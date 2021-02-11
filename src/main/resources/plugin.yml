@@ -1,0 +1,8 @@
+name: ArcticPrinter
+author: KyroKrypt
+version: 1.0.0
+main: dev.kyro.arcticprinter.ArcticPrinter
+description: Printer plugin for factions
+softDepend: [ ShopGUIPlus, Vault ]
+commands:
+  printer:
