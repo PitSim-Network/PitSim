@@ -1,8 +1,6 @@
-name: ArcticPrinter
-author: KyroKrypt
+name: Template
+authors: [ KyroKrypt, Finn ]
 version: 1.0.0
 main: dev.kyro.arcticprinter.ArcticPrinter
-description: Printer plugin for factions
-softDepend: [ ShopGUIPlus, Vault ]
+description: Template plugin
 commands:
-  printer:
