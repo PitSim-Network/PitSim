@@ -17,11 +17,10 @@ repositories {
 dependencies {
     compileOnly 'org.spigotmc:spigot-api:1.8.8-R0.1-SNAPSHOT'
 
-    compile 'com.github.ArcticDevelopment:ArcticAPI:01baeb1065'
+    compile 'com.github.ArcticDevelopment:ArcticAPI:-SNAPSHOT'
 
-    compileOnly 'com.github.MilkBowl:VaultAPI:1.7'
 }
 shadowJar {
 
-    relocate 'dev.kyro.arcticapi', 'dev.kyro.arcticfishing.arcticapi'
+    relocate 'dev.kyro.arcticapi', 'dev.kyro.arctictemplate.arcticapi'
 }
