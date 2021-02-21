@@ -1,11 +1,13 @@
-package dev.arcticdevelopment.template;
+package dev.arcticdevelopment.arcticfishing;
 
+
+import dev.kyro.arcticapi.commands.ABaseCommand;
 import dev.kyro.arcticapi.ArcticAPI;
 import org.bukkit.plugin.java.JavaPlugin;
 
-public class Template extends JavaPlugin {
+public class ArcticFishing extends JavaPlugin {
 
-    public static Template INSTANCE;
+    public static ArcticFishing INSTANCE;
 
     @Override
     public void onEnable() {
@@ -33,6 +35,7 @@ public class Template extends JavaPlugin {
     }
 
     private void registerCommands() {
+        ABaseCommand apiCommand = new BaseCommand("darkzone");
 
 //        getCommand("printer").setExecutor(new PrinterCommand());
     }
