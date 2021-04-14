@@ -95,7 +95,7 @@ public class EnchantManager {
 		itemEnchants.setInteger(applyEnchant.refNames.get(0), currentLvl);
 
 		AItemStackBuilder itemStackBuilder = new AItemStackBuilder(nbtItem.getItem());
-		itemStackBuilder.setName("&cTier " + AUtil.toRoman(enchantNum) + getMysticType(itemStack));
+		itemStackBuilder.setName("&cTier " + AUtil.toRoman(enchantNum) + " " + getMysticType(itemStack));
 
 		ALoreBuilder loreBuilder = new ALoreBuilder();
 		loreBuilder.addLore("&7Lives: &a0&7/0");
@@ -132,22 +132,17 @@ public class EnchantManager {
 		List<ItemStack> inUse = new ArrayList<>(Arrays.asList(player.getInventory().getArmorContents()));
 		inUse.add(player.getItemInHand());
 
-		int totalLevel = 0;
+		int finalLevel = 0;
 		for(ItemStack itemStack : inUse) {
-
-			if(itemStack == null || itemStack.getType() == Material.AIR) continue;
-			NBTItem nbtItem = new NBTItem(itemStack);
-			if(!nbtItem.hasKey(NBTTag.ITEM_UUID.getRef())) continue;
-
-			Map<PitEnchant, Integer> itemEnchantMap = getEnchantsOnItem(itemStack);
-			for(Map.Entry<PitEnchant, Integer> entry : itemEnchantMap.entrySet()) {
-
-				if(entry.getKey() != pitEnchant) continue;
-				totalLevel += entry.getValue();
+			int enchantLvl = getEnchantLevel(itemStack, pitEnchant);
+			if(pitEnchant.effectStacks) {
+				finalLevel += enchantLvl;
+			} else {
+				if(enchantLvl > finalLevel) finalLevel = enchantLvl;
 			}
 		}
 
-		return totalLevel;
+		return finalLevel;
 	}
 
 	public static int getEnchantLevel(ItemStack itemStack, PitEnchant pitEnchant) {

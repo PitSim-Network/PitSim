@@ -1,10 +1,8 @@
 package dev.kyro.pitremake.enchants;
 
 import dev.kyro.arcticapi.builders.ALoreBuilder;
-import dev.kyro.arcticapi.misc.ASound;
 import dev.kyro.pitremake.controllers.*;
 import dev.kyro.pitremake.enums.ApplyType;
-import org.bukkit.Sound;
 
 import java.util.List;
 
@@ -23,12 +21,10 @@ public class Perun extends PitEnchant {
 
 		PitPlayer pitPlayer = PitPlayer.getPitPlayer(damageEvent.attacker);
 		HitCounter.incrementCounter(pitPlayer.player, this);
-		System.out.println(pitPlayer.enchantHits);
 		if(!HitCounter.hasReachedThreshold(pitPlayer.player, this, getStrikes(enchantLvl))) return damageEvent;
 
 		damageEvent.trueDamage += getTrueDamage(enchantLvl);
 		damageEvent.defender.getWorld().strikeLightningEffect(damageEvent.defender.getLocation());
-		ASound.play(damageEvent.attacker, Sound.ORB_PICKUP, 1, 0.6F);
 
 		return damageEvent;
 	}

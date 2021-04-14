@@ -1,5 +1,6 @@
 package dev.kyro.pitremake.controllers;
 
+import org.bukkit.entity.Arrow;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 
@@ -11,6 +12,7 @@ public class DamageEvent {
 	public EntityDamageByEntityEvent event;
 	public Player attacker;
 	public Player defender;
+	public Arrow arrow;
 
 	public double increase = 0;
 	public double increasePercent = 0;
@@ -23,7 +25,13 @@ public class DamageEvent {
 
 	public DamageEvent(EntityDamageByEntityEvent event) {
 		this.event = event;
-		this.attacker = (Player) event.getDamager();
+
+		if(event.getDamager() instanceof Arrow) {
+			this.arrow = (Arrow) event.getDamager();
+			this.attacker = (Player) arrow.getShooter();
+		} else {
+			this.attacker = (Player) event.getDamager();
+		}
 		this.defender = (Player) event.getEntity();
 	}
 }

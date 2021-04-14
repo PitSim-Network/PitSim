@@ -1,5 +1,6 @@
 package dev.kyro.pitremake.controllers;
 
+import org.bukkit.entity.Arrow;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -11,9 +12,7 @@ public class DamageManager implements Listener {
 	@EventHandler(ignoreCancelled = true, priority = EventPriority.HIGH)
 	public void onAttack(EntityDamageByEntityEvent event) {
 
-		if(!(event.getEntity() instanceof Player) || !(event.getDamager() instanceof Player)) return;
-		Player attacker = (Player) event.getDamager();
-		Player defender = (Player) event.getEntity();
+		if(!(event.getEntity() instanceof Player) || (!(event.getDamager() instanceof Player) && !(event.getDamager() instanceof Arrow))) return;
 
 		handleAttack(new DamageEvent(event));
 	}
@@ -36,19 +35,23 @@ public class DamageManager implements Listener {
 
 		damageEvent.event.setDamage(damage);
 
-		double finalHealth = damageEvent.defender.getHealth() - damageEvent.trueDamage;
-		if(finalHealth <= 0) {
+		if(damageEvent.trueDamage != 0) {
+			double finalHealth = damageEvent.defender.getHealth() - damageEvent.trueDamage;
+			if(finalHealth <= 0) {
 //			TODO: Call death
-			return;
+				return;
+			}
+			damageEvent.defender.setHealth(finalHealth);
 		}
-		damageEvent.defender.setHealth(finalHealth);
 
-		finalHealth = damageEvent.attacker.getHealth() - damageEvent.selfTrueDamage;
-		if(finalHealth <= 0) {
+		if(damageEvent.selfTrueDamage != 0) {
+			double finalHealth = damageEvent.attacker.getHealth() - damageEvent.selfTrueDamage;
+			if(finalHealth <= 0) {
 //			TODO: Call death
-			return;
+				return;
+			}
+			damageEvent.attacker.setHealth(finalHealth);
+			damageEvent.attacker.damage(0);
 		}
-		damageEvent.attacker.setHealth(finalHealth);
-		damageEvent.attacker.damage(0);
 	}
 }

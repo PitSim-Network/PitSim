@@ -12,6 +12,7 @@ public abstract class PitEnchant {
 	public List<String> refNames;
 	public boolean isRare;
 	public ApplyType applyType;
+	public boolean effectStacks = false;
 
 	private String overrideName;
 

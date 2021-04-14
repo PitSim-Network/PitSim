@@ -25,10 +25,10 @@ public class Gamble extends PitEnchant {
 
 		if(Math.random() < 0.5) {
 			damageEvent.trueDamage += getTrueDamage(enchantLvl);
-			ASound.play(damageEvent.attacker, Sound.ORB_PICKUP, 1, 0.7F);
+			ASound.play(damageEvent.attacker, Sound.NOTE_PLING, 1, 3F);
 		} else {
 			damageEvent.selfTrueDamage += getTrueDamage(enchantLvl);
-			ASound.play(damageEvent.attacker, Sound.ORB_PICKUP, 1, 0.6F);
+			ASound.play(damageEvent.attacker, Sound.NOTE_PLING, 1, 1.5F);
 		}
 
 		return damageEvent;
