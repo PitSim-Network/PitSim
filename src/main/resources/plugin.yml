@@ -1,6 +1,6 @@
 name: Template
 authors: [ KyroKrypt, Finn ]
 version: 1.0.0
-main: dev.kyro.arcticprinter.ArcticPrinter
-description: Template plugin
+main: dev.kyro.pitremake.PitRemake
+description: Remake of the Hypixel Pit
 commands:
