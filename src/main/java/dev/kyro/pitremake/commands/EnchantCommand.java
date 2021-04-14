@@ -58,11 +58,15 @@ public class EnchantCommand implements CommandExecutor {
 
 		ItemStack updatedItem;
 		try {
-			updatedItem = EnchantManager.addEnchant(player.getItemInHand(), pitEnchant, level);
+			updatedItem = EnchantManager.addEnchant(player.getItemInHand(), pitEnchant, level, false);
 		} catch(Exception e) {
 			if(e instanceof InvalidEnchantLevelException) {
 
-				AOutput.error(player, "There is already a higher level enchant on this item");
+				if(!((InvalidEnchantLevelException) e).levelTooHigh) {
+					AOutput.error(player, "Invalid enchant level");
+				} else {
+					AOutput.error(player, "There is already a higher level enchant on this item");
+				}
 			} else if(e instanceof MaxTokensExceededException) {
 
 				if(!((MaxTokensExceededException) e).isRare) {
@@ -73,11 +77,14 @@ public class EnchantCommand implements CommandExecutor {
 			} else if(e instanceof MaxEnchantsExceededException) {
 
 				AOutput.error(player, "You cannot have more than 3 enchants on an item");
+			} else {
+				e.printStackTrace();
 			}
 			return false;
 		}
 
 		player.setItemInHand(updatedItem);
+		AOutput.send(player, "Added the enchant");
 		return false;
 	}
 }

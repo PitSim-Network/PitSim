@@ -5,3 +5,5 @@ main: dev.kyro.pitremake.PitRemake
 description: Remake of the Hypixel Pit
 commands:
   atest:
+  enchant:
+  fresh:

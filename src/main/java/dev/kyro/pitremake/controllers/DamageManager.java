@@ -36,11 +36,19 @@ public class DamageManager implements Listener {
 
 		damageEvent.event.setDamage(damage);
 
-//		double finalHealth = damageEvent.defender.getHealth() - damageEvent.trueDamage;
-//		if(finalHealth <= 0) {
-////			TODO: Call death
-//			return;
-//		}
-//		damageEvent.defender.setHealth(finalHealth);
+		double finalHealth = damageEvent.defender.getHealth() - damageEvent.trueDamage;
+		if(finalHealth <= 0) {
+//			TODO: Call death
+			return;
+		}
+		damageEvent.defender.setHealth(finalHealth);
+
+		finalHealth = damageEvent.attacker.getHealth() - damageEvent.selfTrueDamage;
+		if(finalHealth <= 0) {
+//			TODO: Call death
+			return;
+		}
+		damageEvent.attacker.setHealth(finalHealth);
+		damageEvent.attacker.damage(0);
 	}
 }

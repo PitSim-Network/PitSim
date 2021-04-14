@@ -22,8 +22,8 @@ public abstract class PitEnchant {
 		this.applyType = applyType;
 	}
 
-	public abstract List<String> getDescription();
 	public abstract DamageEvent onDamage(DamageEvent damageEvent);
+	public abstract List<String> getDescription(int enchantLvl);
 
 	public String getDisplayName() {
 

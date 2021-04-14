@@ -19,6 +19,7 @@ public class DamageEvent {
 	public double decrease = 0;
 
 	public double trueDamage = 0;
+	public double selfTrueDamage = 0;
 
 	public DamageEvent(EntityDamageByEntityEvent event) {
 		this.event = event;

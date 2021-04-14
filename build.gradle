@@ -18,10 +18,10 @@ repositories {
 dependencies {
     compileOnly 'org.spigotmc:spigot-api:1.8.8-R0.1-SNAPSHOT'
 
-    compile 'com.github.ArcticDevelopment:ArcticAPI:c2e06c1f48'
+    compile 'com.github.ArcticDevelopment:ArcticAPI:5a340353a0'
     compile 'de.tr7zw:item-nbt-api-plugin:2.7.1'
 }
 shadowJar {
 
-    relocate 'dev.kyro.arcticapi', 'dev.kyro.arctictemplate.arcticapi'
+    relocate 'dev.kyro.arcticapi', 'dev.kyro.pitremake.arcticapi'
 }
