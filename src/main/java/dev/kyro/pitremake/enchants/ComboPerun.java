@@ -3,12 +3,13 @@ package dev.kyro.pitremake.enchants;
 import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.pitremake.controllers.*;
 import dev.kyro.pitremake.enums.ApplyType;
+import dev.kyro.pitremake.misc.Misc;
 
 import java.util.List;
 
-public class Perun extends PitEnchant {
+public class ComboPerun extends PitEnchant {
 
-	public Perun() {
+	public ComboPerun() {
 		super("Combo: Perun's Wrath", true, ApplyType.SWORDS,
 				"perun", "lightning");
 	}
@@ -40,7 +41,7 @@ public class Perun extends PitEnchant {
 
 		double inHearts = (getTrueDamage(enchantLvl) / 2);
 		String asString = Double.toString(inHearts).endsWith(".0") ? Double.toString(inHearts).split(".0")[0] : Double.toString(inHearts);
-		return new ALoreBuilder("&7Every&e" + ordinalWords(getStrikes(enchantLvl)) + " &7hit strikes",
+		return new ALoreBuilder("&7Every&e" + Misc.ordinalWords(getStrikes(enchantLvl)) + " &7hit strikes",
 				"&elightning for &c" + asString + "\u2764&7.", "&7&oLightning deals true damage").getLore();
 	}
 
@@ -52,22 +53,5 @@ public class Perun extends PitEnchant {
 	public int getStrikes(int enchantLvl) {
 
 		return Math.max(6 - enchantLvl, 1);
-	}
-
-	public String ordinalWords(int num) {
-
-		switch(num) {
-			case 1:
-				return "";
-			case 2:
-				return " second";
-			case 3:
-				return " third";
-			case 4:
-				return " fourth";
-			case 5:
-				return " fifth";
-		}
-		return "";
 	}
 }

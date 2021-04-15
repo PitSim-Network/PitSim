@@ -6,10 +6,7 @@ import dev.kyro.pitremake.commands.EnchantCommand;
 import dev.kyro.pitremake.commands.FreshCommand;
 import dev.kyro.pitremake.controllers.DamageManager;
 import dev.kyro.pitremake.controllers.EnchantManager;
-import dev.kyro.pitremake.enchants.Billionaire;
-import dev.kyro.pitremake.enchants.Gamble;
-import dev.kyro.pitremake.enchants.Perun;
-import dev.kyro.pitremake.enchants.Solitude;
+import dev.kyro.pitremake.enchants.*;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class PitRemake extends JavaPlugin {
@@ -37,9 +34,13 @@ public class PitRemake extends JavaPlugin {
 
 		EnchantManager.registerEnchant(new Billionaire());
 		EnchantManager.registerEnchant(new Gamble());
-		EnchantManager.registerEnchant(new Perun());
+		EnchantManager.registerEnchant(new Executioner());
+		EnchantManager.registerEnchant(new ComboPerun());
+		EnchantManager.registerEnchant(new ComboDamage());
+		EnchantManager.registerEnchant(new ComboHeal());
 
 		EnchantManager.registerEnchant(new Solitude());
+		EnchantManager.registerEnchant(new DiamondAllergy());
 	}
 
 	private void registerCommands() {
