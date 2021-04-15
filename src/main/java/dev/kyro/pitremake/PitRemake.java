@@ -38,6 +38,7 @@ public class PitRemake extends JavaPlugin {
 		EnchantManager.registerEnchant(new Billionaire());
 		EnchantManager.registerEnchant(new Gamble());
 		EnchantManager.registerEnchant(new Perun());
+
 		EnchantManager.registerEnchant(new Solitude());
 	}
 
