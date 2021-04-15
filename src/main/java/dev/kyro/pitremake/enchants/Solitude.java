@@ -1,13 +1,11 @@
 package dev.kyro.pitremake.enchants;
 
 import dev.kyro.arcticapi.builders.ALoreBuilder;
-import dev.kyro.arcticapi.misc.ASound;
 import dev.kyro.pitremake.controllers.DamageEvent;
 import dev.kyro.pitremake.controllers.EnchantManager;
 import dev.kyro.pitremake.controllers.PitEnchant;
 import dev.kyro.pitremake.enums.ApplyType;
 import dev.kyro.pitremake.misc.NumberFormatter;
-import org.bukkit.Sound;
 
 import java.util.List;
 
@@ -25,7 +23,6 @@ public class Solitude extends PitEnchant {
 		if(enchantLvl == 0) return damageEvent;
 
 		damageEvent.multiplier.add(getDamageMultiplier(enchantLvl));
-		ASound.play(damageEvent.attacker, Sound.ORB_PICKUP, 1, 1F);
 
 		return damageEvent;
 	}
