@@ -2,11 +2,12 @@ package dev.kyro.pitremake.controllers;
 
 import dev.kyro.pitremake.enums.ApplyType;
 import org.bukkit.ChatColor;
+import org.bukkit.event.Listener;
 
 import java.util.Arrays;
 import java.util.List;
 
-public abstract class PitEnchant {
+public abstract class PitEnchant implements Listener {
 
 	public String name;
 	public List<String> refNames;
