@@ -27,9 +27,11 @@ public class ComboHeal extends PitEnchant {
 		HitCounter.incrementCounter(pitPlayer.player, this);
 		if(!HitCounter.hasReachedThreshold(pitPlayer.player, this, 4)) return damageEvent;
 
-		damageEvent.attacker.setHealth(damageEvent.attacker.getHealth() + getEffect(enchantLvl));
+		damageEvent.attacker.setHealth(Math.min(damageEvent.attacker.getHealth() + getEffect(enchantLvl), damageEvent.attacker.getMaxHealth()));
 		EntityPlayer nmsPlayer = ((CraftPlayer) damageEvent.attacker).getHandle();
-		nmsPlayer.setAbsorptionHearts((float) (nmsPlayer.getAbsorptionHearts() + getEffect(enchantLvl)));
+		if(nmsPlayer.getAbsorptionHearts() < 8) {
+			nmsPlayer.setAbsorptionHearts(Math.min((float) (nmsPlayer.getAbsorptionHearts() + getEffect(enchantLvl)), 8));
+		}
 
 		ASound.play(damageEvent.attacker, Sound.DONKEY_HIT, 1F, 0.5F);
 
