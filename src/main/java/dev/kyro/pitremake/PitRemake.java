@@ -42,10 +42,10 @@ public class PitRemake extends JavaPlugin {
 		EnchantManager.registerEnchant(new ComboDamage());
 		EnchantManager.registerEnchant(new ComboHeal());
 
+		EnchantManager.registerEnchant(new MegaLongBow());
+
 		EnchantManager.registerEnchant(new Solitude());
 		EnchantManager.registerEnchant(new DiamondAllergy());
-
-		EnchantManager.registerEnchant(new MegaLongBow());
 	}
 
 	private void registerCommands() {
