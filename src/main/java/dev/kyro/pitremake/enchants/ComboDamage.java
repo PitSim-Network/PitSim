@@ -24,7 +24,7 @@ public class ComboDamage extends PitEnchant {
 		HitCounter.incrementCounter(pitPlayer.player, this);
 		if(!HitCounter.hasReachedThreshold(pitPlayer.player, this, getStrikes(enchantLvl))) return damageEvent;
 
-		damageEvent.increasePercent += getDamage(enchantLvl);
+		damageEvent.increasePercent += getDamage(enchantLvl) / 100;
 
 		return damageEvent;
 	}
