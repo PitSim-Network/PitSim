@@ -12,6 +12,9 @@ public class PitPlayer {
 
 	public Player player;
 
+	public int killstreak = 0;
+	public Megastreak megastreak;
+
 	public HashMap<PitEnchant, Integer> enchantHits = new HashMap<>();
 
 	private PitPlayer(Player player) {
@@ -34,5 +37,17 @@ public class PitPlayer {
 		}
 
 		return pitPlayer;
+	}
+
+	public void incrementKillstreak() {
+
+		killstreak++;
+		if(killstreak == megastreak.requiredKills) megastreak.onMega();
+	}
+
+	public void setKillstreak(int killstreak) {
+
+		this.killstreak = killstreak;
+		if(killstreak >= megastreak.requiredKills) megastreak.onMega();
 	}
 }
