@@ -4,6 +4,7 @@ import dev.kyro.arcticapi.ArcticAPI;
 import dev.kyro.pitremake.commands.ATestCommand;
 import dev.kyro.pitremake.commands.EnchantCommand;
 import dev.kyro.pitremake.commands.FreshCommand;
+import dev.kyro.pitremake.controllers.CooldownManager;
 import dev.kyro.pitremake.controllers.DamageManager;
 import dev.kyro.pitremake.controllers.EnchantManager;
 import dev.kyro.pitremake.enchants.*;
@@ -21,6 +22,8 @@ public class PitRemake extends JavaPlugin {
 		loadConfig();
 
 		ArcticAPI.configInit(this, "prefix", "error-prefix");
+
+		CooldownManager.init();
 
 		registerCommands();
 		registerListeners();

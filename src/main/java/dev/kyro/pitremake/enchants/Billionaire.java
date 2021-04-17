@@ -23,6 +23,9 @@ public class Billionaire extends PitEnchant {
 		int enchantLvl = EnchantManager.getEnchantLevel(damageEvent.attacker, this);
 		if(enchantLvl == 0) return damageEvent;
 
+//		Cooldown cooldown = getCooldown(damageEvent.attacker, 40);
+//		if(cooldown.isOnCooldown()) return damageEvent; else cooldown.reset();
+
 		damageEvent.multiplier.add(getDamageMultiplier(enchantLvl));
 		ASound.play(damageEvent.attacker, Sound.ORB_PICKUP, 1, 0.73F);
 

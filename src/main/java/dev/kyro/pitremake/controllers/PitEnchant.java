@@ -2,10 +2,10 @@ package dev.kyro.pitremake.controllers;
 
 import dev.kyro.pitremake.enums.ApplyType;
 import org.bukkit.ChatColor;
+import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 public abstract class PitEnchant implements Listener {
 
@@ -14,6 +14,7 @@ public abstract class PitEnchant implements Listener {
 	public boolean isRare;
 	public ApplyType applyType;
 	public boolean effectStacks = false;
+	public Map<UUID, Cooldown> cooldowns = new HashMap<>();
 
 	private String overrideName;
 
@@ -26,6 +27,15 @@ public abstract class PitEnchant implements Listener {
 
 	public abstract DamageEvent onDamage(DamageEvent damageEvent);
 	public abstract List<String> getDescription(int enchantLvl);
+
+	public Cooldown getCooldown(Player player, int time) {
+
+		if(cooldowns.containsKey(player.getUniqueId())) return cooldowns.get(player.getUniqueId());
+
+		Cooldown cooldown = new Cooldown(time);
+		cooldowns.put(player.getUniqueId(), cooldown);
+		return cooldown;
+	}
 
 	public String getDisplayName() {
 
