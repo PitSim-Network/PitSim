@@ -1,5 +1,6 @@
 package dev.kyro.pitremake.controllers;
 
+import dev.kyro.arcticapi.misc.AOutput;
 import org.bukkit.entity.Arrow;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -19,6 +20,8 @@ public class DamageManager implements Listener {
 
 	public void handleAttack(DamageEvent damageEvent) {
 
+		AOutput.send(damageEvent.attacker, "Initial Damage: " + damageEvent.event.getDamage());
+
 		for(PitEnchant pitEnchant : EnchantManager.pitEnchants) {
 			pitEnchant.onDamage(damageEvent);
 		}
@@ -34,6 +37,8 @@ public class DamageManager implements Listener {
 		damage = Math.max(damage, 0);
 
 		damageEvent.event.setDamage(damage);
+
+		AOutput.send(damageEvent.attacker, "Final Damage: " + damageEvent.event.getDamage());
 
 		if(damageEvent.trueDamage != 0) {
 			double finalHealth = damageEvent.defender.getHealth() - damageEvent.trueDamage;

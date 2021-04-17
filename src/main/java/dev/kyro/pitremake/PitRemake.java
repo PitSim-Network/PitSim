@@ -43,6 +43,7 @@ public class PitRemake extends JavaPlugin {
 		EnchantManager.registerEnchant(new ComboHeal());
 		EnchantManager.registerEnchant(new Punisher());
 		EnchantManager.registerEnchant(new KingBuster());
+//		After ComboHeal
 		EnchantManager.registerEnchant(new GoldAndBoosted());
 		EnchantManager.registerEnchant(new PainFocus());
 
