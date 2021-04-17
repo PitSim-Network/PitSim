@@ -1,6 +1,9 @@
 package dev.kyro.pitremake.misc;
 
 import org.bukkit.Location;
+import org.bukkit.entity.Player;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 
 public class Misc {
 
@@ -16,6 +19,7 @@ public class Misc {
 
 		return Math.sqrt(Math.pow(x1 - x2, 2) + Math.pow(y1 - y2, 2) + Math.pow(z1 - z2, 2));
 	}
+
 	public static String ordinalWords(int num) {
 
 		switch(num) {
@@ -31,5 +35,16 @@ public class Misc {
 				return " fifth";
 		}
 		return "";
+	}
+
+	public static void applyPotionEffect(Player player, PotionEffectType type, int amplifier) {
+
+		for(PotionEffect potionEffect : player.getActivePotionEffects()) {
+			if(!potionEffect.getType().equals(type) || potionEffect.getAmplifier() > amplifier) continue;
+			if(potionEffect.getAmplifier() == amplifier && potionEffect.getDuration() >= 40) continue;
+			player.removePotionEffect(type);
+			break;
+		}
+		player.addPotionEffect(new PotionEffect(type, 40, amplifier, true));
 	}
 }

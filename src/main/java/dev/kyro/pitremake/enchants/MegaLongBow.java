@@ -7,11 +7,11 @@ import dev.kyro.pitremake.controllers.DamageEvent;
 import dev.kyro.pitremake.controllers.EnchantManager;
 import dev.kyro.pitremake.controllers.PitEnchant;
 import dev.kyro.pitremake.enums.ApplyType;
+import dev.kyro.pitremake.misc.Misc;
 import org.bukkit.entity.Arrow;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.entity.EntityShootBowEvent;
-import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
 import java.util.List;
@@ -43,13 +43,7 @@ public class MegaLongBow extends PitEnchant {
 
 		arrow.setCritical(true);
 		arrow.setVelocity(player.getLocation().getDirection().multiply(2.9));
-		for(PotionEffect potionEffect : player.getActivePotionEffects()) {
-			if(!potionEffect.getType().equals(PotionEffectType.JUMP) || potionEffect.getAmplifier() > getJumpMultiplier(enchantLvl)) continue;
-			if(potionEffect.getAmplifier() == getJumpMultiplier(enchantLvl) && potionEffect.getDuration() >= 40) continue;
-			player.removePotionEffect(PotionEffectType.JUMP);
-			break;
-		}
-		player.addPotionEffect(new PotionEffect(PotionEffectType.JUMP, 40, getJumpMultiplier(enchantLvl), true));
+		Misc.applyPotionEffect(player, PotionEffectType.JUMP, getJumpMultiplier(enchantLvl));
 	}
 
 	@Override
