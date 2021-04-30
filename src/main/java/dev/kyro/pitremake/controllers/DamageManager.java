@@ -2,7 +2,6 @@ package dev.kyro.pitremake.controllers;
 
 import dev.kyro.arcticapi.misc.AOutput;
 import org.bukkit.entity.Arrow;
-import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -16,7 +15,7 @@ import java.util.Map;
 
 public class DamageManager implements Listener {
 
-	public static Map<Entity, EntityShootBowEvent> arrowMap = new HashMap<>();
+	public static Map<EntityShootBowEvent, Map<PitEnchant, Integer>> arrowMap = new HashMap<>();
 
 	@EventHandler(ignoreCancelled = true)
 	public void onBowShoot(EntityShootBowEvent event) {
@@ -24,24 +23,35 @@ public class DamageManager implements Listener {
 		if(!(event.getEntity() instanceof Player) || !(event.getProjectile() instanceof Arrow)) return;
 		Player shooter = (Player) event.getEntity();
 		Arrow arrow = (Arrow) event.getProjectile();
-		arrowMap.put(arrow, event);
+		arrowMap.put(event, EnchantManager.getEnchantsOnPlayer(shooter));
 	}
 
 	@EventHandler
 	public void onArrowLand(ProjectileHitEvent event) {
 
 		if(!(event.getEntity() instanceof Arrow)) return;
-		Arrow arrow = (Arrow) event.getEntity();
-		arrowMap.remove(arrow);
+		for(Map.Entry<EntityShootBowEvent, Map<PitEnchant, Integer>> entry : arrowMap.entrySet()) {
+			if(!entry.getKey().getEntity().equals(event.getEntity())) continue;
+			arrowMap.remove(entry.getKey());
+			return;
+		}
 	}
 
 	@EventHandler(ignoreCancelled = true, priority = EventPriority.HIGH)
 	public void onAttack(EntityDamageByEntityEvent event) {
 
 		if(!(event.getEntity() instanceof Player) || (!(event.getDamager() instanceof Player) && !(event.getDamager() instanceof Arrow))) return;
-		Player attacker = event.getDamager() instanceof Player ? (Player) event.getDamager() : (Player) arrowMap.remove(event.getDamager()).getEntity();
+		if(event.getDamager() instanceof Player) {
 
-		handleAttack(new DamageEvent(event, EnchantManager.getEnchantsOnPlayer(attacker)));
+			handleAttack(new DamageEvent(event, EnchantManager.getEnchantsOnPlayer((Player) event.getDamager())));
+		} else {
+
+			for(Map.Entry<EntityShootBowEvent, Map<PitEnchant, Integer>> entry : arrowMap.entrySet()) {
+
+				if(!entry.getKey().getEntity().equals(event.getDamager())) continue;
+				handleAttack(new DamageEvent(event, arrowMap.remove(entry.getKey())));
+			}
+		}
 	}
 
 	public void handleAttack(DamageEvent damageEvent) {
