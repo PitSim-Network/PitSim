@@ -43,7 +43,7 @@ public class MegaLongBow extends PitEnchant {
 
 		arrow.setCritical(true);
 		arrow.setVelocity(player.getLocation().getDirection().multiply(2.9));
-		Misc.applyPotionEffect(player, PotionEffectType.JUMP, getJumpMultiplier(enchantLvl));
+		Misc.applyPotionEffect(player, PotionEffectType.JUMP, 40, getJumpMultiplier(enchantLvl));
 	}
 
 	@Override

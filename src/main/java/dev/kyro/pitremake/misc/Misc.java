@@ -37,14 +37,14 @@ public class Misc {
 		return "";
 	}
 
-	public static void applyPotionEffect(Player player, PotionEffectType type, int amplifier) {
+	public static void applyPotionEffect(Player player, PotionEffectType type, int duration, int amplifier) {
 
 		for(PotionEffect potionEffect : player.getActivePotionEffects()) {
 			if(!potionEffect.getType().equals(type) || potionEffect.getAmplifier() > amplifier) continue;
-			if(potionEffect.getAmplifier() == amplifier && potionEffect.getDuration() >= 40) continue;
+			if(potionEffect.getAmplifier() == amplifier && potionEffect.getDuration() >= duration) continue;
 			player.removePotionEffect(type);
 			break;
 		}
-		player.addPotionEffect(new PotionEffect(type, 40, amplifier, true));
+		player.addPotionEffect(new PotionEffect(type, duration, amplifier, true));
 	}
 }
