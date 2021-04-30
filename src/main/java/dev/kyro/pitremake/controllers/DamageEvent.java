@@ -14,7 +14,7 @@ public class DamageEvent {
 	public Player attacker;
 	public Player defender;
 	public Arrow arrow;
-	private Map<PitEnchant, Integer> attackerEnchantMap;
+	private final Map<PitEnchant, Integer> attackerEnchantMap;
 
 	public double increase = 0;
 	public double increasePercent = 0;
@@ -27,9 +27,9 @@ public class DamageEvent {
 
 	public double executeUnder = 0;
 
-	public DamageEvent(EntityDamageByEntityEvent event) {
+	public DamageEvent(EntityDamageByEntityEvent event, Map<PitEnchant, Integer> attackerEnchantMap) {
 		this.event = event;
-		attackerEnchantMap = EnchantManager.getEnchantsOnPlayer(attacker.getPlayer());
+		this.attackerEnchantMap = attackerEnchantMap;
 
 		if(event.getDamager() instanceof Arrow) {
 			this.arrow = (Arrow) event.getDamager();
