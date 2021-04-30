@@ -47,6 +47,6 @@ public class ComboHeal extends PitEnchant {
 
 	public double getEffect(int enchantLvl) {
 
-		return enchantLvl * 0.4;
+		return enchantLvl * 0.8;
 	}
 }
