@@ -48,6 +48,7 @@ public class PitRemake extends JavaPlugin {
 		EnchantManager.registerEnchant(new PainFocus());
 
 		EnchantManager.registerEnchant(new MegaLongBow());
+		EnchantManager.registerEnchant(new Volley());
 
 		EnchantManager.registerEnchant(new Solitude());
 		EnchantManager.registerEnchant(new DiamondAllergy());
