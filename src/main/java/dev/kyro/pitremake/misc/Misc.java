@@ -47,4 +47,10 @@ public class Misc {
 		}
 		player.addPotionEffect(new PotionEffect(type, duration, amplifier, true));
 	}
+
+	public static String getHearts(double damage) {
+
+		String string = (damage / 2) % 1 == 0 ? String.valueOf((int) (damage / 2)) : String.valueOf((Math.floor(damage * 50)) / 100);
+		return string + "\u2764";
+	}
 }
