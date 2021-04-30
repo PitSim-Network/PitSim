@@ -29,7 +29,7 @@ public class MegaLongBow extends PitEnchant {
 	}
 
 	@EventHandler
-	public void onDamage(EntityShootBowEvent event) {
+	public void onBowShoot(EntityShootBowEvent event) {
 
 		if(!(event.getEntity() instanceof Player) || !(event.getProjectile() instanceof Arrow)) return;
 		Player player = ((Player) event.getEntity()).getPlayer();
