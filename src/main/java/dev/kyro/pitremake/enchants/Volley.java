@@ -21,8 +21,8 @@ import java.util.List;
 public class Volley extends PitEnchant {
 
 	public Volley() {
-		super("Mega Longbow", true, ApplyType.BOWS,
-				"megalongbow", "mega-longbow", "mlb");
+		super("Volley", true, ApplyType.BOWS,
+				"volley");
 	}
 
 	@Override
