@@ -4,6 +4,7 @@ import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.arcticapi.misc.ASound;
 import dev.kyro.pitremake.controllers.*;
 import dev.kyro.pitremake.enums.ApplyType;
+import dev.kyro.pitremake.misc.Misc;
 import net.minecraft.server.v1_8_R3.EntityPlayer;
 import org.bukkit.Sound;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
@@ -42,7 +43,7 @@ public class ComboHeal extends PitEnchant {
 	public List<String> getDescription(int enchantLvl) {
 
 		return new ALoreBuilder("&7Every &efourth &7strike heals",
-				"&c" + getEffect(enchantLvl) + "\u2764 &7and grants &6" + getEffect(enchantLvl) + "\u2764").getLore();
+				"&c" + Misc.getHearts(getEffect(enchantLvl)) + " &7and grants &6" + Misc.getHearts(getEffect(enchantLvl))).getLore();
 	}
 
 	public double getEffect(int enchantLvl) {

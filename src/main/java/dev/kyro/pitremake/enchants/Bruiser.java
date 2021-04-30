@@ -4,6 +4,7 @@ import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.pitremake.controllers.DamageEvent;
 import dev.kyro.pitremake.controllers.PitEnchant;
 import dev.kyro.pitremake.enums.ApplyType;
+import dev.kyro.pitremake.misc.Misc;
 
 import java.util.List;
 
@@ -29,7 +30,7 @@ public class Bruiser extends PitEnchant {
 	@Override
 	public List<String> getDescription(int enchantLvl) {
 
-		return new ALoreBuilder("&7Blocking with your swords reduces", "received damage by &c" + getDamageReduction(enchantLvl) + "\u2764").getLore();
+		return new ALoreBuilder("&7Blocking with your swords reduces", "received damage by &c" + Misc.getHearts(getDamageReduction(enchantLvl))).getLore();
 	}
 
 	public double getDamageReduction(int enchantLvl) {

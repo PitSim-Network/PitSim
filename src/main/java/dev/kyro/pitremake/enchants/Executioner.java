@@ -3,9 +3,9 @@ package dev.kyro.pitremake.enchants;
 import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.pitremake.PitRemake;
 import dev.kyro.pitremake.controllers.DamageEvent;
-import dev.kyro.pitremake.controllers.EnchantManager;
 import dev.kyro.pitremake.controllers.PitEnchant;
 import dev.kyro.pitremake.enums.ApplyType;
+import dev.kyro.pitremake.misc.Misc;
 import net.minecraft.server.v1_8_R3.*;
 import org.bukkit.Bukkit;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
@@ -59,7 +59,7 @@ public class Executioner extends PitEnchant {
 	@Override
 	public List<String> getDescription(int enchantLvl) {
 
-		return new ALoreBuilder("&7Hitting an enemy below &c" + (getExecuteHealth(enchantLvl) / 2) + "\u2764",
+		return new ALoreBuilder("&7Hitting an enemy below &c" + Misc.getHearts(getExecuteHealth(enchantLvl)),
 				"&7instantly kills them").getLore();
 	}
 

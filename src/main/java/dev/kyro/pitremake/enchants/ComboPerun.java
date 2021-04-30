@@ -39,10 +39,8 @@ public class ComboPerun extends PitEnchant {
 					"&7per &bdiamond piece &7on your", "&7victim.", "&7&oLightning deals true damage").getLore();
 		}
 
-		double inHearts = (getTrueDamage(enchantLvl) / 2);
-		String asString = Double.toString(inHearts).endsWith(".0") ? Double.toString(inHearts).split(".0")[0] : Double.toString(inHearts);
 		return new ALoreBuilder("&7Every&e" + Misc.ordinalWords(getStrikes(enchantLvl)) + " &7hit strikes",
-				"&elightning for &c" + asString + "\u2764&7.", "&7&oLightning deals true damage").getLore();
+				"&elightning for &c" + Misc.getHearts(getTrueDamage(enchantLvl)) + "&7.", "&7&oLightning deals true damage").getLore();
 	}
 
 	public double getTrueDamage(int enchantLvl) {
