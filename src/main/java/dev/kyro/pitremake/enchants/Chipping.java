@@ -28,7 +28,7 @@ public class Chipping extends PitEnchant {
 	@Override
 	public List<String> getDescription(int enchantLvl) {
 
-		return new ALoreBuilder("&7Enemies hitting you receive", "&c" + getDamage(enchantLvl) + "\u2764 &7 true damage").getLore();
+		return new ALoreBuilder("&7Deals &c" + getDamage(enchantLvl) + "\u2764 &7extra true damage").getLore();
 	}
 
 	public double getDamage(int enchantLvl) {
