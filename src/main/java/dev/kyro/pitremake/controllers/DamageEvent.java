@@ -6,6 +6,7 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class DamageEvent {
 
@@ -13,6 +14,7 @@ public class DamageEvent {
 	public Player attacker;
 	public Player defender;
 	public Arrow arrow;
+	private Map<PitEnchant, Integer> attackerEnchantMap;
 
 	public double increase = 0;
 	public double increasePercent = 0;
@@ -27,6 +29,7 @@ public class DamageEvent {
 
 	public DamageEvent(EntityDamageByEntityEvent event) {
 		this.event = event;
+		attackerEnchantMap = EnchantManager.getEnchantsOnPlayer(attacker.getPlayer());
 
 		if(event.getDamager() instanceof Arrow) {
 			this.arrow = (Arrow) event.getDamager();
@@ -35,5 +38,10 @@ public class DamageEvent {
 			this.attacker = (Player) event.getDamager();
 		}
 		this.defender = (Player) event.getEntity();
+	}
+
+	public int getEnchantLevel(PitEnchant pitEnchant) {
+
+		return attackerEnchantMap.getOrDefault(pitEnchant, 0);
 	}
 }

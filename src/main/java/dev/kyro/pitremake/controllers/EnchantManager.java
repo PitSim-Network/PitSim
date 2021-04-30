@@ -15,6 +15,7 @@ import dev.kyro.pitremake.exceptions.MismatchedEnchantException;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
 
@@ -163,7 +164,25 @@ public class EnchantManager {
 		return 0;
 	}
 
+	public static Map<PitEnchant, Integer> getEnchantsOnPlayer(Player player) {
+
+		List<ItemStack> inUse = new ArrayList<>(Arrays.asList(player.getInventory().getArmorContents()));
+		inUse.add(player.getItemInHand());
+
+		Map<PitEnchant, Integer> itemEnchantMap = new HashMap<>();
+		for(ItemStack itemStack : inUse) {
+			itemEnchantMap.putAll(getEnchantsOnItem(itemStack));
+		}
+
+		return itemEnchantMap;
+	}
+
 	public static Map<PitEnchant, Integer> getEnchantsOnItem(ItemStack itemStack) {
+		return getEnchantsOnItem(itemStack, new HashMap<>());
+	}
+
+	@org.jetbrains.annotations.NotNull
+	public static Map<PitEnchant, Integer> getEnchantsOnItem(ItemStack itemStack, @NotNull Map<PitEnchant, Integer> currentEnchantMap) {
 
 		Map<PitEnchant, Integer> itemEnchantMap = new HashMap<>();
 		if(itemStack == null) return itemEnchantMap;
@@ -176,9 +195,10 @@ public class EnchantManager {
 
 			PitEnchant pitEnchant = getEnchant(key);
 			Integer enchantLvl = itemEnchants.getInteger(key);
-			if(enchantLvl == 0) continue;
+			if(pitEnchant == null || enchantLvl == 0) continue;
 
-			assert pitEnchant != null;
+			if(currentEnchantMap.containsKey(pitEnchant) && currentEnchantMap.get(pitEnchant) >= enchantLvl) continue;
+
 			itemEnchantMap.put(pitEnchant, enchantLvl);
 		}
 

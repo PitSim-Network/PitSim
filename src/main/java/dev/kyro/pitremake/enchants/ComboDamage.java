@@ -17,7 +17,7 @@ public class ComboDamage extends PitEnchant {
 	@Override
 	public DamageEvent onDamage(DamageEvent damageEvent) {
 
-		int enchantLvl = EnchantManager.getEnchantLevel(damageEvent.attacker, this);
+		int enchantLvl = damageEvent.getEnchantLevel(this);
 		if(enchantLvl == 0) return damageEvent;
 
 		PitPlayer pitPlayer = PitPlayer.getPitPlayer(damageEvent.attacker);
