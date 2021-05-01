@@ -171,6 +171,7 @@ public class EnchantManager {
 
 		Map<PitEnchant, Integer> itemEnchantMap = new HashMap<>();
 		for(ItemStack itemStack : inUse) {
+			if(itemStack == null || itemStack.getType() == Material.AIR) continue;
 			itemEnchantMap.putAll(getEnchantsOnItem(itemStack));
 		}
 

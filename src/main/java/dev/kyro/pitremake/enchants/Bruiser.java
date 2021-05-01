@@ -2,6 +2,7 @@ package dev.kyro.pitremake.enchants;
 
 import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.pitremake.controllers.DamageEvent;
+import dev.kyro.pitremake.controllers.EnchantManager;
 import dev.kyro.pitremake.controllers.PitEnchant;
 import dev.kyro.pitremake.enums.ApplyType;
 import dev.kyro.pitremake.misc.Misc;
@@ -18,10 +19,8 @@ public class Bruiser extends PitEnchant {
 	@Override
 	public DamageEvent onDamage(DamageEvent damageEvent) {
 
-		int enchantLvl = damageEvent.getEnchantLevel(this);
-		if(enchantLvl == 0) return damageEvent;
-
-		if(damageEvent.defender.getHealth() / damageEvent.defender.getMaxHealth() < 0.5) return damageEvent;
+		int enchantLvl = EnchantManager.getEnchantLevel(damageEvent.defender, this);
+		if(enchantLvl == 0 || !damageEvent.defender.isBlocking()) return damageEvent;
 		damageEvent.decrease += getDamageReduction(enchantLvl);
 
 		return damageEvent;

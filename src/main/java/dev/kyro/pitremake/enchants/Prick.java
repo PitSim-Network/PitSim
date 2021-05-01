@@ -2,6 +2,7 @@ package dev.kyro.pitremake.enchants;
 
 import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.pitremake.controllers.DamageEvent;
+import dev.kyro.pitremake.controllers.EnchantManager;
 import dev.kyro.pitremake.controllers.PitEnchant;
 import dev.kyro.pitremake.enums.ApplyType;
 import dev.kyro.pitremake.misc.Misc;
@@ -18,7 +19,7 @@ public class Prick extends PitEnchant {
 	@Override
 	public DamageEvent onDamage(DamageEvent damageEvent) {
 
-		int enchantLvl = damageEvent.getEnchantLevel(this);
+		int enchantLvl = EnchantManager.getEnchantLevel(damageEvent.defender, this);
 		if(enchantLvl == 0) return damageEvent;
 
 		damageEvent.selfTrueDamage += getDamage(enchantLvl);

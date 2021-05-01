@@ -20,7 +20,7 @@ public class DiamondAllergy extends PitEnchant {
 	@Override
 	public DamageEvent onDamage(DamageEvent damageEvent) {
 
-		int enchantLvl = damageEvent.getEnchantLevel(this);
+		int enchantLvl = EnchantManager.getEnchantLevel(damageEvent.defender, this);
 		if(enchantLvl == 0) return damageEvent;
 
 		ItemStack weapon = damageEvent.attacker.getItemInHand();
