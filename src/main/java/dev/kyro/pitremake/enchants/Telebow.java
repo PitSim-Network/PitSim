@@ -4,6 +4,8 @@ import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.pitremake.controllers.*;
 import dev.kyro.pitremake.enums.ApplyType;
 import dev.kyro.pitremake.misc.Misc;
+import org.bukkit.Location;
+import org.bukkit.Sound;
 import org.bukkit.entity.Arrow;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -31,8 +33,12 @@ public class Telebow extends PitEnchant {
 
 		Cooldown cooldown = getCooldown(damageEvent.attacker, getCooldown(enchantLvl) * 20);
 		cooldown.reduceCooldown(60);
-		Misc.sendActionBar(damageEvent.attacker, "&cTelebow Cooldown: " + cooldown.getTicksLeft() / 20 + "&c(s)");
 
+		if(cooldown.isOnCooldown()) {
+			Misc.sendActionBar(damageEvent.attacker, "&cTelebow Cooldown: " + cooldown.getTicksLeft() / 20 + "&c(s)");
+		} else {
+			Misc.sendActionBar(damageEvent.attacker, "&aTelebow Ready!");
+		}
 		return damageEvent;
 	}
 
@@ -82,7 +88,13 @@ public class Telebow extends PitEnchant {
 				Arrow teleArrow = (Arrow) event.getEntity();
 				if(teleArrow.equals(teleShot)) {
 
-					player.teleport(teleArrow.getLocation());
+					Location teleportLoc = teleArrow.getLocation().clone();
+					teleportLoc.setYaw(-teleArrow.getLocation().getYaw());
+					teleportLoc.setPitch(-teleArrow.getLocation().getPitch());
+
+					player.teleport(teleportLoc);
+					player.getWorld().playSound(teleArrow.getLocation(), Sound.ENDERMAN_TELEPORT, 1f, 2f);
+
 					teleShot.remove();
 				}
 			}
