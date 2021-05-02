@@ -1,6 +1,11 @@
 package dev.kyro.pitremake.misc;
 
+import net.minecraft.server.v1_8_R3.IChatBaseComponent;
+import net.minecraft.server.v1_8_R3.PacketPlayOutChat;
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.Location;
+import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
@@ -52,5 +57,20 @@ public class Misc {
 
 		String string = (damage / 2) % 1 == 0 ? String.valueOf((int) (damage / 2)) : String.valueOf((Math.floor(damage * 50)) / 100);
 		return string + "\u2764";
+	}
+
+
+	public static void sendActionBar(Player p, String message) {
+		PacketPlayOutChat packet = new PacketPlayOutChat(IChatBaseComponent.ChatSerializer.a("{\"text\":\"" +
+				ChatColor.translateAlternateColorCodes('&', message) + "\"}"), (byte) 2);
+		((CraftPlayer) p).getHandle().playerConnection.sendPacket(packet);
+	}
+
+	public static void broadcastMessage(String message) {
+		PacketPlayOutChat packet = new PacketPlayOutChat(IChatBaseComponent.ChatSerializer.a("{\"text\":\"" +
+				ChatColor.translateAlternateColorCodes('&', message) + "\"}"), (byte) 2);
+		for (Player p : Bukkit.getServer().getOnlinePlayers()) {
+			((CraftPlayer) p).getHandle().playerConnection.sendPacket(packet);
+		}
 	}
 }

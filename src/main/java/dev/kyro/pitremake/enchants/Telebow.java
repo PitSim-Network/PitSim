@@ -1,22 +1,22 @@
 package dev.kyro.pitremake.enchants;
 
 import dev.kyro.arcticapi.builders.ALoreBuilder;
-import dev.kyro.pitremake.PitRemake;
-import dev.kyro.pitremake.controllers.DamageEvent;
-import dev.kyro.pitremake.controllers.EnchantManager;
-import dev.kyro.pitremake.controllers.PitEnchant;
+import dev.kyro.pitremake.controllers.*;
 import dev.kyro.pitremake.enums.ApplyType;
-import dev.kyro.pitremake.events.VolleyShootEvent;
-import org.bukkit.Sound;
+import dev.kyro.pitremake.misc.Misc;
 import org.bukkit.entity.Arrow;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityShootBowEvent;
-import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.event.entity.ProjectileHitEvent;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Telebow extends PitEnchant {
+
+	public List<Arrow> teleShots = new ArrayList<>();
 
 	public Telebow() {
 		super("Telebow", true, ApplyType.BOWS,
@@ -25,57 +25,100 @@ public class Telebow extends PitEnchant {
 
 	@Override
 	public DamageEvent onDamage(DamageEvent damageEvent) {
+		int enchantLvl = damageEvent.getEnchantLevel(this);
+		if(enchantLvl == 0) return damageEvent;
+		if(damageEvent.arrow == null) return damageEvent;
+
+		Cooldown cooldown = getCooldown(damageEvent.attacker, getCooldown(enchantLvl) * 20);
+		cooldown.reduceCooldown(60);
+		Misc.sendActionBar(damageEvent.attacker, "&cTelebow Cooldown: " + cooldown.getTicksLeft() / 20 + "&c(s)");
+
 		return damageEvent;
 	}
 
 	@EventHandler
 	public void onBowShoot(EntityShootBowEvent event) {
 
-		if(event instanceof VolleyShootEvent) return;
 
 		if(!(event.getEntity() instanceof Player) || !(event.getProjectile() instanceof Arrow)) return;
+
 		Player player = ((Player) event.getEntity()).getPlayer();
 		Arrow arrow = (Arrow) event.getProjectile();
 
 		int enchantLvl = EnchantManager.getEnchantLevel(player, this);
-		if(enchantLvl == 0) return;
 
-		new BukkitRunnable() {
-			int count = 0;
-			double arrowVelo = arrow.getVelocity().length();
-			@Override
-			public void run() {
+		if(enchantLvl == 0 || !player.isSneaking()) return;
 
-				if(++count == getArrows(enchantLvl)) {
 
-					cancel();
-					return;
-				}
 
-				Arrow volleyArrow = player.launchProjectile(Arrow.class);
-				volleyArrow.setVelocity(player.getEyeLocation().getDirection().normalize().multiply(arrowVelo));
 
-				VolleyShootEvent volleyShootEvent = new VolleyShootEvent(event.getEntity(), event.getBow(), volleyArrow, event.getForce());
-				PitRemake.INSTANCE.getServer().getPluginManager().callEvent(volleyShootEvent);
 
-				new BukkitRunnable() {
-					@Override
-					public void run() {
-						player.getWorld().playSound(player.getLocation(), Sound.SHOOT_ARROW, 1, 1);
-					}
-				}.runTaskLater(PitRemake.INSTANCE, 1L);
-			}
-		}.runTaskTimer(PitRemake.INSTANCE, 2L, 2L);
+		Cooldown cooldown = getCooldown(player, getCooldown(enchantLvl) * 20);
+		if(cooldown.isOnCooldown()) {
+
+
+			if(player.isSneaking()) Misc.sendActionBar(player, "&cTelebow Cooldown: " + cooldown.getTicksLeft() / 20 + "&c(s)");
+
+			return;
+		}
+		if(cooldown.isOnCooldown()) return; else cooldown.reset();
+
+		if(player.isSneaking()) {
+			teleShots.add(arrow);
+		}
+
+
+
 	}
+
+	@EventHandler
+	public void onHit(ProjectileHitEvent event) {
+		if(!(event.getEntity() instanceof Arrow) || !(event.getEntity().getShooter() instanceof Player)) return;
+		Player player = (Player) event.getEntity().getShooter();
+
+		for(Arrow teleShot : teleShots) {
+			if(teleShot.equals(event.getEntity())) {
+
+				Arrow teleArrow = (Arrow) event.getEntity();
+				if(teleArrow.equals(teleShot)) {
+
+					player.teleport(teleArrow.getLocation());
+					teleShot.remove();
+				}
+			}
+
+		}
+
+
+	}
+
+
+
 
 	@Override
 	public List<String> getDescription(int enchantLvl) {
 
-		return new ALoreBuilder("&7Sneak to shoot a teleportation &f", "&7arrow" + getArrows(enchantLvl) + " arrows &7at once").getLore();
+		return new ALoreBuilder("&7Sneak to shoot a teleportation &f", "&7arrow (" + getCooldown(enchantLvl) + "s cooldown, -3s per bow", "&7hit)").getLore();
 	}
 
-	public int getArrows(int enchantLvl) {
+	public static int getCooldown(int enchantLvl) {
 
-		return enchantLvl + 2;
+		switch(enchantLvl) {
+			case 1:
+				return 90;
+			case 2:
+				return 45;
+			case 3:
+				return 20;
+			case 4:
+				return 10;
+			case 5:
+				return 3;
+			case 6:
+				return 1;
+		}
+
+		return 0;
 	}
 }
+

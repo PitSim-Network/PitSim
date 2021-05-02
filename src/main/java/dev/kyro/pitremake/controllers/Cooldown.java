@@ -41,4 +41,15 @@ public class Cooldown {
 
 		return ticksLeft > 0;
 	}
+
+	public int getTicksLeft() {
+
+		return ticksLeft;
+	}
+
+	public int reduceCooldown(int ticks) {
+		for(int i = 0; i < ticks; i++) tick();
+
+		return ticksLeft;
+	}
 }
