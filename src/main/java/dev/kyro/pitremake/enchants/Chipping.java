@@ -34,6 +34,6 @@ public class Chipping extends PitEnchant {
 
 	public double getDamage(int enchantLvl) {
 
-		return enchantLvl * 0.5;
+		return enchantLvl;
 	}
 }
