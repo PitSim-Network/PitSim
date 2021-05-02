@@ -30,7 +30,11 @@ public abstract class PitEnchant implements Listener {
 
 	public Cooldown getCooldown(Player player, int time) {
 
-		if(cooldowns.containsKey(player.getUniqueId())) return cooldowns.get(player.getUniqueId());
+		if(cooldowns.containsKey(player.getUniqueId())) {
+			Cooldown cooldown = cooldowns.get(player.getUniqueId());
+			cooldown.initialTime = time;
+			return cooldown;
+		}
 
 		Cooldown cooldown = new Cooldown(time);
 		cooldown.ticksLeft = 0;
