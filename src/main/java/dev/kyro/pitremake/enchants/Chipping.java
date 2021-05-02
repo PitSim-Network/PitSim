@@ -19,7 +19,7 @@ public class Chipping extends PitEnchant {
 	public DamageEvent onDamage(DamageEvent damageEvent) {
 
 		int enchantLvl = damageEvent.getEnchantLevel(this);
-		if(enchantLvl == 0) return damageEvent;
+		if(enchantLvl == 0 || !damageEvent.arrow.isCritical()) return damageEvent;
 
 		damageEvent.trueDamage += getDamage(enchantLvl);
 
