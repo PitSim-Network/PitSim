@@ -1,6 +1,7 @@
 package dev.kyro.pitremake.controllers;
 
 import dev.kyro.arcticapi.misc.AOutput;
+import dev.kyro.pitremake.PitRemake;
 import org.bukkit.entity.Arrow;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -8,14 +9,34 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityShootBowEvent;
-import org.bukkit.event.entity.ProjectileHitEvent;
+import org.bukkit.scheduler.BukkitRunnable;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class DamageManager implements Listener {
 
 	public static Map<EntityShootBowEvent, Map<PitEnchant, Integer>> arrowMap = new HashMap<>();
+
+	static {
+
+		new BukkitRunnable() {
+			@Override
+			public void run() {
+
+				List<EntityShootBowEvent> toRemove = new ArrayList<>();
+				for(Map.Entry<EntityShootBowEvent, Map<PitEnchant, Integer>> entry : arrowMap.entrySet()) {
+
+					if(entry.getKey().getProjectile().isDead()) toRemove.add(entry.getKey());
+				}
+				for(EntityShootBowEvent remove : toRemove) {
+					arrowMap.remove(remove);
+				}
+			}
+		}.runTaskTimer(PitRemake.INSTANCE, 0L, 1L);
+	}
 
 	@EventHandler(ignoreCancelled = true)
 	public void onBowShoot(EntityShootBowEvent event) {
@@ -24,17 +45,6 @@ public class DamageManager implements Listener {
 		Player shooter = (Player) event.getEntity();
 		Arrow arrow = (Arrow) event.getProjectile();
 		arrowMap.put(event, EnchantManager.getEnchantsOnPlayer(shooter));
-	}
-
-	@EventHandler
-	public void onArrowLand(ProjectileHitEvent event) {
-
-		if(!(event.getEntity() instanceof Arrow)) return;
-		for(Map.Entry<EntityShootBowEvent, Map<PitEnchant, Integer>> entry : arrowMap.entrySet()) {
-			if(!entry.getKey().getEntity().equals(event.getEntity())) continue;
-			arrowMap.remove(entry.getKey());
-			return;
-		}
 	}
 
 	@EventHandler(ignoreCancelled = true, priority = EventPriority.HIGH)
@@ -48,8 +58,8 @@ public class DamageManager implements Listener {
 
 			for(Map.Entry<EntityShootBowEvent, Map<PitEnchant, Integer>> entry : arrowMap.entrySet()) {
 
-				if(!entry.getKey().getEntity().equals(event.getDamager())) continue;
-				handleAttack(new DamageEvent(event, arrowMap.remove(entry.getKey())));
+				if(!entry.getKey().getProjectile().equals(event.getDamager())) continue;
+				handleAttack(new DamageEvent(event, arrowMap.get(entry.getKey())));
 			}
 		}
 	}
@@ -70,21 +80,21 @@ public class DamageManager implements Listener {
 
 		if(damageEvent.trueDamage != 0) {
 			double finalHealth = damageEvent.defender.getHealth() - damageEvent.trueDamage;
-			if(finalHealth <= 0) {
+//			if(finalHealth <= 0) {
 //				TODO: Call death
-			} else {
-				damageEvent.defender.setHealth(finalHealth);
-			}
+//			} else {
+				damageEvent.defender.setHealth(Math.max(finalHealth, 0));
+//			}
 		}
 
 		if(damageEvent.selfTrueDamage != 0) {
 			double finalHealth = damageEvent.attacker.getHealth() - damageEvent.selfTrueDamage;
-			if(finalHealth <= 0) {
+//			if(finalHealth <= 0) {
 //				TODO: Call death
-			} else {
+//			} else {
 				damageEvent.attacker.setHealth(finalHealth);
-				damageEvent.attacker.damage(0);
-			}
+				damageEvent.attacker.damage(Math.max(finalHealth, 0));
+//			}
 		}
 	}
 

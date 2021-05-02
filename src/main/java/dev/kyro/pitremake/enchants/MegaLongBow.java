@@ -7,6 +7,7 @@ import dev.kyro.pitremake.controllers.DamageEvent;
 import dev.kyro.pitremake.controllers.EnchantManager;
 import dev.kyro.pitremake.controllers.PitEnchant;
 import dev.kyro.pitremake.enums.ApplyType;
+import dev.kyro.pitremake.events.VolleyShootEvent;
 import dev.kyro.pitremake.misc.Misc;
 import org.bukkit.entity.Arrow;
 import org.bukkit.entity.Player;
@@ -38,12 +39,23 @@ public class MegaLongBow extends PitEnchant {
 		int enchantLvl = EnchantManager.getEnchantLevel(player, this);
 		if(enchantLvl == 0) return;
 
+		if(event instanceof VolleyShootEvent) {
+
+			critArrow(player, arrow);
+			return;
+		}
+
 		Cooldown cooldown = getCooldown(player, 20);
 		if(cooldown.isOnCooldown()) return; else cooldown.reset();
 
-		arrow.setCritical(true);
-		arrow.setVelocity(player.getLocation().getDirection().multiply(2.9));
+		critArrow(player, arrow);
 		Misc.applyPotionEffect(player, PotionEffectType.JUMP, 40, getJumpMultiplier(enchantLvl));
+	}
+
+	public static void critArrow(Player player, Arrow arrow) {
+
+		arrow.setCritical(true);
+		arrow.setVelocity(player.getLocation().getDirection().multiply(2.95));
 	}
 
 	@Override

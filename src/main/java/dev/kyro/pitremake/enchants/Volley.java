@@ -1,8 +1,6 @@
 package dev.kyro.pitremake.enchants;
 
 import dev.kyro.arcticapi.builders.ALoreBuilder;
-import dev.kyro.arcticapi.misc.ASound;
-import dev.kyro.arcticapi.misc.AUtil;
 import dev.kyro.pitremake.PitRemake;
 import dev.kyro.pitremake.controllers.DamageEvent;
 import dev.kyro.pitremake.controllers.EnchantManager;
@@ -43,25 +41,37 @@ public class Volley extends PitEnchant {
 		if(enchantLvl == 0) return;
 
 		new BukkitRunnable() {
+			int count = 0;
+			double arrowVelo = arrow.getVelocity().length();
 			@Override
 			public void run() {
 
+				if(++count == getArrows(enchantLvl)) {
+
+					cancel();
+					return;
+				}
+
 				Arrow volleyArrow = player.launchProjectile(Arrow.class);
-				volleyArrow.setVelocity(player.getEyeLocation().getDirection().normalize().multiply(arrow.getVelocity().length()));
+				volleyArrow.setVelocity(player.getEyeLocation().getDirection().normalize().multiply(arrowVelo));
 
 				VolleyShootEvent volleyShootEvent = new VolleyShootEvent(event.getEntity(), event.getBow(), volleyArrow, event.getForce());
 				PitRemake.INSTANCE.getServer().getPluginManager().callEvent(volleyShootEvent);
 
-				ASound.play(player, Sound.SHOOT_ARROW, 1, 1);
+				new BukkitRunnable() {
+					@Override
+					public void run() {
+						player.getWorld().playSound(player.getLocation(), Sound.SHOOT_ARROW, 1, 1);
+					}
+				}.runTaskLater(PitRemake.INSTANCE, 1L);
 			}
-		}.runTaskTimer(PitRemake.INSTANCE, 2L, 1L);
+		}.runTaskTimer(PitRemake.INSTANCE, 2L, 2L);
 	}
 
 	@Override
 	public List<String> getDescription(int enchantLvl) {
 
-		return new ALoreBuilder("&7One shot per second, this bow is",
-				"&7automatically fully drawn and", "&7grants &aJump Boost " + AUtil.toRoman(getArrows(enchantLvl) + 1) + " &7(2s)").getLore();
+		return new ALoreBuilder("&7Shoot &f" + getArrows(enchantLvl) + " arrows &7at once").getLore();
 	}
 
 	public int getArrows(int enchantLvl) {
