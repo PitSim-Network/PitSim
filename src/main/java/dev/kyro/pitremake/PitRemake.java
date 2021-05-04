@@ -61,6 +61,7 @@ public class PitRemake extends JavaPlugin {
 		EnchantManager.registerEnchant(new Prick());
 
 //		After all
+		EnchantManager.registerEnchant(new Regularity());
 	}
 
 	private void registerCommands() {
