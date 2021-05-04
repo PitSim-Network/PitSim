@@ -20,7 +20,6 @@ public class Fletching extends PitEnchant {
 		int enchantLvl = damageEvent.getEnchantLevel(this);
 		if(enchantLvl == 0) return damageEvent;
 
-		if(damageEvent.defender.getHealth() / damageEvent.defender.getMaxHealth() > 0.5) return damageEvent;
 		damageEvent.increasePercent += getDamage(enchantLvl) / 100D;
 
 		return damageEvent;
@@ -32,6 +31,7 @@ public class Fletching extends PitEnchant {
 		return new ALoreBuilder("&7Deal &c+" + getDamage(enchantLvl) + " &7bow damage").getLore();
 	}
 
+//	TODO: Fletching damage equation
 	public int getDamage(int enchantLvl) {
 
 		switch(enchantLvl) {
