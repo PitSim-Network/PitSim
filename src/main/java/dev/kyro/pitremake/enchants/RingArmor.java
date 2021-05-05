@@ -5,14 +5,15 @@ import dev.kyro.pitremake.controllers.DamageEvent;
 import dev.kyro.pitremake.controllers.EnchantManager;
 import dev.kyro.pitremake.controllers.PitEnchant;
 import dev.kyro.pitremake.enums.ApplyType;
+import org.bukkit.Bukkit;
 
 import java.util.List;
 
-public class Protection extends PitEnchant {
+public class RingArmor extends PitEnchant {
 
-	public Protection() {
-		super("Protection", false, ApplyType.PANTS,
-				"prot", "protection", "p");
+	public RingArmor() {
+		super("Ring Armor", false, ApplyType.PANTS,
+				"ring", "armor", "ring-armor");
 	}
 
 	@Override
@@ -21,6 +22,7 @@ public class Protection extends PitEnchant {
 		int enchantLvl = EnchantManager.getEnchantLevel(damageEvent.defender, this);
 		if(enchantLvl == 0) return damageEvent;
 
+		if(!damageEvent.hitByArrow) return damageEvent;
 		damageEvent.multiplier.add(getDamageMultiplier(enchantLvl));
 
 		return damageEvent;
@@ -29,7 +31,7 @@ public class Protection extends PitEnchant {
 	@Override
 	public List<String> getDescription(int enchantLvl) {
 
-		return new ALoreBuilder("&7Receive &9-" + getDamageReduction(enchantLvl) + "% &7damage").getLore();
+		return new ALoreBuilder("&7Receive &9-" + getDamageReduction(enchantLvl) + "% &7damage from", "&7arrows").getLore();
 	}
 
 	public double getDamageMultiplier(int enchantLvl) {
@@ -37,8 +39,20 @@ public class Protection extends PitEnchant {
 		return (100D - getDamageReduction(enchantLvl)) / 100;
 	}
 
+//	TODO: Ring Armor damage reduction equation
+
 	public int getDamageReduction(int enchantLvl) {
 
-		return (int) Math.max(Math.floor(Math.pow(enchantLvl, 1.3) * 2) + 2, 0);
+		switch(enchantLvl) {
+			case 1:
+				return 20;
+			case 2:
+				return 40;
+			case 3:
+				return 60;
+
+		}
+
+		return 0;
 	}
 }

@@ -14,6 +14,7 @@ public class DamageEvent {
 	public Player attacker;
 	public Player defender;
 	public Arrow arrow;
+	public Boolean hitByArrow;
 	private final Map<PitEnchant, Integer> attackerEnchantMap;
 
 	public double increase = 0;
@@ -32,9 +33,11 @@ public class DamageEvent {
 		this.attackerEnchantMap = attackerEnchantMap;
 
 		if(event.getDamager() instanceof Arrow) {
+			this.hitByArrow = true;
 			this.arrow = (Arrow) event.getDamager();
 			this.attacker = (Player) arrow.getShooter();
 		} else {
+			this.hitByArrow = false;
 			this.attacker = (Player) event.getDamager();
 		}
 		this.defender = (Player) event.getEntity();
