@@ -1,13 +1,11 @@
 package dev.kyro.pitremake.enchants;
 
 import dev.kyro.arcticapi.builders.ALoreBuilder;
-import dev.kyro.arcticapi.misc.AUtil;
 import dev.kyro.pitremake.controllers.Cooldown;
 import dev.kyro.pitremake.controllers.DamageEvent;
 import dev.kyro.pitremake.controllers.PitEnchant;
 import dev.kyro.pitremake.enums.ApplyType;
 import dev.kyro.pitremake.misc.Misc;
-import org.bukkit.Sound;
 import org.bukkit.potion.PotionEffectType;
 
 import java.util.List;
@@ -28,7 +26,7 @@ public class SpeedyHit extends PitEnchant {
 		Cooldown cooldown = getCooldown(damageEvent.attacker,(getCooldown(enchantLvl) * 20));
 		if(cooldown.isOnCooldown()) return damageEvent; else cooldown.reset();
 
-		Misc.applyPotionEffect(damageEvent.attacker, PotionEffectType.SPEED, (int) (getDuration(enchantLvl) * 20), 0);
+		Misc.applyPotionEffect(damageEvent.attacker, PotionEffectType.SPEED, (int) (getDuration(enchantLvl) * 20), 0, true, false);
 
 		return damageEvent;
 	}

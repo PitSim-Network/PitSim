@@ -3,7 +3,6 @@ package dev.kyro.pitremake.enchants;
 import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.arcticapi.misc.AUtil;
 import dev.kyro.pitremake.controllers.Cooldown;
-import dev.kyro.pitremake.controllers.CooldownManager;
 import dev.kyro.pitremake.controllers.DamageEvent;
 import dev.kyro.pitremake.controllers.PitEnchant;
 import dev.kyro.pitremake.enums.ApplyType;
@@ -29,7 +28,7 @@ public class Crush extends PitEnchant {
 		Cooldown cooldown = getCooldown(damageEvent.attacker, 2 * 20);
 		if(cooldown.isOnCooldown()) return damageEvent; else cooldown.reset();
 
-		Misc.applyPotionEffect(damageEvent.defender, PotionEffectType.WEAKNESS, (int) (getDuration(enchantLvl) * 20), enchantLvl + 3);
+		Misc.applyPotionEffect(damageEvent.defender, PotionEffectType.WEAKNESS, (int) (getDuration(enchantLvl) * 20), enchantLvl + 3, true, false);
 		damageEvent.attacker.playSound(damageEvent.attacker.getLocation(), Sound.GLASS, 1, 0.80F);
 		damageEvent.defender.playSound(damageEvent.defender.getLocation(), Sound.GLASS, 1, 0.80F);
 

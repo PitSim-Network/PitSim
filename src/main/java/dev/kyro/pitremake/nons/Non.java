@@ -49,7 +49,8 @@ public class Non {
 
 	public void tick() {
 
-		if(target == null) return;
+		if(nonState != NonState.FIGHTING) return;
+
 		non = (Player) npc.getEntity();
 		pickTarget();
 		npc.getNavigator().setTarget(target, true);
@@ -57,7 +58,7 @@ public class Non {
 		if(traits.contains(NonTrait.IRON_STREAKER))
 				Misc.applyPotionEffect(non, PotionEffectType.DAMAGE_RESISTANCE, 9999, 2, true, false);
 
-		if(count % 3 == 0 && (!traits.contains(NonTrait.NO_JUMP)) || Math.random() < 0.1) {
+		if(count % 3 == 0 && (!traits.contains(NonTrait.NO_JUMP)) || Math.random() < 0.05) {
 
 			Block underneath = non.getLocation().clone().subtract(0, 0.2, 0).getBlock();
 			if(underneath.getType() != Material.AIR) {
@@ -69,9 +70,8 @@ public class Non {
 				double distance = target.getLocation().distance(non.getLocation());
 				Vector sprintVelo = target.getLocation().toVector().subtract(non.getLocation().toVector())
 						.normalize();
-				if(distance < Math.random() * 1.5 + 1.5) sprintVelo.multiply(-0.16).setY(0.4); else sprintVelo.multiply(0.5).setY(0.4);
 
-				Vector velo = sprintVelo.add(rotLoc.getDirection().normalize().setY(0).multiply(0.1));
+				if(distance < Math.random() * 1.5 + 1.5) sprintVelo.multiply(-0.16).setY(0.4); else sprintVelo.multiply(0.5).setY(0.4);
 				non.setVelocity(sprintVelo);
 			}
 		}
@@ -83,12 +83,12 @@ public class Non {
 
 		Player closest = null;
 		double closestDistance = 100;
-		for(Entity nearbyEntity : non.getNearbyEntities(10, 10, 10)) {
+		for(Entity nearbyEntity : non.getWorld().getNearbyEntities(new Location(Bukkit.getWorld("world"), 0.5, 94, 0.5), 10, 10, 10)) {
 
 			if(!(nearbyEntity instanceof Player) || nearbyEntity.getUniqueId().equals(non.getUniqueId())) continue;
 			double targetDistanceFromMid = Math.sqrt(Math.pow(nearbyEntity.getLocation().getX(), 2) +
 					Math.pow(nearbyEntity.getLocation().getZ(), 2));
-			if(targetDistanceFromMid > 8) continue;
+			if(targetDistanceFromMid > 9) continue;
 
 			double distance = nearbyEntity.getLocation().distance(non.getLocation());
 			if(distance >= closestDistance) continue;
@@ -157,7 +157,7 @@ public class Non {
 					public void run() {
 						nonState = NonState.FIGHTING;
 					}
-				}.runTaskLater(PitRemake.INSTANCE, 40L);
+				}.runTaskLater(PitRemake.INSTANCE, 10L);
 			}
 		}.runTaskLater(PitRemake.INSTANCE, (long) (Math.random() * 20 + 20));
 	}

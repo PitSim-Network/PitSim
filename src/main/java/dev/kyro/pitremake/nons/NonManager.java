@@ -2,10 +2,7 @@ package dev.kyro.pitremake.nons;
 
 import dev.kyro.pitremake.PitRemake;
 import dev.kyro.pitremake.controllers.DamageManager;
-import dev.kyro.pitremake.misc.Misc;
 import org.bukkit.entity.Player;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -27,7 +24,7 @@ public class NonManager implements Listener {
 		}.runTaskTimer(PitRemake.INSTANCE, 0L, 1L);
 	}
 
-	@EventHandler(priority = EventPriority.HIGHEST)
+//	@EventHandler(priority = EventPriority.LOW)
 	public void onDamage(EntityDamageByEntityEvent event) {
 
 		if(!(event.getDamager() instanceof Player) || !(event.getEntity() instanceof Player)) return;
@@ -43,15 +40,13 @@ public class NonManager implements Listener {
 		}
 
 		if(event.getFinalDamage() < defender.getHealth()) return;
-		Misc.multiKill((Player) event.getDamager());
-		event.setCancelled(true);
-		non.respawn();
 	}
 
 	public static Non getNon(Player player) {
 
 		for(Non non : nons) {
 
+			if(non == null) continue;
 			if(non.non.getUniqueId().equals(player.getUniqueId())) return non;
 		}
 		return null;

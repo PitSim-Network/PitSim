@@ -25,8 +25,9 @@ public class SprintDrain extends PitEnchant {
 
 		if(damageEvent.attacker.equals(damageEvent.defender)) return damageEvent;
 
-		Misc.applyPotionEffect(damageEvent.defender, PotionEffectType.SLOW, getSlowDuration(enchantLvl) * 20, 0);
-		Misc.applyPotionEffect(damageEvent.attacker, PotionEffectType.SPEED, getSpeedDuration(enchantLvl) * 20, getSpeedModifier(enchantLvl) - 1);
+		Misc.applyPotionEffect(damageEvent.defender, PotionEffectType.SLOW, getSlowDuration(enchantLvl) * 20, 0, true, false);
+		Misc.applyPotionEffect(damageEvent.attacker, PotionEffectType.SPEED,
+				getSpeedDuration(enchantLvl) * 20, getSpeedModifier(enchantLvl) - 1, true, false);
 
 		return damageEvent;
 	}
