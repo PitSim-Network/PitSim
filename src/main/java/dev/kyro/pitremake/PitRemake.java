@@ -46,6 +46,8 @@ public class PitRemake extends JavaPlugin {
 		EnchantManager.registerEnchant(new Bruiser());
 		EnchantManager.registerEnchant(new BeatTheSpammers());
 		EnchantManager.registerEnchant(new Sharp());
+		EnchantManager.registerEnchant(new Crush());
+		EnchantManager.registerEnchant(new SpeedyHit());
 //		After ComboHeal
 		EnchantManager.registerEnchant(new GoldAndBoosted());
 		EnchantManager.registerEnchant(new PainFocus());
@@ -71,6 +73,7 @@ public class PitRemake extends JavaPlugin {
 
 //		After all
 		EnchantManager.registerEnchant(new Regularity());
+		EnchantManager.registerEnchant(new Lifesteal());
 	}
 
 	private void registerCommands() {
