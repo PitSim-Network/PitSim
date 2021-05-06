@@ -2,6 +2,7 @@ package dev.kyro.pitremake.enchants;
 
 import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.pitremake.controllers.DamageEvent;
+import dev.kyro.pitremake.controllers.DamageManager;
 import dev.kyro.pitremake.controllers.PitEnchant;
 import dev.kyro.pitremake.enums.ApplyType;
 import org.bukkit.Bukkit;
@@ -21,7 +22,7 @@ public class Lifesteal extends PitEnchant {
 		int enchantLvl = damageEvent.getEnchantLevel(this);
 		if(enchantLvl == 0) return damageEvent;
 
-		double damage = damageEvent.event.getDamage();
+		double damage = damageEvent.getFinalDamageIncrease();
 
 		Bukkit.broadcastMessage(String.valueOf(damage));
 		Bukkit.broadcastMessage(String.valueOf(damage * getHealing(enchantLvl)));

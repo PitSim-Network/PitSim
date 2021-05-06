@@ -72,7 +72,7 @@ public class DamageManager implements Listener {
 			pitEnchant.onDamage(damageEvent);
 		}
 
-		double damage = getFinalDamage(damageEvent);
+		double damage = damageEvent.getFinalDamage();
 
 		damageEvent.event.setDamage(damage);
 
@@ -96,20 +96,5 @@ public class DamageManager implements Listener {
 				damageEvent.attacker.damage(0);
 //			}
 		}
-	}
-
-	public static double getFinalDamage(DamageEvent damageEvent) {
-
-		double damage = damageEvent.event.getDamage();
-		damage += damageEvent.increase;
-		damage *= 1 + damageEvent.increasePercent;
-		for(double multiplier : damageEvent.multiplier) {
-			damage *= multiplier;
-		}
-		damage *= 1 - damageEvent.decreasePercent;
-		damage -= damageEvent.decrease;
-		damage = Math.max(damage, 0);
-
-		return damage;
 	}
 }
