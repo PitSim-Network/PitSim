@@ -19,6 +19,7 @@ import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Non {
@@ -27,7 +28,7 @@ public class Non {
 	public Player non;
 	public Player target;
 
-	public List<NonTrait> traits;
+	public List<NonTrait> traits = new ArrayList<>();
 	public NonState nonState = NonState.RESPAWNING;
 	public int count = 0;
 
