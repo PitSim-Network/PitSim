@@ -34,6 +34,8 @@ public class Misc {
 	}
 
 	public static void applyPotionEffect(Player player, PotionEffectType type, int duration, int amplifier, boolean ambient, boolean particles) {
+		if(amplifier < 0) return;
+		if(duration == 0) return;
 
 		for(PotionEffect potionEffect : player.getActivePotionEffects()) {
 			if(!potionEffect.getType().equals(type) || potionEffect.getAmplifier() > amplifier) continue;

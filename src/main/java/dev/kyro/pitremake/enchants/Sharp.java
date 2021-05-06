@@ -4,14 +4,15 @@ import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.pitremake.controllers.DamageEvent;
 import dev.kyro.pitremake.controllers.PitEnchant;
 import dev.kyro.pitremake.enums.ApplyType;
+import org.bukkit.Material;
 
 import java.util.List;
 
-public class Fletching extends PitEnchant {
+public class Sharp extends PitEnchant {
 
-	public Fletching() {
-		super("Fletching", false, ApplyType.BOWS,
-				"fletch", "fletching");
+	public Sharp() {
+		super("Sharp", false, ApplyType.SWORDS,
+				"sharp", "s");
 	}
 
 	@Override
@@ -28,21 +29,21 @@ public class Fletching extends PitEnchant {
 	@Override
 	public List<String> getDescription(int enchantLvl) {
 
-		return new ALoreBuilder("&7Deal &c+" + getDamage(enchantLvl) + " &7bow damage").getLore();
+		return new ALoreBuilder("&7Deal &c+" + getDamage(enchantLvl) + "% &7melee damage").getLore();
 	}
 
-//	TODO: Fletching damage equation
+	//	TODO: Sharp damage calculation
+	
 	public int getDamage(int enchantLvl) {
 
 		switch(enchantLvl) {
 			case 1:
-				return 7;
+				return 4;
 			case 2:
-				return 12;
+				return 7;
 			case 3:
-				return 20;
-			case 20:
-				return 100;
+				return 12;
+
 		}
 
 		return 0;

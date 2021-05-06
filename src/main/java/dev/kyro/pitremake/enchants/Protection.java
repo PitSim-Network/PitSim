@@ -13,7 +13,7 @@ public class Protection extends PitEnchant {
 
 	public Protection() {
 		super("Protection", false, ApplyType.PANTS,
-				"prot", "protection");
+				"prot", "protection", "p");
 	}
 
 	@Override

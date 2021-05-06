@@ -4,14 +4,15 @@ import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.pitremake.controllers.DamageEvent;
 import dev.kyro.pitremake.controllers.PitEnchant;
 import dev.kyro.pitremake.enums.ApplyType;
+import org.bukkit.Material;
 
 import java.util.List;
 
-public class Fletching extends PitEnchant {
+public class BeatTheSpammers extends PitEnchant {
 
-	public Fletching() {
-		super("Fletching", false, ApplyType.BOWS,
-				"fletch", "fletching");
+	public BeatTheSpammers() {
+		super("Beat the Spammers", false, ApplyType.SWORDS,
+				"bts", "spammers", "beat", "beat-the-spammers");
 	}
 
 	@Override
@@ -20,6 +21,7 @@ public class Fletching extends PitEnchant {
 		int enchantLvl = damageEvent.getEnchantLevel(this);
 		if(enchantLvl == 0) return damageEvent;
 
+		if(!damageEvent.defender.getItemInHand().getType().equals(Material.BOW)) return damageEvent;
 		damageEvent.increasePercent += getDamage(enchantLvl) / 100D;
 
 		return damageEvent;
@@ -28,21 +30,21 @@ public class Fletching extends PitEnchant {
 	@Override
 	public List<String> getDescription(int enchantLvl) {
 
-		return new ALoreBuilder("&7Deal &c+" + getDamage(enchantLvl) + " &7bow damage").getLore();
+		return new ALoreBuilder("&7Deal &c+" + getDamage(enchantLvl) + "% &7damage vs. players", "&7holding a bow").getLore();
 	}
 
-//	TODO: Fletching damage equation
+	//	TODO: Beat The Spammers damage calculation
+
 	public int getDamage(int enchantLvl) {
 
 		switch(enchantLvl) {
 			case 1:
-				return 7;
+				return 10;
 			case 2:
-				return 12;
+				return 25;
 			case 3:
-				return 20;
-			case 20:
-				return 100;
+				return 40;
+
 		}
 
 		return 0;

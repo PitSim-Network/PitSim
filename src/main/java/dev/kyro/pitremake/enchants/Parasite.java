@@ -7,11 +7,11 @@ import dev.kyro.pitremake.enums.ApplyType;
 
 import java.util.List;
 
-public class Fletching extends PitEnchant {
+public class Parasite extends PitEnchant {
 
-	public Fletching() {
-		super("Fletching", false, ApplyType.BOWS,
-				"fletch", "fletching");
+	public Parasite() {
+		super("Parasite", false, ApplyType.BOWS,
+				"parasite", "para");
 	}
 
 	@Override
@@ -20,7 +20,7 @@ public class Fletching extends PitEnchant {
 		int enchantLvl = damageEvent.getEnchantLevel(this);
 		if(enchantLvl == 0) return damageEvent;
 
-		damageEvent.increasePercent += getDamage(enchantLvl) / 100D;
+		damageEvent.attacker.setHealth(Math.min(damageEvent.attacker.getHealth() + getHealing(enchantLvl), damageEvent.attacker.getMaxHealth()));
 
 		return damageEvent;
 	}
@@ -28,23 +28,23 @@ public class Fletching extends PitEnchant {
 	@Override
 	public List<String> getDescription(int enchantLvl) {
 
-		return new ALoreBuilder("&7Deal &c+" + getDamage(enchantLvl) + " &7bow damage").getLore();
+		return new ALoreBuilder("&7Heal &c" + getHealing(enchantLvl) / 2 + "\u2764 &7on arrow hit").getLore();
 	}
 
 //	TODO: Fletching damage equation
-	public int getDamage(int enchantLvl) {
+	public double getHealing(int enchantLvl) {
+
 
 		switch(enchantLvl) {
 			case 1:
-				return 7;
+				return 0.5;
 			case 2:
-				return 12;
+				return 1.0;
 			case 3:
-				return 20;
-			case 20:
-				return 100;
+				return 2.0;
+
 		}
 
-		return 0;
+		return 0.0;
 	}
 }
