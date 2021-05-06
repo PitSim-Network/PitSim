@@ -2,6 +2,8 @@ package dev.kyro.pitremake.controllers;
 
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitremake.PitRemake;
+import dev.kyro.pitremake.misc.Misc;
+import dev.kyro.pitremake.nons.NonManager;
 import org.bukkit.entity.Arrow;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -51,6 +53,8 @@ public class DamageManager implements Listener {
 	public void onAttack(EntityDamageByEntityEvent event) {
 
 		if(!(event.getEntity() instanceof Player) || (!(event.getDamager() instanceof Player) && !(event.getDamager() instanceof Arrow))) return;
+		if(NonManager.hitCooldownList.contains((Player) event.getEntity())) return;
+
 		if(event.getDamager() instanceof Player) {
 
 			handleAttack(new DamageEvent(event, EnchantManager.getEnchantsOnPlayer((Player) event.getDamager())));

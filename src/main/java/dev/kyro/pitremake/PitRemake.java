@@ -26,7 +26,6 @@ public class PitRemake extends JavaPlugin {
 		ArcticAPI.configInit(this, "prefix", "error-prefix");
 
 		CooldownManager.init();
-		NonManager.init();
 
 		registerCommands();
 		registerListeners();
@@ -79,7 +78,8 @@ public class PitRemake extends JavaPlugin {
 
 	private void registerListeners() {
 
-        getServer().getPluginManager().registerEvents(new DamageManager(), this);
+		getServer().getPluginManager().registerEvents(new DamageManager(), this);
+		getServer().getPluginManager().registerEvents(new NonManager(), this);
 	}
 
 	private void loadConfig() {

@@ -1,14 +1,18 @@
 package dev.kyro.pitremake.misc;
 
+import dev.kyro.arcticapi.misc.ASound;
+import dev.kyro.pitremake.PitRemake;
 import net.minecraft.server.v1_8_R3.IChatBaseComponent;
 import net.minecraft.server.v1_8_R3.PacketPlayOutChat;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
+import org.bukkit.Sound;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
+import org.bukkit.scheduler.BukkitRunnable;
 
 public class Misc {
 
@@ -59,6 +63,38 @@ public class Misc {
 		return string + "\u2764";
 	}
 
+	public static void multiKill(Player player) {
+
+		new BukkitRunnable() {
+			int count = 1;
+			@Override
+			public void run() {
+
+				switch(count) {
+					case 0:
+//						ASound.play(player, Sound.ORB_PICKUP, 1F, 1.7301587F);
+						break;
+					case 1:
+						ASound.play(player, Sound.ORB_PICKUP, 1F, 1.7936507F);
+						break;
+					case 2:
+						ASound.play(player, Sound.ORB_PICKUP, 1F, 1.8253968F);
+						break;
+					case 3:
+						ASound.play(player, Sound.ORB_PICKUP, 1F, 1.8730159F);
+						break;
+					case 4:
+						ASound.play(player, Sound.ORB_PICKUP, 1F, 1.9047619F);
+						break;
+					case 5:
+						ASound.play(player, Sound.ORB_PICKUP, 1F, 1.9523809F);
+						break;
+				}
+
+				if(++count > 5) cancel();
+			}
+		}.runTaskTimer(PitRemake.INSTANCE, 0L, 2L);
+	}
 
 	public static void sendActionBar(Player p, String message) {
 		PacketPlayOutChat packet = new PacketPlayOutChat(IChatBaseComponent.ChatSerializer.a("{\"text\":\"" +
