@@ -98,6 +98,11 @@ public class DamageManager implements Listener {
 		}
 	}
 
+	public void kill(Player attacker, Player dead, boolean exeDeath) {
+
+
+	}
+
 	public static double getFinalDamage(DamageEvent damageEvent) {
 
 		double damage = damageEvent.event.getDamage();

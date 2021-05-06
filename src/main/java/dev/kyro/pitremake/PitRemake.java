@@ -4,9 +4,11 @@ import dev.kyro.arcticapi.ArcticAPI;
 import dev.kyro.pitremake.commands.ATestCommand;
 import dev.kyro.pitremake.commands.EnchantCommand;
 import dev.kyro.pitremake.commands.FreshCommand;
+import dev.kyro.pitremake.commands.NonCommand;
 import dev.kyro.pitremake.controllers.CooldownManager;
 import dev.kyro.pitremake.controllers.DamageManager;
 import dev.kyro.pitremake.controllers.EnchantManager;
+import dev.kyro.pitremake.nons.NonManager;
 import dev.kyro.pitremake.enchants.*;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -24,6 +26,7 @@ public class PitRemake extends JavaPlugin {
 		ArcticAPI.configInit(this, "prefix", "error-prefix");
 
 		CooldownManager.init();
+		NonManager.init();
 
 		registerCommands();
 		registerListeners();
@@ -68,6 +71,7 @@ public class PitRemake extends JavaPlugin {
 
 	private void registerCommands() {
 
+		getCommand("non").setExecutor(new NonCommand());
 		getCommand("atest").setExecutor(new ATestCommand());
 		getCommand("enchant").setExecutor(new EnchantCommand());
 		getCommand("fresh").setExecutor(new FreshCommand());
