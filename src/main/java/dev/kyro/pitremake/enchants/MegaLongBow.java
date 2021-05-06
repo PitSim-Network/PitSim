@@ -49,7 +49,7 @@ public class MegaLongBow extends PitEnchant {
 		if(cooldown.isOnCooldown()) return; else cooldown.reset();
 
 		critArrow(player, arrow);
-		Misc.applyPotionEffect(player, PotionEffectType.JUMP, 40, getJumpMultiplier(enchantLvl));
+		Misc.applyPotionEffect(player, PotionEffectType.JUMP, 40, getJumpMultiplier(enchantLvl), false, true);
 	}
 
 	public static void critArrow(Player player, Arrow arrow) {

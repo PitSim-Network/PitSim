@@ -1,6 +1,7 @@
 package dev.kyro.pitremake.nons;
 
 import dev.kyro.pitremake.PitRemake;
+import dev.kyro.pitremake.controllers.DamageManager;
 import dev.kyro.pitremake.misc.Misc;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -15,7 +16,6 @@ import java.util.List;
 public class NonManager implements Listener {
 
 	public static List<Non> nons = new ArrayList<>();
-	public static List<Player> hitCooldownList = new ArrayList<>();
 
 	static {
 
@@ -33,30 +33,27 @@ public class NonManager implements Listener {
 		if(!(event.getDamager() instanceof Player) || !(event.getEntity() instanceof Player)) return;
 		Player defender = (Player) event.getEntity();
 
+		Non non = getNon(defender);
+		if(non == null) return;
+
+		if(DamageManager.hitCooldownList.contains(non.non)) {
+
+			event.setCancelled(true);
+			return;
+		}
+
+		if(event.getFinalDamage() < defender.getHealth()) return;
+		Misc.multiKill((Player) event.getDamager());
+		event.setCancelled(true);
+		non.respawn();
+	}
+
+	public static Non getNon(Player player) {
+
 		for(Non non : nons) {
 
-			if(!non.non.getUniqueId().equals(defender.getUniqueId())) continue;
-
-			if(hitCooldownList.contains(non.non)) {
-
-				event.setCancelled(true);
-				continue;
-			}
-
-			hitCooldownList.add(non.non);
-			new BukkitRunnable() {
-				@Override
-				public void run() {
-					hitCooldownList.remove(non.non);
-				}
-			}.runTaskLater(PitRemake.INSTANCE, 10L);
-
-			if(event.getFinalDamage() < defender.getHealth()) return;
-			Misc.multiKill((Player) event.getDamager());
-			event.setCancelled(true);
-			non.respawn();
-
-			break;
+			if(non.non.getUniqueId().equals(player.getUniqueId())) return non;
 		}
+		return null;
 	}
 }

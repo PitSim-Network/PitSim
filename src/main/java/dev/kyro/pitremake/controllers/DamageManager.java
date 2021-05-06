@@ -2,8 +2,8 @@ package dev.kyro.pitremake.controllers;
 
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitremake.PitRemake;
-import dev.kyro.pitremake.misc.Misc;
-import dev.kyro.pitremake.nons.NonManager;
+import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.entity.Arrow;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -13,6 +13,7 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityShootBowEvent;
 import org.bukkit.scheduler.BukkitRunnable;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -20,6 +21,7 @@ import java.util.Map;
 
 public class DamageManager implements Listener {
 
+	public static List<Player> hitCooldownList = new ArrayList<>();
 	public static Map<EntityShootBowEvent, Map<PitEnchant, Integer>> arrowMap = new HashMap<>();
 
 	static {
@@ -40,7 +42,7 @@ public class DamageManager implements Listener {
 		}.runTaskTimer(PitRemake.INSTANCE, 0L, 1L);
 	}
 
-	@EventHandler(ignoreCancelled = true)
+	@EventHandler(ignoreCancelled = true, priority = EventPriority.HIGH)
 	public void onBowShoot(EntityShootBowEvent event) {
 
 		if(!(event.getEntity() instanceof Player) || !(event.getProjectile() instanceof Arrow)) return;
@@ -53,7 +55,17 @@ public class DamageManager implements Listener {
 	public void onAttack(EntityDamageByEntityEvent event) {
 
 		if(!(event.getEntity() instanceof Player) || (!(event.getDamager() instanceof Player) && !(event.getDamager() instanceof Arrow))) return;
-		if(NonManager.hitCooldownList.contains((Player) event.getEntity())) return;
+		Player attacker = (Player) event.getDamager();
+		Player defender = (Player) event.getEntity();
+
+		if(hitCooldownList.contains((Player) event.getEntity())) return;
+		DamageManager.hitCooldownList.add(defender);
+		new BukkitRunnable() {
+			@Override
+			public void run() {
+				DamageManager.hitCooldownList.remove(defender);
+			}
+		}.runTaskLater(PitRemake.INSTANCE, 10L);
 
 		if(event.getDamager() instanceof Player) {
 
@@ -100,11 +112,27 @@ public class DamageManager implements Listener {
 				damageEvent.attacker.damage(Math.max(finalHealth, 0));
 //			}
 		}
+
+		if(damageEvent.event.getFinalDamage() >= damageEvent.defender.getHealth()) {
+
+			damageEvent.event.setCancelled(true);
+			kill(damageEvent.attacker, damageEvent.defender, false);
+		} else if(damageEvent.event.getFinalDamage() + damageEvent.executeUnder < damageEvent.defender.getHealth()) {
+
+			damageEvent.event.setCancelled(true);
+			kill(damageEvent.attacker, damageEvent.defender, true);
+		}
 	}
 
-	public void kill(Player attacker, Player dead, boolean exeDeath) {
+	public static void kill(Player attacker, Player dead, boolean exeDeath) {
 
+		Location spawnLoc = new Location(Bukkit.getWorld("world"), 0.5, 100, 0.5);
 
+		dead.setHealth(dead.getMaxHealth());
+
+		DecimalFormat df = new DecimalFormat("##0.00");
+		AOutput.send(attacker, "&a&lKILL!&7 on &b" + dead.getName() + " &b+" + "5" + "XP" + " &6+" + "5" + df.format(5));
+		AOutput.send(dead, "&cYou Died!");
 	}
 
 	public static double getFinalDamage(DamageEvent damageEvent) {

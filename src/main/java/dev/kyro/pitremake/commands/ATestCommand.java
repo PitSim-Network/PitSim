@@ -3,7 +3,6 @@ package dev.kyro.pitremake.commands;
 import dev.kyro.arcticapi.builders.AItemStackBuilder;
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitremake.PitRemake;
-import dev.kyro.pitremake.misc.Misc;
 import net.citizensnpcs.api.CitizensAPI;
 import net.citizensnpcs.api.ai.Navigator;
 import net.citizensnpcs.api.npc.NPC;
@@ -259,7 +258,7 @@ public class ATestCommand implements CommandExecutor {
 				Entity entity = npc.getEntity();
 				Vector npcVelo = entity.getVelocity();
 				Vector dir = entity.getLocation().getDirection();
-				if(Misc.getDistance(player.getLocation(), npc.getEntity().getLocation()) > 4.2) {
+				if(player.getLocation().distance(npc.getEntity().getLocation()) > 4.2) {
 
 					entity.setVelocity(npcVelo.add(dir.normalize().setY(0).multiply(0.12)));
 				} else {
@@ -269,7 +268,7 @@ public class ATestCommand implements CommandExecutor {
 					entity.setVelocity(npcVelo.add(rotLoc.getDirection().normalize().setY(0).multiply(0.12)));
 				}
 
-				if(Misc.getDistance(player.getLocation(), npc.getEntity().getLocation()) < 4.2) {
+				if(player.getLocation().distance(npc.getEntity().getLocation()) < 4.2) {
 
 					player.damage(9, npc.getEntity());
 				}

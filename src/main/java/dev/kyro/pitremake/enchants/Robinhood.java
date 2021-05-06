@@ -47,11 +47,10 @@ public class Robinhood extends PitEnchant {
 
 				for(Entity nearbyEntity : arrow.getWorld().getNearbyEntities(arrow.getLocation(), 8, 8, 8)) {
 
-//					nearbyEntity.getName().equals("KyroKrypt")
 					if(!(nearbyEntity instanceof Player) || nearbyEntity.equals(player)) continue;
 					Player target = (Player) nearbyEntity;
 
-					double distance = arrow.getLocation().toVector().distance(nearbyEntity.getLocation().toVector());
+					double distance = arrow.getLocation().distance(nearbyEntity.getLocation());
 					if(targetInfo == null || (nearbyEntity != targetInfo.getKey() && distance < targetInfo.getValue())) {
 						targetInfo = new AbstractMap.SimpleEntry<>(target, distance);
 						break;

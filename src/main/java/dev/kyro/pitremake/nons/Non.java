@@ -1,6 +1,7 @@
 package dev.kyro.pitremake.nons;
 
 import dev.kyro.pitremake.PitRemake;
+import dev.kyro.pitremake.misc.Misc;
 import net.citizensnpcs.api.CitizensAPI;
 import net.citizensnpcs.api.npc.NPC;
 import net.citizensnpcs.api.trait.trait.Equipment;
@@ -14,8 +15,11 @@ import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerTeleportEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
+
+import java.util.List;
 
 public class Non {
 
@@ -23,6 +27,7 @@ public class Non {
 	public Player non;
 	public Player target;
 
+	public List<NonTrait> traits;
 	public NonState nonState = NonState.RESPAWNING;
 	public int count = 0;
 
@@ -36,19 +41,22 @@ public class Non {
 
 		NonManager.nons.add(this);
 
+		pickTraits();
+
 		respawn();
 	}
 
 	public void tick() {
 
+		if(target == null) return;
 		non = (Player) npc.getEntity();
-
 		pickTarget();
 		npc.getNavigator().setTarget(target, true);
 
-		if(target == null || !target.getWorld().equals(non.getWorld())) return;
+		if(traits.contains(NonTrait.IRON_STREAKER))
+				Misc.applyPotionEffect(non, PotionEffectType.DAMAGE_RESISTANCE, 9999, 2, true, false);
 
-		if(count % 3 == 0) {
+		if(count % 3 == 0 && (!traits.contains(NonTrait.NO_JUMP)) || Math.random() < 0.1) {
 
 			Block underneath = non.getLocation().clone().subtract(0, 0.2, 0).getBlock();
 			if(underneath.getType() != Material.AIR) {
@@ -57,13 +65,12 @@ public class Non {
 				Location rotLoc = non.getLocation().clone();
 				rotLoc.setYaw(non.getLocation().getYaw() + (rand == 0 ? -90 : 90));
 
-				double distance = target.getLocation().toVector().distance(non.getLocation().toVector());
+				double distance = target.getLocation().distance(non.getLocation());
 				Vector sprintVelo = target.getLocation().toVector().subtract(non.getLocation().toVector())
 						.normalize();
 				if(distance < Math.random() * 1.5 + 1.5) sprintVelo.multiply(-0.16).setY(0.4); else sprintVelo.multiply(0.5).setY(0.4);
 
 				Vector velo = sprintVelo.add(rotLoc.getDirection().normalize().setY(0).multiply(0.1));
-
 				non.setVelocity(sprintVelo);
 			}
 		}
@@ -78,8 +85,11 @@ public class Non {
 		for(Entity nearbyEntity : non.getNearbyEntities(10, 10, 10)) {
 
 			if(!(nearbyEntity instanceof Player) || nearbyEntity.getUniqueId().equals(non.getUniqueId())) continue;
+			double targetDistanceFromMid = Math.sqrt(Math.pow(nearbyEntity.getLocation().getX(), 2) +
+					Math.pow(nearbyEntity.getLocation().getZ(), 2));
+			if(targetDistanceFromMid > 8) continue;
 
-			double distance = nearbyEntity.getLocation().toVector().distance(non.getLocation().toVector());
+			double distance = nearbyEntity.getLocation().distance(non.getLocation());
 			if(distance >= closestDistance) continue;
 
 			closest = (Player) nearbyEntity;
@@ -103,25 +113,34 @@ public class Non {
 				.attackDelayTicks((int) (Math.random() * 4 + 3))
 				.attackRange(4);
 
-		non.setHealth(20);
+		non.setHealth(non.getMaxHealth());
 
 		Equipment equipment = npc.getTrait(Equipment.class);
-		equipment.set(Equipment.EquipmentSlot.HAND, new ItemStack(Material.IRON_SWORD));
-		equipment.set(Equipment.EquipmentSlot.CHESTPLATE, new ItemStack(Material.CHAINMAIL_CHESTPLATE));
-		equipment.set(Equipment.EquipmentSlot.LEGGINGS, new ItemStack(Material.CHAINMAIL_LEGGINGS));
-		equipment.set(Equipment.EquipmentSlot.BOOTS, new ItemStack(Material.CHAINMAIL_BOOTS));
+		if(traits.contains(NonTrait.IRON_STREAKER)) {
 
-		int rand = (int) (Math.random() * 3);
-		switch(rand) {
-			case 0:
-				equipment.set(Equipment.EquipmentSlot.CHESTPLATE, new ItemStack(Material.IRON_CHESTPLATE));
-				break;
-			case 1:
-				equipment.set(Equipment.EquipmentSlot.LEGGINGS, new ItemStack(Material.IRON_LEGGINGS));
-				break;
-			case 2:
-				equipment.set(Equipment.EquipmentSlot.BOOTS, new ItemStack(Material.IRON_BOOTS));
-				break;
+			equipment.set(Equipment.EquipmentSlot.HAND, new ItemStack(Material.DIAMOND_SWORD));
+			equipment.set(Equipment.EquipmentSlot.HELMET, new ItemStack(Material.IRON_HELMET));
+			equipment.set(Equipment.EquipmentSlot.CHESTPLATE, new ItemStack(Material.IRON_CHESTPLATE));
+			equipment.set(Equipment.EquipmentSlot.LEGGINGS, new ItemStack(Material.IRON_LEGGINGS));
+			equipment.set(Equipment.EquipmentSlot.BOOTS, new ItemStack(Material.IRON_BOOTS));
+		} else {
+			equipment.set(Equipment.EquipmentSlot.HAND, new ItemStack(Material.IRON_SWORD));
+			equipment.set(Equipment.EquipmentSlot.CHESTPLATE, new ItemStack(Material.CHAINMAIL_CHESTPLATE));
+			equipment.set(Equipment.EquipmentSlot.LEGGINGS, new ItemStack(Material.CHAINMAIL_LEGGINGS));
+			equipment.set(Equipment.EquipmentSlot.BOOTS, new ItemStack(Material.CHAINMAIL_BOOTS));
+
+			int rand = (int) (Math.random() * 3);
+			switch(rand) {
+				case 0:
+					equipment.set(Equipment.EquipmentSlot.CHESTPLATE, new ItemStack(Material.IRON_CHESTPLATE));
+					break;
+				case 1:
+					equipment.set(Equipment.EquipmentSlot.LEGGINGS, new ItemStack(Material.IRON_LEGGINGS));
+					break;
+				case 2:
+					equipment.set(Equipment.EquipmentSlot.BOOTS, new ItemStack(Material.IRON_BOOTS));
+					break;
+			}
 		}
 
 		new BukkitRunnable() {
@@ -140,5 +159,18 @@ public class Non {
 				}.runTaskLater(PitRemake.INSTANCE, 40L);
 			}
 		}.runTaskLater(PitRemake.INSTANCE, (long) (Math.random() * 20 + 20));
+	}
+
+	public void pickTraits() {
+
+
+		if(Math.random() < 0.5) {
+
+			traits.add(NonTrait.NO_JUMP);
+		}
+		if(Math.random() < 0.2) {
+
+			traits.add(NonTrait.IRON_STREAKER);
+		}
 	}
 }
