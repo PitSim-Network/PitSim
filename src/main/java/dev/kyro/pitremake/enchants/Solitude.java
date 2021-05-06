@@ -5,6 +5,7 @@ import dev.kyro.pitremake.controllers.DamageEvent;
 import dev.kyro.pitremake.controllers.EnchantManager;
 import dev.kyro.pitremake.controllers.PitEnchant;
 import dev.kyro.pitremake.enums.ApplyType;
+import dev.kyro.pitremake.misc.Misc;
 import dev.kyro.pitremake.misc.NumberFormatter;
 
 import java.util.List;
@@ -22,7 +23,7 @@ public class Solitude extends PitEnchant {
 		int enchantLvl = EnchantManager.getEnchantLevel(damageEvent.defender, this);
 		if(enchantLvl == 0) return damageEvent;
 
-		damageEvent.multiplier.add(getDamageMultiplier(enchantLvl));
+		damageEvent.multiplier.add(Misc.getReductionMultiplier(getDamageReduction(enchantLvl)));
 
 		return damageEvent;
 	}
@@ -30,22 +31,17 @@ public class Solitude extends PitEnchant {
 	@Override
 	public List<String> getDescription(int enchantLvl) {
 
-		return new ALoreBuilder("&7Receive &9-" + getDamageReduction(enchantLvl) + "% &7damage when &9" + NumberFormatter.convert(getNearbyPlayers(enchantLvl)),
-				"&7or less players are within 7", "&7blocks").getLore();
+		return new ALoreBuilder("&7Receive &9-" + Misc.roundString(getDamageReduction(enchantLvl)) + "% &7damage when &9" +
+				NumberFormatter.convert(getNearbyPlayers(enchantLvl)), "&7or less players are within 7", "&7blocks").getLore();
 	}
 
 	public int getNearbyPlayers(int enchantLvl) {
 
-		return (int) (enchantLvl * 0.5 + 1);
+		return Misc.linearEnchant(enchantLvl, 0.5, 1);
 	}
 
-	public double getDamageMultiplier(int enchantLvl) {
+	public double getDamageReduction(int enchantLvl) {
 
-		return Math.max(0.7 - ((double) enchantLvl / 10), 0);
-	}
-
-	public int getDamageReduction(int enchantLvl) {
-
-		return (int) (100 - getDamageMultiplier(enchantLvl) * 100);
+		return 30 + enchantLvl * 10;
 	}
 }

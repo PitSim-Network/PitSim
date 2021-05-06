@@ -100,6 +100,11 @@ public class Misc {
 		return Math.max(1 - (reduction / 100D), 0);
 	}
 
+	public static int linearEnchant(int level, double step, double base) {
+
+		return (int) (level * step + base);
+	}
+
 	public static void sendActionBar(Player player, String message) {
 		PacketPlayOutChat packet = new PacketPlayOutChat(IChatBaseComponent.ChatSerializer.a("{\"text\":\"" +
 				ChatColor.translateAlternateColorCodes('&', message) + "\"}"), (byte) 2);

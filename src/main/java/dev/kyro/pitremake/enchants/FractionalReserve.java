@@ -5,6 +5,7 @@ import dev.kyro.pitremake.controllers.DamageEvent;
 import dev.kyro.pitremake.controllers.EnchantManager;
 import dev.kyro.pitremake.controllers.PitEnchant;
 import dev.kyro.pitremake.enums.ApplyType;
+import dev.kyro.pitremake.misc.Misc;
 
 import java.util.List;
 
@@ -21,7 +22,7 @@ public class FractionalReserve extends PitEnchant {
 		int enchantLvl = EnchantManager.getEnchantLevel(damageEvent.defender, this);
 		if(enchantLvl == 0) return damageEvent;
 
-		damageEvent.multiplier.add(getDamageMultiplier(enchantLvl));
+		damageEvent.multiplier.add(Misc.getReductionMultiplier(getDamageReduction(enchantLvl)));
 
 		return damageEvent;
 	}
@@ -33,12 +34,7 @@ public class FractionalReserve extends PitEnchant {
 				"&610,000g &7you have (&9-" + getDamageReduction(enchantLvl) + "%", "&7max)").getLore();
 	}
 
-	public double getDamageMultiplier(int enchantLvl) {
-
-		return (100D - getDamageReduction(enchantLvl)) / 100;
-	}
-
-	public int getDamageReduction(int enchantLvl) {
+	public double getDamageReduction(int enchantLvl) {
 
 		return (int) Math.max(Math.floor(Math.pow(enchantLvl, 1.65) * 3) + 12, 0);
 	}

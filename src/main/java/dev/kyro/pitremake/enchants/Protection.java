@@ -30,10 +30,10 @@ public class Protection extends PitEnchant {
 	@Override
 	public List<String> getDescription(int enchantLvl) {
 
-		return new ALoreBuilder("&7Receive &9-" + getDamageReduction(enchantLvl) + "% &7damage").getLore();
+		return new ALoreBuilder("&7Receive &9-" + Misc.roundString(getDamageReduction(enchantLvl)) + "% &7damage").getLore();
 	}
 
-	public int getDamageReduction(int enchantLvl) {
+	public double getDamageReduction(int enchantLvl) {
 
 		return (int) Math.floor(Math.pow(enchantLvl, 1.3) * 2) + 2;
 	}
