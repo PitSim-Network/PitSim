@@ -35,6 +35,16 @@ public class Prick extends PitEnchant {
 
 	public double getDamage(int enchantLvl) {
 
-		return enchantLvl * 1.25 + 1.25;
+		switch(enchantLvl) {
+			case 1:
+				return 0.5;
+			case 2:
+				return 0.75;
+			case 3:
+				return 1.0;
+
+		}
+
+		return 0;
 	}
 }

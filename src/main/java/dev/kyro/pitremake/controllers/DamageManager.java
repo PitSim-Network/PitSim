@@ -93,7 +93,7 @@ public class DamageManager implements Listener {
 //				TODO: Call death
 //			} else {
 				damageEvent.attacker.setHealth(finalHealth);
-				damageEvent.attacker.damage(Math.max(finalHealth, 0));
+				damageEvent.attacker.damage(0);
 //			}
 		}
 	}

@@ -12,7 +12,7 @@ public class BeatTheSpammers extends PitEnchant {
 
 	public BeatTheSpammers() {
 		super("Beat the Spammers", false, ApplyType.SWORDS,
-				"bts", "spammers", "beat", "beat-the-spammers");
+				"bts", "spammers", "beat", "beat-the-spammers", "beatthespammers");
 	}
 
 	@Override
