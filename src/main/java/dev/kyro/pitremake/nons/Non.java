@@ -6,10 +6,12 @@ import net.citizensnpcs.api.CitizensAPI;
 import net.citizensnpcs.api.npc.NPC;
 import net.citizensnpcs.api.trait.trait.Equipment;
 import net.citizensnpcs.npc.ai.CitizensNavigator;
+import net.minecraft.server.v1_8_R3.EntityPlayer;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
+import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
@@ -29,6 +31,7 @@ public class Non {
 	public Player target;
 
 	public List<NonTrait> traits = new ArrayList<>();
+	public double persistence;
 	public NonState nonState = NonState.RESPAWNING;
 	public int count = 0;
 
@@ -37,21 +40,31 @@ public class Non {
 		this.npc = CitizensAPI.getNPCRegistry().createNPC(EntityType.PLAYER, name);
 		spawn();
 		this.non = (Player) npc.getEntity();
-
-		npc.setProtected(false);
-
 		NonManager.nons.add(this);
 
+		CitizensNavigator navigator = (CitizensNavigator) npc.getNavigator();
+		navigator.getDefaultParameters()
+				.attackDelayTicks((int) (Math.random() * 4 + 3))
+				.attackRange(4);
+		npc.setProtected(false);
+
 		pickTraits();
+
+		persistence = (Math.random() * 3 + 94) / 100D;
+		if(traits.contains(NonTrait.IRON_STREAKER)) persistence -= 100 - persistence;
 
 		respawn();
 	}
 
 	public void tick() {
 
-		if(nonState != NonState.FIGHTING) return;
-
 		non = (Player) npc.getEntity();
+
+		if(nonState != NonState.FIGHTING) {
+			npc.getNavigator().setTarget(null, true);
+			return;
+		}
+
 		pickTarget();
 		npc.getNavigator().setTarget(target, true);
 
@@ -71,7 +84,7 @@ public class Non {
 				Vector sprintVelo = target.getLocation().toVector().subtract(non.getLocation().toVector())
 						.normalize();
 
-				if(distance < Math.random() * 1.5 + 1.5) sprintVelo.multiply(-0.16).setY(0.4); else sprintVelo.multiply(0.5).setY(0.4);
+				if(distance < Math.random() * 1.5 + 1.5) sprintVelo.multiply(-0.16).setY(0.4); else sprintVelo.multiply(0.4).setY(0.4);
 				non.setVelocity(sprintVelo);
 			}
 		}
@@ -80,6 +93,8 @@ public class Non {
 	}
 
 	public void pickTarget() {
+
+		if(target != null && Math.random() < persistence) return;
 
 		Player closest = null;
 		double closestDistance = 100;
@@ -106,13 +121,9 @@ public class Non {
 
 	public void respawn() {
 
+		nonState = NonState.RESPAWNING;
 		Location spawnLoc = new Location(Bukkit.getWorld("world"), 0.5, 100, 0.5, -180, 60);
 		npc.teleport(spawnLoc, PlayerTeleportEvent.TeleportCause.PLUGIN);
-
-		CitizensNavigator navigator = (CitizensNavigator) npc.getNavigator();
-		navigator.getDefaultParameters()
-				.attackDelayTicks((int) (Math.random() * 4 + 3))
-				.attackRange(4);
 
 		non.setHealth(non.getMaxHealth());
 
@@ -165,13 +176,22 @@ public class Non {
 	public void pickTraits() {
 
 
-		if(Math.random() < 0.5) {
+		if(Math.random() < 0.7) {
 
 			traits.add(NonTrait.NO_JUMP);
 		}
-		if(Math.random() < 0.2) {
+		if(Math.random() < 0.12) {
 
 			traits.add(NonTrait.IRON_STREAKER);
+		}
+	}
+
+	public void rewardKill() {
+
+		non.setHealth(Math.min(non.getHealth() + 3, non.getMaxHealth()));
+		EntityPlayer nmsPlayer = ((CraftPlayer) non).getHandle();
+		if(nmsPlayer.getAbsorptionHearts() < 8) {
+			nmsPlayer.setAbsorptionHearts(Math.min(nmsPlayer.getAbsorptionHearts() + 3, 5));
 		}
 	}
 }

@@ -2,9 +2,11 @@ package dev.kyro.pitremake.controllers;
 
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitremake.PitRemake;
+import dev.kyro.pitremake.enchants.Regularity;
 import dev.kyro.pitremake.misc.Misc;
 import dev.kyro.pitremake.nons.Non;
 import dev.kyro.pitremake.nons.NonManager;
+import dev.kyro.pitremake.nons.NonTrait;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Arrow;
@@ -25,6 +27,7 @@ import java.util.Map;
 public class DamageManager implements Listener {
 
 	public static List<Player> hitCooldownList = new ArrayList<>();
+	public static List<Player> nonHitCooldownList = new ArrayList<>();
 	public static Map<EntityShootBowEvent, Map<PitEnchant, Integer>> arrowMap = new HashMap<>();
 
 	static {
@@ -61,17 +64,34 @@ public class DamageManager implements Listener {
 		Player attacker = (Player) event.getDamager();
 		Player defender = (Player) event.getEntity();
 
-		if(hitCooldownList.contains((Player) event.getEntity())) {
+		Non non = NonManager.getNon(attacker);
+		if((non == null && hitCooldownList.contains(defender) && !Regularity.toReg.contains(attacker.getUniqueId())) ||
+				(non != null && nonHitCooldownList.contains(defender))) {
 			event.setCancelled(true);
 			return;
 		}
 		DamageManager.hitCooldownList.add(defender);
+		DamageManager.nonHitCooldownList.add(defender);
 		new BukkitRunnable() {
 			@Override
 			public void run() {
 				DamageManager.hitCooldownList.remove(defender);
 			}
 		}.runTaskLater(PitRemake.INSTANCE, 10L);
+		new BukkitRunnable() {
+			@Override
+			public void run() {
+				DamageManager.nonHitCooldownList.remove(defender);
+			}
+		}.runTaskLater(PitRemake.INSTANCE, 12L);
+		if(non != null) {
+			if(non.traits.contains(NonTrait.IRON_STREAKER)) {
+				event.setDamage(10.5);
+				attacker.setHealth(Math.min(attacker.getHealth() + 1, attacker.getMaxHealth()));
+			} else {
+				event.setDamage(7);
+			}
+		}
 
 		if(event.getDamager() instanceof Player) {
 
@@ -102,21 +122,21 @@ public class DamageManager implements Listener {
 
 		if(damageEvent.trueDamage != 0) {
 			double finalHealth = damageEvent.defender.getHealth() - damageEvent.trueDamage;
-//			if(finalHealth <= 0) {
-//				TODO: Call death
-//			} else {
+			if(finalHealth <= 0) {
+				kill(damageEvent.attacker, damageEvent.defender, false);
+			} else {
 				damageEvent.defender.setHealth(Math.max(finalHealth, 0));
-//			}
+			}
 		}
 
 		if(damageEvent.selfTrueDamage != 0) {
 			double finalHealth = damageEvent.attacker.getHealth() - damageEvent.selfTrueDamage;
-//			if(finalHealth <= 0) {
-//				TODO: Call death
-//			} else {
-				damageEvent.attacker.setHealth(finalHealth);
-				damageEvent.attacker.damage(Math.max(finalHealth, 0));
-//			}
+			if(finalHealth <= 0) {
+				kill(damageEvent.attacker, damageEvent.defender, false);
+			} else {
+				damageEvent.attacker.setHealth(Math.max(finalHealth, 0));
+				damageEvent.attacker.damage(0);
+			}
 		}
 
 		if(damageEvent.event.getFinalDamage() >= damageEvent.defender.getHealth()) {
@@ -146,6 +166,11 @@ public class DamageManager implements Listener {
 		} else {
 			Misc.multiKill(attacker);
 			non.respawn();
+		}
+
+		Non attackNon = NonManager.getNon(attacker);
+		if(attackNon != null) {
+			attackNon.rewardKill();
 		}
 	}
 
