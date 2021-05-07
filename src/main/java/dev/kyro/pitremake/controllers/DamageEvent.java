@@ -47,4 +47,29 @@ public class DamageEvent {
 
 		return attackerEnchantMap.getOrDefault(pitEnchant, 0);
 	}
+
+	public double getFinalDamageIncrease() {
+
+		double damage = event.getDamage();
+		damage += increase;
+		damage *= 1 + increasePercent;
+		for(double multiplier : multiplier) {
+			if(multiplier < 1) continue;
+			damage *= multiplier;
+		}
+		return Math.max(damage, 0);
+	}
+
+	public double getFinalDamage() {
+
+		double damage = event.getDamage();
+		damage += increase;
+		damage *= 1 + increasePercent;
+		for(double multiplier : multiplier) {
+			damage *= multiplier;
+		}
+		damage *= 1 - decreasePercent;
+		damage -= decrease;
+		return Math.max(damage, 0);
+	}
 }
