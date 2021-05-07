@@ -3,6 +3,7 @@ package dev.kyro.pitremake.controllers;
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitremake.PitRemake;
 import dev.kyro.pitremake.enchants.Regularity;
+import dev.kyro.pitremake.enums.ApplyType;
 import dev.kyro.pitremake.misc.Misc;
 import dev.kyro.pitremake.nons.Non;
 import dev.kyro.pitremake.nons.NonManager;
@@ -61,10 +62,14 @@ public class DamageManager implements Listener {
 	public void onAttack(EntityDamageByEntityEvent event) {
 
 		if(!(event.getEntity() instanceof Player) || (!(event.getDamager() instanceof Player) && !(event.getDamager() instanceof Arrow))) return;
-		Player attacker = (Player) event.getDamager();
+		Player attacker = event.getDamager() instanceof Player ? (Player) event.getDamager() : (Player) ((Arrow) event.getDamager()).getShooter();
 		Player defender = (Player) event.getEntity();
 
 		Non non = NonManager.getNon(attacker);
+		/*
+		Cancel if < 10 ticks and is a normal player attacking and < 12 ticks if non attacking. This is to give player hit priority
+		over the non when attempting to attack because for some reason the nons have like 40 cps.
+		 */
 		if((non == null && hitCooldownList.contains(defender) && !Regularity.toReg.contains(attacker.getUniqueId())) ||
 				(non != null && nonHitCooldownList.contains(defender))) {
 			event.setCancelled(true);
@@ -84,6 +89,7 @@ public class DamageManager implements Listener {
 				DamageManager.nonHitCooldownList.remove(defender);
 			}
 		}.runTaskLater(PitRemake.INSTANCE, 12L);
+//		Vampire for nons
 		if(non != null) {
 			if(non.traits.contains(NonTrait.IRON_STREAKER)) {
 				event.setDamage(10.5);
@@ -93,6 +99,7 @@ public class DamageManager implements Listener {
 			}
 		}
 
+//		Applies enchants to an attack
 		if(event.getDamager() instanceof Player) {
 
 			handleAttack(new DamageEvent(event, EnchantManager.getEnchantsOnPlayer((Player) event.getDamager())));
@@ -111,6 +118,11 @@ public class DamageManager implements Listener {
 		AOutput.send(damageEvent.attacker, "Initial Damage: " + damageEvent.event.getDamage());
 
 		for(PitEnchant pitEnchant : EnchantManager.pitEnchants) {
+//			Skip enchant application if the enchant is a bow enchant and is used in mele
+			if(pitEnchant.applyType == ApplyType.BOWS && damageEvent.arrow == null) continue;
+//			Skips enchant application if the enchant only works on mele hit and the event is from an arrow
+			if(pitEnchant.meleOnly && damageEvent.arrow != null) continue;
+
 			pitEnchant.onDamage(damageEvent);
 		}
 

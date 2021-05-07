@@ -20,6 +20,8 @@ public class Regularity extends PitEnchant {
 	public Regularity() {
 		super("Regularity", true, ApplyType.SWORDS,
 				"regularity", "reg");
+
+		meleOnly = true;
 	}
 
 	@Override

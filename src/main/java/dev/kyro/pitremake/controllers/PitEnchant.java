@@ -14,6 +14,7 @@ public abstract class PitEnchant implements Listener {
 	public boolean isRare;
 	public ApplyType applyType;
 	public boolean effectStacks = false;
+	public boolean meleOnly = false;
 	public Map<UUID, Cooldown> cooldowns = new HashMap<>();
 
 	private String overrideName;

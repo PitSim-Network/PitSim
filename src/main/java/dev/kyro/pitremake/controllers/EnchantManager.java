@@ -57,11 +57,6 @@ public class EnchantManager {
 		return null;
 	}
 
-	public static ItemStack addEnchant(ItemStack itemStack, PitEnchant pitEnchant, int applyLvl) throws Exception {
-
-		return addEnchant(itemStack, pitEnchant, applyLvl, true);
-	}
-
 	public static ItemStack addEnchant(ItemStack itemStack, PitEnchant applyEnchant, int applyLvl, boolean safe) throws Exception {
 
 		NBTItem nbtItem = new NBTItem(itemStack);
