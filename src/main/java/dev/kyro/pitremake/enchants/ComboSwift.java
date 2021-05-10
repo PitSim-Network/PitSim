@@ -27,7 +27,7 @@ public class ComboSwift extends PitEnchant {
 		if(!HitCounter.hasReachedThreshold(pitPlayer.player, this, getCombo(enchantLvl))) return damageEvent;
 
 		Misc.applyPotionEffect(damageEvent.attacker, PotionEffectType.SPEED, (int) (enchantLvl + 2) * 20,
-				getSpeedAmplifier(enchantLvl) - 1);
+				getSpeedAmplifier(enchantLvl) - 1, true, false);
 
 		return damageEvent;
 	}
@@ -41,7 +41,6 @@ public class ComboSwift extends PitEnchant {
 	}
 
 	//	TODO: Sharp damage calculation
-
 	public int getSpeedAmplifier(int enchantLvl) {
 
 		switch(enchantLvl) {

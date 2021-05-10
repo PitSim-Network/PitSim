@@ -90,10 +90,10 @@ public class DamageManager implements Listener {
 			}
 		}.runTaskLater(PitRemake.INSTANCE, 12L);
 //		Vampire for nons
+		attacker.setHealth(Math.min(attacker.getHealth() + 1, attacker.getMaxHealth()));
 		if(non != null) {
 			if(non.traits.contains(NonTrait.IRON_STREAKER)) {
 				event.setDamage(10.5);
-				attacker.setHealth(Math.min(attacker.getHealth() + 1, attacker.getMaxHealth()));
 			} else {
 				event.setDamage(7);
 			}
@@ -164,7 +164,7 @@ public class DamageManager implements Listener {
 
 	public static void kill(Player attacker, Player dead, boolean exeDeath) {
 
-		Location spawnLoc = new Location(Bukkit.getWorld("world"), 20.5, 100, 0.5);
+		Location spawnLoc = new Location(Bukkit.getWorld("PitMap"), -107.5, 111, 193.5, 45, 0);
 
 		dead.setHealth(dead.getMaxHealth());
 

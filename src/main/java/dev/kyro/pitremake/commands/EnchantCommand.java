@@ -58,7 +58,11 @@ public class EnchantCommand implements CommandExecutor {
 
 		ItemStack updatedItem;
 		try {
-			updatedItem = EnchantManager.addEnchant(player.getItemInHand(), pitEnchant, level, false);
+			if(player.isOp()) {
+				updatedItem = EnchantManager.addEnchant(player.getItemInHand(), pitEnchant, level, false);
+			} else {
+				updatedItem = EnchantManager.addEnchant(player.getItemInHand(), pitEnchant, level, true);
+			}
 		} catch(Exception e) {
 			if(e instanceof InvalidEnchantLevelException) {
 

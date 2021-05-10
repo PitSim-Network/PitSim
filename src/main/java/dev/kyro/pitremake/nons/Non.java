@@ -15,7 +15,6 @@ import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
-import org.bukkit.event.player.PlayerTeleportEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -71,6 +70,8 @@ public class Non {
 		if(traits.contains(NonTrait.IRON_STREAKER))
 				Misc.applyPotionEffect(non, PotionEffectType.DAMAGE_RESISTANCE, 9999, 2, true, false);
 
+		if(target == null) return;
+
 		if(count % 3 == 0 && (!traits.contains(NonTrait.NO_JUMP)) || Math.random() < 0.05) {
 
 			Block underneath = non.getLocation().clone().subtract(0, 0.2, 0).getBlock();
@@ -98,11 +99,12 @@ public class Non {
 
 		Player closest = null;
 		double closestDistance = 100;
-		for(Entity nearbyEntity : non.getWorld().getNearbyEntities(new Location(Bukkit.getWorld("world"), 0.5, 94, 0.5), 10, 10, 10)) {
+		Location midLoc = new Location(Bukkit.getWorld("PitMap"), -119, 43, 205);
+		for(Entity nearbyEntity : non.getWorld().getNearbyEntities(midLoc, 10, 10, 10)) {
 
 			if(!(nearbyEntity instanceof Player) || nearbyEntity.getUniqueId().equals(non.getUniqueId())) continue;
-			double targetDistanceFromMid = Math.sqrt(Math.pow(nearbyEntity.getLocation().getX(), 2) +
-					Math.pow(nearbyEntity.getLocation().getZ(), 2));
+			double targetDistanceFromMid = Math.sqrt(Math.pow(nearbyEntity.getLocation().getX() - midLoc.getX(), 2) +
+					Math.pow(nearbyEntity.getLocation().getZ() - midLoc.getZ(), 2));
 			if(targetDistanceFromMid > 9) continue;
 
 			double distance = nearbyEntity.getLocation().distance(non.getLocation());
@@ -115,15 +117,17 @@ public class Non {
 	}
 
 	public void spawn() {
-		Location spawnLoc = new Location(Bukkit.getWorld("world"), 0.5, 100, 0.5, -180, 60);
+		Location spawnLoc = new Location(Bukkit.getWorld("PitMap"), -119, 111, 211, -180, 60);
 		npc.spawn(spawnLoc);
 	}
 
 	public void respawn() {
 
 		nonState = NonState.RESPAWNING;
-		Location spawnLoc = new Location(Bukkit.getWorld("world"), 0.5, 100, 0.5, -180, 60);
-		npc.teleport(spawnLoc, PlayerTeleportEvent.TeleportCause.PLUGIN);
+		Location spawnLoc = new Location(Bukkit.getWorld("PitMap"), -119, 111, 211, -180, 60);
+//		npc.teleport(spawnLoc, PlayerTeleportEvent.TeleportCause.PLUGIN);
+		npc.despawn();
+		npc.spawn(spawnLoc);
 
 		non.setHealth(non.getMaxHealth());
 
@@ -168,7 +172,7 @@ public class Non {
 					public void run() {
 						nonState = NonState.FIGHTING;
 					}
-				}.runTaskLater(PitRemake.INSTANCE, 10L);
+				}.runTaskLater(PitRemake.INSTANCE, 55L);
 			}
 		}.runTaskLater(PitRemake.INSTANCE, (long) (Math.random() * 20 + 20));
 	}

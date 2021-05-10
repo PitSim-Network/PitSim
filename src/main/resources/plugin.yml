@@ -3,6 +3,8 @@ author: KyroKrypt
 version: 1.0.0
 main: dev.kyro.pitremake.PitRemake
 description: Remake of the Hypixel Pit
+depend:
+  - Citizens
 commands:
   atest:
   enchant:

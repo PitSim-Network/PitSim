@@ -20,6 +20,7 @@ public class PushComesToShove extends PitEnchant {
 
 		if(damageEvent.arrow == null) return damageEvent;
 		int enchantLvl = damageEvent.getEnchantLevel(this);
+		if(enchantLvl == 0) return damageEvent;
 		PitPlayer pitPlayer = PitPlayer.getPitPlayer(damageEvent.attacker);
 		HitCounter.incrementCounter(pitPlayer.player, this);
 
