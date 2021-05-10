@@ -198,4 +198,10 @@ public class Non {
 			nmsPlayer.setAbsorptionHearts(Math.min(nmsPlayer.getAbsorptionHearts() + 3, 5));
 		}
 	}
+
+	public void remove() {
+
+		NonManager.nons.remove(this);
+		npc.destroy();
+	}
 }

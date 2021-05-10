@@ -115,7 +115,7 @@ public class DamageManager implements Listener {
 
 	public static void handleAttack(DamageEvent damageEvent) {
 
-		AOutput.send(damageEvent.attacker, "Initial Damage: " + damageEvent.event.getDamage());
+//		AOutput.send(damageEvent.attacker, "Initial Damage: " + damageEvent.event.getDamage());
 
 		for(PitEnchant pitEnchant : EnchantManager.pitEnchants) {
 //			Skip enchant application if the enchant is a bow enchant and is used in mele
@@ -130,7 +130,7 @@ public class DamageManager implements Listener {
 
 		damageEvent.event.setDamage(damage);
 
-		AOutput.send(damageEvent.attacker, "Final Damage: " + damageEvent.event.getDamage());
+//		AOutput.send(damageEvent.attacker, "Final Damage: " + damageEvent.event.getDamage());
 
 		if(damageEvent.trueDamage != 0) {
 			double finalHealth = damageEvent.defender.getHealth() - damageEvent.trueDamage;
@@ -169,7 +169,7 @@ public class DamageManager implements Listener {
 		dead.setHealth(dead.getMaxHealth());
 
 		DecimalFormat df = new DecimalFormat("##0.00");
-		AOutput.send(attacker, "&a&lKILL!&7 on &b" + dead.getName() + " &b+" + "5" + "XP" + " &6+" + "5" + df.format(5));
+		AOutput.send(attacker, "&a&lKILL!&7 on &b" + dead.getName() + " &b+" + "5" + "XP" + " &6+" + df.format(5) + "g");
 		AOutput.send(dead, "&cYou Died!");
 
 		Non non = NonManager.getNon(dead);
