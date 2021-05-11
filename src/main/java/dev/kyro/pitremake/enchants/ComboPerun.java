@@ -4,6 +4,8 @@ import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.pitremake.controllers.*;
 import dev.kyro.pitremake.enums.ApplyType;
 import dev.kyro.pitremake.misc.Misc;
+import org.bukkit.Bukkit;
+import org.bukkit.Material;
 
 import java.util.List;
 
@@ -24,9 +26,26 @@ public class ComboPerun extends PitEnchant {
 		HitCounter.incrementCounter(pitPlayer.player, this);
 		if(!HitCounter.hasReachedThreshold(pitPlayer.player, this, getStrikes(enchantLvl))) return damageEvent;
 
-		damageEvent.trueDamage += getTrueDamage(enchantLvl);
-		damageEvent.defender.getWorld().strikeLightningEffect(damageEvent.defender.getLocation());
+		if(enchantLvl == 3) {
+			int diamondpeices = 0;
+			if(!(damageEvent.defender.getInventory().getHelmet() == null) && damageEvent.defender.getInventory().getHelmet().getType() == Material.DIAMOND_HELMET) {
+				diamondpeices = diamondpeices + 2;
+			}
+			if(!(damageEvent.defender.getInventory().getChestplate() == null) && damageEvent.defender.getInventory().getChestplate().getType() == Material.DIAMOND_CHESTPLATE) {
+				diamondpeices = diamondpeices + 2;
+			}
+			if(!(damageEvent.defender.getInventory().getLeggings() == null) && damageEvent.defender.getInventory().getLeggings().getType() == Material.DIAMOND_LEGGINGS) {
+				diamondpeices = diamondpeices + 2;
+			}
+			if(!(damageEvent.defender.getInventory().getBoots() == null) && damageEvent.defender.getInventory().getBoots().getType() == Material.DIAMOND_BOOTS) {
+				diamondpeices = diamondpeices + 2;
+			}
 
+			damageEvent.trueDamage += diamondpeices;
+		} else {
+			damageEvent.trueDamage += getTrueDamage(enchantLvl);
+		}
+		damageEvent.defender.getWorld().strikeLightningEffect(damageEvent.defender.getLocation());
 		return damageEvent;
 	}
 
