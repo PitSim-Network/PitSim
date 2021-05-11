@@ -1,7 +1,7 @@
 package dev.kyro.pitsim.controllers;
 
 import dev.kyro.arcticapi.misc.AOutput;
-import dev.kyro.pitsim.PitRemake;
+import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.enchants.PitBlob;
 import dev.kyro.pitsim.enchants.Regularity;
 import dev.kyro.pitsim.enums.ApplyType;
@@ -48,7 +48,7 @@ public class DamageManager implements Listener {
 					arrowMap.remove(remove);
 				}
 			}
-		}.runTaskTimer(PitRemake.INSTANCE, 0L, 1L);
+		}.runTaskTimer(PitSim.INSTANCE, 0L, 1L);
 	}
 
 	@EventHandler(ignoreCancelled = true, priority = EventPriority.HIGH)
@@ -95,13 +95,13 @@ public class DamageManager implements Listener {
 			public void run() {
 				DamageManager.hitCooldownList.remove(defender);
 			}
-		}.runTaskLater(PitRemake.INSTANCE, 10L);
+		}.runTaskLater(PitSim.INSTANCE, 10L);
 		new BukkitRunnable() {
 			@Override
 			public void run() {
 				DamageManager.nonHitCooldownList.remove(defender);
 			}
-		}.runTaskLater(PitRemake.INSTANCE, 12L);
+		}.runTaskLater(PitSim.INSTANCE, 12L);
 //		Vampire for nons
 		attacker.setHealth(Math.min(attacker.getHealth() + 1, attacker.getMaxHealth()));
 		if(non != null) {

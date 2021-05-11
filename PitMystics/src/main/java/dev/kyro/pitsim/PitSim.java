@@ -17,9 +17,9 @@ import dev.kyro.pitsim.enchants.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PitRemake extends JavaPlugin {
+public class PitSim extends JavaPlugin {
 
-	public static PitRemake INSTANCE;
+	public static PitSim INSTANCE;
 
 	@Override
 	public void onEnable() {

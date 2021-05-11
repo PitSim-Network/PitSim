@@ -2,7 +2,7 @@ package dev.kyro.pitsim.enchants;
 
 import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.arcticapi.events.armor.AChangeEquipmentEvent;
-import dev.kyro.pitsim.PitRemake;
+import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.controllers.DamageEvent;
 import dev.kyro.pitsim.controllers.DamageManager;
 import dev.kyro.pitsim.controllers.EnchantManager;
@@ -50,7 +50,7 @@ public class PitBlob extends PitEnchant {
 					}
 				}
 			}
-		}.runTaskTimer(PitRemake.INSTANCE, 0L, 1L);
+		}.runTaskTimer(PitSim.INSTANCE, 0L, 1L);
 	}
 
 	public PitBlob() {

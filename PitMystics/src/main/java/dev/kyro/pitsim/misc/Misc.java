@@ -1,7 +1,7 @@
 package dev.kyro.pitsim.misc;
 
 import dev.kyro.arcticapi.misc.ASound;
-import dev.kyro.pitsim.PitRemake;
+import dev.kyro.pitsim.PitSim;
 import net.minecraft.server.v1_8_R3.IChatBaseComponent;
 import net.minecraft.server.v1_8_R3.PacketPlayOutChat;
 import org.bukkit.ChatColor;
@@ -73,7 +73,7 @@ public class Misc {
 
 				if(++count > 5) cancel();
 			}
-		}.runTaskTimer(PitRemake.INSTANCE, 0L, 2L);
+		}.runTaskTimer(PitSim.INSTANCE, 0L, 2L);
 	}
 
 	/**

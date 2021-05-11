@@ -2,7 +2,7 @@ package dev.kyro.pitsim.commands;
 
 import dev.kyro.arcticapi.builders.AItemStackBuilder;
 import dev.kyro.arcticapi.misc.AOutput;
-import dev.kyro.pitsim.PitRemake;
+import dev.kyro.pitsim.PitSim;
 import net.citizensnpcs.api.CitizensAPI;
 import net.citizensnpcs.api.ai.Navigator;
 import net.citizensnpcs.api.npc.NPC;
@@ -129,7 +129,7 @@ public class ATestCommand implements CommandExecutor {
 				callHopper(targetPlayer, hoppers.get(count++));
 
 			}
-		}.runTaskTimer(PitRemake.INSTANCE, 0L, 3L);
+		}.runTaskTimer(PitSim.INSTANCE, 0L, 3L);
 		return false;
 	}
 
@@ -272,6 +272,6 @@ public class ATestCommand implements CommandExecutor {
 					player.damage(9, npc.getEntity());
 				}
 			}
-		}.runTaskTimer(PitRemake.INSTANCE, 0L, 1L);
+		}.runTaskTimer(PitSim.INSTANCE, 0L, 1L);
 	}
 }

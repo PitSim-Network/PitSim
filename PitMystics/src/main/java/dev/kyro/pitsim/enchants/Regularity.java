@@ -1,7 +1,7 @@
 package dev.kyro.pitsim.enchants;
 
 import dev.kyro.arcticapi.builders.ALoreBuilder;
-import dev.kyro.pitsim.PitRemake;
+import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.controllers.DamageEvent;
 import dev.kyro.pitsim.controllers.PitEnchant;
 import dev.kyro.pitsim.enums.ApplyType;
@@ -45,7 +45,7 @@ public class Regularity extends PitEnchant {
 				damageEvent.defender.setNoDamageTicks(0);
 				damageEvent.defender.damage(damage, damageEvent.attacker);
 			}
-		}.runTaskLater(PitRemake.INSTANCE, 3L);
+		}.runTaskLater(PitSim.INSTANCE, 3L);
 
 		new BukkitRunnable() {
 			@Override
@@ -53,7 +53,7 @@ public class Regularity extends PitEnchant {
 
 				toReg.remove(damageEvent.attacker.getUniqueId());
 			}
-		}.runTaskLater(PitRemake.INSTANCE, 4L);
+		}.runTaskLater(PitSim.INSTANCE, 4L);
 
 		return damageEvent;
 	}

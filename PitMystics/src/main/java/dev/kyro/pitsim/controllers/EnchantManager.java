@@ -5,7 +5,7 @@ import de.tr7zw.nbtapi.NBTItem;
 import dev.kyro.arcticapi.builders.AItemStackBuilder;
 import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.arcticapi.misc.AUtil;
-import dev.kyro.pitsim.PitRemake;
+import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.enums.ApplyType;
 import dev.kyro.pitsim.enums.NBTTag;
 import dev.kyro.pitsim.exceptions.InvalidEnchantLevelException;
@@ -26,7 +26,7 @@ public class EnchantManager {
 	public static void registerEnchant(PitEnchant pitEnchant) {
 
 		pitEnchants.add(pitEnchant);
-		PitRemake.INSTANCE.getServer().getPluginManager().registerEvents(pitEnchant, PitRemake.INSTANCE);
+		PitSim.INSTANCE.getServer().getPluginManager().registerEvents(pitEnchant, PitSim.INSTANCE);
 	}
 
 	public static boolean canTypeApply(ItemStack itemStack, PitEnchant pitEnchant) {

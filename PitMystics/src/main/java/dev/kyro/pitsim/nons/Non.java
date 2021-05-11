@@ -1,6 +1,6 @@
 package dev.kyro.pitsim.nons;
 
-import dev.kyro.pitsim.PitRemake;
+import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.misc.Misc;
 import net.citizensnpcs.api.CitizensAPI;
 import net.citizensnpcs.api.npc.NPC;
@@ -178,9 +178,9 @@ public class Non {
 					public void run() {
 						nonState = NonState.FIGHTING;
 					}
-				}.runTaskLater(PitRemake.INSTANCE, 55L);
+				}.runTaskLater(PitSim.INSTANCE, 55L);
 			}
-		}.runTaskLater(PitRemake.INSTANCE, (long) (Math.random() * 20 + 20));
+		}.runTaskLater(PitSim.INSTANCE, (long) (Math.random() * 20 + 20));
 	}
 
 	public void pickTraits() {

@@ -25,7 +25,8 @@ dependencies {
     compile 'com.github.ArcticDevelopment:ArcticAPI:521ab146a5'
     compile 'de.tr7zw:item-nbt-api-plugin:2.7.1'
 }
+
 shadowJar {
 
-    relocate 'dev.kyro.arcticapi', 'dev.kyro.pitremake.arcticapi'
+    relocate 'dev.kyro.arcticapi', 'dev.kyro.pitsim.arcticapi'
 }

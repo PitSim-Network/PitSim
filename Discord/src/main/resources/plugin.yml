@@ -1,0 +1,7 @@
+name: PitDiscord
+authors:
+  - Kyro
+  - Wiji
+version: 1.0.0
+main: dev.kyro.pitdiscord.DiscordPlugin
+description: Discord connection for PitSim

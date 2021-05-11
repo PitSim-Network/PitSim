@@ -1,7 +1,7 @@
 package dev.kyro.pitsim.enchants;
 
 import dev.kyro.arcticapi.builders.ALoreBuilder;
-import dev.kyro.pitsim.PitRemake;
+import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.controllers.DamageEvent;
 import dev.kyro.pitsim.controllers.EnchantManager;
 import dev.kyro.pitsim.controllers.PitEnchant;
@@ -67,7 +67,7 @@ public class Robinhood extends PitEnchant {
 					arrow.setVelocity(direction);
 				}
 			}
-		}.runTaskTimer(PitRemake.INSTANCE, 0L, 3L);
+		}.runTaskTimer(PitSim.INSTANCE, 0L, 3L);
 	}
 
 	@Override

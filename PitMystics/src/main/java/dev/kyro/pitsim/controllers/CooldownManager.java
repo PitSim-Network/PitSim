@@ -1,6 +1,6 @@
 package dev.kyro.pitsim.controllers;
 
-import dev.kyro.pitsim.PitRemake;
+import dev.kyro.pitsim.PitSim;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.ArrayList;
@@ -22,7 +22,7 @@ public class CooldownManager {
 				}
 				cooldownList.removeAll(toRemove);
 			}
-		}.runTaskTimer(PitRemake.INSTANCE, 0L, 1L);
+		}.runTaskTimer(PitSim.INSTANCE, 0L, 1L);
 	}
 
 	public static void add(Cooldown cooldownCooldown) {

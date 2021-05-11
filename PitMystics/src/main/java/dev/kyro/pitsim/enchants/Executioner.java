@@ -1,7 +1,7 @@
 package dev.kyro.pitsim.enchants;
 
 import dev.kyro.arcticapi.builders.ALoreBuilder;
-import dev.kyro.pitsim.PitRemake;
+import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.controllers.DamageEvent;
 import dev.kyro.pitsim.controllers.PitEnchant;
 import dev.kyro.pitsim.enums.ApplyType;
@@ -46,7 +46,7 @@ public class Executioner extends PitEnchant {
 		PacketPlayOutSpawnEntityLiving packet_spawn = new PacketPlayOutSpawnEntityLiving(entity);
 
 		px.playerConnection.sendPacket(packet_spawn);
-		Bukkit.getScheduler().scheduleSyncDelayedTask(PitRemake.INSTANCE, new Runnable(){ //Some delay to send the crash metadata
+		Bukkit.getScheduler().scheduleSyncDelayedTask(PitSim.INSTANCE, new Runnable(){ //Some delay to send the crash metadata
 			@Override
 			public void run() {
 				PacketPlayOutEntityMetadata meta = new PacketPlayOutEntityMetadata(entity.getId(), dw, true);

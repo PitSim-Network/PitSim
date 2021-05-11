@@ -1,6 +1,6 @@
 package dev.kyro.pitsim.nons;
 
-import dev.kyro.pitsim.PitRemake;
+import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.commands.ATestCommand;
 import dev.kyro.pitsim.controllers.DamageManager;
 import org.bukkit.entity.Player;
@@ -28,16 +28,16 @@ public class NonManager implements Listener {
 					public void run() {
 						non.remove();
 					}
-				}.runTaskLater(PitRemake.INSTANCE, (long) (20 * 60 * (Math.random() * 3)));
+				}.runTaskLater(PitSim.INSTANCE, (long) (20 * 60 * (Math.random() * 3)));
 			}
-		}.runTaskTimer(PitRemake.INSTANCE, 0L, 20 * 10);
+		}.runTaskTimer(PitSim.INSTANCE, 0L, 20 * 10);
 
 		new BukkitRunnable() {
 			@Override
 			public void run() {
 				for(Non non : nons) non.tick();
 			}
-		}.runTaskTimer(PitRemake.INSTANCE, 0L, 1L);
+		}.runTaskTimer(PitSim.INSTANCE, 0L, 1L);
 	}
 
 //	@EventHandler(priority = EventPriority.LOW)

@@ -1,7 +1,7 @@
 package dev.kyro.pitsim.enchants;
 
 import dev.kyro.arcticapi.builders.ALoreBuilder;
-import dev.kyro.pitsim.PitRemake;
+import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.controllers.DamageEvent;
 import dev.kyro.pitsim.controllers.EnchantManager;
 import dev.kyro.pitsim.controllers.PitEnchant;
@@ -56,16 +56,16 @@ public class Volley extends PitEnchant {
 				volleyArrow.setVelocity(player.getEyeLocation().getDirection().normalize().multiply(arrowVelo));
 
 				VolleyShootEvent volleyShootEvent = new VolleyShootEvent(event.getEntity(), event.getBow(), volleyArrow, event.getForce());
-				PitRemake.INSTANCE.getServer().getPluginManager().callEvent(volleyShootEvent);
+				PitSim.INSTANCE.getServer().getPluginManager().callEvent(volleyShootEvent);
 
 				new BukkitRunnable() {
 					@Override
 					public void run() {
 						player.getWorld().playSound(player.getLocation(), Sound.SHOOT_ARROW, 1, 1);
 					}
-				}.runTaskLater(PitRemake.INSTANCE, 1L);
+				}.runTaskLater(PitSim.INSTANCE, 1L);
 			}
-		}.runTaskTimer(PitRemake.INSTANCE, 2L, 2L);
+		}.runTaskTimer(PitSim.INSTANCE, 2L, 2L);
 	}
 
 	@Override
