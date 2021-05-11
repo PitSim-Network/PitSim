@@ -1,7 +1,7 @@
 name: PitRemake
 author: KyroKrypt
 version: 1.0.0
-main: dev.kyro.pitremake.PitRemake
+main: dev.kyro.pitsim.PitRemake
 description: Remake of the Hypixel Pit
 depend:
   - Citizens
