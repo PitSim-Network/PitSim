@@ -18,6 +18,7 @@ public class NonCommand implements CommandExecutor {
 
 		target = player;
 		new Non(ATestCommand.hoppers.get((int) (Math.random() * ATestCommand.hoppers.size())));
+//		new Non("bluetango766");
 
 		return false;
 	}

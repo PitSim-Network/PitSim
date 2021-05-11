@@ -20,6 +20,7 @@ public class NonManager implements Listener {
 		new BukkitRunnable() {
 			@Override
 			public void run() {
+				if(true) return;
 				if(nons.size() >= 10) return;
 				Non non = new Non(ATestCommand.hoppers.get((int) (Math.random() * ATestCommand.hoppers.size())));
 				new BukkitRunnable() {

@@ -8,6 +8,7 @@ import dev.kyro.pitremake.commands.NonCommand;
 import dev.kyro.pitremake.controllers.CooldownManager;
 import dev.kyro.pitremake.controllers.DamageManager;
 import dev.kyro.pitremake.controllers.EnchantManager;
+import dev.kyro.pitremake.controllers.PitEnchant;
 import dev.kyro.pitremake.enchants.*;
 import dev.kyro.pitremake.nons.Non;
 import dev.kyro.pitremake.nons.NonManager;
@@ -44,6 +45,8 @@ public class PitRemake extends JavaPlugin {
 
 			non.remove();
 		}
+
+		for(PitEnchant pitEnchant : EnchantManager.pitEnchants) pitEnchant.onDisable();
 	}
 
 	private void registerEnchants() {
@@ -84,6 +87,7 @@ public class PitRemake extends JavaPlugin {
 		EnchantManager.registerEnchant(new Protection());
 		EnchantManager.registerEnchant(new Prick());
 		EnchantManager.registerEnchant(new RingArmor());
+		EnchantManager.registerEnchant(new PitBlob());
 
 //		After all
 		EnchantManager.registerEnchant(new Regularity());

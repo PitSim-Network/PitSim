@@ -77,6 +77,7 @@ public class ATestCommand implements CommandExecutor {
 		hoppers.add("bubulS");
 		hoppers.add("o6am");
 		hoppers.add("qre");
+		hoppers.add("Dark4ever");
 	}
 
 	public Team t;

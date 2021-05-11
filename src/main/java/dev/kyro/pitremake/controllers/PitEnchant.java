@@ -29,6 +29,8 @@ public abstract class PitEnchant implements Listener {
 	public abstract DamageEvent onDamage(DamageEvent damageEvent);
 	public abstract List<String> getDescription(int enchantLvl);
 
+	public void onDisable() {}
+
 	public Cooldown getCooldown(Player player, int time) {
 
 		if(cooldowns.containsKey(player.getUniqueId())) {

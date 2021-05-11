@@ -164,10 +164,15 @@ public class EnchantManager {
 		List<ItemStack> inUse = new ArrayList<>(Arrays.asList(player.getInventory().getArmorContents()));
 		inUse.add(player.getItemInHand());
 
+		return getEnchantsOnPlayer(inUse.toArray(new ItemStack[5]));
+	}
+
+	public static Map<PitEnchant, Integer> getEnchantsOnPlayer(ItemStack[] inUseArr) {
+
 		Map<PitEnchant, Integer> itemEnchantMap = new HashMap<>();
-		for(ItemStack itemStack : inUse) {
+		for(ItemStack itemStack : inUseArr) {
 			if(itemStack == null || itemStack.getType() == Material.AIR) continue;
-			itemEnchantMap.putAll(getEnchantsOnItem(itemStack));
+			itemEnchantMap.putAll(getEnchantsOnItem(itemStack, itemEnchantMap));
 		}
 
 		return itemEnchantMap;
@@ -181,7 +186,7 @@ public class EnchantManager {
 	public static Map<PitEnchant, Integer> getEnchantsOnItem(ItemStack itemStack, @NotNull Map<PitEnchant, Integer> currentEnchantMap) {
 
 		Map<PitEnchant, Integer> itemEnchantMap = new HashMap<>();
-		if(itemStack == null) return itemEnchantMap;
+		if(itemStack == null || itemStack.getType() == Material.AIR) return itemEnchantMap;
 		NBTItem nbtItem = new NBTItem(itemStack);
 		if(!nbtItem.hasKey(NBTTag.ITEM_UUID.getRef())) return itemEnchantMap;
 

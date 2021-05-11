@@ -22,7 +22,7 @@ dependencies {
     compileOnly 'org.bukkit:craftbukkit:1.8.8-R0.1-SNAPSHOT'
     compileOnly 'net.citizensnpcs:citizens-main:2.0.24-SNAPSHOT'
 
-    compile 'com.github.ArcticDevelopment:ArcticAPI:5a340353a0'
+    compile 'com.github.ArcticDevelopment:ArcticAPI:521ab146a5'
     compile 'de.tr7zw:item-nbt-api-plugin:2.7.1'
 }
 shadowJar {
