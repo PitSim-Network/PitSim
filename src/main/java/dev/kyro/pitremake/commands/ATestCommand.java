@@ -70,13 +70,14 @@ public class ATestCommand implements CommandExecutor {
 		hoppers.add("KyroKrypt");
 		hoppers.add("ZexorPVP");
 		hoppers.add("TSM_Dauquen");
-		hoppers.add("xStateifmind");
+		hoppers.add("xStateofmind");
 		hoppers.add("Skunker");
 		hoppers.add("Arti_Creep");
 		hoppers.add("M0HAMM3D17");
 		hoppers.add("bubulS");
 		hoppers.add("o6am");
 		hoppers.add("qre");
+		hoppers.add("Dark4ever");
 	}
 
 	public Team t;
@@ -222,8 +223,6 @@ public class ATestCommand implements CommandExecutor {
 			equipment.set(Equipment.EquipmentSlot.LEGGINGS, new ItemStack(Material.IRON_LEGGINGS));
 		}
 		equipment.set(Equipment.EquipmentSlot.BOOTS, new ItemStack(Material.DIAMOND_BOOTS));
-
-		System.out.println(((Player) npc.getEntity()).getDisplayName());
 
 		new BukkitRunnable() {
 

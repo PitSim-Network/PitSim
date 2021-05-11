@@ -1,7 +1,9 @@
 package dev.kyro.pitremake.controllers;
 
+import dev.kyro.pitremake.enchants.PitBlob;
 import org.bukkit.entity.Arrow;
 import org.bukkit.entity.Player;
+import org.bukkit.entity.Slime;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 
 import java.util.ArrayList;
@@ -14,6 +16,7 @@ public class DamageEvent {
 	public Player attacker;
 	public Player defender;
 	public Arrow arrow;
+	public Slime slime;
 	public Boolean hitByArrow;
 	private final Map<PitEnchant, Integer> attackerEnchantMap;
 
@@ -32,13 +35,16 @@ public class DamageEvent {
 		this.event = event;
 		this.attackerEnchantMap = attackerEnchantMap;
 
-		if(event.getDamager() instanceof Arrow) {
+		if(event.getDamager() instanceof Player) {
+			this.hitByArrow = false;
+			this.attacker = (Player) event.getDamager();
+		} else if(event.getDamager() instanceof Arrow) {
 			this.hitByArrow = true;
 			this.arrow = (Arrow) event.getDamager();
 			this.attacker = (Player) arrow.getShooter();
-		} else {
-			this.hitByArrow = false;
-			this.attacker = (Player) event.getDamager();
+		} else if(event.getDamager() instanceof Slime) {
+			this.slime = (Slime) event.getDamager();
+			this.attacker = PitBlob.getOwner((Slime) event.getDamager());
 		}
 		this.defender = (Player) event.getEntity();
 	}

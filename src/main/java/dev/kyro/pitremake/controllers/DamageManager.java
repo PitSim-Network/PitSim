@@ -2,6 +2,7 @@ package dev.kyro.pitremake.controllers;
 
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitremake.PitRemake;
+import dev.kyro.pitremake.enchants.PitBlob;
 import dev.kyro.pitremake.enchants.Regularity;
 import dev.kyro.pitremake.enums.ApplyType;
 import dev.kyro.pitremake.misc.Misc;
@@ -12,6 +13,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Arrow;
 import org.bukkit.entity.Player;
+import org.bukkit.entity.Slime;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -20,10 +22,7 @@ import org.bukkit.event.entity.EntityShootBowEvent;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.text.DecimalFormat;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class DamageManager implements Listener {
 
@@ -61,8 +60,19 @@ public class DamageManager implements Listener {
 	@EventHandler(ignoreCancelled = true, priority = EventPriority.HIGH)
 	public void onAttack(EntityDamageByEntityEvent event) {
 
-		if(!(event.getEntity() instanceof Player) || (!(event.getDamager() instanceof Player) && !(event.getDamager() instanceof Arrow))) return;
-		Player attacker = event.getDamager() instanceof Player ? (Player) event.getDamager() : (Player) ((Arrow) event.getDamager()).getShooter();
+		if(!(event.getEntity() instanceof Player) ||
+				(!(event.getDamager() instanceof Player) && !(event.getDamager() instanceof Arrow) && !(event.getDamager() instanceof Slime))) return;
+		Player attacker = null;
+		if(event.getDamager() instanceof Player) {
+			attacker = (Player) event.getDamager();
+		} else if(event.getDamager() instanceof Arrow) {
+			attacker = (Player) ((Arrow) event.getDamager()).getShooter();
+		} else if(event.getDamager() instanceof Slime) {
+
+			attacker = PitBlob.getOwner((Slime) event.getDamager());
+			if(attacker == null) return;
+		}
+		assert attacker != null;
 		Player defender = (Player) event.getEntity();
 
 		Non non = NonManager.getNon(attacker);
@@ -103,53 +113,58 @@ public class DamageManager implements Listener {
 		if(event.getDamager() instanceof Player) {
 
 			handleAttack(new DamageEvent(event, EnchantManager.getEnchantsOnPlayer((Player) event.getDamager())));
-		} else {
+		} else if(event.getDamager() instanceof Arrow) {
 
 			for(Map.Entry<EntityShootBowEvent, Map<PitEnchant, Integer>> entry : arrowMap.entrySet()) {
 
 				if(!entry.getKey().getProjectile().equals(event.getDamager())) continue;
 				handleAttack(new DamageEvent(event, arrowMap.get(entry.getKey())));
 			}
+		} else if(event.getDamager() instanceof Slime) {
+
+			handleAttack(new DamageEvent(event, EnchantManager.getEnchantsOnPlayer(attacker)));
 		}
 	}
 
 	public static void handleAttack(DamageEvent damageEvent) {
 
-		AOutput.send(damageEvent.attacker, "Initial Damage: " + damageEvent.event.getDamage());
+//		AOutput.send(damageEvent.attacker, "Initial Damage: " + damageEvent.event.getDamage());
 
-		for(PitEnchant pitEnchant : EnchantManager.pitEnchants) {
+		if(damageEvent.slime == null) {
+			for(PitEnchant pitEnchant : EnchantManager.pitEnchants) {
 //			Skip enchant application if the enchant is a bow enchant and is used in mele
-			if(pitEnchant.applyType == ApplyType.BOWS && damageEvent.arrow == null) continue;
+				if(pitEnchant.applyType == ApplyType.BOWS && damageEvent.arrow == null) continue;
 //			Skips enchant application if the enchant only works on mele hit and the event is from an arrow
-			if(pitEnchant.meleOnly && damageEvent.arrow != null) continue;
+				if(pitEnchant.meleOnly && damageEvent.arrow != null) continue;
 
-			pitEnchant.onDamage(damageEvent);
-		}
+				pitEnchant.onDamage(damageEvent);
+			}
 
-		double damage = damageEvent.getFinalDamage();
+			double damage = damageEvent.getFinalDamage();
 
-		damageEvent.event.setDamage(damage);
+			damageEvent.event.setDamage(damage);
 
-		AOutput.send(damageEvent.attacker, "Final Damage: " + damageEvent.event.getDamage());
+			if(damageEvent.trueDamage != 0) {
+				double finalHealth = damageEvent.defender.getHealth() - damageEvent.trueDamage;
+				if(finalHealth <= 0) {
+					kill(damageEvent.attacker, damageEvent.defender, false);
+				} else {
+					damageEvent.defender.setHealth(Math.max(finalHealth, 0));
+				}
+			}
 
-		if(damageEvent.trueDamage != 0) {
-			double finalHealth = damageEvent.defender.getHealth() - damageEvent.trueDamage;
-			if(finalHealth <= 0) {
-				kill(damageEvent.attacker, damageEvent.defender, false);
-			} else {
-				damageEvent.defender.setHealth(Math.max(finalHealth, 0));
+			if(damageEvent.selfTrueDamage != 0) {
+				double finalHealth = damageEvent.attacker.getHealth() - damageEvent.selfTrueDamage;
+				if(finalHealth <= 0) {
+					kill(damageEvent.attacker, damageEvent.defender, false);
+				} else {
+					damageEvent.attacker.setHealth(Math.max(finalHealth, 0));
+					damageEvent.attacker.damage(0);
+				}
 			}
 		}
 
-		if(damageEvent.selfTrueDamage != 0) {
-			double finalHealth = damageEvent.attacker.getHealth() - damageEvent.selfTrueDamage;
-			if(finalHealth <= 0) {
-				kill(damageEvent.attacker, damageEvent.defender, false);
-			} else {
-				damageEvent.attacker.setHealth(Math.max(finalHealth, 0));
-				damageEvent.attacker.damage(0);
-			}
-		}
+//		AOutput.send(damageEvent.attacker, "Final Damage: " + damageEvent.event.getDamage());
 
 		if(damageEvent.event.getFinalDamage() >= damageEvent.defender.getHealth()) {
 
@@ -164,12 +179,12 @@ public class DamageManager implements Listener {
 
 	public static void kill(Player attacker, Player dead, boolean exeDeath) {
 
-		Location spawnLoc = new Location(Bukkit.getWorld("PitMap"), -107.5, 111, 193.5, 45, 0);
+		Location spawnLoc = new Location(Bukkit.getWorld("pit"), -107.5, 111, 193.5, 45, 0);
 
 		dead.setHealth(dead.getMaxHealth());
 
 		DecimalFormat df = new DecimalFormat("##0.00");
-		AOutput.send(attacker, "&a&lKILL!&7 on &b" + dead.getName() + " &b+" + "5" + "XP" + " &6+" + "5" + df.format(5));
+		AOutput.send(attacker, "&a&lKILL!&7 on &b" + dead.getName() + " &b+" + "5" + "XP" + " &6+" + df.format(5) + "g");
 		AOutput.send(dead, "&cYou Died!");
 
 		Non non = NonManager.getNon(dead);

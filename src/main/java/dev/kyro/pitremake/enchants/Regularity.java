@@ -18,7 +18,7 @@ public class Regularity extends PitEnchant {
 	public static List<UUID> toReg = new ArrayList<>();
 
 	public Regularity() {
-		super("Regularity", true, ApplyType.SWORDS,
+		super("Regularity", true, ApplyType.PANTS,
 				"regularity", "reg");
 
 		meleOnly = true;

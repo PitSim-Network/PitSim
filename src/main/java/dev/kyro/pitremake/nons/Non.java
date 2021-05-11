@@ -58,6 +58,12 @@ public class Non {
 	public void tick() {
 
 		non = (Player) npc.getEntity();
+		if(npc.isSpawned() && non.getLocation().getY() <= 42) {
+			Location teleportLoc = non.getLocation().clone();
+			teleportLoc.setY(43);
+			non.teleport(teleportLoc);
+			return;
+		}
 
 		if(nonState != NonState.FIGHTING) {
 			npc.getNavigator().setTarget(null, true);
@@ -95,11 +101,11 @@ public class Non {
 
 	public void pickTarget() {
 
-		if(target != null && Math.random() < persistence) return;
+//		if(target != null && Math.random() < persistence) return;
 
 		Player closest = null;
 		double closestDistance = 100;
-		Location midLoc = new Location(Bukkit.getWorld("PitMap"), -119, 43, 205);
+		Location midLoc = new Location(Bukkit.getWorld("pit"), -119, 43, 205);
 		for(Entity nearbyEntity : non.getWorld().getNearbyEntities(midLoc, 10, 10, 10)) {
 
 			if(!(nearbyEntity instanceof Player) || nearbyEntity.getUniqueId().equals(non.getUniqueId())) continue;
@@ -117,14 +123,14 @@ public class Non {
 	}
 
 	public void spawn() {
-		Location spawnLoc = new Location(Bukkit.getWorld("PitMap"), -119, 111, 211, -180, 60);
+		Location spawnLoc = new Location(Bukkit.getWorld("pit"), -119, 111, 211, -180, 60);
 		npc.spawn(spawnLoc);
 	}
 
 	public void respawn() {
 
 		nonState = NonState.RESPAWNING;
-		Location spawnLoc = new Location(Bukkit.getWorld("PitMap"), -119, 111, 211, -180, 60);
+		Location spawnLoc = new Location(Bukkit.getWorld("pit"), -119, 111, 211, -180, 60);
 //		npc.teleport(spawnLoc, PlayerTeleportEvent.TeleportCause.PLUGIN);
 		npc.despawn();
 		npc.spawn(spawnLoc);
@@ -197,5 +203,11 @@ public class Non {
 		if(nmsPlayer.getAbsorptionHearts() < 8) {
 			nmsPlayer.setAbsorptionHearts(Math.min(nmsPlayer.getAbsorptionHearts() + 3, 5));
 		}
+	}
+
+	public void remove() {
+
+		NonManager.nons.remove(this);
+		npc.destroy();
 	}
 }
