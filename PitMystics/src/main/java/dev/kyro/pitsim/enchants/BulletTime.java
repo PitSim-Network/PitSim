@@ -28,7 +28,9 @@ public class BulletTime extends PitEnchant {
 		if(!(damageEvent.defender.isBlocking())) return damageEvent;
 
 		damageEvent.defender.getWorld().playSound(damageEvent.defender.getLocation(), Sound.FIZZ, 1f, 1.5f);
-		damageEvent.arrow.getWorld().playEffect(damageEvent.arrow.getLocation(), Effect.SMOKE, 0, 30);
+		damageEvent.arrow.getWorld().playEffect(damageEvent.arrow.getLocation(), Effect.EXPLOSION, 0, 30);
+
+		damageEvent.defender.setHealth(Math.min(damageEvent.defender.getHealth() + getHealing(enchantLvl), damageEvent.defender.getMaxHealth()));
 
 		damageEvent.event.setCancelled(true);
 		damageEvent.arrow.remove();
@@ -40,10 +42,13 @@ public class BulletTime extends PitEnchant {
 	@Override
 	public List<String> getDescription(int enchantLvl) {
 
-		return new ALoreBuilder("&7Deal &c+" + getHealing(enchantLvl) + "% &7melee damage").getLore();
+		if(enchantLvl == 1) {
+			return new ALoreBuilder("&7Blocking destroys arrows that hit", "&7you").getLore();
+		} else {
+			return new ALoreBuilder("&7Blocking destroys arrows that hit", "&7you. Destroying arrows this way",
+					"&7heals &c" + (double) getHealing(enchantLvl)/2 + "&c\u2764").getLore();
+		}
 	}
-
-	//	TODO: Sharp damage calculation
 	
 	public int getHealing(int enchantLvl) {
 

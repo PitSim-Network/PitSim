@@ -1,8 +1,10 @@
 package dev.kyro.pitsim.enchants;
 
 import dev.kyro.arcticapi.builders.ALoreBuilder;
+import dev.kyro.pitsim.PitRemake;
 import dev.kyro.pitsim.enums.ApplyType;
 import dev.kyro.pitsim.misc.Misc;
+import org.bukkit.Effect;
 import org.bukkit.Location;
 import org.bukkit.Sound;
 import org.bukkit.entity.Arrow;
@@ -14,9 +16,11 @@ import dev.kyro.pitsim.controllers.Cooldown;
 import dev.kyro.pitsim.controllers.DamageEvent;
 import dev.kyro.pitsim.controllers.EnchantManager;
 import dev.kyro.pitsim.controllers.PitEnchant;
+import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class Telebow extends PitEnchant {
 
@@ -37,12 +41,14 @@ public class Telebow extends PitEnchant {
 		cooldown.reduceCooldown(60);
 
 		if(cooldown.isOnCooldown()) {
-			Misc.sendActionBar(damageEvent.attacker, "&cTelebow Cooldown: " + cooldown.getTicksLeft() / 20 + "&c(s)");
+			Misc.sendActionBar(damageEvent.attacker, "&eTelebow: &c" + cooldown.getTicksLeft() / 20 + "&cs cooldown!");
 		} else {
-			Misc.sendActionBar(damageEvent.attacker, "&aTelebow Ready!");
+			Misc.sendActionBar(damageEvent.attacker, "&eTelebow: &aReady!");
 		}
 		return damageEvent;
 	}
+
+
 
 	@EventHandler
 	public void onBowShoot(EntityShootBowEvent event) {
@@ -58,14 +64,23 @@ public class Telebow extends PitEnchant {
 		if(enchantLvl == 0 || !player.isSneaking()) return;
 
 
+		new BukkitRunnable() {
+			@Override
+			public void run() {
+				for(int i = 0; i < teleShots.size(); i++) {
+					Arrow arrow = teleShots.get(i);
+					arrow.getWorld().playEffect(arrow.getLocation(), Effect.POTION_SWIRL, 0, 30);
+				}
 
+			}
+		}.runTaskTimer(PitRemake.INSTANCE, 0L, 3L);
 
 
 		Cooldown cooldown = getCooldown(player, getCooldown(enchantLvl) * 20);
 		if(cooldown.isOnCooldown()) {
 
 
-			if(player.isSneaking()) Misc.sendActionBar(player, "&cTelebow Cooldown: " + cooldown.getTicksLeft() / 20 + "&c(s)");
+			if(player.isSneaking()) Misc.sendActionBar(player, "&eTelebow: &c" + cooldown.getTicksLeft() / 20 + "&cs cooldown!");
 
 			return;
 		}
@@ -77,6 +92,7 @@ public class Telebow extends PitEnchant {
 
 
 
+
 	}
 
 	@EventHandler
@@ -84,25 +100,31 @@ public class Telebow extends PitEnchant {
 		if(!(event.getEntity() instanceof Arrow) || !(event.getEntity().getShooter() instanceof Player)) return;
 		Player player = (Player) event.getEntity().getShooter();
 
-		for(Arrow teleShot : teleShots) {
-			if(teleShot.equals(event.getEntity())) {
+		if(teleShots.size() == 0) return;
+try {
+	for(Arrow teleShot : teleShots) {
+		if(teleShot.equals(event.getEntity())) {
 
-				Arrow teleArrow = (Arrow) event.getEntity();
-				if(teleArrow.equals(teleShot)) {
+			Arrow teleArrow = (Arrow) event.getEntity();
+			if(teleArrow.equals(teleShot)) {
 
-					Location teleportLoc = teleArrow.getLocation().clone();
-					teleportLoc.setYaw(-teleArrow.getLocation().getYaw());
-					teleportLoc.setPitch(-teleArrow.getLocation().getPitch());
+				Location teleportLoc = teleArrow.getLocation().clone();
+				teleportLoc.setYaw(-teleArrow.getLocation().getYaw());
+				teleportLoc.setPitch(-teleArrow.getLocation().getPitch());
 
-					player.teleport(teleportLoc);
-					player.getWorld().playSound(teleArrow.getLocation(), Sound.ENDERMAN_TELEPORT, 1f, 2f);
+				player.teleport(teleportLoc);
+				player.getWorld().playSound(teleArrow.getLocation(), Sound.ENDERMAN_TELEPORT, 1f, 2f);
 
-					teleShot.remove();
-				}
+				teleShot.remove();
+				teleShots.remove(teleShot);
 			}
-
 		}
 
+	}
+
+		}catch(Exception e) {
+
+			}
 
 	}
 
