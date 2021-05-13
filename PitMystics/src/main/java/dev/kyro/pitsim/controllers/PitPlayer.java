@@ -1,5 +1,8 @@
 package dev.kyro.pitsim.controllers;
 
+import dev.kyro.pitsim.controllers.killstreaks.Killstreak;
+import dev.kyro.pitsim.controllers.killstreaks.Megastreak;
+import dev.kyro.pitsim.killstreaks.Overdrive;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
@@ -12,8 +15,9 @@ public class PitPlayer {
 
 	public Player player;
 
-	public int killstreak = 0;
-	public Megastreak megastreak;
+	public int kills = 0;
+	public List<Killstreak> killstreaks = new ArrayList<>();
+	public Megastreak megastreak = new Overdrive();
 
 	public HashMap<PitEnchant, Integer> enchantHits = new HashMap<>();
 
@@ -39,15 +43,26 @@ public class PitPlayer {
 		return pitPlayer;
 	}
 
-	public void incrementKillstreak() {
-
-		killstreak++;
-		if(killstreak == megastreak.requiredKills) megastreak.onMega();
+	public void endKillstreak() {
+		kills = 0;
+		megastreak.reset();
 	}
 
-	public void setKillstreak(int killstreak) {
+	public void incrementKillstreak() {
 
-		this.killstreak = killstreak;
-		if(killstreak >= megastreak.requiredKills) megastreak.onMega();
+		kills++;
+		if(kills == megastreak.requiredKills) megastreak.proc();
+		for(Killstreak killstreak : killstreaks) {
+			if(kills == 0 || kills % killstreak.killInterval != 0) continue;
+			killstreak.proc();
+		}
+	}
+
+	public void setKills(int kills) {
+
+		kills = Math.max(kills, 0);
+		endKillstreak();
+
+		for(int i = 0; i < kills; i++) incrementKillstreak();
 	}
 }

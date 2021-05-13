@@ -1,20 +1,21 @@
 package dev.kyro.pitsim.killstreaks;
 
-import dev.kyro.pitsim.controllers.Megastreak;
+import dev.kyro.pitsim.controllers.killstreaks.Megastreak;
 
 public class Overdrive extends Megastreak {
 
-	public Overdrive(String name, String prefix, String... refNames) {
+	public Overdrive() {
 		super("&c&lOVERDRIVE", "&c&lOVRDRV", 5);
 	}
 
 	@Override
-	public void onMega() {
+	public void proc() {
+
 
 	}
 
 	@Override
-	public void onDeath() {
+	public void reset() {
 
 	}
 }

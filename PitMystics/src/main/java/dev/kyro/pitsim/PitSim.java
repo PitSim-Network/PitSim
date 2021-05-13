@@ -5,10 +5,7 @@ import dev.kyro.pitsim.commands.ATestCommand;
 import dev.kyro.pitsim.commands.EnchantCommand;
 import dev.kyro.pitsim.commands.FreshCommand;
 import dev.kyro.pitsim.commands.NonCommand;
-import dev.kyro.pitsim.controllers.CooldownManager;
-import dev.kyro.pitsim.controllers.DamageManager;
-import dev.kyro.pitsim.controllers.EnchantManager;
-import dev.kyro.pitsim.controllers.PitEnchant;
+import dev.kyro.pitsim.controllers.*;
 import dev.kyro.pitsim.nons.Non;
 import dev.kyro.pitsim.nons.NonManager;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -106,6 +103,7 @@ public class PitSim extends JavaPlugin {
 
 		getServer().getPluginManager().registerEvents(new DamageManager(), this);
 		getServer().getPluginManager().registerEvents(new NonManager(), this);
+		getServer().getPluginManager().registerEvents(new PlayerManager(), this);
 	}
 
 	private void loadConfig() {

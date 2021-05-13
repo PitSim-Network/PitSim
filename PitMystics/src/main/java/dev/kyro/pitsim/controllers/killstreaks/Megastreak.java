@@ -1,4 +1,4 @@
-package dev.kyro.pitsim.controllers;
+package dev.kyro.pitsim.controllers.killstreaks;
 
 import java.util.Arrays;
 import java.util.List;
@@ -17,6 +17,6 @@ public abstract class Megastreak {
 		this.refNames = Arrays.asList(refNames);
 	}
 
-	public abstract void onMega();
-	public abstract void onDeath();
+	public abstract void proc();
+	public abstract void reset();
 }

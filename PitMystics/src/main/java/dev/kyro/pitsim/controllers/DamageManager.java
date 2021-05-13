@@ -183,6 +183,7 @@ public class DamageManager implements Listener {
 				double finalHealth = damageEvent.attacker.getHealth() - damageEvent.selfTrueDamage;
 				if(finalHealth <= 0) {
 					kill(damageEvent.attacker, damageEvent.defender, false);
+					return;
 				} else {
 					damageEvent.attacker.setHealth(Math.max(finalHealth, 0));
 					damageEvent.attacker.damage(0);
@@ -224,6 +225,9 @@ public class DamageManager implements Listener {
 		Non attackNon = NonManager.getNon(attacker);
 		if(attackNon != null) {
 			attackNon.rewardKill();
+		} else {
+			PitPlayer pitPlayer = PitPlayer.getPitPlayer(attacker);
+			pitPlayer.incrementKillstreak();
 		}
 	}
 }
