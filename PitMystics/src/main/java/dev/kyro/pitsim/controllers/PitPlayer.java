@@ -15,7 +15,7 @@ public class PitPlayer {
 
 	public Player player;
 
-	public int kills = 0;
+	private int kills = 0;
 	public List<Killstreak> killstreaks = new ArrayList<>();
 	public Megastreak megastreak = new Overdrive();
 
@@ -46,9 +46,10 @@ public class PitPlayer {
 	public void endKillstreak() {
 		kills = 0;
 		megastreak.reset();
+		killstreaks.forEach(Killstreak::reset);
 	}
 
-	public void incrementKillstreak() {
+	public void incrementKills() {
 
 		kills++;
 		if(kills == megastreak.requiredKills) megastreak.proc();
@@ -58,11 +59,15 @@ public class PitPlayer {
 		}
 	}
 
+	public int getKills() {
+		return kills;
+	}
+
 	public void setKills(int kills) {
 
 		kills = Math.max(kills, 0);
 		endKillstreak();
 
-		for(int i = 0; i < kills; i++) incrementKillstreak();
+		for(int i = 0; i < kills; i++) incrementKills();
 	}
 }

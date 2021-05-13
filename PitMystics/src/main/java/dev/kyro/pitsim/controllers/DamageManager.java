@@ -5,6 +5,7 @@ import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.enchants.PitBlob;
 import dev.kyro.pitsim.enchants.Regularity;
 import dev.kyro.pitsim.enums.ApplyType;
+import dev.kyro.pitsim.events.AttackEvent;
 import dev.kyro.pitsim.misc.Misc;
 import dev.kyro.pitsim.nons.Non;
 import dev.kyro.pitsim.nons.NonManager;
@@ -12,6 +13,7 @@ import dev.kyro.pitsim.nons.NonTrait;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Arrow;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Slime;
 import org.bukkit.event.EventHandler;
@@ -61,8 +63,137 @@ public class DamageManager implements Listener {
 		arrowMap.put(event, EnchantManager.getEnchantsOnPlayer(shooter));
 	}
 
-	@EventHandler(ignoreCancelled = true, priority = EventPriority.HIGH)
+	@EventHandler(ignoreCancelled = true)
 	public void onAttack(EntityDamageByEntityEvent event) {
+
+		if(!(event.getEntity() instanceof Player)) return;
+		Player attacker = getAttacker(event.getDamager());
+		Player defender = (Player) event.getEntity();
+
+		Map<PitEnchant, Integer> defenderEnchantMap = EnchantManager.getEnchantsOnPlayer(defender);
+		boolean fakeHit = false;
+
+		Non attackingNon = NonManager.getNon(attacker);
+		Non defendingNon = NonManager.getNon(defender);
+//		Hit on non or by non
+//		TODO: wadafrick how does this reg cooldown work
+		if((attackingNon != null && nonHitCooldownList.contains(defender)) ||
+				(attackingNon == null && defendingNon != null && hitCooldownList.contains(defender)) && !Regularity.toReg.contains(attacker.getUniqueId())) {
+			event.setCancelled(true);
+			return;
+		}
+//		Regular player to player hit
+		if(attackingNon == null && !Regularity.toReg.contains(attacker.getUniqueId())) {
+			fakeHit = fakeHitCooldownList.contains(defender);
+		}
+
+		Bukkit.broadcastMessage(fakeHit + "");
+		fakeHitCooldownList.add(defender); hitCooldownList.add(defender); nonHitCooldownList.add(defender);
+		new BukkitRunnable() {
+			int count = 0;
+			@Override
+			public void run() {
+				if(++count == 12) cancel();
+
+				if(count == 6) DamageManager.fakeHitCooldownList.remove(defender);
+				if(count == 10) DamageManager.hitCooldownList.remove(defender);
+				if(count == 12) DamageManager.nonHitCooldownList.remove(defender);
+			}
+		}.runTaskTimer(PitSim.INSTANCE, 0L, 1L);
+
+		AttackEvent.Pre preEvent = null;
+		if(event.getDamager() instanceof Player) {
+
+			preEvent = new AttackEvent.Pre(event, EnchantManager.getEnchantsOnPlayer((Player) event.getDamager()), defenderEnchantMap, fakeHit);
+		} else if(event.getDamager() instanceof Arrow) {
+
+			for(Map.Entry<EntityShootBowEvent, Map<PitEnchant, Integer>> entry : arrowMap.entrySet()) {
+
+				if(!entry.getKey().getProjectile().equals(event.getDamager())) continue;
+				preEvent = new AttackEvent.Pre(event, arrowMap.get(entry.getKey()), defenderEnchantMap, fakeHit);
+			}
+		} else if(event.getDamager() instanceof Slime) {
+
+			attacker = PitBlob.getOwner((Slime) event.getDamager());
+			if(attacker == null) return;
+		}
+		if(preEvent == null) return;
+
+		Bukkit.getServer().getPluginManager().callEvent(preEvent);
+		if(preEvent.isCancelled()) return;
+		AttackEvent.Apply applyEvent = new AttackEvent.Apply(preEvent);
+		Bukkit.getServer().getPluginManager().callEvent(applyEvent);
+
+//		TODO: Handle attack
+
+		Bukkit.getServer().getPluginManager().callEvent(new AttackEvent.Post(applyEvent));
+	}
+
+	@EventHandler(priority = EventPriority.MONITOR)
+	public static void handleAttack(AttackEvent.Apply attackEvent) {
+
+//		AOutput.send(attackEvent.attacker, "Initial Damage: " + attackEvent.event.getDamage());
+
+//		if(attackEvent.slime == null) {
+		for(PitEnchant pitEnchant : EnchantManager.pitEnchants) {
+//				Skip if fake hit and enchant doesn't handle fake hits
+			if(!pitEnchant.fakeHits && attackEvent.fakeHit) continue;
+//				Skip enchant application if the enchant is a bow enchant and is used in mele
+			if(pitEnchant.applyType == ApplyType.BOWS && attackEvent.arrow == null) continue;
+//				Skips enchant application if the enchant only works on mele hit and the event is from an arrow
+			if(pitEnchant.meleOnly && attackEvent.arrow != null) continue;
+
+//				pitEnchant.onDamage(attackEvent);
+		}
+
+		double damage = attackEvent.getFinalDamage();
+
+		attackEvent.event.setDamage(damage);
+
+		if(attackEvent.trueDamage != 0) {
+			double finalHealth = attackEvent.defender.getHealth() - attackEvent.trueDamage;
+			if(finalHealth <= 0) {
+				kill(attackEvent.attacker, attackEvent.defender, false);
+			} else {
+				attackEvent.defender.setHealth(Math.max(finalHealth, 0));
+			}
+		}
+
+		if(attackEvent.selfTrueDamage != 0) {
+			double finalHealth = attackEvent.attacker.getHealth() - attackEvent.selfTrueDamage;
+			if(finalHealth <= 0) {
+				kill(attackEvent.attacker, attackEvent.defender, false);
+				return;
+			} else {
+				attackEvent.attacker.setHealth(Math.max(finalHealth, 0));
+				attackEvent.attacker.damage(0);
+			}
+		}
+//		}
+
+//		AOutput.send(attackEvent.attacker, "Final Damage: " + attackEvent.event.getDamage());
+
+		if(attackEvent.event.getFinalDamage() >= attackEvent.defender.getHealth()) {
+
+			attackEvent.event.setCancelled(true);
+			kill(attackEvent.attacker, attackEvent.defender, false);
+		} else if(attackEvent.event.getFinalDamage() + attackEvent.executeUnder >= attackEvent.defender.getHealth()) {
+
+			attackEvent.event.setCancelled(true);
+			kill(attackEvent.attacker, attackEvent.defender, true);
+		}
+	}
+
+	public static Player getAttacker(Entity damager) {
+
+		if(damager instanceof Player) return (Player) damager;
+		if(damager instanceof Arrow) return (Player) ((Arrow) damager).getShooter();
+
+		return null;
+	}
+
+//	@EventHandler(ignoreCancelled = true, priority = EventPriority.HIGH)
+	public void onDamage(EntityDamageByEntityEvent event) {
 
 		if(!(event.getEntity() instanceof Player) ||
 				(!(event.getDamager() instanceof Player) && !(event.getDamager() instanceof Arrow) && !(event.getDamager() instanceof Slime))) return;
@@ -99,23 +230,16 @@ public class DamageManager implements Listener {
 		fakeHitCooldownList.add(defender);
 		nonHitCooldownList.add(defender);
 		new BukkitRunnable() {
+			int count = 0;
 			@Override
 			public void run() {
-				DamageManager.hitCooldownList.remove(defender);
+				if(++count == 12) cancel();
+
+				if(count == 6) DamageManager.fakeHitCooldownList.remove(defender);
+				if(count == 10) DamageManager.hitCooldownList.remove(defender);
+				if(count == 12) DamageManager.nonHitCooldownList.remove(defender);
 			}
-		}.runTaskLater(PitSim.INSTANCE, 10L);
-		new BukkitRunnable() {
-			@Override
-			public void run() {
-				DamageManager.fakeHitCooldownList.remove(defender);
-			}
-		}.runTaskLater(PitSim.INSTANCE, 6L);
-		new BukkitRunnable() {
-			@Override
-			public void run() {
-				DamageManager.nonHitCooldownList.remove(defender);
-			}
-		}.runTaskLater(PitSim.INSTANCE, 12L);
+		}.runTaskTimer(PitSim.INSTANCE, 0L, 1L);
 //		Vampire for nons
 		if(!fakeHit) {
 			int healing = 0;
@@ -227,7 +351,7 @@ public class DamageManager implements Listener {
 			attackNon.rewardKill();
 		} else {
 			PitPlayer pitPlayer = PitPlayer.getPitPlayer(attacker);
-			pitPlayer.incrementKillstreak();
+			pitPlayer.incrementKills();
 		}
 	}
 }

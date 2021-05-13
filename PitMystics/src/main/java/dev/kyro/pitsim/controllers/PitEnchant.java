@@ -27,7 +27,7 @@ public abstract class PitEnchant implements Listener {
 		this.applyType = applyType;
 	}
 
-	public abstract DamageEvent onDamage(DamageEvent damageEvent);
+	public DamageEvent onDamage(DamageEvent damageEvent) { return damageEvent; }
 	public abstract List<String> getDescription(int enchantLvl);
 
 	public void onDisable() {}
