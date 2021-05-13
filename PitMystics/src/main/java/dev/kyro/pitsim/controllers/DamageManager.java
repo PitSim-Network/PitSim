@@ -30,6 +30,7 @@ import java.util.Map;
 public class DamageManager implements Listener {
 
 	public static List<Player> hitCooldownList = new ArrayList<>();
+	public static List<Player> fakeHitCooldownList = new ArrayList<>();
 	public static List<Player> nonHitCooldownList = new ArrayList<>();
 	public static Map<EntityShootBowEvent, Map<PitEnchant, Integer>> arrowMap = new HashMap<>();
 
@@ -78,18 +79,25 @@ public class DamageManager implements Listener {
 		assert attacker != null;
 		Player defender = (Player) event.getEntity();
 
-		Non non = NonManager.getNon(attacker);
-		/*
-		Cancel if < 10 ticks and is a normal player attacking and < 12 ticks if non attacking. This is to give player hit priority
-		over the non when attempting to attack because for some reason the nons have like 40 cps.
-		 */
-		if((non == null && hitCooldownList.contains(defender) && !Regularity.toReg.contains(attacker.getUniqueId())) ||
-				(non != null && nonHitCooldownList.contains(defender))) {
+		Non attackingNon = NonManager.getNon(attacker);
+		Non defendingNon = NonManager.getNon(defender);
+		boolean fakeHit = false;
+
+//		Hit on non or by non
+		if((attackingNon != null && nonHitCooldownList.contains(defender)) ||
+				(attackingNon == null && defendingNon != null && hitCooldownList.contains(defender)) && !Regularity.toReg.contains(attacker.getUniqueId())) {
 			event.setCancelled(true);
 			return;
 		}
-		DamageManager.hitCooldownList.add(defender);
-		DamageManager.nonHitCooldownList.add(defender);
+//		Regular player to player hit
+		if(attackingNon == null && !Regularity.toReg.contains(attacker.getUniqueId())) {
+			fakeHit = fakeHitCooldownList.contains(defender);
+		}
+
+		Bukkit.broadcastMessage(fakeHit + "");
+		hitCooldownList.add(defender);
+		fakeHitCooldownList.add(defender);
+		nonHitCooldownList.add(defender);
 		new BukkitRunnable() {
 			@Override
 			public void run() {
@@ -99,13 +107,26 @@ public class DamageManager implements Listener {
 		new BukkitRunnable() {
 			@Override
 			public void run() {
+				DamageManager.fakeHitCooldownList.remove(defender);
+			}
+		}.runTaskLater(PitSim.INSTANCE, 6L);
+		new BukkitRunnable() {
+			@Override
+			public void run() {
 				DamageManager.nonHitCooldownList.remove(defender);
 			}
 		}.runTaskLater(PitSim.INSTANCE, 12L);
 //		Vampire for nons
-		attacker.setHealth(Math.min(attacker.getHealth() + 1, attacker.getMaxHealth()));
-		if(non != null) {
-			if(non.traits.contains(NonTrait.IRON_STREAKER)) {
+		if(!fakeHit) {
+			int healing = 0;
+			if(event.getDamager() instanceof Player) healing = 1;
+			else if(event.getDamager() instanceof Arrow) {
+				if(((Arrow) event.getDamager()).isCritical()) healing = 3;
+			}
+			attacker.setHealth(Math.min(attacker.getHealth() + healing, attacker.getMaxHealth()));
+		}
+		if(attackingNon != null) {
+			if(attackingNon.traits.contains(NonTrait.IRON_STREAKER)) {
 				event.setDamage(10.5);
 			} else {
 				event.setDamage(7);
@@ -115,17 +136,17 @@ public class DamageManager implements Listener {
 //		Applies enchants to an attack
 		if(event.getDamager() instanceof Player) {
 
-			handleAttack(new DamageEvent(event, EnchantManager.getEnchantsOnPlayer((Player) event.getDamager())));
+			handleAttack(new DamageEvent(event, EnchantManager.getEnchantsOnPlayer((Player) event.getDamager()), fakeHit));
 		} else if(event.getDamager() instanceof Arrow) {
 
 			for(Map.Entry<EntityShootBowEvent, Map<PitEnchant, Integer>> entry : arrowMap.entrySet()) {
 
 				if(!entry.getKey().getProjectile().equals(event.getDamager())) continue;
-				handleAttack(new DamageEvent(event, arrowMap.get(entry.getKey())));
+				handleAttack(new DamageEvent(event, arrowMap.get(entry.getKey()), fakeHit));
 			}
 		} else if(event.getDamager() instanceof Slime) {
 
-			handleAttack(new DamageEvent(event, EnchantManager.getEnchantsOnPlayer(attacker)));
+			handleAttack(new DamageEvent(event, EnchantManager.getEnchantsOnPlayer(attacker), fakeHit));
 		}
 	}
 
@@ -135,9 +156,11 @@ public class DamageManager implements Listener {
 
 		if(damageEvent.slime == null) {
 			for(PitEnchant pitEnchant : EnchantManager.pitEnchants) {
-//			Skip enchant application if the enchant is a bow enchant and is used in mele
+//				Skip if fake hit and enchant doesn't handle fake hits
+				if(!pitEnchant.fakeHits && damageEvent.fakeHit) continue;
+//				Skip enchant application if the enchant is a bow enchant and is used in mele
 				if(pitEnchant.applyType == ApplyType.BOWS && damageEvent.arrow == null) continue;
-//			Skips enchant application if the enchant only works on mele hit and the event is from an arrow
+//				Skips enchant application if the enchant only works on mele hit and the event is from an arrow
 				if(pitEnchant.meleOnly && damageEvent.arrow != null) continue;
 
 				pitEnchant.onDamage(damageEvent);

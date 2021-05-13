@@ -19,6 +19,7 @@ public class DamageEvent {
 	public Slime slime;
 	public Boolean hitByArrow;
 	private final Map<PitEnchant, Integer> attackerEnchantMap;
+	public boolean fakeHit;
 
 	public double increase = 0;
 	public double increasePercent = 0;
@@ -31,9 +32,10 @@ public class DamageEvent {
 
 	public double executeUnder = 0;
 
-	public DamageEvent(EntityDamageByEntityEvent event, Map<PitEnchant, Integer> attackerEnchantMap) {
+	public DamageEvent(EntityDamageByEntityEvent event, Map<PitEnchant, Integer> attackerEnchantMap, boolean fakeHit) {
 		this.event = event;
 		this.attackerEnchantMap = attackerEnchantMap;
+		this.fakeHit = fakeHit;
 
 		if(event.getDamager() instanceof Player) {
 			this.hitByArrow = false;
