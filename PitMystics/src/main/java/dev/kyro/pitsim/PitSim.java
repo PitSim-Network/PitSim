@@ -62,6 +62,8 @@ public class PitSim extends JavaPlugin {
 		EnchantManager.registerEnchant(new Crush());
 		EnchantManager.registerEnchant(new SpeedyHit());
 		EnchantManager.registerEnchant(new ComboSwift());
+		EnchantManager.registerEnchant(new DiamondStomp());
+		EnchantManager.registerEnchant(new BulletTime());
 //		After ComboHeal
 		EnchantManager.registerEnchant(new GoldAndBoosted());
 		EnchantManager.registerEnchant(new PainFocus());
@@ -77,6 +79,7 @@ public class PitSim extends JavaPlugin {
 		EnchantManager.registerEnchant(new SprintDrain());
 		EnchantManager.registerEnchant(new BottomlessQuiver());
 		EnchantManager.registerEnchant(new Parasite());
+		EnchantManager.registerEnchant(new LuckyShot());
 
 		EnchantManager.registerEnchant(new Solitude());
 		EnchantManager.registerEnchant(new DiamondAllergy());

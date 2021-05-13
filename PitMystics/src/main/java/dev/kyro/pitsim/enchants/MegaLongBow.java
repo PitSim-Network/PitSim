@@ -21,7 +21,7 @@ public class MegaLongBow extends PitEnchant {
 
 	public MegaLongBow() {
 		super("Mega Longbow", true, ApplyType.BOWS,
-				"megalongbow", "mega-longbow", "mlb");
+				"megalongbow", "mega-longbow", "mlb", "mega");
 	}
 
 	@Override
