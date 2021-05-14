@@ -14,8 +14,8 @@ import java.util.List;
 public class GoldenHeart extends PitEnchant {
 
 	public GoldenHeart() {
-		super("Combo: Heal", false, ApplyType.SWORDS,
-				"comboheal", "ch", "combo-heal", "cheal");
+		super("Golden Heart", false, ApplyType.SWORDS,
+				"goldenheart", "golden-heart", "gheart");
 	}
 
 	@EventHandler
