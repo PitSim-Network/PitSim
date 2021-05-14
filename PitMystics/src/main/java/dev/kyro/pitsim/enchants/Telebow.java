@@ -100,34 +100,26 @@ public class Telebow extends PitEnchant {
 		Player player = (Player) event.getEntity().getShooter();
 
 		if(teleShots.size() == 0) return;
-try {
-	for(Arrow teleShot : teleShots) {
-		if(teleShot.equals(event.getEntity())) {
+		try {
+			for(Arrow teleShot : teleShots) {
+				if(teleShot.equals(event.getEntity())) {
 
-			Arrow teleArrow = (Arrow) event.getEntity();
-			if(teleArrow.equals(teleShot)) {
+					Arrow teleArrow = (Arrow) event.getEntity();
+					if(teleArrow.equals(teleShot)) {
 
-				Location teleportLoc = teleArrow.getLocation().clone();
-				teleportLoc.setYaw(-teleArrow.getLocation().getYaw());
-				teleportLoc.setPitch(-teleArrow.getLocation().getPitch());
+						Location teleportLoc = teleArrow.getLocation().clone();
+						teleportLoc.setYaw(-teleArrow.getLocation().getYaw());
+						teleportLoc.setPitch(-teleArrow.getLocation().getPitch());
 
-				player.teleport(teleportLoc);
-				player.getWorld().playSound(teleArrow.getLocation(), Sound.ENDERMAN_TELEPORT, 1f, 2f);
+						player.teleport(teleportLoc);
+						player.getWorld().playSound(teleArrow.getLocation(), Sound.ENDERMAN_TELEPORT, 1f, 2f);
 
-				teleShots.remove(teleShot);
+						teleShots.remove(teleShot);
+					}
+				}
 			}
-		}
-
+		} catch(Exception ignored) {}
 	}
-
-		}catch(Exception e) {
-
-			}
-
-	}
-
-
-
 
 	@Override
 	public List<String> getDescription(int enchantLvl) {

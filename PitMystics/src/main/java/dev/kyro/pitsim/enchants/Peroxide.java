@@ -3,7 +3,6 @@ package dev.kyro.pitsim.enchants;
 import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.arcticapi.misc.AUtil;
 import dev.kyro.pitsim.controllers.Cooldown;
-import dev.kyro.pitsim.controllers.EnchantManager;
 import dev.kyro.pitsim.controllers.PitEnchant;
 import dev.kyro.pitsim.enums.ApplyType;
 import dev.kyro.pitsim.events.AttackEvent;
@@ -27,7 +26,7 @@ public class Peroxide extends PitEnchant {
 		int enchantLvl = attackEvent.getDefenderEnchantLevel(this);
 		if(enchantLvl == 0) return;
 
-		Cooldown cooldown = getCooldown(attackEvent.attacker, getCooldown(enchantLvl));
+		Cooldown cooldown = getCooldown(attackEvent.attacker, 51);
 		if(cooldown.isOnCooldown()) return; else cooldown.reset();
 
 		Misc.applyPotionEffect(attackEvent.defender, PotionEffectType.REGENERATION, getDuration(enchantLvl),
@@ -43,37 +42,12 @@ public class Peroxide extends PitEnchant {
 	}
 
 	public int getAmplifier(int enchantLvl) {
-		switch(enchantLvl) {
-			case 1:
-			case 2:
-				return 1;
-			case 3:
-				return 2;
-		}
-		return 0;
+
+		return Misc.linearEnchant(enchantLvl, 0.5, 1);
 	}
 
 	public int getDuration(int enchantLvl) {
-		switch(enchantLvl) {
-			case 1:
-				return 99;
-			case 2:
-				return 149;
-			case 3:
-				return 149;
-		}
-		return 0;
-	}
 
-	public int getCooldown(int enchantLvl) {
-		switch(enchantLvl) {
-			case 1:
-				return 51;
-			case 2:
-				return 51;
-			case 3:
-				return 51;
-		}
-		return 0;
+		return Misc.linearEnchant(enchantLvl, 0.5, 1.5) * 50 + 49;
 	}
 }

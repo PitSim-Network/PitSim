@@ -30,7 +30,7 @@ public class Crush extends PitEnchant {
 		Cooldown cooldown = getCooldown(attackEvent.attacker, 2 * 20);
 		if(cooldown.isOnCooldown()) return; else cooldown.reset();
 
-		Misc.applyPotionEffect(attackEvent.defender, PotionEffectType.WEAKNESS, (int) (getDuration(enchantLvl) * 20), enchantLvl + 3, true, false);
+		Misc.applyPotionEffect(attackEvent.defender, PotionEffectType.WEAKNESS, getDuration(enchantLvl), enchantLvl + 3, true, false);
 		attackEvent.attacker.playSound(attackEvent.attacker.getLocation(), Sound.GLASS, 1, 0.80F);
 		attackEvent.defender.playSound(attackEvent.defender.getLocation(), Sound.GLASS, 1, 0.80F);
 	}
@@ -38,24 +38,12 @@ public class Crush extends PitEnchant {
 	@Override
 	public List<String> getDescription(int enchantLvl) {
 
-		return new ALoreBuilder("&7Strikes apply &cWeakness " + AUtil.toRoman(enchantLvl + 4), "&7(lasts " + getDuration(enchantLvl) +
+		return new ALoreBuilder("&7Strikes apply &cWeakness " + AUtil.toRoman(enchantLvl + 4), "&7(lasts " + (getDuration(enchantLvl) / 20D) +
 				"s, 2s cooldown)").getLore();
 	}
 
-	//	TODO: Crush damage calculation
-	
-	public double getDuration(int enchantLvl) {
+	public int getDuration(int enchantLvl) {
 
-		switch(enchantLvl) {
-			case 1:
-				return 0.2;
-			case 2:
-				return 0.4;
-			case 3:
-				return 0.5;
-
-		}
-
-		return 0;
+		return (int) (Math.floor(Math.pow(enchantLvl, 0.7) * 2 + enchantLvl / 2D) * 2);
 	}
 }

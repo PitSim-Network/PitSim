@@ -29,7 +29,7 @@ public class SprintDrain extends PitEnchant {
 
 		Misc.applyPotionEffect(attackEvent.defender, PotionEffectType.SLOW, getSlowDuration(enchantLvl) * 20, 0, true, false);
 		Misc.applyPotionEffect(attackEvent.attacker, PotionEffectType.SPEED,
-				getSpeedDuration(enchantLvl) * 20, getSpeedModifier(enchantLvl) - 1, true, false);
+				getSpeedDuration(enchantLvl) * 20, getSpeedAmplifier(enchantLvl) - 1, true, false);
 	}
 
 	@Override
@@ -37,58 +37,27 @@ public class SprintDrain extends PitEnchant {
 
 
 		if(enchantLvl == 1) {
-			return new ALoreBuilder("&7Arrow shots grant you &eSpeed " + AUtil.toRoman(getSpeedModifier(enchantLvl)), "&7(" +
+			return new ALoreBuilder("&7Arrow shots grant you &eSpeed " + AUtil.toRoman(getSpeedAmplifier(enchantLvl)), "&7(" +
 					getSpeedDuration(enchantLvl) + "s)").getLore();
 		} else {
-			return new ALoreBuilder("&7Arrow shots grant you &eSpeed " + AUtil.toRoman(getSpeedModifier(enchantLvl)), "&7(" +
+			return new ALoreBuilder("&7Arrow shots grant you &eSpeed " + AUtil.toRoman(getSpeedAmplifier(enchantLvl)), "&7(" +
 					getSpeedDuration(enchantLvl) + "s) and apply &9Slowness I ", "&7(" + getSlowDuration(enchantLvl) + "s)").getLore();
 		}
 
 	}
 
-//	TODO: Sprint drain equations
 	public int getSlowDuration(int enchantLvl) {
 
-		switch(enchantLvl) {
-			case 1:
-				return 0;
-			case 2:
-				return 3;
-			case 3:
-				return 3;
-
-		}
-
-		return 0;
+		return Misc.linearEnchant(enchantLvl, 0.5, 0) * 3;
 	}
 
-	public int getSpeedModifier(int enchantLvl) {
+	public int getSpeedAmplifier(int enchantLvl) {
 
-		switch(enchantLvl) {
-			case 1:
-				return 1;
-			case 2:
-				return 1;
-			case 3:
-				return 2;
-
-		}
-
-		return 0;
+		return Misc.linearEnchant(enchantLvl, 0.5, 1);
 	}
 
 	public int getSpeedDuration(int enchantLvl) {
 
-		switch(enchantLvl) {
-			case 1:
-				return 3;
-			case 2:
-				return 5;
-			case 3:
-				return 7;
-
-		}
-
-		return 0;
+		return enchantLvl * 2 + 1;
 	}
 }

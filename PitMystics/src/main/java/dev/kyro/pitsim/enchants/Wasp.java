@@ -35,19 +35,8 @@ public class Wasp extends PitEnchant {
 				getDuration(enchantLvl) + "s) on hit").getLore();
 	}
 
-//	TODO: Wasp damage equation
 	public int getDuration(int enchantLvl) {
 
-		switch(enchantLvl) {
-			case 1:
-				return 6;
-			case 2:
-				return 11;
-			case 3:
-				return 16;
-
-		}
-
-		return 0;
+		return enchantLvl * 5 + 1;
 	}
 }

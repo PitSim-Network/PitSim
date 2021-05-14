@@ -4,6 +4,7 @@ import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.pitsim.controllers.PitEnchant;
 import dev.kyro.pitsim.enums.ApplyType;
 import dev.kyro.pitsim.events.AttackEvent;
+import dev.kyro.pitsim.misc.Misc;
 import org.bukkit.event.EventHandler;
 
 import java.util.List;
@@ -28,23 +29,11 @@ public class Parasite extends PitEnchant {
 	@Override
 	public List<String> getDescription(int enchantLvl) {
 
-		return new ALoreBuilder("&7Heal &c" + getHealing(enchantLvl) / 2 + "\u2764 &7on arrow hit").getLore();
+		return new ALoreBuilder("&7Heal &c" + Misc.getHearts(getHealing(enchantLvl)) + " &7on arrow hit").getLore();
 	}
 
-//	TODO: Fletching damage equation
 	public double getHealing(int enchantLvl) {
 
-
-		switch(enchantLvl) {
-			case 1:
-				return 0.5;
-			case 2:
-				return 1.0;
-			case 3:
-				return 2.0;
-
-		}
-
-		return 0.0;
+		return Math.floor(Math.pow(enchantLvl, 1.4)) * 0.5;
 	}
 }

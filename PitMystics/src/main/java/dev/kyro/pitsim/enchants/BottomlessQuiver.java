@@ -40,19 +40,8 @@ public class BottomlessQuiver extends PitEnchant {
 		else return new ALoreBuilder("&7Get &f" + getArrowAmount(enchantLvl) + " arrows &7on arrow hit").getLore();
 	}
 
-//	TODO: Bottomless quiver arrow equation
 	public int getArrowAmount(int enchantLvl) {
 
-		switch(enchantLvl) {
-			case 1:
-				return 1;
-			case 2:
-				return 3;
-			case 3:
-				return 8;
-
-		}
-
-		return 0;
+		return (int) (Math.pow(enchantLvl, 1.9));
 	}
 }

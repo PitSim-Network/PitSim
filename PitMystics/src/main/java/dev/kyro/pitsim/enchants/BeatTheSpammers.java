@@ -33,20 +33,8 @@ public class BeatTheSpammers extends PitEnchant {
 		return new ALoreBuilder("&7Deal &c+" + getDamage(enchantLvl) + "% &7damage vs. players", "&7holding a bow").getLore();
 	}
 
-	//	TODO: Beat The Spammers damage calculation
-
 	public int getDamage(int enchantLvl) {
 
-		switch(enchantLvl) {
-			case 1:
-				return 10;
-			case 2:
-				return 25;
-			case 3:
-				return 40;
-
-		}
-
-		return 0;
+		return (int) (Math.floor(Math.pow(enchantLvl, 1.6) + enchantLvl) * 5);
 	}
 }

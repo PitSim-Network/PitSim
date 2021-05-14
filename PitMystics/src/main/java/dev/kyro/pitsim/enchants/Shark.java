@@ -42,20 +42,8 @@ public class Shark extends PitEnchant {
 				"&7player below &c6\u2764 &7within 12", "&7blocks").getLore();
 	}
 
-	//	TODO: Sharp damage calculation
-	
 	public int getDamage(int enchantLvl) {
 
-		switch(enchantLvl) {
-			case 1:
-				return 2;
-			case 2:
-				return 4;
-			case 3:
-				return 7;
-
-		}
-
-		return 0;
+		return (int) (Math.pow(enchantLvl, 1.2)  * 2);
 	}
 }

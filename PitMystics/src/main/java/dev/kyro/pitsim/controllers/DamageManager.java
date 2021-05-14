@@ -76,7 +76,6 @@ public class DamageManager implements Listener {
 		Non attackingNon = NonManager.getNon(attacker);
 		Non defendingNon = NonManager.getNon(defender);
 //		Hit on non or by non
-//		TODO: wadafrick how does this reg cooldown work
 		if((attackingNon != null && nonHitCooldownList.contains(defender)) ||
 				(attackingNon == null && defendingNon != null && hitCooldownList.contains(defender)) && !Regularity.toReg.contains(defender.getUniqueId())) {
 			event.setCancelled(true);

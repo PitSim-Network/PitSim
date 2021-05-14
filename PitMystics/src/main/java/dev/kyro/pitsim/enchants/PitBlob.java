@@ -3,7 +3,6 @@ package dev.kyro.pitsim.enchants;
 import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.arcticapi.events.armor.AChangeEquipmentEvent;
 import dev.kyro.pitsim.PitSim;
-import dev.kyro.pitsim.controllers.DamageEvent;
 import dev.kyro.pitsim.controllers.DamageManager;
 import dev.kyro.pitsim.controllers.EnchantManager;
 import dev.kyro.pitsim.controllers.PitEnchant;
@@ -35,7 +34,7 @@ public class PitBlob extends PitEnchant {
 			@Override
 			public void run() {
 				for(Map.Entry<UUID, Slime> entry : blobMap.entrySet()) {
-					double damage = entry.getValue().getSize() - 1;
+					double damage = (entry.getValue().getSize() - 1) / 2D;
 					for(Entity entity : entry.getValue().getNearbyEntities(0, 0, 0)) {
 
 						if(!(entity instanceof Player)) continue;
@@ -124,9 +123,4 @@ public class PitBlob extends PitEnchant {
 		return new ALoreBuilder("&7Kills respawn &aThe Blob&7. This", "&7slimy pet will follow you around",
 				"&7and kill your enemies. &aThe Blob", "&7grows and gains health for every", "&7enemy you kill.").getLore();
 	}
-
-//	public double getDamageReduction(int enchantLvl) {
-//
-//		return (int) Math.floor(Math.pow(enchantLvl, 1.3) * 2) + 2;
-//	}
 }

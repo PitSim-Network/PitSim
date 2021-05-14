@@ -40,20 +40,8 @@ public class DiamondStomp extends PitEnchant {
 				"&7wearing diamond armor").getLore();
 	}
 
-	//	TODO: Sharp damage calculation
-	
 	public int getDamage(int enchantLvl) {
 
-		switch(enchantLvl) {
-			case 1:
-				return 6;
-			case 2:
-				return 12;
-			case 3:
-				return 25;
-
-		}
-
-		return 0;
+		return (int) (Math.pow(enchantLvl, 2.15) * 2 + 4);
 	}
 }

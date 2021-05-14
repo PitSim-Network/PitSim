@@ -46,15 +46,6 @@ public class Healer extends PitEnchant {
 
 	public double getHealing(int enchantLvl) {
 
-		switch(enchantLvl) {
-			case 1:
-				return 4;
-			case 2:
-				return 8;
-			case 3:
-				return 10;
-		}
-
-		return 0;
+		return (int) (Math.floor(Math.pow(enchantLvl, 0.7) * 2 + enchantLvl / 2D) * 2);
 	}
 }

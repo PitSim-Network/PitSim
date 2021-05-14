@@ -37,20 +37,8 @@ public class RingArmor extends PitEnchant {
 		return (100D - getDamageReduction(enchantLvl)) / 100;
 	}
 
-//	TODO: Ring Armor damage reduction equation
-
 	public int getDamageReduction(int enchantLvl) {
 
-		switch(enchantLvl) {
-			case 1:
-				return 20;
-			case 2:
-				return 40;
-			case 3:
-				return 60;
-
-		}
-
-		return 0;
+		return enchantLvl * 20;
 	}
 }

@@ -43,33 +43,13 @@ public class ComboSwift extends PitEnchant {
 
 	}
 
-	//	TODO: Sharp damage calculation
 	public int getSpeedAmplifier(int enchantLvl) {
 
-		switch(enchantLvl) {
-			case 1:
-				return 1;
-			case 2:
-			case 3:
-				return 2;
-
-		}
-
-		return 0;
+		return Misc.linearEnchant(enchantLvl, 0.5, 1);
 	}
 
 	public int getCombo(int enchantLvl) {
 
-		switch(enchantLvl) {
-			case 1:
-				return 4;
-			case 2:
-				return 3;
-			case 3:
-				return 3;
-
-		}
-
-		return 0;
+		return Math.max(Misc.linearEnchant(enchantLvl, -0.5, 4.5), 1);
 	}
 }

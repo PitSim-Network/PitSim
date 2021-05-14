@@ -44,16 +44,6 @@ public class LastStand extends PitEnchant {
 	}
 
 	public int getSeconds(int enchantLvl) {
-		switch(enchantLvl) {
-			case 1:
-				return 3;
-			case 2:
-				return 4;
-			case 3:
-				return 4;
-
-		}
-
-		return 0;
+		return Misc.linearEnchant(enchantLvl, 0.5, 3);
 	}
 }

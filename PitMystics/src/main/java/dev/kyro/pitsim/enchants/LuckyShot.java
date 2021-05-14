@@ -58,7 +58,7 @@ public class LuckyShot extends PitEnchant {
 		int enchantLvl = EnchantManager.getEnchantLevel(((Player) event.getEntity()).getPlayer(), this);
 
 		double chanceCalculation = Math.random();
-		double enchantChance = getChance(enchantLvl) * 0.01;
+		double enchantChance = getChance(enchantLvl) / 100D;
 
 		if(chanceCalculation <= enchantChance) {
 			luckyShots.add((Arrow) event.getProjectile());
@@ -95,16 +95,10 @@ public class LuckyShot extends PitEnchant {
 
 							}
 						}.runTaskLater(PitSim.INSTANCE, 1L);
-
 					}
 				}
-
 			}
-
-		}catch(Exception e) {
-
-		}
-
+		}catch(Exception ignored) {}
 	}
 
 	@Override
@@ -114,20 +108,8 @@ public class LuckyShot extends PitEnchant {
 				"&7quadruple damage").getLore();
 	}
 
-//	TODO: Lucky Shot damage equation
 	public int getChance(int enchantLvl) {
 
-		switch(enchantLvl) {
-			case 1:
-				return 2;
-			case 2:
-				return 5;
-			case 3:
-				return 10;
-			case 20:
-				return 100;
-		}
-
-		return 0;
+		return Math.min((int) (Math.pow(enchantLvl, 1.5) * 2), 100);
 	}
 }

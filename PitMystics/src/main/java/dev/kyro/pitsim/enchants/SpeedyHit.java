@@ -38,34 +38,13 @@ public class SpeedyHit extends PitEnchant {
 				getCooldown(enchantLvl) + "s", "&7cooldown)").getLore();
 	}
 
-	//	TODO: Sharp damage calculation
 	public int getDuration(int enchantLvl) {
 
-		switch(enchantLvl) {
-			case 1:
-				return 5;
-			case 2:
-				return 7;
-			case 3:
-				return 9;
-
-		}
-
-		return 0;
+		return enchantLvl * 2 + 3;
 	}
 
 	public int getCooldown(int enchantLvl) {
 
-		switch(enchantLvl) {
-			case 1:
-				return 3;
-			case 2:
-				return 2;
-			case 3:
-				return 1;
-
-		}
-
-		return 0;
+		return Math.max(4 - enchantLvl, 1);
 	}
 }

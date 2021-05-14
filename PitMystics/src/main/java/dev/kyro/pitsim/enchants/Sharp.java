@@ -31,20 +31,8 @@ public class Sharp extends PitEnchant {
 		return new ALoreBuilder("&7Deal &c+" + getDamage(enchantLvl) + "% &7melee damage").getLore();
 	}
 
-	//	TODO: Sharp damage calculation
-	
 	public int getDamage(int enchantLvl) {
 
-		switch(enchantLvl) {
-			case 1:
-				return 4;
-			case 2:
-				return 7;
-			case 3:
-				return 12;
-
-		}
-
-		return 0;
+		return (int) (Math.pow(enchantLvl, 1.2) * 3 + 1);
 	}
 }

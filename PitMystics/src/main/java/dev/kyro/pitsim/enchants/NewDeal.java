@@ -44,17 +44,7 @@ public class NewDeal extends PitEnchant {
 	}
 
 	public double getDamageReduction(int enchantLvl) {
-		switch(enchantLvl) {
-			case 1:
-				return 0;
-			case 2:
-				return 4;
-			case 3:
-				return 8;
 
-		}
-
-		return 0;
-
+		return (enchantLvl - 1) * 4;
 	}
 }

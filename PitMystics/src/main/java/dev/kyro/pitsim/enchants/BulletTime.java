@@ -1,10 +1,10 @@
 package dev.kyro.pitsim.enchants;
 
 import dev.kyro.arcticapi.builders.ALoreBuilder;
-import dev.kyro.pitsim.controllers.EnchantManager;
 import dev.kyro.pitsim.controllers.PitEnchant;
 import dev.kyro.pitsim.enums.ApplyType;
 import dev.kyro.pitsim.events.AttackEvent;
+import dev.kyro.pitsim.misc.Misc;
 import org.bukkit.Effect;
 import org.bukkit.Sound;
 import org.bukkit.event.EventHandler;
@@ -23,11 +23,7 @@ public class BulletTime extends PitEnchant {
 		if(!canAttack(attackEvent)) return;
 
 		int enchantLvl = attackEvent.getDefenderEnchantLevel(this);
-		if(enchantLvl == 0) return;
-
-		if(attackEvent.arrow == null) return;
-
-		if(!(attackEvent.defender.isBlocking())) return;
+		if(enchantLvl == 0 || attackEvent.arrow == null || !(attackEvent.defender.isBlocking())) return;
 
 		attackEvent.defender.getWorld().playSound(attackEvent.defender.getLocation(), Sound.FIZZ, 1f, 1.5f);
 		attackEvent.arrow.getWorld().playEffect(attackEvent.arrow.getLocation(), Effect.EXPLOSION, 0, 30);
@@ -45,22 +41,12 @@ public class BulletTime extends PitEnchant {
 			return new ALoreBuilder("&7Blocking destroys arrows that hit", "&7you").getLore();
 		} else {
 			return new ALoreBuilder("&7Blocking destroys arrows that hit", "&7you. Destroying arrows this way",
-					"&7heals &c" + (double) getHealing(enchantLvl)/2 + "&c\u2764").getLore();
+					"&7heals &c" + Misc.getHearts(getHealing(enchantLvl))).getLore();
 		}
 	}
 	
 	public int getHealing(int enchantLvl) {
 
-		switch(enchantLvl) {
-			case 1:
-				return 0;
-			case 2:
-				return 2;
-			case 3:
-				return 3;
-
-		}
-
-		return 0;
+		return (int) (Math.pow(enchantLvl, 0.75) * 3 - 3);
 	}
 }

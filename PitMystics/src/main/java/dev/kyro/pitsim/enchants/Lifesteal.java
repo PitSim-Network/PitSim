@@ -24,13 +24,10 @@ public class Lifesteal extends PitEnchant {
 
 		double damage = attackEvent.getFinalDamage();
 
-//		Bukkit.broadcastMessage(String.valueOf(damage));
-//		Bukkit.broadcastMessage(String.valueOf(damage * getHealing(enchantLvl)));
-
-		if(attackEvent.attacker.getHealth() > attackEvent.attacker.getMaxHealth() - damage * getHealing(enchantLvl)) {
+		if(attackEvent.attacker.getHealth() > attackEvent.attacker.getMaxHealth() - damage * (getHealing(enchantLvl) / 100D)) {
 			attackEvent.attacker.setHealth(attackEvent.attacker.getMaxHealth());
 		} else {
-			attackEvent.attacker.setHealth(attackEvent.attacker.getHealth() + damage * getHealing(enchantLvl));
+			attackEvent.attacker.setHealth(attackEvent.attacker.getHealth() + damage * (getHealing(enchantLvl) / 100D));
 		}
 
 	}
@@ -43,16 +40,6 @@ public class Lifesteal extends PitEnchant {
 
 	public double getHealing(int enchantLvl) {
 
-		switch(enchantLvl) {
-			case 1:
-				return 0.04;
-			case 2:
-				return 0.08;
-			case 3:
-				return 0.13;
-
-		}
-
-		return 0;
+		return (int) (Math.pow(enchantLvl, 1.1) * 4);
 	}
 }

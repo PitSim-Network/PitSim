@@ -31,20 +31,8 @@ public class Fletching extends PitEnchant {
 		return new ALoreBuilder("&7Deal &c+" + getDamage(enchantLvl) + " &7bow damage").getLore();
 	}
 
-//	TODO: Fletching damage equation
 	public int getDamage(int enchantLvl) {
 
-		switch(enchantLvl) {
-			case 1:
-				return 7;
-			case 2:
-				return 12;
-			case 3:
-				return 20;
-			case 20:
-				return 100;
-		}
-
-		return 0;
+		return (int) (Math.pow(enchantLvl, 1.32) * 4 + 3);
 	}
 }
