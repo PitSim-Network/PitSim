@@ -27,6 +27,7 @@ public class MegaLongBow extends PitEnchant {
 
 	@EventHandler
 	public void onAttack(AttackEvent.Apply attackEvent) {
+		if(!canAttack(attackEvent)) return;
 	}
 
 	@EventHandler

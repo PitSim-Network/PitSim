@@ -28,6 +28,7 @@ public class Regularity extends PitEnchant {
 
 	@EventHandler
 	public void onAttack(AttackEvent.Apply attackEvent) {
+		if(!canAttack(attackEvent)) return;
 
 		if(toReg.contains(attackEvent.attacker.getUniqueId())) return;
 

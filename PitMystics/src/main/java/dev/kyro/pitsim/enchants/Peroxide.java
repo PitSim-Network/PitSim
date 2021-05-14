@@ -1,6 +1,7 @@
 package dev.kyro.pitsim.enchants;
 
 import dev.kyro.arcticapi.builders.ALoreBuilder;
+import dev.kyro.arcticapi.misc.AUtil;
 import dev.kyro.pitsim.controllers.Cooldown;
 import dev.kyro.pitsim.controllers.EnchantManager;
 import dev.kyro.pitsim.controllers.PitEnchant;
@@ -21,7 +22,8 @@ public class Peroxide extends PitEnchant {
 
 	@EventHandler
 	public void onAttack(AttackEvent.Apply attackEvent	) {
-
+		if(!canAttack(attackEvent)) return;
+		
 		int enchantLvl = EnchantManager.getEnchantLevel(attackEvent.defender, this);
 		if(enchantLvl == 0) return;
 
@@ -36,7 +38,8 @@ public class Peroxide extends PitEnchant {
 	@Override
 	public List<String> getDescription(int enchantLvl) {
 
-		return new ALoreBuilder("&7Receive &9-" + Misc.roundString(getAmplifier(enchantLvl)) + "% &7damage").getLore();
+		return new ALoreBuilder("&7Gain &cRegen " + AUtil.toRoman(getAmplifier(enchantLvl)) + " &7(" +
+				getDuration(enchantLvl) + "&7s) when hit").getLore();
 	}
 
 	public int getAmplifier(int enchantLvl) {

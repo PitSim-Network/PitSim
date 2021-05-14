@@ -21,6 +21,7 @@ public class PushComesToShove extends PitEnchant {
 
 	@EventHandler
 	public void onAttack(AttackEvent.Apply attackEvent) {
+		if(!canAttack(attackEvent)) return;
 
 		if(attackEvent.arrow == null) return;
 		int enchantLvl = attackEvent.getEnchantLevel(this);
