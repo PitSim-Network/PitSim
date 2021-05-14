@@ -2,7 +2,6 @@ package dev.kyro.pitsim.enchants;
 
 import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.pitsim.PitSim;
-import dev.kyro.pitsim.controllers.DamageEvent;
 import dev.kyro.pitsim.controllers.PitEnchant;
 import dev.kyro.pitsim.enums.ApplyType;
 import dev.kyro.pitsim.events.AttackEvent;
@@ -28,8 +27,9 @@ public class Regularity extends PitEnchant {
 
 	@EventHandler
 	public void onAttack(AttackEvent.Apply attackEvent) {
+		if(!canAttack(attackEvent)) return;
 
-		if(toReg.contains(attackEvent.attacker.getUniqueId())) return;
+		if(toReg.contains(attackEvent.defender.getUniqueId())) return;
 
 		int enchantLvl = attackEvent.getEnchantLevel(this);
 		if(enchantLvl == 0) return;
@@ -37,11 +37,13 @@ public class Regularity extends PitEnchant {
 		double finalDamage = attackEvent.event.getFinalDamage();
 		if(finalDamage >= 3) return;
 
-		toReg.add(attackEvent.attacker.getUniqueId());
+		toReg.add(attackEvent.defender.getUniqueId());
 
 		new BukkitRunnable() {
 			@Override
 			public void run() {
+
+				if(!toReg.contains(attackEvent.defender.getUniqueId())) return;
 
 				double damage = attackEvent.event.getOriginalDamage(EntityDamageEvent.DamageModifier.BASE);
 				attackEvent.defender.setNoDamageTicks(0);
@@ -53,7 +55,7 @@ public class Regularity extends PitEnchant {
 			@Override
 			public void run() {
 
-				toReg.remove(attackEvent.attacker.getUniqueId());
+				toReg.remove(attackEvent.defender.getUniqueId());
 			}
 		}.runTaskLater(PitSim.INSTANCE, 4L);
 	}

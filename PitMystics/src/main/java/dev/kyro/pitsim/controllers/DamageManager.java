@@ -10,7 +10,9 @@ import dev.kyro.pitsim.misc.Misc;
 import dev.kyro.pitsim.nons.Non;
 import dev.kyro.pitsim.nons.NonManager;
 import org.bukkit.Bukkit;
+import org.bukkit.EntityEffect;
 import org.bukkit.Location;
+import org.bukkit.Sound;
 import org.bukkit.entity.Arrow;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
@@ -76,12 +78,13 @@ public class DamageManager implements Listener {
 //		Hit on non or by non
 //		TODO: wadafrick how does this reg cooldown work
 		if((attackingNon != null && nonHitCooldownList.contains(defender)) ||
-				(attackingNon == null && defendingNon != null && hitCooldownList.contains(defender)) && !Regularity.toReg.contains(attacker.getUniqueId())) {
+				(attackingNon == null && defendingNon != null && hitCooldownList.contains(defender)) && !Regularity.toReg.contains(defender.getUniqueId())) {
 			event.setCancelled(true);
 			return;
 		}
 //		Regular player to player hit
-		if(attackingNon == null && !Regularity.toReg.contains(attacker.getUniqueId())) {
+		Bukkit.broadcastMessage(Regularity.toReg.contains(defender.getUniqueId()) + "");
+		if(attackingNon == null && !Regularity.toReg.contains(defender.getUniqueId())) {
 			fakeHit = hitCooldownList.contains(defender);
 		}
 
@@ -152,7 +155,9 @@ public class DamageManager implements Listener {
 		if(attackEvent.trueDamage != 0) {
 			double finalHealth = attackEvent.defender.getHealth() - attackEvent.trueDamage;
 			if(finalHealth <= 0) {
+				attackEvent.event.setCancelled(true);
 				kill(attackEvent.attacker, attackEvent.defender, false);
+				return;
 			} else {
 				attackEvent.defender.setHealth(Math.max(finalHealth, 0));
 			}
@@ -161,6 +166,7 @@ public class DamageManager implements Listener {
 		if(attackEvent.selfTrueDamage != 0) {
 			double finalHealth = attackEvent.attacker.getHealth() - attackEvent.selfTrueDamage;
 			if(finalHealth <= 0) {
+				attackEvent.event.setCancelled(true);
 				kill(attackEvent.attacker, attackEvent.defender, false);
 				return;
 			} else {
@@ -199,6 +205,10 @@ public class DamageManager implements Listener {
 		Location spawnLoc = new Location(Bukkit.getWorld("pit"), -107.5, 111, 193.5, 45, 0);
 
 		dead.setHealth(dead.getMaxHealth());
+		dead.playEffect(EntityEffect.HURT);
+		dead.playSound(dead.getLocation(), Sound.FALL_BIG, 1000, 1F);
+		dead.playSound(dead.getLocation(), Sound.FALL_BIG, 1000, 1F);
+		Regularity.toReg.remove(dead.getUniqueId());
 
 		DecimalFormat df = new DecimalFormat("##0.00");
 		AOutput.send(attacker, "&a&lKILL!&7 on &b" + dead.getName() + " &b+" + "5" + "XP" + " &6+" + df.format(5) + "g");
