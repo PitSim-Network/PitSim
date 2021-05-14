@@ -17,12 +17,13 @@ public class PitPlayer {
 
 	private int kills = 0;
 	public List<Killstreak> killstreaks = new ArrayList<>();
-	public Megastreak megastreak = new Overdrive();
+	public Megastreak megastreak;
 
 	public HashMap<PitEnchant, Integer> enchantHits = new HashMap<>();
 
 	private PitPlayer(Player player) {
 		this.player = player;
+		this.megastreak = new Overdrive(this);
 	}
 
 	public static PitPlayer getPitPlayer(Player player) {
@@ -52,11 +53,12 @@ public class PitPlayer {
 	public void incrementKills() {
 
 		kills++;
-		if(kills == megastreak.requiredKills) megastreak.proc();
+		if(kills == megastreak.getRequiredKills()) megastreak.proc();
 		for(Killstreak killstreak : killstreaks) {
 			if(kills == 0 || kills % killstreak.killInterval != 0) continue;
 			killstreak.proc();
 		}
+		megastreak.kill();
 	}
 
 	public int getKills() {
