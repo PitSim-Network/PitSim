@@ -18,7 +18,7 @@ public class RingArmor extends PitEnchant {
 	}
 
 	@EventHandler
-	public void onDamage(AttackEvent.Apply attackEvent) {
+	public void onAttack(AttackEvent.Apply attackEvent) {
 
 		int enchantLvl = EnchantManager.getEnchantLevel(attackEvent.defender, this);
 		if(enchantLvl == 0) return;

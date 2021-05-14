@@ -1,6 +1,7 @@
 package dev.kyro.pitsim.controllers;
 
 import dev.kyro.pitsim.enums.ApplyType;
+import dev.kyro.pitsim.events.AttackEvent;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
@@ -27,9 +28,8 @@ public abstract class PitEnchant implements Listener {
 		this.applyType = applyType;
 	}
 
-	public DamageEvent onDamage(DamageEvent damageEvent) { return damageEvent; }
+	public DamageEvent onAttack(DamageEvent damageEvent) { return damageEvent; }
 	public abstract List<String> getDescription(int enchantLvl);
-
 	public void onDisable() {}
 
 	public Cooldown getCooldown(Player player, int time) {

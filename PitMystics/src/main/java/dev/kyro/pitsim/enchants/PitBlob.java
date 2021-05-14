@@ -69,7 +69,7 @@ public class PitBlob extends PitEnchant {
 	}
 
 	@EventHandler
-	public void onDamage(EntityDamageEvent event) {
+	public void onAttack(EntityDamageEvent event) {
 
 		if(!(event.getEntity() instanceof Slime) || !blobMap.containsValue((Slime) event.getEntity())) return;
 		event.setDamage(0);
@@ -105,7 +105,7 @@ public class PitBlob extends PitEnchant {
 	}
 
 	@EventHandler
-	public void onDamage(AttackEvent.Apply attackEvent) {
+	public void onAttack(AttackEvent.Apply attackEvent) {
 	}
 
 	@Override

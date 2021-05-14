@@ -20,7 +20,7 @@ public class ComboDamage extends PitEnchant {
 	}
 
 	@EventHandler
-	public void onDamage(AttackEvent.Apply attackEvent) {
+	public void onAttack(AttackEvent.Apply attackEvent) {
 
 		int enchantLvl = attackEvent.getEnchantLevel(this);
 		if(enchantLvl == 0) return;
