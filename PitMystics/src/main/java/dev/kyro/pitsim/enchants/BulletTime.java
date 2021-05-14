@@ -1,7 +1,6 @@
 package dev.kyro.pitsim.enchants;
 
 import dev.kyro.arcticapi.builders.ALoreBuilder;
-import dev.kyro.pitsim.controllers.DamageEvent;
 import dev.kyro.pitsim.controllers.EnchantManager;
 import dev.kyro.pitsim.controllers.PitEnchant;
 import dev.kyro.pitsim.enums.ApplyType;
@@ -20,7 +19,7 @@ public class BulletTime extends PitEnchant {
 	}
 
 	@EventHandler
-	public void onAttack(AttackEvent.Apply attackEvent) {
+	public void cancel(AttackEvent.Pre attackEvent) {
 
 		int enchantLvl = EnchantManager.getEnchantLevel(attackEvent.defender, this);
 		if(enchantLvl == 0) return;
@@ -34,14 +33,8 @@ public class BulletTime extends PitEnchant {
 
 		attackEvent.defender.setHealth(Math.min(attackEvent.defender.getHealth() + getHealing(enchantLvl), attackEvent.defender.getMaxHealth()));
 
-		attackEvent.event.setCancelled(true);
+		attackEvent.setCancelled(true);
 		attackEvent.arrow.remove();
-
-	}
-
-	@EventHandler
-	public void cancel(AttackEvent.Pre cancelEvent) {
-		cancelEvent.setCancelled(true);
 	}
 
 	@Override
