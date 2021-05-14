@@ -21,6 +21,7 @@ dependencies {
     implementation 'org.jetbrains:annotations:20.1.0'
     compileOnly 'org.spigotmc:spigot:1.8.8-R0.1-SNAPSHOT'
     compileOnly 'net.citizensnpcs:citizens-main:2.0.24-SNAPSHOT'
+    compileOnly "com.github.MilkBowl:VaultAPI:1.7"
 
     compile 'com.github.ArcticDevelopment:ArcticAPI:521ab146a5'
     compile 'de.tr7zw:item-nbt-api-plugin:2.7.1'
