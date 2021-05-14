@@ -142,7 +142,7 @@ public class DamageManager implements Listener {
 			double finalHealth = attackEvent.defender.getHealth() - attackEvent.trueDamage;
 			if(finalHealth <= 0) {
 				attackEvent.event.setCancelled(true);
-				kill(attackEvent.attacker, attackEvent.defender, false);
+				kill(attackEvent, false);
 				return;
 			} else {
 				attackEvent.defender.setHealth(Math.max(finalHealth, 0));
@@ -153,7 +153,7 @@ public class DamageManager implements Listener {
 			double finalHealth = attackEvent.attacker.getHealth() - attackEvent.selfTrueDamage;
 			if(finalHealth <= 0) {
 				attackEvent.event.setCancelled(true);
-				kill(attackEvent.attacker, attackEvent.defender, false);
+				kill(attackEvent, false);
 				return;
 			} else {
 				attackEvent.attacker.setHealth(Math.max(finalHealth, 0));
@@ -167,11 +167,11 @@ public class DamageManager implements Listener {
 		if(attackEvent.event.getFinalDamage() >= attackEvent.defender.getHealth()) {
 
 			attackEvent.event.setCancelled(true);
-			kill(attackEvent.attacker, attackEvent.defender, false);
+			kill(attackEvent, false);
 		} else if(attackEvent.event.getFinalDamage() + attackEvent.executeUnder >= attackEvent.defender.getHealth()) {
 
 			attackEvent.event.setCancelled(true);
-			kill(attackEvent.attacker, attackEvent.defender, true);
+			kill(attackEvent, true);
 		}
 	}
 
@@ -183,39 +183,40 @@ public class DamageManager implements Listener {
 		return null;
 	}
 
-	public static void kill(Player attacker, Player defender, boolean exeDeath) {
+	public static void kill(AttackEvent.Apply attackEvent, boolean exeDeath) {
 
-		PitPlayer pitAttacker = PitPlayer.getPitPlayer(attacker);
+		PitPlayer pitAttacker = PitPlayer.getPitPlayer(attackEvent.attacker);
 		pitAttacker.incrementKills();
 
 		Location spawnLoc = new Location(Bukkit.getWorld("pit"), -107.5, 111, 193.5, 45, 0);
 
-		defender.setHealth(defender.getMaxHealth());
-		defender.playEffect(EntityEffect.HURT);
-		defender.playSound(defender.getLocation(), Sound.FALL_BIG, 1000, 1F);
-		defender.playSound(defender.getLocation(), Sound.FALL_BIG, 1000, 1F);
-		Regularity.toReg.remove(defender.getUniqueId());
+		attackEvent.defender.setHealth(attackEvent.defender.getMaxHealth());
+		attackEvent.defender.playEffect(EntityEffect.HURT);
+		attackEvent.defender.playSound(attackEvent.defender.getLocation(), Sound.FALL_BIG, 1000, 1F);
+		attackEvent.defender.playSound(attackEvent.defender.getLocation(), Sound.FALL_BIG, 1000, 1F);
+		Regularity.toReg.remove(attackEvent.defender.getUniqueId());
 
-		Non non = NonManager.getNon(defender);
+		Non non = NonManager.getNon(attackEvent.defender);
 		if(non == null) {
-			defender.teleport(spawnLoc);
+			attackEvent.defender.teleport(spawnLoc);
 		} else {
-			Misc.multiKill(attacker);
+			Misc.multiKill(attackEvent.attacker);
 			non.respawn();
 		}
 
-		Non attackNon = NonManager.getNon(attacker);
+		Non attackNon = NonManager.getNon(attackEvent.attacker);
 		if(attackNon != null) {
 			attackNon.rewardKill();
 		}
 
-		KillEvent killEvent = new KillEvent(attacker, defender, exeDeath);
+		KillEvent killEvent = new KillEvent(attackEvent, exeDeath);
 		Bukkit.getServer().getPluginManager().callEvent(killEvent);
 
-		PitSim.VAULT.depositPlayer(attacker, killEvent.goldReward);
+		PitSim.VAULT.depositPlayer(attackEvent.attacker, killEvent.getFinalGold());
 
 		DecimalFormat df = new DecimalFormat("##0.00");
-		AOutput.send(attacker, "&a&lKILL!&7 on &b" + defender.getName() + " &b+" + killEvent.xpReward + "XP" +" &6+" + df.format(killEvent.goldReward) + "g");
-		AOutput.send(defender, "&cYou Died!");
+		AOutput.send(attackEvent.attacker, "&a&lKILL!&7 on &b" + attackEvent.defender.getName() + " &b+" +
+				killEvent.getFinalXp() + "XP" +" &6+" + df.format(killEvent.getFinalGold()) + "g");
+		AOutput.send(attackEvent.defender, "&cYou Died!");
 	}
 }

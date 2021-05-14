@@ -133,7 +133,7 @@ public class EnchantManager {
 		int finalLevel = 0;
 		for(ItemStack itemStack : inUse) {
 			int enchantLvl = getEnchantLevel(itemStack, pitEnchant);
-			if(pitEnchant.effectStacks) {
+			if(pitEnchant.levelStacks) {
 				finalLevel += enchantLvl;
 			} else {
 				if(enchantLvl > finalLevel) finalLevel = enchantLvl;

@@ -102,6 +102,10 @@ public class PitSim extends JavaPlugin {
 		EnchantManager.registerEnchant(new Peroxide());
 		EnchantManager.registerEnchant(new NewDeal());
 
+//		Resource Enchants
+		EnchantManager.registerEnchant(new Moctezuma());
+		EnchantManager.registerEnchant(new GoldBump());
+
 //		After all
 		EnchantManager.registerEnchant(new Regularity());
 		EnchantManager.registerEnchant(new Lifesteal());
