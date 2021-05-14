@@ -31,7 +31,7 @@ public class Regularity extends PitEnchant {
 
 		if(toReg.contains(attackEvent.defender.getUniqueId())) return;
 
-		int enchantLvl = attackEvent.getEnchantLevel(this);
+		int enchantLvl = attackEvent.getAttackerEnchantLevel(this);
 		if(enchantLvl == 0) return;
 
 		double finalDamage = attackEvent.event.getFinalDamage();

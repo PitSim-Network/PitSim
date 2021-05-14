@@ -1,8 +1,6 @@
 package dev.kyro.pitsim.enchants;
 
 import dev.kyro.arcticapi.builders.ALoreBuilder;
-import dev.kyro.pitsim.PitSim;
-import dev.kyro.pitsim.controllers.DamageManager;
 import dev.kyro.pitsim.controllers.EnchantManager;
 import dev.kyro.pitsim.controllers.PitEnchant;
 import dev.kyro.pitsim.enums.ApplyType;
@@ -23,7 +21,7 @@ public class NewDeal extends PitEnchant {
 	public void onAttack(AttackEvent.Apply attackEvent) {
 		if(!canAttack(attackEvent)) return;
 
-		int enchantLvl = EnchantManager.getEnchantLevel(attackEvent.defender, this);
+		int enchantLvl = attackEvent.getDefenderEnchantLevel(this);
 		if(enchantLvl == 0) return;
 
 		PitEnchant bill = EnchantManager.getEnchant("billionaire");
@@ -37,13 +35,12 @@ public class NewDeal extends PitEnchant {
 	@Override
 	public List<String> getDescription(int enchantLvl) {
 
-	if(enchantLvl == 0) {
-		return new ALoreBuilder("&7You are immune to &6Billionaire").getLore();
-	} else {
-		return new ALoreBuilder("&7Receive &9-" + Misc.roundString(getDamageReduction(enchantLvl)) + "% &7damage and you are",
-				"&7immune to &6Billionaire").getLore();
-	}
-
+		if(enchantLvl == 1) {
+			return new ALoreBuilder("&7You are immune to &6Billionaire").getLore();
+		} else {
+			return new ALoreBuilder("&7Receive &9-" + Misc.roundString(getDamageReduction(enchantLvl)) + "% &7damage and you are",
+					"&7immune to &6Billionaire").getLore();
+		}
 	}
 
 	public double getDamageReduction(int enchantLvl) {

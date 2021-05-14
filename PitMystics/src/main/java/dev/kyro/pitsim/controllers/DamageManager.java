@@ -4,7 +4,6 @@ import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.enchants.PitBlob;
 import dev.kyro.pitsim.enchants.Regularity;
-import dev.kyro.pitsim.enums.ApplyType;
 import dev.kyro.pitsim.events.AttackEvent;
 import dev.kyro.pitsim.misc.Misc;
 import dev.kyro.pitsim.nons.Non;
@@ -135,20 +134,7 @@ public class DamageManager implements Listener {
 	public static void handleAttack(AttackEvent.Apply attackEvent) {
 		AOutput.send(attackEvent.attacker, "Initial Damage: " + attackEvent.event.getDamage());
 
-//		if(attackEvent.slime == null) {
-		for(PitEnchant pitEnchant : EnchantManager.pitEnchants) {
-//				Skip if fake hit and enchant doesn't handle fake hits
-			if(!pitEnchant.fakeHits && attackEvent.fakeHit) continue;
-//				Skip enchant application if the enchant is a bow enchant and is used in mele
-			if(pitEnchant.applyType == ApplyType.BOWS && attackEvent.arrow == null) continue;
-//				Skips enchant application if the enchant only works on mele hit and the event is from an arrow
-			if(pitEnchant.meleOnly && attackEvent.arrow != null) continue;
-
-//				pitEnchant.onDamage(attackEvent);
-		}
-
 		double damage = attackEvent.getFinalDamage();
-
 		attackEvent.event.setDamage(damage);
 
 		if(attackEvent.trueDamage != 0) {

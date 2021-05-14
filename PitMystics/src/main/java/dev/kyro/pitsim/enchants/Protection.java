@@ -1,8 +1,6 @@
 package dev.kyro.pitsim.enchants;
 
 import dev.kyro.arcticapi.builders.ALoreBuilder;
-import dev.kyro.pitsim.controllers.DamageEvent;
-import dev.kyro.pitsim.controllers.EnchantManager;
 import dev.kyro.pitsim.controllers.PitEnchant;
 import dev.kyro.pitsim.enums.ApplyType;
 import dev.kyro.pitsim.events.AttackEvent;
@@ -22,7 +20,7 @@ public class Protection extends PitEnchant {
 	public void onAttack(AttackEvent.Apply attackEvent) {
 		if(!canAttack(attackEvent)) return;
 
-		int enchantLvl = EnchantManager.getEnchantLevel(attackEvent.defender, this);
+		int enchantLvl = attackEvent.getDefenderEnchantLevel(this);
 		if(enchantLvl == 0) return;
 
 		attackEvent.multiplier.add(Misc.getReductionMultiplier(getDamageReduction(enchantLvl)));

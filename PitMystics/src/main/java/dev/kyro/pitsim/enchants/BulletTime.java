@@ -22,7 +22,7 @@ public class BulletTime extends PitEnchant {
 	public void cancel(AttackEvent.Pre attackEvent) {
 		if(!canAttack(attackEvent)) return;
 
-		int enchantLvl = EnchantManager.getEnchantLevel(attackEvent.defender, this);
+		int enchantLvl = attackEvent.getDefenderEnchantLevel(this);
 		if(enchantLvl == 0) return;
 
 		if(attackEvent.arrow == null) return;

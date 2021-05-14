@@ -1,14 +1,12 @@
 package dev.kyro.pitsim.enchants;
 
 import dev.kyro.arcticapi.builders.ALoreBuilder;
-import dev.kyro.arcticapi.misc.ASound;
 import dev.kyro.pitsim.controllers.Cooldown;
 import dev.kyro.pitsim.controllers.PitEnchant;
 import dev.kyro.pitsim.enums.ApplyType;
 import dev.kyro.pitsim.events.AttackEvent;
 import dev.kyro.pitsim.misc.Misc;
 import org.bukkit.Effect;
-import org.bukkit.Sound;
 import org.bukkit.event.EventHandler;
 
 import java.util.List;
@@ -24,7 +22,7 @@ public class Healer extends PitEnchant {
 	public void onAttack(AttackEvent.Apply attackEvent) {
 		if(!canAttack(attackEvent)) return;
 
-		int enchantLvl = attackEvent.getEnchantLevel(this);
+		int enchantLvl = attackEvent.getAttackerEnchantLevel(this);
 		if(enchantLvl == 0) return;
 
 		Cooldown cooldown = getCooldown(attackEvent.attacker, 20);

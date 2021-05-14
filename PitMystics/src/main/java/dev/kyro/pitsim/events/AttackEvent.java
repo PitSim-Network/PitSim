@@ -107,9 +107,14 @@ public class AttackEvent extends Event {
 		}
 	}
 
-	public int getEnchantLevel(PitEnchant pitEnchant) {
+	public int getAttackerEnchantLevel(PitEnchant pitEnchant) {
 
 		return attackerEnchantMap.getOrDefault(pitEnchant, 0);
+	}
+
+	public int getDefenderEnchantLevel(PitEnchant pitEnchant) {
+
+		return defenderEnchantMap.getOrDefault(pitEnchant, 0);
 	}
 
 	public Map<PitEnchant, Integer> getAttackerEnchantMap() {
