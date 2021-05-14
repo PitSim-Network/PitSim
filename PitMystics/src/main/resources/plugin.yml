@@ -7,6 +7,7 @@ main: dev.kyro.pitsim.PitSim
 description: Remake of the Hypixel Pit
 depend:
   - Citizens
+  - Vault
 commands:
   atest:
   enchant:

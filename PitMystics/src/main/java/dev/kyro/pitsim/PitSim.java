@@ -1,15 +1,18 @@
 package dev.kyro.pitsim;
 
 import dev.kyro.arcticapi.ArcticAPI;
+import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.commands.ATestCommand;
 import dev.kyro.pitsim.commands.EnchantCommand;
 import dev.kyro.pitsim.commands.FreshCommand;
 import dev.kyro.pitsim.commands.NonCommand;
 import dev.kyro.pitsim.controllers.*;
+import dev.kyro.pitsim.enchants.*;
 import dev.kyro.pitsim.nons.Non;
 import dev.kyro.pitsim.nons.NonManager;
+import net.milkbowl.vault.economy.Economy;
+import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
-import dev.kyro.pitsim.enchants.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,11 +20,17 @@ import java.util.List;
 public class PitSim extends JavaPlugin {
 
 	public static PitSim INSTANCE;
+	public static Economy VAULT = null;
 
 	@Override
 	public void onEnable() {
 
 		INSTANCE = this;
+		if (!setupEconomy()) {
+			AOutput.log(String.format("[%s] - Disabled due to no Vault dependency found!", getDescription().getName()));
+			getServer().getPluginManager().disablePlugin(this);
+			return;
+		}
 
 		loadConfig();
 
@@ -118,5 +127,17 @@ public class PitSim extends JavaPlugin {
 
 		getConfig().options().copyDefaults(true);
 		saveConfig();
+	}
+
+	private boolean setupEconomy() {
+		if (getServer().getPluginManager().getPlugin("Vault") == null) {
+			return false;
+		}
+		RegisteredServiceProvider<Economy> rsp = getServer().getServicesManager().getRegistration(Economy.class);
+		if (rsp == null) {
+			return false;
+		}
+		VAULT = rsp.getProvider();
+		return VAULT != null;
 	}
 }
