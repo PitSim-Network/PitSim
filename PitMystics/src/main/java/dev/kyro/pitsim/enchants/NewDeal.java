@@ -25,7 +25,7 @@ public class NewDeal extends PitEnchant {
 		if(enchantLvl == 0) return;
 
 		PitEnchant bill = EnchantManager.getEnchant("billionaire");
-		int billLevel = EnchantManager.getEnchantLevel(attackEvent.getAttackerEnchantMap(), bill);
+		int billLevel = attackEvent.getAttackerEnchantLevel(bill);
 
 		if(billLevel != 0) attackEvent.getAttackerEnchantMap().remove(bill);
 
