@@ -33,6 +33,10 @@ public class AttackEvent extends Event {
 		this.attackerEnchantMap = attackerEnchantMap;
 		this.defenderEnchantMap = defenderEnchantMap;
 		this.fakeHit = fakeHit;
+
+		if(event.getDamager() instanceof Arrow) {
+			arrow = (Arrow) event.getDamager();
+		}
 	}
 
 	@Override
