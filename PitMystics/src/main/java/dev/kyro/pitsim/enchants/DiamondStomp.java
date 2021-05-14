@@ -4,7 +4,9 @@ import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.pitsim.controllers.DamageEvent;
 import dev.kyro.pitsim.controllers.PitEnchant;
 import dev.kyro.pitsim.enums.ApplyType;
+import dev.kyro.pitsim.events.AttackEvent;
 import org.bukkit.Material;
+import org.bukkit.event.EventHandler;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.List;
@@ -16,21 +18,19 @@ public class DiamondStomp extends PitEnchant {
 				"stomp", "ds", "dstomp", "diamond-stomp");
 	}
 
-	@Override
-	public DamageEvent onDamage(DamageEvent damageEvent) {
+	@EventHandler
+	public void onDamage(AttackEvent.Apply attackEvent) {
 
-		int enchantLvl = damageEvent.getEnchantLevel(this);
-		if(enchantLvl == 0) return damageEvent;
+		int enchantLvl = attackEvent.getEnchantLevel(this);
+		if(enchantLvl == 0) return;
 
-		for(ItemStack armorContent : damageEvent.defender.getInventory().getArmorContents()) {
+		for(ItemStack armorContent : attackEvent.defender.getInventory().getArmorContents()) {
 			if(!(armorContent.getType() == Material.DIAMOND_HELMET || armorContent.getType() == Material.DIAMOND_CHESTPLATE
 			|| armorContent.getType() == Material.DIAMOND_LEGGINGS || armorContent.getType() == Material.DIAMOND_BOOTS))
-				return damageEvent;
+				return;
 		}
 
-		damageEvent.increasePercent += getDamage(enchantLvl) / 100D;
-
-		return damageEvent;
+		attackEvent.increasePercent += getDamage(enchantLvl) / 100D;
 	}
 
 	@Override

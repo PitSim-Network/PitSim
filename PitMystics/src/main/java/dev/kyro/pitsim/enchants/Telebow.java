@@ -1,8 +1,9 @@
 package dev.kyro.pitsim.enchants;
 
 import dev.kyro.arcticapi.builders.ALoreBuilder;
-import dev.kyro.pitsim.PitRemake;
+import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.enums.ApplyType;
+import dev.kyro.pitsim.events.AttackEvent;
 import dev.kyro.pitsim.misc.Misc;
 import org.bukkit.Effect;
 import org.bukkit.Location;
@@ -13,7 +14,6 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.entity.EntityShootBowEvent;
 import org.bukkit.event.entity.ProjectileHitEvent;
 import dev.kyro.pitsim.controllers.Cooldown;
-import dev.kyro.pitsim.controllers.DamageEvent;
 import dev.kyro.pitsim.controllers.EnchantManager;
 import dev.kyro.pitsim.controllers.PitEnchant;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -31,21 +31,20 @@ public class Telebow extends PitEnchant {
 				"telebow", "tele");
 	}
 
-	@Override
-	public DamageEvent onDamage(DamageEvent damageEvent) {
-		int enchantLvl = damageEvent.getEnchantLevel(this);
-		if(enchantLvl == 0) return damageEvent;
-		if(damageEvent.arrow == null) return damageEvent;
+	@EventHandler
+	public void onDamage(AttackEvent.Apply attackEvent) {
+		int enchantLvl = attackEvent.getEnchantLevel(this);
+		if(enchantLvl == 0) return;
+		if(attackEvent.arrow == null) return;
 
-		Cooldown cooldown = getCooldown(damageEvent.attacker, getCooldown(enchantLvl) * 20);
+		Cooldown cooldown = getCooldown(attackEvent.attacker, getCooldown(enchantLvl) * 20);
 		cooldown.reduceCooldown(60);
 
 		if(cooldown.isOnCooldown()) {
-			Misc.sendActionBar(damageEvent.attacker, "&eTelebow: &c" + cooldown.getTicksLeft() / 20 + "&cs cooldown!");
+			Misc.sendActionBar(attackEvent.attacker, "&eTelebow: &c" + cooldown.getTicksLeft() / 20 + "&cs cooldown!");
 		} else {
-			Misc.sendActionBar(damageEvent.attacker, "&eTelebow: &aReady!");
+			Misc.sendActionBar(attackEvent.attacker, "&eTelebow: &aReady!");
 		}
-		return damageEvent;
 	}
 
 
@@ -73,7 +72,7 @@ public class Telebow extends PitEnchant {
 				}
 
 			}
-		}.runTaskTimer(PitRemake.INSTANCE, 0L, 3L);
+		}.runTaskTimer(PitSim.INSTANCE, 0L, 3L);
 
 
 		Cooldown cooldown = getCooldown(player, getCooldown(enchantLvl) * 20);
@@ -115,7 +114,6 @@ try {
 				player.teleport(teleportLoc);
 				player.getWorld().playSound(teleArrow.getLocation(), Sound.ENDERMAN_TELEPORT, 1f, 2f);
 
-				teleShot.remove();
 				teleShots.remove(teleShot);
 			}
 		}

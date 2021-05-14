@@ -5,7 +5,9 @@ import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.controllers.DamageEvent;
 import dev.kyro.pitsim.controllers.PitEnchant;
 import dev.kyro.pitsim.enums.ApplyType;
+import dev.kyro.pitsim.events.AttackEvent;
 import dev.kyro.pitsim.misc.Misc;
+import org.bukkit.event.EventHandler;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.scheduler.BukkitRunnable;
 
@@ -24,26 +26,26 @@ public class Regularity extends PitEnchant {
 		meleOnly = true;
 	}
 
-	@Override
-	public DamageEvent onDamage(DamageEvent damageEvent) {
+	@EventHandler
+	public void onDamage(AttackEvent.Apply attackEvent) {
 
-		if(toReg.contains(damageEvent.attacker.getUniqueId())) return damageEvent;
+		if(toReg.contains(attackEvent.attacker.getUniqueId())) return;
 
-		int enchantLvl = damageEvent.getEnchantLevel(this);
-		if(enchantLvl == 0) return damageEvent;
+		int enchantLvl = attackEvent.getEnchantLevel(this);
+		if(enchantLvl == 0) return;
 
-		double finalDamage = damageEvent.event.getFinalDamage();
-		if(finalDamage >= 3) return damageEvent;
+		double finalDamage = attackEvent.event.getFinalDamage();
+		if(finalDamage >= 3) return;
 
-		toReg.add(damageEvent.attacker.getUniqueId());
+		toReg.add(attackEvent.attacker.getUniqueId());
 
 		new BukkitRunnable() {
 			@Override
 			public void run() {
 
-				double damage = damageEvent.event.getOriginalDamage(EntityDamageEvent.DamageModifier.BASE);
-				damageEvent.defender.setNoDamageTicks(0);
-				damageEvent.defender.damage(damage, damageEvent.attacker);
+				double damage = attackEvent.event.getOriginalDamage(EntityDamageEvent.DamageModifier.BASE);
+				attackEvent.defender.setNoDamageTicks(0);
+				attackEvent.defender.damage(damage, attackEvent.attacker);
 			}
 		}.runTaskLater(PitSim.INSTANCE, 3L);
 
@@ -51,11 +53,9 @@ public class Regularity extends PitEnchant {
 			@Override
 			public void run() {
 
-				toReg.remove(damageEvent.attacker.getUniqueId());
+				toReg.remove(attackEvent.attacker.getUniqueId());
 			}
 		}.runTaskLater(PitSim.INSTANCE, 4L);
-
-		return damageEvent;
 	}
 
 	@Override

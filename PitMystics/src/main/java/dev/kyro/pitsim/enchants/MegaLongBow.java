@@ -7,6 +7,7 @@ import dev.kyro.pitsim.controllers.DamageEvent;
 import dev.kyro.pitsim.controllers.EnchantManager;
 import dev.kyro.pitsim.controllers.PitEnchant;
 import dev.kyro.pitsim.enums.ApplyType;
+import dev.kyro.pitsim.events.AttackEvent;
 import dev.kyro.pitsim.events.VolleyShootEvent;
 import dev.kyro.pitsim.misc.Misc;
 import org.bukkit.entity.Arrow;
@@ -24,9 +25,8 @@ public class MegaLongBow extends PitEnchant {
 				"megalongbow", "mega-longbow", "mlb", "mega");
 	}
 
-	@Override
-	public DamageEvent onDamage(DamageEvent damageEvent) {
-		return damageEvent;
+	@EventHandler
+	public void onDamage(AttackEvent.Apply attackEvent) {
 	}
 
 	@EventHandler

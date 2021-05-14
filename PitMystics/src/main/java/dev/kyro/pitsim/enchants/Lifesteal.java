@@ -4,6 +4,8 @@ import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.pitsim.controllers.DamageEvent;
 import dev.kyro.pitsim.controllers.PitEnchant;
 import dev.kyro.pitsim.enums.ApplyType;
+import dev.kyro.pitsim.events.AttackEvent;
+import org.bukkit.event.EventHandler;
 
 import java.util.List;
 
@@ -14,25 +16,23 @@ public class Lifesteal extends PitEnchant {
 				"ls", "lifesteal", "life");
 	}
 
-	@Override
-	public DamageEvent onDamage(DamageEvent damageEvent) {
+	@EventHandler
+	public void onDamage(AttackEvent.Apply attackEvent) {
 
-		int enchantLvl = damageEvent.getEnchantLevel(this);
-		if(enchantLvl == 0) return damageEvent;
+		int enchantLvl = attackEvent.getEnchantLevel(this);
+		if(enchantLvl == 0) return;
 
-		double damage = damageEvent.getFinalDamageIncrease();
+		double damage = attackEvent.getFinalDamage();
 
 //		Bukkit.broadcastMessage(String.valueOf(damage));
 //		Bukkit.broadcastMessage(String.valueOf(damage * getHealing(enchantLvl)));
 
-		if(damageEvent.attacker.getHealth() > damageEvent.attacker.getMaxHealth() - damage * getHealing(enchantLvl)) {
-			damageEvent.attacker.setHealth(damageEvent.attacker.getMaxHealth());
+		if(attackEvent.attacker.getHealth() > attackEvent.attacker.getMaxHealth() - damage * getHealing(enchantLvl)) {
+			attackEvent.attacker.setHealth(attackEvent.attacker.getMaxHealth());
 		} else {
-			damageEvent.attacker.setHealth(damageEvent.attacker.getHealth() + damage * getHealing(enchantLvl));
+			attackEvent.attacker.setHealth(attackEvent.attacker.getHealth() + damage * getHealing(enchantLvl));
 		}
 
-
-		return damageEvent;
 	}
 
 	@Override

@@ -5,7 +5,9 @@ import dev.kyro.pitsim.controllers.DamageEvent;
 import dev.kyro.pitsim.controllers.EnchantManager;
 import dev.kyro.pitsim.controllers.PitEnchant;
 import dev.kyro.pitsim.enums.ApplyType;
+import dev.kyro.pitsim.events.AttackEvent;
 import dev.kyro.pitsim.misc.Misc;
+import org.bukkit.event.EventHandler;
 
 import java.util.List;
 
@@ -16,15 +18,13 @@ public class FractionalReserve extends PitEnchant {
 				"fractionalreserve", "frac", "frac-reserve", "fractional-reserve", "fracreserve");
 	}
 
-	@Override
-	public DamageEvent onDamage(DamageEvent damageEvent) {
+	@EventHandler
+	public void onDamage(AttackEvent.Apply attackEvent) {
 
-		int enchantLvl = EnchantManager.getEnchantLevel(damageEvent.defender, this);
-		if(enchantLvl == 0) return damageEvent;
+		int enchantLvl = EnchantManager.getEnchantLevel(attackEvent.defender, this);
+		if(enchantLvl == 0) return;
 
-		damageEvent.multiplier.add(Misc.getReductionMultiplier(getDamageReduction(enchantLvl)));
-
-		return damageEvent;
+		attackEvent.multiplier.add(Misc.getReductionMultiplier(getDamageReduction(enchantLvl)));
 	}
 
 	@Override

@@ -5,8 +5,10 @@ import dev.kyro.arcticapi.misc.ASound;
 import dev.kyro.pitsim.controllers.DamageEvent;
 import dev.kyro.pitsim.controllers.PitEnchant;
 import dev.kyro.pitsim.enums.ApplyType;
+import dev.kyro.pitsim.events.AttackEvent;
 import dev.kyro.pitsim.misc.Misc;
 import org.bukkit.Sound;
+import org.bukkit.event.EventHandler;
 
 import java.util.List;
 
@@ -17,21 +19,20 @@ public class Gamble extends PitEnchant {
 				"gamble");
 	}
 
-	@Override
-	public DamageEvent onDamage(DamageEvent damageEvent) {
+	@EventHandler
+	public void onDamage(AttackEvent.Apply attackEvent) {
 
-		int enchantLvl = damageEvent.getEnchantLevel(this);
-		if(enchantLvl == 0) return damageEvent;
+		int enchantLvl = attackEvent.getEnchantLevel(this);
+		if(enchantLvl == 0) return;
 
 		if(Math.random() < 0.5) {
-			damageEvent.trueDamage += getTrueDamage(enchantLvl);
-			ASound.play(damageEvent.attacker, Sound.NOTE_PLING, 1, 3F);
+			attackEvent.trueDamage += getTrueDamage(enchantLvl);
+			ASound.play(attackEvent.attacker, Sound.NOTE_PLING, 1, 3F);
 		} else {
-			damageEvent.selfTrueDamage += getTrueDamage(enchantLvl);
-			ASound.play(damageEvent.attacker, Sound.NOTE_PLING, 1, 1.5F);
+			attackEvent.selfTrueDamage += getTrueDamage(enchantLvl);
+			ASound.play(attackEvent.attacker, Sound.NOTE_PLING, 1, 1.5F);
 		}
 
-		return damageEvent;
 	}
 
 	@Override

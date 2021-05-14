@@ -3,6 +3,7 @@ package dev.kyro.pitsim.enchants;
 import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.arcticapi.misc.ASound;
 import dev.kyro.pitsim.enums.ApplyType;
+import dev.kyro.pitsim.events.AttackEvent;
 import dev.kyro.pitsim.misc.Misc;
 import net.minecraft.server.v1_8_R3.EntityPlayer;
 import org.bukkit.Sound;
@@ -11,6 +12,7 @@ import dev.kyro.pitsim.controllers.DamageEvent;
 import dev.kyro.pitsim.controllers.HitCounter;
 import dev.kyro.pitsim.controllers.PitEnchant;
 import dev.kyro.pitsim.controllers.PitPlayer;
+import org.bukkit.event.EventHandler;
 
 import java.util.List;
 
@@ -21,25 +23,23 @@ public class ComboHeal extends PitEnchant {
 				"comboheal", "ch", "combo-heal", "cheal");
 	}
 
-	@Override
-	public DamageEvent onDamage(DamageEvent damageEvent) {
+	@EventHandler
+	public void onDamage(AttackEvent.Apply attackEvent) {
 
-		int enchantLvl = damageEvent.getEnchantLevel(this);
-		if(enchantLvl == 0) return damageEvent;
+		int enchantLvl = attackEvent.getEnchantLevel(this);
+		if(enchantLvl == 0) return;
 
-		PitPlayer pitPlayer = PitPlayer.getPitPlayer(damageEvent.attacker);
+		PitPlayer pitPlayer = PitPlayer.getPitPlayer(attackEvent.attacker);
 		HitCounter.incrementCounter(pitPlayer.player, this);
-		if(!HitCounter.hasReachedThreshold(pitPlayer.player, this, 4)) return damageEvent;
+		if(!HitCounter.hasReachedThreshold(pitPlayer.player, this, 4)) return;
 
-		damageEvent.attacker.setHealth(Math.min(damageEvent.attacker.getHealth() + getEffect(enchantLvl), damageEvent.attacker.getMaxHealth()));
-		EntityPlayer nmsPlayer = ((CraftPlayer) damageEvent.attacker).getHandle();
+		attackEvent.attacker.setHealth(Math.min(attackEvent.attacker.getHealth() + getEffect(enchantLvl), attackEvent.attacker.getMaxHealth()));
+		EntityPlayer nmsPlayer = ((CraftPlayer) attackEvent.attacker).getHandle();
 		if(nmsPlayer.getAbsorptionHearts() < 8) {
 			nmsPlayer.setAbsorptionHearts(Math.min((float) (nmsPlayer.getAbsorptionHearts() + getEffect(enchantLvl)), 8));
 		}
 
-		ASound.play(damageEvent.attacker, Sound.DONKEY_HIT, 1F, 0.5F);
-
-		return damageEvent;
+		ASound.play(attackEvent.attacker, Sound.DONKEY_HIT, 1F, 0.5F);;
 	}
 
 	@Override

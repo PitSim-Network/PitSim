@@ -4,6 +4,7 @@ import dev.kyro.arcticapi.misc.ASound;
 import dev.kyro.pitsim.PitSim;
 import net.minecraft.server.v1_8_R3.IChatBaseComponent;
 import net.minecraft.server.v1_8_R3.PacketPlayOutChat;
+import net.minecraft.server.v1_8_R3.PacketPlayOutTitle;
 import org.bukkit.ChatColor;
 import org.bukkit.Sound;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
@@ -111,5 +112,29 @@ public class Misc {
 		PacketPlayOutChat packet = new PacketPlayOutChat(IChatBaseComponent.ChatSerializer.a("{\"text\":\"" +
 				ChatColor.translateAlternateColorCodes('&', message) + "\"}"), (byte) 2);
 		((CraftPlayer) player).getHandle().playerConnection.sendPacket(packet);
+	}
+
+	public static void sendTitle(Player player, String message) {
+		IChatBaseComponent chatTitle = IChatBaseComponent.ChatSerializer.a("{\"text\": \"" +
+				ChatColor.translateAlternateColorCodes('&', message) + "\"}");
+
+		PacketPlayOutTitle title = new PacketPlayOutTitle(PacketPlayOutTitle.EnumTitleAction.TITLE, chatTitle);
+		PacketPlayOutTitle length = new PacketPlayOutTitle(5, 20, 5);
+
+
+		((CraftPlayer) player).getHandle().playerConnection.sendPacket(title);
+		((CraftPlayer) player).getHandle().playerConnection.sendPacket(length);
+	}
+
+	public static void sendSubTitle(Player player, String message) {
+		IChatBaseComponent chatSubTitle = IChatBaseComponent.ChatSerializer.a("{\"text\": \"" +
+				ChatColor.translateAlternateColorCodes('&', message) + "\"}");
+
+		PacketPlayOutTitle subtitle = new PacketPlayOutTitle(PacketPlayOutTitle.EnumTitleAction.SUBTITLE, chatSubTitle);
+		PacketPlayOutTitle length = new PacketPlayOutTitle(5, 20, 5);
+
+
+		((CraftPlayer) player).getHandle().playerConnection.sendPacket(subtitle);
+		((CraftPlayer) player).getHandle().playerConnection.sendPacket(length);
 	}
 }

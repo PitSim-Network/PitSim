@@ -4,7 +4,9 @@ import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.pitsim.controllers.DamageEvent;
 import dev.kyro.pitsim.controllers.PitEnchant;
 import dev.kyro.pitsim.enums.ApplyType;
+import dev.kyro.pitsim.events.AttackEvent;
 import org.bukkit.Material;
+import org.bukkit.event.EventHandler;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.List;
@@ -16,19 +18,17 @@ public class BottomlessQuiver extends PitEnchant {
 				"bq", "bottomless-quiver", "bottom", "quiver");
 	}
 
-	@Override
-	public DamageEvent onDamage(DamageEvent damageEvent) {
+	@EventHandler
+	public void onDamage(AttackEvent.Apply attackEvent) {
 
-		int enchantLvl = damageEvent.getEnchantLevel(this);
-		if(enchantLvl == 0) return damageEvent;
+		int enchantLvl = attackEvent.getEnchantLevel(this);
+		if(enchantLvl == 0) return;
 
-		if(damageEvent.attacker.equals(damageEvent.defender)) return damageEvent;
+		if(attackEvent.attacker.equals(attackEvent.defender)) return;
 
 		ItemStack arrows = new ItemStack(Material.ARROW);
 		arrows.setAmount(getArrowAmount(enchantLvl));
-		damageEvent.attacker.getInventory().addItem(arrows);
-
-		return damageEvent;
+		attackEvent.attacker.getInventory().addItem(arrows);
 	}
 
 	@Override

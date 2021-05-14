@@ -4,6 +4,8 @@ import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.pitsim.controllers.DamageEvent;
 import dev.kyro.pitsim.controllers.PitEnchant;
 import dev.kyro.pitsim.enums.ApplyType;
+import dev.kyro.pitsim.events.AttackEvent;
+import org.bukkit.event.EventHandler;
 
 import java.util.List;
 
@@ -14,15 +16,13 @@ public class Parasite extends PitEnchant {
 				"parasite", "para");
 	}
 
-	@Override
-	public DamageEvent onDamage(DamageEvent damageEvent) {
+	@EventHandler
+	public void onDamage(AttackEvent.Apply attackEvent) {
 
-		int enchantLvl = damageEvent.getEnchantLevel(this);
-		if(enchantLvl == 0) return damageEvent;
+		int enchantLvl = attackEvent.getEnchantLevel(this);
+		if(enchantLvl == 0) return;
 
-		damageEvent.attacker.setHealth(Math.min(damageEvent.attacker.getHealth() + getHealing(enchantLvl), damageEvent.attacker.getMaxHealth()));
-
-		return damageEvent;
+		attackEvent.attacker.setHealth(Math.min(attackEvent.attacker.getHealth() + getHealing(enchantLvl), attackEvent.attacker.getMaxHealth()));
 	}
 
 	@Override

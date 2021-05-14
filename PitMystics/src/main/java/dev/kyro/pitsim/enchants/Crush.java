@@ -6,8 +6,10 @@ import dev.kyro.pitsim.controllers.Cooldown;
 import dev.kyro.pitsim.controllers.DamageEvent;
 import dev.kyro.pitsim.controllers.PitEnchant;
 import dev.kyro.pitsim.enums.ApplyType;
+import dev.kyro.pitsim.events.AttackEvent;
 import dev.kyro.pitsim.misc.Misc;
 import org.bukkit.Sound;
+import org.bukkit.event.EventHandler;
 import org.bukkit.potion.PotionEffectType;
 
 import java.util.List;
@@ -19,20 +21,18 @@ public class Crush extends PitEnchant {
 				"crush");
 	}
 
-	@Override
-	public DamageEvent onDamage(DamageEvent damageEvent) {
+	@EventHandler
+	public void onDamage(AttackEvent.Apply attackEvent) {
 
-		int enchantLvl = damageEvent.getEnchantLevel(this);
-		if(enchantLvl == 0) return damageEvent;
+		int enchantLvl = attackEvent.getEnchantLevel(this);
+		if(enchantLvl == 0) return;
 
-		Cooldown cooldown = getCooldown(damageEvent.attacker, 2 * 20);
-		if(cooldown.isOnCooldown()) return damageEvent; else cooldown.reset();
+		Cooldown cooldown = getCooldown(attackEvent.attacker, 2 * 20);
+		if(cooldown.isOnCooldown()) return; else cooldown.reset();
 
-		Misc.applyPotionEffect(damageEvent.defender, PotionEffectType.WEAKNESS, (int) (getDuration(enchantLvl) * 20), enchantLvl + 3, true, false);
-		damageEvent.attacker.playSound(damageEvent.attacker.getLocation(), Sound.GLASS, 1, 0.80F);
-		damageEvent.defender.playSound(damageEvent.defender.getLocation(), Sound.GLASS, 1, 0.80F);
-
-		return damageEvent;
+		Misc.applyPotionEffect(attackEvent.defender, PotionEffectType.WEAKNESS, (int) (getDuration(enchantLvl) * 20), enchantLvl + 3, true, false);
+		attackEvent.attacker.playSound(attackEvent.attacker.getLocation(), Sound.GLASS, 1, 0.80F);
+		attackEvent.defender.playSound(attackEvent.defender.getLocation(), Sound.GLASS, 1, 0.80F);
 	}
 
 	@Override

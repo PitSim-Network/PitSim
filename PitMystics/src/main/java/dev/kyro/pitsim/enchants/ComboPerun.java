@@ -2,12 +2,14 @@ package dev.kyro.pitsim.enchants;
 
 import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.pitsim.enums.ApplyType;
+import dev.kyro.pitsim.events.AttackEvent;
 import dev.kyro.pitsim.misc.Misc;
 import org.bukkit.Material;
 import dev.kyro.pitsim.controllers.DamageEvent;
 import dev.kyro.pitsim.controllers.HitCounter;
 import dev.kyro.pitsim.controllers.PitEnchant;
 import dev.kyro.pitsim.controllers.PitPlayer;
+import org.bukkit.event.EventHandler;
 
 import java.util.List;
 
@@ -18,37 +20,36 @@ public class ComboPerun extends PitEnchant {
 				"perun", "lightning");
 	}
 
-	@Override
-	public DamageEvent onDamage(DamageEvent damageEvent) {
+	@EventHandler
+	public void onDamage(AttackEvent.Apply attackEvent) {
 
-		int enchantLvl = damageEvent.getEnchantLevel(this);
-		if(enchantLvl == 0) return damageEvent;
+		int enchantLvl = attackEvent.getEnchantLevel(this);
+		if(enchantLvl == 0) return;
 
-		PitPlayer pitPlayer = PitPlayer.getPitPlayer(damageEvent.attacker);
+		PitPlayer pitPlayer = PitPlayer.getPitPlayer(attackEvent.attacker);
 		HitCounter.incrementCounter(pitPlayer.player, this);
-		if(!HitCounter.hasReachedThreshold(pitPlayer.player, this, getStrikes(enchantLvl))) return damageEvent;
+		if(!HitCounter.hasReachedThreshold(pitPlayer.player, this, getStrikes(enchantLvl))) return;
 
 		if(enchantLvl == 3) {
 			int diamondpeices = 0;
-			if(!(damageEvent.defender.getInventory().getHelmet() == null) && damageEvent.defender.getInventory().getHelmet().getType() == Material.DIAMOND_HELMET) {
+			if(!(attackEvent.defender.getInventory().getHelmet() == null) && attackEvent.defender.getInventory().getHelmet().getType() == Material.DIAMOND_HELMET) {
 				diamondpeices = diamondpeices + 2;
 			}
-			if(!(damageEvent.defender.getInventory().getChestplate() == null) && damageEvent.defender.getInventory().getChestplate().getType() == Material.DIAMOND_CHESTPLATE) {
+			if(!(attackEvent.defender.getInventory().getChestplate() == null) && attackEvent.defender.getInventory().getChestplate().getType() == Material.DIAMOND_CHESTPLATE) {
 				diamondpeices = diamondpeices + 2;
 			}
-			if(!(damageEvent.defender.getInventory().getLeggings() == null) && damageEvent.defender.getInventory().getLeggings().getType() == Material.DIAMOND_LEGGINGS) {
+			if(!(attackEvent.defender.getInventory().getLeggings() == null) && attackEvent.defender.getInventory().getLeggings().getType() == Material.DIAMOND_LEGGINGS) {
 				diamondpeices = diamondpeices + 2;
 			}
-			if(!(damageEvent.defender.getInventory().getBoots() == null) && damageEvent.defender.getInventory().getBoots().getType() == Material.DIAMOND_BOOTS) {
+			if(!(attackEvent.defender.getInventory().getBoots() == null) && attackEvent.defender.getInventory().getBoots().getType() == Material.DIAMOND_BOOTS) {
 				diamondpeices = diamondpeices + 2;
 			}
 
-			damageEvent.trueDamage += diamondpeices;
+			attackEvent.trueDamage += diamondpeices;
 		} else {
-			damageEvent.trueDamage += getTrueDamage(enchantLvl);
+			attackEvent.trueDamage += getTrueDamage(enchantLvl);
 		}
-		damageEvent.defender.getWorld().strikeLightningEffect(damageEvent.defender.getLocation());
-		return damageEvent;
+		attackEvent.defender.getWorld().strikeLightningEffect(attackEvent.defender.getLocation());
 	}
 
 	@Override

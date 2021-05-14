@@ -5,6 +5,8 @@ import dev.kyro.pitsim.controllers.DamageEvent;
 import dev.kyro.pitsim.controllers.EnchantManager;
 import dev.kyro.pitsim.controllers.PitEnchant;
 import dev.kyro.pitsim.enums.ApplyType;
+import dev.kyro.pitsim.events.AttackEvent;
+import org.bukkit.event.EventHandler;
 
 import java.util.List;
 
@@ -15,16 +17,14 @@ public class RingArmor extends PitEnchant {
 				"ring", "armor", "ring-armor");
 	}
 
-	@Override
-	public DamageEvent onDamage(DamageEvent damageEvent) {
+	@EventHandler
+	public void onDamage(AttackEvent.Apply attackEvent) {
 
-		int enchantLvl = EnchantManager.getEnchantLevel(damageEvent.defender, this);
-		if(enchantLvl == 0) return damageEvent;
+		int enchantLvl = EnchantManager.getEnchantLevel(attackEvent.defender, this);
+		if(enchantLvl == 0) return;
 
-		if(!damageEvent.hitByArrow) return damageEvent;
-		damageEvent.multiplier.add(getDamageMultiplier(enchantLvl));
-
-		return damageEvent;
+		if(attackEvent.arrow == null) return;
+		attackEvent.multiplier.add(getDamageMultiplier(enchantLvl));
 	}
 
 	@Override

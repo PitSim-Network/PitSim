@@ -1,17 +1,22 @@
 package dev.kyro.pitsim.enchants;
 
 import dev.kyro.arcticapi.builders.ALoreBuilder;
-import dev.kyro.pitsim.PitRemake;
+import dev.kyro.arcticapi.misc.AOutput;
+import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.controllers.DamageEvent;
 import dev.kyro.pitsim.controllers.EnchantManager;
 import dev.kyro.pitsim.controllers.PitEnchant;
 import dev.kyro.pitsim.enums.ApplyType;
-import org.bukkit.Bukkit;
+import dev.kyro.pitsim.events.AttackEvent;
+import dev.kyro.pitsim.misc.Misc;
 import org.bukkit.Effect;
+import org.bukkit.Sound;
 import org.bukkit.entity.Arrow;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.entity.EntityShootBowEvent;
+import org.bukkit.event.entity.ProjectileHitEvent;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.ArrayList;
@@ -26,14 +31,24 @@ public class LuckyShot extends PitEnchant {
 				"luckyshot", "lucky-shot", "lucky", "luck");
 	}
 
-	@Override
-	public DamageEvent onDamage(DamageEvent damageEvent) {
+	@EventHandler
+	public void onDamage(AttackEvent.Apply attackEvent) {
 
-		int enchantLvl = damageEvent.getEnchantLevel(this);
-		if(enchantLvl == 0) return damageEvent;
+		int enchantLvl = attackEvent.getEnchantLevel(this);
+		if(enchantLvl == 0) return;
 
 
-		return damageEvent;
+		for(Arrow luckyShot : luckyShots) {
+			if(luckyShot.equals(attackEvent.arrow)) {
+
+				attackEvent.multiplier.add(4.0);
+				AOutput.send(attackEvent.attacker, "&e&lLUCKY SHOT! &7against &b" + attackEvent.defender.getName() + "&7!");
+				AOutput.send(attackEvent.defender, "&c&lOUCH! &b" + attackEvent.defender.getName() + " &7got a lucky shot against you!");
+				Misc.sendTitle(attackEvent.defender, " ");
+				Misc.sendSubTitle(attackEvent.defender, "&c&lOUCH!");
+				attackEvent.defender.playSound(attackEvent.defender.getLocation(), Sound.ZOMBIE_WOODBREAK, 1f, 1f);
+			}
+		}
 	}
 
 
@@ -48,7 +63,6 @@ public class LuckyShot extends PitEnchant {
 
 		if(chanceCalculation <= enchantChance) {
 			luckyShots.add((Arrow) event.getProjectile());
-			Bukkit.broadcastMessage("Lucky Shot!");
 		}
 
 		new BukkitRunnable() {
@@ -60,19 +74,50 @@ public class LuckyShot extends PitEnchant {
 				}
 
 			}
-		}.runTaskTimer(PitRemake.INSTANCE, 0L, 1L);
+		}.runTaskTimer(PitSim.INSTANCE, 0L, 0L);
 
 	}
 
+	@EventHandler(priority = EventPriority.LOW)
+	public void onHit(ProjectileHitEvent event) {
+		if(!(event.getEntity() instanceof Arrow) || !(event.getEntity().getShooter() instanceof Player)) return;
+		Player player = (Player) event.getEntity().getShooter();
 
+		if(luckyShots.size() == 0) return;
+		try {
+			for(Arrow luckyShot : luckyShots) {
+				if(luckyShot.equals(event.getEntity())) {
+
+					Arrow luckyArrow = (Arrow) event.getEntity();
+					if(luckyArrow.equals(luckyShot)) {
+
+						new BukkitRunnable() {
+							@Override
+							public void run() {
+								luckyShots.remove(luckyShot);
+
+							}
+						}.runTaskLater(PitSim.INSTANCE, 1L);
+
+					}
+				}
+
+			}
+
+		}catch(Exception e) {
+
+		}
+
+	}
 
 	@Override
 	public List<String> getDescription(int enchantLvl) {
 
-		return new ALoreBuilder("&7Deal &c+" + getChance(enchantLvl) + " &7bow damage").getLore();
+		return new ALoreBuilder("&e" + getChance(enchantLvl) + "&e% &7chance for a shot to deal",
+				"&7quadruple damage").getLore();
 	}
 
-//	TODO: Fletching damage equation
+//	TODO: Lucky Shot damage equation
 	public int getChance(int enchantLvl) {
 
 		switch(enchantLvl) {

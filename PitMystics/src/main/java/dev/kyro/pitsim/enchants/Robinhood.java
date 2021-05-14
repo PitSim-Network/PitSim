@@ -6,6 +6,7 @@ import dev.kyro.pitsim.controllers.DamageEvent;
 import dev.kyro.pitsim.controllers.EnchantManager;
 import dev.kyro.pitsim.controllers.PitEnchant;
 import dev.kyro.pitsim.enums.ApplyType;
+import dev.kyro.pitsim.events.AttackEvent;
 import org.bukkit.entity.Arrow;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
@@ -25,9 +26,8 @@ public class Robinhood extends PitEnchant {
 				"robinhood", "robin");
 	}
 
-	@Override
-	public DamageEvent onDamage(DamageEvent damageEvent) {
-		return damageEvent;
+	@EventHandler
+	public void onDamage(AttackEvent.Apply attackEvent) {
 	}
 
 	@EventHandler

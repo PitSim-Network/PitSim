@@ -4,6 +4,8 @@ import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.pitsim.controllers.DamageEvent;
 import dev.kyro.pitsim.controllers.PitEnchant;
 import dev.kyro.pitsim.enums.ApplyType;
+import dev.kyro.pitsim.events.AttackEvent;
+import org.bukkit.event.EventHandler;
 
 import java.util.List;
 
@@ -14,15 +16,13 @@ public class Fletching extends PitEnchant {
 				"fletch", "fletching");
 	}
 
-	@Override
-	public DamageEvent onDamage(DamageEvent damageEvent) {
+	@EventHandler
+	public void onDamage(AttackEvent.Apply attackEvent) {
 
-		int enchantLvl = damageEvent.getEnchantLevel(this);
-		if(enchantLvl == 0) return damageEvent;
+		int enchantLvl = attackEvent.getEnchantLevel(this);
+		if(enchantLvl == 0) return;
 
-		damageEvent.increasePercent += getDamage(enchantLvl) / 100D;
-
-		return damageEvent;
+		attackEvent.increasePercent += getDamage(enchantLvl) / 100D;
 	}
 
 	@Override
