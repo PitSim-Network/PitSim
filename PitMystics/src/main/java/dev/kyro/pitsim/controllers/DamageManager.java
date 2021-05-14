@@ -5,6 +5,7 @@ import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.enchants.PitBlob;
 import dev.kyro.pitsim.enchants.Regularity;
 import dev.kyro.pitsim.events.AttackEvent;
+import dev.kyro.pitsim.events.KillEvent;
 import dev.kyro.pitsim.misc.Misc;
 import dev.kyro.pitsim.nons.Non;
 import dev.kyro.pitsim.nons.NonManager;
@@ -182,26 +183,22 @@ public class DamageManager implements Listener {
 		return null;
 	}
 
-	public static void kill(Player attacker, Player dead, boolean exeDeath) {
+	public static void kill(Player attacker, Player defender, boolean exeDeath) {
 
 		PitPlayer pitAttacker = PitPlayer.getPitPlayer(attacker);
 		pitAttacker.incrementKills();
 
 		Location spawnLoc = new Location(Bukkit.getWorld("pit"), -107.5, 111, 193.5, 45, 0);
 
-		dead.setHealth(dead.getMaxHealth());
-		dead.playEffect(EntityEffect.HURT);
-		dead.playSound(dead.getLocation(), Sound.FALL_BIG, 1000, 1F);
-		dead.playSound(dead.getLocation(), Sound.FALL_BIG, 1000, 1F);
-		Regularity.toReg.remove(dead.getUniqueId());
+		defender.setHealth(defender.getMaxHealth());
+		defender.playEffect(EntityEffect.HURT);
+		defender.playSound(defender.getLocation(), Sound.FALL_BIG, 1000, 1F);
+		defender.playSound(defender.getLocation(), Sound.FALL_BIG, 1000, 1F);
+		Regularity.toReg.remove(defender.getUniqueId());
 
-		DecimalFormat df = new DecimalFormat("##0.00");
-		AOutput.send(attacker, "&a&lKILL!&7 on &b" + dead.getName() + " &b+" + "5" + "XP" + " &6+" + df.format(5) + "g");
-		AOutput.send(dead, "&cYou Died!");
-
-		Non non = NonManager.getNon(dead);
+		Non non = NonManager.getNon(defender);
 		if(non == null) {
-			dead.teleport(spawnLoc);
+			defender.teleport(spawnLoc);
 		} else {
 			Misc.multiKill(attacker);
 			non.respawn();
@@ -211,5 +208,14 @@ public class DamageManager implements Listener {
 		if(attackNon != null) {
 			attackNon.rewardKill();
 		}
+
+		KillEvent killEvent = new KillEvent(attacker, defender, exeDeath);
+		Bukkit.getServer().getPluginManager().callEvent(killEvent);
+
+		PitSim.VAULT.depositPlayer(attacker, killEvent.goldReward);
+
+		DecimalFormat df = new DecimalFormat("##0.00");
+		AOutput.send(attacker, "&a&lKILL!&7 on &b" + defender.getName() + " &b+" + killEvent.xpReward + "XP" +" &6+" + df.format(killEvent.goldReward) + "g");
+		AOutput.send(defender, "&cYou Died!");
 	}
 }
