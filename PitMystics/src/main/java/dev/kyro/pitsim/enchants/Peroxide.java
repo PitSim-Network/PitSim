@@ -1,7 +1,6 @@
 package dev.kyro.pitsim.enchants;
 
 import dev.kyro.arcticapi.builders.ALoreBuilder;
-import dev.kyro.pitsim.controllers.DamageEvent;
 import dev.kyro.pitsim.controllers.EnchantManager;
 import dev.kyro.pitsim.controllers.PitEnchant;
 import dev.kyro.pitsim.enums.ApplyType;
@@ -13,11 +12,11 @@ import org.bukkit.potion.PotionEffectType;
 
 import java.util.List;
 
-public class LastStand extends PitEnchant {
+public class Peroxide extends PitEnchant {
 
-	public LastStand() {
-		super("Last Stand", false, ApplyType.PANTS,
-				"laststand", "last", "last-stand", "resistance");
+	public Peroxide() {
+		super("Peroxide", false, ApplyType.PANTS,
+				"pero", "peroxide", "regeneration", "regen");
 	}
 
 	@EventHandler
@@ -26,11 +25,9 @@ public class LastStand extends PitEnchant {
 		int enchantLvl = EnchantManager.getEnchantLevel(attackEvent.defender, this);
 		if(enchantLvl == 0) return;
 
-		if(attackEvent.defender.getHealth() - attackEvent.getFinalDamage() <= 6) {
-			Bukkit.broadcastMessage("6 or below!");
-			Misc.applyPotionEffect(attackEvent.defender, PotionEffectType.DAMAGE_RESISTANCE, getSeconds(enchantLvl)
-					* 20, getAmplifier(enchantLvl) - 1, false, false);
-		}
+		Misc.applyPotionEffect(attackEvent.defender, PotionEffectType.REGENERATION, getSeconds(enchantLvl)
+				* 20, getAmplifier(enchantLvl) - 1, false, false);
+
 	}
 
 	@Override
@@ -40,18 +37,28 @@ public class LastStand extends PitEnchant {
 	}
 
 	public int getAmplifier(int enchantLvl) {
+		switch(enchantLvl) {
+			case 1:
+				return 1;
+			case 2:
+				return 1;
+			case 3:
+				return 2;
 
-		return enchantLvl;
+		}
+
+		return 0;
+
 	}
 
 	public int getSeconds(int enchantLvl) {
 		switch(enchantLvl) {
 			case 1:
-				return 3;
+				return 5;
 			case 2:
-				return 4;
+				return 8;
 			case 3:
-				return 4;
+				return 8;
 
 		}
 
