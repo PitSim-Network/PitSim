@@ -2,6 +2,7 @@ package dev.kyro.pitsim.enchants;
 
 import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.arcticapi.misc.ASound;
+import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.controllers.PitEnchant;
 import dev.kyro.pitsim.enums.ApplyType;
 import dev.kyro.pitsim.events.AttackEvent;
@@ -23,6 +24,10 @@ public class Billionaire extends PitEnchant {
 
 		int enchantLvl = attackEvent.getAttackerEnchantLevel(this);
 		if(enchantLvl == 0) return;
+
+		double finalBalance = PitSim.VAULT.getBalance(attackEvent.attacker) - getGoldCost(enchantLvl);
+		if(finalBalance < 0) return;
+		PitSim.VAULT.withdrawPlayer(attackEvent.attacker, getGoldCost(enchantLvl));
 
 		attackEvent.multiplier.add(getDamageMultiplier(enchantLvl));
 		ASound.play(attackEvent.attacker, Sound.ORB_PICKUP, 1, 0.73F);
