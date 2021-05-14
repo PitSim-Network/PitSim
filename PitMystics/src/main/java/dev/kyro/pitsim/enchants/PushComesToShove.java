@@ -2,14 +2,13 @@ package dev.kyro.pitsim.enchants;
 
 import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.arcticapi.misc.AUtil;
+import dev.kyro.pitsim.controllers.HitCounter;
+import dev.kyro.pitsim.controllers.PitEnchant;
+import dev.kyro.pitsim.controllers.PitPlayer;
 import dev.kyro.pitsim.enums.ApplyType;
 import dev.kyro.pitsim.events.AttackEvent;
 import org.bukkit.event.EventHandler;
 import org.bukkit.util.Vector;
-import dev.kyro.pitsim.controllers.DamageEvent;
-import dev.kyro.pitsim.controllers.HitCounter;
-import dev.kyro.pitsim.controllers.PitEnchant;
-import dev.kyro.pitsim.controllers.PitPlayer;
 
 import java.util.List;
 
@@ -31,7 +30,7 @@ public class PushComesToShove extends PitEnchant {
 
 		if(!HitCounter.hasReachedThreshold(pitPlayer.player, this, 3)) return;
 
-		Vector velocity = attackEvent.arrow.getVelocity().normalize().multiply(getPunchLevel(enchantLvl) * 2.35);
+		Vector velocity = attackEvent.arrow.getVelocity().normalize().multiply(getPunchMultiplier(enchantLvl) / 2.35);
 		velocity.setY(0);
 
 		attackEvent.defender.setVelocity(velocity);
