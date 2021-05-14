@@ -10,6 +10,7 @@ import dev.kyro.pitsim.misc.Misc;
 import dev.kyro.pitsim.misc.NumberFormatter;
 import org.bukkit.event.EventHandler;
 
+import javax.swing.text.html.parser.Entity;
 import java.util.List;
 
 public class Solitude extends PitEnchant {
@@ -21,10 +22,11 @@ public class Solitude extends PitEnchant {
 
 	@EventHandler
 	public void onAttack(AttackEvent.Apply attackEvent) {
+		if(!canAttack(attackEvent)) return;
 
 		int enchantLvl = EnchantManager.getEnchantLevel(attackEvent.defender, this);
 		if(enchantLvl == 0) return;
-
+		
 		attackEvent.multiplier.add(Misc.getReductionMultiplier(getDamageReduction(enchantLvl)));
 	}
 

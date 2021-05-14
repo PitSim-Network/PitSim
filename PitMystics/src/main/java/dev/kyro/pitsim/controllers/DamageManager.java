@@ -133,8 +133,7 @@ public class DamageManager implements Listener {
 	}
 
 	public static void handleAttack(AttackEvent.Apply attackEvent) {
-
-//		AOutput.send(attackEvent.attacker, "Initial Damage: " + attackEvent.event.getDamage());
+		AOutput.send(attackEvent.attacker, "Initial Damage: " + attackEvent.event.getDamage());
 
 //		if(attackEvent.slime == null) {
 		for(PitEnchant pitEnchant : EnchantManager.pitEnchants) {
@@ -176,7 +175,7 @@ public class DamageManager implements Listener {
 		}
 //		}
 
-//		AOutput.send(attackEvent.attacker, "Final Damage: " + attackEvent.event.getDamage());
+		AOutput.send(attackEvent.attacker, "Final Damage: " + attackEvent.event.getDamage());
 
 		if(attackEvent.event.getFinalDamage() >= attackEvent.defender.getHealth()) {
 

@@ -6,6 +6,7 @@ import dev.kyro.arcticapi.builders.AItemStackBuilder;
 import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.arcticapi.misc.AUtil;
 import dev.kyro.pitsim.PitSim;
+import dev.kyro.pitsim.enchants.Billionaire;
 import dev.kyro.pitsim.enums.ApplyType;
 import dev.kyro.pitsim.enums.NBTTag;
 import dev.kyro.pitsim.exceptions.InvalidEnchantLevelException;
@@ -151,6 +152,17 @@ public class EnchantManager {
 
 		Map<PitEnchant, Integer> itemEnchantMap = getEnchantsOnItem(itemStack);
 		return getEnchantLevel(itemEnchantMap, pitEnchant);
+	}
+
+	public static int getEnchantLevel(Map<PitEnchant, Integer> enchantMap, PitEnchant pitEnchant) {
+
+		for(Map.Entry<PitEnchant, Integer> entry : enchantMap.entrySet()) {
+
+			if(entry.getKey() != pitEnchant) continue;
+			return entry.getValue();
+		}
+
+		return 0;
 	}
 
 	public static int getEnchantLevel(Map<PitEnchant, Integer> enchantMap, PitEnchant pitEnchant) {

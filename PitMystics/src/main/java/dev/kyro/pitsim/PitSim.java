@@ -64,9 +64,11 @@ public class PitSim extends JavaPlugin {
 		EnchantManager.registerEnchant(new ComboSwift());
 		EnchantManager.registerEnchant(new DiamondStomp());
 		EnchantManager.registerEnchant(new BulletTime());
+		EnchantManager.registerEnchant(new Healer());
 //		After ComboHeal
 		EnchantManager.registerEnchant(new GoldAndBoosted());
 		EnchantManager.registerEnchant(new PainFocus());
+		EnchantManager.registerEnchant(new Shark());
 
 		EnchantManager.registerEnchant(new MegaLongBow());
 		EnchantManager.registerEnchant(new Volley());
@@ -89,6 +91,7 @@ public class PitSim extends JavaPlugin {
 		EnchantManager.registerEnchant(new RingArmor());
 		EnchantManager.registerEnchant(new PitBlob());
 		EnchantManager.registerEnchant(new Peroxide());
+		EnchantManager.registerEnchant(new NewDeal());
 
 //		After all
 		EnchantManager.registerEnchant(new Regularity());

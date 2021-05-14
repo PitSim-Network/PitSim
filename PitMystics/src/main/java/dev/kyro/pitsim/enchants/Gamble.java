@@ -16,11 +16,12 @@ public class Gamble extends PitEnchant {
 
 	public Gamble() {
 		super("Gamble", true, ApplyType.SWORDS,
-				"gamble");
+				"gamble", "gam");
 	}
 
 	@EventHandler
 	public void onAttack(AttackEvent.Apply attackEvent) {
+		if(!canAttack(attackEvent)) return;
 
 		int enchantLvl = attackEvent.getEnchantLevel(this);
 		if(enchantLvl == 0) return;

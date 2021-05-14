@@ -32,6 +32,7 @@ public class LuckyShot extends PitEnchant {
 
 	@EventHandler
 	public void onAttack(AttackEvent.Apply attackEvent) {
+		if(!canAttack(attackEvent)) return;
 
 		int enchantLvl = attackEvent.getEnchantLevel(this);
 		if(enchantLvl == 0) return;
