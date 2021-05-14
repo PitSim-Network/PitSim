@@ -5,8 +5,10 @@ import dev.kyro.pitsim.controllers.DamageEvent;
 import dev.kyro.pitsim.controllers.EnchantManager;
 import dev.kyro.pitsim.controllers.PitEnchant;
 import dev.kyro.pitsim.enums.ApplyType;
+import dev.kyro.pitsim.events.AttackEvent;
 import org.bukkit.Effect;
 import org.bukkit.Sound;
+import org.bukkit.event.EventHandler;
 
 import java.util.List;
 
@@ -17,26 +19,24 @@ public class BulletTime extends PitEnchant {
 				"bullettime", "bullet-time", "bullet", "bt");
 	}
 
-	@Override
-	public DamageEvent onDamage(DamageEvent damageEvent) {
+	@EventHandler
+	public void onDamage(AttackEvent.Apply attackEvent) {
 
-		int enchantLvl = EnchantManager.getEnchantLevel(damageEvent.defender, this);
-		if(enchantLvl == 0) return damageEvent;
+		int enchantLvl = EnchantManager.getEnchantLevel(attackEvent.defender, this);
+		if(enchantLvl == 0) return;
 
-		if(damageEvent.arrow == null) return damageEvent;
+		if(attackEvent.arrow == null) return;
 
-		if(!(damageEvent.defender.isBlocking())) return damageEvent;
+		if(!(attackEvent.defender.isBlocking())) return;
 
-		damageEvent.defender.getWorld().playSound(damageEvent.defender.getLocation(), Sound.FIZZ, 1f, 1.5f);
-		damageEvent.arrow.getWorld().playEffect(damageEvent.arrow.getLocation(), Effect.EXPLOSION, 0, 30);
+		attackEvent.defender.getWorld().playSound(attackEvent.defender.getLocation(), Sound.FIZZ, 1f, 1.5f);
+		attackEvent.arrow.getWorld().playEffect(attackEvent.arrow.getLocation(), Effect.EXPLOSION, 0, 30);
 
-		damageEvent.defender.setHealth(Math.min(damageEvent.defender.getHealth() + getHealing(enchantLvl), damageEvent.defender.getMaxHealth()));
+		attackEvent.defender.setHealth(Math.min(attackEvent.defender.getHealth() + getHealing(enchantLvl), attackEvent.defender.getMaxHealth()));
 
-		damageEvent.event.setCancelled(true);
-		damageEvent.arrow.remove();
+		attackEvent.event.setCancelled(true);
+		attackEvent.arrow.remove();
 
-
-		return damageEvent;
 	}
 
 	@Override

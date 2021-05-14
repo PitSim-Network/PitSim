@@ -6,6 +6,7 @@ import dev.kyro.pitsim.controllers.DamageEvent;
 import dev.kyro.pitsim.controllers.EnchantManager;
 import dev.kyro.pitsim.controllers.PitEnchant;
 import dev.kyro.pitsim.enums.ApplyType;
+import dev.kyro.pitsim.events.AttackEvent;
 import dev.kyro.pitsim.events.VolleyShootEvent;
 import org.bukkit.Sound;
 import org.bukkit.entity.Arrow;
@@ -23,9 +24,8 @@ public class Volley extends PitEnchant {
 				"volley");
 	}
 
-	@Override
-	public DamageEvent onDamage(DamageEvent damageEvent) {
-		return damageEvent;
+	@EventHandler
+	public void onDamage(AttackEvent.Apply attackEvent) {
 	}
 
 	@EventHandler

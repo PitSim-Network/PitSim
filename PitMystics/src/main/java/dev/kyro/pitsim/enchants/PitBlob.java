@@ -8,6 +8,7 @@ import dev.kyro.pitsim.controllers.DamageManager;
 import dev.kyro.pitsim.controllers.EnchantManager;
 import dev.kyro.pitsim.controllers.PitEnchant;
 import dev.kyro.pitsim.enums.ApplyType;
+import dev.kyro.pitsim.events.AttackEvent;
 import dev.kyro.pitsim.nons.Non;
 import dev.kyro.pitsim.nons.NonManager;
 import org.bukkit.Bukkit;
@@ -103,10 +104,8 @@ public class PitBlob extends PitEnchant {
 		}
 	}
 
-	@Override
-	public DamageEvent onDamage(DamageEvent damageEvent) {
-
-		return damageEvent;
+	@EventHandler
+	public void onDamage(AttackEvent.Apply attackEvent) {
 	}
 
 	@Override

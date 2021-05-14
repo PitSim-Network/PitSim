@@ -4,7 +4,9 @@ import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.pitsim.controllers.DamageEvent;
 import dev.kyro.pitsim.controllers.PitEnchant;
 import dev.kyro.pitsim.enums.ApplyType;
+import dev.kyro.pitsim.events.AttackEvent;
 import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
 
 import java.util.List;
 
@@ -15,15 +17,13 @@ public class PainFocus extends PitEnchant {
 				"painfocus", "pf", "pain-focus");
 	}
 
-	@Override
-	public DamageEvent onDamage(DamageEvent damageEvent) {
+	@EventHandler
+	public void onDamage(AttackEvent.Apply attackEvent) {
 
-		int enchantLvl = damageEvent.getEnchantLevel(this);
-		if(enchantLvl == 0) return damageEvent;
+		int enchantLvl = attackEvent.getEnchantLevel(this);
+		if(enchantLvl == 0) return;
 
-		damageEvent.increasePercent += getDamage(damageEvent.attacker, enchantLvl) / 100;
-
-		return damageEvent;
+		attackEvent.increasePercent += getDamage(attackEvent.attacker, enchantLvl) / 100;
 	}
 
 	@Override

@@ -4,8 +4,10 @@ import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.pitsim.controllers.DamageEvent;
 import dev.kyro.pitsim.controllers.PitEnchant;
 import dev.kyro.pitsim.enums.ApplyType;
+import dev.kyro.pitsim.events.AttackEvent;
 import net.minecraft.server.v1_8_R3.EntityLiving;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftLivingEntity;
+import org.bukkit.event.EventHandler;
 
 import java.util.List;
 
@@ -16,17 +18,15 @@ public class GoldAndBoosted extends PitEnchant {
 				"gab", "gold-and-boosted", "goldandboosted");
 	}
 
-	@Override
-	public DamageEvent onDamage(DamageEvent damageEvent) {
+	@EventHandler
+	public void onDamage(AttackEvent.Apply attackEvent) {
 
-		int enchantLvl = damageEvent.getEnchantLevel(this);
-		if(enchantLvl == 0) return damageEvent;
+		int enchantLvl = attackEvent.getEnchantLevel(this);
+		if(enchantLvl == 0) return;
 
-		EntityLiving nmsPlayer = ((CraftLivingEntity) damageEvent.attacker).getHandle();
-		if(nmsPlayer.getAbsorptionHearts() == 0) return damageEvent;
-		damageEvent.increasePercent += getDamage(enchantLvl) / 100D;
-
-		return damageEvent;
+		EntityLiving nmsPlayer = ((CraftLivingEntity) attackEvent.attacker).getHandle();
+		if(nmsPlayer.getAbsorptionHearts() == 0) return;
+		attackEvent.increasePercent += getDamage(enchantLvl) / 100D;
 	}
 
 	@Override

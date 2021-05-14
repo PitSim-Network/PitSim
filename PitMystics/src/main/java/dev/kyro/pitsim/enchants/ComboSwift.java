@@ -3,7 +3,9 @@ package dev.kyro.pitsim.enchants;
 import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.arcticapi.misc.AUtil;
 import dev.kyro.pitsim.enums.ApplyType;
+import dev.kyro.pitsim.events.AttackEvent;
 import dev.kyro.pitsim.misc.Misc;
+import org.bukkit.event.EventHandler;
 import org.bukkit.potion.PotionEffectType;
 import dev.kyro.pitsim.controllers.DamageEvent;
 import dev.kyro.pitsim.controllers.HitCounter;
@@ -19,20 +21,18 @@ public class ComboSwift extends PitEnchant {
 				"comoswift", "swift", "cs", "combo-swift");
 	}
 
-	@Override
-	public DamageEvent onDamage(DamageEvent damageEvent) {
+	@EventHandler
+	public void onDamage(AttackEvent.Apply attackEvent) {
 
-		int enchantLvl = damageEvent.getEnchantLevel(this);
-		if(enchantLvl == 0) return damageEvent;
+		int enchantLvl = attackEvent.getEnchantLevel(this);
+		if(enchantLvl == 0) return;
 
-		PitPlayer pitPlayer = PitPlayer.getPitPlayer(damageEvent.attacker);
+		PitPlayer pitPlayer = PitPlayer.getPitPlayer(attackEvent.attacker);
 		HitCounter.incrementCounter(pitPlayer.player, this);
-		if(!HitCounter.hasReachedThreshold(pitPlayer.player, this, getCombo(enchantLvl))) return damageEvent;
+		if(!HitCounter.hasReachedThreshold(pitPlayer.player, this, getCombo(enchantLvl))) return;
 
-		Misc.applyPotionEffect(damageEvent.attacker, PotionEffectType.SPEED, (int) (enchantLvl + 2) * 20,
+		Misc.applyPotionEffect(attackEvent.attacker, PotionEffectType.SPEED, (int) (enchantLvl + 2) * 20,
 				getSpeedAmplifier(enchantLvl) - 1, true, false);
-
-		return damageEvent;
 	}
 
 	@Override

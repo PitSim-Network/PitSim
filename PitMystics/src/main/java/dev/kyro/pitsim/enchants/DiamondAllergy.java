@@ -5,7 +5,9 @@ import dev.kyro.pitsim.controllers.DamageEvent;
 import dev.kyro.pitsim.controllers.EnchantManager;
 import dev.kyro.pitsim.controllers.PitEnchant;
 import dev.kyro.pitsim.enums.ApplyType;
+import dev.kyro.pitsim.events.AttackEvent;
 import org.bukkit.Material;
+import org.bukkit.event.EventHandler;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.List;
@@ -17,19 +19,17 @@ public class DiamondAllergy extends PitEnchant {
 				"da", "dallergy", "diamondallergy", "diamond-allergy");
 	}
 
-	@Override
-	public DamageEvent onDamage(DamageEvent damageEvent) {
+	@EventHandler
+	public void onDamage(AttackEvent.Apply attackEvent) {
 
-		int enchantLvl = EnchantManager.getEnchantLevel(damageEvent.defender, this);
-		if(enchantLvl == 0) return damageEvent;
+		int enchantLvl = EnchantManager.getEnchantLevel(attackEvent.defender, this);
+		if(enchantLvl == 0) return;
 
-		ItemStack weapon = damageEvent.attacker.getItemInHand();
-		if(weapon == null) return damageEvent;
-		if(weapon.getType() != Material.DIAMOND_SWORD && weapon.getType() != Material.DIAMOND_SPADE) return damageEvent;
+		ItemStack weapon = attackEvent.attacker.getItemInHand();
+		if(weapon == null) return;
+		if(weapon.getType() != Material.DIAMOND_SWORD && weapon.getType() != Material.DIAMOND_SPADE) return;
 
-		damageEvent.multiplier.add(getDamageMultiplier(enchantLvl));
-
-		return damageEvent;
+		attackEvent.multiplier.add(getDamageMultiplier(enchantLvl));
 	}
 
 	@Override

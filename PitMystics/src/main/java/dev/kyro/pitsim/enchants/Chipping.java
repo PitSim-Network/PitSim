@@ -4,26 +4,26 @@ import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.pitsim.controllers.DamageEvent;
 import dev.kyro.pitsim.controllers.PitEnchant;
 import dev.kyro.pitsim.enums.ApplyType;
+import dev.kyro.pitsim.events.AttackEvent;
 import dev.kyro.pitsim.misc.Misc;
+import org.bukkit.event.EventHandler;
 
 import java.util.List;
 
-public class Chipping extends PitEnchant {
+public class 	Chipping extends PitEnchant {
 
 	public Chipping() {
 		super("Chipping", false, ApplyType.BOWS,
 				"chipping", "chip");
 	}
 
-	@Override
-	public DamageEvent onDamage(DamageEvent damageEvent) {
+	@EventHandler
+	public void onDamage(AttackEvent.Apply attackEvent) {
 
-		int enchantLvl = damageEvent.getEnchantLevel(this);
-		if(enchantLvl == 0 || !damageEvent.arrow.isCritical()) return damageEvent;
+		int enchantLvl = attackEvent.getEnchantLevel(this);
+		if(enchantLvl == 0 || !attackEvent.arrow.isCritical()) return;
 
-		damageEvent.trueDamage += getDamage(enchantLvl);
-
-		return damageEvent;
+		attackEvent.trueDamage += getDamage(enchantLvl);
 	}
 
 	@Override

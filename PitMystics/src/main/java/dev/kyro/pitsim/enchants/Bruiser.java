@@ -5,7 +5,9 @@ import dev.kyro.pitsim.controllers.DamageEvent;
 import dev.kyro.pitsim.controllers.EnchantManager;
 import dev.kyro.pitsim.controllers.PitEnchant;
 import dev.kyro.pitsim.enums.ApplyType;
+import dev.kyro.pitsim.events.AttackEvent;
 import dev.kyro.pitsim.misc.Misc;
+import org.bukkit.event.EventHandler;
 
 import java.util.List;
 
@@ -16,14 +18,12 @@ public class Bruiser extends PitEnchant {
 				"bruiser");
 	}
 
-	@Override
-	public DamageEvent onDamage(DamageEvent damageEvent) {
+	@EventHandler
+	public void onDamage(AttackEvent.Apply attackEvent) {
 
-		int enchantLvl = EnchantManager.getEnchantLevel(damageEvent.defender, this);
-		if(enchantLvl == 0 || !damageEvent.defender.isBlocking()) return damageEvent;
-		damageEvent.decrease += getDamageReduction(enchantLvl);
-
-		return damageEvent;
+		int enchantLvl = EnchantManager.getEnchantLevel(attackEvent.defender, this);
+		if(enchantLvl == 0 || !attackEvent.defender.isBlocking()) return;
+		attackEvent.decrease += getDamageReduction(enchantLvl);
 	}
 
 	@Override

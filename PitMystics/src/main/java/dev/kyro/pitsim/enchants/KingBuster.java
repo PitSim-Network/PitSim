@@ -4,6 +4,8 @@ import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.pitsim.controllers.DamageEvent;
 import dev.kyro.pitsim.controllers.PitEnchant;
 import dev.kyro.pitsim.enums.ApplyType;
+import dev.kyro.pitsim.events.AttackEvent;
+import org.bukkit.event.EventHandler;
 
 import java.util.List;
 
@@ -14,16 +16,14 @@ public class KingBuster extends PitEnchant {
 				"kb", "kingbuster", "kbuster", "king-buster");
 	}
 
-	@Override
-	public DamageEvent onDamage(DamageEvent damageEvent) {
+	@EventHandler
+	public void onDamage(AttackEvent.Apply attackEvent) {
 
-		int enchantLvl = damageEvent.getEnchantLevel(this);
-		if(enchantLvl == 0) return damageEvent;
+		int enchantLvl = attackEvent.getEnchantLevel(this);
+		if(enchantLvl == 0) return;
 
-		if(damageEvent.defender.getHealth() / damageEvent.defender.getMaxHealth() < 0.5) return damageEvent;
-		damageEvent.increasePercent += getDamage(enchantLvl) / 100D;
-
-		return damageEvent;
+		if(attackEvent.defender.getHealth() / attackEvent.defender.getMaxHealth() < 0.5) return;
+		attackEvent.increasePercent += getDamage(enchantLvl) / 100D;
 	}
 
 	@Override

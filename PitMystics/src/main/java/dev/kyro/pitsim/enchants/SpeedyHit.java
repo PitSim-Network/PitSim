@@ -5,7 +5,9 @@ import dev.kyro.pitsim.controllers.Cooldown;
 import dev.kyro.pitsim.controllers.DamageEvent;
 import dev.kyro.pitsim.controllers.PitEnchant;
 import dev.kyro.pitsim.enums.ApplyType;
+import dev.kyro.pitsim.events.AttackEvent;
 import dev.kyro.pitsim.misc.Misc;
+import org.bukkit.event.EventHandler;
 import org.bukkit.potion.PotionEffectType;
 
 import java.util.List;
@@ -17,18 +19,16 @@ public class SpeedyHit extends PitEnchant {
 				"speedyhit", "speedy", "speed", "sh", "speedy-hit");
 	}
 
-	@Override
-	public DamageEvent onDamage(DamageEvent damageEvent) {
+	@EventHandler
+	public void onDamage(AttackEvent.Apply attackEvent) {
 
-		int enchantLvl = damageEvent.getEnchantLevel(this);
-		if(enchantLvl == 0) return damageEvent;
+		int enchantLvl = attackEvent.getEnchantLevel(this);
+		if(enchantLvl == 0) return;
 
-		Cooldown cooldown = getCooldown(damageEvent.attacker,(getCooldown(enchantLvl) * 20));
-		if(cooldown.isOnCooldown()) return damageEvent; else cooldown.reset();
+		Cooldown cooldown = getCooldown(attackEvent.attacker,(getCooldown(enchantLvl) * 20));
+		if(cooldown.isOnCooldown()) return; else cooldown.reset();
 
-		Misc.applyPotionEffect(damageEvent.attacker, PotionEffectType.SPEED, (int) (getDuration(enchantLvl) * 20), 0, true, false);
-
-		return damageEvent;
+		Misc.applyPotionEffect(attackEvent.attacker, PotionEffectType.SPEED, (int) (getDuration(enchantLvl) * 20), 0, true, false);
 	}
 
 	@Override

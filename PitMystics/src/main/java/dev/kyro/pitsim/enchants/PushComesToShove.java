@@ -3,6 +3,8 @@ package dev.kyro.pitsim.enchants;
 import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.arcticapi.misc.AUtil;
 import dev.kyro.pitsim.enums.ApplyType;
+import dev.kyro.pitsim.events.AttackEvent;
+import org.bukkit.event.EventHandler;
 import org.bukkit.util.Vector;
 import dev.kyro.pitsim.controllers.DamageEvent;
 import dev.kyro.pitsim.controllers.HitCounter;
@@ -18,23 +20,21 @@ public class PushComesToShove extends PitEnchant {
 				"pushcomestoshove", "push-comes-to-shove", "pcts");
 	}
 
-	@Override
-	public DamageEvent onDamage(DamageEvent damageEvent) {
+	@EventHandler
+	public void onDamage(AttackEvent.Apply attackEvent) {
 
-		if(damageEvent.arrow == null) return damageEvent;
-		int enchantLvl = damageEvent.getEnchantLevel(this);
-		if(enchantLvl == 0) return damageEvent;
-		PitPlayer pitPlayer = PitPlayer.getPitPlayer(damageEvent.attacker);
+		if(attackEvent.arrow == null) return;
+		int enchantLvl = attackEvent.getEnchantLevel(this);
+		if(enchantLvl == 0) return;
+		PitPlayer pitPlayer = PitPlayer.getPitPlayer(attackEvent.attacker);
 		HitCounter.incrementCounter(pitPlayer.player, this);
 
-		if(!HitCounter.hasReachedThreshold(pitPlayer.player, this, 3)) return damageEvent;
+		if(!HitCounter.hasReachedThreshold(pitPlayer.player, this, 3)) return;
 
-		Vector velocity = damageEvent.arrow.getVelocity().normalize().multiply(getPunchLevel(enchantLvl) * 2.35);
+		Vector velocity = attackEvent.arrow.getVelocity().normalize().multiply(getPunchLevel(enchantLvl) * 2.35);
 		velocity.setY(0);
 
-		damageEvent.defender.setVelocity(velocity);
-
-		return damageEvent;
+		attackEvent.defender.setVelocity(velocity);
 	}
 
 	@Override

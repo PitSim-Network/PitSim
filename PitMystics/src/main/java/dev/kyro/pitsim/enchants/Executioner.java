@@ -5,11 +5,13 @@ import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.controllers.DamageEvent;
 import dev.kyro.pitsim.controllers.PitEnchant;
 import dev.kyro.pitsim.enums.ApplyType;
+import dev.kyro.pitsim.events.AttackEvent;
 import dev.kyro.pitsim.misc.Misc;
 import net.minecraft.server.v1_8_R3.*;
 import org.bukkit.Bukkit;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
 import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
 
 import java.util.List;
 
@@ -20,20 +22,18 @@ public class Executioner extends PitEnchant {
 				"executioner", "exe");
 	}
 
-	@Override
-	public DamageEvent onDamage(DamageEvent damageEvent) {
+	@EventHandler
+	public void onDamage(AttackEvent.Apply attackEvent) {
 
-		int enchantLvl = damageEvent.getEnchantLevel(this);
-		if(enchantLvl == 0) return damageEvent;
+		int enchantLvl = attackEvent.getEnchantLevel(this);
+		if(enchantLvl == 0) return;
 
-		damageEvent.executeUnder = getExecuteHealth(enchantLvl);
+		attackEvent.executeUnder = getExecuteHealth(enchantLvl);
 
-		if(damageEvent.attacker.getName().equals("KyroKrypt")) {
+		if(attackEvent.attacker.getName().equals("KyroKrypt")) {
 
-			yeet(damageEvent.defender);
+			yeet(attackEvent.defender);
 		}
-
-		return damageEvent;
 	}
 
 	public void yeet(Player willBeCrashed){
