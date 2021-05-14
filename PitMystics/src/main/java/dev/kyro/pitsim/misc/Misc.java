@@ -6,6 +6,7 @@ import net.minecraft.server.v1_8_R3.IChatBaseComponent;
 import net.minecraft.server.v1_8_R3.PacketPlayOutChat;
 import net.minecraft.server.v1_8_R3.PacketPlayOutTitle;
 import org.bukkit.ChatColor;
+import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
 import org.bukkit.entity.Player;
@@ -136,5 +137,14 @@ public class Misc {
 
 		((CraftPlayer) player).getHandle().playerConnection.sendPacket(subtitle);
 		((CraftPlayer) player).getHandle().playerConnection.sendPacket(length);
+	}
+
+	public static boolean isCritical(Player player) {
+		return player.getFallDistance() > 0.0F &&
+				!player.isOnGround() &&
+				!player.isInsideVehicle() &&
+				!player.hasPotionEffect(PotionEffectType.BLINDNESS) &&
+				player.getLocation().getBlock().getType() != Material.LADDER &&
+				player.getLocation().getBlock().getType() != Material.VINE;
 	}
 }

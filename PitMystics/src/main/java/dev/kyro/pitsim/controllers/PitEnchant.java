@@ -28,9 +28,20 @@ public abstract class PitEnchant implements Listener {
 		this.applyType = applyType;
 	}
 
-	public DamageEvent onAttack(DamageEvent damageEvent) { return damageEvent; }
 	public abstract List<String> getDescription(int enchantLvl);
 	public void onDisable() {}
+
+	public boolean canAttack(AttackEvent.Apply attackEvent) {
+
+//		Skip if fake hit and enchant doesn't handle fake hits
+		if(!fakeHits && attackEvent.fakeHit) return false;
+//		Skip enchant application if the enchant is a bow enchant and is used in mele
+		if(applyType == ApplyType.BOWS && attackEvent.arrow == null) return false;
+//		Skips enchant application if the enchant only works on mele hit and the event is from an arrow
+		if(meleOnly && attackEvent.arrow != null) return false;
+
+		return true;
+	}
 
 	public Cooldown getCooldown(Player player, int time) {
 
