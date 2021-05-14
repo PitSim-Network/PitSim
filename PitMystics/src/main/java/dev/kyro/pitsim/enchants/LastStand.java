@@ -5,7 +5,6 @@ import dev.kyro.pitsim.controllers.PitEnchant;
 import dev.kyro.pitsim.enums.ApplyType;
 import dev.kyro.pitsim.events.AttackEvent;
 import dev.kyro.pitsim.misc.Misc;
-import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
 import org.bukkit.potion.PotionEffectType;
 
@@ -26,7 +25,6 @@ public class LastStand extends PitEnchant {
 		if(enchantLvl == 0) return;
 
 		if(attackEvent.defender.getHealth() - attackEvent.getFinalDamage() <= 6) {
-			Bukkit.broadcastMessage("6 or below!");
 			Misc.applyPotionEffect(attackEvent.defender, PotionEffectType.DAMAGE_RESISTANCE, getSeconds(enchantLvl)
 					* 20, getAmplifier(enchantLvl) - 1, false, false);
 		}

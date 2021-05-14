@@ -18,7 +18,7 @@ public class NewDeal extends PitEnchant {
 	}
 
 	@EventHandler
-	public void onAttack(AttackEvent.Apply attackEvent) {
+	public void onAttack(AttackEvent.Pre attackEvent) {
 		if(!canAttack(attackEvent)) return;
 
 		int enchantLvl = attackEvent.getDefenderEnchantLevel(this);
@@ -28,6 +28,17 @@ public class NewDeal extends PitEnchant {
 		int billLevel = attackEvent.getAttackerEnchantLevel(bill);
 
 		if(billLevel != 0) attackEvent.getAttackerEnchantMap().remove(bill);
+	}
+
+	@EventHandler
+	public void onAttack(AttackEvent.Apply attackEvent) {
+		if(!canAttack(attackEvent)) return;
+
+		int enchantLvl = attackEvent.getDefenderEnchantLevel(this);
+		if(enchantLvl == 0) return;
+
+		PitEnchant bill = EnchantManager.getEnchant("billionaire");
+		int billLevel = attackEvent.getAttackerEnchantLevel(bill);
 
 		attackEvent.multiplier.add(Misc.getReductionMultiplier(getDamageReduction(enchantLvl)));
 	}

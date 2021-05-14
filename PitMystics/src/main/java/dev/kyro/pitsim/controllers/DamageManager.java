@@ -82,7 +82,6 @@ public class DamageManager implements Listener {
 			return;
 		}
 //		Regular player to player hit
-		Bukkit.broadcastMessage(Regularity.toReg.contains(defender.getUniqueId()) + "");
 		if(attackingNon == null && !Regularity.toReg.contains(defender.getUniqueId())) {
 			fakeHit = hitCooldownList.contains(defender);
 		}
