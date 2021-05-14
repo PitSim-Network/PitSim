@@ -1,10 +1,8 @@
 package dev.kyro.pitsim.enchants;
 
 import dev.kyro.arcticapi.builders.ALoreBuilder;
-import dev.kyro.pitsim.PitSim;
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.PitSim;
-import dev.kyro.pitsim.controllers.DamageEvent;
 import dev.kyro.pitsim.controllers.EnchantManager;
 import dev.kyro.pitsim.controllers.PitEnchant;
 import dev.kyro.pitsim.enums.ApplyType;
@@ -74,8 +72,6 @@ public class LuckyShot extends PitEnchant {
 				}
 			}
 		}.runTaskTimer(PitSim.INSTANCE, 0L, 0L);
-
-		}.runTaskTimer(PitSim.INSTANCE, 0L, 1L);
 	}
 
 	@EventHandler(priority = EventPriority.LOW)
