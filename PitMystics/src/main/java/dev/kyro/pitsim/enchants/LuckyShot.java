@@ -1,7 +1,7 @@
 package dev.kyro.pitsim.enchants;
 
 import dev.kyro.arcticapi.builders.ALoreBuilder;
-import dev.kyro.pitsim.PitRemake;
+import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.controllers.DamageEvent;
 import dev.kyro.pitsim.controllers.EnchantManager;
 import dev.kyro.pitsim.controllers.PitEnchant;
@@ -32,10 +32,8 @@ public class LuckyShot extends PitEnchant {
 		int enchantLvl = damageEvent.getEnchantLevel(this);
 		if(enchantLvl == 0) return damageEvent;
 
-
 		return damageEvent;
 	}
-
 
 	@EventHandler
 	public void onShoot(EntityShootBowEvent event) {
@@ -58,13 +56,9 @@ public class LuckyShot extends PitEnchant {
 					Arrow arrow = luckyShots.get(i);
 					arrow.getWorld().playEffect(arrow.getLocation(), Effect.COLOURED_DUST, 0, 30);
 				}
-
 			}
-		}.runTaskTimer(PitRemake.INSTANCE, 0L, 1L);
-
+		}.runTaskTimer(PitSim.INSTANCE, 0L, 1L);
 	}
-
-
 
 	@Override
 	public List<String> getDescription(int enchantLvl) {
