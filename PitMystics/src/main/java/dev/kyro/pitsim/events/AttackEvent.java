@@ -111,4 +111,12 @@ public class AttackEvent extends Event {
 
 		return attackerEnchantMap.getOrDefault(pitEnchant, 0);
 	}
+
+	public Map<PitEnchant, Integer> getAttackerEnchantMap() {
+		return attackerEnchantMap;
+	}
+
+	public Map<PitEnchant, Integer> getDefenderEnchantMap() {
+		return defenderEnchantMap;
+	}
 }

@@ -39,7 +39,7 @@ public class Peroxide extends PitEnchant {
 	public List<String> getDescription(int enchantLvl) {
 
 		return new ALoreBuilder("&7Gain &cRegen " + AUtil.toRoman(getAmplifier(enchantLvl)) + " &7(" +
-				getDuration(enchantLvl) + "&7s) when hit").getLore();
+				getDuration(enchantLvl)/20 + "&7s) when hit").getLore();
 	}
 
 	public int getAmplifier(int enchantLvl) {

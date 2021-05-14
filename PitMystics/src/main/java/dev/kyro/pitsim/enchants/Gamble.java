@@ -16,7 +16,7 @@ public class Gamble extends PitEnchant {
 
 	public Gamble() {
 		super("Gamble", true, ApplyType.SWORDS,
-				"gamble");
+				"gamble", "gam");
 	}
 
 	@EventHandler
