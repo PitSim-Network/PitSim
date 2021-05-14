@@ -179,6 +179,7 @@ public class DamageManager implements Listener {
 
 		if(damager instanceof Player) return (Player) damager;
 		if(damager instanceof Arrow) return (Player) ((Arrow) damager).getShooter();
+		if(damager instanceof Slime) return PitBlob.getOwner((Slime) damager);
 
 		return null;
 	}
