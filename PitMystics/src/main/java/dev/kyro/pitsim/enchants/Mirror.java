@@ -1,12 +1,11 @@
 package dev.kyro.pitsim.enchants;
 
 import dev.kyro.arcticapi.builders.ALoreBuilder;
-import dev.kyro.pitsim.controllers.EnchantManager;
 import dev.kyro.pitsim.controllers.PitEnchant;
 import dev.kyro.pitsim.enums.ApplyType;
 import dev.kyro.pitsim.events.AttackEvent;
-import dev.kyro.pitsim.misc.Misc;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 
 import java.util.List;
 
@@ -17,50 +16,47 @@ public class Mirror extends PitEnchant {
 				"mirror", "mir");
 	}
 
-	@EventHandler
+	@EventHandler(priority = EventPriority.HIGH)
 	public void onAttack(AttackEvent.Apply attackEvent) {
 		if(!canAttack(attackEvent)) return;
 
-		int enchantLvl = EnchantManager.getEnchantLevel(attackEvent.defender, this);
-		if(enchantLvl == 0) return;
+		int attackerEnchantLvl = attackEvent.getAttackerEnchantLevel(this);
+		int defenderEnchantLvl = attackEvent.getDefenderEnchantLevel(this);
+		if(attackerEnchantLvl == 0 && defenderEnchantLvl == 0) return;
 
-		PitEnchant perun = EnchantManager.getEnchant("perun");
-		PitEnchant gamble = EnchantManager.getEnchant("gamble");
-		PitEnchant mirror = EnchantManager.getEnchant("mirror");
+//		If just opponent has mirror
+		if(defenderEnchantLvl != 0) {
 
-		int perunLevel = EnchantManager.getEnchantLevel(attackEvent.getAttackerEnchantMap(), perun);
-		int gambleLevel = EnchantManager.getEnchantLevel(attackEvent.getAttackerEnchantMap(), gamble);
-		int mirrorLevel = EnchantManager.getEnchantLevel(attackEvent.getAttackerEnchantMap(), mirror);
+			double trueDamage = attackEvent.trueDamage;
+			trueDamage *= getReflectionPercent(defenderEnchantLvl) / 100;
+			attackEvent.trueDamage = 0;
+			if(attackerEnchantLvl == 0) attackEvent.selfTrueDamage += trueDamage;
+		}
 
-		if(billLevel != 0) attackEvent.getAttackerEnchantMap().remove(bill);
-
-		attackEvent.multiplier.add(Misc.getReductionMultiplier(getDamageReduction(enchantLvl)));
+		attackEvent.selfTrueDamage = 0;
 	}
 
 	@Override
 	public List<String> getDescription(int enchantLvl) {
 
-	if(enchantLvl == 0) {
-		return new ALoreBuilder("&7You are immune to &6Billionaire").getLore();
-	} else {
-		return new ALoreBuilder("&7Receive &9-" + Misc.roundString(getDamageReduction(enchantLvl)) + "% &7damage and you are",
-				"&7immune to &6Billionaire").getLore();
+		if(enchantLvl == 1) {
+			return new ALoreBuilder("&7You are immune to true damage").getLore();
+		} else {
+			return new ALoreBuilder("&7You do not take true damage and",
+					"&7instead reflect &e" + getReflectionPercent(enchantLvl) + "&7% of it to", "&7your attacker").getLore();
+		}
 	}
 
-	}
-
-	public double getDamageReduction(int enchantLvl) {
+	public double getReflectionPercent(int enchantLvl) {
 		switch(enchantLvl) {
 			case 1:
 				return 0;
 			case 2:
-				return 4;
+				return 25;
 			case 3:
-				return 8;
+				return 50;
 
 		}
-
 		return 0;
-
 	}
 }
