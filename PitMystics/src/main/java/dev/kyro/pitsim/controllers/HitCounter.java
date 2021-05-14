@@ -24,4 +24,27 @@ public class HitCounter {
 		pitPlayer.enchantHits.put(pitEnchant, 0);
 		return true;
 	}
+
+	public static void incrementCharge(Player player, PitEnchant pitEnchant) {
+
+		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
+		pitPlayer.enchantCharge.putIfAbsent(pitEnchant, 0);
+		Integer currentCharge = pitPlayer.enchantCharge.get(pitEnchant);
+
+		pitPlayer.enchantCharge.put(pitEnchant, currentCharge + 1);
+	}
+
+	public static int getCharge(Player player, PitEnchant pitEnchant) {
+
+		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
+		pitPlayer.enchantCharge.putIfAbsent(pitEnchant, 0);
+
+		return pitPlayer.enchantCharge.get(pitEnchant);
+	}
+
+	public static void setCharge(Player player, PitEnchant pitEnchant, int charge) {
+
+		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
+		pitPlayer.enchantCharge.put(pitEnchant, charge);
+	}
 }

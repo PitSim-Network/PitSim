@@ -8,6 +8,7 @@ import org.bukkit.entity.Player;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class PitPlayer {
 
@@ -19,7 +20,8 @@ public class PitPlayer {
 	public List<Killstreak> killstreaks = new ArrayList<>();
 	public Megastreak megastreak;
 
-	public HashMap<PitEnchant, Integer> enchantHits = new HashMap<>();
+	public Map<PitEnchant, Integer> enchantHits = new HashMap<>();
+	public Map<PitEnchant, Integer> enchantCharge = new HashMap<>();
 
 	private PitPlayer(Player player) {
 		this.player = player;

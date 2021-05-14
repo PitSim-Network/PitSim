@@ -112,7 +112,7 @@ public class EnchantManager {
 
 	public static PitEnchant getEnchant(String refName) {
 
-		for(PitEnchant enchant : EnchantManager.pitEnchants) {
+		for(PitEnchant enchant : pitEnchants) {
 
 			if(!enchant.refNames.contains(refName)) continue;
 			return enchant;
@@ -150,7 +150,12 @@ public class EnchantManager {
 		if(!nbtItem.hasKey(NBTTag.ITEM_UUID.getRef())) return 0;
 
 		Map<PitEnchant, Integer> itemEnchantMap = getEnchantsOnItem(itemStack);
-		for(Map.Entry<PitEnchant, Integer> entry : itemEnchantMap.entrySet()) {
+		return getEnchantLevel(itemEnchantMap, pitEnchant);
+	}
+
+	public static int getEnchantLevel(Map<PitEnchant, Integer> enchantMap, PitEnchant pitEnchant) {
+
+		for(Map.Entry<PitEnchant, Integer> entry : enchantMap.entrySet()) {
 
 			if(entry.getKey() != pitEnchant) continue;
 			return entry.getValue();

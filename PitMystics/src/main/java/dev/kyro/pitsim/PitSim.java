@@ -108,6 +108,7 @@ public class PitSim extends JavaPlugin {
 		getServer().getPluginManager().registerEvents(new DamageManager(), this);
 		getServer().getPluginManager().registerEvents(new NonManager(), this);
 		getServer().getPluginManager().registerEvents(new PlayerManager(), this);
+		getServer().getPluginManager().registerEvents(new ChatManager(), this);
 	}
 
 	private void loadConfig() {
