@@ -32,7 +32,7 @@ public class HeighHo extends PitEnchant {
 	@Override
 	public List<String> getDescription(int enchantLvl) {
 
-		return new ALoreBuilder("&7Deal &c+" + getDamage(enchantLvl) + "% &7melee damage").getLore();
+		return new ALoreBuilder("&7Deal &c+" + getDamage(enchantLvl) + " &7damage against", "&fMirror &7wearers").getLore();
 	}
 
 	public int getDamage(int enchantLvl) {
