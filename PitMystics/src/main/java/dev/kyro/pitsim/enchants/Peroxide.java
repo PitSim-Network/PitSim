@@ -1,12 +1,12 @@
 package dev.kyro.pitsim.enchants;
 
 import dev.kyro.arcticapi.builders.ALoreBuilder;
+import dev.kyro.pitsim.controllers.Cooldown;
 import dev.kyro.pitsim.controllers.EnchantManager;
 import dev.kyro.pitsim.controllers.PitEnchant;
 import dev.kyro.pitsim.enums.ApplyType;
 import dev.kyro.pitsim.events.AttackEvent;
 import dev.kyro.pitsim.misc.Misc;
-import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
 import org.bukkit.potion.PotionEffectType;
 
@@ -25,8 +25,11 @@ public class Peroxide extends PitEnchant {
 		int enchantLvl = EnchantManager.getEnchantLevel(attackEvent.defender, this);
 		if(enchantLvl == 0) return;
 
-		Misc.applyPotionEffect(attackEvent.defender, PotionEffectType.REGENERATION, getSeconds(enchantLvl)
-				* 20, getAmplifier(enchantLvl) - 1, false, false);
+		Cooldown cooldown = getCooldown(attackEvent.attacker, getCooldown(enchantLvl));
+		if(cooldown.isOnCooldown()) return; else cooldown.reset();
+
+		Misc.applyPotionEffect(attackEvent.defender, PotionEffectType.REGENERATION, getDuration(enchantLvl),
+				getAmplifier(enchantLvl) - 1, false, false);
 
 	}
 
@@ -39,29 +42,35 @@ public class Peroxide extends PitEnchant {
 	public int getAmplifier(int enchantLvl) {
 		switch(enchantLvl) {
 			case 1:
-				return 1;
 			case 2:
 				return 1;
 			case 3:
 				return 2;
-
 		}
-
 		return 0;
-
 	}
 
-	public int getSeconds(int enchantLvl) {
+	public int getDuration(int enchantLvl) {
 		switch(enchantLvl) {
 			case 1:
-				return 5;
+				return 99;
 			case 2:
-				return 8;
+				return 149;
 			case 3:
-				return 8;
-
+				return 149;
 		}
+		return 0;
+	}
 
+	public int getCooldown(int enchantLvl) {
+		switch(enchantLvl) {
+			case 1:
+				return 51;
+			case 2:
+				return 51;
+			case 3:
+				return 51;
+		}
 		return 0;
 	}
 }
