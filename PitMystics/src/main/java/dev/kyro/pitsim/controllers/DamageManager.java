@@ -126,12 +126,16 @@ public class DamageManager implements Listener {
 		}
 		AttackEvent.Apply applyEvent = new AttackEvent.Apply(preEvent);
 		Bukkit.getServer().getPluginManager().callEvent(applyEvent);
+		if(applyEvent.fakeHit) {
+			applyEvent.event.setDamage(0);
+			return;
+		}
 		handleAttack(applyEvent);
 		Bukkit.getServer().getPluginManager().callEvent(new AttackEvent.Post(applyEvent));
 	}
 
 	public static void handleAttack(AttackEvent.Apply attackEvent) {
-		AOutput.send(attackEvent.attacker, "Initial Damage: " + attackEvent.event.getDamage());
+//		AOutput.send(attackEvent.attacker, "Initial Damage: " + attackEvent.event.getDamage());
 
 //		As strong as iron
 		if(attackEvent.defender.getInventory().getLeggings() != null && attackEvent.defender.getInventory().getLeggings().getType() == Material.LEATHER_LEGGINGS) {
@@ -168,8 +172,8 @@ public class DamageManager implements Listener {
 		}
 //		}
 
-		AOutput.send(attackEvent.attacker, "Final Damage: " + attackEvent.event.getDamage());
-		AOutput.send(attackEvent.attacker, "Final Damage: " + attackEvent.event.getFinalDamage());
+//		AOutput.send(attackEvent.attacker, "Final Damage: " + attackEvent.event.getDamage());
+//		AOutput.send(attackEvent.attacker, "Final Damage: " + attackEvent.event.getFinalDamage());
 
 		if(attackEvent.event.getFinalDamage() >= attackEvent.defender.getHealth()) {
 

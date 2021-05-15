@@ -39,7 +39,7 @@ public class RetroGravityMicrocosm extends PitEnchant {
 		if(attackerEnchantLvl >= 2) {
 
 			int charge = getCharge(attackEvent.attacker, attackEvent.defender);
-			attackEvent.increase += charge * 3;
+			attackEvent.increase += Math.min(charge, 5);
 		}
 		if(defenderEnchantLvl != 0) {
 			if(attackEvent.attacker.getLocation().add(0, -0.1, 0).getBlock().getType() != Material.AIR) return;
@@ -50,6 +50,13 @@ public class RetroGravityMicrocosm extends PitEnchant {
 			int charge = getCharge(attackEvent.defender, attackEvent.attacker);
 			setCharge(attackEvent.defender, attackEvent.attacker, ++charge);
 
+			if(defenderEnchantLvl >= 1) {
+				attackEvent.defender.setHealth(Math.min(attackEvent.defender.getHealth() + 2.5, attackEvent.defender.getMaxHealth()));
+			}
+			if(defenderEnchantLvl >= 3) {
+				attackEvent.selfTrueDamage += 0.5;
+			}
+
 			new BukkitRunnable() {
 				@Override
 				public void run() {
@@ -58,7 +65,7 @@ public class RetroGravityMicrocosm extends PitEnchant {
 				}
 			}.runTaskLater(PitSim.INSTANCE, 30 * 20);
 
-			AOutput.send(attackEvent.defender, "RGM proced against " + attackEvent.attacker.getName() + " [" + (charge + 1) + "x]");
+			AOutput.send(attackEvent.defender, "&d&lRGM!&7 Procced against " + attackEvent.attacker.getName() + " &8(" + Math.min(charge, 5) + "x)");
 			ASound.play(attackEvent.defender, Sound.ENDERMAN_HIT, 1F, 1F);
 			ASound.play(attackEvent.attacker, Sound.ENDERMAN_HIT, 1F, 1F);
 		}
