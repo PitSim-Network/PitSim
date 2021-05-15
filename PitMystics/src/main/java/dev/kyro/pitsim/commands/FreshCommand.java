@@ -59,7 +59,7 @@ public class FreshCommand implements CommandExecutor {
 			assert pantColor != null;
 
 			itemStack = new AItemStackBuilder(Material.LEATHER_LEGGINGS)
-					.setName(pantColor.chatColor + "Fresh Blue Pants")
+					.setName(pantColor.chatColor + "Fresh " + pantColor.refName + " Pants")
 					.setLore(new ALoreBuilder("&7Kept on death", "&f", "&f",
 							pantColor.chatColor + "Used in the mystic well", pantColor.chatColor + "Also, a fashion statement"))
 					.addUnbreakable(true).getItemStack();
