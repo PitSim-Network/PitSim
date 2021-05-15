@@ -105,6 +105,9 @@ public class PitSim extends JavaPlugin {
 		EnchantManager.registerEnchant(new GoldenHeart());
 		EnchantManager.registerEnchant(new RetroGravityMicrocosm());
 		EnchantManager.registerEnchant(new Mirror());
+		EnchantManager.registerEnchant(new LastStand());
+		EnchantManager.registerEnchant(new Booboo());
+		EnchantManager.registerEnchant(new CriticallyFunky());
 
 //		Resource Enchants
 		EnchantManager.registerEnchant(new Moctezuma());
