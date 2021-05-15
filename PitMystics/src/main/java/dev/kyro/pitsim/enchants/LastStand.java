@@ -1,6 +1,8 @@
 package dev.kyro.pitsim.enchants;
 
 import dev.kyro.arcticapi.builders.ALoreBuilder;
+import dev.kyro.arcticapi.misc.AUtil;
+import dev.kyro.pitsim.controllers.Cooldown;
 import dev.kyro.pitsim.controllers.PitEnchant;
 import dev.kyro.pitsim.enums.ApplyType;
 import dev.kyro.pitsim.events.AttackEvent;
@@ -18,13 +20,16 @@ public class LastStand extends PitEnchant {
 	}
 
 	@EventHandler
-	public void onAttack(AttackEvent.Apply attackEvent	) {
+	public void onAttack(AttackEvent.Post attackEvent	) {
 		if(!canAttack(attackEvent)) return;
 
 		int enchantLvl = attackEvent.getDefenderEnchantLevel(this);
 		if(enchantLvl == 0) return;
 
-		if(attackEvent.defender.getHealth() - attackEvent.getFinalDamage() <= 6) {
+		Cooldown cooldown = getCooldown(attackEvent.attacker, 10 * 20);
+		if(cooldown.isOnCooldown()) return; else cooldown.reset();
+
+		if(attackEvent.defender.getHealth() - attackEvent.event.getFinalDamage() <= 6) {
 			Misc.applyPotionEffect(attackEvent.defender, PotionEffectType.DAMAGE_RESISTANCE, getSeconds(enchantLvl)
 					* 20, getAmplifier(enchantLvl) - 1, false, false);
 		}
@@ -33,7 +38,8 @@ public class LastStand extends PitEnchant {
 	@Override
 	public List<String> getDescription(int enchantLvl) {
 
-		return new ALoreBuilder("&7Receive &9-" + Misc.roundString(getAmplifier(enchantLvl)) + "% &7damage").getLore();
+		return new ALoreBuilder("&7Gain &9Resistance " + AUtil.toRoman(getAmplifier(enchantLvl)) + " &7("
+		+ getSeconds(enchantLvl) + " &7seconds)", "&7when reaching &c3\u2764").getLore();
 	}
 
 	public int getAmplifier(int enchantLvl) {
