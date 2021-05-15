@@ -1,19 +1,15 @@
 package dev.kyro.pitsim.enchants;
 
 import dev.kyro.arcticapi.builders.ALoreBuilder;
-import dev.kyro.pitsim.PitSim;
+import dev.kyro.arcticapi.events.armor.AChangeEquipmentEvent;
 import dev.kyro.pitsim.controllers.EnchantManager;
 import dev.kyro.pitsim.controllers.PitEnchant;
 import dev.kyro.pitsim.enums.ApplyType;
-import dev.kyro.pitsim.events.AttackEvent;
-import dev.kyro.pitsim.misc.Misc;
-import org.bukkit.Bukkit;
-import org.bukkit.Effect;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
-import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.List;
+import java.util.Map;
 
 public class GottaGoFast extends PitEnchant {
 	public static GottaGoFast INSTANCE;
@@ -25,43 +21,41 @@ public class GottaGoFast extends PitEnchant {
 	}
 
 	@EventHandler
-	public void onAttack(AttackEvent.Apply attackEvent) {
-		if(!canAttack(attackEvent)) return;
+	public void onArmorEquip(AChangeEquipmentEvent event) {
 
-		int enchantLvl = attackEvent.getDefenderEnchantLevel(this);
+		Player player = event.getPlayer();
 
-		attackEvent.multiplier.add(Misc.getReductionMultiplier(getDamageReduction(enchantLvl)));
-	}
+		Map<PitEnchant, Integer> enchantMap = EnchantManager.getEnchantsOnPlayer(player);
+		int enchantLvl = enchantMap.getOrDefault(this, 0);
 
-	static {
-		new BukkitRunnable() {
-			@Override
-			public void run() {
-				for(Player player : Bukkit.getOnlinePlayers()) {
-					int level = EnchantManager.getEnchantLevel(player, INSTANCE);
+		Map<PitEnchant, Integer> oldEnchantMap = EnchantManager.getEnchantsOnPlayer(event.getPreviousArmor());
+		int oldEnchantLvl = oldEnchantMap.getOrDefault(this, 0);
 
-					if(level == 0) player.setWalkSpeed(0.2F);
-					if(level == 1) player.setWalkSpeed(0.2F + (0.2F * 0.04F));
-					if(level == 2) player.setWalkSpeed(0.2F + (0.2F * 0.1F));
-					if(level == 3) player.setWalkSpeed(0.2F + (0.2F * 0.2F));
+		if(enchantLvl != oldEnchantLvl) {
 
-					if(level != 0) {
-						player.getWorld().spigot().playEffect(player.getLocation().subtract(0, 1, 0),
-								Effect.SMOKE, 0, 0, (float) 0.5, (float) 0.5, (float) 0.5, (float) 0.01, 20, 50);
-					}
-				}
-			}
-		}.runTaskTimer(PitSim.INSTANCE, 0L, 20L);
+			player.setWalkSpeed(getWalkSpeed(enchantLvl));
+		}
 	}
 
 	@Override
 	public List<String> getDescription(int enchantLvl) {
 
-		return new ALoreBuilder("&7Receive &9-" + Misc.roundString(getDamageReduction(enchantLvl)) + "% &7damage").getLore();
+		return new ALoreBuilder("&7Receive% &7damage").getLore();
 	}
 
-	public double getDamageReduction(int enchantLvl) {
+//	TODO: GTGF equation
+	public float getWalkSpeed(int enchantLvl) {
 
-		return (int) Math.floor(Math.pow(enchantLvl, 1.3) * 2) + 2;
+		switch(enchantLvl) {
+			case 0:
+				return 0.2F;
+			case 1:
+				return 0.2F + (0.2F * 0.04F);
+			case 2:
+				return 0.2F + (0.2F * 0.1F);
+			case 3:
+				return 0.2F + (0.2F * 0.2F);
+		}
+		return 0.2F;
 	}
 }
