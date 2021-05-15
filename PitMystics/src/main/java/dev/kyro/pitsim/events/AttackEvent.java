@@ -98,6 +98,18 @@ public class AttackEvent extends Event {
 			damage -= decrease;
 			return Math.max(damage, 0);
 		}
+
+		public double getFinalDamageIncrease() {
+
+			double damage = event.getDamage();
+			damage += increase;
+			damage *= 1 + increasePercent;
+			for(double multiplier : multiplier) {
+				if(multiplier < 1) continue;
+				damage *= multiplier;
+			}
+			return Math.max(damage, 0);
+		}
 	}
 
 	public static class Post extends AttackEvent {

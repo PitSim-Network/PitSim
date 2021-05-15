@@ -28,7 +28,7 @@ public class ComboPerun extends PitEnchant {
 
 		PitPlayer pitPlayer = PitPlayer.getPitPlayer(attackEvent.attacker);
 		HitCounter.incrementCounter(pitPlayer.player, this);
-		if(!HitCounter.hasReachedThreshold(pitPlayer.player, this, getStrikes(enchantLvl))) return;
+		if(!HitCounter.hasReachedThreshold(pitPlayer.player, this, enchantLvl == 3 ? 4 : getStrikes(enchantLvl))) return;
 
 		if(enchantLvl == 3) {
 			int diamondpeices = 0;

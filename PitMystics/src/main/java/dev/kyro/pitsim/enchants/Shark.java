@@ -8,7 +8,6 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class Shark extends PitEnchant {
@@ -26,13 +25,13 @@ public class Shark extends PitEnchant {
 		if(enchantLvl == 0) return;
 
 		List<Entity> entityList = attackEvent.attacker.getNearbyEntities(12, 12, 12);
-		List<Player> playerList = new ArrayList<>();
+		int nearby = 0;
 
 		for(Entity entity : entityList) {
-			if(entity instanceof Player && ((Player) entity).getHealth() < 12) playerList.add((Player) entity);
+			if(entity instanceof Player && ((Player) entity).getHealth() < 12) nearby++;
 		}
 
-		attackEvent.increasePercent += (getDamage(enchantLvl) / 100D)* playerList.size();
+		attackEvent.increasePercent += (getDamage(enchantLvl) / 100D) * nearby;
 	}
 
 	@Override

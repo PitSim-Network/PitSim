@@ -25,14 +25,14 @@ public class GoldenHeart extends PitEnchant {
 		if(enchantLvl == 0) return;
 
 		EntityPlayer nmsPlayer = ((CraftPlayer) killEvent.attacker).getHandle();
-		if(nmsPlayer.getAbsorptionHearts() < 6) nmsPlayer.setAbsorptionHearts(Math.min((float) (nmsPlayer.getAbsorptionHearts() + getEffect(enchantLvl)), 6));
+		if(nmsPlayer.getAbsorptionHearts() < 12) nmsPlayer.setAbsorptionHearts(Math.min((float) (nmsPlayer.getAbsorptionHearts() + getEffect(enchantLvl)), 12));
 	}
 
 	@Override
 	public List<String> getDescription(int enchantLvl) {
 
 		return new ALoreBuilder("&7gain &6+" + Misc.getHearts(getEffect(enchantLvl)) + " &7absorption on kill",
-				"&7(max &7" + Misc.getHearts(6) + "&7)").getLore();
+				"&7(max &6" + Misc.getHearts(12) + "&7)").getLore();
 	}
 
 	public double getEffect(int enchantLvl) {

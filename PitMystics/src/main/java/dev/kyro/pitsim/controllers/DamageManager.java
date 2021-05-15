@@ -1,18 +1,17 @@
 package dev.kyro.pitsim.controllers;
 
+import de.tr7zw.nbtapi.NBTItem;
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.enchants.PitBlob;
 import dev.kyro.pitsim.enchants.Regularity;
+import dev.kyro.pitsim.enums.NBTTag;
 import dev.kyro.pitsim.events.AttackEvent;
 import dev.kyro.pitsim.events.KillEvent;
 import dev.kyro.pitsim.misc.Misc;
 import dev.kyro.pitsim.nons.Non;
 import dev.kyro.pitsim.nons.NonManager;
-import org.bukkit.Bukkit;
-import org.bukkit.EntityEffect;
-import org.bukkit.Location;
-import org.bukkit.Sound;
+import org.bukkit.*;
 import org.bukkit.entity.Arrow;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
@@ -87,16 +86,17 @@ public class DamageManager implements Listener {
 		}
 
 		if(!fakeHit) {
+			if(attackingNon == null) attacker.setHealth(Math.min(attacker.getHealth() + 1, attacker.getMaxHealth()));
 			hitCooldownList.add(defender);
 			nonHitCooldownList.add(defender);
 			new BukkitRunnable() {
 				int count = 0;
 				@Override
 				public void run() {
-					if(++count == 12) cancel();
+					if(++count == 15) cancel();
 
 					if(count == 10) DamageManager.hitCooldownList.remove(defender);
-					if(count == 12) DamageManager.nonHitCooldownList.remove(defender);
+					if(count == 15) DamageManager.nonHitCooldownList.remove(defender);
 				}
 			}.runTaskTimer(PitSim.INSTANCE, 0L, 1L);
 		}
@@ -133,6 +133,14 @@ public class DamageManager implements Listener {
 	public static void handleAttack(AttackEvent.Apply attackEvent) {
 		AOutput.send(attackEvent.attacker, "Initial Damage: " + attackEvent.event.getDamage());
 
+//		As strong as iron
+		if(attackEvent.defender.getInventory().getLeggings() != null && attackEvent.defender.getInventory().getLeggings().getType() == Material.LEATHER_LEGGINGS) {
+			NBTItem pants = new NBTItem(attackEvent.defender.getInventory().getLeggings());
+			if(pants.hasKey(NBTTag.ITEM_UUID.getRef())) {
+				attackEvent.multiplier.add(0.86956521);
+			}
+		}
+
 		double damage = attackEvent.getFinalDamage();
 		attackEvent.event.setDamage(damage);
 
@@ -161,6 +169,7 @@ public class DamageManager implements Listener {
 //		}
 
 		AOutput.send(attackEvent.attacker, "Final Damage: " + attackEvent.event.getDamage());
+		AOutput.send(attackEvent.attacker, "Final Damage: " + attackEvent.event.getFinalDamage());
 
 		if(attackEvent.event.getFinalDamage() >= attackEvent.defender.getHealth()) {
 
