@@ -93,7 +93,28 @@ public class RetroGravityMicrocosm extends PitEnchant {
 	@Override
 	public List<String> getDescription(int enchantLvl) {
 
-		return new ALoreBuilder("&7Receive &9-" + Misc.roundString(getDamageReduction(enchantLvl)) + "% &7damage").getLore();
+		if(enchantLvl == 1) {
+			return new ALoreBuilder("&7When a player hits you from", "&7above ground &e3 times &7in a row:",
+					"&7You heal &c1.25\u2764").getLore();
+		}
+		if(enchantLvl == 2) {
+			return new ALoreBuilder("&7When a player hits you from", "&7above ground &e3 times &7in a row:",
+					"&7You heal &c1.25\u2764", "&7Gain &c+1.5\u2764 &7damage vs them for 30s").getLore();
+		}
+		if(enchantLvl == 3) {
+			return new ALoreBuilder("&7When a player hits you from", "&7above ground &e3 times &7in a row:",
+					"&7You heal &c1.25\u2764", "&7Gain &c+1.5\u2764 &7damage vs them for 30s",
+					"&7They take &c0.5\u2764 &7true damage").getLore();
+		} else {
+			return null;
+		}
+
+	}
+
+	public float getHealing(int enchantLvl) {
+
+
+		return 0.2F;
 	}
 
 	public double getDamageReduction(int enchantLvl) {

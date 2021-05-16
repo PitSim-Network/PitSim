@@ -6,6 +6,7 @@ import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.controllers.EnchantManager;
 import dev.kyro.pitsim.controllers.PitEnchant;
 import dev.kyro.pitsim.enums.ApplyType;
+import dev.kyro.pitsim.misc.Misc;
 import org.bukkit.Bukkit;
 import org.bukkit.Effect;
 import org.bukkit.entity.Player;
@@ -60,7 +61,7 @@ public class GottaGoFast extends PitEnchant {
 	@Override
 	public List<String> getDescription(int enchantLvl) {
 
-		return new ALoreBuilder("&7Receive% &7damage").getLore();
+		return new ALoreBuilder("&7Move &e" + Misc.roundString(getWalkSpeedLore(enchantLvl)) + "&e% faster &7at all times").getLore();
 	}
 
 //	TODO: GTGF equation
@@ -75,6 +76,19 @@ public class GottaGoFast extends PitEnchant {
 				return 0.2F + (0.2F * 0.1F);
 			case 3:
 				return 0.2F + (0.2F * 0.2F);
+		}
+		return 0.2F;
+	}
+
+	public float getWalkSpeedLore(int enchantLvl) {
+
+		switch(enchantLvl) {
+			case 1:
+				return 4;
+			case 2:
+				return 10;
+			case 3:
+				return 20;
 		}
 		return 0.2F;
 	}
