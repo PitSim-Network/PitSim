@@ -16,6 +16,7 @@ public class GoldenHeart extends PitEnchant {
 	public GoldenHeart() {
 		super("Golden Heart", false, ApplyType.SWORDS,
 				"goldenheart", "golden-heart", "gheart");
+		isUncommonEnchant = true;
 	}
 
 	@EventHandler

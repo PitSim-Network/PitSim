@@ -15,6 +15,7 @@ public class NewDeal extends PitEnchant {
 	public NewDeal() {
 		super("New Deal", false, ApplyType.PANTS,
 				"newdeal", "new-deal", "nd", "new", "deal");
+		isUncommonEnchant = true;
 	}
 
 	@EventHandler

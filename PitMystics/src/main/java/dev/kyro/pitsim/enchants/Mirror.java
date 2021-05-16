@@ -14,6 +14,7 @@ public class Mirror extends PitEnchant {
 	public Mirror() {
 		super("Mirror", false, ApplyType.PANTS,
 				"mirror", "mir");
+		isUncommonEnchant = true;
 	}
 
 	@EventHandler(priority = EventPriority.HIGH)

@@ -14,6 +14,7 @@ public class 	Chipping extends PitEnchant {
 	public Chipping() {
 		super("Chipping", false, ApplyType.BOWS,
 				"chipping", "chip");
+		isUncommonEnchant = true;
 	}
 
 	@EventHandler

@@ -16,6 +16,7 @@ public class Wasp extends PitEnchant {
 	public Wasp() {
 		super("Wasp", false, ApplyType.BOWS,
 				"wasp");
+		isUncommonEnchant = true;
 	}
 
 	@EventHandler

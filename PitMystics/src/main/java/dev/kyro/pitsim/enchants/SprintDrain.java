@@ -16,6 +16,7 @@ public class SprintDrain extends PitEnchant {
 	public SprintDrain() {
 		super("Sprint Drain", false, ApplyType.BOWS,
 				"sprintdrain", "drain", "sprint", "sprint-drain", "sd");
+		isUncommonEnchant = true;
 	}
 
 	@EventHandler

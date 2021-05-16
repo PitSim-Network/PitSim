@@ -15,6 +15,7 @@ public class FractionalReserve extends PitEnchant {
 	public FractionalReserve() {
 		super("Fractional Reserve", false, ApplyType.PANTS,
 				"fractionalreserve", "frac", "frac-reserve", "fractional-reserve", "fracreserve");
+		isUncommonEnchant = true;
 	}
 
 	@EventHandler

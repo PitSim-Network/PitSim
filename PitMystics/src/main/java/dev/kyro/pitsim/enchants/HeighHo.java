@@ -14,6 +14,7 @@ public class HeighHo extends PitEnchant {
 	public HeighHo() {
 		super("Heigh-Ho", false, ApplyType.PANTS,
 				"heighho", "heigh-ho", "hiho", "hi-ho", "antimirror", "nomirror");
+		isUncommonEnchant = true;
 	}
 
 	@EventHandler

@@ -18,6 +18,7 @@ public class Crush extends PitEnchant {
 	public Crush() {
 		super("Crush", false, ApplyType.SWORDS,
 				"crush");
+		isUncommonEnchant = true;
 	}
 
 	@EventHandler
