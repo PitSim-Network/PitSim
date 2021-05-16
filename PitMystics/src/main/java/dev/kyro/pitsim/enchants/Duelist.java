@@ -17,6 +17,7 @@ public class Duelist extends PitEnchant {
 	public Duelist() {
 		super("Duelist", false, ApplyType.SWORDS,
 				"duel", "duelist", "dualist", "dual");
+		isUncommonEnchant = true;
 	}
 
 	@EventHandler

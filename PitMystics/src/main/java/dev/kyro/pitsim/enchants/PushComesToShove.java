@@ -17,6 +17,7 @@ public class PushComesToShove extends PitEnchant {
 	public PushComesToShove() {
 		super("Push comes to shove", false, ApplyType.BOWS,
 				"pushcomestoshove", "push-comes-to-shove", "pcts");
+		isUncommonEnchant = true;
 	}
 
 	@EventHandler

@@ -15,6 +15,7 @@ public class Lifesteal extends PitEnchant {
 	public Lifesteal() {
 		super("Lifesteal", false, ApplyType.SWORDS,
 				"ls", "lifesteal", "life");
+		isUncommonEnchant = true;
 	}
 
 	@EventHandler(priority = EventPriority.HIGH)

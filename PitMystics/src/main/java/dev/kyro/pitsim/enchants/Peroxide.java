@@ -17,6 +17,7 @@ public class Peroxide extends PitEnchant {
 	public Peroxide() {
 		super("Peroxide", false, ApplyType.PANTS,
 				"pero", "peroxide", "regeneration", "regen");
+		isUncommonEnchant = true;
 	}
 
 	@EventHandler

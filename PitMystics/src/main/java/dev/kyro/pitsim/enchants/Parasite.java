@@ -14,6 +14,7 @@ public class Parasite extends PitEnchant {
 	public Parasite() {
 		super("Parasite", false, ApplyType.BOWS,
 				"parasite", "para");
+		isUncommonEnchant = true;
 	}
 
 	@EventHandler

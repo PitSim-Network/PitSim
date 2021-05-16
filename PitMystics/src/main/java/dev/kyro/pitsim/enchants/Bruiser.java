@@ -14,6 +14,7 @@ public class Bruiser extends PitEnchant {
 	public Bruiser() {
 		super("Bruiser", false, ApplyType.SWORDS,
 				"bruiser");
+		isUncommonEnchant = true;
 	}
 
 	@EventHandler

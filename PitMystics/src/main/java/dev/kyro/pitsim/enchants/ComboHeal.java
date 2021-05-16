@@ -20,6 +20,7 @@ public class ComboHeal extends PitEnchant {
 	public ComboHeal() {
 		super("Combo: Heal", false, ApplyType.SWORDS,
 				"comboheal", "ch", "combo-heal", "cheal");
+		isUncommonEnchant = true;
 	}
 
 	@EventHandler

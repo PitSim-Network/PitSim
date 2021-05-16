@@ -16,6 +16,7 @@ public class CriticallyFunky extends PitEnchant {
 	public CriticallyFunky() {
 		super("Critically Funky", false, ApplyType.PANTS,
 				"criticallyfunky", "critically-funky", "cf", "critfunky", "crit-funky", "crit", "funky");
+		isUncommonEnchant = true;
 	}
 
 	@EventHandler

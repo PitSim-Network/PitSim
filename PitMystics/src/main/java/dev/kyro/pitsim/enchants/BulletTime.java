@@ -16,6 +16,7 @@ public class BulletTime extends PitEnchant {
 	public BulletTime() {
 		super("Bullet Time", false, ApplyType.SWORDS,
 				"bullettime", "bullet-time", "bullet", "bt");
+		isUncommonEnchant = true;
 	}
 
 	@EventHandler
