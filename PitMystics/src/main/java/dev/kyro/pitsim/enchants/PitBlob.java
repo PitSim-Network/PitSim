@@ -39,7 +39,7 @@ public class PitBlob extends PitEnchant {
 
 						if(!(entity instanceof Player)) continue;
 						Non non = NonManager.getNon((Player) entity);
-						if(non == null || DamageManager.hitCooldownList.contains(non.non)) return;
+						if(non == null || DamageManager.hitCooldownList.contains(non.non)) continue;
 
 						EntityDamageByEntityEvent event = new EntityDamageByEntityEvent(entry.getValue(), non.non,
 								EntityDamageEvent.DamageCause.CUSTOM, damage);
