@@ -214,6 +214,10 @@ public class EnchantManager {
 			if(currentEnchantMap.containsKey(pitEnchant) && currentEnchantMap.get(pitEnchant) >= enchantLvl) continue;
 
 			itemEnchantMap.put(pitEnchant, enchantLvl);
+
+//			if(currentEnchantMap.containsKey(pitEnchant) && currentEnchantMap.get(pitEnchant) >= enchantLvl && !pitEnchant.levelStacks) continue;
+//			if(currentEnchantMap.containsKey(pitEnchant) && !pitEnchant.levelStacks) itemEnchantMap.put(pitEnchant, enchantLvl);
+//			else itemEnchantMap.put(pitEnchant, (itemEnchantMap.get(pitEnchant) != null ? itemEnchantMap.get(pitEnchant) : 0) + enchantLvl);
 		}
 
 		return itemEnchantMap;
