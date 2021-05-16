@@ -44,8 +44,8 @@ public class LuckyShot extends PitEnchant {
 				attackEvent.multiplier.add(4.0);
 				AOutput.send(attackEvent.attacker, "&e&lLUCKY SHOT! &7against &b" + attackEvent.defender.getName() + "&7!");
 				AOutput.send(attackEvent.defender, "&c&lOUCH! &b" + attackEvent.attacker.getName() + " &7got a lucky shot against you!");
-				Misc.sendTitle(attackEvent.defender, " ");
-				Misc.sendSubTitle(attackEvent.defender, "&c&lOUCH!");
+				Misc.sendTitle(attackEvent.defender, " ", 20);
+				Misc.sendSubTitle(attackEvent.defender, "&c&lOUCH!", 20);
 				attackEvent.defender.playSound(attackEvent.defender.getLocation(), Sound.ZOMBIE_WOODBREAK, 1f, 1f);
 			}
 		}

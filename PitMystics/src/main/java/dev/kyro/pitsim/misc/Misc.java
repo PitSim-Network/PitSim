@@ -116,28 +116,27 @@ public class Misc {
 		((CraftPlayer) player).getHandle().playerConnection.sendPacket(packet);
 	}
 
-	public static void sendTitle(Player player, String message) {
+	public static void sendTitle(Player player, String message, int length) {
 		IChatBaseComponent chatTitle = IChatBaseComponent.ChatSerializer.a("{\"text\": \"" +
 				ChatColor.translateAlternateColorCodes('&', message) + "\"}");
 
 		PacketPlayOutTitle title = new PacketPlayOutTitle(PacketPlayOutTitle.EnumTitleAction.TITLE, chatTitle);
-		PacketPlayOutTitle length = new PacketPlayOutTitle(5, 20, 5);
+		PacketPlayOutTitle titleLength = new PacketPlayOutTitle(5, length, 5);
 
 
 		((CraftPlayer) player).getHandle().playerConnection.sendPacket(title);
-		((CraftPlayer) player).getHandle().playerConnection.sendPacket(length);
+		((CraftPlayer) player).getHandle().playerConnection.sendPacket(title);
 	}
 
-	public static void sendSubTitle(Player player, String message) {
+	public static void sendSubTitle(Player player, String message, int length) {
 		IChatBaseComponent chatSubTitle = IChatBaseComponent.ChatSerializer.a("{\"text\": \"" +
 				ChatColor.translateAlternateColorCodes('&', message) + "\"}");
 
 		PacketPlayOutTitle subtitle = new PacketPlayOutTitle(PacketPlayOutTitle.EnumTitleAction.SUBTITLE, chatSubTitle);
-		PacketPlayOutTitle length = new PacketPlayOutTitle(5, 20, 5);
-
+		PacketPlayOutTitle subTitleLength = new PacketPlayOutTitle(5, length, 5);
 
 		((CraftPlayer) player).getHandle().playerConnection.sendPacket(subtitle);
-		((CraftPlayer) player).getHandle().playerConnection.sendPacket(length);
+		((CraftPlayer) player).getHandle().playerConnection.sendPacket(subTitleLength);
 	}
 
 	public static boolean isCritical(Player player) {
