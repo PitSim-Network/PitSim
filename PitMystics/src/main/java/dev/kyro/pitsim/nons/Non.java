@@ -123,14 +123,14 @@ public class Non {
 	}
 
 	public void spawn() {
-		Location spawnLoc = new Location(Bukkit.getWorld("pit"), -119, 111, 211, -180, 60);
+		Location spawnLoc = new Location(Bukkit.getWorld("pit"), -119, 86, 211, -180, 60);
 		npc.spawn(spawnLoc);
 	}
 
 	public void respawn() {
 
 		nonState = NonState.RESPAWNING;
-		Location spawnLoc = new Location(Bukkit.getWorld("pit"), -119, 111, 211, -180, 60);
+		Location spawnLoc = new Location(Bukkit.getWorld("pit"), -119, 86, 211, -180, 60);
 //		npc.teleport(spawnLoc, PlayerTeleportEvent.TeleportCause.PLUGIN);
 		npc.despawn();
 		npc.spawn(spawnLoc);
