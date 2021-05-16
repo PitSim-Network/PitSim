@@ -2,6 +2,7 @@ package dev.kyro.pitsim.controllers;
 
 import de.tr7zw.nbtapi.NBTCompound;
 import de.tr7zw.nbtapi.NBTItem;
+import de.tr7zw.nbtapi.NBTList;
 import dev.kyro.arcticapi.builders.AItemStackBuilder;
 import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.arcticapi.misc.AUtil;
@@ -61,6 +62,7 @@ public class EnchantManager {
 
 		NBTItem nbtItem = new NBTItem(itemStack);
 
+		NBTList<String> enchantOrder = nbtItem.getStringList(NBTTag.PIT_ENCHANT_ORDER.getRef());
 		NBTCompound itemEnchants = nbtItem.getCompound(NBTTag.PIT_ENCHANTS.getRef());
 		Integer currentLvl = itemEnchants.getInteger(applyEnchant.refNames.get(0));
 		Integer enchantNum = nbtItem.getInteger(NBTTag.ITEM_ENCHANTS.getRef());
@@ -81,29 +83,35 @@ public class EnchantManager {
 			throw new MaxEnchantsExceededException();
 		}
 
-		if(currentLvl == 0) enchantNum++;
+		if(currentLvl == 0) {
+			enchantNum++;
+			enchantOrder.add(applyEnchant.refNames.get(0));
+		}
+		if(applyLvl == 0) {
+			enchantNum--;
+			enchantOrder.remove(applyEnchant.refNames.get(0));
+		}
+		itemEnchants.setInteger(applyEnchant.refNames.get(0), applyLvl);
+
 		tokenNum += applyLvl - currentLvl;
 		if(applyEnchant.isRare) rTokenNum += applyLvl - currentLvl;
-		currentLvl = applyLvl;
-		itemEnchants.setInteger(applyEnchant.refNames.get(0), currentLvl);
 		nbtItem.setInteger(NBTTag.ITEM_ENCHANTS.getRef(), enchantNum);
 		nbtItem.setInteger(NBTTag.ITEM_TOKENS.getRef(), tokenNum);
 		nbtItem.setInteger(NBTTag.ITEM_RTOKENS.getRef(), rTokenNum);
 
-		itemEnchants.setInteger(applyEnchant.refNames.get(0), currentLvl);
-
 		AItemStackBuilder itemStackBuilder = new AItemStackBuilder(nbtItem.getItem());
-		itemStackBuilder.setName("&cTier " + AUtil.toRoman(enchantNum) + " " + getMysticType(itemStack));
+		itemStackBuilder.setName("&cTier " + (enchantNum != 0 ? AUtil.toRoman(enchantNum) : 0) + " " + getMysticType(itemStack));
 
 		ALoreBuilder loreBuilder = new ALoreBuilder();
 		loreBuilder.addLore("&7Lives: &a0&7/0");
-		loreBuilder.addLore("&f");
-		Map<PitEnchant, Integer> itemEnchantMap = getEnchantsOnItem(itemStackBuilder.getItemStack());
-		for(Map.Entry<PitEnchant, Integer> entry : itemEnchantMap.entrySet()) {
+		for(String key : enchantOrder) {
 
-			loreBuilder.addLore(entry.getKey().getDisplayName() + enchantLevelToRoman(entry.getValue()));
-			loreBuilder.addLore(entry.getKey().getDescription(entry.getValue()));
+			PitEnchant enchant = EnchantManager.getEnchant(key);
+			Integer enchantLvl = itemEnchants.getInteger(key);
+			assert enchant != null;
 			loreBuilder.addLore("&f");
+			loreBuilder.addLore(enchant.getDisplayName() + enchantLevelToRoman(enchantLvl));
+			loreBuilder.addLore(enchant.getDescription(enchantLvl));
 		}
 		itemStackBuilder.setLore(loreBuilder.getLore());
 

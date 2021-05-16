@@ -10,6 +10,7 @@ import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -146,5 +147,10 @@ public class Misc {
 				!player.hasPotionEffect(PotionEffectType.BLINDNESS) &&
 				player.getLocation().getBlock().getType() != Material.LADDER &&
 				player.getLocation().getBlock().getType() != Material.VINE;
+	}
+
+	public static boolean isAirOrNull(ItemStack itemStack) {
+
+		return itemStack == null || itemStack.getType() == Material.AIR;
 	}
 }

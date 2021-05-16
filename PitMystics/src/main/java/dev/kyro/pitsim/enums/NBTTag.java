@@ -4,6 +4,7 @@ public enum NBTTag {
 
 	ITEM_UUID("pr-uuid"),
 	PIT_ENCHANTS("pr-enchants"),
+	PIT_ENCHANT_ORDER("pr-enchant-order"),
 	ITEM_TOKENS("pr-token-num"),
 	ITEM_RTOKENS("pr-rare-token-num"),
 	ITEM_ENCHANTS("pr-enchant-num");
