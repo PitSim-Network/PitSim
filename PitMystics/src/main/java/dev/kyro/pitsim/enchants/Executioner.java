@@ -1,13 +1,17 @@
 package dev.kyro.pitsim.enchants;
 
 import dev.kyro.arcticapi.builders.ALoreBuilder;
+import dev.kyro.arcticapi.misc.ASound;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.controllers.PitEnchant;
 import dev.kyro.pitsim.enums.ApplyType;
 import dev.kyro.pitsim.events.AttackEvent;
+import dev.kyro.pitsim.events.KillEvent;
 import dev.kyro.pitsim.misc.Misc;
 import net.minecraft.server.v1_8_R3.*;
 import org.bukkit.Bukkit;
+import org.bukkit.Effect;
+import org.bukkit.Sound;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -19,6 +23,15 @@ public class Executioner extends PitEnchant {
 	public Executioner() {
 		super("Executioner", true, ApplyType.SWORDS,
 				"executioner", "exe");
+	}
+
+	@EventHandler
+	public void onKill(KillEvent event) {
+
+		if(!event.exeDeath) return;
+
+		ASound.play(event.attacker, Sound.VILLAGER_DEATH, 1, 0.5F);
+		event.defender.getWorld().playEffect(event.defender.getLocation().add(0, 1, 0), Effect.STEP_SOUND, 152);
 	}
 
 	@EventHandler
