@@ -28,7 +28,7 @@ public class Pullbow extends PitEnchant {
 		if(cooldown.isOnCooldown()) return; else cooldown.reset();
 
 		Vector dirVector = attackEvent.attacker.getLocation().toVector().subtract(attackEvent.defender.getLocation().toVector()).setY(0);
-		Vector pullVector = dirVector.clone().normalize().setY(0.5).multiply(2).add(dirVector.clone().multiply(0.08));
+		Vector pullVector = dirVector.clone().normalize().setY(0.5).multiply(2.5).add(dirVector.clone().multiply(0.04));
 		attackEvent.defender.setVelocity(pullVector.multiply(getMultiplier(enchantLvl)));
 	}
 
@@ -40,6 +40,6 @@ public class Pullbow extends PitEnchant {
 
 	public static double getMultiplier(int enchantLvl) {
 
-		return (enchantLvl * 0.5) + 1;
+		return (enchantLvl * 0.25) + 1;
 	}
 }

@@ -1,8 +1,9 @@
 package dev.kyro.pitsim.enchants;
 
 import dev.kyro.arcticapi.builders.ALoreBuilder;
-import dev.kyro.arcticapi.misc.AUtil;
-import dev.kyro.pitsim.controllers.*;
+import dev.kyro.pitsim.controllers.Cooldown;
+import dev.kyro.pitsim.controllers.EnchantManager;
+import dev.kyro.pitsim.controllers.PitEnchant;
 import dev.kyro.pitsim.enums.ApplyType;
 import dev.kyro.pitsim.events.AttackEvent;
 import dev.kyro.pitsim.misc.Misc;
@@ -12,7 +13,6 @@ import org.bukkit.entity.Arrow;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
-import org.bukkit.event.entity.EntityShootBowEvent;
 import org.bukkit.event.entity.ProjectileHitEvent;
 import org.bukkit.util.Vector;
 
@@ -38,12 +38,13 @@ public class Explosive extends PitEnchant {
 	@EventHandler
 	public void onShoot(ProjectileHitEvent event) {
 
-		if(!(event.getEntity() instanceof Arrow || event.getEntity().getShooter() instanceof Player)) return;
-
+		if(!(event.getEntity() instanceof Arrow) || !(event.getEntity().getShooter() instanceof Player)) return;
 
 		Arrow arrow = (Arrow) event.getEntity();
 		Player shooter = (Player) arrow.getShooter();
+
 		int enchantLvl = EnchantManager.getEnchantLevel(shooter, this);
+		if(enchantLvl == 0) return;
 
 		Cooldown cooldown = getCooldown(shooter, getCooldown(enchantLvl));
 		if(cooldown.isOnCooldown()) return; else cooldown.reset();
@@ -55,8 +56,8 @@ public class Explosive extends PitEnchant {
 
 				if(player != shooter) {
 					Vector force = player.getLocation().toVector().subtract(arrow.getLocation().toVector())
-							.normalize().multiply(1.25);
-					force.setY(.85f);
+							.setY(1).normalize().multiply(1.15);
+//					force.setY(.85f);
 
 					player.setVelocity(force);
 				}
@@ -67,7 +68,6 @@ public class Explosive extends PitEnchant {
 				getPitch(enchantLvl));
 		arrow.getWorld().playEffect(arrow.getLocation(), getEffect(enchantLvl),
 				getEffect(enchantLvl).getData(), 100);
-
 	}
 
 	@Override
