@@ -116,6 +116,7 @@ public class AttackEvent extends Event {
 
 		public Post(AttackEvent event) {
 			super(event.event, event.attackerEnchantMap, event.defenderEnchantMap, event.fakeHit);
+
 		}
 	}
 
