@@ -41,6 +41,9 @@ public class PitSim extends JavaPlugin {
 		registerCommands();
 		registerListeners();
 		registerEnchants();
+
+
+
 	}
 
 	@Override
@@ -95,6 +98,7 @@ public class PitSim extends JavaPlugin {
 		EnchantManager.registerEnchant(new LuckyShot());
 		EnchantManager.registerEnchant(new Pullbow());
 		EnchantManager.registerEnchant(new Explosive());
+		EnchantManager.registerEnchant(new FasterThanTheirShadows());
 
 		EnchantManager.registerEnchant(new Solitude());
 		EnchantManager.registerEnchant(new DiamondAllergy());
@@ -122,6 +126,7 @@ public class PitSim extends JavaPlugin {
 //		After all
 		EnchantManager.registerEnchant(new Regularity());
 		EnchantManager.registerEnchant(new Lifesteal());
+
 	}
 
 	private void registerCommands() {
@@ -138,6 +143,8 @@ public class PitSim extends JavaPlugin {
 		getServer().getPluginManager().registerEvents(new NonManager(), this);
 		getServer().getPluginManager().registerEvents(new PlayerManager(), this);
 		getServer().getPluginManager().registerEvents(new ChatManager(), this);
+		getServer().getPluginManager().registerEvents(new DamageIndicator(), this);
+
 	}
 
 	private void loadConfig() {

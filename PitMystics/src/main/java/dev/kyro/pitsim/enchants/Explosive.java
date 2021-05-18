@@ -23,7 +23,6 @@ public class Explosive extends PitEnchant {
 	public Explosive() {
 		super("Explosive", true, ApplyType.BOWS,
 				"explosive", "explo", "ex", "explode");
-		isUncommonEnchant = true;
 	}
 
 	@EventHandler
@@ -138,13 +137,4 @@ public class Explosive extends PitEnchant {
 		return 0;
 	}
 
-	public int getSpeedAmplifier(int enchantLvl) {
-
-		return Misc.linearEnchant(enchantLvl, 0.5, 1);
-	}
-
-	public int getSpeedDuration(int enchantLvl) {
-
-		return enchantLvl * 2 + 1;
-	}
 }

@@ -14,7 +14,7 @@ public class DiamondStomp extends PitEnchant {
 
 	public DiamondStomp() {
 		super("Diamond Stomp", false, ApplyType.SWORDS,
-				"stomp", "ds", "dstomp", "diamond-stomp");
+				"diamondstomp", "stomp", "ds", "dstomp", "diamond-stomp");
 	}
 
 	@EventHandler
