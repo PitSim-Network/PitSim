@@ -11,6 +11,7 @@ import dev.kyro.pitsim.enchants.*;
 import dev.kyro.pitsim.nons.Non;
 import dev.kyro.pitsim.nons.NonManager;
 import net.milkbowl.vault.economy.Economy;
+import org.bukkit.Bukkit;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -30,6 +31,12 @@ public class PitSim extends JavaPlugin {
 			AOutput.log(String.format("[%s] - Disabled due to no Vault dependency found!", getDescription().getName()));
 			getServer().getPluginManager().disablePlugin(this);
 			return;
+		}
+
+		if (Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null) {
+		} else {
+			AOutput.log(String.format("Could not find PlaceholderAPI! This plugin is required."));
+			Bukkit.getPluginManager().disablePlugin(this);
 		}
 
 		loadConfig();

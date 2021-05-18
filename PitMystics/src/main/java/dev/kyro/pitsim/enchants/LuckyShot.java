@@ -8,6 +8,7 @@ import dev.kyro.pitsim.controllers.PitEnchant;
 import dev.kyro.pitsim.enums.ApplyType;
 import dev.kyro.pitsim.events.AttackEvent;
 import dev.kyro.pitsim.misc.Misc;
+import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.Effect;
 import org.bukkit.Sound;
 import org.bukkit.entity.Arrow;
@@ -42,11 +43,14 @@ public class LuckyShot extends PitEnchant {
 			if(luckyShot.equals(attackEvent.arrow)) {
 
 				attackEvent.multiplier.add(4.0);
-				AOutput.send(attackEvent.attacker, "&e&lLUCKY SHOT! &7against &b" + attackEvent.defender.getName() + "&7!");
-				AOutput.send(attackEvent.defender, "&c&lOUCH! &b" + attackEvent.attacker.getName() + " &7got a lucky shot against you!");
+				String attack = "&e&lLUCKY SHOT! &7against %luckperms_prefix%%player_name%&7!";
+				String defend = "&c&lOUCH! %luckperms_prefix%%player_name% &7got a lucky shot against you!";
 				Misc.sendTitle(attackEvent.defender, " ", 20);
 				Misc.sendSubTitle(attackEvent.defender, "&c&lOUCH!", 20);
 				attackEvent.defender.playSound(attackEvent.defender.getLocation(), Sound.ZOMBIE_WOODBREAK, 1f, 1f);
+				AOutput.send(attackEvent.attacker, PlaceholderAPI.setPlaceholders(attackEvent.defender, attack));
+				AOutput.send(attackEvent.defender, PlaceholderAPI.setPlaceholders(attackEvent.attacker, defend));
+
 			}
 		}
 	}

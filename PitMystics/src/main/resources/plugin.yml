@@ -8,6 +8,7 @@ description: Remake of the Hypixel Pit
 depend:
   - Citizens
   - Vault
+  - PlaceholderAPI
 commands:
   atest:
   enchant:

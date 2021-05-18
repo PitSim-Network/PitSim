@@ -11,6 +11,7 @@ import dev.kyro.pitsim.events.KillEvent;
 import dev.kyro.pitsim.misc.Misc;
 import dev.kyro.pitsim.nons.Non;
 import dev.kyro.pitsim.nons.NonManager;
+import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.*;
 import org.bukkit.entity.Arrow;
 import org.bukkit.entity.Entity;
@@ -213,6 +214,7 @@ public class DamageManager implements Listener {
 		Non non = NonManager.getNon(attackEvent.defender);
 		if(non == null) {
 			attackEvent.defender.teleport(spawnLoc);
+			Misc.multiKill(attackEvent.attacker);
 		} else {
 			Misc.multiKill(attackEvent.attacker);
 			non.respawn();
@@ -229,8 +231,20 @@ public class DamageManager implements Listener {
 		PitSim.VAULT.depositPlayer(attackEvent.attacker, killEvent.getFinalGold());
 
 		DecimalFormat df = new DecimalFormat("##0.00");
-		AOutput.send(attackEvent.attacker, "&a&lKILL!&7 on &b" + attackEvent.defender.getName() + " &b+" +
-				killEvent.getFinalXp() + "XP" +" &6+" + df.format(killEvent.getFinalGold()) + "g");
-		AOutput.send(attackEvent.defender, "&cYou Died!");
+		String kill = "&a&lKILL!&7 on %luckperms_prefix%%player_name% &b+" +
+				killEvent.getFinalXp() + "XP" +" &6+" + df.format(killEvent.getFinalGold()) + "g";
+		String death = "&c&lDEATH! &7by %luckperms_prefix%%player_name%";
+		String killActionBar = "&7%luckperms_prefix%%player_name% &a&lKILL!";
+		AOutput.send(attackEvent.attacker, PlaceholderAPI.setPlaceholders(attackEvent.defender, kill));
+		AOutput.send(attackEvent.defender, PlaceholderAPI.setPlaceholders(attackEvent.attacker, death));
+		String actionBarPlaceholder = PlaceholderAPI.setPlaceholders(attackEvent.defender, killActionBar);
+		new BukkitRunnable() {
+			@Override
+			public void run() {
+
+				Misc.sendActionBar(attackEvent.attacker, actionBarPlaceholder);
+			}
+		}.runTaskLater(PitSim.INSTANCE, 1L);
+
 	}
 }

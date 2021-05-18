@@ -2,6 +2,7 @@ package dev.kyro.pitsim.controllers;
 
 import dev.kyro.pitsim.events.AttackEvent;
 import dev.kyro.pitsim.misc.Misc;
+import me.clip.placeholderapi.PlaceholderAPI;
 import net.minecraft.server.v1_8_R3.EntityPlayer;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -70,6 +71,9 @@ public class DamageIndicator implements Listener {
 
         StringBuilder output = new StringBuilder();
 
+        String playername = "&7%luckperms_prefix%%player_name% ";
+        output.append(PlaceholderAPI.setPlaceholders(attackEvent.defender, playername));
+
         for (int i = 0; i < Math.max(originalHealth - roundedDamageTaken, 0); i++) {
             output.append(ChatColor.DARK_RED).append("\u2764");
         }
@@ -88,5 +92,6 @@ public class DamageIndicator implements Listener {
 
         Misc.sendActionBar(attacker, output.toString());
     }
+
 
 }
