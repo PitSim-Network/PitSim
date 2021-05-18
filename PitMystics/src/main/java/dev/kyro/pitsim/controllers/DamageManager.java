@@ -184,6 +184,8 @@ public class DamageManager implements Listener {
 			attackEvent.event.setCancelled(true);
 			kill(attackEvent, true);
 		}
+
+		DamageIndicator.onAttack(attackEvent);
 	}
 
 	public static Player getAttacker(Entity damager) {
