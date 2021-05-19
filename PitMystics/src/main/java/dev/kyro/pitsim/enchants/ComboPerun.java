@@ -31,21 +31,21 @@ public class ComboPerun extends PitEnchant {
 		if(!HitCounter.hasReachedThreshold(pitPlayer.player, this, enchantLvl == 3 ? 4 : getStrikes(enchantLvl))) return;
 
 		if(enchantLvl == 3) {
-			int diamondpeices = 0;
+			int diamondPieces = 0;
 			if(!(attackEvent.defender.getInventory().getHelmet() == null) && attackEvent.defender.getInventory().getHelmet().getType() == Material.DIAMOND_HELMET) {
-				diamondpeices = diamondpeices + 2;
+				diamondPieces = diamondPieces + 2;
 			}
 			if(!(attackEvent.defender.getInventory().getChestplate() == null) && attackEvent.defender.getInventory().getChestplate().getType() == Material.DIAMOND_CHESTPLATE) {
-				diamondpeices = diamondpeices + 2;
+				diamondPieces = diamondPieces + 2;
 			}
 			if(!(attackEvent.defender.getInventory().getLeggings() == null) && attackEvent.defender.getInventory().getLeggings().getType() == Material.DIAMOND_LEGGINGS) {
-				diamondpeices = diamondpeices + 2;
+				diamondPieces = diamondPieces + 2;
 			}
 			if(!(attackEvent.defender.getInventory().getBoots() == null) && attackEvent.defender.getInventory().getBoots().getType() == Material.DIAMOND_BOOTS) {
-				diamondpeices = diamondpeices + 2;
+				diamondPieces = diamondPieces + 2;
 			}
 
-			attackEvent.trueDamage += diamondpeices;
+			attackEvent.trueDamage += diamondPieces;
 		} else {
 			attackEvent.trueDamage += getTrueDamage(enchantLvl);
 		}

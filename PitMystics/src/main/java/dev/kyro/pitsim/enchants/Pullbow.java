@@ -1,20 +1,19 @@
 package dev.kyro.pitsim.enchants;
 
 import dev.kyro.arcticapi.builders.ALoreBuilder;
-import dev.kyro.arcticapi.misc.AUtil;
+import dev.kyro.pitsim.controllers.Cooldown;
 import dev.kyro.pitsim.controllers.PitEnchant;
 import dev.kyro.pitsim.enums.ApplyType;
 import dev.kyro.pitsim.events.AttackEvent;
-import dev.kyro.pitsim.misc.Misc;
 import org.bukkit.event.EventHandler;
-import org.bukkit.potion.PotionEffectType;
+import org.bukkit.util.Vector;
 
 import java.util.List;
 
 public class Pullbow extends PitEnchant {
 
 	public Pullbow() {
-		super("Pullbow", true, ApplyType.PANTS,
+		super("Pullbow", true, ApplyType.BOWS,
 				"pullbow", "pull");
 	}
 
@@ -25,39 +24,22 @@ public class Pullbow extends PitEnchant {
 		int enchantLvl = attackEvent.getAttackerEnchantLevel(this);
 		if(enchantLvl == 0) return;
 
-		if(attackEvent.attacker.equals(attackEvent.defender)) return;
+		Cooldown cooldown = getCooldown(attackEvent.attacker, 160);
+		if(cooldown.isOnCooldown()) return; else cooldown.reset();
 
-		Misc.applyPotionEffect(attackEvent.defender, PotionEffectType.SLOW, getSlowDuration(enchantLvl) * 20, 0, true, false);
-		Misc.applyPotionEffect(attackEvent.attacker, PotionEffectType.SPEED,
-				getSpeedDuration(enchantLvl) * 20, getSpeedAmplifier(enchantLvl) - 1, true, false);
+		Vector dirVector = attackEvent.attacker.getLocation().toVector().subtract(attackEvent.defender.getLocation().toVector()).setY(0);
+		Vector pullVector = dirVector.clone().normalize().setY(0.5).multiply(2.5).add(dirVector.clone().multiply(0.04));
+		attackEvent.defender.setVelocity(pullVector.multiply(getMultiplier(enchantLvl)));
 	}
 
 	@Override
 	public List<String> getDescription(int enchantLvl) {
 
-
-		if(enchantLvl == 1) {
-			return new ALoreBuilder("&7Arrow shots grant you &eSpeed " + AUtil.toRoman(getSpeedAmplifier(enchantLvl)), "&7(" +
-					getSpeedDuration(enchantLvl) + "s)").getLore();
-		} else {
-			return new ALoreBuilder("&7Arrow shots grant you &eSpeed " + AUtil.toRoman(getSpeedAmplifier(enchantLvl)), "&7(" +
-					getSpeedDuration(enchantLvl) + "s) and apply &9Slowness I ", "&7(" + getSlowDuration(enchantLvl) + "s)").getLore();
-		}
-
+		return new ALoreBuilder("&7Hitting a player pulls them toward", "&7you (8s cooldown)").getLore();
 	}
 
-	public int getSlowDuration(int enchantLvl) {
+	public static double getMultiplier(int enchantLvl) {
 
-		return Misc.linearEnchant(enchantLvl, 0.5, 0) * 3;
-	}
-
-	public int getSpeedAmplifier(int enchantLvl) {
-
-		return Misc.linearEnchant(enchantLvl, 0.5, 1);
-	}
-
-	public int getSpeedDuration(int enchantLvl) {
-
-		return enchantLvl * 2 + 1;
+		return (enchantLvl * 0.25) + 1;
 	}
 }

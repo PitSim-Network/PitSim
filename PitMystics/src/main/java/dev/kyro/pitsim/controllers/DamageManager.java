@@ -105,7 +105,7 @@ public class DamageManager implements Listener {
 		AttackEvent.Pre preEvent = null;
 		if(event.getDamager() instanceof Player) {
 
-			preEvent = new AttackEvent.Pre(event, EnchantManager.getEnchantsOnPlayer((Player) event.getDamager()), defenderEnchantMap, fakeHit);
+			preEvent = new AttackEvent.Pre(event, EnchantManager.getEnchantsOnPlayer(attacker), defenderEnchantMap, fakeHit);
 		} else if(event.getDamager() instanceof Arrow) {
 
 			for(Map.Entry<EntityShootBowEvent, Map<PitEnchant, Integer>> entry : arrowMap.entrySet()) {
@@ -115,8 +115,7 @@ public class DamageManager implements Listener {
 			}
 		} else if(event.getDamager() instanceof Slime) {
 
-			attacker = PitBlob.getOwner((Slime) event.getDamager());
-			if(attacker == null) return;
+			preEvent = new AttackEvent.Pre(event, new HashMap<>(), defenderEnchantMap, fakeHit);
 		}
 		if(preEvent == null) return;
 
@@ -203,7 +202,7 @@ public class DamageManager implements Listener {
 		PitPlayer pitAttacker = PitPlayer.getPitPlayer(attackEvent.attacker);
 		pitAttacker.incrementKills();
 
-		Location spawnLoc = new Location(Bukkit.getWorld("pit"), -107.5, 111, 193.5, 45, 0);
+		Location spawnLoc = new Location(Bukkit.getWorld("pit"), -108.5, 86, 194.5, 45, 0);
 
 		attackEvent.defender.setHealth(attackEvent.defender.getMaxHealth());
 		attackEvent.defender.playEffect(EntityEffect.HURT);
