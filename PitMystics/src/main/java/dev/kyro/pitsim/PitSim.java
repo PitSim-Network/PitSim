@@ -8,7 +8,6 @@ import dev.kyro.pitsim.commands.FreshCommand;
 import dev.kyro.pitsim.commands.NonCommand;
 import dev.kyro.pitsim.controllers.*;
 import dev.kyro.pitsim.enchants.*;
-import dev.kyro.pitsim.inventories.ApplyEnchantGUI;
 import dev.kyro.pitsim.nons.Non;
 import dev.kyro.pitsim.nons.NonManager;
 import net.milkbowl.vault.economy.Economy;
@@ -93,7 +92,7 @@ public class PitSim extends JavaPlugin {
 		EnchantManager.registerEnchant(new Volley());
 		EnchantManager.registerEnchant(new Chipping());
 		EnchantManager.registerEnchant(new Telebow());
-		EnchantManager.registerEnchant(new Robinhood());
+//		EnchantManager.registerEnchant(new Robinhood());
 		EnchantManager.registerEnchant(new Fletching());
 		EnchantManager.registerEnchant(new PushComesToShove());
 		EnchantManager.registerEnchant(new Wasp());

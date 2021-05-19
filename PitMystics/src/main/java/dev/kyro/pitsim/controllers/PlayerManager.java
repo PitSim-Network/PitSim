@@ -9,6 +9,8 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.event.player.PlayerItemDamageEvent;
+import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 
@@ -46,5 +48,25 @@ public class PlayerManager implements Listener {
 		}.runTaskLater(PitSim.INSTANCE, 40L);
 
 		ASound.play(player, Sound.HORSE_ARMOR, 1F, 1.3F);
+	}
+
+	@EventHandler
+	public void onItemDamage(PlayerItemDamageEvent event) {
+		event.setCancelled(true);
+	}
+
+	@EventHandler
+	public void onPlayerJoin(PlayerJoinEvent event) {
+
+		Player player = event.getPlayer();
+
+		new BukkitRunnable() {
+			@Override
+			public void run() {
+
+				player.setMaxHealth(32);
+				player.setHealth(player.getMaxHealth());
+			}
+		}.runTaskLater(PitSim.INSTANCE, 1L);
 	}
 }

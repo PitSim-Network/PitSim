@@ -67,29 +67,11 @@ public class GottaGoFast extends PitEnchant {
 //	TODO: GTGF equation
 	public float getWalkSpeed(int enchantLvl) {
 
-		switch(enchantLvl) {
-			case 0:
-				return 0.2F;
-			case 1:
-				return 0.2F + (0.2F * 0.04F);
-			case 2:
-				return 0.2F + (0.2F * 0.1F);
-			case 3:
-				return 0.2F + (0.2F * 0.2F);
-		}
-		return 0.2F;
+		return 0.2F + (0.2F * (getWalkSpeedLore(enchantLvl) / 100));
 	}
 
 	public float getWalkSpeedLore(int enchantLvl) {
 
-		switch(enchantLvl) {
-			case 1:
-				return 4;
-			case 2:
-				return 10;
-			case 3:
-				return 20;
-		}
-		return 0.2F;
+		return enchantLvl * 5 + 5;
 	}
 }

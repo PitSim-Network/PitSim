@@ -22,7 +22,7 @@ public class NonManager implements Listener {
 			@Override
 			public void run() {
 //				if(true) return;
-				if(nons.size() >= 7 + Bukkit.getOnlinePlayers().size() * 2) return;
+				if(nons.size() >= 10 + Bukkit.getOnlinePlayers().size()) return;
 				Non non = new Non(ATestCommand.hoppers.get((int) (Math.random() * ATestCommand.hoppers.size())));
 				new BukkitRunnable() {
 					@Override
@@ -31,7 +31,7 @@ public class NonManager implements Listener {
 					}
 				}.runTaskLater(PitSim.INSTANCE, (long) (20 * 60 * (Math.random() * 4 + 1)));
 			}
-		}.runTaskTimer(PitSim.INSTANCE, 0L, 20 * 10);
+		}.runTaskTimer(PitSim.INSTANCE, 0L, 20 * 1);
 
 		new BukkitRunnable() {
 			@Override

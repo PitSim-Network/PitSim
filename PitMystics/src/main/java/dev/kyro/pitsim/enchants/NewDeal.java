@@ -5,7 +5,6 @@ import dev.kyro.pitsim.controllers.EnchantManager;
 import dev.kyro.pitsim.controllers.PitEnchant;
 import dev.kyro.pitsim.enums.ApplyType;
 import dev.kyro.pitsim.events.AttackEvent;
-import dev.kyro.pitsim.misc.Misc;
 import org.bukkit.event.EventHandler;
 
 import java.util.List;
@@ -38,21 +37,18 @@ public class NewDeal extends PitEnchant {
 		int enchantLvl = attackEvent.getDefenderEnchantLevel(this);
 		if(enchantLvl == 0) return;
 
-		PitEnchant bill = EnchantManager.getEnchant("billionaire");
-		int billLevel = attackEvent.getAttackerEnchantLevel(bill);
-
-		attackEvent.multiplier.add(Misc.getReductionMultiplier(getDamageReduction(enchantLvl)));
+//		attackEvent.multiplier.add(Misc.getReductionMultiplier(getDamageReduction(enchantLvl)));
 	}
 
 	@Override
 	public List<String> getDescription(int enchantLvl) {
 
-		if(enchantLvl == 1) {
+//		if(enchantLvl == 1) {
 			return new ALoreBuilder("&7You are immune to &6Billionaire").getLore();
-		} else {
-			return new ALoreBuilder("&7Receive &9-" + Misc.roundString(getDamageReduction(enchantLvl)) + "% &7damage and you are",
-					"&7immune to &6Billionaire").getLore();
-		}
+//		} else {
+//			return new ALoreBuilder("&7Receive &9-" + Misc.roundString(getDamageReduction(enchantLvl)) + "% &7damage and you are",
+//					"&7immune to &6Billionaire").getLore();
+//		}
 	}
 
 	public double getDamageReduction(int enchantLvl) {

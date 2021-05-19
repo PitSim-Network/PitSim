@@ -80,6 +80,7 @@ public class AttackEvent extends Event {
 		public double decrease = 0;
 		public double trueDamage = 0;
 		public double selfTrueDamage = 0;
+		public double selfVeryTrueDamage = 0;
 		public double executeUnder = 0;
 
 		public Apply(AttackEvent event) {
