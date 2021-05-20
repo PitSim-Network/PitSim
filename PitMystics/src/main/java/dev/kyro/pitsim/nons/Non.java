@@ -60,7 +60,7 @@ public class Non {
 		non = (Player) npc.getEntity();
 		if(npc.isSpawned() && non.getLocation().getY() <= 42) {
 			Location teleportLoc = non.getLocation().clone();
-			teleportLoc.setY(43);
+			teleportLoc.setY(43.2);
 			non.teleport(teleportLoc);
 			return;
 		}
