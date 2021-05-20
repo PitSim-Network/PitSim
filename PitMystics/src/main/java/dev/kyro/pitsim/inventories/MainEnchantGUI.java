@@ -52,7 +52,7 @@ public class MainEnchantGUI extends AInventoryGUI {
 
 			if(slot == 10 || slot == 13 || slot == 15) {
 
-				player.openInventory(new ApplyEnchantGUI(this).getInventory());
+				if(!Misc.isAirOrNull(mystic)) player.openInventory(new ApplyEnchantGUI(this).getInventory());
 			}
 
 			if(slot == 37) {
