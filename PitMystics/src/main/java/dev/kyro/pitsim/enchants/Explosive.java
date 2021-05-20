@@ -6,7 +6,8 @@ import dev.kyro.pitsim.controllers.EnchantManager;
 import dev.kyro.pitsim.controllers.PitEnchant;
 import dev.kyro.pitsim.enums.ApplyType;
 import dev.kyro.pitsim.events.AttackEvent;
-import dev.kyro.pitsim.misc.Misc;
+import dev.kyro.pitsim.nons.Non;
+import dev.kyro.pitsim.nons.NonManager;
 import org.bukkit.Effect;
 import org.bukkit.Sound;
 import org.bukkit.entity.Arrow;
@@ -52,10 +53,11 @@ public class Explosive extends PitEnchant {
 				getRange(enchantLvl), getRange(enchantLvl))) {
 			if(entity instanceof Player) {
 				Player player = (Player) entity;
+				Non non = NonManager.getNon(player);
 
 				if(player != shooter) {
 					Vector force = player.getLocation().toVector().subtract(arrow.getLocation().toVector())
-							.setY(1).normalize().multiply(1.15);
+							.setY(1).normalize().multiply(non == null ? 1.15 : 2);
 //					force.setY(.85f);
 
 					player.setVelocity(force);
