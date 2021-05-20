@@ -1,14 +1,14 @@
 package dev.kyro.pitsim.controllers;
 
+import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.controllers.killstreaks.Killstreak;
 import dev.kyro.pitsim.controllers.killstreaks.Megastreak;
 import dev.kyro.pitsim.killstreaks.Overdrive;
 import org.bukkit.entity.Player;
+import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.scheduler.BukkitTask;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class PitPlayer {
 
@@ -23,7 +23,10 @@ public class PitPlayer {
 	public Map<PitEnchant, Integer> enchantHits = new HashMap<>();
 	public Map<PitEnchant, Integer> enchantCharge = new HashMap<>();
 
-	private PitPlayer(Player player) {
+	public Map<UUID, Double> recentDamageMap = new HashMap<>();
+	public List<BukkitTask> assistRemove = new ArrayList<>();
+
+	public PitPlayer(Player player) {
 		this.player = player;
 		this.megastreak = new Overdrive(this);
 	}
@@ -73,5 +76,23 @@ public class PitPlayer {
 		endKillstreak();
 
 		for(int i = 0; i < kills; i++) incrementKills();
+	}
+
+	public Map<UUID, Double> getRecentDamageMap() {
+		return recentDamageMap;
+	}
+
+	public void addDamage(Player player, double damage) {
+
+		recentDamageMap.putIfAbsent(player.getUniqueId(), 0D);
+		recentDamageMap.put(player.getUniqueId(), recentDamageMap.get(player.getUniqueId()) + damage);
+
+		assistRemove.add(new BukkitRunnable() {
+			@Override
+			public void run() {
+				recentDamageMap.putIfAbsent(player.getUniqueId(), 0D);
+				recentDamageMap.put(player.getUniqueId(), recentDamageMap.get(player.getUniqueId()) - damage);
+			}
+		}.runTaskLater(PitSim.INSTANCE, 200L));
 	}
 }

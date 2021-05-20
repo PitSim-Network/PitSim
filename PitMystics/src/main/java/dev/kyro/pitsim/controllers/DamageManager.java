@@ -24,12 +24,10 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityShootBowEvent;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.scheduler.BukkitTask;
 
 import java.text.DecimalFormat;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class DamageManager implements Listener {
 
@@ -234,22 +232,52 @@ public class DamageManager implements Listener {
 		KillEvent killEvent = new KillEvent(attackEvent, exeDeath);
 		Bukkit.getServer().getPluginManager().callEvent(killEvent);
 
-		PitSim.VAULT.depositPlayer(attackEvent.attacker, killEvent.getFinalGold());
+		PitSim.VAULT.depositPlayer(killEvent.attacker, killEvent.getFinalGold());
 
 		DecimalFormat df = new DecimalFormat("##0.00");
-		String kill = "&a&lKILL!&7 on %luckperms_prefix%%player_name% &b+" +
-				killEvent.getFinalXp() + "XP" +" &6+" + df.format(killEvent.getFinalGold()) + "g";
+		String kill = "&a&lKILL!&7 on %luckperms_prefix%%player_name% &b+" + killEvent.getFinalXp() + "XP" +" &6+" + df.format(killEvent.getFinalGold()) + "g";
 		String death = "&c&lDEATH! &7by %luckperms_prefix%%player_name%";
 		String killActionBar = "&7%luckperms_prefix%%player_name% &a&lKILL!";
-		AOutput.send(attackEvent.attacker, PlaceholderAPI.setPlaceholders(attackEvent.defender, kill));
-		AOutput.send(attackEvent.defender, PlaceholderAPI.setPlaceholders(attackEvent.attacker, death));
-		String actionBarPlaceholder = PlaceholderAPI.setPlaceholders(attackEvent.defender, killActionBar);
+		AOutput.send(killEvent.attacker, PlaceholderAPI.setPlaceholders(killEvent.defender, kill));
+		AOutput.send(killEvent.defender, PlaceholderAPI.setPlaceholders(killEvent.attacker, death));
+		String actionBarPlaceholder = PlaceholderAPI.setPlaceholders(killEvent.defender, killActionBar);
 		new BukkitRunnable() {
 			@Override
 			public void run() {
 
-				Misc.sendActionBar(attackEvent.attacker, actionBarPlaceholder);
+				Misc.sendActionBar(killEvent.attacker, actionBarPlaceholder);
 			}
 		}.runTaskLater(PitSim.INSTANCE, 1L);
+
+		double finalDamage = 0;
+		for(Map.Entry<UUID, Double> entry : pitDefender.recentDamageMap.entrySet()) {
+
+			finalDamage += entry.getValue();
+		}
+
+		for(Map.Entry<UUID, Double> entry : pitDefender.recentDamageMap.entrySet()) {
+
+			if(entry.getKey().equals(killEvent.attacker.getUniqueId())) continue;
+
+			Player assistPlayer = Bukkit.getPlayer(entry.getKey());
+			if(assistPlayer == null) continue;
+			double assistPercent = entry.getValue() / finalDamage;
+			AOutput.send(assistPlayer, "&a&lASSIST!&7 " + Math.round(assistPercent * 100) + "% on %luckperms_prefix%%player_name%");
+
+			int xp = (int) (killEvent.getFinalXp() * assistPercent);
+			double gold = killEvent.getFinalGold() * assistPercent;
+
+			PitSim.VAULT.depositPlayer(assistPlayer, killEvent.getFinalGold());
+
+			String assist = "&a&lASSIST!&7 " + Math.round(assistPercent * 100) + "% on %luckperms_prefix%%player_name% &b+" +
+					xp + "XP" +" &6+" + df.format(gold) + "g";
+
+			AOutput.send(assistPlayer, PlaceholderAPI.setPlaceholders(killEvent.defender, assist));
+		}
+
+		for(BukkitTask bukkitTask : pitDefender.assistRemove) {
+			bukkitTask.cancel();
+		}
+		pitDefender.recentDamageMap.clear();
 	}
 }
