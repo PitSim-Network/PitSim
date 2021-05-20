@@ -28,7 +28,7 @@ public class Fletching extends PitEnchant {
 	@Override
 	public List<String> getDescription(int enchantLvl) {
 
-		return new ALoreBuilder("&7Deal &c+" + getDamage(enchantLvl) + " &7bow damage").getLore();
+		return new ALoreBuilder("&7Deal &c+" + getDamage(enchantLvl) + "% &7bow damage").getLore();
 	}
 
 	public int getDamage(int enchantLvl) {

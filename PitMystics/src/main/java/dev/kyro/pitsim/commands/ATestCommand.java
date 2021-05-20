@@ -80,6 +80,8 @@ public class ATestCommand implements CommandExecutor {
 		hoppers.add("qre");
 		hoppers.add("Dark4ever");
 		hoppers.add("Muruseni");
+		hoppers.add("staffmuted");
+		hoppers.add("wiji1");
 	}
 
 	public Team t;

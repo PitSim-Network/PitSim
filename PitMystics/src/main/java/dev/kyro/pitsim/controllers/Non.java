@@ -8,6 +8,8 @@ import net.citizensnpcs.api.CitizensAPI;
 import net.citizensnpcs.api.npc.NPC;
 import net.citizensnpcs.api.trait.trait.Equipment;
 import net.citizensnpcs.npc.ai.CitizensNavigator;
+import net.citizensnpcs.npc.skin.SkinnableEntity;
+import net.citizensnpcs.util.NMS;
 import net.minecraft.server.v1_8_R3.EntityPlayer;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -127,6 +129,7 @@ public class Non {
 	public void spawn() {
 		Location spawnLoc = new Location(Bukkit.getWorld("pit"), -119, 86, 211, -180, 60);
 		npc.spawn(spawnLoc);
+//		skin(npc, "wiji1", npc.getStoredLocation());
 	}
 
 	public void respawn() {
@@ -136,6 +139,7 @@ public class Non {
 //		npc.teleport(spawnLoc, PlayerTeleportEvent.TeleportCause.PLUGIN);
 		npc.despawn();
 		npc.spawn(spawnLoc);
+//		skin(npc, "wiji1", npc.getStoredLocation());
 
 		non.setHealth(non.getMaxHealth());
 
@@ -211,5 +215,22 @@ public class Non {
 
 		NonManager.nons.remove(this);
 		npc.destroy();
+	}
+
+	public void skin(NPC npc, String name, Location loc) {
+		npc.data().set(NPC.PLAYER_SKIN_UUID_METADATA, name);
+		npc.data().set(NPC.PLAYER_SKIN_USE_LATEST, false);
+		if (npc.isSpawned()) {
+			SkinnableEntity skinnable = (SkinnableEntity) npc.getEntity();
+			if (skinnable != null) {
+				skinnable.setSkinName(name);
+			}
+		}else {
+			npc.spawn(loc);
+			SkinnableEntity skinnable = (SkinnableEntity) npc.getEntity();
+			if (skinnable != null) {
+				skinnable.setSkinName(name);
+			}
+		}
 	}
 }
