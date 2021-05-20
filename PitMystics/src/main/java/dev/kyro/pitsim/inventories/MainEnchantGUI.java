@@ -118,7 +118,7 @@ public class MainEnchantGUI extends AInventoryGUI {
 	public void onClose(InventoryCloseEvent event) {
 
 		ItemStack mystic = event.getInventory().getItem(37);
-		if(!Misc.isAirOrNull(mystic)) {
+		if(!Misc.isAirOrNull(mystic) && !FreshCommand.isFresh(mystic)) {
 			player.getInventory().addItem(mystic);
 		}
 	}
