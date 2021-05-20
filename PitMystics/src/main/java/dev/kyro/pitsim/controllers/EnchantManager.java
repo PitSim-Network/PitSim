@@ -85,6 +85,7 @@ public class EnchantManager {
 				throw new MaxEnchantsExceededException();
 			}
 		}
+		if(nbtItem.getString(NBTTag.ITEM_JEWEL_ENCHANT.getRef()).equals(applyEnchant.refNames.get(0))) jewel = true;
 		if(jewel && (safe || applyLvl == 0)) {
 			throw new IsJewelException();
 		}
@@ -119,6 +120,12 @@ public class EnchantManager {
 			loreBuilder.addLore("&f");
 			loreBuilder.addLore(enchant.getDisplayName() + enchantLevelToRoman(enchantLvl));
 			loreBuilder.addLore(enchant.getDescription(enchantLvl));
+		}
+		if(nbtItem.hasKey(NBTTag.ITEM_JEWEL_ENCHANT.getRef())) {
+			PitEnchant jewelEnchant = getEnchant(nbtItem.getString(NBTTag.ITEM_JEWEL_ENCHANT.getRef()));
+			assert jewelEnchant != null;
+			loreBuilder.addLore("&f");
+			loreBuilder.addLore("&aJEWEL!&9 " + jewelEnchant.getDisplayName());
 		}
 		itemStackBuilder.setLore(loreBuilder.getLore());
 
@@ -241,12 +248,16 @@ public class EnchantManager {
 			switch(applyType) {
 				case BOWS:
 					if(enchantApplyType == ApplyType.BOWS) applicableEnchants.add(pitEnchant);
+					break;
 				case PANTS:
 					if(enchantApplyType == ApplyType.PANTS) applicableEnchants.add(pitEnchant);
+					break;
 				case SWORDS:
 					if(enchantApplyType == ApplyType.SWORDS) applicableEnchants.add(pitEnchant);
+					break;
 				case WEAPONS:
 					if(enchantApplyType == ApplyType.BOWS || enchantApplyType == ApplyType.SWORDS) applicableEnchants.add(pitEnchant);
+					break;
 			}
 		}
 		return applicableEnchants;

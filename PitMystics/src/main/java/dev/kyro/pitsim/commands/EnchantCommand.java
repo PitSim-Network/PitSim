@@ -5,10 +5,7 @@ import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.controllers.EnchantManager;
 import dev.kyro.pitsim.controllers.PitEnchant;
 import dev.kyro.pitsim.enums.NBTTag;
-import dev.kyro.pitsim.exceptions.InvalidEnchantLevelException;
-import dev.kyro.pitsim.exceptions.IsJewelException;
-import dev.kyro.pitsim.exceptions.MaxEnchantsExceededException;
-import dev.kyro.pitsim.exceptions.MaxTokensExceededException;
+import dev.kyro.pitsim.exceptions.*;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -65,7 +62,9 @@ public class EnchantCommand implements CommandExecutor {
 				updatedItem = EnchantManager.addEnchant(player.getItemInHand(), pitEnchant, level, true);
 			}
 		} catch(Exception exception) {
-			if(exception instanceof InvalidEnchantLevelException) {
+			if(exception instanceof MismatchedEnchantException) {
+				AOutput.error(player, "That enchant can't go on that item");
+			} else if(exception instanceof InvalidEnchantLevelException) {
 
 				if(!((InvalidEnchantLevelException) exception).levelTooHigh) {
 					AOutput.error(player, "Invalid enchant level");
