@@ -2,11 +2,11 @@ package dev.kyro.pitsim.enchants;
 
 import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.pitsim.PitSim;
-import dev.kyro.pitsim.controllers.DamageEvent;
 import dev.kyro.pitsim.controllers.EnchantManager;
 import dev.kyro.pitsim.controllers.PitEnchant;
 import dev.kyro.pitsim.enums.ApplyType;
 import dev.kyro.pitsim.events.AttackEvent;
+import org.bukkit.Location;
 import org.bukkit.entity.Arrow;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
@@ -42,31 +42,42 @@ public class Robinhood extends PitEnchant {
 		if(enchantLvl == 0) return;
 
 		new BukkitRunnable() {
-			Map.Entry<Player, Double> targetInfo = null;
 			@Override
 			public void run() {
+				Map.Entry<Player, Double> targetInfo = null;
 
 				for(Entity nearbyEntity : arrow.getWorld().getNearbyEntities(arrow.getLocation(), 8, 8, 8)) {
 
 					if(!(nearbyEntity instanceof Player) || nearbyEntity.equals(player)) continue;
 					Player target = (Player) nearbyEntity;
 
-					double distance = arrow.getLocation().distance(nearbyEntity.getLocation());
-					if(targetInfo == null || (nearbyEntity != targetInfo.getKey() && distance < targetInfo.getValue())) {
+					double distance = arrow.getLocation().distance(target.getLocation());
+					if(targetInfo == null || distance < targetInfo.getValue()) {
 						targetInfo = new AbstractMap.SimpleEntry<>(target, distance);
-						break;
 					}
 				}
 
-				if(targetInfo != null) {
+				if(targetInfo == null) return;
 
-					Vector arrowVector = arrow.getLocation().toVector();
-					Vector targetVector = targetInfo.getKey().getLocation().toVector();
-					targetVector.setY(targetVector.getY() + 2);
+				Vector optimalVector = targetInfo.getKey().getLocation().toVector().subtract(arrow.getLocation().toVector());
+				Vector arrowDirVector = arrow.getLocation().getDirection();
 
-					Vector direction = targetVector.subtract(arrowVector).normalize();
-					arrow.setVelocity(direction);
-				}
+				float yaw = arrowDirVector.angle(optimalVector);
+				yaw = (float) Math.min(Math.max(yaw, - Math.PI / 10), Math.PI / 10);
+				float pitch = arrowDirVector.angle(optimalVector);
+				pitch = (float) Math.min(Math.max(pitch, - Math.PI / 10), Math.PI / 10);
+
+				Location finalLocation = arrow.getLocation().clone();
+				finalLocation.setYaw((float) (finalLocation.getYaw() + Math.toDegrees(yaw)));
+				finalLocation.setPitch((float) (finalLocation.getPitch() + Math.toDegrees(pitch)));
+				arrow.setVelocity(finalLocation.getDirection().normalize().multiply(arrow.getVelocity().length()));
+
+//				Vector arrowVector = arrow.getLocation().toVector();
+//				Vector targetVector = targetInfo.getKey().getLocation().toVector();
+//				targetVector.setY(targetVector.getY() + 2);
+//
+//				Vector direction = targetVector.subtract(arrowVector).normalize();
+//				arrow.setVelocity(direction);
 			}
 		}.runTaskTimer(PitSim.INSTANCE, 0L, 3L);
 	}
