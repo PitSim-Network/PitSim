@@ -35,7 +35,7 @@ public class PitSim extends JavaPlugin {
 
 		if (Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null) {
 		} else {
-			AOutput.log(String.format("Could not find PlaceholderAPI! This plugin is required."));
+			AOutput.log("Could not find PlaceholderAPI! This plugin is required.");
 			Bukkit.getPluginManager().disablePlugin(this);
 		}
 
