@@ -1,7 +1,9 @@
-package dev.kyro.pitsim.nons;
+package dev.kyro.pitsim.controllers;
 
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.misc.Misc;
+import dev.kyro.pitsim.enums.NonState;
+import dev.kyro.pitsim.enums.NonTrait;
 import net.citizensnpcs.api.CitizensAPI;
 import net.citizensnpcs.api.npc.NPC;
 import net.citizensnpcs.api.trait.trait.Equipment;

@@ -1,8 +1,7 @@
-package dev.kyro.pitsim.nons;
+package dev.kyro.pitsim.controllers;
 
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.commands.ATestCommand;
-import dev.kyro.pitsim.controllers.DamageManager;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;

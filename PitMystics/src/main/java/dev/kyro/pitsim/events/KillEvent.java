@@ -1,7 +1,7 @@
 package dev.kyro.pitsim.events;
 
-import dev.kyro.pitsim.nons.Non;
-import dev.kyro.pitsim.nons.NonManager;
+import dev.kyro.pitsim.controllers.Non;
+import dev.kyro.pitsim.controllers.NonManager;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;

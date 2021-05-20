@@ -1,4 +1,4 @@
-package dev.kyro.pitsim.nons;
+package dev.kyro.pitsim.enums;
 
 public enum NonTrait {
 
