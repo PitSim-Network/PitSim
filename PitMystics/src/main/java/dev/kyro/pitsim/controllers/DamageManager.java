@@ -22,6 +22,7 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityShootBowEvent;
+import org.bukkit.potion.PotionEffect;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.text.DecimalFormat;
@@ -200,6 +201,7 @@ public class DamageManager implements Listener {
 	public static void kill(AttackEvent.Apply attackEvent, boolean exeDeath) {
 
 		PitPlayer pitAttacker = PitPlayer.getPitPlayer(attackEvent.attacker);
+		PitPlayer pitDefender = PitPlayer.getPitPlayer(attackEvent.defender);
 		pitAttacker.incrementKills();
 
 		Location spawnLoc = new Location(Bukkit.getWorld("pit"), -108.5, 86, 194.5, 45, 0);
@@ -210,13 +212,18 @@ public class DamageManager implements Listener {
 		attackEvent.defender.playSound(attackEvent.defender.getLocation(), Sound.FALL_BIG, 1000, 1F);
 		Regularity.toReg.remove(attackEvent.defender.getUniqueId());
 
-		Non non = NonManager.getNon(attackEvent.defender);
-		if(non == null) {
+		Non defendingNon = NonManager.getNon(attackEvent.defender);
+		if(defendingNon == null) {
 			attackEvent.defender.teleport(spawnLoc);
 			Misc.multiKill(attackEvent.attacker);
 		} else {
 			Misc.multiKill(attackEvent.attacker);
-			non.respawn();
+			defendingNon.respawn();
+		}
+
+		pitDefender.megastreak.reset();
+		for(PotionEffect potionEffect : attackEvent.defender.getActivePotionEffects()) {
+			attackEvent.defender.removePotionEffect(potionEffect.getType());
 		}
 
 		Non attackNon = NonManager.getNon(attackEvent.attacker);
@@ -244,6 +251,5 @@ public class DamageManager implements Listener {
 				Misc.sendActionBar(attackEvent.attacker, actionBarPlaceholder);
 			}
 		}.runTaskLater(PitSim.INSTANCE, 1L);
-
 	}
 }
