@@ -64,7 +64,7 @@ public class PlayerManager implements Listener {
 			@Override
 			public void run() {
 
-				player.setMaxHealth(32);
+				player.setMaxHealth(28);
 				player.setHealth(player.getMaxHealth());
 			}
 		}.runTaskLater(PitSim.INSTANCE, 1L);
