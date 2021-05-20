@@ -6,6 +6,7 @@ import dev.kyro.pitsim.controllers.EnchantManager;
 import dev.kyro.pitsim.controllers.PitEnchant;
 import dev.kyro.pitsim.enums.NBTTag;
 import dev.kyro.pitsim.exceptions.InvalidEnchantLevelException;
+import dev.kyro.pitsim.exceptions.IsJewelException;
 import dev.kyro.pitsim.exceptions.MaxEnchantsExceededException;
 import dev.kyro.pitsim.exceptions.MaxTokensExceededException;
 import org.bukkit.command.Command;
@@ -63,26 +64,28 @@ public class EnchantCommand implements CommandExecutor {
 			} else {
 				updatedItem = EnchantManager.addEnchant(player.getItemInHand(), pitEnchant, level, true);
 			}
-		} catch(Exception e) {
-			if(e instanceof InvalidEnchantLevelException) {
+		} catch(Exception exception) {
+			if(exception instanceof InvalidEnchantLevelException) {
 
-				if(!((InvalidEnchantLevelException) e).levelTooHigh) {
+				if(!((InvalidEnchantLevelException) exception).levelTooHigh) {
 					AOutput.error(player, "Invalid enchant level");
 				} else {
 					AOutput.error(player, "There is already a higher level enchant on this item");
 				}
-			} else if(e instanceof MaxTokensExceededException) {
+			} else if(exception instanceof MaxTokensExceededException) {
 
-				if(!((MaxTokensExceededException) e).isRare) {
+				if(((MaxTokensExceededException) exception).isRare) {
 					AOutput.error(player, "You cannot have more than 5 rare tokens on an item");
 				} else {
 					AOutput.error(player, "You cannot have more than 8 tokens on an item");
 				}
-			} else if(e instanceof MaxEnchantsExceededException) {
+			} else if(exception instanceof MaxEnchantsExceededException) {
 
 				AOutput.error(player, "You cannot have more than 3 enchants on an item");
+			} else if(exception instanceof IsJewelException) {
+				AOutput.error(player, "You cannot modify a jewel enchant");
 			} else {
-				e.printStackTrace();
+				exception.printStackTrace();
 			}
 			return false;
 		}

@@ -9,10 +9,7 @@ import dev.kyro.arcticapi.misc.AUtil;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.enums.ApplyType;
 import dev.kyro.pitsim.enums.NBTTag;
-import dev.kyro.pitsim.exceptions.InvalidEnchantLevelException;
-import dev.kyro.pitsim.exceptions.MaxEnchantsExceededException;
-import dev.kyro.pitsim.exceptions.MaxTokensExceededException;
-import dev.kyro.pitsim.exceptions.MismatchedEnchantException;
+import dev.kyro.pitsim.exceptions.*;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -59,6 +56,10 @@ public class EnchantManager {
 	}
 
 	public static ItemStack addEnchant(ItemStack itemStack, PitEnchant applyEnchant, int applyLvl, boolean safe) throws Exception {
+		return addEnchant(itemStack, applyEnchant, applyLvl, safe, false);
+	}
+
+	public static ItemStack addEnchant(ItemStack itemStack, PitEnchant applyEnchant, int applyLvl, boolean safe, boolean jewel) throws Exception {
 
 		NBTItem nbtItem = new NBTItem(itemStack);
 
@@ -69,18 +70,23 @@ public class EnchantManager {
 		Integer tokenNum = nbtItem.getInteger(NBTTag.ITEM_TOKENS.getRef());
 		Integer rTokenNum = nbtItem.getInteger(NBTTag.ITEM_RTOKENS.getRef());
 
-		if(safe && !EnchantManager.canTypeApply(itemStack, applyEnchant)) {
-			throw new MismatchedEnchantException();
-		} else if(safe && applyLvl > 3) {
-			throw new InvalidEnchantLevelException(true);
-		} else if(currentLvl == applyLvl) {
-			throw new InvalidEnchantLevelException(false);
-		} else if(safe && applyLvl + tokenNum > 8) {
-			throw new MaxTokensExceededException(false);
-		} else if(safe && applyEnchant.isRare && applyLvl + rTokenNum > 5) {
-			throw new MaxTokensExceededException(true);
-		} else if(safe && enchantNum >= 3) {
-			throw new MaxEnchantsExceededException();
+		if(!jewel && safe) {
+			if(!EnchantManager.canTypeApply(itemStack, applyEnchant)) {
+				throw new MismatchedEnchantException();
+			} else if(applyLvl > 3) {
+				throw new InvalidEnchantLevelException(true);
+			} else if(currentLvl == applyLvl) {
+//			throw new InvalidEnchantLevelException(false);
+			} else if(applyLvl + tokenNum > 8) {
+				throw new MaxTokensExceededException(false);
+			} else if(applyEnchant.isRare && applyLvl + rTokenNum > 5) {
+				throw new MaxTokensExceededException(true);
+			} else if(enchantNum >= 3) {
+				throw new MaxEnchantsExceededException();
+			}
+		}
+		if(jewel && (safe || applyLvl == 0)) {
+			throw new IsJewelException();
 		}
 
 		if(currentLvl == 0) {
@@ -94,7 +100,8 @@ public class EnchantManager {
 		itemEnchants.setInteger(applyEnchant.refNames.get(0), applyLvl);
 
 		tokenNum += applyLvl - currentLvl;
-		if(applyEnchant.isRare) rTokenNum += applyLvl - currentLvl;
+		if(applyEnchant.isRare && !jewel) rTokenNum += applyLvl - currentLvl;
+		if(jewel) nbtItem.setString(NBTTag.ITEM_JEWEL_ENCHANT.getRef(), applyEnchant.refNames.get(0));
 		nbtItem.setInteger(NBTTag.ITEM_ENCHANTS.getRef(), enchantNum);
 		nbtItem.setInteger(NBTTag.ITEM_TOKENS.getRef(), tokenNum);
 		nbtItem.setInteger(NBTTag.ITEM_RTOKENS.getRef(), rTokenNum);
@@ -221,5 +228,27 @@ public class EnchantManager {
 		}
 
 		return itemEnchantMap;
+	}
+
+	public static List<PitEnchant> getEnchants(ApplyType applyType) {
+
+		List<PitEnchant> applicableEnchants = new ArrayList<>();
+		if(applyType == ApplyType.ALL) return pitEnchants;
+
+		for(PitEnchant pitEnchant : pitEnchants) {
+			ApplyType enchantApplyType = pitEnchant.applyType;
+
+			switch(applyType) {
+				case BOWS:
+					if(enchantApplyType == ApplyType.BOWS) applicableEnchants.add(pitEnchant);
+				case PANTS:
+					if(enchantApplyType == ApplyType.PANTS) applicableEnchants.add(pitEnchant);
+				case SWORDS:
+					if(enchantApplyType == ApplyType.SWORDS) applicableEnchants.add(pitEnchant);
+				case WEAPONS:
+					if(enchantApplyType == ApplyType.BOWS || enchantApplyType == ApplyType.SWORDS) applicableEnchants.add(pitEnchant);
+			}
+		}
+		return applicableEnchants;
 	}
 }

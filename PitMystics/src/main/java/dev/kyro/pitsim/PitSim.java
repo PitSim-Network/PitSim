@@ -3,10 +3,7 @@ package dev.kyro.pitsim;
 import dev.kyro.arcticapi.ArcticAPI;
 import dev.kyro.arcticapi.hooks.AHook;
 import dev.kyro.arcticapi.misc.AOutput;
-import dev.kyro.pitsim.commands.ATestCommand;
-import dev.kyro.pitsim.commands.EnchantCommand;
-import dev.kyro.pitsim.commands.FreshCommand;
-import dev.kyro.pitsim.commands.NonCommand;
+import dev.kyro.pitsim.commands.*;
 import dev.kyro.pitsim.controllers.*;
 import dev.kyro.pitsim.enchants.*;
 import dev.kyro.pitsim.placeholders.LevelBracketPlaceholder;
@@ -141,6 +138,7 @@ public class PitSim extends JavaPlugin {
 		getCommand("atest").setExecutor(new ATestCommand());
 		getCommand("enchant").setExecutor(new EnchantCommand());
 		getCommand("fresh").setExecutor(new FreshCommand());
+		getCommand("jewel").setExecutor(new JewelCommand());
 	}
 
 	private void registerListeners() {
