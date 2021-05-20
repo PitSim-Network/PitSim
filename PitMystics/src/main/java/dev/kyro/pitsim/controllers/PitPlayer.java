@@ -15,6 +15,7 @@ public class PitPlayer {
 	public static List<PitPlayer> pitPlayers = new ArrayList<>();
 
 	public Player player;
+	public String levelBracket;
 
 	private int kills = 0;
 	public List<Killstreak> killstreaks = new ArrayList<>();
@@ -29,6 +30,35 @@ public class PitPlayer {
 	public PitPlayer(Player player) {
 		this.player = player;
 		this.megastreak = new Overdrive(this);
+
+		Non non = NonManager.getNon(player);
+		if(non == null) {
+			levelBracket = "&d[&b&l120&d]";
+		} else {
+			int rand = (int) (Math.random() * 6);
+			String color;
+			switch(rand) {
+				case 0:
+					color = "&7";
+					break;
+				case 1:
+					color = "&9";
+					break;
+				case 2:
+					color = "&3";
+					break;
+				case 3:
+					color = "&2";
+					break;
+				case 4:
+					color = "&e";
+					break;
+				default:
+					color = "&6";
+					break;
+			}
+			levelBracket = "&7[" + color + "&l" + (rand * (int) (Math.random() * 10)) + "&7]";
+		}
 	}
 
 	public static PitPlayer getPitPlayer(Player player) {

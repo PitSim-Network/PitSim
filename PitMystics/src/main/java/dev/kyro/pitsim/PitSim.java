@@ -1,6 +1,7 @@
 package dev.kyro.pitsim;
 
 import dev.kyro.arcticapi.ArcticAPI;
+import dev.kyro.arcticapi.hooks.AHook;
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.commands.ATestCommand;
 import dev.kyro.pitsim.commands.EnchantCommand;
@@ -8,8 +9,7 @@ import dev.kyro.pitsim.commands.FreshCommand;
 import dev.kyro.pitsim.commands.NonCommand;
 import dev.kyro.pitsim.controllers.*;
 import dev.kyro.pitsim.enchants.*;
-import dev.kyro.pitsim.controllers.Non;
-import dev.kyro.pitsim.controllers.NonManager;
+import dev.kyro.pitsim.placeholders.LevelBracketPlaceholder;
 import net.milkbowl.vault.economy.Economy;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.RegisteredServiceProvider;
@@ -48,6 +48,9 @@ public class PitSim extends JavaPlugin {
 		registerCommands();
 		registerListeners();
 		registerEnchants();
+
+		ArcticAPI.setupPlaceholderAPI("pitsim");
+		AHook.registerPlaceholder(new LevelBracketPlaceholder());
 	}
 
 	@Override
