@@ -33,31 +33,7 @@ public class PitPlayer {
 
 		Non non = NonManager.getNon(player);
 		if(non == null) {
-			levelBracket = "&d[&b&l120&d]";
-		} else {
-			int rand = (int) (Math.random() * 6);
-			String color;
-			switch(rand) {
-				case 0:
-					color = "&7";
-					break;
-				case 1:
-					color = "&9";
-					break;
-				case 2:
-					color = "&3";
-					break;
-				case 3:
-					color = "&2";
-					break;
-				case 4:
-					color = "&e";
-					break;
-				default:
-					color = "&6";
-					break;
-			}
-			levelBracket = "&7[" + color + "&l" + (rand * (int) (Math.random() * 10)) + "&7]";
+			levelBracket = "&d[&b&l120&d]&r";
 		}
 	}
 
@@ -121,7 +97,8 @@ public class PitPlayer {
 			@Override
 			public void run() {
 				recentDamageMap.putIfAbsent(player.getUniqueId(), 0D);
-				recentDamageMap.put(player.getUniqueId(), recentDamageMap.get(player.getUniqueId()) - damage);
+				if( recentDamageMap.get(player.getUniqueId()) - damage != 0)
+					recentDamageMap.put(player.getUniqueId(), recentDamageMap.get(player.getUniqueId()) - damage); else recentDamageMap.remove(player.getUniqueId());
 			}
 		}.runTaskLater(PitSim.INSTANCE, 200L));
 	}

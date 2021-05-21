@@ -4,12 +4,9 @@ import dev.kyro.pitsim.events.AttackEvent;
 import dev.kyro.pitsim.misc.Misc;
 import me.clip.placeholderapi.PlaceholderAPI;
 import net.minecraft.server.v1_8_R3.EntityPlayer;
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
 import org.bukkit.entity.Player;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 
 
@@ -69,9 +66,10 @@ public class DamageIndicator implements Listener {
             }
         }
 
+        Non defendingNon = NonManager.getNon(defender);
         StringBuilder output = new StringBuilder();
 
-        String playername = "&7%luckperms_prefix%%player_name% ";
+        String playername = "&7%luckperms_prefix%" + (defendingNon == null ? "%player_name%" : defendingNon.displayName);
         output.append(PlaceholderAPI.setPlaceholders(attackEvent.defender, playername));
 
         for (int i = 0; i < Math.max(originalHealth - roundedDamageTaken, 0); i++) {

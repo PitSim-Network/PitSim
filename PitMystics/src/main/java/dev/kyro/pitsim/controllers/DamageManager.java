@@ -2,6 +2,7 @@ package dev.kyro.pitsim.controllers;
 
 import de.tr7zw.nbtapi.NBTItem;
 import dev.kyro.arcticapi.misc.AOutput;
+import dev.kyro.arcticapi.misc.ASound;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.enchants.PitBlob;
 import dev.kyro.pitsim.enchants.Regularity;
@@ -167,7 +168,9 @@ public class DamageManager implements Listener {
 				attackEvent.attacker.damage(0);
 			}
 		}
-//		}
+
+		PitPlayer pitPlayer = PitPlayer.getPitPlayer(attackEvent.defender);
+		pitPlayer.addDamage(attackEvent.attacker, attackEvent.event.getFinalDamage() + attackEvent.trueDamage);
 
 //		AOutput.send(attackEvent.attacker, "Final Damage: " + attackEvent.event.getDamage());
 //		AOutput.send(attackEvent.attacker, "Final Damage: " + attackEvent.event.getFinalDamage());
@@ -233,9 +236,10 @@ public class DamageManager implements Listener {
 		PitSim.VAULT.depositPlayer(killEvent.attacker, killEvent.getFinalGold());
 
 		DecimalFormat df = new DecimalFormat("##0.00");
-		String kill = "&a&lKILL!&7 on %luckperms_prefix%%player_name% &b+" + killEvent.getFinalXp() + "XP" +" &6+" + df.format(killEvent.getFinalGold()) + "g";
-		String death = "&c&lDEATH! &7by %luckperms_prefix%%player_name%";
-		String killActionBar = "&7%luckperms_prefix%%player_name% &a&lKILL!";
+		String kill = "&a&lKILL!&7 on %luckperms_prefix%" + (defendingNon == null ? "%player_name%" : defendingNon.displayName)
+				+ " &b+" + killEvent.getFinalXp() + "XP" +" &6+" + df.format(killEvent.getFinalGold()) + "g";
+		String death = "&c&lDEATH! &7by %luckperms_prefix%" + (defendingNon == null ? "%player_name%" : defendingNon.displayName);
+		String killActionBar = "&7%luckperms_prefix%" + (defendingNon == null ? "%player_name%" : defendingNon.displayName) + " &a&lKILL!";
 		AOutput.send(killEvent.attacker, PlaceholderAPI.setPlaceholders(killEvent.defender, kill));
 		AOutput.send(killEvent.defender, PlaceholderAPI.setPlaceholders(killEvent.attacker, death));
 		String actionBarPlaceholder = PlaceholderAPI.setPlaceholders(killEvent.defender, killActionBar);
@@ -260,15 +264,15 @@ public class DamageManager implements Listener {
 			Player assistPlayer = Bukkit.getPlayer(entry.getKey());
 			if(assistPlayer == null) continue;
 			double assistPercent = entry.getValue() / finalDamage;
-			AOutput.send(assistPlayer, "&a&lASSIST!&7 " + Math.round(assistPercent * 100) + "% on %luckperms_prefix%%player_name%");
 
-			int xp = (int) (killEvent.getFinalXp() * assistPercent);
+			int xp = (int) Math.ceil(killEvent.getFinalXp() * assistPercent);
 			double gold = killEvent.getFinalGold() * assistPercent;
 
 			PitSim.VAULT.depositPlayer(assistPlayer, killEvent.getFinalGold());
 
-			String assist = "&a&lASSIST!&7 " + Math.round(assistPercent * 100) + "% on %luckperms_prefix%%player_name% &b+" +
-					xp + "XP" +" &6+" + df.format(gold) + "g";
+			ASound.play(assistPlayer, Sound.ORB_PICKUP, 1F, 1.7301587F);
+			String assist = "&a&lASSIST!&7 " + Math.round(assistPercent * 100) + "% on %luckperms_prefix%" +
+					(defendingNon == null ? "%player_name%" : defendingNon.displayName) + " &b+" + xp + "XP" +" &6+" + df.format(gold) + "g";
 
 			AOutput.send(assistPlayer, PlaceholderAPI.setPlaceholders(killEvent.defender, assist));
 		}

@@ -1,15 +1,14 @@
 package dev.kyro.pitsim.controllers;
 
 import dev.kyro.pitsim.PitSim;
-import dev.kyro.pitsim.misc.Misc;
 import dev.kyro.pitsim.enums.NonState;
 import dev.kyro.pitsim.enums.NonTrait;
+import dev.kyro.pitsim.misc.Misc;
 import net.citizensnpcs.api.CitizensAPI;
 import net.citizensnpcs.api.npc.NPC;
 import net.citizensnpcs.api.trait.trait.Equipment;
 import net.citizensnpcs.npc.ai.CitizensNavigator;
 import net.citizensnpcs.npc.skin.SkinnableEntity;
-import net.citizensnpcs.util.NMS;
 import net.minecraft.server.v1_8_R3.EntityPlayer;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -32,6 +31,8 @@ public class Non {
 	public NPC npc;
 	public Player non;
 	public Player target;
+	public String name;
+	public String displayName;
 
 	public List<NonTrait> traits = new ArrayList<>();
 	public double persistence;
@@ -39,8 +40,32 @@ public class Non {
 	public int count = 0;
 
 	public Non(String name) {
+		this.name = name;
 
-		this.npc = CitizensAPI.getNPCRegistry().createNPC(EntityType.PLAYER, name);
+		int rand = (int) (Math.random() * 6);
+		String color;
+		switch(rand) {
+			case 0:
+				color = "&7";
+				break;
+			case 1:
+				color = "&9";
+				break;
+			case 2:
+				color = "&3";
+				break;
+			case 3:
+				color = "&2";
+				break;
+			case 4:
+				color = "&a";
+				break;
+			default:
+				color = "&e";
+				break;
+		}
+		displayName = "&7[" + color + (rand * 10 + (int) (Math.random() * 10)) + "&7]&7" + " " + name;
+		this.npc = CitizensAPI.getNPCRegistry().createNPC(EntityType.PLAYER, displayName);
 		spawn();
 		this.non = (Player) npc.getEntity();
 		NonManager.nons.add(this);
@@ -57,6 +82,7 @@ public class Non {
 		if(traits.contains(NonTrait.IRON_STREAKER)) persistence -= 100 - persistence;
 
 		respawn();
+		skin(name);
 	}
 
 	public void tick() {
@@ -217,16 +243,10 @@ public class Non {
 		npc.destroy();
 	}
 
-	public void skin(NPC npc, String name, Location loc) {
+	public void skin(String name) {
 		npc.data().set(NPC.PLAYER_SKIN_UUID_METADATA, name);
 		npc.data().set(NPC.PLAYER_SKIN_USE_LATEST, false);
 		if (npc.isSpawned()) {
-			SkinnableEntity skinnable = (SkinnableEntity) npc.getEntity();
-			if (skinnable != null) {
-				skinnable.setSkinName(name);
-			}
-		}else {
-			npc.spawn(loc);
 			SkinnableEntity skinnable = (SkinnableEntity) npc.getEntity();
 			if (skinnable != null) {
 				skinnable.setSkinName(name);
