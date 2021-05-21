@@ -19,7 +19,18 @@ public class JewelCommand implements CommandExecutor {
 		if(!(sender instanceof Player)) return false;
 		Player player = (Player) sender;
 
-		ItemStack jewel = FreshCommand.getFreshItem(MysticType.PANTS, PantColor.RED);
+		MysticType mysticType;
+		int rand = (int) (Math.random() * 3);
+		switch(rand) {
+			case 0:
+				mysticType = MysticType.SWORD;
+			case 1:
+				mysticType = MysticType.BOW;
+			default:
+				mysticType = MysticType.PANTS;
+		}
+
+		ItemStack jewel = FreshCommand.getFreshItem(mysticType, PantColor.RED);
 		assert jewel != null;
 		NBTItem nbtItem = new NBTItem(jewel);
 		nbtItem.setBoolean(NBTTag.IS_JEWEL.getRef(), true);

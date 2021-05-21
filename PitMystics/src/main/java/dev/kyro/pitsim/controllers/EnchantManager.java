@@ -8,6 +8,7 @@ import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.arcticapi.misc.AUtil;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.enums.ApplyType;
+import dev.kyro.pitsim.enums.MysticType;
 import dev.kyro.pitsim.enums.NBTTag;
 import dev.kyro.pitsim.exceptions.*;
 import dev.kyro.pitsim.misc.Misc;
@@ -181,7 +182,7 @@ public class EnchantManager {
 		int jewelKills = nbtItem.getInteger(NBTTag.JEWEL_KILLS.getRef());
 		if(jewelKills < 100 || !jewelString.isEmpty()) return;
 
-		List<PitEnchant> applicableEnchants = EnchantManager.getEnchants(ApplyType.PANTS);
+		List<PitEnchant> applicableEnchants = EnchantManager.getEnchants(MysticType.getMysticType(itemStack));
 		PitEnchant jewelEnchant = applicableEnchants.get((int) (Math.random() * applicableEnchants.size()));
 		try {
 			itemStack = EnchantManager.addEnchant(nbtItem.getItem(), jewelEnchant, 3, false, true);
@@ -331,19 +332,44 @@ public class EnchantManager {
 
 		for(PitEnchant pitEnchant : pitEnchants) {
 			ApplyType enchantApplyType = pitEnchant.applyType;
+			if(enchantApplyType == ApplyType.ALL) applicableEnchants.add(pitEnchant);
 
 			switch(applyType) {
 				case BOWS:
-					if(enchantApplyType == ApplyType.BOWS) applicableEnchants.add(pitEnchant);
+					if(enchantApplyType == ApplyType.BOWS || enchantApplyType == ApplyType.WEAPONS) applicableEnchants.add(pitEnchant);
 					break;
 				case PANTS:
 					if(enchantApplyType == ApplyType.PANTS) applicableEnchants.add(pitEnchant);
 					break;
 				case SWORDS:
-					if(enchantApplyType == ApplyType.SWORDS) applicableEnchants.add(pitEnchant);
+					if(enchantApplyType == ApplyType.SWORDS || enchantApplyType == ApplyType.WEAPONS) applicableEnchants.add(pitEnchant);
 					break;
 				case WEAPONS:
-					if(enchantApplyType == ApplyType.BOWS || enchantApplyType == ApplyType.SWORDS) applicableEnchants.add(pitEnchant);
+					if(enchantApplyType == ApplyType.WEAPONS || enchantApplyType == ApplyType.BOWS
+							|| enchantApplyType == ApplyType.SWORDS) applicableEnchants.add(pitEnchant);
+					break;
+			}
+		}
+		return applicableEnchants;
+	}
+
+	public static List<PitEnchant> getEnchants(MysticType mystictype) {
+
+		List<PitEnchant> applicableEnchants = new ArrayList<>();
+
+		for(PitEnchant pitEnchant : pitEnchants) {
+			ApplyType enchantApplyType = pitEnchant.applyType;
+			if(enchantApplyType == ApplyType.ALL) applicableEnchants.add(pitEnchant);
+
+			switch(mystictype) {
+				case BOW:
+					if(enchantApplyType == ApplyType.BOWS || enchantApplyType == ApplyType.WEAPONS) applicableEnchants.add(pitEnchant);
+					break;
+				case PANTS:
+					if(enchantApplyType == ApplyType.PANTS) applicableEnchants.add(pitEnchant);
+					break;
+				case SWORD:
+					if(enchantApplyType == ApplyType.SWORDS || enchantApplyType == ApplyType.WEAPONS) applicableEnchants.add(pitEnchant);
 					break;
 			}
 		}
