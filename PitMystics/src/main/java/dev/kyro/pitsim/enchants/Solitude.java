@@ -5,7 +5,8 @@ import dev.kyro.pitsim.controllers.PitEnchant;
 import dev.kyro.pitsim.enums.ApplyType;
 import dev.kyro.pitsim.events.AttackEvent;
 import dev.kyro.pitsim.misc.Misc;
-import dev.kyro.pitsim.misc.NumberFormatter;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 
 import java.util.List;
@@ -23,15 +24,22 @@ public class Solitude extends PitEnchant {
 
 		int enchantLvl = attackEvent.getDefenderEnchantLevel(this);
 		if(enchantLvl == 0) return;
-		
-		attackEvent.multiplier.add(Misc.getReductionMultiplier(getDamageReduction(enchantLvl)));
+
+		int nearbyPlayers = 0;
+		for(Entity nearby : attackEvent.defender.getNearbyEntities(7, 7, 7)) {
+			if(!(nearby instanceof Player) || nearby == attackEvent.defender) continue;
+			nearbyPlayers++;
+		}
+
+		double reduction = Math.max(getDamageReduction(enchantLvl) - nearbyPlayers * 10, 0);
+		attackEvent.multiplier.add(Misc.getReductionMultiplier(reduction));
 	}
 
 	@Override
 	public List<String> getDescription(int enchantLvl) {
 
-		return new ALoreBuilder("&7Receive &9-" + Misc.roundString(getDamageReduction(enchantLvl)) + "% &7damage when &9" +
-				NumberFormatter.convert(getNearbyPlayers(enchantLvl)), "&7or less players are within 7", "&7blocks").getLore();
+		return new ALoreBuilder("&7Receive &9-" + Misc.roundString(getDamageReduction(enchantLvl)) + "% &7damage, but",
+				"&7lose &910% &7reduction for every", "&7nearby player besides yourself").getLore();
 	}
 
 	public int getNearbyPlayers(int enchantLvl) {
