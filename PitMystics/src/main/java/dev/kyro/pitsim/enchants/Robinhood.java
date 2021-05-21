@@ -6,7 +6,6 @@ import dev.kyro.pitsim.controllers.EnchantManager;
 import dev.kyro.pitsim.controllers.PitEnchant;
 import dev.kyro.pitsim.enums.ApplyType;
 import dev.kyro.pitsim.events.AttackEvent;
-import org.bukkit.Location;
 import org.bukkit.entity.Arrow;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
@@ -46,7 +45,7 @@ public class Robinhood extends PitEnchant {
 			public void run() {
 				Map.Entry<Player, Double> targetInfo = null;
 
-				for(Entity nearbyEntity : arrow.getWorld().getNearbyEntities(arrow.getLocation(), 8, 8, 8)) {
+				for(Entity nearbyEntity : arrow.getWorld().getNearbyEntities(arrow.getLocation(), 16, 16, 16)) {
 
 					if(!(nearbyEntity instanceof Player) || nearbyEntity.equals(player)) continue;
 					Player target = (Player) nearbyEntity;
@@ -59,18 +58,8 @@ public class Robinhood extends PitEnchant {
 
 				if(targetInfo == null) return;
 
-				Vector optimalVector = targetInfo.getKey().getLocation().toVector().subtract(arrow.getLocation().toVector());
-				Vector arrowDirVector = arrow.getLocation().getDirection();
-
-				float yaw = arrowDirVector.angle(optimalVector);
-				yaw = (float) Math.min(Math.max(yaw, - Math.PI / 10), Math.PI / 10);
-				float pitch = arrowDirVector.angle(optimalVector);
-				pitch = (float) Math.min(Math.max(pitch, - Math.PI / 10), Math.PI / 10);
-
-				Location finalLocation = arrow.getLocation().clone();
-				finalLocation.setYaw((float) (finalLocation.getYaw() + Math.toDegrees(yaw)));
-				finalLocation.setPitch((float) (finalLocation.getPitch() + Math.toDegrees(pitch)));
-				arrow.setVelocity(finalLocation.getDirection().normalize().multiply(arrow.getVelocity().length()));
+				Vector optimalVectorYaw = targetInfo.getKey().getLocation().toVector().subtract(arrow.getLocation().toVector()).setY(0).normalize();
+				Vector arrowDirVectorYaw = arrow.getVelocity().setY(0).normalize();
 
 //				Vector arrowVector = arrow.getLocation().toVector();
 //				Vector targetVector = targetInfo.getKey().getLocation().toVector();
@@ -79,7 +68,7 @@ public class Robinhood extends PitEnchant {
 //				Vector direction = targetVector.subtract(arrowVector).normalize();
 //				arrow.setVelocity(direction);
 			}
-		}.runTaskTimer(PitSim.INSTANCE, 0L, 3L);
+		}.runTaskTimer(PitSim.INSTANCE, 0L, 1L);
 	}
 
 	@Override
