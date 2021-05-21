@@ -12,9 +12,9 @@ import java.util.List;
 public class KillEvent extends Event {
 	private static final HandlerList handlers = new HandlerList();
 
-	public AttackEvent.Apply attackEvent;
-	public Player attacker;
-	public Player defender;
+//	public AttackEvent.Apply attackEvent;
+	public Player killer;
+	public Player dead;
 	public boolean exeDeath;
 
 	public int xpReward;
@@ -22,13 +22,13 @@ public class KillEvent extends Event {
 	public List<Double> xpMultipliers = new ArrayList<>();
 	public List<Double> goldMultipliers = new ArrayList<>();
 
-	public KillEvent(AttackEvent.Apply attackEvent, boolean exeDeath) {
-		this.attackEvent = attackEvent;
-		this.attacker = attackEvent.attacker;
-		this.defender = attackEvent.defender;
+	public KillEvent(Player killer, Player dead, boolean exeDeath) {
+//		this.attackEvent = attackEvent;
+		this.killer = killer;
+		this.dead = dead;
 		this.exeDeath = exeDeath;
 
-		Non defendingNon = NonManager.getNon(defender);
+		Non defendingNon = NonManager.getNon(this.dead);
 		xpReward = defendingNon == null ? 5 : 1;
 	}
 

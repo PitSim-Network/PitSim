@@ -10,9 +10,11 @@ import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.enums.ApplyType;
 import dev.kyro.pitsim.enums.NBTTag;
 import dev.kyro.pitsim.exceptions.*;
+import dev.kyro.pitsim.misc.Misc;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
@@ -110,8 +112,20 @@ public class EnchantManager {
 		AItemStackBuilder itemStackBuilder = new AItemStackBuilder(nbtItem.getItem());
 		itemStackBuilder.setName("&cTier " + (enchantNum != 0 ? AUtil.toRoman(enchantNum) : 0) + " " + getMysticType(itemStack));
 
+		setItemLore(itemStackBuilder.getItemStack());
+		return itemStackBuilder.getItemStack();
+	}
+
+	public static void setItemLore(ItemStack itemStack) {
+
+		NBTItem nbtItem = new NBTItem(itemStack);
+		NBTList<String> enchantOrder = nbtItem.getStringList(NBTTag.PIT_ENCHANT_ORDER.getRef());
+		NBTCompound itemEnchants = nbtItem.getCompound(NBTTag.PIT_ENCHANTS.getRef());
+		int playerKills = nbtItem.getInteger(NBTTag.PLAYER_KILLS.getRef());
+		int botKills = nbtItem.getInteger(NBTTag.BOT_KILLS.getRef());
+
 		ALoreBuilder loreBuilder = new ALoreBuilder();
-		loreBuilder.addLore("&7Lives: &a0&7/0");
+		loreBuilder.addLore("&7Kills: &a" + Misc.getFormattedKills(playerKills) + "&7/" + Misc.getFormattedKills(botKills));
 		for(String key : enchantOrder) {
 
 			PitEnchant enchant = EnchantManager.getEnchant(key);
@@ -127,9 +141,28 @@ public class EnchantManager {
 			loreBuilder.addLore("&f");
 			loreBuilder.addLore("&aJEWEL!&9 " + jewelEnchant.getDisplayName());
 		}
-		itemStackBuilder.setLore(loreBuilder.getLore());
 
-		return itemStackBuilder.getItemStack();
+		ItemMeta itemMeta = itemStack.getItemMeta();
+		itemMeta.setLore(loreBuilder.getLore());
+		itemStack.setItemMeta(itemMeta);
+	}
+
+	public static void incrementKills(Player attacker, Player killed) {
+		Non non = NonManager.getNon(killed);
+		String ref = non == null ? NBTTag.PLAYER_KILLS.getRef() : NBTTag.BOT_KILLS.getRef();
+
+		if(!Misc.isAirOrNull(attacker.getItemInHand())) {
+			NBTItem nbtItem = new NBTItem(attacker.getItemInHand());
+			nbtItem.setInteger(ref, nbtItem.getInteger(ref) + 1);
+			setItemLore(nbtItem.getItem());
+			attacker.setItemInHand(nbtItem.getItem());
+		}
+		if(!Misc.isAirOrNull(attacker.getInventory().getLeggings())) {
+			NBTItem nbtItem = new NBTItem(attacker.getInventory().getLeggings());
+			nbtItem.setInteger(ref, nbtItem.getInteger(ref) + 1);
+			setItemLore(nbtItem.getItem());
+			attacker.getInventory().setLeggings(nbtItem.getItem());
+		}
 	}
 
 	public static PitEnchant getEnchant(String refName) {

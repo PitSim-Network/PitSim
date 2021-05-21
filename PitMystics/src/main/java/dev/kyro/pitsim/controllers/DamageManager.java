@@ -150,7 +150,7 @@ public class DamageManager implements Listener {
 			double finalHealth = attackEvent.defender.getHealth() - attackEvent.trueDamage;
 			if(finalHealth <= 0) {
 				attackEvent.event.setCancelled(true);
-				kill(attackEvent, false);
+				kill(attackEvent.attacker, attackEvent.defender, false);
 				return;
 			} else {
 				attackEvent.defender.setHealth(Math.max(finalHealth, 0));
@@ -161,7 +161,7 @@ public class DamageManager implements Listener {
 			double finalHealth = attackEvent.attacker.getHealth() - attackEvent.selfTrueDamage - attackEvent.selfVeryTrueDamage;
 			if(finalHealth <= 0) {
 				attackEvent.event.setCancelled(true);
-				kill(attackEvent, false);
+				kill(attackEvent.defender, attackEvent.attacker, false);
 				return;
 			} else {
 				attackEvent.attacker.setHealth(Math.max(finalHealth, 0));
@@ -178,11 +178,11 @@ public class DamageManager implements Listener {
 		if(attackEvent.event.getFinalDamage() >= attackEvent.defender.getHealth()) {
 
 			attackEvent.event.setCancelled(true);
-			kill(attackEvent, false);
+			kill(attackEvent.attacker, attackEvent.defender, false);
 		} else if(attackEvent.event.getFinalDamage() + attackEvent.executeUnder >= attackEvent.defender.getHealth()) {
 
 			attackEvent.event.setCancelled(true);
-			kill(attackEvent, true);
+			kill(attackEvent.attacker, attackEvent.defender, true);
 		}
 
 		DamageIndicator.onAttack(attackEvent);
@@ -197,57 +197,59 @@ public class DamageManager implements Listener {
 		return null;
 	}
 
-	public static void kill(AttackEvent.Apply attackEvent, boolean exeDeath) {
+	public static void kill(Player killer, Player dead, boolean exeDeath) {
 
-		PitPlayer pitAttacker = PitPlayer.getPitPlayer(attackEvent.attacker);
-		PitPlayer pitDefender = PitPlayer.getPitPlayer(attackEvent.defender);
+		EnchantManager.incrementKills(killer, dead);
+
+		PitPlayer pitAttacker = PitPlayer.getPitPlayer(killer);
+		PitPlayer pitDefender = PitPlayer.getPitPlayer(dead);
 		pitAttacker.incrementKills();
 
 		Location spawnLoc = new Location(Bukkit.getWorld("pit"), -108.5, 86, 194.5, 45, 0);
 
-		attackEvent.defender.setHealth(attackEvent.defender.getMaxHealth());
-		attackEvent.defender.playEffect(EntityEffect.HURT);
-		attackEvent.defender.playSound(attackEvent.defender.getLocation(), Sound.FALL_BIG, 1000, 1F);
-		attackEvent.defender.playSound(attackEvent.defender.getLocation(), Sound.FALL_BIG, 1000, 1F);
-		Regularity.toReg.remove(attackEvent.defender.getUniqueId());
+		dead.setHealth(dead.getMaxHealth());
+		dead.playEffect(EntityEffect.HURT);
+		dead.playSound(dead.getLocation(), Sound.FALL_BIG, 1000, 1F);
+		dead.playSound(dead.getLocation(), Sound.FALL_BIG, 1000, 1F);
+		Regularity.toReg.remove(dead.getUniqueId());
 
-		Non defendingNon = NonManager.getNon(attackEvent.defender);
+		Non defendingNon = NonManager.getNon(dead);
 		if(defendingNon == null) {
-			attackEvent.defender.teleport(spawnLoc);
-			Misc.multiKill(attackEvent.attacker);
+			dead.teleport(spawnLoc);
+			Misc.multiKill(killer);
 		} else {
-			Misc.multiKill(attackEvent.attacker);
+			Misc.multiKill(killer);
 			defendingNon.respawn();
 		}
 
 		pitDefender.megastreak.reset();
-		for(PotionEffect potionEffect : attackEvent.defender.getActivePotionEffects()) {
-			attackEvent.defender.removePotionEffect(potionEffect.getType());
+		for(PotionEffect potionEffect : dead.getActivePotionEffects()) {
+			dead.removePotionEffect(potionEffect.getType());
 		}
 
-		Non attackNon = NonManager.getNon(attackEvent.attacker);
-		if(attackNon != null) {
-			attackNon.rewardKill();
+		Non attackingNon = NonManager.getNon(killer);
+		if(attackingNon != null) {
+			attackingNon.rewardKill();
 		}
 
-		KillEvent killEvent = new KillEvent(attackEvent, exeDeath);
+		KillEvent killEvent = new KillEvent(killer, dead, exeDeath);
 		Bukkit.getServer().getPluginManager().callEvent(killEvent);
 
-		PitSim.VAULT.depositPlayer(killEvent.attacker, killEvent.getFinalGold());
+		PitSim.VAULT.depositPlayer(killEvent.killer, killEvent.getFinalGold());
 
 		DecimalFormat df = new DecimalFormat("##0.00");
 		String kill = "&a&lKILL!&7 on %luckperms_prefix%" + (defendingNon == null ? "%player_name%" : defendingNon.displayName)
 				+ " &b+" + killEvent.getFinalXp() + "XP" +" &6+" + df.format(killEvent.getFinalGold()) + "g";
-		String death = "&c&lDEATH! &7by %luckperms_prefix%" + (defendingNon == null ? "%player_name%" : defendingNon.displayName);
+		String death = "&c&lDEATH! &7by %luckperms_prefix%" + (attackingNon == null ? "%player_name%" : defendingNon.displayName);
 		String killActionBar = "&7%luckperms_prefix%" + (defendingNon == null ? "%player_name%" : defendingNon.displayName) + " &a&lKILL!";
-		AOutput.send(killEvent.attacker, PlaceholderAPI.setPlaceholders(killEvent.defender, kill));
-		AOutput.send(killEvent.defender, PlaceholderAPI.setPlaceholders(killEvent.attacker, death));
-		String actionBarPlaceholder = PlaceholderAPI.setPlaceholders(killEvent.defender, killActionBar);
+		AOutput.send(killEvent.killer, PlaceholderAPI.setPlaceholders(killEvent.dead, kill));
+		AOutput.send(killEvent.dead, PlaceholderAPI.setPlaceholders(killEvent.killer, death));
+		String actionBarPlaceholder = PlaceholderAPI.setPlaceholders(killEvent.dead, killActionBar);
 		new BukkitRunnable() {
 			@Override
 			public void run() {
 
-				Misc.sendActionBar(killEvent.attacker, actionBarPlaceholder);
+				Misc.sendActionBar(killEvent.killer, actionBarPlaceholder);
 			}
 		}.runTaskLater(PitSim.INSTANCE, 1L);
 
@@ -259,7 +261,7 @@ public class DamageManager implements Listener {
 
 		for(Map.Entry<UUID, Double> entry : pitDefender.recentDamageMap.entrySet()) {
 
-			if(entry.getKey().equals(killEvent.attacker.getUniqueId())) continue;
+			if(entry.getKey().equals(killEvent.killer.getUniqueId())) continue;
 
 			Player assistPlayer = Bukkit.getPlayer(entry.getKey());
 			if(assistPlayer == null) continue;
@@ -274,7 +276,7 @@ public class DamageManager implements Listener {
 			String assist = "&a&lASSIST!&7 " + Math.round(assistPercent * 100) + "% on %luckperms_prefix%" +
 					(defendingNon == null ? "%player_name%" : defendingNon.displayName) + " &b+" + xp + "XP" +" &6+" + df.format(gold) + "g";
 
-			AOutput.send(assistPlayer, PlaceholderAPI.setPlaceholders(killEvent.defender, assist));
+			AOutput.send(assistPlayer, PlaceholderAPI.setPlaceholders(killEvent.dead, assist));
 		}
 
 		for(BukkitTask bukkitTask : pitDefender.assistRemove) {

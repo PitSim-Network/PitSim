@@ -152,4 +152,13 @@ public class Misc {
 
 		return itemStack == null || itemStack.getType() == Material.AIR;
 	}
+
+	public static String getFormattedKills(int kills) {
+
+		DecimalFormat decimalFormat = new DecimalFormat("#.##");
+		decimalFormat.setGroupingUsed(true);
+		decimalFormat.setGroupingSize(3);
+
+		return decimalFormat.format(kills);
+	}
 }

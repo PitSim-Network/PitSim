@@ -8,7 +8,9 @@ public enum NBTTag {
 	ITEM_JEWEL_ENCHANT("pr-jewel-enchant"),
 	ITEM_TOKENS("pr-token-num"),
 	ITEM_RTOKENS("pr-rare-token-num"),
-	ITEM_ENCHANTS("pr-enchant-num");
+	ITEM_ENCHANTS("pr-enchant-num"),
+	PLAYER_KILLS("pr-player-kills"),
+	BOT_KILLS("pr-bot-kills");
 
 	private final String ref;
 

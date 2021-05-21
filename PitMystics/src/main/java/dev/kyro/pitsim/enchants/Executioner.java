@@ -30,8 +30,8 @@ public class Executioner extends PitEnchant {
 
 		if(!event.exeDeath) return;
 
-		ASound.play(event.attacker, Sound.VILLAGER_DEATH, 1, 0.5F);
-		event.defender.getWorld().playEffect(event.defender.getLocation().add(0, 1, 0), Effect.STEP_SOUND, 152);
+		ASound.play(event.killer, Sound.VILLAGER_DEATH, 1, 0.5F);
+		event.dead.getWorld().playEffect(event.dead.getLocation().add(0, 1, 0), Effect.STEP_SOUND, 152);
 	}
 
 	@EventHandler
@@ -78,6 +78,6 @@ public class Executioner extends PitEnchant {
 
 	public double getExecuteHealth(int enchantLvl) {
 
-		return enchantLvl + 1;
+		return enchantLvl + 2;
 	}
 }
