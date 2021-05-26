@@ -1,12 +1,10 @@
 package dev.kyro.pitsim;
 
 import dev.kyro.arcticapi.ArcticAPI;
-import dev.kyro.arcticapi.hooks.AHook;
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.commands.*;
 import dev.kyro.pitsim.controllers.*;
 import dev.kyro.pitsim.enchants.*;
-import dev.kyro.pitsim.placeholders.LevelBracketPlaceholder;
 import net.milkbowl.vault.economy.Economy;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.RegisteredServiceProvider;
@@ -30,8 +28,9 @@ public class PitSim extends JavaPlugin {
 			return;
 		}
 
-		if(Bukkit.getPluginManager().getPlugin("PlaceholderAPI") == null) {
-			AOutput.log("Could not find PlaceholderAPI! This plugin is required.");
+		if (Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null) {
+		} else {
+			AOutput.log(String.format("Could not find PlaceholderAPI! This plugin is required."));
 			Bukkit.getPluginManager().disablePlugin(this);
 		}
 
@@ -44,9 +43,6 @@ public class PitSim extends JavaPlugin {
 		registerCommands();
 		registerListeners();
 		registerEnchants();
-
-		ArcticAPI.setupPlaceholderAPI("pitsim");
-		AHook.registerPlaceholder(new LevelBracketPlaceholder());
 	}
 
 	@Override
@@ -91,7 +87,7 @@ public class PitSim extends JavaPlugin {
 		EnchantManager.registerEnchant(new Volley());
 		EnchantManager.registerEnchant(new Chipping());
 		EnchantManager.registerEnchant(new Telebow());
-//		EnchantManager.registerEnchant(new Robinhood());
+		EnchantManager.registerEnchant(new Robinhood());
 		EnchantManager.registerEnchant(new Fletching());
 		EnchantManager.registerEnchant(new PushComesToShove());
 		EnchantManager.registerEnchant(new Wasp());
@@ -140,8 +136,8 @@ public class PitSim extends JavaPlugin {
 		getCommand("atest").setExecutor(new ATestCommand());
 		getCommand("enchant").setExecutor(new EnchantCommand());
 		getCommand("fresh").setExecutor(new FreshCommand());
-		getCommand("jewel").setExecutor(new JewelCommand());
-		getCommand("complete").setExecutor(new CompleteJewelCommand());
+		getCommand("show").setExecutor(new ShowCommand());
+		getCommand("perks").setExecutor(new PerksCommand());
 	}
 
 	private void registerListeners() {
@@ -151,6 +147,7 @@ public class PitSim extends JavaPlugin {
 		getServer().getPluginManager().registerEvents(new PlayerManager(), this);
 		getServer().getPluginManager().registerEvents(new ChatManager(), this);
 		getServer().getPluginManager().registerEvents(new DamageIndicator(), this);
+
 	}
 
 	private void loadConfig() {
