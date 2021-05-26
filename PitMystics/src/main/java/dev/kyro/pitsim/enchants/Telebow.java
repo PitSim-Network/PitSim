@@ -14,6 +14,7 @@ import org.bukkit.Sound;
 import org.bukkit.entity.Arrow;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityShootBowEvent;
 import org.bukkit.event.entity.ProjectileHitEvent;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -41,9 +42,19 @@ public class Telebow extends PitEnchant {
 		cooldown.reduceCooldown(60);
 
 		if(cooldown.isOnCooldown()) {
-			Misc.sendActionBar(attackEvent.attacker, "&eTelebow: &c" + cooldown.getTicksLeft() / 20 + "&cs cooldown!");
+			new BukkitRunnable() {
+				@Override
+				public void run() {
+					Misc.sendActionBar(attackEvent.attacker, "&eTelebow: &c" + cooldown.getTicksLeft() / 20 + "&cs cooldown!");
+				}
+			}.runTaskLater(PitSim.INSTANCE, 1L);
 		} else {
-			Misc.sendActionBar(attackEvent.attacker, "&eTelebow: &aReady!");
+			new BukkitRunnable() {
+				@Override
+				public void run() {
+					Misc.sendActionBar(attackEvent.attacker, "&eTelebow: &aReady!");
+				}
+			}.runTaskLater(PitSim.INSTANCE, 1L);
 		}
 	}
 

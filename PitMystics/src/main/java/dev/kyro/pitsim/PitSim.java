@@ -137,7 +137,6 @@ public class PitSim extends JavaPlugin {
 		getCommand("enchant").setExecutor(new EnchantCommand());
 		getCommand("fresh").setExecutor(new FreshCommand());
 		getCommand("show").setExecutor(new ShowCommand());
-		getCommand("perks").setExecutor(new PerksCommand());
 	}
 
 	private void registerListeners() {
