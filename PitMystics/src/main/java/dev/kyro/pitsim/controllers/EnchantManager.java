@@ -129,6 +129,7 @@ public class EnchantManager {
 
 		ALoreBuilder loreBuilder = new ALoreBuilder();
 
+		loreBuilder.addLore("&7Kills: &a" + Misc.getFormattedKills(playerKills) + "&7/" + Misc.getFormattedKills(botKills));
 		if(isJewel && !isJewelComplete(itemStack)) {
 
 			loreBuilder.addLore("&7");
@@ -154,7 +155,6 @@ public class EnchantManager {
 				loreBuilder.addLore("&aJEWEL!&9 " + jewelEnchant.getDisplayName());
 			}
 		}
-		loreBuilder.addLore("&7Kills: &a" + Misc.getFormattedKills(playerKills) + "&7/" + Misc.getFormattedKills(botKills));
 
 		ItemMeta itemMeta = itemStack.getItemMeta();
 		itemMeta.setLore(loreBuilder.getLore());
