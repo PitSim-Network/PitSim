@@ -85,7 +85,7 @@ public class DamageManager implements Listener {
 		}
 
 		if(!fakeHit) {
-			if(attackingNon == null) attacker.setHealth(Math.min(attacker.getHealth() + 1, attacker.getMaxHealth()));
+//			if(attackingNon == null) attacker.setHealth(Math.min(attacker.getHealth() + 1, attacker.getMaxHealth()));
 			hitCooldownList.add(defender);
 			nonHitCooldownList.add(defender);
 			new BukkitRunnable() {
