@@ -4,6 +4,7 @@ import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.controllers.killstreaks.Killstreak;
 import dev.kyro.pitsim.controllers.killstreaks.Megastreak;
 import dev.kyro.pitsim.killstreaks.Overdrive;
+import dev.kyro.pitsim.upgrades.Vampire;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
@@ -16,6 +17,8 @@ public class PitPlayer {
 
 	public Player player;
 	public String levelBracket;
+
+	public PitUpgrade[] pitUpgrades = new PitUpgrade[] { Vampire.INSTANCE, null, null, null };
 
 	private int kills = 0;
 	public List<Killstreak> killstreaks = new ArrayList<>();
