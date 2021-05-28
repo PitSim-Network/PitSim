@@ -3,7 +3,6 @@ package dev.kyro.pitsim.upgrades;
 import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.pitsim.controllers.PitUpgrade;
 import dev.kyro.pitsim.events.AttackEvent;
-import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.event.EventHandler;
 import org.bukkit.inventory.ItemStack;
@@ -21,7 +20,9 @@ public class Vampire extends PitUpgrade {
 
 		if(!playerHasUpgrade(attackEvent.attacker)) return;
 
-		attackEvent.attacker.setHealth(Math.min(attackEvent.attacker.getHealth() + 1, attackEvent.attacker.getMaxHealth()));
+		int healing = 1;
+		if(attackEvent.arrow != null && attackEvent.arrow.isCritical()) healing = 3;
+		attackEvent.attacker.setHealth(Math.min(attackEvent.attacker.getHealth() + healing, attackEvent.attacker.getMaxHealth()));
 	}
 
 	@Override
