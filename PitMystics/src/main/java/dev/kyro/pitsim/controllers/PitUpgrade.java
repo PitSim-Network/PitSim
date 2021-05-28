@@ -3,6 +3,7 @@ package dev.kyro.pitsim.controllers;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
+import org.bukkit.inventory.ItemStack;
 
 import java.util.List;
 
@@ -11,13 +12,13 @@ public abstract class PitUpgrade implements Listener {
     public static PitUpgrade INSTANCE;
 
     public String name;
-    public Material displayMaterial;
+    public ItemStack displayItem;
     public int guiSlot;
 
-    public PitUpgrade(String name, Material displayMaterial, int guiSlot) {
+    public PitUpgrade(String name, ItemStack displayItem, int guiSlot) {
         INSTANCE = this;
         this.name = name;
-        this.displayMaterial = displayMaterial;
+        this.displayItem = displayItem;
         this.guiSlot = guiSlot;
     }
 
