@@ -1,6 +1,11 @@
 package dev.kyro.pitsim.enums;
 
+import dev.kyro.pitsim.misc.Misc;
 import org.bukkit.ChatColor;
+import org.bukkit.Color;
+import org.bukkit.Material;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.LeatherArmorMeta;
 
 public enum PantColor {
 
@@ -29,6 +34,19 @@ public enum PantColor {
 
 			if(pantColor.refName.equalsIgnoreCase(refName)) return pantColor;
 		}
+		return null;
+	}
+
+	public static PantColor getPantColor(ItemStack itemStack) {
+
+		if(Misc.isAirOrNull(itemStack) || itemStack.getType() != Material.LEATHER_LEGGINGS) return null;
+		LeatherArmorMeta leatherArmorMeta = (LeatherArmorMeta) itemStack.getItemMeta();
+
+		for(PantColor pantColor : values()) {
+
+			if(Color.fromRGB(pantColor.hexColor).equals(leatherArmorMeta.getColor())) return pantColor;
+		}
+
 		return null;
 	}
 }
