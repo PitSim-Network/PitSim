@@ -5,6 +5,8 @@ import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.commands.*;
 import dev.kyro.pitsim.controllers.*;
 import dev.kyro.pitsim.enchants.*;
+import dev.kyro.pitsim.upgrades.Dirty;
+import dev.kyro.pitsim.upgrades.StrengthChaining;
 import dev.kyro.pitsim.upgrades.Vampire;
 import net.milkbowl.vault.economy.Economy;
 import org.bukkit.Bukkit;
@@ -135,6 +137,8 @@ public class PitSim extends JavaPlugin {
 	private void registerUpgrades() {
 
 		UpgradeManager.registerUpgrade(new Vampire());
+		UpgradeManager.registerUpgrade(new Dirty());
+		UpgradeManager.registerUpgrade(new StrengthChaining());
 	}
 
 	private void registerCommands() {

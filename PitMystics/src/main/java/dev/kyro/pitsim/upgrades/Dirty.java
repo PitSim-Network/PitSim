@@ -3,17 +3,18 @@ package dev.kyro.pitsim.upgrades;
 import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.pitsim.controllers.PitUpgrade;
 import dev.kyro.pitsim.events.AttackEvent;
-import org.bukkit.Bukkit;
+import dev.kyro.pitsim.misc.Misc;
 import org.bukkit.Material;
 import org.bukkit.event.EventHandler;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.potion.PotionEffectType;
 
 import java.util.List;
 
-public class Vampire extends PitUpgrade {
+public class Dirty extends PitUpgrade {
 
-	public Vampire() {
-		super("Vampire", new ItemStack(Material.FERMENTED_SPIDER_EYE), 10);
+	public Dirty() {
+		super("Vampire", new ItemStack(Material.DIRT, 1, (short) 1), 11);
 	}
 
 	@EventHandler
@@ -21,7 +22,7 @@ public class Vampire extends PitUpgrade {
 
 		if(!playerHasUpgrade(attackEvent.attacker)) return;
 
-		attackEvent.attacker.setHealth(Math.min(attackEvent.attacker.getHealth() + 1, attackEvent.attacker.getMaxHealth()));
+		Misc.applyPotionEffect(attackEvent.attacker, PotionEffectType.DAMAGE_RESISTANCE, 4 * 20, 1, true, false);
 	}
 
 	@Override
