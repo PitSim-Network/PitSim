@@ -5,6 +5,7 @@ import dev.kyro.pitsim.controllers.EnchantManager;
 import dev.kyro.pitsim.controllers.PitEnchant;
 import dev.kyro.pitsim.enums.ApplyType;
 import dev.kyro.pitsim.events.AttackEvent;
+import dev.kyro.pitsim.misc.Misc;
 import org.bukkit.event.EventHandler;
 
 import java.util.List;
@@ -38,13 +39,15 @@ public class NewDeal extends PitEnchant {
 		if(enchantLvl == 0) return;
 
 //		attackEvent.multiplier.add(Misc.getReductionMultiplier(getDamageReduction(enchantLvl)));
+		attackEvent.veryTrueDamage += getTrueDamage(enchantLvl);
 	}
 
 	@Override
 	public List<String> getDescription(int enchantLvl) {
 
 //		if(enchantLvl == 1) {
-			return new ALoreBuilder("&7You are immune to &6Billionaire").getLore();
+			return new ALoreBuilder("&7You are immune to &6Billionaire&7,",
+					"&7but take &c" + Misc.getHearts(getTrueDamage(enchantLvl)) + " &7very true", "&7damage when hit").getLore();
 //		} else {
 //			return new ALoreBuilder("&7Receive &9-" + Misc.roundString(getDamageReduction(enchantLvl)) + "% &7damage and you are",
 //					"&7immune to &6Billionaire").getLore();
@@ -54,5 +57,10 @@ public class NewDeal extends PitEnchant {
 	public double getDamageReduction(int enchantLvl) {
 
 		return (enchantLvl - 1) * 4;
+	}
+
+	public double getTrueDamage(int enchantLvl) {
+
+		return Math.max(1.2 - enchantLvl * 0.2, 0);
 	}
 }

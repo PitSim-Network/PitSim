@@ -82,7 +82,6 @@ public class PitSim extends JavaPlugin {
 		EnchantManager.registerEnchant(new Healer());
 		EnchantManager.registerEnchant(new Duelist());
 		EnchantManager.registerEnchant(new ComboStun());
-//		After ComboHeal
 		EnchantManager.registerEnchant(new GoldAndBoosted());
 		EnchantManager.registerEnchant(new PainFocus());
 		EnchantManager.registerEnchant(new Shark());

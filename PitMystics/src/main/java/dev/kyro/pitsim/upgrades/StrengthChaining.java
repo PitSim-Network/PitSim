@@ -5,7 +5,6 @@ import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.controllers.PitUpgrade;
 import dev.kyro.pitsim.events.AttackEvent;
 import dev.kyro.pitsim.events.KillEvent;
-import dev.kyro.pitsim.misc.Misc;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -16,59 +15,42 @@ import org.bukkit.scheduler.BukkitRunnable;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 public class StrengthChaining extends PitUpgrade {
+
+	public static Map<UUID, Integer> amplifierMap = new HashMap<>();
+	public static Map<UUID, Integer> timerMap = new HashMap<>();
 
 	public StrengthChaining() {
 		super("Vampire", new ItemStack(Material.REDSTONE), 12);
 	}
 
-	public static Map<Player, Integer> strength = new HashMap<>();
-	public static Map<Player, Integer> timer = new HashMap<>();
-
-
 	static {
 		new BukkitRunnable() {
 			@Override
 			public void run() {
-
 				for(Player player : Bukkit.getOnlinePlayers()) {
 
+					timerMap.putIfAbsent(player.getUniqueId(), 0);
+					int ticksLeft = timerMap.get(player.getUniqueId());
+					timerMap.put(player.getUniqueId(), Math.max(ticksLeft - 1, 0));
 
-					if(!strength.containsKey(player)) return;
-
-					if(!timer.containsKey(player)) timer.put(player, 7);
-
-					int seconds = timer.get(player);
-					timer.put(player, seconds - 1);
-
-					if(timer.get(player).equals(0)) {
-						timer.remove(player);
-						strength.remove(player);
-					}
+					if(ticksLeft == 0) amplifierMap.remove(player.getUniqueId());
 				}
-
-
 			}
-		}.runTaskTimer(PitSim.INSTANCE, 20L, 20L);
+		}.runTaskTimer(PitSim.INSTANCE, 0L, 1L);
 	}
-
 
 	@EventHandler
 	public void onKill(KillEvent killEvent) {
 
 		if(!playerHasUpgrade(killEvent.killer)) return;
 
-			if(strength.containsKey(killEvent.killer)) {
-				int level = strength.get(killEvent.killer);
-
-				if(level == 5) strength.put(killEvent.killer, 5);
-				else strength.put(killEvent.killer, level + 1);
-
-				timer.put(killEvent.killer, 7);
-			}
-
-
+		amplifierMap.putIfAbsent(killEvent.killer.getUniqueId(), 0);
+		int level = amplifierMap.get(killEvent.killer.getUniqueId());
+		amplifierMap.put(killEvent.killer.getUniqueId(), Math.min(level + 1, 5));
+		timerMap.put(killEvent.killer.getUniqueId(), 140);
 	}
 
 	@EventHandler
@@ -76,12 +58,8 @@ public class StrengthChaining extends PitUpgrade {
 
 		if(!playerHasUpgrade(attackEvent.attacker)) return;
 
-		attackEvent.increasePercent += (strength.get(attackEvent.attacker) * 8) / 100D;
-
+		attackEvent.increasePercent += (amplifierMap.get(attackEvent.attacker.getUniqueId()) * 8) / 100D;
 	}
-
-
-
 
 	@Override
 	public List<String> getDescription() {

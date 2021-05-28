@@ -146,8 +146,8 @@ public class DamageManager implements Listener {
 		double damage = attackEvent.getFinalDamage();
 		attackEvent.event.setDamage(damage);
 
-		if(attackEvent.trueDamage != 0) {
-			double finalHealth = attackEvent.defender.getHealth() - attackEvent.trueDamage;
+		if(attackEvent.trueDamage != 0 || attackEvent.veryTrueDamage != 0) {
+			double finalHealth = attackEvent.defender.getHealth() - attackEvent.trueDamage - attackEvent.veryTrueDamage;
 			if(finalHealth <= 0) {
 				attackEvent.event.setCancelled(true);
 				kill(attackEvent, attackEvent.attacker, attackEvent.defender, false);

@@ -17,7 +17,6 @@ import java.util.Map;
 
 public class AttackEvent extends Event {
 	private static final HandlerList handlers = new HandlerList();
-	private boolean cancel = false;
 
 	public EntityDamageByEntityEvent event;
 	public Player attacker;
@@ -79,6 +78,7 @@ public class AttackEvent extends Event {
 		public double decreasePercent = 0;
 		public double decrease = 0;
 		public double trueDamage = 0;
+		public double veryTrueDamage = 0;
 		public double selfTrueDamage = 0;
 		public double selfVeryTrueDamage = 0;
 		public double executeUnder = 0;
