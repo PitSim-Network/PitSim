@@ -142,6 +142,7 @@ public class PitSim extends JavaPlugin {
 
 	private void registerCommands() {
 
+		getCommand("perks").setExecutor(new PerkCommand());
 		getCommand("non").setExecutor(new NonCommand());
 //		getCommand("atest").setExecutor(new ATestCommand());
 		getCommand("enchant").setExecutor(new EnchantCommand());
@@ -156,7 +157,6 @@ public class PitSim extends JavaPlugin {
 		getServer().getPluginManager().registerEvents(new PlayerManager(), this);
 		getServer().getPluginManager().registerEvents(new ChatManager(), this);
 		getServer().getPluginManager().registerEvents(new DamageIndicator(), this);
-
 	}
 
 	private void loadConfig() {

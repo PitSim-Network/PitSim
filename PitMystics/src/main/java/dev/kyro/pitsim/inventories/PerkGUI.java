@@ -5,6 +5,7 @@ import dev.kyro.arcticapi.gui.AInventoryGUI;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.controllers.PitPerk;
 import dev.kyro.pitsim.controllers.PitPlayer;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
@@ -19,13 +20,16 @@ public class PerkGUI extends AInventoryGUI {
 	public boolean inSubGUI = false;
 
 	public PerkGUI(Player player) {
-		super("Enchant GUI", 6);
+		super("Perk GUI", 6);
 		this.player = player;
+
+		builder = new AInventoryBuilder(baseGUI)
+				.createBorder(Material.STAINED_GLASS_PANE, 8);
 
 		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
 		for(int i = 0; i < pitPlayer.pitPerks.length; i++) {
 			PitPerk pitPerk = pitPlayer.pitPerks[i];
-//			baseGUI.setItem(10 + i * 2, pitPerk.);
+			baseGUI.setItem(10 + i * 2, pitPerk.getDisplayItem());
 		}
 	}
 
@@ -36,9 +40,12 @@ public class PerkGUI extends AInventoryGUI {
 		ItemStack clickedItem = event.getCurrentItem();
 		if(event.getClickedInventory().getHolder() == this) {
 
+			if(slot == 10 || slot == 12 || slot == 14 || slot == 16) {
 
-		} else {
-
+				inSubGUI = true;
+				player.openInventory(new ApplyPerkGUI(this, getPerkNum(slot)).getInventory());
+				return;
+			}
 		}
 		updateGUI();
 	}
@@ -65,5 +72,31 @@ public class PerkGUI extends AInventoryGUI {
 		for(int i = 0; i < baseGUI.getSize(); i++) {
 			player.getOpenInventory().setItem(i, baseGUI.getItem(i));
 		}
+	}
+
+	public int getSlot(int perkNum) {
+
+		return perkNum * 2 + 8;
+	}
+
+	public int getPerkNum(int slot) {
+
+		return (slot - 8) / 2;
+	}
+
+	public PitPerk getActivePerk(int perkNum) {
+
+		return getActivePerks()[perkNum];
+	}
+
+	public PitPerk[] getActivePerks() {
+
+		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
+		return pitPlayer.pitPerks;
+	}
+
+	public void setPerk(PitPerk pitPerk, int perkNum) {
+
+		getActivePerks()[perkNum] = pitPerk;
 	}
 }

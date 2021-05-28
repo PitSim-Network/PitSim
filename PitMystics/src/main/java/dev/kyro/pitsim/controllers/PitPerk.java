@@ -1,5 +1,6 @@
 package dev.kyro.pitsim.controllers;
 
+import dev.kyro.arcticapi.builders.AItemStackBuilder;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 import org.bukkit.inventory.ItemStack;
@@ -31,5 +32,12 @@ public abstract class PitPerk implements Listener {
             if(pitPerk == this) return true;
         }
         return false;
+    }
+
+    public ItemStack getDisplayItem() {
+        return new AItemStackBuilder(displayItem.clone())
+                .setLore(getDescription())
+                .setName(name)
+                .getItemStack();
     }
 }
