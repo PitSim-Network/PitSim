@@ -1,7 +1,7 @@
-package dev.kyro.pitsim.upgrades;
+package dev.kyro.pitsim.perks;
 
 import dev.kyro.arcticapi.builders.ALoreBuilder;
-import dev.kyro.pitsim.controllers.PitUpgrade;
+import dev.kyro.pitsim.controllers.PitPerk;
 import dev.kyro.pitsim.events.AttackEvent;
 import dev.kyro.pitsim.events.KillEvent;
 import dev.kyro.pitsim.misc.Misc;
@@ -12,7 +12,7 @@ import org.bukkit.potion.PotionEffectType;
 
 import java.util.List;
 
-public class Vampire extends PitUpgrade {
+public class Vampire extends PitPerk {
 
 	public Vampire() {
 		super("Vampire", new ItemStack(Material.FERMENTED_SPIDER_EYE), 10);

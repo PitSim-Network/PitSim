@@ -1,21 +1,20 @@
 package dev.kyro.pitsim.controllers;
 
-import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.List;
 
-public abstract class PitUpgrade implements Listener {
+public abstract class PitPerk implements Listener {
 
-    public static PitUpgrade INSTANCE;
+    public static PitPerk INSTANCE;
 
     public String name;
     public ItemStack displayItem;
     public int guiSlot;
 
-    public PitUpgrade(String name, ItemStack displayItem, int guiSlot) {
+    public PitPerk(String name, ItemStack displayItem, int guiSlot) {
         INSTANCE = this;
         this.name = name;
         this.displayItem = displayItem;
@@ -27,9 +26,9 @@ public abstract class PitUpgrade implements Listener {
     public boolean playerHasUpgrade(Player player) {
 
         PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
-        for(PitUpgrade pitUpgrade : pitPlayer.pitUpgrades) {
+        for(PitPerk pitPerk : pitPlayer.pitPerks) {
 
-            if(pitUpgrade == this) return true;
+            if(pitPerk == this) return true;
         }
         return false;
     }

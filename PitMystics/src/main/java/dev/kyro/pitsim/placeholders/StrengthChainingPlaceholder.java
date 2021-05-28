@@ -2,7 +2,7 @@ package dev.kyro.pitsim.placeholders;
 
 import dev.kyro.arcticapi.hooks.APAPIPlaceholder;
 import dev.kyro.arcticapi.misc.AUtil;
-import dev.kyro.pitsim.upgrades.StrengthChaining;
+import dev.kyro.pitsim.perks.StrengthChaining;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 

@@ -1,7 +1,7 @@
-package dev.kyro.pitsim.upgrades;
+package dev.kyro.pitsim.perks;
 
 import dev.kyro.arcticapi.builders.ALoreBuilder;
-import dev.kyro.pitsim.controllers.PitUpgrade;
+import dev.kyro.pitsim.controllers.PitPerk;
 import dev.kyro.pitsim.events.AttackEvent;
 import dev.kyro.pitsim.misc.Misc;
 import org.bukkit.Material;
@@ -11,7 +11,7 @@ import org.bukkit.potion.PotionEffectType;
 
 import java.util.List;
 
-public class Dirty extends PitUpgrade {
+public class Dirty extends PitPerk {
 
 	public Dirty() {
 		super("Vampire", new ItemStack(Material.DIRT, 1, (short) 1), 11);

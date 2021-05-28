@@ -1,8 +1,8 @@
-package dev.kyro.pitsim.upgrades;
+package dev.kyro.pitsim.perks;
 
 import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.pitsim.PitSim;
-import dev.kyro.pitsim.controllers.PitUpgrade;
+import dev.kyro.pitsim.controllers.PitPerk;
 import dev.kyro.pitsim.events.AttackEvent;
 import dev.kyro.pitsim.events.KillEvent;
 import org.bukkit.Bukkit;
@@ -17,7 +17,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
-public class StrengthChaining extends PitUpgrade {
+public class StrengthChaining extends PitPerk {
 
 	public static Map<UUID, Integer> amplifierMap = new HashMap<>();
 	public static Map<UUID, Integer> timerMap = new HashMap<>();
