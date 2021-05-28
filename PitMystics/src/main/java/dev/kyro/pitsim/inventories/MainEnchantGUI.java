@@ -6,6 +6,7 @@ import dev.kyro.arcticapi.builders.AInventoryBuilder;
 import dev.kyro.arcticapi.builders.AItemStackBuilder;
 import dev.kyro.arcticapi.gui.AInventoryGUI;
 import dev.kyro.arcticapi.misc.AOutput;
+import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.commands.FreshCommand;
 import dev.kyro.pitsim.controllers.EnchantManager;
 import dev.kyro.pitsim.controllers.PitEnchant;
@@ -19,11 +20,15 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.inventory.InventoryOpenEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.scheduler.BukkitRunnable;
+
+import java.util.Map;
 
 public class MainEnchantGUI extends AInventoryGUI {
 
 	public AInventoryBuilder builder;
 	public Player player;
+	public boolean inSubGUI = false;
 
 	public MainEnchantGUI(Player player) {
 		super("Enchant GUI", 6);
@@ -50,9 +55,16 @@ public class MainEnchantGUI extends AInventoryGUI {
 		ItemStack mystic = event.getInventory().getItem(37);
 		if(event.getClickedInventory().getHolder() == this) {
 
-			if(slot == 10 || slot == 13 || slot == 15) {
+			if(slot == 10 || slot == 13 || slot == 16) {
 
-				if(!Misc.isAirOrNull(mystic)) player.openInventory(new ApplyEnchantGUI(this).getInventory());
+				if(Misc.isAirOrNull(mystic)) {
+					return;
+				}
+
+				inSubGUI = true;
+				Map.Entry<PitEnchant, Integer> displayEnchant = getDisplayEnchant(clickedItem);
+				player.openInventory(new ApplyEnchantGUI(this, displayEnchant, mystic).getInventory());
+				return;
 			}
 
 			if(slot == 37) {
@@ -112,11 +124,19 @@ public class MainEnchantGUI extends AInventoryGUI {
 	@Override
 	public void onOpen(InventoryOpenEvent event) {
 
+		inSubGUI = false;
+		new BukkitRunnable() {
+			@Override
+			public void run() {
+				updateGUI();
+			}
+		}.runTaskLater(PitSim.INSTANCE, 1L);
 	}
 
 	@Override
 	public void onClose(InventoryCloseEvent event) {
 
+		if(inSubGUI) return;
 		ItemStack mystic = event.getInventory().getItem(37);
 		if(!Misc.isAirOrNull(mystic) && !FreshCommand.isFresh(mystic)) {
 			player.getInventory().addItem(mystic);
@@ -160,5 +180,15 @@ public class MainEnchantGUI extends AInventoryGUI {
 		for(int i = 0; i < baseGUI.getSize(); i++) {
 			player.getOpenInventory().setItem(i, baseGUI.getItem(i));
 		}
+	}
+
+	public static Map.Entry<PitEnchant, Integer> getDisplayEnchant(ItemStack mystic) {
+
+		Map<PitEnchant, Integer> enchantMap = EnchantManager.getEnchantsOnItem(mystic);
+		for(Map.Entry<PitEnchant, Integer> entry : enchantMap.entrySet()) {
+
+			return entry;
+		}
+		return null;
 	}
 }
