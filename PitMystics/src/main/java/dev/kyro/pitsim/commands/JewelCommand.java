@@ -24,10 +24,13 @@ public class JewelCommand implements CommandExecutor {
 		switch(rand) {
 			case 0:
 				mysticType = MysticType.SWORD;
+				break;
 			case 1:
 				mysticType = MysticType.BOW;
+				break;
 			default:
 				mysticType = MysticType.PANTS;
+				break;
 		}
 
 		ItemStack jewel = FreshCommand.getFreshItem(mysticType, PantColor.RED);
