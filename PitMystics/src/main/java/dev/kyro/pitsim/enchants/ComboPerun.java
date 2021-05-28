@@ -1,15 +1,19 @@
 package dev.kyro.pitsim.enchants;
 
 import dev.kyro.arcticapi.builders.ALoreBuilder;
+import dev.kyro.pitsim.controllers.HitCounter;
+import dev.kyro.pitsim.controllers.NonManager;
+import dev.kyro.pitsim.controllers.PitEnchant;
+import dev.kyro.pitsim.controllers.PitPlayer;
 import dev.kyro.pitsim.enums.ApplyType;
 import dev.kyro.pitsim.events.AttackEvent;
 import dev.kyro.pitsim.misc.Misc;
 import org.bukkit.Material;
-import dev.kyro.pitsim.controllers.HitCounter;
-import dev.kyro.pitsim.controllers.PitEnchant;
-import dev.kyro.pitsim.controllers.PitPlayer;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class ComboPerun extends PitEnchant {
@@ -50,6 +54,13 @@ public class ComboPerun extends PitEnchant {
 			attackEvent.trueDamage += getTrueDamage(enchantLvl);
 		}
 		attackEvent.defender.getWorld().strikeLightningEffect(attackEvent.defender.getLocation());
+
+		List<Player> lightningPlayers = new ArrayList<>();
+		for(Entity nearbyEntity : attackEvent.defender.getWorld().getNearbyEntities(attackEvent.defender.getLocation(), 5, 5, 5)) {
+			if(!(nearbyEntity instanceof Player) || NonManager.getNon((Player) nearbyEntity) != null) continue;
+			lightningPlayers.add((Player) nearbyEntity);
+		}
+		Misc.strikeLightningForPlayers(attackEvent.defender.getLocation(), lightningPlayers);
 	}
 
 	@Override
