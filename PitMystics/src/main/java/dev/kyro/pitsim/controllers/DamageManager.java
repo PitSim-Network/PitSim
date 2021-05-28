@@ -150,7 +150,7 @@ public class DamageManager implements Listener {
 			double finalHealth = attackEvent.defender.getHealth() - attackEvent.trueDamage;
 			if(finalHealth <= 0) {
 				attackEvent.event.setCancelled(true);
-				kill(attackEvent.attacker, attackEvent.defender, false);
+				kill(attackEvent, attackEvent.attacker, attackEvent.defender, false);
 				return;
 			} else {
 				attackEvent.defender.setHealth(Math.max(finalHealth, 0));
@@ -161,7 +161,7 @@ public class DamageManager implements Listener {
 			double finalHealth = attackEvent.attacker.getHealth() - attackEvent.selfTrueDamage - attackEvent.selfVeryTrueDamage;
 			if(finalHealth <= 0) {
 				attackEvent.event.setCancelled(true);
-				kill(attackEvent.defender, attackEvent.attacker, false);
+				kill(attackEvent, attackEvent.defender, attackEvent.attacker, false);
 				return;
 			} else {
 				attackEvent.attacker.setHealth(Math.max(finalHealth, 0));
@@ -178,11 +178,11 @@ public class DamageManager implements Listener {
 		if(attackEvent.event.getFinalDamage() >= attackEvent.defender.getHealth()) {
 
 			attackEvent.event.setCancelled(true);
-			kill(attackEvent.attacker, attackEvent.defender, false);
+			kill(attackEvent, attackEvent.attacker, attackEvent.defender, false);
 		} else if(attackEvent.event.getFinalDamage() + attackEvent.executeUnder >= attackEvent.defender.getHealth()) {
 
 			attackEvent.event.setCancelled(true);
-			kill(attackEvent.attacker, attackEvent.defender, true);
+			kill(attackEvent, attackEvent.attacker, attackEvent.defender, true);
 		}
 
 		DamageIndicator.onAttack(attackEvent);
@@ -197,7 +197,7 @@ public class DamageManager implements Listener {
 		return null;
 	}
 
-	public static void kill(Player killer, Player dead, boolean exeDeath) {
+	public static void kill(AttackEvent attackEvent, Player killer, Player dead, boolean exeDeath) {
 
 		EnchantManager.incrementKills(killer, dead);
 
@@ -232,7 +232,7 @@ public class DamageManager implements Listener {
 			attackingNon.rewardKill();
 		}
 
-		KillEvent killEvent = new KillEvent(killer, dead, exeDeath);
+		KillEvent killEvent = new KillEvent(attackEvent, killer, dead, exeDeath);
 		Bukkit.getServer().getPluginManager().callEvent(killEvent);
 
 		PitSim.VAULT.depositPlayer(killEvent.killer, killEvent.getFinalGold());

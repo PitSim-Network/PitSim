@@ -3,7 +3,11 @@ package dev.kyro.pitsim.enchants;
 import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.pitsim.controllers.PitEnchant;
 import dev.kyro.pitsim.enums.ApplyType;
+import dev.kyro.pitsim.events.KillEvent;
 import dev.kyro.pitsim.misc.Misc;
+import net.minecraft.server.v1_8_R3.EntityPlayer;
+import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
+import org.bukkit.event.EventHandler;
 
 import java.util.List;
 
@@ -15,15 +19,15 @@ public class GoldenHeart extends PitEnchant {
 		isUncommonEnchant = true;
 	}
 
-//	@EventHandler
-//	public void onAttack(KillEvent killEvent) {
-//
-//		int enchantLvl = killEvent.attackEvent.getAttackerEnchantLevel(this);
-//		if(enchantLvl == 0) return;
-//
-//		EntityPlayer nmsPlayer = ((CraftPlayer) killEvent.killer).getHandle();
-//		if(nmsPlayer.getAbsorptionHearts() < 12) nmsPlayer.setAbsorptionHearts(Math.min((float) (nmsPlayer.getAbsorptionHearts() + getEffect(enchantLvl)), 12));
-//	}
+	@EventHandler
+	public void onAttack(KillEvent killEvent) {
+
+		int enchantLvl = killEvent.getKillerEnchantLevel(this);
+		if(enchantLvl == 0) return;
+
+		EntityPlayer nmsPlayer = ((CraftPlayer) killEvent.killer).getHandle();
+		if(nmsPlayer.getAbsorptionHearts() < 12) nmsPlayer.setAbsorptionHearts(Math.min((float) (nmsPlayer.getAbsorptionHearts() + getEffect(enchantLvl)), 12));
+	}
 
 	@Override
 	public List<String> getDescription(int enchantLvl) {
