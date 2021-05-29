@@ -2,7 +2,7 @@ package dev.kyro.pitsim.perks;
 
 import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.pitsim.controllers.PitPerk;
-import dev.kyro.pitsim.events.AttackEvent;
+import dev.kyro.pitsim.events.KillEvent;
 import dev.kyro.pitsim.misc.Misc;
 import org.bukkit.Material;
 import org.bukkit.event.EventHandler;
@@ -13,16 +13,19 @@ import java.util.List;
 
 public class Dirty extends PitPerk {
 
+	public static Dirty INSTANCE;
+
 	public Dirty() {
-		super("Vampire", new ItemStack(Material.DIRT, 1, (short) 1), 11);
+		super("Dirty", new ItemStack(Material.DIRT, 1, (short) 1), 11);
+		INSTANCE = this;
 	}
 
 	@EventHandler
-	public void onAttack(AttackEvent.Apply attackEvent) {
+	public void onKill(KillEvent killEvent) {
 
-		if(!playerHasUpgrade(attackEvent.attacker)) return;
+		if(!playerHasUpgrade(killEvent.killer)) return;
 
-		Misc.applyPotionEffect(attackEvent.attacker, PotionEffectType.DAMAGE_RESISTANCE, 4 * 20, 1, true, false);
+		Misc.applyPotionEffect(killEvent.killer, PotionEffectType.DAMAGE_RESISTANCE, 4 * 20, 1, true, false);
 	}
 
 	@Override

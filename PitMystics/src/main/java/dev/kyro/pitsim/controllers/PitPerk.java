@@ -9,14 +9,14 @@ import java.util.List;
 
 public abstract class PitPerk implements Listener {
 
-    public static PitPerk INSTANCE;
+//    public static PitPerk INSTANCE;
 
     public String name;
     public ItemStack displayItem;
     public int guiSlot;
 
     public PitPerk(String name, ItemStack displayItem, int guiSlot) {
-        INSTANCE = this;
+//        INSTANCE = this;
         this.name = name;
         this.displayItem = displayItem;
         this.guiSlot = guiSlot;

@@ -19,11 +19,14 @@ import java.util.UUID;
 
 public class StrengthChaining extends PitPerk {
 
+	public static StrengthChaining INSTANCE;
+
 	public static Map<UUID, Integer> amplifierMap = new HashMap<>();
 	public static Map<UUID, Integer> timerMap = new HashMap<>();
 
 	public StrengthChaining() {
-		super("Vampire", new ItemStack(Material.REDSTONE), 12);
+		super("Strength", new ItemStack(Material.REDSTONE), 12);
+		INSTANCE = this;
 	}
 
 	static {
@@ -58,6 +61,7 @@ public class StrengthChaining extends PitPerk {
 
 		if(!playerHasUpgrade(attackEvent.attacker)) return;
 
+		amplifierMap.putIfAbsent(attackEvent.attacker.getUniqueId(), 0);
 		attackEvent.increasePercent += (amplifierMap.get(attackEvent.attacker.getUniqueId()) * 8) / 100D;
 	}
 

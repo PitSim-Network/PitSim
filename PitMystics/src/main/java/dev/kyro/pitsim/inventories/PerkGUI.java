@@ -29,6 +29,7 @@ public class PerkGUI extends AInventoryGUI {
 		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
 		for(int i = 0; i < pitPlayer.pitPerks.length; i++) {
 			PitPerk pitPerk = pitPlayer.pitPerks[i];
+			if(pitPerk == null) continue;
 			baseGUI.setItem(10 + i * 2, pitPerk.getDisplayItem());
 		}
 	}
