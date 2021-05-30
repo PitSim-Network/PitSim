@@ -7,6 +7,7 @@ import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.enchants.PitBlob;
 import dev.kyro.pitsim.enchants.Regularity;
 import dev.kyro.pitsim.enums.NBTTag;
+import dev.kyro.pitsim.enums.NonTrait;
 import dev.kyro.pitsim.events.AttackEvent;
 import dev.kyro.pitsim.events.KillEvent;
 import dev.kyro.pitsim.misc.Misc;
@@ -98,6 +99,11 @@ public class DamageManager implements Listener {
 					if(count == 15) DamageManager.nonHitCooldownList.remove(defender);
 				}
 			}.runTaskTimer(PitSim.INSTANCE, 0L, 1L);
+		}
+
+		if(attackingNon != null) {
+			event.setDamage(attackingNon.traits.contains(NonTrait.IRON_STREAKER) ? 9 : 6);
+			if(Misc.isCritical(attacker)) event.setDamage(event.getDamage() * 1.5);
 		}
 
 		AttackEvent.Pre preEvent = null;
