@@ -17,7 +17,7 @@ public class StrengthChainingPlaceholder implements APAPIPlaceholder {
 
 		Integer level = StrengthChaining.amplifierMap.get(player.getUniqueId());
 		Integer time = StrengthChaining.timerMap.get(player.getUniqueId());
-		if(level == null) return "None";
+		if(level == null || level == 0) return "None";
 
 		return "&c" + AUtil.toRoman(level) + " &7(" + getTime(time) + ")";
 	}
