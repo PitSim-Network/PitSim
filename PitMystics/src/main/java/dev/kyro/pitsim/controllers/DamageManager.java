@@ -233,9 +233,11 @@ public class DamageManager implements Listener {
 			dead.removePotionEffect(potionEffect.getType());
 		}
 
-		Non attackingNon = NonManager.getNon(killer);
-		if(attackingNon != null) {
-			attackingNon.rewardKill();
+		Non killingNon = NonManager.getNon(killer);
+		if(killingNon != null) {
+			killingNon.rewardKill();
+		} else {
+			killer.setHealth(Math.min(killer.getHealth() + 2, killer.getMaxHealth()));
 		}
 
 		KillEvent killEvent = new KillEvent(attackEvent, killer, dead, exeDeath);
@@ -246,7 +248,7 @@ public class DamageManager implements Listener {
 		DecimalFormat df = new DecimalFormat("##0.00");
 		String kill = "&a&lKILL!&7 on %luckperms_prefix%" + (defendingNon == null ? "%player_name%" : defendingNon.displayName)
 				+ " &b+" + killEvent.getFinalXp() + "XP" +" &6+" + df.format(killEvent.getFinalGold()) + "g";
-		String death = "&c&lDEATH! &7by %luckperms_prefix%" + (attackingNon == null ? "%player_name%" : defendingNon.displayName);
+		String death = "&c&lDEATH! &7by %luckperms_prefix%" + (killingNon == null ? "%player_name%" : defendingNon.displayName);
 		String killActionBar = "&7%luckperms_prefix%" + (defendingNon == null ? "%player_name%" : defendingNon.displayName) + " &a&lKILL!";
 		AOutput.send(killEvent.killer, PlaceholderAPI.setPlaceholders(killEvent.dead, kill));
 		AOutput.send(killEvent.dead, PlaceholderAPI.setPlaceholders(killEvent.killer, death));
