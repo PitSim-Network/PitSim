@@ -43,10 +43,10 @@ public class Executioner extends PitEnchant {
 
 		attackEvent.executeUnder = getExecuteHealth(enchantLvl);
 
-		if(attackEvent.attacker.getName().equals("KyroKrypt")) {
-
-			yeet(attackEvent.defender);
-		}
+//		if(attackEvent.attacker.getName().equals("KyroKrypt")) {
+//
+//			yeet(attackEvent.defender);
+//		}
 	}
 
 	public void yeet(Player willBeCrashed){
