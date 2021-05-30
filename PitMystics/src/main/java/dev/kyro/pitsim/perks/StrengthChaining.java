@@ -53,7 +53,7 @@ public class StrengthChaining extends PitPerk {
 		amplifierMap.putIfAbsent(killEvent.killer.getUniqueId(), 0);
 		int level = amplifierMap.get(killEvent.killer.getUniqueId());
 		amplifierMap.put(killEvent.killer.getUniqueId(), Math.min(level + 1, 5));
-		timerMap.put(killEvent.killer.getUniqueId(), 140);
+		timerMap.put(killEvent.killer.getUniqueId(), 160);
 	}
 
 	@EventHandler

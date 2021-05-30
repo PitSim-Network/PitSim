@@ -23,7 +23,8 @@ public class KillEvent extends Event {
 	public boolean exeDeath;
 
 	public int xpReward;
-	public int goldReward = 5;
+//	public int goldReward = 5;
+	public int goldReward = 500;
 	public List<Double> xpMultipliers = new ArrayList<>();
 	public List<Double> goldMultipliers = new ArrayList<>();
 

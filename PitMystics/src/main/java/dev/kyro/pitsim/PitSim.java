@@ -1,6 +1,7 @@
 package dev.kyro.pitsim;
 
 import dev.kyro.arcticapi.ArcticAPI;
+import dev.kyro.arcticapi.hooks.AHook;
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.commands.*;
 import dev.kyro.pitsim.controllers.*;
@@ -8,6 +9,8 @@ import dev.kyro.pitsim.enchants.*;
 import dev.kyro.pitsim.perks.Dirty;
 import dev.kyro.pitsim.perks.StrengthChaining;
 import dev.kyro.pitsim.perks.Vampire;
+import dev.kyro.pitsim.placeholders.LevelBracketPlaceholder;
+import dev.kyro.pitsim.placeholders.StrengthChainingPlaceholder;
 import net.milkbowl.vault.economy.Economy;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.RegisteredServiceProvider;
@@ -36,6 +39,10 @@ public class PitSim extends JavaPlugin {
 			AOutput.log(String.format("Could not find PlaceholderAPI! This plugin is required."));
 			Bukkit.getPluginManager().disablePlugin(this);
 		}
+
+		ArcticAPI.setupPlaceholderAPI("pitsim");
+		AHook.registerPlaceholder(new LevelBracketPlaceholder());
+		AHook.registerPlaceholder(new StrengthChainingPlaceholder());
 
 		loadConfig();
 
@@ -142,9 +149,9 @@ public class PitSim extends JavaPlugin {
 
 	private void registerCommands() {
 
+//		getCommand("atest").setExecutor(new ATestCommand());
 		getCommand("perks").setExecutor(new PerkCommand());
 		getCommand("non").setExecutor(new NonCommand());
-//		getCommand("atest").setExecutor(new ATestCommand());
 		getCommand("enchant").setExecutor(new EnchantCommand());
 		getCommand("fresh").setExecutor(new FreshCommand());
 		getCommand("show").setExecutor(new ShowCommand());
