@@ -3,16 +3,15 @@ package dev.kyro.pitsim.enchants;
 import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.arcticapi.misc.AUtil;
 import dev.kyro.pitsim.controllers.Cooldown;
-import dev.kyro.pitsim.controllers.DamageEvent;
 import dev.kyro.pitsim.controllers.EnchantManager;
 import dev.kyro.pitsim.controllers.PitEnchant;
 import dev.kyro.pitsim.enums.ApplyType;
 import dev.kyro.pitsim.events.AttackEvent;
-import dev.kyro.pitsim.events.VolleyShootEvent;
 import dev.kyro.pitsim.misc.Misc;
 import org.bukkit.entity.Arrow;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.entity.EntityShootBowEvent;
 import org.bukkit.potion.PotionEffectType;
 
@@ -30,7 +29,7 @@ public class MegaLongBow extends PitEnchant {
 		if(!canAttack(attackEvent)) return;
 	}
 
-	@EventHandler
+	@EventHandler(priority = EventPriority.LOW)
 	public void onBowShoot(EntityShootBowEvent event) {
 
 		if(!(event.getEntity() instanceof Player) || !(event.getProjectile() instanceof Arrow)) return;
@@ -40,11 +39,11 @@ public class MegaLongBow extends PitEnchant {
 		int enchantLvl = EnchantManager.getEnchantLevel(player, this);
 		if(enchantLvl == 0) return;
 
-		if(event instanceof VolleyShootEvent) {
-
-			critArrow(player, arrow);
-			return;
-		}
+//		if(event instanceof VolleyShootEvent) {
+//
+//			critArrow(player, arrow);
+//			return;
+//		}
 
 		Cooldown cooldown = getCooldown(player, 20);
 		if(cooldown.isOnCooldown()) return; else cooldown.reset();

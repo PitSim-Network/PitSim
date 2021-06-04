@@ -2,7 +2,6 @@ package dev.kyro.pitsim.enchants;
 
 import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.pitsim.PitSim;
-import dev.kyro.pitsim.controllers.DamageEvent;
 import dev.kyro.pitsim.controllers.EnchantManager;
 import dev.kyro.pitsim.controllers.PitEnchant;
 import dev.kyro.pitsim.enums.ApplyType;
@@ -29,7 +28,7 @@ public class Volley extends PitEnchant {
 		if(!canAttack(attackEvent)) return;
 	}
 
-	@EventHandler
+	@EventHandler()
 	public void onBowShoot(EntityShootBowEvent event) {
 
 		if(event instanceof VolleyShootEvent) return;
@@ -43,7 +42,7 @@ public class Volley extends PitEnchant {
 
 		new BukkitRunnable() {
 			int count = 0;
-			double arrowVelo = arrow.getVelocity().length();
+			final double arrowVelo = arrow.getVelocity().length();
 			@Override
 			public void run() {
 
