@@ -1,6 +1,7 @@
 package dev.kyro.pitsim;
 
 import dev.kyro.arcticapi.ArcticAPI;
+import dev.kyro.arcticapi.data.AData;
 import dev.kyro.arcticapi.hooks.AHook;
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.commands.*;
@@ -23,6 +24,7 @@ public class PitSim extends JavaPlugin {
 
 	public static PitSim INSTANCE;
 	public static Economy VAULT = null;
+	public static AData playerList;
 
 	@Override
 	public void onEnable() {
@@ -47,6 +49,7 @@ public class PitSim extends JavaPlugin {
 		loadConfig();
 
 		ArcticAPI.configInit(this, "prefix", "error-prefix");
+		playerList = new AData("player-list", "", false);
 
 		CooldownManager.init();
 
