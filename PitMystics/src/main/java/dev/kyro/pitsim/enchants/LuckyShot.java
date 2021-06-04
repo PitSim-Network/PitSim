@@ -24,7 +24,19 @@ import java.util.List;
 
 public class LuckyShot extends PitEnchant {
 
-	public List<Arrow> luckyShots = new ArrayList<>();
+	public static List<Arrow> luckyShots = new ArrayList<>();
+
+	static {
+		new BukkitRunnable() {
+			@Override
+			public void run() {
+				for(int i = 0; i < luckyShots.size(); i++) {
+					Arrow arrow = luckyShots.get(i);
+					arrow.getWorld().playEffect(arrow.getLocation(), Effect.COLOURED_DUST, 0, 30);
+				}
+			}
+		}.runTaskTimer(PitSim.INSTANCE, 0L, 1L);
+	}
 
 	public LuckyShot() {
 		super("Lucky Shot", true, ApplyType.BOWS,
@@ -38,7 +50,6 @@ public class LuckyShot extends PitEnchant {
 		int enchantLvl = attackEvent.getAttackerEnchantLevel(this);
 		if(enchantLvl == 0) return;
 
-
 		for(Arrow luckyShot : luckyShots) {
 			if(luckyShot.equals(attackEvent.arrow)) {
 
@@ -50,7 +61,6 @@ public class LuckyShot extends PitEnchant {
 				attackEvent.defender.playSound(attackEvent.defender.getLocation(), Sound.ZOMBIE_WOODBREAK, 1f, 1f);
 				AOutput.send(attackEvent.attacker, PlaceholderAPI.setPlaceholders(attackEvent.defender, attack));
 				AOutput.send(attackEvent.defender, PlaceholderAPI.setPlaceholders(attackEvent.attacker, defend));
-
 			}
 		}
 	}
@@ -67,16 +77,6 @@ public class LuckyShot extends PitEnchant {
 		if(chanceCalculation <= enchantChance) {
 			luckyShots.add((Arrow) event.getProjectile());
 		}
-
-		new BukkitRunnable() {
-			@Override
-			public void run() {
-				for(int i = 0; i < luckyShots.size(); i++) {
-					Arrow arrow = luckyShots.get(i);
-					arrow.getWorld().playEffect(arrow.getLocation(), Effect.COLOURED_DUST, 0, 30);
-				}
-			}
-		}.runTaskTimer(PitSim.INSTANCE, 0L, 0L);
 	}
 
 	@EventHandler(priority = EventPriority.LOW)
