@@ -34,7 +34,7 @@ public class PitSim extends JavaPlugin {
 			return;
 		}
 
-		if (Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null) {
+		if(Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null) {
 		} else {
 			AOutput.log(String.format("Could not find PlaceholderAPI! This plugin is required."));
 			Bukkit.getPluginManager().disablePlugin(this);
@@ -155,6 +155,7 @@ public class PitSim extends JavaPlugin {
 		getCommand("enchant").setExecutor(new EnchantCommand());
 		getCommand("fresh").setExecutor(new FreshCommand());
 		getCommand("show").setExecutor(new ShowCommand());
+		getCommand("jewel").setExecutor(new JewelCommand());
 	}
 
 	private void registerListeners() {
