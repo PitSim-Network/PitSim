@@ -8,7 +8,6 @@ import dev.kyro.pitsim.controllers.PitEnchant;
 import dev.kyro.pitsim.enums.ApplyType;
 import dev.kyro.pitsim.misc.Misc;
 import org.bukkit.Bukkit;
-import org.bukkit.Effect;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -50,8 +49,8 @@ public class GottaGoFast extends PitEnchant {
 				for(Player player : Bukkit.getOnlinePlayers()) {
 					int level = EnchantManager.getEnchantLevel(player, INSTANCE);
 					if(level != 0) {
-						player.getWorld().spigot().playEffect(player.getLocation(),
-								Effect.CLOUD, 0, 1, 0.5F, 0.5F, 0.5F,0.01F, 5, 25);
+//						player.getWorld().spigot().playEffect(player.getLocation(),
+//								Effect.CLOUD, 0, 1, 0.5F, 0.5F, 0.5F,0.01F, 5, 25);
 					}
 				}
 			}
