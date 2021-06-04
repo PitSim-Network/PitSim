@@ -1,18 +1,18 @@
-import java.util.HashMap;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ExperienceManager {
 
-	public static Map<Integer, Long> levelMap = new HashMap<>();
+	public static List<Long> levelMap = new ArrayList<>();
 
 	static {
 
 		for(int i = 0; i < 2000; i++) {
-			levelMap.put(i, getXP(i));
+			levelMap.add(getXP(i));
 		}
 
-		for(Map.Entry<Integer, Long> entry : levelMap.entrySet()) {
-			System.out.println(entry.getValue());
+		for(int i = 0; i < levelMap.size(); i++) {
+			System.out.println(i + " " + levelMap.get(i));
 		}
 	}
 
@@ -24,16 +24,19 @@ public class ExperienceManager {
 
 	public static int getLevel(long xp) {
 
-		for(int i = 0; i < levelMap.entrySet().size(); i++) {
+		for(int i = 0; i < levelMap.size(); i++) {
 
-//			levelMap.get
+			long lvlXP = levelMap.get(i);
+			if(xp < lvlXP) continue;
+			return i;
 		}
+
 		return -1;
 	}
 
 	public static long getXP(long level) {
 
-		return (long) (10 + 10 * level + Math.pow(level, 2.3) + Math.pow(1.015, level));
+		return (long) (9 + 10 * level + Math.pow(level, 2.3) + Math.pow(1.015, level));
 	}
 
 	public static long getXPToNextLvl(long currentXP) {
