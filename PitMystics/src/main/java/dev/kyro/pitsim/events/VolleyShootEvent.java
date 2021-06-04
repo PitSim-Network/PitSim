@@ -12,10 +12,10 @@ import java.util.Map;
 
 public class VolleyShootEvent extends EntityShootBowEvent {
 
-	public Map<PitEnchant, Integer> enchantMap;
+	public Map<PitEnchant, Integer> shooterEnchantMap;
 
 	public VolleyShootEvent(LivingEntity entity, ItemStack bow, Arrow arrow, Float force) {
 		super(entity, bow, arrow, force);
-		enchantMap = EnchantManager.getEnchantsOnPlayer((Player) entity);
+		shooterEnchantMap = EnchantManager.getEnchantsOnPlayer((Player) entity);
 	}
 }
