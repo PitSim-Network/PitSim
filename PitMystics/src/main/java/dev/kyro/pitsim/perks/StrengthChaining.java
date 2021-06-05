@@ -25,7 +25,7 @@ public class StrengthChaining extends PitPerk {
 	public static Map<UUID, Integer> timerMap = new HashMap<>();
 
 	public StrengthChaining() {
-		super("Strength", new ItemStack(Material.REDSTONE), 12);
+		super("Strength-Chaining", new ItemStack(Material.REDSTONE), 12);
 		INSTANCE = this;
 	}
 
@@ -67,6 +67,6 @@ public class StrengthChaining extends PitPerk {
 
 	@Override
 	public List<String> getDescription() {
-		return new ALoreBuilder("gay perk").getLore();
+		return new ALoreBuilder("&c+8% damage &7for 7s stacking", "&7on kill.").getLore();
 	}
 }

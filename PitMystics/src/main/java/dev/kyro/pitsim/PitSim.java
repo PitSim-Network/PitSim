@@ -12,9 +12,7 @@ import dev.kyro.pitsim.commands.market.MarketCommand;
 import dev.kyro.pitsim.controllers.*;
 import dev.kyro.pitsim.controllers.market.MarketManager;
 import dev.kyro.pitsim.enchants.*;
-import dev.kyro.pitsim.perks.Dirty;
-import dev.kyro.pitsim.perks.StrengthChaining;
-import dev.kyro.pitsim.perks.Vampire;
+import dev.kyro.pitsim.perks.*;
 import dev.kyro.pitsim.placeholders.LevelBracketPlaceholder;
 import dev.kyro.pitsim.placeholders.StrengthChainingPlaceholder;
 import net.milkbowl.vault.economy.Economy;
@@ -124,7 +122,7 @@ public class PitSim extends JavaPlugin {
 		EnchantManager.registerEnchant(new Protection());
 		EnchantManager.registerEnchant(new Prick());
 		EnchantManager.registerEnchant(new RingArmor());
-		EnchantManager.registerEnchant(new PitBlob());
+//		EnchantManager.registerEnchant(new PitBlob());
 		EnchantManager.registerEnchant(new Peroxide());
 		EnchantManager.registerEnchant(new NewDeal());
 		EnchantManager.registerEnchant(new HeighHo());
@@ -150,9 +148,11 @@ public class PitSim extends JavaPlugin {
 
 	private void registerUpgrades() {
 
+		PerkManager.registerUpgrade(new NoPerk());
 		PerkManager.registerUpgrade(new Vampire());
 		PerkManager.registerUpgrade(new Dirty());
 		PerkManager.registerUpgrade(new StrengthChaining());
+		PerkManager.registerUpgrade(new Gladiator());
 	}
 
 	private void registerCommands() {
