@@ -12,7 +12,8 @@ public enum NBTTag {
 	PLAYER_KILLS("pr-player-kills"),
 	BOT_KILLS("pr-bot-kills"),
 	JEWEL_KILLS("pr-jewel-kills"),
-	IS_JEWEL("pr-isjewel");
+	IS_JEWEL("pr-isjewel"),
+	IS_GEMMED("pr-isgemmed");
 
 	private final String ref;
 

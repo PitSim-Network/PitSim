@@ -3,15 +3,17 @@ package dev.kyro.pitsim.controllers.market;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.MemoryConfiguration;
 
+import java.text.DecimalFormat;
+
 public class MarketOrder {
 
-	public double pure;
+	public double pbs;
 	public int philo;
 	public int feathers;
 	public double water;
 
-	public MarketOrder(double pure, int philo, int feathers, double water) {
-		this.pure = pure;
+	public MarketOrder(double pbs, int philo, int feathers, double water) {
+		this.pbs = pbs;
 		this.philo = philo;
 		this.feathers = feathers;
 		this.water = water;
@@ -19,7 +21,7 @@ public class MarketOrder {
 
 	public MarketOrder(ConfigurationSection save) {
 
-		this.pure = save.getDouble("pure");
+		this.pbs = save.getDouble("pure");
 		this.philo = save.getInt("philo");
 		this.feathers = save.getInt("feathers");
 		this.water = save.getDouble("water");
@@ -27,7 +29,7 @@ public class MarketOrder {
 
 	public double getTotalWorth(Currency currency) {
 
-		double pureCost = pure;
+		double pureCost = pbs;
 		pureCost += philo / 10D;
 		pureCost += feathers * 2D;
 		pureCost += water / 3.5D;
@@ -49,7 +51,7 @@ public class MarketOrder {
 
 		switch(currency) {
 			case PURE:
-				return pure;
+				return pbs;
 			case PHILO:
 				return philo;
 			case FEATHER:
@@ -78,10 +80,17 @@ public class MarketOrder {
 
 	public ConfigurationSection createSave() {
 		ConfigurationSection save = new MemoryConfiguration();
-		save.set("pure", pure);
+		save.set("pbs", pbs);
 		save.set("philo", philo);
 		save.set("feathers", feathers);
 		save.set("water", water);
 		return save;
+	}
+
+	@Override
+	public String toString() {
+		DecimalFormat df = new DecimalFormat("0.#");
+		DecimalFormat df2 = new DecimalFormat("0.00");
+		return "&7" + df.format(pbs) + "&6 pb&7, &7" + philo + "&a cac&7, &7" + feathers + "&f fed&7, &9$&7" + df2.format(water);
 	}
 }

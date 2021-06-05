@@ -161,11 +161,42 @@ public class EnchantManager {
 		itemStack.setItemMeta(itemMeta);
 	}
 
+	public static void setDisplayItemLore(ItemStack itemStack) {
+
+		NBTItem nbtItem = new NBTItem(itemStack);
+		NBTList<String> enchantOrder = nbtItem.getStringList(NBTTag.PIT_ENCHANT_ORDER.getRef());
+		NBTCompound itemEnchants = nbtItem.getCompound(NBTTag.PIT_ENCHANTS.getRef());
+		boolean isGemmed = isGemmed(itemStack);
+
+		ALoreBuilder loreBuilder = new ALoreBuilder();
+		loreBuilder.addLore("&7&m------------------");
+		for(String key : enchantOrder) {
+
+			PitEnchant enchant = EnchantManager.getEnchant(key);
+			Integer enchantLvl = itemEnchants.getInteger(key);
+			assert enchant != null;
+			loreBuilder.addLore(enchant.getDisplayName() + enchantLevelToRoman(enchantLvl));
+		}
+		loreBuilder.addLore("&7&m------------------");
+		if(isGemmed) loreBuilder.addLore("&aGEMMED!");
+
+		ItemMeta itemMeta = itemStack.getItemMeta();
+		itemMeta.setLore(loreBuilder.getLore());
+		itemStack.setItemMeta(itemMeta);
+	}
+
 	public static boolean isJewel(ItemStack itemStack) {
 
 		if(Misc.isAirOrNull(itemStack)) return false;
 		NBTItem nbtItem = new NBTItem(itemStack);
 		return nbtItem.getBoolean(NBTTag.IS_JEWEL.getRef());
+	}
+
+	public static boolean isGemmed(ItemStack itemStack) {
+
+		if(Misc.isAirOrNull(itemStack)) return false;
+		NBTItem nbtItem = new NBTItem(itemStack);
+		return nbtItem.getBoolean(NBTTag.IS_GEMMED.getRef());
 	}
 
 	public static boolean isJewelComplete(ItemStack itemStack) {

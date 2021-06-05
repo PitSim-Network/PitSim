@@ -1,5 +1,7 @@
 package dev.kyro.pitsim.controllers.market;
 
+import dev.kyro.arcticapi.builders.AItemStackBuilder;
+import dev.kyro.pitsim.controllers.EnchantManager;
 import dev.kyro.pitsim.misc.ItemBase64;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.MemoryConfiguration;
@@ -35,7 +37,9 @@ public class AuctionItem implements Serializable {
 		this.playerName = player.getName();
 		this.playerUUID = player.getUniqueId();
 
-		this.item = item;
+		this.item = item.clone();
+		EnchantManager.setDisplayItemLore(this.item);
+		new AItemStackBuilder(this.item).setName("&c" + playerName + "'s " + EnchantManager.getMysticType(this.item));
 		this.dateListed = new Date();
 		this.duration = duration;
 		this.acceptedCurrencies = acceptedCurrencies;

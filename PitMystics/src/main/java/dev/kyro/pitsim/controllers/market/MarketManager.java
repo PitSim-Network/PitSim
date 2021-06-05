@@ -33,9 +33,6 @@ public class MarketManager implements Listener {
 					System.out.println(key);
 					auctionItems.add(new AuctionItem(playerData.getConfigurationSection("auctions." + key)));
 				}
-//				System.out.println(playerAuctions.size());
-//				if(playerAuctions == null) continue;
-//				for(ConfigurationSection playerAuction : playerAuctions) auctionItems.add(new AuctionItem(playerAuction));
 			}
 		}
 	}
@@ -55,12 +52,6 @@ public class MarketManager implements Listener {
 		auctionItems.add(auctionItem);
 
 		FileConfiguration playerData = APlayerData.getPlayerData(player);
-//		List<ConfigurationSection> auctionItems = (List<ConfigurationSection>) playerData.getList("auctions");
-//		auctionItems = auctionItems != null ? auctionItems : new ArrayList<>();
-
-//		auctionItems.add(auctionItem.createSave());
-
-//		playerData.set("asdf", "asdf");
 		playerData.set("auctions." + auctionItem.uuid.toString(), auctionItem.createSave());
 		APlayerData.savePlayerData(player);
 	}
