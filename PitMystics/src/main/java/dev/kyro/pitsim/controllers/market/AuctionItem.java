@@ -43,7 +43,7 @@ public class AuctionItem implements Serializable {
 	}
 
 	public AuctionItem(ConfigurationSection save) {
-		this.uuid = UUID.fromString(save.getString("uuid"));
+//		this.uuid = UUID.fromString(save.getString("uuid"));
 		this.playerName = save.getString("player-name");
 		this.playerUUID = UUID.fromString(save.getString("player-uuid"));
 
@@ -63,14 +63,14 @@ public class AuctionItem implements Serializable {
 		this.BIN = new MarketOrder(save.getConfigurationSection("bin"));
 
 		this.topBidderName = save.getString("top-bidder");
-		this.topBidderUUID = UUID.fromString(save.getString("bidder-uuid"));
-		this.topBid = new MarketOrder(save.getConfigurationSection("top-bid"));
+		this.topBidderUUID = save.getString("bidder-uuid") != null ? UUID.fromString(save.getString("bidder-uuid")) : null;
+		this.topBid = save.getConfigurationSection("top-bid") != null ? new MarketOrder(save.getConfigurationSection("top-bid")) : null;
 	}
 
 	public ConfigurationSection createSave() {
 		ConfigurationSection save = new MemoryConfiguration();
 
-		save.set("uuid", uuid.toString());
+//		save.set("uuid", uuid.toString());
 		save.set("player-name", playerName);
 		save.set("player-uuid", playerUUID.toString());
 		save.set("item", ItemBase64.itemTo64(item));
@@ -83,8 +83,8 @@ public class AuctionItem implements Serializable {
 
 		save.set("bin", BIN.createSave());
 		save.set("top-bidder", topBidderName);
-		save.set("bidder-uuid", topBidderUUID.toString());
-		save.set("top-bid", topBid.createSave());
+		save.set("bidder-uuid", topBidderUUID != null ? topBidderUUID.toString() : null);
+		save.set("top-bid", topBid != null ? topBid.createSave() : null);
 
 		return save;
 	}

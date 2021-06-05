@@ -1,17 +1,19 @@
 package dev.kyro.pitsim;
 
 import dev.kyro.arcticapi.ArcticAPI;
+import dev.kyro.arcticapi.commands.ABaseCommand;
 import dev.kyro.arcticapi.data.AData;
-import dev.kyro.arcticapi.hooks.AHook;
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.commands.*;
+import dev.kyro.pitsim.commands.market.AuctionCommand;
+import dev.kyro.pitsim.commands.market.ListCommand;
+import dev.kyro.pitsim.commands.market.MarketCommand;
 import dev.kyro.pitsim.controllers.*;
+import dev.kyro.pitsim.controllers.market.MarketManager;
 import dev.kyro.pitsim.enchants.*;
 import dev.kyro.pitsim.perks.Dirty;
 import dev.kyro.pitsim.perks.StrengthChaining;
 import dev.kyro.pitsim.perks.Vampire;
-import dev.kyro.pitsim.placeholders.LevelBracketPlaceholder;
-import dev.kyro.pitsim.placeholders.StrengthChainingPlaceholder;
 import net.milkbowl.vault.economy.Economy;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.RegisteredServiceProvider;
@@ -42,9 +44,9 @@ public class PitSim extends JavaPlugin {
 			Bukkit.getPluginManager().disablePlugin(this);
 		}
 
-		ArcticAPI.setupPlaceholderAPI("pitsim");
-		AHook.registerPlaceholder(new LevelBracketPlaceholder());
-		AHook.registerPlaceholder(new StrengthChainingPlaceholder());
+//		ArcticAPI.setupPlaceholderAPI("pitsim");
+//		AHook.registerPlaceholder(new LevelBracketPlaceholder());
+//		AHook.registerPlaceholder(new StrengthChainingPlaceholder());
 
 		loadConfig();
 
@@ -152,6 +154,10 @@ public class PitSim extends JavaPlugin {
 
 	private void registerCommands() {
 
+		ABaseCommand marketCommand = new MarketCommand("market");
+		marketCommand.registerCommand(new ListCommand("list"));
+		marketCommand.registerCommand(new AuctionCommand("ah"));
+
 //		getCommand("atest").setExecutor(new ATestCommand());
 		getCommand("perks").setExecutor(new PerkCommand());
 		getCommand("non").setExecutor(new NonCommand());
@@ -168,6 +174,7 @@ public class PitSim extends JavaPlugin {
 		getServer().getPluginManager().registerEvents(new PlayerManager(), this);
 		getServer().getPluginManager().registerEvents(new ChatManager(), this);
 		getServer().getPluginManager().registerEvents(new DamageIndicator(), this);
+		getServer().getPluginManager().registerEvents(new MarketManager(), this);
 	}
 
 	private void loadConfig() {

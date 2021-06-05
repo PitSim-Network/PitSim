@@ -27,7 +27,7 @@ dependencies {
     compileOnly "me.clip:placeholderapi:2.10.9"
 
 
-    compile 'com.github.ArcticDevelopment:ArcticAPI:521ab146a5'
+    compile 'com.github.ArcticDevelopment:ArcticAPI:1196e3ea78'
     compile 'de.tr7zw:item-nbt-api-plugin:2.7.1'
 }
 
