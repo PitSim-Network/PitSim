@@ -3,6 +3,7 @@ package dev.kyro.pitsim;
 import dev.kyro.arcticapi.ArcticAPI;
 import dev.kyro.arcticapi.commands.ABaseCommand;
 import dev.kyro.arcticapi.data.AData;
+import dev.kyro.arcticapi.hooks.AHook;
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.commands.*;
 import dev.kyro.pitsim.commands.market.AuctionCommand;
@@ -14,6 +15,8 @@ import dev.kyro.pitsim.enchants.*;
 import dev.kyro.pitsim.perks.Dirty;
 import dev.kyro.pitsim.perks.StrengthChaining;
 import dev.kyro.pitsim.perks.Vampire;
+import dev.kyro.pitsim.placeholders.LevelBracketPlaceholder;
+import dev.kyro.pitsim.placeholders.StrengthChainingPlaceholder;
 import net.milkbowl.vault.economy.Economy;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.RegisteredServiceProvider;
@@ -44,9 +47,9 @@ public class PitSim extends JavaPlugin {
 			Bukkit.getPluginManager().disablePlugin(this);
 		}
 
-//		ArcticAPI.setupPlaceholderAPI("pitsim");
-//		AHook.registerPlaceholder(new LevelBracketPlaceholder());
-//		AHook.registerPlaceholder(new StrengthChainingPlaceholder());
+		ArcticAPI.setupPlaceholderAPI("pitsim");
+		AHook.registerPlaceholder(new LevelBracketPlaceholder());
+		AHook.registerPlaceholder(new StrengthChainingPlaceholder());
 
 		loadConfig();
 
