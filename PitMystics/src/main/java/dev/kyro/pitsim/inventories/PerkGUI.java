@@ -11,6 +11,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.inventory.InventoryOpenEvent;
+import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -42,10 +43,10 @@ public class PerkGUI extends AInventoryGUI {
 
 			if(pitPerk.name.equals("No Perk")) {
 				meta.setDisplayName(ChatColor.translateAlternateColorCodes('&',
-						"&aPerk Slot #" + getPerkNum(pitPerk.guiSlot)));
+						"&aPerk Slot #" + builder.getInventory().first(perkItem)));
 			} else {
 				meta.setDisplayName(ChatColor.translateAlternateColorCodes('&',
-						"&ePerk Slot #" + getPerkNum(pitPerk.guiSlot)));
+						"&ePerk Slot #" + builder.getInventory().first(perkItem)));
 			}
 			List<String> lore = new ArrayList<>();
 
@@ -58,6 +59,9 @@ public class PerkGUI extends AInventoryGUI {
 			}
 			lore.add("");
 			lore.add(ChatColor.translateAlternateColorCodes('&', "&eClick to choose perk!"));
+
+
+
 
 			meta.setLore(lore);
 			perkItem.setItemMeta(meta);
@@ -86,6 +90,7 @@ public class PerkGUI extends AInventoryGUI {
 
 	@Override
 	public void onOpen(InventoryOpenEvent event) {
+
 
 		inSubGUI = false;
 		new BukkitRunnable() {
@@ -118,10 +123,10 @@ public class PerkGUI extends AInventoryGUI {
 
 			if(pitPerk.name.equals("No Perk")) {
 				meta.setDisplayName(ChatColor.translateAlternateColorCodes('&',
-						"&aPerk Slot #" + getPerkNum(pitPerk.guiSlot)));
+						"&aPerk Slot #" + builder.getInventory().first(perkItem)));
 			} else {
 				meta.setDisplayName(ChatColor.translateAlternateColorCodes('&',
-						"&ePerk Slot #" + getPerkNum(pitPerk.guiSlot)));
+						"&ePerk Slot #" + builder.getInventory().first(perkItem)));
 			}
 			List<String> lore = new ArrayList<>();
 

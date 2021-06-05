@@ -8,6 +8,8 @@ import dev.kyro.pitsim.controllers.PerkManager;
 import dev.kyro.pitsim.controllers.PitPerk;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
+import org.bukkit.Sound;
+import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.inventory.InventoryOpenEvent;
@@ -76,6 +78,7 @@ public class ApplyPerkGUI extends AInventoryGUI {
 
 	@Override
 	public void onClick(InventoryClickEvent event) {
+		Player player = (Player) event.getWhoClicked();
 
 		int slot = event.getSlot();
 		if(event.getClickedInventory().getHolder() == this) {
@@ -85,10 +88,12 @@ public class ApplyPerkGUI extends AInventoryGUI {
 
 				for(PitPerk activePerk : perkGUI.getActivePerks()) {
 					if(activePerk != clickedPerk || activePerk.name.equals("No Perk")) continue;
+					player.playSound(player.getLocation(), Sound.ENDERMAN_TELEPORT, 1F, 0.5F);
 					AOutput.error(perkGUI.player, "That perk is already equipped");
 					return;
 				}
 
+				player.playSound(player.getLocation(), Sound.NOTE_PLING, 1F, 2F);
 				perkGUI.setPerk(clickedPerk, perkNum);
 				perkGUI.player.openInventory(perkGUI.getInventory());
 				perkGUI.updateGUI();
@@ -98,6 +103,7 @@ public class ApplyPerkGUI extends AInventoryGUI {
 			if(slot == 49) {
 				perkGUI.player.openInventory(perkGUI.getInventory());
 				perkGUI.updateGUI();
+				return;
 			}
 		}
 		updateGUI();
