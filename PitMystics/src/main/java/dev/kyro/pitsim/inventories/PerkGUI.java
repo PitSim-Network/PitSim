@@ -43,10 +43,10 @@ public class PerkGUI extends AInventoryGUI {
 
 			if(pitPerk.name.equals("No Perk")) {
 				meta.setDisplayName(ChatColor.translateAlternateColorCodes('&',
-						"&aPerk Slot #" + builder.getInventory().first(perkItem)));
+						"&aPerk Slot #" + (i + 1)));
 			} else {
 				meta.setDisplayName(ChatColor.translateAlternateColorCodes('&',
-						"&ePerk Slot #" + builder.getInventory().first(perkItem)));
+						"&ePerk Slot #" + (i + 1)));
 			}
 			List<String> lore = new ArrayList<>();
 
@@ -123,10 +123,10 @@ public class PerkGUI extends AInventoryGUI {
 
 			if(pitPerk.name.equals("No Perk")) {
 				meta.setDisplayName(ChatColor.translateAlternateColorCodes('&',
-						"&aPerk Slot #" + builder.getInventory().first(perkItem)));
+						"&aPerk Slot #" + (i + 1)));
 			} else {
 				meta.setDisplayName(ChatColor.translateAlternateColorCodes('&',
-						"&ePerk Slot #" + builder.getInventory().first(perkItem)));
+						"&ePerk Slot #" + (i + 1)));
 			}
 			List<String> lore = new ArrayList<>();
 
@@ -160,7 +160,7 @@ public class PerkGUI extends AInventoryGUI {
 
 	public PitPerk getActivePerk(int perkNum) {
 
-		return getActivePerks()[perkNum];
+		return getActivePerks()[perkNum - 1];
 	}
 
 	public PitPerk[] getActivePerks() {

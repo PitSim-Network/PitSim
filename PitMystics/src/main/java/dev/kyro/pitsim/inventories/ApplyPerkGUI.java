@@ -6,6 +6,8 @@ import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.controllers.PerkManager;
 import dev.kyro.pitsim.controllers.PitPerk;
+import dev.kyro.pitsim.events.PerkEquipEvent;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.Sound;
@@ -92,6 +94,11 @@ public class ApplyPerkGUI extends AInventoryGUI {
 					AOutput.error(perkGUI.player, "That perk is already equipped");
 					return;
 				}
+
+				PitPerk replacedPerk = perkGUI.getActivePerk(perkNum);
+				PerkEquipEvent equipEvent = new PerkEquipEvent(clickedPerk, player, replacedPerk);
+				Bukkit.getPluginManager().callEvent(equipEvent);
+
 
 				player.playSound(player.getLocation(), Sound.NOTE_PLING, 1F, 2F);
 				perkGUI.setPerk(clickedPerk, perkNum);

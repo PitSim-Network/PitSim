@@ -38,7 +38,10 @@ public class Gladiator extends PitPerk {
 					amplifierMap.putIfAbsent(player.getUniqueId(), 0);
 					List<Entity> players = player.getNearbyEntities(12, 12, 12);
 					players.removeIf(entity -> !(entity instanceof Player));
-					amplifierMap.put(player.getUniqueId(), players.size());
+					int reduction = players.size();
+					if(reduction > 10) reduction = 10;
+					if(reduction < 3) reduction = 0;
+					amplifierMap.put(player.getUniqueId(), reduction);
 
 				}
 			}

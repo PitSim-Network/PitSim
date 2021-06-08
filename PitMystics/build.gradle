@@ -26,9 +26,9 @@ dependencies {
     compileOnly "com.github.MilkBowl:VaultAPI:1.7"
     compileOnly "me.clip:placeholderapi:2.10.9"
 
-
     compile 'com.github.ArcticDevelopment:ArcticAPI:1196e3ea78'
     compile 'de.tr7zw:item-nbt-api-plugin:2.7.1'
+    compileOnly files('PitMystics/libs/KarhuAPI.jar')
 }
 
 shadowJar {
