@@ -2,10 +2,7 @@ package dev.kyro.pitsim.events;
 
 import dev.kyro.pitsim.controllers.DamageManager;
 import dev.kyro.pitsim.controllers.PitEnchant;
-import org.bukkit.entity.Arrow;
-import org.bukkit.entity.LivingEntity;
-import org.bukkit.entity.Player;
-import org.bukkit.entity.Slime;
+import org.bukkit.entity.*;
 import org.bukkit.event.Cancellable;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
@@ -39,6 +36,8 @@ public class AttackEvent extends Event {
 		if(event.getDamager() instanceof Arrow) {
 			arrow = (Arrow) event.getDamager();
 		} else if(event.getDamager() instanceof Slime) {
+			pet = (LivingEntity) event.getDamager();
+		} else if(event.getDamager() instanceof Wolf) {
 			pet = (LivingEntity) event.getDamager();
 		}
 	}

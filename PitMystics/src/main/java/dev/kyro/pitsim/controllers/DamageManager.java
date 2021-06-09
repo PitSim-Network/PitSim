@@ -6,6 +6,7 @@ import dev.kyro.arcticapi.misc.ASound;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.enchants.PitBlob;
 import dev.kyro.pitsim.enchants.Regularity;
+import dev.kyro.pitsim.enchants.WolfPack;
 import dev.kyro.pitsim.enums.NBTTag;
 import dev.kyro.pitsim.enums.NonTrait;
 import dev.kyro.pitsim.events.AttackEvent;
@@ -13,10 +14,7 @@ import dev.kyro.pitsim.events.KillEvent;
 import dev.kyro.pitsim.misc.Misc;
 import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.*;
-import org.bukkit.entity.Arrow;
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.Player;
-import org.bukkit.entity.Slime;
+import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -120,6 +118,9 @@ public class DamageManager implements Listener {
 		} else if(event.getDamager() instanceof Slime) {
 
 			preEvent = new AttackEvent.Pre(event, new HashMap<>(), defenderEnchantMap, fakeHit);
+		} else if(event.getDamager() instanceof Wolf) {
+
+			preEvent = new AttackEvent.Pre(event, new HashMap<>(), defenderEnchantMap, fakeHit);
 		}
 		if(preEvent == null) return;
 
@@ -199,6 +200,7 @@ public class DamageManager implements Listener {
 		if(damager instanceof Player) return (Player) damager;
 		if(damager instanceof Arrow) return (Player) ((Arrow) damager).getShooter();
 		if(damager instanceof Slime) return PitBlob.getOwner((Slime) damager);
+		if(damager instanceof Wolf) return WolfPack.getOwner((Wolf) damager);
 
 		return null;
 	}

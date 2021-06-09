@@ -17,7 +17,6 @@ import dev.kyro.pitsim.placeholders.GladiatorPlaceholder;
 import dev.kyro.pitsim.placeholders.LevelBracketPlaceholder;
 import dev.kyro.pitsim.placeholders.StrengthChainingPlaceholder;
 import me.liwk.karhu.api.KarhuAPI;
-import me.liwk.karhu.api.event.KarhuListener;
 import net.milkbowl.vault.economy.Economy;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.RegisteredServiceProvider;
@@ -126,7 +125,8 @@ public class PitSim extends JavaPlugin {
 		EnchantManager.registerEnchant(new Protection());
 		EnchantManager.registerEnchant(new Prick());
 		EnchantManager.registerEnchant(new RingArmor());
-//		EnchantManager.registerEnchant(new PitBlob());
+		EnchantManager.registerEnchant(new PitBlob());
+		EnchantManager.registerEnchant(new WolfPack());
 		EnchantManager.registerEnchant(new Peroxide());
 		EnchantManager.registerEnchant(new NewDeal());
 		EnchantManager.registerEnchant(new HeighHo());

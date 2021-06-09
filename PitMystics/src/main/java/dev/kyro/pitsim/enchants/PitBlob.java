@@ -123,7 +123,7 @@ public class PitBlob extends PitEnchant {
 		} else if(blobMap.containsKey(player.getUniqueId())) {
 
 			if(blobMap.get(player.getUniqueId()) == null) return;
-			blobMap.get(player.getUniqueId()).setSize(enchantLvl);
+			blobMap.get(player.getUniqueId()).setSize(Math.min(enchantLvl * 2, blobMap.get(player.getUniqueId()).getSize()));
 		}
 	}
 
