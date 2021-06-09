@@ -19,7 +19,7 @@ public class Mirror extends PitEnchant {
 
 	@EventHandler(priority = EventPriority.HIGH)
 	public void onAttack(AttackEvent.Apply attackEvent) {
-		if(!canAttack(attackEvent)) return;
+		if(!canApply(attackEvent)) return;
 
 		int attackerEnchantLvl = attackEvent.getAttackerEnchantLevel(this);
 		int defenderEnchantLvl = attackEvent.getDefenderEnchantLevel(this);

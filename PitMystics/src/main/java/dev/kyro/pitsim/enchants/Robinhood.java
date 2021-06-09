@@ -27,7 +27,7 @@ public class Robinhood extends PitEnchant {
 
 	@EventHandler
 	public void onAttack(AttackEvent.Apply attackEvent) {
-		if(!canAttack(attackEvent)) return;
+		if(!canApply(attackEvent)) return;
 	}
 
 	@EventHandler

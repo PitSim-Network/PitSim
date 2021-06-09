@@ -7,7 +7,6 @@ import dev.kyro.pitsim.controllers.PitPlayer;
 import dev.kyro.pitsim.enums.ApplyType;
 import dev.kyro.pitsim.events.AttackEvent;
 import dev.kyro.pitsim.misc.Misc;
-import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
 
 import java.util.List;
@@ -22,7 +21,7 @@ public class Duelist extends PitEnchant {
 
 	@EventHandler
 	public void onAttack(AttackEvent.Apply attackEvent) {
-		if(!canAttack(attackEvent)) return;
+		if(!canApply(attackEvent)) return;
 
 
 		int attackerEnchantLvl = attackEvent.getAttackerEnchantLevel(this);

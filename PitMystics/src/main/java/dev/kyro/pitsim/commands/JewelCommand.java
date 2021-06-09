@@ -34,7 +34,7 @@ public class JewelCommand implements CommandExecutor {
 				break;
 		}
 
-		ItemStack jewel = FreshCommand.getFreshItem(mysticType, PantColor.RED);
+		ItemStack jewel = FreshCommand.getFreshItem(mysticType, PantColor.JEWEL);
 		assert jewel != null;
 		NBTItem nbtItem = new NBTItem(jewel);
 		nbtItem.setBoolean(NBTTag.IS_JEWEL.getRef(), true);

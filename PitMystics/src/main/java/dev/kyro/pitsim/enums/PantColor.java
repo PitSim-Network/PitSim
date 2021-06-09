@@ -13,9 +13,9 @@ public enum PantColor {
 	ORANGE("Orange", ChatColor.GOLD, 0xFFAA00),
 	YELLOW("Yellow", ChatColor.YELLOW, 0xFFFF55),
 	GREEN("Green", ChatColor.GREEN, 0x55FF55),
-	BLUE("Blue", ChatColor.BLUE, 0x5555FF);
+	BLUE("Blue", ChatColor.BLUE, 0x5555FF),
 //	DARK("", ChatColor.DARK_PURPLE, 0x000000),
-//	SEWER("", ChatColor.DARK_AQUA, 0x7DC383),
+	JEWEL("Jewel", ChatColor.DARK_AQUA, 0x7DC383);
 //	AQUA("", ChatColor.DARK_AQUA, 0x55FFFF);
 
 	public String refName;
@@ -26,6 +26,11 @@ public enum PantColor {
 		this.refName = refName;
 		this.chatColor = chatColor;
 		this.hexColor = hexColor;
+	}
+
+	public static PantColor getNormalRandom() {
+
+		return values()[(int) (Math.random() * 5)];
 	}
 
 	public static PantColor getPantColor(String refName) {
@@ -48,5 +53,14 @@ public enum PantColor {
 		}
 
 		return null;
+	}
+
+	public static void setPantColor(ItemStack itemStack, PantColor pantColor) {
+
+		if(Misc.isAirOrNull(itemStack) || itemStack.getType() != Material.LEATHER_LEGGINGS) return;
+		LeatherArmorMeta leatherArmorMeta = (LeatherArmorMeta) itemStack.getItemMeta();
+
+		leatherArmorMeta.setColor(Color.fromRGB(pantColor.hexColor));
+		itemStack.setItemMeta(leatherArmorMeta);
 	}
 }

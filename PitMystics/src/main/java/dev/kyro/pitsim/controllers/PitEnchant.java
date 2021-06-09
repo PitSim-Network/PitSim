@@ -33,7 +33,7 @@ public abstract class PitEnchant implements Listener {
 	public abstract List<String> getDescription(int enchantLvl);
 	public void onDisable() {}
 
-	public boolean canAttack(AttackEvent attackEvent) {
+	public boolean canApply(AttackEvent attackEvent) {
 
 //		Skip if fake hit and enchant doesn't handle fake hits
 		if(!fakeHits && attackEvent.fakeHit) return false;

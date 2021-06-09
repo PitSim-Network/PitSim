@@ -11,6 +11,7 @@ import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.enums.ApplyType;
 import dev.kyro.pitsim.enums.MysticType;
 import dev.kyro.pitsim.enums.NBTTag;
+import dev.kyro.pitsim.enums.PantColor;
 import dev.kyro.pitsim.exceptions.*;
 import dev.kyro.pitsim.misc.Constant;
 import dev.kyro.pitsim.misc.Misc;
@@ -68,7 +69,6 @@ public class EnchantManager {
 	}
 
 	public static ItemStack addEnchant(ItemStack itemStack, PitEnchant applyEnchant, int applyLvl, boolean safe, boolean jewel) throws Exception {
-
 		NBTItem nbtItem = new NBTItem(itemStack);
 
 		NBTList<String> enchantOrder = nbtItem.getStringList(NBTTag.PIT_ENCHANT_ORDER.getRef());
@@ -89,13 +89,24 @@ public class EnchantManager {
 				throw new MaxTokensExceededException(false);
 			} else if(applyEnchant.isRare && applyLvl + rTokenNum > 5) {
 				throw new MaxTokensExceededException(true);
-			} else if(enchantNum >= 3) {
+			} else if(enchantNum >= 3 && applyLvl != 0) {
 				throw new MaxEnchantsExceededException();
 			}
 		}
 		if(nbtItem.getString(NBTTag.ITEM_JEWEL_ENCHANT.getRef()).equals(applyEnchant.refNames.get(0))) jewel = true;
 		if(jewel && (safe || applyLvl == 0)) {
 			throw new IsJewelException();
+		}
+		if(enchantNum == 2 && safe) {
+			boolean hasCommonEnchant = false;
+			for(String enchantString : enchantOrder) {
+				PitEnchant pitEnchant = EnchantManager.getEnchant(enchantString);
+				if(pitEnchant == null) continue;
+				if(pitEnchant.isUncommonEnchant) continue;
+				hasCommonEnchant = true;
+				break;
+			}
+			if(!hasCommonEnchant) throw new NoCommonEnchantException();
 		}
 
 		if(currentLvl == 0) {
@@ -120,6 +131,23 @@ public class EnchantManager {
 
 		setItemLore(itemStackBuilder.getItemStack());
 		return itemStackBuilder.getItemStack();
+	}
+
+	public boolean isIllegalItem(ItemStack itemStack) {
+		NBTItem nbtItem = new NBTItem(itemStack);
+
+		NBTList<String> enchantOrder = nbtItem.getStringList(NBTTag.PIT_ENCHANT_ORDER.getRef());
+		NBTCompound itemEnchants = nbtItem.getCompound(NBTTag.PIT_ENCHANTS.getRef());
+		Integer enchantNum = nbtItem.getInteger(NBTTag.ITEM_ENCHANTS.getRef());
+		Integer tokenNum = nbtItem.getInteger(NBTTag.ITEM_TOKENS.getRef());
+		Integer rTokenNum = nbtItem.getInteger(NBTTag.ITEM_RTOKENS.getRef());
+
+		if(enchantNum > 3 || tokenNum > 8 || rTokenNum > 4) return true;
+		for(PitEnchant pitEnchant : EnchantManager.pitEnchants) {
+			if(itemEnchants.getInteger(pitEnchant.refNames.get(0)) > 3) return true;
+		}
+		
+		return false;
 	}
 
 	public static void setItemLore(ItemStack itemStack) {
@@ -229,6 +257,7 @@ public class EnchantManager {
 		}
 
 		PitEnchant jewelEnchant = weightedEnchantList.get((int) (Math.random() * weightedEnchantList.size()));
+		PantColor.setPantColor(nbtItem.getItem(), PantColor.getNormalRandom());
 		Bukkit.broadcastMessage(ChatColor.translateAlternateColorCodes(
 				'&', "&3&lJEWEL!&7 " + player.getDisplayName() + " &7found " + jewelEnchant.getDisplayName()));
 		ASound.play(player, Sound.ENDERDRAGON_GROWL, 1, 1);
