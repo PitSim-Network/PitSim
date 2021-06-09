@@ -10,6 +10,7 @@ import dev.kyro.pitsim.enums.ApplyType;
 import dev.kyro.pitsim.events.AttackEvent;
 import dev.kyro.pitsim.controllers.Non;
 import dev.kyro.pitsim.controllers.NonManager;
+import dev.kyro.pitsim.events.KillEvent;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
@@ -34,7 +35,7 @@ public class PitBlob extends PitEnchant {
 			@Override
 			public void run() {
 				for(Map.Entry<UUID, Slime> entry : blobMap.entrySet()) {
-					double damage = (entry.getValue().getSize() - 1) / 2D;
+					double damage = (entry.getValue().getSize() - 1) * 2;
 					for(Entity entity : entry.getValue().getNearbyEntities(0, 0, 0)) {
 
 						if(!(entity instanceof Player)) continue;
@@ -71,7 +72,32 @@ public class PitBlob extends PitEnchant {
 	public void onAttack(EntityDamageEvent event) {
 
 		if(!(event.getEntity() instanceof Slime) || !blobMap.containsValue((Slime) event.getEntity())) return;
-		event.setDamage(0);
+		Slime slime = (Slime) event.getEntity();
+		if(event.getFinalDamage() < slime.getHealth()) return;
+		for(Map.Entry<UUID, Slime> entry : blobMap.entrySet()) {
+			if(entry.getValue() != slime) continue;
+			blobMap.remove(entry.getKey());
+			return;
+		}
+	}
+
+	@EventHandler
+	public void onKill(KillEvent killEvent) {
+
+		int enchantLvl = killEvent.getKillerEnchantLevel(this);
+		if(enchantLvl == 0) return;
+
+		Slime slime = blobMap.get(killEvent.killer.getUniqueId());
+		if(slime != null) {
+
+			if(Math.random() < 0.25) slime.setSize(Math.min(slime.getSize() + 1, enchantLvl * 2));
+			slime.setHealth(slime.getMaxHealth());
+			return;
+		}
+
+		slime = (Slime) killEvent.killer.getWorld().spawnEntity(killEvent.killer.getLocation(), EntityType.SLIME);
+		slime.setSize(1);
+		blobMap.put(killEvent.killer.getUniqueId(), slime);
 	}
 
 	@EventHandler
@@ -87,11 +113,8 @@ public class PitBlob extends PitEnchant {
 
 		if(oldEnchantLvl == 0 && enchantLvl != 0) {
 
-			if(blobMap.containsKey(player.getUniqueId())) return;
+//			if(blobMap.containsKey(player.getUniqueId())) return;
 
-			Slime slime = (Slime) player.getWorld().spawnEntity(player.getLocation(), EntityType.SLIME);
-			slime.setSize(enchantLvl);
-			blobMap.put(player.getUniqueId(), slime);
 		} else if(enchantLvl == 0 && oldEnchantLvl != 0) {
 			Slime slime = blobMap.get(player.getUniqueId());
 			if(slime == null) return;
@@ -99,6 +122,7 @@ public class PitBlob extends PitEnchant {
 			blobMap.remove(player.getUniqueId());
 		} else if(blobMap.containsKey(player.getUniqueId())) {
 
+			if(blobMap.get(player.getUniqueId()) == null) return;
 			blobMap.get(player.getUniqueId()).setSize(enchantLvl);
 		}
 	}
