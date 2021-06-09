@@ -165,7 +165,6 @@ public class Non {
 //		npc.teleport(spawnLoc, PlayerTeleportEvent.TeleportCause.PLUGIN);
 		npc.despawn();
 		npc.spawn(spawnLoc);
-//		skin(npc, "wiji1", npc.getStoredLocation());
 
 		non.setHealth(non.getMaxHealth());
 
