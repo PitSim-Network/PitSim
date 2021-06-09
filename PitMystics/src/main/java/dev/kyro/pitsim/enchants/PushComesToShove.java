@@ -2,12 +2,15 @@ package dev.kyro.pitsim.enchants;
 
 import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.arcticapi.misc.AUtil;
+import dev.kyro.pitsim.PitSim;
+import dev.kyro.pitsim.controllers.BypassManager;
 import dev.kyro.pitsim.controllers.HitCounter;
 import dev.kyro.pitsim.controllers.PitEnchant;
 import dev.kyro.pitsim.controllers.PitPlayer;
 import dev.kyro.pitsim.enums.ApplyType;
 import dev.kyro.pitsim.events.AttackEvent;
 import org.bukkit.event.EventHandler;
+import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
 
 import java.util.List;
@@ -35,7 +38,19 @@ public class PushComesToShove extends PitEnchant {
 		Vector velocity = attackEvent.arrow.getVelocity().normalize().multiply(getPunchMultiplier(enchantLvl) / 2.35);
 		velocity.setY(0);
 
+		if(BypassManager.bypassPCTS.contains(attackEvent.defender)) {
+			BypassManager.bypassPCTS.remove(attackEvent.defender);
+		}
+		BypassManager.bypassPCTS.add(attackEvent.defender);
+
 		attackEvent.defender.setVelocity(velocity);
+
+		new BukkitRunnable() {
+			@Override
+			public void run() {
+				BypassManager.bypassPCTS.remove(attackEvent.defender);
+			}
+		}.runTaskLater(PitSim.INSTANCE, 40L);
 	}
 
 	@Override

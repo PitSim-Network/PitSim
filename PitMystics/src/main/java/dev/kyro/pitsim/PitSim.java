@@ -16,6 +16,8 @@ import dev.kyro.pitsim.perks.*;
 import dev.kyro.pitsim.placeholders.GladiatorPlaceholder;
 import dev.kyro.pitsim.placeholders.LevelBracketPlaceholder;
 import dev.kyro.pitsim.placeholders.StrengthChainingPlaceholder;
+import me.liwk.karhu.api.KarhuAPI;
+import me.liwk.karhu.api.event.KarhuListener;
 import net.milkbowl.vault.economy.Economy;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.RegisteredServiceProvider;
@@ -107,14 +109,14 @@ public class PitSim extends JavaPlugin {
 		EnchantManager.registerEnchant(new Telebow());
 		EnchantManager.registerEnchant(new Robinhood());
 		EnchantManager.registerEnchant(new Fletching());
-//		EnchantManager.registerEnchant(new PushComesToShove());
+		EnchantManager.registerEnchant(new PushComesToShove());
 		EnchantManager.registerEnchant(new Wasp());
 		EnchantManager.registerEnchant(new SprintDrain());
 		EnchantManager.registerEnchant(new BottomlessQuiver());
 		EnchantManager.registerEnchant(new Parasite());
 		EnchantManager.registerEnchant(new LuckyShot());
 		EnchantManager.registerEnchant(new Pullbow());
-//		EnchantManager.registerEnchant(new Explosive());
+		EnchantManager.registerEnchant(new Explosive());
 		EnchantManager.registerEnchant(new FasterThanTheirShadows());
 		EnchantManager.registerEnchant(new PinDown());
 
@@ -175,7 +177,7 @@ public class PitSim extends JavaPlugin {
 
 	private void registerListeners() {
 
-		getServer().getPluginManager().registerEvents(new BypassManager(), this);
+		KarhuAPI.getEventRegistry().addListener(new BypassManager());
 		getServer().getPluginManager().registerEvents(new DamageManager(), this);
 		getServer().getPluginManager().registerEvents(new NonManager(), this);
 		getServer().getPluginManager().registerEvents(new PlayerManager(), this);

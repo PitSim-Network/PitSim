@@ -30,8 +30,11 @@ public class Pullbow extends PitEnchant {
 		Cooldown cooldown = getCooldown(attackEvent.attacker, 160);
 		if(cooldown.isOnCooldown()) return; else cooldown.reset();
 
-		if(BypassManager.bypassPlayers.contains(attackEvent.defender)) BypassManager.bypassPlayers.remove(attackEvent.defender);
-		else BypassManager.bypassPlayers.add(attackEvent.defender);
+		if(BypassManager.bypassPullbow.contains(attackEvent.defender)) {
+			BypassManager.bypassPullbow.remove(attackEvent.defender);
+			BypassManager.bypassPullbow.add(attackEvent.defender);
+		}
+		else BypassManager.bypassPullbow.add(attackEvent.defender);
 
 		Vector dirVector = attackEvent.attacker.getLocation().toVector().subtract(attackEvent.defender.getLocation().toVector()).setY(0);
 		Vector pullVector = dirVector.clone().normalize().setY(0.5).multiply(2.5).add(dirVector.clone().multiply(0.04));
@@ -40,9 +43,9 @@ public class Pullbow extends PitEnchant {
 		new BukkitRunnable() {
 			@Override
 			public void run() {
-				BypassManager.bypassPlayers.remove(attackEvent.defender);
+				BypassManager.bypassPullbow.remove(attackEvent.defender);
 			}
-		}.runTaskLater(PitSim.INSTANCE, 60L);
+		}.runTaskLater(PitSim.INSTANCE, 40L);
 
 	}
 

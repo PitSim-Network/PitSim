@@ -1,13 +1,10 @@
 package dev.kyro.pitsim.enchants;
 
 import dev.kyro.arcticapi.builders.ALoreBuilder;
-import dev.kyro.pitsim.controllers.Cooldown;
-import dev.kyro.pitsim.controllers.EnchantManager;
-import dev.kyro.pitsim.controllers.PitEnchant;
+import dev.kyro.pitsim.PitSim;
+import dev.kyro.pitsim.controllers.*;
 import dev.kyro.pitsim.enums.ApplyType;
 import dev.kyro.pitsim.events.AttackEvent;
-import dev.kyro.pitsim.controllers.Non;
-import dev.kyro.pitsim.controllers.NonManager;
 import org.bukkit.Effect;
 import org.bukkit.Sound;
 import org.bukkit.entity.Arrow;
@@ -15,6 +12,7 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.entity.ProjectileHitEvent;
+import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
 
 import java.util.List;
@@ -56,11 +54,24 @@ public class Explosive extends PitEnchant {
 				Non non = NonManager.getNon(player);
 
 				if(player != shooter) {
+
+					if(BypassManager.bypassExplosive.contains(player)) {
+						BypassManager.bypassExplosive.remove(player);
+					}
+					BypassManager.bypassExplosive.add(player);
+
 					Vector force = player.getLocation().toVector().subtract(arrow.getLocation().toVector())
 							.setY(1).normalize().multiply(non == null ? 1.15 : 2);
 //					force.setY(.85f);
 
 					player.setVelocity(force);
+
+					new BukkitRunnable() {
+						@Override
+						public void run() {
+							BypassManager.bypassExplosive.remove(player);
+						}
+					}.runTaskLater(PitSim.INSTANCE, 20L);
 				}
 			}
 		}
