@@ -14,7 +14,7 @@ import java.util.List;
 public class GoldenHeart extends PitEnchant {
 
 	public GoldenHeart() {
-		super("Golden Heart", false, ApplyType.SWORDS,
+		super("Golden Heart", false, ApplyType.PANTS,
 				"goldenheart", "golden-heart", "gheart");
 		isUncommonEnchant = true;
 	}

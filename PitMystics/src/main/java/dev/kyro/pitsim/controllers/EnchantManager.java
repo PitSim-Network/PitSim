@@ -96,7 +96,7 @@ public class EnchantManager {
 		if(jewel && (safe || applyLvl == 0)) {
 			throw new IsJewelException();
 		}
-		if(enchantNum == 2 && safe) {
+		if(enchantNum == 2 && safe && !isJewel(itemStack)) {
 			boolean hasCommonEnchant = false;
 			for(String enchantString : enchantOrder) {
 				PitEnchant pitEnchant = EnchantManager.getEnchant(enchantString);
@@ -155,7 +155,7 @@ public class EnchantManager {
 			hasCommonEnchant = true;
 			break;
 		}
-		return !hasCommonEnchant && enchantNum == 3;
+		return !hasCommonEnchant && enchantNum == 3 && !isJewel(itemStack);
 	}
 
 	public static void setItemLore(ItemStack itemStack) {

@@ -59,11 +59,10 @@ public class CriticallyFunky extends PitEnchant {
 
 		switch(enchantLvl) {
 			case 1:
-				return 20;
 			case 2:
 				return 35;
 			case 3:
-				return 50;
+				return 60;
 
 		}
 		return 0;
