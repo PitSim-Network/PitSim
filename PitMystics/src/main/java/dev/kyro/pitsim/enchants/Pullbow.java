@@ -1,11 +1,14 @@
 package dev.kyro.pitsim.enchants;
 
 import dev.kyro.arcticapi.builders.ALoreBuilder;
+import dev.kyro.pitsim.PitSim;
+import dev.kyro.pitsim.controllers.BypassManager;
 import dev.kyro.pitsim.controllers.Cooldown;
 import dev.kyro.pitsim.controllers.PitEnchant;
 import dev.kyro.pitsim.enums.ApplyType;
 import dev.kyro.pitsim.events.AttackEvent;
 import org.bukkit.event.EventHandler;
+import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
 
 import java.util.List;
@@ -27,10 +30,27 @@ public class Pullbow extends PitEnchant {
 		Cooldown cooldown = getCooldown(attackEvent.attacker, 160);
 		if(cooldown.isOnCooldown()) return; else cooldown.reset();
 
+		if(BypassManager.bypassPullbow.contains(attackEvent.defender)) {
+			BypassManager.bypassPullbow.remove(attackEvent.defender);
+			BypassManager.bypassPullbow.add(attackEvent.defender);
+		}
+		else BypassManager.bypassPullbow.add(attackEvent.defender);
+
 		Vector dirVector = attackEvent.attacker.getLocation().toVector().subtract(attackEvent.defender.getLocation().toVector()).setY(0);
 		Vector pullVector = dirVector.clone().normalize().setY(0.5).multiply(2.5).add(dirVector.clone().multiply(0.04));
 		attackEvent.defender.setVelocity(pullVector.multiply(getMultiplier(enchantLvl)));
+
+		new BukkitRunnable() {
+			@Override
+			public void run() {
+				BypassManager.bypassPullbow.remove(attackEvent.defender);
+			}
+		}.runTaskLater(PitSim.INSTANCE, 40L);
+
 	}
+
+
+
 
 	@Override
 	public List<String> getDescription(int enchantLvl) {

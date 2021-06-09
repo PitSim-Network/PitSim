@@ -39,6 +39,6 @@ public class Vampire extends PitPerk {
 
 	@Override
 	public List<String> getDescription() {
-		return new ALoreBuilder("gay perk").getLore();
+		return new ALoreBuilder("&7Heal &c0.5\u2764 &7on hit.", "&7Tripled on arrow crit.", "&cRegen I &7(8s) on kill."	).getLore();
 	}
 }

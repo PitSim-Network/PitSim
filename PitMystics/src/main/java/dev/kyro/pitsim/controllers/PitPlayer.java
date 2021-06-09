@@ -5,6 +5,7 @@ import dev.kyro.pitsim.controllers.killstreaks.Killstreak;
 import dev.kyro.pitsim.controllers.killstreaks.Megastreak;
 import dev.kyro.pitsim.killstreaks.Overdrive;
 import dev.kyro.pitsim.perks.Dirty;
+import dev.kyro.pitsim.perks.NoPerk;
 import dev.kyro.pitsim.perks.StrengthChaining;
 import dev.kyro.pitsim.perks.Vampire;
 import org.bukkit.entity.Player;
@@ -20,7 +21,7 @@ public class PitPlayer {
 	public Player player;
 	public String levelBracket;
 
-	public PitPerk[] pitPerks = new PitPerk[] { Vampire.INSTANCE, Dirty.INSTANCE, StrengthChaining.INSTANCE, null };
+	public PitPerk[] pitPerks = new PitPerk[] { NoPerk.INSTANCE, NoPerk.INSTANCE, NoPerk.INSTANCE, NoPerk.INSTANCE };
 
 	private int kills = 0;
 	public List<Killstreak> killstreaks = new ArrayList<>();
@@ -28,6 +29,8 @@ public class PitPlayer {
 
 	public Map<PitEnchant, Integer> enchantHits = new HashMap<>();
 	public Map<PitEnchant, Integer> enchantCharge = new HashMap<>();
+
+
 
 	public Map<UUID, Double> recentDamageMap = new HashMap<>();
 	public List<BukkitTask> assistRemove = new ArrayList<>();
