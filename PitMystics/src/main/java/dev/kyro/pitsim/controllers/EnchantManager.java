@@ -8,10 +8,7 @@ import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.arcticapi.misc.ASound;
 import dev.kyro.arcticapi.misc.AUtil;
 import dev.kyro.pitsim.PitSim;
-import dev.kyro.pitsim.enums.ApplyType;
-import dev.kyro.pitsim.enums.MysticType;
-import dev.kyro.pitsim.enums.NBTTag;
-import dev.kyro.pitsim.enums.PantColor;
+import dev.kyro.pitsim.enums.*;
 import dev.kyro.pitsim.exceptions.*;
 import dev.kyro.pitsim.misc.Constant;
 import dev.kyro.pitsim.misc.Misc;
@@ -81,13 +78,15 @@ public class EnchantManager {
 		if(!jewel && safe) {
 			if(!EnchantManager.canTypeApply(itemStack, applyEnchant)) {
 				throw new MismatchedEnchantException();
+			} else if(isJewel(itemStack) && !isJewelComplete(itemStack)) {
+				throw new IsJewelException();
 			} else if(applyLvl > 3) {
 				throw new InvalidEnchantLevelException(true);
 			} else if(currentLvl == applyLvl) {
 //			throw new InvalidEnchantLevelException(false);
 			} else if(applyLvl + tokenNum > 8) {
 				throw new MaxTokensExceededException(false);
-			} else if(applyEnchant.isRare && applyLvl + rTokenNum > 5) {
+			} else if(applyEnchant.isRare && applyLvl + rTokenNum > 4) {
 				throw new MaxTokensExceededException(true);
 			} else if(enchantNum >= 3 && applyLvl != 0) {
 				throw new MaxEnchantsExceededException();
@@ -133,8 +132,10 @@ public class EnchantManager {
 		return itemStackBuilder.getItemStack();
 	}
 
-	public boolean isIllegalItem(ItemStack itemStack) {
+	public static boolean isIllegalItem(ItemStack itemStack) {
+		if(Misc.isAirOrNull(itemStack)) return false;
 		NBTItem nbtItem = new NBTItem(itemStack);
+		if(!nbtItem.hasKey(NBTTag.ITEM_UUID.getRef())) return false;
 
 		NBTList<String> enchantOrder = nbtItem.getStringList(NBTTag.PIT_ENCHANT_ORDER.getRef());
 		NBTCompound itemEnchants = nbtItem.getCompound(NBTTag.PIT_ENCHANTS.getRef());
@@ -146,8 +147,15 @@ public class EnchantManager {
 		for(PitEnchant pitEnchant : EnchantManager.pitEnchants) {
 			if(itemEnchants.getInteger(pitEnchant.refNames.get(0)) > 3) return true;
 		}
-		
-		return false;
+		boolean hasCommonEnchant = false;
+		for(String enchantString : enchantOrder) {
+			PitEnchant pitEnchant = EnchantManager.getEnchant(enchantString);
+			if(pitEnchant == null) continue;
+			if(pitEnchant.isUncommonEnchant) continue;
+			hasCommonEnchant = true;
+			break;
+		}
+		return !hasCommonEnchant && enchantNum == 3;
 	}
 
 	public static void setItemLore(ItemStack itemStack) {
@@ -248,15 +256,33 @@ public class EnchantManager {
 
 		List<PitEnchant> enchantList = EnchantManager.getEnchants(MysticType.getMysticType(itemStack));
 		List<PitEnchant> weightedEnchantList = new ArrayList<>();
+
 		for(PitEnchant pitEnchant : enchantList) {
+
 			weightedEnchantList.add(pitEnchant);
 			if(pitEnchant.isRare) continue;
 			weightedEnchantList.add(pitEnchant);
+			weightedEnchantList.add(pitEnchant);
 			if(pitEnchant.isUncommonEnchant) continue;
 			weightedEnchantList.add(pitEnchant);
+			weightedEnchantList.add(pitEnchant);
 		}
+		Collections.shuffle(weightedEnchantList);
+		PitEnchant jewelEnchant = weightedEnchantList.get(0);
 
-		PitEnchant jewelEnchant = weightedEnchantList.get((int) (Math.random() * weightedEnchantList.size()));
+//		Collections.shuffle(enchantList);
+//		double rand = Math.random();
+//		EnchantRarity enchantRarity = EnchantRarity.COMMON;
+//		if(rand < 0.1) enchantRarity = EnchantRarity.RARE; else if(rand < 0.35) enchantRarity = EnchantRarity.UNCOMMON;
+//
+//		PitEnchant jewelEnchant;
+//		for(int i = 0;; i++) {
+//
+//			if(enchantRarity != enchantList.get(i).getRarity()) continue;
+//			jewelEnchant = enchantList.get(i);
+//			break;
+//		}
+
 		PantColor.setPantColor(nbtItem.getItem(), PantColor.getNormalRandom());
 		Bukkit.broadcastMessage(ChatColor.translateAlternateColorCodes(
 				'&', "&3&lJEWEL!&7 " + player.getDisplayName() + " &7found " + jewelEnchant.getDisplayName()));
@@ -277,13 +303,30 @@ public class EnchantManager {
 			nbtItem.setInteger(ref, nbtItem.getInteger(ref) + 1);
 
 			if(isJewel(itemStack) && !isJewelComplete(itemStack))
-					nbtItem.setInteger(NBTTag.JEWEL_KILLS.getRef(), nbtItem.getInteger(NBTTag.JEWEL_KILLS.getRef()) + 1);
+				nbtItem.setInteger(NBTTag.JEWEL_KILLS.getRef(), nbtItem.getInteger(NBTTag.JEWEL_KILLS.getRef()) + 1);
 
 			ItemStack jewelStack = completeJewel(attacker, nbtItem.getItem());
 			if(jewelStack != null) nbtItem = new NBTItem(jewelStack);
 
 			setItemLore(nbtItem.getItem());
 			attacker.setItemInHand(nbtItem.getItem());
+
+			for(int i = 0; i < 9; i++) {
+				if(i == attacker.getInventory().getHeldItemSlot()) continue;
+
+				ItemStack hotbarStack = attacker.getInventory().getItem(i);
+				if(Misc.isAirOrNull(hotbarStack) || hotbarStack.getType() != Material.BOW) continue;
+				NBTItem hotbarNbtItem = new NBTItem(hotbarStack);
+
+				if(isJewel(hotbarStack) && !isJewelComplete(hotbarStack))
+					hotbarNbtItem.setInteger(NBTTag.JEWEL_KILLS.getRef(), hotbarNbtItem.getInteger(NBTTag.JEWEL_KILLS.getRef()) + 1);
+
+				ItemStack hotbarJewelStack = completeJewel(attacker, hotbarNbtItem.getItem());
+				if(hotbarJewelStack != null) hotbarNbtItem = new NBTItem(hotbarJewelStack);
+
+				setItemLore(hotbarNbtItem.getItem());
+				attacker.getInventory().setItem(i, hotbarNbtItem.getItem());
+			}
 		}
 		if(!Misc.isAirOrNull(attacker.getInventory().getLeggings())) {
 			ItemStack itemStack = attacker.getInventory().getLeggings();

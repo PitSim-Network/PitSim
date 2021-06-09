@@ -1,6 +1,7 @@
 package dev.kyro.pitsim.controllers;
 
 import dev.kyro.pitsim.enums.ApplyType;
+import dev.kyro.pitsim.enums.EnchantRarity;
 import dev.kyro.pitsim.events.AttackEvent;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
@@ -66,5 +67,12 @@ public abstract class PitEnchant implements Listener {
 	public void setOverrideName(String overrideName) {
 
 		this.overrideName = overrideName;
+	}
+
+	public EnchantRarity getRarity() {
+
+		if(isRare) return EnchantRarity.RARE;
+		if(isUncommonEnchant) return EnchantRarity.UNCOMMON;
+		return EnchantRarity.COMMON;
 	}
 }

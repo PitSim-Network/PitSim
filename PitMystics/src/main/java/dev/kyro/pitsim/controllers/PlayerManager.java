@@ -1,8 +1,10 @@
 package dev.kyro.pitsim.controllers;
 
+import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.arcticapi.misc.ASound;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.misc.Misc;
+import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -63,6 +65,25 @@ public class PlayerManager implements Listener {
 		new BukkitRunnable() {
 			@Override
 			public void run() {
+
+				if(!player.isOp()) {
+
+					int itemsRemoved = 0;
+					for(int i = 0; i < 36; i++) {
+
+						ItemStack itemStack = player.getInventory().getItem(i);
+						if(EnchantManager.isIllegalItem(itemStack)) {
+							player.getInventory().setItem(i, new ItemStack(Material.AIR));
+							itemsRemoved++;
+						}
+					}
+					if(EnchantManager.isIllegalItem(player.getEquipment().getLeggings())) {
+						player.getEquipment().setLeggings(new ItemStack(Material.AIR));
+						itemsRemoved++;
+					}
+					if(itemsRemoved != 0) AOutput.error(player, "&c" + itemsRemoved + " &7illegal item" +
+							(itemsRemoved == 1 ? " was" : "s were") + " removed from your inventory");
+				}
 
 				player.setMaxHealth(28);
 				player.setHealth(player.getMaxHealth());

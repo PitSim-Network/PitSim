@@ -74,7 +74,7 @@ public class EnchantCommand implements CommandExecutor {
 			} else if(exception instanceof MaxTokensExceededException) {
 
 				if(((MaxTokensExceededException) exception).isRare) {
-					AOutput.error(player, "You cannot have more than 5 rare tokens on an item");
+					AOutput.error(player, "You cannot have more than 4 rare tokens on an item");
 				} else {
 					AOutput.error(player, "You cannot have more than 8 tokens on an item");
 				}
