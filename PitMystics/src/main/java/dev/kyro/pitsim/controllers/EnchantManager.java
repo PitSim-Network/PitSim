@@ -5,14 +5,19 @@ import de.tr7zw.nbtapi.NBTItem;
 import de.tr7zw.nbtapi.NBTList;
 import dev.kyro.arcticapi.builders.AItemStackBuilder;
 import dev.kyro.arcticapi.builders.ALoreBuilder;
+import dev.kyro.arcticapi.misc.ASound;
 import dev.kyro.arcticapi.misc.AUtil;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.enums.ApplyType;
 import dev.kyro.pitsim.enums.MysticType;
 import dev.kyro.pitsim.enums.NBTTag;
 import dev.kyro.pitsim.exceptions.*;
+import dev.kyro.pitsim.misc.Constant;
 import dev.kyro.pitsim.misc.Misc;
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.Material;
+import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -133,7 +138,7 @@ public class EnchantManager {
 		if(isJewel && !isJewelComplete(itemStack)) {
 
 			loreBuilder.addLore("&7");
-			loreBuilder.addLore("&7Kill &c117 &7players to recycle");
+			loreBuilder.addLore("&7Kill &c" + Constant.JEWEL_KILLS + " &7players to recycle");
 			loreBuilder.addLore("&7into Tier 1 pants with a Tier III");
 			loreBuilder.addLore("&7enchant");
 			loreBuilder.addLore("&7Kills: &3" + jewelKills);
@@ -152,7 +157,7 @@ public class EnchantManager {
 				PitEnchant jewelEnchant = getEnchant(nbtItem.getString(NBTTag.ITEM_JEWEL_ENCHANT.getRef()));
 				assert jewelEnchant != null;
 				loreBuilder.addLore("&f");
-				loreBuilder.addLore("&aJEWEL!&9 " + jewelEnchant.getDisplayName());
+				loreBuilder.addLore("&3JEWEL!&9 " + jewelEnchant.getDisplayName());
 			}
 		}
 
@@ -203,21 +208,34 @@ public class EnchantManager {
 
 		if(!isJewel(itemStack)) return false;
 		NBTItem nbtItem = new NBTItem(itemStack);
-		return nbtItem.getInteger(NBTTag.JEWEL_KILLS.getRef()) >= 100;
+		return nbtItem.getInteger(NBTTag.JEWEL_KILLS.getRef()) >= Constant.JEWEL_KILLS;
 	}
 
-	public static void completeJewel(ItemStack itemStack) {
-		if(Misc.isAirOrNull(itemStack) || !isJewel(itemStack)) return;
+	public static ItemStack completeJewel(Player player, ItemStack itemStack) {
+		if(Misc.isAirOrNull(itemStack) || !isJewel(itemStack)) return null;
 		NBTItem nbtItem = new NBTItem(itemStack);
 		String jewelString = nbtItem.getString(NBTTag.ITEM_JEWEL_ENCHANT.getRef());
 		int jewelKills = nbtItem.getInteger(NBTTag.JEWEL_KILLS.getRef());
-		if(jewelKills < 100 || !jewelString.isEmpty()) return;
+		if(jewelKills < Constant.JEWEL_KILLS || !jewelString.isEmpty()) return null;
 
-		List<PitEnchant> applicableEnchants = EnchantManager.getEnchants(MysticType.getMysticType(itemStack));
-		PitEnchant jewelEnchant = applicableEnchants.get((int) (Math.random() * applicableEnchants.size()));
+		List<PitEnchant> enchantList = EnchantManager.getEnchants(MysticType.getMysticType(itemStack));
+		List<PitEnchant> weightedEnchantList = new ArrayList<>();
+		for(PitEnchant pitEnchant : enchantList) {
+			weightedEnchantList.add(pitEnchant);
+			if(pitEnchant.isRare) continue;
+			weightedEnchantList.add(pitEnchant);
+			if(pitEnchant.isUncommonEnchant) continue;
+			weightedEnchantList.add(pitEnchant);
+		}
+
+		PitEnchant jewelEnchant = weightedEnchantList.get((int) (Math.random() * weightedEnchantList.size()));
+		Bukkit.broadcastMessage(ChatColor.translateAlternateColorCodes(
+				'&', "&3&lJEWEL!&7 " + player.getDisplayName() + " &7found " + jewelEnchant.getDisplayName()));
+		ASound.play(player, Sound.ENDERDRAGON_GROWL, 1, 1);
 		try {
-			itemStack = EnchantManager.addEnchant(nbtItem.getItem(), jewelEnchant, 3, false, true);
+			return EnchantManager.addEnchant(nbtItem.getItem(), jewelEnchant, 3, false, true);
 		} catch(Exception ignored) { }
+		return null;
 	}
 
 	public static void incrementKills(Player attacker, Player killed) {
@@ -231,7 +249,9 @@ public class EnchantManager {
 
 			if(isJewel(itemStack) && !isJewelComplete(itemStack))
 					nbtItem.setInteger(NBTTag.JEWEL_KILLS.getRef(), nbtItem.getInteger(NBTTag.JEWEL_KILLS.getRef()) + 1);
-			completeJewel(itemStack);
+
+			ItemStack jewelStack = completeJewel(attacker, nbtItem.getItem());
+			if(jewelStack != null) nbtItem = new NBTItem(jewelStack);
 
 			setItemLore(nbtItem.getItem());
 			attacker.setItemInHand(nbtItem.getItem());
@@ -243,7 +263,9 @@ public class EnchantManager {
 
 			if(isJewel(itemStack) && !isJewelComplete(itemStack))
 				nbtItem.setInteger(NBTTag.JEWEL_KILLS.getRef(), nbtItem.getInteger(NBTTag.JEWEL_KILLS.getRef()) + 1);
-			completeJewel(itemStack);
+
+			ItemStack jewelStack = completeJewel(attacker, nbtItem.getItem());
+			if(jewelStack != null) nbtItem = new NBTItem(jewelStack);
 
 			setItemLore(nbtItem.getItem());
 			attacker.getInventory().setLeggings(nbtItem.getItem());
