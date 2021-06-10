@@ -1,6 +1,7 @@
 package dev.kyro.pitsim.controllers;
 
 import dev.kyro.pitsim.PitSim;
+import dev.kyro.pitsim.controllers.objects.PitPerk;
 
 import java.util.ArrayList;
 import java.util.List;

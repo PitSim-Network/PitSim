@@ -11,6 +11,8 @@ import dev.kyro.pitsim.commands.market.ListCommand;
 import dev.kyro.pitsim.commands.market.MarketCommand;
 import dev.kyro.pitsim.controllers.*;
 import dev.kyro.pitsim.controllers.market.MarketManager;
+import dev.kyro.pitsim.controllers.objects.Non;
+import dev.kyro.pitsim.controllers.objects.PitEnchant;
 import dev.kyro.pitsim.enchants.*;
 import dev.kyro.pitsim.perks.*;
 import dev.kyro.pitsim.placeholders.GladiatorPlaceholder;

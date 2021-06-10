@@ -5,7 +5,7 @@ import dev.kyro.arcticapi.events.armor.AChangeEquipmentEvent;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.controllers.EnchantManager;
 import dev.kyro.pitsim.controllers.HitCounter;
-import dev.kyro.pitsim.controllers.PitEnchant;
+import dev.kyro.pitsim.controllers.objects.PitEnchant;
 import dev.kyro.pitsim.enums.ApplyType;
 import dev.kyro.pitsim.events.KillEvent;
 import dev.kyro.pitsim.misc.Misc;

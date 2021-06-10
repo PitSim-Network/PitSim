@@ -1,13 +1,9 @@
-package dev.kyro.pitsim.controllers;
+package dev.kyro.pitsim.controllers.objects;
 
 import dev.kyro.pitsim.PitSim;
-import dev.kyro.pitsim.controllers.killstreaks.Killstreak;
-import dev.kyro.pitsim.controllers.killstreaks.Megastreak;
+import dev.kyro.pitsim.controllers.NonManager;
 import dev.kyro.pitsim.killstreaks.Overdrive;
-import dev.kyro.pitsim.perks.Dirty;
 import dev.kyro.pitsim.perks.NoPerk;
-import dev.kyro.pitsim.perks.StrengthChaining;
-import dev.kyro.pitsim.perks.Vampire;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;

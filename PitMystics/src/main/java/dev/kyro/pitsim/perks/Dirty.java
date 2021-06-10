@@ -1,7 +1,7 @@
 package dev.kyro.pitsim.perks;
 
 import dev.kyro.arcticapi.builders.ALoreBuilder;
-import dev.kyro.pitsim.controllers.PitPerk;
+import dev.kyro.pitsim.controllers.objects.PitPerk;
 import dev.kyro.pitsim.events.KillEvent;
 import dev.kyro.pitsim.misc.Misc;
 import org.bukkit.Material;

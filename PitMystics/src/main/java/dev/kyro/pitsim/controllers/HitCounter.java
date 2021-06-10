@@ -1,5 +1,7 @@
 package dev.kyro.pitsim.controllers;
 
+import dev.kyro.pitsim.controllers.objects.PitEnchant;
+import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import org.bukkit.entity.Player;
 
 public class HitCounter {

@@ -9,8 +9,8 @@ import net.minecraft.server.v1_8_R3.EntityPlayer;
 import org.bukkit.Sound;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
 import dev.kyro.pitsim.controllers.HitCounter;
-import dev.kyro.pitsim.controllers.PitEnchant;
-import dev.kyro.pitsim.controllers.PitPlayer;
+import dev.kyro.pitsim.controllers.objects.PitEnchant;
+import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import org.bukkit.event.EventHandler;
 
 import java.util.List;

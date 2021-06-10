@@ -1,4 +1,4 @@
-package dev.kyro.pitsim.controllers;
+package dev.kyro.pitsim.controllers.objects;
 
 import dev.kyro.arcticapi.builders.AItemStackBuilder;
 import org.bukkit.entity.Player;

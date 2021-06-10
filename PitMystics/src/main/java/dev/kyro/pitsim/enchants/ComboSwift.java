@@ -8,8 +8,8 @@ import dev.kyro.pitsim.misc.Misc;
 import org.bukkit.event.EventHandler;
 import org.bukkit.potion.PotionEffectType;
 import dev.kyro.pitsim.controllers.HitCounter;
-import dev.kyro.pitsim.controllers.PitEnchant;
-import dev.kyro.pitsim.controllers.PitPlayer;
+import dev.kyro.pitsim.controllers.objects.PitEnchant;
+import dev.kyro.pitsim.controllers.objects.PitPlayer;
 
 import java.util.List;
 

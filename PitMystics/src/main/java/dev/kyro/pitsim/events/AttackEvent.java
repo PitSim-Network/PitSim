@@ -1,7 +1,7 @@
 package dev.kyro.pitsim.events;
 
 import dev.kyro.pitsim.controllers.DamageManager;
-import dev.kyro.pitsim.controllers.PitEnchant;
+import dev.kyro.pitsim.controllers.objects.PitEnchant;
 import org.bukkit.entity.*;
 import org.bukkit.event.Cancellable;
 import org.bukkit.event.Event;

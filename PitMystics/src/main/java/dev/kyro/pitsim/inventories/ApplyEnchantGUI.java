@@ -4,7 +4,7 @@ import dev.kyro.arcticapi.builders.AInventoryBuilder;
 import dev.kyro.arcticapi.gui.AInventoryGUI;
 import dev.kyro.pitsim.commands.FreshCommand;
 import dev.kyro.pitsim.controllers.EnchantManager;
-import dev.kyro.pitsim.controllers.PitEnchant;
+import dev.kyro.pitsim.controllers.objects.PitEnchant;
 import dev.kyro.pitsim.enums.MysticType;
 import org.bukkit.Material;
 import org.bukkit.event.inventory.InventoryClickEvent;

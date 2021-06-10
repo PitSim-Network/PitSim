@@ -3,7 +3,7 @@ package dev.kyro.pitsim.commands;
 import de.tr7zw.nbtapi.NBTItem;
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.controllers.EnchantManager;
-import dev.kyro.pitsim.controllers.PitEnchant;
+import dev.kyro.pitsim.controllers.objects.PitEnchant;
 import dev.kyro.pitsim.enums.NBTTag;
 import dev.kyro.pitsim.exceptions.*;
 import org.bukkit.command.Command;

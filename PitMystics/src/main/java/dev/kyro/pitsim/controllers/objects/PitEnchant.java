@@ -1,5 +1,6 @@
-package dev.kyro.pitsim.controllers;
+package dev.kyro.pitsim.controllers.objects;
 
+import dev.kyro.pitsim.controllers.Cooldown;
 import dev.kyro.pitsim.enums.ApplyType;
 import dev.kyro.pitsim.enums.EnchantRarity;
 import dev.kyro.pitsim.events.AttackEvent;

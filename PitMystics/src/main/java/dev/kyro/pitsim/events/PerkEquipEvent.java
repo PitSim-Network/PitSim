@@ -1,6 +1,6 @@
 package dev.kyro.pitsim.events;
 
-import dev.kyro.pitsim.controllers.PitPerk;
+import dev.kyro.pitsim.controllers.objects.PitPerk;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Cancellable;
 import org.bukkit.event.Event;

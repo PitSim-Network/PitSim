@@ -1,7 +1,7 @@
 package dev.kyro.pitsim.placeholders;
 
 import dev.kyro.arcticapi.hooks.APAPIPlaceholder;
-import dev.kyro.pitsim.controllers.PitPlayer;
+import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import org.bukkit.entity.Player;
 
 public class LevelBracketPlaceholder implements APAPIPlaceholder {

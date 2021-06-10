@@ -2,7 +2,7 @@ package dev.kyro.pitsim.commands;
 
 import dev.kyro.arcticapi.misc.AUtil;
 import dev.kyro.pitsim.controllers.EnchantManager;
-import dev.kyro.pitsim.controllers.PitEnchant;
+import dev.kyro.pitsim.controllers.objects.PitEnchant;
 import dev.kyro.pitsim.enums.ApplyType;
 import dev.kyro.pitsim.enums.MysticType;
 import dev.kyro.pitsim.enums.PantColor;

@@ -1,4 +1,4 @@
-package dev.kyro.pitsim.controllers.killstreaks;
+package dev.kyro.pitsim.controllers.objects;
 
 import java.util.Arrays;
 import java.util.List;

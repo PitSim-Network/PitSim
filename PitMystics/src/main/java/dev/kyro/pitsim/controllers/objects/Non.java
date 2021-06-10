@@ -1,6 +1,7 @@
-package dev.kyro.pitsim.controllers;
+package dev.kyro.pitsim.controllers.objects;
 
 import dev.kyro.pitsim.PitSim;
+import dev.kyro.pitsim.controllers.NonManager;
 import dev.kyro.pitsim.enums.NonState;
 import dev.kyro.pitsim.enums.NonTrait;
 import dev.kyro.pitsim.misc.Misc;

@@ -1,8 +1,8 @@
 package dev.kyro.pitsim.killstreaks;
 
 import dev.kyro.pitsim.PitSim;
-import dev.kyro.pitsim.controllers.PitPlayer;
-import dev.kyro.pitsim.controllers.killstreaks.Megastreak;
+import dev.kyro.pitsim.controllers.objects.PitPlayer;
+import dev.kyro.pitsim.controllers.objects.Megastreak;
 import dev.kyro.pitsim.misc.Misc;
 import org.bukkit.Sound;
 import org.bukkit.potion.PotionEffectType;

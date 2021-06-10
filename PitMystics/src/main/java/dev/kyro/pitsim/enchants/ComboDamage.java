@@ -5,8 +5,8 @@ import dev.kyro.pitsim.enums.ApplyType;
 import dev.kyro.pitsim.events.AttackEvent;
 import dev.kyro.pitsim.misc.Misc;
 import dev.kyro.pitsim.controllers.HitCounter;
-import dev.kyro.pitsim.controllers.PitEnchant;
-import dev.kyro.pitsim.controllers.PitPlayer;
+import dev.kyro.pitsim.controllers.objects.PitEnchant;
+import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import org.bukkit.event.EventHandler;
 
 import java.util.List;

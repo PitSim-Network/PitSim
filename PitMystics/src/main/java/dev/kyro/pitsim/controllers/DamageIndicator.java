@@ -1,5 +1,6 @@
 package dev.kyro.pitsim.controllers;
 
+import dev.kyro.pitsim.controllers.objects.Non;
 import dev.kyro.pitsim.events.AttackEvent;
 import dev.kyro.pitsim.misc.Misc;
 import me.clip.placeholderapi.PlaceholderAPI;

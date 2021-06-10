@@ -5,7 +5,7 @@ import dev.kyro.arcticapi.gui.AInventoryGUI;
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.controllers.PerkManager;
-import dev.kyro.pitsim.controllers.PitPerk;
+import dev.kyro.pitsim.controllers.objects.PitPerk;
 import dev.kyro.pitsim.events.PerkEquipEvent;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
