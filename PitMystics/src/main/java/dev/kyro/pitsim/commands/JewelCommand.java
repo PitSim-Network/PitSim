@@ -3,6 +3,7 @@ package dev.kyro.pitsim.commands;
 import de.tr7zw.nbtapi.NBTItem;
 import dev.kyro.arcticapi.misc.AUtil;
 import dev.kyro.pitsim.controllers.EnchantManager;
+import dev.kyro.pitsim.controllers.objects.SpecialItem;
 import dev.kyro.pitsim.enums.MysticType;
 import dev.kyro.pitsim.enums.NBTTag;
 import dev.kyro.pitsim.enums.PantColor;
@@ -39,6 +40,8 @@ public class JewelCommand implements CommandExecutor {
 		NBTItem nbtItem = new NBTItem(jewel);
 		nbtItem.setBoolean(NBTTag.IS_JEWEL.getRef(), true);
 		EnchantManager.setItemLore(nbtItem.getItem());
+
+		new SpecialItem(nbtItem.getItem()).enableDropConfirm();
 
 		AUtil.giveItemSafely(player, nbtItem.getItem());
 		return false;

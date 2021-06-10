@@ -13,7 +13,9 @@ public enum NBTTag {
 	BOT_KILLS("pr-bot-kills"),
 	JEWEL_KILLS("pr-jewel-kills"),
 	IS_JEWEL("pr-isjewel"),
-	IS_GEMMED("pr-isgemmed");
+	IS_GEMMED("pr-isgemmed"),
+	UNDROPPABLE("pr-undroppable"),
+	DROP_CONFIRM("pr-dropconfirm");
 
 	private final String ref;
 
