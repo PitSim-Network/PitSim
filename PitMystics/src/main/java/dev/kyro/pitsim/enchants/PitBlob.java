@@ -68,11 +68,18 @@ public class PitBlob extends PitEnchant {
 		return null;
 	}
 
-	@EventHandler
+	@EventHandler(ignoreCancelled = true)
 	public void onAttack(EntityDamageEvent event) {
 
 		if(!(event.getEntity() instanceof Slime) || !blobMap.containsValue((Slime) event.getEntity())) return;
 		Slime slime = (Slime) event.getEntity();
+
+		if(getOwner(slime) == event.getEntity()) {
+
+			event.setCancelled(true);
+			return;
+		}
+
 		if(event.getFinalDamage() < slime.getHealth()) return;
 		for(Map.Entry<UUID, Slime> entry : blobMap.entrySet()) {
 			if(entry.getValue() != slime) continue;

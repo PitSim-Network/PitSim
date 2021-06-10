@@ -79,11 +79,18 @@ public class WolfPack extends PitEnchant {
 		return null;
 	}
 
-	@EventHandler
+	@EventHandler(ignoreCancelled = true)
 	public void onAttack(EntityDamageEvent event) {
 
 		if(!(event.getEntity() instanceof Wolf) || !isInPack((Wolf) event.getEntity())) return;
 		Wolf wolf = (Wolf) event.getEntity();
+
+		if(getOwner(wolf) == event.getEntity()) {
+
+			event.setCancelled(true);
+			return;
+		}
+
 		if(event.getFinalDamage() < wolf.getHealth()) return;
 		for(Map.Entry<UUID, List<Wolf>> entry : wolfMap.entrySet()) {
 			if(entry.getValue() != wolf) continue;
@@ -124,7 +131,7 @@ public class WolfPack extends PitEnchant {
 		int oldEnchantLvl = oldEnchantMap.getOrDefault(this, 0);
 
 		if(oldEnchantLvl == 0 && enchantLvl != 0) {
-
+//			Don't remove this
 		} else if(enchantLvl == 0 && oldEnchantLvl != 0) {
 			List<Wolf> pack = wolfMap.get(player.getUniqueId());
 			if(pack == null) return;
@@ -152,7 +159,7 @@ public class WolfPack extends PitEnchant {
 
 	public static int getKills(int enchantLvl) {
 
-		return Misc.linearEnchant(enchantLvl, -0.5, 4.5);
+		return Math.max(Misc.linearEnchant(enchantLvl, -0.5, 4.5), 1);
 	}
 
 	@Override
