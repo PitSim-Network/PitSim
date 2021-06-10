@@ -13,6 +13,7 @@ import dev.kyro.pitsim.controllers.*;
 import dev.kyro.pitsim.controllers.market.MarketManager;
 import dev.kyro.pitsim.enchants.*;
 import dev.kyro.pitsim.perks.*;
+import dev.kyro.pitsim.placeholders.CombatTimerPlaceholder;
 import dev.kyro.pitsim.placeholders.GladiatorPlaceholder;
 import dev.kyro.pitsim.placeholders.LevelBracketPlaceholder;
 import dev.kyro.pitsim.placeholders.StrengthChainingPlaceholder;
@@ -48,10 +49,14 @@ public class PitSim extends JavaPlugin {
 			Bukkit.getPluginManager().disablePlugin(this);
 		}
 
+
+
+
 		ArcticAPI.setupPlaceholderAPI("pitsim");
 		AHook.registerPlaceholder(new LevelBracketPlaceholder());
 		AHook.registerPlaceholder(new StrengthChainingPlaceholder());
 		AHook.registerPlaceholder(new GladiatorPlaceholder());
+		AHook.registerPlaceholder(new CombatTimerPlaceholder());
 
 		loadConfig();
 
@@ -184,6 +189,8 @@ public class PitSim extends JavaPlugin {
 		getServer().getPluginManager().registerEvents(new ChatManager(), this);
 		getServer().getPluginManager().registerEvents(new DamageIndicator(), this);
 		getServer().getPluginManager().registerEvents(new MarketManager(), this);
+		getServer().getPluginManager().registerEvents(new CombatManager(), this);
+		getServer().getPluginManager().registerEvents(new SpawnManager(), this);
 	}
 
 	private void loadConfig() {

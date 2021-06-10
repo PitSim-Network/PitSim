@@ -24,7 +24,7 @@ import java.util.List;
 
 public class Telebow extends PitEnchant {
 
-	public List<Arrow> teleShots = new ArrayList<>();
+	public static List<Arrow> teleShots = new ArrayList<>();
 
 	public Telebow() {
 		super("Telebow", true, ApplyType.BOWS,
