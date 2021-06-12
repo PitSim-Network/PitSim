@@ -2,7 +2,7 @@ package dev.kyro.pitsim.controllers.objects;
 
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.controllers.NonManager;
-import dev.kyro.pitsim.killstreaks.Overdrive;
+import dev.kyro.pitsim.killstreaks.Uberstreak;
 import dev.kyro.pitsim.perks.NoPerk;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -33,7 +33,7 @@ public class PitPlayer {
 
 	public PitPlayer(Player player) {
 		this.player = player;
-		this.megastreak = new Overdrive(this);
+		this.megastreak = new Uberstreak(this);
 
 		Non non = NonManager.getNon(player);
 		if(non == null) {
@@ -60,9 +60,9 @@ public class PitPlayer {
 	}
 
 	public void endKillstreak() {
-		kills = 0;
 		megastreak.reset();
 		killstreaks.forEach(Killstreak::reset);
+		kills = 0;
 	}
 
 	public void incrementKills() {

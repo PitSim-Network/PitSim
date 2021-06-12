@@ -4,9 +4,15 @@ import org.bukkit.inventory.ItemStack;
 
 public enum MysticType {
 
-	SWORD,
-	BOW,
-	PANTS;
+	SWORD("Sword"),
+	BOW("Bow"),
+	PANTS("Pants");
+
+	public String displayName;
+
+	MysticType(String displayName) {
+		this.displayName = displayName;
+	}
 
 	public static MysticType getMysticType(ItemStack itemStack) {
 
