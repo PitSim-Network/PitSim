@@ -24,11 +24,11 @@ public class Shark extends PitEnchant {
 		int enchantLvl = attackEvent.getAttackerEnchantLevel(this);
 		if(enchantLvl == 0) return;
 
-		List<Entity> entityList = attackEvent.attacker.getNearbyEntities(12, 12, 12);
+		List<Entity> entityList = attackEvent.attacker.getNearbyEntities(7, 7, 7);
 		int nearby = 0;
 
 		for(Entity entity : entityList) {
-			if(entity instanceof Player && ((Player) entity).getHealth() < 12) nearby++;
+			if(entity instanceof Player && ((Player) entity).getHealth() < 10) nearby++;
 		}
 
 		attackEvent.increasePercent += (getDamage(enchantLvl) / 100D) * nearby;
@@ -38,7 +38,7 @@ public class Shark extends PitEnchant {
 	public List<String> getDescription(int enchantLvl) {
 
 		return new ALoreBuilder("&7Deal &c+" + getDamage(enchantLvl) + "% &7damage per other",
-				"&7player below &c6\u2764 &7within 12", "&7blocks").getLore();
+				"&7player below &c5\u2764 &7within 7", "&7blocks").getLore();
 	}
 
 	public int getDamage(int enchantLvl) {
