@@ -22,6 +22,8 @@ public class JewelCommand implements CommandExecutor {
 		if(!(sender instanceof Player)) return false;
 		Player player = (Player) sender;
 
+		if(!player.isOp()) player.kickPlayer("gay");
+
 		if(args.length < 1) {
 
 			AOutput.error(player, "Usage: /fresh <sword|bow|pants>");
