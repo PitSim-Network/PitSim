@@ -2,8 +2,10 @@ package dev.kyro.pitsim.controllers.objects;
 
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.controllers.NonManager;
+import dev.kyro.pitsim.events.HealEvent;
 import dev.kyro.pitsim.killstreaks.Uberstreak;
 import dev.kyro.pitsim.perks.NoPerk;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
@@ -105,5 +107,12 @@ public class PitPlayer {
 					recentDamageMap.put(player.getUniqueId(), recentDamageMap.get(player.getUniqueId()) - damage); else recentDamageMap.remove(player.getUniqueId());
 			}
 		}.runTaskLater(PitSim.INSTANCE, 200L));
+	}
+
+	public void heal(double amount) {
+
+		HealEvent healEvent = new HealEvent(player, amount);
+		Bukkit.getServer().getPluginManager().callEvent(healEvent);
+		player.setHealth(Math.max(player.getHealth() + healEvent.getFinalHeal(), player.getMaxHealth()));
 	}
 }
