@@ -2,6 +2,7 @@ package dev.kyro.pitsim.perks;
 
 import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.pitsim.controllers.objects.PitPerk;
+import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.events.AttackEvent;
 import dev.kyro.pitsim.events.KillEvent;
 import dev.kyro.pitsim.misc.Misc;
@@ -24,10 +25,11 @@ public class Vampire extends PitPerk {
 	@EventHandler
 	public void onAttack(AttackEvent.Apply attackEvent) {
 		if(!playerHasUpgrade(attackEvent.attacker)) return;
+		PitPlayer pitAttacker = PitPlayer.getPitPlayer(attackEvent.attacker);
 
 		int healing = 1;
 		if(attackEvent.arrow != null && attackEvent.arrow.isCritical()) healing = 3;
-		attackEvent.attacker.setHealth(Math.min(attackEvent.attacker.getHealth() + healing, attackEvent.attacker.getMaxHealth()));
+		pitAttacker.heal(healing);
 	}
 
 	@EventHandler

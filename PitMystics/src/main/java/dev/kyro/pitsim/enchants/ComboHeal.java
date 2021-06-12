@@ -26,6 +26,7 @@ public class ComboHeal extends PitEnchant {
 	@EventHandler
 	public void onAttack(AttackEvent.Apply attackEvent) {
 		if(!canApply(attackEvent)) return;
+		PitPlayer pitAttacker = PitPlayer.getPitPlayer(attackEvent.attacker);
 
 		int enchantLvl = attackEvent.getAttackerEnchantLevel(this);
 		if(enchantLvl == 0) return;
@@ -34,7 +35,7 @@ public class ComboHeal extends PitEnchant {
 		HitCounter.incrementCounter(pitPlayer.player, this);
 		if(!HitCounter.hasReachedThreshold(pitPlayer.player, this, 4)) return;
 
-		attackEvent.attacker.setHealth(Math.min(attackEvent.attacker.getHealth() + getEffect(enchantLvl), attackEvent.attacker.getMaxHealth()));
+		pitAttacker.heal(getEffect(enchantLvl));
 		EntityPlayer nmsPlayer = ((CraftPlayer) attackEvent.attacker).getHandle();
 		if(nmsPlayer.getAbsorptionHearts() < 8) {
 			nmsPlayer.setAbsorptionHearts(Math.min((float) (nmsPlayer.getAbsorptionHearts() + getEffect(enchantLvl)), 8));

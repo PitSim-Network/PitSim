@@ -247,7 +247,7 @@ public class DamageManager implements Listener {
 		if(killingNon != null) {
 			killingNon.rewardKill();
 		} else {
-			killer.setHealth(Math.min(killer.getHealth() + 2, killer.getMaxHealth()));
+			pitAttacker.heal(2);
 		}
 
 		KillEvent killEvent = new KillEvent(attackEvent, killer, dead, exeDeath);

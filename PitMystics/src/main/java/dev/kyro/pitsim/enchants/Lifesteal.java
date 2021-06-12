@@ -2,6 +2,7 @@ package dev.kyro.pitsim.enchants;
 
 import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.pitsim.controllers.objects.PitEnchant;
+import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.enums.ApplyType;
 import dev.kyro.pitsim.events.AttackEvent;
 import dev.kyro.pitsim.misc.Misc;
@@ -21,18 +22,13 @@ public class Lifesteal extends PitEnchant {
 	@EventHandler(priority = EventPriority.HIGH)
 	public void onAttack(AttackEvent.Apply attackEvent) {
 		if(!canApply(attackEvent)) return;
+		PitPlayer pitAttacker = PitPlayer.getPitPlayer(attackEvent.attacker);
 
 		int enchantLvl = attackEvent.getAttackerEnchantLevel(this);
 		if(enchantLvl == 0) return;
 
 		double damage = attackEvent.getFinalDamageIncrease();
-
-		if(attackEvent.attacker.getHealth() > attackEvent.attacker.getMaxHealth() - damage * (getHealing(enchantLvl) / 100D)) {
-			attackEvent.attacker.setHealth(attackEvent.attacker.getMaxHealth());
-		} else {
-			attackEvent.attacker.setHealth(attackEvent.attacker.getHealth() + damage * (getHealing(enchantLvl) / 100D));
-		}
-
+		pitAttacker.heal(damage * (getHealing(enchantLvl) / 100D));
 	}
 
 	@Override

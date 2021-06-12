@@ -3,6 +3,7 @@ package dev.kyro.pitsim.enchants;
 import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.pitsim.controllers.Cooldown;
 import dev.kyro.pitsim.controllers.objects.PitEnchant;
+import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.enums.ApplyType;
 import dev.kyro.pitsim.events.AttackEvent;
 import dev.kyro.pitsim.misc.Misc;
@@ -21,6 +22,8 @@ public class Healer extends PitEnchant {
 	@EventHandler
 	public void onAttack(AttackEvent.Apply attackEvent) {
 		if(!canApply(attackEvent)) return;
+		PitPlayer pitAttacker = PitPlayer.getPitPlayer(attackEvent.attacker);
+		PitPlayer pitDefender = PitPlayer.getPitPlayer(attackEvent.defender);
 
 		int enchantLvl = attackEvent.getAttackerEnchantLevel(this);
 		if(enchantLvl == 0) return;
@@ -29,8 +32,8 @@ public class Healer extends PitEnchant {
 		if(cooldown.isOnCooldown()) return; else cooldown.reset();
 
 		attackEvent.multiplier.add(0d);
-		attackEvent.attacker.setHealth(Math.min(attackEvent.attacker.getHealth() + 0.5 + (0.5 * enchantLvl), attackEvent.attacker.getMaxHealth()));
-		attackEvent.defender.setHealth(Math.min(attackEvent.defender.getHealth() + getHealing(enchantLvl), attackEvent.defender.getMaxHealth()));
+		pitAttacker.heal(0.5 + (0.5 * enchantLvl));
+		pitDefender.heal(getHealing(enchantLvl));
 		
 		attackEvent.defender.getWorld().spigot().playEffect(attackEvent.defender.getLocation().add(0, 1, 0),
 				Effect.HAPPY_VILLAGER, 0, 0, (float) 0.5, (float) 0.5, (float) 0.5, (float) 0.01, 20, 50);

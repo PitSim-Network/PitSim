@@ -10,17 +10,20 @@ import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.enums.MysticType;
 import dev.kyro.pitsim.enums.NBTTag;
 import dev.kyro.pitsim.enums.PantColor;
+import dev.kyro.pitsim.events.HealEvent;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.event.EventHandler;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.scheduler.BukkitTask;
 
 import java.util.Arrays;
 import java.util.List;
 
 public class Uberstreak extends Megastreak {
 
-	public BukkitTask runnable;
+	public Uberstreak(PitPlayer pitPlayer) {
+		super(pitPlayer);
+	}
 
 	@Override
 	public String getName() {
@@ -39,11 +42,14 @@ public class Uberstreak extends Megastreak {
 
 	@Override
 	public int getRequiredKills() {
-		return 5;
+		return 100;
 	}
 
-	public Uberstreak(PitPlayer pitPlayer) {
-		super(pitPlayer);
+	@EventHandler
+	public void onHeal(HealEvent healEvent) {
+		if(!isOnMega()) return;
+
+		healEvent.multipliers.add(0D);
 	}
 
 	@Override

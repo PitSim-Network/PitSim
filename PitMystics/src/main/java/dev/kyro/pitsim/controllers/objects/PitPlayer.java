@@ -113,6 +113,6 @@ public class PitPlayer {
 
 		HealEvent healEvent = new HealEvent(player, amount);
 		Bukkit.getServer().getPluginManager().callEvent(healEvent);
-		player.setHealth(Math.max(player.getHealth() + healEvent.getFinalHeal(), player.getMaxHealth()));
+		player.setHealth(Math.min(player.getHealth() + healEvent.getFinalHeal(), player.getMaxHealth()));
 	}
 }

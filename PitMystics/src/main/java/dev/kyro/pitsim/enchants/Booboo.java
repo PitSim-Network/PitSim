@@ -4,6 +4,7 @@ import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.controllers.EnchantManager;
 import dev.kyro.pitsim.controllers.objects.PitEnchant;
+import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.enums.ApplyType;
 import dev.kyro.pitsim.events.AttackEvent;
 import org.bukkit.Bukkit;
@@ -39,17 +40,18 @@ public class Booboo extends PitEnchant {
 			public void run() {
 				for(Player player : Bukkit.getOnlinePlayers()) {
 					int level = EnchantManager.getEnchantLevel(player, INSTANCE);
+					PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
 
 					if(level == 1 && counter % 5 == 0) {
-						player.setHealth(Math.min(player.getHealth() + 2, player.getMaxHealth()));
+						pitPlayer.heal(2);
 					} else if(level == 2 && counter % 4 == 0) {
-						player.setHealth(Math.min(player.getHealth() + 2, player.getMaxHealth()));
+						pitPlayer.heal(2);
 					} else if(level == 3 && counter % 3 == 0) {
-						player.setHealth(Math.min(player.getHealth() + 2, player.getMaxHealth()));
+						pitPlayer.heal(2);
 					} else if(level == 4 && counter % 2 == 0) {
-						player.setHealth(Math.min(player.getHealth() + 2, player.getMaxHealth()));
+						pitPlayer.heal(2);
 					} else if(level != 0) {
-						player.setHealth(Math.min(player.getHealth() + 2, player.getMaxHealth()));
+						pitPlayer.heal(2);
 					}
 				}
 

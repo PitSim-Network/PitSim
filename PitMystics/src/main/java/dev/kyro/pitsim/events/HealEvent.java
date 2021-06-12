@@ -12,7 +12,7 @@ public class HealEvent extends Event {
 
 	public Player player;
 	private final double initialHeal;
-	public static List<Double> multipliers = new ArrayList<>();
+	public List<Double> multipliers = new ArrayList<>();
 
 	public HealEvent(Player player, double initialHeal) {
 		this.player = player;
