@@ -214,7 +214,6 @@ public class DamageManager implements Listener {
 
 		PitPlayer pitAttacker = PitPlayer.getPitPlayer(killer);
 		PitPlayer pitDefender = PitPlayer.getPitPlayer(dead);
-		pitAttacker.incrementKills();
 
 		Location spawnLoc = new Location(Bukkit.getWorld("pit"), -108.5, 86, 194.5, 45, 0);
 
@@ -223,6 +222,12 @@ public class DamageManager implements Listener {
 		dead.playSound(dead.getLocation(), Sound.FALL_BIG, 1000, 1F);
 		dead.playSound(dead.getLocation(), Sound.FALL_BIG, 1000, 1F);
 		Regularity.toReg.remove(dead.getUniqueId());
+
+		Non attackingNon = NonManager.getNon(killer);
+		if(attackingNon == null) {
+
+			pitAttacker.incrementKills();
+		}
 
 		Non defendingNon = NonManager.getNon(dead);
 		if(defendingNon == null) {
