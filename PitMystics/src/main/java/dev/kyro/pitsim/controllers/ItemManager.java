@@ -61,7 +61,9 @@ public class ItemManager implements Listener {
 						dropConfirmMap.remove(player);
 					}
 				}.runTaskLater(PitSim.INSTANCE, 60L);
+
 				AOutput.error(player, "&e&lWARNING! &7You are about to drop an item. Click the drop button again to drop the item.");
+				event.setCancelled(true);
 				return;
 			}
 
