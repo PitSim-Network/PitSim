@@ -238,7 +238,7 @@ public class DamageManager implements Listener {
 			defendingNon.respawn();
 		}
 
-		pitDefender.megastreak.reset();
+		pitDefender.endKillstreak();
 		for(PotionEffect potionEffect : dead.getActivePotionEffects()) {
 			dead.removePotionEffect(potionEffect.getType());
 		}

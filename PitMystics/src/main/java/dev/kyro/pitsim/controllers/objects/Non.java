@@ -19,6 +19,7 @@ import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
+import org.bukkit.event.player.PlayerTeleportEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -89,6 +90,7 @@ public class Non {
 	public void tick() {
 
 		non = (Player) npc.getEntity();
+		if(!npc.isSpawned()) spawn();
 		if(npc.isSpawned() && non.getLocation().getY() <= 42) {
 			Location teleportLoc = non.getLocation().clone();
 			teleportLoc.setY(43.2);
@@ -106,6 +108,7 @@ public class Non {
 
 		if(traits.contains(NonTrait.IRON_STREAKER))
 				Misc.applyPotionEffect(non, PotionEffectType.DAMAGE_RESISTANCE, 9999, 2, true, false);
+//		non.setHealth(non.getMaxHealth());
 
 		if(target == null) return;
 
@@ -154,7 +157,7 @@ public class Non {
 	}
 
 	public void spawn() {
-		Location spawnLoc = new Location(Bukkit.getWorld("pit"), -119, 86, 211, -180, 60);
+		Location spawnLoc = new Location(Bukkit.getWorld("pit"), -119, 86, 205, -180, 60);
 		npc.spawn(spawnLoc);
 //		skin(npc, "wiji1", npc.getStoredLocation());
 	}
@@ -162,10 +165,12 @@ public class Non {
 	public void respawn() {
 
 		nonState = NonState.RESPAWNING;
-		Location spawnLoc = new Location(Bukkit.getWorld("pit"), -119, 86, 211, -180, 60);
-//		npc.teleport(spawnLoc, PlayerTeleportEvent.TeleportCause.PLUGIN);
-		npc.despawn();
-		npc.spawn(spawnLoc);
+//		Location spawnLoc = new Location(Bukkit.getWorld("pit"), -119, 86, 211, -180, 60);
+		Location spawnLoc = new Location(Bukkit.getWorld("pit"), -119, 86, 205, -180, 60);
+		if(!npc.isSpawned()) spawn();
+		non.teleport(spawnLoc, PlayerTeleportEvent.TeleportCause.PLUGIN);
+//		npc.despawn();
+//		npc.spawn(spawnLoc);
 
 		non.setHealth(non.getMaxHealth());
 
@@ -197,20 +202,28 @@ public class Non {
 			}
 		}
 
+
+		new BukkitRunnable() {
+			@Override
+			public void run() {
+				nonState = NonState.FIGHTING;
+			}
+		}.runTaskLater(PitSim.INSTANCE, 40L);
+
 		new BukkitRunnable() {
 			@Override
 			public void run() {
 
-				Vector velo = non.getLocation().getDirection().normalize().multiply(0.7);
-				velo.setY(0.35);
-				non.setVelocity(velo);
-
-				new BukkitRunnable() {
-					@Override
-					public void run() {
-						nonState = NonState.FIGHTING;
-					}
-				}.runTaskLater(PitSim.INSTANCE, 55L);
+//				Vector velo = non.getLocation().getDirection().normalize().multiply(0.7);
+//				velo.setY(0.35);
+//				non.setVelocity(velo);
+//
+//				new BukkitRunnable() {
+//					@Override
+//					public void run() {
+//						nonState = NonState.FIGHTING;
+//					}
+//				}.runTaskLater(PitSim.INSTANCE, 55L);
 			}
 		}.runTaskLater(PitSim.INSTANCE, (long) (Math.random() * 20 + 20));
 	}
