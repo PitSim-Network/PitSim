@@ -6,6 +6,7 @@ import dev.kyro.pitsim.events.HealEvent;
 import dev.kyro.pitsim.killstreaks.Uberstreak;
 import dev.kyro.pitsim.perks.NoPerk;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
@@ -76,6 +77,9 @@ public class PitPlayer {
 			killstreak.proc();
 		}
 		megastreak.kill();
+
+		if(kills % 10 == 0) Bukkit.broadcastMessage(ChatColor.translateAlternateColorCodes(
+				'&', "&c&lSTREAK!&7 of &c" + kills + " &7by " + player.getDisplayName()));
 	}
 
 	public int getKills() {
