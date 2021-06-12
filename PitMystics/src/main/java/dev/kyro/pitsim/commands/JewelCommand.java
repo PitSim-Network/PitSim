@@ -1,6 +1,7 @@
 package dev.kyro.pitsim.commands;
 
 import de.tr7zw.nbtapi.NBTItem;
+import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.arcticapi.misc.AUtil;
 import dev.kyro.pitsim.controllers.EnchantManager;
 import dev.kyro.pitsim.controllers.ItemManager;
@@ -21,38 +22,31 @@ public class JewelCommand implements CommandExecutor {
 		if(!(sender instanceof Player)) return false;
 		Player player = (Player) sender;
 
-		MysticType mysticType = null;
-		if(args.length > 1) {
+		if(args.length < 1) {
 
-			String type = args[0].toLowerCase();
-			switch(type) {
-				case "sword":
-					mysticType = MysticType.SWORD;
-					break;
-				case "bow":
-					mysticType = MysticType.BOW;
-					break;
-				case "pants":
-				case "pant":
-				case "fresh":
-					mysticType = MysticType.PANTS;
-					break;
-			}
+			AOutput.error(player, "Usage: /fresh <sword|bow|pants>");
+			return false;
 		}
 
+		MysticType mysticType = null;
+		String type = args[0].toLowerCase();
+		switch(type) {
+			case "sword":
+				mysticType = MysticType.SWORD;
+				break;
+			case "bow":
+				mysticType = MysticType.BOW;
+				break;
+			case "pants":
+			case "pant":
+			case "fresh":
+				mysticType = MysticType.PANTS;
+				break;
+		}
 		if(mysticType == null) {
-			int rand = (int) (Math.random() * 3);
-			switch(rand) {
-				case 0:
-					mysticType = MysticType.SWORD;
-					break;
-				case 1:
-					mysticType = MysticType.BOW;
-					break;
-				default:
-					mysticType = MysticType.PANTS;
-					break;
-			}
+
+			AOutput.error(player, "Usage: /fresh <sword|bow|pants>");
+			return false;
 		}
 
 		ItemStack jewel = FreshCommand.getFreshItem(mysticType, PantColor.JEWEL);
