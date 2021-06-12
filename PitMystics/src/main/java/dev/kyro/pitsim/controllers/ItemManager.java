@@ -19,6 +19,24 @@ public class ItemManager implements Listener {
 
 	public static Map<Player, ItemStack> dropConfirmMap = new HashMap<>();
 
+	public static ItemStack enableUndroppable(ItemStack itemStack) {
+
+		if(Misc.isAirOrNull(itemStack)) return itemStack;
+		NBTItem nbtItem = new NBTItem(itemStack);
+
+		nbtItem.setBoolean(NBTTag.UNDROPPABLE.getRef(), true);
+		return nbtItem.getItem();
+	}
+
+	public static ItemStack enableDropConfirm(ItemStack itemStack) {
+
+		if(Misc.isAirOrNull(itemStack)) return itemStack;
+		NBTItem nbtItem = new NBTItem(itemStack);
+
+		nbtItem.setBoolean(NBTTag.DROP_CONFIRM.getRef(), true);
+		return nbtItem.getItem();
+	}
+
 	@EventHandler
 	public static void onItemDrop(PlayerDropItemEvent event) {
 		ItemStack itemStack = event.getItemDrop().getItemStack();
