@@ -21,18 +21,38 @@ public class JewelCommand implements CommandExecutor {
 		if(!(sender instanceof Player)) return false;
 		Player player = (Player) sender;
 
-		MysticType mysticType;
-		int rand = (int) (Math.random() * 3);
-		switch(rand) {
-			case 0:
-				mysticType = MysticType.SWORD;
-				break;
-			case 1:
-				mysticType = MysticType.BOW;
-				break;
-			default:
-				mysticType = MysticType.PANTS;
-				break;
+		MysticType mysticType = null;
+		if(args.length > 1) {
+
+			String type = args[0].toLowerCase();
+			switch(type) {
+				case "sword":
+					mysticType = MysticType.SWORD;
+					break;
+				case "bow":
+					mysticType = MysticType.BOW;
+					break;
+				case "pants":
+				case "pant":
+				case "fresh":
+					mysticType = MysticType.PANTS;
+					break;
+			}
+		}
+
+		if(mysticType == null) {
+			int rand = (int) (Math.random() * 3);
+			switch(rand) {
+				case 0:
+					mysticType = MysticType.SWORD;
+					break;
+				case 1:
+					mysticType = MysticType.BOW;
+					break;
+				default:
+					mysticType = MysticType.PANTS;
+					break;
+			}
 		}
 
 		ItemStack jewel = FreshCommand.getFreshItem(mysticType, PantColor.JEWEL);
