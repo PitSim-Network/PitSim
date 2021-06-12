@@ -17,7 +17,6 @@ public class LastStand extends PitEnchant {
 	public LastStand() {
 		super("Last Stand", false, ApplyType.PANTS,
 				"laststand", "last", "last-stand", "resistance");
-		isUncommonEnchant = true;
 	}
 
 	@EventHandler
