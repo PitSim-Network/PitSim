@@ -28,7 +28,7 @@ public class Volley extends PitEnchant {
 		if(!canApply(attackEvent)) return;
 	}
 
-	@EventHandler()
+	@EventHandler(ignoreCancelled = true)
 	public void onBowShoot(EntityShootBowEvent event) {
 
 		if(event instanceof VolleyShootEvent) return;
