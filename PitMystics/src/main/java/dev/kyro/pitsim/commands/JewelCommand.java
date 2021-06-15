@@ -3,6 +3,7 @@ package dev.kyro.pitsim.commands;
 import de.tr7zw.nbtapi.NBTItem;
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.arcticapi.misc.AUtil;
+import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.controllers.EnchantManager;
 import dev.kyro.pitsim.controllers.ItemManager;
 import dev.kyro.pitsim.enums.MysticType;
@@ -20,6 +21,14 @@ public class JewelCommand implements CommandExecutor {
 	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
 
 		if(!(sender instanceof Player)) return false;
+//		if(!sender.isOp()) return false;
+
+		double finalBalance = PitSim.VAULT.getBalance((Player) sender) - 200000;
+		if(finalBalance < 0) return false;
+		PitSim.VAULT.withdrawPlayer((Player) sender, 200000);
+		AOutput.send(sender, "&aPurchased a jewel for &6200,000g");
+
+
 		Player player = (Player) sender;
 
 		if(!player.isOp()) {

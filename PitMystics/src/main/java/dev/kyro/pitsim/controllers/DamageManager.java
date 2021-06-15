@@ -10,6 +10,7 @@ import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.enchants.PitBlob;
 import dev.kyro.pitsim.enchants.Regularity;
 import dev.kyro.pitsim.enchants.WolfPack;
+import dev.kyro.pitsim.enchants.Telebow;
 import dev.kyro.pitsim.enums.NBTTag;
 import dev.kyro.pitsim.enums.NonTrait;
 import dev.kyro.pitsim.events.AttackEvent;
@@ -218,6 +219,9 @@ public class DamageManager implements Listener {
 		PitPlayer pitDefender = PitPlayer.getPitPlayer(dead);
 
 		Location spawnLoc = new Location(Bukkit.getWorld("pit"), -108.5, 86, 194.5, 45, 0);
+
+		Telebow.teleShots.removeIf(teleShot -> teleShot.getShooter().equals(dead));
+
 
 		dead.setHealth(dead.getMaxHealth());
 		dead.playEffect(EntityEffect.HURT);
