@@ -22,6 +22,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.ProjectileHitEvent;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.potion.PotionEffectType;
+import org.bukkit.scheduler.BukkitRunnable;
 
 import java.lang.reflect.Field;
 import java.util.List;
@@ -49,16 +50,27 @@ public class FasterThanTheirShadows extends PitEnchant implements Listener {
 				4 * 20, getSpeedAmplifier(enchantLvl) - 1, true, false);
 	}
 
-
-
 	@EventHandler (priority = EventPriority.HIGHEST)
 	private void onArrowHitBlock(ArrowHitBlockEvent event) {
 		Arrow arrow = event.getArrow();
 		Block block = event.getBlock(); // the block that was hit
 		int enchantLvl = EnchantManager.getEnchantLevel((Player) arrow.getShooter(), this);
+		if(block == null) return;
 
+		HitCounter.resetCombo((Player) arrow.getShooter(), this);
+	}
 
-		if(block != null) HitCounter.resetCombo((Player) arrow.getShooter(), this);
+	@EventHandler (priority = EventPriority.HIGHEST)
+	private void onArrowHitBlockDelete(ArrowHitBlockEvent event) {
+		if(event.getBlock() == null) return;
+		new BukkitRunnable() {
+			@Override
+			public void run() {
+				try {
+					event.getArrow().remove();
+				} catch(Exception ignored) { }
+			}
+		}.runTaskLater(PitSim.INSTANCE, 100L);
 	}
 
 	@EventHandler

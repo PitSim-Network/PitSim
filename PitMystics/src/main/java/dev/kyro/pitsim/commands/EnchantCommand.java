@@ -6,6 +6,7 @@ import dev.kyro.pitsim.controllers.EnchantManager;
 import dev.kyro.pitsim.controllers.objects.PitEnchant;
 import dev.kyro.pitsim.enums.NBTTag;
 import dev.kyro.pitsim.exceptions.*;
+import dev.kyro.pitsim.misc.Misc;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -20,7 +21,7 @@ public class EnchantCommand implements CommandExecutor {
 		if(!(sender instanceof Player)) return false;
 		Player player = (Player) sender;
 
-		if(player.getItemInHand() == null) {
+		if(Misc.isAirOrNull(player.getItemInHand())) {
 
 			AOutput.error(player, "Not holding a mystic item");
 			return false;
@@ -67,9 +68,9 @@ public class EnchantCommand implements CommandExecutor {
 			} else if(exception instanceof InvalidEnchantLevelException) {
 
 				if(!((InvalidEnchantLevelException) exception).levelTooHigh) {
-					AOutput.error(player, "Invalid enchant level");
+					AOutput.error(player, "Level too low");
 				} else {
-					AOutput.error(player, "There is already a higher level enchant on this item");
+					AOutput.error(player, "Level too high");
 				}
 			} else if(exception instanceof MaxTokensExceededException) {
 

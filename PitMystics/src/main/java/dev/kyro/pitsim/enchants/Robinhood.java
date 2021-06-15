@@ -21,7 +21,7 @@ import java.util.Map;
 public class Robinhood extends PitEnchant {
 
 	public Robinhood() {
-		super("Robinhood", true, ApplyType.BOWS,
+		super("Robinhood", true, ApplyType.NONE,
 				"robinhood", "robin");
 	}
 
@@ -58,15 +58,15 @@ public class Robinhood extends PitEnchant {
 
 				if(targetInfo == null) return;
 
-				Vector optimalVectorYaw = targetInfo.getKey().getLocation().toVector().subtract(arrow.getLocation().toVector()).setY(0).normalize();
-				Vector arrowDirVectorYaw = arrow.getVelocity().setY(0).normalize();
+//				Vector optimalVectorYaw = targetInfo.getKey().getLocation().toVector().subtract(arrow.getLocation().toVector()).setY(0).normalize();
+//				Vector arrowDirVectorYaw = arrow.getVelocity().setY(0).normalize();
 
-//				Vector arrowVector = arrow.getLocation().toVector();
-//				Vector targetVector = targetInfo.getKey().getLocation().toVector();
-//				targetVector.setY(targetVector.getY() + 2);
-//
-//				Vector direction = targetVector.subtract(arrowVector).normalize();
-//				arrow.setVelocity(direction);
+				Vector arrowVector = arrow.getLocation().toVector();
+				Vector targetVector = targetInfo.getKey().getLocation().toVector();
+				targetVector.setY(targetVector.getY() + 2);
+
+				Vector direction = targetVector.subtract(arrowVector).normalize();
+				arrow.setVelocity(direction);
 			}
 		}.runTaskTimer(PitSim.INSTANCE, 0L, 1L);
 	}

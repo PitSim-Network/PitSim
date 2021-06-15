@@ -15,7 +15,7 @@ public class GoldenHeart extends PitEnchant {
 
 	public GoldenHeart() {
 		super("Golden Heart", false, ApplyType.PANTS,
-				"goldenheart", "golden-heart", "gheart");
+				"goldenheart", "golden-heart", "gheart", "golden-hearts", "goldenhearts");
 		isUncommonEnchant = true;
 	}
 

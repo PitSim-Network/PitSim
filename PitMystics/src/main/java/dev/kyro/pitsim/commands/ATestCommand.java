@@ -88,13 +88,22 @@ public class ATestCommand implements CommandExecutor {
 		hoppers.add("Whensus");
 		hoppers.add("bigNaeNae");
 		hoppers.add("xJqker");
-		hoppers.add("staffmuted");
 		hoppers.add("Alps");
 		hoppers.add("SilontsSimp");
 		hoppers.add("lkjv");
 		hoppers.add("Spenduh");
 		hoppers.add("Technoperson");
 		hoppers.add("Xavier9346");
+		hoppers.add("eveoiii");
+		hoppers.add("ivapev4forlife");
+		hoppers.add("CheesierCheese");
+		hoppers.add("FreeJUSTHUNTINGU");
+		hoppers.add("Zsombor_1");
+		hoppers.add("KindEinesTeufels");
+		hoppers.add("iwantamommy");
+		hoppers.add("_MarcusW_");
+		hoppers.add("tam259");
+		hoppers.add("47n");
 	}
 
 	public Team t;

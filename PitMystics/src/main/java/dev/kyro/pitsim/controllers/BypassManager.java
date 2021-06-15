@@ -4,10 +4,7 @@ import me.liwk.karhu.api.data.SubCategory;
 import me.liwk.karhu.api.event.KarhuEvent;
 import me.liwk.karhu.api.event.KarhuListener;
 import me.liwk.karhu.api.event.impl.KarhuAlertEvent;
-import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.Listener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,6 +15,8 @@ public class BypassManager implements KarhuListener {
     public static List<Player> bypassPCTS = new ArrayList<>();
     public static List<Player> bypassPullbow = new ArrayList<>();
     public static List<Player> bypassExplosive = new ArrayList<>();
+    public static List<Player> bypassPunch = new ArrayList<>();
+    public static List<Player> bypassAll = new ArrayList<>();
 
     @Override
     public void onEvent(KarhuEvent karhuEvent) {
@@ -44,6 +43,13 @@ public class BypassManager implements KarhuListener {
 
             for(Player player : bypassExplosive) {
                 if(event.getPlayer() == player && subcategory.equals(SubCategory.SPEED)) {
+                    karhuEvent.cancel();
+                }
+
+            }
+
+            for(Player player : bypassAll) {
+                if(event.getPlayer() == player) {
                     karhuEvent.cancel();
                 }
 

@@ -84,6 +84,8 @@ public class EnchantManager {
 				throw new IsJewelException();
 			} else if(applyLvl > 3) {
 				throw new InvalidEnchantLevelException(true);
+			} else if(applyLvl < 0) {
+				throw new InvalidEnchantLevelException(false);
 			} else if(currentLvl == applyLvl) {
 //			throw new InvalidEnchantLevelException(false);
 			} else if(applyLvl + tokenNum > 8) {
@@ -186,7 +188,7 @@ public class EnchantManager {
 
 				PitEnchant enchant = EnchantManager.getEnchant(key);
 				Integer enchantLvl = itemEnchants.getInteger(key);
-				assert enchant != null;
+				if(enchant == null) continue;
 				loreBuilder.addLore("&f");
 				loreBuilder.addLore(enchant.getDisplayName() + enchantLevelToRoman(enchantLvl));
 				loreBuilder.addLore(enchant.getDescription(enchantLvl));
@@ -366,8 +368,10 @@ public class EnchantManager {
 	
 	public static int getEnchantLevel(Player player, PitEnchant pitEnchant) {
 
-		List<ItemStack> inUse = player.getInventory().getArmorContents() != null ?
-				new ArrayList<>(Arrays.asList(player.getInventory().getArmorContents())) : new ArrayList<>();
+//		List<ItemStack> inUse = player.getInventory().getArmorContents() != null ?
+//				new ArrayList<>(Arrays.asList(player.getInventory().getArmorContents())) : new ArrayList<>();
+		List<ItemStack> inUse = new ArrayList<>();
+		for(ItemStack armor : player.getInventory().getArmorContents()) if(armor != null) inUse.add(armor);
 		inUse.add(player.getItemInHand());
 
 		int finalLevel = 0;

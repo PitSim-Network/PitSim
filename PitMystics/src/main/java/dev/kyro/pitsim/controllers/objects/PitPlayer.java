@@ -6,8 +6,8 @@ import dev.kyro.pitsim.controllers.NonManager;
 import dev.kyro.pitsim.events.HealEvent;
 import dev.kyro.pitsim.killstreaks.Uberstreak;
 import dev.kyro.pitsim.perks.NoPerk;
+import dev.kyro.pitsim.perks.Thick;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -88,8 +88,8 @@ public class PitPlayer {
 		}
 		megastreak.kill();
 
-		if(kills % 10 == 0) Bukkit.broadcastMessage(ChatColor.translateAlternateColorCodes(
-				'&', "&c&lSTREAK!&7 of &c" + kills + " &7by " + player.getDisplayName()));
+//		if(kills % 10 == 0) Bukkit.broadcastMessage(ChatColor.translateAlternateColorCodes(
+//				'&', "&c&lSTREAK!&7 of &c" + kills + " &7by " + player.getDisplayName()));
 	}
 
 	public int getKills() {
@@ -129,5 +129,19 @@ public class PitPlayer {
 		HealEvent healEvent = new HealEvent(player, amount);
 		Bukkit.getServer().getPluginManager().callEvent(healEvent);
 		player.setHealth(Math.min(player.getHealth() + healEvent.getFinalHeal(), player.getMaxHealth()));
+	}
+
+	public boolean hasPerk(PitPerk pitPerk) {
+
+		for(PitPerk perk : pitPerks) if(perk == pitPerk) return true;
+		return false;
+	}
+
+	public void updateMaxHealth() {
+
+		int maxHealth = 24;
+		if(hasPerk(Thick.INSTANCE)) maxHealth += 4;
+
+		player.setMaxHealth(maxHealth);
 	}
 }

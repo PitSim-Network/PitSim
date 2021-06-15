@@ -1,7 +1,6 @@
 package dev.kyro.pitsim.enchants;
 
 import dev.kyro.arcticapi.builders.ALoreBuilder;
-import dev.kyro.pitsim.controllers.HitCounter;
 import dev.kyro.pitsim.controllers.objects.PitEnchant;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.enums.ApplyType;
@@ -30,20 +29,20 @@ public class Duelist extends PitEnchant {
 		PitPlayer pitPlayer = PitPlayer.getPitPlayer(attackEvent.defender);
 
 
-		if(defenderEnchantLvl != 0 && attackEvent.defender.isBlocking()) {
-			HitCounter.incrementCounter(pitPlayer.player, this);
-			if(!HitCounter.hasReachedThreshold(pitPlayer.player, this, 2)) return;
-
-			HitCounter.setCharge(attackEvent.defender, this, 1);
-			attackEvent.defender.setHealth(Math.min(attackEvent.defender.getHealth()
-					+ getHealing(defenderEnchantLvl), attackEvent.defender.getMaxHealth()));
-		}
-
-
-		if(attackerEnchantLvl != 0 && HitCounter.getCharge(attackEvent.attacker, this) == 1) {
-			attackEvent.increasePercent += getDamage(attackerEnchantLvl) / 100D;
-			HitCounter.setCharge(attackEvent.attacker, this, 0);
-		}
+//		if(defenderEnchantLvl != 0 && attackEvent.defender.isBlocking()) {
+//			HitCounter.incrementCounter(pitPlayer.player, this);
+//			if(!HitCounter.hasReachedThreshold(pitPlayer.player, this, 2)) return;
+//
+//			HitCounter.setCharge(attackEvent.defender, this, 1);
+//		}
+//
+//
+//		if(attackerEnchantLvl != 0 && HitCounter.getCharge(attackEvent.attacker, this) == 1) {
+//			attackEvent.increasePercent += getDamage(attackerEnchantLvl) / 100D;
+//			HitCounter.setCharge(attackEvent.attacker, this, 0);
+//			attackEvent.defender.setHealth(Math.min(attackEvent.defender.getHealth()
+//					+ getHealing(defenderEnchantLvl), attackEvent.defender.getMaxHealth()));
+//		}
 	}
 
 	@Override

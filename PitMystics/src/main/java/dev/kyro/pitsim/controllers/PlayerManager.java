@@ -7,10 +7,7 @@ import dev.kyro.pitsim.controllers.objects.Non;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.events.KillEvent;
 import dev.kyro.pitsim.misc.Misc;
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.Material;
-import org.bukkit.Sound;
+import org.bukkit.*;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -94,6 +91,26 @@ public class PlayerManager implements Listener {
 	public void onPlayerJoin(PlayerJoinEvent event) {
 
 		Player player = event.getPlayer();
+		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
+
+		if(!player.isOp()) {
+			BypassManager.bypassAll.add(player);
+			Misc.sendTitle(player, ChatColor.translateAlternateColorCodes('&', "&c&lSYNCING WORLD"), 200);
+			new BukkitRunnable() {
+				int count = 0;
+				@Override
+				public void run() {
+					if((count != 0 && !player.isOnline()) || count++ >= 80) {
+						cancel();
+						BypassManager.bypassAll.remove(player);
+						return;
+					}
+
+					Location spawnLoc = new Location(Bukkit.getWorld("pit"), -108.5, 86, 194.5, 45, 0);
+					player.teleport(spawnLoc);
+				}
+			}.runTaskTimer(PitSim.INSTANCE, 0L, 1L);
+		}
 
 		new BukkitRunnable() {
 			@Override
@@ -118,7 +135,7 @@ public class PlayerManager implements Listener {
 							(itemsRemoved == 1 ? " was" : "s were") + " removed from your inventory");
 				}
 
-				player.setMaxHealth(28);
+				pitPlayer.updateMaxHealth();
 				player.setHealth(player.getMaxHealth());
 			}
 		}.runTaskLater(PitSim.INSTANCE, 1L);

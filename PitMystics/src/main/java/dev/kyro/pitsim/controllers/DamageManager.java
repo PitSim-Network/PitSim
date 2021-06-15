@@ -222,7 +222,6 @@ public class DamageManager implements Listener {
 
 		Telebow.teleShots.removeIf(teleShot -> teleShot.getShooter().equals(dead));
 
-
 		dead.setHealth(dead.getMaxHealth());
 		dead.playEffect(EntityEffect.HURT);
 		dead.playSound(dead.getLocation(), Sound.FALL_BIG, 1000, 1F);
@@ -261,7 +260,7 @@ public class DamageManager implements Listener {
 		DecimalFormat df = new DecimalFormat("##0.00");
 		String kill = "&a&lKILL!&7 on %luckperms_prefix%" + (defendingNon == null ? "%player_name%" : defendingNon.displayName)
 				+ " &b+" + killEvent.getFinalXp() + "XP" +" &6+" + df.format(killEvent.getFinalGold()) + "g";
-		String death = "&c&lDEATH! &7by %luckperms_prefix%" + (killingNon == null ? "%player_name%" : defendingNon.displayName);
+		String death = "&c&lDEATH! &7by %luckperms_prefix%" + (killingNon == null ? "%player_name%" : killingNon.displayName);
 		String killActionBar = "&7%luckperms_prefix%" + (defendingNon == null ? "%player_name%" : defendingNon.displayName) + " &a&lKILL!";
 		AOutput.send(killEvent.killer, PlaceholderAPI.setPlaceholders(killEvent.dead, kill));
 		AOutput.send(killEvent.dead, PlaceholderAPI.setPlaceholders(killEvent.killer, death));

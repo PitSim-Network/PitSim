@@ -57,11 +57,8 @@ public class Telebow extends PitEnchant {
 		}
 	}
 
-
-
-	@EventHandler
+	@EventHandler(ignoreCancelled = true)
 	public void onBowShoot(EntityShootBowEvent event) {
-
 
 		if(!(event.getEntity() instanceof Player) || !(event.getProjectile() instanceof Arrow)) return;
 
@@ -69,9 +66,7 @@ public class Telebow extends PitEnchant {
 		Arrow arrow = (Arrow) event.getProjectile();
 
 		int enchantLvl = EnchantManager.getEnchantLevel(player, this);
-
 		if(enchantLvl == 0 || !player.isSneaking()) return;
-
 
 		new BukkitRunnable() {
 			@Override
@@ -83,7 +78,6 @@ public class Telebow extends PitEnchant {
 
 			}
 		}.runTaskTimer(PitSim.INSTANCE, 0L, 3L);
-
 
 		Cooldown cooldown = getCooldown(player, getCooldown(enchantLvl) * 20);
 		if(cooldown.isOnCooldown()) {
@@ -98,10 +92,6 @@ public class Telebow extends PitEnchant {
 		if(player.isSneaking()) {
 			teleShots.add(arrow);
 		}
-
-
-
-
 	}
 
 	@EventHandler

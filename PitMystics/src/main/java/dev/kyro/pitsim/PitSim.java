@@ -15,11 +15,7 @@ import dev.kyro.pitsim.controllers.objects.Non;
 import dev.kyro.pitsim.controllers.objects.PitEnchant;
 import dev.kyro.pitsim.enchants.*;
 import dev.kyro.pitsim.perks.*;
-import dev.kyro.pitsim.placeholders.CombatTimerPlaceholder;
-import dev.kyro.pitsim.placeholders.GladiatorPlaceholder;
-import dev.kyro.pitsim.placeholders.PrefixPlaceholder;
-import dev.kyro.pitsim.placeholders.StrengthChainingPlaceholder;
-import dev.kyro.pitsim.placeholders.SuffixPlaceholder;
+import dev.kyro.pitsim.placeholders.*;
 import me.liwk.karhu.api.KarhuAPI;
 import net.milkbowl.vault.economy.Economy;
 import org.bukkit.Bukkit;
@@ -57,6 +53,7 @@ public class PitSim extends JavaPlugin {
 		AHook.registerPlaceholder(new StrengthChainingPlaceholder());
 		AHook.registerPlaceholder(new GladiatorPlaceholder());
 		AHook.registerPlaceholder(new CombatTimerPlaceholder());
+		AHook.registerPlaceholder(new StreakPlaceholder());
 
 		loadConfig();
 
@@ -85,7 +82,9 @@ public class PitSim extends JavaPlugin {
 
 	private void registerEnchants() {
 		EnchantManager.registerEnchant(new aCPLEnchant());
+		EnchantManager.registerEnchant(new JewelHunter());
 
+		EnchantManager.registerEnchant(new ThePunch());
 		EnchantManager.registerEnchant(new Billionaire());
 		EnchantManager.registerEnchant(new Gamble());
 		EnchantManager.registerEnchant(new Executioner());
@@ -133,7 +132,7 @@ public class PitSim extends JavaPlugin {
 		EnchantManager.registerEnchant(new Protection());
 		EnchantManager.registerEnchant(new Prick());
 		EnchantManager.registerEnchant(new RingArmor());
-		EnchantManager.registerEnchant(new PitBlob());
+//		EnchantManager.registerEnchant(new PitBlob());
 //		EnchantManager.registerEnchant(new WolfPack());
 		EnchantManager.registerEnchant(new Peroxide());
 		EnchantManager.registerEnchant(new NewDeal());
@@ -181,6 +180,7 @@ public class PitSim extends JavaPlugin {
 		getCommand("fresh").setExecutor(new FreshCommand());
 		getCommand("show").setExecutor(new ShowCommand());
 		getCommand("jewel").setExecutor(new JewelCommand());
+		getCommand("enchants").setExecutor(new EnchantListCommand());
 	}
 
 	private void registerListeners() {
