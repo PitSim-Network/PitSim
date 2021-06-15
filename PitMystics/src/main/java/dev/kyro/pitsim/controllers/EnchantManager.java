@@ -268,6 +268,8 @@ public class EnchantManager {
 			if(pitEnchant.isUncommonEnchant) continue;
 			weightedEnchantList.add(pitEnchant);
 			weightedEnchantList.add(pitEnchant);
+			weightedEnchantList.add(pitEnchant);
+			weightedEnchantList.add(pitEnchant);
 		}
 		Collections.shuffle(weightedEnchantList);
 		PitEnchant jewelEnchant = weightedEnchantList.get(0);
@@ -364,7 +366,8 @@ public class EnchantManager {
 	
 	public static int getEnchantLevel(Player player, PitEnchant pitEnchant) {
 
-		List<ItemStack> inUse = player.getInventory().getArmorContents() != null ? new ArrayList<>(Arrays.asList(player.getInventory().getArmorContents())) : new ArrayList<>();
+		List<ItemStack> inUse = player.getInventory().getArmorContents() != null ?
+				new ArrayList<>(Arrays.asList(player.getInventory().getArmorContents())) : new ArrayList<>();
 		inUse.add(player.getItemInHand());
 
 		int finalLevel = 0;
@@ -413,7 +416,7 @@ public class EnchantManager {
 
 		Map<PitEnchant, Integer> itemEnchantMap = new HashMap<>();
 		for(ItemStack itemStack : inUseArr) {
-			if(itemStack == null || itemStack.getType() == Material.AIR) continue;
+			if(Misc.isAirOrNull(itemStack)) continue;
 			itemEnchantMap.putAll(getEnchantsOnItem(itemStack, itemEnchantMap));
 		}
 
@@ -440,13 +443,12 @@ public class EnchantManager {
 			Integer enchantLvl = itemEnchants.getInteger(key);
 			if(pitEnchant == null || enchantLvl == 0) continue;
 
-			if(currentEnchantMap.containsKey(pitEnchant) && currentEnchantMap.get(pitEnchant) >= enchantLvl) continue;
+//			if(currentEnchantMap.containsKey(pitEnchant) && currentEnchantMap.get(pitEnchant) >= enchantLvl) continue;
+//			itemEnchantMap.put(pitEnchant, enchantLvl);
 
-			itemEnchantMap.put(pitEnchant, enchantLvl);
-
-//			if(currentEnchantMap.containsKey(pitEnchant) && currentEnchantMap.get(pitEnchant) >= enchantLvl && !pitEnchant.levelStacks) continue;
-//			if(currentEnchantMap.containsKey(pitEnchant) && !pitEnchant.levelStacks) itemEnchantMap.put(pitEnchant, enchantLvl);
-//			else itemEnchantMap.put(pitEnchant, (itemEnchantMap.get(pitEnchant) != null ? itemEnchantMap.get(pitEnchant) : 0) + enchantLvl);
+			if(currentEnchantMap.containsKey(pitEnchant) && currentEnchantMap.get(pitEnchant) >= enchantLvl && !pitEnchant.levelStacks) continue;
+			if(currentEnchantMap.containsKey(pitEnchant) && !pitEnchant.levelStacks) itemEnchantMap.put(pitEnchant, enchantLvl);
+			else itemEnchantMap.put(pitEnchant, (currentEnchantMap.get(pitEnchant) != null ? currentEnchantMap.get(pitEnchant) : 0) + enchantLvl);
 		}
 
 		return itemEnchantMap;
