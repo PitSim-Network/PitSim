@@ -98,7 +98,7 @@ public class PitBlob extends PitEnchant {
 
 			boolean isMaxSize = slime.getSize() >= getMaxSlimeSize(enchantLvl);
 			if(Math.random() < 0.25 && !isMaxSize) slime.setSize(slime.getSize() + 1);
-			if(isMaxSize) slime.setHealth(slime.getMaxHealth());
+			if(!isMaxSize) slime.setHealth(slime.getMaxHealth());
 			return;
 		}
 
