@@ -20,11 +20,12 @@ public class PitPlayer {
 	public static List<PitPlayer> pitPlayers = new ArrayList<>();
 
 	public Player player;
-	public String levelBracket;
+	public String prefix;
 
 	public PitPerk[] pitPerks = new PitPerk[4];
 
 	private int kills = 0;
+	public int bounty = 0;
 	public List<Killstreak> killstreaks = new ArrayList<>();
 	public Megastreak megastreak;
 
@@ -40,7 +41,7 @@ public class PitPlayer {
 
 		Non non = NonManager.getNon(player);
 		if(non == null) {
-			levelBracket = "&d[&b&l120&d]&r";
+			prefix = "&d[&b&l120&d]&r ";
 		}
 
 		for(int i = 0; i < pitPerks.length; i++) {

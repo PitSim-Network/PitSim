@@ -16,8 +16,9 @@ import dev.kyro.pitsim.controllers.objects.PitEnchant;
 import dev.kyro.pitsim.enchants.*;
 import dev.kyro.pitsim.perks.*;
 import dev.kyro.pitsim.placeholders.GladiatorPlaceholder;
-import dev.kyro.pitsim.placeholders.LevelBracketPlaceholder;
+import dev.kyro.pitsim.placeholders.PrefixPlaceholder;
 import dev.kyro.pitsim.placeholders.StrengthChainingPlaceholder;
+import dev.kyro.pitsim.placeholders.SuffixPlaceholder;
 import me.liwk.karhu.api.KarhuAPI;
 import net.milkbowl.vault.economy.Economy;
 import org.bukkit.Bukkit;
@@ -50,7 +51,8 @@ public class PitSim extends JavaPlugin {
 		}
 
 		ArcticAPI.setupPlaceholderAPI("pitsim");
-		AHook.registerPlaceholder(new LevelBracketPlaceholder());
+		AHook.registerPlaceholder(new PrefixPlaceholder());
+		AHook.registerPlaceholder(new SuffixPlaceholder());
 		AHook.registerPlaceholder(new StrengthChainingPlaceholder());
 		AHook.registerPlaceholder(new GladiatorPlaceholder());
 
