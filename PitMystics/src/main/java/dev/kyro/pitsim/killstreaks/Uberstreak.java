@@ -10,10 +10,8 @@ import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.enums.MysticType;
 import dev.kyro.pitsim.enums.NBTTag;
 import dev.kyro.pitsim.enums.PantColor;
-import dev.kyro.pitsim.events.HealEvent;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
-import org.bukkit.event.EventHandler;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.Arrays;
@@ -45,12 +43,21 @@ public class Uberstreak extends Megastreak {
 		return 100;
 	}
 
-	@EventHandler
-	public void onHeal(HealEvent healEvent) {
-		if(!isOnMega()) return;
-
-		healEvent.multipliers.add(0D);
-	}
+//	@EventHandler
+//	public void onHeal(HealEvent healEvent) {
+//		if(!isOnMega()) return;
+//
+//		healEvent.multipliers.add(0D);
+//	}
+//
+//	@EventHandler
+//	public void onPlayerRegainHealth(EntityRegainHealthEvent event) {
+//		if(!isOnMega()) return;
+//		if(event.getRegainReason() != EntityRegainHealthEvent.RegainReason.SATIATED &&
+//				event.getRegainReason() != EntityRegainHealthEvent.RegainReason.REGEN &&
+//				event.getRegainReason() != EntityRegainHealthEvent.RegainReason.MAGIC_REGEN) return;
+//		event.setCancelled(true);
+//	}
 
 	@Override
 	public void proc() {

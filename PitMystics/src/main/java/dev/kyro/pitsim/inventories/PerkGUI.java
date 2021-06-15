@@ -1,12 +1,14 @@
 package dev.kyro.pitsim.inventories;
 
 import dev.kyro.arcticapi.builders.AInventoryBuilder;
+import dev.kyro.arcticapi.data.APlayerData;
 import dev.kyro.arcticapi.gui.AInventoryGUI;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.controllers.objects.PitPerk;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
@@ -58,9 +60,6 @@ public class PerkGUI extends AInventoryGUI {
 			}
 			lore.add("");
 			lore.add(ChatColor.translateAlternateColorCodes('&', "&eClick to choose perk!"));
-
-
-
 
 			meta.setLore(lore);
 			perkItem.setItemMeta(meta);
@@ -169,6 +168,10 @@ public class PerkGUI extends AInventoryGUI {
 	}
 
 	public void setPerk(PitPerk pitPerk, int perkNum) {
+
+		FileConfiguration playerData = APlayerData.getPlayerData(player);
+		playerData.set("perk-" + (perkNum - 1), pitPerk.refName);
+		APlayerData.savePlayerData(player);
 
 		getActivePerks()[perkNum - 1] = pitPerk;
 	}

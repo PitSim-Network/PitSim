@@ -209,6 +209,8 @@ public class DamageManager implements Listener {
 	}
 
 	public static void kill(AttackEvent attackEvent, Player killer, Player dead, boolean exeDeath) {
+		KillEvent killEvent = new KillEvent(attackEvent, killer, dead, exeDeath);
+		Bukkit.getServer().getPluginManager().callEvent(killEvent);
 
 		EnchantManager.incrementKills(killer, dead);
 
@@ -249,9 +251,6 @@ public class DamageManager implements Listener {
 		} else {
 			pitAttacker.heal(2);
 		}
-
-		KillEvent killEvent = new KillEvent(attackEvent, killer, dead, exeDeath);
-		Bukkit.getServer().getPluginManager().callEvent(killEvent);
 
 		PitSim.VAULT.depositPlayer(killEvent.killer, killEvent.getFinalGold());
 

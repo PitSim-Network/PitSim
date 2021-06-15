@@ -5,21 +5,26 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 import org.bukkit.inventory.ItemStack;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public abstract class PitPerk implements Listener {
 
-//    public static PitPerk INSTANCE;
+    public static List<PitPerk> pitPerks = new ArrayList<>();
 
     public String name;
+    public String refName;
     public ItemStack displayItem;
     public int guiSlot;
 
-    public PitPerk(String name, ItemStack displayItem, int guiSlot) {
+    public PitPerk(String name, String refName, ItemStack displayItem, int guiSlot) {
 //        INSTANCE = this;
         this.name = name;
+        this.refName = refName;
         this.displayItem = displayItem;
         this.guiSlot = guiSlot;
+
+        pitPerks.add(this);
     }
 
     public abstract List<String> getDescription();
@@ -39,5 +44,13 @@ public abstract class PitPerk implements Listener {
                 .setLore(getDescription())
                 .setName(name)
                 .getItemStack();
+    }
+
+    public static PitPerk getPitPerk(String refName) {
+
+        for(PitPerk pitPerk : pitPerks) {
+            if(pitPerk.refName.equalsIgnoreCase(refName)) return pitPerk;
+        }
+        return null;
     }
 }

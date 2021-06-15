@@ -5,11 +5,10 @@ import dev.kyro.arcticapi.events.armor.AChangeEquipmentEvent;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.controllers.DamageManager;
 import dev.kyro.pitsim.controllers.EnchantManager;
+import dev.kyro.pitsim.controllers.NonManager;
+import dev.kyro.pitsim.controllers.objects.Non;
 import dev.kyro.pitsim.controllers.objects.PitEnchant;
 import dev.kyro.pitsim.enums.ApplyType;
-import dev.kyro.pitsim.events.AttackEvent;
-import dev.kyro.pitsim.controllers.objects.Non;
-import dev.kyro.pitsim.controllers.NonManager;
 import dev.kyro.pitsim.events.KillEvent;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Entity;
@@ -35,7 +34,7 @@ public class PitBlob extends PitEnchant {
 			@Override
 			public void run() {
 				for(Map.Entry<UUID, Slime> entry : blobMap.entrySet()) {
-					double damage = (entry.getValue().getSize() - 1) * 2;
+					double damage = (entry.getValue().getSize() - 1) * 1.5;
 					for(Entity entity : entry.getValue().getNearbyEntities(0, 0, 0)) {
 
 						if(!(entity instanceof Player)) continue;
@@ -97,8 +96,9 @@ public class PitBlob extends PitEnchant {
 		Slime slime = blobMap.get(killEvent.killer.getUniqueId());
 		if(slime != null) {
 
-			if(Math.random() < 0.25) slime.setSize(Math.min(slime.getSize() + 1, enchantLvl * 2));
-			slime.setHealth(slime.getMaxHealth());
+			boolean isMaxSize = slime.getSize() >= getMaxSlimeSize(enchantLvl);
+			if(Math.random() < 0.25 && !isMaxSize) slime.setSize(slime.getSize() + 1);
+			if(isMaxSize) slime.setHealth(slime.getMaxHealth());
 			return;
 		}
 
@@ -134,11 +134,6 @@ public class PitBlob extends PitEnchant {
 		}
 	}
 
-	@EventHandler
-	public void onAttack(AttackEvent.Apply attackEvent) {
-		if(!canApply(attackEvent)) return;
-	}
-
 	@Override
 	public void onDisable() {
 
@@ -153,5 +148,10 @@ public class PitBlob extends PitEnchant {
 
 		return new ALoreBuilder("&7Kills respawn &aThe Blob&7. This", "&7slimy pet will follow you around",
 				"&7and kill your enemies. &aThe Blob", "&7grows and gains health for every", "&7enemy you kill.").getLore();
+	}
+
+	public static int getMaxSlimeSize(int enchantLvl) {
+
+		return enchantLvl * 2;
 	}
 }

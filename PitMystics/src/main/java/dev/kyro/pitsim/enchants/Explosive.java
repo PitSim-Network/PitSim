@@ -63,7 +63,7 @@ public class Explosive extends PitEnchant {
 					BypassManager.bypassExplosive.add(player);
 
 					Vector force = player.getLocation().toVector().subtract(arrow.getLocation().toVector())
-							.setY(1).normalize().multiply(non == null ? 1.15 : 2);
+							.setY(1).normalize().multiply(non == null ? 1.15 : 5);
 //					force.setY(.85f);
 
 					player.setVelocity(force);

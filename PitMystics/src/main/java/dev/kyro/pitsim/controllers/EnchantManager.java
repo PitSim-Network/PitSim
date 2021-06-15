@@ -107,7 +107,7 @@ public class EnchantManager {
 				hasCommonEnchant = true;
 				break;
 			}
-			if(!hasCommonEnchant) throw new NoCommonEnchantException();
+			if(!hasCommonEnchant && applyEnchant.isUncommonEnchant) throw new NoCommonEnchantException();
 		}
 
 		if(currentLvl == 0) {

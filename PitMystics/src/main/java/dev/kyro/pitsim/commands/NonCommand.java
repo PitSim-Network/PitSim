@@ -16,9 +16,10 @@ public class NonCommand implements CommandExecutor {
 		if(!(sender instanceof Player)) return false;
 		Player player = (Player) sender;
 
+		if(!player.isOp()) return false;
+
 		target = player;
 		new Non(ATestCommand.hoppers.get((int) (Math.random() * ATestCommand.hoppers.size())));
-//		new Non("bluetango766");
 
 		return false;
 	}

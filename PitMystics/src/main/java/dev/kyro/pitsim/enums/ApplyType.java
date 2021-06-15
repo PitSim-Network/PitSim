@@ -6,5 +6,6 @@ public enum ApplyType {
 	SWORDS,
 	PANTS,
 	WEAPONS,
-	ALL;
+	ALL,
+	NONE;
 }

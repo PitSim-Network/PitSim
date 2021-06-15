@@ -3,7 +3,6 @@ package dev.kyro.pitsim.controllers;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.commands.ATestCommand;
 import dev.kyro.pitsim.controllers.objects.Non;
-import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
@@ -21,15 +20,15 @@ public class NonManager implements Listener {
 		new BukkitRunnable() {
 			@Override
 			public void run() {
-				if(true) return;
-				if(nons.size() >= 10 + Bukkit.getOnlinePlayers().size()) return;
+//				if(true) return;
+				if(nons.size() >= 25) return;
 				Non non = new Non(ATestCommand.hoppers.get((int) (Math.random() * ATestCommand.hoppers.size())));
-				new BukkitRunnable() {
-					@Override
-					public void run() {
-						non.remove();
-					}
-				}.runTaskLater(PitSim.INSTANCE, (long) (20 * 60 * (Math.random() * 4 + 1)));
+//				new BukkitRunnable() {
+//					@Override
+//					public void run() {
+//						non.remove();
+//					}
+//				}.runTaskLater(PitSim.INSTANCE, (long) (20 * 60 * (Math.random() * 4 + 1)));
 			}
 		}.runTaskTimer(PitSim.INSTANCE, 0L, 20 * 1);
 

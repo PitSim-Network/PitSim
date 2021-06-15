@@ -15,7 +15,7 @@ public class Thick extends PitPerk {
 	public static Thick INSTANCE;
 
 	public Thick() {
-		super("Thick", new ItemStack(Material.APPLE, 1, (short) 0), 14);
+		super("Thick", "thick", new ItemStack(Material.APPLE, 1, (short) 0), 14);
 		INSTANCE = this;
 	}
 
@@ -26,12 +26,12 @@ public class Thick extends PitPerk {
 		PitPerk replacedPerk = event.getReplacedPerk();
 
 		if(perk == INSTANCE) {
-			player.setMaxHealth(player.getMaxHealth() + 4);
-			player.setHealth(player.getMaxHealth());
+//			player.setMaxHealth(player.getMaxHealth() + 4);
+//			player.setHealth(player.getMaxHealth());
 		}
 
 		if(replacedPerk == INSTANCE) {
-			player.setMaxHealth(player.getMaxHealth() - 4);
+//			player.setMaxHealth(player.getMaxHealth() - 4);
 		}
 	}
 

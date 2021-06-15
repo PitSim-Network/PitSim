@@ -1,5 +1,6 @@
 package dev.kyro.pitsim.controllers.objects;
 
+import dev.kyro.arcticapi.data.APlayerData;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.controllers.NonManager;
 import dev.kyro.pitsim.events.HealEvent;
@@ -7,6 +8,7 @@ import dev.kyro.pitsim.killstreaks.Uberstreak;
 import dev.kyro.pitsim.perks.NoPerk;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
@@ -20,7 +22,7 @@ public class PitPlayer {
 	public Player player;
 	public String levelBracket;
 
-	public PitPerk[] pitPerks = new PitPerk[] { NoPerk.INSTANCE, NoPerk.INSTANCE, NoPerk.INSTANCE, NoPerk.INSTANCE };
+	public PitPerk[] pitPerks = new PitPerk[4];
 
 	private int kills = 0;
 	public List<Killstreak> killstreaks = new ArrayList<>();
@@ -28,8 +30,6 @@ public class PitPlayer {
 
 	public Map<PitEnchant, Integer> enchantHits = new HashMap<>();
 	public Map<PitEnchant, Integer> enchantCharge = new HashMap<>();
-
-
 
 	public Map<UUID, Double> recentDamageMap = new HashMap<>();
 	public List<BukkitTask> assistRemove = new ArrayList<>();
@@ -41,6 +41,15 @@ public class PitPlayer {
 		Non non = NonManager.getNon(player);
 		if(non == null) {
 			levelBracket = "&d[&b&l120&d]&r";
+		}
+
+		for(int i = 0; i < pitPerks.length; i++) {
+
+			FileConfiguration playerData = APlayerData.getPlayerData(player);
+			String perkString = playerData.getString("perk-" + i);
+			PitPerk savedPerk = perkString != null ? PitPerk.getPitPerk(perkString) : NoPerk.INSTANCE;
+
+			pitPerks[i] = savedPerk != null ? savedPerk : NoPerk.INSTANCE;
 		}
 	}
 
@@ -99,6 +108,7 @@ public class PitPlayer {
 	}
 
 	public void addDamage(Player player, double damage) {
+		if(player == null) return;
 
 		recentDamageMap.putIfAbsent(player.getUniqueId(), 0D);
 		recentDamageMap.put(player.getUniqueId(), recentDamageMap.get(player.getUniqueId()) + damage);

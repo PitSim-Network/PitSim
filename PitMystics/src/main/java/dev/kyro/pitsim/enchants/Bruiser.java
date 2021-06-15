@@ -29,7 +29,7 @@ public class Bruiser extends PitEnchant {
 	@Override
 	public List<String> getDescription(int enchantLvl) {
 
-		return new ALoreBuilder("&7Blocking with your swords reduces", "received damage by &c" + Misc.getHearts(getDamageReduction(enchantLvl))).getLore();
+		return new ALoreBuilder("&7Blocking with your swords reduces", "&7received damage by &c" + Misc.getHearts(getDamageReduction(enchantLvl))).getLore();
 	}
 
 	public double getDamageReduction(int enchantLvl) {
