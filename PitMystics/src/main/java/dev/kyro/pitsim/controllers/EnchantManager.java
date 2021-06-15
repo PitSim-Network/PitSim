@@ -364,7 +364,7 @@ public class EnchantManager {
 	
 	public static int getEnchantLevel(Player player, PitEnchant pitEnchant) {
 
-		List<ItemStack> inUse = new ArrayList<>(Arrays.asList(player.getInventory().getArmorContents()));
+		List<ItemStack> inUse = player.getInventory().getArmorContents() != null ? new ArrayList<>(Arrays.asList(player.getInventory().getArmorContents())) : new ArrayList<>();
 		inUse.add(player.getItemInHand());
 
 		int finalLevel = 0;
