@@ -48,6 +48,6 @@ public class Billionaire extends PitEnchant {
 	public int getGoldCost(int enchantLvl) {
 
 //		TODO: remove 1/5 cost
-		return (int) ((Math.floor(Math.pow(enchantLvl, 1.75)) * 50 + 50) / 5);
+		return (int) ((Math.floor(Math.pow(enchantLvl, 1.75)) * 50 + 50));
 	}
 }
