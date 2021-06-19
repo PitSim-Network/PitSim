@@ -91,11 +91,9 @@ public class AttackEvent extends Event {
 			double damage = event.getDamage();
 			damage += increase;
 			damage *= 1 + increasePercent;
-			for(double multiplier : multiplier) {
-				damage *= multiplier;
-			}
+			for(double multiplier : multiplier) damage *= multiplier;
 			damage *= 1 - decreasePercent;
-			damage -= decrease;
+//			damage -= decrease;
 			return Math.max(damage, 0);
 		}
 

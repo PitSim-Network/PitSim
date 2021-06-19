@@ -76,6 +76,6 @@ public class Volley extends PitEnchant {
 
 	public int getArrows(int enchantLvl) {
 
-		return enchantLvl + 2;
+		return enchantLvl + 1;
 	}
 }

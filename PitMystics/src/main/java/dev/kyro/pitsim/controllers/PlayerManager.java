@@ -116,7 +116,7 @@ public class PlayerManager implements Listener {
 			@Override
 			public void run() {
 
-				if(!player.isOp()) {
+				if(!player.isOp() && !player.getName().equals("Fishduper")) {
 
 					int itemsRemoved = 0;
 					for(int i = 0; i < 36; i++) {

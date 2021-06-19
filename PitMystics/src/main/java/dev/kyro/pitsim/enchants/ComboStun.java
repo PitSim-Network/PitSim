@@ -58,11 +58,11 @@ public class ComboStun extends PitEnchant {
 
 		switch(enchantLvl) {
 			case 1:
-				return 0.5;
+				return 0.7;
 			case 2:
-				return 0.8;
+				return 1.0;
 			case 3:
-				return 1.5;
+				return 1.7;
 
 		}
 		return 0;
