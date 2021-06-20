@@ -8,6 +8,7 @@ import dev.kyro.pitsim.killstreaks.Uberstreak;
 import dev.kyro.pitsim.perks.NoPerk;
 import dev.kyro.pitsim.perks.Thick;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -88,8 +89,8 @@ public class PitPlayer {
 		}
 		megastreak.kill();
 
-//		if(kills % 10 == 0) Bukkit.broadcastMessage(ChatColor.translateAlternateColorCodes(
-//				'&', "&c&lSTREAK!&7 of &c" + kills + " &7by " + player.getDisplayName()));
+		if(kills % 10 == 0) Bukkit.broadcastMessage(ChatColor.translateAlternateColorCodes(
+				'&', "&c&lSTREAK!&7 of &c" + kills + " &7by " + player.getDisplayName()));
 	}
 
 	public int getKills() {
