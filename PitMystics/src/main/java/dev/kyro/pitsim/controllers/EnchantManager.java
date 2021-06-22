@@ -418,13 +418,17 @@ public class EnchantManager {
 
 	public static Map<PitEnchant, Integer> getEnchantsOnPlayer(ItemStack[] inUseArr) {
 
-		Map<PitEnchant, Integer> itemEnchantMap = new HashMap<>();
-		for(ItemStack itemStack : inUseArr) {
-			if(Misc.isAirOrNull(itemStack)) continue;
-			itemEnchantMap.putAll(getEnchantsOnItem(itemStack, itemEnchantMap));
+		Map<PitEnchant, Integer> playerEnchantMap = new HashMap<>();
+		for(int i = 0; i < inUseArr.length; i++) {
+			if(Misc.isAirOrNull(inUseArr[i])) continue;
+			Map<PitEnchant, Integer> itemEnchantMap = getEnchantsOnItem(inUseArr[i], playerEnchantMap);
+			if(i == 4) {
+				for(Map.Entry<PitEnchant, Integer> entry : itemEnchantMap.entrySet())
+					if(entry.getKey().applyType != ApplyType.PANTS) playerEnchantMap.put(entry.getKey(), entry.getValue());
+			} else playerEnchantMap.putAll(itemEnchantMap);
 		}
 
-		return itemEnchantMap;
+		return playerEnchantMap;
 	}
 
 	public static Map<PitEnchant, Integer> getEnchantsOnItem(ItemStack itemStack) {

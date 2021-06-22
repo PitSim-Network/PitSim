@@ -16,6 +16,7 @@ import dev.kyro.pitsim.controllers.objects.PitEnchant;
 import dev.kyro.pitsim.enchants.*;
 import dev.kyro.pitsim.perks.*;
 import dev.kyro.pitsim.placeholders.*;
+import me.liwk.karhu.api.KarhuAPI;
 import net.milkbowl.vault.economy.Economy;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.RegisteredServiceProvider;
@@ -186,7 +187,7 @@ public class PitSim extends JavaPlugin {
 
 	private void registerListeners() {
 
-//		KarhuAPI.getEventRegistry().addListener(new BypassManager());
+		KarhuAPI.getEventRegistry().addListener(new BypassManager());
 		getServer().getPluginManager().registerEvents(new DamageManager(), this);
 		getServer().getPluginManager().registerEvents(new NonManager(), this);
 		getServer().getPluginManager().registerEvents(new PlayerManager(), this);
