@@ -3,6 +3,7 @@ package dev.kyro.pitsim.controllers.objects;
 import dev.kyro.arcticapi.data.APlayerData;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.controllers.NonManager;
+import dev.kyro.pitsim.enchants.Hearts;
 import dev.kyro.pitsim.events.HealEvent;
 import dev.kyro.pitsim.killstreaks.Uberstreak;
 import dev.kyro.pitsim.perks.NoPerk;
@@ -89,7 +90,7 @@ public class PitPlayer {
 		}
 		megastreak.kill();
 
-		if(kills % 10 == 0) Bukkit.broadcastMessage(ChatColor.translateAlternateColorCodes(
+		if(kills % 100 == 0) Bukkit.broadcastMessage(ChatColor.translateAlternateColorCodes(
 				'&', "&c&lSTREAK!&7 of &c" + kills + " &7by " + player.getDisplayName()));
 	}
 
@@ -142,7 +143,9 @@ public class PitPlayer {
 
 		int maxHealth = 24;
 		if(hasPerk(Thick.INSTANCE)) maxHealth += 4;
+		if(Hearts.INSTANCE != null) maxHealth += Hearts.INSTANCE.getExtraHealth(this);
 
+		if(player.getMaxHealth() == maxHealth) return;
 		player.setMaxHealth(maxHealth);
 	}
 }

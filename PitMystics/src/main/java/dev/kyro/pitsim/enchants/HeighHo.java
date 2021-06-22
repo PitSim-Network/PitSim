@@ -5,6 +5,7 @@ import dev.kyro.pitsim.controllers.EnchantManager;
 import dev.kyro.pitsim.controllers.objects.PitEnchant;
 import dev.kyro.pitsim.enums.ApplyType;
 import dev.kyro.pitsim.events.AttackEvent;
+import dev.kyro.pitsim.misc.Misc;
 import org.bukkit.event.EventHandler;
 
 import java.util.List;
@@ -14,7 +15,7 @@ public class HeighHo extends PitEnchant {
 	public HeighHo() {
 		super("Heigh-Ho", false, ApplyType.PANTS,
 				"heighho", "heigh-ho", "hiho", "hi-ho", "antimirror", "nomirror");
-		isUncommonEnchant = true;
+//		isUncommonEnchant = true;
 	}
 
 	@EventHandler
@@ -33,11 +34,11 @@ public class HeighHo extends PitEnchant {
 	@Override
 	public List<String> getDescription(int enchantLvl) {
 
-		return new ALoreBuilder("&7Deal &c+" + getDamage(enchantLvl) + " &7damage against", "&fMirror &7wearers").getLore();
+		return new ALoreBuilder("&7Deal &c+" + Misc.roundString(getDamage(enchantLvl)) + " &7damage against", "&fMirror &7wearers").getLore();
 	}
 
-	public int getDamage(int enchantLvl) {
+	public double getDamage(int enchantLvl) {
 
-		return enchantLvl;
+		return enchantLvl - 0.5;
 	}
 }

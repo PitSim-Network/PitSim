@@ -6,8 +6,10 @@ import dev.kyro.arcticapi.misc.ASound;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.controllers.HitCounter;
 import dev.kyro.pitsim.controllers.objects.PitEnchant;
+import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.enums.ApplyType;
 import dev.kyro.pitsim.events.AttackEvent;
+import dev.kyro.pitsim.misc.Misc;
 import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
@@ -49,13 +51,15 @@ public class RetroGravityMicrocosm extends PitEnchant {
 			int charge = getCharge(attackEvent.defender, attackEvent.attacker);
 			setCharge(attackEvent.defender, attackEvent.attacker, ++charge);
 
-			if(defenderEnchantLvl >= 1) {
-				attackEvent.defender.setHealth(Math.min(attackEvent.defender.getHealth() + 2.5, attackEvent.defender.getMaxHealth()));
-			}
-			if(defenderEnchantLvl >= 3) {
-				attackEvent.selfTrueDamage += 0.5;
-			}
+//			if(defenderEnchantLvl >= 1) {
+//				attackEvent.defender.setHealth(Math.min(attackEvent.defender.getHealth() + 2.5, attackEvent.defender.getMaxHealth()));
+//			}
+//			if(defenderEnchantLvl >= 3) {
+//				attackEvent.selfTrueDamage += 0.5;
+//			}
 
+			PitPlayer pitDefender = PitPlayer.getPitPlayer(attackEvent.defender);
+			pitDefender.heal(getDamage(defenderEnchantLvl));
 			new BukkitRunnable() {
 				@Override
 				public void run() {
@@ -92,26 +96,33 @@ public class RetroGravityMicrocosm extends PitEnchant {
 	@Override
 	public List<String> getDescription(int enchantLvl) {
 
-		if(enchantLvl == 1) {
-			return new ALoreBuilder("&7When a player hits you from", "&7above ground &e3 times &7in a row:",
-					"&7You heal &c1.25\u2764").getLore();
-		}
-		if(enchantLvl == 2) {
-			return new ALoreBuilder("&7When a player hits you from", "&7above ground &e3 times &7in a row:",
-					"&7You heal &c1.25\u2764", "&7Gain &c+1.5\u2764 &7damage vs them for 30s").getLore();
-		}
-		if(enchantLvl == 3) {
-			return new ALoreBuilder("&7When a player hits you from", "&7above ground &e3 times &7in a row:",
-					"&7You heal &c1.25\u2764", "&7Gain &c+1.5\u2764 &7damage vs them for 30s",
-					"&7They take &c0.5\u2764 &7true damage").getLore();
-		} else {
-			return null;
-		}
+		return new ALoreBuilder("&7When a player hits you from", "&7above ground &e3 times &7in a row,",
+				"&7gain &c+" + Misc.getHearts(getDamage(enchantLvl)) + " &7damage vs them for 30s", "&7and heal for &c" + Misc.getHearts(getDamage(enchantLvl)),
+				"&7Can have up to &65 &7stacks at a time").getLore();
 
+//		if(enchantLvl == 1) {
+//			return new ALoreBuilder("&7When a player hits you from", "&7above ground &e3 times &7in a row:",
+//					"&7You heal &c1.25\u2764").getLore();
+//		}
+//		if(enchantLvl == 2) {
+//			return new ALoreBuilder("&7When a player hits you from", "&7above ground &e3 times &7in a row:",
+//					"&7You heal &c1.25\u2764", "&7Gain &c+1.5\u2764 &7damage vs them for 30s").getLore();
+//		}
+//		if(enchantLvl == 3) {
+//			return new ALoreBuilder("&7When a player hits you from", "&7above ground &e3 times &7in a row:",
+//					"&7You heal &c1.25\u2764", "&7Gain &c+1.5\u2764 &7damage vs them for 30s",
+//					"&7They take &c0.5\u2764 &7true damage").getLore();
+//		} else {
+//			return null;
+//		}
+	}
+
+	public double getDamage(int enchantLvl) {
+
+		return enchantLvl * 0.2 + 0.4;
 	}
 
 	public float getHealing(int enchantLvl) {
-
 
 		return 0.2F;
 	}
