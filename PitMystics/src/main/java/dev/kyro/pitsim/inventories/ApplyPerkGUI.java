@@ -146,6 +146,7 @@ public class ApplyPerkGUI extends AInventoryGUI {
 			if(activePerk == pitPerk) return true;
 		}
 
+		System.out.println();
 		return false;
 	}
 }
