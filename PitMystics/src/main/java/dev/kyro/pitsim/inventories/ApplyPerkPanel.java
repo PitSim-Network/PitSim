@@ -1,9 +1,8 @@
 package dev.kyro.pitsim.inventories;
 
-import dev.kyro.arcticapi.builders.AInventoryBuilder;
-import dev.kyro.arcticapi.gui.AInventoryGUI;
+import dev.kyro.arcticapi.gui.AGUI;
+import dev.kyro.arcticapi.gui.AGUIPanel;
 import dev.kyro.arcticapi.misc.AOutput;
-import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.controllers.PerkManager;
 import dev.kyro.pitsim.controllers.objects.PitPerk;
 import dev.kyro.pitsim.events.PerkEquipEvent;
@@ -17,38 +16,32 @@ import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.inventory.InventoryOpenEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class ApplyPerkGUI extends AInventoryGUI {
-
-	public AInventoryBuilder builder;
+public class ApplyPerkPanel extends AGUIPanel {
 	public PerkGUI perkGUI;
+
 	public int perkNum;
 
-	public ApplyPerkGUI(PerkGUI perkGUI, int perkNum) {
-		super("Choose a perk", 6);
-		this.perkGUI = perkGUI;
-		this.perkNum = perkNum;
+	public ApplyPerkPanel(AGUI gui) {
+		super(gui);
+		perkGUI = (PerkGUI) gui;
 
-		builder = new AInventoryBuilder(baseGUI)
-				.createBorder(Material.STAINED_GLASS_PANE, 8);
+		inventoryBuilder.createBorder(Material.STAINED_GLASS_PANE, 8);
 
 		for(PitPerk pitPerk : PerkManager.pitPerks) {
-
 
 			ItemStack perkItem = new ItemStack(pitPerk.displayItem);
 			ItemMeta meta = perkItem.getItemMeta();
 
 			meta.setDisplayName(ChatColor.translateAlternateColorCodes('&', "&a" + pitPerk.name));
-			List<String> lore = new ArrayList<>();
 
-			lore.addAll(pitPerk.getDescription());
+			List<String> lore = new ArrayList<>(pitPerk.getDescription());
 			lore.add("");
 
-			if(isActive(pitPerk)) lore.add(ChatColor.translateAlternateColorCodes('&', "&aAlready selected!"));
+			if(perkGUI.isActive(pitPerk)) lore.add(ChatColor.translateAlternateColorCodes('&', "&aAlready selected!"));
 			else lore.add(ChatColor.translateAlternateColorCodes('&', "&eClick to select!"));
 
 			if(pitPerk.name.equals("No Perk")){
@@ -64,7 +57,7 @@ public class ApplyPerkGUI extends AInventoryGUI {
 			meta.setLore(lore);
 			perkItem.setItemMeta(meta);
 
-			baseGUI.setItem(pitPerk.guiSlot, perkItem);
+			getInventory().setItem(pitPerk.guiSlot, perkItem);
 		}
 
 		ItemStack back = new ItemStack(Material.ARROW);
@@ -75,7 +68,17 @@ public class ApplyPerkGUI extends AInventoryGUI {
 		meta.setLore(lore);
 		back.setItemMeta(meta);
 
-		baseGUI.setItem(49, back);
+		getInventory().setItem(49, back);
+	}
+
+	@Override
+	public String getName() {
+		return "Choose a perk";
+	}
+
+	@Override
+	public int getRows() {
+		return 6;
 	}
 
 	@Override
@@ -102,51 +105,20 @@ public class ApplyPerkGUI extends AInventoryGUI {
 
 				player.playSound(player.getLocation(), Sound.NOTE_PLING, 1F, 2F);
 				perkGUI.setPerk(clickedPerk, perkNum);
-				perkGUI.player.openInventory(perkGUI.getInventory());
-				perkGUI.updateGUI();
+				openPreviousGUI();
 				return;
 			}
 
 			if(slot == 49) {
-				perkGUI.player.openInventory(perkGUI.getInventory());
-				perkGUI.updateGUI();
+				openPreviousGUI();
 				return;
 			}
 		}
-		updateGUI();
 	}
 
 	@Override
-	public void onOpen(InventoryOpenEvent event) {
-
-		new BukkitRunnable() {
-			@Override
-			public void run() {
-				updateGUI();
-			}
-		}.runTaskLater(PitSim.INSTANCE, 1L);
-	}
+	public void onOpen(InventoryOpenEvent event) { }
 
 	@Override
-	public void onClose(InventoryCloseEvent event) {
-
-	}
-
-	public void updateGUI() {
-
-		for(int i = 0; i < baseGUI.getSize(); i++) {
-			perkGUI.player.getOpenInventory().setItem(i, baseGUI.getItem(i));
-		}
-	}
-
-	public boolean isActive(PitPerk pitPerk) {
-
-		for(PitPerk activePerk : perkGUI.getActivePerks()) {
-
-			if(activePerk == pitPerk) return true;
-		}
-
-		System.out.println();
-		return false;
-	}
+	public void onClose(InventoryCloseEvent event) { }
 }
