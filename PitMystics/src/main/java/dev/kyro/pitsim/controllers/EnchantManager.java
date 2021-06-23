@@ -88,11 +88,12 @@ public class EnchantManager {
 				throw new InvalidEnchantLevelException(false);
 			} else if(currentLvl == applyLvl) {
 //			throw new InvalidEnchantLevelException(false);
-			} else if(applyLvl + tokenNum > 8) {
+			} else if(applyLvl - currentLvl + tokenNum > 8) {
 				throw new MaxTokensExceededException(false);
-			} else if(applyEnchant.isRare && applyLvl + rTokenNum > 4) {
+			} else if(applyEnchant.isRare && applyLvl - currentLvl + rTokenNum > 4) {
 				throw new MaxTokensExceededException(true);
-			} else if(enchantNum >= 3 && applyLvl != 0) {
+			} else if(enchantNum >= 3 && applyLvl != 0 && currentLvl == 0) {
+				Bukkit.broadcastMessage(applyLvl + "");
 				throw new MaxEnchantsExceededException();
 			}
 		}
