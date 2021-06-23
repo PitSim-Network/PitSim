@@ -40,7 +40,7 @@ public class RetroGravityMicrocosm extends PitEnchant {
 		if(attackerEnchantLvl >= 2) {
 
 			int charge = getCharge(attackEvent.attacker, attackEvent.defender);
-			attackEvent.increase += Math.min(charge, 5);
+			attackEvent.increase += Math.min(charge, getMaxStacks(attackerEnchantLvl));
 		}
 		if(defenderEnchantLvl != 0) {
 			if(attackEvent.attacker.getLocation().add(0, -0.1, 0).getBlock().getType() != Material.AIR) return;
@@ -59,7 +59,7 @@ public class RetroGravityMicrocosm extends PitEnchant {
 //			}
 
 			PitPlayer pitDefender = PitPlayer.getPitPlayer(attackEvent.defender);
-			pitDefender.heal(getDamage(defenderEnchantLvl));
+			pitDefender.heal(1);
 			new BukkitRunnable() {
 				@Override
 				public void run() {
@@ -96,9 +96,9 @@ public class RetroGravityMicrocosm extends PitEnchant {
 	@Override
 	public List<String> getDescription(int enchantLvl) {
 
-		return new ALoreBuilder("&7When a player hits you from", "&7above ground &e3 times &7in a row,",
-				"&7gain &c+" + Misc.getHearts(getDamage(enchantLvl)) + " &7damage vs them for 30s", "&7and heal for &c" + Misc.getHearts(getDamage(enchantLvl)),
-				"&7Can have up to &65 &7stacks at a time").getLore();
+			return new ALoreBuilder("&7When a player hits you from", "&7above ground &e3 times &7in a row:",
+					"&7You heal &c" + Misc.getHearts(1), "&7Gain &c" + Misc.getHearts(1) + " &7damage vs them for 30s",
+					"&7Can have up to &6" + getMaxStacks(enchantLvl) + " &7stacks at a time").getLore();
 
 //		if(enchantLvl == 1) {
 //			return new ALoreBuilder("&7When a player hits you from", "&7above ground &e3 times &7in a row:",
@@ -117,9 +117,9 @@ public class RetroGravityMicrocosm extends PitEnchant {
 //		}
 	}
 
-	public double getDamage(int enchantLvl) {
+	public int getMaxStacks(int enchantLvl) {
 
-		return enchantLvl * 0.2 + 0.4;
+		return enchantLvl + 3;
 	}
 
 	public float getHealing(int enchantLvl) {

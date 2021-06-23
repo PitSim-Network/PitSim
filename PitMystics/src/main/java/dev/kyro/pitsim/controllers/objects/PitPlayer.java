@@ -116,14 +116,20 @@ public class PitPlayer {
 		recentDamageMap.putIfAbsent(player.getUniqueId(), 0D);
 		recentDamageMap.put(player.getUniqueId(), recentDamageMap.get(player.getUniqueId()) + damage);
 
-		assistRemove.add(new BukkitRunnable() {
+		BukkitTask bukkitTask = new BukkitRunnable() {
 			@Override
 			public void run() {
+				for(BukkitTask pendingTask : Bukkit.getScheduler().getPendingTasks()) {
+					if(pendingTask.getTaskId() != getTaskId()) continue;
+					assistRemove.remove(pendingTask);
+					break;
+				}
 				recentDamageMap.putIfAbsent(player.getUniqueId(), 0D);
-				if( recentDamageMap.get(player.getUniqueId()) - damage != 0)
+				if(recentDamageMap.get(player.getUniqueId()) - damage != 0)
 					recentDamageMap.put(player.getUniqueId(), recentDamageMap.get(player.getUniqueId()) - damage); else recentDamageMap.remove(player.getUniqueId());
 			}
-		}.runTaskLater(PitSim.INSTANCE, 200L));
+		}.runTaskLater(PitSim.INSTANCE, 200L);
+		assistRemove.add(bukkitTask);
 	}
 
 	public void heal(double amount) {

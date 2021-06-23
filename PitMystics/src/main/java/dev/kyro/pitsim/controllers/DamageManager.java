@@ -299,9 +299,9 @@ public class DamageManager implements Listener {
 			AOutput.send(assistPlayer, PlaceholderAPI.setPlaceholders(killEvent.dead, assist));
 		}
 
-		for(BukkitTask bukkitTask : pitDefender.assistRemove) {
-			bukkitTask.cancel();
-		}
+		pitDefender.assistRemove.forEach(BukkitTask::cancel);
+		pitDefender.assistRemove.clear();
+
 		pitDefender.recentDamageMap.clear();
 	}
 }
