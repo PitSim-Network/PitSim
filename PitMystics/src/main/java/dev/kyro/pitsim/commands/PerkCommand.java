@@ -15,8 +15,11 @@ public class PerkCommand implements CommandExecutor {
 		Player player = (Player) sender;
 
 		PerkGUI perkGUI = new PerkGUI(player);
-		player.openInventory(perkGUI.getInventory());
-		perkGUI.updateGUI();
+		perkGUI.open();
+
+//		PerkPanel perkPanel = new PerkPanel(player);
+//		player.openInventory(perkPanel.getInventory());
+//		perkPanel.updateGUI();
 
 		return false;
 	}
