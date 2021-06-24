@@ -9,7 +9,9 @@ depend:
   - Citizens
   - Vault
   - PlaceholderAPI
+  - NoteBlockAPI
 commands:
+  oof:
   atest:
   enchant:
   fresh:
@@ -20,3 +22,4 @@ commands:
   market:
   enchants:
   setkills:
+  togglestereo:

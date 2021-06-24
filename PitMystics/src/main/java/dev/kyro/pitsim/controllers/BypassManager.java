@@ -16,6 +16,7 @@ public class BypassManager implements KarhuListener {
     public static List<Player> bypassPullbow = new ArrayList<>();
     public static List<Player> bypassExplosive = new ArrayList<>();
     public static List<Player> bypassPunch = new ArrayList<>();
+    public static List<Player> oofBypass = new ArrayList<>();
     public static List<Player> bypassAll = new ArrayList<>();
 
     @Override

@@ -1,5 +1,6 @@
 package dev.kyro.pitsim.controllers;
 
+import com.google.common.base.Function;
 import de.tr7zw.nbtapi.NBTItem;
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.arcticapi.misc.ASound;
@@ -23,6 +24,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityShootBowEvent;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -33,6 +35,7 @@ import java.util.*;
 
 public class DamageManager implements Listener {
 
+	public static Location spawnLoc = new Location(Bukkit.getWorld("pit"), -108.5, 86, 194.5, 45, 0);
 	public static List<Player> hitCooldownList = new ArrayList<>();
 	public static List<Player> nonHitCooldownList = new ArrayList<>();
 	public static Map<EntityShootBowEvent, Map<PitEnchant, Integer>> arrowMap = new HashMap<>();
@@ -210,6 +213,7 @@ public class DamageManager implements Listener {
 	}
 
 	public static void kill(AttackEvent attackEvent, Player killer, Player dead, boolean exeDeath) {
+
 		KillEvent killEvent = new KillEvent(attackEvent, killer, dead, exeDeath);
 		Bukkit.getServer().getPluginManager().callEvent(killEvent);
 
@@ -218,7 +222,6 @@ public class DamageManager implements Listener {
 		PitPlayer pitAttacker = PitPlayer.getPitPlayer(killer);
 		PitPlayer pitDefender = PitPlayer.getPitPlayer(dead);
 
-		Location spawnLoc = new Location(Bukkit.getWorld("pit"), -108.5, 86, 194.5, 45, 0);
 
 		Telebow.teleShots.removeIf(teleShot -> teleShot.getShooter().equals(dead));
 
@@ -234,12 +237,12 @@ public class DamageManager implements Listener {
 			pitAttacker.incrementKills();
 		}
 
+		Misc.multiKill(killer);
+
 		Non defendingNon = NonManager.getNon(dead);
 		if(defendingNon == null) {
 			dead.teleport(spawnLoc);
-			Misc.multiKill(killer);
 		} else {
-			Misc.multiKill(killer);
 			defendingNon.respawn();
 		}
 
@@ -303,5 +306,24 @@ public class DamageManager implements Listener {
 			bukkitTask.cancel();
 		}
 		pitDefender.recentDamageMap.clear();
+	}
+
+	public static void Death(Player dead) {
+		Telebow.teleShots.removeIf(teleShot -> teleShot.getShooter().equals(dead));
+
+		dead.setHealth(dead.getMaxHealth());
+		dead.playEffect(EntityEffect.HURT);
+		dead.playSound(dead.getLocation(), Sound.FALL_BIG, 1000, 1F);
+		dead.playSound(dead.getLocation(), Sound.FALL_BIG, 1000, 1F);
+		Regularity.toReg.remove(dead.getUniqueId());
+
+		dead.teleport(spawnLoc);
+		PitPlayer pitDefender = PitPlayer.getPitPlayer(dead);
+		pitDefender.endKillstreak();
+		pitDefender.bounty = 0;
+		for(PotionEffect potionEffect : dead.getActivePotionEffects()) {
+			dead.removePotionEffect(potionEffect.getType());
+		}
+		AOutput.send(dead, "&c&lDEATH!");
 	}
 }

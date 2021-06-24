@@ -35,17 +35,18 @@ public class ComboDamage extends PitEnchant {
 	@Override
 	public List<String> getDescription(int enchantLvl) {
 
-		return new ALoreBuilder("&7Every &e" + Misc.ordinalWords(enchantLvl) + " &7strike deals",
+		return new ALoreBuilder("&7Every&e" + Misc.ordinalWords(getStrikes(enchantLvl)) + " &7strike deals",
 				"&c+" + getDamage(enchantLvl) + "% &7damage").getLore();
 	}
 
-	public double getDamage(int enchantLvl) {
+	public int getDamage(int enchantLvl) {
 
-		return Math.floor(Math.pow(enchantLvl, 1.75)) * 5 + 15;
+		return (int) (Math.floor(Math.pow(enchantLvl, 1.75)) * 5 + 15);
 	}
 
 	public int getStrikes(int enchantLvl) {
 
 		return Math.max(4 - (int) (enchantLvl * 0.5), 1);
+
 	}
 }

@@ -37,6 +37,8 @@ public class PitPlayer {
 	public Map<UUID, Double> recentDamageMap = new HashMap<>();
 	public List<BukkitTask> assistRemove = new ArrayList<>();
 
+	public UUID lastHitUUID = null;
+
 	public PitPlayer(Player player) {
 		this.player = player;
 		this.megastreak = new Uberstreak(this);
