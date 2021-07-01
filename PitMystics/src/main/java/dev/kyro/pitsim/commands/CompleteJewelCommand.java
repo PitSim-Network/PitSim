@@ -26,7 +26,7 @@ public class CompleteJewelCommand implements CommandExecutor {
 		List<PitEnchant> applicableEnchants = EnchantManager.getEnchants(ApplyType.PANTS);
 		PitEnchant jewelEnchant = applicableEnchants.get((int) (Math.random() * applicableEnchants.size()));
 		try {
-			jewel = EnchantManager.addEnchant(jewel, jewelEnchant, 3, false, true);
+			jewel = EnchantManager.addEnchant(jewel, jewelEnchant, 3, false, true, -1);
 		} catch(Exception ignored) { }
 
 		AUtil.giveItemSafely(player, jewel);

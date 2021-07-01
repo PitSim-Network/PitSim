@@ -10,7 +10,10 @@ import dev.kyro.arcticapi.misc.AUtil;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.controllers.objects.Non;
 import dev.kyro.pitsim.controllers.objects.PitEnchant;
-import dev.kyro.pitsim.enums.*;
+import dev.kyro.pitsim.enums.ApplyType;
+import dev.kyro.pitsim.enums.MysticType;
+import dev.kyro.pitsim.enums.NBTTag;
+import dev.kyro.pitsim.enums.PantColor;
 import dev.kyro.pitsim.exceptions.*;
 import dev.kyro.pitsim.misc.Constant;
 import dev.kyro.pitsim.misc.Misc;
@@ -64,10 +67,10 @@ public class EnchantManager {
 	}
 
 	public static ItemStack addEnchant(ItemStack itemStack, PitEnchant applyEnchant, int applyLvl, boolean safe) throws Exception {
-		return addEnchant(itemStack, applyEnchant, applyLvl, safe, false);
+		return addEnchant(itemStack, applyEnchant, applyLvl, safe, false, -1);
 	}
 
-	public static ItemStack addEnchant(ItemStack itemStack, PitEnchant applyEnchant, int applyLvl, boolean safe, boolean jewel) throws Exception {
+	public static ItemStack addEnchant(ItemStack itemStack, PitEnchant applyEnchant, int applyLvl, boolean safe, boolean jewel, int insert) throws Exception {
 		NBTItem nbtItem = new NBTItem(itemStack);
 
 		NBTList<String> enchantOrder = nbtItem.getStringList(NBTTag.PIT_ENCHANT_ORDER.getRef());
@@ -115,7 +118,16 @@ public class EnchantManager {
 
 		if(currentLvl == 0) {
 			enchantNum++;
-			enchantOrder.add(applyEnchant.refNames.get(0));
+			if(insert == -1) {
+				enchantOrder.add(applyEnchant.refNames.get(0));
+			} else {
+				List<String> tempList = new ArrayList<>(enchantOrder);
+				enchantOrder.clear();
+				for(int i = 0; i <= tempList.size(); i++) {
+					if(i == insert) enchantOrder.add(applyEnchant.refNames.get(0));
+					if(i < tempList.size()) enchantOrder.add(tempList.get(i));
+				}
+			}
 		}
 		if(applyLvl == 0) {
 			enchantNum--;
@@ -295,7 +307,7 @@ public class EnchantManager {
 				'&', "&3&lJEWEL!&7 " + player.getDisplayName() + " &7found " + jewelEnchant.getDisplayName()));
 		ASound.play(player, Sound.ENDERDRAGON_GROWL, 1, 1);
 		try {
-			return EnchantManager.addEnchant(nbtItem.getItem(), jewelEnchant, 3, false, true);
+			return EnchantManager.addEnchant(nbtItem.getItem(), jewelEnchant, 3, false, true, -1);
 		} catch(Exception ignored) { }
 		return null;
 	}

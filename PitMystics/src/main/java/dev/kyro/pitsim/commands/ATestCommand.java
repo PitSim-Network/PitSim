@@ -3,6 +3,7 @@ package dev.kyro.pitsim.commands;
 import dev.kyro.arcticapi.builders.AItemStackBuilder;
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.PitSim;
+import dev.kyro.pitsim.inventories.EnchantingGUI;
 import net.citizensnpcs.api.CitizensAPI;
 import net.citizensnpcs.api.ai.Navigator;
 import net.citizensnpcs.api.npc.NPC;
@@ -114,6 +115,10 @@ public class ATestCommand implements CommandExecutor {
 
 		if(!(sender instanceof Player)) return false;
 		Player player = (Player) sender;
+
+		EnchantingGUI enchantingGUI = new EnchantingGUI(player);
+		enchantingGUI.open();
+		AOutput.send(player, "Opening enchanting gui");
 
 //		MainEnchantGUI mainEnchantGUI = new MainEnchantGUI(player);
 //		player.openInventory(mainEnchantGUI.getInventory());

@@ -170,7 +170,7 @@ public class PitSim extends JavaPlugin {
 //		marketCommand.registerCommand(new ListCommand("list"));
 //		marketCommand.registerCommand(new AuctionCommand("ah"));
 
-//		getCommand("atest").setExecutor(new ATestCommand());
+		getCommand("atest").setExecutor(new ATestCommand());
 		getCommand("perks").setExecutor(new PerkCommand());
 		getCommand("non").setExecutor(new NonCommand());
 		getCommand("enchant").setExecutor(new EnchantCommand());
