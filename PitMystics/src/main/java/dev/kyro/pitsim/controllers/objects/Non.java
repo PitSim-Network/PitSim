@@ -168,9 +168,15 @@ public class Non {
 //		Location spawnLoc = new Location(Bukkit.getWorld("pit"), -119, 86, 211, -180, 60);
 		Location spawnLoc = new Location(Bukkit.getWorld("pit"), -119, 86, 205, -180, 60);
 		if(!npc.isSpawned()) spawn();
-		non.teleport(spawnLoc, PlayerTeleportEvent.TeleportCause.PLUGIN);
-		npc.despawn();
-		npc.spawn(spawnLoc);
+		try {
+
+			non.teleport(spawnLoc, PlayerTeleportEvent.TeleportCause.PLUGIN);
+		} catch(Exception ignored) {
+
+			npc.despawn();
+			npc.spawn(spawnLoc);
+			System.out.println("non teleportation respawn errored");
+		}
 
 		non.setHealth(non.getMaxHealth());
 

@@ -1,5 +1,6 @@
 package dev.kyro.pitsim;
 
+import com.xxmicloxx.NoteBlockAPI.songplayer.EntitySongPlayer;
 import dev.kyro.arcticapi.ArcticAPI;
 import dev.kyro.arcticapi.data.AData;
 import dev.kyro.arcticapi.hooks.AHook;
@@ -18,7 +19,10 @@ import org.bukkit.entity.Player;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 
 public class PitSim extends JavaPlugin {
 
@@ -85,8 +89,7 @@ public class PitSim extends JavaPlugin {
 		Iterator<Map.Entry<Player, EntitySongPlayer>> it = StereoManager.playerMusic.entrySet().iterator();
 		while(it.hasNext()) {
 			Map.Entry<Player, EntitySongPlayer> pair = it.next();
-			EntitySongPlayer esp = (EntitySongPlayer) pair.getValue();
-
+			EntitySongPlayer esp = pair.getValue();
 			esp.destroy();
 			it.remove();
 		}

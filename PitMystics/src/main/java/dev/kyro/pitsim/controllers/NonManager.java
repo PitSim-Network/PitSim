@@ -20,17 +20,17 @@ public class NonManager implements Listener {
 		new BukkitRunnable() {
 			@Override
 			public void run() {
-				if(true) return;
+//				if(true) return;
 				if(nons.size() >= 25) return;
 				Non non = new Non(ATestCommand.hoppers.get((int) (Math.random() * ATestCommand.hoppers.size())));
-//				new BukkitRunnable() {
-//					@Override
-//					public void run() {
-//						non.remove();
-//					}
-//				}.runTaskLater(PitSim.INSTANCE, (long) (20 * 60 * (Math.random() * 4 + 1)));
+				new BukkitRunnable() {
+					@Override
+					public void run() {
+						non.remove();
+					}
+				}.runTaskLater(PitSim.INSTANCE, (long) (20 * 60 * (Math.random() * 4 + 1)));
 			}
-		}.runTaskTimer(PitSim.INSTANCE, 0L, 20 * 1);
+		}.runTaskTimer(PitSim.INSTANCE, 0L, 40);
 
 		new BukkitRunnable() {
 			@Override
