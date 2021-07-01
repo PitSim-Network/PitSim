@@ -1,11 +1,16 @@
 package dev.kyro.pitsim.controllers;
 
+import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.PitSim;
+import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.events.AttackEvent;
+import dev.kyro.pitsim.events.KillEvent;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
+import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -33,7 +38,17 @@ public class CombatManager implements Listener {
                     if(time > 0) taggedPlayers.put(entry.getKey(), time);
                     else toRemove.add(entry.getKey());
                 }
-                for(UUID uuid : toRemove) taggedPlayers.remove(uuid);
+
+                for(UUID uuid : toRemove) {
+                    taggedPlayers.remove(uuid);
+                    for(Player player : Bukkit.getOnlinePlayers()) {
+                        if(player.getUniqueId().equals(uuid)) {
+                            PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
+                            pitPlayer.lastHitUUID = null;
+                        }
+                    }
+                }
+
             }
         }.runTaskTimer(PitSim.INSTANCE, 0L, 1L);
     }
@@ -48,12 +63,13 @@ public class CombatManager implements Listener {
 
    }
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.HIGHEST)
     public static void onJoin(PlayerJoinEvent event) {
 
         if(!bannedPlayers.contains(event.getPlayer().getUniqueId())) return;
 
-        event.getPlayer().kickPlayer("You combat banned. Please wait a minute before joining again.");
+
+        event.getPlayer().kickPlayer("You are combat banned. Please wait a minute before joining again.");
     }
 
    @EventHandler
@@ -72,10 +88,34 @@ public class CombatManager implements Listener {
                     bannedPlayers.remove(player.getUniqueId());
                 }
             }.runTaskLater(PitSim.INSTANCE, 60 * 20);
-
-//            ConsoleCommandSender console = Bukkit.getServer().getConsoleSender();
-//            String command = "ipban " + player.getName() + " 2m Logging out while in Combat -s";
-//            Bukkit.dispatchCommand(console, command);
         }
+   }
+
+   @EventHandler
+   public static void onDeath(KillEvent event) {
+       taggedPlayers.remove(event.dead.getUniqueId());
+   }
+
+   @EventHandler
+    public static void onCommandSend(PlayerCommandPreprocessEvent event) {
+
+        List<String> BlockedCommands = new ArrayList<>();
+        BlockedCommands.add("/ec");
+        BlockedCommands.add("/echest");
+        BlockedCommands.add("/enderchest");
+        BlockedCommands.add("/perks");
+        BlockedCommands.add("/spawn");
+
+
+        if(taggedPlayers.containsKey(event.getPlayer().getUniqueId())) {
+            for(String cmd : BlockedCommands) {
+                if(cmd.equals(event.getMessage())) {
+                    event.setCancelled(true);
+                    AOutput.error(event.getPlayer(), "&c&c&lNOPE! &7You cannot use that while in combat!");
+                }
+            }
+        }
+
+
    }
 }

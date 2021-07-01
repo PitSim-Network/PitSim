@@ -14,11 +14,11 @@ import dev.kyro.pitsim.perks.*;
 import dev.kyro.pitsim.placeholders.*;
 import net.milkbowl.vault.economy.Economy;
 import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 public class PitSim extends JavaPlugin {
 
@@ -40,6 +40,13 @@ public class PitSim extends JavaPlugin {
 		} else {
 			AOutput.log(String.format("Could not find PlaceholderAPI! This plugin is required."));
 			Bukkit.getPluginManager().disablePlugin(this);
+		}
+
+		boolean NoteBlockAPI = true;
+		if (!Bukkit.getPluginManager().isPluginEnabled("NoteBlockAPI")){
+			getLogger().severe("*** NoteBlockAPI is not installed or not enabled. ***");
+			NoteBlockAPI = false;
+			return;
 		}
 
 		registerUpgrades();
@@ -74,6 +81,15 @@ public class PitSim extends JavaPlugin {
 		}
 
 		for(PitEnchant pitEnchant : EnchantManager.pitEnchants) pitEnchant.onDisable();
+
+		Iterator<Map.Entry<Player, EntitySongPlayer>> it = StereoManager.playerMusic.entrySet().iterator();
+		while(it.hasNext()) {
+			Map.Entry<Player, EntitySongPlayer> pair = it.next();
+			EntitySongPlayer esp = (EntitySongPlayer) pair.getValue();
+
+			esp.destroy();
+			it.remove();
+		}
 	}
 
 	private void registerEnchants() {
@@ -143,6 +159,7 @@ public class PitSim extends JavaPlugin {
 		EnchantManager.registerEnchant(new GottaGoFast());
 		EnchantManager.registerEnchant(new Electrolytes());
 		EnchantManager.registerEnchant(new CounterOffensive());
+		EnchantManager.registerEnchant(new Stereo());
 
 //		Resource Enchants
 		EnchantManager.registerEnchant(new Moctezuma());
@@ -170,7 +187,9 @@ public class PitSim extends JavaPlugin {
 //		marketCommand.registerCommand(new ListCommand("list"));
 //		marketCommand.registerCommand(new AuctionCommand("ah"));
 
+//		getCommand("atest").setExecutor(new ATestCommand());
 		getCommand("atest").setExecutor(new ATestCommand());
+		getCommand("oof").setExecutor(new OofCommand());
 		getCommand("perks").setExecutor(new PerkCommand());
 		getCommand("non").setExecutor(new NonCommand());
 		getCommand("enchant").setExecutor(new EnchantCommand());
@@ -179,6 +198,7 @@ public class PitSim extends JavaPlugin {
 		getCommand("jewel").setExecutor(new JewelCommand());
 		getCommand("enchants").setExecutor(new EnchantListCommand());
 		getCommand("setkills").setExecutor(new SetKillCommand());
+//		getCommand("togglestereo").setExecutor(new ToggleStereoCommand());
 	}
 
 	private void registerListeners() {

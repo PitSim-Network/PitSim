@@ -2,6 +2,7 @@ package dev.kyro.pitsim.events;
 
 import dev.kyro.pitsim.controllers.DamageManager;
 import dev.kyro.pitsim.controllers.objects.PitEnchant;
+import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import org.bukkit.entity.*;
 import org.bukkit.event.Cancellable;
 import org.bukkit.event.Event;
@@ -32,6 +33,9 @@ public class AttackEvent extends Event {
 		this.attackerEnchantMap = attackerEnchantMap;
 		this.defenderEnchantMap = defenderEnchantMap;
 		this.fakeHit = fakeHit;
+
+		PitPlayer pitPlayer = PitPlayer.getPitPlayer(defender);
+		pitPlayer.lastHitUUID = attacker.getUniqueId();
 
 		if(event.getDamager() instanceof Arrow) {
 			arrow = (Arrow) event.getDamager();

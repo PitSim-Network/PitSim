@@ -90,6 +90,7 @@ public class Uberstreak extends Megastreak {
 		assert jewel != null;
 		NBTItem nbtItem = new NBTItem(jewel);
 		nbtItem.setBoolean(NBTTag.IS_JEWEL.getRef(), true);
+
 		EnchantManager.setItemLore(nbtItem.getItem());
 
 		AUtil.giveItemSafely(pitPlayer.player, nbtItem.getItem());

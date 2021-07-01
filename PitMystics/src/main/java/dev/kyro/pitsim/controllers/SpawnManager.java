@@ -33,25 +33,29 @@ public class SpawnManager implements Listener {
 
         Player player = (Player) event.getEntity();
 
-        Location loc = new Location(player.getWorld(), player.getLocation().getX(), player.getLocation().getY(), player.getLocation().getZ());
+        if(isInSpawn(player.getLocation())) {
+            event.setCancelled(true);
+            player.playSound(player.getLocation(), Sound.VILLAGER_NO, 1 ,1);
+        }
+
+    }
+
+
+    public static Boolean isInSpawn(Location loc) {
         RegionContainer container = WorldGuardPlugin.inst().getRegionContainer();
         RegionManager regions = container.get(loc.getWorld());
         assert regions != null;
         ApplicableRegionSet set = regions.getApplicableRegions((BukkitUtil.toVector(loc)));
 
-
-
         for(ProtectedRegion region : set) {
             if(region.getId().equals("spawn")) {
-                event.setCancelled(true);
-                player.playSound(player.getLocation(), Sound.VILLAGER_NO, 1 ,1);
+                return true;
             }
         }
-
-
-//        arrowList.add((Arrow) event.getProjectile());
-
+        return false;
     }
+
+
 
 
 //    @EventHandler

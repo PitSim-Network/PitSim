@@ -18,7 +18,6 @@ repositories {
     maven { url "https://repo.extendedclip.com/content/repositories/placeholderapi/" }
     maven { url "http://maven.sk89q.com/repo/" }
     maven { url "https://maven.enginehub.org/repo/" }
-
 }
 
 dependencies {
@@ -30,7 +29,7 @@ dependencies {
     compileOnly 'com.sk89q.worldguard:worldguard-legacy:6.2'
     compileOnly 'com.sk89q.worldedit:worldedit-bukkit:6.0'
 
-
+    compile group: 'com.github.koca2000', name: 'NoteBlockAPI', version: '-SNAPSHOT'
     compile 'com.github.ArcticDevelopment:ArcticAPI:fc630bd727'
     compile 'de.tr7zw:item-nbt-api-plugin:2.8.0'
     compileOnly files('libs/KarhuAPI.jar')
