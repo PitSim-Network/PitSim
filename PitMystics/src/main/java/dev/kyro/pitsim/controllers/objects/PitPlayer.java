@@ -4,6 +4,7 @@ import dev.kyro.arcticapi.data.APlayerData;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.controllers.NonManager;
 import dev.kyro.pitsim.enchants.Hearts;
+import dev.kyro.pitsim.enums.KillEffect;
 import dev.kyro.pitsim.events.HealEvent;
 import dev.kyro.pitsim.killstreaks.Uberstreak;
 import dev.kyro.pitsim.perks.NoPerk;
@@ -36,6 +37,8 @@ public class PitPlayer {
 
 	public Map<UUID, Double> recentDamageMap = new HashMap<>();
 	public List<BukkitTask> assistRemove = new ArrayList<>();
+
+	public KillEffect killEffect = null;
 
 	public UUID lastHitUUID = null;
 

@@ -15,7 +15,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PerkPanel extends AGUIPanel {
+public class  PerkPanel extends AGUIPanel {
 	public PerkGUI perkGUI;
 
 	public PerkPanel(AGUI gui) {

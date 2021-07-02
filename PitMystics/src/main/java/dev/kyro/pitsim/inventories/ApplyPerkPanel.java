@@ -94,7 +94,7 @@ public class ApplyPerkPanel extends AGUIPanel {
 				for(PitPerk activePerk : perkGUI.getActivePerks()) {
 					if(activePerk != clickedPerk || activePerk.name.equals("No Perk")) continue;
 					player.playSound(player.getLocation(), Sound.ENDERMAN_TELEPORT, 1F, 0.5F);
-					AOutput.error(perkGUI.player, "That perk is already equipped");
+					AOutput.error(perkGUI.player, "&cThat perk is already equipped");
 					return;
 				}
 

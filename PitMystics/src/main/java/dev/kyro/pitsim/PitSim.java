@@ -201,6 +201,7 @@ public class PitSim extends JavaPlugin {
 		getCommand("jewel").setExecutor(new JewelCommand());
 		getCommand("enchants").setExecutor(new EnchantListCommand());
 		getCommand("setkills").setExecutor(new SetKillCommand());
+		getCommand("donator").setExecutor(new DonatorCommand());
 //		getCommand("togglestereo").setExecutor(new ToggleStereoCommand());
 	}
 
@@ -216,6 +217,7 @@ public class PitSim extends JavaPlugin {
 		getServer().getPluginManager().registerEvents(new ItemManager(), this);
 		getServer().getPluginManager().registerEvents(new CombatManager(), this);
 		getServer().getPluginManager().registerEvents(new SpawnManager(), this);
+
 	}
 
 	private void loadConfig() {

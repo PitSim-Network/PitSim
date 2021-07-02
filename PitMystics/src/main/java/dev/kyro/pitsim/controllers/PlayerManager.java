@@ -6,6 +6,7 @@ import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.controllers.objects.Non;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.events.KillEvent;
+import dev.kyro.pitsim.misc.KillEffects;
 import dev.kyro.pitsim.misc.Misc;
 import org.bukkit.*;
 import org.bukkit.entity.Player;
@@ -35,6 +36,11 @@ public class PlayerManager implements Listener {
 		Non killingNon = NonManager.getNon(killEvent.killer);
 		Non deadNon = NonManager.getNon(killEvent.dead);
 
+		if(pitKiller.killEffect != null && killEvent.killer.hasPermission("pitsim.killeffect")) {
+			Bukkit.broadcastMessage("Killeffect!");
+			KillEffects.trigger(killEvent.killer, pitKiller.killEffect, killEvent.dead.getLocation());
+		}
+
 		if(pitDead.bounty != 0 && killingNon == null) {
 			DecimalFormat formatter = new DecimalFormat("#,###.#");
 			Bukkit.broadcastMessage(ChatColor.translateAlternateColorCodes('&',
@@ -42,6 +48,8 @@ public class PlayerManager implements Listener {
 							"&7 for &6&l" + formatter.format(pitDead.bounty)) + "g");
 			PitSim.VAULT.depositPlayer(killEvent.killer, pitDead.bounty);
 			pitDead.bounty = 0;
+
+
 		}
 
 		if(Math.random() < 0.1 && killingNon == null) {

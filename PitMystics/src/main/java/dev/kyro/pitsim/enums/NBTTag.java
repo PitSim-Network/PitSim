@@ -15,7 +15,8 @@ public enum NBTTag {
 	IS_JEWEL("pr-isjewel"),
 	IS_GEMMED("pr-isgemmed"),
 	UNDROPPABLE("pr-undroppable"),
-	DROP_CONFIRM("pr-dropconfirm");
+	DROP_CONFIRM("pr-dropconfirm"),
+	ORIGINAL_COLOR("pr-original-color");
 
 	private final String ref;
 

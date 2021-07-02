@@ -43,9 +43,16 @@ public class ShowCommand implements CommandExecutor {
 
         builder.append(meta.getDisplayName() + "\n");
 
+        int i = 0;
+
             for(String s : lore) {
-                builder.append(s).append("\n");
+
+                if(i == lore.size() - 1) builder.append(s);
+                else builder.append(s).append("\n");
+
+                i++;
             }
+
 
 
 
