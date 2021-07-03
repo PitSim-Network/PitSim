@@ -8,6 +8,8 @@ public class DonatorGUI extends AGUI {
         public DonatorPanel donatorPanel;
         public KillEffectPanel killEffectPanel;
         public PantsColorPanel pantsColorPanel;
+        public DeathCryPanel deathCryPanel;
+        public ChatColorPanel chatColorPanel;
 
         public DonatorGUI(Player player) {
                 super(player);
@@ -16,5 +18,7 @@ public class DonatorGUI extends AGUI {
                 setHomePanel(donatorPanel);
                 killEffectPanel = new KillEffectPanel(this);
                 pantsColorPanel = new PantsColorPanel(this);
+                deathCryPanel = new DeathCryPanel(this);
+                chatColorPanel = new ChatColorPanel(this);
         }
 }

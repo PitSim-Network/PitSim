@@ -11,6 +11,7 @@ import dev.kyro.pitsim.controllers.market.MarketManager;
 import dev.kyro.pitsim.controllers.objects.Non;
 import dev.kyro.pitsim.controllers.objects.PitEnchant;
 import dev.kyro.pitsim.enchants.*;
+import dev.kyro.pitsim.misc.ItemRename;
 import dev.kyro.pitsim.perks.*;
 import dev.kyro.pitsim.placeholders.*;
 import net.milkbowl.vault.economy.Economy;
@@ -217,6 +218,7 @@ public class PitSim extends JavaPlugin {
 		getServer().getPluginManager().registerEvents(new ItemManager(), this);
 		getServer().getPluginManager().registerEvents(new CombatManager(), this);
 		getServer().getPluginManager().registerEvents(new SpawnManager(), this);
+		getServer().getPluginManager().registerEvents(new ItemRename(), this);
 
 	}
 
