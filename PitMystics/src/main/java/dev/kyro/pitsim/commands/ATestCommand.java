@@ -83,16 +83,14 @@ public class ATestCommand implements CommandExecutor {
 		hoppers.add("wiji1");
 		hoppers.add("KyroKrypt");
 		hoppers.add("Muruseni");
-		hoppers.add("Tinykloon");
 		hoppers.add("hevrts");
-		hoppers.add("Whensus");
-		hoppers.add("bigNaeNae");
 		hoppers.add("xJqker");
-		hoppers.add("Alps");
-		hoppers.add("SilontsSimp");
+		hoppers.add("wackful");
+		hoppers.add("qezou");
+		hoppers.add("LocKsS");
+		hoppers.add("Bobbybenny12");
+		hoppers.add("Troving");
 		hoppers.add("lkjv");
-		hoppers.add("Spenduh");
-		hoppers.add("Technoperson");
 		hoppers.add("Xavier9346");
 		hoppers.add("eveoiii");
 		hoppers.add("ivapev4forlife");
@@ -100,10 +98,16 @@ public class ATestCommand implements CommandExecutor {
 		hoppers.add("FreeJUSTHUNTINGU");
 		hoppers.add("Zsombor_1");
 		hoppers.add("KindEinesTeufels");
-		hoppers.add("iwantamommy");
 		hoppers.add("_MarcusW_");
-		hoppers.add("tam259");
 		hoppers.add("47n");
+		hoppers.add("Sqim");
+		hoppers.add("AddisonDj");
+		hoppers.add("Spellforger");
+		hoppers.add("Airpark ");
+		hoppers.add("BRXTROLTROLTROL");
+		hoppers.add("1Ror");
+		hoppers.add("susbaka69");
+
 	}
 
 	public Team t;

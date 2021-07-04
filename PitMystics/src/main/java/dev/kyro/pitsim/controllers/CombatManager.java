@@ -66,10 +66,7 @@ public class CombatManager implements Listener {
     @EventHandler(priority = EventPriority.HIGHEST)
     public static void onJoin(PlayerJoinEvent event) {
 
-        if(!bannedPlayers.contains(event.getPlayer().getUniqueId())) return;
 
-
-        event.getPlayer().kickPlayer("You are combat banned. Please wait a minute before joining again.");
     }
 
    @EventHandler

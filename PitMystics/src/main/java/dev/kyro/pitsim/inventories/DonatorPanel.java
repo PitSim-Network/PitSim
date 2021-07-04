@@ -9,6 +9,7 @@ import dev.kyro.pitsim.enums.NBTTag;
 import dev.kyro.pitsim.enums.PantColor;
 import dev.kyro.pitsim.misc.ItemRename;
 import dev.kyro.pitsim.misc.Misc;
+import me.clip.placeholderapi.PlaceholderAPI;
 import net.milkbowl.vault.chat.Chat;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -19,6 +20,7 @@ import org.bukkit.event.inventory.InventoryOpenEvent;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.inventory.meta.SkullMeta;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -41,24 +43,26 @@ public class DonatorPanel extends AGUIPanel {
 
     @Override
     public int getRows() {
-        return 5;
+        return 3;
     }
 
     @Override
     public void onClick(InventoryClickEvent event) {
         int slot = event.getSlot();
         if(event.getClickedInventory().getHolder() == this) {
-
-            if(slot == 19) {
+            if(slot == 11) {
+                if(!player.hasPermission("pitsim.chat")) return;
+                openPanel(donatorGUI.chatOptionsPanel);
+             } else if(slot == 12) {
                 if(!player.hasPermission("pitsim.pantscolor")) return;
                 openPanel(donatorGUI.pantsColorPanel);
-            } else if(slot == 20) {
+            } else if(slot == 13) {
                 if(!player.hasPermission("pitsim.deathcry")) return;
                 openPanel(donatorGUI.deathCryPanel);
-            } else if(slot == 21) {
+            } else if(slot == 14) {
                 if(!player.hasPermission("pitsim.killeffect")) return;
                 openPanel(donatorGUI.killEffectPanel);
-            }  else if(slot == 22) {
+            }  else if(slot == 15) {
                 if(!player.hasPermission("pitsim.itemrename")) return;
                 ItemStack heldItem = player.getItemInHand();
                 if(Misc.isAirOrNull(heldItem)) return;
@@ -67,7 +71,7 @@ public class DonatorPanel extends AGUIPanel {
                     player.closeInventory();
                     ItemRename.renameItem(player, player.getItemInHand());
                 }
-            } else if(slot == 23) {
+            } else if(slot == 16) {
                 if(!player.hasPermission("pitsim.chatcolor")) return;
                 openPanel(donatorGUI.chatColorPanel);
             }
@@ -196,11 +200,65 @@ public class DonatorPanel extends AGUIPanel {
         chatmeta.setLore(chatlore);
         chat.setItemMeta(chatmeta);
 
-        getInventory().setItem(19, pants);
-        getInventory().setItem(20, death);
-        getInventory().setItem(21, kill);
-        getInventory().setItem(22, rename);
-        getInventory().setItem(23, chat);
+
+        ItemStack filter = new ItemStack(Material.REDSTONE_COMPARATOR);
+        ItemMeta filtermeta = filter.getItemMeta();
+        List<String> filterlore = new ArrayList<>();
+        filterlore.add(ChatColor.GRAY + "Filter out certain in-game messages");
+        filterlore.add(ChatColor.GRAY + "to better your game experience");
+        filterlore.add("");
+        if(player.hasPermission("pitsim.chat")) {
+            filterlore.add(ChatColor.YELLOW + "Click to select!");
+            filtermeta.setDisplayName(ChatColor.YELLOW + "Chat Options");
+        } else {
+            filterlore.add(ChatColor.translateAlternateColorCodes('&', "&cRequires &eLegendary &crank!"));
+            filtermeta.setDisplayName(ChatColor.RED + "Chat Options");
+        }
+        filtermeta.setLore(filterlore);
+        filter.setItemMeta(filtermeta);
+
+        ItemStack head = new ItemStack(Material.SKULL_ITEM, 1, (byte) 3);
+        SkullMeta headmeta = (SkullMeta) head.getItemMeta();
+        headmeta.setOwner(player.getDisplayName());
+        headmeta.setDisplayName(ChatColor.YELLOW + "Rank Information");
+        List<String> headlore = new ArrayList<>();
+        String rank = "&7Current rank: %luckperms_groups%";
+        headlore.add(ChatColor.translateAlternateColorCodes('&', PlaceholderAPI.setPlaceholders(player, rank)));
+        headlore.add("");
+        if(player.hasPermission("reportex.use")) headlore.add(ChatColor.GREEN + "Access to /report");
+        else headlore.add(ChatColor.RED + "Access to /report");
+        if(player.hasPermission("pitsim.show")) headlore.add(ChatColor.GREEN + "Access to /show");
+        else headlore.add(ChatColor.RED + "Access to /show");
+        if(player.hasPermission("pitsim.chat")) headlore.add(ChatColor.GREEN + "Access to /chat");
+        else headlore.add(ChatColor.RED + "Access to /chat");
+        if(player.hasPermission("pitsim.pantscolor")) headlore.add(ChatColor.GREEN + "Pants Colorizer");
+        else headlore.add(ChatColor.RED + "Pants Colorizer");
+        if(player.hasPermission("pitsim.deathcry")) headlore.add(ChatColor.GREEN + "Death Cries");
+        else headlore.add(ChatColor.RED + "Death Cries");
+        if(player.hasPermission("pitsim.killeffect")) headlore.add(ChatColor.GREEN + "Kill Effects");
+        else headlore.add(ChatColor.RED + "Kill Effects");
+        if(player.hasPermission("pitsim.itemrename")) headlore.add(ChatColor.GREEN + "Item Rename");
+        else headlore.add(ChatColor.RED + "Item Rename");
+        if(player.hasPermission("pitsim.stereo")) headlore.add(ChatColor.GREEN + "Stereo Pants");
+        else headlore.add(ChatColor.RED + "Stereo Pants");
+        if(player.hasPermission("pitsim.chatcolor")) headlore.add(ChatColor.GREEN + "Chat Colors");
+        else headlore.add(ChatColor.RED + "Chat Colors");
+        if(player.hasPermission("galacticvaults.limit.14")) headlore.add(ChatColor.GRAY + "14x " + ChatColor.DARK_PURPLE + "Ender Chest Pages");
+        else if(player.hasPermission("galacticvaults.limit.10")) headlore.add(ChatColor.GRAY + "10x " + ChatColor.DARK_PURPLE + "Ender Chest Pages");
+        else if(player.hasPermission("galacticvaults.limit.7")) headlore.add(ChatColor.GRAY + "7x " + ChatColor.DARK_PURPLE + "Ender Chest Pages");
+        else if(player.hasPermission("galacticvaults.limit.5")) headlore.add(ChatColor.GRAY + "5x " + ChatColor.DARK_PURPLE + "Ender Chest Pages");
+        else if(player.hasPermission("galacticvaults.limit.3")) headlore.add(ChatColor.GRAY + "3x " + ChatColor.DARK_PURPLE + "Ender Chest Pages");
+        else if(player.hasPermission("galacticvaults.limit.1")) headlore.add(ChatColor.GRAY + "1x " + ChatColor.DARK_PURPLE + "Ender Chest Pages");
+        headmeta.setLore(headlore);
+        head.setItemMeta(headmeta);
+
+        getInventory().setItem(10, head);
+        getInventory().setItem(11, filter);
+        getInventory().setItem(12, pants);
+        getInventory().setItem(13, death);
+        getInventory().setItem(14, kill);
+        getInventory().setItem(15, rename);
+        getInventory().setItem(16, chat);
 
         updateInventory();
 

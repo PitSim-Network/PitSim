@@ -2,6 +2,7 @@ package dev.kyro.pitsim.commands;
 
 import com.google.gson.Gson;
 import dev.kyro.arcticapi.misc.AOutput;
+import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import me.clip.placeholderapi.PlaceholderAPI;
 import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.api.chat.ComponentBuilder;
@@ -71,7 +72,8 @@ public class ShowCommand implements CommandExecutor {
         nonhover.addExtra(hover);
 
         for(Player onlinePlayer : Bukkit.getOnlinePlayers()) {
-            onlinePlayer.spigot().sendMessage(nonhover);
+            PitPlayer pitPlayer = PitPlayer.getPitPlayer(onlinePlayer);
+            if(!pitPlayer.disabledPlayerChat)onlinePlayer.spigot().sendMessage(nonhover);
         }
 
         return false;

@@ -49,9 +49,14 @@ public class PlayerManager implements Listener {
 
 		if(pitDead.bounty != 0 && killingNon == null) {
 			DecimalFormat formatter = new DecimalFormat("#,###.#");
-			Bukkit.broadcastMessage(ChatColor.translateAlternateColorCodes('&',
-					"&6&lBOUNTY CLAIMED!&7 " + killEvent.killer.getDisplayName() + "&7 killed " + killEvent.dead.getDisplayName() +
-							"&7 for &6&l" + formatter.format(pitDead.bounty)) + "g");
+
+			for(Player player : Bukkit.getOnlinePlayers()) {
+				PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
+				if(pitPlayer.disabledBounties) continue;
+				player.sendMessage(ChatColor.translateAlternateColorCodes('&',
+						"&6&lBOUNTY CLAIMED!&7 " + killEvent.killer.getDisplayName() + "&7 killed " + killEvent.dead.getDisplayName() +
+								"&7 for &6&l" + formatter.format(pitDead.bounty)) + "g");
+			}
 			PitSim.VAULT.depositPlayer(killEvent.killer, pitDead.bounty);
 			pitDead.bounty = 0;
 
@@ -62,7 +67,7 @@ public class PlayerManager implements Listener {
 
 			int amount = (int) Math.floor(Math.random() * 5 + 1) * 5000;
 			pitKiller.bounty += amount;
-			AOutput.send(killEvent.killer, "&6&lBOUNTY!&7 bump &6&l" + amount + "g&7 on " + killEvent.killer.getDisplayName() +
+			if(!pitKiller.disabledBounties) AOutput.send(killEvent.killer, "&6&lBOUNTY!&7 bump &6&l" + amount + "g&7 on " + killEvent.killer.getDisplayName() +
 					"&7 for high streak");
 			ASound.play(killEvent.killer, Sound.WITHER_SPAWN, 1, 1);
 		}

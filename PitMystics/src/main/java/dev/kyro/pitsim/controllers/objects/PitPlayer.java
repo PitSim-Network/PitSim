@@ -4,9 +4,11 @@ import dev.kyro.arcticapi.data.APlayerData;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.controllers.NonManager;
 import dev.kyro.pitsim.enchants.Hearts;
+import dev.kyro.pitsim.enums.AChatColor;
 import dev.kyro.pitsim.enums.DeathCry;
 import dev.kyro.pitsim.enums.KillEffect;
 import dev.kyro.pitsim.events.HealEvent;
+import dev.kyro.pitsim.inventories.ChatColorPanel;
 import dev.kyro.pitsim.killstreaks.Uberstreak;
 import dev.kyro.pitsim.perks.NoPerk;
 import dev.kyro.pitsim.perks.Thick;
@@ -41,6 +43,12 @@ public class PitPlayer {
 
 	public KillEffect killEffect = null;
 	public DeathCry deathCry = null;
+	public AChatColor chatColor = null;
+
+	public Boolean disabledPlayerChat = false;
+	public Boolean disabledKillFeed = false;
+	public Boolean disabledBounties = false;
+	public Boolean disabledStreaks = false;
 
 	public UUID lastHitUUID = null;
 
@@ -53,14 +61,32 @@ public class PitPlayer {
 			prefix = "&d[&b&l120&d]&r ";
 		}
 
+		FileConfiguration playerData = APlayerData.getPlayerData(player);
+
 		for(int i = 0; i < pitPerks.length; i++) {
 
-			FileConfiguration playerData = APlayerData.getPlayerData(player);
 			String perkString = playerData.getString("perk-" + i);
 			PitPerk savedPerk = perkString != null ? PitPerk.getPitPerk(perkString) : NoPerk.INSTANCE;
 
 			pitPerks[i] = savedPerk != null ? savedPerk : NoPerk.INSTANCE;
 		}
+
+		String deathCryString = playerData.getString("deathcry");
+		if(deathCryString != null) deathCry = DeathCry.valueOf(deathCryString);
+
+		String killEffectString = playerData.getString("killeffect");
+		if(killEffectString != null) killEffect = KillEffect.valueOf(killEffectString);
+
+		String chatColorString = playerData.getString("chatcolor");
+		if(chatColorString != null) {
+			chatColor = AChatColor.valueOf(chatColorString);
+			ChatColorPanel.playerChatColors.put(player, chatColor);
+		}
+
+		disabledBounties = playerData.getBoolean("disabledbounties");
+		disabledStreaks = playerData.getBoolean("disabledstreaks");
+		disabledKillFeed = playerData.getBoolean("disabledkillfeed");
+		disabledPlayerChat = playerData.getBoolean("disabledplayerchat");
 	}
 
 	public static PitPlayer getPitPlayer(Player player) {
@@ -97,8 +123,14 @@ public class PitPlayer {
 		}
 		megastreak.kill();
 
-		if(kills % 100 == 0) Bukkit.broadcastMessage(ChatColor.translateAlternateColorCodes(
-				'&', "&c&lSTREAK!&7 of &c" + kills + " &7by " + player.getDisplayName()));
+		if(kills % 25 == 0) {
+			for(Player onlinePlayer : Bukkit.getOnlinePlayers()) {
+				PitPlayer pitPlayer = PitPlayer.getPitPlayer(onlinePlayer);
+				if(pitPlayer.disabledStreaks) continue;
+				onlinePlayer.sendMessage(ChatColor.translateAlternateColorCodes(
+						'&', "&c&lSTREAK!&7 of &c" + kills + " &7by " + player.getDisplayName()));
+			}
+		}
 	}
 
 	public int getKills() {

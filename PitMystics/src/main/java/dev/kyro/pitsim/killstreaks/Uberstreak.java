@@ -12,6 +12,7 @@ import dev.kyro.pitsim.enums.NBTTag;
 import dev.kyro.pitsim.enums.PantColor;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.Arrays;
@@ -63,8 +64,13 @@ public class Uberstreak extends Megastreak {
 	public void proc() {
 
 		pitPlayer.player.playSound(pitPlayer.player.getLocation(), "mob.guardian.curse", 1000, 1);
-		Bukkit.broadcastMessage(ChatColor.translateAlternateColorCodes('&',
-				"&c&lMEGASTREAK!&7 " + pitPlayer.player.getDisplayName() + "&7 activated &d&lUBERSTREAK&7!"));
+
+		for(Player player : Bukkit.getOnlinePlayers()) {
+			PitPlayer pitPlayer2 = PitPlayer.getPitPlayer(player);
+			if(pitPlayer2.disabledStreaks) continue;
+			player.sendMessage(ChatColor.translateAlternateColorCodes('&',
+					"&c&lMEGASTREAK!&7 " + pitPlayer.player.getDisplayName() + "&7 activated &d&lUBERSTREAK&7!"));
+		}
 	}
 
 	@Override
