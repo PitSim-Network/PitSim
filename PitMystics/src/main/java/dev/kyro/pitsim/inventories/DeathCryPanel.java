@@ -71,7 +71,7 @@ public class DeathCryPanel extends AGUIPanel {
               } else if(slot == 11) {
                 if(pitPlayer.deathCry != DeathCry.MARIO_DEATH) {
                     pitPlayer.deathCry = DeathCry.MARIO_DEATH;
-                    playerData.set("deathcry", DeathCry.MARIO_DEATH);
+                    playerData.set("deathcry", DeathCry.MARIO_DEATH.toString());
                     APlayerData.savePlayerData(player);
                     player.playSound(player.getLocation(), Sound.NOTE_PLING, 1F, 2F);
                     openPanel(donatorGUI.deathCryPanel);
@@ -83,7 +83,7 @@ public class DeathCryPanel extends AGUIPanel {
             } else if(slot == 12) {
                 if(pitPlayer.deathCry != DeathCry.GHAST_SCREAM) {
                     pitPlayer.deathCry = DeathCry.GHAST_SCREAM;
-                    playerData.set("deathcry", DeathCry.GHAST_SCREAM);
+                    playerData.set("deathcry", DeathCry.GHAST_SCREAM.toString());
                     APlayerData.savePlayerData(player);
                     player.playSound(player.getLocation(), Sound.NOTE_PLING, 1F, 2F);
                     openPanel(donatorGUI.deathCryPanel);

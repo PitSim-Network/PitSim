@@ -70,7 +70,7 @@ public class KillEffectPanel extends AGUIPanel {
             } else if(slot == 11) {
                 if(pitPlayer.killEffect != KillEffect.EXE_DEATH) {
                     pitPlayer.killEffect = KillEffect.EXE_DEATH;
-                    playerData.set("killeffect", KillEffect.EXE_DEATH);
+                    playerData.set("killeffect", KillEffect.EXE_DEATH.toString());
                     APlayerData.savePlayerData(player);
                     player.playSound(player.getLocation(), Sound.NOTE_PLING, 1F, 2F);
                     openPanel(donatorGUI.killEffectPanel);
@@ -82,7 +82,7 @@ public class KillEffectPanel extends AGUIPanel {
             } else if(slot == 12) {
                 if(pitPlayer.killEffect != KillEffect.FIRE) {
                     pitPlayer.killEffect = KillEffect.FIRE;
-                    playerData.set("killeffect", KillEffect.FIRE);
+                    playerData.set("killeffect", KillEffect.FIRE.toString());
                     APlayerData.savePlayerData(player);
                     player.playSound(player.getLocation(), Sound.NOTE_PLING, 1F, 2F);
                     openPanel(donatorGUI.killEffectPanel);

@@ -10,6 +10,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryOpenEvent;
+import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.permissions.PermissionAttachment;
@@ -21,6 +22,21 @@ import java.util.Map;
 import java.util.UUID;
 
 public class EnderChestManager implements Listener {
+
+    @EventHandler
+    public void onOpen(InventoryOpenEvent event) {
+        if(event.getInventory().getType().equals(InventoryType.ENDER_CHEST) && !event.getPlayer().isOp()) {
+            event.getPlayer().closeInventory();
+            new BukkitRunnable() {
+                @Override
+                public void run() {
+                    Bukkit.dispatchCommand(event.getPlayer(), "pv 1");
+                    ASound.play((Player) event.getPlayer(), Sound.CHEST_OPEN);
+                }
+            }.runTaskLater(PitSim.INSTANCE, 1L);
+
+        }
+    }
 
 
     @EventHandler
