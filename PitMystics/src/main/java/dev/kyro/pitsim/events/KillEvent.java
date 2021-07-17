@@ -24,7 +24,7 @@ public class KillEvent extends Event {
 
 	public int xpReward;
 //	public int goldReward = 5;
-	public int goldReward = 500;
+	public int goldReward = 20;
 	public List<Double> xpMultipliers = new ArrayList<>();
 	public List<Double> goldMultipliers = new ArrayList<>();
 

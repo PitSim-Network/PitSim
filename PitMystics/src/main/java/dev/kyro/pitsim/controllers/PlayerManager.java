@@ -5,12 +5,14 @@ import dev.kyro.arcticapi.misc.ASound;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.controllers.objects.Non;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
-import dev.kyro.pitsim.enums.DeathCry;
 import dev.kyro.pitsim.events.KillEvent;
 import dev.kyro.pitsim.misc.DeathCrys;
 import dev.kyro.pitsim.misc.KillEffects;
 import dev.kyro.pitsim.misc.Misc;
-import org.bukkit.*;
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
+import org.bukkit.Material;
+import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -60,7 +62,7 @@ public class PlayerManager implements Listener {
 
 		if(Math.random() < 0.1 && killingNon == null) {
 
-			int amount = (int) Math.floor(Math.random() * 5 + 1) * 5000;
+			int amount = (int) Math.floor(Math.random() * 5 + 1) * 500;
 			pitKiller.bounty += amount;
 			AOutput.send(killEvent.killer, "&6&lBOUNTY!&7 bump &6&l" + amount + "g&7 on " + killEvent.killer.getDisplayName() +
 					"&7 for high streak");
@@ -107,24 +109,24 @@ public class PlayerManager implements Listener {
 		Player player = event.getPlayer();
 		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
 
-		if(!player.isOp()) {
-			BypassManager.bypassAll.add(player);
-			Misc.sendTitle(player, ChatColor.translateAlternateColorCodes('&', "&c&lSYNCING WORLD"), 200);
-			new BukkitRunnable() {
-				int count = 0;
-				@Override
-				public void run() {
-					if((count != 0 && !player.isOnline()) || count++ >= 80) {
-						cancel();
-						BypassManager.bypassAll.remove(player);
-						return;
-					}
-
-					Location spawnLoc = new Location(Bukkit.getWorld("pit"), -108.5, 86, 194.5, 45, 0);
-					player.teleport(spawnLoc);
-				}
-			}.runTaskTimer(PitSim.INSTANCE, 0L, 1L);
-		}
+//		if(!player.isOp()) {
+//			BypassManager.bypassAll.add(player);
+//			Misc.sendTitle(player, ChatColor.translateAlternateColorCodes('&', "&c&lSYNCING WORLD"), 200);
+//			new BukkitRunnable() {
+//				int count = 0;
+//				@Override
+//				public void run() {
+//					if((count != 0 && !player.isOnline()) || count++ >= 80) {
+//						cancel();
+//						BypassManager.bypassAll.remove(player);
+//						return;
+//					}
+//
+//					Location spawnLoc = new Location(Bukkit.getWorld("pit"), -108.5, 86, 194.5, 45, 0);
+//					player.teleport(spawnLoc);
+//				}
+//			}.runTaskTimer(PitSim.INSTANCE, 0L, 1L);
+//		}
 
 		new BukkitRunnable() {
 			@Override
