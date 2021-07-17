@@ -68,7 +68,7 @@ public class RetroGravityMicrocosm extends PitEnchant {
 				}
 			}.runTaskLater(PitSim.INSTANCE, 30 * 20);
 
-			AOutput.send(attackEvent.defender, "&d&lRGM!&7 Procced against " + attackEvent.attacker.getName() + " &8(" + Math.min(charge, 5) + "x)");
+			AOutput.send(attackEvent.defender, "&d&lRGM!&7 Procced against " + attackEvent.attacker.getName() + " &8(" + Math.min(charge, getMaxStacks(attackerEnchantLvl)) + "x)");
 			ASound.play(attackEvent.defender, Sound.ENDERMAN_HIT, 1F, 1F);
 			ASound.play(attackEvent.attacker, Sound.ENDERMAN_HIT, 1F, 1F);
 		}
