@@ -14,8 +14,6 @@ import org.bukkit.inventory.ItemStack;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
-import java.util.UUID;
 
 public class MarketManager implements Listener {
 
@@ -23,18 +21,18 @@ public class MarketManager implements Listener {
 
 	static {
 
-		List<String> playerList = PitSim.playerList.getStringList("players");
-		if(playerList != null) {
-			for(String player : playerList) {
-				FileConfiguration playerData = APlayerData.getPlayerData(UUID.fromString(player));
-				if(playerData == null || playerData.getConfigurationSection("auctions") == null) continue;
-				Set<String> keys = playerData.getConfigurationSection("auctions").getKeys(false);
-				for(String key : keys) {
-					System.out.println(key);
-					auctionItems.add(new AuctionItem(playerData.getConfigurationSection("auctions." + key)));
-				}
-			}
-		}
+//		List<String> playerList = PitSim.playerList.getStringList("players");
+//		if(playerList != null) {
+//			for(String player : playerList) {
+//				FileConfiguration playerData = APlayerData.getPlayerData(UUID.fromString(player));
+//				if(playerData == null || playerData.getConfigurationSection("auctions") == null) continue;
+//				Set<String> keys = playerData.getConfigurationSection("auctions").getKeys(false);
+//				for(String key : keys) {
+//					System.out.println(key);
+//					auctionItems.add(new AuctionItem(playerData.getConfigurationSection("auctions." + key)));
+//				}
+//			}
+//		}
 	}
 
 	@EventHandler

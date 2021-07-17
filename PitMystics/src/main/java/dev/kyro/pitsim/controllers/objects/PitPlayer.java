@@ -51,15 +51,18 @@ public class PitPlayer {
 		Non non = NonManager.getNon(player);
 		if(non == null) {
 			prefix = "&d[&b&l120&d]&r ";
-		}
-
-		for(int i = 0; i < pitPerks.length; i++) {
 
 			FileConfiguration playerData = APlayerData.getPlayerData(player);
-			String perkString = playerData.getString("perk-" + i);
-			PitPerk savedPerk = perkString != null ? PitPerk.getPitPerk(perkString) : NoPerk.INSTANCE;
+			for(int i = 0; i < pitPerks.length; i++) {
 
-			pitPerks[i] = savedPerk != null ? savedPerk : NoPerk.INSTANCE;
+				String perkString = playerData.getString("perk-" + i);
+				PitPerk savedPerk = perkString != null ? PitPerk.getPitPerk(perkString) : NoPerk.INSTANCE;
+
+				pitPerks[i] = savedPerk != null ? savedPerk : NoPerk.INSTANCE;
+			}
+		} else {
+
+			Arrays.fill(pitPerks, NoPerk.INSTANCE);
 		}
 	}
 
