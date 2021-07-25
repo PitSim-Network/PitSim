@@ -54,6 +54,8 @@ public class PitSim extends JavaPlugin {
 			return;
 		}
 
+//		PitEventManager.eventWait();
+
 		registerUpgrades();
 
 		ArcticAPI.setupPlaceholderAPI("pitsim");
@@ -203,6 +205,8 @@ public class PitSim extends JavaPlugin {
 		getCommand("enchants").setExecutor(new EnchantListCommand());
 		getCommand("setkills").setExecutor(new SetKillCommand());
 		getCommand("donator").setExecutor(new DonatorCommand());
+		getCommand("ks").setExecutor(new KsCommand());
+		getCommand("bounty").setExecutor(new BountyCommand());
 //		getCommand("togglestereo").setExecutor(new ToggleStereoCommand());
 	}
 

@@ -3,6 +3,7 @@ package dev.kyro.pitsim.events;
 import dev.kyro.pitsim.controllers.objects.Non;
 import dev.kyro.pitsim.controllers.NonManager;
 import dev.kyro.pitsim.controllers.objects.PitEnchant;
+import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
@@ -24,7 +25,7 @@ public class KillEvent extends Event {
 
 	public int xpReward;
 //	public int goldReward = 5;
-	public int goldReward = 500;
+	public int goldReward = 20;
 	public List<Double> xpMultipliers = new ArrayList<>();
 	public List<Double> goldMultipliers = new ArrayList<>();
 
@@ -53,6 +54,8 @@ public class KillEvent extends Event {
 		for(Double goldMultiplier : goldMultipliers) {
 			goldReward *= goldMultiplier;
 		}
+		PitPlayer pitPlayer = PitPlayer.getPitPlayer(killer.getPlayer());
+
 		return goldReward;
 	}
 

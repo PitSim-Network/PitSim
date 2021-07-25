@@ -33,6 +33,7 @@ public class PitPlayer {
 	private int kills = 0;
 	public int bounty = 0;
 	public List<Killstreak> killstreaks = new ArrayList<>();
+
 	public Megastreak megastreak;
 
 	public Map<PitEnchant, Integer> enchantHits = new HashMap<>();

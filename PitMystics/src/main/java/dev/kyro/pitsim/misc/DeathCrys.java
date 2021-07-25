@@ -24,7 +24,6 @@ public class DeathCrys {
     public static void trigger(Player player, DeathCry deathCry, Location location) {
 
         if(deathCry == DeathCry.MARIO_DEATH) {
-            Bukkit.broadcastMessage("HI");
             File file = new File("plugins/NoteBlockAPI/Effects/mariodeath.nbs");
             Song song = NBSDecoder.parse(file);
             PositionSongPlayer psp = new PositionSongPlayer(song);

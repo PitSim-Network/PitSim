@@ -26,7 +26,7 @@ public class Uberstreak extends Megastreak {
 
 	@Override
 	public String getName() {
-		return "&c&lUBER";
+		return "&d&lUBER";
 	}
 
 	@Override

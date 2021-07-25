@@ -2,6 +2,7 @@ package dev.kyro.pitsim.controllers.objects;
 
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.controllers.NonManager;
+import dev.kyro.pitsim.controllers.PitEventManager;
 import dev.kyro.pitsim.enums.NonState;
 import dev.kyro.pitsim.enums.NonTrait;
 import dev.kyro.pitsim.misc.Misc;
@@ -18,6 +19,7 @@ import org.bukkit.block.Block;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerTeleportEvent;
 import org.bukkit.inventory.ItemStack;
@@ -68,7 +70,7 @@ public class Non {
 		}
 		displayName = "&7[" + color + (rand * 10 + (int) (Math.random() * 10)) + "&7]&7" + " " + name;
 		this.npc = CitizensAPI.getNPCRegistry().createNPC(EntityType.PLAYER, displayName);
-		spawn();
+		if(!PitEventManager.majorEvent)spawn();
 		this.non = (Player) npc.getEntity();
 		NonManager.nons.add(this);
 
@@ -83,14 +85,14 @@ public class Non {
 		persistence = (Math.random() * 3 + 94) / 100D;
 		if(traits.contains(NonTrait.IRON_STREAKER)) persistence -= 100 - persistence;
 
-		respawn();
+		if(!PitEventManager.majorEvent)respawn();
 		skin(name);
 	}
 
 	public void tick() {
 
 		non = (Player) npc.getEntity();
-		if(!npc.isSpawned()) spawn();
+		if(!npc.isSpawned() && !PitEventManager.majorEvent) spawn();
 		if(npc.isSpawned() && non.getLocation().getY() <= 42) {
 			Location teleportLoc = non.getLocation().clone();
 			teleportLoc.setY(43.2);
@@ -107,7 +109,7 @@ public class Non {
 		npc.getNavigator().setTarget(target, true);
 
 		if(traits.contains(NonTrait.IRON_STREAKER))
-				Misc.applyPotionEffect(non, PotionEffectType.DAMAGE_RESISTANCE, 9999, 2, true, false);
+				Misc.applyPotionEffect((Player) non, PotionEffectType.DAMAGE_RESISTANCE, 9999, 1, true, false);
 //		non.setHealth(non.getMaxHealth());
 
 		if(target == null) return;
@@ -156,6 +158,12 @@ public class Non {
 		target = closest;
 	}
 
+	public void setDisabled(Boolean toggled) {
+		Location spawnLoc = new Location(Bukkit.getWorld("pit"), -119, 86, 205, -180, 60);
+		if(toggled) npc.despawn();
+		else npc.spawn(spawnLoc);
+	}
+
 	public void spawn() {
 		Location spawnLoc = new Location(Bukkit.getWorld("pit"), -119, 86, 205, -180, 60);
 		npc.spawn(spawnLoc);
@@ -167,16 +175,18 @@ public class Non {
 		nonState = NonState.RESPAWNING;
 //		Location spawnLoc = new Location(Bukkit.getWorld("pit"), -119, 86, 211, -180, 60);
 		Location spawnLoc = new Location(Bukkit.getWorld("pit"), -119, 86, 205, -180, 60);
-		if(!npc.isSpawned()) spawn();
-//		try {
+		if(!npc.isSpawned() && !PitEventManager.majorEvent) spawn();
+		try {
 
-//			non.teleport(spawnLoc, PlayerTeleportEvent.TeleportCause.PLUGIN);
-//		} catch(Exception ignored) {
+			non.teleport(spawnLoc, PlayerTeleportEvent.TeleportCause.PLUGIN);
+		} catch(Exception ignored) {
 
+			ignored.printStackTrace();
 			npc.despawn();
 			npc.spawn(spawnLoc);
-//			System.out.println("non teleportation respawn errored");
-//		}
+			System.out.println("non teleportation respawn errored");
+		}
+
 
 		non.setHealth(non.getMaxHealth());
 

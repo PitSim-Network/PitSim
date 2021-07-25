@@ -296,7 +296,12 @@ public class DamageManager implements Listener {
 			int xp = (int) Math.ceil(killEvent.getFinalXp() * assistPercent);
 			double gold = killEvent.getFinalGold() * assistPercent;
 
-			PitSim.VAULT.depositPlayer(assistPlayer, killEvent.getFinalGold());
+			if(killEvent.getFinalGold() > 10) {
+				PitSim.VAULT.depositPlayer(assistPlayer, 10);
+			} else {
+				PitSim.VAULT.depositPlayer(assistPlayer, killEvent.getFinalGold());
+			}
+
 
 			ASound.play(assistPlayer, Sound.ORB_PICKUP, 1F, 1.7301587F);
 			String assist = "&a&lASSIST!&7 " + Math.round(assistPercent * 100) + "% on %luckperms_prefix%" +

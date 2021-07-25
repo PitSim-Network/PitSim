@@ -18,6 +18,7 @@ repositories {
     maven { url "https://repo.extendedclip.com/content/repositories/placeholderapi/" }
     maven { url "http://maven.sk89q.com/repo/" }
     maven { url "https://maven.enginehub.org/repo/" }
+    maven { url "https://repo.inventivetalent.org/content/repositories/snapshots" }
 }
 
 dependencies {
@@ -28,6 +29,7 @@ dependencies {
     compileOnly "me.clip:placeholderapi:2.10.9"
     compileOnly 'com.sk89q.worldguard:worldguard-legacy:6.2'
     compileOnly 'com.sk89q.worldedit:worldedit-bukkit:6.0'
+    compileOnly 'org.inventivetalent:bossbarapi:2.4.3-SNAPSHOT'
 
     compile group: 'com.github.koca2000', name: 'NoteBlockAPI', version: '-SNAPSHOT'
     compile 'com.github.ArcticDevelopment:ArcticAPI:fc630bd727'

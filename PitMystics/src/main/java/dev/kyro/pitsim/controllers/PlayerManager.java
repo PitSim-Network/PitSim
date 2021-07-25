@@ -10,6 +10,7 @@ import dev.kyro.pitsim.events.KillEvent;
 import dev.kyro.pitsim.misc.DeathCrys;
 import dev.kyro.pitsim.misc.KillEffects;
 import dev.kyro.pitsim.misc.Misc;
+import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.*;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -20,6 +21,8 @@ import org.bukkit.event.player.PlayerItemDamageEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
+import org.inventivetalent.bossbar.BossBar;
+import org.inventivetalent.bossbar.BossBarAPI;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -65,7 +68,7 @@ public class PlayerManager implements Listener {
 
 		if(Math.random() < 0.1 && killingNon == null) {
 
-			int amount = (int) Math.floor(Math.random() * 5 + 1) * 5000;
+			int amount = (int) Math.floor(Math.random() * 5 + 1) * 200		;
 			pitKiller.bounty += amount;
 			if(!pitKiller.disabledBounties) AOutput.send(killEvent.killer, "&6&lBOUNTY!&7 bump &6&l" + amount + "g&7 on " + killEvent.killer.getDisplayName() +
 					"&7 for high streak");
@@ -112,24 +115,34 @@ public class PlayerManager implements Listener {
 		Player player = event.getPlayer();
 		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
 
-		if(!player.isOp()) {
-			BypassManager.bypassAll.add(player);
-			Misc.sendTitle(player, ChatColor.translateAlternateColorCodes('&', "&c&lSYNCING WORLD"), 200);
-			new BukkitRunnable() {
+		new BukkitRunnable() {
 				int count = 0;
 				@Override
 				public void run() {
-					if((count != 0 && !player.isOnline()) || count++ >= 80) {
-						cancel();
-						BypassManager.bypassAll.remove(player);
-						return;
-					}
-
-					Location spawnLoc = new Location(Bukkit.getWorld("pit"), -108.5, 86, 194.5, 45, 0);
-					player.teleport(spawnLoc);
+					System.out.println("Location changed!");
+//					player.teleport(player.getLocation());
 				}
-			}.runTaskTimer(PitSim.INSTANCE, 0L, 1L);
-		}
+			}.runTaskLater(PitSim.INSTANCE, 1L);
+
+
+//		if(!player.isOp()) {
+//			BypassManager.bypassAll.add(player);
+//			Misc.sendTitle(player, ChatColor.translateAlternateColorCodes('&', "&c&lSYNCING WORLD"), 200);
+//			new BukkitRunnable() {
+//				int count = 0;
+//				@Override
+//				public void run() {
+//					if((count != 0 && !player.isOnline()) || count++ >= 80) {
+//						cancel();
+//						BypassManager.bypassAll.remove(player);
+//						return;
+//					}
+//
+//					Location spawnLoc = new Location(Bukkit.getWorld("pit"), -108.5, 86, 194.5, 45, 0);
+//					player.teleport(spawnLoc);
+//				}
+//			}.runTaskTimer(PitSim.INSTANCE, 0L, 1L);
+//		}
 
 		new BukkitRunnable() {
 			@Override

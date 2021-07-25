@@ -73,7 +73,7 @@ public class ChatColorPanel extends AGUIPanel {
                     } else {
                         playerChatColors.put(player, chatColor);
                         pitPlayer.chatColor = chatColor;
-                        playerData.set("chatcolor", chatColor);
+                        playerData.set("chatcolor", chatColor.toString());
                         APlayerData.savePlayerData(player);
                         player.playSound(player.getLocation(), Sound.NOTE_PLING, 1F, 2F);
                         openPanel(donatorGUI.chatColorPanel);
