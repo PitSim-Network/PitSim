@@ -1,12 +1,27 @@
 package dev.kyro.pitsim.controllers;
 
+import dev.kyro.pitsim.controllers.objects.Non;
+import dev.kyro.pitsim.enums.GameMap;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.entity.Player;
 
 public class MapManager {
 
+    public static GameMap map = null;
+
+    public static void onStart() {
+        double d = Math.random();
+        if(d < 0.5) map = GameMap.DESERT;
+        else map = GameMap.STARWARS;
+
+        for(Player onlinePlayer : Bukkit.getOnlinePlayers()) {
+            onlinePlayer.teleport(getPlayerSpawn());
+        }
+    }
+
     public static Location playerDesert = new org.bukkit.Location(Bukkit.getWorld("pit"), -108, 86, 194, 48, 3);
-    public static Location desertNonSpawn = new Location(Bukkit.getWorld("pit"), -119, 43, 205);
+    public static Location desertNonSpawn = new Location(Bukkit.getWorld("pit"), -119, 85, 205);
     public static Location desertMid = new Location(Bukkit.getWorld("pit"), -118, 43, 204);
     public static int desertY = 42;
 
@@ -17,19 +32,33 @@ public class MapManager {
 
     public static Location getNonSpawn() {
 
-        return snowNonSpawn;
+        if(map == GameMap.STARWARS)return snowNonSpawn;
+        else return desertNonSpawn;
     }
 
     public static Location getMid() {
 
-        return snowMid;
+        if(map == GameMap.STARWARS)return snowMid;
+        else return desertMid;
     }
 
     public static int getY() {
-        return snowY;
+        if(map == GameMap.STARWARS)return snowY;
+        else return desertY;
     }
 
     public static Location getPlayerSpawn() {
-        return playerSnow;
+        if(map == GameMap.STARWARS)return playerSnow;
+        else return playerDesert;
+    }
+
+    public static void onSwitch() {
+        for(Player onlinePlayer : Bukkit.getOnlinePlayers()) {
+            onlinePlayer.teleport(getPlayerSpawn());
+        }
+
+        for(Non non : NonManager.nons) {
+            non.respawn();
+        }
     }
 }

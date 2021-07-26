@@ -10,6 +10,7 @@ import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.enums.MysticType;
 import dev.kyro.pitsim.enums.NBTTag;
 import dev.kyro.pitsim.enums.PantColor;
+import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
@@ -68,8 +69,10 @@ public class Uberstreak extends Megastreak {
 		for(Player player : Bukkit.getOnlinePlayers()) {
 			PitPlayer pitPlayer2 = PitPlayer.getPitPlayer(player);
 			if(pitPlayer2.disabledStreaks) continue;
-			player.sendMessage(ChatColor.translateAlternateColorCodes('&',
-					"&c&lMEGASTREAK!&7 " + pitPlayer.player.getDisplayName() + "&7 activated &d&lUBERSTREAK&7!"));
+			String message = ChatColor.translateAlternateColorCodes('&',
+					"&c&lMEGASTREAK!&7 %luckperms_prefix%" + pitPlayer.player.getDisplayName() + "&7 activated &d&lUBERSTREAK&7!");
+
+			player.sendMessage(PlaceholderAPI.setPlaceholders(player, message));
 		}
 	}
 

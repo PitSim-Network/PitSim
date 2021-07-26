@@ -3,6 +3,7 @@ package dev.kyro.pitsim;
 import com.xxmicloxx.NoteBlockAPI.songplayer.EntitySongPlayer;
 import dev.kyro.arcticapi.ArcticAPI;
 import dev.kyro.arcticapi.data.AData;
+import dev.kyro.arcticapi.data.APlayerData;
 import dev.kyro.arcticapi.hooks.AHook;
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.commands.*;
@@ -10,12 +11,14 @@ import dev.kyro.pitsim.controllers.*;
 import dev.kyro.pitsim.controllers.market.MarketManager;
 import dev.kyro.pitsim.controllers.objects.Non;
 import dev.kyro.pitsim.controllers.objects.PitEnchant;
+import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.enchants.*;
 import dev.kyro.pitsim.misc.ItemRename;
 import dev.kyro.pitsim.perks.*;
 import dev.kyro.pitsim.placeholders.*;
 import net.milkbowl.vault.economy.Economy;
 import org.bukkit.Bukkit;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -35,6 +38,10 @@ public class PitSim extends JavaPlugin {
 	public void onEnable() {
 
 		INSTANCE = this;
+
+		MapManager.onStart();
+
+
 		if (!setupEconomy()) {
 			AOutput.log(String.format("[%s] - Disabled due to no Vault dependency found!", getDescription().getName()));
 			getServer().getPluginManager().disablePlugin(this);
@@ -53,6 +60,7 @@ public class PitSim extends JavaPlugin {
 			NoteBlockAPI = false;
 			return;
 		}
+
 
 //		PitEventManager.eventWait();
 
@@ -94,6 +102,15 @@ public class PitSim extends JavaPlugin {
 
 	@Override
 	public void onDisable() {
+
+		for(Player onlinePlayer : Bukkit.getOnlinePlayers()) {
+			PitPlayer pitplayer = PitPlayer.getPitPlayer(onlinePlayer);
+			FileConfiguration playerData = APlayerData.getPlayerData(onlinePlayer);
+			playerData.set("level", pitplayer.playerLevel);
+			playerData.set("playerkills", pitplayer.playerKills);
+			playerData.set("xp", pitplayer.remainingXP);
+			APlayerData.savePlayerData(onlinePlayer);
+		}
 
 		List<Non> copyList = new ArrayList<>(NonManager.nons);
 		for(Non non : copyList) {
@@ -222,7 +239,7 @@ public class PitSim extends JavaPlugin {
 		getCommand("ks").setExecutor(new KsCommand());
 		getCommand("bounty").setExecutor(new BountyCommand());
 		getCommand("spawn").setExecutor(new SpawnCommand());
-		getCommand("xptest").setExecutor(new XpTestCommand());
+		getCommand("changemap").setExecutor(new ChangeMapCommand());
 //		getCommand("togglestereo").setExecutor(new ToggleStereoCommand());
 	}
 

@@ -37,7 +37,6 @@ import java.util.*;
 
 public class DamageManager implements Listener {
 
-	public static Location spawnLoc = MapManager.getPlayerSpawn();
 	public static List<Player> hitCooldownList = new ArrayList<>();
 	public static List<Player> nonHitCooldownList = new ArrayList<>();
 	public static Map<EntityShootBowEvent, Map<PitEnchant, Integer>> arrowMap = new HashMap<>();
@@ -248,6 +247,7 @@ public class DamageManager implements Listener {
 
 		Non defendingNon = NonManager.getNon(dead);
 		if(defendingNon == null) {
+			Location spawnLoc = MapManager.getPlayerSpawn();
 			dead.teleport(spawnLoc);
 			pitAttacker.playerKills = pitAttacker.playerKills + 1;
 			playerData.set("playerkills", pitAttacker.playerLevel);
@@ -349,6 +349,7 @@ public class DamageManager implements Listener {
 		playerData.set("xp", pitPlayer.remainingXP);
 		APlayerData.savePlayerData(dead);
 
+		Location spawnLoc = MapManager.getPlayerSpawn();
 		dead.teleport(spawnLoc);
 		PitPlayer pitDefender = PitPlayer.getPitPlayer(dead);
 		pitDefender.endKillstreak();

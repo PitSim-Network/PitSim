@@ -26,7 +26,6 @@ public class LeaderboardManager {
         ValueComparator bvc =  new ValueComparator(levels);
         TreeMap<String,Integer> sorted_map = new TreeMap<String,Integer>(bvc);
         sorted_map.putAll(levels);
-        System.out.println(sorted_map);
         finalSorted.clear();
         finalSorted = sorted_map;
         finalLevels.putAll(sorted_map);

@@ -10,6 +10,7 @@ import dev.kyro.pitsim.events.KillEvent;
 import dev.kyro.pitsim.misc.DeathCrys;
 import dev.kyro.pitsim.misc.KillEffects;
 import dev.kyro.pitsim.misc.Misc;
+import me.clip.placeholderapi.PlaceholderAPI;
 import net.md_5.bungee.api.chat.TextComponent;
 import net.royawesome.jlibnoise.module.combiner.Max;
 import org.bukkit.*;
@@ -58,9 +59,18 @@ public class PlayerManager implements Listener {
 			for(Player player : Bukkit.getOnlinePlayers()) {
 				PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
 				if(pitPlayer.disabledBounties) continue;
-				player.sendMessage(ChatColor.translateAlternateColorCodes('&',
-						"&6&lBOUNTY CLAIMED!&7 " + killEvent.killer.getDisplayName() + "&7 killed " + killEvent.dead.getDisplayName() +
-								"&7 for &6&l" + formatter.format(pitDead.bounty)) + "g");
+
+
+				String bounty1 = ChatColor.translateAlternateColorCodes('&',
+						"&6&lBOUNTY CLAIMED!&7 %luckperms_prefix%" + killEvent.killer.getDisplayName() + "&7 killed ");
+				String bounty2 = ChatColor.translateAlternateColorCodes('&', "%luckperms_prefix%" + killEvent.dead.getDisplayName()
+						+ "&7 for &6&l" + formatter.format(pitDead.bounty)) + "g";
+				String bounty3 = PlaceholderAPI.setPlaceholders(killEvent.killer, bounty1);
+				String bounty4 = PlaceholderAPI.setPlaceholders(killEvent.dead, bounty2);
+				player.sendMessage(bounty3 + bounty4);
+
+
+
 			}
 			PitSim.VAULT.depositPlayer(killEvent.killer, pitDead.bounty);
 			pitDead.bounty = 0;
@@ -72,8 +82,9 @@ public class PlayerManager implements Listener {
 
 			int amount = (int) Math.floor(Math.random() * 5 + 1) * 200		;
 			pitKiller.bounty += amount;
-			if(!pitKiller.disabledBounties) AOutput.send(killEvent.killer, "&6&lBOUNTY!&7 bump &6&l" + amount + "g&7 on " + killEvent.killer.getDisplayName() +
-					"&7 for high streak");
+			String message = "&6&lBOUNTY!&7 bump &6&l" + amount + "g&7 on %luckperms_prefix%" + killEvent.killer.getDisplayName() +
+					"&7 for high streak";
+			if(!pitKiller.disabledBounties) AOutput.send(killEvent.killer, PlaceholderAPI.setPlaceholders(killEvent.killer, message));
 			ASound.play(killEvent.killer, Sound.WITHER_SPAWN, 1, 1);
 		}
 	}
@@ -130,6 +141,14 @@ public class PlayerManager implements Listener {
 		Location spawnLoc = MapManager.getPlayerSpawn();
 		player.teleport(spawnLoc);
 
+		new BukkitRunnable() {
+				@Override
+				public void run() {
+
+					String message = "%luckperms_prefix%";
+					pitPlayer.prefix = "&7[&e" + pitPlayer.playerLevel + "&7] " + PlaceholderAPI.setPlaceholders(player, message);
+				}
+			}.runTaskLater(PitSim.INSTANCE,  10L);
 
 //		if(!player.isOp()) {
 //			BypassManager.bypassAll.add(player);

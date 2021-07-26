@@ -12,6 +12,7 @@ import dev.kyro.pitsim.inventories.ChatColorPanel;
 import dev.kyro.pitsim.killstreaks.Uberstreak;
 import dev.kyro.pitsim.perks.NoPerk;
 import dev.kyro.pitsim.perks.Thick;
+import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -61,9 +62,7 @@ public class PitPlayer {
 		this.megastreak = new Uberstreak(this);
 
 		Non non = NonManager.getNon(player);
-		if(non == null) {
-			prefix = "&d[&b&l120&d]&r ";
-		}
+
 
 		FileConfiguration playerData = APlayerData.getPlayerData(player);
 
@@ -71,6 +70,10 @@ public class PitPlayer {
 			playerLevel = playerData.getInt("level");
 			remainingXP = playerData.getInt("xp");
 			playerKills = playerData.getInt("playerkills");
+		}
+
+		if(non == null) {
+			prefix = "&7[&e" + playerLevel + "&7] ";
 		}
 
 		for(int i = 0; i < pitPerks.length; i++) {
@@ -137,8 +140,9 @@ public class PitPlayer {
 			for(Player onlinePlayer : Bukkit.getOnlinePlayers()) {
 				PitPlayer pitPlayer = PitPlayer.getPitPlayer(onlinePlayer);
 				if(pitPlayer.disabledStreaks) continue;
-				onlinePlayer.sendMessage(ChatColor.translateAlternateColorCodes(
-						'&', "&c&lSTREAK!&7 of &c" + kills + " &7by " + player.getDisplayName()));
+				String message = ChatColor.translateAlternateColorCodes(
+						'&', "&c&lSTREAK!&7 of &c" + kills + " &7by %luckperms_prefix%" + player.getDisplayName());
+				onlinePlayer.sendMessage(PlaceholderAPI.setPlaceholders(player, message));
 			}
 		}
 	}
