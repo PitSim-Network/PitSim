@@ -3,6 +3,7 @@ package dev.kyro.pitsim.enchants;
 import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.arcticapi.misc.ASound;
 import dev.kyro.pitsim.PitSim;
+import dev.kyro.pitsim.controllers.NonManager;
 import dev.kyro.pitsim.controllers.objects.PitEnchant;
 import dev.kyro.pitsim.enums.ApplyType;
 import dev.kyro.pitsim.events.AttackEvent;
@@ -25,9 +26,14 @@ public class Billionaire extends PitEnchant {
 		int enchantLvl = attackEvent.getAttackerEnchantLevel(this);
 		if(enchantLvl == 0) return;
 
-		double finalBalance = PitSim.VAULT.getBalance(attackEvent.attacker) - getGoldCost(enchantLvl);
+		int goldCost = getGoldCost(enchantLvl);
+
+		if(NonManager.getNon(attackEvent.defender) == null) {
+			goldCost = goldCost /  5;
+		}
+		double finalBalance = PitSim.VAULT.getBalance(attackEvent.attacker) - goldCost;
 		if(finalBalance < 0) return;
-		PitSim.VAULT.withdrawPlayer(attackEvent.attacker, getGoldCost(enchantLvl));
+		PitSim.VAULT.withdrawPlayer(attackEvent.attacker, goldCost);
 
 		attackEvent.multiplier.add(getDamageMultiplier(enchantLvl));
 		ASound.play(attackEvent.attacker, Sound.ORB_PICKUP, 1, 0.73F);
@@ -37,7 +43,7 @@ public class Billionaire extends PitEnchant {
 	public List<String> getDescription(int enchantLvl) {
 
 		return new ALoreBuilder("&7Hits with this sword deal &c" + getDamageMultiplier(enchantLvl) + "x",
-				"&cdamage &7but cost &6" + getGoldCost(enchantLvl) + "g").getLore();
+				"&cdamage &7but cost &6" + getGoldCost(enchantLvl) / 5 + "g &7against", "&7players and &6" + getGoldCost(enchantLvl) + "g &7against", "&7bots").getLore();
 	}
 
 	public double getDamageMultiplier(int enchantLvl) {

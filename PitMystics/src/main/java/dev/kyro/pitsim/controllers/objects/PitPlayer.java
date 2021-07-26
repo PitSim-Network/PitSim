@@ -28,6 +28,9 @@ public class PitPlayer {
 	public Player player;
 	public String prefix;
 
+	public int playerLevel = 1;
+	public int remainingXP = 21;
+	public int playerKills = 0;
 	public PitPerk[] pitPerks = new PitPerk[4];
 
 	private int kills = 0;
@@ -63,6 +66,12 @@ public class PitPlayer {
 		}
 
 		FileConfiguration playerData = APlayerData.getPlayerData(player);
+
+		if(playerData.getInt("level") > 0) {
+			playerLevel = playerData.getInt("level");
+			remainingXP = playerData.getInt("xp");
+			playerKills = playerData.getInt("playerkills");
+		}
 
 		for(int i = 0; i < pitPerks.length; i++) {
 

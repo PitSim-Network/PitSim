@@ -65,6 +65,20 @@ public class PitSim extends JavaPlugin {
 		AHook.registerPlaceholder(new GladiatorPlaceholder());
 		AHook.registerPlaceholder(new CombatTimerPlaceholder());
 		AHook.registerPlaceholder(new StreakPlaceholder());
+		AHook.registerPlaceholder(new ExperiencePlaceholder());
+		AHook.registerPlaceholder(new LevelPlaceholder());
+		AHook.registerPlaceholder(new PlayerKillsPlaceholder());
+		AHook.registerPlaceholder(new LeaderboardPlaceholder());
+		AHook.registerPlaceholder(new LeaderboardPlaceholder2());
+		AHook.registerPlaceholder(new LeaderboardPlaceholder3());
+		AHook.registerPlaceholder(new LeaderboardPlaceholder4());
+		AHook.registerPlaceholder(new LeaderboardPlaceholder5());
+		AHook.registerPlaceholder(new LeaderboardPlaceholder6());
+		AHook.registerPlaceholder(new LeaderboardPlaceholder7());
+		AHook.registerPlaceholder(new LeaderboardPlaceholder8());
+		AHook.registerPlaceholder(new LeaderboardPlaceholder9());
+		AHook.registerPlaceholder(new LeaderboardPlaceholder10());
+
 
 		loadConfig();
 
@@ -207,6 +221,8 @@ public class PitSim extends JavaPlugin {
 		getCommand("donator").setExecutor(new DonatorCommand());
 		getCommand("ks").setExecutor(new KsCommand());
 		getCommand("bounty").setExecutor(new BountyCommand());
+		getCommand("spawn").setExecutor(new SpawnCommand());
+		getCommand("xptest").setExecutor(new XpTestCommand());
 //		getCommand("togglestereo").setExecutor(new ToggleStereoCommand());
 	}
 

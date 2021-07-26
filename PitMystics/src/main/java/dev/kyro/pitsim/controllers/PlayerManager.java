@@ -11,6 +11,7 @@ import dev.kyro.pitsim.misc.DeathCrys;
 import dev.kyro.pitsim.misc.KillEffects;
 import dev.kyro.pitsim.misc.Misc;
 import net.md_5.bungee.api.chat.TextComponent;
+import net.royawesome.jlibnoise.module.combiner.Max;
 import org.bukkit.*;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -19,6 +20,7 @@ import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerItemDamageEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.inventivetalent.bossbar.BossBar;
@@ -103,6 +105,16 @@ public class PlayerManager implements Listener {
 
 		ASound.play(player, Sound.HORSE_ARMOR, 1F, 1.3F);
 	}
+	@EventHandler
+	public void onRespawn(PlayerRespawnEvent event) {
+		new BukkitRunnable() {
+			@Override
+			public void run() {
+				event.getPlayer().teleport(MapManager.getPlayerSpawn());
+			}
+		}.runTaskLater(PitSim.INSTANCE, 10L);
+
+	}
 
 	@EventHandler
 	public void onItemDamage(PlayerItemDamageEvent event) {
@@ -115,14 +127,8 @@ public class PlayerManager implements Listener {
 		Player player = event.getPlayer();
 		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
 
-		new BukkitRunnable() {
-				int count = 0;
-				@Override
-				public void run() {
-					System.out.println("Location changed!");
-//					player.teleport(player.getLocation());
-				}
-			}.runTaskLater(PitSim.INSTANCE, 1L);
+		Location spawnLoc = MapManager.getPlayerSpawn();
+		player.teleport(spawnLoc);
 
 
 //		if(!player.isOp()) {

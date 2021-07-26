@@ -58,7 +58,8 @@ public class EnderChestManager implements Listener {
 
     @EventHandler
     public void onCommand(PlayerCommandPreprocessEvent event) {
-        if(event.getMessage().contains("pv") || event.getMessage().contains("playervault")) {
+        if(event.getMessage().contains("pv") || event.getMessage().equalsIgnoreCase("playervault") ||
+                event.getMessage().equalsIgnoreCase("ec") || event.getMessage().equalsIgnoreCase("enderchest") || event.getMessage().equalsIgnoreCase("echest")) {
             Block block = event.getPlayer().getTargetBlock((HashSet<Byte>) null, 5);
             if(!block.getType().equals(Material.ENDER_CHEST)) {
                 event.getPlayer().sendMessage("Unknown command. Type \"/help\" for help.");

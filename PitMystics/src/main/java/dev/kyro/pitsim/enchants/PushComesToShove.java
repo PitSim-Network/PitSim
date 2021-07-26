@@ -4,6 +4,7 @@ import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.arcticapi.misc.AUtil;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.controllers.BypassManager;
+import dev.kyro.pitsim.controllers.Cooldown;
 import dev.kyro.pitsim.controllers.HitCounter;
 import dev.kyro.pitsim.controllers.objects.PitEnchant;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
@@ -32,6 +33,9 @@ public class PushComesToShove extends PitEnchant {
 		if(enchantLvl == 0) return;
 		PitPlayer pitPlayer = PitPlayer.getPitPlayer(attackEvent.attacker);
 		HitCounter.incrementCounter(pitPlayer.player, this);
+
+		Cooldown cooldown = getCooldown(attackEvent.attacker, 200);
+		if(cooldown.isOnCooldown()) return; else cooldown.reset();
 
 		if(!HitCounter.hasReachedThreshold(pitPlayer.player, this, 3)) return;
 

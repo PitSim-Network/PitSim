@@ -2,6 +2,7 @@ package dev.kyro.pitsim.controllers;
 
 import com.google.common.base.Function;
 import de.tr7zw.nbtapi.NBTItem;
+import dev.kyro.arcticapi.data.APlayerData;
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.arcticapi.misc.ASound;
 import dev.kyro.pitsim.PitSim;
@@ -19,6 +20,7 @@ import dev.kyro.pitsim.events.KillEvent;
 import dev.kyro.pitsim.misc.Misc;
 import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.*;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -35,7 +37,7 @@ import java.util.*;
 
 public class DamageManager implements Listener {
 
-	public static Location spawnLoc = new Location(Bukkit.getWorld("pit"), -108.5, 86, 194.5, 45, 0);
+	public static Location spawnLoc = MapManager.getPlayerSpawn();
 	public static List<Player> hitCooldownList = new ArrayList<>();
 	public static List<Player> nonHitCooldownList = new ArrayList<>();
 	public static Map<EntityShootBowEvent, Map<PitEnchant, Integer>> arrowMap = new HashMap<>();
@@ -230,6 +232,11 @@ public class DamageManager implements Listener {
 		dead.playSound(dead.getLocation(), Sound.FALL_BIG, 1000, 1F);
 		dead.playSound(dead.getLocation(), Sound.FALL_BIG, 1000, 1F);
 		Regularity.toReg.remove(dead.getUniqueId());
+		FileConfiguration playerData = APlayerData.getPlayerData(dead);
+		playerData.set("level", pitDefender.playerLevel);
+		playerData.set("playerkills", pitDefender.playerKills);
+		playerData.set("xp", pitDefender.remainingXP);
+		APlayerData.savePlayerData(dead);
 
 		Non attackingNon = NonManager.getNon(killer);
 		if(attackingNon == null) {
@@ -242,6 +249,9 @@ public class DamageManager implements Listener {
 		Non defendingNon = NonManager.getNon(dead);
 		if(defendingNon == null) {
 			dead.teleport(spawnLoc);
+			pitAttacker.playerKills = pitAttacker.playerKills + 1;
+			playerData.set("playerkills", pitAttacker.playerLevel);
+			APlayerData.savePlayerData(killer);
 		} else {
 			defendingNon.respawn();
 		}
@@ -258,6 +268,10 @@ public class DamageManager implements Listener {
 			pitAttacker.heal(2);
 		}
 
+
+		if(pitAttacker.remainingXP - killEvent.getFinalXp() >= 0) pitAttacker.remainingXP = pitAttacker.remainingXP - killEvent.getFinalXp();
+		else pitAttacker.remainingXP = 0;
+		LevelManager.incrementLevel(killer);
 		PitSim.VAULT.depositPlayer(killEvent.killer, killEvent.getFinalGold());
 
 		DecimalFormat df = new DecimalFormat("##0.00");
@@ -296,6 +310,8 @@ public class DamageManager implements Listener {
 			int xp = (int) Math.ceil(killEvent.getFinalXp() * assistPercent);
 			double gold = killEvent.getFinalGold() * assistPercent;
 
+
+
 			if(killEvent.getFinalGold() > 10) {
 				PitSim.VAULT.depositPlayer(assistPlayer, 10);
 			} else {
@@ -325,6 +341,13 @@ public class DamageManager implements Listener {
 		dead.playSound(dead.getLocation(), Sound.FALL_BIG, 1000, 1F);
 		dead.playSound(dead.getLocation(), Sound.FALL_BIG, 1000, 1F);
 		Regularity.toReg.remove(dead.getUniqueId());
+
+		FileConfiguration playerData = APlayerData.getPlayerData(dead);
+		PitPlayer pitPlayer = PitPlayer.getPitPlayer(dead);
+		playerData.set("level", pitPlayer.playerLevel);
+		playerData.set("playerkills", pitPlayer.playerKills);
+		playerData.set("xp", pitPlayer.remainingXP);
+		APlayerData.savePlayerData(dead);
 
 		dead.teleport(spawnLoc);
 		PitPlayer pitDefender = PitPlayer.getPitPlayer(dead);

@@ -105,6 +105,8 @@ public class FasterThanTheirShadows extends PitEnchant implements Listener {
 										new ArrowHitBlockEvent((Arrow) event.getEntity(), block));
 					} else {
 						Block block = event.getEntity().getWorld().getBlockAt(x, y, z);
+
+						if(block == null || event.getEntity() == null) return;
 						Bukkit.getServer()
 								.getPluginManager()
 								.callEvent(
@@ -112,13 +114,9 @@ public class FasterThanTheirShadows extends PitEnchant implements Listener {
 					}
 
 				} catch (NoSuchFieldException e1) {
-					e1.printStackTrace();
 				} catch (SecurityException e1) {
-					e1.printStackTrace();
 				} catch (IllegalArgumentException e1) {
-					e1.printStackTrace();
 				} catch (IllegalAccessException e1) {
-					e1.printStackTrace();
 				}
 			}
 		});

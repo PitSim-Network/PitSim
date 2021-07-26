@@ -1,6 +1,7 @@
 package dev.kyro.pitsim.controllers.objects;
 
 import dev.kyro.pitsim.PitSim;
+import dev.kyro.pitsim.controllers.MapManager;
 import dev.kyro.pitsim.controllers.NonManager;
 import dev.kyro.pitsim.controllers.PitEventManager;
 import dev.kyro.pitsim.enums.NonState;
@@ -93,9 +94,9 @@ public class Non {
 
 		non = (Player) npc.getEntity();
 		if(!npc.isSpawned() && !PitEventManager.majorEvent) spawn();
-		if(npc.isSpawned() && non.getLocation().getY() <= 42) {
+		if(npc.isSpawned() && non.getLocation().getY() <= MapManager.getY()) {
 			Location teleportLoc = non.getLocation().clone();
-			teleportLoc.setY(43.2);
+			teleportLoc.setY(MapManager.getY() + 1.2);
 			non.teleport(teleportLoc);
 			return;
 		}
@@ -141,7 +142,7 @@ public class Non {
 
 		Player closest = null;
 		double closestDistance = 100;
-		Location midLoc = new Location(Bukkit.getWorld("pit"), -119, 43, 205);
+		Location midLoc = MapManager.getMid();
 		for(Entity nearbyEntity : non.getWorld().getNearbyEntities(midLoc, 10, 10, 10)) {
 
 			if(!(nearbyEntity instanceof Player) || nearbyEntity.getUniqueId().equals(non.getUniqueId())) continue;
@@ -159,13 +160,13 @@ public class Non {
 	}
 
 	public void setDisabled(Boolean toggled) {
-		Location spawnLoc = new Location(Bukkit.getWorld("pit"), -119, 86, 205, -180, 60);
+		Location spawnLoc = MapManager.getNonSpawn();
 		if(toggled) npc.despawn();
 		else npc.spawn(spawnLoc);
 	}
 
 	public void spawn() {
-		Location spawnLoc = new Location(Bukkit.getWorld("pit"), -119, 86, 205, -180, 60);
+		Location spawnLoc = MapManager.getNonSpawn();
 		npc.spawn(spawnLoc);
 //		skin(npc, "wiji1", npc.getStoredLocation());
 	}
@@ -174,7 +175,7 @@ public class Non {
 
 		nonState = NonState.RESPAWNING;
 //		Location spawnLoc = new Location(Bukkit.getWorld("pit"), -119, 86, 211, -180, 60);
-		Location spawnLoc = new Location(Bukkit.getWorld("pit"), -119, 86, 205, -180, 60);
+		Location spawnLoc = MapManager.getNonSpawn();
 		if(!npc.isSpawned() && !PitEventManager.majorEvent) spawn();
 		try {
 
