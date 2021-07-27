@@ -182,12 +182,21 @@ public class EnchantManager {
 		NBTCompound itemEnchants = nbtItem.getCompound(NBTTag.PIT_ENCHANTS.getRef());
 		int playerKills = nbtItem.getInteger(NBTTag.PLAYER_KILLS.getRef());
 		int botKills = nbtItem.getInteger(NBTTag.BOT_KILLS.getRef());
+		int currentLives = nbtItem.getInteger(NBTTag.CURRENT_LIVES.getRef());
+		int maxLives = nbtItem.getInteger(NBTTag.MAX_LIVES.getRef());
 		int jewelKills = nbtItem.getInteger(NBTTag.JEWEL_KILLS.getRef());
 		boolean isJewel = isJewel(itemStack);
+		char c = 'a';
 
 		ALoreBuilder loreBuilder = new ALoreBuilder();
 
-		loreBuilder.addLore("&7Kills: &a" + Misc.getFormattedKills(playerKills) + "&7/" + Misc.getFormattedKills(botKills));
+		if(nbtItem.hasKey(NBTTag.ITEM_JEWEL_ENCHANT.getRef()) && nbtItem.hasKey(NBTTag.MAX_LIVES.getRef())) {
+			if(currentLives <= 3) c = 'c';
+			else c = 'a';
+			loreBuilder.addLore("&7Lives: &" + c + currentLives + "&7/" + maxLives);
+		} else {
+//			loreBuilder.addLore("&7Kills: &a" + Misc.getFormattedKills(playerKills) + "&7/" + Misc.getFormattedKills(botKills));
+		}
 		if(isJewel && !isJewelComplete(itemStack)) {
 
 			loreBuilder.addLore("&7");
@@ -303,6 +312,9 @@ public class EnchantManager {
 //		}
 
 		PantColor.setPantColor(nbtItem.getItem(), PantColor.getNormalRandom());
+		int maxLives = Math.random() > 0.01 ? (int) (Math.random() * 50 + 10) : 100;
+		nbtItem.setInteger(NBTTag.MAX_LIVES.getRef(), maxLives);
+		nbtItem.setInteger(NBTTag.CURRENT_LIVES.getRef(), maxLives);
 		Bukkit.broadcastMessage(ChatColor.translateAlternateColorCodes(
 				'&', "&3&lJEWEL!&7 " + player.getDisplayName() + " &7found " + jewelEnchant.getDisplayName()));
 		ASound.play(player, Sound.ENDERDRAGON_GROWL, 1, 1);

@@ -144,9 +144,14 @@ public class PlayerManager implements Listener {
 		new BukkitRunnable() {
 				@Override
 				public void run() {
+					Bukkit.getServer().dispatchCommand(player, "spawn");
 
 					String message = "%luckperms_prefix%";
-					pitPlayer.prefix = "&7[&e" + pitPlayer.playerLevel + "&7] " + PlaceholderAPI.setPlaceholders(player, message);
+					if(pitPlayer.megastreak.isOnMega()) {
+						pitPlayer.prefix = pitPlayer.megastreak.getName() + " " + PlaceholderAPI.setPlaceholders(player, message);
+					} else {
+						pitPlayer.prefix = "&7[&e" + pitPlayer.playerLevel + "&7] &7" + PlaceholderAPI.setPlaceholders(player, message);
+					}
 				}
 			}.runTaskLater(PitSim.INSTANCE,  10L);
 

@@ -2,9 +2,13 @@ package dev.kyro.pitsim.controllers;
 
 import dev.kyro.arcticapi.misc.ASound;
 import dev.kyro.pitsim.PitSim;
+import dev.kyro.pitsim.controllers.objects.PitPlayer;
+import me.clip.placeholderapi.PlaceholderAPI;
+import org.bukkit.Bukkit;
 import org.bukkit.Sound;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.io.File;
@@ -37,6 +41,17 @@ static {
 
         @Override
         public void run() {
+
+            for(Player player : Bukkit.getOnlinePlayers()) {
+                PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
+                String message = "%luckperms_prefix%";
+                if(pitPlayer.megastreak.isOnMega()) {
+                    pitPlayer.prefix = pitPlayer.megastreak.getName() + " " + PlaceholderAPI.setPlaceholders(player, message);
+                } else {
+                    pitPlayer.prefix = "&7[&e" + pitPlayer.playerLevel + "&7] &7" + PlaceholderAPI.setPlaceholders(player, message);
+                }
+            }
+
             calculate();
         }
     }.runTaskTimer(PitSim.INSTANCE, 0L, 4000L);

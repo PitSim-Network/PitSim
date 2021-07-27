@@ -16,7 +16,10 @@ public enum NBTTag {
 	IS_GEMMED("pr-isgemmed"),
 	UNDROPPABLE("pr-undroppable"),
 	DROP_CONFIRM("pr-dropconfirm"),
-	ORIGINAL_COLOR("pr-original-color");
+	ORIGINAL_COLOR("pr-original-color"),
+	CURRENT_LIVES("pr-current-lives"),
+	MAX_LIVES("pr-max-lives"),
+	IS_FEATHER("pr-isfeather");
 
 	private final String ref;
 

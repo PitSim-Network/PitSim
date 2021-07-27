@@ -32,23 +32,23 @@ public class MapManager {
 
     public static Location getNonSpawn() {
 
-        if(map == GameMap.STARWARS)return snowNonSpawn;
+        if(map == GameMap.STARWARS) return snowNonSpawn;
         else return desertNonSpawn;
     }
 
     public static Location getMid() {
 
-        if(map == GameMap.STARWARS)return snowMid;
+        if(map == GameMap.STARWARS) return snowMid;
         else return desertMid;
     }
 
     public static int getY() {
-        if(map == GameMap.STARWARS)return snowY;
+        if(map == GameMap.STARWARS) return snowY;
         else return desertY;
     }
 
     public static Location getPlayerSpawn() {
-        if(map == GameMap.STARWARS)return playerSnow;
+        if(map == GameMap.STARWARS) return playerSnow;
         else return playerDesert;
     }
 

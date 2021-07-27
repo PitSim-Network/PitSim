@@ -24,7 +24,6 @@ public class KillEvent extends Event {
 	public boolean exeDeath;
 
 	public int xpReward;
-//	public int goldReward = 5;
 	public int goldReward = 20;
 	public List<Double> xpMultipliers = new ArrayList<>();
 	public List<Double> goldMultipliers = new ArrayList<>();
@@ -50,12 +49,10 @@ public class KillEvent extends Event {
 
 
 	public double getFinalGold() {
-
+		int goldReward = this.goldReward;
 		for(Double goldMultiplier : goldMultipliers) {
 			goldReward *= goldMultiplier;
 		}
-		PitPlayer pitPlayer = PitPlayer.getPitPlayer(killer.getPlayer());
-
 		return goldReward;
 	}
 

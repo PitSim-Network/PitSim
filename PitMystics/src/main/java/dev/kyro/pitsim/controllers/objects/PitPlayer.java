@@ -73,7 +73,8 @@ public class PitPlayer {
 		}
 
 		if(non == null) {
-			prefix = "&7[&e" + playerLevel + "&7] ";
+			String message = "%luckperms_prefix%";
+			prefix = "&7[&e" + playerLevel + "&7] &7" + PlaceholderAPI.setPlaceholders(player, message);
 		}
 
 		for(int i = 0; i < pitPerks.length; i++) {
@@ -203,6 +204,15 @@ public class PitPlayer {
 		int maxHealth = 24;
 		if(hasPerk(Thick.INSTANCE)) maxHealth += 4;
 		if(Hearts.INSTANCE != null) maxHealth += Hearts.INSTANCE.getExtraHealth(this);
+		if(megastreak.isOnMega() && megastreak.getClass() == Uberstreak.class && kills >= 100) {
+			maxHealth -= 2;
+		}
+		if(megastreak.isOnMega() && megastreak.getClass() == Uberstreak.class && kills >= 200) {
+			maxHealth -= 2;
+		}
+		if(megastreak.isOnMega() && megastreak.getClass() == Uberstreak.class && kills >= 300) {
+			maxHealth -= 2;
+		}
 
 		if(player.getMaxHealth() == maxHealth) return;
 		player.setMaxHealth(maxHealth);

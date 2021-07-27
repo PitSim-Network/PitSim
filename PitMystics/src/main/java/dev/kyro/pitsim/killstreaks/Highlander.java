@@ -5,6 +5,7 @@ import dev.kyro.pitsim.controllers.objects.Megastreak;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.events.AttackEvent;
 import dev.kyro.pitsim.events.KillEvent;
+import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Sound;
@@ -15,7 +16,6 @@ import java.util.Arrays;
 import java.util.List;
 
 public class Highlander extends Megastreak {
-    public static Highlander INSTANCE;
     public Highlander(PitPlayer pitPlayer) {
         super(pitPlayer);
         INSTANCE = this;
@@ -28,7 +28,7 @@ public class Highlander extends Megastreak {
 
     @Override
     public String getPrefix() {
-        return "&6&lHIGH";
+        return "&6Highlander";
     }
 
     @Override
@@ -38,28 +38,38 @@ public class Highlander extends Megastreak {
 
     @Override
     public int getRequiredKills() {
-        return 50;
+        return 1;
     }
-
-        @EventHandler
-        public static void onKill(KillEvent killEvent) {
-            if(INSTANCE.playerIsOnMega(killEvent) && PitPlayer.getPitPlayer(killEvent.killer).megastreak == INSTANCE) {
-                killEvent.goldMultipliers.add((100 / 100D) + 0.5);
-
-            }
-        }
 
     @EventHandler
-    public void onAttack(AttackEvent.Apply attackEvent) {
-        int killstreak  = pitPlayer.getKills();
-
-        if(killstreak >= 50) {
-            attackEvent.increasePercent += (killstreak / 100D);
+    public void onKill(KillEvent killEvent) {
+        PitPlayer pitPlayer = PitPlayer.getPitPlayer(killEvent.killer);
+        if(pitPlayer != this.pitPlayer) return;
+        if(pitPlayer.megastreak.playerIsOnMega(killEvent) && pitPlayer.megastreak.getClass() == Highlander.class) {
+            killEvent.goldMultipliers.add(1.5);
+            Bukkit.broadcastMessage(killEvent.goldMultipliers.toString());
+            Bukkit.broadcastMessage(String.valueOf(killEvent.goldReward));
+            Bukkit.broadcastMessage(killEvent.getFinalGold() + "");
         }
     }
+
+//    @EventHandler
+//    public void onAttack(AttackEvent.Apply attackEvent) {
+//        int killstreak  = pitPlayer.getKills();
+//
+//        if(killstreak >= 50 && pitPlayer.megastreak.getClass() == Highlander.class) {
+//            attackEvent.increasePercent += (killstreak / 100D);
+//        }
+//    }
 
     @Override
     public void proc() {
+        String message = "%luckperms_prefix%";
+        if(pitPlayer.megastreak.isOnMega()) {
+            pitPlayer.prefix = pitPlayer.megastreak.getName() + " " + PlaceholderAPI.setPlaceholders(pitPlayer.player, message);
+        } else {
+            pitPlayer.prefix = "&7[&e" + pitPlayer.playerLevel + "&7] &7" + PlaceholderAPI.setPlaceholders(pitPlayer.player, message);
+        }
 
         ASound.play(pitPlayer.player, Sound.WITHER_SPAWN, 2, 0.5f);
         pitPlayer.megastreak = this;
@@ -75,5 +85,12 @@ public class Highlander extends Megastreak {
     @Override
     public void reset() {
 
+        String message = "%luckperms_prefix%";
+        if(pitPlayer.megastreak.isOnMega()) {
+            pitPlayer.prefix = pitPlayer.megastreak.getName() + " " + PlaceholderAPI.setPlaceholders(pitPlayer.player, message);
+        } else {
+            pitPlayer.prefix = "&7[&e" + pitPlayer.playerLevel + "&7] &7" + PlaceholderAPI.setPlaceholders(pitPlayer.player, message);
+        }
     }
+
 }
