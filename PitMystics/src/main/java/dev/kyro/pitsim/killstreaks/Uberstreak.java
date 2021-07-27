@@ -19,10 +19,14 @@ import dev.kyro.pitsim.misc.ProtArmor;
 import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.entity.EntityRegainHealthEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -39,6 +43,11 @@ public class Uberstreak extends Megastreak {
 	}
 
 	@Override
+	public String getRawName() {
+		return "Uberstreak";
+	}
+
+	@Override
 	public String getPrefix() {
 		return "&dUberstreak";
 	}
@@ -51,6 +60,17 @@ public class Uberstreak extends Megastreak {
 	@Override
 	public int getRequiredKills() {
 		return 100;
+	}
+
+	@Override
+	public ItemStack guiItem() {
+		ItemStack item = new ItemStack(Material.GOLD_SWORD);
+		ItemMeta meta = item.getItemMeta();
+		List<String> lore = new ArrayList<>();
+		lore.add(ChatColor.LIGHT_PURPLE + "Uberstreak test");
+		meta.setLore(lore);
+		item.setItemMeta(meta);
+		return item;
 	}
 
 	@EventHandler
@@ -89,6 +109,18 @@ public class Uberstreak extends Megastreak {
 	}
 
 //	@EventHandler
+//	public void onHeal(EntityRegainHealthEvent event) {
+//		if(!(event.getEntity() instanceof Player)) return;
+//		PitPlayer pitPlayer = PitPlayer.getPitPlayer((Player) event.getEntity());
+//		if(pitPlayer != this.pitPlayer) return;
+//		if(pitPlayer.megastreak.isOnMega() && pitPlayer.megastreak.getClass() == Uberstreak.class) {
+//			if(pitPlayer.getKills() >= 400) {
+//				event.setCancelled(true);
+//			}
+//		}
+//	}
+
+//	@EventHandler
 //	public void onHeal(HealEvent healEvent) {
 //		if(!isOnMega()) return;
 //
@@ -108,7 +140,7 @@ public class Uberstreak extends Megastreak {
 	public void proc() {
 		String message = "%luckperms_prefix%";
 		if(pitPlayer.megastreak.isOnMega()) {
-			pitPlayer.prefix = pitPlayer.megastreak.getName() + " " + PlaceholderAPI.setPlaceholders(pitPlayer.player, message);
+			pitPlayer.prefix = pitPlayer.megastreak.getName() + " &7" + PlaceholderAPI.setPlaceholders(pitPlayer.player, message);
 		} else {
 			pitPlayer.prefix = "&7[&e" + pitPlayer.playerLevel + "&7] &7" + PlaceholderAPI.setPlaceholders(pitPlayer.player, message);
 		}
@@ -135,7 +167,7 @@ public class Uberstreak extends Megastreak {
 
 		String message = "%luckperms_prefix%";
 		if(pitPlayer.megastreak.isOnMega()) {
-			pitPlayer.prefix = pitPlayer.megastreak.getName() + " " + PlaceholderAPI.setPlaceholders(pitPlayer.player, message);
+			pitPlayer.prefix = pitPlayer.megastreak.getName() + " &7" + PlaceholderAPI.setPlaceholders(pitPlayer.player, message);
 		} else {
 			pitPlayer.prefix = "&7[&e" + pitPlayer.playerLevel + "&7] &7" + PlaceholderAPI.setPlaceholders(pitPlayer.player, message);
 		}

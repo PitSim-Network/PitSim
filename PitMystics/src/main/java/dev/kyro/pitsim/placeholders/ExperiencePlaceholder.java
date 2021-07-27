@@ -15,6 +15,7 @@ public class ExperiencePlaceholder implements APAPIPlaceholder {
 	public String getValue(Player player) {
 
 		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
-		return String.valueOf(pitPlayer.remainingXP);
+		if(pitPlayer.remainingXP == 0) return "MAXED!";
+		else return String.valueOf(pitPlayer.remainingXP);
 	}
 }

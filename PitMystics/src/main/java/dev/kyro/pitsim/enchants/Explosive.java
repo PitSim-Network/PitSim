@@ -49,11 +49,15 @@ public class Explosive extends PitEnchant {
 		Cooldown cooldown = getCooldown(shooter, getCooldown(enchantLvl));
 		if(cooldown.isOnCooldown()) return; else cooldown.reset();
 
+		if(SpawnManager.isInSpawn(arrow.getLocation())) return;
+
 		for (Entity entity : arrow.getNearbyEntities(getRange(enchantLvl),
 				getRange(enchantLvl), getRange(enchantLvl))) {
 			if(entity instanceof Player) {
 				Player player = (Player) entity;
 				Non non = NonManager.getNon(player);
+				if(non == null) return;
+
 
 				if(player != shooter) {
 

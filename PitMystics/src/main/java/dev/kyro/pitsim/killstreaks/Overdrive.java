@@ -4,7 +4,9 @@ import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.controllers.objects.Megastreak;
 import dev.kyro.pitsim.misc.Misc;
+import org.bukkit.Material;
 import org.bukkit.Sound;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
@@ -22,6 +24,11 @@ public class Overdrive extends Megastreak {
 	}
 
 	@Override
+	public String getRawName() {
+		return "Overdrive";
+	}
+
+	@Override
 	public String getPrefix() {
 		return "&c&lOVRDRV";
 	}
@@ -34,6 +41,11 @@ public class Overdrive extends Megastreak {
 	@Override
 	public int getRequiredKills() {
 		return 20;
+	}
+
+	@Override
+	public ItemStack guiItem() {
+		return new ItemStack(Material.BLAZE_POWDER);
 	}
 
 	public Overdrive(PitPlayer pitPlayer) {

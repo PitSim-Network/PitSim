@@ -148,7 +148,7 @@ public class PlayerManager implements Listener {
 
 					String message = "%luckperms_prefix%";
 					if(pitPlayer.megastreak.isOnMega()) {
-						pitPlayer.prefix = pitPlayer.megastreak.getName() + " " + PlaceholderAPI.setPlaceholders(player, message);
+						pitPlayer.prefix = pitPlayer.megastreak.getName() + " &7" + PlaceholderAPI.setPlaceholders(player, message);
 					} else {
 						pitPlayer.prefix = "&7[&e" + pitPlayer.playerLevel + "&7] &7" + PlaceholderAPI.setPlaceholders(player, message);
 					}

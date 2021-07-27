@@ -8,9 +8,11 @@ import dev.kyro.pitsim.events.KillEvent;
 import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.inventory.ItemStack;
 
 import java.util.Arrays;
 import java.util.List;
@@ -24,6 +26,11 @@ public class Highlander extends Megastreak {
     @Override
     public String getName() {
         return "&6&lHIGH";
+    }
+
+    @Override
+    public String getRawName() {
+        return "Highlander";
     }
 
     @Override
@@ -41,6 +48,11 @@ public class Highlander extends Megastreak {
         return 1;
     }
 
+    @Override
+    public ItemStack guiItem() {
+            return new ItemStack(Material.GOLD_BOOTS);
+    }
+
     @EventHandler
     public void onKill(KillEvent killEvent) {
         PitPlayer pitPlayer = PitPlayer.getPitPlayer(killEvent.killer);
@@ -53,20 +65,21 @@ public class Highlander extends Megastreak {
         }
     }
 
-//    @EventHandler
-//    public void onAttack(AttackEvent.Apply attackEvent) {
-//        int killstreak  = pitPlayer.getKills();
-//
-//        if(killstreak >= 50 && pitPlayer.megastreak.getClass() == Highlander.class) {
-//            attackEvent.increasePercent += (killstreak / 100D);
-//        }
-//    }
+    @EventHandler
+    public void onHit(AttackEvent.Apply attackEvent) {
+        PitPlayer pitPlayer = PitPlayer.getPitPlayer(attackEvent.defender);
+        if(pitPlayer != this.pitPlayer) return;
+        if(pitPlayer.megastreak.isOnMega() && pitPlayer.megastreak.getClass() == Highlander.class) {
+            int ks = pitPlayer.getKills();
+            attackEvent.increasePercent += (ks / 5)  / 100D;
+        }
+    }
 
     @Override
     public void proc() {
         String message = "%luckperms_prefix%";
         if(pitPlayer.megastreak.isOnMega()) {
-            pitPlayer.prefix = pitPlayer.megastreak.getName() + " " + PlaceholderAPI.setPlaceholders(pitPlayer.player, message);
+            pitPlayer.prefix = pitPlayer.megastreak.getName() + " &7" + PlaceholderAPI.setPlaceholders(pitPlayer.player, message);
         } else {
             pitPlayer.prefix = "&7[&e" + pitPlayer.playerLevel + "&7] &7" + PlaceholderAPI.setPlaceholders(pitPlayer.player, message);
         }
@@ -87,7 +100,7 @@ public class Highlander extends Megastreak {
 
         String message = "%luckperms_prefix%";
         if(pitPlayer.megastreak.isOnMega()) {
-            pitPlayer.prefix = pitPlayer.megastreak.getName() + " " + PlaceholderAPI.setPlaceholders(pitPlayer.player, message);
+            pitPlayer.prefix = pitPlayer.megastreak.getName() + " &7" + PlaceholderAPI.setPlaceholders(pitPlayer.player, message);
         } else {
             pitPlayer.prefix = "&7[&e" + pitPlayer.playerLevel + "&7] &7" + PlaceholderAPI.setPlaceholders(pitPlayer.player, message);
         }

@@ -32,7 +32,7 @@ public class  PerkPanel extends AGUIPanel {
 
 	@Override
 	public int getRows() {
-		return 6;
+		return 5;
 	}
 
 	@Override
@@ -86,6 +86,30 @@ public class  PerkPanel extends AGUIPanel {
 
 			getInventory().setItem(10 + i * 2, perkItem);
 		}
+
+		ItemStack killStreak = new ItemStack(Material.GOLD_BLOCK);
+		ItemMeta ksMeta = killStreak.getItemMeta();
+		ksMeta.setDisplayName(ChatColor.translateAlternateColorCodes('&', "&eKillstreaks &c&lCOMING SOON"));
+		killStreak.setItemMeta(ksMeta);
+
+		getInventory().setItem(28, killStreak);
+		getInventory().setItem(30, killStreak);
+		getInventory().setItem(32, killStreak);
+
+		ItemStack megaStreak = new ItemStack(pitPlayer.megastreak.guiItem().getType());
+		ItemMeta msMeta = megaStreak.getItemMeta();
+		msMeta.setDisplayName(ChatColor.YELLOW + "Megastreak");
+		List<String> msLore = new ArrayList<>();
+		msLore.add(ChatColor.GRAY + "Selected: " + ChatColor.GREEN + pitPlayer.megastreak.getRawName());
+		msLore.add("");
+		msLore.addAll(pitPlayer.megastreak.guiItem().getItemMeta().getLore());
+		msLore.add("");
+		msLore.add(ChatColor.YELLOW + "Click to switch megastreak!");
+		msMeta.setLore(msLore);
+		megaStreak.setItemMeta(msMeta);
+
+		getInventory().setItem(34, megaStreak);
+
 		updateInventory();
 	}
 
