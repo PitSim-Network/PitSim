@@ -138,7 +138,7 @@ public class PitSim extends JavaPlugin {
 		EnchantManager.registerEnchant(new aCPLEnchant());
 		EnchantManager.registerEnchant(new JewelHunter());
 
-		EnchantManager.registerEnchant(new ThePunch());
+//		EnchantManager.registerEnchant(new ThePunch());
 		EnchantManager.registerEnchant(new Billionaire());
 		EnchantManager.registerEnchant(new Gamble());
 		EnchantManager.registerEnchant(new Executioner());

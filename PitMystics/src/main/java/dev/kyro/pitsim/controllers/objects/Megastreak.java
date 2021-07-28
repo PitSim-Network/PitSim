@@ -17,6 +17,7 @@ public abstract class Megastreak implements Listener {
 		Bukkit.getServer().getPluginManager().registerEvents(this, PitSim.INSTANCE);
 	}
 
+
 	public abstract String getName();
 	public abstract String getRawName();
 	public abstract String getPrefix();

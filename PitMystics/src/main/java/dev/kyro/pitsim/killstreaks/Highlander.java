@@ -27,6 +27,7 @@ import org.bukkit.scheduler.BukkitTask;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public class Highlander extends Megastreak {
     public Highlander(PitPlayer pitPlayer) {
@@ -73,6 +74,8 @@ public class Highlander extends Megastreak {
 
     @Override
     public ItemStack guiItem() {
+
+
         ItemStack item = new ItemStack(Material.GOLD_BOOTS);
         ItemMeta meta = item.getItemMeta();
         List<String> lore = new ArrayList<>();

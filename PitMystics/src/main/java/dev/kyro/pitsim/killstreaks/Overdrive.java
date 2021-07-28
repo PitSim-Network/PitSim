@@ -7,9 +7,12 @@ import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.controllers.objects.Megastreak;
 import dev.kyro.pitsim.events.AttackEvent;
 import dev.kyro.pitsim.misc.Misc;
+import me.clip.placeholderapi.PlaceholderAPI;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.Sound;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -38,7 +41,7 @@ public class Overdrive extends Megastreak {
 
 	@Override
 	public String getPrefix() {
-		return "&c&lOVRDRV";
+		return "&c&lOverdrive";
 	}
 
 	@Override
@@ -48,7 +51,7 @@ public class Overdrive extends Megastreak {
 
 	@Override
 	public int getRequiredKills() {
-		return 20;
+		return 50;
 	}
 
 	@Override
@@ -118,10 +121,32 @@ public class Overdrive extends Megastreak {
 				Misc.applyPotionEffect(pitPlayer.player, PotionEffectType.SPEED, 200, 0, true, false);
 			}
 		}.runTaskTimer(PitSim.INSTANCE, 0L, 60L);
+
+		String message = "%luckperms_prefix%";
+		if(pitPlayer.megastreak.isOnMega()) {
+			pitPlayer.prefix = pitPlayer.megastreak.getName() + " &7" + PlaceholderAPI.setPlaceholders(pitPlayer.player, message);
+		} else {
+			pitPlayer.prefix = "&7[&e" + pitPlayer.playerLevel + "&7] &7" + PlaceholderAPI.setPlaceholders(pitPlayer.player, message);
+		}
+
+		pitPlayer.megastreak = this;
+		for(Player player : Bukkit.getOnlinePlayers()) {
+			PitPlayer pitPlayer2 = PitPlayer.getPitPlayer(player);
+			if(pitPlayer2.disabledStreaks) continue;
+			player.sendMessage(ChatColor.translateAlternateColorCodes('&',
+					"&c&lMEGASTREAK!&7 " + pitPlayer.player.getDisplayName() + "&7 activated &c&lOVERDRIVE&7!"));
+		}
 	}
 
 	@Override
 	public void reset() {
+
+		String message = "%luckperms_prefix%";
+		if(pitPlayer.megastreak.isOnMega()) {
+			pitPlayer.prefix = pitPlayer.megastreak.getName() + " &7" + PlaceholderAPI.setPlaceholders(pitPlayer.player, message);
+		} else {
+			pitPlayer.prefix = "&7[&e" + pitPlayer.playerLevel + "&7] &7" + PlaceholderAPI.setPlaceholders(pitPlayer.player, message);
+		}
 
 		int randomNum = ThreadLocalRandom.current().nextInt(1000, 5000 + 1);
 		AOutput.send(pitPlayer.player, "&c&lOVERDRIVE! &7Earned &6+" + randomNum + "&6g &7from megastreak!");

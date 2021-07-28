@@ -69,6 +69,7 @@ public class MegastreakPanel extends AGUIPanel {
                             if(pitPlayer.playerLevel < 0) level = true;
                             if(pitPlayer.megastreak.getClass() == Overdrive.class) has = true;
                             if(!has && !level) {
+                                pitPlayer.megastreak.
                                 pitPlayer.megastreak = new Overdrive(pitPlayer);
                                 perkGUI.megaWrapUp();
                             }
@@ -80,7 +81,7 @@ public class MegastreakPanel extends AGUIPanel {
                                 perkGUI.megaWrapUp();
                             }
                         } else if(megastreak.getClass() == Uberstreak.class) {
-                            if(pitPlayer.playerLevel < 20) level = true;
+                            if(pitPlayer.playerLevel < 25) level = true;
                             if(pitPlayer.megastreak.getClass() == Uberstreak.class) has = true;
                             if(!has && !level) {
                                 pitPlayer.megastreak = new Uberstreak(pitPlayer);

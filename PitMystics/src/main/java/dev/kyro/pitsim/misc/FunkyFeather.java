@@ -55,7 +55,7 @@ public class FunkyFeather {
             if(nbtItem.hasKey(NBTTag.IS_FEATHER.getRef())) {
                 AOutput.send(player, "&3&lFUNKY FEATHER! &7Inventory protected.");
                 if(itemStack.getAmount() > 1) itemStack.setAmount(itemStack.getAmount() - 1);
-                else player.getInventory().remove(itemStack);
+                else player.getInventory().setItem(i, null);
                 ASound.play(player, Sound.BAT_TAKEOFF, 2, 1.9F);
                 return true;
             }
