@@ -7,6 +7,7 @@ import dev.kyro.pitsim.controllers.objects.Non;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.enums.DeathCry;
 import dev.kyro.pitsim.events.KillEvent;
+import dev.kyro.pitsim.killstreaks.Highlander;
 import dev.kyro.pitsim.misc.DeathCrys;
 import dev.kyro.pitsim.misc.KillEffects;
 import dev.kyro.pitsim.misc.Misc;
@@ -53,7 +54,7 @@ public class PlayerManager implements Listener {
 		}
 
 
-		if(pitDead.bounty != 0 && killingNon == null) {
+		if(pitDead.bounty != 0 && killingNon == null && pitKiller != pitDead) {
 			DecimalFormat formatter = new DecimalFormat("#,###.#");
 
 			for(Player player : Bukkit.getOnlinePlayers()) {
@@ -73,15 +74,20 @@ public class PlayerManager implements Listener {
 
 			}
 			PitSim.VAULT.depositPlayer(killEvent.killer, pitDead.bounty);
-			pitDead.bounty = 0;
+			if(pitDead.megastreak.getClass() != Highlander.class) pitDead.bounty = 0;
 
 
 		}
 
-		if(Math.random() < 0.1 && killingNon == null) {
+		if(Math.random() < 0.1 && killingNon == null && pitKiller.bounty < 25000) {
 
-			int amount = (int) Math.floor(Math.random() * 5 + 1) * 200		;
-			pitKiller.bounty += amount;
+			int amount = (int) Math.floor(Math.random() * 5 + 1) * 200;
+			if(pitKiller.bounty + amount > 25000) {
+				amount = 25000 - pitKiller.bounty;
+				pitKiller.bounty = 25000;
+			}  else {
+				pitKiller.bounty += amount;
+			}
 			String message = "&6&lBOUNTY!&7 bump &6&l" + amount + "g&7 on %luckperms_prefix%" + killEvent.killer.getDisplayName() +
 					"&7 for high streak";
 			if(!pitKiller.disabledBounties) AOutput.send(killEvent.killer, PlaceholderAPI.setPlaceholders(killEvent.killer, message));

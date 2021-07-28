@@ -69,7 +69,8 @@ public class Non {
 				color = "&e";
 				break;
 		}
-		displayName = "&7[" + color + (rand * 10 + (int) (Math.random() * 10)) + "&7]&7" + " " + name;
+//		displayName = "&7[" + color + (rand * 10 + (int) (Math.random() * 10)) + "&7]&7" + " " + name;
+		displayName = "&7" + name;
 		this.npc = CitizensAPI.getNPCRegistry().createNPC(EntityType.PLAYER, displayName);
 		if(!PitEventManager.majorEvent)spawn();
 		this.non = (Player) npc.getEntity();

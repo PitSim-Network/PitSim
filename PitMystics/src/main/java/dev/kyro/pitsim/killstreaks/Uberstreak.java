@@ -58,6 +58,16 @@ public class Uberstreak extends Megastreak {
 	}
 
 	@Override
+	public int guiSlot() {
+		return 13;
+	}
+
+	@Override
+	public int levelReq() {
+		return 25;
+	}
+
+	@Override
 	public int getRequiredKills() {
 		return 100;
 	}
@@ -67,7 +77,23 @@ public class Uberstreak extends Megastreak {
 		ItemStack item = new ItemStack(Material.GOLD_SWORD);
 		ItemMeta meta = item.getItemMeta();
 		List<String> lore = new ArrayList<>();
-		lore.add(ChatColor.LIGHT_PURPLE + "Uberstreak test");
+		lore.add(ChatColor.translateAlternateColorCodes('&', "&7Triggers on: &c100 kills"));
+		lore.add("");
+		lore.add(ChatColor.GRAY + "On trigger:");
+		lore.add(ChatColor.translateAlternateColorCodes('&', "&a\u25a0"));
+		lore.add("");
+		lore.add(ChatColor.GRAY + "BUT:");
+		lore.add(ChatColor.translateAlternateColorCodes('&', "&c\u25a0 &7Receive &c+10% &7damage per 50 kills"));
+		lore.add("");
+		lore.add(ChatColor.GRAY + "During the streak:");
+		lore.add(ChatColor.translateAlternateColorCodes('&', "&d\u25a0 &7100 kills: &c-1 max \u2764"));
+		lore.add(ChatColor.translateAlternateColorCodes('&', "&d\u25a0 &7200 kills: &c-1 max \u2764 &7(2 total)"));
+		lore.add(ChatColor.translateAlternateColorCodes('&', "&d\u25a0 &7300 kills: &c-1 max \u2764 &7(3 total)"));
+		lore.add(ChatColor.translateAlternateColorCodes('&', "&d\u25a0 &7400 kills: &cNo longer gain health"));
+		lore.add("");
+		lore.add(ChatColor.GRAY + "On death:");
+		lore.add(ChatColor.translateAlternateColorCodes('&', "&e\u25a0 &7Earn a random &dUberdrop&7."));
+		lore.add(ChatColor.translateAlternateColorCodes('&', "&7(If streak is at least 400)"));
 		meta.setLore(lore);
 		item.setItemMeta(meta);
 		return item;
@@ -79,7 +105,7 @@ public class Uberstreak extends Megastreak {
 		if(pitPlayer != this.pitPlayer) return;
 		if(pitPlayer.megastreak.isOnMega() && pitPlayer.megastreak.getClass() == Uberstreak.class) {
 			int ks = pitPlayer.getKills();
-			attackEvent.increasePercent += (ks / 10)  / 100D;
+			attackEvent.increasePercent += (ks / 5)  / 100D;
 		}
 	}
 

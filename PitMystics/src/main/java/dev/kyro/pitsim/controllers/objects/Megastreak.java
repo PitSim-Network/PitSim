@@ -23,6 +23,8 @@ public abstract class Megastreak implements Listener {
 	public abstract List<String> getRefNames();
 	public abstract int getRequiredKills();
 	public abstract ItemStack guiItem();
+	public abstract int guiSlot();
+	public abstract int levelReq();
 
 	public abstract void proc();
 	public abstract void reset();

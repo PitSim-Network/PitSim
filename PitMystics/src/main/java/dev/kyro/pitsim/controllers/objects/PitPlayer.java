@@ -9,6 +9,7 @@ import dev.kyro.pitsim.enums.DeathCry;
 import dev.kyro.pitsim.enums.KillEffect;
 import dev.kyro.pitsim.events.HealEvent;
 import dev.kyro.pitsim.inventories.ChatColorPanel;
+import dev.kyro.pitsim.killstreaks.NoMegastreak;
 import dev.kyro.pitsim.killstreaks.Uberstreak;
 import dev.kyro.pitsim.perks.NoPerk;
 import dev.kyro.pitsim.perks.Thick;
@@ -59,7 +60,7 @@ public class PitPlayer {
 
 	public PitPlayer(Player player) {
 		this.player = player;
-		this.megastreak = new Uberstreak(this);
+		this.megastreak = new NoMegastreak(this);
 
 		Non non = NonManager.getNon(player);
 
@@ -130,7 +131,7 @@ public class PitPlayer {
 	public void incrementKills() {
 
 		kills++;
-		if(kills == megastreak.getRequiredKills()) megastreak.proc();
+		if(kills == megastreak.getRequiredKills() && megastreak.getClass() != NoMegastreak.class) megastreak.proc();
 		for(Killstreak killstreak : killstreaks) {
 			if(kills == 0 || kills % killstreak.killInterval != 0) continue;
 			killstreak.proc();

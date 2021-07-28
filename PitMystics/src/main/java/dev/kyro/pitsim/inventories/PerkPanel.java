@@ -4,6 +4,7 @@ import dev.kyro.arcticapi.gui.AGUI;
 import dev.kyro.arcticapi.gui.AGUIPanel;
 import dev.kyro.pitsim.controllers.objects.PitPerk;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
+import dev.kyro.pitsim.killstreaks.NoMegastreak;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.event.inventory.InventoryClickEvent;
@@ -27,7 +28,7 @@ public class  PerkPanel extends AGUIPanel {
 
 	@Override
 	public String getName() {
-		return "Perk GUI";
+		return "Perks and Killstreaks";
 	}
 
 	@Override
@@ -47,7 +48,12 @@ public class  PerkPanel extends AGUIPanel {
 				openPanel(perkGUI.applyPerkPanel);
 				return;
 			}
+
+			if(slot == 34) {
+				openPanel(perkGUI.megastreakPanel);
+			}
 		}
+
 	}
 
 	@Override
@@ -100,11 +106,19 @@ public class  PerkPanel extends AGUIPanel {
 		ItemMeta msMeta = megaStreak.getItemMeta();
 		msMeta.setDisplayName(ChatColor.YELLOW + "Megastreak");
 		List<String> msLore = new ArrayList<>();
-		msLore.add(ChatColor.GRAY + "Selected: " + ChatColor.GREEN + pitPlayer.megastreak.getRawName());
+		if(pitPlayer.megastreak.getClass() != NoMegastreak.class) {
+			msLore.add(ChatColor.GRAY + "Selected: " + ChatColor.GREEN + pitPlayer.megastreak.getRawName());
+			msLore.add("");
+			msLore.addAll(pitPlayer.megastreak.guiItem().getItemMeta().getLore());
+		} else {
+			msLore.add(ChatColor.GRAY + "Select a megastreak to fill this slot.");
+		}
 		msLore.add("");
-		msLore.addAll(pitPlayer.megastreak.guiItem().getItemMeta().getLore());
-		msLore.add("");
-		msLore.add(ChatColor.YELLOW + "Click to switch megastreak!");
+		if(pitPlayer.megastreak.getClass() == NoMegastreak.class) {
+			msLore.add(ChatColor.YELLOW + "Click to choose megastreak!");
+		} else {
+			msLore.add(ChatColor.YELLOW + "Click to switch megastreak!");
+		}
 		msMeta.setLore(msLore);
 		megaStreak.setItemMeta(msMeta);
 

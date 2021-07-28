@@ -13,6 +13,10 @@ import dev.kyro.pitsim.controllers.objects.Non;
 import dev.kyro.pitsim.controllers.objects.PitEnchant;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.enchants.*;
+import dev.kyro.pitsim.killstreaks.Highlander;
+import dev.kyro.pitsim.killstreaks.NoMegastreak;
+import dev.kyro.pitsim.killstreaks.Overdrive;
+import dev.kyro.pitsim.killstreaks.Uberstreak;
 import dev.kyro.pitsim.misc.ItemRename;
 import dev.kyro.pitsim.perks.*;
 import dev.kyro.pitsim.placeholders.*;
@@ -65,6 +69,7 @@ public class PitSim extends JavaPlugin {
 //		PitEventManager.eventWait();
 
 		registerUpgrades();
+		registerMegastreaks();
 
 		ArcticAPI.setupPlaceholderAPI("pitsim");
 		AHook.registerPlaceholder(new PrefixPlaceholder());
@@ -218,6 +223,17 @@ public class PitSim extends JavaPlugin {
 		PerkManager.registerUpgrade(new Gladiator());
 		PerkManager.registerUpgrade(new Thick());
 	}
+
+	private void registerMegastreaks() {
+
+		PerkManager.registerMegastreak(new Overdrive(null));
+		PerkManager.registerMegastreak(new Highlander(null));
+		PerkManager.registerMegastreak(new Uberstreak(null));
+		PerkManager.registerMegastreak(new NoMegastreak(null));
+
+
+	}
+
 
 	private void registerCommands() {
 
