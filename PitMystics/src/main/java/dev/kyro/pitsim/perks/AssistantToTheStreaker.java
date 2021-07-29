@@ -11,25 +11,18 @@ import org.bukkit.potion.PotionEffectType;
 
 import java.util.List;
 
-public class Dirty extends PitPerk {
+public class AssistantToTheStreaker extends PitPerk {
 
-	public static Dirty INSTANCE;
+	public static AssistantToTheStreaker INSTANCE;
 
-	public Dirty() {
-		super("Dirty", "dirty", new ItemStack(Material.DIRT, 1, (short) 1), 11, INSTANCE);
+	public AssistantToTheStreaker() {
+		super("Assistant Streaker", "atts", new ItemStack(Material.SPRUCE_FENCE, 1, (short) 0), 15, INSTANCE);
 		INSTANCE = this;
 	}
 
-	@EventHandler
-	public void onKill(KillEvent killEvent) {
-
-		if(!playerHasUpgrade(killEvent.killer)) return;
-
-		Misc.applyPotionEffect(killEvent.killer, PotionEffectType.DAMAGE_RESISTANCE, 4 * 20, 1, true, false);
-	}
 
 	@Override
 	public List<String> getDescription() {
-		return new ALoreBuilder("&7Gain Resistance II (4s) on kill.").getLore();
+		return new ALoreBuilder("&7Assists count their", "&aparticipation &7towards", "&7killstreaks.").getLore();
 	}
 }

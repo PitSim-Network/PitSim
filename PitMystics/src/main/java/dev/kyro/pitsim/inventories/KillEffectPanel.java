@@ -4,6 +4,7 @@ import dev.kyro.arcticapi.data.APlayerData;
 import dev.kyro.arcticapi.gui.AGUI;
 import dev.kyro.arcticapi.gui.AGUIPanel;
 import dev.kyro.arcticapi.misc.AOutput;
+import dev.kyro.pitsim.controllers.NonManager;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.enums.DeathCry;
 import dev.kyro.pitsim.enums.KillEffect;
@@ -24,7 +25,7 @@ import java.util.List;
 
 public class KillEffectPanel extends AGUIPanel {
     PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
-    FileConfiguration playerData = APlayerData.getPlayerData(player);
+
 
     public DonatorGUI donatorGUI;
     public KillEffectPanel(AGUI gui) {
@@ -47,6 +48,8 @@ public class KillEffectPanel extends AGUIPanel {
 
     @Override
     public void onClick(InventoryClickEvent event) {
+        if(NonManager.getNon(player) != null) return;
+        FileConfiguration playerData = APlayerData.getPlayerData(player);
         int slot = event.getSlot();
         if(event.getClickedInventory().getHolder() == this) {
 

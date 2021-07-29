@@ -5,6 +5,7 @@ import dev.kyro.pitsim.events.KillEvent;
 import org.bukkit.Bukkit;
 import org.bukkit.event.Listener;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.plugin.RegisteredListener;
 
 import java.util.List;
 
@@ -17,7 +18,6 @@ public abstract class Megastreak implements Listener {
 		Bukkit.getServer().getPluginManager().registerEvents(this, PitSim.INSTANCE);
 	}
 
-
 	public abstract String getName();
 	public abstract String getRawName();
 	public abstract String getPrefix();
@@ -27,6 +27,7 @@ public abstract class Megastreak implements Listener {
 	public abstract int guiSlot();
 	public abstract int levelReq();
 
+	public abstract void stop();
 	public abstract void proc();
 	public abstract void reset();
 

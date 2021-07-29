@@ -22,6 +22,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.HandlerList;
 import org.bukkit.event.entity.EntityRegainHealthEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -59,7 +60,7 @@ public class Uberstreak extends Megastreak {
 
 	@Override
 	public int guiSlot() {
-		return 13;
+		return 14;
 	}
 
 	@Override
@@ -80,16 +81,16 @@ public class Uberstreak extends Megastreak {
 		lore.add(ChatColor.translateAlternateColorCodes('&', "&7Triggers on: &c100 kills"));
 		lore.add("");
 		lore.add(ChatColor.GRAY + "On trigger:");
-		lore.add(ChatColor.translateAlternateColorCodes('&', "&a\u25a0"));
+		lore.add(ChatColor.translateAlternateColorCodes('&', "&a\u25a0 &7Immune to enchants that &emove &7you."));
 		lore.add("");
 		lore.add(ChatColor.GRAY + "BUT:");
-		lore.add(ChatColor.translateAlternateColorCodes('&', "&c\u25a0 &7Receive &c+10% &7damage per 50 kills"));
+		lore.add(ChatColor.translateAlternateColorCodes('&', "&c\u25a0 &7Receive &c+10% &7damage per 50 kills."));
 		lore.add("");
 		lore.add(ChatColor.GRAY + "During the streak:");
 		lore.add(ChatColor.translateAlternateColorCodes('&', "&d\u25a0 &7100 kills: &c-1 max \u2764"));
 		lore.add(ChatColor.translateAlternateColorCodes('&', "&d\u25a0 &7200 kills: &c-1 max \u2764 &7(2 total)"));
 		lore.add(ChatColor.translateAlternateColorCodes('&', "&d\u25a0 &7300 kills: &c-1 max \u2764 &7(3 total)"));
-		lore.add(ChatColor.translateAlternateColorCodes('&', "&d\u25a0 &7400 kills: &cNo longer gain health"));
+		lore.add(ChatColor.translateAlternateColorCodes('&', "&d\u25a0 &7400 kills: &cNo longer gain health."));
 		lore.add("");
 		lore.add(ChatColor.GRAY + "On death:");
 		lore.add(ChatColor.translateAlternateColorCodes('&', "&e\u25a0 &7Earn a random &dUberdrop&7."));
@@ -104,7 +105,7 @@ public class Uberstreak extends Megastreak {
 		PitPlayer pitPlayer = PitPlayer.getPitPlayer(attackEvent.defender);
 		if(pitPlayer != this.pitPlayer) return;
 		if(pitPlayer.megastreak.isOnMega() && pitPlayer.megastreak.getClass() == Uberstreak.class) {
-			int ks = pitPlayer.getKills();
+			double ks = pitPlayer.getKills();
 			attackEvent.increasePercent += (ks / 5)  / 100D;
 		}
 	}
@@ -114,18 +115,18 @@ public class Uberstreak extends Megastreak {
 		PitPlayer pitPlayer = PitPlayer.getPitPlayer(killEvent.killer);
 		if(pitPlayer != this.pitPlayer) return;
 		if(pitPlayer.megastreak.isOnMega() && pitPlayer.megastreak.getClass() == Uberstreak.class) {
-			int ks = pitPlayer.getKills();
-			if(ks == 199) {
+			double ks = pitPlayer.getKills();
+			if(ks >= 199 && ks < 200) {
 				pitPlayer.player.playSound(pitPlayer.player.getLocation(), "mob.guardian.curse", 1000, 1);
 				pitPlayer.updateMaxHealth();
 				AOutput.send(pitPlayer.player, "&d&lUBERSTREAK &c-1 max \u2764");
 			}
-			if(ks == 299) {
+			if(ks >= 299 && ks < 300) {
 				pitPlayer.player.playSound(pitPlayer.player.getLocation(), "mob.guardian.curse", 1000, 1);
 				pitPlayer.updateMaxHealth();
 				AOutput.send(pitPlayer.player, "&d&lUBERSTREAK &c-1 max \u2764");
 			}
-			if(ks == 399) {
+			if(ks >= 399 && ks <  400) {
 				pitPlayer.player.playSound(pitPlayer.player.getLocation(), "mob.guardian.curse", 1000, 1);
 				pitPlayer.updateMaxHealth();
 				AOutput.send(pitPlayer.player, "&d&lUBERSTREAK &cCannot heal");
@@ -306,6 +307,11 @@ public class Uberstreak extends Megastreak {
 //	}
 	public static void jew(MysticType mysticType) {
 
+	}
+
+	@Override
+	public void stop() {
+		HandlerList.unregisterAll(this);
 	}
 
 	@Override

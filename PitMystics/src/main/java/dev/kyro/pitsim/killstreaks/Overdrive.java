@@ -14,6 +14,7 @@ import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.HandlerList;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.potion.PotionEffectType;
@@ -41,7 +42,7 @@ public class Overdrive extends Megastreak {
 
 	@Override
 	public String getPrefix() {
-		return "&c&lOverdrive";
+		return "&cOverdrive";
 	}
 
 	@Override
@@ -100,7 +101,7 @@ public class Overdrive extends Megastreak {
 			attackEvent.increasePercent += 10 / 100D;
 		}
 		if(pitPlayer.megastreak.isOnMega() && pitPlayer.megastreak.getClass() == Overdrive.class) {
-			int ks = pitPlayer.getKills();
+			int ks = (int) Math.floor(pitPlayer.getKills());
 //            attackEvent.increasePercent += ((ks / 5)  / 100D) * 8;
 			if(NonManager.getNon(attackEvent.attacker) == null) {
 				attackEvent.increasePercent += (ks - 50) / 100D;
@@ -118,7 +119,9 @@ public class Overdrive extends Megastreak {
 		runnable = new BukkitRunnable() {
 			@Override
 			public void run() {
-				Misc.applyPotionEffect(pitPlayer.player, PotionEffectType.SPEED, 200, 0, true, false);
+				if(pitPlayer.megastreak.getClass() == Overdrive.class && pitPlayer.megastreak.isOnMega()) {
+					Misc.applyPotionEffect(pitPlayer.player, PotionEffectType.SPEED, 200, 0, true, false);
+				}
 			}
 		}.runTaskTimer(PitSim.INSTANCE, 0L, 60L);
 
@@ -148,11 +151,18 @@ public class Overdrive extends Megastreak {
 			pitPlayer.prefix = "&7[&e" + pitPlayer.playerLevel + "&7] &7" + PlaceholderAPI.setPlaceholders(pitPlayer.player, message);
 		}
 
-		int randomNum = ThreadLocalRandom.current().nextInt(1000, 5000 + 1);
-		AOutput.send(pitPlayer.player, "&c&lOVERDRIVE! &7Earned &6+" + randomNum + "&6g &7from megastreak!");
-		PitSim.VAULT.depositPlayer(pitPlayer.player, randomNum);
+		if(pitPlayer.megastreak.isOnMega()) {
+			int randomNum = ThreadLocalRandom.current().nextInt(1000, 5000 + 1);
+			AOutput.send(pitPlayer.player, "&c&lOVERDRIVE! &7Earned &6+" + randomNum + "&6g &7from megastreak!");
+			PitSim.VAULT.depositPlayer(pitPlayer.player, randomNum);
+		}
 
 		if(runnable != null) runnable.cancel();
+	}
+
+	@Override
+	public void stop() {
+		HandlerList.unregisterAll(this);
 	}
 
 	@Override

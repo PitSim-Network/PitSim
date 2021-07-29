@@ -20,6 +20,7 @@ import dev.kyro.pitsim.events.KillEvent;
 import dev.kyro.pitsim.misc.FunkyFeather;
 import dev.kyro.pitsim.misc.Misc;
 import dev.kyro.pitsim.misc.ProtArmor;
+import dev.kyro.pitsim.perks.AssistantToTheStreaker;
 import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.*;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -234,12 +235,13 @@ public class DamageManager implements Listener {
 		dead.playSound(dead.getLocation(), Sound.FALL_BIG, 1000, 1F);
 		dead.playSound(dead.getLocation(), Sound.FALL_BIG, 1000, 1F);
 		Regularity.toReg.remove(dead.getUniqueId());
-		FileConfiguration playerData = APlayerData.getPlayerData(dead);
-		playerData.set("level", pitDefender.playerLevel);
-		playerData.set("playerkills", pitDefender.playerKills);
-		playerData.set("xp", pitDefender.remainingXP);
-		APlayerData.savePlayerData(dead);
-
+		if(NonManager.getNon(dead) == null) {
+			FileConfiguration playerData = APlayerData.getPlayerData(dead);
+			playerData.set("level", pitDefender.playerLevel);
+			playerData.set("playerkills", pitDefender.playerKills);
+			playerData.set("xp", pitDefender.remainingXP);
+			APlayerData.savePlayerData(dead);
+		}
 		Non attackingNon = NonManager.getNon(killer);
 		if(attackingNon == null) {
 
@@ -250,6 +252,7 @@ public class DamageManager implements Listener {
 
 		Non defendingNon = NonManager.getNon(dead);
 		if(defendingNon == null) {
+			FileConfiguration playerData = APlayerData.getPlayerData(dead);
 			Location spawnLoc = MapManager.getPlayerSpawn();
 			dead.teleport(spawnLoc);
 			pitAttacker.playerKills = pitAttacker.playerKills + 1;
@@ -260,6 +263,7 @@ public class DamageManager implements Listener {
 		}
 
 		pitDefender.endKillstreak();
+		pitDefender.bounty = 0;
 		for(PotionEffect potionEffect : dead.getActivePotionEffects()) {
 			dead.removePotionEffect(potionEffect.getType());
 		}
@@ -309,6 +313,11 @@ public class DamageManager implements Listener {
 			Player assistPlayer = Bukkit.getPlayer(entry.getKey());
 			if(assistPlayer == null) continue;
 			double assistPercent = entry.getValue() / finalDamage;
+
+			PitPlayer pitPlayer = PitPlayer.getPitPlayer(assistPlayer);
+			if(pitPlayer.hasPerk(AssistantToTheStreaker.INSTANCE)) {
+				pitPlayer.incrementAssist(assistPercent);
+			}
 
 			int xp = (int) Math.ceil(killEvent.getFinalXp() * assistPercent);
 			double gold = killEvent.getFinalGold() * assistPercent;

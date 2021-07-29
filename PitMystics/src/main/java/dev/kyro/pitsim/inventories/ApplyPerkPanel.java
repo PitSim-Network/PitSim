@@ -5,15 +5,18 @@ import dev.kyro.arcticapi.gui.AGUIPanel;
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.controllers.PerkManager;
 import dev.kyro.pitsim.controllers.objects.PitPerk;
+import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.events.PerkEquipEvent;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.Sound;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.inventory.InventoryOpenEvent;
+import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
@@ -21,6 +24,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ApplyPerkPanel extends AGUIPanel {
+	PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
 	public PerkGUI perkGUI;
 
 	public int perkNum;
@@ -53,7 +57,10 @@ public class ApplyPerkPanel extends AGUIPanel {
 				lore.add("");
 				lore.add(ChatColor.YELLOW + "Click to remove perk!");
 			}
-
+			if(pitPlayer.hasPerk(pitPerk.INSTANCE)) {
+				meta.addEnchant(Enchantment.PROTECTION_ENVIRONMENTAL, 1, false);
+				meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
+			}
 			meta.setLore(lore);
 			perkItem.setItemMeta(meta);
 

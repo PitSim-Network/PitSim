@@ -5,13 +5,11 @@ import dev.kyro.arcticapi.misc.ASound;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.controllers.NonManager;
 import dev.kyro.pitsim.controllers.objects.Megastreak;
-import dev.kyro.pitsim.controllers.objects.Non;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.events.AttackEvent;
 import dev.kyro.pitsim.events.KillEvent;
 import dev.kyro.pitsim.misc.Misc;
 import me.clip.placeholderapi.PlaceholderAPI;
-import net.milkbowl.vault.chat.Chat;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -28,34 +26,33 @@ import org.bukkit.scheduler.BukkitTask;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.ThreadLocalRandom;
 
-public class Highlander extends Megastreak {
-    public Highlander(PitPlayer pitPlayer) {
+public class Beastmode extends Megastreak {
+    public Beastmode(PitPlayer pitPlayer) {
         super(pitPlayer);
-        INSTANCE = this;
     }
 
     public BukkitTask runnable;
 
     @Override
     public String getName() {
-        return "&6&lHIGH";
+        return "&a&lBEAST";
     }
 
     @Override
     public String getRawName() {
-        return "Highlander";
+        return "Beastmode";
     }
 
     @Override
     public String getPrefix() {
-        return "&6Highlander";
+        return "&aBeastmode";
     }
 
     @Override
     public List<String> getRefNames() {
-        return Arrays.asList("highlander", "high");
+        return Arrays.asList("beastmode", "beast");
     }
 
     @Override
@@ -65,34 +62,33 @@ public class Highlander extends Megastreak {
 
     @Override
     public int guiSlot() {
-        return 12;
+        return 13;
     }
 
     @Override
     public int levelReq() {
-        return 10;
+        return 20;
     }
 
     @Override
     public ItemStack guiItem() {
 
 
-        ItemStack item = new ItemStack(Material.GOLD_BOOTS);
+        ItemStack item = new ItemStack(Material.DIAMOND_HELMET);
         ItemMeta meta = item.getItemMeta();
         List<String> lore = new ArrayList<>();
         lore.add(ChatColor.translateAlternateColorCodes('&', "&7Triggers on: &c50 kills"));
         lore.add("");
         lore.add(ChatColor.GRAY + "On trigger:");
-        lore.add(ChatColor.translateAlternateColorCodes('&', "&a\u25a0 &7Perma &eSpeed I&7."));
-        lore.add(ChatColor.translateAlternateColorCodes('&', "&a\u25a0 &7Earn &6+100% gold &7from kills."));
-        lore.add(ChatColor.translateAlternateColorCodes('&', "&a\u25a0 &7Deal &c+33% &7damage vs bounties players."));
+        lore.add(ChatColor.translateAlternateColorCodes('&', "&a\u25a0 &7Deal &c+25% &7damage to bots."));
+        lore.add(ChatColor.translateAlternateColorCodes('&', "&a\u25a0 &7Earn &b+100% XP &7from kills."));
         lore.add("");
         lore.add(ChatColor.GRAY + "BUT:");
         lore.add(ChatColor.translateAlternateColorCodes('&', "&c\u25a0 &7Receive &c+1% &7damage per kill over 50."));
         lore.add(ChatColor.translateAlternateColorCodes('&', "&7(Damage tripled for bots)"));
         lore.add("");
         lore.add(ChatColor.GRAY + "On death:");
-        lore.add(ChatColor.translateAlternateColorCodes('&', "&e\u25a0 &7Earn your own bounty as well."));
+        lore.add(ChatColor.translateAlternateColorCodes('&', "&e\u25a0 &7Earn between &b1000 &7and &b5000 XP&7."));
 
         meta.setLore(lore);
         item.setItemMeta(meta);
@@ -103,8 +99,8 @@ public class Highlander extends Megastreak {
     public void onKill(KillEvent killEvent) {
         PitPlayer pitPlayer = PitPlayer.getPitPlayer(killEvent.killer);
         if(pitPlayer != this.pitPlayer) return;
-        if(pitPlayer.megastreak.playerIsOnMega(killEvent) && pitPlayer.megastreak.getClass() == Highlander.class) {
-            killEvent.goldMultipliers.add(2.0);
+        if(pitPlayer.megastreak.playerIsOnMega(killEvent) && pitPlayer.megastreak.getClass() == Beastmode.class) {
+            killEvent.xpMultipliers.add(2.0);
         }
     }
 
@@ -112,7 +108,7 @@ public class Highlander extends Megastreak {
     public void onHit(AttackEvent.Apply attackEvent) {
         PitPlayer pitPlayer = PitPlayer.getPitPlayer(attackEvent.defender);
         if(pitPlayer != this.pitPlayer) return;
-        if(pitPlayer.megastreak.isOnMega() && pitPlayer.megastreak.getClass() == Highlander.class) {
+        if(pitPlayer.megastreak.isOnMega() && pitPlayer.megastreak.getClass() == Beastmode.class) {
             int ks = (int) Math.floor(pitPlayer.getKills());
 //            attackEvent.increasePercent += ((ks / 5)  / 100D) * 8;
             if(NonManager.getNon(attackEvent.attacker) == null) {
@@ -129,9 +125,9 @@ public class Highlander extends Megastreak {
         PitPlayer pitPlayer = PitPlayer.getPitPlayer(attackEvent.attacker);
         PitPlayer pitDefender = PitPlayer.getPitPlayer(attackEvent.defender);
         if(pitPlayer != this.pitPlayer) return;
-        if(pitPlayer.megastreak.isOnMega() && pitPlayer.megastreak.getClass() == Highlander.class) {
-            if(pitDefender.bounty > 0) {
-                attackEvent.increasePercent += 33 / 100D;
+        if(pitPlayer.megastreak.isOnMega() && pitPlayer.megastreak.getClass() == Beastmode.class) {
+            if(NonManager.getNon(attackEvent.defender) != null) {
+                attackEvent.increasePercent += 25 / 100D;
             }
         }
     }
@@ -139,15 +135,7 @@ public class Highlander extends Megastreak {
     @Override
     public void proc() {
 
-        runnable = new BukkitRunnable() {
-            @Override
-            public void run() {
-                if(pitPlayer.megastreak.getClass() == Highlander.class && pitPlayer.megastreak.isOnMega()) {
-                    Misc.applyPotionEffect(pitPlayer.player, PotionEffectType.SPEED, 200, 0, true, false);
-                }
-            }
-        }.runTaskTimer(PitSim.INSTANCE, 0L, 60L);
-
+        pitPlayer.player.getWorld().playSound(pitPlayer.player.getLocation(), Sound.WITHER_SPAWN, 1000, 1);
         String message = "%luckperms_prefix%";
         if(pitPlayer.megastreak.isOnMega()) {
             pitPlayer.prefix = pitPlayer.megastreak.getName() + " &7" + PlaceholderAPI.setPlaceholders(pitPlayer.player, message);
@@ -155,13 +143,12 @@ public class Highlander extends Megastreak {
             pitPlayer.prefix = "&7[&e" + pitPlayer.playerLevel + "&7] &7" + PlaceholderAPI.setPlaceholders(pitPlayer.player, message);
         }
 
-        ASound.play(pitPlayer.player, Sound.WITHER_SPAWN, 2, 0.5f);
         pitPlayer.megastreak = this;
         for(Player player : Bukkit.getOnlinePlayers()) {
             PitPlayer pitPlayer2 = PitPlayer.getPitPlayer(player);
             if(pitPlayer2.disabledStreaks) continue;
             player.sendMessage(ChatColor.translateAlternateColorCodes('&',
-                    "&c&lMEGASTREAK!&7 " + pitPlayer.player.getDisplayName() + "&7 activated &6&lHIGHLANDER&7!"));
+                    "&c&lMEGASTREAK!&7 " + pitPlayer.player.getDisplayName() + "&7 activated &a&lBEASTMODE&7!"));
         }
 
     }
@@ -175,11 +162,13 @@ public class Highlander extends Megastreak {
         } else {
             pitPlayer.prefix = "&7[&e" + pitPlayer.playerLevel + "&7] &7" + PlaceholderAPI.setPlaceholders(pitPlayer.player, message);
         }
-        PitSim.VAULT.depositPlayer(pitPlayer.player, pitPlayer.bounty);
-        if(pitPlayer.bounty != 0 && pitPlayer.megastreak.isOnMega()) {
-            AOutput.send(pitPlayer.player, "&6&lHIGHLANDER! &7Earned &6+" + pitPlayer.bounty + "&6g &7from megastreak!");
-            pitPlayer.bounty = 0;
+
+        int randomNum = ThreadLocalRandom.current().nextInt(1000, 5000 + 1);
+        if(pitPlayer.megastreak.isOnMega())  {
+            AOutput.send(pitPlayer.player, "&c&lBEASTMODE! &7Earned &b" + randomNum + "&b XP &7from megastreak!");
+            pitPlayer.remainingXP = Math.max(pitPlayer.remainingXP - randomNum, 0);
         }
+
     }
 
     @Override

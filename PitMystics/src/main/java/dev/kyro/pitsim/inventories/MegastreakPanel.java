@@ -6,10 +6,7 @@ import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.controllers.PerkManager;
 import dev.kyro.pitsim.controllers.objects.Megastreak;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
-import dev.kyro.pitsim.killstreaks.Highlander;
-import dev.kyro.pitsim.killstreaks.NoMegastreak;
-import dev.kyro.pitsim.killstreaks.Overdrive;
-import dev.kyro.pitsim.killstreaks.Uberstreak;
+import dev.kyro.pitsim.killstreaks.*;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.Sound;
@@ -62,6 +59,7 @@ public class MegastreakPanel extends AGUIPanel {
                             if(pitPlayer.playerLevel < 0) level = true;
                             if(pitPlayer.megastreak.getClass() == NoMegastreak.class) has = true;
                             if(!has && !level) {
+                                pitPlayer.megastreak.stop();
                                 pitPlayer.megastreak = new NoMegastreak(pitPlayer);
                                 perkGUI.megaWrapUp();
                             }
@@ -69,21 +67,31 @@ public class MegastreakPanel extends AGUIPanel {
                             if(pitPlayer.playerLevel < 0) level = true;
                             if(pitPlayer.megastreak.getClass() == Overdrive.class) has = true;
                             if(!has && !level) {
-                                pitPlayer.megastreak.
+                                pitPlayer.megastreak.stop();
                                 pitPlayer.megastreak = new Overdrive(pitPlayer);
                                 perkGUI.megaWrapUp();
                             }
                         } else if(megastreak.getClass() == Highlander.class) {
-                            if(pitPlayer.playerLevel < 10) level = true;
+                            if(pitPlayer.playerLevel < 0) level = true;
                             if(pitPlayer.megastreak.getClass() == Highlander.class) has = true;
                             if(!has && !level) {
+                                pitPlayer.megastreak.stop();
                                 pitPlayer.megastreak = new Highlander(pitPlayer);
                                 perkGUI.megaWrapUp();
                             }
+                        } else if(megastreak.getClass() == Beastmode.class) {
+                            if(pitPlayer.playerLevel < 0) level = true;
+                            if(pitPlayer.megastreak.getClass() == Beastmode.class) has = true;
+                            if(!has && !level) {
+                                pitPlayer.megastreak.stop();
+                                pitPlayer.megastreak = new Beastmode(pitPlayer);
+                                perkGUI.megaWrapUp();
+                            }
                         } else if(megastreak.getClass() == Uberstreak.class) {
-                            if(pitPlayer.playerLevel < 25) level = true;
+                            if(pitPlayer.playerLevel < 0) level = true;
                             if(pitPlayer.megastreak.getClass() == Uberstreak.class) has = true;
                             if(!has && !level) {
+                                pitPlayer.megastreak.stop();
                                 pitPlayer.megastreak = new Uberstreak(pitPlayer);
                                 perkGUI.megaWrapUp();
                             }

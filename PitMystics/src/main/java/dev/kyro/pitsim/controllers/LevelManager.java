@@ -3,6 +3,7 @@ package dev.kyro.pitsim.controllers;
 import dev.kyro.arcticapi.data.APlayerData;
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.arcticapi.misc.ASound;
+import dev.kyro.pitsim.controllers.objects.Non;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.Bukkit;
@@ -67,6 +68,7 @@ public class LevelManager {
             String message = ChatColor.translateAlternateColorCodes('&', "&e&lLEVEL UP! %luckperms_prefix%%player_name% &7has reached level &e" + pitplayer.playerLevel);
             Bukkit.broadcastMessage(PlaceholderAPI.setPlaceholders(player, message));
 
+            if(NonManager.getNon(player) != null) return;
             FileConfiguration playerData = APlayerData.getPlayerData(player);
             playerData.set("level", pitplayer.playerLevel);
             playerData.set("playerkills", pitplayer.playerKills);

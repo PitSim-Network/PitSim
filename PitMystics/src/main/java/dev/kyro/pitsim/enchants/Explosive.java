@@ -5,8 +5,10 @@ import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.controllers.*;
 import dev.kyro.pitsim.controllers.objects.Non;
 import dev.kyro.pitsim.controllers.objects.PitEnchant;
+import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.enums.ApplyType;
 import dev.kyro.pitsim.events.AttackEvent;
+import dev.kyro.pitsim.killstreaks.Uberstreak;
 import org.bukkit.Effect;
 import org.bukkit.Sound;
 import org.bukkit.entity.Arrow;
@@ -56,8 +58,6 @@ public class Explosive extends PitEnchant {
 			if(entity instanceof Player) {
 				Player player = (Player) entity;
 				Non non = NonManager.getNon(player);
-				if(non == null) return;
-
 
 				if(player != shooter) {
 
@@ -65,19 +65,22 @@ public class Explosive extends PitEnchant {
 						BypassManager.bypassExplosive.remove(player);
 					}
 					BypassManager.bypassExplosive.add(player);
+					PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
 
-					Vector force = player.getLocation().toVector().subtract(arrow.getLocation().toVector())
-							.setY(1).normalize().multiply(non == null ? 1.15 : 5);
+
+					if(NonManager.getNon(player) == null) {
+						if(pitPlayer.megastreak.getClass() == Uberstreak.class && pitPlayer.megastreak.isOnMega()) continue;
+						Vector force = player.getLocation().toVector().subtract(arrow.getLocation().toVector())
+								.setY(1).normalize().multiply(non == null ? 1.15 : 5);
 //					force.setY(.85f);
-
-					player.setVelocity(force);
-
-					new BukkitRunnable() {
-						@Override
-						public void run() {
-							BypassManager.bypassExplosive.remove(player);
-						}
-					}.runTaskLater(PitSim.INSTANCE, 20L);
+						player.setVelocity(force);
+						new BukkitRunnable() {
+							@Override
+							public void run() {
+								BypassManager.bypassExplosive.remove(player);
+							}
+						}.runTaskLater(PitSim.INSTANCE, 20L);
+					}
 				}
 			}
 		}

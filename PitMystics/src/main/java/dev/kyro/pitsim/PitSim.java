@@ -8,15 +8,12 @@ import dev.kyro.arcticapi.hooks.AHook;
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.commands.*;
 import dev.kyro.pitsim.controllers.*;
-import dev.kyro.pitsim.controllers.market.MarketManager;
+//import dev.kyro.pitsim.controllers.market.MarketManager;
 import dev.kyro.pitsim.controllers.objects.Non;
 import dev.kyro.pitsim.controllers.objects.PitEnchant;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.enchants.*;
-import dev.kyro.pitsim.killstreaks.Highlander;
-import dev.kyro.pitsim.killstreaks.NoMegastreak;
-import dev.kyro.pitsim.killstreaks.Overdrive;
-import dev.kyro.pitsim.killstreaks.Uberstreak;
+import dev.kyro.pitsim.killstreaks.*;
 import dev.kyro.pitsim.misc.ItemRename;
 import dev.kyro.pitsim.perks.*;
 import dev.kyro.pitsim.placeholders.*;
@@ -24,6 +21,7 @@ import net.milkbowl.vault.economy.Economy;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
+import org.bukkit.plugin.RegisteredListener;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -71,6 +69,7 @@ public class PitSim extends JavaPlugin {
 		registerUpgrades();
 		registerMegastreaks();
 
+
 		ArcticAPI.setupPlaceholderAPI("pitsim");
 		AHook.registerPlaceholder(new PrefixPlaceholder());
 		AHook.registerPlaceholder(new SuffixPlaceholder());
@@ -110,6 +109,7 @@ public class PitSim extends JavaPlugin {
 
 		for(Player onlinePlayer : Bukkit.getOnlinePlayers()) {
 			PitPlayer pitplayer = PitPlayer.getPitPlayer(onlinePlayer);
+			if(NonManager.getNon(onlinePlayer) != null) continue;
 			FileConfiguration playerData = APlayerData.getPlayerData(onlinePlayer);
 			playerData.set("level", pitplayer.playerLevel);
 			playerData.set("playerkills", pitplayer.playerKills);
@@ -222,6 +222,7 @@ public class PitSim extends JavaPlugin {
 		PerkManager.registerUpgrade(new StrengthChaining());
 		PerkManager.registerUpgrade(new Gladiator());
 		PerkManager.registerUpgrade(new Thick());
+		PerkManager.registerUpgrade(new AssistantToTheStreaker());
 	}
 
 	private void registerMegastreaks() {
@@ -230,6 +231,7 @@ public class PitSim extends JavaPlugin {
 		PerkManager.registerMegastreak(new Highlander(null));
 		PerkManager.registerMegastreak(new Uberstreak(null));
 		PerkManager.registerMegastreak(new NoMegastreak(null));
+		PerkManager.registerMegastreak(new Beastmode(null));
 
 
 	}
@@ -268,7 +270,7 @@ public class PitSim extends JavaPlugin {
 		getServer().getPluginManager().registerEvents(new PlayerManager(), this);
 		getServer().getPluginManager().registerEvents(new ChatManager(), this);
 		getServer().getPluginManager().registerEvents(new DamageIndicator(), this);
-		getServer().getPluginManager().registerEvents(new MarketManager(), this);
+//		getServer().getPluginManager().registerEvents(new MarketManager(), this);
 		getServer().getPluginManager().registerEvents(new ItemManager(), this);
 		getServer().getPluginManager().registerEvents(new CombatManager(), this);
 		getServer().getPluginManager().registerEvents(new SpawnManager(), this);

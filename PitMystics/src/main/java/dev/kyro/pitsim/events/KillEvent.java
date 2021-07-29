@@ -40,7 +40,7 @@ public class KillEvent extends Event {
 	}
 
 	public int getFinalXp() {
-
+		int xpReward = this.xpReward;
 		for(Double xpMultiplier : xpMultipliers) {
 			xpReward *= xpMultiplier;
 		}

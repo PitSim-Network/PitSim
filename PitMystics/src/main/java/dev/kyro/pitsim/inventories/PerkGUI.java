@@ -2,6 +2,7 @@ package dev.kyro.pitsim.inventories;
 
 import dev.kyro.arcticapi.data.APlayerData;
 import dev.kyro.arcticapi.gui.AGUI;
+import dev.kyro.pitsim.controllers.NonManager;
 import dev.kyro.pitsim.controllers.objects.Megastreak;
 import dev.kyro.pitsim.controllers.objects.PitPerk;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
@@ -51,7 +52,7 @@ public class PerkGUI extends AGUI {
 	}
 
 	public void setPerk(PitPerk pitPerk, int perkNum) {
-
+		if(NonManager.getNon(player) !=  null) return;
 		FileConfiguration playerData = APlayerData.getPlayerData(player);
 		playerData.set("perk-" + (perkNum - 1), pitPerk.refName);
 		APlayerData.savePlayerData(player);

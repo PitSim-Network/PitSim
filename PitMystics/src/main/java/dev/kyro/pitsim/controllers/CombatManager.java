@@ -3,6 +3,7 @@ package dev.kyro.pitsim.controllers;
 import dev.kyro.arcticapi.data.APlayerData;
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.PitSim;
+import dev.kyro.pitsim.controllers.objects.Non;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.events.AttackEvent;
 import dev.kyro.pitsim.events.KillEvent;
@@ -73,6 +74,7 @@ public class CombatManager implements Listener {
 
    @EventHandler
     public static void onLeave(PlayerQuitEvent event) {
+        if(NonManager.getNon(event.getPlayer()) != null) return;
        FileConfiguration playerData = APlayerData.getPlayerData(event.getPlayer());
        PitPlayer pitplayer = PitPlayer.getPitPlayer(event.getPlayer());
        playerData.set("level", pitplayer.playerLevel);

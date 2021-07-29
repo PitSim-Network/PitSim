@@ -7,6 +7,7 @@ import dev.kyro.pitsim.misc.Misc;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.Sound;
+import org.bukkit.event.HandlerList;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.potion.PotionEffectType;
@@ -43,7 +44,7 @@ public class NoMegastreak extends Megastreak {
 
 	@Override
 	public int getRequiredKills() {
-		return 20;
+		return 1000000000;
 	}
 
 	@Override
@@ -89,6 +90,11 @@ public class NoMegastreak extends Megastreak {
 	public void reset() {
 
 		if(runnable != null) runnable.cancel();
+	}
+
+	@Override
+	public void stop() {
+		HandlerList.unregisterAll(this);
 	}
 
 	@Override

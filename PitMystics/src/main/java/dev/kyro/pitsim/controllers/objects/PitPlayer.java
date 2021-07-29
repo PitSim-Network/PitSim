@@ -35,9 +35,10 @@ public class PitPlayer {
 	public int playerKills = 0;
 	public PitPerk[] pitPerks = new PitPerk[4];
 
-	private int kills = 0;
+	private double kills = 0;
 	public int bounty = 0;
 	public List<Killstreak> killstreaks = new ArrayList<>();
+	public int latestKillAnnouncement = 0;
 
 	public Megastreak megastreak;
 
@@ -64,44 +65,44 @@ public class PitPlayer {
 
 		Non non = NonManager.getNon(player);
 
-
-		FileConfiguration playerData = APlayerData.getPlayerData(player);
-
-		if(playerData.getInt("level") > 0) {
-			playerLevel = playerData.getInt("level");
-			remainingXP = playerData.getInt("xp");
-			playerKills = playerData.getInt("playerkills");
-		}
-
 		if(non == null) {
 			String message = "%luckperms_prefix%";
 			prefix = "&7[&e" + playerLevel + "&7] &7" + PlaceholderAPI.setPlaceholders(player, message);
+
+			FileConfiguration playerData = APlayerData.getPlayerData(player);
+
+			if(playerData.getInt("level") > 0) {
+				playerLevel = playerData.getInt("level");
+				remainingXP = playerData.getInt("xp");
+				playerKills = playerData.getInt("playerkills");
+			}
+
+			for(int i = 0; i < pitPerks.length; i++) {
+
+				String perkString = playerData.getString("perk-" + i);
+				PitPerk savedPerk = perkString != null ? PitPerk.getPitPerk(perkString) : NoPerk.INSTANCE;
+
+				pitPerks[i] = savedPerk != null ? savedPerk : NoPerk.INSTANCE;
+			}
+
+			String deathCryString = playerData.getString("deathcry");
+			if(deathCryString != null) deathCry = DeathCry.valueOf(deathCryString);
+
+			String killEffectString = playerData.getString("killeffect");
+			if(killEffectString != null) killEffect = KillEffect.valueOf(killEffectString);
+
+			String chatColorString = playerData.getString("chatcolor");
+			if(chatColorString != null) {
+				chatColor = AChatColor.valueOf(chatColorString);
+				ChatColorPanel.playerChatColors.put(player, chatColor);
+			}
+
+			disabledBounties = playerData.getBoolean("disabledbounties");
+			disabledStreaks = playerData.getBoolean("disabledstreaks");
+			disabledKillFeed = playerData.getBoolean("disabledkillfeed");
+			disabledPlayerChat = playerData.getBoolean("disabledplayerchat");
 		}
 
-		for(int i = 0; i < pitPerks.length; i++) {
-
-			String perkString = playerData.getString("perk-" + i);
-			PitPerk savedPerk = perkString != null ? PitPerk.getPitPerk(perkString) : NoPerk.INSTANCE;
-
-			pitPerks[i] = savedPerk != null ? savedPerk : NoPerk.INSTANCE;
-		}
-
-		String deathCryString = playerData.getString("deathcry");
-		if(deathCryString != null) deathCry = DeathCry.valueOf(deathCryString);
-
-		String killEffectString = playerData.getString("killeffect");
-		if(killEffectString != null) killEffect = KillEffect.valueOf(killEffectString);
-
-		String chatColorString = playerData.getString("chatcolor");
-		if(chatColorString != null) {
-			chatColor = AChatColor.valueOf(chatColorString);
-			ChatColorPanel.playerChatColors.put(player, chatColor);
-		}
-
-		disabledBounties = playerData.getBoolean("disabledbounties");
-		disabledStreaks = playerData.getBoolean("disabledstreaks");
-		disabledKillFeed = playerData.getBoolean("disabledkillfeed");
-		disabledPlayerChat = playerData.getBoolean("disabledplayerchat");
 	}
 
 	public static PitPlayer getPitPlayer(Player player) {
@@ -126,31 +127,58 @@ public class PitPlayer {
 		megastreak.reset();
 		killstreaks.forEach(Killstreak::reset);
 		kills = 0;
+		latestKillAnnouncement = 0;
 	}
 
 	public void incrementKills() {
 
 		kills++;
-		if(kills == megastreak.getRequiredKills() && megastreak.getClass() != NoMegastreak.class) megastreak.proc();
+		if(kills >= megastreak.getRequiredKills() && kills < megastreak.getRequiredKills() + 1 && megastreak.getClass() != NoMegastreak.class) megastreak.proc();
 		for(Killstreak killstreak : killstreaks) {
 			if(kills == 0 || kills % killstreak.killInterval != 0) continue;
 			killstreak.proc();
 		}
 		megastreak.kill();
 
-		if(kills % 25 == 0) {
+		if(Math.floor(kills) % 25 == 0) {
 			for(Player onlinePlayer : Bukkit.getOnlinePlayers()) {
 				PitPlayer pitPlayer = PitPlayer.getPitPlayer(onlinePlayer);
 				if(pitPlayer.disabledStreaks) continue;
 				String message = ChatColor.translateAlternateColorCodes(
-						'&', "&c&lSTREAK!&7 of &c" + kills + " &7by %luckperms_prefix%" + player.getDisplayName());
+						'&', "&c&lSTREAK!&7 of &c" + (int) Math.floor(kills) + " &7by %luckperms_prefix%" + player.getDisplayName());
 				onlinePlayer.sendMessage(PlaceholderAPI.setPlaceholders(player, message));
 			}
 		}
 	}
 
-	public int getKills() {
+	public void incrementAssist(double assistPercent) {
+
+		kills =  kills + (Math.round(assistPercent * 100) / 100D);
+
+		if(kills >= megastreak.getRequiredKills() && kills < megastreak.getRequiredKills() + 1 && megastreak.getClass() != NoMegastreak.class &
+				!megastreak.isOnMega()) megastreak.proc();
+		for(Killstreak killstreak : killstreaks) {
+			if(kills == 0 || kills % killstreak.killInterval != 0) continue;
+			killstreak.proc();
+		}
+		if(Math.floor(kills) % 25 == 0 && latestKillAnnouncement != Math.floor(kills)) {
+			for(Player onlinePlayer : Bukkit.getOnlinePlayers()) {
+				PitPlayer pitPlayer = PitPlayer.getPitPlayer(onlinePlayer);
+				if(pitPlayer.disabledStreaks) continue;
+				String message = ChatColor.translateAlternateColorCodes(
+						'&', "&c&lSTREAK!&7 of &c" + (int) Math.floor(kills) + " &7by %luckperms_prefix%" + player.getDisplayName());
+				onlinePlayer.sendMessage(PlaceholderAPI.setPlaceholders(player, message));
+			}
+			latestKillAnnouncement = (int) Math.floor(kills);
+		}
+	}
+
+	public double getKills() {
 		return kills;
+	}
+
+	public void setKillsreak(double newKills) {
+		kills = newKills;
 	}
 
 	public void setKills(int kills) {
