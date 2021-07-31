@@ -22,8 +22,8 @@ public class KillEvent extends Event {
 	private final Map<PitEnchant, Integer> deadEnchantMap;
 
 	public boolean exeDeath;
-
-	public int xpReward;
+	public int xpReward = 20;
+	public int xpCap = 50;
 	public int goldReward = 20;
 	public List<Double> xpMultipliers = new ArrayList<>();
 	public List<Double> goldMultipliers = new ArrayList<>();
@@ -36,15 +36,17 @@ public class KillEvent extends Event {
 		this.exeDeath = exeDeath;
 
 		Non defendingNon = NonManager.getNon(this.dead);
-		xpReward = defendingNon == null ? 5 : 1;
+		xpReward = defendingNon == null ? 5 :20;
 	}
 
 	public int getFinalXp() {
+
 		int xpReward = this.xpReward;
 		for(Double xpMultiplier : xpMultipliers) {
 			xpReward *= xpMultiplier;
 		}
-		return xpReward;
+		if(xpReward > xpCap) return xpCap;
+		else return xpReward;
 	}
 
 

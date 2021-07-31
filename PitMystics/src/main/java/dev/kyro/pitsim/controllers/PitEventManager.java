@@ -59,13 +59,12 @@ public class PitEventManager {
                 new BukkitRunnable() {
                     @Override
                     public void run() {
-                        BossBarManager.timerBar(ChatColor.translateAlternateColorCodes('&',
-                                "&5&lMAJOR EVENT! " + randomEvent.color + "" + ChatColor.BOLD +
-                                        randomEvent.getName().toUpperCase(Locale.ROOT)) + "! &7Starting in", 0, 30, ChatColor.YELLOW);
+//                        BossBarManager.timerBar(ChatColor.translateAlternateColorCodes('&',
+//                                "&5&lMAJOR EVENT! " + randomEvent.color + "" + ChatColor.BOLD +
+//                                        randomEvent.getName().toUpperCase(Locale.ROOT)) + "! &7Starting in", 0, 30, ChatColor.YELLOW);
 
                     }
                 }.runTaskLater(PitSim.INSTANCE, 10L);
-
 
 
                 randomEvent.prepare();
@@ -101,9 +100,9 @@ public class PitEventManager {
                 new BukkitRunnable() {
                     @Override
                     public void run() {
-                        BossBarManager.timerBar(ChatColor.translateAlternateColorCodes('&',
-                                "&5&lMAJOR EVENT! " + event.color + "" + ChatColor.BOLD +
-                                        event.getName().toUpperCase(Locale.ROOT)) + "! &7Ending in", 1, 0, ChatColor.GREEN);
+//                        BossBarManager.timerBar(ChatColor.translateAlternateColorCodes('&',
+//                                "&5&lMAJOR EVENT! " + event.color + "" + ChatColor.BOLD +
+//                                        event.getName().toUpperCase(Locale.ROOT)) + "! &7Ending in", 1, 0, ChatColor.GREEN);
                     }
                 }.runTaskLater(PitSim.INSTANCE, 10L);
 

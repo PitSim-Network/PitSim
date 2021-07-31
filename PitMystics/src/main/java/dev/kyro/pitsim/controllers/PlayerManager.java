@@ -11,10 +11,15 @@ import dev.kyro.pitsim.killstreaks.Highlander;
 import dev.kyro.pitsim.misc.DeathCrys;
 import dev.kyro.pitsim.misc.KillEffects;
 import dev.kyro.pitsim.misc.Misc;
+import dev.kyro.pitsim.misc.TokenOfAppreciation;
 import me.clip.placeholderapi.PlaceholderAPI;
+import net.kyori.adventure.audience.Audience;
+import net.kyori.adventure.platform.bukkit.BukkitAudiences;
 import net.md_5.bungee.api.chat.TextComponent;
 import net.royawesome.jlibnoise.module.combiner.Max;
 import org.bukkit.*;
+import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -28,14 +33,14 @@ import org.bukkit.scheduler.BukkitRunnable;
 import org.inventivetalent.bossbar.BossBar;
 import org.inventivetalent.bossbar.BossBarAPI;
 
+import java.io.File;
 import java.text.DecimalFormat;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 public class PlayerManager implements Listener {
 
 	public static List<UUID> swapCooldown = new ArrayList<>();
+	public static Map<Player, BossBarManager> bossBars = new HashMap<>();
 
 	@EventHandler
 	public static void onKill(KillEvent killEvent) {
@@ -99,6 +104,7 @@ public class PlayerManager implements Listener {
 	public static void onClick(PlayerInteractEvent event) {
 
 		Player player = event.getPlayer();
+
 		if(event.getAction() != Action.RIGHT_CLICK_AIR && event.getAction() != Action.RIGHT_CLICK_BLOCK) return;
 		if(Misc.isAirOrNull(player.getItemInHand()) || !player.getItemInHand().getType().toString().contains("LEGGINGS")) return;
 
@@ -140,6 +146,12 @@ public class PlayerManager implements Listener {
 
 	@EventHandler
 	public void onPlayerJoin(PlayerJoinEvent event) {
+		if(isNew(event.getPlayer())) TokenOfAppreciation.giveToken(event.getPlayer(), 1);
+
+//		BossBarManager bm = new BossBarManager();
+//		Audience audiences = PitSim.INSTANCE.adventure().player(event.getPlayer());
+//		bm.showMyBossBar(audiences);
+//		bossBars.put(event.getPlayer(), bm);
 
 		Player player = event.getPlayer();
 		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
@@ -207,5 +219,18 @@ public class PlayerManager implements Listener {
 				player.setHealth(player.getMaxHealth());
 			}
 		}.runTaskLater(PitSim.INSTANCE, 1L);
+	}
+
+	public static Boolean isNew(Player player) {
+		File directory = new File("plugins/PitRemake/playerdata");
+		File[] files = directory.listFiles();
+		for(File file : files) {
+
+			if(file.getName().equals(player.getUniqueId().toString() + ".yml")) {
+				return false;
+			}
+
+		}
+		return true;
 	}
 }

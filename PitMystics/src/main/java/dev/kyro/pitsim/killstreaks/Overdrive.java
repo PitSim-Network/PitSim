@@ -136,8 +136,9 @@ public class Overdrive extends Megastreak {
 		for(Player player : Bukkit.getOnlinePlayers()) {
 			PitPlayer pitPlayer2 = PitPlayer.getPitPlayer(player);
 			if(pitPlayer2.disabledStreaks) continue;
-			player.sendMessage(ChatColor.translateAlternateColorCodes('&',
-					"&c&lMEGASTREAK!&7 " + pitPlayer.player.getDisplayName() + "&7 activated &c&lOVERDRIVE&7!"));
+			String streakMessage = ChatColor.translateAlternateColorCodes('&',
+					"&c&lMEGASTREAK! %luckperms_prefix%" + pitPlayer.player.getDisplayName() + " &7activated &c&lOVERDRIVE&7!");
+			AOutput.send(player, PlaceholderAPI.setPlaceholders(pitPlayer.player, streakMessage));
 		}
 	}
 

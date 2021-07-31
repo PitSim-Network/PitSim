@@ -30,6 +30,7 @@ dependencies {
     compileOnly 'com.sk89q.worldguard:worldguard-legacy:6.2'
     compileOnly 'com.sk89q.worldedit:worldedit-bukkit:6.0'
     compileOnly 'org.inventivetalent:bossbarapi:2.4.3-SNAPSHOT'
+    implementation("net.kyori:adventure-platform-bukkit:4.0.0-SNAPSHOT")
 
     compile group: 'com.github.koca2000', name: 'NoteBlockAPI', version: '-SNAPSHOT'
     compile 'com.github.ArcticDevelopment:ArcticAPI:fc630bd727'
@@ -40,4 +41,5 @@ dependencies {
 shadowJar {
 
     relocate 'dev.kyro.arcticapi', 'dev.kyro.pitsim.arcticapi'
+    relocate 'net.kyori', 'dev.kyro.pitsim.kyori'
 }

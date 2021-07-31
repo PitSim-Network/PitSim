@@ -82,6 +82,7 @@ public class Beastmode extends Megastreak {
         lore.add(ChatColor.GRAY + "On trigger:");
         lore.add(ChatColor.translateAlternateColorCodes('&', "&a\u25a0 &7Deal &c+25% &7damage to bots."));
         lore.add(ChatColor.translateAlternateColorCodes('&', "&a\u25a0 &7Earn &b+100% XP &7from kills."));
+        lore.add(ChatColor.translateAlternateColorCodes('&', "&a\u25a0 &7Gain &b+50 max XP&7."));
         lore.add("");
         lore.add(ChatColor.GRAY + "BUT:");
         lore.add(ChatColor.translateAlternateColorCodes('&', "&c\u25a0 &7Receive &c+1% &7damage per kill over 50."));
@@ -121,6 +122,15 @@ public class Beastmode extends Megastreak {
     }
 
     @EventHandler
+    public void kill(KillEvent killEvent) {
+        PitPlayer pitPlayer = PitPlayer.getPitPlayer(killEvent.killer);
+        if(pitPlayer != this.pitPlayer) return;
+        if(pitPlayer.megastreak.isOnMega() && pitPlayer.megastreak.getClass() == Beastmode.class) {
+            killEvent.xpCap += 50;
+        }
+    }
+
+    @EventHandler
     public void onAttack(AttackEvent.Apply attackEvent) {
         PitPlayer pitPlayer = PitPlayer.getPitPlayer(attackEvent.attacker);
         PitPlayer pitDefender = PitPlayer.getPitPlayer(attackEvent.defender);
@@ -147,8 +157,10 @@ public class Beastmode extends Megastreak {
         for(Player player : Bukkit.getOnlinePlayers()) {
             PitPlayer pitPlayer2 = PitPlayer.getPitPlayer(player);
             if(pitPlayer2.disabledStreaks) continue;
-            player.sendMessage(ChatColor.translateAlternateColorCodes('&',
-                    "&c&lMEGASTREAK!&7 " + pitPlayer.player.getDisplayName() + "&7 activated &a&lBEASTMODE&7!"));
+           String streakMessage = ChatColor.translateAlternateColorCodes('&',
+                    "&c&lMEGASTREAK! %luckperms_prefix%" + pitPlayer.player.getDisplayName() + "&7 activated &a&lBEASTMODE&7!");
+           AOutput.send(player, PlaceholderAPI.setPlaceholders(pitPlayer.player, streakMessage));
+
         }
 
     }

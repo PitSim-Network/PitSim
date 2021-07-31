@@ -197,13 +197,34 @@ public class EnchantManager {
 		} else {
 //			loreBuilder.addLore("&7Kills: &a" + Misc.getFormattedKills(playerKills) + "&7/" + Misc.getFormattedKills(botKills));
 		}
+		ItemMeta itemMeta = itemStack.getItemMeta();
 		if(isJewel && !isJewelComplete(itemStack)) {
 
-			loreBuilder.addLore("&7");
-			loreBuilder.addLore("&7Kill &c" + Constant.JEWEL_KILLS + " &7players to recycle");
-			loreBuilder.addLore("&7into Tier 1 pants with a Tier III");
-			loreBuilder.addLore("&7enchant");
-			loreBuilder.addLore("&7Kills: &3" + jewelKills);
+			if(getMysticType(itemStack) == "Pants") {
+				itemMeta.setDisplayName(ChatColor.DARK_AQUA + "Hidden Jewel Pants");
+				loreBuilder.addLore("&7");
+				loreBuilder.addLore("&7Kill &c" + Constant.JEWEL_KILLS + " &7players to recycle");
+				loreBuilder.addLore("&7into Tier I pants with a Tier III");
+				loreBuilder.addLore("&7enchant");
+				loreBuilder.addLore("&7Kills: &3" + jewelKills);
+			}
+			if(getMysticType(itemStack) == "Sword") {
+				itemMeta.setDisplayName(ChatColor.YELLOW + "Hidden Jewel Sword");
+				loreBuilder.addLore("&7");
+				loreBuilder.addLore("&7Kill &c" + Constant.JEWEL_KILLS + " &7players to recycle");
+				loreBuilder.addLore("&7into a Tier I sword with a Tier");
+				loreBuilder.addLore("&7III enchant");
+				loreBuilder.addLore("&7Kills: &3" + jewelKills);
+			}
+			if(getMysticType(itemStack) == "Bow") {
+				itemMeta.setDisplayName(ChatColor.AQUA + "Hidden Jewel Bow");
+				loreBuilder.addLore("&7");
+				loreBuilder.addLore("&7Kill &c" + Constant.JEWEL_KILLS + " &7players to recycle");
+				loreBuilder.addLore("&7into a Tier I bow with a Tier");
+				loreBuilder.addLore("&7III enchant");
+				loreBuilder.addLore("&7Kills: &3" + jewelKills);
+			}
+
 		} else {
 
 			for(String key : enchantOrder) {
@@ -223,7 +244,7 @@ public class EnchantManager {
 			}
 		}
 
-		ItemMeta itemMeta = itemStack.getItemMeta();
+
 		itemMeta.setLore(loreBuilder.getLore());
 		itemStack.setItemMeta(itemMeta);
 	}
@@ -403,6 +424,7 @@ public class EnchantManager {
 		for(ItemStack itemStack : inUse) {
 			int enchantLvl = getEnchantLevel(itemStack, pitEnchant);
 			if(pitEnchant.levelStacks) {
+
 				finalLevel += enchantLvl;
 			} else {
 				if(enchantLvl > finalLevel) finalLevel = enchantLvl;

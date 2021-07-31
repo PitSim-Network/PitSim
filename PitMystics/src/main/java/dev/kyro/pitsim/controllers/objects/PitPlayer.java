@@ -2,15 +2,16 @@ package dev.kyro.pitsim.controllers.objects;
 
 import dev.kyro.arcticapi.data.APlayerData;
 import dev.kyro.pitsim.PitSim;
+import dev.kyro.pitsim.controllers.LevelManager;
 import dev.kyro.pitsim.controllers.NonManager;
+import dev.kyro.pitsim.controllers.PerkManager;
 import dev.kyro.pitsim.enchants.Hearts;
 import dev.kyro.pitsim.enums.AChatColor;
 import dev.kyro.pitsim.enums.DeathCry;
 import dev.kyro.pitsim.enums.KillEffect;
 import dev.kyro.pitsim.events.HealEvent;
 import dev.kyro.pitsim.inventories.ChatColorPanel;
-import dev.kyro.pitsim.killstreaks.NoMegastreak;
-import dev.kyro.pitsim.killstreaks.Uberstreak;
+import dev.kyro.pitsim.killstreaks.*;
 import dev.kyro.pitsim.perks.NoPerk;
 import dev.kyro.pitsim.perks.Thick;
 import me.clip.placeholderapi.PlaceholderAPI;
@@ -41,6 +42,8 @@ public class PitPlayer {
 	public int latestKillAnnouncement = 0;
 
 	public Megastreak megastreak;
+	public long uberReset = 0;
+	public int dailyUbersLeft = 5;
 
 	public Map<PitEnchant, Integer> enchantHits = new HashMap<>();
 	public Map<PitEnchant, Integer> enchantCharge = new HashMap<>();
@@ -75,6 +78,7 @@ public class PitPlayer {
 				playerLevel = playerData.getInt("level");
 				remainingXP = playerData.getInt("xp");
 				playerKills = playerData.getInt("playerkills");
+				LevelManager.setXPBar(player, this);
 			}
 
 			for(int i = 0; i < pitPerks.length; i++) {
@@ -101,6 +105,18 @@ public class PitPlayer {
 			disabledStreaks = playerData.getBoolean("disabledstreaks");
 			disabledKillFeed = playerData.getBoolean("disabledkillfeed");
 			disabledPlayerChat = playerData.getBoolean("disabledplayerchat");
+			uberReset = playerData.getLong("ubercooldown");
+			dailyUbersLeft = playerData.getInt("ubersleft");
+
+				String streak = playerData.getString("megastreak");
+
+			if(streak == "Beastmode") this.megastreak = new Beastmode(this);
+			if(streak == "No Megastreak") this.megastreak = new NoMegastreak(this);
+			if(streak == "Highlander") this.megastreak = new Highlander(this);
+			if(streak == "Overdrive") this.megastreak = new Overdrive(this);
+			if(streak == "Uberstreak") this.megastreak = new Uberstreak(this);
+
+
 		}
 
 	}

@@ -1,6 +1,7 @@
 package dev.kyro.pitsim.killstreaks;
 
 import de.tr7zw.nbtapi.NBTItem;
+import dev.kyro.arcticapi.data.APlayerData;
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.arcticapi.misc.AUtil;
 import dev.kyro.pitsim.commands.FreshCommand;
@@ -20,6 +21,7 @@ import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.HandlerList;
@@ -192,6 +194,22 @@ public class Uberstreak extends Megastreak {
 		if(pitPlayer.getKills() < 400)  return;
 		if(!isOnMega()) return;
 
+		if(pitPlayer.uberReset == 0) {
+			pitPlayer.uberReset = System.currentTimeMillis() / 1000L;
+		}
+		pitPlayer.dailyUbersLeft = pitPlayer.dailyUbersLeft - 1;
+
+		FileConfiguration playerData = APlayerData.getPlayerData(pitPlayer.player);
+		playerData.set("ubercooldown", pitPlayer.uberReset);
+		playerData.set("ubersleft", pitPlayer.dailyUbersLeft);
+		APlayerData.savePlayerData(pitPlayer.player);
+
+		if(pitPlayer.dailyUbersLeft == 0) {
+			stop();
+			pitPlayer.megastreak = new NoMegastreak(pitPlayer);
+		}
+
+
 		String message = "%luckperms_prefix%";
 		if(pitPlayer.megastreak.isOnMega()) {
 			pitPlayer.prefix = pitPlayer.megastreak.getName() + " &7" + PlaceholderAPI.setPlaceholders(pitPlayer.player, message);
@@ -199,8 +217,8 @@ public class Uberstreak extends Megastreak {
 			pitPlayer.prefix = "&7[&e" + pitPlayer.playerLevel + "&7] &7" + PlaceholderAPI.setPlaceholders(pitPlayer.player, message);
 		}
 
-		int rand = (int) (Math.random() * 4);
-		if(rand == 0) {
+		int rand = (int) (Math.random() * 10);
+		if(rand == 0 || rand == 1 || rand == 2) {
 
 			int rand2 = (int) (Math.random() * 3);
 			if(rand2 == 0) mysticType = MysticType.SWORD;
@@ -218,7 +236,7 @@ public class Uberstreak extends Megastreak {
 			AUtil.giveItemSafely(pitPlayer.player, nbtItem.getItem());
 			uberMessage("&3Hidden Jewel " + mysticType.displayName, pitPlayer);
 
-		} else if(rand == 1) {
+		} else if(rand == 3 || rand == 4 || rand == 5) {
 			int rand2 = (int) (Math.random() * 3);
 			if(rand2 == 0) {
 				FunkyFeather.giveFeather(pitPlayer.player, 1);
@@ -231,7 +249,7 @@ public class Uberstreak extends Megastreak {
 				FunkyFeather.giveFeather(pitPlayer.player, 3);
 				uberMessage("&33x Funky Feather", pitPlayer);
 			}
-		} else if(rand == 2) {
+		} else if(rand == 9) {
 			int rand2 = (int) (Math.random() * 3);
 			if(rand2 == 0) {
 				ChunkOfVile.giveVile(pitPlayer.player, 2);
@@ -245,7 +263,7 @@ public class Uberstreak extends Megastreak {
 				ChunkOfVile.giveVile(pitPlayer.player, 6);
 				uberMessage("&56x Chunk of Vile", pitPlayer);
 			}
-		} else if(rand == 3) {
+		} else if(rand == 6 || rand == 7 || rand == 8) {
 			int rand2 = (int) (Math.random() * 4);
 			if(rand2 == 0) {
 				ProtArmor.getArmor(pitPlayer.player, "helmet");

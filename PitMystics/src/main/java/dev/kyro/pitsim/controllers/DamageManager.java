@@ -252,12 +252,14 @@ public class DamageManager implements Listener {
 
 		Non defendingNon = NonManager.getNon(dead);
 		if(defendingNon == null) {
-			FileConfiguration playerData = APlayerData.getPlayerData(dead);
 			Location spawnLoc = MapManager.getPlayerSpawn();
 			dead.teleport(spawnLoc);
-			pitAttacker.playerKills = pitAttacker.playerKills + 1;
-			playerData.set("playerkills", pitAttacker.playerLevel);
-			APlayerData.savePlayerData(killer);
+			if(attackingNon == null) {
+				FileConfiguration playerData = APlayerData.getPlayerData(dead);
+				if(killer != dead) pitAttacker.playerKills = pitAttacker.playerKills + 1;
+				playerData.set("playerkills", pitAttacker.playerLevel);
+				APlayerData.savePlayerData(killer);
+			}
 		} else {
 			defendingNon.respawn();
 		}
@@ -319,15 +321,18 @@ public class DamageManager implements Listener {
 				pitPlayer.incrementAssist(assistPercent);
 			}
 
-			int xp = (int) Math.ceil(killEvent.getFinalXp() * assistPercent);
-			double gold = killEvent.getFinalGold() * assistPercent;
+			int xp = (int) Math.ceil(20 * assistPercent);
+			double gold = 20 * assistPercent;
 
-
+			PitPlayer assistPitPlayer = PitPlayer.getPitPlayer(assistPlayer);
+			if(assistPitPlayer.remainingXP - xp < 0) assistPitPlayer.remainingXP = 0;
+			else assistPitPlayer.remainingXP = assistPitPlayer.remainingXP  - xp;
+			LevelManager.incrementLevel(assistPlayer);
 
 			if(killEvent.getFinalGold() > 10) {
 				PitSim.VAULT.depositPlayer(assistPlayer, 10);
 			} else {
-				PitSim.VAULT.depositPlayer(assistPlayer, killEvent.getFinalGold());
+				PitSim.VAULT.depositPlayer(assistPlayer, gold);
 			}
 
 
@@ -335,7 +340,6 @@ public class DamageManager implements Listener {
 			String assist = "&a&lASSIST!&7 " + Math.round(assistPercent * 100) + "% on %luckperms_prefix%" +
 					(defendingNon == null ? "%player_name%" : defendingNon.displayName) + " &b+" + xp + "XP" +" &6+" + df.format(gold) + "g";
 
-			PitPlayer assistPitPlayer = PitPlayer.getPitPlayer(assistPlayer);
 			if(!assistPitPlayer.disabledKillFeed) AOutput.send(assistPlayer, PlaceholderAPI.setPlaceholders(killEvent.dead, assist));
 		}
 
@@ -393,6 +397,7 @@ public class DamageManager implements Listener {
 		dead.playSound(dead.getLocation(), Sound.FALL_BIG, 1000, 1F);
 		dead.playSound(dead.getLocation(), Sound.FALL_BIG, 1000, 1F);
 		Regularity.toReg.remove(dead.getUniqueId());
+		CombatManager.taggedPlayers.remove(dead.getUniqueId());
 
 		FileConfiguration playerData = APlayerData.getPlayerData(dead);
 		PitPlayer pitPlayer = PitPlayer.getPitPlayer(dead);

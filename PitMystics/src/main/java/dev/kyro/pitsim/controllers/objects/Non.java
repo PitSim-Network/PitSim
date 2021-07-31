@@ -102,13 +102,19 @@ public class Non {
 			return;
 		}
 
+
 		if(nonState != NonState.FIGHTING) {
-			npc.getNavigator().setTarget(null, true);
+			if(!npc.isSpawned()) spawn();
+			if(npc.isSpawned()) {
+				npc.getNavigator().setTarget(null, true);
+			}
 			return;
 		}
 
-		pickTarget();
-		npc.getNavigator().setTarget(target, true);
+		if(npc.isSpawned()) {
+			pickTarget();
+			npc.getNavigator().setTarget(target, true);
+		} else spawn();
 
 		if(traits.contains(NonTrait.IRON_STREAKER))
 				Misc.applyPotionEffect((Player) non, PotionEffectType.DAMAGE_RESISTANCE, 9999, 1, true, false);
@@ -180,7 +186,10 @@ public class Non {
 		if(!npc.isSpawned() && !PitEventManager.majorEvent) spawn();
 		try {
 
-			non.teleport(spawnLoc, PlayerTeleportEvent.TeleportCause.PLUGIN);
+			if(npc.isSpawned()) {
+				non.teleport(spawnLoc, PlayerTeleportEvent.TeleportCause.PLUGIN);
+			}
+
 		} catch(Exception ignored) {
 
 			ignored.printStackTrace();
@@ -190,36 +199,37 @@ public class Non {
 		}
 
 
-		non.setHealth(non.getMaxHealth());
+		if(npc.isSpawned()) {
+			non.setHealth(non.getMaxHealth());
 
-		Equipment equipment = npc.getTrait(Equipment.class);
-		if(traits.contains(NonTrait.IRON_STREAKER)) {
+			Equipment equipment = npc.getTrait(Equipment.class);
+			if(traits.contains(NonTrait.IRON_STREAKER)) {
 
-			equipment.set(Equipment.EquipmentSlot.HAND, new ItemStack(Material.DIAMOND_SWORD));
-			equipment.set(Equipment.EquipmentSlot.HELMET, new ItemStack(Material.IRON_HELMET));
-			equipment.set(Equipment.EquipmentSlot.CHESTPLATE, new ItemStack(Material.IRON_CHESTPLATE));
-			equipment.set(Equipment.EquipmentSlot.LEGGINGS, new ItemStack(Material.IRON_LEGGINGS));
-			equipment.set(Equipment.EquipmentSlot.BOOTS, new ItemStack(Material.IRON_BOOTS));
-		} else {
-			equipment.set(Equipment.EquipmentSlot.HAND, new ItemStack(Material.IRON_SWORD));
-			equipment.set(Equipment.EquipmentSlot.CHESTPLATE, new ItemStack(Material.CHAINMAIL_CHESTPLATE));
-			equipment.set(Equipment.EquipmentSlot.LEGGINGS, new ItemStack(Material.CHAINMAIL_LEGGINGS));
-			equipment.set(Equipment.EquipmentSlot.BOOTS, new ItemStack(Material.CHAINMAIL_BOOTS));
+				equipment.set(Equipment.EquipmentSlot.HAND, new ItemStack(Material.DIAMOND_SWORD));
+				equipment.set(Equipment.EquipmentSlot.HELMET, new ItemStack(Material.IRON_HELMET));
+				equipment.set(Equipment.EquipmentSlot.CHESTPLATE, new ItemStack(Material.IRON_CHESTPLATE));
+				equipment.set(Equipment.EquipmentSlot.LEGGINGS, new ItemStack(Material.IRON_LEGGINGS));
+				equipment.set(Equipment.EquipmentSlot.BOOTS, new ItemStack(Material.IRON_BOOTS));
+			} else {
+				equipment.set(Equipment.EquipmentSlot.HAND, new ItemStack(Material.IRON_SWORD));
+				equipment.set(Equipment.EquipmentSlot.CHESTPLATE, new ItemStack(Material.CHAINMAIL_CHESTPLATE));
+				equipment.set(Equipment.EquipmentSlot.LEGGINGS, new ItemStack(Material.CHAINMAIL_LEGGINGS));
+				equipment.set(Equipment.EquipmentSlot.BOOTS, new ItemStack(Material.CHAINMAIL_BOOTS));
 
-			int rand = (int) (Math.random() * 3);
-			switch(rand) {
-				case 0:
-					equipment.set(Equipment.EquipmentSlot.CHESTPLATE, new ItemStack(Material.IRON_CHESTPLATE));
-					break;
-				case 1:
-					equipment.set(Equipment.EquipmentSlot.LEGGINGS, new ItemStack(Material.IRON_LEGGINGS));
-					break;
-				case 2:
-					equipment.set(Equipment.EquipmentSlot.BOOTS, new ItemStack(Material.IRON_BOOTS));
-					break;
+				int rand = (int) (Math.random() * 3);
+				switch(rand) {
+					case 0:
+						equipment.set(Equipment.EquipmentSlot.CHESTPLATE, new ItemStack(Material.IRON_CHESTPLATE));
+						break;
+					case 1:
+						equipment.set(Equipment.EquipmentSlot.LEGGINGS, new ItemStack(Material.IRON_LEGGINGS));
+						break;
+					case 2:
+						equipment.set(Equipment.EquipmentSlot.BOOTS, new ItemStack(Material.IRON_BOOTS));
+						break;
+				}
 			}
 		}
-
 
 		new BukkitRunnable() {
 			@Override

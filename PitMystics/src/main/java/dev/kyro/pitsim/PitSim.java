@@ -17,6 +17,7 @@ import dev.kyro.pitsim.killstreaks.*;
 import dev.kyro.pitsim.misc.ItemRename;
 import dev.kyro.pitsim.perks.*;
 import dev.kyro.pitsim.placeholders.*;
+import net.kyori.adventure.platform.bukkit.BukkitAudiences;
 import net.milkbowl.vault.economy.Economy;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -24,6 +25,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.plugin.RegisteredListener;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.checkerframework.checker.nullness.qual.NonNull;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -35,6 +37,14 @@ public class PitSim extends JavaPlugin {
 	public static PitSim INSTANCE;
 	public static Economy VAULT = null;
 	public static AData playerList;
+	private BukkitAudiences adventure;
+
+	public @NonNull BukkitAudiences adventure() {
+		if(this.adventure == null) {
+			throw new IllegalStateException("Tried to access Adventure when the plugin was disabled!");
+		}
+		return this.adventure;
+	}
 
 	@Override
 	public void onEnable() {
@@ -42,6 +52,9 @@ public class PitSim extends JavaPlugin {
 		INSTANCE = this;
 
 		MapManager.onStart();
+
+		adventure = BukkitAudiences.create(this);
+
 
 
 		if (!setupEconomy()) {
@@ -114,6 +127,8 @@ public class PitSim extends JavaPlugin {
 			playerData.set("level", pitplayer.playerLevel);
 			playerData.set("playerkills", pitplayer.playerKills);
 			playerData.set("xp", pitplayer.remainingXP);
+			playerData.set("ubersleft", pitplayer.dailyUbersLeft);
+			playerData.set("ubercooldown", pitplayer.uberReset);
 			APlayerData.savePlayerData(onlinePlayer);
 		}
 
@@ -147,7 +162,7 @@ public class PitSim extends JavaPlugin {
 		EnchantManager.registerEnchant(new ComboHeal());
 		EnchantManager.registerEnchant(new Punisher());
 		EnchantManager.registerEnchant(new KingBuster());
-		EnchantManager.registerEnchant(new Bruiser());
+//		EnchantManager.registerEnchant(new Bruiser());
 		EnchantManager.registerEnchant(new BeatTheSpammers());
 		EnchantManager.registerEnchant(new Sharp());
 		EnchantManager.registerEnchant(new Crush());
@@ -162,6 +177,7 @@ public class PitSim extends JavaPlugin {
 		EnchantManager.registerEnchant(new PainFocus());
 		EnchantManager.registerEnchant(new Shark());
 		EnchantManager.registerEnchant(new XpBump());
+		EnchantManager.registerEnchant(new Sweaty());
 
 		EnchantManager.registerEnchant(new MegaLongBow());
 		EnchantManager.registerEnchant(new Volley());
@@ -259,6 +275,7 @@ public class PitSim extends JavaPlugin {
 		getCommand("bounty").setExecutor(new BountyCommand());
 		getCommand("spawn").setExecutor(new SpawnCommand());
 		getCommand("changemap").setExecutor(new ChangeMapCommand());
+		getCommand("crategive").setExecutor(new CrateGiveCommand());
 //		getCommand("togglestereo").setExecutor(new ToggleStereoCommand());
 	}
 

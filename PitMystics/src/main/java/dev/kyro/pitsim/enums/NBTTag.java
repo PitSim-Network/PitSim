@@ -19,7 +19,9 @@ public enum NBTTag {
 	ORIGINAL_COLOR("pr-original-color"),
 	CURRENT_LIVES("pr-current-lives"),
 	MAX_LIVES("pr-max-lives"),
-	IS_FEATHER("pr-isfeather");
+	IS_FEATHER("pr-isfeather"),
+	IS_TOKEN("pr-istoken"),
+	IS_VILE("pr-isvile");
 
 	private final String ref;
 

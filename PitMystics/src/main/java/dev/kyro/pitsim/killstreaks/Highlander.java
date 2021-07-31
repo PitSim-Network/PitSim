@@ -160,8 +160,9 @@ public class Highlander extends Megastreak {
         for(Player player : Bukkit.getOnlinePlayers()) {
             PitPlayer pitPlayer2 = PitPlayer.getPitPlayer(player);
             if(pitPlayer2.disabledStreaks) continue;
-            player.sendMessage(ChatColor.translateAlternateColorCodes('&',
-                    "&c&lMEGASTREAK!&7 " + pitPlayer.player.getDisplayName() + "&7 activated &6&lHIGHLANDER&7!"));
+            String streakMessage = ChatColor.translateAlternateColorCodes('&',
+                    "&c&lMEGASTREAK! %luckperms_prefix%" + pitPlayer.player.getDisplayName() + " &7activated &6&lHIGHLANDER&7!");
+            AOutput.send(player, PlaceholderAPI.setPlaceholders(pitPlayer.player, streakMessage));
         }
 
     }

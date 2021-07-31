@@ -1,71 +1,39 @@
 package dev.kyro.pitsim.controllers;
 
-import dev.kyro.arcticapi.misc.ASound;
-import dev.kyro.pitsim.PitSim;
-import net.md_5.bungee.api.chat.TextComponent;
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.Sound;
-import org.bukkit.entity.Player;
-import org.bukkit.scheduler.BukkitRunnable;
-import org.inventivetalent.bossbar.BossBar;
-import org.inventivetalent.bossbar.BossBarAPI;
-
-import java.time.Duration;
-import java.util.ArrayList;
-import java.util.Collection;
+import net.kyori.adventure.audience.Audience;
+import net.kyori.adventure.bossbar.BossBar;
+import net.kyori.adventure.text.Component;
+import org.bukkit.craftbukkit.libs.jline.internal.Nullable;
+import org.checkerframework.checker.nullness.qual.NonNull;
 
 public class BossBarManager {
 
-    public static void timerBar(String message, int startminutes, int startseconds, ChatColor numcolor) {
+    private @Nullable
+    BossBar activeBar;
 
+    public void showMyBossBar(final @NonNull Audience target) {
+        final Component name = Component.text("Awesome BossBar");
+        // Creates a red boss bar which has no progress and no notches
+        final BossBar emptyBar = BossBar.bossBar(name, 0, BossBar.Color.RED, BossBar.Overlay.PROGRESS);
+        // Creates a green boss bar which has 50% progress and 10 notches
+        final BossBar halfBar = BossBar.bossBar(name, 0.5f, BossBar.Color.RED, BossBar.Overlay.NOTCHED_10);
 
-        for(Player player : Bukkit.getOnlinePlayers()) {
+        // etc..
+        final BossBar fullBar = BossBar.bossBar(name, 1, BossBar.Color.BLUE, BossBar.Overlay.NOTCHED_20);
 
-            BossBar bossBar = BossBarAPI.addBar(player, new TextComponent(""), BossBarAPI.Color.PINK, BossBarAPI.Style.PROGRESS, 1.0f);
+        // Send a bossbar to your audience
+        target.showBossBar(fullBar);
 
-            new BukkitRunnable() {
-                int minutes = startminutes;
-                int seconds = startseconds;
+        // Store it locally to be able to hide it manually later
+        this.activeBar = fullBar;
+    }
 
-
-
-                @Override
-                public void run() {
-
-                    if(seconds > 0) {
-                        seconds = seconds - 1;
-
-                    } else {
-                        if(minutes > 0) {
-                            minutes = minutes - 1;
-                            seconds = 59;
-                        } else {
-                            bossBar.removePlayer(player);
-                            this.cancel();
-                        }
-
-                    }
-
-//                    int decimal = (minutes * 60) + seconds / (startminutes * 60);
-                    String finalseconds = (seconds < 10 ? "0" : "") + seconds;
-                    String finalminutes = (minutes < 10 ? "0" : "") + minutes;
-                    bossBar.setMessage(message + " " + numcolor + finalminutes + ":" + finalseconds);
-//                  bossBar.setProgress((float) ((minutes * 60) + seconds) / (startminutes * 60));
-//
-//                    Bukkit.broadcastMessage(String.valueOf((minutes * 60) + seconds));
-                }
-            }.runTaskTimer(PitSim.INSTANCE, 0L, 20L);
-
-        }
-
-
-
-
-
-
-
+    public void hideActiveBossBar(final @NonNull Audience target) {
+        target.hideBossBar(this.activeBar);
+        this.activeBar = null;
 
     }
+
+
 
 }

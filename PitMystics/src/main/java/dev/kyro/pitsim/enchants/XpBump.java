@@ -34,6 +34,6 @@ public class XpBump extends PitEnchant {
 
 	public int getXpIncrease(int enchantLvl) {
 
-		return enchantLvl;
+		return enchantLvl * 2;
 	}
 }

@@ -1,6 +1,8 @@
 package dev.kyro.pitsim.misc;
 
+import de.tr7zw.nbtapi.NBTItem;
 import dev.kyro.arcticapi.misc.AUtil;
+import dev.kyro.pitsim.enums.NBTTag;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -23,7 +25,10 @@ public class ChunkOfVile {
         vile.setItemMeta(meta);
         vile.setAmount(amount);
 
-        AUtil.giveItemSafely(player, vile);
+        NBTItem nbtItem  = new NBTItem(vile);
+        nbtItem.setBoolean(NBTTag.IS_VILE.getRef(), true);
+
+        AUtil.giveItemSafely(player, nbtItem.getItem());
 
     }
 }
