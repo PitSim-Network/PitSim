@@ -17,6 +17,7 @@ import dev.kyro.pitsim.killstreaks.*;
 import dev.kyro.pitsim.misc.ItemRename;
 import dev.kyro.pitsim.perks.*;
 import dev.kyro.pitsim.placeholders.*;
+import net.kyori.adventure.audience.Audience;
 import net.kyori.adventure.platform.bukkit.BukkitAudiences;
 import net.milkbowl.vault.economy.Economy;
 import org.bukkit.Bukkit;
@@ -54,8 +55,10 @@ public class PitSim extends JavaPlugin {
 		MapManager.onStart();
 
 		adventure = BukkitAudiences.create(this);
-
-
+		for(Player onlinePlayer : Bukkit.getOnlinePlayers()) {
+			BossBarManager bm = new BossBarManager();
+			PlayerManager.bossBars.put(onlinePlayer, bm);
+		}
 
 		if (!setupEconomy()) {
 			AOutput.log(String.format("[%s] - Disabled due to no Vault dependency found!", getDescription().getName()));
@@ -81,6 +84,7 @@ public class PitSim extends JavaPlugin {
 
 		registerUpgrades();
 		registerMegastreaks();
+
 
 
 		ArcticAPI.setupPlaceholderAPI("pitsim");

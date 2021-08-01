@@ -2,6 +2,7 @@ package dev.kyro.pitsim.placeholders;
 
 import dev.kyro.arcticapi.hooks.APAPIPlaceholder;
 import dev.kyro.pitsim.controllers.CombatManager;
+import dev.kyro.pitsim.controllers.PitEventManager;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.perks.Gladiator;
 import net.milkbowl.vault.chat.Chat;
@@ -21,6 +22,8 @@ public class CombatTimerPlaceholder implements APAPIPlaceholder {
 
 		Integer time = CombatManager.taggedPlayers.get(player.getUniqueId());
 		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
+
+		if(PitEventManager.majorEvent) return ChatColor.YELLOW + "Event";
 
 		if(pitPlayer.megastreak.isOnMega()) {
 			return pitPlayer.megastreak.getPrefix();

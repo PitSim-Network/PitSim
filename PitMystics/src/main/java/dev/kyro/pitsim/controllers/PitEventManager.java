@@ -9,6 +9,7 @@ import dev.kyro.arcticapi.misc.ASound;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.controllers.objects.Non;
 import dev.kyro.pitsim.controllers.objects.PitEvent;
+import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.misc.Misc;
 import dev.kyro.pitsim.pitevents.TestEvent;
 import dev.kyro.pitsim.pitevents.TestEvent2;
@@ -29,7 +30,8 @@ import java.util.*;
 
 public class PitEventManager {
     public static List<PitEvent> events = new ArrayList<>();
-
+    public static Map<Player, Double> kills = new HashMap<>();
+    public static Map<Player, Integer> bounty = new HashMap<>();
     public static Boolean majorEvent = false;
 
     public static void eventWait() {
@@ -76,7 +78,7 @@ public class PitEventManager {
 
 
             }
-        }.runTaskTimer(PitSim.INSTANCE, 0L, 2000L);
+        }.runTaskTimer(PitSim.INSTANCE, 0L, 10000);
 
     }
 
@@ -95,7 +97,11 @@ public class PitEventManager {
                     Misc.sendTitle(player,event.color + "" + ChatColor.BOLD + "PIT EVENT!", 50);
                     Misc.sendSubTitle(player, event.color + "" + ChatColor.BOLD + event.name.toUpperCase(Locale.ROOT), 50);
                     ASound.play(player, Sound.ENDERDRAGON_GROWL, 2  , 1);
-
+                    PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
+                    kills.put(player, pitPlayer.getKills());
+                    bounty.put(player, pitPlayer.bounty);
+                    pitPlayer.setKills(0);
+                    pitPlayer.bounty = 0;
                 }
 
                 for(Non non : NonManager.nons) {
@@ -108,6 +114,7 @@ public class PitEventManager {
                         for(Player onlinePlayer : Bukkit.getOnlinePlayers()) {
                             BossBarManager manager = PlayerManager.bossBars.get(onlinePlayer);
                             Audience audience = PitSim.INSTANCE.adventure().player(onlinePlayer);
+                            manager.hideActiveBossBar(audience);
                             manager.showMyBossBar(audience);
                             manager.timerBar(audience, ChatColor.translateAlternateColorCodes('&',
                                 "&5&lMAJOR EVENT! " + event.color + "" + ChatColor.BOLD +
@@ -128,7 +135,16 @@ public class PitEventManager {
         new BukkitRunnable() {
             @Override
             public void run() {
-
+                for(Player onlinePlayer : Bukkit.getOnlinePlayers()) {
+                    BossBarManager manager = PlayerManager.bossBars.get(onlinePlayer);
+                    Audience audience = PitSim.INSTANCE.adventure().player(onlinePlayer);
+                    manager.hideActiveBossBar(audience);
+                    PitPlayer pitPlayer = PitPlayer.getPitPlayer(onlinePlayer);
+                    pitPlayer.setKills(kills.get(onlinePlayer));
+                    pitPlayer.bounty = 0;
+                    kills.remove(onlinePlayer);
+                    bounty.remove(onlinePlayer);
+                }
                 Bukkit.broadcastMessage("MAJOR EVENT: " + event.getName() + " ended");
                 event.end();
                 majorEvent = false;

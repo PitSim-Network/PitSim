@@ -169,9 +169,11 @@ public class PlayerManager implements Listener {
 				}
 			}.runTaskLater(PitSim.INSTANCE,  10L);
 
-		BossBarManager bm = new BossBarManager();
-		Audience audiences = PitSim.INSTANCE.adventure().player(event.getPlayer());
-		bossBars.put(event.getPlayer(), bm);
+		if(!bossBars.containsKey(event.getPlayer())) {
+			BossBarManager bm = new BossBarManager();
+			Audience audiences = PitSim.INSTANCE.adventure().player(event.getPlayer());
+			bossBars.put(event.getPlayer(), bm);
+		}
 
 //		if(!player.isOp()) {
 //			BypassManager.bypassAll.add(player);

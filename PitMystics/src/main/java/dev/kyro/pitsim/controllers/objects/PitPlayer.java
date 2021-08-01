@@ -197,7 +197,7 @@ public class PitPlayer {
 		kills = newKills;
 	}
 
-	public void setKills(int kills) {
+	public void setKills(double kills) {
 
 		kills = Math.max(kills, 0);
 		endKillstreak();

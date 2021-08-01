@@ -72,7 +72,7 @@ public class Non {
 //		displayName = "&7[" + color + (rand * 10 + (int) (Math.random() * 10)) + "&7]&7" + " " + name;
 		displayName = "&7" + name;
 		this.npc = CitizensAPI.getNPCRegistry().createNPC(EntityType.PLAYER, displayName);
-		if(!PitEventManager.majorEvent)spawn();
+		if(!PitEventManager.majorEvent) spawn();
 		this.non = (Player) npc.getEntity();
 		NonManager.nons.add(this);
 
@@ -94,7 +94,7 @@ public class Non {
 	public void tick() {
 
 		non = (Player) npc.getEntity();
-		if(!npc.isSpawned() && !PitEventManager.majorEvent) spawn();
+		if(!npc.isSpawned() && !PitEventManager.majorEvent) respawn();
 		if(npc.isSpawned() && non.getLocation().getY() <= MapManager.getY()) {
 			Location teleportLoc = non.getLocation().clone();
 			teleportLoc.setY(MapManager.getY() + 1.2);
@@ -104,7 +104,7 @@ public class Non {
 
 
 		if(nonState != NonState.FIGHTING) {
-			if(!npc.isSpawned()) spawn();
+			if(!npc.isSpawned()) respawn();
 			if(npc.isSpawned()) {
 				npc.getNavigator().setTarget(null, true);
 			}
@@ -114,16 +114,17 @@ public class Non {
 		if(npc.isSpawned()) {
 			pickTarget();
 			npc.getNavigator().setTarget(target, true);
-		} else spawn();
+		} else respawn();
 
-		if(traits.contains(NonTrait.IRON_STREAKER))
+		if(traits.contains(NonTrait.IRON_STREAKER) && npc.isSpawned())
 				Misc.applyPotionEffect((Player) non, PotionEffectType.DAMAGE_RESISTANCE, 9999, 1, true, false);
 //		non.setHealth(non.getMaxHealth());
 
-		if(target == null) return;
+		if(target == null && !npc.isSpawned()) return;
 
 		if(count % 3 == 0 && (!traits.contains(NonTrait.NO_JUMP)) || Math.random() < 0.05) {
 
+			if(npc.isSpawned()) {
 			Block underneath = non.getLocation().clone().subtract(0, 0.2, 0).getBlock();
 			if(underneath.getType() != Material.AIR) {
 
@@ -135,8 +136,10 @@ public class Non {
 				Vector sprintVelo = target.getLocation().toVector().subtract(non.getLocation().toVector())
 						.normalize();
 
-				if(distance < Math.random() * 1.5 + 1.5) sprintVelo.multiply(-0.16).setY(0.4); else sprintVelo.multiply(0.4).setY(0.4);
+				if(distance < Math.random() * 1.5 + 1.5) sprintVelo.multiply(-0.16).setY(0.4);
+				else sprintVelo.multiply(0.4).setY(0.4);
 				non.setVelocity(sprintVelo);
+			}
 			}
 		}
 
