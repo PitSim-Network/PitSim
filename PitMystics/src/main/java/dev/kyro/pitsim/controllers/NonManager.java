@@ -59,6 +59,7 @@ public class NonManager implements Listener {
 	}
 
 	public static Non getNon(Player player) {
+		if(PitEventManager.majorEvent) return null;
 
 		for(Non non : nons) {
 

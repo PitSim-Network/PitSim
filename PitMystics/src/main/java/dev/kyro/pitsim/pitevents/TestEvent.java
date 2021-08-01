@@ -1,5 +1,6 @@
 package dev.kyro.pitsim.pitevents;
 
+import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.controllers.LeaderboardManager;
 import dev.kyro.pitsim.controllers.MapManager;
 import dev.kyro.pitsim.controllers.PitEventManager;
@@ -19,6 +20,7 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.*;
 
@@ -146,7 +148,7 @@ public class TestEvent extends PitEvent {
                 if(blueBannerPlayer instanceof Player && !blue.contains(blueBannerPlayer) && blueBannerHolder == null) {
                     Bukkit.broadcastMessage("Blue Banner taken by " + ((Player) blueBannerPlayer).getDisplayName() + "!");
                     blueBannerHolder = (Player) blueBannerPlayer;
-                    blueBannerHolder.getInventory().setHelmet(new ItemStack(Material.BANNER, 1, (short) 12));
+                    blueBannerHolder.getInventory().setHelmet(new ItemStack(Material.BANNER, 1, (short) 9));
                     getLocation("BlueBanner").getBlock().setType(Material.AIR);
                     blueArmor.setCustomName(ChatColor.BLUE + "Blue Banner Taken by " + ((Player) blueBannerPlayer).getDisplayName());
                     for(Player player : blue) {
@@ -169,7 +171,7 @@ public class TestEvent extends PitEvent {
                 if(redBannerPlayer instanceof Player && !red.contains(redBannerPlayer) && redBannerHolder == null) {
                     Bukkit.broadcastMessage("Red Banner taken by " + ((Player) redBannerPlayer).getDisplayName() + "!");
                     redBannerHolder = (Player) redBannerPlayer;
-                    redBannerHolder.getInventory().setHelmet(new ItemStack(Material.BANNER, 1, (short) 15));
+                    redBannerHolder.getInventory().setHelmet(new ItemStack(Material.BANNER, 1, (short) 12));
                     getLocation("RedBanner").getBlock().setType(Material.AIR);
                     redArmor.setCustomName(ChatColor.RED + "Red Banner Taken by " + ((Player) redBannerPlayer).getDisplayName());
                     for(Player player : red) {
@@ -188,22 +190,39 @@ public class TestEvent extends PitEvent {
         }
     }
 
+    @EventHandler
     public void onKill(KillEvent killEvent) {
         if(red.contains(killEvent.dead)) {
             if(blueBannerHolder == killEvent.dead) {
                 blueBannerHolder = null;
                 Bukkit.broadcastMessage(killEvent.dead.getDisplayName() + "  was killed. The Blue Banner was returned to its base.");
                 setupBlueBanner();
+                for(Player player : blue) {
+                    Misc.sendTitle(player, ChatColor.BLUE + "Banner Returned!", 40);
+                }
             }
-            killEvent.dead.teleport(getLocation("RedSpawn"));
+            new BukkitRunnable() {
+                @Override
+                public void run() {
+                    killEvent.dead.teleport(getLocation("RedSpawn"));
+                }
+            }.runTaskLater(PitSim.INSTANCE, 1L);
         }
         if(blue.contains(killEvent.dead)) {
             if(redBannerHolder == killEvent.dead) {
                 redBannerHolder = null;
                 Bukkit.broadcastMessage(killEvent.dead.getDisplayName() + "  was killed. The Red Banner was returned to its base.");
                 setupRedBanner();
+                for(Player player : red) {
+                    Misc.sendTitle(player, ChatColor.RED + "Banner Returned!", 40);
+                }
             }
-            killEvent.dead.teleport(getLocation("BlueSpawn"));
+            new BukkitRunnable() {
+                @Override
+                public void run() {
+                    killEvent.dead.teleport(getLocation("BlueSpawn"));
+                }
+            }.runTaskLater(PitSim.INSTANCE, 1L);
         }
     }
 
