@@ -3,6 +3,7 @@ package dev.kyro.pitsim.enchants;
 import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.controllers.EnchantManager;
+import dev.kyro.pitsim.controllers.NonManager;
 import dev.kyro.pitsim.controllers.objects.PitEnchant;
 import dev.kyro.pitsim.enums.ApplyType;
 import dev.kyro.pitsim.events.AttackEvent;
@@ -45,10 +46,11 @@ public class Robinhood extends PitEnchant {
 			public void run() {
 				Map.Entry<Player, Double> targetInfo = null;
 
-				for(Entity nearbyEntity : arrow.getWorld().getNearbyEntities(arrow.getLocation(), 16, 16, 16)) {
+				for(Entity nearbyEntity : arrow.getWorld().getNearbyEntities(arrow.getLocation(), 8, 8, 8)) {
 
 					if(!(nearbyEntity instanceof Player) || nearbyEntity.equals(player)) continue;
 					Player target = (Player) nearbyEntity;
+					if(NonManager.getNon(target) != null) continue;
 
 					double distance = arrow.getLocation().distance(target.getLocation());
 					if(targetInfo == null || distance < targetInfo.getValue()) {
