@@ -2,6 +2,7 @@ package dev.kyro.pitsim.controllers;
 
 import com.google.common.base.Function;
 import de.tr7zw.nbtapi.NBTItem;
+import dev.kyro.arcticapi.data.APlayerData;
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.arcticapi.misc.ASound;
 import dev.kyro.pitsim.PitSim;
@@ -16,9 +17,13 @@ import dev.kyro.pitsim.enums.NBTTag;
 import dev.kyro.pitsim.enums.NonTrait;
 import dev.kyro.pitsim.events.AttackEvent;
 import dev.kyro.pitsim.events.KillEvent;
+import dev.kyro.pitsim.misc.FunkyFeather;
 import dev.kyro.pitsim.misc.Misc;
+import dev.kyro.pitsim.misc.ProtArmor;
+import dev.kyro.pitsim.perks.AssistantToTheStreaker;
 import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.*;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -26,6 +31,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityShootBowEvent;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
@@ -35,7 +41,6 @@ import java.util.*;
 
 public class DamageManager implements Listener {
 
-	public static Location spawnLoc = new Location(Bukkit.getWorld("pit"), -108.5, 86, 194.5, 45, 0);
 	public static List<Player> hitCooldownList = new ArrayList<>();
 	public static List<Player> nonHitCooldownList = new ArrayList<>();
 	public static Map<EntityShootBowEvent, Map<PitEnchant, Integer>> arrowMap = new HashMap<>();
@@ -230,7 +235,13 @@ public class DamageManager implements Listener {
 		dead.playSound(dead.getLocation(), Sound.FALL_BIG, 1000, 1F);
 		dead.playSound(dead.getLocation(), Sound.FALL_BIG, 1000, 1F);
 		Regularity.toReg.remove(dead.getUniqueId());
-
+		if(NonManager.getNon(dead) == null) {
+			FileConfiguration playerData = APlayerData.getPlayerData(dead);
+			playerData.set("level", pitDefender.playerLevel);
+			playerData.set("playerkills", pitDefender.playerKills);
+			playerData.set("xp", pitDefender.remainingXP);
+			APlayerData.savePlayerData(dead);
+		}
 		Non attackingNon = NonManager.getNon(killer);
 		if(attackingNon == null) {
 
@@ -241,12 +252,20 @@ public class DamageManager implements Listener {
 
 		Non defendingNon = NonManager.getNon(dead);
 		if(defendingNon == null) {
+			Location spawnLoc = MapManager.getPlayerSpawn();
 			dead.teleport(spawnLoc);
+			if(attackingNon == null) {
+				FileConfiguration playerData = APlayerData.getPlayerData(dead);
+				if(killer != dead) pitAttacker.playerKills = pitAttacker.playerKills + 1;
+				playerData.set("playerkills", pitAttacker.playerLevel);
+				APlayerData.savePlayerData(killer);
+			}
 		} else {
 			defendingNon.respawn();
 		}
 
 		pitDefender.endKillstreak();
+		pitDefender.bounty = 0;
 		for(PotionEffect potionEffect : dead.getActivePotionEffects()) {
 			dead.removePotionEffect(potionEffect.getType());
 		}
@@ -258,6 +277,10 @@ public class DamageManager implements Listener {
 			pitAttacker.heal(2);
 		}
 
+
+		if(pitAttacker.remainingXP - killEvent.getFinalXp() >= 0) pitAttacker.remainingXP = pitAttacker.remainingXP - killEvent.getFinalXp();
+		else pitAttacker.remainingXP = 0;
+		LevelManager.incrementLevel(killer);
 		PitSim.VAULT.depositPlayer(killEvent.killer, killEvent.getFinalGold());
 
 		DecimalFormat df = new DecimalFormat("##0.00");
@@ -265,8 +288,11 @@ public class DamageManager implements Listener {
 				+ " &b+" + killEvent.getFinalXp() + "XP" +" &6+" + df.format(killEvent.getFinalGold()) + "g";
 		String death = "&c&lDEATH! &7by %luckperms_prefix%" + (killingNon == null ? "%player_name%" : killingNon.displayName);
 		String killActionBar = "&7%luckperms_prefix%" + (defendingNon == null ? "%player_name%" : defendingNon.displayName) + " &a&lKILL!";
-		AOutput.send(killEvent.killer, PlaceholderAPI.setPlaceholders(killEvent.dead, kill));
-		AOutput.send(killEvent.dead, PlaceholderAPI.setPlaceholders(killEvent.killer, death));
+
+		PitPlayer pitKiller = PitPlayer.getPitPlayer(killer);
+		if(!pitKiller.disabledKillFeed) AOutput.send(killEvent.killer, PlaceholderAPI.setPlaceholders(killEvent.dead, kill));
+		PitPlayer pitDead = PitPlayer.getPitPlayer(dead);
+		if(!pitDead.disabledKillFeed) AOutput.send(killEvent.dead, PlaceholderAPI.setPlaceholders(killEvent.killer, death));
 		String actionBarPlaceholder = PlaceholderAPI.setPlaceholders(killEvent.dead, killActionBar);
 		new BukkitRunnable() {
 			@Override
@@ -290,22 +316,77 @@ public class DamageManager implements Listener {
 			if(assistPlayer == null) continue;
 			double assistPercent = entry.getValue() / finalDamage;
 
-			int xp = (int) Math.ceil(killEvent.getFinalXp() * assistPercent);
-			double gold = killEvent.getFinalGold() * assistPercent;
+			PitPlayer pitPlayer = PitPlayer.getPitPlayer(assistPlayer);
+			if(pitPlayer.hasPerk(AssistantToTheStreaker.INSTANCE)) {
+				pitPlayer.incrementAssist(assistPercent);
+			}
 
-			PitSim.VAULT.depositPlayer(assistPlayer, killEvent.getFinalGold());
+			int xp = (int) Math.ceil(20 * assistPercent);
+			double gold = 20 * assistPercent;
+
+			PitPlayer assistPitPlayer = PitPlayer.getPitPlayer(assistPlayer);
+			if(assistPitPlayer.remainingXP - xp < 0) assistPitPlayer.remainingXP = 0;
+			else assistPitPlayer.remainingXP = assistPitPlayer.remainingXP  - xp;
+			LevelManager.incrementLevel(assistPlayer);
+
+			if(killEvent.getFinalGold() > 10) {
+				PitSim.VAULT.depositPlayer(assistPlayer, 10);
+			} else {
+				PitSim.VAULT.depositPlayer(assistPlayer, gold);
+			}
+
 
 			ASound.play(assistPlayer, Sound.ORB_PICKUP, 1F, 1.7301587F);
 			String assist = "&a&lASSIST!&7 " + Math.round(assistPercent * 100) + "% on %luckperms_prefix%" +
 					(defendingNon == null ? "%player_name%" : defendingNon.displayName) + " &b+" + xp + "XP" +" &6+" + df.format(gold) + "g";
 
-			AOutput.send(assistPlayer, PlaceholderAPI.setPlaceholders(killEvent.dead, assist));
+			if(!assistPitPlayer.disabledKillFeed) AOutput.send(assistPlayer, PlaceholderAPI.setPlaceholders(killEvent.dead, assist));
 		}
 
 		pitDefender.assistRemove.forEach(BukkitTask::cancel);
 		pitDefender.assistRemove.clear();
 
 		pitDefender.recentDamageMap.clear();
+
+		String message = "%luckperms_prefix%";
+		pitDead.prefix = "&7[&e" + pitDead.playerLevel + "&7] &7" + PlaceholderAPI.setPlaceholders(pitDead.player, message);
+
+		boolean feather = FunkyFeather.useFeather(dead);
+
+		for(int i = 0; i < dead.getInventory().getSize(); i++) {
+			ItemStack itemStack = dead.getInventory().getItem(i);
+			if(Misc.isAirOrNull(itemStack)) continue;
+			NBTItem nbtItem = new NBTItem(itemStack);
+			if(nbtItem.hasKey(NBTTag.MAX_LIVES.getRef())) {
+				int lives = nbtItem.getInteger(NBTTag.CURRENT_LIVES.getRef());
+				if(feather) return;
+				if(lives - 1 == 0) {
+					dead.getInventory().remove(itemStack);
+				} else {
+					nbtItem.setInteger(NBTTag.CURRENT_LIVES.getRef(), nbtItem.getInteger(NBTTag.CURRENT_LIVES.getRef()) - 1);
+					EnchantManager.setItemLore(nbtItem.getItem());
+					dead.getInventory().setItem(i, nbtItem.getItem());
+				}
+			}
+		}
+		if(!feather) ProtArmor.deleteArmor(dead);
+		if(!Misc.isAirOrNull(dead.getInventory().getLeggings())) {
+			ItemStack pants = dead.getInventory().getLeggings();
+			NBTItem nbtItem = new NBTItem(pants);
+			if(nbtItem.hasKey(NBTTag.MAX_LIVES.getRef())) {
+				int lives = nbtItem.getInteger(NBTTag.CURRENT_LIVES.getRef());
+				if(!feather) {
+					if(lives - 1 == 0) {
+						dead.getInventory().remove(pants);
+					} else {
+						nbtItem.setInteger(NBTTag.CURRENT_LIVES.getRef(), nbtItem.getInteger(NBTTag.CURRENT_LIVES.getRef()) - 1);
+						EnchantManager.setItemLore(nbtItem.getItem());
+						dead.getInventory().setLeggings(nbtItem.getItem());
+					}
+				}
+
+			}
+		}
 	}
 
 	public static void Death(Player dead) {
@@ -316,8 +397,32 @@ public class DamageManager implements Listener {
 		dead.playSound(dead.getLocation(), Sound.FALL_BIG, 1000, 1F);
 		dead.playSound(dead.getLocation(), Sound.FALL_BIG, 1000, 1F);
 		Regularity.toReg.remove(dead.getUniqueId());
+		CombatManager.taggedPlayers.remove(dead.getUniqueId());
 
+		FileConfiguration playerData = APlayerData.getPlayerData(dead);
+		PitPlayer pitPlayer = PitPlayer.getPitPlayer(dead);
+		playerData.set("level", pitPlayer.playerLevel);
+		playerData.set("playerkills", pitPlayer.playerKills);
+		playerData.set("xp", pitPlayer.remainingXP);
+		APlayerData.savePlayerData(dead);
+
+		Location spawnLoc = MapManager.getPlayerSpawn();
 		dead.teleport(spawnLoc);
+
+
+//		for(ItemStack itemStack : dead.getInventory()) {
+//
+//			if(Misc.isAirOrNull(itemStack)) continue;
+//			NBTItem nbtItem = new NBTItem(itemStack);
+//			if(nbtItem.hasKey(NBTTag.MAX_LIVES.getRef())) {
+//				Bukkit.broadcastMessage(itemStack.getItemMeta().getDisplayName());
+//				int lives = nbtItem.getInteger(NBTTag.CURRENT_LIVES.getRef());
+//				nbtItem.setInteger(NBTTag.CURRENT_LIVES.getRef(), nbtItem.getInteger(NBTTag.CURRENT_LIVES.getRef()) - 1);
+//				nbtItem.getItem();
+//				EnchantManager.setItemLore(itemStack);
+//				Bukkit.broadcastMessage(String.valueOf(nbtItem.getInteger(NBTTag.CURRENT_LIVES.getRef())));
+//			}
+//		}
 		PitPlayer pitDefender = PitPlayer.getPitPlayer(dead);
 		pitDefender.endKillstreak();
 		pitDefender.bounty = 0;
@@ -325,5 +430,46 @@ public class DamageManager implements Listener {
 			dead.removePotionEffect(potionEffect.getType());
 		}
 		AOutput.send(dead, "&c&lDEATH!");
+		String message = "%luckperms_prefix%";
+		pitDefender.prefix = "&7[&e" + pitDefender.playerLevel + "&7] &7" + PlaceholderAPI.setPlaceholders(pitDefender.player, message);
+
+		boolean feather = FunkyFeather.useFeather(dead);
+
+		for(int i = 0; i < dead.getInventory().getSize(); i++) {
+			ItemStack itemStack = dead.getInventory().getItem(i);
+			if(Misc.isAirOrNull(itemStack)) continue;
+			NBTItem nbtItem = new NBTItem(itemStack);
+			if(nbtItem.hasKey(NBTTag.MAX_LIVES.getRef())) {
+				int lives = nbtItem.getInteger(NBTTag.CURRENT_LIVES.getRef());
+				if(feather) return;
+				if(lives - 1 == 0) {
+					dead.getInventory().remove(itemStack);
+				} else {
+					nbtItem.setInteger(NBTTag.CURRENT_LIVES.getRef(), nbtItem.getInteger(NBTTag.CURRENT_LIVES.getRef()) - 1);
+					EnchantManager.setItemLore(nbtItem.getItem());
+					dead.getInventory().setItem(i, nbtItem.getItem());
+				}
+			}
+		}
+
+		if(!feather) ProtArmor.deleteArmor(dead);
+
+		if(!Misc.isAirOrNull(dead.getInventory().getLeggings())) {
+			ItemStack pants = dead.getInventory().getLeggings();
+			NBTItem nbtItem = new NBTItem(pants);
+			if(nbtItem.hasKey(NBTTag.MAX_LIVES.getRef())) {
+				int lives = nbtItem.getInteger(NBTTag.CURRENT_LIVES.getRef());
+				if(!feather) {
+					if(lives - 1 == 0) {
+						dead.getInventory().remove(pants);
+					} else {
+						nbtItem.setInteger(NBTTag.CURRENT_LIVES.getRef(), nbtItem.getInteger(NBTTag.CURRENT_LIVES.getRef()) - 1);
+						EnchantManager.setItemLore(nbtItem.getItem());
+						dead.getInventory().setLeggings(nbtItem.getItem());
+					}
+				}
+
+			}
+		}
 	}
 }

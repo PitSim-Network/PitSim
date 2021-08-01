@@ -1,14 +1,17 @@
 package dev.kyro.pitsim.inventories;
 
+import dev.kyro.arcticapi.data.APlayerData;
 import dev.kyro.arcticapi.gui.AGUI;
 import dev.kyro.arcticapi.gui.AGUIPanel;
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.enums.DeathCry;
 import dev.kyro.pitsim.enums.KillEffect;
+import net.milkbowl.vault.chat.Chat;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.Sound;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
@@ -22,7 +25,7 @@ import java.util.List;
 
 public class DeathCryPanel extends AGUIPanel {
     PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
-
+    FileConfiguration playerData = APlayerData.getPlayerData(player);
 
     public DonatorGUI donatorGUI;
     public DeathCryPanel(AGUI gui) {
@@ -54,10 +57,22 @@ public class DeathCryPanel extends AGUIPanel {
             }
 
             if(!player.hasPermission("pitsim.deathcry")) return;
-
-            if(slot == 10) {
+                if(slot == 10) {
+                    if(pitPlayer.deathCry != null) {
+                        pitPlayer.deathCry = null;
+                        playerData.set("deathcry", null);
+                        APlayerData.savePlayerData(player);
+                        player.playSound(player.getLocation(), Sound.NOTE_PLING, 1F, 2F);
+                        openPanel(donatorGUI.deathCryPanel);
+                    } else {
+                        player.playSound(player.getLocation(), Sound.ENDERMAN_TELEPORT, 1F, 0.5F);
+                        AOutput.error(player, "&cYou don't have a Death cry equipped!");
+                    }
+              } else if(slot == 11) {
                 if(pitPlayer.deathCry != DeathCry.MARIO_DEATH) {
                     pitPlayer.deathCry = DeathCry.MARIO_DEATH;
+                    playerData.set("deathcry", DeathCry.MARIO_DEATH.toString());
+                    APlayerData.savePlayerData(player);
                     player.playSound(player.getLocation(), Sound.NOTE_PLING, 1F, 2F);
                     openPanel(donatorGUI.deathCryPanel);
                 } else {
@@ -65,19 +80,22 @@ public class DeathCryPanel extends AGUIPanel {
                     AOutput.error(player, "&cThat death cry is already equipped");
                 }
                 return;
-            } else if(slot == 11) {
+            } else if(slot == 12) {
                 if(pitPlayer.deathCry != DeathCry.GHAST_SCREAM) {
                     pitPlayer.deathCry = DeathCry.GHAST_SCREAM;
+                    playerData.set("deathcry", DeathCry.GHAST_SCREAM.toString());
+                    APlayerData.savePlayerData(player);
                     player.playSound(player.getLocation(), Sound.NOTE_PLING, 1F, 2F);
                     openPanel(donatorGUI.deathCryPanel);
                 } else {
                     player.playSound(player.getLocation(), Sound.ENDERMAN_TELEPORT, 1F, 0.5F);
                     AOutput.error(player, "&cThat death cry is already equipped");
                 }
-                return;
             }
 
             updateInventory();
+
+
         }
 
         updateInventory();
@@ -93,6 +111,22 @@ public class DeathCryPanel extends AGUIPanel {
         backlore.add(ChatColor.GRAY + "To Donator Perks");
         backmeta.setLore(backlore);
         back.setItemMeta(backmeta);
+
+        ItemStack none = new ItemStack(Material.BARRIER);
+        ItemMeta nonemeta = none.getItemMeta();
+        List<String> nonelore = new ArrayList<>();
+        nonelore.add("");
+        if(pitPlayer.deathCry == null) {
+            nonelore.add(ChatColor.GREEN + "Already Selected!");
+            nonemeta.setDisplayName(ChatColor.GREEN + "None");
+            nonemeta.addEnchant(Enchantment.PROTECTION_ENVIRONMENTAL,0 , false);
+            nonemeta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
+        } else {
+            nonelore.add(ChatColor.YELLOW + "Click to select!");
+            nonemeta.setDisplayName(ChatColor.YELLOW + "None");
+        }
+        nonemeta.setLore(nonelore);
+        none.setItemMeta(nonemeta);
 
         ItemStack mario = new ItemStack(Material.RED_MUSHROOM);
         ItemMeta mariometa = mario.getItemMeta();
@@ -135,8 +169,9 @@ public class DeathCryPanel extends AGUIPanel {
         ghastmeta.setLore(ghastlore);
         ghast.setItemMeta(ghastmeta);
 
-        getInventory().setItem(10, mario);
-        getInventory().setItem(11, ghast);
+        getInventory().setItem(10, none);
+        getInventory().setItem(11, mario);
+        getInventory().setItem(12, ghast);
         getInventory().setItem(22, back);
         updateInventory();
     }

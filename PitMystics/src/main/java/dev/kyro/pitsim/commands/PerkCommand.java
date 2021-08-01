@@ -1,5 +1,7 @@
 package dev.kyro.pitsim.commands;
 
+import dev.kyro.arcticapi.misc.AOutput;
+import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.inventories.PerkGUI;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -13,6 +15,12 @@ public class PerkCommand implements CommandExecutor {
 
 		if(!(sender instanceof Player)) return false;
 		Player player = (Player) sender;
+
+		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
+		if(pitPlayer.megastreak.isOnMega()) {
+			AOutput.error(player, "&cYou cannot use this command while on a megastreak!");
+			return false;
+		}
 
 		PerkGUI perkGUI = new PerkGUI(player);
 		perkGUI.open();

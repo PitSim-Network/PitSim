@@ -10,6 +10,7 @@ import net.citizensnpcs.api.npc.NPC;
 import net.citizensnpcs.api.trait.trait.Equipment;
 import net.citizensnpcs.trait.LookClose;
 import net.citizensnpcs.util.Util;
+import net.minecraft.server.v1_8_R3.EntityPlayer;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -83,27 +84,28 @@ public class ATestCommand implements CommandExecutor {
 		hoppers.add("wiji1");
 		hoppers.add("KyroKrypt");
 		hoppers.add("Muruseni");
-		hoppers.add("Tinykloon");
-		hoppers.add("hevrts");
-		hoppers.add("Whensus");
-		hoppers.add("bigNaeNae");
-		hoppers.add("xJqker");
-		hoppers.add("Alps");
-		hoppers.add("SilontsSimp");
+		hoppers.add("wackful");
+		hoppers.add("Bobbybenny12");
+		hoppers.add("Troving");
 		hoppers.add("lkjv");
-		hoppers.add("Spenduh");
-		hoppers.add("Technoperson");
 		hoppers.add("Xavier9346");
-		hoppers.add("eveoiii");
-		hoppers.add("ivapev4forlife");
-		hoppers.add("CheesierCheese");
 		hoppers.add("FreeJUSTHUNTINGU");
 		hoppers.add("Zsombor_1");
-		hoppers.add("KindEinesTeufels");
-		hoppers.add("iwantamommy");
+		hoppers.add("AddisonDj");
+		hoppers.add("Airpark");
+		hoppers.add("1Ror");
+		hoppers.add("Tinykloon");
 		hoppers.add("_MarcusW_");
-		hoppers.add("tam259");
-		hoppers.add("47n");
+		hoppers.add("UpdateGame");
+		hoppers.add("_A1Sauce");
+		hoppers.add("GRIMPIT");
+		hoppers.add("GANGMEMBER7PUMP");
+		hoppers.add("woolens");
+		hoppers.add("Qtj_ALT");
+
+
+
+
 	}
 
 	public Team t;
@@ -284,7 +286,7 @@ public class ATestCommand implements CommandExecutor {
 					}
 				}
 
-				((Player) npc.getEntity()).addPotionEffect(new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, 9999, 3, true, false));
+				((Player) npc.getEntity()).addPotionEffect(new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, 9999, 1, true, false));
 
 				Util.faceEntity(npc.getEntity(), player);
 

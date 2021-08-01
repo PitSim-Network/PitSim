@@ -12,14 +12,14 @@ public class ExperienceManager {
 		}
 
 		for(int i = 0; i < levelMap.size(); i++) {
-			System.out.println(i + " " + levelMap.get(i));
+//			System.out.println(i + " " + levelMap.get(i));
 		}
 	}
 
 	public static void main(String[] args) {
 
 //		System.out.println(getXP(101) - getXP(100));
-		System.out.println(getXPToNextLvl(getXP(500)));
+//		System.out.println(getXPToNextLvl(getXP(500)));
 	}
 
 	public static int getLevel(long xp) {

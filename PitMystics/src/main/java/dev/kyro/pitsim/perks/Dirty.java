@@ -16,7 +16,7 @@ public class Dirty extends PitPerk {
 	public static Dirty INSTANCE;
 
 	public Dirty() {
-		super("Dirty", "dirty", new ItemStack(Material.DIRT, 1, (short) 1), 11);
+		super("Dirty", "dirty", new ItemStack(Material.DIRT, 1, (short) 1), 11, INSTANCE);
 		INSTANCE = this;
 	}
 

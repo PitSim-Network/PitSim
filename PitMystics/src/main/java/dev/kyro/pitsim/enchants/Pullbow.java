@@ -5,8 +5,10 @@ import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.controllers.BypassManager;
 import dev.kyro.pitsim.controllers.Cooldown;
 import dev.kyro.pitsim.controllers.objects.PitEnchant;
+import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.enums.ApplyType;
 import dev.kyro.pitsim.events.AttackEvent;
+import dev.kyro.pitsim.killstreaks.Uberstreak;
 import org.bukkit.event.EventHandler;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
@@ -36,6 +38,8 @@ public class Pullbow extends PitEnchant {
 		}
 		else BypassManager.bypassPullbow.add(attackEvent.defender);
 
+		PitPlayer pitPlayer = PitPlayer.getPitPlayer(attackEvent.defender);
+		if(pitPlayer.megastreak.getClass() == Uberstreak.class && pitPlayer.megastreak.isOnMega()) return;
 		Vector dirVector = attackEvent.attacker.getLocation().toVector().subtract(attackEvent.defender.getLocation().toVector()).setY(0);
 		Vector pullVector = dirVector.clone().normalize().setY(0.5).multiply(2.5).add(dirVector.clone().multiply(0.04));
 		attackEvent.defender.setVelocity(pullVector.multiply(getMultiplier(enchantLvl)));

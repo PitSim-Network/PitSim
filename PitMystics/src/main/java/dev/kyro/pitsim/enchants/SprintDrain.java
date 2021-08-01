@@ -3,8 +3,10 @@ package dev.kyro.pitsim.enchants;
 import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.arcticapi.misc.AUtil;
 import dev.kyro.pitsim.controllers.objects.PitEnchant;
+import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.enums.ApplyType;
 import dev.kyro.pitsim.events.AttackEvent;
+import dev.kyro.pitsim.killstreaks.Overdrive;
 import dev.kyro.pitsim.misc.Misc;
 import org.bukkit.event.EventHandler;
 import org.bukkit.potion.PotionEffectType;
@@ -28,7 +30,10 @@ public class SprintDrain extends PitEnchant {
 
 		if(attackEvent.attacker.equals(attackEvent.defender)) return;
 
-		Misc.applyPotionEffect(attackEvent.defender, PotionEffectType.SLOW, getSlowDuration(enchantLvl) * 20, 0, true, false);
+		PitPlayer pitDefender = PitPlayer.getPitPlayer(attackEvent.defender);
+		if(pitDefender.megastreak.getClass() != Overdrive.class) {
+			Misc.applyPotionEffect(attackEvent.defender, PotionEffectType.SLOW, getSlowDuration(enchantLvl) * 20, 0, true, false);
+		}
 		Misc.applyPotionEffect(attackEvent.attacker, PotionEffectType.SPEED,
 				getSpeedDuration(enchantLvl) * 20, getSpeedAmplifier(enchantLvl) - 1, true, false);
 	}

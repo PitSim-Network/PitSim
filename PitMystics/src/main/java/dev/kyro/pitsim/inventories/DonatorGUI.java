@@ -10,6 +10,7 @@ public class DonatorGUI extends AGUI {
         public PantsColorPanel pantsColorPanel;
         public DeathCryPanel deathCryPanel;
         public ChatColorPanel chatColorPanel;
+        public ChatOptionsPanel chatOptionsPanel;
 
         public DonatorGUI(Player player) {
                 super(player);
@@ -20,5 +21,6 @@ public class DonatorGUI extends AGUI {
                 pantsColorPanel = new PantsColorPanel(this);
                 deathCryPanel = new DeathCryPanel(this);
                 chatColorPanel = new ChatColorPanel(this);
+                chatOptionsPanel = new ChatOptionsPanel(this);
         }
 }

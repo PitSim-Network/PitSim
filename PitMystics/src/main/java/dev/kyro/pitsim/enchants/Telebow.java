@@ -4,6 +4,7 @@ import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.controllers.Cooldown;
 import dev.kyro.pitsim.controllers.EnchantManager;
+import dev.kyro.pitsim.controllers.SpawnManager;
 import dev.kyro.pitsim.controllers.objects.PitEnchant;
 import dev.kyro.pitsim.enums.ApplyType;
 import dev.kyro.pitsim.events.AttackEvent;
@@ -89,7 +90,7 @@ public class Telebow extends PitEnchant {
 		}
 		if(cooldown.isOnCooldown()) return; else cooldown.reset();
 
-		if(player.isSneaking()) {
+		if(player.isSneaking() && !SpawnManager.isInSpawn(player.getLocation())) {
 			teleShots.add(arrow);
 		}
 	}

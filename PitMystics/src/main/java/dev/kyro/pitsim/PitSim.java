@@ -3,22 +3,32 @@ package dev.kyro.pitsim;
 import com.xxmicloxx.NoteBlockAPI.songplayer.EntitySongPlayer;
 import dev.kyro.arcticapi.ArcticAPI;
 import dev.kyro.arcticapi.data.AData;
+import dev.kyro.arcticapi.data.APlayerData;
 import dev.kyro.arcticapi.hooks.AHook;
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.commands.*;
 import dev.kyro.pitsim.controllers.*;
-import dev.kyro.pitsim.controllers.market.MarketManager;
+//import dev.kyro.pitsim.controllers.market.MarketManager;
 import dev.kyro.pitsim.controllers.objects.Non;
 import dev.kyro.pitsim.controllers.objects.PitEnchant;
+import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.enchants.*;
+import dev.kyro.pitsim.killstreaks.*;
 import dev.kyro.pitsim.misc.ItemRename;
 import dev.kyro.pitsim.perks.*;
+import dev.kyro.pitsim.pitevents.TestEvent;
+import dev.kyro.pitsim.pitevents.TestEvent2;
 import dev.kyro.pitsim.placeholders.*;
+import net.kyori.adventure.audience.Audience;
+import net.kyori.adventure.platform.bukkit.BukkitAudiences;
 import net.milkbowl.vault.economy.Economy;
 import org.bukkit.Bukkit;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
+import org.bukkit.plugin.RegisteredListener;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.checkerframework.checker.nullness.qual.NonNull;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -30,11 +40,28 @@ public class PitSim extends JavaPlugin {
 	public static PitSim INSTANCE;
 	public static Economy VAULT = null;
 	public static AData playerList;
+	private BukkitAudiences adventure;
+
+	public @NonNull BukkitAudiences adventure() {
+		if(this.adventure == null) {
+			throw new IllegalStateException("Tried to access Adventure when the plugin was disabled!");
+		}
+		return this.adventure;
+	}
 
 	@Override
 	public void onEnable() {
 
 		INSTANCE = this;
+
+		MapManager.onStart();
+
+		adventure = BukkitAudiences.create(this);
+		for(Player onlinePlayer : Bukkit.getOnlinePlayers()) {
+			BossBarManager bm = new BossBarManager();
+			PlayerManager.bossBars.put(onlinePlayer, bm);
+		}
+
 		if (!setupEconomy()) {
 			AOutput.log(String.format("[%s] - Disabled due to no Vault dependency found!", getDescription().getName()));
 			getServer().getPluginManager().disablePlugin(this);
@@ -54,7 +81,14 @@ public class PitSim extends JavaPlugin {
 			return;
 		}
 
+
+		registerPitEvents();
+//		PitEventManager.eventWait();
+
 		registerUpgrades();
+		registerMegastreaks();
+
+
 
 		ArcticAPI.setupPlaceholderAPI("pitsim");
 		AHook.registerPlaceholder(new PrefixPlaceholder());
@@ -63,6 +97,20 @@ public class PitSim extends JavaPlugin {
 		AHook.registerPlaceholder(new GladiatorPlaceholder());
 		AHook.registerPlaceholder(new CombatTimerPlaceholder());
 		AHook.registerPlaceholder(new StreakPlaceholder());
+		AHook.registerPlaceholder(new ExperiencePlaceholder());
+		AHook.registerPlaceholder(new LevelPlaceholder());
+		AHook.registerPlaceholder(new PlayerKillsPlaceholder());
+		AHook.registerPlaceholder(new LeaderboardPlaceholder());
+		AHook.registerPlaceholder(new LeaderboardPlaceholder2());
+		AHook.registerPlaceholder(new LeaderboardPlaceholder3());
+		AHook.registerPlaceholder(new LeaderboardPlaceholder4());
+		AHook.registerPlaceholder(new LeaderboardPlaceholder5());
+		AHook.registerPlaceholder(new LeaderboardPlaceholder6());
+		AHook.registerPlaceholder(new LeaderboardPlaceholder7());
+		AHook.registerPlaceholder(new LeaderboardPlaceholder8());
+		AHook.registerPlaceholder(new LeaderboardPlaceholder9());
+		AHook.registerPlaceholder(new LeaderboardPlaceholder10());
+
 
 		loadConfig();
 
@@ -78,6 +126,18 @@ public class PitSim extends JavaPlugin {
 
 	@Override
 	public void onDisable() {
+
+		for(Player onlinePlayer : Bukkit.getOnlinePlayers()) {
+			PitPlayer pitplayer = PitPlayer.getPitPlayer(onlinePlayer);
+			if(NonManager.getNon(onlinePlayer) != null) continue;
+			FileConfiguration playerData = APlayerData.getPlayerData(onlinePlayer);
+			playerData.set("level", pitplayer.playerLevel);
+			playerData.set("playerkills", pitplayer.playerKills);
+			playerData.set("xp", pitplayer.remainingXP);
+			playerData.set("ubersleft", pitplayer.dailyUbersLeft);
+			playerData.set("ubercooldown", pitplayer.uberReset);
+			APlayerData.savePlayerData(onlinePlayer);
+		}
 
 		List<Non> copyList = new ArrayList<>(NonManager.nons);
 		for(Non non : copyList) {
@@ -100,7 +160,7 @@ public class PitSim extends JavaPlugin {
 		EnchantManager.registerEnchant(new aCPLEnchant());
 		EnchantManager.registerEnchant(new JewelHunter());
 
-		EnchantManager.registerEnchant(new ThePunch());
+//		EnchantManager.registerEnchant(new ThePunch());
 		EnchantManager.registerEnchant(new Billionaire());
 		EnchantManager.registerEnchant(new Gamble());
 		EnchantManager.registerEnchant(new Executioner());
@@ -123,6 +183,8 @@ public class PitSim extends JavaPlugin {
 		EnchantManager.registerEnchant(new GoldAndBoosted());
 		EnchantManager.registerEnchant(new PainFocus());
 		EnchantManager.registerEnchant(new Shark());
+		EnchantManager.registerEnchant(new XpBump());
+		EnchantManager.registerEnchant(new Sweaty());
 
 		EnchantManager.registerEnchant(new MegaLongBow());
 		EnchantManager.registerEnchant(new Volley());
@@ -183,6 +245,21 @@ public class PitSim extends JavaPlugin {
 		PerkManager.registerUpgrade(new StrengthChaining());
 		PerkManager.registerUpgrade(new Gladiator());
 		PerkManager.registerUpgrade(new Thick());
+		PerkManager.registerUpgrade(new AssistantToTheStreaker());
+	}
+
+	private void registerMegastreaks() {
+
+		PerkManager.registerMegastreak(new Overdrive(null));
+		PerkManager.registerMegastreak(new Highlander(null));
+		PerkManager.registerMegastreak(new Uberstreak(null));
+		PerkManager.registerMegastreak(new NoMegastreak(null));
+		PerkManager.registerMegastreak(new Beastmode(null));
+	}
+
+	private void registerPitEvents() {
+		PitEventManager.registerPitEvent(new TestEvent());
+		PitEventManager.registerPitEvent(new TestEvent2());
 	}
 
 	private void registerCommands() {
@@ -203,6 +280,11 @@ public class PitSim extends JavaPlugin {
 		getCommand("enchants").setExecutor(new EnchantListCommand());
 		getCommand("setkills").setExecutor(new SetKillCommand());
 		getCommand("donator").setExecutor(new DonatorCommand());
+		getCommand("ks").setExecutor(new KsCommand());
+		getCommand("bounty").setExecutor(new BountyCommand());
+		getCommand("spawn").setExecutor(new SpawnCommand());
+		getCommand("changemap").setExecutor(new ChangeMapCommand());
+		getCommand("crategive").setExecutor(new CrateGiveCommand());
 //		getCommand("togglestereo").setExecutor(new ToggleStereoCommand());
 	}
 
@@ -210,15 +292,16 @@ public class PitSim extends JavaPlugin {
 
 //		KarhuAPI.getEventRegistry().addListener(new BypassManager());
 		getServer().getPluginManager().registerEvents(new DamageManager(), this);
-		getServer().getPluginManager().registerEvents(new NonManager(), this);
+//		getServer().getPluginManager().registerEvents(new NonManager(), this);
 		getServer().getPluginManager().registerEvents(new PlayerManager(), this);
 		getServer().getPluginManager().registerEvents(new ChatManager(), this);
 		getServer().getPluginManager().registerEvents(new DamageIndicator(), this);
-		getServer().getPluginManager().registerEvents(new MarketManager(), this);
+//		getServer().getPluginManager().registerEvents(new MarketManager(), this);
 		getServer().getPluginManager().registerEvents(new ItemManager(), this);
 		getServer().getPluginManager().registerEvents(new CombatManager(), this);
 		getServer().getPluginManager().registerEvents(new SpawnManager(), this);
 		getServer().getPluginManager().registerEvents(new ItemRename(), this);
+		getServer().getPluginManager().registerEvents(new EnderChestManager(), this);
 
 	}
 

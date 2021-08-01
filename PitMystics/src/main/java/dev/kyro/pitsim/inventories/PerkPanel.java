@@ -4,6 +4,7 @@ import dev.kyro.arcticapi.gui.AGUI;
 import dev.kyro.arcticapi.gui.AGUIPanel;
 import dev.kyro.pitsim.controllers.objects.PitPerk;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
+import dev.kyro.pitsim.killstreaks.NoMegastreak;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.event.inventory.InventoryClickEvent;
@@ -27,12 +28,12 @@ public class  PerkPanel extends AGUIPanel {
 
 	@Override
 	public String getName() {
-		return "Perk GUI";
+		return "Perks and Killstreaks";
 	}
 
 	@Override
 	public int getRows() {
-		return 6;
+		return 5;
 	}
 
 	@Override
@@ -47,7 +48,12 @@ public class  PerkPanel extends AGUIPanel {
 				openPanel(perkGUI.applyPerkPanel);
 				return;
 			}
+
+			if(slot == 34) {
+				openPanel(perkGUI.megastreakPanel);
+			}
 		}
+
 	}
 
 	@Override
@@ -86,6 +92,38 @@ public class  PerkPanel extends AGUIPanel {
 
 			getInventory().setItem(10 + i * 2, perkItem);
 		}
+
+		ItemStack killStreak = new ItemStack(Material.GOLD_BLOCK);
+		ItemMeta ksMeta = killStreak.getItemMeta();
+		ksMeta.setDisplayName(ChatColor.translateAlternateColorCodes('&', "&eKillstreaks &c&lCOMING SOON"));
+		killStreak.setItemMeta(ksMeta);
+
+		getInventory().setItem(28, killStreak);
+		getInventory().setItem(30, killStreak);
+		getInventory().setItem(32, killStreak);
+
+		ItemStack megaStreak = new ItemStack(pitPlayer.megastreak.guiItem().getType());
+		ItemMeta msMeta = megaStreak.getItemMeta();
+		msMeta.setDisplayName(ChatColor.YELLOW + "Megastreak");
+		List<String> msLore = new ArrayList<>();
+		if(pitPlayer.megastreak.getClass() != NoMegastreak.class) {
+			msLore.add(ChatColor.GRAY + "Selected: " + ChatColor.GREEN + pitPlayer.megastreak.getRawName());
+			msLore.add("");
+			msLore.addAll(pitPlayer.megastreak.guiItem().getItemMeta().getLore());
+		} else {
+			msLore.add(ChatColor.GRAY + "Select a megastreak to fill this slot.");
+		}
+		msLore.add("");
+		if(pitPlayer.megastreak.getClass() == NoMegastreak.class) {
+			msLore.add(ChatColor.YELLOW + "Click to choose megastreak!");
+		} else {
+			msLore.add(ChatColor.YELLOW + "Click to switch megastreak!");
+		}
+		msMeta.setLore(msLore);
+		megaStreak.setItemMeta(msMeta);
+
+		getInventory().setItem(34, megaStreak);
+
 		updateInventory();
 	}
 
