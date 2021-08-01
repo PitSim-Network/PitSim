@@ -1,6 +1,7 @@
 package dev.kyro.pitsim.controllers.objects;
 
 import dev.kyro.pitsim.PitSim;
+import dev.kyro.pitsim.controllers.PerkManager;
 import dev.kyro.pitsim.events.KillEvent;
 import org.bukkit.Bukkit;
 import org.bukkit.event.Listener;
@@ -40,4 +41,6 @@ public abstract class Megastreak implements Listener {
 	public boolean playerIsOnMega(KillEvent killEvent) {
 		return PitPlayer.getPitPlayer(killEvent.killer).getKills() >= getRequiredKills();
 	}
+
+
 }
