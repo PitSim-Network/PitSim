@@ -16,6 +16,8 @@ import dev.kyro.pitsim.enchants.*;
 import dev.kyro.pitsim.killstreaks.*;
 import dev.kyro.pitsim.misc.ItemRename;
 import dev.kyro.pitsim.perks.*;
+import dev.kyro.pitsim.pitevents.TestEvent;
+import dev.kyro.pitsim.pitevents.TestEvent2;
 import dev.kyro.pitsim.placeholders.*;
 import net.kyori.adventure.audience.Audience;
 import net.kyori.adventure.platform.bukkit.BukkitAudiences;
@@ -80,6 +82,7 @@ public class PitSim extends JavaPlugin {
 		}
 
 
+		registerPitEvents();
 		PitEventManager.eventWait();
 
 		registerUpgrades();
@@ -252,10 +255,12 @@ public class PitSim extends JavaPlugin {
 		PerkManager.registerMegastreak(new Uberstreak(null));
 		PerkManager.registerMegastreak(new NoMegastreak(null));
 		PerkManager.registerMegastreak(new Beastmode(null));
-
-
 	}
 
+	private void registerPitEvents() {
+		PitEventManager.registerPitEvent(new TestEvent());
+		PitEventManager.registerPitEvent(new TestEvent2());
+	}
 
 	private void registerCommands() {
 

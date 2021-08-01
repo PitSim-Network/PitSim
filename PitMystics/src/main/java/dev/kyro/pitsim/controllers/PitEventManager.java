@@ -34,9 +34,12 @@ public class PitEventManager {
     public static Map<Player, Integer> bounty = new HashMap<>();
     public static Boolean majorEvent = false;
 
+    public static void registerPitEvent(PitEvent event) {
+        events.add(event);
+        PitSim.INSTANCE.getServer().getPluginManager().registerEvents(event, PitSim.INSTANCE);
+    }
+
     public static void eventWait() {
-    events.add(new TestEvent());
-    events.add(new TestEvent2());
 
 
         new BukkitRunnable() {

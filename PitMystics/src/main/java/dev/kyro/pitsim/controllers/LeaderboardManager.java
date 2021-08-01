@@ -17,6 +17,7 @@ import java.util.*;
 public class LeaderboardManager {
     public static Map<String, Integer> finalLevels = new HashMap<>();
     public static TreeMap<String, Integer> finalSorted = new TreeMap<>();
+    public static TreeMap<String, Integer> eventSorted = new TreeMap<>();
 
     public static void calculate() {
         Map<String, Integer> levels = new HashMap<>();
@@ -34,6 +35,16 @@ public class LeaderboardManager {
         finalSorted = sorted_map;
         finalLevels.putAll(sorted_map);
 
+    }
+
+    public static TreeMap<String, Integer> calculateEvent(Map<String, Integer> data) {
+
+        ValueComparator bvc =  new ValueComparator(data);
+        TreeMap<String,Integer> sorted_map = new TreeMap<String,Integer>(bvc);
+        sorted_map.putAll(data);
+
+        eventSorted = sorted_map;
+        return eventSorted;
     }
 
 static {
@@ -77,3 +88,4 @@ class ValueComparator implements Comparator<String> {
         }
     }
 }
+
