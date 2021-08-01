@@ -12,6 +12,7 @@ import dev.kyro.pitsim.controllers.objects.PitEvent;
 import dev.kyro.pitsim.misc.Misc;
 import dev.kyro.pitsim.pitevents.TestEvent;
 import dev.kyro.pitsim.pitevents.TestEvent2;
+import net.kyori.adventure.audience.Audience;
 import net.md_5.bungee.api.chat.TextComponent;
 import net.milkbowl.vault.chat.Chat;
 import org.bukkit.Bukkit;
@@ -59,10 +60,14 @@ public class PitEventManager {
                 new BukkitRunnable() {
                     @Override
                     public void run() {
-//                        BossBarManager.timerBar(ChatColor.translateAlternateColorCodes('&',
-//                                "&5&lMAJOR EVENT! " + randomEvent.color + "" + ChatColor.BOLD +
-//                                        randomEvent.getName().toUpperCase(Locale.ROOT)) + "! &7Starting in", 0, 30, ChatColor.YELLOW);
-
+                        for(Player onlinePlayer : Bukkit.getOnlinePlayers()) {
+                            BossBarManager manager = PlayerManager.bossBars.get(onlinePlayer);
+                            Audience audiences = PitSim.INSTANCE.adventure().player(onlinePlayer);
+                            manager.showMyBossBar(audiences);
+                            manager.timerBar(audiences, ChatColor.translateAlternateColorCodes('&',
+                                    "&5&lMAJOR EVENT! " + randomEvent.color + "" + ChatColor.BOLD +
+                                            randomEvent.getName().toUpperCase(Locale.ROOT)) + "! &7Starting in", 0, 30, ChatColor.YELLOW);
+                        }
                     }
                 }.runTaskLater(PitSim.INSTANCE, 10L);
 
@@ -100,9 +105,16 @@ public class PitEventManager {
                 new BukkitRunnable() {
                     @Override
                     public void run() {
-//                        BossBarManager.timerBar(ChatColor.translateAlternateColorCodes('&',
-//                                "&5&lMAJOR EVENT! " + event.color + "" + ChatColor.BOLD +
-//                                        event.getName().toUpperCase(Locale.ROOT)) + "! &7Ending in", 1, 0, ChatColor.GREEN);
+                        for(Player onlinePlayer : Bukkit.getOnlinePlayers()) {
+                            BossBarManager manager = PlayerManager.bossBars.get(onlinePlayer);
+                            Audience audience = PitSim.INSTANCE.adventure().player(onlinePlayer);
+                            manager.showMyBossBar(audience);
+                            manager.timerBar(audience, ChatColor.translateAlternateColorCodes('&',
+                                "&5&lMAJOR EVENT! " + event.color + "" + ChatColor.BOLD +
+                                        event.getName().toUpperCase(Locale.ROOT)) + "! &7Ending in", 1, 0, ChatColor.GREEN);
+
+                        }
+//
                     }
                 }.runTaskLater(PitSim.INSTANCE, 10L);
 

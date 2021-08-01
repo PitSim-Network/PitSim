@@ -148,13 +148,9 @@ public class PlayerManager implements Listener {
 	public void onPlayerJoin(PlayerJoinEvent event) {
 		if(isNew(event.getPlayer())) TokenOfAppreciation.giveToken(event.getPlayer(), 1);
 
-//		BossBarManager bm = new BossBarManager();
-//		Audience audiences = PitSim.INSTANCE.adventure().player(event.getPlayer());
-//		bm.showMyBossBar(audiences);
-//		bossBars.put(event.getPlayer(), bm);
-
 		Player player = event.getPlayer();
 		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
+
 
 		Location spawnLoc = MapManager.getPlayerSpawn();
 		player.teleport(spawnLoc);
@@ -172,6 +168,10 @@ public class PlayerManager implements Listener {
 					}
 				}
 			}.runTaskLater(PitSim.INSTANCE,  10L);
+
+		BossBarManager bm = new BossBarManager();
+		Audience audiences = PitSim.INSTANCE.adventure().player(event.getPlayer());
+		bossBars.put(event.getPlayer(), bm);
 
 //		if(!player.isOp()) {
 //			BypassManager.bypassAll.add(player);

@@ -77,7 +77,7 @@ public class PitSim extends JavaPlugin {
 		}
 
 
-//		PitEventManager.eventWait();
+		PitEventManager.eventWait();
 
 		registerUpgrades();
 		registerMegastreaks();
@@ -283,7 +283,7 @@ public class PitSim extends JavaPlugin {
 
 //		KarhuAPI.getEventRegistry().addListener(new BypassManager());
 		getServer().getPluginManager().registerEvents(new DamageManager(), this);
-		getServer().getPluginManager().registerEvents(new NonManager(), this);
+//		getServer().getPluginManager().registerEvents(new NonManager(), this);
 		getServer().getPluginManager().registerEvents(new PlayerManager(), this);
 		getServer().getPluginManager().registerEvents(new ChatManager(), this);
 		getServer().getPluginManager().registerEvents(new DamageIndicator(), this);

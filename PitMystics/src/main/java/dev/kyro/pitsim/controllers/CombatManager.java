@@ -74,6 +74,7 @@ public class CombatManager implements Listener {
 
    @EventHandler
     public static void onLeave(PlayerQuitEvent event) {
+        PlayerManager.bossBars.remove(event.getPlayer());
         if(NonManager.getNon(event.getPlayer()) != null) return;
        FileConfiguration playerData = APlayerData.getPlayerData(event.getPlayer());
        PitPlayer pitplayer = PitPlayer.getPitPlayer(event.getPlayer());
