@@ -7,6 +7,7 @@ import dev.kyro.pitsim.controllers.PitEventManager;
 import dev.kyro.pitsim.controllers.objects.PitEvent;
 import dev.kyro.pitsim.enums.GameMap;
 import dev.kyro.pitsim.events.KillEvent;
+import dev.kyro.pitsim.events.OofEvent;
 import dev.kyro.pitsim.misc.Misc;
 import org.bukkit.*;
 import org.bukkit.block.Banner;
@@ -17,7 +18,10 @@ import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
+import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -53,6 +57,7 @@ public class TestEvent extends PitEvent {
     @Override
     public void start() {
         teamSetup();
+        PitEventManager.activeEvent = this;
         Bukkit.broadcastMessage("Starting: " + name + ". Ends in " + minutes + " minutes.");
 
     }
@@ -61,6 +66,7 @@ public class TestEvent extends PitEvent {
     public void end() {
         for(Player onlinePlayer : Bukkit.getOnlinePlayers()) {
             if(helmets.containsKey(onlinePlayer)) onlinePlayer.getInventory().setHelmet(helmets.get(onlinePlayer));
+            else onlinePlayer.getInventory().setHelmet(new ItemStack(Material.AIR));
             helmets.remove(onlinePlayer);
         }
         red.clear();
@@ -72,6 +78,8 @@ public class TestEvent extends PitEvent {
         getLocation("BlueBanner").getBlock().setType(Material.AIR, true);
         getLocation("RedBanner").getBlock().setType(Material.AIR, true);
         getTopThree();
+        captures.clear();
+        PitEventManager.activeEvent = null;
 
         Bukkit.broadcastMessage(name + " has ended.");
     }
@@ -148,7 +156,7 @@ public class TestEvent extends PitEvent {
                 if(blueBannerPlayer instanceof Player && !blue.contains(blueBannerPlayer) && blueBannerHolder == null) {
                     Bukkit.broadcastMessage("Blue Banner taken by " + ((Player) blueBannerPlayer).getDisplayName() + "!");
                     blueBannerHolder = (Player) blueBannerPlayer;
-                    blueBannerHolder.getInventory().setHelmet(new ItemStack(Material.BANNER, 1, (short) 9));
+                    blueBannerHolder.getInventory().setHelmet(new ItemStack(Material.BANNER, 1, (short) 4));
                     getLocation("BlueBanner").getBlock().setType(Material.AIR);
                     blueArmor.setCustomName(ChatColor.BLUE + "Blue Banner Taken by " + ((Player) blueBannerPlayer).getDisplayName());
                     for(Player player : blue) {
@@ -171,7 +179,7 @@ public class TestEvent extends PitEvent {
                 if(redBannerPlayer instanceof Player && !red.contains(redBannerPlayer) && redBannerHolder == null) {
                     Bukkit.broadcastMessage("Red Banner taken by " + ((Player) redBannerPlayer).getDisplayName() + "!");
                     redBannerHolder = (Player) redBannerPlayer;
-                    redBannerHolder.getInventory().setHelmet(new ItemStack(Material.BANNER, 1, (short) 12));
+                    redBannerHolder.getInventory().setHelmet(new ItemStack(Material.BANNER, 1, (short) 1));
                     getLocation("RedBanner").getBlock().setType(Material.AIR);
                     redArmor.setCustomName(ChatColor.RED + "Red Banner Taken by " + ((Player) redBannerPlayer).getDisplayName());
                     for(Player player : red) {
@@ -195,6 +203,7 @@ public class TestEvent extends PitEvent {
         if(red.contains(killEvent.dead)) {
             if(blueBannerHolder == killEvent.dead) {
                 blueBannerHolder = null;
+                killEvent.dead.getInventory().setHelmet(redHat);
                 Bukkit.broadcastMessage(killEvent.dead.getDisplayName() + "  was killed. The Blue Banner was returned to its base.");
                 setupBlueBanner();
                 for(Player player : blue) {
@@ -211,6 +220,7 @@ public class TestEvent extends PitEvent {
         if(blue.contains(killEvent.dead)) {
             if(redBannerHolder == killEvent.dead) {
                 redBannerHolder = null;
+               killEvent.dead.getInventory().setHelmet(blueHat);
                 Bukkit.broadcastMessage(killEvent.dead.getDisplayName() + "  was killed. The Red Banner was returned to its base.");
                 setupRedBanner();
                 for(Player player : red) {
@@ -224,6 +234,121 @@ public class TestEvent extends PitEvent {
                 }
             }.runTaskLater(PitSim.INSTANCE, 1L);
         }
+    }
+
+    @EventHandler
+    public void onOof(OofEvent oofEvent) {
+        if(red.contains(oofEvent.getPlayer())) {
+            if(blueBannerHolder == oofEvent.getPlayer()) {
+                blueBannerHolder = null;
+                oofEvent.getPlayer().getInventory().setHelmet(redHat);
+                Bukkit.broadcastMessage(oofEvent.getPlayer().getDisplayName() + "  was killed. The Blue Banner was returned to its base.");
+                setupBlueBanner();
+                for(Player player : blue) {
+                    Misc.sendTitle(player, ChatColor.BLUE + "Banner Returned!", 40);
+                }
+            }
+            new BukkitRunnable() {
+                @Override
+                public void run() {
+                   oofEvent.getPlayer().teleport(getLocation("RedSpawn"));
+                }
+            }.runTaskLater(PitSim.INSTANCE, 1L);
+        }
+        if(blue.contains(oofEvent.getPlayer())) {
+            if(redBannerHolder == oofEvent.getPlayer()) {
+                redBannerHolder = null;
+                oofEvent.getPlayer().getInventory().setHelmet(blueHat);
+                Bukkit.broadcastMessage(oofEvent.getPlayer().getDisplayName() + "  was killed. The Red Banner was returned to its base.");
+                setupRedBanner();
+                for(Player player : red) {
+                    Misc.sendTitle(player, ChatColor.RED + "Banner Returned!", 40);
+                }
+            }
+            new BukkitRunnable() {
+                @Override
+                public void run() {
+                    oofEvent.getPlayer().teleport(getLocation("BlueSpawn"));
+                }
+            }.runTaskLater(PitSim.INSTANCE, 1L);
+        }
+    }
+
+    @EventHandler
+    public void onJoin(PlayerJoinEvent event) {
+        if(PitEventManager.activeEvent != this) return;
+        helmets.put(event.getPlayer(), event.getPlayer().getInventory().getHelmet());
+
+        if(red.size() > blue.size()) {
+            blue.add(event.getPlayer());
+            event.getPlayer().getInventory().setHelmet(blueHat);
+            new BukkitRunnable() {
+                @Override
+                public void run() {
+                    event.getPlayer().teleport(getLocation("BlueSpawn"));
+                }
+            }.runTaskLater(PitSim.INSTANCE, 1L);
+            event.getPlayer().teleport(getLocation("BlueSpawn"));
+        }
+        if(red.size() < blue.size()) {
+            red.add(event.getPlayer());
+            event.getPlayer().getInventory().setHelmet(redHat);
+            new BukkitRunnable() {
+                @Override
+                public void run() {
+                    event.getPlayer().teleport(getLocation("RedSpawn"));
+                }
+            }.runTaskLater(PitSim.INSTANCE, 1L);
+        }
+        if(red.size() == blue.size()) {
+            blue.add(event.getPlayer());
+            event.getPlayer().getInventory().setHelmet(blueHat);
+            new BukkitRunnable() {
+                @Override
+                public void run() {
+                    event.getPlayer().teleport(getLocation("BlueSpawn"));
+                }
+            }.runTaskLater(PitSim.INSTANCE, 1L);
+        }
+        captures.put(event.getPlayer(), 0);
+
+    }
+
+    @EventHandler
+    public void onLeave(PlayerQuitEvent event) {
+        if(red.contains(event.getPlayer())) {
+            red.remove(event.getPlayer());
+            if(blueBannerHolder == event.getPlayer()) {
+                blueBannerHolder = null;
+                Bukkit.broadcastMessage(event.getPlayer().getDisplayName() + "  has left. The Blue Banner was returned to its base.");
+                setupBlueBanner();
+                for(Player player : blue) {
+                    Misc.sendTitle(player, ChatColor.BLUE + "Banner Returned!", 40);
+                }
+            }
+        }
+        if(blue.contains(event.getPlayer())) {
+            blue.remove(event.getPlayer());
+            if(redBannerHolder == event.getPlayer()) {
+                redBannerHolder = null;
+                Bukkit.broadcastMessage(event.getPlayer().getDisplayName() + "  has left. The Red Banner was returned to its base.");
+                setupRedBanner();
+                for(Player player : red) {
+                    Misc.sendTitle(player, ChatColor.RED + "Banner Returned!", 40);
+                }
+            }
+        }
+        if(helmets.containsKey(event.getPlayer())) {
+            event.getPlayer().getInventory().setHelmet(helmets.get(event.getPlayer()));
+        } else event.getPlayer().getInventory().setHelmet(new ItemStack(Material.AIR));
+        helmets.remove(event.getPlayer());
+        captures.remove(event.getPlayer());
+    }
+
+    @EventHandler
+    public void onClick(InventoryClickEvent event) {
+        if(PitEventManager.activeEvent != this) return;
+        if(event.getSlot() == 39) event.setCancelled(true);
     }
 
     public void teamSetup() {

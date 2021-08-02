@@ -25,6 +25,7 @@ public class PitEventManager {
     public static Map<Player, Double> kills = new HashMap<>();
     public static Map<Player, Integer> bounty = new HashMap<>();
     public static Boolean majorEvent = false;
+    public static PitEvent activeEvent;
 
     public static void registerPitEvent(PitEvent event) {
         events.add(event);
@@ -135,8 +136,8 @@ public class PitEventManager {
                     Audience audience = PitSim.INSTANCE.adventure().player(onlinePlayer);
                     manager.hideActiveBossBar(audience);
                     PitPlayer pitPlayer = PitPlayer.getPitPlayer(onlinePlayer);
-                    pitPlayer.setKills(kills.get(onlinePlayer));
-                    pitPlayer.bounty = 0;
+                    if(kills.containsKey(onlinePlayer)) pitPlayer.setKills(kills.get(onlinePlayer));
+                    if(bounty.containsKey(onlinePlayer)) pitPlayer.bounty = 0;
                     kills.remove(onlinePlayer);
                     bounty.remove(onlinePlayer);
                 }
