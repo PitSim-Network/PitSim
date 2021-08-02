@@ -33,7 +33,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 public class Highlander extends Megastreak {
     public Highlander(PitPlayer pitPlayer) {
         super(pitPlayer);
-        INSTANCE = this;
+//        INSTANCE = this;
     }
 
     public BukkitTask runnable;
