@@ -29,7 +29,7 @@ public class Billionaire extends PitEnchant {
 		int goldCost = getGoldCost(enchantLvl);
 
 		if(NonManager.getNon(attackEvent.defender) == null) {
-			goldCost = goldCost /  5;
+			goldCost = goldCost / 5;
 		}
 		double finalBalance = PitSim.VAULT.getBalance(attackEvent.attacker) - goldCost;
 		if(finalBalance < 0) return;
@@ -53,6 +53,6 @@ public class Billionaire extends PitEnchant {
 
 	public int getGoldCost(int enchantLvl) {
 
-		return (int) (Math.floor(Math.pow(enchantLvl, 1.75)) * 50 + 50) / 5;
+		return (int) (Math.floor(Math.pow(enchantLvl, 1.75)) * 50 + 50);
 	}
 }
