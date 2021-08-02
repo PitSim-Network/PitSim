@@ -224,6 +224,7 @@ public class PitSim extends JavaPlugin {
 		EnchantManager.registerEnchant(new Electrolytes());
 		EnchantManager.registerEnchant(new CounterOffensive());
 		EnchantManager.registerEnchant(new Stereo());
+		EnchantManager.registerEnchant(new ReallyToxic());
 
 //		Resource Enchants
 		EnchantManager.registerEnchant(new Moctezuma());
