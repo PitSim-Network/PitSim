@@ -1,9 +1,11 @@
 package dev.kyro.pitsim.enchants;
 
 import dev.kyro.arcticapi.builders.ALoreBuilder;
+import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.controllers.Cooldown;
 import dev.kyro.pitsim.controllers.EnchantManager;
+import dev.kyro.pitsim.controllers.MapManager;
 import dev.kyro.pitsim.controllers.SpawnManager;
 import dev.kyro.pitsim.controllers.objects.PitEnchant;
 import dev.kyro.pitsim.enums.ApplyType;
@@ -82,15 +84,12 @@ public class Telebow extends PitEnchant {
 
 		Cooldown cooldown = getCooldown(player, getCooldown(enchantLvl) * 20);
 		if(cooldown.isOnCooldown()) {
-
-
 			if(player.isSneaking()) Misc.sendActionBar(player, "&eTelebow: &c" + cooldown.getTicksLeft() / 20 + "&cs cooldown!");
-
 			return;
 		}
 		if(cooldown.isOnCooldown()) return; else cooldown.reset();
 
-		if(player.isSneaking() && !SpawnManager.isInSpawn(player.getLocation())) {
+		if(!SpawnManager.isInSpawn(player.getLocation())) {
 			teleShots.add(arrow);
 		}
 	}
@@ -112,10 +111,19 @@ public class Telebow extends PitEnchant {
 						teleportLoc.setYaw(-teleArrow.getLocation().getYaw());
 						teleportLoc.setPitch(-teleArrow.getLocation().getPitch());
 
+						double distance = MapManager.getMid().distance(teleportLoc);
+						if(distance < 8) {
+
+							AOutput.error(player, "You are not allowed to telebow into mid");
+							teleShots.remove(teleShot);
+							return;
+						}
+
 						player.teleport(teleportLoc);
 						player.getWorld().playSound(teleArrow.getLocation(), Sound.ENDERMAN_TELEPORT, 1f, 2f);
 
 						teleShots.remove(teleShot);
+						return;
 					}
 				}
 			}
