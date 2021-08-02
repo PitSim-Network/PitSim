@@ -39,6 +39,6 @@ public class HeighHo extends PitEnchant {
 
 	public double getDamage(int enchantLvl) {
 
-		return enchantLvl - 0.5;
+		return enchantLvl / 2D + 0.5;
 	}
 }
