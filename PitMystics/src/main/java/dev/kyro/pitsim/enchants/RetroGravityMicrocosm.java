@@ -37,7 +37,7 @@ public class RetroGravityMicrocosm extends PitEnchant {
 		int attackerEnchantLvl = attackEvent.getAttackerEnchantLevel(this);
 		int defenderEnchantLvl = attackEvent.getDefenderEnchantLevel(this);
 
-		if(attackerEnchantLvl >= 2) {
+		if(attackerEnchantLvl != 0) {
 
 			int charge = getCharge(attackEvent.attacker, attackEvent.defender);
 			attackEvent.increase += Math.min(charge, getMaxStacks(attackerEnchantLvl));
