@@ -113,7 +113,6 @@ public class Telebow extends PitEnchant {
 
 						double distance = MapManager.getMid().distance(teleportLoc);
 						if(distance < 8) {
-
 							AOutput.error(player, "You are not allowed to telebow into mid");
 							teleShots.remove(teleShot);
 							return;
