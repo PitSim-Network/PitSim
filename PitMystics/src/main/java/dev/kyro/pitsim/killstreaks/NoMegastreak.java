@@ -44,7 +44,7 @@ public class NoMegastreak extends Megastreak {
 
 	@Override
 	public int getRequiredKills() {
-		return 1000000000;
+		return Integer.MAX_VALUE;
 	}
 
 	@Override
