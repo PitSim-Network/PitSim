@@ -56,72 +56,74 @@ public class MegastreakPanel extends AGUIPanel {
                 openPanel(perkGUI.getHomePanel());
             }
 
-                for(Megastreak megastreak : PerkManager.megastreaks) {
-                    if(megastreak.guiSlot() == slot) {
-                        if(megastreak.getClass() == NoMegastreak.class) {
-                            if(pitPlayer.playerLevel < 0) level = true;
-                            if(pitPlayer.megastreak.getClass() == NoMegastreak.class) has = true;
-                            if(!has && !level) {
-                                pitPlayer.megastreak.stop();
-                                pitPlayer.megastreak = new NoMegastreak(pitPlayer);
-                                perkGUI.megaWrapUp();
-                            }
-                        } else if(megastreak.getClass() == Overdrive.class) {
-                            if(pitPlayer.playerLevel < 0) level = true;
-                            if(pitPlayer.megastreak.getClass() == Overdrive.class) has = true;
-                            if(!has && !level) {
-                                pitPlayer.megastreak.stop();
-                                pitPlayer.megastreak = new Overdrive(pitPlayer);
-                                perkGUI.megaWrapUp();
-                            }
-                        } else if(megastreak.getClass() == Highlander.class) {
-                            if(pitPlayer.playerLevel < 10) level = true;
-                            if(pitPlayer.megastreak.getClass() == Highlander.class) has = true;
-                            if(!has && !level) {
-                                pitPlayer.megastreak.stop();
-                                pitPlayer.megastreak = new Highlander(pitPlayer);
-                                perkGUI.megaWrapUp();
-                            }
-                        } else if(megastreak.getClass() == Beastmode.class) {
-                            if(pitPlayer.playerLevel < 20) level = true;
-                            if(pitPlayer.megastreak.getClass() == Beastmode.class) has = true;
-                            if(!has && !level) {
-                                pitPlayer.megastreak.stop();
-                                pitPlayer.megastreak = new Beastmode(pitPlayer);
-                                perkGUI.megaWrapUp();
-                            }
-                        } else if(megastreak.getClass() == Uberstreak.class) {
-                            if(pitPlayer.playerLevel < 25) level = true;
-                            if(pitPlayer.megastreak.getClass() == Uberstreak.class) has = true;
-                            if(pitPlayer.dailyUbersLeft == 0) uberCd = true;
-                            if(!has && !level && !uberCd) {
-                                pitPlayer.megastreak.stop();
-                                pitPlayer.megastreak = new Uberstreak(pitPlayer);
-                                perkGUI.megaWrapUp();
-                            }
+            for(Megastreak megastreak : PerkManager.megastreaks) {
+                if(megastreak.guiSlot() == slot) {
+                    PitPlayer pitPlayer = PitPlayer.getPitPlayer(perkGUI.player);
+                    pitPlayer.setKills(0);
+                    if(megastreak.getClass() == NoMegastreak.class) {
+                        if(pitPlayer.playerLevel < 0) level = true;
+                        if(pitPlayer.megastreak.getClass() == NoMegastreak.class) has = true;
+                        if(!has && !level) {
+                            pitPlayer.megastreak.stop();
+                            pitPlayer.megastreak = new NoMegastreak(pitPlayer);
+                            perkGUI.megaWrapUp();
                         }
-                        if(!level && !has && !uberCd) {
-                            openPanel(perkGUI.getHomePanel());
-                            player.playSound(player.getLocation(), Sound.NOTE_PLING, 1F, 2F);
-                            FileConfiguration playerData = APlayerData.getPlayerData(player);
-                            playerData.set("megastreak", megastreak.getRawName());
-                            APlayerData.savePlayerData(player);
+                    } else if(megastreak.getClass() == Overdrive.class) {
+                        if(pitPlayer.playerLevel < 0) level = true;
+                        if(pitPlayer.megastreak.getClass() == Overdrive.class) has = true;
+                        if(!has && !level) {
+                            pitPlayer.megastreak.stop();
+                            pitPlayer.megastreak = new Overdrive(pitPlayer);
+                            perkGUI.megaWrapUp();
                         }
-                        if(level) {
-                            AOutput.error(player, "&cYou arent high enough level to use this");
-                            player.playSound(player.getLocation(), Sound.ENDERMAN_TELEPORT, 1F, 0.5F);
+                    } else if(megastreak.getClass() == Highlander.class) {
+                        if(pitPlayer.playerLevel < 10) level = true;
+                        if(pitPlayer.megastreak.getClass() == Highlander.class) has = true;
+                        if(!has && !level) {
+                            pitPlayer.megastreak.stop();
+                            pitPlayer.megastreak = new Highlander(pitPlayer);
+                            perkGUI.megaWrapUp();
                         }
-                        if(has) {
-                            AOutput.error(player, "&cThat megastreak is already equipped");
-                            player.playSound(player.getLocation(), Sound.ENDERMAN_TELEPORT, 1F, 0.5F);
+                    } else if(megastreak.getClass() == Beastmode.class) {
+                        if(pitPlayer.playerLevel < 20) level = true;
+                        if(pitPlayer.megastreak.getClass() == Beastmode.class) has = true;
+                        if(!has && !level) {
+                            pitPlayer.megastreak.stop();
+                            pitPlayer.megastreak = new Beastmode(pitPlayer);
+                            perkGUI.megaWrapUp();
                         }
-                        if(uberCd) {
-                            AOutput.error(player, "&cYou have reached the daily limit for this killstreak");
-                            player.playSound(player.getLocation(), Sound.ENDERMAN_TELEPORT, 1F, 0.5F);
+                    } else if(megastreak.getClass() == Uberstreak.class) {
+                        if(pitPlayer.playerLevel < 25) level = true;
+                        if(pitPlayer.megastreak.getClass() == Uberstreak.class) has = true;
+                        if(pitPlayer.dailyUbersLeft == 0) uberCd = true;
+                        if(!has && !level && !uberCd) {
+                            pitPlayer.megastreak.stop();
+                            pitPlayer.megastreak = new Uberstreak(pitPlayer);
+                            perkGUI.megaWrapUp();
                         }
+                    }
+                    if(!level && !has && !uberCd) {
+                        openPanel(perkGUI.getHomePanel());
+                        player.playSound(player.getLocation(), Sound.NOTE_PLING, 1F, 2F);
+                        FileConfiguration playerData = APlayerData.getPlayerData(player);
+                        playerData.set("megastreak", megastreak.getRawName());
+                        APlayerData.savePlayerData(player);
+                    }
+                    if(level) {
+                        AOutput.error(player, "&cYou arent high enough level to use this");
+                        player.playSound(player.getLocation(), Sound.ENDERMAN_TELEPORT, 1F, 0.5F);
+                    }
+                    if(has) {
+                        AOutput.error(player, "&cThat megastreak is already equipped");
+                        player.playSound(player.getLocation(), Sound.ENDERMAN_TELEPORT, 1F, 0.5F);
+                    }
+                    if(uberCd) {
+                        AOutput.error(player, "&cYou have reached the daily limit for this killstreak");
+                        player.playSound(player.getLocation(), Sound.ENDERMAN_TELEPORT, 1F, 0.5F);
                     }
                 }
             }
+        }
 
     }
 
