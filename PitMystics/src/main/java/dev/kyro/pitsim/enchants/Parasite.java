@@ -3,6 +3,7 @@ package dev.kyro.pitsim.enchants;
 import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.pitsim.controllers.Cooldown;
 import dev.kyro.pitsim.controllers.objects.PitEnchant;
+import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.enums.ApplyType;
 import dev.kyro.pitsim.events.AttackEvent;
 import dev.kyro.pitsim.misc.Misc;
@@ -22,14 +23,14 @@ public class Parasite extends PitEnchant {
 	public void onAttack(AttackEvent.Apply attackEvent) {
 		if(!canApply(attackEvent)) return;
 
-
 		int enchantLvl = attackEvent.getAttackerEnchantLevel(this);
 		if(enchantLvl == 0) return;
 
 		Cooldown cooldown = getCooldown(attackEvent.attacker, 40);
 		if(cooldown.isOnCooldown()) return; else cooldown.reset();
 
-		attackEvent.attacker.setHealth(Math.min(attackEvent.attacker.getHealth() + getHealing(enchantLvl), attackEvent.attacker.getMaxHealth()));
+		PitPlayer pitAttacker = PitPlayer.getPitPlayer(attackEvent.defender);
+		pitAttacker.heal(getHealing(enchantLvl));
 	}
 
 	@Override
