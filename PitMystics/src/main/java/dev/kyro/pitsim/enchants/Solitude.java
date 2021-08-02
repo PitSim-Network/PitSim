@@ -31,7 +31,7 @@ public class Solitude extends PitEnchant {
 			nearbyPlayers++;
 		}
 
-		double reduction = Math.max(getDamageReduction(enchantLvl) - nearbyPlayers * 10, 0);
+		double reduction = Math.max(getDamageReduction(enchantLvl) - nearbyPlayers * getReductionPerPlayer(enchantLvl), 0);
 		attackEvent.multiplier.add(Misc.getReductionMultiplier(reduction));
 	}
 
@@ -39,16 +39,16 @@ public class Solitude extends PitEnchant {
 	public List<String> getDescription(int enchantLvl) {
 
 		return new ALoreBuilder("&7Receive &9-" + Misc.roundString(getDamageReduction(enchantLvl)) + "% &7damage, but",
-				"&7lose &910% &7reduction for every", "&7nearby player besides yourself").getLore();
+				"&7lose &9" + getReductionPerPlayer(enchantLvl) + "% &7reduction for every", "&7nearby player besides yourself").getLore();
 	}
 
-	public int getNearbyPlayers(int enchantLvl) {
+	public int getReductionPerPlayer(int enchantLvl) {
 
-		return Misc.linearEnchant(enchantLvl, 0.5, 1);
+		return 12;
 	}
 
 	public double getDamageReduction(int enchantLvl) {
 
-		return Math.min(30 + enchantLvl * 10, 100);
+		return Math.min(40 + enchantLvl * 10, 100);
 	}
 }

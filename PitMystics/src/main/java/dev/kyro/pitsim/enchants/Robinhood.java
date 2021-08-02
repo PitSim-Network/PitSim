@@ -46,7 +46,7 @@ public class Robinhood extends PitEnchant {
 			public void run() {
 				Map.Entry<Player, Double> targetInfo = null;
 
-				for(Entity nearbyEntity : arrow.getWorld().getNearbyEntities(arrow.getLocation(), 8, 8, 8)) {
+				for(Entity nearbyEntity : arrow.getWorld().getNearbyEntities(arrow.getLocation(), 1.5, 1.5, 1.5)) {
 
 					if(!(nearbyEntity instanceof Player) || nearbyEntity.equals(player)) continue;
 					Player target = (Player) nearbyEntity;

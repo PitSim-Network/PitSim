@@ -35,6 +35,6 @@ public class BeatTheSpammers extends PitEnchant {
 
 	public int getDamage(int enchantLvl) {
 
-		return (int) (Math.floor(Math.pow(enchantLvl, 1.6) + enchantLvl) * 5);
+		return enchantLvl * 25;
 	}
 }

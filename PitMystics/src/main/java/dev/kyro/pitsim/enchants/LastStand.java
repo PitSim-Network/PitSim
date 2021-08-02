@@ -29,7 +29,7 @@ public class LastStand extends PitEnchant {
 		Cooldown cooldown = getCooldown(attackEvent.attacker, 10 * 20);
 		if(cooldown.isOnCooldown()) return; else cooldown.reset();
 
-		if(attackEvent.defender.getHealth() - attackEvent.event.getFinalDamage() <= 6) {
+		if(attackEvent.defender.getHealth() - attackEvent.event.getFinalDamage() <= getProcHealth()) {
 			Misc.applyPotionEffect(attackEvent.defender, PotionEffectType.DAMAGE_RESISTANCE, getSeconds(enchantLvl)
 					* 20, getAmplifier(enchantLvl) - 1, false, false);
 		}
@@ -40,6 +40,11 @@ public class LastStand extends PitEnchant {
 
 		return new ALoreBuilder("&7Gain &9Resistance " + AUtil.toRoman(getAmplifier(enchantLvl)) + " &7("
 		+ getSeconds(enchantLvl) + " &7seconds)", "&7when reaching &c3\u2764").getLore();
+	}
+
+	public int getProcHealth() {
+
+		return 8;
 	}
 
 	public int getAmplifier(int enchantLvl) {

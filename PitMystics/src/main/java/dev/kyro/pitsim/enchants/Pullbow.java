@@ -41,7 +41,7 @@ public class Pullbow extends PitEnchant {
 		PitPlayer pitPlayer = PitPlayer.getPitPlayer(attackEvent.defender);
 		if(pitPlayer.megastreak.getClass() == Uberstreak.class && pitPlayer.megastreak.isOnMega()) return;
 		Vector dirVector = attackEvent.attacker.getLocation().toVector().subtract(attackEvent.defender.getLocation().toVector()).setY(0);
-		Vector pullVector = dirVector.clone().normalize().setY(0.5).multiply(2.5).add(dirVector.clone().multiply(0.04));
+		Vector pullVector = dirVector.clone().normalize().setY(0.5).multiply(2.5).add(dirVector.clone().multiply(0.03));
 		attackEvent.defender.setVelocity(pullVector.multiply(getMultiplier(enchantLvl)));
 
 		new BukkitRunnable() {
@@ -53,9 +53,6 @@ public class Pullbow extends PitEnchant {
 
 	}
 
-
-
-
 	@Override
 	public List<String> getDescription(int enchantLvl) {
 
@@ -64,6 +61,6 @@ public class Pullbow extends PitEnchant {
 
 	public static double getMultiplier(int enchantLvl) {
 
-		return (enchantLvl * 0.25) + 1;
+		return (enchantLvl * 0.2) + 1.15;
 	}
 }

@@ -34,6 +34,6 @@ public class Protection extends PitEnchant {
 
 	public double getDamageReduction(int enchantLvl) {
 
-		return (int) Math.floor(Math.pow(enchantLvl, 1.3) * 2) + 2;
+		return (int) Math.floor(Math.pow(enchantLvl, 1.3) * 2) * 2 + 4;
 	}
 }

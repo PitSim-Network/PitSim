@@ -44,7 +44,7 @@ public class ReallyToxic extends PitEnchant {
 
 		int attackerCharge = HitCounter.getCharge(attackEvent.attacker, this);
 		if(attackerCharge != 0 && !toxicNotifCooldown.contains(attackEvent.attacker.getUniqueId())) {
-			AOutput.send(attackEvent.attacker, "&a&lTOXIC!&f You heal &a" + Math.min(attackerCharge, getMaxReduction()) + "% &aless from enchants");
+			AOutput.send(attackEvent.attacker, "&a&lTOXIC!&f You heal &a" + Math.min(attackerCharge, getMaxReduction()) + "% &aless");
 			toxicNotifCooldown.add(attackEvent.attacker.getUniqueId());
 			new BukkitRunnable() {
 				@Override

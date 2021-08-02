@@ -13,7 +13,7 @@ import java.util.List;
 public class ThePunch extends PitEnchant {
 
 	public ThePunch() {
-		super("The Punch", true, ApplyType.BOWS,
+		super("The Punch", true, ApplyType.NONE,
 				"thepunch", "the-punch", "punch", "yeet");
 		isUncommonEnchant = true;
 	}

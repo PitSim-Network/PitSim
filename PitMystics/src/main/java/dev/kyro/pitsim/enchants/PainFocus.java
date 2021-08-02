@@ -34,7 +34,7 @@ public class PainFocus extends PitEnchant {
 
 	public int getDamage(int enchantLvl) {
 
-		return (int) Math.floor(Math.pow(enchantLvl, 1.5));
+		return (int) Math.floor(Math.pow(enchantLvl, 1.6));
 	}
 
 	public double getDamage(Player player, int enchantLvl) {

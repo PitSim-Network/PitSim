@@ -45,6 +45,6 @@ public class NotGladiator extends PitEnchant {
 
 	public double getDamageReduction(int enchantLvl) {
 
-		return Math.min(enchantLvl * 0.5 + 0.5, 100);
+		return Math.min(enchantLvl * 0.5 + 1.5, 100);
 	}
 }
