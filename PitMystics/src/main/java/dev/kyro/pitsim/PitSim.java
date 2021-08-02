@@ -81,7 +81,7 @@ public class PitSim extends JavaPlugin {
 
 
 		registerPitEvents();
-//		PitEventManager.eventWait();
+		PitEventManager.eventWait();
 
 		registerUpgrades();
 		registerMegastreaks();

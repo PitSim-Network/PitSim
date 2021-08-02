@@ -114,7 +114,7 @@ public class PitEventManager {
                             manager.showMyBossBar(audience);
                             manager.timerBar(audience, ChatColor.translateAlternateColorCodes('&',
                                 "&5&lMAJOR EVENT! " + event.color + "" + ChatColor.BOLD +
-                                        event.getName().toUpperCase(Locale.ROOT)) + "! &7Ending in", 1, 0, ChatColor.GREEN);
+                                        event.getName().toUpperCase(Locale.ROOT)) + "! &7Ending in", 5, 0, ChatColor.GREEN);
 
                         }
 //
@@ -150,7 +150,7 @@ public class PitEventManager {
 
 
             }
-        }.runTaskLater(PitSim.INSTANCE, 1200L);
+        }.runTaskLater(PitSim.INSTANCE, 6000L);
     }
 
     public static PitEvent getRandomEvent(List<PitEvent> events) {
