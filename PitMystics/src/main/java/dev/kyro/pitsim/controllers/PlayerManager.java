@@ -1,11 +1,13 @@
 package dev.kyro.pitsim.controllers;
 
+import dev.kyro.arcticapi.builders.AItemStackBuilder;
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.arcticapi.misc.ASound;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.controllers.objects.Non;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.enums.DeathCry;
+import dev.kyro.pitsim.events.AttackEvent;
 import dev.kyro.pitsim.events.KillEvent;
 import dev.kyro.pitsim.killstreaks.Highlander;
 import dev.kyro.pitsim.misc.DeathCrys;
@@ -24,15 +26,18 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.Sound;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
+import org.bukkit.event.entity.ItemMergeEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerItemDamageEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.inventivetalent.bossbar.BossBar;
 import org.inventivetalent.bossbar.BossBarAPI;
@@ -149,8 +154,22 @@ public class PlayerManager implements Listener {
 	}
 
 	@EventHandler
+	public void onAttack(AttackEvent.Apply attackEvent) {
+
+		Non defendingNon = NonManager.getNon(attackEvent.defender);
+		if(defendingNon == null) attackEvent.multiplier.add(0.9);
+
+//		ItemStack itemStack = attackEvent.attacker.getItemInHand();
+//		if(itemStack != null && itemStack.hasItemMeta() && itemStack.getItemMeta().hasEnchant(Enchantment.DAMAGE_ALL)
+//				&& itemStack.getItemMeta().getEnchantLevel(Enchantment.DAMAGE_ALL) == 1) {
+//			itemStack.addUnsafeEnchantment(Enchantment.DAMAGE_ALL, 2);
+//			attackEvent.attacker.setItemInHand(itemStack);
+//		}
+	}
+
+	@EventHandler
 	public void onPlayerJoin(PlayerJoinEvent event) {
-		if(isNew(event.getPlayer())) TokenOfAppreciation.giveToken(event.getPlayer(), 1);
+//		if(isNew(event.getPlayer())) TokenOfAppreciation.giveToken(event.getPlayer(), 1);
 
 		Player player = event.getPlayer();
 		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
@@ -211,11 +230,18 @@ public class PlayerManager implements Listener {
 							player.getInventory().setItem(i, new ItemStack(Material.AIR));
 							itemsRemoved++;
 						}
+//						if(itemStack != null && itemStack.hasItemMeta() && itemStack.getItemMeta().hasEnchant(Enchantment.DAMAGE_ALL)
+//								&& itemStack.getItemMeta().getEnchantLevel(Enchantment.DAMAGE_ALL) == 1) {
+//							itemStack.addUnsafeEnchantment(Enchantment.DAMAGE_ALL, 2);
+//							player.getInventory().setItem(i, itemStack);
+//						}
 					}
+
 					if(EnchantManager.isIllegalItem(player.getEquipment().getLeggings())) {
 						player.getEquipment().setLeggings(new ItemStack(Material.AIR));
 						itemsRemoved++;
 					}
+
 					if(itemsRemoved != 0) AOutput.error(player, "&c" + itemsRemoved + " &7illegal item" +
 							(itemsRemoved == 1 ? " was" : "s were") + " removed from your inventory");
 				}

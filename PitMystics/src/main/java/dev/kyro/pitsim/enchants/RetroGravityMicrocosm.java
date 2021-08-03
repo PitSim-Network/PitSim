@@ -101,6 +101,6 @@ public class RetroGravityMicrocosm extends PitEnchant {
 
 	public double getHealing(int enchantLvl) {
 
-		return 1.5;
+		return 1;
 	}
 }

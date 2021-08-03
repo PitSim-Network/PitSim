@@ -35,21 +35,21 @@ public class ComboPerun extends PitEnchant {
 		if(!HitCounter.hasReachedThreshold(pitPlayer.player, this, enchantLvl == 3 ? 4 : getStrikes(enchantLvl))) return;
 
 		if(enchantLvl == 3) {
-			int diamondPieces = 0;
+			int damage = 2;
 			if(!(attackEvent.defender.getInventory().getHelmet() == null) && attackEvent.defender.getInventory().getHelmet().getType() == Material.DIAMOND_HELMET) {
-				diamondPieces = diamondPieces + 2;
+				damage += 2;
 			}
 			if(!(attackEvent.defender.getInventory().getChestplate() == null) && attackEvent.defender.getInventory().getChestplate().getType() == Material.DIAMOND_CHESTPLATE) {
-				diamondPieces = diamondPieces + 2;
+				damage += 2;
 			}
 			if(!(attackEvent.defender.getInventory().getLeggings() == null) && attackEvent.defender.getInventory().getLeggings().getType() == Material.DIAMOND_LEGGINGS) {
-				diamondPieces = diamondPieces + 2;
+				damage += 2;
 			}
 			if(!(attackEvent.defender.getInventory().getBoots() == null) && attackEvent.defender.getInventory().getBoots().getType() == Material.DIAMOND_BOOTS) {
-				diamondPieces = diamondPieces + 2;
+				damage += 2;
 			}
 
-			attackEvent.trueDamage += diamondPieces;
+			attackEvent.trueDamage += damage;
 		} else {
 			attackEvent.trueDamage += getTrueDamage(enchantLvl);
 		}
@@ -68,7 +68,7 @@ public class ComboPerun extends PitEnchant {
 
 		if(enchantLvl == 3) {
 
-			return new ALoreBuilder("&7Every &efourth &7hit strikes", "&elightning &7for &7+ &c1\u2764",
+			return new ALoreBuilder("&7Every &efourth &7hit strikes", "&elightning &7for &c1\u2764 &7+ &c1\u2764",
 					"&7per &bdiamond piece &7on your", "&7victim.", "&7&oLightning deals true damage").getLore();
 		}
 
