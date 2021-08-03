@@ -173,7 +173,6 @@ public class PlayerManager implements Listener {
 
 		Player player = event.getPlayer();
 		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
-
 		Location spawnLoc = MapManager.getPlayerSpawn();
 		player.teleport(spawnLoc);
 

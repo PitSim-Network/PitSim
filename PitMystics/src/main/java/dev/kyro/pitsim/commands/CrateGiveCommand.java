@@ -42,31 +42,34 @@ public class CrateGiveCommand implements CommandExecutor {
             EnchantManager.setItemLore(nbtItem.getItem());
 
             AUtil.giveItemSafely(player, nbtItem.getItem());
-            broadcast("&3Hidden Jewel Pants", player);
+            AUtil.giveItemSafely(player, nbtItem.getItem());
+            broadcast("&32x Hidden Jewel Pants", player);
         }
         if(args[0].equals("HJS")) {
-            ItemStack jewel = FreshCommand.getFreshItem(MysticType.SWORD, PantColor.JEWEL);
-            jewel = ItemManager.enableDropConfirm(jewel);
-            assert jewel != null;
-            NBTItem nbtItem = new NBTItem(jewel);
-            nbtItem.setBoolean(NBTTag.IS_JEWEL.getRef(), true);
+            ItemStack jewelSword = FreshCommand.getFreshItem(MysticType.SWORD, PantColor.JEWEL);
+            jewelSword = ItemManager.enableDropConfirm(jewelSword);
+            assert jewelSword != null;
+            NBTItem nbtItemSword = new NBTItem(jewelSword);
+            nbtItemSword.setBoolean(NBTTag.IS_JEWEL.getRef(), true);
 
-            EnchantManager.setItemLore(nbtItem.getItem());
+            EnchantManager.setItemLore(nbtItemSword.getItem());
 
-            AUtil.giveItemSafely(player, nbtItem.getItem());
-            broadcast("&eHidden Jewel Sword", player);
+            AUtil.giveItemSafely(player, nbtItemSword.getItem());
+            AUtil.giveItemSafely(player, nbtItemSword.getItem());
+            broadcast("&e2x Hidden Jewel Sword", player);
         }
         if(args[0].equals("HJB")) {
-            ItemStack jewel = FreshCommand.getFreshItem(MysticType.BOW, PantColor.JEWEL);
-            jewel = ItemManager.enableDropConfirm(jewel);
-            assert jewel != null;
-            NBTItem nbtItem = new NBTItem(jewel);
-            nbtItem.setBoolean(NBTTag.IS_JEWEL.getRef(), true);
+            ItemStack jewelBow = FreshCommand.getFreshItem(MysticType.BOW, PantColor.JEWEL);
+            jewelBow = ItemManager.enableDropConfirm(jewelBow);
+            assert jewelBow != null;
+            NBTItem nbtItemBow = new NBTItem(jewelBow);
+            nbtItemBow.setBoolean(NBTTag.IS_JEWEL.getRef(), true);
 
-            EnchantManager.setItemLore(nbtItem.getItem());
+            EnchantManager.setItemLore(nbtItemBow.getItem());
 
-            AUtil.giveItemSafely(player, nbtItem.getItem());
-            broadcast("&bHidden Jewel Bow", player);
+            AUtil.giveItemSafely(player, nbtItemBow.getItem());
+            AUtil.giveItemSafely(player, nbtItemBow.getItem());
+            broadcast("&b2x Hidden Jewel Bow", player);
         }
         if(args[0].equals("P1")) {
             ProtArmor.getArmor(player, "helmet");
@@ -91,21 +94,74 @@ public class CrateGiveCommand implements CommandExecutor {
             ChunkOfVile.giveVile(player, 3);
             broadcast("&53x Chunk of Vile", player);
         }
-        if(args[0].equals("10K")) {
-            PitSim.VAULT.depositPlayer(player, 10000);
-            broadcast("&610,000 Gold", player);
+        if(args[0].equals("50K")) {
+            PitSim.VAULT.depositPlayer(player, 50000);
+            broadcast("&650,000 Gold", player);
         }
-        if(args[0].equals("25K")) {
-            PitSim.VAULT.depositPlayer(player, 25000);
-            broadcast("&625,000 Gold", player);
+        if(args[0].equals("150K")) {
+            PitSim.VAULT.depositPlayer(player, 150000);
+            broadcast("&6150,000 Gold", player);
         }
-        if(args[0].equals("100K")) {
-            PitSim.VAULT.depositPlayer(player, 100000);
-            broadcast("&6100,000 Gold", player);
+        if(args[0].equals("300K")) {
+            PitSim.VAULT.depositPlayer(player, 300000);
+            broadcast("&6300,000 Gold", player);
         }
-        if(args[0].equals("500K")) {
-            PitSim.VAULT.depositPlayer(player, 500000);
-            broadcast("&6500,000 Gold", player);
+        if(args[0].equals("DC")) {
+            double gold = PitSim.VAULT.getBalance(player);
+            if(gold * 2 > 1000000) PitSim.VAULT.depositPlayer(player, 1000000);
+            else PitSim.VAULT.depositPlayer(player, gold);
+            broadcast("&6Double Current Gold", player);
+        }
+        if(args[0].equals("JB")) {
+            ItemStack jewel = FreshCommand.getFreshItem(MysticType.PANTS, PantColor.JEWEL);
+            jewel = ItemManager.enableDropConfirm(jewel);
+            assert jewel != null;
+            NBTItem nbtItem = new NBTItem(jewel);
+            nbtItem.setBoolean(NBTTag.IS_JEWEL.getRef(), true);
+
+            EnchantManager.setItemLore(nbtItem.getItem());
+
+            AUtil.giveItemSafely(player, nbtItem.getItem());
+            AUtil.giveItemSafely(player, nbtItem.getItem());
+
+            ItemStack jewelSword = FreshCommand.getFreshItem(MysticType.SWORD, PantColor.JEWEL);
+            jewelSword = ItemManager.enableDropConfirm(jewelSword);
+            assert jewelSword != null;
+            NBTItem nbtItemSword = new NBTItem(jewelSword);
+            nbtItemSword.setBoolean(NBTTag.IS_JEWEL.getRef(), true);
+
+            EnchantManager.setItemLore(nbtItemSword.getItem());
+
+            AUtil.giveItemSafely(player, nbtItemSword.getItem());
+            AUtil.giveItemSafely(player, nbtItemSword.getItem());
+
+            ItemStack jewelBow = FreshCommand.getFreshItem(MysticType.BOW, PantColor.JEWEL);
+            jewelBow = ItemManager.enableDropConfirm(jewelBow);
+            assert jewelBow != null;
+            NBTItem nbtItemBow = new NBTItem(jewelBow);
+            nbtItemBow.setBoolean(NBTTag.IS_JEWEL.getRef(), true);
+
+            EnchantManager.setItemLore(nbtItemBow.getItem());
+
+            AUtil.giveItemSafely(player, nbtItemBow.getItem());
+            AUtil.giveItemSafely(player, nbtItemBow.getItem());
+            broadcast("&bHidden Jewel Bundle", player);
+        }
+        if(args[0].equals("P1H")) {
+            ProtArmor.getArmor(player, "Helmet");
+            broadcast("&bProtection I Diamond Helmet", player);
+        }
+        if(args[0].equals("P1C")) {
+            ProtArmor.getArmor(player, "Chestplate");
+            broadcast("&bProtection I Diamond Chestplate", player);
+        }
+        if(args[0].equals("P1L")) {
+            ProtArmor.getArmor(player, "Leggings");
+            broadcast("&bProtection I Diamond Leggings", player);
+        }
+        if(args[0].equals("P1B")) {
+            ProtArmor.getArmor(player, "Boots");
+            broadcast("&bProtection I Diamond Boots", player);
         }
 
         return false;
