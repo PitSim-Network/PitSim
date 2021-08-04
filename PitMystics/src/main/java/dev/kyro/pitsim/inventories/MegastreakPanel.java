@@ -95,7 +95,7 @@ public class MegastreakPanel extends AGUIPanel {
                     } else if(megastreak.getClass() == Uberstreak.class) {
                         if(pitPlayer.playerLevel < 25) level = true;
                         if(pitPlayer.megastreak.getClass() == Uberstreak.class) has = true;
-                        if(pitPlayer.dailyUbersLeft == 0) uberCd = true;
+                        if(pitPlayer.dailyUbersLeft <= 0) uberCd = true;
                         if(!has && !level && !uberCd) {
                             pitPlayer.megastreak.stop();
                             pitPlayer.megastreak = new Uberstreak(pitPlayer);

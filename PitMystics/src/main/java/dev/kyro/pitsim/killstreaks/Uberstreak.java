@@ -204,9 +204,11 @@ public class Uberstreak extends Megastreak {
 		playerData.set("ubersleft", pitPlayer.dailyUbersLeft);
 		APlayerData.savePlayerData(pitPlayer.player);
 
-		if(pitPlayer.dailyUbersLeft == 0) {
-			stop();
+		if(pitPlayer.dailyUbersLeft <= 0) {
 			pitPlayer.megastreak = new NoMegastreak(pitPlayer);
+			playerData.set("megastreak", pitPlayer.megastreak.getRawName());
+			APlayerData.savePlayerData(pitPlayer.player);
+			stop();
 		}
 
 
