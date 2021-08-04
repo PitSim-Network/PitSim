@@ -44,6 +44,6 @@ public class Gamble extends PitEnchant {
 
 	public int getTrueDamage(int enchantLvl) {
 
-		return enchantLvl * 2;
+		return enchantLvl + 1;
 	}
 }

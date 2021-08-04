@@ -38,8 +38,8 @@ public class Regularity extends PitEnchant {
 		double finalDamage = attackEvent.event.getFinalDamage();
 		if(finalDamage >= maxFinalDamage(enchantLvl)) return;
 
-		HitCounter.incrementCounter(attackEvent.attacker, this);
-		if(!HitCounter.hasReachedThreshold(attackEvent.attacker, this, getStrikes())) return;
+//		HitCounter.incrementCounter(attackEvent.attacker, this);
+//		if(!HitCounter.hasReachedThreshold(attackEvent.attacker, this, getStrikes())) return;
 
 		toReg.add(attackEvent.defender.getUniqueId());
 		new BukkitRunnable() {
@@ -63,12 +63,12 @@ public class Regularity extends PitEnchant {
 
 	public static int secondHitDamage(int enchantLvl) {
 
-		return enchantLvl * 15 + 15;
+		return enchantLvl * 15 + 30;
 	}
 
 	public static double maxFinalDamage(int enchantLvl) {
 
-		return enchantLvl * 0.4 + 2.8;
+		return enchantLvl * 0.4 + 1.8;
 	}
 
 	public static int getStrikes() {
@@ -79,11 +79,11 @@ public class Regularity extends PitEnchant {
 	@Override
 	public List<String> getDescription(int enchantLvl) {
 
-//		return new ALoreBuilder("&7If the final damage of your strike", "&7deals less than &c" +
-//				Misc.getHearts(maxFinalDamage(enchantLvl)) + " &7damage,",
-//				"&7strike again in &a0.1s &7for &c" + secondHitDamage(enchantLvl) + "%", "&7damage").getLore();
+		return new ALoreBuilder("&7If the final damage of your strike", "&7deals less than &c" +
+				Misc.getHearts(maxFinalDamage(enchantLvl)) + " &7damage,",
+				"&7strike again in &a0.1s &7for &c" + secondHitDamage(enchantLvl) + "%", "&7damage").getLore();
 
-		return new ALoreBuilder("&7Every &eSecond &7hit strikes",
-				"&7again in &a0.1s &7for &c" + secondHitDamage(enchantLvl) + "% damage").getLore();
+//		return new ALoreBuilder("&7Every &eSecond &7hit strikes",
+//				"&7again in &a0.1s &7for &c" + secondHitDamage(enchantLvl) + "% damage").getLore();
 	}
 }

@@ -22,7 +22,7 @@ import java.util.Map;
 public class Robinhood extends PitEnchant {
 
 	public Robinhood() {
-		super("Robinhood", true, ApplyType.NONE,
+		super("Robinhood", true, ApplyType.BOWS,
 				"robinhood", "robin");
 	}
 

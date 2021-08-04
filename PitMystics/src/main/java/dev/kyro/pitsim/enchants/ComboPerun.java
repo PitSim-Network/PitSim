@@ -37,16 +37,16 @@ public class ComboPerun extends PitEnchant {
 		if(enchantLvl == 3) {
 			int damage = 2;
 			if(!(attackEvent.defender.getInventory().getHelmet() == null) && attackEvent.defender.getInventory().getHelmet().getType() == Material.DIAMOND_HELMET) {
-				damage += 2;
+				damage += 1;
 			}
 			if(!(attackEvent.defender.getInventory().getChestplate() == null) && attackEvent.defender.getInventory().getChestplate().getType() == Material.DIAMOND_CHESTPLATE) {
-				damage += 2;
+				damage += 1;
 			}
 			if(!(attackEvent.defender.getInventory().getLeggings() == null) && attackEvent.defender.getInventory().getLeggings().getType() == Material.DIAMOND_LEGGINGS) {
-				damage += 2;
+				damage += 1;
 			}
 			if(!(attackEvent.defender.getInventory().getBoots() == null) && attackEvent.defender.getInventory().getBoots().getType() == Material.DIAMOND_BOOTS) {
-				damage += 2;
+				damage += 1;
 			}
 
 			attackEvent.trueDamage += damage;
@@ -68,8 +68,10 @@ public class ComboPerun extends PitEnchant {
 
 		if(enchantLvl == 3) {
 
-			return new ALoreBuilder("&7Every &efourth &7hit strikes", "&elightning &7for &c1\u2764 &7+ &c1\u2764",
+			return new ALoreBuilder("&7Every &efourth &7hit strikes", "&elightning &7for &c1\u2764 &7+ &c0.5\u2764",
 					"&7per &bdiamond piece &7on your", "&7victim.", "&7&oLightning deals true damage").getLore();
+//			return new ALoreBuilder("&7Every &efourth &7hit strikes", "&elightning &7for &c1\u2764",
+//					"&7per &bdiamond piece &7on your", "&7victim.", "&7&oLightning deals true damage").getLore();
 		}
 
 		return new ALoreBuilder("&7Every&e" + Misc.ordinalWords(getStrikes(enchantLvl)) + " &7hit strikes",
