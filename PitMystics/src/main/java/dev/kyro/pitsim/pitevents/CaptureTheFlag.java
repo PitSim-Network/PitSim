@@ -7,11 +7,13 @@ import com.sk89q.worldedit.bukkit.BukkitWorld;
 import com.sk89q.worldedit.bukkit.WorldEditPlugin;
 import com.sk89q.worldedit.schematic.MCEditSchematicFormat;
 import com.sk89q.worldedit.world.DataException;
+import com.xxmicloxx.NoteBlockAPI.songplayer.EntitySongPlayer;
 import dev.kyro.arcticapi.misc.ASound;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.controllers.LeaderboardManager;
 import dev.kyro.pitsim.controllers.MapManager;
 import dev.kyro.pitsim.controllers.PitEventManager;
+import dev.kyro.pitsim.controllers.StereoManager;
 import dev.kyro.pitsim.controllers.objects.PitEvent;
 import dev.kyro.pitsim.enums.GameMap;
 import dev.kyro.pitsim.events.AttackEvent;
@@ -27,13 +29,13 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
-import org.bukkit.event.player.PlayerJoinEvent;
-import org.bukkit.event.player.PlayerMoveEvent;
-import org.bukkit.event.player.PlayerQuitEvent;
+import org.bukkit.event.player.*;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
 
@@ -41,9 +43,10 @@ import java.io.File;
 import java.io.IOException;
 import java.util.*;
 
-public class TestEvent extends PitEvent {
+public class CaptureTheFlag extends PitEvent {
     public static List<Player> red = new ArrayList<>();
     public static List<Player> blue = new ArrayList<>();
+    public static List<Player> respawningPlayers = new ArrayList<>();
     public static Map<Player, ItemStack> helmets = new HashMap<>();
     public static Map<Player, Integer> captures = new HashMap<>();
     public static ArmorStand blueArmor;
@@ -52,10 +55,10 @@ public class TestEvent extends PitEvent {
     public static Player redBannerHolder;
     public static ItemStack blueHat;
     public static ItemStack redHat;
-    public static TestEvent INSTANCE;
+    public static CaptureTheFlag INSTANCE;
 
-    public TestEvent() {
-        super("Capture The Flag", 5, true, ChatColor.GREEN);
+    public CaptureTheFlag() {
+        super("Capture The Flag", 5, true,"CTF", ChatColor.GREEN);
         INSTANCE = this;
     }
 
@@ -68,8 +71,8 @@ public class TestEvent extends PitEvent {
 
     @Override
     public void start() {
-        teamSetup();
         PitEventManager.activeEvent = this;
+        teamSetup();
 
     }
 
@@ -81,6 +84,12 @@ public class TestEvent extends PitEvent {
             helmets.remove(onlinePlayer);
             onlinePlayer.playEffect(getLocation("BlueBanner"), Effect.RECORD_PLAY,0);
         }
+        for(Player respawningPlayer : respawningPlayers) {
+            respawningPlayer.setGameMode(GameMode.SURVIVAL);
+        }
+        getTopThree();
+        PitEventManager.activeEvent = null;
+        respawningPlayers.clear();
         redArmor.remove();
         blueArmor.remove();
         redBannerHolder = null;
@@ -88,8 +97,9 @@ public class TestEvent extends PitEvent {
         getLocation("BlueBanner").getBlock().setType(Material.AIR, true);
         getLocation("RedBanner").getBlock().setType(Material.AIR, true);
         if(MapManager.map == GameMap.DESERT) loadSchematic(new File("plugins/WorldEdit/schematics/CTFResetDesert.schematic"), getLocation("BlueSchematic"));
+        if(MapManager.map == GameMap.STARWARS) loadSchematic(new File("plugins/WorldEdit/schematics/CTFResetStarwars.schematic"), getLocation("BlueSchematic"));
         if(MapManager.map == GameMap.DESERT) loadSchematic(new File("plugins/WorldEdit/schematics/CTFResetDesert.schematic"), getLocation("RedSchematic"));
-        getTopThree();
+        if(MapManager.map == GameMap.STARWARS) loadSchematic(new File("plugins/WorldEdit/schematics/CTFResetStarwars.schematic"), getLocation("RedSchematic"));
         red.clear();
         blue.clear();
         captures.clear();
@@ -123,6 +133,7 @@ public class TestEvent extends PitEvent {
                  playerThree = (String) sortedMap.keySet().toArray()[2];
             }
 
+
         for(Player player : Bukkit.getOnlinePlayers()) {
             if(player.getDisplayName().equalsIgnoreCase(playerOne)) {
                 if(red.contains(player)) messageOne = ChatColor.translateAlternateColorCodes('&',
@@ -150,10 +161,23 @@ public class TestEvent extends PitEvent {
         Bukkit.broadcastMessage(ChatColor.translateAlternateColorCodes('&', "&6&m------------------------"));
         Bukkit.broadcastMessage(ChatColor.translateAlternateColorCodes('&', "&6&lPIT EVENT ENDED: " +
                 this.color + "" + ChatColor.BOLD + this.getName().toUpperCase(Locale.ROOT) + "&6&l!"));
+        if(getBlueScore() > getRedScore()) Bukkit.broadcastMessage(ChatColor.translateAlternateColorCodes('&', "&6&lWinning team: &9BLUE TEAM &ewith " + getBlueScore() + " &eCaptures!"));
+        else Bukkit.broadcastMessage(ChatColor.translateAlternateColorCodes('&', "&6&lWinning team: &cRED TEAM &ewith " + getRedScore() + " &eCaptures!"));
         for(Player onlinePlayer : Bukkit.getOnlinePlayers()) {
-            if(red.contains(onlinePlayer)) onlinePlayer.sendMessage(ChatColor.translateAlternateColorCodes('&', "&6&lYou: &a" + captures.get(onlinePlayer) + " &cCaptures"));
+            if(getBlueScore() > getRedScore()) {
+                if(blue.contains(onlinePlayer)) onlinePlayer.sendMessage(ChatColor.translateAlternateColorCodes('&', "&6&lTeam bonus: &a&lSUCCESS! &7You were on the winning team!"));
+                else onlinePlayer.sendMessage(ChatColor.translateAlternateColorCodes('&', "&6&lTeam bonus: &c&lFAILED! &7You were not on the winning team."));
+            }
+            if(getBlueScore() < getRedScore()) {
+                if(red.contains(onlinePlayer)) onlinePlayer.sendMessage(ChatColor.translateAlternateColorCodes('&', "&6&lTeam bonus: &a&lSUCCESS! &7You were on the winning team!"));
+                else onlinePlayer.sendMessage(ChatColor.translateAlternateColorCodes('&', "&6&lTeam bonus: &c&lFAILED! &7You were not on the winning team."));
+            }
+
+
+            if(red.contains(onlinePlayer)) onlinePlayer.sendMessage(ChatColor.translateAlternateColorCodes('&', "&6&lYou: &c" + captures.get(onlinePlayer) + " &cCaptures"));
             else onlinePlayer.sendMessage(ChatColor.translateAlternateColorCodes('&', "&6&lYou: &9" + captures.get(onlinePlayer) + " &9Captures"));
         }
+        Bukkit.broadcastMessage(ChatColor.translateAlternateColorCodes('&', "&6&lTop players:"));
         if(messageOne != null) Bukkit.broadcastMessage(PlaceholderAPI.setPlaceholders(player1, messageOne));
         if(messageTwo != null) Bukkit.broadcastMessage(PlaceholderAPI.setPlaceholders(player2, messageTwo));
         if(messageThree != null) Bukkit.broadcastMessage(PlaceholderAPI.setPlaceholders(player3, messageThree));
@@ -163,23 +187,40 @@ public class TestEvent extends PitEvent {
     public Location getLocation(String location) {
         if(location == "BlueSpawn") {
             if(MapManager.map == GameMap.DESERT) return new Location(Bukkit.getWorld("pit"), -177, 46, 148);
+            if(MapManager.map == GameMap.STARWARS) return new Location(Bukkit.getWorld("pit"), -175, 16, 771);
         }
         if(location == "BlueBanner") {
             if(MapManager.map == GameMap.DESERT) return new Location(Bukkit.getWorld("pit"), -168, 48, 158);
+            if(MapManager.map == GameMap.STARWARS) return new Location(Bukkit.getWorld("pit"), -173, 18, 762);
         }
         if(location == "BlueSchematic") {
             if(MapManager.map == GameMap.DESERT) return new Location(Bukkit.getWorld("pit"), -168, 46, 158);
+            if(MapManager.map == GameMap.STARWARS) return new Location(Bukkit.getWorld("pit"), -173, 16, 762);
         }
         if(location == "RedSchematic") {
             if(MapManager.map == GameMap.DESERT) return new Location(Bukkit.getWorld("pit"), -84, 45, 264);
+            if(MapManager.map == GameMap.STARWARS) return new Location(Bukkit.getWorld("pit"), -167, 15, 666);
         }
         if(location == "RedSpawn") {
             if(MapManager.map == GameMap.DESERT) return new Location(Bukkit.getWorld("pit"), -75, 45, 269);
+            if(MapManager.map == GameMap.STARWARS) return new Location(Bukkit.getWorld("pit"), -172, 16, 658);
         }
         if(location == "RedBanner") {
             if(MapManager.map == GameMap.DESERT) return new Location(Bukkit.getWorld("pit"), -84, 47, 264);
+            if(MapManager.map == GameMap.STARWARS) return new Location(Bukkit.getWorld("pit"), -167, 17, 666);
         }
         return null;
+    }
+
+    @EventHandler (priority = EventPriority.HIGHEST)
+    public void onCommandSend(PlayerCommandPreprocessEvent event) {
+
+        if(event.getMessage().equalsIgnoreCase("/oof") && respawningPlayers.contains(event.getPlayer())) event.setCancelled(true);
+    }
+
+    @EventHandler
+    public void onInteract(PlayerArmorStandManipulateEvent event) {
+        event.setCancelled(true);
     }
 
     @EventHandler
@@ -189,7 +230,7 @@ public class TestEvent extends PitEvent {
 
     @EventHandler
     public void onMove(PlayerMoveEvent event) {
-        if(!PitEventManager.majorEvent || PitEventManager.activeEvent != this) return;
+        if(!PitEventManager.majorEvent || PitEventManager.activeEvent != this || respawningPlayers.contains(event.getPlayer())) return;
         if(blueArmor !=  null) {
             List<Entity> blueBannerPlayers = blueArmor.getNearbyEntities(2, 2, 2);
             for(Entity blueBannerPlayer : blueBannerPlayers) {
@@ -212,7 +253,8 @@ public class TestEvent extends PitEvent {
                 }
                 if(blueBannerPlayer instanceof Player && blue.contains(blueBannerPlayer) && redBannerHolder == blueBannerPlayer) {
                     ((Player) blueBannerPlayer).getInventory().setHelmet(blueHat);
-                    captures.put((Player) blueBannerPlayer, captures.get(blueBannerPlayer) + 1);
+                    if(!captures.containsKey(blueBannerPlayer)) captures.put((Player) blueBannerPlayer, 1);
+                    else captures.put((Player) blueBannerPlayer, captures.get(blueBannerPlayer) + 1);
                     redBannerHolder  = null;
                     setupRedBanner();
                     explosion(blueArmor, (Player) blueBannerPlayer);
@@ -252,7 +294,8 @@ public class TestEvent extends PitEvent {
                 }
                 if(redBannerPlayer instanceof Player && red.contains(redBannerPlayer) && blueBannerHolder == redBannerPlayer) {
                     ((Player) redBannerPlayer).getInventory().setHelmet(redHat);
-                    captures.put((Player) redBannerPlayer, captures.get(redBannerPlayer) + 1);
+                    if(!captures.containsKey(redBannerPlayer)) captures.put((Player) redBannerPlayer, 1);
+                    else captures.put((Player) redBannerPlayer, captures.get(redBannerPlayer) + 1);
                     blueBannerHolder = null;
                     explosion(redArmor, (Player) redBannerPlayer);
                     setupBlueBanner();
@@ -287,12 +330,9 @@ public class TestEvent extends PitEvent {
                     ASound.play(player, Sound.NOTE_PLING, 2, 1F);
                 }
             }
-            new BukkitRunnable() {
-                @Override
-                public void run() {
-                    killEvent.dead.teleport(getLocation("RedSpawn"));
-                }
-            }.runTaskLater(PitSim.INSTANCE, 1L);
+                    killEvent.dead.teleport(killEvent.dead.getLocation());
+                    respawn(killEvent.dead);
+
         }
         if(blue.contains(killEvent.dead)) {
             if(redBannerHolder == killEvent.dead) {
@@ -307,12 +347,8 @@ public class TestEvent extends PitEvent {
                     ASound.play(player, Sound.NOTE_PLING, 2, 1F);
                 }
             }
-            new BukkitRunnable() {
-                @Override
-                public void run() {
-                    killEvent.dead.teleport(getLocation("BlueSpawn"));
-                }
-            }.runTaskLater(PitSim.INSTANCE, 1L);
+                    killEvent.dead.teleport(killEvent.dead.getLocation());
+                    respawn(killEvent.dead);
         }
     }
 
@@ -331,12 +367,8 @@ public class TestEvent extends PitEvent {
                     ASound.play(player, Sound.NOTE_PLING, 2, 1F);
                 }
             }
-            new BukkitRunnable() {
-                @Override
-                public void run() {
-                   oofEvent.getPlayer().teleport(getLocation("RedSpawn"));
-                }
-            }.runTaskLater(PitSim.INSTANCE, 1L);
+                   oofEvent.getPlayer().teleport(oofEvent.getPlayer().getLocation());
+                   respawn(oofEvent.getPlayer());
         }
         if(blue.contains(oofEvent.getPlayer())) {
             if(redBannerHolder == oofEvent.getPlayer()) {
@@ -351,12 +383,8 @@ public class TestEvent extends PitEvent {
                     ASound.play(player, Sound.NOTE_PLING, 2, 1F);
                 }
             }
-            new BukkitRunnable() {
-                @Override
-                public void run() {
-                    oofEvent.getPlayer().teleport(getLocation("BlueSpawn"));
-                }
-            }.runTaskLater(PitSim.INSTANCE, 1L);
+                    oofEvent.getPlayer().teleport(oofEvent.getPlayer().getLocation());
+                    respawn(oofEvent.getPlayer());
         }
     }
 
@@ -372,31 +400,31 @@ public class TestEvent extends PitEvent {
                 @Override
                 public void run() {
                     event.getPlayer().teleport(getLocation("BlueSpawn"));
+                    respawn(event.getPlayer());
                 }
             }.runTaskLater(PitSim.INSTANCE, 1L);
-            event.getPlayer().teleport(getLocation("BlueSpawn"));
-        }
-        if(red.size() < blue.size()) {
+        } else if(red.size() < blue.size()) {
             red.add(event.getPlayer());
             event.getPlayer().getInventory().setHelmet(redHat);
             new BukkitRunnable() {
                 @Override
                 public void run() {
                     event.getPlayer().teleport(getLocation("RedSpawn"));
+                    respawn(event.getPlayer());
                 }
             }.runTaskLater(PitSim.INSTANCE, 1L);
-        }
-        if(red.size() == blue.size()) {
+        } else {
             blue.add(event.getPlayer());
             event.getPlayer().getInventory().setHelmet(blueHat);
             new BukkitRunnable() {
                 @Override
                 public void run() {
                     event.getPlayer().teleport(getLocation("BlueSpawn"));
+                    respawn(event.getPlayer());
                 }
             }.runTaskLater(PitSim.INSTANCE, 1L);
         }
-        captures.put(event.getPlayer(), 0);
+        if(!captures.containsKey(event.getPlayer())) captures.put(event.getPlayer(), 0);
 
     }
 
@@ -433,8 +461,9 @@ public class TestEvent extends PitEvent {
         if(helmets.containsKey(event.getPlayer())) {
             event.getPlayer().getInventory().setHelmet(helmets.get(event.getPlayer()));
         } else event.getPlayer().getInventory().setHelmet(new ItemStack(Material.AIR));
+        if(respawningPlayers.contains(event.getPlayer())) event.getPlayer().setGameMode(GameMode.SURVIVAL);
         helmets.remove(event.getPlayer());
-        captures.remove(event.getPlayer());
+        respawningPlayers.remove(event.getPlayer());
     }
 
     @EventHandler
@@ -569,5 +598,86 @@ public class TestEvent extends PitEvent {
         }
         armorStand.getLocation().getWorld().playSound(armorStand.getLocation(), Sound.EXPLODE, 1, 2);
         armorStand.getLocation().getWorld().playEffect(armorStand.getLocation(), Effect.EXPLOSION_HUGE,  200, 200);
+    }
+
+    public void respawn(Player player) {
+        respawningPlayers.add(player);
+        player.setGameMode(GameMode.SPECTATOR);
+        Misc.sendTitle(player, "&cYOU DIED!", 40);
+        Misc.sendSubTitle(player, "&eYou will respawn in &c5 &eseconds!", 20);
+        new BukkitRunnable() {
+            @Override
+            public void run() {
+                Misc.sendTitle(player, "&cYOU DIED!", 40);
+                Misc.sendSubTitle(player, "&eYou will respawn in &c4 &eseconds!", 20);
+
+                new BukkitRunnable() {
+                    @Override
+                    public void run() {
+                        Misc.sendTitle(player, "&cYOU DIED!", 40);
+                        Misc.sendSubTitle(player, "&eYou will respawn in &c3 &eseconds!", 20);
+
+                        new BukkitRunnable() {
+                            @Override
+                            public void run() {
+                                Misc.sendTitle(player, "&cYOU DIED!", 40);
+                                Misc.sendSubTitle(player, "&eYou will respawn in &c2 &eseconds!", 20);
+
+                                new BukkitRunnable() {
+                                    @Override
+                                    public void run() {
+                                        Misc.sendTitle(player, "&cYOU DIED!", 40);
+                                        Misc.sendSubTitle(player, "&eYou will respawn in &c1 &esecond!", 20);
+
+                                        new BukkitRunnable() {
+                                            @Override
+                                            public void run() {
+                                                player.setGameMode(GameMode.SURVIVAL);
+                                                if(red.contains(player)) player.teleport(getLocation("RedSpawn"));
+                                                if(blue.contains(player)) player.teleport(getLocation("BlueSpawn"));
+                                                respawningPlayers.remove(player);
+                                            }
+                                        }.runTaskLater(PitSim.INSTANCE, 20L);
+                                    }
+                                }.runTaskLater(PitSim.INSTANCE, 20L);
+                            }
+                        }.runTaskLater(PitSim.INSTANCE, 20L);
+                    }
+                }.runTaskLater(PitSim.INSTANCE, 20L);
+            }
+        }.runTaskLater(PitSim.INSTANCE, 20L);
+
+
+    }
+
+    public static int getRedScore() {
+        int redScore = 0;
+        for(Map.Entry<Player, Integer> pair : captures.entrySet()) {
+            int value = pair.getValue();
+            Player key = pair.getKey();
+            if(red.contains(key)) redScore = redScore + value;
+        }
+        return redScore;
+    }
+
+    public static int getBlueScore() {
+        int blueScore = 0;
+        for(Map.Entry<Player, Integer> pair : captures.entrySet()) {
+            int value = pair.getValue();
+            Player key = pair.getKey();
+            if(blue.contains(key)) blueScore = blueScore + value;
+
+        }
+        return blueScore;
+    }
+
+    static {
+        new BukkitRunnable() {
+            @Override
+            public void run() {
+                if(redBannerHolder != null) Misc.applyPotionEffect(redBannerHolder, PotionEffectType.SLOW, 100, 1, true, false);
+                if(blueBannerHolder != null) Misc.applyPotionEffect(blueBannerHolder, PotionEffectType.SLOW, 100, 1, true, false);
+            }
+        }.runTaskTimer(PitSim.INSTANCE,0, 20L);
     }
 }

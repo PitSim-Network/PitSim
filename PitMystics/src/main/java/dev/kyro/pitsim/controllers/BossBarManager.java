@@ -32,7 +32,7 @@ public class BossBarManager {
         target.showBossBar(defaultBar);
 
         // Store it locally to be able to hide it manually later
-        this.activeBar = fullBar;
+        this.activeBar = defaultBar;
     }
 
     public void hideActiveBossBar(final @NonNull Audience target) {
@@ -40,43 +40,7 @@ public class BossBarManager {
         this.activeBar = null;
 
     }
-        public void timerBar(Audience targetPlayer, String message, int startminutes, int startseconds, ChatColor numcolor) {
-        for(Player player : Bukkit.getOnlinePlayers()) {
-            BossBar bossBar = defaultBar;
 
-            new BukkitRunnable() {
-                int minutes = startminutes;
-                int seconds = startseconds;
-                @Override
-                public void run() {
-                    if(seconds > 0) {
-                        seconds = seconds - 1;
-                    } else {
-                        if(minutes > 0) {
-                            minutes = minutes - 1;
-                            seconds = 59;
-                        } else {
-                            hideActiveBossBar(targetPlayer);
-                            this.cancel();
-                        }
-
-                    }
-
-                    float first = (float) (minutes * 60) + (float) seconds;
-                    float second = (float) (startminutes * 60) + (float) startseconds;
-                    float decimal = first / second;
-                    String finalseconds = (seconds < 10 ? "0" : "") + seconds;
-                    String finalminutes = (minutes < 10 ? "0" : "") + minutes;
-                    Component newComponent = Component.text(message + " " + numcolor + finalminutes + ":" + finalseconds);
-                    bossBar.name(newComponent);
-                    bossBar.progress(decimal);
-//
-//                    Bukkit.broadcastMessage(String.valueOf((minutes * 60) + seconds));
-                }
-            }.runTaskTimer(PitSim.INSTANCE, 0L, 20L);
-
-        }
-    }
 
 
 

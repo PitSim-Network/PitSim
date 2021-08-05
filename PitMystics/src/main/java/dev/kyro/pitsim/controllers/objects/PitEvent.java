@@ -9,12 +9,14 @@ public abstract class PitEvent implements Listener {
     public Boolean isMajor;
     public int minutes;
     public ChatColor color;
+    public String abreviatedName;
 
-    public PitEvent(String name, int minutes, Boolean isMajor, ChatColor color) {
+    public PitEvent(String name, int minutes, Boolean isMajor, String abreviatedName, ChatColor color) {
         this.name = name;
         this.minutes = minutes;
         this.isMajor = isMajor;
         this.color = color;
+        this.abreviatedName = abreviatedName;
     }
 
     public abstract String getName();

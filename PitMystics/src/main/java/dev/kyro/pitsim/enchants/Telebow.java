@@ -1,6 +1,7 @@
 package dev.kyro.pitsim.enchants;
 
 import dev.kyro.arcticapi.builders.ALoreBuilder;
+import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.controllers.Cooldown;
 import dev.kyro.pitsim.controllers.EnchantManager;
@@ -10,7 +11,7 @@ import dev.kyro.pitsim.controllers.objects.PitEnchant;
 import dev.kyro.pitsim.enums.ApplyType;
 import dev.kyro.pitsim.events.AttackEvent;
 import dev.kyro.pitsim.misc.Misc;
-import dev.kyro.pitsim.pitevents.TestEvent;
+import dev.kyro.pitsim.pitevents.CaptureTheFlag;
 import org.bukkit.Effect;
 import org.bukkit.Location;
 import org.bukkit.Sound;
@@ -70,7 +71,7 @@ public class Telebow extends PitEnchant {
 
 		int enchantLvl = EnchantManager.getEnchantLevel(player, this);
 		if(enchantLvl == 0 || !player.isSneaking()) return;
-		if(PitEventManager.activeEvent.getClass() == TestEvent.class) return;
+		if(PitEventManager.activeEvent.getClass() == CaptureTheFlag.class) return;
 
 		new BukkitRunnable() {
 			@Override
@@ -114,6 +115,12 @@ public class Telebow extends PitEnchant {
 						Location teleportLoc = teleArrow.getLocation().clone();
 						teleportLoc.setYaw(-teleArrow.getLocation().getYaw());
 						teleportLoc.setPitch(-teleArrow.getLocation().getPitch());
+
+						if(SpawnManager.isInSpawn(teleportLoc)) {
+								AOutput.error(player, "You are not allowed to telebow into spawn");
+							teleShots.remove(teleShot);
+							return;
+						}
 
 						player.teleport(teleportLoc);
 						player.getWorld().playSound(teleArrow.getLocation(), Sound.ENDERMAN_TELEPORT, 1f, 2f);

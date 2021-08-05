@@ -1,5 +1,6 @@
 package dev.kyro.pitsim.controllers;
 
+import be.maximvdw.featherboard.api.FeatherBoardAPI;
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.arcticapi.misc.ASound;
 import dev.kyro.pitsim.PitSim;
@@ -146,7 +147,14 @@ public class PlayerManager implements Listener {
 
 	@EventHandler
 	public void onPlayerJoin(PlayerJoinEvent event) {
-		if(isNew(event.getPlayer())) TokenOfAppreciation.giveToken(event.getPlayer(), 1);
+//		if(isNew(event.getPlayer())) TokenOfAppreciation.giveToken(event.getPlayer(), 1);
+
+		if(PitEventManager.majorEvent) FeatherBoardAPI.showScoreboard(event.getPlayer(), "event");
+		else {
+			FeatherBoardAPI.resetDefaultScoreboard(event.getPlayer());
+			FeatherBoardAPI.showScoreboard(event.getPlayer(), "default");
+		}
+
 
 		Player player = event.getPlayer();
 		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);

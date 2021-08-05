@@ -119,7 +119,7 @@ public class CombatManager implements Listener {
 
         if(taggedPlayers.containsKey(event.getPlayer().getUniqueId())) {
             for(String cmd : BlockedCommands) {
-                if(cmd.equals(event.getMessage())) {
+                if(cmd.equalsIgnoreCase(event.getMessage())) {
                     event.setCancelled(true);
                     AOutput.error(event.getPlayer(), "&c&c&lNOPE! &7You cannot use that while in combat!");
                 }

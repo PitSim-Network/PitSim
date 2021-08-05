@@ -9,7 +9,7 @@ public class TestEvent2 extends PitEvent {
     public static TestEvent2 INSTANCE;
 
     public TestEvent2() {
-        super("Test Event2", 5, true, ChatColor.GOLD);
+        super("Test Event2", 5, true, "TE2", ChatColor.GOLD);
         INSTANCE = this;
     }
 
