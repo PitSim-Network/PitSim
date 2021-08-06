@@ -42,6 +42,7 @@ public class PitEventManager {
         new BukkitRunnable() {
             @Override
             public void run() {
+                if(Bukkit.getOnlinePlayers().size() < 2) return;
 
                 PitEvent randomEvent = getRandomEvent(events);
                 startTimer(randomEvent);
@@ -51,7 +52,7 @@ public class PitEventManager {
                 RadioSongPlayer rsp = new RadioSongPlayer(song);
                 rsp.setRepeatMode(RepeatMode.NO);
                 Bukkit.broadcastMessage(ChatColor.translateAlternateColorCodes('&', "&5&lMAJOR EVENT! " +
-                        " " + randomEvent.color + ""  + ChatColor.BOLD + randomEvent.name.toUpperCase(Locale.ROOT) + " &7in 30 seconds [&e&lINFO&7]"));
+                        " " + randomEvent.color + ""  + ChatColor.BOLD + randomEvent.name.toUpperCase(Locale.ROOT) + " &7in 3 minutes [&e&lINFO&7]"));
 
                 for(Player onlinePlayer : Bukkit.getOnlinePlayers()) {
 
@@ -64,7 +65,7 @@ public class PitEventManager {
                     public void run() {
                         timerBar(ChatColor.translateAlternateColorCodes('&',
                                 "&5&lMAJOR EVENT! " + randomEvent.color + "" + ChatColor.BOLD +
-                                        randomEvent.getName().toUpperCase(Locale.ROOT)) + "! &7Starting in", 0, 30, ChatColor.YELLOW);
+                                        randomEvent.getName().toUpperCase(Locale.ROOT)) + "! &7Starting in", 3, 0, ChatColor.YELLOW);
                     }
                 }.runTaskLater(PitSim.INSTANCE, 10L);
 
@@ -73,7 +74,7 @@ public class PitEventManager {
 
 
             }
-        }.runTaskTimer(PitSim.INSTANCE, 0L, 10000);
+        }.runTaskTimer(PitSim.INSTANCE, 600L, 45600);
 
     }
 
@@ -118,7 +119,7 @@ public class PitEventManager {
 
 
             }
-        }.runTaskLater(PitSim.INSTANCE, 600L);
+        }.runTaskLater(PitSim.INSTANCE, 3600L);
     }
 
     public static void endTimer(PitEvent event) {
@@ -136,7 +137,6 @@ public class PitEventManager {
                     kills.remove(onlinePlayer);
                     bounty.remove(onlinePlayer);
                 }
-                Bukkit.broadcastMessage("MAJOR EVENT: " + event.getName() + " ended");
                 event.end();
                 majorEvent = false;
                 for(Non non : NonManager.nons) {
@@ -153,7 +153,8 @@ public class PitEventManager {
 
     public static PitEvent getRandomEvent(List<PitEvent> events) {
         Random rand = new Random();
-        return events.get(rand.nextInt(events.size()));
+//        return events.get(rand.nextInt(events.size()));
+        return events.get(0);
     }
 
     public static void timerBar(String message, int startminutes, int startseconds, ChatColor numcolor) {

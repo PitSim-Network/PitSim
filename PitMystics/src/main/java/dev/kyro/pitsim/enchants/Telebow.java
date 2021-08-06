@@ -129,6 +129,12 @@ public class Telebow extends PitEnchant {
 							return;
 						}
 
+						if(PitEventManager.majorEvent && PitEventManager.activeEvent.getClass() == CaptureTheFlag.class) {
+							AOutput.error(player, "Telebow is disabled during this event");
+							teleShots.remove(teleShot);
+							return;
+						}
+
 						player.teleport(teleportLoc);
 						player.getWorld().playSound(teleArrow.getLocation(), Sound.ENDERMAN_TELEPORT, 1f, 2f);
 

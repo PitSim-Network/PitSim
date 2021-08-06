@@ -10,7 +10,9 @@ import dev.kyro.pitsim.killstreaks.Highlander;
 import dev.kyro.pitsim.killstreaks.Uberstreak;
 import dev.kyro.pitsim.misc.FunkyFeather;
 import dev.kyro.pitsim.misc.ProtArmor;
+import dev.kyro.pitsim.pitevents.CaptureTheFlag;
 import net.kyori.adventure.text.Component;
+import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -47,10 +49,8 @@ public class KsCommand implements CommandExecutor {
 
 //        player.sendMessage(LevelManager.getXP(Integer.parseInt(args[0])) + " " + LevelManager.getPlayerKills(Integer.parseInt(args[0])));
 
-        BossBarManager bossBarManager = PlayerManager.bossBars.get(player);
-        final Component newText = Component.text("Changed!");
-        bossBarManager.defaultBar.name(newText);
-        bossBarManager.defaultBar.progress(0.2F);
+        Bukkit.broadcastMessage(CaptureTheFlag.respawningPlayers.toString());
+
         return false;
     }
 }

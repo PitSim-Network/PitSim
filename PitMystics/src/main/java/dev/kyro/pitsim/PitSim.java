@@ -128,7 +128,7 @@ public class PitSim extends JavaPlugin {
 	@Override
 	public void onDisable() {
 
-		PitEventManager.activeEvent.end();
+		if(PitEventManager.majorEvent) PitEventManager.activeEvent.end();
 
 		for(Player onlinePlayer : Bukkit.getOnlinePlayers()) {
 			PitPlayer pitplayer = PitPlayer.getPitPlayer(onlinePlayer);

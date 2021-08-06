@@ -7,6 +7,7 @@ import dev.kyro.arcticapi.misc.AUtil;
 import dev.kyro.pitsim.commands.FreshCommand;
 import dev.kyro.pitsim.controllers.EnchantManager;
 import dev.kyro.pitsim.controllers.ItemManager;
+import dev.kyro.pitsim.controllers.PitEventManager;
 import dev.kyro.pitsim.controllers.objects.Megastreak;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.enums.MysticType;
@@ -313,6 +314,7 @@ public class Uberstreak extends Megastreak {
 		}
 
 		public static void uberMessage(String message, PitPlayer pitPlayer) {
+		if(PitEventManager.majorEvent) return;
 			for(Player player : Bukkit.getOnlinePlayers()) {
 				PitPlayer pitPlayer2 = PitPlayer.getPitPlayer(player);
 				if(pitPlayer2.disabledStreaks) continue;

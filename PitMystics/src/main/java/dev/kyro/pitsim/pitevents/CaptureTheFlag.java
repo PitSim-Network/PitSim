@@ -83,6 +83,7 @@ public class CaptureTheFlag extends PitEvent {
             else onlinePlayer.getInventory().setHelmet(new ItemStack(Material.AIR));
             helmets.remove(onlinePlayer);
             onlinePlayer.playEffect(getLocation("BlueBanner"), Effect.RECORD_PLAY,0);
+            onlinePlayer.teleport(MapManager.getPlayerSpawn());
         }
         for(Player respawningPlayer : respawningPlayers) {
             respawningPlayer.setGameMode(GameMode.SURVIVAL);
@@ -238,7 +239,7 @@ public class CaptureTheFlag extends PitEvent {
         if(blueArmor !=  null) {
             List<Entity> blueBannerPlayers = blueArmor.getNearbyEntities(2, 2, 2);
             for(Entity blueBannerPlayer : blueBannerPlayers) {
-                if(blueBannerPlayer instanceof Player && !blue.contains(blueBannerPlayer) && blueBannerHolder == null) {
+                if(blueBannerPlayer instanceof Player && !blue.contains(blueBannerPlayer) && blueBannerHolder == null && !respawningPlayers.contains(blueBannerPlayer)) {
                     String message = ChatColor.translateAlternateColorCodes('&', ChatColor.BLUE +
                             "" + ChatColor.BOLD + "BLUE FLAG! &7Stolen by %luckperms_prefix%") + ((Player) blueBannerPlayer).getDisplayName() + "&7!";
                     Bukkit.broadcastMessage(PlaceholderAPI.setPlaceholders((Player) blueBannerPlayer, message));
@@ -255,7 +256,7 @@ public class CaptureTheFlag extends PitEvent {
                         ASound.play(player, Sound.NOTE_PLING, 2, 0.5F);
                     }
                 }
-                if(blueBannerPlayer instanceof Player && blue.contains(blueBannerPlayer) && redBannerHolder == blueBannerPlayer) {
+                if(blueBannerPlayer instanceof Player && blue.contains(blueBannerPlayer) && redBannerHolder == blueBannerPlayer && !respawningPlayers.contains(blueBannerPlayer)) {
                     ((Player) blueBannerPlayer).getInventory().setHelmet(blueHat);
                     if(!captures.containsKey(blueBannerPlayer)) captures.put((Player) blueBannerPlayer, 1);
                     else captures.put((Player) blueBannerPlayer, captures.get(blueBannerPlayer) + 1);
@@ -279,7 +280,7 @@ public class CaptureTheFlag extends PitEvent {
         if(redArmor !=  null) {
             List<Entity> redBannerPlayers = redArmor.getNearbyEntities(2, 2, 2);
             for(Entity redBannerPlayer : redBannerPlayers) {
-                if(redBannerPlayer instanceof Player && !red.contains(redBannerPlayer) && redBannerHolder == null) {
+                if(redBannerPlayer instanceof Player && !red.contains(redBannerPlayer) && redBannerHolder == null && !respawningPlayers.contains(redBannerPlayer)) {
                     String message = ChatColor.translateAlternateColorCodes('&', ChatColor.RED +
                             "" + ChatColor.BOLD + "RED FLAG! &7Stolen by %luckperms_prefix%") + ((Player) redBannerPlayer).getDisplayName() + "&7!";
                     Bukkit.broadcastMessage(PlaceholderAPI.setPlaceholders((Player) redBannerPlayer, message));
@@ -296,7 +297,7 @@ public class CaptureTheFlag extends PitEvent {
                         ASound.play(player, Sound.NOTE_PLING, 2, 0.5F);
                     }
                 }
-                if(redBannerPlayer instanceof Player && red.contains(redBannerPlayer) && blueBannerHolder == redBannerPlayer) {
+                if(redBannerPlayer instanceof Player && red.contains(redBannerPlayer) && blueBannerHolder == redBannerPlayer && !respawningPlayers.contains(redBannerPlayer)) {
                     ((Player) redBannerPlayer).getInventory().setHelmet(redHat);
                     if(!captures.containsKey(redBannerPlayer)) captures.put((Player) redBannerPlayer, 1);
                     else captures.put((Player) redBannerPlayer, captures.get(redBannerPlayer) + 1);
@@ -334,8 +335,9 @@ public class CaptureTheFlag extends PitEvent {
                     ASound.play(player, Sound.NOTE_PLING, 2, 1F);
                 }
             }
-                    killEvent.dead.teleport(killEvent.dead.getLocation());
-                    respawn(killEvent.dead);
+            respawningPlayers.add(killEvent.dead);
+            killEvent.dead.teleport(killEvent.dead.getLocation());
+            respawn(killEvent.dead);
 
         }
         if(blue.contains(killEvent.dead)) {
@@ -351,8 +353,9 @@ public class CaptureTheFlag extends PitEvent {
                     ASound.play(player, Sound.NOTE_PLING, 2, 1F);
                 }
             }
-                    killEvent.dead.teleport(killEvent.dead.getLocation());
-                    respawn(killEvent.dead);
+            respawningPlayers.add(killEvent.dead);
+            killEvent.dead.teleport(killEvent.dead.getLocation());
+            respawn(killEvent.dead);
         }
     }
 
@@ -371,8 +374,9 @@ public class CaptureTheFlag extends PitEvent {
                     ASound.play(player, Sound.NOTE_PLING, 2, 1F);
                 }
             }
-                   oofEvent.getPlayer().teleport(oofEvent.getPlayer().getLocation());
-                   respawn(oofEvent.getPlayer());
+            respawningPlayers.add(oofEvent.getPlayer());
+            oofEvent.getPlayer().teleport(oofEvent.getPlayer().getLocation());
+            respawn(oofEvent.getPlayer());
         }
         if(blue.contains(oofEvent.getPlayer())) {
             if(redBannerHolder == oofEvent.getPlayer()) {
@@ -387,8 +391,9 @@ public class CaptureTheFlag extends PitEvent {
                     ASound.play(player, Sound.NOTE_PLING, 2, 1F);
                 }
             }
-                    oofEvent.getPlayer().teleport(oofEvent.getPlayer().getLocation());
-                    respawn(oofEvent.getPlayer());
+            respawningPlayers.add(oofEvent.getPlayer());
+            oofEvent.getPlayer().teleport(oofEvent.getPlayer().getLocation());
+            respawn(oofEvent.getPlayer());
         }
     }
 
@@ -403,6 +408,7 @@ public class CaptureTheFlag extends PitEvent {
             new BukkitRunnable() {
                 @Override
                 public void run() {
+                    respawningPlayers.add(event.getPlayer());
                     event.getPlayer().teleport(getLocation("BlueSpawn"));
                     respawn(event.getPlayer());
                 }
@@ -413,6 +419,7 @@ public class CaptureTheFlag extends PitEvent {
             new BukkitRunnable() {
                 @Override
                 public void run() {
+                    respawningPlayers.add(event.getPlayer());
                     event.getPlayer().teleport(getLocation("RedSpawn"));
                     respawn(event.getPlayer());
                 }
@@ -423,6 +430,7 @@ public class CaptureTheFlag extends PitEvent {
             new BukkitRunnable() {
                 @Override
                 public void run() {
+                    respawningPlayers.add(event.getPlayer());
                     event.getPlayer().teleport(getLocation("BlueSpawn"));
                     respawn(event.getPlayer());
                 }
@@ -434,6 +442,7 @@ public class CaptureTheFlag extends PitEvent {
 
     @EventHandler
     public void onLeave(PlayerQuitEvent event) {
+        if(PitEventManager.activeEvent != this) return;
         if(red.contains(event.getPlayer())) {
             red.remove(event.getPlayer());
             if(blueBannerHolder == event.getPlayer()) {
@@ -516,8 +525,10 @@ public class CaptureTheFlag extends PitEvent {
                 helmets.put(player, player.getInventory().getHelmet());
             }
             player.getInventory().setHelmet(blueItem);
-            loadSchematic(new File("plugins/WorldEdit/schematics/BluePoint.schematic"), getLocation("BlueSchematic"));
             player.teleport(getLocation("BlueSpawn"));
+            }
+
+            loadSchematic(new File("plugins/WorldEdit/schematics/BluePoint.schematic"), getLocation("BlueSchematic"));
             ArmorStand blueStand = (ArmorStand) Bukkit.getWorld("pit").spawnEntity(getLocation("BlueBanner"), EntityType.ARMOR_STAND);
             blueStand.setVisible(false);
             blueStand.setGravity(false);
@@ -525,7 +536,7 @@ public class CaptureTheFlag extends PitEvent {
             blueStand.setCustomName(ChatColor.BLUE + "" + ChatColor.BOLD + "Blue Flag");
             blueArmor = blueStand;
             setupBlueBanner();
-        }
+
 
         ItemStack redItem = new ItemStack(Material.WOOL, 1, (short) 14);
         ItemMeta redMeta = redItem.getItemMeta();
@@ -539,8 +550,10 @@ public class CaptureTheFlag extends PitEvent {
                 helmets.put(player, player.getInventory().getHelmet());
             }
             player.getInventory().setHelmet(redItem);
-            loadSchematic(new File("plugins/WorldEdit/schematics/RedPoint.schematic"), getLocation("RedSchematic"));
             player.teleport(getLocation("RedSpawn"));
+        }
+
+            loadSchematic(new File("plugins/WorldEdit/schematics/RedPoint.schematic"), getLocation("RedSchematic"));
             ArmorStand redStand = (ArmorStand) Bukkit.getWorld("pit").spawnEntity(getLocation("RedBanner"), EntityType.ARMOR_STAND);
             redStand.setVisible(false);
             redStand.setCustomNameVisible(true);
@@ -548,7 +561,7 @@ public class CaptureTheFlag extends PitEvent {
             redStand.setCustomName(ChatColor.RED + "" + ChatColor.BOLD + "Red Flag");
             redArmor = redStand;
             setupRedBanner();
-        }
+
     }
 
     public void setupBlueBanner() {
@@ -605,7 +618,7 @@ public class CaptureTheFlag extends PitEvent {
     }
 
     public void respawn(Player player) {
-        respawningPlayers.add(player);
+
         player.setGameMode(GameMode.SPECTATOR);
         Misc.sendTitle(player, "&cYOU DIED!", 40);
         Misc.sendSubTitle(player, "&eYou will respawn in &c5 &eseconds!", 20);
