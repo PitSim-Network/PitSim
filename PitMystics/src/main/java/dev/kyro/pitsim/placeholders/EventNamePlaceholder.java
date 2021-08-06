@@ -18,8 +18,12 @@ public class EventNamePlaceholder implements APAPIPlaceholder {
 	@Override
 	public String getValue(Player player) {
 
+
 		if(PitEventManager.majorEvent) {
-			return PitEventManager.activeEvent.color + "" + ChatColor.BOLD + PitEventManager.activeEvent.abreviatedName.toUpperCase(Locale.ROOT);
+			if(PitEventManager.activeEvent.abreviatedName != null) {
+				return PitEventManager.activeEvent.color + "" + ChatColor.BOLD + PitEventManager.activeEvent.abreviatedName.toUpperCase(Locale.ROOT);
+			}
+			else return "None";
 		}
 		else return "None";
 	}

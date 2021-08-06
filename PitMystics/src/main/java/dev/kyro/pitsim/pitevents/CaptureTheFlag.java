@@ -90,8 +90,8 @@ public class CaptureTheFlag extends PitEvent {
         getTopThree();
         PitEventManager.activeEvent = null;
         respawningPlayers.clear();
-        redArmor.remove();
-        blueArmor.remove();
+        if(redArmor != null) redArmor.remove();
+        if(blueArmor != null) blueArmor.remove();
         redBannerHolder = null;
         blueBannerHolder = null;
         getLocation("BlueBanner").getBlock().setType(Material.AIR, true);
@@ -208,6 +208,10 @@ public class CaptureTheFlag extends PitEvent {
         if(location == "RedBanner") {
             if(MapManager.map == GameMap.DESERT) return new Location(Bukkit.getWorld("pit"), -84, 47, 264);
             if(MapManager.map == GameMap.STARWARS) return new Location(Bukkit.getWorld("pit"), -167, 17, 666);
+        }
+        if(location == "MusicSpawn") {
+            if(MapManager.map == GameMap.DESERT) return new Location(Bukkit.getWorld("pit"), -119, 43, 205);
+            if(MapManager.map == GameMap.STARWARS) return new Location(Bukkit.getWorld("pit"), -171, 15, 713);
         }
         return null;
     }
@@ -485,7 +489,7 @@ public class CaptureTheFlag extends PitEvent {
 
         for(Player player : players) {
             captures.put(player, 0);
-            player.playEffect(MapManager.getMid(), Effect.RECORD_PLAY, Material.RECORD_4.getId());
+            player.playEffect(getLocation("MusicSpawn"), Effect.RECORD_PLAY, Material.RECORD_4.getId());
 //            player.playEffect(getLocation("BlueBanner"), Effect.RECORD_PLAY, Material.RECORD_3.getId());
 //            player.playEffect(getLocation("RedBanner"), Effect.RECORD_PLAY, Material.RECORD_3.getId());
         }

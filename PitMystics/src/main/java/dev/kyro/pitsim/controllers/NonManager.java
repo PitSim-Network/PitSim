@@ -35,7 +35,7 @@ public class NonManager implements Listener {
 		new BukkitRunnable() {
 			@Override
 			public void run() {
-				for(Non non : nons) non.tick();
+				if(!PitEventManager.majorEvent) for(Non non : nons) non.tick();
 			}
 		}.runTaskTimer(PitSim.INSTANCE, 0L, 1L);
 	}
