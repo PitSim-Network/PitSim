@@ -6,11 +6,13 @@ import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.controllers.Cooldown;
 import dev.kyro.pitsim.controllers.EnchantManager;
 import dev.kyro.pitsim.controllers.MapManager;
+import dev.kyro.pitsim.controllers.PitEventManager;
 import dev.kyro.pitsim.controllers.SpawnManager;
 import dev.kyro.pitsim.controllers.objects.PitEnchant;
 import dev.kyro.pitsim.enums.ApplyType;
 import dev.kyro.pitsim.events.AttackEvent;
 import dev.kyro.pitsim.misc.Misc;
+import dev.kyro.pitsim.pitevents.CaptureTheFlag;
 import org.bukkit.Effect;
 import org.bukkit.Location;
 import org.bukkit.Sound;
@@ -84,12 +86,15 @@ public class Telebow extends PitEnchant {
 
 		Cooldown cooldown = getCooldown(player, getCooldown(enchantLvl) * 20);
 		if(cooldown.isOnCooldown()) {
+
+
 			if(player.isSneaking()) Misc.sendActionBar(player, "&eTelebow: &c" + cooldown.getTicksLeft() / 20 + "&cs cooldown!");
+
 			return;
 		}
 		if(cooldown.isOnCooldown()) return; else cooldown.reset();
 
-		if(!SpawnManager.isInSpawn(player.getLocation())) {
+		if(player.isSneaking() && !SpawnManager.isInSpawn(player.getLocation())) {
 			teleShots.add(arrow);
 		}
 	}
@@ -114,6 +119,12 @@ public class Telebow extends PitEnchant {
 						double distance = MapManager.getMid().distance(teleportLoc);
 						if(distance < 8) {
 							AOutput.error(player, "You are not allowed to telebow into mid");
+							teleShots.remove(teleShot);
+							return;
+						}
+
+						if(SpawnManager.isInSpawn(teleportLoc)) {
+								AOutput.error(player, "You are not allowed to telebow into spawn");
 							teleShots.remove(teleShot);
 							return;
 						}

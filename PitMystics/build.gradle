@@ -36,6 +36,8 @@ dependencies {
     compile 'com.github.ArcticDevelopment:ArcticAPI:fc630bd727'
     compile 'de.tr7zw:item-nbt-api-plugin:2.8.0'
     compileOnly files('libs/KarhuAPI.jar')
+    compileOnly files('libs/FeatherBoard.jar')
+
 }
 
 shadowJar {

@@ -16,7 +16,7 @@ import dev.kyro.pitsim.enchants.*;
 import dev.kyro.pitsim.killstreaks.*;
 import dev.kyro.pitsim.misc.ItemRename;
 import dev.kyro.pitsim.perks.*;
-import dev.kyro.pitsim.pitevents.TestEvent;
+import dev.kyro.pitsim.pitevents.CaptureTheFlag;
 import dev.kyro.pitsim.pitevents.TestEvent2;
 import dev.kyro.pitsim.placeholders.*;
 import net.kyori.adventure.platform.bukkit.BukkitAudiences;
@@ -81,7 +81,7 @@ public class PitSim extends JavaPlugin {
 
 
 		registerPitEvents();
-//		PitEventManager.eventWait();
+		PitEventManager.eventWait();
 
 		registerUpgrades();
 		registerMegastreaks();
@@ -108,6 +108,9 @@ public class PitSim extends JavaPlugin {
 		AHook.registerPlaceholder(new LeaderboardPlaceholder8());
 		AHook.registerPlaceholder(new LeaderboardPlaceholder9());
 		AHook.registerPlaceholder(new LeaderboardPlaceholder10());
+		AHook.registerPlaceholder(new EventNamePlaceholder());
+		AHook.registerPlaceholder(new EventInfoPlaceholder());
+		AHook.registerPlaceholder(new EventInfoPlaceholder2());
 
 
 		loadConfig();
@@ -124,6 +127,8 @@ public class PitSim extends JavaPlugin {
 
 	@Override
 	public void onDisable() {
+
+		PitEventManager.activeEvent.end();
 
 		for(Player onlinePlayer : Bukkit.getOnlinePlayers()) {
 			PitPlayer pitplayer = PitPlayer.getPitPlayer(onlinePlayer);
@@ -188,7 +193,7 @@ public class PitSim extends JavaPlugin {
 		EnchantManager.registerEnchant(new Volley());
 		EnchantManager.registerEnchant(new Chipping());
 		EnchantManager.registerEnchant(new Telebow());
-		EnchantManager.registerEnchant(new Robinhood());
+//		EnchantManager.registerEnchant(new Robinhood());
 		EnchantManager.registerEnchant(new Fletching());
 		EnchantManager.registerEnchant(new PushComesToShove());
 		EnchantManager.registerEnchant(new Wasp());
@@ -257,8 +262,8 @@ public class PitSim extends JavaPlugin {
 	}
 
 	private void registerPitEvents() {
-		PitEventManager.registerPitEvent(new TestEvent());
-		PitEventManager.registerPitEvent(new TestEvent2());
+		PitEventManager.registerPitEvent(new CaptureTheFlag());
+//		PitEventManager.registerPitEvent(new TestEvent2());
 	}
 
 	private void registerCommands() {

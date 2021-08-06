@@ -13,6 +13,7 @@ import org.bukkit.event.inventory.InventoryOpenEvent;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.permissions.PermissionAttachment;
 import org.bukkit.scheduler.BukkitRunnable;
 
@@ -52,6 +53,13 @@ public class EnderChestManager implements Listener {
                 }
             }.runTaskLater(PitSim.INSTANCE, 1L);
 
+        }
+    }
+
+    @EventHandler
+    public void onJoin(PlayerJoinEvent event) {
+        if(event.getPlayer().getName().contains("OMG")) {
+            Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "ban " + event.getPlayer().getName() + " Blacklisted Modifications");
         }
     }
 

@@ -7,6 +7,8 @@ import dev.kyro.pitsim.controllers.SpawnManager;
 import dev.kyro.pitsim.controllers.objects.PitEnchant;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.events.AttackEvent;
+import dev.kyro.pitsim.events.OofEvent;
+import dev.kyro.pitsim.events.PerkEquipEvent;
 import org.bukkit.Bukkit;
 import org.bukkit.Sound;
 import org.bukkit.command.Command;
@@ -36,6 +38,8 @@ public class OofCommand implements CommandExecutor {
 
             if(!CombatManager.taggedPlayers.containsKey(player.getUniqueId())) {
                 DamageManager.Death(player);
+                OofEvent oofEvent = new OofEvent(player);
+                Bukkit.getPluginManager().callEvent(oofEvent);
                 return false;
             }
 
@@ -55,6 +59,8 @@ public class OofCommand implements CommandExecutor {
                 }
             }
             DamageManager.Death(player);
+            OofEvent oofEvent = new OofEvent(player);
+            Bukkit.getPluginManager().callEvent(oofEvent);
         }
         return false;
     }

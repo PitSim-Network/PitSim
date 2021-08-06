@@ -1,6 +1,5 @@
 package dev.kyro.pitsim.controllers;
 
-import com.google.common.base.Function;
 import de.tr7zw.nbtapi.NBTItem;
 import dev.kyro.arcticapi.data.APlayerData;
 import dev.kyro.arcticapi.misc.AOutput;
@@ -21,6 +20,7 @@ import dev.kyro.pitsim.misc.FunkyFeather;
 import dev.kyro.pitsim.misc.Misc;
 import dev.kyro.pitsim.misc.ProtArmor;
 import dev.kyro.pitsim.perks.AssistantToTheStreaker;
+import dev.kyro.pitsim.pitevents.CaptureTheFlag;
 import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.*;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -29,7 +29,6 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
-import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityShootBowEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
@@ -253,7 +252,9 @@ public class DamageManager implements Listener {
 		Non defendingNon = NonManager.getNon(dead);
 		if(defendingNon == null) {
 			Location spawnLoc = MapManager.getPlayerSpawn();
-			dead.teleport(spawnLoc);
+			if(PitEventManager.activeEvent != null) {
+				if(PitEventManager.activeEvent.getClass() != CaptureTheFlag.class) dead.teleport(spawnLoc);
+			} else dead.teleport(spawnLoc);
 			if(attackingNon == null) {
 				FileConfiguration playerData = APlayerData.getPlayerData(dead);
 				if(killer != dead) pitAttacker.playerKills = pitAttacker.playerKills + 1;
@@ -407,7 +408,9 @@ public class DamageManager implements Listener {
 		APlayerData.savePlayerData(dead);
 
 		Location spawnLoc = MapManager.getPlayerSpawn();
-		dead.teleport(spawnLoc);
+		if(PitEventManager.activeEvent != null) {
+			if(PitEventManager.activeEvent.getClass() != CaptureTheFlag.class) dead.teleport(spawnLoc);
+		} else dead.teleport(spawnLoc);
 
 
 //		for(ItemStack itemStack : dead.getInventory()) {

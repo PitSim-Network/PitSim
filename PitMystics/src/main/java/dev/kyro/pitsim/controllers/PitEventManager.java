@@ -1,5 +1,7 @@
 package dev.kyro.pitsim.controllers;
 
+import be.maximvdw.featherboard.FeatherBoard;
+import be.maximvdw.featherboard.api.FeatherBoardAPI;
 import com.xxmicloxx.NoteBlockAPI.model.RepeatMode;
 import com.xxmicloxx.NoteBlockAPI.model.Song;
 import com.xxmicloxx.NoteBlockAPI.songplayer.RadioSongPlayer;
@@ -11,6 +13,8 @@ import dev.kyro.pitsim.controllers.objects.PitEvent;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.misc.Misc;
 import net.kyori.adventure.audience.Audience;
+import net.kyori.adventure.bossbar.BossBar;
+import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Sound;
@@ -25,6 +29,7 @@ public class PitEventManager {
     public static Map<Player, Double> kills = new HashMap<>();
     public static Map<Player, Integer> bounty = new HashMap<>();
     public static Boolean majorEvent = false;
+    public static PitEvent activeEvent;
 
     public static void registerPitEvent(PitEvent event) {
         events.add(event);
@@ -57,14 +62,9 @@ public class PitEventManager {
                 new BukkitRunnable() {
                     @Override
                     public void run() {
-                        for(Player onlinePlayer : Bukkit.getOnlinePlayers()) {
-                            BossBarManager manager = PlayerManager.bossBars.get(onlinePlayer);
-                            Audience audiences = PitSim.INSTANCE.adventure().player(onlinePlayer);
-                            manager.showMyBossBar(audiences);
-                            manager.timerBar(audiences, ChatColor.translateAlternateColorCodes('&',
-                                    "&5&lMAJOR EVENT! " + randomEvent.color + "" + ChatColor.BOLD +
-                                            randomEvent.getName().toUpperCase(Locale.ROOT)) + "! &7Starting in", 0, 30, ChatColor.YELLOW);
-                        }
+                        timerBar(ChatColor.translateAlternateColorCodes('&',
+                                "&5&lMAJOR EVENT! " + randomEvent.color + "" + ChatColor.BOLD +
+                                        randomEvent.getName().toUpperCase(Locale.ROOT)) + "! &7Starting in", 0, 30, ChatColor.YELLOW);
                     }
                 }.runTaskLater(PitSim.INSTANCE, 10L);
 
@@ -99,6 +99,10 @@ public class PitEventManager {
                     pitPlayer.bounty = 0;
                 }
 
+                for(Player onlinePlayer : Bukkit.getOnlinePlayers()) {
+                    FeatherBoardAPI.showScoreboard(onlinePlayer, "event");
+                }
+
                 for(Non non : NonManager.nons) {
                     non.setDisabled(true);
                 }
@@ -106,17 +110,9 @@ public class PitEventManager {
                 new BukkitRunnable() {
                     @Override
                     public void run() {
-                        for(Player onlinePlayer : Bukkit.getOnlinePlayers()) {
-                            BossBarManager manager = PlayerManager.bossBars.get(onlinePlayer);
-                            Audience audience = PitSim.INSTANCE.adventure().player(onlinePlayer);
-                            manager.hideActiveBossBar(audience);
-                            manager.showMyBossBar(audience);
-                            manager.timerBar(audience, ChatColor.translateAlternateColorCodes('&',
+                        timerBar(ChatColor.translateAlternateColorCodes('&',
                                 "&5&lMAJOR EVENT! " + event.color + "" + ChatColor.BOLD +
-                                        event.getName().toUpperCase(Locale.ROOT)) + "! &7Ending in", 1, 0, ChatColor.GREEN);
-
-                        }
-//
+                                        event.getName().toUpperCase(Locale.ROOT)) + "! &7Ending in", 5, 0, ChatColor.GREEN);
                     }
                 }.runTaskLater(PitSim.INSTANCE, 10L);
 
@@ -135,8 +131,8 @@ public class PitEventManager {
                     Audience audience = PitSim.INSTANCE.adventure().player(onlinePlayer);
                     manager.hideActiveBossBar(audience);
                     PitPlayer pitPlayer = PitPlayer.getPitPlayer(onlinePlayer);
-                    pitPlayer.setKills(kills.get(onlinePlayer));
-                    pitPlayer.bounty = 0;
+                    if(kills.containsKey(onlinePlayer)) pitPlayer.setKills(kills.get(onlinePlayer));
+                    if(bounty.containsKey(onlinePlayer)) pitPlayer.bounty = 0;
                     kills.remove(onlinePlayer);
                     bounty.remove(onlinePlayer);
                 }
@@ -147,14 +143,64 @@ public class PitEventManager {
                     non.setDisabled(false);
                 }
 
-
+                for(Player onlinePlayer : Bukkit.getOnlinePlayers()) {
+                    FeatherBoardAPI.removeScoreboardOverride(onlinePlayer, "event");
+                    FeatherBoardAPI.resetDefaultScoreboard(onlinePlayer);
+                }
             }
-        }.runTaskLater(PitSim.INSTANCE, 1200L);
+        }.runTaskLater(PitSim.INSTANCE, 6000L);
     }
 
     public static PitEvent getRandomEvent(List<PitEvent> events) {
         Random rand = new Random();
         return events.get(rand.nextInt(events.size()));
+    }
+
+    public static void timerBar(String message, int startminutes, int startseconds, ChatColor numcolor) {
+
+            new BukkitRunnable() {
+                int minutes = startminutes;
+                int seconds = startseconds;
+                @Override
+                public void run() {
+                    for(Player onlinePlayer : Bukkit.getOnlinePlayers()) {
+                        BossBarManager manager = PlayerManager.bossBars.get(onlinePlayer);
+                        Audience audiences = PitSim.INSTANCE.adventure().player(onlinePlayer);
+                        manager.showMyBossBar(audiences);
+                    }
+                    if(seconds > 0) {
+                        seconds = seconds - 1;
+                    } else {
+                        if(minutes > 0) {
+                            minutes = minutes - 1;
+                            seconds = 59;
+                        } else {
+                            for(Player onlinePlayer : Bukkit.getOnlinePlayers()) {
+                                BossBarManager manager = PlayerManager.bossBars.get(onlinePlayer);
+                                Audience audiences = PitSim.INSTANCE.adventure().player(onlinePlayer);
+                                manager.hideActiveBossBar(audiences);
+                            }
+                            this.cancel();
+                        }
+
+                    }
+
+                    float first = (float) (minutes * 60) + (float) seconds;
+                    float second = (float) (startminutes * 60) + (float) startseconds;
+                    float decimal = first / second;
+                    String finalseconds = (seconds < 10 ? "0" : "") + seconds;
+                    String finalminutes = (minutes < 10 ? "0" : "") + minutes;
+                    Component newComponent = Component.text(message + " " + numcolor + finalminutes + ":" + finalseconds);
+                    for(Player onlinePlayer : Bukkit.getOnlinePlayers()) {
+                        BossBarManager manager = PlayerManager.bossBars.get(onlinePlayer);
+                        Audience audiences = PitSim.INSTANCE.adventure().player(onlinePlayer);
+                        manager.defaultBar.name(newComponent);
+                        manager.defaultBar.progress(decimal);
+                    }
+//                    Bukkit.broadcastMessage(String.valueOf((minutes * 60) + seconds));
+                }
+            }.runTaskTimer(PitSim.INSTANCE, 0L, 20L);
+
     }
 
 }

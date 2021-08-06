@@ -1,6 +1,7 @@
 package dev.kyro.pitsim.controllers;
 
 import dev.kyro.arcticapi.builders.AItemStackBuilder;
+import be.maximvdw.featherboard.api.FeatherBoardAPI;
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.arcticapi.misc.ASound;
 import dev.kyro.pitsim.PitSim;
@@ -37,7 +38,6 @@ import org.bukkit.event.player.PlayerItemDamageEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.inventivetalent.bossbar.BossBar;
 import org.inventivetalent.bossbar.BossBarAPI;
@@ -171,8 +171,17 @@ public class PlayerManager implements Listener {
 	public void onPlayerJoin(PlayerJoinEvent event) {
 //		if(isNew(event.getPlayer())) TokenOfAppreciation.giveToken(event.getPlayer(), 1);
 
+		if(PitEventManager.majorEvent) FeatherBoardAPI.showScoreboard(event.getPlayer(), "event");
+		else {
+			FeatherBoardAPI.resetDefaultScoreboard(event.getPlayer());
+			FeatherBoardAPI.showScoreboard(event.getPlayer(), "default");
+		}
+
+
 		Player player = event.getPlayer();
 		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
+
+
 		Location spawnLoc = MapManager.getPlayerSpawn();
 		player.teleport(spawnLoc);
 
@@ -229,18 +238,11 @@ public class PlayerManager implements Listener {
 							player.getInventory().setItem(i, new ItemStack(Material.AIR));
 							itemsRemoved++;
 						}
-//						if(itemStack != null && itemStack.hasItemMeta() && itemStack.getItemMeta().hasEnchant(Enchantment.DAMAGE_ALL)
-//								&& itemStack.getItemMeta().getEnchantLevel(Enchantment.DAMAGE_ALL) == 1) {
-//							itemStack.addUnsafeEnchantment(Enchantment.DAMAGE_ALL, 2);
-//							player.getInventory().setItem(i, itemStack);
-//						}
 					}
-
 					if(EnchantManager.isIllegalItem(player.getEquipment().getLeggings())) {
 						player.getEquipment().setLeggings(new ItemStack(Material.AIR));
 						itemsRemoved++;
 					}
-
 					if(itemsRemoved != 0) AOutput.error(player, "&c" + itemsRemoved + " &7illegal item" +
 							(itemsRemoved == 1 ? " was" : "s were") + " removed from your inventory");
 				}
