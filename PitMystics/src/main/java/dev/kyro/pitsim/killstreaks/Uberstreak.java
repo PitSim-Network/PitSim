@@ -6,6 +6,7 @@ import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.arcticapi.misc.AUtil;
 import dev.kyro.pitsim.commands.FreshCommand;
 import dev.kyro.pitsim.controllers.EnchantManager;
+import dev.kyro.pitsim.controllers.HitCounter;
 import dev.kyro.pitsim.controllers.ItemManager;
 import dev.kyro.pitsim.controllers.PitEventManager;
 import dev.kyro.pitsim.controllers.objects.Megastreak;
@@ -14,9 +15,11 @@ import dev.kyro.pitsim.enums.MysticType;
 import dev.kyro.pitsim.enums.NBTTag;
 import dev.kyro.pitsim.enums.PantColor;
 import dev.kyro.pitsim.events.AttackEvent;
+import dev.kyro.pitsim.events.HealEvent;
 import dev.kyro.pitsim.events.KillEvent;
 import dev.kyro.pitsim.misc.ChunkOfVile;
 import dev.kyro.pitsim.misc.FunkyFeather;
+import dev.kyro.pitsim.misc.Misc;
 import dev.kyro.pitsim.misc.ProtArmor;
 import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.Bukkit;
@@ -136,6 +139,14 @@ public class Uberstreak extends Megastreak {
 			}
 		}
 
+	}
+
+	@EventHandler
+	public void onHeal(HealEvent event) {
+		if(event.player != pitPlayer.player) return;
+		if(pitPlayer.getKills() < 400) return;
+
+		event.multipliers.add(0D);
 	}
 
 //	@EventHandler

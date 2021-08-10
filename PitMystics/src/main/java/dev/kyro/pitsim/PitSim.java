@@ -17,7 +17,7 @@ import dev.kyro.pitsim.killstreaks.*;
 import dev.kyro.pitsim.misc.ItemRename;
 import dev.kyro.pitsim.perks.*;
 import dev.kyro.pitsim.pitevents.CaptureTheFlag;
-import dev.kyro.pitsim.pitevents.TestEvent2;
+import dev.kyro.pitsim.pitevents.Juggernaut;
 import dev.kyro.pitsim.placeholders.*;
 import net.kyori.adventure.platform.bukkit.BukkitAudiences;
 import net.milkbowl.vault.economy.Economy;
@@ -263,7 +263,7 @@ public class PitSim extends JavaPlugin {
 
 	private void registerPitEvents() {
 		PitEventManager.registerPitEvent(new CaptureTheFlag());
-//		PitEventManager.registerPitEvent(new TestEvent2());
+//		PitEventManager.registerPitEvent(new Juggernaut());
 	}
 
 	private void registerCommands() {

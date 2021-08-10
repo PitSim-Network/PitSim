@@ -221,6 +221,10 @@ public class CaptureTheFlag extends PitEvent {
     public void onCommandSend(PlayerCommandPreprocessEvent event) {
 
         if(event.getMessage().equalsIgnoreCase("/oof") && respawningPlayers.contains(event.getPlayer())) event.setCancelled(true);
+        if(event.getMessage().equalsIgnoreCase("/spawn")) {
+            if(event.getPlayer().equals(blueBannerHolder)) event.setCancelled(true);
+            if(event.getPlayer().equals(redBannerHolder)) event.setCancelled(true);
+        }
     }
 
     @EventHandler

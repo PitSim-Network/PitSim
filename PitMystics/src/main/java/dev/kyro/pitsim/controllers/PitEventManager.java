@@ -36,6 +36,7 @@ public class PitEventManager {
         PitSim.INSTANCE.getServer().getPluginManager().registerEvents(event, PitSim.INSTANCE);
     }
 
+
     public static void eventWait() {
 
 
@@ -87,7 +88,11 @@ public class PitEventManager {
                 Bukkit.broadcastMessage(ChatColor.translateAlternateColorCodes('&', "&5&lMAJOR EVENT! " +
                         " " + event.color + ""  + ChatColor.BOLD + event.name.toUpperCase(Locale.ROOT) + " &7starting now"));
                 endTimer(event);
-                event.start();
+                try {
+                    event.start();
+                } catch(Exception e) {
+                    e.printStackTrace();
+                }
                 majorEvent = true;
                 for(Player player : Bukkit.getOnlinePlayers()) {
                     Misc.sendTitle(player,event.color + "" + ChatColor.BOLD + "PIT EVENT!", 50);
@@ -127,34 +132,37 @@ public class PitEventManager {
         new BukkitRunnable() {
             @Override
             public void run() {
-                for(Player onlinePlayer : Bukkit.getOnlinePlayers()) {
-                    BossBarManager manager = PlayerManager.bossBars.get(onlinePlayer);
-                    Audience audience = PitSim.INSTANCE.adventure().player(onlinePlayer);
-                    manager.hideActiveBossBar(audience);
-                    PitPlayer pitPlayer = PitPlayer.getPitPlayer(onlinePlayer);
-                    if(kills.containsKey(onlinePlayer)) pitPlayer.setKills(kills.get(onlinePlayer));
-                    if(bounty.containsKey(onlinePlayer)) pitPlayer.bounty = 0;
-                    kills.remove(onlinePlayer);
-                    bounty.remove(onlinePlayer);
-                }
-                event.end();
-                majorEvent = false;
-                for(Non non : NonManager.nons) {
-                    non.setDisabled(false);
-                }
-
-                for(Player onlinePlayer : Bukkit.getOnlinePlayers()) {
-                    FeatherBoardAPI.removeScoreboardOverride(onlinePlayer, "event");
-                    FeatherBoardAPI.resetDefaultScoreboard(onlinePlayer);
-                }
+               if(majorEvent) endEvent(event);
             }
         }.runTaskLater(PitSim.INSTANCE, 6000L);
     }
 
+    public static void endEvent(PitEvent event) {
+        for(Player onlinePlayer : Bukkit.getOnlinePlayers()) {
+            BossBarManager manager = PlayerManager.bossBars.get(onlinePlayer);
+            Audience audience = PitSim.INSTANCE.adventure().player(onlinePlayer);
+            manager.hideActiveBossBar(audience);
+            PitPlayer pitPlayer = PitPlayer.getPitPlayer(onlinePlayer);
+            if(kills.containsKey(onlinePlayer)) pitPlayer.setKills(kills.get(onlinePlayer));
+            if(bounty.containsKey(onlinePlayer)) pitPlayer.bounty = 0;
+            kills.remove(onlinePlayer);
+            bounty.remove(onlinePlayer);
+        }
+        event.end();
+        majorEvent = false;
+        for(Non non : NonManager.nons) {
+            non.setDisabled(false);
+        }
+
+        for(Player onlinePlayer : Bukkit.getOnlinePlayers()) {
+            FeatherBoardAPI.removeScoreboardOverride(onlinePlayer, "event");
+            FeatherBoardAPI.resetDefaultScoreboard(onlinePlayer);
+        }
+    }
+
     public static PitEvent getRandomEvent(List<PitEvent> events) {
         Random rand = new Random();
-//        return events.get(rand.nextInt(events.size()));
-        return events.get(0);
+        return events.get(rand.nextInt(events.size()));
     }
 
     public static void timerBar(String message, int startminutes, int startseconds, ChatColor numcolor) {

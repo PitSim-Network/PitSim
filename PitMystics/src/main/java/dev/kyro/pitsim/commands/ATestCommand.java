@@ -102,6 +102,11 @@ public class ATestCommand implements CommandExecutor {
 		hoppers.add("GANGMEMBER7PUMP");
 		hoppers.add("woolens");
 		hoppers.add("Qtj_ALT");
+		hoppers.add("perungod");
+		hoppers.add("memescientist");
+		hoppers.add("souliow");
+		hoppers.add("PitSim");
+		hoppers.add("el24");
 
 
 

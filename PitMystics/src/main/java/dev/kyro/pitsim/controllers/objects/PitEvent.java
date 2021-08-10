@@ -21,6 +21,6 @@ public abstract class PitEvent implements Listener {
 
     public abstract String getName();
     public abstract void prepare();
-    public abstract void start();
+    public abstract void start() throws Exception;
     public abstract void end();
 }

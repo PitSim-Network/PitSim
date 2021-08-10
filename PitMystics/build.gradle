@@ -37,6 +37,7 @@ dependencies {
     compile 'de.tr7zw:item-nbt-api-plugin:2.8.0'
     compileOnly files('libs/KarhuAPI.jar')
     compileOnly files('libs/FeatherBoard.jar')
+    compileOnly files('libs/EssentialsX.jar')
 
 }
 
