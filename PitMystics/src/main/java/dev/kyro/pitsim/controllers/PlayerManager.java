@@ -253,6 +253,25 @@ public class PlayerManager implements Listener {
 		}.runTaskLater(PitSim.INSTANCE, 1L);
 	}
 
+	public static void removeIllegalItems(Player player) {
+			int itemsRemoved = 0;
+			for(int i = 0; i < 36; i++) {
+
+				ItemStack itemStack = player.getInventory().getItem(i);
+				if(EnchantManager.isIllegalItem(itemStack)) {
+					player.getInventory().setItem(i, new ItemStack(Material.AIR));
+					itemsRemoved++;
+				}
+			}
+			if(EnchantManager.isIllegalItem(player.getEquipment().getLeggings())) {
+				player.getEquipment().setLeggings(new ItemStack(Material.AIR));
+				itemsRemoved++;
+			}
+//			if(itemsRemoved != 0) AOutput.error(player, "&c" + itemsRemoved + " &7illegal item" +
+//					(itemsRemoved == 1 ? " was" : "s were") + " removed from your inventory");
+
+	}
+
 	public static Boolean isNew(Player player) {
 		File directory = new File("plugins/PitRemake/playerdata");
 		File[] files = directory.listFiles();

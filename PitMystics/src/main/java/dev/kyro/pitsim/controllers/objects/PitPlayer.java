@@ -14,6 +14,7 @@ import dev.kyro.pitsim.inventories.ChatColorPanel;
 import dev.kyro.pitsim.killstreaks.*;
 import dev.kyro.pitsim.perks.NoPerk;
 import dev.kyro.pitsim.perks.Thick;
+import dev.kyro.pitsim.pitevents.Juggernaut;
 import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -248,6 +249,7 @@ public class PitPlayer {
 		int maxHealth = 24;
 		if(hasPerk(Thick.INSTANCE)) maxHealth += 4;
 		if(Hearts.INSTANCE != null) maxHealth += Hearts.INSTANCE.getExtraHealth(this);
+
 		if(megastreak.isOnMega() && megastreak.getClass() == Uberstreak.class && kills >= 100) {
 			maxHealth -= 2;
 		}
@@ -258,6 +260,7 @@ public class PitPlayer {
 			maxHealth -= 2;
 		}
 
+		if(Juggernaut.juggernaut == this.player) maxHealth = 100;
 		if(player.getMaxHealth() == maxHealth) return;
 		player.setMaxHealth(maxHealth);
 	}

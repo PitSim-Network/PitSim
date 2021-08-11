@@ -2,6 +2,7 @@ package dev.kyro.pitsim.controllers;
 
 import be.maximvdw.featherboard.FeatherBoard;
 import be.maximvdw.featherboard.api.FeatherBoardAPI;
+import com.sun.org.apache.bcel.internal.generic.IF_ACMPEQ;
 import com.xxmicloxx.NoteBlockAPI.model.RepeatMode;
 import com.xxmicloxx.NoteBlockAPI.model.Song;
 import com.xxmicloxx.NoteBlockAPI.songplayer.RadioSongPlayer;
@@ -30,6 +31,7 @@ public class PitEventManager {
     public static Map<Player, Integer> bounty = new HashMap<>();
     public static Boolean majorEvent = false;
     public static PitEvent activeEvent;
+    public static Boolean preparingEvent = false;
 
     public static void registerPitEvent(PitEvent event) {
         events.add(event);
@@ -43,7 +45,7 @@ public class PitEventManager {
         new BukkitRunnable() {
             @Override
             public void run() {
-                if(Bukkit.getOnlinePlayers().size() < 2) return;
+                if(Bukkit.getOnlinePlayers().size() < 4) return;
 
                 PitEvent randomEvent = getRandomEvent(events);
                 startTimer(randomEvent);
@@ -60,6 +62,7 @@ public class PitEventManager {
                     rsp.addPlayer(onlinePlayer);
                 }
                 rsp.setPlaying(true);
+                preparingEvent = true;
 
                 new BukkitRunnable() {
                     @Override
@@ -75,7 +78,7 @@ public class PitEventManager {
 
 
             }
-        }.runTaskTimer(PitSim.INSTANCE, 600L, 45600);
+        }.runTaskTimer(PitSim.INSTANCE, 3600L, 45600);
 
     }
 
@@ -95,6 +98,7 @@ public class PitEventManager {
                 }
                 majorEvent = true;
                 for(Player player : Bukkit.getOnlinePlayers()) {
+                    preparingEvent = false;
                     Misc.sendTitle(player,event.color + "" + ChatColor.BOLD + "PIT EVENT!", 50);
                     Misc.sendSubTitle(player, event.color + "" + ChatColor.BOLD + event.name.toUpperCase(Locale.ROOT), 50);
                     ASound.play(player, Sound.ENDERDRAGON_GROWL, 2  , 1);
@@ -124,7 +128,7 @@ public class PitEventManager {
 
 
             }
-        }.runTaskLater(PitSim.INSTANCE, 3600L);
+        }.runTaskLater(PitSim.INSTANCE, 600L);
     }
 
     public static void endTimer(PitEvent event) {
@@ -157,6 +161,10 @@ public class PitEventManager {
         for(Player onlinePlayer : Bukkit.getOnlinePlayers()) {
             FeatherBoardAPI.removeScoreboardOverride(onlinePlayer, "event");
             FeatherBoardAPI.resetDefaultScoreboard(onlinePlayer);
+
+            BossBarManager manager = PlayerManager.bossBars.get(onlinePlayer);
+            Audience audiences = PitSim.INSTANCE.adventure().player(onlinePlayer);
+            manager.hideActiveBossBar(audiences);
         }
     }
 
@@ -172,6 +180,14 @@ public class PitEventManager {
                 int seconds = startseconds;
                 @Override
                 public void run() {
+                    if(!majorEvent && !preparingEvent) {
+                        for(Player onlinePlayer : Bukkit.getOnlinePlayers()) {
+                            BossBarManager manager = PlayerManager.bossBars.get(onlinePlayer);
+                            Audience audiences = PitSim.INSTANCE.adventure().player(onlinePlayer);
+                            manager.hideActiveBossBar(audiences);
+                        }
+                        this.cancel();
+                    }
                     for(Player onlinePlayer : Bukkit.getOnlinePlayers()) {
                         BossBarManager manager = PlayerManager.bossBars.get(onlinePlayer);
                         Audience audiences = PitSim.INSTANCE.adventure().player(onlinePlayer);

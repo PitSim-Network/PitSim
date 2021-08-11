@@ -21,7 +21,7 @@ public class EventInfoPlaceholder2 implements APAPIPlaceholder {
 
 		if(PitEventManager.majorEvent && PitEventManager.activeEvent.getClass() == Juggernaut.class) {
 			return ChatColor.translateAlternateColorCodes('&',
-					" &7- &6Health &c" + (int) Juggernaut.juggernaut.getHealth() + " &7/&c" + (int) Juggernaut.juggernaut.getMaxHealth() + "&c\u2764");
+					" &7- &6Health &c" + (int) Juggernaut.juggernaut.getHealth() / 2+ "&7/&c" + (int) Juggernaut.juggernaut.getMaxHealth() / 2  + "&c\u2764");
 		}
 
 		if(PitEventManager.majorEvent && PitEventManager.activeEvent.getClass() == CaptureTheFlag.class) {

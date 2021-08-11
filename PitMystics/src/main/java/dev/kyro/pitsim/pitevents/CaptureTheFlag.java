@@ -82,7 +82,6 @@ public class CaptureTheFlag extends PitEvent {
             if(helmets.containsKey(onlinePlayer)) onlinePlayer.getInventory().setHelmet(helmets.get(onlinePlayer));
             else onlinePlayer.getInventory().setHelmet(new ItemStack(Material.AIR));
             helmets.remove(onlinePlayer);
-            onlinePlayer.playEffect(getLocation("BlueBanner"), Effect.RECORD_PLAY,0);
             onlinePlayer.teleport(MapManager.getPlayerSpawn());
         }
         for(Player respawningPlayer : respawningPlayers) {

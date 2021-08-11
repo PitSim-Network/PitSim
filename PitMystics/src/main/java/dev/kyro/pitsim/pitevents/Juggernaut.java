@@ -4,27 +4,32 @@ import dev.kyro.arcticapi.misc.ASound;
 import dev.kyro.arcticapi.misc.AUtil;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.commands.FreshCommand;
-import dev.kyro.pitsim.controllers.EnchantManager;
-import dev.kyro.pitsim.controllers.LeaderboardManager;
-import dev.kyro.pitsim.controllers.MapManager;
-import dev.kyro.pitsim.controllers.PitEventManager;
+import dev.kyro.pitsim.controllers.*;
 import dev.kyro.pitsim.controllers.objects.PitEvent;
+import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.enums.GameMap;
-import dev.kyro.pitsim.enums.MysticType;
 import dev.kyro.pitsim.events.AttackEvent;
 import dev.kyro.pitsim.events.HealEvent;
 import dev.kyro.pitsim.events.KillEvent;
 import dev.kyro.pitsim.misc.Misc;
 import me.clip.placeholderapi.PlaceholderAPI;
+import net.kyori.adventure.audience.Audience;
 import org.bukkit.*;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
+import org.bukkit.event.entity.EntityRegainHealthEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.player.PlayerCommandPreprocessEvent;
+import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
+import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.util.Vector;
 
 import java.util.*;
 
@@ -33,6 +38,7 @@ public class Juggernaut extends PitEvent {
 
     public static Player juggernaut;
     public int swordSlot;
+    public ItemStack sword;
     public static Boolean eventIsActive = false;
 	public static List<Player> respawningPlayers = new ArrayList<>();
     public Boolean isStartingPeriod = false;
@@ -40,6 +46,9 @@ public class Juggernaut extends PitEvent {
 	public static Map<Player, Integer> juggernautDamage = new HashMap<>();
 	public static int juggernautKills = 0;
 	public static Boolean juggernautKilled = false;
+	public int lastHealthUpdate = 100;
+	public Map<UUID, Cooldown> cooldowns = new HashMap<>();
+	public ItemStack pants = null;
 
     public Juggernaut() {
         super("Juggernaut", 5, true, "JUGGERNAUT", ChatColor.GOLD);
@@ -62,21 +71,34 @@ public class Juggernaut extends PitEvent {
     	pickJuggernaut();
 	    for(Player player : Bukkit.getOnlinePlayers()) {
 		    setCompass(player);
+		    player.playEffect(MapManager.getMid(), Effect.RECORD_PLAY, Material.RECORD_8.getId());
 	    }
     }
 
     @Override
     public void end() {
 	    for(Player player : Bukkit.getOnlinePlayers()) {
+		    for(ItemStack itemStack : player.getInventory()) {
+			    if(!Misc.isAirOrNull(itemStack) && itemStack.getType().equals(Material.COMPASS)) player.getInventory().remove(itemStack);
+		    }
 		    player.teleport(MapManager.getPlayerSpawn());
+		    player.setGameMode(GameMode.SURVIVAL);
 	    }
+	    juggernaut.getInventory().remove(sword);
+	    if(Misc.isAirOrNull(pants)) juggernaut.getInventory().setLeggings(new ItemStack(Material.AIR));
+	    else juggernaut.getInventory().setLeggings(pants);
+	    PlayerManager.removeIllegalItems(juggernaut);
+	    PitPlayer pitPlayer = PitPlayer.getPitPlayer(juggernaut);
+	    String message = "%luckperms_prefix%";
+	    pitPlayer.prefix = "&7[&e" + pitPlayer.playerLevel + "&7] &7" + PlaceholderAPI.setPlaceholders(pitPlayer.player, message);
     	eventIsActive = false;
-        getTopThree();
         juggernaut = null;
         movements.clear();
         juggernautDamage.clear();
         juggernautKills = 0;
         juggernautKilled = false;
+        lastHealthUpdate = 100;
+        pants = null;
 	    PitEventManager.activeEvent = null;
     }
 
@@ -92,7 +114,7 @@ public class Juggernaut extends PitEvent {
     public Location randomPlayerSpawn() {
     	List<Location> desertLocations = new ArrayList<>();
     	Location Desertlocation1 = new Location(Bukkit.getWorld("pit"), -101, 44, 168, 14, 3);
-	    Location Desertlocation2 = new Location(Bukkit.getWorld("pit"), -153, 44, 233, -123, 5);
+	    Location Desertlocation2 = new Location(Bukkit.getWorld("pit"), -144, 44, 233, -123, 5);
 	    Location Desertlocation3 = new Location(Bukkit.getWorld("pit"), -98, 44, 233, 144, 0);
 	    desertLocations.add(Desertlocation1);
 	    desertLocations.add(Desertlocation2);
@@ -117,27 +139,121 @@ public class Juggernaut extends PitEvent {
     }
 
     @EventHandler
+    public void onJoin(PlayerJoinEvent event) {
+	    if(PitEventManager.activeEvent != this) return;
+    	respawningPlayers.add(event.getPlayer());
+    	respawn(event.getPlayer());
+    	setCompass(event.getPlayer());
+    }
+
+    @EventHandler
+    public void onLeave(PlayerQuitEvent event) {
+    	if(event.getPlayer() == juggernaut && eventIsActive) {
+		    juggernautKilled = true;
+		    event.getPlayer().getInventory().remove(sword);
+		    if(Misc.isAirOrNull(pants)) juggernaut.getInventory().setLeggings(new ItemStack(Material.AIR));
+		    else juggernaut.getInventory().setLeggings(pants);
+		    pants = null;
+		    PlayerManager.removeIllegalItems(event.getPlayer());
+		    event.getPlayer().setHealth(juggernaut.getMaxHealth());
+		    getTopThree();
+		    explosion(event.getPlayer());
+
+		    for(Player player : Bukkit.getOnlinePlayers()) {
+			    ASound.play(player, Sound.ENDERDRAGON_DEATH, 1, 2);
+		    }
+
+		    new BukkitRunnable() {
+			    @Override
+			    public void run() {
+				    endEvent();
+			    }
+		    }.runTaskLater(PitSim.INSTANCE, 200L);
+
+	    }
+    	if(event.getPlayer() != juggernaut && eventIsActive) {
+		    for(ItemStack itemStack : event.getPlayer().getInventory()) {
+			    if(!Misc.isAirOrNull(itemStack) && itemStack.getType().equals(Material.COMPASS)) event.getPlayer().getInventory().remove(itemStack);
+		    }
+		    event.getPlayer().teleport(MapManager.getPlayerSpawn());
+		    event.getPlayer().setGameMode(GameMode.SURVIVAL);
+	    }
+    }
+
+    @EventHandler
     public void onMove(PlayerMoveEvent event) {
+
     	if(isStartingPeriod) {
     		if(movements.containsKey(event.getPlayer())) movements.put(event.getPlayer(), movements.get(event.getPlayer()) + 1);
     		else movements.put(event.getPlayer(), 1);
 	    }
+	    if(PitEventManager.activeEvent != this) return;
+    	if(event.getPlayer() != juggernaut) return;
+    	if(event.getPlayer().getGameMode() == GameMode.SPECTATOR) return;
+	    double distance = MapManager.getMid().distance(event.getPlayer().getLocation());
+	    if(distance > 16) {
+
+		    Cooldown cooldown = getCooldown(juggernaut, 40);
+		    if(cooldown.isOnCooldown()) return; else cooldown.reset();
+
+		    Misc.sendTitle(event.getPlayer(), "&cYou cannot leave mid!", 40);
+		    ASound.play(event.getPlayer(), Sound.NOTE_PLING, 2, 0.5F);
+
+		    Vector dirVector = MapManager.getMid().toVector().subtract(event.getPlayer().getLocation().toVector()).setY(0);
+		    Vector pullVector = dirVector.clone().normalize().setY(0.5).multiply(2.5).add(dirVector.clone().multiply(0.03));
+		    event.getPlayer().setVelocity(pullVector.multiply(0.9));
+	    }
     }
+
+	public Cooldown getCooldown(Player player, int time) {
+
+		if(cooldowns.containsKey(player.getUniqueId())) {
+			Cooldown cooldown = cooldowns.get(player.getUniqueId());
+			cooldown.initialTime = time;
+			return cooldown;
+		}
+
+		Cooldown cooldown = new Cooldown(time);
+		cooldown.ticksLeft = 0;
+		cooldowns.put(player.getUniqueId(), cooldown);
+		return cooldown;
+	}
 
     @EventHandler
     public void onClick(InventoryClickEvent event) {
         if(PitEventManager.activeEvent != this) return;
         if(event.getWhoClicked() == juggernaut && event.getSlot() == swordSlot) event.setCancelled(true);
-        if(event.getWhoClicked() != juggernaut && event.getSlot() == 9) event.setCancelled(true);
+        if(event.getWhoClicked() != juggernaut && event.getSlot() == 8) event.setCancelled(true);
 
     }
 
     @EventHandler
     public void onHeal(HealEvent event) {
+	    if(PitEventManager.activeEvent != this) return;
         if(event.player != juggernaut) return;
 
         event.multipliers.add(0D);
     }
+
+    @EventHandler
+	public void onHeal(EntityRegainHealthEvent event) {
+	    if(PitEventManager.activeEvent != this) return;
+		if(!(event.getEntity() instanceof Player)) return;
+		if(event.getEntity() != juggernaut) return;
+		event.setCancelled(true);
+	}
+
+	@EventHandler (priority = EventPriority.HIGHEST)
+	public void onCommandSend(PlayerCommandPreprocessEvent event) {
+
+		if(event.getMessage().equalsIgnoreCase("/oof") && respawningPlayers.contains(event.getPlayer())) event.setCancelled(true);
+		if(event.getMessage().equalsIgnoreCase("/spawn") && event.getPlayer() == juggernaut) {
+		event.setCancelled(true);
+		}
+		if(event.getMessage().equalsIgnoreCase("/oof") && event.getPlayer() == juggernaut) {
+			event.setCancelled(true);
+		}
+	}
 
     @EventHandler
     public void onPreAttack(AttackEvent.Pre attackEvent) {
@@ -149,40 +265,114 @@ public class Juggernaut extends PitEvent {
 	public void onAttack(AttackEvent.Apply attackEvent) {
 		if(PitEventManager.activeEvent != this) return;
 		if(attackEvent.defender == juggernaut && attackEvent.attacker != juggernaut) {
-			int damage = (int) (attackEvent.getFinalDamageIncrease() / 2);
+			int damage = (int) (attackEvent.getFinalDamageIncrease() / 6);
 			if(juggernautDamage.containsKey(attackEvent.attacker)) juggernautDamage.put(attackEvent.attacker, juggernautDamage.get(attackEvent.attacker) + damage);
 			else juggernautDamage.put(attackEvent.attacker, damage);
 
-			Bukkit.broadcastMessage(String.valueOf(juggernautDamage.get(attackEvent.attacker)));
+			if(juggernaut.getHealth() / 2 <= 50 && lastHealthUpdate > 50) {
+				lastHealthUpdate = 50;
+				sendTitle(ChatColor.RED + "50\u2764", color + "Juggernaut &chealth remaining!");
+			}
+			if(juggernaut.getHealth() / 2 <= 40 && lastHealthUpdate > 40) {
+				lastHealthUpdate = 40;
+				sendTitle(ChatColor.RED + "40\u2764", color + "Juggernaut &chealth remaining!");
+			}
+			if(juggernaut.getHealth() / 2 <= 30 && lastHealthUpdate > 30) {
+				lastHealthUpdate = 30;
+				sendTitle(ChatColor.RED + "30\u2764", color + "Juggernaut &chealth remaining!");
+			}
+			if(juggernaut.getHealth() / 2 <= 20 && lastHealthUpdate > 20) {
+				lastHealthUpdate = 20;
+				sendTitle(ChatColor.RED + "20\u2764", color + "Juggernaut &chealth remaining!");
+			}
+			if(juggernaut.getHealth() / 2 <= 10 && lastHealthUpdate > 10) {
+				lastHealthUpdate = 10;
+				sendTitle(ChatColor.RED + "10\u2764", color + "Juggernaut &chealth remaining!");
+			}
 		}
 	}
 
 	@EventHandler
 	public void onKill(KillEvent killEvent) {
     	if(!eventIsActive) return;
+    	if(killEvent.killer == juggernaut) {
+    		juggernautKills += 1;
+    		String message = ChatColor.translateAlternateColorCodes('&', "%luckperms_prefix%" +
+				    killEvent.dead.getDisplayName() + " &7was killed. The " + color + "Juggernaut &7now has &c" + juggernautKills + " &7total kills,");
+    		Bukkit.broadcastMessage(PlaceholderAPI.setPlaceholders(killEvent.dead, message));
+	    }
     	if(killEvent.dead != juggernaut) {
     		respawningPlayers.add(killEvent.dead);
+		    killEvent.dead.teleport(killEvent.dead.getLocation());
     		respawn(killEvent.dead);
 	    } else {
     		juggernautKilled = true;
-    		PitEventManager.endEvent(this);
+    		juggernaut.setGameMode(GameMode.SPECTATOR);
+    		juggernaut.setHealth(juggernaut.getMaxHealth());
+		    getTopThree();
+		    explosion(killEvent.dead);
+		    for(Player player : Bukkit.getOnlinePlayers()) {
+			    ASound.play(player, Sound.ENDERDRAGON_DEATH, 1, 2);
+		    }
+
+		    new BukkitRunnable() {
+			    @Override
+			    public void run() {
+				    endEvent();
+			    }
+		    }.runTaskLater(PitSim.INSTANCE, 200L);
+
 	    }
+	}
+
+	public void endEvent() {
+		PitEventManager.majorEvent = false;
+		for(Player onlinePlayer : Bukkit.getOnlinePlayers()) {
+			BossBarManager manager = PlayerManager.bossBars.get(onlinePlayer);
+			Audience audiences = PitSim.INSTANCE.adventure().player(onlinePlayer);
+			manager.hideActiveBossBar(audiences);
+		}
+		PitEventManager.endEvent(this);
+	}
+
+	public void sendTitle(String title, String subtitle) {
+		for(Player player : Bukkit.getOnlinePlayers()) {
+			Misc.sendTitle(player, title, 40);
+			if(subtitle != null) Misc.sendSubTitle(player, subtitle, 40);
+			ASound.play(player, Sound.NOTE_PLING, 2, 1F);
+		}
 	}
 
 
     public void pickJuggernaut() throws Exception {
-	    List<Player> keysAsArray = new ArrayList<>(movements.keySet());
-	    Random r = new Random();
-	    Player randomPlayer = (Player) movements.keySet().toArray()[r.nextInt(keysAsArray.size())];
+	    List<Player> keysAsArray = new ArrayList<>();
 
-	    makeJuggernaut(randomPlayer);
-    }
+	    for(Map.Entry<Player, Integer> playerIntegerEntry : movements.entrySet()) {
+		    if(playerIntegerEntry.getValue() > 300) keysAsArray.add(playerIntegerEntry.getKey());
+	    }
+
+			if(keysAsArray.size() <= 2) {
+				cancelEvent();
+				return;
+			}
+
+		    Random r = new Random();
+		    Player randomPlayer = keysAsArray.get(r.nextInt(keysAsArray.size()));
+
+		    makeJuggernaut(randomPlayer);
+	    }
+
+	    public void cancelEvent() {
+    	Bukkit.broadcastMessage(ChatColor.translateAlternateColorCodes('&', "&c&llEVENT CANCELED! &7Not enough active players."));
+    	endEvent();
+	    }
 
     public void makeJuggernaut(Player player) throws Exception {
-    	if(movements.get(player) < 100) {
+    	if(movements.get(player) < 300) {
     		pickJuggernaut();
     		return;
 	    }
+    	PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
 
         juggernaut = player;
         ItemStack freshSword = FreshCommand.getFreshItem("sword");
@@ -199,11 +389,28 @@ public class Juggernaut extends PitEvent {
         ItemStack slotItem = player.getItemInHand();
         player.getInventory().setItem(swordSlot, updatedItem3);
         this.swordSlot = swordSlot;
+        this.sword = updatedItem3;
         if(!Misc.isAirOrNull(slotItem))AUtil.giveItemSafely(player, slotItem);
 
-        player.setMaxHealth(40);
+	    ItemStack freshPants = FreshCommand.getFreshItem("orange");
+	    ItemStack updatedPants1 = EnchantManager.addEnchant(freshPants, EnchantManager.getEnchant("soli"), 5, false);
+	    ItemStack updatedPants2 = EnchantManager.addEnchant(updatedPants1, EnchantManager.getEnchant("cf"), 3, false);
+	    ItemStack updatedPants3 = EnchantManager.addEnchant(updatedPants2, EnchantManager.getEnchant("mirror"), 3, false);
+
+	    assert updatedPants3 != null;
+	    ItemMeta pantsMeta = updatedPants3.getItemMeta();
+	    pantsMeta.setDisplayName(ChatColor.GOLD + "" + ChatColor.BOLD + "JUGGERNAUT PANTS");
+	    updatedPants3.setItemMeta(pantsMeta);
+
+	    if(!Misc.isAirOrNull(player.getInventory().getLeggings())) this.pants = player.getInventory().getLeggings();
+	    player.getInventory().setLeggings(updatedPants3);
+
+        pitPlayer.updateMaxHealth();
         player.setHealth(player.getMaxHealth());
         player.teleport(getLocation("JuggernautSpawn"));
+
+	    String message = "%luckperms_prefix%";
+	    pitPlayer.prefix = color + "" + ChatColor.BOLD + "JUGGER &7" + PlaceholderAPI.setPlaceholders(pitPlayer.player, message);
     }
 
     public void setCompass(Player player) {
@@ -213,12 +420,12 @@ public class Juggernaut extends PitEvent {
             compassMeta.setDisplayName(ChatColor.translateAlternateColorCodes('&', "&6&lJUGGERNAUT LOCATION"));
             compass.setItemMeta(compassMeta);
 
-            int compassSlot = 9;
-            ItemStack slotItem = player.getInventory().getItem(9);
+            int compassSlot = 8;
+            ItemStack slotItem = player.getInventory().getItem(8);
             player.getInventory().setItem(compassSlot, compass);
             if(!Misc.isAirOrNull(slotItem))AUtil.giveItemSafely(player, slotItem);
 
-	    if(movements.get(player) < 100) return;
+	    if(movements.get(player) < 300) return;
 	    player.teleport(getLocation("PlayerSpawn"));
     }
 
@@ -273,7 +480,7 @@ public class Juggernaut extends PitEvent {
 				this.color + "" + ChatColor.BOLD + this.getName().toUpperCase(Locale.ROOT) + "&6&l!"));
 
 		if(juggernautKilled) Bukkit.broadcastMessage(ChatColor.translateAlternateColorCodes('&', "&6&lJuggernaut Status: &c&lDEAD"));
-		else Bukkit.broadcastMessage(ChatColor.translateAlternateColorCodes('&', "&6&lJuggernaut status: &a&lALIVE &7(&c" + juggernaut.getHealth() + "&c\u2764&7)"));
+		else Bukkit.broadcastMessage(ChatColor.translateAlternateColorCodes('&', "&6&lJuggernaut status: &a&lALIVE &7(&c" + (int) juggernaut.getHealth() / 2+ "&c\u2764&7)"));
 
 		for(Player onlinePlayer : Bukkit.getOnlinePlayers()) {
 			if(juggernautKilled) {
@@ -287,7 +494,8 @@ public class Juggernaut extends PitEvent {
 
 
 			if(onlinePlayer == juggernaut) onlinePlayer.sendMessage(ChatColor.translateAlternateColorCodes('&', "&6&lYou: &a" + juggernautKills + " &aPlayers killed"));
-			else onlinePlayer.sendMessage(ChatColor.translateAlternateColorCodes('&', "&6&lYou: &c" + juggernautDamage.get(onlinePlayer) + "&c\u2764"));
+			else if(juggernautDamage.get(onlinePlayer) != null) onlinePlayer.sendMessage(ChatColor.translateAlternateColorCodes('&', "&6&lYou: &c" + juggernautDamage.get(onlinePlayer) + "&c\u2764"));
+			else onlinePlayer.sendMessage(ChatColor.translateAlternateColorCodes('&', "&6&lYou: 0&c\u2764"));
 		}
 		Bukkit.broadcastMessage(ChatColor.translateAlternateColorCodes('&', "&6&lTop players:"));
 		if(messageOne != null) Bukkit.broadcastMessage(PlaceholderAPI.setPlaceholders(player1, messageOne));
@@ -345,6 +553,22 @@ public class Juggernaut extends PitEvent {
 
 	}
 
+	public void explosion(Player player) {
+		List<Player> explosionPlayers = new ArrayList<>();
+		List<Entity> nearbyPlayers = player.getNearbyEntities(10, 10, 10);
+		for(Entity nearbyPlayer : nearbyPlayers) {
+			if(nearbyPlayer instanceof Player) explosionPlayers.add((Player) nearbyPlayer);
+		}
+
+		for(Player explosionPlayer : explosionPlayers) {
+			Vector force = explosionPlayer.getLocation().toVector().subtract(player.getLocation().toVector())
+					.setY(1).normalize().multiply(5);
+			player.setVelocity(force);
+		}
+		player.getLocation().getWorld().playSound(player.getLocation(), Sound.EXPLODE, 1, 2);
+		player.getLocation().getWorld().playEffect(player.getLocation(), Effect.EXPLOSION_HUGE,  200, 200);
+	}
+
     static {
 	    new BukkitRunnable() {
 		    @Override
@@ -353,7 +577,9 @@ public class Juggernaut extends PitEvent {
 				    for(Player player : Bukkit.getOnlinePlayers()) {
 					    player.setCompassTarget(juggernaut.getLocation());
 				    }
-				    Misc.applyPotionEffect(juggernaut, PotionEffectType.SLOW, 40, 1, false, false);
+				    Misc.applyPotionEffect(juggernaut, PotionEffectType.DAMAGE_RESISTANCE, 40, 0, false, false);
+				    juggernaut.getWorld().spigot().playEffect(juggernaut.getLocation(),
+						    Effect.FLAME, 0, 2, 0F, 1F, 0F,0.08F, 100, 6);
 			    }
 		    }
 	    }.runTaskTimer(PitSim.INSTANCE, 0L, 20L);

@@ -141,13 +141,13 @@ public class Uberstreak extends Megastreak {
 
 	}
 
-	@EventHandler
-	public void onHeal(HealEvent event) {
-		if(event.player != pitPlayer.player) return;
-		if(pitPlayer.getKills() < 400) return;
-
-		event.multipliers.add(0D);
-	}
+//	@EventHandler
+//	public void onHeal(HealEvent event) {
+//		if(event.player != pitPlayer.player) return;
+//		if(pitPlayer.getKills() < 400) return;
+//
+//		event.multipliers.add(0D);
+//	}
 
 //	@EventHandler
 //	public void onHeal(EntityRegainHealthEvent event) {

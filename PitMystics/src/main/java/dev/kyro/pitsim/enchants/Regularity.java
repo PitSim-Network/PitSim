@@ -7,6 +7,7 @@ import dev.kyro.pitsim.controllers.objects.PitEnchant;
 import dev.kyro.pitsim.enums.ApplyType;
 import dev.kyro.pitsim.events.AttackEvent;
 import dev.kyro.pitsim.misc.Misc;
+import dev.kyro.pitsim.pitevents.Juggernaut;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -37,6 +38,7 @@ public class Regularity extends PitEnchant {
 
 		double finalDamage = attackEvent.event.getFinalDamage();
 		if(finalDamage >= maxFinalDamage(enchantLvl)) return;
+		if(attackEvent.defender == Juggernaut.juggernaut) return;
 
 //		HitCounter.incrementCounter(attackEvent.attacker, this);
 //		if(!HitCounter.hasReachedThreshold(attackEvent.attacker, this, getStrikes())) return;

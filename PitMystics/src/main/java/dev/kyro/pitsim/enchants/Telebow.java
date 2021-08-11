@@ -13,6 +13,7 @@ import dev.kyro.pitsim.enums.ApplyType;
 import dev.kyro.pitsim.events.AttackEvent;
 import dev.kyro.pitsim.misc.Misc;
 import dev.kyro.pitsim.pitevents.CaptureTheFlag;
+import dev.kyro.pitsim.pitevents.Juggernaut;
 import org.bukkit.Effect;
 import org.bukkit.Location;
 import org.bukkit.Sound;
@@ -131,6 +132,11 @@ public class Telebow extends PitEnchant {
 
 						if(PitEventManager.majorEvent && PitEventManager.activeEvent.getClass() == CaptureTheFlag.class) {
 							AOutput.error(player, "Telebow is disabled during this event");
+							teleShots.remove(teleShot);
+							return;
+						}
+
+						if(player == Juggernaut.juggernaut) {
 							teleShots.remove(teleShot);
 							return;
 						}

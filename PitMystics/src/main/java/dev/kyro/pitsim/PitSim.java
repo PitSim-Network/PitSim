@@ -263,7 +263,7 @@ public class PitSim extends JavaPlugin {
 
 	private void registerPitEvents() {
 		PitEventManager.registerPitEvent(new CaptureTheFlag());
-//		PitEventManager.registerPitEvent(new Juggernaut());
+		PitEventManager.registerPitEvent(new Juggernaut());
 	}
 
 	private void registerCommands() {
