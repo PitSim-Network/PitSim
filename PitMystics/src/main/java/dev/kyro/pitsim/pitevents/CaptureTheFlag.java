@@ -10,10 +10,7 @@ import com.sk89q.worldedit.world.DataException;
 import com.xxmicloxx.NoteBlockAPI.songplayer.EntitySongPlayer;
 import dev.kyro.arcticapi.misc.ASound;
 import dev.kyro.pitsim.PitSim;
-import dev.kyro.pitsim.controllers.LeaderboardManager;
-import dev.kyro.pitsim.controllers.MapManager;
-import dev.kyro.pitsim.controllers.PitEventManager;
-import dev.kyro.pitsim.controllers.StereoManager;
+import dev.kyro.pitsim.controllers.*;
 import dev.kyro.pitsim.controllers.objects.PitEvent;
 import dev.kyro.pitsim.enums.GameMap;
 import dev.kyro.pitsim.events.AttackEvent;
@@ -82,7 +79,7 @@ public class CaptureTheFlag extends PitEvent {
             if(helmets.containsKey(onlinePlayer)) onlinePlayer.getInventory().setHelmet(helmets.get(onlinePlayer));
             else onlinePlayer.getInventory().setHelmet(new ItemStack(Material.AIR));
             helmets.remove(onlinePlayer);
-            onlinePlayer.teleport(MapManager.getPlayerSpawn());
+            if(!AFKManager.AFKPlayers.contains(onlinePlayer)) onlinePlayer.teleport(MapManager.getPlayerSpawn());
         }
         for(Player respawningPlayer : respawningPlayers) {
             respawningPlayer.setGameMode(GameMode.SURVIVAL);
@@ -496,6 +493,7 @@ public class CaptureTheFlag extends PitEvent {
 
     public void teamSetup() {
 
+
         List<Player> players = new ArrayList<>(Bukkit.getOnlinePlayers());
 
 
@@ -528,7 +526,7 @@ public class CaptureTheFlag extends PitEvent {
                 helmets.put(player, player.getInventory().getHelmet());
             }
             player.getInventory().setHelmet(blueItem);
-            player.teleport(getLocation("BlueSpawn"));
+            if(!AFKManager.AFKPlayers.contains(player)) player.teleport(getLocation("BlueSpawn"));
             }
 
             loadSchematic(new File("plugins/WorldEdit/schematics/BluePoint.schematic"), getLocation("BlueSchematic"));
@@ -553,7 +551,7 @@ public class CaptureTheFlag extends PitEvent {
                 helmets.put(player, player.getInventory().getHelmet());
             }
             player.getInventory().setHelmet(redItem);
-            player.teleport(getLocation("RedSpawn"));
+            if(!AFKManager.AFKPlayers.contains(player)) player.teleport(getLocation("RedSpawn"));
         }
 
             loadSchematic(new File("plugins/WorldEdit/schematics/RedPoint.schematic"), getLocation("RedSchematic"));

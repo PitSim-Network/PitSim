@@ -32,6 +32,7 @@ public class PitEventManager {
     public static Boolean majorEvent = false;
     public static PitEvent activeEvent;
     public static Boolean preparingEvent = false;
+    public static Boolean canceledEvent = false;
 
     public static void registerPitEvent(PitEvent event) {
         events.add(event);
@@ -45,7 +46,7 @@ public class PitEventManager {
         new BukkitRunnable() {
             @Override
             public void run() {
-                if(Bukkit.getOnlinePlayers().size() < 4) return;
+                if(AFKManager.onlineActivePlayers < 4) return;
 
                 PitEvent randomEvent = getRandomEvent(events);
                 startTimer(randomEvent);
@@ -78,7 +79,7 @@ public class PitEventManager {
 
 
             }
-        }.runTaskTimer(PitSim.INSTANCE, 3600L, 45600);
+        }.runTaskTimer(PitSim.INSTANCE, 600, 45600);
 
     }
 
@@ -87,6 +88,11 @@ public class PitEventManager {
         new BukkitRunnable() {
             @Override
             public void run() {
+                if(AFKManager.onlineActivePlayers < 4) {
+                    Bukkit.broadcastMessage(ChatColor.translateAlternateColorCodes('&', "&c&lEVENT CANCELED! &7Not enough active players!"));
+                    canceledEvent = true;
+                    return;
+                }
 
                 Bukkit.broadcastMessage(ChatColor.translateAlternateColorCodes('&', "&5&lMAJOR EVENT! " +
                         " " + event.color + ""  + ChatColor.BOLD + event.name.toUpperCase(Locale.ROOT) + " &7starting now"));
@@ -128,7 +134,7 @@ public class PitEventManager {
 
 
             }
-        }.runTaskLater(PitSim.INSTANCE, 600L);
+        }.runTaskLater(PitSim.INSTANCE, 3600);
     }
 
     public static void endTimer(PitEvent event) {
@@ -136,7 +142,8 @@ public class PitEventManager {
         new BukkitRunnable() {
             @Override
             public void run() {
-               if(majorEvent) endEvent(event);
+               if(majorEvent && !canceledEvent) endEvent(event);
+               canceledEvent = false;
             }
         }.runTaskLater(PitSim.INSTANCE, 6000L);
     }
@@ -223,6 +230,13 @@ public class PitEventManager {
                         manager.defaultBar.progress(decimal);
                     }
 //                    Bukkit.broadcastMessage(String.valueOf((minutes * 60) + seconds));
+                    if(!majorEvent && !preparingEvent) {
+                    for(Player onlinePlayer : Bukkit.getOnlinePlayers()) {
+                        BossBarManager manager = PlayerManager.bossBars.get(onlinePlayer);
+                        Audience audiences = PitSim.INSTANCE.adventure().player(onlinePlayer);
+                        manager.hideActiveBossBar(audiences);
+                    }
+                    }
                 }
             }.runTaskTimer(PitSim.INSTANCE, 0L, 20L);
 

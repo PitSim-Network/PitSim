@@ -1,6 +1,7 @@
 package dev.kyro.pitsim.placeholders;
 
 import dev.kyro.arcticapi.hooks.APAPIPlaceholder;
+import dev.kyro.pitsim.controllers.AFKManager;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import org.bukkit.entity.Player;
 
@@ -15,6 +16,7 @@ public class SuffixPlaceholder implements APAPIPlaceholder {
 	public String getValue(Player player) {
 
 		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
-		return pitPlayer.bounty != 0 ? "&7 &6&l" + pitPlayer.bounty + "g" : "";
+		if(AFKManager.AFKPlayers.contains(player)) return "&8 [AFK]";
+		else return pitPlayer.bounty != 0 ? "&7 &6&l" + pitPlayer.bounty + "g" : "";
 	}
 }

@@ -61,10 +61,10 @@ public class Explosive extends PitEnchant {
 
 				if(player != shooter) {
 
-					if(BypassManager.bypassExplosive.contains(player)) {
-						BypassManager.bypassExplosive.remove(player);
-					}
-					BypassManager.bypassExplosive.add(player);
+//					if(BypassManager.bypassExplosive.contains(player)) {
+//						BypassManager.bypassExplosive.remove(player);
+//					}
+//					BypassManager.bypassExplosive.add(player);
 					PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
 
 
@@ -74,12 +74,12 @@ public class Explosive extends PitEnchant {
 								.setY(1).normalize().multiply(non == null ? 1.15 : 5);
 //					force.setY(.85f);
 						player.setVelocity(force);
-						new BukkitRunnable() {
-							@Override
-							public void run() {
-								BypassManager.bypassExplosive.remove(player);
-							}
-						}.runTaskLater(PitSim.INSTANCE, 20L);
+//						new BukkitRunnable() {
+//							@Override
+//							public void run() {
+//								BypassManager.bypassExplosive.remove(player);
+//							}
+//						}.runTaskLater(PitSim.INSTANCE, 20L);
 					}
 				}
 			}

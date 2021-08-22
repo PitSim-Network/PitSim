@@ -46,19 +46,19 @@ public class PushComesToShove extends PitEnchant {
 		Vector velocity = attackEvent.arrow.getVelocity().normalize().multiply(getPunchMultiplier(enchantLvl) / 2.35);
 		velocity.setY(0);
 
-		if(BypassManager.bypassPCTS.contains(attackEvent.defender)) {
-			BypassManager.bypassPCTS.remove(attackEvent.defender);
-		}
-		BypassManager.bypassPCTS.add(attackEvent.defender);
+//		if(BypassManager.bypassPCTS.contains(attackEvent.defender)) {
+//			BypassManager.bypassPCTS.remove(attackEvent.defender);
+//		}
+//		BypassManager.bypassPCTS.add(attackEvent.defender);
 
 		attackEvent.defender.setVelocity(velocity);
 
-		new BukkitRunnable() {
-			@Override
-			public void run() {
-				BypassManager.bypassPCTS.remove(attackEvent.defender);
-			}
-		}.runTaskLater(PitSim.INSTANCE, 40L);
+//		new BukkitRunnable() {
+//			@Override
+//			public void run() {
+//				BypassManager.bypassPCTS.remove(attackEvent.defender);
+//			}
+//		}.runTaskLater(PitSim.INSTANCE, 40L);
 	}
 
 	@Override

@@ -1,5 +1,6 @@
 package dev.kyro.pitsim.pitevents;
 
+import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.arcticapi.misc.ASound;
 import dev.kyro.arcticapi.misc.AUtil;
 import dev.kyro.pitsim.PitSim;
@@ -20,11 +21,9 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.entity.EntityRegainHealthEvent;
+import org.bukkit.event.inventory.InventoryAction;
 import org.bukkit.event.inventory.InventoryClickEvent;
-import org.bukkit.event.player.PlayerCommandPreprocessEvent;
-import org.bukkit.event.player.PlayerJoinEvent;
-import org.bukkit.event.player.PlayerMoveEvent;
-import org.bukkit.event.player.PlayerQuitEvent;
+import org.bukkit.event.player.*;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.potion.PotionEffectType;
@@ -81,7 +80,7 @@ public class Juggernaut extends PitEvent {
 		    for(ItemStack itemStack : player.getInventory()) {
 			    if(!Misc.isAirOrNull(itemStack) && itemStack.getType().equals(Material.COMPASS)) player.getInventory().remove(itemStack);
 		    }
-		    player.teleport(MapManager.getPlayerSpawn());
+		    if(!AFKManager.AFKPlayers.contains(player)) player.teleport(MapManager.getPlayerSpawn());
 		    player.setGameMode(GameMode.SURVIVAL);
 	    }
 	    juggernaut.getInventory().remove(sword);
@@ -222,9 +221,19 @@ public class Juggernaut extends PitEvent {
     @EventHandler
     public void onClick(InventoryClickEvent event) {
         if(PitEventManager.activeEvent != this) return;
+        if(event.getAction().equals(InventoryAction.DROP_ONE_SLOT) || event.getAction().equals(InventoryAction.DROP_ALL_SLOT) || event.getAction().equals(InventoryAction.DROP_ALL_CURSOR) || event.getAction().equals(InventoryAction.DROP_ONE_CURSOR)) {
+        	event.setCancelled(true);
+	    }
         if(event.getWhoClicked() == juggernaut && event.getSlot() == swordSlot) event.setCancelled(true);
         if(event.getWhoClicked() != juggernaut && event.getSlot() == 8) event.setCancelled(true);
 
+    }
+
+    @EventHandler
+    public void onDrop(PlayerDropItemEvent event) {
+	    if(PitEventManager.activeEvent != this) return;
+	    if(event.getPlayer() == juggernaut && event.getPlayer().getInventory().getHeldItemSlot() == swordSlot) event.setCancelled(true);
+	    if(event.getPlayer() != juggernaut && event.getPlayer().getInventory().getHeldItemSlot() == 8) event.setCancelled(true);
     }
 
     @EventHandler
@@ -327,11 +336,6 @@ public class Juggernaut extends PitEvent {
 
 	public void endEvent() {
 		PitEventManager.majorEvent = false;
-		for(Player onlinePlayer : Bukkit.getOnlinePlayers()) {
-			BossBarManager manager = PlayerManager.bossBars.get(onlinePlayer);
-			Audience audiences = PitSim.INSTANCE.adventure().player(onlinePlayer);
-			manager.hideActiveBossBar(audiences);
-		}
 		PitEventManager.endEvent(this);
 	}
 
@@ -347,28 +351,17 @@ public class Juggernaut extends PitEvent {
     public void pickJuggernaut() throws Exception {
 	    List<Player> keysAsArray = new ArrayList<>();
 
-	    for(Map.Entry<Player, Integer> playerIntegerEntry : movements.entrySet()) {
-		    if(playerIntegerEntry.getValue() > 300) keysAsArray.add(playerIntegerEntry.getKey());
+	    ArrayList<Player> allPlayers = new ArrayList<Player>(Bukkit.getOnlinePlayers());
+	    int random = new Random().nextInt(allPlayers.size());
+	    Player picked = allPlayers.get(random);
+
+		    makeJuggernaut(picked);
 	    }
 
-			if(keysAsArray.size() <= 2) {
-				cancelEvent();
-				return;
-			}
 
-		    Random r = new Random();
-		    Player randomPlayer = keysAsArray.get(r.nextInt(keysAsArray.size()));
-
-		    makeJuggernaut(randomPlayer);
-	    }
-
-	    public void cancelEvent() {
-    	Bukkit.broadcastMessage(ChatColor.translateAlternateColorCodes('&', "&c&llEVENT CANCELED! &7Not enough active players."));
-    	endEvent();
-	    }
 
     public void makeJuggernaut(Player player) throws Exception {
-    	if(movements.get(player) < 300) {
+    	if(AFKManager.AFKPlayers.contains(player)) {
     		pickJuggernaut();
     		return;
 	    }
@@ -425,7 +418,7 @@ public class Juggernaut extends PitEvent {
             player.getInventory().setItem(compassSlot, compass);
             if(!Misc.isAirOrNull(slotItem))AUtil.giveItemSafely(player, slotItem);
 
-	    if(movements.get(player) < 300) return;
+	    if(AFKManager.AFKPlayers.contains(player)) return;
 	    player.teleport(getLocation("PlayerSpawn"));
     }
 
@@ -577,7 +570,11 @@ public class Juggernaut extends PitEvent {
 				    for(Player player : Bukkit.getOnlinePlayers()) {
 					    player.setCompassTarget(juggernaut.getLocation());
 				    }
-				    Misc.applyPotionEffect(juggernaut, PotionEffectType.DAMAGE_RESISTANCE, 40, 0, false, false);
+				    int resistanceLevel = 0;
+				    if(AFKManager.onlineActivePlayers > 5 && AFKManager.onlineActivePlayers <= 10) resistanceLevel = 1;
+				    if(AFKManager.onlineActivePlayers > 10) resistanceLevel = 2;
+
+				    Misc.applyPotionEffect(juggernaut, PotionEffectType.DAMAGE_RESISTANCE, 40, resistanceLevel, false, false);
 				    juggernaut.getWorld().spigot().playEffect(juggernaut.getLocation(),
 						    Effect.FLAME, 0, 2, 0F, 1F, 0F,0.08F, 100, 6);
 			    }

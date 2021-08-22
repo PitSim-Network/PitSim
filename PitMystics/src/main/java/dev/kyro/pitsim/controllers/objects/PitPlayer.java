@@ -5,6 +5,7 @@ import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.controllers.LevelManager;
 import dev.kyro.pitsim.controllers.NonManager;
 import dev.kyro.pitsim.controllers.PerkManager;
+import dev.kyro.pitsim.controllers.PitEventManager;
 import dev.kyro.pitsim.enchants.Hearts;
 import dev.kyro.pitsim.enums.AChatColor;
 import dev.kyro.pitsim.enums.DeathCry;
@@ -140,7 +141,7 @@ public class PitPlayer {
 	}
 
 	public void endKillstreak() {
-		megastreak.reset();
+		if(!PitEventManager.majorEvent) megastreak.reset();
 		killstreaks.forEach(Killstreak::reset);
 		kills = 0;
 		latestKillAnnouncement = 0;

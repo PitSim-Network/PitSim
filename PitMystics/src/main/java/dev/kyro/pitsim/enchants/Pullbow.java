@@ -32,11 +32,11 @@ public class Pullbow extends PitEnchant {
 		Cooldown cooldown = getCooldown(attackEvent.attacker, 160);
 		if(cooldown.isOnCooldown()) return; else cooldown.reset();
 
-		if(BypassManager.bypassPullbow.contains(attackEvent.defender)) {
-			BypassManager.bypassPullbow.remove(attackEvent.defender);
-			BypassManager.bypassPullbow.add(attackEvent.defender);
-		}
-		else BypassManager.bypassPullbow.add(attackEvent.defender);
+//		if(BypassManager.bypassPullbow.contains(attackEvent.defender)) {
+//			BypassManager.bypassPullbow.remove(attackEvent.defender);
+//			BypassManager.bypassPullbow.add(attackEvent.defender);
+//		}
+//		else BypassManager.bypassPullbow.add(attackEvent.defender);
 
 		PitPlayer pitPlayer = PitPlayer.getPitPlayer(attackEvent.defender);
 		if(pitPlayer.megastreak.getClass() == Uberstreak.class && pitPlayer.megastreak.isOnMega()) return;
@@ -44,12 +44,12 @@ public class Pullbow extends PitEnchant {
 		Vector pullVector = dirVector.clone().normalize().setY(0.5).multiply(2.5).add(dirVector.clone().multiply(0.03));
 		attackEvent.defender.setVelocity(pullVector.multiply(getMultiplier(enchantLvl)));
 
-		new BukkitRunnable() {
-			@Override
-			public void run() {
-				BypassManager.bypassPullbow.remove(attackEvent.defender);
-			}
-		}.runTaskLater(PitSim.INSTANCE, 40L);
+//		new BukkitRunnable() {
+//			@Override
+//			public void run() {
+//				BypassManager.bypassPullbow.remove(attackEvent.defender);
+//			}
+//		}.runTaskLater(PitSim.INSTANCE, 40L);
 
 	}
 
