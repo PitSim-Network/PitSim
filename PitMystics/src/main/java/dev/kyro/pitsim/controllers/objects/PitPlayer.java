@@ -37,6 +37,7 @@ public class PitPlayer {
 	public int remainingXP = 21;
 	public int playerKills = 0;
 	public PitPerk[] pitPerks = new PitPerk[4];
+	public int renown;
 
 	private double kills = 0;
 	public int bounty = 0;
@@ -103,6 +104,8 @@ public class PitPlayer {
 				ChatColorPanel.playerChatColors.put(player, chatColor);
 			}
 
+			if(playerData.contains("renown")) renown = playerData.getInt("renown");
+
 			disabledBounties = playerData.getBoolean("disabledbounties");
 			disabledStreaks = playerData.getBoolean("disabledstreaks");
 			disabledKillFeed = playerData.getBoolean("disabledkillfeed");
@@ -117,6 +120,8 @@ public class PitPlayer {
 			if(streak == "Highlander") this.megastreak = new Highlander(this);
 			if(streak == "Overdrive") this.megastreak = new Overdrive(this);
 			if(streak == "Uberstreak") this.megastreak = new Uberstreak(this);
+
+
 
 
 		}

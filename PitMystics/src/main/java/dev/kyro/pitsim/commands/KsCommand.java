@@ -6,6 +6,8 @@ import dev.kyro.pitsim.controllers.BossBarManager;
 import dev.kyro.pitsim.controllers.LevelManager;
 import dev.kyro.pitsim.controllers.PlayerManager;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
+import dev.kyro.pitsim.inventories.PerkGUI;
+import dev.kyro.pitsim.inventories.RenownShopGUI;
 import dev.kyro.pitsim.killstreaks.Highlander;
 import dev.kyro.pitsim.killstreaks.Uberstreak;
 import dev.kyro.pitsim.misc.FunkyFeather;
@@ -49,7 +51,10 @@ public class KsCommand implements CommandExecutor {
 
 //        player.sendMessage(LevelManager.getXP(Integer.parseInt(args[0])) + " " + LevelManager.getPlayerKills(Integer.parseInt(args[0])));
 
-        Bukkit.broadcastMessage(CaptureTheFlag.respawningPlayers.toString());
+//        Bukkit.broadcastMessage(CaptureTheFlag.respawningPlayers.toString());
+
+        RenownShopGUI renownShopGUI = new RenownShopGUI(player);
+        renownShopGUI.open();
 
         return false;
     }
