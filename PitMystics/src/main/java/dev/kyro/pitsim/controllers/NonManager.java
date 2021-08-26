@@ -3,6 +3,7 @@ package dev.kyro.pitsim.controllers;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.commands.ATestCommand;
 import dev.kyro.pitsim.controllers.objects.Non;
+import net.citizensnpcs.api.CitizensAPI;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;

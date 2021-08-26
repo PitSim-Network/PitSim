@@ -16,6 +16,9 @@ import dev.kyro.pitsim.misc.KillEffects;
 import dev.kyro.pitsim.misc.Misc;
 import dev.kyro.pitsim.misc.TokenOfAppreciation;
 import me.clip.placeholderapi.PlaceholderAPI;
+import net.citizensnpcs.api.CitizensAPI;
+import net.citizensnpcs.api.npc.NPC;
+import net.citizensnpcs.api.npc.NPCRegistry;
 import net.kyori.adventure.audience.Audience;
 import net.kyori.adventure.platform.bukkit.BukkitAudiences;
 import net.md_5.bungee.api.chat.TextComponent;
@@ -53,6 +56,13 @@ public class PlayerManager implements Listener {
 
 	@EventHandler
 	public static void onKill(KillEvent killEvent) {
+
+		if(SpawnManager.isInSpawn(killEvent.killer.getLocation()) && SpawnManager.isInSpawn(killEvent.dead.getLocation())) {
+			NPCRegistry nons = CitizensAPI.getNPCRegistry();
+			for(NPC non : nons) {
+				if(SpawnManager.isInSpawn(non.getStoredLocation())) non.destroy();
+			}
+		}
 
 		PitPlayer pitKiller = PitPlayer.getPitPlayer(killEvent.killer);
 		PitPlayer pitDead = PitPlayer.getPitPlayer(killEvent.dead);

@@ -6,6 +6,7 @@ import dev.kyro.arcticapi.gui.AGUIPanel;
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.arcticapi.misc.ASound;
 import dev.kyro.arcticapi.misc.AUtil;
+import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.enums.RenownUpgrade;
 import dev.kyro.pitsim.misc.RenownUpgradeDisplays;
 import org.bukkit.ChatColor;
@@ -26,6 +27,7 @@ import java.util.List;
 public class RenownShopConfirmPanel extends AGUIPanel {
 
     FileConfiguration playerData = APlayerData.getPlayerData(player);
+    PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
     public RenownShopGUI renownShopGUI;
     public RenownShopConfirmPanel(AGUI gui) {
         super(gui);
@@ -55,7 +57,11 @@ public class RenownShopConfirmPanel extends AGUIPanel {
                     if(playerData.contains(upgrade.name()))
                         playerData.set(upgrade.name(), RenownUpgrade.getTier(player, upgrade) + 1);
                         else playerData.set(upgrade.name(), 1);
-                } else playerData.set(upgrade.name(), true);
+                        pitPlayer.renown = pitPlayer.renown - upgrade.tierCosts.get(RenownUpgrade.getTier(player, upgrade) - 1);
+                } else {
+                    playerData.set(upgrade.name(), 0);
+                    pitPlayer.renown = pitPlayer.renown - upgrade.renownCost;
+                }
                 RenownShopGUI.purchaseConfirmations.remove(player);
                 openPanel(renownShopGUI.getHomePanel());
 
