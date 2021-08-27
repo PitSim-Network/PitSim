@@ -5,7 +5,9 @@ import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.enums.RenownUpgrade;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
@@ -15,6 +17,11 @@ import java.util.List;
 
 public class RenownUpgradeDisplays {
 
+	public static List<Integer> goldBoostCosts = Arrays.asList(10, 12, 14, 16, 18, 20, 22, 24, 26, 28);
+	public static List<Integer> XPBoostCosts = Arrays.asList(10, 12, 14, 16, 18, 20, 22, 24, 26, 28);
+	public static List<Integer> tenacityCosts = Arrays.asList(10, 50);
+	public static List<Integer> uberIncreaseCosts = Arrays.asList(25, 50, 75, 100, 125);
+	public static List<Integer> divineCosts = Arrays.asList(25, 50, 75);
 
 	public static ItemStack getDisplayItem(RenownUpgrade upgrade, Player player) {
 		if(upgrade.equals(RenownUpgrade.GOLD_BOOST)) {
@@ -63,6 +70,94 @@ public class RenownUpgradeDisplays {
 			item.setItemMeta(meta);
 			return item;
 		}
+		if(upgrade.equals(RenownUpgrade.STREAKER)) {
+			ItemStack item = new ItemStack(Material.WHEAT);
+			ItemMeta meta = item.getItemMeta();
+			meta.setDisplayName(itemNameString(upgrade, player));
+			List<String> lore = new ArrayList<>();
+			lore.add(ChatColor.GRAY + "Required level: " + ChatColor.YELLOW + upgrade.levelReq);
+			lore.add("");
+			lore.add(ChatColor.YELLOW + "Streaker");
+			lore.add(ChatColor.translateAlternateColorCodes('&', "&7Upon reaching your &emegastreak&7,"));
+			lore.add(ChatColor.translateAlternateColorCodes('&', "&7gain &b+100 max XP &7if it took &f30 &7or"));
+			lore.add(ChatColor.translateAlternateColorCodes('&', "&7less seconds. Subtracts &b10 max"));
+			lore.add(ChatColor.translateAlternateColorCodes('&', "&bXP &7per additional &f10 &7seconds."));
+			meta.setLore(loreBuilder(upgrade, player, lore));
+			item.setItemMeta(meta);
+			return item;
+		}
+		if(upgrade.equals(RenownUpgrade.DIVINE_INTERVENTION)) {
+			ItemStack item = new ItemStack(Material.QUARTZ_STAIRS);
+			ItemMeta meta = item.getItemMeta();
+			meta.setDisplayName(itemNameString(upgrade, player));
+			List<String> lore = new ArrayList<>();
+			if(RenownUpgrade.hasUpgrade(player, upgrade)) lore.add(ChatColor.translateAlternateColorCodes('&',
+					"&7Current: &e" + (5 * RenownUpgrade.getTier(player, upgrade)) + "% chance"));
+			if(RenownUpgrade.hasUpgrade(player, upgrade)) lore.add(ChatColor.GRAY + "Tier: " + ChatColor.GREEN + AUtil.toRoman(RenownUpgrade.getTier(player, upgrade)));
+			if(RenownUpgrade.hasUpgrade(player, upgrade)) lore.add("");
+			lore.add(ChatColor.GRAY + "Each tier:");
+			lore.add(ChatColor.YELLOW + "+5% chance " + ChatColor.GRAY + "to keep your");
+			lore.add(ChatColor.GRAY + "inventory on death.");
+			meta.setLore(loreBuilder(upgrade, player, lore));
+			item.setItemMeta(meta);
+			return item;
+		}
+		if(upgrade.equals(RenownUpgrade.UBER_INCREASE)) {
+			ItemStack item = new ItemStack(Material.WATCH);
+			ItemMeta meta = item.getItemMeta();
+			meta.addEnchant(Enchantment.ARROW_FIRE, 1, false);
+			meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
+			meta.setDisplayName(itemNameString(upgrade, player));
+			List<String> lore = new ArrayList<>();
+			if(RenownUpgrade.hasUpgrade(player, upgrade)) lore.add(ChatColor.translateAlternateColorCodes('&',
+					"&7Current: &f+" + RenownUpgrade.getTier(player, upgrade) + " &7daily &dUberstreaks"));
+			if(RenownUpgrade.hasUpgrade(player, upgrade)) lore.add(ChatColor.GRAY + "Tier: " + ChatColor.GREEN + AUtil.toRoman(RenownUpgrade.getTier(player, upgrade)));
+			if(RenownUpgrade.hasUpgrade(player, upgrade)) lore.add("");
+			lore.add(ChatColor.GRAY + "Each tier:");
+			lore.add(ChatColor.GRAY + "Daily " + ChatColor.LIGHT_PURPLE + "Uberstreak "  + ChatColor.GRAY + "limit is");
+			lore.add(ChatColor.GRAY + "increased by " + ChatColor.WHITE + 1 + ChatColor.GRAY + ".");
+			meta.setLore(loreBuilder(upgrade, player, lore));
+			item.setItemMeta(meta);
+			return item;
+		}
+		if(upgrade.equals(RenownUpgrade.WITHERCRAFT)) {
+			ItemStack item = new ItemStack(Material.EYE_OF_ENDER);
+			ItemMeta meta = item.getItemMeta();
+			meta.setDisplayName(itemNameString(upgrade, player));
+			List<String> lore = new ArrayList<>();
+			lore.add(ChatColor.GRAY + "Ability to right-click a");
+			lore.add(ChatColor.DARK_PURPLE + "Chunk of Vile " + ChatColor.GRAY + "and sacrifice");
+			lore.add(ChatColor.GRAY + "it to repair a life on a ");
+			lore.add(ChatColor.DARK_AQUA + "Jewel " + ChatColor.GRAY + "item.");
+			meta.setLore(loreBuilder(upgrade, player, lore));
+			item.setItemMeta(meta);
+			return item;
+		}
+		if(upgrade.equals(RenownUpgrade.FIRST_STRIKE)) {
+			ItemStack item = new ItemStack(Material.COOKED_CHICKEN);
+			ItemMeta meta = item.getItemMeta();
+			meta.setDisplayName(itemNameString(upgrade, player));
+			List<String> lore = new ArrayList<>();
+			lore.add(ChatColor.GRAY + "Required level: " + ChatColor.YELLOW + upgrade.levelReq);
+			lore.add("");
+			lore.add(ChatColor.YELLOW + "First Strike");
+			lore.add(ChatColor.translateAlternateColorCodes('&', "&7First hit on a player deals"));
+			lore.add(ChatColor.translateAlternateColorCodes('&', "&c+35% damage &7and grants"));
+			lore.add(ChatColor.translateAlternateColorCodes('&', "&eSpeed I &7(5s)"));
+			meta.setLore(loreBuilder(upgrade, player, lore));
+			item.setItemMeta(meta);
+			return item;
+		}
+		if(upgrade.equals(RenownUpgrade.IMPATIENT)) {
+			ItemStack item = new ItemStack(Material.CARROT_ITEM);
+			ItemMeta meta = item.getItemMeta();
+			meta.setDisplayName(itemNameString(upgrade, player));
+			List<String> lore = new ArrayList<>();
+			lore.add(ChatColor.GRAY + "Gain Speed II in spawn area.");
+			meta.setLore(loreBuilder(upgrade, player, lore));
+			item.setItemMeta(meta);
+			return item;
+		}
 
 		return null;
 	}
@@ -105,7 +200,7 @@ public class RenownUpgradeDisplays {
 			lore.add("");
 		}
 		if(!upgrade.isTiered && !RenownUpgrade.hasUpgrade(player, upgrade)) {
-			lore.add(ChatColor.translateAlternateColorCodes('&', "&7Cost: &e" + upgrade.tierCosts.get(RenownUpgrade.getTier(player, upgrade)) + " Renown"));
+			lore.add(ChatColor.translateAlternateColorCodes('&', "&7Cost: &e" + upgrade.renownCost + " Renown"));
 			lore.add(ChatColor.translateAlternateColorCodes('&', "&7You have: &e" + pitPlayer.renown + " Renown"));
 			lore.add("");
 		}
@@ -114,7 +209,4 @@ public class RenownUpgradeDisplays {
 		return lore;
 	}
 
-	public static List<Integer> goldBoostCosts = Arrays.asList(10, 12, 14, 16, 18, 20, 22, 24, 26, 28);
-	public static List<Integer> XPBoostCosts = Arrays.asList(10, 12, 14, 16, 18, 20, 22, 24, 26, 28);
-	public static List<Integer> TenacityCosts = Arrays.asList(10, 50);
 }

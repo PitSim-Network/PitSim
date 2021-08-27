@@ -17,6 +17,7 @@ public class Sweaty extends PitEnchant {
 		super("Sweaty", false, ApplyType.ALL,
 				"sweaty", "sweaty", "sw");
 		isUncommonEnchant = true;
+		levelStacks = true;
 	}
 
 	@EventHandler
@@ -48,11 +49,13 @@ public class Sweaty extends PitEnchant {
 
 		switch(enchantLvl) {
 			case 1:
-				return 3;
 			case 2:
-				return 2;
 			case 3:
 				return 1;
+			case 4:
+			case 5:
+			case 6:
+				return 2;
 		}
 		return 0;
 	}
@@ -61,11 +64,17 @@ public class Sweaty extends PitEnchant {
 
 		switch(enchantLvl) {
 			case 1:
-				return 10;
+				return 5;
 			case 2:
-				return 25;
+				return 10;
 			case 3:
-				return 50;
+				return 15;
+			case 4:
+				return 20;
+			case 5:
+				return 25;
+			case 6:
+				return 30;
 		}
 		return 0;
 	}

@@ -16,10 +16,13 @@ import java.util.List;
 public enum RenownUpgrade {
     GOLD_BOOST("Renown Gold Boost", 10, 0, 1, true, 10, RenownUpgradeDisplays.goldBoostCosts),
     XP_BOOST("Renown XP Boost", 10,  1, 1, true, 10, RenownUpgradeDisplays.XPBoostCosts),
-    TENACITY("Tenacity", 10,  2, 10, true, 2, RenownUpgradeDisplays.TenacityCosts);
-
-
-
+    TENACITY("Tenacity", 10,  2, 10, true, 2, RenownUpgradeDisplays.tenacityCosts),
+    STREAKER("Perk unlock: Streaker", 20, 3, 25, false, 0, null),
+    UBER_INCREASE("Uberstreak Limit Increase", 25, 4, 30, true, 5, RenownUpgradeDisplays.uberIncreaseCosts),
+    DIVINE_INTERVENTION("Divine Intervention", 25, 5, 25, true, 3, RenownUpgradeDisplays.divineCosts),
+    WITHERCRAFT("Withercraft", 50, 6, 30, false, 0, null),
+    FIRST_STRIKE("Perk unlock: First Strike", 15, 7, 10, false, 0, null),
+    IMPATIENT("Impatient", 10, 8, 10, false, 0, null);
 
 
     public String refName;

@@ -56,6 +56,11 @@ public class KsCommand implements CommandExecutor {
         RenownShopGUI renownShopGUI = new RenownShopGUI(player);
         renownShopGUI.open();
 
+        if(args.length > 0) {
+            PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
+            if(args[0].equalsIgnoreCase("renown")) pitPlayer.renown += 50;
+        }
+
         return false;
     }
 }
