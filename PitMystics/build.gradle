@@ -22,7 +22,7 @@ repositories {
 }
 
 dependencies {
-    implementation 'org.jetbrains:annotations:20.1.0'
+    implementation 'org.jetbrains:annotations:22.0.0'
 //    compileOnly 'org.spigotmc:spigot:1.8.8-R0.1-SNAPSHOT'
     compileOnly files('libs/ispigot.jar')
     compileOnly 'net.citizensnpcs:citizens-main:2.0.27-SNAPSHOT'
