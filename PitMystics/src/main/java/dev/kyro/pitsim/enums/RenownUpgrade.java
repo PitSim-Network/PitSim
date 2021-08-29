@@ -22,7 +22,9 @@ public enum RenownUpgrade {
     DIVINE_INTERVENTION("Divine Intervention", 25, 5, 25, true, 3, RenownUpgradeDisplays.divineCosts),
     WITHERCRAFT("Withercraft", 50, 6, 30, false, 0, null),
     FIRST_STRIKE("Perk unlock: First Strike", 15, 7, 10, false, 0, null),
-    IMPATIENT("Impatient", 10, 8, 10, false, 0, null);
+    IMPATIENT("Impatient", 10, 8, 10, false, 0, null),
+    HELMETRY("Helmetry", 25, 9, 15, false, 0, null),
+    GEM("Gem", 40, 10, 40, true, 10, RenownUpgradeDisplays.gemPrices);
 
 
     public String refName;

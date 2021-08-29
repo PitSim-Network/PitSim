@@ -22,6 +22,7 @@ public class RenownUpgradeDisplays {
 	public static List<Integer> tenacityCosts = Arrays.asList(10, 50);
 	public static List<Integer> uberIncreaseCosts = Arrays.asList(25, 50, 75, 100, 125);
 	public static List<Integer> divineCosts = Arrays.asList(25, 50, 75);
+	public static List<Integer> gemPrices = Arrays.asList(40, 45, 50 , 55, 60, 70, 80, 90, 100, 120);
 
 	public static ItemStack getDisplayItem(RenownUpgrade upgrade, Player player) {
 		if(upgrade.equals(RenownUpgrade.GOLD_BOOST)) {
@@ -154,6 +155,18 @@ public class RenownUpgradeDisplays {
 			meta.setDisplayName(itemNameString(upgrade, player));
 			List<String> lore = new ArrayList<>();
 			lore.add(ChatColor.GRAY + "Gain Speed II in spawn area.");
+			meta.setLore(loreBuilder(upgrade, player, lore));
+			item.setItemMeta(meta);
+			return item;
+		}
+		if(upgrade.equals(RenownUpgrade.HELMETRY)) {
+			ItemStack item = new ItemStack(Material.GOLD_HELMET);
+			ItemMeta meta = item.getItemMeta();
+			meta.setDisplayName(itemNameString(upgrade, player));
+			List<String> lore = new ArrayList<>();
+			lore.add(ChatColor.translateAlternateColorCodes('&', "&7Unlock the ability to craft &6Golden Helmets"));
+			lore.add(ChatColor.translateAlternateColorCodes('&', "&7for &e10 Renown &7each. &6Golden Helmets &7can"));
+			lore.add(ChatColor.translateAlternateColorCodes('&', "&7be upgraded by putting &7gold &7into them."));
 			meta.setLore(loreBuilder(upgrade, player, lore));
 			item.setItemMeta(meta);
 			return item;

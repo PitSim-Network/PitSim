@@ -55,7 +55,7 @@ public class CaptureTheFlag extends PitEvent {
     public static CaptureTheFlag INSTANCE;
 
     public CaptureTheFlag() {
-        super("Capture The Flag", 5, true,"CTF", ChatColor.GREEN);
+        super("Capture The Flag", 5, true, "CTF", ChatColor.GREEN);
         INSTANCE = this;
     }
 

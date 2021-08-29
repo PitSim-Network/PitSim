@@ -9,6 +9,7 @@ import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.enums.ApplyType;
 import dev.kyro.pitsim.events.AttackEvent;
 import dev.kyro.pitsim.killstreaks.Uberstreak;
+import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
@@ -25,12 +26,17 @@ public class Pullbow extends PitEnchant {
 	@EventHandler
 	public void onAttack(AttackEvent.Apply attackEvent) {
 		if(!canApply(attackEvent)) return;
+		Bukkit.broadcastMessage("test");
 
 		int enchantLvl = attackEvent.getAttackerEnchantLevel(this);
 		if(enchantLvl == 0) return;
 
+		Bukkit.broadcastMessage("test2");
+
 		Cooldown cooldown = getCooldown(attackEvent.attacker, 160);
 		if(cooldown.isOnCooldown()) return; else cooldown.reset();
+
+		Bukkit.broadcastMessage("test3");
 
 //		if(BypassManager.bypassPullbow.contains(attackEvent.defender)) {
 //			BypassManager.bypassPullbow.remove(attackEvent.defender);
@@ -40,9 +46,12 @@ public class Pullbow extends PitEnchant {
 
 		PitPlayer pitPlayer = PitPlayer.getPitPlayer(attackEvent.defender);
 		if(pitPlayer.megastreak.getClass() == Uberstreak.class && pitPlayer.megastreak.isOnMega()) return;
+		Bukkit.broadcastMessage("test4");
 		Vector dirVector = attackEvent.attacker.getLocation().toVector().subtract(attackEvent.defender.getLocation().toVector()).setY(0);
 		Vector pullVector = dirVector.clone().normalize().setY(0.5).multiply(2.5).add(dirVector.clone().multiply(0.03));
+		Bukkit.broadcastMessage("test5");
 		attackEvent.defender.setVelocity(pullVector.multiply(getMultiplier(enchantLvl)));
+		Bukkit.broadcastMessage("test6");
 
 //		new BukkitRunnable() {
 //			@Override

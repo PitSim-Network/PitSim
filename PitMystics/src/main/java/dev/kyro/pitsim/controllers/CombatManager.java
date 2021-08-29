@@ -74,6 +74,7 @@ public class CombatManager implements Listener {
 
    @EventHandler
     public static void onLeave(PlayerQuitEvent event) {
+        event.getPlayer().closeInventory();
         PlayerManager.bossBars.remove(event.getPlayer());
         PitEventManager.kills.remove(event.getPlayer());
         PitEventManager.bounty.remove(event.getPlayer());
