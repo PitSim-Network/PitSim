@@ -209,9 +209,9 @@ public class PitEventManager {
 				float first = (float) (minutes * 60) + (float) seconds;
 				float second = (float) (startminutes * 60) + (float) startseconds;
 				float decimal = first / second;
-				String finalseconds = (seconds < 10 ? "0" : "") + seconds;
-				String finalminutes = (minutes < 10 ? "0" : "") + minutes;
-				Component newComponent = Component.text(message + " " + numcolor + finalminutes + ":" + finalseconds);
+				String finalSeconds = (seconds < 10 ? "0" : "") + seconds;
+				String finalMinutes = (minutes < 10 ? "0" : "") + minutes;
+				Component newComponent = Component.text(message + " " + numcolor + finalMinutes + ":" + finalSeconds);
 				for(Player onlinePlayer : Bukkit.getOnlinePlayers()) {
 					BossBarManager manager = PlayerManager.bossBars.get(onlinePlayer);
 					Audience audiences = PitSim.INSTANCE.adventure().player(onlinePlayer);

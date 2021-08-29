@@ -63,7 +63,6 @@ public class GottaGoFast extends PitEnchant {
 		return new ALoreBuilder("&7Move &e" + Misc.roundString(getWalkSpeedLore(enchantLvl)) + "&e% faster &7at all times").getLore();
 	}
 
-//	TODO: GTGF equation
 	public float getWalkSpeed(int enchantLvl) {
 
 		return 0.2F + (0.2F * (getWalkSpeedLore(enchantLvl) / 100));
