@@ -50,7 +50,7 @@ public class Booboo extends PitEnchant {
 						pitPlayer.heal(2);
 					} else if(level == 4 && counter % 2 == 0) {
 						pitPlayer.heal(2);
-					} else if(level != 0) {
+					} else if(level > 4) {
 						pitPlayer.heal(2);
 					}
 				}
