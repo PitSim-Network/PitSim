@@ -17,14 +17,17 @@ public enum RenownUpgrade {
     GOLD_BOOST("Renown Gold Boost", 10, 0, 1, true, 10, RenownUpgradeDisplays.goldBoostCosts),
     XP_BOOST("Renown XP Boost", 10,  1, 1, true, 10, RenownUpgradeDisplays.XPBoostCosts),
     TENACITY("Tenacity", 10,  2, 10, true, 2, RenownUpgradeDisplays.tenacityCosts),
-    STREAKER("Perk unlock: Streaker", 20, 3, 25, false, 0, null),
+    STREAKER("Perk unlock: Streaker", 20, 3, 20, false, 0, null),
     UBER_INCREASE("Uberstreak Limit Increase", 25, 4, 30, true, 5, RenownUpgradeDisplays.uberIncreaseCosts),
     DIVINE_INTERVENTION("Divine Intervention", 25, 5, 25, true, 3, RenownUpgradeDisplays.divineCosts),
     WITHERCRAFT("Withercraft", 50, 6, 30, false, 0, null),
     FIRST_STRIKE("Perk unlock: First Strike", 15, 7, 10, false, 0, null),
     IMPATIENT("Impatient", 10, 8, 10, false, 0, null),
     HELMETRY("Helmetry", 25, 9, 15, false, 0, null),
-    GEM("Gem", 40, 10, 40, true, 10, RenownUpgradeDisplays.gemPrices);
+    GEM("Gem-Making", 40, 10, 40, true, 10, RenownUpgradeDisplays.gemPrices),
+    FANCY_PANTS("Shardhunter", 15, 11, 15, false, 0, null),
+    SELF_CONFIDENCE("Self Confidence", 50, 12, 20, false, 0, null),
+    LUCKY_KILL("Lucky Kill",  10, 13, 5, true, 5, RenownUpgradeDisplays.luckyKillPrices);
 
 
     public String refName;

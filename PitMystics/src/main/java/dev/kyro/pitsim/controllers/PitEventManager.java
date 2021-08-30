@@ -142,7 +142,7 @@ public class PitEventManager {
         new BukkitRunnable() {
             @Override
             public void run() {
-               if(majorEvent && activeEvent == null) endEvent(event);
+               if(majorEvent && activeEvent != null) endEvent(event);
                canceledEvent = false;
             }
         }.runTaskLater(PitSim.INSTANCE, 6000L);

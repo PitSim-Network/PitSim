@@ -23,6 +23,7 @@ public class RenownUpgradeDisplays {
 	public static List<Integer> uberIncreaseCosts = Arrays.asList(25, 50, 75, 100, 125);
 	public static List<Integer> divineCosts = Arrays.asList(25, 50, 75);
 	public static List<Integer> gemPrices = Arrays.asList(40, 45, 50 , 55, 60, 70, 80, 90, 100, 120);
+	public static List<Integer> luckyKillPrices = Arrays.asList(10, 20, 30, 40);
 
 	public static ItemStack getDisplayItem(RenownUpgrade upgrade, Player player) {
 		if(upgrade.equals(RenownUpgrade.GOLD_BOOST)) {
@@ -164,9 +165,76 @@ public class RenownUpgradeDisplays {
 			ItemMeta meta = item.getItemMeta();
 			meta.setDisplayName(itemNameString(upgrade, player));
 			List<String> lore = new ArrayList<>();
-			lore.add(ChatColor.translateAlternateColorCodes('&', "&7Unlock the ability to craft &6Golden Helmets"));
-			lore.add(ChatColor.translateAlternateColorCodes('&', "&7for &e10 Renown &7each. &6Golden Helmets &7can"));
-			lore.add(ChatColor.translateAlternateColorCodes('&', "&7be upgraded by putting &7gold &7into them."));
+			lore.add(ChatColor.translateAlternateColorCodes('&', "&7Unlock the ability to craft"));
+			lore.add(ChatColor.translateAlternateColorCodes('&', "&6Golden Helmets &7for &e10"));
+			lore.add(ChatColor.translateAlternateColorCodes('&', "&eRenown &7each. &6Golden Helmets"));
+			lore.add(ChatColor.translateAlternateColorCodes('&', "&7can be upgraded by putting &7gold"));
+			lore.add(ChatColor.translateAlternateColorCodes('&', "&7into them."));
+			meta.setLore(loreBuilder(upgrade, player, lore));
+			item.setItemMeta(meta);
+			return item;
+		}
+		if(upgrade.equals(RenownUpgrade.GEM)) {
+			ItemStack item = new ItemStack(Material.EMERALD);
+			ItemMeta meta = item.getItemMeta();
+			meta.setDisplayName(itemNameString(upgrade, player));
+			meta.addEnchant(Enchantment.ARROW_FIRE, 1, false);
+			meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
+			List<String> lore = new ArrayList<>();
+			if(RenownUpgrade.hasUpgrade(player, upgrade)) lore.add(ChatColor.translateAlternateColorCodes('&',
+					"&7Current: &f" + 0.01 * RenownUpgrade.getTier(player, upgrade) + " &f% &7drop chance"));
+			if(RenownUpgrade.hasUpgrade(player, upgrade)) lore.add(ChatColor.GRAY + "Tier: " + ChatColor.GREEN + AUtil.toRoman(RenownUpgrade.getTier(player, upgrade)));
+			if(RenownUpgrade.hasUpgrade(player, upgrade)) lore.add("");
+			lore.add(ChatColor.GRAY + "Each tier:");
+			lore.add(ChatColor.translateAlternateColorCodes('&', "&7Gain &f+0.01% &7chance to obtain a &aGem"));
+			lore.add(ChatColor.translateAlternateColorCodes('&', "&aShard &7on kill. &7Use &aGem Shards"));
+			lore.add(ChatColor.translateAlternateColorCodes('&', "&7to create &aTotally Legit Gems&7."));
+			meta.setLore(loreBuilder(upgrade, player, lore));
+			item.setItemMeta(meta);
+			return item;
+		}
+		if(upgrade.equals(RenownUpgrade.FANCY_PANTS)) {
+			ItemStack item = new ItemStack(Material.LEATHER_LEGGINGS);
+			ItemMeta meta = item.getItemMeta();
+			meta.addEnchant(Enchantment.ARROW_FIRE, 1, false);
+			meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
+			meta.setDisplayName(itemNameString(upgrade, player));
+			List<String> lore = new ArrayList<>();
+			lore.add(ChatColor.translateAlternateColorCodes('&', "&7Your pants now &eglow&7."));
+			meta.setLore(loreBuilder(upgrade, player, lore));
+			item.setItemMeta(meta);
+			return item;
+		}
+		if(upgrade.equals(RenownUpgrade.SELF_CONFIDENCE)) {
+			ItemStack item = new ItemStack(Material.PAINTING);
+			ItemMeta meta = item.getItemMeta();
+			meta.setDisplayName(itemNameString(upgrade, player));
+			List<String> lore = new ArrayList<>();
+			lore.add(ChatColor.translateAlternateColorCodes('&', "&7Earn bonus &eRenown&7:"));
+			lore.add(ChatColor.translateAlternateColorCodes('&', "&7Top 1: &e+2 Renown"));
+			lore.add(ChatColor.translateAlternateColorCodes('&', "&7Top 3: &e+1 Renown"));
+			lore.add(ChatColor.translateAlternateColorCodes('&', "&7in major events when 10"));
+			lore.add(ChatColor.translateAlternateColorCodes('&', "&7or more players are online."));
+			meta.setLore(loreBuilder(upgrade, player, lore));
+			item.setItemMeta(meta);
+			return item;
+		}
+		if(upgrade.equals(RenownUpgrade.LUCKY_KILL)) {
+			ItemStack item = new ItemStack(Material.EMERALD);
+			ItemMeta meta = item.getItemMeta();
+			meta.setDisplayName(itemNameString(upgrade, player));
+			meta.addEnchant(Enchantment.ARROW_FIRE, 1, false);
+			meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
+			List<String> lore = new ArrayList<>();
+			if(RenownUpgrade.hasUpgrade(player, upgrade)) lore.add(ChatColor.translateAlternateColorCodes('&',
+					"&7Current: &e" + RenownUpgrade.getTier(player, upgrade) + " &e% &7chance"));
+			if(RenownUpgrade.hasUpgrade(player, upgrade)) lore.add(ChatColor.GRAY + "Tier: " + ChatColor.GREEN + AUtil.toRoman(RenownUpgrade.getTier(player, upgrade)));
+			if(RenownUpgrade.hasUpgrade(player, upgrade)) lore.add("");
+			lore.add(ChatColor.GRAY + "Each tier:");
+			lore.add(ChatColor.translateAlternateColorCodes('&', "&Gain &f+0.01% &7chance when getting a"));
+			lore.add(ChatColor.translateAlternateColorCodes('&', "&yplayer kill to make it a &dLucky Kill&7."));
+			lore.add(ChatColor.translateAlternateColorCodes('&', "&7(Doubles all kill rewards including bounties"));
+			lore.add(ChatColor.translateAlternateColorCodes('&', "&7and kill requirement)"));
 			meta.setLore(loreBuilder(upgrade, player, lore));
 			item.setItemMeta(meta);
 			return item;

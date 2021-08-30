@@ -37,7 +37,7 @@ public class PitPlayer {
 	public int remainingXP = 21;
 	public int playerKills = 0;
 	public PitPerk[] pitPerks = new PitPerk[4];
-	public int renown = 50;
+	public int renown = 0;
 
 	private double kills = 0;
 	public int bounty = 0;

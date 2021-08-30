@@ -29,6 +29,8 @@ public class KsCommand implements CommandExecutor {
         if(!(sender instanceof Player)) return false;
         Player player = (Player) sender;
 
+        if(!player.isOp()) return false;
+
 //        FunkyFeather.giveFeather(player, 5);
 //        AUtil.giveItemSafely(player, ProtArmor.getArmor("helmet"));
 //        AUtil.giveItemSafely(player, ProtArmor.getArmor("chestplate"));
