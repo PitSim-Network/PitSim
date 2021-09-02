@@ -23,8 +23,8 @@ repositories {
 
 dependencies {
     implementation 'org.jetbrains:annotations:20.1.0'
-//    compileOnly 'org.spigotmc:spigot:1.8.8-R0.1-SNAPSHOT'
-    compileOnly files('libs/ispigot.jar')
+    compileOnly 'org.spigotmc:spigot:1.8.8-R0.1-SNAPSHOT'
+//    compileOnly files('libs/.jar')
     compileOnly 'net.citizensnpcs:citizens-main:2.0.27-SNAPSHOT'
     compileOnly "com.github.MilkBowl:VaultAPI:1.7"
     compileOnly "me.clip:placeholderapi:2.10.9"
@@ -36,7 +36,7 @@ dependencies {
     compile group: 'com.github.koca2000', name: 'NoteBlockAPI', version: '-SNAPSHOT'
     compile 'com.github.ArcticDevelopment:ArcticAPI:fc630bd727'
     compile 'de.tr7zw:item-nbt-api-plugin:2.8.0'
-    compileOnly files('libs/KarhuAPI.jar')
+    compileOnly files('libs/Buzz_API.jar')
     compileOnly files('libs/FeatherBoard.jar')
     compileOnly files('libs/EssentialsX.jar')
 

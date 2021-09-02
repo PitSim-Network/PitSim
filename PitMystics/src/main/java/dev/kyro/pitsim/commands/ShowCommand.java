@@ -34,10 +34,10 @@ public class ShowCommand implements CommandExecutor {
             return false;
         }
 
-       if(!item.hasItemMeta()) {
-           AOutput.error(player, "&cThis item does not have lore!");
-           return false;
-       }
+        if(!item.hasItemMeta()) {
+            AOutput.error(player, "&cThis item does not have lore!");
+            return false;
+        }
 
         StringBuilder builder = new StringBuilder();
 
@@ -46,13 +46,13 @@ public class ShowCommand implements CommandExecutor {
 
         int i = 0;
 
-            for(String s : lore) {
+        for(String s : lore) {
 
-                if(i == lore.size() - 1) builder.append(s);
-                else builder.append(s).append("\n");
+            if(i == lore.size() - 1) builder.append(s);
+            else builder.append(s).append("\n");
 
-                i++;
-            }
+            i++;
+        }
 
 
 
