@@ -160,85 +160,91 @@ public class PitSim extends JavaPlugin {
 	}
 
 	private void registerEnchants() {
+		EnchantManager.registerEnchant(new aComboVenom());
 		EnchantManager.registerEnchant(new aCPLEnchant());
-		EnchantManager.registerEnchant(new JewelHunter());
+		EnchantManager.registerEnchant(new Robinhood());
+//		EnchantManager.registerEnchant(new JewelHunter());
 
 //		EnchantManager.registerEnchant(new ThePunch());
 		EnchantManager.registerEnchant(new Billionaire());
-		EnchantManager.registerEnchant(new Gamble());
-		EnchantManager.registerEnchant(new Executioner());
 		EnchantManager.registerEnchant(new ComboPerun());
-		EnchantManager.registerEnchant(new ComboDamage());
-		EnchantManager.registerEnchant(new ComboHeal());
-		EnchantManager.registerEnchant(new Punisher());
-		EnchantManager.registerEnchant(new KingBuster());
-//		EnchantManager.registerEnchant(new Bruiser());
-		EnchantManager.registerEnchant(new BeatTheSpammers());
-		EnchantManager.registerEnchant(new Sharp());
-		EnchantManager.registerEnchant(new Crush());
-		EnchantManager.registerEnchant(new SpeedyHit());
-		EnchantManager.registerEnchant(new ComboSwift());
-		EnchantManager.registerEnchant(new DiamondStomp());
-		EnchantManager.registerEnchant(new BulletTime());
-		EnchantManager.registerEnchant(new Healer());
-//		EnchantManager.registerEnchant(new Duelist());
+		EnchantManager.registerEnchant(new Executioner());
+		EnchantManager.registerEnchant(new Gamble());
 		EnchantManager.registerEnchant(new ComboStun());
-		EnchantManager.registerEnchant(new GoldAndBoosted());
-		EnchantManager.registerEnchant(new PainFocus());
+		EnchantManager.registerEnchant(new SpeedyHit());
+		EnchantManager.registerEnchant(new Healer());
+		EnchantManager.registerEnchant(new Lifesteal());
+		EnchantManager.registerEnchant(new ComboHeal());
+
 		EnchantManager.registerEnchant(new Shark());
-		EnchantManager.registerEnchant(new XpBump());
-		EnchantManager.registerEnchant(new Sweaty());
+		EnchantManager.registerEnchant(new PainFocus());
+		EnchantManager.registerEnchant(new DiamondStomp());
+		EnchantManager.registerEnchant(new ComboDamage());
+		EnchantManager.registerEnchant(new KingBuster());
+		EnchantManager.registerEnchant(new Sharp());
+		EnchantManager.registerEnchant(new Punisher());
+		EnchantManager.registerEnchant(new BeatTheSpammers());
+		EnchantManager.registerEnchant(new GoldAndBoosted());
+
+		EnchantManager.registerEnchant(new ComboSwift());
+		EnchantManager.registerEnchant(new BulletTime());
+		EnchantManager.registerEnchant(new Crush());
+//		EnchantManager.registerEnchant(new Bruiser());
+//		EnchantManager.registerEnchant(new Duelist());
 
 		EnchantManager.registerEnchant(new MegaLongBow());
 		EnchantManager.registerEnchant(new Volley());
-		EnchantManager.registerEnchant(new Chipping());
 		EnchantManager.registerEnchant(new Telebow());
-//		EnchantManager.registerEnchant(new Robinhood());
-		EnchantManager.registerEnchant(new Fletching());
-		EnchantManager.registerEnchant(new PushComesToShove());
-		EnchantManager.registerEnchant(new Wasp());
-		EnchantManager.registerEnchant(new SprintDrain());
-		EnchantManager.registerEnchant(new BottomlessQuiver());
-		EnchantManager.registerEnchant(new Parasite());
-		EnchantManager.registerEnchant(new LuckyShot());
 		EnchantManager.registerEnchant(new Pullbow());
 		EnchantManager.registerEnchant(new Explosive());
-		EnchantManager.registerEnchant(new FasterThanTheirShadows());
-		EnchantManager.registerEnchant(new PinDown());
+		EnchantManager.registerEnchant(new LuckyShot());
 
+		EnchantManager.registerEnchant(new SprintDrain());
+		EnchantManager.registerEnchant(new Wasp());
+		EnchantManager.registerEnchant(new PinDown());
+		EnchantManager.registerEnchant(new FasterThanTheirShadow());
+		EnchantManager.registerEnchant(new PushComesToShove());
+		EnchantManager.registerEnchant(new Parasite());
+		EnchantManager.registerEnchant(new Fletching());
+		EnchantManager.registerEnchant(new Chipping());
+		EnchantManager.registerEnchant(new BottomlessQuiver());
+
+		EnchantManager.registerEnchant(new RetroGravityMicrocosm());
+		EnchantManager.registerEnchant(new Regularity());
 		EnchantManager.registerEnchant(new Solitude());
-		EnchantManager.registerEnchant(new NotGladiator());
-		EnchantManager.registerEnchant(new DiamondAllergy());
+
+		EnchantManager.registerEnchant(new Mirror());
+		EnchantManager.registerEnchant(new CriticallyFunky());
 		EnchantManager.registerEnchant(new FractionalReserve());
+		EnchantManager.registerEnchant(new NotGladiator());
 		EnchantManager.registerEnchant(new Protection());
-		EnchantManager.registerEnchant(new Hearts());
-		EnchantManager.registerEnchant(new Prick());
 		EnchantManager.registerEnchant(new RingArmor());
-//		EnchantManager.registerEnchant(new PitBlob());
-//		EnchantManager.registerEnchant(new WolfPack());
+
 		EnchantManager.registerEnchant(new Peroxide());
+		EnchantManager.registerEnchant(new Booboo());
+		EnchantManager.registerEnchant(new ReallyToxic());
 		EnchantManager.registerEnchant(new NewDeal());
 		EnchantManager.registerEnchant(new HeighHo());
+
 		EnchantManager.registerEnchant(new GoldenHeart());
-		EnchantManager.registerEnchant(new RetroGravityMicrocosm());
-		EnchantManager.registerEnchant(new Mirror());
-		EnchantManager.registerEnchant(new LastStand());
-		EnchantManager.registerEnchant(new Booboo());
-		EnchantManager.registerEnchant(new CriticallyFunky());
-		EnchantManager.registerEnchant(new GottaGoFast());
+		EnchantManager.registerEnchant(new Hearts());
+		EnchantManager.registerEnchant(new Prick());
 		EnchantManager.registerEnchant(new Electrolytes());
+		EnchantManager.registerEnchant(new GottaGoFast());
 		EnchantManager.registerEnchant(new CounterOffensive());
+		EnchantManager.registerEnchant(new LastStand());
 		EnchantManager.registerEnchant(new Stereo());
-		EnchantManager.registerEnchant(new ReallyToxic());
+//		EnchantManager.registerEnchant(new DiamondAllergy());
+//		EnchantManager.registerEnchant(new PitBlob());
+//		EnchantManager.registerEnchant(new WolfPack());
 
 //		Resource Enchants
 		EnchantManager.registerEnchant(new Moctezuma());
 		EnchantManager.registerEnchant(new GoldBump());
 		EnchantManager.registerEnchant(new GoldBoost());
 
-//		After all
-		EnchantManager.registerEnchant(new Regularity());
-		EnchantManager.registerEnchant(new Lifesteal());
+		EnchantManager.registerEnchant(new Sweaty());
+		EnchantManager.registerEnchant(new XpBump());
 	}
 
 	private void registerUpgrades() {
@@ -300,14 +306,13 @@ public class PitSim extends JavaPlugin {
 		getServer().getPluginManager().registerEvents(new PlayerManager(), this);
 		getServer().getPluginManager().registerEvents(new ChatManager(), this);
 		getServer().getPluginManager().registerEvents(new DamageIndicator(), this);
-//		getServer().getPluginManager().registerEvents(new MarketManager(), this);
 		getServer().getPluginManager().registerEvents(new ItemManager(), this);
 		getServer().getPluginManager().registerEvents(new CombatManager(), this);
 		getServer().getPluginManager().registerEvents(new SpawnManager(), this);
 		getServer().getPluginManager().registerEvents(new ItemRename(), this);
 		getServer().getPluginManager().registerEvents(new EnderChestManager(), this);
 		getServer().getPluginManager().registerEvents(new AFKManager(), this);
-
+		getServer().getPluginManager().registerEvents(new EnchantManager(), this);
 	}
 
 	private void loadConfig() {

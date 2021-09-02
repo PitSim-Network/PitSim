@@ -15,22 +15,41 @@ import dev.kyro.pitsim.enums.MysticType;
 import dev.kyro.pitsim.enums.NBTTag;
 import dev.kyro.pitsim.enums.PantColor;
 import dev.kyro.pitsim.exceptions.*;
+import dev.kyro.pitsim.inventories.EnchantingGUI;
 import dev.kyro.pitsim.misc.Constant;
 import dev.kyro.pitsim.misc.Misc;
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.Material;
-import org.bukkit.Sound;
+import org.bukkit.*;
+import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
+import org.bukkit.event.block.Action;
+import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.inventory.meta.LeatherArmorMeta;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
 
-public class EnchantManager {
+public class EnchantManager implements Listener {
 
 	public static List<PitEnchant> pitEnchants = new ArrayList<>();
+
+	@EventHandler
+	public static void onEnchantingTableClick(PlayerInteractEvent event) {
+		if(event.getAction() != Action.LEFT_CLICK_BLOCK && event.getAction() != Action.RIGHT_CLICK_BLOCK) return;
+		Player player = event.getPlayer();
+		Block block = event.getClickedBlock();
+
+		if(block.getType() != Material.ENCHANTMENT_TABLE) return;
+
+		event.setCancelled(true);
+
+		EnchantingGUI enchantingGUI = new EnchantingGUI(player);
+		enchantingGUI.open();
+		ASound.play(player, Sound.HORSE_ARMOR, 1F, 1.3F);
+	}
 
 	public static void registerEnchant(PitEnchant pitEnchant) {
 
@@ -141,6 +160,7 @@ public class EnchantManager {
 		nbtItem.setInteger(NBTTag.ITEM_ENCHANTS.getRef(), enchantNum);
 		nbtItem.setInteger(NBTTag.ITEM_TOKENS.getRef(), tokenNum);
 		nbtItem.setInteger(NBTTag.ITEM_RTOKENS.getRef(), rTokenNum);
+		if(applyEnchant.refNames.get(0).equals("venom")) nbtItem.setBoolean(NBTTag.IS_VENOM.getRef(), true);
 
 		AItemStackBuilder itemStackBuilder = new AItemStackBuilder(nbtItem.getItem());
 		itemStackBuilder.setName("&cTier " + (enchantNum != 0 ? AUtil.toRoman(enchantNum) : 0) + " " + getMysticType(itemStack));
@@ -227,6 +247,12 @@ public class EnchantManager {
 			}
 
 		} else {
+			if(nbtItem.getBoolean(NBTTag.IS_VENOM.getRef())) {
+				itemMeta.setDisplayName(ChatColor.DARK_PURPLE + "Tier II Evil Pants");
+				loreBuilder.getLore().clear();
+				loreBuilder.addLore("&7Lives: &a140&7/140", "&7", "&9Somber", "&7You are unaffected by mystical", "&7enchantments.");
+				if(itemMeta instanceof LeatherArmorMeta) ((LeatherArmorMeta) itemMeta).setColor(Color.fromRGB(PantColor.DARK.hexColor));
+			}
 
 			for(String key : enchantOrder) {
 
@@ -242,6 +268,9 @@ public class EnchantManager {
 				assert jewelEnchant != null;
 				loreBuilder.addLore("&f");
 				loreBuilder.addLore("&3JEWEL!&9 " + jewelEnchant.getDisplayName());
+			}
+			if(nbtItem.getBoolean(NBTTag.IS_VENOM.getRef())) {
+				loreBuilder.addLore("&7", "&5Enchants require heresy", "&5As strong as leather");
 			}
 		}
 

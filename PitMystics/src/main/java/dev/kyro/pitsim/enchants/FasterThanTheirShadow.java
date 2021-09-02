@@ -27,9 +27,9 @@ import org.bukkit.scheduler.BukkitRunnable;
 import java.lang.reflect.Field;
 import java.util.List;
 
-public class FasterThanTheirShadows extends PitEnchant implements Listener {
+public class FasterThanTheirShadow extends PitEnchant implements Listener {
 
-	public FasterThanTheirShadows() {
+	public FasterThanTheirShadow() {
 		super("Faster than their shadow", false, ApplyType.BOWS,
 				"fasterthantheirshadow", "ftts", "faster", "shadow", "faster-than-their-shadow");
 		isUncommonEnchant = true;

@@ -37,7 +37,7 @@ public class Sweaty extends PitEnchant {
 	public List<String> getDescription(int enchantLvl) {
 
 		if(enchantLvl != 3) {
-			return new ALoreBuilder("&7Earn a stacking &b+1 XP &7every", "&e" + Misc.ordinalWords(getXpIncrease(enchantLvl)).substring(1) +
+			return new ALoreBuilder("&7Earn a stacking &b+1 XP &7every", "&e" + Misc.ordinalWords(getXpIncrease(enchantLvl)) +
 					" &7kill and &b+" + getCapIncrese(enchantLvl) + " max XP &7per", "&7kill", "&7(Must be on a megastreak)").getLore();
 		} else {
 			return new ALoreBuilder("&7Earn a stacking &b+1 XP &7every",

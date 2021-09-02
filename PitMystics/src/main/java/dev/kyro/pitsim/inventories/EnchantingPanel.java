@@ -5,6 +5,7 @@ import de.tr7zw.nbtapi.NBTList;
 import dev.kyro.arcticapi.gui.AGUI;
 import dev.kyro.arcticapi.gui.AGUIPanel;
 import dev.kyro.arcticapi.misc.AOutput;
+import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.commands.FreshCommand;
 import dev.kyro.pitsim.controllers.EnchantManager;
 import dev.kyro.pitsim.controllers.objects.PitEnchant;
@@ -16,12 +17,19 @@ import org.bukkit.Material;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.inventory.InventoryOpenEvent;
+import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.InventoryView;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.scheduler.BukkitTask;
 
 import java.util.Map;
 
 public class EnchantingPanel extends AGUIPanel {
 	public EnchantingGUI enchantingGUI;
+	public boolean forcedClose = false;
+	public int count = 0;
+	public BukkitTask runnable;
 
 	public EnchantingPanel(AGUI gui) {
 		super(gui);
@@ -33,7 +41,32 @@ public class EnchantingPanel extends AGUIPanel {
 				.setSlots(Material.STAINED_GLASS_PANE, 15, 27, 28, 29, 36, 38, 45, 46, 47)
 				.setSlots(Material.STAINED_GLASS_PANE, 7, 30, 31, 32, 33, 34, 35, 39, 42, 44, 48, 49, 50, 51, 52, 53);
 
-		updateInventory();
+		EnchantingPanel enchantingPanel = this;
+		int[] slots = new int[] { 27, 28, 29, 38, 47, 46, 45, 36 };
+		runnable = new BukkitRunnable() {
+			@Override
+			public void run() {
+				InventoryView inventoryView = player.getOpenInventory();
+				if(inventoryView == null) return;
+				Inventory inventory = inventoryView.getTopInventory();
+				if(inventory == null) return;
+				if(inventory.getHolder() != enchantingPanel) return;
+
+				if(count < 8) {
+					getInventory().setItem(slots[count], new ItemStack(Material.STAINED_GLASS_PANE, 1, (short) 10));
+				} else if(count < 15) {
+					getInventory().setItem(slots[count % 8], new ItemStack(Material.STAINED_GLASS_PANE, 1, (short) 15));
+				} else {
+					getInventory().setItem(slots[count % 8], new ItemStack(Material.STAINED_GLASS_PANE, 1, (short) 15));
+					getInventory().setItem(slots[(count + 1) % 8], new ItemStack(Material.STAINED_GLASS_PANE, 1, (short) 10));
+				}
+//				getInventory().setItem(slots[((count + 5) % 4) + 4], new ItemStack(Material.STAINED_GLASS_PANE, 1, (short) 10));
+//				getInventory().setItem(slots[(count % 4) + 4], new ItemStack(Material.STAINED_GLASS_PANE, 1, (short) 15));
+
+				updateInventory();
+				count++;
+			}
+		}.runTaskTimer(PitSim.INSTANCE, 0L, 3L);
 	}
 
 	@Override
@@ -56,13 +89,20 @@ public class EnchantingPanel extends AGUIPanel {
 
 			if(slot == 10 || slot == 13 || slot == 16) {
 
-				if(Misc.isAirOrNull(mystic)) {
+				if(Misc.isAirOrNull(mystic) || clickedItem.getType() == Material.BARRIER) {
 					return;
 				}
 
 				Map.Entry<PitEnchant, Integer> displayEnchant = getDisplayEnchant(clickedItem);
+
+				NBTItem nbtItem = new NBTItem(mystic);
+				if(displayEnchant != null && nbtItem.getString(NBTTag.ITEM_JEWEL_ENCHANT.getRef()).equals(displayEnchant.getKey().refNames.get(0))) {
+					AOutput.error(player, "You cannot modify a jewel enchant");
+					return;
+				}
+
+				forcedClose = true;
 				openPanel(new ApplyEnchantPanel(enchantingGUI, mystic, displayEnchant, enchantingGUI.getEnchantSlot(slot)));
-//				player.openInventory(new ApplyEnchantPanel(this, displayEnchant, mystic).getInventory());
 				return;
 			}
 
@@ -125,11 +165,15 @@ public class EnchantingPanel extends AGUIPanel {
 
 	@Override
 	public void onClose(InventoryCloseEvent event) {
+		if(!forcedClose) closeGUI();
+	}
 
-//		ItemStack mystic = event.getInventory().getItem(37);
-//		if(!Misc.isAirOrNull(mystic) && !FreshCommand.isFresh(mystic)) {
-//			player.getInventory().addItem(mystic);
-//		}
+	public void closeGUI() {
+		ItemStack mystic = getInventory().getItem(37);
+		if(!Misc.isAirOrNull(mystic) && !FreshCommand.isFresh(mystic)) {
+			player.getInventory().addItem(mystic);
+		}
+		runnable.cancel();
 	}
 
 	@Override

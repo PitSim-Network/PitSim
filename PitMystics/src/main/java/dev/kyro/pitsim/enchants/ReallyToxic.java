@@ -2,17 +2,13 @@ package dev.kyro.pitsim.enchants;
 
 import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.arcticapi.misc.AOutput;
-import dev.kyro.arcticapi.misc.ASound;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.controllers.HitCounter;
 import dev.kyro.pitsim.controllers.objects.PitEnchant;
 import dev.kyro.pitsim.enums.ApplyType;
 import dev.kyro.pitsim.events.AttackEvent;
 import dev.kyro.pitsim.events.HealEvent;
-import dev.kyro.pitsim.events.VolleyShootEvent;
 import dev.kyro.pitsim.misc.Misc;
-import javafx.beans.property.SimpleDoubleProperty;
-import org.bukkit.Sound;
 import org.bukkit.entity.Arrow;
 import org.bukkit.event.EventHandler;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -64,8 +60,8 @@ public class ReallyToxic extends PitEnchant {
 
 		int charge = HitCounter.getCharge(attackEvent.defender, this);
 		if(charge == 0) {
-			ASound.play(attackEvent.attacker, Sound.SPIDER_IDLE, 1, 1);
-			ASound.play(attackEvent.defender, Sound.SPIDER_IDLE, 1, 1);
+//			ASound.play(attackEvent.attacker, Sound.SPIDER_IDLE, 1, 1);
+//			ASound.play(attackEvent.defender, Sound.SPIDER_IDLE, 1, 1);
 		}
 		HitCounter.setCharge(attackEvent.defender, this, charge + getReductionPerHit(enchantLvl));
 

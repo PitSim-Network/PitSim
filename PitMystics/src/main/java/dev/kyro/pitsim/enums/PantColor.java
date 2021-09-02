@@ -38,7 +38,7 @@ public enum PantColor {
 
 
 	//Special Colors
-//	DARK("", ChatColor.DARK_PURPLE, 0x000000),
+	DARK("", ChatColor.DARK_PURPLE, 0x000000),
 	JEWEL("Jewel", ChatColor.DARK_AQUA, 0x7DC383);
 //	AQUA("", ChatColor.DARK_AQUA, 0x55FFFF);
 

@@ -13,6 +13,7 @@ import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.inventory.InventoryOpenEvent;
 import org.bukkit.inventory.ItemStack;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -22,6 +23,7 @@ public class ApplyEnchantPanel extends AGUIPanel {
 	public ItemStack mystic;
 	public Map.Entry<PitEnchant, Integer> previousEnchant;
 	public int enchantSlot;
+	public boolean forcedClose = false;
 
 	public ApplyEnchantPanel(AGUI gui, ItemStack mystic, Map.Entry<PitEnchant, Integer> previousEnchant, int enchantSlot) {
 		super(gui);
@@ -33,7 +35,20 @@ public class ApplyEnchantPanel extends AGUIPanel {
 		inventoryBuilder.createBorder(Material.STAINED_GLASS_PANE, 2)
 				.setSlots(Material.BARRIER, 0, 45);
 
-		List<PitEnchant> applicableEnchants = EnchantManager.getEnchants(MysticType.getMysticType(mystic));
+		Map<PitEnchant, Integer> enchantMap = EnchantManager.getEnchantsOnItem(mystic);
+		if(previousEnchant != null) enchantMap.remove(previousEnchant.getKey());
+
+		int enchants = enchantMap.size();
+		boolean hasCommon = EnchantManager.isJewel(mystic);
+		for(Map.Entry<PitEnchant, Integer> entry : EnchantManager.getEnchantsOnItem(mystic).entrySet()) {
+			if(!entry.getKey().isUncommonEnchant) hasCommon = true;
+		}
+		List<PitEnchant> applicableEnchants = new ArrayList<>();
+		for(PitEnchant enchant : EnchantManager.getEnchants(MysticType.getMysticType(mystic))) {
+			if((!hasCommon || (previousEnchant != null && !previousEnchant.getKey().isUncommonEnchant)) && enchants >= 2 && enchant.isUncommonEnchant) continue;
+			if(EnchantManager.getEnchantsOnItem(mystic).containsKey(enchant)) continue;
+			applicableEnchants.add(enchant);
+		}
 		int count = 0;
 		for(int i = 0; count != applicableEnchants.size(); i++) {
 
@@ -41,7 +56,7 @@ public class ApplyEnchantPanel extends AGUIPanel {
 
 			ItemStack displayItem = FreshCommand.getFreshItem(MysticType.getMysticType(mystic), PantColor.getPantColor(mystic));
 			try {
-				displayItem = EnchantManager.addEnchant(displayItem, applicableEnchants.get(count++), 1, false);
+				displayItem = EnchantManager.addEnchant(displayItem, applicableEnchants.get(count++), 3, false);
 			} catch(Exception ignored) { }
 			getInventory().setItem(i, displayItem);
 		}
@@ -70,20 +85,21 @@ public class ApplyEnchantPanel extends AGUIPanel {
 
 			if(slot == 45) {
 
+				forcedClose = true;
 				openPanel(enchantingGUI.enchantingPanel);
+				enchantingGUI.enchantingPanel.forcedClose = false;
 				return;
 			}
 
 			for(Map.Entry<PitEnchant, Integer> entry : enchantMap.entrySet()) {
 
 				try {
-					if(previousEnchant != null) mystic = EnchantManager.addEnchant(mystic, previousEnchant.getKey(), 0, false);
-					mystic = EnchantManager.addEnchant(mystic, entry.getKey(), hotbarSlot != -1 ? hotbarSlot : 3, false, false, enchantSlot - 1);
+//					mystic = EnchantManager.addEnchant(mystic, entry.getKey(), hotbarSlot != -1 ? hotbarSlot : 3, false, false, enchantSlot - 1);
 				} catch(Exception exception) {
 					exception.printStackTrace();
 				}
-				enchantingGUI.updateMystic(mystic);
-				openPanel(enchantingGUI.enchantingPanel);
+				forcedClose = true;
+				openPanel(new ApplyEnchantLevelPanel(enchantingGUI, mystic, entry.getKey(), enchantSlot, previousEnchant));
 				return;
 			}
 		}
@@ -96,6 +112,6 @@ public class ApplyEnchantPanel extends AGUIPanel {
 
 	@Override
 	public void onClose(InventoryCloseEvent event) {
-
+		if(!forcedClose) enchantingGUI.enchantingPanel.closeGUI();
 	}
 }
