@@ -13,16 +13,11 @@ import org.bukkit.event.inventory.InventoryOpenEvent;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
-import org.bukkit.event.player.PlayerJoinEvent;
-import org.bukkit.permissions.PermissionAttachment;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Map;
-import java.util.UUID;
 
-public class EnderChestManager implements Listener {
+public class EnderchestManager implements Listener {
 
     @EventHandler
     public void onOpen(InventoryOpenEvent event) {
@@ -39,7 +34,6 @@ public class EnderChestManager implements Listener {
         }
     }
 
-
     @EventHandler
     public void onInteract(PlayerInteractEvent event) {
         Block block = event.getPlayer().getTargetBlock((HashSet<Byte>) null, 5);
@@ -55,14 +49,6 @@ public class EnderChestManager implements Listener {
 
         }
     }
-
-    @EventHandler
-    public void onJoin(PlayerJoinEvent event) {
-        if(event.getPlayer().getName().contains("OMG")) {
-            Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "ban " + event.getPlayer().getName() + " Blacklisted Modifications");
-        }
-    }
-
 
     @EventHandler
     public void onCommand(PlayerCommandPreprocessEvent event) {
