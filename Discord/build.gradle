@@ -14,13 +14,20 @@ repositories {
 
 dependencies {
     compileOnly 'org.bukkit:craftbukkit:1.8.8-R0.1-SNAPSHOT'
+    compile group: 'org.slf4j', name: 'slf4j-log4j12', version: '1.7.29'
     compile ('net.dv8tion:JDA:4.2.1_262') {
         exclude module: 'opus-java'
     }
+    compileOnly 'net.luckperms:api:5.3'
 
     compileOnly project(':PitMystics')
 }
 
+shadowJar {
+
+    relocate 'dev.kyro.arcticapi', 'dev.kyro.pitdiscord.arcticapi'
+    relocate 'net.dv8tion', 'dev.kyro.pitdiscord.net.dv8tion'
+}
 
 repositories {
     mavenCentral()
@@ -39,6 +46,6 @@ dependencies {
     compileOnly 'net.citizensnpcs:citizens-main:2.0.24-SNAPSHOT'
     compileOnly "com.github.MilkBowl:VaultAPI:1.7"
 
-    compileOnly 'com.github.ArcticDevelopment:ArcticAPI:521ab146a5'
+    compile 'com.github.ArcticDevelopment:ArcticAPI:521ab146a5'
     compileOnly 'de.tr7zw:item-nbt-api-plugin:2.7.1'
 }
