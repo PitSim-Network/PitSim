@@ -7,6 +7,7 @@ import dev.kyro.pitsim.controllers.NonManager;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Role;
 import net.luckperms.api.model.user.User;
+import net.luckperms.api.model.user.UserManager;
 import net.luckperms.api.node.Node;
 import net.luckperms.api.node.NodeEqualityPredicate;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -20,6 +21,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 
 public class InGameNitro implements Listener {
@@ -50,29 +52,36 @@ public class InGameNitro implements Listener {
 					if(playerUUID == null) continue;
 					memberIGNs.add(member.getEffectiveName());
 
-					User luckPermsUser = DiscordPlugin.LUCKPERMS.getUserManager().getUser(playerUUID);
-					if(luckPermsUser == null) continue;
-					Node node = Node.builder("group.nitro")
-							.value(true)
-							.expiry(Duration.ofMinutes(12))
-							.build();
-
-					for(Node playerNode : luckPermsUser.getNodes()) {
-						if(!playerNode.equals(node, NodeEqualityPredicate.ONLY_KEY)) continue;
-						try {
-							DiscordPlugin.LUCKPERMS.getUserManager().modifyUser(playerUUID, user -> user.data().remove(playerNode)).get();
-						} catch(InterruptedException | ExecutionException e) {
-							e.printStackTrace();
+//					User luckPermsUser = DiscordPlugin.LUCKPERMS.getUserManager().getUser(playerUUID);
+					UserManager userManager = DiscordPlugin.LUCKPERMS.getUserManager();
+					CompletableFuture<User> userFuture = userManager.loadUser(playerUUID);
+					UUID finalPlayerUUID = playerUUID;
+					userFuture.thenAccept(user -> {
+						if(user == null) {
+							return;
 						}
-					}
+						Node node = Node.builder("group.nitro")
+								.value(true)
+								.expiry(Duration.ofMinutes(4))
+								.build();
 
-					DiscordPlugin.LUCKPERMS.getUserManager().modifyUser(playerUUID, user -> user.data().add(node));
+						for(Node playerNode : user.getNodes()) {
+							if(!playerNode.equals(node, NodeEqualityPredicate.ONLY_KEY)) continue;
+							try {
+								DiscordPlugin.LUCKPERMS.getUserManager().modifyUser(finalPlayerUUID, modifyUser -> modifyUser.data().remove(playerNode)).get();
+							} catch(InterruptedException | ExecutionException e) {
+								e.printStackTrace();
+							}
+						}
+
+						DiscordPlugin.LUCKPERMS.getUserManager().modifyUser(finalPlayerUUID, modifyUser -> modifyUser.data().add(node));
+					});
 				}
 
 				try {
 					NonManager.updateNons(memberIGNs);
 				} catch(Exception ignored) { }
 			}
-		}.runTaskTimer(DiscordPlugin.INSTANCE, 0L, 10 * 60 * 20L);
+		}.runTaskTimer(DiscordPlugin.INSTANCE, 0L, 3 * 10 * 20L);
 	}
 }
