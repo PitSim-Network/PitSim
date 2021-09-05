@@ -42,7 +42,6 @@ public class NonManager implements Listener {
 	public static void updateNons(List<String> botIGNs) {
 
 		NonManager.botIGNs = new ArrayList<>(botIGNs);
-		System.out.println(NonManager.botIGNs);
 	}
 
 //	@EventHandler(priority = EventPriority.LOW)
