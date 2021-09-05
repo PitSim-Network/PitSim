@@ -17,7 +17,7 @@ public class EnchantingGUI extends AGUI {
 
 	public void updateMystic(ItemStack mystic) {
 
-		enchantingPanel.getInventory().setItem(37, mystic);
+		enchantingPanel.mystic = mystic;
 		enchantingPanel.updateInventory();
 	}
 

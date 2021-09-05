@@ -65,8 +65,6 @@ public class EnchantingPanel extends AGUIPanel {
 					getInventory().setItem(slots[count % 8], new ItemStack(Material.STAINED_GLASS_PANE, 1, (short) 15));
 					getInventory().setItem(slots[(count + 1) % 8], new ItemStack(Material.STAINED_GLASS_PANE, 1, (short) 10));
 				}
-//				getInventory().setItem(slots[((count + 5) % 4) + 4], new ItemStack(Material.STAINED_GLASS_PANE, 1, (short) 10));
-//				getInventory().setItem(slots[(count % 4) + 4], new ItemStack(Material.STAINED_GLASS_PANE, 1, (short) 15));
 
 				updateInventory();
 				count++;
@@ -164,6 +162,7 @@ public class EnchantingPanel extends AGUIPanel {
 			if(slot == 43) {
 				if(Misc.isAirOrNull(mystic)) {
 
+					if(!freshSelect) count += 15;
 					freshSelect = !freshSelect;
 					updateInventory();
 				} else {
