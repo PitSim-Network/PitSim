@@ -4,7 +4,6 @@ import dev.kyro.arcticapi.data.APlayerData;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.controllers.LevelManager;
 import dev.kyro.pitsim.controllers.NonManager;
-import dev.kyro.pitsim.controllers.PerkManager;
 import dev.kyro.pitsim.controllers.PitEventManager;
 import dev.kyro.pitsim.enchants.Hearts;
 import dev.kyro.pitsim.enums.AChatColor;
@@ -21,6 +20,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
 
@@ -64,6 +64,8 @@ public class PitPlayer {
 	public Boolean disabledStreaks = false;
 
 	public UUID lastHitUUID = null;
+
+	public ItemStack confirmedDrop = null;
 
 	public PitPlayer(Player player) {
 		this.player = player;
