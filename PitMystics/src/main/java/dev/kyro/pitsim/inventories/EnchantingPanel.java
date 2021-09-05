@@ -32,6 +32,8 @@ public class EnchantingPanel extends AGUIPanel {
 	public boolean forcedClose = false;
 	public int count = 0;
 	public BukkitTask runnable;
+	public boolean freshSelect = false;
+	public ItemStack mystic = new ItemStack(Material.AIR);
 
 	public EnchantingPanel(AGUI gui) {
 		super(gui);
@@ -48,6 +50,7 @@ public class EnchantingPanel extends AGUIPanel {
 		runnable = new BukkitRunnable() {
 			@Override
 			public void run() {
+				if(freshSelect) return;
 				InventoryView inventoryView = player.getOpenInventory();
 				if(inventoryView == null) return;
 				Inventory inventory = inventoryView.getTopInventory();
@@ -86,10 +89,10 @@ public class EnchantingPanel extends AGUIPanel {
 
 		int slot = event.getSlot();
 		ItemStack clickedItem = event.getCurrentItem();
-		ItemStack mystic = event.getInventory().getItem(37);
 		if(event.getClickedInventory().getHolder() == this) {
 
 			if(slot == 10 || slot == 13 || slot == 16) {
+				if(freshSelect) return;
 
 				if(Misc.isAirOrNull(mystic) || clickedItem.getType() != Material.ENCHANTMENT_TABLE) {
 					ASound.play(player, Sound.VILLAGER_NO);
@@ -110,36 +113,59 @@ public class EnchantingPanel extends AGUIPanel {
 			}
 
 			if(slot == 37) {
+				if(freshSelect) {
+					mystic = FreshCommand.getFreshItem(MysticType.PANTS, PantColor.RED);
+					freshSelect = false;
+				} else {
+					getInventory().setItem(37, new ItemStack(Material.AIR));
+					if(!FreshCommand.isFresh(mystic)) player.getInventory().addItem(mystic);
+					mystic = new ItemStack(Material.AIR);
+				}
+			}
 
-				getInventory().setItem(37, new ItemStack(Material.AIR));
-				if(!FreshCommand.isFresh(mystic)) player.getInventory().addItem(mystic);
+			if(slot == 38 && freshSelect) {
+				mystic = FreshCommand.getFreshItem(MysticType.PANTS, PantColor.ORANGE);
+				freshSelect = false;
+			}
+
+			if(slot == 39 && freshSelect) {
+				mystic = FreshCommand.getFreshItem(MysticType.PANTS, PantColor.YELLOW);
+				freshSelect = false;
 			}
 
 			if(slot == 40) {
-
-				if(Misc.isAirOrNull(mystic)) {
-
-					getInventory().setItem(37, FreshCommand.getFreshItem(MysticType.SWORD, null));
+				if(freshSelect) {
+					mystic = FreshCommand.getFreshItem(MysticType.PANTS, PantColor.GREEN);
+					freshSelect = false;
 				} else {
-					AOutput.error(player, "Already an item in the mystic well");
-					return;
+					if(Misc.isAirOrNull(mystic)) {
+
+						mystic = FreshCommand.getFreshItem(MysticType.SWORD, null);
+					} else {
+						AOutput.error(player, "Already an item in the mystic well");
+						return;
+					}
 				}
 			}
 			if(slot == 41) {
-
-				if(Misc.isAirOrNull(mystic)) {
-
-					getInventory().setItem(37, FreshCommand.getFreshItem(MysticType.BOW, null));
+				if(freshSelect) {
+					mystic = FreshCommand.getFreshItem(MysticType.PANTS, PantColor.BLUE);
+					freshSelect = false;
 				} else {
-					AOutput.error(player, "Already an item in the mystic well");
-					return;
+					if(Misc.isAirOrNull(mystic)) {
+
+						mystic = FreshCommand.getFreshItem(MysticType.BOW, null);
+					} else {
+						AOutput.error(player, "Already an item in the mystic well");
+						return;
+					}
 				}
 			}
 			if(slot == 43) {
-
 				if(Misc.isAirOrNull(mystic)) {
 
-					getInventory().setItem(37, FreshCommand.getFreshItem(MysticType.PANTS, PantColor.RED));
+					freshSelect = !freshSelect;
+					updateInventory();
 				} else {
 					AOutput.error(player, "Already an item in the mystic well");
 					return;
@@ -164,7 +190,6 @@ public class EnchantingPanel extends AGUIPanel {
 
 			mystic = event.getClickedInventory().getItem(slot);
 			event.getClickedInventory().setItem(slot, new ItemStack(Material.AIR));
-			getInventory().setItem(37, mystic);
 		}
 		updateInventory();
 	}
@@ -178,7 +203,6 @@ public class EnchantingPanel extends AGUIPanel {
 	}
 
 	public void closeGUI() {
-		ItemStack mystic = getInventory().getItem(37);
 		if(!Misc.isAirOrNull(mystic) && !FreshCommand.isFresh(mystic)) {
 			player.getInventory().addItem(mystic);
 		}
@@ -187,16 +211,33 @@ public class EnchantingPanel extends AGUIPanel {
 
 	@Override
 	public void updateInventory() {
-
-		ItemStack mystic = getInventory().getItem(37);
 		if(Misc.isAirOrNull(mystic)) {
 
-			getInventory().setItem(40, FreshCommand.getFreshItem(MysticType.SWORD, null));
-			getInventory().setItem(41, FreshCommand.getFreshItem(MysticType.BOW, null));
-			inventoryBuilder.setSlots(Material.CACTUS, 0, 43);
+			if(freshSelect) {
+				for(int i = 0; i < 5; i++) {
+					ItemStack fresh = FreshCommand.getFreshItem(MysticType.PANTS, PantColor.values()[i]);
+					getInventory().setItem(i + 37, fresh);
+				}
+				inventoryBuilder.setSlots(Material.STAINED_GLASS_PANE, 7, 27, 28, 29, 36, 45, 46, 47);
+			} else {
+				if(getInventory().getItem(38).getType() != Material.STAINED_GLASS_PANE) {
+					inventoryBuilder.setSlots(Material.STAINED_GLASS_PANE, 7, 39);
+					inventoryBuilder.setSlots(Material.STAINED_GLASS_PANE, 15, 27, 28, 29, 36, 38, 45, 46, 47);
+				}
 
+				getInventory().setItem(37, mystic);
+				getInventory().setItem(40, FreshCommand.getFreshItem(MysticType.SWORD, null));
+				getInventory().setItem(41, FreshCommand.getFreshItem(MysticType.BOW, null));
+			}
+			inventoryBuilder.setSlots(Material.CACTUS, 0, 43);
 			inventoryBuilder.setSlots(Material.BARRIER, 0, 10, 13, 16);
 		} else {
+			if(getInventory().getItem(38).getType() != Material.STAINED_GLASS_PANE) {
+				inventoryBuilder.setSlots(Material.STAINED_GLASS_PANE, 7, 39);
+				inventoryBuilder.setSlots(Material.STAINED_GLASS_PANE, 15, 27, 28, 29, 36, 38, 45, 46, 47);
+			}
+
+			getInventory().setItem(37, mystic);
 
 			inventoryBuilder.setSlots(Material.BARRIER, 0, 40, 41, 43);
 
