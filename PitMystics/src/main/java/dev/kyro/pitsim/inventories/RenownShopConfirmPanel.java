@@ -6,9 +6,9 @@ import dev.kyro.arcticapi.gui.AGUIPanel;
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.arcticapi.misc.ASound;
 import dev.kyro.arcticapi.misc.AUtil;
+import dev.kyro.pitsim.controllers.UpgradeManager;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
-import dev.kyro.pitsim.enums.RenownUpgrade;
-import dev.kyro.pitsim.misc.RenownUpgradeDisplays;
+import dev.kyro.pitsim.controllers.objects.RenownUpgrade;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.Sound;
@@ -20,7 +20,6 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -54,21 +53,21 @@ public class RenownShopConfirmPanel extends AGUIPanel {
             if(slot == 11) {
                 RenownUpgrade upgrade = RenownShopGUI.purchaseConfirmations.get(player);
                 if(upgrade.isTiered) {
-                    if(playerData.contains(upgrade.name()))
-                        playerData.set(upgrade.name(), RenownUpgrade.getTier(player, upgrade) + 1);
-                        else playerData.set(upgrade.name(), 1);
-                        pitPlayer.renown = pitPlayer.renown - upgrade.tierCosts.get(RenownUpgrade.getTier(player, upgrade) - 1);
+                    if(playerData.contains(upgrade.refName))
+                        playerData.set(upgrade.refName, UpgradeManager.getTier(player, upgrade) + 1);
+                        else playerData.set(upgrade.refName, 1);
+                        pitPlayer.renown = pitPlayer.renown - upgrade.getTierCosts().get(UpgradeManager.getTier(player, upgrade) - 1);
                 } else {
-                    playerData.set(upgrade.name(), 0);
+                    playerData.set(upgrade.refName, 0);
                     pitPlayer.renown = pitPlayer.renown - upgrade.renownCost;
                 }
                 RenownShopGUI.purchaseConfirmations.remove(player);
                 openPanel(renownShopGUI.getHomePanel());
 
                 if(upgrade.isTiered) {
-                    AOutput.send(player, ChatColor.translateAlternateColorCodes('&', "&a&lPURCHASE! &6" + upgrade.refName + " " + AUtil.toRoman(RenownUpgrade.getTier(player, upgrade))));
+                    AOutput.send(player, ChatColor.translateAlternateColorCodes('&', "&a&lPURCHASE! &6" + upgrade.name + " " + AUtil.toRoman(UpgradeManager.getTier(player, upgrade))));
                 } else {
-                    AOutput.send(player, ChatColor.translateAlternateColorCodes('&', "&a&lPURCHASE! &6" + upgrade.refName));
+                    AOutput.send(player, ChatColor.translateAlternateColorCodes('&', "&a&lPURCHASE! &6" + upgrade.name));
                 }
                 ASound.play(player, Sound.ORB_PICKUP, 2, 1.5F);
 
@@ -93,11 +92,11 @@ public class RenownShopConfirmPanel extends AGUIPanel {
         List<String> confirmLore = new ArrayList<>();
         RenownUpgrade upgrade = RenownShopGUI.purchaseConfirmations.get(player);
         if(upgrade.isTiered) {
-            confirmLore.add(ChatColor.translateAlternateColorCodes('&', "&7Purchasing: &6" + upgrade.refName + " " +
-                    AUtil.toRoman(RenownUpgrade.getTier(player, upgrade) + 1)));
-            confirmLore.add(ChatColor.translateAlternateColorCodes('&', "&7Cost: &e" + upgrade.tierCosts.get(RenownUpgrade.getTier(player, upgrade))));
+            confirmLore.add(ChatColor.translateAlternateColorCodes('&', "&7Purchasing: &6" + upgrade.name + " " +
+                    AUtil.toRoman(UpgradeManager.getTier(player, upgrade) + 1)));
+            confirmLore.add(ChatColor.translateAlternateColorCodes('&', "&7Cost: &e" + upgrade.getTierCosts().get(UpgradeManager.getTier(player, upgrade))));
         } else {
-            confirmLore.add(ChatColor.translateAlternateColorCodes('&', "&7Purchasing: &6" + upgrade.refName));
+            confirmLore.add(ChatColor.translateAlternateColorCodes('&', "&7Purchasing: &6" + upgrade.name));
             confirmLore.add(ChatColor.translateAlternateColorCodes('&', "&7Cost: &e" + upgrade.renownCost));
         }
         confirmMeta.setLore(confirmLore);

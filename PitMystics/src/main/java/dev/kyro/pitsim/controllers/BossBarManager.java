@@ -1,15 +1,9 @@
 package dev.kyro.pitsim.controllers;
 
-import dev.kyro.pitsim.PitSim;
 import net.kyori.adventure.audience.Audience;
 import net.kyori.adventure.bossbar.BossBar;
 import net.kyori.adventure.text.Component;
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.craftbukkit.libs.jline.internal.Nullable;
-import org.bukkit.entity.Player;
-import org.bukkit.scheduler.BukkitRunnable;
-import org.checkerframework.checker.nullness.qual.NonNull;
 
 public class BossBarManager {
 
@@ -19,7 +13,7 @@ public class BossBarManager {
     final Component name = Component.text("Awesome BossBar");
     public final BossBar defaultBar = BossBar.bossBar(name, 1, BossBar.Color.BLUE, BossBar.Overlay.NOTCHED_20);
 
-    public void showMyBossBar(final @NonNull Audience target) {
+    public void showMyBossBar(final Audience target) {
         // Creates a red boss bar which has no progress and no notches
         final BossBar emptyBar = BossBar.bossBar(name, 0, BossBar.Color.RED, BossBar.Overlay.PROGRESS);
         // Creates a green boss bar which has 50% progress and 10 notches
@@ -35,7 +29,7 @@ public class BossBarManager {
         this.activeBar = defaultBar;
     }
 
-    public void hideActiveBossBar(final @NonNull Audience target) {
+    public void hideActiveBossBar(final Audience target) {
         target.hideBossBar(this.activeBar);
         this.activeBar = null;
 

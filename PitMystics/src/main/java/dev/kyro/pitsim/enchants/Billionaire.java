@@ -4,6 +4,7 @@ import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.arcticapi.misc.ASound;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.controllers.NonManager;
+import dev.kyro.pitsim.controllers.UpgradeManager;
 import dev.kyro.pitsim.controllers.objects.PitEnchant;
 import dev.kyro.pitsim.enums.ApplyType;
 import dev.kyro.pitsim.events.AttackEvent;
@@ -32,6 +33,10 @@ public class Billionaire extends PitEnchant {
 		if(NonManager.getNon(attackEvent.defender) == null) {
 			goldCost = goldCost / 5;
 		}
+		if(UpgradeManager.hasUpgrade(attackEvent.attacker, "TAX_EVASION")) {
+			goldCost = goldCost - (int) ((UpgradeManager.getTier(attackEvent.attacker, "TAX_EVASION") * 0.1) * goldCost);
+		}
+
 		double finalBalance = PitSim.VAULT.getBalance(attackEvent.attacker) - goldCost;
 		if(finalBalance < 0) return;
 		if(Juggernaut.juggernaut != attackEvent.attacker)PitSim.VAULT.withdrawPlayer(attackEvent.attacker, goldCost);

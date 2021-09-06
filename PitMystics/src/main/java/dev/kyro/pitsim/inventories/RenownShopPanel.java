@@ -4,25 +4,21 @@ import dev.kyro.arcticapi.data.APlayerData;
 import dev.kyro.arcticapi.gui.AGUI;
 import dev.kyro.arcticapi.gui.AGUIPanel;
 import dev.kyro.arcticapi.misc.AOutput;
+import dev.kyro.pitsim.controllers.UpgradeManager;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
-import dev.kyro.pitsim.enums.AChatColor;
-import dev.kyro.pitsim.enums.RenownUpgrade;
-import dev.kyro.pitsim.misc.Misc;
-import dev.kyro.pitsim.misc.RenownUpgradeDisplays;
+import dev.kyro.pitsim.controllers.objects.RenownUpgrade;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.enchantments.Enchantment;
-import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.inventory.InventoryOpenEvent;
-import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
-import java.util.*;
+import java.util.Collections;
+import java.util.List;
 
 public class RenownShopPanel extends AGUIPanel {
 
@@ -51,27 +47,27 @@ public class RenownShopPanel extends AGUIPanel {
 
         if(event.getClickedInventory().getHolder() == this) {
 
-            for(RenownUpgrade upgrade : RenownUpgrade.values()) {
-                if(slot == upgrade.slot) {
+            for(RenownUpgrade upgrade : UpgradeManager.upgrades) {
+                if(slot == upgrade.guiSlot) {
                     if(upgrade.levelReq > pitPlayer.playerLevel) {
                         AOutput.error(player, "&cYou are too low level to acquire this!");
                         player.playSound(player.getLocation(), Sound.VILLAGER_NO, 1 ,1);
                         continue;
                     }
                     if(upgrade.isTiered) {
-                        if(upgrade.maxTiers != RenownUpgrade.getTier(player, upgrade) && upgrade.tierCosts.get(RenownUpgrade.getTier(player, upgrade)) > pitPlayer.renown) {
+                        if(upgrade.maxTiers != UpgradeManager.getTier(player, upgrade) && upgrade.getTierCosts().get(UpgradeManager.getTier(player, upgrade)) > pitPlayer.renown) {
                             AOutput.error(player, "&cYou do not have enough renown!");
                             player.playSound(player.getLocation(), Sound.VILLAGER_NO, 1 ,1);
                             continue;
                         }
-                        if(RenownUpgrade.getTier(player, upgrade) < upgrade.maxTiers) {
+                        if(UpgradeManager.getTier(player, upgrade) < upgrade.maxTiers) {
                             RenownShopGUI.purchaseConfirmations.put(player, upgrade);
                             openPanel(renownShopGUI.renownShopConfirmPanel);
                         } else {
                             AOutput.error(player, "&aYou already unlocked the last upgrade!");
                             player.playSound(player.getLocation(), Sound.VILLAGER_NO, 1 ,1);
                         }
-                    } else if(!RenownUpgrade.hasUpgrade(player, upgrade)) {
+                    } else if(!UpgradeManager.hasUpgrade(player, upgrade)) {
                         if(upgrade.renownCost > pitPlayer.renown) {
                             AOutput.error(player, "&cYou do not have enough renown!");
                             player.playSound(player.getLocation(), Sound.VILLAGER_NO, 1 ,1);
@@ -105,13 +101,13 @@ public class RenownShopPanel extends AGUIPanel {
         meta.setDisplayName(ChatColor.RED + "Unknown upgrade");
 
 
-        for (RenownUpgrade upg : RenownUpgrade.values()) {
+        for (RenownUpgrade upg : UpgradeManager.upgrades) {
             if(upg.levelReq > pitPlayer.playerLevel) {
                 List<String> lore = Collections.singletonList(ChatColor.GRAY + "Level: " + ChatColor.YELLOW + upg.levelReq);
                 meta.setLore(lore);
                 item.setItemMeta(meta);
-                getInventory().setItem(upg.slot, item);
-            } else getInventory().setItem(upg.slot, RenownUpgradeDisplays.getDisplayItem(upg, player));
+                getInventory().setItem(upg.guiSlot, item);
+            } else getInventory().setItem(upg.guiSlot, upg.getDisplayItem(player));
         }
     }
 

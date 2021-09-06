@@ -4,6 +4,7 @@ import dev.kyro.arcticapi.gui.AGUI;
 import dev.kyro.arcticapi.gui.AGUIPanel;
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.controllers.PerkManager;
+import dev.kyro.pitsim.controllers.UpgradeManager;
 import dev.kyro.pitsim.controllers.objects.PitPerk;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.events.PerkEquipEvent;
@@ -37,34 +38,50 @@ public class ApplyPerkPanel extends AGUIPanel {
 
 		for(PitPerk pitPerk : PerkManager.pitPerks) {
 
-			ItemStack perkItem = new ItemStack(pitPerk.displayItem);
-			ItemMeta meta = perkItem.getItemMeta();
+			if(pitPerk.renownUnlockable && !UpgradeManager.hasUpgrade(player, pitPerk.upgradeRef)) {
+				ItemStack perkItem = new ItemStack(Material.BEDROCK);
+				ItemMeta meta = perkItem.getItemMeta();
 
-			meta.setDisplayName(ChatColor.translateAlternateColorCodes('&', "&a" + pitPerk.name));
-
-			List<String> lore = new ArrayList<>(pitPerk.getDescription());
-			lore.add("");
-
-			if(perkGUI.isActive(pitPerk)) lore.add(ChatColor.translateAlternateColorCodes('&', "&aAlready selected!"));
-			else lore.add(ChatColor.translateAlternateColorCodes('&', "&eClick to select!"));
-
-			if(pitPerk.name.equals("No Perk")){
 				meta.setDisplayName(ChatColor.translateAlternateColorCodes('&', "&c" + pitPerk.name));
-				lore.clear();
-				lore.add(ChatColor.GRAY + "Are you hardcore enough that you");
-				lore.add(ChatColor.GRAY + "don't need any perk for this");
-				lore.add(ChatColor.GRAY + "slot?");
-				lore.add("");
-				lore.add(ChatColor.YELLOW + "Click to remove perk!");
-			}
-			if(pitPlayer.hasPerk(pitPerk.INSTANCE)) {
-				meta.addEnchant(Enchantment.PROTECTION_ENVIRONMENTAL, 1, false);
-				meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
-			}
-			meta.setLore(lore);
-			perkItem.setItemMeta(meta);
 
-			getInventory().setItem(pitPerk.guiSlot, perkItem);
+				List<String> lore = new ArrayList<>(pitPerk.getDescription());
+				lore.add("");
+				lore.add(ChatColor.RED + "Unlocked in the Renown shop!");
+				meta.setLore(lore);
+				perkItem.setItemMeta(meta);
+				getInventory().setItem(pitPerk.guiSlot, perkItem);
+			} else {
+
+				ItemStack perkItem = new ItemStack(pitPerk.displayItem);
+				ItemMeta meta = perkItem.getItemMeta();
+
+				meta.setDisplayName(ChatColor.translateAlternateColorCodes('&', "&a" + pitPerk.name));
+
+				List<String> lore = new ArrayList<>(pitPerk.getDescription());
+				lore.add("");
+
+				if(perkGUI.isActive(pitPerk))
+					lore.add(ChatColor.translateAlternateColorCodes('&', "&aAlready selected!"));
+				else lore.add(ChatColor.translateAlternateColorCodes('&', "&eClick to select!"));
+
+				if(pitPerk.name.equals("No Perk")) {
+					meta.setDisplayName(ChatColor.translateAlternateColorCodes('&', "&c" + pitPerk.name));
+					lore.clear();
+					lore.add(ChatColor.GRAY + "Are you hardcore enough that you");
+					lore.add(ChatColor.GRAY + "don't need any perk for this");
+					lore.add(ChatColor.GRAY + "slot?");
+					lore.add("");
+					lore.add(ChatColor.YELLOW + "Click to remove perk!");
+				}
+				if(pitPlayer.hasPerk(pitPerk.INSTANCE)) {
+					meta.addEnchant(Enchantment.PROTECTION_ENVIRONMENTAL, 1, false);
+					meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
+				}
+				meta.setLore(lore);
+				perkItem.setItemMeta(meta);
+
+				getInventory().setItem(pitPerk.guiSlot, perkItem);
+			}
 		}
 
 		ItemStack back = new ItemStack(Material.ARROW);
@@ -97,6 +114,12 @@ public class ApplyPerkPanel extends AGUIPanel {
 
 			for(PitPerk clickedPerk : PerkManager.pitPerks) {
 				if(clickedPerk.guiSlot != slot) continue;
+
+				if(clickedPerk.renownUnlockable && !UpgradeManager.hasUpgrade(player, clickedPerk.upgradeRef)) {
+					AOutput.error(player, "&cThis perk needs to be unlocked in the renown shop!");
+					player.playSound(player.getLocation(), Sound.ENDERMAN_TELEPORT, 1F, 0.5F);
+					return;
+				}
 
 				for(PitPerk activePerk : perkGUI.getActivePerks()) {
 					if(activePerk != clickedPerk || activePerk.name.equals("No Perk")) continue;

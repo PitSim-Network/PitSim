@@ -1,12 +1,7 @@
 package dev.kyro.pitsim.inventories;
 
-import dev.kyro.arcticapi.data.APlayerData;
 import dev.kyro.arcticapi.gui.AGUI;
-import dev.kyro.pitsim.controllers.NonManager;
-import dev.kyro.pitsim.controllers.objects.PitPerk;
-import dev.kyro.pitsim.controllers.objects.PitPlayer;
-import dev.kyro.pitsim.enums.RenownUpgrade;
-import org.bukkit.configuration.file.FileConfiguration;
+import dev.kyro.pitsim.controllers.objects.RenownUpgrade;
 import org.bukkit.entity.Player;
 
 import java.util.HashMap;

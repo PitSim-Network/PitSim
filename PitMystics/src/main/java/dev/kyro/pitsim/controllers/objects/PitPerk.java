@@ -16,14 +16,18 @@ public abstract class PitPerk implements Listener {
     public String refName;
     public ItemStack displayItem;
     public int guiSlot;
+    public boolean renownUnlockable;
+    public String upgradeRef;
     public PitPerk INSTANCE;
 
-    public PitPerk(String name, String refName, ItemStack displayItem, int guiSlot, PitPerk instance) {
+    public PitPerk(String name, String refName, ItemStack displayItem, int guiSlot, boolean renownUnlockable, String upgradeRef, PitPerk instance) {
 //        INSTANCE = this;
         this.name = name;
         this.refName = refName;
         this.displayItem = displayItem;
         this.guiSlot = guiSlot;
+        this.renownUnlockable = renownUnlockable;
+        this.upgradeRef = upgradeRef;
         this.INSTANCE = instance;
 
         pitPerks.add(this);

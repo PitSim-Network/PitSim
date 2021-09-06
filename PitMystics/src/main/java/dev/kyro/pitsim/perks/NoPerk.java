@@ -12,7 +12,7 @@ public class NoPerk extends PitPerk {
 	public static NoPerk INSTANCE;
 
 	public NoPerk() {
-		super("No Perk", "none", new ItemStack(Material.DIAMOND_BLOCK, 1, (short) 0), 50, INSTANCE);
+		super("No Perk", "none", new ItemStack(Material.DIAMOND_BLOCK, 1, (short) 0), 50, false, "", INSTANCE);
 		INSTANCE = this;
 	}
 

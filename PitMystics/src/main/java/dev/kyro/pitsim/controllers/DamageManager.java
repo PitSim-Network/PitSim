@@ -257,7 +257,11 @@ public class DamageManager implements Listener {
 			} else dead.teleport(spawnLoc);
 			if(attackingNon == null) {
 				FileConfiguration playerData = APlayerData.getPlayerData(dead);
-				if(killer != dead) pitAttacker.playerKills = pitAttacker.playerKills + 1;
+				if(killer != dead) {
+					if(killEvent.isLuckyKill) pitAttacker.playerKills = pitAttacker.playerKills + 3;
+					else pitAttacker.playerKills = pitAttacker.playerKills + 1;
+				}
+
 				playerData.set("playerkills", pitAttacker.playerLevel);
 				APlayerData.savePlayerData(killer);
 			}

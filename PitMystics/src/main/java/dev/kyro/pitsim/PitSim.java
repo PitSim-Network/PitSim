@@ -8,10 +8,10 @@ import dev.kyro.arcticapi.hooks.AHook;
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.commands.*;
 import dev.kyro.pitsim.controllers.*;
-//import dev.kyro.pitsim.controllers.market.MarketManager;
 import dev.kyro.pitsim.controllers.objects.Non;
 import dev.kyro.pitsim.controllers.objects.PitEnchant;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
+import dev.kyro.pitsim.enchants.GoldBoost;
 import dev.kyro.pitsim.enchants.*;
 import dev.kyro.pitsim.killstreaks.*;
 import dev.kyro.pitsim.misc.ItemRename;
@@ -19,6 +19,7 @@ import dev.kyro.pitsim.perks.*;
 import dev.kyro.pitsim.pitevents.CaptureTheFlag;
 import dev.kyro.pitsim.pitevents.Juggernaut;
 import dev.kyro.pitsim.placeholders.*;
+import dev.kyro.pitsim.upgrades.*;
 import net.kyori.adventure.platform.bukkit.BukkitAudiences;
 import net.milkbowl.vault.economy.Economy;
 import org.bukkit.Bukkit;
@@ -26,12 +27,13 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.checkerframework.checker.nullness.qual.NonNull;
 
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+
+//import dev.kyro.pitsim.controllers.market.MarketManager;
 
 public class PitSim extends JavaPlugin {
 
@@ -40,7 +42,7 @@ public class PitSim extends JavaPlugin {
 	public static AData playerList;
 	private BukkitAudiences adventure;
 
-	public @NonNull BukkitAudiences adventure() {
+	public BukkitAudiences adventure() {
 		if(this.adventure == null) {
 			throw new IllegalStateException("Tried to access Adventure when the plugin was disabled!");
 		}
@@ -84,6 +86,7 @@ public class PitSim extends JavaPlugin {
 		PitEventManager.eventWait();
 
 		registerUpgrades();
+		registerPerks();
 		registerMegastreaks();
 
 
@@ -241,7 +244,7 @@ public class PitSim extends JavaPlugin {
 		EnchantManager.registerEnchant(new Lifesteal());
 	}
 
-	private void registerUpgrades() {
+	private void registerPerks() {
 
 		PerkManager.registerUpgrade(new NoPerk());
 		PerkManager.registerUpgrade(new Vampire());
@@ -250,6 +253,7 @@ public class PitSim extends JavaPlugin {
 		PerkManager.registerUpgrade(new Gladiator());
 		PerkManager.registerUpgrade(new Thick());
 		PerkManager.registerUpgrade(new AssistantToTheStreaker());
+		PerkManager.registerUpgrade(new FirstStrike());
 	}
 
 	private void registerMegastreaks() {
@@ -307,6 +311,27 @@ public class PitSim extends JavaPlugin {
 		getServer().getPluginManager().registerEvents(new ItemRename(), this);
 		getServer().getPluginManager().registerEvents(new EnderChestManager(), this);
 		getServer().getPluginManager().registerEvents(new AFKManager(), this);
+
+	}
+
+	public void registerUpgrades() {
+		UpgradeManager.registerUpgrade(new dev.kyro.pitsim.upgrades.GoldBoost());
+		UpgradeManager.registerUpgrade(new XPBoost());
+		UpgradeManager.registerUpgrade(new Tenacity());
+		UpgradeManager.registerUpgrade(new UnlockStreaker());
+		UpgradeManager.registerUpgrade(new UberIncrease());
+		UpgradeManager.registerUpgrade(new DivineIntervention());
+		UpgradeManager.registerUpgrade(new Withercraft());
+		UpgradeManager.registerUpgrade(new UnlockFirstStrike());
+		UpgradeManager.registerUpgrade(new Impatient());
+		UpgradeManager.registerUpgrade(new Helmetry());
+		UpgradeManager.registerUpgrade(new Shardhunter());
+		UpgradeManager.registerUpgrade(new FancyPants());
+		UpgradeManager.registerUpgrade(new SelfConfidence());
+		UpgradeManager.registerUpgrade(new LuckyKill());
+		UpgradeManager.registerUpgrade(new LifeInsurance());
+		UpgradeManager.registerUpgrade(new TaxEvasion());
+		UpgradeManager.registerUpgrade(new DoubleDeath());
 
 	}
 
