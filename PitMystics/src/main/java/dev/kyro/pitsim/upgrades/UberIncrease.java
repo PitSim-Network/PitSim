@@ -1,5 +1,6 @@
 package dev.kyro.pitsim.upgrades;
 
+import dev.kyro.arcticapi.gui.AGUIPanel;
 import dev.kyro.arcticapi.misc.AUtil;
 import dev.kyro.pitsim.controllers.UpgradeManager;
 import dev.kyro.pitsim.controllers.objects.RenownUpgrade;
@@ -21,7 +22,7 @@ public class UberIncrease extends RenownUpgrade {
 	}
 
 	@Override
-	public ItemStack getDisplayItem(Player player) {
+	public ItemStack getDisplayItem(Player player, boolean isCustomPanel) {
 		ItemStack item = new ItemStack(Material.WATCH);
 		ItemMeta meta = item.getItemMeta();
 		meta.addEnchant(Enchantment.ARROW_FIRE, 1, false);
@@ -35,10 +36,13 @@ public class UberIncrease extends RenownUpgrade {
 		lore.add(ChatColor.GRAY + "Each tier:");
 		lore.add(ChatColor.GRAY + "Daily " + ChatColor.LIGHT_PURPLE + "Uberstreak "  + ChatColor.GRAY + "limit is");
 		lore.add(ChatColor.GRAY + "increased by " + ChatColor.WHITE + 1 + ChatColor.GRAY + ".");
-		meta.setLore(UpgradeManager.loreBuilder(this, player, lore));
+		meta.setLore(UpgradeManager.loreBuilder(this, player, lore, isCustomPanel));
 		item.setItemMeta(meta);
 		return item;
 	}
+
+	@Override
+	public AGUIPanel getCustomPanel() {return null;}
 
 	@Override
 	public List<Integer> getTierCosts() {

@@ -21,7 +21,8 @@ public enum NBTTag {
 	MAX_LIVES("pr-max-lives"),
 	IS_FEATHER("pr-isfeather"),
 	IS_TOKEN("pr-istoken"),
-	IS_VILE("pr-isvile");
+	IS_VILE("pr-isvile"),
+	IS_SHARD("pr-isshard");
 
 	private final String ref;
 

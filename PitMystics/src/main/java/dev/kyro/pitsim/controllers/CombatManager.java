@@ -91,17 +91,19 @@ public class CombatManager implements Listener {
 
        PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
        UUID attackerUUID = pitPlayer.lastHitUUID;
-       for(Player onlinePlayer : Bukkit.getOnlinePlayers()) {
-           if(onlinePlayer.getUniqueId().equals(attackerUUID)) {
+       if(taggedPlayers.containsKey(player.getUniqueId())) {
+           for(Player onlinePlayer : Bukkit.getOnlinePlayers()) {
+               if(onlinePlayer.getUniqueId().equals(attackerUUID)) {
 
-               Map<PitEnchant, Integer> attackerEnchant = new HashMap<>();
-               Map<PitEnchant, Integer> defenderEnchant = new HashMap<>();
-               EntityDamageByEntityEvent ev = new EntityDamageByEntityEvent(onlinePlayer, player, EntityDamageEvent.DamageCause.CUSTOM, 0);
-               AttackEvent attackEvent = new AttackEvent(ev, attackerEnchant, defenderEnchant, false);
+                   Map<PitEnchant, Integer> attackerEnchant = new HashMap<>();
+                   Map<PitEnchant, Integer> defenderEnchant = new HashMap<>();
+                   EntityDamageByEntityEvent ev = new EntityDamageByEntityEvent(onlinePlayer, player, EntityDamageEvent.DamageCause.CUSTOM, 0);
+                   AttackEvent attackEvent = new AttackEvent(ev, attackerEnchant, defenderEnchant, false);
 
 
-               DamageManager.kill(attackEvent, onlinePlayer, player, false);
-               return;
+                   DamageManager.kill(attackEvent, onlinePlayer, player, false);
+                   return;
+               }
            }
        }
        DamageManager.Death(player);

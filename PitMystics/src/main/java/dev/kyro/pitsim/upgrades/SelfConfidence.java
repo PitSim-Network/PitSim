@@ -1,5 +1,6 @@
 package dev.kyro.pitsim.upgrades;
 
+import dev.kyro.arcticapi.gui.AGUIPanel;
 import dev.kyro.pitsim.controllers.UpgradeManager;
 import dev.kyro.pitsim.controllers.objects.RenownUpgrade;
 import org.bukkit.ChatColor;
@@ -17,7 +18,7 @@ public class SelfConfidence extends RenownUpgrade {
 	}
 
 	@Override
-	public ItemStack getDisplayItem(Player player) {
+	public ItemStack getDisplayItem(Player player, boolean isCustomPanel) {
 		ItemStack item = new ItemStack(Material.PAINTING);
 		ItemMeta meta = item.getItemMeta();
 		meta.setDisplayName(UpgradeManager.itemNameString(this, player));
@@ -27,10 +28,13 @@ public class SelfConfidence extends RenownUpgrade {
 		lore.add(ChatColor.translateAlternateColorCodes('&', "&7Top 3: &e+1 Renown"));
 		lore.add(ChatColor.translateAlternateColorCodes('&', "&7in major events when 10"));
 		lore.add(ChatColor.translateAlternateColorCodes('&', "&7or more players are online."));
-		meta.setLore(UpgradeManager.loreBuilder(this, player, lore));
+		meta.setLore(UpgradeManager.loreBuilder(this, player, lore, isCustomPanel));
 		item.setItemMeta(meta);
 		return item;
 	}
+
+	@Override
+	public AGUIPanel getCustomPanel() {return null;}
 
 	@Override
 	public List<Integer> getTierCosts() {

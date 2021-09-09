@@ -1,5 +1,6 @@
 package dev.kyro.pitsim.upgrades;
 
+import dev.kyro.arcticapi.gui.AGUIPanel;
 import dev.kyro.arcticapi.misc.AUtil;
 import dev.kyro.pitsim.controllers.UpgradeManager;
 import dev.kyro.pitsim.controllers.objects.RenownUpgrade;
@@ -21,7 +22,7 @@ public class Tenacity extends RenownUpgrade {
 	}
 
 	@Override
-	public ItemStack getDisplayItem(Player player) {
+	public ItemStack getDisplayItem(Player player, boolean isCustomPanel) {
 		ItemStack item = new ItemStack(Material.MAGMA_CREAM);
 		ItemMeta meta = item.getItemMeta();
 		meta.setDisplayName(UpgradeManager.itemNameString(this, player));
@@ -32,10 +33,13 @@ public class Tenacity extends RenownUpgrade {
 		if(UpgradeManager.hasUpgrade(player, this)) lore.add("");
 		lore.add(ChatColor.GRAY + "Each tier:");
 		lore.add(ChatColor.GRAY + "Heal " + ChatColor.RED + "0.5\u2764 "  + ChatColor.GRAY + "on kill.");
-		meta.setLore(UpgradeManager.loreBuilder(this, player, lore));
+		meta.setLore(UpgradeManager.loreBuilder(this, player, lore, isCustomPanel));
 		item.setItemMeta(meta);
 		return item;
 	}
+
+	@Override
+	public AGUIPanel getCustomPanel() {return null;}
 
 	@Override
 	public List<Integer> getTierCosts() {

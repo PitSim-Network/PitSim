@@ -85,10 +85,14 @@ public class UpgradeManager {
 		return ChatColor.YELLOW + "Click to purchase!";
 	}
 
-	public static List<String> loreBuilder(RenownUpgrade upgrade, Player player, List<String> originalLore) {
+	public static List<String> loreBuilder(RenownUpgrade upgrade, Player player, List<String> originalLore, boolean isCustomPanel) {
 		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
 		List<String> lore = new ArrayList<>(originalLore);
 		lore.add("");
+		if(!isCustomPanel && upgrade.getCustomPanel() != null && hasUpgrade(player, upgrade)) {
+			lore.add(ChatColor.YELLOW + "Click to open menu!");
+			return lore;
+		}
 		if(upgrade.isTiered && getTier(player, upgrade) != upgrade.maxTiers) {
 			lore.add(ChatColor.translateAlternateColorCodes('&', "&7Cost: &e" + upgrade.getTierCosts().get(getTier(player, upgrade)) + " Renown"));
 			lore.add(ChatColor.translateAlternateColorCodes('&', "&7You have: &e" + pitPlayer.renown + " Renown"));

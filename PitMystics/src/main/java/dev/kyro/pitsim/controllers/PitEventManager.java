@@ -1,8 +1,6 @@
 package dev.kyro.pitsim.controllers;
 
-import be.maximvdw.featherboard.FeatherBoard;
 import be.maximvdw.featherboard.api.FeatherBoardAPI;
-import com.sun.org.apache.bcel.internal.generic.IF_ACMPEQ;
 import com.xxmicloxx.NoteBlockAPI.model.RepeatMode;
 import com.xxmicloxx.NoteBlockAPI.model.Song;
 import com.xxmicloxx.NoteBlockAPI.songplayer.RadioSongPlayer;
@@ -14,7 +12,6 @@ import dev.kyro.pitsim.controllers.objects.PitEvent;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.misc.Misc;
 import net.kyori.adventure.audience.Audience;
-import net.kyori.adventure.bossbar.BossBar;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;

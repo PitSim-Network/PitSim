@@ -1,5 +1,6 @@
 package dev.kyro.pitsim.upgrades;
 
+import dev.kyro.arcticapi.gui.AGUIPanel;
 import dev.kyro.pitsim.controllers.UpgradeManager;
 import dev.kyro.pitsim.controllers.objects.RenownUpgrade;
 import org.bukkit.ChatColor;
@@ -17,7 +18,7 @@ public class UnlockStreaker extends RenownUpgrade {
 	}
 
 	@Override
-	public ItemStack getDisplayItem(Player player) {
+	public ItemStack getDisplayItem(Player player, boolean isCustomPanel) {
 			ItemStack item = new ItemStack(Material.WHEAT);
 			ItemMeta meta = item.getItemMeta();
 			meta.setDisplayName(UpgradeManager.itemNameString(this, player));
@@ -29,10 +30,13 @@ public class UnlockStreaker extends RenownUpgrade {
 			lore.add(ChatColor.translateAlternateColorCodes('&', "&7gain &b+100 max XP &7if it took &f30 &7or"));
 			lore.add(ChatColor.translateAlternateColorCodes('&', "&7less seconds. Subtracts &b10 max"));
 			lore.add(ChatColor.translateAlternateColorCodes('&', "&bXP &7per additional &f10 &7seconds."));
-			meta.setLore(UpgradeManager.loreBuilder(this, player, lore));
+			meta.setLore(UpgradeManager.loreBuilder(this, player, lore, isCustomPanel));
 			item.setItemMeta(meta);
 			return item;
 	}
+
+	@Override
+	public AGUIPanel getCustomPanel() {return null;}
 
 	@Override
 	public List<Integer> getTierCosts() {

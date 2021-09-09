@@ -1,5 +1,6 @@
 package dev.kyro.pitsim.upgrades;
 
+import dev.kyro.arcticapi.gui.AGUIPanel;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.controllers.SpawnManager;
 import dev.kyro.pitsim.controllers.UpgradeManager;
@@ -25,16 +26,19 @@ public class Impatient extends RenownUpgrade {
 	}
 
 	@Override
-	public ItemStack getDisplayItem(Player player) {
+	public ItemStack getDisplayItem(Player player, boolean isCustomPanel) {
 		ItemStack item = new ItemStack(Material.CARROT_ITEM);
 		ItemMeta meta = item.getItemMeta();
 		meta.setDisplayName(UpgradeManager.itemNameString(this, player));
 		List<String> lore = new ArrayList<>();
 		lore.add(ChatColor.GRAY + "Gain Speed II in spawn area.");
-		meta.setLore(UpgradeManager.loreBuilder(this, player, lore));
+		meta.setLore(UpgradeManager.loreBuilder(this, player, lore, isCustomPanel));
 		item.setItemMeta(meta);
 		return item;
 	}
+
+	@Override
+	public AGUIPanel getCustomPanel() {return null;}
 
 	@Override
 	public List<Integer> getTierCosts() {

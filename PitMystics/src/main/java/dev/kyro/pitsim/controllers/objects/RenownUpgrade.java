@@ -1,5 +1,6 @@
 package dev.kyro.pitsim.controllers.objects;
 
+import dev.kyro.arcticapi.gui.AGUIPanel;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 import org.bukkit.inventory.ItemStack;
@@ -36,9 +37,11 @@ public abstract class RenownUpgrade implements Listener {
         upgrades.add(this);
     }
 
-    public abstract ItemStack getDisplayItem(Player player);
+    public abstract ItemStack getDisplayItem(Player player, boolean isCustomPanel);
 
     public abstract List<Integer> getTierCosts();
+
+    public abstract AGUIPanel getCustomPanel();
 
 
 

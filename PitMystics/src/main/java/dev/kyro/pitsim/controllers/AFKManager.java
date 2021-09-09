@@ -3,11 +3,13 @@ package dev.kyro.pitsim.controllers;
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.PitSim;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerMoveEvent;
+import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.ArrayList;
@@ -71,12 +73,12 @@ public class AFKManager implements Listener {
 		}
 	}
 
-//	@EventHandler
-//	public void onQuit(PlayerQuitEvent event) {
-//		AFKPlayers.remove(event.getPlayer());
-//
-//		Bukkit.broadcastMessage(ChatColor.translateAlternateColorCodes('&', "&8[&c-&8] &6" + event.getPlayer().getDisplayName() + " &ehas left"));
-//	}
+	@EventHandler
+	public void onQuit(PlayerQuitEvent event) {
+		AFKPlayers.remove(event.getPlayer());
+
+		Bukkit.broadcastMessage(ChatColor.translateAlternateColorCodes('&', "&8[&c-&8] &6" + event.getPlayer().getDisplayName() + " &ehas left"));
+	}
 
 
 }
