@@ -70,6 +70,12 @@ public class Shardhunter extends RenownUpgrade {
 		int tier = UpgradeManager.getTier(killEvent.killer, this);
 		if(tier == 0) return;
 
+		double chance = 0.0001 * tier;
+
+		boolean givesShard = Math.random() < chance;
+
+		if(!givesShard) return;
+
 		ItemStack shardItem = new ItemStack(Material.PRISMARINE_SHARD);
 		ItemMeta shardMeta = shardItem.getItemMeta();
 		shardMeta.addEnchant(Enchantment.ARROW_FIRE, 1, false);
@@ -95,12 +101,28 @@ public class Shardhunter extends RenownUpgrade {
 		rsp.addPlayer(killEvent.killer);
 		rsp.setPlaying(true);
 
-		double chance = 0.0001 * tier;
 
-		boolean givesShard = Math.random() < chance;
+	}
 
+	public static ItemStack getGemItem() {
+		ItemStack gem = new ItemStack(Material.EMERALD);
+		ItemMeta meta = gem.getItemMeta();
+		meta.setDisplayName(ChatColor.GREEN + "Totally Legit Gem");
+		meta.addEnchant(Enchantment.ARROW_FIRE, 1, false);
+		meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
+		List<String> lore = new ArrayList<>();
+		lore.add(ChatColor.GRAY + "Kept on death");
+		lore.add(ChatColor.GRAY + "Adds " + ChatColor.LIGHT_PURPLE + "1 tier " + ChatColor.GRAY + "to a mystic enchant.");
+		lore.add(ChatColor.DARK_GRAY + "Once per item!");
+		lore.add("");
+		lore.add(ChatColor.YELLOW + "Hold and right-click to use!");
+		meta.setLore(lore);
+		gem.setItemMeta(meta);
 
+		NBTItem nbtItem = new NBTItem(gem);
 
+		nbtItem.setBoolean(NBTTag.IS_GEM.getRef(), true);
 
+		return nbtItem.getItem();
 	}
 }
