@@ -41,6 +41,10 @@ public class UberIncrease extends RenownUpgrade {
 		return item;
 	}
 
+	public static int getUberIncrease(Player player) {
+		return UpgradeManager.getTier(player, "UBER_INCREASE");
+	}
+
 	@Override
 	public AGUIPanel getCustomPanel() {return null;}
 

@@ -8,6 +8,7 @@ import dev.kyro.pitsim.controllers.PerkManager;
 import dev.kyro.pitsim.controllers.objects.Megastreak;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.killstreaks.*;
+import dev.kyro.pitsim.upgrades.UberIncrease;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.Sound;
@@ -138,11 +139,11 @@ public class MegastreakPanel extends AGUIPanel {
             if(megastreak.getClass() == Uberstreak.class && pitPlayer.playerLevel >= megastreak.levelReq()) {
                 if((System.currentTimeMillis() / 1000L) - 86400 > pitPlayer.uberReset) {
                     pitPlayer.uberReset = 0;
-                    pitPlayer.dailyUbersLeft = 5;
+                    pitPlayer.dailyUbersLeft = 5 + UberIncrease.getUberIncrease(player);
                 }
                 int ubersLeft = pitPlayer.dailyUbersLeft;
-                if(ubersLeft == 0) lore.add(ChatColor.translateAlternateColorCodes('&', "&dDaily Uberstreaks remaining: &c0&7/5"));
-                else lore.add(ChatColor.translateAlternateColorCodes('&', "&dDaily Uberstreaks remaining: &a" + ubersLeft + "&7/5"));
+                if(ubersLeft == 0) lore.add(ChatColor.translateAlternateColorCodes('&', "&dDaily Uberstreaks remaining: &c0&7/" + (5 + UberIncrease.getUberIncrease(player))));
+                else lore.add(ChatColor.translateAlternateColorCodes('&', "&dDaily Uberstreaks remaining: &a" + ubersLeft + "&7/" + (5 + UberIncrease.getUberIncrease(player))));
 
                 FileConfiguration playerData = APlayerData.getPlayerData(pitPlayer.player);
                 playerData.set("ubercooldown", pitPlayer.uberReset);

@@ -10,8 +10,8 @@ import dev.kyro.pitsim.controllers.objects.PitEnchant;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.enchants.PitBlob;
 import dev.kyro.pitsim.enchants.Regularity;
-import dev.kyro.pitsim.enchants.WolfPack;
 import dev.kyro.pitsim.enchants.Telebow;
+import dev.kyro.pitsim.enchants.WolfPack;
 import dev.kyro.pitsim.enums.NBTTag;
 import dev.kyro.pitsim.enums.NonTrait;
 import dev.kyro.pitsim.events.AttackEvent;
@@ -21,6 +21,7 @@ import dev.kyro.pitsim.misc.Misc;
 import dev.kyro.pitsim.misc.ProtArmor;
 import dev.kyro.pitsim.perks.AssistantToTheStreaker;
 import dev.kyro.pitsim.pitevents.CaptureTheFlag;
+import dev.kyro.pitsim.upgrades.DivineIntervention;
 import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.*;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -356,40 +357,46 @@ public class DamageManager implements Listener {
 		String message = "%luckperms_prefix%";
 		pitDead.prefix = "&7[&e" + pitDead.playerLevel + "&7] &7" + PlaceholderAPI.setPlaceholders(pitDead.player, message);
 
-		boolean feather = FunkyFeather.useFeather(dead);
+		if(PitEventManager.majorEvent && UpgradeManager.hasUpgrade(dead, "LIFE_INSURANCE")) {
+			AOutput.send(dead, "&2&lLIFE INSURANCE! &7Inventory protected.");
+		} else {
 
-		for(int i = 0; i < dead.getInventory().getSize(); i++) {
-			ItemStack itemStack = dead.getInventory().getItem(i);
-			if(Misc.isAirOrNull(itemStack)) continue;
-			NBTItem nbtItem = new NBTItem(itemStack);
-			if(nbtItem.hasKey(NBTTag.MAX_LIVES.getRef())) {
-				int lives = nbtItem.getInteger(NBTTag.CURRENT_LIVES.getRef());
-				if(feather) return;
-				if(lives - 1 == 0) {
-					dead.getInventory().remove(itemStack);
-				} else {
-					nbtItem.setInteger(NBTTag.CURRENT_LIVES.getRef(), nbtItem.getInteger(NBTTag.CURRENT_LIVES.getRef()) - 1);
-					EnchantManager.setItemLore(nbtItem.getItem());
-					dead.getInventory().setItem(i, nbtItem.getItem());
-				}
-			}
-		}
-		if(!feather) ProtArmor.deleteArmor(dead);
-		if(!Misc.isAirOrNull(dead.getInventory().getLeggings())) {
-			ItemStack pants = dead.getInventory().getLeggings();
-			NBTItem nbtItem = new NBTItem(pants);
-			if(nbtItem.hasKey(NBTTag.MAX_LIVES.getRef())) {
-				int lives = nbtItem.getInteger(NBTTag.CURRENT_LIVES.getRef());
-				if(!feather) {
+			boolean divine = DivineIntervention.INSTANCE.isDivine(dead);
+			boolean feather = FunkyFeather.useFeather(dead, divine);
+
+			for(int i = 0; i < dead.getInventory().getSize(); i++) {
+				ItemStack itemStack = dead.getInventory().getItem(i);
+				if(Misc.isAirOrNull(itemStack)) continue;
+				NBTItem nbtItem = new NBTItem(itemStack);
+				if(nbtItem.hasKey(NBTTag.MAX_LIVES.getRef())) {
+					int lives = nbtItem.getInteger(NBTTag.CURRENT_LIVES.getRef());
+					if(feather || divine) return;
 					if(lives - 1 == 0) {
-						dead.getInventory().remove(pants);
+						dead.getInventory().remove(itemStack);
 					} else {
 						nbtItem.setInteger(NBTTag.CURRENT_LIVES.getRef(), nbtItem.getInteger(NBTTag.CURRENT_LIVES.getRef()) - 1);
 						EnchantManager.setItemLore(nbtItem.getItem());
-						dead.getInventory().setLeggings(nbtItem.getItem());
+						dead.getInventory().setItem(i, nbtItem.getItem());
 					}
 				}
+			}
+			if(!feather && !divine) ProtArmor.deleteArmor(dead);
+			if(!Misc.isAirOrNull(dead.getInventory().getLeggings())) {
+				ItemStack pants = dead.getInventory().getLeggings();
+				NBTItem nbtItem = new NBTItem(pants);
+				if(nbtItem.hasKey(NBTTag.MAX_LIVES.getRef())) {
+					int lives = nbtItem.getInteger(NBTTag.CURRENT_LIVES.getRef());
+					if(!feather && !divine) {
+						if(lives - 1 == 0) {
+							dead.getInventory().remove(pants);
+						} else {
+							nbtItem.setInteger(NBTTag.CURRENT_LIVES.getRef(), nbtItem.getInteger(NBTTag.CURRENT_LIVES.getRef()) - 1);
+							EnchantManager.setItemLore(nbtItem.getItem());
+							dead.getInventory().setLeggings(nbtItem.getItem());
+						}
+					}
 
+				}
 			}
 		}
 	}
@@ -440,42 +447,48 @@ public class DamageManager implements Listener {
 		String message = "%luckperms_prefix%";
 		pitDefender.prefix = "&7[&e" + pitDefender.playerLevel + "&7] &7" + PlaceholderAPI.setPlaceholders(pitDefender.player, message);
 
-		boolean feather = FunkyFeather.useFeather(dead);
+		if(PitEventManager.majorEvent && UpgradeManager.hasUpgrade(dead, "LIFE_INSURANCE")) {
+			AOutput.send(dead, "&2&lLIFE INSURANCE! &7Inventory protected.");
+		} else {
 
-		for(int i = 0; i < dead.getInventory().getSize(); i++) {
-			ItemStack itemStack = dead.getInventory().getItem(i);
-			if(Misc.isAirOrNull(itemStack)) continue;
-			NBTItem nbtItem = new NBTItem(itemStack);
-			if(nbtItem.hasKey(NBTTag.MAX_LIVES.getRef())) {
-				int lives = nbtItem.getInteger(NBTTag.CURRENT_LIVES.getRef());
-				if(feather) return;
-				if(lives - 1 == 0) {
-					dead.getInventory().remove(itemStack);
-				} else {
-					nbtItem.setInteger(NBTTag.CURRENT_LIVES.getRef(), nbtItem.getInteger(NBTTag.CURRENT_LIVES.getRef()) - 1);
-					EnchantManager.setItemLore(nbtItem.getItem());
-					dead.getInventory().setItem(i, nbtItem.getItem());
-				}
-			}
-		}
+			boolean divine = DivineIntervention.INSTANCE.isDivine(dead);
+			boolean feather = FunkyFeather.useFeather(dead, divine);
 
-		if(!feather) ProtArmor.deleteArmor(dead);
-
-		if(!Misc.isAirOrNull(dead.getInventory().getLeggings())) {
-			ItemStack pants = dead.getInventory().getLeggings();
-			NBTItem nbtItem = new NBTItem(pants);
-			if(nbtItem.hasKey(NBTTag.MAX_LIVES.getRef())) {
-				int lives = nbtItem.getInteger(NBTTag.CURRENT_LIVES.getRef());
-				if(!feather) {
+			for(int i = 0; i < dead.getInventory().getSize(); i++) {
+				ItemStack itemStack = dead.getInventory().getItem(i);
+				if(Misc.isAirOrNull(itemStack)) continue;
+				NBTItem nbtItem = new NBTItem(itemStack);
+				if(nbtItem.hasKey(NBTTag.MAX_LIVES.getRef())) {
+					int lives = nbtItem.getInteger(NBTTag.CURRENT_LIVES.getRef());
+					if(feather) return;
 					if(lives - 1 == 0) {
-						dead.getInventory().remove(pants);
+						dead.getInventory().remove(itemStack);
 					} else {
 						nbtItem.setInteger(NBTTag.CURRENT_LIVES.getRef(), nbtItem.getInteger(NBTTag.CURRENT_LIVES.getRef()) - 1);
 						EnchantManager.setItemLore(nbtItem.getItem());
-						dead.getInventory().setLeggings(nbtItem.getItem());
+						dead.getInventory().setItem(i, nbtItem.getItem());
 					}
 				}
+			}
 
+			if(!feather) ProtArmor.deleteArmor(dead);
+
+			if(!Misc.isAirOrNull(dead.getInventory().getLeggings())) {
+				ItemStack pants = dead.getInventory().getLeggings();
+				NBTItem nbtItem = new NBTItem(pants);
+				if(nbtItem.hasKey(NBTTag.MAX_LIVES.getRef())) {
+					int lives = nbtItem.getInteger(NBTTag.CURRENT_LIVES.getRef());
+					if(!feather) {
+						if(lives - 1 == 0) {
+							dead.getInventory().remove(pants);
+						} else {
+							nbtItem.setInteger(NBTTag.CURRENT_LIVES.getRef(), nbtItem.getInteger(NBTTag.CURRENT_LIVES.getRef()) - 1);
+							EnchantManager.setItemLore(nbtItem.getItem());
+							dead.getInventory().setLeggings(nbtItem.getItem());
+						}
+					}
+
+				}
 			}
 		}
 	}

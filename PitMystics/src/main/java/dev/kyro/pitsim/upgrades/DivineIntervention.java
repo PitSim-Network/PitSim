@@ -1,6 +1,7 @@
 package dev.kyro.pitsim.upgrades;
 
 import dev.kyro.arcticapi.gui.AGUIPanel;
+import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.arcticapi.misc.AUtil;
 import dev.kyro.pitsim.controllers.UpgradeManager;
 import dev.kyro.pitsim.controllers.objects.RenownUpgrade;
@@ -15,8 +16,10 @@ import java.util.Arrays;
 import java.util.List;
 
 public class DivineIntervention extends RenownUpgrade {
+	public static DivineIntervention INSTANCE;
 	public DivineIntervention() {
 		super("Divine Intervention", "DIVINE_INTERVENTION", 25, 30, 25, true, 3);
+		INSTANCE = this;
 	}
 
 	@Override
@@ -35,6 +38,24 @@ public class DivineIntervention extends RenownUpgrade {
 		meta.setLore(UpgradeManager.loreBuilder(this, player, lore, isCustomPanel));
 		item.setItemMeta(meta);
 		return item;
+	}
+
+	public boolean isDivine(Player player) {
+		if(!UpgradeManager.hasUpgrade(player, this)) return false;
+
+		int tier = UpgradeManager.getTier(player, this);
+		if(tier == 0) return false;
+
+		double chance = 0.01 * (tier * 5);
+
+		boolean isDouble = Math.random() < chance;
+
+		if(isDouble) {
+			AOutput.send(player, "&b&lDIVINE INTERVENTION! &7Inventory saved!");
+//			ASound.play(player, Sound.VILLA);
+		}
+
+		return isDouble;
 	}
 
 	@Override

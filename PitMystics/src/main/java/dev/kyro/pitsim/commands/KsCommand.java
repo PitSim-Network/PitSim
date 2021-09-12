@@ -1,26 +1,11 @@
 package dev.kyro.pitsim.commands;
 
-import dev.kyro.arcticapi.misc.AOutput;
-import dev.kyro.arcticapi.misc.AUtil;
-import dev.kyro.pitsim.controllers.BossBarManager;
-import dev.kyro.pitsim.controllers.LevelManager;
-import dev.kyro.pitsim.controllers.PlayerManager;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
-import dev.kyro.pitsim.inventories.PerkGUI;
 import dev.kyro.pitsim.inventories.RenownShopGUI;
-import dev.kyro.pitsim.killstreaks.Highlander;
-import dev.kyro.pitsim.killstreaks.Uberstreak;
-import dev.kyro.pitsim.misc.FunkyFeather;
-import dev.kyro.pitsim.misc.ProtArmor;
-import dev.kyro.pitsim.pitevents.CaptureTheFlag;
-import net.kyori.adventure.text.Component;
-import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-
-import java.util.logging.Level;
 
 public class KsCommand implements CommandExecutor {
     @Override

@@ -158,7 +158,7 @@ public class ShardHunterPanel extends AGUIPanel {
         List<String> lore = new ArrayList<>();
         lore.add("");
         lore.add(ChatColor.translateAlternateColorCodes('&', "&7Use &f64 &aAncient Gem Shards &7to craft"));
-        lore.add(ChatColor.translateAlternateColorCodes('&', "&aa Totally Legit Gem&7. (Gain a 9th token"));
+        lore.add(ChatColor.translateAlternateColorCodes('&', "&7a&a Totally Legit Gem&7. (Gain a 9th token"));
         lore.add(ChatColor.translateAlternateColorCodes('&', "&7on &dHidden Jewel &7items)"));
         lore.add("");
         lore.add(ChatColor.translateAlternateColorCodes('&', "&7Your progress:"));

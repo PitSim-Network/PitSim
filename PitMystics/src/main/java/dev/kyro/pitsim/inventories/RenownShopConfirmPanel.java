@@ -71,6 +71,8 @@ public class RenownShopConfirmPanel extends AGUIPanel {
                 }
                 ASound.play(player, Sound.ORB_PICKUP, 2, 1.5F);
 
+                if(upgrade.refName.equals("UBER_INCREASE")) pitPlayer.dailyUbersLeft++;
+
             }
 
             if(slot == 15)  {

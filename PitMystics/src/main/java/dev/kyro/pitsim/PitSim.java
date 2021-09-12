@@ -14,7 +14,9 @@ import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.enchants.GoldBoost;
 import dev.kyro.pitsim.enchants.*;
 import dev.kyro.pitsim.killstreaks.*;
+import dev.kyro.pitsim.misc.ChunkOfVile;
 import dev.kyro.pitsim.misc.ItemRename;
+import dev.kyro.pitsim.misc.TotallyLegitGem;
 import dev.kyro.pitsim.perks.*;
 import dev.kyro.pitsim.pitevents.CaptureTheFlag;
 import dev.kyro.pitsim.pitevents.Juggernaut;
@@ -254,6 +256,7 @@ public class PitSim extends JavaPlugin {
 		PerkManager.registerUpgrade(new Thick());
 		PerkManager.registerUpgrade(new AssistantToTheStreaker());
 		PerkManager.registerUpgrade(new FirstStrike());
+		PerkManager.registerUpgrade(new Streaker());
 	}
 
 	private void registerMegastreaks() {
@@ -311,6 +314,8 @@ public class PitSim extends JavaPlugin {
 		getServer().getPluginManager().registerEvents(new ItemRename(), this);
 		getServer().getPluginManager().registerEvents(new EnderChestManager(), this);
 		getServer().getPluginManager().registerEvents(new AFKManager(), this);
+		getServer().getPluginManager().registerEvents(new TotallyLegitGem(), this);
+		getServer().getPluginManager().registerEvents(new ChunkOfVile(), this);
 
 	}
 

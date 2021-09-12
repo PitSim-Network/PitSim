@@ -6,7 +6,6 @@ import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.enums.ApplyType;
 import dev.kyro.pitsim.events.KillEvent;
 import dev.kyro.pitsim.killstreaks.NoMegastreak;
-import dev.kyro.pitsim.misc.Misc;
 import org.bukkit.event.EventHandler;
 
 import java.util.List;
@@ -51,11 +50,11 @@ public class Sweaty extends PitEnchant {
 			case 1:
 			case 2:
 			case 3:
-				return 1;
+				return 2;
 			case 4:
 			case 5:
 			case 6:
-				return 2;
+				return 1;
 		}
 		return 0;
 	}

@@ -46,7 +46,9 @@ public class FunkyFeather {
         }
     }
 
-    public static boolean useFeather(Player player) {
+    public static boolean useFeather(Player player, boolean isDivine) {
+        if(isDivine) return false;
+
 
         for(int i = 0; i < 9; i++) {
             ItemStack itemStack = player.getInventory().getItem(i);

@@ -105,8 +105,9 @@ public class CombatManager implements Listener {
                    return;
                }
            }
+           DamageManager.Death(player);
        }
-       DamageManager.Death(player);
+
 
 //        Player player = event.getPlayer();
 //
