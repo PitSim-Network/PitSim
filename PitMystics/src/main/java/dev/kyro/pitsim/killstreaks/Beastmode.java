@@ -6,6 +6,7 @@ import dev.kyro.pitsim.controllers.objects.Megastreak;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.events.AttackEvent;
 import dev.kyro.pitsim.events.KillEvent;
+import dev.kyro.pitsim.upgrades.DoubleDeath;
 import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -170,11 +171,12 @@ public class Beastmode extends Megastreak {
 			pitPlayer.prefix = "&7[&e" + pitPlayer.playerLevel + "&7] &7" + PlaceholderAPI.setPlaceholders(pitPlayer.player, message);
 		}
 
-		int randomNum = ThreadLocalRandom.current().nextInt(1000, 5000 + 1);
-		if(pitPlayer.megastreak.isOnMega())  {
-			AOutput.send(pitPlayer.player, "&c&lBEASTMODE! &7Earned &b" + randomNum + "&b XP &7from megastreak!");
-			pitPlayer.remainingXP = Math.max(pitPlayer.remainingXP - randomNum, 0);
-		}
+        int randomNum = ThreadLocalRandom.current().nextInt(1000, 5000 + 1);
+        if(DoubleDeath.INSTANCE.isDoubleDeath(pitPlayer.player)) randomNum = randomNum * 2;
+        if(pitPlayer.megastreak.isOnMega())  {
+            AOutput.send(pitPlayer.player, "&c&lBEASTMODE! &7Earned &b" + randomNum + "&b XP &7from megastreak!");
+            pitPlayer.remainingXP = Math.max(pitPlayer.remainingXP - randomNum, 0);
+        }
 
 	}
 

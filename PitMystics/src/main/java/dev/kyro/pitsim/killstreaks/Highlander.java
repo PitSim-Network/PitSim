@@ -9,6 +9,7 @@ import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.events.AttackEvent;
 import dev.kyro.pitsim.events.KillEvent;
 import dev.kyro.pitsim.misc.Misc;
+import dev.kyro.pitsim.upgrades.DoubleDeath;
 import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -167,18 +168,19 @@ public class Highlander extends Megastreak {
 	@Override
 	public void reset() {
 
-		String message = "%luckperms_prefix%";
-		if(pitPlayer.megastreak.isOnMega()) {
-			pitPlayer.prefix = pitPlayer.megastreak.getName() + " &7" + PlaceholderAPI.setPlaceholders(pitPlayer.player, message);
-		} else {
-			pitPlayer.prefix = "&7[&e" + pitPlayer.playerLevel + "&7] &7" + PlaceholderAPI.setPlaceholders(pitPlayer.player, message);
-		}
-		PitSim.VAULT.depositPlayer(pitPlayer.player, pitPlayer.bounty);
-		if(pitPlayer.bounty != 0 && pitPlayer.megastreak.isOnMega()) {
-			AOutput.send(pitPlayer.player, "&6&lHIGHLANDER! &7Earned &6+" + pitPlayer.bounty + "&6g &7from megastreak!");
-			pitPlayer.bounty = 0;
-		}
-	}
+        String message = "%luckperms_prefix%";
+        if(pitPlayer.megastreak.isOnMega()) {
+            pitPlayer.prefix = pitPlayer.megastreak.getName() + " &7" + PlaceholderAPI.setPlaceholders(pitPlayer.player, message);
+        } else {
+            pitPlayer.prefix = "&7[&e" + pitPlayer.playerLevel + "&7] &7" + PlaceholderAPI.setPlaceholders(pitPlayer.player, message);
+        }
+        if(DoubleDeath.INSTANCE.isDoubleDeath(pitPlayer.player)) pitPlayer.bounty = pitPlayer.bounty * 2;
+        PitSim.VAULT.depositPlayer(pitPlayer.player, pitPlayer.bounty);
+        if(pitPlayer.bounty != 0 && pitPlayer.megastreak.isOnMega()) {
+            AOutput.send(pitPlayer.player, "&6&lHIGHLANDER! &7Earned &6+" + pitPlayer.bounty + "&6g &7from megastreak!");
+            pitPlayer.bounty = 0;
+        }
+    }
 
 	@Override
 	public void stop() {

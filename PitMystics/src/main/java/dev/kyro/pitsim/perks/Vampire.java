@@ -18,7 +18,7 @@ public class Vampire extends PitPerk {
 	public static Vampire INSTANCE;
 
 	public Vampire() {
-		super("Vampire", "vampire", new ItemStack(Material.FERMENTED_SPIDER_EYE), 10, INSTANCE	);
+		super("Vampire", "vampire", new ItemStack(Material.FERMENTED_SPIDER_EYE), 10, false, "", INSTANCE	);
 		INSTANCE = this;
 	}
 

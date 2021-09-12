@@ -22,6 +22,8 @@ public enum NBTTag {
 	IS_FEATHER("pr-isfeather"),
 	IS_TOKEN("pr-istoken"),
 	IS_VILE("pr-isvile"),
+	IS_SHARD("pr-isshard"),
+	IS_GEM("pr-isgem"),
 
 	IS_VENOM("pr-isvenom");
 

@@ -6,7 +6,6 @@ import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.enums.ApplyType;
 import dev.kyro.pitsim.events.KillEvent;
 import dev.kyro.pitsim.killstreaks.NoMegastreak;
-import dev.kyro.pitsim.misc.Misc;
 import org.bukkit.event.EventHandler;
 
 import java.util.List;
@@ -37,8 +36,8 @@ public class Sweaty extends PitEnchant {
 	public List<String> getDescription(int enchantLvl) {
 
 		if(enchantLvl != 3) {
-			return new ALoreBuilder("&7Earn a stacking &b+1 XP &7every", "&e" + Misc.ordinalWords(getXpIncrease(enchantLvl)) +
-					" &7kill and &b+" + getCapIncrese(enchantLvl) + " max XP &7per", "&7kill", "&7(Must be on a megastreak)").getLore();
+			return new ALoreBuilder("&7Earn a stacking &b+1 XP &7every",
+					" &7kill and &b+" + getCapIncrese(enchantLvl) + " max XP &7per kill", "&7(Must be on a megastreak)").getLore();
 		} else {
 			return new ALoreBuilder("&7Earn a stacking &b+1 XP &7every",
 					"&7kill and &b+" + getCapIncrese(enchantLvl) + " max XP &7per kill", "&7(Must be on a megastreak)").getLore();
@@ -51,11 +50,11 @@ public class Sweaty extends PitEnchant {
 			case 1:
 			case 2:
 			case 3:
-				return 1;
+				return 2;
 			case 4:
 			case 5:
 			case 6:
-				return 2;
+				return 1;
 		}
 		return 0;
 	}

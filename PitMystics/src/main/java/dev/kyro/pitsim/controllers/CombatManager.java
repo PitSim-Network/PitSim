@@ -3,7 +3,7 @@ package dev.kyro.pitsim.controllers;
 import dev.kyro.arcticapi.data.APlayerData;
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.PitSim;
-import dev.kyro.pitsim.controllers.objects.Non;
+import dev.kyro.pitsim.controllers.objects.PitEnchant;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.events.AttackEvent;
 import dev.kyro.pitsim.events.KillEvent;
@@ -13,6 +13,8 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
@@ -74,6 +76,8 @@ public class CombatManager implements Listener {
 
    @EventHandler
     public static void onLeave(PlayerQuitEvent event) {
+        Player player = event.getPlayer();
+        event.getPlayer().closeInventory();
         PlayerManager.bossBars.remove(event.getPlayer());
         PitEventManager.kills.remove(event.getPlayer());
         PitEventManager.bounty.remove(event.getPlayer());
@@ -84,6 +88,26 @@ public class CombatManager implements Listener {
        playerData.set("playerkills", pitplayer.playerKills);
        playerData.set("xp", pitplayer.remainingXP);
        APlayerData.savePlayerData(event.getPlayer());
+
+       PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
+       UUID attackerUUID = pitPlayer.lastHitUUID;
+       if(taggedPlayers.containsKey(player.getUniqueId())) {
+           for(Player onlinePlayer : Bukkit.getOnlinePlayers()) {
+               if(onlinePlayer.getUniqueId().equals(attackerUUID)) {
+
+                   Map<PitEnchant, Integer> attackerEnchant = new HashMap<>();
+                   Map<PitEnchant, Integer> defenderEnchant = new HashMap<>();
+                   EntityDamageByEntityEvent ev = new EntityDamageByEntityEvent(onlinePlayer, player, EntityDamageEvent.DamageCause.CUSTOM, 0);
+                   AttackEvent attackEvent = new AttackEvent(ev, attackerEnchant, defenderEnchant, false);
+
+
+                   DamageManager.kill(attackEvent, onlinePlayer, player, false);
+                   return;
+               }
+           }
+           DamageManager.Death(player);
+       }
+
 
 //        Player player = event.getPlayer();
 //

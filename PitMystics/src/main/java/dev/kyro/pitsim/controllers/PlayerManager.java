@@ -28,6 +28,8 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerItemDamageEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
+import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.player.*;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 
@@ -73,6 +75,7 @@ public class PlayerManager implements Listener {
 
 
 		if(pitDead.bounty != 0 && killingNon == null && pitKiller != pitDead) {
+			if(killEvent.isLuckyKill) pitDead.bounty = pitDead.bounty * 3;
 			DecimalFormat formatter = new DecimalFormat("#,###.#");
 
 			for(Player player : Bukkit.getOnlinePlayers()) {
@@ -174,6 +177,8 @@ public class PlayerManager implements Listener {
 	@EventHandler
 	public void onPlayerJoin(PlayerJoinEvent event) {
 //		if(isNew(event.getPlayer())) TokenOfAppreciation.giveToken(event.getPlayer(), 1);
+		event.getPlayer().setNoDamageTicks(18);
+		event.getPlayer().setMaximumNoDamageTicks(18);
 
 		if(PitEventManager.majorEvent) FeatherBoardAPI.showScoreboard(event.getPlayer(), "event");
 		else {
@@ -274,6 +279,21 @@ public class PlayerManager implements Listener {
 //			if(itemsRemoved != 0) AOutput.error(player, "&c" + itemsRemoved + " &7illegal item" +
 //					(itemsRemoved == 1 ? " was" : "s were") + " removed from your inventory");
 
+	}
+
+	@EventHandler
+	public void onCraft(InventoryClickEvent event) {
+		if(event.getSlot() == 80 || event.getSlot() == 81 || event.getSlot() == 82 || event.getSlot() == 83) event.setCancelled(true);
+	}
+
+
+	@EventHandler
+	public void onJoin(AsyncPlayerPreLoginEvent event) {
+		Player player = Bukkit.getServer().getPlayerExact(event.getName());
+		if(player == null) return;
+		if(player.isOnline()) {
+			event.disallow(AsyncPlayerPreLoginEvent.Result.KICK_OTHER, ChatColor.RED + "You are already online! \nIf you believe this is an error, try re-logging in a few seconds.");
+		}
 	}
 
 	public static Boolean isNew(Player player) {

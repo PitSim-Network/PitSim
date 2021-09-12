@@ -128,14 +128,14 @@ public class PitEventManager {
 
 	public static void endTimer(PitEvent event) {
 
-		new BukkitRunnable() {
-			@Override
-			public void run() {
-				if(majorEvent && activeEvent == null) endEvent(event);
-				canceledEvent = false;
-			}
-		}.runTaskLater(PitSim.INSTANCE, 6000L);
-	}
+        new BukkitRunnable() {
+            @Override
+            public void run() {
+               if(majorEvent && activeEvent != null) endEvent(event);
+               canceledEvent = false;
+            }
+        }.runTaskLater(PitSim.INSTANCE, 6000L);
+    }
 
 	public static void endEvent(PitEvent event) {
 		for(Player onlinePlayer : Bukkit.getOnlinePlayers()) {
