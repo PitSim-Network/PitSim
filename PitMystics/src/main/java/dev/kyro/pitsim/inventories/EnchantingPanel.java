@@ -16,12 +16,15 @@ import dev.kyro.pitsim.enums.PantColor;
 import dev.kyro.pitsim.misc.Misc;
 import org.bukkit.Material;
 import org.bukkit.Sound;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.inventory.InventoryOpenEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryView;
+import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
 
@@ -32,7 +35,7 @@ public class EnchantingPanel extends AGUIPanel {
 	public boolean forcedClose = false;
 	public int count = 0;
 	public BukkitTask runnable;
-	public boolean freshSelect = false;
+	public boolean colorSelect = false;
 	public ItemStack mystic = new ItemStack(Material.AIR);
 
 	public EnchantingPanel(AGUI gui) {
@@ -50,26 +53,28 @@ public class EnchantingPanel extends AGUIPanel {
 		runnable = new BukkitRunnable() {
 			@Override
 			public void run() {
-				if(freshSelect) return;
+				if(colorSelect) return;
 				InventoryView inventoryView = player.getOpenInventory();
 				if(inventoryView == null) return;
 				Inventory inventory = inventoryView.getTopInventory();
 				if(inventory == null) return;
 				if(inventory.getHolder() != enchantingPanel) return;
 
-				if(count < 8) {
-					getInventory().setItem(slots[count], new ItemStack(Material.STAINED_GLASS_PANE, 1, (short) 10));
-				} else if(count < 15) {
-					getInventory().setItem(slots[count % 8], new ItemStack(Material.STAINED_GLASS_PANE, 1, (short) 15));
-				} else {
-					getInventory().setItem(slots[count % 8], new ItemStack(Material.STAINED_GLASS_PANE, 1, (short) 15));
-					getInventory().setItem(slots[(count + 1) % 8], new ItemStack(Material.STAINED_GLASS_PANE, 1, (short) 10));
+				if(count % 3 == 0) {
+					if(count / 3 < 8) {
+						getInventory().setItem(slots[count / 3], new ItemStack(Material.STAINED_GLASS_PANE, 1, (short) 10));
+					} else if(count / 3 < 15) {
+						getInventory().setItem(slots[(count / 3) % 8], new ItemStack(Material.STAINED_GLASS_PANE, 1, (short) 15));
+					} else {
+						getInventory().setItem(slots[(count / 3) % 8], new ItemStack(Material.STAINED_GLASS_PANE, 1, (short) 15));
+						getInventory().setItem(slots[((count / 3) + 1) % 8], new ItemStack(Material.STAINED_GLASS_PANE, 1, (short) 10));
+					}
 				}
 
 				updateInventory();
 				count++;
 			}
-		}.runTaskTimer(PitSim.INSTANCE, 0L, 3L);
+		}.runTaskTimer(PitSim.INSTANCE, 0L, 1L);
 	}
 
 	@Override
@@ -90,7 +95,7 @@ public class EnchantingPanel extends AGUIPanel {
 		if(event.getClickedInventory().getHolder() == this) {
 
 			if(slot == 10 || slot == 13 || slot == 16) {
-				if(freshSelect) return;
+				if(colorSelect) return;
 
 				if(Misc.isAirOrNull(mystic) || clickedItem.getType() != Material.ENCHANTMENT_TABLE) {
 					ASound.play(player, Sound.VILLAGER_NO);
@@ -111,9 +116,9 @@ public class EnchantingPanel extends AGUIPanel {
 			}
 
 			if(slot == 37) {
-				if(freshSelect) {
+				if(colorSelect) {
 					mystic = FreshCommand.getFreshItem(MysticType.PANTS, PantColor.RED);
-					freshSelect = false;
+					colorSelect = false;
 				} else {
 					getInventory().setItem(37, new ItemStack(Material.AIR));
 					if(!FreshCommand.isFresh(mystic)) player.getInventory().addItem(mystic);
@@ -121,20 +126,20 @@ public class EnchantingPanel extends AGUIPanel {
 				}
 			}
 
-			if(slot == 38 && freshSelect) {
+			if(slot == 38 && colorSelect) {
 				mystic = FreshCommand.getFreshItem(MysticType.PANTS, PantColor.ORANGE);
-				freshSelect = false;
+				colorSelect = false;
 			}
 
-			if(slot == 39 && freshSelect) {
+			if(slot == 39 && colorSelect) {
 				mystic = FreshCommand.getFreshItem(MysticType.PANTS, PantColor.YELLOW);
-				freshSelect = false;
+				colorSelect = false;
 			}
 
 			if(slot == 40) {
-				if(freshSelect) {
+				if(colorSelect) {
 					mystic = FreshCommand.getFreshItem(MysticType.PANTS, PantColor.GREEN);
-					freshSelect = false;
+					colorSelect = false;
 				} else {
 					if(Misc.isAirOrNull(mystic)) {
 
@@ -146,9 +151,9 @@ public class EnchantingPanel extends AGUIPanel {
 				}
 			}
 			if(slot == 41) {
-				if(freshSelect) {
+				if(colorSelect) {
 					mystic = FreshCommand.getFreshItem(MysticType.PANTS, PantColor.BLUE);
-					freshSelect = false;
+					colorSelect = false;
 				} else {
 					if(Misc.isAirOrNull(mystic)) {
 
@@ -162,8 +167,8 @@ public class EnchantingPanel extends AGUIPanel {
 			if(slot == 43) {
 				if(Misc.isAirOrNull(mystic)) {
 
-					if(!freshSelect) count += 15;
-					freshSelect = !freshSelect;
+					if(!colorSelect) count += 15 * 3;
+					colorSelect = !colorSelect;
 					updateInventory();
 				} else {
 					AOutput.error(player, "Already an item in the mystic well");
@@ -212,7 +217,7 @@ public class EnchantingPanel extends AGUIPanel {
 	public void updateInventory() {
 		if(Misc.isAirOrNull(mystic)) {
 
-			if(freshSelect) {
+			if(colorSelect) {
 				for(int i = 0; i < 5; i++) {
 					ItemStack fresh = FreshCommand.getFreshItem(MysticType.PANTS, PantColor.values()[i]);
 					getInventory().setItem(i + 37, fresh);
@@ -261,6 +266,7 @@ public class EnchantingPanel extends AGUIPanel {
 			}
 		}
 
+		makeSectionActive(getActiveSection());
 		super.updateInventory();
 	}
 
@@ -272,5 +278,48 @@ public class EnchantingPanel extends AGUIPanel {
 			return entry;
 		}
 		return null;
+	}
+
+	public GUISection getActiveSection() {
+
+		if(Misc.isAirOrNull(mystic)) return colorSelect ? GUISection.COLOR_SELECT : GUISection.FRESH_SELECT;
+		if(getInventory().getItem(10).getType() == Material.ENCHANTMENT_TABLE) return GUISection.TIER_1;
+		if(getInventory().getItem(13).getType() == Material.ENCHANTMENT_TABLE) return GUISection.TIER_2;
+		if(getInventory().getItem(16).getType() == Material.ENCHANTMENT_TABLE) return GUISection.TIER_3;
+		return GUISection.MYSTIC_INPUT;
+	}
+
+	public void makeSectionActive(GUISection guiSection) {
+		for(GUISection value : GUISection.values()) {
+			if(value == guiSection) continue;
+			for(int slot : value.slots) {
+				ItemStack itemStack = getInventory().getItem(slot);
+				if(Misc.isAirOrNull(itemStack)) continue;
+				if(itemStack.getType() == Material.STAINED_GLASS_PANE) itemStack.removeEnchantment(Enchantment.DURABILITY);
+				getInventory().setItem(slot, itemStack);
+			}
+		}
+		for(int slot : guiSection.slots) {
+			ItemStack itemStack = getInventory().getItem(slot);
+			if(Misc.isAirOrNull(itemStack)) continue;
+			itemStack.addUnsafeEnchantment(Enchantment.DURABILITY, 1);
+			ItemMeta itemMeta = itemStack.getItemMeta(); itemMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS); itemStack.setItemMeta(itemMeta);
+			getInventory().setItem(slot, itemStack);
+		}
+	}
+
+	private enum GUISection {
+		TIER_1(0, 1, 2, 9, 11, 18, 19, 20),
+		TIER_2(3, 4, 5, 12, 14, 21, 22, 23),
+		TIER_3(6, 7, 8, 15, 17, 24, 25, 26),
+		MYSTIC_INPUT(27, 28, 29, 36, 38, 45, 46, 47),
+		FRESH_SELECT(30, 31, 32, 33, 34, 35, 39, 42, 44, 48, 49, 50, 51, 52, 53),
+		COLOR_SELECT(27, 28, 29, 36, 38, 45, 46, 47, 30, 31, 32, 33, 34, 35, 39, 42, 44, 48, 49, 50, 51, 52, 53);
+
+		public int[] slots;
+
+		GUISection(int... slots) {
+			this.slots = slots;
+		}
 	}
 }

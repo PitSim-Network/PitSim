@@ -1,49 +1,35 @@
 package dev.kyro.pitsim.controllers;
 
-import dev.kyro.arcticapi.builders.AItemStackBuilder;
 import be.maximvdw.featherboard.api.FeatherBoardAPI;
+import de.tr7zw.nbtapi.NBTItem;
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.arcticapi.misc.ASound;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.controllers.objects.Non;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
-import dev.kyro.pitsim.enums.DeathCry;
 import dev.kyro.pitsim.events.AttackEvent;
 import dev.kyro.pitsim.events.KillEvent;
 import dev.kyro.pitsim.killstreaks.Highlander;
 import dev.kyro.pitsim.misc.DeathCrys;
 import dev.kyro.pitsim.misc.KillEffects;
 import dev.kyro.pitsim.misc.Misc;
-import dev.kyro.pitsim.misc.TokenOfAppreciation;
 import me.clip.placeholderapi.PlaceholderAPI;
 import net.citizensnpcs.api.CitizensAPI;
 import net.citizensnpcs.api.npc.NPC;
 import net.citizensnpcs.api.npc.NPCRegistry;
 import net.kyori.adventure.audience.Audience;
-import net.kyori.adventure.platform.bukkit.BukkitAudiences;
-import net.md_5.bungee.api.chat.TextComponent;
-import net.royawesome.jlibnoise.module.combiner.Max;
 import org.bukkit.*;
-import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.Material;
-import org.bukkit.Sound;
-import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
-import org.bukkit.event.entity.ItemMergeEvent;
+import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerItemDamageEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
-import org.inventivetalent.bossbar.BossBar;
-import org.inventivetalent.bossbar.BossBarAPI;
 
 import java.io.File;
 import java.text.DecimalFormat;
@@ -53,6 +39,14 @@ public class PlayerManager implements Listener {
 
 	public static List<UUID> swapCooldown = new ArrayList<>();
 	public static Map<Player, BossBarManager> bossBars = new HashMap<>();
+
+	@EventHandler
+	public void onClick(InventoryClickEvent event) {
+		if(Misc.isAirOrNull(event.getCurrentItem())) return;
+		ItemStack itemStack = event.getCurrentItem();
+		NBTItem nbtItem = new NBTItem(itemStack);
+		System.out.println(nbtItem);
+	}
 
 	@EventHandler
 	public static void onKill(KillEvent killEvent) {
