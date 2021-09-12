@@ -45,7 +45,6 @@ public class ItemManager implements Listener {
 		System.out.println(event.getAction());
 
 		ItemStack itemStack = !Misc.isAirOrNull(event.getCursor()) ? event.getCursor() : event.getCurrentItem();
-		System.out.println(itemStack);
 		Player player = (Player) event.getWhoClicked();
 		if(Misc.isAirOrNull(itemStack)) return;
 		NBTItem nbtItem = new NBTItem(itemStack);
