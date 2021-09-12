@@ -28,7 +28,7 @@ public class CrateGiveCommand implements CommandExecutor {
         Player player = null;
 
         for(Player onlinePlayer : Bukkit.getOnlinePlayers()) {
-            if(args[1].equalsIgnoreCase(onlinePlayer.getName())) player  = onlinePlayer;
+            if(args[1].equalsIgnoreCase(onlinePlayer.getName())) player = onlinePlayer;
         }
         assert player != null;
 
@@ -78,6 +78,14 @@ public class CrateGiveCommand implements CommandExecutor {
             ProtArmor.getArmor(player, "boots");
             broadcast("&bProtection I Diamond Set", player);
         }
+        if(args[0].equals("1F")) {
+            FunkyFeather.giveFeather(player, 1);
+            broadcast("&31x Funky Feather", player);
+        }
+        if(args[0].equals("2F")) {
+            FunkyFeather.giveFeather(player, 2);
+            broadcast("&32x Funky Feather", player);
+        }
         if(args[0].equals("3F")) {
             FunkyFeather.giveFeather(player, 3);
             broadcast("&33x Funky Feather", player);
@@ -86,13 +94,21 @@ public class CrateGiveCommand implements CommandExecutor {
             FunkyFeather.giveFeather(player, 5);
             broadcast("&35x Funky Feather", player);
         }
-        if(args[0].equals("6V")) {
-            ChunkOfVile.giveVile(player, 6);
-            broadcast("&56x Chunk of Vile", player);
+        if(args[0].equals("1V")) {
+            ChunkOfVile.giveVile(player, 1);
+            broadcast("&51x Chunk of Vile", player);
+        }
+        if(args[0].equals("2V")) {
+            ChunkOfVile.giveVile(player, 2);
+            broadcast("&52x Chunk of Vile", player);
         }
         if(args[0].equals("3V")) {
             ChunkOfVile.giveVile(player, 3);
             broadcast("&53x Chunk of Vile", player);
+        }
+        if(args[0].equals("6V")) {
+            ChunkOfVile.giveVile(player, 6);
+            broadcast("&56x Chunk of Vile", player);
         }
         if(args[0].equals("50K")) {
             PitSim.VAULT.depositPlayer(player, 50000);
