@@ -3,11 +3,7 @@ package dev.kyro.pitsim.enchants;
 import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.PitSim;
-import dev.kyro.pitsim.controllers.Cooldown;
-import dev.kyro.pitsim.controllers.EnchantManager;
-import dev.kyro.pitsim.controllers.MapManager;
-import dev.kyro.pitsim.controllers.PitEventManager;
-import dev.kyro.pitsim.controllers.SpawnManager;
+import dev.kyro.pitsim.controllers.*;
 import dev.kyro.pitsim.controllers.objects.PitEnchant;
 import dev.kyro.pitsim.enums.ApplyType;
 import dev.kyro.pitsim.events.AttackEvent;
@@ -63,6 +59,18 @@ public class Telebow extends PitEnchant {
 		}
 	}
 
+	static {
+		new BukkitRunnable() {
+			@Override
+			public void run() {
+				for(Arrow arrow : teleShots) {
+					for(int j = 0; j < 10; j++)
+						arrow.getWorld().playEffect(arrow.getLocation(), Effect.POTION_SWIRL, 0, 30);
+				}
+			}
+		}.runTaskTimer(PitSim.INSTANCE, 0L, 1L);
+	}
+
 	@EventHandler(ignoreCancelled = true)
 	public void onBowShoot(EntityShootBowEvent event) {
 
@@ -74,16 +82,6 @@ public class Telebow extends PitEnchant {
 		int enchantLvl = EnchantManager.getEnchantLevel(player, this);
 		if(enchantLvl == 0 || !player.isSneaking()) return;
 
-		new BukkitRunnable() {
-			@Override
-			public void run() {
-				for(int i = 0; i < teleShots.size(); i++) {
-					Arrow arrow = teleShots.get(i);
-					arrow.getWorld().playEffect(arrow.getLocation(), Effect.POTION_SWIRL, 0, 30);
-				}
-
-			}
-		}.runTaskTimer(PitSim.INSTANCE, 0L, 3L);
 
 		Cooldown cooldown = getCooldown(player, getCooldown(enchantLvl) * 20);
 		if(cooldown.isOnCooldown()) {

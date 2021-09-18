@@ -22,6 +22,7 @@ public class UpgradeManager {
 	}
 
 	public static boolean hasUpgrade(Player player, RenownUpgrade upgrade) {
+		if(NonManager.getNon(player) != null) return false;
 		FileConfiguration playerData = APlayerData.getPlayerData(player);
 		return playerData.contains(upgrade.refName);
 //        return playerData.contains(upgrade.name()) && playerData.getBoolean(upgrade.name());
@@ -29,6 +30,7 @@ public class UpgradeManager {
 	}
 
 	public static boolean hasUpgrade(Player player, String upgrade) {
+		if(NonManager.getNon(player) != null) return false;
 		for(RenownUpgrade renownUpgrade : UpgradeManager.upgrades) {
 			if(renownUpgrade.refName.equals(upgrade)) {
 				FileConfiguration playerData = APlayerData.getPlayerData(player);
@@ -39,6 +41,7 @@ public class UpgradeManager {
 	}
 
 	public static int getTier(Player player, RenownUpgrade upgrade) {
+		if(NonManager.getNon(player) != null) return 0;
 		FileConfiguration playerData = APlayerData.getPlayerData(player);
 		if(!playerData.contains(upgrade.refName)) return 0;
 		else return playerData.getInt(upgrade.refName);
@@ -46,6 +49,7 @@ public class UpgradeManager {
 	}
 
 	public static int getTier(Player player, String upgrade) {
+		if(NonManager.getNon(player) != null) return 0;
 		for(RenownUpgrade renownUpgrade : UpgradeManager.upgrades) {
 			if(renownUpgrade.refName.equals(upgrade)) {
 				FileConfiguration playerData = APlayerData.getPlayerData(player);

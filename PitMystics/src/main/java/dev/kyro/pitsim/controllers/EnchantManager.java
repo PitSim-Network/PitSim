@@ -194,7 +194,9 @@ public class EnchantManager {
 		if(nbtItem.hasKey(NBTTag.ITEM_JEWEL_ENCHANT.getRef()) && nbtItem.hasKey(NBTTag.MAX_LIVES.getRef())) {
 			if(currentLives <= 3) c = 'c';
 			else c = 'a';
-			loreBuilder.addLore("&7Lives: &" + c + currentLives + "&7/" + maxLives);
+			String lives = "&7Lives: &" + c + currentLives + "&7/" + maxLives;
+			if(nbtItem.hasKey(NBTTag.IS_GEMMED.getRef())) lives += " &a\u2666";
+			loreBuilder.addLore(lives);
 		} else {
 //			loreBuilder.addLore("&7Kills: &a" + Misc.getFormattedKills(playerKills) + "&7/" + Misc.getFormattedKills(botKills));
 		}

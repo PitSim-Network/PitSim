@@ -18,7 +18,7 @@ import java.util.List;
 
 public class Tenacity extends RenownUpgrade {
 	public Tenacity() {
-		super("Tenacity", "TENACITY", 10, 13, 1, true, 10);
+		super("Tenacity", "TENACITY", 10, 13, 1, true, 2);
 	}
 
 	@Override

@@ -257,13 +257,13 @@ public class DamageManager implements Listener {
 				if(PitEventManager.activeEvent.getClass() != CaptureTheFlag.class) dead.teleport(spawnLoc);
 			} else dead.teleport(spawnLoc);
 			if(attackingNon == null) {
-				FileConfiguration playerData = APlayerData.getPlayerData(dead);
+				FileConfiguration playerData = APlayerData.getPlayerData(killer);
 				if(killer != dead) {
 					if(killEvent.isLuckyKill) pitAttacker.playerKills = pitAttacker.playerKills + 3;
 					else pitAttacker.playerKills = pitAttacker.playerKills + 1;
 				}
 
-				playerData.set("playerkills", pitAttacker.playerLevel);
+				playerData.set("playerkills", pitAttacker.playerKills);
 				APlayerData.savePlayerData(killer);
 			}
 		} else {

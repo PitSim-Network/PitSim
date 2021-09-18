@@ -39,6 +39,8 @@ import java.util.Map;
 
 public class PitSim extends JavaPlugin {
 
+	public static double version = 1.0;
+
 	public static PitSim INSTANCE;
 	public static Economy VAULT = null;
 	public static AData playerList;

@@ -1,6 +1,7 @@
 package dev.kyro.pitsim.controllers;
 
 import be.maximvdw.featherboard.api.FeatherBoardAPI;
+import dev.kyro.arcticapi.data.APlayerData;
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.arcticapi.misc.ASound;
 import dev.kyro.pitsim.PitSim;
@@ -18,6 +19,7 @@ import net.citizensnpcs.api.npc.NPC;
 import net.citizensnpcs.api.npc.NPCRegistry;
 import net.kyori.adventure.audience.Audience;
 import org.bukkit.*;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -162,20 +164,25 @@ public class PlayerManager implements Listener {
 
 	@EventHandler
 	public void onPlayerJoin(PlayerJoinEvent event) {
+		Player player = event.getPlayer();
+		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
+
 //		if(isNew(event.getPlayer())) TokenOfAppreciation.giveToken(event.getPlayer(), 1);
 		event.getPlayer().setNoDamageTicks(18);
 		event.getPlayer().setMaximumNoDamageTicks(18);
+
+
+			compensateRenown(event.getPlayer());
+			FileConfiguration playerData = APlayerData.getPlayerData(player);
+			playerData.set("lastversion", PitSim.version);
+			APlayerData.savePlayerData(player);
+
 
 		if(PitEventManager.majorEvent) FeatherBoardAPI.showScoreboard(event.getPlayer(), "event");
 		else {
 			FeatherBoardAPI.resetDefaultScoreboard(event.getPlayer());
 			FeatherBoardAPI.showScoreboard(event.getPlayer(), "default");
 		}
-
-
-		Player player = event.getPlayer();
-		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
-
 
 		Location spawnLoc = MapManager.getPlayerSpawn();
 		player.teleport(spawnLoc);
@@ -293,5 +300,21 @@ public class PlayerManager implements Listener {
 
 		}
 		return true;
+	}
+
+	public static void compensateRenown(Player player) {
+		FileConfiguration playerData = APlayerData.getPlayerData(player);
+		if(playerData.contains("lastversion") && playerData.getDouble("lastversion")  >= 1.0) return;
+
+		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
+		int totalRenown = 0;
+		for(int i = 0; i < pitPlayer.playerLevel; i++) {
+			totalRenown += LevelManager.getRenownFromLevel(i);
+		}
+		pitPlayer.renown += totalRenown;
+		AOutput.send(player, "&a&lCOMPENSATION! &7Received &e+" + totalRenown + " Renown &7for your current level.");
+		ASound.play(player, Sound.NOTE_PLING, 2, 1.5F);
+
+		APlayerData.savePlayerData(player);
 	}
 }
