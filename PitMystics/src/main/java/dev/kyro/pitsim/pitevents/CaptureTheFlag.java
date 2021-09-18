@@ -7,11 +7,12 @@ import com.sk89q.worldedit.bukkit.BukkitWorld;
 import com.sk89q.worldedit.bukkit.WorldEditPlugin;
 import com.sk89q.worldedit.schematic.MCEditSchematicFormat;
 import com.sk89q.worldedit.world.DataException;
-import com.xxmicloxx.NoteBlockAPI.songplayer.EntitySongPlayer;
+import dev.kyro.arcticapi.data.APlayerData;
 import dev.kyro.arcticapi.misc.ASound;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.controllers.*;
 import dev.kyro.pitsim.controllers.objects.PitEvent;
+import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.enums.GameMap;
 import dev.kyro.pitsim.events.AttackEvent;
 import dev.kyro.pitsim.events.KillEvent;
@@ -21,6 +22,7 @@ import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.*;
 import org.bukkit.block.Banner;
 import org.bukkit.block.BlockFace;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
@@ -104,6 +106,7 @@ public class CaptureTheFlag extends PitEvent {
     }
 
     public void getTopThree() {
+        Map<Player, Integer> renown = new HashMap<>();
         Map<String, Integer> stringPlayers = new HashMap<>();
         String playerOne = null;
         String playerTwo = null;
@@ -137,6 +140,9 @@ public class CaptureTheFlag extends PitEvent {
                         "   &e&l#1 %luckperms_prefix%" + player.getDisplayName() + " &ewith &c" + captures.get(player) + " &cCaptures");
                 else messageOne = ChatColor.translateAlternateColorCodes('&',
                         "   &e&l#1 %luckperms_prefix%" + player.getDisplayName() + " &ewith &9" + captures.get(player) + " &9Captures");
+                if(renown.containsKey(player)) renown.put(player, renown.get(player) + 1);
+                else renown.put(player, 1);
+                if(Bukkit.getOnlinePlayers().size() >= 10 && UpgradeManager.hasUpgrade(player, "SELF_CONFIDENCE")) renown.put(player, renown.get(player) + 2);
                 player1 = player;
             }
             if(player.getDisplayName().equalsIgnoreCase(playerTwo)) {
@@ -144,6 +150,9 @@ public class CaptureTheFlag extends PitEvent {
                         "   &e&l#2 %luckperms_prefix%" + player.getDisplayName() + " &ewith &c" + captures.get(player) + " &cCaptures");
                 else messageTwo = ChatColor.translateAlternateColorCodes('&',
                         "   &e&l#2 %luckperms_prefix%" + player.getDisplayName() + " &ewith &9" + captures.get(player) + " &9Captures");
+                if(renown.containsKey(player)) renown.put(player, renown.get(player) + 1);
+                else renown.put(player, 1);
+                if(Bukkit.getOnlinePlayers().size() >= 10 && UpgradeManager.hasUpgrade(player, "SELF_CONFIDENCE")) renown.put(player, renown.get(player) + 1);
                 player2 = player;
             }
             if(player.getDisplayName().equalsIgnoreCase(playerThree)) {
@@ -151,13 +160,41 @@ public class CaptureTheFlag extends PitEvent {
                         "   &e&l#3 %luckperms_prefix%" + player.getDisplayName() + " &ewith &c" + captures.get(player) + " &cCaptures");
                 else messageThree = ChatColor.translateAlternateColorCodes('&',
                         "   &e&l#3 %luckperms_prefix%" + player.getDisplayName() + " &ewith &9" + captures.get(player) + " &9Captures");
+                if(renown.containsKey(player)) renown.put(player, renown.get(player) + 1);
+                else renown.put(player, 1);
+                if(Bukkit.getOnlinePlayers().size() >= 10 && UpgradeManager.hasUpgrade(player, "SELF_CONFIDENCE")) renown.put(player, renown.get(player) + 1);
                 player3 = player;
+            }
+        }
+
+        for(Player player : Bukkit.getOnlinePlayers()) {
+            if(getBlueScore() > getRedScore()) {
+                if(blue.contains(player)) {
+                    if(renown.containsKey(player)) renown.put(player, renown.get(player) + 1);
+                    else renown.put(player, 1);
+                }
+            }
+            if(getBlueScore() < getRedScore()) {
+                if(red.contains(player)) {
+                    if(renown.containsKey(player)) renown.put(player, renown.get(player) + 1);
+                    else renown.put(player, 1);
+                }
             }
         }
 
         Bukkit.broadcastMessage(ChatColor.translateAlternateColorCodes('&', "&6&m------------------------"));
         Bukkit.broadcastMessage(ChatColor.translateAlternateColorCodes('&', "&6&lPIT EVENT ENDED: " +
                 this.color + "" + ChatColor.BOLD + this.getName().toUpperCase(Locale.ROOT) + "&6&l!"));
+        for(Player player : Bukkit.getOnlinePlayers()) {
+            if(renown.get(player) == null) player.sendMessage(ChatColor.translateAlternateColorCodes('&', "&6&lYour rewards: &cNONE"));
+            else  {
+                player.sendMessage(ChatColor.translateAlternateColorCodes('&', "&6&lYour rewards: &e+" + renown.get(player) + " Renown"));
+                PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
+                pitPlayer.renown += renown.get(player);
+                FileConfiguration playerData = APlayerData.getPlayerData(player);
+                playerData.set("renown", pitPlayer.renown);
+            }
+        }
         if(getBlueScore() > getRedScore()) Bukkit.broadcastMessage(ChatColor.translateAlternateColorCodes('&', "&6&lWinning team: &9BLUE TEAM &ewith " + getBlueScore() + " &eCaptures!"));
         else Bukkit.broadcastMessage(ChatColor.translateAlternateColorCodes('&', "&6&lWinning team: &cRED TEAM &ewith " + getRedScore() + " &eCaptures!"));
         for(Player onlinePlayer : Bukkit.getOnlinePlayers()) {

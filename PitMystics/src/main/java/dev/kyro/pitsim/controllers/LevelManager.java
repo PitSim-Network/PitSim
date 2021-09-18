@@ -3,7 +3,6 @@ package dev.kyro.pitsim.controllers;
 import dev.kyro.arcticapi.data.APlayerData;
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.arcticapi.misc.ASound;
-import dev.kyro.pitsim.controllers.objects.Non;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.misc.Misc;
 import me.clip.placeholderapi.PlaceholderAPI;
@@ -13,7 +12,6 @@ import org.bukkit.Sound;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 
-import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -66,11 +64,13 @@ public class LevelManager {
             pitplayer.remainingXP  = (int) getXP(pitplayer.playerLevel + 1);
             pitplayer.playerLevel = pitplayer.playerLevel + 1;
             pitplayer.playerKills = 0;
+            pitplayer.renown += getRenownFromLevel(pitplayer.playerLevel);
             setXPBar(player, pitplayer);
 
             ASound.play(player, Sound.LEVEL_UP, 1, 1);
             String message = ChatColor.translateAlternateColorCodes('&', "&e&lLEVEL UP! %luckperms_prefix%%player_name% &7has reached level &e" + pitplayer.playerLevel);
             Bukkit.broadcastMessage(PlaceholderAPI.setPlaceholders(player, message));
+            AOutput.send(player, "&7Rewards: &e+" + getRenownFromLevel(pitplayer.playerLevel) + " Renown");
 
             Misc.sendTitle(player, "&e&lLEVEL UP!", 40);
             Misc.sendSubTitle(player, "&e" + (pitplayer.playerLevel - 1) + " &7\u279F &e" + pitplayer.playerLevel, 40);
@@ -80,6 +80,7 @@ public class LevelManager {
             playerData.set("level", pitplayer.playerLevel);
             playerData.set("playerkills", pitplayer.playerKills);
             playerData.set("xp", pitplayer.remainingXP);
+            playerData.set("renown", pitplayer.renown);
             APlayerData.savePlayerData(player);
         }
     }
@@ -96,5 +97,16 @@ public class LevelManager {
 
         player.setExp(xp);
 
+    }
+
+    public static int getRenownFromLevel(int level) {
+//        if(level >= 0 && level < 5) return 0;
+//        if(level > 4 && level < 10) return 1;
+//        if(level > 14 && level < 20) return 3;
+//        if(level > 24 && level < 30) return 5;
+//        if(level > 34 && level < 40) return 7;
+//        if(level > 44 && level < 50) return 9;
+//        return 11;
+        return level > 50 ? 10 : level/5;
     }
 }

@@ -1,6 +1,6 @@
 package dev.kyro.pitsim.pitevents;
 
-import dev.kyro.arcticapi.misc.AOutput;
+import dev.kyro.arcticapi.data.APlayerData;
 import dev.kyro.arcticapi.misc.ASound;
 import dev.kyro.arcticapi.misc.AUtil;
 import dev.kyro.pitsim.PitSim;
@@ -14,8 +14,8 @@ import dev.kyro.pitsim.events.HealEvent;
 import dev.kyro.pitsim.events.KillEvent;
 import dev.kyro.pitsim.misc.Misc;
 import me.clip.placeholderapi.PlaceholderAPI;
-import net.kyori.adventure.audience.Audience;
 import org.bukkit.*;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -424,6 +424,7 @@ public class Juggernaut extends PitEvent {
 
 	public void getTopThree() {
 		Map<String, Integer> stringPlayers = new HashMap<>();
+		Map<Player, Integer> renown = new HashMap<>();
 		String playerOne = null;
 		String playerTwo = null;
 		String playerThree = null;
@@ -454,23 +455,57 @@ public class Juggernaut extends PitEvent {
 			if(player.getDisplayName().equalsIgnoreCase(playerOne)) {
 				messageOne = ChatColor.translateAlternateColorCodes('&',
 						"   &e&l#1 %luckperms_prefix%" + player.getDisplayName() + " &ewith &c" + juggernautDamage.get(player) + "&c\u2764");
+				if(renown.containsKey(player)) renown.put(player, renown.get(player) + 1);
+				else renown.put(player, 1);
+				if(Bukkit.getOnlinePlayers().size() >= 10 && UpgradeManager.hasUpgrade(player, "SELF_CONFIDENCE")) renown.put(player, renown.get(player) + 2);
 				player1 = player;
 			}
 			if(player.getDisplayName().equalsIgnoreCase(playerTwo)) {
 				 messageTwo = ChatColor.translateAlternateColorCodes('&',
 						 "   &e&l#2 %luckperms_prefix%" + player.getDisplayName() + " &ewith &c" + juggernautDamage.get(player) + "&c\u2764");
+				if(renown.containsKey(player)) renown.put(player, renown.get(player) + 1);
+				else renown.put(player, 1);
+				if(Bukkit.getOnlinePlayers().size() >= 10 && UpgradeManager.hasUpgrade(player, "SELF_CONFIDENCE")) renown.put(player, renown.get(player) + 1);
 				player2 = player;
 			}
 			if(player.getDisplayName().equalsIgnoreCase(playerThree)) {
 				 messageThree = ChatColor.translateAlternateColorCodes('&',
 						 "   &e&l#3 %luckperms_prefix%" + player.getDisplayName() + " &ewith &c" + juggernautDamage.get(player) + "&c\u2764");
+				if(renown.containsKey(player)) renown.put(player, renown.get(player) + 1);
+				else renown.put(player, 1);
+				if(Bukkit.getOnlinePlayers().size() >= 10 && UpgradeManager.hasUpgrade(player, "SELF_CONFIDENCE")) renown.put(player, renown.get(player) + 1);
 				player3 = player;
+			}
+		}
+
+		for(Player player : Bukkit.getOnlinePlayers()) {
+			if(juggernaut == player) {
+				if(!juggernautKilled) {
+					if(renown.containsKey(player)) renown.put(player, renown.get(player) + 1);
+					else renown.put(player, 1);
+				}
+			}
+			if(juggernaut != player) {
+				if(juggernautKilled) {
+					if(renown.containsKey(player)) renown.put(player, renown.get(player) + 1);
+					else renown.put(player, 1);
+				}
 			}
 		}
 
 		Bukkit.broadcastMessage(ChatColor.translateAlternateColorCodes('&', "&6&m------------------------"));
 		Bukkit.broadcastMessage(ChatColor.translateAlternateColorCodes('&', "&6&lPIT EVENT ENDED: " +
 				this.color + "" + ChatColor.BOLD + this.getName().toUpperCase(Locale.ROOT) + "&6&l!"));
+		for(Player player : Bukkit.getOnlinePlayers()) {
+			if(renown.get(player) == null) player.sendMessage(ChatColor.translateAlternateColorCodes('&', "&6&lYour rewards: &cNONE"));
+			else  {
+				player.sendMessage(ChatColor.translateAlternateColorCodes('&', "&6&lYour rewards: &e+" + renown.get(player) + " Renown"));
+				PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
+				pitPlayer.renown += renown.get(player);
+				FileConfiguration playerData = APlayerData.getPlayerData(player);
+				playerData.set("renown", pitPlayer.renown);
+			}
+		}
 
 		if(juggernautKilled) Bukkit.broadcastMessage(ChatColor.translateAlternateColorCodes('&', "&6&lJuggernaut Status: &c&lDEAD"));
 		else Bukkit.broadcastMessage(ChatColor.translateAlternateColorCodes('&', "&6&lJuggernaut status: &a&lALIVE &7(&c" + (int) juggernaut.getHealth() / 2+ "&c\u2764&7)"));

@@ -80,6 +80,8 @@ public class RenownShopConfirmPanel extends AGUIPanel {
                 openPanel(renownShopGUI.getHomePanel());
             }
 
+            playerData.set("renown", pitPlayer.renown);
+
             APlayerData.savePlayerData(player);
             updateInventory();
         }
