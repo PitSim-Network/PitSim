@@ -29,5 +29,6 @@ commands:
   spawn:
   changemap:
   crategive:
+  cg:
   afk:
   pitreload:

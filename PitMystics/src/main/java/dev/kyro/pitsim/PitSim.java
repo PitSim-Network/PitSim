@@ -304,7 +304,8 @@ public class PitSim extends JavaPlugin {
 		getCommand("bounty").setExecutor(new BountyCommand());
 		getCommand("spawn").setExecutor(new SpawnCommand());
 		getCommand("changemap").setExecutor(new ChangeMapCommand());
-		getCommand("crategive").setExecutor(new CrateGiveCommand());
+		getCommand("crategive").setExecutor(new OldCrateGiveCommand());
+		getCommand("cg").setExecutor(new CrateGiveCommand());
 		getCommand("pitreload").setExecutor(new ReloadCommand());
 //		getCommand("togglestereo").setExecutor(new ToggleStereoCommand());
 	}
