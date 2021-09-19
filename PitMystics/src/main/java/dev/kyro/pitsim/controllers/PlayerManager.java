@@ -320,6 +320,7 @@ public class PlayerManager implements Listener {
 			totalRenown += LevelManager.getRenownFromLevel(i);
 		}
 		pitPlayer.renown += totalRenown;
+		playerData.set("renown", pitPlayer.renown);
 		AOutput.send(player, "&a&lCOMPENSATION! &7Received &e+" + totalRenown + " Renown &7for your current level.");
 		ASound.play(player, Sound.NOTE_PLING, 2, 1.5F);
 

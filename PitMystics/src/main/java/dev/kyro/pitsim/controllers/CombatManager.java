@@ -82,6 +82,7 @@ public class CombatManager implements Listener {
        playerData.set("level", pitplayer.playerLevel);
        playerData.set("playerkills", pitplayer.playerKills);
        playerData.set("xp", pitplayer.remainingXP);
+       playerData.set("renown", pitplayer.renown);
        APlayerData.savePlayerData(event.getPlayer());
         event.getPlayer().closeInventory();
         PlayerManager.bossBars.remove(event.getPlayer());

@@ -193,6 +193,7 @@ public class CaptureTheFlag extends PitEvent {
                 pitPlayer.renown += renown.get(player);
                 FileConfiguration playerData = APlayerData.getPlayerData(player);
                 playerData.set("renown", pitPlayer.renown);
+                APlayerData.savePlayerData(player);
             }
         }
         if(getBlueScore() > getRedScore()) Bukkit.broadcastMessage(ChatColor.translateAlternateColorCodes('&', "&6&lWinning team: &9BLUE TEAM &ewith " + getBlueScore() + " &eCaptures!"));

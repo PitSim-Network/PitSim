@@ -5,6 +5,7 @@ import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.arcticapi.misc.ASound;
 import dev.kyro.arcticapi.misc.AUtil;
 import dev.kyro.pitsim.PitSim;
+import dev.kyro.pitsim.controllers.ItemManager;
 import dev.kyro.pitsim.enums.NBTTag;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -31,6 +32,8 @@ public class FunkyFeather {
         meta.setLore(lore);
         feather.setItemMeta(meta);
         feather.setAmount(amount);
+
+        feather = ItemManager.enableDropConfirm(feather);
 
         NBTItem nbtItem = new NBTItem(feather);
         nbtItem.setBoolean(NBTTag.IS_FEATHER.getRef(), true);

@@ -65,10 +65,13 @@ public class NonManager implements Listener {
 	public static Non getNon(Player player) {
 		if(PitEventManager.majorEvent) return null;
 
-		for(Non non : nons) {
-
-			if(non == null) continue;
-			if(non.non.getUniqueId().equals(player.getUniqueId())) return non;
+		try {
+			for(Non non : nons) {
+				if(non == null) continue;
+				if(non.non.getUniqueId().equals(player.getUniqueId())) return non;
+			}
+		} catch(Exception exception) {
+			return null;
 		}
 		return null;
 	}

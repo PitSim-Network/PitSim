@@ -12,7 +12,7 @@ import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.controllers.objects.RenownUpgrade;
 import dev.kyro.pitsim.enums.NBTTag;
 import dev.kyro.pitsim.misc.Misc;
-import dev.kyro.pitsim.upgrades.Shardhunter;
+import dev.kyro.pitsim.upgrades.ShardHunter;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.Sound;
@@ -114,7 +114,7 @@ public class ShardHunterPanel extends AGUIPanel {
                     }
                 }
 
-                AUtil.giveItemSafely(player, Shardhunter.getGemItem(), true);
+                AUtil.giveItemSafely(player, ShardHunter.getGemItem(), true);
                 player.closeInventory();
                 ASound.play(player, Sound.ORB_PICKUP, 2, 1.5F);
                 AOutput.send(player, "&d&lITEM CRAFTED! &7Received &aTotally Legit Gem&7!");

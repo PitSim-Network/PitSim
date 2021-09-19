@@ -28,8 +28,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class Shardhunter extends RenownUpgrade {
-	public Shardhunter() {
+public class ShardHunter extends RenownUpgrade {
+	public ShardHunter() {
 		super("Shardhunter", "SHARDHUNTER", 40, 34, 40, true, 10);
 	}
 
@@ -89,6 +89,7 @@ public class Shardhunter extends RenownUpgrade {
 		lore.add(ChatColor.GRAY + "able to craft an item of great power.");
 		shardMeta.setLore(lore);
 		shardItem.setItemMeta(shardMeta);
+		shardItem = ItemManager.enableDropConfirm(shardItem);
 		NBTItem nbtItem = new NBTItem(shardItem);
 		nbtItem.setBoolean(NBTTag.IS_SHARD.getRef(), true);
 
@@ -101,8 +102,6 @@ public class Shardhunter extends RenownUpgrade {
 		rsp.setRepeatMode(RepeatMode.NO);
 		rsp.addPlayer(killEvent.killer);
 		rsp.setPlaying(true);
-
-
 	}
 
 	public static ItemStack getGemItem() {

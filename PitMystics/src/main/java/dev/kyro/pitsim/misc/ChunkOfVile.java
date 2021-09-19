@@ -3,6 +3,7 @@ package dev.kyro.pitsim.misc;
 import de.tr7zw.nbtapi.NBTItem;
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.arcticapi.misc.AUtil;
+import dev.kyro.pitsim.controllers.ItemManager;
 import dev.kyro.pitsim.controllers.UpgradeManager;
 import dev.kyro.pitsim.enums.NBTTag;
 import dev.kyro.pitsim.inventories.VileGUI;
@@ -32,6 +33,8 @@ public class ChunkOfVile implements Listener {
         meta.setLore(lore);
         vile.setItemMeta(meta);
         vile.setAmount(amount);
+
+        vile = ItemManager.enableDropConfirm(vile);
 
         NBTItem nbtItem  = new NBTItem(vile);
         nbtItem.setBoolean(NBTTag.IS_VILE.getRef(), true);

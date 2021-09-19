@@ -146,6 +146,7 @@ public class PitSim extends JavaPlugin {
 			playerData.set("xp", pitplayer.remainingXP);
 			playerData.set("ubersleft", pitplayer.dailyUbersLeft);
 			playerData.set("ubercooldown", pitplayer.uberReset);
+			playerData.set("renown", pitplayer.renown);
 			APlayerData.savePlayerData(onlinePlayer);
 		}
 
@@ -339,7 +340,7 @@ public class PitSim extends JavaPlugin {
 		UpgradeManager.registerUpgrade(new UnlockFirstStrike());
 		UpgradeManager.registerUpgrade(new Impatient());
 		UpgradeManager.registerUpgrade(new Helmetry());
-		UpgradeManager.registerUpgrade(new Shardhunter());
+		UpgradeManager.registerUpgrade(new ShardHunter());
 		UpgradeManager.registerUpgrade(new FancyPants());
 		UpgradeManager.registerUpgrade(new SelfConfidence());
 		UpgradeManager.registerUpgrade(new LuckyKill());

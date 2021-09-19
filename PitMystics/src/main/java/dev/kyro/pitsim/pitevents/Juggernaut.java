@@ -77,9 +77,9 @@ public class Juggernaut extends PitEvent {
     @Override
     public void end() {
 	    for(Player player : Bukkit.getOnlinePlayers()) {
-		    for(ItemStack itemStack : player.getInventory()) {
-			    if(!Misc.isAirOrNull(itemStack) && itemStack.getType().equals(Material.COMPASS)) player.getInventory().remove(itemStack);
-		    }
+//		    for(ItemStack itemStack : player.getInventory()) {
+//			    if(!Misc.isAirOrNull(itemStack) && itemStack.getType().equals(Material.COMPASS)) player.getInventory().remove(itemStack);
+//		    }
 		    if(!AFKManager.AFKPlayers.contains(player)) player.teleport(MapManager.getPlayerSpawn());
 		    player.setGameMode(GameMode.SURVIVAL);
 	    }
@@ -171,9 +171,9 @@ public class Juggernaut extends PitEvent {
 
 	    }
     	if(event.getPlayer() != juggernaut && eventIsActive) {
-		    for(ItemStack itemStack : event.getPlayer().getInventory()) {
-			    if(!Misc.isAirOrNull(itemStack) && itemStack.getType().equals(Material.COMPASS)) event.getPlayer().getInventory().remove(itemStack);
-		    }
+//		    for(ItemStack itemStack : event.getPlayer().getInventory()) {
+//			    if(!Misc.isAirOrNull(itemStack) && itemStack.getType().equals(Material.COMPASS)) event.getPlayer().getInventory().remove(itemStack);
+//		    }
 		    event.getPlayer().teleport(MapManager.getPlayerSpawn());
 		    event.getPlayer().setGameMode(GameMode.SURVIVAL);
 	    }
@@ -407,19 +407,19 @@ public class Juggernaut extends PitEvent {
     }
 
     public void setCompass(Player player) {
-    	if(player == juggernaut) return;
-            ItemStack compass = new ItemStack(Material.COMPASS);
-            ItemMeta compassMeta = compass.getItemMeta();
-            compassMeta.setDisplayName(ChatColor.translateAlternateColorCodes('&', "&6&lJUGGERNAUT LOCATION"));
-            compass.setItemMeta(compassMeta);
-
-            int compassSlot = 8;
-            ItemStack slotItem = player.getInventory().getItem(8);
-            player.getInventory().setItem(compassSlot, compass);
-            if(!Misc.isAirOrNull(slotItem))AUtil.giveItemSafely(player, slotItem);
-
-	    if(AFKManager.AFKPlayers.contains(player)) return;
-	    player.teleport(getLocation("PlayerSpawn"));
+//    	if(player == juggernaut) return;
+//            ItemStack compass = new ItemStack(Material.COMPASS);
+//            ItemMeta compassMeta = compass.getItemMeta();
+//            compassMeta.setDisplayName(ChatColor.translateAlternateColorCodes('&', "&6&lJUGGERNAUT LOCATION"));
+//            compass.setItemMeta(compassMeta);
+//
+//            int compassSlot = 8;
+//            ItemStack slotItem = player.getInventory().getItem(8);
+//            player.getInventory().setItem(compassSlot, compass);
+//            if(!Misc.isAirOrNull(slotItem))AUtil.giveItemSafely(player, slotItem);
+//
+//	    if(AFKManager.AFKPlayers.contains(player)) return;
+//	    player.teleport(getLocation("PlayerSpawn"));
     }
 
 	public void getTopThree() {
@@ -504,6 +504,7 @@ public class Juggernaut extends PitEvent {
 				pitPlayer.renown += renown.get(player);
 				FileConfiguration playerData = APlayerData.getPlayerData(player);
 				playerData.set("renown", pitPlayer.renown);
+				APlayerData.savePlayerData(player);
 			}
 		}
 
@@ -602,9 +603,9 @@ public class Juggernaut extends PitEvent {
 		    @Override
 		    public void run() {
 		    	if(eventIsActive) {
-				    for(Player player : Bukkit.getOnlinePlayers()) {
-					    player.setCompassTarget(juggernaut.getLocation());
-				    }
+//				    for(Player player : Bukkit.getOnlinePlayers()) {
+//					    player.setCompassTarget(juggernaut.getLocation());
+//				    }
 				    int resistanceLevel = 0;
 				    if(AFKManager.onlineActivePlayers > 5 && AFKManager.onlineActivePlayers <= 10) resistanceLevel = 1;
 				    if(AFKManager.onlineActivePlayers > 10) resistanceLevel = 2;

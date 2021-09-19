@@ -149,7 +149,6 @@ public class PitEventManager {
 			bounty.remove(onlinePlayer);
 		}
 		event.end();
-		majorEvent = false;
 		for(Non non : NonManager.nons) {
 			non.setDisabled(false);
 		}
@@ -162,6 +161,7 @@ public class PitEventManager {
 			Audience audiences = PitSim.INSTANCE.adventure().player(onlinePlayer);
 			manager.hideActiveBossBar(audiences);
 		}
+		majorEvent = false;
 	}
 
 	public static PitEvent getRandomEvent(List<PitEvent> events) {
@@ -218,7 +218,7 @@ public class PitEventManager {
 					manager.defaultBar.name(newComponent);
 					manager.defaultBar.progress(decimal);
 				}
-				Bukkit.broadcastMessage(String.valueOf((minutes * 60) + seconds));
+//				Bukkit.broadcastMessage(String.valueOf((minutes * 60) + seconds));
 				if(!majorEvent && !preparingEvent) {
 					for(Player onlinePlayer : Bukkit.getOnlinePlayers()) {
 						BossBarManager manager = PlayerManager.bossBars.get(onlinePlayer);

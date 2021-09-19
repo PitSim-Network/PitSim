@@ -115,17 +115,13 @@ public class PitPlayer {
 			uberReset = playerData.getLong("ubercooldown");
 			dailyUbersLeft = playerData.getInt("ubersleft");
 
-				String streak = playerData.getString("megastreak");
+			String streak = playerData.getString("megastreak");
 
-			if(streak == "Beastmode") this.megastreak = new Beastmode(this);
-			if(streak == "No Megastreak") this.megastreak = new NoMegastreak(this);
-			if(streak == "Highlander") this.megastreak = new Highlander(this);
-			if(streak == "Overdrive") this.megastreak = new Overdrive(this);
-			if(streak == "Uberstreak") this.megastreak = new Uberstreak(this);
-
-
-
-
+			if(Objects.equals(streak, "Beastmode")) this.megastreak = new Beastmode(this);
+			if(Objects.equals(streak, "No Megastreak")) this.megastreak = new NoMegastreak(this);
+			if(Objects.equals(streak, "Highlander")) this.megastreak = new Highlander(this);
+			if(Objects.equals(streak, "Overdrive")) this.megastreak = new Overdrive(this);
+			if(Objects.equals(streak, "Uberstreak")) this.megastreak = new Uberstreak(this);
 		}
 	}
 
