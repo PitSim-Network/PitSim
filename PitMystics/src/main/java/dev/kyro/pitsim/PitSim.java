@@ -293,7 +293,7 @@ public class PitSim extends JavaPlugin {
 		getCommand("enchants").setExecutor(new EnchantListCommand());
 		getCommand("setkills").setExecutor(new SetKillCommand());
 		getCommand("donator").setExecutor(new DonatorCommand());
-		getCommand("ks").setExecutor(new KsCommand());
+		getCommand("renown").setExecutor(new RenownCommand());
 		getCommand("bounty").setExecutor(new BountyCommand());
 		getCommand("spawn").setExecutor(new SpawnCommand());
 		getCommand("changemap").setExecutor(new ChangeMapCommand());
