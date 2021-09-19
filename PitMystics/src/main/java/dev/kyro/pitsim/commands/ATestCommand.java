@@ -1,6 +1,5 @@
 package dev.kyro.pitsim.commands;
 
-import de.tr7zw.nbtapi.NBTItem;
 import dev.kyro.arcticapi.builders.AItemStackBuilder;
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.PitSim;
@@ -122,9 +121,9 @@ public class ATestCommand implements CommandExecutor {
 		if(!(sender instanceof Player)) return false;
 		Player player = (Player) sender;
 
-		System.out.println(player.getItemInHand().toString());
-		NBTItem nbtItem = new NBTItem(player.getItemInHand());
-		System.out.println(nbtItem.toString());
+//		System.out.println(player.getItemInHand().toString());
+//		NBTItem nbtItem = new NBTItem(player.getItemInHand());
+//		System.out.println(nbtItem.toString());
 
 //		EnchantingGUI enchantingGUI = new EnchantingGUI(player);
 //		enchantingGUI.open();

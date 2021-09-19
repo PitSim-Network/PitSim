@@ -14,7 +14,7 @@ import java.util.List;
 
 public class Helmetry extends RenownUpgrade {
 	public Helmetry() {
-		super("Helmetry", "HELMETRY", 25, 23, 15, false, 0);
+		super("Helmetry", "HELMETRY", 10000, 23, 15, false, 0);
 	}
 
 	@Override

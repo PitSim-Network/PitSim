@@ -48,7 +48,8 @@ public class EnchantManager implements Listener {
 
 		EnchantingGUI enchantingGUI = new EnchantingGUI(player);
 		enchantingGUI.open();
-		ASound.play(player, Sound.HORSE_ARMOR, 1F, 1.3F);
+		ASound.play(player, Sound.GHAST_FIREBALL, 0.1F, 0.5F);
+		ASound.play(player, Sound.ITEM_PICKUP, 1F, 0.9F);
 	}
 
 	public static void registerEnchant(PitEnchant pitEnchant) {
@@ -180,9 +181,8 @@ public class EnchantManager implements Listener {
 		Integer tokenNum = nbtItem.getInteger(NBTTag.ITEM_TOKENS.getRef());
 		Integer rTokenNum = nbtItem.getInteger(NBTTag.ITEM_RTOKENS.getRef());
 
-		if(enchantNum > 3 || rTokenNum > 4) return true;
-		if(nbtItem.hasKey(NBTTag.IS_GEMMED.getRef()) && tokenNum > 9) return true;
-		else if(tokenNum > 8) return true;
+		int maxTokens = nbtItem.getBoolean(NBTTag.IS_GEMMED.getRef()) ? 9 : 8;
+		if(enchantNum > 3 || tokenNum > maxTokens || rTokenNum > 4) return true;
 		for(PitEnchant pitEnchant : EnchantManager.pitEnchants) {
 			if(itemEnchants.getInteger(pitEnchant.refNames.get(0)) > 3) return true;
 		}

@@ -16,7 +16,7 @@ import java.util.List;
 
 public class FancyPants extends RenownUpgrade {
 	public FancyPants() {
-		super("Fancy Pants", "FANCY_PANTS", 15, 25, 15, false, 0);
+		super("Fancy Pants", "FANCY_PANTS", 10, 25, 15, false, 0);
 	}
 
 	@Override

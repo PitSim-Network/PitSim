@@ -1,18 +1,19 @@
 package dev.kyro.pitsim.controllers;
 
-import dev.kyro.arcticapi.misc.ASound;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.Bukkit;
-import org.bukkit.Sound;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.io.File;
-import java.util.*;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.TreeMap;
 
 public class LeaderboardManager {
     public static Map<String, Integer> finalLevels = new HashMap<>();
@@ -25,6 +26,10 @@ public class LeaderboardManager {
         File[] files = directory.listFiles();
         for(File file : files) {
             FileConfiguration data = YamlConfiguration.loadConfiguration(file);
+//            if(data.getInt("playerkills") == 0 && data.getInt("level") == 1) {
+//                file.delete();
+//                System.out.println("deleted file");
+//            }
             levels.put(data.getString("name"), data.getInt("level"));
         }
 

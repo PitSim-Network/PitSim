@@ -280,7 +280,8 @@ public class DamageManager implements Listener {
 		if(killingNon != null) {
 			killingNon.rewardKill();
 		} else {
-			pitAttacker.heal(2);
+//			Disabled auto-tenacity
+//			pitAttacker.heal(2);
 		}
 
 

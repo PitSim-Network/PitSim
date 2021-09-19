@@ -109,7 +109,7 @@ public class EnchantingPanel extends AGUIPanel {
 
 	@Override
 	public String getName() {
-		return "Enchant GUI";
+		return "Mystic Well";
 	}
 
 	@Override

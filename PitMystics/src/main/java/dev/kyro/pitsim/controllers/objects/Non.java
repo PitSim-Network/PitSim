@@ -13,14 +13,12 @@ import net.citizensnpcs.api.trait.trait.Equipment;
 import net.citizensnpcs.npc.ai.CitizensNavigator;
 import net.citizensnpcs.npc.skin.SkinnableEntity;
 import net.minecraft.server.v1_8_R3.EntityPlayer;
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
-import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerTeleportEvent;
 import org.bukkit.inventory.ItemStack;
@@ -126,20 +124,24 @@ public class Non {
 
 			if(npc.isSpawned()) {
 			Block underneath = non.getLocation().clone().subtract(0, 0.2, 0).getBlock();
-			if(underneath.getType() != Material.AIR) {
+				if(underneath.getType() != Material.AIR) {
 
-				int rand = (int) (Math.random() * 2);
-				Location rotLoc = non.getLocation().clone();
-				rotLoc.setYaw(non.getLocation().getYaw() + (rand == 0 ? -90 : 90));
+					int rand = (int) (Math.random() * 2);
+					Location rotLoc = non.getLocation().clone();
+					rotLoc.setYaw(non.getLocation().getYaw() + (rand == 0 ? -90 : 90));
 
-				double distance = target.getLocation().distance(non.getLocation());
-				Vector sprintVelo = target.getLocation().toVector().subtract(non.getLocation().toVector())
-						.normalize();
+					try {
+						double distance = target.getLocation().distance(non.getLocation());
+						Vector sprintVelo = target.getLocation().toVector().subtract(non.getLocation().toVector())
+								.normalize();
 
-				if(distance < Math.random() * 1.5 + 1.5) sprintVelo.multiply(-0.16).setY(0.4);
-				else sprintVelo.multiply(0.4).setY(0.4);
-				non.setVelocity(sprintVelo);
-			}
+						if(distance < Math.random() * 1.5 + 1.5) sprintVelo.multiply(-0.16).setY(0.4);
+						else sprintVelo.multiply(0.4).setY(0.4);
+						non.setVelocity(sprintVelo);
+					} catch(Exception ignored) {
+						System.out.println("error with non targets (im assuming)");
+					}
+				}
 			}
 		}
 

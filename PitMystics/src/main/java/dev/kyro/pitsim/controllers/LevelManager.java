@@ -107,6 +107,6 @@ public class LevelManager {
 //        if(level > 34 && level < 40) return 7;
 //        if(level > 44 && level < 50) return 9;
 //        return 11;
-        return level > 50 ? 10 : level/5;
+        return (level > 50 ? 10 : level/5) * 2;
     }
 }

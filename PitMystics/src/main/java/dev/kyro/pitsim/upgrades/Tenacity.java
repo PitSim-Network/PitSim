@@ -3,6 +3,7 @@ package dev.kyro.pitsim.upgrades;
 import dev.kyro.arcticapi.gui.AGUIPanel;
 import dev.kyro.arcticapi.misc.AUtil;
 import dev.kyro.pitsim.controllers.UpgradeManager;
+import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.controllers.objects.RenownUpgrade;
 import dev.kyro.pitsim.events.KillEvent;
 import org.bukkit.ChatColor;
@@ -53,6 +54,7 @@ public class Tenacity extends RenownUpgrade {
 		int tier = UpgradeManager.getTier(killEvent.killer, this);
 		if(tier == 0) return;
 
-		killEvent.killer.setHealth(Math.min(killEvent.killer.getHealth() + tier, killEvent.killer.getMaxHealth()));
+		PitPlayer pitKiller = PitPlayer.getPitPlayer(killEvent.killer);
+		pitKiller.heal(tier);
 	}
 }

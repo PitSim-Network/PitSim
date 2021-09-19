@@ -1,7 +1,6 @@
 package dev.kyro.pitsim.controllers;
 
 import be.maximvdw.featherboard.api.FeatherBoardAPI;
-import de.tr7zw.nbtapi.NBTItem;
 import dev.kyro.arcticapi.data.APlayerData;
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.arcticapi.misc.ASound;
@@ -26,11 +25,6 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.inventory.InventoryClickEvent;
-import org.bukkit.event.player.PlayerInteractEvent;
-import org.bukkit.event.player.PlayerItemDamageEvent;
-import org.bukkit.event.player.PlayerJoinEvent;
-import org.bukkit.event.player.PlayerRespawnEvent;
-import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.*;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -44,13 +38,13 @@ public class PlayerManager implements Listener {
 	public static List<UUID> swapCooldown = new ArrayList<>();
 	public static Map<Player, BossBarManager> bossBars = new HashMap<>();
 
-	@EventHandler
-	public void onClick(InventoryClickEvent event) {
-		if(Misc.isAirOrNull(event.getCurrentItem())) return;
-		ItemStack itemStack = event.getCurrentItem();
-		NBTItem nbtItem = new NBTItem(itemStack);
-		System.out.println(nbtItem);
-	}
+//	@EventHandler
+//	public void onClick(InventoryClickEvent event) {
+//		if(Misc.isAirOrNull(event.getCurrentItem())) return;
+//		ItemStack itemStack = event.getCurrentItem();
+//		NBTItem nbtItem = new NBTItem(itemStack);
+//		System.out.println(nbtItem);
+//	}
 
 	@EventHandler
 	public static void onKill(KillEvent killEvent) {

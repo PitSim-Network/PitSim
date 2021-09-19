@@ -8,6 +8,7 @@ import de.tr7zw.nbtapi.NBTItem;
 import dev.kyro.arcticapi.gui.AGUIPanel;
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.arcticapi.misc.AUtil;
+import dev.kyro.pitsim.controllers.ItemManager;
 import dev.kyro.pitsim.controllers.UpgradeManager;
 import dev.kyro.pitsim.controllers.objects.RenownUpgrade;
 import dev.kyro.pitsim.enums.NBTTag;
@@ -118,6 +119,8 @@ public class Shardhunter extends RenownUpgrade {
 		lore.add(ChatColor.YELLOW + "Hold and right-click to use!");
 		meta.setLore(lore);
 		gem.setItemMeta(meta);
+
+		gem = ItemManager.enableDropConfirm(gem);
 
 		NBTItem nbtItem = new NBTItem(gem);
 

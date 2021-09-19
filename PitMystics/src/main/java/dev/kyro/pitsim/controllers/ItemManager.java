@@ -42,8 +42,6 @@ public class ItemManager implements Listener {
 		if(event.getAction() != InventoryAction.DROP_ALL_CURSOR && event.getAction() != InventoryAction.DROP_ALL_SLOT &&
 				event.getAction() != InventoryAction.DROP_ONE_CURSOR && event.getAction() != InventoryAction.DROP_ONE_SLOT) return;
 
-		System.out.println(event.getAction());
-
 		ItemStack itemStack = !Misc.isAirOrNull(event.getCursor()) ? event.getCursor() : event.getCurrentItem();
 		Player player = (Player) event.getWhoClicked();
 		if(Misc.isAirOrNull(itemStack)) return;

@@ -44,7 +44,7 @@ public class ChunkOfVile implements Listener {
     public void onInteract(PlayerInteractEvent event) {
         int items = 0;
 
-        if(event.getAction() == Action.LEFT_CLICK_AIR || event.getAction() == Action.LEFT_CLICK_BLOCK) return;
+        if(Misc.isAirOrNull(event.getPlayer().getItemInHand()) || event.getAction() == Action.LEFT_CLICK_AIR || event.getAction() == Action.LEFT_CLICK_BLOCK) return;
         NBTItem nbtItem = new NBTItem(event.getPlayer().getItemInHand());
 
         if(nbtItem.hasKey(NBTTag.IS_VILE.getRef())) {
