@@ -44,6 +44,7 @@ public class DiscordManager implements EventListener {
 		GUILD = JDA.getGuildById(Constants.GUILD_ROLE_ID);
 
 		DiscordPlugin.INSTANCE.getServer().getPluginManager().registerEvents(new InGameNitro(), DiscordPlugin.INSTANCE);
+		DiscordPlugin.INSTANCE.getServer().getPluginManager().registerEvents(new MiscManager(), DiscordPlugin.INSTANCE);
 	}
 
 	public static void registerCommand(DiscordCommand command) {
