@@ -9,6 +9,7 @@ import dev.kyro.pitsim.controllers.objects.Non;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.events.AttackEvent;
 import dev.kyro.pitsim.events.KillEvent;
+import dev.kyro.pitsim.inventories.CaptchaGUI;
 import dev.kyro.pitsim.killstreaks.Highlander;
 import dev.kyro.pitsim.misc.DeathCrys;
 import dev.kyro.pitsim.misc.KillEffects;
@@ -325,5 +326,25 @@ public class PlayerManager implements Listener {
 		ASound.play(player, Sound.NOTE_PLING, 2, 1.5F);
 
 		APlayerData.savePlayerData(player);
+	}
+
+	public static List<UUID> passedCaptcha = new ArrayList<>();
+	@EventHandler
+	public static void onJoin(PlayerJoinEvent event) {
+		new BukkitRunnable() {
+			@Override
+			public void run() {
+				new CaptchaGUI(event.getPlayer()).open();
+			}
+		}.runTaskLater(PitSim.INSTANCE, 1L);
+	}
+	@EventHandler
+	public static void onLeave(PlayerQuitEvent event) {
+		passedCaptcha.remove(event.getPlayer().getUniqueId());
+	}
+	@EventHandler
+	public static void onChat(AsyncPlayerChatEvent event) {
+		if(!passedCaptcha.contains(event.getPlayer().getUniqueId())) return;
+		event.setCancelled(true);
 	}
 }
