@@ -5,11 +5,9 @@ import com.xxmicloxx.NoteBlockAPI.model.Song;
 import com.xxmicloxx.NoteBlockAPI.songplayer.EntitySongPlayer;
 import com.xxmicloxx.NoteBlockAPI.utils.NBSDecoder;
 import dev.kyro.arcticapi.builders.ALoreBuilder;
-import dev.kyro.arcticapi.enums.ArmorType;
 import dev.kyro.arcticapi.events.armor.AChangeEquipmentEvent;
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.PitSim;
-import dev.kyro.pitsim.controllers.EnchantManager;
 import dev.kyro.pitsim.controllers.StereoManager;
 import dev.kyro.pitsim.controllers.objects.PitEnchant;
 import dev.kyro.pitsim.enums.ApplyType;
@@ -17,17 +15,13 @@ import dev.kyro.pitsim.events.AttackEvent;
 import dev.kyro.pitsim.misc.Misc;
 import org.bukkit.Bukkit;
 import org.bukkit.Effect;
-import org.bukkit.Material;
 import org.bukkit.Sound;
-import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
-import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.io.File;
 import java.util.List;
-import java.util.Map;
 import java.util.Random;
 
 public class Stereo extends PitEnchant {
@@ -47,7 +41,7 @@ public class Stereo extends PitEnchant {
 			if(StereoManager.playerMusic.containsKey(event.getPlayer())) return;
 
 			if(!event.getPlayer().hasPermission("pitsim.stereo")) {
-				AOutput.error(event.getPlayer(), "&c&lNOPE! &7You must have the &bMiraculous Rank &7or higher to use &dRARE! &9Stereo");
+				AOutput.error(event.getPlayer(), "&c&lNOPE! &7You must have the &bMiraculous Rank &7or higher to use &9Stereo");
 				event.getPlayer().playSound(event.getPlayer().getLocation(), Sound.VILLAGER_NO, 1 ,1);
 				return;
 			}

@@ -27,7 +27,7 @@ public class StereoManager implements Listener {
         List<String> lore = player.getInventory().getLeggings().getItemMeta().getLore();
 
         for(String s : lore) {
-            if(s.contains("RARE!") && s.contains("Stereo")) {
+            if(s.contains("Stereo")) {
                 return true;
             }
         }
