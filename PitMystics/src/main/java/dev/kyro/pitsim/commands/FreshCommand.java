@@ -31,6 +31,11 @@ public class FreshCommand implements CommandExecutor {
 		if(!(sender instanceof Player)) return false;
 		Player player = (Player) sender;
 
+		if(player.hasPermission("pitsim.nitro")) {
+			AOutput.send(player, "&cYou must boost our discord server to gain access to this feature! &7Join with: &fndiscord.gg/pitsim");
+			return false;
+		}
+
 		if(args.length < 1) {
 
 			AOutput.error(player, "Usage: /enchant <sword|bow|color>");

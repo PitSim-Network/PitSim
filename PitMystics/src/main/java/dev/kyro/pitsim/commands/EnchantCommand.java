@@ -21,6 +21,11 @@ public class EnchantCommand implements CommandExecutor {
 		if(!(sender instanceof Player)) return false;
 		Player player = (Player) sender;
 
+		if(player.hasPermission("pitsim.nitro")) {
+			AOutput.send(player, "&cYou must boost our discord server to gain access to this feature! &7Join with: &fndiscord.gg/pitsim");
+			return false;
+		}
+
 		if(Misc.isAirOrNull(player.getItemInHand())) {
 
 			AOutput.error(player, "Not holding a mystic item");

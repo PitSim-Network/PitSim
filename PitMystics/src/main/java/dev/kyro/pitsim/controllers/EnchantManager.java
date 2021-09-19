@@ -180,7 +180,9 @@ public class EnchantManager implements Listener {
 		Integer tokenNum = nbtItem.getInteger(NBTTag.ITEM_TOKENS.getRef());
 		Integer rTokenNum = nbtItem.getInteger(NBTTag.ITEM_RTOKENS.getRef());
 
-		if(enchantNum > 3 || tokenNum > 8 || rTokenNum > 4) return true;
+		if(enchantNum > 3 || rTokenNum > 4) return true;
+		if(nbtItem.hasKey(NBTTag.IS_GEMMED.getRef()) && tokenNum > 9) return true;
+		else if(tokenNum > 8) return true;
 		for(PitEnchant pitEnchant : EnchantManager.pitEnchants) {
 			if(itemEnchants.getInteger(pitEnchant.refNames.get(0)) > 3) return true;
 		}
