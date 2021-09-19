@@ -2,6 +2,8 @@ package dev.kyro.pitsim.inventories;
 
 import de.tr7zw.nbtapi.NBTItem;
 import de.tr7zw.nbtapi.NBTList;
+import dev.kyro.arcticapi.builders.AItemStackBuilder;
+import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.arcticapi.gui.AGUI;
 import dev.kyro.arcticapi.gui.AGUIPanel;
 import dev.kyro.arcticapi.misc.AOutput;
@@ -37,6 +39,34 @@ public class EnchantingPanel extends AGUIPanel {
 	public BukkitTask runnable;
 	public boolean colorSelect = false;
 	public ItemStack mystic = new ItemStack(Material.AIR);
+
+	public static ItemStack philo;
+	public static ItemStack selectEnchant;
+	public static ItemStack noMystic;
+	public static ItemStack noEnchantYet;
+	public static ItemStack mysticInWell;
+	static {
+		philo = new AItemStackBuilder(new ItemStack(Material.CACTUS))
+				.setName("&aPhilosopher's Cactus")
+				.setLore(new ALoreBuilder("&7Click to select", "&7a pant color"))
+				.getItemStack();
+		selectEnchant = new AItemStackBuilder(new ItemStack(Material.ENCHANTMENT_TABLE))
+				.setName("&dOpen Enchant Slot")
+				.setLore(new ALoreBuilder("&7Click to add an enchant", "&7to your item"))
+				.getItemStack();
+		noMystic = new AItemStackBuilder(new ItemStack(Material.BARRIER))
+				.setName("&cNo Item")
+				.setLore(new ALoreBuilder("&7Put an item in", "&7the mystic well"))
+				.getItemStack();
+		noEnchantYet = new AItemStackBuilder(new ItemStack(Material.BARRIER))
+				.setName("&cInvalid Enchant Slot")
+				.setLore(new ALoreBuilder("&7Please click on the", "&7current slot to the left"))
+				.getItemStack();
+		mysticInWell = new AItemStackBuilder(new ItemStack(Material.IRON_FENCE))
+				.setName("&cAlready Enchanting")
+				.setLore(new ALoreBuilder("&7You cannot create a fresh", "&7item when there is already", "&7an item in the well"))
+				.getItemStack();
+	}
 
 	public EnchantingPanel(AGUI gui) {
 		super(gui);
@@ -233,8 +263,13 @@ public class EnchantingPanel extends AGUIPanel {
 				getInventory().setItem(40, FreshCommand.getFreshItem(MysticType.SWORD, null));
 				getInventory().setItem(41, FreshCommand.getFreshItem(MysticType.BOW, null));
 			}
-			inventoryBuilder.setSlots(Material.CACTUS, 0, 43);
-			inventoryBuilder.setSlots(Material.BARRIER, 0, 10, 13, 16);
+//			inventoryBuilder.setSlots(Material.CACTUS, 0, 43);
+//			inventoryBuilder.setSlots(Material.BARRIER, 0, 10, 13, 16);
+
+			getInventory().setItem(43, philo);
+			getInventory().setItem(10, noMystic);
+			getInventory().setItem(13, noMystic);
+			getInventory().setItem(16, noMystic);
 		} else {
 			if(getInventory().getItem(38).getType() != Material.STAINED_GLASS_PANE) {
 				inventoryBuilder.setSlots(Material.STAINED_GLASS_PANE, 7, 39);
@@ -243,14 +278,17 @@ public class EnchantingPanel extends AGUIPanel {
 
 			getInventory().setItem(37, mystic);
 
-			inventoryBuilder.setSlots(Material.BARRIER, 0, 40, 41, 43);
+//			inventoryBuilder.setSlots(Material.BARRIER, 0, 40, 41, 43);
+			getInventory().setItem(40, mysticInWell);
+			getInventory().setItem(41, mysticInWell);
+			getInventory().setItem(43, mysticInWell);
 
 			NBTItem nbtItem = new NBTItem(mystic);
 			NBTList<String> enchantOrder = nbtItem.getStringList(NBTTag.PIT_ENCHANT_ORDER.getRef());
 
 			for(int i = 0; i < 3; i++) {
 				if(i + 1 > enchantOrder.size()) {
-					ItemStack itemStack = new ItemStack(i > enchantOrder.size() ? Material.BARRIER : Material.ENCHANTMENT_TABLE);
+					ItemStack itemStack = i > enchantOrder.size() ? noEnchantYet : selectEnchant;
 					getInventory().setItem(10 + (3 * i), itemStack);
 					continue;
 				}
@@ -301,7 +339,7 @@ public class EnchantingPanel extends AGUIPanel {
 		}
 		for(int slot : guiSection.slots) {
 			ItemStack itemStack = getInventory().getItem(slot);
-			if(Misc.isAirOrNull(itemStack)) continue;
+			if(Misc.isAirOrNull(itemStack) || itemStack.getType() == Material.LEATHER_LEGGINGS) continue;
 			itemStack.addUnsafeEnchantment(Enchantment.DURABILITY, 1);
 			ItemMeta itemMeta = itemStack.getItemMeta(); itemMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS); itemStack.setItemMeta(itemMeta);
 			getInventory().setItem(slot, itemStack);

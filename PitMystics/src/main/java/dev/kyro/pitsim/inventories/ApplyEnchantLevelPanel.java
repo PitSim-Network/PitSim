@@ -1,6 +1,8 @@
 package dev.kyro.pitsim.inventories;
 
 import de.tr7zw.nbtapi.NBTItem;
+import dev.kyro.arcticapi.builders.AItemStackBuilder;
+import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.arcticapi.gui.AGUI;
 import dev.kyro.arcticapi.gui.AGUIPanel;
 import dev.kyro.pitsim.commands.FreshCommand;
@@ -27,6 +29,14 @@ public class ApplyEnchantLevelPanel extends AGUIPanel {
 	public Map.Entry<PitEnchant, Integer> previousEnchant;
 	public boolean forcedClose = false;
 
+	public static ItemStack tooPowerful;
+	static {
+		tooPowerful = new AItemStackBuilder(new ItemStack(Material.BARRIER))
+				.setName("&cToo Powerful")
+				.setLore(new ALoreBuilder("&7You have too many enchant tokens", "&7of this type on your item"))
+				.getItemStack();
+	}
+
 	public ApplyEnchantLevelPanel(AGUI gui, ItemStack mystic, PitEnchant enchant, int enchantSlot, Map.Entry<PitEnchant, Integer> previousEnchant) {
 		super(gui);
 		enchantingGUI = (EnchantingGUI) gui;
@@ -38,9 +48,10 @@ public class ApplyEnchantLevelPanel extends AGUIPanel {
 		inventoryBuilder.setSlots(Material.STAINED_GLASS_PANE, 5, 0, 1, 2, 9, 11, 18, 19, 20)
 				.setSlots(Material.STAINED_GLASS_PANE, 4, 3, 4, 5, 12, 14, 21, 22, 23)
 				.setSlots(Material.STAINED_GLASS_PANE, 14, 6, 7, 8, 15, 17, 24, 25, 26);
+//		getInventory().setItem(22, EnchantingGUI.back);
 
 		for(int i = 0; i < 3; i++) {
-			getInventory().setItem(10 + i * 3, new ItemStack(Material.BARRIER));
+			getInventory().setItem(10 + i * 3, tooPowerful);
 
 			NBTItem nbtItem = new NBTItem(mystic);
 			if(nbtItem.getInteger(NBTTag.ITEM_TOKENS.getRef()) + i + 1 > 8) continue;
@@ -74,7 +85,15 @@ public class ApplyEnchantLevelPanel extends AGUIPanel {
 		Map<PitEnchant, Integer> enchantMap = EnchantManager.getEnchantsOnItem(clickedItem);
 		if(event.getClickedInventory().getHolder() == this) {
 
-			if(Misc.isAirOrNull(clickedItem) || clickedItem.getType() == Material.BARRIER) return;
+//			if(slot == 22) {
+//
+//				forcedClose = true;
+//				openPanel(previousGUI);w
+//				((ApplyEnchantPanel) previousGUI).forcedClose = false;
+//				return;
+//			}
+
+			if(Misc.isAirOrNull(clickedItem) || clickedItem.equals(tooPowerful)) return;
 
 			int applyLvl;
 			if(slot == 10) {

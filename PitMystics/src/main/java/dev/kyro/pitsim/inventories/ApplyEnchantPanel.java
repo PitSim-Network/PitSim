@@ -32,8 +32,9 @@ public class ApplyEnchantPanel extends AGUIPanel {
 		this.previousEnchant = previousEnchant;
 		this.enchantSlot = enchantSlot;
 
-		inventoryBuilder.createBorder(Material.STAINED_GLASS_PANE, 2)
-				.setSlots(Material.BARRIER, 0, 45);
+		inventoryBuilder.createBorder(Material.STAINED_GLASS_PANE, 2);
+//				.setSlots(Material.BARRIER, 0, 45);
+		getInventory().setItem(49, EnchantingGUI.back);
 
 		Map<PitEnchant, Integer> enchantMap = EnchantManager.getEnchantsOnItem(mystic);
 		if(previousEnchant != null) enchantMap.remove(previousEnchant.getKey());
@@ -83,7 +84,7 @@ public class ApplyEnchantPanel extends AGUIPanel {
 		Map<PitEnchant, Integer> enchantMap = EnchantManager.getEnchantsOnItem(clickedItem);
 		if(event.getClickedInventory().getHolder() == this) {
 
-			if(slot == 45) {
+			if(slot == 49) {
 
 				forcedClose = true;
 				openPanel(enchantingGUI.enchantingPanel);
