@@ -76,7 +76,7 @@ public class Overdrive extends Megastreak {
 		lore.add(ChatColor.GRAY + "On trigger:");
 		lore.add(ChatColor.translateAlternateColorCodes('&', "&a\u25a0 &7Perma &eSpeed I&7."));
 		lore.add(ChatColor.translateAlternateColorCodes('&', "&a\u25a0 &7Immune to &9Slowness&7."));
-		lore.add(ChatColor.translateAlternateColorCodes('&', "&a\u25a0 &eSpeed &7effects cannot be removed."));
+		/*lore.add(ChatColor.translateAlternateColorCodes('&', "&a\u25a0 &eSpeed &7effects cannot be removed."));*/
 		lore.add("");
 		lore.add(ChatColor.GRAY + "BUT:");
 		lore.add(ChatColor.translateAlternateColorCodes('&', "&c\u25a0 &7Passively receive &c+10% &7damage."));

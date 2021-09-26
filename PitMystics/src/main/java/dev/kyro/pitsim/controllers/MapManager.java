@@ -27,7 +27,7 @@ public class MapManager {
 
     public static Location playerSnow = new org.bukkit.Location(Bukkit.getWorld("pit"), -99, 46, 707, 0, 0);
     public static Location snowNonSpawn = new Location(Bukkit.getWorld("pit"), -99, 55, 716, -90, 0);
-    public static Location snowMid = new Location(Bukkit.getWorld("pit"), -98, 5, 716);
+    public static Location snowMid = new Location(Bukkit.getWorld("pit"), -98, 6, 716);
     public static int snowY = 4;
 
     public static Location getNonSpawn() {

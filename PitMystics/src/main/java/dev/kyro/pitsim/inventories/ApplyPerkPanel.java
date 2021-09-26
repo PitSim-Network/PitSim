@@ -8,6 +8,7 @@ import dev.kyro.pitsim.controllers.UpgradeManager;
 import dev.kyro.pitsim.controllers.objects.PitPerk;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.events.PerkEquipEvent;
+import dev.kyro.pitsim.perks.Streaker;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -117,6 +118,12 @@ public class ApplyPerkPanel extends AGUIPanel {
 
 				if(clickedPerk.renownUnlockable && !UpgradeManager.hasUpgrade(player, clickedPerk.upgradeRef)) {
 					AOutput.error(player, "&cThis perk needs to be unlocked in the renown shop!");
+					player.playSound(player.getLocation(), Sound.ENDERMAN_TELEPORT, 1F, 0.5F);
+					return;
+				}
+
+				if(clickedPerk.getClass() == Streaker.class && pitPlayer.getKills() > 0) {
+					AOutput.error(player, "&cYou cannot select this perk while on a killstreak!");
 					player.playSound(player.getLocation(), Sound.ENDERMAN_TELEPORT, 1F, 0.5F);
 					return;
 				}
