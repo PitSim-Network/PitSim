@@ -174,6 +174,7 @@ public class PitEventManager {
 		new BukkitRunnable() {
 			int minutes = startminutes;
 			int seconds = startseconds;
+
 			@Override
 			public void run() {
 				if(!majorEvent && !preparingEvent) {
@@ -228,6 +229,6 @@ public class PitEventManager {
 				}
 			}
 		}.runTaskTimer(PitSim.INSTANCE, 0L, 20L);
-	}
 
+	}
 }

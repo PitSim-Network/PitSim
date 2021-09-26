@@ -101,6 +101,7 @@ public class DamageManager implements Listener {
 			nonHitCooldownList.add(defender);
 			new BukkitRunnable() {
 				int count = 0;
+
 				@Override
 				public void run() {
 					if(++count == 15) cancel();
@@ -258,7 +259,7 @@ public class DamageManager implements Listener {
 			} else dead.teleport(spawnLoc);
 			if(attackingNon == null) {
 				FileConfiguration playerData = APlayerData.getPlayerData(killer);
-				if(killer != dead) {
+				if(killer != dead && !isNaked(dead)) {
 					if(killEvent.isLuckyKill) pitAttacker.playerKills = pitAttacker.playerKills + 3;
 					else pitAttacker.playerKills = pitAttacker.playerKills + 1;
 				}
@@ -285,21 +286,24 @@ public class DamageManager implements Listener {
 		}
 
 
-		if(pitAttacker.remainingXP - killEvent.getFinalXp() >= 0) pitAttacker.remainingXP = pitAttacker.remainingXP - killEvent.getFinalXp();
+		if(pitAttacker.remainingXP - killEvent.getFinalXp() >= 0)
+			pitAttacker.remainingXP = pitAttacker.remainingXP - killEvent.getFinalXp();
 		else pitAttacker.remainingXP = 0;
 		LevelManager.incrementLevel(killer);
 		PitSim.VAULT.depositPlayer(killEvent.killer, killEvent.getFinalGold());
 
 		DecimalFormat df = new DecimalFormat("##0.00");
 		String kill = "&a&lKILL!&7 on %luckperms_prefix%" + (defendingNon == null ? "%player_name%" : defendingNon.displayName)
-				+ " &b+" + killEvent.getFinalXp() + "XP" +" &6+" + df.format(killEvent.getFinalGold()) + "g";
+				+ " &b+" + killEvent.getFinalXp() + "XP" + " &6+" + df.format(killEvent.getFinalGold()) + "g";
 		String death = "&c&lDEATH! &7by %luckperms_prefix%" + (killingNon == null ? "%player_name%" : killingNon.displayName);
 		String killActionBar = "&7%luckperms_prefix%" + (defendingNon == null ? "%player_name%" : defendingNon.displayName) + " &a&lKILL!";
 
 		PitPlayer pitKiller = PitPlayer.getPitPlayer(killer);
-		if(!pitKiller.disabledKillFeed) AOutput.send(killEvent.killer, PlaceholderAPI.setPlaceholders(killEvent.dead, kill));
+		if(!pitKiller.disabledKillFeed)
+			AOutput.send(killEvent.killer, PlaceholderAPI.setPlaceholders(killEvent.dead, kill));
 		PitPlayer pitDead = PitPlayer.getPitPlayer(dead);
-		if(!pitDead.disabledKillFeed) AOutput.send(killEvent.dead, PlaceholderAPI.setPlaceholders(killEvent.killer, death));
+		if(!pitDead.disabledKillFeed)
+			AOutput.send(killEvent.dead, PlaceholderAPI.setPlaceholders(killEvent.killer, death));
 		String actionBarPlaceholder = PlaceholderAPI.setPlaceholders(killEvent.dead, killActionBar);
 		new BukkitRunnable() {
 			@Override
@@ -333,7 +337,7 @@ public class DamageManager implements Listener {
 
 			PitPlayer assistPitPlayer = PitPlayer.getPitPlayer(assistPlayer);
 			if(assistPitPlayer.remainingXP - xp < 0) assistPitPlayer.remainingXP = 0;
-			else assistPitPlayer.remainingXP = assistPitPlayer.remainingXP  - xp;
+			else assistPitPlayer.remainingXP = assistPitPlayer.remainingXP - xp;
 			LevelManager.incrementLevel(assistPlayer);
 
 			if(killEvent.getFinalGold() > 10) {
@@ -345,9 +349,10 @@ public class DamageManager implements Listener {
 
 			ASound.play(assistPlayer, Sound.ORB_PICKUP, 1F, 1.7301587F);
 			String assist = "&a&lASSIST!&7 " + Math.round(assistPercent * 100) + "% on %luckperms_prefix%" +
-					(defendingNon == null ? "%player_name%" : defendingNon.displayName) + " &b+" + xp + "XP" +" &6+" + df.format(gold) + "g";
+					(defendingNon == null ? "%player_name%" : defendingNon.displayName) + " &b+" + xp + "XP" + " &6+" + df.format(gold) + "g";
 
-			if(!assistPitPlayer.disabledKillFeed) AOutput.send(assistPlayer, PlaceholderAPI.setPlaceholders(killEvent.dead, assist));
+			if(!assistPitPlayer.disabledKillFeed)
+				AOutput.send(assistPlayer, PlaceholderAPI.setPlaceholders(killEvent.dead, assist));
 		}
 
 		pitDefender.assistRemove.forEach(BukkitTask::cancel);
@@ -404,6 +409,7 @@ public class DamageManager implements Listener {
 
 	public static void Death(Player dead) {
 		Telebow.teleShots.removeIf(teleShot -> teleShot.getShooter().equals(dead));
+
 
 		dead.setHealth(dead.getMaxHealth());
 		dead.playEffect(EntityEffect.HURT);
@@ -492,5 +498,12 @@ public class DamageManager implements Listener {
 				}
 			}
 		}
+	}
+
+	public static boolean isNaked(Player player) {
+		if(!Misc.isAirOrNull(player.getInventory().getHelmet())) return false;
+		if(!Misc.isAirOrNull(player.getInventory().getChestplate())) return false;
+		if(!Misc.isAirOrNull(player.getInventory().getLeggings())) return false;
+		return Misc.isAirOrNull(player.getInventory().getBoots());
 	}
 }

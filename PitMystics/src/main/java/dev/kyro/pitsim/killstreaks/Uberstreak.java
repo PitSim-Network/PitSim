@@ -6,7 +6,6 @@ import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.arcticapi.misc.AUtil;
 import dev.kyro.pitsim.commands.FreshCommand;
 import dev.kyro.pitsim.controllers.EnchantManager;
-import dev.kyro.pitsim.controllers.HitCounter;
 import dev.kyro.pitsim.controllers.ItemManager;
 import dev.kyro.pitsim.controllers.PitEventManager;
 import dev.kyro.pitsim.controllers.objects.Megastreak;
@@ -15,11 +14,9 @@ import dev.kyro.pitsim.enums.MysticType;
 import dev.kyro.pitsim.enums.NBTTag;
 import dev.kyro.pitsim.enums.PantColor;
 import dev.kyro.pitsim.events.AttackEvent;
-import dev.kyro.pitsim.events.HealEvent;
 import dev.kyro.pitsim.events.KillEvent;
 import dev.kyro.pitsim.misc.ChunkOfVile;
 import dev.kyro.pitsim.misc.FunkyFeather;
-import dev.kyro.pitsim.misc.Misc;
 import dev.kyro.pitsim.misc.ProtArmor;
 import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.Bukkit;
@@ -29,7 +26,6 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.HandlerList;
-import org.bukkit.event.entity.EntityRegainHealthEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
@@ -247,7 +243,7 @@ public class Uberstreak extends Megastreak {
 
 			EnchantManager.setItemLore(nbtItem.getItem());
 
-			AUtil.giveItemSafely(pitPlayer.player, nbtItem.getItem());
+			AUtil.giveItemSafely(pitPlayer.player, nbtItem.getItem(), true);
 			uberMessage("&3Hidden Jewel " + mysticType.displayName, pitPlayer);
 
 		} else if(rand == 3 || rand == 4 || rand == 5) {

@@ -42,7 +42,7 @@ public class FunkyFeather {
                 new BukkitRunnable() {
                     @Override
                     public void run() {
-                        AUtil.giveItemSafely(player, nbtItem.getItem());
+                        AUtil.giveItemSafely(player, nbtItem.getItem(), true);
                     }
                 }.runTaskLater(PitSim.INSTANCE, 10L);
             }

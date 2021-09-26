@@ -2,10 +2,8 @@ package dev.kyro.pitsim.misc;
 
 import dev.kyro.arcticapi.misc.AUtil;
 import dev.kyro.pitsim.PitSim;
-import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
-import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -44,13 +42,13 @@ public class ProtArmor {
             @Override
             public void run() {
                 if(type.equalsIgnoreCase("helmet")) {
-                    AUtil.giveItemSafely(player, helmet);
+                    AUtil.giveItemSafely(player, helmet, true);
                 } else if(type.equalsIgnoreCase("chestplate")) {
-                    AUtil.giveItemSafely(player, chestplate);
+                    AUtil.giveItemSafely(player, chestplate, true);
                 } else if(type.equalsIgnoreCase("leggings")) {
-                    AUtil.giveItemSafely(player, legs);
+                    AUtil.giveItemSafely(player, legs, true);
                 } else if(type.equalsIgnoreCase("boots")) {
-                    AUtil.giveItemSafely(player, boots);
+                    AUtil.giveItemSafely(player, boots, true);
                 }
             }
         }.runTaskLater(PitSim.INSTANCE, 10L);

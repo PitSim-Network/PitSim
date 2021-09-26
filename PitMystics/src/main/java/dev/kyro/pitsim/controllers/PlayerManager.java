@@ -28,6 +28,7 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.*;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
+import org.spigotmc.event.player.PlayerSpawnLocationEvent;
 
 import java.io.File;
 import java.text.DecimalFormat;
@@ -192,23 +193,6 @@ public class PlayerManager implements Listener {
 			FeatherBoardAPI.showScoreboard(event.getPlayer(), "default");
 		}
 
-		Location spawnLoc = MapManager.getPlayerSpawn();
-		player.teleport(spawnLoc);
-
-		new BukkitRunnable() {
-				@Override
-				public void run() {
-					Bukkit.getServer().dispatchCommand(player, "spawn");
-
-					String message = "%luckperms_prefix%";
-					if(pitPlayer.megastreak.isOnMega()) {
-						pitPlayer.prefix = pitPlayer.megastreak.getName() + " &7" + PlaceholderAPI.setPlaceholders(player, message);
-					} else {
-						pitPlayer.prefix = "&7[&e" + pitPlayer.playerLevel + "&7] &7" + PlaceholderAPI.setPlaceholders(player, message);
-					}
-				}
-			}.runTaskLater(PitSim.INSTANCE,  10L);
-
 		if(!bossBars.containsKey(event.getPlayer())) {
 			BossBarManager bm = new BossBarManager();
 			Audience audiences = PitSim.INSTANCE.adventure().player(event.getPlayer());
@@ -261,6 +245,28 @@ public class PlayerManager implements Listener {
 				player.setHealth(player.getMaxHealth());
 			}
 		}.runTaskLater(PitSim.INSTANCE, 1L);
+	}
+
+	@EventHandler
+	public void onJoin(PlayerSpawnLocationEvent event) {
+		Player player = event.getPlayer();
+		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
+		Location spawnLoc = MapManager.getPlayerSpawn();
+		player.teleport(spawnLoc);
+
+		new BukkitRunnable() {
+			@Override
+			public void run() {
+				Bukkit.getServer().dispatchCommand(player, "spawn");
+
+				String message = "%luckperms_prefix%";
+				if(pitPlayer.megastreak.isOnMega()) {
+					pitPlayer.prefix = pitPlayer.megastreak.getName() + " &7" + PlaceholderAPI.setPlaceholders(player, message);
+				} else {
+					pitPlayer.prefix = "&7[&e" + pitPlayer.playerLevel + "&7] &7" + PlaceholderAPI.setPlaceholders(player, message);
+				}
+			}
+		}.runTaskLater(PitSim.INSTANCE,  10L);
 	}
 
 	public static void removeIllegalItems(Player player) {

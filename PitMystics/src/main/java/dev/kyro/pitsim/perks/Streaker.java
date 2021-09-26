@@ -7,6 +7,7 @@ import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.controllers.objects.PitPerk;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.events.KillEvent;
+import dev.kyro.pitsim.events.OofEvent;
 import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
@@ -97,6 +98,12 @@ public class Streaker extends PitPerk {
 		xpReward.remove(event.getPlayer());
 		playerTimes.remove(event.getPlayer());
 
+	}
+
+	@EventHandler
+	public void onOof(OofEvent event) {
+		xpReward.remove(event.getPlayer());
+		playerTimes.remove(event.getPlayer());
 	}
 
 	@Override
