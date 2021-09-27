@@ -32,3 +32,4 @@ commands:
   cg:
   afk:
   pitreload:
+  setvalue:
