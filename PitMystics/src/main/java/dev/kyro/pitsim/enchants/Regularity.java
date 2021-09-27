@@ -7,6 +7,7 @@ import dev.kyro.pitsim.enums.ApplyType;
 import dev.kyro.pitsim.events.AttackEvent;
 import dev.kyro.pitsim.misc.Misc;
 import dev.kyro.pitsim.pitevents.Juggernaut;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -16,6 +17,7 @@ import java.util.List;
 import java.util.UUID;
 
 public class Regularity extends PitEnchant {
+	public static Regularity INSTANCE;
 
 	public static List<UUID> toReg = new ArrayList<>();
 
@@ -24,6 +26,7 @@ public class Regularity extends PitEnchant {
 				"regularity", "reg");
 
 		meleOnly = true;
+		INSTANCE = this;
 	}
 
 	@EventHandler
@@ -59,6 +62,15 @@ public class Regularity extends PitEnchant {
 		}.runTaskLater(PitSim.INSTANCE, 4L);
 	}
 
+	public static boolean isRegHit(Player defender) {
+
+		return toReg.contains(defender.getUniqueId());
+	}
+
+	public static boolean skipHit(int enchantLvl) {
+		return Math.random() * 100 > secondHitDamage(enchantLvl);
+	}
+
 	public static int secondHitDamage(int enchantLvl) {
 
 		return enchantLvl * 15 + 30;
@@ -66,14 +78,15 @@ public class Regularity extends PitEnchant {
 
 	public static double maxFinalDamage(int enchantLvl) {
 
-		return enchantLvl * 0.4 + 1.8;
+		return enchantLvl * 0.4 + 1.6;
 	}
 
 	@Override
 	public List<String> getDescription(int enchantLvl) {
 
-		return new ALoreBuilder("&7If the final damage of your strike", "&7deals less than &c" +
-				Misc.getHearts(maxFinalDamage(enchantLvl)) + " &7damage,",
-				"&7strike again in &a0.1s &7for &c" + secondHitDamage(enchantLvl) + "%", "&7damage").getLore();
+		return new ALoreBuilder("&7If your strike deals less than &c" + Misc.getHearts(maxFinalDamage(enchantLvl)),
+				"&7final damage, &astrike again &7for &c" + secondHitDamage(enchantLvl) + "%",
+				"&7damage. &7(Combo enchants have a", "&e" + secondHitDamage(enchantLvl) + "% &7of incrementing the combo",
+				"&7 on the second hit)").getLore();
 	}
 }

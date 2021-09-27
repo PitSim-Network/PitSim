@@ -31,6 +31,9 @@ public class ComboHeal extends PitEnchant {
 		int enchantLvl = attackEvent.getAttackerEnchantLevel(this);
 		if(enchantLvl == 0) return;
 
+		int regLvl = attackEvent.getAttackerEnchantLevel(Regularity.INSTANCE);
+		if(Regularity.isRegHit(attackEvent.defender) && Regularity.skipHit(regLvl)) return;
+
 		PitPlayer pitPlayer = PitPlayer.getPitPlayer(attackEvent.attacker);
 		HitCounter.incrementCounter(pitPlayer.player, this);
 		if(!HitCounter.hasReachedThreshold(pitPlayer.player, this, 4)) return;
@@ -53,6 +56,6 @@ public class ComboHeal extends PitEnchant {
 
 	public double getEffect(int enchantLvl) {
 
-		return enchantLvl * 0.6;
+		return enchantLvl * 0.8;
 	}
 }

@@ -45,7 +45,6 @@ public class UpgradeManager {
 		FileConfiguration playerData = APlayerData.getPlayerData(player);
 		if(!playerData.contains(upgrade.refName)) return 0;
 		else return playerData.getInt(upgrade.refName);
-
 	}
 
 	public static int getTier(Player player, String upgrade) {

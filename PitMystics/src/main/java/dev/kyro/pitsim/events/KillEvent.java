@@ -23,7 +23,7 @@ public class KillEvent extends Event {
 	public boolean exeDeath;
 	public int xpReward = 20;
 	public int xpCap = 50;
-	public int goldReward = 20;
+	public double goldReward = 20;
 	public List<Double> xpMultipliers = new ArrayList<>();
 	public List<Double> goldMultipliers = new ArrayList<>();
 	public boolean isLuckyKill = false;
@@ -51,7 +51,7 @@ public class KillEvent extends Event {
 
 
 	public double getFinalGold() {
-		int goldReward = this.goldReward;
+		double goldReward = this.goldReward;
 		for(Double goldMultiplier : goldMultipliers) {
 			goldReward *= goldMultiplier;
 		}

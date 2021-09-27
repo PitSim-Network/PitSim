@@ -30,6 +30,9 @@ public class ComboPerun extends PitEnchant {
 		int enchantLvl = attackEvent.getAttackerEnchantLevel(this);
 		if(enchantLvl == 0) return;
 
+		int regLvl = attackEvent.getAttackerEnchantLevel(Regularity.INSTANCE);
+		if(Regularity.isRegHit(attackEvent.defender) && Regularity.skipHit(regLvl)) return;
+
 		PitPlayer pitPlayer = PitPlayer.getPitPlayer(attackEvent.attacker);
 		HitCounter.incrementCounter(pitPlayer.player, this);
 		if(!HitCounter.hasReachedThreshold(pitPlayer.player, this, enchantLvl == 3 ? 4 : getStrikes(enchantLvl))) return;

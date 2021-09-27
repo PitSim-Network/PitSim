@@ -29,7 +29,7 @@ public class Parasite extends PitEnchant {
 		Cooldown cooldown = getCooldown(attackEvent.attacker, 40);
 		if(cooldown.isOnCooldown()) return; else cooldown.reset();
 
-		PitPlayer pitAttacker = PitPlayer.getPitPlayer(attackEvent.defender);
+		PitPlayer pitAttacker = PitPlayer.getPitPlayer(attackEvent.attacker);
 		pitAttacker.heal(getHealing(enchantLvl));
 	}
 

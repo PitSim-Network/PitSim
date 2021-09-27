@@ -15,7 +15,7 @@ public class HeighHo extends PitEnchant {
 	public HeighHo() {
 		super("Heigh-Ho", false, ApplyType.PANTS,
 				"heighho", "heigh-ho", "hiho", "hi-ho", "antimirror", "nomirror");
-//		isUncommonEnchant = true;
+		isUncommonEnchant = true;
 	}
 
 	@EventHandler
@@ -39,6 +39,6 @@ public class HeighHo extends PitEnchant {
 
 	public double getDamage(int enchantLvl) {
 
-		return enchantLvl / 2D + 0.5;
+		return enchantLvl;
 	}
 }

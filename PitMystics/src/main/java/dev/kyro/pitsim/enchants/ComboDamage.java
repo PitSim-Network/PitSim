@@ -25,11 +25,14 @@ public class ComboDamage extends PitEnchant {
 		int enchantLvl = attackEvent.getAttackerEnchantLevel(this);
 		if(enchantLvl == 0) return;
 
+		int regLvl = attackEvent.getAttackerEnchantLevel(Regularity.INSTANCE);
+		if(Regularity.isRegHit(attackEvent.defender) && Regularity.skipHit(regLvl)) return;
+
 		PitPlayer pitPlayer = PitPlayer.getPitPlayer(attackEvent.attacker);
 		HitCounter.incrementCounter(pitPlayer.player, this);
 		if(!HitCounter.hasReachedThreshold(pitPlayer.player, this, getStrikes(enchantLvl))) return;
 
-		attackEvent.increasePercent += getDamage(enchantLvl) / 100;
+		attackEvent.increasePercent += getDamage(enchantLvl) / 100D;
 	}
 
 	@Override

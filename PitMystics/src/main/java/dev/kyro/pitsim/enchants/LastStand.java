@@ -20,7 +20,7 @@ public class LastStand extends PitEnchant {
 	}
 
 	@EventHandler
-	public void onAttack(AttackEvent.Post attackEvent	) {
+	public void onAttack(AttackEvent.Post attackEvent) {
 		if(!canApply(attackEvent)) return;
 
 		int enchantLvl = attackEvent.getDefenderEnchantLevel(this);
@@ -39,7 +39,7 @@ public class LastStand extends PitEnchant {
 	public List<String> getDescription(int enchantLvl) {
 
 		return new ALoreBuilder("&7Gain &9Resistance " + AUtil.toRoman(getAmplifier(enchantLvl)) + " &7("
-		+ getSeconds(enchantLvl) + " &7seconds)", "&7when reaching &c3\u2764").getLore();
+		+ getSeconds(enchantLvl) + " &7seconds)", "&7when reaching &c" + Misc.getHearts(getProcHealth())).getLore();
 	}
 
 	public int getProcHealth() {
