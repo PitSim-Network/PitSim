@@ -25,7 +25,7 @@ public class FractionalReserve extends PitEnchant {
 		int enchantLvl = attackEvent.getDefenderEnchantLevel(this);
 		if(enchantLvl == 0) return;
 
-		int reduction = (int) Math.min(PitSim.VAULT.getBalance(attackEvent.attacker) / 10000, getMaxDamageReduction(enchantLvl));
+		int reduction = (int) Math.min(PitSim.VAULT.getBalance(attackEvent.defender) / 10000, getMaxDamageReduction(enchantLvl));
 		attackEvent.multiplier.add(Misc.getReductionMultiplier(reduction));
 	}
 

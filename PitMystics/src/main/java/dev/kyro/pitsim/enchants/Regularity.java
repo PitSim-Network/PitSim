@@ -2,7 +2,6 @@ package dev.kyro.pitsim.enchants;
 
 import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.pitsim.PitSim;
-import dev.kyro.pitsim.controllers.HitCounter;
 import dev.kyro.pitsim.controllers.objects.PitEnchant;
 import dev.kyro.pitsim.enums.ApplyType;
 import dev.kyro.pitsim.events.AttackEvent;
@@ -40,9 +39,6 @@ public class Regularity extends PitEnchant {
 		if(finalDamage >= maxFinalDamage(enchantLvl)) return;
 		if(attackEvent.defender == Juggernaut.juggernaut) return;
 
-//		HitCounter.incrementCounter(attackEvent.attacker, this);
-//		if(!HitCounter.hasReachedThreshold(attackEvent.attacker, this, getStrikes())) return;
-
 		toReg.add(attackEvent.defender.getUniqueId());
 		new BukkitRunnable() {
 			@Override
@@ -73,19 +69,11 @@ public class Regularity extends PitEnchant {
 		return enchantLvl * 0.4 + 1.8;
 	}
 
-	public static int getStrikes() {
-
-		return 2;
-	}
-
 	@Override
 	public List<String> getDescription(int enchantLvl) {
 
 		return new ALoreBuilder("&7If the final damage of your strike", "&7deals less than &c" +
 				Misc.getHearts(maxFinalDamage(enchantLvl)) + " &7damage,",
 				"&7strike again in &a0.1s &7for &c" + secondHitDamage(enchantLvl) + "%", "&7damage").getLore();
-
-//		return new ALoreBuilder("&7Every &eSecond &7hit strikes",
-//				"&7again in &a0.1s &7for &c" + secondHitDamage(enchantLvl) + "% damage").getLore();
 	}
 }
