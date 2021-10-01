@@ -1,11 +1,9 @@
 package dev.kyro.pitsim.commands;
 
-import com.google.gson.Gson;
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import me.clip.placeholderapi.PlaceholderAPI;
 import net.md_5.bungee.api.chat.BaseComponent;
-import net.md_5.bungee.api.chat.ComponentBuilder;
 import net.md_5.bungee.api.chat.HoverEvent;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Bukkit;
@@ -16,6 +14,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+
 import java.util.List;
 
 public class ShowCommand implements CommandExecutor {
@@ -45,6 +44,11 @@ public class ShowCommand implements CommandExecutor {
         builder.append(meta.getDisplayName() + "\n");
 
         int i = 0;
+
+        if(lore.size() < 1) {
+            AOutput.error(player, "&cThis item does not have lore!");
+            return false;
+        }
 
         for(String s : lore) {
 

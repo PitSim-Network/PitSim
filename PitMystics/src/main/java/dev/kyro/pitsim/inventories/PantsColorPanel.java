@@ -3,18 +3,14 @@ package dev.kyro.pitsim.inventories;
 import de.tr7zw.nbtapi.NBTItem;
 import dev.kyro.arcticapi.gui.AGUI;
 import dev.kyro.arcticapi.gui.AGUIPanel;
-import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.commands.FreshCommand;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
-import dev.kyro.pitsim.enums.KillEffect;
 import dev.kyro.pitsim.enums.NBTTag;
 import dev.kyro.pitsim.enums.PantColor;
 import dev.kyro.pitsim.misc.Misc;
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.Sound;
-import org.bukkit.entity.Item;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.inventory.InventoryOpenEvent;
@@ -100,7 +96,7 @@ public class PantsColorPanel extends AGUIPanel {
 
         for(PantColor pantColor : PantColor.values()) {
             if(pantColor.refName.equals("Blue") || pantColor.refName.equals("Red") || pantColor.refName.equals("Orange")
-                    || pantColor.refName.equals("Yellow") || pantColor.refName.equals("Green") || pantColor.refName.equals("Jewel")) continue;
+                    || pantColor.refName.equals("Yellow") || pantColor.refName.equals("Green") || pantColor.refName.equals("Jewel") || pantColor.refName.equals("Dark")) continue;
 
             ItemStack pants = new ItemStack(Material.LEATHER_LEGGINGS);
             ItemMeta meta = pants.getItemMeta();

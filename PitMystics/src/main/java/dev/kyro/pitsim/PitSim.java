@@ -303,6 +303,7 @@ public class PitSim extends JavaPlugin {
 		getCommand("crategive").setExecutor(new OldCrateGiveCommand());
 		getCommand("cg").setExecutor(new CrateGiveCommand());
 		getCommand("pitreload").setExecutor(new ReloadCommand());
+		getCommand("setvalue").setExecutor(new SetValueCommand());
 //		getCommand("togglestereo").setExecutor(new ToggleStereoCommand());
 	}
 
