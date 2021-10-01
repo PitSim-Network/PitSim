@@ -1,6 +1,7 @@
 package dev.kyro.pitsim.controllers.objects;
 
 import dev.kyro.pitsim.controllers.Cooldown;
+import dev.kyro.pitsim.enchants.Regularity;
 import dev.kyro.pitsim.enums.ApplyType;
 import dev.kyro.pitsim.enums.EnchantRarity;
 import dev.kyro.pitsim.events.AttackEvent;
@@ -37,8 +38,9 @@ public abstract class PitEnchant implements Listener {
 
 	public boolean canApply(AttackEvent attackEvent) {
 
+		if(!fakeHits && Regularity.isRegHit(attackEvent.defender) && attackEvent.fakeHit) return false;
 //		Skip if fake hit and enchant doesn't handle fake hits
-		if(!fakeHits && attackEvent.fakeHit) return false;
+//		if(!fakeHits && attackEvent.fakeHit) return false;
 //		Skip enchant application if the enchant is a bow enchant and is used in mele
 		if(applyType == ApplyType.BOWS && attackEvent.arrow == null) return false;
 //		Skips enchant application if the enchant only works on mele hit and the event is from an arrow

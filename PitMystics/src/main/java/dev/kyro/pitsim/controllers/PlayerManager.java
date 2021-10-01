@@ -52,9 +52,11 @@ public class PlayerManager implements Listener {
 
 		if(SpawnManager.isInSpawn(killEvent.killer.getLocation()) && SpawnManager.isInSpawn(killEvent.dead.getLocation())) {
 			NPCRegistry nons = CitizensAPI.getNPCRegistry();
+			List<NPC> toRemove = new ArrayList<>();
 			for(NPC non : nons) {
-				if(SpawnManager.isInSpawn(non.getStoredLocation())) non.destroy();
+				if(SpawnManager.isInSpawn(non.getStoredLocation())) toRemove.add(non);
 			}
+			for(NPC npc : toRemove) npc.destroy();
 		}
 
 		PitPlayer pitKiller = PitPlayer.getPitPlayer(killEvent.killer);
@@ -177,8 +179,8 @@ public class PlayerManager implements Listener {
 		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
 
 //		if(isNew(event.getPlayer())) TokenOfAppreciation.giveToken(event.getPlayer(), 1);
-		event.getPlayer().setNoDamageTicks(18);
-		event.getPlayer().setMaximumNoDamageTicks(18);
+//		event.getPlayer().setNoDamageTicks(18);
+//		event.getPlayer().setMaximumNoDamageTicks(18);
 
 
 			compensateRenown(event.getPlayer());

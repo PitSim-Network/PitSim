@@ -2,6 +2,8 @@ package dev.kyro.pitsim.controllers;
 
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.controllers.objects.Non;
+import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
@@ -20,16 +22,16 @@ public class NonManager implements Listener {
 			public void run() {
 //				if(true) return;
 				if(botIGNs.isEmpty()) botIGNs.add("KyroKrypt");
-				if(nons.size() >= 25) return;
+				if(nons.size() >= getMaxNons()) return;
 				Non non = new Non(botIGNs.get((int) (Math.random() * botIGNs.size())));
 				new BukkitRunnable() {
 					@Override
 					public void run() {
 						non.remove();
 					}
-				}.runTaskLater(PitSim.INSTANCE, (long) (20 * 60 * (Math.random() * 4 + 1)));
+				}.runTaskLater(PitSim.INSTANCE, (long) (20 * 60));
 			}
-		}.runTaskTimer(PitSim.INSTANCE, 40L, 40);
+		}.runTaskTimer(PitSim.INSTANCE, 40L, 20);
 
 		new BukkitRunnable() {
 			@Override
@@ -37,6 +39,16 @@ public class NonManager implements Listener {
 				if(!PitEventManager.majorEvent) for(Non non : nons) non.tick();
 			}
 		}.runTaskTimer(PitSim.INSTANCE, 0L, 1L);
+	}
+
+	public static int getMaxNons() {
+		Location mid = MapManager.getMid();
+		int playersNearMid = 0;
+		for(Player onlinePlayer : Bukkit.getOnlinePlayers()) {
+			double distance = mid.distance(onlinePlayer.getLocation());
+			if(distance < 20) playersNearMid++;
+		}
+		return playersNearMid * 5 + 10;
 	}
 
 	public static void updateNons(List<String> botIGNs) {

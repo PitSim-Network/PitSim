@@ -20,6 +20,7 @@ public class Regularity extends PitEnchant {
 	public static Regularity INSTANCE;
 
 	public static List<UUID> toReg = new ArrayList<>();
+	public static List<UUID> regCooldown = new ArrayList<>();
 
 	public Regularity() {
 		super("Regularity", true, ApplyType.PANTS,
@@ -32,6 +33,7 @@ public class Regularity extends PitEnchant {
 	@EventHandler
 	public void onAttack(AttackEvent.Post attackEvent) {
 		if(!canApply(attackEvent)) return;
+		if(!fakeHits && attackEvent.fakeHit) return;
 
 		if(toReg.contains(attackEvent.defender.getUniqueId())) return;
 
@@ -43,6 +45,7 @@ public class Regularity extends PitEnchant {
 		if(attackEvent.defender == Juggernaut.juggernaut) return;
 
 		toReg.add(attackEvent.defender.getUniqueId());
+		regCooldown.add(attackEvent.defender.getUniqueId());
 		new BukkitRunnable() {
 			@Override
 			public void run() {
@@ -60,6 +63,12 @@ public class Regularity extends PitEnchant {
 				toReg.remove(attackEvent.defender.getUniqueId());
 			}
 		}.runTaskLater(PitSim.INSTANCE, 4L);
+		new BukkitRunnable() {
+			@Override
+			public void run() {
+				regCooldown.remove(attackEvent.defender.getUniqueId());
+			}
+		}.runTaskLater(PitSim.INSTANCE, 11L);
 	}
 
 	public static boolean isRegHit(Player defender) {

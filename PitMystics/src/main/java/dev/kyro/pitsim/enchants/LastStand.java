@@ -1,12 +1,14 @@
 package dev.kyro.pitsim.enchants;
 
 import dev.kyro.arcticapi.builders.ALoreBuilder;
+import dev.kyro.arcticapi.misc.ASound;
 import dev.kyro.arcticapi.misc.AUtil;
 import dev.kyro.pitsim.controllers.Cooldown;
 import dev.kyro.pitsim.controllers.objects.PitEnchant;
 import dev.kyro.pitsim.enums.ApplyType;
 import dev.kyro.pitsim.events.AttackEvent;
 import dev.kyro.pitsim.misc.Misc;
+import org.bukkit.Sound;
 import org.bukkit.event.EventHandler;
 import org.bukkit.potion.PotionEffectType;
 
@@ -26,10 +28,10 @@ public class LastStand extends PitEnchant {
 		int enchantLvl = attackEvent.getDefenderEnchantLevel(this);
 		if(enchantLvl == 0) return;
 
-		Cooldown cooldown = getCooldown(attackEvent.defender, 10 * 20);
-		if(cooldown.isOnCooldown()) return; else cooldown.reset();
-
 		if(attackEvent.defender.getHealth() - attackEvent.event.getFinalDamage() <= getProcHealth()) {
+			Cooldown cooldown = getCooldown(attackEvent.defender, 10 * 20);
+			if(cooldown.isOnCooldown()) return; else cooldown.reset();
+			ASound.play(attackEvent.defender, Sound.ZOMBIE_WOODBREAK, 1, 1);
 			Misc.applyPotionEffect(attackEvent.defender, PotionEffectType.DAMAGE_RESISTANCE, getSeconds(enchantLvl)
 					* 20, getAmplifier(enchantLvl) - 1, false, false);
 		}
@@ -39,12 +41,12 @@ public class LastStand extends PitEnchant {
 	public List<String> getDescription(int enchantLvl) {
 
 		return new ALoreBuilder("&7Gain &9Resistance " + AUtil.toRoman(getAmplifier(enchantLvl)) + " &7("
-		+ getSeconds(enchantLvl) + " &7seconds)", "&7when reaching &c" + Misc.getHearts(getProcHealth())).getLore();
+		+ getSeconds(enchantLvl) + " &7seconds)", "&7when reaching &c" + Misc.getHearts(getProcHealth()) + " &7(10s cooldown)").getLore();
 	}
 
 	public int getProcHealth() {
 
-		return 8;
+		return 10;
 	}
 
 	public int getAmplifier(int enchantLvl) {

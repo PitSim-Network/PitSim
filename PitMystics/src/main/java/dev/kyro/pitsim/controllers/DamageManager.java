@@ -46,11 +46,9 @@ public class DamageManager implements Listener {
 	public static Map<EntityShootBowEvent, Map<PitEnchant, Integer>> arrowMap = new HashMap<>();
 
 	static {
-
 		new BukkitRunnable() {
 			@Override
 			public void run() {
-
 				List<EntityShootBowEvent> toRemove = new ArrayList<>();
 				for(Map.Entry<EntityShootBowEvent, Map<PitEnchant, Integer>> entry : arrowMap.entrySet()) {
 
@@ -95,6 +93,11 @@ public class DamageManager implements Listener {
 			fakeHit = hitCooldownList.contains(defender);
 		}
 
+		if(Regularity.regCooldown.contains(defender.getUniqueId()) && !Regularity.toReg.contains(defender.getUniqueId())) {
+			event.setCancelled(true);
+			return;
+		}
+
 		if(!fakeHit) {
 //			if(attackingNon == null) attacker.setHealth(Math.min(attacker.getHealth() + 1, attacker.getMaxHealth()));
 			hitCooldownList.add(defender);
@@ -106,7 +109,7 @@ public class DamageManager implements Listener {
 				public void run() {
 					if(++count == 15) cancel();
 
-					if(count == 10) DamageManager.hitCooldownList.remove(defender);
+					if(count == 8) DamageManager.hitCooldownList.remove(defender);
 					if(count == 15) DamageManager.nonHitCooldownList.remove(defender);
 				}
 			}.runTaskTimer(PitSim.INSTANCE, 0L, 1L);
@@ -144,10 +147,10 @@ public class DamageManager implements Listener {
 		}
 		AttackEvent.Apply applyEvent = new AttackEvent.Apply(preEvent);
 		Bukkit.getServer().getPluginManager().callEvent(applyEvent);
-		if(applyEvent.fakeHit) {
-			applyEvent.event.setDamage(0);
-			return;
-		}
+//		if(applyEvent.fakeHit) {
+//			applyEvent.event.setDamage(0);
+//			return;
+//		}
 		handleAttack(applyEvent);
 		Bukkit.getServer().getPluginManager().callEvent(new AttackEvent.Post(applyEvent));
 	}
