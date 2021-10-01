@@ -3,7 +3,6 @@ package dev.kyro.pitsim.controllers;
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.PitSim;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -77,7 +76,7 @@ public class AFKManager implements Listener {
 	public void onQuit(PlayerQuitEvent event) {
 		AFKPlayers.remove(event.getPlayer());
 
-		Bukkit.broadcastMessage(ChatColor.translateAlternateColorCodes('&', "&8[&c-&8] &6" + event.getPlayer().getDisplayName() + " &ehas left"));
+//		Bukkit.broadcastMessage(ChatColor.translateAlternateColorCodes('&', "&8[&c-&8] &6" + event.getPlayer().getDisplayName() + " &ehas left"));
 	}
 
 

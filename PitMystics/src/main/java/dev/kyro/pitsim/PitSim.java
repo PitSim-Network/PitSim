@@ -16,6 +16,7 @@ import dev.kyro.pitsim.enchants.*;
 import dev.kyro.pitsim.killstreaks.*;
 import dev.kyro.pitsim.misc.ChunkOfVile;
 import dev.kyro.pitsim.misc.ItemRename;
+import dev.kyro.pitsim.misc.LauncherListeners;
 import dev.kyro.pitsim.misc.TotallyLegitGem;
 import dev.kyro.pitsim.perks.*;
 import dev.kyro.pitsim.pitevents.CaptureTheFlag;
@@ -23,6 +24,7 @@ import dev.kyro.pitsim.pitevents.Juggernaut;
 import dev.kyro.pitsim.placeholders.*;
 import dev.kyro.pitsim.upgrades.*;
 import net.kyori.adventure.platform.bukkit.BukkitAudiences;
+import net.luckperms.api.LuckPerms;
 import net.milkbowl.vault.economy.Economy;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -40,6 +42,7 @@ import java.util.Map;
 public class PitSim extends JavaPlugin {
 
 	public static double version = 1.0;
+	public static LuckPerms LUCKPERMS;
 
 	public static PitSim INSTANCE;
 	public static Economy VAULT = null;
@@ -57,6 +60,11 @@ public class PitSim extends JavaPlugin {
 	public void onEnable() {
 
 		INSTANCE = this;
+
+		RegisteredServiceProvider<LuckPerms> provider = Bukkit.getServicesManager().getRegistration(LuckPerms.class);
+		if (provider != null) {
+			LUCKPERMS = provider.getProvider();
+		}
 
 		MapManager.onStart();
 
@@ -324,6 +332,7 @@ public class PitSim extends JavaPlugin {
 		getServer().getPluginManager().registerEvents(new EnchantManager(), this);
 		getServer().getPluginManager().registerEvents(new TotallyLegitGem(), this);
 		getServer().getPluginManager().registerEvents(new ChunkOfVile(), this);
+		getServer().getPluginManager().registerEvents(new LauncherListeners(this), this);
 
 	}
 
@@ -339,7 +348,7 @@ public class PitSim extends JavaPlugin {
 		UpgradeManager.registerUpgrade(new Impatient());
 		UpgradeManager.registerUpgrade(new Helmetry());
 		UpgradeManager.registerUpgrade(new ShardHunter());
-		UpgradeManager.registerUpgrade(new FancyPants());
+		UpgradeManager.registerUpgrade(new ReportAccess());
 		UpgradeManager.registerUpgrade(new SelfConfidence());
 		UpgradeManager.registerUpgrade(new LuckyKill());
 		UpgradeManager.registerUpgrade(new LifeInsurance());

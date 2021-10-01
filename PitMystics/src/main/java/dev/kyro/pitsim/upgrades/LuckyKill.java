@@ -25,7 +25,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class LuckyKill extends RenownUpgrade {
+public  class LuckyKill extends RenownUpgrade {
 	public LuckyKill() {
 		super("Lucky Kill", "LUCKY_KILL", 10, 19, 5, true, 4);
 	}

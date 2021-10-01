@@ -5,7 +5,6 @@ import dev.kyro.pitsim.controllers.UpgradeManager;
 import dev.kyro.pitsim.controllers.objects.RenownUpgrade;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
-import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
@@ -14,20 +13,23 @@ import org.bukkit.inventory.meta.ItemMeta;
 import java.util.ArrayList;
 import java.util.List;
 
-public class FancyPants extends RenownUpgrade {
-	public FancyPants() {
-		super("Fancy Pants", "FANCY_PANTS", 10, 25, 15, false, 0);
+public class ReportAccess extends RenownUpgrade {
+	public ReportAccess() {
+		super("Access to /report", "REPORT_ACCESS", 10, 25, 15, false, 0);
 	}
 
 	@Override
 	public ItemStack getDisplayItem(Player player, boolean isCustomPanel) {
-		ItemStack item = new ItemStack(Material.LEATHER_LEGGINGS);
+		ItemStack item = new ItemStack(Material.SIGN);
 		ItemMeta meta = item.getItemMeta();
-		meta.addEnchant(Enchantment.ARROW_FIRE, 1, false);
+//		meta.addEnchant(Enchantment.ARROW_FIRE, 1, false);
 		meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
 		meta.setDisplayName(UpgradeManager.itemNameString(this, player));
 		List<String> lore = new ArrayList<>();
-		lore.add(ChatColor.translateAlternateColorCodes('&', "&7Your pants now &eglow&7."));
+		lore.add(ChatColor.translateAlternateColorCodes('&', "&7You now have access to a premium"));
+		lore.add(ChatColor.translateAlternateColorCodes('&', "&7report system to get cheaters"));
+		lore.add(ChatColor.translateAlternateColorCodes('&', "&7banned faster!"));
+		lore.add(ChatColor.translateAlternateColorCodes('&', "&7(Removable if abused)"));
 		meta.setLore(UpgradeManager.loreBuilder(this, player, lore, isCustomPanel));
 		item.setItemMeta(meta);
 		return item;
