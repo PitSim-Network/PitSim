@@ -2,9 +2,7 @@ package dev.kyro.pitsim.controllers.objects;
 
 import dev.kyro.arcticapi.data.APlayerData;
 import dev.kyro.pitsim.PitSim;
-import dev.kyro.pitsim.controllers.LevelManager;
-import dev.kyro.pitsim.controllers.NonManager;
-import dev.kyro.pitsim.controllers.PitEventManager;
+import dev.kyro.pitsim.controllers.*;
 import dev.kyro.pitsim.enchants.Hearts;
 import dev.kyro.pitsim.enums.AChatColor;
 import dev.kyro.pitsim.enums.DeathCry;
@@ -34,8 +32,11 @@ public class PitPlayer {
 	public String prefix;
 
 	public int playerLevel = 1;
-	public int remainingXP = 21;
+	public int prestige = 0;
+	public int level = 1;
+	public int remainingXP = PrestigeValues.getXPForLevel(1);
 	public int playerKills = 0;
+	public int goldGrinded = 0;
 	public PitPerk[] pitPerks = new PitPerk[4];
 	public int renown = 0;
 
@@ -75,14 +76,16 @@ public class PitPlayer {
 
 		if(non == null) {
 			String message = "%luckperms_prefix%";
-			prefix = "&7[&e" + playerLevel + "&7] &7" + PlaceholderAPI.setPlaceholders(player, message);
+			prefix = "&7[&e" + level + "&7] &7" + PlaceholderAPI.setPlaceholders(player, message);
 
 			FileConfiguration playerData = APlayerData.getPlayerData(player);
 
 			if(playerData.getInt("level") > 0) {
-				playerLevel = playerData.getInt("level");
+				level = playerData.getInt("level");
 				remainingXP = playerData.getInt("xp");
 				playerKills = playerData.getInt("playerkills");
+				goldGrinded = playerData.getInt("goldgrinded");
+				prestige = playerData.getInt("prestige");
 				LevelManager.setXPBar(player, this);
 			}
 

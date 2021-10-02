@@ -62,12 +62,12 @@ public class Uberstreak extends Megastreak {
 
 	@Override
 	public int guiSlot() {
-		return 14;
+		return 13;
 	}
 
 	@Override
-	public int levelReq() {
-		return 25;
+	public int prestigeReq() {
+		return 20;
 	}
 
 	@Override
@@ -179,7 +179,7 @@ public class Uberstreak extends Megastreak {
 		if(pitPlayer.megastreak.isOnMega()) {
 			pitPlayer.prefix = pitPlayer.megastreak.getName() + " &7" + PlaceholderAPI.setPlaceholders(pitPlayer.player, message);
 		} else {
-			pitPlayer.prefix = "&7[&e" + pitPlayer.playerLevel + "&7] &7" + PlaceholderAPI.setPlaceholders(pitPlayer.player, message);
+			pitPlayer.prefix = "&7[&e" + pitPlayer.level + "&7] &7" + PlaceholderAPI.setPlaceholders(pitPlayer.player, message);
 		}
 
 		pitPlayer.player.playSound(pitPlayer.player.getLocation(), "mob.guardian.curse", 1000, 1);
@@ -224,7 +224,7 @@ public class Uberstreak extends Megastreak {
 		if(pitPlayer.megastreak.isOnMega()) {
 			pitPlayer.prefix = pitPlayer.megastreak.getName() + " &7" + PlaceholderAPI.setPlaceholders(pitPlayer.player, message);
 		} else {
-			pitPlayer.prefix = "&7[&e" + pitPlayer.playerLevel + "&7] &7" + PlaceholderAPI.setPlaceholders(pitPlayer.player, message);
+			pitPlayer.prefix = "&7[&e" + pitPlayer.level + "&7] &7" + PlaceholderAPI.setPlaceholders(pitPlayer.player, message);
 		}
 
 		int rand = (int) (Math.random() * 10);

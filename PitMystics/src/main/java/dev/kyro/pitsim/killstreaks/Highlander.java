@@ -3,6 +3,7 @@ package dev.kyro.pitsim.killstreaks;
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.arcticapi.misc.ASound;
 import dev.kyro.pitsim.PitSim;
+import dev.kyro.pitsim.controllers.LevelManager;
 import dev.kyro.pitsim.controllers.NonManager;
 import dev.kyro.pitsim.controllers.objects.Megastreak;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
@@ -63,12 +64,12 @@ public class Highlander extends Megastreak {
 
 	@Override
 	public int guiSlot() {
-		return 12;
+		return 14;
 	}
 
 	@Override
-	public int levelReq() {
-		return 10;
+	public int prestigeReq() {
+		return 25;
 	}
 
 	@Override
@@ -150,7 +151,7 @@ public class Highlander extends Megastreak {
 		if(pitPlayer.megastreak.isOnMega()) {
 			pitPlayer.prefix = pitPlayer.megastreak.getName() + " &7" + PlaceholderAPI.setPlaceholders(pitPlayer.player, message);
 		} else {
-			pitPlayer.prefix = "&7[&e" + pitPlayer.playerLevel + "&7] &7" + PlaceholderAPI.setPlaceholders(pitPlayer.player, message);
+			pitPlayer.prefix = "&7[&e" + pitPlayer.level + "&7] &7" + PlaceholderAPI.setPlaceholders(pitPlayer.player, message);
 		}
 
 		ASound.play(pitPlayer.player, Sound.WITHER_SPAWN, 2, 0.5f);
@@ -172,10 +173,10 @@ public class Highlander extends Megastreak {
         if(pitPlayer.megastreak.isOnMega()) {
             pitPlayer.prefix = pitPlayer.megastreak.getName() + " &7" + PlaceholderAPI.setPlaceholders(pitPlayer.player, message);
         } else {
-            pitPlayer.prefix = "&7[&e" + pitPlayer.playerLevel + "&7] &7" + PlaceholderAPI.setPlaceholders(pitPlayer.player, message);
+            pitPlayer.prefix = "&7[&e" + pitPlayer.level + "&7] &7" + PlaceholderAPI.setPlaceholders(pitPlayer.player, message);
         }
         if(DoubleDeath.INSTANCE.isDoubleDeath(pitPlayer.player)) pitPlayer.bounty = pitPlayer.bounty * 2;
-        PitSim.VAULT.depositPlayer(pitPlayer.player, pitPlayer.bounty);
+		LevelManager.addGold(pitPlayer.player, pitPlayer.bounty);
         if(pitPlayer.bounty != 0 && pitPlayer.megastreak.isOnMega()) {
             AOutput.send(pitPlayer.player, "&6&lHIGHLANDER! &7Earned &6+" + pitPlayer.bounty + "&6g &7from megastreak!");
             pitPlayer.bounty = 0;

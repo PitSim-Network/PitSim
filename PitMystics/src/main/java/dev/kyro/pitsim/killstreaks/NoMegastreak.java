@@ -53,7 +53,7 @@ public class NoMegastreak extends Megastreak {
 	}
 
 	@Override
-	public int levelReq() {
+	public int prestigeReq() {
 		return 0;
 	}
 

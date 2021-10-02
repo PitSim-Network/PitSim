@@ -149,7 +149,8 @@ public class PitSim extends JavaPlugin {
 			PitPlayer pitplayer = PitPlayer.getPitPlayer(onlinePlayer);
 			if(NonManager.getNon(onlinePlayer) != null) continue;
 			FileConfiguration playerData = APlayerData.getPlayerData(onlinePlayer);
-			playerData.set("level", pitplayer.playerLevel);
+			playerData.set("level", pitplayer.level);
+			playerData.set("prestige", pitplayer.prestige);
 			playerData.set("playerkills", pitplayer.playerKills);
 			playerData.set("xp", pitplayer.remainingXP);
 			playerData.set("ubersleft", pitplayer.dailyUbersLeft);

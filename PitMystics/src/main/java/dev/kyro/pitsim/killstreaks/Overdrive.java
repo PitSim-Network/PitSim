@@ -2,6 +2,7 @@ package dev.kyro.pitsim.killstreaks;
 
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.PitSim;
+import dev.kyro.pitsim.controllers.LevelManager;
 import dev.kyro.pitsim.controllers.NonManager;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.controllers.objects.Megastreak;
@@ -62,7 +63,7 @@ public class Overdrive extends Megastreak {
 	}
 
 	@Override
-	public int levelReq() {
+	public int prestigeReq() {
 		return 0;
 	}
 
@@ -130,7 +131,7 @@ public class Overdrive extends Megastreak {
 		if(pitPlayer.megastreak.isOnMega()) {
 			pitPlayer.prefix = pitPlayer.megastreak.getName() + " &7" + PlaceholderAPI.setPlaceholders(pitPlayer.player, message);
 		} else {
-			pitPlayer.prefix = "&7[&e" + pitPlayer.playerLevel + "&7] &7" + PlaceholderAPI.setPlaceholders(pitPlayer.player, message);
+			pitPlayer.prefix = "&7[&e" + pitPlayer.level + "&7] &7" + PlaceholderAPI.setPlaceholders(pitPlayer.player, message);
 		}
 
 		pitPlayer.megastreak = this;
@@ -150,14 +151,14 @@ public class Overdrive extends Megastreak {
 		if(pitPlayer.megastreak.isOnMega()) {
 			pitPlayer.prefix = pitPlayer.megastreak.getName() + " &7" + PlaceholderAPI.setPlaceholders(pitPlayer.player, message);
 		} else {
-			pitPlayer.prefix = "&7[&e" + pitPlayer.playerLevel + "&7] &7" + PlaceholderAPI.setPlaceholders(pitPlayer.player, message);
+			pitPlayer.prefix = "&7[&e" + pitPlayer.level + "&7] &7" + PlaceholderAPI.setPlaceholders(pitPlayer.player, message);
 		}
 
 		if(pitPlayer.megastreak.isOnMega()) {
 			int randomNum = ThreadLocalRandom.current().nextInt(1000, 5000 + 1);
 			if(DoubleDeath.INSTANCE.isDoubleDeath(pitPlayer.player)) randomNum = randomNum * 2;
 			AOutput.send(pitPlayer.player, "&c&lOVERDRIVE! &7Earned &6+" + randomNum + "&6g &7from megastreak!");
-			PitSim.VAULT.depositPlayer(pitPlayer.player, randomNum);
+			LevelManager.addGold(pitPlayer.player, randomNum);
 		}
 
 		if(runnable != null) runnable.cancel();

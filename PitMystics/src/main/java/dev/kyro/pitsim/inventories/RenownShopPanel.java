@@ -4,6 +4,7 @@ import dev.kyro.arcticapi.data.APlayerData;
 import dev.kyro.arcticapi.gui.AGUI;
 import dev.kyro.arcticapi.gui.AGUIPanel;
 import dev.kyro.arcticapi.misc.AOutput;
+import dev.kyro.arcticapi.misc.AUtil;
 import dev.kyro.pitsim.controllers.UpgradeManager;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.controllers.objects.RenownUpgrade;
@@ -17,6 +18,7 @@ import org.bukkit.event.inventory.InventoryOpenEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -47,9 +49,14 @@ public class RenownShopPanel extends AGUIPanel {
 
         if(event.getClickedInventory().getHolder() == this) {
 
+            if(slot == 40) {
+                PrestigeGUI prestigeGUI = new PrestigeGUI(player);
+                prestigeGUI.open();
+            }
+
             for(RenownUpgrade upgrade : UpgradeManager.upgrades) {
                 if(slot == upgrade.guiSlot) {
-                    if(upgrade.levelReq > pitPlayer.playerLevel) {
+                    if(upgrade.prestigeReq > pitPlayer.prestige) {
                         AOutput.error(player, "&cYou are too low level to acquire this!");
                         player.playSound(player.getLocation(), Sound.VILLAGER_NO, 1 ,1);
                         continue;
@@ -110,13 +117,23 @@ public class RenownShopPanel extends AGUIPanel {
 
 
         for (RenownUpgrade upg : UpgradeManager.upgrades) {
-            if(upg.levelReq > pitPlayer.playerLevel) {
-                List<String> lore = Collections.singletonList(ChatColor.GRAY + "Level: " + ChatColor.YELLOW + upg.levelReq);
+            if(upg.prestigeReq > pitPlayer.prestige) {
+                List<String> lore = Collections.singletonList(ChatColor.GRAY + "Prestige: " + ChatColor.YELLOW + AUtil.toRoman(upg.prestigeReq));
                 meta.setLore(lore);
                 item.setItemMeta(meta);
                 getInventory().setItem(upg.guiSlot, item);
             } else getInventory().setItem(upg.guiSlot, upg.getDisplayItem(player, false));
         }
+
+        ItemStack back = new ItemStack(Material.ARROW);
+        ItemMeta backmeta = back.getItemMeta();
+        backmeta.setDisplayName(ChatColor.GREEN + "Go Back");
+        List<String> backlore = new ArrayList<>();
+        backlore.add(ChatColor.GRAY + "To Prestige & Renown");
+        backmeta.setLore(backlore);
+        back.setItemMeta(backmeta);
+
+        getInventory().setItem(40, back);
     }
 
     @Override

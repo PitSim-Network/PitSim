@@ -15,6 +15,6 @@ public class LevelPlaceholder implements APAPIPlaceholder {
 	public String getValue(Player player) {
 
 		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
-		return String.valueOf(pitPlayer.playerLevel);
+		return String.valueOf(pitPlayer.level);
 	}
 }

@@ -18,7 +18,7 @@ import java.util.List;
 
 public class UberIncrease extends RenownUpgrade {
 	public UberIncrease() {
-		super("Uberstreak Limit Increase", "UBER_INCREASE", 25, 32, 30, true, 5);
+		super("Uberstreak Limit Increase", "UBER_INCREASE", 25, 32, 27, true, 5);
 	}
 
 	@Override

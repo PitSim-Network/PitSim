@@ -79,7 +79,8 @@ public class CombatManager implements Listener {
         Player player = event.getPlayer();
        FileConfiguration playerData = APlayerData.getPlayerData(event.getPlayer());
        PitPlayer pitplayer = PitPlayer.getPitPlayer(event.getPlayer());
-       playerData.set("level", pitplayer.playerLevel);
+       playerData.set("level", pitplayer.level);
+       playerData.set("prestige", pitplayer.prestige);
        playerData.set("playerkills", pitplayer.playerKills);
        playerData.set("xp", pitplayer.remainingXP);
        playerData.set("renown", pitplayer.renown);

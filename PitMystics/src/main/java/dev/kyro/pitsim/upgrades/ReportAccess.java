@@ -15,7 +15,7 @@ import java.util.List;
 
 public class ReportAccess extends RenownUpgrade {
 	public ReportAccess() {
-		super("Access to /report", "REPORT_ACCESS", 10, 25, 15, false, 0);
+		super("Access to /report", "REPORT_ACCESS", 10, 25, 11, false, 0);
 	}
 
 	@Override

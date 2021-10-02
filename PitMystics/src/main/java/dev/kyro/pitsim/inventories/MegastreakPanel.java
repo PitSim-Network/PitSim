@@ -4,6 +4,7 @@ import dev.kyro.arcticapi.data.APlayerData;
 import dev.kyro.arcticapi.gui.AGUI;
 import dev.kyro.arcticapi.gui.AGUIPanel;
 import dev.kyro.arcticapi.misc.AOutput;
+import dev.kyro.arcticapi.misc.AUtil;
 import dev.kyro.pitsim.controllers.PerkManager;
 import dev.kyro.pitsim.controllers.objects.Megastreak;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
@@ -62,7 +63,7 @@ public class MegastreakPanel extends AGUIPanel {
                     PitPlayer pitPlayer = PitPlayer.getPitPlayer(perkGUI.player);
                     pitPlayer.setKills(0);
                     if(megastreak.getClass() == NoMegastreak.class) {
-                        if(pitPlayer.playerLevel < 0) level = true;
+                        if(pitPlayer.prestige < 0) level = true;
                         if(pitPlayer.megastreak.getClass() == NoMegastreak.class) has = true;
                         if(!has && !level) {
                             pitPlayer.megastreak.stop();
@@ -70,7 +71,7 @@ public class MegastreakPanel extends AGUIPanel {
                             perkGUI.megaWrapUp();
                         }
                     } else if(megastreak.getClass() == Overdrive.class) {
-                        if(pitPlayer.playerLevel < 0) level = true;
+                        if(pitPlayer.prestige < 0) level = true;
                         if(pitPlayer.megastreak.getClass() == Overdrive.class) has = true;
                         if(!has && !level) {
                             pitPlayer.megastreak.stop();
@@ -78,7 +79,7 @@ public class MegastreakPanel extends AGUIPanel {
                             perkGUI.megaWrapUp();
                         }
                     } else if(megastreak.getClass() == Highlander.class) {
-                        if(pitPlayer.playerLevel < 10) level = true;
+                        if(pitPlayer.prestige < 25) level = true;
                         if(pitPlayer.megastreak.getClass() == Highlander.class) has = true;
                         if(!has && !level) {
                             pitPlayer.megastreak.stop();
@@ -86,7 +87,7 @@ public class MegastreakPanel extends AGUIPanel {
                             perkGUI.megaWrapUp();
                         }
                     } else if(megastreak.getClass() == Beastmode.class) {
-                        if(pitPlayer.playerLevel < 20) level = true;
+                        if(pitPlayer.prestige < 16) level = true;
                         if(pitPlayer.megastreak.getClass() == Beastmode.class) has = true;
                         if(!has && !level) {
                             pitPlayer.megastreak.stop();
@@ -94,7 +95,7 @@ public class MegastreakPanel extends AGUIPanel {
                             perkGUI.megaWrapUp();
                         }
                     } else if(megastreak.getClass() == Uberstreak.class) {
-                        if(pitPlayer.playerLevel < 25) level = true;
+                        if(pitPlayer.prestige < 20) level = true;
                         if(pitPlayer.megastreak.getClass() == Uberstreak.class) has = true;
                         if(pitPlayer.dailyUbersLeft <= 0) uberCd = true;
                         if(!has && !level && !uberCd) {
@@ -136,7 +137,7 @@ public class MegastreakPanel extends AGUIPanel {
             ItemMeta meta = item.getItemMeta();
             List<String> lore = new ArrayList<>(megastreak.guiItem().getItemMeta().getLore());
             lore.add("");
-            if(megastreak.getClass() == Uberstreak.class && pitPlayer.playerLevel >= megastreak.levelReq()) {
+            if(megastreak.getClass() == Uberstreak.class && pitPlayer.prestige >= megastreak.prestigeReq()) {
                 if((System.currentTimeMillis() / 1000L) - 86400 > pitPlayer.uberReset) {
                     pitPlayer.uberReset = 0;
                     pitPlayer.dailyUbersLeft = 5 + UberIncrease.getUberIncrease(player);
@@ -154,8 +155,8 @@ public class MegastreakPanel extends AGUIPanel {
                 lore.add(ChatColor.GREEN + "Already selected!");
                 meta.setDisplayName(ChatColor.GREEN + megastreak.getRawName());
                 meta.addEnchant(Enchantment.ARROW_FIRE, 1, false);
-            } else if(pitPlayer.playerLevel < megastreak.levelReq() && megastreak.getClass() != NoMegastreak.class) {
-                lore.add(ChatColor.RED + "Unlocked at level " + ChatColor.YELLOW + megastreak.levelReq() + ChatColor.RED + "!");
+            } else if(pitPlayer.prestige < megastreak.prestigeReq() && megastreak.getClass() != NoMegastreak.class) {
+                lore.add(ChatColor.RED + "Unlocked at prestige " + ChatColor.YELLOW + AUtil.toRoman(megastreak.prestigeReq()));
                 meta.setDisplayName(ChatColor.RED + megastreak.getRawName());
             } else if(megastreak.getClass() == Uberstreak.class && pitPlayer.dailyUbersLeft == 0){
                 lore.add(ChatColor.RED + "Daily limit reached!");

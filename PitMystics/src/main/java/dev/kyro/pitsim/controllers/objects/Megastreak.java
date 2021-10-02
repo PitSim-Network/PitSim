@@ -1,12 +1,10 @@
 package dev.kyro.pitsim.controllers.objects;
 
 import dev.kyro.pitsim.PitSim;
-import dev.kyro.pitsim.controllers.PerkManager;
 import dev.kyro.pitsim.events.KillEvent;
 import org.bukkit.Bukkit;
 import org.bukkit.event.Listener;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.plugin.RegisteredListener;
 
 import java.util.List;
 
@@ -26,7 +24,7 @@ public abstract class Megastreak implements Listener {
 	public abstract int getRequiredKills();
 	public abstract ItemStack guiItem();
 	public abstract int guiSlot();
-	public abstract int levelReq();
+	public abstract int prestigeReq();
 
 	public abstract void stop();
 	public abstract void proc();

@@ -7,6 +7,7 @@ import dev.kyro.arcticapi.misc.ASound;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.controllers.objects.Non;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
+import dev.kyro.pitsim.controllers.objects.RenownUpgrade;
 import dev.kyro.pitsim.events.AttackEvent;
 import dev.kyro.pitsim.events.KillEvent;
 import dev.kyro.pitsim.killstreaks.Highlander;
@@ -93,7 +94,7 @@ public class PlayerManager implements Listener {
 
 
 			}
-			PitSim.VAULT.depositPlayer(killEvent.killer, pitDead.bounty);
+			LevelManager.addGold(killEvent.killer, pitDead.bounty);
 			if(pitDead.megastreak.getClass() != Highlander.class) pitDead.bounty = 0;
 
 
@@ -185,6 +186,7 @@ public class PlayerManager implements Listener {
 
 			if(!isNew(player)) compensateRenown(event.getPlayer());
 			compensateFancyPants(player);
+			compensateRenownPerks(player);
 
 			FileConfiguration playerData = APlayerData.getPlayerData(player);
 			playerData.set("lastversion", PitSim.version);
@@ -267,7 +269,7 @@ public class PlayerManager implements Listener {
 				if(pitPlayer.megastreak.isOnMega()) {
 					pitPlayer.prefix = pitPlayer.megastreak.getName() + " &7" + PlaceholderAPI.setPlaceholders(player, message);
 				} else {
-					pitPlayer.prefix = "&7[&e" + pitPlayer.playerLevel + "&7] &7" + PlaceholderAPI.setPlaceholders(player, message);
+					pitPlayer.prefix = "&7[&e" + pitPlayer.level + "&7] &7" + PlaceholderAPI.setPlaceholders(player, message);
 				}
 			}
 		}.runTaskLater(PitSim.INSTANCE,  10L);
@@ -327,7 +329,7 @@ public class PlayerManager implements Listener {
 		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
 		int totalRenown = 0;
 		for(int i = 0; i < pitPlayer.playerLevel; i++) {
-			totalRenown += LevelManager.getRenownFromLevel(i);
+			totalRenown += OldLevelManager.getRenownFromLevel(i);
 		}
 		pitPlayer.renown += totalRenown;
 		playerData.set("renown", pitPlayer.renown);
@@ -350,6 +352,31 @@ public class PlayerManager implements Listener {
 		ASound.play(player, Sound.NOTE_PLING, 2, 1.5F);
 
 		APlayerData.savePlayerData(player);
+	}
+
+	public static void compensateRenownPerks(Player player) {
+		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
+		FileConfiguration playerData = APlayerData.getPlayerData(player);
+		int renown = 0;
+		for(RenownUpgrade upgrade : UpgradeManager.upgrades) {
+			if(UpgradeManager.hasUpgrade(player, upgrade) && upgrade.prestigeReq > pitPlayer.prestige) {
+				Bukkit.broadcastMessage(upgrade.name);
+				if(upgrade.isTiered) {
+					int tier = UpgradeManager.getTier(player, upgrade);
+					for(int i = 0; i < tier; i++) {
+						renown += upgrade.getTierCosts().get(i);
+					}
+				} else renown += upgrade.renownCost;
+				playerData.set(upgrade.refName, null);
+			}
+		}
+		pitPlayer.renown += renown;
+
+		if(renown == 0) return;
+		playerData.set("renown", pitPlayer.renown);
+		APlayerData.savePlayerData(player);
+		AOutput.send(player, "&a&lCOMPENSATION! &7Received &e+" + renown + " Renown &7for recent renown shop changes.");
+		ASound.play(player, Sound.NOTE_PLING, 2, 1.5F);
 	}
 
 

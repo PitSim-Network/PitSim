@@ -3,6 +3,8 @@ package dev.kyro.pitsim.controllers;
 import dev.kyro.arcticapi.data.APlayerData;
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.arcticapi.misc.ASound;
+import dev.kyro.arcticapi.misc.AUtil;
+import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.misc.Misc;
 import me.clip.placeholderapi.PlaceholderAPI;
@@ -12,101 +14,112 @@ import org.bukkit.Sound;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class LevelManager {
 
-    public static List<Long> levelMap = new ArrayList<>();
 
-    static {
+	public static void addXp(Player player, int xp) {
+		if(!(NonManager.getNon(player) == null)) return;
+		FileConfiguration playerData = APlayerData.getPlayerData(player);
+		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
+		while(xp > 0) {
+			if(!(pitPlayer.level < 120)) {
+				pitPlayer.remainingXP = 0;
+				return;
+			}
+			if(pitPlayer.remainingXP - xp <= 0) {
+				xp -= pitPlayer.remainingXP;
+				pitPlayer.remainingXP = 0;
+				incrementLevel(player);
+			} else {
+				pitPlayer.remainingXP -= xp;
+				xp = 0;
+			}
+			setXPBar(player, pitPlayer);
+			playerData.set("xp", pitPlayer.remainingXP);
+			playerData.set("prestige", pitPlayer.prestige);
+			APlayerData.savePlayerData(player);
+		}
 
-        for(int i = 0; i < 2000; i++) {
-            levelMap.add(getXP(i));
-        }
+	}
 
-        for(int i = 0; i < levelMap.size(); i++) {
-//            System.out.println(i + " " + levelMap.get(i));
-        }
-    }
+	public static void incrementLevel(Player player) {
+		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
+		PrestigeValues.PrestigeInfo prestigeInfo = PrestigeValues.getPrestigeInfo(pitPlayer.prestige);
+		if(!(pitPlayer.level < 120)) return;
+		if(pitPlayer.remainingXP > 0) return;
 
-    public static int getLevel(long xp) {
+		pitPlayer.level += 1;
+		pitPlayer.remainingXP = (int) (PrestigeValues.getXPForLevel(pitPlayer.level) * prestigeInfo.xpMultiplier);
+		setXPBar(player, pitPlayer);
 
-        for(int i = 0; i < levelMap.size(); i++) {
+		ASound.play(player, Sound.LEVEL_UP, 1, 1);
+		Misc.sendTitle(player, "&e&lLEVEL UP!", 40);
+		Misc.sendSubTitle(player, "&7[&e" + (pitPlayer.level - 1) + "&7] \u279F [&e" + pitPlayer.level + "&7]", 40);
+		AOutput.send(player,  "&e&lPIT LEVEL UP! &7[&e" + (pitPlayer.level - 1) + "&7] \u279F [&e" + pitPlayer.level + "&7]");
 
-            long lvlXP = levelMap.get(i);
-            if(xp < lvlXP) continue;
-            return i;
-        }
+		FileConfiguration playerData = APlayerData.getPlayerData(player);
+		playerData.set("level", pitPlayer.level);
+		playerData.set("xp", pitPlayer.remainingXP);
+		playerData.set("prestige", pitPlayer.prestige);
+		APlayerData.savePlayerData(player);
+	}
 
-        return -1;
-    }
+	public static void addGold(Player player, int amount) {
+		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
 
-    public static long getXP(long level) {
+		pitPlayer.goldGrinded += amount;
+		PitSim.VAULT.depositPlayer(player, amount);
+		FileConfiguration playerData = APlayerData.getPlayerData(player);
+		playerData.set("goldgrinded", pitPlayer.goldGrinded);
+		APlayerData.savePlayerData(player);
+	}
 
-        return (long) (9 + 10 * level + Math.pow(level, 2.3) + Math.pow(1.015, level)) * 100;
-    }
 
-    public static long getXPToNextLvl(long currentXP) {
+	public static void incrementPrestige(Player player) {
+		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
+		PrestigeValues.PrestigeInfo prestigeInfo = PrestigeValues.getPrestigeInfo(pitPlayer.prestige);
+		if(pitPlayer.level < 120) return;
+		if(pitPlayer.goldGrinded < prestigeInfo.goldReq) return;
+		if(pitPlayer.playerKills < prestigeInfo.killReq) return;
 
-        int currentLvl = getLevel(currentXP);
-        return getXP(currentLvl + 1) - getXP(currentLvl);
-    }
+		pitPlayer.prestige += 1;
+		pitPlayer.level = 1;
+		pitPlayer.goldGrinded = 0;
+		PitSim.VAULT.withdrawPlayer(player, PitSim.VAULT.getBalance(player));
+		pitPlayer.playerKills = 0;
+		pitPlayer.remainingXP = (int) (PrestigeValues.getXPForLevel(1) * prestigeInfo.xpMultiplier);
 
-    public static int getPlayerKills(long level) {
-        return (int) ((9 + 10 * level + Math.pow(level, 2.3) + Math.pow(1.015, level)) / 20);
-    }
+		FileConfiguration playerData = APlayerData.getPlayerData(player);
+		playerData.set("goldgrinded", pitPlayer.goldGrinded);
+		playerData.set("prestige", pitPlayer.prestige);
+		playerData.set("level", pitPlayer.level);
+		playerData.set("playerkills", pitPlayer.playerKills);
+		playerData.set("xp", pitPlayer.remainingXP);
+		APlayerData.savePlayerData(player);
 
-    public static void incrementLevel(Player player) {
-        PitPlayer pitplayer = PitPlayer.getPitPlayer(player);
-        setXPBar(player, pitplayer);
-        if(NonManager.getNon(player) == null && pitplayer.remainingXP == 0 && pitplayer.playerKills >= getPlayerKills(pitplayer.playerLevel)) {
-            pitplayer.remainingXP  = (int) getXP(pitplayer.playerLevel + 1);
-            pitplayer.playerLevel = pitplayer.playerLevel + 1;
-            pitplayer.playerKills = 0;
-            pitplayer.renown += getRenownFromLevel(pitplayer.playerLevel);
-            setXPBar(player, pitplayer);
 
-            ASound.play(player, Sound.LEVEL_UP, 1, 1);
-            String message = ChatColor.translateAlternateColorCodes('&', "&e&lLEVEL UP! %luckperms_prefix%%player_name% &7has reached level &e" + pitplayer.playerLevel);
-            Bukkit.broadcastMessage(PlaceholderAPI.setPlaceholders(player, message));
-            AOutput.send(player, "&7Rewards: &e+" + getRenownFromLevel(pitplayer.playerLevel) + " Renown");
+		ASound.play(player, Sound.ENDERDRAGON_GROWL, 1, 1);
+		Misc.sendTitle(player, "&e&lPRESTIGE!", 40);
+		Misc.sendSubTitle(player, "&7You unlocked prestige &e" + AUtil.toRoman(pitPlayer.prestige), 40);
+		String message = ChatColor.translateAlternateColorCodes('&', "&e&lPRESTIGE! %luckperms_prefix%%player_name% &7unlocked prestige &e" + AUtil.toRoman(pitPlayer.prestige) + "&7, gg!");
+		Bukkit.broadcastMessage(PlaceholderAPI.setPlaceholders(player, message));
 
-            Misc.sendTitle(player, "&e&lLEVEL UP!", 40);
-            Misc.sendSubTitle(player, "&e" + (pitplayer.playerLevel - 1) + " &7\u279F &e" + pitplayer.playerLevel, 40);
 
-            if(NonManager.getNon(player) != null) return;
-            FileConfiguration playerData = APlayerData.getPlayerData(player);
-            playerData.set("level", pitplayer.playerLevel);
-            playerData.set("playerkills", pitplayer.playerKills);
-            playerData.set("xp", pitplayer.remainingXP);
-            playerData.set("renown", pitplayer.renown);
-            APlayerData.savePlayerData(player);
-        }
-    }
+	}
 
-    public static void setXPBar(Player player, PitPlayer pitPlayer) {
-        if(NonManager.getNon(player) != null) return;
+	public static void setXPBar(Player player, PitPlayer pitPlayer) {
+		if(NonManager.getNon(player) != null) return;
 
-        player.setLevel(pitPlayer.playerLevel);
-        float remaining = pitPlayer.remainingXP;
-        float total = (int) getXP(pitPlayer.playerLevel);
+		player.setLevel(pitPlayer.level);
+		float remaining = pitPlayer.remainingXP;
+		float total = PrestigeValues.getXPForLevel(pitPlayer.level);
 
-        player.setLevel(pitPlayer.playerLevel);
-        float xp = (total - remaining) /  total;
+		player.setLevel(pitPlayer.level);
+		float xp = (total - remaining) /  total;
 
-        player.setExp(xp);
+		player.setExp(xp);
 
-    }
+	}
 
-    public static int getRenownFromLevel(int level) {
-//        if(level >= 0 && level < 5) return 0;
-//        if(level > 4 && level < 10) return 1;
-//        if(level > 14 && level < 20) return 3;
-//        if(level > 24 && level < 30) return 5;
-//        if(level > 34 && level < 40) return 7;
-//        if(level > 44 && level < 50) return 9;
-//        return 11;
-        return (level > 50 ? 10 : level/5) * 2;
-    }
+
 }

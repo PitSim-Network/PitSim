@@ -241,7 +241,8 @@ public class DamageManager implements Listener {
 		Regularity.toReg.remove(dead.getUniqueId());
 		if(NonManager.getNon(dead) == null) {
 			FileConfiguration playerData = APlayerData.getPlayerData(dead);
-			playerData.set("level", pitDefender.playerLevel);
+			playerData.set("level", pitDefender.level);
+			playerData.set("prestige", pitDefender.prestige);
 			playerData.set("playerkills", pitDefender.playerKills);
 			playerData.set("xp", pitDefender.remainingXP);
 			APlayerData.savePlayerData(dead);
@@ -289,11 +290,9 @@ public class DamageManager implements Listener {
 		}
 
 
-		if(pitAttacker.remainingXP - killEvent.getFinalXp() >= 0)
-			pitAttacker.remainingXP = pitAttacker.remainingXP - killEvent.getFinalXp();
-		else pitAttacker.remainingXP = 0;
-		LevelManager.incrementLevel(killer);
-		PitSim.VAULT.depositPlayer(killEvent.killer, killEvent.getFinalGold());
+		LevelManager.addXp(pitAttacker.player, killEvent.getFinalXp());
+//		OldLevelManager.incrementLevel(killer);
+		LevelManager.addGold(killEvent.killer, (int) killEvent.getFinalGold());
 
 		DecimalFormat df = new DecimalFormat("##0.00");
 		String kill = "&a&lKILL!&7 on %luckperms_prefix%" + (defendingNon == null ? "%player_name%" : defendingNon.displayName)
@@ -339,14 +338,13 @@ public class DamageManager implements Listener {
 			double gold = 20 * assistPercent;
 
 			PitPlayer assistPitPlayer = PitPlayer.getPitPlayer(assistPlayer);
-			if(assistPitPlayer.remainingXP - xp < 0) assistPitPlayer.remainingXP = 0;
-			else assistPitPlayer.remainingXP = assistPitPlayer.remainingXP - xp;
-			LevelManager.incrementLevel(assistPlayer);
+			LevelManager.addXp(assistPitPlayer.player, xp);
+//			OldLevelManager.incrementLevel(assistPlayer);
 
 			if(killEvent.getFinalGold() > 10) {
-				PitSim.VAULT.depositPlayer(assistPlayer, 10);
+				LevelManager.addGold(assistPlayer, 10);
 			} else {
-				PitSim.VAULT.depositPlayer(assistPlayer, gold);
+				LevelManager.addGold(assistPlayer, (int) gold);
 			}
 
 
@@ -364,7 +362,7 @@ public class DamageManager implements Listener {
 		pitDefender.recentDamageMap.clear();
 
 		String message = "%luckperms_prefix%";
-		pitDead.prefix = "&7[&e" + pitDead.playerLevel + "&7] &7" + PlaceholderAPI.setPlaceholders(pitDead.player, message);
+		pitDead.prefix = "&7[&e" + pitDead.level + "&7] &7" + PlaceholderAPI.setPlaceholders(pitDead.player, message);
 
 		if(PitEventManager.majorEvent && UpgradeManager.hasUpgrade(dead, "LIFE_INSURANCE")) {
 			AOutput.send(dead, "&2&lLIFE INSURANCE! &7Inventory protected.");
@@ -423,7 +421,7 @@ public class DamageManager implements Listener {
 
 		FileConfiguration playerData = APlayerData.getPlayerData(dead);
 		PitPlayer pitPlayer = PitPlayer.getPitPlayer(dead);
-		playerData.set("level", pitPlayer.playerLevel);
+		playerData.set("level", pitPlayer.level);
 		playerData.set("playerkills", pitPlayer.playerKills);
 		playerData.set("xp", pitPlayer.remainingXP);
 		APlayerData.savePlayerData(dead);
@@ -455,7 +453,7 @@ public class DamageManager implements Listener {
 		}
 		AOutput.send(dead, "&c&lDEATH!");
 		String message = "%luckperms_prefix%";
-		pitDefender.prefix = "&7[&e" + pitDefender.playerLevel + "&7] &7" + PlaceholderAPI.setPlaceholders(pitDefender.player, message);
+		pitDefender.prefix = "&7[&e" + pitDefender.level + "&7] &7" + PlaceholderAPI.setPlaceholders(pitDefender.player, message);
 
 		if(PitEventManager.majorEvent && UpgradeManager.hasUpgrade(dead, "LIFE_INSURANCE")) {
 			AOutput.send(dead, "&2&lLIFE INSURANCE! &7Inventory protected.");
