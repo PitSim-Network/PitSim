@@ -38,8 +38,9 @@ dependencies {
     compile 'de.tr7zw:item-nbt-api-plugin:2.8.0'
     compileOnly files('libs/Buzz_API.jar')
     compileOnly files('libs/FeatherBoard.jar')
-    compileOnly files('libs/EssentialsX.jar')
+    compileOnly files('libs/SpaceDeltaSpigot-API.jar')
 
+    compileOnly 'net.luckperms:api:5.3'
 }
 
 shadowJar {

@@ -183,7 +183,9 @@ public class PlayerManager implements Listener {
 //		event.getPlayer().setMaximumNoDamageTicks(18);
 
 
-			compensateRenown(event.getPlayer());
+			if(!isNew(player)) compensateRenown(event.getPlayer());
+			compensateFancyPants(player);
+
 			FileConfiguration playerData = APlayerData.getPlayerData(player);
 			playerData.set("lastversion", PitSim.version);
 			APlayerData.savePlayerData(player);
@@ -334,6 +336,23 @@ public class PlayerManager implements Listener {
 
 		APlayerData.savePlayerData(player);
 	}
+
+	public static void compensateFancyPants(Player player) {
+		FileConfiguration playerData = APlayerData.getPlayerData(player);
+		if(!playerData.contains("FANCY_PANTS")) return;
+		playerData.set("FANCY_PANTS", null);
+
+		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
+
+		pitPlayer.renown += 10;
+		playerData.set("renown", pitPlayer.renown);
+		AOutput.send(player, "&a&lCOMPENSATION! &7Received &e+" + 10 + " Renown &7for the removal of &fFancy Pants");
+		ASound.play(player, Sound.NOTE_PLING, 2, 1.5F);
+
+		APlayerData.savePlayerData(player);
+	}
+
+
 
 	public static List<UUID> passedCaptcha = new ArrayList<>();
 	@EventHandler

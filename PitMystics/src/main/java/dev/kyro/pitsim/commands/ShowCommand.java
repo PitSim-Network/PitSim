@@ -23,6 +23,8 @@ public class ShowCommand implements CommandExecutor {
 
         if(!(sender instanceof Player)) return false;
 
+        Bukkit.broadcastMessage(((Player) sender).getLocation().getDirection().toString());
+
         Player player = (Player) sender;
         ItemStack item = player.getItemInHand();
         ItemMeta meta = item.getItemMeta();

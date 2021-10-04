@@ -178,4 +178,9 @@ public class Misc {
 			entityPlayer.playerConnection.sendPacket(new PacketPlayOutSpawnEntityWeather(lightning));
 		}
 	}
+
+	public static <T> T getRandomElement(List<T> list) {
+		int index = (int) (Math.random() * list.size());
+		return list.get(index);
+	}
 }

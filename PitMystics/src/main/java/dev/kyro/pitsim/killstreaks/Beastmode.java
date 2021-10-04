@@ -1,6 +1,7 @@
 package dev.kyro.pitsim.killstreaks;
 
 import dev.kyro.arcticapi.misc.AOutput;
+import dev.kyro.pitsim.controllers.LevelManager;
 import dev.kyro.pitsim.controllers.NonManager;
 import dev.kyro.pitsim.controllers.objects.Megastreak;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
@@ -176,6 +177,7 @@ public class Beastmode extends Megastreak {
         if(pitPlayer.megastreak.isOnMega())  {
             AOutput.send(pitPlayer.player, "&c&lBEASTMODE! &7Earned &b" + randomNum + "&b XP &7from megastreak!");
             pitPlayer.remainingXP = Math.max(pitPlayer.remainingXP - randomNum, 0);
+	        LevelManager.incrementLevel(pitPlayer.player);
         }
 
 	}
