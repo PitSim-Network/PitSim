@@ -45,6 +45,7 @@ public class NonManager implements Listener {
 		Location mid = MapManager.getMid();
 		int playersNearMid = 0;
 		for(Player onlinePlayer : Bukkit.getOnlinePlayers()) {
+			if(onlinePlayer.getWorld() != mid.getWorld()) continue;
 			double distance = mid.distance(onlinePlayer.getLocation());
 			if(distance < 20) playersNearMid++;
 		}
