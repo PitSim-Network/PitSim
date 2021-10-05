@@ -32,8 +32,11 @@ public class MapManager {
 
     public static Location getNonSpawn() {
 
-        if(map == GameMap.STARWARS) return snowNonSpawn;
-        else return desertNonSpawn;
+        Location spawn = map == GameMap.STARWARS ? snowNonSpawn : desertNonSpawn;
+        spawn = spawn.clone();
+        spawn.setX(spawn.getX() + (Math.random() * 6 - 3));
+        spawn.setZ(spawn.getZ() + (Math.random() * 6 - 3));
+        return spawn;
     }
 
     public static Location getMid() {
