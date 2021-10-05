@@ -88,7 +88,7 @@ public class PrestigePanel extends AGUIPanel {
 			prestigeLore.add(ChatColor.translateAlternateColorCodes('&', "&7&oRenown upgrades are kept"));
 			prestigeLore.add(ChatColor.translateAlternateColorCodes('&', "&7&oEnder chest is kept"));
 			prestigeLore.add("");
-			prestigeLore.add(ChatColor.translateAlternateColorCodes('&', "&7Reward: &eRenown"));
+			prestigeLore.add(ChatColor.translateAlternateColorCodes('&', "&7Reward: &e" + pitPlayer.renown + " &eRenown"));
 			prestigeLore.add("");
 			prestigeLore.add(ChatColor.translateAlternateColorCodes('&', "&7New prestige: &e" + AUtil.toRoman(pitPlayer.prestige + 1)));
 			if(pitPlayer.prestige != 0) prestigeLore.add(ChatColor.translateAlternateColorCodes('&', "&b+" + (int) (100 * nextPrestigeInfo.xpMultiplier) + "&b% &7needed xp!"));

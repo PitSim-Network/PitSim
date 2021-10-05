@@ -89,7 +89,7 @@ public class Juggernaut extends PitEvent {
 	    PlayerManager.removeIllegalItems(juggernaut);
 	    PitPlayer pitPlayer = PitPlayer.getPitPlayer(juggernaut);
 	    String message = "%luckperms_prefix%";
-	    pitPlayer.prefix = "&7[&e" + pitPlayer.level + "&7] &7" + PlaceholderAPI.setPlaceholders(pitPlayer.player, message);
+	    pitPlayer.prefix = PrestigeValues.getPlayerPrefix(pitPlayer.player) + PlaceholderAPI.setPlaceholders(pitPlayer.player, message);
     	eventIsActive = false;
         juggernaut = null;
         movements.clear();

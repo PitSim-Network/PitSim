@@ -269,7 +269,7 @@ public class PlayerManager implements Listener {
 				if(pitPlayer.megastreak.isOnMega()) {
 					pitPlayer.prefix = pitPlayer.megastreak.getName() + " &7" + PlaceholderAPI.setPlaceholders(player, message);
 				} else {
-					pitPlayer.prefix = "&7[&e" + pitPlayer.level + "&7] &7" + PlaceholderAPI.setPlaceholders(player, message);
+					pitPlayer.prefix = PrestigeValues.getPlayerPrefix(pitPlayer.player) + PlaceholderAPI.setPlaceholders(player, message);
 				}
 			}
 		}.runTaskLater(PitSim.INSTANCE,  10L);

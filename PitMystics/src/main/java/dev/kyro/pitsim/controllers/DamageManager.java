@@ -362,7 +362,7 @@ public class DamageManager implements Listener {
 		pitDefender.recentDamageMap.clear();
 
 		String message = "%luckperms_prefix%";
-		pitDead.prefix = "&7[&e" + pitDead.level + "&7] &7" + PlaceholderAPI.setPlaceholders(pitDead.player, message);
+		pitDead.prefix = PrestigeValues.getPlayerPrefix(pitDead.player) + PlaceholderAPI.setPlaceholders(pitDead.player, message);
 
 		if(PitEventManager.majorEvent && UpgradeManager.hasUpgrade(dead, "LIFE_INSURANCE")) {
 			AOutput.send(dead, "&2&lLIFE INSURANCE! &7Inventory protected.");
@@ -453,7 +453,7 @@ public class DamageManager implements Listener {
 		}
 		AOutput.send(dead, "&c&lDEATH!");
 		String message = "%luckperms_prefix%";
-		pitDefender.prefix = "&7[&e" + pitDefender.level + "&7] &7" + PlaceholderAPI.setPlaceholders(pitDefender.player, message);
+		pitDefender.prefix = PrestigeValues.getPlayerPrefix(pitDefender.player) + PlaceholderAPI.setPlaceholders(pitDefender.player, message);
 
 		if(PitEventManager.majorEvent && UpgradeManager.hasUpgrade(dead, "LIFE_INSURANCE")) {
 			AOutput.send(dead, "&2&lLIFE INSURANCE! &7Inventory protected.");

@@ -27,6 +27,7 @@ public class PrestigeConfirmPanel extends AGUIPanel {
 		prestigeGUI = (PrestigeGUI) gui;
 	}
 
+
 	@Override
 	public String getName() {
 		return "Prestige & Renown";

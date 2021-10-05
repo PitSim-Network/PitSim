@@ -88,11 +88,13 @@ public class LevelManager {
 		PitSim.VAULT.withdrawPlayer(player, PitSim.VAULT.getBalance(player));
 		pitPlayer.playerKills = 0;
 		pitPlayer.remainingXP = (int) (PrestigeValues.getXPForLevel(1) * prestigeInfo.xpMultiplier);
+		pitPlayer.renown += prestigeInfo.renownReward;
 
 		FileConfiguration playerData = APlayerData.getPlayerData(player);
 		playerData.set("goldgrinded", pitPlayer.goldGrinded);
 		playerData.set("prestige", pitPlayer.prestige);
 		playerData.set("level", pitPlayer.level);
+		playerData.set("renown", pitPlayer.renown);
 		playerData.set("playerkills", pitPlayer.playerKills);
 		playerData.set("xp", pitPlayer.remainingXP);
 		APlayerData.savePlayerData(player);
