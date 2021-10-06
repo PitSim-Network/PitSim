@@ -49,19 +49,26 @@ public class LevelManager {
 		if(pitPlayer.remainingXP > 0) return;
 
 		pitPlayer.level += 1;
-		pitPlayer.remainingXP = (int) (PrestigeValues.getXPForLevel(pitPlayer.level) * prestigeInfo.xpMultiplier);
+		pitPlayer.remainingXP = (int) ((PrestigeValues.getXPForLevel(pitPlayer.level) * prestigeInfo.xpMultiplier) / 10);
 		setXPBar(player, pitPlayer);
 
 		ASound.play(player, Sound.LEVEL_UP, 1, 1);
 		Misc.sendTitle(player, "&e&lLEVEL UP!", 40);
-		Misc.sendSubTitle(player, "&7[&e" + (pitPlayer.level - 1) + "&7] \u279F [&e" + pitPlayer.level + "&7]", 40);
-		AOutput.send(player,  "&e&lPIT LEVEL UP! &7[&e" + (pitPlayer.level - 1) + "&7] \u279F [&e" + pitPlayer.level + "&7]");
+		Misc.sendSubTitle(player, prestigeInfo.getOpenBracket() + PrestigeValues.getLevelColor(pitPlayer.level - 1) + (pitPlayer.level - 1) + prestigeInfo.getCloseBracket() + " &7\u279F " + prestigeInfo.getOpenBracket() + PrestigeValues.getLevelColor(pitPlayer.level) + pitPlayer.level + prestigeInfo.getCloseBracket(), 40);
+		AOutput.send(player,  "&e&lPIT LEVEL UP! " + prestigeInfo.getOpenBracket() + PrestigeValues.getLevelColor(pitPlayer.level - 1) + (pitPlayer.level - 1) + prestigeInfo.getCloseBracket() + " &7\u279F " + prestigeInfo.getOpenBracket() + PrestigeValues.getLevelColor(pitPlayer.level) + pitPlayer.level + prestigeInfo.getCloseBracket());
 
 		FileConfiguration playerData = APlayerData.getPlayerData(player);
 		playerData.set("level", pitPlayer.level);
 		playerData.set("xp", pitPlayer.remainingXP);
 		playerData.set("prestige", pitPlayer.prestige);
 		APlayerData.savePlayerData(player);
+
+		String message = "%luckperms_prefix%";
+		if(pitPlayer.megastreak.isOnMega()) {
+			pitPlayer.prefix = pitPlayer.megastreak.getName() + " &7" + PlaceholderAPI.setPlaceholders(pitPlayer.player, message);
+		} else {
+			pitPlayer.prefix = PrestigeValues.getPlayerPrefix(pitPlayer.player) + PlaceholderAPI.setPlaceholders(pitPlayer.player, message);
+		}
 	}
 
 	public static void addGold(Player player, int amount) {
@@ -79,8 +86,8 @@ public class LevelManager {
 		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
 		PrestigeValues.PrestigeInfo prestigeInfo = PrestigeValues.getPrestigeInfo(pitPlayer.prestige);
 		if(pitPlayer.level < 120) return;
-		if(pitPlayer.goldGrinded < prestigeInfo.goldReq) return;
-		if(pitPlayer.playerKills < prestigeInfo.killReq) return;
+		if(pitPlayer.goldGrinded < prestigeInfo.goldReq / 10) return;
+//		if(pitPlayer.playerKills < prestigeInfo.killReq) return;
 
 		pitPlayer.prestige += 1;
 		pitPlayer.level = 1;
@@ -99,12 +106,19 @@ public class LevelManager {
 		playerData.set("xp", pitPlayer.remainingXP);
 		APlayerData.savePlayerData(player);
 
+		String message = "%luckperms_prefix%";
+		if(pitPlayer.megastreak.isOnMega()) {
+			pitPlayer.prefix = pitPlayer.megastreak.getName() + " &7" + PlaceholderAPI.setPlaceholders(pitPlayer.player, message);
+		} else {
+			pitPlayer.prefix = PrestigeValues.getPlayerPrefix(pitPlayer.player) + PlaceholderAPI.setPlaceholders(pitPlayer.player, message);
+		}
+
 
 		ASound.play(player, Sound.ENDERDRAGON_GROWL, 1, 1);
 		Misc.sendTitle(player, "&e&lPRESTIGE!", 40);
 		Misc.sendSubTitle(player, "&7You unlocked prestige &e" + AUtil.toRoman(pitPlayer.prestige), 40);
-		String message = ChatColor.translateAlternateColorCodes('&', "&e&lPRESTIGE! %luckperms_prefix%%player_name% &7unlocked prestige &e" + AUtil.toRoman(pitPlayer.prestige) + "&7, gg!");
-		Bukkit.broadcastMessage(PlaceholderAPI.setPlaceholders(player, message));
+		String message2 = ChatColor.translateAlternateColorCodes('&', "&e&lPRESTIGE! %luckperms_prefix%%player_name% &7unlocked prestige &e" + AUtil.toRoman(pitPlayer.prestige) + "&7, gg!");
+		Bukkit.broadcastMessage(PlaceholderAPI.setPlaceholders(player, message2));
 
 
 	}
@@ -114,7 +128,7 @@ public class LevelManager {
 
 		player.setLevel(pitPlayer.level);
 		float remaining = pitPlayer.remainingXP;
-		float total = PrestigeValues.getXPForLevel(pitPlayer.level);
+		float total = (PrestigeValues.getXPForLevel(pitPlayer.level) / 10);
 
 		player.setLevel(pitPlayer.level);
 		float xp = (total - remaining) /  total;

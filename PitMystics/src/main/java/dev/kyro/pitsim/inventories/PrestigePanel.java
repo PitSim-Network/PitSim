@@ -44,7 +44,8 @@ public class PrestigePanel extends AGUIPanel {
 		int slot = event.getSlot();
 		if(event.getClickedInventory().getHolder() == this) {
 			if(slot == 11) {
-				if(pitPlayer.level == 120 && pitPlayer.goldGrinded >= prestigeInfo.goldReq && pitPlayer.playerKills >= prestigeInfo.killReq) {
+//				if(pitPlayer.level == 120 && pitPlayer.goldGrinded >= prestigeInfo.goldReq && pitPlayer.playerKills >= prestigeInfo.killReq) {
+					if(pitPlayer.level == 120 && pitPlayer.goldGrinded >= prestigeInfo.goldReq / 10) {
 					if(pitPlayer.prestige == 50) {
 						AOutput.error(player, "&aYou are already the maximum prestige!");
 						player.playSound(player.getLocation(), Sound.VILLAGER_NO, 1 ,1);
@@ -75,7 +76,7 @@ public class PrestigePanel extends AGUIPanel {
 		} else {
 			prestigeMeta.setDisplayName(ChatColor.AQUA + "Prestige");
 			if(pitPlayer.prestige != 0) prestigeLore.add(ChatColor.translateAlternateColorCodes('&', "&7Current: &e" + AUtil.toRoman(pitPlayer.prestige)));
-			prestigeLore.add(ChatColor.translateAlternateColorCodes('&', "&7Required Level: [&e120&7]"));
+			prestigeLore.add(ChatColor.translateAlternateColorCodes('&', "&7Required Level: " + prestigeInfo.getOpenBracket() + "&b&l120" + prestigeInfo.getCloseBracket()));
 			DecimalFormat formatter = new DecimalFormat("#,###.#");
 			prestigeLore.add(ChatColor.translateAlternateColorCodes('&', "&7Grinded: &6" +
 					formatter.format(pitPlayer.goldGrinded) + "&7/&6" + formatter.format(prestigeInfo.goldReq) + "g"));
@@ -93,7 +94,8 @@ public class PrestigePanel extends AGUIPanel {
 			prestigeLore.add(ChatColor.translateAlternateColorCodes('&', "&7New prestige: &e" + AUtil.toRoman(pitPlayer.prestige + 1)));
 			if(pitPlayer.prestige != 0) prestigeLore.add(ChatColor.translateAlternateColorCodes('&', "&b+" + (int) (100 * nextPrestigeInfo.xpMultiplier) + "&b% &7needed xp!"));
 			prestigeLore.add("");
-			if(pitPlayer.level == 120 && pitPlayer.goldGrinded >= prestigeInfo.goldReq && pitPlayer.playerKills >= prestigeInfo.killReq) {
+//			if(pitPlayer.level == 120 && pitPlayer.goldGrinded >= prestigeInfo.goldReq && pitPlayer.playerKills >= prestigeInfo.killReq) {
+			if(pitPlayer.level == 120 && pitPlayer.goldGrinded >= prestigeInfo.goldReq / 10) {
 				prestigeLore.add(ChatColor.YELLOW + "Click to purchase!");
 			} else {
 				prestigeLore.add(ChatColor.RED + "Requirements not met!");
