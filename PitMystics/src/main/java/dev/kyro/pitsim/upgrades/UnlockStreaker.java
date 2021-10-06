@@ -28,9 +28,11 @@ public class UnlockStreaker extends RenownUpgrade {
 			lore.add("");
 			lore.add(ChatColor.YELLOW + "Streaker");
 			lore.add(ChatColor.translateAlternateColorCodes('&', "&7Upon reaching your &emegastreak&7,"));
-			lore.add(ChatColor.translateAlternateColorCodes('&', "&7gain &b+100 max XP &7if it took &f30 &7or"));
-			lore.add(ChatColor.translateAlternateColorCodes('&', "&7less seconds. Subtracts &b10 max"));
-			lore.add(ChatColor.translateAlternateColorCodes('&', "&bXP &7per additional &f10 &7seconds."));
+			lore.add(ChatColor.translateAlternateColorCodes('&', "&7gain &b+100% XP &7if it took &f30 &7or"));
+			lore.add(ChatColor.translateAlternateColorCodes('&', "&7less seconds. Subtracts &b10% XP"));
+			lore.add(ChatColor.translateAlternateColorCodes('&', "&7per additional &f10 &7seconds."));
+		    lore.add(ChatColor.translateAlternateColorCodes('&', "&7Passively gain &b+80 max XP"));
+
 			meta.setLore(UpgradeManager.loreBuilder(this, player, lore, isCustomPanel));
 			item.setItemMeta(meta);
 			return item;

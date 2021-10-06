@@ -20,7 +20,7 @@ import java.util.*;
 
 public class Streaker extends PitPerk {
 	public static Map<Player, Integer> playerTimes = new HashMap<>();
-	public Map<Player, Integer> xpReward = new HashMap<>();
+	public Map<Player, Double> xpReward = new HashMap<>();
 
 	public static Streaker INSTANCE;
 
@@ -36,32 +36,33 @@ public class Streaker extends PitPerk {
 		playerTimes.remove(killEvent.dead);
 
 		if(!playerHasUpgrade(killEvent.killer)) return;
+		killEvent.xpCap += 80;
 
-		if(xpReward.containsKey(killEvent.killer)) killEvent.xpCap += xpReward.get(killEvent.killer);
+		if(xpReward.containsKey(killEvent.killer)) killEvent.xpMultipliers.add(xpReward.get(killEvent.killer));
 
 		PitPlayer pitPlayer = PitPlayer.getPitPlayer(killEvent.killer);
 
 		if(pitPlayer.megastreak.isOnMega()) {
 			if(playerTimes.containsKey(killEvent.killer)) {
 				Player player = killEvent.killer;
-				int xp = 0;
+				double xp = 0;
 
-				if(playerTimes.get(player) > 120) xp  = 10;
-				if(playerTimes.get(player) <= 120) xp  = 10;
-				if(playerTimes.get(player) <= 110) xp  = 20;
-				if(playerTimes.get(player) <= 100) xp  = 30;
-				if(playerTimes.get(player) <= 90) xp  = 40;
-				if(playerTimes.get(player) <= 80) xp  = 50;
-				if(playerTimes.get(player) <= 70) xp  = 60;
-				if(playerTimes.get(player) <= 60) xp  = 70;
-				if(playerTimes.get(player) <= 50) xp  = 80;
-				if(playerTimes.get(player) <= 40) xp  = 90;
-				if(playerTimes.get(player) <= 30) xp  = 100;
+				if(playerTimes.get(player) > 120) xp  = 1;
+				if(playerTimes.get(player) <= 120) xp  = 1.1;
+				if(playerTimes.get(player) <= 110) xp  = 1.2;
+				if(playerTimes.get(player) <= 100) xp  = 1.3;
+				if(playerTimes.get(player) <= 90) xp  = 1.4;
+				if(playerTimes.get(player) <= 80) xp  = 1.5;
+				if(playerTimes.get(player) <= 70) xp  = 1.6;
+				if(playerTimes.get(player) <= 60) xp  = 1.7;
+				if(playerTimes.get(player) <= 50) xp  = 1.8;
+				if(playerTimes.get(player) <= 40) xp  = 1.9;
+				if(playerTimes.get(player) <= 30) xp  = 2;
 
 				 xpReward.put(player, xp);
 
 				AOutput.send(player, "&b&lSTREAKER! &7You hit your megastreak in &e" +
-						playerTimes.get(player) + " seconds&7. Gained &b+" + xp + " max XP &7for the rest of the streak.");
+						playerTimes.get(player) + " seconds&7. Gained &b+" + (xp - 1) * 100 + "% XP &7for the rest of the streak.");
 				ASound.play(player, Sound.BURP, 2, 1.2F);
 				playerTimes.remove(player);
 				return;
@@ -108,7 +109,7 @@ public class Streaker extends PitPerk {
 
 	@Override
 	public List<String> getDescription() {
-		return new ALoreBuilder("&7Upon reaching your &emegastreak&7,", "&7gain &b+100 max XP &7if it took &f30 &7or",
-				"&7less seconds. Subtracts &b10 max", "&bXP &7per additional &f10 &7seconds.").getLore();
+		return new ALoreBuilder("&7Upon reaching your &emegastreak&7,", "&7gain &b+100% XP &7if it took &f30 &7or",
+				"&7less seconds. Subtracts &b10% XP", "&7per additional &f10 &7seconds.", "&7Passively gain &b+80 max XP").getLore();
 	}
 }
