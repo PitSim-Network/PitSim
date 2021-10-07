@@ -62,7 +62,7 @@ public class Streaker extends PitPerk {
 				 xpReward.put(player, xp);
 
 				AOutput.send(player, "&b&lSTREAKER! &7You hit your megastreak in &e" +
-						playerTimes.get(player) + " seconds&7. Gained &b+" + (xp - 1) * 100 + "% XP &7for the rest of the streak.");
+						playerTimes.get(player) + " seconds&7. Gained &b+" + Math.ceil((xp - 1) * 100) + "% XP &7for the rest of the streak.");
 				ASound.play(player, Sound.BURP, 2, 1.2F);
 				playerTimes.remove(player);
 				return;

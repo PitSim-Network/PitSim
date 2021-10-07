@@ -46,6 +46,7 @@ public class PitPlayer {
 	public int latestKillAnnouncement = 0;
 
 	public Megastreak megastreak;
+	public int moonBonus = 0;
 	public long uberReset = 0;
 	public int dailyUbersLeft = 5;
 
@@ -117,6 +118,7 @@ public class PitPlayer {
 			disabledPlayerChat = playerData.getBoolean("disabledplayerchat");
 			uberReset = playerData.getLong("ubercooldown");
 			dailyUbersLeft = playerData.getInt("ubersleft");
+			moonBonus = playerData.getInt("moonbonus");
 
 			String streak = playerData.getString("megastreak");
 
@@ -125,6 +127,7 @@ public class PitPlayer {
 			if(Objects.equals(streak, "Highlander")) this.megastreak = new Highlander(this);
 			if(Objects.equals(streak, "Overdrive")) this.megastreak = new Overdrive(this);
 			if(Objects.equals(streak, "Uberstreak")) this.megastreak = new Uberstreak(this);
+			if(Objects.equals(streak, "To the Moon")) this.megastreak = new ToTheMoon(this);
 		}
 	}
 

@@ -130,6 +130,7 @@ public class CombatManager implements Listener {
    @EventHandler
    public static void onDeath(KillEvent event) {
        taggedPlayers.remove(event.dead.getUniqueId());
+       PitPlayer.getPitPlayer(event.dead).lastHitUUID = null;
    }
 
    @EventHandler

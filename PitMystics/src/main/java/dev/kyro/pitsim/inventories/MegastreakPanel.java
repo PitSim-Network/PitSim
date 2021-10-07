@@ -103,7 +103,15 @@ public class MegastreakPanel extends AGUIPanel {
                             pitPlayer.megastreak = new Uberstreak(pitPlayer);
                             perkGUI.megaWrapUp();
                         }
+                    } else if(megastreak.getClass() == ToTheMoon.class) {
+                    if(pitPlayer.prestige < 33) level = true;
+                    if(pitPlayer.megastreak.getClass() == ToTheMoon.class) has = true;
+                    if(!has && !level && !uberCd) {
+                        pitPlayer.megastreak.stop();
+                        pitPlayer.megastreak = new ToTheMoon(pitPlayer);
+                        perkGUI.megaWrapUp();
                     }
+                }
                     if(!level && !has && !uberCd) {
                         openPanel(perkGUI.getHomePanel());
                         player.playSound(player.getLocation(), Sound.NOTE_PLING, 1F, 2F);

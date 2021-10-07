@@ -383,7 +383,7 @@ public class Juggernaut extends PitEvent {
         player.getInventory().setItem(swordSlot, updatedItem3);
         this.swordSlot = swordSlot;
         this.sword = updatedItem3;
-        if(!Misc.isAirOrNull(slotItem))AUtil.giveItemSafely(player, slotItem);
+        if(!Misc.isAirOrNull(slotItem))AUtil.giveItemSafely(player, slotItem, true);
 
 	    ItemStack freshPants = FreshCommand.getFreshItem("orange");
 	    ItemStack updatedPants1 = EnchantManager.addEnchant(freshPants, EnchantManager.getEnchant("soli"), 5, false);

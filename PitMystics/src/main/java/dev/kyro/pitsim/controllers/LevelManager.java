@@ -96,6 +96,7 @@ public class LevelManager {
 		pitPlayer.playerKills = 0;
 		pitPlayer.remainingXP = (int) (PrestigeValues.getXPForLevel(1) * prestigeInfo.xpMultiplier);
 		pitPlayer.renown += prestigeInfo.renownReward;
+		pitPlayer.moonBonus = 0;
 
 		FileConfiguration playerData = APlayerData.getPlayerData(player);
 		playerData.set("goldgrinded", pitPlayer.goldGrinded);
@@ -104,6 +105,7 @@ public class LevelManager {
 		playerData.set("renown", pitPlayer.renown);
 		playerData.set("playerkills", pitPlayer.playerKills);
 		playerData.set("xp", pitPlayer.remainingXP);
+		if(pitPlayer.prestige >= 33) playerData.set("moonbonus", pitPlayer.moonBonus);
 		APlayerData.savePlayerData(player);
 
 		String message = "%luckperms_prefix%";

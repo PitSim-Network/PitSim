@@ -280,6 +280,7 @@ public class PitSim extends JavaPlugin {
 		PerkManager.registerMegastreak(new Uberstreak(null));
 		PerkManager.registerMegastreak(new NoMegastreak(null));
 		PerkManager.registerMegastreak(new Beastmode(null));
+		PerkManager.registerMegastreak(new ToTheMoon(null));
 	}
 
 	private void registerPitEvents() {
@@ -355,6 +356,7 @@ public class PitSim extends JavaPlugin {
 		UpgradeManager.registerUpgrade(new LifeInsurance());
 		UpgradeManager.registerUpgrade(new TaxEvasion());
 		UpgradeManager.registerUpgrade(new DoubleDeath());
+		UpgradeManager.registerUpgrade(new XPComplex());
 
 	}
 

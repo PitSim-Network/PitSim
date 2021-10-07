@@ -40,7 +40,7 @@ public class RenownShopPanel extends AGUIPanel {
 
     @Override
     public int getRows() {
-        return 5;
+        return 6;
     }
 
     @Override
@@ -49,7 +49,7 @@ public class RenownShopPanel extends AGUIPanel {
 
         if(event.getClickedInventory().getHolder() == this) {
 
-            if(slot == 40) {
+            if(slot == 49) {
                 PrestigeGUI prestigeGUI = new PrestigeGUI(player);
                 prestigeGUI.open();
             }
@@ -133,7 +133,7 @@ public class RenownShopPanel extends AGUIPanel {
         backmeta.setLore(backlore);
         back.setItemMeta(backmeta);
 
-        getInventory().setItem(40, back);
+        getInventory().setItem(49, back);
     }
 
     @Override

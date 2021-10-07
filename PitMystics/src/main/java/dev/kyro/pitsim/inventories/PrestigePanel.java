@@ -71,10 +71,10 @@ public class PrestigePanel extends AGUIPanel {
 		ItemStack prestige = new ItemStack(Material.DIAMOND);
 		ItemMeta prestigeMeta = prestige.getItemMeta();
 		List<String> prestigeLore = new ArrayList<>();
+		prestigeMeta.setDisplayName(ChatColor.AQUA + "Prestige");
 		if(pitPlayer.prestige == 50) {
 			prestigeLore.add(ChatColor.GREEN + "You've reached the maximum prestige, GG");
 		} else {
-			prestigeMeta.setDisplayName(ChatColor.AQUA + "Prestige");
 			if(pitPlayer.prestige != 0) prestigeLore.add(ChatColor.translateAlternateColorCodes('&', "&7Current: &e" + AUtil.toRoman(pitPlayer.prestige)));
 			prestigeLore.add(ChatColor.translateAlternateColorCodes('&', "&7Required Level: " + prestigeInfo.getOpenBracket() + "&b&l120" + prestigeInfo.getCloseBracket()));
 			DecimalFormat formatter = new DecimalFormat("#,###.#");
