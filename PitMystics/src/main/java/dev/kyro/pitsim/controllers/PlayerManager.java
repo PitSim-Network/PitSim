@@ -163,6 +163,7 @@ public class PlayerManager implements Listener {
 	public void onAttack(AttackEvent.Apply attackEvent) {
 
 		Non defendingNon = NonManager.getNon(attackEvent.defender);
+//		Arch chest
 		if(defendingNon == null) attackEvent.multiplier.add(0.9);
 
 //		ItemStack itemStack = attackEvent.attacker.getItemInHand();

@@ -6,6 +6,7 @@ import dev.kyro.pitsim.controllers.objects.PitEnchant;
 import dev.kyro.pitsim.enums.ApplyType;
 import dev.kyro.pitsim.events.AttackEvent;
 import dev.kyro.pitsim.misc.Misc;
+import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
 
 import java.util.List;
@@ -25,19 +26,19 @@ public class FractionalReserve extends PitEnchant {
 		int enchantLvl = attackEvent.getDefenderEnchantLevel(this);
 		if(enchantLvl == 0) return;
 
-		int reduction = (int) Math.min(PitSim.VAULT.getBalance(attackEvent.defender) / 10000, getMaxDamageReduction(enchantLvl));
-		attackEvent.multiplier.add(Misc.getReductionMultiplier(reduction));
+		int reduction = Math.max((int) Math.log10(PitSim.VAULT.getBalance(attackEvent.defender)) + 1, 0);
+		Bukkit.broadcastMessage(reduction + "");
+		attackEvent.multiplier.add(Misc.getReductionMultiplier(reduction * getReduction(enchantLvl)));
 	}
 
 	@Override
 	public List<String> getDescription(int enchantLvl) {
 
-		return new ALoreBuilder("&7Receive &9-1% damage per",
-				"&610,000g &7you have (&9-" + getMaxDamageReduction(enchantLvl) + "%", "&7max)").getLore();
+		return new ALoreBuilder("&7Receive &9-"+ getReduction(enchantLvl) + "% &7damage per",
+				"&6digit &7in your gold").getLore();
 	}
 
-	public double getMaxDamageReduction(int enchantLvl) {
-
-		return (int) Math.max(Math.floor(Math.pow(enchantLvl, 1.65) * 3) + 12, 0);
+	public static int getReduction(int enchantLvl) {
+		return enchantLvl + 3;
 	}
 }
