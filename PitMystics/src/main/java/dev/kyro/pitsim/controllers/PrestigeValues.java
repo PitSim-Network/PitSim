@@ -17,7 +17,7 @@ public class PrestigeValues {
 		public double goldReq;
 		public double killReq;
 		public int renownReward;
-		private final String bracketColor;
+		public final String bracketColor;
 
 		public String getOpenBracket() {
 			if(prestige == 50) return "&f|";

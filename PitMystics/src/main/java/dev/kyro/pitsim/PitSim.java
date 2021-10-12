@@ -126,6 +126,8 @@ public class PitSim extends JavaPlugin {
 		AHook.registerPlaceholder(new EventNamePlaceholder());
 		AHook.registerPlaceholder(new EventInfoPlaceholder());
 		AHook.registerPlaceholder(new EventInfoPlaceholder2());
+		AHook.registerPlaceholder(new PrestigeLevelPlaceholder());
+		AHook.registerPlaceholder(new PrestigePlaceholder());
 
 
 		loadConfig();
