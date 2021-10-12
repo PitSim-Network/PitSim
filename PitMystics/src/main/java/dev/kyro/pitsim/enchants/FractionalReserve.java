@@ -27,7 +27,6 @@ public class FractionalReserve extends PitEnchant {
 		if(enchantLvl == 0) return;
 
 		int reduction = Math.max((int) Math.log10(PitSim.VAULT.getBalance(attackEvent.defender)) + 1, 0);
-		Bukkit.broadcastMessage(reduction + "");
 		attackEvent.multiplier.add(Misc.getReductionMultiplier(reduction * getReduction(enchantLvl)));
 	}
 
