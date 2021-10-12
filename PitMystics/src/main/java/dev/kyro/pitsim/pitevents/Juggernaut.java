@@ -195,12 +195,12 @@ public class Juggernaut extends PitEvent {
 		    Cooldown cooldown = getCooldown(juggernaut, 40);
 		    if(cooldown.isOnCooldown()) return; else cooldown.reset();
 
-		    Misc.sendTitle(event.getPlayer(), "&cYou cannot leave mid!", 40);
+		    Misc.sendTitle(event.getPlayer(), "&cYou cannot leave mid!", 20);
 		    ASound.play(event.getPlayer(), Sound.NOTE_PLING, 2, 0.5F);
 
 		    Vector dirVector = MapManager.getMid().toVector().subtract(event.getPlayer().getLocation().toVector()).setY(0);
-		    Vector pullVector = dirVector.clone().normalize().setY(0.5).multiply(2.5).add(dirVector.clone().multiply(0.03));
-		    event.getPlayer().setVelocity(pullVector.multiply(0.9));
+		    Vector pullVector = dirVector.clone().normalize().setY(0.2).multiply(2.5).add(dirVector.clone().multiply(0.03));
+		    event.getPlayer().setVelocity(pullVector.multiply(0.5));
 	    }
     }
 
@@ -369,7 +369,7 @@ public class Juggernaut extends PitEvent {
 
         juggernaut = player;
         ItemStack freshSword = FreshCommand.getFreshItem("sword");
-        ItemStack updatedItem1 = EnchantManager.addEnchant(freshSword, EnchantManager.getEnchant("bill"), 10, false);
+        ItemStack updatedItem1 = EnchantManager.addEnchant(freshSword, EnchantManager.getEnchant("bill"), 5, false);
 	    ItemStack updatedItem2 = EnchantManager.addEnchant(updatedItem1, EnchantManager.getEnchant("perun"), 5, false);
 	    ItemStack updatedItem3 = EnchantManager.addEnchant(updatedItem2, EnchantManager.getEnchant("stomp"), 5, false);
 
@@ -386,7 +386,7 @@ public class Juggernaut extends PitEvent {
         if(!Misc.isAirOrNull(slotItem))AUtil.giveItemSafely(player, slotItem);
 
 	    ItemStack freshPants = FreshCommand.getFreshItem("orange");
-	    ItemStack updatedPants1 = EnchantManager.addEnchant(freshPants, EnchantManager.getEnchant("soli"), 5, false);
+	    ItemStack updatedPants1 = EnchantManager.addEnchant(freshPants, EnchantManager.getEnchant("prot"), 10, false);
 	    ItemStack updatedPants2 = EnchantManager.addEnchant(updatedPants1, EnchantManager.getEnchant("cf"), 3, false);
 	    ItemStack updatedPants3 = EnchantManager.addEnchant(updatedPants2, EnchantManager.getEnchant("mirror"), 3, false);
 
@@ -482,7 +482,7 @@ public class Juggernaut extends PitEvent {
 			if(juggernaut == player) {
 				if(!juggernautKilled) {
 					if(renown.containsKey(player)) renown.put(player, renown.get(player) + 1);
-					else renown.put(player, 1);
+					else renown.put(player, 3);
 				}
 			}
 			if(juggernaut != player) {
@@ -507,6 +507,7 @@ public class Juggernaut extends PitEvent {
 				APlayerData.savePlayerData(player);
 			}
 		}
+
 
 		if(juggernautKilled) Bukkit.broadcastMessage(ChatColor.translateAlternateColorCodes('&', "&6&lJuggernaut Status: &c&lDEAD"));
 		else Bukkit.broadcastMessage(ChatColor.translateAlternateColorCodes('&', "&6&lJuggernaut status: &a&lALIVE &7(&c" + (int) juggernaut.getHealth() / 2+ "&c\u2764&7)"));
