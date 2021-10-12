@@ -14,6 +14,7 @@ public class RenownShopGUI extends AGUI {
 	public static ShardHunterPanel shardHunterPanel;
 	public static WithercraftPanel withercraftPanel;
 	public static ItemClearPanel itemClearPanel;
+	public static HelmetryPanel helmetryPanel;
 	public static Map<Player, RenownUpgrade> purchaseConfirmations = new HashMap<>();
 
 	public RenownShopGUI(Player player) {
@@ -24,6 +25,7 @@ public class RenownShopGUI extends AGUI {
 		shardHunterPanel = new ShardHunterPanel(this);
 		withercraftPanel = new WithercraftPanel(this);
 		itemClearPanel = new ItemClearPanel(this);
+		helmetryPanel = new HelmetryPanel(this);
 		setHomePanel(renownShopPanel);
 	}
 
