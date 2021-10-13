@@ -76,11 +76,15 @@ public class GoldenHelmet {
 		item.setItemMeta(meta);
 
 		if(getInventorySlot() == -2) {
+			item.setAmount(1);
 			owner.getInventory().setHelmet(item);
 			return;
 		}
 
-		owner.getInventory().setItem(getInventorySlot(), item);
+		NBTItem nbtItem = new NBTItem(item);
+		nbtItem.setInteger(NBTTag.GHELMET_GOLD.getRef(), gold);
+
+		owner.getInventory().setItem(getInventorySlot(), nbtItem.getItem());
 
 	}
 
