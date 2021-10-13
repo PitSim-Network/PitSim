@@ -28,8 +28,7 @@ public class HelmetGUI extends AGUI {
 
 		depositPlayers.remove(player);
 		depositPlayers.put(player, helmet);
-		AOutput.send(player, "&a&lPlease type your desired name for the item that you were holding");
-		AOutput.send(player, "&7&o(You may include color codes using the & symbol)");
+		AOutput.send(player, "&a&lPlease the amount of gold you wish to deposit into the helmet.");
 
 		new BukkitRunnable() {
 			@Override

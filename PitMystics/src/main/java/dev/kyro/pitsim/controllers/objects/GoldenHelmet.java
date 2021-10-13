@@ -86,8 +86,8 @@ public class GoldenHelmet {
 
 	public int getInventorySlot() {
 		for(int i = 0; i < owner.getInventory().getSize(); i++) {
+			if(Misc.isAirOrNull(owner.getInventory().getItem(i))) continue;
 			if(owner.getInventory().getItem(i).getType() == Material.GOLD_HELMET) {
-				 if(Misc.isAirOrNull(owner.getInventory().getItem(i))) continue;
 				NBTItem helmetItem = new NBTItem(item);
 				NBTItem playerItem = new NBTItem(owner.getInventory().getItem(i));
 

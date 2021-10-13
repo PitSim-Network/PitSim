@@ -2,13 +2,14 @@ package dev.kyro.pitsim.controllers;
 
 import de.tr7zw.nbtapi.NBTItem;
 import dev.kyro.arcticapi.misc.AOutput;
+import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.controllers.objects.GoldenHelmet;
 import dev.kyro.pitsim.enums.NBTTag;
 import dev.kyro.pitsim.inventories.HelmetGUI;
-import dev.kyro.pitsim.misc.ItemRename;
 import dev.kyro.pitsim.misc.Misc;
 import org.bukkit.Material;
 import org.bukkit.Sound;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
@@ -64,25 +65,41 @@ public class HelmetListeners implements Listener {
 	public void onChat(AsyncPlayerChatEvent event) {
 		if(HelmetGUI.depositPlayers.containsKey(event.getPlayer())){
 			event.setCancelled(true);
-			ItemStack helmet = ItemRename.renamePlayers.get(event.getPlayer());
+			ItemStack helmet = HelmetGUI.depositPlayers.get(event.getPlayer());
 
 			if(Misc.isAirOrNull(helmet)) {
-				ItemRename.renamePlayers.remove(event.getPlayer());
+				HelmetGUI.depositPlayers.remove(event.getPlayer());
 				return;
 			}
+
+			int gold = 0;
 
 			try {
-				Integer.parseInt(event.getMessage());
+				gold = Integer.parseInt(event.getMessage());
 			} catch(Exception e) {
 				AOutput.send(event.getPlayer(), "&cThat is not a valid number!");
+				HelmetGUI.depositPlayers.remove(event.getPlayer());
 				return;
 			}
 
-			GoldenHelmet goldenHelmet = GoldenHelmet.getHelmet(helmet, event.getPlayer());
-			goldenHelmet.depositGold();
+			double finalBalance = PitSim.VAULT.getBalance((Player) event.getPlayer()) - gold;
+			if(finalBalance < 0) {
+				AOutput.send(event.getPlayer(), "&cYou do not have enough gold!");
+				HelmetGUI.depositPlayers.remove(event.getPlayer());
+				return;
+			}
+			PitSim.VAULT.withdrawPlayer((Player) event.getPlayer(), gold);
 
-			AOutput.send(event.getPlayer(), "&aSuccessfully renamed item!");
-			ItemRename.renamePlayers.remove(event.getPlayer());
+			GoldenHelmet goldenHelmet = GoldenHelmet.getHelmet(helmet, event.getPlayer());
+			if(goldenHelmet.getInventorySlot() == -1) {
+				AOutput.send(event.getPlayer(), "&cUnable to find helmet!");
+				HelmetGUI.depositPlayers.remove(event.getPlayer());
+				return;
+			}
+			goldenHelmet.depositGold(gold);
+
+			AOutput.send(event.getPlayer(), "&aSuccessfully deposited gold!");
+			HelmetGUI.depositPlayers.remove(event.getPlayer());
 		}
 	}
 }
