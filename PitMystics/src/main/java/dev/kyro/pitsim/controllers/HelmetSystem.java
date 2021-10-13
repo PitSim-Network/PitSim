@@ -8,18 +8,20 @@ import java.util.Map;
 public class HelmetSystem {
 	public static int increment = 200_000;
 	public enum Passive {
-		XP_BOOST(3, 3, 10, (short) 12),
-		GOLD_BOOST(4, 4, 25, (short) 14),
-		DAMAGE(10, 5, 10, (short) 1),
-		DAMAGE_REDUCTION(10, 10, 10, (short) 6),
-		SHARD_CHANCE(7, 35, 10, (short) 10);
+		XP_BOOST("&bXP Boost", 3, 3, 10, (short) 12),
+		GOLD_BOOST("&6Gold Boost", 4, 4, 25, (short) 14),
+		DAMAGE("&c+1% Damage Dealt",10, 5, 10, (short) 1),
+		DAMAGE_REDUCTION("&9-1% Damage Received",10, 10, 10, (short) 6),
+		SHARD_CHANCE("&a+0.1% Shard Chance", 7, 35, 10, (short) 10);
 
+		public String refName;
 		public int everyX;
 		public int level1Unlock;
 		public int maxStacks;
 		public short data;
 
-		Passive(int everyX, int level1Unlock, int maxStacks, short data) {
+		Passive(String refName, int everyX, int level1Unlock, int maxStacks, short data) {
+			this.refName = refName;
 			this.everyX = everyX;
 			this.level1Unlock = level1Unlock;
 			this.maxStacks = maxStacks;

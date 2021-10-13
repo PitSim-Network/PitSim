@@ -1,5 +1,7 @@
 package dev.kyro.pitsim.inventories;
 
+import dev.kyro.arcticapi.builders.AItemStackBuilder;
+import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.arcticapi.data.APlayerData;
 import dev.kyro.arcticapi.gui.AGUI;
 import dev.kyro.arcticapi.gui.AGUIPanel;
@@ -188,12 +190,59 @@ public class HelmetPanel extends AGUIPanel {
         List<HelmetSystem.Passive> passives;
         if(HelmetSystem.getLevel(goldenHelmet.gold) == 1) passives = HelmetSystem.getLevelData(level + 1);
         else passives = HelmetSystem.getLevelData(level);
-        if(passives.size() > 1) getInventory().setItem(column + 18, new ItemStack(Material.BEACON));
+
+        DecimalFormat formatter = new DecimalFormat("#,###.#");
+        ALoreBuilder loreBuilder = new ALoreBuilder("&7Unlocked at: &6" + formatter.format(HelmetSystem.getTotalGoldAtLevel(level)), "", "&7Passives:");
+
+        AItemStackBuilder builder = new AItemStackBuilder(Material.BEACON)
+                .setLore(loreBuilder);
+
+
+
+        for(HelmetSystem.Passive passive : passives) {
+            loreBuilder.addLore(passive.refName);
+        }
+        if(passives.size() == 0) loreBuilder.addLore("&cNONE");
+        loreBuilder.addLore("");
+        if(HelmetSystem.getLevel(goldenHelmet.gold) < level) {
+            loreBuilder.addLore(ColumnStatus.LOCKED.color + "Locked!");
+            builder.setName(ColumnStatus.LOCKED.color + "Level " + level);
+        } else if(HelmetSystem.getLevel(goldenHelmet.gold) > 1 && HelmetSystem.getTotalGoldAtLevel(level - 1) <= goldenHelmet.gold) {
+            loreBuilder.addLore(ColumnStatus.UNLOCKING.color + "&aUnlocked!");
+            builder.setName(ColumnStatus.UNLOCKING.color + "Level " + level);
+        } else {
+            loreBuilder.addLore(ColumnStatus.UNLOCKED.color + "&aUnlocked!");
+            builder.setName(ColumnStatus.UNLOCKED.color + "Level " + level);
+        }
+
+
+        if(passives.size() > 1) {
+
+
+
+            getInventory().setItem(column + 18, builder.getItemStack());
+        }
         else if(passives.size() == 1){
             columnList.get(1).setType(Material.INK_SACK);
             columnList.get(1).setDurability(passives.get(0).data);
-            getInventory().setItem(column + 18, columnList.get(1));
-        } else getInventory().setItem(column + 18, columnList.get(1));
+            getInventory().setItem(column + 18, builder.getItemStack());
+        } else getInventory().setItem(column + 18, builder.getItemStack());
+
+    }
+
+    enum ColumnStatus {
+        UNLOCKED(ChatColor.GREEN),
+        UNLOCKING(ChatColor.GOLD),
+        LOCKED(ChatColor.RED);
+
+        public ChatColor color;
+        ColumnStatus(ChatColor color) {
+            this.color = color;
+        }
+    }
+
+    public void setItemLore(ItemStack item) {
+
 
     }
 
