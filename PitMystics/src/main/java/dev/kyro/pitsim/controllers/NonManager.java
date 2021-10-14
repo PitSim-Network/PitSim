@@ -22,14 +22,16 @@ public class NonManager implements Listener {
 			public void run() {
 //				if(true) return;
 				if(botIGNs.isEmpty()) botIGNs.add("KyroKrypt");
-				if(nons.size() >= getMaxNons()) return;
-				Non non = new Non(botIGNs.get((int) (Math.random() * botIGNs.size())));
-				new BukkitRunnable() {
-					@Override
-					public void run() {
-						non.remove();
-					}
-				}.runTaskLater(PitSim.INSTANCE, (long) (20 * 60));
+				for(int i = 0; i < 3; i++) {
+					if(nons.size() >= getMaxNons()) return;
+					Non non = new Non(botIGNs.get((int) (Math.random() * botIGNs.size())));
+					new BukkitRunnable() {
+						@Override
+						public void run() {
+							non.remove();
+						}
+					}.runTaskLater(PitSim.INSTANCE, (long) (20 * 60 * (Math.random() * 10 + 5)));
+				}
 			}
 		}.runTaskTimer(PitSim.INSTANCE, 40L, 20);
 
@@ -49,7 +51,7 @@ public class NonManager implements Listener {
 			double distance = mid.distance(onlinePlayer.getLocation());
 			if(distance < 20) playersNearMid++;
 		}
-		return playersNearMid * 5 + 10;
+		return playersNearMid * 3 + 15;
 	}
 
 	public static void updateNons(List<String> botIGNs) {
