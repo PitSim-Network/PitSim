@@ -72,10 +72,23 @@ public class HelmetPanel extends AGUIPanel {
         helmetDisplay.setItemMeta(helmetMeta);
         getInventory().setItem(1, helmetDisplay);
 
-        ItemStack ability = new ItemStack(Material.EYE_OF_ENDER);
-        if(goldenHelmet.ability != null) ability.setType(goldenHelmet.ability.getDisplayItem().getType());
+        AItemStackBuilder abilityBuilder = new AItemStackBuilder(Material.EYE_OF_ENDER);
+        abilityBuilder.setName("&eAbility");
+        ALoreBuilder abilityLoreBuilder = new ALoreBuilder();
+        if(goldenHelmet.ability != null) {
+            abilityLoreBuilder.addLore("&7Selected: &9" + goldenHelmet.ability.name);
+            abilityBuilder.getItemStack().setType(goldenHelmet.ability.getDisplayItem().getType());
+            abilityLoreBuilder.addLore(goldenHelmet.ability.getDescription());
+            abilityLoreBuilder.addLore("", "&eClick to chance ability!");
+        }
+        else {
+            abilityLoreBuilder.addLore("&7Selected: &cNONE", "&7Abilities let you spend the", "&6gold &7in your helmet on", "&7various buffs.");
+            abilityLoreBuilder.addLore("", "&eClick to choose an ability!");
+        }
 
-        getInventory().setItem(4, ability);
+
+        abilityBuilder.setLore(abilityLoreBuilder);
+        getInventory().setItem(4, abilityBuilder.getItemStack());
 
         ItemStack deposit = new ItemStack(Material.PAPER);
         ItemMeta depositMeta = deposit.getItemMeta();

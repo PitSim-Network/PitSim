@@ -183,7 +183,7 @@ public class HelmetListeners implements Listener {
 		assert goldenHelmet != null;
 
 		if(goldenHelmet.ability == null) {
-			AOutput.error(player, "&6&lGOLDEN HELMET! &7No ability selected!");
+			AOutput.error(player, "&6&lGOLDEN HELMET! &cNo ability selected!");
 			event.getPlayer().playSound(event.getPlayer().getLocation(), Sound.VILLAGER_NO, 1F, 1F);
 			return;
 		}

@@ -1,12 +1,12 @@
 package dev.kyro.pitsim.controllers.objects;
 
 import dev.kyro.pitsim.PitSim;
+import dev.kyro.pitsim.controllers.Cooldown;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 import org.bukkit.inventory.ItemStack;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 public abstract class HelmetAbility implements Listener {
 
@@ -46,6 +46,21 @@ public abstract class HelmetAbility implements Listener {
 
         helmetAbilities.add(helmetAbility);
         PitSim.INSTANCE.getServer().getPluginManager().registerEvents(helmetAbility, PitSim.INSTANCE);
+    }
+
+    public Map<UUID, Cooldown> cooldowns = new HashMap<>();
+    public Cooldown getCooldown(Player player, int time) {
+
+        if(cooldowns.containsKey(player.getUniqueId())) {
+            Cooldown cooldown = cooldowns.get(player.getUniqueId());
+            cooldown.initialTime = time;
+            return cooldown;
+        }
+
+        Cooldown cooldown = new Cooldown(time);
+        cooldown.ticksLeft = 0;
+        cooldowns.put(player.getUniqueId(), cooldown);
+        return cooldown;
     }
 
 }

@@ -61,6 +61,7 @@ public class HelmetAbilityPanel extends AGUIPanel {
             if(slot == 9) {
                 goldenHelmet.setAbility(null);
                 player.playSound(player.getLocation(), Sound.NOTE_PLING, 1F, 2F);
+                openPreviousGUI();
             }
 
             for(HelmetAbility helmetAbility : HelmetAbility.helmetAbilities) {

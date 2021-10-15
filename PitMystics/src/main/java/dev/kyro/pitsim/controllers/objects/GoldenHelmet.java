@@ -1,13 +1,15 @@
 package dev.kyro.pitsim.controllers.objects;
 
 import de.tr7zw.nbtapi.NBTItem;
+import dev.kyro.arcticapi.builders.ALoreBuilder;
+import dev.kyro.arcticapi.misc.AOutput;
+import dev.kyro.arcticapi.misc.ASound;
 import dev.kyro.pitsim.controllers.HelmetSystem;
 import dev.kyro.pitsim.enums.NBTTag;
 import dev.kyro.pitsim.helmetabilities.Leap;
 import dev.kyro.pitsim.misc.Misc;
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.Material;
+import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -20,6 +22,7 @@ public class GoldenHelmet {
 
 	public static List<GoldenHelmet> helmets = new ArrayList<>();
 	public static GoldenHelmet INSTANCE;
+	DecimalFormat formatter = new DecimalFormat("#,###.#");
 
 	public Player owner;
 	public ItemStack item;
@@ -70,35 +73,31 @@ public class GoldenHelmet {
 
 	public void setLore() {
 		if(getInventorySlot(owner) == -1) return;
-		List<String> lore = new ArrayList<>();
-		lore.add(ChatColor.GRAY + "Selected ability:");
-		if(ability != null) lore.add(ChatColor.BLUE + ability.name);
-		else lore.add(ChatColor.RED + "NONE");
-		lore.add("");
-		lore.add(ChatColor.GRAY + "Passives:");
+		ALoreBuilder loreBuilder = new ALoreBuilder();
+		loreBuilder.addLore("");
+		if(ability != null) {
+			loreBuilder.addLore("&7Ability: &9" + ability.name);
+			loreBuilder.addLore(ability.getDescription());
+		}
+		else loreBuilder.addLore("&7Ability: &cNONE");
+		loreBuilder.addLore("", "&7Passives:");
 		int passives = 0;
 		for(HelmetSystem.Passive passive : HelmetSystem.Passive.values()) {
 			int level = HelmetSystem.getLevel(gold);
 			int passiveLevel = HelmetSystem.getTotalStacks(passive,level - 1);
-			Bukkit.broadcastMessage(String.valueOf(level - 1));
-
 
 			if(passiveLevel == 0) continue;
 			passives++;
 
 			if(passive.name().equals("DAMAGE_REDUCTION")) {
-				lore.add(ChatColor.translateAlternateColorCodes('&',passive.color + "-" + passiveLevel * passive.baseUnit + "% " + passive.refName));
-			} else lore.add(ChatColor.translateAlternateColorCodes('&', passive.color + "+" + passiveLevel * passive.baseUnit + "% " + passive.refName));
+				loreBuilder.addLore(passive.color + "-" + passiveLevel * passive.baseUnit + "% " + passive.refName);
+			} else loreBuilder.addLore(passive.color + "+" + passiveLevel * passive.baseUnit + "% " + passive.refName);
 		}
-		if(passives == 0) lore.add(ChatColor.RED  + "NONE");
-		lore.add("");
-		DecimalFormat formatter = new DecimalFormat("#,###.#");
-		lore.add(ChatColor.GRAY + "Gold: "  + ChatColor.GOLD + formatter.format(gold) + "g");
-		lore.add("");
-		lore.add(ChatColor.YELLOW + "Hold and right-click to modify!");
+		if(passives == 0) loreBuilder.addLore("&cNONE");
+		loreBuilder.addLore("", "&7Gold: &6" + formatter.format(gold) + "g", "", "&eHold and right-click to modify!");
 
 		ItemMeta meta = item.getItemMeta();
-		meta.setLore(lore);
+		meta.setLore(loreBuilder.getLore());
 		item.setItemMeta(meta);
 
 		NBTItem nbtItem = new NBTItem(item);
@@ -165,6 +164,21 @@ public class GoldenHelmet {
 	public void depositGold(int gold) {
 		this.gold += gold;
 		setLore();
+	}
+
+	public boolean withdrawGold(int gold) {
+		if(this.gold < gold) return false;
+		else {
+			if(HelmetSystem.getLevel(this.gold - gold) < HelmetSystem.getLevel(this.gold)) {
+				AOutput.send(owner, "&6&lGOLDEN HELMET! &7Helmet level reduced to &f" +
+						HelmetSystem.getLevel(this.gold - gold) + "&7. (&6" + formatter.format(this.gold - gold) + "g&7)");
+				ASound.play(ability.player, Sound.ANVIL_BREAK, 1, 2);
+			}
+			this.gold -= gold;
+			setLore();
+
+		}
+		return true;
 	}
 
 }

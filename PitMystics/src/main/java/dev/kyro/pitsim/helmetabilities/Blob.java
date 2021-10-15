@@ -18,10 +18,10 @@ import java.text.DecimalFormat;
 import java.util.Arrays;
 import java.util.List;
 
-public class Leap extends HelmetAbility {
-	public Leap(Player player) {
+public class Blob extends HelmetAbility {
+	public Blob(Player player) {
 
-		super(player,"Leap", "leap", false, 10);
+		super(player,"Pit Blob", "pitblob", true, 11);
 	}
 
 
@@ -70,7 +70,7 @@ public class Leap extends HelmetAbility {
 
 	@Override
 	public ItemStack getDisplayItem() {
-		AItemStackBuilder builder = new AItemStackBuilder(Material.RABBIT_FOOT);
+		AItemStackBuilder builder = new AItemStackBuilder(Material.SLIME_BALL);
 		builder.setName("&e" + name);
 		ALoreBuilder loreBuilder = new ALoreBuilder();
 		loreBuilder.addLore(getDescription());
