@@ -29,7 +29,7 @@ public class HelmetAbilityPanel extends AGUIPanel {
 
     FileConfiguration playerData = APlayerData.getPlayerData(player);
     PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
-    GoldenHelmet goldenHelmet = GoldenHelmet.getHelmet(player.getItemInHand(), player);
+    GoldenHelmet goldenHelmet = GoldenHelmet.getHelmetItem(player.getItemInHand(), player);
     public HelmetGUI helmetGUI;
     public HelmetAbilityPanel(AGUI gui) {
         super(gui);
@@ -67,7 +67,7 @@ public class HelmetAbilityPanel extends AGUIPanel {
             for(HelmetAbility helmetAbility : HelmetAbility.helmetAbilities) {
                 if(slot != helmetAbility.slot) continue;
 
-                GoldenHelmet goldenHelmet = GoldenHelmet.getHelmet(helm, player);
+                GoldenHelmet goldenHelmet = GoldenHelmet.getHelmetItem(helm, player);
 
                 if(goldenHelmet == null) {
                     player.closeInventory();
@@ -96,7 +96,7 @@ public class HelmetAbilityPanel extends AGUIPanel {
             AItemStackBuilder builder = new AItemStackBuilder(helmetAbility.getDisplayItem());
             ALoreBuilder loreBuilder = new ALoreBuilder();
 
-            GoldenHelmet goldenHelmet = GoldenHelmet.getHelmet(getHelm(), player);
+            GoldenHelmet goldenHelmet = GoldenHelmet.getHelmetItem(getHelm(), player);
             if(goldenHelmet == null) {
                 player.closeInventory();
                 return;

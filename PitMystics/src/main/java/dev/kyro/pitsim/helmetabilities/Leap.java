@@ -8,11 +8,11 @@ import dev.kyro.pitsim.controllers.Cooldown;
 import dev.kyro.pitsim.controllers.HelmetListeners;
 import dev.kyro.pitsim.controllers.objects.GoldenHelmet;
 import dev.kyro.pitsim.controllers.objects.HelmetAbility;
-import dev.kyro.pitsim.enchants.Pullbow;
 import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.util.Vector;
 
 import java.text.DecimalFormat;
 import java.util.Arrays;
@@ -38,11 +38,11 @@ public class Leap extends HelmetAbility {
 	@Override
 	public void onProc() {
 
-		GoldenHelmet goldenHelmet = HelmetListeners.getHelmet(player);
+		GoldenHelmet goldenHelmet = HelmetListeners.getHelmetInstance(player);
 
 		assert goldenHelmet != null;
 		if(!goldenHelmet.withdrawGold(10000)) {
-			AOutput.error(player, "&cNot enough gold!");
+			AOutput.error(player,"&cNot enough gold!");
 			ASound.play(player, Sound.VILLAGER_NO, 1F, 1F);
 			return;
 		}
@@ -57,7 +57,10 @@ public class Leap extends HelmetAbility {
 
 		AOutput.send(player, "&6&lGOLDEN HELMET! &7Used &9Leap&7! (&6-10,000g&7)");
 		ASound.play(player, Sound.BAT_TAKEOFF, 1, 1);
-		player.setVelocity(player.getLocation().getDirection().multiply(Pullbow.getMultiplier(6)));
+		Vector vector = player.getLocation().getDirection().setY(0).normalize().multiply(3).setY(1);
+//		if(vector.getY() < 0) vector.setY(-vector.getY());
+		player.setVelocity(vector);
+
 
 
 	}

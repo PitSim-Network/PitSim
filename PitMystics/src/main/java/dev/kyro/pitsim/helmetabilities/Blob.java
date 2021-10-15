@@ -38,7 +38,7 @@ public class Blob extends HelmetAbility {
 	@Override
 	public void onProc() {
 
-		GoldenHelmet goldenHelmet = HelmetListeners.getHelmet(player);
+		GoldenHelmet goldenHelmet = HelmetListeners.getHelmetInstance(player);
 
 		assert goldenHelmet != null;
 		if(!goldenHelmet.withdrawGold(10000)) {

@@ -26,7 +26,7 @@ public class HelmetPanel extends AGUIPanel {
 
     FileConfiguration playerData = APlayerData.getPlayerData(player);
     PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
-    GoldenHelmet goldenHelmet = GoldenHelmet.getHelmet(player.getItemInHand(), player);
+    GoldenHelmet goldenHelmet = GoldenHelmet.getHelmetItem(player.getItemInHand(), player);
     List<List<ItemStack>> columns = new ArrayList<>();
     public HelmetGUI helmetGUI;
     public HelmetPanel(AGUI gui) {

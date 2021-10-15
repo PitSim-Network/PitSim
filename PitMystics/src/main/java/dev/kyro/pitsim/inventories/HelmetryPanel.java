@@ -105,7 +105,7 @@ public class HelmetryPanel extends AGUIPanel {
                 nbtItem.setString(NBTTag.GHELMET_ABILITY.getRef(), null);
                 nbtItem.setString(NBTTag.GHELMET_UUID.getRef(), UUID.randomUUID().toString());
 
-                GoldenHelmet goldenHelmet = GoldenHelmet.getHelmet(nbtItem.getItem(), player);
+                GoldenHelmet goldenHelmet = GoldenHelmet.getHelmetItem(nbtItem.getItem(), player);
 
                 AUtil.giveItemSafely(player, nbtItem.getItem(), true);
                 assert goldenHelmet != null;

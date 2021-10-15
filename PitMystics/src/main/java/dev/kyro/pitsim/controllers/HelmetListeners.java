@@ -101,7 +101,7 @@ public class HelmetListeners implements Listener {
 			}
 			PitSim.VAULT.withdrawPlayer((Player) event.getPlayer(), gold);
 
-			GoldenHelmet goldenHelmet = GoldenHelmet.getHelmet(helmet, event.getPlayer());
+			GoldenHelmet goldenHelmet = GoldenHelmet.getHelmetItem(helmet, event.getPlayer());
 			if(goldenHelmet.getInventorySlot(event.getPlayer()) == -1) {
 				AOutput.send(event.getPlayer(), "&cUnable to find helmet!");
 				HelmetGUI.depositPlayers.remove(event.getPlayer());
@@ -119,8 +119,9 @@ public class HelmetListeners implements Listener {
 
 	@EventHandler
 	public void onAttack(AttackEvent.Apply attackEvent) {
-		GoldenHelmet attackerHelmet = getHelmet(attackEvent.attacker);
-		GoldenHelmet defenderHelmet = getHelmet(attackEvent.defender);
+		if(NonManager.getNon(attackEvent.attacker) != null || NonManager.getNon(attackEvent.defender) != null) return;
+		GoldenHelmet attackerHelmet = getHelmetInstance(attackEvent.attacker);
+		GoldenHelmet defenderHelmet = getHelmetInstance(attackEvent.defender);
 
 		int attackLevel = 0;
 		if(attackerHelmet != null) attackLevel = HelmetSystem.getLevel(attackerHelmet.gold);
@@ -134,7 +135,7 @@ public class HelmetListeners implements Listener {
 
 	@EventHandler
 	public void onKill(KillEvent killEvent) {
-		GoldenHelmet helmet = getHelmet(killEvent.killer);
+		GoldenHelmet helmet = getHelmetInstance(killEvent.killer);
 		if(helmet == null) return;
 
 		int level = HelmetSystem.getLevel(helmet.gold);
@@ -146,9 +147,9 @@ public class HelmetListeners implements Listener {
 
 	}
 
-	public static GoldenHelmet getHelmet(Player player) {
+	public static GoldenHelmet getHelmetInstance(Player player) {
 		if(Misc.isAirOrNull(player.getInventory().getHelmet())) return null;
-		return GoldenHelmet.getHelmet(player.getInventory().getHelmet(), player);
+		return GoldenHelmet.getHelmetItem(player.getInventory().getHelmet(), player);
 
 	}
 
@@ -179,7 +180,8 @@ public class HelmetListeners implements Listener {
 		if(helmSlot == -2) helm = player.getInventory().getHelmet();
 		else return;
 
-		GoldenHelmet goldenHelmet = GoldenHelmet.getHelmet(helm, player);
+
+		GoldenHelmet goldenHelmet = GoldenHelmet.getHelmetItem(helm, player);
 		assert goldenHelmet != null;
 
 		if(goldenHelmet.ability == null) {
@@ -190,8 +192,7 @@ public class HelmetListeners implements Listener {
 
 		if(goldenHelmet.ability.isTogglable) {
 			if(HelmetAbility.toggledHelmets.contains(goldenHelmet)) {
-				HelmetAbility.toggledHelmets.remove(goldenHelmet);
-				goldenHelmet.ability.onDeactivate();
+				goldenHelmet.deactivate();
 			} else {
 				HelmetAbility.toggledHelmets.add(goldenHelmet);
 				goldenHelmet.ability.onActivate();

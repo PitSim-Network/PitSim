@@ -31,17 +31,19 @@ public class GoldenHelmet {
 
 
 
-	public GoldenHelmet(ItemStack item) {
+	public GoldenHelmet(ItemStack item, Player owner) {
 		this.item = item;
-
+		this.owner  = owner;
 		NBTItem nbtItem = new NBTItem(item);
 		this.gold = nbtItem.getInteger(NBTTag.GHELMET_GOLD.getRef());
 		this.ability = generateInstance(owner, nbtItem.getString(NBTTag.GHELMET_ABILITY.getRef()));
+
+
 		INSTANCE = this;
 	}
 
 
-	public static GoldenHelmet getHelmet(ItemStack helmet, Player player) {
+	public static GoldenHelmet getHelmetItem(ItemStack helmet, Player player) {
 
 		GoldenHelmet goldenHelmet = null;
 		for(GoldenHelmet testGoldenHelmet : helmets) {
@@ -57,9 +59,9 @@ public class GoldenHelmet {
 		}
 		if(goldenHelmet == null) {
 
-			goldenHelmet = new GoldenHelmet(helmet);
-			helmets.add(goldenHelmet);
+			goldenHelmet = new GoldenHelmet(helmet, player);
 			goldenHelmet.owner = player;
+			helmets.add(goldenHelmet);
 			goldenHelmet.setLore();
 
 
@@ -179,6 +181,11 @@ public class GoldenHelmet {
 
 		}
 		return true;
+	}
+
+	public void deactivate() {
+		this.ability.onDeactivate();
+		HelmetAbility.toggledHelmets.remove(this);
 	}
 
 }
