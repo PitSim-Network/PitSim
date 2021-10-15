@@ -2,6 +2,7 @@ package dev.kyro.pitsim.misc;
 
 import dev.kyro.arcticapi.misc.ASound;
 import dev.kyro.pitsim.PitSim;
+import dev.kyro.pitsim.controllers.NonManager;
 import net.minecraft.server.v1_8_R3.*;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -9,6 +10,7 @@ import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.craftbukkit.v1_8_R3.CraftWorld;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
@@ -16,6 +18,7 @@ import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.text.DecimalFormat;
+import java.util.ArrayList;
 import java.util.List;
 
 public class Misc {
@@ -163,19 +166,25 @@ public class Misc {
 		return decimalFormat.format(kills);
 	}
 
-	public static void strikeLightningForPlayers(Location location, List<Player> players) {
-		Player[] lightningPlayers = new Player[players.size()];
-		lightningPlayers = players.toArray(lightningPlayers);
+	public static void strikeLightningForPlayers(Location location, double radius) {
+		List<Player> nearbyPlayers = new ArrayList<>();
+		for(Entity nearbyEntity : location.getWorld().getNearbyEntities(location, radius, radius, radius)) {
+			if(!(nearbyEntity instanceof Player) || NonManager.getNon((Player) nearbyEntity) != null) continue;
+			nearbyPlayers.add((Player) nearbyEntity);
+		}
+
+		Player[] lightningPlayers = new Player[nearbyPlayers.size()];
+		lightningPlayers = nearbyPlayers.toArray(lightningPlayers);
 		strikeLightningForPlayers(location, lightningPlayers);
 	}
 
 	public static void strikeLightningForPlayers(Location location, Player... players) {
 		World world = ((CraftWorld) location.getWorld()).getHandle();
-		EntityLightning lightning = new EntityLightning(world, location.getX(), location.getY(), location.getZ(), false, false);
 
 		for(Player player : players) {
 			EntityPlayer entityPlayer = ((CraftPlayer) player).getHandle();
-			entityPlayer.playerConnection.sendPacket(new PacketPlayOutSpawnEntityWeather(lightning));
+			entityPlayer.playerConnection.sendPacket(new PacketPlayOutSpawnEntityWeather(
+					new EntityLightning(world, location.getX(), location.getY(), location.getZ(), false, false)));
 		}
 	}
 
