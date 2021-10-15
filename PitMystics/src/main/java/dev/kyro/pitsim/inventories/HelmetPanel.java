@@ -49,6 +49,9 @@ public class HelmetPanel extends AGUIPanel {
     public void onClick(InventoryClickEvent event) {
         int slot = event.getSlot();
         if(event.getClickedInventory().getHolder() == this) {
+            if(slot == 4) {
+                openPanel(helmetGUI.helmetAbilityPanel);
+            }
             if(slot == 7) {
                 HelmetGUI.deposit(player, goldenHelmet.item);
                 player.closeInventory();

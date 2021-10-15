@@ -5,6 +5,7 @@ import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.arcticapi.misc.ASound;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.controllers.objects.GoldenHelmet;
+import dev.kyro.pitsim.controllers.objects.HelmetAbility;
 import dev.kyro.pitsim.enums.NBTTag;
 import dev.kyro.pitsim.events.AttackEvent;
 import dev.kyro.pitsim.events.KillEvent;
@@ -18,8 +19,12 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.event.player.PlayerQuitEvent;
+import org.bukkit.event.player.PlayerToggleSneakEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.scheduler.BukkitRunnable;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -97,7 +102,7 @@ public class HelmetListeners implements Listener {
 			PitSim.VAULT.withdrawPlayer((Player) event.getPlayer(), gold);
 
 			GoldenHelmet goldenHelmet = GoldenHelmet.getHelmet(helmet, event.getPlayer());
-			if(goldenHelmet.getInventorySlot() == -1) {
+			if(goldenHelmet.getInventorySlot(event.getPlayer()) == -1) {
 				AOutput.send(event.getPlayer(), "&cUnable to find helmet!");
 				HelmetGUI.depositPlayers.remove(event.getPlayer());
 				event.getPlayer().playSound(event.getPlayer().getLocation(), Sound.VILLAGER_NO, 1F, 1F);
@@ -145,5 +150,83 @@ public class HelmetListeners implements Listener {
 		if(Misc.isAirOrNull(player.getInventory().getHelmet())) return null;
 		return GoldenHelmet.getHelmet(player.getInventory().getHelmet(), player);
 
+	}
+
+	public List<Player> crouchPlayers = new ArrayList<>();
+
+	@EventHandler
+	public void onCrouch(PlayerToggleSneakEvent event) {
+		Player player = event.getPlayer();
+		if(!event.isSneaking()) return;
+
+		if(!crouchPlayers.contains(player)) {
+			crouchPlayers.add(player);
+			new BukkitRunnable() {
+				@Override
+				public void run() {
+
+					crouchPlayers.remove(player);
+				}
+			}.runTaskLater(PitSim.INSTANCE, 7L);
+			return;
+		}
+		crouchPlayers.remove(player);
+
+		int helmSlot = getInventorySlot(player);
+		if(helmSlot == -1) return;
+
+		ItemStack helm = null;
+		if(helmSlot == -2) helm = player.getInventory().getHelmet();
+		else return;
+
+		GoldenHelmet goldenHelmet = GoldenHelmet.getHelmet(helm, player);
+		assert goldenHelmet != null;
+
+		if(goldenHelmet.ability == null) {
+			AOutput.error(player, "&6&lGOLDEN HELMET! &7No ability selected!");
+			event.getPlayer().playSound(event.getPlayer().getLocation(), Sound.VILLAGER_NO, 1F, 1F);
+			return;
+		}
+
+		if(goldenHelmet.ability.isTogglable) {
+			if(HelmetAbility.toggledHelmets.contains(goldenHelmet)) {
+				HelmetAbility.toggledHelmets.remove(goldenHelmet);
+				goldenHelmet.ability.onDeactivate();
+			} else {
+				HelmetAbility.toggledHelmets.add(goldenHelmet);
+				goldenHelmet.ability.onActivate();
+			}
+		} else {
+			goldenHelmet.ability.onProc();
+		}
+	}
+
+	@EventHandler
+	public void onQuit(PlayerQuitEvent event) {
+		crouchPlayers.remove(event.getPlayer());
+		for(GoldenHelmet goldenHelmet : GoldenHelmet.INSTANCE.getHelmetsFromPlayer(event.getPlayer())) {
+			HelmetAbility.toggledHelmets.remove(goldenHelmet);
+		}
+
+	}
+
+	public int getInventorySlot(Player owner) {
+		if(Misc.isAirOrNull(owner.getInventory().getHelmet())) return -1;
+		if(owner.getInventory().getHelmet().getType() == Material.GOLD_HELMET) {
+
+			NBTItem playerItem = new NBTItem(owner.getInventory().getHelmet());
+
+			if(playerItem.hasKey(NBTTag.GHELMET_UUID.getRef())) return -2;
+		}
+		for(int i = 0; i < owner.getInventory().getSize(); i++) {
+			if(Misc.isAirOrNull(owner.getInventory().getItem(i))) continue;
+			if(owner.getInventory().getItem(i).getType() == Material.GOLD_HELMET) {
+				NBTItem playerItem = new NBTItem(owner.getInventory().getItem(i));
+
+				if(!playerItem.hasKey(NBTTag.GHELMET_UUID.getRef())) continue;
+				return i;
+			}
+		}
+		return -1;
 	}
 }

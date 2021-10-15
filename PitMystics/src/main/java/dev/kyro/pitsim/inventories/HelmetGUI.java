@@ -13,11 +13,13 @@ import java.util.Map;
 public class HelmetGUI extends AGUI {
 
 	public static HelmetPanel helmetPanel;
+	public HelmetAbilityPanel helmetAbilityPanel;
 
 	public HelmetGUI(Player player) {
 		super(player);
 
 		helmetPanel = new HelmetPanel(this);
+		helmetAbilityPanel = new HelmetAbilityPanel(this);
 
 		setHomePanel(helmetPanel);
 	}
@@ -38,5 +40,7 @@ public class HelmetGUI extends AGUI {
 		}.runTaskLater(PitSim.INSTANCE, 1200L);
 
 	}
+
+
 
 }

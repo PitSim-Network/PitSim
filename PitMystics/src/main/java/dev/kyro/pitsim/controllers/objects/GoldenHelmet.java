@@ -3,6 +3,7 @@ package dev.kyro.pitsim.controllers.objects;
 import de.tr7zw.nbtapi.NBTItem;
 import dev.kyro.pitsim.controllers.HelmetSystem;
 import dev.kyro.pitsim.enums.NBTTag;
+import dev.kyro.pitsim.helmetabilities.Leap;
 import dev.kyro.pitsim.misc.Misc;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -17,10 +18,12 @@ import java.util.List;
 public class GoldenHelmet {
 
 	public static List<GoldenHelmet> helmets = new ArrayList<>();
-	public static Player owner;
+	public static GoldenHelmet INSTANCE;
 
+	public Player owner;
 	public ItemStack item;
 	public int gold;
+	public HelmetAbility ability = null;
 
 
 
@@ -29,6 +32,8 @@ public class GoldenHelmet {
 
 		NBTItem nbtItem = new NBTItem(item);
 		this.gold = nbtItem.getInteger(NBTTag.GHELMET_GOLD.getRef());
+		this.ability = generateInstance(owner, nbtItem.getString(NBTTag.GHELMET_ABILITY.getRef()));
+		INSTANCE = this;
 	}
 
 
@@ -50,20 +55,24 @@ public class GoldenHelmet {
 
 			goldenHelmet = new GoldenHelmet(helmet);
 			helmets.add(goldenHelmet);
-			owner = player;
+			goldenHelmet.owner = player;
+			goldenHelmet.setLore();
+
 
 
 		}
 
-		owner = player;
+		goldenHelmet.owner = player;
 		return goldenHelmet;
 	}
 
 
 	public void setLore() {
-		if(getInventorySlot() == -1) return;
+		if(getInventorySlot(owner) == -1) return;
 		List<String> lore = new ArrayList<>();
 		lore.add(ChatColor.GRAY + "Selected ability:");
+		if(ability != null) lore.add(ChatColor.BLUE + ability.name);
+		else lore.add(ChatColor.RED + "NONE");
 		lore.add("");
 		lore.add(ChatColor.GRAY + "Passives:");
 		int passives = 0;
@@ -90,8 +99,9 @@ public class GoldenHelmet {
 
 		NBTItem nbtItem = new NBTItem(item);
 		nbtItem.setInteger(NBTTag.GHELMET_GOLD.getRef(), gold);
+		if(ability != null) nbtItem.setString(NBTTag.GHELMET_ABILITY.getRef(), ability.refName);
 
-		if(getInventorySlot() == -2) {
+		if(getInventorySlot(owner) == -2) {
 			item.setAmount(1);
 			owner.getInventory().setHelmet(nbtItem.getItem());
 			return;
@@ -99,11 +109,21 @@ public class GoldenHelmet {
 
 
 		item.setAmount(1);
-		owner.getInventory().setItem(getInventorySlot(), nbtItem.getItem());
+		owner.getInventory().setItem(getInventorySlot(owner), nbtItem.getItem());
 
 	}
 
-	public int getInventorySlot() {
+	public List<GoldenHelmet> getHelmetsFromPlayer(Player player) {
+		List<GoldenHelmet> playerHelmets = new ArrayList<>();
+		for(GoldenHelmet helmet : helmets) {
+			if(owner == player) playerHelmets.add(helmet);
+		}
+		return playerHelmets;
+	}
+
+
+
+	public int getInventorySlot(Player owner) {
 		for(int i = 0; i < owner.getInventory().getSize(); i++) {
 			if(Misc.isAirOrNull(owner.getInventory().getItem(i))) continue;
 			if(owner.getInventory().getItem(i).getType() == Material.GOLD_HELMET) {
@@ -125,6 +145,18 @@ public class GoldenHelmet {
 		}
 		return -1;
 	}
+
+	public void setAbility(HelmetAbility ability) {
+		if(ability == null) this.ability = null;
+		else this.ability = generateInstance(owner, ability.refName);
+		setLore();
+	}
+
+	public HelmetAbility generateInstance(Player player, String refName) {
+		if(refName.equals("leap")) return new Leap(player);
+		return null;
+	}
+
 
 	public void depositGold(int gold) {
 		this.gold += gold;

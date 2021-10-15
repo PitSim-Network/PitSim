@@ -8,11 +8,13 @@ import dev.kyro.arcticapi.hooks.AHook;
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.commands.*;
 import dev.kyro.pitsim.controllers.*;
+import dev.kyro.pitsim.controllers.objects.HelmetAbility;
 import dev.kyro.pitsim.controllers.objects.Non;
 import dev.kyro.pitsim.controllers.objects.PitEnchant;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.enchants.GoldBoost;
 import dev.kyro.pitsim.enchants.*;
+import dev.kyro.pitsim.helmetabilities.Leap;
 import dev.kyro.pitsim.killstreaks.*;
 import dev.kyro.pitsim.misc.ChunkOfVile;
 import dev.kyro.pitsim.misc.ItemRename;
@@ -140,6 +142,7 @@ public class PitSim extends JavaPlugin {
 		registerEnchants();
 		registerCommands();
 		registerListeners();
+		registerHelmetAbilities();
 	}
 
 	@Override
@@ -360,6 +363,11 @@ public class PitSim extends JavaPlugin {
 		UpgradeManager.registerUpgrade(new TaxEvasion());
 		UpgradeManager.registerUpgrade(new DoubleDeath());
 		UpgradeManager.registerUpgrade(new XPComplex());
+
+	}
+
+	public void registerHelmetAbilities() {
+		HelmetAbility.registerHelmetAbility(new Leap(null));
 
 	}
 
