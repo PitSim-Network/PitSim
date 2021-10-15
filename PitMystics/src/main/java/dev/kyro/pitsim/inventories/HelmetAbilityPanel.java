@@ -6,16 +6,24 @@ import dev.kyro.arcticapi.data.APlayerData;
 import dev.kyro.arcticapi.gui.AGUI;
 import dev.kyro.arcticapi.gui.AGUIPanel;
 import dev.kyro.arcticapi.misc.AOutput;
+import dev.kyro.pitsim.controllers.HelmetListeners;
 import dev.kyro.pitsim.controllers.objects.GoldenHelmet;
 import dev.kyro.pitsim.controllers.objects.HelmetAbility;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
+import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.inventory.InventoryOpenEvent;
+import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class HelmetAbilityPanel extends AGUIPanel {
 
@@ -46,8 +54,13 @@ public class HelmetAbilityPanel extends AGUIPanel {
 
             ItemStack helm = getHelm();
 
+            if(slot == 22) {
+                openPreviousGUI();
+            }
+
             if(slot == 9) {
                 goldenHelmet.setAbility(null);
+                player.playSound(player.getLocation(), Sound.NOTE_PLING, 1F, 2F);
             }
 
             for(HelmetAbility helmetAbility : HelmetAbility.helmetAbilities) {
@@ -55,17 +68,23 @@ public class HelmetAbilityPanel extends AGUIPanel {
 
                 GoldenHelmet goldenHelmet = GoldenHelmet.getHelmet(helm, player);
 
-                assert goldenHelmet != null;
-                if(goldenHelmet.ability.refName.equals(helmetAbility.refName)) {
+                if(goldenHelmet == null) {
+                    player.closeInventory();
+                    return;
+                }
+                if(goldenHelmet.ability != null && goldenHelmet.ability.refName.equals(helmetAbility.refName)) {
                     AOutput.error(player, "&aYou already have that ability selected!");
                     player.playSound(player.getLocation(), Sound.VILLAGER_NO, 1F, 1F);
                     return;
                 }
 
+                player.playSound(player.getLocation(), Sound.NOTE_PLING, 1F, 2F);
                 goldenHelmet.setAbility(helmetAbility);
+                openPreviousGUI();
+
 
             }
-            openPreviousGUI();
+
         }
         updateInventory();
     }
@@ -77,14 +96,26 @@ public class HelmetAbilityPanel extends AGUIPanel {
             ALoreBuilder loreBuilder = new ALoreBuilder();
 
             GoldenHelmet goldenHelmet = GoldenHelmet.getHelmet(getHelm(), player);
-            assert goldenHelmet != null;
-            if(!goldenHelmet.ability.refName.equals(helmetAbility.refName)) {
-                builder.setName("&e" + helmetAbility.refName);
-                loreBuilder.addLore("", "&eCLick to select!");
-            } else  {
-                builder.setName("&a" + helmetAbility.refName);
-                loreBuilder.addLore("", "&aCLick to select!");
-                builder.addEnchantGlint(true);
+            if(goldenHelmet == null) {
+                player.closeInventory();
+                return;
+            }
+            loreBuilder.addLore(helmetAbility.getDescription());
+            if(goldenHelmet.ability != null) {
+                if(!goldenHelmet.ability.refName.equals(helmetAbility.refName)) {
+                    builder.setName("&e" + helmetAbility.name);
+                    loreBuilder.addLore("", "&eClick to select!");
+                } else {
+                    builder.setName("&a" + helmetAbility.name);
+                    loreBuilder.addLore("", "&aAlready selected!");
+                    ItemMeta meta = builder.getItemStack().getItemMeta();
+                    meta.addEnchant(Enchantment.ARROW_FIRE, 1, false);
+                    meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
+                    builder.getItemStack().setItemMeta(meta);
+                }
+            } else {
+                builder.setName("&e" + helmetAbility.name);
+                loreBuilder.addLore("", "&eClick to select!");
             }
             builder.setLore(loreBuilder);
             getInventory().setItem(helmetAbility.slot, builder.getItemStack());
@@ -96,6 +127,16 @@ public class HelmetAbilityPanel extends AGUIPanel {
         builder.setLore(loreBuilder);
         getInventory().setItem(9, builder.getItemStack());
 
+        ItemStack back = new ItemStack(Material.ARROW);
+        ItemMeta meta = back.getItemMeta();
+        meta.setDisplayName(ChatColor.GREEN + "Go Back");
+        List<String> lore = new ArrayList<>();
+        lore.add(ChatColor.GRAY + "To Modify Helmet");
+        meta.setLore(lore);
+        back.setItemMeta(meta);
+
+        getInventory().setItem(22, back);
+
     }
 
 
@@ -104,7 +145,7 @@ public class HelmetAbilityPanel extends AGUIPanel {
     }
 
     public ItemStack getHelm() {
-        int helmSlot = GoldenHelmet.INSTANCE.getInventorySlot(player);
+        int helmSlot = HelmetListeners.getInventorySlot(player);
         if(helmSlot == -1) return null;
 
         ItemStack helm = null;

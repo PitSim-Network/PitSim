@@ -76,7 +76,10 @@ public class ShardHunter extends RenownUpgrade {
 
 		double chance = 0.0001 * tier;
 		GoldenHelmet helmet = HelmetListeners.getHelmet(killEvent.killer);
-		if(helmet != null) chance += 0.001 * HelmetSystem.getTotalStacks(HelmetSystem.Passive.SHARD_CHANCE, HelmetSystem.getLevel(helmet.gold));
+		if(helmet != null) {
+			int level = HelmetSystem.getLevel(helmet.gold);
+			chance += 0.001 * HelmetSystem.getTotalStacks(HelmetSystem.Passive.SHARD_CHANCE,level - 1);
+		}
 
 		boolean givesShard = Math.random() < chance;
 

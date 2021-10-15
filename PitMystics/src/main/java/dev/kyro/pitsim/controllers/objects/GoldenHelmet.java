@@ -5,6 +5,7 @@ import dev.kyro.pitsim.controllers.HelmetSystem;
 import dev.kyro.pitsim.enums.NBTTag;
 import dev.kyro.pitsim.helmetabilities.Leap;
 import dev.kyro.pitsim.misc.Misc;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -77,7 +78,10 @@ public class GoldenHelmet {
 		lore.add(ChatColor.GRAY + "Passives:");
 		int passives = 0;
 		for(HelmetSystem.Passive passive : HelmetSystem.Passive.values()) {
-			int passiveLevel = HelmetSystem.getTotalStacks(passive, HelmetSystem.getLevel(gold));
+			int level = HelmetSystem.getLevel(gold);
+			int passiveLevel = HelmetSystem.getTotalStacks(passive,level - 1);
+			Bukkit.broadcastMessage(String.valueOf(level - 1));
+
 
 			if(passiveLevel == 0) continue;
 			passives++;

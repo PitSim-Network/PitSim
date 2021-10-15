@@ -69,7 +69,7 @@ public class HelmetSystem {
 	}
 
 	public static int getLevel(int gold) {
-		if(gold > levelMap.get(100)) return 100;
+		if(gold > levelMap.get(100)) return 101;
 		for(Map.Entry<Integer, Integer> entry : levelMap.entrySet()) {
 			if(entry.getValue() > gold) return entry.getKey();
 		}

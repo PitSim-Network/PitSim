@@ -124,11 +124,11 @@ public class HelmetListeners implements Listener {
 
 		int attackLevel = 0;
 		if(attackerHelmet != null) attackLevel = HelmetSystem.getLevel(attackerHelmet.gold);
-		if(attackerHelmet != null) attackEvent.increasePercent += HelmetSystem.getTotalStacks(HelmetSystem.Passive.DAMAGE, attackLevel) / 100D;
+		if(attackerHelmet != null) attackEvent.increasePercent += HelmetSystem.getTotalStacks(HelmetSystem.Passive.DAMAGE, attackLevel - 1) / 100D;
 
 		int defenderLevel = 0;
 		if(defenderHelmet != null) defenderLevel = HelmetSystem.getLevel(defenderHelmet.gold);
-		if(defenderHelmet != null) attackEvent.multiplier.add(Misc.getReductionMultiplier(HelmetSystem.getTotalStacks(HelmetSystem.Passive.DAMAGE_REDUCTION, attackLevel)));
+		if(defenderHelmet != null) attackEvent.multiplier.add(Misc.getReductionMultiplier(HelmetSystem.getTotalStacks(HelmetSystem.Passive.DAMAGE_REDUCTION, defenderLevel - 1)));
 
 	}
 
@@ -139,9 +139,9 @@ public class HelmetListeners implements Listener {
 
 		int level = HelmetSystem.getLevel(helmet.gold);
 
-		killEvent.goldMultipliers.add(1 + HelmetSystem.getTotalStacks(HelmetSystem.Passive.GOLD_BOOST, level) / 100D);
+		killEvent.goldMultipliers.add(1 + HelmetSystem.getTotalStacks(HelmetSystem.Passive.GOLD_BOOST,  level  - 1) / 100D);
 
-		killEvent.xpMultipliers.add(1 + HelmetSystem.getTotalStacks(HelmetSystem.Passive.XP_BOOST, level) / 100D);
+		killEvent.xpMultipliers.add(1 + HelmetSystem.getTotalStacks(HelmetSystem.Passive.XP_BOOST, level - 1) / 100D);
 
 
 	}
@@ -210,7 +210,7 @@ public class HelmetListeners implements Listener {
 
 	}
 
-	public int getInventorySlot(Player owner) {
+	public static int getInventorySlot(Player owner) {
 		if(Misc.isAirOrNull(owner.getInventory().getHelmet())) return -1;
 		if(owner.getInventory().getHelmet().getType() == Material.GOLD_HELMET) {
 

@@ -72,7 +72,10 @@ public class HelmetPanel extends AGUIPanel {
         helmetDisplay.setItemMeta(helmetMeta);
         getInventory().setItem(1, helmetDisplay);
 
-        getInventory().setItem(4, new ItemStack(Material.BEACON));
+        ItemStack ability = new ItemStack(Material.EYE_OF_ENDER);
+        if(goldenHelmet.ability != null) ability.setType(goldenHelmet.ability.getDisplayItem().getType());
+
+        getInventory().setItem(4, ability);
 
         ItemStack deposit = new ItemStack(Material.PAPER);
         ItemMeta depositMeta = deposit.getItemMeta();
@@ -165,7 +168,8 @@ public class HelmetPanel extends AGUIPanel {
             AItemStackBuilder builder = new AItemStackBuilder(Material.INK_SACK);
             ALoreBuilder loreBuilder = new ALoreBuilder();
             builder.getItemStack().setDurability(passive.data);
-            int passiveLevel = HelmetSystem.getTotalStacks(passive, HelmetSystem.getLevel(goldenHelmet.gold));
+            int goldLevel = HelmetSystem.getLevel(goldenHelmet.gold);
+            int passiveLevel = HelmetSystem.getTotalStacks(passive, goldLevel - 1);
             builder.getItemStack().setAmount(passiveLevel);
             builder.setName(passive.refName);
             String percent;
