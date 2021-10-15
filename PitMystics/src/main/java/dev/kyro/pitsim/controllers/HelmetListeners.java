@@ -2,9 +2,12 @@ package dev.kyro.pitsim.controllers;
 
 import de.tr7zw.nbtapi.NBTItem;
 import dev.kyro.arcticapi.misc.AOutput;
+import dev.kyro.arcticapi.misc.ASound;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.controllers.objects.GoldenHelmet;
 import dev.kyro.pitsim.enums.NBTTag;
+import dev.kyro.pitsim.events.AttackEvent;
+import dev.kyro.pitsim.events.KillEvent;
 import dev.kyro.pitsim.inventories.HelmetGUI;
 import dev.kyro.pitsim.misc.Misc;
 import org.bukkit.Material;
@@ -56,6 +59,7 @@ public class HelmetListeners implements Listener {
 			}
 
 
+			ASound.play(event.getPlayer(), Sound.ANVIL_USE, 1, 2);
 			HelmetGUI helmetGUI = new HelmetGUI(event.getPlayer());
 			helmetGUI.open();
 		}
@@ -79,6 +83,7 @@ public class HelmetListeners implements Listener {
 			} catch(Exception e) {
 				AOutput.send(event.getPlayer(), "&cThat is not a valid number!");
 				HelmetGUI.depositPlayers.remove(event.getPlayer());
+				event.getPlayer().playSound(event.getPlayer().getLocation(), Sound.VILLAGER_NO, 1F, 1F);
 				return;
 			}
 
@@ -86,6 +91,7 @@ public class HelmetListeners implements Listener {
 			if(finalBalance < 0) {
 				AOutput.send(event.getPlayer(), "&cYou do not have enough gold!");
 				HelmetGUI.depositPlayers.remove(event.getPlayer());
+				event.getPlayer().playSound(event.getPlayer().getLocation(), Sound.VILLAGER_NO, 1F, 1F);
 				return;
 			}
 			PitSim.VAULT.withdrawPlayer((Player) event.getPlayer(), gold);
@@ -94,12 +100,50 @@ public class HelmetListeners implements Listener {
 			if(goldenHelmet.getInventorySlot() == -1) {
 				AOutput.send(event.getPlayer(), "&cUnable to find helmet!");
 				HelmetGUI.depositPlayers.remove(event.getPlayer());
+				event.getPlayer().playSound(event.getPlayer().getLocation(), Sound.VILLAGER_NO, 1F, 1F);
 				return;
 			}
 			goldenHelmet.depositGold(gold);
 
 			AOutput.send(event.getPlayer(), "&aSuccessfully deposited gold!");
 			HelmetGUI.depositPlayers.remove(event.getPlayer());
+			ASound.play(event.getPlayer(), Sound.ZOMBIE_METAL, 1, 2);
 		}
+
+	}
+
+	@EventHandler
+	public void onAttack(AttackEvent.Apply attackEvent) {
+		GoldenHelmet attackerHelmet = getHelmet(attackEvent.attacker);
+		GoldenHelmet defenderHelmet = getHelmet(attackEvent.defender);
+
+		int attackLevel = 0;
+		if(attackerHelmet != null) attackLevel = HelmetSystem.getLevel(attackerHelmet.gold);
+		if(attackerHelmet != null) attackEvent.increasePercent += HelmetSystem.getTotalStacks(HelmetSystem.Passive.DAMAGE, attackLevel) / 100D;
+
+		int defenderLevel = 0;
+		if(defenderHelmet != null) defenderLevel = HelmetSystem.getLevel(defenderHelmet.gold);
+		if(defenderHelmet != null) attackEvent.multiplier.add(Misc.getReductionMultiplier(HelmetSystem.getTotalStacks(HelmetSystem.Passive.DAMAGE_REDUCTION, attackLevel)));
+
+	}
+
+	@EventHandler
+	public void onKill(KillEvent killEvent) {
+		GoldenHelmet helmet = getHelmet(killEvent.killer);
+		if(helmet == null) return;
+
+		int level = HelmetSystem.getLevel(helmet.gold);
+
+		killEvent.goldMultipliers.add(1 + HelmetSystem.getTotalStacks(HelmetSystem.Passive.GOLD_BOOST, level) / 100D);
+
+		killEvent.xpMultipliers.add(1 + HelmetSystem.getTotalStacks(HelmetSystem.Passive.XP_BOOST, level) / 100D);
+
+
+	}
+
+	public static GoldenHelmet getHelmet(Player player) {
+		if(Misc.isAirOrNull(player.getInventory().getHelmet())) return null;
+		return GoldenHelmet.getHelmet(player.getInventory().getHelmet(), player);
+
 	}
 }

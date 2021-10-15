@@ -1,6 +1,7 @@
 package dev.kyro.pitsim.controllers.objects;
 
 import de.tr7zw.nbtapi.NBTItem;
+import dev.kyro.pitsim.controllers.HelmetSystem;
 import dev.kyro.pitsim.enums.NBTTag;
 import dev.kyro.pitsim.misc.Misc;
 import org.bukkit.ChatColor;
@@ -65,6 +66,18 @@ public class GoldenHelmet {
 		lore.add(ChatColor.GRAY + "Selected ability:");
 		lore.add("");
 		lore.add(ChatColor.GRAY + "Passives:");
+		int passives = 0;
+		for(HelmetSystem.Passive passive : HelmetSystem.Passive.values()) {
+			int passiveLevel = HelmetSystem.getTotalStacks(passive, HelmetSystem.getLevel(gold));
+
+			if(passiveLevel == 0) continue;
+			passives++;
+
+			if(passive.name().equals("DAMAGE_REDUCTION")) {
+				lore.add(ChatColor.translateAlternateColorCodes('&',passive.color + "-" + passiveLevel * passive.baseUnit + "% " + passive.refName));
+			} else lore.add(ChatColor.translateAlternateColorCodes('&', passive.color + "+" + passiveLevel * passive.baseUnit + "% " + passive.refName));
+		}
+		if(passives == 0) lore.add(ChatColor.RED  + "NONE");
 		lore.add("");
 		DecimalFormat formatter = new DecimalFormat("#,###.#");
 		lore.add(ChatColor.GRAY + "Gold: "  + ChatColor.GOLD + formatter.format(gold) + "g");
@@ -75,15 +88,17 @@ public class GoldenHelmet {
 		meta.setLore(lore);
 		item.setItemMeta(meta);
 
-		if(getInventorySlot() == -2) {
-			item.setAmount(1);
-			owner.getInventory().setHelmet(item);
-			return;
-		}
-
 		NBTItem nbtItem = new NBTItem(item);
 		nbtItem.setInteger(NBTTag.GHELMET_GOLD.getRef(), gold);
 
+		if(getInventorySlot() == -2) {
+			item.setAmount(1);
+			owner.getInventory().setHelmet(nbtItem.getItem());
+			return;
+		}
+
+
+		item.setAmount(1);
 		owner.getInventory().setItem(getInventorySlot(), nbtItem.getItem());
 
 	}
