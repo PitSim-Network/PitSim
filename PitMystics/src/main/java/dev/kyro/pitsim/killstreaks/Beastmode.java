@@ -80,7 +80,7 @@ public class Beastmode extends Megastreak {
 		lore.add(ChatColor.GRAY + "On trigger:");
 		lore.add(ChatColor.translateAlternateColorCodes('&', "&a\u25a0 &7Deal &c+25% &7damage to bots."));
 		lore.add(ChatColor.translateAlternateColorCodes('&', "&a\u25a0 &7Earn &b+100% XP &7from kills."));
-		lore.add(ChatColor.translateAlternateColorCodes('&', "&a\u25a0 &7Gain &b+100 max XP&7."));
+		lore.add(ChatColor.translateAlternateColorCodes('&', "&a\u25a0 &7Gain &b+130 max XP&7."));
 		lore.add("");
 		lore.add(ChatColor.GRAY + "BUT:");
 		lore.add(ChatColor.translateAlternateColorCodes('&', "&c\u25a0 &7Receive &c+1% &7damage per kill over 50."));
@@ -95,27 +95,17 @@ public class Beastmode extends Megastreak {
 	}
 
 	@EventHandler
-	public void onKill(KillEvent killEvent) {
-		PitPlayer pitPlayer = PitPlayer.getPitPlayer(killEvent.killer);
-		if(pitPlayer != this.pitPlayer) return;
-		if(pitPlayer.megastreak.playerIsOnMega(killEvent) && pitPlayer.megastreak.getClass() == Beastmode.class) {
-			killEvent.xpMultipliers.add(2.0);
-		}
-	}
-
-	@EventHandler
 	public void onHit(AttackEvent.Apply attackEvent) {
 		PitPlayer pitPlayer = PitPlayer.getPitPlayer(attackEvent.defender);
 		if(pitPlayer != this.pitPlayer) return;
 		if(pitPlayer.megastreak.isOnMega() && pitPlayer.megastreak.getClass() == Beastmode.class) {
 			int ks = (int) Math.floor(pitPlayer.getKills());
-//            attackEvent.increasePercent += ((ks / 5)  / 100D) * 8;
+//			TODO: Update lore
 			if(NonManager.getNon(attackEvent.attacker) == null) {
-				attackEvent.increasePercent += (ks - 50) / 100D;
+				attackEvent.increasePercent += (ks - 50) / 200D;
 			} else {
-				attackEvent.increasePercent += ((ks - 50) * 3) / 100D;
+				attackEvent.increasePercent += ((ks - 50) * 3) / 200D;
 			}
-//            Bukkit.broadcastMessage(attackEvent.getFinalDamage() + "");
 		}
 	}
 
@@ -124,7 +114,8 @@ public class Beastmode extends Megastreak {
 		PitPlayer pitPlayer = PitPlayer.getPitPlayer(killEvent.killer);
 		if(pitPlayer != this.pitPlayer) return;
 		if(pitPlayer.megastreak.isOnMega() && pitPlayer.megastreak.getClass() == Beastmode.class) {
-			killEvent.xpCap += 100;
+			killEvent.xpCap += 130;
+			killEvent.xpMultipliers.add(2.0);
 		}
 	}
 

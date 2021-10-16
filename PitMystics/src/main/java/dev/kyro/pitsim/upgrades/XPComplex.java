@@ -25,7 +25,7 @@ public class XPComplex extends RenownUpgrade {
 		ItemMeta meta = item.getItemMeta();
 		meta.setDisplayName(UpgradeManager.itemNameString(this, player));
 		List<String> lore = new ArrayList<>();
-		lore.add(ChatColor.translateAlternateColorCodes('&', "&7Gain &b+200 max XP&7."));
+		lore.add(ChatColor.translateAlternateColorCodes('&', "&7Gain &b+150 max XP&7."));
 		meta.setLore(UpgradeManager.loreBuilder(this, player, lore, isCustomPanel));
 		item.setItemMeta(meta);
 		return item;
@@ -41,6 +41,6 @@ public class XPComplex extends RenownUpgrade {
 	public void onKill(KillEvent killEvent) {
 		if(!UpgradeManager.hasUpgrade(killEvent.killer, this)) return;
 
-		killEvent.xpCap += 200;
+		killEvent.xpCap += 150;
 	}
 }

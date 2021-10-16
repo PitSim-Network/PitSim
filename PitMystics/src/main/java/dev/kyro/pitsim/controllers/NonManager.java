@@ -48,7 +48,7 @@ public class NonManager implements Listener {
 			double distance = mid.distance(onlinePlayer.getLocation());
 			if(distance < 20) playersNearMid++;
 		}
-		return playersNearMid * 5 + 10;
+		return playersNearMid * 3 + 20;
 	}
 
 	public static void updateNons(List<String> botIGNs) {
