@@ -49,7 +49,7 @@ public class LevelManager {
 		if(pitPlayer.remainingXP > 0) return;
 
 		pitPlayer.level += 1;
-		pitPlayer.remainingXP = (int) ((PrestigeValues.getXPForLevel(pitPlayer.level) * prestigeInfo.xpMultiplier) / 10);
+		pitPlayer.remainingXP = (int) ((PrestigeValues.getXPForLevel(pitPlayer.level) * prestigeInfo.xpMultiplier));
 		setXPBar(player, pitPlayer);
 
 		ASound.play(player, Sound.LEVEL_UP, 1, 1);
@@ -86,7 +86,7 @@ public class LevelManager {
 		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
 		PrestigeValues.PrestigeInfo prestigeInfo = PrestigeValues.getPrestigeInfo(pitPlayer.prestige);
 		if(pitPlayer.level < 120) return;
-		if(pitPlayer.goldGrinded < prestigeInfo.goldReq / 10) return;
+		if(pitPlayer.goldGrinded < prestigeInfo.goldReq) return;
 //		if(pitPlayer.playerKills < prestigeInfo.killReq) return;
 
 		pitPlayer.prestige += 1;

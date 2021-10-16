@@ -45,7 +45,7 @@ public class PrestigePanel extends AGUIPanel {
 		if(event.getClickedInventory().getHolder() == this) {
 			if(slot == 11) {
 //				if(pitPlayer.level == 120 && pitPlayer.goldGrinded >= prestigeInfo.goldReq && pitPlayer.playerKills >= prestigeInfo.killReq) {
-					if(pitPlayer.level == 120 && pitPlayer.goldGrinded >= prestigeInfo.goldReq / 10) {
+					if(pitPlayer.level == 120 && pitPlayer.goldGrinded >= prestigeInfo.goldReq) {
 					if(pitPlayer.prestige == 50) {
 						AOutput.error(player, "&aYou are already the maximum prestige!");
 						player.playSound(player.getLocation(), Sound.VILLAGER_NO, 1 ,1);
@@ -95,7 +95,7 @@ public class PrestigePanel extends AGUIPanel {
 			if(pitPlayer.prestige != 0) prestigeLore.add(ChatColor.translateAlternateColorCodes('&', "&b+" + (int) (100 * nextPrestigeInfo.xpMultiplier) + "&b% &7needed xp!"));
 			prestigeLore.add("");
 //			if(pitPlayer.level == 120 && pitPlayer.goldGrinded >= prestigeInfo.goldReq && pitPlayer.playerKills >= prestigeInfo.killReq) {
-			if(pitPlayer.level == 120 && pitPlayer.goldGrinded >= prestigeInfo.goldReq / 10) {
+			if(pitPlayer.level == 120 && pitPlayer.goldGrinded >= prestigeInfo.goldReq) {
 				prestigeLore.add(ChatColor.YELLOW + "Click to purchase!");
 			} else {
 				prestigeLore.add(ChatColor.RED + "Requirements not met!");

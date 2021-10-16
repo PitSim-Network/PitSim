@@ -17,10 +17,9 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
-import org.bukkit.event.player.AsyncPlayerChatEvent;
-import org.bukkit.event.player.PlayerInteractEvent;
-import org.bukkit.event.player.PlayerQuitEvent;
-import org.bukkit.event.player.PlayerToggleSneakEvent;
+import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.inventory.InventoryType;
+import org.bukkit.event.player.*;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 
@@ -125,16 +124,20 @@ public class HelmetListeners implements Listener {
 
 		int attackLevel = 0;
 		if(attackerHelmet != null) attackLevel = HelmetSystem.getLevel(attackerHelmet.gold);
-		if(attackerHelmet != null) attackEvent.increasePercent += HelmetSystem.getTotalStacks(HelmetSystem.Passive.DAMAGE, attackLevel - 1) / 100D;
+		if(attackerHelmet != null && attackerHelmet.getInventorySlot(attackEvent.attacker) == -2) attackEvent.increasePercent += HelmetSystem.getTotalStacks(HelmetSystem.Passive.DAMAGE, attackLevel - 1) / 100D;
 
 		int defenderLevel = 0;
 		if(defenderHelmet != null) defenderLevel = HelmetSystem.getLevel(defenderHelmet.gold);
-		if(defenderHelmet != null) attackEvent.multiplier.add(Misc.getReductionMultiplier(HelmetSystem.getTotalStacks(HelmetSystem.Passive.DAMAGE_REDUCTION, defenderLevel - 1)));
+		if(defenderHelmet != null && attackerHelmet.getInventorySlot(attackEvent.attacker) == -2) attackEvent.multiplier.add(Misc.getReductionMultiplier(HelmetSystem.getTotalStacks(HelmetSystem.Passive.DAMAGE_REDUCTION, defenderLevel - 1)));
 
 	}
 
 	@EventHandler
 	public void onKill(KillEvent killEvent) {
+
+		if(NonManager.getNon(killEvent.killer) != null) return;
+		if(killEvent.killer.getInventory().getHelmet().getType() != Material.GOLD_HELMET) return;
+
 		GoldenHelmet helmet = getHelmetInstance(killEvent.killer);
 		if(helmet == null) return;
 
@@ -194,6 +197,13 @@ public class HelmetListeners implements Listener {
 			if(HelmetAbility.toggledHelmets.contains(goldenHelmet)) {
 				goldenHelmet.deactivate();
 			} else {
+				for(GoldenHelmet helmet : GoldenHelmet.INSTANCE.getHelmetsFromPlayer(player)) {
+					if(helmet.ability == null) continue;
+					if(helmet.ability.refName.equals(goldenHelmet.ability.refName) && HelmetAbility.toggledHelmets.contains(helmet)) {
+						AOutput.error(player, "&cAbility already activated!");
+						return;
+					}
+				}
 				HelmetAbility.toggledHelmets.add(goldenHelmet);
 				goldenHelmet.ability.onActivate();
 			}
@@ -207,8 +217,32 @@ public class HelmetListeners implements Listener {
 		crouchPlayers.remove(event.getPlayer());
 		for(GoldenHelmet goldenHelmet : GoldenHelmet.INSTANCE.getHelmetsFromPlayer(event.getPlayer())) {
 			HelmetAbility.toggledHelmets.remove(goldenHelmet);
+			if(goldenHelmet.ability != null) goldenHelmet.deactivate();
 		}
 
+	}
+
+	@EventHandler
+	public void onRemove(InventoryClickEvent event) {
+
+		Player player = (Player) event.getWhoClicked();
+
+		if(event.getClickedInventory().getType() != InventoryType.PLAYER) return;
+		if(Misc.isAirOrNull(player.getInventory().getHelmet())) return;
+		if(event.getSlot() == 39 && player.getInventory().getHelmet().getType() == Material.GOLD_HELMET) {
+			for(GoldenHelmet goldenHelmet : GoldenHelmet.INSTANCE.getHelmetsFromPlayer(player)) {
+				if(goldenHelmet.ability != null) goldenHelmet.deactivate();
+			}
+
+		}
+	}
+
+	@EventHandler
+	public void onDrop(PlayerDropItemEvent event) {
+		if(event.getItemDrop().getItemStack().getType() != Material.GOLD_HELMET) return;
+		for(GoldenHelmet goldenHelmet : GoldenHelmet.INSTANCE.getHelmetsFromPlayer(event.getPlayer())) {
+			if(goldenHelmet.ability != null) goldenHelmet.deactivate();
+		}
 	}
 
 	public static int getInventorySlot(Player owner) {

@@ -14,6 +14,7 @@ import dev.kyro.pitsim.controllers.objects.PitEnchant;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.enchants.GoldBoost;
 import dev.kyro.pitsim.enchants.*;
+import dev.kyro.pitsim.helmetabilities.Blob;
 import dev.kyro.pitsim.helmetabilities.Leap;
 import dev.kyro.pitsim.killstreaks.*;
 import dev.kyro.pitsim.misc.ChunkOfVile;
@@ -318,7 +319,8 @@ public class PitSim extends JavaPlugin {
 		getCommand("crategive").setExecutor(new OldCrateGiveCommand());
 		getCommand("cg").setExecutor(new CrateGiveCommand());
 		getCommand("pitreload").setExecutor(new ReloadCommand());
-		getCommand("setvalue").setExecutor(new SetValueCommand());
+		getCommand("setlevel").setExecutor(new SetLevelCommand());
+
 //		getCommand("togglestereo").setExecutor(new ToggleStereoCommand());
 	}
 
@@ -341,6 +343,7 @@ public class PitSim extends JavaPlugin {
 		getServer().getPluginManager().registerEvents(new ChunkOfVile(), this);
 		getServer().getPluginManager().registerEvents(new LauncherListeners(this), this);
 		getServer().getPluginManager().registerEvents(new HelmetListeners(), this);
+		getServer().getPluginManager().registerEvents(new PitBlob(), this);
 
 	}
 
@@ -368,6 +371,7 @@ public class PitSim extends JavaPlugin {
 
 	public void registerHelmetAbilities() {
 		HelmetAbility.registerHelmetAbility(new Leap(null));
+		HelmetAbility.registerHelmetAbility(new Blob(null));
 
 	}
 

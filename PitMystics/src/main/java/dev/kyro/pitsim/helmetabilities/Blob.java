@@ -4,21 +4,26 @@ import dev.kyro.arcticapi.builders.AItemStackBuilder;
 import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.arcticapi.misc.ASound;
-import dev.kyro.pitsim.controllers.Cooldown;
+import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.controllers.HelmetListeners;
 import dev.kyro.pitsim.controllers.objects.GoldenHelmet;
 import dev.kyro.pitsim.controllers.objects.HelmetAbility;
-import dev.kyro.pitsim.enchants.Pullbow;
+import dev.kyro.pitsim.enchants.PitBlob;
 import org.bukkit.Material;
 import org.bukkit.Sound;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
+import org.bukkit.entity.Slime;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.scheduler.BukkitTask;
 
 import java.text.DecimalFormat;
 import java.util.Arrays;
 import java.util.List;
 
 public class Blob extends HelmetAbility {
+	BukkitTask runnable;
 	public Blob(Player player) {
 
 		super(player,"Pit Blob", "pitblob", true, 11);
@@ -28,36 +33,51 @@ public class Blob extends HelmetAbility {
 	@Override
 	public void onActivate() {
 
+		GoldenHelmet goldenHelmet = HelmetListeners.getHelmetInstance(player);
+
+		assert goldenHelmet != null;
+		if(!goldenHelmet.withdrawGold(10000)) {
+			AOutput.error(player,"&cNot enough gold!");
+			HelmetAbility.toggledHelmets.remove(goldenHelmet);
+			ASound.play(player, Sound.VILLAGER_NO, 1F, 1F);
+			return;
+		}
+
+		Slime slime;
+		slime = (Slime) player.getWorld().spawnEntity(player.getLocation(), EntityType.SLIME);
+		slime.setSize(1);
+		PitBlob.blobMap.put(player.getUniqueId(), slime);
+		ASound.play(player, Sound.NOTE_PLING, 1.3F, 2);
+		AOutput.send(player, "&6&lGOLDEN HELMET! &7Activated one minute of &9Pit Blob&7. (&6-10,000g&7)");
+
+		runnable = new BukkitRunnable() {
+			@Override
+			public void run() {
+				if(!goldenHelmet.withdrawGold(10000)) {
+					AOutput.error(player,"&cNot enough gold!");
+					goldenHelmet.deactivate();
+					ASound.play(player, Sound.VILLAGER_NO, 1F, 1F);
+				} else {
+					ASound.play(player, Sound.NOTE_STICKS, 2F, 1.5F);
+				}
+			}
+		}.runTaskTimer(PitSim.INSTANCE, 20L, 20);
+
+
 	}
 
 	@Override
 	public void onDeactivate() {
+		Slime slime = PitBlob.blobMap.get(player.getUniqueId());
+		slime.remove();
+		PitBlob.blobMap.remove(player.getUniqueId());
+		runnable.cancel();
+		AOutput.send(player, "&6&lGOLDEN HELMET! &cDeactivated &9Pit Blob&c.");
 
 	}
 
 	@Override
 	public void onProc() {
-
-		GoldenHelmet goldenHelmet = HelmetListeners.getHelmetInstance(player);
-
-		assert goldenHelmet != null;
-		if(!goldenHelmet.withdrawGold(10000)) {
-			AOutput.error(player, "&cNot enough gold!");
-			ASound.play(player, Sound.VILLAGER_NO, 1F, 1F);
-			return;
-		}
-
-		Cooldown cooldown = getCooldown(player, 100);
-		if(cooldown.isOnCooldown()) {
-			AOutput.error(player, "&cAbility on cooldown!");
-			ASound.play(player, Sound.VILLAGER_NO, 1F, 1F);
-			return;
-		} else cooldown.reset();
-
-
-		AOutput.send(player, "&6&lGOLDEN HELMET! &7Used &9Leap&7! (&6-10,000g&7)");
-		ASound.play(player, Sound.BAT_TAKEOFF, 1, 1);
-		player.setVelocity(player.getLocation().getDirection().multiply(Pullbow.getMultiplier(6)));
 
 
 	}
@@ -78,4 +98,8 @@ public class Blob extends HelmetAbility {
 
 		return builder.getItemStack();
 	}
+
+
+
+
 }
