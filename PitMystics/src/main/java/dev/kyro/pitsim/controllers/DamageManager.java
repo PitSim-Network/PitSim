@@ -413,7 +413,6 @@ public class DamageManager implements Listener {
 	public static void Death(Player dead) {
 		Telebow.teleShots.removeIf(teleShot -> teleShot.getShooter().equals(dead));
 
-
 		dead.setHealth(dead.getMaxHealth());
 		dead.playEffect(EntityEffect.HURT);
 		dead.playSound(dead.getLocation(), Sound.FALL_BIG, 1000, 1F);

@@ -172,14 +172,13 @@ public class Beastmode extends Megastreak {
 			pitPlayer.prefix = "&7[&e" + pitPlayer.playerLevel + "&7] &7" + PlaceholderAPI.setPlaceholders(pitPlayer.player, message);
 		}
 
-        int randomNum = ThreadLocalRandom.current().nextInt(1000, 5000 + 1);
-        if(DoubleDeath.INSTANCE.isDoubleDeath(pitPlayer.player)) randomNum = randomNum * 2;
-        if(pitPlayer.megastreak.isOnMega())  {
+        if(pitPlayer.megastreak.isOnMega()) {
+			int randomNum = ThreadLocalRandom.current().nextInt(1000, 5000 + 1);
+			if(DoubleDeath.INSTANCE.isDoubleDeath(pitPlayer.player)) randomNum = randomNum * 2;
             AOutput.send(pitPlayer.player, "&c&lBEASTMODE! &7Earned &b" + randomNum + "&b XP &7from megastreak!");
             pitPlayer.remainingXP = Math.max(pitPlayer.remainingXP - randomNum, 0);
 	        LevelManager.incrementLevel(pitPlayer.player);
         }
-
 	}
 
 	@Override

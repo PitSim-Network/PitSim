@@ -174,9 +174,10 @@ public class Highlander extends Megastreak {
         } else {
             pitPlayer.prefix = "&7[&e" + pitPlayer.playerLevel + "&7] &7" + PlaceholderAPI.setPlaceholders(pitPlayer.player, message);
         }
-        if(DoubleDeath.INSTANCE.isDoubleDeath(pitPlayer.player)) pitPlayer.bounty = pitPlayer.bounty * 2;
-        PitSim.VAULT.depositPlayer(pitPlayer.player, pitPlayer.bounty);
+
         if(pitPlayer.bounty != 0 && pitPlayer.megastreak.isOnMega()) {
+			if(DoubleDeath.INSTANCE.isDoubleDeath(pitPlayer.player)) pitPlayer.bounty = pitPlayer.bounty * 2;
+			PitSim.VAULT.depositPlayer(pitPlayer.player, pitPlayer.bounty);
             AOutput.send(pitPlayer.player, "&6&lHIGHLANDER! &7Earned &6+" + pitPlayer.bounty + "&6g &7from megastreak!");
             pitPlayer.bounty = 0;
         }
