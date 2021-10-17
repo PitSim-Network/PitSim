@@ -33,3 +33,4 @@ commands:
   afk:
   pitreload:
   setvalue:
+  check:

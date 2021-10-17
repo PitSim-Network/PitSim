@@ -313,6 +313,7 @@ public class PitSim extends JavaPlugin {
 		getCommand("cg").setExecutor(new CrateGiveCommand());
 		getCommand("pitreload").setExecutor(new ReloadCommand());
 		getCommand("setvalue").setExecutor(new SetValueCommand());
+		getCommand("check").setExecutor(new AnticheatCommand());
 //		getCommand("togglestereo").setExecutor(new ToggleStereoCommand());
 	}
 
@@ -334,7 +335,7 @@ public class PitSim extends JavaPlugin {
 		getServer().getPluginManager().registerEvents(new TotallyLegitGem(), this);
 		getServer().getPluginManager().registerEvents(new ChunkOfVile(), this);
 		getServer().getPluginManager().registerEvents(new ReachAutoBan(), this);
-
+		getServer().getPluginManager().registerEvents(new NonAnticheat(), this);
 	}
 
 	public void registerUpgrades() {
