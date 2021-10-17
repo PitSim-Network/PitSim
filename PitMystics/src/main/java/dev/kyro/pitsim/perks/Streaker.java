@@ -16,6 +16,7 @@ import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 
+import java.text.DecimalFormat;
 import java.util.*;
 
 public class Streaker extends PitPerk {
@@ -62,8 +63,9 @@ public class Streaker extends PitPerk {
 
 				xpReward.put(player, xp);
 
+				DecimalFormat format = new DecimalFormat("0.#");
 				AOutput.send(player, "&b&lSTREAKER! &7You hit your megastreak in &e" +
-						playerTimes.get(player) + " seconds&7. Gained &b+" + Math.ceil((xp - 1) * 100) + "% XP &7for the rest of the streak.");
+						playerTimes.get(player) + " seconds&7. Gain &b+" + format.format(Math.ceil((xp - 1) * 100)) + "% XP &7for the rest of the streak.");
 				ASound.play(player, Sound.BURP, 2, 1.2F);
 				playerTimes.remove(player);
 				return;
