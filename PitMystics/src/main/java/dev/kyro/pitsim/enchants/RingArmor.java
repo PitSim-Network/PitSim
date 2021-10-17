@@ -37,8 +37,8 @@ public class RingArmor extends PitEnchant {
 	@Override
 	public List<String> getDescription(int enchantLvl) {
 
-		return new ALoreBuilder("&7Receive &9-" + getDamageReduction(enchantLvl) + "% &7damage from",
-				"&7arrows and deal &c+" + getDamageReduction(enchantLvl) + "% &7damage on", "&7your next melee hit").getLore();
+		return new ALoreBuilder("&7Receive &9-" + getDamageReduction(enchantLvl) + "% &7damage when",
+				"&7shot. Deal &c+" + getDamageReduction(enchantLvl) + "% &7damage on", "&7your next melee hit").getLore();
 	}
 
 	public double getDamageMultiplier(int enchantLvl) {
