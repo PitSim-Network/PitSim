@@ -106,7 +106,7 @@ public class ToTheMoon extends Megastreak {
 		if(pitPlayer.megastreak.getClass() == ToTheMoon.class) {
 //			TODO: Update lore
 			if(pitPlayer.getKills() > 200) {
-				double increase = (5 * ((pitPlayer.getKills() - 300) / 20))/100D;
+				double increase = (5 * ((pitPlayer.getKills() - 200) / 20))/100D;
 				if(NonManager.getNon(attackEvent.attacker) == null) {
 					attackEvent.increasePercent += increase;
 				} else attackEvent.increasePercent += (increase * 3);
