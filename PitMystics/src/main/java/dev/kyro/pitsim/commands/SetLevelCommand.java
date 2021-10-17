@@ -2,6 +2,7 @@ package dev.kyro.pitsim.commands;
 
 import dev.kyro.arcticapi.data.APlayerData;
 import dev.kyro.arcticapi.misc.AOutput;
+import dev.kyro.pitsim.controllers.LevelManager;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -20,7 +21,9 @@ public class SetLevelCommand implements CommandExecutor {
         PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
 
         try {
-            pitPlayer.level = Integer.parseInt(args[0]);
+            pitPlayer.level = Integer.parseInt(args[0]) - 1;
+            pitPlayer.remainingXP = 0;
+            LevelManager.incrementLevel(player);
         } catch(Exception e) {
             AOutput.error(player, "&cLevel set Failed!");
             return false;
