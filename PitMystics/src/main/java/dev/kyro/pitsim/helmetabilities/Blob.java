@@ -24,6 +24,7 @@ import java.util.List;
 
 public class Blob extends HelmetAbility {
 	BukkitTask runnable;
+	boolean isActive;
 	public Blob(Player player) {
 
 		super(player,"Pit Blob", "pitblob", true, 11);
@@ -38,7 +39,7 @@ public class Blob extends HelmetAbility {
 		assert goldenHelmet != null;
 		if(!goldenHelmet.withdrawGold(10000)) {
 			AOutput.error(player,"&cNot enough gold!");
-			HelmetAbility.toggledHelmets.remove(goldenHelmet);
+			HelmetAbility.toggledHelmets.remove(goldenHelmet.uuid);
 			ASound.play(player, Sound.VILLAGER_NO, 1F, 1F);
 			return;
 		}
@@ -49,6 +50,7 @@ public class Blob extends HelmetAbility {
 		PitBlob.blobMap.put(player.getUniqueId(), slime);
 		ASound.play(player, Sound.NOTE_PLING, 1.3F, 2);
 		AOutput.send(player, "&6&lGOLDEN HELMET! &7Activated one minute of &9Pit Blob&7. (&6-10,000g&7)");
+		isActive = true;
 
 		runnable = new BukkitRunnable() {
 			@Override
@@ -59,6 +61,7 @@ public class Blob extends HelmetAbility {
 					ASound.play(player, Sound.VILLAGER_NO, 1F, 1F);
 				} else {
 					ASound.play(player, Sound.NOTE_STICKS, 2F, 1.5F);
+					isActive = true;
 				}
 			}
 		}.runTaskTimer(PitSim.INSTANCE, 20L, 20);
@@ -69,10 +72,11 @@ public class Blob extends HelmetAbility {
 	@Override
 	public void onDeactivate() {
 		Slime slime = PitBlob.blobMap.get(player.getUniqueId());
-		slime.remove();
+		if(slime != null) slime.remove();
 		PitBlob.blobMap.remove(player.getUniqueId());
 		runnable.cancel();
 		AOutput.send(player, "&6&lGOLDEN HELMET! &cDeactivated &9Pit Blob&c.");
+		isActive = false;
 
 	}
 
@@ -80,6 +84,11 @@ public class Blob extends HelmetAbility {
 	public void onProc() {
 
 
+	}
+
+	@Override
+	public boolean isActive() {
+		return isActive;
 	}
 
 	@Override

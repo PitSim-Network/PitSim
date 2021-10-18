@@ -11,7 +11,7 @@ import java.util.*;
 public abstract class HelmetAbility implements Listener {
 
     public static List<HelmetAbility> helmetAbilities = new ArrayList<>();
-    public static List<GoldenHelmet> toggledHelmets = new ArrayList<>();
+    public static List<UUID> toggledHelmets = new ArrayList<>();
 
     public Player player;
     public String name;
@@ -30,6 +30,7 @@ public abstract class HelmetAbility implements Listener {
     public void onActivate() { }
     public void onDeactivate() { }
     public void onProc() { }
+    public abstract boolean isActive();
 
     public abstract List<String> getDescription();
     public abstract ItemStack getDisplayItem();
