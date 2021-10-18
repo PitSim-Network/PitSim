@@ -26,14 +26,17 @@ public class MapManager {
     public static int desertY = 42;
 
     public static Location playerSnow = new org.bukkit.Location(Bukkit.getWorld("pit"), -99, 46, 707, 0, 0);
-    public static Location snowNonSpawn = new Location(Bukkit.getWorld("pit"), -99, 55, 716, -90, 0);
+    public static Location snowNonSpawn = new Location(Bukkit.getWorld("pit"), -99, 46, 716, -90, 0);
     public static Location snowMid = new Location(Bukkit.getWorld("pit"), -98, 6, 716);
     public static int snowY = 4;
 
     public static Location getNonSpawn() {
 
-        if(map == GameMap.STARWARS) return snowNonSpawn;
-        else return desertNonSpawn;
+        Location spawn = map == GameMap.STARWARS ? snowNonSpawn : desertNonSpawn;
+        spawn = spawn.clone();
+        spawn.setX(spawn.getX() + (Math.random() * 6 - 3));
+        spawn.setZ(spawn.getZ() + (Math.random() * 6 - 3));
+        return spawn;
     }
 
     public static Location getMid() {

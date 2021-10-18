@@ -1,2 +1,8 @@
 prefix: "&7[&b&lA&7]&f "
 error-prefix: "&8[&c&lA&8]&f "
+whitelisted-ips:
+  - '/127.0.0.1'
+anticheat:
+  abnormal-angle: 40
+  abnormal-distance: 30
+  alert-interval: 15
