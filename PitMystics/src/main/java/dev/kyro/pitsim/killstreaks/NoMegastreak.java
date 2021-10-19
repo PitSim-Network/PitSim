@@ -58,6 +58,11 @@ public class NoMegastreak extends Megastreak {
 	}
 
 	@Override
+	public int levelReq() {
+		return 0;
+	}
+
+	@Override
 	public ItemStack guiItem() {
 		ItemStack item = new ItemStack(Material.REDSTONE_BLOCK);
 		ItemMeta meta = item.getItemMeta();

@@ -17,6 +17,7 @@ public abstract class HelmetAbility implements Listener {
     public String name;
     public String refName;
     public boolean isTogglable;
+    public boolean isActive = false;
     public int slot;
 
     public HelmetAbility(Player player, String name, String refName, boolean isTogglable, int slot) {
@@ -28,9 +29,10 @@ public abstract class HelmetAbility implements Listener {
     }
 
     public void onActivate() { }
+    public abstract boolean shouldActivate();
     public void onDeactivate() { }
     public void onProc() { }
-    public abstract boolean isActive();
+
 
     public abstract List<String> getDescription();
     public abstract ItemStack getDisplayItem();

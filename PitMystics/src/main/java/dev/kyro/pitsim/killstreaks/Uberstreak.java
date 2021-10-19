@@ -72,6 +72,11 @@ public class Uberstreak extends Megastreak {
 	}
 
 	@Override
+	public int levelReq() {
+		return 100;
+	}
+
+	@Override
 	public int getRequiredKills() {
 		return 100;
 	}

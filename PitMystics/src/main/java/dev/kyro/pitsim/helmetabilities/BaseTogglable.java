@@ -22,10 +22,9 @@ import java.text.DecimalFormat;
 import java.util.Arrays;
 import java.util.List;
 
-public class Blob extends HelmetAbility {
-	BukkitTask runnable;
-	boolean isActive;
-	public Blob(Player player) {
+public class BaseTogglable extends HelmetAbility {
+	public BukkitTask runnable;
+	public BaseTogglable(Player player) {
 
 		super(player,"Pit Blob", "pitblob", true, 11);
 	}
@@ -63,10 +62,10 @@ public class Blob extends HelmetAbility {
 	@Override
 	public boolean shouldActivate() {
 		GoldenHelmet goldenHelmet = HelmetListeners.getHelmetInstance(player);
-
 		assert goldenHelmet != null;
 		if(!goldenHelmet.withdrawGold(10000)) {
 			AOutput.error(player,"&cNot enough gold!");
+			HelmetAbility.toggledHelmets.remove(goldenHelmet.uuid);
 			ASound.play(player, Sound.VILLAGER_NO, 1F, 1F);
 			return false;
 		}
@@ -80,6 +79,7 @@ public class Blob extends HelmetAbility {
 		PitBlob.blobMap.remove(player.getUniqueId());
 		runnable.cancel();
 		AOutput.send(player, "&6&lGOLDEN HELMET! &cDeactivated &9Pit Blob&c.");
+		isActive = false;
 
 	}
 

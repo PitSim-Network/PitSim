@@ -31,6 +31,11 @@ public class Leap extends HelmetAbility {
 	}
 
 	@Override
+	public boolean shouldActivate() {
+		return false;
+	}
+
+	@Override
 	public void onDeactivate() {
 
 	}
@@ -65,10 +70,6 @@ public class Leap extends HelmetAbility {
 
 	}
 
-	@Override
-	public boolean isActive() {
-		return false;
-	}
 
 	@Override
 	public List<String> getDescription() {

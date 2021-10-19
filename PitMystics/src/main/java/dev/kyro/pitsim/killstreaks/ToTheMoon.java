@@ -69,6 +69,11 @@ public class ToTheMoon extends Megastreak {
 		return 33;
 	}
 
+	@Override
+	public int levelReq() {
+		return 50;
+	}
+
 
 	@Override
 	public ItemStack guiItem() {

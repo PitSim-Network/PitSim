@@ -69,6 +69,11 @@ public class Overdrive extends Megastreak {
 	}
 
 	@Override
+	public int levelReq() {
+		return 0;
+	}
+
+	@Override
 	public ItemStack guiItem() {
 		ItemStack item = new ItemStack(Material.BLAZE_POWDER);
 		ItemMeta meta = item.getItemMeta();

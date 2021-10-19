@@ -69,6 +69,9 @@ public class Beastmode extends Megastreak {
 	}
 
 	@Override
+	public int levelReq() {return 50;}
+
+	@Override
 	public ItemStack guiItem() {
 
 

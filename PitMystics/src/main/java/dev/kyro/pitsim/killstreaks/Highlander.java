@@ -74,6 +74,11 @@ public class Highlander extends Megastreak {
 	}
 
 	@Override
+	public int levelReq() {
+		return 90;
+	}
+
+	@Override
 	public ItemStack guiItem() {
 
 
