@@ -141,6 +141,8 @@ public class HelmetAbilityPanel extends AGUIPanel {
     }
 
 
+
+
     @Override
     public void onClose(InventoryCloseEvent event) {
     }
