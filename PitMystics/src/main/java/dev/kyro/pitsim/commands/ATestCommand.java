@@ -2,7 +2,6 @@ package dev.kyro.pitsim.commands;
 
 import dev.kyro.pitsim.controllers.PrestigeValues;
 import dev.kyro.pitsim.inventories.PrestigeGUI;
-import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -110,7 +109,6 @@ public class ATestCommand implements CommandExecutor {
 
 			xp += PrestigeValues.getXPForLevel(i);
 		}
-		Bukkit.broadcastMessage(xp + "");
 
 //		System.out.println(player.getItemInHand().toString());
 //		NBTItem nbtItem = new NBTItem(player.getItemInHand());

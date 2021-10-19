@@ -12,11 +12,13 @@ public class HealEvent extends Event {
 
 	public Player player;
 	private final double initialHeal;
+	public HealType healType;
 	public List<Double> multipliers = new ArrayList<>();
 
-	public HealEvent(Player player, double initialHeal) {
+	public HealEvent(Player player, double initialHeal, HealType healType) {
 		this.player = player;
 		this.initialHeal = initialHeal;
+		this.healType = healType;
 	}
 
 	@Override
@@ -33,5 +35,10 @@ public class HealEvent extends Event {
 		double finalHeal = initialHeal;
 		for(Double multiplier : multipliers) finalHeal *= multiplier;
 		return finalHeal;
+	}
+
+	public enum HealType {
+		HEALTH,
+		ABSORPTION
 	}
 }

@@ -114,13 +114,12 @@ public class Highlander extends Megastreak {
 		if(pitPlayer != this.pitPlayer) return;
 		if(pitPlayer.megastreak.isOnMega() && pitPlayer.megastreak.getClass() == Highlander.class) {
 			int ks = (int) Math.floor(pitPlayer.getKills());
-//            attackEvent.increasePercent += ((ks / 5)  / 100D) * 8;
+//			TODO: Update lore
 			if(NonManager.getNon(attackEvent.attacker) == null) {
-				attackEvent.increasePercent += (ks - 50) / 100D;
+				attackEvent.increasePercent += (ks - 50) / 200D;
 			} else {
-				attackEvent.increasePercent += ((ks - 50) * 3) / 100D;
+				attackEvent.increasePercent += ((ks - 50) * 3) / 200D;
 			}
-//            Bukkit.broadcastMessage(attackEvent.getFinalDamage() + "");
 		}
 	}
 

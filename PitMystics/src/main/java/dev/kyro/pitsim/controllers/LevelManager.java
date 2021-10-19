@@ -16,7 +16,6 @@ import org.bukkit.entity.Player;
 
 public class LevelManager {
 
-
 	public static void addXp(Player player, int xp) {
 		if(!(NonManager.getNon(player) == null)) return;
 		FileConfiguration playerData = APlayerData.getPlayerData(player);
@@ -39,7 +38,6 @@ public class LevelManager {
 			playerData.set("prestige", pitPlayer.prestige);
 			APlayerData.savePlayerData(player);
 		}
-
 	}
 
 	public static void incrementLevel(Player player) {
@@ -115,14 +113,11 @@ public class LevelManager {
 			pitPlayer.prefix = PrestigeValues.getPlayerPrefix(pitPlayer.player) + PlaceholderAPI.setPlaceholders(pitPlayer.player, message);
 		}
 
-
 		ASound.play(player, Sound.ENDERDRAGON_GROWL, 1, 1);
 		Misc.sendTitle(player, "&e&lPRESTIGE!", 40);
 		Misc.sendSubTitle(player, "&7You unlocked prestige &e" + AUtil.toRoman(pitPlayer.prestige), 40);
 		String message2 = ChatColor.translateAlternateColorCodes('&', "&e&lPRESTIGE! %luckperms_prefix%%player_name% &7unlocked prestige &e" + AUtil.toRoman(pitPlayer.prestige) + "&7, gg!");
 		Bukkit.broadcastMessage(PlaceholderAPI.setPlaceholders(player, message2));
-
-
 	}
 
 	public static void setXPBar(Player player, PitPlayer pitPlayer) {
@@ -130,14 +125,12 @@ public class LevelManager {
 
 		player.setLevel(pitPlayer.level);
 		float remaining = pitPlayer.remainingXP;
-		float total = (PrestigeValues.getXPForLevel(pitPlayer.level) / 10);
+		PrestigeValues.PrestigeInfo prestigeInfo = PrestigeValues.getPrestigeInfo(pitPlayer.prestige);
+		float total = (float) (PrestigeValues.getXPForLevel(pitPlayer.level) * prestigeInfo.xpMultiplier);
 
 		player.setLevel(pitPlayer.level);
-		float xp = (total - remaining) /  total;
+		float xp = (total - remaining) / total;
 
 		player.setExp(xp);
-
 	}
-
-
 }

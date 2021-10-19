@@ -104,19 +104,25 @@ public class ToTheMoon extends Megastreak {
 		PitPlayer pitPlayer = PitPlayer.getPitPlayer(attackEvent.defender);
 		if(pitPlayer != this.pitPlayer) return;
 		if(pitPlayer.megastreak.getClass() == ToTheMoon.class) {
-			if(pitPlayer.getKills() > 300) {
-				double increase = (5 * ((pitPlayer.getKills() - 300) / 20))/100D;
+//			TODO: Update lore
+			if(pitPlayer.getKills() > 200) {
+				double increase = (5 * ((pitPlayer.getKills() - 200) / 20))/100D;
 				if(NonManager.getNon(attackEvent.attacker) == null) {
 					attackEvent.increasePercent += increase;
 				} else attackEvent.increasePercent += (increase * 3);
 			}
-			if(pitPlayer.getKills() > 700) {
-				attackEvent.increase += 0.2 * ((pitPlayer.getKills() - 700)/ 10);
+//			TODO: Update lore
+			if(pitPlayer.getKills() > 400) {
+				if(NonManager.getNon(attackEvent.attacker) == null) {
+					attackEvent.increase += 0.2 * ((pitPlayer.getKills() - 400) / 50);
+				} else attackEvent.increase += 0.6 * ((pitPlayer.getKills() - 400) / 50);
 			}
-
+//			TODO: Update lore
+			if(pitPlayer.getKills() > 700) {
+				attackEvent.veryTrueDamage += 0.2 * ((pitPlayer.getKills() - 700) / 10);
+			}
 		}
 	}
-
 
 	@EventHandler
 	public void onKill(KillEvent killEvent) {
@@ -127,7 +133,8 @@ public class ToTheMoon extends Megastreak {
 		if(!playerIsOnMega(killEvent)) return;
 
 		killEvent.xpCap += (pitPlayer.getKills() - 100) * 2;
-
+//		TODO: Update lore
+		killEvent.xpMultipliers.add(2.0);
 	}
 
 	@Override

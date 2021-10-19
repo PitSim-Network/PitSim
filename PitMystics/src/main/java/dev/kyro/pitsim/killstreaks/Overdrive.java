@@ -3,11 +3,11 @@ package dev.kyro.pitsim.killstreaks;
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.controllers.LevelManager;
-import dev.kyro.pitsim.controllers.NonManager;
 import dev.kyro.pitsim.controllers.PrestigeValues;
-import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.controllers.objects.Megastreak;
+import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.events.AttackEvent;
+import dev.kyro.pitsim.events.KillEvent;
 import dev.kyro.pitsim.misc.Misc;
 import dev.kyro.pitsim.upgrades.DoubleDeath;
 import me.clip.placeholderapi.PlaceholderAPI;
@@ -105,13 +105,24 @@ public class Overdrive extends Megastreak {
 		}
 		if(pitPlayer.megastreak.isOnMega() && pitPlayer.megastreak.getClass() == Overdrive.class) {
 			int ks = (int) Math.floor(pitPlayer.getKills());
-//            attackEvent.increasePercent += ((ks / 5)  / 100D) * 8;
-			if(NonManager.getNon(attackEvent.attacker) == null) {
-				attackEvent.increasePercent += (ks - 50) / 100D;
-			} else {
-				attackEvent.increasePercent += ((ks - 50) * 3) / 100D;
-			}
-//            Bukkit.broadcastMessage(attackEvent.getFinalDamage() + "");
+//			if(NonManager.getNon(attackEvent.attacker) == null) {
+//				attackEvent.increasePercent += (ks - 50) / 100D;
+//			} else {
+//				attackEvent.increasePercent += ((ks - 50) * 3) / 100D;
+//			}
+//			TODO: Update lore
+			attackEvent.veryTrueDamage += (ks - 50) / 37.5D;
+		}
+	}
+
+	@EventHandler
+	public void kill(KillEvent killEvent) {
+		PitPlayer pitPlayer = PitPlayer.getPitPlayer(killEvent.killer);
+		if(pitPlayer != this.pitPlayer) return;
+		if(pitPlayer.megastreak.isOnMega() && pitPlayer.megastreak.getClass() == Overdrive.class) {
+//			TODO: Update lore
+			killEvent.xpMultipliers.add(1.5);
+			killEvent.goldMultipliers.add(1.5);
 		}
 	}
 

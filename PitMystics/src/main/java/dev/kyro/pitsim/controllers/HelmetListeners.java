@@ -227,7 +227,7 @@ public class HelmetListeners implements Listener {
 
 		Player player = (Player) event.getWhoClicked();
 
-		if(event.getClickedInventory().getType() != InventoryType.PLAYER) return;
+		if(event.getClickedInventory() == null || event.getClickedInventory().getType() != InventoryType.PLAYER) return;
 		if(Misc.isAirOrNull(player.getInventory().getHelmet())) return;
 		if(event.getSlot() == 39 && player.getInventory().getHelmet().getType() == Material.GOLD_HELMET) {
 			try {

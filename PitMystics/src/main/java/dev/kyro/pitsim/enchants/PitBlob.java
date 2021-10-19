@@ -33,13 +33,13 @@ public class PitBlob extends PitEnchant {
 			@Override
 			public void run() {
 				for(Map.Entry<UUID, Slime> entry : blobMap.entrySet()) {
-					double damage = (entry.getValue().getSize() - 1) * 1.5;
+					double damage = (entry.getValue().getSize() - 1);
 					entry.getValue().setHealth(entry.getValue().getMaxHealth());
 					for(Entity entity : entry.getValue().getNearbyEntities(0, 0, 0)) {
 
 						if(!(entity instanceof Player)) continue;
 						Non non = NonManager.getNon((Player) entity);
-						if(non == null || DamageManager.hitCooldownList.contains(non.non)) continue;
+						if(non == null || DamageManager.nonHitCooldownList.contains(non.non)) continue;
 
 						EntityDamageByEntityEvent event = new EntityDamageByEntityEvent(entry.getValue(), non.non,
 								EntityDamageEvent.DamageCause.CUSTOM, damage);

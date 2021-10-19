@@ -164,21 +164,21 @@ public class PrestigeValues {
 		prestigeMap.put(32, new PrestigeInfo(32, 90.0, 2_800_000, 220, 15, "&f"));
 		prestigeMap.put(33, new PrestigeInfo(33, 120.0, 3_000_000, 230, 15, "&f")); //moon
 		prestigeMap.put(34, new PrestigeInfo(34, 125.0, 3_400_000, 240, 18, "&f"));
-		prestigeMap.put(35, new PrestigeInfo(35, 130.0, 4_000_000, 250, 18, "&4")); //withercraft
-		prestigeMap.put(36, new PrestigeInfo(36, 135.0, 4_600_000, 260, 18, "&4"));
-		prestigeMap.put(37, new PrestigeInfo(37, 140.0, 5_200_000, 270, 18, "&4"));
-		prestigeMap.put(38, new PrestigeInfo(38, 145.0, 6_000_000, 280, 18, "&4"));
-		prestigeMap.put(39, new PrestigeInfo(39, 150.0, 6_800_000, 290, 21, "&4"));
-		prestigeMap.put(40, new PrestigeInfo(40, 155.0, 8_000_000, 300, 21, "&a")); //celebrity
-		prestigeMap.put(41, new PrestigeInfo(41, 160.0, 8_400_000, 310, 21, "&a"));
-		prestigeMap.put(42, new PrestigeInfo(42, 165.0, 8_800_000, 320, 21, "&a"));
-		prestigeMap.put(43, new PrestigeInfo(43, 170.0, 9_200_000, 330, 21, "&a"));
-		prestigeMap.put(44, new PrestigeInfo(44, 175.0, 9_600_000, 340, 24, "&a"));
-		prestigeMap.put(45, new PrestigeInfo(45, 185.0, 10_000_000, 350, 27, "&2"));
-		prestigeMap.put(46, new PrestigeInfo(46, 195.0, 11_000_000, 375, 30, "&2"));
-		prestigeMap.put(47, new PrestigeInfo(47, 205.0, 12_000_000, 400, 35, "&2"));
-		prestigeMap.put(48, new PrestigeInfo(48, 225.0, 13_000_000, 500, 40, "&2"));
-		prestigeMap.put(49, new PrestigeInfo(49, 250.0, 20_000_000, 1000, 50, "&2"));
+		prestigeMap.put(35, new PrestigeInfo(35, 130.0, 4_000_000, 250, 18, "&a")); //withercraft
+		prestigeMap.put(36, new PrestigeInfo(36, 135.0, 4_600_000, 260, 18, "&a"));
+		prestigeMap.put(37, new PrestigeInfo(37, 140.0, 5_200_000, 270, 18, "&a"));
+		prestigeMap.put(38, new PrestigeInfo(38, 145.0, 6_000_000, 280, 18, "&a"));
+		prestigeMap.put(39, new PrestigeInfo(39, 150.0, 6_800_000, 290, 21, "&a"));
+		prestigeMap.put(40, new PrestigeInfo(40, 155.0, 8_000_000, 300, 21, "&2")); //celebrity
+		prestigeMap.put(41, new PrestigeInfo(41, 160.0, 8_400_000, 310, 21, "&2"));
+		prestigeMap.put(42, new PrestigeInfo(42, 165.0, 8_800_000, 320, 21, "&2"));
+		prestigeMap.put(43, new PrestigeInfo(43, 170.0, 9_200_000, 330, 21, "&2"));
+		prestigeMap.put(44, new PrestigeInfo(44, 175.0, 9_600_000, 340, 24, "&2"));
+		prestigeMap.put(45, new PrestigeInfo(45, 185.0, 10_000_000, 350, 27, "&4"));
+		prestigeMap.put(46, new PrestigeInfo(46, 195.0, 11_000_000, 375, 30, "&4"));
+		prestigeMap.put(47, new PrestigeInfo(47, 205.0, 12_000_000, 400, 35, "&4"));
+		prestigeMap.put(48, new PrestigeInfo(48, 225.0, 13_000_000, 500, 40, "&4"));
+		prestigeMap.put(49, new PrestigeInfo(49, 250.0, 20_000_000, 1000, 50, "&4"));
 		prestigeMap.put(50, new PrestigeInfo(50, 2000.0, 0, 0, 150, ""));
 	}
 }
