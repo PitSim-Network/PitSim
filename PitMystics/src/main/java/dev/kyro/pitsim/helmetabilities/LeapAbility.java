@@ -18,8 +18,8 @@ import java.text.DecimalFormat;
 import java.util.Arrays;
 import java.util.List;
 
-public class Leap extends HelmetAbility {
-	public Leap(Player player) {
+public class LeapAbility extends HelmetAbility {
+	public LeapAbility(Player player) {
 
 		super(player,"Leap", "leap", false, 10);
 	}

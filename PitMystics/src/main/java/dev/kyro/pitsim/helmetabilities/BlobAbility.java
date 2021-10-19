@@ -22,9 +22,9 @@ import java.text.DecimalFormat;
 import java.util.Arrays;
 import java.util.List;
 
-public class Blob extends HelmetAbility {
+public class BlobAbility extends HelmetAbility {
 	BukkitTask runnable;
-	public Blob(Player player) {
+	public BlobAbility(Player player) {
 
 		super(player,"Pit Blob", "pitblob", true, 11);
 	}
