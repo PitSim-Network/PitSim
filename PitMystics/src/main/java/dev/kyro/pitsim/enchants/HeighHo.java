@@ -8,7 +8,6 @@ import dev.kyro.pitsim.events.AttackEvent;
 import dev.kyro.pitsim.misc.Misc;
 import org.bukkit.event.EventHandler;
 
-import java.text.DecimalFormat;
 import java.util.List;
 
 public class HeighHo extends PitEnchant {
@@ -39,9 +38,8 @@ public class HeighHo extends PitEnchant {
 	@Override
 	public List<String> getDescription(int enchantLvl) {
 
-		DecimalFormat format = new DecimalFormat("0.#");
 		return new ALoreBuilder("&7Receive &9-" + getReduction(enchantLvl) + "% &7damage from mirror",
-				"&7users. Deal &c+" + format.format(getIncrease(enchantLvl)) + "% &7damage per", "&7mirror level on your opponent").getLore();
+				"&7users. Deal &c+" + getIncrease(enchantLvl) + "% &7damage per", "&7mirror level on your opponent").getLore();
 
 //		return new ALoreBuilder("&7Deal &c+" + Misc.roundString(getDamage(enchantLvl)) + " &7damage against", "&fMirror &7wearers").getLore();
 	}
@@ -51,8 +49,8 @@ public class HeighHo extends PitEnchant {
 		return enchantLvl * 5;
 	}
 
-	public double getIncrease(int enchantLvl) {
+	public int getIncrease(int enchantLvl) {
 
-		return enchantLvl * 2 + 1;
+		return enchantLvl * 3 + 1;
 	}
 }
