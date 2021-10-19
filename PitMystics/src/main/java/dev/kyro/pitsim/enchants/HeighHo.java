@@ -8,6 +8,7 @@ import dev.kyro.pitsim.events.AttackEvent;
 import dev.kyro.pitsim.misc.Misc;
 import org.bukkit.event.EventHandler;
 
+import java.text.DecimalFormat;
 import java.util.List;
 
 public class HeighHo extends PitEnchant {
@@ -32,25 +33,26 @@ public class HeighHo extends PitEnchant {
 		int defenderMirrorLvl = attackEvent.getDefenderEnchantLevel(EnchantManager.getEnchant("mirror"));
 		if(defenderMirrorLvl == 0) return;
 
-		attackEvent.increasePercent += getIncrease(attackerEnchantLvl) * defenderMirrorLvl;
+		attackEvent.increasePercent += getIncrease(attackerEnchantLvl) * defenderMirrorLvl / 100D;
 	}
 
 	@Override
 	public List<String> getDescription(int enchantLvl) {
 
+		DecimalFormat format = new DecimalFormat("0.#");
 		return new ALoreBuilder("&7Receive &9-" + getReduction(enchantLvl) + "% &7damage from mirror",
-				"&7users. Deal &c+" + getIncrease(enchantLvl) + "% damage per mirror", "&7level on your opponent").getLore();
+				"&7users. Deal &c+" + format.format(getIncrease(enchantLvl)) + "% &7damage per", "&7mirror level on your opponent").getLore();
 
 //		return new ALoreBuilder("&7Deal &c+" + Misc.roundString(getDamage(enchantLvl)) + " &7damage against", "&fMirror &7wearers").getLore();
 	}
 
 	public int getReduction(int enchantLvl) {
 
-		return enchantLvl;
+		return enchantLvl * 5;
 	}
 
 	public double getIncrease(int enchantLvl) {
 
-		return enchantLvl * 2.5D + 2.5D;
+		return enchantLvl * 2 + 1;
 	}
 }
