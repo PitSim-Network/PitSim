@@ -18,6 +18,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 public class GoldenHelmet {
 
@@ -29,6 +30,7 @@ public class GoldenHelmet {
 	public ItemStack item;
 	public int gold;
 	public HelmetAbility ability = null;
+	public UUID uuid;
 
 
 
@@ -38,6 +40,7 @@ public class GoldenHelmet {
 		NBTItem nbtItem = new NBTItem(item);
 		this.gold = nbtItem.getInteger(NBTTag.GHELMET_GOLD.getRef());
 		this.ability = generateInstance(owner, nbtItem.getString(NBTTag.GHELMET_ABILITY.getRef()));
+		this.uuid = UUID.fromString(nbtItem.getString(NBTTag.GHELMET_UUID.getRef()));
 
 
 		INSTANCE = this;
@@ -122,7 +125,7 @@ public class GoldenHelmet {
 	public List<GoldenHelmet> getHelmetsFromPlayer(Player player) {
 		List<GoldenHelmet> playerHelmets = new ArrayList<>();
 		for(GoldenHelmet helmet : helmets) {
-			if(owner == player) playerHelmets.add(helmet);
+			if(helmet.owner == player) playerHelmets.add(helmet);
 		}
 		return playerHelmets;
 	}
@@ -187,7 +190,7 @@ public class GoldenHelmet {
 
 	public void deactivate() {
 		this.ability.onDeactivate();
-		HelmetAbility.toggledHelmets.remove(this);
+		HelmetAbility.toggledHelmets.remove(this.uuid);
 	}
 
 }

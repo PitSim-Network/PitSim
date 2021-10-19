@@ -128,7 +128,7 @@ public class HelmetListeners implements Listener {
 
 		int defenderLevel = 0;
 		if(defenderHelmet != null) defenderLevel = HelmetSystem.getLevel(defenderHelmet.gold);
-		if(defenderHelmet != null && attackerHelmet.getInventorySlot(attackEvent.attacker) == -2) attackEvent.multiplier.add(Misc.getReductionMultiplier(HelmetSystem.getTotalStacks(HelmetSystem.Passive.DAMAGE_REDUCTION, defenderLevel - 1)));
+		if(defenderHelmet != null && defenderHelmet.getInventorySlot(attackEvent.defender) == -2) attackEvent.multiplier.add(Misc.getReductionMultiplier(HelmetSystem.getTotalStacks(HelmetSystem.Passive.DAMAGE_REDUCTION, defenderLevel - 1)));
 
 	}
 
@@ -194,17 +194,17 @@ public class HelmetListeners implements Listener {
 		}
 
 		if(goldenHelmet.ability.isTogglable) {
-			if(HelmetAbility.toggledHelmets.contains(goldenHelmet)) {
+			if(HelmetAbility.toggledHelmets.contains(goldenHelmet.uuid)) {
 				goldenHelmet.deactivate();
 			} else {
 				for(GoldenHelmet helmet : GoldenHelmet.INSTANCE.getHelmetsFromPlayer(player)) {
 					if(helmet.ability == null) continue;
-					if(helmet.ability.refName.equals(goldenHelmet.ability.refName) && HelmetAbility.toggledHelmets.contains(helmet)) {
+					if(helmet.ability.refName.equals(goldenHelmet.ability.refName) && HelmetAbility.toggledHelmets.contains(helmet.uuid)) {
 						AOutput.error(player, "&cAbility already activated!");
 						return;
 					}
 				}
-				HelmetAbility.toggledHelmets.add(goldenHelmet);
+				HelmetAbility.toggledHelmets.add(goldenHelmet.uuid);
 				goldenHelmet.ability.onActivate();
 			}
 		} else {
@@ -216,7 +216,7 @@ public class HelmetListeners implements Listener {
 	public void onQuit(PlayerQuitEvent event) {
 		crouchPlayers.remove(event.getPlayer());
 		for(GoldenHelmet goldenHelmet : GoldenHelmet.INSTANCE.getHelmetsFromPlayer(event.getPlayer())) {
-			HelmetAbility.toggledHelmets.remove(goldenHelmet);
+			HelmetAbility.toggledHelmets.remove(goldenHelmet.uuid);
 			if(goldenHelmet.ability != null) goldenHelmet.deactivate();
 		}
 
@@ -230,10 +230,14 @@ public class HelmetListeners implements Listener {
 		if(event.getClickedInventory() == null || event.getClickedInventory().getType() != InventoryType.PLAYER) return;
 		if(Misc.isAirOrNull(player.getInventory().getHelmet())) return;
 		if(event.getSlot() == 39 && player.getInventory().getHelmet().getType() == Material.GOLD_HELMET) {
-			for(GoldenHelmet goldenHelmet : GoldenHelmet.INSTANCE.getHelmetsFromPlayer(player)) {
-				if(goldenHelmet.ability != null) goldenHelmet.deactivate();
-			}
+			try {
 
+				for(GoldenHelmet goldenHelmet : GoldenHelmet.INSTANCE.getHelmetsFromPlayer(player)) {
+					if(goldenHelmet.ability != null && goldenHelmet.ability.isActive()) goldenHelmet.deactivate();
+				}
+			} catch(Exception ignored) {
+
+			}
 		}
 	}
 
@@ -241,7 +245,7 @@ public class HelmetListeners implements Listener {
 	public void onDrop(PlayerDropItemEvent event) {
 		if(event.getItemDrop().getItemStack().getType() != Material.GOLD_HELMET) return;
 		for(GoldenHelmet goldenHelmet : GoldenHelmet.INSTANCE.getHelmetsFromPlayer(event.getPlayer())) {
-			if(goldenHelmet.ability != null) goldenHelmet.deactivate();
+			if(goldenHelmet.ability != null && goldenHelmet.ability.isActive()) goldenHelmet.deactivate();
 		}
 	}
 

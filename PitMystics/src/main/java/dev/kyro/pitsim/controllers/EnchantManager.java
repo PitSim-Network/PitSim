@@ -116,7 +116,6 @@ public class EnchantManager implements Listener {
 			} else if(applyEnchant.isRare && applyLvl - currentLvl + rTokenNum > 4) {
 				throw new MaxTokensExceededException(true);
 			} else if(enchantNum >= 3 && applyLvl != 0 && currentLvl == 0) {
-				Bukkit.broadcastMessage(applyLvl + "");
 				throw new MaxEnchantsExceededException();
 			}
 		}

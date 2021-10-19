@@ -47,8 +47,9 @@ public class MegastreakPanel extends AGUIPanel {
 
     @Override
     public void onClick(InventoryClickEvent event) {
-        boolean level = false;
+        boolean prestige = false;
         boolean has = false;
+        boolean level = false;
         boolean uberCd = false;
 
         int slot = event.getSlot();
@@ -63,68 +64,78 @@ public class MegastreakPanel extends AGUIPanel {
                     PitPlayer pitPlayer = PitPlayer.getPitPlayer(perkGUI.player);
                     pitPlayer.setKills(0);
                     if(megastreak.getClass() == NoMegastreak.class) {
-                        if(pitPlayer.prestige < 0) level = true;
+                        if(pitPlayer.prestige < 0) prestige = true;
+                        if(pitPlayer.level < 0) level = true;
                         if(pitPlayer.megastreak.getClass() == NoMegastreak.class) has = true;
-                        if(!has && !level) {
+                        if(!has && !prestige) {
                             pitPlayer.megastreak.stop();
                             pitPlayer.megastreak = new NoMegastreak(pitPlayer);
                             perkGUI.megaWrapUp();
                         }
                     } else if(megastreak.getClass() == Overdrive.class) {
-                        if(pitPlayer.prestige < 0) level = true;
+                        if(pitPlayer.prestige < 0) prestige = true;
+                        if(pitPlayer.level < 0) level = true;
                         if(pitPlayer.megastreak.getClass() == Overdrive.class) has = true;
-                        if(!has && !level) {
+                        if(!has && !prestige) {
                             pitPlayer.megastreak.stop();
                             pitPlayer.megastreak = new Overdrive(pitPlayer);
                             perkGUI.megaWrapUp();
                         }
                     } else if(megastreak.getClass() == Highlander.class) {
-                        if(pitPlayer.prestige < 25) level = true;
+                        if(pitPlayer.prestige < 25) prestige = true;
                         if(pitPlayer.megastreak.getClass() == Highlander.class) has = true;
-                        if(!has && !level) {
+                        if(pitPlayer.level < 80) level = true;
+                        if(!has && !prestige) {
                             pitPlayer.megastreak.stop();
                             pitPlayer.megastreak = new Highlander(pitPlayer);
                             perkGUI.megaWrapUp();
                         }
                     } else if(megastreak.getClass() == Beastmode.class) {
-                        if(pitPlayer.prestige < 16) level = true;
+                        if(pitPlayer.prestige < 16) prestige = true;
                         if(pitPlayer.megastreak.getClass() == Beastmode.class) has = true;
-                        if(!has && !level) {
+                        if(pitPlayer.level < 50) level = true;
+                        if(!has && !prestige) {
                             pitPlayer.megastreak.stop();
                             pitPlayer.megastreak = new Beastmode(pitPlayer);
                             perkGUI.megaWrapUp();
                         }
                     } else if(megastreak.getClass() == Uberstreak.class) {
-                        if(pitPlayer.prestige < 20) level = true;
+                        if(pitPlayer.prestige < 20) prestige = true;
                         if(pitPlayer.megastreak.getClass() == Uberstreak.class) has = true;
+                        if(pitPlayer.level < 100) level = true;
                         if(pitPlayer.dailyUbersLeft <= 0) uberCd = true;
-                        if(!has && !level && !uberCd) {
+                        if(!has && !prestige && !uberCd) {
                             pitPlayer.megastreak.stop();
                             pitPlayer.megastreak = new Uberstreak(pitPlayer);
                             perkGUI.megaWrapUp();
                         }
                     } else if(megastreak.getClass() == ToTheMoon.class) {
-                    if(pitPlayer.prestige < 33) level = true;
+                    if(pitPlayer.prestige < 33) prestige = true;
                     if(pitPlayer.megastreak.getClass() == ToTheMoon.class) has = true;
-                    if(!has && !level && !uberCd) {
+                        if(pitPlayer.level < 50) level = true;
+                    if(!has && !prestige && !uberCd) {
                         pitPlayer.megastreak.stop();
                         pitPlayer.megastreak = new ToTheMoon(pitPlayer);
                         perkGUI.megaWrapUp();
                     }
                 }
-                    if(!level && !has && !uberCd) {
+                    if(!prestige && !has && !uberCd) {
                         openPanel(perkGUI.getHomePanel());
                         player.playSound(player.getLocation(), Sound.NOTE_PLING, 1F, 2F);
                         FileConfiguration playerData = APlayerData.getPlayerData(player);
                         playerData.set("megastreak", megastreak.getRawName());
                         APlayerData.savePlayerData(player);
                     }
-                    if(level) {
-                        AOutput.error(player, "&cYou arent high enough level to use this");
+                    if(prestige) {
+                        AOutput.error(player, "&cYou arent high enough prestige to use this");
                         player.playSound(player.getLocation(), Sound.ENDERMAN_TELEPORT, 1F, 0.5F);
                     }
                     if(has) {
                         AOutput.error(player, "&cThat megastreak is already equipped");
+                        player.playSound(player.getLocation(), Sound.ENDERMAN_TELEPORT, 1F, 0.5F);
+                    }
+                    if(level) {
+                        AOutput.error(player, "&cYou are not high enough level to use this megastreak!");
                         player.playSound(player.getLocation(), Sound.ENDERMAN_TELEPORT, 1F, 0.5F);
                     }
                     if(uberCd) {

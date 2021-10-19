@@ -200,7 +200,7 @@ public class Uberstreak extends Megastreak {
 	public void reset() {
 		pitPlayer.updateMaxHealth();
 
-		if(pitPlayer.getKills() < 400)  return;
+		if(pitPlayer.getKills() < 400) return;
 		if(!isOnMega()) return;
 
 		if(pitPlayer.uberReset == 0) {

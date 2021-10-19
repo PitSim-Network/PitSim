@@ -25,6 +25,7 @@ public abstract class Megastreak implements Listener {
 	public abstract ItemStack guiItem();
 	public abstract int guiSlot();
 	public abstract int prestigeReq();
+	public abstract int levelReq();
 
 	public abstract void stop();
 	public abstract void proc();
