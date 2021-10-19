@@ -1,9 +1,11 @@
 package dev.kyro.pitsim.enchants;
 
+import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.pitsim.controllers.EnchantManager;
 import dev.kyro.pitsim.controllers.objects.PitEnchant;
 import dev.kyro.pitsim.enums.ApplyType;
 import dev.kyro.pitsim.events.AttackEvent;
+import dev.kyro.pitsim.misc.Misc;
 import org.bukkit.event.EventHandler;
 
 import java.util.List;
@@ -20,22 +22,26 @@ public class HeighHo extends PitEnchant {
 	public void onAttack(AttackEvent.Apply attackEvent) {
 		if(!canApply(attackEvent)) return;
 
-		int enchantLvl = attackEvent.getAttackerEnchantLevel(this);
-		if(enchantLvl == 0) return;
+		int defenderEnchantLvl = attackEvent.getDefenderEnchantLevel(this);
+		int attackerMirrorLvl = attackEvent.getAttackerEnchantLevel(EnchantManager.getEnchant("mirror"));
+		if(defenderEnchantLvl != 0 && attackerMirrorLvl != 0) attackEvent.multiplier.add(Misc.getReductionMultiplier(getReduction(defenderEnchantLvl)));
 
-		int mirrorLvl = attackEvent.getDefenderEnchantLevel(EnchantManager.getEnchant("mirror"));
-		if(mirrorLvl == 0) return;
+		int attackerEnchantLvl = attackEvent.getAttackerEnchantLevel(this);
+		if(attackerEnchantLvl == 0) return;
 
-//		attackEvent.increase += getDamage(enchantLvl);
+		int defenderMirrorLvl = attackEvent.getDefenderEnchantLevel(EnchantManager.getEnchant("mirror"));
+		if(defenderMirrorLvl == 0) return;
+
+		attackEvent.increasePercent += getIncrease(attackerEnchantLvl) * defenderMirrorLvl;
 	}
 
 	@Override
 	public List<String> getDescription(int enchantLvl) {
 
-//		return
+		return new ALoreBuilder("&7Receive &9-" + getReduction(enchantLvl) + "% &7damage from mirror",
+				"&7users. Deal &c+" + getIncrease(enchantLvl) + "% damage per mirror", "&7level on your opponent").getLore();
 
 //		return new ALoreBuilder("&7Deal &c+" + Misc.roundString(getDamage(enchantLvl)) + " &7damage against", "&fMirror &7wearers").getLore();
-		return null;
 	}
 
 	public int getReduction(int enchantLvl) {
@@ -43,8 +49,8 @@ public class HeighHo extends PitEnchant {
 		return enchantLvl;
 	}
 
-	public double getIncrease(int enchantLvl, int mirrorLvl) {
+	public double getIncrease(int enchantLvl) {
 
-		return 2.5D * enchantLvl;
+		return enchantLvl * 2.5D + 2.5D;
 	}
 }
