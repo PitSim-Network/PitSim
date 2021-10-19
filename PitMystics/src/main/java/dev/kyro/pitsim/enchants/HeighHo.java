@@ -1,11 +1,9 @@
 package dev.kyro.pitsim.enchants;
 
-import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.pitsim.controllers.EnchantManager;
 import dev.kyro.pitsim.controllers.objects.PitEnchant;
 import dev.kyro.pitsim.enums.ApplyType;
 import dev.kyro.pitsim.events.AttackEvent;
-import dev.kyro.pitsim.misc.Misc;
 import org.bukkit.event.EventHandler;
 
 import java.util.List;
@@ -28,17 +26,25 @@ public class HeighHo extends PitEnchant {
 		int mirrorLvl = attackEvent.getDefenderEnchantLevel(EnchantManager.getEnchant("mirror"));
 		if(mirrorLvl == 0) return;
 
-		attackEvent.increase += getDamage(enchantLvl);
+//		attackEvent.increase += getDamage(enchantLvl);
 	}
 
 	@Override
 	public List<String> getDescription(int enchantLvl) {
 
-		return new ALoreBuilder("&7Deal &c+" + Misc.roundString(getDamage(enchantLvl)) + " &7damage against", "&fMirror &7wearers").getLore();
+//		return
+
+//		return new ALoreBuilder("&7Deal &c+" + Misc.roundString(getDamage(enchantLvl)) + " &7damage against", "&fMirror &7wearers").getLore();
+		return null;
 	}
 
-	public double getDamage(int enchantLvl) {
+	public int getReduction(int enchantLvl) {
 
-		return enchantLvl - 0.5;
+		return enchantLvl;
+	}
+
+	public double getIncrease(int enchantLvl, int mirrorLvl) {
+
+		return 2.5D * enchantLvl;
 	}
 }
