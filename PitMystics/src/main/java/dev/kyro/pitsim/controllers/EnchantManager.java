@@ -446,6 +446,7 @@ public class EnchantManager implements Listener {
 	}
 	
 	public static int getEnchantLevel(Player player, PitEnchant pitEnchant) {
+		if(player == null) return 0;
 
 //		List<ItemStack> inUse = player.getInventory().getArmorContents() != null ?
 //				new ArrayList<>(Arrays.asList(player.getInventory().getArmorContents())) : new ArrayList<>();
