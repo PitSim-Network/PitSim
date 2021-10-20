@@ -79,7 +79,7 @@ public class PitPlayer {
 
 		if(non == null) {
 			String message = "%luckperms_prefix%";
-			prefix = "&7[&e" + level + "&7] &7" + PlaceholderAPI.setPlaceholders(player, message);
+			prefix = "";
 
 			FileConfiguration playerData = APlayerData.getPlayerData(player);
 

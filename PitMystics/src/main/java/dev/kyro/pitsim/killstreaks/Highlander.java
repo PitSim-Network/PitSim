@@ -174,19 +174,22 @@ public class Highlander extends Megastreak {
 	@Override
 	public void reset() {
 
-        String message = "%luckperms_prefix%";
-        if(pitPlayer.megastreak.isOnMega()) {
-            pitPlayer.prefix = pitPlayer.megastreak.getName() + " &7" + PlaceholderAPI.setPlaceholders(pitPlayer.player, message);
-        } else {
-            pitPlayer.prefix = PrestigeValues.getPlayerPrefix(pitPlayer.player) + PlaceholderAPI.setPlaceholders(pitPlayer.player, message);
-        }
-        if(DoubleDeath.INSTANCE.isDoubleDeath(pitPlayer.player)) pitPlayer.bounty = pitPlayer.bounty * 2;
-		LevelManager.addGold(pitPlayer.player, pitPlayer.bounty);
-        if(pitPlayer.bounty != 0 && pitPlayer.megastreak.isOnMega()) {
-            AOutput.send(pitPlayer.player, "&6&lHIGHLANDER! &7Earned &6+" + pitPlayer.bounty + "&6g &7from megastreak!");
-            pitPlayer.bounty = 0;
-        }
-    }
+		String message = "%luckperms_prefix%";
+		if(pitPlayer.megastreak.isOnMega()) {
+			pitPlayer.prefix = pitPlayer.megastreak.getName() + " &7" + PlaceholderAPI.setPlaceholders(pitPlayer.player, message);
+		} else {
+			pitPlayer.prefix = PrestigeValues.getPlayerPrefix(pitPlayer.player) + PlaceholderAPI.setPlaceholders(pitPlayer.player, message);
+		}
+
+		if(isOnMega()) {
+			if(DoubleDeath.INSTANCE.isDoubleDeath(pitPlayer.player)) pitPlayer.bounty = pitPlayer.bounty * 2;
+			LevelManager.addGold(pitPlayer.player, pitPlayer.bounty);
+			if(pitPlayer.bounty != 0 && pitPlayer.megastreak.isOnMega()) {
+				AOutput.send(pitPlayer.player, "&6&lHIGHLANDER! &7Earned &6+" + pitPlayer.bounty + "&6g &7from megastreak!");
+				pitPlayer.bounty = 0;
+			}
+		}
+	}
 
 	@Override
 	public void stop() {

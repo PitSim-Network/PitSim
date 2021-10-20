@@ -1,9 +1,13 @@
 package dev.kyro.pitsim.placeholders;
 
 import dev.kyro.arcticapi.hooks.APAPIPlaceholder;
-import dev.kyro.pitsim.controllers.LeaderboardManager;
+import dev.kyro.arcticapi.misc.AUtil;
+import dev.kyro.pitsim.controllers.NewLeaderboardManager;
+import dev.kyro.pitsim.controllers.PrestigeValues;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 
 public class LeaderboardPlaceholder implements APAPIPlaceholder {
@@ -18,9 +22,18 @@ public class LeaderboardPlaceholder implements APAPIPlaceholder {
 
 		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
 
-		String key = (String) LeaderboardManager.finalSorted.keySet().toArray()[0];
-		int value = LeaderboardManager.finalLevels.get(key);
+		FileConfiguration key = (FileConfiguration) NewLeaderboardManager.sortedMap.keySet().toArray()[NewLeaderboardManager.sortedMap.size() - 1];
+		Bukkit.broadcastMessage(key + "");
+		int value = NewLeaderboardManager.sortedMap.get(key);
 
-		return ChatColor.translateAlternateColorCodes('&', "&71. &6&l" + key + " &7- &e" + value);
+		StringBuilder levelBuilder = new StringBuilder();
+		PrestigeValues.PrestigeInfo info = PrestigeValues.getPrestigeInfo(key.getInt("prestige"));
+		levelBuilder.append(info.getOpenBracket()).append(ChatColor.YELLOW).append(AUtil.toRoman(key.getInt("prestige")))
+				.append(ChatColor.YELLOW + "-").append(PrestigeValues.getLevelColor(key.getInt("level"))).append(key.getString("level")).append(info.getCloseBracket());
+
+		StringBuilder builder = new StringBuilder();
+		builder.append(ChatColor.GOLD).append(key.getString("name")).append(" " + ChatColor.GRAY + "- ");
+
+		return ChatColor.translateAlternateColorCodes('&', builder + levelBuilder.toString());
 	}
 }

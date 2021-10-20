@@ -70,6 +70,7 @@ public class LevelManager {
 	}
 
 	public static void addGold(Player player, int amount) {
+		if(NonManager.getNon(player) != null) return;
 		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
 
 		pitPlayer.goldGrinded += amount;

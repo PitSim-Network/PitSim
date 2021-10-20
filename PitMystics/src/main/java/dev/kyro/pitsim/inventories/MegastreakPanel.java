@@ -6,6 +6,7 @@ import dev.kyro.arcticapi.gui.AGUIPanel;
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.arcticapi.misc.AUtil;
 import dev.kyro.pitsim.controllers.PerkManager;
+import dev.kyro.pitsim.controllers.PrestigeValues;
 import dev.kyro.pitsim.controllers.objects.Megastreak;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.killstreaks.*;
@@ -113,13 +114,13 @@ public class MegastreakPanel extends AGUIPanel {
                     if(pitPlayer.prestige < 33) prestige = true;
                     if(pitPlayer.megastreak.getClass() == ToTheMoon.class) has = true;
                         if(pitPlayer.level < 50) level = true;
-                    if(!has && !prestige && !uberCd) {
+                    if(!has && !prestige && !uberCd && !level) {
                         pitPlayer.megastreak.stop();
                         pitPlayer.megastreak = new ToTheMoon(pitPlayer);
                         perkGUI.megaWrapUp();
                     }
                 }
-                    if(!prestige && !has && !uberCd) {
+                    if(!prestige && !has && !uberCd && !level) {
                         openPanel(perkGUI.getHomePanel());
                         player.playSound(player.getLocation(), Sound.NOTE_PLING, 1F, 2F);
                         FileConfiguration playerData = APlayerData.getPlayerData(player);
@@ -180,7 +181,11 @@ public class MegastreakPanel extends AGUIPanel {
             } else if(megastreak.getClass() == Uberstreak.class && pitPlayer.dailyUbersLeft == 0){
                 lore.add(ChatColor.RED + "Daily limit reached!");
                 meta.setDisplayName(ChatColor.RED + megastreak.getRawName());
-            } else if(megastreak.getClass() != NoMegastreak.class){
+            } else if(pitPlayer.level < megastreak.levelReq()){
+                PrestigeValues.PrestigeInfo info = PrestigeValues.getPrestigeInfo(pitPlayer.prestige);
+                lore.add(ChatColor.translateAlternateColorCodes('&', "&cUnlocked at level " + info.getOpenBracket() + PrestigeValues.getLevelColor(megastreak.levelReq()) + megastreak.levelReq() + info.getCloseBracket()));
+                meta.setDisplayName(ChatColor.RED + megastreak.getRawName());
+            }else if(megastreak.getClass() != NoMegastreak.class){
                 lore.add(ChatColor.YELLOW + "Click to select!");
                 meta.setDisplayName(ChatColor.YELLOW + megastreak.getRawName());
             }
