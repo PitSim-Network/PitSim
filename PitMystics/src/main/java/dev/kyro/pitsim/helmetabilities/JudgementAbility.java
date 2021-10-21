@@ -73,6 +73,11 @@ public class JudgementAbility extends HelmetAbility {
 	}
 
 	@Override
+	public boolean shouldActivate() {
+		return false;
+	}
+
+	@Override
 	public void onDeactivate() {
 		Slime slime = PitBlob.blobMap.get(player.getUniqueId());
 		slime.remove();

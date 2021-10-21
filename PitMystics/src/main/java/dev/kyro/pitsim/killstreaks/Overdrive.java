@@ -148,7 +148,7 @@ public class Overdrive extends Megastreak {
 		if(pitPlayer.megastreak.isOnMega()) {
 			pitPlayer.prefix = pitPlayer.megastreak.getName() + " &7" + PlaceholderAPI.setPlaceholders(pitPlayer.player, message);
 		} else {
-			pitPlayer.prefix = PrestigeValues.getPlayerPrefix(pitPlayer.player) + PlaceholderAPI.setPlaceholders(pitPlayer.player, message);
+			pitPlayer.prefix = PrestigeValues.getPlayerPrefixNameTag(pitPlayer.player) + PlaceholderAPI.setPlaceholders(pitPlayer.player, message);
 		}
 
 		pitPlayer.megastreak = this;
@@ -168,7 +168,7 @@ public class Overdrive extends Megastreak {
 		if(pitPlayer.megastreak.isOnMega()) {
 			pitPlayer.prefix = pitPlayer.megastreak.getName() + " &7" + PlaceholderAPI.setPlaceholders(pitPlayer.player, message);
 		} else {
-			pitPlayer.prefix = PrestigeValues.getPlayerPrefix(pitPlayer.player) + PlaceholderAPI.setPlaceholders(pitPlayer.player, message);
+			pitPlayer.prefix = PrestigeValues.getPlayerPrefixNameTag(pitPlayer.player) + PlaceholderAPI.setPlaceholders(pitPlayer.player, message);
 		}
 
 		if(pitPlayer.megastreak.isOnMega()) {

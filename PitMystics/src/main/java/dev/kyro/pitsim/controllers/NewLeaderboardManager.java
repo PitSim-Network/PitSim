@@ -1,13 +1,15 @@
 package dev.kyro.pitsim.controllers;
 
 import dev.kyro.pitsim.PitSim;
-import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.io.File;
-import java.util.*;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 public class NewLeaderboardManager {
@@ -50,7 +52,6 @@ public class NewLeaderboardManager {
 			@Override
 			public void run() {
 				calculate();
-				Bukkit.broadcastMessage(sortedMap + "");
 			}
 		}.runTaskTimer(PitSim.INSTANCE, 0L, 4000L);
 	}

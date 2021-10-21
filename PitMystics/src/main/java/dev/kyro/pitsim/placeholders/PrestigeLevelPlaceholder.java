@@ -20,7 +20,7 @@ public class PrestigeLevelPlaceholder implements APAPIPlaceholder {
 
 		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
 
-		if(pitPlayer.prestige == 0) return PrestigeValues.getPlayerPrefix(player);
+		if(pitPlayer.prestige == 0) return PrestigeValues.getPlayerPrefixNameTag(player);
 
 		StringBuilder builder = new StringBuilder();
 		PrestigeValues.PrestigeInfo prestigeInfo = PrestigeValues.getPrestigeInfo(pitPlayer.prestige);

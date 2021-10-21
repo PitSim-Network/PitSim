@@ -32,6 +32,6 @@ public class LeaderboardPlaceholder9 implements APAPIPlaceholder {
 		StringBuilder builder = new StringBuilder();
 		builder.append(ChatColor.GOLD).append(key.getString("name")).append(" " + ChatColor.GRAY + "- ");
 
-		return ChatColor.translateAlternateColorCodes('&', builder.toString() + levelBuilder.toString());
+		return ChatColor.translateAlternateColorCodes('&', "&79. " +  builder.toString() + levelBuilder.toString());
 	}
 }

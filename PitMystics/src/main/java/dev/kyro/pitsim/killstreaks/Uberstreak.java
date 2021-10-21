@@ -185,7 +185,7 @@ public class Uberstreak extends Megastreak {
 		if(pitPlayer.megastreak.isOnMega()) {
 			pitPlayer.prefix = pitPlayer.megastreak.getName() + " &7" + PlaceholderAPI.setPlaceholders(pitPlayer.player, message);
 		} else {
-			pitPlayer.prefix = PrestigeValues.getPlayerPrefix(pitPlayer.player) + PlaceholderAPI.setPlaceholders(pitPlayer.player, message);
+			pitPlayer.prefix = PrestigeValues.getPlayerPrefixNameTag(pitPlayer.player) + PlaceholderAPI.setPlaceholders(pitPlayer.player, message);
 		}
 
 		pitPlayer.player.playSound(pitPlayer.player.getLocation(), "mob.guardian.curse", 1000, 1);
@@ -230,7 +230,7 @@ public class Uberstreak extends Megastreak {
 		if(pitPlayer.megastreak.isOnMega()) {
 			pitPlayer.prefix = pitPlayer.megastreak.getName() + " &7" + PlaceholderAPI.setPlaceholders(pitPlayer.player, message);
 		} else {
-			pitPlayer.prefix = PrestigeValues.getPlayerPrefix(pitPlayer.player) + PlaceholderAPI.setPlaceholders(pitPlayer.player, message);
+			pitPlayer.prefix = PrestigeValues.getPlayerPrefixNameTag(pitPlayer.player) + PlaceholderAPI.setPlaceholders(pitPlayer.player, message);
 		}
 
 		int rand = (int) (Math.random() * 10);

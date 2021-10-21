@@ -156,7 +156,7 @@ public class Highlander extends Megastreak {
 		if(pitPlayer.megastreak.isOnMega()) {
 			pitPlayer.prefix = pitPlayer.megastreak.getName() + " &7" + PlaceholderAPI.setPlaceholders(pitPlayer.player, message);
 		} else {
-			pitPlayer.prefix = PrestigeValues.getPlayerPrefix(pitPlayer.player) + PlaceholderAPI.setPlaceholders(pitPlayer.player, message);
+			pitPlayer.prefix = PrestigeValues.getPlayerPrefixNameTag(pitPlayer.player) + PlaceholderAPI.setPlaceholders(pitPlayer.player, message);
 		}
 
 		ASound.play(pitPlayer.player, Sound.WITHER_SPAWN, 2, 0.5f);
@@ -178,7 +178,7 @@ public class Highlander extends Megastreak {
 		if(pitPlayer.megastreak.isOnMega()) {
 			pitPlayer.prefix = pitPlayer.megastreak.getName() + " &7" + PlaceholderAPI.setPlaceholders(pitPlayer.player, message);
 		} else {
-			pitPlayer.prefix = PrestigeValues.getPlayerPrefix(pitPlayer.player) + PlaceholderAPI.setPlaceholders(pitPlayer.player, message);
+			pitPlayer.prefix = PrestigeValues.getPlayerPrefixNameTag(pitPlayer.player) + PlaceholderAPI.setPlaceholders(pitPlayer.player, message);
 		}
 
 		if(isOnMega()) {

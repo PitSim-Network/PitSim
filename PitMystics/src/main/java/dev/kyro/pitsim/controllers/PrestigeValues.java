@@ -81,10 +81,16 @@ public class PrestigeValues {
 		else return "&7";
 	}
 
+	public static String getPlayerPrefixNameTag(Player player) {
+		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
+		PrestigeInfo prestigeInfo = PrestigeValues.getPrestigeInfo(pitPlayer.prestige);
+		return prestigeInfo.getOpenBracketNameTag() + getLevelColor(pitPlayer.level) + pitPlayer.level + prestigeInfo.getCloseBracketNameTag() + " ";
+	}
+
 	public static String getPlayerPrefix(Player player) {
 		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
 		PrestigeInfo prestigeInfo = PrestigeValues.getPrestigeInfo(pitPlayer.prestige);
-		return prestigeInfo.getOpenBracketNameTag() + getLevelColor(pitPlayer.level) + pitPlayer.level + prestigeInfo.getCloseBracketNameTag();
+		return prestigeInfo.getOpenBracket() + getLevelColor(pitPlayer.level) + pitPlayer.level + prestigeInfo.getCloseBracket();
 	}
 
 	static {
