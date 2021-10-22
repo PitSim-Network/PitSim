@@ -11,9 +11,9 @@ public class MapManager {
     public static GameMap map = null;
 
     public static void onStart() {
-        double d = Math.random();
-        if(d < 0.5) map = GameMap.DESERT;
-        else map = GameMap.STARWARS;
+//        double d = Math.random();
+//        if(d < 0.5) map = GameMap.DESERT;
+//        else map = GameMap.STARWARS;
 
         for(Player onlinePlayer : Bukkit.getOnlinePlayers()) {
             onlinePlayer.teleport(getPlayerSpawn());
@@ -30,9 +30,14 @@ public class MapManager {
     public static Location snowMid = new Location(Bukkit.getWorld("pit"), -98, 6, 716);
     public static int snowY = 4;
 
+    public static Location spawn = new Location(Bukkit.getWorld("pitsim"), 0.5, 88, 8.5, -180, 0);
+    public static Location nonSpawn = new Location(Bukkit.getWorld("pitsim"), 0, 86, 0);
+    public static Location mid = new Location(Bukkit.getWorld("pitsim"), 0, 70, 0);
+    public static int Y = 70;
+
     public static Location getNonSpawn() {
 
-        Location spawn = map == GameMap.STARWARS ? snowNonSpawn : desertNonSpawn;
+        Location spawn = nonSpawn;
         spawn = spawn.clone();
         spawn.setX(spawn.getX() + (Math.random() * 6 - 3));
         spawn.setZ(spawn.getZ() + (Math.random() * 6 - 3));
@@ -41,18 +46,15 @@ public class MapManager {
 
     public static Location getMid() {
 
-        if(map == GameMap.STARWARS) return snowMid;
-        else return desertMid;
+        return mid;
     }
 
     public static int getY() {
-        if(map == GameMap.STARWARS) return snowY;
-        else return desertY;
+        return Y;
     }
 
     public static Location getPlayerSpawn() {
-        if(map == GameMap.STARWARS) return playerSnow;
-        else return playerDesert;
+        return spawn;
     }
 
     public static void onSwitch() {

@@ -9,6 +9,7 @@ import dev.kyro.pitsim.enums.NBTTag;
 import dev.kyro.pitsim.helmetabilities.BlobAbility;
 import dev.kyro.pitsim.helmetabilities.LeapAbility;
 import dev.kyro.pitsim.misc.Misc;
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
@@ -189,9 +190,9 @@ public class GoldenHelmet {
 	}
 
 	public void deactivate() {
-		this.ability.onDeactivate();
-		HelmetAbility.toggledHelmets.remove(this.uuid);
+		HelmetAbility.toggledHelmets.remove(uuid);
 		this.ability.isActive = false;
+		this.ability.onDeactivate();
 
 	}
 
