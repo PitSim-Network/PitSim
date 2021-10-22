@@ -8,52 +8,102 @@ import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.controllers.HelmetListeners;
 import dev.kyro.pitsim.controllers.objects.GoldenHelmet;
 import dev.kyro.pitsim.controllers.objects.HelmetAbility;
-import dev.kyro.pitsim.enchants.PitBlob;
+import dev.kyro.pitsim.controllers.objects.PitPlayer;
+import dev.kyro.pitsim.events.AttackEvent;
+import dev.kyro.pitsim.misc.Misc;
 import org.bukkit.Material;
 import org.bukkit.Sound;
-import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
-import org.bukkit.entity.Slime;
+import org.bukkit.event.EventHandler;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
-import org.bukkit.scheduler.BukkitTask;
 
 import java.text.DecimalFormat;
 import java.util.Arrays;
 import java.util.List;
 
 public class JudgementAbility extends HelmetAbility {
-	public BukkitTask runnable;
 	public JudgementAbility(Player player) {
 
-		super(player,"Pit Blob", "pitblob", true, 11);
+		super(player,"Judgement", "judgement", true, 13);
 	}
 
+	@EventHandler
+	public void onAttack(AttackEvent.Apply attackEvent) {
+		if(!isActive(attackEvent.attacker)) return;
+
+		GoldenHelmet goldenHelmet = HelmetListeners.getHelmetInstance(attackEvent.attacker);
+		assert goldenHelmet != null;
+		if(!goldenHelmet.withdrawGold(10000)) {
+			AOutput.error(attackEvent.attacker,"&cNot enough gold!");
+			goldenHelmet.deactivate();
+			ASound.play(attackEvent.attacker, Sound.VILLAGER_NO, 1F, 1F);
+			return;
+		}
+
+		PitPlayer pitAttacker = PitPlayer.getPitPlayer(attackEvent.attacker);
+
+		if(Math.random() < 0.25) {
+
+			pitAttacker.heal(4);
+			ASound.play(attackEvent.attacker, Sound.BURP, 1, 1);
+		}
+
+		if(Math.random() < 0.2) {
+
+			Misc.applyPotionEffect(attackEvent.attacker, PotionEffectType.INCREASE_DAMAGE, 40, 0, true, false);
+			ASound.play(attackEvent.attacker, Sound.ENDERMAN_SCREAM, 1, 1);
+		}
+
+		if(Math.random() < 0.15) {
+
+			Misc.applyPotionEffect(attackEvent.defender, PotionEffectType.WITHER, 100, 2, true, false);
+			ASound.play(attackEvent.attacker, Sound.WITHER_SHOOT, 1, 1);
+		}
+
+		if(Math.random() < 0.15) {
+
+			Misc.applyPotionEffect(attackEvent.attacker, PotionEffectType.DAMAGE_RESISTANCE, 60, 1, true, false);
+			ASound.play(attackEvent.attacker, Sound.IRONGOLEM_HIT, 1, 1);
+		}
+
+		if(Math.random() < 0.1) {
+
+			Misc.applyPotionEffect(attackEvent.defender, PotionEffectType.SLOW, 40, 4, true, false);
+			ASound.play(attackEvent.attacker, Sound.ANVIL_LAND, 1, 1);
+		}
+
+		if(Math.random() < 0.05) {
+
+			attackEvent.defender.setHealth(attackEvent.defender.getHealth() / 2D);
+			ASound.play(attackEvent.attacker, Sound.ZOMBIE_WOODBREAK, 1, 1);
+			attackEvent.defender.playSound(attackEvent.defender.getLocation(), "mob.guardian.curse", 1000, 1);
+		}
+
+		if(Math.random() < 0.05) {
+
+			ASound.play(attackEvent.attacker, Sound.ENDERDRAGON_GROWL, 1, 1);
+			ASound.play(attackEvent.defender, Sound.IRONGOLEM_DEATH, 1, 1);
+			new BukkitRunnable() {
+				int count = 0;
+				@Override
+				public void run() {
+					if(++count == 5) cancel();
+					attackEvent.defender.getWorld().strikeLightningEffect(attackEvent.defender.getLocation());
+					attackEvent.defender.setHealth(Math.max(attackEvent.defender.getHealth() - 2, 1));
+				}
+			}.runTaskTimer(PitSim.INSTANCE, 0L, 2L);
+		}
+	}
 
 	@Override
 	public void onActivate() {
 		GoldenHelmet goldenHelmet = HelmetListeners.getHelmetInstance(player);
-
 		assert goldenHelmet != null;
-		Slime slime;
-		slime = (Slime) player.getWorld().spawnEntity(player.getLocation(), EntityType.SLIME);
-		slime.setSize(1);
-		PitBlob.blobMap.put(player.getUniqueId(), slime);
-		ASound.play(player, Sound.NOTE_PLING, 1.3F, 2);
-		AOutput.send(player, "&6&lGOLDEN HELMET! &aActivated &9Pit Blob&7. (&6-10,000g&7 per second)");
 
-		runnable = new BukkitRunnable() {
-			@Override
-			public void run() {
-				if(!goldenHelmet.withdrawGold(10000)) {
-					AOutput.error(player,"&cNot enough gold!");
-					goldenHelmet.deactivate();
-					ASound.play(player, Sound.VILLAGER_NO, 1F, 1F);
-				} else {
-					ASound.play(player, Sound.NOTE_STICKS, 2F, 1.5F);
-				}
-			}
-		}.runTaskTimer(PitSim.INSTANCE, 20L, 20);
+		ASound.play(player, Sound.NOTE_PLING, 1.3F, 2);
+		AOutput.send(player, "&6&lGOLDEN HELMET! &aActivated &9Judgement&7. (&6-10,000g&7 per hit)");
 	}
 
 	@Override
@@ -71,12 +121,7 @@ public class JudgementAbility extends HelmetAbility {
 
 	@Override
 	public void onDeactivate() {
-		Slime slime = PitBlob.blobMap.get(player.getUniqueId());
-		if(slime != null) slime.remove();
-		PitBlob.blobMap.remove(player.getUniqueId());
-		runnable.cancel();
-		AOutput.send(player, "&6&lGOLDEN HELMET! &cDeactivated &9Pit Blob&c.");
-
+		AOutput.send(player, "&6&lGOLDEN HELMET! &cDeactivated &9Judgement&c.");
 	}
 
 	@Override

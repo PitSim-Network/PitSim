@@ -30,6 +30,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityShootBowEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
@@ -59,6 +60,13 @@ public class DamageManager implements Listener {
 				}
 			}
 		}.runTaskTimer(PitSim.INSTANCE, 0L, 1L);
+	}
+
+	@EventHandler
+	public void onWitherDamage(EntityDamageEvent event) {
+		if(event.getCause() != EntityDamageEvent.DamageCause.WITHER || !(event.getEntity() instanceof Player)) return;
+		Player player = (Player) event.getEntity();
+		if(event.getFinalDamage() >= player.getHealth()) death(player);
 	}
 
 	@EventHandler(ignoreCancelled = true, priority = EventPriority.HIGH)
@@ -408,7 +416,7 @@ public class DamageManager implements Listener {
 		}
 	}
 
-	public static void Death(Player dead) {
+	public static void death(Player dead) {
 		Telebow.teleShots.removeIf(teleShot -> teleShot.getShooter().equals(dead));
 
 		dead.setHealth(dead.getMaxHealth());
