@@ -67,7 +67,7 @@ public class SpawnNPCs implements Listener {
 
 	public static void createKyroNPC() {
 		NPCRegistry registry = CitizensAPI.getNPCRegistry();
-		kyro = registry.createNPC(EntityType.PLAYER, "KyroKrypt");
+		kyro = registry.createNPC(EntityType.PLAYER, "&9KyroKrypt");
 		kyro.spawn(MapManager.getKyroNPCSpawn());
 		skin(kyro, "KyroKrypt");
 		kyro.addTrait(LookClose.class);
@@ -77,7 +77,7 @@ public class SpawnNPCs implements Listener {
 
 	public static void createWijiNPC() {
 		NPCRegistry registry = CitizensAPI.getNPCRegistry();
-		wiji = registry.createNPC(EntityType.PLAYER, "wiji1");
+		wiji = registry.createNPC(EntityType.PLAYER, "&9wiji1");
 		wiji.spawn(MapManager.getWijiNPCSpawn());
 		skin(wiji, "wiji1");
 		wiji.addTrait(LookClose.class);
