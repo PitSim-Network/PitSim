@@ -23,8 +23,7 @@ import java.util.Arrays;
 import java.util.List;
 
 public class BlobAbility extends HelmetAbility {
-	BukkitTask runnable;
-	boolean isActive;
+	public BukkitTask runnable;
 	public BlobAbility(Player player) {
 
 		super(player,"Pit Blob", "pitblob", true, 11);
@@ -33,7 +32,6 @@ public class BlobAbility extends HelmetAbility {
 
 	@Override
 	public void onActivate() {
-
 		GoldenHelmet goldenHelmet = HelmetListeners.getHelmetInstance(player);
 
 		assert goldenHelmet != null;
@@ -56,8 +54,6 @@ public class BlobAbility extends HelmetAbility {
 				}
 			}
 		}.runTaskTimer(PitSim.INSTANCE, 20L, 20);
-
-
 	}
 
 	@Override
