@@ -33,7 +33,7 @@ public class MapManager {
     public static Location spawn = new Location(Bukkit.getWorld("pitsim"), 0.5, 88, 8.5, -180, 0);
     public static Location nonSpawn = new Location(Bukkit.getWorld("pitsim"), 0, 86, 0);
     public static Location mid = new Location(Bukkit.getWorld("pitsim"), 0, 70, 0);
-    public static int Y = 70;
+    public static int y = 70;
     public static Location upgradeNPCSpawn = new Location(Bukkit.getWorld("pitsim"), 10, 88, 4, 90, 0);
     public static Location prestigeNPCSpawn = new Location(Bukkit.getWorld("pitsim"), -12, 88, -1, -90, 0);
 
@@ -52,7 +52,7 @@ public class MapManager {
     }
 
     public static int getY() {
-        return Y;
+        return y;
     }
 
     public static Location getPlayerSpawn() {

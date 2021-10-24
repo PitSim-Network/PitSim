@@ -66,6 +66,10 @@ public abstract class HelmetAbility implements Listener {
         return cooldown;
     }
 
+    public boolean isActive(Player player) {
+        return isActive(player, this);
+    }
+
     public static boolean isActive(Player player, HelmetAbility ability) {
         List<GoldenHelmet> helmets = GoldenHelmet.INSTANCE.getHelmetsFromPlayer(player);
 

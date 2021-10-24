@@ -7,9 +7,10 @@ import dev.kyro.arcticapi.misc.ASound;
 import dev.kyro.pitsim.controllers.HelmetSystem;
 import dev.kyro.pitsim.enums.NBTTag;
 import dev.kyro.pitsim.helmetabilities.BlobAbility;
+import dev.kyro.pitsim.helmetabilities.GoldAbility;
+import dev.kyro.pitsim.helmetabilities.JudgementAbility;
 import dev.kyro.pitsim.helmetabilities.LeapAbility;
 import dev.kyro.pitsim.misc.Misc;
-import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
@@ -165,6 +166,8 @@ public class GoldenHelmet {
 	public HelmetAbility generateInstance(Player player, String refName) {
 		if(refName.equals("leap")) return new LeapAbility(player);
 		if(refName.equals("pitblob")) return new BlobAbility(player);
+		if(refName.equals("gold")) return new GoldAbility(player);
+		if(refName.equals("judgement")) return new JudgementAbility(player);
 		return null;
 	}
 

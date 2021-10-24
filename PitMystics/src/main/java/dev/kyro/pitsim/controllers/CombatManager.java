@@ -107,7 +107,7 @@ public class CombatManager implements Listener {
                    return;
                }
            }
-           DamageManager.Death(player);
+           DamageManager.death(player);
        }
 
 

@@ -93,7 +93,7 @@ public class Non {
 
 		non = (Player) npc.getEntity();
 		if(!npc.isSpawned() && !PitEventManager.majorEvent) respawn();
-		if(npc.isSpawned() && non.getLocation().getY() <= MapManager.getY()) {
+		if(npc.isSpawned() && non.getLocation().getY() <= MapManager.getY() - 0.1) {
 			Location teleportLoc = non.getLocation().clone();
 			teleportLoc.setY(MapManager.getY() + 1.2);
 			non.teleport(teleportLoc);
@@ -124,7 +124,7 @@ public class Non {
 
 			if(npc.isSpawned()) {
 			Block underneath = non.getLocation().clone().subtract(0, 0.2, 0).getBlock();
-				if(underneath.getType() != Material.AIR) {
+				if(underneath.getType() != Material.AIR && underneath.getType() != Material.CARPET) {
 
 					int rand = (int) (Math.random() * 2);
 					Location rotLoc = non.getLocation().clone();
@@ -241,24 +241,7 @@ public class Non {
 			public void run() {
 				nonState = NonState.FIGHTING;
 			}
-		}.runTaskLater(PitSim.INSTANCE, 40L);
-
-		new BukkitRunnable() {
-			@Override
-			public void run() {
-
-//				Vector velo = non.getLocation().getDirection().normalize().multiply(0.7);
-//				velo.setY(0.35);
-//				non.setVelocity(velo);
-//
-//				new BukkitRunnable() {
-//					@Override
-//					public void run() {
-//						nonState = NonState.FIGHTING;
-//					}
-//				}.runTaskLater(PitSim.INSTANCE, 55L);
-			}
-		}.runTaskLater(PitSim.INSTANCE, (long) (Math.random() * 20 + 20));
+		}.runTaskLater(PitSim.INSTANCE, 20L);
 	}
 
 	public void pickTraits() {
