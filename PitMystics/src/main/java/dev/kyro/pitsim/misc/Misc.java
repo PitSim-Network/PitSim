@@ -185,6 +185,8 @@ public class Misc {
 			EntityPlayer entityPlayer = ((CraftPlayer) player).getHandle();
 			entityPlayer.playerConnection.sendPacket(new PacketPlayOutSpawnEntityWeather(
 					new EntityLightning(world, location.getX(), location.getY(), location.getZ(), false, false)));
+			entityPlayer.playerConnection.sendPacket(new PacketPlayOutNamedSoundEffect(
+					"ambient.weather.thunder", location.getX(), location.getY(), location.getZ(), 10000.0F, 63));
 		}
 	}
 
