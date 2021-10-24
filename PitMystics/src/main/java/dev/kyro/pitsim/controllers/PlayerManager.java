@@ -23,6 +23,7 @@ import org.bukkit.*;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.inventory.InventoryClickEvent;
@@ -39,15 +40,7 @@ public class PlayerManager implements Listener {
 
 	public static Map<Player, BossBarManager> bossBars = new HashMap<>();
 
-//	@EventHandler
-//	public void onClick(InventoryClickEvent event) {
-//		if(Misc.isAirOrNull(event.getCurrentItem())) return;
-//		ItemStack itemStack = event.getCurrentItem();
-//		NBTItem nbtItem = new NBTItem(itemStack);
-//		System.out.println(nbtItem);
-//	}
-
-	@EventHandler
+	@EventHandler(priority = EventPriority.HIGHEST)
 	public static void onKill(KillEvent killEvent) {
 
 		if(SpawnManager.isInSpawn(killEvent.killer.getLocation()) && SpawnManager.isInSpawn(killEvent.dead.getLocation())) {
