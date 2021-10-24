@@ -204,7 +204,6 @@ public class HelmetListeners implements Listener {
 						return;
 					}
 				}
-				HelmetAbility.toggledHelmets.add(goldenHelmet.uuid);
 				if(goldenHelmet.ability.shouldActivate()) {
 					goldenHelmet.ability.isActive = true;
 					HelmetAbility.toggledHelmets.add(goldenHelmet.uuid);
