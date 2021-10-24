@@ -40,6 +40,31 @@ public class PlayerManager implements Listener {
 
 	public static Map<Player, BossBarManager> bossBars = new HashMap<>();
 
+	@EventHandler
+	public void onKillForRank(KillEvent killEvent) {
+		if(killEvent.killer.hasPermission("group.nitro")) {
+			killEvent.goldMultipliers.add(1.1);
+			killEvent.xpMultipliers.add(1.1);
+		}
+
+		if(killEvent.killer.hasPermission("group.unthinkable")) {
+			killEvent.goldMultipliers.add(1.25);
+			killEvent.xpMultipliers.add(1.25);
+		} else if(killEvent.killer.hasPermission("group.miraculous")) {
+			killEvent.goldMultipliers.add(1.20);
+			killEvent.xpMultipliers.add(1.20);
+		} else if(killEvent.killer.hasPermission("group.extraordinary")) {
+			killEvent.goldMultipliers.add(1.15);
+			killEvent.xpMultipliers.add(1.15);
+		} else if(killEvent.killer.hasPermission("group.overpowered")) {
+			killEvent.goldMultipliers.add(1.1);
+			killEvent.xpMultipliers.add(1.1);
+		} else if(killEvent.killer.hasPermission("group.legendary")) {
+			killEvent.goldMultipliers.add(1.05);
+			killEvent.xpMultipliers.add(1.05);
+		}
+	}
+
 	@EventHandler(priority = EventPriority.HIGHEST)
 	public static void onKill(KillEvent killEvent) {
 
