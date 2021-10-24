@@ -147,29 +147,6 @@ public class PlayerManager implements Listener {
 			}.runTaskLater(PitSim.INSTANCE, 40L);
 			ASound.play(player, Sound.HORSE_ARMOR, 1F, 1.3F);
 		}
-
-		if(player.getItemInHand().getType().toString().contains("HELMET")){
-			if(Misc.isAirOrNull(player.getInventory().getHelmet())) return;
-
-			if(helmetSwapCooldown.contains(player.getUniqueId())) {
-
-				ASound.play(player, Sound.VILLAGER_NO, 1F, 1F);
-				return;
-			}
-
-			ItemStack held = player.getItemInHand();
-			player.setItemInHand(player.getInventory().getHelmet());
-			player.getInventory().setHelmet(held);
-
-			helmetSwapCooldown.add(player.getUniqueId());
-			new BukkitRunnable() {
-				@Override
-				public void run() {
-					helmetSwapCooldown.remove(player.getUniqueId());
-				}
-			}.runTaskLater(PitSim.INSTANCE, 40L);
-			ASound.play(player, Sound.HORSE_ARMOR, 1F, 1.3F);
-		}
 	}
 
 	@EventHandler
