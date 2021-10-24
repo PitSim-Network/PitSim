@@ -72,7 +72,7 @@ public class DamageManager implements Listener {
 
 	@EventHandler
 	public void onHeal(EntityRegainHealthEvent event) {
-		if(!(event.getEntity() instanceof Player)) return;
+		if(!(event.getEntity() instanceof Player) || event.getRegainReason() == EntityRegainHealthEvent.RegainReason.CUSTOM) return;
 		Player player = (Player) event.getEntity();
 		event.setCancelled(true);
 
