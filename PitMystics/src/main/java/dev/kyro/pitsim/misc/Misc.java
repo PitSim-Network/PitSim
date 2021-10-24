@@ -2,6 +2,8 @@ package dev.kyro.pitsim.misc;
 
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.controllers.NonManager;
+import dev.kyro.pitsim.controllers.objects.PitPlayer;
+import dev.kyro.pitsim.killstreaks.Uberstreak;
 import net.minecraft.server.v1_8_R3.*;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -42,6 +44,14 @@ public class Misc {
 	public static void applyPotionEffect(Player player, PotionEffectType type, int duration, int amplifier, boolean ambient, boolean particles) {
 		if(amplifier < 0) return;
 		if(duration == 0) return;
+
+		if(NonManager.getNon(player) == null) {
+			PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
+			if(pitPlayer.megastreak.getClass() == Uberstreak.class) {
+				Uberstreak uberstreak = (Uberstreak) pitPlayer.megastreak;
+				if(uberstreak.uberEffects.contains(Uberstreak.UberEffect.NO_SPEED) && type == PotionEffectType.SPEED) return;
+			}
+		}
 
 		for(PotionEffect potionEffect : player.getActivePotionEffects()) {
 			if(!potionEffect.getType().equals(type) || potionEffect.getAmplifier() > amplifier) continue;

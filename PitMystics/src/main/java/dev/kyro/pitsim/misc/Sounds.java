@@ -70,6 +70,7 @@ public class Sounds {
 	public static final SoundEffect UBER_200 = new SoundEffect("mob.guardian.curse", 1000, 1);
 	public static final SoundEffect UBER_300 = new SoundEffect("mob.guardian.curse", 1000, 1);
 	public static final SoundEffect UBER_400 = new SoundEffect("mob.guardian.curse", 1000, 1);
+	public static final SoundEffect UBER_500 = new SoundEffect("mob.guardian.curse", 1000, 1);
 
 //	Upgrades
 	public static final SoundEffect STREAKER = new SoundEffect(Sound.BURP, 2, 1.2F);

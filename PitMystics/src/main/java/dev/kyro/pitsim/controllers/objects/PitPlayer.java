@@ -276,14 +276,9 @@ public class PitPlayer {
 		if(hasPerk(Thick.INSTANCE)) maxHealth += 4;
 		if(Hearts.INSTANCE != null) maxHealth += Hearts.INSTANCE.getExtraHealth(this);
 
-		if(megastreak.isOnMega() && megastreak.getClass() == Uberstreak.class && kills >= 100) {
-			maxHealth -= 2;
-		}
-		if(megastreak.isOnMega() && megastreak.getClass() == Uberstreak.class && kills >= 200) {
-			maxHealth -= 2;
-		}
-		if(megastreak.isOnMega() && megastreak.getClass() == Uberstreak.class && kills >= 300) {
-			maxHealth -= 2;
+		if(megastreak.getClass() == Uberstreak.class) {
+			Uberstreak uberstreak = (Uberstreak) megastreak;
+			if(uberstreak.uberEffects.contains(Uberstreak.UberEffect.LOSE_MAX_HEALTH)) maxHealth -= 4;
 		}
 
 		if(Juggernaut.juggernaut == this.player) maxHealth = 100;
