@@ -19,10 +19,10 @@ import java.text.DecimalFormat;
 import java.util.Arrays;
 import java.util.List;
 
-public class GoldAbility extends HelmetAbility {
-	public GoldAbility(Player player) {
+public class GoldRushAbility extends HelmetAbility {
+	public GoldRushAbility(Player player) {
 
-		super(player,"Gold", "gold", true, 12);
+		super(player,"Gold Rush", "goldrush", true, 12);
 	}
 
 	@EventHandler
@@ -37,6 +37,7 @@ public class GoldAbility extends HelmetAbility {
 			ASound.play(attackEvent.attacker, Sound.VILLAGER_NO, 1F, 1F);
 			return;
 		}
+		ASound.play(attackEvent.attacker, Sound.ORB_PICKUP, 1, 0.9F);
 	}
 
 	@EventHandler
@@ -55,7 +56,7 @@ public class GoldAbility extends HelmetAbility {
 		assert goldenHelmet != null;
 
 		ASound.play(player, Sound.NOTE_PLING, 1.3F, 2);
-		AOutput.send(player, "&6&lGOLDEN HELMET! &aActivated &9Gold&7. (&6-1,000g&7 per hit)");
+		AOutput.send(player, "&6&lGOLDEN HELMET! &aActivated &9Gold Rush&7. (&6-1,000g&7 per hit)");
 	}
 
 	@Override
@@ -73,7 +74,7 @@ public class GoldAbility extends HelmetAbility {
 
 	@Override
 	public void onDeactivate() {
-		AOutput.send(player, "&6&lGOLDEN HELMET! &cDeactivated &9Gold&c.");
+		AOutput.send(player, "&6&lGOLDEN HELMET! &cDeactivated &9Gold Rush&c.");
 	}
 
 	@Override

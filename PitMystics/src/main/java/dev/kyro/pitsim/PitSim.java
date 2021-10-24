@@ -15,7 +15,7 @@ import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.enchants.GoldBoost;
 import dev.kyro.pitsim.enchants.*;
 import dev.kyro.pitsim.helmetabilities.BlobAbility;
-import dev.kyro.pitsim.helmetabilities.GoldAbility;
+import dev.kyro.pitsim.helmetabilities.GoldRushAbility;
 import dev.kyro.pitsim.helmetabilities.JudgementAbility;
 import dev.kyro.pitsim.helmetabilities.LeapAbility;
 import dev.kyro.pitsim.killstreaks.*;
@@ -377,7 +377,7 @@ public class PitSim extends JavaPlugin {
 	public void registerHelmetAbilities() {
 		HelmetAbility.registerHelmetAbility(new LeapAbility(null));
 		HelmetAbility.registerHelmetAbility(new BlobAbility(null));
-		HelmetAbility.registerHelmetAbility(new GoldAbility(null));
+		HelmetAbility.registerHelmetAbility(new GoldRushAbility(null));
 		HelmetAbility.registerHelmetAbility(new JudgementAbility(null));
 
 	}
