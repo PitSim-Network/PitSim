@@ -46,17 +46,11 @@ public class JudgementAbility extends HelmetAbility {
 
 		if(Math.random() < 0.25) {
 
-			pitAttacker.heal(4);
+			pitAttacker.heal(2);
 			ASound.play(attackEvent.attacker, Sound.BURP, 1, 1);
 		}
 
-		if(Math.random() < 0.2) {
-
-			Misc.applyPotionEffect(attackEvent.attacker, PotionEffectType.INCREASE_DAMAGE, 40, 0, true, false);
-			ASound.play(attackEvent.attacker, Sound.ENDERMAN_SCREAM, 1, 1);
-		}
-
-		if(Math.random() < 0.15) {
+		if(Math.random() < 0.20) {
 
 			Misc.applyPotionEffect(attackEvent.defender, PotionEffectType.WITHER, 100, 2, true, false);
 			ASound.play(attackEvent.attacker, Sound.WITHER_SHOOT, 1, 1);
@@ -68,20 +62,26 @@ public class JudgementAbility extends HelmetAbility {
 			ASound.play(attackEvent.attacker, Sound.IRONGOLEM_HIT, 1, 1);
 		}
 
-		if(Math.random() < 0.1) {
+		if(Math.random() < 0.10) {
+
+			Misc.applyPotionEffect(attackEvent.attacker, PotionEffectType.INCREASE_DAMAGE, 40, 0, true, false);
+			ASound.play(attackEvent.attacker, Sound.ENDERMAN_SCREAM, 1, 1);
+		}
+
+		if(Math.random() < 0.05) {
 
 			Misc.applyPotionEffect(attackEvent.defender, PotionEffectType.SLOW, 40, 4, true, false);
 			ASound.play(attackEvent.attacker, Sound.ANVIL_LAND, 1, 1);
 		}
 
-		if(Math.random() < 0.05) {
+		if(Math.random() < 0.03) {
 
 			attackEvent.defender.setHealth(attackEvent.defender.getHealth() / 2D);
 			ASound.play(attackEvent.attacker, Sound.ZOMBIE_WOODBREAK, 1, 1);
 			attackEvent.defender.playSound(attackEvent.defender.getLocation(), "mob.guardian.curse", 1000, 1);
 		}
 
-		if(Math.random() < 0.05) {
+		if(Math.random() < 0.02) {
 
 			ASound.play(attackEvent.attacker, Sound.ENDERDRAGON_GROWL, 1, 1);
 			ASound.play(attackEvent.defender, Sound.IRONGOLEM_DEATH, 1, 1);
