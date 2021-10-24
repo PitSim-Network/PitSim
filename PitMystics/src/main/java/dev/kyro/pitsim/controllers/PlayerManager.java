@@ -15,9 +15,6 @@ import dev.kyro.pitsim.misc.DeathCrys;
 import dev.kyro.pitsim.misc.KillEffects;
 import dev.kyro.pitsim.misc.Misc;
 import me.clip.placeholderapi.PlaceholderAPI;
-import net.citizensnpcs.api.CitizensAPI;
-import net.citizensnpcs.api.npc.NPC;
-import net.citizensnpcs.api.npc.NPCRegistry;
 import net.kyori.adventure.audience.Audience;
 import org.bukkit.*;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -67,15 +64,6 @@ public class PlayerManager implements Listener {
 
 	@EventHandler(priority = EventPriority.HIGHEST)
 	public static void onKill(KillEvent killEvent) {
-
-		if(SpawnManager.isInSpawn(killEvent.killer.getLocation()) && SpawnManager.isInSpawn(killEvent.dead.getLocation())) {
-			NPCRegistry nons = CitizensAPI.getNPCRegistry();
-			List<NPC> toRemove = new ArrayList<>();
-			for(NPC non : nons) {
-				if(SpawnManager.isInSpawn(non.getStoredLocation())) toRemove.add(non);
-			}
-			for(NPC npc : toRemove) npc.destroy();
-		}
 
 		PitPlayer pitKiller = PitPlayer.getPitPlayer(killEvent.killer);
 		PitPlayer pitDead = PitPlayer.getPitPlayer(killEvent.dead);

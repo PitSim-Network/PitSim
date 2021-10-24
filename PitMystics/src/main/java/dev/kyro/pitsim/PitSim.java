@@ -28,6 +28,8 @@ import dev.kyro.pitsim.pitevents.CaptureTheFlag;
 import dev.kyro.pitsim.pitevents.Juggernaut;
 import dev.kyro.pitsim.placeholders.*;
 import dev.kyro.pitsim.upgrades.*;
+import net.citizensnpcs.api.CitizensAPI;
+import net.citizensnpcs.api.npc.NPC;
 import net.kyori.adventure.platform.bukkit.BukkitAudiences;
 import net.luckperms.api.LuckPerms;
 import net.milkbowl.vault.economy.Economy;
@@ -71,6 +73,8 @@ public class PitSim extends JavaPlugin {
 			LUCKPERMS = provider.getProvider();
 		}
 
+		CitizensAPI.getNPCRegistry().forEach(NPC::destroy);
+
 		MapManager.onStart();
 
 		adventure = BukkitAudiences.create(this);
@@ -98,15 +102,12 @@ public class PitSim extends JavaPlugin {
 			return;
 		}
 
-
 		registerPitEvents();
 		PitEventManager.eventWait();
 
 		registerUpgrades();
 		registerPerks();
 		registerMegastreaks();
-
-
 
 		ArcticAPI.setupPlaceholderAPI("pitsim");
 		AHook.registerPlaceholder(new PrefixPlaceholder());
