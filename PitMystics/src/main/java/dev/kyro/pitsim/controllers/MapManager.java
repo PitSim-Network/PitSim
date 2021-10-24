@@ -31,16 +31,16 @@ public class MapManager {
     public static int snowY = 4;
 
     public static Location spawn = new Location(Bukkit.getWorld("pitsim"), 0.5, 88, 8.5, -180, 0);
-    public static Location nonSpawn = new Location(Bukkit.getWorld("pitsim"), 0, 86, 0);
+    public static Location nonSpawn = new Location(Bukkit.getWorld("pitsim"), 0, 87, 0);
     public static Location mid = new Location(Bukkit.getWorld("pitsim"), 0, 70, 0);
-    public static int Y = 70;
+    public static int y = 70;
 
     public static Location getNonSpawn() {
 
         Location spawn = nonSpawn;
         spawn = spawn.clone();
-        spawn.setX(spawn.getX() + (Math.random() * 6 - 3));
-        spawn.setZ(spawn.getZ() + (Math.random() * 6 - 3));
+        spawn.setX(spawn.getX() + (Math.random() * 8 - 4));
+        spawn.setZ(spawn.getZ() + (Math.random() * 8 - 4));
         return spawn;
     }
 
@@ -50,7 +50,7 @@ public class MapManager {
     }
 
     public static int getY() {
-        return Y;
+        return y;
     }
 
     public static Location getPlayerSpawn() {
