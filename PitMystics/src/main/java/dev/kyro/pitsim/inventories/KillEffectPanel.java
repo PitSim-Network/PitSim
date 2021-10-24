@@ -6,11 +6,10 @@ import dev.kyro.arcticapi.gui.AGUIPanel;
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.controllers.NonManager;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
-import dev.kyro.pitsim.enums.DeathCry;
 import dev.kyro.pitsim.enums.KillEffect;
+import dev.kyro.pitsim.misc.Sounds;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
-import org.bukkit.Sound;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.event.inventory.InventoryClickEvent;
@@ -64,10 +63,10 @@ public class KillEffectPanel extends AGUIPanel {
                     pitPlayer.killEffect = null;
                     playerData.set("killeffect", null);
                     APlayerData.savePlayerData(player);
-                    player.playSound(player.getLocation(), Sound.NOTE_PLING, 1F, 2F);
+                    Sounds.SUCCESS.play(player);
                     openPanel(donatorGUI.deathCryPanel);
                 } else {
-                    player.playSound(player.getLocation(), Sound.ENDERMAN_TELEPORT, 1F, 0.5F);
+                    Sounds.ERROR.play(player);
                     AOutput.error(player, "&cYou don't have a Kill effect equipped!");
                 }
             } else if(slot == 11) {
@@ -75,10 +74,10 @@ public class KillEffectPanel extends AGUIPanel {
                     pitPlayer.killEffect = KillEffect.EXE_DEATH;
                     playerData.set("killeffect", KillEffect.EXE_DEATH.toString());
                     APlayerData.savePlayerData(player);
-                    player.playSound(player.getLocation(), Sound.NOTE_PLING, 1F, 2F);
+                    Sounds.SUCCESS.play(player);
                     openPanel(donatorGUI.killEffectPanel);
                 } else {
-                    player.playSound(player.getLocation(), Sound.ENDERMAN_TELEPORT, 1F, 0.5F);
+                    Sounds.ERROR.play(player);
                     AOutput.error(player, "&cThat kill effect is already equipped");
                 }
                 return;
@@ -87,10 +86,10 @@ public class KillEffectPanel extends AGUIPanel {
                     pitPlayer.killEffect = KillEffect.FIRE;
                     playerData.set("killeffect", KillEffect.FIRE.toString());
                     APlayerData.savePlayerData(player);
-                    player.playSound(player.getLocation(), Sound.NOTE_PLING, 1F, 2F);
+                    Sounds.SUCCESS.play(player);
                     openPanel(donatorGUI.killEffectPanel);
                 } else {
-                    player.playSound(player.getLocation(), Sound.ENDERMAN_TELEPORT, 1F, 0.5F);
+                    Sounds.ERROR.play(player);
                     AOutput.error(player, "&cThat kill effect is already equipped");
                 }
                 return;

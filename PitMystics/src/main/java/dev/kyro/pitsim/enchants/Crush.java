@@ -7,7 +7,7 @@ import dev.kyro.pitsim.controllers.objects.PitEnchant;
 import dev.kyro.pitsim.enums.ApplyType;
 import dev.kyro.pitsim.events.AttackEvent;
 import dev.kyro.pitsim.misc.Misc;
-import org.bukkit.Sound;
+import dev.kyro.pitsim.misc.Sounds;
 import org.bukkit.event.EventHandler;
 import org.bukkit.potion.PotionEffectType;
 
@@ -32,8 +32,8 @@ public class Crush extends PitEnchant {
 		if(cooldown.isOnCooldown()) return; else cooldown.reset();
 
 		Misc.applyPotionEffect(attackEvent.defender, PotionEffectType.WEAKNESS, getDuration(enchantLvl), enchantLvl + 3, true, false);
-		attackEvent.attacker.playSound(attackEvent.attacker.getLocation(), Sound.GLASS, 1, 0.80F);
-		attackEvent.defender.playSound(attackEvent.defender.getLocation(), Sound.GLASS, 1, 0.80F);
+		Sounds.CRUSH.play(attackEvent.attacker);
+		Sounds.CRUSH.play(attackEvent.defender);
 	}
 
 	@Override

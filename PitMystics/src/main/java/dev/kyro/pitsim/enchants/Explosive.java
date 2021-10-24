@@ -1,22 +1,24 @@
 package dev.kyro.pitsim.enchants;
 
 import dev.kyro.arcticapi.builders.ALoreBuilder;
-import dev.kyro.pitsim.PitSim;
-import dev.kyro.pitsim.controllers.*;
+import dev.kyro.pitsim.controllers.Cooldown;
+import dev.kyro.pitsim.controllers.EnchantManager;
+import dev.kyro.pitsim.controllers.NonManager;
+import dev.kyro.pitsim.controllers.SpawnManager;
 import dev.kyro.pitsim.controllers.objects.Non;
 import dev.kyro.pitsim.controllers.objects.PitEnchant;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.enums.ApplyType;
 import dev.kyro.pitsim.events.AttackEvent;
 import dev.kyro.pitsim.killstreaks.Uberstreak;
+import dev.kyro.pitsim.misc.Sounds;
 import org.bukkit.Effect;
-import org.bukkit.Sound;
+import org.bukkit.Location;
 import org.bukkit.entity.Arrow;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.entity.ProjectileHitEvent;
-import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
 
 import java.util.List;
@@ -85,8 +87,7 @@ public class Explosive extends PitEnchant {
 			}
 		}
 
-		arrow.getWorld().playSound(arrow.getLocation(), Sound.EXPLODE, 0.75f,
-				getPitch(enchantLvl));
+		playSound(arrow.getLocation(), enchantLvl);
 		arrow.getWorld().playEffect(arrow.getLocation(), getEffect(enchantLvl),
 				getEffect(enchantLvl).getData(), 100);
 	}
@@ -117,18 +118,16 @@ public class Explosive extends PitEnchant {
 		return 0;
 	}
 
-	public float getPitch(int enchantLvl) {
+	public void playSound(Location location, int enchantLvl) {
 
 		switch(enchantLvl) {
 			case 1:
-				return 2;
+				Sounds.EXPLOSIVE_1.play(location);
 			case 2:
-				return 1;
+				Sounds.EXPLOSIVE_2.play(location);
 			case 3:
-				return 1.4F;
-
+				Sounds.EXPLOSIVE_3.play(location);
 		}
-		return 0;
 	}
 
 	public Effect getEffect(int enchantLvl) {
@@ -137,7 +136,6 @@ public class Explosive extends PitEnchant {
 			case 1:
 				return Effect.EXPLOSION_LARGE;
 			case 2:
-				return Effect.EXPLOSION_HUGE;
 			case 3:
 				return Effect.EXPLOSION_HUGE;
 

@@ -3,7 +3,6 @@ package dev.kyro.pitsim.controllers;
 import be.maximvdw.featherboard.api.FeatherBoardAPI;
 import dev.kyro.arcticapi.data.APlayerData;
 import dev.kyro.arcticapi.misc.AOutput;
-import dev.kyro.arcticapi.misc.ASound;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.controllers.objects.Non;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
@@ -14,9 +13,13 @@ import dev.kyro.pitsim.killstreaks.Highlander;
 import dev.kyro.pitsim.misc.DeathCrys;
 import dev.kyro.pitsim.misc.KillEffects;
 import dev.kyro.pitsim.misc.Misc;
+import dev.kyro.pitsim.misc.Sounds;
 import me.clip.placeholderapi.PlaceholderAPI;
 import net.kyori.adventure.audience.Audience;
-import org.bukkit.*;
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
+import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -117,7 +120,7 @@ public class PlayerManager implements Listener {
 			String message = "&6&lBOUNTY!&7 bump &6&l" + amount + "g&7 on %luckperms_prefix%" + killEvent.killer.getDisplayName() +
 					"&7 for high streak";
 			if(!pitKiller.disabledBounties) AOutput.send(killEvent.killer, PlaceholderAPI.setPlaceholders(killEvent.killer, message));
-			ASound.play(killEvent.killer, Sound.WITHER_SPAWN, 1, 1);
+			Sounds.BOUNTY.play(killEvent.killer);
 		}
 	}
 
@@ -135,7 +138,7 @@ public class PlayerManager implements Listener {
 
 			if(pantsSwapCooldown.contains(player.getUniqueId())) {
 
-				ASound.play(player, Sound.VILLAGER_NO, 1F, 1F);
+				Sounds.NO.play(player);
 				return;
 			}
 
@@ -150,7 +153,7 @@ public class PlayerManager implements Listener {
 					pantsSwapCooldown.remove(player.getUniqueId());
 				}
 			}.runTaskLater(PitSim.INSTANCE, 40L);
-			ASound.play(player, Sound.HORSE_ARMOR, 1F, 1.3F);
+			Sounds.ARMOR_SWAP.play(player);
 		}
 	}
 
@@ -345,7 +348,7 @@ public class PlayerManager implements Listener {
 		pitPlayer.renown += totalRenown;
 		playerData.set("renown", pitPlayer.renown);
 		AOutput.send(player, "&a&lCOMPENSATION! &7Received &e+" + totalRenown + " Renown &7for your current level.");
-		ASound.play(player, Sound.NOTE_PLING, 2, 1.5F);
+		Sounds.COMPENSATION.play(player);
 
 		APlayerData.savePlayerData(player);
 	}
@@ -360,7 +363,7 @@ public class PlayerManager implements Listener {
 		pitPlayer.renown += 10;
 		playerData.set("renown", pitPlayer.renown);
 		AOutput.send(player, "&a&lCOMPENSATION! &7Received &e+" + 10 + " Renown &7for the removal of &fFancy Pants");
-		ASound.play(player, Sound.NOTE_PLING, 2, 1.5F);
+		Sounds.COMPENSATION.play(player);
 
 		APlayerData.savePlayerData(player);
 	}
@@ -387,7 +390,7 @@ public class PlayerManager implements Listener {
 		playerData.set("renown", pitPlayer.renown);
 		APlayerData.savePlayerData(player);
 		AOutput.send(player, "&a&lCOMPENSATION! &7Received &e+" + renown + " Renown &7for recent renown shop changes.");
-		ASound.play(player, Sound.NOTE_PLING, 2, 1.5F);
+		Sounds.COMPENSATION.play(player);
 	}
 
 

@@ -52,7 +52,6 @@ public class DivineIntervention extends RenownUpgrade {
 
 		if(isDouble) {
 			AOutput.send(player, "&b&lDIVINE INTERVENTION! &7Inventory saved!");
-//			ASound.play(player, Sound.VILLA);
 		}
 
 		return isDouble;

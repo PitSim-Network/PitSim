@@ -1,7 +1,6 @@
 package dev.kyro.pitsim.enchants;
 
 import dev.kyro.arcticapi.builders.ALoreBuilder;
-import dev.kyro.arcticapi.misc.ASound;
 import dev.kyro.pitsim.controllers.HitCounter;
 import dev.kyro.pitsim.controllers.NonManager;
 import dev.kyro.pitsim.controllers.objects.Non;
@@ -10,7 +9,7 @@ import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.enums.ApplyType;
 import dev.kyro.pitsim.events.AttackEvent;
 import dev.kyro.pitsim.misc.Misc;
-import org.bukkit.Sound;
+import dev.kyro.pitsim.misc.Sounds;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.potion.PotionEffectType;
@@ -59,8 +58,8 @@ public class aComboVenom extends PitEnchant {
 
 //		Misc.applyPotionEffect(attackEvent.attacker, PotionEffectType.POISON, 20 * 24, 0, true, false);
 		Misc.applyPotionEffect(attackEvent.defender, PotionEffectType.POISON, 20 * 12, 0, true, false);
-		ASound.play(attackEvent.attacker, Sound.SPIDER_IDLE, 1, 1);
-		ASound.play(attackEvent.defender, Sound.SPIDER_IDLE, 1, 1);
+		Sounds.VENOM.play(attackEvent.attacker);
+		Sounds.VENOM.play(attackEvent.defender);
 	}
 
 	@Override

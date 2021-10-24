@@ -8,9 +8,9 @@ import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.enums.NBTTag;
 import dev.kyro.pitsim.enums.PantColor;
 import dev.kyro.pitsim.misc.Misc;
+import dev.kyro.pitsim.misc.Sounds;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
-import org.bukkit.Sound;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.inventory.InventoryOpenEvent;
@@ -78,7 +78,7 @@ public class PantsColorPanel extends AGUIPanel {
             for (PantColor matchingPantColor : PantColor.values()) {
                 if(matchingPantColor.equals(pantColor)) {
                     PantColor.setPantColor(player.getInventory().getLeggings(), pantColor);
-                    player.playSound(player.getLocation(), Sound.NOTE_PLING, 1F, 2F);
+                    Sounds.SUCCESS.play(player);
                     player.closeInventory();
                 }
             }

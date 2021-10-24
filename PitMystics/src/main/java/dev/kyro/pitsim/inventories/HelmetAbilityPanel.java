@@ -10,9 +10,9 @@ import dev.kyro.pitsim.controllers.HelmetListeners;
 import dev.kyro.pitsim.controllers.objects.GoldenHelmet;
 import dev.kyro.pitsim.controllers.objects.HelmetAbility;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
+import dev.kyro.pitsim.misc.Sounds;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
-import org.bukkit.Sound;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.event.inventory.InventoryClickEvent;
@@ -60,7 +60,7 @@ public class HelmetAbilityPanel extends AGUIPanel {
 
             if(slot == 9) {
                 goldenHelmet.setAbility(null);
-                player.playSound(player.getLocation(), Sound.NOTE_PLING, 1F, 2F);
+                Sounds.SUCCESS.play(player);
                 openPreviousGUI();
             }
 
@@ -75,11 +75,11 @@ public class HelmetAbilityPanel extends AGUIPanel {
                 }
                 if(goldenHelmet.ability != null && goldenHelmet.ability.refName.equals(helmetAbility.refName)) {
                     AOutput.error(player, "&aYou already have that ability selected!");
-                    player.playSound(player.getLocation(), Sound.VILLAGER_NO, 1F, 1F);
+                    Sounds.NO.play(player);
                     return;
                 }
 
-                player.playSound(player.getLocation(), Sound.NOTE_PLING, 1F, 2F);
+                Sounds.SUCCESS.play(player);
                 goldenHelmet.setAbility(helmetAbility);
                 openPreviousGUI();
 

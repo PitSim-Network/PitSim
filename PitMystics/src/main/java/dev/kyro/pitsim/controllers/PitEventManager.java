@@ -5,17 +5,16 @@ import com.xxmicloxx.NoteBlockAPI.model.RepeatMode;
 import com.xxmicloxx.NoteBlockAPI.model.Song;
 import com.xxmicloxx.NoteBlockAPI.songplayer.RadioSongPlayer;
 import com.xxmicloxx.NoteBlockAPI.utils.NBSDecoder;
-import dev.kyro.arcticapi.misc.ASound;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.controllers.objects.Non;
 import dev.kyro.pitsim.controllers.objects.PitEvent;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.misc.Misc;
+import dev.kyro.pitsim.misc.Sounds;
 import net.kyori.adventure.audience.Audience;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
-import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
@@ -98,7 +97,7 @@ public class PitEventManager {
 					preparingEvent = false;
 					Misc.sendTitle(player,event.color + "" + ChatColor.BOLD + "PIT EVENT!", 50);
 					Misc.sendSubTitle(player, event.color + "" + ChatColor.BOLD + event.name.toUpperCase(Locale.ROOT), 50);
-					ASound.play(player, Sound.ENDERDRAGON_GROWL, 2  , 1);
+					Sounds.EVENT_START.play(player);
 					PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
 					kills.put(player, pitPlayer.getKills());
 					bounty.put(player, pitPlayer.bounty);

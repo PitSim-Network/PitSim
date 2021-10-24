@@ -10,12 +10,12 @@ import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.events.AttackEvent;
 import dev.kyro.pitsim.events.KillEvent;
 import dev.kyro.pitsim.misc.Misc;
+import dev.kyro.pitsim.misc.Sounds;
 import dev.kyro.pitsim.upgrades.DoubleDeath;
 import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
-import org.bukkit.Sound;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -146,7 +146,7 @@ public class ToTheMoon extends Megastreak {
 	@Override
 	public void proc() {
 
-		pitPlayer.player.getWorld().playSound(pitPlayer.player.getLocation(), Sound.WITHER_SPAWN, 1000, 1);
+		Sounds.MEGA_GENERAL.play(pitPlayer.player.getLocation());
 		runnable = new BukkitRunnable() {
 			@Override
 			public void run() {

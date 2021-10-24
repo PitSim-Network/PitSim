@@ -1,17 +1,12 @@
 package dev.kyro.pitsim.killstreaks;
 
-import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.controllers.objects.Megastreak;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
-import dev.kyro.pitsim.misc.Misc;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
-import org.bukkit.Sound;
 import org.bukkit.event.HandlerList;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.potion.PotionEffectType;
-import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
 
 import java.util.ArrayList;
@@ -80,16 +75,7 @@ public class NoMegastreak extends Megastreak {
 	}
 
 	@Override
-	public void proc() {
-
-		pitPlayer.player.getWorld().playSound(pitPlayer.player.getLocation(), Sound.WITHER_SPAWN, 1000, 1);
-		runnable = new BukkitRunnable() {
-			@Override
-			public void run() {
-				Misc.applyPotionEffect(pitPlayer.player, PotionEffectType.SPEED, 200, 0, true, false);
-			}
-		}.runTaskTimer(PitSim.INSTANCE, 0L, 60L);
-	}
+	public void proc() { }
 
 	@Override
 	public void reset() {

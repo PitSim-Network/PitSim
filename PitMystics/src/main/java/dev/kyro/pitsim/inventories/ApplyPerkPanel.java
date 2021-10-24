@@ -8,11 +8,11 @@ import dev.kyro.pitsim.controllers.UpgradeManager;
 import dev.kyro.pitsim.controllers.objects.PitPerk;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.events.PerkEquipEvent;
+import dev.kyro.pitsim.misc.Sounds;
 import dev.kyro.pitsim.perks.Streaker;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
-import org.bukkit.Sound;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
@@ -118,19 +118,19 @@ public class ApplyPerkPanel extends AGUIPanel {
 
 				if(clickedPerk.renownUnlockable && !UpgradeManager.hasUpgrade(player, clickedPerk.upgradeRef)) {
 					AOutput.error(player, "&cThis perk needs to be unlocked in the renown shop!");
-					player.playSound(player.getLocation(), Sound.ENDERMAN_TELEPORT, 1F, 0.5F);
+					Sounds.ERROR.play(player);
 					return;
 				}
 
 				if(clickedPerk.getClass() == Streaker.class && pitPlayer.getKills() > 0) {
 					AOutput.error(player, "&cYou cannot select this perk while on a killstreak!");
-					player.playSound(player.getLocation(), Sound.ENDERMAN_TELEPORT, 1F, 0.5F);
+					Sounds.ERROR.play(player);
 					return;
 				}
 
 				for(PitPerk activePerk : perkGUI.getActivePerks()) {
 					if(activePerk != clickedPerk || activePerk.name.equals("No Perk")) continue;
-					player.playSound(player.getLocation(), Sound.ENDERMAN_TELEPORT, 1F, 0.5F);
+					Sounds.ERROR.play(player);
 					AOutput.error(perkGUI.player, "&cThat perk is already equipped");
 					return;
 				}
@@ -139,8 +139,7 @@ public class ApplyPerkPanel extends AGUIPanel {
 				PerkEquipEvent equipEvent = new PerkEquipEvent(clickedPerk, player, replacedPerk);
 				Bukkit.getPluginManager().callEvent(equipEvent);
 
-
-				player.playSound(player.getLocation(), Sound.NOTE_PLING, 1F, 2F);
+				Sounds.SUCCESS.play(player);
 				perkGUI.setPerk(clickedPerk, perkNum);
 				openPreviousGUI();
 				return;

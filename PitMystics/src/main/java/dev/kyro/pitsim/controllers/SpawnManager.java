@@ -8,9 +8,9 @@ import com.sk89q.worldguard.protection.managers.RegionManager;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
+import dev.kyro.pitsim.misc.Sounds;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
-import org.bukkit.Sound;
 import org.bukkit.entity.Arrow;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -37,7 +37,7 @@ public class SpawnManager implements Listener {
 
         if(isInSpawn(player.getLocation())) {
             event.setCancelled(true);
-            player.playSound(player.getLocation(), Sound.VILLAGER_NO, 1 ,1);
+            Sounds.NO.play(player);
         }
 
     }

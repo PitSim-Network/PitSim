@@ -7,9 +7,9 @@ import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.controllers.UpgradeManager;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.controllers.objects.RenownUpgrade;
+import dev.kyro.pitsim.misc.Sounds;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
-import org.bukkit.Sound;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
@@ -52,13 +52,13 @@ public class WithercraftPanel extends AGUIPanel {
             if(slot == 15) {
                     if(upgrade.prestigeReq > pitPlayer.prestige) {
                         AOutput.error(player, "&cYou are too low prestige to acquire this!");
-                        player.playSound(player.getLocation(), Sound.VILLAGER_NO, 1 ,1);
+                        Sounds.NO.play(player);
                         return;
                     }
                     if(upgrade.isTiered) {
                         if(upgrade.maxTiers != UpgradeManager.getTier(player, upgrade) && upgrade.getTierCosts().get(UpgradeManager.getTier(player, upgrade)) > pitPlayer.renown) {
                             AOutput.error(player, "&cYou do not have enough renown!");
-                            player.playSound(player.getLocation(), Sound.VILLAGER_NO, 1 ,1);
+                            Sounds.NO.play(player);
                             return;
                         }
                         if(UpgradeManager.getTier(player, upgrade) < upgrade.maxTiers) {
@@ -66,26 +66,26 @@ public class WithercraftPanel extends AGUIPanel {
                             openPanel(renownShopGUI.renownShopConfirmPanel);
                         } else {
                             AOutput.error(player, "&aYou already unlocked the last upgrade!");
-                            player.playSound(player.getLocation(), Sound.VILLAGER_NO, 1 ,1);
+                            Sounds.NO.play(player);
                         }
                     } else if(!UpgradeManager.hasUpgrade(player, upgrade)) {
                         if(upgrade.renownCost > pitPlayer.renown) {
                             AOutput.error(player, "&cYou do not have enough renown!");
-                            player.playSound(player.getLocation(), Sound.VILLAGER_NO, 1 ,1);
+                            Sounds.NO.play(player);
                             return;
                         }
                         RenownShopGUI.purchaseConfirmations.put(player, upgrade);
                         openPanel(renownShopGUI.renownShopConfirmPanel);
                     } else {
                         AOutput.error(player, "&aYou already unlocked this upgrade!");
-                        player.playSound(player.getLocation(), Sound.VILLAGER_NO, 1 ,1);
+                        Sounds.NO.play(player);
                     }
 
             }
             if(slot == 11) {
                 if(pitPlayer.renown < 5) {
                     AOutput.error(player, "&cYou do not have enough renown to do this!");
-                    player.playSound(player.getLocation(), Sound.VILLAGER_NO, 1 ,1);
+                    Sounds.NO.play(player);
                     return;
                 }
 

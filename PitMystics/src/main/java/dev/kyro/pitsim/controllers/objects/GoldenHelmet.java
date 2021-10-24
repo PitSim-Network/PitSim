@@ -3,7 +3,6 @@ package dev.kyro.pitsim.controllers.objects;
 import de.tr7zw.nbtapi.NBTItem;
 import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.arcticapi.misc.AOutput;
-import dev.kyro.arcticapi.misc.ASound;
 import dev.kyro.pitsim.controllers.HelmetSystem;
 import dev.kyro.pitsim.enums.NBTTag;
 import dev.kyro.pitsim.helmetabilities.BlobAbility;
@@ -11,8 +10,8 @@ import dev.kyro.pitsim.helmetabilities.GoldRushAbility;
 import dev.kyro.pitsim.helmetabilities.JudgementAbility;
 import dev.kyro.pitsim.helmetabilities.LeapAbility;
 import dev.kyro.pitsim.misc.Misc;
+import dev.kyro.pitsim.misc.Sounds;
 import org.bukkit.Material;
-import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -177,7 +176,7 @@ public class GoldenHelmet {
 			if(HelmetSystem.getLevel(this.gold - gold) < HelmetSystem.getLevel(this.gold)) {
 				AOutput.send(owner, "&6&lGOLDEN HELMET! &7Helmet level reduced to &f" +
 						HelmetSystem.getLevel(this.gold - gold) + "&7. (&6" + formatter.format(this.gold - gold) + "g&7)");
-				ASound.play(ability.player, Sound.ANVIL_BREAK, 1, 2);
+				Sounds.HELMET_DOWNGRADE.play(ability.player);
 			}
 			this.gold -= gold;
 			setLore();

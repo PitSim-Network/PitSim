@@ -1,12 +1,11 @@
 package dev.kyro.pitsim.enchants;
 
 import dev.kyro.arcticapi.builders.ALoreBuilder;
-import dev.kyro.arcticapi.misc.ASound;
 import dev.kyro.pitsim.controllers.objects.PitEnchant;
 import dev.kyro.pitsim.enums.ApplyType;
 import dev.kyro.pitsim.events.AttackEvent;
 import dev.kyro.pitsim.misc.Misc;
-import org.bukkit.Sound;
+import dev.kyro.pitsim.misc.Sounds;
 import org.bukkit.event.EventHandler;
 
 import java.util.List;
@@ -27,10 +26,10 @@ public class Gamble extends PitEnchant {
 
 		if(Math.random() < 0.5) {
 			attackEvent.trueDamage += getTrueDamage(enchantLvl);
-			ASound.play(attackEvent.attacker, Sound.NOTE_PLING, 1, 3F);
+			Sounds.GAMBLE_YES.play(attackEvent.attacker);
 		} else {
 			attackEvent.selfVeryTrueDamage += getTrueDamage(enchantLvl);
-			ASound.play(attackEvent.attacker, Sound.NOTE_PLING, 1, 1.5F);
+			Sounds.GAMBLE_NO.play(attackEvent.attacker);
 		}
 
 	}

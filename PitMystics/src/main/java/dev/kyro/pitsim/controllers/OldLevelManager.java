@@ -2,13 +2,12 @@ package dev.kyro.pitsim.controllers;
 
 import dev.kyro.arcticapi.data.APlayerData;
 import dev.kyro.arcticapi.misc.AOutput;
-import dev.kyro.arcticapi.misc.ASound;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.misc.Misc;
+import dev.kyro.pitsim.misc.Sounds;
 import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
-import org.bukkit.Sound;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 
@@ -67,7 +66,7 @@ public class OldLevelManager {
             pitplayer.renown += getRenownFromLevel(pitplayer.playerLevel);
             setXPBar(player, pitplayer);
 
-            ASound.play(player, Sound.LEVEL_UP, 1, 1);
+            Sounds.LEVEL_UP.play(player);
             String message = ChatColor.translateAlternateColorCodes('&', "&e&lLEVEL UP! %luckperms_prefix%%player_name% &7has reached level &e" + pitplayer.playerLevel);
             Bukkit.broadcastMessage(PlaceholderAPI.setPlaceholders(player, message));
             AOutput.send(player, "&7Rewards: &e+" + getRenownFromLevel(pitplayer.playerLevel) + " Renown");

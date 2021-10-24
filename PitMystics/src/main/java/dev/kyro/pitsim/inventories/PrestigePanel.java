@@ -6,9 +6,9 @@ import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.arcticapi.misc.AUtil;
 import dev.kyro.pitsim.controllers.PrestigeValues;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
+import dev.kyro.pitsim.misc.Sounds;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
-import org.bukkit.Sound;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.inventory.InventoryOpenEvent;
@@ -48,7 +48,7 @@ public class PrestigePanel extends AGUIPanel {
 					if(pitPlayer.level == 120 && pitPlayer.goldGrinded >= prestigeInfo.goldReq) {
 					if(pitPlayer.prestige == 50) {
 						AOutput.error(player, "&aYou are already the maximum prestige!");
-						player.playSound(player.getLocation(), Sound.VILLAGER_NO, 1 ,1);
+						Sounds.NO.play(player);
 						return;
 					}
 
@@ -56,7 +56,7 @@ public class PrestigePanel extends AGUIPanel {
 					openPanel(prestigeGUI.prestigeConfirmPanel);
 				} else {
 					AOutput.error(player, "&cYou do not meet the requirments to prestige!");
-					player.playSound(player.getLocation(), Sound.VILLAGER_NO, 1 ,1);
+						Sounds.NO.play(player);
 				}
 			}
 			if(slot == 15) {

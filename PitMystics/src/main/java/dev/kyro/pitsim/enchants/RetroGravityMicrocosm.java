@@ -2,7 +2,6 @@ package dev.kyro.pitsim.enchants;
 
 import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.arcticapi.misc.AOutput;
-import dev.kyro.arcticapi.misc.ASound;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.controllers.HitCounter;
 import dev.kyro.pitsim.controllers.objects.PitEnchant;
@@ -10,8 +9,8 @@ import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.enums.ApplyType;
 import dev.kyro.pitsim.events.AttackEvent;
 import dev.kyro.pitsim.misc.Misc;
+import dev.kyro.pitsim.misc.Sounds;
 import org.bukkit.Material;
-import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -63,8 +62,8 @@ public class RetroGravityMicrocosm extends PitEnchant {
 
 			AOutput.send(attackEvent.defender, "&d&lRGM!&7 Procced against " +
 					attackEvent.attacker.getName() + " &8(" + Math.min(charge, getMaxStacks(defenderEnchantLvl)) + "x)");
-			ASound.play(attackEvent.defender, Sound.ENDERMAN_HIT, 1F, 1F);
-			ASound.play(attackEvent.attacker, Sound.ENDERMAN_HIT, 1F, 1F);
+			Sounds.RGM.play(attackEvent.defender);
+			Sounds.RGM.play(attackEvent.attacker);
 		}
 	}
 

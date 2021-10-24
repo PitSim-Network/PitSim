@@ -5,10 +5,9 @@ import dev.kyro.arcticapi.gui.AGUI;
 import dev.kyro.arcticapi.gui.AGUIPanel;
 import dev.kyro.pitsim.controllers.NonManager;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
-import dev.kyro.pitsim.enums.DeathCry;
+import dev.kyro.pitsim.misc.Sounds;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
-import org.bukkit.Sound;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
@@ -62,7 +61,7 @@ public class ChatOptionsPanel extends AGUIPanel {
                     playerData.set("disabledbounties", true);
                 }
                 APlayerData.savePlayerData(player);
-                player.playSound(player.getLocation(), Sound.NOTE_PLING, 1F, 2F);
+                Sounds.SUCCESS.play(player);
                 openPanel(donatorGUI.chatOptionsPanel);
             } else if(slot == 12) {
                 if(pitPlayer.disabledStreaks) {
@@ -73,7 +72,7 @@ public class ChatOptionsPanel extends AGUIPanel {
                     playerData.set("disabledstreaks", true);
                 }
                 APlayerData.savePlayerData(player);
-                player.playSound(player.getLocation(), Sound.NOTE_PLING, 1F, 2F);
+                Sounds.SUCCESS.play(player);
                 openPanel(donatorGUI.chatOptionsPanel);
             } else if(slot == 14) {
                 if(pitPlayer.disabledKillFeed) {
@@ -84,7 +83,7 @@ public class ChatOptionsPanel extends AGUIPanel {
                     playerData.set("disabledkillfeed", true);
                 }
                 APlayerData.savePlayerData(player);
-                player.playSound(player.getLocation(), Sound.NOTE_PLING, 1F, 2F);
+                Sounds.SUCCESS.play(player);
                 openPanel(donatorGUI.chatOptionsPanel);
             } else if(slot == 16) {
                 if(pitPlayer.disabledPlayerChat) {
@@ -95,7 +94,7 @@ public class ChatOptionsPanel extends AGUIPanel {
                     playerData.set("disabledplayerchat", true);
                 }
                 APlayerData.savePlayerData(player);
-                player.playSound(player.getLocation(), Sound.NOTE_PLING, 1F, 2F);
+                Sounds.SUCCESS.play(player);
                 openPanel(donatorGUI.chatOptionsPanel);
             }
 

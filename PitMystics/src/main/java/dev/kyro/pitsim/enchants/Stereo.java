@@ -13,9 +13,9 @@ import dev.kyro.pitsim.controllers.objects.PitEnchant;
 import dev.kyro.pitsim.enums.ApplyType;
 import dev.kyro.pitsim.events.AttackEvent;
 import dev.kyro.pitsim.misc.Misc;
+import dev.kyro.pitsim.misc.Sounds;
 import org.bukkit.Bukkit;
 import org.bukkit.Effect;
-import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -42,7 +42,7 @@ public class Stereo extends PitEnchant {
 
 			if(!event.getPlayer().hasPermission("pitsim.stereo")) {
 				AOutput.error(event.getPlayer(), "&c&lNOPE! &7You must have the &bMiraculous Rank &7or higher to use &9Stereo");
-				event.getPlayer().playSound(event.getPlayer().getLocation(), Sound.VILLAGER_NO, 1 ,1);
+				Sounds.NO.play(event.getPlayer());
 				return;
 			}
 

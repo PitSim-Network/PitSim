@@ -1,7 +1,6 @@
 package dev.kyro.pitsim.killstreaks;
 
 import dev.kyro.arcticapi.misc.AOutput;
-import dev.kyro.arcticapi.misc.ASound;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.controllers.LevelManager;
 import dev.kyro.pitsim.controllers.PrestigeValues;
@@ -11,12 +10,12 @@ import dev.kyro.pitsim.events.AttackEvent;
 import dev.kyro.pitsim.events.HealEvent;
 import dev.kyro.pitsim.events.KillEvent;
 import dev.kyro.pitsim.misc.Misc;
+import dev.kyro.pitsim.misc.Sounds;
 import dev.kyro.pitsim.upgrades.DoubleDeath;
 import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
-import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.HandlerList;
@@ -140,6 +139,7 @@ public class Highlander extends Megastreak {
 	@Override
 	public void proc() {
 
+		Sounds.MEGA_GENERAL.play(pitPlayer.player.getLocation());
 		runnable = new BukkitRunnable() {
 			@Override
 			public void run() {
@@ -156,7 +156,6 @@ public class Highlander extends Megastreak {
 			pitPlayer.prefix = PrestigeValues.getPlayerPrefixNameTag(pitPlayer.player) + PlaceholderAPI.setPlaceholders(pitPlayer.player, message);
 		}
 
-		ASound.play(pitPlayer.player, Sound.WITHER_SPAWN, 2, 0.5f);
 		pitPlayer.megastreak = this;
 		for(Player player : Bukkit.getOnlinePlayers()) {
 			PitPlayer pitPlayer2 = PitPlayer.getPitPlayer(player);
@@ -165,7 +164,6 @@ public class Highlander extends Megastreak {
 					"&c&lMEGASTREAK! %luckperms_prefix%" + pitPlayer.player.getDisplayName() + " &7activated &6&lHIGHLANDER&7!");
 			AOutput.send(player, PlaceholderAPI.setPlaceholders(pitPlayer.player, streakMessage));
 		}
-
 	}
 
 	@Override

@@ -4,12 +4,11 @@ import de.tr7zw.nbtapi.NBTItem;
 import dev.kyro.arcticapi.gui.AGUI;
 import dev.kyro.arcticapi.gui.AGUIPanel;
 import dev.kyro.arcticapi.misc.AOutput;
-import dev.kyro.arcticapi.misc.ASound;
 import dev.kyro.pitsim.controllers.EnchantManager;
 import dev.kyro.pitsim.enums.NBTTag;
 import dev.kyro.pitsim.misc.Misc;
+import dev.kyro.pitsim.misc.Sounds;
 import org.bukkit.ChatColor;
-import org.bukkit.Sound;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.inventory.InventoryOpenEvent;
@@ -55,8 +54,8 @@ public class VilePanel extends AGUIPanel {
                     player.getInventory().setItem(i, nbtItem.getItem());
                     player.closeInventory();
                     AOutput.send(player,  "&5&lWITHERCRAFT! &7Repaired " + nbtItem.getItem().getItemMeta().getDisplayName() + "&7!");
-                    ASound.play(player, Sound.ENDERMAN_IDLE, 2F, 1.2F);
-                    ASound.play(player, Sound.ENDERMAN_TELEPORT, 1, 1.5F);
+                    Sounds.WITHERCRAFT_1.play(player);
+                    Sounds.WITHERCRAFT_2.play(player);
 
                     int itemsToRemove = 1;
                     for(int j = 0; j < player.getInventory().getContents().length; j++) {

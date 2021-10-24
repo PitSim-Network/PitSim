@@ -19,6 +19,7 @@ import dev.kyro.pitsim.events.KillEvent;
 import dev.kyro.pitsim.misc.ChunkOfVile;
 import dev.kyro.pitsim.misc.FunkyFeather;
 import dev.kyro.pitsim.misc.ProtArmor;
+import dev.kyro.pitsim.misc.Sounds;
 import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -125,17 +126,17 @@ public class Uberstreak extends Megastreak {
 		if(pitPlayer.megastreak.isOnMega() && pitPlayer.megastreak.getClass() == Uberstreak.class) {
 			double ks = pitPlayer.getKills();
 			if(ks >= 199 && ks < 200) {
-				pitPlayer.player.playSound(pitPlayer.player.getLocation(), "mob.guardian.curse", 1000, 1);
+				Sounds.UBER_200.play(pitPlayer.player);
 				pitPlayer.updateMaxHealth();
 				AOutput.send(pitPlayer.player, "&d&lUBERSTREAK &c-1 max \u2764");
 			}
 			if(ks >= 299 && ks < 300) {
-				pitPlayer.player.playSound(pitPlayer.player.getLocation(), "mob.guardian.curse", 1000, 1);
+				Sounds.UBER_300.play(pitPlayer.player);
 				pitPlayer.updateMaxHealth();
 				AOutput.send(pitPlayer.player, "&d&lUBERSTREAK &c-1 max \u2764");
 			}
 			if(ks >= 399 && ks <  400) {
-				pitPlayer.player.playSound(pitPlayer.player.getLocation(), "mob.guardian.curse", 1000, 1);
+				Sounds.UBER_400.play(pitPlayer.player);
 				pitPlayer.updateMaxHealth();
 				AOutput.send(pitPlayer.player, "&d&lUBERSTREAK &cCannot heal");
 			}
@@ -188,7 +189,7 @@ public class Uberstreak extends Megastreak {
 			pitPlayer.prefix = PrestigeValues.getPlayerPrefixNameTag(pitPlayer.player) + PlaceholderAPI.setPlaceholders(pitPlayer.player, message);
 		}
 
-		pitPlayer.player.playSound(pitPlayer.player.getLocation(), "mob.guardian.curse", 1000, 1);
+		Sounds.UBER_100.play(pitPlayer.player);
 		for(Player player : Bukkit.getOnlinePlayers()) {
 			PitPlayer pitPlayer2 = PitPlayer.getPitPlayer(player);
 			if(pitPlayer2.disabledStreaks) continue;

@@ -6,8 +6,8 @@ import dev.kyro.pitsim.controllers.Cooldown;
 import dev.kyro.pitsim.controllers.objects.PitEnchant;
 import dev.kyro.pitsim.enums.ApplyType;
 import dev.kyro.pitsim.events.AttackEvent;
+import dev.kyro.pitsim.misc.Sounds;
 import me.clip.placeholderapi.PlaceholderAPI;
-import org.bukkit.Sound;
 import org.bukkit.event.EventHandler;
 import org.bukkit.potion.PotionEffectType;
 
@@ -36,7 +36,7 @@ public class PinDown extends PitEnchant {
 
 		if(attackEvent.defender.hasPotionEffect(PotionEffectType.SPEED)) attackEvent.defender.removePotionEffect(PotionEffectType.SPEED);
 		if(attackEvent.defender.hasPotionEffect(PotionEffectType.JUMP)) attackEvent.defender.removePotionEffect(PotionEffectType.JUMP);
-		attackEvent.defender.playSound(attackEvent.defender.getLocation(), Sound.BURP, 1, 1);
+		Sounds.PIN_DOWN.play(attackEvent.defender);
 		String pinMessage = "&c&lPINNED! &7by %luckperms_prefix%%player_name%&7. Speed and Jump Boost cancelled!";
 		String pinMessage2 = "&a&lITS A PIN! &7Removed Speed and Jump Boost from %luckperms_prefix%%player_name%&7!";
 		AOutput.send(attackEvent.defender, PlaceholderAPI.setPlaceholders(attackEvent.attacker, pinMessage));

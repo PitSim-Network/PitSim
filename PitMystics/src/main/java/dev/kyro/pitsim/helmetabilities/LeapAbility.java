@@ -3,13 +3,12 @@ package dev.kyro.pitsim.helmetabilities;
 import dev.kyro.arcticapi.builders.AItemStackBuilder;
 import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.arcticapi.misc.AOutput;
-import dev.kyro.arcticapi.misc.ASound;
 import dev.kyro.pitsim.controllers.Cooldown;
 import dev.kyro.pitsim.controllers.HelmetListeners;
 import dev.kyro.pitsim.controllers.objects.GoldenHelmet;
 import dev.kyro.pitsim.controllers.objects.HelmetAbility;
+import dev.kyro.pitsim.misc.Sounds;
 import org.bukkit.Material;
-import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.Vector;
@@ -47,19 +46,19 @@ public class LeapAbility extends HelmetAbility {
 		assert goldenHelmet != null;
 		if(!goldenHelmet.withdrawGold(10000)) {
 			AOutput.error(player,"&cNot enough gold!");
-			ASound.play(player, Sound.VILLAGER_NO, 1F, 1F);
+			Sounds.NO.play(player);
 			return;
 		}
 
 		Cooldown cooldown = getCooldown(player, 100);
 		if(cooldown.isOnCooldown()) {
 			AOutput.error(player, "&cAbility on cooldown!");
-			ASound.play(player, Sound.VILLAGER_NO, 1F, 1F);
+			Sounds.NO.play(player);
 			return;
 		} else cooldown.reset();
 
 		AOutput.send(player, "&6&lGOLDEN HELMET! &7Used &9Leap&7! (&6-10,000g&7)");
-		ASound.play(player, Sound.BAT_TAKEOFF, 1, 1);
+		Sounds.LEAP.play(player);
 		Vector vector = player.getLocation().getDirection().setY(0).normalize().multiply(3).setY(1);
 //		if(vector.getY() < 0) vector.setY(-vector.getY());
 		player.setVelocity(vector);

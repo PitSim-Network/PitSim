@@ -2,16 +2,15 @@ package dev.kyro.pitsim.controllers;
 
 import dev.kyro.arcticapi.data.APlayerData;
 import dev.kyro.arcticapi.misc.AOutput;
-import dev.kyro.arcticapi.misc.ASound;
 import dev.kyro.arcticapi.misc.AUtil;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.killstreaks.Overdrive;
 import dev.kyro.pitsim.misc.Misc;
+import dev.kyro.pitsim.misc.Sounds;
 import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
-import org.bukkit.Sound;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 
@@ -51,7 +50,7 @@ public class LevelManager {
 		pitPlayer.remainingXP = (int) ((PrestigeValues.getXPForLevel(pitPlayer.level) * prestigeInfo.xpMultiplier));
 		setXPBar(player, pitPlayer);
 
-		ASound.play(player, Sound.LEVEL_UP, 1, 1);
+		Sounds.LEVEL_UP.play(player);
 		Misc.sendTitle(player, "&e&lLEVEL UP!", 40);
 		Misc.sendSubTitle(player, prestigeInfo.getOpenBracket() + PrestigeValues.getLevelColor(pitPlayer.level - 1) + (pitPlayer.level - 1) + prestigeInfo.getCloseBracket() + " &7\u279F " + prestigeInfo.getOpenBracket() + PrestigeValues.getLevelColor(pitPlayer.level) + pitPlayer.level + prestigeInfo.getCloseBracket(), 40);
 		AOutput.send(player,  "&e&lPIT LEVEL UP! " + prestigeInfo.getOpenBracket() + PrestigeValues.getLevelColor(pitPlayer.level - 1) + (pitPlayer.level - 1) + prestigeInfo.getCloseBracket() + " &7\u279F " + prestigeInfo.getOpenBracket() + PrestigeValues.getLevelColor(pitPlayer.level) + pitPlayer.level + prestigeInfo.getCloseBracket());
@@ -117,7 +116,7 @@ public class LevelManager {
 			pitPlayer.prefix = PrestigeValues.getPlayerPrefixNameTag(pitPlayer.player) + PlaceholderAPI.setPlaceholders(pitPlayer.player, message);
 		}
 
-		ASound.play(player, Sound.ENDERDRAGON_GROWL, 1, 1);
+		Sounds.PRESTIGE.play(player);
 		Misc.sendTitle(player, "&e&lPRESTIGE!", 40);
 		Misc.sendSubTitle(player, "&7You unlocked prestige &e" + AUtil.toRoman(pitPlayer.prestige), 40);
 		String message2 = ChatColor.translateAlternateColorCodes('&', "&e&lPRESTIGE! %luckperms_prefix%%player_name% &7unlocked prestige &e" + AUtil.toRoman(pitPlayer.prestige) + "&7, gg!");

@@ -6,14 +6,12 @@ import dev.kyro.arcticapi.gui.AGUIPanel;
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.enums.AChatColor;
-import dev.kyro.pitsim.enums.DeathCry;
 import dev.kyro.pitsim.misc.Misc;
+import dev.kyro.pitsim.misc.Sounds;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
-import org.bukkit.Sound;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.enchantments.Enchantment;
-import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
@@ -68,14 +66,14 @@ public class ChatColorPanel extends AGUIPanel {
                         getInventory().getItem(slot).getDurability() == chatColor.data) {
 
                     if(playerChatColors.containsKey(player) && playerChatColors.get(player).equals(chatColor)) {
-                        player.playSound(player.getLocation(), Sound.ENDERMAN_TELEPORT, 1F, 0.5F);
+                        Sounds.ERROR.play(player);
                         AOutput.error(player, "&cThat chat color is already equipped");
                     } else {
                         playerChatColors.put(player, chatColor);
                         pitPlayer.chatColor = chatColor;
                         playerData.set("chatcolor", chatColor.toString());
                         APlayerData.savePlayerData(player);
-                        player.playSound(player.getLocation(), Sound.NOTE_PLING, 1F, 2F);
+                        Sounds.SUCCESS.play(player);
                         openPanel(donatorGUI.chatColorPanel);
                     }
 

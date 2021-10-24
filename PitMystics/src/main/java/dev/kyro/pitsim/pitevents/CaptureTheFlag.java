@@ -8,7 +8,6 @@ import com.sk89q.worldedit.bukkit.WorldEditPlugin;
 import com.sk89q.worldedit.schematic.MCEditSchematicFormat;
 import com.sk89q.worldedit.world.DataException;
 import dev.kyro.arcticapi.data.APlayerData;
-import dev.kyro.arcticapi.misc.ASound;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.controllers.*;
 import dev.kyro.pitsim.controllers.objects.PitEvent;
@@ -18,6 +17,7 @@ import dev.kyro.pitsim.events.AttackEvent;
 import dev.kyro.pitsim.events.KillEvent;
 import dev.kyro.pitsim.events.OofEvent;
 import dev.kyro.pitsim.misc.Misc;
+import dev.kyro.pitsim.misc.Sounds;
 import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.*;
 import org.bukkit.block.Banner;
@@ -288,10 +288,10 @@ public class CaptureTheFlag extends PitEvent {
 					explosion(blueArmor, (Player) blueBannerPlayer);
 					Misc.sendTitle((Player) blueBannerPlayer, ChatColor.RED + "You Got The Flag!", 40);
 					Misc.sendSubTitle((Player) blueBannerPlayer, ChatColor.RED + "Return it to your base", 40);
-					ASound.play((Player) blueBannerPlayer, Sound.NOTE_PLING, 2, 2F);
+					Sounds.CTF_FLAG_STEAL.play((Player) blueBannerPlayer);
 					for(Player player : blue) {
 						Misc.sendTitle(player, ChatColor.BLUE + "Flag Stolen!", 40);
-						ASound.play(player, Sound.NOTE_PLING, 2, 0.5F);
+						Sounds.CTF_FLAG_STOLEN.play(player);
 					}
 				}
 				if(blueBannerPlayer instanceof Player && blue.contains(blueBannerPlayer) && redBannerHolder == blueBannerPlayer && !respawningPlayers.contains(blueBannerPlayer)) {
@@ -306,11 +306,11 @@ public class CaptureTheFlag extends PitEvent {
 					Bukkit.broadcastMessage(PlaceholderAPI.setPlaceholders((Player) blueBannerPlayer, message));
 					for(Player player : red) {
 						Misc.sendTitle(player, ChatColor.RED + "Flag Captured!", 40);
-						ASound.play(player, Sound.BLAZE_DEATH, 2, 0.5F);
+						Sounds.CTF_FLAG_CAPTURED.play(player);
 					}
 					for(Player player : blue) {
 						Misc.sendTitle(player, ChatColor.BLUE + "Your Team Scored!", 40);
-						ASound.play(player, Sound.LEVEL_UP, 2, 0.5F);
+						Sounds.CTF_FLAG_SCORE.play(player);
 					}
 				}
 			}
@@ -329,10 +329,10 @@ public class CaptureTheFlag extends PitEvent {
 					explosion(redArmor, (Player) redBannerPlayer);
 					Misc.sendTitle((Player) redBannerPlayer, ChatColor.BLUE + "You Got The Flag!", 40);
 					Misc.sendSubTitle((Player) redBannerPlayer, ChatColor.BLUE + "Return it to your base", 40);
-					ASound.play((Player) redBannerPlayer, Sound.NOTE_PLING, 2, 2F);
+					Sounds.CTF_FLAG_STEAL.play((Player) redBannerPlayer);
 					for(Player player : red) {
 						Misc.sendTitle(player, ChatColor.RED + "Flag Stolen!", 40);
-						ASound.play(player, Sound.NOTE_PLING, 2, 0.5F);
+						Sounds.CTF_FLAG_STOLEN.play(player);
 					}
 				}
 				if(redBannerPlayer instanceof Player && red.contains(redBannerPlayer) && blueBannerHolder == redBannerPlayer && !respawningPlayers.contains(redBannerPlayer)) {
@@ -347,11 +347,11 @@ public class CaptureTheFlag extends PitEvent {
 					Bukkit.broadcastMessage(PlaceholderAPI.setPlaceholders((Player) redBannerPlayer, message));
 					for(Player player : blue) {
 						Misc.sendTitle(player, ChatColor.BLUE + "Flag Captured!", 40);
-						ASound.play(player, Sound.BLAZE_DEATH, 2, 0.5F);
+						Sounds.CTF_FLAG_CAPTURED.play(player);
 					}
 					for(Player player : red) {
 						Misc.sendTitle(player, ChatColor.RED + "Your Team Scored!", 40);
-						ASound.play(player, Sound.LEVEL_UP, 2, 0.5F);
+						Sounds.CTF_FLAG_SCORE.play(player);
 					}
 				}
 			}
@@ -370,7 +370,7 @@ public class CaptureTheFlag extends PitEvent {
 				setupBlueBanner();
 				for(Player player : blue) {
 					Misc.sendTitle(player, ChatColor.BLUE + "Flag Returned!", 40);
-					ASound.play(player, Sound.NOTE_PLING, 2, 1F);
+					Sounds.EVENT_PING.play(player);
 				}
 			}
 			respawningPlayers.add(killEvent.dead);
@@ -388,7 +388,7 @@ public class CaptureTheFlag extends PitEvent {
 				setupRedBanner();
 				for(Player player : red) {
 					Misc.sendTitle(player, ChatColor.RED + "Flag Returned!", 40);
-					ASound.play(player, Sound.NOTE_PLING, 2, 1F);
+					Sounds.EVENT_PING.play(player);
 				}
 			}
 			respawningPlayers.add(killEvent.dead);
@@ -409,7 +409,7 @@ public class CaptureTheFlag extends PitEvent {
 				setupBlueBanner();
 				for(Player player : blue) {
 					Misc.sendTitle(player, ChatColor.BLUE + "Flag Returned!", 40);
-					ASound.play(player, Sound.NOTE_PLING, 2, 1F);
+					Sounds.EVENT_PING.play(player);
 				}
 			}
 			respawningPlayers.add(oofEvent.getPlayer());
@@ -426,7 +426,7 @@ public class CaptureTheFlag extends PitEvent {
 				setupRedBanner();
 				for(Player player : red) {
 					Misc.sendTitle(player, ChatColor.RED + "Flag Returned!", 40);
-					ASound.play(player, Sound.NOTE_PLING, 2, 1F);
+					Sounds.EVENT_PING.play(player);
 				}
 			}
 			respawningPlayers.add(oofEvent.getPlayer());
@@ -491,7 +491,7 @@ public class CaptureTheFlag extends PitEvent {
 				setupBlueBanner();
 				for(Player player : blue) {
 					Misc.sendTitle(player, ChatColor.BLUE + "Flag Returned!", 40);
-					ASound.play(player, Sound.NOTE_PLING, 2, 1F);
+					Sounds.EVENT_PING.play(player);
 				}
 			}
 		}
@@ -505,7 +505,7 @@ public class CaptureTheFlag extends PitEvent {
 				setupRedBanner();
 				for(Player player : red) {
 					Misc.sendTitle(player, ChatColor.RED + "Flag Returned!", 40);
-					ASound.play(player, Sound.NOTE_PLING, 2, 1F);
+					Sounds.EVENT_PING.play(player);
 				}
 			}
 		}
@@ -652,7 +652,7 @@ public class CaptureTheFlag extends PitEvent {
 					.setY(1).normalize().multiply(2);
 			if(bypassPlayer != player) player.setVelocity(force);
 		}
-		armorStand.getLocation().getWorld().playSound(armorStand.getLocation(), Sound.EXPLODE, 1, 2);
+		Sounds.CTF_EXPLOSION.play(armorStand.getLocation());
 		armorStand.getLocation().getWorld().playEffect(armorStand.getLocation(), Effect.EXPLOSION_HUGE,  200, 200);
 	}
 

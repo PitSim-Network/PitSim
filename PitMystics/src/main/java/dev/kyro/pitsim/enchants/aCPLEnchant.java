@@ -1,8 +1,6 @@
 package dev.kyro.pitsim.enchants;
 
 import dev.kyro.arcticapi.builders.ALoreBuilder;
-import dev.kyro.arcticapi.misc.AOutput;
-import dev.kyro.arcticapi.misc.ASound;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.controllers.EnchantManager;
 import dev.kyro.pitsim.controllers.NonManager;
@@ -11,14 +9,11 @@ import dev.kyro.pitsim.controllers.objects.PitEnchant;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.enums.ApplyType;
 import dev.kyro.pitsim.events.AttackEvent;
-import dev.kyro.pitsim.misc.Misc;
 import org.bukkit.Bukkit;
 import org.bukkit.Effect;
 import org.bukkit.Location;
-import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
-import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.List;
@@ -63,64 +58,64 @@ public class aCPLEnchant extends PitEnchant {
 		Non defendingNon = NonManager.getNon(attackEvent.defender);
 		if(defendingNon != null) return;
 
-		if(Math.random() < 0.25 * enchantLvl) {
-
-			pitAttacker.heal(4);
-			AOutput.send(attackEvent.attacker, "You were blessed");
-			ASound.play(attackEvent.attacker, Sound.BURP, 1, 1);
-		}
-
-		if(Math.random() < 0.2 * enchantLvl) {
-
-			Misc.applyPotionEffect(attackEvent.attacker, PotionEffectType.INCREASE_DAMAGE, 40, 0, true, false);
-			AOutput.send(attackEvent.attacker, "The power of the gods flows through you for a brief moment");
-			ASound.play(attackEvent.attacker, Sound.ENDERMAN_SCREAM, 1, 1);
-		}
-
-		if(Math.random() < 0.15 * enchantLvl) {
-
-			Misc.applyPotionEffect(attackEvent.defender, PotionEffectType.WITHER, 100, 2, true, false);
-			AOutput.send(attackEvent.attacker, "Your foe suffers at the wrath of your will");
-			ASound.play(attackEvent.attacker, Sound.WITHER_SHOOT, 1, 1);
-		}
-
-		if(Math.random() < 0.15 * enchantLvl) {
-
-			Misc.applyPotionEffect(attackEvent.attacker, PotionEffectType.DAMAGE_RESISTANCE, 60, 1, true, false);
-			AOutput.send(attackEvent.attacker, "Your not gonna die now");
-			ASound.play(attackEvent.attacker, Sound.IRONGOLEM_HIT, 1, 1);
-		}
-
-		if(Math.random() < 0.1 * enchantLvl) {
-
-			Misc.applyPotionEffect(attackEvent.defender, PotionEffectType.SLOW, 40, 4, true, false);
-			AOutput.send(attackEvent.attacker, "You stun your opponent");
-			ASound.play(attackEvent.attacker, Sound.ANVIL_LAND, 1, 1);
-		}
-
-		if(Math.random() < 0.05 * enchantLvl) {
-
-			attackEvent.defender.setHealth(attackEvent.defender.getHealth() / 2D);
-			AOutput.send(attackEvent.attacker, "Your opponent is crippled");
-			ASound.play(attackEvent.attacker, Sound.ZOMBIE_WOODBREAK, 1, 1);
-			attackEvent.defender.playSound(attackEvent.defender.getLocation(), "mob.guardian.curse", 1000, 1);
-		}
-
-		if(Math.random() < 0.05) {
-
-			AOutput.send(attackEvent.attacker, "Zeus > Perun");
-			ASound.play(attackEvent.attacker, Sound.ENDERDRAGON_GROWL, 1, 1);
-			ASound.play(attackEvent.defender, Sound.IRONGOLEM_DEATH, 1, 1);
-			new BukkitRunnable() {
-				int count = 0;
-				@Override
-				public void run() {
-					if(++count == 5) cancel();
-					attackEvent.defender.getWorld().strikeLightningEffect(attackEvent.defender.getLocation());
-					attackEvent.defender.setHealth(Math.max(attackEvent.defender.getHealth() - 2, 0));
-				}
-			}.runTaskTimer(PitSim.INSTANCE, 0L, 2L);
-		}
+//		if(Math.random() < 0.25 * enchantLvl) {
+//
+//			pitAttacker.heal(4);
+//			AOutput.send(attackEvent.attacker, "You were blessed");
+//			ASound.play(attackEvent.attacker, Sound.BURP, 1, 1);
+//		}
+//
+//		if(Math.random() < 0.2 * enchantLvl) {
+//
+//			Misc.applyPotionEffect(attackEvent.attacker, PotionEffectType.INCREASE_DAMAGE, 40, 0, true, false);
+//			AOutput.send(attackEvent.attacker, "The power of the gods flows through you for a brief moment");
+//			ASound.play(attackEvent.attacker, Sound.ENDERMAN_SCREAM, 1, 1);
+//		}
+//
+//		if(Math.random() < 0.15 * enchantLvl) {
+//
+//			Misc.applyPotionEffect(attackEvent.defender, PotionEffectType.WITHER, 100, 2, true, false);
+//			AOutput.send(attackEvent.attacker, "Your foe suffers at the wrath of your will");
+//			ASound.play(attackEvent.attacker, Sound.WITHER_SHOOT, 1, 1);
+//		}
+//
+//		if(Math.random() < 0.15 * enchantLvl) {
+//
+//			Misc.applyPotionEffect(attackEvent.attacker, PotionEffectType.DAMAGE_RESISTANCE, 60, 1, true, false);
+//			AOutput.send(attackEvent.attacker, "Your not gonna die now");
+//			ASound.play(attackEvent.attacker, Sound.IRONGOLEM_HIT, 1, 1);
+//		}
+//
+//		if(Math.random() < 0.1 * enchantLvl) {
+//
+//			Misc.applyPotionEffect(attackEvent.defender, PotionEffectType.SLOW, 40, 4, true, false);
+//			AOutput.send(attackEvent.attacker, "You stun your opponent");
+//			ASound.play(attackEvent.attacker, Sound.ANVIL_LAND, 1, 1);
+//		}
+//
+//		if(Math.random() < 0.05 * enchantLvl) {
+//
+//			attackEvent.defender.setHealth(attackEvent.defender.getHealth() / 2D);
+//			AOutput.send(attackEvent.attacker, "Your opponent is crippled");
+//			ASound.play(attackEvent.attacker, Sound.ZOMBIE_WOODBREAK, 1, 1);
+//			attackEvent.defender.playSound(attackEvent.defender.getLocation(), "mob.guardian.curse", 1000, 1);
+//		}
+//
+//		if(Math.random() < 0.05) {
+//
+//			AOutput.send(attackEvent.attacker, "Zeus > Perun");
+//			ASound.play(attackEvent.attacker, Sound.ENDERDRAGON_GROWL, 1, 1);
+//			ASound.play(attackEvent.defender, Sound.IRONGOLEM_DEATH, 1, 1);
+//			new BukkitRunnable() {
+//				int count = 0;
+//				@Override
+//				public void run() {
+//					if(++count == 5) cancel();
+//					attackEvent.defender.getWorld().strikeLightningEffect(attackEvent.defender.getLocation());
+//					attackEvent.defender.setHealth(Math.max(attackEvent.defender.getHealth() - 2, 0));
+//				}
+//			}.runTaskTimer(PitSim.INSTANCE, 0L, 2L);
+//		}
 	}
 
 	@Override

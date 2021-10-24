@@ -6,8 +6,8 @@ import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.enums.ApplyType;
 import dev.kyro.pitsim.events.AttackEvent;
 import dev.kyro.pitsim.misc.Misc;
+import dev.kyro.pitsim.misc.Sounds;
 import org.bukkit.Effect;
-import org.bukkit.Sound;
 import org.bukkit.event.EventHandler;
 
 import java.util.List;
@@ -28,7 +28,7 @@ public class BulletTime extends PitEnchant {
 		int enchantLvl = attackEvent.getDefenderEnchantLevel(this);
 		if(enchantLvl == 0 || attackEvent.arrow == null || !(attackEvent.defender.isBlocking())) return;
 
-		attackEvent.defender.getWorld().playSound(attackEvent.defender.getLocation(), Sound.FIZZ, 1f, 1.5f);
+		Sounds.BULLET_TIME.play(attackEvent.defender);
 		attackEvent.arrow.getWorld().playEffect(attackEvent.arrow.getLocation(), Effect.EXPLOSION, 0, 30);
 
 		PitPlayer pitDefender = PitPlayer.getPitPlayer(attackEvent.defender);

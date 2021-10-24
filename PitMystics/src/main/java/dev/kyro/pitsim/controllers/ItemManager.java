@@ -2,12 +2,11 @@ package dev.kyro.pitsim.controllers;
 
 import de.tr7zw.nbtapi.NBTItem;
 import dev.kyro.arcticapi.misc.AOutput;
-import dev.kyro.arcticapi.misc.ASound;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.enums.NBTTag;
 import dev.kyro.pitsim.misc.Misc;
-import org.bukkit.Sound;
+import dev.kyro.pitsim.misc.Sounds;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -52,7 +51,7 @@ public class ItemManager implements Listener {
 		event.setCancelled(true);
 		player.updateInventory();
 		AOutput.error(player, "This item cannot be dropped from your inventory");
-		ASound.play(player, Sound.NOTE_PLING);
+		Sounds.WARNING_LOUD.play(player);
 	}
 
 	@EventHandler(ignoreCancelled = true)
@@ -68,7 +67,7 @@ public class ItemManager implements Listener {
 
 			event.setCancelled(true);
 			AOutput.error(player, "You are not able to drop that item");
-			ASound.play(player, Sound.NOTE_PLING);
+			Sounds.WARNING_LOUD.play(player);
 		}
 
 		if(nbtItem.hasKey(NBTTag.DROP_CONFIRM.getRef())) {
@@ -84,7 +83,7 @@ public class ItemManager implements Listener {
 				}.runTaskLater(PitSim.INSTANCE, 60L);
 				pitPlayer.confirmedDrop = itemStack;
 				AOutput.error(player, "&e&lWARNING! &7You are about to drop an item. Click the drop button again to drop the item.");
-				ASound.play(player, Sound.NOTE_PLING);
+				Sounds.WARNING_LOUD.play(player);
 			} else {
 				pitPlayer.confirmedDrop = null;
 			}

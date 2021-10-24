@@ -3,7 +3,6 @@ package dev.kyro.pitsim.controllers;
 import de.tr7zw.nbtapi.NBTItem;
 import dev.kyro.arcticapi.data.APlayerData;
 import dev.kyro.arcticapi.misc.AOutput;
-import dev.kyro.arcticapi.misc.ASound;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.controllers.objects.Non;
 import dev.kyro.pitsim.controllers.objects.PitEnchant;
@@ -19,6 +18,7 @@ import dev.kyro.pitsim.events.KillEvent;
 import dev.kyro.pitsim.misc.FunkyFeather;
 import dev.kyro.pitsim.misc.Misc;
 import dev.kyro.pitsim.misc.ProtArmor;
+import dev.kyro.pitsim.misc.Sounds;
 import dev.kyro.pitsim.perks.AssistantToTheStreaker;
 import dev.kyro.pitsim.pitevents.CaptureTheFlag;
 import dev.kyro.pitsim.upgrades.DivineIntervention;
@@ -258,8 +258,8 @@ public class DamageManager implements Listener {
 
 		dead.setHealth(dead.getMaxHealth());
 		dead.playEffect(EntityEffect.HURT);
-		dead.playSound(dead.getLocation(), Sound.FALL_BIG, 1000, 1F);
-		dead.playSound(dead.getLocation(), Sound.FALL_BIG, 1000, 1F);
+		Sounds.DEATH_FALL.play(dead);
+		Sounds.DEATH_FALL.play(dead);
 		Regularity.toReg.remove(dead.getUniqueId());
 		if(NonManager.getNon(dead) == null) {
 			FileConfiguration playerData = APlayerData.getPlayerData(dead);
@@ -384,8 +384,7 @@ public class DamageManager implements Listener {
 				LevelManager.addGold(assistPlayer, (int) gold);
 			}
 
-
-			ASound.play(assistPlayer, Sound.ORB_PICKUP, 1F, 1.7301587F);
+			Sounds.ASSIST.play(assistPlayer);
 			String assist = "&a&lASSIST!&7 " + Math.round(assistPercent * 100) + "% on %luckperms_prefix%" +
 					(defendingNon == null ? "%player_name%" : defendingNon.displayName) + " &b+" + xp + "XP" + " &6+" + df.format(gold) + "g";
 
@@ -450,8 +449,8 @@ public class DamageManager implements Listener {
 
 		dead.setHealth(dead.getMaxHealth());
 		dead.playEffect(EntityEffect.HURT);
-		dead.playSound(dead.getLocation(), Sound.FALL_BIG, 1000, 1F);
-		dead.playSound(dead.getLocation(), Sound.FALL_BIG, 1000, 1F);
+		Sounds.DEATH_FALL.play(dead);
+		Sounds.DEATH_FALL.play(dead);
 		Regularity.toReg.remove(dead.getUniqueId());
 		CombatManager.taggedPlayers.remove(dead.getUniqueId());
 

@@ -7,7 +7,6 @@ import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.arcticapi.gui.AGUI;
 import dev.kyro.arcticapi.gui.AGUIPanel;
 import dev.kyro.arcticapi.misc.AOutput;
-import dev.kyro.arcticapi.misc.ASound;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.commands.FreshCommand;
 import dev.kyro.pitsim.controllers.EnchantManager;
@@ -16,8 +15,8 @@ import dev.kyro.pitsim.enums.MysticType;
 import dev.kyro.pitsim.enums.NBTTag;
 import dev.kyro.pitsim.enums.PantColor;
 import dev.kyro.pitsim.misc.Misc;
+import dev.kyro.pitsim.misc.Sounds;
 import org.bukkit.Material;
-import org.bukkit.Sound;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
@@ -128,7 +127,7 @@ public class EnchantingPanel extends AGUIPanel {
 				if(colorSelect) return;
 
 				if(Misc.isAirOrNull(mystic) || clickedItem.getType() != Material.ENCHANTMENT_TABLE) {
-					ASound.play(player, Sound.VILLAGER_NO);
+					Sounds.NO.play(player);
 					return;
 				}
 
@@ -218,7 +217,7 @@ public class EnchantingPanel extends AGUIPanel {
 
 			if(EnchantManager.isJewel(clickedItem) && !EnchantManager.isJewelComplete(clickedItem)) {
 				AOutput.error(player, "You cannot enchant incomplete jewels");
-				ASound.play(player, Sound.VILLAGER_NO);
+				Sounds.NO.play(player);
 				return;
 			}
 

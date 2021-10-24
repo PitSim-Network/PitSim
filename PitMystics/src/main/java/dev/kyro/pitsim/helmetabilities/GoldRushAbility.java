@@ -3,14 +3,13 @@ package dev.kyro.pitsim.helmetabilities;
 import dev.kyro.arcticapi.builders.AItemStackBuilder;
 import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.arcticapi.misc.AOutput;
-import dev.kyro.arcticapi.misc.ASound;
 import dev.kyro.pitsim.controllers.HelmetListeners;
 import dev.kyro.pitsim.controllers.objects.GoldenHelmet;
 import dev.kyro.pitsim.controllers.objects.HelmetAbility;
 import dev.kyro.pitsim.events.AttackEvent;
 import dev.kyro.pitsim.events.KillEvent;
+import dev.kyro.pitsim.misc.Sounds;
 import org.bukkit.Material;
-import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.inventory.ItemStack;
@@ -34,10 +33,10 @@ public class GoldRushAbility extends HelmetAbility {
 		if(!goldenHelmet.withdrawGold(1000)) {
 			AOutput.error(attackEvent.attacker,"&cNot enough gold!");
 			goldenHelmet.deactivate();
-			ASound.play(attackEvent.attacker, Sound.VILLAGER_NO, 1F, 1F);
+			Sounds.NO.play(player);
 			return;
 		}
-		ASound.play(attackEvent.attacker, Sound.ORB_PICKUP, 1, 0.9F);
+		Sounds.GOLD_RUSH.play(attackEvent.attacker);
 	}
 
 	@EventHandler
@@ -55,7 +54,7 @@ public class GoldRushAbility extends HelmetAbility {
 		GoldenHelmet goldenHelmet = HelmetListeners.getHelmetInstance(player);
 		assert goldenHelmet != null;
 
-		ASound.play(player, Sound.NOTE_PLING, 1.3F, 2);
+		Sounds.HELMET_ACTIVATE.play(player);
 		AOutput.send(player, "&6&lGOLDEN HELMET! &aActivated &9Gold Rush&7. (&6-1,000g&7 per hit)");
 	}
 
@@ -66,7 +65,7 @@ public class GoldRushAbility extends HelmetAbility {
 		assert goldenHelmet != null;
 		if(!goldenHelmet.withdrawGold(1000)) {
 			AOutput.error(player,"&cNot enough gold!");
-			ASound.play(player, Sound.VILLAGER_NO, 1F, 1F);
+			Sounds.NO.play(player);
 			return false;
 		}
 		return true;

@@ -8,7 +8,7 @@ import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.enums.ApplyType;
 import dev.kyro.pitsim.events.AttackEvent;
 import dev.kyro.pitsim.misc.Misc;
-import org.bukkit.Sound;
+import dev.kyro.pitsim.misc.Sounds;
 import org.bukkit.event.EventHandler;
 import org.bukkit.potion.PotionEffectType;
 
@@ -45,9 +45,8 @@ public class ComboStun extends PitEnchant {
 		Misc.sendTitle(attackEvent.defender, "&cSTUNNED", (int) getDuration(enchantLvl) * 20);
 		Misc.sendSubTitle(attackEvent.defender, "&eYou cannot move!", (int) getDuration(enchantLvl) * 20);
 
-		attackEvent.attacker.playSound(attackEvent.attacker.getLocation(), Sound.ANVIL_LAND, 1, 1);
-		attackEvent.defender.playSound(attackEvent.attacker.getLocation(), Sound.ANVIL_LAND, 1, 1);
-
+		Sounds.COMBO_STUN.play(attackEvent.attacker);
+		Sounds.COMBO_STUN.play(attackEvent.defender);
 	}
 
 	@Override

@@ -9,7 +9,6 @@ import dev.kyro.pitsim.enums.NBTTag;
 import dev.kyro.pitsim.inventories.VileGUI;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
-import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -54,7 +53,7 @@ public class ChunkOfVile implements Listener {
 
         if(!UpgradeManager.hasUpgrade(event.getPlayer(), "WITHERCRAFT")) {
             AOutput.error(event.getPlayer(), "&c&lWITHERFAIL! &7You must first unlock Withercraft from the renown shop before using this item!");
-            event.getPlayer().playSound(event.getPlayer().getLocation(), Sound.ENDERMAN_TELEPORT, 1F, 0.5F);
+            Sounds.ERROR.play(event.getPlayer());
             return;
         }
 
@@ -73,7 +72,7 @@ public class ChunkOfVile implements Listener {
 
         if(items == 0) {
             AOutput.error(event.getPlayer(), "&c&lWITHERFAIL! &7You have no items to repair!");
-            event.getPlayer().playSound(event.getPlayer().getLocation(), Sound.ENDERMAN_TELEPORT, 1F, 0.5F);
+            Sounds.ERROR.play(event.getPlayer());
             return;
         }
 

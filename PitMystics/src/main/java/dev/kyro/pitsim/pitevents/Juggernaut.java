@@ -1,7 +1,6 @@
 package dev.kyro.pitsim.pitevents;
 
 import dev.kyro.arcticapi.data.APlayerData;
-import dev.kyro.arcticapi.misc.ASound;
 import dev.kyro.arcticapi.misc.AUtil;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.commands.FreshCommand;
@@ -13,6 +12,7 @@ import dev.kyro.pitsim.events.AttackEvent;
 import dev.kyro.pitsim.events.HealEvent;
 import dev.kyro.pitsim.events.KillEvent;
 import dev.kyro.pitsim.misc.Misc;
+import dev.kyro.pitsim.misc.Sounds;
 import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.*;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -159,7 +159,7 @@ public class Juggernaut extends PitEvent {
 		    explosion(event.getPlayer());
 
 		    for(Player player : Bukkit.getOnlinePlayers()) {
-			    ASound.play(player, Sound.ENDERDRAGON_DEATH, 1, 2);
+			    Sounds.JUGGERNAUT_END.play(player);
 		    }
 
 		    new BukkitRunnable() {
@@ -196,7 +196,7 @@ public class Juggernaut extends PitEvent {
 		    if(cooldown.isOnCooldown()) return; else cooldown.reset();
 
 		    Misc.sendTitle(event.getPlayer(), "&cYou cannot leave mid!", 20);
-		    ASound.play(event.getPlayer(), Sound.NOTE_PLING, 2, 0.5F);
+		    Sounds.WARNING_LOUD.play(event.getPlayer());
 
 		    Vector dirVector = MapManager.getMid().toVector().subtract(event.getPlayer().getLocation().toVector()).setY(0);
 		    Vector pullVector = dirVector.clone().normalize().setY(0.2).multiply(2.5).add(dirVector.clone().multiply(0.03));
@@ -321,7 +321,7 @@ public class Juggernaut extends PitEvent {
 		    getTopThree();
 		    explosion(killEvent.dead);
 		    for(Player player : Bukkit.getOnlinePlayers()) {
-			    ASound.play(player, Sound.ENDERDRAGON_DEATH, 1, 2);
+				Sounds.JUGGERNAUT_END.play(player);
 		    }
 
 		    new BukkitRunnable() {
@@ -343,7 +343,7 @@ public class Juggernaut extends PitEvent {
 		for(Player player : Bukkit.getOnlinePlayers()) {
 			Misc.sendTitle(player, title, 40);
 			if(subtitle != null) Misc.sendSubTitle(player, subtitle, 40);
-			ASound.play(player, Sound.NOTE_PLING, 2, 1F);
+			Sounds.EVENT_PING.play(player);
 		}
 	}
 
@@ -354,11 +354,8 @@ public class Juggernaut extends PitEvent {
 	    ArrayList<Player> allPlayers = new ArrayList<Player>(Bukkit.getOnlinePlayers());
 	    int random = new Random().nextInt(allPlayers.size());
 	    Player picked = allPlayers.get(random);
-
 		    makeJuggernaut(picked);
 	    }
-
-
 
     public void makeJuggernaut(Player player) throws Exception {
     	if(AFKManager.AFKPlayers.contains(player)) {
@@ -595,7 +592,7 @@ public class Juggernaut extends PitEvent {
 					.setY(1).normalize().multiply(5);
 			player.setVelocity(force);
 		}
-		player.getLocation().getWorld().playSound(player.getLocation(), Sound.EXPLODE, 1, 2);
+		Sounds.JUGGERNAUT_EXPLOSION.play(player.getLocation());
 		player.getLocation().getWorld().playEffect(player.getLocation(), Effect.EXPLOSION_HUGE,  200, 200);
 	}
 

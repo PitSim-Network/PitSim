@@ -2,7 +2,6 @@ package dev.kyro.pitsim.controllers;
 
 import de.tr7zw.nbtapi.NBTItem;
 import dev.kyro.arcticapi.misc.AOutput;
-import dev.kyro.arcticapi.misc.ASound;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.controllers.objects.GoldenHelmet;
 import dev.kyro.pitsim.controllers.objects.HelmetAbility;
@@ -11,8 +10,8 @@ import dev.kyro.pitsim.events.AttackEvent;
 import dev.kyro.pitsim.events.KillEvent;
 import dev.kyro.pitsim.inventories.HelmetGUI;
 import dev.kyro.pitsim.misc.Misc;
+import dev.kyro.pitsim.misc.Sounds;
 import org.bukkit.Material;
-import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -58,12 +57,11 @@ public class HelmetListeners implements Listener {
 
 			if(!UpgradeManager.hasUpgrade(event.getPlayer(), "HELMETRY")) {
 				AOutput.error(event.getPlayer(), "&cYou must first unlock &6Helmetry &cfrom the renown shop before using this item!");
-				event.getPlayer().playSound(event.getPlayer().getLocation(), Sound.VILLAGER_NO, 1F, 1F);
+				Sounds.NO.play(event.getPlayer());
 				return;
 			}
 
-
-			ASound.play(event.getPlayer(), Sound.ANVIL_USE, 1, 2);
+			Sounds.HELMET_GUI_OPEN.play(event.getPlayer());
 			HelmetGUI helmetGUI = new HelmetGUI(event.getPlayer());
 			helmetGUI.open();
 		}
@@ -87,7 +85,7 @@ public class HelmetListeners implements Listener {
 			} catch(Exception e) {
 				AOutput.send(event.getPlayer(), "&cThat is not a valid number!");
 				HelmetGUI.depositPlayers.remove(event.getPlayer());
-				event.getPlayer().playSound(event.getPlayer().getLocation(), Sound.VILLAGER_NO, 1F, 1F);
+				Sounds.NO.play(event.getPlayer());
 				return;
 			}
 
@@ -95,7 +93,7 @@ public class HelmetListeners implements Listener {
 			if(finalBalance < 0) {
 				AOutput.send(event.getPlayer(), "&cYou do not have enough gold!");
 				HelmetGUI.depositPlayers.remove(event.getPlayer());
-				event.getPlayer().playSound(event.getPlayer().getLocation(), Sound.VILLAGER_NO, 1F, 1F);
+				Sounds.NO.play(event.getPlayer());
 				return;
 			}
 			PitSim.VAULT.withdrawPlayer((Player) event.getPlayer(), gold);
@@ -104,16 +102,15 @@ public class HelmetListeners implements Listener {
 			if(goldenHelmet.getInventorySlot(event.getPlayer()) == -1) {
 				AOutput.send(event.getPlayer(), "&cUnable to find helmet!");
 				HelmetGUI.depositPlayers.remove(event.getPlayer());
-				event.getPlayer().playSound(event.getPlayer().getLocation(), Sound.VILLAGER_NO, 1F, 1F);
+				Sounds.NO.play(event.getPlayer());
 				return;
 			}
 			goldenHelmet.depositGold(gold);
 
 			AOutput.send(event.getPlayer(), "&aSuccessfully deposited gold!");
 			HelmetGUI.depositPlayers.remove(event.getPlayer());
-			ASound.play(event.getPlayer(), Sound.ZOMBIE_METAL, 1, 2);
+			Sounds.HELMET_DEPOSIT_GOLD.play(event.getPlayer());
 		}
-
 	}
 
 	@EventHandler
@@ -124,12 +121,13 @@ public class HelmetListeners implements Listener {
 
 		int attackLevel = 0;
 		if(attackerHelmet != null) attackLevel = HelmetSystem.getLevel(attackerHelmet.gold);
-		if(attackerHelmet != null && attackerHelmet.getInventorySlot(attackEvent.attacker) == -2) attackEvent.increasePercent += HelmetSystem.getTotalStacks(HelmetSystem.Passive.DAMAGE, attackLevel - 1) / 100D;
+		if(attackerHelmet != null && attackerHelmet.getInventorySlot(attackEvent.attacker) == -2)
+				attackEvent.increasePercent += HelmetSystem.getTotalStacks(HelmetSystem.Passive.DAMAGE, attackLevel - 1) / 100D;
 
 		int defenderLevel = 0;
 		if(defenderHelmet != null) defenderLevel = HelmetSystem.getLevel(defenderHelmet.gold);
-		if(defenderHelmet != null && defenderHelmet.getInventorySlot(attackEvent.defender) == -2) attackEvent.multiplier.add(Misc.getReductionMultiplier(HelmetSystem.getTotalStacks(HelmetSystem.Passive.DAMAGE_REDUCTION, defenderLevel - 1)));
-
+		if(defenderHelmet != null && defenderHelmet.getInventorySlot(attackEvent.defender) == -2)
+				attackEvent.multiplier.add(Misc.getReductionMultiplier(HelmetSystem.getTotalStacks(HelmetSystem.Passive.DAMAGE_REDUCTION, defenderLevel - 1)));
 	}
 
 	@EventHandler(priority = EventPriority.HIGHEST)
@@ -200,7 +198,7 @@ public class HelmetListeners implements Listener {
 
 		if(goldenHelmet.ability == null) {
 			AOutput.error(player, "&6&lGOLDEN HELMET! &cNo ability selected!");
-			event.getPlayer().playSound(event.getPlayer().getLocation(), Sound.VILLAGER_NO, 1F, 1F);
+			Sounds.NO.play(player);
 			return;
 		}
 

@@ -2,7 +2,6 @@ package dev.kyro.pitsim.misc;
 
 import de.tr7zw.nbtapi.NBTItem;
 import dev.kyro.arcticapi.misc.AOutput;
-import dev.kyro.arcticapi.misc.ASound;
 import dev.kyro.arcticapi.misc.AUtil;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.controllers.ItemManager;
@@ -10,7 +9,6 @@ import dev.kyro.pitsim.enums.NBTTag;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
-import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -61,7 +59,7 @@ public class FunkyFeather {
                 AOutput.send(player, "&3&lFUNKY FEATHER! &7Inventory protected.");
                 if(itemStack.getAmount() > 1) itemStack.setAmount(itemStack.getAmount() - 1);
                 else player.getInventory().setItem(i, null);
-                ASound.play(player, Sound.BAT_TAKEOFF, 2, 1.9F);
+                Sounds.FUNKY_FEATHER.play(player);
                 return true;
             }
         }

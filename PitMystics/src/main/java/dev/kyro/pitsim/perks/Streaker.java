@@ -2,14 +2,13 @@ package dev.kyro.pitsim.perks;
 
 import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.arcticapi.misc.AOutput;
-import dev.kyro.arcticapi.misc.ASound;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.controllers.objects.PitPerk;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.events.KillEvent;
 import dev.kyro.pitsim.events.OofEvent;
+import dev.kyro.pitsim.misc.Sounds;
 import org.bukkit.Material;
-import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.player.PlayerQuitEvent;
@@ -66,7 +65,7 @@ public class Streaker extends PitPerk {
 				DecimalFormat format = new DecimalFormat("0.#");
 				AOutput.send(player, "&b&lSTREAKER! &7You hit your megastreak in &e" +
 						playerTimes.get(player) + " seconds&7. Gain &b+" + format.format(Math.ceil((xp - 1) * 100)) + "% XP &7for the rest of the streak.");
-				ASound.play(player, Sound.BURP, 2, 1.2F);
+				Sounds.STREAKER.play(player);
 				playerTimes.remove(player);
 				return;
 			}
@@ -75,7 +74,7 @@ public class Streaker extends PitPerk {
 		if(!playerTimes.containsKey(killEvent.killer) && !pitPlayer.megastreak.isOnMega()) {
 			playerTimes.put(killEvent.killer, 0);
 			AOutput.send(killEvent.killer, "&b&lSTREAKER! &7Streak timer started!");
-			ASound.play(killEvent.killer, Sound.BURP, 2, 1.2F);
+			Sounds.STREAKER.play(killEvent.killer);
 		}
 	}
 

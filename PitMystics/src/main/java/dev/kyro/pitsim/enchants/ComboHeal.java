@@ -1,7 +1,6 @@
 package dev.kyro.pitsim.enchants;
 
 import dev.kyro.arcticapi.builders.ALoreBuilder;
-import dev.kyro.arcticapi.misc.ASound;
 import dev.kyro.pitsim.controllers.HitCounter;
 import dev.kyro.pitsim.controllers.objects.PitEnchant;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
@@ -9,7 +8,7 @@ import dev.kyro.pitsim.enums.ApplyType;
 import dev.kyro.pitsim.events.AttackEvent;
 import dev.kyro.pitsim.events.HealEvent;
 import dev.kyro.pitsim.misc.Misc;
-import org.bukkit.Sound;
+import dev.kyro.pitsim.misc.Sounds;
 import org.bukkit.event.EventHandler;
 
 import java.util.List;
@@ -40,7 +39,7 @@ public class ComboHeal extends PitEnchant {
 		pitAttacker.heal(getHealing(enchantLvl));
 		pitAttacker.heal(getHealing(enchantLvl), HealEvent.HealType.ABSORPTION, 8);
 
-		ASound.play(attackEvent.attacker, Sound.DONKEY_HIT, 1F, 0.5F);;
+		Sounds.COMBO_PROC.play(attackEvent.attacker);
 	}
 
 	@Override

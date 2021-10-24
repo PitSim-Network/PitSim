@@ -10,10 +10,10 @@ import dev.kyro.pitsim.controllers.PrestigeValues;
 import dev.kyro.pitsim.controllers.objects.Megastreak;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.killstreaks.*;
+import dev.kyro.pitsim.misc.Sounds;
 import dev.kyro.pitsim.upgrades.UberIncrease;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
-import org.bukkit.Sound;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.event.inventory.InventoryClickEvent;
@@ -122,26 +122,26 @@ public class MegastreakPanel extends AGUIPanel {
                 }
                     if(!prestige && !has && !uberCd && !level) {
                         openPanel(perkGUI.getHomePanel());
-                        player.playSound(player.getLocation(), Sound.NOTE_PLING, 1F, 2F);
+                        Sounds.SUCCESS.play(player);
                         FileConfiguration playerData = APlayerData.getPlayerData(player);
                         playerData.set("megastreak", megastreak.getRawName());
                         APlayerData.savePlayerData(player);
                     }
                     if(prestige) {
                         AOutput.error(player, "&cYou arent high enough prestige to use this");
-                        player.playSound(player.getLocation(), Sound.ENDERMAN_TELEPORT, 1F, 0.5F);
+                        Sounds.ERROR.play(player);
                     }
                     if(has) {
                         AOutput.error(player, "&cThat megastreak is already equipped");
-                        player.playSound(player.getLocation(), Sound.ENDERMAN_TELEPORT, 1F, 0.5F);
+                        Sounds.ERROR.play(player);
                     }
                     if(level) {
                         AOutput.error(player, "&cYou are not high enough level to use this megastreak!");
-                        player.playSound(player.getLocation(), Sound.ENDERMAN_TELEPORT, 1F, 0.5F);
+                        Sounds.ERROR.play(player);
                     }
                     if(uberCd) {
                         AOutput.error(player, "&cYou have reached the daily limit for this killstreak");
-                        player.playSound(player.getLocation(), Sound.ENDERMAN_TELEPORT, 1F, 0.5F);
+                        Sounds.ERROR.play(player);
                     }
                 }
             }

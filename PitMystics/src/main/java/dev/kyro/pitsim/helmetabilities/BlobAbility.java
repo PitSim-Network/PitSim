@@ -3,14 +3,13 @@ package dev.kyro.pitsim.helmetabilities;
 import dev.kyro.arcticapi.builders.AItemStackBuilder;
 import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.arcticapi.misc.AOutput;
-import dev.kyro.arcticapi.misc.ASound;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.controllers.HelmetListeners;
 import dev.kyro.pitsim.controllers.objects.GoldenHelmet;
 import dev.kyro.pitsim.controllers.objects.HelmetAbility;
 import dev.kyro.pitsim.enchants.PitBlob;
+import dev.kyro.pitsim.misc.Sounds;
 import org.bukkit.Material;
-import org.bukkit.Sound;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Slime;
@@ -39,7 +38,7 @@ public class BlobAbility extends HelmetAbility {
 		slime = (Slime) player.getWorld().spawnEntity(player.getLocation(), EntityType.SLIME);
 		slime.setSize(1);
 		PitBlob.blobMap.put(player.getUniqueId(), slime);
-		ASound.play(player, Sound.NOTE_PLING, 1.3F, 2);
+		Sounds.HELMET_ACTIVATE.play(player);
 		AOutput.send(player, "&6&lGOLDEN HELMET! &aActivated &9Pit Blob&7 (&6-10,000g&7 per second)");
 
 		runnable = new BukkitRunnable() {
@@ -48,9 +47,9 @@ public class BlobAbility extends HelmetAbility {
 				if(!goldenHelmet.withdrawGold(10000)) {
 					AOutput.error(player,"&cNot enough gold!");
 					goldenHelmet.deactivate();
-					ASound.play(player, Sound.VILLAGER_NO, 1F, 1F);
+					Sounds.NO.play(player);
 				} else {
-					ASound.play(player, Sound.NOTE_STICKS, 2F, 1.5F);
+					Sounds.HELMET_TICK.play(player);
 				}
 			}
 		}.runTaskTimer(PitSim.INSTANCE, 20L, 20);
@@ -63,7 +62,7 @@ public class BlobAbility extends HelmetAbility {
 		assert goldenHelmet != null;
 		if(!goldenHelmet.withdrawGold(10000)) {
 			AOutput.error(player,"&cNot enough gold!");
-			ASound.play(player, Sound.VILLAGER_NO, 1F, 1F);
+			Sounds.NO.play(player);
 			return false;
 		}
 		return true;

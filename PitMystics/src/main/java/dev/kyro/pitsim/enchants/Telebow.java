@@ -8,11 +8,11 @@ import dev.kyro.pitsim.controllers.objects.PitEnchant;
 import dev.kyro.pitsim.enums.ApplyType;
 import dev.kyro.pitsim.events.AttackEvent;
 import dev.kyro.pitsim.misc.Misc;
+import dev.kyro.pitsim.misc.Sounds;
 import dev.kyro.pitsim.pitevents.CaptureTheFlag;
 import dev.kyro.pitsim.pitevents.Juggernaut;
 import org.bukkit.Effect;
 import org.bukkit.Location;
-import org.bukkit.Sound;
 import org.bukkit.entity.Arrow;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -140,7 +140,7 @@ public class Telebow extends PitEnchant {
 						}
 
 						player.teleport(teleportLoc);
-						player.getWorld().playSound(teleArrow.getLocation(), Sound.ENDERMAN_TELEPORT, 1f, 2f);
+						Sounds.TELEBOW.play(teleArrow.getLocation());
 
 						teleShots.remove(teleShot);
 						return;

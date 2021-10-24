@@ -1,13 +1,11 @@
 package dev.kyro.pitsim.misc;
 
-import dev.kyro.arcticapi.misc.ASound;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.controllers.NonManager;
 import net.minecraft.server.v1_8_R3.*;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.Sound;
 import org.bukkit.craftbukkit.v1_8_R3.CraftWorld;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
 import org.bukkit.entity.Entity;
@@ -62,19 +60,19 @@ public class Misc {
 
 				switch(count) {
 					case 0:
-						ASound.play(player, Sound.ORB_PICKUP, 1F, 1.7936507F);
+						Sounds.MULTI_1.play(player);
 						break;
 					case 1:
-						ASound.play(player, Sound.ORB_PICKUP, 1F, 1.8253968F);
+						Sounds.MULTI_2.play(player);
 						break;
 					case 2:
-						ASound.play(player, Sound.ORB_PICKUP, 1F, 1.8730159F);
+						Sounds.MULTI_3.play(player);
 						break;
 					case 3:
-						ASound.play(player, Sound.ORB_PICKUP, 1F, 1.9047619F);
+						Sounds.MULTI_4.play(player);
 						break;
 					case 4:
-						ASound.play(player, Sound.ORB_PICKUP, 1F, 1.9523809F);
+						Sounds.MULTI_5.play(player);
 						break;
 				}
 
