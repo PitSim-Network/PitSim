@@ -140,6 +140,7 @@ public class ToTheMoon extends Megastreak {
 		killEvent.xpCap += (pitPlayer.getKills() - 100) * 2;
 //		TODO: Update lore
 		killEvent.xpMultipliers.add(2.0);
+		killEvent.goldMultipliers.add(0.5);
 	}
 
 	@Override

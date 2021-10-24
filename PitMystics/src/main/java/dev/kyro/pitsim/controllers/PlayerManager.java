@@ -15,14 +15,12 @@ import dev.kyro.pitsim.misc.DeathCrys;
 import dev.kyro.pitsim.misc.KillEffects;
 import dev.kyro.pitsim.misc.Misc;
 import me.clip.placeholderapi.PlaceholderAPI;
-import net.citizensnpcs.api.CitizensAPI;
-import net.citizensnpcs.api.npc.NPC;
-import net.citizensnpcs.api.npc.NPCRegistry;
 import net.kyori.adventure.audience.Audience;
 import org.bukkit.*;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.inventory.InventoryClickEvent;
@@ -37,28 +35,35 @@ import java.util.*;
 
 public class PlayerManager implements Listener {
 
-	public static List<UUID> swapCooldown = new ArrayList<>();
 	public static Map<Player, BossBarManager> bossBars = new HashMap<>();
 
-//	@EventHandler
-//	public void onClick(InventoryClickEvent event) {
-//		if(Misc.isAirOrNull(event.getCurrentItem())) return;
-//		ItemStack itemStack = event.getCurrentItem();
-//		NBTItem nbtItem = new NBTItem(itemStack);
-//		System.out.println(nbtItem);
-//	}
-
 	@EventHandler
-	public static void onKill(KillEvent killEvent) {
-
-		if(SpawnManager.isInSpawn(killEvent.killer.getLocation()) && SpawnManager.isInSpawn(killEvent.dead.getLocation())) {
-			NPCRegistry nons = CitizensAPI.getNPCRegistry();
-			List<NPC> toRemove = new ArrayList<>();
-			for(NPC non : nons) {
-				if(SpawnManager.isInSpawn(non.getStoredLocation())) toRemove.add(non);
-			}
-			for(NPC npc : toRemove) npc.destroy();
+	public void onKillForRank(KillEvent killEvent) {
+		if(killEvent.killer.hasPermission("group.nitro")) {
+			killEvent.goldMultipliers.add(1.1);
+			killEvent.xpMultipliers.add(1.1);
 		}
+
+		if(killEvent.killer.hasPermission("group.unthinkable")) {
+			killEvent.goldMultipliers.add(1.25);
+			killEvent.xpMultipliers.add(1.25);
+		} else if(killEvent.killer.hasPermission("group.miraculous")) {
+			killEvent.goldMultipliers.add(1.20);
+			killEvent.xpMultipliers.add(1.20);
+		} else if(killEvent.killer.hasPermission("group.extraordinary")) {
+			killEvent.goldMultipliers.add(1.15);
+			killEvent.xpMultipliers.add(1.15);
+		} else if(killEvent.killer.hasPermission("group.overpowered")) {
+			killEvent.goldMultipliers.add(1.1);
+			killEvent.xpMultipliers.add(1.1);
+		} else if(killEvent.killer.hasPermission("group.legendary")) {
+			killEvent.goldMultipliers.add(1.05);
+			killEvent.xpMultipliers.add(1.05);
+		}
+	}
+
+	@EventHandler(priority = EventPriority.HIGHEST)
+	public static void onKill(KillEvent killEvent) {
 
 		PitPlayer pitKiller = PitPlayer.getPitPlayer(killEvent.killer);
 		PitPlayer pitDead = PitPlayer.getPitPlayer(killEvent.dead);
@@ -116,34 +121,39 @@ public class PlayerManager implements Listener {
 		}
 	}
 
+	public static List<UUID> pantsSwapCooldown = new ArrayList<>();
 	@EventHandler
 	public static void onClick(PlayerInteractEvent event) {
 
 		Player player = event.getPlayer();
 
 		if(event.getAction() != Action.RIGHT_CLICK_AIR && event.getAction() != Action.RIGHT_CLICK_BLOCK) return;
-		if(Misc.isAirOrNull(player.getItemInHand()) || !player.getItemInHand().getType().toString().contains("LEGGINGS")) return;
+		if(Misc.isAirOrNull(player.getItemInHand())) return;
 
-		if(swapCooldown.contains(player.getUniqueId())) {
+		if(player.getItemInHand().getType().toString().contains("LEGGINGS")){
+			if(Misc.isAirOrNull(player.getInventory().getLeggings())) return;
 
-			ASound.play(player, Sound.VILLAGER_NO, 1F, 1F);
-			return;
-		}
+			if(pantsSwapCooldown.contains(player.getUniqueId())) {
 
-		ItemStack held = player.getItemInHand();
-		player.setItemInHand(player.getInventory().getLeggings());
-		player.getInventory().setLeggings(held);
-
-		swapCooldown.add(player.getUniqueId());
-		new BukkitRunnable() {
-			@Override
-			public void run() {
-				swapCooldown.remove(player.getUniqueId());
+				ASound.play(player, Sound.VILLAGER_NO, 1F, 1F);
+				return;
 			}
-		}.runTaskLater(PitSim.INSTANCE, 40L);
 
-		ASound.play(player, Sound.HORSE_ARMOR, 1F, 1.3F);
+			ItemStack held = player.getItemInHand();
+			player.setItemInHand(player.getInventory().getLeggings());
+			player.getInventory().setLeggings(held);
+
+			pantsSwapCooldown.add(player.getUniqueId());
+			new BukkitRunnable() {
+				@Override
+				public void run() {
+					pantsSwapCooldown.remove(player.getUniqueId());
+				}
+			}.runTaskLater(PitSim.INSTANCE, 40L);
+			ASound.play(player, Sound.HORSE_ARMOR, 1F, 1.3F);
+		}
 	}
+
 	@EventHandler
 	public void onRespawn(PlayerRespawnEvent event) {
 		new BukkitRunnable() {
