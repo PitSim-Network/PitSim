@@ -19,10 +19,7 @@ import dev.kyro.pitsim.helmetabilities.GoldRushAbility;
 import dev.kyro.pitsim.helmetabilities.JudgementAbility;
 import dev.kyro.pitsim.helmetabilities.LeapAbility;
 import dev.kyro.pitsim.killstreaks.*;
-import dev.kyro.pitsim.misc.ChunkOfVile;
-import dev.kyro.pitsim.misc.ItemRename;
-import dev.kyro.pitsim.misc.ReachAutoBan;
-import dev.kyro.pitsim.misc.TotallyLegitGem;
+import dev.kyro.pitsim.misc.*;
 import dev.kyro.pitsim.perks.*;
 import dev.kyro.pitsim.pitevents.CaptureTheFlag;
 import dev.kyro.pitsim.pitevents.Juggernaut;
@@ -71,7 +68,10 @@ public class PitSim extends JavaPlugin {
 			LUCKPERMS = provider.getProvider();
 		}
 
+
 		CitizensAPI.getNPCRegistry().forEach(NPC::destroy);
+
+		SpawnNPCs.createNPCs();
 
 		MapManager.onStart();
 
@@ -100,12 +100,15 @@ public class PitSim extends JavaPlugin {
 			return;
 		}
 
+
 		registerPitEvents();
 		PitEventManager.eventWait();
 
 		registerUpgrades();
 		registerPerks();
 		registerMegastreaks();
+
+
 
 		ArcticAPI.setupPlaceholderAPI("pitsim");
 		AHook.registerPlaceholder(new PrefixPlaceholder());
@@ -149,6 +152,8 @@ public class PitSim extends JavaPlugin {
 
 	@Override
 	public void onDisable() {
+
+		SpawnNPCs.removeNPCs();
 
 		if(PitEventManager.majorEvent) PitEventManager.activeEvent.end();
 
@@ -348,6 +353,7 @@ public class PitSim extends JavaPlugin {
 		getServer().getPluginManager().registerEvents(new NonAnticheat(), this);
 		getServer().getPluginManager().registerEvents(new HelmetListeners(), this);
 		getServer().getPluginManager().registerEvents(new PitBlob(), this);
+		getServer().getPluginManager().registerEvents(new SpawnNPCs(), this);
 
 	}
 
@@ -370,6 +376,7 @@ public class PitSim extends JavaPlugin {
 		UpgradeManager.registerUpgrade(new TaxEvasion());
 		UpgradeManager.registerUpgrade(new DoubleDeath());
 		UpgradeManager.registerUpgrade(new XPComplex());
+		UpgradeManager.registerUpgrade(new KillSteal());
 
 	}
 

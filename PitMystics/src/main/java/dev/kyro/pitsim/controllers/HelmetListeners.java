@@ -15,6 +15,7 @@ import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.inventory.InventoryClickEvent;
@@ -28,7 +29,6 @@ import java.util.Collections;
 import java.util.List;
 
 public class HelmetListeners implements Listener {
-
 
 
 	private final List<Material> armorMaterials = Collections.singletonList(Material.GOLD_HELMET);
@@ -132,10 +132,21 @@ public class HelmetListeners implements Listener {
 
 	}
 
+	@EventHandler(priority = EventPriority.HIGHEST)
+	public void onPlayerInteract(PlayerInteractEvent event) {
+		Player player = event.getPlayer();
+		Action action = event.getAction();
+		if ((action.equals(Action.RIGHT_CLICK_BLOCK) || action.equals(Action.RIGHT_CLICK_AIR)) && this.armorMaterials.contains(player.getItemInHand().getType())) {
+			event.setCancelled(true);
+			player.updateInventory();
+		}
+	}
+
 	@EventHandler
 	public void onKill(KillEvent killEvent) {
 
 		if(NonManager.getNon(killEvent.killer) != null) return;
+		if(Misc.isAirOrNull(killEvent.killer.getInventory().getHelmet())) return;
 		if(killEvent.killer.getInventory().getHelmet().getType() != Material.GOLD_HELMET) return;
 
 		GoldenHelmet helmet = getHelmetInstance(killEvent.killer);
@@ -253,8 +264,8 @@ public class HelmetListeners implements Listener {
 	}
 
 	public static int getInventorySlot(Player owner) {
-		if(Misc.isAirOrNull(owner.getInventory().getHelmet())) return -1;
-		if(owner.getInventory().getHelmet().getType() == Material.GOLD_HELMET) {
+//		if(Misc.isAirOrNull(owner.getInventory().getHelmet())) return -1;
+		if(!Misc.isAirOrNull(owner.getInventory().getHelmet()) && owner.getInventory().getHelmet().getType() == Material.GOLD_HELMET) {
 
 			NBTItem playerItem = new NBTItem(owner.getInventory().getHelmet());
 
