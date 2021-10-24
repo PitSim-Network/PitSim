@@ -40,7 +40,7 @@ public class BlobAbility extends HelmetAbility {
 		slime.setSize(1);
 		PitBlob.blobMap.put(player.getUniqueId(), slime);
 		ASound.play(player, Sound.NOTE_PLING, 1.3F, 2);
-		AOutput.send(player, "&6&lGOLDEN HELMET! &aActivated &9Pit Blob&7. (&6-10,000g&7 per second)");
+		AOutput.send(player, "&6&lGOLDEN HELMET! &aActivated &9Pit Blob&7 (&6-10,000g&7 per second)");
 
 		runnable = new BukkitRunnable() {
 			@Override

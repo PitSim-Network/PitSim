@@ -125,21 +125,18 @@ public class JudgementAbility extends HelmetAbility {
 	}
 
 	@Override
-	public void onProc() {
-
-
-	}
-
+	public void onProc() { }
 
 	@Override
 	public List<String> getDescription() {
 		DecimalFormat formatter = new DecimalFormat("#,###.#");
-		return Arrays.asList("&7Double-Sneak to toggle the", "&7Pit Blob. The blob grows", "&7with kills.", "", "&7Cost: &6" + formatter.format(10000) + "g &7per second");
+		return Arrays.asList("&7Double-Sneak to toggle", "&7Judgement. Annihilate your", "&7opponents with RNGesus", "",
+				"&7Cost: &6" + formatter.format(10000) + "g &7per hit");
 	}
 
 	@Override
 	public ItemStack getDisplayItem() {
-		AItemStackBuilder builder = new AItemStackBuilder(Material.SLIME_BALL);
+		AItemStackBuilder builder = new AItemStackBuilder(Material.BEACON);
 		builder.setName("&e" + name);
 		ALoreBuilder loreBuilder = new ALoreBuilder();
 		loreBuilder.addLore(getDescription());
@@ -147,8 +144,4 @@ public class JudgementAbility extends HelmetAbility {
 
 		return builder.getItemStack();
 	}
-
-
-
-
 }
