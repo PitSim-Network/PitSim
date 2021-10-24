@@ -178,7 +178,7 @@ public class PlayerManager implements Listener {
 
 		Non defendingNon = NonManager.getNon(attackEvent.defender);
 //		Arch chest
-		if(defendingNon == null) attackEvent.multiplier.add(0.9);
+		if(defendingNon == null) attackEvent.multiplier.add(0.85);
 
 //		ItemStack itemStack = attackEvent.attacker.getItemInHand();
 //		if(itemStack != null && itemStack.hasItemMeta() && itemStack.getItemMeta().hasEnchant(Enchantment.DAMAGE_ALL)

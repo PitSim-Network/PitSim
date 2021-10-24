@@ -25,7 +25,7 @@ import java.util.List;
 public class JudgementAbility extends HelmetAbility {
 	public JudgementAbility(Player player) {
 
-		super(player,"Judgement", "judgement", true, 13);
+		super(player,"Judgement", "judgement", true, 14);
 	}
 
 	@EventHandler
@@ -110,7 +110,7 @@ public class JudgementAbility extends HelmetAbility {
 		GoldenHelmet goldenHelmet = HelmetListeners.getHelmetInstance(player);
 
 		assert goldenHelmet != null;
-		if(!goldenHelmet.withdrawGold(10000)) {
+		if(PitSim.VAULT.getBalance(player) < 10000) {
 			AOutput.error(player,"&cNot enough gold!");
 			Sounds.NO.play(player);
 			return false;

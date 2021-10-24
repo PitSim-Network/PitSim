@@ -19,6 +19,7 @@ public abstract class HelmetAbility implements Listener {
     public boolean isTogglable;
     public boolean isActive = false;
     public int slot;
+    public int cost;
 
     public HelmetAbility(Player player, String name, String refName, boolean isTogglable, int slot) {
         this.player = player;

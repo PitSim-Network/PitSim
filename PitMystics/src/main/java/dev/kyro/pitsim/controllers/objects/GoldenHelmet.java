@@ -5,10 +5,7 @@ import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.controllers.HelmetSystem;
 import dev.kyro.pitsim.enums.NBTTag;
-import dev.kyro.pitsim.helmetabilities.BlobAbility;
-import dev.kyro.pitsim.helmetabilities.GoldRushAbility;
-import dev.kyro.pitsim.helmetabilities.JudgementAbility;
-import dev.kyro.pitsim.helmetabilities.LeapAbility;
+import dev.kyro.pitsim.helmetabilities.*;
 import dev.kyro.pitsim.misc.Misc;
 import dev.kyro.pitsim.misc.Sounds;
 import org.bukkit.Material;
@@ -160,6 +157,7 @@ public class GoldenHelmet {
 		if(refName.equals("leap")) return new LeapAbility(player);
 		if(refName.equals("pitblob")) return new BlobAbility(player);
 		if(refName.equals("goldrush")) return new GoldRushAbility(player);
+		if(refName.equals("hermit")) return new HermitAbility(player);
 		if(refName.equals("judgement")) return new JudgementAbility(player);
 		return null;
 	}
