@@ -41,8 +41,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-//import dev.kyro.pitsim.controllers.market.MarketManager;
-
 public class PitSim extends JavaPlugin {
 
 	public static double version = 1.0;
