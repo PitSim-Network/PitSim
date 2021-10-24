@@ -31,6 +31,7 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.event.entity.EntityRegainHealthEvent;
 import org.bukkit.event.entity.EntityShootBowEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
@@ -67,6 +68,16 @@ public class DamageManager implements Listener {
 		if(event.getCause() != EntityDamageEvent.DamageCause.WITHER || !(event.getEntity() instanceof Player)) return;
 		Player player = (Player) event.getEntity();
 		if(event.getFinalDamage() >= player.getHealth()) death(player);
+	}
+
+	@EventHandler
+	public void onHeal(EntityRegainHealthEvent event) {
+		if(!(event.getEntity() instanceof Player)) return;
+		Player player = (Player) event.getEntity();
+		event.setCancelled(true);
+
+		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
+		pitPlayer.heal(event.getAmount());
 	}
 
 	@EventHandler(ignoreCancelled = true, priority = EventPriority.HIGH)
