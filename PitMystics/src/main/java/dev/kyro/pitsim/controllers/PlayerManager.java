@@ -37,7 +37,6 @@ import java.util.*;
 
 public class PlayerManager implements Listener {
 
-	public static List<UUID> swapCooldown = new ArrayList<>();
 	public static Map<Player, BossBarManager> bossBars = new HashMap<>();
 
 //	@EventHandler
@@ -116,34 +115,63 @@ public class PlayerManager implements Listener {
 		}
 	}
 
+	public static List<UUID> helmetSwapCooldown = new ArrayList<>();
+	public static List<UUID> pantsSwapCooldown = new ArrayList<>();
 	@EventHandler
 	public static void onClick(PlayerInteractEvent event) {
 
 		Player player = event.getPlayer();
 
 		if(event.getAction() != Action.RIGHT_CLICK_AIR && event.getAction() != Action.RIGHT_CLICK_BLOCK) return;
-		if(Misc.isAirOrNull(player.getItemInHand()) || !player.getItemInHand().getType().toString().contains("LEGGINGS")) return;
+		if(Misc.isAirOrNull(player.getItemInHand())) return;
 
-		if(swapCooldown.contains(player.getUniqueId())) {
+		if(player.getItemInHand().getType().toString().contains("LEGGINGS")){
+			if(Misc.isAirOrNull(player.getInventory().getLeggings())) return;
 
-			ASound.play(player, Sound.VILLAGER_NO, 1F, 1F);
-			return;
+			if(pantsSwapCooldown.contains(player.getUniqueId())) {
+
+				ASound.play(player, Sound.VILLAGER_NO, 1F, 1F);
+				return;
+			}
+
+			ItemStack held = player.getItemInHand();
+			player.setItemInHand(player.getInventory().getLeggings());
+			player.getInventory().setLeggings(held);
+
+			pantsSwapCooldown.add(player.getUniqueId());
+			new BukkitRunnable() {
+				@Override
+				public void run() {
+					pantsSwapCooldown.remove(player.getUniqueId());
+				}
+			}.runTaskLater(PitSim.INSTANCE, 40L);
+			ASound.play(player, Sound.HORSE_ARMOR, 1F, 1.3F);
 		}
 
-		ItemStack held = player.getItemInHand();
-		player.setItemInHand(player.getInventory().getLeggings());
-		player.getInventory().setLeggings(held);
+		if(player.getItemInHand().getType().toString().contains("HELMET")){
+			if(Misc.isAirOrNull(player.getInventory().getHelmet())) return;
 
-		swapCooldown.add(player.getUniqueId());
-		new BukkitRunnable() {
-			@Override
-			public void run() {
-				swapCooldown.remove(player.getUniqueId());
+			if(helmetSwapCooldown.contains(player.getUniqueId())) {
+
+				ASound.play(player, Sound.VILLAGER_NO, 1F, 1F);
+				return;
 			}
-		}.runTaskLater(PitSim.INSTANCE, 40L);
 
-		ASound.play(player, Sound.HORSE_ARMOR, 1F, 1.3F);
+			ItemStack held = player.getItemInHand();
+			player.setItemInHand(player.getInventory().getHelmet());
+			player.getInventory().setHelmet(held);
+
+			helmetSwapCooldown.add(player.getUniqueId());
+			new BukkitRunnable() {
+				@Override
+				public void run() {
+					helmetSwapCooldown.remove(player.getUniqueId());
+				}
+			}.runTaskLater(PitSim.INSTANCE, 40L);
+			ASound.play(player, Sound.HORSE_ARMOR, 1F, 1.3F);
+		}
 	}
+
 	@EventHandler
 	public void onRespawn(PlayerRespawnEvent event) {
 		new BukkitRunnable() {
