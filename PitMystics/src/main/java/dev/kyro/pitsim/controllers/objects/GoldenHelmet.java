@@ -25,7 +25,6 @@ import java.util.UUID;
 public class GoldenHelmet {
 
 	public static List<GoldenHelmet> helmets = new ArrayList<>();
-	public static GoldenHelmet INSTANCE;
 	DecimalFormat formatter = new DecimalFormat("#,###.#");
 
 	public Player owner;
@@ -34,8 +33,6 @@ public class GoldenHelmet {
 	public HelmetAbility ability = null;
 	public UUID uuid;
 
-
-
 	public GoldenHelmet(ItemStack item, Player owner) {
 		this.item = item;
 		this.owner  = owner;
@@ -43,9 +40,6 @@ public class GoldenHelmet {
 		this.gold = nbtItem.getInteger(NBTTag.GHELMET_GOLD.getRef());
 		this.ability = generateInstance(owner, nbtItem.getString(NBTTag.GHELMET_ABILITY.getRef()));
 		this.uuid = UUID.fromString(nbtItem.getString(NBTTag.GHELMET_UUID.getRef()));
-
-
-		INSTANCE = this;
 	}
 
 
@@ -124,7 +118,7 @@ public class GoldenHelmet {
 
 	}
 
-	public List<GoldenHelmet> getHelmetsFromPlayer(Player player) {
+	public static List<GoldenHelmet> getHelmetsFromPlayer(Player player) {
 		List<GoldenHelmet> playerHelmets = new ArrayList<>();
 		for(GoldenHelmet helmet : helmets) {
 			if(helmet.owner == player) playerHelmets.add(helmet);
