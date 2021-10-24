@@ -110,6 +110,7 @@ public class Highlander extends Megastreak {
 		if(pitPlayer != this.pitPlayer) return;
 		if(pitPlayer.megastreak.playerIsOnMega(killEvent) && pitPlayer.megastreak.getClass() == Highlander.class) {
 			killEvent.goldMultipliers.add(2.0);
+			killEvent.xpMultipliers.add(0.5);
 		}
 	}
 

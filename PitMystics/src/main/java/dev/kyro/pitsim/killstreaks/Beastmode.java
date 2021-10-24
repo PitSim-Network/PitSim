@@ -119,6 +119,7 @@ public class Beastmode extends Megastreak {
 		if(pitPlayer.megastreak.isOnMega() && pitPlayer.megastreak.getClass() == Beastmode.class) {
 			killEvent.xpCap += 130;
 			killEvent.xpMultipliers.add(2.0);
+			killEvent.goldMultipliers.add(0.5);
 		}
 	}
 
