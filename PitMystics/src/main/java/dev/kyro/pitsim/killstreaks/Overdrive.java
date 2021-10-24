@@ -105,9 +105,6 @@ public class Overdrive extends Megastreak {
 	public void onHit(AttackEvent.Apply attackEvent) {
 		PitPlayer pitPlayer = PitPlayer.getPitPlayer(attackEvent.defender);
 		if(pitPlayer != this.pitPlayer) return;
-		if(pitPlayer.megastreak.getClass() == Overdrive.class) {
-			attackEvent.increasePercent += 10 / 100D;
-		}
 		if(pitPlayer.megastreak.isOnMega() && pitPlayer.megastreak.getClass() == Overdrive.class) {
 			int ks = (int) Math.floor(pitPlayer.getKills());
 //			if(NonManager.getNon(attackEvent.attacker) == null) {
@@ -116,7 +113,7 @@ public class Overdrive extends Megastreak {
 //				attackEvent.increasePercent += ((ks - 50) * 3) / 100D;
 //			}
 //			TODO: Update lore
-			attackEvent.veryTrueDamage += (ks - 50) / 37.5D;
+			attackEvent.veryTrueDamage += (ks - 50) / 25D;
 		}
 	}
 

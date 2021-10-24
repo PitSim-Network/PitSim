@@ -173,6 +173,9 @@ public class DamageManager implements Listener {
 				attackEvent.multiplier.add(0.86956521);
 			}
 		}
+		if(attackEvent.defender.getInventory().getHelmet() != null && attackEvent.defender.getInventory().getHelmet().getType() == Material.GOLD_HELMET) {
+			attackEvent.multiplier.add(0.95652173913);
+		}
 
 		double damage = attackEvent.getFinalDamage();
 		attackEvent.event.setDamage(damage);

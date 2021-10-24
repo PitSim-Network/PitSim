@@ -4,11 +4,11 @@ import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.arcticapi.misc.ASound;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.controllers.LevelManager;
-import dev.kyro.pitsim.controllers.NonManager;
 import dev.kyro.pitsim.controllers.PrestigeValues;
 import dev.kyro.pitsim.controllers.objects.Megastreak;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.events.AttackEvent;
+import dev.kyro.pitsim.events.HealEvent;
 import dev.kyro.pitsim.events.KillEvent;
 import dev.kyro.pitsim.misc.Misc;
 import dev.kyro.pitsim.upgrades.DoubleDeath;
@@ -114,17 +114,13 @@ public class Highlander extends Megastreak {
 	}
 
 	@EventHandler
-	public void onHit(AttackEvent.Apply attackEvent) {
-		PitPlayer pitPlayer = PitPlayer.getPitPlayer(attackEvent.defender);
+	public void ohHeal(HealEvent healEvent) {
+		PitPlayer pitPlayer = PitPlayer.getPitPlayer(healEvent.player);
 		if(pitPlayer != this.pitPlayer) return;
 		if(pitPlayer.megastreak.isOnMega() && pitPlayer.megastreak.getClass() == Highlander.class) {
 			int ks = (int) Math.floor(pitPlayer.getKills());
 //			TODO: Update lore
-			if(NonManager.getNon(attackEvent.attacker) == null) {
-				attackEvent.increasePercent += (ks - 50) / 200D;
-			} else {
-				attackEvent.increasePercent += ((ks - 50) * 3) / 200D;
-			}
+			healEvent.multipliers.add(1 / ((ks - 50) / 50D));
 		}
 	}
 

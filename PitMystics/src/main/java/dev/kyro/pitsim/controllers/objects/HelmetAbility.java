@@ -71,7 +71,7 @@ public abstract class HelmetAbility implements Listener {
     }
 
     public static boolean isActive(Player player, HelmetAbility ability) {
-        List<GoldenHelmet> helmets = GoldenHelmet.INSTANCE.getHelmetsFromPlayer(player);
+        List<GoldenHelmet> helmets = GoldenHelmet.getHelmetsFromPlayer(player);
 
         for(GoldenHelmet helmet : helmets) {
             if(!helmet.ability.refName.equals(ability.refName)) continue;

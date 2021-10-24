@@ -207,7 +207,7 @@ public class HelmetListeners implements Listener {
 			if(HelmetAbility.toggledHelmets.contains(goldenHelmet.uuid)) {
 				goldenHelmet.deactivate();
 			} else {
-				for(GoldenHelmet helmet : GoldenHelmet.INSTANCE.getHelmetsFromPlayer(player)) {
+				for(GoldenHelmet helmet : GoldenHelmet.getHelmetsFromPlayer(player)) {
 					if(helmet.ability == null) continue;
 					if(helmet.ability.refName.equals(goldenHelmet.ability.refName) && HelmetAbility.toggledHelmets.contains(helmet.uuid)) {
 						AOutput.error(player, "&cAbility already activated!");
@@ -228,7 +228,7 @@ public class HelmetListeners implements Listener {
 	@EventHandler
 	public void onQuit(PlayerQuitEvent event) {
 		crouchPlayers.remove(event.getPlayer());
-		for(GoldenHelmet goldenHelmet : GoldenHelmet.INSTANCE.getHelmetsFromPlayer(event.getPlayer())) {
+		for(GoldenHelmet goldenHelmet : GoldenHelmet.getHelmetsFromPlayer(event.getPlayer())) {
 			HelmetAbility.toggledHelmets.remove(goldenHelmet.uuid);
 			if(goldenHelmet.ability != null) goldenHelmet.deactivate();
 		}
@@ -245,7 +245,7 @@ public class HelmetListeners implements Listener {
 		if(event.getSlot() == 39 && player.getInventory().getHelmet().getType() == Material.GOLD_HELMET) {
 			try {
 
-				for(GoldenHelmet goldenHelmet : GoldenHelmet.INSTANCE.getHelmetsFromPlayer(player)) {
+				for(GoldenHelmet goldenHelmet : GoldenHelmet.getHelmetsFromPlayer(player)) {
 					if(goldenHelmet.ability != null && goldenHelmet.ability.isActive) goldenHelmet.deactivate();
 				}
 			} catch(Exception ignored) {
@@ -257,7 +257,7 @@ public class HelmetListeners implements Listener {
 	@EventHandler
 	public void onDrop(PlayerDropItemEvent event) {
 		if(event.getItemDrop().getItemStack().getType() != Material.GOLD_HELMET) return;
-		for(GoldenHelmet goldenHelmet : GoldenHelmet.INSTANCE.getHelmetsFromPlayer(event.getPlayer())) {
+		for(GoldenHelmet goldenHelmet : GoldenHelmet.getHelmetsFromPlayer(event.getPlayer())) {
 			if(goldenHelmet.ability != null && goldenHelmet.ability.isActive) goldenHelmet.deactivate();
 		}
 	}
