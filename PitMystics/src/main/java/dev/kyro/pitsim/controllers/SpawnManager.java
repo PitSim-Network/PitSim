@@ -7,7 +7,8 @@ import com.sk89q.worldguard.protection.ApplicableRegionSet;
 import com.sk89q.worldguard.protection.managers.RegionManager;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import dev.kyro.pitsim.PitSim;
-import dev.kyro.pitsim.events.VolleyShootEvent;
+import dev.kyro.pitsim.controllers.objects.PitPlayer;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Sound;
 import org.bukkit.entity.Arrow;
@@ -15,14 +16,15 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityShootBowEvent;
-import org.bukkit.event.entity.ProjectileHitEvent;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class SpawnManager implements Listener {
 
     public static List<Arrow> arrowList = new ArrayList<>();
+    public static boolean postMajor = false;
 
 
     @EventHandler
@@ -53,6 +55,26 @@ public class SpawnManager implements Listener {
             }
         }
         return false;
+    }
+
+    public static void clearSpawnStreaks() {
+        if(postMajor) return;
+        for(Player player : Bukkit.getOnlinePlayers()) {
+            if(isInSpawn(player.getLocation())) {
+                PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
+                pitPlayer.setKills(0);
+            }
+        }
+
+    }
+
+    static {
+        new BukkitRunnable() {
+            @Override
+            public void run() {
+                clearSpawnStreaks();
+            }
+        }.runTaskLater(PitSim.INSTANCE, 20L);
     }
 
 

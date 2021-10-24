@@ -138,6 +138,13 @@ public class PitEventManager {
     }
 
 	public static void endEvent(PitEvent event) {
+		SpawnManager.postMajor = true;
+		new BukkitRunnable() {
+			@Override
+			public void run() {
+				SpawnManager.postMajor = false;
+			}
+		}.runTaskLater(PitSim.INSTANCE, 30 * 20L);
 		for(Player onlinePlayer : Bukkit.getOnlinePlayers()) {
 			BossBarManager manager = PlayerManager.bossBars.get(onlinePlayer);
 			Audience audience = PitSim.INSTANCE.adventure().player(onlinePlayer);

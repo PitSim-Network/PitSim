@@ -15,6 +15,7 @@ import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.inventory.InventoryClickEvent;
@@ -28,7 +29,6 @@ import java.util.Collections;
 import java.util.List;
 
 public class HelmetListeners implements Listener {
-
 
 
 	private final List<Material> armorMaterials = Collections.singletonList(Material.GOLD_HELMET);
@@ -130,6 +130,16 @@ public class HelmetListeners implements Listener {
 		if(defenderHelmet != null) defenderLevel = HelmetSystem.getLevel(defenderHelmet.gold);
 		if(defenderHelmet != null && defenderHelmet.getInventorySlot(attackEvent.defender) == -2) attackEvent.multiplier.add(Misc.getReductionMultiplier(HelmetSystem.getTotalStacks(HelmetSystem.Passive.DAMAGE_REDUCTION, defenderLevel - 1)));
 
+	}
+
+	@EventHandler(priority = EventPriority.HIGHEST)
+	public void onPlayerInteract(PlayerInteractEvent event) {
+		Player player = event.getPlayer();
+		Action action = event.getAction();
+		if ((action.equals(Action.RIGHT_CLICK_BLOCK) || action.equals(Action.RIGHT_CLICK_AIR)) && this.armorMaterials.contains(player.getItemInHand().getType())) {
+			event.setCancelled(true);
+			player.updateInventory();
+		}
 	}
 
 	@EventHandler

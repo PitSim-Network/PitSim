@@ -6,6 +6,7 @@ import dev.kyro.arcticapi.misc.ASound;
 import dev.kyro.arcticapi.misc.AUtil;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
+import dev.kyro.pitsim.killstreaks.Overdrive;
 import dev.kyro.pitsim.misc.Misc;
 import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.Bukkit;
@@ -91,6 +92,8 @@ public class LevelManager {
 		pitPlayer.prestige += 1;
 		pitPlayer.level = 1;
 		pitPlayer.goldGrinded = 0;
+		pitPlayer.megastreak = new Overdrive(pitPlayer);
+		pitPlayer.endKillstreak();
 		PitSim.VAULT.withdrawPlayer(player, PitSim.VAULT.getBalance(player));
 		pitPlayer.playerKills = 0;
 		pitPlayer.remainingXP = (int) (PrestigeValues.getXPForLevel(1) * prestigeInfo.xpMultiplier);
