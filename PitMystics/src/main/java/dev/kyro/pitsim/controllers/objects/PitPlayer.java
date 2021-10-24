@@ -57,6 +57,7 @@ public class PitPlayer {
 
 	public Map<UUID, Double> recentDamageMap = new HashMap<>();
 	public List<BukkitTask> assistRemove = new ArrayList<>();
+	public Player assistSteal;
 
 	public KillEffect killEffect = null;
 	public DeathCry deathCry = null;

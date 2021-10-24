@@ -150,6 +150,8 @@ public class PitSim extends JavaPlugin {
 	@Override
 	public void onDisable() {
 
+		SpawnNPCs.removeNPCs();
+
 		if(PitEventManager.majorEvent) PitEventManager.activeEvent.end();
 
 		for(Player onlinePlayer : Bukkit.getOnlinePlayers()) {
@@ -371,6 +373,7 @@ public class PitSim extends JavaPlugin {
 		UpgradeManager.registerUpgrade(new TaxEvasion());
 		UpgradeManager.registerUpgrade(new DoubleDeath());
 		UpgradeManager.registerUpgrade(new XPComplex());
+		UpgradeManager.registerUpgrade(new KillSteal());
 
 	}
 

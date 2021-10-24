@@ -6,7 +6,7 @@ import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.inventories.PerkGUI;
 import dev.kyro.pitsim.inventories.PrestigeGUI;
 import net.citizensnpcs.api.CitizensAPI;
-import net.citizensnpcs.api.event.NPCClickEvent;
+import net.citizensnpcs.api.event.NPCRightClickEvent;
 import net.citizensnpcs.api.npc.NPC;
 import net.citizensnpcs.api.npc.NPCRegistry;
 import org.bukkit.entity.EntityType;
@@ -32,7 +32,7 @@ public class SpawnNPCs implements Listener {
 	public static void createUpgradeNPC() {
 		NPCRegistry registry = CitizensAPI.getNPCRegistry();
 
-		NPC upgradesNPC = registry.createNPC(EntityType.VILLAGER, "");
+		NPC upgradesNPC = registry.createNPC(EntityType.VILLAGER, " ");
 		upgradesNPC.spawn(MapManager.getUpgradeNPCSpawn());
 		upgrade = upgradesNPC;
 	}
@@ -40,17 +40,17 @@ public class SpawnNPCs implements Listener {
 	public static void createPrestigeNPC() {
 		NPCRegistry registry = CitizensAPI.getNPCRegistry();
 
-		NPC prestigeNPC = registry.createNPC(EntityType.VILLAGER, "");
+		NPC prestigeNPC = registry.createNPC(EntityType.VILLAGER, " ");
 		prestigeNPC.spawn(MapManager.getPrestigeNPCSpawn());
 		prestige = prestigeNPC;
 	}
 
 	@EventHandler
-	public void onClickEvent(NPCClickEvent event){
+	public void onClickEvent(NPCRightClickEvent event){
 
 		Player player = event.getClicker();
 
-		if(event.getNPC() == upgrade)  {
+		if(event.getNPC().getId() == upgrade.getId())  {
 			PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
 			if(pitPlayer.megastreak.isOnMega()) {
 				AOutput.error(player, "&cYou cannot use this command while on a megastreak!");
@@ -61,7 +61,7 @@ public class SpawnNPCs implements Listener {
 			perkGUI.open();
 		}
 
-		if(event.getNPC() == prestige) {
+		if(event.getNPC().getId() == prestige.getId()) {
 			PrestigeGUI prestigeGUI = new PrestigeGUI(player);
 			prestigeGUI.open();
 		}
