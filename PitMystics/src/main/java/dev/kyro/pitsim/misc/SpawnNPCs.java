@@ -9,6 +9,8 @@ import net.citizensnpcs.api.CitizensAPI;
 import net.citizensnpcs.api.event.NPCRightClickEvent;
 import net.citizensnpcs.api.npc.NPC;
 import net.citizensnpcs.api.npc.NPCRegistry;
+import net.citizensnpcs.npc.skin.SkinnableEntity;
+import net.citizensnpcs.trait.LookClose;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -18,31 +20,69 @@ public class SpawnNPCs implements Listener {
 
 	public static NPC upgrade = null;
 	public static NPC prestige = null;
+	public static NPC kyro = null;
+	public static NPC wiji = null;
 
 	public static void createNPCs() {
 		createPrestigeNPC();
 		createUpgradeNPC();
+		createKyroNPC();
+		createWijiNPC();
 	}
 
 	public static void removeNPCs() {
-		upgrade.destroy();
-		prestige.destroy();
+		try {
+			upgrade.destroy();
+		} catch(Exception ignored) {
+			System.out.println("error despawning npc");
+		}
+		try {
+			prestige.destroy();
+		} catch(Exception ignored) {
+			System.out.println("error despawning npc");
+		}
+		try {
+			kyro.destroy();
+		} catch(Exception ignored) {
+			System.out.println("error despawning npc");
+		}
+		try {
+			wiji.destroy();
+		} catch(Exception ignored) {
+			System.out.println("error despawning npc");
+		}
 	}
 
 	public static void createUpgradeNPC() {
 		NPCRegistry registry = CitizensAPI.getNPCRegistry();
-
-		NPC upgradesNPC = registry.createNPC(EntityType.VILLAGER, " ");
-		upgradesNPC.spawn(MapManager.getUpgradeNPCSpawn());
-		upgrade = upgradesNPC;
+		upgrade = registry.createNPC(EntityType.VILLAGER, " ");
+		upgrade.spawn(MapManager.getUpgradeNPCSpawn());
 	}
 
 	public static void createPrestigeNPC() {
 		NPCRegistry registry = CitizensAPI.getNPCRegistry();
+		prestige = registry.createNPC(EntityType.VILLAGER, " ");
+		prestige.spawn(MapManager.getPrestigeNPCSpawn());
+	}
 
-		NPC prestigeNPC = registry.createNPC(EntityType.VILLAGER, " ");
-		prestigeNPC.spawn(MapManager.getPrestigeNPCSpawn());
-		prestige = prestigeNPC;
+	public static void createKyroNPC() {
+		NPCRegistry registry = CitizensAPI.getNPCRegistry();
+		kyro = registry.createNPC(EntityType.PLAYER, "KyroKrypt");
+		kyro.spawn(MapManager.getKyroNPCSpawn());
+		skin(kyro, "KyroKrypt");
+		kyro.addTrait(LookClose.class);
+		kyro.getTrait(LookClose.class).setRange(10);
+		kyro.getTrait(LookClose.class).toggle();
+	}
+
+	public static void createWijiNPC() {
+		NPCRegistry registry = CitizensAPI.getNPCRegistry();
+		wiji = registry.createNPC(EntityType.PLAYER, "wiji1");
+		wiji.spawn(MapManager.getWijiNPCSpawn());
+		skin(wiji, "wiji1");
+		wiji.addTrait(LookClose.class);
+		wiji.getTrait(LookClose.class).setRange(10);
+		wiji.getTrait(LookClose.class).toggle();
 	}
 
 	@EventHandler
@@ -65,9 +105,16 @@ public class SpawnNPCs implements Listener {
 			PrestigeGUI prestigeGUI = new PrestigeGUI(player);
 			prestigeGUI.open();
 		}
-
 	}
 
-
-
+	public static void skin(NPC npc, String name) {
+		npc.data().set(NPC.PLAYER_SKIN_UUID_METADATA, name);
+		npc.data().set(NPC.PLAYER_SKIN_USE_LATEST, false);
+		if (npc.isSpawned()) {
+			SkinnableEntity skinnable = (SkinnableEntity) npc.getEntity();
+			if (skinnable != null) {
+				skinnable.setSkinName(name);
+			}
+		}
+	}
 }
