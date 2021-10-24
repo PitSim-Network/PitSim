@@ -146,6 +146,7 @@ public class HelmetListeners implements Listener {
 	public void onKill(KillEvent killEvent) {
 
 		if(NonManager.getNon(killEvent.killer) != null) return;
+		if(Misc.isAirOrNull(killEvent.killer.getInventory().getHelmet())) return;
 		if(killEvent.killer.getInventory().getHelmet().getType() != Material.GOLD_HELMET) return;
 
 		GoldenHelmet helmet = getHelmetInstance(killEvent.killer);
@@ -263,8 +264,8 @@ public class HelmetListeners implements Listener {
 	}
 
 	public static int getInventorySlot(Player owner) {
-		if(Misc.isAirOrNull(owner.getInventory().getHelmet())) return -1;
-		if(owner.getInventory().getHelmet().getType() == Material.GOLD_HELMET) {
+//		if(Misc.isAirOrNull(owner.getInventory().getHelmet())) return -1;
+		if(!Misc.isAirOrNull(owner.getInventory().getHelmet()) && owner.getInventory().getHelmet().getType() == Material.GOLD_HELMET) {
 
 			NBTItem playerItem = new NBTItem(owner.getInventory().getHelmet());
 

@@ -354,14 +354,14 @@ public class DamageManager implements Listener {
 			if(UpgradeManager.hasUpgrade(assistPlayer, "KILL_STEAL")) {
 				int tier = UpgradeManager.getTier(assistPlayer, "KILL_STEAL");
 				assistPercent += (tier * 10) / 100D;
-				if(assistPercent > 1) {
+				if(assistPercent >= 1) {
 					Map<PitEnchant, Integer> attackerEnchant = new HashMap<>();
 					Map<PitEnchant, Integer> defenderEnchant = new HashMap<>();
 					EntityDamageByEntityEvent ev = new EntityDamageByEntityEvent(assistPlayer, dead, EntityDamageEvent.DamageCause.CUSTOM, 0);
 					AttackEvent aEvent = new AttackEvent(ev, attackerEnchant, defenderEnchant, false);
 
 
-					DamageManager.fakeKill(attackEvent, killer, dead, false);
+					DamageManager.fakeKill(attackEvent, assistPlayer, dead, false);
 					continue;
 				}
 			}
