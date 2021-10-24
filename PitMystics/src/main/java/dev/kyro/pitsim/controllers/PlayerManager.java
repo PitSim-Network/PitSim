@@ -115,7 +115,6 @@ public class PlayerManager implements Listener {
 		}
 	}
 
-	public static List<UUID> helmetSwapCooldown = new ArrayList<>();
 	public static List<UUID> pantsSwapCooldown = new ArrayList<>();
 	@EventHandler
 	public static void onClick(PlayerInteractEvent event) {
