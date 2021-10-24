@@ -6,6 +6,7 @@ import net.minecraft.server.v1_8_R3.*;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.Sound;
 import org.bukkit.craftbukkit.v1_8_R3.CraftWorld;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
 import org.bukkit.entity.Entity;
@@ -183,13 +184,9 @@ public class Misc {
 			EntityPlayer entityPlayer = ((CraftPlayer) player).getHandle();
 			entityPlayer.playerConnection.sendPacket(new PacketPlayOutSpawnEntityWeather(
 					new EntityLightning(world, location.getX(), location.getY(), location.getZ(), false, false)));
-			entityPlayer.playerConnection.sendPacket(new PacketPlayOutNamedSoundEffect(
-					"ambient.weather.thunder", location.getX(), location.getY(), location.getZ(), 10000.0F, 63));
-		}
-	}
 
-	public static <T> T getRandomElement(List<T> list) {
-		int index = (int) (Math.random() * list.size());
-		return list.get(index);
+			player.playSound(location, Sound.AMBIENCE_THUNDER, 10, 1);
+			player.playSound(location, Sound.EXPLODE, 10, (float) (Math.random() * 0.2 + 0.6));
+		}
 	}
 }
