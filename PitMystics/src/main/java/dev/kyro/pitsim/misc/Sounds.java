@@ -24,6 +24,12 @@ public class Sounds {
 						.add(Sound.IRONGOLEM_DEATH, 1, 1));
 	}
 
+	static {
+		Player toPlay = null;
+		SIMPLE_SOUND.play(toPlay);
+		COMPLEX_SOUND.play(toPlay.getLocation(), 10);
+	}
+
 	public static class SoundEffect {
 		private SoundMoment soundMoment;
 		private final List<SoundMoment> soundTimeList = new ArrayList<>();
