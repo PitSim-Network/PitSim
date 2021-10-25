@@ -88,7 +88,7 @@ public class Beastmode extends Megastreak {
 		lore.add(ChatColor.GRAY + "BUT:");
 		lore.add(ChatColor.translateAlternateColorCodes('&', "&c\u25a0 &7Receive &c+0.5% &7damage per kill over 50"));
 		lore.add(ChatColor.translateAlternateColorCodes('&', "&7(Damage tripled for bots)"));
-		lore.add(ChatColor.translateAlternateColorCodes('&', "&a\u25a0 &7Earn &c-50% &7gold from kills"));
+		lore.add(ChatColor.translateAlternateColorCodes('&', "&c\u25a0 &7Earn &c-50% &7gold from kills"));
 		lore.add("");
 		lore.add(ChatColor.GRAY + "On death:");
 		lore.add(ChatColor.translateAlternateColorCodes('&', "&e\u25a0 &7Earn between &b1000 &7and &b5000 XP&7"));

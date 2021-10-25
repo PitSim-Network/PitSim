@@ -81,14 +81,14 @@ public class Overdrive extends Megastreak {
 		lore.add(ChatColor.translateAlternateColorCodes('&', "&7Triggers on: &c50 kills"));
 		lore.add("");
 		lore.add(ChatColor.GRAY + "On trigger:");
-		lore.add(ChatColor.translateAlternateColorCodes('&', "&a\u25a0 &7Earn &b+50% XP &7from kills."));
-		lore.add(ChatColor.translateAlternateColorCodes('&', "&a\u25a0 &7Earn &b+50% gold &7from kills."));
+		lore.add(ChatColor.translateAlternateColorCodes('&', "&a\u25a0 &7Earn &b+50% XP &7from kills"));
+		lore.add(ChatColor.translateAlternateColorCodes('&', "&a\u25a0 &7Earn &6+50% gold &7from kills"));
 		lore.add(ChatColor.translateAlternateColorCodes('&', "&a\u25a0 &7Permanent &eSpeed I&7"));
 		lore.add(ChatColor.translateAlternateColorCodes('&', "&a\u25a0 &7Immune to &9Slowness&7"));
 		lore.add("");
 		lore.add(ChatColor.GRAY + "BUT:");
-		lore.add(ChatColor.translateAlternateColorCodes('&', "&c\u25a0 &7Receive &c+10" + Misc.getHearts(1)));
-		lore.add(ChatColor.translateAlternateColorCodes('&', "&7very true damage per 25 kills"));
+		lore.add(ChatColor.translateAlternateColorCodes('&', "&c\u25a0 &7Receive &c+" + Misc.getHearts(1) + " &7very true"));
+		lore.add(ChatColor.translateAlternateColorCodes('&', "&7damage per 25 kills"));
 		lore.add("");
 		lore.add(ChatColor.GRAY + "On death:");
 		lore.add(ChatColor.translateAlternateColorCodes('&', "&e\u25a0 &7Earn between &61000 &7and &65000 gold&7"));
