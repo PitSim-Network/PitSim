@@ -326,6 +326,8 @@ public class PitSim extends JavaPlugin {
 		getCommand("setlevel").setExecutor(new SetLevelCommand());
 		getCommand("setprestige").setExecutor(new SetPrestigeCommand());
 		getCommand("check").setExecutor(new AnticheatCommand());
+		getCommand("store").setExecutor(new StoreCommand());
+		getCommand("shop").setExecutor(new StoreCommand());
 //		getCommand("togglestereo").setExecutor(new ToggleStereoCommand());
 	}
 
