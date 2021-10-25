@@ -96,9 +96,9 @@ public class Uberstreak extends Megastreak {
 		lore.add(ChatColor.translateAlternateColorCodes('&', "&c\u25a0 &7Deal &c-50% &7damage to nons"));
 		lore.add("");
 		lore.add(ChatColor.GRAY + "During the streak:");
-		lore.add(ChatColor.translateAlternateColorCodes('&', "&d\u25a0 &7200 kills: Random &abuff &7or &cdebuff"));
-		lore.add(ChatColor.translateAlternateColorCodes('&', "&d\u25a0 &7300 kills: Random &abuff &7or &cdebuff"));
-		lore.add(ChatColor.translateAlternateColorCodes('&', "&d\u25a0 &7400 kills: Random &abuff &7or &cdebuff"));
+		lore.add(ChatColor.translateAlternateColorCodes('&', "&d\u25a0 &7200 kills: Random &dbuff &7or &cdebuff"));
+		lore.add(ChatColor.translateAlternateColorCodes('&', "&d\u25a0 &7300 kills: Random &dbuff &7or &cdebuff"));
+		lore.add(ChatColor.translateAlternateColorCodes('&', "&d\u25a0 &7400 kills: Random &dbuff &7or &cdebuff"));
 		lore.add(ChatColor.translateAlternateColorCodes('&', "&d\u25a0 &7500 kills: &cNo longer gain health"));
 		lore.add("");
 		lore.add(ChatColor.GRAY + "On death:");
@@ -351,8 +351,8 @@ public class Uberstreak extends Megastreak {
 
 		NONE("&7Nothing happens... Yay?"),
 
-		TAKE_LESS_DAMAGE("&aTake 10% less damage"),
-		SKIP_100("&aZoooom");
+		TAKE_LESS_DAMAGE("&dTake 10% less damage"),
+		SKIP_100("&dZoooom");
 
 		public String description;
 
