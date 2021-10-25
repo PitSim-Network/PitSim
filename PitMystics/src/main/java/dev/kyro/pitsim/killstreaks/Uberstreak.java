@@ -15,7 +15,7 @@ import dev.kyro.pitsim.enums.NBTTag;
 import dev.kyro.pitsim.enums.PantColor;
 import dev.kyro.pitsim.events.AttackEvent;
 import dev.kyro.pitsim.events.HealEvent;
-import dev.kyro.pitsim.events.KillEvent;
+import dev.kyro.pitsim.events.IncrementKillsEvent;
 import dev.kyro.pitsim.misc.*;
 import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.Bukkit;
@@ -146,13 +146,15 @@ public class Uberstreak extends Megastreak {
 	}
 
 	@EventHandler
-	public void onKill(KillEvent killEvent) {
-		PitPlayer pitPlayer = PitPlayer.getPitPlayer(killEvent.killer);
+	public void onKill(IncrementKillsEvent event) {
+		PitPlayer pitPlayer = PitPlayer.getPitPlayer(event.player);
 		if(pitPlayer != this.pitPlayer) return;
 		if(pitPlayer.megastreak.isOnMega() && pitPlayer.megastreak.getClass() == Uberstreak.class) {
-			double ks = pitPlayer.getKills();
 
-			if(ks >= 199 && ks < 200) {
+			double current = event.currentAmount;
+			double newKills = event.newAmount;
+
+			if(current < 200 && newKills >= 200) {
 				Sounds.UBER_200.play(pitPlayer.player);
 				UberEffect uberEffect = UberEffect.getRandom(uberEffects);
 				if(uberEffects.size() < 1) uberEffects.add(uberEffect);
@@ -160,7 +162,7 @@ public class Uberstreak extends Megastreak {
 				pitPlayer.updateMaxHealth();
 				AOutput.send(pitPlayer.player, "&d&lUBERSTREAK &7Random Effect: " + uberEffect.description);
 			}
-			if(ks >= 299 && ks < 300) {
+			if(current < 300 && newKills >= 300) {
 				Sounds.UBER_300.play(pitPlayer.player);
 				UberEffect uberEffect = UberEffect.getRandom(uberEffects);
 				if(uberEffects.size() < 2) uberEffects.add(uberEffect);
@@ -168,7 +170,7 @@ public class Uberstreak extends Megastreak {
 				pitPlayer.updateMaxHealth();
 				AOutput.send(pitPlayer.player, "&d&lUBERSTREAK &7Random Effect: " + uberEffect.description);
 			}
-			if(ks >= 399 && ks < 400) {
+			if(current < 400 && newKills >= 400) {
 				Sounds.UBER_400.play(pitPlayer.player);
 				UberEffect uberEffect = UberEffect.getRandom(uberEffects);
 				if(uberEffects.size() < 3) uberEffects.add(uberEffect);
@@ -176,7 +178,7 @@ public class Uberstreak extends Megastreak {
 				pitPlayer.updateMaxHealth();
 				AOutput.send(pitPlayer.player, "&d&lUBERSTREAK &7Random Effect: " + uberEffect.description);
 			}
-			if(ks >= 499 && ks < 500) {
+			if(current < 500 && newKills >= 500) {
 				Sounds.UBER_500.play(pitPlayer.player);
 				pitPlayer.updateMaxHealth();
 				AOutput.send(pitPlayer.player, "&d&lUBERSTREAK &cCannot heal");

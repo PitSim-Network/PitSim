@@ -41,7 +41,7 @@ public class Sounds {
 	public static final SoundEffect ARMOR_SWAP = new SoundEffect(Sound.HORSE_ARMOR, 1F, 1.3F);
 	public static final SoundEffect COMPENSATION = new SoundEffect(Sound.NOTE_PLING, 2, 1.5F);
 	public static final SoundEffect RENOWN_SHOP_PURCHASE = new SoundEffect(Sound.ORB_PICKUP, 2, 1.5F);
-	public static final SoundEffect FUNKY_FEATHER = new SoundEffect(Sound.BAT_TAKEOFF, 2, 1.9F);
+	public static final SoundEffect FUNKY_FEATHER = new SoundEffect(Sound.BAT_TAKEOFF, 2, 2F);
 	public static final SoundEffect CLEAR_JEWEL = new SoundEffect(Sound.SHEEP_SHEAR, 1, 2);
 
 //	Enchants
