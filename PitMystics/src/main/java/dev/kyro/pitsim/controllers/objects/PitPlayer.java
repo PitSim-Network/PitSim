@@ -8,6 +8,7 @@ import dev.kyro.pitsim.enums.AChatColor;
 import dev.kyro.pitsim.enums.DeathCry;
 import dev.kyro.pitsim.enums.KillEffect;
 import dev.kyro.pitsim.events.HealEvent;
+import dev.kyro.pitsim.events.IncrementKillsEvent;
 import dev.kyro.pitsim.inventories.ChatColorPanel;
 import dev.kyro.pitsim.killstreaks.*;
 import dev.kyro.pitsim.perks.NoPerk;
@@ -20,6 +21,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
 import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
@@ -161,13 +163,18 @@ public class PitPlayer {
 
 	public void incrementKills() {
 
+		double previousKills = this.kills;
+
 		kills++;
-		if(kills >= megastreak.getRequiredKills() && kills < megastreak.getRequiredKills() + 1 && megastreak.getClass() != NoMegastreak.class) megastreak.proc();
+
+		Bukkit.getPluginManager().callEvent(new IncrementKillsEvent(this.player, previousKills, 1));
+
+
+
 		for(Killstreak killstreak : killstreaks) {
 			if(kills == 0 || kills % killstreak.killInterval != 0) continue;
 			killstreak.proc();
 		}
-		megastreak.kill();
 
 		if(Math.floor(kills) % 25 == 0) {
 			for(Player onlinePlayer : Bukkit.getOnlinePlayers()) {
@@ -180,7 +187,18 @@ public class PitPlayer {
 		}
 	}
 
+	@EventHandler
+	public void onIncrement(IncrementKillsEvent event) {
+		Bukkit.broadcastMessage("test");
+		if(event.currentAmount < megastreak.getRequiredKills() && event.newAmount >= megastreak.getRequiredKills() && megastreak.getClass() != NoMegastreak.class) megastreak.proc();
+		megastreak.kill();
+	}
+
 	public void incrementAssist(double assistPercent) {
+
+		double previousKills = this.kills;
+
+		Bukkit.getPluginManager().callEvent(new IncrementKillsEvent(this.player, previousKills, assistPercent));
 
 		kills =  kills + (Math.round(assistPercent * 100) / 100D);
 
@@ -204,10 +222,6 @@ public class PitPlayer {
 
 	public double getKills() {
 		return kills;
-	}
-
-	public void setKillsreak(double newKills) {
-		kills = newKills;
 	}
 
 	public void setKills(double kills) {
