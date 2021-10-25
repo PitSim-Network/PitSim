@@ -81,17 +81,17 @@ public class Overdrive extends Megastreak {
 		lore.add(ChatColor.translateAlternateColorCodes('&', "&7Triggers on: &c50 kills"));
 		lore.add("");
 		lore.add(ChatColor.GRAY + "On trigger:");
-		lore.add(ChatColor.translateAlternateColorCodes('&', "&a\u25a0 &7Perma &eSpeed I&7."));
-		lore.add(ChatColor.translateAlternateColorCodes('&', "&a\u25a0 &7Immune to &9Slowness&7."));
-		/*lore.add(ChatColor.translateAlternateColorCodes('&', "&a\u25a0 &eSpeed &7effects cannot be removed."));*/
+		lore.add(ChatColor.translateAlternateColorCodes('&', "&a\u25a0 &7Earn &b+50% XP &7from kills."));
+		lore.add(ChatColor.translateAlternateColorCodes('&', "&a\u25a0 &7Earn &b+50% gold &7from kills."));
+		lore.add(ChatColor.translateAlternateColorCodes('&', "&a\u25a0 &7Permanent &eSpeed I&7"));
+		lore.add(ChatColor.translateAlternateColorCodes('&', "&a\u25a0 &7Immune to &9Slowness&7"));
 		lore.add("");
 		lore.add(ChatColor.GRAY + "BUT:");
-		lore.add(ChatColor.translateAlternateColorCodes('&', "&c\u25a0 &7Passively receive &c+10% &7damage."));
-		lore.add(ChatColor.translateAlternateColorCodes('&', "&c\u25a0 &7Receive &c+1% &7damage per kill over 50."));
-		lore.add(ChatColor.translateAlternateColorCodes('&', "&7(Damage tripled for bots)"));
+		lore.add(ChatColor.translateAlternateColorCodes('&', "&c\u25a0 &7Receive &c+10" + Misc.getHearts(1)));
+		lore.add(ChatColor.translateAlternateColorCodes('&', "&7very true damage per 25 kills"));
 		lore.add("");
 		lore.add(ChatColor.GRAY + "On death:");
-		lore.add(ChatColor.translateAlternateColorCodes('&', "&e\u25a0 &7Earn between &61000 &7and &65000 gold&7."));
+		lore.add(ChatColor.translateAlternateColorCodes('&', "&e\u25a0 &7Earn between &61000 &7and &65000 gold&7"));
 		meta.setLore(lore);
 		item.setItemMeta(meta);
 		return item;
@@ -107,12 +107,6 @@ public class Overdrive extends Megastreak {
 		if(pitPlayer != this.pitPlayer) return;
 		if(pitPlayer.megastreak.isOnMega() && pitPlayer.megastreak.getClass() == Overdrive.class) {
 			int ks = (int) Math.floor(pitPlayer.getKills());
-//			if(NonManager.getNon(attackEvent.attacker) == null) {
-//				attackEvent.increasePercent += (ks - 50) / 100D;
-//			} else {
-//				attackEvent.increasePercent += ((ks - 50) * 3) / 100D;
-//			}
-//			TODO: Update lore
 			attackEvent.veryTrueDamage += (ks - 50) / 25D;
 		}
 	}

@@ -27,6 +27,10 @@ public class SetPrestigeCommand implements CommandExecutor {
         }
         FileConfiguration playerData = APlayerData.getPlayerData(player);
         playerData.set("prestige", pitPlayer.prestige);
+
+        pitPlayer.moonBonus = 0;
+        playerData.set("moonbonus", pitPlayer.moonBonus);
+
         APlayerData.savePlayerData(player);
         AOutput.send(player, "&aSuccess!");
 

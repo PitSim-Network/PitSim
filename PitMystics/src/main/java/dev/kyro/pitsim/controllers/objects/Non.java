@@ -155,7 +155,7 @@ public class Non {
 		Player closest = null;
 		double closestDistance = 100;
 		Location midLoc = MapManager.getMid();
-		for(Entity nearbyEntity : non.getWorld().getNearbyEntities(midLoc, 7, 7, 7)) {
+		for(Entity nearbyEntity : non.getWorld().getNearbyEntities(midLoc, 5, 5, 5)) {
 
 			if(!(nearbyEntity instanceof Player) || nearbyEntity.getUniqueId().equals(non.getUniqueId())) continue;
 			double targetDistanceFromMid = Math.sqrt(Math.pow(nearbyEntity.getLocation().getX() - midLoc.getX(), 2) +
