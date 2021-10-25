@@ -27,7 +27,7 @@ public class Sufferance extends PitEnchant {
 
 		PitPlayer pitDefender = PitPlayer.getPitPlayer(attackEvent.defender);
 		pitDefender.heal((attackEvent.trueDamage + attackEvent.veryTrueDamage) * getReductionPercent(defenderLvl) / 100D,
-				HealEvent.HealType.ABSORPTION, (int) attackEvent.defender.getMaxHealth());
+				HealEvent.HealType.ABSORPTION, 4);
 	}
 
 	@Override
@@ -38,12 +38,6 @@ public class Sufferance extends PitEnchant {
 	}
 
 	public static int getReductionPercent(int enchantLvl) {
-		switch(enchantLvl) {
-			case 1:
-				return 25;
-			case 2:
-				return 50;
-		}
-		return 100;
+		return enchantLvl * 20;
 	}
 }
