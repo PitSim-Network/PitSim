@@ -165,7 +165,7 @@ public class DamageManager implements Listener {
 			return;
 		}
 		AttackEvent.Apply applyEvent = new AttackEvent.Apply(preEvent);
-		Bukkit.getServer().getPluginManager().callEvent(applyEvent);
+			Bukkit.getServer().getPluginManager().callEvent(applyEvent);
 //		if(applyEvent.fakeHit) {
 //			applyEvent.event.setDamage(0);
 //			return;

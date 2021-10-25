@@ -2,7 +2,10 @@ package dev.kyro.pitsim.controllers.objects;
 
 import dev.kyro.arcticapi.data.APlayerData;
 import dev.kyro.pitsim.PitSim;
-import dev.kyro.pitsim.controllers.*;
+import dev.kyro.pitsim.controllers.LevelManager;
+import dev.kyro.pitsim.controllers.NonManager;
+import dev.kyro.pitsim.controllers.PitEventManager;
+import dev.kyro.pitsim.controllers.PrestigeValues;
 import dev.kyro.pitsim.enchants.Hearts;
 import dev.kyro.pitsim.enums.AChatColor;
 import dev.kyro.pitsim.enums.DeathCry;
@@ -21,7 +24,6 @@ import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
 import org.bukkit.entity.Player;
-import org.bukkit.event.EventHandler;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
@@ -185,13 +187,6 @@ public class PitPlayer {
 				onlinePlayer.sendMessage(PlaceholderAPI.setPlaceholders(player, message));
 			}
 		}
-	}
-
-	@EventHandler
-	public void onIncrement(IncrementKillsEvent event) {
-		Bukkit.broadcastMessage("test");
-		if(event.currentAmount < megastreak.getRequiredKills() && event.newAmount >= megastreak.getRequiredKills() && megastreak.getClass() != NoMegastreak.class) megastreak.proc();
-		megastreak.kill();
 	}
 
 	public void incrementAssist(double assistPercent) {

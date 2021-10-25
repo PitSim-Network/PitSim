@@ -8,8 +8,10 @@ import dev.kyro.pitsim.controllers.objects.Non;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.controllers.objects.RenownUpgrade;
 import dev.kyro.pitsim.events.AttackEvent;
+import dev.kyro.pitsim.events.IncrementKillsEvent;
 import dev.kyro.pitsim.events.KillEvent;
 import dev.kyro.pitsim.killstreaks.Highlander;
+import dev.kyro.pitsim.killstreaks.NoMegastreak;
 import dev.kyro.pitsim.misc.DeathCrys;
 import dev.kyro.pitsim.misc.KillEffects;
 import dev.kyro.pitsim.misc.Misc;
@@ -122,6 +124,13 @@ public class PlayerManager implements Listener {
 			if(!pitKiller.disabledBounties) AOutput.send(killEvent.killer, PlaceholderAPI.setPlaceholders(killEvent.killer, message));
 			Sounds.BOUNTY.play(killEvent.killer);
 		}
+	}
+
+	@EventHandler
+	public void onIncrement(IncrementKillsEvent event) {
+		PitPlayer pitPlayer = PitPlayer.getPitPlayer(event.player);
+		if(event.currentAmount < pitPlayer.megastreak.getRequiredKills() && event.newAmount >= pitPlayer.megastreak.getRequiredKills() && pitPlayer.megastreak.getClass() != NoMegastreak.class) pitPlayer.megastreak.proc();
+		pitPlayer.megastreak.kill();
 	}
 
 	public static List<UUID> pantsSwapCooldown = new ArrayList<>();

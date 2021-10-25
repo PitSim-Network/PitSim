@@ -282,6 +282,7 @@ public class PitSim extends JavaPlugin {
 		PerkManager.registerUpgrade(new AssistantToTheStreaker());
 		PerkManager.registerUpgrade(new FirstStrike());
 		PerkManager.registerUpgrade(new Streaker());
+		PerkManager.registerUpgrade(new CounterJanitor());
 	}
 
 	private void registerMegastreaks() {
@@ -377,6 +378,7 @@ public class PitSim extends JavaPlugin {
 		UpgradeManager.registerUpgrade(new DoubleDeath());
 		UpgradeManager.registerUpgrade(new XPComplex());
 		UpgradeManager.registerUpgrade(new KillSteal());
+		UpgradeManager.registerUpgrade(new UnlockCounterJanitor());
 		UpgradeManager.registerUpgrade(new Celebrity());
 	}
 

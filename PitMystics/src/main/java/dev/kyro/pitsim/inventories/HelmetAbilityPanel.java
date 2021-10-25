@@ -25,7 +25,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 import java.util.ArrayList;
 import java.util.List;
 
-public class HelmetAbilityPanel extends AGUIPanel {
+public  class HelmetAbilityPanel extends AGUIPanel {
 
     FileConfiguration playerData = APlayerData.getPlayerData(player);
     PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
