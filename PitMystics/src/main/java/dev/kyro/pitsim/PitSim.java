@@ -377,7 +377,7 @@ public class PitSim extends JavaPlugin {
 		UpgradeManager.registerUpgrade(new DoubleDeath());
 		UpgradeManager.registerUpgrade(new XPComplex());
 		UpgradeManager.registerUpgrade(new KillSteal());
-
+		UpgradeManager.registerUpgrade(new Celebrity());
 	}
 
 	public void registerHelmetAbilities() {
