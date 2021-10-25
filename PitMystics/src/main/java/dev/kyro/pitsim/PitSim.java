@@ -237,6 +237,7 @@ public class PitSim extends JavaPlugin {
 		EnchantManager.registerEnchant(new Solitude());
 
 		EnchantManager.registerEnchant(new Mirror());
+		EnchantManager.registerEnchant(new Sufferance());
 		EnchantManager.registerEnchant(new CriticallyFunky());
 		EnchantManager.registerEnchant(new FractionalReserve());
 		EnchantManager.registerEnchant(new NotGladiator());
