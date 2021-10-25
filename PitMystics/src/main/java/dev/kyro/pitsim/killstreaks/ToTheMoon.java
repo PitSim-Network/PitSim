@@ -86,15 +86,19 @@ public class ToTheMoon extends Megastreak {
 		lore.add(ChatColor.translateAlternateColorCodes('&', "&a\u25a0 &7Gain &b+2 max XP &7per kill."));
 		lore.add("");
 		lore.add(ChatColor.GRAY + "BUT:");
-		lore.add(ChatColor.translateAlternateColorCodes('&', "&c\u25a0 &7Starting from 300, receive &c+5%"));
+		lore.add(ChatColor.translateAlternateColorCodes('&', "&c\u25a0 &7Starting from 200, receive &c+5%"));
 		lore.add(ChatColor.translateAlternateColorCodes('&', "&7damage per 20 kills. (Tripled for bots)"));
-		lore.add(ChatColor.translateAlternateColorCodes('&', "&c\u25a0 &7Starting from 700, receive &c+0.1\u2764"));
-		lore.add(ChatColor.translateAlternateColorCodes('&', "&7true damage per 10 kills."));
+		lore.add(ChatColor.translateAlternateColorCodes('&', "&c\u25a0 &7Starting from 400, receive &c+" + Misc.getHearts(0.2)));
+		lore.add(ChatColor.translateAlternateColorCodes('&', "&7damage per 50 kills. (Tripled for bots)"));
+		lore.add(ChatColor.translateAlternateColorCodes('&', "&c\u25a0 &7Starting from 700, receive &c+" + Misc.getHearts(0.2)));
+		lore.add(ChatColor.translateAlternateColorCodes('&', "&7very true damage per 10 kills."));
+		lore.add(ChatColor.translateAlternateColorCodes('&', "&a\u25a0 &7Earn &c-50% &7gold from kills"));
 
 		lore.add("");
 		lore.add(ChatColor.GRAY + "On death:");
 		lore.add(ChatColor.translateAlternateColorCodes('&', "&e\u25a0 &7Earn a permanent &b+1 max XP"));
 		lore.add(ChatColor.translateAlternateColorCodes('&', "&7until you prestige (30 max)"));
+		lore.add(ChatColor.translateAlternateColorCodes('&', "&7(If streak is at least 700)"));
 		meta.setLore(lore);
 		item.setItemMeta(meta);
 		return item;
@@ -183,7 +187,7 @@ public class ToTheMoon extends Megastreak {
 			pitPlayer.prefix = PrestigeValues.getPlayerPrefixNameTag(pitPlayer.player) + PlaceholderAPI.setPlaceholders(pitPlayer.player, message);
 		}
 
-		if(pitPlayer.megastreak.isOnMega()) {
+		if(pitPlayer.megastreak.isOnMega() && pitPlayer.getKills() >= 700) {
 			int cap = 1;
 			if(DoubleDeath.INSTANCE.isDoubleDeath(pitPlayer.player)) cap *= 2;
 			if(pitPlayer.moonBonus + cap > 30) cap = 30 - pitPlayer.moonBonus;

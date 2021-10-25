@@ -81,16 +81,17 @@ public class Beastmode extends Megastreak {
 		lore.add(ChatColor.translateAlternateColorCodes('&', "&7Triggers on: &c50 kills"));
 		lore.add("");
 		lore.add(ChatColor.GRAY + "On trigger:");
-		lore.add(ChatColor.translateAlternateColorCodes('&', "&a\u25a0 &7Deal &c+25% &7damage to bots."));
-		lore.add(ChatColor.translateAlternateColorCodes('&', "&a\u25a0 &7Earn &b+100% XP &7from kills."));
-		lore.add(ChatColor.translateAlternateColorCodes('&', "&a\u25a0 &7Gain &b+130 max XP&7."));
+		lore.add(ChatColor.translateAlternateColorCodes('&', "&a\u25a0 &7Deal &c+25% &7damage to bots"));
+		lore.add(ChatColor.translateAlternateColorCodes('&', "&a\u25a0 &7Earn &b+100% XP &7from kills"));
+		lore.add(ChatColor.translateAlternateColorCodes('&', "&a\u25a0 &7Gain &b+130 max XP&7"));
 		lore.add("");
 		lore.add(ChatColor.GRAY + "BUT:");
-		lore.add(ChatColor.translateAlternateColorCodes('&', "&c\u25a0 &7Receive &c+1% &7damage per kill over 50."));
+		lore.add(ChatColor.translateAlternateColorCodes('&', "&c\u25a0 &7Receive &c+0.5% &7damage per kill over 50"));
 		lore.add(ChatColor.translateAlternateColorCodes('&', "&7(Damage tripled for bots)"));
+		lore.add(ChatColor.translateAlternateColorCodes('&', "&a\u25a0 &7Earn &c-50% &7gold from kills"));
 		lore.add("");
 		lore.add(ChatColor.GRAY + "On death:");
-		lore.add(ChatColor.translateAlternateColorCodes('&', "&e\u25a0 &7Earn between &b1000 &7and &b5000 XP&7."));
+		lore.add(ChatColor.translateAlternateColorCodes('&', "&e\u25a0 &7Earn between &b1000 &7and &b5000 XP&7"));
 
 		meta.setLore(lore);
 		item.setItemMeta(meta);
