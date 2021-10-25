@@ -16,7 +16,7 @@ import java.util.List;
 
 public class XPComplex extends RenownUpgrade {
 	public XPComplex() {
-		super("Experience-Industrial Complex", "XP_COMPLEX", 50, 37, 23, false, 1);
+		super("Experience-Industrial Complex", "XP_COMPLEX", 50, 29, 23, false, 1);
 	}
 
 	@Override

@@ -15,7 +15,7 @@ import java.util.List;
 
 public class UnlockFirstStrike extends RenownUpgrade {
 	public UnlockFirstStrike() {
-		super("Perk unlock: First Strike", "FIRST_STRIKE", 25, 20, 10, false, 0);
+		super("Perk unlock: First Strike", "FIRST_STRIKE", 25, 19, 10, false, 0);
 	}
 
 	@Override

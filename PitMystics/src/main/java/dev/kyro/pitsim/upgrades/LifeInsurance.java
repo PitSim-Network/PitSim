@@ -14,7 +14,7 @@ import java.util.List;
 
 public class LifeInsurance extends RenownUpgrade {
 	public LifeInsurance() {
-		super("Life Insurance", "LIFE_INSURANCE", 30, 33, 12, false, 0);
+		super("Life Insurance", "LIFE_INSURANCE", 30, 21, 12, false, 0);
 	}
 
 	@Override

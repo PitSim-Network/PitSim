@@ -14,7 +14,7 @@ import java.util.List;
 
 public  class FastPass extends RenownUpgrade {
 	public FastPass() {
-		super("Fast Pass", "FAST_PASS", 10, 40, 38, false, 0);
+		super("Fast Pass", "FAST_PASS", 10, 33, 38, false, 0);
 	}
 
 	@Override
@@ -23,8 +23,8 @@ public  class FastPass extends RenownUpgrade {
 		ItemMeta meta = item.getItemMeta();
 		meta.setDisplayName(UpgradeManager.itemNameString(this, player));
 		List<String> lore = new ArrayList<>();
-		lore.add(ChatColor.GRAY + "&7Start at level 50 after");
-		lore.add(ChatColor.GRAY + "&7you &eprestige&7.");
+		lore.add(ChatColor.translateAlternateColorCodes('&', "&7Start at level 50 after"));
+		lore.add(ChatColor.translateAlternateColorCodes('&', "&7you &eprestige&7."));
 		meta.setLore(UpgradeManager.loreBuilder(this, player, lore, isCustomPanel));
 		item.setItemMeta(meta);
 		return item;

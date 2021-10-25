@@ -52,7 +52,7 @@ public  class HelmetAbilityPanel extends AGUIPanel {
         int slot = event.getSlot();
         if(event.getClickedInventory().getHolder() == this) {
 
-            ItemStack helm = getHelm();
+            ItemStack helm = player.getItemInHand();
 
             if(slot == 22) {
                 openPreviousGUI();

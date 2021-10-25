@@ -5,10 +5,12 @@ import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.arcticapi.data.APlayerData;
 import dev.kyro.arcticapi.gui.AGUI;
 import dev.kyro.arcticapi.gui.AGUIPanel;
+import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.arcticapi.misc.AUtil;
 import dev.kyro.pitsim.controllers.HelmetSystem;
 import dev.kyro.pitsim.controllers.objects.GoldenHelmet;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
+import dev.kyro.pitsim.misc.Sounds;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -55,6 +57,8 @@ public class HelmetPanel extends AGUIPanel {
             if(slot == 7) {
                 HelmetGUI.deposit(player, goldenHelmet.item);
                 player.closeInventory();
+                AOutput.error(player, "&cYou cannot do this while there is an ability activated!");
+                Sounds.NO.play(player);
             }
 
         }
@@ -187,18 +191,20 @@ public class HelmetPanel extends AGUIPanel {
             builder.setName(passive.refName);
             String percent;
             if(passiveLevel != 0) {
-                if(passive.name().equals("DAMAGE_REDUCTION"))
+                if(passive.name().equals("DAMAGE_REDUCTION")) {
                     percent = "&7Current: " + passive.color + "-" + passiveLevel * passive.baseUnit + "%";
-                else percent = "&7Current: " + passive.color + "+" + passiveLevel * passive.baseUnit + "%";
+                } else if(passive.name().equals("SHARD_CHANCE")) {
+                    percent = "&7Current: " + passive.color + "+" + passiveLevel * (passive.baseUnit / 10) + "%";
+                } else percent = "&7Current: " + passive.color + "+" + passiveLevel * passive.baseUnit + "%";
                 String tier = "&7Tier: &a" + AUtil.toRoman(passiveLevel);
                 if(passiveLevel > 0) loreBuilder.addLore(percent, tier);
             }
             loreBuilder.addLore("");
             if(passive.name().equals("DAMAGE_REDUCTION")) {
                 loreBuilder.addLore("&7Each tier:", passive.color + "-" + passive.baseUnit + "% " + passive.refName, "", "&eLevel up helmet to upgrade!");
-            } else {
-                loreBuilder.addLore("&7Each tier:", passive.color + "+" + passive.baseUnit + "% " + passive.refName, "", "&eLevel up helmet to upgrade!");
-            }
+            } else if(passive.name().equals("SHARD_CHANCE")){
+                loreBuilder.addLore("&7Each tier:", passive.color + "+" + (passive.baseUnit / 10) + "% " + passive.refName, "", "&eLevel up helmet to upgrade!");
+            } else loreBuilder.addLore("&7Each tier:", passive.color + "+" + passive.baseUnit + "% " + passive.refName, "", "&eLevel up helmet to upgrade!");
             builder.setLore(loreBuilder);
             getInventory().setItem(k, builder.getItemStack());
             k += 2;
@@ -254,7 +260,13 @@ public class HelmetPanel extends AGUIPanel {
         for(HelmetSystem.Passive passive : passives) {
             if(passive.name().equals("DAMAGE_REDUCTION")) {
                 loreBuilder.addLore(passive.color + "-" + passive.baseUnit + "% " + passive.refName);
-            } else loreBuilder.addLore(passive.color + "+" + passive.baseUnit + "% " + passive.refName);
+                continue;
+            }
+            if(passive.name().equals("SHARD_CHANCE"))  {
+                loreBuilder.addLore(passive.color + "+" + (passive.baseUnit / 10) + "% " + passive.refName);
+                continue;
+            }
+            loreBuilder.addLore(passive.color + "+" + passive.baseUnit + "% " + passive.refName);
         }
         if(passives.size() > 1) builder.getItemStack().setType(Material.BEACON);
         else if(passives.size() != 0){

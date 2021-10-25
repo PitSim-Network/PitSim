@@ -25,7 +25,7 @@ import java.util.List;
 
 public  class KillSteal extends RenownUpgrade {
 	public KillSteal() {
-		super("Kill Steal", "KILL_STEAL", 10, 38, 28, true, 3);
+		super("Kill Steal", "KILL_STEAL", 10, 31, 28, true, 3);
 	}
 
 	@Override

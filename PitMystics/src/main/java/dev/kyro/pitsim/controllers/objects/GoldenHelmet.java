@@ -89,7 +89,13 @@ public class GoldenHelmet {
 
 			if(passive.name().equals("DAMAGE_REDUCTION")) {
 				loreBuilder.addLore(passive.color + "-" + passiveLevel * passive.baseUnit + "% " + passive.refName);
-			} else loreBuilder.addLore(passive.color + "+" + passiveLevel * passive.baseUnit + "% " + passive.refName);
+				continue;
+			}
+			if(passive.name().equals("SHARD_CHANCE"))  {
+				loreBuilder.addLore(passive.color + "+" + passiveLevel * (passive.baseUnit / 10) + "% " + passive.refName);
+				continue;
+			}
+			loreBuilder.addLore(passive.color + "+" + passiveLevel * passive.baseUnit + "% " + passive.refName);
 		}
 		if(passives == 0) loreBuilder.addLore("&cNONE");
 		loreBuilder.addLore("", "&7Gold: &6" + formatter.format(gold) + "g", "", "&eHold and right-click to modify!");

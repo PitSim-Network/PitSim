@@ -99,7 +99,7 @@ public class PitSim extends JavaPlugin {
 
 
 		registerPitEvents();
-		PitEventManager.eventWait();
+//		PitEventManager.eventWait();
 
 		registerUpgrades();
 		registerPerks();
@@ -380,6 +380,7 @@ public class PitSim extends JavaPlugin {
 		UpgradeManager.registerUpgrade(new KillSteal());
 		UpgradeManager.registerUpgrade(new UnlockCounterJanitor());
 		UpgradeManager.registerUpgrade(new Celebrity());
+		UpgradeManager.registerUpgrade(new FastPass());
 	}
 
 	public void registerHelmetAbilities() {

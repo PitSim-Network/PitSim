@@ -23,7 +23,7 @@ import java.util.List;
 public class DoubleDeath extends RenownUpgrade {
 	public static DoubleDeath INSTANCE;
 	public DoubleDeath() {
-		super("Double-Death", "DOUBLE_DEATH", 15, 21, 9, true, 4);
+		super("Double-Death", "DOUBLE_DEATH", 15, 16, 9, true, 4);
 		INSTANCE = this;
 	}
 

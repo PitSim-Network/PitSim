@@ -15,7 +15,7 @@ import java.util.List;
 
 public class UnlockCounterJanitor extends RenownUpgrade {
 	public UnlockCounterJanitor() {
-		super("Perk unlock: Counter-Janitor", "COUNTER_JANITOR", 20, 39, 10, false, 0);
+		super("Perk unlock: Counter-Janitor", "COUNTER_JANITOR", 20, 22, 10, false, 0);
 	}
 
 	@Override

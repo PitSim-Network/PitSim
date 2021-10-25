@@ -17,12 +17,12 @@ import java.util.List;
 
 public class Celebrity extends RenownUpgrade {
 	public Celebrity() {
-		super("Celebrity", "CELEBRITY", 300, 52, 40, false, 0);
+		super("Celebrity", "CELEBRITY", 300, 34, 40, false, 0);
 	}
 
 	@Override
 	public ItemStack getDisplayItem(Player player, boolean isCustomPanel) {
-		ItemStack item = new ItemStack(Material.RAW_FISH, (short) 3);
+		ItemStack item = new ItemStack(Material.RAW_FISH,1, (short) 3);
 		ItemMeta meta = item.getItemMeta();
 		meta.setDisplayName(UpgradeManager.itemNameString(this, player));
 		List<String> lore = new ALoreBuilder("&7Literally earn &62x gold &7from", "&7kills").getLore();

@@ -14,7 +14,7 @@ import java.util.List;
 
 public class SelfConfidence extends RenownUpgrade {
 	public SelfConfidence() {
-		super("Self Confidence", "SELF_CONFIDENCE", 35, 29, 14, false, 0);
+		super("Self Confidence", "SELF_CONFIDENCE", 35, 29, 23, false, 0);
 	}
 
 	@Override

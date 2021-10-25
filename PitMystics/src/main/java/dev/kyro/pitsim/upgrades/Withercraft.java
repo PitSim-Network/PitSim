@@ -15,7 +15,7 @@ import java.util.List;
 
 public class Withercraft extends RenownUpgrade {
 	public Withercraft() {
-		super("Withercraft", "WITHERCRAFT", 50, 31, 18, false, 0);
+		super("Withercraft", "WITHERCRAFT", 50, 25, 18, false, 0);
 	}
 
 	@Override

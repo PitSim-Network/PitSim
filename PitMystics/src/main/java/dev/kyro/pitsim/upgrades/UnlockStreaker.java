@@ -15,7 +15,7 @@ import java.util.List;
 
 public class UnlockStreaker extends RenownUpgrade {
 	public UnlockStreaker() {
-		super("Perk unlock: Streaker", "STREAKER", 30, 28, 7, false, 0);
+		super("Perk unlock: Streaker", "STREAKER", 30, 15, 7, false, 0);
 	}
 
 	@Override

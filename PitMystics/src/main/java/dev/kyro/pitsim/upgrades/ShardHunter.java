@@ -33,7 +33,7 @@ import java.util.List;
 
 public class ShardHunter extends RenownUpgrade {
 	public ShardHunter() {
-		super("Shardhunter", "SHARDHUNTER", 40, 34, 30, true, 10);
+		super("Shardhunter", "SHARDHUNTER", 40, 32, 30, true, 10);
 	}
 
 	@Override
@@ -78,7 +78,7 @@ public class ShardHunter extends RenownUpgrade {
 		GoldenHelmet helmet = HelmetListeners.getHelmetInstance(killEvent.killer);
 		if(helmet != null) {
 			int level = HelmetSystem.getLevel(helmet.gold);
-			if(killEvent.killer.getInventory().getHelmet().getType() == Material.GOLD_HELMET) chance += 0.001 * HelmetSystem.getTotalStacks(HelmetSystem.Passive.SHARD_CHANCE,level - 1);
+			if(killEvent.killer.getInventory().getHelmet().getType() == Material.GOLD_HELMET) chance += 0.0001 * HelmetSystem.getTotalStacks(HelmetSystem.Passive.SHARD_CHANCE,level - 1);
 		}
 
 		boolean givesShard = Math.random() < chance;
