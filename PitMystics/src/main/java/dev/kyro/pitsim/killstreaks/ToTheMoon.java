@@ -83,7 +83,7 @@ public class ToTheMoon extends Megastreak {
 		lore.add(ChatColor.translateAlternateColorCodes('&', "&7Triggers on: &c100 kills"));
 		lore.add("");
 		lore.add(ChatColor.GRAY + "On trigger:");
-		lore.add(ChatColor.translateAlternateColorCodes('&', "&a\u25a0 &7Gain &b+2 max XP &7per kill."));
+		lore.add(ChatColor.translateAlternateColorCodes('&', "&a\u25a0 &7Gain &b+2 max XP &7per kill"));
 		lore.add("");
 		lore.add(ChatColor.GRAY + "BUT:");
 		lore.add(ChatColor.translateAlternateColorCodes('&', "&c\u25a0 &7Starting from 200, receive &c+5%"));
@@ -92,7 +92,7 @@ public class ToTheMoon extends Megastreak {
 		lore.add(ChatColor.translateAlternateColorCodes('&', "&7damage per 50 kills. (Tripled for bots)"));
 		lore.add(ChatColor.translateAlternateColorCodes('&', "&c\u25a0 &7Starting from 700, receive &c+" + Misc.getHearts(0.2)));
 		lore.add(ChatColor.translateAlternateColorCodes('&', "&7very true damage per 10 kills."));
-		lore.add(ChatColor.translateAlternateColorCodes('&', "&a\u25a0 &7Earn &c-50% &7gold from kills"));
+		lore.add(ChatColor.translateAlternateColorCodes('&', "&c\u25a0 &7Earn &c-50% &7gold from kills"));
 
 		lore.add("");
 		lore.add(ChatColor.GRAY + "On death:");

@@ -237,6 +237,7 @@ public class PitSim extends JavaPlugin {
 		EnchantManager.registerEnchant(new Solitude());
 
 		EnchantManager.registerEnchant(new Mirror());
+		EnchantManager.registerEnchant(new Sufferance());
 		EnchantManager.registerEnchant(new CriticallyFunky());
 		EnchantManager.registerEnchant(new FractionalReserve());
 		EnchantManager.registerEnchant(new NotGladiator());
@@ -378,7 +379,7 @@ public class PitSim extends JavaPlugin {
 		UpgradeManager.registerUpgrade(new XPComplex());
 		UpgradeManager.registerUpgrade(new KillSteal());
 		UpgradeManager.registerUpgrade(new UnlockCounterJanitor());
-
+		UpgradeManager.registerUpgrade(new Celebrity());
 	}
 
 	public void registerHelmetAbilities() {
