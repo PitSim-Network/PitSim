@@ -15,7 +15,7 @@ public class Sufferance extends PitEnchant {
 
 	public Sufferance() {
 		super("Sufferance", false, ApplyType.PANTS,
-				"suffer", "sufferance", "sufference");
+				"sufferance", "suffer", "sufference");
 	}
 
 	@EventHandler(priority = EventPriority.HIGHEST)
