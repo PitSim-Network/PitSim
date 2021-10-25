@@ -161,6 +161,8 @@ public class HelmetListeners implements Listener {
 
 	public static GoldenHelmet getHelmetInstance(Player player) {
 		if(Misc.isAirOrNull(player.getInventory().getHelmet())) return null;
+		NBTItem nbtItem = new NBTItem(player.getInventory().getHelmet());
+		if(!nbtItem.hasKey(NBTTag.GHELMET_UUID.getRef())) return null;
 		return GoldenHelmet.getHelmetItem(player.getInventory().getHelmet(), player);
 
 	}

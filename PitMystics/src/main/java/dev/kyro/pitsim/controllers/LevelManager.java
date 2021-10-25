@@ -86,16 +86,22 @@ public class LevelManager {
 		PrestigeValues.PrestigeInfo prestigeInfo = PrestigeValues.getPrestigeInfo(pitPlayer.prestige);
 		if(pitPlayer.level < 120) return;
 		if(pitPlayer.goldGrinded < prestigeInfo.goldReq) return;
+		//TODO: Re-enable killreq
 //		if(pitPlayer.playerKills < prestigeInfo.killReq) return;
 
 		pitPlayer.prestige += 1;
-		pitPlayer.level = 1;
+		if(UpgradeManager.hasUpgrade(player, "FAST_PASS")) {
+			pitPlayer.level = 50;
+			pitPlayer.remainingXP = (int) (PrestigeValues.getXPForLevel(50) * prestigeInfo.xpMultiplier);
+		} else {
+			pitPlayer.level = 1;
+			pitPlayer.remainingXP = (int) (PrestigeValues.getXPForLevel(1) * prestigeInfo.xpMultiplier);
+		}
 		pitPlayer.goldGrinded = 0;
 		pitPlayer.megastreak = new Overdrive(pitPlayer);
 		pitPlayer.endKillstreak();
 		PitSim.VAULT.withdrawPlayer(player, PitSim.VAULT.getBalance(player));
 		pitPlayer.playerKills = 0;
-		pitPlayer.remainingXP = (int) (PrestigeValues.getXPForLevel(1) * prestigeInfo.xpMultiplier);
 		pitPlayer.renown += prestigeInfo.renownReward;
 		pitPlayer.moonBonus = 0;
 

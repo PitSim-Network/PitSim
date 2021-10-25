@@ -25,7 +25,7 @@ import java.util.List;
 
 public  class KillSteal extends RenownUpgrade {
 	public KillSteal() {
-		super("Kill Steal", "KILL_STEAL", 10, 38, 13, true, 3);
+		super("Kill Steal", "KILL_STEAL", 10, 38, 28, true, 3);
 	}
 
 	@Override
@@ -51,7 +51,7 @@ public  class KillSteal extends RenownUpgrade {
 
 	@Override
 	public List<Integer> getTierCosts() {
-		return Arrays.asList(15, 20, 30);
+		return Arrays.asList(20, 30, 40);
 	}
 
 	@EventHandler

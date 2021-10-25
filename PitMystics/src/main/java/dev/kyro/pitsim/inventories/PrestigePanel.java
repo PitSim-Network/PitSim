@@ -44,6 +44,7 @@ public class PrestigePanel extends AGUIPanel {
 		int slot = event.getSlot();
 		if(event.getClickedInventory().getHolder() == this) {
 			if(slot == 11) {
+				//TODO: Re-enable killreq
 //				if(pitPlayer.level == 120 && pitPlayer.goldGrinded >= prestigeInfo.goldReq && pitPlayer.playerKills >= prestigeInfo.killReq) {
 					if(pitPlayer.level == 120 && pitPlayer.goldGrinded >= prestigeInfo.goldReq) {
 					if(pitPlayer.prestige == 50) {
@@ -94,6 +95,7 @@ public class PrestigePanel extends AGUIPanel {
 			prestigeLore.add(ChatColor.translateAlternateColorCodes('&', "&7New prestige: &e" + AUtil.toRoman(pitPlayer.prestige + 1)));
 			if(pitPlayer.prestige != 0) prestigeLore.add(ChatColor.translateAlternateColorCodes('&', "&b+" + (int) (100 * nextPrestigeInfo.xpMultiplier) + "&b% &7needed xp!"));
 			prestigeLore.add("");
+			//TODO: Re-enable killreq
 //			if(pitPlayer.level == 120 && pitPlayer.goldGrinded >= prestigeInfo.goldReq && pitPlayer.playerKills >= prestigeInfo.killReq) {
 			if(pitPlayer.level == 120 && pitPlayer.goldGrinded >= prestigeInfo.goldReq) {
 				prestigeLore.add(ChatColor.YELLOW + "Click to purchase!");
