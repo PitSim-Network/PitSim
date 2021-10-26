@@ -112,6 +112,7 @@ public class LevelManager {
 		playerData.set("renown", pitPlayer.renown);
 		playerData.set("playerkills", pitPlayer.playerKills);
 		playerData.set("xp", pitPlayer.remainingXP);
+		playerData.set("megastreak", pitPlayer.megastreak.getRawName());
 		if(pitPlayer.prestige >= 33) playerData.set("moonbonus", pitPlayer.moonBonus);
 		APlayerData.savePlayerData(player);
 

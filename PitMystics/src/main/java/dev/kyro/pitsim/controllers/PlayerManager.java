@@ -1,12 +1,10 @@
 package dev.kyro.pitsim.controllers;
 
 import be.maximvdw.featherboard.api.FeatherBoardAPI;
-import dev.kyro.arcticapi.data.APlayerData;
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.controllers.objects.Non;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
-import dev.kyro.pitsim.controllers.objects.RenownUpgrade;
 import dev.kyro.pitsim.events.AttackEvent;
 import dev.kyro.pitsim.events.IncrementKillsEvent;
 import dev.kyro.pitsim.events.KillEvent;
@@ -22,7 +20,6 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -34,7 +31,6 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.spigotmc.event.player.PlayerSpawnLocationEvent;
 
-import java.io.File;
 import java.text.DecimalFormat;
 import java.util.*;
 
@@ -207,14 +203,6 @@ public class PlayerManager implements Listener {
 //		event.getPlayer().setMaximumNoDamageTicks(18);
 
 
-			if(!isNew(player)) compensateRenown(event.getPlayer());
-			compensateFancyPants(player);
-			compensateRenownPerks(player);
-
-			FileConfiguration playerData = APlayerData.getPlayerData(player);
-			playerData.set("lastversion", PitSim.version);
-			APlayerData.savePlayerData(player);
-
 
 		if(PitEventManager.majorEvent) FeatherBoardAPI.showScoreboard(event.getPlayer(), "event");
 		else {
@@ -332,75 +320,7 @@ public class PlayerManager implements Listener {
 		}
 	}
 
-	public static Boolean isNew(Player player) {
-		File directory = new File("plugins/PitRemake/playerdata");
-		File[] files = directory.listFiles();
-		for(File file : files) {
 
-			if(file.getName().equals(player.getUniqueId().toString() + ".yml")) {
-				return false;
-			}
-
-		}
-		return true;
-	}
-
-	public static void compensateRenown(Player player) {
-		FileConfiguration playerData = APlayerData.getPlayerData(player);
-		if(playerData.contains("lastversion") && playerData.getDouble("lastversion")  >= 1.0) return;
-
-		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
-		int totalRenown = 0;
-		for(int i = 0; i < pitPlayer.playerLevel; i++) {
-			totalRenown += OldLevelManager.getRenownFromLevel(i);
-		}
-		pitPlayer.renown += totalRenown;
-		playerData.set("renown", pitPlayer.renown);
-		AOutput.send(player, "&a&lCOMPENSATION! &7Received &e+" + totalRenown + " Renown &7for your current level.");
-		Sounds.COMPENSATION.play(player);
-
-		APlayerData.savePlayerData(player);
-	}
-
-	public static void compensateFancyPants(Player player) {
-		FileConfiguration playerData = APlayerData.getPlayerData(player);
-		if(!playerData.contains("FANCY_PANTS")) return;
-		playerData.set("FANCY_PANTS", null);
-
-		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
-
-		pitPlayer.renown += 10;
-		playerData.set("renown", pitPlayer.renown);
-		AOutput.send(player, "&a&lCOMPENSATION! &7Received &e+" + 10 + " Renown &7for the removal of &fFancy Pants");
-		Sounds.COMPENSATION.play(player);
-
-		APlayerData.savePlayerData(player);
-	}
-
-	public static void compensateRenownPerks(Player player) {
-		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
-		FileConfiguration playerData = APlayerData.getPlayerData(player);
-		int renown = 0;
-		for(RenownUpgrade upgrade : UpgradeManager.upgrades) {
-			if(UpgradeManager.hasUpgrade(player, upgrade) && upgrade.prestigeReq > pitPlayer.prestige) {
-				Bukkit.broadcastMessage(upgrade.name);
-				if(upgrade.isTiered) {
-					int tier = UpgradeManager.getTier(player, upgrade);
-					for(int i = 0; i < tier; i++) {
-						renown += upgrade.getTierCosts().get(i);
-					}
-				} else renown += upgrade.renownCost;
-				playerData.set(upgrade.refName, null);
-			}
-		}
-		pitPlayer.renown += renown;
-
-		if(renown == 0) return;
-		playerData.set("renown", pitPlayer.renown);
-		APlayerData.savePlayerData(player);
-		AOutput.send(player, "&a&lCOMPENSATION! &7Received &e+" + renown + " Renown &7for recent renown shop changes.");
-		Sounds.COMPENSATION.play(player);
-	}
 
 
 

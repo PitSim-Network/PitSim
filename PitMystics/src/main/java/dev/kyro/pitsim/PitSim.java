@@ -40,7 +40,7 @@ import java.util.Map;
 
 public class PitSim extends JavaPlugin {
 
-	public static double version = 1.0;
+	public static double version = 2.0;
 	public static LuckPerms LUCKPERMS;
 
 	public static PitSim INSTANCE;
@@ -355,6 +355,7 @@ public class PitSim extends JavaPlugin {
 		getServer().getPluginManager().registerEvents(new HelmetListeners(), this);
 		getServer().getPluginManager().registerEvents(new PitBlob(), this);
 		getServer().getPluginManager().registerEvents(new SpawnNPCs(), this);
+		getServer().getPluginManager().registerEvents(new BackwardsCompatibility(), this);
 
 	}
 
@@ -371,7 +372,7 @@ public class PitSim extends JavaPlugin {
 		UpgradeManager.registerUpgrade(new Helmetry());
 		UpgradeManager.registerUpgrade(new ShardHunter());
 		UpgradeManager.registerUpgrade(new ReportAccess());
-		UpgradeManager.registerUpgrade(new SelfConfidence());
+//		UpgradeManager.registerUpgrade(new SelfConfidence());
 		UpgradeManager.registerUpgrade(new LuckyKill());
 		UpgradeManager.registerUpgrade(new LifeInsurance());
 		UpgradeManager.registerUpgrade(new TaxEvasion());

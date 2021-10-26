@@ -16,7 +16,6 @@ import org.bukkit.entity.Slime;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
-import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.HashMap;
@@ -67,10 +66,10 @@ public class PitBlob extends PitEnchant {
 		return null;
 	}
 
-	@EventHandler
-	public void onLeave(PlayerQuitEvent event) {
-		blobMap.remove(event.getPlayer().getUniqueId());
-	}
+//	/*@EventHandler
+//	public void onLeave(PlayerQuitEvent event) {
+//		blobMap.remove(event.getPlayer().getUniqueId());
+//	}*/
 
 	@EventHandler(ignoreCancelled = true)
 	public void onAttack(EntityDamageEvent event) {

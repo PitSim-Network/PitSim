@@ -232,6 +232,9 @@ public class HelmetListeners implements Listener {
 		for(GoldenHelmet goldenHelmet : GoldenHelmet.getHelmetsFromPlayer(event.getPlayer())) {
 			HelmetAbility.toggledHelmets.remove(goldenHelmet.uuid);
 			if(goldenHelmet.ability != null) goldenHelmet.deactivate();
+
+			goldenHelmet.owner = null;
+			GoldenHelmet.helmets.remove(goldenHelmet);
 		}
 
 	}
