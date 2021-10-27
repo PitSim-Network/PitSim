@@ -21,7 +21,16 @@ public class NonManager implements Listener {
 			@Override
 			public void run() {
 //				if(true) return;
-				if(botIGNs.isEmpty()) botIGNs.add("KyroKrypt");
+				if(botIGNs.isEmpty()) {
+					botIGNs.add("KyroKrypt");
+					botIGNs.add("wiji1");
+					botIGNs.add("Chantingshoe");
+					botIGNs.add("ObvEndyy");
+					botIGNs.add("OPeterIsCracked");
+					botIGNs.add("pogha");
+					botIGNs.add("robert_mugabe355");
+					botIGNs.add("xLava28");
+				}
 				for(int i = 0; i < 3; i++) {
 					if(nons.size() >= getMaxNons()) return;
 					Non non = new Non(botIGNs.get((int) (Math.random() * botIGNs.size())));
