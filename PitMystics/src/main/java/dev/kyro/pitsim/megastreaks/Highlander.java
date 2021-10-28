@@ -1,4 +1,4 @@
-package dev.kyro.pitsim.killstreaks;
+package dev.kyro.pitsim.megastreaks;
 
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.PitSim;
@@ -7,6 +7,7 @@ import dev.kyro.pitsim.controllers.PrestigeValues;
 import dev.kyro.pitsim.controllers.objects.Megastreak;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.events.AttackEvent;
+import dev.kyro.pitsim.events.HealEvent;
 import dev.kyro.pitsim.events.KillEvent;
 import dev.kyro.pitsim.misc.Misc;
 import dev.kyro.pitsim.misc.Sounds;
@@ -27,30 +28,33 @@ import org.bukkit.scheduler.BukkitTask;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.concurrent.ThreadLocalRandom;
 
-public class Overdrive extends Megastreak {
+public class Highlander extends Megastreak {
+	public Highlander(PitPlayer pitPlayer) {
+		super(pitPlayer);
+
+	}
 
 	public BukkitTask runnable;
 
 	@Override
 	public String getName() {
-		return "&c&lOVRDRV";
+		return "&6&lHIGH";
 	}
 
 	@Override
 	public String getRawName() {
-		return "Overdrive";
+		return "Highlander";
 	}
 
 	@Override
 	public String getPrefix() {
-		return "&cOverdrive";
+		return "&6Highlander";
 	}
 
 	@Override
 	public List<String> getRefNames() {
-		return Arrays.asList("overdrive");
+		return Arrays.asList("highlander", "high");
 	}
 
 	@Override
@@ -60,65 +64,75 @@ public class Overdrive extends Megastreak {
 
 	@Override
 	public int guiSlot() {
-		return 11;
+		return 14;
 	}
 
 	@Override
 	public int prestigeReq() {
-		return 0;
+		return 25;
 	}
 
 	@Override
 	public int levelReq() {
-		return 0;
+		return 90;
 	}
 
 	@Override
 	public ItemStack guiItem() {
-		ItemStack item = new ItemStack(Material.BLAZE_POWDER);
+
+
+		ItemStack item = new ItemStack(Material.GOLD_BOOTS);
 		ItemMeta meta = item.getItemMeta();
 		List<String> lore = new ArrayList<>();
 		lore.add(ChatColor.translateAlternateColorCodes('&', "&7Triggers on: &c50 kills"));
 		lore.add("");
 		lore.add(ChatColor.GRAY + "On trigger:");
-		lore.add(ChatColor.translateAlternateColorCodes('&', "&a\u25a0 &7Earn &b+50% XP &7from kills"));
-		lore.add(ChatColor.translateAlternateColorCodes('&', "&a\u25a0 &7Earn &6+50% gold &7from kills"));
-		lore.add(ChatColor.translateAlternateColorCodes('&', "&a\u25a0 &7Permanent &eSpeed I&7"));
-		lore.add(ChatColor.translateAlternateColorCodes('&', "&a\u25a0 &7Immune to &9Slowness&7"));
+		lore.add(ChatColor.translateAlternateColorCodes('&', "&a\u25a0 &7Perma &eSpeed I&7"));
+		lore.add(ChatColor.translateAlternateColorCodes('&', "&a\u25a0 &7Earn &6+100% gold &7from kills"));
+		lore.add(ChatColor.translateAlternateColorCodes('&', "&a\u25a0 &7Deal &c+33% &7damage vs bounties players"));
 		lore.add("");
 		lore.add(ChatColor.GRAY + "BUT:");
-		lore.add(ChatColor.translateAlternateColorCodes('&', "&c\u25a0 &7Receive &c+" + Misc.getHearts(1) + " &7very true"));
-		lore.add(ChatColor.translateAlternateColorCodes('&', "&7damage per 25 kills"));
+		lore.add(ChatColor.translateAlternateColorCodes('&', "&c\u25a0 &7Heal &cless &7per kill over 50"));
+		lore.add(ChatColor.translateAlternateColorCodes('&', "&c\u25a0 &7Earn &c-50% &7XP from kills"));
 		lore.add("");
 		lore.add(ChatColor.GRAY + "On death:");
-		lore.add(ChatColor.translateAlternateColorCodes('&', "&e\u25a0 &7Earn between &61000 &7and &65000 gold&7"));
+		lore.add(ChatColor.translateAlternateColorCodes('&', "&e\u25a0 &7Earn your own bounty as well"));
+
 		meta.setLore(lore);
 		item.setItemMeta(meta);
 		return item;
 	}
 
-	public Overdrive(PitPlayer pitPlayer) {
-		super(pitPlayer);
-	}
-
 	@EventHandler
-	public void onHit(AttackEvent.Apply attackEvent) {
-		PitPlayer pitPlayer = PitPlayer.getPitPlayer(attackEvent.defender);
+	public void onKill(KillEvent killEvent) {
+		PitPlayer pitPlayer = PitPlayer.getPitPlayer(killEvent.killer);
 		if(pitPlayer != this.pitPlayer) return;
-		if(pitPlayer.megastreak.isOnMega() && pitPlayer.megastreak.getClass() == Overdrive.class) {
-			int ks = (int) Math.floor(pitPlayer.getKills());
-			attackEvent.veryTrueDamage += (ks - 50) / 25D;
+		if(pitPlayer.megastreak.playerIsOnMega(killEvent) && pitPlayer.megastreak.getClass() == Highlander.class) {
+			killEvent.goldMultipliers.add(2.0);
+			killEvent.xpMultipliers.add(0.5);
 		}
 	}
 
 	@EventHandler
-	public void kill(KillEvent killEvent) {
-		PitPlayer pitPlayer = PitPlayer.getPitPlayer(killEvent.killer);
+	public void ohHeal(HealEvent healEvent) {
+		PitPlayer pitPlayer = PitPlayer.getPitPlayer(healEvent.player);
 		if(pitPlayer != this.pitPlayer) return;
-		if(pitPlayer.megastreak.isOnMega() && pitPlayer.megastreak.getClass() == Overdrive.class) {
+		if(pitPlayer.megastreak.isOnMega() && pitPlayer.megastreak.getClass() == Highlander.class) {
+			int ks = (int) Math.floor(pitPlayer.getKills());
 //			TODO: Update lore
-			killEvent.xpMultipliers.add(1.5);
-			killEvent.goldMultipliers.add(1.5);
+			healEvent.multipliers.add(1 / ((ks - 50) / 50D));
+		}
+	}
+
+	@EventHandler
+	public void onAttack(AttackEvent.Apply attackEvent) {
+		PitPlayer pitPlayer = PitPlayer.getPitPlayer(attackEvent.attacker);
+		PitPlayer pitDefender = PitPlayer.getPitPlayer(attackEvent.defender);
+		if(pitPlayer != this.pitPlayer) return;
+		if(pitPlayer.megastreak.isOnMega() && pitPlayer.megastreak.getClass() == Highlander.class) {
+			if(pitDefender.bounty > 0) {
+				attackEvent.increasePercent += 33 / 100D;
+			}
 		}
 	}
 
@@ -129,7 +143,7 @@ public class Overdrive extends Megastreak {
 		runnable = new BukkitRunnable() {
 			@Override
 			public void run() {
-				if(pitPlayer.megastreak.getClass() == Overdrive.class && pitPlayer.megastreak.isOnMega()) {
+				if(pitPlayer.megastreak.getClass() == Highlander.class && pitPlayer.megastreak.isOnMega()) {
 					Misc.applyPotionEffect(pitPlayer.player, PotionEffectType.SPEED, 200, 0, true, false);
 				}
 			}
@@ -147,7 +161,7 @@ public class Overdrive extends Megastreak {
 			PitPlayer pitPlayer2 = PitPlayer.getPitPlayer(player);
 			if(pitPlayer2.disabledStreaks) continue;
 			String streakMessage = ChatColor.translateAlternateColorCodes('&',
-					"&c&lMEGASTREAK! %luckperms_prefix%" + pitPlayer.player.getDisplayName() + " &7activated &c&lOVERDRIVE&7!");
+					"&c&lMEGASTREAK! %luckperms_prefix%" + pitPlayer.player.getDisplayName() + " &7activated &6&lHIGHLANDER&7!");
 			AOutput.send(player, PlaceholderAPI.setPlaceholders(pitPlayer.player, streakMessage));
 		}
 	}
@@ -162,24 +176,18 @@ public class Overdrive extends Megastreak {
 			pitPlayer.prefix = PrestigeValues.getPlayerPrefixNameTag(pitPlayer.player) + PlaceholderAPI.setPlaceholders(pitPlayer.player, message);
 		}
 
-		if(pitPlayer.megastreak.isOnMega()) {
-			int randomNum = ThreadLocalRandom.current().nextInt(1000, 5000 + 1);
-			if(DoubleDeath.INSTANCE.isDoubleDeath(pitPlayer.player)) randomNum = randomNum * 2;
-			AOutput.send(pitPlayer.player, "&c&lOVERDRIVE! &7Earned &6+" + randomNum + "&6g &7from megastreak!");
-			LevelManager.addGold(pitPlayer.player, randomNum);
+		if(isOnMega()) {
+			if(DoubleDeath.INSTANCE.isDoubleDeath(pitPlayer.player)) pitPlayer.bounty = pitPlayer.bounty * 2;
+			LevelManager.addGold(pitPlayer.player, pitPlayer.bounty);
+			if(pitPlayer.bounty != 0 && pitPlayer.megastreak.isOnMega()) {
+				AOutput.send(pitPlayer.player, "&6&lHIGHLANDER! &7Earned &6+" + pitPlayer.bounty + "&6g &7from megastreak!");
+				pitPlayer.bounty = 0;
+			}
 		}
-
-		if(runnable != null) runnable.cancel();
 	}
 
 	@Override
 	public void stop() {
 		HandlerList.unregisterAll(this);
-	}
-
-	@Override
-	public void kill() {
-
-		if(!isOnMega()) return;
 	}
 }

@@ -1,6 +1,7 @@
 package dev.kyro.pitsim.controllers;
 
 import dev.kyro.pitsim.PitSim;
+import dev.kyro.pitsim.controllers.objects.Killstreak;
 import dev.kyro.pitsim.controllers.objects.Megastreak;
 import dev.kyro.pitsim.controllers.objects.PitPerk;
 
@@ -11,6 +12,7 @@ public class PerkManager {
 
 	public static List<PitPerk> pitPerks = new ArrayList<>();
 	public static List<Megastreak> megastreaks = new ArrayList<>();
+	public static List<Killstreak> killstreaks = new ArrayList<>();
 
 	public static void registerUpgrade(PitPerk pitPerk) {
 
@@ -22,4 +24,11 @@ public class PerkManager {
 		megastreaks.add(megastreak);
 
 	}
+
+	public static void registerKillstreak(Killstreak killstreak) {
+		killstreaks.add(killstreak);
+
+	}
+
+
 }

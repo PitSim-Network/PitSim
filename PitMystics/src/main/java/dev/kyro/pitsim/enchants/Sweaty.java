@@ -5,7 +5,7 @@ import dev.kyro.pitsim.controllers.objects.PitEnchant;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.enums.ApplyType;
 import dev.kyro.pitsim.events.KillEvent;
-import dev.kyro.pitsim.killstreaks.NoMegastreak;
+import dev.kyro.pitsim.megastreaks.NoMegastreak;
 import org.bukkit.event.EventHandler;
 
 import java.util.List;

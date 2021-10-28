@@ -9,7 +9,7 @@ import dev.kyro.pitsim.controllers.PrestigeValues;
 import dev.kyro.pitsim.controllers.UpgradeManager;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.controllers.objects.RenownUpgrade;
-import dev.kyro.pitsim.killstreaks.Overdrive;
+import dev.kyro.pitsim.megastreaks.Overdrive;
 import dev.kyro.pitsim.perks.NoPerk;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;

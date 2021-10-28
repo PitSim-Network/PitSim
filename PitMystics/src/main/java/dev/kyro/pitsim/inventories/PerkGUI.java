@@ -3,12 +3,8 @@ package dev.kyro.pitsim.inventories;
 import dev.kyro.arcticapi.data.APlayerData;
 import dev.kyro.arcticapi.gui.AGUI;
 import dev.kyro.pitsim.controllers.NonManager;
-import dev.kyro.pitsim.controllers.objects.Megastreak;
 import dev.kyro.pitsim.controllers.objects.PitPerk;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
-import dev.kyro.pitsim.killstreaks.Highlander;
-import dev.kyro.pitsim.killstreaks.Overdrive;
-import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 
@@ -17,6 +13,9 @@ public class PerkGUI extends AGUI {
 	public PerkPanel perkPanel;
 	public ApplyPerkPanel applyPerkPanel;
 	public MegastreakPanel megastreakPanel;
+	public KillstreakPanel killstreakPanel;
+
+	public static int killstreakSlot = 0;
 
 	public PerkGUI(Player player) {
 		super(player);
@@ -25,6 +24,7 @@ public class PerkGUI extends AGUI {
 		setHomePanel(perkPanel);
 		applyPerkPanel = new ApplyPerkPanel(this);
 		megastreakPanel = new MegastreakPanel(this);
+		killstreakPanel = new KillstreakPanel(this);
 	}
 
 	public void megaWrapUp() {

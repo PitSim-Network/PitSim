@@ -4,7 +4,7 @@ import dev.kyro.arcticapi.gui.AGUI;
 import dev.kyro.arcticapi.gui.AGUIPanel;
 import dev.kyro.pitsim.controllers.objects.PitPerk;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
-import dev.kyro.pitsim.killstreaks.NoMegastreak;
+import dev.kyro.pitsim.megastreaks.NoMegastreak;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.event.inventory.InventoryClickEvent;
@@ -51,6 +51,21 @@ public class  PerkPanel extends AGUIPanel {
 
 			if(slot == 34) {
 				openPanel(perkGUI.megastreakPanel);
+			}
+
+			if(slot == 32) {
+				PerkGUI.killstreakSlot = 3;
+				openPanel(perkGUI.killstreakPanel);
+			}
+
+			if(slot == 30) {
+				PerkGUI.killstreakSlot = 2;
+				openPanel(perkGUI.killstreakPanel);
+			}
+
+			if(slot == 28) {
+				PerkGUI.killstreakSlot = 1;
+				openPanel(perkGUI.killstreakPanel);
 			}
 		}
 
