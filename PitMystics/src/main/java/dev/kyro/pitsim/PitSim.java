@@ -69,8 +69,12 @@ public class PitSim extends JavaPlugin {
 			LUCKPERMS = provider.getProvider();
 		}
 
-
-		CitizensAPI.getNPCRegistry().forEach(NPC::destroy);
+		List<NPC> toRemove = new ArrayList<>();
+		CitizensAPI.getNPCRegistry().forEach(toRemove::add);
+		while(!toRemove.isEmpty()) {
+			toRemove.get(0).destroy();
+			toRemove.remove(0);
+		}
 
 		SpawnNPCs.createNPCs();
 
