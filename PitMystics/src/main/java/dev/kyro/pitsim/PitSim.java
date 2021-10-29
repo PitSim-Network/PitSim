@@ -15,10 +15,7 @@ import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.enchants.GoldBoost;
 import dev.kyro.pitsim.enchants.*;
 import dev.kyro.pitsim.helmetabilities.*;
-import dev.kyro.pitsim.killstreaks.NoKillstreak;
-import dev.kyro.pitsim.killstreaks.Test1;
-import dev.kyro.pitsim.killstreaks.Test2;
-import dev.kyro.pitsim.killstreaks.Test3;
+import dev.kyro.pitsim.killstreaks.*;
 import dev.kyro.pitsim.megastreaks.*;
 import dev.kyro.pitsim.misc.*;
 import dev.kyro.pitsim.perks.*;
@@ -296,9 +293,16 @@ public class PitSim extends JavaPlugin {
 
 	private void registerKillstreaks() {
 		PerkManager.registerKillstreak(new NoKillstreak());
-		PerkManager.registerKillstreak(new Test1());
-		PerkManager.registerKillstreak(new Test2());
-		PerkManager.registerKillstreak(new Test3());
+
+		PerkManager.registerKillstreak(new Explicious());
+		PerkManager.registerKillstreak(new RR());
+		PerkManager.registerKillstreak(new AssuredStrike());
+		PerkManager.registerKillstreak(new Leech());
+
+		PerkManager.registerKillstreak(new CounterStrike());
+		PerkManager.registerKillstreak(new HerosHaste());
+		PerkManager.registerKillstreak(new FightOrFlight());
+		PerkManager.registerKillstreak(new TacticalRetreat());
 	}
 
 	private void registerMegastreaks() {

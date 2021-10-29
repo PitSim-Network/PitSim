@@ -27,7 +27,7 @@ public class PerkManager {
 
 	public static void registerKillstreak(Killstreak killstreak) {
 		killstreaks.add(killstreak);
-
+		PitSim.INSTANCE.getServer().getPluginManager().registerEvents(killstreak, PitSim.INSTANCE);
 	}
 
 

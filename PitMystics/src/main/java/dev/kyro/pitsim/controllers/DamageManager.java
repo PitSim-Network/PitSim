@@ -292,8 +292,8 @@ public class DamageManager implements Listener {
 
 				playerData.set("playerkills", pitAttacker.playerKills);
 				APlayerData.savePlayerData(killer);
+				pitDefender.endKillstreak();
 			}
-			pitDefender.endKillstreak();
 		} else {
 			defendingNon.respawn();
 		}

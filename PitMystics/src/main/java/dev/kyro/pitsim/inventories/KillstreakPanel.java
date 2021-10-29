@@ -30,6 +30,7 @@ public class KillstreakPanel extends AGUIPanel {
 	public KillstreakPanel(AGUI gui) {
 		super(gui);
 		perkGUI = (PerkGUI) gui;
+
 	}
 
 	@Override
@@ -39,18 +40,18 @@ public class KillstreakPanel extends AGUIPanel {
 
 	@Override
 	public int getRows() {
-		return 5;
+		return 6;
 	}
 
 	@Override
 	public void onClick(InventoryClickEvent event) {
 		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
-		int killstreakSlot = PerkGUI.killstreakSlot;
+		int killstreakSlot = perkGUI.killstreakSlot;
 
 		int slot = event.getSlot();
 		if(event.getClickedInventory().getHolder() == this) {
 
-			if(slot == 40) {
+			if(slot == 49) {
 				openPreviousGUI();
 				return;
 			}
@@ -73,13 +74,17 @@ public class KillstreakPanel extends AGUIPanel {
 							return;
 						}
 
-						Killstreak previousKillstreak = getKillstreakFromInterval(player, killstreak.killInterval);
-						for(int i = 0; i < pitPlayer.killstreaks.size(); i++) {
-							if(previousKillstreak != null && pitPlayer.killstreaks.get(i).refName.equals(previousKillstreak.refName)) {
-								pitPlayer.killstreaks.set(i, NoKillstreak.INSTANCE);
-								perkGUI.saveKillstreak(NoKillstreak.INSTANCE, killstreakSlot);
-								AOutput.error(player, "&c&lDISABLED! &7Disabled &a" + previousKillstreak.name + " &7because you cannot have two killstreaks with the same kill interval!");
-							}
+
+					}
+
+					Killstreak previousKillstreak = getKillstreakFromInterval(player, killstreak.killInterval);
+					for(int i = 0; i < pitPlayer.killstreaks.size(); i++) {
+						if(previousKillstreak != null && pitPlayer.killstreaks.get(i).refName.equals(previousKillstreak.refName)) {
+							if(i == killstreakSlot - 1) continue;
+							if(previousKillstreak.refName.equals("NoKillstreak")) continue;
+							pitPlayer.killstreaks.set(i, NoKillstreak.INSTANCE);
+							perkGUI.saveKillstreak(NoKillstreak.INSTANCE, i + 1);
+							AOutput.error(player, "&c&lDISABLED! &7Disabled &a" + previousKillstreak.name + " &7because you cannot have two killstreaks with the same kill interval!");
 						}
 					}
 
@@ -99,13 +104,15 @@ public class KillstreakPanel extends AGUIPanel {
 	@Override
 	public void onOpen(InventoryOpenEvent event) {
 
+		inventoryBuilder.createBorder(Material.STAINED_GLASS_PANE, 8);
+
 		AItemStackBuilder builder5Kills = new AItemStackBuilder(Material.ITEM_FRAME);
 		builder5Kills.setName("&c5 Kills");
 		if(getKillstreakFromInterval(player, 5) != null) {
 			builder5Kills.setLore(new ALoreBuilder("&7Selected: &e" + Objects.requireNonNull(getKillstreakFromInterval(player, 5)).name));
 			builder5Kills.addEnchantGlint(true);
 		}
-		getInventory().setItem(2, builder5Kills.getItemStack());
+		getInventory().setItem(10, builder5Kills.getItemStack());
 
 		AItemStackBuilder builder10Kills = new AItemStackBuilder(Material.ITEM_FRAME);
 		builder10Kills.setName("&c10 Kills");
@@ -113,7 +120,7 @@ public class KillstreakPanel extends AGUIPanel {
 			builder10Kills.setLore(new ALoreBuilder("&7Selected: &e" + Objects.requireNonNull(getKillstreakFromInterval(player, 10)).name));
 			builder10Kills.addEnchantGlint(true);
 		}
-		getInventory().setItem(11, builder10Kills.getItemStack());
+		getInventory().setItem(19, builder10Kills.getItemStack());
 
 		AItemStackBuilder builder25Kills = new AItemStackBuilder(Material.ITEM_FRAME);
 		builder25Kills.setName("&c25 Kills");
@@ -121,7 +128,7 @@ public class KillstreakPanel extends AGUIPanel {
 			builder25Kills.setLore(new ALoreBuilder("&7Selected: &e" + Objects.requireNonNull(getKillstreakFromInterval(player, 25)).name));
 			builder25Kills.addEnchantGlint(true);
 		}
-		getInventory().setItem(20, builder25Kills.getItemStack());
+		getInventory().setItem(28, builder25Kills.getItemStack());
 
 		AItemStackBuilder builder50Kills = new AItemStackBuilder(Material.ITEM_FRAME);
 		builder50Kills.setName("&c50 Kills");
@@ -129,7 +136,7 @@ public class KillstreakPanel extends AGUIPanel {
 			builder50Kills.setLore(new ALoreBuilder("&7Selected: &e" + Objects.requireNonNull(getKillstreakFromInterval(player, 7)).name));
 			builder50Kills.addEnchantGlint(true);
 		}
-		getInventory().setItem(29, builder50Kills.getItemStack());
+		getInventory().setItem(37, builder50Kills.getItemStack());
 
 		ItemStack back = new ItemStack(Material.ARROW);
 		ItemMeta meta = back.getItemMeta();
@@ -139,16 +146,16 @@ public class KillstreakPanel extends AGUIPanel {
 		meta.setLore(lore);
 		back.setItemMeta(meta);
 
-		getInventory().setItem(40, back);
+		getInventory().setItem(49, back);
 
 		for(Killstreak killstreak : PerkManager.killstreaks) {
 			PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
 
 			if(killstreak.refName.equals("NoKillstreak")) {
 				AItemStackBuilder builder = new AItemStackBuilder(killstreak.getDisplayItem());
-				builder.setLore(new ALoreBuilder("", "&eClick to remove killstreak!"));
-				getInventory().setItem(41, builder.getItemStack());
-				killstreakSlots.put(killstreak, 41);
+				builder.setLore(new ALoreBuilder(builder.getItemStack().getItemMeta().getLore()).addLore("", "&eClick to remove killstreak!"));
+				getInventory().setItem(50, builder.getItemStack());
+				killstreakSlots.put(killstreak, 50);
 				continue;
 			}
 
@@ -159,7 +166,7 @@ public class KillstreakPanel extends AGUIPanel {
 			}
 
 			AItemStackBuilder builder = new AItemStackBuilder(killstreak.getDisplayItem());
-			ALoreBuilder loreBuilder = new ALoreBuilder("");
+			ALoreBuilder loreBuilder = new ALoreBuilder(builder.getItemStack().getItemMeta().getLore()).addLore("");
 			if(hasKillstreakEquipped(player, killstreak)) {
 				builder.setName("&a" + killstreak.name);
 				loreBuilder.addLore("&aAlready selected!");
@@ -198,10 +205,10 @@ public class KillstreakPanel extends AGUIPanel {
 	}
 
 	public static int getIntervalStartingSlot(int interval) {
-		if(interval == 5) return 2;
-		if(interval == 10) return 11;
-		if(interval == 25) return 20;
-		return 29;
+		if(interval == 5) return 10;
+		if(interval == 10) return 19;
+		if(interval == 25) return 28;
+		return 37;
 	}
 
 	public static boolean hasKillstreakEquipped(Player player, Killstreak killstreak) {

@@ -3,7 +3,8 @@ package dev.kyro.pitsim.killstreaks;
 import dev.kyro.arcticapi.builders.AItemStackBuilder;
 import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.pitsim.controllers.objects.Killstreak;
-import dev.kyro.pitsim.events.KillEvent;
+import dev.kyro.pitsim.controllers.objects.PitPlayer;
+import dev.kyro.pitsim.events.AttackEvent;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -12,23 +13,23 @@ import org.bukkit.inventory.ItemStack;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Explicious extends Killstreak {
+public class Leech extends Killstreak {
 
-	public static Explicious INSTANCE;
+	public static Leech INSTANCE;
 
-	public Explicious() {
-		super("Explicious", "Explicious", 5, 0);
+	public Leech() {
+		super("Leech", "Leech", 5, 0);
 		INSTANCE = this;
 	}
 
 	List<Player> rewardPlayers = new ArrayList<>();
 
-
 	@EventHandler
-	public void onKill(KillEvent killEvent) {
-		if(rewardPlayers.contains(killEvent.killer)) {
-			killEvent.xpReward += 12;
-			rewardPlayers.remove(killEvent.killer);
+	public void onHit(AttackEvent.Apply event) {
+		if(rewardPlayers.contains(event.attacker)) {
+			PitPlayer pitPlayer = PitPlayer.getPitPlayer(event.attacker);
+			pitPlayer.heal(1.5 + (event.getFinalDamageIncrease() * (50 / 100D)));
+			rewardPlayers.remove(event.attacker);
 		}
 	}
 
@@ -46,9 +47,9 @@ public class Explicious extends Killstreak {
 	@Override
 	public ItemStack getDisplayItem() {
 
-		AItemStackBuilder builder = new AItemStackBuilder(Material.INK_SACK, 1, 12);
+		AItemStackBuilder builder = new AItemStackBuilder(Material.FERMENTED_SPIDER_EYE);
 		builder.setName("&e" + name);
-		builder.setLore(new ALoreBuilder("&7Every: &c" + killInterval + " kills", "", "&7Gain &b+12 XP&7."));
+		builder.setLore(new ALoreBuilder("&7Every: &c" + killInterval + " kills", "", "&7Next melee hit heals for &c1.5\u2764 &7+", "&c50% &7of its damage."));
 
 		return builder.getItemStack();
 	}

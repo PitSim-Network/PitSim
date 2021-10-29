@@ -2,9 +2,10 @@ package dev.kyro.pitsim.controllers.objects;
 
 import dev.kyro.pitsim.controllers.PerkManager;
 import org.bukkit.entity.Player;
+import org.bukkit.event.Listener;
 import org.bukkit.inventory.ItemStack;
 
-public abstract class Killstreak {
+public abstract class Killstreak implements Listener {
 
 	public String name;
 	public String refName;

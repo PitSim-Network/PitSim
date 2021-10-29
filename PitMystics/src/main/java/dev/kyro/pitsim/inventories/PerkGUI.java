@@ -16,7 +16,7 @@ public class PerkGUI extends AGUI {
 	public MegastreakPanel megastreakPanel;
 	public KillstreakPanel killstreakPanel;
 
-	public static int killstreakSlot = 0;
+	public int killstreakSlot = 0;
 
 	public PerkGUI(Player player) {
 		super(player);

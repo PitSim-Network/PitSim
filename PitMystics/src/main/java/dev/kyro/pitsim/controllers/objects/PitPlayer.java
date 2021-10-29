@@ -168,7 +168,7 @@ public class PitPlayer {
 	public void endKillstreak() {
 		if(!PitEventManager.majorEvent) megastreak.reset();
 		for(Killstreak killstreak : killstreaks) {
-			killstreak.INSTANCE.reset(player);
+			killstreak.reset(player);
 		}
 		kills = 0;
 		latestKillAnnouncement = 0;

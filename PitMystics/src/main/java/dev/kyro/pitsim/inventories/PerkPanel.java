@@ -68,7 +68,7 @@ public class  PerkPanel extends AGUIPanel {
 					AOutput.error(player, "&cYou are too low level to use this slot!");
 					return;
 				}
-				PerkGUI.killstreakSlot = 3;
+				perkGUI.killstreakSlot = 3;
 				openPanel(perkGUI.killstreakPanel);
 			}
 
@@ -78,7 +78,7 @@ public class  PerkPanel extends AGUIPanel {
 					AOutput.error(player, "&cYou are too low level to use this slot!");
 					return;
 				}
-				PerkGUI.killstreakSlot = 2;
+				perkGUI.killstreakSlot = 2;
 				openPanel(perkGUI.killstreakPanel);
 			}
 
@@ -88,7 +88,7 @@ public class  PerkPanel extends AGUIPanel {
 					AOutput.error(player, "&cYou are too low level to use this slot!");
 					return;
 				}
-				PerkGUI.killstreakSlot = 1;
+				perkGUI.killstreakSlot = 1;
 				openPanel(perkGUI.killstreakPanel);
 			}
 		}
