@@ -30,7 +30,7 @@ public class Test3 extends Killstreak {
 	@Override
 	public ItemStack getDisplayItem() {
 
-		AItemStackBuilder builder = new AItemStackBuilder(Material.GOLD_BLOCK);
+		AItemStackBuilder builder = new AItemStackBuilder(Material.FIREBALL);
 		builder.setName("&c" + name);
 		builder.setLore(new ALoreBuilder("&7Wanna free up this slot for", "&7some reason?"));
 

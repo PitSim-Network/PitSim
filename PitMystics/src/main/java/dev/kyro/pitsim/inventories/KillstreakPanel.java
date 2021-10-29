@@ -11,7 +11,6 @@ import dev.kyro.pitsim.controllers.objects.Killstreak;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.killstreaks.NoKillstreak;
 import dev.kyro.pitsim.misc.Sounds;
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -27,8 +26,10 @@ public class KillstreakPanel extends AGUIPanel {
 
 	public static Map<Killstreak, Integer> killstreakSlots = new HashMap<>();
 
+	public PerkGUI perkGUI;
 	public KillstreakPanel(AGUI gui) {
 		super(gui);
+		perkGUI = (PerkGUI) gui;
 	}
 
 	@Override
@@ -74,13 +75,17 @@ public class KillstreakPanel extends AGUIPanel {
 
 						Killstreak previousKillstreak = getKillstreakFromInterval(player, killstreak.killInterval);
 						for(int i = 0; i < pitPlayer.killstreaks.size(); i++) {
-							if(previousKillstreak != null && pitPlayer.killstreaks.get(i).refName.equals(previousKillstreak.refName))
+							if(previousKillstreak != null && pitPlayer.killstreaks.get(i).refName.equals(previousKillstreak.refName)) {
 								pitPlayer.killstreaks.set(i, NoKillstreak.INSTANCE);
+								perkGUI.saveKillstreak(NoKillstreak.INSTANCE, killstreakSlot);
+								AOutput.error(player, "&c&lDISABLED! &7Disabled &a" + previousKillstreak.name + " &7because you cannot have two killstreaks with the same kill interval!");
+							}
 						}
 					}
 
 
 					pitPlayer.killstreaks.set(killstreakSlot - 1, killstreak);
+					perkGUI.saveKillstreak(killstreak, killstreakSlot);
 					Sounds.SUCCESS.play(player);
 					openPreviousGUI();
 

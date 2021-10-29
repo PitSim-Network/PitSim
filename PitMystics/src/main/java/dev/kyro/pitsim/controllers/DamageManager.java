@@ -293,11 +293,12 @@ public class DamageManager implements Listener {
 				playerData.set("playerkills", pitAttacker.playerKills);
 				APlayerData.savePlayerData(killer);
 			}
+			pitDefender.endKillstreak();
 		} else {
 			defendingNon.respawn();
 		}
 
-		pitDefender.endKillstreak();
+
 		pitDefender.bounty = 0;
 		for(PotionEffect potionEffect : dead.getActivePotionEffects()) {
 			dead.removePotionEffect(potionEffect.getType());

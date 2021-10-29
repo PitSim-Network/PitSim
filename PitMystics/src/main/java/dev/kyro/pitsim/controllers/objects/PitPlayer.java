@@ -106,6 +106,14 @@ public class PitPlayer {
 				pitPerks[i] = savedPerk != null ? savedPerk : NoPerk.INSTANCE;
 			}
 
+			for(int i = 0; i < killstreaks.size(); i++) {
+
+				String killstreakString = playerData.getString("killstreak-" + i);
+				Killstreak savedKillstreak = killstreakString != null ? Killstreak.getKillstreak(killstreakString) : NoKillstreak.INSTANCE;
+
+				killstreaks.set(i, savedKillstreak);
+			}
+
 			String deathCryString = playerData.getString("deathcry");
 			if(deathCryString != null) deathCry = DeathCry.valueOf(deathCryString);
 
@@ -159,9 +167,9 @@ public class PitPlayer {
 
 	public void endKillstreak() {
 		if(!PitEventManager.majorEvent) megastreak.reset();
-//		for(Killstreak killstreak : killstreaks) {
-//			killstreak.INSTANCE.reset(player);
-//		}
+		for(Killstreak killstreak : killstreaks) {
+			killstreak.INSTANCE.reset(player);
+		}
 		kills = 0;
 		latestKillAnnouncement = 0;
 	}

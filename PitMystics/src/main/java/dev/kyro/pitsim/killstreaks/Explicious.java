@@ -7,12 +7,12 @@ import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
-public class Test1 extends Killstreak {
+public class Explicious extends Killstreak {
 
-	public static Test1 INSTANCE;
+	public static Explicious INSTANCE;
 
-	public Test1() {
-		super("Test1", "Test1", 5, 5);
+	public Explicious() {
+		super("Explicious", "Explicious", 5, 0);
 		INSTANCE = this;
 	}
 

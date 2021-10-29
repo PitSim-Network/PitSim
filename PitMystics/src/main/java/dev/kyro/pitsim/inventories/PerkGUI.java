@@ -3,6 +3,7 @@ package dev.kyro.pitsim.inventories;
 import dev.kyro.arcticapi.data.APlayerData;
 import dev.kyro.arcticapi.gui.AGUI;
 import dev.kyro.pitsim.controllers.NonManager;
+import dev.kyro.pitsim.controllers.objects.Killstreak;
 import dev.kyro.pitsim.controllers.objects.PitPerk;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -59,6 +60,13 @@ public class PerkGUI extends AGUI {
 		APlayerData.savePlayerData(player);
 
 		getActivePerks()[perkNum - 1] = pitPerk;
+	}
+
+	public void saveKillstreak(Killstreak killstreak, int slotNum) {
+		if(NonManager.getNon(player) !=  null) return;
+		FileConfiguration playerData = APlayerData.getPlayerData(player);
+		playerData.set("killstreak-" + (slotNum - 1), killstreak.refName);
+		APlayerData.savePlayerData(player);
 	}
 
 	public boolean isActive(PitPerk pitPerk) {
