@@ -270,6 +270,7 @@ public class PitPlayer {
 	}
 
 	public void heal(double amount, HealEvent.HealType healType, int max) {
+		if(amount == 0) return;
 		if(max == -1) max = Integer.MAX_VALUE;
 
 		HealEvent healEvent = new HealEvent(player, amount, healType);
