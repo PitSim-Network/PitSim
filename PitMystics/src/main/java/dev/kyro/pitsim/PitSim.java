@@ -353,6 +353,8 @@ public class PitSim extends JavaPlugin {
 		getCommand("check").setExecutor(new AnticheatCommand());
 		getCommand("store").setExecutor(new StoreCommand());
 		getCommand("shop").setExecutor(new StoreCommand());
+		getCommand("discord").setExecutor(new DiscordCommand());
+		getCommand("disc").setExecutor(new DiscordCommand());
 //		getCommand("togglestereo").setExecutor(new ToggleStereoCommand());
 	}
 
