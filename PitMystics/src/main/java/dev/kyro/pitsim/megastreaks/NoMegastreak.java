@@ -1,4 +1,4 @@
-package dev.kyro.pitsim.killstreaks;
+package dev.kyro.pitsim.megastreaks;
 
 import dev.kyro.pitsim.controllers.objects.Megastreak;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;

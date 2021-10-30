@@ -16,6 +16,7 @@ import dev.kyro.pitsim.enchants.GoldBoost;
 import dev.kyro.pitsim.enchants.*;
 import dev.kyro.pitsim.helmetabilities.*;
 import dev.kyro.pitsim.killstreaks.*;
+import dev.kyro.pitsim.megastreaks.*;
 import dev.kyro.pitsim.misc.*;
 import dev.kyro.pitsim.perks.*;
 import dev.kyro.pitsim.pitevents.CaptureTheFlag;
@@ -107,6 +108,7 @@ public class PitSim extends JavaPlugin {
 
 		registerUpgrades();
 		registerPerks();
+		registerKillstreaks();
 		registerMegastreaks();
 
 
@@ -289,6 +291,23 @@ public class PitSim extends JavaPlugin {
 		PerkManager.registerUpgrade(new CounterJanitor());
 	}
 
+	private void registerKillstreaks() {
+		PerkManager.registerKillstreak(new NoKillstreak());
+
+		PerkManager.registerKillstreak(new Explicious());
+		PerkManager.registerKillstreak(new RR());
+		PerkManager.registerKillstreak(new AssuredStrike());
+		PerkManager.registerKillstreak(new Leech());
+
+		PerkManager.registerKillstreak(new CounterStrike());
+		PerkManager.registerKillstreak(new HerosHaste());
+		PerkManager.registerKillstreak(new FightOrFlight());
+		PerkManager.registerKillstreak(new TacticalRetreat());
+
+		PerkManager.registerKillstreak(new GoldNanoFactory());
+		PerkManager.registerKillstreak(new Baker());
+	}
+
 	private void registerMegastreaks() {
 
 		PerkManager.registerMegastreak(new Overdrive(null));
@@ -360,6 +379,7 @@ public class PitSim extends JavaPlugin {
 		getServer().getPluginManager().registerEvents(new PitBlob(), this);
 		getServer().getPluginManager().registerEvents(new SpawnNPCs(), this);
 		getServer().getPluginManager().registerEvents(new BackwardsCompatibility(), this);
+		getServer().getPluginManager().registerEvents(new YummyBread(), this);
 
 	}
 

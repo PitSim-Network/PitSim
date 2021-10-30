@@ -9,7 +9,7 @@ import dev.kyro.pitsim.controllers.PerkManager;
 import dev.kyro.pitsim.controllers.PrestigeValues;
 import dev.kyro.pitsim.controllers.objects.Megastreak;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
-import dev.kyro.pitsim.killstreaks.*;
+import dev.kyro.pitsim.megastreaks.*;
 import dev.kyro.pitsim.misc.Sounds;
 import dev.kyro.pitsim.upgrades.UberIncrease;
 import org.bukkit.ChatColor;
@@ -68,7 +68,7 @@ public class MegastreakPanel extends AGUIPanel {
                         if(pitPlayer.prestige < 0) prestige = true;
                         if(pitPlayer.level < 0) level = true;
                         if(pitPlayer.megastreak.getClass() == NoMegastreak.class) has = true;
-                        if(!has && !prestige) {
+                        if(!has && !prestige && !level) {
                             pitPlayer.megastreak.stop();
                             pitPlayer.megastreak = new NoMegastreak(pitPlayer);
                             perkGUI.megaWrapUp();
@@ -77,7 +77,7 @@ public class MegastreakPanel extends AGUIPanel {
                         if(pitPlayer.prestige < 0) prestige = true;
                         if(pitPlayer.level < 0) level = true;
                         if(pitPlayer.megastreak.getClass() == Overdrive.class) has = true;
-                        if(!has && !prestige) {
+                        if(!has && !prestige && !level) {
                             pitPlayer.megastreak.stop();
                             pitPlayer.megastreak = new Overdrive(pitPlayer);
                             perkGUI.megaWrapUp();
@@ -85,8 +85,9 @@ public class MegastreakPanel extends AGUIPanel {
                     } else if(megastreak.getClass() == Highlander.class) {
                         if(pitPlayer.prestige < 25) prestige = true;
                         if(pitPlayer.megastreak.getClass() == Highlander.class) has = true;
+                        if(pitPlayer.level < 0) level = true;
                         if(pitPlayer.level < 80) level = true;
-                        if(!has && !prestige) {
+                        if(!has && !prestige && !level) {
                             pitPlayer.megastreak.stop();
                             pitPlayer.megastreak = new Highlander(pitPlayer);
                             perkGUI.megaWrapUp();
@@ -95,7 +96,7 @@ public class MegastreakPanel extends AGUIPanel {
                         if(pitPlayer.prestige < 16) prestige = true;
                         if(pitPlayer.megastreak.getClass() == Beastmode.class) has = true;
                         if(pitPlayer.level < 50) level = true;
-                        if(!has && !prestige) {
+                        if(!has && !prestige && !level) {
                             pitPlayer.megastreak.stop();
                             pitPlayer.megastreak = new Beastmode(pitPlayer);
                             perkGUI.megaWrapUp();
@@ -105,7 +106,7 @@ public class MegastreakPanel extends AGUIPanel {
                         if(pitPlayer.megastreak.getClass() == Uberstreak.class) has = true;
                         if(pitPlayer.level < 100) level = true;
                         if(pitPlayer.dailyUbersLeft <= 0) uberCd = true;
-                        if(!has && !prestige && !uberCd) {
+                        if(!has && !prestige && !uberCd && !level) {
                             pitPlayer.megastreak.stop();
                             pitPlayer.megastreak = new Uberstreak(pitPlayer);
                             perkGUI.megaWrapUp();
@@ -128,7 +129,7 @@ public class MegastreakPanel extends AGUIPanel {
                         APlayerData.savePlayerData(player);
                     }
                     if(prestige) {
-                        AOutput.error(player, "&cYou arent high enough prestige to use this");
+                        AOutput.error(player, "&cYou aren't high enough prestige to use this!");
                         Sounds.ERROR.play(player);
                     }
                     if(has) {

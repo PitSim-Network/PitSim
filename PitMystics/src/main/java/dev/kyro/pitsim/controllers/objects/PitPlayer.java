@@ -13,7 +13,8 @@ import dev.kyro.pitsim.enums.KillEffect;
 import dev.kyro.pitsim.events.HealEvent;
 import dev.kyro.pitsim.events.IncrementKillsEvent;
 import dev.kyro.pitsim.inventories.ChatColorPanel;
-import dev.kyro.pitsim.killstreaks.*;
+import dev.kyro.pitsim.killstreaks.NoKillstreak;
+import dev.kyro.pitsim.megastreaks.*;
 import dev.kyro.pitsim.perks.NoPerk;
 import dev.kyro.pitsim.perks.Thick;
 import dev.kyro.pitsim.pitevents.Juggernaut;
@@ -48,7 +49,7 @@ public class PitPlayer {
 
 	private double kills = 0;
 	public int bounty = 0;
-	public List<Killstreak> killstreaks = new ArrayList<>();
+	public List<Killstreak> killstreaks = Arrays.asList(NoKillstreak.INSTANCE, NoKillstreak.INSTANCE, NoKillstreak.INSTANCE);
 	public int latestKillAnnouncement = 0;
 
 	public Megastreak megastreak;
@@ -105,6 +106,14 @@ public class PitPlayer {
 				pitPerks[i] = savedPerk != null ? savedPerk : NoPerk.INSTANCE;
 			}
 
+			for(int i = 0; i < killstreaks.size(); i++) {
+
+				String killstreakString = playerData.getString("killstreak-" + i);
+				Killstreak savedKillstreak = killstreakString != null ? Killstreak.getKillstreak(killstreakString) : NoKillstreak.INSTANCE;
+
+				killstreaks.set(i, savedKillstreak);
+			}
+
 			String deathCryString = playerData.getString("deathcry");
 			if(deathCryString != null) deathCry = DeathCry.valueOf(deathCryString);
 
@@ -158,7 +167,9 @@ public class PitPlayer {
 
 	public void endKillstreak() {
 		if(!PitEventManager.majorEvent) megastreak.reset();
-		killstreaks.forEach(Killstreak::reset);
+		for(Killstreak killstreak : killstreaks) {
+			killstreak.reset(player);
+		}
 		kills = 0;
 		latestKillAnnouncement = 0;
 	}
@@ -175,7 +186,7 @@ public class PitPlayer {
 
 		for(Killstreak killstreak : killstreaks) {
 			if(kills == 0 || kills % killstreak.killInterval != 0) continue;
-			killstreak.proc();
+			killstreak.proc(player);
 		}
 
 		if(Math.floor(kills) % 25 == 0) {
@@ -201,7 +212,7 @@ public class PitPlayer {
 				!megastreak.isOnMega()) megastreak.proc();
 		for(Killstreak killstreak : killstreaks) {
 			if(kills == 0 || kills % killstreak.killInterval != 0) continue;
-			killstreak.proc();
+			killstreak.proc(player);
 		}
 		if(Math.floor(kills) % 25 == 0 && latestKillAnnouncement != Math.floor(kills)) {
 			for(Player onlinePlayer : Bukkit.getOnlinePlayers()) {

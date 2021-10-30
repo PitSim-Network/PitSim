@@ -5,7 +5,8 @@ import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.arcticapi.misc.AUtil;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
-import dev.kyro.pitsim.killstreaks.Overdrive;
+import dev.kyro.pitsim.killstreaks.NoKillstreak;
+import dev.kyro.pitsim.megastreaks.Overdrive;
 import dev.kyro.pitsim.misc.Misc;
 import dev.kyro.pitsim.misc.Sounds;
 import me.clip.placeholderapi.PlaceholderAPI;
@@ -104,6 +105,8 @@ public class LevelManager {
 		pitPlayer.playerKills = 0;
 		pitPlayer.renown += prestigeInfo.renownReward;
 		pitPlayer.moonBonus = 0;
+		pitPlayer.killstreaks.set(1, NoKillstreak.INSTANCE);
+		pitPlayer.killstreaks.set(2, NoKillstreak.INSTANCE);
 
 		FileConfiguration playerData = APlayerData.getPlayerData(player);
 		playerData.set("goldgrinded", pitPlayer.goldGrinded);
@@ -113,6 +116,8 @@ public class LevelManager {
 		playerData.set("playerkills", pitPlayer.playerKills);
 		playerData.set("xp", pitPlayer.remainingXP);
 		playerData.set("megastreak", pitPlayer.megastreak.getRawName());
+		playerData.set("killstreak-1", pitPlayer.killstreaks.get(1).refName);
+		playerData.set("killstreak-2", pitPlayer.killstreaks.get(2).refName);
 		if(pitPlayer.prestige >= 33) playerData.set("moonbonus", pitPlayer.moonBonus);
 		APlayerData.savePlayerData(player);
 

@@ -3,7 +3,7 @@ package dev.kyro.pitsim.misc;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.controllers.NonManager;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
-import dev.kyro.pitsim.killstreaks.Uberstreak;
+import dev.kyro.pitsim.megastreaks.Uberstreak;
 import net.minecraft.server.v1_8_R3.*;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;

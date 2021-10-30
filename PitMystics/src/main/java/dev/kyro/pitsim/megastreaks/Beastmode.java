@@ -1,4 +1,4 @@
-package dev.kyro.pitsim.killstreaks;
+package dev.kyro.pitsim.megastreaks;
 
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.controllers.LevelManager;
