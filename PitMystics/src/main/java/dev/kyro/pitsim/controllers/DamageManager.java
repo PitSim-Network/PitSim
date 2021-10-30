@@ -15,15 +15,15 @@ import dev.kyro.pitsim.enums.NBTTag;
 import dev.kyro.pitsim.enums.NonTrait;
 import dev.kyro.pitsim.events.AttackEvent;
 import dev.kyro.pitsim.events.KillEvent;
-import dev.kyro.pitsim.misc.FunkyFeather;
-import dev.kyro.pitsim.misc.Misc;
-import dev.kyro.pitsim.misc.ProtArmor;
-import dev.kyro.pitsim.misc.Sounds;
+import dev.kyro.pitsim.misc.*;
 import dev.kyro.pitsim.perks.AssistantToTheStreaker;
 import dev.kyro.pitsim.pitevents.CaptureTheFlag;
 import dev.kyro.pitsim.upgrades.DivineIntervention;
 import me.clip.placeholderapi.PlaceholderAPI;
-import org.bukkit.*;
+import org.bukkit.Bukkit;
+import org.bukkit.EntityEffect;
+import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
@@ -252,6 +252,7 @@ public class DamageManager implements Listener {
 
 		PitPlayer pitAttacker = PitPlayer.getPitPlayer(killer);
 		PitPlayer pitDefender = PitPlayer.getPitPlayer(dead);
+		if(NonManager.getNon(dead) == null) pitDefender.endKillstreak();
 
 
 		Telebow.teleShots.removeIf(teleShot -> teleShot.getShooter().equals(dead));
@@ -292,7 +293,6 @@ public class DamageManager implements Listener {
 
 				playerData.set("playerkills", pitAttacker.playerKills);
 				APlayerData.savePlayerData(killer);
-				pitDefender.endKillstreak();
 			}
 		} else {
 			defendingNon.respawn();
@@ -424,7 +424,10 @@ public class DamageManager implements Listener {
 					}
 				}
 			}
-			if(!feather && !divine) ProtArmor.deleteArmor(dead);
+			if(!feather && !divine) {
+				ProtArmor.deleteArmor(dead);
+				YummyBread.deleteBread(dead);
+			}
 			if(!Misc.isAirOrNull(dead.getInventory().getLeggings())) {
 				ItemStack pants = dead.getInventory().getLeggings();
 				NBTItem nbtItem = new NBTItem(pants);
@@ -515,7 +518,10 @@ public class DamageManager implements Listener {
 				}
 			}
 
-			if(!feather) ProtArmor.deleteArmor(dead);
+			if(!feather && !divine) {
+				ProtArmor.deleteArmor(dead);
+				YummyBread.deleteBread(dead);
+			}
 
 			if(!Misc.isAirOrNull(dead.getInventory().getLeggings())) {
 				ItemStack pants = dead.getInventory().getLeggings();

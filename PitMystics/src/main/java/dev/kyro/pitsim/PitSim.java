@@ -303,6 +303,9 @@ public class PitSim extends JavaPlugin {
 		PerkManager.registerKillstreak(new HerosHaste());
 		PerkManager.registerKillstreak(new FightOrFlight());
 		PerkManager.registerKillstreak(new TacticalRetreat());
+
+		PerkManager.registerKillstreak(new GoldNanoFactory());
+		PerkManager.registerKillstreak(new Baker());
 	}
 
 	private void registerMegastreaks() {
@@ -376,6 +379,7 @@ public class PitSim extends JavaPlugin {
 		getServer().getPluginManager().registerEvents(new PitBlob(), this);
 		getServer().getPluginManager().registerEvents(new SpawnNPCs(), this);
 		getServer().getPluginManager().registerEvents(new BackwardsCompatibility(), this);
+		getServer().getPluginManager().registerEvents(new YummyBread(), this);
 
 	}
 

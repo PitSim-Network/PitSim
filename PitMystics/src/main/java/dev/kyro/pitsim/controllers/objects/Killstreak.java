@@ -30,4 +30,12 @@ public abstract class Killstreak implements Listener {
 		}
 		return null;
 	}
+	
+	public static boolean hasKillstreak(Player player, Killstreak killstreak) {
+		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
+		for(Killstreak killstreaks : pitPlayer.killstreaks) {
+			if(killstreaks.refName.equals(killstreak.refName)) return true;
+		}
+		return false;
+	}
 }
