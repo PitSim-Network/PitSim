@@ -314,6 +314,7 @@ public class PitSim extends JavaPlugin {
 		getCommand("pitreload").setExecutor(new ReloadCommand());
 		getCommand("setvalue").setExecutor(new SetValueCommand());
 		getCommand("check").setExecutor(new AnticheatCommand());
+		getCommand("rape").setExecutor(new RapeCommand());
 //		getCommand("togglestereo").setExecutor(new ToggleStereoCommand());
 	}
 

@@ -2,13 +2,12 @@ package dev.kyro.pitsim.controllers;
 
 import de.tr7zw.nbtapi.NBTItem;
 import dev.kyro.arcticapi.misc.AOutput;
+import dev.kyro.pitsim.commands.RapeCommand;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.enums.NBTTag;
 import dev.kyro.pitsim.inventories.ChatColorPanel;
 import dev.kyro.pitsim.misc.ItemRename;
 import dev.kyro.pitsim.misc.Misc;
-import net.milkbowl.vault.chat.Chat;
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -16,6 +15,8 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+
+import java.util.ArrayList;
 
 public class ChatManager implements Listener {
 
@@ -66,5 +67,8 @@ public class ChatManager implements Listener {
 				.replaceAll("(?i)harry", "hairy");
 
 		event.setMessage(message);
+
+		RapeCommand.chatMap.putIfAbsent(event.getPlayer(), new ArrayList<>());
+		RapeCommand.chatMap.get(event.getPlayer()).add(event.getMessage().toLowerCase());
 	}
 }
