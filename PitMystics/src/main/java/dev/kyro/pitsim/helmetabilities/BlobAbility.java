@@ -73,7 +73,7 @@ public class BlobAbility extends HelmetAbility {
 		Slime slime = PitBlob.blobMap.get(player.getUniqueId());
 		if(slime != null) slime.remove();
 		PitBlob.blobMap.remove(player.getUniqueId());
-		runnable.cancel();
+		if(runnable != null) runnable.cancel();
 		AOutput.send(player, "&6&lGOLDEN HELMET! &cDeactivated &9Pit Blob&c.");
 	}
 

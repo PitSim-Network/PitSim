@@ -174,6 +174,15 @@ public class PlayerManager implements Listener {
 	}
 
 	@EventHandler
+	public void onMove(PlayerMoveEvent event) {
+		Bukkit.broadcastMessage("e");
+		if(event.getPlayer().getLocation().getY() < 20)  {
+			DamageManager.death(event.getPlayer());
+			Bukkit.broadcastMessage("e2");
+		}
+	}
+
+	@EventHandler
 	public void onItemDamage(PlayerItemDamageEvent event) {
 		event.setCancelled(true);
 	}

@@ -74,7 +74,7 @@ public class SpawnManager implements Listener {
             public void run() {
                 clearSpawnStreaks();
             }
-        }.runTaskLater(PitSim.INSTANCE, 20L);
+        }.runTaskTimer(PitSim.INSTANCE, 20L, 20L);
     }
 
 

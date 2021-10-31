@@ -10,7 +10,6 @@ import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.enums.NBTTag;
 import dev.kyro.pitsim.events.AttackEvent;
 import dev.kyro.pitsim.events.HealEvent;
-import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -75,12 +74,12 @@ public class YummyBread implements Listener {
 	}
 
 	public static void deleteBread(Player player) {
-		Bukkit.broadcastMessage("e1");
+		if(NonManager.getNon(player) != null) return;
 		for(int i = 0; i < player.getInventory().getSize(); i++) {
 			if(Misc.isAirOrNull(player.getInventory().getItem(i))) continue;
 			NBTItem nbtItem = new NBTItem(player.getInventory().getItem(i));
-			if(nbtItem.hasKey(NBTTag.IS_YUMMY_BREAD.getRef()) && nbtItem.hasKey(NBTTag.IS_VERY_YUMMY_BREAD.getRef())) {
-				Bukkit.broadcastMessage("e2");
+			if(nbtItem.hasKey(NBTTag.IS_YUMMY_BREAD.getRef()) || nbtItem.hasKey(NBTTag.IS_VERY_YUMMY_BREAD.getRef())) {
+
 				player.getInventory().remove(player.getInventory().getItem(i));
 			}
 		}

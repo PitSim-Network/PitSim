@@ -306,6 +306,7 @@ public class PitSim extends JavaPlugin {
 
 		PerkManager.registerKillstreak(new GoldNanoFactory());
 		PerkManager.registerKillstreak(new Baker());
+		PerkManager.registerKillstreak(new AuraOfProtection());
 	}
 
 	private void registerMegastreaks() {

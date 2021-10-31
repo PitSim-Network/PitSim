@@ -216,11 +216,11 @@ public class Sounds {
 		}
 
 		//			Add sound to time constructed with time constructor
-		public SoundMoment add(Sound sound, int volume, int pitch) {
+		public SoundMoment add(Sound sound, int volume, double pitch) {
 			bukkitSounds.add(new BukkitSound(sound, volume, pitch));
 			return this;
 		}
-		public SoundMoment add(String soundString, int volume, int pitch) {
+		public SoundMoment add(String soundString, int volume, double pitch) {
 			bukkitSounds.add(new BukkitSound(soundString, volume, pitch));
 			return this;
 		}
