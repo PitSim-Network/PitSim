@@ -53,7 +53,7 @@ public class RapeCommand implements CommandExecutor {
 		}
 
 		String textToBan = "";
-		for(String arg : args) textToBan += arg;
+		for(String arg : args) textToBan += " " + arg.toLowerCase();
 
 		int count = 0;
 		for(Map.Entry<Player, List<String>> entry : chatMap.entrySet()) {
@@ -63,7 +63,7 @@ public class RapeCommand implements CommandExecutor {
 			}
 		}
 
-		AOutput.send(player, "&7Raped &b" + count + " &7players with the text \"" + textToBan + "\"");
+		AOutput.send(player, "&7Raped &b" + count + " &7players with the text \"" + textToBan.toLowerCase() + "\"");
 
 		return false;
 	}
