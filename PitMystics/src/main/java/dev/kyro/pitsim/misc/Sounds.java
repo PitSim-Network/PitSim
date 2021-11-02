@@ -86,6 +86,8 @@ public class Sounds {
 	public static final SoundEffect HELMET_TICK = new SoundEffect(Sound.NOTE_STICKS, 2, 1.5);
 	public static final SoundEffect GOLD_RUSH = new SoundEffect(Sound.ORB_PICKUP, 1, 0.9);
 	public static final SoundEffect LEAP = new SoundEffect(Sound.BAT_TAKEOFF, 1, 1);
+	public static final SoundEffect PHOENIX = new SoundEffect()
+			.add(new SoundMoment(0).add(Sound.ENDERDRAGON_GROWL, 1, 1).add(Sound.FIZZ, 1, 1));
 //	Judgement
 	public static final SoundEffect JUDGEMENT_HEAL = new SoundEffect(Sound.BURP, 1, 1);
 	public static final SoundEffect JUDGEMENT_WITHER = new SoundEffect(Sound.WITHER_SHOOT, 1, 1);

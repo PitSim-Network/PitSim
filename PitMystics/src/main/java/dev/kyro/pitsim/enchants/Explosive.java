@@ -55,33 +55,19 @@ public class Explosive extends PitEnchant {
 
 		if(SpawnManager.isInSpawn(arrow.getLocation())) return;
 
-		for (Entity entity : arrow.getNearbyEntities(getRange(enchantLvl),
-				getRange(enchantLvl), getRange(enchantLvl))) {
+		for (Entity entity : arrow.getNearbyEntities(getRange(enchantLvl), getRange(enchantLvl), getRange(enchantLvl))) {
 			if(entity instanceof Player) {
 				Player player = (Player) entity;
 				Non non = NonManager.getNon(player);
 
 				if(player != shooter) {
 
-//					if(BypassManager.bypassExplosive.contains(player)) {
-//						BypassManager.bypassExplosive.remove(player);
-//					}
-//					BypassManager.bypassExplosive.add(player);
 					PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
-
-
 					if(NonManager.getNon(player) == null) {
 						if(pitPlayer.megastreak.getClass() == Uberstreak.class && pitPlayer.megastreak.isOnMega()) continue;
 						Vector force = player.getLocation().toVector().subtract(arrow.getLocation().toVector())
 								.setY(1).normalize().multiply(non == null ? 1.15 : 5);
-//					force.setY(.85f);
 						player.setVelocity(force);
-//						new BukkitRunnable() {
-//							@Override
-//							public void run() {
-//								BypassManager.bypassExplosive.remove(player);
-//							}
-//						}.runTaskLater(PitSim.INSTANCE, 20L);
 					}
 				}
 			}

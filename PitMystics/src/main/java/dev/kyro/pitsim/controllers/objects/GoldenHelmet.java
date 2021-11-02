@@ -165,6 +165,7 @@ public class GoldenHelmet {
 		if(refName.equals("goldrush")) return new GoldRushAbility(player);
 		if(refName.equals("hermit")) return new HermitAbility(player);
 		if(refName.equals("judgement")) return new JudgementAbility(player);
+		if(refName.equals("phoenix")) return new PhoenixAbility(player);
 		return null;
 	}
 
