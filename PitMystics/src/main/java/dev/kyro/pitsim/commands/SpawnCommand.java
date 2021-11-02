@@ -1,8 +1,7 @@
 package dev.kyro.pitsim.commands;
 
-import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.controllers.MapManager;
-import org.bukkit.Bukkit;
+import dev.kyro.pitsim.helmetabilities.PhoenixAbility;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -14,6 +13,7 @@ public class SpawnCommand implements CommandExecutor {
 
         Player player = (Player) sender;
         player.teleport(MapManager.getPlayerSpawn());
+        PhoenixAbility.alreadyActivatedList.remove(player.getUniqueId());
 
         return false;
     }

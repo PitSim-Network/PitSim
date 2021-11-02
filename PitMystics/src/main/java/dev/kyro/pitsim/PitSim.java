@@ -417,6 +417,7 @@ public class PitSim extends JavaPlugin {
 		HelmetAbility.registerHelmetAbility(new GoldRushAbility(null));
 		HelmetAbility.registerHelmetAbility(new HermitAbility(null));
 		HelmetAbility.registerHelmetAbility(new JudgementAbility(null));
+		HelmetAbility.registerHelmetAbility(new PhoenixAbility(null));
 	}
 
 	private void loadConfig() {
