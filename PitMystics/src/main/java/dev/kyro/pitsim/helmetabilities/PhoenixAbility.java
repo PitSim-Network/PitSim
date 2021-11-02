@@ -37,19 +37,17 @@ public class PhoenixAbility extends HelmetAbility {
 	}
 
 	@EventHandler
-	public void onKill(KillEvent killEvent) {
-		if(!killEvent.dead.getUniqueId().equals(player.getUniqueId())) return;
-		alreadyActivatedList.remove(player.getUniqueId());
+	public static void onKill(KillEvent killEvent) {
+		alreadyActivatedList.remove(killEvent.dead.getUniqueId());
 	}
 
 	@EventHandler
-	public void onLogout(PlayerQuitEvent event) {
-		if(!event.getPlayer().getUniqueId().equals(player.getUniqueId())) return;
-		alreadyActivatedList.remove(player.getUniqueId());
+	public static void onLogout(PlayerQuitEvent event) {
+		alreadyActivatedList.remove(event.getPlayer().getUniqueId());
 	}
 
 	@EventHandler
-	public void onLogout(HealEvent healEvent) {
+	public static void onLogout(HealEvent healEvent) {
 		if(!alreadyActivatedList.contains(healEvent.player.getUniqueId())) return;
 		healEvent.multipliers.add(0D);
 	}
@@ -74,7 +72,7 @@ public class PhoenixAbility extends HelmetAbility {
 		alreadyActivatedList.add(player.getUniqueId());
 		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
 		pitPlayer.heal(player.getMaxHealth());
-		pitPlayer.heal(player.getMaxHealth(), HealEvent.HealType.ABSORPTION, (int) player.getMaxHealth());
+		pitPlayer.heal(player.getMaxHealth() * 2, HealEvent.HealType.ABSORPTION, (int) player.getMaxHealth() * 2);
 		for (Entity entity : player.getNearbyEntities(5, 5, 5)) {
 			if(!(entity instanceof Player)) continue;
 			Player target = (Player) entity;
