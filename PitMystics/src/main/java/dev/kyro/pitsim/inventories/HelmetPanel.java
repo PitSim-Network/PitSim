@@ -5,12 +5,10 @@ import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.arcticapi.data.APlayerData;
 import dev.kyro.arcticapi.gui.AGUI;
 import dev.kyro.arcticapi.gui.AGUIPanel;
-import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.arcticapi.misc.AUtil;
 import dev.kyro.pitsim.controllers.HelmetSystem;
 import dev.kyro.pitsim.controllers.objects.GoldenHelmet;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
-import dev.kyro.pitsim.misc.Sounds;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -57,8 +55,7 @@ public class HelmetPanel extends AGUIPanel {
             if(slot == 7) {
                 HelmetGUI.deposit(player, goldenHelmet.item);
                 player.closeInventory();
-                AOutput.error(player, "&cYou cannot do this while there is an ability activated!");
-                Sounds.NO.play(player);
+
             }
 
         }

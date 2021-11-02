@@ -7,6 +7,7 @@ import dev.kyro.pitsim.controllers.objects.PitEnchant;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.events.AttackEvent;
 import dev.kyro.pitsim.events.KillEvent;
+import dev.kyro.pitsim.events.OofEvent;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
@@ -132,6 +133,12 @@ public class CombatManager implements Listener {
        taggedPlayers.remove(event.dead.getUniqueId());
        PitPlayer.getPitPlayer(event.dead).lastHitUUID = null;
    }
+
+    @EventHandler
+    public static void onOof(OofEvent event) {
+        taggedPlayers.remove(event.getPlayer().getUniqueId());
+        PitPlayer.getPitPlayer(event.getPlayer()).lastHitUUID = null;
+    }
 
    @EventHandler
     public static void onCommandSend(PlayerCommandPreprocessEvent event) {
