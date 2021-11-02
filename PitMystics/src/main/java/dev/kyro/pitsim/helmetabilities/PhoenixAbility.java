@@ -14,7 +14,6 @@ import dev.kyro.pitsim.events.KillEvent;
 import dev.kyro.pitsim.events.OofEvent;
 import dev.kyro.pitsim.megastreaks.Uberstreak;
 import dev.kyro.pitsim.misc.Sounds;
-import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
@@ -57,7 +56,6 @@ public class PhoenixAbility extends HelmetAbility {
 	public static void onHeal(HealEvent healEvent) {
 		if(!alreadyActivatedList.contains(healEvent.player.getUniqueId())) return;
 		healEvent.multipliers.add(0D);
-		Bukkit.broadcastMessage("cancelling healing");
 	}
 
 	@Override
@@ -77,10 +75,10 @@ public class PhoenixAbility extends HelmetAbility {
 			return;
 		}
 
-		alreadyActivatedList.add(player.getUniqueId());
 		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
 		pitPlayer.heal(player.getMaxHealth());
 		pitPlayer.heal(player.getMaxHealth() * 2, HealEvent.HealType.ABSORPTION, (int) player.getMaxHealth() * 2);
+		alreadyActivatedList.add(player.getUniqueId());
 		for (Entity entity : player.getNearbyEntities(5, 5, 5)) {
 			if(!(entity instanceof Player)) continue;
 			Player target = (Player) entity;
