@@ -61,6 +61,9 @@ public class HelmetListeners implements Listener {
 				return;
 			}
 
+
+
+
 			Sounds.HELMET_GUI_OPEN.play(event.getPlayer());
 			HelmetGUI helmetGUI = new HelmetGUI(event.getPlayer());
 			helmetGUI.open();
@@ -172,6 +175,8 @@ public class HelmetListeners implements Listener {
 	@EventHandler
 	public void onCrouch(PlayerToggleSneakEvent event) {
 		Player player = event.getPlayer();
+
+
 		if(!event.isSneaking()) return;
 
 		if(!crouchPlayers.contains(player)) {
@@ -187,6 +192,8 @@ public class HelmetListeners implements Listener {
 		}
 		crouchPlayers.remove(player);
 
+
+
 		int helmSlot = getInventorySlot(player);
 		if(helmSlot == -1) return;
 
@@ -197,6 +204,13 @@ public class HelmetListeners implements Listener {
 
 		GoldenHelmet goldenHelmet = GoldenHelmet.getHelmetItem(helm, player);
 		assert goldenHelmet != null;
+		goldenHelmet.owner = player;
+
+		for(GoldenHelmet goldenHelmet1 : GoldenHelmet.getHelmetsFromPlayer(event.getPlayer())) {
+			if(goldenHelmet1.ability.player !=  goldenHelmet1.owner) goldenHelmet1.ability.player = goldenHelmet1.owner;
+		}
+
+
 
 		if(goldenHelmet.ability == null) {
 			AOutput.error(player, "&6&lGOLDEN HELMET! &cNo ability selected!");

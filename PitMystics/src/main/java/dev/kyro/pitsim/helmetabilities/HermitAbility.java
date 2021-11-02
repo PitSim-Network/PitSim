@@ -66,7 +66,6 @@ public class HermitAbility extends HelmetAbility {
 	@Override
 	public boolean shouldActivate() {
 		GoldenHelmet goldenHelmet = HelmetListeners.getHelmetInstance(player);
-
 		assert goldenHelmet != null;
 		if(!goldenHelmet.withdrawGold(cost * 100)) {
 			AOutput.error(player,"&cNot enough gold!");

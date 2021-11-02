@@ -172,13 +172,20 @@ public class PlayerManager implements Listener {
 		}.runTaskLater(PitSim.INSTANCE, 10L);
 
 	}
+//
+//	long time = 0;
+//
+//	@EventHandler
+//	public void onHit(EntityDamageEvent event) {
+//		if(NonManager.getNon((Player) event.getEntity()) != null) return;
+//		Bukkit.broadcastMessage(System.currentTimeMillis() - time + "");
+//		time = System.currentTimeMillis();
+//	}
 
 	@EventHandler
 	public void onMove(PlayerMoveEvent event) {
-		Bukkit.broadcastMessage("e");
 		if(event.getPlayer().getLocation().getY() < 20)  {
 			DamageManager.death(event.getPlayer());
-			Bukkit.broadcastMessage("e2");
 		}
 	}
 
