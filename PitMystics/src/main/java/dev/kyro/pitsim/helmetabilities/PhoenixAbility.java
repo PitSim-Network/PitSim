@@ -11,8 +11,10 @@ import dev.kyro.pitsim.controllers.objects.Non;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.events.HealEvent;
 import dev.kyro.pitsim.events.KillEvent;
+import dev.kyro.pitsim.events.OofEvent;
 import dev.kyro.pitsim.megastreaks.Uberstreak;
 import dev.kyro.pitsim.misc.Sounds;
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
@@ -47,9 +49,15 @@ public class PhoenixAbility extends HelmetAbility {
 	}
 
 	@EventHandler
-	public static void onLogout(HealEvent healEvent) {
+	public static void onOof(OofEvent event) {
+		alreadyActivatedList.remove(event.getPlayer().getUniqueId());
+	}
+
+	@EventHandler
+	public static void onHeal(HealEvent healEvent) {
 		if(!alreadyActivatedList.contains(healEvent.player.getUniqueId())) return;
 		healEvent.multipliers.add(0D);
+		Bukkit.broadcastMessage("cancelling healing");
 	}
 
 	@Override
