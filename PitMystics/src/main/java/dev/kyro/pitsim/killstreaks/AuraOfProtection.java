@@ -10,6 +10,7 @@ import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 
@@ -21,13 +22,13 @@ public class AuraOfProtection extends Killstreak {
 	public static AuraOfProtection INSTANCE;
 
 	public AuraOfProtection() {
-		super("Aura of Protection", "AuraOfProtection", 25, 0);
+		super("Aura of Protection", "AuraOfProtection", 25, 6);
 		INSTANCE = this;
 	}
 
 	List<Player> rewardPlayers = new ArrayList<>();
 
-	@EventHandler
+	@EventHandler(priority = EventPriority.HIGHEST)
 	public void onHit(AttackEvent.Apply event) {
 		if(rewardPlayers.contains(event.defender)) {
 			event.trueDamage = 0;
@@ -58,7 +59,7 @@ public class AuraOfProtection extends Killstreak {
 	}
 
 	@Override
-	public ItemStack getDisplayItem() {
+	public ItemStack getDisplayItem(Player player) {
 
 		AItemStackBuilder builder = new AItemStackBuilder(Material.SLIME_BALL);
 		builder.setName("&e" + name);

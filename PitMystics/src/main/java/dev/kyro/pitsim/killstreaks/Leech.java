@@ -18,7 +18,7 @@ public class Leech extends Killstreak {
 	public static Leech INSTANCE;
 
 	public Leech() {
-		super("Leech", "Leech", 5, 0);
+		super("Leech", "Leech", 5, 18);
 		INSTANCE = this;
 	}
 
@@ -45,7 +45,7 @@ public class Leech extends Killstreak {
 	}
 
 	@Override
-	public ItemStack getDisplayItem() {
+	public ItemStack getDisplayItem(Player player) {
 
 		AItemStackBuilder builder = new AItemStackBuilder(Material.FERMENTED_SPIDER_EYE);
 		builder.setName("&e" + name);

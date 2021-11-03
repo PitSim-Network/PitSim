@@ -96,8 +96,8 @@ public class ToTheMoon extends Megastreak {
 
 		lore.add("");
 		lore.add(ChatColor.GRAY + "On death:");
-		lore.add(ChatColor.translateAlternateColorCodes('&', "&e\u25a0 &7Earn a permanent &b+1 max XP"));
-		lore.add(ChatColor.translateAlternateColorCodes('&', "&7until you prestige (30 max)"));
+		lore.add(ChatColor.translateAlternateColorCodes('&', "&e\u25a0 &7Earn a permanent &b+5 max XP"));
+		lore.add(ChatColor.translateAlternateColorCodes('&', "&7until you prestige (50 max)"));
 		lore.add(ChatColor.translateAlternateColorCodes('&', "&7(If streak is at least 700)"));
 		meta.setLore(lore);
 		item.setItemMeta(meta);
@@ -188,12 +188,12 @@ public class ToTheMoon extends Megastreak {
 		}
 
 		if(pitPlayer.megastreak.isOnMega() && pitPlayer.getKills() >= 700) {
-			int cap = 1;
+			int cap = 5;
 			if(DoubleDeath.INSTANCE.isDoubleDeath(pitPlayer.player)) cap *= 2;
-			if(pitPlayer.moonBonus + cap > 30) cap = 30 - pitPlayer.moonBonus;
+			if(pitPlayer.moonBonus + cap > 50) cap = 50 - pitPlayer.moonBonus;
 			if(cap > 0) {
 				pitPlayer.moonBonus += cap;
-				AOutput.send(pitPlayer.player, "&b&lTO THE MOON! &7Gained &b+" + cap + " max XP &7until you prestige! (" + pitPlayer.moonBonus + "/30)");
+				AOutput.send(pitPlayer.player, "&b&lTO THE MOON! &7Gained &b+" + cap + " max XP &7until you prestige! (" + pitPlayer.moonBonus + "/50)");
 			}
 			FileConfiguration playerData = APlayerData.getPlayerData(pitPlayer.player);
 			playerData.set("moonbonus", pitPlayer.moonBonus);

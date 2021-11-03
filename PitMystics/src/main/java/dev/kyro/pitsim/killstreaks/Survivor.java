@@ -4,8 +4,8 @@ import dev.kyro.arcticapi.builders.AItemStackBuilder;
 import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.controllers.objects.Killstreak;
-import dev.kyro.pitsim.events.AttackEvent;
-import dev.kyro.pitsim.misc.Misc;
+import dev.kyro.pitsim.events.HealEvent;
+import dev.kyro.pitsim.misc.Sounds;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -15,39 +15,34 @@ import org.bukkit.scheduler.BukkitRunnable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CounterStrike extends Killstreak {
+public class Survivor extends Killstreak {
 
-	public static CounterStrike INSTANCE;
+	public static Survivor INSTANCE;
 
-	public CounterStrike() {
-		super("Counter-Strike", "CounterStrike", 10, 20);
+	public Survivor() {
+		super("Survivor", "Survivor", 25, 0);
 		INSTANCE = this;
 	}
 
 	List<Player> rewardPlayers = new ArrayList<>();
 
 	@EventHandler
-	public void onhit(AttackEvent.Apply event) {
-		if(rewardPlayers.contains(event.attacker)) {
-			event.increasePercent += (15/ 100D);
-			rewardPlayers.remove(event.attacker);
-		}
-		if(rewardPlayers.contains(event.defender)) {
-			event.multiplier.add(Misc.getReductionMultiplier(20));
-			rewardPlayers.remove(event.defender);
-		}
+	public void onHeal(HealEvent healEvent) {
+		if(!rewardPlayers.contains(healEvent.player)) return;
+		healEvent.multipliers.add(1.25D);
 	}
 
 	@Override
 	public void proc(Player player) {
 		rewardPlayers.add(player);
+		Sounds.SURVIVOR_HEAL.play(player);
 
 		new BukkitRunnable() {
 			@Override
 			public void run() {
 				rewardPlayers.remove(player);
 			}
-		}.runTaskLater(PitSim.INSTANCE, 20 * 8L);
+		}.runTaskLater(PitSim.INSTANCE, 15 * 20L);
 	}
 
 	@Override
@@ -58,9 +53,9 @@ public class CounterStrike extends Killstreak {
 	@Override
 	public ItemStack getDisplayItem(Player player) {
 
-		AItemStackBuilder builder = new AItemStackBuilder(Material.IRON_BARDING);
+		AItemStackBuilder builder = new AItemStackBuilder(Material.GOLDEN_APPLE);
 		builder.setName("&e" + name);
-		builder.setLore(new ALoreBuilder("&7Every: &c" + killInterval + " kills", "", "&7Deal &c+15% &7damage and receive", "&9-20% &7damage per hit for 8s."));
+		builder.setLore(new ALoreBuilder("&7Every: &c" + killInterval + " kills", "", "&7Heal &e+25% &7more &c\u2764 &7and &6\u2764 ", "&7for 15 seconds."));
 
 		return builder.getItemStack();
 	}

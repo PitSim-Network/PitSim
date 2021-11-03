@@ -18,7 +18,7 @@ public class AssuredStrike extends Killstreak {
 	public static AssuredStrike INSTANCE;
 
 	public AssuredStrike() {
-		super("Assured Strike", "AssuredStrike", 5, 0);
+		super("Assured Strike", "AssuredStrike", 5, 2);
 		INSTANCE = this;
 	}
 
@@ -45,7 +45,7 @@ public class AssuredStrike extends Killstreak {
 	}
 
 	@Override
-	public ItemStack getDisplayItem() {
+	public ItemStack getDisplayItem(Player player) {
 
 		AItemStackBuilder builder = new AItemStackBuilder(Material.DIAMOND_SWORD);
 		builder.setName("&e" + name);

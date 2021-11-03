@@ -88,7 +88,7 @@ public class LevelManager {
 		if(pitPlayer.level < 120) return;
 		if(pitPlayer.goldGrinded < prestigeInfo.goldReq) return;
 		//TODO: Re-enable killreq
-//		if(pitPlayer.playerKills < prestigeInfo.killReq) return;
+		if(pitPlayer.playerKills < prestigeInfo.killReq) return;
 
 		pitPlayer.prestige += 1;
 		if(UpgradeManager.hasUpgrade(player, "FAST_PASS")) {
@@ -105,6 +105,7 @@ public class LevelManager {
 		pitPlayer.playerKills = 0;
 		pitPlayer.renown += prestigeInfo.renownReward;
 		pitPlayer.moonBonus = 0;
+		pitPlayer.goldStack = 0;
 		pitPlayer.killstreaks.set(1, NoKillstreak.INSTANCE);
 		pitPlayer.killstreaks.set(2, NoKillstreak.INSTANCE);
 
@@ -115,6 +116,7 @@ public class LevelManager {
 		playerData.set("renown", pitPlayer.renown);
 		playerData.set("playerkills", pitPlayer.playerKills);
 		playerData.set("xp", pitPlayer.remainingXP);
+		playerData.set("goldstack", pitPlayer.goldStack);
 		playerData.set("megastreak", pitPlayer.megastreak.getRawName());
 		playerData.set("killstreak-1", pitPlayer.killstreaks.get(1).refName);
 		playerData.set("killstreak-2", pitPlayer.killstreaks.get(2).refName);

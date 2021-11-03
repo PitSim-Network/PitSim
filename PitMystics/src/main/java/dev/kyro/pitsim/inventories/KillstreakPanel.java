@@ -124,7 +124,7 @@ public class KillstreakPanel extends AGUIPanel {
 
 		AItemStackBuilder builder25Kills = new AItemStackBuilder(Material.ITEM_FRAME);
 		builder25Kills.setName("&c25 Kills");
-		if(getKillstreakFromInterval(player, 7) != null) {
+		if(getKillstreakFromInterval(player, 25) != null) {
 			builder25Kills.setLore(new ALoreBuilder("&7Selected: &e" + Objects.requireNonNull(getKillstreakFromInterval(player, 25)).name));
 			builder25Kills.addEnchantGlint(true);
 		}
@@ -132,8 +132,8 @@ public class KillstreakPanel extends AGUIPanel {
 
 		AItemStackBuilder builder50Kills = new AItemStackBuilder(Material.ITEM_FRAME);
 		builder50Kills.setName("&c50 Kills");
-		if(getKillstreakFromInterval(player, 7) != null) {
-			builder50Kills.setLore(new ALoreBuilder("&7Selected: &e" + Objects.requireNonNull(getKillstreakFromInterval(player, 7)).name));
+		if(getKillstreakFromInterval(player, 50) != null) {
+			builder50Kills.setLore(new ALoreBuilder("&7Selected: &e" + Objects.requireNonNull(getKillstreakFromInterval(player, 50)).name));
 			builder50Kills.addEnchantGlint(true);
 		}
 		getInventory().setItem(37, builder50Kills.getItemStack());
@@ -152,7 +152,7 @@ public class KillstreakPanel extends AGUIPanel {
 			PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
 
 			if(killstreak.refName.equals("NoKillstreak")) {
-				AItemStackBuilder builder = new AItemStackBuilder(killstreak.getDisplayItem());
+				AItemStackBuilder builder = new AItemStackBuilder(killstreak.getDisplayItem(player));
 				builder.setLore(new ALoreBuilder(builder.getItemStack().getItemMeta().getLore()).addLore("", "&eClick to remove killstreak!"));
 				getInventory().setItem(50, builder.getItemStack());
 				killstreakSlots.put(killstreak, 50);
@@ -165,7 +165,7 @@ public class KillstreakPanel extends AGUIPanel {
 				slot++;
 			}
 
-			AItemStackBuilder builder = new AItemStackBuilder(killstreak.getDisplayItem());
+			AItemStackBuilder builder = new AItemStackBuilder(killstreak.getDisplayItem(player));
 			ALoreBuilder loreBuilder = new ALoreBuilder(builder.getItemStack().getItemMeta().getLore()).addLore("");
 			if(hasKillstreakEquipped(player, killstreak)) {
 				builder.setName("&a" + killstreak.name);
@@ -174,6 +174,7 @@ public class KillstreakPanel extends AGUIPanel {
 			} else if(pitPlayer.prestige < killstreak.prestige) {
 				builder.setName("&c" + killstreak.name);
 				loreBuilder.addLore("&cUnlocked at prestige &e" + AUtil.toRoman(killstreak.prestige));
+				builder.getItemStack().setType(Material.BEDROCK);
 			} else {
 				builder.setName("&e" + killstreak.name);
 				loreBuilder.addLore("&eClick to select!");

@@ -19,7 +19,7 @@ public class FightOrFlight extends Killstreak {
 	public static FightOrFlight INSTANCE;
 
 	public FightOrFlight() {
-		super("Fight or Flight", "FightOrFlight", 10, 0);
+		super("Fight or Flight", "FightOrFlight", 10, 4);
 		INSTANCE = this;
 	}
 
@@ -49,7 +49,7 @@ public class FightOrFlight extends Killstreak {
 	}
 
 	@Override
-	public ItemStack getDisplayItem() {
+	public ItemStack getDisplayItem(Player player) {
 
 		AItemStackBuilder builder = new AItemStackBuilder(Material.FIREBALL);
 		builder.setName("&e" + name);

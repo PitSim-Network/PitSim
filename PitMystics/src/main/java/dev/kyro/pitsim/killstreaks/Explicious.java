@@ -44,7 +44,7 @@ public class Explicious extends Killstreak {
 	}
 
 	@Override
-	public ItemStack getDisplayItem() {
+	public ItemStack getDisplayItem(Player player) {
 
 		AItemStackBuilder builder = new AItemStackBuilder(Material.INK_SACK, 1, 12);
 		builder.setName("&e" + name);

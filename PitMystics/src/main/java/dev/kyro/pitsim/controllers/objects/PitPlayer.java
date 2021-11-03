@@ -2,10 +2,7 @@ package dev.kyro.pitsim.controllers.objects;
 
 import dev.kyro.arcticapi.data.APlayerData;
 import dev.kyro.pitsim.PitSim;
-import dev.kyro.pitsim.controllers.LevelManager;
-import dev.kyro.pitsim.controllers.NonManager;
-import dev.kyro.pitsim.controllers.PitEventManager;
-import dev.kyro.pitsim.controllers.PrestigeValues;
+import dev.kyro.pitsim.controllers.*;
 import dev.kyro.pitsim.enchants.Hearts;
 import dev.kyro.pitsim.enums.AChatColor;
 import dev.kyro.pitsim.enums.DeathCry;
@@ -13,6 +10,7 @@ import dev.kyro.pitsim.enums.KillEffect;
 import dev.kyro.pitsim.events.HealEvent;
 import dev.kyro.pitsim.events.IncrementKillsEvent;
 import dev.kyro.pitsim.inventories.ChatColorPanel;
+import dev.kyro.pitsim.killstreaks.Monster;
 import dev.kyro.pitsim.killstreaks.NoKillstreak;
 import dev.kyro.pitsim.megastreaks.*;
 import dev.kyro.pitsim.perks.NoPerk;
@@ -54,6 +52,7 @@ public class PitPlayer {
 
 	public Megastreak megastreak;
 	public int moonBonus = 0;
+	public double goldStack = 0;
 	public long uberReset = 0;
 	public int dailyUbersLeft = 5;
 
@@ -62,7 +61,6 @@ public class PitPlayer {
 
 	public Map<UUID, Double> recentDamageMap = new HashMap<>();
 	public List<BukkitTask> assistRemove = new ArrayList<>();
-	public Player assistSteal;
 
 	public KillEffect killEffect = null;
 	public DeathCry deathCry = null;
@@ -135,6 +133,7 @@ public class PitPlayer {
 			uberReset = playerData.getLong("ubercooldown");
 			dailyUbersLeft = playerData.getInt("ubersleft");
 			moonBonus = playerData.getInt("moonbonus");
+			goldStack = playerData.getDouble("goldstack");
 
 			String streak = playerData.getString("megastreak");
 
@@ -300,6 +299,10 @@ public class PitPlayer {
 		if(megastreak.getClass() == Uberstreak.class) {
 			Uberstreak uberstreak = (Uberstreak) megastreak;
 			if(uberstreak.uberEffects.contains(Uberstreak.UberEffect.LOSE_MAX_HEALTH)) maxHealth -= 4;
+		}
+
+		if(Killstreak.hasKillstreak(player, "Monster") && Monster.healthMap.containsKey(player)) {
+			maxHealth += Monster.healthMap.get(player);
 		}
 
 		if(Juggernaut.juggernaut == this.player) maxHealth = 100;

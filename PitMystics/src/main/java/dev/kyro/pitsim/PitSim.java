@@ -295,18 +295,24 @@ public class PitSim extends JavaPlugin {
 		PerkManager.registerKillstreak(new NoKillstreak());
 
 		PerkManager.registerKillstreak(new Explicious());
-		PerkManager.registerKillstreak(new RR());
 		PerkManager.registerKillstreak(new AssuredStrike());
+		PerkManager.registerKillstreak(new RR());
 		PerkManager.registerKillstreak(new Leech());
 
-		PerkManager.registerKillstreak(new CounterStrike());
-		PerkManager.registerKillstreak(new HerosHaste());
-		PerkManager.registerKillstreak(new FightOrFlight());
 		PerkManager.registerKillstreak(new TacticalRetreat());
+		PerkManager.registerKillstreak(new FightOrFlight());
+		PerkManager.registerKillstreak(new HerosHaste());
+		PerkManager.registerKillstreak(new CounterStrike());
 
+		PerkManager.registerKillstreak(new Survivor());
+		PerkManager.registerKillstreak(new AuraOfProtection());
 		PerkManager.registerKillstreak(new GoldNanoFactory());
 		PerkManager.registerKillstreak(new Baker());
-		PerkManager.registerKillstreak(new AuraOfProtection());
+
+		PerkManager.registerKillstreak(new Monster());
+		PerkManager.registerKillstreak(new Spongesteve());
+		PerkManager.registerKillstreak(new GoldStack());
+		PerkManager.registerKillstreak(new Shockwave());
 	}
 
 	private void registerMegastreaks() {

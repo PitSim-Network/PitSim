@@ -28,7 +28,7 @@ public class NoKillstreak extends Killstreak {
 	}
 
 	@Override
-	public ItemStack getDisplayItem() {
+	public ItemStack getDisplayItem(Player player) {
 
 		AItemStackBuilder builder = new AItemStackBuilder(Material.GOLD_BLOCK);
 		builder.setName("&c" + name);

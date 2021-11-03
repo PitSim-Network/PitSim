@@ -142,7 +142,7 @@ public class  PerkPanel extends AGUIPanel {
 				continue;
 			}
 			Killstreak killstreak = pitPlayer.killstreaks.get(i);
-			AItemStackBuilder builder = new AItemStackBuilder(killstreak.getDisplayItem());
+			AItemStackBuilder builder = new AItemStackBuilder(killstreak.getDisplayItem(player));
 			ALoreBuilder loreBuilder = new ALoreBuilder();
 			if(!killstreak.refName.equals("NoKillstreak")) {
 				builder.setName("&eKillstreak slot #" + (i + 1));

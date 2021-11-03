@@ -27,8 +27,8 @@ public class Helmetry extends RenownUpgrade {
 		lore.add(ChatColor.translateAlternateColorCodes('&', "&7Unlock the ability to craft"));
 		lore.add(ChatColor.translateAlternateColorCodes('&', "&6Golden Helmets &7for &e10"));
 		lore.add(ChatColor.translateAlternateColorCodes('&', "&eRenown &7each. &6Golden Helmets"));
-		lore.add(ChatColor.translateAlternateColorCodes('&', "&7can be upgraded by putting &7gold"));
-		lore.add(ChatColor.translateAlternateColorCodes('&', "&7into them."));
+		lore.add(ChatColor.translateAlternateColorCodes('&', "&7can be upgraded by putting"));
+		lore.add(ChatColor.translateAlternateColorCodes('&', "&6gold &7into them."));
 		meta.setLore(UpgradeManager.loreBuilder(this, player, lore, isCustomPanel));
 		item.setItemMeta(meta);
 		return item;

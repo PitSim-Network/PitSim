@@ -31,6 +31,9 @@ public class SetPrestigeCommand implements CommandExecutor {
         pitPlayer.moonBonus = 0;
         playerData.set("moonbonus", pitPlayer.moonBonus);
 
+        pitPlayer.goldStack = 0;
+        playerData.set("goldstack", pitPlayer.goldStack);
+
         APlayerData.savePlayerData(player);
         AOutput.send(player, "&aSuccess!");
 

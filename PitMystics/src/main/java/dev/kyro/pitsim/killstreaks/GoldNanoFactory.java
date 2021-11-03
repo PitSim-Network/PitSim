@@ -26,7 +26,7 @@ public class GoldNanoFactory extends Killstreak {
 	public static GoldNanoFactory INSTANCE;
 
 	public GoldNanoFactory() {
-		super("Gold Nano Factory", "GoldNanoFactory", 25, 0);
+		super("Gold Nano Factory", "GoldNanoFactory", 25, 14);
 		INSTANCE = this;
 	}
 
@@ -90,7 +90,7 @@ public class GoldNanoFactory extends Killstreak {
 	}
 
 	@Override
-	public ItemStack getDisplayItem() {
+	public ItemStack getDisplayItem(Player player) {
 
 		AItemStackBuilder builder = new AItemStackBuilder(Material.GOLD_NUGGET);
 		builder.setName("&e" + name);

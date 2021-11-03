@@ -14,7 +14,7 @@ public class Baker extends Killstreak {
 	public static Baker INSTANCE;
 
 	public Baker() {
-		super("Baker", "Baker", 25, 0);
+		super("Baker", "Baker", 25, 22);
 		INSTANCE = this;
 	}
 
@@ -32,7 +32,7 @@ public class Baker extends Killstreak {
 	}
 
 	@Override
-	public ItemStack getDisplayItem() {
+	public ItemStack getDisplayItem(Player player) {
 
 		AItemStackBuilder builder = new AItemStackBuilder(Material.BREAD);
 		builder.setName("&e" + name);

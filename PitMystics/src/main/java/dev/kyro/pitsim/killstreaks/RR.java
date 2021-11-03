@@ -14,7 +14,7 @@ public class RR extends Killstreak {
 	public static RR INSTANCE;
 
 	public RR() {
-		super("R And R", "R&R", 5, 0);
+		super("R And R", "R&R", 5, 10);
 		INSTANCE = this;
 	}
 
@@ -30,7 +30,7 @@ public class RR extends Killstreak {
 	}
 
 	@Override
-	public ItemStack getDisplayItem() {
+	public ItemStack getDisplayItem(Player player) {
 
 		AItemStackBuilder builder = new AItemStackBuilder(Material.GOLDEN_CARROT);
 		builder.setName("&e" + name);

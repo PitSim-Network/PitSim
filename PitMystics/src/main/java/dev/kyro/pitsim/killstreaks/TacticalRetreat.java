@@ -30,7 +30,7 @@ public class TacticalRetreat extends Killstreak {
 	}
 
 	@Override
-	public ItemStack getDisplayItem() {
+	public ItemStack getDisplayItem(Player player) {
 
 		AItemStackBuilder builder = new AItemStackBuilder(Material.DOUBLE_PLANT, 1, 2);
 		builder.setName("&e" + name);
