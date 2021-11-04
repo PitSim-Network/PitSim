@@ -6,6 +6,7 @@ import dev.kyro.arcticapi.data.AData;
 import dev.kyro.arcticapi.data.APlayerData;
 import dev.kyro.arcticapi.hooks.AHook;
 import dev.kyro.arcticapi.misc.AOutput;
+import dev.kyro.pitsim.boosters.XPBooster;
 import dev.kyro.pitsim.commands.*;
 import dev.kyro.pitsim.controllers.*;
 import dev.kyro.pitsim.controllers.objects.HelmetAbility;
@@ -139,7 +140,6 @@ public class PitSim extends JavaPlugin {
 		AHook.registerPlaceholder(new PrestigeLevelPlaceholder());
 		AHook.registerPlaceholder(new PrestigePlaceholder());
 
-
 		loadConfig();
 
 		ArcticAPI.configInit(this, "prefix", "error-prefix");
@@ -150,6 +150,7 @@ public class PitSim extends JavaPlugin {
 		registerEnchants();
 		registerCommands();
 		registerListeners();
+		registerBoosters();
 		registerHelmetAbilities();
 	}
 
@@ -362,6 +363,7 @@ public class PitSim extends JavaPlugin {
 		getCommand("shop").setExecutor(new StoreCommand());
 		getCommand("discord").setExecutor(new DiscordCommand());
 		getCommand("disc").setExecutor(new DiscordCommand());
+		getCommand("booster").setExecutor(new BoosterCommand());
 //		getCommand("togglestereo").setExecutor(new ToggleStereoCommand());
 	}
 
@@ -389,7 +391,11 @@ public class PitSim extends JavaPlugin {
 		getServer().getPluginManager().registerEvents(new SpawnNPCs(), this);
 		getServer().getPluginManager().registerEvents(new BackwardsCompatibility(), this);
 		getServer().getPluginManager().registerEvents(new YummyBread(), this);
+		getServer().getPluginManager().registerEvents(new BoosterManager(), this);
+	}
 
+	public void registerBoosters() {
+		BoosterManager.registerBooster(new XPBooster());
 	}
 
 	public void registerUpgrades() {
