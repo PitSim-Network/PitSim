@@ -13,6 +13,7 @@ public class RenownCommand implements CommandExecutor {
 
         if(!(sender instanceof Player)) return false;
         Player player = (Player) sender;
+        if(!player.isOp())  return false;
 
 
         RenownShopGUI renownShopGUI = new RenownShopGUI(player);

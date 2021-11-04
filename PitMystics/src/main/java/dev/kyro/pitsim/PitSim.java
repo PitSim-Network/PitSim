@@ -364,6 +364,7 @@ public class PitSim extends JavaPlugin {
 		getCommand("discord").setExecutor(new DiscordCommand());
 		getCommand("disc").setExecutor(new DiscordCommand());
 		getCommand("booster").setExecutor(new BoosterCommand());
+		getCommand("boostergive").setExecutor(new BoosterGiveCommand());
 //		getCommand("togglestereo").setExecutor(new ToggleStereoCommand());
 	}
 

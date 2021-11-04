@@ -3,6 +3,7 @@ package dev.kyro.pitsim.commands;
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.controllers.BoosterManager;
 import dev.kyro.pitsim.controllers.objects.Booster;
+import dev.kyro.pitsim.inventories.BoosterGUI;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -16,6 +17,9 @@ public class BoosterCommand implements CommandExecutor {
 		if(!(sender instanceof Player)) return false;
 		if(!sender.isOp()) return false;
 		Player player = (Player) sender;
+
+		BoosterGUI boosterGUI = new BoosterGUI(player);
+		boosterGUI.open();
 
 		String concatenatedBoosters = "";
 		for(Booster booster : BoosterManager.boosterList) concatenatedBoosters += concatenatedBoosters.isEmpty() ? booster.refName : ", " + booster.refName;
