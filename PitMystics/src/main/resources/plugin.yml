@@ -12,6 +12,8 @@ depend:
   - NoteBlockAPI
   - ProtocolLib
 commands:
+  pitsim:
+  ps:
   oof:
   atest:
   enchant:
@@ -22,25 +24,18 @@ commands:
   jewel:
   market:
   enchants:
-  setkills:
   togglestereo:
   donator:
   renown:
-  bounty:
   spawn:
-  changemap:
   crategive:
   cg:
   afk:
-  pitreload:
-  setlevel:
-  setprestige:
   check:
   shop:
   store:
   discord:
   disc:
   booster:
-  hopper:
   boostergive:
   vn:
