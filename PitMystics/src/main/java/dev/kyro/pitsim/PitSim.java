@@ -282,6 +282,7 @@ public class PitSim extends JavaPlugin {
 		getCommand("enchant").setExecutor(new EnchantCommand());
 		getCommand("fresh").setExecutor(new FreshCommand());
 		getCommand("show").setExecutor(new ShowCommand());
+//		TODO: Need to make it so jewels can be created completed (with enchant and lives)
 		getCommand("jewel").setExecutor(new JewelCommand());
 		getCommand("enchants").setExecutor(new EnchantListCommand());
 		getCommand("donator").setExecutor(new DonatorCommand());
