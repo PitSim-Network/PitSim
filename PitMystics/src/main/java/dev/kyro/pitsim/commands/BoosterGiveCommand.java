@@ -1,5 +1,6 @@
 package dev.kyro.pitsim.commands;
 
+import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.controllers.objects.Booster;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import org.bukkit.Bukkit;
@@ -22,6 +23,10 @@ public class BoosterGiveCommand implements CommandExecutor {
         if(player == null) return false;
         PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
         Booster.setBooster(player, args[1], Booster.getBoosterAmount(player, args[1]) + 1);
+
+        Booster booster = Booster.getBooster(args[1]);
+        assert booster != null;
+        AOutput.send(player, "&6&lBOOSTER! &7Received &f1 " + booster.color + booster.name + "&7.")  ;
 
 
         return false;

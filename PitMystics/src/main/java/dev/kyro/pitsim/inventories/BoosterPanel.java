@@ -9,6 +9,10 @@ import dev.kyro.pitsim.controllers.BoosterManager;
 import dev.kyro.pitsim.controllers.objects.Booster;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.misc.Sounds;
+import me.clip.placeholderapi.PlaceholderAPI;
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
+import org.bukkit.Material;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.inventory.InventoryOpenEvent;
@@ -20,6 +24,7 @@ public class BoosterPanel extends AGUIPanel {
 	public BoosterPanel(AGUI gui) {
 		super(gui);
 		boosterGUI = (BoosterGUI) gui;
+		inventoryBuilder.createBorder(Material.STAINED_GLASS_PANE, 8);
 	}
 
 	@Override
@@ -29,7 +34,7 @@ public class BoosterPanel extends AGUIPanel {
 
 	@Override
 	public int getRows() {
-		return 4;
+		return 3;
 	}
 
 	@Override
@@ -39,12 +44,23 @@ public class BoosterPanel extends AGUIPanel {
 			for(Booster booster : BoosterManager.boosterList) {
 				if(booster.slot ==  slot) {
 					if(Booster.getBoosterAmount(player, booster) < 1) {
-						Sounds.NO.play(player);
-						AOutput.error(player, "");
+						Sounds.SUCCESS.play(player);
+						AOutput.send(player, "&aBuy boosters at https://pitsim.tebex.io");
 						return;
+					} else {
+						Sounds.SUCCESS.play(player);
+						booster.minutes += 60;
+						booster.updateTime();
+						String playerName = "%luckperms_prefix%%essentials_nickname%";
+						String playernamecolor = PlaceholderAPI.setPlaceholders(player, playerName);
+						Bukkit.broadcastMessage(ChatColor.translateAlternateColorCodes('&', "&6&lBOOSTER! " + playernamecolor + " has used a " + booster.color + booster.name));
+						Booster.setBooster(player, booster, Booster.getBoosterAmount(player, booster) - 1);
 					}
+
+					player.closeInventory();
 				}
 			}
+
 		}
 	}
 
@@ -58,6 +74,8 @@ public class BoosterPanel extends AGUIPanel {
 				loreBuilder.addLore("&eClick to use booster!");
 			} else loreBuilder.addLore("&eClick to buy booster!");
 			builder.setLore(loreBuilder);
+			if(booster.minutes > 0) builder.addEnchantGlint(true);
+			builder.getItemStack().setAmount(Math.min(booster.minutes, 64));
 			getInventory().setItem(booster.slot, builder.getItemStack());
 		}
 	}
