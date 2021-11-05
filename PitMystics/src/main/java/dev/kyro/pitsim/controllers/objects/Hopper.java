@@ -87,6 +87,7 @@ public class Hopper {
 	}
 
 	public void tick() {
+		hopper = (Player) npc.getEntity();
 		if(count++ == 0 || !npc.isSpawned()) return;
 
 		if(count % 5 == 0) {
