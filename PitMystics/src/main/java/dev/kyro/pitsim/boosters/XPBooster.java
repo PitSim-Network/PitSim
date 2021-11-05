@@ -12,7 +12,7 @@ import java.util.List;
 
 public class XPBooster extends Booster {
 	public XPBooster() {
-		super("XP Booster", "xp", 10);
+		super("XP Booster", "xp");
 	}
 
 	@EventHandler

@@ -19,10 +19,10 @@ public abstract class Booster implements Listener {
 	public int minutes;
 	public int slot;
 
-	public Booster(String name, String refName, int slot) {
+	public Booster(String name, String refName) {
 		this.name = name;
 		this.refName = refName;
-		this.slot = slot;
+//		this.slot = slot;
 		minutes = Math.max(AConfig.getInt("boosters." + refName), 3);
 	}
 
