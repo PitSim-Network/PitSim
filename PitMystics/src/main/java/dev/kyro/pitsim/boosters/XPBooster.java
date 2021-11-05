@@ -4,6 +4,7 @@ import dev.kyro.arcticapi.builders.AItemStackBuilder;
 import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.pitsim.controllers.objects.Booster;
 import dev.kyro.pitsim.events.KillEvent;
+import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -13,7 +14,7 @@ import java.util.List;
 
 public class XPBooster extends Booster {
 	public XPBooster() {
-		super("XP Booster", "xp");
+		super("XP Booster", "xp", 10, ChatColor.AQUA);
 	}
 
 	@EventHandler(priority = EventPriority.HIGH)

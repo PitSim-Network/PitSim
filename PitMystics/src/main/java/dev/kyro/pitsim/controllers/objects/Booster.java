@@ -18,11 +18,14 @@ public abstract class Booster implements Listener {
 	public String refName;
 	public int minutes;
 	public int slot;
+	public ChatColor color;
 
-	public Booster(String name, String refName) {
+	public Booster(String name, String refName, int slot, ChatColor color) {
 		this.name = name;
 		this.refName = refName;
-//		this.slot = slot;
+		this.slot = slot;
+		this.color = color;
+		Bukkit.broadcastMessage(AConfig.getInt("boosters." + refName) +  "");
 		minutes = Math.max(AConfig.getInt("boosters." + refName), 3);
 	}
 
@@ -36,7 +39,7 @@ public abstract class Booster implements Listener {
 	}
 
 	public void onDisable() {
-		Bukkit.broadcastMessage(ChatColor.translateAlternateColorCodes('&', "&6&lBOOSTER! &7" + name + "&7 no longer active"));
+		Bukkit.broadcastMessage(ChatColor.translateAlternateColorCodes('&', "&6&lBOOSTER! &7" + color + name + "&7 no longer active"));
 	}
 
 	public boolean isActive() {
@@ -45,24 +48,35 @@ public abstract class Booster implements Listener {
 
 	public void updateTime() {
 
-		AConfig.set("booster." + refName, minutes);
+		AConfig.set("boosters." + refName, minutes);
+		AConfig.saveConfig();
 	}
 
 
 	public static int getBoosterAmount(Player player, Booster booster) {
 		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
-		return pitPlayer.boosters.get(booster);
+		return pitPlayer.boosters.getOrDefault(booster, 0);
 	}
 
 	public static int getBoosterAmount(Player player, String booster) {
 		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
 		for(Booster booster1 : BoosterManager.boosterList) {
 			if(booster1.refName.equals(booster)) {
-				return pitPlayer.boosters.get(booster1);
+				return pitPlayer.boosters.getOrDefault(booster1, 0);
 			}
 		}
 		return 0;
 	}
+
+	public static Booster getBooster(String booster) {
+		for(Booster booster1 : BoosterManager.boosterList) {
+			if(booster1.refName.equals(booster)) {
+				return booster1;
+			}
+		}
+		return null;
+	}
+
 	public static void setBooster(Player player, Booster booster, int amount)  {
 		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
 		pitPlayer.boosters.put(booster, amount);
