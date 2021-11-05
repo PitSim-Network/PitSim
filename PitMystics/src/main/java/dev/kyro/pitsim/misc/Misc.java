@@ -2,6 +2,7 @@ package dev.kyro.pitsim.misc;
 
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.controllers.NonManager;
+import dev.kyro.pitsim.controllers.objects.GoldenHelmet;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.megastreaks.Uberstreak;
 import net.minecraft.server.v1_8_R3.*;
@@ -60,6 +61,11 @@ public class Misc {
 			break;
 		}
 		player.addPotionEffect(new PotionEffect(type, duration, amplifier, ambient, particles));
+		if(type == PotionEffectType.POISON) {
+			for(GoldenHelmet goldenHelmet : GoldenHelmet.getHelmetsFromPlayer(player)) {
+				if(goldenHelmet.ability != null && goldenHelmet.ability.isActive) goldenHelmet.deactivate();
+			}
+		}
 	}
 
 	public static void multiKill(Player player) {

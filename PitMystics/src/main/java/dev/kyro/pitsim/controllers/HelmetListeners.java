@@ -5,6 +5,7 @@ import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.controllers.objects.GoldenHelmet;
 import dev.kyro.pitsim.controllers.objects.HelmetAbility;
+import dev.kyro.pitsim.enchants.ComboVenom;
 import dev.kyro.pitsim.enums.NBTTag;
 import dev.kyro.pitsim.events.AttackEvent;
 import dev.kyro.pitsim.events.KillEvent;
@@ -175,9 +176,8 @@ public class HelmetListeners implements Listener {
 	@EventHandler
 	public void onCrouch(PlayerToggleSneakEvent event) {
 		Player player = event.getPlayer();
-
-
 		if(!event.isSneaking()) return;
+		if(ComboVenom.isVenomed(player)) return;
 
 		if(!crouchPlayers.contains(player)) {
 			crouchPlayers.add(player);
@@ -192,15 +192,12 @@ public class HelmetListeners implements Listener {
 		}
 		crouchPlayers.remove(player);
 
-
-
 		int helmSlot = getInventorySlot(player);
 		if(helmSlot == -1) return;
 
 		ItemStack helm = null;
 		if(helmSlot == -2) helm = player.getInventory().getHelmet();
 		else return;
-
 
 		GoldenHelmet goldenHelmet = GoldenHelmet.getHelmetItem(helm, player);
 		assert goldenHelmet != null;
@@ -209,8 +206,6 @@ public class HelmetListeners implements Listener {
 		for(GoldenHelmet goldenHelmet1 : GoldenHelmet.getHelmetsFromPlayer(event.getPlayer())) {
 			if(goldenHelmet1.ability.player !=  goldenHelmet1.owner) goldenHelmet1.ability.player = goldenHelmet1.owner;
 		}
-
-
 
 		if(goldenHelmet.ability == null) {
 			AOutput.error(player, "&6&lGOLDEN HELMET! &cNo ability selected!");

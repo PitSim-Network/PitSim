@@ -1,5 +1,7 @@
 package dev.kyro.pitsim;
 
+import com.comphenix.protocol.ProtocolLibrary;
+import com.comphenix.protocol.ProtocolManager;
 import com.xxmicloxx.NoteBlockAPI.songplayer.EntitySongPlayer;
 import dev.kyro.arcticapi.ArcticAPI;
 import dev.kyro.arcticapi.data.AData;
@@ -43,10 +45,12 @@ import java.util.Map;
 public class PitSim extends JavaPlugin {
 
 	public static double version = 2.0;
-	public static LuckPerms LUCKPERMS;
 
+	public static LuckPerms LUCKPERMS;
 	public static PitSim INSTANCE;
 	public static Economy VAULT = null;
+	public static ProtocolManager PROTOCOL_MANAGER = null;
+
 	public static AData playerList;
 	private BukkitAudiences adventure;
 
@@ -66,6 +70,8 @@ public class PitSim extends JavaPlugin {
 		if (provider != null) {
 			LUCKPERMS = provider.getProvider();
 		}
+
+		PROTOCOL_MANAGER = ProtocolLibrary.getProtocolManager();
 
 		List<NPC> toRemove = new ArrayList<>();
 		CitizensAPI.getNPCRegistry().forEach(toRemove::add);
@@ -193,7 +199,7 @@ public class PitSim extends JavaPlugin {
 	}
 
 	private void registerEnchants() {
-		EnchantManager.registerEnchant(new aComboVenom());
+		EnchantManager.registerEnchant(new ComboVenom());
 		EnchantManager.registerEnchant(new aCPLEnchant());
 		EnchantManager.registerEnchant(new Robinhood());
 
@@ -364,6 +370,7 @@ public class PitSim extends JavaPlugin {
 		getCommand("discord").setExecutor(new DiscordCommand());
 		getCommand("disc").setExecutor(new DiscordCommand());
 		getCommand("booster").setExecutor(new BoosterCommand());
+		getCommand("hopper").setExecutor(new HopperCommand());
 //		getCommand("togglestereo").setExecutor(new ToggleStereoCommand());
 	}
 
@@ -392,6 +399,7 @@ public class PitSim extends JavaPlugin {
 		getServer().getPluginManager().registerEvents(new BackwardsCompatibility(), this);
 		getServer().getPluginManager().registerEvents(new YummyBread(), this);
 		getServer().getPluginManager().registerEvents(new BoosterManager(), this);
+		getServer().getPluginManager().registerEvents(new HopperManager(), this);
 	}
 
 	public void registerBoosters() {

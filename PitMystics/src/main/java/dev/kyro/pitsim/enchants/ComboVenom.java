@@ -10,18 +10,23 @@ import dev.kyro.pitsim.enums.ApplyType;
 import dev.kyro.pitsim.events.AttackEvent;
 import dev.kyro.pitsim.misc.Misc;
 import dev.kyro.pitsim.misc.Sounds;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.potion.PotionEffectType;
 
 import java.util.List;
 
-public class aComboVenom extends PitEnchant {
+public class ComboVenom extends PitEnchant {
 
-	public aComboVenom() {
+	public ComboVenom() {
 		super("Combo: Venom", true, ApplyType.NONE,
 				"venom", "combo-venom");
 		isUncommonEnchant = true;
+	}
+
+	public static boolean isVenomed(Player player) {
+		return player.hasPotionEffect(PotionEffectType.POISON);
 	}
 
 	@EventHandler
@@ -31,13 +36,13 @@ public class aComboVenom extends PitEnchant {
 
 	@EventHandler
 	public void onPrep(AttackEvent.Pre attackEvent) {
-//		if(attackEvent.attacker.hasPotionEffect(PotionEffectType.POISON) || attackEvent.defender.hasPotionEffect(PotionEffectType.POISON)) {
-//			attackEvent.getAttackerEnchantMap().clear();
-//			attackEvent.getDefenderEnchantMap().clear();
-//		}
-		if(attackEvent.attacker.hasPotionEffect(PotionEffectType.POISON)) {
+		if(isVenomed(attackEvent.attacker) || isVenomed(attackEvent.defender)) {
 			attackEvent.getAttackerEnchantMap().clear();
+			attackEvent.getDefenderEnchantMap().clear();
 		}
+//		if(isVenomed(attackEvent.attacker)) {
+//			attackEvent.getAttackerEnchantMap().clear();
+//		}
 	}
 
 	@EventHandler

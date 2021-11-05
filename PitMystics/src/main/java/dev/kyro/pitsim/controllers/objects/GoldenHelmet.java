@@ -194,7 +194,6 @@ public class GoldenHelmet {
 		HelmetAbility.toggledHelmets.remove(uuid);
 		this.ability.isActive = false;
 		this.ability.onDeactivate();
-
 	}
 
 }
