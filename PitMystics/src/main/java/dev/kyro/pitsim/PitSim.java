@@ -274,7 +274,7 @@ public class PitSim extends JavaPlugin {
 		getCommand("ps").setExecutor(adminCommand);
 
 		getCommand("atest").setExecutor(new ATestCommand());
-		getCommand("vn").setExecutor(new NonVisibilityCommand());
+		getCommand("fps").setExecutor(new FPSCommand());
 
 		getCommand("oof").setExecutor(new OofCommand());
 		getCommand("perks").setExecutor(new PerkCommand());
