@@ -8,6 +8,9 @@ import dev.kyro.arcticapi.data.AData;
 import dev.kyro.arcticapi.data.APlayerData;
 import dev.kyro.arcticapi.hooks.AHook;
 import dev.kyro.arcticapi.misc.AOutput;
+import dev.kyro.pitsim.boosters.ChaosBooster;
+import dev.kyro.pitsim.boosters.GoldBooster;
+import dev.kyro.pitsim.boosters.PvPBooster;
 import dev.kyro.pitsim.boosters.XPBooster;
 import dev.kyro.pitsim.commands.*;
 import dev.kyro.pitsim.controllers.*;
@@ -404,6 +407,9 @@ public class PitSim extends JavaPlugin {
 
 	public void registerBoosters() {
 		BoosterManager.registerBooster(new XPBooster());
+		BoosterManager.registerBooster(new GoldBooster());
+		BoosterManager.registerBooster(new PvPBooster());
+		BoosterManager.registerBooster(new ChaosBooster());
 	}
 
 	public void registerUpgrades() {
