@@ -6,6 +6,7 @@ import dev.kyro.pitsim.controllers.objects.Booster;
 import dev.kyro.pitsim.events.KillEvent;
 import org.bukkit.Material;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.List;
@@ -15,10 +16,11 @@ public class XPBooster extends Booster {
 		super("XP Booster", "xp");
 	}
 
-	@EventHandler
+	@EventHandler(priority = EventPriority.HIGH)
 	public void onKill(KillEvent killEvent) {
 		if(!isActive()) return;
-		killEvent.goldMultipliers.add(100D);
+		killEvent.xpMultipliers.add(2.0);
+		killEvent.xpCap *= 1.5;
 	}
 
 	@Override

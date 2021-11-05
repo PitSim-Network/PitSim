@@ -1,6 +1,7 @@
 package dev.kyro.pitsim.controllers.objects;
 
 import dev.kyro.pitsim.PitSim;
+import dev.kyro.pitsim.controllers.BoosterManager;
 import dev.kyro.pitsim.controllers.MapManager;
 import dev.kyro.pitsim.controllers.NonManager;
 import dev.kyro.pitsim.controllers.PitEventManager;
@@ -188,6 +189,9 @@ public class Non {
 		nonState = NonState.RESPAWNING;
 //		Location spawnLoc = new Location(Bukkit.getWorld("pit"), -119, 86, 211, -180, 60);
 		Location spawnLoc = MapManager.getNonSpawn();
+		Booster booster = BoosterManager.getBooster("chaos");
+		if(Math.random() < 0.5 && booster.isActive()) spawnLoc.add(0, -10, 0);
+
 		if(!npc.isSpawned() && !PitEventManager.majorEvent) spawn();
 		try {
 

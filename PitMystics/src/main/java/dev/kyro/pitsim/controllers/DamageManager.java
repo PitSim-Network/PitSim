@@ -287,8 +287,8 @@ public class DamageManager implements Listener {
 			if(attackingNon == null) {
 				FileConfiguration playerData = APlayerData.getPlayerData(killer);
 				if(killer != dead && !isNaked(dead)) {
-					if(killEvent.isLuckyKill) pitAttacker.playerKills = pitAttacker.playerKills + 3;
-					else pitAttacker.playerKills = pitAttacker.playerKills + 1;
+					if(killEvent.isLuckyKill) pitAttacker.playerKills += killEvent.playerKillWorth * 3;
+					else pitAttacker.playerKills += killEvent.playerKillWorth;
 				}
 
 				playerData.set("playerkills", pitAttacker.playerKills);

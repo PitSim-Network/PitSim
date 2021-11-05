@@ -1,6 +1,7 @@
 package dev.kyro.pitsim.controllers;
 
 import dev.kyro.pitsim.PitSim;
+import dev.kyro.pitsim.controllers.objects.Booster;
 import dev.kyro.pitsim.controllers.objects.Non;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -53,6 +54,15 @@ public class NonManager implements Listener {
 	}
 
 	public static int getMaxNons() {
+		int base = 15;
+		int max = 30;
+
+		Booster booster = BoosterManager.getBooster("chaos");
+		if(booster.isActive()) {
+			max = 50;
+			base = 50;
+		}
+
 		Location mid = MapManager.getMid();
 		int playersNearMid = 0;
 		for(Player onlinePlayer : Bukkit.getOnlinePlayers()) {
@@ -60,7 +70,7 @@ public class NonManager implements Listener {
 			double distance = mid.distance(onlinePlayer.getLocation());
 			if(distance < 20) playersNearMid++;
 		}
-		return Math.min(playersNearMid * 3 + 15, 40);
+		return Math.min(playersNearMid * 3 + base, max);
 	}
 
 	public static void updateNons(List<String> botIGNs) {

@@ -15,7 +15,7 @@ public class GoldBooster extends Booster {
 	@EventHandler
 	public void onKill(KillEvent killEvent) {
 		if(!isActive()) return;
-		killEvent.goldMultipliers.add(100D);
+		killEvent.goldMultipliers.add(2.0);
 	}
 
 	@Override

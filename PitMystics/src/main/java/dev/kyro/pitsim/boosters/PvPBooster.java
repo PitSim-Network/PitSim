@@ -15,7 +15,8 @@ public class PvPBooster extends Booster {
 	@EventHandler
 	public void onKill(KillEvent killEvent) {
 		if(!isActive()) return;
-		killEvent.goldMultipliers.add(100D);
+		killEvent.playerKillWorth *= 2;
+//		TODO: not lose lives
 	}
 
 	@Override
