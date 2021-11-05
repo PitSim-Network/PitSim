@@ -75,6 +75,9 @@ public class PitPlayer {
 
 	public ItemStack confirmedDrop = null;
 
+	public Map<Booster, Integer> boosters = new HashMap<>();
+
+
 	public PitPlayer(Player player) {
 		this.player = player;
 		this.megastreak = new NoMegastreak(this);
@@ -143,6 +146,10 @@ public class PitPlayer {
 			if(Objects.equals(streak, "Overdrive")) this.megastreak = new Overdrive(this);
 			if(Objects.equals(streak, "Uberstreak")) this.megastreak = new Uberstreak(this);
 			if(Objects.equals(streak, "To the Moon")) this.megastreak = new ToTheMoon(this);
+
+			for(Booster booster : BoosterManager.boosterList) {
+				boosters.put(booster, playerData.getInt("boosters." + booster.refName));
+			}
 		}
 	}
 
@@ -289,6 +296,8 @@ public class PitPlayer {
 		for(PitPerk perk : pitPerks) if(perk == pitPerk) return true;
 		return false;
 	}
+
+
 
 	public void updateMaxHealth() {
 
