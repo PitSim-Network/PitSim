@@ -22,6 +22,7 @@ public class NonVisibilityCommand implements CommandExecutor {
         FileConfiguration playerData = APlayerData.getPlayerData(player);
         boolean nonsHidden = playerData.getBoolean("misc.nons-hidden");
         playerData.set("misc.nons-hidden", !nonsHidden);
+        APlayerData.savePlayerData(player);
 
         if(nonsHidden) {
             for(Non non : NonManager.nons) player.showPlayer(non.non);
