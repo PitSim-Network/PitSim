@@ -96,7 +96,7 @@ public class RetroGravityMicrocosm extends PitEnchant {
 
 	public int getMaxStacks(int enchantLvl) {
 
-		return enchantLvl + 3;
+		return enchantLvl * 2;
 	}
 
 	public double getHealing(int enchantLvl) {
