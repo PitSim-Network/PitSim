@@ -259,6 +259,7 @@ public class PitSim extends JavaPlugin {
 	private void registerCommands() {
 
 		ABaseCommand adminCommand = new BaseAdminCommand("pitsim");
+		getCommand("ps").setExecutor(adminCommand);
 		ABaseCommand giveCommand = new BaseSetCommand(adminCommand, "give");
 		ABaseCommand setCommand = new BaseSetCommand(adminCommand, "set");
 		adminCommand.registerCommand(new AnticheatCommand("check"));
@@ -269,7 +270,8 @@ public class PitSim extends JavaPlugin {
 		setCommand.registerCommand(new SetPrestigeCommand("prestige"));
 		setCommand.registerCommand(new SetLevelCommand("level"));
 		setCommand.registerCommand(new BountyCommand("bounty"));
-		getCommand("ps").setExecutor(adminCommand);
+
+		giveCommand.registerCommands(new JewelCommand("jewel"));
 
 		getCommand("atest").setExecutor(new ATestCommand());
 		getCommand("fps").setExecutor(new FPSCommand());
@@ -281,7 +283,6 @@ public class PitSim extends JavaPlugin {
 		getCommand("fresh").setExecutor(new FreshCommand());
 		getCommand("show").setExecutor(new ShowCommand());
 //		TODO: Need to make it so jewels can be created completed (with enchant and lives)
-		getCommand("jewel").setExecutor(new JewelCommand());
 		getCommand("enchants").setExecutor(new EnchantListCommand());
 		getCommand("donator").setExecutor(new DonatorCommand());
 		getCommand("renown").setExecutor(new RenownCommand());

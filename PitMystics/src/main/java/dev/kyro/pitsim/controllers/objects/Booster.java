@@ -2,6 +2,8 @@ package dev.kyro.pitsim.controllers.objects;
 
 import dev.kyro.arcticapi.data.AConfig;
 import dev.kyro.arcticapi.data.APlayerData;
+import dev.kyro.pitsim.boosters.GoldBooster;
+import dev.kyro.pitsim.boosters.XPBooster;
 import dev.kyro.pitsim.controllers.BoosterManager;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -25,7 +27,7 @@ public abstract class Booster implements Listener {
 		this.refName = refName;
 		this.slot = slot;
 		this.color = color;
-		minutes = Math.max(AConfig.getInt("boosters." + refName), 0);
+		minutes = Math.max(AConfig.getInt("boosters." + refName), getClass() == XPBooster.class || getClass() == GoldBooster.class ? 3 : 0);
 	}
 
 	public abstract List<String> getDescription();

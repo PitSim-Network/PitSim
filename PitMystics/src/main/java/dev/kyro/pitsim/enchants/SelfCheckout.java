@@ -41,7 +41,7 @@ public class SelfCheckout extends PitEnchant {
 			return;
 		}
 
-		int renown = (int) (pitKiller.getKills() / 100);
+		int renown = (int) ((pitKiller.getKills() + 1) / 100);
 		if(renown != 0) {
 			pitKiller.renown += renown;
 			FileConfiguration playerData = APlayerData.getPlayerData(killEvent.killer);
@@ -53,10 +53,10 @@ public class SelfCheckout extends PitEnchant {
 		NBTItem nbtItem = new NBTItem(leggings);
 		if(nbtItem.hasKey(NBTTag.CURRENT_LIVES.getRef())) {
 			int lives = nbtItem.getInteger(NBTTag.CURRENT_LIVES.getRef());
-			if(lives - 1 == 0) {
+			if(lives - 2 <= 0) {
 				killEvent.killer.getEquipment().setLeggings(new ItemStack(Material.AIR));
 			} else {
-				nbtItem.setInteger(NBTTag.CURRENT_LIVES.getRef(), nbtItem.getInteger(NBTTag.CURRENT_LIVES.getRef()) - 1);
+				nbtItem.setInteger(NBTTag.CURRENT_LIVES.getRef(), nbtItem.getInteger(NBTTag.CURRENT_LIVES.getRef()) - 2);
 				EnchantManager.setItemLore(nbtItem.getItem());
 				killEvent.killer.getEquipment().setLeggings(nbtItem.getItem());
 			}
@@ -73,10 +73,5 @@ public class SelfCheckout extends PitEnchant {
 				"&e\u25a0 &7Die! Keep jewel lives on death",
 				"&a\u25a0 &7Gain &e+1 renown &7for every 100 killstreak",
 				"&c\u25a0 &7Lose &c2 lives &7on this item").getLore();
-	}
-
-	public double getHealing(int enchantLvl) {
-
-		return Math.floor(Math.pow(enchantLvl, 1.4));
 	}
 }
