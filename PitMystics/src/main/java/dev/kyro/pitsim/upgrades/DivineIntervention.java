@@ -18,7 +18,7 @@ import java.util.List;
 public class DivineIntervention extends RenownUpgrade {
 	public static DivineIntervention INSTANCE;
 	public DivineIntervention() {
-		super("Divine Intervention", "DIVINE_INTERVENTION", 25, 30, 25, true, 3);
+		super("Divine Intervention", "DIVINE_INTERVENTION", 25, 24, 17, true, 3);
 		INSTANCE = this;
 	}
 
@@ -52,7 +52,6 @@ public class DivineIntervention extends RenownUpgrade {
 
 		if(isDouble) {
 			AOutput.send(player, "&b&lDIVINE INTERVENTION! &7Inventory saved!");
-//			ASound.play(player, Sound.VILLA);
 		}
 
 		return isDouble;

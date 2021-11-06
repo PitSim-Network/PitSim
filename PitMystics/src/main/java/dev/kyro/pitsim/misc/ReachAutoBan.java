@@ -9,6 +9,8 @@ import org.stellardev.anticheat.api.BuzzAlertEvent;
 
 public class ReachAutoBan implements Listener {
 
+
+
 	@EventHandler
 	public void onFlag(BuzzAlertEvent event) {
 		if(event.getCheck().equalsIgnoreCase("RangeA") && event.getTotalVl() >= 4) {

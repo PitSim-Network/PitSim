@@ -13,6 +13,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
+import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
@@ -70,5 +71,20 @@ public class ChatManager implements Listener {
 
 		RapeCommand.chatMap.putIfAbsent(event.getPlayer(), new ArrayList<>());
 		RapeCommand.chatMap.get(event.getPlayer()).add(event.getMessage().toLowerCase());
+	}
+
+	@EventHandler
+	public void onCommandSend(PlayerCommandPreprocessEvent event) {
+		if(event.getMessage().startsWith("/view")) {
+
+			String newCommand = "/invsee ";
+
+			String[] splited = event.getMessage().split("\\s+");
+
+			newCommand = "invsee " + splited[1];
+
+			event.setCancelled(true);
+			event.getPlayer().performCommand(newCommand);
+		}
 	}
 }

@@ -1,7 +1,6 @@
 package dev.kyro.pitsim.enchants;
 
 import dev.kyro.arcticapi.builders.ALoreBuilder;
-import dev.kyro.arcticapi.misc.ASound;
 import dev.kyro.pitsim.controllers.HitCounter;
 import dev.kyro.pitsim.controllers.NonManager;
 import dev.kyro.pitsim.controllers.objects.Non;
@@ -10,19 +9,24 @@ import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.enums.ApplyType;
 import dev.kyro.pitsim.events.AttackEvent;
 import dev.kyro.pitsim.misc.Misc;
-import org.bukkit.Sound;
+import dev.kyro.pitsim.misc.Sounds;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.potion.PotionEffectType;
 
 import java.util.List;
 
-public class aComboVenom extends PitEnchant {
+public class ComboVenom extends PitEnchant {
 
-	public aComboVenom() {
+	public ComboVenom() {
 		super("Combo: Venom", true, ApplyType.NONE,
 				"venom", "combo-venom");
 		isUncommonEnchant = true;
+	}
+
+	public static boolean isVenomed(Player player) {
+		return player.hasPotionEffect(PotionEffectType.POISON);
 	}
 
 	@EventHandler
@@ -32,13 +36,13 @@ public class aComboVenom extends PitEnchant {
 
 	@EventHandler
 	public void onPrep(AttackEvent.Pre attackEvent) {
-//		if(attackEvent.attacker.hasPotionEffect(PotionEffectType.POISON) || attackEvent.defender.hasPotionEffect(PotionEffectType.POISON)) {
-//			attackEvent.getAttackerEnchantMap().clear();
-//			attackEvent.getDefenderEnchantMap().clear();
-//		}
-		if(attackEvent.attacker.hasPotionEffect(PotionEffectType.POISON)) {
+		if(isVenomed(attackEvent.attacker) || isVenomed(attackEvent.defender)) {
 			attackEvent.getAttackerEnchantMap().clear();
+			attackEvent.getDefenderEnchantMap().clear();
 		}
+//		if(isVenomed(attackEvent.attacker)) {
+//			attackEvent.getAttackerEnchantMap().clear();
+//		}
 	}
 
 	@EventHandler
@@ -59,8 +63,8 @@ public class aComboVenom extends PitEnchant {
 
 //		Misc.applyPotionEffect(attackEvent.attacker, PotionEffectType.POISON, 20 * 24, 0, true, false);
 		Misc.applyPotionEffect(attackEvent.defender, PotionEffectType.POISON, 20 * 12, 0, true, false);
-		ASound.play(attackEvent.attacker, Sound.SPIDER_IDLE, 1, 1);
-		ASound.play(attackEvent.defender, Sound.SPIDER_IDLE, 1, 1);
+		Sounds.VENOM.play(attackEvent.attacker);
+		Sounds.VENOM.play(attackEvent.defender);
 	}
 
 	@Override

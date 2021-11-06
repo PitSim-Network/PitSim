@@ -5,17 +5,16 @@ import dev.kyro.arcticapi.data.APlayerData;
 import dev.kyro.arcticapi.gui.AGUI;
 import dev.kyro.arcticapi.gui.AGUIPanel;
 import dev.kyro.arcticapi.misc.AOutput;
-import dev.kyro.arcticapi.misc.ASound;
 import dev.kyro.arcticapi.misc.AUtil;
 import dev.kyro.pitsim.controllers.UpgradeManager;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.controllers.objects.RenownUpgrade;
 import dev.kyro.pitsim.enums.NBTTag;
 import dev.kyro.pitsim.misc.Misc;
+import dev.kyro.pitsim.misc.Sounds;
 import dev.kyro.pitsim.upgrades.ShardHunter;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
-import org.bukkit.Sound;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.event.inventory.InventoryClickEvent;
@@ -58,15 +57,15 @@ public class ShardHunterPanel extends AGUIPanel {
             assert upgrade != null;
 
             if(slot == 15) {
-                    if(upgrade.levelReq > pitPlayer.playerLevel) {
+                    if(upgrade.prestigeReq > pitPlayer.prestige) {
                         AOutput.error(player, "&cYou are too low level to acquire this!");
-                        player.playSound(player.getLocation(), Sound.VILLAGER_NO, 1 ,1);
+                        Sounds.NO.play(player);
                         return;
                     }
                     if(upgrade.isTiered) {
                         if(upgrade.maxTiers != UpgradeManager.getTier(player, upgrade) && upgrade.getTierCosts().get(UpgradeManager.getTier(player, upgrade)) > pitPlayer.renown) {
                             AOutput.error(player, "&cYou do not have enough renown!");
-                            player.playSound(player.getLocation(), Sound.VILLAGER_NO, 1 ,1);
+                            Sounds.NO.play(player);
                             return;
                         }
                         if(UpgradeManager.getTier(player, upgrade) < upgrade.maxTiers) {
@@ -74,26 +73,26 @@ public class ShardHunterPanel extends AGUIPanel {
                             openPanel(renownShopGUI.renownShopConfirmPanel);
                         } else {
                             AOutput.error(player, "&aYou already unlocked the last upgrade!");
-                            player.playSound(player.getLocation(), Sound.VILLAGER_NO, 1 ,1);
+                            Sounds.NO.play(player);
                         }
                     } else if(!UpgradeManager.hasUpgrade(player, upgrade)) {
                         if(upgrade.renownCost > pitPlayer.renown) {
                             AOutput.error(player, "&cYou do not have enough renown!");
-                            player.playSound(player.getLocation(), Sound.VILLAGER_NO, 1 ,1);
+                            Sounds.NO.play(player);
                             return;
                         }
                         RenownShopGUI.purchaseConfirmations.put(player, upgrade);
                         openPanel(renownShopGUI.renownShopConfirmPanel);
                     } else {
                         AOutput.error(player, "&aYou already unlocked this upgrade!");
-                        player.playSound(player.getLocation(), Sound.VILLAGER_NO, 1 ,1);
+                        Sounds.NO.play(player);
                     }
 
             }
             if(slot == 11) {
                 if(getShards() < 64) {
                     AOutput.error(player, "&cYou do not have enough shards to craft this!");
-                    player.playSound(player.getLocation(), Sound.VILLAGER_NO, 1 ,1);
+                    Sounds.NO.play(player);
                     return;
                 }
 
@@ -116,7 +115,7 @@ public class ShardHunterPanel extends AGUIPanel {
 
                 AUtil.giveItemSafely(player, ShardHunter.getGemItem(), true);
                 player.closeInventory();
-                ASound.play(player, Sound.ORB_PICKUP, 2, 1.5F);
+                Sounds.GEM_CRAFT.play(player);
                 AOutput.send(player, "&d&lITEM CRAFTED! &7Received &aTotally Legit Gem&7!");
 
             }

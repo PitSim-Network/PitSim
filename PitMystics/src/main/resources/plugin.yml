@@ -10,7 +10,10 @@ depend:
   - Vault
   - PlaceholderAPI
   - NoteBlockAPI
+  - ProtocolLib
 commands:
+  pitsim:
+  ps:
   oof:
   atest:
   enchant:
@@ -35,3 +38,10 @@ commands:
   setvalue:
   check:
   rape:
+  shop:
+  store:
+  discord:
+  disc:
+  booster:
+  boostergive:
+  fps:

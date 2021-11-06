@@ -8,9 +8,8 @@ import dev.kyro.pitsim.controllers.objects.PitEnchant;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.events.AttackEvent;
 import dev.kyro.pitsim.events.OofEvent;
-import dev.kyro.pitsim.events.PerkEquipEvent;
+import dev.kyro.pitsim.misc.Sounds;
 import org.bukkit.Bukkit;
-import org.bukkit.Sound;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -33,11 +32,11 @@ public class OofCommand implements CommandExecutor {
         if(SpawnManager.isInSpawn(player.getLocation())) {
 
             AOutput.send(player, "&c&lNOPE! &7Cant /oof in spawn!");
-            player.playSound(player.getLocation(), Sound.ENDERMAN_TELEPORT, 1F, 0.5F);
+            Sounds.ERROR.play(player);
         } else {
 
             if(!CombatManager.taggedPlayers.containsKey(player.getUniqueId())) {
-                DamageManager.Death(player);
+                DamageManager.death(player);
                 OofEvent oofEvent = new OofEvent(player);
                 Bukkit.getPluginManager().callEvent(oofEvent);
                 return false;
@@ -58,7 +57,7 @@ public class OofCommand implements CommandExecutor {
                     return false;
                 }
             }
-            DamageManager.Death(player);
+            DamageManager.death(player);
             OofEvent oofEvent = new OofEvent(player);
             Bukkit.getPluginManager().callEvent(oofEvent);
         }

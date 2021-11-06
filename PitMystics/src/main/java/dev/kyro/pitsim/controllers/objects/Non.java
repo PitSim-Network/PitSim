@@ -1,6 +1,8 @@
 package dev.kyro.pitsim.controllers.objects;
 
 import dev.kyro.pitsim.PitSim;
+import dev.kyro.pitsim.commands.FPSCommand;
+import dev.kyro.pitsim.controllers.BoosterManager;
 import dev.kyro.pitsim.controllers.MapManager;
 import dev.kyro.pitsim.controllers.NonManager;
 import dev.kyro.pitsim.controllers.PitEventManager;
@@ -72,6 +74,7 @@ public class Non {
 		this.npc = CitizensAPI.getNPCRegistry().createNPC(EntityType.PLAYER, displayName);
 		if(!PitEventManager.majorEvent) spawn();
 		this.non = (Player) npc.getEntity();
+		FPSCommand.hideNewNon(this);
 		NonManager.nons.add(this);
 
 		CitizensNavigator navigator = (CitizensNavigator) npc.getNavigator();
@@ -90,10 +93,10 @@ public class Non {
 	}
 
 	public void tick() {
-
+		if(npc.getEntity() != null && non != npc.getEntity()) FPSCommand.hideNewNon(this);
 		non = (Player) npc.getEntity();
 		if(!npc.isSpawned() && !PitEventManager.majorEvent) respawn();
-		if(npc.isSpawned() && non.getLocation().getY() <= MapManager.getY()) {
+		if(npc.isSpawned() && non.getLocation().getY() <= MapManager.getY() - 0.1) {
 			Location teleportLoc = non.getLocation().clone();
 			teleportLoc.setY(MapManager.getY() + 1.2);
 			non.teleport(teleportLoc);
@@ -124,7 +127,7 @@ public class Non {
 
 			if(npc.isSpawned()) {
 			Block underneath = non.getLocation().clone().subtract(0, 0.2, 0).getBlock();
-				if(underneath.getType() != Material.AIR) {
+				if(underneath.getType() != Material.AIR && underneath.getType() != Material.CARPET) {
 
 					int rand = (int) (Math.random() * 2);
 					Location rotLoc = non.getLocation().clone();
@@ -155,7 +158,7 @@ public class Non {
 		Player closest = null;
 		double closestDistance = 100;
 		Location midLoc = MapManager.getMid();
-		for(Entity nearbyEntity : non.getWorld().getNearbyEntities(midLoc, 10, 10, 10)) {
+		for(Entity nearbyEntity : non.getWorld().getNearbyEntities(midLoc, 5, 5, 5)) {
 
 			if(!(nearbyEntity instanceof Player) || nearbyEntity.getUniqueId().equals(non.getUniqueId())) continue;
 			double targetDistanceFromMid = Math.sqrt(Math.pow(nearbyEntity.getLocation().getX() - midLoc.getX(), 2) +
@@ -180,14 +183,15 @@ public class Non {
 	public void spawn() {
 		Location spawnLoc = MapManager.getNonSpawn();
 		npc.spawn(spawnLoc);
-//		skin(npc, "wiji1", npc.getStoredLocation());
 	}
 
 	public void respawn() {
 
 		nonState = NonState.RESPAWNING;
-//		Location spawnLoc = new Location(Bukkit.getWorld("pit"), -119, 86, 211, -180, 60);
 		Location spawnLoc = MapManager.getNonSpawn();
+		Booster booster = BoosterManager.getBooster("chaos");
+		if(Math.random() < 0.5 && booster.isActive()) spawnLoc.add(0, -10, 0);
+
 		if(!npc.isSpawned() && !PitEventManager.majorEvent) spawn();
 		try {
 
@@ -241,24 +245,7 @@ public class Non {
 			public void run() {
 				nonState = NonState.FIGHTING;
 			}
-		}.runTaskLater(PitSim.INSTANCE, 40L);
-
-		new BukkitRunnable() {
-			@Override
-			public void run() {
-
-//				Vector velo = non.getLocation().getDirection().normalize().multiply(0.7);
-//				velo.setY(0.35);
-//				non.setVelocity(velo);
-//
-//				new BukkitRunnable() {
-//					@Override
-//					public void run() {
-//						nonState = NonState.FIGHTING;
-//					}
-//				}.runTaskLater(PitSim.INSTANCE, 55L);
-			}
-		}.runTaskLater(PitSim.INSTANCE, (long) (Math.random() * 20 + 20));
+		}.runTaskLater(PitSim.INSTANCE, 20L);
 	}
 
 	public void pickTraits() {

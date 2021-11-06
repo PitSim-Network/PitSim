@@ -1,6 +1,7 @@
 package dev.kyro.pitsim.controllers;
 
 import dev.kyro.pitsim.PitSim;
+import dev.kyro.pitsim.controllers.objects.Booster;
 import dev.kyro.pitsim.controllers.objects.Non;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -21,7 +22,16 @@ public class NonManager implements Listener {
 			@Override
 			public void run() {
 //				if(true) return;
-				if(botIGNs.isEmpty()) botIGNs.add("KyroKrypt");
+				if(botIGNs.isEmpty()) {
+					botIGNs.add("KyroKrypt");
+					botIGNs.add("wiji1");
+					botIGNs.add("Chantingshoe");
+					botIGNs.add("ObvEndyy");
+					botIGNs.add("OPeterIsCracked");
+					botIGNs.add("pogha");
+					botIGNs.add("robert_mugabe355");
+					botIGNs.add("xLava28");
+				}
 				for(int i = 0; i < 3; i++) {
 					if(nons.size() >= getMaxNons()) return;
 					Non non = new Non(botIGNs.get((int) (Math.random() * botIGNs.size())));
@@ -44,6 +54,15 @@ public class NonManager implements Listener {
 	}
 
 	public static int getMaxNons() {
+		int base = 15;
+		int max = 30;
+
+		Booster booster = BoosterManager.getBooster("chaos");
+		if(booster.isActive()) {
+			max = 50;
+			base = 50;
+		}
+
 		Location mid = MapManager.getMid();
 		int playersNearMid = 0;
 		for(Player onlinePlayer : Bukkit.getOnlinePlayers()) {
@@ -51,7 +70,7 @@ public class NonManager implements Listener {
 			double distance = mid.distance(onlinePlayer.getLocation());
 			if(distance < 20) playersNearMid++;
 		}
-		return Math.min(playersNearMid * 3 + 15, 40);
+		return Math.min(playersNearMid * 3 + base, max);
 	}
 
 	public static void updateNons(List<String> botIGNs) {

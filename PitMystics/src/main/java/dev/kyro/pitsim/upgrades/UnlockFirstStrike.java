@@ -1,6 +1,7 @@
 package dev.kyro.pitsim.upgrades;
 
 import dev.kyro.arcticapi.gui.AGUIPanel;
+import dev.kyro.arcticapi.misc.AUtil;
 import dev.kyro.pitsim.controllers.UpgradeManager;
 import dev.kyro.pitsim.controllers.objects.RenownUpgrade;
 import org.bukkit.ChatColor;
@@ -14,7 +15,7 @@ import java.util.List;
 
 public class UnlockFirstStrike extends RenownUpgrade {
 	public UnlockFirstStrike() {
-		super("Perk unlock: First Strike", "FIRST_STRIKE", 25, 20, 10, false, 0);
+		super("Perk unlock: First Strike", "FIRST_STRIKE", 25, 19, 10, false, 0);
 	}
 
 	@Override
@@ -23,7 +24,7 @@ public class UnlockFirstStrike extends RenownUpgrade {
 		ItemMeta meta = item.getItemMeta();
 		meta.setDisplayName(UpgradeManager.itemNameString(this, player));
 		List<String> lore = new ArrayList<>();
-		lore.add(ChatColor.GRAY + "Required level: " + ChatColor.YELLOW + this.levelReq);
+		lore.add(ChatColor.GRAY + "Required prestige: " + ChatColor.YELLOW + AUtil.toRoman(this.prestigeReq));
 		lore.add("");
 		lore.add(ChatColor.YELLOW + "First Strike");
 		lore.add(ChatColor.translateAlternateColorCodes('&', "&7First hit on a player deals"));

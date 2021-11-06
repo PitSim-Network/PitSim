@@ -41,6 +41,7 @@ public class Booboo extends PitEnchant {
 				for(Player player : Bukkit.getOnlinePlayers()) {
 					int level = EnchantManager.getEnchantLevel(player, INSTANCE);
 					PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
+					if(ComboVenom.isVenomed(player)) continue;
 
 					if(level == 1 && counter % 5 == 0) {
 						pitPlayer.heal(2);

@@ -24,6 +24,12 @@ public enum NBTTag {
 	IS_VILE("pr-isvile"),
 	IS_SHARD("pr-isshard"),
 	IS_GEM("pr-isgem"),
+	IS_GHELMET("pr-isghelm"),
+	GHELMET_UUID("pr-ghelm-uuid"),
+	GHELMET_GOLD("pr-ghelm-gold"),
+	GHELMET_ABILITY("pr-ghelm-ability"),
+	IS_YUMMY_BREAD("pr-is-yummy-bread"),
+	IS_VERY_YUMMY_BREAD("pr-is-very-yummy-bread"),
 
 	IS_VENOM("pr-isvenom");
 

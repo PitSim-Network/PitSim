@@ -21,7 +21,7 @@ import java.util.List;
 public class Impatient extends RenownUpgrade {
 	public static RenownUpgrade INSTANCE;
 	public Impatient() {
-		super("Impatient", "IMPATIENT", 10, 22, 10, false, 0);
+		super("Impatient", "IMPATIENT", 10, 14, 6, false, 0);
 		INSTANCE = this;
 	}
 

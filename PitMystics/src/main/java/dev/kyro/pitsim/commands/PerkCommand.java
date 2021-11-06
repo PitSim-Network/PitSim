@@ -15,6 +15,7 @@ public class PerkCommand implements CommandExecutor {
 
 		if(!(sender instanceof Player)) return false;
 		Player player = (Player) sender;
+		if(!player.isOp()) return false;
 
 		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
 		if(pitPlayer.megastreak.isOnMega()) {

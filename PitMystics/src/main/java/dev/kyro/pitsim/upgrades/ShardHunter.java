@@ -8,8 +8,11 @@ import de.tr7zw.nbtapi.NBTItem;
 import dev.kyro.arcticapi.gui.AGUIPanel;
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.arcticapi.misc.AUtil;
+import dev.kyro.pitsim.controllers.HelmetListeners;
+import dev.kyro.pitsim.controllers.HelmetSystem;
 import dev.kyro.pitsim.controllers.ItemManager;
 import dev.kyro.pitsim.controllers.UpgradeManager;
+import dev.kyro.pitsim.controllers.objects.GoldenHelmet;
 import dev.kyro.pitsim.controllers.objects.RenownUpgrade;
 import dev.kyro.pitsim.enums.NBTTag;
 import dev.kyro.pitsim.events.KillEvent;
@@ -30,7 +33,7 @@ import java.util.List;
 
 public class ShardHunter extends RenownUpgrade {
 	public ShardHunter() {
-		super("Shardhunter", "SHARDHUNTER", 40, 34, 40, true, 10);
+		super("Shardhunter", "SHARDHUNTER", 40, 32, 30, true, 10);
 	}
 
 	@Override
@@ -72,28 +75,16 @@ public class ShardHunter extends RenownUpgrade {
 		if(tier == 0) return;
 
 		double chance = 0.0001 * tier;
+		GoldenHelmet helmet = HelmetListeners.getHelmetInstance(killEvent.killer);
+		if(helmet != null) {
+			int level = HelmetSystem.getLevel(helmet.gold);
+			if(killEvent.killer.getInventory().getHelmet().getType() == Material.GOLD_HELMET) chance += 0.0001 * HelmetSystem.getTotalStacks(HelmetSystem.Passive.SHARD_CHANCE,level - 1);
+		}
 
 		boolean givesShard = Math.random() < chance;
 
 		if(!givesShard) return;
-
-		ItemStack shardItem = new ItemStack(Material.PRISMARINE_SHARD);
-		ItemMeta shardMeta = shardItem.getItemMeta();
-		shardMeta.addEnchant(Enchantment.ARROW_FIRE, 1, false);
-		shardMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
-		shardMeta.setDisplayName(ChatColor.GREEN + "Ancient Gem Shard");
-		List<String> lore = new ArrayList<>();
-		lore.add(ChatColor.YELLOW + "Special item");
-		lore.add(ChatColor.GRAY + "A piece of a relic lost to time.");
-		lore.add(ChatColor.GRAY + "Find enough shards and you may be");
-		lore.add(ChatColor.GRAY + "able to craft an item of great power.");
-		shardMeta.setLore(lore);
-		shardItem.setItemMeta(shardMeta);
-		shardItem = ItemManager.enableDropConfirm(shardItem);
-		NBTItem nbtItem = new NBTItem(shardItem);
-		nbtItem.setBoolean(NBTTag.IS_SHARD.getRef(), true);
-
-		AUtil.giveItemSafely(killEvent.killer, nbtItem.getItem(), true);
+		AUtil.giveItemSafely(killEvent.killer, getShardItem(1), true);
 		AOutput.send(killEvent.killer, "&d&lGEM SHARD! &7obtained from killing " + killEvent.dead.getDisplayName() + "!");
 
 		File file = new File("plugins/NoteBlockAPI/Effects/ShardHunter.nbs");
@@ -125,6 +116,26 @@ public class ShardHunter extends RenownUpgrade {
 
 		nbtItem.setBoolean(NBTTag.IS_GEM.getRef(), true);
 
+		return nbtItem.getItem();
+	}
+
+	public static ItemStack getShardItem(int amount) {
+		ItemStack shardItem = new ItemStack(Material.PRISMARINE_SHARD);
+		ItemMeta shardMeta = shardItem.getItemMeta();
+		shardMeta.addEnchant(Enchantment.ARROW_FIRE, 1, false);
+		shardMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
+		shardMeta.setDisplayName(ChatColor.GREEN + "Ancient Gem Shard");
+		List<String> lore = new ArrayList<>();
+		lore.add(ChatColor.YELLOW + "Special item");
+		lore.add(ChatColor.GRAY + "A piece of a relic lost to time.");
+		lore.add(ChatColor.GRAY + "Find enough shards and you may be");
+		lore.add(ChatColor.GRAY + "able to craft an item of great power.");
+		shardMeta.setLore(lore);
+		shardItem.setItemMeta(shardMeta);
+		shardItem.setAmount(amount);
+		shardItem = ItemManager.enableDropConfirm(shardItem);
+		NBTItem nbtItem = new NBTItem(shardItem);
+		nbtItem.setBoolean(NBTTag.IS_SHARD.getRef(), true);
 		return nbtItem.getItem();
 	}
 }

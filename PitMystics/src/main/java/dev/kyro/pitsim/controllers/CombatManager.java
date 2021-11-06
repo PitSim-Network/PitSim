@@ -7,6 +7,7 @@ import dev.kyro.pitsim.controllers.objects.PitEnchant;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.events.AttackEvent;
 import dev.kyro.pitsim.events.KillEvent;
+import dev.kyro.pitsim.events.OofEvent;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
@@ -79,13 +80,14 @@ public class CombatManager implements Listener {
         Player player = event.getPlayer();
        FileConfiguration playerData = APlayerData.getPlayerData(event.getPlayer());
        PitPlayer pitplayer = PitPlayer.getPitPlayer(event.getPlayer());
-       playerData.set("level", pitplayer.playerLevel);
+       playerData.set("level", pitplayer.level);
+       playerData.set("prestige", pitplayer.prestige);
        playerData.set("playerkills", pitplayer.playerKills);
        playerData.set("xp", pitplayer.remainingXP);
        playerData.set("renown", pitplayer.renown);
        APlayerData.savePlayerData(event.getPlayer());
         event.getPlayer().closeInventory();
-        PlayerManager.bossBars.remove(event.getPlayer());
+//        PlayerManager.bossBars.remove(event.getPlayer());
         PitEventManager.kills.remove(event.getPlayer());
         PitEventManager.bounty.remove(event.getPlayer());
         if(NonManager.getNon(event.getPlayer()) != null) return;
@@ -106,7 +108,7 @@ public class CombatManager implements Listener {
                    return;
                }
            }
-           DamageManager.Death(player);
+           DamageManager.death(player);
        }
 
 
@@ -129,7 +131,14 @@ public class CombatManager implements Listener {
    @EventHandler
    public static void onDeath(KillEvent event) {
        taggedPlayers.remove(event.dead.getUniqueId());
+       PitPlayer.getPitPlayer(event.dead).lastHitUUID = null;
    }
+
+    @EventHandler
+    public static void onOof(OofEvent event) {
+        taggedPlayers.remove(event.getPlayer().getUniqueId());
+        PitPlayer.getPitPlayer(event.getPlayer()).lastHitUUID = null;
+    }
 
    @EventHandler
     public static void onCommandSend(PlayerCommandPreprocessEvent event) {

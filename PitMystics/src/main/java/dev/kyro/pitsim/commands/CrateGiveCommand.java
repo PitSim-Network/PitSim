@@ -7,6 +7,7 @@ import dev.kyro.arcticapi.misc.AUtil;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.controllers.EnchantManager;
 import dev.kyro.pitsim.controllers.ItemManager;
+import dev.kyro.pitsim.controllers.LevelManager;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.enums.MysticType;
 import dev.kyro.pitsim.enums.NBTTag;
@@ -119,7 +120,7 @@ public class CrateGiveCommand implements CommandExecutor {
 				ChunkOfVile.giveVile(player, amount);
 				return false;
 			case "gold":
-				PitSim.VAULT.depositPlayer(player, amount);
+				LevelManager.addGold(player, amount);
 				return false;
 			case "renown":
 				pitPlayer.renown += amount;

@@ -16,20 +16,20 @@ public abstract class RenownUpgrade implements Listener {
     public String refName;
     public int renownCost;
     public int guiSlot;
-    public int levelReq;
+    public int prestigeReq;
     public boolean isTiered;
     public int maxTiers;
 
 
     public RenownUpgrade INSTANCE;
 
-    public RenownUpgrade(String name, String refName, int renownCost, int guiSlot, int levelReq, boolean isTiered, int maxTiers) {
+    public RenownUpgrade(String name, String refName, int renownCost, int guiSlot, int prestigeReq, boolean isTiered, int maxTiers) {
 //        INSTANCE = this;
         this.name = name;
         this.refName = refName;
         this.renownCost = renownCost;
         this.guiSlot = guiSlot;
-        this.levelReq = levelReq;
+        this.prestigeReq = prestigeReq;
         this.isTiered = isTiered;
         this.maxTiers = maxTiers;
 

@@ -1,15 +1,14 @@
 package dev.kyro.pitsim.enchants;
 
 import dev.kyro.arcticapi.builders.ALoreBuilder;
-import dev.kyro.arcticapi.misc.ASound;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.controllers.NonManager;
 import dev.kyro.pitsim.controllers.UpgradeManager;
 import dev.kyro.pitsim.controllers.objects.PitEnchant;
 import dev.kyro.pitsim.enums.ApplyType;
 import dev.kyro.pitsim.events.AttackEvent;
+import dev.kyro.pitsim.misc.Sounds;
 import dev.kyro.pitsim.pitevents.Juggernaut;
-import org.bukkit.Sound;
 import org.bukkit.event.EventHandler;
 
 import java.util.List;
@@ -42,7 +41,7 @@ public class Billionaire extends PitEnchant {
 		if(Juggernaut.juggernaut != attackEvent.attacker)PitSim.VAULT.withdrawPlayer(attackEvent.attacker, goldCost);
 
 		attackEvent.multiplier.add(getDamageMultiplier(enchantLvl));
-		ASound.play(attackEvent.attacker, Sound.ORB_PICKUP, 1, 0.73F);
+		Sounds.BILLIONAIRE.play(attackEvent.attacker);
 	}
 
 	@Override

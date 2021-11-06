@@ -3,12 +3,9 @@ package dev.kyro.pitsim.inventories;
 import dev.kyro.arcticapi.data.APlayerData;
 import dev.kyro.arcticapi.gui.AGUI;
 import dev.kyro.pitsim.controllers.NonManager;
-import dev.kyro.pitsim.controllers.objects.Megastreak;
+import dev.kyro.pitsim.controllers.objects.Killstreak;
 import dev.kyro.pitsim.controllers.objects.PitPerk;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
-import dev.kyro.pitsim.killstreaks.Highlander;
-import dev.kyro.pitsim.killstreaks.Overdrive;
-import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 
@@ -17,6 +14,9 @@ public class PerkGUI extends AGUI {
 	public PerkPanel perkPanel;
 	public ApplyPerkPanel applyPerkPanel;
 	public MegastreakPanel megastreakPanel;
+	public KillstreakPanel killstreakPanel;
+
+	public int killstreakSlot = 0;
 
 	public PerkGUI(Player player) {
 		super(player);
@@ -25,6 +25,7 @@ public class PerkGUI extends AGUI {
 		setHomePanel(perkPanel);
 		applyPerkPanel = new ApplyPerkPanel(this);
 		megastreakPanel = new MegastreakPanel(this);
+		killstreakPanel = new KillstreakPanel(this);
 	}
 
 	public void megaWrapUp() {
@@ -59,6 +60,13 @@ public class PerkGUI extends AGUI {
 		APlayerData.savePlayerData(player);
 
 		getActivePerks()[perkNum - 1] = pitPerk;
+	}
+
+	public void saveKillstreak(Killstreak killstreak, int slotNum) {
+		if(NonManager.getNon(player) !=  null) return;
+		FileConfiguration playerData = APlayerData.getPlayerData(player);
+		playerData.set("killstreak-" + (slotNum - 1), killstreak.refName);
+		APlayerData.savePlayerData(player);
 	}
 
 	public boolean isActive(PitPerk pitPerk) {

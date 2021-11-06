@@ -1,29 +1,39 @@
 package dev.kyro.pitsim;
 
+import com.comphenix.protocol.ProtocolLibrary;
+import com.comphenix.protocol.ProtocolManager;
 import com.xxmicloxx.NoteBlockAPI.songplayer.EntitySongPlayer;
 import dev.kyro.arcticapi.ArcticAPI;
+import dev.kyro.arcticapi.commands.ABaseCommand;
 import dev.kyro.arcticapi.data.AData;
 import dev.kyro.arcticapi.data.APlayerData;
 import dev.kyro.arcticapi.hooks.AHook;
 import dev.kyro.arcticapi.misc.AOutput;
+import dev.kyro.pitsim.boosters.ChaosBooster;
+import dev.kyro.pitsim.boosters.GoldBooster;
+import dev.kyro.pitsim.boosters.PvPBooster;
+import dev.kyro.pitsim.boosters.XPBooster;
 import dev.kyro.pitsim.commands.*;
+import dev.kyro.pitsim.commands.admin.*;
 import dev.kyro.pitsim.controllers.*;
+import dev.kyro.pitsim.controllers.objects.HelmetAbility;
 import dev.kyro.pitsim.controllers.objects.Non;
 import dev.kyro.pitsim.controllers.objects.PitEnchant;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.enchants.GoldBoost;
 import dev.kyro.pitsim.enchants.*;
+import dev.kyro.pitsim.helmetabilities.*;
 import dev.kyro.pitsim.killstreaks.*;
-import dev.kyro.pitsim.misc.ChunkOfVile;
-import dev.kyro.pitsim.misc.ItemRename;
-import dev.kyro.pitsim.misc.ReachAutoBan;
-import dev.kyro.pitsim.misc.TotallyLegitGem;
+import dev.kyro.pitsim.megastreaks.*;
+import dev.kyro.pitsim.misc.*;
 import dev.kyro.pitsim.perks.*;
 import dev.kyro.pitsim.pitevents.CaptureTheFlag;
 import dev.kyro.pitsim.pitevents.Juggernaut;
 import dev.kyro.pitsim.placeholders.*;
 import dev.kyro.pitsim.upgrades.*;
-import net.kyori.adventure.platform.bukkit.BukkitAudiences;
+import net.citizensnpcs.api.CitizensAPI;
+import net.citizensnpcs.api.npc.NPC;
+//import net.kyori.adventure.platform.bukkit.BukkitAudiences;
 import net.luckperms.api.LuckPerms;
 import net.milkbowl.vault.economy.Economy;
 import org.bukkit.Bukkit;
@@ -37,24 +47,24 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-//import dev.kyro.pitsim.controllers.market.MarketManager;
-
 public class PitSim extends JavaPlugin {
 
-	public static double version = 1.0;
-	public static LuckPerms LUCKPERMS;
+	public static double version = 2.0;
 
+	public static LuckPerms LUCKPERMS;
 	public static PitSim INSTANCE;
 	public static Economy VAULT = null;
-	public static AData playerList;
-	private BukkitAudiences adventure;
+	public static ProtocolManager PROTOCOL_MANAGER = null;
 
-	public BukkitAudiences adventure() {
-		if(this.adventure == null) {
-			throw new IllegalStateException("Tried to access Adventure when the plugin was disabled!");
-		}
-		return this.adventure;
-	}
+	public static AData playerList;
+//	private BukkitAudiences adventure;
+//
+//	public BukkitAudiences adventure() {
+//		if(this.adventure == null) {
+//			throw new IllegalStateException("Tried to access Adventure when the plugin was disabled!");
+//		}
+//		return this.adventure;
+//	}
 
 	@Override
 	public void onEnable() {
@@ -66,13 +76,24 @@ public class PitSim extends JavaPlugin {
 			LUCKPERMS = provider.getProvider();
 		}
 
+		PROTOCOL_MANAGER = ProtocolLibrary.getProtocolManager();
+
+		List<NPC> toRemove = new ArrayList<>();
+		CitizensAPI.getNPCRegistry().forEach(toRemove::add);
+		while(!toRemove.isEmpty()) {
+			toRemove.get(0).destroy();
+			toRemove.remove(0);
+		}
+
+		SpawnNPCs.createNPCs();
+
 		MapManager.onStart();
 
-		adventure = BukkitAudiences.create(this);
-		for(Player onlinePlayer : Bukkit.getOnlinePlayers()) {
-			BossBarManager bm = new BossBarManager();
-			PlayerManager.bossBars.put(onlinePlayer, bm);
-		}
+//		adventure = BukkitAudiences.create(this);
+//		for(Player onlinePlayer : Bukkit.getOnlinePlayers()) {
+//			BossBarManager bm = new BossBarManager();
+//			PlayerManager.bossBars.put(onlinePlayer, bm);
+//		}
 
 		if (!setupEconomy()) {
 			AOutput.log(String.format("[%s] - Disabled due to no Vault dependency found!", getDescription().getName()));
@@ -95,10 +116,11 @@ public class PitSim extends JavaPlugin {
 
 
 		registerPitEvents();
-		PitEventManager.eventWait();
+//		PitEventManager.eventWait();
 
 		registerUpgrades();
 		registerPerks();
+		registerKillstreaks();
 		registerMegastreaks();
 
 
@@ -126,7 +148,8 @@ public class PitSim extends JavaPlugin {
 		AHook.registerPlaceholder(new EventNamePlaceholder());
 		AHook.registerPlaceholder(new EventInfoPlaceholder());
 		AHook.registerPlaceholder(new EventInfoPlaceholder2());
-
+		AHook.registerPlaceholder(new PrestigeLevelPlaceholder());
+		AHook.registerPlaceholder(new PrestigePlaceholder());
 
 		loadConfig();
 
@@ -138,10 +161,14 @@ public class PitSim extends JavaPlugin {
 		registerEnchants();
 		registerCommands();
 		registerListeners();
+		registerBoosters();
+		registerHelmetAbilities();
 	}
 
 	@Override
 	public void onDisable() {
+
+		SpawnNPCs.removeNPCs();
 
 		if(PitEventManager.majorEvent) PitEventManager.activeEvent.end();
 
@@ -149,7 +176,8 @@ public class PitSim extends JavaPlugin {
 			PitPlayer pitplayer = PitPlayer.getPitPlayer(onlinePlayer);
 			if(NonManager.getNon(onlinePlayer) != null) continue;
 			FileConfiguration playerData = APlayerData.getPlayerData(onlinePlayer);
-			playerData.set("level", pitplayer.playerLevel);
+			playerData.set("level", pitplayer.level);
+			playerData.set("prestige", pitplayer.prestige);
 			playerData.set("playerkills", pitplayer.playerKills);
 			playerData.set("xp", pitplayer.remainingXP);
 			playerData.set("ubersleft", pitplayer.dailyUbersLeft);
@@ -175,8 +203,188 @@ public class PitSim extends JavaPlugin {
 		}
 	}
 
+	private void registerPerks() {
+
+		PerkManager.registerUpgrade(new NoPerk());
+		PerkManager.registerUpgrade(new Vampire());
+		PerkManager.registerUpgrade(new Dirty());
+		PerkManager.registerUpgrade(new StrengthChaining());
+		PerkManager.registerUpgrade(new Gladiator());
+		PerkManager.registerUpgrade(new Thick());
+		PerkManager.registerUpgrade(new AssistantToTheStreaker());
+		PerkManager.registerUpgrade(new FirstStrike());
+		PerkManager.registerUpgrade(new Streaker());
+		PerkManager.registerUpgrade(new CounterJanitor());
+	}
+
+	private void registerKillstreaks() {
+		PerkManager.registerKillstreak(new NoKillstreak());
+
+		PerkManager.registerKillstreak(new Explicious());
+		PerkManager.registerKillstreak(new AssuredStrike());
+		PerkManager.registerKillstreak(new RR());
+		PerkManager.registerKillstreak(new Leech());
+
+		PerkManager.registerKillstreak(new TacticalRetreat());
+		PerkManager.registerKillstreak(new FightOrFlight());
+		PerkManager.registerKillstreak(new HerosHaste());
+		PerkManager.registerKillstreak(new CounterStrike());
+
+		PerkManager.registerKillstreak(new Survivor());
+		PerkManager.registerKillstreak(new AuraOfProtection());
+		PerkManager.registerKillstreak(new GoldNanoFactory());
+		PerkManager.registerKillstreak(new Baker());
+
+		PerkManager.registerKillstreak(new Monster());
+		PerkManager.registerKillstreak(new Spongesteve());
+		PerkManager.registerKillstreak(new GoldStack());
+		PerkManager.registerKillstreak(new Shockwave());
+	}
+
+	private void registerMegastreaks() {
+
+		PerkManager.registerMegastreak(new Overdrive(null));
+		PerkManager.registerMegastreak(new Highlander(null));
+		PerkManager.registerMegastreak(new Uberstreak(null));
+		PerkManager.registerMegastreak(new NoMegastreak(null));
+		PerkManager.registerMegastreak(new Beastmode(null));
+		PerkManager.registerMegastreak(new ToTheMoon(null));
+	}
+
+	private void registerPitEvents() {
+		PitEventManager.registerPitEvent(new CaptureTheFlag());
+		PitEventManager.registerPitEvent(new Juggernaut());
+	}
+
+	private void registerCommands() {
+
+		ABaseCommand adminCommand = new BaseAdminCommand("pitsim");
+		ABaseCommand giveCommand = new BaseSetCommand(adminCommand, "give");
+		ABaseCommand setCommand = new BaseSetCommand(adminCommand, "set");
+		adminCommand.registerCommand(new AnticheatCommand("check"));
+		adminCommand.registerCommand(new HopperCommand("hopper"));
+		adminCommand.registerCommand(new ReloadCommand("reload"));
+		adminCommand.registerCommand(new BypassCommand("bypass"));
+
+		setCommand.registerCommand(new SetPrestigeCommand("prestige"));
+		setCommand.registerCommand(new SetLevelCommand("level"));
+		setCommand.registerCommand(new BountyCommand("bounty"));
+		getCommand("ps").setExecutor(adminCommand);
+
+		getCommand("atest").setExecutor(new ATestCommand());
+		getCommand("fps").setExecutor(new FPSCommand());
+
+		getCommand("oof").setExecutor(new OofCommand());
+		getCommand("perks").setExecutor(new PerkCommand());
+		getCommand("non").setExecutor(new NonCommand());
+		getCommand("enchant").setExecutor(new EnchantCommand());
+		getCommand("fresh").setExecutor(new FreshCommand());
+		getCommand("show").setExecutor(new ShowCommand());
+//		TODO: Need to make it so jewels can be created completed (with enchant and lives)
+		getCommand("jewel").setExecutor(new JewelCommand());
+		getCommand("enchants").setExecutor(new EnchantListCommand());
+		getCommand("donator").setExecutor(new DonatorCommand());
+		getCommand("renown").setExecutor(new RenownCommand());
+		getCommand("spawn").setExecutor(new SpawnCommand());
+		getCommand("crategive").setExecutor(new OldCrateGiveCommand());
+		getCommand("cg").setExecutor(new CrateGiveCommand());
+		getCommand("store").setExecutor(new StoreCommand());
+		getCommand("shop").setExecutor(new StoreCommand());
+		getCommand("discord").setExecutor(new DiscordCommand());
+		getCommand("disc").setExecutor(new DiscordCommand());
+		getCommand("booster").setExecutor(new BoosterCommand());
+		getCommand("boostergive").setExecutor(new BoosterGiveCommand());
+//		getCommand("togglestereo").setExecutor(new ToggleStereoCommand());
+	}
+
+	private void registerListeners() {
+
+		getServer().getPluginManager().registerEvents(new DamageManager(), this);
+//		getServer().getPluginManager().registerEvents(new NonManager(), this);
+		getServer().getPluginManager().registerEvents(new PlayerManager(), this);
+		getServer().getPluginManager().registerEvents(new ChatManager(), this);
+		getServer().getPluginManager().registerEvents(new DamageIndicator(), this);
+		getServer().getPluginManager().registerEvents(new ItemManager(), this);
+		getServer().getPluginManager().registerEvents(new CombatManager(), this);
+		getServer().getPluginManager().registerEvents(new SpawnManager(), this);
+		getServer().getPluginManager().registerEvents(new ItemRename(), this);
+		getServer().getPluginManager().registerEvents(new EnderchestManager(), this);
+		getServer().getPluginManager().registerEvents(new AFKManager(), this);
+		getServer().getPluginManager().registerEvents(new EnchantManager(), this);
+		getServer().getPluginManager().registerEvents(new TotallyLegitGem(), this);
+		getServer().getPluginManager().registerEvents(new ChunkOfVile(), this);
+		getServer().getPluginManager().registerEvents(new ReachAutoBan(), this);
+		getServer().getPluginManager().registerEvents(new NonAnticheat(), this);
+		getServer().getPluginManager().registerEvents(new HelmetListeners(), this);
+		getServer().getPluginManager().registerEvents(new PitBlob(), this);
+		getServer().getPluginManager().registerEvents(new SpawnNPCs(), this);
+		getServer().getPluginManager().registerEvents(new BackwardsCompatibility(), this);
+		getServer().getPluginManager().registerEvents(new YummyBread(), this);
+		getServer().getPluginManager().registerEvents(new BoosterManager(), this);
+		getServer().getPluginManager().registerEvents(new HopperManager(), this);
+	}
+
+	public void registerBoosters() {
+		BoosterManager.registerBooster(new XPBooster());
+		BoosterManager.registerBooster(new GoldBooster());
+		BoosterManager.registerBooster(new PvPBooster());
+		BoosterManager.registerBooster(new ChaosBooster());
+	}
+
+	public void registerUpgrades() {
+		UpgradeManager.registerUpgrade(new dev.kyro.pitsim.upgrades.GoldBoost());
+		UpgradeManager.registerUpgrade(new XPBoost());
+		UpgradeManager.registerUpgrade(new Tenacity());
+		UpgradeManager.registerUpgrade(new UnlockStreaker());
+		UpgradeManager.registerUpgrade(new UberIncrease());
+		UpgradeManager.registerUpgrade(new DivineIntervention());
+		UpgradeManager.registerUpgrade(new Withercraft());
+		UpgradeManager.registerUpgrade(new UnlockFirstStrike());
+		UpgradeManager.registerUpgrade(new Impatient());
+		UpgradeManager.registerUpgrade(new Helmetry());
+		UpgradeManager.registerUpgrade(new ShardHunter());
+		UpgradeManager.registerUpgrade(new ReportAccess());
+//		UpgradeManager.registerUpgrade(new SelfConfidence());
+		UpgradeManager.registerUpgrade(new LuckyKill());
+		UpgradeManager.registerUpgrade(new LifeInsurance());
+		UpgradeManager.registerUpgrade(new TaxEvasion());
+		UpgradeManager.registerUpgrade(new DoubleDeath());
+		UpgradeManager.registerUpgrade(new XPComplex());
+		UpgradeManager.registerUpgrade(new KillSteal());
+		UpgradeManager.registerUpgrade(new UnlockCounterJanitor());
+		UpgradeManager.registerUpgrade(new Celebrity());
+		UpgradeManager.registerUpgrade(new FastPass());
+	}
+
+	public void registerHelmetAbilities() {
+		HelmetAbility.registerHelmetAbility(new LeapAbility(null));
+		HelmetAbility.registerHelmetAbility(new BlobAbility(null));
+		HelmetAbility.registerHelmetAbility(new GoldRushAbility(null));
+		HelmetAbility.registerHelmetAbility(new HermitAbility(null));
+		HelmetAbility.registerHelmetAbility(new JudgementAbility(null));
+		HelmetAbility.registerHelmetAbility(new PhoenixAbility(null));
+	}
+
+	private void loadConfig() {
+
+		getConfig().options().copyDefaults(true);
+		saveConfig();
+	}
+
+	private boolean setupEconomy() {
+		if (getServer().getPluginManager().getPlugin("Vault") == null) {
+			return false;
+		}
+		RegisteredServiceProvider<Economy> rsp = getServer().getServicesManager().getRegistration(Economy.class);
+		if (rsp == null) {
+			return false;
+		}
+		VAULT = rsp.getProvider();
+		return VAULT != null;
+	}
+
 	private void registerEnchants() {
-		EnchantManager.registerEnchant(new aComboVenom());
+		EnchantManager.registerEnchant(new ComboVenom());
 		EnchantManager.registerEnchant(new aCPLEnchant());
 		EnchantManager.registerEnchant(new Robinhood());
 
@@ -227,6 +435,7 @@ public class PitSim extends JavaPlugin {
 		EnchantManager.registerEnchant(new Solitude());
 
 		EnchantManager.registerEnchant(new Mirror());
+		EnchantManager.registerEnchant(new Sufferance());
 		EnchantManager.registerEnchant(new CriticallyFunky());
 		EnchantManager.registerEnchant(new FractionalReserve());
 		EnchantManager.registerEnchant(new NotGladiator());
@@ -258,123 +467,5 @@ public class PitSim extends JavaPlugin {
 
 		EnchantManager.registerEnchant(new Sweaty());
 		EnchantManager.registerEnchant(new XpBump());
-	}
-
-	private void registerPerks() {
-
-		PerkManager.registerUpgrade(new NoPerk());
-		PerkManager.registerUpgrade(new Vampire());
-		PerkManager.registerUpgrade(new Dirty());
-		PerkManager.registerUpgrade(new StrengthChaining());
-		PerkManager.registerUpgrade(new Gladiator());
-		PerkManager.registerUpgrade(new Thick());
-		PerkManager.registerUpgrade(new AssistantToTheStreaker());
-		PerkManager.registerUpgrade(new FirstStrike());
-		PerkManager.registerUpgrade(new Streaker());
-	}
-
-	private void registerMegastreaks() {
-
-		PerkManager.registerMegastreak(new Overdrive(null));
-		PerkManager.registerMegastreak(new Highlander(null));
-		PerkManager.registerMegastreak(new Uberstreak(null));
-		PerkManager.registerMegastreak(new NoMegastreak(null));
-		PerkManager.registerMegastreak(new Beastmode(null));
-	}
-
-	private void registerPitEvents() {
-		PitEventManager.registerPitEvent(new CaptureTheFlag());
-		PitEventManager.registerPitEvent(new Juggernaut());
-	}
-
-	private void registerCommands() {
-
-//		ABaseCommand marketCommand = new MarketCommand("market");
-//		marketCommand.registerCommand(new ListCommand("list"));
-//		marketCommand.registerCommand(new AuctionCommand("ah"));
-
-//		getCommand("atest").setExecutor(new ATestCommand());
-		getCommand("atest").setExecutor(new ATestCommand());
-		getCommand("oof").setExecutor(new OofCommand());
-		getCommand("perks").setExecutor(new PerkCommand());
-		getCommand("non").setExecutor(new NonCommand());
-		getCommand("enchant").setExecutor(new EnchantCommand());
-		getCommand("fresh").setExecutor(new FreshCommand());
-		getCommand("show").setExecutor(new ShowCommand());
-		getCommand("jewel").setExecutor(new JewelCommand());
-		getCommand("enchants").setExecutor(new EnchantListCommand());
-		getCommand("setkills").setExecutor(new SetKillCommand());
-		getCommand("donator").setExecutor(new DonatorCommand());
-		getCommand("renown").setExecutor(new RenownCommand());
-		getCommand("bounty").setExecutor(new BountyCommand());
-		getCommand("spawn").setExecutor(new SpawnCommand());
-		getCommand("changemap").setExecutor(new ChangeMapCommand());
-		getCommand("crategive").setExecutor(new OldCrateGiveCommand());
-		getCommand("cg").setExecutor(new CrateGiveCommand());
-		getCommand("pitreload").setExecutor(new ReloadCommand());
-		getCommand("setvalue").setExecutor(new SetValueCommand());
-		getCommand("check").setExecutor(new AnticheatCommand());
-		getCommand("rape").setExecutor(new RapeCommand());
-//		getCommand("togglestereo").setExecutor(new ToggleStereoCommand());
-	}
-
-	private void registerListeners() {
-
-//		KarhuAPI.getEventRegistry().addListener(new BypassManager());
-		getServer().getPluginManager().registerEvents(new DamageManager(), this);
-//		getServer().getPluginManager().registerEvents(new NonManager(), this);
-		getServer().getPluginManager().registerEvents(new PlayerManager(), this);
-		getServer().getPluginManager().registerEvents(new ChatManager(), this);
-		getServer().getPluginManager().registerEvents(new DamageIndicator(), this);
-		getServer().getPluginManager().registerEvents(new ItemManager(), this);
-		getServer().getPluginManager().registerEvents(new CombatManager(), this);
-		getServer().getPluginManager().registerEvents(new SpawnManager(), this);
-		getServer().getPluginManager().registerEvents(new ItemRename(), this);
-		getServer().getPluginManager().registerEvents(new EnderchestManager(), this);
-		getServer().getPluginManager().registerEvents(new AFKManager(), this);
-		getServer().getPluginManager().registerEvents(new EnchantManager(), this);
-		getServer().getPluginManager().registerEvents(new TotallyLegitGem(), this);
-		getServer().getPluginManager().registerEvents(new ChunkOfVile(), this);
-		getServer().getPluginManager().registerEvents(new ReachAutoBan(), this);
-		getServer().getPluginManager().registerEvents(new NonAnticheat(), this);
-	}
-
-	public void registerUpgrades() {
-		UpgradeManager.registerUpgrade(new dev.kyro.pitsim.upgrades.GoldBoost());
-		UpgradeManager.registerUpgrade(new XPBoost());
-		UpgradeManager.registerUpgrade(new Tenacity());
-		UpgradeManager.registerUpgrade(new UnlockStreaker());
-		UpgradeManager.registerUpgrade(new UberIncrease());
-		UpgradeManager.registerUpgrade(new DivineIntervention());
-		UpgradeManager.registerUpgrade(new Withercraft());
-		UpgradeManager.registerUpgrade(new UnlockFirstStrike());
-		UpgradeManager.registerUpgrade(new Impatient());
-		UpgradeManager.registerUpgrade(new Helmetry());
-		UpgradeManager.registerUpgrade(new ShardHunter());
-		UpgradeManager.registerUpgrade(new ReportAccess());
-		UpgradeManager.registerUpgrade(new SelfConfidence());
-		UpgradeManager.registerUpgrade(new LuckyKill());
-		UpgradeManager.registerUpgrade(new LifeInsurance());
-		UpgradeManager.registerUpgrade(new TaxEvasion());
-		UpgradeManager.registerUpgrade(new DoubleDeath());
-
-	}
-
-	private void loadConfig() {
-
-		getConfig().options().copyDefaults(true);
-		saveConfig();
-	}
-
-	private boolean setupEconomy() {
-		if (getServer().getPluginManager().getPlugin("Vault") == null) {
-			return false;
-		}
-		RegisteredServiceProvider<Economy> rsp = getServer().getServicesManager().getRegistration(Economy.class);
-		if (rsp == null) {
-			return false;
-		}
-		VAULT = rsp.getProvider();
-		return VAULT != null;
 	}
 }

@@ -1,18 +1,19 @@
-package dev.kyro.pitsim.killstreaks;
+package dev.kyro.pitsim.megastreaks;
 
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.controllers.LevelManager;
 import dev.kyro.pitsim.controllers.NonManager;
+import dev.kyro.pitsim.controllers.PrestigeValues;
 import dev.kyro.pitsim.controllers.objects.Megastreak;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.events.AttackEvent;
 import dev.kyro.pitsim.events.KillEvent;
+import dev.kyro.pitsim.misc.Sounds;
 import dev.kyro.pitsim.upgrades.DoubleDeath;
 import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
-import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.HandlerList;
@@ -59,13 +60,16 @@ public class Beastmode extends Megastreak {
 
 	@Override
 	public int guiSlot() {
-		return 13;
+		return 12;
 	}
 
 	@Override
-	public int levelReq() {
-		return 20;
+	public int prestigeReq() {
+		return 16;
 	}
+
+	@Override
+	public int levelReq() {return 50;}
 
 	@Override
 	public ItemStack guiItem() {
@@ -77,29 +81,21 @@ public class Beastmode extends Megastreak {
 		lore.add(ChatColor.translateAlternateColorCodes('&', "&7Triggers on: &c50 kills"));
 		lore.add("");
 		lore.add(ChatColor.GRAY + "On trigger:");
-		lore.add(ChatColor.translateAlternateColorCodes('&', "&a\u25a0 &7Deal &c+25% &7damage to bots."));
-		lore.add(ChatColor.translateAlternateColorCodes('&', "&a\u25a0 &7Earn &b+100% XP &7from kills."));
-		lore.add(ChatColor.translateAlternateColorCodes('&', "&a\u25a0 &7Gain &b+50 max XP&7."));
+//		lore.add(ChatColor.translateAlternateColorCodes('&', "&a\u25a0 &7Deal &c+25% &7damage to bots"));
+		lore.add(ChatColor.translateAlternateColorCodes('&', "&a\u25a0 &7Earn &b+100% XP &7from kills"));
+		lore.add(ChatColor.translateAlternateColorCodes('&', "&a\u25a0 &7Gain &b+130 max XP&7"));
 		lore.add("");
 		lore.add(ChatColor.GRAY + "BUT:");
-		lore.add(ChatColor.translateAlternateColorCodes('&', "&c\u25a0 &7Receive &c+1% &7damage per kill over 50."));
+		lore.add(ChatColor.translateAlternateColorCodes('&', "&c\u25a0 &7Receive &c+0.5% &7damage per kill over 50"));
 		lore.add(ChatColor.translateAlternateColorCodes('&', "&7(Damage tripled for bots)"));
+		lore.add(ChatColor.translateAlternateColorCodes('&', "&c\u25a0 &7Earn &c-50% &7gold from kills"));
 		lore.add("");
 		lore.add(ChatColor.GRAY + "On death:");
-		lore.add(ChatColor.translateAlternateColorCodes('&', "&e\u25a0 &7Earn between &b1000 &7and &b5000 XP&7."));
+		lore.add(ChatColor.translateAlternateColorCodes('&', "&e\u25a0 &7Earn between &b1000 &7and &b5000 XP&7"));
 
 		meta.setLore(lore);
 		item.setItemMeta(meta);
 		return item;
-	}
-
-	@EventHandler
-	public void onKill(KillEvent killEvent) {
-		PitPlayer pitPlayer = PitPlayer.getPitPlayer(killEvent.killer);
-		if(pitPlayer != this.pitPlayer) return;
-		if(pitPlayer.megastreak.playerIsOnMega(killEvent) && pitPlayer.megastreak.getClass() == Beastmode.class) {
-			killEvent.xpMultipliers.add(2.0);
-		}
 	}
 
 	@EventHandler
@@ -108,13 +104,12 @@ public class Beastmode extends Megastreak {
 		if(pitPlayer != this.pitPlayer) return;
 		if(pitPlayer.megastreak.isOnMega() && pitPlayer.megastreak.getClass() == Beastmode.class) {
 			int ks = (int) Math.floor(pitPlayer.getKills());
-//            attackEvent.increasePercent += ((ks / 5)  / 100D) * 8;
+//			TODO: Update lore
 			if(NonManager.getNon(attackEvent.attacker) == null) {
-				attackEvent.increasePercent += (ks - 50) / 100D;
+				attackEvent.increasePercent += (ks - 50) / 200D;
 			} else {
-				attackEvent.increasePercent += ((ks - 50) * 3) / 100D;
+				attackEvent.increasePercent += ((ks - 50) * 3) / 200D;
 			}
-//            Bukkit.broadcastMessage(attackEvent.getFinalDamage() + "");
 		}
 	}
 
@@ -123,7 +118,9 @@ public class Beastmode extends Megastreak {
 		PitPlayer pitPlayer = PitPlayer.getPitPlayer(killEvent.killer);
 		if(pitPlayer != this.pitPlayer) return;
 		if(pitPlayer.megastreak.isOnMega() && pitPlayer.megastreak.getClass() == Beastmode.class) {
-			killEvent.xpCap += 50;
+			killEvent.xpCap += 130;
+			killEvent.xpMultipliers.add(2.0);
+			killEvent.goldMultipliers.add(0.5);
 		}
 	}
 
@@ -134,7 +131,7 @@ public class Beastmode extends Megastreak {
 		if(pitPlayer != this.pitPlayer) return;
 		if(pitPlayer.megastreak.isOnMega() && pitPlayer.megastreak.getClass() == Beastmode.class) {
 			if(NonManager.getNon(attackEvent.defender) != null) {
-				attackEvent.increasePercent += 25 / 100D;
+//				attackEvent.increasePercent += 25 / 100D;
 			}
 		}
 	}
@@ -142,12 +139,12 @@ public class Beastmode extends Megastreak {
 	@Override
 	public void proc() {
 
-		pitPlayer.player.getWorld().playSound(pitPlayer.player.getLocation(), Sound.WITHER_SPAWN, 1000, 1);
+		Sounds.MEGA_GENERAL.play(pitPlayer.player.getLocation());
 		String message = "%luckperms_prefix%";
 		if(pitPlayer.megastreak.isOnMega()) {
 			pitPlayer.prefix = pitPlayer.megastreak.getName() + " &7" + PlaceholderAPI.setPlaceholders(pitPlayer.player, message);
 		} else {
-			pitPlayer.prefix = "&7[&e" + pitPlayer.playerLevel + "&7] &7" + PlaceholderAPI.setPlaceholders(pitPlayer.player, message);
+			pitPlayer.prefix = PrestigeValues.getPlayerPrefixNameTag(pitPlayer.player) + PlaceholderAPI.setPlaceholders(pitPlayer.player, message);
 		}
 
 		pitPlayer.megastreak = this;
@@ -169,15 +166,15 @@ public class Beastmode extends Megastreak {
 		if(pitPlayer.megastreak.isOnMega()) {
 			pitPlayer.prefix = pitPlayer.megastreak.getName() + " &7" + PlaceholderAPI.setPlaceholders(pitPlayer.player, message);
 		} else {
-			pitPlayer.prefix = "&7[&e" + pitPlayer.playerLevel + "&7] &7" + PlaceholderAPI.setPlaceholders(pitPlayer.player, message);
+			pitPlayer.prefix = PrestigeValues.getPlayerPrefixNameTag(pitPlayer.player) + PlaceholderAPI.setPlaceholders(pitPlayer.player, message);
 		}
 
         if(pitPlayer.megastreak.isOnMega()) {
 			int randomNum = ThreadLocalRandom.current().nextInt(1000, 5000 + 1);
 			if(DoubleDeath.INSTANCE.isDoubleDeath(pitPlayer.player)) randomNum = randomNum * 2;
             AOutput.send(pitPlayer.player, "&c&lBEASTMODE! &7Earned &b" + randomNum + "&b XP &7from megastreak!");
-            pitPlayer.remainingXP = Math.max(pitPlayer.remainingXP - randomNum, 0);
-	        LevelManager.incrementLevel(pitPlayer.player);
+	        LevelManager.addXp(pitPlayer.player, randomNum);
+//	        OldLevelManager.incrementLevel(pitPlayer.player);
         }
 	}
 

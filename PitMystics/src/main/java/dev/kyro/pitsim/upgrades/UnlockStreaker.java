@@ -1,6 +1,7 @@
 package dev.kyro.pitsim.upgrades;
 
 import dev.kyro.arcticapi.gui.AGUIPanel;
+import dev.kyro.arcticapi.misc.AUtil;
 import dev.kyro.pitsim.controllers.UpgradeManager;
 import dev.kyro.pitsim.controllers.objects.RenownUpgrade;
 import org.bukkit.ChatColor;
@@ -14,7 +15,7 @@ import java.util.List;
 
 public class UnlockStreaker extends RenownUpgrade {
 	public UnlockStreaker() {
-		super("Perk unlock: Streaker", "STREAKER", 30, 28, 20, false, 0);
+		super("Perk unlock: Streaker", "STREAKER", 30, 15, 7, false, 0);
 	}
 
 	@Override
@@ -23,13 +24,15 @@ public class UnlockStreaker extends RenownUpgrade {
 			ItemMeta meta = item.getItemMeta();
 			meta.setDisplayName(UpgradeManager.itemNameString(this, player));
 			List<String> lore = new ArrayList<>();
-			lore.add(ChatColor.GRAY + "Required level: " + ChatColor.YELLOW + this.levelReq);
+			lore.add(ChatColor.GRAY + "Required prestige: " + ChatColor.YELLOW + AUtil.toRoman(this.prestigeReq));
 			lore.add("");
 			lore.add(ChatColor.YELLOW + "Streaker");
 			lore.add(ChatColor.translateAlternateColorCodes('&', "&7Upon reaching your &emegastreak&7,"));
-			lore.add(ChatColor.translateAlternateColorCodes('&', "&7gain &b+100 max XP &7if it took &f30 &7or"));
-			lore.add(ChatColor.translateAlternateColorCodes('&', "&7less seconds. Subtracts &b10 max"));
-			lore.add(ChatColor.translateAlternateColorCodes('&', "&bXP &7per additional &f10 &7seconds."));
+			lore.add(ChatColor.translateAlternateColorCodes('&', "&7gain &b+100% XP &7if it took &f30 &7or"));
+			lore.add(ChatColor.translateAlternateColorCodes('&', "&7less seconds. Subtracts &b10% XP"));
+			lore.add(ChatColor.translateAlternateColorCodes('&', "&7per additional &f10 &7seconds."));
+		    lore.add(ChatColor.translateAlternateColorCodes('&', "&7Passively gain &b+80 max XP"));
+
 			meta.setLore(UpgradeManager.loreBuilder(this, player, lore, isCustomPanel));
 			item.setItemMeta(meta);
 			return item;

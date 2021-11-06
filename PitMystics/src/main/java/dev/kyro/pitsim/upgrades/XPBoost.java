@@ -18,7 +18,7 @@ import java.util.List;
 
 public class XPBoost extends RenownUpgrade {
 	public XPBoost() {
-		super("Renown XP Boost", "XP_BOOST", 10, 14, 1, true, 10);
+		super("Renown XP Boost", "XP_BOOST", 10, 12, 1, true, 10);
 	}
 
 	@Override

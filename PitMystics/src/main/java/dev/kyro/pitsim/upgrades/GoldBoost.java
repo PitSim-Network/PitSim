@@ -19,7 +19,7 @@ import java.util.List;
 public class GoldBoost extends RenownUpgrade {
 
 	public GoldBoost() {
-		super("Renown Gold Boost", "GOLD_BOOST", 10, 12, 1, true, 10);
+		super("Renown Gold Boost", "GOLD_BOOST", 10, 10, 1, true, 10);
 	}
 	List<Integer> goldBoostCosts = Arrays.asList(10, 12, 14, 16, 18, 20, 22, 24, 26, 28);
 

@@ -4,14 +4,13 @@ import de.tr7zw.nbtapi.NBTItem;
 import dev.kyro.arcticapi.data.APlayerData;
 import dev.kyro.arcticapi.gui.AGUI;
 import dev.kyro.arcticapi.gui.AGUIPanel;
-import dev.kyro.arcticapi.misc.ASound;
 import dev.kyro.pitsim.controllers.EnchantManager;
 import dev.kyro.pitsim.controllers.objects.PitEnchant;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.enums.NBTTag;
 import dev.kyro.pitsim.misc.Misc;
+import dev.kyro.pitsim.misc.Sounds;
 import org.bukkit.ChatColor;
-import org.bukkit.Sound;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
@@ -73,7 +72,7 @@ public class TotallyLegitGemPanel extends AGUIPanel {
                         e.printStackTrace();
                     }
                     player.closeInventory();
-                    ASound.play(player, Sound.GLASS, 1, 2);
+                    Sounds.GEM_USE.play(player);
 
                     int itemsToRemove = 1;
                     for(int j = 0; j < player.getInventory().getContents().length; j++) {

@@ -3,6 +3,7 @@ package dev.kyro.pitsim.upgrades;
 import dev.kyro.arcticapi.gui.AGUIPanel;
 import dev.kyro.pitsim.controllers.UpgradeManager;
 import dev.kyro.pitsim.controllers.objects.RenownUpgrade;
+import dev.kyro.pitsim.inventories.RenownShopGUI;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -14,7 +15,7 @@ import java.util.List;
 
 public class Withercraft extends RenownUpgrade {
 	public Withercraft() {
-		super("Withercraft", "WITHERCRAFT", 50, 31, 30, false, 0);
+		super("Withercraft", "WITHERCRAFT", 50, 25, 18, false, 0);
 	}
 
 	@Override
@@ -33,7 +34,9 @@ public class Withercraft extends RenownUpgrade {
 	}
 
 	@Override
-	public AGUIPanel getCustomPanel() {return null;}
+	public AGUIPanel getCustomPanel() {
+		return RenownShopGUI.withercraftPanel;
+	}
 
 	@Override
 	public List<Integer> getTierCosts() {

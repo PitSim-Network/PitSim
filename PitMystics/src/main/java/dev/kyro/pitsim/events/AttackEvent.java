@@ -35,7 +35,7 @@ public class AttackEvent extends Event {
 		this.fakeHit = fakeHit;
 
 		PitPlayer pitPlayer = PitPlayer.getPitPlayer(defender);
-		if(!(pitPlayer.player ==  attacker))pitPlayer.lastHitUUID = attacker.getUniqueId();
+		if(!(pitPlayer.player == attacker)) pitPlayer.lastHitUUID = attacker.getUniqueId();
 
 		if(event.getDamager() instanceof Arrow) {
 			arrow = (Arrow) event.getDamager();

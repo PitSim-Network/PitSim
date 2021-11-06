@@ -1,10 +1,9 @@
 package dev.kyro.pitsim.controllers;
 
-import dev.kyro.arcticapi.misc.ASound;
 import dev.kyro.pitsim.PitSim;
+import dev.kyro.pitsim.misc.Sounds;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
-import org.bukkit.Sound;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -27,7 +26,7 @@ public class EnderchestManager implements Listener {
                 @Override
                 public void run() {
                     Bukkit.dispatchCommand(event.getPlayer(), "pv 1");
-                    ASound.play((Player) event.getPlayer(), Sound.CHEST_OPEN);
+                    if(event.getPlayer() instanceof Player) Sounds.ENDERCHEST_OPEN.play((Player) event.getPlayer());
                 }
             }.runTaskLater(PitSim.INSTANCE, 1L);
 
@@ -43,7 +42,7 @@ public class EnderchestManager implements Listener {
                 @Override
                 public void run() {
                     Bukkit.dispatchCommand(event.getPlayer(), "pv 1");
-                    ASound.play(event.getPlayer(), Sound.CHEST_OPEN);
+                    Sounds.ENDERCHEST_OPEN.play(event.getPlayer());
                 }
             }.runTaskLater(PitSim.INSTANCE, 1L);
 

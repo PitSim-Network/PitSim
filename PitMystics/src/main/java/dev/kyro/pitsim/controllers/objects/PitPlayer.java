@@ -2,23 +2,26 @@ package dev.kyro.pitsim.controllers.objects;
 
 import dev.kyro.arcticapi.data.APlayerData;
 import dev.kyro.pitsim.PitSim;
-import dev.kyro.pitsim.controllers.LevelManager;
-import dev.kyro.pitsim.controllers.NonManager;
-import dev.kyro.pitsim.controllers.PitEventManager;
+import dev.kyro.pitsim.controllers.*;
 import dev.kyro.pitsim.enchants.Hearts;
 import dev.kyro.pitsim.enums.AChatColor;
 import dev.kyro.pitsim.enums.DeathCry;
 import dev.kyro.pitsim.enums.KillEffect;
 import dev.kyro.pitsim.events.HealEvent;
+import dev.kyro.pitsim.events.IncrementKillsEvent;
 import dev.kyro.pitsim.inventories.ChatColorPanel;
-import dev.kyro.pitsim.killstreaks.*;
+import dev.kyro.pitsim.killstreaks.Monster;
+import dev.kyro.pitsim.killstreaks.NoKillstreak;
+import dev.kyro.pitsim.megastreaks.*;
 import dev.kyro.pitsim.perks.NoPerk;
 import dev.kyro.pitsim.perks.Thick;
 import dev.kyro.pitsim.pitevents.Juggernaut;
 import me.clip.placeholderapi.PlaceholderAPI;
+import net.minecraft.server.v1_8_R3.EntityPlayer;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -34,17 +37,22 @@ public class PitPlayer {
 	public String prefix;
 
 	public int playerLevel = 1;
-	public int remainingXP = 21;
+	public int prestige = 0;
+	public int level = 1;
+	public int remainingXP = PrestigeValues.getXPForLevel(1);
 	public int playerKills = 0;
+	public int goldGrinded = 0;
 	public PitPerk[] pitPerks = new PitPerk[4];
 	public int renown = 0;
 
 	private double kills = 0;
 	public int bounty = 0;
-	public List<Killstreak> killstreaks = new ArrayList<>();
+	public List<Killstreak> killstreaks = Arrays.asList(NoKillstreak.INSTANCE, NoKillstreak.INSTANCE, NoKillstreak.INSTANCE);
 	public int latestKillAnnouncement = 0;
 
 	public Megastreak megastreak;
+	public int moonBonus = 0;
+	public double goldStack = 0;
 	public long uberReset = 0;
 	public int dailyUbersLeft = 5;
 
@@ -67,6 +75,9 @@ public class PitPlayer {
 
 	public ItemStack confirmedDrop = null;
 
+	public Map<Booster, Integer> boosters = new HashMap<>();
+
+
 	public PitPlayer(Player player) {
 		this.player = player;
 		this.megastreak = new NoMegastreak(this);
@@ -75,14 +86,16 @@ public class PitPlayer {
 
 		if(non == null) {
 			String message = "%luckperms_prefix%";
-			prefix = "&7[&e" + playerLevel + "&7] &7" + PlaceholderAPI.setPlaceholders(player, message);
+			prefix = "";
 
 			FileConfiguration playerData = APlayerData.getPlayerData(player);
 
 			if(playerData.getInt("level") > 0) {
-				playerLevel = playerData.getInt("level");
+				level = playerData.getInt("level");
 				remainingXP = playerData.getInt("xp");
 				playerKills = playerData.getInt("playerkills");
+				goldGrinded = playerData.getInt("goldgrinded");
+				prestige = playerData.getInt("prestige");
 				LevelManager.setXPBar(player, this);
 			}
 
@@ -92,6 +105,14 @@ public class PitPlayer {
 				PitPerk savedPerk = perkString != null ? PitPerk.getPitPerk(perkString) : NoPerk.INSTANCE;
 
 				pitPerks[i] = savedPerk != null ? savedPerk : NoPerk.INSTANCE;
+			}
+
+			for(int i = 0; i < killstreaks.size(); i++) {
+
+				String killstreakString = playerData.getString("killstreak-" + i);
+				Killstreak savedKillstreak = killstreakString != null ? Killstreak.getKillstreak(killstreakString) : NoKillstreak.INSTANCE;
+
+				killstreaks.set(i, savedKillstreak);
 			}
 
 			String deathCryString = playerData.getString("deathcry");
@@ -114,6 +135,8 @@ public class PitPlayer {
 			disabledPlayerChat = playerData.getBoolean("disabledplayerchat");
 			uberReset = playerData.getLong("ubercooldown");
 			dailyUbersLeft = playerData.getInt("ubersleft");
+			moonBonus = playerData.getInt("moonbonus");
+			goldStack = playerData.getDouble("goldstack");
 
 			String streak = playerData.getString("megastreak");
 
@@ -122,6 +145,11 @@ public class PitPlayer {
 			if(Objects.equals(streak, "Highlander")) this.megastreak = new Highlander(this);
 			if(Objects.equals(streak, "Overdrive")) this.megastreak = new Overdrive(this);
 			if(Objects.equals(streak, "Uberstreak")) this.megastreak = new Uberstreak(this);
+			if(Objects.equals(streak, "To the Moon")) this.megastreak = new ToTheMoon(this);
+
+			for(Booster booster : BoosterManager.boosterList) {
+				boosters.put(booster, playerData.getInt("boosters." + booster.refName));
+			}
 		}
 	}
 
@@ -145,20 +173,27 @@ public class PitPlayer {
 
 	public void endKillstreak() {
 		if(!PitEventManager.majorEvent) megastreak.reset();
-		killstreaks.forEach(Killstreak::reset);
+		for(Killstreak killstreak : killstreaks) {
+			killstreak.reset(player);
+		}
 		kills = 0;
 		latestKillAnnouncement = 0;
 	}
 
 	public void incrementKills() {
 
+		double previousKills = this.kills;
+
 		kills++;
-		if(kills >= megastreak.getRequiredKills() && kills < megastreak.getRequiredKills() + 1 && megastreak.getClass() != NoMegastreak.class) megastreak.proc();
+
+		Bukkit.getPluginManager().callEvent(new IncrementKillsEvent(this.player, previousKills, 1));
+
+
+
 		for(Killstreak killstreak : killstreaks) {
 			if(kills == 0 || kills % killstreak.killInterval != 0) continue;
-			killstreak.proc();
+			killstreak.proc(player);
 		}
-		megastreak.kill();
 
 		if(Math.floor(kills) % 25 == 0) {
 			for(Player onlinePlayer : Bukkit.getOnlinePlayers()) {
@@ -173,13 +208,17 @@ public class PitPlayer {
 
 	public void incrementAssist(double assistPercent) {
 
+		double previousKills = this.kills;
+
+		Bukkit.getPluginManager().callEvent(new IncrementKillsEvent(this.player, previousKills, assistPercent));
+
 		kills =  kills + (Math.round(assistPercent * 100) / 100D);
 
 		if(kills >= megastreak.getRequiredKills() && kills < megastreak.getRequiredKills() + 1 && megastreak.getClass() != NoMegastreak.class &
 				!megastreak.isOnMega()) megastreak.proc();
 		for(Killstreak killstreak : killstreaks) {
 			if(kills == 0 || kills % killstreak.killInterval != 0) continue;
-			killstreak.proc();
+			killstreak.proc(player);
 		}
 		if(Math.floor(kills) % 25 == 0 && latestKillAnnouncement != Math.floor(kills)) {
 			for(Player onlinePlayer : Bukkit.getOnlinePlayers()) {
@@ -195,10 +234,6 @@ public class PitPlayer {
 
 	public double getKills() {
 		return kills;
-	}
-
-	public void setKillsreak(double newKills) {
-		kills = newKills;
 	}
 
 	public void setKills(double kills) {
@@ -237,9 +272,23 @@ public class PitPlayer {
 
 	public void heal(double amount) {
 
-		HealEvent healEvent = new HealEvent(player, amount);
+		heal(amount, HealEvent.HealType.HEALTH, -1);
+	}
+
+	public void heal(double amount, HealEvent.HealType healType, int max) {
+		if(amount == 0) return;
+		if(max == -1) max = Integer.MAX_VALUE;
+
+		HealEvent healEvent = new HealEvent(player, amount, healType);
 		Bukkit.getServer().getPluginManager().callEvent(healEvent);
-		player.setHealth(Math.min(player.getHealth() + healEvent.getFinalHeal(), player.getMaxHealth()));
+
+		if(healType == HealEvent.HealType.HEALTH) {
+			player.setHealth(Math.min(player.getHealth() + healEvent.getFinalHeal(), player.getMaxHealth()));
+		} else {
+			EntityPlayer nmsPlayer = ((CraftPlayer) player).getHandle();
+			if(nmsPlayer.getAbsorptionHearts() < max)
+				nmsPlayer.setAbsorptionHearts(Math.min((float) (nmsPlayer.getAbsorptionHearts() + healEvent.getFinalHeal()), max));
+		}
 	}
 
 	public boolean hasPerk(PitPerk pitPerk) {
@@ -248,20 +297,21 @@ public class PitPlayer {
 		return false;
 	}
 
+
+
 	public void updateMaxHealth() {
 
 		int maxHealth = 24;
 		if(hasPerk(Thick.INSTANCE)) maxHealth += 4;
 		if(Hearts.INSTANCE != null) maxHealth += Hearts.INSTANCE.getExtraHealth(this);
 
-		if(megastreak.isOnMega() && megastreak.getClass() == Uberstreak.class && kills >= 100) {
-			maxHealth -= 2;
+		if(megastreak.getClass() == Uberstreak.class) {
+			Uberstreak uberstreak = (Uberstreak) megastreak;
+			if(uberstreak.uberEffects.contains(Uberstreak.UberEffect.LOSE_MAX_HEALTH)) maxHealth -= 4;
 		}
-		if(megastreak.isOnMega() && megastreak.getClass() == Uberstreak.class && kills >= 200) {
-			maxHealth -= 2;
-		}
-		if(megastreak.isOnMega() && megastreak.getClass() == Uberstreak.class && kills >= 300) {
-			maxHealth -= 2;
+
+		if(Killstreak.hasKillstreak(player, "Monster") && Monster.healthMap.containsKey(player)) {
+			maxHealth += Monster.healthMap.get(player);
 		}
 
 		if(Juggernaut.juggernaut == this.player) maxHealth = 100;

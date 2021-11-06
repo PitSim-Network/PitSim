@@ -1,23 +1,22 @@
-package dev.kyro.pitsim.killstreaks;
+package dev.kyro.pitsim.megastreaks;
 
 import de.tr7zw.nbtapi.NBTItem;
 import dev.kyro.arcticapi.data.APlayerData;
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.arcticapi.misc.AUtil;
+import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.commands.FreshCommand;
-import dev.kyro.pitsim.controllers.EnchantManager;
-import dev.kyro.pitsim.controllers.ItemManager;
-import dev.kyro.pitsim.controllers.PitEventManager;
+import dev.kyro.pitsim.controllers.*;
 import dev.kyro.pitsim.controllers.objects.Megastreak;
+import dev.kyro.pitsim.controllers.objects.PitEnchant;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.enums.MysticType;
 import dev.kyro.pitsim.enums.NBTTag;
 import dev.kyro.pitsim.enums.PantColor;
 import dev.kyro.pitsim.events.AttackEvent;
-import dev.kyro.pitsim.events.KillEvent;
-import dev.kyro.pitsim.misc.ChunkOfVile;
-import dev.kyro.pitsim.misc.FunkyFeather;
-import dev.kyro.pitsim.misc.ProtArmor;
+import dev.kyro.pitsim.events.HealEvent;
+import dev.kyro.pitsim.events.IncrementKillsEvent;
+import dev.kyro.pitsim.misc.*;
 import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -28,12 +27,15 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.HandlerList;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 public class Uberstreak extends Megastreak {
+	public List<UberEffect> uberEffects = new ArrayList<>();
 	MysticType mysticType;
 
 	public Uberstreak(PitPlayer pitPlayer) {
@@ -62,12 +64,17 @@ public class Uberstreak extends Megastreak {
 
 	@Override
 	public int guiSlot() {
-		return 14;
+		return 13;
+	}
+
+	@Override
+	public int prestigeReq() {
+		return 20;
 	}
 
 	@Override
 	public int levelReq() {
-		return 25;
+		return 100;
 	}
 
 	@Override
@@ -83,95 +90,117 @@ public class Uberstreak extends Megastreak {
 		lore.add(ChatColor.translateAlternateColorCodes('&', "&7Triggers on: &c100 kills"));
 		lore.add("");
 		lore.add(ChatColor.GRAY + "On trigger:");
-		lore.add(ChatColor.translateAlternateColorCodes('&', "&a\u25a0 &7Immune to enchants that &emove &7you."));
+		lore.add(ChatColor.translateAlternateColorCodes('&', "&a\u25a0 &7Immune to enchants that &emove &7you"));
 		lore.add("");
 		lore.add(ChatColor.GRAY + "BUT:");
-		lore.add(ChatColor.translateAlternateColorCodes('&', "&c\u25a0 &7Receive &c+10% &7damage per 50 kills."));
+		lore.add(ChatColor.translateAlternateColorCodes('&', "&c\u25a0 &7Deal &c-50% &7damage to nons"));
 		lore.add("");
 		lore.add(ChatColor.GRAY + "During the streak:");
-		lore.add(ChatColor.translateAlternateColorCodes('&', "&d\u25a0 &7100 kills: &c-1 max \u2764"));
-		lore.add(ChatColor.translateAlternateColorCodes('&', "&d\u25a0 &7200 kills: &c-1 max \u2764 &7(2 total)"));
-		lore.add(ChatColor.translateAlternateColorCodes('&', "&d\u25a0 &7300 kills: &c-1 max \u2764 &7(3 total)"));
-		lore.add(ChatColor.translateAlternateColorCodes('&', "&d\u25a0 &7400 kills: &cNo longer gain health."));
+		lore.add(ChatColor.translateAlternateColorCodes('&', "&d\u25a0 &7200 kills: Random &dbuff &7or &cdebuff"));
+		lore.add(ChatColor.translateAlternateColorCodes('&', "&d\u25a0 &7300 kills: Random &dbuff &7or &cdebuff"));
+		lore.add(ChatColor.translateAlternateColorCodes('&', "&d\u25a0 &7400 kills: Random &dbuff &7or &cdebuff"));
+		lore.add(ChatColor.translateAlternateColorCodes('&', "&d\u25a0 &7500 kills: &cNo longer gain health"));
 		lore.add("");
 		lore.add(ChatColor.GRAY + "On death:");
-		lore.add(ChatColor.translateAlternateColorCodes('&', "&e\u25a0 &7Earn a random &dUberdrop&7."));
-		lore.add(ChatColor.translateAlternateColorCodes('&', "&7(If streak is at least 400)"));
+		lore.add(ChatColor.translateAlternateColorCodes('&', "&e\u25a0 &7Earn a random &dUberdrop&7"));
+		lore.add(ChatColor.translateAlternateColorCodes('&', "&7(If streak is at least 500)"));
 		meta.setLore(lore);
 		item.setItemMeta(meta);
 		return item;
 	}
 
 	@EventHandler
-	public void onHit(AttackEvent.Apply attackEvent) {
-		PitPlayer pitPlayer = PitPlayer.getPitPlayer(attackEvent.defender);
-		if(pitPlayer != this.pitPlayer) return;
-		if(pitPlayer.megastreak.isOnMega() && pitPlayer.megastreak.getClass() == Uberstreak.class) {
-			double ks = pitPlayer.getKills();
-			attackEvent.increasePercent += (ks / 5)  / 100D;
+	public void onPreAttack(AttackEvent.Pre attackEvent) {
+		PitPlayer pitAttacker = PitPlayer.getPitPlayer(attackEvent.attacker);
+		if(pitAttacker != this.pitPlayer || pitAttacker.megastreak.getClass() != Uberstreak.class) return;
+		if(pitAttacker.megastreak.isOnMega()) {
+			PitEnchant exe = EnchantManager.getEnchant("executioner");
+			if(uberEffects.contains(UberEffect.EXE_DISABLE)) attackEvent.getAttackerEnchantMap().remove(exe);
 		}
 	}
 
 	@EventHandler
-	public void onKill(KillEvent killEvent) {
-		PitPlayer pitPlayer = PitPlayer.getPitPlayer(killEvent.killer);
+	public void onAttack(AttackEvent.Apply attackEvent) {
+		PitPlayer pitDefender = PitPlayer.getPitPlayer(attackEvent.defender);
+		if(pitDefender == this.pitPlayer && pitDefender.megastreak.getClass() == Uberstreak.class) {
+			if(uberEffects.contains(UberEffect.TAKE_MORE_DAMAGE)) attackEvent.multiplier.add(1.25);
+			if(uberEffects.contains(UberEffect.TAKE_LESS_DAMAGE)) attackEvent.multiplier.add(0.9);
+		}
+
+		PitPlayer pitAttacker = PitPlayer.getPitPlayer(attackEvent.attacker);
+		if(pitAttacker != this.pitPlayer || pitAttacker.megastreak.getClass() != Uberstreak.class) return;
+		if(pitAttacker.megastreak.isOnMega()) {
+			if(NonManager.getNon(attackEvent.defender) != null) attackEvent.multiplier.add(0.5);
+		}
+	}
+
+	@EventHandler
+	public void onHeal(HealEvent event) {
+		PitPlayer pitPlayer = PitPlayer.getPitPlayer(event.player);
+		if(pitPlayer != this.pitPlayer) return;
+
+		if(uberEffects.contains(UberEffect.HEAL_LESS)) event.multipliers.add(0.75);
+
+		if(pitPlayer.getKills() < 500) return;
+		event.multipliers.add(0D);
+	}
+
+	@EventHandler
+	public void onKill(IncrementKillsEvent event) {
+		PitPlayer pitPlayer = PitPlayer.getPitPlayer(event.player);
 		if(pitPlayer != this.pitPlayer) return;
 		if(pitPlayer.megastreak.isOnMega() && pitPlayer.megastreak.getClass() == Uberstreak.class) {
-			double ks = pitPlayer.getKills();
-			if(ks >= 199 && ks < 200) {
-				pitPlayer.player.playSound(pitPlayer.player.getLocation(), "mob.guardian.curse", 1000, 1);
+
+			double current = event.currentAmount;
+			double newKills = event.newAmount;
+
+			if(current < 200 && newKills >= 200) {
+				Sounds.UBER_200.play(pitPlayer.player);
+				UberEffect uberEffect = UberEffect.getRandom(uberEffects);
+				if(uberEffects.size() < 1) uberEffects.add(uberEffect);
+				if(uberEffect == UberEffect.SKIP_100) zoom();
 				pitPlayer.updateMaxHealth();
-				AOutput.send(pitPlayer.player, "&d&lUBERSTREAK &c-1 max \u2764");
+				AOutput.send(pitPlayer.player, "&d&lUBERSTREAK &7Random Effect: " + uberEffect.description);
 			}
-			if(ks >= 299 && ks < 300) {
-				pitPlayer.player.playSound(pitPlayer.player.getLocation(), "mob.guardian.curse", 1000, 1);
+			if(current < 300 && newKills >= 300) {
+				Sounds.UBER_300.play(pitPlayer.player);
+				UberEffect uberEffect = UberEffect.getRandom(uberEffects);
+				if(uberEffects.size() < 2) uberEffects.add(uberEffect);
+				if(uberEffect == UberEffect.SKIP_100) zoom();
 				pitPlayer.updateMaxHealth();
-				AOutput.send(pitPlayer.player, "&d&lUBERSTREAK &c-1 max \u2764");
+				AOutput.send(pitPlayer.player, "&d&lUBERSTREAK &7Random Effect: " + uberEffect.description);
 			}
-			if(ks >= 399 && ks <  400) {
-				pitPlayer.player.playSound(pitPlayer.player.getLocation(), "mob.guardian.curse", 1000, 1);
+			if(current < 400 && newKills >= 400) {
+				Sounds.UBER_400.play(pitPlayer.player);
+				UberEffect uberEffect = UberEffect.getRandom(uberEffects);
+				if(uberEffects.size() < 3) uberEffects.add(uberEffect);
+				if(uberEffect == UberEffect.SKIP_100) zoom();
+				pitPlayer.updateMaxHealth();
+				AOutput.send(pitPlayer.player, "&d&lUBERSTREAK &7Random Effect: " + uberEffect.description);
+			}
+			if(current < 500 && newKills >= 500) {
+				Sounds.UBER_500.play(pitPlayer.player);
 				pitPlayer.updateMaxHealth();
 				AOutput.send(pitPlayer.player, "&d&lUBERSTREAK &cCannot heal");
 			}
 		}
-
 	}
 
-//	@EventHandler
-//	public void onHeal(HealEvent event) {
-//		if(event.player != pitPlayer.player) return;
-//		if(pitPlayer.getKills() < 400) return;
-//
-//		event.multipliers.add(0D);
-//	}
+	public void zoom() {
+		new BukkitRunnable() {
+			int count = 0;
+			@Override
+			public void run() {
+				if(count++ == 50) {
+					cancel();
+					return;
+				}
 
-//	@EventHandler
-//	public void onHeal(EntityRegainHealthEvent event) {
-//		if(!(event.getEntity() instanceof Player)) return;
-//		PitPlayer pitPlayer = PitPlayer.getPitPlayer((Player) event.getEntity());
-//		if(pitPlayer != this.pitPlayer) return;
-//		if(pitPlayer.megastreak.isOnMega() && pitPlayer.megastreak.getClass() == Uberstreak.class) {
-//			if(pitPlayer.getKills() >= 400) {
-//				event.setCancelled(true);
-//			}
-//		}
-//	}
-
-//	@EventHandler
-//	public void onHeal(HealEvent healEvent) {
-//		if(!isOnMega()) return;
-//
-//		healEvent.multipliers.add(0D);
-//	}
-//
-//	@EventHandler
-//	public void onPlayerRegainHealth(EntityRegainHealthEvent event) {
-//		if(!isOnMega()) return;
-//		if(event.getRegainReason() != EntityRegainHealthEvent.RegainReason.SATIATED &&
-//				event.getRegainReason() != EntityRegainHealthEvent.RegainReason.REGEN &&
-//				event.getRegainReason() != EntityRegainHealthEvent.RegainReason.MAGIC_REGEN) return;
-//		event.setCancelled(true);
-//	}
+				pitPlayer.incrementKills();
+				Misc.multiKill(pitPlayer.player);
+			}
+		}.runTaskTimer(PitSim.INSTANCE, 0L, 3L);
+	}
 
 	@Override
 	public void proc() {
@@ -179,10 +208,10 @@ public class Uberstreak extends Megastreak {
 		if(pitPlayer.megastreak.isOnMega()) {
 			pitPlayer.prefix = pitPlayer.megastreak.getName() + " &7" + PlaceholderAPI.setPlaceholders(pitPlayer.player, message);
 		} else {
-			pitPlayer.prefix = "&7[&e" + pitPlayer.playerLevel + "&7] &7" + PlaceholderAPI.setPlaceholders(pitPlayer.player, message);
+			pitPlayer.prefix = PrestigeValues.getPlayerPrefixNameTag(pitPlayer.player) + PlaceholderAPI.setPlaceholders(pitPlayer.player, message);
 		}
 
-		pitPlayer.player.playSound(pitPlayer.player.getLocation(), "mob.guardian.curse", 1000, 1);
+		Sounds.UBER_100.play(pitPlayer.player);
 		for(Player player : Bukkit.getOnlinePlayers()) {
 			PitPlayer pitPlayer2 = PitPlayer.getPitPlayer(player);
 			if(pitPlayer2.disabledStreaks) continue;
@@ -192,14 +221,14 @@ public class Uberstreak extends Megastreak {
 			player.sendMessage(PlaceholderAPI.setPlaceholders(pitPlayer.player, message2));
 		}
 		pitPlayer.updateMaxHealth();
-		AOutput.send(pitPlayer.player, "&d&lUBERSTREAK &c-1 max \u2764");
+		AOutput.send(pitPlayer.player, "&d&lUBERSTREAK &cDeal -50% damage to nons");
 	}
 
 	@Override
 	public void reset() {
 		pitPlayer.updateMaxHealth();
-
-		if(pitPlayer.getKills() < 400) return;
+		uberEffects.clear();
+		if(pitPlayer.getKills() < 500) return;
 		if(!isOnMega()) return;
 
 		if(pitPlayer.uberReset == 0) {
@@ -219,12 +248,11 @@ public class Uberstreak extends Megastreak {
 			stop();
 		}
 
-
 		String message = "%luckperms_prefix%";
 		if(pitPlayer.megastreak.isOnMega()) {
 			pitPlayer.prefix = pitPlayer.megastreak.getName() + " &7" + PlaceholderAPI.setPlaceholders(pitPlayer.player, message);
 		} else {
-			pitPlayer.prefix = "&7[&e" + pitPlayer.playerLevel + "&7] &7" + PlaceholderAPI.setPlaceholders(pitPlayer.player, message);
+			pitPlayer.prefix = PrestigeValues.getPlayerPrefixNameTag(pitPlayer.player) + PlaceholderAPI.setPlaceholders(pitPlayer.player, message);
 		}
 
 		int rand = (int) (Math.random() * 10);
@@ -292,50 +320,17 @@ public class Uberstreak extends Megastreak {
 				uberMessage("&bProtection I Diamond Boots", pitPlayer);
 			}
 		}
+	}
 
-
-
-//		int rand = (int) (Math.random() * 4);
-//		switch(rand) {
-//			case 0:
-//				int rand2 = (int) (Math.random() * 3);
-//				switch(rand2) {
-//					case 0:
-//						mysticType = MysticType.SWORD;
-//						break;
-//					case 1:
-//						mysticType = MysticType.BOW;
-//						break;
-//					default:
-//						mysticType = MysticType.PANTS;
-//						break;
-//				}
-//				mysticType = MysticType.SWORD;
-//				break;
-//			case 1:
-//				mysticType = MysticType.BOW;
-//				break;
-//			default:
-//				mysticType = MysticType.PANTS;
-//				break;
+	public static void uberMessage(String message, PitPlayer pitPlayer) {
+	if(PitEventManager.majorEvent) return;
+		for(Player player : Bukkit.getOnlinePlayers()) {
+			PitPlayer pitPlayer2 = PitPlayer.getPitPlayer(player);
+			if(pitPlayer2.disabledStreaks) continue;
+			String message2 = ChatColor.translateAlternateColorCodes('&',
+					"&d&lUBERDROP!&7 %luckperms_prefix%" + pitPlayer.player.getDisplayName() + "&7 obtained an &dUberdrop: &7" + message);
+			player.sendMessage(PlaceholderAPI.setPlaceholders(pitPlayer.player, message2));
 		}
-
-		public static void uberMessage(String message, PitPlayer pitPlayer) {
-		if(PitEventManager.majorEvent) return;
-			for(Player player : Bukkit.getOnlinePlayers()) {
-				PitPlayer pitPlayer2 = PitPlayer.getPitPlayer(player);
-				if(pitPlayer2.disabledStreaks) continue;
-				String message2 = ChatColor.translateAlternateColorCodes('&',
-						"&d&lUBERDROP!&7 %luckperms_prefix%" + pitPlayer.player.getDisplayName() + "&7 obtained an &dUberdrop: &7" + message);
-				player.sendMessage(PlaceholderAPI.setPlaceholders(pitPlayer.player, message2));
-			}
-		}
-
-
-
-//	}
-	public static void jew(MysticType mysticType) {
-
 	}
 
 	@Override
@@ -347,5 +342,34 @@ public class Uberstreak extends Megastreak {
 	public void kill() {
 
 		if(!isOnMega()) return;
+	}
+
+	public enum UberEffect {
+		NO_SPEED("&CYou cannot gain speed"),
+		TAKE_MORE_DAMAGE("&CTake 25% more damage"),
+		EXE_DISABLE("&cExecutioner no longer works"),
+		LOSE_MAX_HEALTH("&c-" + Misc.getHearts(4) + " max hp"),
+		HEAL_LESS("&cHeal 25% less from all sources"),
+
+		NONE("&7Nothing happens... Yay?"),
+
+		TAKE_LESS_DAMAGE("&dTake 10% less damage"),
+		SKIP_100("&dZoooom");
+
+		public String description;
+
+		UberEffect(String description) {
+			this.description = description;
+		}
+
+		public static UberEffect getRandom(List<UberEffect> uberEffects) {
+			List<UberEffect> possible = new ArrayList<>();
+			for(UberEffect value : values()) {
+				if(!uberEffects.contains(value)) possible.add(value);
+			}
+
+			Collections.shuffle(possible);
+			return possible.get(0);
+		}
 	}
 }

@@ -6,11 +6,9 @@ import dev.kyro.arcticapi.gui.AGUIPanel;
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.enums.DeathCry;
-import dev.kyro.pitsim.enums.KillEffect;
-import net.milkbowl.vault.chat.Chat;
+import dev.kyro.pitsim.misc.Sounds;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
-import org.bukkit.Sound;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.event.inventory.InventoryClickEvent;
@@ -62,10 +60,10 @@ public class DeathCryPanel extends AGUIPanel {
                         pitPlayer.deathCry = null;
                         playerData.set("deathcry", null);
                         APlayerData.savePlayerData(player);
-                        player.playSound(player.getLocation(), Sound.NOTE_PLING, 1F, 2F);
+                        Sounds.SUCCESS.play(player);
                         openPanel(donatorGUI.deathCryPanel);
                     } else {
-                        player.playSound(player.getLocation(), Sound.ENDERMAN_TELEPORT, 1F, 0.5F);
+                        Sounds.ERROR.play(player);
                         AOutput.error(player, "&cYou don't have a Death cry equipped!");
                     }
               } else if(slot == 11) {
@@ -73,10 +71,10 @@ public class DeathCryPanel extends AGUIPanel {
                     pitPlayer.deathCry = DeathCry.MARIO_DEATH;
                     playerData.set("deathcry", DeathCry.MARIO_DEATH.toString());
                     APlayerData.savePlayerData(player);
-                    player.playSound(player.getLocation(), Sound.NOTE_PLING, 1F, 2F);
+                    Sounds.SUCCESS.play(player);
                     openPanel(donatorGUI.deathCryPanel);
                 } else {
-                    player.playSound(player.getLocation(), Sound.ENDERMAN_TELEPORT, 1F, 0.5F);
+                    Sounds.ERROR.play(player);
                     AOutput.error(player, "&cThat death cry is already equipped");
                 }
                 return;
@@ -85,10 +83,10 @@ public class DeathCryPanel extends AGUIPanel {
                     pitPlayer.deathCry = DeathCry.GHAST_SCREAM;
                     playerData.set("deathcry", DeathCry.GHAST_SCREAM.toString());
                     APlayerData.savePlayerData(player);
-                    player.playSound(player.getLocation(), Sound.NOTE_PLING, 1F, 2F);
+                    Sounds.SUCCESS.play(player);
                     openPanel(donatorGUI.deathCryPanel);
                 } else {
-                    player.playSound(player.getLocation(), Sound.ENDERMAN_TELEPORT, 1F, 0.5F);
+                    Sounds.ERROR.play(player);
                     AOutput.error(player, "&cThat death cry is already equipped");
                 }
             }

@@ -7,7 +7,7 @@ import dev.kyro.pitsim.controllers.objects.PitEnchant;
 import dev.kyro.pitsim.enums.ApplyType;
 import dev.kyro.pitsim.events.AttackEvent;
 import dev.kyro.pitsim.events.VolleyShootEvent;
-import org.bukkit.Sound;
+import dev.kyro.pitsim.misc.Sounds;
 import org.bukkit.entity.Arrow;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -61,7 +61,7 @@ public class Volley extends PitEnchant {
 				new BukkitRunnable() {
 					@Override
 					public void run() {
-						player.getWorld().playSound(player.getLocation(), Sound.SHOOT_ARROW, 1, 1);
+						Sounds.VOLLEY.play(player);
 					}
 				}.runTaskLater(PitSim.INSTANCE, 1L);
 			}

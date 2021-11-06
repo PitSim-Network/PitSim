@@ -5,7 +5,6 @@ import de.tr7zw.nbtapi.NBTItem;
 import de.tr7zw.nbtapi.NBTList;
 import dev.kyro.arcticapi.builders.AItemStackBuilder;
 import dev.kyro.arcticapi.builders.ALoreBuilder;
-import dev.kyro.arcticapi.misc.ASound;
 import dev.kyro.arcticapi.misc.AUtil;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.controllers.objects.Non;
@@ -18,7 +17,11 @@ import dev.kyro.pitsim.exceptions.*;
 import dev.kyro.pitsim.inventories.EnchantingGUI;
 import dev.kyro.pitsim.misc.Constant;
 import dev.kyro.pitsim.misc.Misc;
-import org.bukkit.*;
+import dev.kyro.pitsim.misc.Sounds;
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
+import org.bukkit.Color;
+import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -48,8 +51,8 @@ public class EnchantManager implements Listener {
 
 		EnchantingGUI enchantingGUI = new EnchantingGUI(player);
 		enchantingGUI.open();
-		ASound.play(player, Sound.GHAST_FIREBALL, 0.1F, 0.5F);
-		ASound.play(player, Sound.ITEM_PICKUP, 1F, 0.9F);
+		Sounds.MYSTIC_WELL_OPEN_1.play(player);
+		Sounds.MYSTIC_WELL_OPEN_2.play(player);
 	}
 
 	public static void registerEnchant(PitEnchant pitEnchant) {
@@ -371,7 +374,7 @@ public class EnchantManager implements Listener {
 		nbtItem.setInteger(NBTTag.CURRENT_LIVES.getRef(), maxLives);
 		Bukkit.broadcastMessage(ChatColor.translateAlternateColorCodes(
 				'&', "&3&lJEWEL!&7 " + player.getDisplayName() + " &7found " + jewelEnchant.getDisplayName()));
-		ASound.play(player, Sound.ENDERDRAGON_GROWL, 1, 1);
+		Sounds.JEWEL_FIND.play(player);
 		try {
 			return EnchantManager.addEnchant(nbtItem.getItem(), jewelEnchant, 3, false, true, -1);
 		} catch(Exception ignored) { }

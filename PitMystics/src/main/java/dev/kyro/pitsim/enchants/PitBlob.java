@@ -1,10 +1,8 @@
 package dev.kyro.pitsim.enchants;
 
 import dev.kyro.arcticapi.builders.ALoreBuilder;
-import dev.kyro.arcticapi.events.armor.AChangeEquipmentEvent;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.controllers.DamageManager;
-import dev.kyro.pitsim.controllers.EnchantManager;
 import dev.kyro.pitsim.controllers.NonManager;
 import dev.kyro.pitsim.controllers.objects.Non;
 import dev.kyro.pitsim.controllers.objects.PitEnchant;
@@ -34,12 +32,13 @@ public class PitBlob extends PitEnchant {
 			@Override
 			public void run() {
 				for(Map.Entry<UUID, Slime> entry : blobMap.entrySet()) {
-					double damage = (entry.getValue().getSize() - 1) * 1.5;
+					double damage = (entry.getValue().getSize() - 1);
+					entry.getValue().setHealth(entry.getValue().getMaxHealth());
 					for(Entity entity : entry.getValue().getNearbyEntities(0, 0, 0)) {
 
 						if(!(entity instanceof Player)) continue;
 						Non non = NonManager.getNon((Player) entity);
-						if(non == null || DamageManager.hitCooldownList.contains(non.non)) continue;
+						if(non == null || DamageManager.nonHitCooldownList.contains(non.non)) continue;
 
 						EntityDamageByEntityEvent event = new EntityDamageByEntityEvent(entry.getValue(), non.non,
 								EntityDamageEvent.DamageCause.CUSTOM, damage);
@@ -67,10 +66,24 @@ public class PitBlob extends PitEnchant {
 		return null;
 	}
 
+//	/*@EventHandler
+//	public void onLeave(PlayerQuitEvent event) {
+//		blobMap.remove(event.getPlayer().getUniqueId());
+//	}*/
+
 	@EventHandler(ignoreCancelled = true)
 	public void onAttack(EntityDamageEvent event) {
 
-		if(!(event.getEntity() instanceof Slime) || !blobMap.containsValue((Slime) event.getEntity())) return;
+		if(!(event.getEntity() instanceof Slime)) {
+			return;
+		}
+
+		if(!blobMap.containsValue((Slime) event.getEntity())) {
+			return;
+		}
+
+
+
 		Slime slime = (Slime) event.getEntity();
 
 		if(getOwner(slime) == event.getEntity()) {
@@ -89,14 +102,11 @@ public class PitBlob extends PitEnchant {
 
 	@EventHandler
 	public void onKill(KillEvent killEvent) {
-
-		int enchantLvl = killEvent.getKillerEnchantLevel(this);
-		if(enchantLvl == 0) return;
-
+		if(!blobMap.containsKey(killEvent.killer.getUniqueId())) return;
 		Slime slime = blobMap.get(killEvent.killer.getUniqueId());
 		if(slime != null) {
 
-			boolean isMaxSize = slime.getSize() >= getMaxSlimeSize(enchantLvl);
+			boolean isMaxSize = slime.getSize() >= getMaxSlimeSize(3);
 			if(Math.random() < 0.25 && !isMaxSize) slime.setSize(slime.getSize() + 1);
 			if(!isMaxSize) slime.setHealth(slime.getMaxHealth());
 			return;
@@ -108,31 +118,45 @@ public class PitBlob extends PitEnchant {
 	}
 
 	@EventHandler
-	public void onArmorEquip(AChangeEquipmentEvent event) {
+	public void onDamage(EntityDamageEvent event) {
+		if(event.getEntity() instanceof Slime) event.setCancelled(true);
 
-		Player player = event.getPlayer();
 
-		Map<PitEnchant, Integer> enchantMap = EnchantManager.getEnchantsOnPlayer(player);
-		int enchantLvl = enchantMap.getOrDefault(this, 0);
-
-		Map<PitEnchant, Integer> oldEnchantMap = EnchantManager.getEnchantsOnPlayer(event.getPreviousArmor());
-		int oldEnchantLvl = oldEnchantMap.getOrDefault(this, 0);
-
-		if(oldEnchantLvl == 0 && enchantLvl != 0) {
-
-//			if(blobMap.containsKey(player.getUniqueId())) return;
-
-		} else if(enchantLvl == 0 && oldEnchantLvl != 0) {
-			Slime slime = blobMap.get(player.getUniqueId());
-			if(slime == null) return;
-			slime.remove();
-			blobMap.remove(player.getUniqueId());
-		} else if(blobMap.containsKey(player.getUniqueId())) {
-
-			if(blobMap.get(player.getUniqueId()) == null) return;
-			blobMap.get(player.getUniqueId()).setSize(Math.min(enchantLvl * 2, blobMap.get(player.getUniqueId()).getSize()));
-		}
 	}
+
+	@EventHandler
+	public void onDamage(EntityDamageByEntityEvent event) {
+		if(!(event.getDamager() instanceof Slime)) return;
+		Player player = getOwner((Slime) event.getDamager());
+		if(event.getEntity() == player) event.setCancelled(true);
+	}
+
+//	@EventHandler
+//	public void onArmorEquip(AChangeEquipmentEvent event) {
+//
+//		Player player = event.getPlayer();
+//
+//		Map<PitEnchant, Integer> enchantMap = EnchantManager.getEnchantsOnPlayer(player);
+//		int enchantLvl = enchantMap.getOrDefault(this, 0);
+//
+//		Map<PitEnchant, Integer> oldEnchantMap = EnchantManager.getEnchantsOnPlayer(event.getPreviousArmor());
+//		int oldEnchantLvl = oldEnchantMap.getOrDefault(this, 0);
+//
+//		if(oldEnchantLvl == 0 && enchantLvl != 0) {
+//
+////			if(blobMap.containsKey(player.getUniqueId())) return;
+//
+//		} else if(enchantLvl == 0 && oldEnchantLvl != 0) {
+//			Slime slime = blobMap.get(player.getUniqueId());
+//			if(slime == null) return;
+//			slime.remove();
+//			blobMap.remove(player.getUniqueId());
+//		} else if(blobMap.containsKey(player.getUniqueId())) {
+//
+//			if(blobMap.get(player.getUniqueId()) == null) return;
+//			blobMap.get(player.getUniqueId()).setSize(Math.min(enchantLvl * 2, blobMap.get(player.getUniqueId()).getSize()));
+//		}
+//	}
 
 	@Override
 	public void onDisable() {
@@ -142,6 +166,7 @@ public class PitBlob extends PitEnchant {
 			entry.getValue().remove();
 		}
 	}
+
 
 	@Override
 	public List<String> getDescription(int enchantLvl) {

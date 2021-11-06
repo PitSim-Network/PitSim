@@ -1,63 +1,71 @@
 package dev.kyro.pitsim.controllers;
 
 import be.maximvdw.featherboard.api.FeatherBoardAPI;
-import dev.kyro.arcticapi.data.APlayerData;
 import dev.kyro.arcticapi.misc.AOutput;
-import dev.kyro.arcticapi.misc.ASound;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.controllers.objects.Non;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.events.AttackEvent;
+import dev.kyro.pitsim.events.IncrementKillsEvent;
 import dev.kyro.pitsim.events.KillEvent;
-import dev.kyro.pitsim.killstreaks.Highlander;
+import dev.kyro.pitsim.megastreaks.Highlander;
+import dev.kyro.pitsim.megastreaks.NoMegastreak;
 import dev.kyro.pitsim.misc.DeathCrys;
 import dev.kyro.pitsim.misc.KillEffects;
 import dev.kyro.pitsim.misc.Misc;
+import dev.kyro.pitsim.misc.Sounds;
 import me.clip.placeholderapi.PlaceholderAPI;
-import net.citizensnpcs.api.CitizensAPI;
-import net.citizensnpcs.api.npc.NPC;
-import net.citizensnpcs.api.npc.NPCRegistry;
-import net.kyori.adventure.audience.Audience;
-import org.bukkit.*;
-import org.bukkit.configuration.file.FileConfiguration;
+//import net.kyori.adventure.audience.Audience;
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
+import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
+import org.bukkit.event.block.BlockBreakEvent;
+import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.*;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.spigotmc.event.player.PlayerSpawnLocationEvent;
 
-import java.io.File;
 import java.text.DecimalFormat;
 import java.util.*;
 
 public class PlayerManager implements Listener {
-
-	public static List<UUID> swapCooldown = new ArrayList<>();
-	public static Map<Player, BossBarManager> bossBars = new HashMap<>();
-
-//	@EventHandler
-//	public void onClick(InventoryClickEvent event) {
-//		if(Misc.isAirOrNull(event.getCurrentItem())) return;
-//		ItemStack itemStack = event.getCurrentItem();
-//		NBTItem nbtItem = new NBTItem(itemStack);
-//		System.out.println(nbtItem);
-//	}
+//	public static Map<Player, BossBarManager> bossBars = new HashMap<>();
 
 	@EventHandler
-	public static void onKill(KillEvent killEvent) {
-
-		if(SpawnManager.isInSpawn(killEvent.killer.getLocation()) && SpawnManager.isInSpawn(killEvent.dead.getLocation())) {
-			NPCRegistry nons = CitizensAPI.getNPCRegistry();
-			List<NPC> toRemove = new ArrayList<>();
-			for(NPC non : nons) {
-				if(SpawnManager.isInSpawn(non.getStoredLocation())) toRemove.add(non);
-			}
-			for(NPC npc : toRemove) npc.destroy();
+	public void onKillForRank(KillEvent killEvent) {
+		if(killEvent.killer.hasPermission("group.nitro")) {
+			killEvent.goldMultipliers.add(1.1);
+			killEvent.xpMultipliers.add(1.1);
 		}
+
+		if(killEvent.killer.hasPermission("group.unthinkable")) {
+			killEvent.goldMultipliers.add(1.25);
+			killEvent.xpMultipliers.add(1.25);
+		} else if(killEvent.killer.hasPermission("group.miraculous")) {
+			killEvent.goldMultipliers.add(1.20);
+			killEvent.xpMultipliers.add(1.20);
+		} else if(killEvent.killer.hasPermission("group.extraordinary")) {
+			killEvent.goldMultipliers.add(1.15);
+			killEvent.xpMultipliers.add(1.15);
+		} else if(killEvent.killer.hasPermission("group.overpowered")) {
+			killEvent.goldMultipliers.add(1.1);
+			killEvent.xpMultipliers.add(1.1);
+		} else if(killEvent.killer.hasPermission("group.legendary")) {
+			killEvent.goldMultipliers.add(1.05);
+			killEvent.xpMultipliers.add(1.05);
+		}
+	}
+
+	@EventHandler(priority = EventPriority.HIGHEST)
+	public static void onKill(KillEvent killEvent) {
 
 		PitPlayer pitKiller = PitPlayer.getPitPlayer(killEvent.killer);
 		PitPlayer pitDead = PitPlayer.getPitPlayer(killEvent.dead);
@@ -93,7 +101,7 @@ public class PlayerManager implements Listener {
 
 
 			}
-			PitSim.VAULT.depositPlayer(killEvent.killer, pitDead.bounty);
+			LevelManager.addGold(killEvent.killer, pitDead.bounty);
 			if(pitDead.megastreak.getClass() != Highlander.class) pitDead.bounty = 0;
 
 
@@ -111,38 +119,50 @@ public class PlayerManager implements Listener {
 			String message = "&6&lBOUNTY!&7 bump &6&l" + amount + "g&7 on %luckperms_prefix%" + killEvent.killer.getDisplayName() +
 					"&7 for high streak";
 			if(!pitKiller.disabledBounties) AOutput.send(killEvent.killer, PlaceholderAPI.setPlaceholders(killEvent.killer, message));
-			ASound.play(killEvent.killer, Sound.WITHER_SPAWN, 1, 1);
+			Sounds.BOUNTY.play(killEvent.killer);
 		}
 	}
 
+	@EventHandler
+	public void onIncrement(IncrementKillsEvent event) {
+		PitPlayer pitPlayer = PitPlayer.getPitPlayer(event.player);
+		if(event.currentAmount < pitPlayer.megastreak.getRequiredKills() && event.newAmount >= pitPlayer.megastreak.getRequiredKills() && pitPlayer.megastreak.getClass() != NoMegastreak.class) pitPlayer.megastreak.proc();
+		pitPlayer.megastreak.kill();
+	}
+
+	public static List<UUID> pantsSwapCooldown = new ArrayList<>();
 	@EventHandler
 	public static void onClick(PlayerInteractEvent event) {
 
 		Player player = event.getPlayer();
 
 		if(event.getAction() != Action.RIGHT_CLICK_AIR && event.getAction() != Action.RIGHT_CLICK_BLOCK) return;
-		if(Misc.isAirOrNull(player.getItemInHand()) || !player.getItemInHand().getType().toString().contains("LEGGINGS")) return;
+		if(Misc.isAirOrNull(player.getItemInHand())) return;
 
-		if(swapCooldown.contains(player.getUniqueId())) {
+		if(player.getItemInHand().getType().toString().contains("LEGGINGS")){
+			if(Misc.isAirOrNull(player.getInventory().getLeggings())) return;
 
-			ASound.play(player, Sound.VILLAGER_NO, 1F, 1F);
-			return;
-		}
+			if(pantsSwapCooldown.contains(player.getUniqueId())) {
 
-		ItemStack held = player.getItemInHand();
-		player.setItemInHand(player.getInventory().getLeggings());
-		player.getInventory().setLeggings(held);
-
-		swapCooldown.add(player.getUniqueId());
-		new BukkitRunnable() {
-			@Override
-			public void run() {
-				swapCooldown.remove(player.getUniqueId());
+				Sounds.NO.play(player);
+				return;
 			}
-		}.runTaskLater(PitSim.INSTANCE, 40L);
 
-		ASound.play(player, Sound.HORSE_ARMOR, 1F, 1.3F);
+			ItemStack held = player.getItemInHand();
+			player.setItemInHand(player.getInventory().getLeggings());
+			player.getInventory().setLeggings(held);
+
+			pantsSwapCooldown.add(player.getUniqueId());
+			new BukkitRunnable() {
+				@Override
+				public void run() {
+					pantsSwapCooldown.remove(player.getUniqueId());
+				}
+			}.runTaskLater(PitSim.INSTANCE, 40L);
+			Sounds.ARMOR_SWAP.play(player);
+		}
 	}
+
 	@EventHandler
 	public void onRespawn(PlayerRespawnEvent event) {
 		new BukkitRunnable() {
@@ -152,6 +172,22 @@ public class PlayerManager implements Listener {
 			}
 		}.runTaskLater(PitSim.INSTANCE, 10L);
 
+	}
+//
+//	long time = 0;
+//
+//	@EventHandler
+//	public void onHit(EntityDamageEvent event) {
+//		if(NonManager.getNon((Player) event.getEntity()) != null) return;
+//		Bukkit.broadcastMessage(System.currentTimeMillis() - time + "");
+//		time = System.currentTimeMillis();
+//	}
+
+	@EventHandler
+	public void onMove(PlayerMoveEvent event) {
+		if(event.getPlayer().getLocation().getY() < 20)  {
+			DamageManager.death(event.getPlayer());
+		}
 	}
 
 	@EventHandler
@@ -184,13 +220,6 @@ public class PlayerManager implements Listener {
 //		event.getPlayer().setMaximumNoDamageTicks(18);
 
 
-			if(!isNew(player)) compensateRenown(event.getPlayer());
-			compensateFancyPants(player);
-
-			FileConfiguration playerData = APlayerData.getPlayerData(player);
-			playerData.set("lastversion", PitSim.version);
-			APlayerData.savePlayerData(player);
-
 
 		if(PitEventManager.majorEvent) FeatherBoardAPI.showScoreboard(event.getPlayer(), "event");
 		else {
@@ -198,11 +227,11 @@ public class PlayerManager implements Listener {
 			FeatherBoardAPI.showScoreboard(event.getPlayer(), "default");
 		}
 
-		if(!bossBars.containsKey(event.getPlayer())) {
-			BossBarManager bm = new BossBarManager();
-			Audience audiences = PitSim.INSTANCE.adventure().player(event.getPlayer());
-			bossBars.put(event.getPlayer(), bm);
-		}
+//		if(!bossBars.containsKey(event.getPlayer())) {
+//			BossBarManager bm = new BossBarManager();
+//			Audience audiences = PitSim.INSTANCE.adventure().player(event.getPlayer());
+//			bossBars.put(event.getPlayer(), bm);
+//		}
 
 //		if(!player.isOp()) {
 //			BypassManager.bypassAll.add(player);
@@ -268,7 +297,7 @@ public class PlayerManager implements Listener {
 				if(pitPlayer.megastreak.isOnMega()) {
 					pitPlayer.prefix = pitPlayer.megastreak.getName() + " &7" + PlaceholderAPI.setPlaceholders(player, message);
 				} else {
-					pitPlayer.prefix = "&7[&e" + pitPlayer.playerLevel + "&7] &7" + PlaceholderAPI.setPlaceholders(player, message);
+					pitPlayer.prefix = PrestigeValues.getPlayerPrefixNameTag(pitPlayer.player) + PlaceholderAPI.setPlaceholders(player, message);
 				}
 			}
 		}.runTaskLater(PitSim.INSTANCE,  10L);
@@ -308,50 +337,7 @@ public class PlayerManager implements Listener {
 		}
 	}
 
-	public static Boolean isNew(Player player) {
-		File directory = new File("plugins/PitRemake/playerdata");
-		File[] files = directory.listFiles();
-		for(File file : files) {
 
-			if(file.getName().equals(player.getUniqueId().toString() + ".yml")) {
-				return false;
-			}
-
-		}
-		return true;
-	}
-
-	public static void compensateRenown(Player player) {
-		FileConfiguration playerData = APlayerData.getPlayerData(player);
-		if(playerData.contains("lastversion") && playerData.getDouble("lastversion")  >= 1.0) return;
-
-		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
-		int totalRenown = 0;
-		for(int i = 0; i < pitPlayer.playerLevel; i++) {
-			totalRenown += LevelManager.getRenownFromLevel(i);
-		}
-		pitPlayer.renown += totalRenown;
-		playerData.set("renown", pitPlayer.renown);
-		AOutput.send(player, "&a&lCOMPENSATION! &7Received &e+" + totalRenown + " Renown &7for your current level.");
-		ASound.play(player, Sound.NOTE_PLING, 2, 1.5F);
-
-		APlayerData.savePlayerData(player);
-	}
-
-	public static void compensateFancyPants(Player player) {
-		FileConfiguration playerData = APlayerData.getPlayerData(player);
-		if(!playerData.contains("FANCY_PANTS")) return;
-		playerData.set("FANCY_PANTS", null);
-
-		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
-
-		pitPlayer.renown += 10;
-		playerData.set("renown", pitPlayer.renown);
-		AOutput.send(player, "&a&lCOMPENSATION! &7Received &e+" + 10 + " Renown &7for the removal of &fFancy Pants");
-		ASound.play(player, Sound.NOTE_PLING, 2, 1.5F);
-
-		APlayerData.savePlayerData(player);
-	}
 
 
 
@@ -373,5 +359,23 @@ public class PlayerManager implements Listener {
 	public static void onChat(AsyncPlayerChatEvent event) {
 		if(!passedCaptcha.contains(event.getPlayer().getUniqueId())) return;
 		event.setCancelled(true);
+	}
+
+	public static List<Player> toggledPlayers = new ArrayList<>();
+
+	@EventHandler
+	public void onBreak(BlockBreakEvent event) {
+		if(!event.getPlayer().isOp()) return;
+		if(toggledPlayers.contains(event.getPlayer())) return;
+		event.setCancelled(true);
+		AOutput.error(event.getPlayer(), "&CBlock breaking disabled, run /pitsim worldmodify to toggle");
+	}
+
+	@EventHandler
+	public void onBreak(BlockPlaceEvent event) {
+		if(!event.getPlayer().isOp()) return;
+		if(toggledPlayers.contains(event.getPlayer())) return;
+		event.setCancelled(true);
+		AOutput.error(event.getPlayer(), "&CBlock placing disabled, run /pitsim worldmodify to toggle");
 	}
 }

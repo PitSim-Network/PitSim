@@ -1,8 +1,10 @@
 package dev.kyro.pitsim.misc;
 
-import dev.kyro.arcticapi.misc.ASound;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.controllers.NonManager;
+import dev.kyro.pitsim.controllers.objects.GoldenHelmet;
+import dev.kyro.pitsim.controllers.objects.PitPlayer;
+import dev.kyro.pitsim.megastreaks.Uberstreak;
 import net.minecraft.server.v1_8_R3.*;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -44,6 +46,14 @@ public class Misc {
 		if(amplifier < 0) return;
 		if(duration == 0) return;
 
+		if(NonManager.getNon(player) == null) {
+			PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
+			if(pitPlayer.megastreak.getClass() == Uberstreak.class) {
+				Uberstreak uberstreak = (Uberstreak) pitPlayer.megastreak;
+				if(uberstreak.uberEffects.contains(Uberstreak.UberEffect.NO_SPEED) && type == PotionEffectType.SPEED) return;
+			}
+		}
+
 		for(PotionEffect potionEffect : player.getActivePotionEffects()) {
 			if(!potionEffect.getType().equals(type) || potionEffect.getAmplifier() > amplifier) continue;
 			if(potionEffect.getAmplifier() == amplifier && potionEffect.getDuration() >= duration) continue;
@@ -51,6 +61,11 @@ public class Misc {
 			break;
 		}
 		player.addPotionEffect(new PotionEffect(type, duration, amplifier, ambient, particles));
+		if(type == PotionEffectType.POISON) {
+			for(GoldenHelmet goldenHelmet : GoldenHelmet.getHelmetsFromPlayer(player)) {
+				if(goldenHelmet.ability != null && goldenHelmet.ability.isActive) goldenHelmet.deactivate();
+			}
+		}
 	}
 
 	public static void multiKill(Player player) {
@@ -62,19 +77,19 @@ public class Misc {
 
 				switch(count) {
 					case 0:
-						ASound.play(player, Sound.ORB_PICKUP, 1F, 1.7936507F);
+						Sounds.MULTI_1.play(player);
 						break;
 					case 1:
-						ASound.play(player, Sound.ORB_PICKUP, 1F, 1.8253968F);
+						Sounds.MULTI_2.play(player);
 						break;
 					case 2:
-						ASound.play(player, Sound.ORB_PICKUP, 1F, 1.8730159F);
+						Sounds.MULTI_3.play(player);
 						break;
 					case 3:
-						ASound.play(player, Sound.ORB_PICKUP, 1F, 1.9047619F);
+						Sounds.MULTI_4.play(player);
 						break;
 					case 4:
-						ASound.play(player, Sound.ORB_PICKUP, 1F, 1.9523809F);
+						Sounds.MULTI_5.play(player);
 						break;
 				}
 
@@ -185,11 +200,9 @@ public class Misc {
 			EntityPlayer entityPlayer = ((CraftPlayer) player).getHandle();
 			entityPlayer.playerConnection.sendPacket(new PacketPlayOutSpawnEntityWeather(
 					new EntityLightning(world, location.getX(), location.getY(), location.getZ(), false, false)));
-		}
-	}
 
-	public static <T> T getRandomElement(List<T> list) {
-		int index = (int) (Math.random() * list.size());
-		return list.get(index);
+			player.playSound(location, Sound.AMBIENCE_THUNDER, 10, 1);
+			player.playSound(location, Sound.EXPLODE, 10, (float) (Math.random() * 0.2 + 0.6));
+		}
 	}
 }

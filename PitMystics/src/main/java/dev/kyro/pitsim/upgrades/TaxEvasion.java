@@ -16,7 +16,7 @@ import java.util.List;
 
 public class TaxEvasion extends RenownUpgrade {
 	public TaxEvasion() {
-		super("Tax Evasion", "TAX_EVASION", 25, 24, 15, true, 3);
+		super("Tax Evasion", "TAX_EVASION", 25, 28, 22, true, 3);
 	}
 
 	@Override

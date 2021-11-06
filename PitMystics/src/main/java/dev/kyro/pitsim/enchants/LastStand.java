@@ -1,14 +1,13 @@
 package dev.kyro.pitsim.enchants;
 
 import dev.kyro.arcticapi.builders.ALoreBuilder;
-import dev.kyro.arcticapi.misc.ASound;
 import dev.kyro.arcticapi.misc.AUtil;
 import dev.kyro.pitsim.controllers.Cooldown;
 import dev.kyro.pitsim.controllers.objects.PitEnchant;
 import dev.kyro.pitsim.enums.ApplyType;
 import dev.kyro.pitsim.events.AttackEvent;
 import dev.kyro.pitsim.misc.Misc;
-import org.bukkit.Sound;
+import dev.kyro.pitsim.misc.Sounds;
 import org.bukkit.event.EventHandler;
 import org.bukkit.potion.PotionEffectType;
 
@@ -31,7 +30,7 @@ public class LastStand extends PitEnchant {
 		if(attackEvent.defender.getHealth() - attackEvent.event.getFinalDamage() <= getProcHealth()) {
 			Cooldown cooldown = getCooldown(attackEvent.defender, 10 * 20);
 			if(cooldown.isOnCooldown()) return; else cooldown.reset();
-			ASound.play(attackEvent.defender, Sound.ZOMBIE_WOODBREAK, 1, 1);
+			Sounds.LAST_STAND.play(attackEvent.defender);
 			Misc.applyPotionEffect(attackEvent.defender, PotionEffectType.DAMAGE_RESISTANCE, getSeconds(enchantLvl)
 					* 20, getAmplifier(enchantLvl) - 1, false, false);
 		}

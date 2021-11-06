@@ -27,7 +27,7 @@ import java.util.List;
 
 public  class LuckyKill extends RenownUpgrade {
 	public LuckyKill() {
-		super("Lucky Kill", "LUCKY_KILL", 10, 19, 5, true, 4);
+		super("Lucky Kill", "LUCKY_KILL", 10, 13, 5, true, 4);
 	}
 
 	@Override
