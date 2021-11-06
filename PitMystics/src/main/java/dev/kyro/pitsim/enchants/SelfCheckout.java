@@ -40,7 +40,7 @@ public class SelfCheckout extends PitEnchant {
 			return;
 		}
 
-		int renown = (int) (pitKiller.getKills() / 100);
+		int renown = (int) (pitKiller.getKills() + 1 / 100);
 		if(renown != 0) {
 			pitKiller.renown += renown;
 			FileConfiguration playerData = APlayerData.getPlayerData(killEvent.killer);
