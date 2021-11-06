@@ -80,12 +80,10 @@ public enum PantColor {
 	}
 
 	public static void setPantColor(ItemStack itemStack, PantColor pantColor) {
-
 		if(Misc.isAirOrNull(itemStack) || itemStack.getType() != Material.LEATHER_LEGGINGS) return;
 		LeatherArmorMeta leatherArmorMeta = (LeatherArmorMeta) itemStack.getItemMeta();
 
 		leatherArmorMeta.setColor(Color.fromRGB(pantColor.hexColor));
-
 		
 		leatherArmorMeta.setDisplayName(pantColor.chatColor + (ChatColor.RESET + leatherArmorMeta.getDisplayName()));
 		itemStack.setItemMeta(leatherArmorMeta);
