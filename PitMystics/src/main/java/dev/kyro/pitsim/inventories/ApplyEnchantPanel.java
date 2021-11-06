@@ -5,6 +5,7 @@ import dev.kyro.arcticapi.gui.AGUIPanel;
 import dev.kyro.pitsim.commands.FreshCommand;
 import dev.kyro.pitsim.controllers.EnchantManager;
 import dev.kyro.pitsim.controllers.objects.PitEnchant;
+import dev.kyro.pitsim.enchants.SelfCheckout;
 import dev.kyro.pitsim.enums.MysticType;
 import dev.kyro.pitsim.enums.PantColor;
 import org.bukkit.Material;
@@ -48,6 +49,7 @@ public class ApplyEnchantPanel extends AGUIPanel {
 		for(PitEnchant enchant : EnchantManager.getEnchants(MysticType.getMysticType(mystic))) {
 			if((!hasCommon || (previousEnchant != null && !previousEnchant.getKey().isUncommonEnchant)) && enchants >= 2 && enchant.isUncommonEnchant) continue;
 			if(EnchantManager.getEnchantsOnItem(mystic).containsKey(enchant)) continue;
+			if(enchant.getClass() == SelfCheckout.class) continue;
 			applicableEnchants.add(enchant);
 		}
 		int count = 0;
