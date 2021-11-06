@@ -25,7 +25,7 @@ import java.util.List;
 public class JudgementAbility extends HelmetAbility {
 	public JudgementAbility(Player player) {
 
-		super(player,"Judgement", "judgement", true, 14);
+		super(player,"Judgement", "judgement", true, 15);
 	}
 
 	@EventHandler
