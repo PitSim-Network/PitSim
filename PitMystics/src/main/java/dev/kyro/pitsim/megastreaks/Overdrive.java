@@ -3,6 +3,7 @@ package dev.kyro.pitsim.megastreaks;
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.controllers.LevelManager;
+import dev.kyro.pitsim.controllers.NonManager;
 import dev.kyro.pitsim.controllers.PrestigeValues;
 import dev.kyro.pitsim.controllers.objects.Megastreak;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
@@ -88,7 +89,7 @@ public class Overdrive extends Megastreak {
 		lore.add("");
 		lore.add(ChatColor.GRAY + "BUT:");
 		lore.add(ChatColor.translateAlternateColorCodes('&', "&c\u25a0 &7Receive &c+" + Misc.getHearts(1) + " &7very true"));
-		lore.add(ChatColor.translateAlternateColorCodes('&', "&7damage per 25 kills"));
+		lore.add(ChatColor.translateAlternateColorCodes('&', "&7damage per 25 kills (only from nons)"));
 		lore.add("");
 		lore.add(ChatColor.GRAY + "On death:");
 		lore.add(ChatColor.translateAlternateColorCodes('&', "&e\u25a0 &7Earn between &61000 &7and &65000 gold&7"));
@@ -107,7 +108,9 @@ public class Overdrive extends Megastreak {
 		if(pitPlayer != this.pitPlayer) return;
 		if(pitPlayer.megastreak.isOnMega() && pitPlayer.megastreak.getClass() == Overdrive.class) {
 			int ks = (int) Math.floor(pitPlayer.getKills());
-			attackEvent.veryTrueDamage += (ks - 50) / 25D;
+			if(NonManager.getNon(attackEvent.attacker) == null) {
+				attackEvent.veryTrueDamage += (ks - 50) / 25D;
+			}
 		}
 	}
 
