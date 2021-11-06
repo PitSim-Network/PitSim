@@ -183,7 +183,7 @@ public class Hopper {
 
 	public void remove() {
 
-		HopperManager.hopperList.remove(this);
+		HopperManager.toRemove.add(this);
 		npc.destroy();
 		hopper.remove();
 	}
