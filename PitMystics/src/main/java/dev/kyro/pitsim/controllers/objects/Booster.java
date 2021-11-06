@@ -25,7 +25,7 @@ public abstract class Booster implements Listener {
 		this.refName = refName;
 		this.slot = slot;
 		this.color = color;
-		minutes = Math.max(AConfig.getInt("boosters." + refName), 3);
+		minutes = Math.max(AConfig.getInt("boosters." + refName), 0);
 	}
 
 	public abstract List<String> getDescription();

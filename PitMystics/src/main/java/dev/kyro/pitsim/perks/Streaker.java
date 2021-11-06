@@ -49,7 +49,7 @@ public class Streaker extends PitPerk {
 
 //				TODO: Update lore
 				if(playerTimes.get(player) > 60) xp = 1;
-				if(playerTimes.get(player) <= 55) xp = 1.1;
+				if(playerTimes.get(player) <= 60) xp = 1.1;
 				if(playerTimes.get(player) <= 50) xp = 1.2;
 				if(playerTimes.get(player) <= 45) xp = 1.3;
 				if(playerTimes.get(player) <= 40) xp = 1.4;
