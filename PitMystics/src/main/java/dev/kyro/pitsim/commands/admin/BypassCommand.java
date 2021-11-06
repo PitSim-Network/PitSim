@@ -7,8 +7,8 @@ import org.bukkit.entity.Player;
 
 import java.util.List;
 
-public class WorldModifyCommand extends ASubCommand {
-	public WorldModifyCommand(String executor) {
+public class BypassCommand extends ASubCommand {
+	public BypassCommand(String executor) {
 		super(executor);
 	}
 
