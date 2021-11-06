@@ -12,7 +12,6 @@ public class BoosterCommand implements CommandExecutor {
 	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
 
 		if(!(sender instanceof Player)) return false;
-		if(!sender.isOp()) return false;
 		Player player = (Player) sender;
 
 		BoosterGUI boosterGUI = new BoosterGUI(player);
