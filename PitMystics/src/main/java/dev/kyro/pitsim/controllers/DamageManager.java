@@ -503,7 +503,7 @@ public class DamageManager implements Listener {
 
 		if(PitEventManager.majorEvent && UpgradeManager.hasUpgrade(dead, "LIFE_INSURANCE")) {
 			AOutput.send(dead, "&2&lLIFE INSURANCE! &7Inventory protected.");
-		} else if (EnchantManager.getEnchantLevel(dead.getInventory().getLeggings(), EnchantManager.getEnchant("sco")) > 0) {
+		} else if (EnchantManager.getEnchantLevel(dead.getInventory().getLeggings(), EnchantManager.getEnchant("sco")) > 0 && killstreak > 100) {
 
 		} else if (!(BoosterManager.getBooster("pvp").minutes > 0)) {
 

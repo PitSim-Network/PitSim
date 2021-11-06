@@ -50,6 +50,8 @@ public class SelfCheckout extends PitEnchant {
 			AOutput.send(killEvent.killer, "&7You have been given &e" + renown + " renown");
 		}
 
+		DamageManager.death(killEvent.killer);
+
 		NBTItem nbtItem = new NBTItem(leggings);
 		if(nbtItem.hasKey(NBTTag.CURRENT_LIVES.getRef())) {
 			int lives = nbtItem.getInteger(NBTTag.CURRENT_LIVES.getRef());
@@ -63,7 +65,6 @@ public class SelfCheckout extends PitEnchant {
 
 		}
 
-		DamageManager.death(killEvent.killer);
 	}
 
 	@Override

@@ -266,7 +266,6 @@ public class PitSim extends JavaPlugin {
 		adminCommand.registerCommand(new HopperCommand("hopper"));
 		adminCommand.registerCommand(new ReloadCommand("reload"));
 		adminCommand.registerCommand(new BypassCommand("bypass"));
-
 		setCommand.registerCommand(new SetPrestigeCommand("prestige"));
 		setCommand.registerCommand(new SetLevelCommand("level"));
 		setCommand.registerCommand(new BountyCommand("bounty"));
