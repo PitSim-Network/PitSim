@@ -6,7 +6,6 @@ import dev.kyro.pitsim.controllers.objects.PitEnchant;
 import dev.kyro.pitsim.enums.ApplyType;
 import dev.kyro.pitsim.events.AttackEvent;
 import dev.kyro.pitsim.misc.Misc;
-import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
 
 import java.util.List;
@@ -38,6 +37,6 @@ public class FractionalReserve extends PitEnchant {
 	}
 
 	public static int getReduction(int enchantLvl) {
-		return enchantLvl + 3;
+		return enchantLvl * 2;
 	}
 }
