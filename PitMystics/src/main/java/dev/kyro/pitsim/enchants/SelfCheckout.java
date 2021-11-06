@@ -21,7 +21,7 @@ import java.util.List;
 public class SelfCheckout extends PitEnchant {
 
 	public SelfCheckout() {
-		super("Golden Heart", true, ApplyType.PANTS,
+		super("Self-Checkout", true, ApplyType.PANTS,
 				"selfcheckout", "self-checkout", "sco", "selfcheck", "checkout", "soco");
 	}
 
@@ -32,13 +32,13 @@ public class SelfCheckout extends PitEnchant {
 		int enchantLvl = EnchantManager.getEnchantLevel(leggings, this);
 		if(enchantLvl == 0) return;
 
-		if(!EnchantManager.isJewelComplete(leggings)) {
-			AOutput.error(killEvent.killer, "This enchant only works on jewel items");
-			return;
-		}
-
 		PitPlayer pitKiller = PitPlayer.getPitPlayer(killEvent.killer);
 		if(pitKiller.getKills() + 1 < 100 || pitKiller.megastreak.getClass() == Uberstreak.class) return;
+
+		if(!EnchantManager.isJewelComplete(leggings)) {
+			AOutput.error(killEvent.killer, "Self-Checkout only works on jewel items");
+			return;
+		}
 
 		int renown = (int) (pitKiller.getKills() / 100);
 		if(renown != 0) {
