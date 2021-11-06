@@ -72,9 +72,4 @@ public class SelfCheckout extends PitEnchant {
 				"&a\u25a0 &7Gain &a+1 renown &7for every 100 killstreak",
 				"&c\u25a0 &7Lose &c2 lives &7on this item").getLore();
 	}
-
-	public double getHealing(int enchantLvl) {
-
-		return Math.floor(Math.pow(enchantLvl, 1.4));
-	}
 }
