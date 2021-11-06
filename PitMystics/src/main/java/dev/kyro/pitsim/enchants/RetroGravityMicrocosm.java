@@ -8,11 +8,14 @@ import dev.kyro.pitsim.controllers.objects.PitEnchant;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.enums.ApplyType;
 import dev.kyro.pitsim.events.AttackEvent;
+import dev.kyro.pitsim.events.KillEvent;
+import dev.kyro.pitsim.events.OofEvent;
 import dev.kyro.pitsim.misc.Misc;
 import dev.kyro.pitsim.misc.Sounds;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.HashMap;
@@ -27,6 +30,21 @@ public class RetroGravityMicrocosm extends PitEnchant {
 	public RetroGravityMicrocosm() {
 		super("Retro-Gravity Microcosm", true, ApplyType.PANTS,
 				"rgm", "retro", "retrogravitymicrocosm", "retro-gravitymicrocosm", "retro-gravity-microcosm");
+	}
+
+	@EventHandler
+	public void onKill(KillEvent killEvent) {
+		rgmMap.remove(killEvent.dead.getUniqueId());
+	}
+
+	@EventHandler
+	public void onOof(OofEvent event) {
+		rgmMap.remove(event.getPlayer().getUniqueId());
+	}
+
+	@EventHandler
+	public void onOof(PlayerQuitEvent event) {
+		rgmMap.remove(event.getPlayer().getUniqueId());
 	}
 
 	@EventHandler
