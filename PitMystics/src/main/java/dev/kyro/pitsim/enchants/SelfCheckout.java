@@ -52,10 +52,10 @@ public class SelfCheckout extends PitEnchant {
 		NBTItem nbtItem = new NBTItem(leggings);
 		if(nbtItem.hasKey(NBTTag.CURRENT_LIVES.getRef())) {
 			int lives = nbtItem.getInteger(NBTTag.CURRENT_LIVES.getRef());
-			if(lives - 1 == 0) {
+			if(lives - 2 <= 0) {
 				killEvent.killer.getEquipment().setLeggings(new ItemStack(Material.AIR));
 			} else {
-				nbtItem.setInteger(NBTTag.CURRENT_LIVES.getRef(), nbtItem.getInteger(NBTTag.CURRENT_LIVES.getRef()) - 1);
+				nbtItem.setInteger(NBTTag.CURRENT_LIVES.getRef(), nbtItem.getInteger(NBTTag.CURRENT_LIVES.getRef()) - 2);
 				EnchantManager.setItemLore(nbtItem.getItem());
 				killEvent.killer.getEquipment().setLeggings(nbtItem.getItem());
 			}
