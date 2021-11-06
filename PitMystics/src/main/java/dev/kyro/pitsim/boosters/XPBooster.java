@@ -32,7 +32,7 @@ public class XPBooster extends Booster {
 	@Override
 	public ItemStack getDisplayItem() {
 		AItemStackBuilder builder = new AItemStackBuilder(Material.INK_SACK, 1, 12);
-		ALoreBuilder loreBuilder = new ALoreBuilder("&7All players on the server gain", "&b+50% XP&7.", "");
+		ALoreBuilder loreBuilder = new ALoreBuilder("&7All players on the server gain", "&b2x XP&7 and &b1.5x XP cap&7.", "");
 		if(minutes > 0) {
 			builder.setName("&a" + name);
 			loreBuilder.addLore("&7Status: &aActive!", "&7Expires in: &e" + minutes + " minutes", "");

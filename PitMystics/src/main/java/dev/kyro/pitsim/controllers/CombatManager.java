@@ -87,7 +87,7 @@ public class CombatManager implements Listener {
        playerData.set("renown", pitplayer.renown);
        APlayerData.savePlayerData(event.getPlayer());
         event.getPlayer().closeInventory();
-        PlayerManager.bossBars.remove(event.getPlayer());
+//        PlayerManager.bossBars.remove(event.getPlayer());
         PitEventManager.kills.remove(event.getPlayer());
         PitEventManager.bounty.remove(event.getPlayer());
         if(NonManager.getNon(event.getPlayer()) != null) return;

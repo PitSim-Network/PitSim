@@ -15,7 +15,7 @@ import dev.kyro.pitsim.misc.KillEffects;
 import dev.kyro.pitsim.misc.Misc;
 import dev.kyro.pitsim.misc.Sounds;
 import me.clip.placeholderapi.PlaceholderAPI;
-import net.kyori.adventure.audience.Audience;
+//import net.kyori.adventure.audience.Audience;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -25,6 +25,8 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
+import org.bukkit.event.block.BlockBreakEvent;
+import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.*;
 import org.bukkit.inventory.ItemStack;
@@ -35,7 +37,7 @@ import java.text.DecimalFormat;
 import java.util.*;
 
 public class PlayerManager implements Listener {
-	public static Map<Player, BossBarManager> bossBars = new HashMap<>();
+//	public static Map<Player, BossBarManager> bossBars = new HashMap<>();
 
 	@EventHandler
 	public void onKillForRank(KillEvent killEvent) {
@@ -225,11 +227,11 @@ public class PlayerManager implements Listener {
 			FeatherBoardAPI.showScoreboard(event.getPlayer(), "default");
 		}
 
-		if(!bossBars.containsKey(event.getPlayer())) {
-			BossBarManager bm = new BossBarManager();
-			Audience audiences = PitSim.INSTANCE.adventure().player(event.getPlayer());
-			bossBars.put(event.getPlayer(), bm);
-		}
+//		if(!bossBars.containsKey(event.getPlayer())) {
+//			BossBarManager bm = new BossBarManager();
+//			Audience audiences = PitSim.INSTANCE.adventure().player(event.getPlayer());
+//			bossBars.put(event.getPlayer(), bm);
+//		}
 
 //		if(!player.isOp()) {
 //			BypassManager.bypassAll.add(player);
@@ -357,5 +359,23 @@ public class PlayerManager implements Listener {
 	public static void onChat(AsyncPlayerChatEvent event) {
 		if(!passedCaptcha.contains(event.getPlayer().getUniqueId())) return;
 		event.setCancelled(true);
+	}
+
+	public static List<Player> toggledPlayers = new ArrayList<>();
+
+	@EventHandler
+	public void onBreak(BlockBreakEvent event) {
+		if(!event.getPlayer().isOp()) return;
+		if(toggledPlayers.contains(event.getPlayer())) return;
+		event.setCancelled(true);
+		AOutput.error(event.getPlayer(), "&CBlock breaking disabled, run /pitsim worldmodify to toggle");
+	}
+
+	@EventHandler
+	public void onBreak(BlockPlaceEvent event) {
+		if(!event.getPlayer().isOp()) return;
+		if(toggledPlayers.contains(event.getPlayer())) return;
+		event.setCancelled(true);
+		AOutput.error(event.getPlayer(), "&CBlock placing disabled, run /pitsim worldmodify to toggle");
 	}
 }

@@ -11,8 +11,8 @@ import dev.kyro.pitsim.controllers.objects.PitEvent;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.misc.Misc;
 import dev.kyro.pitsim.misc.Sounds;
-import net.kyori.adventure.audience.Audience;
-import net.kyori.adventure.text.Component;
+//import net.kyori.adventure.audience.Audience;
+//import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
@@ -145,9 +145,9 @@ public class PitEventManager {
 			}
 		}.runTaskLater(PitSim.INSTANCE, 30 * 20L);
 		for(Player onlinePlayer : Bukkit.getOnlinePlayers()) {
-			BossBarManager manager = PlayerManager.bossBars.get(onlinePlayer);
-			Audience audience = PitSim.INSTANCE.adventure().player(onlinePlayer);
-			manager.hideActiveBossBar(audience);
+//			BossBarManager manager = PlayerManager.bossBars.get(onlinePlayer);
+//			Audience audience = PitSim.INSTANCE.adventure().player(onlinePlayer);
+//			manager.hideActiveBossBar(audience);
 			PitPlayer pitPlayer = PitPlayer.getPitPlayer(onlinePlayer);
 			if(kills.containsKey(onlinePlayer)) pitPlayer.setKills(kills.get(onlinePlayer));
 			if(bounty.containsKey(onlinePlayer)) pitPlayer.bounty = 0;
@@ -163,9 +163,9 @@ public class PitEventManager {
 			FeatherBoardAPI.removeScoreboardOverride(onlinePlayer, "event");
 			FeatherBoardAPI.resetDefaultScoreboard(onlinePlayer);
 
-			BossBarManager manager = PlayerManager.bossBars.get(onlinePlayer);
-			Audience audiences = PitSim.INSTANCE.adventure().player(onlinePlayer);
-			manager.hideActiveBossBar(audiences);
+//			BossBarManager manager = PlayerManager.bossBars.get(onlinePlayer);
+//			Audience audiences = PitSim.INSTANCE.adventure().player(onlinePlayer);
+//			manager.hideActiveBossBar(audiences);
 		}
 		majorEvent = false;
 	}
@@ -185,16 +185,16 @@ public class PitEventManager {
 			public void run() {
 				if(!majorEvent && !preparingEvent) {
 					for(Player onlinePlayer : Bukkit.getOnlinePlayers()) {
-						BossBarManager manager = PlayerManager.bossBars.get(onlinePlayer);
-						Audience audiences = PitSim.INSTANCE.adventure().player(onlinePlayer);
-						manager.hideActiveBossBar(audiences);
+//						BossBarManager manager = PlayerManager.bossBars.get(onlinePlayer);
+//						Audience audiences = PitSim.INSTANCE.adventure().player(onlinePlayer);
+//						manager.hideActiveBossBar(audiences);
 					}
 					this.cancel();
 				}
 				for(Player onlinePlayer : Bukkit.getOnlinePlayers()) {
-					BossBarManager manager = PlayerManager.bossBars.get(onlinePlayer);
-					Audience audiences = PitSim.INSTANCE.adventure().player(onlinePlayer);
-					manager.showMyBossBar(audiences);
+//					BossBarManager manager = PlayerManager.bossBars.get(onlinePlayer);
+//					Audience audiences = PitSim.INSTANCE.adventure().player(onlinePlayer);
+//					manager.showMyBossBar(audiences);
 				}
 				if(seconds > 0) {
 					seconds = seconds - 1;
@@ -204,9 +204,9 @@ public class PitEventManager {
 						seconds = 59;
 					} else {
 						for(Player onlinePlayer : Bukkit.getOnlinePlayers()) {
-							BossBarManager manager = PlayerManager.bossBars.get(onlinePlayer);
-							Audience audiences = PitSim.INSTANCE.adventure().player(onlinePlayer);
-							manager.hideActiveBossBar(audiences);
+//							BossBarManager manager = PlayerManager.bossBars.get(onlinePlayer);
+//							Audience audiences = PitSim.INSTANCE.adventure().player(onlinePlayer);
+//							manager.hideActiveBossBar(audiences);
 						}
 						this.cancel();
 					}
@@ -218,19 +218,19 @@ public class PitEventManager {
 				float decimal = first / second;
 				String finalSeconds = (seconds < 10 ? "0" : "") + seconds;
 				String finalMinutes = (minutes < 10 ? "0" : "") + minutes;
-				Component newComponent = Component.text(message + " " + numcolor + finalMinutes + ":" + finalSeconds);
+//				Component newComponent = Component.text(message + " " + numcolor + finalMinutes + ":" + finalSeconds);
 				for(Player onlinePlayer : Bukkit.getOnlinePlayers()) {
-					BossBarManager manager = PlayerManager.bossBars.get(onlinePlayer);
-					Audience audiences = PitSim.INSTANCE.adventure().player(onlinePlayer);
-					manager.defaultBar.name(newComponent);
-					manager.defaultBar.progress(decimal);
+//					BossBarManager manager = PlayerManager.bossBars.get(onlinePlayer);
+//					Audience audiences = PitSim.INSTANCE.adventure().player(onlinePlayer);
+//					manager.defaultBar.name(newComponent);
+//					manager.defaultBar.progress(decimal);
 				}
 //				Bukkit.broadcastMessage(String.valueOf((minutes * 60) + seconds));
 				if(!majorEvent && !preparingEvent) {
 					for(Player onlinePlayer : Bukkit.getOnlinePlayers()) {
-						BossBarManager manager = PlayerManager.bossBars.get(onlinePlayer);
-						Audience audiences = PitSim.INSTANCE.adventure().player(onlinePlayer);
-						manager.hideActiveBossBar(audiences);
+//						BossBarManager manager = PlayerManager.bossBars.get(onlinePlayer);
+//						Audience audiences = PitSim.INSTANCE.adventure().player(onlinePlayer);
+//						manager.hideActiveBossBar(audiences);
 					}
 				}
 			}

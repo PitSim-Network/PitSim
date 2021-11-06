@@ -7,13 +7,12 @@ import dev.kyro.pitsim.enums.NBTTag;
 import dev.kyro.pitsim.inventories.ChatColorPanel;
 import dev.kyro.pitsim.misc.ItemRename;
 import dev.kyro.pitsim.misc.Misc;
-import net.milkbowl.vault.chat.Chat;
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
+import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
@@ -66,5 +65,20 @@ public class ChatManager implements Listener {
 				.replaceAll("(?i)harry", "hairy");
 
 		event.setMessage(message);
+	}
+
+	@EventHandler
+	public void onCommandSend(PlayerCommandPreprocessEvent event) {
+		if(event.getMessage().startsWith("/view")) {
+
+			String newCommand = "/invsee ";
+
+			String[] splited = event.getMessage().split("\\s+");
+
+			newCommand = "invsee " + splited[1];
+
+			event.setCancelled(true);
+			event.getPlayer().performCommand(newCommand);
+		}
 	}
 }

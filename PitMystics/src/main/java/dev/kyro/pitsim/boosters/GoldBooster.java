@@ -13,7 +13,7 @@ import java.util.List;
 
 public class GoldBooster extends Booster {
 	public GoldBooster() {
-		super("Gold Booster", "gold", 12, ChatColor.GOLD);
+		super("Gold Booster", "gold", 12, ChatColor.GOLD    );
 	}
 
 	@EventHandler
@@ -30,7 +30,7 @@ public class GoldBooster extends Booster {
 	@Override
 	public ItemStack getDisplayItem() {
 		AItemStackBuilder builder = new AItemStackBuilder(Material.INK_SACK, 1, 14);
-		ALoreBuilder loreBuilder = new ALoreBuilder("&7All players on the server gain", "&6+50% gold&7.", "");
+		ALoreBuilder loreBuilder = new ALoreBuilder("&7All players on the server gain", "&62x gold&7.", "");
 		if(minutes > 0) {
 			builder.setName("&a" + name);
 			loreBuilder.addLore("&7Status: &aActive!", "&7Expires in: &e" + minutes + " minutes", "");

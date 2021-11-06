@@ -19,7 +19,6 @@ public class ChaosBooster extends Booster {
 	@EventHandler
 	public void onKill(KillEvent killEvent) {
 		if(!isActive()) return;
-		killEvent.goldMultipliers.add(100D);
 	}
 
 	@Override

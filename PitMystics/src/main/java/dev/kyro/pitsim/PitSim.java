@@ -14,10 +14,7 @@ import dev.kyro.pitsim.boosters.GoldBooster;
 import dev.kyro.pitsim.boosters.PvPBooster;
 import dev.kyro.pitsim.boosters.XPBooster;
 import dev.kyro.pitsim.commands.*;
-import dev.kyro.pitsim.commands.admin.BaseAdminCommand;
-import dev.kyro.pitsim.commands.admin.BaseSetCommand;
-import dev.kyro.pitsim.commands.admin.SetLevelCommand;
-import dev.kyro.pitsim.commands.admin.SetPrestigeCommand;
+import dev.kyro.pitsim.commands.admin.*;
 import dev.kyro.pitsim.controllers.*;
 import dev.kyro.pitsim.controllers.objects.HelmetAbility;
 import dev.kyro.pitsim.controllers.objects.Non;
@@ -36,7 +33,7 @@ import dev.kyro.pitsim.placeholders.*;
 import dev.kyro.pitsim.upgrades.*;
 import net.citizensnpcs.api.CitizensAPI;
 import net.citizensnpcs.api.npc.NPC;
-import net.kyori.adventure.platform.bukkit.BukkitAudiences;
+//import net.kyori.adventure.platform.bukkit.BukkitAudiences;
 import net.luckperms.api.LuckPerms;
 import net.milkbowl.vault.economy.Economy;
 import org.bukkit.Bukkit;
@@ -60,14 +57,14 @@ public class PitSim extends JavaPlugin {
 	public static ProtocolManager PROTOCOL_MANAGER = null;
 
 	public static AData playerList;
-	private BukkitAudiences adventure;
-
-	public BukkitAudiences adventure() {
-		if(this.adventure == null) {
-			throw new IllegalStateException("Tried to access Adventure when the plugin was disabled!");
-		}
-		return this.adventure;
-	}
+//	private BukkitAudiences adventure;
+//
+//	public BukkitAudiences adventure() {
+//		if(this.adventure == null) {
+//			throw new IllegalStateException("Tried to access Adventure when the plugin was disabled!");
+//		}
+//		return this.adventure;
+//	}
 
 	@Override
 	public void onEnable() {
@@ -92,11 +89,11 @@ public class PitSim extends JavaPlugin {
 
 		MapManager.onStart();
 
-		adventure = BukkitAudiences.create(this);
-		for(Player onlinePlayer : Bukkit.getOnlinePlayers()) {
-			BossBarManager bm = new BossBarManager();
-			PlayerManager.bossBars.put(onlinePlayer, bm);
-		}
+//		adventure = BukkitAudiences.create(this);
+//		for(Player onlinePlayer : Bukkit.getOnlinePlayers()) {
+//			BossBarManager bm = new BossBarManager();
+//			PlayerManager.bossBars.put(onlinePlayer, bm);
+//		}
 
 		if (!setupEconomy()) {
 			AOutput.log(String.format("[%s] - Disabled due to no Vault dependency found!", getDescription().getName()));
@@ -267,6 +264,7 @@ public class PitSim extends JavaPlugin {
 		adminCommand.registerCommand(new AnticheatCommand("check"));
 		adminCommand.registerCommand(new HopperCommand("hopper"));
 		adminCommand.registerCommand(new ReloadCommand("reload"));
+		adminCommand.registerCommand(new WorldModifyCommand("worldmodify"));
 
 		setCommand.registerCommand(new SetPrestigeCommand("prestige"));
 		setCommand.registerCommand(new SetLevelCommand("level"));

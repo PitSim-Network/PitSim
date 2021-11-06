@@ -403,7 +403,7 @@ public class DamageManager implements Listener {
 
 		if(PitEventManager.majorEvent && UpgradeManager.hasUpgrade(dead, "LIFE_INSURANCE")) {
 			AOutput.send(dead, "&2&lLIFE INSURANCE! &7Inventory protected.");
-		} else {
+		} else if (!(BoosterManager.getBooster("pvp").minutes > 0)) {
 
 			boolean divine = DivineIntervention.INSTANCE.isDivine(dead);
 			boolean feather = FunkyFeather.useFeather(dead, divine);
@@ -496,7 +496,7 @@ public class DamageManager implements Listener {
 
 		if(PitEventManager.majorEvent && UpgradeManager.hasUpgrade(dead, "LIFE_INSURANCE")) {
 			AOutput.send(dead, "&2&lLIFE INSURANCE! &7Inventory protected.");
-		} else {
+		} else if (!(BoosterManager.getBooster("pvp").minutes > 0)) {
 
 			boolean divine = DivineIntervention.INSTANCE.isDivine(dead);
 			boolean feather = FunkyFeather.useFeather(dead, divine);

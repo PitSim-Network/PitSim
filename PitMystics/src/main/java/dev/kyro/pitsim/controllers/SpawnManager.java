@@ -6,8 +6,11 @@ import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
 import com.sk89q.worldguard.protection.ApplicableRegionSet;
 import com.sk89q.worldguard.protection.managers.RegionManager;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
+import de.tr7zw.nbtapi.NBTItem;
+import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
+import dev.kyro.pitsim.enums.NBTTag;
 import dev.kyro.pitsim.misc.Sounds;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -16,6 +19,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityShootBowEvent;
+import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.ArrayList;
@@ -40,6 +44,16 @@ public class SpawnManager implements Listener {
             Sounds.NO.play(player);
         }
 
+    }
+
+    @EventHandler
+    public void onDrop(PlayerDropItemEvent event) {
+        if(!isInSpawn(event.getItemDrop().getLocation())) return;
+        NBTItem nbtItem = new NBTItem(event.getItemDrop().getItemStack());
+        if(nbtItem.hasKey(NBTTag.DROP_CONFIRM.getRef())) return;
+        event.getItemDrop().remove();
+        AOutput.send(event.getPlayer(), "&c&lITEM DELETED! &7Dropped in spawn area.");
+        Sounds.NO.play(event.getPlayer());
     }
 
 

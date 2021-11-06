@@ -25,7 +25,6 @@ public abstract class Booster implements Listener {
 		this.refName = refName;
 		this.slot = slot;
 		this.color = color;
-		Bukkit.broadcastMessage(AConfig.getInt("boosters." + refName) +  "");
 		minutes = Math.max(AConfig.getInt("boosters." + refName), 3);
 	}
 
