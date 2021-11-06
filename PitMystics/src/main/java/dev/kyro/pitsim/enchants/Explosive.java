@@ -81,8 +81,7 @@ public class Explosive extends PitEnchant {
 	@Override
 	public List<String> getDescription(int enchantLvl) {
 
-
-		if(enchantLvl == 1) {
+		if(enchantLvl < 3) {
 			return new ALoreBuilder("&7Arrows fo POP! (" + getCooldown(enchantLvl) / 20 + "s cooldown)").getLore();
 		} else {
 			return new ALoreBuilder("&7Arrows fo BOOM! (" + getCooldown(enchantLvl) / 20 + "s cooldown)").getLore();
@@ -94,7 +93,6 @@ public class Explosive extends PitEnchant {
 
 		switch(enchantLvl) {
 			case 1:
-				return 1;
 			case 2:
 				return 2.5;
 			case 3:

@@ -26,7 +26,7 @@ public class Parasite extends PitEnchant {
 		int enchantLvl = attackEvent.getAttackerEnchantLevel(this);
 		if(enchantLvl == 0) return;
 
-		Cooldown cooldown = getCooldown(attackEvent.attacker, 40);
+		Cooldown cooldown = getCooldown(attackEvent.attacker, 20);
 		if(cooldown.isOnCooldown()) return; else cooldown.reset();
 
 		PitPlayer pitAttacker = PitPlayer.getPitPlayer(attackEvent.attacker);
@@ -36,7 +36,7 @@ public class Parasite extends PitEnchant {
 	@Override
 	public List<String> getDescription(int enchantLvl) {
 
-		return new ALoreBuilder("&7Heal &c" + Misc.getHearts(getHealing(enchantLvl)) + " &7on arrow hit (2s cooldown)").getLore();
+		return new ALoreBuilder("&7Heal &c" + Misc.getHearts(getHealing(enchantLvl)) + " &7on arrow hit (1s cooldown)").getLore();
 	}
 
 	public double getHealing(int enchantLvl) {

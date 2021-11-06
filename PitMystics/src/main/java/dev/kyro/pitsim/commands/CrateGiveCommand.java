@@ -131,7 +131,7 @@ public class CrateGiveCommand implements CommandExecutor {
 				new BukkitRunnable() {
 					@Override
 					public void run() {
-						AOutput.send(finalPlayer, "&7You have been given &e" + amount + " Renown");
+						AOutput.send(finalPlayer, "&7You have been given &e" + amount + " renown");
 					}
 				}.runTaskLater(PitSim.INSTANCE, 3L);
 				return false;
