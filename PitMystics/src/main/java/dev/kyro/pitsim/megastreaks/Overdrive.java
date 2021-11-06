@@ -88,8 +88,8 @@ public class Overdrive extends Megastreak {
 		lore.add(ChatColor.translateAlternateColorCodes('&', "&a\u25a0 &7Immune to &9Slowness&7"));
 		lore.add("");
 		lore.add(ChatColor.GRAY + "BUT:");
-		lore.add(ChatColor.translateAlternateColorCodes('&', "&c\u25a0 &7Receive &c+" + Misc.getHearts(1) + " &7very true"));
-		lore.add(ChatColor.translateAlternateColorCodes('&', "&7damage per 25 kills (only from nons)"));
+		lore.add(ChatColor.translateAlternateColorCodes('&', "&c\u25a0 &7Receive &c+" + Misc.getHearts(0.2) + " &7very true"));
+		lore.add(ChatColor.translateAlternateColorCodes('&', "&7damage per 10 kills (only from nons)"));
 		lore.add("");
 		lore.add(ChatColor.GRAY + "On death:");
 		lore.add(ChatColor.translateAlternateColorCodes('&', "&e\u25a0 &7Earn between &61000 &7and &65000 gold&7"));
@@ -109,7 +109,7 @@ public class Overdrive extends Megastreak {
 		if(pitPlayer.megastreak.isOnMega() && pitPlayer.megastreak.getClass() == Overdrive.class) {
 			int ks = (int) Math.floor(pitPlayer.getKills());
 			if(NonManager.getNon(attackEvent.attacker) == null) {
-				attackEvent.veryTrueDamage += (ks - 50) / 25D;
+				attackEvent.veryTrueDamage += (ks - 50) / 50D;
 			}
 		}
 	}

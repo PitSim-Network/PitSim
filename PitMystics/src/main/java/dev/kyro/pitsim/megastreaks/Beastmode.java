@@ -86,7 +86,7 @@ public class Beastmode extends Megastreak {
 		lore.add(ChatColor.translateAlternateColorCodes('&', "&a\u25a0 &7Gain &b+130 max XP&7"));
 		lore.add("");
 		lore.add(ChatColor.GRAY + "BUT:");
-		lore.add(ChatColor.translateAlternateColorCodes('&', "&c\u25a0 &7Receive &c+0.5% &7damage per kill over 50"));
+		lore.add(ChatColor.translateAlternateColorCodes('&', "&c\u25a0 &7Receive &c+0.25% &7damage per kill over 50"));
 		lore.add(ChatColor.translateAlternateColorCodes('&', "&7(Damage tripled for bots)"));
 		lore.add(ChatColor.translateAlternateColorCodes('&', "&c\u25a0 &7Earn &c-50% &7gold from kills"));
 		lore.add("");
@@ -106,9 +106,9 @@ public class Beastmode extends Megastreak {
 			int ks = (int) Math.floor(pitPlayer.getKills());
 //			TODO: Update lore
 			if(NonManager.getNon(attackEvent.attacker) == null) {
-				attackEvent.increasePercent += (ks - 50) / 200D;
+				attackEvent.increasePercent += (ks - 50) / 400D;
 			} else {
-				attackEvent.increasePercent += ((ks - 50) * 3) / 200D;
+				attackEvent.increasePercent += ((ks - 50) * 3) / 400D;
 			}
 		}
 	}
