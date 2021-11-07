@@ -43,6 +43,7 @@ public class Hopper {
 
 	public boolean lockedToTarget = false;
 	public boolean canHitOtherHoppers = false;
+	public long lastHitTarget;
 
 	public double persistence;
 	public boolean dirClockwise = true;
@@ -58,6 +59,7 @@ public class Hopper {
 		this.type = type;
 		this.target = target;
 		lockedToTarget = true;
+		lastHitTarget = System.currentTimeMillis();
 		start();
 	}
 
@@ -89,6 +91,11 @@ public class Hopper {
 	public void tick() {
 		hopper = (Player) npc.getEntity();
 		if(count++ == 0 || !npc.isSpawned()) return;
+
+		if(lastHitTarget + 5000 < System.currentTimeMillis()) {
+			hopper.teleport(target);
+			lastHitTarget = System.currentTimeMillis();
+		}
 
 		if(count % 5 == 0) {
 			for(Player onlinePlayer : Bukkit.getOnlinePlayers()) {
@@ -178,6 +185,7 @@ public class Hopper {
 			if(hopper.getLocation().distance(hitTarget.getLocation()) > range) continue;
 			if(!canHitOtherHoppers && HopperManager.isHopper(hitTarget)) continue;
 			hitTarget.damage(damage, hopper);
+			if(hitTarget == target) lastHitTarget = System.currentTimeMillis();
 		}
 	}
 
