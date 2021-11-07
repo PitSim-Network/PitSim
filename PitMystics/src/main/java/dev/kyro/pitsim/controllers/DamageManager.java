@@ -46,6 +46,7 @@ import java.util.*;
 public class DamageManager implements Listener {
 
 	public static List<Player> hitCooldownList = new ArrayList<>();
+	public static List<Player> hopperCooldownList = new ArrayList<>();
 	public static List<Player> nonHitCooldownList = new ArrayList<>();
 	public static Map<EntityShootBowEvent, Map<PitEnchant, Integer>> arrowMap = new HashMap<>();
 
@@ -112,6 +113,10 @@ public class DamageManager implements Listener {
 //		Regular player to player hit
 		if(attackingNon == null && !Regularity.toReg.contains(defender.getUniqueId())) {
 			fakeHit = hitCooldownList.contains(defender);
+			if(hopperCooldownList.contains(defender) && HopperManager.isHopper(defender)) {
+				event.setCancelled(true);
+				return;
+			}
 		}
 
 		if(Regularity.regCooldown.contains(defender.getUniqueId()) && !Regularity.toReg.contains(defender.getUniqueId())) {
@@ -122,6 +127,7 @@ public class DamageManager implements Listener {
 		if(!fakeHit) {
 //			if(attackingNon == null) attacker.setHealth(Math.min(attacker.getHealth() + 1, attacker.getMaxHealth()));
 			hitCooldownList.add(defender);
+			hopperCooldownList.add(defender);
 			nonHitCooldownList.add(defender);
 			new BukkitRunnable() {
 				int count = 0;
@@ -131,6 +137,7 @@ public class DamageManager implements Listener {
 					if(++count == 15) cancel();
 
 					if(count == 8) DamageManager.hitCooldownList.remove(defender);
+					if(count == 10) DamageManager.hopperCooldownList.remove(defender);
 					if(count == 15) DamageManager.nonHitCooldownList.remove(defender);
 				}
 			}.runTaskTimer(PitSim.INSTANCE, 0L, 1L);

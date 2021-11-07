@@ -2,12 +2,16 @@ package dev.kyro.pitsim.controllers;
 
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.controllers.objects.Hopper;
+import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.events.AttackEvent;
 import dev.kyro.pitsim.events.KillEvent;
+import dev.kyro.pitsim.events.OofEvent;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
+import org.bukkit.event.player.PlayerChangedWorldEvent;
+import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.ArrayList;
@@ -50,7 +54,12 @@ public class HopperManager implements Listener {
 		}
 		if(isHopper(attackEvent.attacker)) {
 			Hopper hopper = getHopper(attackEvent.attacker);
-			if(hopper.type != Hopper.Type.CHAIN) hopper.hopper.setHealth(Math.min(hopper.hopper.getHealth() + 0.5, hopper.hopper.getMaxHealth()));
+			if(hopper.type != Hopper.Type.CHAIN) {
+				PitPlayer pitHopper = PitPlayer.getPitPlayer(hopper.hopper);
+				double amount = 1;
+				if(hopper.target != null && hopper.target != attackEvent.defender) pitHopper.heal(amount / 2.0);
+				pitHopper.heal(amount);
+			}
 		}
 	}
 
@@ -63,6 +72,30 @@ public class HopperManager implements Listener {
 
 		if(isHopper(killEvent.dead)) {
 			Hopper hopper = HopperManager.getHopper(killEvent.dead);
+			hopper.remove();
+		}
+	}
+
+	@EventHandler
+	public void onLeave(PlayerQuitEvent event) {
+		for(Hopper hopper : hopperList) {
+			if(event.getPlayer() != hopper.target) continue;
+			hopper.remove();
+		}
+	}
+
+	@EventHandler
+	public void onChangeWorld(PlayerChangedWorldEvent event) {
+		for(Hopper hopper : hopperList) {
+			if(event.getPlayer() != hopper.target || event.getPlayer().getWorld() == hopper.hopper.getWorld()) continue;
+			hopper.remove();
+		}
+	}
+
+	@EventHandler
+	public void onOof(OofEvent event) {
+		for(Hopper hopper : hopperList) {
+			if(event.getPlayer() != hopper.target) continue;
 			hopper.remove();
 		}
 	}

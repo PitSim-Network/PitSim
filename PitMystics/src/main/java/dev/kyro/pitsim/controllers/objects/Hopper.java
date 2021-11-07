@@ -26,7 +26,6 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
 
 import java.lang.reflect.InvocationTargetException;
@@ -43,8 +42,10 @@ public class Hopper {
 
 	public boolean lockedToTarget = false;
 	public boolean canHitOtherHoppers = false;
+	public long lastHitTarget;
+	public double speed = Math.random() < 0.1 ? 0.12 : 5 * (Math.random() / 100D) + 0.04;
 
-	public double persistence;
+	public double switchBias = 4 * (Math.random() / 100D) + 0.02;
 	public boolean dirClockwise = true;
 
 	public Hopper(String name, Type type) {
@@ -58,6 +59,7 @@ public class Hopper {
 		this.type = type;
 		this.target = target;
 		lockedToTarget = true;
+		lastHitTarget = System.currentTimeMillis();
 		start();
 	}
 
@@ -79,16 +81,16 @@ public class Hopper {
 			hopper.setMaxHealth(24);
 			hopper.setHealth(hopper.getMaxHealth());
 		}
-		new BukkitRunnable() {
-			@Override
-			public void run() {
-			}
-		}.runTaskLater(PitSim.INSTANCE, 1L);
 	}
 
 	public void tick() {
 		hopper = (Player) npc.getEntity();
 		if(count++ == 0 || !npc.isSpawned()) return;
+
+		if(lastHitTarget + 5000 < System.currentTimeMillis()) {
+			hopper.teleport(target);
+			lastHitTarget = System.currentTimeMillis();
+		}
 
 		if(count % 5 == 0) {
 			for(Player onlinePlayer : Bukkit.getOnlinePlayers()) {
@@ -140,44 +142,48 @@ public class Hopper {
 
 		if(target != null) Util.faceEntity(hopper, target);
 
-		if(Math.random() < 0.03) dirClockwise = !dirClockwise;
+		if(Math.random() < switchBias) dirClockwise = !dirClockwise;
 
 		Entity entity = hopper;
 		Vector npcVelo = entity.getVelocity();
 		Vector dir = entity.getLocation().getDirection();
-		if(target != null) {
-			if(target.getLocation().distance(hopper.getLocation()) > 3.5) {
+		double distanceFromOptimal = hopper.getLocation().distance(target.getLocation()) - 2.7;
 
-				entity.setVelocity(npcVelo.add(dir.normalize().setY(0).multiply(0.10)));
-//					entity.setVelocity(npcVelo.add(dir.normalize().setY(0).multiply(0.12)));
+		if(target != null) {
+			if(target.getLocation().distance(hopper.getLocation()) > 6) {
+
+				entity.setVelocity(npcVelo.add(dir.setY(0).normalize().multiply(speed + 0.02)));
 			} else {
 
 				Location rotLoc = entity.getLocation().clone();
-				rotLoc.setYaw(entity.getLocation().getYaw() + (dirClockwise ? - 90 : 90));
-				entity.setVelocity(npcVelo.add(rotLoc.getDirection().normalize().setY(0).multiply(0.10)));
-//					entity.setVelocity(npcVelo.add(rotLoc.getDirection().normalize().setY(0).multiply(0.12)));
+				rotLoc.setYaw(entity.getLocation().getYaw() + (dirClockwise ? - 70 : 70));
+				entity.setVelocity(npcVelo.add(rotLoc.getDirection().setY(0).normalize().multiply(speed))
+						.add(dir.setY(0).normalize().multiply(distanceFromOptimal / 20D)));
 			}
 		}
 
 		boolean isCritical = Misc.isCritical(hopper);
-		for(Entity nearbyEntity : hopper.getNearbyEntities(5, 5, 5)) {
-			if(!(nearbyEntity instanceof Player) || team.contains(nearbyEntity.getUniqueId())) continue;
-			Player hitTarget = (Player) nearbyEntity;
+		if(count > 40) {
+			for(Entity nearbyEntity : hopper.getNearbyEntities(5, 5, 5)) {
+				if(!(nearbyEntity instanceof Player) || team.contains(nearbyEntity.getUniqueId())) continue;
+				Player hitTarget = (Player) nearbyEntity;
 
-			double range = 4.2;
-			if(!Misc.isAirOrNull(hopper.getEquipment().getLeggings()) &&
-					EnchantManager.getEnchantLevel(hopper.getEquipment().getLeggings(), EnchantManager.getEnchant("regularity")) != 0) range -= 1;
+				double range = 3.7;
+				if(!Misc.isAirOrNull(hopper.getEquipment().getLeggings()) &&
+						EnchantManager.getEnchantLevel(hopper.getEquipment().getLeggings(), EnchantManager.getEnchant("regularity")) != 0) range -= 0.7;
 
-			double damage = 7.5;
-			if(isCritical) damage *= 1.5;
-			if(target != null && target != hitTarget) {
-				damage /= 2;
-				range -= 1;
+				double damage = 7.5;
+				if(isCritical) damage *= 1.5;
+				if(target != null && target != hitTarget) {
+					damage /= 2;
+					range -= 0.5;
+				}
+
+				if(hopper.getLocation().distance(hitTarget.getLocation()) > range) continue;
+				if(!canHitOtherHoppers && HopperManager.isHopper(hitTarget)) continue;
+				hitTarget.damage(damage, hopper);
+				if(hitTarget == target) lastHitTarget = System.currentTimeMillis();
 			}
-
-			if(hopper.getLocation().distance(hitTarget.getLocation()) > range) continue;
-			if(!canHitOtherHoppers && HopperManager.isHopper(hitTarget)) continue;
-			hitTarget.damage(damage, hopper);
 		}
 	}
 
@@ -205,7 +211,7 @@ public class Hopper {
 		CHAIN("&7Chain Hopper", "chain", "&7", 0.5),
 		DIAMOND("&9Diamond Hopper", "diamond", "&9", 0.5),
 		MYSTIC("&eMystic Hopper", "mystic", "&e", 0.6),
-		VENOM("&2Venom Hopper", "venom", "&2", 0.5),
+		VENOM("&2Venom Hopper", "venom", "&2", 0.6),
 		GSET("&6GSet Hopper", "gset", "&6", 0.6);
 
 		public String name;
@@ -293,23 +299,33 @@ public class Hopper {
 					ItemStack gsetSword = FreshCommand.getFreshItem(MysticType.SWORD, null);
 					double random = Math.random();
 					try {
-						if(random < 0.5) {
+						if(random < 0.33) {
 							gsetSword = EnchantManager.addEnchant(gsetSword, EnchantManager.getEnchant("bill"), 1, false);
 							gsetSword = EnchantManager.addEnchant(gsetSword, EnchantManager.getEnchant("perun"), 3, false);
 							gsetSword = EnchantManager.addEnchant(gsetSword, EnchantManager.getEnchant("comboheal"), 3, false);
-						} else {
+						} else if (random < 0.67) {
 							gsetSword = EnchantManager.addEnchant(gsetSword, EnchantManager.getEnchant("lifesteal"), 3, false);
 							gsetSword = EnchantManager.addEnchant(gsetSword, EnchantManager.getEnchant("bill"), 3, false);
-							gsetSword = EnchantManager.addEnchant(gsetSword, EnchantManager.getEnchant("painfocus"), 2, false);
+						} else {
+							gsetSword = EnchantManager.addEnchant(gsetSword, EnchantManager.getEnchant("lifesteal"), 2, false);
+//							gsetSword = EnchantManager.addEnchant(gsetSword, EnchantManager.getEnchant("bill"), 1, false);
+							gsetSword = EnchantManager.addEnchant(gsetSword, EnchantManager.getEnchant("painfocus"), 10, false);
 						}
 					} catch(Exception ignored) { }
 					ItemStack gsetPants = FreshCommand.getFreshItem(MysticType.PANTS, PantColor.getNormalRandom());
 					try {
-						gsetPants = EnchantManager.addEnchant(gsetPants, EnchantManager.getEnchant("mirror"), 3, false);
-						if(random < 0.5) {
+
+						gsetPants = EnchantManager.addEnchant(gsetPants, EnchantManager.getEnchant("soli"), 3, false);
+						gsetPants = EnchantManager.addEnchant(gsetPants, EnchantManager.getEnchant("cf"), 3, false);
+						if(random < 0.33) {
+							gsetPants = EnchantManager.addEnchant(gsetPants, EnchantManager.getEnchant("mirror"), 3, false);
 							gsetPants = EnchantManager.addEnchant(gsetPants, EnchantManager.getEnchant("regularity"), 3, false);
-						} else {
+						} else if(random < 0.66){
+							gsetPants = EnchantManager.addEnchant(gsetPants, EnchantManager.getEnchant("mirror"), 3, false);
 							gsetPants = EnchantManager.addEnchant(gsetPants, EnchantManager.getEnchant("rgm"), 3, false);
+						} else {
+							gsetPants = EnchantManager.addEnchant(gsetPants, EnchantManager.getEnchant("soli"), 3, false);
+							gsetPants = EnchantManager.addEnchant(gsetPants, EnchantManager.getEnchant("cf"), 3, false);
 						}
 					} catch(Exception ignored) { }
 

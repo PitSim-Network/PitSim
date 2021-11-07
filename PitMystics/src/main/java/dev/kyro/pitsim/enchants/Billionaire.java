@@ -2,6 +2,7 @@ package dev.kyro.pitsim.enchants;
 
 import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.pitsim.PitSim;
+import dev.kyro.pitsim.controllers.HopperManager;
 import dev.kyro.pitsim.controllers.NonManager;
 import dev.kyro.pitsim.controllers.UpgradeManager;
 import dev.kyro.pitsim.controllers.objects.PitEnchant;
@@ -27,8 +28,12 @@ public class Billionaire extends PitEnchant {
 		int enchantLvl = attackEvent.getAttackerEnchantLevel(this);
 		if(enchantLvl == 0) return;
 
-		int goldCost = getGoldCost(enchantLvl);
+		if(HopperManager.isHopper(attackEvent.attacker)) {
+			attackEvent.multiplier.add(getDamageMultiplier(enchantLvl));
+			return;
+		}
 
+		int goldCost = getGoldCost(enchantLvl);
 		if(NonManager.getNon(attackEvent.defender) == null) {
 			goldCost = goldCost / 5;
 		}
