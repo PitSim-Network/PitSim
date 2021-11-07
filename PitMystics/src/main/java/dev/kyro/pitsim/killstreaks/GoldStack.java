@@ -19,7 +19,7 @@ public class GoldStack extends Killstreak {
 	public static GoldStack INSTANCE;
 
 	public GoldStack() {
-		super("Gold Stack", "GoldStack", 50, 16);
+		super("Gold Stack", "GoldStack", 40, 16);
 		INSTANCE = this;
 	}
 

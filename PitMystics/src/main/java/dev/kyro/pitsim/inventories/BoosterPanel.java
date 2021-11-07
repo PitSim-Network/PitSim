@@ -53,7 +53,7 @@ public class BoosterPanel extends AGUIPanel {
 						booster.updateTime();
 						String playerName = "%luckperms_prefix%%essentials_nickname%";
 						String playernamecolor = PlaceholderAPI.setPlaceholders(player, playerName);
-						Bukkit.broadcastMessage(ChatColor.translateAlternateColorCodes('&', "&6&lBOOSTER! " + playernamecolor + " has used a " + booster.color + booster.name));
+						Bukkit.broadcastMessage(ChatColor.translateAlternateColorCodes('&', "&6&lBOOSTER! " + playernamecolor + " &7has used a " + booster.color + booster.name));
 						Booster.setBooster(player, booster, Booster.getBoosterAmount(player, booster) - 1);
 					}
 

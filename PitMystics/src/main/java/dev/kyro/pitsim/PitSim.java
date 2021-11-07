@@ -294,6 +294,7 @@ public class PitSim extends JavaPlugin {
 		getCommand("disc").setExecutor(new DiscordCommand());
 		getCommand("booster").setExecutor(new BoosterCommand());
 		getCommand("boostergive").setExecutor(new BoosterGiveCommand());
+		getCommand("resource").setExecutor(new ResourceCommand());
 //		getCommand("togglestereo").setExecutor(new ToggleStereoCommand());
 	}
 
@@ -322,6 +323,7 @@ public class PitSim extends JavaPlugin {
 		getServer().getPluginManager().registerEvents(new YummyBread(), this);
 		getServer().getPluginManager().registerEvents(new BoosterManager(), this);
 		getServer().getPluginManager().registerEvents(new HopperManager(), this);
+		getServer().getPluginManager().registerEvents(new ResourcePackManager(), this);
 	}
 
 	public void registerBoosters() {

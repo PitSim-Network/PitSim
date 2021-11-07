@@ -16,7 +16,7 @@ public class Monster extends Killstreak {
 	public static Monster INSTANCE;
 
 	public Monster() {
-		super("Monster", "Monster", 50, 0);
+		super("Monster", "Monster", 40, 0);
 		INSTANCE = this;
 	}
 

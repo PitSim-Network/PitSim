@@ -20,7 +20,7 @@ public class CounterStrike extends Killstreak {
 	public static CounterStrike INSTANCE;
 
 	public CounterStrike() {
-		super("Counter-Strike", "CounterStrike", 10, 20);
+		super("Counter-Strike", "CounterStrike", 7, 20);
 		INSTANCE = this;
 	}
 

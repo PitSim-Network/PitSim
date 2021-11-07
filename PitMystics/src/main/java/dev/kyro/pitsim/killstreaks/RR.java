@@ -14,7 +14,7 @@ public class RR extends Killstreak {
 	public static RR INSTANCE;
 
 	public RR() {
-		super("R And R", "R&R", 5, 10);
+		super("R And R", "R&R", 3, 10);
 		INSTANCE = this;
 	}
 

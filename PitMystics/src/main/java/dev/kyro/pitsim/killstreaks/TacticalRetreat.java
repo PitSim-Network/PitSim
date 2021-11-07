@@ -14,7 +14,7 @@ public class TacticalRetreat extends Killstreak {
 	public static TacticalRetreat INSTANCE;
 
 	public TacticalRetreat() {
-		super("Tactical Retreat", "TacticalRetreat", 10, 0);
+		super("Tactical Retreat", "TacticalRetreat", 7, 0);
 		INSTANCE = this;
 	}
 

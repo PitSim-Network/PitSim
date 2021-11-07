@@ -26,7 +26,7 @@ public class GoldNanoFactory extends Killstreak {
 	public static GoldNanoFactory INSTANCE;
 
 	public GoldNanoFactory() {
-		super("Gold Nano Factory", "GoldNanoFactory", 25, 14);
+		super("Gold Nano Factory", "GoldNanoFactory", 15, 14);
 		INSTANCE = this;
 	}
 

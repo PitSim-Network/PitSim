@@ -18,7 +18,7 @@ public class Leech extends Killstreak {
 	public static Leech INSTANCE;
 
 	public Leech() {
-		super("Leech", "Leech", 5, 18);
+		super("Leech", "Leech", 3, 18);
 		INSTANCE = this;
 	}
 

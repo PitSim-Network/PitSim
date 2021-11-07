@@ -22,7 +22,7 @@ public class AuraOfProtection extends Killstreak {
 	public static AuraOfProtection INSTANCE;
 
 	public AuraOfProtection() {
-		super("Aura of Protection", "AuraOfProtection", 25, 6);
+		super("Aura of Protection", "AuraOfProtection", 15, 6);
 		INSTANCE = this;
 	}
 

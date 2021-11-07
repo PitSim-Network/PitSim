@@ -106,37 +106,37 @@ public class KillstreakPanel extends AGUIPanel {
 
 		inventoryBuilder.createBorder(Material.STAINED_GLASS_PANE, 8);
 
-		AItemStackBuilder builder5Kills = new AItemStackBuilder(Material.ITEM_FRAME);
-		builder5Kills.setName("&c5 Kills");
-		if(getKillstreakFromInterval(player, 5) != null) {
-			builder5Kills.setLore(new ALoreBuilder("&7Selected: &e" + Objects.requireNonNull(getKillstreakFromInterval(player, 5)).name));
-			builder5Kills.addEnchantGlint(true);
+		AItemStackBuilder Builder3Kills = new AItemStackBuilder(Material.ITEM_FRAME);
+		Builder3Kills.setName("&c3 Kills");
+		if(getKillstreakFromInterval(player, 3) != null) {
+			Builder3Kills.setLore(new ALoreBuilder("&7Selected: &e" + Objects.requireNonNull(getKillstreakFromInterval(player, 3)).name));
+			Builder3Kills.addEnchantGlint(true);
 		}
-		getInventory().setItem(10, builder5Kills.getItemStack());
+		getInventory().setItem(10, Builder3Kills.getItemStack());
 
-		AItemStackBuilder builder10Kills = new AItemStackBuilder(Material.ITEM_FRAME);
-		builder10Kills.setName("&c10 Kills");
-		if(getKillstreakFromInterval(player, 10) != null) {
-			builder10Kills.setLore(new ALoreBuilder("&7Selected: &e" + Objects.requireNonNull(getKillstreakFromInterval(player, 10)).name));
-			builder10Kills.addEnchantGlint(true);
+		AItemStackBuilder Builder7Kills = new AItemStackBuilder(Material.ITEM_FRAME);
+		Builder7Kills.setName("&c7 Kills");
+		if(getKillstreakFromInterval(player, 7) != null) {
+			Builder7Kills.setLore(new ALoreBuilder("&7Selected: &e" + Objects.requireNonNull(getKillstreakFromInterval(player, 7)).name));
+			Builder7Kills.addEnchantGlint(true);
 		}
-		getInventory().setItem(19, builder10Kills.getItemStack());
+		getInventory().setItem(19, Builder7Kills.getItemStack());
 
-		AItemStackBuilder builder25Kills = new AItemStackBuilder(Material.ITEM_FRAME);
-		builder25Kills.setName("&c25 Kills");
-		if(getKillstreakFromInterval(player, 25) != null) {
-			builder25Kills.setLore(new ALoreBuilder("&7Selected: &e" + Objects.requireNonNull(getKillstreakFromInterval(player, 25)).name));
-			builder25Kills.addEnchantGlint(true);
+		AItemStackBuilder Builder15Kills = new AItemStackBuilder(Material.ITEM_FRAME);
+		Builder15Kills.setName("&c15 Kills");
+		if(getKillstreakFromInterval(player, 15) != null) {
+			Builder15Kills.setLore(new ALoreBuilder("&7Selected: &e" + Objects.requireNonNull(getKillstreakFromInterval(player, 15)).name));
+			Builder15Kills.addEnchantGlint(true);
 		}
-		getInventory().setItem(28, builder25Kills.getItemStack());
+		getInventory().setItem(28, Builder15Kills.getItemStack());
 
-		AItemStackBuilder builder50Kills = new AItemStackBuilder(Material.ITEM_FRAME);
-		builder50Kills.setName("&c50 Kills");
-		if(getKillstreakFromInterval(player, 50) != null) {
-			builder50Kills.setLore(new ALoreBuilder("&7Selected: &e" + Objects.requireNonNull(getKillstreakFromInterval(player, 50)).name));
-			builder50Kills.addEnchantGlint(true);
+		AItemStackBuilder Build40Kills = new AItemStackBuilder(Material.ITEM_FRAME);
+		Build40Kills.setName("&c40 Kills");
+		if(getKillstreakFromInterval(player, 40) != null) {
+			Build40Kills.setLore(new ALoreBuilder("&7Selected: &e" + Objects.requireNonNull(getKillstreakFromInterval(player, 40)).name));
+			Build40Kills.addEnchantGlint(true);
 		}
-		getInventory().setItem(37, builder50Kills.getItemStack());
+		getInventory().setItem(37, Build40Kills.getItemStack());
 
 		ItemStack back = new ItemStack(Material.ARROW);
 		ItemMeta meta = back.getItemMeta();
@@ -206,9 +206,9 @@ public class KillstreakPanel extends AGUIPanel {
 	}
 
 	public static int getIntervalStartingSlot(int interval) {
-		if(interval == 5) return 10;
-		if(interval == 10) return 19;
-		if(interval == 25) return 28;
+		if(interval == 3) return 10;
+		if(interval == 7) return 19;
+		if(interval == 15) return 28;
 		return 37;
 	}
 
