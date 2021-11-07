@@ -31,7 +31,7 @@ public class AuraOfProtection extends Killstreak {
 	@EventHandler(priority = EventPriority.HIGHEST)
 	public void onHit(AttackEvent.Apply event) {
 		if(rewardPlayers.contains(event.defender)) {
-			event.trueDamage = 0;
+			event.trueDamage /= 2.0;
 		}
 	}
 
@@ -63,7 +63,7 @@ public class AuraOfProtection extends Killstreak {
 
 		AItemStackBuilder builder = new AItemStackBuilder(Material.SLIME_BALL);
 		builder.setName("&e" + name);
-		builder.setLore(new ALoreBuilder("&7Every: &c" + killInterval + " kills", "", "&7Gain &eTrue Damage &7immunity &7for", "&715 seconds."));
+		builder.setLore(new ALoreBuilder("&7Every: &c" + killInterval + " kills", "", "&7Take &950% &7less true damage for", "&715 seconds."));
 
 		return builder.getItemStack();
 	}
