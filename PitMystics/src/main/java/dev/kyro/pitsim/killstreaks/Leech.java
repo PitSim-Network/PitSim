@@ -8,6 +8,7 @@ import dev.kyro.pitsim.events.AttackEvent;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.ArrayList;
@@ -24,7 +25,7 @@ public class Leech extends Killstreak {
 
 	List<Player> rewardPlayers = new ArrayList<>();
 
-	@EventHandler
+	@EventHandler(priority = EventPriority.HIGH)
 	public void onHit(AttackEvent.Apply event) {
 		if(rewardPlayers.contains(event.attacker)) {
 			PitPlayer pitPlayer = PitPlayer.getPitPlayer(event.attacker);
