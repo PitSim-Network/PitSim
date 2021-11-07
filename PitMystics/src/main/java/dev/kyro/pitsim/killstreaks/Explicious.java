@@ -27,7 +27,8 @@ public class Explicious extends Killstreak {
 	@EventHandler
 	public void onKill(KillEvent killEvent) {
 		if(rewardPlayers.contains(killEvent.killer)) {
-			killEvent.xpReward += 12;
+			killEvent.xpReward += 20;
+			killEvent.xpCap += 20;
 			rewardPlayers.remove(killEvent.killer);
 		}
 	}
@@ -48,7 +49,7 @@ public class Explicious extends Killstreak {
 
 		AItemStackBuilder builder = new AItemStackBuilder(Material.INK_SACK, 1, 12);
 		builder.setName("&e" + name);
-		builder.setLore(new ALoreBuilder("&7Every: &c" + killInterval + " kills", "", "&7Gain &b+12 XP&7."));
+		builder.setLore(new ALoreBuilder("&7Every: &c" + killInterval + " kills", "", "&7Gain &b+20 XP&7 and &b+20 max XP", "&7on your next kill."));
 
 		return builder.getItemStack();
 	}
