@@ -34,7 +34,6 @@ public class Leech extends Killstreak {
 		}
 	}
 
-
 	@Override
 	public void proc(Player player) {
 		rewardPlayers.add(player);
