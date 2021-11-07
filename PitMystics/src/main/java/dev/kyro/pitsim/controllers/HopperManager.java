@@ -2,6 +2,7 @@ package dev.kyro.pitsim.controllers;
 
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.controllers.objects.Hopper;
+import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.events.AttackEvent;
 import dev.kyro.pitsim.events.KillEvent;
 import dev.kyro.pitsim.events.OofEvent;
@@ -53,7 +54,10 @@ public class HopperManager implements Listener {
 		}
 		if(isHopper(attackEvent.attacker)) {
 			Hopper hopper = getHopper(attackEvent.attacker);
-			if(hopper.type != Hopper.Type.CHAIN) hopper.hopper.setHealth(Math.min(hopper.hopper.getHealth() + 0.5, hopper.hopper.getMaxHealth()));
+			if(hopper.type != Hopper.Type.CHAIN) {
+				PitPlayer pitHopper = PitPlayer.getPitPlayer(hopper.hopper);
+				pitHopper.heal(1);
+			}
 		}
 	}
 
