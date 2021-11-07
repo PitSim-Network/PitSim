@@ -5,10 +5,12 @@ import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.pitsim.controllers.objects.Killstreak;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.events.AttackEvent;
+import dev.kyro.pitsim.misc.Misc;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.potion.PotionEffectType;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,6 +39,7 @@ public class AssuredStrike extends Killstreak {
 	@Override
 	public void proc(Player player) {
 		rewardPlayers.add(player);
+		Misc.applyPotionEffect(player, PotionEffectType.SPEED, 20 * 8, 0, true, false);
 	}
 
 	@Override
@@ -49,7 +52,8 @@ public class AssuredStrike extends Killstreak {
 
 		AItemStackBuilder builder = new AItemStackBuilder(Material.DIAMOND_SWORD);
 		builder.setName("&e" + name);
-		builder.setLore(new ALoreBuilder("&7Every: &c" + killInterval + " kills", "", "&7Next melee hit deals &c+35%", "&cdamage &7and grants &eSpeed I", "&7for 20 seconds."));
+		builder.setLore(new ALoreBuilder("&7Every: &c" + killInterval + " kills", "", "&7Next melee hit deals &c+35%",
+				"&cdamage &7and grants &eSpeed I", "&7for 8 seconds."));
 
 		return builder.getItemStack();
 	}
