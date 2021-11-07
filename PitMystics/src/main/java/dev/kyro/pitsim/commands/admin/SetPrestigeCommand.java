@@ -5,7 +5,9 @@ import dev.kyro.arcticapi.data.APlayerData;
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.controllers.PrestigeValues;
+import dev.kyro.pitsim.controllers.UpgradeManager;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
+import dev.kyro.pitsim.controllers.objects.RenownUpgrade;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
@@ -97,7 +99,7 @@ public class SetPrestigeCommand extends ASubCommand {
                     return;
                 }
 
-                if(prestige > 50) {
+                if(prestige > 50 || prestige < 0) {
                     AOutput.error(player, "&cInvalid number!");
                     return;
                 }
@@ -106,6 +108,9 @@ public class SetPrestigeCommand extends ASubCommand {
                 FileConfiguration playerData = APlayerData.getPlayerData(targetUUID);
 
                 PrestigeValues.PrestigeInfo prestigeInfo = PrestigeValues.getPrestigeInfo(prestige);
+
+                int oldPrestige = 0;
+                oldPrestige = playerData.getInt("prestige");
 
                 playerData.set("prestige", prestige);
                 playerData.set("moonbonus", 0);
@@ -116,8 +121,35 @@ public class SetPrestigeCommand extends ASubCommand {
                 playerData.set("xp", (int) (PrestigeValues.getXPForLevel(1) * prestigeInfo.xpMultiplier));
                 playerData.set("goldstack", 0);
                 playerData.set("megastreak", "Overdrive");
+                playerData.set("killstreak-0", "NoKillstreak");
                 playerData.set("killstreak-1", "NoKillstreak");
                 playerData.set("killstreak-2", "NoKillstreak");
+
+                int renown = 0;
+                renown += playerData.getInt("renown");
+
+                for(RenownUpgrade upgrade : UpgradeManager.upgrades) {
+                    if(UpgradeManager.hasUpgrade(player, upgrade) && upgrade.prestigeReq < playerData.getInt("prestige")) {
+                        playerData.set(upgrade.refName, null);
+                        renown += upgrade.renownCost;
+                    }
+                }
+
+                if(oldPrestige < prestige) {
+                    for(int i = oldPrestige; i < prestige - 1; i++) {
+                        PrestigeValues.PrestigeInfo info = PrestigeValues.getPrestigeInfo(i);
+                        renown += info.renownReward;
+                    }
+                }
+                if(oldPrestige > prestige) {
+                    for(int i = oldPrestige - 1; i > prestige; i--) {
+                        PrestigeValues.PrestigeInfo info = PrestigeValues.getPrestigeInfo(i);
+                        renown -= info.renownReward;
+                    }
+                }
+
+                playerData.set("renown", Math.max(renown, 0));
+
 
 
 
