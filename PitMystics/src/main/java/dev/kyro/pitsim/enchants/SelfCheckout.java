@@ -4,6 +4,7 @@ import de.tr7zw.nbtapi.NBTItem;
 import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.arcticapi.data.APlayerData;
 import dev.kyro.arcticapi.misc.AOutput;
+import dev.kyro.pitsim.controllers.DamageManager;
 import dev.kyro.pitsim.controllers.EnchantManager;
 import dev.kyro.pitsim.controllers.objects.PitEnchant;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
@@ -49,6 +50,8 @@ public class SelfCheckout extends PitEnchant {
 			AOutput.send(killEvent.killer, "&7You have been given &e" + renown + " renown");
 		}
 
+		DamageManager.death(killEvent.killer);
+
 		NBTItem nbtItem = new NBTItem(leggings);
 		if(nbtItem.hasKey(NBTTag.CURRENT_LIVES.getRef())) {
 			int lives = nbtItem.getInteger(NBTTag.CURRENT_LIVES.getRef());
@@ -59,9 +62,9 @@ public class SelfCheckout extends PitEnchant {
 				EnchantManager.setItemLore(nbtItem.getItem());
 				killEvent.killer.getEquipment().setLeggings(nbtItem.getItem());
 			}
+
 		}
 
-//		TODO: Kill player; save lives
 	}
 
 	@Override
@@ -69,7 +72,7 @@ public class SelfCheckout extends PitEnchant {
 
 		return new ALoreBuilder("&7On kill, if you have a killstreak", "&7of at least 100, &eExplode:",
 				"&e\u25a0 &7Die! Keep jewel lives on death",
-				"&a\u25a0 &7Gain &a+1 renown &7for every 100 killstreak",
+				"&a\u25a0 &7Gain &e+1 renown &7for every 100 killstreak",
 				"&c\u25a0 &7Lose &c2 lives &7on this item").getLore();
 	}
 }

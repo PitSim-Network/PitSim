@@ -20,11 +20,13 @@ import dev.kyro.pitsim.perks.AssistantToTheStreaker;
 import dev.kyro.pitsim.pitevents.CaptureTheFlag;
 import dev.kyro.pitsim.upgrades.DivineIntervention;
 import me.clip.placeholderapi.PlaceholderAPI;
+import net.minecraft.server.v1_8_R3.EntityPlayer;
 import org.bukkit.Bukkit;
 import org.bukkit.EntityEffect;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
 import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -252,6 +254,8 @@ public class DamageManager implements Listener {
 
 		PitPlayer pitAttacker = PitPlayer.getPitPlayer(killer);
 		PitPlayer pitDefender = PitPlayer.getPitPlayer(dead);
+		EntityPlayer nmsPlayer = ((CraftPlayer) dead).getHandle();
+		nmsPlayer.setAbsorptionHearts(0);
 		if(NonManager.getNon(dead) == null) pitDefender.endKillstreak();
 
 
@@ -453,6 +457,8 @@ public class DamageManager implements Listener {
 
 		dead.setHealth(dead.getMaxHealth());
 		dead.playEffect(EntityEffect.HURT);
+		EntityPlayer nmsPlayer = ((CraftPlayer) dead).getHandle();
+		nmsPlayer.setAbsorptionHearts(0);
 		Sounds.DEATH_FALL.play(dead);
 		Sounds.DEATH_FALL.play(dead);
 		Regularity.toReg.remove(dead.getUniqueId());
@@ -485,6 +491,7 @@ public class DamageManager implements Listener {
 //			}
 //		}
 		PitPlayer pitDefender = PitPlayer.getPitPlayer(dead);
+		double killstreak = pitDefender.getKills();
 		pitDefender.endKillstreak();
 		pitDefender.bounty = 0;
 		for(PotionEffect potionEffect : dead.getActivePotionEffects()) {
@@ -496,6 +503,8 @@ public class DamageManager implements Listener {
 
 		if(PitEventManager.majorEvent && UpgradeManager.hasUpgrade(dead, "LIFE_INSURANCE")) {
 			AOutput.send(dead, "&2&lLIFE INSURANCE! &7Inventory protected.");
+		} else if (EnchantManager.getEnchantLevel(dead.getInventory().getLeggings(), EnchantManager.getEnchant("sco")) > 0 && killstreak > 100) {
+
 		} else if (!(BoosterManager.getBooster("pvp").minutes > 0)) {
 
 			boolean divine = DivineIntervention.INSTANCE.isDivine(dead);
