@@ -112,6 +112,10 @@ public class DamageManager implements Listener {
 //		Regular player to player hit
 		if(attackingNon == null && !Regularity.toReg.contains(defender.getUniqueId())) {
 			fakeHit = hitCooldownList.contains(defender);
+			if(HopperManager.isHopper(defender)) {
+				event.setCancelled(true);
+				return;
+			}
 		}
 
 		if(Regularity.regCooldown.contains(defender.getUniqueId()) && !Regularity.toReg.contains(defender.getUniqueId())) {
