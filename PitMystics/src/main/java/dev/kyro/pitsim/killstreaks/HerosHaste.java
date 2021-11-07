@@ -14,7 +14,7 @@ public class HerosHaste extends Killstreak {
 	public static HerosHaste INSTANCE;
 
 	public HerosHaste() {
-		super("Hero's Haste", "HerosHaste", 10, 12);
+		super("Hero's Haste", "HerosHaste", 7, 12);
 		INSTANCE = this;
 	}
 

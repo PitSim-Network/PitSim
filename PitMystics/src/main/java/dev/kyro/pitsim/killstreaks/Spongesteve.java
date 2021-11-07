@@ -14,7 +14,7 @@ public class Spongesteve extends Killstreak {
 	public static Spongesteve INSTANCE;
 
 	public Spongesteve() {
-		super("Spongesteve", "Spongesteve", 50, 8);
+		super("Spongesteve", "Spongesteve", 40, 8);
 		INSTANCE = this;
 	}
 

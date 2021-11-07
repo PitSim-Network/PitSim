@@ -18,7 +18,7 @@ public class AssuredStrike extends Killstreak {
 	public static AssuredStrike INSTANCE;
 
 	public AssuredStrike() {
-		super("Assured Strike", "AssuredStrike", 5, 2);
+		super("Assured Strike", "AssuredStrike", 3, 2);
 		INSTANCE = this;
 	}
 

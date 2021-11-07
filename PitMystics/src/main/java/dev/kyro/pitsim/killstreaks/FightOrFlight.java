@@ -19,7 +19,7 @@ public class FightOrFlight extends Killstreak {
 	public static FightOrFlight INSTANCE;
 
 	public FightOrFlight() {
-		super("Fight or Flight", "FightOrFlight", 10, 4);
+		super("Fight or Flight", "FightOrFlight", 7, 4);
 		INSTANCE = this;
 	}
 

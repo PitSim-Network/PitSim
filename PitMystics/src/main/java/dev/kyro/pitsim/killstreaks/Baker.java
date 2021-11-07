@@ -14,7 +14,7 @@ public class Baker extends Killstreak {
 	public static Baker INSTANCE;
 
 	public Baker() {
-		super("Baker", "Baker", 25, 22);
+		super("Baker", "Baker", 15, 22);
 		INSTANCE = this;
 	}
 

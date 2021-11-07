@@ -27,7 +27,7 @@ public class Shockwave extends Killstreak {
 	public static Shockwave INSTANCE;
 
 	public Shockwave() {
-		super("Shockwave", "Shockwave", 50, 24);
+		super("Shockwave", "Shockwave", 40, 24);
 		INSTANCE = this;
 	}
 

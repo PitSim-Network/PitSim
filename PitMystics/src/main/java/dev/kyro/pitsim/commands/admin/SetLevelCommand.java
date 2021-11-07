@@ -3,38 +3,120 @@ package dev.kyro.pitsim.commands.admin;
 import dev.kyro.arcticapi.commands.ASubCommand;
 import dev.kyro.arcticapi.data.APlayerData;
 import dev.kyro.arcticapi.misc.AOutput;
-import dev.kyro.pitsim.controllers.LevelManager;
+import dev.kyro.pitsim.PitSim;
+import dev.kyro.pitsim.controllers.PrestigeValues;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
+import org.bukkit.scheduler.BukkitRunnable;
 
+import java.io.File;
 import java.util.List;
+import java.util.UUID;
 
 public class SetLevelCommand extends ASubCommand {
     public SetLevelCommand(String executor) {
         super(executor);
     }
+    public boolean isOnlinePlayer = false;
+    public boolean isOfflinePlayer = false;
 
     @Override
     public void execute(CommandSender sender, List<String> args) {
+
+        isOnlinePlayer = false;
+        isOfflinePlayer = false;
 
         if(!(sender instanceof Player)) return;
         Player player = (Player) sender;
 
         PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
 
-        try {
-            pitPlayer.level = Integer.parseInt(args.get(0)) - 1;
-            pitPlayer.remainingXP = 0;
-            LevelManager.incrementLevel(player);
-        } catch(Exception e) {
-            AOutput.error(player, "&cLevel set Failed!");
-            return;
+        if(args.size() != 2) {
+            AOutput.error(player, "&cCorrect usage: /ps set level <player> <level>");
         }
-        FileConfiguration playerData = APlayerData.getPlayerData(player);
-        playerData.set("level", pitPlayer.level);
-        APlayerData.savePlayerData(player);
-        AOutput.send(player, "&aSuccess!");
+
+
+        File directory = new File("plugins/PitRemake/playerdata");
+        File[] files = directory.listFiles();
+        assert files != null;
+
+        String targetPlayerString = args.get(0);
+
+        for(Player onlinePlayer : Bukkit.getOnlinePlayers()) {
+            if(onlinePlayer.getName().equals(targetPlayerString)) {
+                isOnlinePlayer = true;
+                for(File file : files) {
+                    if(file.getName().equals(onlinePlayer.getUniqueId() + ".yml")) {
+                        onlinePlayer.kickPlayer(ChatColor.RED + "Your player data has changed. Please re-join.");
+                        resetData(args.get(1), player, file.getName());
+                        return;
+                    }
+                }
+
+                return;
+            }
+        }
+
+        if(!isOnlinePlayer) {
+            for(File file : files) {
+                FileConfiguration data = YamlConfiguration.loadConfiguration(file);
+                if(!data.contains("name")) continue;
+                if(data.getString("name").equalsIgnoreCase(targetPlayerString)) {
+                    resetData(args.get(1), player, file.getName());
+                    isOfflinePlayer = true;
+                    return;
+                }
+            }
+
+        }
+
+        if(!isOfflinePlayer && !isOnlinePlayer) AOutput.error(player, "&cUnable to find player!");
+
+
+
+
+    }
+
+    public void resetData(String levelArg, Player player, String uuid) {
+
+
+
+        new BukkitRunnable() {
+            @Override
+            public void run() {
+                int level = 0;
+
+                try {
+                    level = Integer.parseInt(levelArg);
+                } catch(Exception e) {
+                    AOutput.error(player, "&cInvalid number!");
+                    return;
+                }
+
+                if(level > 120 || level < 1) {
+                    AOutput.error(player, "&cInvalid number!");
+                    return;
+                }
+
+                UUID targetUUID = UUID.fromString(uuid.substring(0, uuid.length() - 4));
+                FileConfiguration playerData = APlayerData.getPlayerData(targetUUID);
+
+
+                playerData.set("level", level);
+                PrestigeValues.PrestigeInfo info = PrestigeValues.getPrestigeInfo(playerData.getInt("prestige"));
+                playerData.set("xp", (int) (PrestigeValues.getXPForLevel(1) * info.xpMultiplier));
+
+
+                APlayerData.savePlayerData(targetUUID);
+                AOutput.send(player, "&aSuccess!");
+            }
+        }.runTaskLater(PitSim.INSTANCE, 10L);
+
+
     }
 }

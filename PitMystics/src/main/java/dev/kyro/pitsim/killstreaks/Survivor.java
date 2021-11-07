@@ -20,7 +20,7 @@ public class Survivor extends Killstreak {
 	public static Survivor INSTANCE;
 
 	public Survivor() {
-		super("Survivor", "Survivor", 25, 0);
+		super("Survivor", "Survivor", 15, 0);
 		INSTANCE = this;
 	}
 
