@@ -34,17 +34,17 @@ public class RetroGravityMicrocosm extends PitEnchant {
 
 	@EventHandler
 	public void onKill(KillEvent killEvent) {
-		rgmMap.remove(killEvent.dead.getUniqueId());
+//		rgmMap.remove(killEvent.dead.getUniqueId());
 	}
 
 	@EventHandler
 	public void onOof(OofEvent event) {
-		rgmMap.remove(event.getPlayer().getUniqueId());
+//		rgmMap.remove(event.getPlayer().getUniqueId());
 	}
 
 	@EventHandler
 	public void onOof(PlayerQuitEvent event) {
-		rgmMap.remove(event.getPlayer().getUniqueId());
+//		rgmMap.remove(event.getPlayer().getUniqueId());
 	}
 
 	@EventHandler
