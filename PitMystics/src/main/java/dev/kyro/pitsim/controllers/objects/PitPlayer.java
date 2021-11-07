@@ -77,7 +77,6 @@ public class PitPlayer {
 
 	public Map<Booster, Integer> boosters = new HashMap<>();
 
-
 	public PitPlayer(Player player) {
 		this.player = player;
 		this.megastreak = new NoMegastreak(this);
