@@ -61,7 +61,7 @@ public class GoldStack extends Killstreak {
 
 	public static double getMax(Player player) {
 		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
-		return (pitPlayer.prestige * 0.1) + 0.5;
+		return (pitPlayer.prestige * 0.1) + 1;
 	}
 
 	public static double getCurrent(Player player) {
