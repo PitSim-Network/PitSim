@@ -101,7 +101,8 @@ public class JudgementAbility extends HelmetAbility {
 
 			Hopper hopper = HopperManager.callHopper("PayForTruce", Hopper.Type.DIAMOND, attackEvent.defender);
 			hopper.team.add(attackEvent.attacker.getUniqueId());
-			Sounds.JUDGEMENT_HEAL.play(attackEvent.attacker);
+			Sounds.JUDGEMENT_HOPPER.play(attackEvent.attacker);
+			Sounds.JUDGEMENT_HOPPER.play(attackEvent.defender);
 		}
 	}
 

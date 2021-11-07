@@ -101,6 +101,7 @@ public class Sounds {
 	public static final SoundEffect JUDGEMENT_HALF_DEFENDER = new SoundEffect("mob.guardian.curse", 1000, 1);
 	public static final SoundEffect JUDGEMENT_ZEUS_ATTACKER = new SoundEffect(Sound.ENDERDRAGON_GROWL, 1, 1);
 	public static final SoundEffect JUDGEMENT_ZEUS_DEFENDER = new SoundEffect(Sound.IRONGOLEM_DEATH, 1, 1);
+	public static final SoundEffect JUDGEMENT_HOPPER = new SoundEffect(Sound.ENDERMAN_TELEPORT, 1, 1);
 
 //	Events
 	public static final SoundEffect EVENT_START = new SoundEffect(Sound.ENDERDRAGON_GROWL, 2  , 1);
