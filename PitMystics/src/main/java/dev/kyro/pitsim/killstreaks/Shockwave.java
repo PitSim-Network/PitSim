@@ -34,7 +34,7 @@ public class Shockwave extends Killstreak {
 
 	@Override
 	public void proc(Player player) {
-		List<Entity> entityList = player.getNearbyEntities(5, 5,5);
+		List<Entity> entityList = player.getNearbyEntities(3, 3,3);
 		List<Player> nonList = new ArrayList<>();
 		for(Entity entity : entityList) {
 			if(entity instanceof Player && NonManager.getNon((Player) entity) != null) {
@@ -65,7 +65,7 @@ public class Shockwave extends Killstreak {
 
 		AItemStackBuilder builder = new AItemStackBuilder(Material.MONSTER_EGG, 1, 60);
 		builder.setName("&e" + name);
-		builder.setLore(new ALoreBuilder("&7Every: &c" + killInterval + " kills", "", "&7Send out a shockwave, killing", "&7aall bots in a 5 block radius."));
+		builder.setLore(new ALoreBuilder("&7Every: &c" + killInterval + " kills", "", "&7Send out a shockwave, killing", "&7aall bots in a 3 block radius."));
 
 		return builder.getItemStack();
 	}
