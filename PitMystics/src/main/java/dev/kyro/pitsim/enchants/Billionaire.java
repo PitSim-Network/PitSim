@@ -28,24 +28,25 @@ public class Billionaire extends PitEnchant {
 		int enchantLvl = attackEvent.getAttackerEnchantLevel(this);
 		if(enchantLvl == 0) return;
 
-		int goldCost = getGoldCost(enchantLvl);
-
-		if(!HopperManager.isHopper(attackEvent.attacker)) {
-			if(NonManager.getNon(attackEvent.defender) == null) {
-				goldCost = goldCost / 5;
-			}
-			if(UpgradeManager.hasUpgrade(attackEvent.attacker, "TAX_EVASION")) {
-				goldCost = goldCost - (int) ((UpgradeManager.getTier(attackEvent.attacker, "TAX_EVASION") * 0.1) * goldCost);
-			}
-
-			double finalBalance = PitSim.VAULT.getBalance(attackEvent.attacker) - goldCost;
-			if(finalBalance < 0) return;
-			if(Juggernaut.juggernaut != attackEvent.attacker)PitSim.VAULT.withdrawPlayer(attackEvent.attacker, goldCost);
-
-			Sounds.BILLIONAIRE.play(attackEvent.attacker);
+		if(HopperManager.isHopper(attackEvent.attacker)) {
+			attackEvent.multiplier.add(getDamageMultiplier(enchantLvl));
+			return;
 		}
 
+		int goldCost = getGoldCost(enchantLvl);
+		if(NonManager.getNon(attackEvent.defender) == null) {
+			goldCost = goldCost / 5;
+		}
+		if(UpgradeManager.hasUpgrade(attackEvent.attacker, "TAX_EVASION")) {
+			goldCost = goldCost - (int) ((UpgradeManager.getTier(attackEvent.attacker, "TAX_EVASION") * 0.1) * goldCost);
+		}
+
+		double finalBalance = PitSim.VAULT.getBalance(attackEvent.attacker) - goldCost;
+		if(finalBalance < 0) return;
+		if(Juggernaut.juggernaut != attackEvent.attacker)PitSim.VAULT.withdrawPlayer(attackEvent.attacker, goldCost);
+
 		attackEvent.multiplier.add(getDamageMultiplier(enchantLvl));
+		Sounds.BILLIONAIRE.play(attackEvent.attacker);
 	}
 
 	@Override
