@@ -30,8 +30,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
 
 import java.lang.reflect.InvocationTargetException;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 public class Hopper {
 	public NPC npc;
@@ -39,6 +38,7 @@ public class Hopper {
 	public String name;
 	public Type type;
 	public Player target;
+	public List<UUID> team = new ArrayList<>();
 	public int count = 0;
 
 	public boolean lockedToTarget = false;
@@ -161,7 +161,7 @@ public class Hopper {
 
 		boolean isCritical = Misc.isCritical(hopper);
 		for(Entity nearbyEntity : hopper.getNearbyEntities(5, 5, 5)) {
-			if(!(nearbyEntity instanceof Player)) continue;
+			if(!(nearbyEntity instanceof Player) || team.contains(nearbyEntity.getUniqueId())) continue;
 			Player hitTarget = (Player) nearbyEntity;
 
 			double range = 4.2;

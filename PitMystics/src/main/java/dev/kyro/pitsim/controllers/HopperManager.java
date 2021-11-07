@@ -32,8 +32,10 @@ public class HopperManager implements Listener {
 		}.runTaskTimer(PitSim.INSTANCE, 0L, 1L);
 	}
 
-	public static void createHopper(String name, Hopper.Type type, Player target) {
-		hopperList.add(new Hopper(name, type, target));
+	public static Hopper callHopper(String name, Hopper.Type type, Player target) {
+		Hopper hopper = new Hopper(name, type, target);
+		hopperList.add(hopper);
+		return hopper;
 	}
 
 	@EventHandler(priority = EventPriority.HIGH)

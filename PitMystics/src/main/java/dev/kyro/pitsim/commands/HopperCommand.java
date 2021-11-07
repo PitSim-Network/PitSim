@@ -48,6 +48,6 @@ public class HopperCommand extends ASubCommand {
 			return;
 		}
 
-		HopperManager.createHopper("PayForTruce", type, target);
+		HopperManager.callHopper("PayForTruce", type, target);
 	}
 }
