@@ -2,6 +2,7 @@ package dev.kyro.pitsim.enchants;
 
 import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.pitsim.PitSim;
+import dev.kyro.pitsim.controllers.HopperManager;
 import dev.kyro.pitsim.controllers.NonManager;
 import dev.kyro.pitsim.controllers.UpgradeManager;
 import dev.kyro.pitsim.controllers.objects.PitEnchant;
@@ -29,19 +30,22 @@ public class Billionaire extends PitEnchant {
 
 		int goldCost = getGoldCost(enchantLvl);
 
-		if(NonManager.getNon(attackEvent.defender) == null) {
-			goldCost = goldCost / 5;
-		}
-		if(UpgradeManager.hasUpgrade(attackEvent.attacker, "TAX_EVASION")) {
-			goldCost = goldCost - (int) ((UpgradeManager.getTier(attackEvent.attacker, "TAX_EVASION") * 0.1) * goldCost);
-		}
+		if(!HopperManager.isHopper(attackEvent.attacker)) {
+			if(NonManager.getNon(attackEvent.defender) == null) {
+				goldCost = goldCost / 5;
+			}
+			if(UpgradeManager.hasUpgrade(attackEvent.attacker, "TAX_EVASION")) {
+				goldCost = goldCost - (int) ((UpgradeManager.getTier(attackEvent.attacker, "TAX_EVASION") * 0.1) * goldCost);
+			}
 
-		double finalBalance = PitSim.VAULT.getBalance(attackEvent.attacker) - goldCost;
-		if(finalBalance < 0) return;
-		if(Juggernaut.juggernaut != attackEvent.attacker)PitSim.VAULT.withdrawPlayer(attackEvent.attacker, goldCost);
+			double finalBalance = PitSim.VAULT.getBalance(attackEvent.attacker) - goldCost;
+			if(finalBalance < 0) return;
+			if(Juggernaut.juggernaut != attackEvent.attacker)PitSim.VAULT.withdrawPlayer(attackEvent.attacker, goldCost);
+
+			Sounds.BILLIONAIRE.play(attackEvent.attacker);
+		}
 
 		attackEvent.multiplier.add(getDamageMultiplier(enchantLvl));
-		Sounds.BILLIONAIRE.play(attackEvent.attacker);
 	}
 
 	@Override
