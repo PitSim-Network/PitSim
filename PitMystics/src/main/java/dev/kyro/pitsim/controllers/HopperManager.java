@@ -56,7 +56,9 @@ public class HopperManager implements Listener {
 			Hopper hopper = getHopper(attackEvent.attacker);
 			if(hopper.type != Hopper.Type.CHAIN) {
 				PitPlayer pitHopper = PitPlayer.getPitPlayer(hopper.hopper);
-				pitHopper.heal(1);
+				double amount = 1;
+				if(hopper.target != null && hopper.target != attackEvent.defender) pitHopper.heal(amount / 2.0);
+				pitHopper.heal(amount);
 			}
 		}
 	}
