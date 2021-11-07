@@ -34,7 +34,7 @@ public class PhoenixAbility extends HelmetAbility {
 
 	public PhoenixAbility(Player player) {
 
-		super(player,"Phoenix", "phoenix", false, 15);
+		super(player,"Phoenix", "phoenix", false, 13);
 	}
 
 	@EventHandler

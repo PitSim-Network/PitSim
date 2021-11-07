@@ -15,26 +15,27 @@ import java.util.List;
 
 public class HopperManager implements Listener {
 	public static List<Hopper> hopperList = new ArrayList<>();
+	public static List<Hopper> toRemove = new ArrayList<>();
 
 	public HopperManager() {
 
 		new BukkitRunnable() {
 			@Override
 			public void run() {
-				List<Hopper> toRemove = new ArrayList<>();
-				if(!PitEventManager.majorEvent) {
-					for(Hopper hopper : hopperList) {
+				for(Hopper hopper : hopperList) {
 //					if(!hopper.npc.isSpawned() && hopper.count > 20) toRemove.add(hopper);
-						hopper.tick();
-					}
+					hopper.tick();
 				}
-				for(Hopper hopper : toRemove) hopper.remove();
+				for(Hopper hopper : toRemove) hopperList.remove(hopper);
+				toRemove.clear();
 			}
 		}.runTaskTimer(PitSim.INSTANCE, 0L, 1L);
 	}
 
-	public static void createHopper(String name, Hopper.Type type, Player target) {
-		hopperList.add(new Hopper(name, type, target));
+	public static Hopper callHopper(String name, Hopper.Type type, Player target) {
+		Hopper hopper = new Hopper(name, type, target);
+		hopperList.add(hopper);
+		return hopper;
 	}
 
 	@EventHandler(priority = EventPriority.HIGH)
@@ -58,7 +59,6 @@ public class HopperManager implements Listener {
 		for(Hopper hopper : hopperList) {
 			if(killEvent.dead != hopper.target) continue;
 			hopper.remove();
-			break;
 		}
 
 		if(isHopper(killEvent.dead)) {

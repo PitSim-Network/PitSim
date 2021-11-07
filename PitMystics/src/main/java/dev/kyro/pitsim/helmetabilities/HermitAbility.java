@@ -27,7 +27,7 @@ public class HermitAbility extends HelmetAbility {
 	public BukkitTask runnable;
 	public HermitAbility(Player player) {
 
-		super(player,"Hermit", "hermit", true, 13);
+		super(player,"Hermit", "hermit", true, 14);
 		cost = 1000;
 	}
 

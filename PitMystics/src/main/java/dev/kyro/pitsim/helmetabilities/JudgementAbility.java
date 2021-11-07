@@ -5,8 +5,10 @@ import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.controllers.HelmetListeners;
+import dev.kyro.pitsim.controllers.HopperManager;
 import dev.kyro.pitsim.controllers.objects.GoldenHelmet;
 import dev.kyro.pitsim.controllers.objects.HelmetAbility;
+import dev.kyro.pitsim.controllers.objects.Hopper;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.events.AttackEvent;
 import dev.kyro.pitsim.misc.Misc;
@@ -25,7 +27,7 @@ import java.util.List;
 public class JudgementAbility extends HelmetAbility {
 	public JudgementAbility(Player player) {
 
-		super(player,"Judgement", "judgement", true, 14);
+		super(player,"Judgement", "judgement", true, 15);
 	}
 
 	@EventHandler
@@ -93,6 +95,13 @@ public class JudgementAbility extends HelmetAbility {
 					attackEvent.defender.setHealth(Math.max(attackEvent.defender.getHealth() - 2, 1));
 				}
 			}.runTaskTimer(PitSim.INSTANCE, 0L, 2L);
+		}
+
+		if(Math.random() < 0.02 && !HopperManager.isHopper(attackEvent.defender)) {
+
+			Hopper hopper = HopperManager.callHopper("PayForTruce", Hopper.Type.DIAMOND, attackEvent.defender);
+			hopper.team.add(attackEvent.attacker.getUniqueId());
+			Sounds.JUDGEMENT_HEAL.play(attackEvent.attacker);
 		}
 	}
 

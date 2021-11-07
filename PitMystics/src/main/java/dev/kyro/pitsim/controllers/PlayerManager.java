@@ -368,7 +368,7 @@ public class PlayerManager implements Listener {
 		if(!event.getPlayer().isOp()) return;
 		if(toggledPlayers.contains(event.getPlayer())) return;
 		event.setCancelled(true);
-		AOutput.error(event.getPlayer(), "&CBlock breaking disabled, run /pitsim worldmodify to toggle");
+		AOutput.error(event.getPlayer(), "&CBlock breaking disabled, run /pitsim bypass to toggle");
 	}
 
 	@EventHandler
@@ -376,6 +376,6 @@ public class PlayerManager implements Listener {
 		if(!event.getPlayer().isOp()) return;
 		if(toggledPlayers.contains(event.getPlayer())) return;
 		event.setCancelled(true);
-		AOutput.error(event.getPlayer(), "&CBlock placing disabled, run /pitsim worldmodify to toggle");
+		AOutput.error(event.getPlayer(), "&CBlock placing disabled, run /pitsim bypass to toggle");
 	}
 }
