@@ -38,7 +38,7 @@ public class AuraOfProtection extends Killstreak {
 	@Override
 	public void proc(Player player) {
 		rewardPlayers.add(player);
-		Sounds.SoundMoment soundMoment = new Sounds.SoundMoment(10);
+		Sounds.SoundMoment soundMoment = new Sounds.SoundMoment(3);
 		soundMoment.add(Sound.ZOMBIE_UNFECT,2, 0.79);
 		soundMoment.add(Sound.ZOMBIE_UNFECT,2, 0.84);
 		soundMoment.add(Sound.ZOMBIE_UNFECT,2, 0.88);

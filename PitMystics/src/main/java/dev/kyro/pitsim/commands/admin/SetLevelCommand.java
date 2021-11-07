@@ -110,6 +110,10 @@ public class SetLevelCommand extends ASubCommand {
                 playerData.set("level", level);
                 PrestigeValues.PrestigeInfo info = PrestigeValues.getPrestigeInfo(playerData.getInt("prestige"));
                 playerData.set("xp", (int) (PrestigeValues.getXPForLevel(1) * info.xpMultiplier));
+                playerData.set("megastreak", "Overdrive");
+                playerData.set("killstreak-0", "NoKillstreak");
+                playerData.set("killstreak-1", "NoKillstreak");
+                playerData.set("killstreak-2", "NoKillstreak");
 
 
                 APlayerData.savePlayerData(targetUUID);

@@ -5,8 +5,10 @@ import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.arcticapi.misc.AUtil;
 import dev.kyro.pitsim.controllers.UpgradeManager;
 import dev.kyro.pitsim.controllers.objects.RenownUpgrade;
+import dev.kyro.pitsim.misc.Sounds;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
+import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -52,6 +54,13 @@ public class DivineIntervention extends RenownUpgrade {
 
 		if(isDouble) {
 			AOutput.send(player, "&b&lDIVINE INTERVENTION! &7Inventory saved!");
+
+			Sounds.SoundMoment soundMoment = new Sounds.SoundMoment(3);
+			soundMoment.add(Sound.ZOMBIE_UNFECT,2, 1.5);
+			soundMoment.add(Sound.ZOMBIE_UNFECT,2, 1.6);
+			soundMoment.add(Sound.ZOMBIE_UNFECT,2, 1.7);
+			soundMoment.add(Sound.ZOMBIE_UNFECT,2, 1.7);
+			soundMoment.play(player);
 		}
 
 		return isDouble;
