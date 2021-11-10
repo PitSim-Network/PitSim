@@ -1,6 +1,7 @@
 package dev.kyro.pitsim.misc;
 
 import dev.kyro.pitsim.PitSim;
+import dev.kyro.pitsim.commands.LightningCommand;
 import dev.kyro.pitsim.controllers.NonManager;
 import dev.kyro.pitsim.controllers.objects.GoldenHelmet;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
@@ -187,6 +188,7 @@ public class Misc {
 			if(!(nearbyEntity instanceof Player) || NonManager.getNon((Player) nearbyEntity) != null) continue;
 			nearbyPlayers.add((Player) nearbyEntity);
 		}
+		for(Player lightningPlayer : LightningCommand.lightningPlayers) nearbyPlayers.remove(lightningPlayer);
 
 		Player[] lightningPlayers = new Player[nearbyPlayers.size()];
 		lightningPlayers = nearbyPlayers.toArray(lightningPlayers);

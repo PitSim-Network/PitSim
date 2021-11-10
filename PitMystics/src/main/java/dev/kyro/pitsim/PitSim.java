@@ -295,6 +295,7 @@ public class PitSim extends JavaPlugin {
 		getCommand("booster").setExecutor(new BoosterCommand());
 		getCommand("boostergive").setExecutor(new BoosterGiveCommand());
 		getCommand("resource").setExecutor(new ResourceCommand());
+		getCommand("lightning").setExecutor(new LightningCommand());
 //		getCommand("togglestereo").setExecutor(new ToggleStereoCommand());
 	}
 
