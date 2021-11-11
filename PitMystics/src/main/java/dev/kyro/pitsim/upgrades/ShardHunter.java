@@ -59,7 +59,8 @@ public class ShardHunter extends RenownUpgrade {
 
 	@Override
 	public List<Integer> getTierCosts() {
-		return Arrays.asList(40, 45, 50 , 55, 60, 70, 80, 90, 100, 120);
+//		return Arrays.asList(40, 45, 50 , 55, 60, 70, 80, 90, 100, 120);
+		return Arrays.asList(10, 13, 16 , 19, 22, 25, 30, 35, 40, 50);
 	}
 
 	@Override
