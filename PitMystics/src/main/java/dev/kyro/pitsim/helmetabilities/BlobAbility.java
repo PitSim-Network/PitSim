@@ -24,10 +24,8 @@ import java.util.List;
 public class BlobAbility extends HelmetAbility {
 	public BukkitTask runnable;
 	public BlobAbility(Player player) {
-
 		super(player,"Pit Blob", "pitblob", true, 11);
 	}
-
 
 	@Override
 	public void onActivate() {
@@ -83,11 +81,7 @@ public class BlobAbility extends HelmetAbility {
 	}
 
 	@Override
-	public void onProc() {
-
-
-	}
-
+	public void onProc() { }
 
 	@Override
 	public List<String> getDescription() {
@@ -106,8 +100,4 @@ public class BlobAbility extends HelmetAbility {
 
 		return builder.getItemStack();
 	}
-
-
-
-
 }
