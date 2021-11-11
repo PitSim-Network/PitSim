@@ -157,11 +157,11 @@ public class PrestigeValues {
 		prestigeMap.put(10, new PrestigeInfo(10, 4.0, 220_000, 40, 14, "&6")); //firststrike
 		prestigeMap.put(11, new PrestigeInfo(11, 5.0, 240_000, 42, 14, "&6")); //report access
 		prestigeMap.put(12, new PrestigeInfo(12, 6.0, 270_000, 44, 15, "&6")); //lifeinsurance
-		prestigeMap.put(13, new PrestigeInfo(13, 7.0, 300_000, 46, 15, "&6")); //counter-janitor
-		prestigeMap.put(14, new PrestigeInfo(14, 8.0, 340_000, 48, 16, "&6")); //self-confidence
+		prestigeMap.put(13, new PrestigeInfo(13, 7.0, 300_000, 46, 15, "&6")); //beast
+		prestigeMap.put(14, new PrestigeInfo(14, 8.0, 340_000, 48, 16, "&6")); //counter-janitor
 		prestigeMap.put(15, new PrestigeInfo(15, 9.0, 400_000, 50, 16, "&c")); //helmetry
-		prestigeMap.put(16, new PrestigeInfo(16, 10.0, 500_000, 52, 16, "&c")); //beast
-		prestigeMap.put(17, new PrestigeInfo(17, 12.0, 600_000, 54, 16, "&c")); //divine
+		prestigeMap.put(16, new PrestigeInfo(16, 10.0, 500_000, 52, 16, "&c")); //divine
+		prestigeMap.put(17, new PrestigeInfo(17, 12.0, 600_000, 54, 16, "&c")); //highlander
 		prestigeMap.put(18, new PrestigeInfo(18, 14.0, 700_000, 56, 18, "&c")); //withercraft
 		prestigeMap.put(19, new PrestigeInfo(19, 16.0, 800_000, 58, 20, "&c"));
 		prestigeMap.put(20, new PrestigeInfo(20, 18.0, 900_000, 100, 20, "&5")); //uber
@@ -169,15 +169,15 @@ public class PrestigeValues {
 		prestigeMap.put(22, new PrestigeInfo(22, 23.0, 1_200_000, 110, 20, "&5")); //taxevasion
 		prestigeMap.put(23, new PrestigeInfo(23, 26.0, 1_400_000, 115, 22, "&5")); //complex
 		prestigeMap.put(24, new PrestigeInfo(24, 30.0, 1_700_000, 120, 24, "&5"));
-		prestigeMap.put(25, new PrestigeInfo(25, 35.0, 2_000_000, 125, 24, "&d")); //highlander
+		prestigeMap.put(25, new PrestigeInfo(25, 35.0, 2_000_000, 125, 24, "&d")); //uberincrease
 		prestigeMap.put(26, new PrestigeInfo(26, 41.0, 2_300_000, 130, 24, "&d"));
-		prestigeMap.put(27, new PrestigeInfo(27, 48.0, 2_600_000, 135, 26, "&d")); //uberincrease
-		prestigeMap.put(28, new PrestigeInfo(28, 55.0, 3_000_000, 140, 28, "&d")); //killsteal
+		prestigeMap.put(27, new PrestigeInfo(27, 48.0, 2_600_000, 135, 26, "&d")); //killsteal
+		prestigeMap.put(28, new PrestigeInfo(28, 55.0, 3_000_000, 140, 28, "&d")); //shard
 		prestigeMap.put(29, new PrestigeInfo(29, 62.0, 3_400_000, 145, 30, "&d"));
-		prestigeMap.put(30, new PrestigeInfo(30, 70.0, 3_800_000, 200, 30, "&f")); //shard
+		prestigeMap.put(30, new PrestigeInfo(30, 70.0, 3_800_000, 200, 30, "&f")); //moon
 		prestigeMap.put(31, new PrestigeInfo(31, 80.0, 4_200_000, 210, 30, "&f"));
 		prestigeMap.put(32, new PrestigeInfo(32, 90.0, 4_600_000, 220, 32, "&f"));
-		prestigeMap.put(33, new PrestigeInfo(33, 120.0, 5_000_000, 230, 34, "&f")); //moon
+		prestigeMap.put(33, new PrestigeInfo(33, 120.0, 5_000_000, 230, 34, "&f"));
 		prestigeMap.put(34, new PrestigeInfo(34, 125.0, 5_400_000, 240, 36, "&f"));
 		prestigeMap.put(35, new PrestigeInfo(35, 130.0, 5_800_000, 250, 36, "&a")); //withercraft
 		prestigeMap.put(36, new PrestigeInfo(36, 135.0, 6_200_000, 260, 36, "&a"));

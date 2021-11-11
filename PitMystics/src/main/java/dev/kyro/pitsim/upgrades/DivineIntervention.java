@@ -20,7 +20,7 @@ import java.util.List;
 public class DivineIntervention extends RenownUpgrade {
 	public static DivineIntervention INSTANCE;
 	public DivineIntervention() {
-		super("Divine Intervention", "DIVINE_INTERVENTION", 25, 24, 17, true, 3);
+		super("Divine Intervention", "DIVINE_INTERVENTION", 25, 24, 16, true, 3);
 		INSTANCE = this;
 	}
 

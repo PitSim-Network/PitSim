@@ -33,7 +33,7 @@ import java.util.List;
 
 public class ShardHunter extends RenownUpgrade {
 	public ShardHunter() {
-		super("Shardhunter", "SHARDHUNTER", 40, 32, 30, true, 10);
+		super("Shardhunter", "SHARDHUNTER", 40, 32, 28, true, 10);
 	}
 
 	@Override
