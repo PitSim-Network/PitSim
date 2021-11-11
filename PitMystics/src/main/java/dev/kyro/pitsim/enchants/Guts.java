@@ -15,7 +15,6 @@ public class Guts extends PitEnchant {
 	public Guts() {
 		super("Guts", false, ApplyType.SWORDS,
 				"guts", "gut");
-		isUncommonEnchant = true;
 	}
 
 	@EventHandler
