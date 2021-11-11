@@ -26,7 +26,7 @@ public class Sufferance extends PitEnchant {
 		if(defenderLvl == 0) return;
 
 		PitPlayer pitDefender = PitPlayer.getPitPlayer(attackEvent.defender);
-		pitDefender.heal((attackEvent.trueDamage + attackEvent.veryTrueDamage) * getReductionPercent(defenderLvl) / 100D,
+		pitDefender.heal((attackEvent.trueDamage) * getReductionPercent(defenderLvl) / 100D,
 				HealEvent.HealType.ABSORPTION, 4);
 	}
 
