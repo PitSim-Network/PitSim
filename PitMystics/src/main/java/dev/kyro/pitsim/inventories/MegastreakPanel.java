@@ -83,7 +83,7 @@ public class MegastreakPanel extends AGUIPanel {
                             perkGUI.megaWrapUp();
                         }
                     } else if(megastreak.getClass() == Highlander.class) {
-                        if(pitPlayer.prestige < 25) prestige = true;
+                        if(pitPlayer.prestige < megastreak.prestigeReq()) prestige = true;
                         if(pitPlayer.megastreak.getClass() == Highlander.class) has = true;
                         if(pitPlayer.level < 0) level = true;
                         if(pitPlayer.level < 80) level = true;
@@ -93,7 +93,7 @@ public class MegastreakPanel extends AGUIPanel {
                             perkGUI.megaWrapUp();
                         }
                     } else if(megastreak.getClass() == Beastmode.class) {
-                        if(pitPlayer.prestige < 16) prestige = true;
+                        if(pitPlayer.prestige < megastreak.prestigeReq()) prestige = true;
                         if(pitPlayer.megastreak.getClass() == Beastmode.class) has = true;
                         if(pitPlayer.level < 50) level = true;
                         if(!has && !prestige && !level) {
@@ -102,7 +102,7 @@ public class MegastreakPanel extends AGUIPanel {
                             perkGUI.megaWrapUp();
                         }
                     } else if(megastreak.getClass() == Uberstreak.class) {
-                        if(pitPlayer.prestige < 20) prestige = true;
+                        if(pitPlayer.prestige < megastreak.prestigeReq()) prestige = true;
                         if(pitPlayer.megastreak.getClass() == Uberstreak.class) has = true;
                         if(pitPlayer.level < 100) level = true;
                         if(pitPlayer.dailyUbersLeft <= 0) uberCd = true;
@@ -112,7 +112,7 @@ public class MegastreakPanel extends AGUIPanel {
                             perkGUI.megaWrapUp();
                         }
                     } else if(megastreak.getClass() == ToTheMoon.class) {
-                    if(pitPlayer.prestige < 33) prestige = true;
+                    if(pitPlayer.prestige < megastreak.prestigeReq()) prestige = true;
                     if(pitPlayer.megastreak.getClass() == ToTheMoon.class) has = true;
                         if(pitPlayer.level < 50) level = true;
                     if(!has && !prestige && !uberCd && !level) {
