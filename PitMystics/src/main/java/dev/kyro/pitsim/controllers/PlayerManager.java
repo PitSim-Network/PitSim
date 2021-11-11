@@ -46,7 +46,7 @@ public class PlayerManager implements Listener {
 			@Override
 			public void run() {
 				for(Player onlinePlayer : Bukkit.getOnlinePlayers()) {
-					if(AFKManager.AFKPlayers.contains(onlinePlayer) || Math.random() > (1.0 / 6.0)) continue;
+					if(AFKManager.AFKPlayers.contains(onlinePlayer) || Math.random() > (1.0 / 3.0)) continue;
 					PitPlayer pitPlayer = PitPlayer.getPitPlayer(onlinePlayer);
 					pitPlayer.renown++;
 					FileConfiguration playerData = APlayerData.getPlayerData(onlinePlayer);
