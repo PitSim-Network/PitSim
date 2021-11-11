@@ -122,7 +122,7 @@ public class Highlander extends Megastreak {
 		if(pitPlayer.megastreak.isOnMega() && pitPlayer.megastreak.getClass() == Highlander.class) {
 			int ks = (int) Math.floor(pitPlayer.getKills());
 //			TODO: Update lore
-			healEvent.multipliers.add(1 / ((ks - 50) / 50D + 1));
+			healEvent.multipliers.add(1 / ((ks - 50) / 100D + 1));
 		}
 	}
 
