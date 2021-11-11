@@ -64,7 +64,7 @@ public class Uberstreak extends Megastreak {
 
 	@Override
 	public int guiSlot() {
-		return 13;
+		return 14;
 	}
 
 	@Override

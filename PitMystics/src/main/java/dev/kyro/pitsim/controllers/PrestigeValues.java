@@ -94,18 +94,18 @@ public class PrestigeValues {
 	}
 
 	static {
-		xpLevelMap.put(0, 15);
-		xpLevelMap.put(10, 30);
-		xpLevelMap.put(20, 50);
-		xpLevelMap.put(30, 75);
-		xpLevelMap.put(40, 125);
-		xpLevelMap.put(50, 300);
-		xpLevelMap.put(60, 600);
-		xpLevelMap.put(70, 800);
-		xpLevelMap.put(80, 900);
-		xpLevelMap.put(90, 1000);
-		xpLevelMap.put(100, 1200);
-		xpLevelMap.put(110, 1500);
+		xpLevelMap.put(0, 15 * 2);
+		xpLevelMap.put(10, 30 * 2);
+		xpLevelMap.put(20, 50 * 2);
+		xpLevelMap.put(30, 75 * 2);
+		xpLevelMap.put(40, 125 * 2);
+		xpLevelMap.put(50, 300 * 2);
+		xpLevelMap.put(60, 600 * 2);
+		xpLevelMap.put(70, 800 * 2);
+		xpLevelMap.put(80, 900 * 2);
+		xpLevelMap.put(90, 1000 * 2);
+		xpLevelMap.put(100, 1200 * 2);
+		xpLevelMap.put(110, 1500 * 2);
 
 //		prestigeXPMultiplierMap.put(0, 1.0);
 //		prestigeXPMultiplierMap.put(1, 1.1);
