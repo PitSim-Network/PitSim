@@ -39,12 +39,12 @@ public class BlobAbility extends HelmetAbility {
 		slime.setSize(1);
 		PitBlob.blobMap.put(player.getUniqueId(), slime);
 		Sounds.HELMET_ACTIVATE.play(player);
-		AOutput.send(player, "&6&lGOLDEN HELMET! &aActivated &9Pit Blob&7 (&6-10,000g&7 per second)");
+		AOutput.send(player, "&6&lGOLDEN HELMET! &aActivated &9Pit Blob&7 (&6-4,000g&7 per second)");
 
 		runnable = new BukkitRunnable() {
 			@Override
 			public void run() {
-				if(!goldenHelmet.withdrawGold(10000)) {
+				if(!goldenHelmet.withdrawGold(4000)) {
 					AOutput.error(player,"&cNot enough gold!");
 					goldenHelmet.deactivate();
 					Sounds.NO.play(player);
@@ -60,7 +60,7 @@ public class BlobAbility extends HelmetAbility {
 		GoldenHelmet goldenHelmet = HelmetListeners.getHelmetInstance(player);
 
 		assert goldenHelmet != null;
-		if(!goldenHelmet.withdrawGold(10000)) {
+		if(!goldenHelmet.withdrawGold(4000)) {
 			AOutput.error(player,"&cNot enough gold!");
 			Sounds.NO.play(player);
 			return false;
@@ -92,7 +92,8 @@ public class BlobAbility extends HelmetAbility {
 	@Override
 	public List<String> getDescription() {
 		DecimalFormat formatter = new DecimalFormat("#,###.#");
-		return Arrays.asList("&7Double-Sneak to toggle the", "&7Pit Blob. The blob grows", "&7with kills.", "", "&7Cost: &6" + formatter.format(10000) + "g &7per second");
+		return Arrays.asList("&7Double-Sneak to toggle the", "&7Pit Blob. The blob grows", "&7with kills.", "", "&7Cost: &6" +
+				formatter.format(4000) + "g &7per second");
 	}
 
 	@Override
