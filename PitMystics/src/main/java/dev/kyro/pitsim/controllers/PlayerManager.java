@@ -1,6 +1,7 @@
 package dev.kyro.pitsim.controllers;
 
 import be.maximvdw.featherboard.api.FeatherBoardAPI;
+import dev.kyro.arcticapi.data.APlayerData;
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.controllers.objects.Non;
@@ -20,6 +21,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -38,6 +40,23 @@ import java.util.*;
 
 public class PlayerManager implements Listener {
 //	public static Map<Player, BossBarManager> bossBars = new HashMap<>();
+
+	static {
+		new BukkitRunnable() {
+			@Override
+			public void run() {
+				for(Player onlinePlayer : Bukkit.getOnlinePlayers()) {
+					if(AFKManager.AFKPlayers.contains(onlinePlayer) || Math.random() > (1.0 / 6.0)) continue;
+					PitPlayer pitPlayer = PitPlayer.getPitPlayer(onlinePlayer);
+					pitPlayer.renown++;
+					FileConfiguration playerData = APlayerData.getPlayerData(onlinePlayer);
+					playerData.set("renown", pitPlayer.renown);
+					APlayerData.savePlayerData(onlinePlayer);
+					AOutput.send(onlinePlayer, "&7You have been given &e1 renown &7for being active");
+				}
+			}
+		}.runTaskTimer(PitSim.INSTANCE, 20 * 60, 20 * 60 * 10);
+	}
 
 	@EventHandler
 	public void onKillForRank(KillEvent killEvent) {
