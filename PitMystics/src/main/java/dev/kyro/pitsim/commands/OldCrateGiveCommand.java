@@ -111,20 +111,20 @@ public class OldCrateGiveCommand implements CommandExecutor {
             broadcast("&56x Chunk of Vile", player);
         }
         if(args[0].equals("50K")) {
-            PitSim.VAULT.depositPlayer(player, 50000);
-            broadcast("&650,000 Gold", player);
-        }
-        if(args[0].equals("150K")) {
-            PitSim.VAULT.depositPlayer(player, 150000);
+            PitSim.VAULT.depositPlayer(player, 150_000);
             broadcast("&6150,000 Gold", player);
         }
-        if(args[0].equals("300K")) {
-            PitSim.VAULT.depositPlayer(player, 300000);
+        if(args[0].equals("150K")) {
+            PitSim.VAULT.depositPlayer(player, 300_000);
             broadcast("&6300,000 Gold", player);
+        }
+        if(args[0].equals("300K")) {
+            PitSim.VAULT.depositPlayer(player, 500_000);
+            broadcast("&6500,000 Gold", player);
         }
         if(args[0].equals("DC")) {
             double gold = PitSim.VAULT.getBalance(player);
-            if(gold * 2 > 1000000) PitSim.VAULT.depositPlayer(player, 1000000);
+            if(gold * 2 > 10_000_000) PitSim.VAULT.depositPlayer(player, 10_000_000);
             else PitSim.VAULT.depositPlayer(player, gold);
             broadcast("&6Double Current Gold", player);
         }
