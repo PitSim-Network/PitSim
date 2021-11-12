@@ -112,6 +112,6 @@ public class Streaker extends PitPerk {
 	@Override
 	public List<String> getDescription() {
 		return new ALoreBuilder("&7Upon reaching your &emegastreak&7,", "&7gain &b+100% XP &7if it took &f30 &7or",
-				"&7less seconds. Subtracts &b10% XP", "&7per additional &f10 &7seconds.", "&7Passively gain &b+80 max XP").getLore();
+				"&7less seconds. Subtracts &b10% XP", "&7per additional &f5 &7seconds.", "&7Passively gain &b+80 max XP").getLore();
 	}
 }
