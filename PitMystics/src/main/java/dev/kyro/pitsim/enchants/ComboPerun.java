@@ -70,7 +70,8 @@ public class ComboPerun extends PitEnchant {
 		}
 
 		return new ALoreBuilder("&7Every&e" + Misc.ordinalWords(getStrikes(enchantLvl)) + " &7hit strikes",
-				"&elightning &7for &c" + Misc.getHearts(2) + "&7+ &c" + Misc.getHearts(getTrueDamage(enchantLvl)) + " if the victim", "&7is a non (Lightning deals true damage)").getLore();
+				"&elightning &7for &c" + Misc.getHearts(2) + "&7+ &c" + Misc.getHearts(getTrueDamage(enchantLvl)) + " &7if the victim",
+				"&7is a non (Lightning deals true damage)").getLore();
 	}
 
 	public double getTrueDamage(int enchantLvl) {
