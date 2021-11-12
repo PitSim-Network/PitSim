@@ -99,6 +99,7 @@ public class LevelManager {
 			pitPlayer.remainingXP = (int) (PrestigeValues.getXPForLevel(1) * prestigeInfo.xpMultiplier);
 		}
 		pitPlayer.goldGrinded = 0;
+		if(pitPlayer.megastreak != null) pitPlayer.megastreak.stop();
 		pitPlayer.megastreak = new Overdrive(pitPlayer);
 		pitPlayer.endKillstreak();
 		PitSim.VAULT.withdrawPlayer(player, PitSim.VAULT.getBalance(player));
