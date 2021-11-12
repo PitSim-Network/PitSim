@@ -2,6 +2,7 @@ package dev.kyro.pitsim.enchants;
 
 import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.pitsim.controllers.HitCounter;
+import dev.kyro.pitsim.controllers.NonManager;
 import dev.kyro.pitsim.controllers.objects.PitEnchant;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.enums.ApplyType;
@@ -50,9 +51,12 @@ public class ComboPerun extends PitEnchant {
 
 			attackEvent.trueDamage += damage;
 		} else {
-			attackEvent.trueDamage += getTrueDamage(enchantLvl);
+			double damage = 2;
+			if(NonManager.getNon(attackEvent.defender) != null) damage += getTrueDamage(enchantLvl);
+
+			attackEvent.trueDamage += damage;
 		}
-//		attackEvent.defender.getWorld().strikeLightningEffect(attackEvent.defender.getLocation());
+
 		Misc.strikeLightningForPlayers(attackEvent.defender.getLocation(), 10);
 	}
 
@@ -62,13 +66,11 @@ public class ComboPerun extends PitEnchant {
 		if(enchantLvl == 3) {
 
 			return new ALoreBuilder("&7Every &efourth &7hit strikes", "&elightning &7for &c1\u2764 &7+ &c0.5\u2764",
-					"&7per &bdiamond piece &7on your", "&7victim.", "&7&oLightning deals true damage").getLore();
-//			return new ALoreBuilder("&7Every &efourth &7hit strikes", "&elightning &7for &c1\u2764",
-//					"&7per &bdiamond piece &7on your", "&7victim.", "&7&oLightning deals true damage").getLore();
+					"&7per &bdiamond piece &7on your", "&7victim.", "&7(Lightning deals true damage)").getLore();
 		}
 
 		return new ALoreBuilder("&7Every&e" + Misc.ordinalWords(getStrikes(enchantLvl)) + " &7hit strikes",
-				"&elightning for &c" + Misc.getHearts(getTrueDamage(enchantLvl)) + "&7.", "&7&oLightning deals true damage").getLore();
+				"&elightning &7for &c" + Misc.getHearts(2) + "&7+ &c" + Misc.getHearts(getTrueDamage(enchantLvl)) + " if the victim", "&7is a non (Lightning deals true damage)").getLore();
 	}
 
 	public double getTrueDamage(int enchantLvl) {
