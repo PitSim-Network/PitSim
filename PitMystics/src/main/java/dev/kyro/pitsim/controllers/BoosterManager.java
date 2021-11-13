@@ -40,8 +40,8 @@ public class BoosterManager implements Listener {
 
 	@EventHandler(priority = EventPriority.MONITOR)
 	public void onKill(KillEvent killEvent) {
-//		if(NonManager.getNon(killEvent.killer) != null || killEvent.killer.isOp()) return;
-		if(killEvent.killer.isOp()) return;
+		if(NonManager.getNon(killEvent.killer) != null || killEvent.killer.isOp()) return;
+//		if(killEvent.killer.isOp()) return;
 
 		Booster goldBooster = BoosterManager.getBooster("gold");
 		donators.putIfAbsent(goldBooster, new ArrayList<>());
