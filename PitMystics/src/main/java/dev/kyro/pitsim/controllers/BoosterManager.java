@@ -6,6 +6,7 @@ import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.boosters.GoldBooster;
 import dev.kyro.pitsim.boosters.XPBooster;
 import dev.kyro.pitsim.controllers.objects.Booster;
+import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.events.KillEvent;
 import dev.kyro.pitsim.misc.Sounds;
 import net.md_5.bungee.api.chat.ClickEvent;
@@ -53,6 +54,22 @@ public class BoosterManager implements Listener {
 			donatorMessages.get(uuid).add(new BoosterReward(goldBooster, gold));
 			OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(uuid);
 			PitSim.VAULT.depositPlayer(offlinePlayer, gold);
+
+			boolean isOnline = false;
+			for(Player onlinePlayer : Bukkit.getOnlinePlayers()) {
+				if(!onlinePlayer.getUniqueId().equals(uuid)) continue;
+				isOnline = true;
+				PitPlayer pitPlayer = PitPlayer.getPitPlayer(onlinePlayer);
+				pitPlayer.goldGrinded += gold;
+				FileConfiguration playerData = APlayerData.getPlayerData(onlinePlayer);
+				playerData.set("goldgrinded", pitPlayer.goldGrinded);
+				APlayerData.savePlayerData(onlinePlayer);
+			}
+			if(!isOnline) {
+				FileConfiguration playerData = APlayerData.getPlayerData(uuid);
+				playerData.set("goldgrinded", playerData.getInt("goldgrinded") + gold);
+				APlayerData.savePlayerData(uuid);
+			}
 		}
 
 		Booster xpBooster = BoosterManager.getBooster("xp");
