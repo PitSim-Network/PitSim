@@ -106,7 +106,8 @@ public class DamageManager implements Listener {
 		Non defendingNon = NonManager.getNon(defender);
 //		Hit on non or by non
 		if((attackingNon != null && nonHitCooldownList.contains(defender)) ||
-				(attackingNon == null && defendingNon != null && hitCooldownList.contains(defender)) && !Regularity.toReg.contains(defender.getUniqueId())) {
+				(attackingNon == null && defendingNon != null && hitCooldownList.contains(defender)) && !Regularity.toReg.contains(defender.getUniqueId()) &&
+				!(event.getDamager() instanceof Arrow)) {
 			event.setCancelled(true);
 			return;
 		}
