@@ -90,7 +90,7 @@ public class GoldRushAbility extends HelmetAbility {
 	public List<String> getDescription() {
 		DecimalFormat formatter = new DecimalFormat("#,###.#");
 		return Arrays.asList("&7Double-Sneak to toggle", "&7Gold. Triple gold on kill", "",
-				"&7Cost: &6" + formatter.format(5000) + "g &7per hit");
+				"&7Cost: &6" + formatter.format(5000) + "g &7per kill");
 	}
 
 	@Override
