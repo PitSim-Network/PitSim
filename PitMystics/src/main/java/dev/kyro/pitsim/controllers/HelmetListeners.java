@@ -85,7 +85,8 @@ public class HelmetListeners implements Listener {
 			int gold = 0;
 
 			try {
-				gold = Integer.parseInt(event.getMessage());
+				if(!Character.isDigit(event.getMessage().charAt(0))) gold = Integer.parseInt(event.getMessage().substring(2));
+				else gold = Integer.parseInt(event.getMessage());
 			} catch(Exception e) {
 				AOutput.send(event.getPlayer(), "&cThat is not a valid number!");
 				HelmetGUI.depositPlayers.remove(event.getPlayer());
@@ -204,6 +205,7 @@ public class HelmetListeners implements Listener {
 		goldenHelmet.owner = player;
 
 		for(GoldenHelmet goldenHelmet1 : GoldenHelmet.getHelmetsFromPlayer(event.getPlayer())) {
+			if(goldenHelmet.ability  == null) continue;
 			if(goldenHelmet1.ability.player !=  goldenHelmet1.owner) goldenHelmet1.ability.player = goldenHelmet1.owner;
 		}
 

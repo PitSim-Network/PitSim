@@ -42,7 +42,6 @@ public class Sounds {
 	public static final SoundEffect COMPENSATION = new SoundEffect(Sound.NOTE_PLING, 2, 1.5F);
 	public static final SoundEffect RENOWN_SHOP_PURCHASE = new SoundEffect(Sound.ORB_PICKUP, 2, 1.5F);
 	public static final SoundEffect FUNKY_FEATHER = new SoundEffect(Sound.BAT_TAKEOFF, 2, 2F);
-	public static final SoundEffect FUNKY_FEATHER2 = new SoundEffect(Sound.ZOMBIE_INFECT, 2, 1.68F);
 	public static final SoundEffect CLEAR_JEWEL = new SoundEffect(Sound.SHEEP_SHEAR, 1, 2);
 	public static final SoundEffect YUMMY_BREAD = new SoundEffect(Sound.EAT, 1, 1.2);
 	public static final SoundEffect BREAD_GIVE = new SoundEffect(Sound.GHAST_FIREBALL, 1, 0.3);
