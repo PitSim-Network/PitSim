@@ -29,14 +29,14 @@ public class GoldRushAbility extends HelmetAbility {
 	public void onAttack(AttackEvent.Apply attackEvent) {
 		if(!isActive(attackEvent.attacker)) return;
 
-		GoldenHelmet goldenHelmet = HelmetListeners.getHelmetInstance(attackEvent.attacker);
-		assert goldenHelmet != null;
-		if(!goldenHelmet.withdrawGold(650)) {
-			AOutput.error(attackEvent.attacker,"&cNot enough gold!");
-			goldenHelmet.deactivate();
-			Sounds.NO.play(player);
-			return;
-		}
+//		GoldenHelmet goldenHelmet = HelmetListeners.getHelmetInstance(attackEvent.attacker);
+//		assert goldenHelmet != null;
+//		if(!goldenHelmet.withdrawGold(1200)) {
+//			AOutput.error(attackEvent.attacker,"&cNot enough gold!");
+//			goldenHelmet.deactivate();
+//			Sounds.NO.play(player);
+//			return;
+//		}
 		Sounds.GOLD_RUSH.play(attackEvent.attacker);
 	}
 
@@ -46,6 +46,12 @@ public class GoldRushAbility extends HelmetAbility {
 
 		GoldenHelmet goldenHelmet = HelmetListeners.getHelmetInstance(killEvent.killer);
 		assert goldenHelmet != null;
+		if(!goldenHelmet.withdrawGold(5000)) {
+			AOutput.error(killEvent.killer,"&cNot enough gold!");
+			goldenHelmet.deactivate();
+			Sounds.NO.play(player);
+			return;
+		}
 
 		killEvent.goldMultipliers.add(3D);
 	}
@@ -56,7 +62,7 @@ public class GoldRushAbility extends HelmetAbility {
 		assert goldenHelmet != null;
 
 		Sounds.HELMET_ACTIVATE.play(player);
-		AOutput.send(player, "&6&lGOLDEN HELMET! &aActivated &9Gold Rush&7. (&6-650g&7 per hit)");
+		AOutput.send(player, "&6&lGOLDEN HELMET! &aActivated &9Gold Rush&7. (&6-5,000g&7 per kill)");
 	}
 
 	@Override
