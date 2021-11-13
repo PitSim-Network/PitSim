@@ -70,7 +70,7 @@ public class GoldRushAbility extends HelmetAbility {
 		GoldenHelmet goldenHelmet = HelmetListeners.getHelmetInstance(player);
 
 		assert goldenHelmet != null;
-		if(PitSim.VAULT.getBalance(player) < 650) {
+		if(PitSim.VAULT.getBalance(player) < 5000) {
 			AOutput.error(player,"&cNot enough gold!");
 			Sounds.NO.play(player);
 			return false;
@@ -90,7 +90,7 @@ public class GoldRushAbility extends HelmetAbility {
 	public List<String> getDescription() {
 		DecimalFormat formatter = new DecimalFormat("#,###.#");
 		return Arrays.asList("&7Double-Sneak to toggle", "&7Gold. Triple gold on kill", "",
-				"&7Cost: &6" + formatter.format(650) + "g &7per hit");
+				"&7Cost: &6" + formatter.format(5000) + "g &7per hit");
 	}
 
 	@Override
