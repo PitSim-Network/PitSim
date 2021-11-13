@@ -87,6 +87,7 @@ public class HelmetListeners implements Listener {
 
 			try {
 				gold = Integer.parseInt(ChatColor.stripColor(event.getMessage()));
+				if(gold <= 0) throw new Exception();
 			} catch(Exception e) {
 				AOutput.send(event.getPlayer(), "&cThat is not a valid number!");
 				HelmetGUI.depositPlayers.remove(event.getPlayer());
