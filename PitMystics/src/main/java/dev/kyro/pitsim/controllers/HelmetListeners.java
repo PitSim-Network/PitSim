@@ -12,6 +12,7 @@ import dev.kyro.pitsim.events.KillEvent;
 import dev.kyro.pitsim.inventories.HelmetGUI;
 import dev.kyro.pitsim.misc.Misc;
 import dev.kyro.pitsim.misc.Sounds;
+import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -85,7 +86,7 @@ public class HelmetListeners implements Listener {
 			int gold = 0;
 
 			try {
-				gold = Integer.parseInt(event.getMessage());
+				gold = Integer.parseInt(ChatColor.stripColor(event.getMessage()));
 			} catch(Exception e) {
 				AOutput.send(event.getPlayer(), "&cThat is not a valid number!");
 				HelmetGUI.depositPlayers.remove(event.getPlayer());
