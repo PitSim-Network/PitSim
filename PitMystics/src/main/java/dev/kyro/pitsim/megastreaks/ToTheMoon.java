@@ -66,7 +66,7 @@ public class ToTheMoon extends Megastreak {
 
 	@Override
 	public int prestigeReq() {
-		return 33;
+		return 30;
 	}
 
 	@Override

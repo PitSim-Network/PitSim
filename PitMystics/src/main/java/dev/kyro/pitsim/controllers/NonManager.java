@@ -55,12 +55,12 @@ public class NonManager implements Listener {
 
 	public static int getMaxNons() {
 		int base = 15;
-		int max = 30;
+		int max = 35;
 
 		Booster booster = BoosterManager.getBooster("chaos");
 		if(booster.isActive()) {
-			max = 50;
-			base = 50;
+			max = 55;
+			base = 55;
 		}
 
 		Location mid = MapManager.getMid();

@@ -7,6 +7,7 @@ import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.commands.FreshCommand;
 import dev.kyro.pitsim.controllers.EnchantManager;
 import dev.kyro.pitsim.controllers.HopperManager;
+import dev.kyro.pitsim.controllers.SpawnManager;
 import dev.kyro.pitsim.enums.MysticType;
 import dev.kyro.pitsim.enums.PantColor;
 import dev.kyro.pitsim.misc.Misc;
@@ -167,6 +168,7 @@ public class Hopper {
 			for(Entity nearbyEntity : hopper.getNearbyEntities(5, 5, 5)) {
 				if(!(nearbyEntity instanceof Player) || team.contains(nearbyEntity.getUniqueId())) continue;
 				Player hitTarget = (Player) nearbyEntity;
+				if(SpawnManager.isInSpawn(hitTarget.getLocation())) continue;
 
 				double range = 3.7;
 				if(!Misc.isAirOrNull(hopper.getEquipment().getLeggings()) &&

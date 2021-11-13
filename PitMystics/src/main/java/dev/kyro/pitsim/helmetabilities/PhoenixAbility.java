@@ -30,7 +30,7 @@ import java.util.UUID;
 
 public class PhoenixAbility extends HelmetAbility {
 	public static List<UUID> alreadyActivatedList = new ArrayList<>();
-	public static int cost = 100_000;
+	public static int cost = 69_420;
 
 	public PhoenixAbility(Player player) {
 
@@ -94,7 +94,7 @@ public class PhoenixAbility extends HelmetAbility {
 			}
 		}
 
-		AOutput.send(player, "&6&lGOLDEN HELMET! &7Used &9Phoenix&7! (&6-100,000g&7)");
+		AOutput.send(player, "&6&lGOLDEN HELMET! &7Used &9Phoenix&7! (&6-69,420g&7)");
 		Sounds.PHOENIX.play(player);
 	}
 

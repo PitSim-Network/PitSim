@@ -65,7 +65,7 @@ public class Beastmode extends Megastreak {
 
 	@Override
 	public int prestigeReq() {
-		return 16;
+		return 13;
 	}
 
 	@Override

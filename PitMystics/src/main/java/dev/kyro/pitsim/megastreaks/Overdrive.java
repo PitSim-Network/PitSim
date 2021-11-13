@@ -83,7 +83,7 @@ public class Overdrive extends Megastreak {
 		lore.add("");
 		lore.add(ChatColor.GRAY + "On trigger:");
 		lore.add(ChatColor.translateAlternateColorCodes('&', "&a\u25a0 &7Earn &b+50% XP &7from kills"));
-		lore.add(ChatColor.translateAlternateColorCodes('&', "&a\u25a0 &7Earn &6+50% gold &7from kills"));
+		lore.add(ChatColor.translateAlternateColorCodes('&', "&a\u25a0 &7Earn &6+100% gold &7from kills"));
 		lore.add(ChatColor.translateAlternateColorCodes('&', "&a\u25a0 &7Permanent &eSpeed I&7"));
 		lore.add(ChatColor.translateAlternateColorCodes('&', "&a\u25a0 &7Immune to &9Slowness&7"));
 		lore.add("");
@@ -121,7 +121,7 @@ public class Overdrive extends Megastreak {
 		if(pitPlayer.megastreak.isOnMega() && pitPlayer.megastreak.getClass() == Overdrive.class) {
 //			TODO: Update lore
 			killEvent.xpMultipliers.add(1.5);
-			killEvent.goldMultipliers.add(1.5);
+			killEvent.goldMultipliers.add(2.0);
 		}
 	}
 

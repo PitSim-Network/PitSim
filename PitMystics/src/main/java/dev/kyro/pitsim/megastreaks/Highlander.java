@@ -3,6 +3,7 @@ package dev.kyro.pitsim.megastreaks;
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.controllers.LevelManager;
+import dev.kyro.pitsim.controllers.NonManager;
 import dev.kyro.pitsim.controllers.PrestigeValues;
 import dev.kyro.pitsim.controllers.objects.Megastreak;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
@@ -64,12 +65,12 @@ public class Highlander extends Megastreak {
 
 	@Override
 	public int guiSlot() {
-		return 14;
+		return 13;
 	}
 
 	@Override
 	public int prestigeReq() {
-		return 25;
+		return 17;
 	}
 
 	@Override
@@ -88,8 +89,9 @@ public class Highlander extends Megastreak {
 		lore.add("");
 		lore.add(ChatColor.GRAY + "On trigger:");
 		lore.add(ChatColor.translateAlternateColorCodes('&', "&a\u25a0 &7Perma &eSpeed I&7"));
-		lore.add(ChatColor.translateAlternateColorCodes('&', "&a\u25a0 &7Earn &6+100% gold &7from kills"));
+		lore.add(ChatColor.translateAlternateColorCodes('&', "&a\u25a0 &7Earn &6+150% gold &7from kills"));
 		lore.add(ChatColor.translateAlternateColorCodes('&', "&a\u25a0 &7Deal &c+33% &7damage vs bounties players"));
+		lore.add(ChatColor.translateAlternateColorCodes('&', "&a\u25a0 &7Deal &c+25% &7damage vs bots"));
 		lore.add("");
 		lore.add(ChatColor.GRAY + "BUT:");
 		lore.add(ChatColor.translateAlternateColorCodes('&', "&c\u25a0 &7Heal &cless &7per kill over 50"));
@@ -108,7 +110,7 @@ public class Highlander extends Megastreak {
 		PitPlayer pitPlayer = PitPlayer.getPitPlayer(killEvent.killer);
 		if(pitPlayer != this.pitPlayer) return;
 		if(pitPlayer.megastreak.playerIsOnMega(killEvent) && pitPlayer.megastreak.getClass() == Highlander.class) {
-			killEvent.goldMultipliers.add(2.0);
+			killEvent.goldMultipliers.add(2.5);
 			killEvent.xpMultipliers.add(0.5);
 		}
 	}
@@ -120,7 +122,7 @@ public class Highlander extends Megastreak {
 		if(pitPlayer.megastreak.isOnMega() && pitPlayer.megastreak.getClass() == Highlander.class) {
 			int ks = (int) Math.floor(pitPlayer.getKills());
 //			TODO: Update lore
-			healEvent.multipliers.add(1 / ((ks - 50) / 50D + 1));
+			healEvent.multipliers.add(1 / ((ks - 50) / 100D + 1));
 		}
 	}
 
@@ -132,6 +134,9 @@ public class Highlander extends Megastreak {
 		if(pitPlayer.megastreak.isOnMega() && pitPlayer.megastreak.getClass() == Highlander.class) {
 			if(pitDefender.bounty > 0) {
 				attackEvent.increasePercent += 33 / 100D;
+			}
+			if(NonManager.getNon(attackEvent.defender) != null) {
+				attackEvent.increasePercent += 25 / 100D;
 			}
 		}
 	}

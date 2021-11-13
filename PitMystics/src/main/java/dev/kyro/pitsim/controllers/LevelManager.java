@@ -99,6 +99,7 @@ public class LevelManager {
 			pitPlayer.remainingXP = (int) (PrestigeValues.getXPForLevel(1) * prestigeInfo.xpMultiplier);
 		}
 		pitPlayer.goldGrinded = 0;
+		if(pitPlayer.megastreak != null) pitPlayer.megastreak.stop();
 		pitPlayer.megastreak = new Overdrive(pitPlayer);
 		pitPlayer.endKillstreak();
 		PitSim.VAULT.withdrawPlayer(player, PitSim.VAULT.getBalance(player));
@@ -120,7 +121,7 @@ public class LevelManager {
 		playerData.set("megastreak", pitPlayer.megastreak.getRawName());
 		playerData.set("killstreak-1", pitPlayer.killstreaks.get(1).refName);
 		playerData.set("killstreak-2", pitPlayer.killstreaks.get(2).refName);
-		if(pitPlayer.prestige >= 33) playerData.set("moonbonus", pitPlayer.moonBonus);
+		if(pitPlayer.prestige >= 30) playerData.set("moonbonus", pitPlayer.moonBonus);
 		APlayerData.savePlayerData(player);
 
 		String message = "%luckperms_prefix%";
