@@ -134,8 +134,8 @@ public class BoosterManager implements Listener {
 //					}
 //				}
 			}
-		}.runTaskTimer(PitSim.INSTANCE, 20, 20);
-//		}.runTaskTimer(PitSim.INSTANCE, 20 * 60L, 20 * 60);
+//		}.runTaskTimer(PitSim.INSTANCE, 20, 20);
+		}.runTaskTimer(PitSim.INSTANCE, 20 * 60L, 20 * 60);
 
 
 		new BukkitRunnable() {
