@@ -2,6 +2,7 @@ package dev.kyro.pitsim.inventories;
 
 import dev.kyro.arcticapi.builders.AItemStackBuilder;
 import dev.kyro.arcticapi.builders.ALoreBuilder;
+import dev.kyro.arcticapi.data.APlayerData;
 import dev.kyro.arcticapi.gui.AGUI;
 import dev.kyro.arcticapi.gui.AGUIPanel;
 import dev.kyro.arcticapi.misc.AOutput;
@@ -13,6 +14,7 @@ import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.inventory.InventoryOpenEvent;
@@ -50,6 +52,12 @@ public class BoosterPanel extends AGUIPanel {
 					} else {
 						Sounds.SUCCESS.play(player);
 						booster.minutes += 60;
+
+						FileConfiguration playerData = APlayerData.getPlayerData(player);
+						int timeLeft = playerData.getInt("booster-time." + booster.refName) + booster.minutes;
+						playerData.set("booster-time." + booster.refName, timeLeft);
+						APlayerData.savePlayerData(player);
+
 						booster.updateTime();
 						String playerName = "%luckperms_prefix%%essentials_nickname%";
 						String playernamecolor = PlaceholderAPI.setPlaceholders(player, playerName);
