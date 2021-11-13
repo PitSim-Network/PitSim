@@ -19,7 +19,7 @@ public class GoldBooster extends Booster {
 	@EventHandler
 	public void onKill(KillEvent killEvent) {
 		if(!isActive()) return;
-		killEvent.goldMultipliers.add(2.0);
+		killEvent.goldMultipliers.add(1.5);
 	}
 
 	@Override
@@ -30,7 +30,8 @@ public class GoldBooster extends Booster {
 	@Override
 	public ItemStack getDisplayItem() {
 		AItemStackBuilder builder = new AItemStackBuilder(Material.INK_SACK, 1, 14);
-		ALoreBuilder loreBuilder = new ALoreBuilder("&7All players on the server gain", "&62x gold&7.", "");
+		ALoreBuilder loreBuilder = new ALoreBuilder("&7All players on the server gain",
+				"&61.5x gold&7. Earn &65% gold from", "&7all players as they streak", "");
 		if(minutes > 0) {
 			builder.setName("&a" + name);
 			loreBuilder.addLore("&7Status: &aActive!", "&7Expires in: &e" + minutes + " minutes", "");
