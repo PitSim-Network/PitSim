@@ -75,6 +75,7 @@ public abstract class HelmetAbility implements Listener {
         List<GoldenHelmet> helmets = GoldenHelmet.getHelmetsFromPlayer(player);
 
         for(GoldenHelmet helmet : helmets) {
+            if(helmet.ability == null) continue;
             if(!helmet.ability.refName.equals(ability.refName)) continue;
             if(toggledHelmets.contains(helmet.uuid)) return true;
         }
