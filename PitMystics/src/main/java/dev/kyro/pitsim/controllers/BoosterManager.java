@@ -48,7 +48,7 @@ public class BoosterManager implements Listener {
 		double gold = killEvent.getFinalGold();
 		for(UUID uuid : donators.get(goldBooster)) {
 			if(killEvent.killer.getUniqueId().equals(uuid)) continue;
-			gold *= (1.0 / 20.0);
+			gold *= (1.0 / 10.0);
 			donatorMessages.putIfAbsent(uuid, new ArrayList<>());
 			donatorMessages.get(uuid).add(new BoosterReward(goldBooster, gold));
 			OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(uuid);
@@ -76,7 +76,7 @@ public class BoosterManager implements Listener {
 		int xp = killEvent.getFinalXp();
 		for(UUID uuid : donators.get(xpBooster)) {
 			if(killEvent.killer.getUniqueId().equals(uuid)) continue;
-			xp *= (1.0 / 20.0);
+			xp *= (1.0 / 10.0);
 			donatorMessages.putIfAbsent(uuid, new ArrayList<>());
 			donatorMessages.get(uuid).add(new BoosterReward(xpBooster, xp));
 			for(Player onlinePlayer : Bukkit.getOnlinePlayers()) {
