@@ -46,7 +46,7 @@ public class GoldRushAbility extends HelmetAbility {
 
 		GoldenHelmet goldenHelmet = HelmetListeners.getHelmetInstance(killEvent.killer);
 		assert goldenHelmet != null;
-		if(!goldenHelmet.withdrawGold(3000)) {
+		if(!goldenHelmet.withdrawGold(3500)) {
 			AOutput.error(killEvent.killer,"&cNot enough gold!");
 			goldenHelmet.deactivate();
 			Sounds.NO.play(player);
@@ -62,7 +62,7 @@ public class GoldRushAbility extends HelmetAbility {
 		assert goldenHelmet != null;
 
 		Sounds.HELMET_ACTIVATE.play(player);
-		AOutput.send(player, "&6&lGOLDEN HELMET! &aActivated &9Gold Rush&7. (&6-3,000g&7 per kill)");
+		AOutput.send(player, "&6&lGOLDEN HELMET! &aActivated &9Gold Rush&7. (&6-3,500g&7 per kill)");
 	}
 
 	@Override
@@ -70,7 +70,7 @@ public class GoldRushAbility extends HelmetAbility {
 		GoldenHelmet goldenHelmet = HelmetListeners.getHelmetInstance(player);
 
 		assert goldenHelmet != null;
-		if(PitSim.VAULT.getBalance(player) < 3000) {
+		if(PitSim.VAULT.getBalance(player) < 3500) {
 			AOutput.error(player,"&cNot enough gold!");
 			Sounds.NO.play(player);
 			return false;
@@ -90,7 +90,7 @@ public class GoldRushAbility extends HelmetAbility {
 	public List<String> getDescription() {
 		DecimalFormat formatter = new DecimalFormat("#,###.#");
 		return Arrays.asList("&7Double-Sneak to toggle", "&7Gold. Triple gold on kill", "",
-				"&7Cost: &6" + formatter.format(3000) + "g &7per kill");
+				"&7Cost: &6" + formatter.format(3500) + "g &7per kill");
 	}
 
 	@Override
