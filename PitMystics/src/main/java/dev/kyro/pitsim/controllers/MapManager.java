@@ -38,6 +38,7 @@ public class MapManager {
     public static Location prestigeNPCSpawn = new Location(Bukkit.getWorld("pitsim"), -12.5, 88, -1.5, -90, 0);
     public static Location kyroNPCSpawn = new Location(Bukkit.getWorld("pitsim"), 7.5, 92, -8.5, 22.5F, 11);
     public static Location wijiNPCSpawn = new Location(Bukkit.getWorld("pitsim"), 0.5, 92, -11.5, 31, 10);
+    public static Location vnx2NPCSpawn = new Location(Bukkit.getWorld("pitsim"), 4, 88, -8.5, 10, 0);
 
     public static Location getNonSpawn() {
 
@@ -75,6 +76,10 @@ public class MapManager {
 
     public static Location getWijiNPCSpawn() {
         return wijiNPCSpawn;
+    }
+
+    public static Location getVnx2NPCSpawn() {
+        return vnx2NPCSpawn;
     }
 
     public static void onSwitch() {

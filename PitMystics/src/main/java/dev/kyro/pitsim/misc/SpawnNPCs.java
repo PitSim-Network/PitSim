@@ -22,12 +22,14 @@ public class SpawnNPCs implements Listener {
 	public static NPC prestige = null;
 	public static NPC kyro = null;
 	public static NPC wiji = null;
+	public static NPC vnx2 = null;
 
 	public static void createNPCs() {
 		createPrestigeNPC();
 		createUpgradeNPC();
 		createKyroNPC();
 		createWijiNPC();
+		createVnx2NPC();
 	}
 
 	public static void removeNPCs() {
@@ -48,6 +50,11 @@ public class SpawnNPCs implements Listener {
 		}
 		try {
 			wiji.destroy();
+		} catch(Exception ignored) {
+			System.out.println("error despawning npc");
+		}
+		try {
+			vnx2.destroy();
 		} catch(Exception ignored) {
 			System.out.println("error despawning npc");
 		}
@@ -80,6 +87,16 @@ public class SpawnNPCs implements Listener {
 		wiji = registry.createNPC(EntityType.PLAYER, "&9wiji1");
 		wiji.spawn(MapManager.getWijiNPCSpawn());
 		skin(wiji, "wiji1");
+		wiji.addTrait(LookClose.class);
+		wiji.getTrait(LookClose.class).setRange(10);
+		wiji.getTrait(LookClose.class).toggle();
+	}
+
+	public static void createVnx2NPC() {
+		NPCRegistry registry = CitizensAPI.getNPCRegistry();
+		wiji = registry.createNPC(EntityType.PLAYER, "&6vnx2");
+		wiji.spawn(MapManager.getVnx2NPCSpawn());
+		skin(wiji, "vnx2");
 		wiji.addTrait(LookClose.class);
 		wiji.getTrait(LookClose.class).setRange(10);
 		wiji.getTrait(LookClose.class).toggle();
