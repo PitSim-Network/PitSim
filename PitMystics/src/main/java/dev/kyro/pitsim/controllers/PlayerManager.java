@@ -16,7 +16,6 @@ import dev.kyro.pitsim.misc.KillEffects;
 import dev.kyro.pitsim.misc.Misc;
 import dev.kyro.pitsim.misc.Sounds;
 import me.clip.placeholderapi.PlaceholderAPI;
-//import net.kyori.adventure.audience.Audience;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -36,10 +35,25 @@ import org.bukkit.scheduler.BukkitRunnable;
 import org.spigotmc.event.player.PlayerSpawnLocationEvent;
 
 import java.text.DecimalFormat;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
+
+//import net.kyori.adventure.audience.Audience;
 
 public class PlayerManager implements Listener {
 //	public static Map<Player, BossBarManager> bossBars = new HashMap<>();
+
+	@EventHandler
+	public void onCommand(PlayerCommandPreprocessEvent event) {
+		if(event.getMessage().toLowerCase().startsWith("trade")) {
+			PitPlayer pitPlayer = PitPlayer.getPitPlayer(event.getPlayer());
+			if(pitPlayer.level < 100) {
+				event.setCancelled(true);
+				AOutput.error(event.getPlayer(), "&c&lNOPE! &7You cannot trade until level 100");
+			}
+		}
+	}
 
 	static {
 		new BukkitRunnable() {
@@ -60,27 +74,24 @@ public class PlayerManager implements Listener {
 
 	@EventHandler
 	public void onKillForRank(KillEvent killEvent) {
+		double multiplier = 1;
 		if(killEvent.killer.hasPermission("group.nitro")) {
-			killEvent.goldMultipliers.add(1.1);
-			killEvent.xpMultipliers.add(1.1);
+			multiplier += 0.1;
 		}
 
 		if(killEvent.killer.hasPermission("group.unthinkable")) {
-			killEvent.goldMultipliers.add(1.25);
-			killEvent.xpMultipliers.add(1.25);
+			multiplier += 0.25;
 		} else if(killEvent.killer.hasPermission("group.miraculous")) {
-			killEvent.goldMultipliers.add(1.20);
-			killEvent.xpMultipliers.add(1.20);
+			multiplier += 0.20;
 		} else if(killEvent.killer.hasPermission("group.extraordinary")) {
-			killEvent.goldMultipliers.add(1.15);
-			killEvent.xpMultipliers.add(1.15);
+			multiplier += 0.15;
 		} else if(killEvent.killer.hasPermission("group.overpowered")) {
-			killEvent.goldMultipliers.add(1.1);
-			killEvent.xpMultipliers.add(1.1);
+			multiplier += 0.1;
 		} else if(killEvent.killer.hasPermission("group.legendary")) {
-			killEvent.goldMultipliers.add(1.05);
-			killEvent.xpMultipliers.add(1.05);
+			multiplier += 0.05;
 		}
+		killEvent.xpMultipliers.add(multiplier);
+		killEvent.goldMultipliers.add(multiplier);
 	}
 
 	@EventHandler(priority = EventPriority.HIGHEST)
