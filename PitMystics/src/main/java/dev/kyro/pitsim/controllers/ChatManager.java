@@ -75,7 +75,7 @@ public class ChatManager implements Listener {
 
 	@EventHandler
 	public void onCommandSend(PlayerCommandPreprocessEvent event) {
-		if(event.getMessage().startsWith("/view")) {
+		if(ChatColor.stripColor(event.getMessage()).startsWith("view")) {
 
 			String newCommand = "/invsee ";
 
