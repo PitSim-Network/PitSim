@@ -3,7 +3,6 @@ package dev.kyro.pitsim.upgrades;
 import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.arcticapi.gui.AGUIPanel;
 import dev.kyro.pitsim.controllers.UpgradeManager;
-import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.controllers.objects.RenownUpgrade;
 import dev.kyro.pitsim.events.KillEvent;
 import org.bukkit.Material;
@@ -46,7 +45,6 @@ public class Celebrity extends RenownUpgrade {
 		int tier = UpgradeManager.getTier(killEvent.killer, this);
 		if(tier == 0) return;
 
-		PitPlayer pitKiller = PitPlayer.getPitPlayer(killEvent.killer);
-		pitKiller.heal(tier);
+		killEvent.goldMultipliers.add(2.0);
 	}
 }
