@@ -29,10 +29,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 public class Uberstreak extends Megastreak {
 	public List<UberEffect> uberEffects = new ArrayList<>();
@@ -112,11 +109,17 @@ public class Uberstreak extends Megastreak {
 	@EventHandler
 	public void onPreAttack(AttackEvent.Pre attackEvent) {
 		PitPlayer pitAttacker = PitPlayer.getPitPlayer(attackEvent.attacker);
-		if(pitAttacker != this.pitPlayer || pitAttacker.megastreak.getClass() != Uberstreak.class) return;
-		if(pitAttacker.megastreak.isOnMega()) {
-			PitEnchant exe = EnchantManager.getEnchant("executioner");
-			if(uberEffects.contains(UberEffect.EXE_DISABLE)) attackEvent.getAttackerEnchantMap().remove(exe);
-		}
+		if(pitAttacker != this.pitPlayer || pitAttacker.megastreak.getClass() != Uberstreak.class || pitAttacker.megastreak.isOnMega()) return;
+
+		Map<PitEnchant, Integer> attackerEnchantMap = attackEvent.getAttackerEnchantMap();
+
+		PitEnchant exe = EnchantManager.getEnchant("executioner");
+		if(uberEffects.contains(UberEffect.EXE_SUCKS) && attackerEnchantMap.containsKey(exe)) attackerEnchantMap.put(exe,
+				Math.max(0, attackerEnchantMap.get(exe) - 1));
+
+		PitEnchant perun = EnchantManager.getEnchant("perun");
+		if(uberEffects.contains(UberEffect.PERUN_SUCKS) && attackerEnchantMap.containsKey(perun)) attackerEnchantMap.put(perun,
+				Math.max(0, attackerEnchantMap.get(perun) - 1));
 	}
 
 	@EventHandler
@@ -347,7 +350,8 @@ public class Uberstreak extends Megastreak {
 	public enum UberEffect {
 		NO_SPEED("&CYou cannot gain speed"),
 		TAKE_MORE_DAMAGE("&CTake 25% more damage"),
-		EXE_DISABLE("&cExecutioner no longer works"),
+		EXE_SUCKS("&cExecutioner level -1"),
+		PERUN_SUCKS("&cCombo: Perun level -1"),
 		LOSE_MAX_HEALTH("&c-" + Misc.getHearts(4) + " max hp"),
 		HEAL_LESS("&cHeal 25% less from all sources"),
 
