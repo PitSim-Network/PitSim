@@ -42,9 +42,6 @@ public class Celebrity extends RenownUpgrade {
 	public void onKill(KillEvent killEvent) {
 		if(!UpgradeManager.hasUpgrade(killEvent.killer, this)) return;
 
-		int tier = UpgradeManager.getTier(killEvent.killer, this);
-		if(tier == 0) return;
-
 		killEvent.goldMultipliers.add(2.0);
 	}
 }
