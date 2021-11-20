@@ -48,17 +48,17 @@ public class Streaker extends PitPerk {
 				double xp = 0;
 
 //				TODO: Update lore
-				if(playerTimes.get(player) > 60) xp = 1;
-				if(playerTimes.get(player) <= 60) xp = 1.1;
-				if(playerTimes.get(player) <= 50) xp = 1.2;
-				if(playerTimes.get(player) <= 45) xp = 1.3;
-				if(playerTimes.get(player) <= 40) xp = 1.4;
-				if(playerTimes.get(player) <= 35) xp = 1.5;
-				if(playerTimes.get(player) <= 30) xp = 1.6;
-				if(playerTimes.get(player) <= 25) xp = 1.7;
-				if(playerTimes.get(player) <= 20) xp = 1.8;
-				if(playerTimes.get(player) <= 15) xp = 1.9;
-				if(playerTimes.get(player) <= 10) xp = 2;
+				if(playerTimes.get(player) > 100) xp = 1;
+				if(playerTimes.get(player) <= 100) xp = 1.1;
+				if(playerTimes.get(player) <= 80) xp = 1.2;
+				if(playerTimes.get(player) <= 70) xp = 1.3;
+				if(playerTimes.get(player) <= 60) xp = 1.4;
+				if(playerTimes.get(player) <= 50) xp = 1.5;
+				if(playerTimes.get(player) <= 40) xp = 1.6;
+				if(playerTimes.get(player) <= 35) xp = 1.7;
+				if(playerTimes.get(player) <= 30) xp = 1.8;
+				if(playerTimes.get(player) <= 25) xp = 1.9;
+				if(playerTimes.get(player) <= 20) xp = 2;
 
 				xpReward.put(player, xp);
 
