@@ -8,8 +8,8 @@ import dev.kyro.pitsim.controllers.NonManager;
 import dev.kyro.pitsim.controllers.objects.Killstreak;
 import dev.kyro.pitsim.controllers.objects.PitEnchant;
 import dev.kyro.pitsim.events.AttackEvent;
-import dev.kyro.pitsim.misc.Sounds;
 import org.bukkit.Effect;
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
@@ -34,10 +34,16 @@ public class Shockwave extends Killstreak {
 
 	@Override
 	public void proc(Player player) {
-		List<Entity> entityList = player.getNearbyEntities(2.5, 2.5,2.5);
+		for(int i = 0; i < 5; i++) {
+			Location exploLoc = player.getLocation().clone().add(0, 1, 0);
+			exploLoc.add(Math.random() * 10 - 5, 0, Math.random() * 10 - 5);
+			player.getWorld().playEffect(exploLoc, Effect.EXPLOSION_HUGE, 1);
+		}
+
+		List<Entity> entityList = player.getNearbyEntities(4, 4,4);
 		List<Player> nonList = new ArrayList<>();
 		for(Entity entity : entityList) {
-			if(entity instanceof Player && NonManager.getNon((Player) entity) != null) {
+			if(entity instanceof Player && NonManager.getNon((Player) entity) != null && entity.getLocation().distance(player.getLocation()) < 4) {
 				nonList.add((Player) entity);
 			}
 		}
@@ -47,13 +53,15 @@ public class Shockwave extends Killstreak {
 			EntityDamageByEntityEvent ev = new EntityDamageByEntityEvent(player, non, EntityDamageEvent.DamageCause.CUSTOM, 0);
 			AttackEvent attackEvent = new AttackEvent(ev, attackerEnchant, defenderEnchant, false);
 
-
-			DamageManager.kill(attackEvent, player, non, false);
+			if(non.getLocation().distance(player.getLocation()) < 2.5) {
+				DamageManager.kill(attackEvent, player, non, false);
+			} else {
+				non.setHealth(non.getHealth() / 2.0);
+			}
 		}
 
-		Sounds.SHOCKWAVE.play(player);
+//		Sounds.SHOCKWAVE.play(player);
 		player.playEffect(player.getLocation(), Effect.EXPLOSION_HUGE, 100);
-
 	}
 
 	@Override
@@ -65,7 +73,7 @@ public class Shockwave extends Killstreak {
 
 		AItemStackBuilder builder = new AItemStackBuilder(Material.MONSTER_EGG, 1, 60);
 		builder.setName("&e" + name);
-		builder.setLore(new ALoreBuilder("&7Every: &c" + killInterval + " kills", "", "&7Send out a shockwave, killing", "&7all bots in a 2.5 block radius."));
+		builder.setLore(new ALoreBuilder("&7Every: &c" + killInterval + " kills", "", "&7Send out a shockwave, doing", "&7massive damage to nearby bots."));
 
 		return builder.getItemStack();
 	}
