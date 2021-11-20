@@ -43,12 +43,12 @@ public class KillEvent extends Event {
 
 	public int getFinalXp() {
 
-		int xpReward = this.xpReward;
+		double xpReward = this.xpReward;
 		for(Double xpMultiplier : xpMultipliers) {
 			xpReward *= xpMultiplier;
 		}
 		if(xpReward > xpCap) return xpCap;
-		else return xpReward;
+		else return (int) xpReward;
 	}
 
 
