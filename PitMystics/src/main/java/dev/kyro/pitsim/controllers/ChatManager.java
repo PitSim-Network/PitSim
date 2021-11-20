@@ -76,12 +76,12 @@ public class ChatManager implements Listener {
 	@EventHandler
 	public void onCommandSend(PlayerCommandPreprocessEvent event) {
 		if(ChatColor.stripColor(event.getMessage()).startsWith("/view")) {
-
-			String newCommand = "/invsee ";
-
+			String newCommand = "invsee";
 			String[] splited = event.getMessage().split("\\s+");
+			if(splited.length < 2) return;
 
-			newCommand = "invsee " + splited[1];
+			newCommand += " " + splited[1];
+			if(splited.length >= 3) newCommand += " " + splited[2];
 
 			event.setCancelled(true);
 			event.getPlayer().performCommand(newCommand);
