@@ -21,6 +21,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -43,6 +44,15 @@ import java.util.UUID;
 
 public class PlayerManager implements Listener {
 //	public static Map<Player, BossBarManager> bossBars = new HashMap<>();
+	static {
+		new BukkitRunnable() {
+			@Override
+			public void run() {
+				for(Non non : NonManager.nons) if(non.non != null) ((CraftPlayer) non.non).getHandle().getDataWatcher().watch(9, (byte) 0);
+				for(Player onlinePlayer : Bukkit.getOnlinePlayers()) ((CraftPlayer) onlinePlayer).getHandle().getDataWatcher().watch(9, (byte) 0);
+			}
+		}.runTaskTimer(PitSim.INSTANCE, 0L, 20L);
+	}
 
 	@EventHandler
 	public void onCommand(PlayerCommandPreprocessEvent event) {
