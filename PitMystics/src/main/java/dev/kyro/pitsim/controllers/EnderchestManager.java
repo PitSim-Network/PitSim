@@ -53,7 +53,8 @@ public class EnderchestManager implements Listener {
     @EventHandler
     public void onCommand(PlayerCommandPreprocessEvent event) {
         if(ChatColor.stripColor(event.getMessage()).toLowerCase().startsWith("/pv") ||
-                ChatColor.stripColor(event.getMessage()).toLowerCase().startsWith("/playervault")) {
+                ChatColor.stripColor(event.getMessage()).toLowerCase().startsWith("/playervault") ||
+                ChatColor.stripColor(event.getMessage()).toLowerCase().startsWith("/vault")) {
             Block block = event.getPlayer().getTargetBlock((HashSet<Byte>) null, 5);
             if(!block.getType().equals(Material.ENDER_CHEST)) {
                 event.getPlayer().sendMessage("Unknown command. Type \"/help\" for help.");
