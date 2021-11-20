@@ -28,7 +28,7 @@ public class Sweaty extends PitEnchant {
 		if(pitPlayer.megastreak.getClass() != NoMegastreak.class && pitPlayer.megastreak.isOnMega()) {
 			killEvent.xpCap += getCapIncrease(enchantLvl);
 			int megaKills = (int) (pitPlayer.getKills() - pitPlayer.megastreak.getRequiredKills());
-			int xp = megaKills * getXpIncrease(enchantLvl);
+			int xp = megaKills * getXpIncrease(enchantLvl) / 2;
 			killEvent.xpReward += xp;
 		}
 	}
