@@ -76,7 +76,7 @@ public class Executioner extends PitEnchant {
 	}
 
 	public double getExecuteHealth(int enchantLvl) {
-
-		return enchantLvl + 2;
+		if(enchantLvl > 2) return enchantLvl * 2 - 1;
+		return enchantLvl + 1;
 	}
 }
