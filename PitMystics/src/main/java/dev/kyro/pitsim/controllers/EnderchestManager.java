@@ -3,6 +3,7 @@ package dev.kyro.pitsim.controllers;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.misc.Sounds;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
@@ -51,7 +52,8 @@ public class EnderchestManager implements Listener {
 
     @EventHandler
     public void onCommand(PlayerCommandPreprocessEvent event) {
-        if(event.getMessage().contains("pv") && event.getMessage().startsWith("pv") || event.getMessage().equalsIgnoreCase("playervault")) {
+        if(ChatColor.stripColor(event.getMessage()).toLowerCase().startsWith("/pv") ||
+                ChatColor.stripColor(event.getMessage()).toLowerCase().startsWith("/playervault")) {
             Block block = event.getPlayer().getTargetBlock((HashSet<Byte>) null, 5);
             if(!block.getType().equals(Material.ENDER_CHEST)) {
                 event.getPlayer().sendMessage("Unknown command. Type \"/help\" for help.");
