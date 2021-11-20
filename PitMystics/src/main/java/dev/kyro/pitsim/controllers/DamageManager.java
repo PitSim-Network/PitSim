@@ -592,7 +592,7 @@ public class DamageManager implements Listener {
 
 
 		Non killingNon = NonManager.getNon(killer);
-			Non defendingNon = NonManager.getNon(dead);
+		Non defendingNon = NonManager.getNon(dead);
 		if(killingNon != null) {
 			killingNon.rewardKill();
 		} else {
