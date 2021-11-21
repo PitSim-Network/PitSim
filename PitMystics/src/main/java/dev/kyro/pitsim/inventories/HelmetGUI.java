@@ -11,7 +11,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class HelmetGUI extends AGUI {
-
 	public static HelmetPanel helmetPanel;
 	public HelmetAbilityPanel helmetAbilityPanel;
 
@@ -38,9 +37,5 @@ public class HelmetGUI extends AGUI {
 				depositPlayers.remove(player);
 			}
 		}.runTaskLater(PitSim.INSTANCE, 1200L);
-
 	}
-
-
-
 }

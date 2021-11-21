@@ -30,41 +30,19 @@ import java.util.Collections;
 import java.util.List;
 
 public class HelmetListeners implements Listener {
-
-
 	private final List<Material> armorMaterials = Collections.singletonList(Material.GOLD_HELMET);
-
-//	@EventHandler
-//	public void onPlayerInteract(PlayerInteractEvent event) {
-//		Player player = event.getPlayer();
-//		if (event.getAction().equals(Action.RIGHT_CLICK_BLOCK) || event.getAction().equals(Action.RIGHT_CLICK_AIR))
-//		{
-//			// Check if the item in hand is contained in the armor list
-//			if (armorMaterials.contains(player.getItemInHand().getType()))
-//			{
-//				event.setCancelled(true);
-//			}
-//		}
-//	}
 
 	@EventHandler
 	public void onInteract(PlayerInteractEvent event) {
-
-
 		if(Misc.isAirOrNull(event.getPlayer().getItemInHand()) || event.getAction() == Action.LEFT_CLICK_AIR || event.getAction() == Action.LEFT_CLICK_BLOCK) return;
 		NBTItem nbtItem = new NBTItem(event.getPlayer().getItemInHand());
 
 		if(nbtItem.hasKey(NBTTag.IS_GHELMET.getRef())) {
-
-
 			if(!UpgradeManager.hasUpgrade(event.getPlayer(), "HELMETRY")) {
 				AOutput.error(event.getPlayer(), "&cYou must first unlock &6Helmetry &cfrom the renown shop before using this item!");
 				Sounds.NO.play(event.getPlayer());
 				return;
 			}
-
-
-
 
 			Sounds.HELMET_GUI_OPEN.play(event.getPlayer());
 			HelmetGUI helmetGUI = new HelmetGUI(event.getPlayer());
@@ -159,10 +137,7 @@ public class HelmetListeners implements Listener {
 		int level = HelmetSystem.getLevel(helmet.gold);
 
 		killEvent.goldMultipliers.add(1 + HelmetSystem.getTotalStacks(HelmetSystem.Passive.GOLD_BOOST,  level  - 1) / 100D);
-
 		killEvent.xpMultipliers.add(1 + HelmetSystem.getTotalStacks(HelmetSystem.Passive.XP_BOOST, level - 1) / 100D);
-
-
 	}
 
 	public static GoldenHelmet getHelmetInstance(Player player) {
@@ -170,7 +145,6 @@ public class HelmetListeners implements Listener {
 		NBTItem nbtItem = new NBTItem(player.getInventory().getHelmet());
 		if(!nbtItem.hasKey(NBTTag.GHELMET_UUID.getRef())) return null;
 		return GoldenHelmet.getHelmetItem(player.getInventory().getHelmet(), player);
-
 	}
 
 	public List<Player> crouchPlayers = new ArrayList<>();
@@ -248,7 +222,6 @@ public class HelmetListeners implements Listener {
 			goldenHelmet.owner = null;
 			GoldenHelmet.helmets.remove(goldenHelmet);
 		}
-
 	}
 
 	@EventHandler

@@ -9,7 +9,6 @@ import org.bukkit.inventory.ItemStack;
 import java.util.*;
 
 public abstract class HelmetAbility implements Listener {
-
     public static List<HelmetAbility> helmetAbilities = new ArrayList<>();
     public static List<UUID> toggledHelmets = new ArrayList<>();
 
@@ -34,7 +33,6 @@ public abstract class HelmetAbility implements Listener {
     public void onDeactivate() { }
     public void onProc() { }
 
-
     public abstract List<String> getDescription();
     public abstract ItemStack getDisplayItem();
 
@@ -44,7 +42,6 @@ public abstract class HelmetAbility implements Listener {
         }
         return null;
     }
-
 
     public static void registerHelmetAbility(HelmetAbility helmetAbility) {
 
@@ -81,5 +78,4 @@ public abstract class HelmetAbility implements Listener {
         }
         return false;
     }
-
 }
