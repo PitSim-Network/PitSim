@@ -206,7 +206,7 @@ public class HelmetListeners implements Listener {
 		goldenHelmet.owner = player;
 
 		for(GoldenHelmet goldenHelmet1 : GoldenHelmet.getHelmetsFromPlayer(event.getPlayer())) {
-			if(goldenHelmet.ability  == null) continue;
+			if(goldenHelmet.ability == null) continue;
 			if(goldenHelmet1.ability.player !=  goldenHelmet1.owner) goldenHelmet1.ability.player = goldenHelmet1.owner;
 		}
 
