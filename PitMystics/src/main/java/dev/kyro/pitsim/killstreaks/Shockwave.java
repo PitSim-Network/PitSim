@@ -47,14 +47,21 @@ public class Shockwave extends Killstreak {
 				nonList.add((Player) entity);
 			}
 		}
+		int count = 0;
 		for(Player non : nonList) {
 			Map<PitEnchant, Integer> attackerEnchant = EnchantManager.getEnchantsOnPlayer(player);
 			Map<PitEnchant, Integer> defenderEnchant = new HashMap<>();
 			EntityDamageByEntityEvent ev = new EntityDamageByEntityEvent(player, non, EntityDamageEvent.DamageCause.CUSTOM, 0);
 			AttackEvent attackEvent = new AttackEvent(ev, attackerEnchant, defenderEnchant, false);
 
-			if(non.getLocation().distance(player.getLocation()) < 2.5) {
+			double distance = non.getLocation().distance(player.getLocation());
+			if(distance < 2.5 && count < 15) {
 				DamageManager.kill(attackEvent, player, non, false);
+				count++;
+				if(distance < 2) {
+					DamageManager.kill(attackEvent, player, non, false);
+					count++;
+				}
 			} else {
 				non.setHealth(non.getHealth() / 2.0);
 			}
