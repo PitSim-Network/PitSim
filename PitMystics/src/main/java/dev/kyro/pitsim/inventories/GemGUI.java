@@ -4,7 +4,6 @@ import dev.kyro.arcticapi.gui.AGUI;
 import org.bukkit.entity.Player;
 
 public class GemGUI extends AGUI {
-
 	public TotallyLegitGemPanel totallyLegitGemPanel;
 
 	public GemGUI(Player player) {
@@ -13,5 +12,4 @@ public class GemGUI extends AGUI {
 		totallyLegitGemPanel = new TotallyLegitGemPanel(this);
 		setHomePanel(totallyLegitGemPanel);
 	}
-
 }
