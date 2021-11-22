@@ -16,13 +16,11 @@ import dev.kyro.pitsim.boosters.XPBooster;
 import dev.kyro.pitsim.commands.*;
 import dev.kyro.pitsim.commands.admin.*;
 import dev.kyro.pitsim.controllers.*;
-import dev.kyro.pitsim.controllers.objects.HelmetAbility;
 import dev.kyro.pitsim.controllers.objects.Non;
 import dev.kyro.pitsim.controllers.objects.PitEnchant;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.enchants.GoldBoost;
 import dev.kyro.pitsim.enchants.*;
-import dev.kyro.pitsim.helmetabilities.*;
 import dev.kyro.pitsim.killstreaks.*;
 import dev.kyro.pitsim.megastreaks.*;
 import dev.kyro.pitsim.misc.*;
@@ -33,7 +31,6 @@ import dev.kyro.pitsim.placeholders.*;
 import dev.kyro.pitsim.upgrades.*;
 import net.citizensnpcs.api.CitizensAPI;
 import net.citizensnpcs.api.npc.NPC;
-//import net.kyori.adventure.platform.bukkit.BukkitAudiences;
 import net.luckperms.api.LuckPerms;
 import net.milkbowl.vault.economy.Economy;
 import org.bukkit.Bukkit;
@@ -46,6 +43,8 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+
+//import net.kyori.adventure.platform.bukkit.BukkitAudiences;
 
 public class PitSim extends JavaPlugin {
 
@@ -317,7 +316,7 @@ public class PitSim extends JavaPlugin {
 		getServer().getPluginManager().registerEvents(new ChunkOfVile(), this);
 		getServer().getPluginManager().registerEvents(new ReachAutoBan(), this);
 		getServer().getPluginManager().registerEvents(new NonAnticheat(), this);
-		getServer().getPluginManager().registerEvents(new HelmetListeners(), this);
+//		getServer().getPluginManager().registerEvents(new HelmetListeners(), this);
 		getServer().getPluginManager().registerEvents(new PitBlob(), this);
 		getServer().getPluginManager().registerEvents(new SpawnNPCs(), this);
 		getServer().getPluginManager().registerEvents(new BackwardsCompatibility(), this);
@@ -344,7 +343,7 @@ public class PitSim extends JavaPlugin {
 		UpgradeManager.registerUpgrade(new Withercraft());
 		UpgradeManager.registerUpgrade(new UnlockFirstStrike());
 		UpgradeManager.registerUpgrade(new Impatient());
-		UpgradeManager.registerUpgrade(new Helmetry());
+//		UpgradeManager.registerUpgrade(new Helmetry());
 		UpgradeManager.registerUpgrade(new ShardHunter());
 		UpgradeManager.registerUpgrade(new ReportAccess());
 //		UpgradeManager.registerUpgrade(new SelfConfidence());
@@ -360,12 +359,12 @@ public class PitSim extends JavaPlugin {
 	}
 
 	public void registerHelmetAbilities() {
-		HelmetAbility.registerHelmetAbility(new LeapAbility(null));
-		HelmetAbility.registerHelmetAbility(new BlobAbility(null));
-		HelmetAbility.registerHelmetAbility(new GoldRushAbility(null));
-		HelmetAbility.registerHelmetAbility(new HermitAbility(null));
-		HelmetAbility.registerHelmetAbility(new JudgementAbility(null));
-		HelmetAbility.registerHelmetAbility(new PhoenixAbility(null));
+//		HelmetAbility.registerHelmetAbility(new LeapAbility(null));
+//		HelmetAbility.registerHelmetAbility(new BlobAbility(null));
+//		HelmetAbility.registerHelmetAbility(new GoldRushAbility(null));
+//		HelmetAbility.registerHelmetAbility(new HermitAbility(null));
+//		HelmetAbility.registerHelmetAbility(new JudgementAbility(null));
+//		HelmetAbility.registerHelmetAbility(new PhoenixAbility(null));
 	}
 
 	private void loadConfig() {
