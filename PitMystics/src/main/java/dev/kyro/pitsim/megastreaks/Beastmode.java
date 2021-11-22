@@ -82,7 +82,7 @@ public class Beastmode extends Megastreak {
 		lore.add("");
 		lore.add(ChatColor.GRAY + "On trigger:");
 //		lore.add(ChatColor.translateAlternateColorCodes('&', "&a\u25a0 &7Deal &c+25% &7damage to bots"));
-		lore.add(ChatColor.translateAlternateColorCodes('&', "&a\u25a0 &7Earn &b+75% XP &7from kills"));
+		lore.add(ChatColor.translateAlternateColorCodes('&', "&a\u25a0 &7Earn &b+100% XP &7from kills"));
 		lore.add(ChatColor.translateAlternateColorCodes('&', "&a\u25a0 &7Gain &b+130 max XP&7"));
 		lore.add("");
 		lore.add(ChatColor.GRAY + "BUT:");
@@ -104,7 +104,6 @@ public class Beastmode extends Megastreak {
 		if(pitPlayer != this.pitPlayer) return;
 		if(pitPlayer.megastreak.isOnMega() && pitPlayer.megastreak.getClass() == Beastmode.class) {
 			int ks = (int) Math.floor(pitPlayer.getKills());
-//			TODO: Update lore
 			if(NonManager.getNon(attackEvent.attacker) == null) {
 				attackEvent.increasePercent += (ks - 50) / 400D;
 			} else {
@@ -119,7 +118,7 @@ public class Beastmode extends Megastreak {
 		if(pitPlayer != this.pitPlayer) return;
 		if(pitPlayer.megastreak.isOnMega() && pitPlayer.megastreak.getClass() == Beastmode.class) {
 			killEvent.xpCap += 130;
-			killEvent.xpMultipliers.add(1.75);
+			killEvent.xpMultipliers.add(2.0);
 			killEvent.goldMultipliers.add(0.5);
 		}
 	}
@@ -157,6 +156,7 @@ public class Beastmode extends Megastreak {
 
 		}
 
+		if(pitPlayer.stats != null) pitPlayer.stats.timesOnBeastmode++;
 	}
 
 	@Override
