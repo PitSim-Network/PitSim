@@ -33,7 +33,6 @@ public class SpawnManager implements Listener {
 
     @EventHandler
     public void onShoot(EntityShootBowEvent event) {
-
         if(!(event.getEntity() instanceof Player)) return;
         if(!(event.getProjectile() instanceof Arrow)) return;
 
@@ -43,7 +42,6 @@ public class SpawnManager implements Listener {
             event.setCancelled(true);
             Sounds.NO.play(player);
         }
-
     }
 
     @EventHandler

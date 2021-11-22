@@ -3,6 +3,7 @@ package dev.kyro.pitsim.enchants;
 import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.controllers.EnchantManager;
+import dev.kyro.pitsim.controllers.SpawnManager;
 import dev.kyro.pitsim.controllers.objects.PitEnchant;
 import dev.kyro.pitsim.enums.ApplyType;
 import dev.kyro.pitsim.events.AttackEvent;
@@ -52,11 +53,14 @@ public class Volley extends PitEnchant {
 					return;
 				}
 
+				if(SpawnManager.isInSpawn(player.getLocation())) return;
+
 				Arrow volleyArrow = player.launchProjectile(Arrow.class);
 				volleyArrow.setVelocity(player.getEyeLocation().getDirection().normalize().multiply(arrowVelo));
 
 				VolleyShootEvent volleyShootEvent = new VolleyShootEvent(event.getEntity(), event.getBow(), volleyArrow, event.getForce());
 				PitSim.INSTANCE.getServer().getPluginManager().callEvent(volleyShootEvent);
+				if(volleyShootEvent.isCancelled()) volleyArrow.remove();
 
 				new BukkitRunnable() {
 					@Override
