@@ -120,7 +120,6 @@ public class PlayerManager implements Listener {
 			DeathCrys.trigger(killEvent.dead, pitDead.deathCry, killEvent.dead.getLocation());
 		}
 
-
 		if(pitDead.bounty != 0 && killingNon == null && pitKiller != pitDead) {
 			if(killEvent.isLuckyKill) pitDead.bounty = pitDead.bounty * 3;
 			DecimalFormat formatter = new DecimalFormat("#,###.#");
@@ -129,7 +128,6 @@ public class PlayerManager implements Listener {
 				PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
 				if(pitPlayer.disabledBounties) continue;
 
-
 				String bounty1 = ChatColor.translateAlternateColorCodes('&',
 						"&6&lBOUNTY CLAIMED!&7 %luckperms_prefix%" + killEvent.killer.getDisplayName() + "&7 killed ");
 				String bounty2 = ChatColor.translateAlternateColorCodes('&', "%luckperms_prefix%" + killEvent.dead.getDisplayName()
@@ -137,14 +135,11 @@ public class PlayerManager implements Listener {
 				String bounty3 = PlaceholderAPI.setPlaceholders(killEvent.killer, bounty1);
 				String bounty4 = PlaceholderAPI.setPlaceholders(killEvent.dead, bounty2);
 				player.sendMessage(bounty3 + bounty4);
-
-
-
 			}
 			LevelManager.addGold(killEvent.killer, pitDead.bounty);
 			if(pitDead.megastreak.getClass() != Highlander.class) pitDead.bounty = 0;
 
-
+			if(pitKiller.stats != null) pitKiller.stats.bountiesClaimed++;
 		}
 
 		if(Math.random() < 0.1 && killingNon == null && pitKiller.bounty < 25000) {
@@ -173,11 +168,37 @@ public class PlayerManager implements Listener {
 	public static List<UUID> pantsSwapCooldown = new ArrayList<>();
 	@EventHandler
 	public static void onClick(PlayerInteractEvent event) {
-
 		Player player = event.getPlayer();
 
 		if(event.getAction() != Action.RIGHT_CLICK_AIR && event.getAction() != Action.RIGHT_CLICK_BLOCK) return;
 		if(Misc.isAirOrNull(player.getItemInHand())) return;
+
+		int firstArrow = -1; boolean multipleStacks = false; boolean hasSpace = false;
+		if(player.getItemInHand().getType() == Material.BOW) {
+			for(int i = 0; i < 36; i++) {
+				ItemStack itemStack = player.getInventory().getItem(i);
+				if(Misc.isAirOrNull(itemStack)) {
+					hasSpace = true;
+					continue;
+				}
+				if(itemStack.getType() != Material.ARROW) continue;
+				if(firstArrow == -1) firstArrow = i; else {
+					multipleStacks = true;
+					break;
+				}
+			}
+			if(!multipleStacks) {
+				if(firstArrow == -1) {
+					if(hasSpace) {
+						player.getInventory().addItem(new ItemStack(Material.ARROW, 32));
+					} else {
+						AOutput.error(player, "Please make room in your inventory for arrows");
+					}
+				} else {
+					player.getInventory().setItem(firstArrow, new ItemStack(Material.ARROW, 32));
+				}
+			}
+		}
 
 		if(player.getItemInHand().getType().toString().contains("LEGGINGS")){
 			if(Misc.isAirOrNull(player.getInventory().getLeggings())) return;
