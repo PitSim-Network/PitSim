@@ -42,7 +42,7 @@ public class Streaker extends PitPerk {
 
 		PitPlayer pitPlayer = PitPlayer.getPitPlayer(killEvent.killer);
 
-		if(pitPlayer.megastreak.isOnMega()) {
+		if(pitPlayer.getKills() + 1 >= pitPlayer.megastreak.getRequiredKills()) {
 			if(playerTimes.containsKey(killEvent.killer)) {
 				Player player = killEvent.killer;
 				double xp = 0;
