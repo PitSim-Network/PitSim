@@ -114,20 +114,17 @@ public class ToTheMoon extends Megastreak {
 		PitPlayer pitPlayer = PitPlayer.getPitPlayer(attackEvent.defender);
 		if(pitPlayer != this.pitPlayer) return;
 		if(pitPlayer.megastreak.getClass() == ToTheMoon.class) {
-//			TODO: Update lore
 			if(pitPlayer.getKills() > 200) {
 				double increase = (5 * ((pitPlayer.getKills() - 200) / 20))/100D;
 				if(NonManager.getNon(attackEvent.attacker) == null) {
 					attackEvent.increasePercent += increase;
 				} else attackEvent.increasePercent += (increase * 3);
 			}
-//			TODO: Update lore
 			if(pitPlayer.getKills() > 400) {
 				if(NonManager.getNon(attackEvent.attacker) == null) {
 					attackEvent.increase += 0.2 * ((pitPlayer.getKills() - 400) / 50);
 				} else attackEvent.increase += 0.6 * ((pitPlayer.getKills() - 400) / 50);
 			}
-//			TODO: Update lore
 			if(pitPlayer.getKills() > 700) {
 				attackEvent.veryTrueDamage += 0.2 * ((pitPlayer.getKills() - 700) / 10);
 			}
@@ -175,6 +172,8 @@ public class ToTheMoon extends Megastreak {
 					"&c&lMEGASTREAK! %luckperms_prefix%" + pitPlayer.player.getDisplayName() + " &7activated &b&lTO THE MOON&7!");
 			AOutput.send(player, PlaceholderAPI.setPlaceholders(pitPlayer.player, streakMessage));
 		}
+
+		if(pitPlayer.stats != null) pitPlayer.stats.timesOnMoon++;
 	}
 
 	@Override

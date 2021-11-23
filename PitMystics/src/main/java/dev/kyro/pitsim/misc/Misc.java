@@ -114,7 +114,7 @@ public class Misc {
 	 */
 	public static String roundString(double number) {
 
-		return new DecimalFormat("##0.##").format(number);
+		return new DecimalFormat("#,##0.##").format(number);
 	}
 
 	/**

@@ -3,7 +3,6 @@ package dev.kyro.pitsim.enchants;
 import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.arcticapi.misc.AUtil;
 import dev.kyro.pitsim.PitSim;
-import dev.kyro.pitsim.controllers.EnchantManager;
 import dev.kyro.pitsim.controllers.HitCounter;
 import dev.kyro.pitsim.controllers.objects.PitEnchant;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
@@ -48,14 +47,15 @@ public class FasterThanTheirShadow extends PitEnchant implements Listener {
 
 		Misc.applyPotionEffect(attackEvent.attacker, PotionEffectType.SPEED,
 				4 * 20, getSpeedAmplifier(enchantLvl) - 1, true, false);
+
+		if(pitPlayer.stats != null) pitPlayer.stats.ftts++;
 	}
 
 	@EventHandler (priority = EventPriority.HIGHEST)
 	private void onArrowHitBlock(ArrowHitBlockEvent event) {
 		Arrow arrow = event.getArrow();
 		Block block = event.getBlock(); // the block that was hit
-		int enchantLvl = EnchantManager.getEnchantLevel((Player) arrow.getShooter(), this);
-		if(block == null) return;
+		if(block == null || arrow.getShooter() == null || !(arrow.getShooter() instanceof Player)) return;
 
 		HitCounter.resetCombo((Player) arrow.getShooter(), this);
 	}

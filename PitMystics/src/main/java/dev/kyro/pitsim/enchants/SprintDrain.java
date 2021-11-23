@@ -36,6 +36,9 @@ public class SprintDrain extends PitEnchant {
 		}
 		Misc.applyPotionEffect(attackEvent.attacker, PotionEffectType.SPEED,
 				getSpeedDuration(enchantLvl) * 20, getSpeedAmplifier(enchantLvl) - 1, true, false);
+
+		PitPlayer pitAttacker = PitPlayer.getPitPlayer(attackEvent.attacker);
+		if(pitAttacker.stats != null) pitAttacker.stats.drain++;
 	}
 
 	@Override

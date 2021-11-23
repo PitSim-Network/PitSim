@@ -266,7 +266,6 @@ public class DamageManager implements Listener {
 		nmsPlayer.setAbsorptionHearts(0);
 		if(NonManager.getNon(dead) == null) pitDefender.endKillstreak();
 
-
 		Telebow.teleShots.removeIf(teleShot -> teleShot.getShooter().equals(dead));
 
 		dead.setHealth(dead.getMaxHealth());
@@ -500,6 +499,9 @@ public class DamageManager implements Listener {
 //		}
 		PitPlayer pitDefender = PitPlayer.getPitPlayer(dead);
 		double killstreak = pitDefender.getKills();
+
+		if(pitPlayer.stats != null && killstreak > pitPlayer.stats.highestStreak) pitPlayer.stats.highestStreak = (int) killstreak;
+
 		pitDefender.endKillstreak();
 		pitDefender.bounty = 0;
 		for(PotionEffect potionEffect : dead.getActivePotionEffects()) {

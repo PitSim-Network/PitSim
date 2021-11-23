@@ -2,6 +2,7 @@ package dev.kyro.pitsim.enchants;
 
 import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.pitsim.controllers.objects.PitEnchant;
+import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.enums.ApplyType;
 import dev.kyro.pitsim.events.AttackEvent;
 import dev.kyro.pitsim.misc.Misc;
@@ -32,6 +33,8 @@ public class Gamble extends PitEnchant {
 			Sounds.GAMBLE_NO.play(attackEvent.attacker);
 		}
 
+		PitPlayer pitPlayer = PitPlayer.getPitPlayer(attackEvent.attacker);
+		if(pitPlayer.stats != null) pitPlayer.stats.gamble += getTrueDamage(enchantLvl);
 	}
 
 	@Override

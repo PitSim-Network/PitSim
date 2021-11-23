@@ -119,7 +119,6 @@ public class Overdrive extends Megastreak {
 		PitPlayer pitPlayer = PitPlayer.getPitPlayer(killEvent.killer);
 		if(pitPlayer != this.pitPlayer) return;
 		if(pitPlayer.megastreak.isOnMega() && pitPlayer.megastreak.getClass() == Overdrive.class) {
-//			TODO: Update lore
 			killEvent.xpMultipliers.add(1.5);
 			killEvent.goldMultipliers.add(2.0);
 		}
@@ -153,6 +152,8 @@ public class Overdrive extends Megastreak {
 					"&c&lMEGASTREAK! %luckperms_prefix%" + pitPlayer.player.getDisplayName() + " &7activated &c&lOVERDRIVE&7!");
 			AOutput.send(player, PlaceholderAPI.setPlaceholders(pitPlayer.player, streakMessage));
 		}
+
+		if(pitPlayer.stats != null) pitPlayer.stats.timesOnOverdrive++;
 	}
 
 	@Override

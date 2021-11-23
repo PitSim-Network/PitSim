@@ -6,6 +6,7 @@ import dev.kyro.pitsim.controllers.HopperManager;
 import dev.kyro.pitsim.controllers.NonManager;
 import dev.kyro.pitsim.controllers.UpgradeManager;
 import dev.kyro.pitsim.controllers.objects.PitEnchant;
+import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.enums.ApplyType;
 import dev.kyro.pitsim.events.AttackEvent;
 import dev.kyro.pitsim.misc.Sounds;
@@ -43,7 +44,10 @@ public class Billionaire extends PitEnchant {
 
 		double finalBalance = PitSim.VAULT.getBalance(attackEvent.attacker) - goldCost;
 		if(finalBalance < 0) return;
-		if(Juggernaut.juggernaut != attackEvent.attacker)PitSim.VAULT.withdrawPlayer(attackEvent.attacker, goldCost);
+		if(Juggernaut.juggernaut != attackEvent.attacker) PitSim.VAULT.withdrawPlayer(attackEvent.attacker, goldCost);
+
+		PitPlayer pitPlayer = PitPlayer.getPitPlayer(attackEvent.attacker);
+		if(pitPlayer.stats != null) pitPlayer.stats.billionaire += goldCost;
 
 		attackEvent.multiplier.add(getDamageMultiplier(enchantLvl));
 		Sounds.BILLIONAIRE.play(attackEvent.attacker);

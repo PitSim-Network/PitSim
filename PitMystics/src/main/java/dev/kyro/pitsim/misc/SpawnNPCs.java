@@ -5,6 +5,7 @@ import dev.kyro.pitsim.controllers.MapManager;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.inventories.PerkGUI;
 import dev.kyro.pitsim.inventories.PrestigeGUI;
+import dev.kyro.pitsim.inventories.StatGUI;
 import net.citizensnpcs.api.CitizensAPI;
 import net.citizensnpcs.api.event.NPCRightClickEvent;
 import net.citizensnpcs.api.npc.NPC;
@@ -94,12 +95,12 @@ public class SpawnNPCs implements Listener {
 
 	public static void createVnx2NPC() {
 		NPCRegistry registry = CitizensAPI.getNPCRegistry();
-		wiji = registry.createNPC(EntityType.PLAYER, "&6vnx2");
-		wiji.spawn(MapManager.getVnx2NPCSpawn());
-		skin(wiji, "vnx2");
-		wiji.addTrait(LookClose.class);
-		wiji.getTrait(LookClose.class).setRange(10);
-		wiji.getTrait(LookClose.class).toggle();
+		vnx2 = registry.createNPC(EntityType.PLAYER, "&e&lSTATISTICS");
+		vnx2.spawn(MapManager.getVnx2NPCSpawn());
+		skin(vnx2, "vnx2");
+		vnx2.addTrait(LookClose.class);
+		vnx2.getTrait(LookClose.class).setRange(10);
+		vnx2.getTrait(LookClose.class).toggle();
 	}
 
 	@EventHandler
@@ -121,6 +122,11 @@ public class SpawnNPCs implements Listener {
 		if(event.getNPC().getId() == prestige.getId()) {
 			PrestigeGUI prestigeGUI = new PrestigeGUI(player);
 			prestigeGUI.open();
+		}
+
+		if(event.getNPC().getId() == vnx2.getId()) {
+			StatGUI statGUI = new StatGUI(player);
+			statGUI.open();
 		}
 	}
 

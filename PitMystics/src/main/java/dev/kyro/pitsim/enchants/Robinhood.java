@@ -6,6 +6,7 @@ import dev.kyro.pitsim.controllers.Cooldown;
 import dev.kyro.pitsim.controllers.EnchantManager;
 import dev.kyro.pitsim.controllers.NonManager;
 import dev.kyro.pitsim.controllers.objects.PitEnchant;
+import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.enums.ApplyType;
 import dev.kyro.pitsim.events.AttackEvent;
 import dev.kyro.pitsim.events.VolleyShootEvent;
@@ -62,6 +63,9 @@ public class Robinhood extends PitEnchant {
 
 		Cooldown cooldown = getCooldown(player, 60);
 		if(cooldown.isOnCooldown()) return; else cooldown.reset();
+
+		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
+		if(pitPlayer.stats != null) pitPlayer.stats.robinhood++;
 
 		new BukkitRunnable() {
 			@Override

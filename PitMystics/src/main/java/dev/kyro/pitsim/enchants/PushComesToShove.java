@@ -29,11 +29,11 @@ public class PushComesToShove extends PitEnchant {
 		if(attackEvent.arrow == null) return;
 		int enchantLvl = attackEvent.getAttackerEnchantLevel(this);
 		if(enchantLvl == 0) return;
-		PitPlayer pitPlayer = PitPlayer.getPitPlayer(attackEvent.attacker);
+		PitPlayer pitAttacker = PitPlayer.getPitPlayer(attackEvent.attacker);
 		PitPlayer pitDefender = PitPlayer.getPitPlayer(attackEvent.defender);
 
-		HitCounter.incrementCounter(pitPlayer.player, this);
-		if(!HitCounter.hasReachedThreshold(pitPlayer.player, this, 3)) return;
+		HitCounter.incrementCounter(pitAttacker.player, this);
+		if(!HitCounter.hasReachedThreshold(pitAttacker.player, this, 3)) return;
 
 		Cooldown cooldown = getCooldown(attackEvent.attacker, 200);
 		if(cooldown.isOnCooldown()) return; else cooldown.reset();
@@ -43,6 +43,8 @@ public class PushComesToShove extends PitEnchant {
 		velocity.setY(0);
 
 		attackEvent.defender.setVelocity(velocity);
+
+		if(pitAttacker.stats != null) pitAttacker.stats.pcts++;
 	}
 
 	@Override

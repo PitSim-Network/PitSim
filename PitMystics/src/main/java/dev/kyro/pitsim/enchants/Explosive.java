@@ -76,6 +76,9 @@ public class Explosive extends PitEnchant {
 		playSound(arrow.getLocation(), enchantLvl);
 		arrow.getWorld().playEffect(arrow.getLocation(), getEffect(enchantLvl),
 				getEffect(enchantLvl).getData(), 100);
+
+		PitPlayer pitPlayer = PitPlayer.getPitPlayer(shooter);
+		if(pitPlayer.stats != null) pitPlayer.stats.explosive++;
 	}
 
 	@Override

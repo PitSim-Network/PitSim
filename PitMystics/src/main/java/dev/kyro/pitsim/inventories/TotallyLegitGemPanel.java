@@ -63,8 +63,6 @@ public class TotallyLegitGemPanel extends AGUIPanel {
                         if(entry.getValue() == 2) enchant = entry.getKey();
                     }
 
-
-
                     EnchantManager.setItemLore(nbtItem.getItem());
                     try {
                         player.getInventory().setItem(i, EnchantManager.addEnchant(nbtItem.getItem(), enchant, 3, false));
@@ -73,6 +71,9 @@ public class TotallyLegitGemPanel extends AGUIPanel {
                     }
                     player.closeInventory();
                     Sounds.GEM_USE.play(player);
+
+                    PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
+                    if(pitPlayer.stats != null) pitPlayer.stats.itemsGemmed++;
 
                     int itemsToRemove = 1;
                     for(int j = 0; j < player.getInventory().getContents().length; j++) {
@@ -90,11 +91,8 @@ public class TotallyLegitGemPanel extends AGUIPanel {
                             }
                         }
                     }
-
                 }
             }
-
-
         }
         updateInventory();
     }

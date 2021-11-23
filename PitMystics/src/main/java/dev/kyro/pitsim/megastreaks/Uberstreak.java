@@ -323,6 +323,8 @@ public class Uberstreak extends Megastreak {
 				uberMessage("&bProtection I Diamond Boots", pitPlayer);
 			}
 		}
+
+		if(pitPlayer.stats != null) pitPlayer.stats.ubersCompleted++;
 	}
 
 	public static void uberMessage(String message, PitPlayer pitPlayer) {

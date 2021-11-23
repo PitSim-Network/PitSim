@@ -5,6 +5,7 @@ import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.controllers.EnchantManager;
 import dev.kyro.pitsim.controllers.objects.PitEnchant;
+import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.enums.ApplyType;
 import dev.kyro.pitsim.events.AttackEvent;
 import dev.kyro.pitsim.misc.Misc;
@@ -37,7 +38,6 @@ public class LuckyShot extends PitEnchant {
 		int enchantLvl = attackEvent.getAttackerEnchantLevel(this);
 		if(enchantLvl == 0) return;
 
-
 		for(Arrow luckyShot : luckyShots) {
 			if(luckyShot.equals(attackEvent.arrow)) {
 
@@ -49,7 +49,6 @@ public class LuckyShot extends PitEnchant {
 				Sounds.LUCKY_SHOT.play(attackEvent.defender);
 				AOutput.send(attackEvent.attacker, PlaceholderAPI.setPlaceholders(attackEvent.defender, attack));
 				AOutput.send(attackEvent.defender, PlaceholderAPI.setPlaceholders(attackEvent.attacker, defend));
-
 			}
 		}
 	}
@@ -57,6 +56,7 @@ public class LuckyShot extends PitEnchant {
 	@EventHandler
 	public void onShoot(EntityShootBowEvent event) {
 		if(!(event.getEntity() instanceof Player) || !(event.getProjectile() instanceof Arrow)) return;
+		Player player = (Player) event.getEntity();
 
 		int enchantLvl = EnchantManager.getEnchantLevel(((Player) event.getEntity()).getPlayer(), this);
 
@@ -65,27 +65,26 @@ public class LuckyShot extends PitEnchant {
 
 		if(chanceCalculation <= enchantChance) {
 			luckyShots.add((Arrow) event.getProjectile());
+
+			PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
+			if(pitPlayer.stats != null) pitPlayer.stats.lucky++;
 		}
 	}
 
 	@EventHandler(priority = EventPriority.LOW)
 	public void onHit(ProjectileHitEvent event) {
 		if(!(event.getEntity() instanceof Arrow) || !(event.getEntity().getShooter() instanceof Player)) return;
-		Player player = (Player) event.getEntity().getShooter();
 
 		if(luckyShots.size() == 0) return;
 		try {
 			for(Arrow luckyShot : luckyShots) {
 				if(luckyShot.equals(event.getEntity())) {
-
 					Arrow luckyArrow = (Arrow) event.getEntity();
 					if(luckyArrow.equals(luckyShot)) {
-
 						new BukkitRunnable() {
 							@Override
 							public void run() {
 								luckyShots.remove(luckyShot);
-
 							}
 						}.runTaskLater(PitSim.INSTANCE, 1L);
 					}

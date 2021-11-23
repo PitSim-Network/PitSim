@@ -77,6 +77,8 @@ public class PitPlayer {
 
 	public Map<Booster, Integer> boosters = new HashMap<>();
 
+	public PlayerStats stats;
+
 	public PitPlayer(Player player) {
 		this.player = player;
 		this.megastreak = new NoMegastreak(this);
@@ -149,6 +151,8 @@ public class PitPlayer {
 			for(Booster booster : BoosterManager.boosterList) {
 				boosters.put(booster, playerData.getInt("boosters." + booster.refName));
 			}
+
+			stats = new PlayerStats(this, playerData);
 		}
 	}
 
@@ -269,25 +273,25 @@ public class PitPlayer {
 		assistRemove.add(bukkitTask);
 	}
 
-	public void heal(double amount) {
+	public HealEvent heal(double amount) {
 
-		heal(amount, HealEvent.HealType.HEALTH, -1);
+		return heal(amount, HealEvent.HealType.HEALTH, -1);
 	}
 
-	public void heal(double amount, HealEvent.HealType healType, int max) {
-		if(amount == 0) return;
+	public HealEvent heal(double amount, HealEvent.HealType healType, int max) {
 		if(max == -1) max = Integer.MAX_VALUE;
 
-		HealEvent healEvent = new HealEvent(player, amount, healType);
+		HealEvent healEvent = new HealEvent(player, amount, healType, max);
 		Bukkit.getServer().getPluginManager().callEvent(healEvent);
 
 		if(healType == HealEvent.HealType.HEALTH) {
 			player.setHealth(Math.min(player.getHealth() + healEvent.getFinalHeal(), player.getMaxHealth()));
 		} else {
 			EntityPlayer nmsPlayer = ((CraftPlayer) player).getHandle();
-			if(nmsPlayer.getAbsorptionHearts() < max)
+			if(nmsPlayer.getAbsorptionHearts() < healEvent.max)
 				nmsPlayer.setAbsorptionHearts(Math.min((float) (nmsPlayer.getAbsorptionHearts() + healEvent.getFinalHeal()), max));
 		}
+		return healEvent;
 	}
 
 	public boolean hasPerk(PitPerk pitPerk) {

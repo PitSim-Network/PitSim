@@ -5,6 +5,7 @@ import dev.kyro.pitsim.controllers.objects.PitEnchant;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.enums.ApplyType;
 import dev.kyro.pitsim.events.AttackEvent;
+import dev.kyro.pitsim.events.HealEvent;
 import dev.kyro.pitsim.misc.Misc;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -28,7 +29,9 @@ public class Lifesteal extends PitEnchant {
 		if(enchantLvl == 0) return;
 
 		double damage = attackEvent.getFinalDamageIncrease();
-		pitAttacker.heal(damage * (getHealing(enchantLvl) / 100D));
+		HealEvent healEvent = pitAttacker.heal(damage * (getHealing(enchantLvl) / 100D));
+
+		if(pitAttacker.stats != null) pitAttacker.stats.lifesteal += healEvent.getEffectiveHeal();
 	}
 
 	@Override

@@ -7,10 +7,24 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 public class PrestigeValues {
-
 	private static final Map<Integer, Integer> xpLevelMap = new LinkedHashMap<>();
-
 	private static final Map<Integer, PrestigeInfo> prestigeMap = new LinkedHashMap<>();
+
+	public static Map<Integer, Integer> totalXPMap = new LinkedHashMap<>();
+
+	public static int getTotalXP(int prestige, int level, int remainingXP) {
+		PrestigeInfo prestigeInfo = getPrestigeInfo(prestige);
+		int totalXP = getXpUpToPrestige(prestige);
+		for(int i = 0; i < level + 1; i++) totalXP += getXPForLevel(level) * prestigeInfo.xpMultiplier;
+		return totalXP - remainingXP;
+	}
+
+	public static int getXpUpToPrestige(int prestige) {
+		int totalXP = 0;
+		for(int i = 0; i < prestige; i++) totalXP += totalXPMap.get(i);
+		return totalXP;
+	}
+
 	public static class PrestigeInfo {
 		public int prestige;
 		public double xpMultiplier;
@@ -107,16 +121,16 @@ public class PrestigeValues {
 		xpLevelMap.put(100, 1200);
 		xpLevelMap.put(110, 1500);
 
-		prestigeMap.put(0, new PrestigeInfo(0, 1.5, 20_000, 10, 20, "&7"));
-		prestigeMap.put(1, new PrestigeInfo(1, 1.65, 40_000, 11, 10, "&9")); //tenacity gboost xp
-		prestigeMap.put(2, new PrestigeInfo(2, 1.8, 60_000, 12, 10, "&9"));
-		prestigeMap.put(3, new PrestigeInfo(3, 1.95, 80_000, 13, 11, "&9"));
-		prestigeMap.put(4, new PrestigeInfo(4, 2.1, 100_000, 14, 12, "&9"));
-		prestigeMap.put(5, new PrestigeInfo(5, 2.25, 120_000, 15, 12, "&e")); //lucky kill
-		prestigeMap.put(6, new PrestigeInfo(6, 2.55, 140_000, 16, 12, "&e")); //impatient
-		prestigeMap.put(7, new PrestigeInfo(7, 3, 160_000, 17, 13, "&e")); //streaker
-		prestigeMap.put(8, new PrestigeInfo(8, 3.75, 180_000, 18, 13, "&e"));
-		prestigeMap.put(9, new PrestigeInfo(9, 4.5, 200_000, 19, 14, "&e")); //doubledeath
+		prestigeMap.put(0, new PrestigeInfo(0, 1, 20_000, 10, 20, "&7"));
+		prestigeMap.put(1, new PrestigeInfo(1, 1.2, 40_000, 11, 10, "&9")); //tenacity gboost xp
+		prestigeMap.put(2, new PrestigeInfo(2, 1.5, 60_000, 12, 10, "&9"));
+		prestigeMap.put(3, new PrestigeInfo(3, 2, 80_000, 13, 11, "&9"));
+		prestigeMap.put(4, new PrestigeInfo(4, 2.5, 100_000, 14, 12, "&9"));
+		prestigeMap.put(5, new PrestigeInfo(5, 3, 120_000, 15, 12, "&e")); //lucky kill
+		prestigeMap.put(6, new PrestigeInfo(6, 3.5, 140_000, 16, 12, "&e")); //impatient
+		prestigeMap.put(7, new PrestigeInfo(7, 4, 160_000, 17, 13, "&e")); //streaker
+		prestigeMap.put(8, new PrestigeInfo(8, 4.5, 180_000, 18, 13, "&e"));
+		prestigeMap.put(9, new PrestigeInfo(9, 5, 200_000, 19, 14, "&e")); //doubledeath
 		prestigeMap.put(10, new PrestigeInfo(10, 6, 220_000, 40, 14, "&6")); //firststrike
 		prestigeMap.put(11, new PrestigeInfo(11, 7, 240_000, 42, 14, "&6")); //report access
 		prestigeMap.put(12, new PrestigeInfo(12, 8, 270_000, 44, 15, "&6")); //lifeinsurance
@@ -158,5 +172,11 @@ public class PrestigeValues {
 		prestigeMap.put(48, new PrestigeInfo(48, 475, 25_000_000, 500, 80, "&4"));
 		prestigeMap.put(49, new PrestigeInfo(49, 500, 30_000_000, 1000, 100, "&4"));
 		prestigeMap.put(50, new PrestigeInfo(50, 5000, 0, 0, 300, ""));
+
+		for(int i = 0; i < 51; i++) {
+			int totalXp = 0;
+			for(int j = 0; j < 120; j++) totalXp += getXPForLevel(i) * getPrestigeInfo(i).xpMultiplier;
+			totalXPMap.put(i, totalXp);
+		}
 	}
 }

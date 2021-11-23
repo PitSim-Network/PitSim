@@ -82,6 +82,8 @@ public class RetroGravityMicrocosm extends PitEnchant {
 					attackEvent.attacker.getName() + " &8(" + Math.min(charge, getMaxStacks(defenderEnchantLvl)) + "x)");
 			Sounds.RGM.play(attackEvent.defender);
 			Sounds.RGM.play(attackEvent.attacker);
+
+			if(pitDefender.stats != null) pitDefender.stats.rgm++;
 		}
 	}
 

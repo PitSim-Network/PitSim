@@ -121,7 +121,6 @@ public class Highlander extends Megastreak {
 		if(pitPlayer != this.pitPlayer) return;
 		if(pitPlayer.megastreak.isOnMega() && pitPlayer.megastreak.getClass() == Highlander.class) {
 			int ks = (int) Math.floor(pitPlayer.getKills());
-//			TODO: Update lore
 			healEvent.multipliers.add(1 / ((ks - 50) / 100D + 1));
 		}
 	}
@@ -169,6 +168,8 @@ public class Highlander extends Megastreak {
 					"&c&lMEGASTREAK! %luckperms_prefix%" + pitPlayer.player.getDisplayName() + " &7activated &6&lHIGHLANDER&7!");
 			AOutput.send(player, PlaceholderAPI.setPlaceholders(pitPlayer.player, streakMessage));
 		}
+
+		if(pitPlayer.stats != null) pitPlayer.stats.timesOnHighlander++;
 	}
 
 	@Override

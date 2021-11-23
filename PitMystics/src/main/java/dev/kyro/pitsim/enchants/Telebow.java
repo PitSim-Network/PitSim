@@ -5,6 +5,7 @@ import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.controllers.*;
 import dev.kyro.pitsim.controllers.objects.PitEnchant;
+import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.enums.ApplyType;
 import dev.kyro.pitsim.events.AttackEvent;
 import dev.kyro.pitsim.misc.Misc;
@@ -145,6 +146,9 @@ public class Telebow extends PitEnchant {
 						Sounds.TELEBOW.play(teleArrow.getLocation());
 
 						teleShots.remove(teleShot);
+
+						PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
+						if(pitPlayer.stats != null) pitPlayer.stats.telebow++;
 						return;
 					}
 				}

@@ -200,6 +200,8 @@ public class PitSim extends JavaPlugin {
 			esp.destroy();
 			it.remove();
 		}
+
+		for(PitPlayer pitPlayer : PitPlayer.pitPlayers) if(pitPlayer.stats != null) pitPlayer.stats.save();
 	}
 
 	private void registerPerks() {
@@ -280,7 +282,6 @@ public class PitSim extends JavaPlugin {
 		getCommand("enchant").setExecutor(new EnchantCommand());
 		getCommand("fresh").setExecutor(new FreshCommand());
 		getCommand("show").setExecutor(new ShowCommand());
-//		TODO: Need to make it so jewels can be created completed (with enchant and lives)
 		getCommand("enchants").setExecutor(new EnchantListCommand());
 		getCommand("donator").setExecutor(new DonatorCommand());
 		getCommand("renown").setExecutor(new RenownCommand());
@@ -295,6 +296,7 @@ public class PitSim extends JavaPlugin {
 		getCommand("boostergive").setExecutor(new BoosterGiveCommand());
 		getCommand("resource").setExecutor(new ResourceCommand());
 		getCommand("lightning").setExecutor(new LightningCommand());
+		getCommand("stat").setExecutor(new StatCommand());
 //		getCommand("togglestereo").setExecutor(new ToggleStereoCommand());
 	}
 
@@ -324,6 +326,7 @@ public class PitSim extends JavaPlugin {
 		getServer().getPluginManager().registerEvents(new BoosterManager(), this);
 		getServer().getPluginManager().registerEvents(new HopperManager(), this);
 		getServer().getPluginManager().registerEvents(new ResourcePackManager(), this);
+		getServer().getPluginManager().registerEvents(new StatManager(), this);
 	}
 
 	public void registerBoosters() {
@@ -430,8 +433,8 @@ public class PitSim extends JavaPlugin {
 		EnchantManager.registerEnchant(new FasterThanTheirShadow());
 		EnchantManager.registerEnchant(new PushComesToShove());
 		EnchantManager.registerEnchant(new Parasite());
-		EnchantManager.registerEnchant(new Fletching());
 		EnchantManager.registerEnchant(new Chipping());
+		EnchantManager.registerEnchant(new Fletching());
 		EnchantManager.registerEnchant(new BottomlessQuiver());
 
 		EnchantManager.registerEnchant(new RetroGravityMicrocosm());

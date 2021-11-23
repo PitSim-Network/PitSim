@@ -3,6 +3,7 @@ package dev.kyro.pitsim.enchants;
 import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.controllers.objects.PitEnchant;
+import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.enums.ApplyType;
 import dev.kyro.pitsim.events.AttackEvent;
 import dev.kyro.pitsim.events.KillEvent;
@@ -25,12 +26,14 @@ public class Executioner extends PitEnchant {
 	}
 
 	@EventHandler
-	public void onKill(KillEvent event) {
+	public void onKill(KillEvent killEvent) {
+		if(!killEvent.exeDeath) return;
 
-		if(!event.exeDeath) return;
+		Sounds.EXE.play(killEvent.killer);
+		killEvent.dead.getWorld().playEffect(killEvent.dead.getLocation().add(0, 1, 0), Effect.STEP_SOUND, 152);
 
-		Sounds.EXE.play(event.killer);
-		event.dead.getWorld().playEffect(event.dead.getLocation().add(0, 1, 0), Effect.STEP_SOUND, 152);
+		PitPlayer pitPlayer = PitPlayer.getPitPlayer(killEvent.killer);
+		if(pitPlayer.stats != null) pitPlayer.stats.executioner++;
 	}
 
 	@EventHandler

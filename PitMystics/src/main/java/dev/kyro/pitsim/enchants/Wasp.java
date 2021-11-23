@@ -3,6 +3,7 @@ package dev.kyro.pitsim.enchants;
 import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.arcticapi.misc.AUtil;
 import dev.kyro.pitsim.controllers.objects.PitEnchant;
+import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.enums.ApplyType;
 import dev.kyro.pitsim.events.AttackEvent;
 import dev.kyro.pitsim.misc.Misc;
@@ -27,6 +28,9 @@ public class Wasp extends PitEnchant {
 		if(enchantLvl == 0) return;
 
 		Misc.applyPotionEffect(attackEvent.defender, PotionEffectType.WEAKNESS, getDuration(enchantLvl) * 20, enchantLvl, true, false);
+
+		PitPlayer pitPlayer = PitPlayer.getPitPlayer(attackEvent.attacker);
+		if(pitPlayer.stats != null) pitPlayer.stats.wasp++;
 	}
 
 	@Override

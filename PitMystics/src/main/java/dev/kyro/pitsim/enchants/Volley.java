@@ -5,6 +5,7 @@ import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.controllers.EnchantManager;
 import dev.kyro.pitsim.controllers.SpawnManager;
 import dev.kyro.pitsim.controllers.objects.PitEnchant;
+import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.enums.ApplyType;
 import dev.kyro.pitsim.events.AttackEvent;
 import dev.kyro.pitsim.events.VolleyShootEvent;
@@ -61,6 +62,9 @@ public class Volley extends PitEnchant {
 				VolleyShootEvent volleyShootEvent = new VolleyShootEvent(event.getEntity(), event.getBow(), volleyArrow, event.getForce());
 				PitSim.INSTANCE.getServer().getPluginManager().callEvent(volleyShootEvent);
 				if(volleyShootEvent.isCancelled()) volleyArrow.remove();
+
+				PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
+				if(pitPlayer.stats != null) pitPlayer.stats.volley++;
 
 				new BukkitRunnable() {
 					@Override
