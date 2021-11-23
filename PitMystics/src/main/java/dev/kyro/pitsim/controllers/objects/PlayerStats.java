@@ -80,14 +80,20 @@ public class PlayerStats {
 
 	//	Ratios
 	public double getPlayerKillsToDeaths() {
+		if(deaths == 0) return 0;
 		return (double) playerKills / deaths;
 	}
 	public double getBotKillsToDeaths() {
+		if(deaths == 0) return 0;
 		return (double) botKills / deaths;
 	}
 	public double getDamageDealtToDamageTaken() {
+		if(damageTaken == 0) return 0;
 		return damageDealt / damageTaken;
 	}
+
+//	Events
+	public int eventsParticipated;
 
 //	Misc
 	public int highestStreak;
@@ -95,9 +101,13 @@ public class PlayerStats {
 	public double absorptionGained;
 	public int bountiesClaimed;
 
+	public int jewelsCompleted;
 	public int itemsGemmed;
+	public int livesLost;
+	public int itemsBroken;
+	public int feathersLost;
+
 	public int chatMessages;
-	public int eventsParticipated;
 
 	public PlayerStats(PitPlayer pitPlayer, FileConfiguration playerData) {
 		this.pitPlayer = pitPlayer;
@@ -145,6 +155,8 @@ public class PlayerStats {
 		rgm = playerData.getInt("stats.enchant.rgm");
 		regularity = playerData.getInt("stats.enchant.regularity");
 
+		eventsParticipated = playerData.getInt("stats.events.events-participated");
+
 		minutesPlayed = playerData.getInt("stats.progression.minutes-played");
 		totalGold = playerData.getDouble("stats.progression.total-gold");
 
@@ -152,9 +164,14 @@ public class PlayerStats {
 		healthRegained = playerData.getDouble("stats.misc.health-regained");
 		absorptionGained = playerData.getDouble("stats.misc.absorption-gained");
 		bountiesClaimed = playerData.getInt("stats.misc.bounties-claimed");
+
+		jewelsCompleted = playerData.getInt("stats.misc.jewels-completed");
 		itemsGemmed = playerData.getInt("stats.misc.items-gemmed");
+		livesLost = playerData.getInt("stats.misc.lives-lost");
+		itemsBroken = playerData.getInt("stats.misc.items-broken");
+		feathersLost = playerData.getInt("stats.misc.feathers-lost");
+
 		chatMessages = playerData.getInt("stats.misc.chat-messages");
-		eventsParticipated = playerData.getInt("stats.misc.events-participated");
 	}
 
 	public void save() {
@@ -199,6 +216,8 @@ public class PlayerStats {
 		playerData.set("stats.enchant.rgm", rgm);
 		playerData.set("stats.enchant.regularity", regularity);
 
+		playerData.set("stats.events.events-participated", eventsParticipated);
+
 		playerData.set("stats.progression.minutes-played", minutesPlayed);
 		playerData.set("stats.progression.total-gold", totalGold);
 
@@ -206,9 +225,14 @@ public class PlayerStats {
 		playerData.set("stats.misc.health-regained", healthRegained);
 		playerData.set("stats.misc.absorption-gained", absorptionGained);
 		playerData.set("stats.misc.bounties-claimed", bountiesClaimed);
+
+		playerData.set("stats.misc.jewels-completed", jewelsCompleted);
 		playerData.set("stats.misc.items-gemmed", itemsGemmed);
+		playerData.set("stats.misc.lives-lost", livesLost);
+		playerData.set("stats.misc.items-broken", itemsBroken);
+		playerData.set("stats.misc.feathers-lost", feathersLost);
+
 		playerData.set("stats.misc.chat-messages", chatMessages);
-		playerData.set("stats.misc.events-participated", eventsParticipated);
 
 		APlayerData.savePlayerData(uuid);
 	}

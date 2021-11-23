@@ -428,10 +428,14 @@ public class DamageManager implements Listener {
 					if(feather || divine) return;
 					if(lives - 1 == 0) {
 						dead.getInventory().remove(itemStack);
+
+						if(pitDead.stats != null) pitDead.stats.itemsBroken++;
 					} else {
 						nbtItem.setInteger(NBTTag.CURRENT_LIVES.getRef(), nbtItem.getInteger(NBTTag.CURRENT_LIVES.getRef()) - 1);
 						EnchantManager.setItemLore(nbtItem.getItem());
 						dead.getInventory().setItem(i, nbtItem.getItem());
+
+						if(pitDead.stats != null) pitDead.stats.livesLost++;
 					}
 				}
 			}
@@ -447,13 +451,16 @@ public class DamageManager implements Listener {
 					if(!feather && !divine) {
 						if(lives - 1 == 0) {
 							dead.getInventory().remove(pants);
+
+							if(pitDead.stats != null) pitDead.stats.itemsBroken++;
 						} else {
 							nbtItem.setInteger(NBTTag.CURRENT_LIVES.getRef(), nbtItem.getInteger(NBTTag.CURRENT_LIVES.getRef()) - 1);
 							EnchantManager.setItemLore(nbtItem.getItem());
 							dead.getInventory().setLeggings(nbtItem.getItem());
+
+							if(pitDead.stats != null) pitDead.stats.livesLost++;
 						}
 					}
-
 				}
 			}
 		}
@@ -529,10 +536,14 @@ public class DamageManager implements Listener {
 					if(feather) return;
 					if(lives - 1 == 0) {
 						dead.getInventory().remove(itemStack);
+
+						if(pitDefender.stats != null) pitDefender.stats.itemsBroken++;
 					} else {
 						nbtItem.setInteger(NBTTag.CURRENT_LIVES.getRef(), nbtItem.getInteger(NBTTag.CURRENT_LIVES.getRef()) - 1);
 						EnchantManager.setItemLore(nbtItem.getItem());
 						dead.getInventory().setItem(i, nbtItem.getItem());
+
+						if(pitDefender.stats != null) pitDefender.stats.livesLost++;
 					}
 				}
 			}
@@ -550,13 +561,16 @@ public class DamageManager implements Listener {
 					if(!feather) {
 						if(lives - 1 == 0) {
 							dead.getInventory().remove(pants);
+
+							if(pitDefender.stats != null) pitDefender.stats.itemsBroken++;
 						} else {
 							nbtItem.setInteger(NBTTag.CURRENT_LIVES.getRef(), nbtItem.getInteger(NBTTag.CURRENT_LIVES.getRef()) - 1);
 							EnchantManager.setItemLore(nbtItem.getItem());
 							dead.getInventory().setLeggings(nbtItem.getItem());
+
+							if(pitDefender.stats != null) pitDefender.stats.livesLost++;
 						}
 					}
-
 				}
 			}
 		}

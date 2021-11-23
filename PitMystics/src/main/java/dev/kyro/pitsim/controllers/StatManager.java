@@ -95,12 +95,13 @@ public class StatManager implements Listener {
 		PitPlayer pitDead = PitPlayer.getPitPlayer(killEvent.dead);
 
 		if(pitKiller.stats != null) {
-			if(NonManager.getNon(killEvent.dead) == null) {
+			if(HopperManager.isHopper(killEvent.dead)) {
+				pitKiller.stats.hopperKills++;
+			} else if(NonManager.getNon(killEvent.dead) == null) {
 				pitKiller.stats.playerKills++;
 			} else {
 				pitKiller.stats.botKills++;
 			}
-			if(HopperManager.isHopper(killEvent.dead)) pitKiller.stats.hopperKills++;
 
 			pitKiller.stats.totalGold += killEvent.getFinalGold();
 		}

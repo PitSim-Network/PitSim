@@ -9,6 +9,7 @@ import dev.kyro.arcticapi.misc.AUtil;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.controllers.objects.Non;
 import dev.kyro.pitsim.controllers.objects.PitEnchant;
+import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.enums.ApplyType;
 import dev.kyro.pitsim.enums.MysticType;
 import dev.kyro.pitsim.enums.NBTTag;
@@ -375,6 +376,10 @@ public class EnchantManager implements Listener {
 		Bukkit.broadcastMessage(ChatColor.translateAlternateColorCodes(
 				'&', "&3&lJEWEL!&7 " + player.getDisplayName() + " &7found " + jewelEnchant.getDisplayName()));
 		Sounds.JEWEL_FIND.play(player);
+
+		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
+		if(pitPlayer.stats != null) pitPlayer.stats.jewelsCompleted++;
+
 		try {
 			return EnchantManager.addEnchant(nbtItem.getItem(), jewelEnchant, 3, false, true, -1);
 		} catch(Exception ignored) { }

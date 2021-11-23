@@ -139,7 +139,11 @@ public class StatPanel extends AGUIPanel {
 						"&7Absorption Gained: &e" + large(stats.absorptionGained),
 						"&7Bounties Claimed: &e" + large(stats.bountiesClaimed),
 						"",
+						"&7Jewels Completed: &e" + large(stats.jewelsCompleted),
 						"&7Items Gemmed: &e" + large(stats.itemsGemmed),
+						"&7Lives Lost: &e" + large(stats.livesLost),
+						"&7Feathers Lost: &e" + large(stats.feathersLost),
+						"",
 						"&7Chat Messages: &e" + large(stats.chatMessages)
 				));
 		statMap.put(16, misc.getItemStack());

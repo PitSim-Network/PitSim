@@ -57,14 +57,16 @@ public class SelfCheckout extends PitEnchant {
 			int lives = nbtItem.getInteger(NBTTag.CURRENT_LIVES.getRef());
 			if(lives - 2 <= 0) {
 				killEvent.killer.getEquipment().setLeggings(new ItemStack(Material.AIR));
+
+				if(pitKiller.stats != null) pitKiller.stats.itemsBroken++;
 			} else {
 				nbtItem.setInteger(NBTTag.CURRENT_LIVES.getRef(), nbtItem.getInteger(NBTTag.CURRENT_LIVES.getRef()) - 2);
 				EnchantManager.setItemLore(nbtItem.getItem());
 				killEvent.killer.getEquipment().setLeggings(nbtItem.getItem());
+
+				if(pitKiller.stats != null) pitKiller.stats.livesLost += 2;
 			}
-
 		}
-
 	}
 
 	@Override

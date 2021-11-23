@@ -5,6 +5,7 @@ import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.arcticapi.misc.AUtil;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.controllers.ItemManager;
+import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.enums.NBTTag;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -50,7 +51,6 @@ public class FunkyFeather {
     public static boolean useFeather(Player player, boolean isDivine) {
         if(isDivine) return false;
 
-
         for(int i = 0; i < 9; i++) {
             ItemStack itemStack = player.getInventory().getItem(i);
             if(Misc.isAirOrNull(itemStack)) continue;
@@ -60,6 +60,9 @@ public class FunkyFeather {
                 if(itemStack.getAmount() > 1) itemStack.setAmount(itemStack.getAmount() - 1);
                 else player.getInventory().setItem(i, null);
                 Sounds.FUNKY_FEATHER.play(player);
+
+                PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
+                if(pitPlayer.stats != null) pitPlayer.stats.feathersLost++;
                 return true;
             }
         }
