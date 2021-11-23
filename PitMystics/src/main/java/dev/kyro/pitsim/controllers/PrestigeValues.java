@@ -1,6 +1,5 @@
 package dev.kyro.pitsim.controllers;
 
-import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import org.bukkit.entity.Player;
 
@@ -14,13 +13,9 @@ public class PrestigeValues {
 	public static Map<Integer, Integer> totalXPMap = new LinkedHashMap<>();
 
 	public static int getTotalXP(int prestige, int level, int remainingXP) {
-		AOutput.broadcast(prestige + " " + level + " " + remainingXP);
 		PrestigeInfo prestigeInfo = getPrestigeInfo(prestige);
 		int totalXP = getXpUpToPrestige(prestige);
-		AOutput.broadcast(totalXP + "");
 		for(int i = 1; i < level + 1; i++) totalXP += getXPForLevel(i) * prestigeInfo.xpMultiplier;
-		AOutput.broadcast(totalXP + "");
-		AOutput.broadcast(totalXP - remainingXP + "");
 		return totalXP - remainingXP;
 	}
 
