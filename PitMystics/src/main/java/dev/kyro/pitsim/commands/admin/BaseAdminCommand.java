@@ -3,6 +3,7 @@ package dev.kyro.pitsim.commands.admin;
 import dev.kyro.arcticapi.commands.ABaseCommand;
 import dev.kyro.arcticapi.misc.AOutput;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 
 import java.util.List;
 
@@ -13,7 +14,7 @@ public class BaseAdminCommand extends ABaseCommand {
 
 	@Override
 	public void executeBase(CommandSender sender, List<String> args) {
-		if(!sender.isOp()) return;
+		if(!sender.isOp() && sender instanceof Player) return;
 		for(String line : createHelp().getMessage()) AOutput.sendIfPlayer(sender, line);
 	}
 

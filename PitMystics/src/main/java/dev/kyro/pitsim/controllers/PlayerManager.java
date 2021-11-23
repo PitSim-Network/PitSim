@@ -56,7 +56,9 @@ public class PlayerManager implements Listener {
 
 	@EventHandler
 	public void onCommand(PlayerCommandPreprocessEvent event) {
-		if(ChatColor.stripColor(event.getMessage()).toLowerCase().startsWith("/trade")) {
+		if(event.getPlayer().isOp()) return;
+		if(ChatColor.stripColor(event.getMessage()).toLowerCase().startsWith("/trade") ||
+				ChatColor.stripColor(event.getMessage()).toLowerCase().startsWith("/pay")) {
 			PitPlayer pitPlayer = PitPlayer.getPitPlayer(event.getPlayer());
 			if(pitPlayer.level < 100) {
 				event.setCancelled(true);
@@ -234,15 +236,6 @@ public class PlayerManager implements Listener {
 		}.runTaskLater(PitSim.INSTANCE, 10L);
 
 	}
-//
-//	long time = 0;
-//
-//	@EventHandler
-//	public void onHit(EntityDamageEvent event) {
-//		if(NonManager.getNon((Player) event.getEntity()) != null) return;
-//		Bukkit.broadcastMessage(System.currentTimeMillis() - time + "");
-//		time = System.currentTimeMillis();
-//	}
 
 	@EventHandler
 	public void onMove(PlayerMoveEvent event) {
@@ -275,12 +268,6 @@ public class PlayerManager implements Listener {
 	public void onPlayerJoin(PlayerJoinEvent event) {
 		Player player = event.getPlayer();
 		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
-
-//		if(isNew(event.getPlayer())) TokenOfAppreciation.giveToken(event.getPlayer(), 1);
-//		event.getPlayer().setNoDamageTicks(18);
-//		event.getPlayer().setMaximumNoDamageTicks(18);
-
-
 
 		if(PitEventManager.majorEvent) FeatherBoardAPI.showScoreboard(event.getPlayer(), "event");
 		else {
@@ -388,7 +375,6 @@ public class PlayerManager implements Listener {
 		if(event.getSlot() == 80 || event.getSlot() == 81 || event.getSlot() == 82 || event.getSlot() == 83) event.setCancelled(true);
 	}
 
-
 	@EventHandler
 	public void onJoin(AsyncPlayerPreLoginEvent event) {
 		Player player = Bukkit.getServer().getPlayerExact(event.getName());
@@ -398,28 +384,16 @@ public class PlayerManager implements Listener {
 		}
 	}
 
-
-
-
-
-	public static List<UUID> passedCaptcha = new ArrayList<>();
 	@EventHandler
 	public static void onJoin(PlayerJoinEvent event) {
-//		new BukkitRunnable() {
-//			@Override
-//			public void run() {
-//				new CaptchaGUI(event.getPlayer()).open();
-//			}
-//		}.runTaskLater(PitSim.INSTANCE, 1L);
-	}
-	@EventHandler
-	public static void onLeave(PlayerQuitEvent event) {
-		passedCaptcha.remove(event.getPlayer().getUniqueId());
-	}
-	@EventHandler
-	public static void onChat(AsyncPlayerChatEvent event) {
-		if(!passedCaptcha.contains(event.getPlayer().getUniqueId())) return;
-		event.setCancelled(true);
+		Player player = event.getPlayer();
+		if(!player.isOp()) return;
+		new BukkitRunnable() {
+			@Override
+			public void run() {
+				Bukkit.dispatchCommand(player, "buzz exempt");
+			}
+		}.runTaskLater(PitSim.INSTANCE, 1L);
 	}
 
 	public static List<Player> toggledPlayers = new ArrayList<>();

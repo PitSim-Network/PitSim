@@ -17,10 +17,7 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.time.Duration;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 
@@ -44,8 +41,10 @@ public class InGameNitro implements Listener {
 				for(Member member : members) {
 
 					UUID playerUUID = null;
+					String effectiveName = member.getEffectiveName().toLowerCase();
 					for(Map.Entry<UUID, FileConfiguration> entry : APlayerData.getAllData().entrySet()) {
-						if(!entry.getValue().getString("name").equals(member.getEffectiveName())) continue;
+						String name = entry.getValue().getString("name");
+						if(name == null || !name.equalsIgnoreCase(effectiveName)) continue;
 						playerUUID = entry.getKey();
 						break;
 					}

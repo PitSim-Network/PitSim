@@ -267,6 +267,7 @@ public class PitSim extends JavaPlugin {
 		adminCommand.registerCommand(new HopperCommand("hopper"));
 		adminCommand.registerCommand(new ReloadCommand("reload"));
 		adminCommand.registerCommand(new BypassCommand("bypass"));
+		adminCommand.registerCommand(new LockdownCommand("lockdown"));
 		setCommand.registerCommand(new SetPrestigeCommand("prestige"));
 		setCommand.registerCommand(new SetLevelCommand("level"));
 		setCommand.registerCommand(new BountyCommand("bounty"));
@@ -297,6 +298,7 @@ public class PitSim extends JavaPlugin {
 		getCommand("resource").setExecutor(new ResourceCommand());
 		getCommand("lightning").setExecutor(new LightningCommand());
 		getCommand("stat").setExecutor(new StatCommand());
+		getCommand("captcha").setExecutor(new CaptchaCommand());
 //		getCommand("togglestereo").setExecutor(new ToggleStereoCommand());
 	}
 
@@ -327,6 +329,7 @@ public class PitSim extends JavaPlugin {
 		getServer().getPluginManager().registerEvents(new HopperManager(), this);
 		getServer().getPluginManager().registerEvents(new ResourcePackManager(), this);
 		getServer().getPluginManager().registerEvents(new StatManager(), this);
+		getServer().getPluginManager().registerEvents(new LockdownManager(), this);
 	}
 
 	public void registerBoosters() {
