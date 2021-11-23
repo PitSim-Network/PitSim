@@ -52,6 +52,7 @@ public class EnderchestManager implements Listener {
 
     @EventHandler
     public void onCommand(PlayerCommandPreprocessEvent event) {
+        if(event.getPlayer().isOp() || event.getPlayer().hasPermission("galacticvaults.openothers")) return;
         if(ChatColor.stripColor(event.getMessage()).toLowerCase().startsWith("/pv") ||
                 ChatColor.stripColor(event.getMessage()).toLowerCase().startsWith("/playervault") ||
                 ChatColor.stripColor(event.getMessage()).toLowerCase().startsWith("/vault")) {
