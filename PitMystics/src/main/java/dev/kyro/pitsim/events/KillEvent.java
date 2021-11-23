@@ -51,7 +51,6 @@ public class KillEvent extends Event {
 		else return (int) xpReward;
 	}
 
-
 	public double getFinalGold() {
 		double goldReward = this.goldReward;
 		for(Double goldMultiplier : goldMultipliers) {
