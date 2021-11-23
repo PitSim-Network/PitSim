@@ -23,14 +23,12 @@ import java.util.List;
 import java.util.Map;
 
 public class Shockwave extends Killstreak {
-
 	public static Shockwave INSTANCE;
 
 	public Shockwave() {
 		super("Shockwave", "Shockwave", 40, 24);
 		INSTANCE = this;
 	}
-
 
 	@Override
 	public void proc(Player player) {
