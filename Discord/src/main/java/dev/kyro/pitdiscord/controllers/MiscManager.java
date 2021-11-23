@@ -1,7 +1,6 @@
 package dev.kyro.pitdiscord.controllers;
 
 import dev.kyro.pitdiscord.Constants;
-import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerQuitEvent;
 
@@ -18,7 +17,7 @@ public class MiscManager implements Listener {
 		wijiAccounts.add("346732b3-c8a3-4861-a3bb-1a288f195888");
 	}
 
-	@EventHandler
+//	@EventHandler
 	public void onWijiLeave(PlayerQuitEvent event) {
 		if(!wijiAccounts.contains(event.getPlayer().getUniqueId().toString())) return;
 		try {
