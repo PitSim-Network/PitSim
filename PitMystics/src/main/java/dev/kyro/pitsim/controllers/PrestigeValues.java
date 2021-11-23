@@ -1,5 +1,6 @@
 package dev.kyro.pitsim.controllers;
 
+import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import org.bukkit.entity.Player;
 
@@ -13,9 +14,13 @@ public class PrestigeValues {
 	public static Map<Integer, Integer> totalXPMap = new LinkedHashMap<>();
 
 	public static int getTotalXP(int prestige, int level, int remainingXP) {
+		AOutput.broadcast(prestige + " " + level + " " + remainingXP);
 		PrestigeInfo prestigeInfo = getPrestigeInfo(prestige);
 		int totalXP = getXpUpToPrestige(prestige);
-		for(int i = 0; i < level + 1; i++) totalXP += getXPForLevel(level) * prestigeInfo.xpMultiplier;
+		AOutput.broadcast(totalXP + "");
+		for(int i = 1; i < level + 1; i++) totalXP += getXPForLevel(i) * prestigeInfo.xpMultiplier;
+		AOutput.broadcast(totalXP + "");
+		AOutput.broadcast(totalXP - remainingXP + "");
 		return totalXP - remainingXP;
 	}
 
@@ -171,11 +176,13 @@ public class PrestigeValues {
 		prestigeMap.put(47, new PrestigeInfo(47, 450, 22_000_000, 400, 70, "&4"));
 		prestigeMap.put(48, new PrestigeInfo(48, 475, 25_000_000, 500, 80, "&4"));
 		prestigeMap.put(49, new PrestigeInfo(49, 500, 30_000_000, 1000, 100, "&4"));
-		prestigeMap.put(50, new PrestigeInfo(50, 5000, 0, 0, 300, ""));
+		double xpMultiplier = 0; for(Map.Entry<Integer, PrestigeInfo> entry : prestigeMap.entrySet()) xpMultiplier += entry.getValue().xpMultiplier;
+		prestigeMap.put(50, new PrestigeInfo(50, xpMultiplier, 0, 0, 300, ""));
 
 		for(int i = 0; i < 51; i++) {
+			PrestigeInfo prestigeInfo = getPrestigeInfo(i);
 			int totalXp = 0;
-			for(int j = 0; j < 120; j++) totalXp += getXPForLevel(i) * getPrestigeInfo(i).xpMultiplier;
+			for(int j = 1; j < 120; j++) totalXp += getXPForLevel(j) * prestigeInfo.xpMultiplier;
 			totalXPMap.put(i, totalXp);
 		}
 	}
