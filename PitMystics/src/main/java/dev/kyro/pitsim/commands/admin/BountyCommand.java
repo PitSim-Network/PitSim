@@ -1,4 +1,4 @@
-package dev.kyro.pitsim.commands;
+package dev.kyro.pitsim.commands.admin;
 
 import dev.kyro.arcticapi.commands.ASubCommand;
 import dev.kyro.arcticapi.misc.AOutput;
