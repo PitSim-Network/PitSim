@@ -118,11 +118,13 @@ public class Telebow extends PitEnchant {
 
 						Location midTeleportLoc = teleportLoc.clone();
 						midTeleportLoc.setY(MapManager.getMid().getY());
-						double distance = MapManager.getMid().distance(midTeleportLoc);
-						if(distance < 12) {
-							AOutput.error(player, "You are not allowed to telebow into mid");
-							teleShots.remove(teleShot);
-							return;
+						if(midTeleportLoc.getWorld() == teleportLoc.getWorld()) {
+							double distance = MapManager.getMid().distance(midTeleportLoc);
+							if(distance < 12) {
+								AOutput.error(player, "You are not allowed to telebow into mid");
+								teleShots.remove(teleShot);
+								return;
+							}
 						}
 
 						if(SpawnManager.isInSpawn(teleportLoc)) {
