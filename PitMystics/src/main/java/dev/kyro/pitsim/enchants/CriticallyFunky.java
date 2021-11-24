@@ -65,7 +65,7 @@ public class CriticallyFunky extends PitEnchant {
 				return 60;
 
 		}
-		return 0;
+		return 100;
 	}
     public double getDamage(int enchantLvl) {
 
@@ -78,7 +78,7 @@ public class CriticallyFunky extends PitEnchant {
                 return 30;
 
         }
-        return 0;
+        return enchantLvl * 15 - 15;
     }
 
 }
