@@ -69,8 +69,6 @@ public class ComboStun extends PitEnchant {
 				return 1.7;
 
 		}
-		return 0;
+		return enchantLvl * 0.5 + 0.5;
 	}
-
-
 }
