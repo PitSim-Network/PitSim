@@ -266,6 +266,7 @@ public class PitSim extends JavaPlugin {
 		adminCommand.registerCommand(new AnticheatCommand("check"));
 		adminCommand.registerCommand(new HopperCommand("hopper"));
 		adminCommand.registerCommand(new UUIDCommand("uuid"));
+		adminCommand.registerCommand(new ViewCommand("view"));
 		adminCommand.registerCommand(new ReloadCommand("reload"));
 		adminCommand.registerCommand(new BypassCommand("bypass"));
 		adminCommand.registerCommand(new LockdownCommand("lockdown"));
