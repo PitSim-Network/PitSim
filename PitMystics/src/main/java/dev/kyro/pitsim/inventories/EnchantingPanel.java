@@ -38,6 +38,7 @@ public class EnchantingPanel extends AGUIPanel {
 	public BukkitTask runnable;
 	public boolean colorSelect = false;
 	public ItemStack mystic = new ItemStack(Material.AIR);
+	public boolean hasGivenItemBack = false;
 
 	public static ItemStack philo;
 	public static ItemStack selectEnchant;
@@ -237,7 +238,8 @@ public class EnchantingPanel extends AGUIPanel {
 
 	public void closeGUI() {
 		if(!Misc.isAirOrNull(mystic) && !FreshCommand.isFresh(mystic)) {
-			player.getInventory().addItem(mystic);
+			if(!hasGivenItemBack) player.getInventory().addItem(mystic);
+			hasGivenItemBack = true;
 		}
 		runnable.cancel();
 	}

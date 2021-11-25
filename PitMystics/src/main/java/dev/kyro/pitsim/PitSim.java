@@ -265,6 +265,7 @@ public class PitSim extends JavaPlugin {
 		ABaseCommand setCommand = new BaseSetCommand(adminCommand, "set");
 		adminCommand.registerCommand(new AnticheatCommand("check"));
 		adminCommand.registerCommand(new HopperCommand("hopper"));
+		adminCommand.registerCommand(new UUIDCommand("uuid"));
 		adminCommand.registerCommand(new ReloadCommand("reload"));
 		adminCommand.registerCommand(new BypassCommand("bypass"));
 		adminCommand.registerCommand(new LockdownCommand("lockdown"));
@@ -330,6 +331,7 @@ public class PitSim extends JavaPlugin {
 		getServer().getPluginManager().registerEvents(new ResourcePackManager(), this);
 		getServer().getPluginManager().registerEvents(new StatManager(), this);
 		getServer().getPluginManager().registerEvents(new LockdownManager(), this);
+		getServer().getPluginManager().registerEvents(new DupeManager(), this);
 	}
 
 	public void registerBoosters() {

@@ -37,7 +37,8 @@ dependencies {
 
     compile group: 'com.github.koca2000', name: 'NoteBlockAPI', version: '-SNAPSHOT'
     compile 'com.github.ArcticDevelopment:ArcticAPI:fc630bd727'
-    compile 'de.tr7zw:item-nbt-api-plugin:2.8.0'
+    compile 'de.tr7zw:item-nbt-api-plugin:2.8.0'// https://mvnrepository.com/artifact/com.googlecode.json-simple/json-simple
+    compile group: 'com.googlecode.json-simple', name: 'json-simple', version: '1.1.1'
     compileOnly files('libs/Buzz_API.jar')
     compileOnly files('libs/FeatherBoard.jar')
     compileOnly files('libs/SpaceDeltaSpigot-API.jar')
