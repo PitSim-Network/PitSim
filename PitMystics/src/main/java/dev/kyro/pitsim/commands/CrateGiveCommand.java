@@ -45,55 +45,62 @@ public class CrateGiveCommand implements CommandExecutor {
 
 		switch(item) {
 			case "hjsword":
-				ItemStack jewelSword = FreshCommand.getFreshItem(MysticType.SWORD, PantColor.JEWEL);
-				jewelSword = ItemManager.enableDropConfirm(jewelSword);
-				NBTItem nbtItemSword = new NBTItem(jewelSword);
-				nbtItemSword.setBoolean(NBTTag.IS_JEWEL.getRef(), true);
-				EnchantManager.setItemLore(nbtItemSword.getItem());
-
-				for(int i = 0; i < amount; i++) AUtil.giveItemSafely(player, nbtItemSword.getItem());
+				for(int i = 0; i < amount; i++) {
+					ItemStack jewelSword = FreshCommand.getFreshItem(MysticType.SWORD, PantColor.JEWEL);
+					jewelSword = ItemManager.enableDropConfirm(jewelSword);
+					NBTItem nbtItemSword = new NBTItem(jewelSword);
+					nbtItemSword.setBoolean(NBTTag.IS_JEWEL.getRef(), true);
+					EnchantManager.setItemLore(nbtItemSword.getItem());
+					AUtil.giveItemSafely(player, nbtItemSword.getItem());
+				}
 				return false;
 			case "hjbow":
-				ItemStack jewelBow = FreshCommand.getFreshItem(MysticType.BOW, PantColor.JEWEL);
-				jewelBow = ItemManager.enableDropConfirm(jewelBow);
-				NBTItem nbtItemBow = new NBTItem(jewelBow);
-				nbtItemBow.setBoolean(NBTTag.IS_JEWEL.getRef(), true);
-				EnchantManager.setItemLore(nbtItemBow.getItem());
-
-				for(int i = 0; i < amount; i++) AUtil.giveItemSafely(player, nbtItemBow.getItem());
+				for(int i = 0; i < amount; i++) {
+					ItemStack jewelBow = FreshCommand.getFreshItem(MysticType.BOW, PantColor.JEWEL);
+					jewelBow = ItemManager.enableDropConfirm(jewelBow);
+					NBTItem nbtItemBow = new NBTItem(jewelBow);
+					nbtItemBow.setBoolean(NBTTag.IS_JEWEL.getRef(), true);
+					EnchantManager.setItemLore(nbtItemBow.getItem());
+					AUtil.giveItemSafely(player, nbtItemBow.getItem());
+				}
 				return false;
 			case "hjpants":
-				ItemStack jewel = FreshCommand.getFreshItem(MysticType.PANTS, PantColor.JEWEL);
-				jewel = ItemManager.enableDropConfirm(jewel);
-				NBTItem nbtItem = new NBTItem(jewel);
-				nbtItem.setBoolean(NBTTag.IS_JEWEL.getRef(), true);
-				EnchantManager.setItemLore(nbtItem.getItem());
-
-				for(int i = 0; i < amount; i++) AUtil.giveItemSafely(player, nbtItem.getItem());
+				for(int i = 0; i < amount; i++) {
+					ItemStack jewel = FreshCommand.getFreshItem(MysticType.PANTS, PantColor.JEWEL);
+					jewel = ItemManager.enableDropConfirm(jewel);
+					NBTItem nbtItem = new NBTItem(jewel);
+					nbtItem.setBoolean(NBTTag.IS_JEWEL.getRef(), true);
+					EnchantManager.setItemLore(nbtItem.getItem());
+					AUtil.giveItemSafely(player, nbtItem.getItem());
+				}
 				return false;
 			case "hjbundle":
-				ItemStack jbsword = FreshCommand.getFreshItem(MysticType.SWORD, PantColor.JEWEL);
-				jbsword = ItemManager.enableDropConfirm(jbsword);
-				NBTItem nbtjbsword = new NBTItem(jbsword);
-				nbtjbsword.setBoolean(NBTTag.IS_JEWEL.getRef(), true);
-				EnchantManager.setItemLore(nbtjbsword.getItem());
+				for(int i = 0; i < amount; i++) {
+					ItemStack jbsword = FreshCommand.getFreshItem(MysticType.SWORD, PantColor.JEWEL);
+					jbsword = ItemManager.enableDropConfirm(jbsword);
+					NBTItem nbtjbsword = new NBTItem(jbsword);
+					nbtjbsword.setBoolean(NBTTag.IS_JEWEL.getRef(), true);
+					EnchantManager.setItemLore(nbtjbsword.getItem());
+					AUtil.giveItemSafely(player, nbtjbsword.getItem());
+				}
 
-				for(int i = 0; i < amount; i++) AUtil.giveItemSafely(player, nbtjbsword.getItem());
+				for(int i = 0; i < amount; i++) {
+					ItemStack jbbow = FreshCommand.getFreshItem(MysticType.BOW, PantColor.JEWEL);
+					jbbow = ItemManager.enableDropConfirm(jbbow);
+					NBTItem nbtjbbow = new NBTItem(jbbow);
+					nbtjbbow.setBoolean(NBTTag.IS_JEWEL.getRef(), true);
+					EnchantManager.setItemLore(nbtjbbow.getItem());
+					AUtil.giveItemSafely(player, nbtjbbow.getItem());
+				}
 
-				ItemStack jbbow = FreshCommand.getFreshItem(MysticType.BOW, PantColor.JEWEL);
-				jbbow = ItemManager.enableDropConfirm(jbbow);
-				NBTItem nbtjbbow = new NBTItem(jbbow);
-				nbtjbbow.setBoolean(NBTTag.IS_JEWEL.getRef(), true);
-				EnchantManager.setItemLore(nbtjbbow.getItem());
-
-				for(int i = 0; i < amount; i++) AUtil.giveItemSafely(player, nbtjbbow.getItem());
-				ItemStack jb = FreshCommand.getFreshItem(MysticType.PANTS, PantColor.JEWEL);
-				jb = ItemManager.enableDropConfirm(jb);
-				NBTItem nbtjb = new NBTItem(jb);
-				nbtjb.setBoolean(NBTTag.IS_JEWEL.getRef(), true);
-				EnchantManager.setItemLore(nbtjb.getItem());
-
-				for(int i = 0; i < amount; i++) AUtil.giveItemSafely(player, nbtjb.getItem());
+				for(int i = 0; i < amount; i++) {
+					ItemStack jb = FreshCommand.getFreshItem(MysticType.PANTS, PantColor.JEWEL);
+					jb = ItemManager.enableDropConfirm(jb);
+					NBTItem nbtjb = new NBTItem(jb);
+					nbtjb.setBoolean(NBTTag.IS_JEWEL.getRef(), true);
+					EnchantManager.setItemLore(nbtjb.getItem());
+					AUtil.giveItemSafely(player, nbtjb.getItem());
+				}
 				return false;
 			case "p1":
 				ProtArmor.getArmor(player, "helmet");

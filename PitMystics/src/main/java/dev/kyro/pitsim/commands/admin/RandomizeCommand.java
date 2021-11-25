@@ -3,6 +3,7 @@ package dev.kyro.pitsim.commands.admin;
 import de.tr7zw.nbtapi.NBTItem;
 import dev.kyro.arcticapi.commands.ASubCommand;
 import dev.kyro.arcticapi.misc.AOutput;
+import dev.kyro.pitsim.controllers.EnchantManager;
 import dev.kyro.pitsim.enums.NBTTag;
 import dev.kyro.pitsim.misc.Misc;
 import org.bukkit.OfflinePlayer;
@@ -35,6 +36,8 @@ public class RandomizeCommand extends ASubCommand {
             AOutput.error(player, "&cInvalid item!");
             return;
         }
+
+        EnchantManager.setItemLore(nbtItem.getItem());
 
         nbtItem.setString(NBTTag.ITEM_UUID.getRef(), UUID.randomUUID().toString());
         player.getInventory().setItemInHand(nbtItem.getItem());

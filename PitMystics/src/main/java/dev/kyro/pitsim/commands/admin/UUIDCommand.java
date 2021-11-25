@@ -3,7 +3,6 @@ package dev.kyro.pitsim.commands.admin;
 import de.tr7zw.nbtapi.NBTItem;
 import dev.kyro.arcticapi.commands.ASubCommand;
 import dev.kyro.arcticapi.misc.AOutput;
-import dev.kyro.pitsim.controllers.DupeManager;
 import dev.kyro.pitsim.enums.NBTTag;
 import dev.kyro.pitsim.misc.Misc;
 import org.bukkit.command.CommandSender;
@@ -21,11 +20,6 @@ public class UUIDCommand extends ASubCommand {
     public void execute(CommandSender sender, List<String> args) {
         if(!(sender instanceof Player)) return;
         Player player = (Player) sender;
-
-        if(args.size() != 0) {
-            DupeManager.checkPlayers(player);
-            return;
-        }
 
         ItemStack itemStack = player.getItemInHand();
         if(Misc.isAirOrNull(itemStack)) return;
