@@ -17,7 +17,6 @@ public class PrefixPlaceholder implements APAPIPlaceholder {
 
 		String message = "%luckperms_prefix%";
 
-
 		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
 		return pitPlayer.prefix + PlaceholderAPI.setPlaceholders(player, message);
 	}
