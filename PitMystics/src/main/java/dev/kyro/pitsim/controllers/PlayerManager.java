@@ -129,7 +129,7 @@ public class PlayerManager implements Listener {
 		}
 
 		if(killEvent.killer.hasPermission("group.eternal")) {
-			multiplier += 0.30;
+			multiplier += 0.35;
 		} else if(killEvent.killer.hasPermission("group.unthinkable")) {
 			multiplier += 0.25;
 		} else if(killEvent.killer.hasPermission("group.miraculous")) {
