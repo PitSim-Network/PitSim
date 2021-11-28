@@ -220,7 +220,7 @@ public class DamageManager implements Listener {
 				return;
 			} else {
 				attackEvent.attacker.setHealth(Math.max(finalHealth, 0));
-				attackEvent.attacker.damage(0);
+//				attackEvent.attacker.damage(0);
 			}
 		}
 
