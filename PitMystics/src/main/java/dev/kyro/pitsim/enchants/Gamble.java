@@ -25,6 +25,9 @@ public class Gamble extends PitEnchant {
 		int enchantLvl = attackEvent.getAttackerEnchantLevel(this);
 		if(enchantLvl == 0) return;
 
+		int regLvl = attackEvent.getAttackerEnchantLevel(Regularity.INSTANCE);
+		if(Regularity.isRegHit(attackEvent.defender) && Regularity.reduceDamage(regLvl)) return;
+
 		if(Math.random() < 0.5) {
 			attackEvent.trueDamage += getTrueDamage(enchantLvl);
 			Sounds.GAMBLE_YES.play(attackEvent.attacker);

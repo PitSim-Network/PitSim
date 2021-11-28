@@ -76,22 +76,26 @@ public class Regularity extends PitEnchant {
 		return toReg.contains(defender.getUniqueId());
 	}
 
-	public static boolean skipHit(int enchantLvl) {
+	//	Only really used for gamble is a bit weird and not exactly correct to call it this
+	public static boolean reduceDamage(int enchantLvl) {
+		if(enchantLvl == 0) return true;
+		return Math.random() * 100 > secondHitDamage(enchantLvl);
+	}
+
+	public static boolean skipIncrement(int enchantLvl) {
+		if(enchantLvl == 0) return true;
 		return Math.random() * 100 > secondComboChance(enchantLvl);
 	}
 
 	public static int secondHitDamage(int enchantLvl) {
-
 		return enchantLvl * 15 + 15;
 	}
 
 	public static int secondComboChance(int enchantLvl) {
-
 		return enchantLvl * 15 + 15;
 	}
 
 	public static double maxFinalDamage(int enchantLvl) {
-
 		return enchantLvl * 0.4 + 1.6;
 	}
 
