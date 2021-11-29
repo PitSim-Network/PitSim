@@ -11,6 +11,7 @@ depend:
   - PlaceholderAPI
   - NoteBlockAPI
   - ProtocolLib
+  - Essentials
 commands:
   pitsim:
   ps:

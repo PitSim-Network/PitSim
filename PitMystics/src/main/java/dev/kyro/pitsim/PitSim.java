@@ -36,6 +36,9 @@ import net.milkbowl.vault.economy.Economy;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
+import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.plugin.Plugin;
+import org.bukkit.plugin.RegisteredListener;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -85,19 +88,17 @@ public class PitSim extends JavaPlugin {
 		}
 
 		SpawnNPCs.createNPCs();
-
 		MapManager.onStart();
-
-//		adventure = BukkitAudiences.create(this);
-//		for(Player onlinePlayer : Bukkit.getOnlinePlayers()) {
-//			BossBarManager bm = new BossBarManager();
-//			PlayerManager.bossBars.put(onlinePlayer, bm);
-//		}
 
 		if (!setupEconomy()) {
 			AOutput.log(String.format("[%s] - Disabled due to no Vault dependency found!", getDescription().getName()));
 			getServer().getPluginManager().disablePlugin(this);
 			return;
+		}
+
+		Plugin essentials = Bukkit.getPluginManager().getPlugin("Essentials");
+		EntityDamageEvent.getHandlerList().unregister(essentials);
+		for(RegisteredListener listener : EntityDamageEvent.getHandlerList().getRegisteredListeners()) {
 		}
 
 		if(Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null) {
@@ -113,7 +114,6 @@ public class PitSim extends JavaPlugin {
 			return;
 		}
 
-
 		registerPitEvents();
 //		PitEventManager.eventWait();
 
@@ -121,8 +121,6 @@ public class PitSim extends JavaPlugin {
 		registerPerks();
 		registerKillstreaks();
 		registerMegastreaks();
-
-
 
 		ArcticAPI.setupPlaceholderAPI("pitsim");
 		AHook.registerPlaceholder(new PrefixPlaceholder());
