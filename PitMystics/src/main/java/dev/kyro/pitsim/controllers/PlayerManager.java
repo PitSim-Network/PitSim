@@ -6,6 +6,7 @@ import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.controllers.objects.Non;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
+import dev.kyro.pitsim.enums.NonTrait;
 import dev.kyro.pitsim.events.AttackEvent;
 import dev.kyro.pitsim.events.IncrementKillsEvent;
 import dev.kyro.pitsim.events.KillEvent;
@@ -293,7 +294,11 @@ public class PlayerManager implements Listener {
 
 		Non defendingNon = NonManager.getNon(attackEvent.defender);
 //		Arch chest
-		if(defendingNon == null) attackEvent.multiplier.add(0.85);
+		if(defendingNon == null) {
+			attackEvent.multiplier.add(0.85);
+		} else {
+			if(defendingNon.traits.contains(NonTrait.IRON_STREAKER)) attackEvent.multiplier.add(0.6);
+		}
 
 //		ItemStack itemStack = attackEvent.attacker.getItemInHand();
 //		if(itemStack != null && itemStack.hasItemMeta() && itemStack.getItemMeta().hasEnchant(Enchantment.DAMAGE_ALL)

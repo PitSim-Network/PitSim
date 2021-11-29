@@ -8,7 +8,6 @@ import dev.kyro.pitsim.controllers.NonManager;
 import dev.kyro.pitsim.controllers.PitEventManager;
 import dev.kyro.pitsim.enums.NonState;
 import dev.kyro.pitsim.enums.NonTrait;
-import dev.kyro.pitsim.misc.Misc;
 import net.citizensnpcs.api.CitizensAPI;
 import net.citizensnpcs.api.npc.NPC;
 import net.citizensnpcs.api.trait.trait.Equipment;
@@ -24,7 +23,6 @@ import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerTeleportEvent;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
 
@@ -117,8 +115,8 @@ public class Non {
 			npc.getNavigator().setTarget(target, true);
 		} else respawn();
 
-		if(traits.contains(NonTrait.IRON_STREAKER) && npc.isSpawned())
-				Misc.applyPotionEffect((Player) non, PotionEffectType.DAMAGE_RESISTANCE, 9999, 1, true, false);
+//		if(traits.contains(NonTrait.IRON_STREAKER) && npc.isSpawned())
+//				Misc.applyPotionEffect((Player) non, PotionEffectType.DAMAGE_RESISTANCE, 9999, 1, true, false);
 //		non.setHealth(non.getMaxHealth());
 
 		if(target == null && !npc.isSpawned()) return;
