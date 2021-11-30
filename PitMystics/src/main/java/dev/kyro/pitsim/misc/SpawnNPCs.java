@@ -97,7 +97,7 @@ public class SpawnNPCs implements Listener {
 		NPCRegistry registry = CitizensAPI.getNPCRegistry();
 		vnx2 = registry.createNPC(EntityType.PLAYER, "&e&lSTATISTICS");
 		vnx2.spawn(MapManager.getVnx2NPCSpawn());
-		skin(vnx2, "vnx2");
+		skin(vnx2, "vnxz");
 		vnx2.addTrait(LookClose.class);
 		vnx2.getTrait(LookClose.class).setRange(10);
 		vnx2.getTrait(LookClose.class).toggle();
