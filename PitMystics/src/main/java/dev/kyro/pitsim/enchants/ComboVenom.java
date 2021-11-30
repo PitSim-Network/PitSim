@@ -51,7 +51,7 @@ public class ComboVenom extends PitEnchant {
 
 		if(attackEvent.attacker.hasPotionEffect(PotionEffectType.POISON) || attackEvent.defender.hasPotionEffect(PotionEffectType.POISON)) {
 			Non non = NonManager.getNon(attackEvent.defender);
-			if(non == null) attackEvent.multiplier.add(10/9D);
+			if(non == null) attackEvent.multiplier.add(10/8.5D);
 		}
 
 		int enchantLvl = attackEvent.getAttackerEnchantLevel(this);

@@ -398,8 +398,8 @@ public class PitSim extends JavaPlugin {
 		EnchantManager.registerEnchant(new ComboVenom());
 //		EnchantManager.registerEnchant(new aCPLEnchant());
 		EnchantManager.registerEnchant(new SelfCheckout());
-		EnchantManager.registerEnchant(new Entanglement());
-		EnchantManager.registerEnchant(new RetroGravityMinikloon());
+		EnchantManager.registerEnchant(new aEntanglement());
+		EnchantManager.registerEnchant(new aRetroGravityMinikloon());
 
 		EnchantManager.registerEnchant(new Billionaire());
 		EnchantManager.registerEnchant(new ComboPerun());
@@ -442,7 +442,7 @@ public class PitSim extends JavaPlugin {
 		EnchantManager.registerEnchant(new Parasite());
 		EnchantManager.registerEnchant(new Chipping());
 		EnchantManager.registerEnchant(new Fletching());
-		EnchantManager.registerEnchant(new BottomlessQuiver());
+//		EnchantManager.registerEnchant(new BottomlessQuiver());
 
 		EnchantManager.registerEnchant(new RetroGravityMicrocosm());
 		EnchantManager.registerEnchant(new Regularity());

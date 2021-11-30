@@ -44,7 +44,7 @@ public class ComboDamage extends PitEnchant {
 
 	public int getDamage(int enchantLvl) {
 
-		return (int) (Math.floor(Math.pow(enchantLvl, 1.75)) * 5 + 15);
+		return (int) (Math.floor(Math.pow(enchantLvl, 1.75)) * 5 + 25);
 	}
 
 	public int getStrikes(int enchantLvl) {

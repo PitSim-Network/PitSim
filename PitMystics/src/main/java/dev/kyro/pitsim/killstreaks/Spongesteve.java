@@ -21,7 +21,7 @@ public class Spongesteve extends Killstreak {
 	@Override
 	public void proc(Player player) {
 		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
-		pitPlayer.heal(30, HealEvent.HealType.ABSORPTION, 60);
+		pitPlayer.heal(50, HealEvent.HealType.ABSORPTION, 100);
 	}
 
 	@Override

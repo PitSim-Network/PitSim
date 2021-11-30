@@ -37,7 +37,6 @@ public class GoldenHeart extends PitEnchant {
 	}
 
 	public double getHealing(int enchantLvl) {
-
-		return Math.floor(Math.pow(enchantLvl, 1.4));
+		return enchantLvl;
 	}
 }

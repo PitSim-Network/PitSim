@@ -14,7 +14,6 @@ public class Prick extends PitEnchant {
 	public Prick() {
 		super("Prick", false, ApplyType.PANTS,
 				"prick", "thorns");
-		isUncommonEnchant = true;
 	}
 
 	@EventHandler

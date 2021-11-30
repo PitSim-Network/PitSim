@@ -59,16 +59,6 @@ public class ComboStun extends PitEnchant {
 	}
 
 	public double getDuration(int enchantLvl) {
-
-		switch(enchantLvl) {
-			case 1:
-				return 0.7;
-			case 2:
-				return 1.0;
-			case 3:
-				return 1.7;
-
-		}
-		return enchantLvl * 0.5 + 0.5;
+		return enchantLvl * 0.3 + 0.5;
 	}
 }

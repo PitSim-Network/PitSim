@@ -34,6 +34,6 @@ public class Guts extends PitEnchant {
 	}
 
 	public double getHealing(int enchantLvl) {
-		return enchantLvl * 0.5;
+		return enchantLvl * 0.5 + 0.5;
 	}
 }
