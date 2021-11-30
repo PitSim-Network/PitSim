@@ -396,7 +396,7 @@ public class PitSim extends JavaPlugin {
 
 	private void registerEnchants() {
 		EnchantManager.registerEnchant(new ComboVenom());
-		EnchantManager.registerEnchant(new aCPLEnchant());
+//		EnchantManager.registerEnchant(new aCPLEnchant());
 		EnchantManager.registerEnchant(new SelfCheckout());
 		EnchantManager.registerEnchant(new Entanglement());
 		EnchantManager.registerEnchant(new RetroGravityMinikloon());
