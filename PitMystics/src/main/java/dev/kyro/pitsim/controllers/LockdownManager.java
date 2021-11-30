@@ -75,7 +75,7 @@ public class LockdownManager implements Listener {
 
 	@EventHandler
 	public void onCommand(PlayerCommandPreprocessEvent event) {
-		if(event.getMessage().toLowerCase().startsWith("/captcha")) return;
+		if(event.getMessage().toLowerCase().startsWith("/captcha") || event.getMessage().toLowerCase().startsWith("/disc")) return;
 		Player player = event.getPlayer();
 		if(!isVerified(player)) {
 			event.setCancelled(true);
