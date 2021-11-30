@@ -91,6 +91,7 @@ public class Non {
 	}
 
 	public void tick() {
+		count++;
 		if(npc.getEntity() != null && non != npc.getEntity()) FPSCommand.hideNewNon(this);
 		non = (Player) npc.getEntity();
 		if(!npc.isSpawned() && !PitEventManager.majorEvent) respawn();
@@ -101,7 +102,6 @@ public class Non {
 			return;
 		}
 
-
 		if(nonState != NonState.FIGHTING) {
 			if(!npc.isSpawned()) respawn();
 			if(npc.isSpawned()) {
@@ -111,8 +111,10 @@ public class Non {
 		}
 
 		if(npc.isSpawned()) {
-			pickTarget();
-			npc.getNavigator().setTarget(target, true);
+			if(count % 4 == 0) {
+				pickTarget();
+				npc.getNavigator().setTarget(target, true);
+			}
 		} else respawn();
 
 //		if(traits.contains(NonTrait.IRON_STREAKER) && npc.isSpawned())
@@ -145,8 +147,6 @@ public class Non {
 				}
 			}
 		}
-
-		count++;
 	}
 
 	public void pickTarget() {
