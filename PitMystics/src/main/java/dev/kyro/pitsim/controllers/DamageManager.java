@@ -145,8 +145,9 @@ public class DamageManager implements Listener {
 		}
 
 		if(attackingNon != null) {
-			event.setDamage(attackingNon.traits.contains(NonTrait.IRON_STREAKER) ? 9 : 6);
-			if(Misc.isCritical(attacker)) event.setDamage(event.getDamage() * 1.5);
+			double damage = attackingNon.traits.contains(NonTrait.IRON_STREAKER) ? 12 : 7;
+			if(Misc.isCritical(attacker)) damage *= 1.5;
+			event.setDamage(damage);
 		}
 
 		AttackEvent.Pre preEvent = null;
