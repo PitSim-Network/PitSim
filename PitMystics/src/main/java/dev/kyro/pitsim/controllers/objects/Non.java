@@ -253,7 +253,7 @@ public class Non {
 
 			traits.add(NonTrait.NO_JUMP);
 		}
-		if(Math.random() < 0.12) {
+		if(Math.random() < 0.10) {
 
 			traits.add(NonTrait.IRON_STREAKER);
 		}
