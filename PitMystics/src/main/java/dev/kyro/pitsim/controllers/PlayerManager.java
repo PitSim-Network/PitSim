@@ -1,11 +1,13 @@
 package dev.kyro.pitsim.controllers;
 
 import be.maximvdw.featherboard.api.FeatherBoardAPI;
+import de.tr7zw.nbtapi.NBTItem;
 import dev.kyro.arcticapi.data.APlayerData;
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.controllers.objects.Non;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
+import dev.kyro.pitsim.enums.NBTTag;
 import dev.kyro.pitsim.enums.NonTrait;
 import dev.kyro.pitsim.events.AttackEvent;
 import dev.kyro.pitsim.events.IncrementKillsEvent;
@@ -23,6 +25,7 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -33,12 +36,17 @@ import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.*;
+import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.spigotmc.event.player.PlayerSpawnLocationEvent;
 
 import java.text.DecimalFormat;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.UUID;
 
 //import net.kyori.adventure.audience.Audience;
 
@@ -215,6 +223,17 @@ public class PlayerManager implements Listener {
 
 		int firstArrow = -1; boolean multipleStacks = false; boolean hasSpace = false;
 		if(player.getItemInHand().getType() == Material.BOW) {
+
+			NBTItem nbtItem = new NBTItem(player.getItemInHand());
+			if(nbtItem.hasKey(NBTTag.ITEM_UUID.getRef()) && !player.getItemInHand().getItemMeta().hasEnchant(Enchantment.WATER_WORKER)) {
+				ItemStack modified = player.getItemInHand();
+				modified.addUnsafeEnchantment(Enchantment.WATER_WORKER, 1);
+				ItemMeta itemMeta = modified.getItemMeta();
+				itemMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
+				modified.setItemMeta(itemMeta);
+				player.setItemInHand(modified);
+			}
+
 			for(int i = 0; i < 36; i++) {
 				ItemStack itemStack = player.getInventory().getItem(i);
 				if(Misc.isAirOrNull(itemStack)) {
