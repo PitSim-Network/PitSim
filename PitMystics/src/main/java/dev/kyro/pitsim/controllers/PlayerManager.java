@@ -239,7 +239,7 @@ public class PlayerManager implements Listener {
 
 	@EventHandler
 	public void onMove(PlayerMoveEvent event) {
-		if(event.getPlayer().getLocation().getY() < 20)  {
+		if(event.getPlayer().getLocation().getY() < 20 && event.getPlayer().getLocation().getWorld().getName().equals("pitsim"))  {
 			DamageManager.death(event.getPlayer());
 		}
 	}
