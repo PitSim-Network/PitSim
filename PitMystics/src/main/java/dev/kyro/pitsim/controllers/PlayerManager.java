@@ -38,10 +38,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 import org.spigotmc.event.player.PlayerSpawnLocationEvent;
 
 import java.text.DecimalFormat;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 //import net.kyori.adventure.audience.Audience;
 
@@ -60,6 +57,7 @@ public class PlayerManager implements Listener {
 	@EventHandler
 	public void onCommand(PlayerCommandPreprocessEvent event) {
 		if(event.getPlayer().isOp()) return;
+//		TODO: Pay needs to be moved to its own command because essentials pay autocompletes name so its not feasible to block command if receiver level < 100
 		if(ChatColor.stripColor(event.getMessage()).toLowerCase().startsWith("/trade") ||
 				ChatColor.stripColor(event.getMessage()).toLowerCase().startsWith("/pay")) {
 			PitPlayer pitPlayer = PitPlayer.getPitPlayer(event.getPlayer());
