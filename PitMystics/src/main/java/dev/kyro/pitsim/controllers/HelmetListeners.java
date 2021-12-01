@@ -19,6 +19,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
+import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.event.player.*;
@@ -47,6 +48,14 @@ public class HelmetListeners implements Listener {
 			Sounds.HELMET_GUI_OPEN.play(event.getPlayer());
 			HelmetGUI helmetGUI = new HelmetGUI(event.getPlayer());
 			helmetGUI.open();
+		}
+	}
+
+	@EventHandler
+	public void onDeath(PlayerDeathEvent event) {
+		for(GoldenHelmet goldenHelmet : GoldenHelmet.getHelmetsFromPlayer(event.getEntity())) {
+			if(goldenHelmet.ability != null) goldenHelmet.ability.onDeactivate();
+			HelmetAbility.toggledHelmets.remove(goldenHelmet.uuid);
 		}
 	}
 
@@ -126,6 +135,11 @@ public class HelmetListeners implements Listener {
 
 	@EventHandler
 	public void onKill(KillEvent killEvent) {
+
+		for(GoldenHelmet goldenHelmet : GoldenHelmet.getHelmetsFromPlayer(killEvent.dead)) {
+			if(goldenHelmet.ability != null) goldenHelmet.ability.onDeactivate();
+			HelmetAbility.toggledHelmets.remove(goldenHelmet.uuid);
+		}
 
 		if(NonManager.getNon(killEvent.killer) != null) return;
 		if(Misc.isAirOrNull(killEvent.killer.getInventory().getHelmet())) return;
