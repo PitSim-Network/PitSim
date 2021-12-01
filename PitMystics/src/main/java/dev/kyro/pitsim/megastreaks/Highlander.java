@@ -90,7 +90,7 @@ public class Highlander extends Megastreak {
 		lore.add(ChatColor.GRAY + "On trigger:");
 		lore.add(ChatColor.translateAlternateColorCodes('&', "&a\u25a0 &7Perma &eSpeed I&7"));
 		lore.add(ChatColor.translateAlternateColorCodes('&', "&a\u25a0 &7Earn &6+150% gold &7from kills"));
-		lore.add(ChatColor.translateAlternateColorCodes('&', "&a\u25a0 &7Deal &c+33% &7damage vs bounties players"));
+		lore.add(ChatColor.translateAlternateColorCodes('&', "&a\u25a0 &7Deal &c+33% &7damage vs bountied players"));
 		lore.add(ChatColor.translateAlternateColorCodes('&', "&a\u25a0 &7Deal &c+25% &7damage vs bots"));
 		lore.add("");
 		lore.add(ChatColor.GRAY + "BUT:");

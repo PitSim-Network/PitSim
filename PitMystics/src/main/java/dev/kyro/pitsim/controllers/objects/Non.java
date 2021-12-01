@@ -8,7 +8,6 @@ import dev.kyro.pitsim.controllers.NonManager;
 import dev.kyro.pitsim.controllers.PitEventManager;
 import dev.kyro.pitsim.enums.NonState;
 import dev.kyro.pitsim.enums.NonTrait;
-import dev.kyro.pitsim.misc.Misc;
 import net.citizensnpcs.api.CitizensAPI;
 import net.citizensnpcs.api.npc.NPC;
 import net.citizensnpcs.api.trait.trait.Equipment;
@@ -24,7 +23,6 @@ import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerTeleportEvent;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
 
@@ -93,6 +91,7 @@ public class Non {
 	}
 
 	public void tick() {
+		count++;
 		if(npc.getEntity() != null && non != npc.getEntity()) FPSCommand.hideNewNon(this);
 		non = (Player) npc.getEntity();
 		if(!npc.isSpawned() && !PitEventManager.majorEvent) respawn();
@@ -103,7 +102,6 @@ public class Non {
 			return;
 		}
 
-
 		if(nonState != NonState.FIGHTING) {
 			if(!npc.isSpawned()) respawn();
 			if(npc.isSpawned()) {
@@ -113,12 +111,14 @@ public class Non {
 		}
 
 		if(npc.isSpawned()) {
-			pickTarget();
-			npc.getNavigator().setTarget(target, true);
+			if(count % 4 == 0) {
+				pickTarget();
+				npc.getNavigator().setTarget(target, true);
+			}
 		} else respawn();
 
-		if(traits.contains(NonTrait.IRON_STREAKER) && npc.isSpawned())
-				Misc.applyPotionEffect((Player) non, PotionEffectType.DAMAGE_RESISTANCE, 9999, 1, true, false);
+//		if(traits.contains(NonTrait.IRON_STREAKER) && npc.isSpawned())
+//				Misc.applyPotionEffect((Player) non, PotionEffectType.DAMAGE_RESISTANCE, 9999, 1, true, false);
 //		non.setHealth(non.getMaxHealth());
 
 		if(target == null && !npc.isSpawned()) return;
@@ -147,8 +147,6 @@ public class Non {
 				}
 			}
 		}
-
-		count++;
 	}
 
 	public void pickTarget() {

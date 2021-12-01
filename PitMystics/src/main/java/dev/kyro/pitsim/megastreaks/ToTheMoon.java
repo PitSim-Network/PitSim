@@ -3,8 +3,10 @@ package dev.kyro.pitsim.megastreaks;
 import dev.kyro.arcticapi.data.APlayerData;
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.PitSim;
+import dev.kyro.pitsim.controllers.HopperManager;
 import dev.kyro.pitsim.controllers.NonManager;
 import dev.kyro.pitsim.controllers.PrestigeValues;
+import dev.kyro.pitsim.controllers.objects.Hopper;
 import dev.kyro.pitsim.controllers.objects.Megastreak;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.events.AttackEvent;
@@ -31,7 +33,7 @@ import java.util.Arrays;
 import java.util.List;
 
 public class ToTheMoon extends Megastreak {
-
+	public boolean hasCalledHopper = false;
 	public BukkitTask runnable;
 
 	@Override
@@ -142,6 +144,11 @@ public class ToTheMoon extends Megastreak {
 		killEvent.xpCap += (pitPlayer.getKills() - 100) * 2;
 		killEvent.xpMultipliers.add(2.5);
 		killEvent.goldMultipliers.add(0.5);
+
+		if(pitPlayer.getKills() > 1200 && !hasCalledHopper) {
+			HopperManager.callHopper("PayForTruce", Hopper.Type.VENOM, killEvent.killer);
+			hasCalledHopper = true;
+		}
 	}
 
 	@Override
@@ -178,6 +185,7 @@ public class ToTheMoon extends Megastreak {
 
 	@Override
 	public void reset() {
+		hasCalledHopper = false;
 
 		String message = "%luckperms_prefix%";
 		if(pitPlayer.megastreak.isOnMega()) {

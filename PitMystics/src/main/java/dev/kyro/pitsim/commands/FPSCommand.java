@@ -31,6 +31,7 @@ public class FPSCommand implements CommandExecutor {
 					if(onlinePlayer.getWorld() != MapManager.getMid().getWorld()) continue;
 					Location playerLoc = onlinePlayer.getLocation();
 					playerLoc.setY(MapManager.getMid().getY());
+					if(playerLoc.getWorld() != MapManager.getMid().getWorld()) continue;
 					boolean closeEnough = playerLoc.distance(MapManager.getMid()) < nonHideRadius;
 					if(closeEnough || SpawnManager.isInSpawn(onlinePlayer.getLocation())) {
 						showMid(onlinePlayer);
@@ -40,6 +41,7 @@ public class FPSCommand implements CommandExecutor {
 					for(Player onlinePlayer2 : Bukkit.getOnlinePlayers()) {
 						Location loc2 = onlinePlayer2.getLocation();
 						loc2.setY(MapManager.getMid().getY());
+						if(loc2.getWorld() != MapManager.getMid().getWorld()) continue;
 						if(closeEnough || loc2.distance(MapManager.getMid()) > playerHideRadius) {
 							onlinePlayer.showPlayer(onlinePlayer2);
 						}

@@ -53,7 +53,6 @@ public class ChatManager implements Listener {
 			ItemRename.renamePlayers.remove(event.getPlayer());
 		}
 
-
 		String message = event.getMessage()
 				.replaceAll("pitsandbox", "shitsandbox")
 				.replaceAll("Pitsandbox", "Shitsandbox")

@@ -33,42 +33,37 @@ public class OldCrateGiveCommand implements CommandExecutor {
         assert player != null;
 
         if(args[0].equals("HJP")) {
-            ItemStack jewel = FreshCommand.getFreshItem(MysticType.PANTS, PantColor.JEWEL);
-            jewel = ItemManager.enableDropConfirm(jewel);
-            assert jewel != null;
-            NBTItem nbtItem = new NBTItem(jewel);
-            nbtItem.setBoolean(NBTTag.IS_JEWEL.getRef(), true);
+            for(int i = 0; i < 2; i++) {
+                ItemStack jewel = FreshCommand.getFreshItem(MysticType.PANTS, PantColor.JEWEL);
+                jewel = ItemManager.enableDropConfirm(jewel);
+                NBTItem nbtItem = new NBTItem(jewel);
+                nbtItem.setBoolean(NBTTag.IS_JEWEL.getRef(), true);
+                EnchantManager.setItemLore(nbtItem.getItem());
+                AUtil.giveItemSafely(player, nbtItem.getItem());
+            }
 
-            EnchantManager.setItemLore(nbtItem.getItem());
-
-            AUtil.giveItemSafely(player, nbtItem.getItem());
-            AUtil.giveItemSafely(player, nbtItem.getItem());
             broadcast("&32x Hidden Jewel Pants", player);
         }
         if(args[0].equals("HJS")) {
-            ItemStack jewelSword = FreshCommand.getFreshItem(MysticType.SWORD, PantColor.JEWEL);
-            jewelSword = ItemManager.enableDropConfirm(jewelSword);
-            assert jewelSword != null;
-            NBTItem nbtItemSword = new NBTItem(jewelSword);
-            nbtItemSword.setBoolean(NBTTag.IS_JEWEL.getRef(), true);
-
-            EnchantManager.setItemLore(nbtItemSword.getItem());
-
-            AUtil.giveItemSafely(player, nbtItemSword.getItem());
-            AUtil.giveItemSafely(player, nbtItemSword.getItem());
+            for(int i = 0; i < 2; i++) {
+                ItemStack jewelSword = FreshCommand.getFreshItem(MysticType.SWORD, PantColor.JEWEL);
+                jewelSword = ItemManager.enableDropConfirm(jewelSword);
+                NBTItem nbtItemSword = new NBTItem(jewelSword);
+                nbtItemSword.setBoolean(NBTTag.IS_JEWEL.getRef(), true);
+                EnchantManager.setItemLore(nbtItemSword.getItem());
+                AUtil.giveItemSafely(player, nbtItemSword.getItem());
+            }
             broadcast("&e2x Hidden Jewel Sword", player);
         }
         if(args[0].equals("HJB")) {
-            ItemStack jewelBow = FreshCommand.getFreshItem(MysticType.BOW, PantColor.JEWEL);
-            jewelBow = ItemManager.enableDropConfirm(jewelBow);
-            assert jewelBow != null;
-            NBTItem nbtItemBow = new NBTItem(jewelBow);
-            nbtItemBow.setBoolean(NBTTag.IS_JEWEL.getRef(), true);
-
-            EnchantManager.setItemLore(nbtItemBow.getItem());
-
-            AUtil.giveItemSafely(player, nbtItemBow.getItem());
-            AUtil.giveItemSafely(player, nbtItemBow.getItem());
+            for(int i = 0; i < 2; i++) {
+                ItemStack jewelBow = FreshCommand.getFreshItem(MysticType.BOW, PantColor.JEWEL);
+                jewelBow = ItemManager.enableDropConfirm(jewelBow);
+                NBTItem nbtItemBow = new NBTItem(jewelBow);
+                nbtItemBow.setBoolean(NBTTag.IS_JEWEL.getRef(), true);
+                EnchantManager.setItemLore(nbtItemBow.getItem());
+                AUtil.giveItemSafely(player, nbtItemBow.getItem());
+            }
             broadcast("&b2x Hidden Jewel Bow", player);
         }
         if(args[0].equals("P1")) {
@@ -129,38 +124,32 @@ public class OldCrateGiveCommand implements CommandExecutor {
             broadcast("&6Double Current Gold", player);
         }
         if(args[0].equals("JB")) {
-            ItemStack jewel = FreshCommand.getFreshItem(MysticType.PANTS, PantColor.JEWEL);
-            jewel = ItemManager.enableDropConfirm(jewel);
-            assert jewel != null;
-            NBTItem nbtItem = new NBTItem(jewel);
-            nbtItem.setBoolean(NBTTag.IS_JEWEL.getRef(), true);
+            for(int i = 0; i < 2; i++) {
+                ItemStack jbsword = FreshCommand.getFreshItem(MysticType.SWORD, PantColor.JEWEL);
+                jbsword = ItemManager.enableDropConfirm(jbsword);
+                NBTItem nbtjbsword = new NBTItem(jbsword);
+                nbtjbsword.setBoolean(NBTTag.IS_JEWEL.getRef(), true);
+                EnchantManager.setItemLore(nbtjbsword.getItem());
+                AUtil.giveItemSafely(player, nbtjbsword.getItem());
+            }
 
-            EnchantManager.setItemLore(nbtItem.getItem());
+            for(int i = 0; i < 2; i++) {
+                ItemStack jbbow = FreshCommand.getFreshItem(MysticType.BOW, PantColor.JEWEL);
+                jbbow = ItemManager.enableDropConfirm(jbbow);
+                NBTItem nbtjbbow = new NBTItem(jbbow);
+                nbtjbbow.setBoolean(NBTTag.IS_JEWEL.getRef(), true);
+                EnchantManager.setItemLore(nbtjbbow.getItem());
+                AUtil.giveItemSafely(player, nbtjbbow.getItem());
+            }
 
-            AUtil.giveItemSafely(player, nbtItem.getItem());
-            AUtil.giveItemSafely(player, nbtItem.getItem());
-
-            ItemStack jewelSword = FreshCommand.getFreshItem(MysticType.SWORD, PantColor.JEWEL);
-            jewelSword = ItemManager.enableDropConfirm(jewelSword);
-            assert jewelSword != null;
-            NBTItem nbtItemSword = new NBTItem(jewelSword);
-            nbtItemSword.setBoolean(NBTTag.IS_JEWEL.getRef(), true);
-
-            EnchantManager.setItemLore(nbtItemSword.getItem());
-
-            AUtil.giveItemSafely(player, nbtItemSword.getItem());
-            AUtil.giveItemSafely(player, nbtItemSword.getItem());
-
-            ItemStack jewelBow = FreshCommand.getFreshItem(MysticType.BOW, PantColor.JEWEL);
-            jewelBow = ItemManager.enableDropConfirm(jewelBow);
-            assert jewelBow != null;
-            NBTItem nbtItemBow = new NBTItem(jewelBow);
-            nbtItemBow.setBoolean(NBTTag.IS_JEWEL.getRef(), true);
-
-            EnchantManager.setItemLore(nbtItemBow.getItem());
-
-            AUtil.giveItemSafely(player, nbtItemBow.getItem());
-            AUtil.giveItemSafely(player, nbtItemBow.getItem());
+            for(int i = 0; i < 2; i++) {
+                ItemStack jb = FreshCommand.getFreshItem(MysticType.PANTS, PantColor.JEWEL);
+                jb = ItemManager.enableDropConfirm(jb);
+                NBTItem nbtjb = new NBTItem(jb);
+                nbtjb.setBoolean(NBTTag.IS_JEWEL.getRef(), true);
+                EnchantManager.setItemLore(nbtjb.getItem());
+                AUtil.giveItemSafely(player, nbtjb.getItem());
+            }
             broadcast("&bHidden Jewel Bundle", player);
         }
         if(args[0].equals("P1H")) {

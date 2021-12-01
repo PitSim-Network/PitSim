@@ -12,9 +12,9 @@ import org.bukkit.inventory.ItemStack;
 import java.util.Collections;
 import java.util.List;
 
-public class Entanglement extends PitEnchant {
+public class aEntanglement extends PitEnchant {
 
-	public Entanglement() {
+	public aEntanglement() {
 		super("Entanglement", true, ApplyType.NONE,
 				"entanglement", "entangle", "tangle", "quantum");
 	}

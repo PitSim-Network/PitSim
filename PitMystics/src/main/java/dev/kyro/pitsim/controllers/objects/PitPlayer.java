@@ -215,7 +215,7 @@ public class PitPlayer {
 
 		Bukkit.getPluginManager().callEvent(new IncrementKillsEvent(this.player, previousKills, assistPercent));
 
-		kills =  kills + (Math.round(assistPercent * 100) / 100D);
+		kills = kills + (Math.round(assistPercent * 100) / 100D);
 
 		if(kills >= megastreak.getRequiredKills() && kills < megastreak.getRequiredKills() + 1 && megastreak.getClass() != NoMegastreak.class &
 				!megastreak.isOnMega()) megastreak.proc();

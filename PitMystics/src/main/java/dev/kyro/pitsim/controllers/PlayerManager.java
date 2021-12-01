@@ -6,6 +6,7 @@ import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.controllers.objects.Non;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
+import dev.kyro.pitsim.enums.NonTrait;
 import dev.kyro.pitsim.events.AttackEvent;
 import dev.kyro.pitsim.events.IncrementKillsEvent;
 import dev.kyro.pitsim.events.KillEvent;
@@ -22,6 +23,7 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -37,6 +39,7 @@ import org.spigotmc.event.player.PlayerSpawnLocationEvent;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 
@@ -82,6 +85,41 @@ public class PlayerManager implements Listener {
 				}
 			}
 		}.runTaskTimer(PitSim.INSTANCE, 20 * 60, 20 * 60 * 10);
+
+		new BukkitRunnable() {
+			@Override
+			public void run() {
+				for(Player player : Bukkit.getOnlinePlayers()) {
+					if(!player.hasPermission("group.eternal") || player.getWorld() != MapManager.getMid().getWorld()) continue;
+					if(SpawnManager.isInSpawn(player.getLocation())) continue;
+					List<Player> nearbyNons = new ArrayList<>();
+					for(Entity nearbyEntity : player.getNearbyEntities(4, 4, 4)) {
+						if(!(nearbyEntity instanceof Player)) continue;
+						Player nearby = (Player) nearbyEntity;
+						if(NonManager.getNon(nearby) == null || SpawnManager.isInSpawn(nearby.getLocation())) continue;
+						if(nearby.getLocation().distance(player.getLocation()) > 4) continue;
+						nearbyNons.add(nearby);
+					}
+					if(!nearbyNons.isEmpty()) {
+						Collections.shuffle(nearbyNons);
+						Player target = nearbyNons.remove(0);
+
+						double damage;
+						if(Misc.isAirOrNull(player.getItemInHand())) {
+							damage = 1;
+						} else if(player.getItemInHand().getType() == Material.GOLD_SWORD) {
+							damage = 7.5;
+						} else {
+							damage = 1;
+						}
+						if(Misc.isCritical(player)) damage *= 1.5;
+
+						target.setNoDamageTicks(0);
+						target.damage(damage, player);
+					}
+				}
+			}
+		}.runTaskTimer(PitSim.INSTANCE, 0L, 10L);
 	}
 
 	@EventHandler
@@ -91,7 +129,9 @@ public class PlayerManager implements Listener {
 			multiplier += 0.1;
 		}
 
-		if(killEvent.killer.hasPermission("group.unthinkable")) {
+		if(killEvent.killer.hasPermission("group.eternal")) {
+			multiplier += 0.35;
+		} else if(killEvent.killer.hasPermission("group.unthinkable")) {
 			multiplier += 0.25;
 		} else if(killEvent.killer.hasPermission("group.miraculous")) {
 			multiplier += 0.20;
@@ -254,7 +294,11 @@ public class PlayerManager implements Listener {
 
 		Non defendingNon = NonManager.getNon(attackEvent.defender);
 //		Arch chest
-		if(defendingNon == null) attackEvent.multiplier.add(0.85);
+		if(defendingNon == null) {
+			attackEvent.multiplier.add(0.85);
+		} else {
+			if(defendingNon.traits.contains(NonTrait.IRON_STREAKER)) attackEvent.multiplier.add(0.6);
+		}
 
 //		ItemStack itemStack = attackEvent.attacker.getItemInHand();
 //		if(itemStack != null && itemStack.hasItemMeta() && itemStack.getItemMeta().hasEnchant(Enchantment.DAMAGE_ALL)

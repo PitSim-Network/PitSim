@@ -20,11 +20,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
-public class RetroGravityMinikloon extends PitEnchant {
+public class aRetroGravityMinikloon extends PitEnchant {
 
 	public static Map<UUID, Map<UUID, Integer>> rgmMap = new HashMap<>();
 
-	public RetroGravityMinikloon() {
+	public aRetroGravityMinikloon() {
 		super("Retro-Gravity Minkloon", true, ApplyType.NONE,
 				"minikloon");
 	}

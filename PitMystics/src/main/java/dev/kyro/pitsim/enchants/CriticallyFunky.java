@@ -55,6 +55,7 @@ public class CriticallyFunky extends PitEnchant {
 					Misc.roundString(getDamage(enchantLvl)) + "&c% &7damage").getLore();
 		}
 	}
+
 	public double getReduction(int enchantLvl) {
 
 		switch(enchantLvl) {
@@ -67,18 +68,8 @@ public class CriticallyFunky extends PitEnchant {
 		}
 		return 100;
 	}
+
     public double getDamage(int enchantLvl) {
-
-        switch(enchantLvl) {
-            case 1:
-                return 0;
-            case 2:
-                return 14;
-            case 3:
-                return 30;
-
-        }
-        return enchantLvl * 15 - 15;
+		return enchantLvl * 15 - 15;
     }
-
 }

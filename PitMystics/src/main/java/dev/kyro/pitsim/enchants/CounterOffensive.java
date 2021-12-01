@@ -16,7 +16,6 @@ public class CounterOffensive extends PitEnchant {
 	public CounterOffensive() {
 		super("Counter-Offensive", false, ApplyType.PANTS,
 				"counteroffensive", "counter-offensive", "co", "offensive");
-		isUncommonEnchant = true;
 	}
 
 	@EventHandler

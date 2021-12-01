@@ -220,7 +220,7 @@ public class DamageManager implements Listener {
 				return;
 			} else {
 				attackEvent.attacker.setHealth(Math.max(finalHealth, 0));
-				attackEvent.attacker.damage(0);
+//				attackEvent.attacker.damage(0);
 			}
 		}
 
@@ -606,7 +606,6 @@ public class DamageManager implements Listener {
 				APlayerData.savePlayerData(killer);
 			}
 
-
 		Non killingNon = NonManager.getNon(killer);
 		Non defendingNon = NonManager.getNon(dead);
 		if(killingNon != null) {
@@ -636,9 +635,6 @@ public class DamageManager implements Listener {
 				Misc.sendActionBar(killEvent.killer, actionBarPlaceholder);
 			}
 		}.runTaskLater(PitSim.INSTANCE, 1L);
-
-
-
 	}
 
 	public static boolean isNaked(Player player) {
