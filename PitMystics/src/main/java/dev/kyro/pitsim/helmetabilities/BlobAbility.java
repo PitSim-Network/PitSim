@@ -73,7 +73,7 @@ public class BlobAbility extends HelmetAbility {
 			slime.remove();
 
 		} catch(Exception e) {
-
+			e.printStackTrace();
 		}
 		PitBlob.blobMap.remove(player.getUniqueId());
 		if(runnable != null) runnable.cancel();
