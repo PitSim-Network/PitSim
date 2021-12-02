@@ -46,7 +46,6 @@ public class Executioner extends PitEnchant {
 		attackEvent.executeUnder = getExecuteHealth(enchantLvl);
 
 //		if(attackEvent.attacker.getName().equals("KyroKrypt")) {
-//
 //			yeet(attackEvent.defender);
 //		}
 	}
@@ -54,20 +53,13 @@ public class Executioner extends PitEnchant {
 	public void yeet(Player willBeCrashed){
 		final EntityPlayer px = ((CraftPlayer)willBeCrashed).getHandle();
 		final EntityCreeper entity = new EntityCreeper(px.world);
-
 		final DataWatcher dw = new DataWatcher(entity);
 		dw.a(18, (Object)Integer.MAX_VALUE);
-
 		PacketPlayOutSpawnEntityLiving packet_spawn = new PacketPlayOutSpawnEntityLiving(entity);
-
 		px.playerConnection.sendPacket(packet_spawn);
-		Bukkit.getScheduler().scheduleSyncDelayedTask(PitSim.INSTANCE, new Runnable(){ //Some delay to send the crash metadata
-			@Override
-			public void run() {
-				PacketPlayOutEntityMetadata meta = new PacketPlayOutEntityMetadata(entity.getId(), dw, true);
-				px.playerConnection.sendPacket(meta);
-			}
-
+		Bukkit.getScheduler().scheduleSyncDelayedTask(PitSim.INSTANCE, () -> {
+			PacketPlayOutEntityMetadata meta = new PacketPlayOutEntityMetadata(entity.getId(), dw, true);
+			px.playerConnection.sendPacket(meta);
 		}, 5L);
 	}
 
