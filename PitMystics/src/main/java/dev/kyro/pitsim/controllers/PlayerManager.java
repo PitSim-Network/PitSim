@@ -190,12 +190,13 @@ public class PlayerManager implements Listener {
 			if(pitKiller.stats != null) pitKiller.stats.bountiesClaimed++;
 		}
 
-		if(Math.random() < 0.1 && killingNon == null && pitKiller.bounty < 25000) {
+		int maxBounty = 20_000;
+		if(Math.random() < 0.1 && killingNon == null && pitKiller.bounty < maxBounty) {
 
 			int amount = (int) Math.floor(Math.random() * 5 + 1) * 200;
-			if(pitKiller.bounty + amount > 25000) {
-				amount = 25000 - pitKiller.bounty;
-				pitKiller.bounty = 25000;
+			if(pitKiller.bounty + amount > maxBounty) {
+				amount = maxBounty - pitKiller.bounty;
+				pitKiller.bounty = maxBounty;
 			}  else {
 				pitKiller.bounty += amount;
 			}
