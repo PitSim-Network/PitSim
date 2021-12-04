@@ -75,7 +75,7 @@ public class BlobAbility extends HelmetAbility {
 		} catch(Exception e) {
 			e.printStackTrace();
 		}
-		//test
+
 		PitBlob.blobMap.remove(player.getUniqueId());
 		if(runnable != null) runnable.cancel();
 		AOutput.send(player, "&6&lGOLDEN HELMET! &cDeactivated &9Pit Blob&c.");
