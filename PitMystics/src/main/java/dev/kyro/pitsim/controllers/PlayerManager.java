@@ -1,11 +1,13 @@
 package dev.kyro.pitsim.controllers;
 
 import be.maximvdw.featherboard.api.FeatherBoardAPI;
+import de.tr7zw.nbtapi.NBTItem;
 import dev.kyro.arcticapi.data.APlayerData;
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.controllers.objects.Non;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
+import dev.kyro.pitsim.enums.NBTTag;
 import dev.kyro.pitsim.enums.NonTrait;
 import dev.kyro.pitsim.events.AttackEvent;
 import dev.kyro.pitsim.events.IncrementKillsEvent;
@@ -23,6 +25,7 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -33,7 +36,9 @@ import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.*;
+import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.spigotmc.event.player.PlayerSpawnLocationEvent;
 
@@ -60,6 +65,7 @@ public class PlayerManager implements Listener {
 	@EventHandler
 	public void onCommand(PlayerCommandPreprocessEvent event) {
 		if(event.getPlayer().isOp()) return;
+//		TODO: Pay needs to be moved to its own command because essentials pay autocompletes name so its not feasible to block command if receiver level < 100
 		if(ChatColor.stripColor(event.getMessage()).toLowerCase().startsWith("/trade") ||
 				ChatColor.stripColor(event.getMessage()).toLowerCase().startsWith("/pay")) {
 			PitPlayer pitPlayer = PitPlayer.getPitPlayer(event.getPlayer());
@@ -184,12 +190,13 @@ public class PlayerManager implements Listener {
 			if(pitKiller.stats != null) pitKiller.stats.bountiesClaimed++;
 		}
 
-		if(Math.random() < 0.1 && killingNon == null && pitKiller.bounty < 25000) {
+		int maxBounty = 20_000;
+		if(Math.random() < 0.1 && killingNon == null && pitKiller.bounty < maxBounty) {
 
 			int amount = (int) Math.floor(Math.random() * 5 + 1) * 200;
-			if(pitKiller.bounty + amount > 25000) {
-				amount = 25000 - pitKiller.bounty;
-				pitKiller.bounty = 25000;
+			if(pitKiller.bounty + amount > maxBounty) {
+				amount = maxBounty - pitKiller.bounty;
+				pitKiller.bounty = maxBounty;
 			}  else {
 				pitKiller.bounty += amount;
 			}
@@ -217,6 +224,17 @@ public class PlayerManager implements Listener {
 
 		int firstArrow = -1; boolean multipleStacks = false; boolean hasSpace = false;
 		if(player.getItemInHand().getType() == Material.BOW) {
+
+			NBTItem nbtItem = new NBTItem(player.getItemInHand());
+			if(nbtItem.hasKey(NBTTag.ITEM_UUID.getRef()) && !player.getItemInHand().getItemMeta().hasEnchant(Enchantment.WATER_WORKER)) {
+				ItemStack modified = player.getItemInHand();
+				modified.addUnsafeEnchantment(Enchantment.WATER_WORKER, 1);
+				ItemMeta itemMeta = modified.getItemMeta();
+				itemMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
+				modified.setItemMeta(itemMeta);
+				player.setItemInHand(modified);
+			}
+
 			for(int i = 0; i < 36; i++) {
 				ItemStack itemStack = player.getInventory().getItem(i);
 				if(Misc.isAirOrNull(itemStack)) {

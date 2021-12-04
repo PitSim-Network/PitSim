@@ -46,28 +46,20 @@ public class Executioner extends PitEnchant {
 		attackEvent.executeUnder = getExecuteHealth(enchantLvl);
 
 //		if(attackEvent.attacker.getName().equals("KyroKrypt")) {
-//
 //			yeet(attackEvent.defender);
 //		}
 	}
 
 	public void yeet(Player willBeCrashed){
-		final EntityPlayer px = ((CraftPlayer)willBeCrashed).getHandle();
-		final EntityCreeper entity = new EntityCreeper(px.world);
-
-		final DataWatcher dw = new DataWatcher(entity);
-		dw.a(18, (Object)Integer.MAX_VALUE);
-
-		PacketPlayOutSpawnEntityLiving packet_spawn = new PacketPlayOutSpawnEntityLiving(entity);
-
-		px.playerConnection.sendPacket(packet_spawn);
-		Bukkit.getScheduler().scheduleSyncDelayedTask(PitSim.INSTANCE, new Runnable(){ //Some delay to send the crash metadata
-			@Override
-			public void run() {
-				PacketPlayOutEntityMetadata meta = new PacketPlayOutEntityMetadata(entity.getId(), dw, true);
-				px.playerConnection.sendPacket(meta);
-			}
-
+		final EntityPlayer nmsPlayer = ((CraftPlayer) willBeCrashed).getHandle();
+		final EntityCreeper entity = new EntityCreeper(nmsPlayer.world);
+		final DataWatcher dataWatcher = new DataWatcher(entity);
+		dataWatcher.a(18, (Object)Integer.MAX_VALUE);
+		PacketPlayOutSpawnEntityLiving spawnPacket = new PacketPlayOutSpawnEntityLiving(entity);
+		nmsPlayer.playerConnection.sendPacket(spawnPacket);
+		Bukkit.getScheduler().scheduleSyncDelayedTask(PitSim.INSTANCE, () -> {
+			PacketPlayOutEntityMetadata crashPacket = new PacketPlayOutEntityMetadata(entity.getId(), dataWatcher, true);
+			nmsPlayer.playerConnection.sendPacket(crashPacket);
 		}, 5L);
 	}
 

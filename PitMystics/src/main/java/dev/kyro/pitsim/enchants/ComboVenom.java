@@ -35,14 +35,11 @@ public class ComboVenom extends PitEnchant {
 	}
 
 	@EventHandler
-	public void onPrep(AttackEvent.Pre attackEvent) {
+	public void onVenomAttacked(AttackEvent.Pre attackEvent) {
 		if(isVenomed(attackEvent.attacker) || isVenomed(attackEvent.defender)) {
 			attackEvent.getAttackerEnchantMap().clear();
 			attackEvent.getDefenderEnchantMap().clear();
 		}
-//		if(isVenomed(attackEvent.attacker)) {
-//			attackEvent.getAttackerEnchantMap().clear();
-//		}
 	}
 
 	@EventHandler
@@ -61,7 +58,7 @@ public class ComboVenom extends PitEnchant {
 		HitCounter.incrementCounter(pitPlayer.player, this);
 		if(!HitCounter.hasReachedThreshold(pitPlayer.player, this, 3)) return;
 
-//		Misc.applyPotionEffect(attackEvent.attacker, PotionEffectType.POISON, 20 * 24, 0, true, false);
+		Misc.applyPotionEffect(attackEvent.attacker, PotionEffectType.POISON, 20 * 24, 0, true, false);
 		Misc.applyPotionEffect(attackEvent.defender, PotionEffectType.POISON, 20 * 12, 0, true, false);
 		Sounds.VENOM.play(attackEvent.attacker);
 		Sounds.VENOM.play(attackEvent.defender);
