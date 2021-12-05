@@ -186,7 +186,7 @@ public class MegastreakPanel extends AGUIPanel {
                 PrestigeValues.PrestigeInfo info = PrestigeValues.getPrestigeInfo(pitPlayer.prestige);
                 lore.add(ChatColor.translateAlternateColorCodes('&', "&cUnlocked at level " + info.getOpenBracket() + PrestigeValues.getLevelColor(megastreak.levelReq()) + megastreak.levelReq() + info.getCloseBracket()));
                 meta.setDisplayName(ChatColor.RED + megastreak.getRawName());
-            }else if(megastreak.getClass() != NoMegastreak.class){
+            } else if(megastreak.getClass() != NoMegastreak.class){
                 lore.add(ChatColor.YELLOW + "Click to select!");
                 meta.setDisplayName(ChatColor.YELLOW + megastreak.getRawName());
             }
