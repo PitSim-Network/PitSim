@@ -203,7 +203,6 @@ public class MegastreakPanel extends AGUIPanel {
             item.setItemMeta(meta);
 
             getInventory().setItem(megastreak.guiSlot(), item);
-
         }
 
         ItemStack back = new ItemStack(Material.ARROW);
