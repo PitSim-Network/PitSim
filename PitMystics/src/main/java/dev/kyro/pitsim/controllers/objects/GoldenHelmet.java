@@ -70,6 +70,7 @@ public class GoldenHelmet {
 
 
 	public void setLore() {
+		if(owner == null) this.ability = null;
 		if(getInventorySlot(owner) == -1) return;
 		ALoreBuilder loreBuilder = new ALoreBuilder();
 		loreBuilder.addLore("");
