@@ -11,6 +11,7 @@ import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.enums.ApplyType;
 import dev.kyro.pitsim.enums.NBTTag;
 import dev.kyro.pitsim.events.KillEvent;
+import dev.kyro.pitsim.megastreaks.NoMegastreak;
 import dev.kyro.pitsim.megastreaks.Uberstreak;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -34,14 +35,14 @@ public class SelfCheckout extends PitEnchant {
 		if(enchantLvl == 0) return;
 
 		PitPlayer pitKiller = PitPlayer.getPitPlayer(killEvent.killer);
-		if(pitKiller.getKills() + 1 < 100 || pitKiller.megastreak.getClass() == Uberstreak.class) return;
+		if(pitKiller.getKills() + 1 < 200 || pitKiller.megastreak.getClass() == Uberstreak.class || pitKiller.megastreak.getClass() == NoMegastreak.class) return;
 
 		if(!EnchantManager.isJewelComplete(leggings)) {
 			AOutput.error(killEvent.killer, "Self-Checkout only works on jewel items");
 			return;
 		}
 
-		int renown = (int) ((pitKiller.getKills() + 1) / 100);
+		int renown = Math.min((int) ((pitKiller.getKills() + 1) / 200), 5);
 		if(renown != 0) {
 			pitKiller.renown += renown;
 			FileConfiguration playerData = APlayerData.getPlayerData(killEvent.killer);
@@ -72,9 +73,9 @@ public class SelfCheckout extends PitEnchant {
 	@Override
 	public List<String> getDescription(int enchantLvl) {
 
-		return new ALoreBuilder("&7On kill, if you have a killstreak", "&7of at least 100, &eExplode:",
+		return new ALoreBuilder("&7On kill, if you have a killstreak", "&7of at least 200, &eExplode:",
 				"&e\u25a0 &7Die! Keep jewel lives on death",
-				"&a\u25a0 &7Gain &e+1 renown &7for every 100 killstreak",
+				"&a\u25a0 &7Gain &e+1 renown &7for every 200 killstreak (max 5)",
 				"&c\u25a0 &7Lose &c2 lives &7on this item").getLore();
 	}
 }
