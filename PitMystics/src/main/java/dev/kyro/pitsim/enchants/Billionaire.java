@@ -30,7 +30,7 @@ public class Billionaire extends PitEnchant {
 		int enchantLvl = attackEvent.getAttackerEnchantLevel(this);
 		if(enchantLvl == 0) return;
 
-		if(HopperManager.isHopper(attackEvent.attacker)) {
+		if(NonManager.getNon(attackEvent.attacker) != null || HopperManager.isHopper(attackEvent.attacker)) {
 			attackEvent.multiplier.add(getDamageMultiplier(enchantLvl));
 			return;
 		}
