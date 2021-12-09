@@ -26,20 +26,22 @@ public class Dispersion extends PitEnchant {
 		int enchantLvl = attackEvent.getDefenderEnchantLevel(this);
 		if(enchantLvl == 0) return;
 
+		if(attackEvent.defender.getLocation().distance(MapManager.getMid()) > 10) return;
+
 		PitPlayer pitDefender = PitPlayer.getPitPlayer(attackEvent.defender);
-		if(!pitDefender.megastreak.isOnMega() || attackEvent.defender.getLocation().distance(MapManager.getMid()) > 10) return;
+		if(pitDefender.megastreak.isOnMega()) {
+			Map<PitEnchant, Integer> selected = new LinkedHashMap<>();
+			for(Map.Entry<PitEnchant, Integer> entry : attackEvent.getAttackerEnchantMap().entrySet()) {
+				if(Math.random() * 100 > getPercent(enchantLvl)) continue;
+				selected.put(entry.getKey(), entry.getValue());
+			}
 
-		Map<PitEnchant, Integer> selected = new LinkedHashMap<>();
-		for(Map.Entry<PitEnchant, Integer> entry : attackEvent.getAttackerEnchantMap().entrySet()) {
-			if(Math.random() * 100 > getPercent(enchantLvl)) continue;
-			selected.put(entry.getKey(), entry.getValue());
-		}
-
-		for(Map.Entry<PitEnchant, Integer> entry : selected.entrySet()) {
-			if(toDisperse.size() > 250) continue;
-			attackEvent.getAttackerEnchantMap().remove(entry.getKey());
-			toDisperse.add(new EnchantAndLevel(entry.getKey(), entry.getValue(),
-					attackEvent.attacker.getUniqueId(), attackEvent.defender.getUniqueId()));
+			for(Map.Entry<PitEnchant, Integer> entry : selected.entrySet()) {
+				if(toDisperse.size() > 250) continue;
+				attackEvent.getAttackerEnchantMap().remove(entry.getKey());
+				toDisperse.add(new EnchantAndLevel(entry.getKey(), entry.getValue(),
+						attackEvent.attacker.getUniqueId(), attackEvent.defender.getUniqueId()));
+			}
 		}
 
 		for(int i = 0; i < toDisperse.size() / 10 + 1; i++) {
