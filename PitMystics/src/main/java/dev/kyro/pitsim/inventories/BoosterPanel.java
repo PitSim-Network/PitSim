@@ -54,7 +54,7 @@ public class BoosterPanel extends AGUIPanel {
 						booster.minutes += 60;
 
 						FileConfiguration playerData = APlayerData.getPlayerData(player);
-						int timeLeft = playerData.getInt("booster-time." + booster.refName) + booster.minutes;
+						int timeLeft = playerData.getInt("booster-time." + booster.refName) + 60;
 						playerData.set("booster-time." + booster.refName, timeLeft);
 						APlayerData.savePlayerData(player);
 
