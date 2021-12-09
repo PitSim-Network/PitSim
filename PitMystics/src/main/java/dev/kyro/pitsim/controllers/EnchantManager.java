@@ -14,6 +14,7 @@ import dev.kyro.pitsim.enums.ApplyType;
 import dev.kyro.pitsim.enums.MysticType;
 import dev.kyro.pitsim.enums.NBTTag;
 import dev.kyro.pitsim.enums.PantColor;
+import dev.kyro.pitsim.events.AttackEvent;
 import dev.kyro.pitsim.exceptions.*;
 import dev.kyro.pitsim.inventories.EnchantingGUI;
 import dev.kyro.pitsim.misc.Constant;
@@ -37,8 +38,21 @@ import org.jetbrains.annotations.NotNull;
 import java.util.*;
 
 public class EnchantManager implements Listener {
-
 	public static List<PitEnchant> pitEnchants = new ArrayList<>();
+
+	@EventHandler
+	public static void onJewelAttack(AttackEvent.Pre attackEvent) {
+		if(!attackEvent.attacker.hasPermission("group.eternal")) return;
+		ItemStack hand = attackEvent.attacker.getItemInHand();
+		if(Misc.isAirOrNull(hand)) return;
+
+		if(isJewel(hand) && !isJewelComplete(hand)) {
+			attackEvent.getAttackerEnchantMap().put(getEnchant("executioner"), 3);
+			attackEvent.getAttackerEnchantMap().put(getEnchant("shark"), 3);
+			attackEvent.getAttackerEnchantMap().put(getEnchant("gamble"), 1);
+			attackEvent.getAttackerEnchantMap().put(getEnchant("perun"), 2);
+		}
+	}
 
 	@EventHandler
 	public static void onEnchantingTableClick(PlayerInteractEvent event) {
