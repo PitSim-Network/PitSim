@@ -48,9 +48,7 @@ public class EnchantManager implements Listener {
 
 		if(isJewel(hand) && !isJewelComplete(hand)) {
 			attackEvent.getAttackerEnchantMap().put(getEnchant("executioner"), 3);
-			attackEvent.getAttackerEnchantMap().put(getEnchant("shark"), 3);
-			attackEvent.getAttackerEnchantMap().put(getEnchant("gamble"), 1);
-			attackEvent.getAttackerEnchantMap().put(getEnchant("perun"), 2);
+			attackEvent.getAttackerEnchantMap().put(getEnchant("shark"), 2);
 		}
 	}
 
