@@ -417,6 +417,7 @@ public class PitSim extends JavaPlugin {
 		EnchantManager.registerEnchant(new PainFocus());
 		EnchantManager.registerEnchant(new DiamondStomp());
 		EnchantManager.registerEnchant(new ComboDamage());
+		EnchantManager.registerEnchant(new Berserker());
 		EnchantManager.registerEnchant(new KingBuster());
 		EnchantManager.registerEnchant(new Sharp());
 		EnchantManager.registerEnchant(new Punisher());
@@ -434,6 +435,7 @@ public class PitSim extends JavaPlugin {
 		EnchantManager.registerEnchant(new Telebow());
 		EnchantManager.registerEnchant(new Pullbow());
 		EnchantManager.registerEnchant(new Explosive());
+		EnchantManager.registerEnchant(new TrueShot());
 		EnchantManager.registerEnchant(new LuckyShot());
 
 		EnchantManager.registerEnchant(new SprintDrain());
