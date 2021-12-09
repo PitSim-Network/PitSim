@@ -9,7 +9,7 @@ import org.bukkit.event.EventHandler;
 
 import java.util.List;
 
-public class 	Chipping extends PitEnchant {
+public class Chipping extends PitEnchant {
 
 	public Chipping() {
 		super("Chipping", false, ApplyType.BOWS,
@@ -29,12 +29,11 @@ public class 	Chipping extends PitEnchant {
 
 	@Override
 	public List<String> getDescription(int enchantLvl) {
-
 		return new ALoreBuilder("&7Deals &c" + Misc.getHearts(getDamage(enchantLvl)) + " &7extra true damage").getLore();
 	}
 
 	public double getDamage(int enchantLvl) {
-
-		return enchantLvl;
+		if(enchantLvl == 1) return 0.5;
+		return enchantLvl - 1;
 	}
 }
