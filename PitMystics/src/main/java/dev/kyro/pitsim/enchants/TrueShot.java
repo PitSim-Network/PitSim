@@ -24,7 +24,7 @@ public class TrueShot extends PitEnchant {
 		int enchantLvl = attackEvent.getAttackerEnchantLevel(this);
 		if(enchantLvl == 0) return;
 
-		double damage = attackEvent.getFinalDamage();
+		double damage = attackEvent.getFinalDamageIncrease();
 		attackEvent.trueDamage += damage * (getPercent(enchantLvl) / 100.0);
 		attackEvent.multiplier.add(Misc.getReductionMultiplier(getPercent(enchantLvl)));
 	}
