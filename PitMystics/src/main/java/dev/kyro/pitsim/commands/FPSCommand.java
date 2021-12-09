@@ -21,7 +21,7 @@ public class FPSCommand implements CommandExecutor {
 	public static List<Player> fpsPlayers = new ArrayList<>();
 	public static List<Player> affectedPlayers = new ArrayList<>();
 	public static double nonHideRadius = 15;
-	public static double playerHideRadius = 5;
+	public static double playerHideRadius = 8;
 	static {
 		new BukkitRunnable() {
 			@Override
