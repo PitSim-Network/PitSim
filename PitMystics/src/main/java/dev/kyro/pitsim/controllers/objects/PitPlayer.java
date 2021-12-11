@@ -45,7 +45,8 @@ public class PitPlayer {
 	public PitPerk[] pitPerks = new PitPerk[4];
 	public int renown = 0;
 
-	private double kills = 0;
+	private int kills = 0;
+	public double assistAmount = 0;
 	public int bounty = 0;
 	public List<Killstreak> killstreaks = Arrays.asList(NoKillstreak.INSTANCE, NoKillstreak.INSTANCE, NoKillstreak.INSTANCE);
 	public int latestKillAnnouncement = 0;
@@ -189,7 +190,7 @@ public class PitPlayer {
 
 		kills++;
 
-		Bukkit.getPluginManager().callEvent(new IncrementKillsEvent(this.player, previousKills, 1));
+		Bukkit.getPluginManager().callEvent(new IncrementKillsEvent(this.player, kills))    ;
 
 
 
@@ -213,11 +214,15 @@ public class PitPlayer {
 
 		double previousKills = this.kills;
 
-		Bukkit.getPluginManager().callEvent(new IncrementKillsEvent(this.player, previousKills, assistPercent));
+		assistAmount = assistAmount + assistPercent;
+		if(assistAmount >= 1) {
+			assistAmount = 0;
+			kills++;
+		}
 
-		kills = kills + (Math.round(assistPercent * 100) / 100D);
+		Bukkit.getPluginManager().callEvent(new IncrementKillsEvent(this.player, kills));
 
-		if(kills >= megastreak.getRequiredKills() && kills < megastreak.getRequiredKills() + 1 && megastreak.getClass() != NoMegastreak.class &
+		if(kills >= megastreak.getRequiredKills() && megastreak.getClass() != NoMegastreak.class &
 				!megastreak.isOnMega()) megastreak.proc();
 		for(Killstreak killstreak : killstreaks) {
 			if(kills == 0 || kills % killstreak.killInterval != 0) continue;

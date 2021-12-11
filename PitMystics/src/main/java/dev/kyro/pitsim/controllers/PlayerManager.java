@@ -5,6 +5,7 @@ import de.tr7zw.nbtapi.NBTItem;
 import dev.kyro.arcticapi.data.APlayerData;
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.PitSim;
+import dev.kyro.pitsim.controllers.objects.Megastreak;
 import dev.kyro.pitsim.controllers.objects.Non;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.enums.NBTTag;
@@ -210,7 +211,10 @@ public class PlayerManager implements Listener {
 	@EventHandler
 	public void onIncrement(IncrementKillsEvent event) {
 		PitPlayer pitPlayer = PitPlayer.getPitPlayer(event.player);
-		if(event.currentAmount < pitPlayer.megastreak.getRequiredKills() && event.newAmount >= pitPlayer.megastreak.getRequiredKills() && pitPlayer.megastreak.getClass() != NoMegastreak.class) pitPlayer.megastreak.proc();
+		int kills = event.kills;
+		Megastreak megastreak = pitPlayer.megastreak;
+		if(kills >= megastreak.getRequiredKills() && megastreak.getClass() != NoMegastreak.class &
+				!megastreak.isOnMega()) megastreak.proc();
 		pitPlayer.megastreak.kill();
 	}
 

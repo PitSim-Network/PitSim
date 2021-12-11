@@ -75,6 +75,7 @@ public class SpawnManager implements Listener {
             if(isInSpawn(player.getLocation())) {
                 PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
                 pitPlayer.endKillstreak();
+                CombatManager.taggedPlayers.remove(player.getUniqueId());
             }
         }
 
