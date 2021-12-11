@@ -66,7 +66,7 @@ public class Dispersion extends PitEnchant {
 	@Override
 	public List<String> getDescription(int enchantLvl) {
 		return new ALoreBuilder("&7If you are on mega and near mid", "&ddisperse " + getPercent(enchantLvl) + "% &7of the enchants",
-				"&7on your opponents attacks to", "&7nearby players using this enchant").getLore();
+				"&7on your opponent's attacks to", "&7nearby players using this enchant").getLore();
 	}
 
 	public int getPercent(int enchantLvl) {

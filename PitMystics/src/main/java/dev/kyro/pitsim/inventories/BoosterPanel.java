@@ -68,7 +68,6 @@ public class BoosterPanel extends AGUIPanel {
 					player.closeInventory();
 				}
 			}
-
 		}
 	}
 
