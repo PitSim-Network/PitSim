@@ -26,7 +26,7 @@ public class LockdownManager implements Listener {
 	public static Map<Player, UUID> captchaAnswers = new HashMap<>();
 	private static boolean requireVerification;
 	private static boolean requireCaptcha;
-	public static String verificationMessage = "&c&lVERIFICATION! &7Verify your account in /discord (.verify)";
+	public static String verificationMessage = "&c&lVERIFICATION! &7Verify your account in discord.pitsim.net (.verify)";
 
 	static {
 		requireVerification = AConfig.getBoolean("security.require-verification");
