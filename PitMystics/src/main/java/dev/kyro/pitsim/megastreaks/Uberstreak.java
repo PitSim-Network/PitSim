@@ -29,9 +29,12 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.scheduler.BukkitRunnable;
 
+import java.text.DecimalFormat;
 import java.util.*;
 
 public class Uberstreak extends Megastreak {
+	public static double SHARD_MULTIPLIER = 3;
+
 	public List<UberEffect> uberEffects = new ArrayList<>();
 	MysticType mysticType;
 
@@ -81,6 +84,8 @@ public class Uberstreak extends Megastreak {
 
 	@Override
 	public ItemStack guiItem() {
+		DecimalFormat decimalFormat = new DecimalFormat("0.#");
+
 		ItemStack item = new ItemStack(Material.GOLD_SWORD);
 		ItemMeta meta = item.getItemMeta();
 		List<String> lore = new ArrayList<>();
@@ -88,6 +93,7 @@ public class Uberstreak extends Megastreak {
 		lore.add("");
 		lore.add(ChatColor.GRAY + "On trigger:");
 		lore.add(ChatColor.translateAlternateColorCodes('&', "&a\u25a0 &7Immune to enchants that &emove &7you"));
+		lore.add(ChatColor.translateAlternateColorCodes('&', "&a\u25a0 &d" + decimalFormat.format(SHARD_MULTIPLIER) + "x &7chance to find &aAncient Gem Shards"));
 		lore.add("");
 		lore.add(ChatColor.GRAY + "BUT:");
 		lore.add(ChatColor.translateAlternateColorCodes('&', "&c\u25a0 &7Deal &c-50% &7damage to nons"));

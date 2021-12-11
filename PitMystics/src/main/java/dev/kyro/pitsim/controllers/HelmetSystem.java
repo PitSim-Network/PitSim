@@ -14,7 +14,7 @@ public class HelmetSystem {
 		GOLD_BOOST("&6Gold Boost", 4, 4, 25, (short) 14, ChatColor.GOLD, 1),
 		DAMAGE("&cDamage Dealt",10, 5, 10, (short) 1, ChatColor.RED, 1),
 		DAMAGE_REDUCTION("&9Damage Received",10, 10, 10, (short) 6, ChatColor.BLUE, 1),
-		SHARD_CHANCE("&aShard Chance", 7, 35, 10, (short) 10, ChatColor.GREEN, 0.1);
+		SHARD_CHANCE("&aShard Chance", 19, 19, 5, (short) 10, ChatColor.GREEN, 0.1);
 
 		public String refName;
 		public int everyX;
