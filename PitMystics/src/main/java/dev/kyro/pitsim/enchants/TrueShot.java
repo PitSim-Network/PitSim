@@ -40,7 +40,7 @@ public class TrueShot extends PitEnchant {
 	}
 
 	public int getPercent(int enchantLvl) {
-		return Math.min(enchantLvl * 10 + 5, 100);
+		return Math.min(enchantLvl * 10, 100);
 	}
 
 	public double getBase(int enchantLvl) {
