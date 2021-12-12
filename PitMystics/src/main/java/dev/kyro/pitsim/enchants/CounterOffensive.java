@@ -27,32 +27,26 @@ public class CounterOffensive extends PitEnchant {
 
 		HitCounter.incrementCounter(attackEvent.defender, this);
 		if(!HitCounter.hasReachedThreshold(attackEvent.defender, this, getCombo(enchantLvl))) return;
-		Misc.applyPotionEffect(attackEvent.defender, PotionEffectType.SPEED, getDuration(enchantLvl) * 20, 1, false, false);
+		Misc.applyPotionEffect(attackEvent.defender, PotionEffectType.SPEED, getSeconds(enchantLvl) * 20, getAmplifier(enchantLvl), false, false);
 	}
 
 	@Override
 	public List<String> getDescription(int enchantLvl) {
 
-		return new ALoreBuilder("&7Gain &eSpeed II &7(" + getDuration(enchantLvl) + "s) when hit",
+		return new ALoreBuilder("&7Gain &eSpeed II &7(" + getSeconds(enchantLvl) + "s) when hit",
 				"&e" + getCombo(enchantLvl) + " times &7by a player").getLore();
 	}
 
 	public int getCombo(int enchantLvl) {
-
-		switch(enchantLvl) {
-			case 1:
-				return 4;
-			case 2:
-				return 3;
-			case 3:
-				return 2;
-
-		}
-		return 0;
+		return Math.max(6 - enchantLvl, 1);
 	}
 
-	public int getDuration(int enchantLvl) {
+	public int getAmplifier(int enchantLvl) {
+		return Misc.linearEnchant(enchantLvl, 0.5, 0);
+	}
 
-		return 1 + (enchantLvl * 2);
+	public int getSeconds(int enchantLvl) {
+		if(enchantLvl == 1) return 2;
+		return enchantLvl * 2;
 	}
 }
