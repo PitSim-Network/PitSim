@@ -47,6 +47,6 @@ public class CounterOffensive extends PitEnchant {
 
 	public int getSeconds(int enchantLvl) {
 		if(enchantLvl == 1) return 2;
-		return enchantLvl * 2;
+		return enchantLvl * 2 - 1;
 	}
 }
