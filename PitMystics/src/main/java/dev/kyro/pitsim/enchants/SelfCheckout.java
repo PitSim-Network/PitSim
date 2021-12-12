@@ -37,7 +37,8 @@ public class SelfCheckout extends PitEnchant {
 		PitPlayer pitKiller = PitPlayer.getPitPlayer(killEvent.killer);
 		if(pitKiller.getKills() + 1 < 200 || pitKiller.megastreak.getClass() == Uberstreak.class || pitKiller.megastreak.getClass() == NoMegastreak.class) return;
 
-		if(!EnchantManager.isJewelComplete(leggings)) {
+		NBTItem nbtItem = new NBTItem(leggings);
+		if(!EnchantManager.isJewelComplete(leggings) || !nbtItem.getString(NBTTag.ITEM_JEWEL_ENCHANT.getRef()).equalsIgnoreCase(refNames.get(0))) {
 			AOutput.error(killEvent.killer, "Self-Checkout only works on jewel items");
 			return;
 		}
@@ -53,7 +54,6 @@ public class SelfCheckout extends PitEnchant {
 
 		DamageManager.death(killEvent.killer);
 
-		NBTItem nbtItem = new NBTItem(leggings);
 		if(nbtItem.hasKey(NBTTag.CURRENT_LIVES.getRef())) {
 			int lives = nbtItem.getInteger(NBTTag.CURRENT_LIVES.getRef());
 			if(lives - 2 <= 0) {
