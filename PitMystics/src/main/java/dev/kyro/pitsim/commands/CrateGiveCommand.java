@@ -15,6 +15,7 @@ import dev.kyro.pitsim.enums.PantColor;
 import dev.kyro.pitsim.misc.ChunkOfVile;
 import dev.kyro.pitsim.misc.FunkyFeather;
 import dev.kyro.pitsim.misc.ProtArmor;
+import dev.kyro.pitsim.upgrades.ShardHunter;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -141,6 +142,9 @@ public class CrateGiveCommand implements CommandExecutor {
 						AOutput.send(finalPlayer, "&7You have been given &e" + amount + " renown");
 					}
 				}.runTaskLater(PitSim.INSTANCE, 3L);
+				return false;
+			case "shard":
+				AUtil.giveItemSafely(player, ShardHunter.getShardItem(amount), true);
 				return false;
 		}
 
