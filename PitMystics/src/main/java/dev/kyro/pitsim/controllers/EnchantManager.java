@@ -382,7 +382,7 @@ public class EnchantManager implements Listener {
 //		}
 
 		PantColor.setPantColor(nbtItem.getItem(), PantColor.getNormalRandom());
-		int maxLives = Math.random() > 0.01 ? (int) (Math.random() * 50 + 10) : 100;
+		int maxLives = getRandomMaxLives();
 		nbtItem.setInteger(NBTTag.MAX_LIVES.getRef(), maxLives);
 		nbtItem.setInteger(NBTTag.CURRENT_LIVES.getRef(), maxLives);
 		Bukkit.broadcastMessage(ChatColor.translateAlternateColorCodes(
@@ -396,6 +396,18 @@ public class EnchantManager implements Listener {
 			return EnchantManager.addEnchant(nbtItem.getItem(), jewelEnchant, 3, false, true, -1);
 		} catch(Exception ignored) { }
 		return null;
+	}
+
+	public static int getRandomMaxLives() {
+		if(Math.random() < 0.001) return 420;
+		if(Math.random() < 0.01) return 100;
+		int maxLives = 10;
+		if(Math.random() < 0.67) {
+			maxLives += (int) (Math.random() * 11);
+		} else {
+			maxLives += (int) (Math.random() * 31 + 10);
+		}
+		return maxLives;
 	}
 
 	public static void incrementKills(Player attacker, Player killed) {
