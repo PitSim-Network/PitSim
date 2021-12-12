@@ -33,7 +33,7 @@ import java.text.DecimalFormat;
 import java.util.*;
 
 public class Uberstreak extends Megastreak {
-	public static double SHARD_MULTIPLIER = 3;
+	public static double SHARD_MULTIPLIER = 2;
 
 	public List<UberEffect> uberEffects = new ArrayList<>();
 	MysticType mysticType;
