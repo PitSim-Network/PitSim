@@ -359,7 +359,8 @@ public class DamageManager implements Listener {
 
 			Player assistPlayer = Bukkit.getPlayer(entry.getKey());
 			if(assistPlayer == null) continue;
-			double assistPercent = entry.getValue() / finalDamage;
+//			TODO: Fix assist erroring (its rare so not super important)
+			double assistPercent = Math.min(entry.getValue() / finalDamage, 1);
 
 			if(UpgradeManager.hasUpgrade(assistPlayer, "KILL_STEAL")) {
 				int tier = UpgradeManager.getTier(assistPlayer, "KILL_STEAL");
