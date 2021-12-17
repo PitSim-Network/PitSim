@@ -81,7 +81,7 @@ public class BoosterManager implements Listener {
 			donatorMessages.get(uuid).add(new BoosterReward(xpBooster, xp));
 			for(Player onlinePlayer : Bukkit.getOnlinePlayers()) {
 				if(!onlinePlayer.getUniqueId().equals(uuid)) continue;
-				LevelManager.addXp(onlinePlayer, xp);
+				LevelManager.addXP(onlinePlayer, xp);
 			}
 		}
 	}
