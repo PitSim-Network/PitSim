@@ -2,6 +2,7 @@ package dev.kyro.pitsim.enchants;
 
 import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.arcticapi.misc.AUtil;
+import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.controllers.Cooldown;
 import dev.kyro.pitsim.controllers.EnchantManager;
 import dev.kyro.pitsim.controllers.objects.PitEnchant;
@@ -14,10 +15,14 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.entity.EntityShootBowEvent;
 import org.bukkit.potion.PotionEffectType;
+import org.bukkit.scheduler.BukkitRunnable;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 public class MegaLongBow extends PitEnchant {
+	public static List<UUID> mlbShots = new ArrayList<>();
 
 	public MegaLongBow() {
 		super("Mega Longbow", true, ApplyType.BOWS,
@@ -27,6 +32,9 @@ public class MegaLongBow extends PitEnchant {
 	@EventHandler
 	public void onAttack(AttackEvent.Apply attackEvent) {
 		if(!canApply(attackEvent)) return;
+		if(attackEvent.arrow == null || !mlbShots.contains(attackEvent.arrow.getUniqueId())) return;
+
+		attackEvent.increaseCalcDecrease.add(Misc.getReductionMultiplier(getReduction()));
 	}
 
 	@EventHandler(priority = EventPriority.LOW)
@@ -48,6 +56,14 @@ public class MegaLongBow extends PitEnchant {
 		Cooldown cooldown = getCooldown(player, 20);
 		if(cooldown.isOnCooldown()) return; else cooldown.reset();
 
+		mlbShots.add(arrow.getUniqueId());
+		new BukkitRunnable() {
+			@Override
+			public void run() {
+				mlbShots.remove(arrow.getUniqueId());
+			}
+		}.runTaskLater(PitSim.INSTANCE, 200L);
+
 		critArrow(player, arrow);
 		Misc.applyPotionEffect(player, PotionEffectType.JUMP, 40, getJumpMultiplier(enchantLvl), true, false);
 	}
@@ -62,7 +78,12 @@ public class MegaLongBow extends PitEnchant {
 	public List<String> getDescription(int enchantLvl) {
 
 		return new ALoreBuilder("&7One shot per second, this bow is",
-				"&7automatically fully drawn and", "&7grants &aJump Boost " + AUtil.toRoman(getJumpMultiplier(enchantLvl) + 1) + " &7(2s)").getLore();
+				"&7automatically fully drawn and", "&7grants &aJump Boost " + AUtil.toRoman(getJumpMultiplier(enchantLvl) + 1) + " &7(2s)",
+				"&7Arrows deal &c-" + getReduction() + "% &7damage").getLore();
+	}
+
+	public static int getReduction() {
+		return 50;
 	}
 
 	public int getJumpMultiplier(int enchantLvl) {
