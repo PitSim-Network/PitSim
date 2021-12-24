@@ -1,7 +1,9 @@
 package dev.kyro.pitsim.controllers;
 
 import de.tr7zw.nbtapi.NBTItem;
+import dev.kyro.arcticapi.data.AConfig;
 import dev.kyro.arcticapi.data.APlayerData;
+import dev.kyro.arcticapi.libs.discord.DiscordWebhook;
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.enums.NBTTag;
@@ -23,17 +25,24 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
+import java.awt.*;
 import java.io.*;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.stream.Stream;
 
 public class DupeManager implements Listener {
 	public static List<TrackedItem> dupedItems = new ArrayList<>();
+	public static Map<UUID, Integer> featherMap = new HashMap<>();
 
 	static {
-		dupeCheck();
+		new BukkitRunnable() {
+			@Override
+			public void run() {
+				dupeCheck();
+			}
+		}.runTaskLaterAsynchronously(PitSim.INSTANCE, 200L);
 	}
 
 	public static void dupeCheck() {
@@ -47,6 +56,7 @@ public class DupeManager implements Listener {
 
 		int count = 0; int total = allPlayerUUIDs.size();
 		for(UUID uuid : allPlayerUUIDs) {
+			featherMap.put(uuid, 0);
 
 			AOutput.log("Stage 1: " + ++count + "/" + total);
 
@@ -64,6 +74,12 @@ public class DupeManager implements Listener {
 
 						if(Misc.isAirOrNull(itemStack)) continue;
 						NBTItem nbtItem = new NBTItem(itemStack);
+
+						if(nbtItem.hasKey(NBTTag.IS_FEATHER.getRef())) {
+							featherMap.put(uuid, featherMap.get(uuid) + itemStack.getAmount());
+							continue;
+						}
+
 						if(!nbtItem.hasKey(NBTTag.ITEM_UUID.getRef()) || !nbtItem.hasKey(NBTTag.ITEM_JEWEL_ENCHANT.getRef())) continue;
 						trackedItems.add(new TrackedItem(uuid, nbtItem, i, j));
 					}
@@ -85,6 +101,12 @@ public class DupeManager implements Listener {
 
 						if(Misc.isAirOrNull(itemStack)) continue;
 						NBTItem nbtItem = new NBTItem(itemStack);
+
+						if(nbtItem.hasKey(NBTTag.IS_FEATHER.getRef())) {
+							featherMap.put(uuid, featherMap.get(uuid) + itemStack.getAmount());
+							continue;
+						}
+
 						if(!nbtItem.hasKey(NBTTag.ITEM_UUID.getRef()) || !nbtItem.hasKey(NBTTag.ITEM_JEWEL_ENCHANT.getRef())) continue;
 						trackedItems.add(new TrackedItem(uuid, nbtItem, i));
 					}
@@ -127,7 +149,40 @@ public class DupeManager implements Listener {
 			System.out.println(offlinePlayer.getName());
 		}
 
-		AOutput.log("Check completed");
+		AOutput.log("Check completed, posting results");
+
+		List<UUID> toRemove = new ArrayList<>();
+		for(Map.Entry<UUID, Integer> entry : featherMap.entrySet()) {
+			OfflinePlayer player = Bukkit.getOfflinePlayer(entry.getKey());
+			if(player.isOp()) toRemove.add(entry.getKey());
+		}
+		for(UUID uuid : toRemove) featherMap.remove(uuid);
+		int totalFeathers = featherMap.values().stream().mapToInt(i -> i).sum();
+
+		DiscordWebhook discordWebhook = new DiscordWebhook(
+				"***REMOVED***");
+		DiscordWebhook.EmbedObject embedObject = new DiscordWebhook.EmbedObject()
+				.setTitle("Feathers")
+				.setDescription("There are a total of " + totalFeathers + " feathers in the game")
+				.setColor(Color.BLACK);
+		discordWebhook.addEmbed(embedObject);
+
+		Stream<Map.Entry<UUID,Integer>> sorted = featherMap.entrySet().stream()
+				.sorted(Collections.reverseOrder(Map.Entry.comparingByValue()))
+				.limit(40);
+		AtomicInteger mapCount = new AtomicInteger(1);
+		sorted.forEach(entry -> {
+			OfflinePlayer player = Bukkit.getOfflinePlayer(entry.getKey());
+			embedObject.addField(mapCount.getAndIncrement() + ". " + player.getName(), entry.getValue() + " Feathers", true);
+		});
+
+		try {
+			if(AConfig.getString("server").equals("pitsim-main")) discordWebhook.execute();
+		} catch(IOException e) {
+			e.printStackTrace();
+		}
+
+		System.out.println("Results posted");
 	}
 
 	public static void handleDuper(Player player) {
