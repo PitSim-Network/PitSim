@@ -28,7 +28,7 @@ public class LastStand extends PitEnchant {
 		if(enchantLvl == 0) return;
 
 		if(attackEvent.defender.getHealth() - attackEvent.event.getFinalDamage() <= getProcHealth()) {
-			Cooldown cooldown = getCooldown(attackEvent.defender, 10 * 20);
+			Cooldown cooldown = getCooldown(attackEvent.defender, getCooldownSeconds(enchantLvl) * 20);
 			if(cooldown.isOnCooldown()) return; else cooldown.reset();
 			Sounds.LAST_STAND.play(attackEvent.defender);
 			Misc.applyPotionEffect(attackEvent.defender, PotionEffectType.DAMAGE_RESISTANCE, getSeconds(enchantLvl)
@@ -40,7 +40,11 @@ public class LastStand extends PitEnchant {
 	public List<String> getDescription(int enchantLvl) {
 
 		return new ALoreBuilder("&7Gain &9Resistance " + AUtil.toRoman(getAmplifier(enchantLvl)) + " &7("
-		+ getSeconds(enchantLvl) + " &7seconds)", "&7when reaching &c" + Misc.getHearts(getProcHealth()) + " &7(10s cooldown)").getLore();
+		+ getSeconds(enchantLvl) + " &7seconds)", "&7when reaching &c" + Misc.getHearts(getProcHealth()) + " &7(" + getCooldownSeconds(enchantLvl) + "s cooldown)").getLore();
+	}
+
+	public int getCooldownSeconds(int enchantLvl) {
+		return 15;
 	}
 
 	public int getProcHealth() {
