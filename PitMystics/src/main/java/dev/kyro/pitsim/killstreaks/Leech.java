@@ -29,7 +29,7 @@ public class Leech extends Killstreak {
 	public void onHit(AttackEvent.Apply event) {
 		if(rewardPlayers.contains(event.attacker)) {
 			PitPlayer pitPlayer = PitPlayer.getPitPlayer(event.attacker);
-			pitPlayer.heal(3 + (event.getFinalDamageIncrease() * (50 / 100D)));
+			pitPlayer.heal(event.getFinalDamageIncrease() * (getPercent() / 100D));
 			rewardPlayers.remove(event.attacker);
 		}
 	}
@@ -49,8 +49,12 @@ public class Leech extends Killstreak {
 
 		AItemStackBuilder builder = new AItemStackBuilder(Material.FERMENTED_SPIDER_EYE);
 		builder.setName("&e" + name);
-		builder.setLore(new ALoreBuilder("&7Every: &c" + killInterval + " kills", "", "&7Next melee hit heals for &c1.5\u2764 &7+", "&c50% &7of its damage."));
+		builder.setLore(new ALoreBuilder("&7Every: &c" + killInterval + " kills", "", "&7Next melee hit heals for", "&c" + getPercent() + "% &7of its damage."));
 
 		return builder.getItemStack();
+	}
+
+	public int getPercent() {
+		return 20;
 	}
 }
