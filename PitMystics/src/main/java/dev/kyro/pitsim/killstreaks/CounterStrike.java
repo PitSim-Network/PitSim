@@ -29,7 +29,7 @@ public class CounterStrike extends Killstreak {
 	@EventHandler
 	public void onhit(AttackEvent.Apply event) {
 		if(rewardPlayers.contains(event.attacker)) {
-			event.increasePercent += (15/ 100D);
+			event.increasePercent += (10/ 100D);
 			rewardPlayers.remove(event.attacker);
 		}
 		if(rewardPlayers.contains(event.defender)) {
@@ -60,7 +60,7 @@ public class CounterStrike extends Killstreak {
 
 		AItemStackBuilder builder = new AItemStackBuilder(Material.IRON_BARDING);
 		builder.setName("&e" + name);
-		builder.setLore(new ALoreBuilder("&7Every: &c" + killInterval + " kills", "", "&7Deal &c+15% &7damage and receive", "&9-20% &7damage per hit for 8s."));
+		builder.setLore(new ALoreBuilder("&7Every: &c" + killInterval + " kills", "", "&7Deal &c+10% &7damage and receive", "&9-20% &7damage per hit for 8s."));
 
 		return builder.getItemStack();
 	}
