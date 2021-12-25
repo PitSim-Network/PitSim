@@ -223,7 +223,7 @@ public class PitSim extends JavaPlugin {
 
 		PerkManager.registerKillstreak(new Explicious());
 		PerkManager.registerKillstreak(new AssuredStrike());
-		PerkManager.registerKillstreak(new RR());
+		PerkManager.registerKillstreak(new RAndR());
 		PerkManager.registerKillstreak(new Leech());
 
 		PerkManager.registerKillstreak(new TacticalRetreat());

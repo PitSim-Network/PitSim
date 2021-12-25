@@ -9,11 +9,11 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffectType;
 
-public class RR extends Killstreak {
+public class RAndR extends Killstreak {
 
-	public static RR INSTANCE;
+	public static RAndR INSTANCE;
 
-	public RR() {
+	public RAndR() {
 		super("R And R", "R&R", 3, 10);
 		INSTANCE = this;
 	}
@@ -21,7 +21,7 @@ public class RR extends Killstreak {
 
 	@Override
 	public void proc(Player player) {
-		Misc.applyPotionEffect(player, PotionEffectType.REGENERATION, 20 * 3, 1, true, false);
+		Misc.applyPotionEffect(player, PotionEffectType.REGENERATION, 20 * 3, 2, true, false);
 		Misc.applyPotionEffect(player, PotionEffectType.DAMAGE_RESISTANCE, 20 * 3, 0, true, false);
 	}
 
@@ -34,7 +34,7 @@ public class RR extends Killstreak {
 
 		AItemStackBuilder builder = new AItemStackBuilder(Material.GOLDEN_CARROT);
 		builder.setName("&e" + name);
-		builder.setLore(new ALoreBuilder("&7Every: &c" + killInterval + " kills", "", "&7Gain &9Resistance I &7and", "&cRegen II &7for 3s."));
+		builder.setLore(new ALoreBuilder("&7Every: &c" + killInterval + " kills", "", "&7Gain &9Resistance I &7and", "&cRegen III &7for 3s."));
 
 		return builder.getItemStack();
 	}
