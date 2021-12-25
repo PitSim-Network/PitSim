@@ -21,7 +21,7 @@ public class HerosHaste extends Killstreak {
 
 	@Override
 	public void proc(Player player) {
-		Misc.applyPotionEffect(player, PotionEffectType.SPEED, 20 * 12, 1, true, false);
+		Misc.applyPotionEffect(player, PotionEffectType.SPEED, 20 * 12, 3, true, false);
 	}
 
 	@Override
@@ -33,7 +33,7 @@ public class HerosHaste extends Killstreak {
 
 		AItemStackBuilder builder = new AItemStackBuilder(Material.BOOK);
 		builder.setName("&e" + name);
-		builder.setLore(new ALoreBuilder("&7Every: &c" + killInterval + " kills", "", "&7Gain &eSpeed II &7for 12 seconds."));
+		builder.setLore(new ALoreBuilder("&7Every: &c" + killInterval + " kills", "", "&7Gain &eSpeed IV &7for 12 seconds."));
 
 		return builder.getItemStack();
 	}
