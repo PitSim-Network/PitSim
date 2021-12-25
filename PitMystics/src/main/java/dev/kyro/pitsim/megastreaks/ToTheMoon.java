@@ -73,7 +73,7 @@ public class ToTheMoon extends Megastreak {
 
 	@Override
 	public int levelReq() {
-		return 50;
+		return 60;
 	}
 
 
