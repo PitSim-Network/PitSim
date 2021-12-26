@@ -360,7 +360,7 @@ public class DamageManager implements Listener {
 			Player assistPlayer = Bukkit.getPlayer(entry.getKey());
 			if(assistPlayer == null) continue;
 //			TODO: Fix assist erroring (its rare so not super important)
-			double assistPercent = Math.min(entry.getValue() / finalDamage, 1);
+			double assistPercent = Math.max(Math.min(entry.getValue() / finalDamage, 1), 0);
 
 			if(UpgradeManager.hasUpgrade(assistPlayer, "KILL_STEAL")) {
 				int tier = UpgradeManager.getTier(assistPlayer, "KILL_STEAL");
@@ -370,7 +370,6 @@ public class DamageManager implements Listener {
 					Map<PitEnchant, Integer> defenderEnchant = new HashMap<>();
 					EntityDamageByEntityEvent ev = new EntityDamageByEntityEvent(assistPlayer, dead, EntityDamageEvent.DamageCause.CUSTOM, 0);
 					AttackEvent aEvent = new AttackEvent(ev, attackerEnchant, defenderEnchant, false);
-
 
 					DamageManager.fakeKill(attackEvent, assistPlayer, dead, false);
 					continue;
