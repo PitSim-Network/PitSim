@@ -161,7 +161,7 @@ public class PitSim extends JavaPlugin {
 		registerCommands();
 		registerListeners();
 		registerBoosters();
-		registerHelmetAbilities();
+//		registerHelmetAbilities();
 	}
 
 	@Override
@@ -324,7 +324,7 @@ public class PitSim extends JavaPlugin {
 		getServer().getPluginManager().registerEvents(new ChunkOfVile(), this);
 		getServer().getPluginManager().registerEvents(new ReachAutoBan(), this);
 		getServer().getPluginManager().registerEvents(new NonAnticheat(), this);
-		getServer().getPluginManager().registerEvents(new HelmetListeners(), this);
+//		getServer().getPluginManager().registerEvents(new HelmetListeners(), this);
 		getServer().getPluginManager().registerEvents(new PitBlob(), this);
 		getServer().getPluginManager().registerEvents(new SpawnNPCs(), this);
 		getServer().getPluginManager().registerEvents(new BackwardsCompatibility(), this);
@@ -354,7 +354,7 @@ public class PitSim extends JavaPlugin {
 		UpgradeManager.registerUpgrade(new Withercraft());
 		UpgradeManager.registerUpgrade(new UnlockFirstStrike());
 		UpgradeManager.registerUpgrade(new Impatient());
-		UpgradeManager.registerUpgrade(new Helmetry());
+//		UpgradeManager.registerUpgrade(new Helmetry());
 		UpgradeManager.registerUpgrade(new ShardHunter());
 		UpgradeManager.registerUpgrade(new ReportAccess());
 //		UpgradeManager.registerUpgrade(new SelfConfidence());
