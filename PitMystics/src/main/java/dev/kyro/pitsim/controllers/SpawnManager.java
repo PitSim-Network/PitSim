@@ -14,12 +14,14 @@ import dev.kyro.pitsim.enums.NBTTag;
 import dev.kyro.pitsim.misc.Sounds;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.entity.Arrow;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityShootBowEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.ArrayList;
@@ -47,8 +49,10 @@ public class SpawnManager implements Listener {
     @EventHandler
     public void onDrop(PlayerDropItemEvent event) {
         if(!isInSpawn(event.getItemDrop().getLocation())) return;
-        NBTItem nbtItem = new NBTItem(event.getItemDrop().getItemStack());
+        ItemStack dropped = event.getItemDrop().getItemStack();
+        NBTItem nbtItem = new NBTItem(dropped);
         if(nbtItem.hasKey(NBTTag.DROP_CONFIRM.getRef())) return;
+        if(dropped.getType() == Material.ENDER_CHEST || dropped.getType() == Material.TRIPWIRE_HOOK) return;
         event.getItemDrop().remove();
         AOutput.send(event.getPlayer(), "&c&lITEM DELETED! &7Dropped in spawn area.");
         Sounds.NO.play(event.getPlayer());
