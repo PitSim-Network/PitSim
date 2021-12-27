@@ -35,14 +35,15 @@ public class YummyBread implements Listener {
 
 	@EventHandler
 	public void onEat(PlayerItemConsumeEvent event) {
+		Player player = event.getPlayer();
 		event.getPlayer().setFoodLevel(19);
 
 		if(Misc.isAirOrNull(event.getItem())) return;
 		NBTItem nbtItem = new NBTItem(event.getItem());
 		if(nbtItem.hasKey(NBTTag.IS_VERY_YUMMY_BREAD.getRef())) {
-			PitPlayer pitPlayer = PitPlayer.getPitPlayer(event.getPlayer());
-			pitPlayer.heal(8);
-			pitPlayer.heal(4, HealEvent.HealType.ABSORPTION, 16);
+			PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
+			pitPlayer.heal(12);
+			pitPlayer.heal(4, HealEvent.HealType.ABSORPTION, 20);
 		}
 	}
 
@@ -71,6 +72,7 @@ public class YummyBread implements Listener {
 		}
 
 		event.getPlayer().setFoodLevel(19);
+		event.getPlayer().updateInventory();
 	}
 
 	public static void deleteBread(Player player) {
@@ -88,13 +90,14 @@ public class YummyBread implements Listener {
 	public static void giveVeryYummyBread(Player player, int amount) {
 		AItemStackBuilder veryBuilder = new AItemStackBuilder(Material.BREAD, amount);
 		veryBuilder.setName("&6Very yummy bread");
-		ALoreBuilder veryLoreBuilder = new ALoreBuilder("&7Heals &c4\u2764", "&7Grants &62\u2764");
+		ALoreBuilder veryLoreBuilder = new ALoreBuilder("&7Heals &c" + Misc.getHearts(12), "&7Grants &6" + Misc.getHearts(4));
 		veryBuilder.setLore(veryLoreBuilder);
 
 		NBTItem nbtItem = new NBTItem(veryBuilder.getItemStack());
 		nbtItem.setBoolean(NBTTag.IS_VERY_YUMMY_BREAD.getRef(), true);
 
 		AUtil.giveItemSafely(player, nbtItem.getItem(), true);
+		player.updateInventory();
 	}
 
 	public static void giveYummyBread(Player player, int amount) {
@@ -107,6 +110,7 @@ public class YummyBread implements Listener {
 		nbtItem.setBoolean(NBTTag.IS_YUMMY_BREAD.getRef(), true);
 
 		AUtil.giveItemSafely(player, nbtItem.getItem(), true);
+		player.updateInventory();
 	}
 
 }
