@@ -18,6 +18,7 @@ import dev.kyro.pitsim.misc.Misc;
 import dev.kyro.pitsim.misc.Sounds;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.GameMode;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -57,19 +58,19 @@ public class NewGoldenHelmet implements Listener {
 			return;
 		}
 
-		if(!abilities.get(player).refName.equals(Objects.requireNonNull(getAbility(player, getHelmet(player))).refName)) generateAbility(player);
+		if(!abilities.get(player).refName.equals(Objects.requireNonNull(getAbility(getHelmet(player))).refName)) generateAbility(player);
 
 		HelmetAbility ability = abilities.get(player);
-		if(!ability.shouldActivate()) return;
 
 		if(ability.isTogglable) {
+			if(!ability.shouldActivate()) return;
 			if(toggledPlayers.contains(player)) {
 				ability.onDeactivate();
-				ability.isActive = true;
+				ability.isActive = false;
 				toggledPlayers.remove(player);
 			} else {
 				ability.onActivate();
-				ability.isActive = false;
+				ability.isActive = true;
 				toggledPlayers.add(player);
 			}
 
@@ -105,14 +106,15 @@ public class NewGoldenHelmet implements Listener {
 
 		NBTItem nbtItem = new NBTItem(helmet);
 
+		if(abilities.containsKey(player)) abilities.get(player).unload();
 		abilities.put(player, generateInstance(player, nbtItem.getString(NBTTag.GHELMET_ABILITY.getRef())));
 	}
 
-	public static HelmetAbility getAbility(Player player, ItemStack helmet) {
+	public static HelmetAbility getAbility(ItemStack helmet) {
 		if(helmet == null) return null;
 
 		NBTItem nbtItem = new NBTItem(helmet);
-		return generateInstance(player, nbtItem.getString(NBTTag.GHELMET_ABILITY.getRef()));
+		return generateInstance(null, nbtItem.getString(NBTTag.GHELMET_ABILITY.getRef()));
 	}
 
 	public static UUID getUUID(Player player) {
@@ -127,11 +129,9 @@ public class NewGoldenHelmet implements Listener {
 		NBTItem nbtItem = new NBTItem(helmet);
 		nbtItem.setInteger(NBTTag.GHELMET_GOLD.getRef(), (getHelmetGold(helmet) + gold));
 
-		if(getHelmet(player) == helmet) {
-			player.getInventory().setHelmet(nbtItem.getItem());
-		} else player.setItemInHand(nbtItem.getItem());
-
-		setLore(player, helmet);
+		setLore(nbtItem.getItem());
+		player.getInventory().setItemInHand(nbtItem.getItem());
+		player.updateInventory();
 	}
 
 	public static boolean withdrawGold(Player player, ItemStack helmet, int gold) {
@@ -148,11 +148,9 @@ public class NewGoldenHelmet implements Listener {
 			helmetGold -= gold;
 			nbtItem.setInteger(NBTTag.GHELMET_GOLD.getRef(), helmetGold);
 
-			if(getHelmet(player) == helmet) {
-				player.getInventory().setHelmet(nbtItem.getItem());
-			} else player.setItemInHand(nbtItem.getItem());
-
-			setLore(player, helmet);
+			setLore(nbtItem.getItem());
+			player.getInventory().setHelmet(nbtItem.getItem());
+			player.updateInventory();
 		}
 		return true;
 	}
@@ -160,6 +158,7 @@ public class NewGoldenHelmet implements Listener {
 	public static void deactivate(Player player) {
 		if(!abilities.containsKey(player)) return;
 		HelmetAbility ability = abilities.get(player);
+		if(!ability.isActive) return;
 
 		ability.onDeactivate();
 		ability.isActive = false;
@@ -176,11 +175,11 @@ public class NewGoldenHelmet implements Listener {
 		return null;
 	}
 
-	public static void setLore(Player player, ItemStack helmet) {
+	public static void setLore(ItemStack helmet) {
 
 		ALoreBuilder loreBuilder = new ALoreBuilder();
 		loreBuilder.addLore("");
-		HelmetAbility ability = getAbility(player, helmet);
+		HelmetAbility ability = getAbility(helmet);
 		int gold = getHelmetGold(helmet);
 
 		if(ability != null) {
@@ -217,11 +216,6 @@ public class NewGoldenHelmet implements Listener {
 		NBTItem nbtItem = new NBTItem(helmet);
 		nbtItem.setInteger(NBTTag.GHELMET_GOLD.getRef(), gold);
 		if(ability != null) nbtItem.setString(NBTTag.GHELMET_ABILITY.getRef(), ability.refName);
-		helmet.setAmount(1);
-
-		if(getHelmet(player) == helmet) {
-			player.getInventory().setHelmet(nbtItem.getItem());
-		} else player.setItemInHand(nbtItem.getItem());
 	}
 
 	public List<Player> crouchPlayers = new ArrayList<>();
@@ -254,8 +248,9 @@ public class NewGoldenHelmet implements Listener {
 		crouchPlayers.remove(event.getPlayer());
 
 		if(abilities.get(event.getPlayer()) != null) {
-			abilities.get(event.getPlayer()).onDeactivate();
+			NewGoldenHelmet.deactivate(event.getPlayer());
 		}
+		if(abilities.containsKey(event.getPlayer())) abilities.get(event.getPlayer()).unload();
 		abilities.remove(event.getPlayer());
 		toggledPlayers.remove(event.getPlayer());
 	}
@@ -264,12 +259,16 @@ public class NewGoldenHelmet implements Listener {
 	public void onRemove(InventoryClickEvent event) {
 
 		Player player = (Player) event.getWhoClicked();
-
+		if(player.getGameMode() != GameMode.SURVIVAL && player.getGameMode() != GameMode.ADVENTURE) {
+			event.setCancelled(true);
+			player.getInventory();
+			return;
+		}
 		if(event.getClickedInventory() == null || event.getClickedInventory().getType() != InventoryType.PLAYER) return;
 		if(Misc.isAirOrNull(player.getInventory().getHelmet())) return;
 		if(event.getSlot() == 39 && player.getInventory().getHelmet().getType() == Material.GOLD_HELMET) {
 			if(abilities.get(player) != null) {
-				abilities.get(player).onDeactivate();
+				NewGoldenHelmet.deactivate(player);
 			}
 			toggledPlayers.remove(player);
 		}
@@ -279,7 +278,7 @@ public class NewGoldenHelmet implements Listener {
 	public void onDrop(PlayerDropItemEvent event) {
 		if(event.getItemDrop().getItemStack().getType() != Material.GOLD_HELMET) return;
 		if(abilities.get(event.getPlayer()) != null) {
-			abilities.get(event.getPlayer()).onDeactivate();
+			NewGoldenHelmet.deactivate(event.getPlayer());
 		}
 		toggledPlayers.remove(event.getPlayer());
 	}
@@ -288,7 +287,7 @@ public class NewGoldenHelmet implements Listener {
 	public void onDeath(PlayerDeathEvent event) {
 		Player player = event.getEntity();
 		if(abilities.get(player) != null) {
-			abilities.get(player).onDeactivate();
+			NewGoldenHelmet.deactivate(player);
 		}
 		toggledPlayers.remove(player);
 	}
@@ -386,7 +385,7 @@ public class NewGoldenHelmet implements Listener {
 
 		Player dead = killEvent.dead;
 		if(abilities.get(dead) != null) {
-			abilities.get(dead).onDeactivate();
+			NewGoldenHelmet.deactivate(killEvent.dead);
 		}
 		toggledPlayers.remove(dead);
 

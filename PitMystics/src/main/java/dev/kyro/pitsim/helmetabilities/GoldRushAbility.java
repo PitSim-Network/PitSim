@@ -25,8 +25,7 @@ public class GoldRushAbility extends HelmetAbility {
 
 	@EventHandler
 	public void onAttack(AttackEvent.Apply attackEvent) {
-		if(!isActive(attackEvent.attacker)) return;
-
+		if(!isActive || player != attackEvent.attacker) return;
 //		GoldenHelmet goldenHelmet = HelmetListeners.getHelmetInstance(attackEvent.attacker);
 //		assert goldenHelmet != null;
 //		if(!goldenHelmet.withdrawGold(1200)) {
@@ -40,7 +39,7 @@ public class GoldRushAbility extends HelmetAbility {
 
 	@EventHandler
 	public void onKill(KillEvent killEvent) {
-		if(!isActive(killEvent.killer)) return;
+		if(!isActive || player != killEvent.killer) return;
 
 		ItemStack goldenHelmet = NewGoldenHelmet.getHelmet(killEvent.killer);
 		assert goldenHelmet != null;
@@ -69,7 +68,6 @@ public class GoldRushAbility extends HelmetAbility {
 		assert goldenHelmet != null;
 		if(!NewGoldenHelmet.withdrawGold(player, goldenHelmet, 4000)) {
 			AOutput.error(player,"&cNot enough gold!");
-			NewGoldenHelmet.deactivate(player);
 			Sounds.NO.play(player);
 			return false;
 		}

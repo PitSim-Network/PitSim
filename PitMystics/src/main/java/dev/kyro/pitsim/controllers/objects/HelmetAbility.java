@@ -3,6 +3,7 @@ package dev.kyro.pitsim.controllers.objects;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.controllers.Cooldown;
 import org.bukkit.entity.Player;
+import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
 import org.bukkit.inventory.ItemStack;
 
@@ -26,6 +27,7 @@ public abstract class HelmetAbility implements Listener {
         this.refName = refName;
         this.isTogglable = isTogglable;
         this.slot = slot;
+        PitSim.INSTANCE.getServer().getPluginManager().registerEvents(this, PitSim.INSTANCE);
     }
 
     public void onActivate() { }
@@ -46,7 +48,6 @@ public abstract class HelmetAbility implements Listener {
     public static void registerHelmetAbility(HelmetAbility helmetAbility) {
 
         helmetAbilities.add(helmetAbility);
-        PitSim.INSTANCE.getServer().getPluginManager().registerEvents(helmetAbility, PitSim.INSTANCE);
     }
 
     public Map<UUID, Cooldown> cooldowns = new HashMap<>();
@@ -69,6 +70,10 @@ public abstract class HelmetAbility implements Listener {
     }
 
     public static boolean isActive(Player player, HelmetAbility ability) {
-        return NewGoldenHelmet.toggledPlayers.contains(player);
+        return ability.isActive;
+    }
+
+    public void unload() {
+        HandlerList.unregisterAll(this);
     }
 }

@@ -106,10 +106,10 @@ public class HelmetryPanel extends AGUIPanel {
                 nbtItem.setBoolean(NBTTag.DROP_CONFIRM.getRef(), true);
 
                 ItemStack goldenHelmet = nbtItem.getItem();
+                NewGoldenHelmet.setLore(nbtItem.getItem());
 
                 AUtil.giveItemSafely(player, nbtItem.getItem(), true);
                 assert goldenHelmet != null;
-                NewGoldenHelmet.setLore(player, goldenHelmet);
 
                 Sounds.HELMET_CRAFT.play(player);
                 player.closeInventory();

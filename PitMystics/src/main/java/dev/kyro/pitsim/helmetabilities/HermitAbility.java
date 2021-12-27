@@ -32,19 +32,18 @@ public class HermitAbility extends HelmetAbility {
 
 	@EventHandler(priority = EventPriority.HIGH)
 	public void onAttack(AttackEvent.Apply attackEvent) {
-		if(!isActive(attackEvent.defender)) return;
+		if(!isActive || player != attackEvent.attacker) return;
 		attackEvent.trueDamage = 0;
 	}
 
 	@Override
 	public void onActivate() {
-		ItemStack goldenHelmet = NewGoldenHelmet.getHelmet(player);
-		assert goldenHelmet != null;
-
 		runnable = new BukkitRunnable() {
 			int count = 0;
 			@Override
 			public void run() {
+				ItemStack goldenHelmet = NewGoldenHelmet.getHelmet(player);
+				assert goldenHelmet != null;
 				if(!NewGoldenHelmet.withdrawGold(player, goldenHelmet, cost)) {
 					AOutput.error(player,"&cNot enough gold!");
 					NewGoldenHelmet.deactivate(player);
@@ -68,7 +67,6 @@ public class HermitAbility extends HelmetAbility {
 		assert goldenHelmet != null;
 		if(!NewGoldenHelmet.withdrawGold(player, goldenHelmet, cost * 100)) {
 			AOutput.error(player,"&cNot enough gold!");
-			NewGoldenHelmet.deactivate(player);
 			Sounds.NO.play(player);
 			return false;
 		}

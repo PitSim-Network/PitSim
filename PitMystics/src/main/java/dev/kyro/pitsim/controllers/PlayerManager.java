@@ -210,7 +210,6 @@ public class PlayerManager implements Listener {
 
 	@EventHandler
 	public void onIncrement(IncrementKillsEvent event) {
-		Bukkit.broadcastMessage("test");
 		PitPlayer pitPlayer = PitPlayer.getPitPlayer(event.player);
 		int kills = event.kills;
 		Megastreak megastreak = pitPlayer.megastreak;

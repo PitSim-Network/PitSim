@@ -5,7 +5,10 @@ import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.controllers.HopperManager;
-import dev.kyro.pitsim.controllers.objects.*;
+import dev.kyro.pitsim.controllers.objects.HelmetAbility;
+import dev.kyro.pitsim.controllers.objects.Hopper;
+import dev.kyro.pitsim.controllers.objects.NewGoldenHelmet;
+import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.events.AttackEvent;
 import dev.kyro.pitsim.misc.Misc;
 import dev.kyro.pitsim.misc.Sounds;
@@ -28,8 +31,7 @@ public class JudgementAbility extends HelmetAbility {
 
 	@EventHandler
 	public void onAttack(AttackEvent.Apply attackEvent) {
-		if(!isActive(attackEvent.attacker)) return;
-
+		if(!isActive || player != attackEvent.attacker) return;
 		ItemStack goldenHelmet = NewGoldenHelmet.getHelmet(attackEvent.attacker);
 		assert goldenHelmet != null;
 		if(!NewGoldenHelmet.withdrawGold(player, goldenHelmet, 5000)) {
@@ -118,7 +120,6 @@ public class JudgementAbility extends HelmetAbility {
 		assert goldenHelmet != null;
 		if(!NewGoldenHelmet.withdrawGold(player, goldenHelmet, 5000)) {
 			AOutput.error(player,"&cNot enough gold!");
-			NewGoldenHelmet.deactivate(player);
 			Sounds.NO.play(player);
 			return false;
 		}

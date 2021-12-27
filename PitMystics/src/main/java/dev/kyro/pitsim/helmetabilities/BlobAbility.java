@@ -28,9 +28,7 @@ public class BlobAbility extends HelmetAbility {
 
 	@Override
 	public void onActivate() {
-		ItemStack goldenHelmet = NewGoldenHelmet.getHelmet(player);
 
-		assert goldenHelmet != null;
 		Slime slime;
 		slime = (Slime) player.getWorld().spawnEntity(player.getLocation(), EntityType.SLIME);
 		slime.setSize(1);
@@ -41,6 +39,8 @@ public class BlobAbility extends HelmetAbility {
 		runnable = new BukkitRunnable() {
 			@Override
 			public void run() {
+				ItemStack goldenHelmet = NewGoldenHelmet.getHelmet(player);
+				assert goldenHelmet != null;
 				if(!NewGoldenHelmet.withdrawGold(player, goldenHelmet, 4000)) {
 					AOutput.error(player,"&cNot enough gold!");
 					NewGoldenHelmet.deactivate(player);
