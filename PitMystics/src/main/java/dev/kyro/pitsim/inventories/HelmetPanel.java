@@ -1,5 +1,6 @@
 package dev.kyro.pitsim.inventories;
 
+import de.tr7zw.nbtapi.NBTItem;
 import dev.kyro.arcticapi.builders.AItemStackBuilder;
 import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.arcticapi.data.APlayerData;
@@ -7,8 +8,11 @@ import dev.kyro.arcticapi.gui.AGUI;
 import dev.kyro.arcticapi.gui.AGUIPanel;
 import dev.kyro.arcticapi.misc.AUtil;
 import dev.kyro.pitsim.controllers.HelmetSystem;
-import dev.kyro.pitsim.controllers.objects.GoldenHelmet;
+import dev.kyro.pitsim.controllers.objects.HelmetAbility;
+import dev.kyro.pitsim.controllers.objects.NewGoldenHelmet;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
+import dev.kyro.pitsim.enums.NBTTag;
+import dev.kyro.pitsim.misc.Misc;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -26,7 +30,7 @@ public class HelmetPanel extends AGUIPanel {
 
     FileConfiguration playerData = APlayerData.getPlayerData(player);
     PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
-    GoldenHelmet goldenHelmet = GoldenHelmet.getHelmetItem(player.getItemInHand(), player);
+    ItemStack goldenHelmet = getHelm();
     List<List<ItemStack>> columns = new ArrayList<>();
     public HelmetGUI helmetGUI;
     public HelmetPanel(AGUI gui) {
@@ -53,7 +57,7 @@ public class HelmetPanel extends AGUIPanel {
                 openPanel(helmetGUI.helmetAbilityPanel);
             }
             if(slot == 7) {
-                HelmetGUI.deposit(player, goldenHelmet.item);
+                HelmetGUI.deposit(player, goldenHelmet);
                 player.closeInventory();
 
             }
@@ -64,10 +68,10 @@ public class HelmetPanel extends AGUIPanel {
 
     @Override
     public void onOpen(InventoryOpenEvent event) {
-        List<String> helmetLore = goldenHelmet.item.getItemMeta().getLore();
+        List<String> helmetLore = goldenHelmet.getItemMeta().getLore();
         helmetLore.remove(helmetLore.size() - 1);
         helmetLore.remove(helmetLore.size() - 1);
-        ItemStack helmetDisplay = goldenHelmet.item.clone();
+        ItemStack helmetDisplay = goldenHelmet.clone();
         ItemMeta helmetMeta = helmetDisplay.getItemMeta();
         helmetMeta.setLore(helmetLore);
         helmetDisplay.setItemMeta(helmetMeta);
@@ -76,10 +80,11 @@ public class HelmetPanel extends AGUIPanel {
         AItemStackBuilder abilityBuilder = new AItemStackBuilder(Material.EYE_OF_ENDER);
         abilityBuilder.setName("&eAbility");
         ALoreBuilder abilityLoreBuilder = new ALoreBuilder();
-        if(goldenHelmet.ability != null) {
-            abilityLoreBuilder.addLore("&7Selected: &9" + goldenHelmet.ability.name);
-            abilityBuilder.getItemStack().setType(goldenHelmet.ability.getDisplayItem().getType());
-            abilityLoreBuilder.addLore(goldenHelmet.ability.getDescription());
+        HelmetAbility ability = getAbility(goldenHelmet);
+        if(ability != null) {
+            abilityLoreBuilder.addLore("&7Selected: &9" + ability.name);
+            abilityBuilder.getItemStack().setType(ability.getDisplayItem().getType());
+            abilityLoreBuilder.addLore(ability.getDescription());
             abilityLoreBuilder.addLore("", "&eClick to chance ability!");
         }
         else {
@@ -101,7 +106,7 @@ public class HelmetPanel extends AGUIPanel {
         depositLore.add(ChatColor.translateAlternateColorCodes('&', "&7in it."));
         depositLore.add("");
         DecimalFormat formatter = new DecimalFormat("#,###.#");
-        depositLore.add(ChatColor.GRAY + "Current gold: " + ChatColor.GOLD + formatter.format(goldenHelmet.gold) + "g");
+        depositLore.add(ChatColor.GRAY + "Current gold: " + ChatColor.GOLD + formatter.format(NewGoldenHelmet.getHelmetGold(goldenHelmet)) + "g");
         depositLore.add("");
         depositLore.add(ChatColor.YELLOW + "Click to deposit gold!");
 
@@ -164,7 +169,7 @@ public class HelmetPanel extends AGUIPanel {
         column9.add(new ItemStack(Material.STAINED_GLASS_PANE, 1, (short) 15));
         columns.add(column9);
 
-        int level = HelmetSystem.getLevel(goldenHelmet.gold);
+        int level = HelmetSystem.getLevel(NewGoldenHelmet.getHelmetGold(goldenHelmet));
 
         int i = 1;
         if(level < 5) i = 1;
@@ -182,7 +187,7 @@ public class HelmetPanel extends AGUIPanel {
             AItemStackBuilder builder = new AItemStackBuilder(Material.INK_SACK);
             ALoreBuilder loreBuilder = new ALoreBuilder();
             builder.getItemStack().setDurability(passive.data);
-            int goldLevel = HelmetSystem.getLevel(goldenHelmet.gold);
+            int goldLevel = HelmetSystem.getLevel(NewGoldenHelmet.getHelmetGold(goldenHelmet));
             int passiveLevel = HelmetSystem.getTotalStacks(passive, goldLevel - 1);
             builder.getItemStack().setAmount(passiveLevel);
             builder.setName(passive.refName);
@@ -217,7 +222,7 @@ public class HelmetPanel extends AGUIPanel {
 
     public void setColumn(int column, int level) {
         List<ItemStack> columnList = columns.get(column);
-            if(HelmetSystem.getTotalGoldAtLevel(level) <= goldenHelmet.gold) {
+            if(HelmetSystem.getTotalGoldAtLevel(level) <= NewGoldenHelmet.getHelmetGold(goldenHelmet)) {
                 columnList.get(0).setDurability((short) 5);
                 removeName(columnList.get(0));
                 getInventory().setItem(column + 9, removeName(columnList.get(0)));
@@ -225,14 +230,15 @@ public class HelmetPanel extends AGUIPanel {
                 removeName(columnList.get(2));
                 getInventory().setItem(column + 27, removeName(columnList.get(2)));
 
-            } else if(HelmetSystem.getLevel(goldenHelmet.gold) > 1 && HelmetSystem.getTotalGoldAtLevel(level - 1) <= goldenHelmet.gold) {
+            } else if(HelmetSystem.getLevel(NewGoldenHelmet.getHelmetGold(goldenHelmet)) > 1 && HelmetSystem.getTotalGoldAtLevel(level - 1)
+                    <= NewGoldenHelmet.getHelmetGold(goldenHelmet)) {
                 columnList.get(0).setDurability((short) 1);
                 removeName(columnList.get(0));
                 getInventory().setItem(column + 9, removeName(columnList.get(0)));
                 columnList.get(2).setDurability((short) 1);
                 getInventory().setItem(column + 27, removeName(columnList.get(2)));
             } else {
-                if(HelmetSystem.getLevel(goldenHelmet.gold) == 1 && column == 0) {
+                if(HelmetSystem.getLevel(NewGoldenHelmet.getHelmetGold(goldenHelmet)) == 1 && column == 0) {
                     columnList.get(0).setDurability((short) 1);
                     removeName(columnList.get(0));
                     columnList.get(2).setDurability((short) 1);
@@ -244,7 +250,7 @@ public class HelmetPanel extends AGUIPanel {
 
 
         List<HelmetSystem.Passive> passives;
-        if(HelmetSystem.getLevel(goldenHelmet.gold) == 1) passives = HelmetSystem.getLevelData(level);
+        if(HelmetSystem.getLevel(NewGoldenHelmet.getHelmetGold(goldenHelmet)) == 1) passives = HelmetSystem.getLevelData(level);
         else passives = HelmetSystem.getLevelData(level);
 
         DecimalFormat formatter = new DecimalFormat("#,###.#");
@@ -271,10 +277,11 @@ public class HelmetPanel extends AGUIPanel {
             builder.getItemStack().setDurability(passives.get(0).data);
         } else loreBuilder.addLore("&cNONE");
         loreBuilder.addLore("");
-        if(HelmetSystem.getTotalGoldAtLevel(level) <= goldenHelmet.gold) {
+        if(HelmetSystem.getTotalGoldAtLevel(level) <= NewGoldenHelmet.getHelmetGold(goldenHelmet)) {
             loreBuilder.addLore(ColumnStatus.UNLOCKED.color + "Unlocked!");
             builder.setName(ColumnStatus.UNLOCKED.color + "Level " + level);
-        } else if(HelmetSystem.getLevel(goldenHelmet.gold) > 1 && HelmetSystem.getTotalGoldAtLevel(level - 1) <= goldenHelmet.gold) {
+        } else if(HelmetSystem.getLevel(NewGoldenHelmet.getHelmetGold(goldenHelmet)) > 1 && HelmetSystem.getTotalGoldAtLevel(level - 1)
+                <= NewGoldenHelmet.getHelmetGold(goldenHelmet)) {
             loreBuilder.addLore(ColumnStatus.UNLOCKING.color + "Locked!");
             builder.setName(ColumnStatus.UNLOCKING.color + "Level " + level);
         } else {
@@ -320,6 +327,20 @@ public class HelmetPanel extends AGUIPanel {
 
     @Override
     public void onClose(InventoryCloseEvent event) {
+    }
+
+    public ItemStack getHelm() {
+
+        if(Misc.isAirOrNull(player.getItemInHand())) return null;
+
+        NBTItem nbtItem = new NBTItem(player.getItemInHand());
+        if(!nbtItem.hasKey(NBTTag.GHELMET_UUID.getRef())) return null;
+
+        return nbtItem.getItem();
+    }
+
+    public HelmetAbility getAbility(ItemStack helmet) {
+        return NewGoldenHelmet.getAbility(player, helmet);
     }
 
 }

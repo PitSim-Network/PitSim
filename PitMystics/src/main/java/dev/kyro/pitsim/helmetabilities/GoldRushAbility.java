@@ -3,10 +3,8 @@ package dev.kyro.pitsim.helmetabilities;
 import dev.kyro.arcticapi.builders.AItemStackBuilder;
 import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.arcticapi.misc.AOutput;
-import dev.kyro.pitsim.PitSim;
-import dev.kyro.pitsim.controllers.HelmetListeners;
-import dev.kyro.pitsim.controllers.objects.GoldenHelmet;
 import dev.kyro.pitsim.controllers.objects.HelmetAbility;
+import dev.kyro.pitsim.controllers.objects.NewGoldenHelmet;
 import dev.kyro.pitsim.events.AttackEvent;
 import dev.kyro.pitsim.events.KillEvent;
 import dev.kyro.pitsim.misc.Sounds;
@@ -44,13 +42,12 @@ public class GoldRushAbility extends HelmetAbility {
 	public void onKill(KillEvent killEvent) {
 		if(!isActive(killEvent.killer)) return;
 
-		GoldenHelmet goldenHelmet = HelmetListeners.getHelmetInstance(killEvent.killer);
+		ItemStack goldenHelmet = NewGoldenHelmet.getHelmet(killEvent.killer);
 		assert goldenHelmet != null;
-		if(!goldenHelmet.withdrawGold(4000)) {
-			AOutput.error(killEvent.killer,"&cNot enough gold!");
-			goldenHelmet.deactivate();
+		if(!NewGoldenHelmet.withdrawGold(player, goldenHelmet, 4000)) {
+			AOutput.error(player,"&cNot enough gold!");
+			NewGoldenHelmet.deactivate(player);
 			Sounds.NO.play(player);
-			return;
 		}
 
 		killEvent.goldMultipliers.add(3D);
@@ -58,7 +55,7 @@ public class GoldRushAbility extends HelmetAbility {
 
 	@Override
 	public void onActivate() {
-		GoldenHelmet goldenHelmet = HelmetListeners.getHelmetInstance(player);
+		ItemStack goldenHelmet = NewGoldenHelmet.getHelmet(player);
 		assert goldenHelmet != null;
 
 		Sounds.HELMET_ACTIVATE.play(player);
@@ -67,11 +64,12 @@ public class GoldRushAbility extends HelmetAbility {
 
 	@Override
 	public boolean shouldActivate() {
-		GoldenHelmet goldenHelmet = HelmetListeners.getHelmetInstance(player);
+		ItemStack goldenHelmet = NewGoldenHelmet.getHelmet(player);
 
 		assert goldenHelmet != null;
-		if(PitSim.VAULT.getBalance(player) < 4000) {
+		if(!NewGoldenHelmet.withdrawGold(player, goldenHelmet, 4000)) {
 			AOutput.error(player,"&cNot enough gold!");
+			NewGoldenHelmet.deactivate(player);
 			Sounds.NO.play(player);
 			return false;
 		}

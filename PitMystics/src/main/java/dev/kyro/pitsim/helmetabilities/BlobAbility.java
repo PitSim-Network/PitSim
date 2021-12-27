@@ -4,9 +4,8 @@ import dev.kyro.arcticapi.builders.AItemStackBuilder;
 import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.PitSim;
-import dev.kyro.pitsim.controllers.HelmetListeners;
-import dev.kyro.pitsim.controllers.objects.GoldenHelmet;
 import dev.kyro.pitsim.controllers.objects.HelmetAbility;
+import dev.kyro.pitsim.controllers.objects.NewGoldenHelmet;
 import dev.kyro.pitsim.enchants.PitBlob;
 import dev.kyro.pitsim.misc.Sounds;
 import org.bukkit.Material;
@@ -29,7 +28,7 @@ public class BlobAbility extends HelmetAbility {
 
 	@Override
 	public void onActivate() {
-		GoldenHelmet goldenHelmet = HelmetListeners.getHelmetInstance(player);
+		ItemStack goldenHelmet = NewGoldenHelmet.getHelmet(player);
 
 		assert goldenHelmet != null;
 		Slime slime;
@@ -42,9 +41,9 @@ public class BlobAbility extends HelmetAbility {
 		runnable = new BukkitRunnable() {
 			@Override
 			public void run() {
-				if(!goldenHelmet.withdrawGold(4000)) {
+				if(!NewGoldenHelmet.withdrawGold(player, goldenHelmet, 4000)) {
 					AOutput.error(player,"&cNot enough gold!");
-					goldenHelmet.deactivate();
+					NewGoldenHelmet.deactivate(player);
 					Sounds.NO.play(player);
 				} else {
 					Sounds.HELMET_TICK.play(player);
@@ -55,10 +54,10 @@ public class BlobAbility extends HelmetAbility {
 
 	@Override
 	public boolean shouldActivate() {
-		GoldenHelmet goldenHelmet = HelmetListeners.getHelmetInstance(player);
+		ItemStack goldenHelmet = NewGoldenHelmet.getHelmet(player);
 
 		assert goldenHelmet != null;
-		if(!goldenHelmet.withdrawGold(4000)) {
+		if(!NewGoldenHelmet.withdrawGold(player, goldenHelmet, 4000)) {
 			AOutput.error(player,"&cNot enough gold!");
 			Sounds.NO.play(player);
 			return false;

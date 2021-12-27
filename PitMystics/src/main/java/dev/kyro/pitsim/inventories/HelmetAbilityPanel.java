@@ -1,15 +1,17 @@
 package dev.kyro.pitsim.inventories;
 
+import de.tr7zw.nbtapi.NBTItem;
 import dev.kyro.arcticapi.builders.AItemStackBuilder;
 import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.arcticapi.data.APlayerData;
 import dev.kyro.arcticapi.gui.AGUI;
 import dev.kyro.arcticapi.gui.AGUIPanel;
 import dev.kyro.arcticapi.misc.AOutput;
-import dev.kyro.pitsim.controllers.HelmetListeners;
-import dev.kyro.pitsim.controllers.objects.GoldenHelmet;
 import dev.kyro.pitsim.controllers.objects.HelmetAbility;
+import dev.kyro.pitsim.controllers.objects.NewGoldenHelmet;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
+import dev.kyro.pitsim.enums.NBTTag;
+import dev.kyro.pitsim.misc.Misc;
 import dev.kyro.pitsim.misc.Sounds;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -29,7 +31,7 @@ public class HelmetAbilityPanel extends AGUIPanel {
 
     FileConfiguration playerData = APlayerData.getPlayerData(player);
     PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
-    GoldenHelmet goldenHelmet = GoldenHelmet.getHelmetItem(player.getItemInHand(), player);
+    ItemStack goldenHelmet = getHelm();
     public HelmetGUI helmetGUI;
     public HelmetAbilityPanel(AGUI gui) {
         super(gui);
@@ -59,7 +61,11 @@ public class HelmetAbilityPanel extends AGUIPanel {
             }
 
             if(slot == 9) {
-                goldenHelmet.setAbility(null);
+                NBTItem nbtItem = new NBTItem(goldenHelmet);
+                nbtItem.setString(NBTTag.GHELMET_ABILITY.getRef(), null);
+
+                player.setItemInHand(nbtItem.getItem());
+                NewGoldenHelmet.abilities.remove(player);
                 Sounds.SUCCESS.play(player);
                 openPreviousGUI();
             }
@@ -67,20 +73,24 @@ public class HelmetAbilityPanel extends AGUIPanel {
             for(HelmetAbility helmetAbility : HelmetAbility.helmetAbilities) {
                 if(slot != helmetAbility.slot) continue;
 
-                GoldenHelmet goldenHelmet = GoldenHelmet.getHelmetItem(helm, player);
+                ItemStack goldenHelmet = getHelm();
 
                 if(goldenHelmet == null) {
                     player.closeInventory();
                     return;
                 }
-                if(goldenHelmet.ability != null && goldenHelmet.ability.refName.equals(helmetAbility.refName)) {
+                HelmetAbility currentAbility = getAbility(goldenHelmet);
+                if(currentAbility != null && currentAbility.refName.equals(helmetAbility.refName)) {
                     AOutput.error(player, "&aYou already have that ability selected!");
                     Sounds.NO.play(player);
                     return;
                 }
 
                 Sounds.SUCCESS.play(player);
-                goldenHelmet.setAbility(helmetAbility);
+                NBTItem nbtItem = new NBTItem(getHelm());
+                nbtItem.setString(NBTTag.GHELMET_ABILITY.getRef(), helmetAbility.refName);
+
+                player.setItemInHand(nbtItem.getItem());
                 openPreviousGUI();
 
 
@@ -96,14 +106,15 @@ public class HelmetAbilityPanel extends AGUIPanel {
             AItemStackBuilder builder = new AItemStackBuilder(helmetAbility.getDisplayItem());
             ALoreBuilder loreBuilder = new ALoreBuilder();
 
-            GoldenHelmet goldenHelmet = GoldenHelmet.getHelmetItem(getHelm(), player);
+            ItemStack goldenHelmet = getHelm();
             if(goldenHelmet == null) {
                 player.closeInventory();
                 return;
             }
             loreBuilder.addLore(helmetAbility.getDescription());
-            if(goldenHelmet.ability != null) {
-                if(!goldenHelmet.ability.refName.equals(helmetAbility.refName)) {
+            HelmetAbility currentAbility = getAbility(goldenHelmet);
+            if(currentAbility != null) {
+                if(!currentAbility.refName.equals(helmetAbility.refName)) {
                     builder.setName("&e" + helmetAbility.name);
                     loreBuilder.addLore("", "&eClick to select!");
                 } else {
@@ -140,21 +151,26 @@ public class HelmetAbilityPanel extends AGUIPanel {
 
     }
 
+    public HelmetAbility getAbility(ItemStack helmet) {
+        return NewGoldenHelmet.getAbility(player, helmet);
+    }
+
 
 
 
     @Override
     public void onClose(InventoryCloseEvent event) {
+        NewGoldenHelmet.setLore(player, goldenHelmet);
     }
 
     public ItemStack getHelm() {
-        int helmSlot = HelmetListeners.getInventorySlot(player);
-        if(helmSlot == -1) return null;
 
-        ItemStack helm = null;
-        if(helmSlot == -2) helm = player.getInventory().getHelmet();
-        else helm = player.getInventory().getItem(helmSlot);
-        return helm;
+        if(Misc.isAirOrNull(player.getItemInHand())) return null;
+
+        NBTItem nbtItem = new NBTItem(player.getItemInHand());
+        if(!nbtItem.hasKey(NBTTag.GHELMET_UUID.getRef())) return null;
+
+        return nbtItem.getItem();
     }
 
 }

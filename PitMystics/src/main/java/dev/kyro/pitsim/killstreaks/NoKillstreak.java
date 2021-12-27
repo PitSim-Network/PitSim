@@ -12,7 +12,7 @@ public class NoKillstreak extends Killstreak {
 	public static NoKillstreak INSTANCE;
 
 	public NoKillstreak() {
-		super("No killstreak", "NoKillstreak", 0, 0);
+		super("No killstreak", "NoKillstreak", -1, 0);
 		INSTANCE = this;
 	}
 

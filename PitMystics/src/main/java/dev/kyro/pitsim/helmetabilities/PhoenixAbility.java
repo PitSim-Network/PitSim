@@ -3,12 +3,8 @@ package dev.kyro.pitsim.helmetabilities;
 import dev.kyro.arcticapi.builders.AItemStackBuilder;
 import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.arcticapi.misc.AOutput;
-import dev.kyro.pitsim.controllers.HelmetListeners;
 import dev.kyro.pitsim.controllers.NonManager;
-import dev.kyro.pitsim.controllers.objects.GoldenHelmet;
-import dev.kyro.pitsim.controllers.objects.HelmetAbility;
-import dev.kyro.pitsim.controllers.objects.Non;
-import dev.kyro.pitsim.controllers.objects.PitPlayer;
+import dev.kyro.pitsim.controllers.objects.*;
 import dev.kyro.pitsim.events.HealEvent;
 import dev.kyro.pitsim.events.KillEvent;
 import dev.kyro.pitsim.events.OofEvent;
@@ -60,7 +56,7 @@ public class PhoenixAbility extends HelmetAbility {
 
 	@Override
 	public void onProc() {
-		GoldenHelmet goldenHelmet = HelmetListeners.getHelmetInstance(player);
+		ItemStack goldenHelmet = NewGoldenHelmet.getHelmet(player);
 
 		if(alreadyActivatedList.contains(player.getUniqueId())) {
 			AOutput.error(player, "&cAbility can only be used once per life!");
@@ -69,7 +65,7 @@ public class PhoenixAbility extends HelmetAbility {
 		}
 
 		assert goldenHelmet != null;
-		if(!goldenHelmet.withdrawGold(cost)) {
+		if(!NewGoldenHelmet.withdrawGold(player, goldenHelmet, cost)) {
 			AOutput.error(player,"&cNot enough gold!");
 			Sounds.NO.play(player);
 			return;

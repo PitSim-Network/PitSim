@@ -4,12 +4,8 @@ import dev.kyro.arcticapi.builders.AItemStackBuilder;
 import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.PitSim;
-import dev.kyro.pitsim.controllers.HelmetListeners;
 import dev.kyro.pitsim.controllers.HopperManager;
-import dev.kyro.pitsim.controllers.objects.GoldenHelmet;
-import dev.kyro.pitsim.controllers.objects.HelmetAbility;
-import dev.kyro.pitsim.controllers.objects.Hopper;
-import dev.kyro.pitsim.controllers.objects.PitPlayer;
+import dev.kyro.pitsim.controllers.objects.*;
 import dev.kyro.pitsim.events.AttackEvent;
 import dev.kyro.pitsim.misc.Misc;
 import dev.kyro.pitsim.misc.Sounds;
@@ -34,12 +30,12 @@ public class JudgementAbility extends HelmetAbility {
 	public void onAttack(AttackEvent.Apply attackEvent) {
 		if(!isActive(attackEvent.attacker)) return;
 
-		GoldenHelmet goldenHelmet = HelmetListeners.getHelmetInstance(attackEvent.attacker);
+		ItemStack goldenHelmet = NewGoldenHelmet.getHelmet(attackEvent.attacker);
 		assert goldenHelmet != null;
-		if(!goldenHelmet.withdrawGold(5000)) {
-			AOutput.error(attackEvent.attacker,"&cNot enough gold!");
-			goldenHelmet.deactivate();
-			Sounds.NO.play(attackEvent.attacker);
+		if(!NewGoldenHelmet.withdrawGold(player, goldenHelmet, 5000)) {
+			AOutput.error(player,"&cNot enough gold!");
+			NewGoldenHelmet.deactivate(player);
+			Sounds.NO.play(player);
 			return;
 		}
 
@@ -108,7 +104,7 @@ public class JudgementAbility extends HelmetAbility {
 
 	@Override
 	public void onActivate() {
-		GoldenHelmet goldenHelmet = HelmetListeners.getHelmetInstance(player);
+		ItemStack goldenHelmet = NewGoldenHelmet.getHelmet(player);
 		assert goldenHelmet != null;
 
 		Sounds.HELMET_ACTIVATE.play(player);
@@ -117,11 +113,12 @@ public class JudgementAbility extends HelmetAbility {
 
 	@Override
 	public boolean shouldActivate() {
-		GoldenHelmet goldenHelmet = HelmetListeners.getHelmetInstance(player);
+		ItemStack goldenHelmet = NewGoldenHelmet.getHelmet(player);
 
 		assert goldenHelmet != null;
-		if(PitSim.VAULT.getBalance(player) < 5000) {
+		if(!NewGoldenHelmet.withdrawGold(player, goldenHelmet, 5000)) {
 			AOutput.error(player,"&cNot enough gold!");
+			NewGoldenHelmet.deactivate(player);
 			Sounds.NO.play(player);
 			return false;
 		}
