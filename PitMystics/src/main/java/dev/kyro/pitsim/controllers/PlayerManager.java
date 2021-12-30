@@ -5,6 +5,7 @@ import de.tr7zw.nbtapi.NBTItem;
 import dev.kyro.arcticapi.data.APlayerData;
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.PitSim;
+import dev.kyro.pitsim.commands.FPSCommand;
 import dev.kyro.pitsim.controllers.objects.Non;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.enums.NBTTag;
@@ -397,6 +398,8 @@ public class PlayerManager implements Listener {
 		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
 		Location spawnLoc = MapManager.getPlayerSpawn();
 		player.teleport(spawnLoc);
+
+		if(player.hasPermission("pitsim.autofps")) FPSCommand.fpsPlayers.add(player);
 
 		new BukkitRunnable() {
 			@Override

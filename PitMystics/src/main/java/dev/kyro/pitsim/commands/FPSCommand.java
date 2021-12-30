@@ -33,7 +33,7 @@ public class FPSCommand implements CommandExecutor {
 					playerLoc.setY(MapManager.getMid().getY());
 					if(playerLoc.getWorld() != MapManager.getMid().getWorld()) continue;
 					boolean closeEnough = playerLoc.distance(MapManager.getMid()) < nonHideRadius;
-					if(closeEnough || SpawnManager.isInSpawn(onlinePlayer.getLocation())) {
+					if(closeEnough && !SpawnManager.isInSpawn(onlinePlayer.getLocation())) {
 						showMid(onlinePlayer);
 					} else {
 						hideMid(onlinePlayer);
