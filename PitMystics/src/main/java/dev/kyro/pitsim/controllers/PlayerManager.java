@@ -399,7 +399,10 @@ public class PlayerManager implements Listener {
 		Location spawnLoc = MapManager.getPlayerSpawn();
 		player.teleport(spawnLoc);
 
-		if(player.hasPermission("pitsim.autofps")) FPSCommand.fpsPlayers.add(player);
+		if(player.hasPermission("pitsim.autofps")) {
+			FPSCommand.fpsPlayers.add(player);
+			FPSCommand.hideMid(player);
+		}
 
 		new BukkitRunnable() {
 			@Override
