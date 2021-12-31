@@ -147,7 +147,6 @@ public class CrateGiveCommand implements CommandExecutor {
 				AUtil.giveItemSafely(player, ShardHunter.getShardItem(amount), true);
 				return false;
 		}
-
 		return false;
 	}
 }
