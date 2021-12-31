@@ -119,7 +119,7 @@ public class OldCrateGiveCommand implements CommandExecutor {
         }
         if(args[0].equals("DC")) {
             double gold = PitSim.VAULT.getBalance(player);
-            if(gold * 2 > 10_000_000) PitSim.VAULT.depositPlayer(player, 10_000_000);
+            if(gold * 2 > 10_000_000) PitSim.VAULT.depositPlayer(player, 2_000_000);
             else PitSim.VAULT.depositPlayer(player, gold);
             broadcast("&6Double Current Gold", player);
         }
