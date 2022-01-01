@@ -75,7 +75,7 @@ public class Highlander extends Megastreak {
 
 	@Override
 	public int levelReq() {
-		return 100;
+		return 90;
 	}
 
 	@Override
