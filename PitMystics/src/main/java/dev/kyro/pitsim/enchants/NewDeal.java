@@ -6,7 +6,6 @@ import dev.kyro.pitsim.controllers.objects.PitEnchant;
 import dev.kyro.pitsim.enums.ApplyType;
 import dev.kyro.pitsim.events.AttackEvent;
 import dev.kyro.pitsim.misc.Misc;
-import dev.kyro.pitsim.pitevents.Juggernaut;
 import org.bukkit.event.EventHandler;
 
 import java.util.List;
@@ -29,7 +28,7 @@ public class NewDeal extends PitEnchant {
 		PitEnchant bill = EnchantManager.getEnchant("billionaire");
 		int billLevel = attackEvent.getAttackerEnchantLevel(bill);
 
-		if(billLevel != 0 && Juggernaut.juggernaut != attackEvent.attacker) attackEvent.getAttackerEnchantMap().remove(bill);
+		if(billLevel != 0) attackEvent.getAttackerEnchantMap().remove(bill);
 	}
 
 	@EventHandler

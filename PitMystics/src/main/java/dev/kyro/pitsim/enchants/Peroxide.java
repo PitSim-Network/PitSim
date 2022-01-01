@@ -7,7 +7,6 @@ import dev.kyro.pitsim.controllers.objects.PitEnchant;
 import dev.kyro.pitsim.enums.ApplyType;
 import dev.kyro.pitsim.events.AttackEvent;
 import dev.kyro.pitsim.misc.Misc;
-import dev.kyro.pitsim.pitevents.Juggernaut;
 import org.bukkit.event.EventHandler;
 import org.bukkit.potion.PotionEffectType;
 
@@ -31,7 +30,6 @@ public class Peroxide extends PitEnchant {
 		Cooldown cooldown = getCooldown(attackEvent.attacker, 51);
 		if(cooldown.isOnCooldown()) return; else cooldown.reset();
 
-		if(attackEvent.defender == Juggernaut.juggernaut) return;
 		Misc.applyPotionEffect(attackEvent.defender, PotionEffectType.REGENERATION, getDuration(enchantLvl),
 				getAmplifier(enchantLvl) - 1, false, false);
 

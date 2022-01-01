@@ -17,7 +17,6 @@ import dev.kyro.pitsim.events.AttackEvent;
 import dev.kyro.pitsim.events.KillEvent;
 import dev.kyro.pitsim.misc.*;
 import dev.kyro.pitsim.perks.AssistantToTheStreaker;
-import dev.kyro.pitsim.pitevents.CaptureTheFlag;
 import dev.kyro.pitsim.upgrades.DivineIntervention;
 import me.clip.placeholderapi.PlaceholderAPI;
 import net.minecraft.server.v1_8_R3.EntityPlayer;
@@ -290,9 +289,7 @@ public class DamageManager implements Listener {
 		Non defendingNon = NonManager.getNon(dead);
 		if(defendingNon == null) {
 			Location spawnLoc = MapManager.getPlayerSpawn();
-			if(PitEventManager.activeEvent != null) {
-				if(PitEventManager.activeEvent.getClass() != CaptureTheFlag.class) dead.teleport(spawnLoc);
-			} else dead.teleport(spawnLoc);
+			dead.teleport(spawnLoc);
 			if(attackingNon == null) {
 				FileConfiguration playerData = APlayerData.getPlayerData(killer);
 				if(killer != dead && !isNaked(dead)) {
@@ -410,9 +407,7 @@ public class DamageManager implements Listener {
 		String message = "%luckperms_prefix%";
 		pitDead.prefix = PrestigeValues.getPlayerPrefixNameTag(pitDead.player) + PlaceholderAPI.setPlaceholders(pitDead.player, message);
 
-		if(PitEventManager.majorEvent && UpgradeManager.hasUpgrade(dead, "LIFE_INSURANCE")) {
-			AOutput.send(dead, "&2&lLIFE INSURANCE! &7Inventory protected.");
-		} else if (!(BoosterManager.getBooster("pvp").minutes > 0)) {
+		if(BoosterManager.getBooster("pvp").minutes <= 0) {
 
 			boolean divine = DivineIntervention.INSTANCE.isDivine(dead);
 			boolean feather = FunkyFeather.useFeather(dead, divine);
@@ -484,9 +479,7 @@ public class DamageManager implements Listener {
 		APlayerData.savePlayerData(dead);
 
 		Location spawnLoc = MapManager.getPlayerSpawn();
-		if(PitEventManager.activeEvent != null) {
-			if(PitEventManager.activeEvent.getClass() != CaptureTheFlag.class) dead.teleport(spawnLoc);
-		} else dead.teleport(spawnLoc);
+		dead.teleport(spawnLoc);
 
 
 //		for(ItemStack itemStack : dead.getInventory()) {
@@ -516,11 +509,9 @@ public class DamageManager implements Listener {
 		String message = "%luckperms_prefix%";
 		pitDefender.prefix = PrestigeValues.getPlayerPrefixNameTag(pitDefender.player) + PlaceholderAPI.setPlaceholders(pitDefender.player, message);
 
-		if(PitEventManager.majorEvent && UpgradeManager.hasUpgrade(dead, "LIFE_INSURANCE")) {
-			AOutput.send(dead, "&2&lLIFE INSURANCE! &7Inventory protected.");
-		} else if (EnchantManager.getEnchantLevel(dead.getInventory().getLeggings(), EnchantManager.getEnchant("sco")) > 0 && killstreak > 100) {
+		if(EnchantManager.getEnchantLevel(dead.getInventory().getLeggings(), EnchantManager.getEnchant("sco")) > 0 && killstreak > 100) {
 
-		} else if (!(BoosterManager.getBooster("pvp").minutes > 0)) {
+		} else if(BoosterManager.getBooster("pvp").minutes <= 0) {
 
 			boolean divine = DivineIntervention.INSTANCE.isDivine(dead);
 			boolean feather = FunkyFeather.useFeather(dead, divine);

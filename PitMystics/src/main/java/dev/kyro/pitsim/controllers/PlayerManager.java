@@ -331,11 +331,8 @@ public class PlayerManager implements Listener {
 		Player player = event.getPlayer();
 		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
 
-		if(PitEventManager.majorEvent) FeatherBoardAPI.showScoreboard(event.getPlayer(), "event");
-		else {
-			FeatherBoardAPI.resetDefaultScoreboard(event.getPlayer());
-			FeatherBoardAPI.showScoreboard(event.getPlayer(), "default");
-		}
+		FeatherBoardAPI.resetDefaultScoreboard(event.getPlayer());
+		FeatherBoardAPI.showScoreboard(event.getPlayer(), "default");
 
 //		if(!bossBars.containsKey(event.getPlayer())) {
 //			BossBarManager bm = new BossBarManager();

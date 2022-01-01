@@ -5,7 +5,6 @@ import dev.kyro.pitsim.controllers.objects.PitEnchant;
 import dev.kyro.pitsim.enums.ApplyType;
 import dev.kyro.pitsim.events.AttackEvent;
 import dev.kyro.pitsim.misc.Misc;
-import dev.kyro.pitsim.pitevents.Juggernaut;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 
@@ -25,7 +24,6 @@ public class Mirror extends PitEnchant {
 
 		int defenderEnchantLvl = attackEvent.getDefenderEnchantLevel(this);
 		if(defenderEnchantLvl == 0) return;
-		if(attackEvent.attacker.equals(Juggernaut.juggernaut)) return;
 		attackEvent.trueDamage *= Misc.getReductionMultiplier(getReductionPercent(defenderEnchantLvl));
 
 //		If just opponent has mirror
