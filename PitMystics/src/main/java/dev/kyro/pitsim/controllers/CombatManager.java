@@ -24,11 +24,12 @@ import org.bukkit.scheduler.BukkitRunnable;
 import java.util.*;
 
 public class CombatManager implements Listener {
-
-	int combatTime = 15 * 20;
-
+	int combatTime = 30 * 20;
 	public static HashMap<UUID, Integer> taggedPlayers = new HashMap<>();
-	public static List<UUID> bannedPlayers = new ArrayList<>();
+
+	public static boolean isInCombat(Player player) {
+		return taggedPlayers.containsKey(player.getUniqueId());
+	}
 
 	static {
 
@@ -156,7 +157,5 @@ public class CombatManager implements Listener {
 				}
 			}
 		}
-
-
 	}
 }

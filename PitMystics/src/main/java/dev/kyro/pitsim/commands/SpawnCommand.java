@@ -2,6 +2,7 @@ package dev.kyro.pitsim.commands;
 
 import dev.kyro.pitsim.controllers.HopperManager;
 import dev.kyro.pitsim.controllers.MapManager;
+import dev.kyro.pitsim.controllers.SpawnManager;
 import dev.kyro.pitsim.controllers.objects.Hopper;
 import dev.kyro.pitsim.helmetabilities.PhoenixAbility;
 import org.bukkit.command.Command;
@@ -14,6 +15,7 @@ public class SpawnCommand implements CommandExecutor {
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
 
         Player player = (Player) sender;
+        SpawnManager.lastLocationMap.remove(player);
         player.teleport(MapManager.getPlayerSpawn());
         PhoenixAbility.alreadyActivatedList.remove(player.getUniqueId());
         for(Hopper hopper : HopperManager.hopperList) {
