@@ -26,12 +26,12 @@ public class TaxEvasion extends RenownUpgrade {
 		meta.setDisplayName(UpgradeManager.itemNameString(this, player));
 		List<String> lore = new ArrayList<>();
 		if(UpgradeManager.hasUpgrade(player, this)) lore.add(ChatColor.translateAlternateColorCodes('&',
-				"&7Current: &6-" + 10 * UpgradeManager.getTier(player, this) + "% Gold"));
+				"&7Current: &6-" + 5 * UpgradeManager.getTier(player, this) + "% Gold"));
 		if(UpgradeManager.hasUpgrade(player, this)) lore.add(ChatColor.GRAY + "Tier: " + ChatColor.GREEN + AUtil.toRoman(UpgradeManager.getTier(player, this)));
 		if(UpgradeManager.hasUpgrade(player, this)) lore.add("");
 		lore.add(ChatColor.GRAY + "Each tier:");
 		lore.add(ChatColor.translateAlternateColorCodes('&', "&dRARE! &9Billionaire &7costs"));
-		lore.add(ChatColor.GOLD + "-10% Gold" + ChatColor.GRAY + ".");
+		lore.add(ChatColor.GOLD + "-5% Gold" + ChatColor.GRAY + ".");
 		meta.setLore(UpgradeManager.loreBuilder(this, player, lore, isCustomPanel));
 		item.setItemMeta(meta);
 		return item;
