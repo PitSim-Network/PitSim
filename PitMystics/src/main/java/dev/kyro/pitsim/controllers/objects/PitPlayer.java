@@ -15,7 +15,6 @@ import dev.kyro.pitsim.killstreaks.NoKillstreak;
 import dev.kyro.pitsim.megastreaks.*;
 import dev.kyro.pitsim.perks.NoPerk;
 import dev.kyro.pitsim.perks.Thick;
-import dev.kyro.pitsim.pitevents.Juggernaut;
 import me.clip.placeholderapi.PlaceholderAPI;
 import net.minecraft.server.v1_8_R3.EntityPlayer;
 import org.bukkit.Bukkit;
@@ -176,7 +175,7 @@ public class PitPlayer {
 	}
 
 	public void endKillstreak() {
-		if(!PitEventManager.majorEvent) megastreak.reset();
+		megastreak.reset();
 		for(Killstreak killstreak : killstreaks) {
 			killstreak.reset(player);
 		}
@@ -322,7 +321,6 @@ public class PitPlayer {
 			maxHealth += Monster.healthMap.get(player);
 		}
 
-		if(Juggernaut.juggernaut == this.player) maxHealth = 100;
 		if(player.getMaxHealth() == maxHealth) return;
 		player.setMaxHealth(maxHealth);
 	}

@@ -86,7 +86,7 @@ public class MegastreakPanel extends AGUIPanel {
                         if(pitPlayer.prestige < megastreak.prestigeReq()) prestige = true;
                         if(pitPlayer.megastreak.getClass() == Highlander.class) has = true;
                         if(pitPlayer.level < 0) level = true;
-                        if(pitPlayer.level < 80) level = true;
+                        if(pitPlayer.level < megastreak.levelReq()) level = true;
                         if(!has && !prestige && !level) {
                             pitPlayer.megastreak.stop();
                             pitPlayer.megastreak = new Highlander(pitPlayer);
@@ -95,7 +95,7 @@ public class MegastreakPanel extends AGUIPanel {
                     } else if(megastreak.getClass() == Beastmode.class) {
                         if(pitPlayer.prestige < megastreak.prestigeReq()) prestige = true;
                         if(pitPlayer.megastreak.getClass() == Beastmode.class) has = true;
-                        if(pitPlayer.level < 50) level = true;
+                        if(pitPlayer.level < megastreak.levelReq()) level = true;
                         if(!has && !prestige && !level) {
                             pitPlayer.megastreak.stop();
                             pitPlayer.megastreak = new Beastmode(pitPlayer);
@@ -104,7 +104,7 @@ public class MegastreakPanel extends AGUIPanel {
                     } else if(megastreak.getClass() == Uberstreak.class) {
                         if(pitPlayer.prestige < megastreak.prestigeReq()) prestige = true;
                         if(pitPlayer.megastreak.getClass() == Uberstreak.class) has = true;
-                        if(pitPlayer.level < 100) level = true;
+                        if(pitPlayer.level < megastreak.levelReq()) level = true;
                         if(pitPlayer.dailyUbersLeft <= 0) uberCd = true;
                         if(!has && !prestige && !uberCd && !level) {
                             pitPlayer.megastreak.stop();
@@ -114,7 +114,7 @@ public class MegastreakPanel extends AGUIPanel {
                     } else if(megastreak.getClass() == ToTheMoon.class) {
                     if(pitPlayer.prestige < megastreak.prestigeReq()) prestige = true;
                     if(pitPlayer.megastreak.getClass() == ToTheMoon.class) has = true;
-                        if(pitPlayer.level < 50) level = true;
+                        if(pitPlayer.level < megastreak.levelReq()) level = true;
                     if(!has && !prestige && !uberCd && !level) {
                         pitPlayer.megastreak.stop();
                         pitPlayer.megastreak = new ToTheMoon(pitPlayer);

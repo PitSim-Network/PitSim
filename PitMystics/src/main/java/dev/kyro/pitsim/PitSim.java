@@ -24,8 +24,6 @@ import dev.kyro.pitsim.killstreaks.*;
 import dev.kyro.pitsim.megastreaks.*;
 import dev.kyro.pitsim.misc.*;
 import dev.kyro.pitsim.perks.*;
-import dev.kyro.pitsim.pitevents.CaptureTheFlag;
-import dev.kyro.pitsim.pitevents.Juggernaut;
 import dev.kyro.pitsim.placeholders.*;
 import dev.kyro.pitsim.upgrades.*;
 import net.citizensnpcs.api.CitizensAPI;
@@ -113,9 +111,6 @@ public class PitSim extends JavaPlugin {
 			return;
 		}
 
-		registerPitEvents();
-//		PitEventManager.eventWait();
-
 		registerUpgrades();
 		registerPerks();
 		registerKillstreaks();
@@ -141,9 +136,6 @@ public class PitSim extends JavaPlugin {
 		AHook.registerPlaceholder(new LeaderboardPlaceholder8());
 		AHook.registerPlaceholder(new LeaderboardPlaceholder9());
 		AHook.registerPlaceholder(new LeaderboardPlaceholder10());
-		AHook.registerPlaceholder(new EventNamePlaceholder());
-		AHook.registerPlaceholder(new EventInfoPlaceholder());
-		AHook.registerPlaceholder(new EventInfoPlaceholder2());
 		AHook.registerPlaceholder(new PrestigeLevelPlaceholder());
 		AHook.registerPlaceholder(new PrestigePlaceholder());
 
@@ -165,8 +157,6 @@ public class PitSim extends JavaPlugin {
 	public void onDisable() {
 
 		SpawnNPCs.removeNPCs();
-
-		if(PitEventManager.majorEvent) PitEventManager.activeEvent.end();
 
 		for(Player onlinePlayer : Bukkit.getOnlinePlayers()) {
 			PitPlayer pitplayer = PitPlayer.getPitPlayer(onlinePlayer);
@@ -248,12 +238,6 @@ public class PitSim extends JavaPlugin {
 		PerkManager.registerMegastreak(new Beastmode(null));
 		PerkManager.registerMegastreak(new ToTheMoon(null));
 	}
-
-	private void registerPitEvents() {
-		PitEventManager.registerPitEvent(new CaptureTheFlag());
-		PitEventManager.registerPitEvent(new Juggernaut());
-	}
-
 	private void registerCommands() {
 
 		ABaseCommand adminCommand = new BaseAdminCommand("pitsim");

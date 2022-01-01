@@ -50,7 +50,7 @@ public class NonManager implements Listener {
 		new BukkitRunnable() {
 			@Override
 			public void run() {
-				if(!PitEventManager.majorEvent) for(Non non : nons) non.tick();
+				for(Non non : nons) non.tick();
 			}
 		}.runTaskTimer(PitSim.INSTANCE, 0L, 1L);
 	}
@@ -99,8 +99,6 @@ public class NonManager implements Listener {
 	}
 
 	public static Non getNon(Player player) {
-		if(PitEventManager.majorEvent) return null;
-
 		try {
 			for(Non non : nons) {
 				if(non == null) continue;

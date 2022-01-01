@@ -40,6 +40,7 @@ public class DupeManager implements Listener {
 		new BukkitRunnable() {
 			@Override
 			public void run() {
+				if(!AConfig.getString("server").equals("pitsim-main")) return;
 				dupeCheck();
 			}
 		}.runTaskLaterAsynchronously(PitSim.INSTANCE, 200L);
@@ -177,7 +178,7 @@ public class DupeManager implements Listener {
 		});
 
 		try {
-			if(AConfig.getString("server").equals("pitsim-main")) discordWebhook.execute();
+			discordWebhook.execute();
 		} catch(IOException e) {
 			e.printStackTrace();
 		}

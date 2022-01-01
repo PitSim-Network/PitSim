@@ -11,6 +11,9 @@ import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.enums.NBTTag;
+import dev.kyro.pitsim.events.KillEvent;
+import dev.kyro.pitsim.events.OofEvent;
+import dev.kyro.pitsim.megastreaks.Uberstreak;
 import dev.kyro.pitsim.misc.Sounds;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -21,147 +24,116 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityShootBowEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
+import org.bukkit.event.player.PlayerMoveEvent;
+import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.util.Vector;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 public class SpawnManager implements Listener {
+	public static Map<Player, Location> lastLocationMap = new HashMap<>();
 
-    public static List<Arrow> arrowList = new ArrayList<>();
-    public static boolean postMajor = false;
+	@EventHandler
+	public void onMove(PlayerMoveEvent event) {
+		Player player = event.getPlayer();
+		if(NonManager.getNon(player) != null || HopperManager.getHopper(player) != null) return;
+		Location location = player.getLocation();
+		boolean isInSpawn = isInSpawn(location);
 
+		if(isInSpawn) {
+			if(!lastLocationMap.containsKey(player)) return;
 
-    @EventHandler
-    public void onShoot(EntityShootBowEvent event) {
-        if(!(event.getEntity() instanceof Player)) return;
-        if(!(event.getProjectile() instanceof Arrow)) return;
+			PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
+			if(pitPlayer.megastreak.getClass() == Uberstreak.class && pitPlayer.megastreak.isOnMega()) {
+				Location lastLocation = lastLocationMap.get(player);
+				player.teleport(lastLocation);
+				player.setVelocity(new Vector());
+				AOutput.error(event.getPlayer(), "&c&c&lNOPE! &7You cannot enter spawn while on an Uberstreak!");
+			} else if(CombatManager.isInCombat(player)) {
+				Location lastLocation = lastLocationMap.get(player);
+				player.teleport(lastLocation);
+				player.setVelocity(new Vector());
+				AOutput.error(event.getPlayer(), "&c&c&lNOPE! &7You cannot enter spawn while in combat!");
+			} else {
+				lastLocationMap.remove(player);
+			}
+		} else {
+			lastLocationMap.put(player, location);
+		}
+	}
 
-        Player player = (Player) event.getEntity();
+	@EventHandler
+	public void onKill(KillEvent killEvent) {
+		lastLocationMap.remove(killEvent.dead);
+	}
 
-        if(isInSpawn(player.getLocation())) {
-            event.setCancelled(true);
-            Sounds.NO.play(player);
-        }
-    }
+	@EventHandler
+	public void onOof(OofEvent event) {
+		lastLocationMap.remove(event.getPlayer());
+	}
 
-    @EventHandler
-    public void onDrop(PlayerDropItemEvent event) {
-        if(!isInSpawn(event.getItemDrop().getLocation())) return;
-        ItemStack dropped = event.getItemDrop().getItemStack();
-        NBTItem nbtItem = new NBTItem(dropped);
-        if(nbtItem.hasKey(NBTTag.DROP_CONFIRM.getRef())) return;
-        if(dropped.getType() == Material.ENDER_CHEST || dropped.getType() == Material.TRIPWIRE_HOOK) return;
-        event.getItemDrop().remove();
-        AOutput.send(event.getPlayer(), "&c&lITEM DELETED! &7Dropped in spawn area.");
-        Sounds.NO.play(event.getPlayer());
-    }
+	@EventHandler
+	public void onQuit(PlayerQuitEvent event) {
+		lastLocationMap.remove(event.getPlayer());
+	}
 
+	@EventHandler
+	public void onShoot(EntityShootBowEvent event) {
+		if(!(event.getEntity() instanceof Player)) return;
+		if(!(event.getProjectile() instanceof Arrow)) return;
 
-    public static Boolean isInSpawn(Location loc) {
-        RegionContainer container = WorldGuardPlugin.inst().getRegionContainer();
-        RegionManager regions = container.get(loc.getWorld());
-        assert regions != null;
-        ApplicableRegionSet set = regions.getApplicableRegions((BukkitUtil.toVector(loc)));
+		Player player = (Player) event.getEntity();
 
-        for(ProtectedRegion region : set) {
-            if(region.getId().equals("spawn") || region.getId().equals("spawn2")) {
-                return true;
-            }
-        }
-        return false;
-    }
+		if(isInSpawn(player.getLocation())) {
+			event.setCancelled(true);
+			Sounds.NO.play(player);
+		}
+	}
 
-    public static void clearSpawnStreaks() {
-        if(postMajor) return;
-        for(Player player : Bukkit.getOnlinePlayers()) {
-            if(isInSpawn(player.getLocation())) {
-                PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
-                pitPlayer.endKillstreak();
-                CombatManager.taggedPlayers.remove(player.getUniqueId());
-            }
-        }
+	@EventHandler
+	public void onDrop(PlayerDropItemEvent event) {
+		if(!isInSpawn(event.getItemDrop().getLocation())) return;
+		ItemStack dropped = event.getItemDrop().getItemStack();
+		NBTItem nbtItem = new NBTItem(dropped);
+		if(nbtItem.hasKey(NBTTag.DROP_CONFIRM.getRef())) return;
+		if(dropped.getType() == Material.ENDER_CHEST || dropped.getType() == Material.TRIPWIRE_HOOK) return;
+		event.getItemDrop().remove();
+		AOutput.send(event.getPlayer(), "&c&lITEM DELETED! &7Dropped in spawn area.");
+		Sounds.NO.play(event.getPlayer());
+	}
 
-    }
+	public static Boolean isInSpawn(Location loc) {
+		RegionContainer container = WorldGuardPlugin.inst().getRegionContainer();
+		RegionManager regions = container.get(loc.getWorld());
+		assert regions != null;
+		ApplicableRegionSet set = regions.getApplicableRegions((BukkitUtil.toVector(loc)));
 
-    static {
-        new BukkitRunnable() {
-            @Override
-            public void run() {
-                clearSpawnStreaks();
-            }
-        }.runTaskTimer(PitSim.INSTANCE, 20L, 20L);
-    }
+		for(ProtectedRegion region : set) {
+			if(region.getId().equals("spawn") || region.getId().equals("spawn2")) {
+				return true;
+			}
+		}
+		return false;
+	}
 
+	public static void clearSpawnStreaks() {
+		for(Player player : Bukkit.getOnlinePlayers()) {
+			if(isInSpawn(player.getLocation()) && !lastLocationMap.containsKey(player)) {
+				PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
+				pitPlayer.endKillstreak();
+			}
+		}
+	}
 
-
-
-//    @EventHandler
-//    public void onHit(ProjectileHitEvent event) {
-//
-//
-//        if(!(event.getEntity() instanceof Arrow)) return;
-//
-//        if(!arrowList.contains((Arrow) event.getEntity())) System.out.println("Arrows are being created that haven't been shot! Please fix this issue.");
-//        else arrowList.remove((Arrow) event.getEntity());
-//    }
-//
-//    @EventHandler
-//    public void volleyShoot(VolleyShootEvent event) {
-//        arrowList.add((Arrow) event.getProjectile());
-//
-//        Player player = (Player) event.getEntity();
-//
-//        Location loc = new Location(player.getWorld(), player.getLocation().getX(), player.getLocation().getY(), player.getLocation().getZ());
-//        RegionContainer container = WorldGuardPlugin.inst().getRegionContainer();
-//        RegionManager regions = container.get(loc.getWorld());
-//        assert regions != null;
-//        ApplicableRegionSet set = regions.getApplicableRegions((BukkitUtil.toVector(loc)));
-//
-//        for(ProtectedRegion region : set) {
-//            if(region.getId().equals("spawn")) {
-//                event.setCancelled(true);
-//            }
-//
-//        }
-//    }
-
-
-//
-//    static {
-//
-//        try {
-//
-//            new BukkitRunnable() {
-//                @Override
-//                public void run() {
-//
-//                    for(Iterator<Arrow> iterator = arrowList.iterator(); arrowList.iterator().hasNext(); ) {
-//                        Arrow arrow = iterator.next();
-//
-//                        Location loc = new Location(arrow.getWorld(), arrow.getLocation().getX(), arrow.getLocation().getY(), arrow.getLocation().getZ());
-//                        RegionContainer container = WorldGuardPlugin.inst().getRegionContainer();
-//                        RegionManager regions = container.get(loc.getWorld());
-//                        assert regions != null;
-//                        ApplicableRegionSet set = regions.getApplicableRegions((BukkitUtil.toVector(loc)));
-//
-//                        for(ProtectedRegion region : set) {
-//                            if(region.getId().equals("spawn")) {
-//                                arrowList.remove(arrow);
-//                                arrow.remove();
-//                            }
-//
-//                        }
-//
-//
-//                    }
-//
-//                }
-//            }.runTaskTimer(PitSim.INSTANCE, 0L, 10L);
-//        } catch(Exception e) {
-//
-//        }
-//    }
-
+	static {
+		new BukkitRunnable() {
+			@Override
+			public void run() {
+				clearSpawnStreaks();
+			}
+		}.runTaskTimer(PitSim.INSTANCE, 20L, 20L);
+	}
 }

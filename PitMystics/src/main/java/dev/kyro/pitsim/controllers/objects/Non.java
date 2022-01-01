@@ -5,7 +5,6 @@ import dev.kyro.pitsim.commands.FPSCommand;
 import dev.kyro.pitsim.controllers.BoosterManager;
 import dev.kyro.pitsim.controllers.MapManager;
 import dev.kyro.pitsim.controllers.NonManager;
-import dev.kyro.pitsim.controllers.PitEventManager;
 import dev.kyro.pitsim.enums.NonState;
 import dev.kyro.pitsim.enums.NonTrait;
 import net.citizensnpcs.api.CitizensAPI;
@@ -70,7 +69,7 @@ public class Non {
 //		displayName = "&7[" + color + (rand * 10 + (int) (Math.random() * 10)) + "&7]&7" + " " + name;
 		displayName = "&7" + name;
 		this.npc = CitizensAPI.getNPCRegistry().createNPC(EntityType.PLAYER, displayName);
-		if(!PitEventManager.majorEvent) spawn();
+		spawn();
 		this.non = (Player) npc.getEntity();
 		FPSCommand.hideNewNon(this);
 		NonManager.nons.add(this);
@@ -86,7 +85,7 @@ public class Non {
 		persistence = (Math.random() * 3 + 94) / 100D;
 		if(traits.contains(NonTrait.IRON_STREAKER)) persistence -= 100 - persistence;
 
-		if(!PitEventManager.majorEvent)respawn();
+		respawn();
 		skin(name);
 	}
 
@@ -94,7 +93,7 @@ public class Non {
 		count++;
 		if(npc.getEntity() != null && non != npc.getEntity()) FPSCommand.hideNewNon(this);
 		non = (Player) npc.getEntity();
-		if(!npc.isSpawned() && !PitEventManager.majorEvent) respawn();
+		if(!npc.isSpawned()) respawn();
 		if(npc.isSpawned() && non.getLocation().getY() <= MapManager.getY() - 0.1) {
 			Location teleportLoc = non.getLocation().clone();
 			teleportLoc.setY(MapManager.getY() + 1.2);
@@ -194,7 +193,7 @@ public class Non {
 			spawnLoc.add(0, -5, 0);
 		}
 
-		if(!npc.isSpawned() && !PitEventManager.majorEvent) spawn();
+		if(!npc.isSpawned()) spawn();
 		try {
 
 			if(npc.isSpawned()) {

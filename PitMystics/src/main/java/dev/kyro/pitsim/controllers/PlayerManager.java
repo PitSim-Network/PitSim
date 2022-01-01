@@ -367,11 +367,8 @@ public class PlayerManager implements Listener {
 		Player player = event.getPlayer();
 		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
 
-		if(PitEventManager.majorEvent) FeatherBoardAPI.showScoreboard(event.getPlayer(), "event");
-		else {
-			FeatherBoardAPI.resetDefaultScoreboard(event.getPlayer());
-			FeatherBoardAPI.showScoreboard(event.getPlayer(), "default");
-		}
+		FeatherBoardAPI.resetDefaultScoreboard(event.getPlayer());
+		FeatherBoardAPI.showScoreboard(event.getPlayer(), "default");
 
 //		if(!bossBars.containsKey(event.getPlayer())) {
 //			BossBarManager bm = new BossBarManager();
@@ -432,17 +429,42 @@ public class PlayerManager implements Listener {
 		Player player = event.getPlayer();
 		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
 		Location spawnLoc = MapManager.getPlayerSpawn();
-		player.teleport(spawnLoc);
+
+		if(player.isOp()) {
+			new BukkitRunnable() {
+				@Override
+				public void run() {
+					Bukkit.dispatchCommand(player, "buzz exempt");
+				}
+			}.runTaskLater(PitSim.INSTANCE, 1L);
+		}
 
 		if(player.hasPermission("pitsim.autofps")) {
 			FPSCommand.fpsPlayers.add(player);
-			FPSCommand.hideMid(player);
+			for(Non non : NonManager.nons) player.hidePlayer(non.non);
+
+			new BukkitRunnable() {
+				@Override
+				public void run() {
+					for(Non non : NonManager.nons) player.hidePlayer(non.non);
+					player.teleport(MapManager.playerSnow);
+				}
+			}.runTaskLater(PitSim.INSTANCE, 1L);
+
+			new BukkitRunnable() {
+				@Override
+				public void run() {
+					player.teleport(spawnLoc);
+				}
+			}.runTaskLater(PitSim.INSTANCE, 20L);
+			return;
 		}
 
+		player.teleport(spawnLoc);
 		new BukkitRunnable() {
 			@Override
 			public void run() {
-				Bukkit.getServer().dispatchCommand(player, "spawn");
+				player.teleport(spawnLoc);
 
 				String message = "%luckperms_prefix%";
 				if(pitPlayer.megastreak.isOnMega()) {
@@ -451,7 +473,7 @@ public class PlayerManager implements Listener {
 					pitPlayer.prefix = PrestigeValues.getPlayerPrefixNameTag(pitPlayer.player) + PlaceholderAPI.setPlaceholders(player, message);
 				}
 			}
-		}.runTaskLater(PitSim.INSTANCE,  10L);
+		}.runTaskLater(PitSim.INSTANCE,  5L);
 	}
 
 	public static void removeIllegalItems(Player player) {
@@ -485,18 +507,6 @@ public class PlayerManager implements Listener {
 		if(player.isOnline()) {
 			event.disallow(AsyncPlayerPreLoginEvent.Result.KICK_OTHER, ChatColor.RED + "You are already online! \nIf you believe this is an error, try re-logging in a few seconds.");
 		}
-	}
-
-	@EventHandler
-	public static void onJoin(PlayerJoinEvent event) {
-		Player player = event.getPlayer();
-		if(!player.isOp()) return;
-		new BukkitRunnable() {
-			@Override
-			public void run() {
-				Bukkit.dispatchCommand(player, "buzz exempt");
-			}
-		}.runTaskLater(PitSim.INSTANCE, 1L);
 	}
 
 	public static List<Player> toggledPlayers = new ArrayList<>();

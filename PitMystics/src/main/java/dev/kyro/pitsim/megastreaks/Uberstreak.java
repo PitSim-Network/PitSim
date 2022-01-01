@@ -331,7 +331,6 @@ public class Uberstreak extends Megastreak {
 	}
 
 	public static void uberMessage(String message, PitPlayer pitPlayer) {
-	if(PitEventManager.majorEvent) return;
 		for(Player player : Bukkit.getOnlinePlayers()) {
 			PitPlayer pitPlayer2 = PitPlayer.getPitPlayer(player);
 			if(pitPlayer2.disabledStreaks) continue;
