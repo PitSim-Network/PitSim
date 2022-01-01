@@ -4,7 +4,7 @@ import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.controllers.DamageManager;
 import dev.kyro.pitsim.controllers.NonManager;
-import dev.kyro.pitsim.controllers.objects.NewGoldenHelmet;
+import dev.kyro.pitsim.controllers.objects.GoldenHelmet;
 import dev.kyro.pitsim.controllers.SpawnManager;
 import dev.kyro.pitsim.controllers.objects.Non;
 import dev.kyro.pitsim.controllers.objects.PitEnchant;
@@ -71,11 +71,11 @@ public class PitBlob extends PitEnchant {
 				}
 
 				for(Player onlinePlayer : Bukkit.getOnlinePlayers()) {
-					if(NewGoldenHelmet.toggledPlayers.contains(onlinePlayer) && NewGoldenHelmet.abilities.get(onlinePlayer).refName.equals("pitblob")) {
+					if(GoldenHelmet.toggledPlayers.contains(onlinePlayer) && GoldenHelmet.abilities.get(onlinePlayer).refName.equals("pitblob")) {
 						if(!blobMap.containsKey(onlinePlayer.getUniqueId())) {
-							NewGoldenHelmet.deactivate(onlinePlayer);
+							GoldenHelmet.deactivate(onlinePlayer);
 
-							NewGoldenHelmet.toggledPlayers.remove(onlinePlayer);
+							GoldenHelmet.toggledPlayers.remove(onlinePlayer);
 						}
 					}
 				}

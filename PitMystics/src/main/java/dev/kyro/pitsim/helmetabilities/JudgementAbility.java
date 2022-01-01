@@ -7,7 +7,7 @@ import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.controllers.HopperManager;
 import dev.kyro.pitsim.controllers.objects.HelmetAbility;
 import dev.kyro.pitsim.controllers.objects.Hopper;
-import dev.kyro.pitsim.controllers.objects.NewGoldenHelmet;
+import dev.kyro.pitsim.controllers.objects.GoldenHelmet;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.events.AttackEvent;
 import dev.kyro.pitsim.misc.Misc;
@@ -32,11 +32,11 @@ public class JudgementAbility extends HelmetAbility {
 	@EventHandler
 	public void onAttack(AttackEvent.Apply attackEvent) {
 		if(!isActive || player != attackEvent.attacker) return;
-		ItemStack goldenHelmet = NewGoldenHelmet.getHelmet(attackEvent.attacker);
+		ItemStack goldenHelmet = GoldenHelmet.getHelmet(attackEvent.attacker);
 		assert goldenHelmet != null;
-		if(!NewGoldenHelmet.withdrawGold(player, goldenHelmet, 6474)) {
+		if(!GoldenHelmet.withdrawGold(player, goldenHelmet, 6474)) {
 			AOutput.error(player,"&cNot enough gold!");
-			NewGoldenHelmet.deactivate(player);
+			GoldenHelmet.deactivate(player);
 			Sounds.NO.play(player);
 			return;
 		}
@@ -106,7 +106,7 @@ public class JudgementAbility extends HelmetAbility {
 
 	@Override
 	public void onActivate() {
-		ItemStack goldenHelmet = NewGoldenHelmet.getHelmet(player);
+		ItemStack goldenHelmet = GoldenHelmet.getHelmet(player);
 		assert goldenHelmet != null;
 
 		Sounds.HELMET_ACTIVATE.play(player);
@@ -115,7 +115,7 @@ public class JudgementAbility extends HelmetAbility {
 
 	@Override
 	public boolean shouldActivate() {
-		if(NewGoldenHelmet.getUsedHelmetGold(player) < 6474) {
+		if(GoldenHelmet.getUsedHelmetGold(player) < 6474) {
 			AOutput.error(player,"&cNot enough gold!");
 			Sounds.NO.play(player);
 			return false;

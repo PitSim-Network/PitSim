@@ -7,7 +7,7 @@ import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.commands.FPSCommand;
 import dev.kyro.pitsim.controllers.objects.Megastreak;
-import dev.kyro.pitsim.controllers.objects.NewGoldenHelmet;
+import dev.kyro.pitsim.controllers.objects.GoldenHelmet;
 import dev.kyro.pitsim.controllers.objects.Non;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.enums.NBTTag;
@@ -293,11 +293,11 @@ public class PlayerManager implements Listener {
 			if(player.isSneaking()) return;
 			if(Misc.isAirOrNull(player.getInventory().getHelmet())) return;
 
-			if(NewGoldenHelmet.abilities.get(event.getPlayer()) != null) {
-				NewGoldenHelmet.deactivate(event.getPlayer());
+			if(GoldenHelmet.abilities.get(event.getPlayer()) != null) {
+				GoldenHelmet.deactivate(event.getPlayer());
 			}
-			NewGoldenHelmet.toggledPlayers.remove(event.getPlayer());
-			NewGoldenHelmet.abilities.remove(event.getPlayer());
+			GoldenHelmet.toggledPlayers.remove(event.getPlayer());
+			GoldenHelmet.abilities.remove(event.getPlayer());
 
 			if(helmetSwapCooldown.contains(player.getUniqueId())) {
 

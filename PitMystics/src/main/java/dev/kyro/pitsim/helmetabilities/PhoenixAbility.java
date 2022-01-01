@@ -56,7 +56,7 @@ public class PhoenixAbility extends HelmetAbility {
 
 	@Override
 	public void onProc() {
-		ItemStack goldenHelmet = NewGoldenHelmet.getHelmet(player);
+		ItemStack goldenHelmet = GoldenHelmet.getHelmet(player);
 
 		if(alreadyActivatedList.contains(player.getUniqueId())) {
 			AOutput.error(player, "&cAbility can only be used once per life!");
@@ -65,7 +65,7 @@ public class PhoenixAbility extends HelmetAbility {
 		}
 
 		assert goldenHelmet != null;
-		if(!NewGoldenHelmet.withdrawGold(player, goldenHelmet, cost)) {
+		if(!GoldenHelmet.withdrawGold(player, goldenHelmet, cost)) {
 			AOutput.error(player,"&cNot enough gold!");
 			Sounds.NO.play(player);
 			return;

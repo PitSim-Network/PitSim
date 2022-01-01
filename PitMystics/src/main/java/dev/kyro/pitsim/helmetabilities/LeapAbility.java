@@ -5,7 +5,7 @@ import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.controllers.Cooldown;
 import dev.kyro.pitsim.controllers.objects.HelmetAbility;
-import dev.kyro.pitsim.controllers.objects.NewGoldenHelmet;
+import dev.kyro.pitsim.controllers.objects.GoldenHelmet;
 import dev.kyro.pitsim.misc.Sounds;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -40,10 +40,10 @@ public class LeapAbility extends HelmetAbility {
 
 	@Override
 	public void onProc() {
-		ItemStack goldenHelmet = NewGoldenHelmet.getHelmet(player);
+		ItemStack goldenHelmet = GoldenHelmet.getHelmet(player);
 
 		assert goldenHelmet != null;
-		if(!NewGoldenHelmet.withdrawGold(player, goldenHelmet, 10000)) {
+		if(!GoldenHelmet.withdrawGold(player, goldenHelmet, 10000)) {
 			AOutput.error(player,"&cNot enough gold!");
 			Sounds.NO.play(player);
 			return;

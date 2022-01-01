@@ -8,7 +8,7 @@ import dev.kyro.arcticapi.gui.AGUI;
 import dev.kyro.arcticapi.gui.AGUIPanel;
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.controllers.objects.HelmetAbility;
-import dev.kyro.pitsim.controllers.objects.NewGoldenHelmet;
+import dev.kyro.pitsim.controllers.objects.GoldenHelmet;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.enums.NBTTag;
 import dev.kyro.pitsim.misc.Misc;
@@ -63,12 +63,12 @@ public class HelmetAbilityPanel extends AGUIPanel {
 			if(slot == 9) {
 				NBTItem nbtItem = new NBTItem(goldenHelmet);
 				nbtItem.setString(NBTTag.GHELMET_ABILITY.getRef(), null);
-				NewGoldenHelmet.setLore(nbtItem.getItem());
+				GoldenHelmet.setLore(nbtItem.getItem());
 				player.getInventory().setItemInHand(nbtItem.getItem());
 
 				player.setItemInHand(nbtItem.getItem());
-				if(NewGoldenHelmet.abilities.containsKey(player)) NewGoldenHelmet.abilities.get(player).unload();
-				NewGoldenHelmet.abilities.remove(player);
+				if(GoldenHelmet.abilities.containsKey(player)) GoldenHelmet.abilities.get(player).unload();
+				GoldenHelmet.abilities.remove(player);
 				Sounds.SUCCESS.play(player);
 				openPreviousGUI();
 			}
@@ -93,7 +93,7 @@ public class HelmetAbilityPanel extends AGUIPanel {
 				NBTItem nbtItem = new NBTItem(getHelm());
 				nbtItem.setString(NBTTag.GHELMET_ABILITY.getRef(), helmetAbility.refName);
 
-				NewGoldenHelmet.setLore(nbtItem.getItem());
+				GoldenHelmet.setLore(nbtItem.getItem());
 				player.getInventory().setItemInHand(nbtItem.getItem());
 				openPreviousGUI();
 			}
@@ -154,7 +154,7 @@ public class HelmetAbilityPanel extends AGUIPanel {
 	}
 
 	public HelmetAbility getAbility(ItemStack helmet) {
-		return NewGoldenHelmet.getAbility(helmet);
+		return GoldenHelmet.getAbility(helmet);
 	}
 
 
@@ -162,7 +162,7 @@ public class HelmetAbilityPanel extends AGUIPanel {
 
 	@Override
 	public void onClose(InventoryCloseEvent event) {
-		NewGoldenHelmet.setLore(goldenHelmet);
+		GoldenHelmet.setLore(goldenHelmet);
 	}
 
 	public ItemStack getHelm() {

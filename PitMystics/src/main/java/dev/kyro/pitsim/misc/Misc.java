@@ -3,7 +3,7 @@ package dev.kyro.pitsim.misc;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.commands.LightningCommand;
 import dev.kyro.pitsim.controllers.NonManager;
-import dev.kyro.pitsim.controllers.objects.NewGoldenHelmet;
+import dev.kyro.pitsim.controllers.objects.GoldenHelmet;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.megastreaks.Uberstreak;
 import net.minecraft.server.v1_8_R3.*;
@@ -63,10 +63,10 @@ public class Misc {
 		}
 		player.addPotionEffect(new PotionEffect(type, duration, amplifier, ambient, particles));
 		if(type == PotionEffectType.POISON) {
-			if(NewGoldenHelmet.abilities.get(player) != null) {
-				NewGoldenHelmet.abilities.get(player).onDeactivate();
+			if(GoldenHelmet.abilities.get(player) != null) {
+				GoldenHelmet.abilities.get(player).onDeactivate();
 			}
-			NewGoldenHelmet.toggledPlayers.remove(player);
+			GoldenHelmet.toggledPlayers.remove(player);
 		}
 	}
 

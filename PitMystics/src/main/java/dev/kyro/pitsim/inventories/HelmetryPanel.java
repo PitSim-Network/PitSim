@@ -7,7 +7,7 @@ import dev.kyro.arcticapi.gui.AGUIPanel;
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.arcticapi.misc.AUtil;
 import dev.kyro.pitsim.controllers.UpgradeManager;
-import dev.kyro.pitsim.controllers.objects.NewGoldenHelmet;
+import dev.kyro.pitsim.controllers.objects.GoldenHelmet;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.controllers.objects.RenownUpgrade;
 import dev.kyro.pitsim.enums.NBTTag;
@@ -106,7 +106,7 @@ public class HelmetryPanel extends AGUIPanel {
                 nbtItem.setBoolean(NBTTag.DROP_CONFIRM.getRef(), true);
 
                 ItemStack goldenHelmet = nbtItem.getItem();
-                NewGoldenHelmet.setLore(nbtItem.getItem());
+                GoldenHelmet.setLore(nbtItem.getItem());
 
                 AUtil.giveItemSafely(player, nbtItem.getItem(), true);
                 assert goldenHelmet != null;

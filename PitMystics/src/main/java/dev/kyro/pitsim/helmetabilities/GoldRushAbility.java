@@ -5,7 +5,7 @@ import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.controllers.LevelManager;
 import dev.kyro.pitsim.controllers.objects.HelmetAbility;
-import dev.kyro.pitsim.controllers.objects.NewGoldenHelmet;
+import dev.kyro.pitsim.controllers.objects.GoldenHelmet;
 import dev.kyro.pitsim.events.AttackEvent;
 import dev.kyro.pitsim.events.KillEvent;
 import dev.kyro.pitsim.misc.Sounds;
@@ -43,11 +43,11 @@ public class GoldRushAbility extends HelmetAbility {
 	public void onKill(KillEvent killEvent) {
 		if(!isActive || player != killEvent.killer) return;
 
-		ItemStack goldenHelmet = NewGoldenHelmet.getHelmet(killEvent.killer);
+		ItemStack goldenHelmet = GoldenHelmet.getHelmet(killEvent.killer);
 		assert goldenHelmet != null;
-		if(!NewGoldenHelmet.withdrawGold(player, goldenHelmet, 2000)) {
+		if(!GoldenHelmet.withdrawGold(player, goldenHelmet, 2000)) {
 			AOutput.error(player,"&cNot enough gold!");
-			NewGoldenHelmet.deactivate(player);
+			GoldenHelmet.deactivate(player);
 			Sounds.NO.play(player);
 		}
 
@@ -56,7 +56,7 @@ public class GoldRushAbility extends HelmetAbility {
 
 	@Override
 	public void onActivate() {
-		ItemStack goldenHelmet = NewGoldenHelmet.getHelmet(player);
+		ItemStack goldenHelmet = GoldenHelmet.getHelmet(player);
 		assert goldenHelmet != null;
 
 		Sounds.HELMET_ACTIVATE.play(player);
@@ -65,10 +65,10 @@ public class GoldRushAbility extends HelmetAbility {
 
 	@Override
 	public boolean shouldActivate() {
-		ItemStack goldenHelmet = NewGoldenHelmet.getHelmet(player);
+		ItemStack goldenHelmet = GoldenHelmet.getHelmet(player);
 
 		assert goldenHelmet != null;
-		if(!NewGoldenHelmet.withdrawGold(player, goldenHelmet, 2000)) {
+		if(!GoldenHelmet.withdrawGold(player, goldenHelmet, 2000)) {
 			AOutput.error(player,"&cNot enough gold!");
 			Sounds.NO.play(player);
 			return false;
