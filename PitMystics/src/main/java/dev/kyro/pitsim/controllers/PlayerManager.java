@@ -41,7 +41,6 @@ import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.scheduler.BukkitRunnable;
-import org.spigotmc.event.player.PlayerSpawnLocationEvent;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -393,21 +392,46 @@ public class PlayerManager implements Listener {
 	}
 
 	@EventHandler
-	public void onJoin(PlayerSpawnLocationEvent event) {
+	public void onJoin(PlayerJoinEvent event) {
 		Player player = event.getPlayer();
 		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
 		Location spawnLoc = MapManager.getPlayerSpawn();
-		player.teleport(spawnLoc);
+
+		if(player.isOp()) {
+			new BukkitRunnable() {
+				@Override
+				public void run() {
+					Bukkit.dispatchCommand(player, "buzz exempt");
+				}
+			}.runTaskLater(PitSim.INSTANCE, 1L);
+		}
 
 		if(player.hasPermission("pitsim.autofps")) {
 			FPSCommand.fpsPlayers.add(player);
-			FPSCommand.hideMid(player);
+			for(Non non : NonManager.nons) player.hidePlayer(non.non);
+
+			new BukkitRunnable() {
+				@Override
+				public void run() {
+					for(Non non : NonManager.nons) player.hidePlayer(non.non);
+					player.teleport(MapManager.playerSnow);
+				}
+			}.runTaskLater(PitSim.INSTANCE, 1L);
+
+			new BukkitRunnable() {
+				@Override
+				public void run() {
+					player.teleport(spawnLoc);
+				}
+			}.runTaskLater(PitSim.INSTANCE, 20L);
+			return;
 		}
 
+		player.teleport(spawnLoc);
 		new BukkitRunnable() {
 			@Override
 			public void run() {
-				Bukkit.getServer().dispatchCommand(player, "spawn");
+				player.teleport(spawnLoc);
 
 				String message = "%luckperms_prefix%";
 				if(pitPlayer.megastreak.isOnMega()) {
@@ -416,7 +440,7 @@ public class PlayerManager implements Listener {
 					pitPlayer.prefix = PrestigeValues.getPlayerPrefixNameTag(pitPlayer.player) + PlaceholderAPI.setPlaceholders(player, message);
 				}
 			}
-		}.runTaskLater(PitSim.INSTANCE,  10L);
+		}.runTaskLater(PitSim.INSTANCE,  1L);
 	}
 
 	public static void removeIllegalItems(Player player) {
@@ -450,18 +474,6 @@ public class PlayerManager implements Listener {
 		if(player.isOnline()) {
 			event.disallow(AsyncPlayerPreLoginEvent.Result.KICK_OTHER, ChatColor.RED + "You are already online! \nIf you believe this is an error, try re-logging in a few seconds.");
 		}
-	}
-
-	@EventHandler
-	public static void onJoin(PlayerJoinEvent event) {
-		Player player = event.getPlayer();
-		if(!player.isOp()) return;
-		new BukkitRunnable() {
-			@Override
-			public void run() {
-				Bukkit.dispatchCommand(player, "buzz exempt");
-			}
-		}.runTaskLater(PitSim.INSTANCE, 1L);
 	}
 
 	public static List<Player> toggledPlayers = new ArrayList<>();
