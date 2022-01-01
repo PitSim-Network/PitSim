@@ -12,6 +12,7 @@ import dev.kyro.pitsim.enums.NBTTag;
 import dev.kyro.pitsim.events.AttackEvent;
 import dev.kyro.pitsim.events.DoubleSneakEvent;
 import dev.kyro.pitsim.events.KillEvent;
+import dev.kyro.pitsim.events.OofEvent;
 import dev.kyro.pitsim.helmetabilities.*;
 import dev.kyro.pitsim.inventories.HelmetGUI;
 import dev.kyro.pitsim.misc.Misc;
@@ -163,6 +164,7 @@ public class NewGoldenHelmet implements Listener {
 		ability.onDeactivate();
 		ability.isActive = false;
 		toggledPlayers.remove(player);
+		abilities.remove(player);
 	}
 
 	public static HelmetAbility generateInstance(Player player, String refName) {
@@ -251,7 +253,6 @@ public class NewGoldenHelmet implements Listener {
 			NewGoldenHelmet.deactivate(event.getPlayer());
 		}
 		if(abilities.containsKey(event.getPlayer())) abilities.get(event.getPlayer()).unload();
-		abilities.remove(event.getPlayer());
 		toggledPlayers.remove(event.getPlayer());
 	}
 
@@ -286,6 +287,15 @@ public class NewGoldenHelmet implements Listener {
 	@EventHandler
 	public void onDeath(PlayerDeathEvent event) {
 		Player player = event.getEntity();
+		if(abilities.get(player) != null) {
+			NewGoldenHelmet.deactivate(player);
+		}
+		toggledPlayers.remove(player);
+	}
+
+	@EventHandler
+	public void onOof(OofEvent event) {
+		Player player = event.getPlayer();
 		if(abilities.get(player) != null) {
 			NewGoldenHelmet.deactivate(player);
 		}
@@ -344,6 +354,7 @@ public class NewGoldenHelmet implements Listener {
 
 	@EventHandler(priority = EventPriority.HIGHEST)
 	public void onPlayerInteract(PlayerInteractEvent event) {
+		if(!event.getPlayer().isSneaking()) return;
 		Player player = event.getPlayer();
 		Action action = event.getAction();
 		if ((action.equals(Action.RIGHT_CLICK_BLOCK) || action.equals(Action.RIGHT_CLICK_AIR)) && this.armorMaterials.contains(player.getItemInHand().getType())) {

@@ -158,7 +158,7 @@ public class PitSim extends JavaPlugin {
 		registerCommands();
 		registerListeners();
 		registerBoosters();
-//		registerHelmetAbilities();
+		registerHelmetAbilities();
 	}
 
 	@Override
@@ -209,7 +209,7 @@ public class PitSim extends JavaPlugin {
 		PerkManager.registerUpgrade(new StrengthChaining());
 		PerkManager.registerUpgrade(new Gladiator());
 		PerkManager.registerUpgrade(new Thick());
-		PerkManager.registerUpgrade(new AssistantToTheStreaker());
+//		PerkManager.registerUpgrade(new AssistantToTheStreaker());
 		PerkManager.registerUpgrade(new FirstStrike());
 		PerkManager.registerUpgrade(new Streaker());
 		PerkManager.registerUpgrade(new CounterJanitor());
@@ -352,7 +352,7 @@ public class PitSim extends JavaPlugin {
 		UpgradeManager.registerUpgrade(new Withercraft());
 		UpgradeManager.registerUpgrade(new UnlockFirstStrike());
 		UpgradeManager.registerUpgrade(new Impatient());
-//		UpgradeManager.registerUpgrade(new Helmetry());
+		UpgradeManager.registerUpgrade(new Helmetry());
 		UpgradeManager.registerUpgrade(new ShardHunter());
 		UpgradeManager.registerUpgrade(new ReportAccess());
 //		UpgradeManager.registerUpgrade(new SelfConfidence());

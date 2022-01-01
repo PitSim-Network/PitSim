@@ -3,6 +3,7 @@ package dev.kyro.pitsim.helmetabilities;
 import dev.kyro.arcticapi.builders.AItemStackBuilder;
 import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.arcticapi.misc.AOutput;
+import dev.kyro.pitsim.controllers.LevelManager;
 import dev.kyro.pitsim.controllers.objects.HelmetAbility;
 import dev.kyro.pitsim.controllers.objects.NewGoldenHelmet;
 import dev.kyro.pitsim.events.AttackEvent;
@@ -11,6 +12,7 @@ import dev.kyro.pitsim.misc.Sounds;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.inventory.ItemStack;
 
 import java.text.DecimalFormat;
@@ -37,19 +39,19 @@ public class GoldRushAbility extends HelmetAbility {
 		Sounds.GOLD_RUSH.play(attackEvent.attacker);
 	}
 
-	@EventHandler
+	@EventHandler(priority = EventPriority.MONITOR)
 	public void onKill(KillEvent killEvent) {
 		if(!isActive || player != killEvent.killer) return;
 
 		ItemStack goldenHelmet = NewGoldenHelmet.getHelmet(killEvent.killer);
 		assert goldenHelmet != null;
-		if(!NewGoldenHelmet.withdrawGold(player, goldenHelmet, 4000)) {
+		if(!NewGoldenHelmet.withdrawGold(player, goldenHelmet, 2000)) {
 			AOutput.error(player,"&cNot enough gold!");
 			NewGoldenHelmet.deactivate(player);
 			Sounds.NO.play(player);
 		}
 
-		killEvent.goldMultipliers.add(3D);
+		LevelManager.addGoldReq(player, (int) (killEvent.getFinalGold() * 2D));
 	}
 
 	@Override
@@ -58,7 +60,7 @@ public class GoldRushAbility extends HelmetAbility {
 		assert goldenHelmet != null;
 
 		Sounds.HELMET_ACTIVATE.play(player);
-		AOutput.send(player, "&6&lGOLDEN HELMET! &aActivated &9Gold Rush&7. (&6-4,000g&7 per kill)");
+		AOutput.send(player, "&6&lGOLDEN HELMET! &aActivated &9Gold Rush&7. (&6-2,000g&7 per kill)");
 	}
 
 	@Override
@@ -66,7 +68,7 @@ public class GoldRushAbility extends HelmetAbility {
 		ItemStack goldenHelmet = NewGoldenHelmet.getHelmet(player);
 
 		assert goldenHelmet != null;
-		if(!NewGoldenHelmet.withdrawGold(player, goldenHelmet, 4000)) {
+		if(!NewGoldenHelmet.withdrawGold(player, goldenHelmet, 2000)) {
 			AOutput.error(player,"&cNot enough gold!");
 			Sounds.NO.play(player);
 			return false;
@@ -86,7 +88,7 @@ public class GoldRushAbility extends HelmetAbility {
 	public List<String> getDescription() {
 		DecimalFormat formatter = new DecimalFormat("#,###.#");
 		return Arrays.asList("&7Double-Sneak to toggle", "&7Gold. Triple gold on kill", "",
-				"&7Cost: &6" + formatter.format(4000) + "g &7per kill");
+				"&7Cost: &6" + formatter.format(2000) + "g &7per kill");
 	}
 
 	@Override

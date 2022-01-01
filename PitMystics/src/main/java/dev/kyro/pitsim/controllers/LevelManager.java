@@ -85,6 +85,16 @@ public class LevelManager {
 		APlayerData.savePlayerData(player);
 	}
 
+	public static void addGoldReq(Player player, int amount) {
+		if(NonManager.getNon(player) != null) return;
+		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
+
+		pitPlayer.goldGrinded += amount;
+		FileConfiguration playerData = APlayerData.getPlayerData(player);
+		playerData.set("goldgrinded", pitPlayer.goldGrinded);
+		APlayerData.savePlayerData(player);
+	}
+
 
 	public static void incrementPrestige(Player player) {
 		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);

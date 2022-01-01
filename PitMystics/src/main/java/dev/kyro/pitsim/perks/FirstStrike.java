@@ -23,7 +23,7 @@ public class FirstStrike extends PitPerk {
 	public static FirstStrike INSTANCE;
 
 	public FirstStrike() {
-		super("First Strike", "firststrike", new ItemStack(Material.COOKED_CHICKEN), 16, true, "FIRST_STRIKE", INSTANCE);
+		super("First Strike", "firststrike", new ItemStack(Material.COOKED_CHICKEN), 15, true, "FIRST_STRIKE", INSTANCE);
 		INSTANCE = this;
 	}
 

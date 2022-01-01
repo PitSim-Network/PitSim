@@ -63,6 +63,8 @@ public class HelmetAbilityPanel extends AGUIPanel {
 			if(slot == 9) {
 				NBTItem nbtItem = new NBTItem(goldenHelmet);
 				nbtItem.setString(NBTTag.GHELMET_ABILITY.getRef(), null);
+				NewGoldenHelmet.setLore(nbtItem.getItem());
+				player.getInventory().setItemInHand(nbtItem.getItem());
 
 				player.setItemInHand(nbtItem.getItem());
 				if(NewGoldenHelmet.abilities.containsKey(player)) NewGoldenHelmet.abilities.get(player).unload();

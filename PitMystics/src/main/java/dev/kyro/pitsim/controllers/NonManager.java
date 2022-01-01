@@ -1,5 +1,6 @@
 package dev.kyro.pitsim.controllers;
 
+import dev.kyro.arcticapi.data.AConfig;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.controllers.objects.Booster;
 import dev.kyro.pitsim.controllers.objects.Non;
@@ -21,6 +22,7 @@ public class NonManager implements Listener {
 		new BukkitRunnable() {
 			@Override
 			public void run() {
+				if(AConfig.getString("nons").equals("false")) return;
 //				if(true) return;
 				if(botIGNs.isEmpty()) {
 					botIGNs.add("KyroKrypt");

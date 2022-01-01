@@ -54,10 +54,7 @@ public class BlobAbility extends HelmetAbility {
 
 	@Override
 	public boolean shouldActivate() {
-		ItemStack goldenHelmet = NewGoldenHelmet.getHelmet(player);
-
-		assert goldenHelmet != null;
-		if(!NewGoldenHelmet.withdrawGold(player, goldenHelmet, 4000)) {
+		if(NewGoldenHelmet.getUsedHelmetGold(player) < 4000) {
 			AOutput.error(player,"&cNot enough gold!");
 			Sounds.NO.play(player);
 			return false;

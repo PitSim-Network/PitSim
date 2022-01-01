@@ -34,7 +34,7 @@ public class JudgementAbility extends HelmetAbility {
 		if(!isActive || player != attackEvent.attacker) return;
 		ItemStack goldenHelmet = NewGoldenHelmet.getHelmet(attackEvent.attacker);
 		assert goldenHelmet != null;
-		if(!NewGoldenHelmet.withdrawGold(player, goldenHelmet, 5000)) {
+		if(!NewGoldenHelmet.withdrawGold(player, goldenHelmet, 6474)) {
 			AOutput.error(player,"&cNot enough gold!");
 			NewGoldenHelmet.deactivate(player);
 			Sounds.NO.play(player);
@@ -110,15 +110,12 @@ public class JudgementAbility extends HelmetAbility {
 		assert goldenHelmet != null;
 
 		Sounds.HELMET_ACTIVATE.play(player);
-		AOutput.send(player, "&6&lGOLDEN HELMET! &aActivated &9Judgement&7. (&6-5,000g&7 per hit)");
+		AOutput.send(player, "&6&lGOLDEN HELMET! &aActivated &9Judgement&7. (&6-6474g&7 per hit)");
 	}
 
 	@Override
 	public boolean shouldActivate() {
-		ItemStack goldenHelmet = NewGoldenHelmet.getHelmet(player);
-
-		assert goldenHelmet != null;
-		if(!NewGoldenHelmet.withdrawGold(player, goldenHelmet, 5000)) {
+		if(NewGoldenHelmet.getUsedHelmetGold(player) < 6474) {
 			AOutput.error(player,"&cNot enough gold!");
 			Sounds.NO.play(player);
 			return false;
@@ -138,7 +135,7 @@ public class JudgementAbility extends HelmetAbility {
 	public List<String> getDescription() {
 		DecimalFormat formatter = new DecimalFormat("#,###.#");
 		return Arrays.asList("&7Double-Sneak to toggle", "&7Judgement. Annihilate your", "&7opponents with RNGesus", "",
-				"&7Cost: &6" + formatter.format(5000) + "g &7per hit");
+				"&7Cost: &6" + formatter.format(6474) + "g &7per hit");
 	}
 
 	@Override

@@ -25,7 +25,7 @@ public class Streaker extends PitPerk {
 	public static Streaker INSTANCE;
 
 	public Streaker() {
-		super("Streaker", "streaker", new ItemStack(Material.WHEAT), 19, true, "STREAKER", INSTANCE);
+		super("Streaker", "streaker", new ItemStack(Material.WHEAT), 16, true, "STREAKER", INSTANCE);
 		INSTANCE = this;
 	}
 

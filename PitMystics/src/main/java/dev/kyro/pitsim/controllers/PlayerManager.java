@@ -5,8 +5,9 @@ import de.tr7zw.nbtapi.NBTItem;
 import dev.kyro.arcticapi.data.APlayerData;
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.PitSim;
-import dev.kyro.pitsim.controllers.objects.Megastreak;
 import dev.kyro.pitsim.commands.FPSCommand;
+import dev.kyro.pitsim.controllers.objects.Megastreak;
+import dev.kyro.pitsim.controllers.objects.NewGoldenHelmet;
 import dev.kyro.pitsim.controllers.objects.Non;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.enums.NBTTag;
@@ -219,6 +220,7 @@ public class PlayerManager implements Listener {
 	}
 
 	public static List<UUID> pantsSwapCooldown = new ArrayList<>();
+	public static List<UUID> helmetSwapCooldown = new ArrayList<>();
 	@EventHandler
 	public static void onClick(PlayerInteractEvent event) {
 		Player player = event.getPlayer();
@@ -282,6 +284,36 @@ public class PlayerManager implements Listener {
 				@Override
 				public void run() {
 					pantsSwapCooldown.remove(player.getUniqueId());
+				}
+			}.runTaskLater(PitSim.INSTANCE, 40L);
+			Sounds.ARMOR_SWAP.play(player);
+		}
+
+		if(player.getItemInHand().getType().toString().contains("HELMET")){
+			if(player.isSneaking()) return;
+			if(Misc.isAirOrNull(player.getInventory().getHelmet())) return;
+
+			if(NewGoldenHelmet.abilities.get(event.getPlayer()) != null) {
+				NewGoldenHelmet.deactivate(event.getPlayer());
+			}
+			NewGoldenHelmet.toggledPlayers.remove(event.getPlayer());
+			NewGoldenHelmet.abilities.remove(event.getPlayer());
+
+			if(helmetSwapCooldown.contains(player.getUniqueId())) {
+
+				Sounds.NO.play(player);
+				return;
+			}
+
+			ItemStack held = player.getItemInHand();
+			player.setItemInHand(player.getInventory().getHelmet());
+			player.getInventory().setHelmet(held);
+
+			helmetSwapCooldown.add(player.getUniqueId());
+			new BukkitRunnable() {
+				@Override
+				public void run() {
+					helmetSwapCooldown.remove(player.getUniqueId());
 				}
 			}.runTaskLater(PitSim.INSTANCE, 40L);
 			Sounds.ARMOR_SWAP.play(player);
