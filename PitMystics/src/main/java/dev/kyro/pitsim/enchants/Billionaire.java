@@ -37,7 +37,7 @@ public class Billionaire extends PitEnchant {
 
 		int goldCost = getGoldCost(enchantLvl);
 		if(NonManager.getNon(attackEvent.defender) == null) {
-			goldCost = goldCost / 5;
+			goldCost = getPlayerGoldCost(enchantLvl);
 		}
 		if(UpgradeManager.hasUpgrade(attackEvent.attacker, "TAX_EVASION")) {
 			goldCost = goldCost - (int) ((UpgradeManager.getTier(attackEvent.attacker, "TAX_EVASION") * 0.1) * goldCost);
@@ -59,7 +59,7 @@ public class Billionaire extends PitEnchant {
 	public List<String> getDescription(int enchantLvl) {
 		DecimalFormat decimalFormat = new DecimalFormat("0.##");
 		return new ALoreBuilder("&7Hits with this sword deal &c" + getDamageMultiplier(enchantLvl) + "x",
-				"&cdamage &7but cost &6" + getGoldCost(enchantLvl) / 5 + "g &7against", "&7players and &6" + getGoldCost(enchantLvl) + "g &7against", "&7bots").getLore();
+				"&cdamage &7but cost &6" + getPlayerGoldCost(enchantLvl) + "g &7against", "&7players and &6" + getGoldCost(enchantLvl) + "g &7against", "&7bots").getLore();
 	}
 
 //	public double getDamageIncrease(int enchantLvl) {
@@ -72,6 +72,12 @@ public class Billionaire extends PitEnchant {
 	}
 
 	public int getGoldCost(int enchantLvl) {
-		return (int) (Math.floor(Math.pow(enchantLvl, 1.75)) * 50 + 50);
+		if(enchantLvl == 1) return 100;
+		return enchantLvl * 450 - 600;
+	}
+
+	public int getPlayerGoldCost(int enchantLvl) {
+		if(enchantLvl == 1) return 20;
+		return enchantLvl * 30 - 20;
 	}
 }

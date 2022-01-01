@@ -111,15 +111,15 @@ public class PrestigeValues {
 		xpLevelMap.put(0, 15);
 		xpLevelMap.put(10, 30);
 		xpLevelMap.put(20, 50);
-		xpLevelMap.put(30, 75);
-		xpLevelMap.put(40, 125);
-		xpLevelMap.put(50, 300);
-		xpLevelMap.put(60, 600);
-		xpLevelMap.put(70, 800);
-		xpLevelMap.put(80, 900);
-		xpLevelMap.put(90, 1000);
-		xpLevelMap.put(100, 1200);
-		xpLevelMap.put(110, 1500);
+		xpLevelMap.put(30, 100);
+		xpLevelMap.put(40, 250);
+		xpLevelMap.put(50, 400);
+		xpLevelMap.put(60, 750);
+		xpLevelMap.put(70, 1000);
+		xpLevelMap.put(80, 1200);
+		xpLevelMap.put(90, 1400);
+		xpLevelMap.put(100, 1700);
+		xpLevelMap.put(110, 2000);
 
 		prestigeMap.put(0, new PrestigeInfo(0, 1, 20_000, 10, 20, "&7"));
 		prestigeMap.put(1, new PrestigeInfo(1, 1.2, 40_000, 11, 10, "&9")); //tenacity gboost xp
@@ -131,46 +131,46 @@ public class PrestigeValues {
 		prestigeMap.put(7, new PrestigeInfo(7, 4, 160_000, 17, 13, "&e")); //streaker
 		prestigeMap.put(8, new PrestigeInfo(8, 4.5, 180_000, 18, 13, "&e"));
 		prestigeMap.put(9, new PrestigeInfo(9, 5, 200_000, 19, 14, "&e")); //doubledeath
-		prestigeMap.put(10, new PrestigeInfo(10, 6, 220_000, 40, 14, "&6")); //firststrike
-		prestigeMap.put(11, new PrestigeInfo(11, 7, 240_000, 42, 14, "&6")); //report access
-		prestigeMap.put(12, new PrestigeInfo(12, 8, 270_000, 44, 15, "&6")); //lifeinsurance
-		prestigeMap.put(13, new PrestigeInfo(13, 10, 300_000, 46, 15, "&6")); //beast
-		prestigeMap.put(14, new PrestigeInfo(14, 12, 340_000, 48, 16, "&6")); //counter-janitor
-		prestigeMap.put(15, new PrestigeInfo(15, 14, 400_000, 50, 16, "&c")); //helmetry
-		prestigeMap.put(16, new PrestigeInfo(16, 16, 500_000, 52, 16, "&c")); //divine
-		prestigeMap.put(17, new PrestigeInfo(17, 18, 600_000, 54, 16, "&c")); //highlander
-		prestigeMap.put(18, new PrestigeInfo(18, 21, 700_000, 56, 18, "&c")); //withercraft
-		prestigeMap.put(19, new PrestigeInfo(19, 24, 800_000, 58, 20, "&c"));
-		prestigeMap.put(20, new PrestigeInfo(20, 27, 900_000, 100, 20, "&5")); //uber
-		prestigeMap.put(21, new PrestigeInfo(21, 30, 1_000_000, 105, 20, "&5"));
-		prestigeMap.put(22, new PrestigeInfo(22, 35, 1_200_000, 110, 20, "&5")); //taxevasion
-		prestigeMap.put(23, new PrestigeInfo(23, 40, 1_400_000, 115, 22, "&5")); //complex
-		prestigeMap.put(24, new PrestigeInfo(24, 45, 1_700_000, 120, 24, "&5"));
-		prestigeMap.put(25, new PrestigeInfo(25, 50, 2_000_000, 125, 24, "&d")); //uberincrease
-		prestigeMap.put(26, new PrestigeInfo(26, 60, 2_300_000, 130, 24, "&d"));
-		prestigeMap.put(27, new PrestigeInfo(27, 70, 2_600_000, 135, 26, "&d")); //killsteal
-		prestigeMap.put(28, new PrestigeInfo(28, 80, 3_000_000, 140, 28, "&d")); //shard
-		prestigeMap.put(29, new PrestigeInfo(29, 90, 3_400_000, 145, 30, "&d"));
-		prestigeMap.put(30, new PrestigeInfo(30, 100, 3_800_000, 200, 30, "&f")); //moon
-		prestigeMap.put(31, new PrestigeInfo(31, 115, 4_200_000, 210, 30, "&f"));
-		prestigeMap.put(32, new PrestigeInfo(32, 130, 4_600_000, 220, 32, "&f"));
-		prestigeMap.put(33, new PrestigeInfo(33, 145, 5_000_000, 230, 34, "&f"));
-		prestigeMap.put(34, new PrestigeInfo(34, 160, 5_400_000, 240, 36, "&f"));
-		prestigeMap.put(35, new PrestigeInfo(35, 175, 5_800_000, 250, 36, "&b")); //withercraft
-		prestigeMap.put(36, new PrestigeInfo(36, 190, 6_200_000, 260, 36, "&b"));
-		prestigeMap.put(37, new PrestigeInfo(37, 210, 6_600_000, 270, 38, "&b"));
-		prestigeMap.put(38, new PrestigeInfo(38, 230, 7_000_000, 280, 40, "&b")); //Fast pass
-		prestigeMap.put(39, new PrestigeInfo(39, 250, 7_500_000, 290, 42, "&b"));
-		prestigeMap.put(40, new PrestigeInfo(40, 275, 10_000_000, 300, 42, "&3")); //celebrity
-		prestigeMap.put(41, new PrestigeInfo(41, 300, 11_000_000, 310, 42, "&3"));
-		prestigeMap.put(42, new PrestigeInfo(42, 325, 12_000_000, 320, 44, "&3"));
-		prestigeMap.put(43, new PrestigeInfo(43, 350, 14_000_000, 330, 46, "&3"));
-		prestigeMap.put(44, new PrestigeInfo(44, 375, 16_000_000, 340, 48, "&3"));
-		prestigeMap.put(45, new PrestigeInfo(45, 400, 18_000_000, 350, 50, "&2"));
-		prestigeMap.put(46, new PrestigeInfo(46, 425, 20_000_000, 375, 60, "&2"));
-		prestigeMap.put(47, new PrestigeInfo(47, 450, 22_000_000, 400, 70, "&2"));
-		prestigeMap.put(48, new PrestigeInfo(48, 475, 25_000_000, 500, 80, "&2"));
-		prestigeMap.put(49, new PrestigeInfo(49, 500, 30_000_000, 1000, 100, "&4"));
+		prestigeMap.put(10, new PrestigeInfo(10, 6, 350_000, 40, 14, "&6")); //firststrike
+		prestigeMap.put(11, new PrestigeInfo(11, 7, 500_000, 42, 14, "&6")); //report access
+		prestigeMap.put(12, new PrestigeInfo(12, 8, 1_000_000, 44, 15, "&6")); //lifeinsurance
+		prestigeMap.put(13, new PrestigeInfo(13, 10, 1_150_000, 46, 15, "&6")); //beast
+		prestigeMap.put(14, new PrestigeInfo(14, 12, 1_250_000, 48, 16, "&6")); //counter-janitor
+		prestigeMap.put(15, new PrestigeInfo(15, 14, 1_400_000, 50, 16, "&c")); //helmetry
+		prestigeMap.put(16, new PrestigeInfo(16, 16, 1_500_000, 52, 16, "&c")); //divine
+		prestigeMap.put(17, new PrestigeInfo(17, 18, 1_600_000, 54, 16, "&c")); //highlander
+		prestigeMap.put(18, new PrestigeInfo(18, 21, 1_700_000, 56, 18, "&c")); //withercraft
+		prestigeMap.put(19, new PrestigeInfo(19, 24, 1_800_000, 58, 20, "&c"));
+		prestigeMap.put(20, new PrestigeInfo(20, 27, 1_900_000, 100, 20, "&5")); //uber
+		prestigeMap.put(21, new PrestigeInfo(21, 30, 2_000_000, 105, 20, "&5"));
+		prestigeMap.put(22, new PrestigeInfo(22, 35, 2_200_000, 110, 20, "&5")); //taxevasion
+		prestigeMap.put(23, new PrestigeInfo(23, 40, 2_400_000, 115, 22, "&5")); //complex
+		prestigeMap.put(24, new PrestigeInfo(24, 45, 2_700_000, 120, 24, "&5"));
+		prestigeMap.put(25, new PrestigeInfo(25, 50, 3_000_000, 125, 24, "&d")); //uberincrease
+		prestigeMap.put(26, new PrestigeInfo(26, 60, 3_300_000, 130, 24, "&d"));
+		prestigeMap.put(27, new PrestigeInfo(27, 70, 3_600_000, 135, 26, "&d")); //killsteal
+		prestigeMap.put(28, new PrestigeInfo(28, 80, 4_000_000, 140, 28, "&d")); //shard
+		prestigeMap.put(29, new PrestigeInfo(29, 90, 4_400_000, 145, 30, "&d"));
+		prestigeMap.put(30, new PrestigeInfo(30, 100, 4_800_000, 300, 30, "&f")); //moon
+		prestigeMap.put(31, new PrestigeInfo(31, 115, 5_200_000, 310, 30, "&f"));
+		prestigeMap.put(32, new PrestigeInfo(32, 130, 5_600_000, 320, 32, "&f"));
+		prestigeMap.put(33, new PrestigeInfo(33, 145, 6_000_000, 330, 34, "&f"));
+		prestigeMap.put(34, new PrestigeInfo(34, 160, 6_400_000, 340, 36, "&f"));
+		prestigeMap.put(35, new PrestigeInfo(35, 175, 6_800_000, 350, 36, "&b")); //withercraft
+		prestigeMap.put(36, new PrestigeInfo(36, 190, 7_200_000, 360, 36, "&b"));
+		prestigeMap.put(37, new PrestigeInfo(37, 210, 7_600_000, 370, 38, "&b"));
+		prestigeMap.put(38, new PrestigeInfo(38, 230, 8_000_000, 380, 40, "&b")); //Fast pass
+		prestigeMap.put(39, new PrestigeInfo(39, 250, 8_500_000, 390, 42, "&b"));
+		prestigeMap.put(40, new PrestigeInfo(40, 275, 15_000_000, 500, 42, "&3")); //celebrity
+		prestigeMap.put(41, new PrestigeInfo(41, 300, 16_000_000, 510, 42, "&3"));
+		prestigeMap.put(42, new PrestigeInfo(42, 325, 17_000_000, 520, 44, "&3"));
+		prestigeMap.put(43, new PrestigeInfo(43, 350, 19_000_000, 530, 46, "&3"));
+		prestigeMap.put(44, new PrestigeInfo(44, 375, 21_000_000, 540, 48, "&3"));
+		prestigeMap.put(45, new PrestigeInfo(45, 400, 23_000_000, 550, 50, "&2"));
+		prestigeMap.put(46, new PrestigeInfo(46, 425, 25_000_000, 575, 60, "&2"));
+		prestigeMap.put(47, new PrestigeInfo(47, 450, 27_000_000, 600, 70, "&2"));
+		prestigeMap.put(48, new PrestigeInfo(48, 475, 30_000_000, 700, 80, "&2"));
+		prestigeMap.put(49, new PrestigeInfo(49, 500, 35_000_000, 1500, 100, "&4"));
 		double xpMultiplier = 0; for(Map.Entry<Integer, PrestigeInfo> entry : prestigeMap.entrySet()) xpMultiplier += entry.getValue().xpMultiplier;
 		prestigeMap.put(50, new PrestigeInfo(50, xpMultiplier, 0, 0, 300, "&4"));
 

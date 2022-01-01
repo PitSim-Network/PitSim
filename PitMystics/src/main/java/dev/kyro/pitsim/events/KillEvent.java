@@ -56,7 +56,7 @@ public class KillEvent extends Event {
 		for(Double goldMultiplier : goldMultipliers) {
 			goldReward *= goldMultiplier;
 		}
-		return goldReward;
+		return Math.min(goldReward, 2000);
 	}
 
 	@Override
