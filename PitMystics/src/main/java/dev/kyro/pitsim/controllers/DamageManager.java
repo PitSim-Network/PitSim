@@ -443,7 +443,7 @@ public class DamageManager implements Listener {
 					int lives = nbtItem.getInteger(NBTTag.CURRENT_LIVES.getRef());
 					if(!feather && !divine) {
 						if(lives - 1 == 0) {
-							dead.getInventory().remove(pants);
+							dead.getInventory().setLeggings(new ItemStack(Material.AIR));
 
 							if(pitDead.stats != null) pitDead.stats.itemsBroken++;
 						} else {
@@ -549,7 +549,7 @@ public class DamageManager implements Listener {
 					int lives = nbtItem.getInteger(NBTTag.CURRENT_LIVES.getRef());
 					if(!feather) {
 						if(lives - 1 == 0) {
-							dead.getInventory().remove(pants);
+							dead.getInventory().setLeggings(new ItemStack(Material.AIR));
 
 							if(pitDefender.stats != null) pitDefender.stats.itemsBroken++;
 						} else {
