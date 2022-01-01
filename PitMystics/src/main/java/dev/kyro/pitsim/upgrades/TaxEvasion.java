@@ -42,6 +42,6 @@ public class TaxEvasion extends RenownUpgrade {
 
 	@Override
 	public List<Integer> getTierCosts() {
-		return Arrays.asList(40, 75, 200);
+		return Arrays.asList(40, 75, 150);
 	}
 }
