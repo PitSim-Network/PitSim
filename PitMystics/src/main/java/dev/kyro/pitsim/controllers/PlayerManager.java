@@ -41,6 +41,7 @@ import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.scheduler.BukkitRunnable;
+import org.spigotmc.event.player.PlayerSpawnLocationEvent;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -389,7 +390,7 @@ public class PlayerManager implements Listener {
 	}
 
 	@EventHandler
-	public void onJoin(PlayerJoinEvent event) {
+	public void onJoin(PlayerSpawnLocationEvent event) {
 		Player player = event.getPlayer();
 		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
 		Location spawnLoc = MapManager.getPlayerSpawn();
@@ -437,7 +438,7 @@ public class PlayerManager implements Listener {
 					pitPlayer.prefix = PrestigeValues.getPlayerPrefixNameTag(pitPlayer.player) + PlaceholderAPI.setPlaceholders(player, message);
 				}
 			}
-		}.runTaskLater(PitSim.INSTANCE,  1L);
+		}.runTaskLater(PitSim.INSTANCE,  5L);
 	}
 
 	public static void removeIllegalItems(Player player) {
