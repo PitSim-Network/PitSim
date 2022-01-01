@@ -17,7 +17,6 @@ public class PrestigeLevelPlaceholder implements APAPIPlaceholder {
 	@Override
 	public String getValue(Player player) {
 
-
 		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
 
 		if(pitPlayer.prestige == 0) return PrestigeValues.getPlayerPrefixNameTag(player);
@@ -26,8 +25,7 @@ public class PrestigeLevelPlaceholder implements APAPIPlaceholder {
 		PrestigeValues.PrestigeInfo prestigeInfo = PrestigeValues.getPrestigeInfo(pitPlayer.prestige);
 		builder.append(prestigeInfo.getOpenBracket());
 		builder.append(ChatColor.YELLOW).append(AUtil.toRoman(pitPlayer.prestige));
-		if(pitPlayer.prestige == 50) builder.append(ChatColor.WHITE);
-	    else builder.append(prestigeInfo.bracketColor);
+	    builder.append(prestigeInfo.bracketColor);
 		builder.append("-");
 		builder.append(PrestigeValues.getLevelColor(pitPlayer.level)).append(pitPlayer.level);
 		builder.append(prestigeInfo.getCloseBracket());

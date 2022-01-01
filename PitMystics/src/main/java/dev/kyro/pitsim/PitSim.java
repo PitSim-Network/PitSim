@@ -158,7 +158,7 @@ public class PitSim extends JavaPlugin {
 		registerCommands();
 		registerListeners();
 		registerBoosters();
-		registerHelmetAbilities();
+//		registerHelmetAbilities();
 	}
 
 	@Override
@@ -220,7 +220,7 @@ public class PitSim extends JavaPlugin {
 
 		PerkManager.registerKillstreak(new Explicious());
 		PerkManager.registerKillstreak(new AssuredStrike());
-		PerkManager.registerKillstreak(new RR());
+		PerkManager.registerKillstreak(new RAndR());
 		PerkManager.registerKillstreak(new Leech());
 
 		PerkManager.registerKillstreak(new TacticalRetreat());
@@ -352,7 +352,7 @@ public class PitSim extends JavaPlugin {
 		UpgradeManager.registerUpgrade(new Withercraft());
 		UpgradeManager.registerUpgrade(new UnlockFirstStrike());
 		UpgradeManager.registerUpgrade(new Impatient());
-		UpgradeManager.registerUpgrade(new Helmetry());
+//		UpgradeManager.registerUpgrade(new Helmetry());
 		UpgradeManager.registerUpgrade(new ShardHunter());
 		UpgradeManager.registerUpgrade(new ReportAccess());
 //		UpgradeManager.registerUpgrade(new SelfConfidence());
@@ -444,6 +444,9 @@ public class PitSim extends JavaPlugin {
 		EnchantManager.registerEnchant(new Parasite());
 		EnchantManager.registerEnchant(new Chipping());
 		EnchantManager.registerEnchant(new Fletching());
+		EnchantManager.registerEnchant(new aBowPlaceholder());
+		EnchantManager.registerEnchant(new aBowPlaceholder());
+		EnchantManager.registerEnchant(new aBowPlaceholder());
 //		EnchantManager.registerEnchant(new BottomlessQuiver());
 
 		EnchantManager.registerEnchant(new RetroGravityMicrocosm());

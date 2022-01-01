@@ -176,11 +176,8 @@ public class DamageManager implements Listener {
 			return;
 		}
 		AttackEvent.Apply applyEvent = new AttackEvent.Apply(preEvent);
-			Bukkit.getServer().getPluginManager().callEvent(applyEvent);
-//		if(applyEvent.fakeHit) {
-//			applyEvent.event.setDamage(0);
-//			return;
-//		}
+		Bukkit.getServer().getPluginManager().callEvent(applyEvent);
+
 		handleAttack(applyEvent);
 		Bukkit.getServer().getPluginManager().callEvent(new AttackEvent.Post(applyEvent));
 	}
@@ -325,7 +322,7 @@ public class DamageManager implements Listener {
 		}
 
 
-		LevelManager.addXp(pitAttacker.player, killEvent.getFinalXp());
+		LevelManager.addXP(pitAttacker.player, killEvent.getFinalXp());
 //		OldLevelManager.incrementLevel(killer);
 		LevelManager.addGold(killEvent.killer, (int) killEvent.getFinalGold());
 
@@ -362,7 +359,8 @@ public class DamageManager implements Listener {
 
 			Player assistPlayer = Bukkit.getPlayer(entry.getKey());
 			if(assistPlayer == null) continue;
-			double assistPercent = entry.getValue() / finalDamage;
+//			TODO: Fix assist erroring (its rare so not super important)
+			double assistPercent = Math.max(Math.min(entry.getValue() / finalDamage, 1), 0);
 
 			if(UpgradeManager.hasUpgrade(assistPlayer, "KILL_STEAL")) {
 				int tier = UpgradeManager.getTier(assistPlayer, "KILL_STEAL");
@@ -372,7 +370,6 @@ public class DamageManager implements Listener {
 					Map<PitEnchant, Integer> defenderEnchant = new HashMap<>();
 					EntityDamageByEntityEvent ev = new EntityDamageByEntityEvent(assistPlayer, dead, EntityDamageEvent.DamageCause.CUSTOM, 0);
 					AttackEvent aEvent = new AttackEvent(ev, attackerEnchant, defenderEnchant, false);
-
 
 					DamageManager.fakeKill(attackEvent, assistPlayer, dead, false);
 					continue;
@@ -388,7 +385,7 @@ public class DamageManager implements Listener {
 			double gold = 20 * assistPercent;
 
 			PitPlayer assistPitPlayer = PitPlayer.getPitPlayer(assistPlayer);
-			LevelManager.addXp(assistPitPlayer.player, xp);
+			LevelManager.addXP(assistPitPlayer.player, xp);
 //			OldLevelManager.incrementLevel(assistPlayer);
 
 			if(killEvent.getFinalGold() > 10) {
@@ -615,7 +612,7 @@ public class DamageManager implements Listener {
 //			Disabled auto-tenacity
 //			pitAttacker.heal(2);
 		}
-		LevelManager.addXp(pitAttacker.player, killEvent.getFinalXp());
+		LevelManager.addXP(pitAttacker.player, killEvent.getFinalXp());
 //		OldLevelManager.incrementLevel(killer);
 		LevelManager.addGold(killEvent.killer, (int) killEvent.getFinalGold());
 

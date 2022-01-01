@@ -6,6 +6,7 @@ import dev.kyro.arcticapi.data.APlayerData;
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.controllers.objects.Megastreak;
+import dev.kyro.pitsim.commands.FPSCommand;
 import dev.kyro.pitsim.controllers.objects.Non;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.enums.NBTTag;
@@ -137,7 +138,7 @@ public class PlayerManager implements Listener {
 		}
 
 		if(killEvent.killer.hasPermission("group.eternal")) {
-			multiplier += 0.35;
+			multiplier += 0.30;
 		} else if(killEvent.killer.hasPermission("group.unthinkable")) {
 			multiplier += 0.25;
 		} else if(killEvent.killer.hasPermission("group.miraculous")) {
@@ -400,6 +401,11 @@ public class PlayerManager implements Listener {
 		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
 		Location spawnLoc = MapManager.getPlayerSpawn();
 		player.teleport(spawnLoc);
+
+		if(player.hasPermission("pitsim.autofps")) {
+			FPSCommand.fpsPlayers.add(player);
+			FPSCommand.hideMid(player);
+		}
 
 		new BukkitRunnable() {
 			@Override

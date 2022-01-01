@@ -5,6 +5,9 @@ import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.controllers.DamageManager;
 import dev.kyro.pitsim.controllers.NonManager;
 import dev.kyro.pitsim.controllers.objects.NewGoldenHelmet;
+import dev.kyro.pitsim.controllers.SpawnManager;
+import dev.kyro.pitsim.controllers.objects.GoldenHelmet;
+import dev.kyro.pitsim.controllers.objects.HelmetAbility;
 import dev.kyro.pitsim.controllers.objects.Non;
 import dev.kyro.pitsim.controllers.objects.PitEnchant;
 import dev.kyro.pitsim.enums.ApplyType;
@@ -15,6 +18,7 @@ import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Slime;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -27,6 +31,12 @@ import java.util.UUID;
 public class PitBlob extends PitEnchant {
 
 	public static Map<UUID, Slime> blobMap = new HashMap<>();
+
+	@EventHandler(priority = EventPriority.LOW)
+	public void onBlobDamagePlayer(EntityDamageByEntityEvent event) {
+		if(!(event.getDamager() instanceof Slime) || !SpawnManager.isInSpawn(event.getEntity().getLocation())) return;
+		event.setCancelled(true);
+	}
 
 	static {
 		new BukkitRunnable() {

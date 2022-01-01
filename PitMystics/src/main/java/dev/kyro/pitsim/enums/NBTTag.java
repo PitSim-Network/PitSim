@@ -29,7 +29,7 @@ public enum NBTTag {
 	GHELMET_GOLD("pr-ghelm-gold"),
 	GHELMET_ABILITY("pr-ghelm-ability"),
 	IS_YUMMY_BREAD("pr-is-yummy-bread"),
-	IS_VERY_YUMMY_BREAD("pr-is-very-yummy-bread"),
+	IS_VERY_YUMMY_BREAD("pr-is-very-yummy-bread2"),
 
 	IS_VENOM("pr-isvenom");
 

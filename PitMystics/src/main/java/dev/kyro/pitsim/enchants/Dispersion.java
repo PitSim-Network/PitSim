@@ -26,7 +26,7 @@ public class Dispersion extends PitEnchant {
 		int enchantLvl = attackEvent.getDefenderEnchantLevel(this);
 		if(enchantLvl == 0) return;
 
-		if(attackEvent.defender.getLocation().distance(MapManager.getMid()) > 10) return;
+		if(attackEvent.defender.getLocation().distance(MapManager.getMid()) > 12) return;
 
 		PitPlayer pitDefender = PitPlayer.getPitPlayer(attackEvent.defender);
 		if(pitDefender.megastreak.isOnMega()) {
@@ -66,7 +66,7 @@ public class Dispersion extends PitEnchant {
 	@Override
 	public List<String> getDescription(int enchantLvl) {
 		return new ALoreBuilder("&7If you are on mega and near mid", "&ddisperse " + getPercent(enchantLvl) + "% &7of the enchants",
-				"&7on your opponents attacks to", "&7nearby players using this enchant").getLore();
+				"&7on your opponent's attacks to", "&7nearby players using this enchant").getLore();
 	}
 
 	public int getPercent(int enchantLvl) {

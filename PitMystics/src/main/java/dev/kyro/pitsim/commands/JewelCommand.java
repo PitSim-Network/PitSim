@@ -81,7 +81,9 @@ public class JewelCommand extends ASubCommand {
 					AOutput.error(sender, "Invalid max lives");
 					return;
 				}
-			} else maxLives = Math.random() > 0.01 ? (int) (Math.random() * 50 + 10) : 100;
+			} else {
+				maxLives = EnchantManager.getRandomMaxLives();
+			}
 
 			PantColor.setPantColor(nbtItem.getItem(), PantColor.getNormalRandom());
 			nbtItem.setInteger(NBTTag.MAX_LIVES.getRef(), maxLives);

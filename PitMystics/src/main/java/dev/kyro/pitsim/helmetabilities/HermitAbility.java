@@ -52,7 +52,7 @@ public class HermitAbility extends HelmetAbility {
 					Sounds.HELMET_TICK.play(player);
 					if(count++ % 2 == 0) {
 						Misc.applyPotionEffect(player, PotionEffectType.SLOW, 100, 1, true, false);
-						Misc.applyPotionEffect(player, PotionEffectType.DAMAGE_RESISTANCE, 100, 1, true, false);
+						Misc.applyPotionEffect(player, PotionEffectType.DAMAGE_RESISTANCE, 100, 0, true, false);
 					}
 				}
 			}

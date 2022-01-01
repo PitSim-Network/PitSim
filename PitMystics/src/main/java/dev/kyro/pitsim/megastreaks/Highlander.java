@@ -81,7 +81,6 @@ public class Highlander extends Megastreak {
 	@Override
 	public ItemStack guiItem() {
 
-
 		ItemStack item = new ItemStack(Material.GOLD_BOOTS);
 		ItemMeta meta = item.getItemMeta();
 		List<String> lore = new ArrayList<>();
@@ -90,7 +89,7 @@ public class Highlander extends Megastreak {
 		lore.add(ChatColor.GRAY + "On trigger:");
 		lore.add(ChatColor.translateAlternateColorCodes('&', "&a\u25a0 &7Perma &eSpeed I&7"));
 		lore.add(ChatColor.translateAlternateColorCodes('&', "&a\u25a0 &7Earn &6+150% gold &7from kills"));
-		lore.add(ChatColor.translateAlternateColorCodes('&', "&a\u25a0 &7Deal &c+33% &7damage vs bountied players"));
+//		lore.add(ChatColor.translateAlternateColorCodes('&', "&a\u25a0 &7Deal &c+33% &7damage vs bountied players"));
 		lore.add(ChatColor.translateAlternateColorCodes('&', "&a\u25a0 &7Deal &c+25% &7damage vs bots"));
 		lore.add("");
 		lore.add(ChatColor.GRAY + "BUT:");
@@ -131,9 +130,9 @@ public class Highlander extends Megastreak {
 		PitPlayer pitDefender = PitPlayer.getPitPlayer(attackEvent.defender);
 		if(pitPlayer != this.pitPlayer) return;
 		if(pitPlayer.megastreak.isOnMega() && pitPlayer.megastreak.getClass() == Highlander.class) {
-			if(pitDefender.bounty > 0) {
-				attackEvent.increasePercent += 33 / 100D;
-			}
+//			if(pitDefender.bounty > 0) {
+//				attackEvent.increasePercent += 33 / 100D;
+//			}
 			if(NonManager.getNon(attackEvent.defender) != null) {
 				attackEvent.increasePercent += 25 / 100D;
 			}

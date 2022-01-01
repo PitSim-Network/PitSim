@@ -61,7 +61,7 @@ public class Sounds {
 	public static final SoundEffect EXPLOSIVE_3 = new SoundEffect(Sound.EXPLODE, 0.75, 1.4);
 	public static final SoundEffect GAMBLE_YES = new SoundEffect(Sound.NOTE_PLING, 1, 3);
 	public static final SoundEffect GAMBLE_NO = new SoundEffect(Sound.NOTE_PLING, 1, 1.5);
-	public static final SoundEffect LAST_STAND = new SoundEffect(Sound.ZOMBIE_WOODBREAK, 1, 1);
+	public static final SoundEffect LAST_STAND = new SoundEffect(Sound.ANVIL_BREAK, 1, 1);
 	public static final SoundEffect LUCKY_SHOT = new SoundEffect(Sound.ZOMBIE_WOODBREAK, 1, 1);
 	public static final SoundEffect PIN_DOWN = new SoundEffect(Sound.BURP, 1, 1);
 	public static final SoundEffect RGM = new SoundEffect(Sound.ENDERMAN_HIT, 1, 1);

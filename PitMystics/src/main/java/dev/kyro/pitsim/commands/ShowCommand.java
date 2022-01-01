@@ -23,7 +23,6 @@ public class ShowCommand implements CommandExecutor {
 
         if(!(sender instanceof Player)) return false;
 
-
         Player player = (Player) sender;
         ItemStack item = player.getItemInHand();
         ItemMeta meta = item.getItemMeta();
@@ -40,12 +39,9 @@ public class ShowCommand implements CommandExecutor {
         }
 
         StringBuilder builder = new StringBuilder();
-
-
         builder.append(meta.getDisplayName() + "\n");
 
         int i = 0;
-
         if(lore.size() < 1) {
             AOutput.error(player, "&cThis item does not have lore!");
             return false;
@@ -55,12 +51,8 @@ public class ShowCommand implements CommandExecutor {
 
             if(i == lore.size() - 1) builder.append(s);
             else builder.append(s).append("\n");
-
             i++;
         }
-
-
-
 
         String playername = "%luckperms_prefix%%essentials_nickname%";
         String playernamecolor = PlaceholderAPI.setPlaceholders(player, playername);
@@ -70,7 +62,7 @@ public class ShowCommand implements CommandExecutor {
                 new TextComponent(String.valueOf(builder))
         };
 
-        TextComponent nonhover = new TextComponent(ChatColor.translateAlternateColorCodes('&',"&6&lSHOWOFF! " + playernamecolor + " &7shows off their "));
+        TextComponent nonhover = new TextComponent(ChatColor.translateAlternateColorCodes('&',"&6SHOWOFF! " + playernamecolor + " &7shows off their "));
         TextComponent hover = new TextComponent(ChatColor.translateAlternateColorCodes('&', meta.getDisplayName()));
         hover.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, hoverEventComponents));
 
@@ -83,7 +75,4 @@ public class ShowCommand implements CommandExecutor {
 
         return false;
     }
-
-
-
 }

@@ -22,7 +22,7 @@ public class Baker extends Killstreak {
 	@Override
 	public void proc(Player player) {
 		double random = Math.random();
-		if(random > 0.8) YummyBread.giveVeryYummyBread(player, 1);
+		if(random > 0.9) YummyBread.giveVeryYummyBread(player, 1);
 		else YummyBread.giveYummyBread(player, 1);
 		Sounds.BREAD_GIVE.play(player);
 	}

@@ -27,7 +27,7 @@ public class LeaderboardPlaceholder2 implements APAPIPlaceholder {
 		StringBuilder levelBuilder = new StringBuilder();
 		PrestigeValues.PrestigeInfo info = PrestigeValues.getPrestigeInfo(key.getInt("prestige"));
 		levelBuilder.append(info.getOpenBracket()).append(ChatColor.YELLOW).append(AUtil.toRoman(key.getInt("prestige")))
-				.append(ChatColor.YELLOW + "-").append(PrestigeValues.getLevelColor(key.getInt("level"))).append(key.getString("level")).append(info.getCloseBracket());
+				.append(info.bracketColor + "-").append(PrestigeValues.getLevelColor(key.getInt("level"))).append(key.getString("level")).append(info.getCloseBracket());
 
 		StringBuilder builder = new StringBuilder();
 		builder.append(ChatColor.GOLD).append(key.getString("name")).append(" " + ChatColor.GRAY + "- ");

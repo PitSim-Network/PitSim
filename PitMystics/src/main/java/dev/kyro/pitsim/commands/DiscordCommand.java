@@ -13,7 +13,7 @@ public class DiscordCommand implements CommandExecutor {
         if(!(sender instanceof Player)) return false;
         Player player = (Player) sender;
 
-        AOutput.send(player, "&6PitSim Discord: &fhttps://discord.pitsim.net");
+        AOutput.send(player, "&6PitSim Discord: &fdiscord.pitsim.net");
 
         return false;
     }

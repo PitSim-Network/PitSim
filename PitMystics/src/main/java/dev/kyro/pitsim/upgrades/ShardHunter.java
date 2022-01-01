@@ -12,10 +12,12 @@ import dev.kyro.pitsim.controllers.HelmetSystem;
 import dev.kyro.pitsim.controllers.ItemManager;
 import dev.kyro.pitsim.controllers.UpgradeManager;
 import dev.kyro.pitsim.controllers.objects.NewGoldenHelmet;
+import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.controllers.objects.RenownUpgrade;
 import dev.kyro.pitsim.enums.NBTTag;
 import dev.kyro.pitsim.events.KillEvent;
 import dev.kyro.pitsim.inventories.RenownShopGUI;
+import dev.kyro.pitsim.megastreaks.Uberstreak;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
@@ -44,11 +46,11 @@ public class ShardHunter extends RenownUpgrade {
 		meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
 		List<String> lore = new ArrayList<>();
 		if(UpgradeManager.hasUpgrade(player, this)) lore.add(ChatColor.translateAlternateColorCodes('&',
-				"&7Current: &f" + 0.01 * UpgradeManager.getTier(player, this) + "&f% &7drop chance"));
+				"&7Current: &f" + 0.005 * UpgradeManager.getTier(player, this) + "&f% &7drop chance"));
 		if(UpgradeManager.hasUpgrade(player, this)) lore.add(ChatColor.GRAY + "Tier: " + ChatColor.GREEN + AUtil.toRoman(UpgradeManager.getTier(player, this)));
 		if(UpgradeManager.hasUpgrade(player, this)) lore.add("");
 		lore.add(ChatColor.GRAY + "Each tier:");
-		lore.add(ChatColor.translateAlternateColorCodes('&', "&7Gain &f+0.01% &7chance to obtain a &aGem"));
+		lore.add(ChatColor.translateAlternateColorCodes('&', "&7Gain &f+0.005% &7chance to obtain a &aGem"));
 		lore.add(ChatColor.translateAlternateColorCodes('&', "&aShard &7on kill. &7Use &aGem Shards"));
 		lore.add(ChatColor.translateAlternateColorCodes('&', "&7to create &aTotally Legit Gems&7."));
 		meta.setLore(UpgradeManager.loreBuilder(this, player, lore, isCustomPanel));
@@ -58,8 +60,9 @@ public class ShardHunter extends RenownUpgrade {
 
 	@Override
 	public List<Integer> getTierCosts() {
-//		return Arrays.asList(40, 45, 50 , 55, 60, 70, 80, 90, 100, 120);
-		return Arrays.asList(10, 13, 16 , 19, 22, 25, 30, 35, 40, 50);
+//		return Arrays.asList(40, 45, 50, 55, 60, 70, 80, 90, 100, 120);
+//		return Arrays.asList(10, 13, 16, 19, 22, 25, 30, 35, 40, 50,    75, 100, 125, 150, 200    250, 300, 350, 400, 500);
+		return Arrays.asList(10, 13, 16, 19, 22, 25, 30, 35, 40, 50);
 	}
 
 	@Override
@@ -74,12 +77,16 @@ public class ShardHunter extends RenownUpgrade {
 		int tier = UpgradeManager.getTier(killEvent.killer, this);
 		if(tier == 0) return;
 
-		double chance = 0.0001 * tier;
+		double chance = 0.00005 * tier;
 		ItemStack helmet = NewGoldenHelmet.getHelmet(killEvent.killer);
+
 		if(helmet != null) {
 			int level = HelmetSystem.getLevel(NewGoldenHelmet.getUsedHelmetGold(killEvent.killer));
 			if(killEvent.killer.getInventory().getHelmet().getType() == Material.GOLD_HELMET) chance += 0.0001 * HelmetSystem.getTotalStacks(HelmetSystem.Passive.SHARD_CHANCE,level - 1);
 		}
+
+		PitPlayer pitKiller = PitPlayer.getPitPlayer(killEvent.killer);
+		if(pitKiller.megastreak.isOnMega() && pitKiller.megastreak.getClass() == Uberstreak.class) chance *= Uberstreak.SHARD_MULTIPLIER;
 
 		boolean givesShard = Math.random() < chance;
 

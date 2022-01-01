@@ -40,7 +40,7 @@ public class GoldNanoFactory extends Killstreak {
 			event.getItem().remove();
 
 			Sounds.SUCCESS.play(event.getPlayer());
-			LevelManager.addGold(event.getPlayer(), 250);
+			LevelManager.addGold(event.getPlayer(), 123);
 
 			Misc.applyPotionEffect(event.getPlayer(), PotionEffectType.REGENERATION, 20 * 2, 3, true, false);
 
@@ -48,9 +48,9 @@ public class GoldNanoFactory extends Killstreak {
 				if(rewardPlayers.containsKey(event.getPlayer())) {
 					rewardPlayers.put(event.getPlayer(), rewardPlayers.get(event.getPlayer()) + 1);
 				} else rewardPlayers.put(event.getPlayer(), 1);
-				AOutput.send(event.getPlayer(), "&6&lGOLD PICKUP! &7from the ground &6250g&7. Gain &6+20% gold &7on your next kill.");
+				AOutput.send(event.getPlayer(), "&6&lGOLD PICKUP! &7Gain &6+123g&7. &6+25% gold &7on your next kill.");
 			} else {
-				AOutput.send(event.getPlayer(), "&6&lGOLD PICKUP! &7from the ground &6250g");
+				AOutput.send(event.getPlayer(), "&6&lGOLD PICKUP! &7Gain &6+123g&7");
 			}
 		}
 	}
@@ -59,16 +59,13 @@ public class GoldNanoFactory extends Killstreak {
 	public void onKill(KillEvent event) {
 		Player player = event.killer;
 		if(rewardPlayers.containsKey(player)) {
-			event.goldMultipliers.add(1 + (20 * rewardPlayers.get(player)) / 100D);
+			event.goldMultipliers.add(1 + (25 * rewardPlayers.get(player)) / 100D);
 			rewardPlayers.remove(player);
 		}
 	}
 
-
 	@Override
 	public void proc(Player player) {
-
-
 
 		for(int i = 0; i < 10; i++) {
 			ItemStack ingot = new ItemStack(Material.GOLD_INGOT);
@@ -81,7 +78,6 @@ public class GoldNanoFactory extends Killstreak {
 			spawnLoc.setZ(spawnLoc.getZ() + (Math.random() * 10 - 5));
 			spawnLoc.getWorld().dropItem(spawnLoc, ingot);
 		}
-
 	}
 
 	@Override
@@ -95,7 +91,7 @@ public class GoldNanoFactory extends Killstreak {
 		AItemStackBuilder builder = new AItemStackBuilder(Material.GOLD_NUGGET);
 		builder.setName("&e" + name);
 		builder.setLore(new ALoreBuilder("&7Every: &c" + killInterval + " kills",
-				"", "&7Spawns &610 gold ingots. &7Picking them",  "&7up grants &cRegen IV &7for 2 seconds", "&7and &6+20% gold &7on your next kill."));
+				"", "&7Spawns &610 gold ingots. &7Picking them",  "&7up grants &cRegen IV &7(s), &6123g&7,", "&7and &6+25% gold &7on your next kill."));
 
 		return builder.getItemStack();
 	}

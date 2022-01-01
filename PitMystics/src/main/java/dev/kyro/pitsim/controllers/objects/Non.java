@@ -188,7 +188,11 @@ public class Non {
 		nonState = NonState.RESPAWNING;
 		Location spawnLoc = MapManager.getNonSpawn();
 		Booster booster = BoosterManager.getBooster("chaos");
-		if(Math.random() < 0.5 && booster.isActive()) spawnLoc.add(0, -10, 0);
+		if(booster.isActive()) {
+			spawnLoc.add(0, -10, 0);
+		} else if(Math.random() < 0.5){
+			spawnLoc.add(0, -5, 0);
+		}
 
 		if(!npc.isSpawned() && !PitEventManager.majorEvent) spawn();
 		try {

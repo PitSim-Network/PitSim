@@ -35,42 +35,44 @@ public class YummyBread implements Listener {
 
 	@EventHandler
 	public void onEat(PlayerItemConsumeEvent event) {
+		Player player = event.getPlayer();
 		event.getPlayer().setFoodLevel(19);
 
 		if(Misc.isAirOrNull(event.getItem())) return;
 		NBTItem nbtItem = new NBTItem(event.getItem());
 		if(nbtItem.hasKey(NBTTag.IS_VERY_YUMMY_BREAD.getRef())) {
-			PitPlayer pitPlayer = PitPlayer.getPitPlayer(event.getPlayer());
-			pitPlayer.heal(8);
-			pitPlayer.heal(4, HealEvent.HealType.ABSORPTION, 16);
+			PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
+			pitPlayer.heal(12);
+			pitPlayer.heal(4, HealEvent.HealType.ABSORPTION, 20);
 		}
 	}
 
 	@EventHandler
 	public void onEat(PlayerInteractEvent event) {
+		Player player = event.getPlayer();
 		if(Misc.isAirOrNull(event.getItem())) return;
 		NBTItem nbtItem = new NBTItem(event.getItem());
-		if(nbtItem.hasKey(NBTTag.IS_YUMMY_BREAD.getRef())) {
-			if(breadStacks.containsKey(event.getPlayer())) {
-				breadStacks.put(event.getPlayer(), breadStacks.get(event.getPlayer()) + 1);
-			} else breadStacks.put(event.getPlayer(), 1);
-			Sounds.YUMMY_BREAD.play(event.getPlayer());
-			if(event.getItem().getAmount() == 1) {
-				event.getPlayer().getInventory().remove(event.getItem());
-			} else event.getItem().setAmount(event.getItem().getAmount() - 1);
+		player.setFoodLevel(19);
+		if(!nbtItem.hasKey(NBTTag.IS_YUMMY_BREAD.getRef())) return;
 
-			new BukkitRunnable() {
-				@Override
-				public void run() {
-					if(breadStacks.containsKey(event.getPlayer())) {
-						if(breadStacks.get(event.getPlayer()) - 1 <= 0) breadStacks.remove(event.getPlayer());
-						else breadStacks.put(event.getPlayer(), breadStacks.get(event.getPlayer()) - 1);
-					}
+		if(breadStacks.containsKey(player)) {
+			breadStacks.put(player, breadStacks.get(player) + 1);
+		} else breadStacks.put(player, 1);
+		Sounds.YUMMY_BREAD.play(player);
+		if(event.getItem().getAmount() == 1) {
+			player.getInventory().remove(event.getItem());
+		} else event.getItem().setAmount(event.getItem().getAmount() - 1);
+
+		new BukkitRunnable() {
+			@Override
+			public void run() {
+				if(breadStacks.containsKey(player)) {
+					if(breadStacks.get(player) - 1 <= 0) breadStacks.remove(player);
+					else breadStacks.put(player, breadStacks.get(player) - 1);
 				}
-			}.runTaskLater(PitSim.INSTANCE, 20 * 30L);
-		}
-
-		event.getPlayer().setFoodLevel(19);
+			}
+		}.runTaskLater(PitSim.INSTANCE, 20 * 30L);
+		player.updateInventory();
 	}
 
 	public static void deleteBread(Player player) {
@@ -88,13 +90,14 @@ public class YummyBread implements Listener {
 	public static void giveVeryYummyBread(Player player, int amount) {
 		AItemStackBuilder veryBuilder = new AItemStackBuilder(Material.BREAD, amount);
 		veryBuilder.setName("&6Very yummy bread");
-		ALoreBuilder veryLoreBuilder = new ALoreBuilder("&7Heals &c4\u2764", "&7Grants &62\u2764");
+		ALoreBuilder veryLoreBuilder = new ALoreBuilder("&7Heals &c" + Misc.getHearts(12), "&7Grants &6" + Misc.getHearts(4));
 		veryBuilder.setLore(veryLoreBuilder);
 
 		NBTItem nbtItem = new NBTItem(veryBuilder.getItemStack());
 		nbtItem.setBoolean(NBTTag.IS_VERY_YUMMY_BREAD.getRef(), true);
 
 		AUtil.giveItemSafely(player, nbtItem.getItem(), true);
+		player.updateInventory();
 	}
 
 	public static void giveYummyBread(Player player, int amount) {
@@ -107,6 +110,6 @@ public class YummyBread implements Listener {
 		nbtItem.setBoolean(NBTTag.IS_YUMMY_BREAD.getRef(), true);
 
 		AUtil.giveItemSafely(player, nbtItem.getItem(), true);
+		player.updateInventory();
 	}
-
 }
