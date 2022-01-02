@@ -63,23 +63,7 @@ public class PlayerManager implements Listener {
 				for(Player onlinePlayer : Bukkit.getOnlinePlayers()) ((CraftPlayer) onlinePlayer).getHandle().getDataWatcher().watch(9, (byte) 0);
 			}
 		}.runTaskTimer(PitSim.INSTANCE, 0L, 20L);
-	}
 
-	@EventHandler
-	public void onCommand(PlayerCommandPreprocessEvent event) {
-		if(event.getPlayer().isOp()) return;
-//		TODO: Pay needs to be moved to its own command because essentials pay autocompletes name so its not feasible to block command if receiver level < 100
-		if(ChatColor.stripColor(event.getMessage()).toLowerCase().startsWith("/trade") ||
-				ChatColor.stripColor(event.getMessage()).toLowerCase().startsWith("/pay")) {
-			PitPlayer pitPlayer = PitPlayer.getPitPlayer(event.getPlayer());
-			if(pitPlayer.level < 100) {
-				event.setCancelled(true);
-				AOutput.error(event.getPlayer(), "&c&lNOPE! &7You cannot trade until level 100");
-			}
-		}
-	}
-
-	static {
 		new BukkitRunnable() {
 			@Override
 			public void run() {
@@ -132,6 +116,20 @@ public class PlayerManager implements Listener {
 	}
 
 	@EventHandler
+	public void onCommand(PlayerCommandPreprocessEvent event) {
+		if(event.getPlayer().isOp()) return;
+//		TODO: Pay needs to be moved to its own command because essentials pay autocompletes name so its not feasible to block command if receiver level < 100
+		if(ChatColor.stripColor(event.getMessage()).toLowerCase().startsWith("/trade") ||
+				ChatColor.stripColor(event.getMessage()).toLowerCase().startsWith("/pay")) {
+			PitPlayer pitPlayer = PitPlayer.getPitPlayer(event.getPlayer());
+			if(pitPlayer.level < 100) {
+				event.setCancelled(true);
+				AOutput.error(event.getPlayer(), "&c&lNOPE! &7You cannot trade until level 100");
+			}
+		}
+	}
+
+	@EventHandler
 	public void onKillForRank(KillEvent killEvent) {
 		double multiplier = 1;
 		if(killEvent.killer.hasPermission("group.nitro")) {
@@ -177,7 +175,7 @@ public class PlayerManager implements Listener {
 
 			for(Player player : Bukkit.getOnlinePlayers()) {
 				PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
-				if(pitPlayer.disabledBounties) continue;
+				if(pitPlayer.bountiesDisabled) continue;
 
 				String bounty1 = ChatColor.translateAlternateColorCodes('&',
 						"&6&lBOUNTY CLAIMED!&7 %luckperms_prefix%" + killEvent.killer.getDisplayName() + "&7 killed ");
@@ -205,7 +203,7 @@ public class PlayerManager implements Listener {
 			}
 			String message = "&6&lBOUNTY!&7 bump &6&l" + amount + "g&7 on %luckperms_prefix%" + killEvent.killer.getDisplayName() +
 					"&7 for high streak";
-			if(!pitKiller.disabledBounties) AOutput.send(killEvent.killer, PlaceholderAPI.setPlaceholders(killEvent.killer, message));
+			if(!pitKiller.bountiesDisabled) AOutput.send(killEvent.killer, PlaceholderAPI.setPlaceholders(killEvent.killer, message));
 			Sounds.BOUNTY.play(killEvent.killer);
 		}
 	}

@@ -56,14 +56,6 @@ public class PitSim extends JavaPlugin {
 	public static ProtocolManager PROTOCOL_MANAGER = null;
 
 	public static AData playerList;
-//	private BukkitAudiences adventure;
-//
-//	public BukkitAudiences adventure() {
-//		if(this.adventure == null) {
-//			throw new IllegalStateException("Tried to access Adventure when the plugin was disabled!");
-//		}
-//		return this.adventure;
-//	}
 
 	@Override
 	public void onEnable() {
@@ -300,6 +292,7 @@ public class PitSim extends JavaPlugin {
 		getServer().getPluginManager().registerEvents(new DamageManager(), this);
 //		getServer().getPluginManager().registerEvents(new NonManager(), this);
 		getServer().getPluginManager().registerEvents(new PlayerManager(), this);
+		getServer().getPluginManager().registerEvents(new PlayerDataManager(), this);
 		getServer().getPluginManager().registerEvents(new ChatManager(), this);
 		getServer().getPluginManager().registerEvents(new DamageIndicator(), this);
 		getServer().getPluginManager().registerEvents(new ItemManager(), this);

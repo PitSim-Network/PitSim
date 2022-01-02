@@ -330,10 +330,10 @@ public class DamageManager implements Listener {
 		String killActionBar = "&7%luckperms_prefix%" + (defendingNon == null ? "%player_name%" : defendingNon.displayName) + " &a&lKILL!";
 
 		PitPlayer pitKiller = PitPlayer.getPitPlayer(killer);
-		if(!pitKiller.disabledKillFeed)
+		if(!pitKiller.killFeedDisabled)
 			AOutput.send(killEvent.killer, PlaceholderAPI.setPlaceholders(killEvent.dead, kill));
 		PitPlayer pitDead = PitPlayer.getPitPlayer(dead);
-		if(!pitDead.disabledKillFeed)
+		if(!pitDead.killFeedDisabled)
 			AOutput.send(killEvent.dead, PlaceholderAPI.setPlaceholders(killEvent.killer, death));
 		String actionBarPlaceholder = PlaceholderAPI.setPlaceholders(killEvent.dead, killActionBar);
 		new BukkitRunnable() {
@@ -395,7 +395,7 @@ public class DamageManager implements Listener {
 			String assist = "&a&lASSIST!&7 " + Math.round(assistPercent * 100) + "% on %luckperms_prefix%" +
 					(defendingNon == null ? "%player_name%" : defendingNon.displayName) + " &b+" + xp + "XP" + " &6+" + df.format(gold) + "g";
 
-			if(!assistPitPlayer.disabledKillFeed)
+			if(!assistPitPlayer.killFeedDisabled)
 				AOutput.send(assistPlayer, PlaceholderAPI.setPlaceholders(killEvent.dead, assist));
 		}
 
@@ -612,7 +612,7 @@ public class DamageManager implements Listener {
 		String killActionBar = "&7%luckperms_prefix%" + (defendingNon == null ? "%player_name%" : defendingNon.displayName) + " &a&lKILL!";
 
 		PitPlayer pitKiller = PitPlayer.getPitPlayer(killer);
-		if(!pitKiller.disabledKillFeed)
+		if(!pitKiller.killFeedDisabled)
 			AOutput.send(killEvent.killer, PlaceholderAPI.setPlaceholders(killEvent.dead, kill));
 		PitPlayer pitDead = PitPlayer.getPitPlayer(dead);
 		String actionBarPlaceholder = PlaceholderAPI.setPlaceholders(killEvent.dead, killActionBar);

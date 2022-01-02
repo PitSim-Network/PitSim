@@ -77,7 +77,6 @@ public class LevelManager {
 		pitPlayer.goldGrinded += amount;
 	}
 
-
 	public static void incrementPrestige(Player player) {
 		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
 		PrestigeValues.PrestigeInfo prestigeInfo = PrestigeValues.getPrestigeInfo(pitPlayer.prestige);
