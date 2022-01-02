@@ -167,7 +167,7 @@ public class Non {
 			spawnLoc.add(0, -5, 0);
 		}
 
-		if(!npc.isSpawned()) spawn();
+		if(!npc.isSpawned() || non == null) spawn();
 		try {
 
 			if(npc.isSpawned()) {
