@@ -25,7 +25,7 @@ public class StatManager implements Listener {
 				for(Player player : Bukkit.getOnlinePlayers()) {
 					PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
 					if(!AFKManager.AFKPlayers.contains(player)) pitPlayer.stats.minutesPlayed++;
-					pitPlayer.stats.save();
+//					pitPlayer.stats.save();
 				}
 			}
 		}.runTaskTimer(PitSim.INSTANCE, 0L, 20 * 60L);

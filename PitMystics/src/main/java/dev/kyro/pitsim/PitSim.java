@@ -6,6 +6,7 @@ import com.xxmicloxx.NoteBlockAPI.songplayer.EntitySongPlayer;
 import dev.kyro.arcticapi.ArcticAPI;
 import dev.kyro.arcticapi.commands.ABaseCommand;
 import dev.kyro.arcticapi.data.AData;
+import dev.kyro.arcticapi.data.APlayerData;
 import dev.kyro.arcticapi.hooks.AHook;
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.boosters.ChaosBooster;
@@ -31,6 +32,7 @@ import net.citizensnpcs.api.npc.NPC;
 import net.luckperms.api.LuckPerms;
 import net.milkbowl.vault.economy.Economy;
 import org.bukkit.Bukkit;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.plugin.Plugin;
@@ -46,7 +48,6 @@ import java.util.Map;
 //import net.kyori.adventure.platform.bukkit.BukkitAudiences;
 
 public class PitSim extends JavaPlugin {
-
 	public static double version = 2.0;
 
 	public static LuckPerms LUCKPERMS;
@@ -232,7 +233,7 @@ public class PitSim extends JavaPlugin {
 		getCommand("ps").setExecutor(adminCommand);
 		ABaseCommand giveCommand = new BaseSetCommand(adminCommand, "give");
 		ABaseCommand setCommand = new BaseSetCommand(adminCommand, "set");
-		adminCommand.registerCommand(new AnticheatCommand("check"));
+//		adminCommand.registerCommand(new AnticheatCommand("check"));
 		adminCommand.registerCommand(new HopperCommand("hopper"));
 		adminCommand.registerCommand(new UUIDCommand("uuid"));
 		adminCommand.registerCommand(new DupeCommand("dupe"));
@@ -282,6 +283,7 @@ public class PitSim extends JavaPlugin {
 		getServer().getPluginManager().registerEvents(new DamageManager(), this);
 //		getServer().getPluginManager().registerEvents(new NonManager(), this);
 		getServer().getPluginManager().registerEvents(new PlayerManager(), this);
+		getServer().getPluginManager().registerEvents(new PlayerDataManager(), this);
 		getServer().getPluginManager().registerEvents(new ChatManager(), this);
 		getServer().getPluginManager().registerEvents(new DamageIndicator(), this);
 		getServer().getPluginManager().registerEvents(new ItemManager(), this);
@@ -294,7 +296,7 @@ public class PitSim extends JavaPlugin {
 		getServer().getPluginManager().registerEvents(new TotallyLegitGem(), this);
 		getServer().getPluginManager().registerEvents(new ChunkOfVile(), this);
 		getServer().getPluginManager().registerEvents(new ReachAutoBan(), this);
-		getServer().getPluginManager().registerEvents(new NonAnticheat(), this);
+//		getServer().getPluginManager().registerEvents(new NonAnticheat(), this);
 //		getServer().getPluginManager().registerEvents(new HelmetListeners(), this);
 		getServer().getPluginManager().registerEvents(new PitBlob(), this);
 		getServer().getPluginManager().registerEvents(new SpawnNPCs(), this);

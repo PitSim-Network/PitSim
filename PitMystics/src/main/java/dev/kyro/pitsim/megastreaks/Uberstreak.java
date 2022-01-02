@@ -221,7 +221,7 @@ public class Uberstreak extends Megastreak {
 		Sounds.UBER_100.play(pitPlayer.player);
 		for(Player player : Bukkit.getOnlinePlayers()) {
 			PitPlayer pitPlayer2 = PitPlayer.getPitPlayer(player);
-			if(pitPlayer2.disabledStreaks) continue;
+			if(pitPlayer2.streaksDisabled) continue;
 			String message2 = ChatColor.translateAlternateColorCodes('&',
 					"&c&lMEGASTREAK!&7 %luckperms_prefix%" + pitPlayer.player.getDisplayName() + "&7 activated &d&lUBERSTREAK&7!");
 
@@ -327,7 +327,7 @@ public class Uberstreak extends Megastreak {
 	public static void uberMessage(String message, PitPlayer pitPlayer) {
 		for(Player player : Bukkit.getOnlinePlayers()) {
 			PitPlayer pitPlayer2 = PitPlayer.getPitPlayer(player);
-			if(pitPlayer2.disabledStreaks) continue;
+			if(pitPlayer2.streaksDisabled) continue;
 			String message2 = ChatColor.translateAlternateColorCodes('&',
 					"&d&lUBERDROP!&7 %luckperms_prefix%" + pitPlayer.player.getDisplayName() + "&7 obtained an &dUberdrop: &7" + message);
 			player.sendMessage(PlaceholderAPI.setPlaceholders(pitPlayer.player, message2));

@@ -149,7 +149,7 @@ public class Beastmode extends Megastreak {
 		pitPlayer.megastreak = this;
 		for(Player player : Bukkit.getOnlinePlayers()) {
 			PitPlayer pitPlayer2 = PitPlayer.getPitPlayer(player);
-			if(pitPlayer2.disabledStreaks) continue;
+			if(pitPlayer2.streaksDisabled) continue;
 			String streakMessage = ChatColor.translateAlternateColorCodes('&',
 					"&c&lMEGASTREAK! %luckperms_prefix%" + pitPlayer.player.getDisplayName() + "&7 activated &a&lBEASTMODE&7!");
 			AOutput.send(player, PlaceholderAPI.setPlaceholders(pitPlayer.player, streakMessage));

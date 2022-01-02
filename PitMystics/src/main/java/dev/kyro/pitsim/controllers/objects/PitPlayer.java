@@ -29,7 +29,6 @@ import org.bukkit.scheduler.BukkitTask;
 import java.util.*;
 
 public class PitPlayer {
-
 	public static List<PitPlayer> pitPlayers = new ArrayList<>();
 
 	public Player player;
@@ -46,43 +45,98 @@ public class PitPlayer {
 	public Map<UUID, Double> recentDamageMap = new HashMap<>();
 	public List<BukkitTask> assistRemove = new ArrayList<>();
 
-	public Boolean disabledPlayerChat = false;
-	public Boolean disabledKillFeed = false;
-	public Boolean disabledBounties = false;
-	public Boolean disabledStreaks = false;
-
 	public UUID lastHitUUID = null;
-
 	public ItemStack confirmedDrop = null;
 
 //	Savable
-	public int prestige = 0;
-	public int level = 1;
+	public int prestige;
+	public int level;
 	public int remainingXP = PrestigeValues.getXPForLevel(1);
-	public int playerKills = 0;
-	public int renown = 0;
+	public int playerKills;
+	public int renown;
 	public PitPerk[] pitPerks = new PitPerk[4];
 	public List<Killstreak> killstreaks = Arrays.asList(NoKillstreak.INSTANCE, NoKillstreak.INSTANCE, NoKillstreak.INSTANCE);
 	public Megastreak megastreak;
 
-	public boolean lightingDisabled;
+	public boolean playerChatDisabled;
+	public boolean killFeedDisabled;
 	public boolean bountiesDisabled;
+	public boolean streaksDisabled;
+	public boolean lightingDisabled;
 	public boolean promptPack;
 
-	public double goldStack = 0;
-	public int moonBonus = 0;
-	public int dailyUbersLeft = 5;
-	public long uberReset = 0;
-	public int goldGrinded = 0;
+	public double goldStack;
+	public int moonBonus;
+	public int dailyUbersLeft;
+	public long uberReset;
+	public int goldGrinded;
 	public Map<Booster, Integer> boosters = new HashMap<>();
 	public Map<Booster, Integer> boosterTime = new HashMap<>();
-	
+
 	public double lastVersion;
 	public KillEffect killEffect = null;
 	public DeathCry deathCry = null;
 	public AChatColor chatColor = null;
 
 	public PlayerStats stats;
+
+	public void save() {
+		FileConfiguration playerData = APlayerData.getPlayerData(player);
+
+		playerData.set("prestige", prestige);
+		playerData.set("level", level);
+		playerData.set("xp", remainingXP);
+		playerData.set("playerkills", playerKills);
+		playerData.set("renown", renown);
+
+		playerData.set("goldstack", goldStack);
+		playerData.set("moonbonus", moonBonus);
+		playerData.set("ubersleft", dailyUbersLeft);
+		playerData.set("ubercooldown", uberReset);
+		playerData.set("goldgrinded", goldGrinded);
+		for(Map.Entry<Booster, Integer> entry : boosters.entrySet()) playerData.set("boosters." + entry.getKey().refName, entry.getValue());
+
+		playerData.set("lastversion", PitSim.version);
+
+		APlayerData.savePlayerData(player);
+	}
+
+	public void fullSave() {
+		FileConfiguration playerData = APlayerData.getPlayerData(player);
+
+		playerData.set("prestige", prestige);
+		playerData.set("level", level);
+		playerData.set("xp", remainingXP);
+		playerData.set("playerkills", playerKills);
+		playerData.set("renown", renown);
+		for(int i = 0; i < pitPerks.length; i++) playerData.set("perk-" + i, pitPerks[i].refName);
+		for(int i = 0; i < killstreaks.size(); i++) playerData.set("killstreak-" + i, killstreaks.get(i).refName);
+		playerData.set("megastreak", megastreak.getRawName());
+
+		playerData.set("disabledplayerchat", playerChatDisabled);
+		playerData.set("disabledkillfeed", killFeedDisabled);
+		playerData.set("disabledbounties", bountiesDisabled);
+		playerData.set("disabledstreaks", streaksDisabled);
+		playerData.set("settings.lightning", lightingDisabled);
+		playerData.set("promptPack", promptPack);
+
+		playerData.set("goldstack", goldStack);
+		playerData.set("moonbonus", moonBonus);
+		playerData.set("ubersleft", dailyUbersLeft);
+		playerData.set("ubercooldown", uberReset);
+		playerData.set("goldgrinded", goldGrinded);
+		for(Map.Entry<Booster, Integer> entry : boosters.entrySet()) playerData.set("boosters." + entry.getKey().refName, entry.getValue());
+		for(Map.Entry<Booster, Integer> entry : boosterTime.entrySet()) playerData.set("booster-time." + entry.getKey().refName, entry.getValue());
+
+		playerData.set("lastversion", PitSim.version);
+		playerData.set("killeffect", killEffect.toString());
+		playerData.set("deathcry", deathCry.toString());
+		playerData.set("chatcolor", chatColor.toString());
+
+		APlayerData.savePlayerData(player);
+
+		stats.save();
+	}
 
 	public PitPlayer(Player player) {
 		this.player = player;
@@ -92,59 +146,24 @@ public class PitPlayer {
 
 		if(non == null) {
 			prefix = "";
-
 			FileConfiguration playerData = APlayerData.getPlayerData(player);
 
-			if(playerData.getInt("level") > 0) {
-				level = playerData.getInt("level");
-				remainingXP = playerData.getInt("xp");
-				playerKills = playerData.getInt("playerkills");
-				goldGrinded = playerData.getInt("goldgrinded");
-				prestige = playerData.getInt("prestige");
-				LevelManager.setXPBar(player, this);
-			}
-
+			prestige = playerData.getInt("prestige");
+			level = playerData.contains("level") ? playerData.getInt("level") : 1;
+			remainingXP = playerData.getInt("xp");
+			playerKills = playerData.getInt("playerkills");
+			renown = playerData.getInt("renown");
 			for(int i = 0; i < pitPerks.length; i++) {
-
 				String perkString = playerData.getString("perk-" + i);
 				PitPerk savedPerk = perkString != null ? PitPerk.getPitPerk(perkString) : NoPerk.INSTANCE;
-
 				pitPerks[i] = savedPerk != null ? savedPerk : NoPerk.INSTANCE;
 			}
-
 			for(int i = 0; i < killstreaks.size(); i++) {
-
 				String killstreakString = playerData.getString("killstreak-" + i);
 				Killstreak savedKillstreak = killstreakString != null ? Killstreak.getKillstreak(killstreakString) : NoKillstreak.INSTANCE;
-
 				killstreaks.set(i, savedKillstreak);
 			}
-
-			String deathCryString = playerData.getString("deathcry");
-			if(deathCryString != null) deathCry = DeathCry.valueOf(deathCryString);
-
-			String killEffectString = playerData.getString("killeffect");
-			if(killEffectString != null) killEffect = KillEffect.valueOf(killEffectString);
-
-			String chatColorString = playerData.getString("chatcolor");
-			if(chatColorString != null) {
-				chatColor = AChatColor.valueOf(chatColorString);
-				ChatColorPanel.playerChatColors.put(player, chatColor);
-			}
-
-			if(playerData.contains("renown")) renown = playerData.getInt("renown");
-
-			disabledBounties = playerData.getBoolean("disabledbounties");
-			disabledStreaks = playerData.getBoolean("disabledstreaks");
-			disabledKillFeed = playerData.getBoolean("disabledkillfeed");
-			disabledPlayerChat = playerData.getBoolean("disabledplayerchat");
-			uberReset = playerData.getLong("ubercooldown");
-			dailyUbersLeft = playerData.getInt("ubersleft");
-			moonBonus = playerData.getInt("moonbonus");
-			goldStack = playerData.getDouble("goldstack");
-
 			String streak = playerData.getString("megastreak");
-
 			if(Objects.equals(streak, "Beastmode")) this.megastreak = new Beastmode(this);
 			if(Objects.equals(streak, "No Megastreak")) this.megastreak = new NoMegastreak(this);
 			if(Objects.equals(streak, "Highlander")) this.megastreak = new Highlander(this);
@@ -152,11 +171,36 @@ public class PitPlayer {
 			if(Objects.equals(streak, "Uberstreak")) this.megastreak = new Uberstreak(this);
 			if(Objects.equals(streak, "To the Moon")) this.megastreak = new ToTheMoon(this);
 
+			playerChatDisabled = playerData.getBoolean("disabledplayerchat");
+			killFeedDisabled = playerData.getBoolean("disabledkillfeed");
+			bountiesDisabled = playerData.getBoolean("disabledbounties");
+			streaksDisabled = playerData.getBoolean("disabledstreaks");
+			lightingDisabled = playerData.getBoolean("settings.lightning");
+			promptPack = playerData.getBoolean("promptPack");
+
+			lastVersion = playerData.getDouble("lastversion");
+			String killEffectString = playerData.getString("killeffect");
+			if(killEffectString != null) killEffect = KillEffect.valueOf(killEffectString);
+			String deathCryString = playerData.getString("deathcry");
+			if(deathCryString != null) deathCry = DeathCry.valueOf(deathCryString);
+			String chatColorString = playerData.getString("chatcolor");
+			if(chatColorString != null) {
+				chatColor = AChatColor.valueOf(chatColorString);
+				ChatColorPanel.playerChatColors.put(player, chatColor);
+			}
+
+			goldStack = playerData.getDouble("goldstack");
+			moonBonus = playerData.getInt("moonbonus");
+			dailyUbersLeft = playerData.contains("ubersleft") ? playerData.getInt("ubersleft") : 5;
+			uberReset = playerData.getLong("ubercooldown");
+			goldGrinded = playerData.getInt("goldgrinded");
 			for(Booster booster : BoosterManager.boosterList) {
 				boosters.put(booster, playerData.getInt("boosters." + booster.refName));
+				boosterTime.put(booster, playerData.getInt("booster-time." + booster.refName));
 			}
 
 			stats = new PlayerStats(this, playerData);
+			LevelManager.setXPBar(player, this);
 		}
 	}
 
@@ -199,7 +243,7 @@ public class PitPlayer {
 		if(Math.floor(kills) % 25 == 0) {
 			for(Player onlinePlayer : Bukkit.getOnlinePlayers()) {
 				PitPlayer pitPlayer = PitPlayer.getPitPlayer(onlinePlayer);
-				if(pitPlayer.disabledStreaks) continue;
+				if(pitPlayer.streaksDisabled) continue;
 				String message = ChatColor.translateAlternateColorCodes(
 						'&', "&c&lSTREAK!&7 of &c" + (int) Math.floor(kills) + " &7by %luckperms_prefix%" + player.getDisplayName());
 				onlinePlayer.sendMessage(PlaceholderAPI.setPlaceholders(player, message));
@@ -225,7 +269,7 @@ public class PitPlayer {
 		if(Math.floor(kills) % 25 == 0 && latestKillAnnouncement != Math.floor(kills)) {
 			for(Player onlinePlayer : Bukkit.getOnlinePlayers()) {
 				PitPlayer pitPlayer = PitPlayer.getPitPlayer(onlinePlayer);
-				if(pitPlayer.disabledStreaks) continue;
+				if(pitPlayer.streaksDisabled) continue;
 				String message = ChatColor.translateAlternateColorCodes(
 						'&', "&c&lSTREAK!&7 of &c" + (int) Math.floor(kills) + " &7by %luckperms_prefix%" + player.getDisplayName());
 				onlinePlayer.sendMessage(PlaceholderAPI.setPlaceholders(player, message));
@@ -298,8 +342,6 @@ public class PitPlayer {
 		for(PitPerk perk : pitPerks) if(perk == pitPerk) return true;
 		return false;
 	}
-
-
 
 	public void updateMaxHealth() {
 
