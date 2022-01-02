@@ -66,15 +66,15 @@ public class HelmetPanel extends AGUIPanel {
 	@Override
 	public void onOpen(InventoryOpenEvent event) {
 		goldenHelmet = getHelm();
-		List<String> helmetLore = goldenHelmet.getItemMeta().getLore();
-		helmetLore.remove(helmetLore.size() - 1);
-		helmetLore.remove(helmetLore.size() - 1);
-		ItemStack helmetDisplay = goldenHelmet.clone();
-		ItemMeta helmetMeta = helmetDisplay.getItemMeta();
-		helmetMeta.setLore(helmetLore);
-		helmetDisplay.setItemMeta(helmetMeta);
-		getInventory().setItem(1, helmetDisplay);
-
+		if(goldenHelmet.getItemMeta().hasLore()) {
+			List<String> helmetLore = goldenHelmet.getItemMeta().getLore();
+			helmetLore.remove(helmetLore.size() - 1);
+			ItemStack helmetDisplay = goldenHelmet.clone();
+			ItemMeta helmetMeta = helmetDisplay.getItemMeta();
+			helmetMeta.setLore(helmetLore);
+			helmetDisplay.setItemMeta(helmetMeta);
+			getInventory().setItem(1, helmetDisplay);
+		}
 		AItemStackBuilder abilityBuilder = new AItemStackBuilder(Material.EYE_OF_ENDER);
 		abilityBuilder.setName("&eAbility");
 		ALoreBuilder abilityLoreBuilder = new ALoreBuilder();
