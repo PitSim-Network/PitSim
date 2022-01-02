@@ -208,7 +208,7 @@ public class PlayerManager implements Listener {
 		PitPlayer pitPlayer = PitPlayer.getPitPlayer(event.player);
 		int kills = event.kills;
 		Megastreak megastreak = pitPlayer.megastreak;
-		if(kills >= megastreak.getRequiredKills() && megastreak.getClass() != NoMegastreak.class && !megastreak.isOnMega()) megastreak.proc();
+		if(kills == megastreak.getRequiredKills() && megastreak.getClass() != NoMegastreak.class) megastreak.proc();
 		pitPlayer.megastreak.kill();
 	}
 

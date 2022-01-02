@@ -259,7 +259,6 @@ public class PitPlayer {
 		}
 
 		Bukkit.getPluginManager().callEvent(new IncrementKillsEvent(this.player, kills));
-
 		if(kills >= megastreak.getRequiredKills() && megastreak.getClass() != NoMegastreak.class &
 				!megastreak.isOnMega()) megastreak.proc();
 		for(Killstreak killstreak : killstreaks) {
