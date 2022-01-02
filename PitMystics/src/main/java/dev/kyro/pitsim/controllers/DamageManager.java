@@ -288,7 +288,7 @@ public class DamageManager implements Listener {
 
 		Non defendingNon = NonManager.getNon(dead);
 		if(defendingNon == null) {
-			Location spawnLoc = MapManager.getPlayerSpawn();
+			Location spawnLoc = MapManager.currentMap.getSpawn(dead.getWorld());
 			dead.teleport(spawnLoc);
 			if(attackingNon == null) {
 				FileConfiguration playerData = APlayerData.getPlayerData(killer);
@@ -478,9 +478,8 @@ public class DamageManager implements Listener {
 		playerData.set("xp", pitPlayer.remainingXP);
 		APlayerData.savePlayerData(dead);
 
-		Location spawnLoc = MapManager.getPlayerSpawn();
+		Location spawnLoc = MapManager.currentMap.getSpawn(dead.getWorld());
 		dead.teleport(spawnLoc);
-
 
 //		for(ItemStack itemStack : dead.getInventory()) {
 //

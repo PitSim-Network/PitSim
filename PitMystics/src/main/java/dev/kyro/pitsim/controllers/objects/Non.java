@@ -15,6 +15,7 @@ import net.citizensnpcs.npc.skin.SkinnableEntity;
 import net.minecraft.server.v1_8_R3.EntityPlayer;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
 import org.bukkit.entity.Entity;
@@ -35,38 +36,17 @@ public class Non {
 	public Player target;
 	public String name;
 	public String displayName;
+	public World world;
 
 	public List<NonTrait> traits = new ArrayList<>();
 	public double persistence;
 	public NonState nonState = NonState.RESPAWNING;
 	public int count = 0;
 
-	public Non(String name) {
+	public Non(String name, World world) {
 		this.name = name;
+		this.world = world;
 
-		int rand = (int) (Math.random() * 6);
-		String color;
-		switch(rand) {
-			case 0:
-				color = "&7";
-				break;
-			case 1:
-				color = "&9";
-				break;
-			case 2:
-				color = "&3";
-				break;
-			case 3:
-				color = "&2";
-				break;
-			case 4:
-				color = "&a";
-				break;
-			default:
-				color = "&e";
-				break;
-		}
-//		displayName = "&7[" + color + (rand * 10 + (int) (Math.random() * 10)) + "&7]&7" + " " + name;
 		displayName = "&7" + name;
 		this.npc = CitizensAPI.getNPCRegistry().createNPC(EntityType.PLAYER, displayName);
 		spawn();
@@ -94,9 +74,9 @@ public class Non {
 		if(npc.getEntity() != null && non != npc.getEntity()) FPSCommand.hideNewNon(this);
 		non = (Player) npc.getEntity();
 		if(!npc.isSpawned()) respawn();
-		if(npc.isSpawned() && non.getLocation().getY() <= MapManager.getY() - 0.1) {
+		if(npc.isSpawned() && non.getLocation().getY() <= MapManager.currentMap.getY(world) - 0.1) {
 			Location teleportLoc = non.getLocation().clone();
-			teleportLoc.setY(MapManager.getY() + 1.2);
+			teleportLoc.setY(MapManager.currentMap.getY(world) + 1.2);
 			non.teleport(teleportLoc);
 			return;
 		}
@@ -115,10 +95,6 @@ public class Non {
 				npc.getNavigator().setTarget(target, true);
 			}
 		} else respawn();
-
-//		if(traits.contains(NonTrait.IRON_STREAKER) && npc.isSpawned())
-//				Misc.applyPotionEffect((Player) non, PotionEffectType.DAMAGE_RESISTANCE, 9999, 1, true, false);
-//		non.setHealth(non.getMaxHealth());
 
 		if(target == null && !npc.isSpawned()) return;
 
@@ -150,11 +126,9 @@ public class Non {
 
 	public void pickTarget() {
 
-//		if(target != null && Math.random() < persistence) return;
-
 		Player closest = null;
 		double closestDistance = 100;
-		Location midLoc = MapManager.getMid();
+		Location midLoc = MapManager.currentMap.getMid(world);
 		for(Entity nearbyEntity : non.getWorld().getNearbyEntities(midLoc, 5, 5, 5)) {
 
 			if(!(nearbyEntity instanceof Player) || nearbyEntity.getUniqueId().equals(non.getUniqueId())) continue;
@@ -172,20 +146,20 @@ public class Non {
 	}
 
 	public void setDisabled(Boolean toggled) {
-		Location spawnLoc = MapManager.getNonSpawn();
+		Location spawnLoc = MapManager.currentMap.getNonSpawn(world);
 		if(toggled) npc.despawn();
 		else npc.spawn(spawnLoc);
 	}
 
 	public void spawn() {
-		Location spawnLoc = MapManager.getNonSpawn();
+		Location spawnLoc = MapManager.currentMap.getNonSpawn(world);
 		npc.spawn(spawnLoc);
 	}
 
 	public void respawn() {
 
 		nonState = NonState.RESPAWNING;
-		Location spawnLoc = MapManager.getNonSpawn();
+		Location spawnLoc = MapManager.currentMap.getNonSpawn(world);
 		Booster booster = BoosterManager.getBooster("chaos");
 		if(booster.isActive()) {
 			spawnLoc.add(0, -10, 0);

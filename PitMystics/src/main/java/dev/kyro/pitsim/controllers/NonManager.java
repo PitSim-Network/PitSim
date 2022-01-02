@@ -6,6 +6,7 @@ import dev.kyro.pitsim.controllers.objects.Booster;
 import dev.kyro.pitsim.controllers.objects.Non;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
@@ -18,12 +19,11 @@ public class NonManager implements Listener {
 	public static List<String> botIGNs = new ArrayList<>();
 	public static List<Non> nons = new ArrayList<>();
 
-	static {
+	public static void init() {
 		new BukkitRunnable() {
 			@Override
 			public void run() {
 				if(AConfig.getString("nons").equals("false")) return;
-//				if(true) return;
 				if(botIGNs.isEmpty()) {
 					botIGNs.add("KyroKrypt");
 					botIGNs.add("wiji1");
@@ -34,15 +34,17 @@ public class NonManager implements Listener {
 					botIGNs.add("robert_mugabe355");
 					botIGNs.add("xLava28");
 				}
-				for(int i = 0; i < 3; i++) {
-					if(nons.size() >= getMaxNons()) return;
-					Non non = new Non(botIGNs.get((int) (Math.random() * botIGNs.size())));
-					new BukkitRunnable() {
-						@Override
-						public void run() {
-							non.remove();
-						}
-					}.runTaskLater(PitSim.INSTANCE, (long) (20 * 60 * (Math.random() * 10 + 5)));
+				for(World world : MapManager.currentMap.lobbies) {
+					for(int i = 0; i < 3; i++) {
+						if(getNonsInLobby(world) >= getMaxNons(world)) break;
+						Non non = new Non(botIGNs.get((int) (Math.random() * botIGNs.size())), world);
+						new BukkitRunnable() {
+							@Override
+							public void run() {
+								non.remove();
+							}
+						}.runTaskLater(PitSim.INSTANCE, (long) (20 * 60 * (Math.random() * 10 + 5)));
+					}
 				}
 			}
 		}.runTaskTimer(PitSim.INSTANCE, 40L, 20);
@@ -55,20 +57,26 @@ public class NonManager implements Listener {
 		}.runTaskTimer(PitSim.INSTANCE, 0L, 1L);
 	}
 
-	public static int getMaxNons() {
+	public static int getNonsInLobby(World world) {
+		int nonCount = 0;
+		for(Non non : nons) if(non.world == world) nonCount++;
+		return nonCount;
+	}
+
+	public static int getMaxNons(World world) {
 		int base = 15;
-		int max = 35;
+		int max = 30;
 
 		Booster booster = BoosterManager.getBooster("chaos");
 		if(booster.isActive()) {
-			max = 55;
-			base = 55;
+			max = 50;
+			base = 50;
 		}
 
-		Location mid = MapManager.getMid();
+		Location mid = MapManager.currentMap.getMid(world);
 		int playersNearMid = 0;
 		for(Player onlinePlayer : Bukkit.getOnlinePlayers()) {
-			if(onlinePlayer.getWorld() != mid.getWorld()) continue;
+			if(onlinePlayer.getWorld() != world) continue;
 			double distance = mid.distance(onlinePlayer.getLocation());
 			if(distance < 20) playersNearMid++;
 		}

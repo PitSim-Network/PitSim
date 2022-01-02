@@ -99,7 +99,7 @@ public class PlayerManager implements Listener {
 			@Override
 			public void run() {
 				for(Player player : Bukkit.getOnlinePlayers()) {
-					if(!player.hasPermission("group.eternal") || player.getWorld() != MapManager.getMid().getWorld()) continue;
+					if(!player.hasPermission("group.eternal") || !MapManager.currentMap.lobbies.contains(player.getWorld())) continue;
 					if(SpawnManager.isInSpawn(player.getLocation())) continue;
 					List<Player> nearbyNons = new ArrayList<>();
 					for(Entity nearbyEntity : player.getNearbyEntities(4, 4, 4)) {
@@ -325,10 +325,9 @@ public class PlayerManager implements Listener {
 		new BukkitRunnable() {
 			@Override
 			public void run() {
-				event.getPlayer().teleport(MapManager.getPlayerSpawn());
+				event.getPlayer().teleport(MapManager.currentMap.getSpawn(event.getPlayer().getWorld()));
 			}
 		}.runTaskLater(PitSim.INSTANCE, 10L);
-
 	}
 
 	@EventHandler
@@ -428,7 +427,7 @@ public class PlayerManager implements Listener {
 	public void onJoin(PlayerSpawnLocationEvent event) {
 		Player player = event.getPlayer();
 		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
-		Location spawnLoc = MapManager.getPlayerSpawn();
+		Location spawnLoc = MapManager.currentMap.getSpawn(MapManager.currentMap.firstLobby);
 
 		if(player.isOp()) {
 			new BukkitRunnable() {

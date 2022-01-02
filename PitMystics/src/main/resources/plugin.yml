@@ -50,3 +50,5 @@ commands:
   lightning:
   stat:
   captcha:
+  play:
+  switch:

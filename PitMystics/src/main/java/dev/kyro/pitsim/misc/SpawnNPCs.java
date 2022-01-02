@@ -12,6 +12,7 @@ import net.citizensnpcs.api.npc.NPC;
 import net.citizensnpcs.api.npc.NPCRegistry;
 import net.citizensnpcs.npc.skin.SkinnableEntity;
 import net.citizensnpcs.trait.LookClose;
+import org.bukkit.World;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -26,11 +27,13 @@ public class SpawnNPCs implements Listener {
 	public static NPC vnx2 = null;
 
 	public static void createNPCs() {
-		createPrestigeNPC();
-		createUpgradeNPC();
-		createKyroNPC();
-		createWijiNPC();
-		createVnx2NPC();
+		for(World world : MapManager.currentMap.lobbies) {
+			createPrestigeNPC(world);
+			createUpgradeNPC(world);
+			createKyroNPC(world);
+			createWijiNPC(world);
+			createVnx2NPC(world);
+		}
 	}
 
 	public static void removeNPCs() {
@@ -61,42 +64,42 @@ public class SpawnNPCs implements Listener {
 		}
 	}
 
-	public static void createUpgradeNPC() {
+	public static void createUpgradeNPC(World world) {
 		NPCRegistry registry = CitizensAPI.getNPCRegistry();
 		upgrade = registry.createNPC(EntityType.VILLAGER, " ");
-		upgrade.spawn(MapManager.getUpgradeNPCSpawn());
+		upgrade.spawn(MapManager.currentMap.getUpgradeNPCSpawn(world));
 	}
 
-	public static void createPrestigeNPC() {
+	public static void createPrestigeNPC(World world) {
 		NPCRegistry registry = CitizensAPI.getNPCRegistry();
 		prestige = registry.createNPC(EntityType.VILLAGER, " ");
-		prestige.spawn(MapManager.getPrestigeNPCSpawn());
+		prestige.spawn(MapManager.currentMap.getPrestigeNPCSpawn(world));
 	}
 
-	public static void createKyroNPC() {
+	public static void createKyroNPC(World world) {
 		NPCRegistry registry = CitizensAPI.getNPCRegistry();
 		kyro = registry.createNPC(EntityType.PLAYER, "&9KyroKrypt");
-		kyro.spawn(MapManager.getKyroNPCSpawn());
+		kyro.spawn(MapManager.currentMap.getKyroNPCSpawn(world));
 		skin(kyro, "KyroKrypt");
 		kyro.addTrait(LookClose.class);
 		kyro.getTrait(LookClose.class).setRange(10);
 		kyro.getTrait(LookClose.class).toggle();
 	}
 
-	public static void createWijiNPC() {
+	public static void createWijiNPC(World world) {
 		NPCRegistry registry = CitizensAPI.getNPCRegistry();
 		wiji = registry.createNPC(EntityType.PLAYER, "&9wiji1");
-		wiji.spawn(MapManager.getWijiNPCSpawn());
+		wiji.spawn(MapManager.currentMap.getWijiNPCSpawn(world));
 		skin(wiji, "wiji1");
 		wiji.addTrait(LookClose.class);
 		wiji.getTrait(LookClose.class).setRange(10);
 		wiji.getTrait(LookClose.class).toggle();
 	}
 
-	public static void createVnx2NPC() {
+	public static void createVnx2NPC(World world) {
 		NPCRegistry registry = CitizensAPI.getNPCRegistry();
 		vnx2 = registry.createNPC(EntityType.PLAYER, "&e&lSTATISTICS");
-		vnx2.spawn(MapManager.getVnx2NPCSpawn());
+		vnx2.spawn(MapManager.currentMap.getVnxNPCSpawn(world));
 		skin(vnx2, "vnxz");
 		vnx2.addTrait(LookClose.class);
 		vnx2.getTrait(LookClose.class).setRange(10);

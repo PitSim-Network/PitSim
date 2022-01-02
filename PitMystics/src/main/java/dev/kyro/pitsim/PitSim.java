@@ -24,6 +24,7 @@ import dev.kyro.pitsim.killstreaks.*;
 import dev.kyro.pitsim.megastreaks.*;
 import dev.kyro.pitsim.misc.*;
 import dev.kyro.pitsim.perks.*;
+import dev.kyro.pitsim.pitmaps.BiomesMap;
 import dev.kyro.pitsim.placeholders.*;
 import dev.kyro.pitsim.upgrades.*;
 import net.citizensnpcs.api.CitizensAPI;
@@ -84,8 +85,10 @@ public class PitSim extends JavaPlugin {
 			toRemove.remove(0);
 		}
 
-		SpawnNPCs.createNPCs();
+		registerMaps();
 		MapManager.onStart();
+		NonManager.init();
+		SpawnNPCs.createNPCs();
 
 		if (!setupEconomy()) {
 			AOutput.log(String.format("[%s] - Disabled due to no Vault dependency found!", getDescription().getName()));
@@ -191,6 +194,10 @@ public class PitSim extends JavaPlugin {
 		for(PitPlayer pitPlayer : PitPlayer.pitPlayers) if(pitPlayer.stats != null) pitPlayer.stats.save();
 	}
 
+	private void registerMaps() {
+		MapManager.registerMap(new BiomesMap("biomes1", "biomes2"));
+	}
+
 	private void registerPerks() {
 
 		PerkManager.registerUpgrade(new NoPerk());
@@ -284,7 +291,9 @@ public class PitSim extends JavaPlugin {
 		getCommand("lightning").setExecutor(new LightningCommand());
 		getCommand("stat").setExecutor(new StatCommand());
 		getCommand("captcha").setExecutor(new CaptchaCommand());
-//		getCommand("togglestereo").setExecutor(new ToggleStereoCommand());
+		SwitchCommand switchCommand = new SwitchCommand();
+		getCommand("switch").setExecutor(switchCommand);
+		getCommand("play").setExecutor(switchCommand);
 	}
 
 	private void registerListeners() {
