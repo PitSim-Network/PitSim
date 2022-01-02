@@ -34,7 +34,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 import java.util.*;
 
 public class RNGesus extends Megastreak {
-	public List<Reality> generatedRealityOrder;
+	public List<Reality> generatedRealityOrder = new ArrayList<>();
 	public Map<Reality, RealityInfo> realityMap = new HashMap<>();
 	public Reality reality = Reality.NONE;
 
@@ -104,6 +104,7 @@ public class RNGesus extends Megastreak {
 
 	public RNGesus(PitPlayer pitPlayer) {
 		super(pitPlayer);
+		for(Reality value : Reality.values()) realityMap.put(value, new RealityInfo(reality));
 		generateRealityOrder();
 	}
 
@@ -178,6 +179,7 @@ public class RNGesus extends Megastreak {
 	public void reset() {
 		generateRealityOrder();
 		realityMap.clear();
+		for(Reality value : Reality.values()) realityMap.put(value, new RealityInfo(reality));
 		reality = Reality.NONE;
 
 		String message = "%luckperms_prefix%";
