@@ -33,7 +33,6 @@ import java.util.List;
 public class Highlander extends Megastreak {
 	public Highlander(PitPlayer pitPlayer) {
 		super(pitPlayer);
-
 	}
 
 	public BukkitTask runnable;
