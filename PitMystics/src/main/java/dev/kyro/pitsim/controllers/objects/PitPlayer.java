@@ -65,9 +65,9 @@ public class PitPlayer {
 	public List<Killstreak> killstreaks = Arrays.asList(NoKillstreak.INSTANCE, NoKillstreak.INSTANCE, NoKillstreak.INSTANCE);
 	public Megastreak megastreak;
 
-	boolean lightingDisabled;
-	boolean bountiesDisabled;
-	boolean promptPack;
+	public boolean lightingDisabled;
+	public boolean bountiesDisabled;
+	public boolean promptPack;
 
 	public double goldStack = 0;
 	public int moonBonus = 0;
