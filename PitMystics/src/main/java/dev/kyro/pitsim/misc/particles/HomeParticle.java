@@ -3,11 +3,13 @@ package dev.kyro.pitsim.misc.particles;
 import dev.kyro.pitsim.PitSim;
 import org.bukkit.Effect;
 import org.bukkit.Location;
+import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
 
 public class HomeParticle {
+	public Player displayPlayer;
 	public Location start;
 	public Player end;
 	public double stepSize;
@@ -16,7 +18,8 @@ public class HomeParticle {
 
 	private BukkitRunnable callback;
 
-	public HomeParticle(Location start, Player end, double stepSize, BukkitRunnable callback) {
+	public HomeParticle(Player displayPlayer, Location start, Player end, double stepSize, BukkitRunnable callback) {
+		this.displayPlayer = displayPlayer;
 		this.start = start;
 		this.end = end;
 		this.stepSize = stepSize;
@@ -30,15 +33,16 @@ public class HomeParticle {
 		new BukkitRunnable() {
 			@Override
 			public void run() {
-				if(!end.isOnline() || currentLoc.getWorld() != end.getWorld()) {
+				if(currentLoc.getWorld() != end.getWorld()) {
 					cancel();
-					display(end.getLocation().add(0, 1, 0));
 					return;
 				}
 				Location endLoc = end.getLocation().add(0, 1, 0);
 				if(currentLoc.distance(endLoc) < stepSize) {
 					cancel();
-					display(end.getLocation().add(0, 1, 0));
+//					display(end.getLocation().add(0, 1, 0));
+					for(int i = 0; i < 10; i++) displayPlayer.playEffect(endLoc, Effect.LAVA_POP, 1);
+					displayPlayer.playSound(endLoc, Sound.LAVA_POP, 1, (float) (Math.random() * 0.5 + 0.9));
 					callback.run();
 					return;
 				}
@@ -51,6 +55,6 @@ public class HomeParticle {
 	}
 
 	public void display(Location location) {
-		location.getWorld().playEffect(location, Effect.HAPPY_VILLAGER, 1);
+		displayPlayer.playEffect(location, Effect.HAPPY_VILLAGER, 1);
 	}
 }

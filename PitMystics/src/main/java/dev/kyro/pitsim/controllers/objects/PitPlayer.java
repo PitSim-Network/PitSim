@@ -278,7 +278,7 @@ public class PitPlayer {
 		}
 	}
 
-	public double getKills() {
+	public int getKills() {
 		return kills;
 	}
 

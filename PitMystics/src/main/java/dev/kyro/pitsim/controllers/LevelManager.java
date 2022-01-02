@@ -6,6 +6,7 @@ import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.killstreaks.NoKillstreak;
 import dev.kyro.pitsim.megastreaks.Overdrive;
+import dev.kyro.pitsim.megastreaks.RNGesus;
 import dev.kyro.pitsim.misc.Misc;
 import dev.kyro.pitsim.misc.Sounds;
 import me.clip.placeholderapi.PlaceholderAPI;
@@ -121,6 +122,11 @@ public class LevelManager {
 
 	public static void setXPBar(Player player, PitPlayer pitPlayer) {
 		if(NonManager.getNon(player) != null) return;
+
+		if(pitPlayer.megastreak.getClass() == RNGesus.class && pitPlayer.megastreak.isOnMega()) {
+
+			return;
+		}
 
 		player.setLevel(pitPlayer.level);
 		float remaining = pitPlayer.remainingXP;
