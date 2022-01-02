@@ -1,6 +1,5 @@
 package dev.kyro.pitsim.inventories;
 
-import dev.kyro.arcticapi.data.APlayerData;
 import dev.kyro.arcticapi.gui.AGUI;
 import dev.kyro.arcticapi.gui.AGUIPanel;
 import dev.kyro.arcticapi.misc.AOutput;
@@ -14,7 +13,6 @@ import dev.kyro.pitsim.misc.Sounds;
 import dev.kyro.pitsim.upgrades.UberIncrease;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
-import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
@@ -124,9 +122,6 @@ public class MegastreakPanel extends AGUIPanel {
                     if(!prestige && !has && !uberCd && !level) {
                         openPanel(perkGUI.getHomePanel());
                         Sounds.SUCCESS.play(player);
-                        FileConfiguration playerData = APlayerData.getPlayerData(player);
-                        playerData.set("megastreak", megastreak.getRawName());
-                        APlayerData.savePlayerData(player);
                     }
                     if(prestige) {
                         AOutput.error(player, "&cYou aren't high enough prestige to use this!");
@@ -166,11 +161,6 @@ public class MegastreakPanel extends AGUIPanel {
                 int ubersLeft = pitPlayer.dailyUbersLeft;
                 if(ubersLeft == 0) lore.add(ChatColor.translateAlternateColorCodes('&', "&dDaily Uberstreaks remaining: &c0&7/" + (5 + UberIncrease.getUberIncrease(player))));
                 else lore.add(ChatColor.translateAlternateColorCodes('&', "&dDaily Uberstreaks remaining: &a" + ubersLeft + "&7/" + (5 + UberIncrease.getUberIncrease(player))));
-
-                FileConfiguration playerData = APlayerData.getPlayerData(pitPlayer.player);
-                playerData.set("ubercooldown", pitPlayer.uberReset);
-                playerData.set("ubersleft", pitPlayer.dailyUbersLeft);
-                APlayerData.savePlayerData(pitPlayer.player);
             }
             if(pitPlayer.megastreak.getClass() == megastreak.getClass() && megastreak.getClass() != NoMegastreak.class) {
                 lore.add(ChatColor.GREEN + "Already selected!");

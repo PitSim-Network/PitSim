@@ -60,6 +60,7 @@ public class BoosterManager implements Listener {
 				isOnline = true;
 				PitPlayer pitPlayer = PitPlayer.getPitPlayer(onlinePlayer);
 				pitPlayer.goldGrinded += gold;
+				//TODO Fix Playerdata in BoosterManager
 				FileConfiguration playerData = APlayerData.getPlayerData(onlinePlayer);
 				playerData.set("goldgrinded", pitPlayer.goldGrinded);
 				APlayerData.savePlayerData(onlinePlayer);

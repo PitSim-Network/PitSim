@@ -1,12 +1,14 @@
 package dev.kyro.pitsim.megastreaks;
 
 import de.tr7zw.nbtapi.NBTItem;
-import dev.kyro.arcticapi.data.APlayerData;
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.arcticapi.misc.AUtil;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.commands.FreshCommand;
-import dev.kyro.pitsim.controllers.*;
+import dev.kyro.pitsim.controllers.EnchantManager;
+import dev.kyro.pitsim.controllers.ItemManager;
+import dev.kyro.pitsim.controllers.NonManager;
+import dev.kyro.pitsim.controllers.PrestigeValues;
 import dev.kyro.pitsim.controllers.objects.Megastreak;
 import dev.kyro.pitsim.controllers.objects.PitEnchant;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
@@ -21,7 +23,6 @@ import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
-import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.HandlerList;
@@ -242,15 +243,8 @@ public class Uberstreak extends Megastreak {
 		}
 		pitPlayer.dailyUbersLeft = pitPlayer.dailyUbersLeft - 1;
 
-		FileConfiguration playerData = APlayerData.getPlayerData(pitPlayer.player);
-		playerData.set("ubercooldown", pitPlayer.uberReset);
-		playerData.set("ubersleft", pitPlayer.dailyUbersLeft);
-		APlayerData.savePlayerData(pitPlayer.player);
-
 		if(pitPlayer.dailyUbersLeft <= 0) {
 			pitPlayer.megastreak = new NoMegastreak(pitPlayer);
-			playerData.set("megastreak", pitPlayer.megastreak.getRawName());
-			APlayerData.savePlayerData(pitPlayer.player);
 			stop();
 		}
 

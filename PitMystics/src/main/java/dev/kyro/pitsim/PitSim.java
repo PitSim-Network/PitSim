@@ -56,6 +56,14 @@ public class PitSim extends JavaPlugin {
 	public static ProtocolManager PROTOCOL_MANAGER = null;
 
 	public static AData playerList;
+//	private BukkitAudiences adventure;
+//
+//	public BukkitAudiences adventure() {
+//		if(this.adventure == null) {
+//			throw new IllegalStateException("Tried to access Adventure when the plugin was disabled!");
+//		}
+//		return this.adventure;
+//	}
 
 	@Override
 	public void onEnable() {
@@ -151,27 +159,10 @@ public class PitSim extends JavaPlugin {
 	public void onDisable() {
 
 		SpawnNPCs.removeNPCs();
-
-		for(Player onlinePlayer : Bukkit.getOnlinePlayers()) {
-			PitPlayer pitplayer = PitPlayer.getPitPlayer(onlinePlayer);
-			if(NonManager.getNon(onlinePlayer) != null) continue;
-			FileConfiguration playerData = APlayerData.getPlayerData(onlinePlayer);
-			playerData.set("level", pitplayer.level);
-			playerData.set("prestige", pitplayer.prestige);
-			playerData.set("playerkills", pitplayer.playerKills);
-			playerData.set("xp", pitplayer.remainingXP);
-			playerData.set("ubersleft", pitplayer.dailyUbersLeft);
-			playerData.set("ubercooldown", pitplayer.uberReset);
-			playerData.set("renown", pitplayer.renown);
-			APlayerData.savePlayerData(onlinePlayer);
-		}
-
 		List<Non> copyList = new ArrayList<>(NonManager.nons);
 		for(Non non : copyList) {
-
 			non.remove();
 		}
-
 		for(PitEnchant pitEnchant : EnchantManager.pitEnchants) pitEnchant.onDisable();
 
 		Iterator<Map.Entry<Player, EntitySongPlayer>> it = StereoManager.playerMusic.entrySet().iterator();

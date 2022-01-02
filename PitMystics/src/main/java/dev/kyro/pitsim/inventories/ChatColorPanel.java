@@ -1,6 +1,5 @@
 package dev.kyro.pitsim.inventories;
 
-import dev.kyro.arcticapi.data.APlayerData;
 import dev.kyro.arcticapi.gui.AGUI;
 import dev.kyro.arcticapi.gui.AGUIPanel;
 import dev.kyro.arcticapi.misc.AOutput;
@@ -10,7 +9,6 @@ import dev.kyro.pitsim.misc.Misc;
 import dev.kyro.pitsim.misc.Sounds;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
-import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
@@ -27,7 +25,6 @@ import java.util.Map;
 
 public class ChatColorPanel extends AGUIPanel {
     PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
-    FileConfiguration playerData = APlayerData.getPlayerData(player);
     public static Map<Player, AChatColor> playerChatColors = new HashMap<>();
 
 
@@ -71,20 +68,12 @@ public class ChatColorPanel extends AGUIPanel {
                     } else {
                         playerChatColors.put(player, chatColor);
                         pitPlayer.chatColor = chatColor;
-                        playerData.set("chatcolor", chatColor.toString());
-                        APlayerData.savePlayerData(player);
                         Sounds.SUCCESS.play(player);
                         openPanel(donatorGUI.chatColorPanel);
                     }
-
-
-
                 }
             }
-
-
         }
-
     }
 
     @Override

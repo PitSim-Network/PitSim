@@ -1,6 +1,5 @@
 package dev.kyro.pitsim.controllers;
 
-import dev.kyro.arcticapi.data.APlayerData;
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.controllers.objects.PitEnchant;
@@ -9,7 +8,6 @@ import dev.kyro.pitsim.events.AttackEvent;
 import dev.kyro.pitsim.events.KillEvent;
 import dev.kyro.pitsim.events.OofEvent;
 import org.bukkit.Bukkit;
-import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -79,14 +77,7 @@ public class CombatManager implements Listener {
 	@EventHandler
 	public static void onLeave(PlayerQuitEvent event) {
 		Player player = event.getPlayer();
-		FileConfiguration playerData = APlayerData.getPlayerData(event.getPlayer());
 		PitPlayer pitplayer = PitPlayer.getPitPlayer(event.getPlayer());
-		playerData.set("level", pitplayer.level);
-		playerData.set("prestige", pitplayer.prestige);
-		playerData.set("playerkills", pitplayer.playerKills);
-		playerData.set("xp", pitplayer.remainingXP);
-		playerData.set("renown", pitplayer.renown);
-		APlayerData.savePlayerData(event.getPlayer());
 		event.getPlayer().closeInventory();
 		if(NonManager.getNon(event.getPlayer()) != null) return;
 
