@@ -39,7 +39,7 @@ public class Telebow extends PitEnchant {
 		if(attackEvent.arrow == null) return;
 
 		Cooldown cooldown = getCooldown(attackEvent.attacker, getCooldown(enchantLvl) * 20);
-		cooldown.reduceCooldown(60);
+		cooldown.reduceCooldown(20);
 
 		if(cooldown.isOnCooldown()) {
 			new BukkitRunnable() {

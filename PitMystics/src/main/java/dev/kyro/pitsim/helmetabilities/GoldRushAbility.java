@@ -51,7 +51,7 @@ public class GoldRushAbility extends HelmetAbility {
 			Sounds.NO.play(player);
 		}
 
-		LevelManager.addGoldReq(player, (int) (killEvent.getFinalGold() * 2D));
+		LevelManager.addGoldReq(player, (int) killEvent.getFinalGold());
 	}
 
 	@Override
@@ -87,7 +87,7 @@ public class GoldRushAbility extends HelmetAbility {
 	@Override
 	public List<String> getDescription() {
 		DecimalFormat formatter = new DecimalFormat("#,###.#");
-		return Arrays.asList("&7Double-Sneak to toggle", "&7Gold. Triple gold on kill", "",
+		return Arrays.asList("&7Double-Sneak to toggle Gold", "&7Rush. Double gold requirement on kill", "",
 				"&7Cost: &6" + formatter.format(2000) + "g &7per kill");
 	}
 

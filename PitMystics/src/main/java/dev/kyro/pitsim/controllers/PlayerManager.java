@@ -454,7 +454,7 @@ public class PlayerManager implements Listener {
 				public void run() {
 					player.teleport(spawnLoc);
 				}
-			}.runTaskLater(PitSim.INSTANCE, 20L);
+			}.runTaskLater(PitSim.INSTANCE, 60L);
 			return;
 		}
 
