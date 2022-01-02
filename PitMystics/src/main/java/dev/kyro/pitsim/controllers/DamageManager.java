@@ -1,7 +1,6 @@
 package dev.kyro.pitsim.controllers;
 
 import de.tr7zw.nbtapi.NBTItem;
-import dev.kyro.arcticapi.data.APlayerData;
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.controllers.objects.Non;
@@ -24,7 +23,6 @@ import org.bukkit.Bukkit;
 import org.bukkit.EntityEffect;
 import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
 import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
@@ -270,14 +268,6 @@ public class DamageManager implements Listener {
 		Sounds.DEATH_FALL.play(dead);
 		Sounds.DEATH_FALL.play(dead);
 		Regularity.toReg.remove(dead.getUniqueId());
-		if(NonManager.getNon(dead) == null) {
-			FileConfiguration playerData = APlayerData.getPlayerData(dead);
-			playerData.set("level", pitDefender.level);
-			playerData.set("prestige", pitDefender.prestige);
-			playerData.set("playerkills", pitDefender.playerKills);
-			playerData.set("xp", pitDefender.remainingXP);
-			APlayerData.savePlayerData(dead);
-		}
 		Non attackingNon = NonManager.getNon(killer);
 		if(attackingNon == null) {
 
@@ -291,14 +281,10 @@ public class DamageManager implements Listener {
 			Location spawnLoc = MapManager.currentMap.getSpawn(dead.getWorld());
 			dead.teleport(spawnLoc);
 			if(attackingNon == null) {
-				FileConfiguration playerData = APlayerData.getPlayerData(killer);
 				if(killer != dead && !isNaked(dead)) {
 					if(killEvent.isLuckyKill) pitAttacker.playerKills += killEvent.playerKillWorth * 3;
 					else pitAttacker.playerKills += killEvent.playerKillWorth;
 				}
-
-				playerData.set("playerkills", pitAttacker.playerKills);
-				APlayerData.savePlayerData(killer);
 			}
 		} else {
 			defendingNon.respawn();
@@ -470,13 +456,7 @@ public class DamageManager implements Listener {
 		Sounds.DEATH_FALL.play(dead);
 		Regularity.toReg.remove(dead.getUniqueId());
 		CombatManager.taggedPlayers.remove(dead.getUniqueId());
-
-		FileConfiguration playerData = APlayerData.getPlayerData(dead);
 		PitPlayer pitPlayer = PitPlayer.getPitPlayer(dead);
-		playerData.set("level", pitPlayer.level);
-		playerData.set("playerkills", pitPlayer.playerKills);
-		playerData.set("xp", pitPlayer.remainingXP);
-		APlayerData.savePlayerData(dead);
 
 		Location spawnLoc = MapManager.currentMap.getSpawn(dead.getWorld());
 		dead.teleport(spawnLoc);
@@ -584,14 +564,10 @@ public class DamageManager implements Listener {
 		Misc.multiKill(killer);
 
 			if(attackingNon == null) {
-				FileConfiguration playerData = APlayerData.getPlayerData(killer);
 				if(killer != dead && !isNaked(dead)) {
 					if(killEvent.isLuckyKill) pitAttacker.playerKills = pitAttacker.playerKills + 3;
 					else pitAttacker.playerKills = pitAttacker.playerKills + 1;
 				}
-
-				playerData.set("playerkills", pitAttacker.playerKills);
-				APlayerData.savePlayerData(killer);
 			}
 
 		Non killingNon = NonManager.getNon(killer);

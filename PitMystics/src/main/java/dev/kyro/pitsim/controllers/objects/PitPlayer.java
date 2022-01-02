@@ -77,7 +77,7 @@ public class PitPlayer {
 	public Map<Booster, Integer> boosters = new HashMap<>();
 	public Map<Booster, Integer> boosterTime = new HashMap<>();
 	
-	public String lastVersion;
+	public double lastVersion;
 	public KillEffect killEffect = null;
 	public DeathCry deathCry = null;
 	public AChatColor chatColor = null;

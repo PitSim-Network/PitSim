@@ -83,14 +83,12 @@ public class KillstreakPanel extends AGUIPanel {
 							if(i == killstreakSlot - 1) continue;
 							if(previousKillstreak.refName.equals("NoKillstreak")) continue;
 							pitPlayer.killstreaks.set(i, NoKillstreak.INSTANCE);
-							perkGUI.saveKillstreak(NoKillstreak.INSTANCE, i + 1);
 							AOutput.error(player, "&c&lDISABLED! &7Disabled &a" + previousKillstreak.name + " &7because you cannot have two killstreaks with the same kill interval!");
 						}
 					}
 
 
 					pitPlayer.killstreaks.set(killstreakSlot - 1, killstreak);
-					perkGUI.saveKillstreak(killstreak, killstreakSlot);
 					Sounds.SUCCESS.play(player);
 					openPreviousGUI();
 

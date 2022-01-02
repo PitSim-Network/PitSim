@@ -1,6 +1,5 @@
 package dev.kyro.pitsim.inventories;
 
-import dev.kyro.arcticapi.data.APlayerData;
 import dev.kyro.arcticapi.gui.AGUI;
 import dev.kyro.arcticapi.gui.AGUIPanel;
 import dev.kyro.pitsim.controllers.NonManager;
@@ -8,7 +7,6 @@ import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.misc.Sounds;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
-import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.inventory.InventoryOpenEvent;
@@ -44,7 +42,6 @@ public class ChatOptionsPanel extends AGUIPanel {
     @Override
     public void onClick(InventoryClickEvent event) {
         if(NonManager.getNon(player) != null) return;
-        FileConfiguration playerData = APlayerData.getPlayerData(player);
         int slot = event.getSlot();
         if(event.getClickedInventory().getHolder() == this) {
 
@@ -55,45 +52,33 @@ public class ChatOptionsPanel extends AGUIPanel {
             if(slot == 10) {
                 if(pitPlayer.disabledBounties) {
                     pitPlayer.disabledBounties = false;
-                    playerData.set("disabledbounties", false);
                 } else {
                     pitPlayer.disabledBounties = true;
-                    playerData.set("disabledbounties", true);
                 }
-                APlayerData.savePlayerData(player);
                 Sounds.SUCCESS.play(player);
                 openPanel(donatorGUI.chatOptionsPanel);
             } else if(slot == 12) {
                 if(pitPlayer.disabledStreaks) {
                     pitPlayer.disabledStreaks = false;
-                    playerData.set("disabledstreaks", false);
                 } else {
                     pitPlayer.disabledStreaks = true;
-                    playerData.set("disabledstreaks", true);
                 }
-                APlayerData.savePlayerData(player);
                 Sounds.SUCCESS.play(player);
                 openPanel(donatorGUI.chatOptionsPanel);
             } else if(slot == 14) {
                 if(pitPlayer.disabledKillFeed) {
                     pitPlayer.disabledKillFeed = false;
-                    playerData.set("disabledkillfeed", false);
                 } else {
                     pitPlayer.disabledKillFeed = true;
-                    playerData.set("disabledkillfeed", true);
                 }
-                APlayerData.savePlayerData(player);
                 Sounds.SUCCESS.play(player);
                 openPanel(donatorGUI.chatOptionsPanel);
             } else if(slot == 16) {
                 if(pitPlayer.disabledPlayerChat) {
                     pitPlayer.disabledPlayerChat = false;
-                    playerData.set("disabledplayerchat", false);
                 } else {
                     pitPlayer.disabledPlayerChat = true;
-                    playerData.set("disabledplayerchat", true);
                 }
-                APlayerData.savePlayerData(player);
                 Sounds.SUCCESS.play(player);
                 openPanel(donatorGUI.chatOptionsPanel);
             }

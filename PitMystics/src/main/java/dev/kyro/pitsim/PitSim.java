@@ -6,7 +6,6 @@ import com.xxmicloxx.NoteBlockAPI.songplayer.EntitySongPlayer;
 import dev.kyro.arcticapi.ArcticAPI;
 import dev.kyro.arcticapi.commands.ABaseCommand;
 import dev.kyro.arcticapi.data.AData;
-import dev.kyro.arcticapi.data.APlayerData;
 import dev.kyro.arcticapi.hooks.AHook;
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.boosters.ChaosBooster;
@@ -32,7 +31,6 @@ import net.citizensnpcs.api.npc.NPC;
 import net.luckperms.api.LuckPerms;
 import net.milkbowl.vault.economy.Economy;
 import org.bukkit.Bukkit;
-import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.plugin.Plugin;
@@ -49,7 +47,7 @@ import java.util.Map;
 
 public class PitSim extends JavaPlugin {
 
-	public static String version = "2.0";
+	public static double version = 2.0;
 
 	public static LuckPerms LUCKPERMS;
 	public static PitSim INSTANCE;
@@ -160,27 +158,10 @@ public class PitSim extends JavaPlugin {
 	public void onDisable() {
 
 		SpawnNPCs.removeNPCs();
-
-		for(Player onlinePlayer : Bukkit.getOnlinePlayers()) {
-			PitPlayer pitplayer = PitPlayer.getPitPlayer(onlinePlayer);
-			if(NonManager.getNon(onlinePlayer) != null) continue;
-			FileConfiguration playerData = APlayerData.getPlayerData(onlinePlayer);
-			playerData.set("level", pitplayer.level);
-			playerData.set("prestige", pitplayer.prestige);
-			playerData.set("playerkills", pitplayer.playerKills);
-			playerData.set("xp", pitplayer.remainingXP);
-			playerData.set("ubersleft", pitplayer.dailyUbersLeft);
-			playerData.set("ubercooldown", pitplayer.uberReset);
-			playerData.set("renown", pitplayer.renown);
-			APlayerData.savePlayerData(onlinePlayer);
-		}
-
 		List<Non> copyList = new ArrayList<>(NonManager.nons);
 		for(Non non : copyList) {
-
 			non.remove();
 		}
-
 		for(PitEnchant pitEnchant : EnchantManager.pitEnchants) pitEnchant.onDisable();
 
 		Iterator<Map.Entry<Player, EntitySongPlayer>> it = StereoManager.playerMusic.entrySet().iterator();

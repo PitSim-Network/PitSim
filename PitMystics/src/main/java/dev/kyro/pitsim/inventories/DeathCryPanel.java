@@ -1,6 +1,5 @@
 package dev.kyro.pitsim.inventories;
 
-import dev.kyro.arcticapi.data.APlayerData;
 import dev.kyro.arcticapi.gui.AGUI;
 import dev.kyro.arcticapi.gui.AGUIPanel;
 import dev.kyro.arcticapi.misc.AOutput;
@@ -9,7 +8,6 @@ import dev.kyro.pitsim.enums.DeathCry;
 import dev.kyro.pitsim.misc.Sounds;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
-import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
@@ -23,7 +21,6 @@ import java.util.List;
 
 public class DeathCryPanel extends AGUIPanel {
     PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
-    FileConfiguration playerData = APlayerData.getPlayerData(player);
 
     public DonatorGUI donatorGUI;
     public DeathCryPanel(AGUI gui) {
@@ -58,8 +55,6 @@ public class DeathCryPanel extends AGUIPanel {
                 if(slot == 10) {
                     if(pitPlayer.deathCry != null) {
                         pitPlayer.deathCry = null;
-                        playerData.set("deathcry", null);
-                        APlayerData.savePlayerData(player);
                         Sounds.SUCCESS.play(player);
                         openPanel(donatorGUI.deathCryPanel);
                     } else {
@@ -69,8 +64,6 @@ public class DeathCryPanel extends AGUIPanel {
               } else if(slot == 11) {
                 if(pitPlayer.deathCry != DeathCry.MARIO_DEATH) {
                     pitPlayer.deathCry = DeathCry.MARIO_DEATH;
-                    playerData.set("deathcry", DeathCry.MARIO_DEATH.toString());
-                    APlayerData.savePlayerData(player);
                     Sounds.SUCCESS.play(player);
                     openPanel(donatorGUI.deathCryPanel);
                 } else {
@@ -81,8 +74,6 @@ public class DeathCryPanel extends AGUIPanel {
             } else if(slot == 12) {
                 if(pitPlayer.deathCry != DeathCry.GHAST_SCREAM) {
                     pitPlayer.deathCry = DeathCry.GHAST_SCREAM;
-                    playerData.set("deathcry", DeathCry.GHAST_SCREAM.toString());
-                    APlayerData.savePlayerData(player);
                     Sounds.SUCCESS.play(player);
                     openPanel(donatorGUI.deathCryPanel);
                 } else {
