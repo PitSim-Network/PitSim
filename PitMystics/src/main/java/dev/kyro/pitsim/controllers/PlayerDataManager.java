@@ -9,7 +9,6 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 public class PlayerDataManager implements Listener {
 	static {
-
 		new BukkitRunnable() {
 			int count = 0;
 			@Override

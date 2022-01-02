@@ -14,7 +14,6 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityShootBowEvent;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
-import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.scheduler.BukkitRunnable;
 
 public class StatManager implements Listener {
@@ -29,12 +28,6 @@ public class StatManager implements Listener {
 				}
 			}
 		}.runTaskTimer(PitSim.INSTANCE, 0L, 20 * 60L);
-	}
-
-	@EventHandler
-	public void saveStats(PlayerQuitEvent event) {
-		PitPlayer pitPlayer = PitPlayer.getPitPlayer(event.getPlayer());
-		pitPlayer.stats.save();
 	}
 
 	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
