@@ -1,38 +1,35 @@
 package dev.kyro.pitsim.megastreaks;
 
 import dev.kyro.arcticapi.misc.AOutput;
-import dev.kyro.pitsim.PitSim;
-import dev.kyro.pitsim.controllers.LevelManager;
+import dev.kyro.pitsim.controllers.DamageManager;
+import dev.kyro.pitsim.controllers.EnchantManager;
 import dev.kyro.pitsim.controllers.NonManager;
 import dev.kyro.pitsim.controllers.PrestigeValues;
 import dev.kyro.pitsim.controllers.objects.Megastreak;
+import dev.kyro.pitsim.controllers.objects.PitEnchant;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.events.AttackEvent;
 import dev.kyro.pitsim.events.KillEvent;
 import dev.kyro.pitsim.misc.Misc;
 import dev.kyro.pitsim.misc.Sounds;
-import dev.kyro.pitsim.upgrades.DoubleDeath;
+import dev.kyro.pitsim.misc.particles.HomeParticle;
 import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.HandlerList;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
-import org.bukkit.scheduler.BukkitTask;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.concurrent.ThreadLocalRandom;
+import java.util.*;
 
 public class RNGesus extends Megastreak {
-
-	public BukkitTask runnable;
 
 	@Override
 	public String getName() {
@@ -104,12 +101,30 @@ public class RNGesus extends Megastreak {
 
 	@EventHandler
 	public void onHit(AttackEvent.Apply attackEvent) {
-		PitPlayer pitPlayer = PitPlayer.getPitPlayer(attackEvent.defender);
+		PitPlayer pitPlayer = PitPlayer.getPitPlayer(attackEvent.attacker);
 		if(pitPlayer != this.pitPlayer) return;
 		if(pitPlayer.megastreak.isOnMega() && pitPlayer.megastreak.getClass() == RNGesus.class) {
-			int ks = (int) Math.floor(pitPlayer.getKills());
-			if(NonManager.getNon(attackEvent.attacker) != null) {
-				attackEvent.veryTrueDamage += (ks - 50) / 50D;
+			List<Entity> entities = attackEvent.defender.getNearbyEntities(5, 5, 5);
+			Collections.shuffle(entities);
+			int count = 0;
+			for(Entity entity : entities) {
+				if(count++ >= 5) break;
+				if(!(entity instanceof Player)) continue;
+				Player target = (Player) entity;
+				if(NonManager.getNon(target) == null) continue;
+
+				BukkitRunnable callback = new BukkitRunnable() {
+					@Override
+					public void run() {
+						Map<PitEnchant, Integer> attackerEnchant = EnchantManager.getEnchantsOnPlayer(attackEvent.attacker);
+						Map<PitEnchant, Integer> defenderEnchant = new HashMap<>();
+						EntityDamageByEntityEvent ev = new EntityDamageByEntityEvent(attackEvent.attacker, target, EntityDamageEvent.DamageCause.CUSTOM, 0);
+						AttackEvent attackEvent = new AttackEvent(ev, attackerEnchant, defenderEnchant, false);
+						DamageManager.fakeKill(attackEvent, attackEvent.attacker, target, false);
+					}
+				};
+
+				new HomeParticle(attackEvent.defender.getLocation().add(0, 1, 0), target, 0.4, callback);
 			}
 		}
 	}
@@ -119,23 +134,14 @@ public class RNGesus extends Megastreak {
 		PitPlayer pitPlayer = PitPlayer.getPitPlayer(killEvent.killer);
 		if(pitPlayer != this.pitPlayer) return;
 		if(pitPlayer.megastreak.isOnMega() && pitPlayer.megastreak.getClass() == RNGesus.class) {
-			killEvent.xpMultipliers.add(1.5);
-			killEvent.goldMultipliers.add(2.0);
+//			killEvent.xpMultipliers.add(1.5);
+//			killEvent.goldMultipliers.add(2.0);
 		}
 	}
 
 	@Override
 	public void proc() {
-
-		Sounds.MEGA_GENERAL.play(pitPlayer.player.getLocation());
-		runnable = new BukkitRunnable() {
-			@Override
-			public void run() {
-				if(pitPlayer.megastreak.getClass() == RNGesus.class && pitPlayer.megastreak.isOnMega()) {
-					Misc.applyPotionEffect(pitPlayer.player, PotionEffectType.SPEED, 200, 0, true, false);
-				}
-			}
-		}.runTaskTimer(PitSim.INSTANCE, 0L, 60L);
+		Sounds.MEGA_RNGESUS.play(pitPlayer.player.getLocation());
 
 		String message = "%luckperms_prefix%";
 		if(pitPlayer.megastreak.isOnMega()) {
@@ -158,7 +164,6 @@ public class RNGesus extends Megastreak {
 
 	@Override
 	public void reset() {
-
 		String message = "%luckperms_prefix%";
 		if(pitPlayer.megastreak.isOnMega()) {
 			pitPlayer.prefix = pitPlayer.megastreak.getName() + " &7" + PlaceholderAPI.setPlaceholders(pitPlayer.player, message);
@@ -167,23 +172,12 @@ public class RNGesus extends Megastreak {
 		}
 
 		if(pitPlayer.megastreak.isOnMega()) {
-			int randomNum = ThreadLocalRandom.current().nextInt(1000, 5000 + 1);
-			if(DoubleDeath.INSTANCE.isDoubleDeath(pitPlayer.player)) randomNum = randomNum * 2;
-			AOutput.send(pitPlayer.player, "&c&lOVERDRIVE! &7Earned &6+" + randomNum + "&6g &7from megastreak!");
-			LevelManager.addGold(pitPlayer.player, randomNum);
+//			Death
 		}
-
-		if(runnable != null) runnable.cancel();
 	}
 
 	@Override
 	public void stop() {
 		HandlerList.unregisterAll(this);
-	}
-
-	@Override
-	public void kill() {
-
-		if(!isOnMega()) return;
 	}
 }
