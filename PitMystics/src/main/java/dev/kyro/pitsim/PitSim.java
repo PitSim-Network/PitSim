@@ -224,6 +224,7 @@ public class PitSim extends JavaPlugin {
 		PerkManager.registerMegastreak(new NoMegastreak(null));
 		PerkManager.registerMegastreak(new Beastmode(null));
 		PerkManager.registerMegastreak(new ToTheMoon(null));
+		PerkManager.registerMegastreak(new RNGesus(null));
 	}
 	private void registerCommands() {
 

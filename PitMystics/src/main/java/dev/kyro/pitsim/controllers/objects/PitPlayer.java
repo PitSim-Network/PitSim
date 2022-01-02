@@ -170,6 +170,7 @@ public class PitPlayer {
 			if(Objects.equals(streak, "Overdrive")) this.megastreak = new Overdrive(this);
 			if(Objects.equals(streak, "Uberstreak")) this.megastreak = new Uberstreak(this);
 			if(Objects.equals(streak, "To the Moon")) this.megastreak = new ToTheMoon(this);
+			if(Objects.equals(streak, "RNGesus")) this.megastreak = new RNGesus(this);
 
 			playerChatDisabled = playerData.getBoolean("disabledplayerchat");
 			killFeedDisabled = playerData.getBoolean("disabledkillfeed");
