@@ -124,7 +124,7 @@ public class LevelManager {
 		if(NonManager.getNon(player) != null) return;
 
 		if(pitPlayer.megastreak.getClass() == RNGesus.class && pitPlayer.megastreak.isOnMega()) {
-
+			((RNGesus) pitPlayer.megastreak).setXPBar();
 			return;
 		}
 

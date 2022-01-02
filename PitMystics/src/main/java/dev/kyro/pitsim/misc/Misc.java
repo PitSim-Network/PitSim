@@ -5,6 +5,7 @@ import dev.kyro.pitsim.commands.LightningCommand;
 import dev.kyro.pitsim.controllers.NonManager;
 import dev.kyro.pitsim.controllers.objects.GoldenHelmet;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
+import dev.kyro.pitsim.megastreaks.RNGesus;
 import dev.kyro.pitsim.megastreaks.Uberstreak;
 import net.minecraft.server.v1_8_R3.*;
 import org.bukkit.ChatColor;
@@ -132,6 +133,9 @@ public class Misc {
 	}
 
 	public static void sendActionBar(Player player, String message) {
+		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
+		if(pitPlayer.megastreak.getClass() == RNGesus.class && pitPlayer.getKills() < RNGesus.INSTABILITY_THRESHOLD) return;
+
 		PacketPlayOutChat packet = new PacketPlayOutChat(IChatBaseComponent.ChatSerializer.a("{\"text\":\"" +
 				ChatColor.translateAlternateColorCodes('&', message) + "\"}"), (byte) 2);
 		((CraftPlayer) player).getHandle().playerConnection.sendPacket(packet);

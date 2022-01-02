@@ -80,7 +80,6 @@ public class AttackEvent extends Event {
 		public List<Double> multiplier = new ArrayList<>();
 		public List<Double> increaseCalcDecrease = new ArrayList<>();
 		public double decreasePercent = 0;
-		public double decrease = 0;
 		public double trueDamage = 0;
 		public double veryTrueDamage = 0;
 		public double selfTrueDamage = 0;

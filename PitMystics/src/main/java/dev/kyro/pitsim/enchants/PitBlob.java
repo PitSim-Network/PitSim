@@ -32,6 +32,9 @@ public class PitBlob extends PitEnchant {
 
 	@EventHandler(priority = EventPriority.LOW)
 	public void onBlobDamagePlayer(EntityDamageByEntityEvent event) {
+		if(event.getEntity() instanceof Player) {
+			if(NonManager.getNon((Player) event.getEntity()) != null) event.setCancelled(true);
+		}
 		if(!(event.getDamager() instanceof Slime) || !SpawnManager.isInSpawn(event.getEntity().getLocation())) return;
 		event.setCancelled(true);
 	}
