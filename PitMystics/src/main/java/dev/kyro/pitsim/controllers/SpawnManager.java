@@ -1,5 +1,9 @@
 package dev.kyro.pitsim.controllers;
 
+import com.comphenix.protocol.PacketType;
+import com.comphenix.protocol.ProtocolLibrary;
+import com.comphenix.protocol.events.PacketAdapter;
+import com.comphenix.protocol.events.PacketEvent;
 import com.sk89q.worldguard.bukkit.BukkitUtil;
 import com.sk89q.worldguard.bukkit.RegionContainer;
 import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
@@ -35,6 +39,17 @@ import java.util.Map;
 
 public class SpawnManager implements Listener {
 	public static Map<Player, Location> lastLocationMap = new HashMap<>();
+
+	static {
+		ProtocolLibrary.getProtocolManager().addPacketListener(
+				new PacketAdapter(PitSim.INSTANCE, PacketType.Play.Server.NAMED_SOUND_EFFECT) {
+			@Override
+			public void onPacketSending(PacketEvent event) {
+				String soundName = event.getPacket().getStrings().read(0);
+				event.setCancelled(soundName.startsWith("mob.villager."));
+			}
+		});
+	}
 
 	@EventHandler
 	public void onMove(PlayerMoveEvent event) {
