@@ -83,7 +83,7 @@ public class HelmetPanel extends AGUIPanel {
 			abilityLoreBuilder.addLore("&7Selected: &9" + ability.name);
 			abilityBuilder.getItemStack().setType(ability.getDisplayItem().getType());
 			abilityLoreBuilder.addLore(ability.getDescription());
-			abilityLoreBuilder.addLore("", "&eClick to chance ability!");
+			abilityLoreBuilder.addLore("", "&eClick to change ability!");
 		}
 		else {
 			abilityLoreBuilder.addLore("&7Selected: &cNONE", "&7Abilities let you spend the", "&6gold &7in your helmet on", "&7various buffs.");

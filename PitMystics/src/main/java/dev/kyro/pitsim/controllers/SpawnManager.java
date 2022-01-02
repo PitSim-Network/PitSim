@@ -59,6 +59,7 @@ public class SpawnManager implements Listener {
 		boolean isInSpawn = isInSpawn(location);
 
 		if(isInSpawn) {
+			if(player.isOp()) return;
 			if(!lastLocationMap.containsKey(player)) return;
 
 			PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
