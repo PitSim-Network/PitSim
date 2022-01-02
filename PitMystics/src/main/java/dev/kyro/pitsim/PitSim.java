@@ -49,7 +49,7 @@ import java.util.Map;
 
 public class PitSim extends JavaPlugin {
 
-	public static double version = 2.0;
+	public static String version = "2.0";
 
 	public static LuckPerms LUCKPERMS;
 	public static PitSim INSTANCE;

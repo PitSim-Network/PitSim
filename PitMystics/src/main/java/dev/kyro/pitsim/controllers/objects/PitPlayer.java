@@ -35,36 +35,16 @@ public class PitPlayer {
 	public Player player;
 	public String prefix;
 
-	public int playerLevel = 1;
-	public int prestige = 0;
-	public int level = 1;
-	public int remainingXP = PrestigeValues.getXPForLevel(1);
-	public int playerKills = 0;
-	public int goldGrinded = 0;
-	public PitPerk[] pitPerks = new PitPerk[4];
-	public int renown = 0;
-
 	private int kills = 0;
 	public double assistAmount = 0;
 	public int bounty = 0;
-	public List<Killstreak> killstreaks = Arrays.asList(NoKillstreak.INSTANCE, NoKillstreak.INSTANCE, NoKillstreak.INSTANCE);
 	public int latestKillAnnouncement = 0;
-
-	public Megastreak megastreak;
-	public int moonBonus = 0;
-	public double goldStack = 0;
-	public long uberReset = 0;
-	public int dailyUbersLeft = 5;
 
 	public Map<PitEnchant, Integer> enchantHits = new HashMap<>();
 	public Map<PitEnchant, Integer> enchantCharge = new HashMap<>();
 
 	public Map<UUID, Double> recentDamageMap = new HashMap<>();
 	public List<BukkitTask> assistRemove = new ArrayList<>();
-
-	public KillEffect killEffect = null;
-	public DeathCry deathCry = null;
-	public AChatColor chatColor = null;
 
 	public Boolean disabledPlayerChat = false;
 	public Boolean disabledKillFeed = false;
@@ -75,7 +55,32 @@ public class PitPlayer {
 
 	public ItemStack confirmedDrop = null;
 
+//	Savable
+	public int prestige = 0;
+	public int level = 1;
+	public int remainingXP = PrestigeValues.getXPForLevel(1);
+	public int playerKills = 0;
+	public int renown = 0;
+	public PitPerk[] pitPerks = new PitPerk[4];
+	public List<Killstreak> killstreaks = Arrays.asList(NoKillstreak.INSTANCE, NoKillstreak.INSTANCE, NoKillstreak.INSTANCE);
+	public Megastreak megastreak;
+
+	boolean lightingDisabled;
+	boolean bountiesDisabled;
+	boolean promptPack;
+
+	public double goldStack = 0;
+	public int moonBonus = 0;
+	public int dailyUbersLeft = 5;
+	public long uberReset = 0;
+	public int goldGrinded = 0;
 	public Map<Booster, Integer> boosters = new HashMap<>();
+	public Map<Booster, Integer> boosterTime = new HashMap<>();
+	
+	public String lastVersion;
+	public KillEffect killEffect = null;
+	public DeathCry deathCry = null;
+	public AChatColor chatColor = null;
 
 	public PlayerStats stats;
 
@@ -86,7 +91,6 @@ public class PitPlayer {
 		Non non = NonManager.getNon(player);
 
 		if(non == null) {
-			String message = "%luckperms_prefix%";
 			prefix = "";
 
 			FileConfiguration playerData = APlayerData.getPlayerData(player);
@@ -184,14 +188,8 @@ public class PitPlayer {
 	}
 
 	public void incrementKills() {
-
-		double previousKills = this.kills;
-
 		kills++;
-
-		Bukkit.getPluginManager().callEvent(new IncrementKillsEvent(this.player, kills))    ;
-
-
+		Bukkit.getPluginManager().callEvent(new IncrementKillsEvent(this.player, kills));
 
 		for(Killstreak killstreak : killstreaks) {
 			if(kills == 0 || kills % killstreak.killInterval != 0) continue;
@@ -210,9 +208,6 @@ public class PitPlayer {
 	}
 
 	public void incrementAssist(double assistPercent) {
-
-		double previousKills = this.kills;
-
 		assistAmount = assistAmount + assistPercent;
 		if(assistAmount >= 1) {
 			assistAmount = 0;
