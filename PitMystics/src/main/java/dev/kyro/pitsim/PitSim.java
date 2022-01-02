@@ -6,7 +6,6 @@ import com.xxmicloxx.NoteBlockAPI.songplayer.EntitySongPlayer;
 import dev.kyro.arcticapi.ArcticAPI;
 import dev.kyro.arcticapi.commands.ABaseCommand;
 import dev.kyro.arcticapi.data.AData;
-import dev.kyro.arcticapi.data.APlayerData;
 import dev.kyro.arcticapi.hooks.AHook;
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.boosters.ChaosBooster;
@@ -32,7 +31,6 @@ import net.citizensnpcs.api.npc.NPC;
 import net.luckperms.api.LuckPerms;
 import net.milkbowl.vault.economy.Economy;
 import org.bukkit.Bukkit;
-import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.plugin.Plugin;
@@ -226,6 +224,7 @@ public class PitSim extends JavaPlugin {
 		PerkManager.registerMegastreak(new NoMegastreak(null));
 		PerkManager.registerMegastreak(new Beastmode(null));
 		PerkManager.registerMegastreak(new ToTheMoon(null));
+		PerkManager.registerMegastreak(new RNGesus(null));
 	}
 	private void registerCommands() {
 
