@@ -72,7 +72,7 @@ public class Billionaire extends PitEnchant {
 
 	public int getGoldCost(int enchantLvl) {
 		if(enchantLvl == 1) return 100;
-		return enchantLvl * 450 - 600;
+		return enchantLvl * 400 - 450;
 	}
 
 	public int getPlayerGoldCost(int enchantLvl) {
