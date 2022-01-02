@@ -48,8 +48,7 @@ import java.util.Map;
 //import net.kyori.adventure.platform.bukkit.BukkitAudiences;
 
 public class PitSim extends JavaPlugin {
-
-	public static String version = "2.0";
+	public static double version = 2.0;
 
 	public static LuckPerms LUCKPERMS;
 	public static PitSim INSTANCE;
@@ -251,7 +250,7 @@ public class PitSim extends JavaPlugin {
 		getCommand("ps").setExecutor(adminCommand);
 		ABaseCommand giveCommand = new BaseSetCommand(adminCommand, "give");
 		ABaseCommand setCommand = new BaseSetCommand(adminCommand, "set");
-		adminCommand.registerCommand(new AnticheatCommand("check"));
+//		adminCommand.registerCommand(new AnticheatCommand("check"));
 		adminCommand.registerCommand(new HopperCommand("hopper"));
 		adminCommand.registerCommand(new UUIDCommand("uuid"));
 		adminCommand.registerCommand(new DupeCommand("dupe"));
@@ -313,7 +312,7 @@ public class PitSim extends JavaPlugin {
 		getServer().getPluginManager().registerEvents(new TotallyLegitGem(), this);
 		getServer().getPluginManager().registerEvents(new ChunkOfVile(), this);
 		getServer().getPluginManager().registerEvents(new ReachAutoBan(), this);
-		getServer().getPluginManager().registerEvents(new NonAnticheat(), this);
+//		getServer().getPluginManager().registerEvents(new NonAnticheat(), this);
 //		getServer().getPluginManager().registerEvents(new HelmetListeners(), this);
 		getServer().getPluginManager().registerEvents(new PitBlob(), this);
 		getServer().getPluginManager().registerEvents(new SpawnNPCs(), this);
