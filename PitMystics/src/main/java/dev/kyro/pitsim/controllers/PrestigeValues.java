@@ -131,13 +131,13 @@ public class PrestigeValues {
 		prestigeMap.put(7, new PrestigeInfo(7, 4, 160_000, 17, 13, "&e")); //streaker
 		prestigeMap.put(8, new PrestigeInfo(8, 4.5, 180_000, 18, 13, "&e"));
 		prestigeMap.put(9, new PrestigeInfo(9, 5, 200_000, 19, 14, "&e")); //doubledeath
-		prestigeMap.put(10, new PrestigeInfo(10, 6, 350_000, 40, 14, "&6")); //firststrike
-		prestigeMap.put(11, new PrestigeInfo(11, 7, 500_000, 42, 14, "&6")); //report access
-		prestigeMap.put(12, new PrestigeInfo(12, 8, 1_000_000, 44, 15, "&6")); //lifeinsurance
-		prestigeMap.put(13, new PrestigeInfo(13, 10, 1_150_000, 46, 15, "&6")); //beast
-		prestigeMap.put(14, new PrestigeInfo(14, 12, 1_250_000, 48, 16, "&6")); //counter-janitor
-		prestigeMap.put(15, new PrestigeInfo(15, 14, 1_400_000, 50, 16, "&c")); //helmetry
-		prestigeMap.put(16, new PrestigeInfo(16, 16, 1_500_000, 52, 16, "&c")); //divine
+		prestigeMap.put(10, new PrestigeInfo(10, 6, 300_000, 40, 14, "&6")); //firststrike
+		prestigeMap.put(11, new PrestigeInfo(11, 7, 400_000, 42, 14, "&6")); //report access
+		prestigeMap.put(12, new PrestigeInfo(12, 8, 500_000, 44, 15, "&6")); //lifeinsurance
+		prestigeMap.put(13, new PrestigeInfo(13, 10, 650_000, 46, 15, "&6")); //beast
+		prestigeMap.put(14, new PrestigeInfo(14, 12, 800_000, 48, 16, "&6")); //counter-janitor
+		prestigeMap.put(15, new PrestigeInfo(15, 14, 1_000_000, 50, 16, "&c")); //helmetry
+		prestigeMap.put(16, new PrestigeInfo(16, 16, 1_300_000, 52, 16, "&c")); //divine
 		prestigeMap.put(17, new PrestigeInfo(17, 18, 1_600_000, 54, 16, "&c")); //highlander
 		prestigeMap.put(18, new PrestigeInfo(18, 21, 1_700_000, 56, 18, "&c")); //withercraft
 		prestigeMap.put(19, new PrestigeInfo(19, 24, 1_800_000, 58, 20, "&c"));
@@ -166,13 +166,17 @@ public class PrestigeValues {
 		prestigeMap.put(42, new PrestigeInfo(42, 325, 17_000_000, 520, 44, "&3"));
 		prestigeMap.put(43, new PrestigeInfo(43, 350, 19_000_000, 530, 46, "&3"));
 		prestigeMap.put(44, new PrestigeInfo(44, 375, 21_000_000, 540, 48, "&3"));
-		prestigeMap.put(45, new PrestigeInfo(45, 400, 23_000_000, 550, 50, "&2"));
-		prestigeMap.put(46, new PrestigeInfo(46, 425, 25_000_000, 575, 60, "&2"));
-		prestigeMap.put(47, new PrestigeInfo(47, 450, 27_000_000, 600, 70, "&2"));
-		prestigeMap.put(48, new PrestigeInfo(48, 475, 30_000_000, 700, 80, "&2"));
-		prestigeMap.put(49, new PrestigeInfo(49, 500, 35_000_000, 1500, 100, "&4"));
-		double xpMultiplier = 0; for(Map.Entry<Integer, PrestigeInfo> entry : prestigeMap.entrySet()) xpMultiplier += entry.getValue().xpMultiplier;
-		prestigeMap.put(50, new PrestigeInfo(50, xpMultiplier, 0, 0, 300, "&4"));
+		prestigeMap.put(45, new PrestigeInfo(45, 400, 23_000_000, 550, 50, "&3"));
+		prestigeMap.put(46, new PrestigeInfo(46, 425, 25_000_000, 575, 60, "&3"));
+		prestigeMap.put(47, new PrestigeInfo(47, 450, 27_000_000, 600, 70, "&3"));
+		prestigeMap.put(48, new PrestigeInfo(48, 475, 30_000_000, 700, 80, "&3"));
+		prestigeMap.put(49, new PrestigeInfo(49, 500, 35_000_000, 1500, 100, "&3"));
+		prestigeMap.put(50, new PrestigeInfo(50, 5000, 0, 0, 300, "&2"));
+		prestigeMap.put(51, new PrestigeInfo(50, 1000, 0, 0, 300, "&2"));
+		prestigeMap.put(52, new PrestigeInfo(50, 1500, 0, 0, 300, "&2"));
+		prestigeMap.put(53, new PrestigeInfo(50, 2000, 0, 0, 300, "&2"));
+		prestigeMap.put(54, new PrestigeInfo(50, 2250, 0, 0, 300, "&2"));
+		prestigeMap.put(55, new PrestigeInfo(50, 2500, 0, 0, 300, "&4"));
 
 		for(int i = 0; i < 51; i++) {
 			PrestigeInfo prestigeInfo = getPrestigeInfo(i);
