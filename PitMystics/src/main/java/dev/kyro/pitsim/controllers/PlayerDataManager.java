@@ -26,6 +26,6 @@ public class PlayerDataManager implements Listener {
 					}
 				}
 			}
-		}.runTaskTimer(PitSim.INSTANCE,  0L, 20);
+		}.runTaskTimer(PitSim.INSTANCE,  20L, 20);
 	}
 }

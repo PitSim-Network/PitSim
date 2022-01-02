@@ -74,9 +74,9 @@ public class PitPlayer {
 	public Map<Booster, Integer> boosterTime = new HashMap<>();
 
 	public double lastVersion;
-	public KillEffect killEffect = null;
-	public DeathCry deathCry = null;
-	public AChatColor chatColor = null;
+	public KillEffect killEffect;
+	public DeathCry deathCry;
+	public AChatColor chatColor;
 
 	public PlayerStats stats;
 
@@ -129,9 +129,9 @@ public class PitPlayer {
 		for(Map.Entry<Booster, Integer> entry : boosterTime.entrySet()) playerData.set("booster-time." + entry.getKey().refName, entry.getValue());
 
 		playerData.set("lastversion", PitSim.version);
-		playerData.set("killeffect", killEffect.toString());
-		playerData.set("deathcry", deathCry.toString());
-		playerData.set("chatcolor", chatColor.toString());
+		if(killEffect != null) playerData.set("killeffect", killEffect.toString());
+		if(deathCry != null) playerData.set("deathcry", deathCry.toString());
+		if(chatColor != null) playerData.set("chatcolor", chatColor.toString());
 
 		APlayerData.savePlayerData(player);
 
