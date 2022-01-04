@@ -275,6 +275,7 @@ public class PitSim extends JavaPlugin {
 		SwitchCommand switchCommand = new SwitchCommand();
 		getCommand("switch").setExecutor(switchCommand);
 		getCommand("play").setExecutor(switchCommand);
+		getCommand("pay").setExecutor(new PayCommand());
 	}
 
 	private void registerListeners() {
