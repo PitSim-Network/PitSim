@@ -32,7 +32,6 @@ import java.util.Map;
 public class MegastreakPanel extends AGUIPanel {
 	PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
 	public static Map<Player, Long> rngsusCdPlayers = new HashMap<>();
-	public static long RNGesusCdMinutes = 20;
 	public PerkGUI perkGUI;
 	public MegastreakPanel(AGUI gui) {
 		super(gui);
@@ -140,9 +139,9 @@ public class MegastreakPanel extends AGUIPanel {
 							pitPlayer.megastreak = new RNGesus(pitPlayer);
 							perkGUI.megaWrapUp();
 							openPanel(perkGUI.getHomePanel());
-						} else if(pitPlayer.renown >= 1) {
-							pitPlayer.renown = pitPlayer.renown - 1;
-							AOutput.send(player, "&aEquipped &6RNGsus &afor &e1 Renown!");
+						} else if(pitPlayer.renown >= RNGesus.RENOWN_COST) {
+							pitPlayer.renown = pitPlayer.renown - RNGesus.RENOWN_COST;
+							AOutput.send(player, "&aEquipped &6RNGsus &afor &e" + RNGesus.RENOWN_COST + " Renown!");
 							Sounds.SUCCESS.play(player);
 							rngsusCdPlayers.remove(player);
 							pitPlayer.megastreak.stop();
@@ -259,13 +258,13 @@ public class MegastreakPanel extends AGUIPanel {
 			public void run() {
 				rngsusCdPlayers.remove(player);
 			}
-		}.runTaskLater(PitSim.INSTANCE, (20 * 60) * RNGesusCdMinutes);
+		}.runTaskLater(PitSim.INSTANCE, (20 * 60) * RNGesus.COOLDOWN_MINUTES);
 	}
 
 	public static String getTime(Player player) {
 		StringBuilder builder = new StringBuilder();
 		long difference = ((System.currentTimeMillis() / 1000) - rngsusCdPlayers.get(player) / 1000);
-		int reverseDiff = (int) (RNGesusCdMinutes * 60) - (int) difference;
+		int reverseDiff = (int) (RNGesus.COOLDOWN_MINUTES * 60) - (int) difference;
 		builder.append(reverseDiff / 60).append("m ");
 		builder.append(reverseDiff % 60).append("s");
 		return builder.toString();

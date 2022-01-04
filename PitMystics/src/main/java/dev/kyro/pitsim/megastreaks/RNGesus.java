@@ -40,6 +40,8 @@ import java.text.DecimalFormat;
 import java.util.*;
 
 public class RNGesus extends Megastreak {
+	public static int RENOWN_COST = 5;
+	public static int COOLDOWN_MINUTES = 60;
 	public static int INSTABILITY_THRESHOLD = 1000;
 
 	public List<Reality> generatedRealityOrder = new ArrayList<>();
