@@ -1,12 +1,14 @@
 package dev.kyro.pitsim.misc.particles;
 
 import dev.kyro.pitsim.PitSim;
-import org.bukkit.Effect;
+import org.bukkit.EntityEffect;
 import org.bukkit.Location;
+import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
 
 public class LineParticle {
+	public Player displayPlayer;
 	public Location start;
 	public Location end;
 	public double stepSize;
@@ -16,7 +18,8 @@ public class LineParticle {
 	private Location currentLoc;
 	private Vector incrementVector;
 
-	public LineParticle(Location start, Location end, double stepSize) {
+	public LineParticle(Player displayPlayer, Location start, Location end, double stepSize) {
+		this.displayPlayer = displayPlayer;
 		this.start = start;
 		this.end = end;
 		this.stepSize = stepSize;
@@ -47,6 +50,6 @@ public class LineParticle {
 	}
 
 	public void display(Location location) {
-		location.getWorld().playEffect(location, Effect.HAPPY_VILLAGER, 1);
+		displayPlayer.playEffect(EntityEffect.VILLAGER_HAPPY);
 	}
 }
