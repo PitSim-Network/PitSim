@@ -10,7 +10,7 @@ import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.server.PluginDisableEvent;
 import org.bukkit.scheduler.BukkitRunnable;
 
-public class PlayerDataManager implements Listener {
+public  class PlayerDataManager implements Listener {
 	static {
 		new BukkitRunnable() {
 			int count = 0;
