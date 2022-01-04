@@ -10,6 +10,7 @@ import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.events.AttackEvent;
 import dev.kyro.pitsim.events.HealEvent;
 import dev.kyro.pitsim.events.KillEvent;
+import dev.kyro.pitsim.inventories.MegastreakPanel;
 import dev.kyro.pitsim.misc.Misc;
 import dev.kyro.pitsim.misc.Sounds;
 import dev.kyro.pitsim.misc.particles.HomeParticle;
@@ -238,6 +239,7 @@ public class RNGesus extends Megastreak {
 
 	@Override
 	public void proc() {
+		MegastreakPanel.rngsusCooldown(pitPlayer.player);
 		Sounds.MEGA_RNGESUS.play(pitPlayer.player.getLocation());
 
 		String message = "%luckperms_prefix%";

@@ -4,6 +4,7 @@ import dev.kyro.arcticapi.gui.AGUI;
 import dev.kyro.arcticapi.gui.AGUIPanel;
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.arcticapi.misc.AUtil;
+import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.controllers.PerkManager;
 import dev.kyro.pitsim.controllers.PrestigeValues;
 import dev.kyro.pitsim.controllers.objects.Megastreak;
@@ -14,18 +15,22 @@ import dev.kyro.pitsim.upgrades.UberIncrease;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
+import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.inventory.InventoryOpenEvent;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class MegastreakPanel extends AGUIPanel {
 	PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
+	public static List<Player> rngsusCdPlayers = new ArrayList<>();
+	public static long RNGesusCdMinutes = 20;
 	public PerkGUI perkGUI;
 	public MegastreakPanel(AGUI gui) {
 		super(gui);
@@ -50,6 +55,7 @@ public class MegastreakPanel extends AGUIPanel {
 		boolean has = false;
 		boolean level = false;
 		boolean uberCd = false;
+		boolean rngsusCd = false;
 
 		int slot = event.getSlot();
 		if(event.getClickedInventory().getHolder() == this) {
@@ -123,12 +129,28 @@ public class MegastreakPanel extends AGUIPanel {
 						if(pitPlayer.megastreak.getClass() == RNGesus.class) has = true;
 						if(pitPlayer.level < megastreak.levelReq()) level = true;
 						if(!has && !prestige && !uberCd && !level) {
+						}
+					}
+					if(megastreak.getClass() == RNGesus.class && !has && !prestige && !uberCd && !level) {
+						if(!rngsusCdPlayers.contains(player)) {
+							Sounds.SUCCESS.play(player);
 							pitPlayer.megastreak.stop();
 							pitPlayer.megastreak = new RNGesus(pitPlayer);
 							perkGUI.megaWrapUp();
+							openPanel(perkGUI.getHomePanel());
+						} else if(pitPlayer.renown >= 1) {
+							pitPlayer.renown = pitPlayer.renown - 1;
+							AOutput.send(player, "&aEquipped &6RNGsus &afor &e1 Renown!");
+							Sounds.SUCCESS.play(player);
+							pitPlayer.megastreak.stop();
+							pitPlayer.megastreak = new RNGesus(pitPlayer);
+							perkGUI.megaWrapUp();
+							openPanel(perkGUI.getHomePanel());
+						} else {
+							AOutput.error(player, "&cYou do not have enough renown!");
+							Sounds.ERROR.play(player);
 						}
-					}
-					if(!prestige && !has && !uberCd && !level) {
+					}else if(!prestige && !has && !uberCd && !level) {
 						openPanel(perkGUI.getHomePanel());
 						Sounds.SUCCESS.play(player);
 					}
@@ -145,7 +167,7 @@ public class MegastreakPanel extends AGUIPanel {
 						Sounds.ERROR.play(player);
 					}
 					if(uberCd) {
-						AOutput.error(player, "&cYou have reached the daily limit for this killstreak");
+						AOutput.error(player, "&cYou have reached the daily limit for this megastreak");
 						Sounds.ERROR.play(player);
 					}
 				}
@@ -171,6 +193,9 @@ public class MegastreakPanel extends AGUIPanel {
 				if(ubersLeft == 0) lore.add(ChatColor.translateAlternateColorCodes('&', "&dDaily Uberstreaks remaining: &c0&7/" + (5 + UberIncrease.getUberIncrease(player))));
 				else lore.add(ChatColor.translateAlternateColorCodes('&', "&dDaily Uberstreaks remaining: &a" + ubersLeft + "&7/" + (5 + UberIncrease.getUberIncrease(player))));
 			}
+			if(megastreak.getClass() == RNGesus.class && rngsusCdPlayers.contains(player)) {
+				lore.add(ChatColor.YELLOW + "Megastreak on cooldown!");
+			}
 			if(pitPlayer.megastreak.getClass() == megastreak.getClass() && megastreak.getClass() != NoMegastreak.class) {
 				lore.add(ChatColor.GREEN + "Already selected!");
 				meta.setDisplayName(ChatColor.GREEN + megastreak.getRawName());
@@ -185,7 +210,13 @@ public class MegastreakPanel extends AGUIPanel {
 				PrestigeValues.PrestigeInfo info = PrestigeValues.getPrestigeInfo(pitPlayer.prestige);
 				lore.add(ChatColor.translateAlternateColorCodes('&', "&cUnlocked at level " + info.getOpenBracket() + PrestigeValues.getLevelColor(megastreak.levelReq()) + megastreak.levelReq() + info.getCloseBracket()));
 				meta.setDisplayName(ChatColor.RED + megastreak.getRawName());
-			} else if(megastreak.getClass() != NoMegastreak.class){
+			} else if(megastreak.getClass() == RNGesus.class && pitPlayer.renown < 1 && rngsusCdPlayers.contains(player)) {
+				lore.add(ChatColor.RED + "Click to select for 1 renown!");
+				meta.setDisplayName(ChatColor.RED + megastreak.getRawName());
+			} else if(megastreak.getClass() == RNGesus.class && pitPlayer.renown >= 1 && rngsusCdPlayers.contains(player)) {
+				lore.add(ChatColor.YELLOW + "Click to select for 1 renown!");
+				meta.setDisplayName(ChatColor.YELLOW + megastreak.getRawName());
+			}else if(megastreak.getClass() != NoMegastreak.class){
 				lore.add(ChatColor.YELLOW + "Click to select!");
 				meta.setDisplayName(ChatColor.YELLOW + megastreak.getRawName());
 			}
@@ -215,6 +246,16 @@ public class MegastreakPanel extends AGUIPanel {
 		getInventory().setItem(22, back);
 
 
+	}
+
+	public static void rngsusCooldown(Player player) {
+		rngsusCdPlayers.add(player);
+		new BukkitRunnable() {
+			@Override
+			public void run() {
+				rngsusCdPlayers.remove(player);
+			}
+		}.runTaskLater(PitSim.INSTANCE, (20 * 60) * RNGesusCdMinutes);
 	}
 
 	@Override

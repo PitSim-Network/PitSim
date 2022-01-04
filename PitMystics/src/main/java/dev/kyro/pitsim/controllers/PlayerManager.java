@@ -14,8 +14,11 @@ import dev.kyro.pitsim.enums.NonTrait;
 import dev.kyro.pitsim.events.AttackEvent;
 import dev.kyro.pitsim.events.IncrementKillsEvent;
 import dev.kyro.pitsim.events.KillEvent;
+import dev.kyro.pitsim.events.OofEvent;
+import dev.kyro.pitsim.inventories.MegastreakPanel;
 import dev.kyro.pitsim.megastreaks.Highlander;
 import dev.kyro.pitsim.megastreaks.NoMegastreak;
+import dev.kyro.pitsim.megastreaks.RNGesus;
 import dev.kyro.pitsim.misc.DeathCrys;
 import dev.kyro.pitsim.misc.KillEffects;
 import dev.kyro.pitsim.misc.Misc;
@@ -517,5 +520,32 @@ public class PlayerManager implements Listener {
 		if(toggledPlayers.contains(event.getPlayer())) return;
 		event.setCancelled(true);
 		AOutput.error(event.getPlayer(), "&CBlock placing disabled, run /pitsim bypass to toggle");
+	}
+
+	@EventHandler
+	public void onQuit(PlayerQuitEvent event) {
+		PitPlayer pitPlayer = PitPlayer.getPitPlayer(event.getPlayer());
+		if(pitPlayer.megastreak.getClass() == RNGesus.class && MegastreakPanel.rngsusCdPlayers.contains(event.getPlayer()));
+		pitPlayer.megastreak = new NoMegastreak(pitPlayer);
+	}
+
+
+	@EventHandler
+	public void onDeath(KillEvent event) {
+		PitPlayer pitPlayer = PitPlayer.getPitPlayer(event.dead);
+		if(pitPlayer.megastreak.getClass() == RNGesus.class && MegastreakPanel.rngsusCdPlayers.contains(event.dead)) {
+			pitPlayer.megastreak = new NoMegastreak(pitPlayer);
+			pitPlayer.fullSave();
+		}
+
+	}
+
+	@EventHandler
+	public void onOof(OofEvent event) {
+		PitPlayer pitPlayer = PitPlayer.getPitPlayer(event.getPlayer());
+		if(pitPlayer.megastreak.getClass() == RNGesus.class && MegastreakPanel.rngsusCdPlayers.contains(event.getPlayer())) {
+			pitPlayer.megastreak = new NoMegastreak(pitPlayer);
+			pitPlayer.fullSave();
+		}
 	}
 }
