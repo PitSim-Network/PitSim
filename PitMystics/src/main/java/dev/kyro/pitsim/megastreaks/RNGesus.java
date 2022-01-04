@@ -48,15 +48,15 @@ public class RNGesus extends Megastreak {
 	public BukkitTask runnable;
 
 	public int getXP(double progression) {
-		return (int) (progression * 3);
+		return (int) (progression);
 	}
 
 	public double getGold(double progression) {
-		return progression * 1.5;
+		return progression;
 	}
 
 	public double getDamage(double progression) {
-		return progression * 0.15;
+		return progression * 0.10;
 	}
 
 	public float getAbsorption(double progression) {
@@ -111,16 +111,16 @@ public class RNGesus extends Megastreak {
 		lore.add(ChatColor.translateAlternateColorCodes('&', "&7Triggers on: &c100 kills"));
 		lore.add("");
 		lore.add(ChatColor.GRAY + "On trigger:");
-		lore.add(ChatColor.translateAlternateColorCodes('&', "&a\u25a0 &7Shift into a Normal reality"));
-		lore.add(ChatColor.translateAlternateColorCodes('&', "&a\u25a0 &7Start a &f20 minute cooldown &7for this streak"));
+		lore.add(ChatColor.translateAlternateColorCodes('&', "&a\u25a0 &7Shift into an &fAbnormal &7reality"));
+		lore.add(ChatColor.translateAlternateColorCodes('&', "&c\u25a0 &7Start a &b20 minute &7cooldown for this streak"));
 		lore.add("");
 		lore.add(ChatColor.GRAY + "Every 100 kills:");
 		lore.add(ChatColor.translateAlternateColorCodes('&', "&b\u25a0 &eShift &7into a random reality (&6Gold&7, &bXP&7,"));
 		lore.add(ChatColor.translateAlternateColorCodes('&', "&cDamage&7, &eAbsorption&7)"));
 		lore.add(ChatColor.translateAlternateColorCodes('&', "&b\u25a0 &7Build up stats for each reality as you streak"));
 		lore.add("");
-		lore.add(ChatColor.GRAY + "At 1000 kills:");
-		lore.add(ChatColor.translateAlternateColorCodes('&', "&b\u25a0 &7Enter a &efrenzy mode &7that uses the stats"));
+		lore.add(ChatColor.GRAY + "At 1000 kills (" + ChatColor.YELLOW + "Destabilized Reality" + ChatColor.GRAY + "):");
+		lore.add(ChatColor.translateAlternateColorCodes('&', "&b\u25a0 Use the stats"));
 		lore.add(ChatColor.translateAlternateColorCodes('&', "&7earned from each reality"));
 		lore.add(ChatColor.translateAlternateColorCodes('&', "&b\u25a0 &7You can no longer heal"));
 		lore.add("");
@@ -156,7 +156,7 @@ public class RNGesus extends Megastreak {
 			Collections.shuffle(entities);
 			int count = 0;
 			for(Entity entity : entities) {
-				if(count++ >= 5) break;
+				if(count++ >= 7) break;
 				if(!(entity instanceof Player)) continue;
 				Player target = (Player) entity;
 				if(NonManager.getNon(target) == null) continue;
@@ -169,12 +169,15 @@ public class RNGesus extends Megastreak {
 						EntityDamageByEntityEvent ev = new EntityDamageByEntityEvent(attackEvent.attacker, target, EntityDamageEvent.DamageCause.CUSTOM, 0);
 						AttackEvent attackEvent = new AttackEvent(ev, attackerEnchant, defenderEnchant, false);
 
-						double finalHealth = target.getHealth() - damage;
-						if(finalHealth <= 0) {
-							DamageManager.fakeKill(attackEvent, attackEvent.attacker, target, false);
-						} else {
-							target.setHealth(finalHealth);
-						}
+//						double finalHealth = target.getHealth() - damage;
+//						if(finalHealth <= 0) {
+//							DamageManager.fakeKill(attackEvent, attackEvent.attacker, target, false);
+//						} else {
+//							target.setHealth(finalHealth);
+//						}
+
+						double chance = damage / target.getMaxHealth();
+						if(Math.random() < chance) DamageManager.fakeKill(attackEvent, attackEvent.attacker, target, false);
 					}
 				};
 
@@ -220,6 +223,7 @@ public class RNGesus extends Megastreak {
 
 	@EventHandler(priority = EventPriority.MONITOR)
 	public void attack(AttackEvent.Apply attackEvent) {
+		if(NonManager.getNon(attackEvent.defender) == null) return;
 		PitPlayer pitPlayer = PitPlayer.getPitPlayer(attackEvent.attacker);
 		if(pitPlayer != this.pitPlayer) return;
 		if(pitPlayer.megastreak.isOnMega() && pitPlayer.megastreak.getClass() == RNGesus.class) {
@@ -302,9 +306,9 @@ public class RNGesus extends Megastreak {
 				} else {
 					EntityPlayer nmsPlayer = ((CraftPlayer) pitPlayer.player).getHandle();
 					if(nmsPlayer.getAbsorptionHearts() > 0) {
-						nmsPlayer.setAbsorptionHearts(Math.max(nmsPlayer.getAbsorptionHearts() - 0.2F, 0));
-					} else if(pitPlayer.player.getHealth() > 0.2) {
-						pitPlayer.player.setHealth(pitPlayer.player.getHealth() - 0.2);
+						nmsPlayer.setAbsorptionHearts(Math.max(nmsPlayer.getAbsorptionHearts() - 1F, 0));
+					} else if(pitPlayer.player.getHealth() > 1) {
+						pitPlayer.player.setHealth(pitPlayer.player.getHealth() - 1);
 					} else {
 						UUID attackerUUID = pitPlayer.lastHitUUID;
 						for(Player onlinePlayer : Bukkit.getOnlinePlayers()) {
@@ -329,20 +333,22 @@ public class RNGesus extends Megastreak {
 
 	@Override
 	public void reset() {
-		int xp = getXP(realityMap.get(Reality.XP).getLevel());
-		double gold = getGold(realityMap.get(Reality.GOLD).getLevel());
-		double damage = getDamage(realityMap.get(Reality.DAMAGE).getLevel());
-		float absorption = getAbsorption(realityMap.get(Reality.ABSORPTION).getLevel());
-		new BukkitRunnable() {
-			@Override
-			public void run() {
-				DecimalFormat decimalFormat = new DecimalFormat("#,####,##0");
-				AOutput.send(pitPlayer.player, "&bXP &7increased by &b" + decimalFormat.format(xp));
-				AOutput.send(pitPlayer.player, "&6Gold &7increased by &6" + decimalFormat.format(gold));
-				AOutput.send(pitPlayer.player, "&cDamage &7increased by &c" + decimalFormat.format(damage));
-				AOutput.send(pitPlayer.player, "&6Absorption &7increased by &9" + decimalFormat.format(absorption));
-			}
-		}.runTaskLater(PitSim.INSTANCE, 20L);
+		if(isOnMega()) {
+			int xp = getXP(realityMap.get(Reality.XP).getLevel());
+			double gold = getGold(realityMap.get(Reality.GOLD).getLevel());
+			double damage = getDamage(realityMap.get(Reality.DAMAGE).getLevel());
+			float absorption = getAbsorption(realityMap.get(Reality.ABSORPTION).getLevel());
+			new BukkitRunnable() {
+				@Override
+				public void run() {
+					DecimalFormat decimalFormat = new DecimalFormat("#,####,##0");
+					AOutput.send(pitPlayer.player, "&bXP &7increased by &b" + decimalFormat.format(xp));
+					AOutput.send(pitPlayer.player, "&6Gold &7increased by &6" + decimalFormat.format(gold));
+					AOutput.send(pitPlayer.player, "&cDamage &7increased by &c" + decimalFormat.format(damage));
+					AOutput.send(pitPlayer.player, "&6Absorption &7increased by &9" + decimalFormat.format(absorption));
+				}
+			}.runTaskLater(PitSim.INSTANCE, 20L);
+		}
 
 		generateRealityOrder();
 		realityMap.clear();
@@ -433,17 +439,17 @@ public class RNGesus extends Megastreak {
 	}
 
 	public enum Reality {
-		NONE("&eNormal?", "&e&lRNGSUS", 1),
-		XP("&bXP", "&b&lRNG&e&lSUS", 1),
-		GOLD("&6Gold", "&6&lRNG&e&lSUS", 1),
-		DAMAGE("&cDamage", "&c&lRNG&e&lSUS", 2),
-		ABSORPTION("&6Absorption", "&9&lRNG&e&lSUS", 1);
+		NONE("&eAbnormal", "&e&lRNGSUS", 1),
+		XP("&bXP", "&b&lRNG&e&lSUS", 0.1),
+		GOLD("&6Gold", "&6&lRNG&e&lSUS", 1.5),
+		DAMAGE("&cDamage", "&c&lRNG&e&lSUS", 1),
+		ABSORPTION("&6Absorption", "&9&lRNG&e&lSUS", 0.2);
 
 		public String displayName;
 		public String prefix;
-		public int baseMultiplier;
+		public double baseMultiplier;
 
-		Reality(String displayName, String prefix, int baseMultiplier) {
+		Reality(String displayName, String prefix, double baseMultiplier) {
 			this.displayName = displayName;
 			this.prefix = prefix;
 			this.baseMultiplier = baseMultiplier;
