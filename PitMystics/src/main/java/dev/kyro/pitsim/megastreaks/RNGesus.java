@@ -144,7 +144,7 @@ public class RNGesus extends Megastreak {
 		if(NonManager.getNon(attackEvent.attacker) != null) return;
 
 		if(pitPlayer.getKills() + 1 >= INSTABILITY_THRESHOLD) {
-			attackEvent.multiplier.clear();
+			attackEvent.multipliers.clear();
 			attackEvent.increaseCalcDecrease.clear();
 			attackEvent.increase = 0;
 			attackEvent.increasePercent = 0;

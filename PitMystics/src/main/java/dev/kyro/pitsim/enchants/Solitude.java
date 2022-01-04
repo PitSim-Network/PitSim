@@ -32,7 +32,7 @@ public class Solitude extends PitEnchant {
 		}
 
 		double reduction = Math.max(getDamageReduction(enchantLvl) - nearbyPlayers * getReductionPerPlayer(enchantLvl), 0);
-		attackEvent.multiplier.add(Misc.getReductionMultiplier(reduction));
+		attackEvent.multipliers.add(Misc.getReductionMultiplier(reduction));
 	}
 
 	@Override

@@ -184,7 +184,7 @@ public class DamageManager implements Listener {
 //		AOutput.send(attackEvent.attacker, "Initial Damage: " + attackEvent.event.getDamage());
 
 //		As strong as iron
-		attackEvent.multiplier.add(ArmorReduction.getReductionMultiplier(attackEvent.defender));
+		attackEvent.multipliers.add(ArmorReduction.getReductionMultiplier(attackEvent.defender));
 
 		double damage = attackEvent.getFinalDamage();
 		attackEvent.event.setDamage(damage);

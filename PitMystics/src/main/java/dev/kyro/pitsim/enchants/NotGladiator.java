@@ -33,7 +33,7 @@ public class NotGladiator extends PitEnchant {
 		nearbyPlayers = Math.min(nearbyPlayers, 10);
 
 		double reduction = Math.max(nearbyPlayers * getDamageReduction(enchantLvl), 0);
-		attackEvent.multiplier.add(Misc.getReductionMultiplier(reduction));
+		attackEvent.multipliers.add(Misc.getReductionMultiplier(reduction));
 	}
 
 	@Override

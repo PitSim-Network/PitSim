@@ -41,7 +41,7 @@ public class LuckyShot extends PitEnchant {
 		for(Arrow luckyShot : luckyShots) {
 			if(luckyShot.equals(attackEvent.arrow)) {
 
-				attackEvent.multiplier.add(4.0);
+				attackEvent.multipliers.add(4.0);
 				String attack = "&e&lLUCKY SHOT! &7against %luckperms_prefix%%player_name%&7!";
 				String defend = "&c&lOUCH! %luckperms_prefix%%player_name% &7got a lucky shot against you!";
 				Misc.sendTitle(attackEvent.defender, " ", 20);

@@ -133,14 +133,14 @@ public class Uberstreak extends Megastreak {
 	public void onAttack(AttackEvent.Apply attackEvent) {
 		PitPlayer pitDefender = PitPlayer.getPitPlayer(attackEvent.defender);
 		if(pitDefender == this.pitPlayer && pitDefender.megastreak.getClass() == Uberstreak.class) {
-			if(uberEffects.contains(UberEffect.TAKE_MORE_DAMAGE)) attackEvent.multiplier.add(1.25);
-			if(uberEffects.contains(UberEffect.TAKE_LESS_DAMAGE)) attackEvent.multiplier.add(0.9);
+			if(uberEffects.contains(UberEffect.TAKE_MORE_DAMAGE)) attackEvent.multipliers.add(1.25);
+			if(uberEffects.contains(UberEffect.TAKE_LESS_DAMAGE)) attackEvent.multipliers.add(0.9);
 		}
 
 		PitPlayer pitAttacker = PitPlayer.getPitPlayer(attackEvent.attacker);
 		if(pitAttacker != this.pitPlayer || pitAttacker.megastreak.getClass() != Uberstreak.class) return;
 		if(pitAttacker.megastreak.isOnMega()) {
-			if(NonManager.getNon(attackEvent.defender) != null) attackEvent.multiplier.add(0.5);
+			if(NonManager.getNon(attackEvent.defender) != null) attackEvent.multipliers.add(0.5);
 		}
 	}
 

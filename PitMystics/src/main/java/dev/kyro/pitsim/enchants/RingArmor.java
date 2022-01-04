@@ -30,7 +30,7 @@ public class RingArmor extends PitEnchant {
 
 		if(defenderEnchantLvl != 0 && attackEvent.arrow != null) {
 			HitCounter.setCharge(attackEvent.defender, this, 1);
-			attackEvent.multiplier.add(getDamageMultiplier(defenderEnchantLvl));
+			attackEvent.multipliers.add(getDamageMultiplier(defenderEnchantLvl));
 		}
 	}
 
