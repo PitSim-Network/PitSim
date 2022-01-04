@@ -38,6 +38,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
+import org.bukkit.event.inventory.CraftItemEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.*;
 import org.bukkit.inventory.ItemFlag;
@@ -111,6 +112,14 @@ public class PlayerManager implements Listener {
 				}
 			}
 		}.runTaskTimer(PitSim.INSTANCE, 0L, 10L);
+	}
+
+	@EventHandler
+	public void onItemCraft(CraftItemEvent event) {
+		Player player = (Player) event.getWhoClicked();
+		event.setCancelled(true);
+		player.updateInventory();
+		AOutput.error(player, "You are not allowed to craft items");
 	}
 
 	@EventHandler
