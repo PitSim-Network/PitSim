@@ -3,14 +3,16 @@ package dev.kyro.pitsim.megastreaks;
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.arcticapi.misc.ASound;
 import dev.kyro.pitsim.PitSim;
-import dev.kyro.pitsim.controllers.*;
+import dev.kyro.pitsim.controllers.DamageManager;
+import dev.kyro.pitsim.controllers.EnchantManager;
+import dev.kyro.pitsim.controllers.NonManager;
+import dev.kyro.pitsim.controllers.PrestigeValues;
 import dev.kyro.pitsim.controllers.objects.Megastreak;
 import dev.kyro.pitsim.controllers.objects.PitEnchant;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.events.AttackEvent;
 import dev.kyro.pitsim.events.HealEvent;
 import dev.kyro.pitsim.events.KillEvent;
-import dev.kyro.pitsim.inventories.MegastreakPanel;
 import dev.kyro.pitsim.misc.Misc;
 import dev.kyro.pitsim.misc.Sounds;
 import dev.kyro.pitsim.misc.particles.HomeParticle;
@@ -43,6 +45,8 @@ public class RNGesus extends Megastreak {
 	public static int RENOWN_COST = 5;
 	public static int COOLDOWN_MINUTES = 60;
 	public static int INSTABILITY_THRESHOLD = 1000;
+
+	public static Map<Player, Long> rngsusCdPlayers = new HashMap<>();
 
 	public List<Reality> generatedRealityOrder = new ArrayList<>();
 	public Map<Reality, RealityInfo> realityMap = new HashMap<>();
@@ -250,7 +254,7 @@ public class RNGesus extends Megastreak {
 
 	@Override
 	public void proc() {
-		MegastreakPanel.rngsusCooldown(pitPlayer.player);
+		rngsusCooldown(pitPlayer.player);
 		Sounds.MEGA_RNGESUS.play(pitPlayer.player.getLocation());
 
 		String message = "%luckperms_prefix%";
@@ -489,5 +493,28 @@ public class RNGesus extends Megastreak {
 		PacketPlayOutChat packet = new PacketPlayOutChat(IChatBaseComponent.ChatSerializer.a("{\"text\":\"" +
 				ChatColor.translateAlternateColorCodes('&', message) + "\"}"), (byte) 2);
 		((CraftPlayer) player).getHandle().playerConnection.sendPacket(packet);
+	}
+
+	public static boolean isOnCooldown(Player player) {
+		if(!rngsusCdPlayers.containsKey(player)) return false;
+		double timeElapsed = new Date().getTime() - rngsusCdPlayers.get(player);
+		if(timeElapsed / 1000 / 60 > RNGesus.COOLDOWN_MINUTES) {
+			rngsusCdPlayers.remove(player);
+			return true;
+		}
+		return false;
+	}
+
+	public static String getTime(Player player) {
+		StringBuilder builder = new StringBuilder();
+		long difference = ((System.currentTimeMillis() / 1000) - rngsusCdPlayers.get(player) / 1000);
+		int reverseDiff = (RNGesus.COOLDOWN_MINUTES * 60) - (int) difference;
+		builder.append(reverseDiff / 60).append("m ");
+		builder.append(reverseDiff % 60).append("s");
+		return builder.toString();
+	}
+
+	public static void rngsusCooldown(Player player) {
+		rngsusCdPlayers.put(player, System.currentTimeMillis());
 	}
 }
