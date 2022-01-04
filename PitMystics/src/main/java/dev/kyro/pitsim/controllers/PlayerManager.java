@@ -525,7 +525,7 @@ public class PlayerManager implements Listener {
 	@EventHandler
 	public void onQuit(PlayerQuitEvent event) {
 		PitPlayer pitPlayer = PitPlayer.getPitPlayer(event.getPlayer());
-		if(pitPlayer.megastreak.getClass() == RNGesus.class && MegastreakPanel.rngsusCdPlayers.contains(event.getPlayer()));
+		if(pitPlayer.megastreak.getClass() == RNGesus.class && MegastreakPanel.rngsusCdPlayers.containsKey(event.getPlayer()));
 		pitPlayer.megastreak = new NoMegastreak(pitPlayer);
 	}
 
@@ -533,7 +533,7 @@ public class PlayerManager implements Listener {
 	@EventHandler
 	public void onDeath(KillEvent event) {
 		PitPlayer pitPlayer = PitPlayer.getPitPlayer(event.dead);
-		if(pitPlayer.megastreak.getClass() == RNGesus.class && MegastreakPanel.rngsusCdPlayers.contains(event.dead)) {
+		if(pitPlayer.megastreak.getClass() == RNGesus.class && MegastreakPanel.rngsusCdPlayers.containsKey(event.dead)) {
 			pitPlayer.megastreak = new NoMegastreak(pitPlayer);
 			pitPlayer.fullSave();
 		}
@@ -543,7 +543,7 @@ public class PlayerManager implements Listener {
 	@EventHandler
 	public void onOof(OofEvent event) {
 		PitPlayer pitPlayer = PitPlayer.getPitPlayer(event.getPlayer());
-		if(pitPlayer.megastreak.getClass() == RNGesus.class && MegastreakPanel.rngsusCdPlayers.contains(event.getPlayer())) {
+		if(pitPlayer.megastreak.getClass() == RNGesus.class && MegastreakPanel.rngsusCdPlayers.containsKey(event.getPlayer())) {
 			pitPlayer.megastreak = new NoMegastreak(pitPlayer);
 			pitPlayer.fullSave();
 		}

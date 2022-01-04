@@ -105,23 +105,27 @@ public class RNGesus extends Megastreak {
 
 	@Override
 	public ItemStack guiItem() {
-		ItemStack item = new ItemStack(Material.BLAZE_POWDER);
+		ItemStack item = new ItemStack(Material.EYE_OF_ENDER);
 		ItemMeta meta = item.getItemMeta();
 		List<String> lore = new ArrayList<>();
 		lore.add(ChatColor.translateAlternateColorCodes('&', "&7Triggers on: &c100 kills"));
 		lore.add("");
 		lore.add(ChatColor.GRAY + "On trigger:");
-		lore.add(ChatColor.translateAlternateColorCodes('&', "&a\u25a0 &7Earn &b+50% XP &7from kills"));
-		lore.add(ChatColor.translateAlternateColorCodes('&', "&a\u25a0 &7Earn &6+100% gold &7from kills"));
-		lore.add(ChatColor.translateAlternateColorCodes('&', "&a\u25a0 &7Permanent &eSpeed I&7"));
-		lore.add(ChatColor.translateAlternateColorCodes('&', "&a\u25a0 &7Immune to &9Slowness&7"));
+		lore.add(ChatColor.translateAlternateColorCodes('&', "&a\u25a0 &7Shift into a Normal reality"));
+		lore.add(ChatColor.translateAlternateColorCodes('&', "&a\u25a0 &7Start a &f20 minute cooldown &7for this streak"));
 		lore.add("");
-		lore.add(ChatColor.GRAY + "BUT:");
-		lore.add(ChatColor.translateAlternateColorCodes('&', "&c\u25a0 &7Receive &c+" + Misc.getHearts(0.2) + " &7very true"));
-		lore.add(ChatColor.translateAlternateColorCodes('&', "&7damage per 10 kills (only from nons)"));
+		lore.add(ChatColor.GRAY + "Every 100 kills:");
+		lore.add(ChatColor.translateAlternateColorCodes('&', "&b\u25a0 &eShift &7into a random reality (&6Gold&7, &bXP&7,"));
+		lore.add(ChatColor.translateAlternateColorCodes('&', "&cDamage&7, &eAbsorption&7)"));
+		lore.add(ChatColor.translateAlternateColorCodes('&', "&b\u25a0 &7Build up stats for each reality as you streak"));
+		lore.add("");
+		lore.add(ChatColor.GRAY + "At 1000 kills:");
+		lore.add(ChatColor.translateAlternateColorCodes('&', "&b\u25a0 &7Enter a &efrenzy mode &7that uses the stats"));
+		lore.add(ChatColor.translateAlternateColorCodes('&', "&7earned from each reality"));
+		lore.add(ChatColor.translateAlternateColorCodes('&', "&b\u25a0 &7You can no longer heal"));
 		lore.add("");
 		lore.add(ChatColor.GRAY + "On death:");
-		lore.add(ChatColor.translateAlternateColorCodes('&', "&e\u25a0 &7Earn between &61000 &7and &65000 gold&7"));
+		lore.add(ChatColor.translateAlternateColorCodes('&', "&e\u25a0 &7View a recap of your stats from each reality"));
 		meta.setLore(lore);
 		item.setItemMeta(meta);
 		return item;
