@@ -41,9 +41,9 @@ public class HomeParticle {
 				if(currentLoc.distance(endLoc) < stepSize) {
 					cancel();
 //					display(end.getLocation().add(0, 1, 0));
-					for(int i = 0; i < 10; i++) displayPlayer.playEffect(endLoc, Effect.LAVA_POP, 1);
+					for(int i = 0; i < 5; i++) displayPlayer.playEffect(endLoc, Effect.LAVA_POP, 1);
 					displayPlayer.playSound(endLoc, Sound.LAVA_POP, 1, (float) (Math.random() * 0.5 + 0.9));
-					callback.run();
+					callback.runTask(PitSim.INSTANCE);
 					return;
 				}
 
