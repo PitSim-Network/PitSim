@@ -1,6 +1,7 @@
 package dev.kyro.pitsim.controllers;
 
 import dev.kyro.arcticapi.misc.AOutput;
+import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.controllers.objects.PitMap;
 import dev.kyro.pitsim.pitmaps.BiomesMap;
 import org.bukkit.Bukkit;
@@ -10,6 +11,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerPortalEvent;
 import org.bukkit.event.player.PlayerTeleportEvent;
+import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
 
 import java.util.ArrayList;
@@ -18,6 +20,26 @@ import java.util.List;
 public class MapManager implements Listener {
 	public static List<PitMap> mapList = new ArrayList<>();
 	public static PitMap currentMap;
+
+	public static boolean multiLobbies = false;
+	public static int ENABLE_THRESHOLD = 10;
+
+	static {
+		new BukkitRunnable() {
+			int count = 0;
+			@Override
+			public void run() {
+				count++;
+
+				int players = Bukkit.getOnlinePlayers().size();
+				if(multiLobbies) {
+					if(count % (60 * 10) == 0 && players < ENABLE_THRESHOLD) disableMultiLobbies();
+				} else {
+					if(players >= ENABLE_THRESHOLD) enableMultiLobbies();
+				}
+			}
+		}.runTaskTimer(PitSim.INSTANCE, 0L, 20L);
+	}
 
 	public static void onStart() {
 		for(Player onlinePlayer : Bukkit.getOnlinePlayers()) {
@@ -30,15 +52,7 @@ public class MapManager implements Listener {
 		currentMap = pitMap;
 	}
 
-	public static Location playerDesert = new org.bukkit.Location(Bukkit.getWorld("pit"), -108, 86, 194, 48, 3);
-	public static Location desertNonSpawn = new Location(Bukkit.getWorld("pit"), -119, 85, 205);
-	public static Location desertMid = new Location(Bukkit.getWorld("pit"), -118, 43, 204);
-	public static int desertY = 42;
-
 	public static Location playerSnow = new org.bukkit.Location(Bukkit.getWorld("pit"), -99, 46, 707, 0, 0);
-	public static Location snowNonSpawn = new Location(Bukkit.getWorld("pit"), -99, 46, 716, -90, 0);
-	public static Location snowMid = new Location(Bukkit.getWorld("pit"), -98, 6, 716);
-	public static int snowY = 4;
 
 	@EventHandler
 	public void onMove(PlayerPortalEvent event) {
@@ -56,5 +70,27 @@ public class MapManager implements Listener {
 		player.teleport(teleportLoc);
 		player.setVelocity(new Vector(1.5, 1, 0));
 		AOutput.send(player, "&7You have connected to lobby &6" + (MapManager.currentMap.getLobbyIndex(teleportLoc.getWorld()) + 1));
+	}
+
+	public static void enableMultiLobbies() {
+		multiLobbies = true;
+		for(int i = 0; i < currentMap.lobbies.size(); i++) {
+			enablePortal(i);
+		}
+	}
+
+	public static void disableMultiLobbies() {
+		multiLobbies = false;
+		for(int i = 1; i < currentMap.lobbies.size(); i++) {
+			disablePortal(i);
+		}
+	}
+
+	public static void enablePortal(int lobbyIndex) {
+
+	}
+
+	public static void disablePortal(int lobbyIndex) {
+
 	}
 }

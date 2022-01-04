@@ -35,6 +35,7 @@ public class NonManager implements Listener {
 					botIGNs.add("xLava28");
 				}
 				for(World world : MapManager.currentMap.lobbies) {
+					if(!MapManager.multiLobbies && world != MapManager.currentMap.firstLobby) continue;
 					for(int i = 0; i < 3; i++) {
 						if(getNonsInLobby(world) >= getMaxNons(world)) break;
 						Non non = new Non(botIGNs.get((int) (Math.random() * botIGNs.size())), world);
