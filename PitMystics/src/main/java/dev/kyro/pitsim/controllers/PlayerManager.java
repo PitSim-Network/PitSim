@@ -15,7 +15,6 @@ import dev.kyro.pitsim.events.AttackEvent;
 import dev.kyro.pitsim.events.IncrementKillsEvent;
 import dev.kyro.pitsim.events.KillEvent;
 import dev.kyro.pitsim.events.OofEvent;
-import dev.kyro.pitsim.inventories.MegastreakPanel;
 import dev.kyro.pitsim.megastreaks.Highlander;
 import dev.kyro.pitsim.megastreaks.NoMegastreak;
 import dev.kyro.pitsim.megastreaks.RNGesus;
@@ -125,9 +124,7 @@ public class PlayerManager implements Listener {
 	@EventHandler
 	public void onCommand(PlayerCommandPreprocessEvent event) {
 		if(event.getPlayer().isOp()) return;
-//		TODO: Pay needs to be moved to its own command because essentials pay autocompletes name so its not feasible to block command if receiver level < 100
-		if(ChatColor.stripColor(event.getMessage()).toLowerCase().startsWith("/trade") ||
-				ChatColor.stripColor(event.getMessage()).toLowerCase().startsWith("/pay")) {
+		if(ChatColor.stripColor(event.getMessage()).toLowerCase().startsWith("/trade")) {
 			PitPlayer pitPlayer = PitPlayer.getPitPlayer(event.getPlayer());
 			if(pitPlayer.level < 100) {
 				event.setCancelled(true);
@@ -535,7 +532,7 @@ public class PlayerManager implements Listener {
 	@EventHandler
 	public void onQuit(PlayerQuitEvent event) {
 		PitPlayer pitPlayer = PitPlayer.getPitPlayer(event.getPlayer());
-		if(pitPlayer.megastreak.getClass() == RNGesus.class && MegastreakPanel.rngsusCdPlayers.containsKey(event.getPlayer()));
+		if(pitPlayer.megastreak.getClass() == RNGesus.class && RNGesus.isOnCooldown(event.getPlayer()));
 		pitPlayer.megastreak = new NoMegastreak(pitPlayer);
 	}
 
@@ -543,7 +540,7 @@ public class PlayerManager implements Listener {
 	@EventHandler
 	public void onDeath(KillEvent event) {
 		PitPlayer pitPlayer = PitPlayer.getPitPlayer(event.dead);
-		if(pitPlayer.megastreak.getClass() == RNGesus.class && MegastreakPanel.rngsusCdPlayers.containsKey(event.dead)) {
+		if(pitPlayer.megastreak.getClass() == RNGesus.class && RNGesus.isOnCooldown(event.dead)) {
 			pitPlayer.megastreak = new NoMegastreak(pitPlayer);
 			pitPlayer.fullSave();
 		}
@@ -553,7 +550,7 @@ public class PlayerManager implements Listener {
 	@EventHandler
 	public void onOof(OofEvent event) {
 		PitPlayer pitPlayer = PitPlayer.getPitPlayer(event.getPlayer());
-		if(pitPlayer.megastreak.getClass() == RNGesus.class && MegastreakPanel.rngsusCdPlayers.containsKey(event.getPlayer())) {
+		if(pitPlayer.megastreak.getClass() == RNGesus.class && RNGesus.isOnCooldown(event.getPlayer())) {
 			pitPlayer.megastreak = new NoMegastreak(pitPlayer);
 			pitPlayer.fullSave();
 		}
