@@ -6,6 +6,7 @@ import dev.kyro.pitsim.controllers.objects.PitMap;
 import dev.kyro.pitsim.pitmaps.BiomesMap;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -74,23 +75,29 @@ public class MapManager implements Listener {
 
 	public static void enableMultiLobbies() {
 		multiLobbies = true;
-		for(int i = 0; i < currentMap.lobbies.size(); i++) {
-			enablePortal(i);
+		for(World lobby : currentMap.lobbies) {
+			enablePortal(lobby);
 		}
 	}
 
 	public static void disableMultiLobbies() {
 		multiLobbies = false;
-		for(int i = 1; i < currentMap.lobbies.size(); i++) {
-			disablePortal(i);
+		List<World> disabledLobbies = new ArrayList<>(currentMap.lobbies);
+		disabledLobbies.remove(0);
+		for(World disabledLobby : disabledLobbies) {
+			disablePortal(disabledLobby);
+		}
+		for(Player onlinePlayer : Bukkit.getOnlinePlayers()) {
+			if(!disabledLobbies.contains(onlinePlayer.getWorld())) continue;
+			AOutput.send(onlinePlayer, "&6&lLOBBY! &7Instance shutdown... Please make your way to the exit portal");
 		}
 	}
 
-	public static void enablePortal(int lobbyIndex) {
+	public static void enablePortal(World lobby) {
 
 	}
 
-	public static void disablePortal(int lobbyIndex) {
+	public static void disablePortal(World lobby) {
 
 	}
 }

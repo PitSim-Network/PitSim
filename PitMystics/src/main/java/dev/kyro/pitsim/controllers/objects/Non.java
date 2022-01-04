@@ -158,6 +158,11 @@ public class Non {
 
 	public void respawn() {
 
+		if(!MapManager.multiLobbies && world != MapManager.currentMap.firstLobby) {
+			remove();
+			return;
+		}
+
 		nonState = NonState.RESPAWNING;
 		Location spawnLoc = MapManager.currentMap.getNonSpawn(world);
 		Booster booster = BoosterManager.getBooster("chaos");
