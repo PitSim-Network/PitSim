@@ -346,7 +346,8 @@ public class PlayerManager implements Listener {
 		if(defendingNon == null) {
 			attackEvent.multiplier.add(0.85);
 		} else {
-			if(defendingNon.traits.contains(NonTrait.IRON_STREAKER)) attackEvent.multiplier.add(0.6);
+//			Non defence
+			if(defendingNon.traits.contains(NonTrait.IRON_STREAKER)) attackEvent.multiplier.add(0.8);
 		}
 
 //		ItemStack itemStack = attackEvent.attacker.getItemInHand();
