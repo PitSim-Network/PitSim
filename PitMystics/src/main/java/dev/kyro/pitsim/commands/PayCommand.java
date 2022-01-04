@@ -34,16 +34,16 @@ public class PayCommand implements CommandExecutor {
             break;
         }
         if(target == null) {
-            AOutput.error(player, "Could not find that player");
+            AOutput.error(player, "&c&lNOPE! &7Could not find that player");
             return false;
         } else if(target == player) {
-            AOutput.error(player, "You cannot pay yourself");
+            AOutput.error(player, "&c&lNOPE! &7You cannot pay yourself");
             return false;
         }
 
         PitPlayer pitTarget = PitPlayer.getPitPlayer(target);
         if(pitTarget.level < 100) {
-            AOutput.error(player, "&c&lNOPE! &7You cannot trade until level 100");
+            AOutput.error(player, "&c&lNOPE! &7That player is not level 100+");
             return false;
         }
 
@@ -58,8 +58,8 @@ public class PayCommand implements CommandExecutor {
 
         PitSim.VAULT.withdrawPlayer(player, amount);
         PitSim.VAULT.depositPlayer(target, amount);
-        AOutput.send(player, "&7You have sent &6" + target.getName() + " &7$" + amount);
-        AOutput.send(target, "&7You have received $" + amount + " from &7" + player.getName());
+        AOutput.send(player, "&6&lTRADE! &7You have sent &6" + target.getName() + " &7$" + amount);
+        AOutput.send(target, "&6&lTRADE! &7You have received $" + amount + " from &7" + player.getName());
         return false;
     }
 }
