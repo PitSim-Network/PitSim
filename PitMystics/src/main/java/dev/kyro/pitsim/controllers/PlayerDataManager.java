@@ -46,6 +46,5 @@ public class PlayerDataManager implements Listener {
 			PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
 			pitPlayer.fullSave();
 		}
-
 	}
 }
