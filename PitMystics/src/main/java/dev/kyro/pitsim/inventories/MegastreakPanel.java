@@ -247,8 +247,6 @@ public class MegastreakPanel extends AGUIPanel {
 		back.setItemMeta(meta);
 
 		getInventory().setItem(22, back);
-
-
 	}
 
 	public static void rngsusCooldown(Player player) {
@@ -271,7 +269,5 @@ public class MegastreakPanel extends AGUIPanel {
 	}
 
 	@Override
-	public void onClose(InventoryCloseEvent event) {
-
-	}
+	public void onClose(InventoryCloseEvent event) { }
 }
