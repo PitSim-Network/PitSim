@@ -184,15 +184,7 @@ public class DamageManager implements Listener {
 //		AOutput.send(attackEvent.attacker, "Initial Damage: " + attackEvent.event.getDamage());
 
 //		As strong as iron
-		if(attackEvent.defender.getInventory().getLeggings() != null && attackEvent.defender.getInventory().getLeggings().getType() == Material.LEATHER_LEGGINGS) {
-			NBTItem pants = new NBTItem(attackEvent.defender.getInventory().getLeggings());
-			if(pants.hasKey(NBTTag.ITEM_UUID.getRef())) {
-				attackEvent.multiplier.add(0.86956521);
-			}
-		}
-		if(attackEvent.defender.getInventory().getHelmet() != null && attackEvent.defender.getInventory().getHelmet().getType() == Material.GOLD_HELMET) {
-			attackEvent.multiplier.add(0.95652173913);
-		}
+		attackEvent.multiplier.add(ArmorReduction.getReductionMultiplier(attackEvent.defender));
 
 		double damage = attackEvent.getFinalDamage();
 		attackEvent.event.setDamage(damage);

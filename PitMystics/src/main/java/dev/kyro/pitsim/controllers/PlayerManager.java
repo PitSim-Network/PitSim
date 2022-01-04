@@ -344,7 +344,7 @@ public class PlayerManager implements Listener {
 		Non defendingNon = NonManager.getNon(attackEvent.defender);
 //		Arch chest
 		if(defendingNon == null) {
-			attackEvent.multiplier.add(0.85);
+			attackEvent.multiplier.add(0.9);
 		} else {
 //			Non defence
 			if(defendingNon.traits.contains(NonTrait.IRON_STREAKER)) attackEvent.multiplier.add(0.8);
