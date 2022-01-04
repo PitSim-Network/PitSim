@@ -1,14 +1,21 @@
 package dev.kyro.pitsim.controllers;
 
+import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.controllers.objects.PitMap;
+import dev.kyro.pitsim.pitmaps.BiomesMap;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
+import org.bukkit.event.player.PlayerPortalEvent;
+import org.bukkit.event.player.PlayerTeleportEvent;
+import org.bukkit.util.Vector;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class MapManager {
+public class MapManager implements Listener {
 	public static List<PitMap> mapList = new ArrayList<>();
 	public static PitMap currentMap;
 
@@ -33,55 +40,21 @@ public class MapManager {
 	public static Location snowMid = new Location(Bukkit.getWorld("pit"), -98, 6, 716);
 	public static int snowY = 4;
 
-//    public static Location spawn = new Location(Bukkit.getWorld("pitsim"), 0.5, 88, 8.5, -180, 0);
-//    public static Location nonSpawn = new Location(Bukkit.getWorld("pitsim"), 0, 86, 0);
-//    public static Location mid = new Location(Bukkit.getWorld("pitsim"), 0, 70, 0);
-//    public static int y = 70;
-//    public static Location upgradeNPCSpawn = new Location(Bukkit.getWorld("pitsim"), 10.5, 88, 4.5, 90, 0);
-//    public static Location prestigeNPCSpawn = new Location(Bukkit.getWorld("pitsim"), -12.5, 88, -1.5, -90, 0);
-//    public static Location kyroNPCSpawn = new Location(Bukkit.getWorld("pitsim"), 7.5, 92, -8.5, 22.5F, 11);
-//    public static Location wijiNPCSpawn = new Location(Bukkit.getWorld("pitsim"), 0.5, 92, -11.5, 31, 10);
-//    public static Location vnx2NPCSpawn = new Location(Bukkit.getWorld("pitsim"), 4, 88, -8.5, 10, 0);
+	@EventHandler
+	public void onMove(PlayerPortalEvent event) {
+		if(currentMap.getClass() != BiomesMap.class || event.getCause() != PlayerTeleportEvent.TeleportCause.NETHER_PORTAL) return;
+		event.setCancelled(true);
+		Player player = event.getPlayer();
+		Location playerLoc = player.getLocation();
 
-//    public static Location getNonSpawn() {
-//
-//        Location spawn = nonSpawn;
-//        spawn = spawn.clone();
-//        spawn.setX(spawn.getX() + (Math.random() * 6 - 3));
-//        spawn.setZ(spawn.getZ() + (Math.random() * 6 - 3));
-//        return spawn;
-//    }
+		Location teleportLoc = playerLoc.clone();
+		teleportLoc.setWorld(MapManager.currentMap.getRandomOrFirst(player.getWorld()));
+		if(teleportLoc.getYaw() > 0 || teleportLoc.getYaw() < -180) teleportLoc.setYaw(-teleportLoc.getYaw());
+		teleportLoc.add(3, 0, 0);
+		teleportLoc.setY(72);
 
-//    public static Location getMid() {
-//
-//        return mid;
-//    }
-//
-//    public static int getY() {
-//        return y;
-//    }
-//
-//    public static Location getPlayerSpawn() {
-//        return spawn;
-//    }
-//
-//    public static Location getUpgradeNPCSpawn() {
-//        return upgradeNPCSpawn;
-//    }
-//
-//    public static Location getPrestigeNPCSpawn() {
-//        return prestigeNPCSpawn;
-//    }
-//
-//    public static Location getKyroNPCSpawn() {
-//        return kyroNPCSpawn;
-//    }
-//
-//    public static Location getWijiNPCSpawn() {
-//        return wijiNPCSpawn;
-//    }
-//
-//    public static Location getVnx2NPCSpawn() {
-//        return vnx2NPCSpawn;
-//    }
+		player.teleport(teleportLoc);
+		player.setVelocity(new Vector(1.5, 1, 0));
+		AOutput.send(player, "&7You have connected to lobby &6" + (MapManager.currentMap.getLobbyIndex(teleportLoc.getWorld()) + 1));
+	}
 }

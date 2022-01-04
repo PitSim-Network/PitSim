@@ -5,6 +5,7 @@ import org.bukkit.Location;
 import org.bukkit.World;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public abstract class PitMap {
@@ -35,5 +36,14 @@ public abstract class PitMap {
 			if(testWorld == world) return i;
 		}
 		return -1;
+	}
+	
+	public World getRandomOrFirst(World current) {
+		if(!lobbies.contains(current)) return firstLobby;
+		List<World> lobbies = new ArrayList<>(this.lobbies);
+		lobbies.remove(current);
+		if(lobbies.isEmpty()) return firstLobby;
+		Collections.shuffle(lobbies);
+		return lobbies.get(0);
 	}
 }

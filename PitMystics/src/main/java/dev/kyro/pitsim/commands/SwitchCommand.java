@@ -12,17 +12,11 @@ public class SwitchCommand implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
         Player player = (Player) sender;
+        if(!player.isOp() && !player.hasPermission("pitsim.switch")) return false;
 
-        World newWorld = null;
-        for(World world : MapManager.currentMap.lobbies) {
-            if(world == player.getWorld()) continue;
-            newWorld = world;
-            break;
-        }
-        if(newWorld == null) newWorld = MapManager.currentMap.firstLobby;
+        World newWorld = MapManager.currentMap.getRandomOrFirst(player.getWorld());
         player.teleport(MapManager.currentMap.getSpawn(newWorld));
         AOutput.send(player, "&7You have connected to lobby &6" + (MapManager.currentMap.getLobbyIndex(newWorld) + 1));
-
         return false;
     }
 }
