@@ -72,7 +72,7 @@ public class Sounds {
 //	Megastreaks
 	public static final SoundEffect MEGA_GENERAL = new SoundEffect(Sound.WITHER_SPAWN, 1000, 1);
 	public static final SoundEffect MEGA_RNGESUS = new SoundEffect(Sound.PORTAL_TRIGGER, 1000, 1);
-	public static final SoundEffect RNGESUS_DESTABILIZE = new SoundEffect(Sound.PORTAL_TRIGGER, 1000, 1);
+	public static final SoundEffect RNGESUS_DESTABILIZE = new SoundEffect(Sound.ENDERDRAGON_DEATH, 1000, 1);
 	public static final SoundEffect UBER_100 = new SoundEffect("mob.guardian.curse", 1000, 1);
 	public static final SoundEffect UBER_200 = new SoundEffect("mob.guardian.curse", 1000, 1);
 	public static final SoundEffect UBER_300 = new SoundEffect("mob.guardian.curse", 1000, 1);
