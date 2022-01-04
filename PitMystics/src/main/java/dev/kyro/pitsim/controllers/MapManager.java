@@ -3,6 +3,7 @@ package dev.kyro.pitsim.controllers;
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.controllers.objects.PitMap;
+import dev.kyro.pitsim.misc.SchematicPaste;
 import dev.kyro.pitsim.pitmaps.BiomesMap;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -15,6 +16,7 @@ import org.bukkit.event.player.PlayerTeleportEvent;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -32,7 +34,7 @@ public class MapManager implements Listener {
 			public void run() {
 				count++;
 
-				int players = Bukkit.getOnlinePlayers().size();
+				int players = AFKManager.onlineActivePlayers;
 				if(multiLobbies) {
 					if(count % (60 * 10) == 0 && players < ENABLE_THRESHOLD) disableMultiLobbies();
 				} else {
@@ -94,10 +96,10 @@ public class MapManager implements Listener {
 	}
 
 	public static void enablePortal(World lobby) {
-
+		SchematicPaste.loadSchematic(new File("plugins/WorldEdit/schematics/doorOpen.schematic"), new Location(lobby, -67, 72, 3));
 	}
 
 	public static void disablePortal(World lobby) {
-
+		SchematicPaste.loadSchematic(new File("plugins/WorldEdit/schematics/doorClosed.schematic"), new Location(lobby, -67, 72, 3));
 	}
 }
