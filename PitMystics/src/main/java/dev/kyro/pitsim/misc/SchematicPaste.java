@@ -19,7 +19,6 @@ public class SchematicPaste {
 		EditSession session = worldEditPlugin.getWorldEdit().getEditSessionFactory().getEditSession(new BukkitWorld(location.getWorld()), 100000);
 		try{
 			CuboidClipboard clipboard = MCEditSchematicFormat.getFormat(file).load(file);
-			clipboard.rotate2D(90);
 			clipboard.paste(session, new com.sk89q.worldedit.Vector(location.getX(), location.getY(), location.getZ()), false);
 		}
 		catch (MaxChangedBlocksException | DataException | IOException e) {
