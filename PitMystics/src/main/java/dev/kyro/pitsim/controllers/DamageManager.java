@@ -134,7 +134,7 @@ public class DamageManager implements Listener {
 				public void run() {
 					if(++count == 15) cancel();
 
-					if(count == 8) DamageManager.hitCooldownList.remove(defender);
+					if(count == 5) DamageManager.hitCooldownList.remove(defender);
 					if(count == 10) DamageManager.hopperCooldownList.remove(defender);
 					if(count == 15) DamageManager.nonHitCooldownList.remove(defender);
 				}

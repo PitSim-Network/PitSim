@@ -64,13 +64,13 @@ public class NonManager implements Listener {
 	}
 
 	public static int getMaxNons(World world) {
-		int base = 15;
-		int max = 30;
+		int base = 20;
+		int max = 40;
 
 		Booster booster = BoosterManager.getBooster("chaos");
 		if(booster.isActive()) {
-			max = 50;
-			base = 50;
+			max = 60;
+			base = 60;
 		}
 
 		Location mid = MapManager.currentMap.getMid(world);
@@ -78,7 +78,7 @@ public class NonManager implements Listener {
 		for(Player onlinePlayer : Bukkit.getOnlinePlayers()) {
 			if(onlinePlayer.getWorld() != world) continue;
 			double distance = mid.distance(onlinePlayer.getLocation());
-			if(distance < 20) playersNearMid++;
+			if(distance < 15) playersNearMid++;
 		}
 		return Math.min(playersNearMid * 3 + base, max);
 	}

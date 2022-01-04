@@ -19,8 +19,8 @@ public class BiomesMap extends PitMap {
 	public Location getNonSpawn(World world) {
 		Location spawn = new Location(world, 0, 86, 0);
 		spawn = spawn.clone();
-		spawn.setX(spawn.getX() + (Math.random() * 6 - 3));
-		spawn.setZ(spawn.getZ() + (Math.random() * 6 - 3));
+		spawn.setX(spawn.getX() + (Math.random() * 7.6 - 3.8));
+		spawn.setZ(spawn.getZ() + (Math.random() * 7.6 - 3.8));
 		return spawn;
 	}
 
