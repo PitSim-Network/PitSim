@@ -99,7 +99,7 @@ public class SetPrestigeCommand extends ASubCommand {
                     return;
                 }
 
-                if(prestige > PrestigeValues.MAX_PRESTIGE || prestige < 0) {
+                if(prestige > 50 || prestige < 0) {
                     AOutput.error(player, "&cInvalid number!");
                     return;
                 }
