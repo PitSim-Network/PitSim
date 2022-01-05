@@ -160,10 +160,8 @@ public class Uberstreak extends Megastreak {
 		PitPlayer pitPlayer = PitPlayer.getPitPlayer(event.player);
 		if(pitPlayer != this.pitPlayer) return;
 		if(pitPlayer.megastreak.isOnMega() && pitPlayer.megastreak.getClass() == Uberstreak.class) {
-			double current = event.currentAmount;
-			double newKills = event.newAmount;
 
-			if(current < 200 && newKills >= 200) {
+			if(event.kills == 200) {
 				Sounds.UBER_200.play(pitPlayer.player);
 				UberEffect uberEffect = UberEffect.getRandom(uberEffects);
 				if(uberEffects.size() < 1) uberEffects.add(uberEffect);
@@ -171,7 +169,7 @@ public class Uberstreak extends Megastreak {
 				pitPlayer.updateMaxHealth();
 				AOutput.send(pitPlayer.player, "&d&lUBERSTREAK &7Random Effect: " + uberEffect.description);
 			}
-			if(current < 300 && newKills >= 300) {
+			if(event.kills == 300) {
 				Sounds.UBER_300.play(pitPlayer.player);
 				UberEffect uberEffect = UberEffect.getRandom(uberEffects);
 				if(uberEffects.size() < 2) uberEffects.add(uberEffect);
@@ -179,7 +177,7 @@ public class Uberstreak extends Megastreak {
 				pitPlayer.updateMaxHealth();
 				AOutput.send(pitPlayer.player, "&d&lUBERSTREAK &7Random Effect: " + uberEffect.description);
 			}
-			if(current < 400 && newKills >= 400) {
+			if(event.kills == 400) {
 				Sounds.UBER_400.play(pitPlayer.player);
 				UberEffect uberEffect = UberEffect.getRandom(uberEffects);
 				if(uberEffects.size() < 3) uberEffects.add(uberEffect);
@@ -187,7 +185,7 @@ public class Uberstreak extends Megastreak {
 				pitPlayer.updateMaxHealth();
 				AOutput.send(pitPlayer.player, "&d&lUBERSTREAK &7Random Effect: " + uberEffect.description);
 			}
-			if(current < 500 && newKills >= 500) {
+			if(event.kills == 500) {
 				Sounds.UBER_500.play(pitPlayer.player);
 				pitPlayer.updateMaxHealth();
 				AOutput.send(pitPlayer.player, "&d&lUBERSTREAK &cCannot heal");

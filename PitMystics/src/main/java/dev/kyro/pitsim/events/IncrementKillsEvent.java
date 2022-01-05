@@ -8,15 +8,11 @@ public class IncrementKillsEvent extends Event {
 	private static final HandlerList handlers = new HandlerList();
 
 	public Player player;
-	public double currentAmount;
-	public double amountChanged;
-	public double newAmount;
+	public int kills;
 
-	public IncrementKillsEvent(Player player, double currentAmount, double amountChanged) {
+	public IncrementKillsEvent(Player player, int kills) {
 		this.player = player;
-		this.currentAmount = currentAmount;
-		this.amountChanged = amountChanged;
-		this.newAmount = currentAmount + amountChanged;
+		this.kills = kills;
 	}
 
 	@Override
