@@ -1,7 +1,6 @@
 package dev.kyro.pitsim.commands;
 
 import de.tr7zw.nbtapi.NBTItem;
-import dev.kyro.arcticapi.data.APlayerData;
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.arcticapi.misc.AUtil;
 import dev.kyro.pitsim.PitSim;
@@ -20,7 +19,6 @@ import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
-import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -132,9 +130,6 @@ public class CrateGiveCommand implements CommandExecutor {
 				return false;
 			case "renown":
 				pitPlayer.renown += amount;
-				FileConfiguration playerData = APlayerData.getPlayerData(player);
-				playerData.set("renown", pitPlayer.renown);
-				APlayerData.savePlayerData(player);
 				Player finalPlayer = player;
 				new BukkitRunnable() {
 					@Override

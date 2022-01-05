@@ -37,8 +37,6 @@ public class OofCommand implements CommandExecutor {
 
             if(!CombatManager.taggedPlayers.containsKey(player.getUniqueId())) {
                 DamageManager.death(player);
-                OofEvent oofEvent = new OofEvent(player);
-                Bukkit.getPluginManager().callEvent(oofEvent);
                 return false;
             }
 

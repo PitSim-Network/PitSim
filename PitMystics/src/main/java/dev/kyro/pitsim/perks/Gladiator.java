@@ -51,7 +51,7 @@ public class Gladiator extends PitPerk {
 	public void onAttack(AttackEvent.Apply attackEvent) {
 		if(!playerHasUpgrade(attackEvent.defender)) return;
 
-		attackEvent.multiplier.add(Misc.getReductionMultiplier(3 * amplifierMap.getOrDefault(attackEvent.defender.getUniqueId(), 0)));
+		attackEvent.multipliers.add(Misc.getReductionMultiplier(3 * amplifierMap.getOrDefault(attackEvent.defender.getUniqueId(), 0)));
 	}
 
 	@Override

@@ -6,6 +6,7 @@ import com.comphenix.protocol.wrappers.WrappedDataWatcher;
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.controllers.EnchantManager;
+import dev.kyro.pitsim.controllers.MapManager;
 import dev.kyro.pitsim.enums.MysticType;
 import dev.kyro.pitsim.enums.PantColor;
 import net.citizensnpcs.api.CitizensAPI;
@@ -123,25 +124,33 @@ public class ATestCommand implements CommandExecutor {
 		Player player = (Player) sender;
 		if(!player.isOp()) return false;
 
-		if(args.length < 1) {
-
-			AOutput.error(player, "Usage: /atest <target>");
-			return false;
-		}
-		String target = args[0];
-		for(Player onlinePlayer : Bukkit.getOnlinePlayers()) {
-
-			if(!onlinePlayer.getName().equalsIgnoreCase(target)) continue;
-			targetPlayer = onlinePlayer;
-			break;
-		}
-		if(targetPlayer == null) {
-
-			AOutput.error(player, "That player is not online");
-			return false;
+		if(MapManager.multiLobbies) {
+			MapManager.disableMultiLobbies(false);
+			AOutput.send(player, "Disabled multi lobbies");
+		} else {
+			MapManager.enableMultiLobbies();
+			AOutput.send(player, "Enabled multi lobbies");
 		}
 
-		callHopper(targetPlayer, "PayForTruce");
+//		if(args.length < 1) {
+//
+//			AOutput.error(player, "Usage: /atest <target>");
+//			return false;
+//		}
+//		String target = args[0];
+//		for(Player onlinePlayer : Bukkit.getOnlinePlayers()) {
+//
+//			if(!onlinePlayer.getName().equalsIgnoreCase(target)) continue;
+//			targetPlayer = onlinePlayer;
+//			break;
+//		}
+//		if(targetPlayer == null) {
+//
+//			AOutput.error(player, "That player is not online");
+//			return false;
+//		}
+//
+//		callHopper(targetPlayer, "PayForTruce");
 //		new BukkitRunnable() {
 //			int count = 0;
 //			@Override

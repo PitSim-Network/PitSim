@@ -1,6 +1,5 @@
 package dev.kyro.pitsim.inventories;
 
-import dev.kyro.arcticapi.data.APlayerData;
 import dev.kyro.arcticapi.gui.AGUI;
 import dev.kyro.arcticapi.gui.AGUIPanel;
 import dev.kyro.pitsim.controllers.NonManager;
@@ -8,7 +7,6 @@ import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.misc.Sounds;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
-import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.inventory.InventoryOpenEvent;
@@ -44,7 +42,6 @@ public class ChatOptionsPanel extends AGUIPanel {
     @Override
     public void onClick(InventoryClickEvent event) {
         if(NonManager.getNon(player) != null) return;
-        FileConfiguration playerData = APlayerData.getPlayerData(player);
         int slot = event.getSlot();
         if(event.getClickedInventory().getHolder() == this) {
 
@@ -53,47 +50,35 @@ public class ChatOptionsPanel extends AGUIPanel {
             if(!player.hasPermission("pitsim.chat")) return;
 
             if(slot == 10) {
-                if(pitPlayer.disabledBounties) {
-                    pitPlayer.disabledBounties = false;
-                    playerData.set("disabledbounties", false);
+                if(pitPlayer.bountiesDisabled) {
+                    pitPlayer.bountiesDisabled = false;
                 } else {
-                    pitPlayer.disabledBounties = true;
-                    playerData.set("disabledbounties", true);
+                    pitPlayer.bountiesDisabled = true;
                 }
-                APlayerData.savePlayerData(player);
                 Sounds.SUCCESS.play(player);
                 openPanel(donatorGUI.chatOptionsPanel);
             } else if(slot == 12) {
-                if(pitPlayer.disabledStreaks) {
-                    pitPlayer.disabledStreaks = false;
-                    playerData.set("disabledstreaks", false);
+                if(pitPlayer.streaksDisabled) {
+                    pitPlayer.streaksDisabled = false;
                 } else {
-                    pitPlayer.disabledStreaks = true;
-                    playerData.set("disabledstreaks", true);
+                    pitPlayer.streaksDisabled = true;
                 }
-                APlayerData.savePlayerData(player);
                 Sounds.SUCCESS.play(player);
                 openPanel(donatorGUI.chatOptionsPanel);
             } else if(slot == 14) {
-                if(pitPlayer.disabledKillFeed) {
-                    pitPlayer.disabledKillFeed = false;
-                    playerData.set("disabledkillfeed", false);
+                if(pitPlayer.killFeedDisabled) {
+                    pitPlayer.killFeedDisabled = false;
                 } else {
-                    pitPlayer.disabledKillFeed = true;
-                    playerData.set("disabledkillfeed", true);
+                    pitPlayer.killFeedDisabled = true;
                 }
-                APlayerData.savePlayerData(player);
                 Sounds.SUCCESS.play(player);
                 openPanel(donatorGUI.chatOptionsPanel);
             } else if(slot == 16) {
-                if(pitPlayer.disabledPlayerChat) {
-                    pitPlayer.disabledPlayerChat = false;
-                    playerData.set("disabledplayerchat", false);
+                if(pitPlayer.playerChatDisabled) {
+                    pitPlayer.playerChatDisabled = false;
                 } else {
-                    pitPlayer.disabledPlayerChat = true;
-                    playerData.set("disabledplayerchat", true);
+                    pitPlayer.playerChatDisabled = true;
                 }
-                APlayerData.savePlayerData(player);
                 Sounds.SUCCESS.play(player);
                 openPanel(donatorGUI.chatOptionsPanel);
             }
@@ -119,7 +104,7 @@ public class ChatOptionsPanel extends AGUIPanel {
         bountylore.add(ChatColor.GRAY + "Toggles bounty announcements");
         bountylore.add(ChatColor.GRAY + "and claims");
         bountylore.add("");
-        if(pitPlayer.disabledBounties) bountylore.add(ChatColor.GRAY + "Enabled: " + ChatColor.RED + "OFF");
+        if(pitPlayer.bountiesDisabled) bountylore.add(ChatColor.GRAY + "Enabled: " + ChatColor.RED + "OFF");
         else bountylore.add(ChatColor.GRAY + "Enabled: " + ChatColor.GREEN + "ON");
         bountylore.add(ChatColor.YELLOW + "Click to toggle!");
         bountymeta.setDisplayName(ChatColor.YELLOW + "Chat Option: Bounties");
@@ -131,7 +116,7 @@ public class ChatOptionsPanel extends AGUIPanel {
         List<String> streaklore = new ArrayList<>();
         streaklore.add(ChatColor.GRAY + "Toggles streak broadcasts");
         streaklore.add("");
-        if(pitPlayer.disabledStreaks) streaklore.add(ChatColor.GRAY + "Enabled: " + ChatColor.RED + "OFF");
+        if(pitPlayer.streaksDisabled) streaklore.add(ChatColor.GRAY + "Enabled: " + ChatColor.RED + "OFF");
         else streaklore.add(ChatColor.GRAY + "Enabled: " + ChatColor.GREEN + "ON");
         streaklore.add(ChatColor.YELLOW + "Click to toggle!");
         streakmeta.setDisplayName(ChatColor.YELLOW + "Chat Option: Streaks");
@@ -145,7 +130,7 @@ public class ChatOptionsPanel extends AGUIPanel {
         killlore.add(ChatColor.GRAY + "death messages");
         killlore.add("");
         killmeta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
-        if(pitPlayer.disabledKillFeed) killlore.add(ChatColor.GRAY + "Enabled: " + ChatColor.RED + "OFF");
+        if(pitPlayer.killFeedDisabled) killlore.add(ChatColor.GRAY + "Enabled: " + ChatColor.RED + "OFF");
         else killlore.add(ChatColor.GRAY + "Enabled: " + ChatColor.GREEN + "ON");
         killlore.add(ChatColor.YELLOW + "Click to toggle!");
         killmeta.setDisplayName(ChatColor.YELLOW + "Chat Option: Kill Feed");
@@ -158,7 +143,7 @@ public class ChatOptionsPanel extends AGUIPanel {
         chatlore.add(ChatColor.GRAY + "Toggles chat messages sent from");
         chatlore.add(ChatColor.GRAY + "players and /show messages");
         chatlore.add("");
-        if(pitPlayer.disabledPlayerChat) chatlore.add(ChatColor.GRAY + "Enabled: " + ChatColor.RED + "OFF");
+        if(pitPlayer.playerChatDisabled) chatlore.add(ChatColor.GRAY + "Enabled: " + ChatColor.RED + "OFF");
         else chatlore.add(ChatColor.GRAY + "Enabled: " + ChatColor.GREEN + "ON");
         chatlore.add(ChatColor.YELLOW + "Click to toggle!");
         chatmeta.setDisplayName(ChatColor.YELLOW + "Chat Option: Player Chat");

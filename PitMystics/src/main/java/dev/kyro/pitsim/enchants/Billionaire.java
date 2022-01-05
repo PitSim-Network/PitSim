@@ -30,7 +30,7 @@ public class Billionaire extends PitEnchant {
 		if(enchantLvl == 0) return;
 
 		if(NonManager.getNon(attackEvent.attacker) != null || HopperManager.isHopper(attackEvent.attacker)) {
-			attackEvent.multiplier.add(getDamageMultiplier(enchantLvl));
+			attackEvent.multipliers.add(getDamageMultiplier(enchantLvl));
 			return;
 		}
 
@@ -49,7 +49,7 @@ public class Billionaire extends PitEnchant {
 		PitPlayer pitPlayer = PitPlayer.getPitPlayer(attackEvent.attacker);
 		if(pitPlayer.stats != null) pitPlayer.stats.billionaire += goldCost;
 
-		attackEvent.multiplier.add(getDamageMultiplier(enchantLvl));
+		attackEvent.multipliers.add(getDamageMultiplier(enchantLvl));
 //		attackEvent.increasePercent += getDamageIncrease(enchantLvl) / 100.0;
 		Sounds.BILLIONAIRE.play(attackEvent.attacker);
 	}
@@ -72,7 +72,7 @@ public class Billionaire extends PitEnchant {
 
 	public int getGoldCost(int enchantLvl) {
 		if(enchantLvl == 1) return 100;
-		return enchantLvl * 400 - 450;
+		return enchantLvl * 450 - 600;
 	}
 
 	public int getPlayerGoldCost(int enchantLvl) {

@@ -35,7 +35,7 @@ public class Robinhood extends PitEnchant {
 		if(!canApply(attackEvent) || attackEvent.arrow == null) return;
 		if(!robinMap.contains(attackEvent.arrow)) return;
 
-		attackEvent.multiplier.add(0.5D);
+		attackEvent.multipliers.add(0.5D);
 	}
 
 	@EventHandler

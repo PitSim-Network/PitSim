@@ -1,18 +1,17 @@
 package dev.kyro.pitsim.controllers;
 
-import dev.kyro.arcticapi.data.APlayerData;
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.arcticapi.misc.AUtil;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.killstreaks.NoKillstreak;
 import dev.kyro.pitsim.megastreaks.Overdrive;
+import dev.kyro.pitsim.megastreaks.RNGesus;
 import dev.kyro.pitsim.misc.Misc;
 import dev.kyro.pitsim.misc.Sounds;
 import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
-import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 
 public class LevelManager {
@@ -23,7 +22,6 @@ public class LevelManager {
 
 	public static void addXP(Player player, int xp) {
 		if(!(NonManager.getNon(player) == null)) return;
-		FileConfiguration playerData = APlayerData.getPlayerData(player);
 		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
 		while(xp > 0) {
 			if(!(pitPlayer.level < 120)) {
@@ -39,9 +37,6 @@ public class LevelManager {
 				xp = 0;
 			}
 			setXPBar(player, pitPlayer);
-			playerData.set("xp", pitPlayer.remainingXP);
-			playerData.set("prestige", pitPlayer.prestige);
-			APlayerData.savePlayerData(player);
 		}
 	}
 
@@ -60,12 +55,6 @@ public class LevelManager {
 		Misc.sendSubTitle(player, prestigeInfo.getOpenBracket() + PrestigeValues.getLevelColor(pitPlayer.level - 1) + (pitPlayer.level - 1) + prestigeInfo.getCloseBracket() + " &7\u279F " + prestigeInfo.getOpenBracket() + PrestigeValues.getLevelColor(pitPlayer.level) + pitPlayer.level + prestigeInfo.getCloseBracket(), 40);
 		AOutput.send(player,  "&e&lPIT LEVEL UP! " + prestigeInfo.getOpenBracket() + PrestigeValues.getLevelColor(pitPlayer.level - 1) + (pitPlayer.level - 1) + prestigeInfo.getCloseBracket() + " &7\u279F " + prestigeInfo.getOpenBracket() + PrestigeValues.getLevelColor(pitPlayer.level) + pitPlayer.level + prestigeInfo.getCloseBracket());
 
-		FileConfiguration playerData = APlayerData.getPlayerData(player);
-		playerData.set("level", pitPlayer.level);
-		playerData.set("xp", pitPlayer.remainingXP);
-		playerData.set("prestige", pitPlayer.prestige);
-		APlayerData.savePlayerData(player);
-
 		String message = "%luckperms_prefix%";
 		if(pitPlayer.megastreak.isOnMega()) {
 			pitPlayer.prefix = pitPlayer.megastreak.getName() + " &7" + PlaceholderAPI.setPlaceholders(pitPlayer.player, message);
@@ -80,9 +69,6 @@ public class LevelManager {
 
 		pitPlayer.goldGrinded += amount;
 		PitSim.VAULT.depositPlayer(player, amount);
-		FileConfiguration playerData = APlayerData.getPlayerData(player);
-		playerData.set("goldgrinded", pitPlayer.goldGrinded);
-		APlayerData.savePlayerData(player);
 	}
 
 	public static void addGoldReq(Player player, int amount) {
@@ -90,11 +76,7 @@ public class LevelManager {
 		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
 
 		pitPlayer.goldGrinded += amount;
-		FileConfiguration playerData = APlayerData.getPlayerData(player);
-		playerData.set("goldgrinded", pitPlayer.goldGrinded);
-		APlayerData.savePlayerData(player);
 	}
-
 
 	public static void incrementPrestige(Player player) {
 		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
@@ -124,20 +106,6 @@ public class LevelManager {
 		pitPlayer.killstreaks.set(1, NoKillstreak.INSTANCE);
 		pitPlayer.killstreaks.set(2, NoKillstreak.INSTANCE);
 
-		FileConfiguration playerData = APlayerData.getPlayerData(player);
-		playerData.set("goldgrinded", pitPlayer.goldGrinded);
-		playerData.set("prestige", pitPlayer.prestige);
-		playerData.set("level", pitPlayer.level);
-		playerData.set("renown", pitPlayer.renown);
-		playerData.set("playerkills", pitPlayer.playerKills);
-		playerData.set("xp", pitPlayer.remainingXP);
-		playerData.set("goldstack", pitPlayer.goldStack);
-		playerData.set("megastreak", pitPlayer.megastreak.getRawName());
-		playerData.set("killstreak-1", pitPlayer.killstreaks.get(1).refName);
-		playerData.set("killstreak-2", pitPlayer.killstreaks.get(2).refName);
-		if(pitPlayer.prestige >= 30) playerData.set("moonbonus", pitPlayer.moonBonus);
-		APlayerData.savePlayerData(player);
-
 		String message = "%luckperms_prefix%";
 		if(pitPlayer.megastreak.isOnMega()) {
 			pitPlayer.prefix = pitPlayer.megastreak.getName() + " &7" + PlaceholderAPI.setPlaceholders(pitPlayer.player, message);
@@ -154,6 +122,11 @@ public class LevelManager {
 
 	public static void setXPBar(Player player, PitPlayer pitPlayer) {
 		if(NonManager.getNon(player) != null) return;
+
+		if(pitPlayer.megastreak.getClass() == RNGesus.class && pitPlayer.megastreak.isOnMega()) {
+			((RNGesus) pitPlayer.megastreak).setXPBar();
+			return;
+		}
 
 		player.setLevel(pitPlayer.level);
 		float remaining = pitPlayer.remainingXP;

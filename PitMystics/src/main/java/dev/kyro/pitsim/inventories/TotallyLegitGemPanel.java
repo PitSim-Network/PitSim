@@ -1,7 +1,6 @@
 package dev.kyro.pitsim.inventories;
 
 import de.tr7zw.nbtapi.NBTItem;
-import dev.kyro.arcticapi.data.APlayerData;
 import dev.kyro.arcticapi.gui.AGUI;
 import dev.kyro.arcticapi.gui.AGUIPanel;
 import dev.kyro.pitsim.controllers.EnchantManager;
@@ -11,7 +10,6 @@ import dev.kyro.pitsim.enums.NBTTag;
 import dev.kyro.pitsim.misc.Misc;
 import dev.kyro.pitsim.misc.Sounds;
 import org.bukkit.ChatColor;
-import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.inventory.InventoryOpenEvent;
@@ -24,7 +22,6 @@ import java.util.Map;
 
 public class TotallyLegitGemPanel extends AGUIPanel {
 
-    FileConfiguration playerData = APlayerData.getPlayerData(player);
     PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
     public Map<Integer, Integer> slots = new HashMap<>();
     public GemGUI gemGUI;

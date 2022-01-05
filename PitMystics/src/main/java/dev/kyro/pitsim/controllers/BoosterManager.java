@@ -60,6 +60,7 @@ public class BoosterManager implements Listener {
 				isOnline = true;
 				PitPlayer pitPlayer = PitPlayer.getPitPlayer(onlinePlayer);
 				pitPlayer.goldGrinded += gold;
+				//TODO Fix Playerdata in BoosterManager
 				FileConfiguration playerData = APlayerData.getPlayerData(onlinePlayer);
 				playerData.set("goldgrinded", pitPlayer.goldGrinded);
 				APlayerData.savePlayerData(onlinePlayer);
@@ -76,7 +77,7 @@ public class BoosterManager implements Listener {
 		int xp = killEvent.getFinalXp();
 		for(UUID uuid : donators.get(xpBooster)) {
 			if(killEvent.killer.getUniqueId().equals(uuid)) continue;
-			xp *= (1.0 / 10.0);
+			xp *= (0.5 / 10.0);
 			donatorMessages.putIfAbsent(uuid, new ArrayList<>());
 			donatorMessages.get(uuid).add(new BoosterReward(xpBooster, xp));
 			for(Player onlinePlayer : Bukkit.getOnlinePlayers()) {

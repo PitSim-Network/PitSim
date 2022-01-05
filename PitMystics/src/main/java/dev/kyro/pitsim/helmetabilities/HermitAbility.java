@@ -85,7 +85,7 @@ public class HermitAbility extends HelmetAbility {
 	@Override
 	public List<String> getDescription() {
 		DecimalFormat formatter = new DecimalFormat("#,###.#");
-		return Arrays.asList("&7Double-Sneak to toggle Hermit.", "&7Receive permanent resistance II,", "&7slowness II, and true damage immunity", "",
+		return Arrays.asList("&7Double-Sneak to toggle Hermit.", "&7Receive permanent resistance I,", "&7slowness II, and true damage immunity", "",
 				"&7Cost: &6" + formatter.format(cost * 100L) + "g &7on activation", "&7Cost: &6" + formatter.format(cost) + "g &7per second");
 	}
 

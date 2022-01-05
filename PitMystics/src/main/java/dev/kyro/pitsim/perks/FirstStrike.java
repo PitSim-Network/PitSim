@@ -36,7 +36,7 @@ public class FirstStrike extends PitPerk {
 		List<Player> hitList = hitPlayers.get(attackEvent.attacker);
 
 		if(!hitList.contains(attackEvent.defender)) {
-			attackEvent.increasePercent += 20 / 100D;
+			attackEvent.increasePercent += 30 / 100D;
 			Misc.applyPotionEffect(attackEvent.attacker, PotionEffectType.SPEED, 5 * 20, 0 , false, false);
 		}
 
@@ -55,6 +55,6 @@ public class FirstStrike extends PitPerk {
 
 	@Override
 	public List<String> getDescription() {
-		return new ALoreBuilder("&7First hit on a player deals", "&c+20% damage &7and grants", "&eSpeed I &7(5s).").getLore();
+		return new ALoreBuilder("&7First hit on a player deals", "&c+30% damage &7and grants", "&eSpeed I &7(5s).").getLore();
 	}
 }

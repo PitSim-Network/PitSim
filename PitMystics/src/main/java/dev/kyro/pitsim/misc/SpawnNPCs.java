@@ -12,95 +12,116 @@ import net.citizensnpcs.api.npc.NPC;
 import net.citizensnpcs.api.npc.NPCRegistry;
 import net.citizensnpcs.npc.skin.SkinnableEntity;
 import net.citizensnpcs.trait.LookClose;
+import org.bukkit.World;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class SpawnNPCs implements Listener {
 
-	public static NPC upgrade = null;
-	public static NPC prestige = null;
-	public static NPC kyro = null;
-	public static NPC wiji = null;
-	public static NPC vnx2 = null;
+	public static List<NPC> upgrade = new ArrayList<>();
+	public static List<NPC> prestige = new ArrayList<>();
+	public static List<NPC> kyro = new ArrayList<>();
+	public static List<NPC> wiji = new ArrayList<>();
+	public static List<NPC> vnx = new ArrayList<>();
 
 	public static void createNPCs() {
-		createPrestigeNPC();
-		createUpgradeNPC();
-		createKyroNPC();
-		createWijiNPC();
-		createVnx2NPC();
+		for(World world : MapManager.currentMap.lobbies) {
+			createPrestigeNPC(world);
+			createUpgradeNPC(world);
+			createKyroNPC(world);
+			createWijiNPC(world);
+			createVnx2NPC(world);
+		}
 	}
 
 	public static void removeNPCs() {
 		try {
-			upgrade.destroy();
+			for(NPC npc : upgrade) {
+				npc.destroy();
+			}
 		} catch(Exception ignored) {
 			System.out.println("error despawning npc");
 		}
 		try {
-			prestige.destroy();
+			for(NPC npc : prestige) {
+				npc.destroy();
+			}
 		} catch(Exception ignored) {
 			System.out.println("error despawning npc");
 		}
 		try {
-			kyro.destroy();
+			for(NPC npc : kyro) {
+				npc.destroy();
+			}
 		} catch(Exception ignored) {
 			System.out.println("error despawning npc");
 		}
 		try {
-			wiji.destroy();
+			for(NPC npc : wiji) {
+				npc.destroy();
+			}
 		} catch(Exception ignored) {
 			System.out.println("error despawning npc");
 		}
 		try {
-			vnx2.destroy();
+			for(NPC npc : vnx) {
+				npc.destroy();
+			}
 		} catch(Exception ignored) {
 			System.out.println("error despawning npc");
 		}
 	}
 
-	public static void createUpgradeNPC() {
+	public static void createUpgradeNPC(World world) {
 		NPCRegistry registry = CitizensAPI.getNPCRegistry();
-		upgrade = registry.createNPC(EntityType.VILLAGER, " ");
-		upgrade.spawn(MapManager.getUpgradeNPCSpawn());
+		NPC npc = registry.createNPC(EntityType.VILLAGER, " ");
+		upgrade.add(npc);
+		npc.spawn(MapManager.currentMap.getUpgradeNPCSpawn(world));
 	}
 
-	public static void createPrestigeNPC() {
+	public static void createPrestigeNPC(World world) {
 		NPCRegistry registry = CitizensAPI.getNPCRegistry();
-		prestige = registry.createNPC(EntityType.VILLAGER, " ");
-		prestige.spawn(MapManager.getPrestigeNPCSpawn());
+		NPC npc = registry.createNPC(EntityType.VILLAGER, " ");
+		prestige.add(npc);
+		npc.spawn(MapManager.currentMap.getPrestigeNPCSpawn(world));
 	}
 
-	public static void createKyroNPC() {
+	public static void createKyroNPC(World world) {
 		NPCRegistry registry = CitizensAPI.getNPCRegistry();
-		kyro = registry.createNPC(EntityType.PLAYER, "&9KyroKrypt");
-		kyro.spawn(MapManager.getKyroNPCSpawn());
-		skin(kyro, "KyroKrypt");
-		kyro.addTrait(LookClose.class);
-		kyro.getTrait(LookClose.class).setRange(10);
-		kyro.getTrait(LookClose.class).toggle();
+		NPC npc = registry.createNPC(EntityType.PLAYER, "&9KyroKrypt");
+		kyro.add(npc);
+		npc.spawn(MapManager.currentMap.getKyroNPCSpawn(world));
+		skin(npc, "KyroKrypt");
+		npc.addTrait(LookClose.class);
+		npc.getTrait(LookClose.class).setRange(10);
+		npc.getTrait(LookClose.class).toggle();
 	}
 
-	public static void createWijiNPC() {
+	public static void createWijiNPC(World world) {
 		NPCRegistry registry = CitizensAPI.getNPCRegistry();
-		wiji = registry.createNPC(EntityType.PLAYER, "&9wiji1");
-		wiji.spawn(MapManager.getWijiNPCSpawn());
-		skin(wiji, "wiji1");
-		wiji.addTrait(LookClose.class);
-		wiji.getTrait(LookClose.class).setRange(10);
-		wiji.getTrait(LookClose.class).toggle();
+		NPC npc = registry.createNPC(EntityType.PLAYER, "&9wiji1");
+		wiji.add(npc);
+		npc.spawn(MapManager.currentMap.getWijiNPCSpawn(world));
+		skin(npc, "wiji1");
+		npc.addTrait(LookClose.class);
+		npc.getTrait(LookClose.class).setRange(10);
+		npc.getTrait(LookClose.class).toggle();
 	}
 
-	public static void createVnx2NPC() {
+	public static void createVnx2NPC(World world) {
 		NPCRegistry registry = CitizensAPI.getNPCRegistry();
-		vnx2 = registry.createNPC(EntityType.PLAYER, "&e&lSTATISTICS");
-		vnx2.spawn(MapManager.getVnx2NPCSpawn());
-		skin(vnx2, "vnxz");
-		vnx2.addTrait(LookClose.class);
-		vnx2.getTrait(LookClose.class).setRange(10);
-		vnx2.getTrait(LookClose.class).toggle();
+		NPC npc = registry.createNPC(EntityType.PLAYER, "&e&lSTATISTICS");
+		vnx.add(npc);
+		npc.spawn(MapManager.currentMap.getVnxNPCSpawn(world));
+		skin(npc, "vnxz");
+		npc.addTrait(LookClose.class);
+		npc.getTrait(LookClose.class).setRange(10);
+		npc.getTrait(LookClose.class).toggle();
 	}
 
 	@EventHandler
@@ -108,25 +129,34 @@ public class SpawnNPCs implements Listener {
 
 		Player player = event.getClicker();
 
-		if(event.getNPC().getId() == upgrade.getId())  {
-			PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
-			if(pitPlayer.megastreak.isOnMega()) {
-				AOutput.error(player, "&cYou cannot use this command while on a megastreak!");
+		for(NPC npc : upgrade) {
+			if(event.getNPC().getId() == npc.getId())  {
+				PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
+				if(pitPlayer.megastreak.isOnMega()) {
+					AOutput.error(player, "&cYou cannot use this command while on a megastreak!");
+					return;
+				}
+
+				PerkGUI perkGUI = new PerkGUI(player);
+				perkGUI.open();
 				return;
 			}
-
-			PerkGUI perkGUI = new PerkGUI(player);
-			perkGUI.open();
 		}
 
-		if(event.getNPC().getId() == prestige.getId()) {
-			PrestigeGUI prestigeGUI = new PrestigeGUI(player);
-			prestigeGUI.open();
+		for(NPC npc : prestige) {
+			if(event.getNPC().getId() == npc.getId()) {
+				PrestigeGUI prestigeGUI = new PrestigeGUI(player);
+				prestigeGUI.open();
+				return;
+			}
 		}
 
-		if(event.getNPC().getId() == vnx2.getId()) {
-			StatGUI statGUI = new StatGUI(player);
-			statGUI.open();
+		for(NPC npc : vnx) {
+			if(event.getNPC().getId() == npc.getId()) {
+				StatGUI statGUI = new StatGUI(player);
+				statGUI.open();
+				return;
+			}
 		}
 	}
 

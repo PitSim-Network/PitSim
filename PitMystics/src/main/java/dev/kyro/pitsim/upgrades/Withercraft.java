@@ -20,7 +20,7 @@ public class Withercraft extends RenownUpgrade {
 
 	@Override
 	public ItemStack getDisplayItem(Player player, boolean isCustomPanel) {
-		ItemStack item = new ItemStack(Material.EYE_OF_ENDER);
+		ItemStack item = new ItemStack(Material.COAL);
 		ItemMeta meta = item.getItemMeta();
 		meta.setDisplayName(UpgradeManager.itemNameString(this, player));
 		List<String> lore = new ArrayList<>();

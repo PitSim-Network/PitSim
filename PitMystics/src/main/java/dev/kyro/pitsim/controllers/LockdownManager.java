@@ -40,12 +40,12 @@ public class LockdownManager implements Listener {
 					if(SpawnManager.isInSpawn(player.getLocation())) continue;
 					if(requireVerification && !isVerified(player)) {
 						AOutput.error(player, verificationMessage);
-						player.teleport(MapManager.getPlayerSpawn());
+						player.teleport(MapManager.currentMap.getSpawn(MapManager.currentMap.firstLobby));
 						continue;
 					}
 					if(requireCaptcha && !isCaptcha(player)) {
 						sendCaptchaMessage(player);
-						player.teleport(MapManager.getPlayerSpawn());
+						player.teleport(MapManager.currentMap.getSpawn(MapManager.currentMap.firstLobby));
 					}
 				}
 			}
