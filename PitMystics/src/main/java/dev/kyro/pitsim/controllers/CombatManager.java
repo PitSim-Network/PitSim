@@ -22,7 +22,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 import java.util.*;
 
 public class CombatManager implements Listener {
-	int combatTime = 30 * 20;
+	int combatTime = 20 * 20;
 	public static HashMap<UUID, Integer> taggedPlayers = new HashMap<>();
 
 	public static boolean isInCombat(Player player) {
