@@ -12,6 +12,7 @@ import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.entity.EntityPortalEvent;
 import org.bukkit.event.player.PlayerPortalEvent;
 import org.bukkit.event.player.PlayerTeleportEvent;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -67,7 +68,13 @@ public class MapManager implements Listener {
 	public static Location playerSnow = new org.bukkit.Location(Bukkit.getWorld("pit"), -99, 46, 707, 0, 0);
 
 	@EventHandler
-	public void onMove(PlayerPortalEvent event) {
+	public void onPortal(EntityPortalEvent event) {
+		if(event.getEntity() instanceof Player) return;
+		event.setCancelled(true);
+	}
+
+	@EventHandler
+	public void onPortal(PlayerPortalEvent event) {
 		if(currentMap.getClass() != BiomesMap.class || event.getCause() != PlayerTeleportEvent.TeleportCause.NETHER_PORTAL) return;
 		event.setCancelled(true);
 		Player player = event.getPlayer();
