@@ -36,6 +36,7 @@ public class FPSCommand implements CommandExecutor {
 					if(!MapManager.currentMap.lobbies.contains(world)) continue;
 					Location playerLoc = onlinePlayer.getLocation();
 					playerLoc.setY(y);
+					if(world != mid.getWorld()) continue;
 					boolean closeEnough = playerLoc.distance(mid) < nonHideRadius;
 					if(closeEnough && !SpawnManager.isInSpawn(onlinePlayer.getLocation())) {
 						showMid(onlinePlayer);
@@ -46,7 +47,7 @@ public class FPSCommand implements CommandExecutor {
 						Location loc2 = onlinePlayer2.getLocation();
 						loc2.setY(y);
 						if(onlinePlayer.getWorld() != world) continue;
-						if((closeEnough && !SpawnManager.isInSpawn(onlinePlayer.getLocation())) || loc2.distance(mid) > playerHideRadius) {
+						if((closeEnough && !SpawnManager.isInSpawn(onlinePlayer.getLocation())) || loc2.getWorld() != mid.getWorld() || loc2.distance(mid) > playerHideRadius) {
 							onlinePlayer.showPlayer(onlinePlayer2);
 						}
 					}
