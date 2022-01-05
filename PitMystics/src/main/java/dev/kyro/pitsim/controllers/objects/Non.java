@@ -96,12 +96,12 @@ public class Non {
 			}
 		} else respawn();
 
-		if(target == null && !npc.isSpawned()) return;
+		if(target == null || !npc.isSpawned()) return;
 
 		if(count % 3 == 0 && (!traits.contains(NonTrait.NO_JUMP)) || Math.random() < 0.05) {
 
 			if(npc.isSpawned()) {
-			Block underneath = non.getLocation().clone().subtract(0, 0.2, 0).getBlock();
+				Block underneath = non.getLocation().clone().subtract(0, 0.2, 0).getBlock();
 				if(underneath.getType() != Material.AIR && underneath.getType() != Material.CARPET) {
 
 					int rand = (int) (Math.random() * 2);

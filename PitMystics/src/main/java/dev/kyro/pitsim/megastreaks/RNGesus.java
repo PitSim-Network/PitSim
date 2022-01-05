@@ -498,17 +498,17 @@ public class RNGesus extends Megastreak {
 	public static boolean isOnCooldown(Player player) {
 		if(!rngsusCdPlayers.containsKey(player)) return false;
 		double timeElapsed = new Date().getTime() - rngsusCdPlayers.get(player);
-		if(timeElapsed / 1000 / 60 > RNGesus.COOLDOWN_MINUTES) {
+		if(timeElapsed / 1000 / 60 > COOLDOWN_MINUTES) {
 			rngsusCdPlayers.remove(player);
-			return true;
+			return false;
 		}
-		return false;
+		return true;
 	}
 
 	public static String getTime(Player player) {
 		StringBuilder builder = new StringBuilder();
 		long difference = ((System.currentTimeMillis() / 1000) - rngsusCdPlayers.get(player) / 1000);
-		int reverseDiff = (RNGesus.COOLDOWN_MINUTES * 60) - (int) difference;
+		int reverseDiff = (COOLDOWN_MINUTES * 60) - (int) difference;
 		builder.append(reverseDiff / 60).append("m ");
 		builder.append(reverseDiff % 60).append("s");
 		return builder.toString();

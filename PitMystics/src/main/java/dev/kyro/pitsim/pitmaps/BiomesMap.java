@@ -1,5 +1,6 @@
 package dev.kyro.pitsim.pitmaps;
 
+import dev.kyro.pitsim.controllers.MapManager;
 import dev.kyro.pitsim.controllers.objects.PitMap;
 import org.bukkit.Location;
 import org.bukkit.World;
@@ -11,22 +12,21 @@ public class BiomesMap extends PitMap {
 
 	@Override
 	public Location getSpawn(World world) {
-		if(!lobbies.contains(world)) return getSpawn(lobbies.get(0));
+		if(!lobbies.contains(world) || (!MapManager.multiLobbies && world != MapManager.currentMap.firstLobby)) return getSpawn(lobbies.get(0));
 		return new Location(world, 0.5, 88, 8.5, -180, 0);
 	}
 
 	@Override
 	public Location getNonSpawn(World world) {
-		Location spawn = new Location(world, 0, 86, 0);
-		spawn = spawn.clone();
-		spawn.setX(spawn.getX() + (Math.random() * 7.6 - 3.8));
-		spawn.setZ(spawn.getZ() + (Math.random() * 7.6 - 3.8));
+		Location spawn = new Location(world, 0.5, 86, 0.5);
+		spawn.setX(spawn.getX() + (Math.random() * 8 - 4));
+		spawn.setZ(spawn.getZ() + (Math.random() * 8 - 4));
 		return spawn;
 	}
 
 	@Override
 	public Location getMid(World world) {
-		return new Location(world, 0, 70, 0);
+		return new Location(world, 0.5, 70, 0.5);
 	}
 
 	@Override

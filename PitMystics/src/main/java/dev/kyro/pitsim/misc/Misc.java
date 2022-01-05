@@ -134,7 +134,7 @@ public class Misc {
 
 	public static void sendActionBar(Player player, String message) {
 		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
-		if(pitPlayer.megastreak.getClass() == RNGesus.class && pitPlayer.getKills() < RNGesus.INSTABILITY_THRESHOLD) return;
+		if(pitPlayer.megastreak.getClass() == RNGesus.class && pitPlayer.getKills() < RNGesus.INSTABILITY_THRESHOLD && pitPlayer.megastreak.isOnMega()) return;
 
 		PacketPlayOutChat packet = new PacketPlayOutChat(IChatBaseComponent.ChatSerializer.a("{\"text\":\"" +
 				ChatColor.translateAlternateColorCodes('&', message) + "\"}"), (byte) 2);

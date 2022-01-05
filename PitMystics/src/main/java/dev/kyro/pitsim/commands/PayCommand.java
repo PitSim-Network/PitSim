@@ -9,6 +9,8 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import java.text.DecimalFormat;
+
 public class PayCommand implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
@@ -22,14 +24,14 @@ public class PayCommand implements CommandExecutor {
         }
 
         PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
-        if(pitPlayer.level < 100) {
+        if(pitPlayer.level < 100 && !player.isOp()) {
             AOutput.error(player, "&c&lNOPE! &7You cannot trade until level 100");
             return false;
         }
 
         Player target = null;
         for(Player onlinePlayer : Bukkit.getOnlinePlayers()) {
-            if(!player.getName().equalsIgnoreCase(args[0])) continue;
+            if(!onlinePlayer.getName().equalsIgnoreCase(args[0])) continue;
             target = onlinePlayer;
             break;
         }
@@ -42,7 +44,7 @@ public class PayCommand implements CommandExecutor {
         }
 
         PitPlayer pitTarget = PitPlayer.getPitPlayer(target);
-        if(pitTarget.level < 100) {
+        if(pitTarget.level < 100 && !player.isOp()) {
             AOutput.error(player, "&c&lNOPE! &7That player is not level 100+");
             return false;
         }
@@ -58,8 +60,9 @@ public class PayCommand implements CommandExecutor {
 
         PitSim.VAULT.withdrawPlayer(player, amount);
         PitSim.VAULT.depositPlayer(target, amount);
-        AOutput.send(player, "&6&lTRADE! &7You have sent &6" + target.getName() + " &7$" + amount);
-        AOutput.send(target, "&6&lTRADE! &7You have received $" + amount + " from &7" + player.getName());
+        DecimalFormat decimalFormat = new DecimalFormat("#,###,###,##0");
+        AOutput.send(player, "&6&lTRADE! &7You have sent &6" + target.getName() + " &7$" + decimalFormat.format(amount));
+        AOutput.send(target, "&6&lTRADE! &7You have received $" + decimalFormat.format(amount) + " from &7" + player.getName());
         return false;
     }
 }
