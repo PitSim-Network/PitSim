@@ -536,7 +536,6 @@ public class PlayerManager implements Listener {
 		pitPlayer.megastreak = new NoMegastreak(pitPlayer);
 	}
 
-
 	@EventHandler
 	public void onDeath(KillEvent event) {
 		PitPlayer pitPlayer = PitPlayer.getPitPlayer(event.dead);
@@ -544,7 +543,6 @@ public class PlayerManager implements Listener {
 			pitPlayer.megastreak = new NoMegastreak(pitPlayer);
 			pitPlayer.fullSave();
 		}
-
 	}
 
 	@EventHandler

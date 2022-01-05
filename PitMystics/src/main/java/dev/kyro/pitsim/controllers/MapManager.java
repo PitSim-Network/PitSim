@@ -29,16 +29,24 @@ public class MapManager implements Listener {
 
 	static {
 		new BukkitRunnable() {
+			@Override
+			public void run() {
+				disableMultiLobbies();
+			}
+		}.runTaskLater(PitSim.INSTANCE, 20L);
+		new BukkitRunnable() {
 			int count = 0;
 			@Override
 			public void run() {
 				count++;
 
 				int players = AFKManager.onlineActivePlayers;
+				boolean chaos = BoosterManager.getBooster("chaos").minutes > 0;
 				if(multiLobbies) {
+					if(chaos) return;
 					if(count % (60 * 10) == 0 && players < ENABLE_THRESHOLD) disableMultiLobbies();
 				} else {
-					if(players >= ENABLE_THRESHOLD) enableMultiLobbies();
+					if(players >= ENABLE_THRESHOLD || chaos) enableMultiLobbies();
 				}
 			}
 		}.runTaskTimer(PitSim.INSTANCE, 0L, 20L);
@@ -76,19 +84,22 @@ public class MapManager implements Listener {
 	}
 
 	public static void enableMultiLobbies() {
+		if(multiLobbies) return;
 		multiLobbies = true;
 		for(World lobby : currentMap.lobbies) {
 			enablePortal(lobby);
 		}
+		for(Player onlinePlayer : Bukkit.getOnlinePlayers()) {
+			AOutput.send(onlinePlayer, "&6&lLobby! &7Second lobby enabled");
+		}
 	}
 
 	public static void disableMultiLobbies() {
+		if(!multiLobbies) return;
 		multiLobbies = false;
 		List<World> disabledLobbies = new ArrayList<>(currentMap.lobbies);
 		disabledLobbies.remove(0);
-		for(World disabledLobby : disabledLobbies) {
-			disablePortal(disabledLobby);
-		}
+		disablePortal(currentMap.firstLobby);
 		for(Player onlinePlayer : Bukkit.getOnlinePlayers()) {
 			if(!disabledLobbies.contains(onlinePlayer.getWorld())) continue;
 			AOutput.send(onlinePlayer, "&6&lLOBBY! &7Instance shutdown... Please make your way to the exit portal");
