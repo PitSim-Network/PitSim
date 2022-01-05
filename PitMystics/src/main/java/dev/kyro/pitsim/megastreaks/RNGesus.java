@@ -162,7 +162,7 @@ public class RNGesus extends Megastreak {
 			Collections.shuffle(entities);
 			int count = 0;
 			for(Entity entity : entities) {
-				if(count++ >= 7) break;
+				if(count++ >= 5) break;
 				if(!(entity instanceof Player)) continue;
 				Player target = (Player) entity;
 				if(NonManager.getNon(target) == null) continue;
@@ -174,13 +174,6 @@ public class RNGesus extends Megastreak {
 						Map<PitEnchant, Integer> defenderEnchant = new HashMap<>();
 						EntityDamageByEntityEvent ev = new EntityDamageByEntityEvent(attackEvent.attacker, target, EntityDamageEvent.DamageCause.CUSTOM, 0);
 						AttackEvent attackEvent = new AttackEvent(ev, attackerEnchant, defenderEnchant, false);
-
-//						double finalHealth = target.getHealth() - damage;
-//						if(finalHealth <= 0) {
-//							DamageManager.fakeKill(attackEvent, attackEvent.attacker, target, false);
-//						} else {
-//							target.setHealth(finalHealth);
-//						}
 
 						double chance = damage / target.getMaxHealth();
 						if(Math.random() < chance) DamageManager.fakeKill(attackEvent, attackEvent.attacker, target, false);
@@ -449,7 +442,7 @@ public class RNGesus extends Megastreak {
 		XP("&bXP", "&b&lRNG&e&lSUS", 0.1),
 		GOLD("&6Gold", "&6&lRNG&e&lSUS", 1.5),
 		DAMAGE("&cDamage", "&c&lRNG&e&lSUS", 1),
-		ABSORPTION("&6Absorption", "&9&lRNG&e&lSUS", 0.2);
+		ABSORPTION("&6Absorption", "&9&lRNG&e&lSUS", 0.3);
 
 		public String displayName;
 		public String prefix;
