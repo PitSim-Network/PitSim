@@ -35,7 +35,12 @@ public  class PlayerDataManager implements Listener {
 	public void onQuit(PlayerQuitEvent event) {
 		Player player = event.getPlayer();
 		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
-		pitPlayer.fullSave();
+		new BukkitRunnable() {
+			@Override
+			public void run() {
+				pitPlayer.fullSave();
+			}
+		}.runTaskLater(PitSim.INSTANCE, 10L);
 	}
 
 	@EventHandler

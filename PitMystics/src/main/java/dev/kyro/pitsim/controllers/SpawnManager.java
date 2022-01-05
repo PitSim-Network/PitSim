@@ -46,7 +46,7 @@ public class SpawnManager implements Listener {
 			@Override
 			public void onPacketSending(PacketEvent event) {
 				String soundName = event.getPacket().getStrings().read(0);
-				event.setCancelled(soundName.startsWith("mob.villager."));
+				event.setCancelled(soundName.equals("mob.villager.idle"));
 			}
 		});
 	}

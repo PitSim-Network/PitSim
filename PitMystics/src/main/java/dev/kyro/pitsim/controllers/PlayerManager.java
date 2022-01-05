@@ -533,6 +533,7 @@ public class PlayerManager implements Listener {
 	public void onQuit(PlayerQuitEvent event) {
 		PitPlayer pitPlayer = PitPlayer.getPitPlayer(event.getPlayer());
 		if(pitPlayer.megastreak.getClass() == RNGesus.class && RNGesus.isOnCooldown(event.getPlayer()))
+			pitPlayer.megastreak.stop();
 			pitPlayer.megastreak = new NoMegastreak(pitPlayer);
 	}
 
@@ -540,8 +541,14 @@ public class PlayerManager implements Listener {
 	public void onDeath(KillEvent event) {
 		PitPlayer pitPlayer = PitPlayer.getPitPlayer(event.dead);
 		if(pitPlayer.megastreak.getClass() == RNGesus.class && RNGesus.isOnCooldown(event.dead)) {
-			pitPlayer.megastreak = new NoMegastreak(pitPlayer);
-			pitPlayer.fullSave();
+			new BukkitRunnable() {
+				@Override
+				public void run() {
+					pitPlayer.megastreak.stop();
+					pitPlayer.megastreak = new NoMegastreak(pitPlayer);
+					pitPlayer.fullSave();
+				}
+			}.runTaskLater(PitSim.INSTANCE, 1L);
 		}
 	}
 
@@ -549,8 +556,14 @@ public class PlayerManager implements Listener {
 	public void onOof(OofEvent event) {
 		PitPlayer pitPlayer = PitPlayer.getPitPlayer(event.getPlayer());
 		if(pitPlayer.megastreak.getClass() == RNGesus.class && RNGesus.isOnCooldown(event.getPlayer())) {
-			pitPlayer.megastreak = new NoMegastreak(pitPlayer);
-			pitPlayer.fullSave();
+			new BukkitRunnable() {
+				@Override
+				public void run() {
+					pitPlayer.megastreak.stop();
+					pitPlayer.megastreak = new NoMegastreak(pitPlayer);
+					pitPlayer.fullSave();
+				}
+			}.runTaskLater(PitSim.INSTANCE, 1L);
 		}
 	}
 }

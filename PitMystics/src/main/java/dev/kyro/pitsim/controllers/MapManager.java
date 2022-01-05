@@ -50,7 +50,7 @@ public class MapManager implements Listener {
 					if(players >= ENABLE_THRESHOLD || chaos) enableMultiLobbies();
 				}
 			}
-		}.runTaskTimer(PitSim.INSTANCE, 0L, 20L);
+		}.runTaskTimer(PitSim.INSTANCE, 40L, 20L);
 	}
 
 	public static void onStart() {
@@ -85,6 +85,7 @@ public class MapManager implements Listener {
 	}
 
 	public static void enableMultiLobbies() {
+		System.out.println(multiLobbies);
 		if(multiLobbies) return;
 		multiLobbies = true;
 		for(World lobby : currentMap.lobbies) {

@@ -440,8 +440,6 @@ public class DamageManager implements Listener {
 	}
 
 	public static void death(Player dead) {
-		OofEvent oofEvent = new OofEvent(dead);
-		Bukkit.getPluginManager().callEvent(oofEvent);
 		Telebow.teleShots.removeIf(teleShot -> teleShot.getShooter().equals(dead));
 
 		dead.setHealth(dead.getMaxHealth());
@@ -497,7 +495,7 @@ public class DamageManager implements Listener {
 				NBTItem nbtItem = new NBTItem(itemStack);
 				if(nbtItem.hasKey(NBTTag.MAX_LIVES.getRef())) {
 					int lives = nbtItem.getInteger(NBTTag.CURRENT_LIVES.getRef());
-					if(feather) return;
+					if(feather) break;
 					if(lives - 1 == 0) {
 						dead.getInventory().remove(itemStack);
 
@@ -538,6 +536,8 @@ public class DamageManager implements Listener {
 				}
 			}
 		}
+		OofEvent oofEvent = new OofEvent(dead);
+		Bukkit.getPluginManager().callEvent(oofEvent);
 	}
 
 	public static void fakeKill(AttackEvent attackEvent, Player killer, Player dead, boolean exeDeath) {

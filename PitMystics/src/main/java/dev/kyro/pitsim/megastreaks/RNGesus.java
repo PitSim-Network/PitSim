@@ -42,7 +42,7 @@ import java.text.DecimalFormat;
 import java.util.*;
 
 public class RNGesus extends Megastreak {
-	public static int RENOWN_COST = 5;
+	public static int RENOWN_COST = 3;
 	public static int COOLDOWN_MINUTES = 60;
 	public static int INSTABILITY_THRESHOLD = 1000;
 
@@ -262,7 +262,7 @@ public class RNGesus extends Megastreak {
 			PitPlayer pitPlayer2 = PitPlayer.getPitPlayer(player);
 			if(pitPlayer2.streaksDisabled) continue;
 			String streakMessage = ChatColor.translateAlternateColorCodes('&',
-					"&c&lMEGASTREAK! %luckperms_prefix%" + pitPlayer.player.getDisplayName() + " &7activated &c&lOVERDRIVE&7!");
+					"&c&lMEGASTREAK! %luckperms_prefix%" + pitPlayer.player.getDisplayName() + " &7activated &e&lRNGESUS&7!");
 			AOutput.send(player, PlaceholderAPI.setPlaceholders(pitPlayer.player, streakMessage));
 		}
 
