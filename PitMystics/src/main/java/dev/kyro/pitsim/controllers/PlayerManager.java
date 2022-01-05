@@ -532,8 +532,8 @@ public class PlayerManager implements Listener {
 	@EventHandler
 	public void onQuit(PlayerQuitEvent event) {
 		PitPlayer pitPlayer = PitPlayer.getPitPlayer(event.getPlayer());
-		if(pitPlayer.megastreak.getClass() == RNGesus.class && RNGesus.isOnCooldown(event.getPlayer()));
-		pitPlayer.megastreak = new NoMegastreak(pitPlayer);
+		if(pitPlayer.megastreak.getClass() == RNGesus.class && RNGesus.isOnCooldown(event.getPlayer()))
+			pitPlayer.megastreak = new NoMegastreak(pitPlayer);
 	}
 
 	@EventHandler

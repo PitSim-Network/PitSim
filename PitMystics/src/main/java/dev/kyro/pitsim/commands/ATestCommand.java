@@ -125,7 +125,7 @@ public class ATestCommand implements CommandExecutor {
 		if(!player.isOp()) return false;
 
 		if(MapManager.multiLobbies) {
-			MapManager.disableMultiLobbies();
+			MapManager.disableMultiLobbies(false);
 			AOutput.send(player, "Disabled multi lobbies");
 		} else {
 			MapManager.enableMultiLobbies();

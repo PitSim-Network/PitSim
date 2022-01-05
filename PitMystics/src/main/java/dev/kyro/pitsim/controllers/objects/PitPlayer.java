@@ -2,7 +2,10 @@ package dev.kyro.pitsim.controllers.objects;
 
 import dev.kyro.arcticapi.data.APlayerData;
 import dev.kyro.pitsim.PitSim;
-import dev.kyro.pitsim.controllers.*;
+import dev.kyro.pitsim.controllers.BoosterManager;
+import dev.kyro.pitsim.controllers.LevelManager;
+import dev.kyro.pitsim.controllers.NonManager;
+import dev.kyro.pitsim.controllers.PrestigeValues;
 import dev.kyro.pitsim.enchants.Hearts;
 import dev.kyro.pitsim.enums.AChatColor;
 import dev.kyro.pitsim.enums.DeathCry;
