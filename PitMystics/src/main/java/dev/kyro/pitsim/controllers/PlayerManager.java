@@ -213,9 +213,7 @@ public class PlayerManager implements Listener {
 	@EventHandler
 	public void onIncrement(IncrementKillsEvent event) {
 		PitPlayer pitPlayer = PitPlayer.getPitPlayer(event.player);
-		int kills = event.kills;
-		Megastreak megastreak = pitPlayer.megastreak;
-		if(kills >= megastreak.getRequiredKills() && megastreak.getClass() != NoMegastreak.class && !megastreak.isOnMega()) megastreak.proc();
+		if(event.currentAmount < pitPlayer.megastreak.getRequiredKills() && event.newAmount >= pitPlayer.megastreak.getRequiredKills() && pitPlayer.megastreak.getClass() != NoMegastreak.class) pitPlayer.megastreak.proc();
 		pitPlayer.megastreak.kill();
 	}
 

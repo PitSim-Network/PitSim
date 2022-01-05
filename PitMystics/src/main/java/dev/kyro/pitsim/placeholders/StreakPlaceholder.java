@@ -19,9 +19,8 @@ public class StreakPlaceholder implements APAPIPlaceholder {
 		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
 
 		if(pitPlayer.hasPerk(AssistantToTheStreaker.INSTANCE) && pitPlayer.getKills() != 0) {
-			double assistantKills = pitPlayer.getKills() + pitPlayer.assistAmount;
 			DecimalFormat df = new DecimalFormat("#.#");
-			return df.format(assistantKills);
+			return df.format(pitPlayer.getKills());
 		} else {
 			int kills = (int) Math.floor(pitPlayer.getKills());
 			return String.valueOf(kills);
