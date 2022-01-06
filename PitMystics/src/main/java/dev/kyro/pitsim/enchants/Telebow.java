@@ -39,7 +39,7 @@ public class Telebow extends PitEnchant {
 		if(attackEvent.arrow == null) return;
 
 		Cooldown cooldown = getCooldown(attackEvent.attacker, getCooldown(enchantLvl) * 20);
-		cooldown.reduceCooldown(20);
+		cooldown.reduceCooldown(40);
 
 		if(cooldown.isOnCooldown()) {
 			new BukkitRunnable() {
@@ -150,7 +150,7 @@ public class Telebow extends PitEnchant {
 	@Override
 	public List<String> getDescription(int enchantLvl) {
 
-		return new ALoreBuilder("&7Sneak to shoot a teleportation &f", "&7arrow (" + getCooldown(enchantLvl) + "s cooldown, -3s per bow", "&7hit)").getLore();
+		return new ALoreBuilder("&7Sneak to shoot a teleportation &f", "&7arrow (" + getCooldown(enchantLvl) + "s cooldown, -2s per bow", "&7hit)").getLore();
 	}
 
 	public static int getCooldown(int enchantLvl) {
