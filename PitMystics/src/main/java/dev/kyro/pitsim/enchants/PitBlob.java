@@ -11,6 +11,7 @@ import dev.kyro.pitsim.controllers.objects.PitEnchant;
 import dev.kyro.pitsim.enums.ApplyType;
 import dev.kyro.pitsim.events.KillEvent;
 import org.bukkit.Bukkit;
+import org.bukkit.World;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
@@ -65,9 +66,9 @@ public class PitBlob extends PitEnchant {
 			public void run() {
 
 				List<Entity> entities = new ArrayList<>();
-				entities.addAll(Bukkit.getWorld("pitsim").getEntities());
-				entities.addAll(Bukkit.getWorld("biomes1").getEntities());
-				entities.addAll(Bukkit.getWorld("biomes2").getEntities());
+				for(World world : Bukkit.getWorlds()) {
+					entities.addAll(world.getEntities());
+				}
 
 				for(Entity slime : entities) {
 					if(!(slime instanceof Slime)) continue;
