@@ -32,6 +32,7 @@ import org.bukkit.scheduler.BukkitTask;
 import java.util.*;
 
 public class PitPlayer {
+
 	public static List<PitPlayer> pitPlayers = new ArrayList<>();
 
 	public Player player;
