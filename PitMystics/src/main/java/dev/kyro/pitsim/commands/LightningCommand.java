@@ -1,11 +1,10 @@
 package dev.kyro.pitsim.commands;
 
-import dev.kyro.arcticapi.data.APlayerData;
 import dev.kyro.arcticapi.misc.AOutput;
+import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
-import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
@@ -19,11 +18,10 @@ public class LightningCommand implements CommandExecutor {
 
 		if(!(sender instanceof Player)) return false;
 		Player player = (Player) sender;
+		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
 
-        FileConfiguration playerData = APlayerData.getPlayerData(player);
-        boolean lightningDisabled = playerData.getBoolean("settings.lightning");
-        playerData.set("settings.lightning", !lightningDisabled);
-        APlayerData.savePlayerData(player);
+        boolean lightningDisabled = pitPlayer.lightingDisabled;
+        pitPlayer.lightingDisabled = !lightningDisabled;
 
 		if(lightningDisabled) {
 			AOutput.send(player, "Lightning enabled");

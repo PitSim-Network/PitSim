@@ -1,12 +1,14 @@
 package dev.kyro.pitsim.megastreaks;
 
 import de.tr7zw.nbtapi.NBTItem;
-import dev.kyro.arcticapi.data.APlayerData;
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.arcticapi.misc.AUtil;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.commands.FreshCommand;
-import dev.kyro.pitsim.controllers.*;
+import dev.kyro.pitsim.controllers.EnchantManager;
+import dev.kyro.pitsim.controllers.ItemManager;
+import dev.kyro.pitsim.controllers.NonManager;
+import dev.kyro.pitsim.controllers.PrestigeValues;
 import dev.kyro.pitsim.controllers.objects.Megastreak;
 import dev.kyro.pitsim.controllers.objects.PitEnchant;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
@@ -21,7 +23,6 @@ import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
-import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.HandlerList;
@@ -132,14 +133,14 @@ public class Uberstreak extends Megastreak {
 	public void onAttack(AttackEvent.Apply attackEvent) {
 		PitPlayer pitDefender = PitPlayer.getPitPlayer(attackEvent.defender);
 		if(pitDefender == this.pitPlayer && pitDefender.megastreak.getClass() == Uberstreak.class) {
-			if(uberEffects.contains(UberEffect.TAKE_MORE_DAMAGE)) attackEvent.multiplier.add(1.25);
-			if(uberEffects.contains(UberEffect.TAKE_LESS_DAMAGE)) attackEvent.multiplier.add(0.9);
+			if(uberEffects.contains(UberEffect.TAKE_MORE_DAMAGE)) attackEvent.multipliers.add(1.25);
+			if(uberEffects.contains(UberEffect.TAKE_LESS_DAMAGE)) attackEvent.multipliers.add(0.9);
 		}
 
 		PitPlayer pitAttacker = PitPlayer.getPitPlayer(attackEvent.attacker);
 		if(pitAttacker != this.pitPlayer || pitAttacker.megastreak.getClass() != Uberstreak.class) return;
 		if(pitAttacker.megastreak.isOnMega()) {
-			if(NonManager.getNon(attackEvent.defender) != null) attackEvent.multiplier.add(0.5);
+			if(NonManager.getNon(attackEvent.defender) != null) attackEvent.multipliers.add(0.5);
 		}
 	}
 
@@ -222,7 +223,7 @@ public class Uberstreak extends Megastreak {
 		Sounds.UBER_100.play(pitPlayer.player);
 		for(Player player : Bukkit.getOnlinePlayers()) {
 			PitPlayer pitPlayer2 = PitPlayer.getPitPlayer(player);
-			if(pitPlayer2.disabledStreaks) continue;
+			if(pitPlayer2.streaksDisabled) continue;
 			String message2 = ChatColor.translateAlternateColorCodes('&',
 					"&c&lMEGASTREAK!&7 %luckperms_prefix%" + pitPlayer.player.getDisplayName() + "&7 activated &d&lUBERSTREAK&7!");
 
@@ -244,15 +245,9 @@ public class Uberstreak extends Megastreak {
 		}
 		pitPlayer.dailyUbersLeft = pitPlayer.dailyUbersLeft - 1;
 
-		FileConfiguration playerData = APlayerData.getPlayerData(pitPlayer.player);
-		playerData.set("ubercooldown", pitPlayer.uberReset);
-		playerData.set("ubersleft", pitPlayer.dailyUbersLeft);
-		APlayerData.savePlayerData(pitPlayer.player);
-
 		if(pitPlayer.dailyUbersLeft <= 0) {
 			pitPlayer.megastreak = new NoMegastreak(pitPlayer);
-			playerData.set("megastreak", pitPlayer.megastreak.getRawName());
-			APlayerData.savePlayerData(pitPlayer.player);
+			pitPlayer.fullSave();
 			stop();
 		}
 
@@ -335,7 +330,7 @@ public class Uberstreak extends Megastreak {
 	public static void uberMessage(String message, PitPlayer pitPlayer) {
 		for(Player player : Bukkit.getOnlinePlayers()) {
 			PitPlayer pitPlayer2 = PitPlayer.getPitPlayer(player);
-			if(pitPlayer2.disabledStreaks) continue;
+			if(pitPlayer2.streaksDisabled) continue;
 			String message2 = ChatColor.translateAlternateColorCodes('&',
 					"&d&lUBERDROP!&7 %luckperms_prefix%" + pitPlayer.player.getDisplayName() + "&7 obtained an &dUberdrop: &7" + message);
 			player.sendMessage(PlaceholderAPI.setPlaceholders(pitPlayer.player, message2));

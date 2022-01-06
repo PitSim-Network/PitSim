@@ -6,7 +6,6 @@ import com.xxmicloxx.NoteBlockAPI.songplayer.EntitySongPlayer;
 import dev.kyro.arcticapi.ArcticAPI;
 import dev.kyro.arcticapi.commands.ABaseCommand;
 import dev.kyro.arcticapi.data.AData;
-import dev.kyro.arcticapi.data.APlayerData;
 import dev.kyro.arcticapi.hooks.AHook;
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.boosters.ChaosBooster;
@@ -24,6 +23,7 @@ import dev.kyro.pitsim.killstreaks.*;
 import dev.kyro.pitsim.megastreaks.*;
 import dev.kyro.pitsim.misc.*;
 import dev.kyro.pitsim.perks.*;
+import dev.kyro.pitsim.pitmaps.BiomesMap;
 import dev.kyro.pitsim.placeholders.*;
 import dev.kyro.pitsim.upgrades.*;
 import net.citizensnpcs.api.CitizensAPI;
@@ -31,7 +31,6 @@ import net.citizensnpcs.api.npc.NPC;
 import net.luckperms.api.LuckPerms;
 import net.milkbowl.vault.economy.Economy;
 import org.bukkit.Bukkit;
-import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.plugin.Plugin;
@@ -47,7 +46,6 @@ import java.util.Map;
 //import net.kyori.adventure.platform.bukkit.BukkitAudiences;
 
 public class PitSim extends JavaPlugin {
-
 	public static double version = 2.0;
 
 	public static LuckPerms LUCKPERMS;
@@ -84,8 +82,10 @@ public class PitSim extends JavaPlugin {
 			toRemove.remove(0);
 		}
 
-		SpawnNPCs.createNPCs();
+		registerMaps();
 		MapManager.onStart();
+		NonManager.init();
+		SpawnNPCs.createNPCs();
 
 		if (!setupEconomy()) {
 			AOutput.log(String.format("[%s] - Disabled due to no Vault dependency found!", getDescription().getName()));
@@ -157,27 +157,10 @@ public class PitSim extends JavaPlugin {
 	public void onDisable() {
 
 		SpawnNPCs.removeNPCs();
-
-		for(Player onlinePlayer : Bukkit.getOnlinePlayers()) {
-			PitPlayer pitplayer = PitPlayer.getPitPlayer(onlinePlayer);
-			if(NonManager.getNon(onlinePlayer) != null) continue;
-			FileConfiguration playerData = APlayerData.getPlayerData(onlinePlayer);
-			playerData.set("level", pitplayer.level);
-			playerData.set("prestige", pitplayer.prestige);
-			playerData.set("playerkills", pitplayer.playerKills);
-			playerData.set("xp", pitplayer.remainingXP);
-			playerData.set("ubersleft", pitplayer.dailyUbersLeft);
-			playerData.set("ubercooldown", pitplayer.uberReset);
-			playerData.set("renown", pitplayer.renown);
-			APlayerData.savePlayerData(onlinePlayer);
-		}
-
 		List<Non> copyList = new ArrayList<>(NonManager.nons);
 		for(Non non : copyList) {
-
 			non.remove();
 		}
-
 		for(PitEnchant pitEnchant : EnchantManager.pitEnchants) pitEnchant.onDisable();
 
 		Iterator<Map.Entry<Player, EntitySongPlayer>> it = StereoManager.playerMusic.entrySet().iterator();
@@ -189,6 +172,10 @@ public class PitSim extends JavaPlugin {
 		}
 
 		for(PitPlayer pitPlayer : PitPlayer.pitPlayers) if(pitPlayer.stats != null) pitPlayer.stats.save();
+	}
+
+	private void registerMaps() {
+		MapManager.registerMap(new BiomesMap("biomes1", "biomes2"));
 	}
 
 	private void registerPerks() {
@@ -237,6 +224,7 @@ public class PitSim extends JavaPlugin {
 		PerkManager.registerMegastreak(new NoMegastreak(null));
 		PerkManager.registerMegastreak(new Beastmode(null));
 		PerkManager.registerMegastreak(new ToTheMoon(null));
+		PerkManager.registerMegastreak(new RNGesus(null));
 	}
 	private void registerCommands() {
 
@@ -244,7 +232,7 @@ public class PitSim extends JavaPlugin {
 		getCommand("ps").setExecutor(adminCommand);
 		ABaseCommand giveCommand = new BaseSetCommand(adminCommand, "give");
 		ABaseCommand setCommand = new BaseSetCommand(adminCommand, "set");
-		adminCommand.registerCommand(new AnticheatCommand("check"));
+//		adminCommand.registerCommand(new AnticheatCommand("check"));
 		adminCommand.registerCommand(new HopperCommand("hopper"));
 		adminCommand.registerCommand(new UUIDCommand("uuid"));
 		adminCommand.registerCommand(new DupeCommand("dupe"));
@@ -284,7 +272,10 @@ public class PitSim extends JavaPlugin {
 		getCommand("lightning").setExecutor(new LightningCommand());
 		getCommand("stat").setExecutor(new StatCommand());
 		getCommand("captcha").setExecutor(new CaptchaCommand());
-//		getCommand("togglestereo").setExecutor(new ToggleStereoCommand());
+		SwitchCommand switchCommand = new SwitchCommand();
+		getCommand("switch").setExecutor(switchCommand);
+		getCommand("play").setExecutor(switchCommand);
+		getCommand("pay").setExecutor(new PayCommand());
 	}
 
 	private void registerListeners() {
@@ -292,6 +283,7 @@ public class PitSim extends JavaPlugin {
 		getServer().getPluginManager().registerEvents(new DamageManager(), this);
 //		getServer().getPluginManager().registerEvents(new NonManager(), this);
 		getServer().getPluginManager().registerEvents(new PlayerManager(), this);
+		getServer().getPluginManager().registerEvents(new PlayerDataManager(), this);
 		getServer().getPluginManager().registerEvents(new ChatManager(), this);
 		getServer().getPluginManager().registerEvents(new DamageIndicator(), this);
 		getServer().getPluginManager().registerEvents(new ItemManager(), this);
@@ -304,7 +296,7 @@ public class PitSim extends JavaPlugin {
 		getServer().getPluginManager().registerEvents(new TotallyLegitGem(), this);
 		getServer().getPluginManager().registerEvents(new ChunkOfVile(), this);
 		getServer().getPluginManager().registerEvents(new ReachAutoBan(), this);
-		getServer().getPluginManager().registerEvents(new NonAnticheat(), this);
+//		getServer().getPluginManager().registerEvents(new NonAnticheat(), this);
 //		getServer().getPluginManager().registerEvents(new HelmetListeners(), this);
 		getServer().getPluginManager().registerEvents(new PitBlob(), this);
 		getServer().getPluginManager().registerEvents(new SpawnNPCs(), this);
@@ -317,6 +309,7 @@ public class PitSim extends JavaPlugin {
 		getServer().getPluginManager().registerEvents(new LockdownManager(), this);
 		getServer().getPluginManager().registerEvents(new DupeManager(), this);
 		getServer().getPluginManager().registerEvents(new GoldenHelmet(), this);
+		getServer().getPluginManager().registerEvents(new MapManager(), this);
 	}
 
 	public void registerBoosters() {

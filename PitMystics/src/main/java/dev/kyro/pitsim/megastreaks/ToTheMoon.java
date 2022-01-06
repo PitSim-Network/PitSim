@@ -1,6 +1,5 @@
 package dev.kyro.pitsim.megastreaks;
 
-import dev.kyro.arcticapi.data.APlayerData;
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.controllers.HopperManager;
@@ -18,7 +17,6 @@ import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
-import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.HandlerList;
@@ -174,7 +172,7 @@ public class ToTheMoon extends Megastreak {
 		pitPlayer.megastreak = this;
 		for(Player player : Bukkit.getOnlinePlayers()) {
 			PitPlayer pitPlayer2 = PitPlayer.getPitPlayer(player);
-			if(pitPlayer2.disabledStreaks) continue;
+			if(pitPlayer2.streaksDisabled) continue;
 			String streakMessage = ChatColor.translateAlternateColorCodes('&',
 					"&c&lMEGASTREAK! %luckperms_prefix%" + pitPlayer.player.getDisplayName() + " &7activated &b&lTO THE MOON&7!");
 			AOutput.send(player, PlaceholderAPI.setPlaceholders(pitPlayer.player, streakMessage));
@@ -202,9 +200,6 @@ public class ToTheMoon extends Megastreak {
 				pitPlayer.moonBonus += cap;
 				AOutput.send(pitPlayer.player, "&b&lTO THE MOON! &7Gained &b+" + cap + " max XP &7until you prestige! (" + pitPlayer.moonBonus + "/50)");
 			}
-			FileConfiguration playerData = APlayerData.getPlayerData(pitPlayer.player);
-			playerData.set("moonbonus", pitPlayer.moonBonus);
-			APlayerData.savePlayerData(pitPlayer.player);
 		}
 
 		if(runnable != null) runnable.cancel();

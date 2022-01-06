@@ -1,6 +1,5 @@
 package dev.kyro.pitsim.inventories;
 
-import dev.kyro.arcticapi.data.APlayerData;
 import dev.kyro.arcticapi.gui.AGUI;
 import dev.kyro.arcticapi.gui.AGUIPanel;
 import dev.kyro.arcticapi.misc.AOutput;
@@ -10,7 +9,6 @@ import dev.kyro.pitsim.enums.KillEffect;
 import dev.kyro.pitsim.misc.Sounds;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
-import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
@@ -48,7 +46,6 @@ public class KillEffectPanel extends AGUIPanel {
     @Override
     public void onClick(InventoryClickEvent event) {
         if(NonManager.getNon(player) != null) return;
-        FileConfiguration playerData = APlayerData.getPlayerData(player);
         int slot = event.getSlot();
         if(event.getClickedInventory().getHolder() == this) {
 
@@ -61,8 +58,6 @@ public class KillEffectPanel extends AGUIPanel {
             if(slot == 10) {
                 if(pitPlayer.killEffect != null) {
                     pitPlayer.killEffect = null;
-                    playerData.set("killeffect", null);
-                    APlayerData.savePlayerData(player);
                     Sounds.SUCCESS.play(player);
                     openPanel(donatorGUI.deathCryPanel);
                 } else {
@@ -72,8 +67,6 @@ public class KillEffectPanel extends AGUIPanel {
             } else if(slot == 11) {
                 if(pitPlayer.killEffect != KillEffect.EXE_DEATH) {
                     pitPlayer.killEffect = KillEffect.EXE_DEATH;
-                    playerData.set("killeffect", KillEffect.EXE_DEATH.toString());
-                    APlayerData.savePlayerData(player);
                     Sounds.SUCCESS.play(player);
                     openPanel(donatorGUI.killEffectPanel);
                 } else {
@@ -84,8 +77,6 @@ public class KillEffectPanel extends AGUIPanel {
             } else if(slot == 12) {
                 if(pitPlayer.killEffect != KillEffect.FIRE) {
                     pitPlayer.killEffect = KillEffect.FIRE;
-                    playerData.set("killeffect", KillEffect.FIRE.toString());
-                    APlayerData.savePlayerData(player);
                     Sounds.SUCCESS.play(player);
                     openPanel(donatorGUI.killEffectPanel);
                 } else {

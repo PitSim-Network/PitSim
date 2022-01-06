@@ -46,7 +46,7 @@ public class PrestigePanel extends AGUIPanel {
 			if(slot == 11) {
 				//TODO: Re-enable killreq
 				if(pitPlayer.level == 120 && pitPlayer.goldGrinded >= prestigeInfo.goldReq && pitPlayer.playerKills >= prestigeInfo.killReq) {
-					if(pitPlayer.prestige == 50) {
+					if(pitPlayer.prestige == PrestigeValues.MAX_PRESTIGE) {
 						AOutput.error(player, "&aYou are already the maximum prestige!");
 						Sounds.NO.play(player);
 						return;
@@ -72,7 +72,7 @@ public class PrestigePanel extends AGUIPanel {
 		ItemMeta prestigeMeta = prestige.getItemMeta();
 		List<String> prestigeLore = new ArrayList<>();
 		prestigeMeta.setDisplayName(ChatColor.AQUA + "Prestige");
-		if(pitPlayer.prestige == 50) {
+		if(pitPlayer.prestige == PrestigeValues.MAX_PRESTIGE) {
 			prestigeLore.add(ChatColor.GREEN + "You've reached the maximum prestige, GG");
 		} else {
 			if(pitPlayer.prestige != 0) prestigeLore.add(ChatColor.translateAlternateColorCodes('&', "&7Current: &e" + AUtil.toRoman(pitPlayer.prestige)));

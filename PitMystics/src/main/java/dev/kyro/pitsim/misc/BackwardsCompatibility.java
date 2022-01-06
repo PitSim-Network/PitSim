@@ -25,10 +25,8 @@ public class BackwardsCompatibility implements Listener {
 		Player player = event.getPlayer();
 
 		levelSystemConversion(player);
-
-		FileConfiguration playerData = APlayerData.getPlayerData(player);
-		playerData.set("lastversion", PitSim.version);
-		APlayerData.savePlayerData(player);
+		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
+		pitPlayer.lastVersion = PitSim.version;
 	}
 
 	public static Boolean isNew(Player player) {
@@ -47,7 +45,7 @@ public class BackwardsCompatibility implements Listener {
 	public static void levelSystemConversion(Player player) {
 		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
 		FileConfiguration playerData = APlayerData.getPlayerData(player);
-		double version = playerData.getDouble("lastversion");
+		double version = pitPlayer.lastVersion;
 		if(version >= 2.0) return;
 
 		int removedRenown = OldLevelManager.getRenownFromLevel(pitPlayer.level);
@@ -92,16 +90,6 @@ public class BackwardsCompatibility implements Listener {
 		pitPlayer.playerKills = 0;
 		pitPlayer.megastreak = new Overdrive(pitPlayer);
 		pitPlayer.goldGrinded = 0;
-
-		playerData.set("goldgrinded", pitPlayer.goldGrinded);
-		playerData.set("prestige", pitPlayer.prestige);
-		playerData.set("level", pitPlayer.level);
-		playerData.set("renown", pitPlayer.renown);
-		playerData.set("playerkills", pitPlayer.playerKills);
-		playerData.set("xp", pitPlayer.remainingXP);
-		playerData.set("megastreak", pitPlayer.megastreak.getRawName());
-
-		APlayerData.savePlayerData(player);
 
 		if(newPrestige  > 0) {
 			Sounds.COMPENSATION.play(player);

@@ -34,6 +34,7 @@ public class PlayerStats {
 	public int timesOnBeastmode;
 	public int timesOnHighlander;
 	public int timesOnMoon;
+	public int timesOnRNGesus;
 	public int ubersCompleted;
 
 //	Mystics
@@ -131,6 +132,7 @@ public class PlayerStats {
 		timesOnBeastmode = playerData.getInt("stats.megastreak.beastmode");
 		timesOnHighlander = playerData.getInt("stats.megastreak.highlander");
 		timesOnMoon = playerData.getInt("stats.megastreak.moon");
+		timesOnRNGesus = playerData.getInt("stats.megastreak.rngesus");
 		ubersCompleted = playerData.getInt("stats.megastreak.ubers-completed");
 
 		billionaire = playerData.getInt("stats.enchant.billionaire");
@@ -192,6 +194,7 @@ public class PlayerStats {
 		playerData.set("stats.megastreak.beastmode", timesOnBeastmode);
 		playerData.set("stats.megastreak.highlander", timesOnHighlander);
 		playerData.set("stats.megastreak.moon", timesOnMoon);
+		playerData.set("stats.megastreak.rngesus", timesOnRNGesus);
 		playerData.set("stats.megastreak.ubers-completed", ubersCompleted);
 
 		playerData.set("stats.enchant.billionaire", billionaire);

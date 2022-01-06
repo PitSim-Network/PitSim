@@ -1,7 +1,6 @@
 package dev.kyro.pitsim.inventories;
 
 import de.tr7zw.nbtapi.NBTItem;
-import dev.kyro.arcticapi.data.APlayerData;
 import dev.kyro.arcticapi.gui.AGUI;
 import dev.kyro.arcticapi.gui.AGUIPanel;
 import dev.kyro.arcticapi.misc.AOutput;
@@ -14,7 +13,6 @@ import dev.kyro.pitsim.enums.NBTTag;
 import dev.kyro.pitsim.misc.Sounds;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
-import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.inventory.InventoryOpenEvent;
@@ -27,7 +25,6 @@ import java.util.UUID;
 
 public class HelmetryPanel extends AGUIPanel {
 
-    FileConfiguration playerData = APlayerData.getPlayerData(player);
     PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
     RenownUpgrade upgrade = null;
     public RenownShopGUI renownShopGUI;
@@ -115,14 +112,10 @@ public class HelmetryPanel extends AGUIPanel {
                 player.closeInventory();
                 AOutput.send(player, "&6&lITEM CRAFTED! &7Received &6Golden Helmet&7!");
                 pitPlayer.renown -= 10;
-                playerData.set("renown", pitPlayer.renown);
-                APlayerData.savePlayerData(player);
-
             }
             if(slot == 22) {
                 openPanel(renownShopGUI.getHomePanel());
             }
-            APlayerData.savePlayerData(player);
             updateInventory();
         }
         updateInventory();

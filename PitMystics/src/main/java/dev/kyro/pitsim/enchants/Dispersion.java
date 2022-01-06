@@ -26,7 +26,8 @@ public class Dispersion extends PitEnchant {
 		int enchantLvl = attackEvent.getDefenderEnchantLevel(this);
 		if(enchantLvl == 0) return;
 
-		if(attackEvent.defender.getLocation().distance(MapManager.getMid()) > 12) return;
+		if(!MapManager.currentMap.lobbies.contains(attackEvent.defender.getWorld())) return;
+		if(attackEvent.defender.getLocation().distance(MapManager.currentMap.getMid(attackEvent.defender.getWorld())) > 12) return;
 
 		PitPlayer pitDefender = PitPlayer.getPitPlayer(attackEvent.defender);
 		if(pitDefender.megastreak.isOnMega()) {

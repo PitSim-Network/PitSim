@@ -2,7 +2,6 @@ package dev.kyro.pitsim.enchants;
 
 import de.tr7zw.nbtapi.NBTItem;
 import dev.kyro.arcticapi.builders.ALoreBuilder;
-import dev.kyro.arcticapi.data.APlayerData;
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.controllers.DamageManager;
 import dev.kyro.pitsim.controllers.EnchantManager;
@@ -14,7 +13,6 @@ import dev.kyro.pitsim.events.KillEvent;
 import dev.kyro.pitsim.megastreaks.NoMegastreak;
 import dev.kyro.pitsim.megastreaks.Uberstreak;
 import org.bukkit.Material;
-import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.event.EventHandler;
 import org.bukkit.inventory.ItemStack;
 
@@ -46,9 +44,6 @@ public class SelfCheckout extends PitEnchant {
 		int renown = Math.min((int) ((pitKiller.getKills() + 1) / 200), 5);
 		if(renown != 0) {
 			pitKiller.renown += renown;
-			FileConfiguration playerData = APlayerData.getPlayerData(killEvent.killer);
-			playerData.set("renown", pitKiller.renown);
-			APlayerData.savePlayerData(killEvent.killer);
 			AOutput.send(killEvent.killer, "&7You have been given &e" + renown + " renown");
 		}
 

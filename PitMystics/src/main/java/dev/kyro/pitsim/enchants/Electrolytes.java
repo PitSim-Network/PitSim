@@ -33,7 +33,7 @@ public class Electrolytes extends PitEnchant {
 		}
 		if(enchantLvl == 0) return;
 
-		attackEvent.multiplier.add(Misc.getReductionMultiplier(getMaxSeconds(enchantLvl)));
+		attackEvent.multipliers.add(Misc.getReductionMultiplier(getMaxSeconds(enchantLvl)));
 	}
 
 

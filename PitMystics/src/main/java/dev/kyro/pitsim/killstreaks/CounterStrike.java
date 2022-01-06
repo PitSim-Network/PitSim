@@ -33,7 +33,7 @@ public class CounterStrike extends Killstreak {
 			rewardPlayers.remove(event.attacker);
 		}
 		if(rewardPlayers.contains(event.defender)) {
-			event.multiplier.add(Misc.getReductionMultiplier(20));
+			event.multipliers.add(Misc.getReductionMultiplier(20));
 			rewardPlayers.remove(event.defender);
 		}
 	}

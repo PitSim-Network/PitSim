@@ -28,7 +28,7 @@ public class DiamondAllergy extends PitEnchant {
 		if(weapon == null) return;
 		if(weapon.getType() != Material.DIAMOND_SWORD && weapon.getType() != Material.DIAMOND_SPADE) return;
 
-		attackEvent.multiplier.add(getDamageMultiplier(enchantLvl));
+		attackEvent.multipliers.add(getDamageMultiplier(enchantLvl));
 	}
 
 	@Override

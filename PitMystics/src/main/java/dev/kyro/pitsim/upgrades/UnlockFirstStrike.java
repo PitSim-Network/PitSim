@@ -28,7 +28,7 @@ public class UnlockFirstStrike extends RenownUpgrade {
 		lore.add("");
 		lore.add(ChatColor.YELLOW + "First Strike");
 		lore.add(ChatColor.translateAlternateColorCodes('&', "&7First hit on a player deals"));
-		lore.add(ChatColor.translateAlternateColorCodes('&', "&c+35% damage &7and grants"));
+		lore.add(ChatColor.translateAlternateColorCodes('&', "&c+30% damage &7and grants"));
 		lore.add(ChatColor.translateAlternateColorCodes('&', "&eSpeed I &7(5s)"));
 		meta.setLore(UpgradeManager.loreBuilder(this, player, lore, isCustomPanel));
 		item.setItemMeta(meta);

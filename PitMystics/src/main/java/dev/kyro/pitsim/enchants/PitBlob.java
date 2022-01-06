@@ -21,10 +21,7 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 public class PitBlob extends PitEnchant {
 
@@ -32,6 +29,9 @@ public class PitBlob extends PitEnchant {
 
 	@EventHandler(priority = EventPriority.LOW)
 	public void onBlobDamagePlayer(EntityDamageByEntityEvent event) {
+		if(event.getEntity() instanceof Player) {
+			if(NonManager.getNon((Player) event.getEntity()) != null) event.setCancelled(true);
+		}
 		if(!(event.getDamager() instanceof Slime) || !SpawnManager.isInSpawn(event.getEntity().getLocation())) return;
 		event.setCancelled(true);
 	}
@@ -64,7 +64,12 @@ public class PitBlob extends PitEnchant {
 			@Override
 			public void run() {
 
-				for(Entity slime : Bukkit.getWorld("pitsim").getEntities()) {
+				List<Entity> entities = new ArrayList<>();
+				entities.addAll(Bukkit.getWorld("pitsim").getEntities());
+				entities.addAll(Bukkit.getWorld("biomes1").getEntities());
+				entities.addAll(Bukkit.getWorld("biomes2").getEntities());
+
+				for(Entity slime : entities) {
 					if(!(slime instanceof Slime)) continue;
 
 					if(!blobMap.containsValue(slime)) slime.remove();

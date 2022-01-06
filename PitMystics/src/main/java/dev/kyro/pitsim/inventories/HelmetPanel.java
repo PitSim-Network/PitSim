@@ -3,19 +3,17 @@ package dev.kyro.pitsim.inventories;
 import de.tr7zw.nbtapi.NBTItem;
 import dev.kyro.arcticapi.builders.AItemStackBuilder;
 import dev.kyro.arcticapi.builders.ALoreBuilder;
-import dev.kyro.arcticapi.data.APlayerData;
 import dev.kyro.arcticapi.gui.AGUI;
 import dev.kyro.arcticapi.gui.AGUIPanel;
 import dev.kyro.arcticapi.misc.AUtil;
 import dev.kyro.pitsim.controllers.HelmetSystem;
-import dev.kyro.pitsim.controllers.objects.HelmetAbility;
 import dev.kyro.pitsim.controllers.objects.GoldenHelmet;
+import dev.kyro.pitsim.controllers.objects.HelmetAbility;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.enums.NBTTag;
 import dev.kyro.pitsim.misc.Misc;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
-import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.inventory.InventoryOpenEvent;
@@ -28,7 +26,6 @@ import java.util.List;
 
 public class HelmetPanel extends AGUIPanel {
 
-	public FileConfiguration playerData = APlayerData.getPlayerData(player);
 	public PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
 	public ItemStack goldenHelmet = null;
 	public List<List<ItemStack>> columns = new ArrayList<>();
@@ -69,15 +66,15 @@ public class HelmetPanel extends AGUIPanel {
 	@Override
 	public void onOpen(InventoryOpenEvent event) {
 		goldenHelmet = getHelm();
-		List<String> helmetLore = goldenHelmet.getItemMeta().getLore();
-		helmetLore.remove(helmetLore.size() - 1);
-		helmetLore.remove(helmetLore.size() - 1);
-		ItemStack helmetDisplay = goldenHelmet.clone();
-		ItemMeta helmetMeta = helmetDisplay.getItemMeta();
-		helmetMeta.setLore(helmetLore);
-		helmetDisplay.setItemMeta(helmetMeta);
-		getInventory().setItem(1, helmetDisplay);
-
+		if(goldenHelmet.getItemMeta().hasLore()) {
+			List<String> helmetLore = goldenHelmet.getItemMeta().getLore();
+			helmetLore.remove(helmetLore.size() - 1);
+			ItemStack helmetDisplay = goldenHelmet.clone();
+			ItemMeta helmetMeta = helmetDisplay.getItemMeta();
+			helmetMeta.setLore(helmetLore);
+			helmetDisplay.setItemMeta(helmetMeta);
+			getInventory().setItem(1, helmetDisplay);
+		}
 		AItemStackBuilder abilityBuilder = new AItemStackBuilder(Material.EYE_OF_ENDER);
 		abilityBuilder.setName("&eAbility");
 		ALoreBuilder abilityLoreBuilder = new ALoreBuilder();
@@ -86,7 +83,7 @@ public class HelmetPanel extends AGUIPanel {
 			abilityLoreBuilder.addLore("&7Selected: &9" + ability.name);
 			abilityBuilder.getItemStack().setType(ability.getDisplayItem().getType());
 			abilityLoreBuilder.addLore(ability.getDescription());
-			abilityLoreBuilder.addLore("", "&eClick to chance ability!");
+			abilityLoreBuilder.addLore("", "&eClick to change ability!");
 		}
 		else {
 			abilityLoreBuilder.addLore("&7Selected: &cNONE", "&7Abilities let you spend the", "&6gold &7in your helmet on", "&7various buffs.");
