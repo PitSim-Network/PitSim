@@ -58,6 +58,11 @@ public class PayCommand implements CommandExecutor {
             return false;
         }
 
+        if(amount > PitSim.VAULT.getBalance(player)) {
+            AOutput.error(player, "You do not have enough money");
+            return false;
+        }
+
         PitSim.VAULT.withdrawPlayer(player, amount);
         PitSim.VAULT.depositPlayer(target, amount);
         DecimalFormat decimalFormat = new DecimalFormat("#,###,###,##0");
