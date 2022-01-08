@@ -95,14 +95,14 @@ public class Hopper {
 
 		if(count % 5 == 0) {
 			for(Player onlinePlayer : Bukkit.getOnlinePlayers()) {
-				if(!onlinePlayer.getWorld().equals(hopper.getWorld()));
+				if(!onlinePlayer.getWorld().equals(hopper.getWorld())) continue;
 				PacketPlayOutAnimation attackPacket = new PacketPlayOutAnimation(((CraftEntity)hopper).getHandle(), 0);
 				((CraftPlayer) onlinePlayer).getHandle().playerConnection.sendPacket(attackPacket);
 			}
 		}
 		if(count % 5 == 4) {
 			for(Player onlinePlayer : Bukkit.getOnlinePlayers()) {
-				if(!onlinePlayer.getWorld().equals(hopper.getWorld()));
+				if(!onlinePlayer.getWorld().equals(hopper.getWorld())) continue;
 
 				PacketContainer packet = PitSim.PROTOCOL_MANAGER.createPacket(PacketType.Play.Server.ENTITY_METADATA);
 				packet.getIntegers().write(0, hopper.getEntityId());
