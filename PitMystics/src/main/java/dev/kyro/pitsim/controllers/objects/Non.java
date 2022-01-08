@@ -136,6 +136,7 @@ public class Non {
 					Math.pow(nearbyEntity.getLocation().getZ() - midLoc.getZ(), 2));
 			if(targetDistanceFromMid > 9) continue;
 
+			if(nearbyEntity.getWorld() != non.getWorld()) continue;
 			double distance = nearbyEntity.getLocation().distance(non.getLocation());
 			if(distance >= closestDistance) continue;
 
