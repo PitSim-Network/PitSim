@@ -88,7 +88,7 @@ public class HopperManager implements Listener {
 	public void onChangeWorld(PlayerChangedWorldEvent event) {
 		for(Hopper hopper : hopperList) {
 			if(event.getPlayer() != hopper.target || event.getPlayer().getWorld() == hopper.hopper.getWorld()) continue;
-			hopper.remove();
+			hopper.hopper.teleport(hopper.target);
 		}
 	}
 
