@@ -20,10 +20,12 @@ repositories {
     maven { url "https://maven.enginehub.org/repo/" }
     maven { url "https://repo.inventivetalent.org/content/repositories/snapshots" }
     maven { url "https://repo.dmulloy2.net/repository/public/" }
+    maven { url "https://eldonexus.de/repository/maven-public" }
 }
 
 dependencies {
     implementation 'org.jetbrains:annotations:22.0.0'
+    implementation("de.eldoria:messageblocker:1.1.1")
 //    compileOnly 'org.spigotmc:spigot:1.8.8-R0.1-SNAPSHOT'
     compileOnly files('libs/ispigot.jar')
     compileOnly 'net.citizensnpcs:citizens-main:2.0.27-SNAPSHOT'
