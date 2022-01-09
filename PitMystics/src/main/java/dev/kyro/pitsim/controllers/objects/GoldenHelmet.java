@@ -252,6 +252,7 @@ public class GoldenHelmet implements Listener {
 		if(abilities.get(event.getPlayer()) != null) {
 			GoldenHelmet.deactivate(event.getPlayer());
 		}
+		if(abilities.get(event.getPlayer()) == null) return;
 		if(abilities.containsKey(event.getPlayer())) abilities.get(event.getPlayer()).unload();
 		toggledPlayers.remove(event.getPlayer());
 	}
