@@ -20,7 +20,7 @@ public class VampireSequence extends TutorialSequence {
 	public List<BukkitTask> runnableList = new ArrayList<>();
 
 	public VampireSequence(Player player, Tutorial tutorial) {
-		super(player, tutorial);
+		super(player, tutorial, Task.EQUIP_VAMPIRE);
 		this.player = player;
 		this.tutorial = tutorial;
 	}

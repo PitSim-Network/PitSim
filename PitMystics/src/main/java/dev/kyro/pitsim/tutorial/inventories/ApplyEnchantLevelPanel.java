@@ -12,6 +12,9 @@ import dev.kyro.pitsim.enums.MysticType;
 import dev.kyro.pitsim.enums.NBTTag;
 import dev.kyro.pitsim.enums.PantColor;
 import dev.kyro.pitsim.misc.Misc;
+import dev.kyro.pitsim.tutorial.TutorialManager;
+import dev.kyro.pitsim.tutorial.sequences.ViewEnchantTiersSequence;
+import dev.kyro.pitsim.tutorial.sequences.ViewEnchantsSequence;
 import org.bukkit.Material;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
@@ -79,6 +82,9 @@ public class ApplyEnchantLevelPanel extends AGUIPanel {
 
 	@Override
 	public void onClick(InventoryClickEvent event) {
+
+		if(TutorialManager.getTutorial(player) != null &&
+				TutorialManager.getTutorial(player).sequence.getClass() == ViewEnchantTiersSequence.class) return;
 
 		int slot = event.getSlot();
 		ItemStack clickedItem = event.getCurrentItem();

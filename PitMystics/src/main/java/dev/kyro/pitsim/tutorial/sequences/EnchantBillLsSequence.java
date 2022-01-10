@@ -13,14 +13,14 @@ import org.bukkit.scheduler.BukkitTask;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ViewEnchantTiersSequence extends TutorialSequence {
+public class EnchantBillLsSequence extends TutorialSequence {
 	public Player player;
 	public Tutorial tutorial;
 	public int waitTime = 0;
 	public List<BukkitTask> runnableList = new ArrayList<>();
 
-	public ViewEnchantTiersSequence(Player player, Tutorial tutorial) {
-		super(player, tutorial, Task.VIEW_ENCHANT_TIERS);
+	public EnchantBillLsSequence(Player player, Tutorial tutorial) {
+		super(player, tutorial, Task.ENCHANT_BILL_LS);
 		this.player = player;
 		this.tutorial = tutorial;
 	}
@@ -35,7 +35,6 @@ public class ViewEnchantTiersSequence extends TutorialSequence {
 		sendMessage(TutorialMessage.DARK_BLUE);
 		wait(2);
 		sendMessage(TutorialMessage.DARK_GREEN);
-		completeTask(Task.VIEW_ENCHANT_TIERS);
 	}
 
 	public void wait(int seconds) {

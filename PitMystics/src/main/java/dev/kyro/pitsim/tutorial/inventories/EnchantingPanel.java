@@ -11,6 +11,8 @@ import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.commands.FreshCommand;
 import dev.kyro.pitsim.controllers.EnchantManager;
 import dev.kyro.pitsim.controllers.objects.PitEnchant;
+import dev.kyro.pitsim.enchants.Billionaire;
+import dev.kyro.pitsim.enchants.Lifesteal;
 import dev.kyro.pitsim.enums.MysticType;
 import dev.kyro.pitsim.enums.NBTTag;
 import dev.kyro.pitsim.enums.PantColor;
@@ -31,6 +33,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
 
+import java.util.List;
 import java.util.Map;
 
 public class EnchantingPanel extends AGUIPanel {
@@ -157,6 +160,17 @@ public class EnchantingPanel extends AGUIPanel {
 				} else {
 					getInventory().setItem(37, new ItemStack(Material.AIR));
 					if(!FreshCommand.isFresh(mystic)) player.getInventory().addItem(mystic);
+
+					boolean hasBill2 = false;
+					boolean hasLs3 = false;
+
+					Map<PitEnchant, Integer> enchantList = EnchantManager.getEnchantsOnItem(mystic);
+					for (Map.Entry<PitEnchant, Integer> entry : enchantList.entrySet()) {
+						if(entry.getKey() instanceof Billionaire && entry.getValue() == 2) hasBill2 = true;
+						if(entry.getKey() instanceof Lifesteal && entry.getValue() == 3) hasLs3 = true;
+					}
+
+
 					mystic = new ItemStack(Material.AIR);
 				}
 			}

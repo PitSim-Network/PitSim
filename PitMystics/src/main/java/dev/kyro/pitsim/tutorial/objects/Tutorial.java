@@ -19,6 +19,7 @@ public class Tutorial {
 	}
 
 	public void onTaskComplete(Task task) {
+		if(task.order < sequence.task.order || task.order > sequence.task.order) return;
 		for(BukkitTask runnable : sequence.getRunnables()) {
 			runnable.cancel();
 		}
@@ -31,6 +32,7 @@ public class Tutorial {
 		if(task == Task.EQUIP_MEGASTREAK) sequence = new InitialMysticWellSequence(player, this);
 		if(task == Task.VIEW_MYSTIC_WELL) sequence = new ViewEnchantsSequence(player, this);
 		if(task == Task.VIEW_ENCHANTS) sequence = new ViewEnchantTiersSequence(player, this);
+		if(task == Task.VIEW_ENCHANT_TIERS) sequence = new EnchantBillLsSequence(player, this);
 
 		player.closeInventory();
 		if(sequence != null) sequence.play();

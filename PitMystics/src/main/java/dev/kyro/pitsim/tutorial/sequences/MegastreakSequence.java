@@ -20,7 +20,7 @@ public class MegastreakSequence extends TutorialSequence {
 	public List<BukkitTask> runnableList = new ArrayList<>();
 
 	public MegastreakSequence(Player player, Tutorial tutorial) {
-		super(player, tutorial);
+		super(player, tutorial, Task.EQUIP_MEGASTREAK);
 		this.player = player;
 		this.tutorial = tutorial;
 	}

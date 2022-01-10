@@ -20,7 +20,7 @@ public class KillstreakSequence extends TutorialSequence {
 	public List<BukkitTask> runnableList = new ArrayList<>();
 
 	public KillstreakSequence(Player player, Tutorial tutorial) {
-		super(player, tutorial);
+		super(player, tutorial, Task.EQUIP_KILLSTREAK);
 		this.player = player;
 		this.tutorial = tutorial;
 	}

@@ -20,7 +20,7 @@ public class ViewEnchantsSequence extends TutorialSequence {
 	public List<BukkitTask> runnableList = new ArrayList<>();
 
 	public ViewEnchantsSequence(Player player, Tutorial tutorial) {
-		super(player, tutorial);
+		super(player, tutorial, Task.VIEW_ENCHANTS);
 		this.player = player;
 		this.tutorial = tutorial;
 	}
