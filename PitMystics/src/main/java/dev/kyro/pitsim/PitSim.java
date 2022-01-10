@@ -25,6 +25,7 @@ import dev.kyro.pitsim.misc.*;
 import dev.kyro.pitsim.perks.*;
 import dev.kyro.pitsim.pitmaps.BiomesMap;
 import dev.kyro.pitsim.placeholders.*;
+import dev.kyro.pitsim.tutorial.TaskListener;
 import dev.kyro.pitsim.upgrades.*;
 import net.citizensnpcs.api.CitizensAPI;
 import net.citizensnpcs.api.npc.NPC;
@@ -310,6 +311,7 @@ public class PitSim extends JavaPlugin {
 		getServer().getPluginManager().registerEvents(new DupeManager(), this);
 		getServer().getPluginManager().registerEvents(new GoldenHelmet(), this);
 		getServer().getPluginManager().registerEvents(new MapManager(), this);
+		getServer().getPluginManager().registerEvents(new TaskListener(), this);
 	}
 
 	public void registerBoosters() {
