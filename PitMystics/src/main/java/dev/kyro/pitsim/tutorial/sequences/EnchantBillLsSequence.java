@@ -23,6 +23,7 @@ public class EnchantBillLsSequence extends TutorialSequence {
 		super(player, tutorial, Task.ENCHANT_BILL_LS);
 		this.player = player;
 		this.tutorial = tutorial;
+		//test
 	}
 
 	@Override
