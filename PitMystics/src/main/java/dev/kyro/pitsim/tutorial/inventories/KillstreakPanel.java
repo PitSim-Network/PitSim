@@ -9,8 +9,10 @@ import dev.kyro.arcticapi.misc.AUtil;
 import dev.kyro.pitsim.controllers.PerkManager;
 import dev.kyro.pitsim.controllers.objects.Killstreak;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
+import dev.kyro.pitsim.events.KillstreakEquipEvent;
 import dev.kyro.pitsim.killstreaks.NoKillstreak;
 import dev.kyro.pitsim.misc.Sounds;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -87,7 +89,8 @@ public class KillstreakPanel extends AGUIPanel {
 						}
 					}
 
-
+					KillstreakEquipEvent ksEvent = new KillstreakEquipEvent(killstreak, player, pitPlayer.killstreaks.get(killstreakSlot - 1));
+					Bukkit.getServer().getPluginManager().callEvent(ksEvent);
 					pitPlayer.killstreaks.set(killstreakSlot - 1, killstreak);
 					Sounds.SUCCESS.play(player);
 					openPreviousGUI();

@@ -8,9 +8,12 @@ import dev.kyro.pitsim.controllers.PerkManager;
 import dev.kyro.pitsim.controllers.PrestigeValues;
 import dev.kyro.pitsim.controllers.objects.Megastreak;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
+import dev.kyro.pitsim.events.KillstreakEquipEvent;
+import dev.kyro.pitsim.events.MegastreakEquipEvent;
 import dev.kyro.pitsim.megastreaks.*;
 import dev.kyro.pitsim.misc.Sounds;
 import dev.kyro.pitsim.upgrades.UberIncrease;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
@@ -147,6 +150,8 @@ public class MegastreakPanel extends AGUIPanel {
 							Sounds.ERROR.play(player);
 						}
 					}else if(!prestige && !has && !uberCd && !level) {
+						MegastreakEquipEvent msEvent = new MegastreakEquipEvent(player);
+						Bukkit.getServer().getPluginManager().callEvent(msEvent);
 						openPanel(perkGUI.getHomePanel());
 						Sounds.SUCCESS.play(player);
 					}

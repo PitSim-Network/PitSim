@@ -2,10 +2,7 @@ package dev.kyro.pitsim.tutorial.objects;
 
 import dev.kyro.pitsim.tutorial.MessageManager;
 import dev.kyro.pitsim.tutorial.Task;
-import dev.kyro.pitsim.tutorial.sequences.InitialSequence;
-import dev.kyro.pitsim.tutorial.sequences.KillstreakSequence;
-import dev.kyro.pitsim.tutorial.sequences.PerkSequence;
-import dev.kyro.pitsim.tutorial.sequences.VampireSequence;
+import dev.kyro.pitsim.tutorial.sequences.*;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitTask;
 
@@ -30,8 +27,9 @@ public class Tutorial {
 		if(task == Task.VIEW_MAP) sequence = new VampireSequence(player, this);
 		if(task == Task.EQUIP_VAMPIRE) sequence = new PerkSequence(player, this);
 		if(task == Task.EQUIP_PERKS) sequence = new KillstreakSequence(player, this);
-		if(task == Task.EQUIP_KILLSTREAK) sequence = new KillstreakSequence(player, this);
+		if(task == Task.EQUIP_KILLSTREAK) sequence = new MegastreakSequence(player, this);
 
+		player.closeInventory();
 		if(sequence != null) sequence.play();
 	}
 
