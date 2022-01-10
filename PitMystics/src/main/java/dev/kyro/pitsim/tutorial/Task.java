@@ -5,7 +5,10 @@ public enum Task {
     EQUIP_VAMPIRE(),
     EQUIP_PERKS(),
     EQUIP_KILLSTREAK(),
-    EQUIP_MEGASTREAK();
+    EQUIP_MEGASTREAK(),
+    VIEW_MYSTIC_WELL(),
+    VIEW_ENCHANTS(),
+    VIEW_ENCHANT_TIERS();
 
 
     Task() {

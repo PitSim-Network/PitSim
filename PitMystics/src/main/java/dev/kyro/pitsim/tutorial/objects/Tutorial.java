@@ -28,6 +28,9 @@ public class Tutorial {
 		if(task == Task.EQUIP_VAMPIRE) sequence = new PerkSequence(player, this);
 		if(task == Task.EQUIP_PERKS) sequence = new KillstreakSequence(player, this);
 		if(task == Task.EQUIP_KILLSTREAK) sequence = new MegastreakSequence(player, this);
+		if(task == Task.EQUIP_MEGASTREAK) sequence = new InitialMysticWellSequence(player, this);
+		if(task == Task.VIEW_MYSTIC_WELL) sequence = new ViewEnchantsSequence(player, this);
+		if(task == Task.VIEW_ENCHANTS) sequence = new ViewEnchantTiersSequence(player, this);
 
 		player.closeInventory();
 		if(sequence != null) sequence.play();
