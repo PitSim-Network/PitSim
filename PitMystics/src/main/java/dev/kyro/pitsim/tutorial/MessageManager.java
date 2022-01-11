@@ -1,31 +1,35 @@
 package dev.kyro.pitsim.tutorial;
 
-import de.eldoria.messageblocker.MessageBlockerAPI;
-import de.eldoria.messageblocker.blocker.MessageBlocker;
+import com.comphenix.protocol.PacketType;
+import com.comphenix.protocol.ProtocolLibrary;
+import com.comphenix.protocol.events.PacketAdapter;
+import com.comphenix.protocol.events.PacketEvent;
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.PitSim;
 import org.bukkit.entity.Player;
+import org.bukkit.event.Listener;
 
-public class MessageManager {
+public class MessageManager implements Listener {
 
-	private static MessageBlocker blocker;
-
-	public static MessageBlocker getBlocker() {
-		if(blocker == null) blocker = MessageBlockerAPI.builder(PitSim.INSTANCE).build();
-		return blocker;
-	}
 
 	public static void sendTutorialMessage(Player player, TutorialMessage message) {
-		getBlocker().announce(player, message.message);
 
 		AOutput.send(player, message.message);
 	}
 
-	public static void blockPlayer(Player player) {
-		getBlocker().blockPlayer(player);
+
+
+	static {
+			ProtocolLibrary.getProtocolManager().addPacketListener(
+					new PacketAdapter(PitSim.INSTANCE, PacketType.Play.Server.CHAT) {
+						@Override
+						public void onPacketSending(PacketEvent event) {
+
+							if(TutorialMessage.getMessages().contains(event.getPacket().getStrings().read(0))) return;
+
+							if(TutorialManager.tutorials.containsKey(event.getPlayer())) event.setCancelled(true);
+						}
+					});
 	}
 
-	public static void unblockPlayer(Player player) {
-		getBlocker().unblockPlayer(player);
-	}
 }
