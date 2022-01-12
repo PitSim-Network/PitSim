@@ -23,6 +23,7 @@ public class VampireSequence extends TutorialSequence {
 		super(player, tutorial, Task.EQUIP_VAMPIRE);
 		this.player = player;
 		this.tutorial = tutorial;
+		player.closeInventory();
 	}
 
 	@Override

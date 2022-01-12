@@ -35,8 +35,10 @@ public class MessageManager implements Listener {
 							boolean isBypassed = false;
 							for (WrappedChatComponent component : components) {
 								for(String identifier : TutorialMessage.getIdentifiers()) {
-									if(component.getJson() == null) continue;
-									if(component.getJson().contains(identifier)) isBypassed = true;
+									try {
+										if(component.getJson() == null) continue;
+										if(component.getJson().contains(identifier)) isBypassed = true;
+									} catch(Exception ignored) { }
 								}
 							}
 

@@ -6,6 +6,7 @@ import dev.kyro.pitsim.enums.ApplyType;
 import dev.kyro.pitsim.events.AttackEvent;
 import dev.kyro.pitsim.events.KillEvent;
 import dev.kyro.pitsim.misc.Misc;
+import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
@@ -42,6 +43,19 @@ public class Electrolytes extends PitEnchant {
 		int enchantLvl = killEvent.getKillerEnchantLevel(this);
 
 		if(killEvent.killer.hasPotionEffect(PotionEffectType.SPEED)) {
+
+			int speedDuration = 0;
+			for (PotionEffect potioneffect : killEvent.killer.getActivePotionEffects()) {
+				Bukkit.broadcastMessage(potioneffect.getType() + "");
+				int duration = potioneffect.getDuration();
+				if (potioneffect.getType() == PotionEffectType.SPEED) {
+					Bukkit.broadcastMessage(speedDuration + " Speed!");
+					speedDuration = duration;
+				}
+			}
+
+			Bukkit.broadcastMessage(speedDuration + "");
+			if(speedDuration > 12.5 * 20) return;
 
 			for(PotionEffect activePotionEffect : killEvent.killer.getActivePotionEffects()) {
 

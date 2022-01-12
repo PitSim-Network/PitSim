@@ -23,6 +23,7 @@ public class PerkSequence extends TutorialSequence {
 		super(player, tutorial, Task.EQUIP_PERKS);
 		this.player = player;
 		this.tutorial = tutorial;
+		player.closeInventory();
 	}
 
 	@Override

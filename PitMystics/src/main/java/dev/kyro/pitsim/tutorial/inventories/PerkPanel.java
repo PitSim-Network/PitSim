@@ -13,6 +13,7 @@ import dev.kyro.pitsim.megastreaks.NoMegastreak;
 import dev.kyro.pitsim.misc.Sounds;
 import dev.kyro.pitsim.tutorial.TutorialManager;
 import dev.kyro.pitsim.tutorial.sequences.KillstreakSequence;
+import dev.kyro.pitsim.tutorial.sequences.PerkSequence;
 import dev.kyro.pitsim.tutorial.sequences.VampireSequence;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -62,7 +63,8 @@ public class  PerkPanel extends AGUIPanel {
 			}
 
 			if(TutorialManager.getTutorial(player) == null) return;
-			if(TutorialManager.getTutorial(player).sequence.getClass() == VampireSequence.class) return;
+			if(TutorialManager.getTutorial(player).sequence.getClass() == VampireSequence.class
+					|| TutorialManager.getTutorial(player).sequence.getClass() == PerkSequence.class) return;
 
 			if(TutorialManager.getTutorial(player).sequence.getClass() != KillstreakSequence.class) {
 				if (slot == 34) {

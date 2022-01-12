@@ -23,6 +23,7 @@ public class KillstreakSequence extends TutorialSequence {
 		super(player, tutorial, Task.EQUIP_KILLSTREAK);
 		this.player = player;
 		this.tutorial = tutorial;
+		player.closeInventory();
 	}
 
 	@Override

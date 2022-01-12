@@ -23,6 +23,7 @@ public class MegastreakSequence extends TutorialSequence {
 		super(player, tutorial, Task.EQUIP_MEGASTREAK);
 		this.player = player;
 		this.tutorial = tutorial;
+		player.closeInventory();
 	}
 
 	@Override

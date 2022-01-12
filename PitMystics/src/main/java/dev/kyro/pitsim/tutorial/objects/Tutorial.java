@@ -61,12 +61,16 @@ public class Tutorial {
 	}
 
 	public void spawnUpgradesNPC() {
+		Bukkit.broadcastMessage("test");
 		NPCRegistry registry = CitizensAPI.getNPCRegistry();
 		NPC npc = registry.createNPC(EntityType.VILLAGER, "&e&lUPGRADES AND KILLSTREAKS");
-		Location location = areaLocation.clone();
-		location.setPitch(-180);
-		location.setY(0);
-		npc.spawn(location.add(0, 1, 8));
+//		Location location = areaLocation.clone();
+//		location.setPitch(-180);
+//		location.setY(0);
+		areaLocation.setPitch(-180);
+		areaLocation.setYaw(0);
+		npc.spawn(areaLocation.add(0.5, 1, 8));
+		Bukkit.broadcastMessage("kys retard");
 		upgradesNPC = npc;
 	}
 
