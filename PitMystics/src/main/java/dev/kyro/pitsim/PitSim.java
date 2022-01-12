@@ -27,6 +27,8 @@ import dev.kyro.pitsim.pitmaps.BiomesMap;
 import dev.kyro.pitsim.placeholders.*;
 import dev.kyro.pitsim.tutorial.MessageManager;
 import dev.kyro.pitsim.tutorial.TaskListener;
+import dev.kyro.pitsim.tutorial.TutorialManager;
+import dev.kyro.pitsim.tutorial.objects.Tutorial;
 import dev.kyro.pitsim.upgrades.*;
 import net.citizensnpcs.api.CitizensAPI;
 import net.citizensnpcs.api.npc.NPC;
@@ -157,6 +159,10 @@ public class PitSim extends JavaPlugin {
 
 	@Override
 	public void onDisable() {
+
+		for(Tutorial value : TutorialManager.tutorials.values()) {
+			value.cleanUp();
+		}
 
 		SpawnNPCs.removeNPCs();
 		List<Non> copyList = new ArrayList<>(NonManager.nons);
@@ -314,6 +320,7 @@ public class PitSim extends JavaPlugin {
 		getServer().getPluginManager().registerEvents(new MapManager(), this);
 		getServer().getPluginManager().registerEvents(new TaskListener(), this);
 		getServer().getPluginManager().registerEvents(new MessageManager(), this);
+		getServer().getPluginManager().registerEvents(new TutorialManager(), this);
 	}
 
 	public void registerBoosters() {

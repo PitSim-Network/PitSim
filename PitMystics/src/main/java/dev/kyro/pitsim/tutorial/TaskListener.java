@@ -1,17 +1,18 @@
 package dev.kyro.pitsim.tutorial;
 
-import dev.kyro.pitsim.controllers.PerkManager;
 import dev.kyro.pitsim.controllers.objects.Killstreak;
 import dev.kyro.pitsim.controllers.objects.PitPerk;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.events.KillstreakEquipEvent;
 import dev.kyro.pitsim.events.MegastreakEquipEvent;
 import dev.kyro.pitsim.events.PerkEquipEvent;
+import dev.kyro.pitsim.tutorial.inventories.PerkGUI;
 import dev.kyro.pitsim.tutorial.objects.Tutorial;
 import dev.kyro.pitsim.tutorial.sequences.KillstreakSequence;
 import dev.kyro.pitsim.tutorial.sequences.MegastreakSequence;
 import dev.kyro.pitsim.tutorial.sequences.PerkSequence;
 import dev.kyro.pitsim.tutorial.sequences.VampireSequence;
+import net.citizensnpcs.api.event.NPCRightClickEvent;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -71,5 +72,23 @@ public class TaskListener implements Listener {
 		if(tutorial == null) return;
 
 		tutorial.onTaskComplete(Task.ENCHANT_BILL_LS);
+	}
+
+
+
+
+
+	@EventHandler
+	public void onClickEvent(NPCRightClickEvent event){
+
+		Player player = event.getClicker();
+
+		for(Tutorial tutorial : TutorialManager.tutorials.values()) {
+			if(event.getNPC() == tutorial.upgradesNPC) {
+				if(player != tutorial.player) return;
+				dev.kyro.pitsim.tutorial.inventories.PerkGUI perkGUI = new PerkGUI(player);
+				perkGUI.open();
+			}
+		}
 	}
 }

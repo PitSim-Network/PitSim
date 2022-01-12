@@ -6,6 +6,8 @@ import dev.kyro.pitsim.tutorial.Task;
 import dev.kyro.pitsim.tutorial.TutorialMessage;
 import dev.kyro.pitsim.tutorial.objects.Tutorial;
 import dev.kyro.pitsim.tutorial.objects.TutorialSequence;
+import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
@@ -16,7 +18,7 @@ import java.util.List;
 public class InitialSequence extends TutorialSequence {
 	public Player player;
 	public Tutorial tutorial;
-	public int waitTime = 0;
+	public double waitTime = 0.1;
 	public List<BukkitTask> runnableList = new ArrayList<>();
 
 	public InitialSequence(Player player, Tutorial tutorial) {
@@ -36,6 +38,7 @@ public class InitialSequence extends TutorialSequence {
 		sendMessage(TutorialMessage.DARK_BLUE);
 		wait(2);
 		sendMessage(TutorialMessage.DARK_GREEN);
+		teleportPlayer();
 		completeTask(Task.VIEW_MAP);
 	}
 
@@ -49,7 +52,7 @@ public class InitialSequence extends TutorialSequence {
 			public void run() {
 				MessageManager.sendTutorialMessage(player, message);
 			}
-		}.runTaskLater(PitSim.INSTANCE, 20L * waitTime);
+		}.runTaskLater(PitSim.INSTANCE, (long) (20 * waitTime));
 		runnableList.add(runnable);
 	}
 
@@ -59,8 +62,17 @@ public class InitialSequence extends TutorialSequence {
 			public void run() {
 				tutorial.onTaskComplete(task);
 			}
-		}.runTaskLater(PitSim.INSTANCE, 20L * waitTime);
+		}.runTaskLater(PitSim.INSTANCE, (long) (20 * waitTime));
 		runnableList.add(runnable);
+	}
+
+	public void teleportPlayer() {
+		BukkitTask runnable = new BukkitRunnable() {
+			@Override
+			public void run() {
+				player.teleport(new Location(Bukkit.getWorld("tutorial"), tutorial.positionCoords.x, 93, tutorial.positionCoords.y));
+			}
+		}.runTaskLater(PitSim.INSTANCE, (long) (20 * waitTime));
 	}
 
 }

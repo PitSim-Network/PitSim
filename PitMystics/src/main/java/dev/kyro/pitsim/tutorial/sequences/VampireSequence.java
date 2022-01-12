@@ -16,7 +16,7 @@ import java.util.List;
 public class VampireSequence extends TutorialSequence {
 	public Player player;
 	public Tutorial tutorial;
-	public int waitTime = 0;
+	public double waitTime = 0.1;
 	public List<BukkitTask> runnableList = new ArrayList<>();
 
 	public VampireSequence(Player player, Tutorial tutorial) {
@@ -32,6 +32,8 @@ public class VampireSequence extends TutorialSequence {
 
 	@Override
 	public void play() {
+		spawnVillager();
+		wait(3);
 		sendMessage(TutorialMessage.DARK_BLUE);
 		wait(2);
 		sendMessage(TutorialMessage.DARK_GREEN);
@@ -48,7 +50,7 @@ public class VampireSequence extends TutorialSequence {
 			public void run() {
 				MessageManager.sendTutorialMessage(player, message);
 			}
-		}.runTaskLater(PitSim.INSTANCE, 20L * waitTime);
+		}.runTaskLater(PitSim.INSTANCE, (long) (20L * waitTime));
 		runnableList.add(runnable);
 	}
 
@@ -58,7 +60,7 @@ public class VampireSequence extends TutorialSequence {
 			public void run() {
 				tutorial.onTaskComplete(task);
 			}
-		}.runTaskLater(PitSim.INSTANCE, 20L * waitTime);
+		}.runTaskLater(PitSim.INSTANCE, (long) (20L * waitTime));
 		runnableList.add(runnable);
 	}
 
@@ -66,9 +68,9 @@ public class VampireSequence extends TutorialSequence {
 		BukkitTask runnable = new BukkitRunnable() {
 			@Override
 			public void run() {
-
+				tutorial.spawnUpgradesNPC();
 			}
-		}.runTaskLater(PitSim.INSTANCE, 20L * waitTime);
+		}.runTaskLater(PitSim.INSTANCE, (long) (20L * waitTime));
 		runnableList.add(runnable);
 	}
 

@@ -40,7 +40,8 @@ public class DoubleDeath extends RenownUpgrade {
 		lore.add(ChatColor.GRAY + "Each tier:");
 		lore.add(ChatColor.GRAY + "Gain " + ChatColor.LIGHT_PURPLE + "+5% " + ChatColor.GRAY + "chance to double");
 		lore.add(ChatColor.GRAY + "megastreak death rewards.");
-		lore.add(ChatColor.GRAY + "&7Does not work when you have the killstreak: \"uberstreak\" equipped on the PitSim network");
+		lore.add(ChatColor.GRAY + "Does not work with");
+		lore.add(ChatColor.GRAY + "Uberstreak.");
 		meta.setLore(UpgradeManager.loreBuilder(this, player, lore, isCustomPanel));
 		item.setItemMeta(meta);
 		return item;
