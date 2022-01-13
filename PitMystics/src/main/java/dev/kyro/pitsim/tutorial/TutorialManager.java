@@ -1,9 +1,16 @@
 package dev.kyro.pitsim.tutorial;
 
+import dev.kyro.pitsim.misc.Sounds;
+import dev.kyro.pitsim.tutorial.inventories.EnchantingGUI;
 import dev.kyro.pitsim.tutorial.objects.Tutorial;
+import dev.kyro.pitsim.tutorial.sequences.EnchantBillLsSequence;
+import org.bukkit.Material;
+import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.block.Action;
+import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 
@@ -42,5 +49,23 @@ public class TutorialManager implements Listener {
 	public void onQuit(PlayerQuitEvent event) {
 		Player player = event.getPlayer();
 		if(tutorials.containsKey(player)) tutorials.get(player).cleanUp();
+	}
+
+	@EventHandler
+	public static void onEnchantingTableClick(PlayerInteractEvent event) {
+		if(!tutorials.containsKey(event.getPlayer())) return;
+		if(!(getTutorial(event.getPlayer()).sequence instanceof EnchantBillLsSequence)) return;
+		if(event.getAction() != Action.LEFT_CLICK_BLOCK && event.getAction() != Action.RIGHT_CLICK_BLOCK) return;
+		Player player = event.getPlayer();
+		Block block = event.getClickedBlock();
+
+		if(block.getType() != Material.ENCHANTMENT_TABLE) return;
+
+		event.setCancelled(true);
+
+		dev.kyro.pitsim.tutorial.inventories.EnchantingGUI enchantingGUI = new EnchantingGUI(player);
+		enchantingGUI.open();
+		Sounds.MYSTIC_WELL_OPEN_1.play(player);
+		Sounds.MYSTIC_WELL_OPEN_2.play(player);
 	}
 }

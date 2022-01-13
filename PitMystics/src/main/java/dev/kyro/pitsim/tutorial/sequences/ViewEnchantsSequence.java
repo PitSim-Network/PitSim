@@ -4,6 +4,7 @@ import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.tutorial.MessageManager;
 import dev.kyro.pitsim.tutorial.Task;
 import dev.kyro.pitsim.tutorial.TutorialMessage;
+import dev.kyro.pitsim.tutorial.inventories.EnchantingPanel;
 import dev.kyro.pitsim.tutorial.objects.Tutorial;
 import dev.kyro.pitsim.tutorial.objects.TutorialSequence;
 import org.bukkit.entity.Player;
@@ -32,8 +33,10 @@ public class ViewEnchantsSequence extends TutorialSequence {
 
 	@Override
 	public void play() {
-		sendMessage(TutorialMessage.DARK_BLUE);
 		wait(2);
+		openGUI();
+		wait(5);
+		sendMessage(TutorialMessage.DARK_BLUE);
 		sendMessage(TutorialMessage.DARK_GREEN);
 		completeTask(Task.VIEW_ENCHANTS);
 	}
@@ -57,6 +60,16 @@ public class ViewEnchantsSequence extends TutorialSequence {
 			@Override
 			public void run() {
 				tutorial.onTaskComplete(task);
+			}
+		}.runTaskLater(PitSim.INSTANCE, 20L * waitTime);
+		runnableList.add(runnable);
+	}
+
+	public void openGUI() {
+		BukkitTask runnable = new BukkitRunnable() {
+			@Override
+			public void run() {
+				player.openInventory(EnchantingPanel.openEnchantsPanel(player).getInventory());
 			}
 		}.runTaskLater(PitSim.INSTANCE, 20L * waitTime);
 		runnableList.add(runnable);

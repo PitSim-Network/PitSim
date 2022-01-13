@@ -29,6 +29,8 @@ public class MessageManager implements Listener {
 						@Override
 						public void onPacketSending(PacketEvent event) {
 
+							if(!TutorialManager.tutorials.containsKey(event.getPlayer())) return;
+
 							PacketContainer packet = event.getPacket();
 							List<WrappedChatComponent> components = packet.getChatComponents().getValues();
 

@@ -1,9 +1,16 @@
 package dev.kyro.pitsim.tutorial.objects;
 
+import dev.kyro.pitsim.PitSim;
+import dev.kyro.pitsim.controllers.objects.PitPlayer;
+import dev.kyro.pitsim.killstreaks.NoKillstreak;
+import dev.kyro.pitsim.megastreaks.NoMegastreak;
 import dev.kyro.pitsim.misc.RingCalc;
 import dev.kyro.pitsim.misc.SchematicPaste;
+import dev.kyro.pitsim.misc.Sounds;
+import dev.kyro.pitsim.perks.NoPerk;
 import dev.kyro.pitsim.tutorial.Task;
 import dev.kyro.pitsim.tutorial.TutorialManager;
+import dev.kyro.pitsim.tutorial.inventories.ApplyEnchantPanel;
 import dev.kyro.pitsim.tutorial.sequences.*;
 import net.citizensnpcs.api.CitizensAPI;
 import net.citizensnpcs.api.npc.NPC;
@@ -12,9 +19,11 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
+import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
 
 import java.io.File;
+import java.util.Arrays;
 
 public class Tutorial {
 	public Player player;
@@ -23,6 +32,7 @@ public class Tutorial {
 	public RingCalc.XYCoords positionCoords;
 	public NPC upgradesNPC = null;
 	public Location areaLocation;
+	public ApplyEnchantPanel panel = null;
 
 
 	public Tutorial(Player player, int position) {
@@ -30,9 +40,18 @@ public class Tutorial {
 		this.sequence = new InitialSequence(player, this);
 		this.position = position;
 		this.positionCoords = RingCalc.getPosInRing(this.position);
-		areaLocation = new Location(Bukkit.getWorld("tutorial"), positionCoords.x, 92, positionCoords.y);
+		areaLocation = new Location(Bukkit.getWorld("tutorial"), positionCoords.x, 92, positionCoords.y, -180, 0);
 		setUpTutorialArea();
 		sequence.play();
+
+		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
+		Arrays.fill(pitPlayer.pitPerks, NoPerk.INSTANCE);
+
+		for(int i = 0; i < pitPlayer.killstreaks.size(); i++) {
+			pitPlayer.killstreaks.set(i, NoKillstreak.INSTANCE);
+		}
+
+		pitPlayer.megastreak = new NoMegastreak(pitPlayer);
 	}
 
 	public void onTaskComplete(Task task) {
@@ -40,6 +59,16 @@ public class Tutorial {
 		for(BukkitTask runnable : sequence.getRunnables()) {
 			runnable.cancel();
 		}
+		Sounds.LEVEL_UP.play(player);
+
+		player.closeInventory();
+
+		new BukkitRunnable() {
+			@Override
+			public void run() {
+				player.closeInventory();
+			}
+		}.runTaskLater(PitSim.INSTANCE, 5L);
 		sequence = null;
 
 		if(task == Task.VIEW_MAP) sequence = new VampireSequence(player, this);
@@ -51,7 +80,6 @@ public class Tutorial {
 		if(task == Task.VIEW_ENCHANTS) sequence = new ViewEnchantTiersSequence(player, this);
 		if(task == Task.VIEW_ENCHANT_TIERS) sequence = new EnchantBillLsSequence(player, this);
 
-		player.closeInventory();
 		if(sequence != null) sequence.play();
 	}
 
@@ -67,15 +95,12 @@ public class Tutorial {
 //		Location location = areaLocation.clone();
 //		location.setPitch(-180);
 //		location.setY(0);
-		areaLocation.setPitch(-180);
-		areaLocation.setYaw(0);
 		npc.spawn(areaLocation.add(0.5, 1, 8));
-		Bukkit.broadcastMessage("kys retard");
 		upgradesNPC = npc;
 	}
 
 	public void cleanUp() {
-		upgradesNPC.destroy();
+		if(upgradesNPC != null) upgradesNPC.destroy();
 		for(BukkitTask runnable : sequence.getRunnables()) {
 			runnable.cancel();
 		}

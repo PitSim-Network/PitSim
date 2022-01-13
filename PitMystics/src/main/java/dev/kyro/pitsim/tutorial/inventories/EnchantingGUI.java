@@ -3,13 +3,14 @@ package dev.kyro.pitsim.tutorial.inventories;
 import dev.kyro.arcticapi.builders.AItemStackBuilder;
 import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.arcticapi.gui.AGUI;
+import dev.kyro.pitsim.tutorial.objects.Tutorial;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 public class EnchantingGUI extends AGUI {
 
-	public EnchantingPanel enchantingPanel;
+	public static EnchantingPanel enchantingPanel;
 
 	public static ItemStack back;
 	static {
@@ -36,4 +37,10 @@ public class EnchantingGUI extends AGUI {
 
 		return (clickedSlot - 7) / 3;
 	}
+
+	public void openHomePanel() {
+		player.openInventory(enchantingPanel.getInventory());
+	}
+
+
 }

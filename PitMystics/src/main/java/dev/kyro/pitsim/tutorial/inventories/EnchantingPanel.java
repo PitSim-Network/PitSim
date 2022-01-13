@@ -22,6 +22,7 @@ import dev.kyro.pitsim.tutorial.TutorialManager;
 import dev.kyro.pitsim.tutorial.sequences.ViewEnchantsSequence;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
+import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.inventory.InventoryOpenEvent;
@@ -33,7 +34,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
 
-import java.util.List;
+import java.util.HashMap;
 import java.util.Map;
 
 public class EnchantingPanel extends AGUIPanel {
@@ -50,6 +51,8 @@ public class EnchantingPanel extends AGUIPanel {
 	public static ItemStack noMystic;
 	public static ItemStack noEnchantYet;
 	public static ItemStack mysticInWell;
+
+	public static Map<Player, ApplyEnchantPanel> enchantPanels = new HashMap<>();
 	static {
 		philo = new AItemStackBuilder(new ItemStack(Material.CACTUS))
 				.setName("&aPhilosopher's Cactus")
@@ -76,6 +79,11 @@ public class EnchantingPanel extends AGUIPanel {
 	public EnchantingPanel(AGUI gui) {
 		super(gui);
 		enchantingGUI = (EnchantingGUI) gui;
+
+		mystic = FreshCommand.getFreshItem("sword");
+		enchantPanels.put(player, new ApplyEnchantPanel(enchantingGUI, mystic, null, enchantingGUI.getEnchantSlot(1)));
+
+
 
 		inventoryBuilder.setSlots(Material.STAINED_GLASS_PANE, 5, 0, 1, 2, 9, 11, 18, 19, 20)
 				.setSlots(Material.STAINED_GLASS_PANE, 4, 3, 4, 5, 12, 14, 21, 22, 23)
@@ -364,6 +372,10 @@ public class EnchantingPanel extends AGUIPanel {
 			ItemMeta itemMeta = itemStack.getItemMeta(); itemMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS); itemStack.setItemMeta(itemMeta);
 			getInventory().setItem(slot, itemStack);
 		}
+	}
+
+	public static ApplyEnchantPanel openEnchantsPanel(Player player) {
+		return enchantPanels.get(player);
 	}
 
 	private enum GUISection {

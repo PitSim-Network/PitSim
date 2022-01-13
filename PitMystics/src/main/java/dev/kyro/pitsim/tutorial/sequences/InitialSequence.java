@@ -73,6 +73,7 @@ public class InitialSequence extends TutorialSequence {
 				player.teleport(new Location(Bukkit.getWorld("tutorial"), tutorial.positionCoords.x, 93, tutorial.positionCoords.y));
 			}
 		}.runTaskLater(PitSim.INSTANCE, (long) (20 * waitTime));
+		runnableList.add(runnable);
 	}
 
 }
