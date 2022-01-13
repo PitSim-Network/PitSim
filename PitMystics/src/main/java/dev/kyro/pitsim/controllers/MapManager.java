@@ -130,4 +130,8 @@ public class MapManager implements Listener {
 	public static void disablePortal(World lobby) {
 		SchematicPaste.loadSchematic(new File("plugins/WorldEdit/schematics/doorClosed.schematic"), new Location(lobby, -67, 72, 3));
 	}
+
+	public static World getTutorial() {
+		return Bukkit.getWorld("tutorial");
+	}
 }

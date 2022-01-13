@@ -26,6 +26,7 @@ import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -184,7 +185,8 @@ public class Highlander extends Megastreak {
 			if(DoubleDeath.INSTANCE.isDoubleDeath(pitPlayer.player)) pitPlayer.bounty = pitPlayer.bounty * 2;
 			LevelManager.addGold(pitPlayer.player, pitPlayer.bounty);
 			if(pitPlayer.bounty != 0 && pitPlayer.megastreak.isOnMega()) {
-				AOutput.send(pitPlayer.player, "&6&lHIGHLANDER! &7Earned &6+" + pitPlayer.bounty + "&6g &7from megastreak!");
+				DecimalFormat formatter = new DecimalFormat("#,###.#");
+				AOutput.send(pitPlayer.player, "&6&lHIGHLANDER! &7Earned &6+" + formatter.format(pitPlayer.bounty) + "&6g &7from megastreak!");
 				pitPlayer.bounty = 0;
 			}
 		}
