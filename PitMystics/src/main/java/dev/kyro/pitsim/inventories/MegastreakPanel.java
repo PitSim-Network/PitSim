@@ -183,7 +183,7 @@ public class MegastreakPanel extends AGUIPanel {
 			List<String> lore = new ArrayList<>(megastreak.guiItem().getItemMeta().getLore());
 			lore.add("");
 			if(megastreak.getClass() == Uberstreak.class && pitPlayer.prestige >= megastreak.prestigeReq()) {
-				if((System.currentTimeMillis() / 1000L) - 86400 > pitPlayer.uberReset) {
+				if((System.currentTimeMillis() / 1000L) - 60 * 60 * 20 > pitPlayer.uberReset) {
 					pitPlayer.uberReset = 0;
 					pitPlayer.dailyUbersLeft = 5 + UberIncrease.getUberIncrease(player);
 				}
