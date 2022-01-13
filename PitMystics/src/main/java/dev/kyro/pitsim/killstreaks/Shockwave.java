@@ -53,7 +53,7 @@ public class Shockwave extends Killstreak {
 			AttackEvent attackEvent = new AttackEvent(ev, attackerEnchant, defenderEnchant, false);
 
 			double distance = non.getLocation().distance(player.getLocation());
-			if(distance < 2.4 && count < 15) {
+			if(distance < 2.5 && count < 15) {
 				DamageManager.kill(attackEvent, player, non, false);
 				count++;
 				if(distance < 2) {
