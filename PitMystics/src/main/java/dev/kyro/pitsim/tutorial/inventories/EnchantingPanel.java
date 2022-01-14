@@ -11,13 +11,13 @@ import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.commands.FreshCommand;
 import dev.kyro.pitsim.controllers.EnchantManager;
 import dev.kyro.pitsim.controllers.objects.PitEnchant;
-import dev.kyro.pitsim.enchants.Billionaire;
-import dev.kyro.pitsim.enchants.Lifesteal;
+import dev.kyro.pitsim.enchants.*;
 import dev.kyro.pitsim.enums.MysticType;
 import dev.kyro.pitsim.enums.NBTTag;
 import dev.kyro.pitsim.enums.PantColor;
 import dev.kyro.pitsim.misc.Misc;
 import dev.kyro.pitsim.misc.Sounds;
+import dev.kyro.pitsim.tutorial.TaskListener;
 import dev.kyro.pitsim.tutorial.TutorialManager;
 import dev.kyro.pitsim.tutorial.sequences.ViewEnchantsSequence;
 import org.bukkit.Material;
@@ -82,6 +82,7 @@ public class EnchantingPanel extends AGUIPanel {
 
 		mystic = FreshCommand.getFreshItem("sword");
 		enchantPanels.put(player, new ApplyEnchantPanel(enchantingGUI, mystic, null, enchantingGUI.getEnchantSlot(1)));
+		mystic = new ItemStack(Material.AIR);
 
 
 
@@ -132,8 +133,11 @@ public class EnchantingPanel extends AGUIPanel {
 
 	@Override
 	public void onClick(InventoryClickEvent event) {
+		if(TutorialManager.getTutorial(player) == null) return;
 
-		if(TutorialManager.getTutorial(player) != null && TutorialManager.getTutorial(player).sequence.getClass() ==
+		if(TutorialManager.getTutorial(player).sequence == null) return;
+
+		if(TutorialManager.getTutorial(player).sequence.getClass() ==
 				ViewEnchantsSequence.class) return;
 
 		int slot = event.getSlot();
@@ -167,17 +171,39 @@ public class EnchantingPanel extends AGUIPanel {
 					colorSelect = false;
 				} else {
 					getInventory().setItem(37, new ItemStack(Material.AIR));
-					if(!FreshCommand.isFresh(mystic)) player.getInventory().addItem(mystic);
+					if(!FreshCommand.isFresh(mystic)) {
 
-					boolean hasBill2 = false;
-					boolean hasLs3 = false;
-
-					Map<PitEnchant, Integer> enchantList = EnchantManager.getEnchantsOnItem(mystic);
-					for (Map.Entry<PitEnchant, Integer> entry : enchantList.entrySet()) {
-						if(entry.getKey() instanceof Billionaire && entry.getValue() == 2) hasBill2 = true;
-						if(entry.getKey() instanceof Lifesteal && entry.getValue() == 3) hasLs3 = true;
+						if(mystic.getType() == Material.GOLD_SWORD) {
+							boolean hasBill2 = false;
+							boolean hasLs3 = false;
+							Map<PitEnchant, Integer> enchantList = EnchantManager.getEnchantsOnItem(mystic);
+							for(Map.Entry<PitEnchant, Integer> entry : enchantList.entrySet()) {
+								if(entry.getKey() instanceof Billionaire && entry.getValue() == 2) hasBill2 = true;
+								if(entry.getKey() instanceof Lifesteal && entry.getValue() == 3) hasLs3 = true;
+							}
+							if(hasBill2 && hasLs3) TaskListener.onEnchantBillLs(player);
+						} else if(mystic.getType() == Material.BOW) {
+							boolean hasMega = false;
+							boolean hasDrain = false;
+							Map<PitEnchant, Integer> enchantList = EnchantManager.getEnchantsOnItem(mystic);
+							for(Map.Entry<PitEnchant, Integer> entry : enchantList.entrySet()) {
+								if(entry.getKey() instanceof MegaLongBow) hasMega = true;
+								if(entry.getKey() instanceof SprintDrain && entry.getValue() == 3) hasDrain = true;
+							}
+							if(hasDrain && hasMega) TaskListener.onMegaDrainEnchant(player);
+						} else {
+							boolean hasRgm = false;
+							boolean hasCf = false;
+							Map<PitEnchant, Integer> enchantList = EnchantManager.getEnchantsOnItem(mystic);
+							for(Map.Entry<PitEnchant, Integer> entry : enchantList.entrySet()) {
+								if(entry.getKey() instanceof RetroGravityMicrocosm && entry.getValue() == 3)
+									hasRgm = true;
+								if(entry.getKey() instanceof CriticallyFunky && entry.getValue() == 3) hasCf = true;
+							}
+							if(hasCf && hasRgm) TaskListener.onEnchantRGM(player);
+						}
 					}
-
+					player.getInventory().addItem(mystic);
 
 					mystic = new ItemStack(Material.AIR);
 				}

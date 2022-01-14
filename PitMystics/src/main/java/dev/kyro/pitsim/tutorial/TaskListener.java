@@ -74,15 +74,26 @@ public class TaskListener implements Listener {
 		tutorial.onTaskComplete(Task.EQUIP_MEGASTREAK);
 	}
 
-	public void onEnchantBillLs(Player player) {
+	public static void onEnchantBillLs(Player player) {
 		Tutorial tutorial = TutorialManager.getTutorial(player);
 		if(tutorial == null) return;
 
 		tutorial.onTaskComplete(Task.ENCHANT_BILL_LS);
 	}
 
+	public static void onEnchantRGM(Player player) {
+		Tutorial tutorial = TutorialManager.getTutorial(player);
+		if(tutorial == null) return;
 
+		tutorial.onTaskComplete(Task.ENCHANT_RGM);
+	}
 
+	public static void onMegaDrainEnchant(Player player) {
+		Tutorial tutorial = TutorialManager.getTutorial(player);
+		if(tutorial == null) return;
+
+		tutorial.onTaskComplete(Task.ENCHANT_MEGA_DRAIN);
+	}
 
 
 	@EventHandler

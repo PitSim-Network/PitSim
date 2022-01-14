@@ -3,7 +3,9 @@ package dev.kyro.pitsim.tutorial;
 import dev.kyro.pitsim.misc.Sounds;
 import dev.kyro.pitsim.tutorial.inventories.EnchantingGUI;
 import dev.kyro.pitsim.tutorial.objects.Tutorial;
-import dev.kyro.pitsim.tutorial.sequences.EnchantBillLsSequence;
+import dev.kyro.pitsim.tutorial.sequences.InitialMysticWellSequence;
+import dev.kyro.pitsim.tutorial.sequences.ViewEnchantTiersSequence;
+import dev.kyro.pitsim.tutorial.sequences.ViewEnchantsSequence;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
@@ -54,7 +56,9 @@ public class TutorialManager implements Listener {
 	@EventHandler
 	public static void onEnchantingTableClick(PlayerInteractEvent event) {
 		if(!tutorials.containsKey(event.getPlayer())) return;
-		if(!(getTutorial(event.getPlayer()).sequence instanceof EnchantBillLsSequence)) return;
+		if(getTutorial(event.getPlayer()).sequence instanceof InitialMysticWellSequence ||
+				getTutorial(event.getPlayer()).sequence instanceof ViewEnchantsSequence ||
+				getTutorial(event.getPlayer()).sequence instanceof ViewEnchantTiersSequence) return;
 		if(event.getAction() != Action.LEFT_CLICK_BLOCK && event.getAction() != Action.RIGHT_CLICK_BLOCK) return;
 		Player player = event.getPlayer();
 		Block block = event.getClickedBlock();

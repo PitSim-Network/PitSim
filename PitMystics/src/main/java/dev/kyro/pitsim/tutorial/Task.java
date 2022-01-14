@@ -9,7 +9,9 @@ public enum Task {
     VIEW_MYSTIC_WELL(6),
     VIEW_ENCHANTS(7),
     VIEW_ENCHANT_TIERS(8),
-    ENCHANT_BILL_LS(9);
+    ENCHANT_BILL_LS(9),
+    ENCHANT_RGM(10),
+    ENCHANT_MEGA_DRAIN(11);
 
     public int order;
 

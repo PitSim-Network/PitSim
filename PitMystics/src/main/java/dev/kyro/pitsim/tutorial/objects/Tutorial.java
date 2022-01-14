@@ -79,6 +79,8 @@ public class Tutorial {
 		if(task == Task.VIEW_MYSTIC_WELL) sequence = new ViewEnchantsSequence(player, this);
 		if(task == Task.VIEW_ENCHANTS) sequence = new ViewEnchantTiersSequence(player, this);
 		if(task == Task.VIEW_ENCHANT_TIERS) sequence = new EnchantBillLsSequence(player, this);
+		if(task == Task.ENCHANT_BILL_LS) sequence = new EnchantRGMSequence(player, this);
+		if(task == Task.ENCHANT_RGM) sequence = new EnchantMegaDrainSequence(player, this);
 
 		if(sequence != null) sequence.play();
 	}
