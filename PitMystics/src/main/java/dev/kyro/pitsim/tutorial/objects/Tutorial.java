@@ -23,7 +23,9 @@ import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 public class Tutorial {
 	public Player player;
@@ -33,6 +35,7 @@ public class Tutorial {
 	public NPC upgradesNPC = null;
 	public Location areaLocation;
 	public ApplyEnchantPanel panel = null;
+	public List<NPC> nons = new ArrayList<>();
 
 
 	public Tutorial(Player player, int position) {
@@ -81,6 +84,7 @@ public class Tutorial {
 		if(task == Task.VIEW_ENCHANT_TIERS) sequence = new EnchantBillLsSequence(player, this);
 		if(task == Task.ENCHANT_BILL_LS) sequence = new EnchantRGMSequence(player, this);
 		if(task == Task.ENCHANT_RGM) sequence = new EnchantMegaDrainSequence(player, this);
+		if(task == Task.ENCHANT_MEGA_DRAIN) sequence = new SpawnNonSequence(player, this);
 
 		if(sequence != null) sequence.play();
 	}
@@ -108,6 +112,10 @@ public class Tutorial {
 		}
 		SchematicPaste.loadSchematic(new File("plugins/WorldEdit/schematics/clear.schematic"), areaLocation);
 		TutorialManager.tutorials.remove(this.player);
+
+		for (NPC non : nons) {
+			non.destroy();
+		}
 	}
 
 	public void addOffset(Location location) {

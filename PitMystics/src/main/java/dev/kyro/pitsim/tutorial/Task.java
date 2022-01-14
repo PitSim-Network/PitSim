@@ -11,7 +11,8 @@ public enum Task {
     VIEW_ENCHANT_TIERS(8),
     ENCHANT_BILL_LS(9),
     ENCHANT_RGM(10),
-    ENCHANT_MEGA_DRAIN(11);
+    ENCHANT_MEGA_DRAIN(11),
+    VIEW_NON(12);
 
     public int order;
 
