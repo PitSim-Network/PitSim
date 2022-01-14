@@ -1,11 +1,13 @@
 package dev.kyro.pitsim.tutorial;
 
+import dev.kyro.pitsim.events.KillEvent;
 import dev.kyro.pitsim.misc.Sounds;
 import dev.kyro.pitsim.tutorial.inventories.EnchantingGUI;
 import dev.kyro.pitsim.tutorial.objects.Tutorial;
 import dev.kyro.pitsim.tutorial.sequences.InitialMysticWellSequence;
 import dev.kyro.pitsim.tutorial.sequences.ViewEnchantTiersSequence;
 import dev.kyro.pitsim.tutorial.sequences.ViewEnchantsSequence;
+import net.citizensnpcs.api.npc.NPC;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
@@ -71,5 +73,15 @@ public class TutorialManager implements Listener {
 		enchantingGUI.open();
 		Sounds.MYSTIC_WELL_OPEN_1.play(player);
 		Sounds.MYSTIC_WELL_OPEN_2.play(player);
+	}
+
+	@EventHandler public void onKill(KillEvent event) {
+		Player player = event.killer;
+		if(getTutorial(player) == null) return;
+
+		Tutorial tutorial = getTutorial(player);
+		for (NPC non : tutorial.nons) {
+			if(non == event.dead) non.spawn(tutorial.areaLocation);
+		}
 	}
 }

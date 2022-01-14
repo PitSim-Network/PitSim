@@ -6,6 +6,11 @@ import dev.kyro.pitsim.tutorial.Task;
 import dev.kyro.pitsim.tutorial.TutorialMessage;
 import dev.kyro.pitsim.tutorial.objects.Tutorial;
 import dev.kyro.pitsim.tutorial.objects.TutorialSequence;
+import net.citizensnpcs.api.CitizensAPI;
+import net.citizensnpcs.api.npc.NPC;
+import org.bukkit.Bukkit;
+import org.bukkit.Material;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
@@ -70,7 +75,10 @@ public class SpawnNonSequence extends TutorialSequence {
 		BukkitTask runnable = new BukkitRunnable() {
 			@Override
 			public void run() {
-
+				Bukkit.getWorld("tutorial").getBlockAt(tutorial.areaLocation).setType(Material.ENCHANTMENT_TABLE);
+				NPC non  = CitizensAPI.getNPCRegistry().createNPC(EntityType.PLAYER, "Dummy");
+				tutorial.nons.add(non);
+				non.spawn(tutorial.areaLocation);
 			}
 		}.runTaskLater(PitSim.INSTANCE, 20L * waitTime);
 		runnableList.add(runnable);
