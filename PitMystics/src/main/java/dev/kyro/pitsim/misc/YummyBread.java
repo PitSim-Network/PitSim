@@ -71,7 +71,7 @@ public class YummyBread implements Listener {
 					else breadStacks.put(player, breadStacks.get(player) - 1);
 				}
 			}
-		}.runTaskLater(PitSim.INSTANCE, 20 * 25L);
+		}.runTaskLater(PitSim.INSTANCE, 20 * 20L);
 		player.updateInventory();
 	}
 
@@ -103,7 +103,7 @@ public class YummyBread implements Listener {
 	public static void giveYummyBread(Player player, int amount) {
 		AItemStackBuilder veryBuilder = new AItemStackBuilder(Material.BREAD, amount);
 		veryBuilder.setName("&6Yummy bread");
-		ALoreBuilder veryLoreBuilder = new ALoreBuilder("&7Deal &c+10% &7damage to bots", "&7for 25 seconds. (Stacking)");
+		ALoreBuilder veryLoreBuilder = new ALoreBuilder("&7Deal &c+10% &7damage to bots", "&7for 20 seconds. (Stacking)");
 		veryBuilder.setLore(veryLoreBuilder);
 
 		NBTItem nbtItem = new NBTItem(veryBuilder.getItemStack());
