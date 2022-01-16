@@ -8,7 +8,6 @@ import dev.kyro.pitsim.controllers.PerkManager;
 import dev.kyro.pitsim.controllers.PrestigeValues;
 import dev.kyro.pitsim.controllers.objects.Megastreak;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
-import dev.kyro.pitsim.events.KillstreakEquipEvent;
 import dev.kyro.pitsim.events.MegastreakEquipEvent;
 import dev.kyro.pitsim.megastreaks.*;
 import dev.kyro.pitsim.misc.Sounds;
@@ -140,7 +139,7 @@ public class MegastreakPanel extends AGUIPanel {
 							pitPlayer.renown = pitPlayer.renown - RNGesus.RENOWN_COST;
 							AOutput.send(player, "&aEquipped &6RNGsus &afor &e" + RNGesus.RENOWN_COST + " Renown!");
 							Sounds.SUCCESS.play(player);
-							RNGesus.rngsusCdPlayers.remove(player);
+							RNGesus.rngesusCooldownPlayers.remove(player.getUniqueId());
 							pitPlayer.megastreak.stop();
 							pitPlayer.megastreak = new RNGesus(pitPlayer);
 							perkGUI.megaWrapUp();

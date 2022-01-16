@@ -46,7 +46,7 @@ public class RNGesus extends Megastreak {
 	public static int COOLDOWN_MINUTES = 60;
 	public static int INSTABILITY_THRESHOLD = 1000;
 
-	public static Map<Player, Long> rngsusCdPlayers = new HashMap<>();
+	public static Map<UUID, Long> rngesusCooldownPlayers = new HashMap<>();
 
 	public List<Reality> generatedRealityOrder = new ArrayList<>();
 	public Map<Reality, RealityInfo> realityMap = new HashMap<>();
@@ -489,10 +489,10 @@ public class RNGesus extends Megastreak {
 	}
 
 	public static boolean isOnCooldown(Player player) {
-		if(!rngsusCdPlayers.containsKey(player)) return false;
-		double timeElapsed = new Date().getTime() - rngsusCdPlayers.get(player);
+		if(!rngesusCooldownPlayers.containsKey(player.getUniqueId())) return false;
+		double timeElapsed = new Date().getTime() - rngesusCooldownPlayers.get(player.getUniqueId());
 		if(timeElapsed / 1000 / 60 > COOLDOWN_MINUTES) {
-			rngsusCdPlayers.remove(player);
+			rngesusCooldownPlayers.remove(player.getUniqueId());
 			return false;
 		}
 		return true;
@@ -500,7 +500,7 @@ public class RNGesus extends Megastreak {
 
 	public static String getTime(Player player) {
 		StringBuilder builder = new StringBuilder();
-		long difference = ((System.currentTimeMillis() / 1000) - rngsusCdPlayers.get(player) / 1000);
+		long difference = ((System.currentTimeMillis() / 1000) - rngesusCooldownPlayers.get(player.getUniqueId()) / 1000);
 		int reverseDiff = (COOLDOWN_MINUTES * 60) - (int) difference;
 		builder.append(reverseDiff / 60).append("m ");
 		builder.append(reverseDiff % 60).append("s");
@@ -508,6 +508,6 @@ public class RNGesus extends Megastreak {
 	}
 
 	public static void rngsusCooldown(Player player) {
-		rngsusCdPlayers.put(player, System.currentTimeMillis());
+		rngesusCooldownPlayers.put(player.getUniqueId(), System.currentTimeMillis());
 	}
 }
