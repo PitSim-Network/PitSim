@@ -2,12 +2,15 @@ package dev.kyro.pitsim.killstreaks;
 
 import dev.kyro.arcticapi.builders.AItemStackBuilder;
 import dev.kyro.arcticapi.builders.ALoreBuilder;
+import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.controllers.DamageManager;
 import dev.kyro.pitsim.controllers.EnchantManager;
 import dev.kyro.pitsim.controllers.NonManager;
 import dev.kyro.pitsim.controllers.objects.Killstreak;
 import dev.kyro.pitsim.controllers.objects.PitEnchant;
+import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.events.AttackEvent;
+import dev.kyro.pitsim.megastreaks.RNGesus;
 import org.bukkit.Effect;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -32,6 +35,12 @@ public class Shockwave extends Killstreak {
 
 	@Override
 	public void proc(Player player) {
+		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
+		if(pitPlayer.megastreak.getClass() == RNGesus.class && pitPlayer.getKills() >= 50) {
+			AOutput.error(player, "&c&lUNSTABLE! &7Shockwave cannot be used in this reality");
+			return;
+		}
+
 		for(int i = 0; i < 5; i++) {
 			Location exploLoc = player.getLocation().clone().add(0, 1, 0);
 			exploLoc.add(Math.random() * 10 - 5, 0, Math.random() * 10 - 5);
