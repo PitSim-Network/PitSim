@@ -10,11 +10,11 @@ import java.util.Map;
 public class HelmetSystem {
 	public static int increment = 200_000;
 	public enum Passive {
-		XP_BOOST("&bXP Boost", 3, 3, 10, (short) 12, ChatColor.AQUA, 1),
-		GOLD_BOOST("&6Gold Boost", 4, 4, 25, (short) 14, ChatColor.GOLD, 1),
+		XP_BOOST("&bXP Boost", 3, 3, 20, (short) 12, ChatColor.AQUA, 1),
+		GOLD_BOOST("&6Gold Boost", 4, 4, 20, (short) 14, ChatColor.GOLD, 1),
 		DAMAGE("&cDamage Dealt",10, 5, 10, (short) 1, ChatColor.RED, 1),
 		DAMAGE_REDUCTION("&9Damage Received",10, 10, 10, (short) 6, ChatColor.BLUE, 1),
-		SHARD_CHANCE("&aShard Chance", 19, 19, 5, (short) 10, ChatColor.GREEN, 0.1);
+		PLAYER_KILLS("&5+1 Player Kill Chance", 7, 7, 15, (short) 5, ChatColor.DARK_PURPLE, 5);
 
 		public String refName;
 		public int everyX;

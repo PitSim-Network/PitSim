@@ -188,19 +188,15 @@ public class HelmetPanel extends AGUIPanel {
 			builder.setName(passive.refName);
 			String percent;
 			if(passiveLevel != 0) {
-				if(passive.name().equals("DAMAGE_REDUCTION")) {
+				if(passive == HelmetSystem.Passive.DAMAGE_REDUCTION) {
 					percent = "&7Current: " + passive.color + "-" + passiveLevel * passive.baseUnit + "%";
-				} else if(passive.name().equals("SHARD_CHANCE")) {
-					percent = "&7Current: " + passive.color + "+" + passiveLevel * (passive.baseUnit / 10) + "%";
 				} else percent = "&7Current: " + passive.color + "+" + passiveLevel * passive.baseUnit + "%";
 				String tier = "&7Tier: &a" + AUtil.toRoman(passiveLevel);
 				if(passiveLevel > 0) loreBuilder.addLore(percent, tier);
 			}
 			loreBuilder.addLore("");
-			if(passive.name().equals("DAMAGE_REDUCTION")) {
+			if(passive == HelmetSystem.Passive.DAMAGE_REDUCTION) {
 				loreBuilder.addLore("&7Each tier:", passive.color + "-" + passive.baseUnit + "% " + passive.refName, "", "&eLevel up helmet to upgrade!");
-			} else if(passive.name().equals("SHARD_CHANCE")){
-				loreBuilder.addLore("&7Each tier:", passive.color + "+" + (passive.baseUnit / 10) + "% " + passive.refName, "", "&eLevel up helmet to upgrade!");
 			} else loreBuilder.addLore("&7Each tier:", passive.color + "+" + passive.baseUnit + "% " + passive.refName, "", "&eLevel up helmet to upgrade!");
 			builder.setLore(loreBuilder);
 			getInventory().setItem(k, builder.getItemStack());
@@ -248,12 +244,8 @@ public class HelmetPanel extends AGUIPanel {
 		AItemStackBuilder builder = new AItemStackBuilder(Material.GOLD_NUGGET);
 
 		for(HelmetSystem.Passive passive : passives) {
-			if(passive.name().equals("DAMAGE_REDUCTION")) {
+			if(passive == HelmetSystem.Passive.DAMAGE_REDUCTION) {
 				loreBuilder.addLore(passive.color + "-" + passive.baseUnit + "% " + passive.refName);
-				continue;
-			}
-			if(passive.name().equals("SHARD_CHANCE"))  {
-				loreBuilder.addLore(passive.color + "+" + (passive.baseUnit / 10) + "% " + passive.refName);
 				continue;
 			}
 			loreBuilder.addLore(passive.color + "+" + passive.baseUnit + "% " + passive.refName);

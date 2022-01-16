@@ -8,10 +8,8 @@ import de.tr7zw.nbtapi.NBTItem;
 import dev.kyro.arcticapi.gui.AGUIPanel;
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.arcticapi.misc.AUtil;
-import dev.kyro.pitsim.controllers.HelmetSystem;
 import dev.kyro.pitsim.controllers.ItemManager;
 import dev.kyro.pitsim.controllers.UpgradeManager;
-import dev.kyro.pitsim.controllers.objects.GoldenHelmet;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.controllers.objects.RenownUpgrade;
 import dev.kyro.pitsim.enums.NBTTag;
@@ -78,12 +76,6 @@ public class ShardHunter extends RenownUpgrade {
 		if(tier == 0) return;
 
 		double chance = 0.00005 * tier;
-		ItemStack helmet = GoldenHelmet.getHelmet(killEvent.killer);
-
-		if(helmet != null) {
-			int level = HelmetSystem.getLevel(GoldenHelmet.getUsedHelmetGold(killEvent.killer));
-			if(killEvent.killer.getInventory().getHelmet().getType() == Material.GOLD_HELMET) chance += 0.0001 * HelmetSystem.getTotalStacks(HelmetSystem.Passive.SHARD_CHANCE,level - 1);
-		}
 
 		PitPlayer pitKiller = PitPlayer.getPitPlayer(killEvent.killer);
 		if(pitKiller.megastreak.isOnMega() && pitKiller.megastreak.getClass() == Uberstreak.class) chance *= Uberstreak.SHARD_MULTIPLIER;

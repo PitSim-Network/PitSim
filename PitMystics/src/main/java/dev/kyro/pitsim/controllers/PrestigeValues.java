@@ -120,7 +120,7 @@ public class PrestigeValues {
 		xpLevelMap.put(80, 1200);
 		xpLevelMap.put(90, 1400);
 		xpLevelMap.put(100, 1700);
-		xpLevelMap.put(110, 2000);
+		xpLevelMap.put(110, 2500);
 
 		prestigeMap.put(0, new PrestigeInfo(0, 1, 20_000, 0, 20, "&7"));
 		prestigeMap.put(1, new PrestigeInfo(1, 1.2, 40_000, 0, 10, "&9")); //tenacity gboost xp

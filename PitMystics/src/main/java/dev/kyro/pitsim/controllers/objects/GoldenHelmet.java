@@ -198,12 +198,8 @@ public class GoldenHelmet implements Listener {
 			if(passiveLevel == 0) continue;
 			passives++;
 
-			if(passive.name().equals("DAMAGE_REDUCTION")) {
+			if(passive == HelmetSystem.Passive.DAMAGE_REDUCTION) {
 				loreBuilder.addLore(passive.color + "-" + passiveLevel * passive.baseUnit + "% " + passive.refName);
-				continue;
-			}
-			if(passive.name().equals("SHARD_CHANCE"))  {
-				loreBuilder.addLore(passive.color + "+" + passiveLevel * (passive.baseUnit / 10) + "% " + passive.refName);
 				continue;
 			}
 			loreBuilder.addLore(passive.color + "+" + passiveLevel * passive.baseUnit + "% " + passive.refName);
@@ -412,5 +408,13 @@ public class GoldenHelmet implements Listener {
 
 		killEvent.goldMultipliers.add(1 + HelmetSystem.getTotalStacks(HelmetSystem.Passive.GOLD_BOOST,  level  - 1) / 100D);
 		killEvent.xpMultipliers.add(1 + HelmetSystem.getTotalStacks(HelmetSystem.Passive.XP_BOOST, level - 1) / 100D);
+
+		if(NonManager.getNon(killEvent.dead) == null) {
+			double chance = HelmetSystem.getTotalStacks(HelmetSystem.Passive.PLAYER_KILLS, level - 1) * HelmetSystem.Passive.PLAYER_KILLS.baseUnit;
+			if(chance > Math.random() * 100) {
+				killEvent.playerKillWorth++;
+				AOutput.send(killEvent.killer, "&6&lHELMET! &7+1 player kill");
+			}
+		}
 	}
 }

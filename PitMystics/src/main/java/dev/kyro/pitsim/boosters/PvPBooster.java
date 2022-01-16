@@ -7,6 +7,7 @@ import dev.kyro.pitsim.events.KillEvent;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.List;
@@ -16,11 +17,10 @@ public class PvPBooster extends Booster {
 		super("PvP Booster", "pvp", 14, ChatColor.RED);
 	}
 
-	@EventHandler
+	@EventHandler(priority = EventPriority.HIGH)
 	public void onKill(KillEvent killEvent) {
 		if(!isActive()) return;
 		killEvent.playerKillWorth *= 2;
-//		TODO: not lose lives
 	}
 
 	@Override
