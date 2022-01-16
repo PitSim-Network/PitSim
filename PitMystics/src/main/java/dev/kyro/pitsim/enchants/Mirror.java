@@ -22,9 +22,15 @@ public class Mirror extends PitEnchant {
 	public void onAttack(AttackEvent.Apply attackEvent) {
 		if(!canApply(attackEvent)) return;
 
+		int attackerEnchantLvl = attackEvent.getAttackerEnchantLevel(this);
+		if(attackerEnchantLvl != 0) {
+			attackEvent.selfTrueDamage *= Misc.getReductionMultiplier(getReductionPercent(attackerEnchantLvl));
+		}
+
 		int defenderEnchantLvl = attackEvent.getDefenderEnchantLevel(this);
-		if(defenderEnchantLvl == 0) return;
-		attackEvent.trueDamage *= Misc.getReductionMultiplier(getReductionPercent(defenderEnchantLvl));
+		if(defenderEnchantLvl != 0) {
+			attackEvent.trueDamage *= Misc.getReductionMultiplier(getReductionPercent(defenderEnchantLvl));
+		}
 
 //		If just opponent has mirror
 //		if(defenderEnchantLvl != 0) {
