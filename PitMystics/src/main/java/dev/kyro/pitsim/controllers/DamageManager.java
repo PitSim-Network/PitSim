@@ -274,7 +274,10 @@ public class DamageManager implements Listener {
 		if(defendingNon == null) {
 			Location spawnLoc = MapManager.currentMap.getSpawn(dead.getWorld());
 			dead.teleport(spawnLoc);
-			if(attackingNon == null) {
+
+//			TODO: THIS IS NOT GOOD CODING
+			boolean realCheck = Bukkit.getOnlinePlayers().contains(dead);
+			if(attackingNon == null && realCheck) {
 				if(killer != dead && !isNaked(dead)) {
 					if(killEvent.isLuckyKill) pitAttacker.playerKills += killEvent.playerKillWorth * 3;
 					else pitAttacker.playerKills += killEvent.playerKillWorth;
