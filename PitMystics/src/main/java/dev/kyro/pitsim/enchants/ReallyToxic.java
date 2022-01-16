@@ -84,7 +84,7 @@ public class ReallyToxic extends PitEnchant {
 
 	public int getReductionPerHit(int enchantLvl) {
 
-		return enchantLvl + 1;
+		return enchantLvl;
 	}
 
 	public int getMaxReduction() {
