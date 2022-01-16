@@ -42,7 +42,7 @@ public class ChatManager implements Listener {
 				return;
 			}
 			NBTItem nbtItem = new NBTItem(heldItem);
-			if(!nbtItem.hasKey(NBTTag.PIT_ENCHANT_ORDER.getRef()) || nbtItem.hasKey(NBTTag.JEWEL_KILLS.getRef())) {
+			if(!nbtItem.hasKey(NBTTag.ITEM_UUID.getRef())) {
 				AOutput.error(event.getPlayer(), "&cYou can only name mystic items!");
 				return;
 			}
