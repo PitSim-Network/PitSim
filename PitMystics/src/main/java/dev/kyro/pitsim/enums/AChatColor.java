@@ -19,8 +19,6 @@ public enum AChatColor {
     YELLOW("Yellow", ChatColor.YELLOW, 'e', Material.INK_SACK, 11),
     WHITE("White", ChatColor.WHITE, 'f', Material.INK_SACK, 15);
 
-
-
     public String refName;
     public ChatColor chatColor;
     public char code;
