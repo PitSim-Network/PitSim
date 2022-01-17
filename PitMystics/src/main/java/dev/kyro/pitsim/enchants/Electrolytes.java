@@ -20,7 +20,7 @@ public class Electrolytes extends PitEnchant {
 		isUncommonEnchant = true;
 	}
 
-	@EventHandler
+//	@EventHandler
 	public void onAttack(AttackEvent.Apply attackEvent) {
 		if(!canApply(attackEvent)) return;
 
@@ -79,11 +79,11 @@ public class Electrolytes extends PitEnchant {
 
 	public int getSeconds(int enchantLvl) {
 
-		return enchantLvl * 2;
+		return enchantLvl * 2 - 1;
 	}
 
 	public int getMaxSeconds(int enchantLvl) {
 
-		return 12 + (6 * enchantLvl);
+		return 5;
 	}
 }
