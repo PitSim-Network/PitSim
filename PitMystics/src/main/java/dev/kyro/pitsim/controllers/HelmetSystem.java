@@ -14,7 +14,7 @@ public class HelmetSystem {
 		GOLD_BOOST("&6Gold Boost", 4, 4, 20, (short) 14, ChatColor.GOLD, 1),
 		DAMAGE("&cDamage Dealt",10, 5, 10, (short) 1, ChatColor.RED, 1),
 		DAMAGE_REDUCTION("&9Damage Received",10, 10, 10, (short) 6, ChatColor.BLUE, 1),
-		PLAYER_KILLS("&5+1 Player Kill", 7, 7, 15, (short) 5, ChatColor.DARK_PURPLE, 5);
+		PLAYER_KILLS("&e+1 Player Kill", 7, 7, 15, (short) 11, ChatColor.YELLOW, 5);
 
 		public String refName;
 		public int everyX;
