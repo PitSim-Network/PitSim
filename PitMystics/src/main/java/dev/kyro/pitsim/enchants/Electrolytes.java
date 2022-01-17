@@ -24,16 +24,12 @@ public class Electrolytes extends PitEnchant {
 	public void onAttack(AttackEvent.Apply attackEvent) {
 		if(!canApply(attackEvent)) return;
 
-		int enchantLvl = attackEvent.getDefenderEnchantLevel(this);
 		int attackerEnchantLevel = attackEvent.getAttackerEnchantLevel(this);
 		for (PotionEffect effect : attackEvent.attacker.getActivePotionEffects()) {
 			if(effect.getType().equals(PotionEffectType.SPEED) && effect.getAmplifier() == 3 && attackerEnchantLevel == 0 && effect.getDuration() > 85) {
 				attackEvent.attacker.removePotionEffect(PotionEffectType.SPEED);
 			}
 		}
-		if(enchantLvl == 0) return;
-
-		attackEvent.multipliers.add(Misc.getReductionMultiplier(getMaxSeconds(enchantLvl)));
 	}
 
 
