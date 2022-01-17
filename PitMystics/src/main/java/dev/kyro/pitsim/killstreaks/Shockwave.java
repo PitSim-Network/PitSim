@@ -36,7 +36,7 @@ public class Shockwave extends Killstreak {
 	@Override
 	public void proc(Player player) {
 		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
-		if(pitPlayer.megastreak.getClass() == RNGesus.class && pitPlayer.getKills() >= 50) {
+		if(pitPlayer.megastreak.getClass() == RNGesus.class && pitPlayer.getKills() >= RNGesus.INSTABILITY_THRESHOLD) {
 			AOutput.error(player, "&c&lUNSTABLE! &7Shockwave cannot be used in this reality");
 			return;
 		}
