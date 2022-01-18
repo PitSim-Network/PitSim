@@ -113,7 +113,7 @@ public class ShardHunter extends RenownUpgrade {
 		lore.add(ChatColor.GRAY + "Adds " + ChatColor.LIGHT_PURPLE + "1 tier " + ChatColor.GRAY + "to a mystic enchant.");
 		lore.add(ChatColor.DARK_GRAY + "Once per item!");
 		lore.add("");
-		lore.add(ChatColor.YELLOW + "Shift right-click to use!");
+		lore.add(ChatColor.YELLOW + "Hold and right-click to use!");
 		meta.setLore(lore);
 		gem.setItemMeta(meta);
 

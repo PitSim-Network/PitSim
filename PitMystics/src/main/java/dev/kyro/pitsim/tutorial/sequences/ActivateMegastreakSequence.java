@@ -6,6 +6,11 @@ import dev.kyro.pitsim.tutorial.Task;
 import dev.kyro.pitsim.tutorial.TutorialMessage;
 import dev.kyro.pitsim.tutorial.objects.Tutorial;
 import dev.kyro.pitsim.tutorial.objects.TutorialSequence;
+import net.citizensnpcs.api.CitizensAPI;
+import net.citizensnpcs.api.npc.NPC;
+import org.bukkit.Bukkit;
+import org.bukkit.Material;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
@@ -13,14 +18,14 @@ import org.bukkit.scheduler.BukkitTask;
 import java.util.ArrayList;
 import java.util.List;
 
-public class EnchantMegaDrainSequence extends TutorialSequence {
+public class ActivateMegastreakSequence extends TutorialSequence {
 	public Player player;
 	public Tutorial tutorial;
 	public int waitTime = 0;
 	public List<BukkitTask> runnableList = new ArrayList<>();
 
-	public EnchantMegaDrainSequence(Player player, Tutorial tutorial) {
-		super(player, tutorial, Task.ENCHANT_MEGA_DRAIN);
+	public ActivateMegastreakSequence(Player player, Tutorial tutorial) {
+		super(player, tutorial, Task.ACTIVATE_MEGASTREAK);
 		this.player = player;
 		this.tutorial = tutorial;
 		//test
@@ -36,6 +41,10 @@ public class EnchantMegaDrainSequence extends TutorialSequence {
 		sendMessage(TutorialMessage.DARK_BLUE);
 		wait(2);
 		sendMessage(TutorialMessage.DARK_GREEN);
+		wait(2);
+		spawnNons();
+		wait(2);
+
 	}
 
 	public void wait(int seconds) {
@@ -57,6 +66,20 @@ public class EnchantMegaDrainSequence extends TutorialSequence {
 			@Override
 			public void run() {
 				tutorial.onTaskComplete(task);
+			}
+		}.runTaskLater(PitSim.INSTANCE, 20L * waitTime);
+		runnableList.add(runnable);
+	}
+
+	public void spawnNons() {
+		BukkitTask runnable = new BukkitRunnable() {
+			@Override
+			public void run() {
+				Bukkit.getWorld("tutorial").getBlockAt(tutorial.areaLocation).setType(Material.AIR);
+				NPC non  = CitizensAPI.getNPCRegistry().createNPC(EntityType.PLAYER, "Dummy");
+				tutorial.nons.add(non);
+				non.spawn(tutorial.areaLocation);
+				non.setProtected(false);
 			}
 		}.runTaskLater(PitSim.INSTANCE, 20L * waitTime);
 		runnableList.add(runnable);

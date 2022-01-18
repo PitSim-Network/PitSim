@@ -12,7 +12,9 @@ public enum Task {
     ENCHANT_BILL_LS(9),
     ENCHANT_RGM(10),
     ENCHANT_MEGA_DRAIN(11),
-    VIEW_NON(12);
+    VIEW_NON(12),
+    ACTIVATE_MEGASTREAK(13),
+    PRESTIGE(14);
 
     public int order;
 

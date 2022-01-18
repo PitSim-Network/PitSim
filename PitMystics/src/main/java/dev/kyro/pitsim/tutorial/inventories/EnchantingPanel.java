@@ -171,6 +171,7 @@ public class EnchantingPanel extends AGUIPanel {
 					colorSelect = false;
 				} else {
 					getInventory().setItem(37, new ItemStack(Material.AIR));
+					boolean hasCorrectItem = false;
 					if(!FreshCommand.isFresh(mystic)) {
 
 						if(mystic.getType() == Material.GOLD_SWORD) {
@@ -181,7 +182,10 @@ public class EnchantingPanel extends AGUIPanel {
 								if(entry.getKey() instanceof Billionaire && entry.getValue() == 2) hasBill2 = true;
 								if(entry.getKey() instanceof Lifesteal && entry.getValue() == 3) hasLs3 = true;
 							}
-							if(hasBill2 && hasLs3) TaskListener.onEnchantBillLs(player);
+							if(hasBill2 && hasLs3) {
+								TaskListener.onEnchantBillLs(player);
+								hasCorrectItem = true;
+							}
 						} else if(mystic.getType() == Material.BOW) {
 							boolean hasMega = false;
 							boolean hasDrain = false;
@@ -190,7 +194,10 @@ public class EnchantingPanel extends AGUIPanel {
 								if(entry.getKey() instanceof MegaLongBow) hasMega = true;
 								if(entry.getKey() instanceof SprintDrain && entry.getValue() == 3) hasDrain = true;
 							}
-							if(hasDrain && hasMega) TaskListener.onMegaDrainEnchant(player);
+							if(hasDrain && hasMega)  {
+								TaskListener.onMegaDrainEnchant(player);
+								hasCorrectItem = true;
+							}
 						} else {
 							boolean hasRgm = false;
 							boolean hasCf = false;
@@ -200,10 +207,21 @@ public class EnchantingPanel extends AGUIPanel {
 									hasRgm = true;
 								if(entry.getKey() instanceof CriticallyFunky && entry.getValue() == 3) hasCf = true;
 							}
-							if(hasCf && hasRgm) TaskListener.onEnchantRGM(player);
+							if(hasCf && hasRgm) {
+								TaskListener.onEnchantRGM(player);
+								hasCorrectItem = true;
+							}
 						}
 					}
-					player.getInventory().addItem(mystic);
+
+					if(hasCorrectItem) {
+						player.getInventory().addItem(mystic);
+						hasGivenItemBack = true;
+					}
+					else {
+						AOutput.error(player, "&cPlease enchant the item the tutorial is instructing you to!");
+						Sounds.NO.play(player);
+					}
 
 					mystic = new ItemStack(Material.AIR);
 				}
@@ -290,10 +308,6 @@ public class EnchantingPanel extends AGUIPanel {
 	}
 
 	public void closeGUI() {
-		if(!Misc.isAirOrNull(mystic) && !FreshCommand.isFresh(mystic)) {
-			if(!hasGivenItemBack) player.getInventory().addItem(mystic);
-			hasGivenItemBack = true;
-		}
 		runnable.cancel();
 	}
 

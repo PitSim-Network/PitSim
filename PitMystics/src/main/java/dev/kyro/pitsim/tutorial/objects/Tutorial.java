@@ -33,7 +33,9 @@ public class Tutorial {
 	public int position;
 	public RingCalc.XYCoords positionCoords;
 	public NPC upgradesNPC = null;
+	public NPC prestigeNPC = null;
 	public Location areaLocation;
+	public Location nonSpawn;
 	public ApplyEnchantPanel panel = null;
 	public List<NPC> nons = new ArrayList<>();
 
@@ -44,6 +46,7 @@ public class Tutorial {
 		this.position = position;
 		this.positionCoords = RingCalc.getPosInRing(this.position);
 		areaLocation = new Location(Bukkit.getWorld("tutorial"), positionCoords.x, 92, positionCoords.y, -180, 0);
+		nonSpawn = areaLocation.clone();
 		setUpTutorialArea();
 		sequence.play();
 
@@ -85,6 +88,8 @@ public class Tutorial {
 		if(task == Task.ENCHANT_BILL_LS) sequence = new EnchantRGMSequence(player, this);
 		if(task == Task.ENCHANT_RGM) sequence = new EnchantMegaDrainSequence(player, this);
 		if(task == Task.ENCHANT_MEGA_DRAIN) sequence = new SpawnNonSequence(player, this);
+		if(task == Task.VIEW_NON) sequence = new ActivateMegastreakSequence(player, this);
+		if(task == Task.ACTIVATE_MEGASTREAK) sequence = new PrestigeSequence(player, this);
 
 		if(sequence != null) sequence.play();
 	}
@@ -95,7 +100,6 @@ public class Tutorial {
 	}
 
 	public void spawnUpgradesNPC() {
-		Bukkit.broadcastMessage("test");
 		NPCRegistry registry = CitizensAPI.getNPCRegistry();
 		NPC npc = registry.createNPC(EntityType.VILLAGER, "&e&lUPGRADES AND KILLSTREAKS");
 //		Location location = areaLocation.clone();
@@ -105,8 +109,19 @@ public class Tutorial {
 		upgradesNPC = npc;
 	}
 
+	public void spawnPrestigeNPC() {
+		NPCRegistry registry = CitizensAPI.getNPCRegistry();
+		NPC npc = registry.createNPC(EntityType.VILLAGER, "&e&lPRESTIGE AND RENOWN");
+//		Location location = areaLocation.clone();
+//		location.setPitch(-180);
+//		location.setY(0);
+		npc.spawn(areaLocation);
+		prestigeNPC = npc;
+	}
+
 	public void cleanUp() {
 		if(upgradesNPC != null) upgradesNPC.destroy();
+		if(prestigeNPC != null) prestigeNPC.destroy();
 		for(BukkitTask runnable : sequence.getRunnables()) {
 			runnable.cancel();
 		}
@@ -116,6 +131,7 @@ public class Tutorial {
 		for (NPC non : nons) {
 			non.destroy();
 		}
+
 	}
 
 	public void addOffset(Location location) {

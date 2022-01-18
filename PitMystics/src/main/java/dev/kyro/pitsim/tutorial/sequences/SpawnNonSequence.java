@@ -75,10 +75,11 @@ public class SpawnNonSequence extends TutorialSequence {
 		BukkitTask runnable = new BukkitRunnable() {
 			@Override
 			public void run() {
-				Bukkit.getWorld("tutorial").getBlockAt(tutorial.areaLocation).setType(Material.ENCHANTMENT_TABLE);
+				Bukkit.getWorld("tutorial").getBlockAt(tutorial.areaLocation).setType(Material.AIR);
 				NPC non  = CitizensAPI.getNPCRegistry().createNPC(EntityType.PLAYER, "Dummy");
 				tutorial.nons.add(non);
 				non.spawn(tutorial.areaLocation);
+				non.setProtected(false);
 			}
 		}.runTaskLater(PitSim.INSTANCE, 20L * waitTime);
 		runnableList.add(runnable);

@@ -4,15 +4,16 @@ import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.controllers.objects.Killstreak;
 import dev.kyro.pitsim.controllers.objects.PitPerk;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
+import dev.kyro.pitsim.events.KillEvent;
 import dev.kyro.pitsim.events.KillstreakEquipEvent;
 import dev.kyro.pitsim.events.MegastreakEquipEvent;
 import dev.kyro.pitsim.events.PerkEquipEvent;
+import dev.kyro.pitsim.megastreaks.NoMegastreak;
+import dev.kyro.pitsim.megastreaks.Overdrive;
 import dev.kyro.pitsim.tutorial.inventories.PerkGUI;
+import dev.kyro.pitsim.tutorial.inventories.PrestigeGUI;
 import dev.kyro.pitsim.tutorial.objects.Tutorial;
-import dev.kyro.pitsim.tutorial.sequences.KillstreakSequence;
-import dev.kyro.pitsim.tutorial.sequences.MegastreakSequence;
-import dev.kyro.pitsim.tutorial.sequences.PerkSequence;
-import dev.kyro.pitsim.tutorial.sequences.VampireSequence;
+import dev.kyro.pitsim.tutorial.sequences.*;
 import net.citizensnpcs.api.event.NPCRightClickEvent;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -107,6 +108,25 @@ public class TaskListener implements Listener {
 				dev.kyro.pitsim.tutorial.inventories.PerkGUI perkGUI = new PerkGUI(player);
 				perkGUI.open();
 			}
+			if(event.getNPC() == tutorial.prestigeNPC) {
+				if(player != tutorial.player) return;
+				PrestigeGUI prestigeGUI = new PrestigeGUI(player);
+				prestigeGUI.open();
+			}
+		}
+	}
+
+	@EventHandler
+	public void onKill(KillEvent event) {
+		Tutorial tutorial = TutorialManager.getTutorial(event.killer);
+		if(tutorial == null) return;
+
+		if(!(tutorial.sequence instanceof ActivateMegastreakSequence)) return;
+
+		PitPlayer pitPlayer = PitPlayer.getPitPlayer(tutorial.player);
+		if(pitPlayer.megastreak instanceof NoMegastreak) pitPlayer.megastreak = new Overdrive(pitPlayer);
+		if(pitPlayer.getKills() >= pitPlayer.megastreak.getRequiredKills()) {
+			tutorial.onTaskComplete(Task.ACTIVATE_MEGASTREAK);
 		}
 	}
 }

@@ -36,6 +36,8 @@ public class MessageManager implements Listener {
 
 							boolean isBypassed = false;
 							for (WrappedChatComponent component : components) {
+								if(component.getJson().contains(event.getPlayer().getDisplayName())) isBypassed = true;
+								if(component.getJson().contains("PIT LEVEL UP!")) isBypassed = true;
 								for(String identifier : TutorialMessage.getIdentifiers()) {
 									try {
 										if(component.getJson() == null) continue;
