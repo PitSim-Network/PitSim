@@ -17,6 +17,7 @@ import net.citizensnpcs.api.npc.NPC;
 import net.citizensnpcs.api.npc.NPCRegistry;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -36,8 +37,10 @@ public class Tutorial {
 	public NPC prestigeNPC = null;
 	public Location areaLocation;
 	public Location nonSpawn;
+	public Location playerSpawn;
 	public ApplyEnchantPanel panel = null;
 	public List<NPC> nons = new ArrayList<>();
+	public ArmorStand mysticWellStand = null;
 
 
 	public Tutorial(Player player, int position) {
@@ -47,6 +50,7 @@ public class Tutorial {
 		this.positionCoords = RingCalc.getPosInRing(this.position);
 		areaLocation = new Location(Bukkit.getWorld("tutorial"), positionCoords.x, 92, positionCoords.y, -180, 0);
 		nonSpawn = areaLocation.clone();
+		playerSpawn = areaLocation.clone();
 		setUpTutorialArea();
 		sequence.play();
 
@@ -91,6 +95,8 @@ public class Tutorial {
 		if(task == Task.VIEW_NON) sequence = new ActivateMegastreakSequence(player, this);
 		if(task == Task.ACTIVATE_MEGASTREAK) sequence = new PrestigeSequence(player, this);
 		if(task == Task.PRESTIGE) sequence = new BuyTenacitySequence(player, this);
+		if(task == Task.BUY_TENACITY) sequence = new FinalSequence(player, this);
+		if(task == Task.FINISH_TUTORIAL) cleanUp();
 
 		if(sequence != null) sequence.play();
 	}
@@ -123,6 +129,7 @@ public class Tutorial {
 	public void cleanUp() {
 		if(upgradesNPC != null) upgradesNPC.destroy();
 		if(prestigeNPC != null) prestigeNPC.destroy();
+		if(mysticWellStand != null) mysticWellStand.remove();
 		for(BukkitTask runnable : sequence.getRunnables()) {
 			runnable.cancel();
 		}

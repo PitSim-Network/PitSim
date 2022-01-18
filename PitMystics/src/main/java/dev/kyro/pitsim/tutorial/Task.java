@@ -15,7 +15,8 @@ public enum Task {
     VIEW_NON(12),
     ACTIVATE_MEGASTREAK(13),
     PRESTIGE(14),
-    BUY_TENACITY(15);
+    BUY_TENACITY(15),
+    FINISH_TUTORIAL(16);
 
     public int order;
 

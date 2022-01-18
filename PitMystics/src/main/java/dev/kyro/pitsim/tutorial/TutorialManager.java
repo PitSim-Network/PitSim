@@ -2,8 +2,12 @@ package dev.kyro.pitsim.tutorial;
 
 import dev.kyro.pitsim.controllers.DamageManager;
 import dev.kyro.pitsim.events.AttackEvent;
+import dev.kyro.pitsim.events.KillEvent;
+import dev.kyro.pitsim.events.OofEvent;
 import dev.kyro.pitsim.misc.Sounds;
+import dev.kyro.pitsim.tutorial.inventories.ApplyEnchantPanel;
 import dev.kyro.pitsim.tutorial.inventories.EnchantingGUI;
+import dev.kyro.pitsim.tutorial.inventories.EnchantingPanel;
 import dev.kyro.pitsim.tutorial.objects.Tutorial;
 import dev.kyro.pitsim.tutorial.sequences.*;
 import net.citizensnpcs.api.npc.NPC;
@@ -11,8 +15,11 @@ import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
+import org.bukkit.event.entity.PlayerDeathEvent;
+import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
@@ -100,6 +107,50 @@ public class TutorialManager implements Listener {
 					tutorial.sequence instanceof EnchantMegaDrainSequence) return;
 
 			event.setCancelled(true);
+		}
+	}
+
+	@EventHandler(priority = EventPriority.MONITOR)
+	public void onDeath(KillEvent event) {
+		Tutorial tutorial = getTutorial(event.dead);
+		if(tutorial == null) return;
+
+		event.dead.teleport(tutorial.playerSpawn);
+	}
+
+	@EventHandler(priority = EventPriority.MONITOR)
+	public void onOof(OofEvent event) {
+		Tutorial tutorial = getTutorial(event.getPlayer());
+		if(tutorial == null) return;
+
+		event.getPlayer().teleport(tutorial.playerSpawn);
+	}
+
+	@EventHandler(priority = EventPriority.MONITOR)
+	public void onDeath(PlayerDeathEvent event) {
+		Tutorial tutorial = getTutorial(event.getEntity());
+		if(tutorial == null) return;
+
+		event.getEntity().teleport(tutorial.playerSpawn);
+	}
+
+	@EventHandler
+	public void onClose(InventoryCloseEvent event) {
+		Player player = (Player) event.getPlayer();
+		Tutorial tutorial = getTutorial(player);
+		if(tutorial == null) return;
+
+		if(tutorial.sequence instanceof InitialMysticWellSequence && event.getInventory().getName().equals("Mystic Well")) {
+			EnchantingGUI enchantGUI = new EnchantingGUI(player);
+			player.openInventory(enchantGUI.getHomePanel().getInventory());
+		}
+
+		if(tutorial.sequence instanceof ViewEnchantsSequence && event.getInventory().getName().equals("Choose an Enchant")) {
+			player.openInventory(EnchantingPanel.openEnchantsPanel(player).getInventory());
+		}
+
+		if(tutorial.sequence instanceof ViewEnchantTiersSequence && event.getInventory().getName().equals("Choose a Level")) {
+			player.openInventory(ApplyEnchantPanel.openEnchantsPanel(player).getInventory());
 		}
 	}
 }

@@ -1,16 +1,13 @@
 package dev.kyro.pitsim.tutorial.sequences;
 
 import dev.kyro.pitsim.PitSim;
+import dev.kyro.pitsim.controllers.MapManager;
 import dev.kyro.pitsim.tutorial.MessageManager;
 import dev.kyro.pitsim.tutorial.Task;
 import dev.kyro.pitsim.tutorial.TutorialMessage;
-import dev.kyro.pitsim.tutorial.inventories.EnchantingGUI;
 import dev.kyro.pitsim.tutorial.objects.Tutorial;
 import dev.kyro.pitsim.tutorial.objects.TutorialSequence;
 import org.bukkit.Bukkit;
-import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
@@ -18,16 +15,17 @@ import org.bukkit.scheduler.BukkitTask;
 import java.util.ArrayList;
 import java.util.List;
 
-public class InitialMysticWellSequence extends TutorialSequence {
+public class FinalSequence extends TutorialSequence {
 	public Player player;
 	public Tutorial tutorial;
 	public int waitTime = 0;
 	public List<BukkitTask> runnableList = new ArrayList<>();
 
-	public InitialMysticWellSequence(Player player, Tutorial tutorial) {
-		super(player, tutorial, Task.VIEW_MYSTIC_WELL);
+	public FinalSequence(Player player, Tutorial tutorial) {
+		super(player, tutorial, Task.FINISH_TUTORIAL);
 		this.player = player;
 		this.tutorial = tutorial;
+		//test
 	}
 
 	@Override
@@ -37,13 +35,12 @@ public class InitialMysticWellSequence extends TutorialSequence {
 
 	@Override
 	public void play() {
-		placeTable();
-		wait(1);
-		openGUI();
-		wait(5);
 		sendMessage(TutorialMessage.DARK_BLUE);
+		wait(2);
+		teleport();
 		sendMessage(TutorialMessage.DARK_GREEN);
-		completeTask(Task.VIEW_MYSTIC_WELL);
+		wait(2);
+		completeTask(Task.FINISH_TUTORIAL);
 	}
 
 	public void wait(int seconds) {
@@ -70,31 +67,14 @@ public class InitialMysticWellSequence extends TutorialSequence {
 		runnableList.add(runnable);
 	}
 
-	public void openGUI() {
+	public void teleport() {
 		BukkitTask runnable = new BukkitRunnable() {
 			@Override
 			public void run() {
-				EnchantingGUI enchantGUI = new EnchantingGUI(player);
-				player.openInventory(enchantGUI.getHomePanel().getInventory());
+				player.teleport(MapManager.currentMap.getSpawn(Bukkit.getWorld("biomes1")));
 			}
 		}.runTaskLater(PitSim.INSTANCE, 20L * waitTime);
 		runnableList.add(runnable);
 	}
-
-	public void placeTable() {
-		BukkitTask runnable = new BukkitRunnable() {
-			@Override
-			public void run() {
-				EnchantingGUI enchantGUI = new EnchantingGUI(player);
-				tutorial.upgradesNPC.destroy();
-				tutorial.upgradesNPC = null;
-
-				Location blockLocation = tutorial.areaLocation.add(0, -1 ,0);
-				Bukkit.getWorld("tutorial").getBlockAt(blockLocation).setType(Material.ENCHANTMENT_TABLE);
-			}
-		}.runTaskLater(PitSim.INSTANCE, 20L * waitTime);
-		runnableList.add(runnable);
-	}
-
 
 }
