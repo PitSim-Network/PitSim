@@ -10,6 +10,10 @@ import dev.kyro.pitsim.controllers.UpgradeManager;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.controllers.objects.RenownUpgrade;
 import dev.kyro.pitsim.misc.Sounds;
+import dev.kyro.pitsim.tutorial.Task;
+import dev.kyro.pitsim.tutorial.TutorialManager;
+import dev.kyro.pitsim.tutorial.objects.Tutorial;
+import dev.kyro.pitsim.tutorial.sequences.BuyTenacitySequence;
 import net.luckperms.api.model.user.UserManager;
 import net.luckperms.api.node.Node;
 import org.bukkit.ChatColor;
@@ -54,6 +58,14 @@ public class RenownShopConfirmPanel extends AGUIPanel {
 
             if(slot == 11) {
                 RenownUpgrade upgrade = RenownShopGUI.purchaseConfirmations.get(player);
+
+                Tutorial tutorial = TutorialManager.getTutorial(player);
+                if(tutorial == null) return;
+
+                if(upgrade.refName.equals("TENACITY") && tutorial.sequence instanceof BuyTenacitySequence) {
+                    tutorial.onTaskComplete(Task.BUY_TENACITY);
+                }
+
                 if(upgrade.isTiered) {
                     if(playerData.contains(upgrade.refName))
                         playerData.set(upgrade.refName, UpgradeManager.getTier(player, upgrade) + 1);

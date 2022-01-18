@@ -14,7 +14,8 @@ public enum Task {
     ENCHANT_MEGA_DRAIN(11),
     VIEW_NON(12),
     ACTIVATE_MEGASTREAK(13),
-    PRESTIGE(14);
+    PRESTIGE(14),
+    BUY_TENACITY(15);
 
     public int order;
 

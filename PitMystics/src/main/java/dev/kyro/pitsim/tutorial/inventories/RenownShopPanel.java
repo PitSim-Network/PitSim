@@ -19,6 +19,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 
 public class RenownShopPanel extends AGUIPanel {
 
@@ -52,6 +53,10 @@ public class RenownShopPanel extends AGUIPanel {
             }
 
             for(RenownUpgrade upgrade : UpgradeManager.upgrades) {
+                if(!Objects.equals(upgrade.refName, "TENACITY")) {
+                    Sounds.NO.play(player);
+                    return;
+                }
                 if(slot == upgrade.guiSlot) {
                     if(upgrade.prestigeReq > pitPlayer.prestige) {
                         AOutput.error(player, "&cYou are too low level to acquire this!");

@@ -90,6 +90,7 @@ public class Tutorial {
 		if(task == Task.ENCHANT_MEGA_DRAIN) sequence = new SpawnNonSequence(player, this);
 		if(task == Task.VIEW_NON) sequence = new ActivateMegastreakSequence(player, this);
 		if(task == Task.ACTIVATE_MEGASTREAK) sequence = new PrestigeSequence(player, this);
+		if(task == Task.PRESTIGE) sequence = new BuyTenacitySequence(player, this);
 
 		if(sequence != null) sequence.play();
 	}
