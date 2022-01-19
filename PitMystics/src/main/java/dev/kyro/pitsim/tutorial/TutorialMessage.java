@@ -4,9 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public enum TutorialMessage {
-    DARK_BLUE("Dark Blue", "Blue"),
-    DARK_GREEN("Dark Green", "Green"),
-    WELCOME1("&eHey there, Welcome to PitSim!", ""),
+    WELCOME1("&eHey there, Welcome to PitSim!", "Hey there, Welcome to PitSim!"),
     WELCOME2("&eBefore you start playing, let me show you a little more about how PitSim works.", "Before you start playing, let me show you a little more about how PitSim works."),
     WELCOME3("&eIf you're sure that you already know what you're doing, you may skip this tutorial with &f/tutorial skip&e.", "If you're sure that you already know what you're doing, you may skip this tutorial with"),
     WELCOME4("&eHowever, I highly recommend taking the tutorial, as you might not know how to play otherwise.", "However, I highly recommend taking the tutorial, as you might not know how to play otherwise."),
