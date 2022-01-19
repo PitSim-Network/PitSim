@@ -10,9 +10,9 @@ public enum TutorialMessage {
     WELCOME2("&eBefore you start playing, let me show you a little more about how PitSim works.", "Before you start playing, let me show you a little more about how PitSim works."),
     WELCOME3("&eIf you're sure that you already know what you're doing, you may skip this tutorial with &f/tutorial skip&e.", "If you're sure that you already know what you're doing, you may skip this tutorial with"),
     WELCOME4("&eHowever, I highly recommend taking the tutorial, as you might not know how to play otherwise.", "However, I highly recommend taking the tutorial, as you might not know how to play otherwise."),
-    WELCOME5("&eWith that being said, lets start the tutorial!", "With that being said, lets start the tutorial!"),
-    VAMPIRE1("&eBefore you can learn about PitSim's unique combat mechanics, lets start out with some basics.", "Before you can learn about PitSim's unique combat mechanics, lets start out with some basics."),
-    VAMPIRE2("&fPerks &eare abilities that gave the player various buffs under certain circumstances.", "are abilities that gave the player various buffs under certain circumstances."),
+    WELCOME5("&eWith that being said, let's start the tutorial!", "With that being said, let's start the tutorial!"),
+    VAMPIRE1("&eBefore you can learn about PitSim's unique combat mechanics, let's start out with some basics.", "Before you can learn about PitSim's unique combat mechanics, let's start out with some basics."),
+    VAMPIRE2("&fPerks &eare abilities that give the player various buffs under certain circumstances.", "are abilities that give the player various buffs under certain circumstances."),
     VAMPIRE3("&eThe one &fPerk &ethat is essential to nearly every situation is &cVampire&e.", "that is essential to nearly every situation is"),
     VAMPIRE4("&eHead over to the &f\"Upgrades and Killstreaks\" &evillager and equip it.", "villager and equip it."),
     PERKS1("&eGreat!", "Great!"),
@@ -21,7 +21,7 @@ public enum TutorialMessage {
     KILLSTREAK2("&eNext we will be looking at &fKillstreaks&e.", "Next we will be looking at"),
     KILLSTREAK3("&fKillstreaks &eare similar to Perks, but are activated on different kill intervals.", "are similar to Perks, but are activated on different kill intervals."),
     KILLSTREAK4("&eGo ahead and choose a Killstreak to fill your first Killstreak slot.", "Go ahead and choose a Killstreak to fill your first Killstreak slot."),
-    MEGASTREAK1("&eThe final types of upgrade available in this menu are &fMegastreaks&e.", "The final types of upgrade available in this menu are"),
+    MEGASTREAK1("&eThe final types of upgrades available in this menu are &fMegastreaks&e.", "The final types of upgrades available in this menu are"),
     MEGASTREAK2("&fMegastreaks &eare a type of Killstreak that only activate once per streak.", "are a type of Killstreak that only activate once per streak."),
     MEGASTREAK3("&eThey completely change your kill rewards and last until you die.", "They completely change your kill rewards and last until you die."),
     MEGASTREAK4("&eSelect &cOverdrive &efrom the Upgrades Villager. You will unlock more Megastreaks later.", "from the Upgrades Villager. You will unlock more Megastreaks later."),
@@ -49,7 +49,7 @@ public enum TutorialMessage {
     RGM3("&eRemember, to enchant &fPants&e, click on the &aPhilosopher's Cactus &efirst.", "Remember, to enchant"),
     MEGA1("&eHey, you're getting the hang of this!", "Hey, you're getting the hang of this!"),
     MEGA2("&eFinally, make me a &fBow &ewith &dRARE! &9Mega Longbow &eand &9Sprint Drain III&e.", "Finally, make me a"),
-    MEGA3("&eIf you're having trouble with this one, &dRARE! &9Mega Longbow &ecan have any Enchant Tier", "If you're having trouble with this one,");
+    MEGA3("&eIf you're having trouble with this one, &dRARE! &9Mega Longbow &ecan have any Enchant Tier.", "If you're having trouble with this one,");
 
 
 

@@ -77,7 +77,8 @@ public class InitialSequence extends TutorialSequence {
 		BukkitTask runnable = new BukkitRunnable() {
 			@Override
 			public void run() {
-				player.teleport(new Location(Bukkit.getWorld("tutorial"), tutorial.positionCoords.x, 93, tutorial.positionCoords.y));
+				Location location = new Location(Bukkit.getWorld("tutorial"), tutorial.positionCoords.x, 93, tutorial.positionCoords.y);
+				player.teleport(location);
 			}
 		}.runTaskLater(PitSim.INSTANCE, (long) (20 * waitTime));
 		runnableList.add(runnable);
