@@ -48,7 +48,7 @@ public class Tutorial {
 		this.sequence = new InitialSequence(player, this);
 		this.position = position;
 		this.positionCoords = RingCalc.getPosInRing(this.position);
-		areaLocation = new Location(Bukkit.getWorld("tutorial"), positionCoords.x, 92, positionCoords.y, -180, 0);
+		areaLocation = new Location(Bukkit.getWorld("tutorial"), positionCoords.x, 92, positionCoords.y, 180, 0);
 		nonSpawn = areaLocation.clone();
 		playerSpawn = areaLocation.clone();
 		setUpTutorialArea();

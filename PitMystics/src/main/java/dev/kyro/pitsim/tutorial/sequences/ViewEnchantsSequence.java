@@ -33,11 +33,15 @@ public class ViewEnchantsSequence extends TutorialSequence {
 
 	@Override
 	public void play() {
-		wait(2);
 		openGUI();
+		sendMessage(TutorialMessage.ENCHANT1);
 		wait(5);
-		sendMessage(TutorialMessage.DARK_BLUE);
-		sendMessage(TutorialMessage.DARK_GREEN);
+		sendMessage(TutorialMessage.ENCHANT2);
+		wait(5);
+		sendMessage(TutorialMessage.ENCHANT3);
+		wait(5);
+		sendMessage(TutorialMessage.ENCHANT4);
+		wait(5);
 		completeTask(Task.VIEW_ENCHANTS);
 	}
 

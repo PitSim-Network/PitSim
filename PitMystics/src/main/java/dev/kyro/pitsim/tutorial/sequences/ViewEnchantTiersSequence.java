@@ -33,12 +33,15 @@ public class ViewEnchantTiersSequence extends TutorialSequence {
 
 	@Override
 	public void play() {
-		wait(2);
 		openGUI();
+		sendMessage(TutorialMessage.TIER1);
 		wait(5);
-		sendMessage(TutorialMessage.DARK_BLUE);
-		wait(2);
-		sendMessage(TutorialMessage.DARK_GREEN);
+		sendMessage(TutorialMessage.TIER2);
+		wait(5);
+		sendMessage(TutorialMessage.TIER3);
+		wait(5);
+		sendMessage(TutorialMessage.TIER4);
+		wait(5);
 		completeTask(Task.VIEW_ENCHANT_TIERS);
 	}
 

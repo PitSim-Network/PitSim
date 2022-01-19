@@ -8,6 +8,7 @@ import com.comphenix.protocol.events.PacketEvent;
 import com.comphenix.protocol.wrappers.WrappedChatComponent;
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.PitSim;
+import dev.kyro.pitsim.misc.Sounds;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 
@@ -17,7 +18,7 @@ public class MessageManager implements Listener {
 
 
 	public static void sendTutorialMessage(Player player, TutorialMessage message) {
-
+		Sounds.SUCCESS.play(player);
 		AOutput.send(player, message.message);
 	}
 

@@ -39,11 +39,23 @@ public class InitialMysticWellSequence extends TutorialSequence {
 	@Override
 	public void play() {
 		placeTable();
-		wait(1);
-		openGUI();
+		sendMessage(TutorialMessage.MYSTIC1);
 		wait(5);
-		sendMessage(TutorialMessage.DARK_BLUE);
-		sendMessage(TutorialMessage.DARK_GREEN);
+		sendMessage(TutorialMessage.MYSTIC2);
+		wait(5);
+		sendMessage(TutorialMessage.MYSTIC3);
+		wait(5);
+		sendMessage(TutorialMessage.MYSTIC4);
+		wait(5);
+		openGUI();
+		sendMessage(TutorialMessage.MYSTIC5);
+		wait(5);
+		sendMessage(TutorialMessage.MYSTIC6);
+		wait(5);
+		sendMessage(TutorialMessage.MYSTIC7);
+		wait(5);
+		sendMessage(TutorialMessage.MYSTIC8);
+		wait(5);
 		completeTask(Task.VIEW_MYSTIC_WELL);
 	}
 

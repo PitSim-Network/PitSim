@@ -33,9 +33,11 @@ public class EnchantRGMSequence extends TutorialSequence {
 
 	@Override
 	public void play() {
-		sendMessage(TutorialMessage.DARK_BLUE);
-		wait(2);
-		sendMessage(TutorialMessage.DARK_GREEN);
+		sendMessage(TutorialMessage.RGM1);
+		wait(5);
+		sendMessage(TutorialMessage.RGM2);
+		wait(10);
+		sendMessage(TutorialMessage.RGM3);
 	}
 
 	public void wait(int seconds) {

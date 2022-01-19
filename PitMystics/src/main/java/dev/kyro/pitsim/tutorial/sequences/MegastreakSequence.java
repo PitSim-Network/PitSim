@@ -33,9 +33,13 @@ public class MegastreakSequence extends TutorialSequence {
 
 	@Override
 	public void play() {
-		sendMessage(TutorialMessage.DARK_BLUE);
-		wait(2);
-		sendMessage(TutorialMessage.DARK_GREEN);
+		sendMessage(TutorialMessage.MEGASTREAK1);
+		wait(5);
+		sendMessage(TutorialMessage.MEGASTREAK2);
+		wait(5);
+		sendMessage(TutorialMessage.MEGASTREAK3);
+		wait(5);
+		sendMessage(TutorialMessage.MEGASTREAK4);
 	}
 
 	public void wait(int seconds) {
