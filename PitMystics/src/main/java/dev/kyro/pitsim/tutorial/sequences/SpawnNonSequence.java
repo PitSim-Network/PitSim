@@ -76,6 +76,7 @@ public class SpawnNonSequence extends TutorialSequence {
 			@Override
 			public void run() {
 				Bukkit.getWorld("tutorial").getBlockAt(tutorial.areaLocation).setType(Material.AIR);
+				tutorial.mysticWellHolo.delete();
 				NPC non  = CitizensAPI.getNPCRegistry().createNPC(EntityType.PLAYER, "Dummy");
 				tutorial.nons.add(non);
 				non.spawn(tutorial.areaLocation);

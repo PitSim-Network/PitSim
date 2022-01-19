@@ -1,5 +1,6 @@
 package dev.kyro.pitsim.tutorial.objects;
 
+import com.gmail.filoghost.holographicdisplays.api.Hologram;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.killstreaks.NoKillstreak;
@@ -17,7 +18,6 @@ import net.citizensnpcs.api.npc.NPC;
 import net.citizensnpcs.api.npc.NPCRegistry;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
-import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -40,7 +40,7 @@ public class Tutorial {
 	public Location playerSpawn;
 	public ApplyEnchantPanel panel = null;
 	public List<NPC> nons = new ArrayList<>();
-	public ArmorStand mysticWellStand = null;
+	public Hologram mysticWellHolo;
 
 
 	public Tutorial(Player player, int position) {
@@ -103,7 +103,7 @@ public class Tutorial {
 
 	public void setUpTutorialArea() {
 		SchematicPaste.loadSchematic(new File("plugins/WorldEdit/schematics/clear.schematic"), areaLocation);
-		SchematicPaste.loadSchematic(new File("plugins/WorldEdit/schematics/tutorialArea.schematic"), areaLocation);
+		SchematicPaste.loadTutorialSchematic(new File("plugins/WorldEdit/schematics/tutorialArea.schematic"), areaLocation);
 	}
 
 	public void spawnUpgradesNPC() {
@@ -129,7 +129,7 @@ public class Tutorial {
 	public void cleanUp() {
 		if(upgradesNPC != null) upgradesNPC.destroy();
 		if(prestigeNPC != null) prestigeNPC.destroy();
-		if(mysticWellStand != null) mysticWellStand.remove();
+		if(mysticWellHolo != null) mysticWellHolo.delete();
 		for(BukkitTask runnable : sequence.getRunnables()) {
 			runnable.cancel();
 		}

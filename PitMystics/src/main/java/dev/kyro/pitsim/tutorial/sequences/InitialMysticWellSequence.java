@@ -1,5 +1,7 @@
 package dev.kyro.pitsim.tutorial.sequences;
 
+import com.gmail.filoghost.holographicdisplays.api.Hologram;
+import com.gmail.filoghost.holographicdisplays.api.HologramsAPI;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.tutorial.MessageManager;
 import dev.kyro.pitsim.tutorial.Task;
@@ -10,7 +12,6 @@ import dev.kyro.pitsim.tutorial.objects.TutorialSequence;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
@@ -88,6 +89,11 @@ public class InitialMysticWellSequence extends TutorialSequence {
 				EnchantingGUI enchantGUI = new EnchantingGUI(player);
 				tutorial.upgradesNPC.destroy();
 				tutorial.upgradesNPC = null;
+
+				Location holoLocation = tutorial.areaLocation.clone().add(0, 1.5, 0.5);
+				Hologram holo = HologramsAPI.createHologram(PitSim.INSTANCE, tutorial.areaLocation);
+				holo.appendTextLine("&d&lMystic Well");
+				tutorial.mysticWellHolo = holo;
 
 				Location blockLocation = tutorial.areaLocation.add(0, -1 ,0);
 				Bukkit.getWorld("tutorial").getBlockAt(blockLocation).setType(Material.ENCHANTMENT_TABLE);

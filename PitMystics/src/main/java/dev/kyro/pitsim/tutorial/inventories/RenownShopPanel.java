@@ -53,11 +53,13 @@ public class RenownShopPanel extends AGUIPanel {
             }
 
             for(RenownUpgrade upgrade : UpgradeManager.upgrades) {
-                if(!Objects.equals(upgrade.refName, "TENACITY")) {
-                    Sounds.NO.play(player);
-                    return;
-                }
+
                 if(slot == upgrade.guiSlot) {
+                    if(!Objects.equals(upgrade.refName, "TENACITY")) {
+                        Sounds.NO.play(player);
+                        return;
+                    }
+
                     if(upgrade.prestigeReq > pitPlayer.prestige) {
                         AOutput.error(player, "&cYou are too low level to acquire this!");
                         Sounds.NO.play(player);

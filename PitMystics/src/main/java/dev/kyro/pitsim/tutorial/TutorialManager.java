@@ -1,5 +1,6 @@
 package dev.kyro.pitsim.tutorial;
 
+import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.controllers.DamageManager;
 import dev.kyro.pitsim.events.AttackEvent;
 import dev.kyro.pitsim.events.KillEvent;
@@ -23,6 +24,8 @@ import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
+import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.scheduler.BukkitTask;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -141,16 +144,31 @@ public class TutorialManager implements Listener {
 		if(tutorial == null) return;
 
 		if(tutorial.sequence instanceof InitialMysticWellSequence && event.getInventory().getName().equals("Mystic Well")) {
-			EnchantingGUI enchantGUI = new EnchantingGUI(player);
-			player.openInventory(enchantGUI.getHomePanel().getInventory());
+			BukkitTask runnable = new BukkitRunnable() {
+				@Override
+				public void run() {
+					EnchantingGUI enchantGUI = new EnchantingGUI(player);
+					player.openInventory(enchantGUI.getHomePanel().getInventory());
+				}
+			}.runTaskLater(PitSim.INSTANCE, 1L);
 		}
 
 		if(tutorial.sequence instanceof ViewEnchantsSequence && event.getInventory().getName().equals("Choose an Enchant")) {
-			player.openInventory(EnchantingPanel.openEnchantsPanel(player).getInventory());
+			BukkitTask runnable = new BukkitRunnable() {
+				@Override
+				public void run() {
+					player.openInventory(EnchantingPanel.openEnchantsPanel(player).getInventory());
+				}
+			}.runTaskLater(PitSim.INSTANCE, 1L);
 		}
 
 		if(tutorial.sequence instanceof ViewEnchantTiersSequence && event.getInventory().getName().equals("Choose a Level")) {
-			player.openInventory(ApplyEnchantPanel.openEnchantsPanel(player).getInventory());
+			BukkitTask runnable = new BukkitRunnable() {
+				@Override
+				public void run() {
+					player.openInventory(ApplyEnchantPanel.openEnchantsPanel(player).getInventory());
+				}
+			}.runTaskLater(PitSim.INSTANCE, 1L);
 		}
 	}
 }
