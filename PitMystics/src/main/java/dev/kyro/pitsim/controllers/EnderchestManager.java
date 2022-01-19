@@ -55,10 +55,11 @@ public class EnderchestManager implements Listener {
         if(event.getPlayer().isOp() || event.getPlayer().hasPermission("galacticvaults.openothers")) return;
         if(ChatColor.stripColor(event.getMessage()).toLowerCase().startsWith("/pv") ||
                 ChatColor.stripColor(event.getMessage()).toLowerCase().startsWith("/playervault") ||
-                ChatColor.stripColor(event.getMessage()).toLowerCase().startsWith("/vault")) {
+                ChatColor.stripColor(event.getMessage()).toLowerCase().startsWith("/vault") ||
+        ShutdownManager.enderchestDisabled) {
             Block block = event.getPlayer().getTargetBlock((HashSet<Byte>) null, 5);
-            if(!block.getType().equals(Material.ENDER_CHEST)) {
-                event.getPlayer().sendMessage("Unknown command. Type \"/help\" for help.");
+            if(!block.getType().equals(Material.ENDER_CHEST) || ShutdownManager.enderchestDisabled) {
+                event.getPlayer().sendMessage("&cYou cannot do this right now!");
                 event.setCancelled(true);
             }
         }
