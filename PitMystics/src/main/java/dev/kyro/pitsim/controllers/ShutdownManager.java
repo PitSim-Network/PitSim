@@ -1,9 +1,11 @@
 package dev.kyro.pitsim.controllers;
 
 import dev.kyro.pitsim.PitSim;
+import dev.kyro.pitsim.misc.Sounds;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.ConsoleCommandSender;
+import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
 public class ShutdownManager {
@@ -37,12 +39,21 @@ public class ShutdownManager {
                     }
                 }
 
-                if(seconds == 0 && counter == 0) {
+                if(seconds == 0 && counter == 1) {
                     if(minutes == 1) {
                         disableEnderChest();
+                        Bukkit.broadcastMessage(ChatColor.RED + "" + ChatColor.BOLD + "SERVER RESTARTING IN "
+                                + minutes + " MINUTE!");
+                    } else if(minutes != 0) {
+                        Bukkit.broadcastMessage(ChatColor.RED + "" + ChatColor.BOLD + "SERVER RESTARTING IN "
+                                + minutes + " MINUTES!");
+                    } else {
+                        Bukkit.broadcastMessage(ChatColor.RED + "" + ChatColor.BOLD + "SERVER RESTARTING!");
                     }
-                    Bukkit.broadcastMessage(ChatColor.RED + "" + ChatColor.BOLD + "SERVER RESTARTING DOWN IN "
-                            + minutes + " MINUTES!");
+                    for(Player onlinePlayer : Bukkit.getOnlinePlayers()) {
+                        Sounds.CTF_FLAG_STOLEN.play(onlinePlayer);
+                        onlinePlayer.closeInventory();
+                    }
                 }
             }
         }.runTaskTimer(PitSim.INSTANCE, 1, 1);
