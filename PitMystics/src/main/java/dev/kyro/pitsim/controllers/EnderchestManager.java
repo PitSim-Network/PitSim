@@ -1,5 +1,6 @@
 package dev.kyro.pitsim.controllers;
 
+import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.misc.Sounds;
 import org.bukkit.Bukkit;
@@ -23,6 +24,11 @@ public class EnderchestManager implements Listener {
     public void onOpen(InventoryOpenEvent event) {
         if(event.getInventory().getType().equals(InventoryType.ENDER_CHEST) && !event.getPlayer().isOp()) {
             event.getPlayer().closeInventory();
+            if(ShutdownManager.enderchestDisabled) {
+                AOutput.error(event.getPlayer(), "&cYou may not open the Enderchest right now.");
+                event.setCancelled(true);
+                return;
+            }
             new BukkitRunnable() {
                 @Override
                 public void run() {
@@ -38,7 +44,11 @@ public class EnderchestManager implements Listener {
     public void onInteract(PlayerInteractEvent event) {
         Block block = event.getPlayer().getTargetBlock((HashSet<Byte>) null, 5);
         if(block.getType().equals(Material.ENDER_CHEST)) {
-
+            if(ShutdownManager.enderchestDisabled) {
+                AOutput.error(event.getPlayer(), "&cYou may not open the Enderchest right now.");
+                event.setCancelled(true);
+                return;
+            }
             new BukkitRunnable() {
                 @Override
                 public void run() {
@@ -57,8 +67,8 @@ public class EnderchestManager implements Listener {
                 ChatColor.stripColor(event.getMessage()).toLowerCase().startsWith("/playervault") ||
                 ChatColor.stripColor(event.getMessage()).toLowerCase().startsWith("/vault")) {
             Block block = event.getPlayer().getTargetBlock((HashSet<Byte>) null, 5);
-            if(!block.getType().equals(Material.ENDER_CHEST)) {
-                event.getPlayer().sendMessage("Unknown command. Type \"/help\" for help.");
+            if(!block.getType().equals(Material.ENDER_CHEST) || ShutdownManager.enderchestDisabled) {
+                event.getPlayer().sendMessage(ChatColor.RED + "You cannot do this right now!");
                 event.setCancelled(true);
             }
         }

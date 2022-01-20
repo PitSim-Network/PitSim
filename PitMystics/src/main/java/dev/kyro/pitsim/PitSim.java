@@ -246,6 +246,7 @@ public class PitSim extends JavaPlugin {
 		adminCommand.registerCommand(new DupeCommand("dupe"));
 		adminCommand.registerCommand(new ViewCommand("view"));
 		adminCommand.registerCommand(new RandomizeCommand("randomize"));
+		adminCommand.registerCommand(new ShutdownCommand("shutdown"));
 		adminCommand.registerCommand(new ReloadCommand("reload"));
 		adminCommand.registerCommand(new BypassCommand("bypass"));
 		adminCommand.registerCommand(new LockdownCommand("lockdown"));
