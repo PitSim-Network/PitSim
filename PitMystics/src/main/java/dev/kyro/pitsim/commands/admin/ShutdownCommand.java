@@ -32,6 +32,11 @@ public class ShutdownCommand extends ASubCommand {
             return;
         }
 
+        if(minutes < 1) {
+            if(player != null) AOutput.error(player, "&cInvalid Parameters. Usage: /ps shutdown <minutes>");
+            return;
+        }
+
         if(ShutdownManager.isShuttingDown) {
             if(player != null) AOutput.error(player, "&cThe server is already shutting down!");
             return;
