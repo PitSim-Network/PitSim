@@ -15,6 +15,7 @@ import dev.kyro.pitsim.boosters.XPBooster;
 import dev.kyro.pitsim.commands.*;
 import dev.kyro.pitsim.commands.admin.*;
 import dev.kyro.pitsim.controllers.*;
+import dev.kyro.pitsim.controllers.log.DupeManager;
 import dev.kyro.pitsim.controllers.objects.*;
 import dev.kyro.pitsim.enchants.GoldBoost;
 import dev.kyro.pitsim.enchants.*;

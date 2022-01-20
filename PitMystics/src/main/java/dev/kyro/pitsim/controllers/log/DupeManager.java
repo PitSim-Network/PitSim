@@ -1,4 +1,4 @@
-package dev.kyro.pitsim.controllers;
+package dev.kyro.pitsim.controllers.log;
 
 import de.tr7zw.nbtapi.NBTItem;
 import dev.kyro.arcticapi.data.AConfig;
@@ -14,13 +14,12 @@ import net.minecraft.server.v1_8_R3.NBTTagCompound;
 import net.minecraft.server.v1_8_R3.NBTTagList;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
-import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.craftbukkit.v1_8_R3.inventory.CraftItemStack;
-import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.scheduler.BukkitTask;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
@@ -32,18 +31,96 @@ import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Stream;
 
+@SuppressWarnings("ConstantConditions")
 public class DupeManager implements Listener {
+	public static BukkitTask runnable;
+
 	public static List<TrackedItem> dupedItems = new ArrayList<>();
-	public static Map<UUID, Integer> featherMap = new HashMap<>();
+	public static List<TrackedMiscItem> miscItems = new ArrayList<>();
+	public static List<BukkitRunnable> helmetSpam = new ArrayList<>();
 
 	static {
+		miscItems.add(new TrackedMiscItem("Feathers", "feathers",
+				"***REMOVED***"));
+		miscItems.add(new TrackedMiscItem("Gem Shards", "shards",
+				"***REMOVED***"));
+		miscItems.add(new TrackedMiscItem("Gems", "gems",
+				"***REMOVED***"));
+
 		new BukkitRunnable() {
 			@Override
 			public void run() {
 				if(!AConfig.getString("server").equals("pitsim-main")) return;
 				dupeCheck();
 			}
-		}.runTaskLaterAsynchronously(PitSim.INSTANCE, 200L);
+		}.runTaskLater(PitSim.INSTANCE, 200L);
+
+		new BukkitRunnable() {
+			@Override
+			public void run() {
+				if(helmetSpam.isEmpty()) return;
+				BukkitRunnable runnable = helmetSpam.remove(0);
+				runnable.runTaskAsynchronously(PitSim.INSTANCE);
+			}
+		}.runTaskTimer(PitSim.INSTANCE, 0L, 100L);
+	}
+
+	public static void run() {
+		if(runnable != null) runnable.cancel();
+		dupedItems.clear();
+		for(TrackedMiscItem miscItem : miscItems) miscItem.itemMap.clear();
+		helmetSpam.clear();
+
+		runnable = new BukkitRunnable() {
+			@Override
+			public void run() {
+				dupeCheck();
+			}
+		}.runTaskAsynchronously(PitSim.INSTANCE);
+	}
+
+	public static void setupMiscItemTracking(UUID uuid) {
+		for(TrackedMiscItem miscItem : miscItems) miscItem.itemMap.put(uuid, 0);
+	}
+
+	public static void trackMiscItem(UUID uuid, ItemStack itemStack, NBTItem nbtItem) {
+		if(nbtItem.hasKey(NBTTag.IS_GHELMET.getRef())) {
+			int gold = nbtItem.getInteger(NBTTag.GHELMET_GOLD.getRef());
+			OfflinePlayer player = Bukkit.getOfflinePlayer(uuid);
+			if((gold >= 100_000_000 || gold < 0) && !player.isOp()) {
+				DiscordWebhook discordWebhook = new DiscordWebhook(
+						"https://discord.com/api/webhooks/933584807068307496/jPA-MDDCpfV82PHRyjo_MusYersSyW_aCMuV37d6f_j2UzceVGTG7gXeo9lD0XlpcifO");
+				DiscordWebhook.EmbedObject embedObject = new DiscordWebhook.EmbedObject()
+						.setTitle(player.getName())
+						.setDescription("Helmet Gold: " + gold)
+						.setColor(Color.BLACK);
+				discordWebhook.addEmbed(embedObject);
+
+				helmetSpam.add(new BukkitRunnable() {
+					@Override
+					public void run() {
+						try {
+							discordWebhook.execute();
+						} catch(IOException e) {
+							e.printStackTrace();
+						}
+					}
+				});
+			}
+		}
+
+		if(nbtItem.hasKey(NBTTag.IS_FEATHER.getRef())) {
+			Map<UUID, Integer> trackMap = getTrack("feathers").itemMap;
+			trackMap.put(uuid, trackMap.get(uuid) + itemStack.getAmount());
+		}
+		if(nbtItem.hasKey(NBTTag.IS_SHARD.getRef())) {
+			Map<UUID, Integer> trackMap = getTrack("shards").itemMap;
+			trackMap.put(uuid, trackMap.get(uuid) + itemStack.getAmount());
+		}
+		if(nbtItem.hasKey(NBTTag.IS_GEM.getRef()) || nbtItem.hasKey(NBTTag.IS_GEMMED.getRef())) {
+			Map<UUID, Integer> trackMap = getTrack("gems").itemMap;
+			trackMap.put(uuid, trackMap.get(uuid) + itemStack.getAmount());
+		}
 	}
 
 	public static void dupeCheck() {
@@ -57,15 +134,15 @@ public class DupeManager implements Listener {
 
 		int count = 0; int total = allPlayerUUIDs.size();
 		for(UUID uuid : allPlayerUUIDs) {
-			featherMap.put(uuid, 0);
+			if(count++ % 100 == 0) AOutput.log("Stage 1: " + count + "/" + total);
 
-			AOutput.log("Stage 1: " + ++count + "/" + total);
+			setupMiscItemTracking(uuid);
 
 			try (FileReader reader = new FileReader("mstore/galacticvaults_players/" + uuid + ".json"))
 			{
 				JSONObject data = (JSONObject) jsonParser.parse(reader);
 				JSONObject vaults = (JSONObject) data.get("vaultContents");
-				for(int i = 1; i < 15; i++) {
+				for(int i = 1; i < 19; i++) {
 					JSONObject vault = (JSONObject) vaults.get(i + "");
 					if(vault == null) continue;
 					for(int j = 8; j < 36; j++) {
@@ -76,11 +153,9 @@ public class DupeManager implements Listener {
 						if(Misc.isAirOrNull(itemStack)) continue;
 						NBTItem nbtItem = new NBTItem(itemStack);
 
-						if(nbtItem.hasKey(NBTTag.IS_FEATHER.getRef())) {
-							featherMap.put(uuid, featherMap.get(uuid) + itemStack.getAmount());
-							continue;
-						}
+						trackMiscItem(uuid, itemStack, nbtItem);
 
+						if(nbtItem.hasKey(NBTTag.GHELMET_UUID.getRef())) trackedItems.add(new TrackedItem(uuid, nbtItem, i, j));
 						if(!nbtItem.hasKey(NBTTag.ITEM_UUID.getRef()) || !nbtItem.hasKey(NBTTag.ITEM_JEWEL_ENCHANT.getRef())) continue;
 						trackedItems.add(new TrackedItem(uuid, nbtItem, i, j));
 					}
@@ -103,11 +178,9 @@ public class DupeManager implements Listener {
 						if(Misc.isAirOrNull(itemStack)) continue;
 						NBTItem nbtItem = new NBTItem(itemStack);
 
-						if(nbtItem.hasKey(NBTTag.IS_FEATHER.getRef())) {
-							featherMap.put(uuid, featherMap.get(uuid) + itemStack.getAmount());
-							continue;
-						}
+						trackMiscItem(uuid, itemStack, nbtItem);
 
+						if(nbtItem.hasKey(NBTTag.GHELMET_UUID.getRef())) trackedItems.add(new TrackedItem(uuid, nbtItem, i));
 						if(!nbtItem.hasKey(NBTTag.ITEM_UUID.getRef()) || !nbtItem.hasKey(NBTTag.ITEM_JEWEL_ENCHANT.getRef())) continue;
 						trackedItems.add(new TrackedItem(uuid, nbtItem, i));
 					}
@@ -128,8 +201,8 @@ public class DupeManager implements Listener {
 
 		int count = 0;
 		for(TrackedItem trackedItem : trackedItems) {
-			System.out.println("Stage 2: " + ++count + "/" + trackedItems.size());
-			UUID trackedItemUUID = UUID.fromString(trackedItem.nbtItem.getString(NBTTag.ITEM_UUID.getRef()));
+			if(count++ % 100 == 0) System.out.println("Stage 2: " + count + "/" + trackedItems.size());
+			UUID trackedItemUUID = trackedItem.itemUUID;
 			for(TrackedItem checkItem : trackedItems) {
 				if(checkItem == trackedItem) continue;
 				if(!checkItem.itemUUID.equals(trackedItemUUID)) continue;
@@ -152,66 +225,40 @@ public class DupeManager implements Listener {
 
 		AOutput.log("Check completed, posting results");
 
-		List<UUID> toRemove = new ArrayList<>();
-		for(Map.Entry<UUID, Integer> entry : featherMap.entrySet()) {
-			OfflinePlayer player = Bukkit.getOfflinePlayer(entry.getKey());
-			if(player.isOp()) toRemove.add(entry.getKey());
-		}
-		for(UUID uuid : toRemove) featherMap.remove(uuid);
-		int totalFeathers = featherMap.values().stream().mapToInt(i -> i).sum();
+		for(TrackedMiscItem miscItem : miscItems) {
+			List<UUID> toRemove = new ArrayList<>();
+			for(Map.Entry<UUID, Integer> entry : miscItem.itemMap.entrySet()) {
+				OfflinePlayer player = Bukkit.getOfflinePlayer(entry.getKey());
+				if(player.isOp()) toRemove.add(entry.getKey());
+			}
+			for(UUID uuid : toRemove) miscItem.itemMap.remove(uuid);
+			int total = miscItem.itemMap.values().stream().mapToInt(i -> i).sum();
 
-		DiscordWebhook discordWebhook = new DiscordWebhook(
-				"***REMOVED***");
-		DiscordWebhook.EmbedObject embedObject = new DiscordWebhook.EmbedObject()
-				.setTitle("Feathers")
-				.setDescription("There are a total of " + totalFeathers + " feathers in the game")
-				.setColor(Color.BLACK);
-		discordWebhook.addEmbed(embedObject);
+			DiscordWebhook discordWebhook = new DiscordWebhook(miscItem.webhookURI);
+			DiscordWebhook.EmbedObject embedObject = new DiscordWebhook.EmbedObject()
+					.setTitle(miscItem.displayName)
+					.setDescription("Total " + miscItem.displayName + ": " + total)
+					.setColor(Color.BLACK);
+			discordWebhook.addEmbed(embedObject);
 
-		Stream<Map.Entry<UUID,Integer>> sorted = featherMap.entrySet().stream()
-				.sorted(Collections.reverseOrder(Map.Entry.comparingByValue()))
-				.limit(40);
-		AtomicInteger mapCount = new AtomicInteger(1);
-		sorted.forEach(entry -> {
-			OfflinePlayer player = Bukkit.getOfflinePlayer(entry.getKey());
-			embedObject.addField(mapCount.getAndIncrement() + ". " + player.getName(), entry.getValue() + " Feathers", true);
-		});
+			Stream<Map.Entry<UUID,Integer>> sorted = miscItem.itemMap.entrySet().stream()
+					.sorted(Collections.reverseOrder(Map.Entry.comparingByValue()))
+					.limit(40);
+			AtomicInteger mapCount = new AtomicInteger(1);
+			sorted.forEach(entry -> {
+				OfflinePlayer player = Bukkit.getOfflinePlayer(entry.getKey());
+				embedObject.addField(mapCount.getAndIncrement() + ". " + player.getName(), entry.getValue() + " " + miscItem.displayName, true);
+			});
 
-		try {
-			discordWebhook.execute();
-		} catch(IOException e) {
-			e.printStackTrace();
+			try {
+				discordWebhook.execute();
+			} catch(IOException e) {
+				e.printStackTrace();
+			}
 		}
 
 		System.out.println("Results posted");
 	}
-
-	public static void handleDuper(Player player) {
-
-		AOutput.broadcast(player.getName() + " likes to dupe items");
-		ConsoleCommandSender console = Bukkit.getServer().getConsoleSender();
-		Bukkit.dispatchCommand(console, "sudo * c:" + player.getName() + " nice items");
-		String command = "ipban " + player.getName() + " Dupe Detection: Account appears to be compromising the integrity of the game";
-		new BukkitRunnable() {
-			@Override
-			public void run() {
-				Bukkit.dispatchCommand(console, command);
-			}
-		}.runTaskLater(PitSim.INSTANCE, 20L);
-	}
-
-//    public static boolean wasDuped(ItemStack itemStack) {
-//        if(Misc.isAirOrNull(itemStack)) return false;
-//
-//        NBTItem nbtItem = new NBTItem(itemStack);
-//        if(!nbtItem.hasKey(NBTTag.ITEM_UUID.getRef())) return false;
-//
-//        UUID uuid = UUID.fromString(nbtItem.getString(NBTTag.ITEM_UUID.getRef()));
-//        List<UUID> dupeUUIDs = new ArrayList<>();
-//        for(String stringUUID : AConfig.getStringList("duped-uuids")) dupeUUIDs.add(UUID.fromString(stringUUID));
-//
-//        return dupeUUIDs.contains(uuid);
-//    }
 
 	public static class TrackedItem {
 		public UUID playerUUID;
@@ -230,7 +277,11 @@ public class DupeManager implements Listener {
 			this.vaultNum = vaultNum;
 			this.vaultSlot = vaultSlot;
 
-			this.itemUUID = UUID.fromString(nbtItem.getString(NBTTag.ITEM_UUID.getRef()));
+			try {
+				this.itemUUID = UUID.fromString(nbtItem.getString(NBTTag.ITEM_UUID.getRef()));
+			} catch(Exception ignored) {
+				this.itemUUID = UUID.fromString(nbtItem.getString(NBTTag.GHELMET_UUID.getRef()));
+			}
 		}
 
 		public TrackedItem(UUID playerUUID, NBTItem nbtItem, Integer inventorySlot) {
@@ -238,7 +289,11 @@ public class DupeManager implements Listener {
 			this.nbtItem = nbtItem;
 			this.inventorySlot = inventorySlot;
 
-			this.itemUUID = UUID.fromString(nbtItem.getString(NBTTag.ITEM_UUID.getRef()));
+			try {
+				this.itemUUID = UUID.fromString(nbtItem.getString(NBTTag.ITEM_UUID.getRef()));
+			} catch(Exception ignored) {
+				this.itemUUID = UUID.fromString(nbtItem.getString(NBTTag.GHELMET_UUID.getRef()));
+			}
 		}
 
 		public void populate() {
@@ -247,5 +302,26 @@ public class DupeManager implements Listener {
 				if(!sharedWith.contains(trackedItem.playerUUID)) sharedWith.add(trackedItem.playerUUID);
 			}
 		}
+	}
+
+	public static class TrackedMiscItem {
+		public String displayName;
+		public String refName;
+		public String webhookURI;
+
+		public Map<UUID, Integer> itemMap = new HashMap<>();
+
+		public TrackedMiscItem(String displayName, String refName, String webhookURI) {
+			this.displayName = displayName;
+			this.refName = refName;
+			this.webhookURI = webhookURI;
+		}
+	}
+
+	public static TrackedMiscItem getTrack(String refName) {
+		for(TrackedMiscItem miscItem : miscItems) {
+			if(miscItem.refName.equalsIgnoreCase(refName)) return miscItem;
+		}
+		return null;
 	}
 }
