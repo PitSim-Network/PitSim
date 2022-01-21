@@ -91,7 +91,8 @@ public class Tutorial {
 		if(task == Task.VIEW_ENCHANT_TIERS) sequence = new EnchantBillLsSequence(player, this);
 		if(task == Task.ENCHANT_BILL_LS) sequence = new EnchantRGMSequence(player, this);
 		if(task == Task.ENCHANT_RGM) sequence = new EnchantMegaDrainSequence(player, this);
-		if(task == Task.ENCHANT_MEGA_DRAIN) sequence = new SpawnNonSequence(player, this);
+		if(task == Task.ENCHANT_MEGA_DRAIN) sequence = new EquipArmorSequence(player, this);
+		if(task == Task.EQUIP_ARMOR) sequence = new SpawnNonSequence(player, this);
 		if(task == Task.VIEW_NON) sequence = new ActivateMegastreakSequence(player, this);
 		if(task == Task.ACTIVATE_MEGASTREAK) sequence = new PrestigeSequence(player, this);
 		if(task == Task.PRESTIGE) sequence = new BuyTenacitySequence(player, this);

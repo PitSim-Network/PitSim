@@ -1,5 +1,6 @@
 package dev.kyro.pitsim.tutorial;
 
+import dev.kyro.arcticapi.events.armor.AChangeEquipmentEvent;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.controllers.objects.Killstreak;
 import dev.kyro.pitsim.controllers.objects.PitPerk;
@@ -10,6 +11,7 @@ import dev.kyro.pitsim.events.MegastreakEquipEvent;
 import dev.kyro.pitsim.events.PerkEquipEvent;
 import dev.kyro.pitsim.megastreaks.NoMegastreak;
 import dev.kyro.pitsim.megastreaks.Overdrive;
+import dev.kyro.pitsim.misc.Misc;
 import dev.kyro.pitsim.tutorial.inventories.PerkGUI;
 import dev.kyro.pitsim.tutorial.inventories.PrestigeGUI;
 import dev.kyro.pitsim.tutorial.objects.Tutorial;
@@ -18,6 +20,7 @@ import net.citizensnpcs.api.event.NPCRightClickEvent;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 
 public class TaskListener implements Listener {
@@ -114,6 +117,21 @@ public class TaskListener implements Listener {
 				prestigeGUI.open();
 			}
 		}
+	}
+
+	@EventHandler
+	public void onEquip(AChangeEquipmentEvent event) {
+		Tutorial tutorial = TutorialManager.getTutorial(event.getPlayer());
+		if(tutorial == null) return;
+		if(!(tutorial.sequence instanceof EquipArmorSequence)) return;
+
+		Player player = event.getPlayer();
+		for (ItemStack armorContent : player.getInventory().getArmorContents()) {
+			if(Misc.isAirOrNull(armorContent)) {
+				return;
+			}
+		}
+		tutorial.onTaskComplete(Task.EQUIP_ARMOR);
 	}
 
 	@EventHandler

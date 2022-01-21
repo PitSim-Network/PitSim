@@ -47,8 +47,22 @@ public enum TutorialMessage {
     RGM3("&eRemember, to enchant &fPants&e, click on the &aPhilosopher's Cactus &efirst.", "Remember, to enchant"),
     MEGA1("&eHey, you're getting the hang of this!", "Hey, you're getting the hang of this!"),
     MEGA2("&eFinally, make me a &fBow &ewith &dRARE! &9Mega Longbow &eand &9Sprint Drain III&e.", "Finally, make me a"),
-    MEGA3("&eIf you're having trouble with this one, &dRARE! &9Mega Longbow &ecan have any Enchant Tier.", "If you're having trouble with this one,");
-
+    MEGA3("&eIf you're having trouble with this one, &dRARE! &9Mega Longbow &ecan have any Enchant Tier.", "If you're having trouble with this one,"),
+    ARMOR1("&eGreat job!, you now have one of each type of &fMystic Item&e!", ""),
+    ARMOR2("&eNow you will get the chance to use them, but first put on the &fArmor &eI gave you.", ""),
+    VIEWNON1("&eAlright! lets proceed.", ""),
+    VIEWNON2("&eThis is a &fDummy Player &ethat you will be using to test out the abilities of your new items.", ""),
+    REACH_MEGA1("&eGo ahead and attack it with your sword.", ""),
+    REACH_MEGA2("&eKeep killing the &fDummy &euntil you get to a 50 killstreak and activate your &cMegastreak&e.", ""),
+    PRESTIGE1("&ePerfect!", ""),
+    PRESTIGE2("&eNow that you know how streaking works, it's time to tell you about &fPrestige&e.", ""),
+    PRESTIGE3("&eOnce you have reached the specified requirements, you can &fPrestige&e.", ""),
+    PRESTIGE4("&fPrestiging &eresets your &blevel &eand &6gold&e, but rewards Renown", ""),
+    PRESTIGE5("&fRenown &ecan be spent on high-tier permanent upgrades.", ""),
+    PRESTIGE6("&eI will now set your &blevel &eto &b&l120 &eso you can prestige, but only this once.", ""),
+    PRESTIGE7("&eAre you ready?", ""),
+    PRESTIGE8("&eAlright, now go to the &f\"Prestige and renown\" &evillager and prestige!", ""),
+    TENACTITY1("&eCongratulations, now use your &fRenown &eto purchase &cTenacity I&e.", "");
 
 
     public String message;
