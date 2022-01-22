@@ -1,10 +1,14 @@
 package dev.kyro.pitsim.tutorial;
 
+import dev.kyro.arcticapi.data.APlayerData;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.controllers.DamageManager;
+import dev.kyro.pitsim.controllers.UpgradeManager;
+import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.events.AttackEvent;
 import dev.kyro.pitsim.events.KillEvent;
 import dev.kyro.pitsim.events.OofEvent;
+import dev.kyro.pitsim.misc.Misc;
 import dev.kyro.pitsim.misc.Sounds;
 import dev.kyro.pitsim.tutorial.inventories.ApplyEnchantPanel;
 import dev.kyro.pitsim.tutorial.inventories.EnchantingGUI;
@@ -14,6 +18,7 @@ import dev.kyro.pitsim.tutorial.sequences.*;
 import net.citizensnpcs.api.npc.NPC;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -24,6 +29,7 @@ import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
 
@@ -55,7 +61,12 @@ public class TutorialManager implements Listener {
 	@EventHandler
 	public void onJoin(PlayerJoinEvent event) {
 		Player player = event.getPlayer();
-		TutorialManager.createTutorial(player);
+		if(isEligable(player)) {
+			TutorialManager.createTutorial(player);
+			FileConfiguration playerData = APlayerData.getPlayerData(player);
+			playerData.set("tutorial", true);
+			APlayerData.savePlayerData(player);
+		}
 	}
 
 	@EventHandler
@@ -170,5 +181,22 @@ public class TutorialManager implements Listener {
 				}
 			}.runTaskLater(PitSim.INSTANCE, 1L);
 		}
+	}
+
+	public boolean isEligable(Player player) {
+		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
+		if(pitPlayer.prestige > 0) return false;
+		for(ItemStack itemStack : player.getInventory()) {
+			if(!Misc.isAirOrNull(itemStack)) return false;
+		}
+
+		if(UpgradeManager.hasUpgrade(player, "TENACITY")) return false;
+
+		FileConfiguration playerData = APlayerData.getPlayerData(player);
+		if(playerData.contains("tutorial")) {
+			return !playerData.getBoolean("tutorial");
+		}
+
+		return true;
 	}
 }

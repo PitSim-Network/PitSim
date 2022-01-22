@@ -1,13 +1,11 @@
 package dev.kyro.pitsim.tutorial.sequences;
 
 import dev.kyro.pitsim.PitSim;
-import dev.kyro.pitsim.controllers.LevelManager;
 import dev.kyro.pitsim.tutorial.MessageManager;
 import dev.kyro.pitsim.tutorial.Task;
 import dev.kyro.pitsim.tutorial.TutorialMessage;
 import dev.kyro.pitsim.tutorial.objects.Tutorial;
 import dev.kyro.pitsim.tutorial.objects.TutorialSequence;
-import net.citizensnpcs.api.npc.NPC;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
@@ -35,9 +33,8 @@ public class BuyTenacitySequence extends TutorialSequence {
 
 	@Override
 	public void play() {
-		sendMessage(TutorialMessage.DARK_BLUE);
-		wait(2);
-		sendMessage(TutorialMessage.DARK_GREEN);
+		wait(5);
+		sendMessage(TutorialMessage.TENACTITY1);
 		wait(2);
 	}
 

@@ -6,11 +6,6 @@ import dev.kyro.pitsim.tutorial.Task;
 import dev.kyro.pitsim.tutorial.TutorialMessage;
 import dev.kyro.pitsim.tutorial.objects.Tutorial;
 import dev.kyro.pitsim.tutorial.objects.TutorialSequence;
-import net.citizensnpcs.api.CitizensAPI;
-import net.citizensnpcs.api.npc.NPC;
-import org.bukkit.Bukkit;
-import org.bukkit.Material;
-import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
@@ -38,10 +33,9 @@ public class ActivateMegastreakSequence extends TutorialSequence {
 
 	@Override
 	public void play() {
-		sendMessage(TutorialMessage.DARK_BLUE);
-		wait(2);
-		sendMessage(TutorialMessage.DARK_GREEN);
-		wait(2);
+		sendMessage(TutorialMessage.REACH_MEGA1);
+		wait(5);
+		sendMessage(TutorialMessage.REACH_MEGA2);
 	}
 
 	public void wait(int seconds) {

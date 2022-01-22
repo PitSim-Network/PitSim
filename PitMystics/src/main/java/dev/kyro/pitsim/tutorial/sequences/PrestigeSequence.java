@@ -35,13 +35,24 @@ public class PrestigeSequence extends TutorialSequence {
 
 	@Override
 	public void play() {
+		sendMessage(TutorialMessage.PRESTIGE1);
+		wait(5);
+		sendMessage(TutorialMessage.PRESTIGE2);
+		wait(5);
+		sendMessage(TutorialMessage.PRESTIGE3);
+		wait(5);
+		sendMessage(TutorialMessage.PRESTIGE4);
+		wait(5);
+		sendMessage(TutorialMessage.PRESTIGE5);
+		wait(5);
+		sendMessage(TutorialMessage.PRESTIGE6);
+		wait(5);
+		sendMessage(TutorialMessage.PRESTIGE7);
+		wait(2);
 		setLevel();
-		sendMessage(TutorialMessage.DARK_BLUE);
-		wait(2);
-		sendMessage(TutorialMessage.DARK_GREEN);
-		wait(2);
+		wait(3);
 		spawnPrestigeVillager();
-		wait(2);
+		sendMessage(TutorialMessage.PRESTIGE8);
 
 	}
 

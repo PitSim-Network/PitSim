@@ -6,7 +6,6 @@ import dev.kyro.pitsim.tutorial.Task;
 import dev.kyro.pitsim.tutorial.TutorialMessage;
 import dev.kyro.pitsim.tutorial.objects.Tutorial;
 import dev.kyro.pitsim.tutorial.objects.TutorialSequence;
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -77,7 +76,9 @@ public class InitialSequence extends TutorialSequence {
 		BukkitTask runnable = new BukkitRunnable() {
 			@Override
 			public void run() {
-				Location location = new Location(Bukkit.getWorld("tutorial"), tutorial.positionCoords.x, 93, tutorial.positionCoords.y);
+				Location location = tutorial.areaLocation.clone();
+				location.setPitch(0);
+				location.setYaw(0);
 				player.teleport(location);
 			}
 		}.runTaskLater(PitSim.INSTANCE, (long) (20 * waitTime));

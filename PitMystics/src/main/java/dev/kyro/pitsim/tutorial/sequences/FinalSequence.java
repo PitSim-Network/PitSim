@@ -35,10 +35,8 @@ public class FinalSequence extends TutorialSequence {
 
 	@Override
 	public void play() {
-		sendMessage(TutorialMessage.DARK_BLUE);
 		wait(2);
 		teleport();
-		sendMessage(TutorialMessage.DARK_GREEN);
 		wait(2);
 		completeTask(Task.FINISH_TUTORIAL);
 	}

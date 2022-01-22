@@ -2,6 +2,7 @@ package dev.kyro.pitsim.tutorial.objects;
 
 import com.gmail.filoghost.holographicdisplays.api.Hologram;
 import dev.kyro.pitsim.PitSim;
+import dev.kyro.pitsim.controllers.MapManager;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.killstreaks.NoKillstreak;
 import dev.kyro.pitsim.megastreaks.NoMegastreak;
@@ -51,6 +52,8 @@ public class Tutorial {
 		areaLocation = new Location(Bukkit.getWorld("tutorial"), positionCoords.x, 92, positionCoords.y, 180, 0);
 		nonSpawn = areaLocation.clone();
 		playerSpawn = areaLocation.clone();
+		playerSpawn.setPitch(0);
+		playerSpawn.setYaw(0);
 		setUpTutorialArea();
 		sequence.play();
 
@@ -65,6 +68,7 @@ public class Tutorial {
 	}
 
 	public void onTaskComplete(Task task) {
+		if(player.getWorld() != MapManager.getTutorial()) player.teleport(playerSpawn);
 		if(task.order < sequence.task.order || task.order > sequence.task.order) return;
 		for(BukkitTask runnable : sequence.getRunnables()) {
 			runnable.cancel();

@@ -38,12 +38,11 @@ public class SpawnNonSequence extends TutorialSequence {
 
 	@Override
 	public void play() {
-		sendMessage(TutorialMessage.DARK_BLUE);
-		wait(2);
-		sendMessage(TutorialMessage.DARK_GREEN);
-		wait(2);
+		sendMessage(TutorialMessage.VIEWNON1);
+		wait(5);
 		spawnNons();
-		wait(2);
+		sendMessage(TutorialMessage.VIEWNON2);
+		wait(5);
 		completeTask(Task.VIEW_NON);
 	}
 
