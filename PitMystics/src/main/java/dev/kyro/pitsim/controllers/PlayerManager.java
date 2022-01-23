@@ -115,7 +115,7 @@ public class PlayerManager implements Listener {
 					}
 				}
 			}
-		}.runTaskTimer(PitSim.INSTANCE, 0L, 10L);
+		}.runTaskTimer(PitSim.INSTANCE, 0L, 12L);
 	}
 
 	@EventHandler
