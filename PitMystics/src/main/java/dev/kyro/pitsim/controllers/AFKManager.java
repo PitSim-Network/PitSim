@@ -23,7 +23,6 @@ public class AFKManager implements Listener {
 	public static Map<Player, Integer> AFKRotations = new HashMap<>();
 	public static Integer onlineActivePlayers = 0;
 
-
 	static {
 		new BukkitRunnable() {
 			@Override
@@ -33,13 +32,15 @@ public class AFKManager implements Listener {
 					if(AFKPlayers.contains(player)) continue;
 
 					onlineActivePlayers++;
+					Location playerLoc = player.getLocation();
 					if(lastLocation.containsKey(player)) {
-						if(player.getLocation().equals(lastLocation.get(player))) {
+						playerLoc.setY(0);
+						if(playerLoc.equals(lastLocation.get(player))) {
 							if(AFKRotations.containsKey(player)) AFKRotations.put(player, AFKRotations.get(player) + 1);
 							else AFKRotations.put(player, 1);
 						}
 					}
-					lastLocation.put(player, player.getLocation());
+					lastLocation.put(player, playerLoc);
 
 					if(AFKRotations.containsKey(player) && AFKRotations.get(player) >= 6) {
 						AFKPlayers.add(player);
@@ -59,7 +60,7 @@ public class AFKManager implements Listener {
 		if(!AFKPlayers.contains(event.getPlayer())) return;
 
 		if(event.getPlayer().getLocation().getBlockX() != lastLocation.get(event.getPlayer()).getBlockX()) moved = true;
-		if(event.getPlayer().getLocation().getBlockY() != lastLocation.get(event.getPlayer()).getBlockY()) moved = true;
+//		if(event.getPlayer().getLocation().getBlockY() != lastLocation.get(event.getPlayer()).getBlockY()) moved = true;
 		if(event.getPlayer().getLocation().getBlockZ() != lastLocation.get(event.getPlayer()).getBlockZ()) moved = true;
 
 		if(moved) {
@@ -78,6 +79,4 @@ public class AFKManager implements Listener {
 
 //		Bukkit.broadcastMessage(ChatColor.translateAlternateColorCodes('&', "&8[&c-&8] &6" + event.getPlayer().getDisplayName() + " &ehas left"));
 	}
-
-
 }
