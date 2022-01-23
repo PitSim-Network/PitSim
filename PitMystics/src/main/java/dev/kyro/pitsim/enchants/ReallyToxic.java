@@ -72,28 +72,24 @@ public class ReallyToxic extends PitEnchant {
 				int charge = HitCounter.getCharge(attackEvent.defender, thisEnchant);
 				HitCounter.setCharge(attackEvent.defender, thisEnchant, charge - getReductionPerHit(enchantLvl));
 			}
-		}.runTaskLater(PitSim.INSTANCE, getStackTime() * 20);
+		}.runTaskLater(PitSim.INSTANCE, getStackTime(enchantLvl) * 20);
 	}
 
 	@Override
 	public List<String> getDescription(int enchantLvl) {
-
-		return new ALoreBuilder("&7Strikes apply 1 stack of", "&aToxicity&7. Stacks last &4" + getStackTime() + "s", "&7and reduce all healing by",
+		return new ALoreBuilder("&7Strikes apply 1 stack of", "&aToxicity&7. Stacks last &4" + getStackTime(enchantLvl) + "s", "&7and reduce all healing by",
 				"&a" + getReductionPerHit(enchantLvl) + "%&7, up to &a" + getMaxReduction() + "%").getLore();
 	}
 
 	public int getReductionPerHit(int enchantLvl) {
-
-		return enchantLvl;
+		return Misc.linearEnchant(enchantLvl, 0.5, 1);
 	}
 
 	public int getMaxReduction() {
-
 		return 40;
 	}
 
-	public long getStackTime() {
-
-		return 8;
+	public long getStackTime(int enchantLvl) {
+		return enchantLvl * 2L + 2;
 	}
 }
