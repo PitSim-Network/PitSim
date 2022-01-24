@@ -212,7 +212,7 @@ public class Hopper {
 	public enum Type {
 		CHAIN("&7Chain Hopper", "chain", "&7", 0.5),
 		DIAMOND("&9Diamond Hopper", "diamond", "&9", 0.5),
-		MYSTIC("&eMystic Hopper", "mystic", "&e", 0.6),
+		MYSTIC("&eMystic Hopper", "mystic", "&e", 0.5),
 		VENOM("&2Venom Hopper", "venom", "&2", 0.6),
 		GSET("&6GSet Hopper", "gset", "&6", 0.6);
 
@@ -264,9 +264,9 @@ public class Hopper {
 				case MYSTIC:
 					ItemStack mysticSword = FreshCommand.getFreshItem(MysticType.SWORD, null);
 					try {
-						mysticSword = EnchantManager.addEnchant(mysticSword, EnchantManager.getEnchant("sharpness"), (int) (Math.random() * 6), false);
-						mysticSword = EnchantManager.addEnchant(mysticSword, EnchantManager.getEnchant("lifesteal"), 3, false);
-						if(Math.random() < 0.25) mysticSword = EnchantManager.addEnchant(mysticSword, EnchantManager.getEnchant("perun"), 1, false);
+						mysticSword = EnchantManager.addEnchant(mysticSword, EnchantManager.getEnchant("sharpness"), (int) (Math.random() * 11), false);
+						mysticSword = EnchantManager.addEnchant(mysticSword, EnchantManager.getEnchant("lifesteal"), 2, false);
+						if(Math.random() < 0.25) mysticSword = EnchantManager.addEnchant(mysticSword, EnchantManager.getEnchant("perun"), 3, false);
 					} catch(Exception ignored) { }
 					ItemStack mysticPants = FreshCommand.getFreshItem(MysticType.PANTS, PantColor.getNormalRandom());
 					try {
