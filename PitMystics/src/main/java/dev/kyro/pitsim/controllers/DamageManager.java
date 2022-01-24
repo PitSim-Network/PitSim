@@ -553,26 +553,25 @@ public class DamageManager implements Listener {
 		PitPlayer pitAttacker = PitPlayer.getPitPlayer(killer);
 		PitPlayer pitDefender = PitPlayer.getPitPlayer(dead);
 
-
 		Non attackingNon = NonManager.getNon(killer);
+		Non defendingNon = NonManager.getNon(dead);
 		if(attackingNon == null) {
 
 			pitAttacker.incrementKills();
 		}
 
 		Misc.multiKill(killer);
-
-			if(attackingNon == null) {
-				if(killer != dead && !isNaked(dead)) {
-					if(killEvent.isLuckyKill) pitAttacker.playerKills = pitAttacker.playerKills + 3;
-					else pitAttacker.playerKills = pitAttacker.playerKills + 1;
-				}
+//		TODO: THIS IS NOT GOOD CODING
+		boolean realCheck = Bukkit.getOnlinePlayers().contains(dead);
+		if(attackingNon == null && defendingNon == null && realCheck) {
+			if(killer != dead && !isNaked(dead)) {
+				if(killEvent.isLuckyKill) pitAttacker.playerKills = pitAttacker.playerKills + 3;
+				else pitAttacker.playerKills = pitAttacker.playerKills + 1;
 			}
+		}
 
-		Non killingNon = NonManager.getNon(killer);
-		Non defendingNon = NonManager.getNon(dead);
-		if(killingNon != null) {
-			killingNon.rewardKill();
+		if(attackingNon != null) {
+			attackingNon.rewardKill();
 		} else {
 //			Disabled auto-tenacity
 //			pitAttacker.heal(2);
