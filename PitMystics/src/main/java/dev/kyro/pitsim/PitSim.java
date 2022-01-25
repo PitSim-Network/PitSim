@@ -323,6 +323,7 @@ public class PitSim extends JavaPlugin {
 		getServer().getPluginManager().registerEvents(new TaskListener(), this);
 		getServer().getPluginManager().registerEvents(new MessageManager(), this);
 		getServer().getPluginManager().registerEvents(new TutorialManager(), this);
+		getServer().getPluginManager().registerEvents(new GuildManager(), this);
 	}
 
 	public void registerBoosters() {
@@ -468,8 +469,6 @@ public class PitSim extends JavaPlugin {
 //		EnchantManager.registerEnchant(new DiamondAllergy());
 //		EnchantManager.registerEnchant(new PitBlob());
 //		EnchantManager.registerEnchant(new WolfPack());
-
-		EnchantManager.registerEnchant(new Dispersion());
 
 //		Resource Enchants
 		EnchantManager.registerEnchant(new Moctezuma());
