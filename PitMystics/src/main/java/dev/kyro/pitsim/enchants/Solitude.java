@@ -43,12 +43,10 @@ public class Solitude extends PitEnchant {
 	}
 
 	public int getReductionPerPlayer(int enchantLvl) {
-
-		return 12;
+		return 8;
 	}
 
 	public double getDamageReduction(int enchantLvl) {
-
 		return Math.min(30 + enchantLvl * 10, 100);
 	}
 }

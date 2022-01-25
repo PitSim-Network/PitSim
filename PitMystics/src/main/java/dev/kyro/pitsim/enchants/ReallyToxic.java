@@ -82,7 +82,7 @@ public class ReallyToxic extends PitEnchant {
 	}
 
 	public int getReductionPerHit(int enchantLvl) {
-		return Misc.linearEnchant(enchantLvl, 0.5, 1);
+		return enchantLvl + 1;
 	}
 
 	public int getMaxReduction() {
@@ -90,6 +90,6 @@ public class ReallyToxic extends PitEnchant {
 	}
 
 	public long getStackTime(int enchantLvl) {
-		return enchantLvl * 2L + 2;
+		return 5;
 	}
 }

@@ -8,6 +8,7 @@ import dev.kyro.pitsim.events.AttackEvent;
 import dev.kyro.pitsim.misc.Misc;
 import org.bukkit.event.EventHandler;
 
+import java.text.DecimalFormat;
 import java.util.List;
 
 public class FractionalReserve extends PitEnchant {
@@ -25,18 +26,19 @@ public class FractionalReserve extends PitEnchant {
 		int enchantLvl = attackEvent.getDefenderEnchantLevel(this);
 		if(enchantLvl == 0) return;
 
-		int reduction = Math.max((int) Math.log10(PitSim.VAULT.getBalance(attackEvent.defender)) + 1, 0);
+		double reduction = Math.max((int) Math.log10(PitSim.VAULT.getBalance(attackEvent.defender)) + 1, 0);
 		attackEvent.multipliers.add(Misc.getReductionMultiplier(reduction * getReduction(enchantLvl)));
 	}
 
 	@Override
 	public List<String> getDescription(int enchantLvl) {
-
-		return new ALoreBuilder("&7Receive &9-"+ getReduction(enchantLvl) + "% &7damage per",
+		DecimalFormat decimalFormat = new DecimalFormat("0.#");
+		return new ALoreBuilder("&7Receive &9-"+ decimalFormat.format(getReduction(enchantLvl)) + "% &7damage per",
 				"&6digit &7in your gold").getLore();
 	}
 
-	public static int getReduction(int enchantLvl) {
-		return enchantLvl * 2;
+	public static double getReduction(int enchantLvl) {
+		if(enchantLvl == 1) return 2;
+		return enchantLvl * 2 - 0.5;
 	}
 }
