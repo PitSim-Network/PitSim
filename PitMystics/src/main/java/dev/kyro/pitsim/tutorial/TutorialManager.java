@@ -89,6 +89,40 @@ public class TutorialManager implements Listener {
 
 		event.setCancelled(true);
 
+		Tutorial tutorial = TutorialManager.getTutorial(player);
+		if(tutorial == null) return;
+
+		if(tutorial.sequence instanceof InitialMysticWellSequence) {
+			BukkitTask runnable = new BukkitRunnable() {
+				@Override
+				public void run() {
+					EnchantingGUI enchantGUI = new EnchantingGUI(player);
+					player.openInventory(enchantGUI.getHomePanel().getInventory());
+				}
+			}.runTaskLater(PitSim.INSTANCE, 1L);
+			return;
+		}
+
+		if(tutorial.sequence instanceof ViewEnchantsSequence) {
+			BukkitTask runnable = new BukkitRunnable() {
+				@Override
+				public void run() {
+					player.openInventory(EnchantingPanel.openEnchantsPanel(player).getInventory());
+				}
+			}.runTaskLater(PitSim.INSTANCE, 1L);
+			return;
+		}
+
+		if(tutorial.sequence instanceof ViewEnchantTiersSequence) {
+			BukkitTask runnable = new BukkitRunnable() {
+				@Override
+				public void run() {
+					player.openInventory(ApplyEnchantPanel.openEnchantsPanel(player).getInventory());
+				}
+			}.runTaskLater(PitSim.INSTANCE, 1L);
+			return;
+		}
+
 		dev.kyro.pitsim.tutorial.inventories.EnchantingGUI enchantingGUI = new EnchantingGUI(player);
 		enchantingGUI.open();
 		Sounds.MYSTIC_WELL_OPEN_1.play(player);
@@ -148,40 +182,40 @@ public class TutorialManager implements Listener {
 		event.getEntity().teleport(tutorial.playerSpawn);
 	}
 
-	@EventHandler
-	public void onClose(InventoryCloseEvent event) {
-		Player player = (Player) event.getPlayer();
-		Tutorial tutorial = getTutorial(player);
-		if(tutorial == null) return;
-
-		if(tutorial.sequence instanceof InitialMysticWellSequence && event.getInventory().getName().equals("Mystic Well")) {
-			BukkitTask runnable = new BukkitRunnable() {
-				@Override
-				public void run() {
-					EnchantingGUI enchantGUI = new EnchantingGUI(player);
-					player.openInventory(enchantGUI.getHomePanel().getInventory());
-				}
-			}.runTaskLater(PitSim.INSTANCE, 1L);
-		}
-
-		if(tutorial.sequence instanceof ViewEnchantsSequence && event.getInventory().getName().equals("Choose an Enchant")) {
-			BukkitTask runnable = new BukkitRunnable() {
-				@Override
-				public void run() {
-					player.openInventory(EnchantingPanel.openEnchantsPanel(player).getInventory());
-				}
-			}.runTaskLater(PitSim.INSTANCE, 1L);
-		}
-
-		if(tutorial.sequence instanceof ViewEnchantTiersSequence && event.getInventory().getName().equals("Choose a Level")) {
-			BukkitTask runnable = new BukkitRunnable() {
-				@Override
-				public void run() {
-					player.openInventory(ApplyEnchantPanel.openEnchantsPanel(player).getInventory());
-				}
-			}.runTaskLater(PitSim.INSTANCE, 1L);
-		}
-	}
+//	@EventHandler
+//	public void onClose(InventoryCloseEvent event) {
+//		Player player = (Player) event.getPlayer();
+//		Tutorial tutorial = getTutorial(player);
+//		if(tutorial == null) return;
+//
+//		if(tutorial.sequence instanceof InitialMysticWellSequence && event.getInventory().getName().equals("Mystic Well")) {
+//			BukkitTask runnable = new BukkitRunnable() {
+//				@Override
+//				public void run() {
+//					EnchantingGUI enchantGUI = new EnchantingGUI(player);
+//					player.openInventory(enchantGUI.getHomePanel().getInventory());
+//				}
+//			}.runTaskLater(PitSim.INSTANCE, 1L);
+//		}
+//
+//		if(tutorial.sequence instanceof ViewEnchantsSequence && event.getInventory().getName().equals("Choose an Enchant")) {
+//			BukkitTask runnable = new BukkitRunnable() {
+//				@Override
+//				public void run() {
+//					player.openInventory(EnchantingPanel.openEnchantsPanel(player).getInventory());
+//				}
+//			}.runTaskLater(PitSim.INSTANCE, 1L);
+//		}
+//
+//		if(tutorial.sequence instanceof ViewEnchantTiersSequence && event.getInventory().getName().equals("Choose a Level")) {
+//			BukkitTask runnable = new BukkitRunnable() {
+//				@Override
+//				public void run() {
+//					player.openInventory(ApplyEnchantPanel.openEnchantsPanel(player).getInventory());
+//				}
+//			}.runTaskLater(PitSim.INSTANCE, 1L);
+//		}
+//	}
 
 	public boolean isEligable(Player player) {
 		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
