@@ -26,6 +26,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
+import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
@@ -232,5 +233,26 @@ public class TutorialManager implements Listener {
 		}
 
 		return true;
+	}
+
+	@EventHandler
+	public void onDrop(PlayerDropItemEvent event) {
+		Player player = event.getPlayer();
+		Tutorial tutorial = getTutorial(player);
+		if(tutorial == null) return;
+
+		event.setCancelled(true);
+	}
+
+	@EventHandler
+	public void onOpen(PlayerInteractEvent event) {
+		Player player = event.getPlayer();
+		Tutorial tutorial = getTutorial(player);
+		if(tutorial == null) return;
+
+		if(event.getClickedBlock() == null) return;
+		if(event.getClickedBlock().getType() == Material.CHEST) {
+			event.setCancelled(true);
+		}
 	}
 }
