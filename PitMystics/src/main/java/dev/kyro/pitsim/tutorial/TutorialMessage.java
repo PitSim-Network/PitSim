@@ -54,7 +54,7 @@ public enum TutorialMessage {
     VIEWNON2("&eThis is a &fDummy Player &ethat you will be using to test out the abilities of your new items.", "that you will be using to test out the abilities of your new items."),
     REACH_MEGA1("&eGo ahead and attack it with your sword.", "Go ahead and attack it with your sword."),
     REACH_MEGA2("&eKeep killing the &fDummy &euntil you get to a 50 killstreak and activate your &cMegastreak&e.", "until you get to a 50 killstreak and activate your"),
-    PRESTIGE1("&ePerfect!", "Perfect"),
+    PRESTIGE1("&ePerfect!", "Perfect!"),
     PRESTIGE2("&eNow that you know how streaking works, it's time to tell you about &fPrestige&e.", "Now that you know how streaking works,"),
     PRESTIGE3("&eOnce you have reached the specified requirements, you can &fPrestige&e.", "Once you have reached the specified requirements, you can"),
     PRESTIGE4("&fPrestiging &eresets your &blevel &eand &6gold&e, but rewards Renown", ", but rewards Renown"),
@@ -62,7 +62,10 @@ public enum TutorialMessage {
     PRESTIGE6("&eI will now set your &blevel &eto &b&l120 &eso you can prestige, but only this once.", "so you can prestige, but only this once."),
     PRESTIGE7("&eAre you ready?", "Are you ready?"),
     PRESTIGE8("&eAlright, now go to the &f\"Prestige and Renown\" &evillager and prestige!", "villager and prestige!"),
-    TENACTITY1("&eCongratulations, now use your &fRenown &eto purchase &cTenacity I&e.", "Congratulations, now use your");
+    TENACTITY1("&eCongratulations, now use your &fRenown &eto purchase &cTenacity I&e from the Renown shop.", "Congratulations, now use your"),
+    FINAL1("&eThis concludes the PitSim tutorial!", "This concludes the PitSim tutorial!"),
+    FINAL2("&eIf you're still confused, join our community Discord at &f&ndiscord.gg/pitsim", "still confused, join our community Discord at"),
+    FINAL3("&eWith that being said, have fun on your PitSim adventure!", "With that being said, have fun on your PitSim adventure!");
 
 
     public String message;

@@ -135,8 +135,10 @@ public class Tutorial {
 		if(upgradesNPC != null) upgradesNPC.destroy();
 		if(prestigeNPC != null) prestigeNPC.destroy();
 		if(mysticWellHolo != null) mysticWellHolo.delete();
-		for(BukkitTask runnable : sequence.getRunnables()) {
-			runnable.cancel();
+		if(sequence.getRunnables() != null) {
+			for(BukkitTask runnable : sequence.getRunnables()) {
+				runnable.cancel();
+			}
 		}
 		SchematicPaste.loadSchematic(new File("plugins/WorldEdit/schematics/clear.schematic"), areaLocation);
 		TutorialManager.tutorials.remove(this.player);

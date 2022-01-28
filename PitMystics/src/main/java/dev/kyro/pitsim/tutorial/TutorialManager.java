@@ -63,9 +63,6 @@ public class TutorialManager implements Listener {
 		Player player = event.getPlayer();
 		if(isEligable(player)) {
 			TutorialManager.createTutorial(player);
-			FileConfiguration playerData = APlayerData.getPlayerData(player);
-			playerData.set("tutorial", true);
-			APlayerData.savePlayerData(player);
 		}
 	}
 

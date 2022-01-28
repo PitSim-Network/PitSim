@@ -1,5 +1,6 @@
 package dev.kyro.pitsim.tutorial.sequences;
 
+import dev.kyro.arcticapi.data.APlayerData;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.controllers.MapManager;
 import dev.kyro.pitsim.tutorial.MessageManager;
@@ -7,7 +8,7 @@ import dev.kyro.pitsim.tutorial.Task;
 import dev.kyro.pitsim.tutorial.TutorialMessage;
 import dev.kyro.pitsim.tutorial.objects.Tutorial;
 import dev.kyro.pitsim.tutorial.objects.TutorialSequence;
-import org.bukkit.Bukkit;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
@@ -36,9 +37,14 @@ public class FinalSequence extends TutorialSequence {
 	@Override
 	public void play() {
 		wait(2);
+		sendMessage(TutorialMessage.FINAL1);
+		wait(5);
+		sendMessage(TutorialMessage.FINAL2);
+		wait(5);
+		sendMessage(TutorialMessage.FINAL3);
 		teleport();
-		wait(2);
 		completeTask(Task.FINISH_TUTORIAL);
+		complete();
 	}
 
 	public void wait(int seconds) {
@@ -69,7 +75,20 @@ public class FinalSequence extends TutorialSequence {
 		BukkitTask runnable = new BukkitRunnable() {
 			@Override
 			public void run() {
-				player.teleport(MapManager.currentMap.getSpawn(Bukkit.getWorld("biomes1")));
+				player.teleport(MapManager.currentMap.firstLobby.getSpawnLocation());
+			}
+		}.runTaskLater(PitSim.INSTANCE, 20L * waitTime);
+		runnableList.add(runnable);
+	}
+
+	public void complete() {
+		BukkitTask runnable = new BukkitRunnable() {
+			@Override
+			public void run() {
+				tutorial.cleanUp();
+				FileConfiguration playerData = APlayerData.getPlayerData(player);
+				playerData.set("tutorial", true);
+				APlayerData.savePlayerData(player);
 			}
 		}.runTaskLater(PitSim.INSTANCE, 20L * waitTime);
 		runnableList.add(runnable);
