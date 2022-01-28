@@ -142,6 +142,17 @@ public class DamageManager implements Listener {
 			}.runTaskTimer(PitSim.INSTANCE, 0L, 1L);
 		}
 
+//		Reduce cpu load by not handling non v non
+		if(attackingNon != null && defendingNon != null) {
+			if(defender.getHealth() <= event.getFinalDamage()) {
+				defender.setHealth(defender.getMaxHealth());
+			} else {
+				defender.setHealth(defender.getHealth() - event.getFinalDamage());
+			}
+			event.setDamage(0);
+			return;
+		}
+
 		if(attackingNon != null) {
 //			Non damage
 			double damage = attackingNon.traits.contains(NonTrait.IRON_STREAKER) ? 9.6 : 7;
