@@ -42,8 +42,10 @@ public class FinalSequence extends TutorialSequence {
 		sendMessage(TutorialMessage.FINAL2);
 		wait(5);
 		sendMessage(TutorialMessage.FINAL3);
+		wait(5);
 		teleport();
 		completeTask(Task.FINISH_TUTORIAL);
+		wait(3);
 		complete();
 	}
 
