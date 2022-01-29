@@ -45,7 +45,7 @@ public enum TutorialMessage {
     RGM1("&eAmazing! You got it!", "Amazing! You got it!"),
     RGM2("&eNow, make me &aPants &ewith &dRARE! &9Retro-Gravity Microcosm III &eand &9Critically Funky III&e.", "Now, make me"),
     RGM3("&eRemember, to enchant &fPants&e, click on the &aPhilosopher's Cactus &efirst.", "Remember, to enchant"),
-    MEGA1("&eHey, you're getting the hang of this!", "  re getting the hang of this!"),
+    MEGA1("&eHey, you're getting the hang of this!", "re getting the hang of this!"),
     MEGA2("&eFinally, make me a &bBow &ewith &dRARE! &9Mega Longbow &eand &9Sprint Drain III&e.", "Finally, make me a"),
     MEGA3("&eIf you're having trouble with this one, &dRARE! &9Mega Longbow &ecan have any Enchant Tier.", "having trouble with this one,"),
     ARMOR1("&eGreat job!, you now have one of each type of &dMystic Item&e!", "Great job!, you now have one of each type of"),
