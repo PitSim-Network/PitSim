@@ -23,8 +23,8 @@ public class MessageManager implements Listener {
 	}
 
 
-
 	static {
+		try {
 			ProtocolLibrary.getProtocolManager().addPacketListener(
 					new PacketAdapter(PitSim.INSTANCE, PacketType.Play.Server.CHAT) {
 						@Override
@@ -36,14 +36,15 @@ public class MessageManager implements Listener {
 							List<WrappedChatComponent> components = packet.getChatComponents().getValues();
 
 							boolean isBypassed = false;
-							for (WrappedChatComponent component : components) {
+							for(WrappedChatComponent component : components) {
 								if(component.getJson().contains(event.getPlayer().getDisplayName())) isBypassed = true;
 								if(component.getJson().contains("PIT LEVEL UP!")) isBypassed = true;
 								for(String identifier : TutorialMessage.getIdentifiers()) {
 									try {
 										if(component.getJson() == null) continue;
 										if(component.getJson().contains(identifier)) isBypassed = true;
-									} catch(Exception ignored) { }
+									} catch(Exception ignored) {
+									}
 								}
 							}
 
@@ -51,6 +52,6 @@ public class MessageManager implements Listener {
 							if(TutorialManager.tutorials.containsKey(event.getPlayer())) event.setCancelled(true);
 						}
 					});
+		} catch(Exception ignored) { }
 	}
-
 }
