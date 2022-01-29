@@ -75,7 +75,7 @@ public class ViewEnchantTiersSequence extends TutorialSequence {
 			public void run() {
 				player.openInventory(ApplyEnchantPanel.openEnchantsPanel(player).getInventory());
 			}
-		}.runTaskLater(PitSim.INSTANCE, 20L * waitTime);
+		}.runTaskLater(PitSim.INSTANCE, (long) (20L * 0.5));
 		runnableList.add(runnable);
 	}
 

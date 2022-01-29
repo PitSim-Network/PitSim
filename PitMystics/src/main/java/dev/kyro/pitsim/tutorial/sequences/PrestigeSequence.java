@@ -35,6 +35,7 @@ public class PrestigeSequence extends TutorialSequence {
 
 	@Override
 	public void play() {
+		disableNon();
 		sendMessage(TutorialMessage.PRESTIGE1);
 		wait(5);
 		sendMessage(TutorialMessage.PRESTIGE2);
@@ -75,6 +76,18 @@ public class PrestigeSequence extends TutorialSequence {
 			@Override
 			public void run() {
 				tutorial.onTaskComplete(task);
+			}
+		}.runTaskLater(PitSim.INSTANCE, 20L * waitTime);
+		runnableList.add(runnable);
+	}
+
+	public void disableNon() {
+		BukkitTask runnable = new BukkitRunnable() {
+			@Override
+			public void run() {
+				for(NPC non : tutorial.nons) {
+					non.setProtected(true);
+				}
 			}
 		}.runTaskLater(PitSim.INSTANCE, 20L * waitTime);
 		runnableList.add(runnable);

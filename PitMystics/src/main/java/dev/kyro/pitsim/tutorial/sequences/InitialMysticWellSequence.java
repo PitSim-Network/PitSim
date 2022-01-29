@@ -102,7 +102,7 @@ public class InitialMysticWellSequence extends TutorialSequence {
 				tutorial.upgradesNPC.destroy();
 				tutorial.upgradesNPC = null;
 
-				Location holoLocation = tutorial.areaLocation.clone().add(0, 1.5, 0.5);
+				Location holoLocation = tutorial.areaLocation.clone().add(0, 3.5, 1);
 				Hologram holo = HologramsAPI.createHologram(PitSim.INSTANCE, tutorial.areaLocation);
 				holo.appendTextLine("&d&lMystic Well");
 				tutorial.mysticWellHolo = holo;

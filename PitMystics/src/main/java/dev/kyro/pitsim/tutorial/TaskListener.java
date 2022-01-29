@@ -143,7 +143,7 @@ public class TaskListener implements Listener {
 
 		PitPlayer pitPlayer = PitPlayer.getPitPlayer(tutorial.player);
 		if(pitPlayer.megastreak instanceof NoMegastreak) pitPlayer.megastreak = new Overdrive(pitPlayer);
-		if(pitPlayer.getKills() >= pitPlayer.megastreak.getRequiredKills()) {
+		if(pitPlayer.getKills() >= pitPlayer.megastreak.getRequiredKills() - 1) {
 			tutorial.onTaskComplete(Task.ACTIVATE_MEGASTREAK);
 		}
 	}

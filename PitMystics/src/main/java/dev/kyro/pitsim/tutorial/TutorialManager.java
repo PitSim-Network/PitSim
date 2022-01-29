@@ -25,7 +25,6 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.entity.PlayerDeathEvent;
-import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
@@ -76,16 +75,11 @@ public class TutorialManager implements Listener {
 	@EventHandler
 	public static void onEnchantingTableClick(PlayerInteractEvent event) {
 		if(!tutorials.containsKey(event.getPlayer())) return;
-		if(getTutorial(event.getPlayer()).sequence instanceof InitialMysticWellSequence ||
-				getTutorial(event.getPlayer()).sequence instanceof ViewEnchantsSequence ||
-				getTutorial(event.getPlayer()).sequence instanceof ViewEnchantTiersSequence) return;
 		if(event.getAction() != Action.LEFT_CLICK_BLOCK && event.getAction() != Action.RIGHT_CLICK_BLOCK) return;
 		Player player = event.getPlayer();
 		Block block = event.getClickedBlock();
 
 		if(block.getType() != Material.ENCHANTMENT_TABLE) return;
-
-		event.setCancelled(true);
 
 		Tutorial tutorial = TutorialManager.getTutorial(player);
 		if(tutorial == null) return;
@@ -98,6 +92,7 @@ public class TutorialManager implements Listener {
 					player.openInventory(enchantGUI.getHomePanel().getInventory());
 				}
 			}.runTaskLater(PitSim.INSTANCE, 1L);
+			event.setCancelled(true);
 			return;
 		}
 
@@ -108,6 +103,7 @@ public class TutorialManager implements Listener {
 					player.openInventory(EnchantingPanel.openEnchantsPanel(player).getInventory());
 				}
 			}.runTaskLater(PitSim.INSTANCE, 1L);
+			event.setCancelled(true);
 			return;
 		}
 
@@ -118,6 +114,7 @@ public class TutorialManager implements Listener {
 					player.openInventory(ApplyEnchantPanel.openEnchantsPanel(player).getInventory());
 				}
 			}.runTaskLater(PitSim.INSTANCE, 1L);
+			event.setCancelled(true);
 			return;
 		}
 
@@ -125,6 +122,8 @@ public class TutorialManager implements Listener {
 		enchantingGUI.open();
 		Sounds.MYSTIC_WELL_OPEN_1.play(player);
 		Sounds.MYSTIC_WELL_OPEN_2.play(player);
+
+		event.setCancelled(true);
 	}
 
 	@EventHandler

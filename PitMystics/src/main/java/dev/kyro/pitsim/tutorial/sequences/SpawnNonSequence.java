@@ -8,6 +8,7 @@ import dev.kyro.pitsim.tutorial.objects.Tutorial;
 import dev.kyro.pitsim.tutorial.objects.TutorialSequence;
 import net.citizensnpcs.api.CitizensAPI;
 import net.citizensnpcs.api.npc.NPC;
+import net.citizensnpcs.npc.skin.SkinnableEntity;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.EntityType;
@@ -80,9 +81,21 @@ public class SpawnNonSequence extends TutorialSequence {
 				tutorial.nons.add(non);
 				non.spawn(tutorial.areaLocation);
 				non.setProtected(false);
+				skin(non, "dropping_");
 			}
 		}.runTaskLater(PitSim.INSTANCE, 20L * waitTime);
 		runnableList.add(runnable);
+	}
+
+	public void skin(NPC npc, String name) {
+		npc.data().set(NPC.PLAYER_SKIN_UUID_METADATA, name);
+		npc.data().set(NPC.PLAYER_SKIN_USE_LATEST, false);
+		if (npc.isSpawned()) {
+			SkinnableEntity skinnable = (SkinnableEntity) npc.getEntity();
+			if (skinnable != null) {
+				skinnable.setSkinName(name);
+			}
+		}
 	}
 
 

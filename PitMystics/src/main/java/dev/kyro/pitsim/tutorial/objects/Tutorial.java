@@ -1,6 +1,7 @@
 package dev.kyro.pitsim.tutorial.objects;
 
 import com.gmail.filoghost.holographicdisplays.api.Hologram;
+import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.controllers.MapManager;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
@@ -12,6 +13,7 @@ import dev.kyro.pitsim.misc.Sounds;
 import dev.kyro.pitsim.perks.NoPerk;
 import dev.kyro.pitsim.tutorial.Task;
 import dev.kyro.pitsim.tutorial.TutorialManager;
+import dev.kyro.pitsim.tutorial.TutorialMessage;
 import dev.kyro.pitsim.tutorial.inventories.ApplyEnchantPanel;
 import dev.kyro.pitsim.tutorial.sequences.*;
 import net.citizensnpcs.api.CitizensAPI;
@@ -74,6 +76,7 @@ public class Tutorial {
 			runnable.cancel();
 		}
 		Sounds.LEVEL_UP.play(player);
+		AOutput.send(player, TutorialMessage.SPACER.message);
 
 		player.closeInventory();
 
