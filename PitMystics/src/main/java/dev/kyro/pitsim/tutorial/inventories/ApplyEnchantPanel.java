@@ -9,15 +9,16 @@ import dev.kyro.pitsim.enchants.SelfCheckout;
 import dev.kyro.pitsim.enums.MysticType;
 import dev.kyro.pitsim.enums.PantColor;
 import dev.kyro.pitsim.tutorial.TutorialManager;
-import dev.kyro.pitsim.tutorial.sequences.InitialMysticWellSequence;
 import dev.kyro.pitsim.tutorial.sequences.ViewEnchantsSequence;
 import org.bukkit.Material;
+import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.inventory.InventoryOpenEvent;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -29,12 +30,16 @@ public class ApplyEnchantPanel extends AGUIPanel {
 	public int enchantSlot;
 	public boolean forcedClose = false;
 
+	public static Map<Player, ApplyEnchantLevelPanel> enchantLevelMap = new HashMap<>();
+
 	public ApplyEnchantPanel(AGUI gui, ItemStack mystic, Map.Entry<PitEnchant, Integer> previousEnchant, int enchantSlot) {
 		super(gui);
 		enchantingGUI = (EnchantingGUI) gui;
 		this.mystic = mystic;
 		this.previousEnchant = previousEnchant;
 		this.enchantSlot = enchantSlot;
+
+		enchantLevelMap.put(player, new ApplyEnchantLevelPanel(enchantingGUI, mystic, EnchantManager.getEnchant("exe"), enchantSlot));
 
 		inventoryBuilder.createBorder(Material.STAINED_GLASS_PANE, 2);
 //				.setSlots(Material.BARRIER, 0, 45);
@@ -108,10 +113,14 @@ public class ApplyEnchantPanel extends AGUIPanel {
 					exception.printStackTrace();
 				}
 				forcedClose = true;
-				openPanel(new ApplyEnchantLevelPanel(enchantingGUI, mystic, entry.getKey(), enchantSlot, previousEnchant));
+				openPanel(new ApplyEnchantLevelPanel(enchantingGUI, mystic, entry.getKey(), enchantSlot));
 				return;
 			}
 		}
+	}
+
+	public static ApplyEnchantLevelPanel openEnchantsPanel(Player player) {
+		return enchantLevelMap.get(player);
 	}
 
 	@Override

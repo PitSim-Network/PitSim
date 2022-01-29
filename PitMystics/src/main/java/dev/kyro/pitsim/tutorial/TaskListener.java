@@ -1,21 +1,27 @@
 package dev.kyro.pitsim.tutorial;
 
+import dev.kyro.arcticapi.events.armor.AChangeEquipmentEvent;
+import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.controllers.objects.Killstreak;
 import dev.kyro.pitsim.controllers.objects.PitPerk;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
+import dev.kyro.pitsim.events.KillEvent;
 import dev.kyro.pitsim.events.KillstreakEquipEvent;
 import dev.kyro.pitsim.events.MegastreakEquipEvent;
 import dev.kyro.pitsim.events.PerkEquipEvent;
+import dev.kyro.pitsim.megastreaks.NoMegastreak;
+import dev.kyro.pitsim.megastreaks.Overdrive;
+import dev.kyro.pitsim.misc.Misc;
 import dev.kyro.pitsim.tutorial.inventories.PerkGUI;
+import dev.kyro.pitsim.tutorial.inventories.PrestigeGUI;
 import dev.kyro.pitsim.tutorial.objects.Tutorial;
-import dev.kyro.pitsim.tutorial.sequences.KillstreakSequence;
-import dev.kyro.pitsim.tutorial.sequences.MegastreakSequence;
-import dev.kyro.pitsim.tutorial.sequences.PerkSequence;
-import dev.kyro.pitsim.tutorial.sequences.VampireSequence;
+import dev.kyro.pitsim.tutorial.sequences.*;
 import net.citizensnpcs.api.event.NPCRightClickEvent;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.scheduler.BukkitRunnable;
 
 public class TaskListener implements Listener {
 
@@ -33,17 +39,22 @@ public class TaskListener implements Listener {
 
 	@EventHandler
 	public void onPerkEquip(PerkEquipEvent event) {
-		Player player = event.getPlayer();
-		Tutorial tutorial = TutorialManager.getTutorial(player);
-		if(tutorial == null) return;
-		if(tutorial.sequence.getClass() != PerkSequence.class) return;
 
-		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
-		for(PitPerk pitPerk : pitPlayer.pitPerks) {
-			if(pitPerk == PitPerk.getPitPerk("none")) return;
-		}
+		new BukkitRunnable() {
+			@Override
+			public void run() {
+				Player player = event.getPlayer();
+				Tutorial tutorial = TutorialManager.getTutorial(player);
+				if(tutorial == null) return;
+				if(tutorial.sequence.getClass() != PerkSequence.class) return;
 
-		tutorial.onTaskComplete(Task.EQUIP_PERKS);
+				PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
+				for(PitPerk pitPerk : pitPlayer.pitPerks) {
+					if(pitPerk == PitPerk.getPitPerk("none")) return;
+				}
+				tutorial.onTaskComplete(Task.EQUIP_PERKS);
+			}
+		}.runTaskLater(PitSim.INSTANCE, 2L);
 	}
 
 	@EventHandler
@@ -67,15 +78,26 @@ public class TaskListener implements Listener {
 		tutorial.onTaskComplete(Task.EQUIP_MEGASTREAK);
 	}
 
-	public void onEnchantBillLs(Player player) {
+	public static void onEnchantBillLs(Player player) {
 		Tutorial tutorial = TutorialManager.getTutorial(player);
 		if(tutorial == null) return;
 
 		tutorial.onTaskComplete(Task.ENCHANT_BILL_LS);
 	}
 
+	public static void onEnchantRGM(Player player) {
+		Tutorial tutorial = TutorialManager.getTutorial(player);
+		if(tutorial == null) return;
 
+		tutorial.onTaskComplete(Task.ENCHANT_RGM);
+	}
 
+	public static void onMegaDrainEnchant(Player player) {
+		Tutorial tutorial = TutorialManager.getTutorial(player);
+		if(tutorial == null) return;
+
+		tutorial.onTaskComplete(Task.ENCHANT_MEGA_DRAIN);
+	}
 
 
 	@EventHandler
@@ -89,6 +111,40 @@ public class TaskListener implements Listener {
 				dev.kyro.pitsim.tutorial.inventories.PerkGUI perkGUI = new PerkGUI(player);
 				perkGUI.open();
 			}
+			if(event.getNPC() == tutorial.prestigeNPC) {
+				if(player != tutorial.player) return;
+				PrestigeGUI prestigeGUI = new PrestigeGUI(player);
+				prestigeGUI.open();
+			}
+		}
+	}
+
+	@EventHandler
+	public void onEquip(AChangeEquipmentEvent event) {
+		Tutorial tutorial = TutorialManager.getTutorial(event.getPlayer());
+		if(tutorial == null) return;
+		if(!(tutorial.sequence instanceof EquipArmorSequence)) return;
+
+		Player player = event.getPlayer();
+		for (ItemStack armorContent : player.getInventory().getArmorContents()) {
+			if(Misc.isAirOrNull(armorContent)) {
+				return;
+			}
+		}
+		tutorial.onTaskComplete(Task.EQUIP_ARMOR);
+	}
+
+	@EventHandler
+	public void onKill(KillEvent event) {
+		Tutorial tutorial = TutorialManager.getTutorial(event.killer);
+		if(tutorial == null) return;
+
+		if(!(tutorial.sequence instanceof ActivateMegastreakSequence)) return;
+
+		PitPlayer pitPlayer = PitPlayer.getPitPlayer(tutorial.player);
+		if(pitPlayer.megastreak instanceof NoMegastreak) pitPlayer.megastreak = new Overdrive(pitPlayer);
+		if(pitPlayer.getKills() >= pitPlayer.megastreak.getRequiredKills() - 1) {
+			tutorial.onTaskComplete(Task.ACTIVATE_MEGASTREAK);
 		}
 	}
 }

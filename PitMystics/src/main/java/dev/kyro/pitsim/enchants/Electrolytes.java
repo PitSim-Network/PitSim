@@ -39,6 +39,16 @@ public class Electrolytes extends PitEnchant {
 
 		if(killEvent.killer.hasPotionEffect(PotionEffectType.SPEED)) {
 
+			int speedDuration = 0;
+			for (PotionEffect potioneffect : killEvent.killer.getActivePotionEffects()) {
+				int duration = potioneffect.getDuration();
+				if (potioneffect.getType() == PotionEffectType.SPEED) {
+					speedDuration = duration;
+				}
+			}
+
+			if(speedDuration > 12.5 * 20) return;
+
 			for(PotionEffect activePotionEffect : killEvent.killer.getActivePotionEffects()) {
 
 				if(activePotionEffect.getType().equals(PotionEffectType.SPEED)) {

@@ -1,29 +1,32 @@
 package dev.kyro.pitsim.tutorial.sequences;
 
+import dev.kyro.arcticapi.misc.AUtil;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.tutorial.MessageManager;
 import dev.kyro.pitsim.tutorial.Task;
 import dev.kyro.pitsim.tutorial.TutorialMessage;
 import dev.kyro.pitsim.tutorial.objects.Tutorial;
 import dev.kyro.pitsim.tutorial.objects.TutorialSequence;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class MegastreakSequence extends TutorialSequence {
+public class EquipArmorSequence extends TutorialSequence {
 	public Player player;
 	public Tutorial tutorial;
 	public int waitTime = 0;
 	public List<BukkitTask> runnableList = new ArrayList<>();
 
-	public MegastreakSequence(Player player, Tutorial tutorial) {
-		super(player, tutorial, Task.EQUIP_MEGASTREAK);
+	public EquipArmorSequence(Player player, Tutorial tutorial) {
+		super(player, tutorial, Task.EQUIP_ARMOR);
 		this.player = player;
 		this.tutorial = tutorial;
-		player.closeInventory();
+		//test
 	}
 
 	@Override
@@ -33,13 +36,10 @@ public class MegastreakSequence extends TutorialSequence {
 
 	@Override
 	public void play() {
-		sendMessage(TutorialMessage.MEGASTREAK1);
+		sendMessage(TutorialMessage.ARMOR1);
 		wait(5);
-		sendMessage(TutorialMessage.MEGASTREAK2);
-		wait(5);
-		sendMessage(TutorialMessage.MEGASTREAK3);
-		wait(5);
-		sendMessage(TutorialMessage.MEGASTREAK4);
+		sendMessage(TutorialMessage.ARMOR2);
+		giveArmor();
 	}
 
 	public void wait(int seconds) {
@@ -61,6 +61,18 @@ public class MegastreakSequence extends TutorialSequence {
 			@Override
 			public void run() {
 				tutorial.onTaskComplete(task);
+			}
+		}.runTaskLater(PitSim.INSTANCE, 20L * waitTime);
+		runnableList.add(runnable);
+	}
+
+	public void giveArmor() {
+		BukkitTask runnable = new BukkitRunnable() {
+			@Override
+			public void run() {
+				AUtil.giveItemSafely(player, new ItemStack(Material.DIAMOND_HELMET));
+				AUtil.giveItemSafely(player, new ItemStack(Material.DIAMOND_CHESTPLATE));
+				AUtil.giveItemSafely(player, new ItemStack(Material.DIAMOND_BOOTS));
 			}
 		}.runTaskLater(PitSim.INSTANCE, 20L * waitTime);
 		runnableList.add(runnable);

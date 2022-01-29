@@ -6,7 +6,6 @@ import dev.kyro.pitsim.tutorial.Task;
 import dev.kyro.pitsim.tutorial.TutorialMessage;
 import dev.kyro.pitsim.tutorial.objects.Tutorial;
 import dev.kyro.pitsim.tutorial.objects.TutorialSequence;
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -34,10 +33,17 @@ public class InitialSequence extends TutorialSequence {
 
 	@Override
 	public void play() {
-		//Do call put any direct code in here. All called code must ran after int waitTime seconds.
-		sendMessage(TutorialMessage.DARK_BLUE);
-		wait(2);
-		sendMessage(TutorialMessage.DARK_GREEN);
+		wait(5);
+		sendMessage(TutorialMessage.WELCOME1);
+		wait(5);
+		sendMessage(TutorialMessage.WELCOME2);
+		wait(5);
+		sendMessage(TutorialMessage.WELCOME3);
+		wait(5);
+		sendMessage(TutorialMessage.WELCOME4);
+		wait(5);
+		sendMessage(TutorialMessage.WELCOME5);
+		wait(5);
 		teleportPlayer();
 		completeTask(Task.VIEW_MAP);
 	}
@@ -70,9 +76,13 @@ public class InitialSequence extends TutorialSequence {
 		BukkitTask runnable = new BukkitRunnable() {
 			@Override
 			public void run() {
-				player.teleport(new Location(Bukkit.getWorld("tutorial"), tutorial.positionCoords.x, 93, tutorial.positionCoords.y));
+				Location location = tutorial.areaLocation.clone();
+				location.setPitch(0);
+				location.setYaw(0);
+				player.teleport(location);
 			}
 		}.runTaskLater(PitSim.INSTANCE, (long) (20 * waitTime));
+		runnableList.add(runnable);
 	}
 
 }

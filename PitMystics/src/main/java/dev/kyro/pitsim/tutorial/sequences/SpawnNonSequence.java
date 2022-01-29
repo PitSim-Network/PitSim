@@ -6,6 +6,12 @@ import dev.kyro.pitsim.tutorial.Task;
 import dev.kyro.pitsim.tutorial.TutorialMessage;
 import dev.kyro.pitsim.tutorial.objects.Tutorial;
 import dev.kyro.pitsim.tutorial.objects.TutorialSequence;
+import net.citizensnpcs.api.CitizensAPI;
+import net.citizensnpcs.api.npc.NPC;
+import net.citizensnpcs.npc.skin.SkinnableEntity;
+import org.bukkit.Bukkit;
+import org.bukkit.Material;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
@@ -13,17 +19,17 @@ import org.bukkit.scheduler.BukkitTask;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MegastreakSequence extends TutorialSequence {
+public class SpawnNonSequence extends TutorialSequence {
 	public Player player;
 	public Tutorial tutorial;
 	public int waitTime = 0;
 	public List<BukkitTask> runnableList = new ArrayList<>();
 
-	public MegastreakSequence(Player player, Tutorial tutorial) {
-		super(player, tutorial, Task.EQUIP_MEGASTREAK);
+	public SpawnNonSequence(Player player, Tutorial tutorial) {
+		super(player, tutorial, Task.VIEW_NON);
 		this.player = player;
 		this.tutorial = tutorial;
-		player.closeInventory();
+		//test
 	}
 
 	@Override
@@ -33,13 +39,12 @@ public class MegastreakSequence extends TutorialSequence {
 
 	@Override
 	public void play() {
-		sendMessage(TutorialMessage.MEGASTREAK1);
+		sendMessage(TutorialMessage.VIEWNON1);
 		wait(5);
-		sendMessage(TutorialMessage.MEGASTREAK2);
+		spawnNons();
+		sendMessage(TutorialMessage.VIEWNON2);
 		wait(5);
-		sendMessage(TutorialMessage.MEGASTREAK3);
-		wait(5);
-		sendMessage(TutorialMessage.MEGASTREAK4);
+		completeTask(Task.VIEW_NON);
 	}
 
 	public void wait(int seconds) {
@@ -64,6 +69,33 @@ public class MegastreakSequence extends TutorialSequence {
 			}
 		}.runTaskLater(PitSim.INSTANCE, 20L * waitTime);
 		runnableList.add(runnable);
+	}
+
+	public void spawnNons() {
+		BukkitTask runnable = new BukkitRunnable() {
+			@Override
+			public void run() {
+				Bukkit.getWorld("tutorial").getBlockAt(tutorial.areaLocation).setType(Material.AIR);
+				tutorial.mysticWellHolo.delete();
+				NPC non  = CitizensAPI.getNPCRegistry().createNPC(EntityType.PLAYER, "Dummy");
+				tutorial.nons.add(non);
+				non.spawn(tutorial.areaLocation);
+				non.setProtected(false);
+				skin(non, "dropping_");
+			}
+		}.runTaskLater(PitSim.INSTANCE, 20L * waitTime);
+		runnableList.add(runnable);
+	}
+
+	public void skin(NPC npc, String name) {
+		npc.data().set(NPC.PLAYER_SKIN_UUID_METADATA, name);
+		npc.data().set(NPC.PLAYER_SKIN_USE_LATEST, false);
+		if (npc.isSpawned()) {
+			SkinnableEntity skinnable = (SkinnableEntity) npc.getEntity();
+			if (skinnable != null) {
+				skinnable.setSkinName(name);
+			}
+		}
 	}
 
 

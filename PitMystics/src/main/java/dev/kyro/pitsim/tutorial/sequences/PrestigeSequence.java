@@ -1,17 +1,13 @@
 package dev.kyro.pitsim.tutorial.sequences;
 
-import com.gmail.filoghost.holographicdisplays.api.Hologram;
-import com.gmail.filoghost.holographicdisplays.api.HologramsAPI;
 import dev.kyro.pitsim.PitSim;
+import dev.kyro.pitsim.controllers.LevelManager;
 import dev.kyro.pitsim.tutorial.MessageManager;
 import dev.kyro.pitsim.tutorial.Task;
 import dev.kyro.pitsim.tutorial.TutorialMessage;
-import dev.kyro.pitsim.tutorial.inventories.EnchantingGUI;
 import dev.kyro.pitsim.tutorial.objects.Tutorial;
 import dev.kyro.pitsim.tutorial.objects.TutorialSequence;
-import org.bukkit.Bukkit;
-import org.bukkit.Location;
-import org.bukkit.Material;
+import net.citizensnpcs.api.npc.NPC;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
@@ -19,16 +15,17 @@ import org.bukkit.scheduler.BukkitTask;
 import java.util.ArrayList;
 import java.util.List;
 
-public class InitialMysticWellSequence extends TutorialSequence {
+public class PrestigeSequence extends TutorialSequence {
 	public Player player;
 	public Tutorial tutorial;
 	public int waitTime = 0;
 	public List<BukkitTask> runnableList = new ArrayList<>();
 
-	public InitialMysticWellSequence(Player player, Tutorial tutorial) {
-		super(player, tutorial, Task.VIEW_MYSTIC_WELL);
+	public PrestigeSequence(Player player, Tutorial tutorial) {
+		super(player, tutorial, Task.PRESTIGE);
 		this.player = player;
 		this.tutorial = tutorial;
+		//test
 	}
 
 	@Override
@@ -38,25 +35,26 @@ public class InitialMysticWellSequence extends TutorialSequence {
 
 	@Override
 	public void play() {
-		placeTable();
-		sendMessage(TutorialMessage.MYSTIC1);
+		disableNon();
+		sendMessage(TutorialMessage.PRESTIGE1);
 		wait(5);
-		sendMessage(TutorialMessage.MYSTIC2);
+		sendMessage(TutorialMessage.PRESTIGE2);
 		wait(5);
-		sendMessage(TutorialMessage.MYSTIC3);
+		sendMessage(TutorialMessage.PRESTIGE3);
 		wait(5);
-		sendMessage(TutorialMessage.MYSTIC4);
+		sendMessage(TutorialMessage.PRESTIGE4);
 		wait(5);
-		openGUI();
-		sendMessage(TutorialMessage.MYSTIC5);
+		sendMessage(TutorialMessage.PRESTIGE5);
 		wait(5);
-		sendMessage(TutorialMessage.MYSTIC6);
+		sendMessage(TutorialMessage.PRESTIGE6);
 		wait(5);
-		sendMessage(TutorialMessage.MYSTIC7);
-		wait(5);
-		sendMessage(TutorialMessage.MYSTIC8);
-		wait(5);
-		completeTask(Task.VIEW_MYSTIC_WELL);
+		sendMessage(TutorialMessage.PRESTIGE7);
+		wait(2);
+		setLevel();
+		wait(3);
+		spawnPrestigeVillager();
+		sendMessage(TutorialMessage.PRESTIGE8);
+
 	}
 
 	public void wait(int seconds) {
@@ -83,36 +81,40 @@ public class InitialMysticWellSequence extends TutorialSequence {
 		runnableList.add(runnable);
 	}
 
-	public void openGUI() {
+	public void disableNon() {
 		BukkitTask runnable = new BukkitRunnable() {
 			@Override
 			public void run() {
-				EnchantingGUI enchantGUI = new EnchantingGUI(player);
-				player.openInventory(enchantGUI.getHomePanel().getInventory());
+				for(NPC non : tutorial.nons) {
+					non.setProtected(true);
+				}
 			}
 		}.runTaskLater(PitSim.INSTANCE, 20L * waitTime);
 		runnableList.add(runnable);
 	}
 
-	public void placeTable() {
+	public void spawnPrestigeVillager() {
 		BukkitTask runnable = new BukkitRunnable() {
 			@Override
 			public void run() {
-				EnchantingGUI enchantGUI = new EnchantingGUI(player);
-				tutorial.upgradesNPC.destroy();
-				tutorial.upgradesNPC = null;
-
-				Location holoLocation = tutorial.areaLocation.clone().add(0, 3.5, 1);
-				Hologram holo = HologramsAPI.createHologram(PitSim.INSTANCE, tutorial.areaLocation);
-				holo.appendTextLine("&d&lMystic Well");
-				tutorial.mysticWellHolo = holo;
-
-				Location blockLocation = tutorial.areaLocation.add(0, -1 ,0);
-				Bukkit.getWorld("tutorial").getBlockAt(blockLocation).setType(Material.ENCHANTMENT_TABLE);
+				for(NPC non : tutorial.nons) {
+					non.destroy();
+				}
+				tutorial.spawnPrestigeNPC();
 			}
 		}.runTaskLater(PitSim.INSTANCE, 20L * waitTime);
 		runnableList.add(runnable);
 	}
 
+	public void setLevel() {
+		BukkitTask runnable = new BukkitRunnable() {
+			@Override
+			public void run() {
+				LevelManager.addXP(player, 1000000);
+				LevelManager.addGoldReq(player, 20000);
+			}
+		}.runTaskLater(PitSim.INSTANCE, 20L * waitTime);
+		runnableList.add(runnable);
+	}
 
 }

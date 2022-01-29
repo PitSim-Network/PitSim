@@ -36,4 +36,10 @@ public class EnchantingGUI extends AGUI {
 
 		return (clickedSlot - 7) / 3;
 	}
+
+	public void openHomePanel() {
+		player.openInventory(enchantingPanel.getInventory());
+	}
+
+
 }

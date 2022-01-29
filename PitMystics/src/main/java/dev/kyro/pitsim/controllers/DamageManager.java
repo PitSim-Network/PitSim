@@ -282,7 +282,7 @@ public class DamageManager implements Listener {
 		Misc.multiKill(killer);
 
 		Non defendingNon = NonManager.getNon(dead);
-		if(defendingNon == null) {
+		if(defendingNon == null && dead.getWorld() != MapManager.getTutorial()) {
 			Location spawnLoc = MapManager.currentMap.getSpawn(dead.getWorld());
 			dead.teleport(spawnLoc);
 
@@ -294,7 +294,7 @@ public class DamageManager implements Listener {
 					else pitAttacker.playerKills += killEvent.playerKillWorth;
 				}
 			}
-		} else {
+		} else if(defendingNon != null) {
 			defendingNon.respawn();
 		}
 

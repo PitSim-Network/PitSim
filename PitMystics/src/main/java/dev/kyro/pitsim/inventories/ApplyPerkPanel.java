@@ -136,11 +136,12 @@ public class ApplyPerkPanel extends AGUIPanel {
 				}
 
 				PitPerk replacedPerk = perkGUI.getActivePerk(perkNum);
-				PerkEquipEvent equipEvent = new PerkEquipEvent(clickedPerk, player, replacedPerk);
-				Bukkit.getPluginManager().callEvent(equipEvent);
 
 				Sounds.SUCCESS.play(player);
 				perkGUI.setPerk(clickedPerk, perkNum);
+				PerkEquipEvent equipEvent = new PerkEquipEvent(clickedPerk, player, replacedPerk);
+				Bukkit.getPluginManager().callEvent(equipEvent);
+
 				openPreviousGUI();
 				return;
 			}

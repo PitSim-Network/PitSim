@@ -23,6 +23,7 @@ public class KillstreakSequence extends TutorialSequence {
 		super(player, tutorial, Task.EQUIP_KILLSTREAK);
 		this.player = player;
 		this.tutorial = tutorial;
+		player.closeInventory();
 	}
 
 	@Override
@@ -32,9 +33,13 @@ public class KillstreakSequence extends TutorialSequence {
 
 	@Override
 	public void play() {
-		sendMessage(TutorialMessage.DARK_BLUE);
-		wait(2);
-		sendMessage(TutorialMessage.DARK_GREEN);
+		sendMessage(TutorialMessage.KILLSTREAK1);
+		wait(5);
+		sendMessage(TutorialMessage.KILLSTREAK2);
+		wait(5);
+		sendMessage(TutorialMessage.KILLSTREAK3);
+		wait(5);
+		sendMessage(TutorialMessage.KILLSTREAK4);
 	}
 
 	public void wait(int seconds) {

@@ -12,7 +12,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-public class NewLeaderboardManager {
+public  class NewLeaderboardManager {
 
 	public static Map<FileConfiguration, Integer> levels = new HashMap<>();
 	public static Map<FileConfiguration, Integer> sortedMap = new HashMap<>();
@@ -41,9 +41,6 @@ public class NewLeaderboardManager {
 						(a, b) -> { throw new AssertionError(); },
 						LinkedHashMap::new
 				));
-
-
-
 
 	}
 
