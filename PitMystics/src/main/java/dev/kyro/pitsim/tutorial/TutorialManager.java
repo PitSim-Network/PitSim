@@ -70,6 +70,7 @@ public class TutorialManager implements Listener {
 	public void onQuit(PlayerQuitEvent event) {
 		Player player = event.getPlayer();
 		if(tutorials.containsKey(player)) tutorials.get(player).cleanUp();
+
 	}
 
 	@EventHandler
