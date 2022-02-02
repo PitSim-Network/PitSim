@@ -41,6 +41,7 @@ dependencies {
     compile 'de.tr7zw:item-nbt-api-plugin:2.8.0'// https://mvnrepository.com/artifact/com.googlecode.json-simple/json-simple
 //    compile group: 'com.googlecode.json-simple', name: 'json-simple', version: '1.1.1'
     compileOnly files('libs/FeatherBoard.jar')
+    compileOnly files('libs/ArcticGuilds-1.0.0-all.jar')
 
     compileOnly 'net.luckperms:api:5.3'
 }
