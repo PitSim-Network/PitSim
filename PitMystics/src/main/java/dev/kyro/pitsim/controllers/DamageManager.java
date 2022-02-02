@@ -509,7 +509,7 @@ public class DamageManager implements Listener {
 				NBTItem nbtItem = new NBTItem(itemStack);
 				if(nbtItem.hasKey(NBTTag.MAX_LIVES.getRef())) {
 					int lives = nbtItem.getInteger(NBTTag.CURRENT_LIVES.getRef());
-					if(feather) break;
+					if(feather || divine) break;
 					if(lives - 1 == 0) {
 						dead.getInventory().remove(itemStack);
 
