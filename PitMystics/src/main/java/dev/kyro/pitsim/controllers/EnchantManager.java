@@ -426,7 +426,7 @@ public class EnchantManager implements Listener {
 			ItemStack jewelStack = completeJewel(attacker, nbtItem.getItem());
 			if(jewelStack != null) nbtItem = new NBTItem(jewelStack);
 
-			setItemLore(nbtItem.getItem());
+			if(nbtItem.hasKey(NBTTag.ITEM_UUID.getRef())) setItemLore(nbtItem.getItem());
 			attacker.setItemInHand(nbtItem.getItem());
 
 			for(int i = 0; i < 9; i++) {
