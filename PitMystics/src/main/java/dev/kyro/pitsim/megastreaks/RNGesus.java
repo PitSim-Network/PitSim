@@ -121,14 +121,15 @@ public class RNGesus extends Megastreak {
 		lore.add(ChatColor.translateAlternateColorCodes('&', "&c\u25a0 &7Start a &b20 minute &7cooldown for this streak"));
 		lore.add("");
 		lore.add(ChatColor.GRAY + "Every 100 kills:");
-		lore.add(ChatColor.translateAlternateColorCodes('&', "&b\u25a0 &eShift &7into a random reality (&6Gold&7, &bXP&7,"));
+		lore.add(ChatColor.translateAlternateColorCodes('&', "&e\u25a0 &eShift &7into a random reality (&6Gold&7, &bXP&7,"));
 		lore.add(ChatColor.translateAlternateColorCodes('&', "&cDamage&7, &eAbsorption&7)"));
-		lore.add(ChatColor.translateAlternateColorCodes('&', "&b\u25a0 &7Build up stats for each reality as you streak"));
+		lore.add(ChatColor.translateAlternateColorCodes('&', "&e\u25a0 &7Build up stats for each reality as you streak"));
 		lore.add("");
-		lore.add(ChatColor.GRAY + "At 1000 kills (" + ChatColor.YELLOW + "Destabilized Reality" + ChatColor.GRAY + "):");
-		lore.add(ChatColor.translateAlternateColorCodes('&', "&b\u25a0 Use the stats"));
-		lore.add(ChatColor.translateAlternateColorCodes('&', "&7earned from each reality"));
-		lore.add(ChatColor.translateAlternateColorCodes('&', "&b\u25a0 &7You can no longer heal"));
+		lore.add(ChatColor.GRAY + "At 1000 kills:");
+		lore.add(ChatColor.translateAlternateColorCodes('&', "&e&k\u25a0&f Reality destabilizes"));
+		lore.add(ChatColor.translateAlternateColorCodes('&', "&a\u25a0 &7Use the stats earned from each reality as"));
+		lore.add(ChatColor.translateAlternateColorCodes('&', "&7&cdamage&7, &9health&7, &bXP&7, and &6gold &7on each kill"));
+		lore.add(ChatColor.translateAlternateColorCodes('&', "&c\u25a0 &7You can no longer heal"));
 		lore.add("");
 		lore.add(ChatColor.GRAY + "On death:");
 		lore.add(ChatColor.translateAlternateColorCodes('&', "&e\u25a0 &7View a recap of your stats from each reality"));
@@ -415,13 +416,12 @@ public class RNGesus extends Megastreak {
 			if(value == Reality.NONE) continue;
 			generatedRealityOrder.add(value);
 		}
-		for(int i = generatedRealityOrder.size(); i < 8; i++) {
+		for(int i = generatedRealityOrder.size(); i < 9; i++) {
 			List<Reality> randomRealities = new ArrayList<>(Arrays.asList(Reality.values()));
 			Collections.shuffle(randomRealities);
 			generatedRealityOrder.add(randomRealities.get(0));
 		}
 		Collections.shuffle(generatedRealityOrder);
-		generatedRealityOrder.add(0, Reality.NONE);
 	}
 
 	public void setXPBar() {
