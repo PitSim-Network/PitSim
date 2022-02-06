@@ -21,7 +21,7 @@ public class GuildPlaceholder8 implements APAPIPlaceholder {
 		Guild guild = GuildLeaderboard.topGuilds.get(7);
 		DecimalFormat formatter = new DecimalFormat("#,###.#");
 		StringBuilder string = new StringBuilder("&78. ");
-		string.append(guild.getColor()).append(guild.name).append(" &7- &e").append(formatter.format(guild.getRepPoints()));
+		string.append(guild.getColor()).append(guild.name).append(" &7- &e").append(formatter.format(guild.reputation));
 		return ChatColor.translateAlternateColorCodes('&', string.toString());
 	}
 }
