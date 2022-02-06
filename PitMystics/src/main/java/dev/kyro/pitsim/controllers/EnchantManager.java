@@ -33,7 +33,6 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.LeatherArmorMeta;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
 
@@ -548,8 +547,7 @@ public class EnchantManager implements Listener {
 		return getEnchantsOnItem(itemStack, new HashMap<>());
 	}
 
-	@org.jetbrains.annotations.NotNull
-	public static Map<PitEnchant, Integer> getEnchantsOnItem(ItemStack itemStack, @NotNull Map<PitEnchant, Integer> currentEnchantMap) {
+	public static Map<PitEnchant, Integer> getEnchantsOnItem(ItemStack itemStack, Map<PitEnchant, Integer> currentEnchantMap) {
 
 		Map<PitEnchant, Integer> itemEnchantMap = new HashMap<>();
 		if(itemStack == null || itemStack.getType() == Material.AIR) return itemEnchantMap;
