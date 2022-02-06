@@ -17,6 +17,15 @@ public class LeaderboardManager {
 	public static Map<FileConfiguration, Integer> levels = new HashMap<>();
 	public static Map<FileConfiguration, Integer> sortedMap = new HashMap<>();
 
+	static {
+		new BukkitRunnable() {
+			@Override
+			public void run() {
+				calculate();
+			}
+		}.runTaskTimerAsynchronously(PitSim.INSTANCE, 0L, 4000L);
+	}
+
 	public static void calculate() {
 		sortedMap.clear();
 		levels.clear();
@@ -41,21 +50,7 @@ public class LeaderboardManager {
 						(a, b) -> { throw new AssertionError(); },
 						LinkedHashMap::new
 				));
-
-
-
-
 	}
-
-	static {
-		new BukkitRunnable() {
-			@Override
-			public void run() {
-				calculate();
-			}
-		}.runTaskTimer(PitSim.INSTANCE, 0L, 4000L);
-	}
-
 }
 
 

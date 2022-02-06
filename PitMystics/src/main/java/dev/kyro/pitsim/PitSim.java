@@ -21,6 +21,7 @@ import dev.kyro.pitsim.enchants.GoldBoost;
 import dev.kyro.pitsim.enchants.*;
 import dev.kyro.pitsim.helmetabilities.*;
 import dev.kyro.pitsim.killstreaks.*;
+import dev.kyro.pitsim.killstreaks.Dispersion;
 import dev.kyro.pitsim.megastreaks.*;
 import dev.kyro.pitsim.misc.*;
 import dev.kyro.pitsim.perks.*;
@@ -214,12 +215,13 @@ public class PitSim extends JavaPlugin {
 	private void registerKillstreaks() {
 		PerkManager.registerKillstreak(new NoKillstreak());
 
+		PerkManager.registerKillstreak(new Dispersion());
 		PerkManager.registerKillstreak(new Explicious());
 		PerkManager.registerKillstreak(new AssuredStrike());
-		PerkManager.registerKillstreak(new RAndR());
 		PerkManager.registerKillstreak(new Leech());
 
-		PerkManager.registerKillstreak(new TacticalRetreat());
+//		PerkManager.registerKillstreak(new TacticalRetreat());
+		PerkManager.registerKillstreak(new RAndR());
 		PerkManager.registerKillstreak(new FightOrFlight());
 		PerkManager.registerKillstreak(new HerosHaste());
 		PerkManager.registerKillstreak(new CounterStrike());

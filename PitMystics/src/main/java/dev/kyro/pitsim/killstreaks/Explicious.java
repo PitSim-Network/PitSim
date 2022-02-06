@@ -17,7 +17,7 @@ public class Explicious extends Killstreak {
 	public static Explicious INSTANCE;
 
 	public Explicious() {
-		super("Explicious", "Explicious", 3, 0);
+		super("Explicious", "Explicious", 3, 2);
 		INSTANCE = this;
 	}
 
