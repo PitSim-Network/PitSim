@@ -6,6 +6,8 @@ import dev.kyro.pitsim.controllers.GuildLeaderboard;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
+import java.text.DecimalFormat;
+
 public class GuildPlaceholder2 implements APAPIPlaceholder {
 
 	@Override
@@ -15,11 +17,11 @@ public class GuildPlaceholder2 implements APAPIPlaceholder {
 
 	@Override
 	public String getValue(Player player) {
-		if(GuildLeaderboard.topGuilds.get(0) == null) return "&cNone!";
+		if(GuildLeaderboard.topGuilds.size() < 2) return "&cNone!";
 		Guild guild = GuildLeaderboard.topGuilds.get(1);
-
+		DecimalFormat formatter = new DecimalFormat("#,###.#");
 		StringBuilder string = new StringBuilder("&f2. ");
-		string.append(guild.getColor()).append(guild.name).append( "&7- &e").append(guild.getRepPoints());
+		string.append(guild.getColor()).append(guild.name).append("& 7- &e").append(formatter.format(guild.getRepPoints()));
 		return ChatColor.translateAlternateColorCodes('&', string.toString());
 	}
 }
