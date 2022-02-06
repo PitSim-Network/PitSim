@@ -21,6 +21,7 @@ import java.util.Map;
 public class GuildIntegrationManager implements Listener {
 	public static int IDLE_REPUTATION = 0;
 	public static int KILL_REPUTATION = 100;
+	public static int FEATHER_KILL_REPUTATION = 100;
 
 	static {
 		new BukkitRunnable() {
@@ -34,6 +35,16 @@ public class GuildIntegrationManager implements Listener {
 				}
 			}
 		}.runTaskTimer(PitSim.INSTANCE, 20 * 60, 20);
+	}
+
+	public static void handleFeather(Player killer, Player dead) {
+		if(killer == null) return;
+		Guild killerGuild = GuildManager.getGuild(killer);
+		Guild deadGuild = GuildManager.getGuild(dead);
+
+		if(killerGuild != null && deadGuild != null) {
+			killerGuild.addReputation(FEATHER_KILL_REPUTATION);
+		}
 	}
 
 	@EventHandler(priority = EventPriority.HIGH)

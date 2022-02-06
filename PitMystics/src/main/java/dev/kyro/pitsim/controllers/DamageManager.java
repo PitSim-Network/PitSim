@@ -393,7 +393,7 @@ public class DamageManager implements Listener {
 		if(BoosterManager.getBooster("pvp").minutes <= 0) {
 
 			boolean divine = DivineIntervention.INSTANCE.isDivine(dead);
-			boolean feather = FunkyFeather.useFeather(dead, divine);
+			boolean feather = FunkyFeather.useFeather(killer, dead, divine);
 
 			for(int i = 0; i < dead.getInventory().getSize(); i++) {
 				ItemStack itemStack = dead.getInventory().getItem(i);
@@ -490,7 +490,7 @@ public class DamageManager implements Listener {
 		} else if(BoosterManager.getBooster("pvp").minutes <= 0) {
 
 			boolean divine = DivineIntervention.INSTANCE.isDivine(dead);
-			boolean feather = FunkyFeather.useFeather(dead, divine);
+			boolean feather = FunkyFeather.useFeather(null, dead, divine);
 
 			for(int i = 0; i < dead.getInventory().getSize(); i++) {
 				ItemStack itemStack = dead.getInventory().getItem(i);
