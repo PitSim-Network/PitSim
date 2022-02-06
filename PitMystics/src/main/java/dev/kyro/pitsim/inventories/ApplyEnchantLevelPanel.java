@@ -69,7 +69,7 @@ public class ApplyEnchantLevelPanel extends AGUIPanel {
 
 	@Override
 	public String getName() {
-		return "Choose an Level";
+		return "Choose a Level";
 	}
 
 	@Override

@@ -11,17 +11,18 @@ import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.commands.FreshCommand;
 import dev.kyro.pitsim.controllers.EnchantManager;
 import dev.kyro.pitsim.controllers.objects.PitEnchant;
-import dev.kyro.pitsim.enchants.Billionaire;
-import dev.kyro.pitsim.enchants.Lifesteal;
+import dev.kyro.pitsim.enchants.*;
 import dev.kyro.pitsim.enums.MysticType;
 import dev.kyro.pitsim.enums.NBTTag;
 import dev.kyro.pitsim.enums.PantColor;
 import dev.kyro.pitsim.misc.Misc;
 import dev.kyro.pitsim.misc.Sounds;
+import dev.kyro.pitsim.tutorial.TaskListener;
 import dev.kyro.pitsim.tutorial.TutorialManager;
 import dev.kyro.pitsim.tutorial.sequences.ViewEnchantsSequence;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
+import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.inventory.InventoryOpenEvent;
@@ -33,7 +34,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
 
-import java.util.List;
+import java.util.HashMap;
 import java.util.Map;
 
 public class EnchantingPanel extends AGUIPanel {
@@ -50,6 +51,8 @@ public class EnchantingPanel extends AGUIPanel {
 	public static ItemStack noMystic;
 	public static ItemStack noEnchantYet;
 	public static ItemStack mysticInWell;
+
+	public static Map<Player, ApplyEnchantPanel> enchantPanels = new HashMap<>();
 	static {
 		philo = new AItemStackBuilder(new ItemStack(Material.CACTUS))
 				.setName("&aPhilosopher's Cactus")
@@ -76,6 +79,12 @@ public class EnchantingPanel extends AGUIPanel {
 	public EnchantingPanel(AGUI gui) {
 		super(gui);
 		enchantingGUI = (EnchantingGUI) gui;
+
+		mystic = FreshCommand.getFreshItem("sword");
+		enchantPanels.put(player, new ApplyEnchantPanel(enchantingGUI, mystic, null, enchantingGUI.getEnchantSlot(1)));
+		mystic = new ItemStack(Material.AIR);
+
+
 
 		inventoryBuilder.setSlots(Material.STAINED_GLASS_PANE, 5, 0, 1, 2, 9, 11, 18, 19, 20)
 				.setSlots(Material.STAINED_GLASS_PANE, 4, 3, 4, 5, 12, 14, 21, 22, 23)
@@ -124,8 +133,11 @@ public class EnchantingPanel extends AGUIPanel {
 
 	@Override
 	public void onClick(InventoryClickEvent event) {
+		if(TutorialManager.getTutorial(player) == null) return;
 
-		if(TutorialManager.getTutorial(player) != null && TutorialManager.getTutorial(player).sequence.getClass() ==
+		if(TutorialManager.getTutorial(player).sequence == null) return;
+
+		if(TutorialManager.getTutorial(player).sequence.getClass() ==
 				ViewEnchantsSequence.class) return;
 
 		int slot = event.getSlot();
@@ -159,17 +171,57 @@ public class EnchantingPanel extends AGUIPanel {
 					colorSelect = false;
 				} else {
 					getInventory().setItem(37, new ItemStack(Material.AIR));
-					if(!FreshCommand.isFresh(mystic)) player.getInventory().addItem(mystic);
+					boolean hasCorrectItem = false;
+					if(!FreshCommand.isFresh(mystic)) {
 
-					boolean hasBill2 = false;
-					boolean hasLs3 = false;
-
-					Map<PitEnchant, Integer> enchantList = EnchantManager.getEnchantsOnItem(mystic);
-					for (Map.Entry<PitEnchant, Integer> entry : enchantList.entrySet()) {
-						if(entry.getKey() instanceof Billionaire && entry.getValue() == 2) hasBill2 = true;
-						if(entry.getKey() instanceof Lifesteal && entry.getValue() == 3) hasLs3 = true;
+						if(mystic.getType() == Material.GOLD_SWORD) {
+							boolean hasBill2 = false;
+							boolean hasLs3 = false;
+							Map<PitEnchant, Integer> enchantList = EnchantManager.getEnchantsOnItem(mystic);
+							for(Map.Entry<PitEnchant, Integer> entry : enchantList.entrySet()) {
+								if(entry.getKey() instanceof Billionaire && entry.getValue() == 2) hasBill2 = true;
+								if(entry.getKey() instanceof Lifesteal && entry.getValue() == 3) hasLs3 = true;
+							}
+							if(hasBill2 && hasLs3) {
+								TaskListener.onEnchantBillLs(player);
+								hasCorrectItem = true;
+							}
+						} else if(mystic.getType() == Material.BOW) {
+							boolean hasMega = false;
+							boolean hasDrain = false;
+							Map<PitEnchant, Integer> enchantList = EnchantManager.getEnchantsOnItem(mystic);
+							for(Map.Entry<PitEnchant, Integer> entry : enchantList.entrySet()) {
+								if(entry.getKey() instanceof MegaLongBow) hasMega = true;
+								if(entry.getKey() instanceof SprintDrain && entry.getValue() == 3) hasDrain = true;
+							}
+							if(hasDrain && hasMega)  {
+								TaskListener.onMegaDrainEnchant(player);
+								hasCorrectItem = true;
+							}
+						} else {
+							boolean hasRgm = false;
+							boolean hasCf = false;
+							Map<PitEnchant, Integer> enchantList = EnchantManager.getEnchantsOnItem(mystic);
+							for(Map.Entry<PitEnchant, Integer> entry : enchantList.entrySet()) {
+								if(entry.getKey() instanceof RetroGravityMicrocosm && entry.getValue() == 3)
+									hasRgm = true;
+								if(entry.getKey() instanceof CriticallyFunky && entry.getValue() == 3) hasCf = true;
+							}
+							if(hasCf && hasRgm) {
+								TaskListener.onEnchantRGM(player);
+								hasCorrectItem = true;
+							}
+						}
 					}
 
+					if(hasCorrectItem) {
+						player.getInventory().addItem(mystic);
+						hasGivenItemBack = true;
+					}
+					else {
+						AOutput.error(player, "&cPlease enchant the item the tutorial is instructing you to!");
+						Sounds.NO.play(player);
+					}
 
 					mystic = new ItemStack(Material.AIR);
 				}
@@ -256,10 +308,6 @@ public class EnchantingPanel extends AGUIPanel {
 	}
 
 	public void closeGUI() {
-		if(!Misc.isAirOrNull(mystic) && !FreshCommand.isFresh(mystic)) {
-			if(!hasGivenItemBack) player.getInventory().addItem(mystic);
-			hasGivenItemBack = true;
-		}
 		runnable.cancel();
 	}
 
@@ -364,6 +412,10 @@ public class EnchantingPanel extends AGUIPanel {
 			ItemMeta itemMeta = itemStack.getItemMeta(); itemMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS); itemStack.setItemMeta(itemMeta);
 			getInventory().setItem(slot, itemStack);
 		}
+	}
+
+	public static ApplyEnchantPanel openEnchantsPanel(Player player) {
+		return enchantPanels.get(player);
 	}
 
 	private enum GUISection {

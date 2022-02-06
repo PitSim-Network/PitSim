@@ -339,6 +339,8 @@ public class PlayerManager implements Listener {
 
 	@EventHandler
 	public void onMove(PlayerMoveEvent event) {
+		if(event.getPlayer().getLocation().getY() < 20 && event.getPlayer().getWorld() == Bukkit.getWorld("tutorial"))
+			DamageManager.death(event.getPlayer());
 		if(event.getPlayer().getLocation().getY() < 20 && MapManager.currentMap.lobbies.contains(event.getPlayer().getWorld()))  {
 			DamageManager.death(event.getPlayer());
 		}

@@ -23,6 +23,7 @@ public class PerkSequence extends TutorialSequence {
 		super(player, tutorial, Task.EQUIP_PERKS);
 		this.player = player;
 		this.tutorial = tutorial;
+		player.closeInventory();
 	}
 
 	@Override
@@ -32,9 +33,9 @@ public class PerkSequence extends TutorialSequence {
 
 	@Override
 	public void play() {
-		sendMessage(TutorialMessage.DARK_BLUE);
-		wait(2);
-		sendMessage(TutorialMessage.DARK_GREEN);
+		sendMessage(TutorialMessage.PERKS1);
+		wait(5);
+		sendMessage(TutorialMessage.PERKS2);
 	}
 
 	public void wait(int seconds) {

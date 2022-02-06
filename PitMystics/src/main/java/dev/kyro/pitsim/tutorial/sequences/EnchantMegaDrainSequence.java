@@ -13,17 +13,17 @@ import org.bukkit.scheduler.BukkitTask;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MegastreakSequence extends TutorialSequence {
+public class EnchantMegaDrainSequence extends TutorialSequence {
 	public Player player;
 	public Tutorial tutorial;
 	public int waitTime = 0;
 	public List<BukkitTask> runnableList = new ArrayList<>();
 
-	public MegastreakSequence(Player player, Tutorial tutorial) {
-		super(player, tutorial, Task.EQUIP_MEGASTREAK);
+	public EnchantMegaDrainSequence(Player player, Tutorial tutorial) {
+		super(player, tutorial, Task.ENCHANT_MEGA_DRAIN);
 		this.player = player;
 		this.tutorial = tutorial;
-		player.closeInventory();
+		//test
 	}
 
 	@Override
@@ -33,13 +33,11 @@ public class MegastreakSequence extends TutorialSequence {
 
 	@Override
 	public void play() {
-		sendMessage(TutorialMessage.MEGASTREAK1);
+		sendMessage(TutorialMessage.MEGA1);
 		wait(5);
-		sendMessage(TutorialMessage.MEGASTREAK2);
-		wait(5);
-		sendMessage(TutorialMessage.MEGASTREAK3);
-		wait(5);
-		sendMessage(TutorialMessage.MEGASTREAK4);
+		sendMessage(TutorialMessage.MEGA2);
+		wait(10);
+		sendMessage(TutorialMessage.MEGA3);
 	}
 
 	public void wait(int seconds) {

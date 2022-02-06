@@ -5,6 +5,7 @@ import dev.kyro.arcticapi.data.APlayerData;
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
+import dev.kyro.pitsim.tutorial.TutorialManager;
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Bukkit;
@@ -44,6 +45,7 @@ public class LockdownManager implements Listener {
 						continue;
 					}
 					if(requireCaptcha && !isCaptcha(player)) {
+						if(TutorialManager.getTutorial(player) != null) return;
 						sendCaptchaMessage(player);
 						player.teleport(MapManager.currentMap.getSpawn(MapManager.currentMap.firstLobby));
 					}
@@ -103,13 +105,14 @@ public class LockdownManager implements Listener {
 		new BukkitRunnable() {
 			@Override
 			public void run() {
+				if(TutorialManager.getTutorial(player) != null) return;
 				if(!isCaptcha(player)) {
 					sendCaptchaMessage(player);
 					sendCaptchaMessage(player);
 					sendCaptchaMessage(player);
 				}
 			}
-		}.runTaskLater(PitSim.INSTANCE, 1L);
+		}.runTaskLater(PitSim.INSTANCE, 10L);
 	}
 
 	public static boolean isVerified(Player player) {

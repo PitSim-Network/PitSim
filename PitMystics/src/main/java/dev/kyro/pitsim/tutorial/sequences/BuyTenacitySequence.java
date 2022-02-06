@@ -13,17 +13,17 @@ import org.bukkit.scheduler.BukkitTask;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MegastreakSequence extends TutorialSequence {
+public class BuyTenacitySequence extends TutorialSequence {
 	public Player player;
 	public Tutorial tutorial;
 	public int waitTime = 0;
 	public List<BukkitTask> runnableList = new ArrayList<>();
 
-	public MegastreakSequence(Player player, Tutorial tutorial) {
-		super(player, tutorial, Task.EQUIP_MEGASTREAK);
+	public BuyTenacitySequence(Player player, Tutorial tutorial) {
+		super(player, tutorial, Task.BUY_TENACITY);
 		this.player = player;
 		this.tutorial = tutorial;
-		player.closeInventory();
+		//test
 	}
 
 	@Override
@@ -33,13 +33,9 @@ public class MegastreakSequence extends TutorialSequence {
 
 	@Override
 	public void play() {
-		sendMessage(TutorialMessage.MEGASTREAK1);
 		wait(5);
-		sendMessage(TutorialMessage.MEGASTREAK2);
-		wait(5);
-		sendMessage(TutorialMessage.MEGASTREAK3);
-		wait(5);
-		sendMessage(TutorialMessage.MEGASTREAK4);
+		sendMessage(TutorialMessage.TENACTITY1);
+		wait(2);
 	}
 
 	public void wait(int seconds) {
@@ -65,6 +61,5 @@ public class MegastreakSequence extends TutorialSequence {
 		}.runTaskLater(PitSim.INSTANCE, 20L * waitTime);
 		runnableList.add(runnable);
 	}
-
 
 }

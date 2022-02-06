@@ -23,6 +23,7 @@ public class VampireSequence extends TutorialSequence {
 		super(player, tutorial, Task.EQUIP_VAMPIRE);
 		this.player = player;
 		this.tutorial = tutorial;
+		player.closeInventory();
 	}
 
 	@Override
@@ -32,11 +33,15 @@ public class VampireSequence extends TutorialSequence {
 
 	@Override
 	public void play() {
+		wait(5);
+		sendMessage(TutorialMessage.VAMPIRE1);
+		wait(5);
+		sendMessage(TutorialMessage.VAMPIRE2);
+		wait(5);
+		sendMessage(TutorialMessage.VAMPIRE3);
 		spawnVillager();
-		wait(3);
-		sendMessage(TutorialMessage.DARK_BLUE);
-		wait(2);
-		sendMessage(TutorialMessage.DARK_GREEN);
+		wait(5);
+		sendMessage(TutorialMessage.VAMPIRE4);
 
 	}
 
