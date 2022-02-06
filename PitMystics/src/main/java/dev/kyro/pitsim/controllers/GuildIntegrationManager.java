@@ -19,9 +19,17 @@ import org.bukkit.scheduler.BukkitRunnable;
 import java.util.Map;
 
 public class GuildIntegrationManager implements Listener {
-	public static int IDLE_REPUTATION = 0;
-	public static int KILL_REPUTATION = 100;
-	public static int FEATHER_KILL_REPUTATION = 100;
+
+//	Reputation amounts
+	public static int getIdleReputation() {
+		return (int) (Math.random() * 50);
+	}
+	public static int getKillReputation() {
+		return (int) (Math.random() * 500);
+	}
+	public static int getFeatherLossReputation() {
+		return (int) (Math.random() * 5_000);
+	}
 
 	static {
 		new BukkitRunnable() {
@@ -31,10 +39,10 @@ public class GuildIntegrationManager implements Listener {
 					if(AFKManager.AFKPlayers.contains(onlinePlayer)) continue;
 					Guild guild = GuildManager.getGuild(onlinePlayer);
 					if(guild == null) continue;
-					guild.addReputation(IDLE_REPUTATION);
+					guild.addReputation(getIdleReputation());
 				}
 			}
-		}.runTaskTimer(PitSim.INSTANCE, 20 * 60, 20);
+		}.runTaskTimer(PitSim.INSTANCE, 20 * 60, 20 * 60);
 	}
 
 	public static void handleFeather(Player killer, Player dead) {
@@ -43,7 +51,7 @@ public class GuildIntegrationManager implements Listener {
 		Guild deadGuild = GuildManager.getGuild(dead);
 
 		if(killerGuild != null && deadGuild != null) {
-			killerGuild.addReputation(FEATHER_KILL_REPUTATION);
+			killerGuild.addReputation(getFeatherLossReputation());
 		}
 	}
 
@@ -120,7 +128,7 @@ public class GuildIntegrationManager implements Listener {
 		}
 
 		if(deadGuild != null) {
-			killerGuild.addReputation(KILL_REPUTATION);
+			killerGuild.addReputation(getKillReputation());
 		}
 	}
 
