@@ -257,71 +257,8 @@ public class Uberstreak extends Megastreak {
 			pitPlayer.prefix = PrestigeValues.getPlayerPrefixNameTag(pitPlayer.player) + PlaceholderAPI.setPlaceholders(pitPlayer.player, message);
 		}
 
-		int rand = (int) (Math.random() * 10);
-		if(rand == 0 || rand == 1 || rand == 2) {
-
-			int rand2 = (int) (Math.random() * 3);
-			if(rand2 == 0) mysticType = MysticType.SWORD;
-			else if(rand2 == 1) mysticType = MysticType.BOW;
-			else if(rand2 == 2) mysticType = MysticType.PANTS;
-
-			ItemStack jewel = FreshCommand.getFreshItem(mysticType, PantColor.JEWEL);
-			jewel = ItemManager.enableDropConfirm(jewel);
-			assert jewel != null;
-			NBTItem nbtItem = new NBTItem(jewel);
-			nbtItem.setBoolean(NBTTag.IS_JEWEL.getRef(), true);
-
-			EnchantManager.setItemLore(nbtItem.getItem());
-
-			AUtil.giveItemSafely(pitPlayer.player, nbtItem.getItem(), true);
-			uberMessage("&3Hidden Jewel " + mysticType.displayName, pitPlayer);
-
-		} else if(rand == 3 || rand == 4 || rand == 5) {
-			int rand2 = (int) (Math.random() * 3);
-			if(rand2 == 0) {
-				FunkyFeather.giveFeather(pitPlayer.player, 1);
-				uberMessage("&3Funky Feather", pitPlayer);
-			} else if(rand2 == 1) {
-				FunkyFeather.giveFeather(pitPlayer.player, 2);
-				uberMessage("&32x Funky Feather", pitPlayer);
-			}
-			else if(rand2 == 2) {
-				FunkyFeather.giveFeather(pitPlayer.player, 3);
-				uberMessage("&33x Funky Feather", pitPlayer);
-			}
-		} else if(rand == 9) {
-			int rand2 = (int) (Math.random() * 3);
-			if(rand2 == 0) {
-				ChunkOfVile.giveVile(pitPlayer.player, 2);
-				uberMessage("&52x Chunk of Vile", pitPlayer);
-			}
-			else if(rand2 == 1) {
-				ChunkOfVile.giveVile(pitPlayer.player, 4);
-				uberMessage("&54x Chunk of Vile", pitPlayer);
-			}
-			else if(rand2 == 2) {
-				ChunkOfVile.giveVile(pitPlayer.player, 6);
-				uberMessage("&56x Chunk of Vile", pitPlayer);
-			}
-		} else if(rand == 6 || rand == 7 || rand == 8) {
-			int rand2 = (int) (Math.random() * 4);
-			if(rand2 == 0) {
-				ProtArmor.getArmor(pitPlayer.player, "helmet");
-				uberMessage("&bProtection I Diamond Helmet", pitPlayer);
-			}
-			else if(rand2 == 1) {
-				ProtArmor.getArmor(pitPlayer.player, "chestplate");
-				uberMessage("&bProtection I Diamond Chestplate", pitPlayer);
-			}
-			else if(rand2 == 2) {
-				ProtArmor.getArmor(pitPlayer.player, "leggings");
-				uberMessage("&bProtection I Diamond Leggings", pitPlayer);
-			}
-			else if(rand2 == 3) {
-				ProtArmor.getArmor(pitPlayer.player, "boots");
-				uberMessage("&bProtection I Diamond Boots", pitPlayer);
-			}
-		}
+		Uberdrop uberdrop = Uberdrop.getRandom();
+		uberdrop.give(pitPlayer);
 
 		if(pitPlayer.stats != null) pitPlayer.stats.ubersCompleted++;
 	}
@@ -374,6 +311,119 @@ public class Uberstreak extends Megastreak {
 
 			Collections.shuffle(possible);
 			return possible.get(0);
+		}
+	}
+
+	public static List<Uberdrop> weightedDropList = new ArrayList<>();
+	public enum Uberdrop {
+		JEWEL_SWORD(5),
+		JEWEL_BOW(5),
+		JEWEL_PANTS(5),
+		JEWEL_BUNDLE(2),
+		FEATHER_1(6),
+		FEATHER_2(4),
+		FEATHER_3(2),
+		VILE_1(6),
+		VILE_3(4),
+		VILE_5(2),
+		P1_HELMET(5),
+		P1_CHESTPLATE(5),
+		P1_LEGGINGS(7),
+		P1_BOOTS(5);
+
+		public int weight;
+
+		Uberdrop(int weight) {
+			this.weight = weight;
+			for(int i = 0; i < weight; i++) weightedDropList.add(this);
+		}
+
+		public static Uberdrop getRandom() {
+			List<Uberdrop> tempDropList = new ArrayList<>(weightedDropList);
+			Collections.shuffle(tempDropList);
+			return tempDropList.get(0);
+		}
+
+		public void give(PitPlayer pitPlayer) {
+			Player player = pitPlayer.player;
+			if(this == JEWEL_SWORD) {
+				ItemStack jewelSword = FreshCommand.getFreshItem(MysticType.SWORD, PantColor.JEWEL);
+				jewelSword = ItemManager.enableDropConfirm(jewelSword);
+				NBTItem nbtItemSword = new NBTItem(jewelSword);
+				nbtItemSword.setBoolean(NBTTag.IS_JEWEL.getRef(), true);
+				EnchantManager.setItemLore(nbtItemSword.getItem());
+				AUtil.giveItemSafely(player, nbtItemSword.getItem());
+				uberMessage("&3Hidden Jewel " + MysticType.SWORD, pitPlayer);
+			} else if(this == JEWEL_BOW) {
+				ItemStack jewelBow = FreshCommand.getFreshItem(MysticType.BOW, PantColor.JEWEL);
+				jewelBow = ItemManager.enableDropConfirm(jewelBow);
+				NBTItem nbtItemBow = new NBTItem(jewelBow);
+				nbtItemBow.setBoolean(NBTTag.IS_JEWEL.getRef(), true);
+				EnchantManager.setItemLore(nbtItemBow.getItem());
+				AUtil.giveItemSafely(player, nbtItemBow.getItem());
+				uberMessage("&3Hidden Jewel " + MysticType.BOW, pitPlayer);
+			} else if(this == JEWEL_PANTS) {
+				ItemStack jewel = FreshCommand.getFreshItem(MysticType.PANTS, PantColor.JEWEL);
+				jewel = ItemManager.enableDropConfirm(jewel);
+				NBTItem nbtItem = new NBTItem(jewel);
+				nbtItem.setBoolean(NBTTag.IS_JEWEL.getRef(), true);
+				EnchantManager.setItemLore(nbtItem.getItem());
+				AUtil.giveItemSafely(player, nbtItem.getItem());
+				uberMessage("&3Hidden Jewel " + MysticType.PANTS, pitPlayer);
+			} else if(this == JEWEL_BUNDLE) {
+				ItemStack jbsword = FreshCommand.getFreshItem(MysticType.SWORD, PantColor.JEWEL);
+				jbsword = ItemManager.enableDropConfirm(jbsword);
+				NBTItem nbtjbsword = new NBTItem(jbsword);
+				nbtjbsword.setBoolean(NBTTag.IS_JEWEL.getRef(), true);
+				EnchantManager.setItemLore(nbtjbsword.getItem());
+				AUtil.giveItemSafely(player, nbtjbsword.getItem());
+
+				ItemStack jbbow = FreshCommand.getFreshItem(MysticType.BOW, PantColor.JEWEL);
+				jbbow = ItemManager.enableDropConfirm(jbbow);
+				NBTItem nbtjbbow = new NBTItem(jbbow);
+				nbtjbbow.setBoolean(NBTTag.IS_JEWEL.getRef(), true);
+				EnchantManager.setItemLore(nbtjbbow.getItem());
+				AUtil.giveItemSafely(player, nbtjbbow.getItem());
+
+				ItemStack jb = FreshCommand.getFreshItem(MysticType.PANTS, PantColor.JEWEL);
+				jb = ItemManager.enableDropConfirm(jb);
+				NBTItem nbtjb = new NBTItem(jb);
+				nbtjb.setBoolean(NBTTag.IS_JEWEL.getRef(), true);
+				EnchantManager.setItemLore(nbtjb.getItem());
+				AUtil.giveItemSafely(player, nbtjb.getItem());
+
+				uberMessage("&3Hidden Jewel Bundle", pitPlayer);
+			} else if(this == FEATHER_1) {
+				FunkyFeather.giveFeather(player, 1);
+				uberMessage("&31x Funky Feather", pitPlayer);
+			} else if(this == FEATHER_2) {
+				FunkyFeather.giveFeather(player, 2);
+				uberMessage("&32x Funky Feather", pitPlayer);
+			} else if(this == FEATHER_3) {
+				FunkyFeather.giveFeather(player, 3);
+				uberMessage("&33x Funky Feather", pitPlayer);
+			} else if(this == VILE_1) {
+				ChunkOfVile.giveVile(player, 1);
+				uberMessage("&51x Chunk of Vile", pitPlayer);
+			} else if(this == VILE_3) {
+				ChunkOfVile.giveVile(player, 3);
+				uberMessage("&53x Chunk of Vile", pitPlayer);
+			} else if(this == VILE_5) {
+				ChunkOfVile.giveVile(player, 5);
+				uberMessage("&55x Chunk of Vile", pitPlayer);
+			} else if(this == P1_HELMET) {
+				ProtArmor.getArmor(player, "helmet");
+				uberMessage("&bProtection I Diamond Helmet", pitPlayer);
+			} else if(this == P1_CHESTPLATE) {
+				ProtArmor.getArmor(player, "chestplate");
+				uberMessage("&bProtection I Diamond Chestplate", pitPlayer);
+			} else if(this == P1_LEGGINGS) {
+				ProtArmor.getArmor(player, "leggings");
+				uberMessage("&bProtection I Diamond Leggings", pitPlayer);
+			} else if(this == P1_BOOTS) {
+				ProtArmor.getArmor(player, "boots");
+				uberMessage("&bProtection I Diamond Boots", pitPlayer);
+			}
 		}
 	}
 }

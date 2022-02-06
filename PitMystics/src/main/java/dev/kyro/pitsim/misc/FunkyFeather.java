@@ -4,6 +4,7 @@ import de.tr7zw.nbtapi.NBTItem;
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.arcticapi.misc.AUtil;
 import dev.kyro.pitsim.PitSim;
+import dev.kyro.pitsim.controllers.GuildIntegrationManager;
 import dev.kyro.pitsim.controllers.ItemManager;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.enums.NBTTag;
@@ -48,20 +49,22 @@ public class FunkyFeather {
         }
     }
 
-    public static boolean useFeather(Player player, boolean isDivine) {
+    public static boolean useFeather(Player killer, Player dead, boolean isDivine) {
         if(isDivine) return false;
 
         for(int i = 0; i < 9; i++) {
-            ItemStack itemStack = player.getInventory().getItem(i);
+            ItemStack itemStack = dead.getInventory().getItem(i);
             if(Misc.isAirOrNull(itemStack)) continue;
             NBTItem nbtItem = new NBTItem(itemStack);
             if(nbtItem.hasKey(NBTTag.IS_FEATHER.getRef())) {
-                AOutput.send(player, "&3&lFUNKY FEATHER! &7Inventory protected.");
+                AOutput.send(dead, "&3&lFUNKY FEATHER! &7Inventory protected.");
                 if(itemStack.getAmount() > 1) itemStack.setAmount(itemStack.getAmount() - 1);
-                else player.getInventory().setItem(i, null);
-                Sounds.FUNKY_FEATHER.play(player);
+                else dead.getInventory().setItem(i, null);
+                Sounds.FUNKY_FEATHER.play(dead);
 
-                PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
+                GuildIntegrationManager.handleFeather(killer, dead);
+
+                PitPlayer pitPlayer = PitPlayer.getPitPlayer(dead);
                 if(pitPlayer.stats != null) pitPlayer.stats.feathersLost++;
                 return true;
             }

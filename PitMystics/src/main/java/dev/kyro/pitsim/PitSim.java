@@ -21,6 +21,7 @@ import dev.kyro.pitsim.enchants.GoldBoost;
 import dev.kyro.pitsim.enchants.*;
 import dev.kyro.pitsim.helmetabilities.*;
 import dev.kyro.pitsim.killstreaks.*;
+import dev.kyro.pitsim.killstreaks.Dispersion;
 import dev.kyro.pitsim.megastreaks.*;
 import dev.kyro.pitsim.misc.*;
 import dev.kyro.pitsim.perks.*;
@@ -141,6 +142,16 @@ public class PitSim extends JavaPlugin {
 		AHook.registerPlaceholder(new LeaderboardPlaceholder8());
 		AHook.registerPlaceholder(new LeaderboardPlaceholder9());
 		AHook.registerPlaceholder(new LeaderboardPlaceholder10());
+		AHook.registerPlaceholder(new GuildPlaceholder());
+		AHook.registerPlaceholder(new GuildPlaceholder2());
+		AHook.registerPlaceholder(new GuildPlaceholder3());
+		AHook.registerPlaceholder(new GuildPlaceholder4());
+		AHook.registerPlaceholder(new GuildPlaceholder5());
+		AHook.registerPlaceholder(new GuildPlaceholder6());
+		AHook.registerPlaceholder(new GuildPlaceholder7());
+		AHook.registerPlaceholder(new GuildPlaceholder8());
+		AHook.registerPlaceholder(new GuildPlaceholder9());
+		AHook.registerPlaceholder(new GuildPlaceholder10());
 		AHook.registerPlaceholder(new PrestigeLevelPlaceholder());
 		AHook.registerPlaceholder(new PrestigePlaceholder());
 
@@ -204,12 +215,13 @@ public class PitSim extends JavaPlugin {
 	private void registerKillstreaks() {
 		PerkManager.registerKillstreak(new NoKillstreak());
 
+		PerkManager.registerKillstreak(new Dispersion());
 		PerkManager.registerKillstreak(new Explicious());
 		PerkManager.registerKillstreak(new AssuredStrike());
-		PerkManager.registerKillstreak(new RAndR());
 		PerkManager.registerKillstreak(new Leech());
 
-		PerkManager.registerKillstreak(new TacticalRetreat());
+//		PerkManager.registerKillstreak(new TacticalRetreat());
+		PerkManager.registerKillstreak(new RAndR());
 		PerkManager.registerKillstreak(new FightOrFlight());
 		PerkManager.registerKillstreak(new HerosHaste());
 		PerkManager.registerKillstreak(new CounterStrike());
@@ -324,6 +336,7 @@ public class PitSim extends JavaPlugin {
 		getServer().getPluginManager().registerEvents(new TaskListener(), this);
 		getServer().getPluginManager().registerEvents(new MessageManager(), this);
 		getServer().getPluginManager().registerEvents(new TutorialManager(), this);
+		getServer().getPluginManager().registerEvents(new GuildIntegrationManager(), this);
 	}
 
 	public void registerBoosters() {
@@ -469,8 +482,6 @@ public class PitSim extends JavaPlugin {
 //		EnchantManager.registerEnchant(new DiamondAllergy());
 //		EnchantManager.registerEnchant(new PitBlob());
 //		EnchantManager.registerEnchant(new WolfPack());
-
-		EnchantManager.registerEnchant(new Dispersion());
 
 //		Resource Enchants
 		EnchantManager.registerEnchant(new Moctezuma());

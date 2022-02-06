@@ -41,7 +41,7 @@ public class SelfCheckout extends PitEnchant {
 			return;
 		}
 
-		int renown = Math.min((int) ((pitKiller.getKills() + 1) / 200), 5);
+		int renown = Math.min((int) ((pitKiller.getKills() + 1) / 300), 4);
 		if(renown != 0) {
 			pitKiller.renown += renown;
 			AOutput.send(killEvent.killer, "&7You have been given &e" + renown + " renown");
@@ -70,7 +70,7 @@ public class SelfCheckout extends PitEnchant {
 
 		return new ALoreBuilder("&7On kill, if you have a killstreak", "&7of at least 200, &eExplode:",
 				"&e\u25a0 &7Die! Keep jewel lives on death",
-				"&a\u25a0 &7Gain &e+1 renown &7for every 200 killstreak (max 5)",
+				"&a\u25a0 &7Gain &e+1 renown &7for every 300 killstreak (max 4)",
 				"&c\u25a0 &7Lose &c2 lives &7on this item").getLore();
 	}
 }

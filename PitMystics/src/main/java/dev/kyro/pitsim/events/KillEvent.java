@@ -25,6 +25,7 @@ public class KillEvent extends Event {
 	public int xpCap = 50;
 	public double goldReward = 20;
 	public List<Double> xpMultipliers = new ArrayList<>();
+	public List<Double> maxXPMultipliers = new ArrayList<>();
 	public List<Double> goldMultipliers = new ArrayList<>();
 
 	public boolean isLuckyKill = false;
@@ -46,6 +47,9 @@ public class KillEvent extends Event {
 		double xpReward = this.xpReward;
 		for(Double xpMultiplier : xpMultipliers) {
 			xpReward *= xpMultiplier;
+		}
+		for(Double maxXPMultiplier : maxXPMultipliers) {
+			xpCap *= maxXPMultiplier;
 		}
 		if(xpReward > xpCap) return xpCap;
 		else return (int) xpReward;

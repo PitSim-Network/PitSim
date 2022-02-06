@@ -4,6 +4,10 @@ import be.maximvdw.featherboard.api.FeatherBoardAPI;
 import de.tr7zw.nbtapi.NBTItem;
 import dev.kyro.arcticapi.data.APlayerData;
 import dev.kyro.arcticapi.misc.AOutput;
+import dev.kyro.arcticguilds.controllers.BuffManager;
+import dev.kyro.arcticguilds.controllers.GuildManager;
+import dev.kyro.arcticguilds.controllers.objects.Guild;
+import dev.kyro.arcticguilds.controllers.objects.GuildBuff;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.commands.FPSCommand;
 import dev.kyro.pitsim.controllers.objects.GoldenHelmet;
@@ -49,10 +53,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 import org.spigotmc.event.player.PlayerSpawnLocationEvent;
 
 import java.text.DecimalFormat;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 //import net.kyori.adventure.audience.Audience;
 
@@ -72,6 +73,15 @@ public class PlayerManager implements Listener {
 			public void run() {
 				for(Player onlinePlayer : Bukkit.getOnlinePlayers()) {
 					if(AFKManager.AFKPlayers.contains(onlinePlayer) || Math.random() > (1.0 / 3.0)) continue;
+
+					Guild guild = GuildManager.getGuild(onlinePlayer);
+					GuildBuff renownBuff = BuffManager.getBuff("renown");
+					double buff = 0;
+					for(Map.Entry<GuildBuff.SubBuff, Double> entry : renownBuff.getBuffs(guild.getLevel(renownBuff)).entrySet()) {
+						if(entry.getKey().refName.equals("renown")) buff = entry.getValue();
+					}
+					if(Math.random() * 2 < 1 + buff / 100.0) continue;
+
 					PitPlayer pitPlayer = PitPlayer.getPitPlayer(onlinePlayer);
 					pitPlayer.renown++;
 					FileConfiguration playerData = APlayerData.getPlayerData(onlinePlayer);
@@ -80,7 +90,7 @@ public class PlayerManager implements Listener {
 					AOutput.send(onlinePlayer, "&7You have been given &e1 renown &7for being active");
 				}
 			}
-		}.runTaskTimer(PitSim.INSTANCE, 20 * 60, 20 * 60 * 10);
+		}.runTaskTimer(PitSim.INSTANCE, 20 * 60, 20 * 60 * 5);
 
 		new BukkitRunnable() {
 			@Override

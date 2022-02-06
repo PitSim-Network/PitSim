@@ -83,7 +83,7 @@ public class ToTheMoon extends Megastreak {
 		lore.add(ChatColor.translateAlternateColorCodes('&', "&7Triggers on: &c100 kills"));
 		lore.add("");
 		lore.add(ChatColor.GRAY + "On trigger:");
-		lore.add(ChatColor.translateAlternateColorCodes('&', "&a\u25a0 &7Earn &b+150% XP &7from kills"));
+ 		lore.add(ChatColor.translateAlternateColorCodes('&', "&a\u25a0 &7Earn &b+120% XP &7from kills"));
 		lore.add(ChatColor.translateAlternateColorCodes('&', "&a\u25a0 &7Gain &b+1.5 max XP &7per kill"));
 		lore.add("");
 		lore.add(ChatColor.GRAY + "BUT:");
@@ -140,7 +140,7 @@ public class ToTheMoon extends Megastreak {
 		if(!playerIsOnMega(killEvent)) return;
 
 		killEvent.xpCap += (pitPlayer.getKills() - 100) * 1.5;
-		killEvent.xpMultipliers.add(2.5);
+		killEvent.xpMultipliers.add(2.2);
 		killEvent.goldMultipliers.add(0.5);
 
 		if(pitPlayer.getKills() > 1200 && !hasCalledHopper) {

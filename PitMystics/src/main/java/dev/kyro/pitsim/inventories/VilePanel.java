@@ -44,6 +44,7 @@ public class VilePanel extends AGUIPanel {
         int slot = event.getSlot();
         if(event.getClickedInventory().getHolder() == this) {
 
+            if(!    slots.containsKey(slot)) return;
             int invSlot = slots.get(slot);
 
             for(int i = 0; i < player.getInventory().getSize(); i++) {

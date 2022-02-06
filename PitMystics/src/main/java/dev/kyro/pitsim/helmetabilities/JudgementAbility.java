@@ -34,7 +34,7 @@ public class JudgementAbility extends HelmetAbility {
 		if(!isActive || player != attackEvent.attacker) return;
 		ItemStack goldenHelmet = GoldenHelmet.getHelmet(attackEvent.attacker);
 		assert goldenHelmet != null;
-		if(!GoldenHelmet.withdrawGold(player, goldenHelmet, 6474)) {
+		if(!GoldenHelmet.withdrawGold(player, goldenHelmet, 5000)) {
 			AOutput.error(player,"&cNot enough gold!");
 			GoldenHelmet.deactivate(player);
 			Sounds.NO.play(player);
@@ -45,19 +45,19 @@ public class JudgementAbility extends HelmetAbility {
 
 		if(Math.random() < 0.25) {
 
-			pitAttacker.heal(2);
+			pitAttacker.heal(1);
 			Sounds.JUDGEMENT_HEAL.play(attackEvent.attacker);
 		}
 
 		if(Math.random() < 0.20) {
 
-			Misc.applyPotionEffect(attackEvent.defender, PotionEffectType.WITHER, 100, 2, true, false);
+			Misc.applyPotionEffect(attackEvent.defender, PotionEffectType.WITHER, 60, 2, true, false);
 			Sounds.JUDGEMENT_WITHER.play(attackEvent.attacker);
 		}
 
 		if(Math.random() < 0.15) {
 
-			Misc.applyPotionEffect(attackEvent.attacker, PotionEffectType.DAMAGE_RESISTANCE, 60, 1, true, false);
+			Misc.applyPotionEffect(attackEvent.attacker, PotionEffectType.DAMAGE_RESISTANCE, 60, 0, true, false);
 			Sounds.JUDGEMENT_RESISTANCE.play(attackEvent.attacker);
 		}
 
@@ -95,9 +95,9 @@ public class JudgementAbility extends HelmetAbility {
 			}.runTaskTimer(PitSim.INSTANCE, 0L, 2L);
 		}
 
-		if(Math.random() < 0.01 && !HopperManager.isHopper(attackEvent.defender)) {
+		if(Math.random() < 0.005 && !HopperManager.isHopper(attackEvent.defender)) {
 
-			Hopper hopper = HopperManager.callHopper("PayForTruce", Hopper.Type.MYSTIC, attackEvent.defender);
+			Hopper hopper = HopperManager.callHopper("PayForTruce", Hopper.Type.GSET, attackEvent.defender);
 			hopper.team.add(attackEvent.attacker.getUniqueId());
 			Sounds.JUDGEMENT_HOPPER.play(attackEvent.attacker);
 			Sounds.JUDGEMENT_HOPPER.play(attackEvent.defender);
@@ -110,12 +110,12 @@ public class JudgementAbility extends HelmetAbility {
 		assert goldenHelmet != null;
 
 		Sounds.HELMET_ACTIVATE.play(player);
-		AOutput.send(player, "&6&lGOLDEN HELMET! &aActivated &9Judgement&7. (&6-6474g&7 per hit)");
+		AOutput.send(player, "&6&lGOLDEN HELMET! &aActivated &9Judgement&7. (&6-5,000g&7 per hit)");
 	}
 
 	@Override
 	public boolean shouldActivate() {
-		if(GoldenHelmet.getUsedHelmetGold(player) < 6474) {
+		if(GoldenHelmet.getUsedHelmetGold(player) < 5000) {
 			AOutput.error(player,"&cNot enough gold!");
 			Sounds.NO.play(player);
 			return false;
@@ -135,7 +135,7 @@ public class JudgementAbility extends HelmetAbility {
 	public List<String> getDescription() {
 		DecimalFormat formatter = new DecimalFormat("#,###.#");
 		return Arrays.asList("&7Double-Sneak to toggle", "&7Judgement. Annihilate your", "&7opponents with RNGesus", "",
-				"&7Cost: &6" + formatter.format(6474) + "g &7per hit");
+				"&7Cost: &6" + formatter.format(5000) + "g &7per hit");
 	}
 
 	@Override

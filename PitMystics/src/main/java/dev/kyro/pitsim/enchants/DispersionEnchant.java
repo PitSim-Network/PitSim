@@ -11,10 +11,10 @@ import org.bukkit.event.EventHandler;
 import java.util.*;
 
 //TODO: Can maybe just re-route the attack to hit someone else instead
-public class Dispersion extends PitEnchant {
+public class DispersionEnchant extends PitEnchant {
 	public static List<EnchantAndLevel> toDisperse = new ArrayList<>();
 
-	public Dispersion() {
+	public DispersionEnchant() {
 		super("Dispersion", false, ApplyType.PANTS,
 				"dispersion", "dis", "disperse");
 	}
