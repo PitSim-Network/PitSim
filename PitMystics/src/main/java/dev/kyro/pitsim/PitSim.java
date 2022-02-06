@@ -141,6 +141,16 @@ public class PitSim extends JavaPlugin {
 		AHook.registerPlaceholder(new LeaderboardPlaceholder8());
 		AHook.registerPlaceholder(new LeaderboardPlaceholder9());
 		AHook.registerPlaceholder(new LeaderboardPlaceholder10());
+		AHook.registerPlaceholder(new GuildPlaceholder());
+		AHook.registerPlaceholder(new GuildPlaceholder2());
+		AHook.registerPlaceholder(new GuildPlaceholder3());
+		AHook.registerPlaceholder(new GuildPlaceholder4());
+		AHook.registerPlaceholder(new GuildPlaceholder5());
+		AHook.registerPlaceholder(new GuildPlaceholder6());
+		AHook.registerPlaceholder(new GuildPlaceholder7());
+		AHook.registerPlaceholder(new GuildPlaceholder8());
+		AHook.registerPlaceholder(new GuildPlaceholder9());
+		AHook.registerPlaceholder(new GuildPlaceholder10());
 		AHook.registerPlaceholder(new PrestigeLevelPlaceholder());
 		AHook.registerPlaceholder(new PrestigePlaceholder());
 

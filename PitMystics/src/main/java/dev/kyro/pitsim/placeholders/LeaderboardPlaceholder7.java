@@ -2,7 +2,7 @@ package dev.kyro.pitsim.placeholders;
 
 import dev.kyro.arcticapi.hooks.APAPIPlaceholder;
 import dev.kyro.arcticapi.misc.AUtil;
-import dev.kyro.pitsim.controllers.NewLeaderboardManager;
+import dev.kyro.pitsim.controllers.LeaderboardManager;
 import dev.kyro.pitsim.controllers.PrestigeValues;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import org.bukkit.ChatColor;
@@ -21,8 +21,8 @@ public class LeaderboardPlaceholder7 implements APAPIPlaceholder {
 
 		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
 
-		FileConfiguration key = (FileConfiguration) NewLeaderboardManager.sortedMap.keySet().toArray()[NewLeaderboardManager.sortedMap.size() - 7];
-		int value = NewLeaderboardManager.sortedMap.get(key);
+		FileConfiguration key = (FileConfiguration) LeaderboardManager.sortedMap.keySet().toArray()[LeaderboardManager.sortedMap.size() - 7];
+		int value = LeaderboardManager.sortedMap.get(key);
 
 		StringBuilder levelBuilder = new StringBuilder();
 		PrestigeValues.PrestigeInfo info = PrestigeValues.getPrestigeInfo(key.getInt("prestige"));
