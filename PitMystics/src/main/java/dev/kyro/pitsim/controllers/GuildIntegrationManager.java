@@ -114,7 +114,7 @@ public class GuildIntegrationManager implements Listener {
 			Map<GuildBuff.SubBuff, Double> buffs = xpBuff.getBuffs(xpBuffLevel);
 			for(Map.Entry<GuildBuff.SubBuff, Double> entry : buffs.entrySet()) {
 				if(entry.getKey().refName.equals("xp")) killEvent.xpMultipliers.add(1 + entry.getValue() / 100.0);
-				if(entry.getKey().refName.equals("maxp")) killEvent.maxXPMultipliers.add(1 + entry.getValue() / 100.0);
+				if(entry.getKey().refName.equals("maxxp")) killEvent.maxXPMultipliers.add(1 + entry.getValue() / 100.0);
 			}
 		}
 
