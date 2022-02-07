@@ -27,7 +27,7 @@ public class HermitAbility extends HelmetAbility {
 	public HermitAbility(Player player) {
 
 		super(player,"Hermit", "hermit", true, 14);
-		cost = 1000;
+		cost = 1500;
 	}
 
 	@EventHandler(priority = EventPriority.HIGH)
@@ -52,20 +52,20 @@ public class HermitAbility extends HelmetAbility {
 					Sounds.HELMET_TICK.play(player);
 					if(count++ % 2 == 0) {
 						Misc.applyPotionEffect(player, PotionEffectType.SLOW, 100, 1, true, false);
-						Misc.applyPotionEffect(player, PotionEffectType.DAMAGE_RESISTANCE, 100, 0, true, false);
+						Misc.applyPotionEffect(player, PotionEffectType.DAMAGE_RESISTANCE, 100, 1, true, false);
 					}
 				}
 			}
 		}.runTaskTimer(PitSim.INSTANCE, 20L, 20);
 		Sounds.HELMET_ACTIVATE.play(player);
-		AOutput.send(player, "&6&lGOLDEN HELMET! &aActivated &9Hermit&7. (&6-1,000g&7 per second)");
+		AOutput.send(player, "&6&lGOLDEN HELMET! &aActivated &9Hermit&7. (&6-1,500g&7 per second)");
 	}
 
 	@Override
 	public boolean shouldActivate() {
 		ItemStack goldenHelmet = GoldenHelmet.getHelmet(player);
 		assert goldenHelmet != null;
-		if(!GoldenHelmet.withdrawGold(player, goldenHelmet, cost * 100)) {
+		if(!GoldenHelmet.withdrawGold(player, goldenHelmet, cost * 10)) {
 			AOutput.error(player,"&cNot enough gold!");
 			Sounds.NO.play(player);
 			return false;
@@ -86,7 +86,7 @@ public class HermitAbility extends HelmetAbility {
 	public List<String> getDescription() {
 		DecimalFormat formatter = new DecimalFormat("#,###.#");
 		return Arrays.asList("&7Double-Sneak to toggle Hermit.", "&7Receive permanent resistance I,", "&7slowness II, and true damage immunity", "",
-				"&7Cost: &6" + formatter.format(cost * 100L) + "g &7on activation", "&7Cost: &6" + formatter.format(cost) + "g &7per second");
+				"&7Cost: &6" + formatter.format(cost * 10L) + "g &7on activation", "&7Cost: &6" + formatter.format(cost) + "g &7per second");
 	}
 
 	@Override
