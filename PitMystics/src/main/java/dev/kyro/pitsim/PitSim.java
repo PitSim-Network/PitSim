@@ -71,7 +71,6 @@ public class PitSim extends JavaPlugin {
 
 	@Override
 	public void onEnable() {
-
 		INSTANCE = this;
 
 		RegisteredServiceProvider<LuckPerms> provider = Bukkit.getServicesManager().getRegistration(LuckPerms.class);
