@@ -2,7 +2,10 @@ package dev.kyro.pitsim.killstreaks;
 
 import dev.kyro.arcticapi.builders.AItemStackBuilder;
 import dev.kyro.arcticapi.builders.ALoreBuilder;
+import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.controllers.objects.Killstreak;
+import dev.kyro.pitsim.controllers.objects.PitPlayer;
+import dev.kyro.pitsim.megastreaks.RNGesus;
 import dev.kyro.pitsim.misc.Sounds;
 import dev.kyro.pitsim.misc.YummyBread;
 import org.bukkit.Material;
@@ -21,6 +24,12 @@ public class Baker extends Killstreak {
 
 	@Override
 	public void proc(Player player) {
+		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
+		if(pitPlayer.megastreak.getClass() == RNGesus.class && pitPlayer.getKills() >= RNGesus.INSTABILITY_THRESHOLD) {
+			AOutput.error(player, "&c&lUNSTABLE! &7Baker cannot be used in this reality");
+			return;
+		}
+
 		double random = Math.random();
 		if(random > 0.9) YummyBread.giveVeryYummyBread(player, 1);
 		else YummyBread.giveYummyBread(player, 1);
