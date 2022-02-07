@@ -165,7 +165,7 @@ public class PitPlayer {
 			for(int i = 0; i < killstreaks.size(); i++) {
 				String killstreakString = playerData.getString("killstreak-" + i);
 				Killstreak savedKillstreak = killstreakString != null ? Killstreak.getKillstreak(killstreakString) : NoKillstreak.INSTANCE;
-				killstreaks.set(i, savedKillstreak);
+				if(savedKillstreak == null) killstreaks.set(i, NoKillstreak.INSTANCE); else killstreaks.set(i, savedKillstreak);
 			}
 			String streak = playerData.getString("megastreak");
 			if(Objects.equals(streak, "Beastmode")) this.megastreak = new Beastmode(this);
