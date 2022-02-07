@@ -83,6 +83,6 @@ public class Dispersion extends Killstreak {
 	}
 
 	public static int getChance() {
-		return 40;
+		return 50;
 	}
 }
