@@ -25,10 +25,10 @@ public class GuildIntegrationManager implements Listener {
 		return (int) (Math.random() * 50);
 	}
 	public static int getKillReputation() {
-		return (int) (Math.random() * 500);
+		return (int) (Math.random() * 400);
 	}
 	public static int getFeatherLossReputation() {
-		return (int) (Math.random() * 5_000);
+		return (int) (Math.random() * 4_000);
 	}
 
 	static {
