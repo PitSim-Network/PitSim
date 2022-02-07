@@ -51,6 +51,6 @@ public class BiomesMap extends PitMap {
 
 	@Override
 	public Location getVnxNPCSpawn(World world) {
-		return new Location(world, 4, 88, -8.5, 10, 0);
+		return new Location(world, 2.5, 88, -8.5, 10, 0);
 	}
 }
