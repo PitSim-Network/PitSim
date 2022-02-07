@@ -88,7 +88,7 @@ public class Highlander extends Megastreak {
 		lore.add("");
 		lore.add(ChatColor.GRAY + "On trigger:");
 		lore.add(ChatColor.translateAlternateColorCodes('&', "&a\u25a0 &7Perma &eSpeed I&7"));
-		lore.add(ChatColor.translateAlternateColorCodes('&', "&a\u25a0 &7Earn &6+120% gold &7from kills"));
+		lore.add(ChatColor.translateAlternateColorCodes('&', "&a\u25a0 &7Earn &6+135% gold &7from kills"));
 //		lore.add(ChatColor.translateAlternateColorCodes('&', "&a\u25a0 &7Deal &c+33% &7damage vs bountied players"));
 		lore.add(ChatColor.translateAlternateColorCodes('&', "&a\u25a0 &7Deal &c+25% &7damage vs bots"));
 		lore.add("");
@@ -109,7 +109,7 @@ public class Highlander extends Megastreak {
 		PitPlayer pitPlayer = PitPlayer.getPitPlayer(killEvent.killer);
 		if(pitPlayer != this.pitPlayer) return;
 		if(pitPlayer.megastreak.playerIsOnMega(killEvent) && pitPlayer.megastreak.getClass() == Highlander.class) {
-			killEvent.goldMultipliers.add(2.2);
+			killEvent.goldMultipliers.add(2.35);
 			killEvent.xpMultipliers.add(0.5);
 		}
 	}
