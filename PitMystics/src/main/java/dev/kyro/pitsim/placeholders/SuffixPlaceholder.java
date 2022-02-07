@@ -21,7 +21,7 @@ public class SuffixPlaceholder implements APAPIPlaceholder {
 		if(AFKManager.AFKPlayers.contains(player)) return "&8 [AFK]";
 		if(pitPlayer.bounty != 0) return "&7 &6&l" + pitPlayer.bounty + "g";
 		Guild guild = GuildManager.getGuild(player);
-		if(guild != null && guild.tag != null) return "&e #" + guild.tag;
+		if(guild != null && guild.tag != null) return guild.getColor() + " #" + guild.tag;
 		return "";
 	}
 }
