@@ -77,8 +77,10 @@ public class PlayerManager implements Listener {
 					Guild guild = GuildManager.getGuild(onlinePlayer);
 					GuildBuff renownBuff = BuffManager.getBuff("renown");
 					double buff = 0;
-					for(Map.Entry<GuildBuff.SubBuff, Double> entry : renownBuff.getBuffs(guild.getLevel(renownBuff)).entrySet()) {
-						if(entry.getKey().refName.equals("renown")) buff = entry.getValue();
+					if(guild != null) {
+						for(Map.Entry<GuildBuff.SubBuff, Double> entry : renownBuff.getBuffs(guild.getLevel(renownBuff)).entrySet()) {
+							if(entry.getKey().refName.equals("renown")) buff = entry.getValue();
+						}
 					}
 					if(Math.random() * 2 < 1 + buff / 100.0) continue;
 
