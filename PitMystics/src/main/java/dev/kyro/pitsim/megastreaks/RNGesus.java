@@ -440,7 +440,7 @@ public class RNGesus extends Megastreak {
 	public enum Reality {
 		NONE("&eAbnormal", "&e&lRNGSUS", 1),
 		XP("&bXP", "&b&lRNG&e&lSUS", 0.1),
-		GOLD("&6Gold", "&6&lRNG&e&lSUS", 1.5),
+		GOLD("&6Gold", "&6&lRNG&e&lSUS", 2),
 		DAMAGE("&cDamage", "&c&lRNG&e&lSUS", 1),
 		ABSORPTION("&6Absorption", "&9&lRNG&e&lSUS", 0.3);
 
