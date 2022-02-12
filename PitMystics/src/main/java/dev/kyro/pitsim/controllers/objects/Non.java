@@ -56,8 +56,9 @@ public class Non {
 
 		CitizensNavigator navigator = (CitizensNavigator) npc.getNavigator();
 		navigator.getDefaultParameters()
-				.attackDelayTicks((int) (Math.random() * 4 + 3))
-				.attackRange(4);
+				.attackDelayTicks(20)
+				.attackRange(4)
+				.updatePathRate(40);
 		npc.setProtected(false);
 
 		pickTraits();
