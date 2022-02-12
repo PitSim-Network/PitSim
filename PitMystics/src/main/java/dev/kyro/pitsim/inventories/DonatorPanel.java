@@ -64,7 +64,7 @@ public class DonatorPanel extends AGUIPanel {
 				ItemStack heldItem = player.getItemInHand();
 				if(Misc.isAirOrNull(heldItem)) return;
 				NBTItem nbtItem = new NBTItem(heldItem);
-				if(nbtItem.hasKey(NBTTag.PIT_ENCHANT_ORDER.getRef()) && !nbtItem.hasKey(NBTTag.JEWEL_KILLS.getRef())) {
+				if(nbtItem.hasKey(NBTTag.ITEM_UUID.getRef())) {
 					player.closeInventory();
 					ItemRename.renameItem(player, player.getItemInHand());
 				}
