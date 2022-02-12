@@ -1,10 +1,11 @@
 package dev.kyro.pitsim.commands;
 
-import dev.kyro.arcticapi.commands.ASubCommand;
+import dev.kyro.arcticapi.commands.ACommand;
 import dev.kyro.arcticapi.data.AConfig;
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.controllers.NonAnticheat;
 import org.bukkit.Bukkit;
+import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
 import org.bukkit.entity.Player;
@@ -12,13 +13,13 @@ import org.bukkit.entity.Player;
 import java.text.DecimalFormat;
 import java.util.List;
 
-public class AnticheatCommand extends ASubCommand {
+public class AnticheatCommand extends ACommand {
 	public AnticheatCommand(String executor) {
 		super(executor);
 	}
 
 	@Override
-	public void execute(CommandSender sender, List<String> args) {
+	public void execute(CommandSender sender, Command command, String alias, List<String> args) {
 		if(!(sender instanceof Player)) return;
 		Player player = ((Player) sender).getPlayer();
 		if(!player.isOp()) return;
@@ -51,5 +52,10 @@ public class AnticheatCommand extends ASubCommand {
 		AOutput.send(player, "&6Recent Hits: &e" + anticheatData.getRecentHits());
 		AOutput.send(player, "&6Abnormal hit distance: &e" + format.format(anticheatData.getAbnormalDistancePercent()) + "%");
 		AOutput.send(player, "&6Abnormal hit angle: &e" + format.format(anticheatData.getAbnormalAnglePercent()) + "%");
+	}
+
+	@Override
+	public List<String> getTabComplete(Player player, String current, List<String> args) {
+		return null;
 	}
 }

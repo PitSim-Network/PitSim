@@ -1,64 +1,67 @@
 package dev.kyro.pitsim.controllers;
 
+import dev.kyro.arcticapi.data.APlayer;
 import dev.kyro.arcticapi.data.APlayerData;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.controllers.objects.RenownUpgrade;
 import org.bukkit.ChatColor;
-import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
+import org.bukkit.event.Listener;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
-public class UpgradeManager {
-
+public class UpgradeManager implements Listener {
+	public static Map<UUID, Map<RenownUpgrade, Integer>> upgradeMap = new HashMap<>();
 	public static List<RenownUpgrade> upgrades = new ArrayList<>();
 
-	public static void registerUpgrade(RenownUpgrade upgrade) {
+	public static void updatePlayer(Player player) {
+		APlayer aPlayer = APlayerData.getPlayerData(player);
+		Map<RenownUpgrade, Integer> playerMap = new HashMap<>();
+		for(RenownUpgrade upgrade : UpgradeManager.upgrades) {
+			if(aPlayer.playerData.contains(upgrade.refName)) playerMap.put(upgrade, aPlayer.playerData.getInt(upgrade.refName));
+		}
+		upgradeMap.put(player.getUniqueId(), playerMap);
+	}
 
+	public static void registerUpgrade(RenownUpgrade upgrade) {
 		upgrades.add(upgrade);
 		PitSim.INSTANCE.getServer().getPluginManager().registerEvents(upgrade, PitSim.INSTANCE);
 	}
 
 	public static boolean hasUpgrade(Player player, RenownUpgrade upgrade) {
 		if(NonManager.getNon(player) != null) return false;
-		FileConfiguration playerData = APlayerData.getPlayerData(player);
-		return playerData.contains(upgrade.refName);
-//        return playerData.contains(upgrade.name()) && playerData.getBoolean(upgrade.name());
-
+		if(!upgradeMap.containsKey(player.getUniqueId())) updatePlayer(player);
+		return upgradeMap.get(player.getUniqueId()).containsKey(upgrade);
 	}
 
-	public static boolean hasUpgrade(Player player, String upgrade) {
+	public static boolean hasUpgrade(Player player, String refName) {
 		if(NonManager.getNon(player) != null) return false;
-		for(RenownUpgrade renownUpgrade : UpgradeManager.upgrades) {
-			if(renownUpgrade.refName.equals(upgrade)) {
-				FileConfiguration playerData = APlayerData.getPlayerData(player);
-				return playerData.contains(renownUpgrade.refName);
-			}
-		}
-		return false;
+		RenownUpgrade upgrade = getUpgrade(refName);
+		if(upgrade == null) return false;
+		return hasUpgrade(player, upgrade);
 	}
 
 	public static int getTier(Player player, RenownUpgrade upgrade) {
 		if(NonManager.getNon(player) != null) return 0;
-		FileConfiguration playerData = APlayerData.getPlayerData(player);
-		if(!playerData.contains(upgrade.refName)) return 0;
-		else return playerData.getInt(upgrade.refName);
+		if(!upgradeMap.containsKey(player.getUniqueId())) updatePlayer(player);
+		if(!upgradeMap.get(player.getUniqueId()).containsKey(upgrade)) return 0;
+		return upgradeMap.get(player.getUniqueId()).get(upgrade);
 	}
 
-	public static int getTier(Player player, String upgrade) {
+	public static int getTier(Player player, String refName) {
 		if(NonManager.getNon(player) != null) return 0;
-		for(RenownUpgrade renownUpgrade : UpgradeManager.upgrades) {
-			if(renownUpgrade.refName.equals(upgrade)) {
-				FileConfiguration playerData = APlayerData.getPlayerData(player);
-				if(!playerData.contains(renownUpgrade.refName)) return 0;
-				else return playerData.getInt(renownUpgrade.refName);
-			}
-		}
-		return 0;
+		RenownUpgrade upgrade = getUpgrade(refName);
+		return getTier(player, upgrade);
 	}
 
+	public static RenownUpgrade getUpgrade(String refName) {
+		for(RenownUpgrade upgrade : upgrades) {
+			if(!upgrade.refName.equalsIgnoreCase(refName)) continue;
+			return upgrade;
+		}
+		return null;
+	}
 
 	public static String renownCostString(RenownUpgrade upgrade, Player player) {
 		if(!upgrade.isTiered) {

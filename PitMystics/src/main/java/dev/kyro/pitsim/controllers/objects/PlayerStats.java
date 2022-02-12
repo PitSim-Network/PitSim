@@ -1,5 +1,6 @@
 package dev.kyro.pitsim.controllers.objects;
 
+import dev.kyro.arcticapi.data.APlayer;
 import dev.kyro.arcticapi.data.APlayerData;
 import dev.kyro.pitsim.controllers.PrestigeValues;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -9,7 +10,6 @@ import java.util.UUID;
 public class PlayerStats {
 	public PitPlayer pitPlayer;
 	public UUID uuid;
-	public FileConfiguration playerData;
 
 //	Offense
 	public int playerKills;
@@ -113,7 +113,6 @@ public class PlayerStats {
 	public PlayerStats(PitPlayer pitPlayer, FileConfiguration playerData) {
 		this.pitPlayer = pitPlayer;
 		this.uuid = pitPlayer.player.getUniqueId();
-		this.playerData = playerData;
 
 		playerKills = playerData.getInt("stats.combat.player-kills");
 		botKills = playerData.getInt("stats.combat.bot-kills");
@@ -177,6 +176,9 @@ public class PlayerStats {
 	}
 
 	public void save() {
+		APlayer aPlayer = APlayerData.getPlayerData(uuid);
+		FileConfiguration playerData = aPlayer.playerData;
+
 		playerData.set("stats.combat.player-kills", playerKills);
 		playerData.set("stats.combat.bot-kills", botKills);
 		playerData.set("stats.combat.hopper-kills", hopperKills);
@@ -237,6 +239,6 @@ public class PlayerStats {
 
 		playerData.set("stats.misc.chat-messages", chatMessages);
 
-		APlayerData.savePlayerData(uuid);
+		aPlayer.save();
 	}
 }

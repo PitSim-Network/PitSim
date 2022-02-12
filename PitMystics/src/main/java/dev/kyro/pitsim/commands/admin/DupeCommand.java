@@ -2,15 +2,17 @@ package dev.kyro.pitsim.commands.admin;
 
 import dev.kyro.arcticapi.builders.AItemStackBuilder;
 import dev.kyro.arcticapi.builders.ALoreBuilder;
-import dev.kyro.arcticapi.commands.ASubCommand;
+import dev.kyro.arcticapi.commands.ACommand;
+import dev.kyro.arcticapi.commands.AMultiCommand;
+import dev.kyro.arcticapi.data.APlayer;
 import dev.kyro.arcticapi.data.APlayerData;
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.arcticapi.misc.AUtil;
 import dev.kyro.pitsim.controllers.log.DupeManager;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
+import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
-import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
@@ -18,13 +20,13 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
-public class DupeCommand extends ASubCommand {
-    public DupeCommand(String executor) {
-        super(executor);
+public class DupeCommand extends ACommand {
+    public DupeCommand(AMultiCommand base, String executor) {
+        super(base, executor);
     }
 
     @Override
-    public void execute(CommandSender sender, List<String> args) {
+    public void execute(CommandSender sender, Command command, String alias, List<String> args) {
         if(!(sender instanceof Player)) return;
         Player player = (Player) sender;
 
@@ -34,9 +36,9 @@ public class DupeCommand extends ASubCommand {
         }
 
         UUID targetUUID = null;
-        for(Map.Entry<UUID, FileConfiguration> entry : APlayerData.getAllData().entrySet()) {
-            String testName = entry.getValue().getString("name");
-            if(testName == null || !testName.equalsIgnoreCase(args.get(0))) continue;
+        for(Map.Entry<UUID, APlayer> entry : APlayerData.getAllData().entrySet()) {
+            OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(entry.getKey());
+            if(offlinePlayer == null || !offlinePlayer.getName().equalsIgnoreCase(args.get(0))) continue;
             targetUUID = entry.getKey();
             break;
         }
@@ -85,5 +87,10 @@ public class DupeCommand extends ASubCommand {
         }
         AOutput.send(player, "&4&lDUPEDUPEDUPEDUPE! &c" + timesDuped + " duped item" + (timesDuped == 1 ? "" : "s"));
         AOutput.send(player, "");
+    }
+
+    @Override
+    public List<String> getTabComplete(Player player, String current, List<String> args) {
+        return null;
     }
 }

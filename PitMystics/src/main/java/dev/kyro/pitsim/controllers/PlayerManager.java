@@ -2,6 +2,7 @@ package dev.kyro.pitsim.controllers;
 
 import be.maximvdw.featherboard.api.FeatherBoardAPI;
 import de.tr7zw.nbtapi.NBTItem;
+import dev.kyro.arcticapi.data.APlayer;
 import dev.kyro.arcticapi.data.APlayerData;
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.arcticguilds.controllers.BuffManager;
@@ -32,7 +33,6 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Entity;
@@ -86,9 +86,9 @@ public class PlayerManager implements Listener {
 
 					PitPlayer pitPlayer = PitPlayer.getPitPlayer(onlinePlayer);
 					pitPlayer.renown++;
-					FileConfiguration playerData = APlayerData.getPlayerData(onlinePlayer);
-					playerData.set("renown", pitPlayer.renown);
-					APlayerData.savePlayerData(onlinePlayer);
+					APlayer aPlayer = APlayerData.getPlayerData(onlinePlayer);
+					aPlayer.playerData.set("renown", pitPlayer.renown);
+					aPlayer.save();
 					AOutput.send(onlinePlayer, "&7You have been given &e1 renown &7for being active");
 				}
 			}

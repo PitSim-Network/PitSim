@@ -1,5 +1,6 @@
 package dev.kyro.pitsim.tutorial.inventories;
 
+import dev.kyro.arcticapi.data.APlayer;
 import dev.kyro.arcticapi.data.APlayerData;
 import dev.kyro.arcticapi.gui.AGUI;
 import dev.kyro.arcticapi.gui.AGUIPanel;
@@ -30,14 +31,12 @@ import java.util.Collections;
 import java.util.List;
 
 public class RenownShopConfirmPanel extends AGUIPanel {
-
-    FileConfiguration playerData = APlayerData.getPlayerData(player);
-    PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
+    public PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
     public RenownShopGUI renownShopGUI;
+
     public RenownShopConfirmPanel(AGUI gui) {
         super(gui);
         renownShopGUI = (RenownShopGUI) gui;
-
     }
 
     @Override
@@ -66,15 +65,18 @@ public class RenownShopConfirmPanel extends AGUIPanel {
                     tutorial.onTaskComplete(Task.BUY_TENACITY);
                 }
 
+                APlayer aPlayer = APlayerData.getPlayerData(player);
+                FileConfiguration playerData = aPlayer.playerData;
                 if(upgrade.isTiered) {
-                    if(playerData.contains(upgrade.refName))
-                        playerData.set(upgrade.refName, UpgradeManager.getTier(player, upgrade) + 1);
-                        else playerData.set(upgrade.refName, 1);
-                        pitPlayer.renown = pitPlayer.renown - upgrade.getTierCosts().get(UpgradeManager.getTier(player, upgrade) - 1);
+                    int tier = UpgradeManager.getTier(player, upgrade);
+                    playerData.set(upgrade.refName, tier + 1);
+                    pitPlayer.renown = pitPlayer.renown - upgrade.getTierCosts().get(tier);
                 } else {
                     playerData.set(upgrade.refName, 0);
                     pitPlayer.renown = pitPlayer.renown - upgrade.renownCost;
                 }
+                aPlayer.save();
+                UpgradeManager.updatePlayer(player);
                 RenownShopGUI.purchaseConfirmations.remove(player);
                 openPanel(renownShopGUI.getHomePanel());
 

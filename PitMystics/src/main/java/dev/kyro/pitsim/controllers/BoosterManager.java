@@ -1,6 +1,5 @@
 package dev.kyro.pitsim.controllers;
 
-import dev.kyro.arcticapi.data.APlayerData;
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.boosters.GoldBooster;
@@ -14,7 +13,6 @@ import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
-import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -54,21 +52,10 @@ public class BoosterManager implements Listener {
 			OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(uuid);
 			PitSim.VAULT.depositPlayer(offlinePlayer, gold);
 
-			boolean isOnline = false;
 			for(Player onlinePlayer : Bukkit.getOnlinePlayers()) {
 				if(!onlinePlayer.getUniqueId().equals(uuid)) continue;
-				isOnline = true;
 				PitPlayer pitPlayer = PitPlayer.getPitPlayer(onlinePlayer);
 				pitPlayer.goldGrinded += gold;
-				//TODO Fix Playerdata in BoosterManager
-				FileConfiguration playerData = APlayerData.getPlayerData(onlinePlayer);
-				playerData.set("goldgrinded", pitPlayer.goldGrinded);
-				APlayerData.savePlayerData(onlinePlayer);
-			}
-			if(!isOnline) {
-				FileConfiguration playerData = APlayerData.getPlayerData(uuid);
-				playerData.set("goldgrinded", playerData.getInt("goldgrinded") + gold);
-				APlayerData.savePlayerData(uuid);
 			}
 		}
 
@@ -122,36 +109,21 @@ public class BoosterManager implements Listener {
 				}
 
 				donators.clear();
-//				Map<Booster, List<UUID>> toAddDonators = new HashMap<>();
-				for(Map.Entry<UUID, FileConfiguration> entry : APlayerData.getAllData().entrySet()) {
-					FileConfiguration playerData = entry.getValue();
-					UUID uuid = entry.getKey();
-					boolean changed = false;
+				for(Player onlinePlayer : Bukkit.getOnlinePlayers()) {
+					PitPlayer pitPlayer = PitPlayer.getPitPlayer(onlinePlayer);
 
 					for(Booster booster : boosterList) {
-						int timeLeft = playerData.getInt("booster-time." + booster.refName);
+						int timeLeft = pitPlayer.boosterTime.get(booster);
 						if(timeLeft <= 0) continue;
+						pitPlayer.boosterTime.put(booster, pitPlayer.boosterTime.get(booster) - 1);
 
-						playerData.set("booster-time." + booster.refName, --timeLeft);
-
+//						TODO: Terrible fix lol
+						if(donators.containsKey(booster)) continue;
 						donators.putIfAbsent(booster, new ArrayList<>());
-						donators.get(booster).add(uuid);
-
-						changed = true;
+						donators.get(booster).add(onlinePlayer.getUniqueId());
 					}
-
-					if(changed) APlayerData.savePlayerData(uuid);
 				}
-
-//				for(Player onlinePlayer : Bukkit.getOnlinePlayers()) {
-//					for(Map.Entry<Booster, List<UUID>> entry : toAddDonators.entrySet()) {
-//						if(!entry.getValue().contains(onlinePlayer.getUniqueId())) continue;
-//						donators.putIfAbsent(entry.getKey(), new ArrayList<>());
-//						donators.get(entry.getKey()).add(onlinePlayer);
-//					}
-//				}
 			}
-//		}.runTaskTimer(PitSim.INSTANCE, 20, 20);
 		}.runTaskTimer(PitSim.INSTANCE, 20 * 60L, 20 * 60);
 
 

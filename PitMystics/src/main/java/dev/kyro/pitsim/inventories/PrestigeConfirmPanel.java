@@ -4,7 +4,6 @@ import dev.kyro.arcticapi.gui.AGUI;
 import dev.kyro.arcticapi.gui.AGUIPanel;
 import dev.kyro.arcticapi.misc.AUtil;
 import dev.kyro.pitsim.controllers.LevelManager;
-import dev.kyro.pitsim.controllers.PrestigeValues;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -18,9 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class PrestigeConfirmPanel extends AGUIPanel {
-	PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
-	PrestigeValues.PrestigeInfo prestigeInfo = PrestigeValues.getPrestigeInfo(pitPlayer.prestige);
-	PrestigeValues.PrestigeInfo nextPrestigeInfo = PrestigeValues.getPrestigeInfo(pitPlayer.prestige + 1);
+	public PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
 	public PrestigeGUI prestigeGUI;
 	public PrestigeConfirmPanel(AGUI gui) {
 		super(gui);

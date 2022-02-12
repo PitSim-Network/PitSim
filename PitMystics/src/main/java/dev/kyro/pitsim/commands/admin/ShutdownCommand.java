@@ -1,22 +1,23 @@
 package dev.kyro.pitsim.commands.admin;
 
-import dev.kyro.arcticapi.commands.ASubCommand;
+import dev.kyro.arcticapi.commands.ACommand;
+import dev.kyro.arcticapi.commands.AMultiCommand;
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.controllers.ShutdownManager;
+import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import java.util.List;
 
-public class ShutdownCommand extends ASubCommand {
-    public ShutdownCommand(String executor) {
-        super(executor);
+public class ShutdownCommand extends ACommand {
+    public ShutdownCommand(AMultiCommand base, String executor) {
+        super(base, executor);
     }
-    public Player player;
 
     @Override
-    public void execute(CommandSender sender, List<String> args) {
-        player = null;
+    public void execute(CommandSender sender, Command command, String alias, List<String> args) {
+        Player player = null;
         if(sender instanceof Player) player = (Player) sender;
 
         if(args.size() < 1) {
@@ -46,5 +47,10 @@ public class ShutdownCommand extends ASubCommand {
             ShutdownManager.initiateShutdown(minutes);
             if(player != null) AOutput.send(player, "&aShutdown Initiated!");
         }
+    }
+
+    @Override
+    public List<String> getTabComplete(Player player, String current, List<String> args) {
+        return null;
     }
 }

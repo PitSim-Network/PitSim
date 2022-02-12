@@ -1,19 +1,22 @@
 package dev.kyro.pitsim.commands.admin;
 
-import dev.kyro.arcticapi.commands.ASubCommand;
+import dev.kyro.arcticapi.commands.ACommand;
+import dev.kyro.arcticapi.commands.AMultiCommand;
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.controllers.LockdownManager;
+import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 
 import java.util.List;
 
-public class LockdownCommand extends ASubCommand {
-	public LockdownCommand(String executor) {
-		super(executor);
+public class LockdownCommand extends ACommand {
+	public LockdownCommand(AMultiCommand base, String executor) {
+		super(base, executor);
 	}
 
 	@Override
-	public void execute(CommandSender sender, List<String> args) {
+	public void execute(CommandSender sender, Command command, String alias, List<String> args) {
 		if(args.size() < 1) {
 			AOutput.send(sender, "&c&lLOCKDOWN! &7Verification currently " + getText(LockdownManager.verificationRequired()));
 			AOutput.send(sender, "&c&lLOCKDOWN! &7Captcha currently " + getText(LockdownManager.captchaRequired()));
@@ -74,6 +77,11 @@ public class LockdownCommand extends ASubCommand {
 		} else {
 			AOutput.error(sender, "&c&lLOCKDOWN! &7<verify|captcha> <on/off>");
 		}
+	}
+
+	@Override
+	public List<String> getTabComplete(Player player, String current, List<String> args) {
+		return null;
 	}
 
 	public static String getText(boolean value) {

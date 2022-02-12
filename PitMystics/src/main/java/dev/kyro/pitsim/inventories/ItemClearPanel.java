@@ -1,6 +1,7 @@
 package dev.kyro.pitsim.inventories;
 
 import de.tr7zw.nbtapi.NBTItem;
+import dev.kyro.arcticapi.data.APlayer;
 import dev.kyro.arcticapi.data.APlayerData;
 import dev.kyro.arcticapi.gui.AGUI;
 import dev.kyro.arcticapi.gui.AGUIPanel;
@@ -14,7 +15,6 @@ import dev.kyro.pitsim.misc.Misc;
 import dev.kyro.pitsim.misc.Sounds;
 import dev.kyro.pitsim.upgrades.ShardHunter;
 import org.bukkit.ChatColor;
-import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.inventory.InventoryOpenEvent;
@@ -27,9 +27,7 @@ import java.util.Map;
 import java.util.Random;
 
 public class ItemClearPanel extends AGUIPanel {
-
-	FileConfiguration playerData = APlayerData.getPlayerData(player);
-	PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
+	public PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
 	public Map<Integer, Integer> slots = new HashMap<>();
 	public RenownShopGUI renownShopGUI;
 	public ItemClearPanel(AGUI gui) {
@@ -97,9 +95,10 @@ public class ItemClearPanel extends AGUIPanel {
 					}
 					if(removedEnchants == 1) player.getInventory().setItem(i, item1);
 
+					APlayer aPlayer = APlayerData.getPlayerData(player);
 					pitPlayer.renown -= 5;
-					playerData.set("renown", pitPlayer.renown);
-					APlayerData.savePlayerData(player);
+					aPlayer.playerData.set("renown", pitPlayer.renown);
+					aPlayer.save();
 
 					player.closeInventory();
 					Sounds.CLEAR_JEWEL.play(player);

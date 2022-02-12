@@ -2,6 +2,7 @@ package dev.kyro.pitsim.inventories;
 
 import dev.kyro.arcticapi.builders.AItemStackBuilder;
 import dev.kyro.arcticapi.builders.ALoreBuilder;
+import dev.kyro.arcticapi.data.APlayer;
 import dev.kyro.arcticapi.data.APlayerData;
 import dev.kyro.arcticapi.gui.AGUI;
 import dev.kyro.arcticapi.gui.AGUIPanel;
@@ -53,10 +54,11 @@ public class BoosterPanel extends AGUIPanel {
 						Sounds.SUCCESS.play(player);
 						booster.minutes += 60;
 
-						FileConfiguration playerData = APlayerData.getPlayerData(player);
+						APlayer aPlayer = APlayerData.getPlayerData(player);
+						FileConfiguration playerData = aPlayer.playerData;
 						int timeLeft = playerData.getInt("booster-time." + booster.refName) + 60;
 						playerData.set("booster-time." + booster.refName, timeLeft);
-						APlayerData.savePlayerData(player);
+						aPlayer.save();
 
 						booster.updateTime();
 						String playerName = "%luckperms_prefix%%essentials_nickname%";

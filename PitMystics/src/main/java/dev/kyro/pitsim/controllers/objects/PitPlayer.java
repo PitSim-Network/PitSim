@@ -1,5 +1,6 @@
 package dev.kyro.pitsim.controllers.objects;
 
+import dev.kyro.arcticapi.data.APlayer;
 import dev.kyro.arcticapi.data.APlayerData;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.controllers.BoosterManager;
@@ -85,7 +86,8 @@ public class PitPlayer {
 	public PlayerStats stats;
 
 	public void save() {
-		FileConfiguration playerData = APlayerData.getPlayerData(player);
+		APlayer aPlayer = APlayerData.getPlayerData(player);
+		FileConfiguration playerData = aPlayer.playerData;
 
 		playerData.set("prestige", prestige);
 		playerData.set("level", level);
@@ -102,11 +104,12 @@ public class PitPlayer {
 
 		playerData.set("lastversion", PitSim.version);
 
-		APlayerData.savePlayerData(player);
+		aPlayer.save();
 	}
 
 	public void fullSave() {
-		FileConfiguration playerData = APlayerData.getPlayerData(player);
+		APlayer aPlayer = APlayerData.getPlayerData(player);
+		FileConfiguration playerData = aPlayer.playerData;
 
 		playerData.set("prestige", prestige);
 		playerData.set("level", level);
@@ -137,8 +140,7 @@ public class PitPlayer {
 		if(deathCry != null) playerData.set("deathcry", deathCry.toString());
 		if(chatColor != null) playerData.set("chatcolor", chatColor.toString());
 
-		APlayerData.savePlayerData(player);
-
+		aPlayer.save();
 		stats.save();
 	}
 
@@ -150,7 +152,8 @@ public class PitPlayer {
 
 		if(non == null) {
 			prefix = "";
-			FileConfiguration playerData = APlayerData.getPlayerData(player);
+			APlayer aPlayer = APlayerData.getPlayerData(player);
+			FileConfiguration playerData = aPlayer.playerData;
 
 			prestige = playerData.getInt("prestige");
 			level = playerData.contains("level") ? playerData.getInt("level") : 1;

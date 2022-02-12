@@ -1,6 +1,5 @@
 package dev.kyro.pitsim.tutorial;
 
-import dev.kyro.arcticapi.events.armor.AChangeEquipmentEvent;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.controllers.objects.Killstreak;
 import dev.kyro.pitsim.controllers.objects.PitPerk;
@@ -20,6 +19,7 @@ import net.citizensnpcs.api.event.NPCRightClickEvent;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.inventory.EquipmentSetEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 
@@ -120,12 +120,12 @@ public class TaskListener implements Listener {
 	}
 
 	@EventHandler
-	public void onEquip(AChangeEquipmentEvent event) {
-		Tutorial tutorial = TutorialManager.getTutorial(event.getPlayer());
+	public void onEquip(EquipmentSetEvent event) {
+		Player player = (Player) event.getHumanEntity();
+		Tutorial tutorial = TutorialManager.getTutorial(player);
 		if(tutorial == null) return;
 		if(!(tutorial.sequence instanceof EquipArmorSequence)) return;
 
-		Player player = event.getPlayer();
 		for (ItemStack armorContent : player.getInventory().getArmorContents()) {
 			if(Misc.isAirOrNull(armorContent)) {
 				return;

@@ -1,5 +1,6 @@
 package dev.kyro.pitsim.tutorial.sequences;
 
+import dev.kyro.arcticapi.data.APlayer;
 import dev.kyro.arcticapi.data.APlayerData;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.controllers.MapManager;
@@ -8,7 +9,6 @@ import dev.kyro.pitsim.tutorial.Task;
 import dev.kyro.pitsim.tutorial.TutorialMessage;
 import dev.kyro.pitsim.tutorial.objects.Tutorial;
 import dev.kyro.pitsim.tutorial.objects.TutorialSequence;
-import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
@@ -88,9 +88,9 @@ public class FinalSequence extends TutorialSequence {
 			@Override
 			public void run() {
 				tutorial.cleanUp();
-				FileConfiguration playerData = APlayerData.getPlayerData(player);
-				playerData.set("tutorial", true);
-				APlayerData.savePlayerData(player);
+				APlayer aPlayer = APlayerData.getPlayerData(player);
+				aPlayer.playerData.set("tutorial", true);
+				aPlayer.save();
 			}
 		}.runTaskLater(PitSim.INSTANCE, 20L * waitTime);
 		runnableList.add(runnable);

@@ -1,24 +1,9 @@
 package dev.kyro.pitsim.commands.admin;
 
-import dev.kyro.arcticapi.commands.ABaseCommand;
-import dev.kyro.arcticapi.misc.AOutput;
-import org.bukkit.command.CommandSender;
+import dev.kyro.arcticapi.commands.AMultiCommand;
 
-import java.util.List;
-
-public class BaseGiveCommand extends ABaseCommand {
-	public BaseGiveCommand(ABaseCommand baseCommand, String executor) {
-		super(baseCommand, executor);
-	}
-
-	@Override
-	public void executeBase(CommandSender sender, List<String> args) {
-		if(!sender.isOp()) return;
-		for(String line : createHelp().getMessage()) AOutput.sendIfPlayer(sender, line);
-	}
-
-	@Override
-	public void executeFail(CommandSender sender, List<String> args) {
-		executeBase(sender, args);
+public class BaseGiveCommand extends AMultiCommand {
+	public BaseGiveCommand(AMultiCommand base, String executor) {
+		super(base, executor);
 	}
 }

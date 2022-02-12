@@ -4,7 +4,7 @@ import com.comphenix.protocol.ProtocolLibrary;
 import com.comphenix.protocol.ProtocolManager;
 import com.xxmicloxx.NoteBlockAPI.songplayer.EntitySongPlayer;
 import dev.kyro.arcticapi.ArcticAPI;
-import dev.kyro.arcticapi.commands.ABaseCommand;
+import dev.kyro.arcticapi.commands.AMultiCommand;
 import dev.kyro.arcticapi.data.AData;
 import dev.kyro.arcticapi.hooks.AHook;
 import dev.kyro.arcticapi.misc.AOutput;
@@ -21,7 +21,6 @@ import dev.kyro.pitsim.enchants.GoldBoost;
 import dev.kyro.pitsim.enchants.*;
 import dev.kyro.pitsim.helmetabilities.*;
 import dev.kyro.pitsim.killstreaks.*;
-import dev.kyro.pitsim.killstreaks.Dispersion;
 import dev.kyro.pitsim.megastreaks.*;
 import dev.kyro.pitsim.misc.*;
 import dev.kyro.pitsim.perks.*;
@@ -40,7 +39,6 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.plugin.Plugin;
-import org.bukkit.plugin.RegisteredListener;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -91,6 +89,7 @@ public class PitSim extends JavaPlugin {
 		MapManager.onStart();
 		NonManager.init();
 		SpawnNPCs.createNPCs();
+		LeaderboardManager.init();
 
 		if (!setupEconomy()) {
 			AOutput.log(String.format("[%s] - Disabled due to no Vault dependency found!", getDescription().getName()));
@@ -100,8 +99,6 @@ public class PitSim extends JavaPlugin {
 
 		Plugin essentials = Bukkit.getPluginManager().getPlugin("Essentials");
 		EntityDamageEvent.getHandlerList().unregister(essentials);
-		for(RegisteredListener listener : EntityDamageEvent.getHandlerList().getRegisteredListeners()) {
-		}
 
 		if(Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null) {
 		} else {
@@ -248,25 +245,25 @@ public class PitSim extends JavaPlugin {
 	}
 	private void registerCommands() {
 
-		ABaseCommand adminCommand = new BaseAdminCommand("pitsim");
+		AMultiCommand adminCommand = new BaseAdminCommand("pitsim");
 		getCommand("ps").setExecutor(adminCommand);
-		ABaseCommand giveCommand = new BaseSetCommand(adminCommand, "give");
-		ABaseCommand setCommand = new BaseSetCommand(adminCommand, "set");
+		AMultiCommand giveCommand = new BaseSetCommand(adminCommand, "give");
+		AMultiCommand setCommand = new BaseSetCommand(adminCommand, "set");
 //		adminCommand.registerCommand(new AnticheatCommand("check"));
-		adminCommand.registerCommand(new HopperCommand("hopper"));
-		adminCommand.registerCommand(new UUIDCommand("uuid"));
-		adminCommand.registerCommand(new DupeCommand("dupe"));
-		adminCommand.registerCommand(new ViewCommand("view"));
-		adminCommand.registerCommand(new RandomizeCommand("randomize"));
-		adminCommand.registerCommand(new ShutdownCommand("shutdown"));
-		adminCommand.registerCommand(new ReloadCommand("reload"));
-		adminCommand.registerCommand(new BypassCommand("bypass"));
-		adminCommand.registerCommand(new LockdownCommand("lockdown"));
-		setCommand.registerCommand(new SetPrestigeCommand("prestige"));
-		setCommand.registerCommand(new SetLevelCommand("level"));
-		setCommand.registerCommand(new BountyCommand("bounty"));
+		new HopperCommand(adminCommand, "hopper");
+		new UUIDCommand(adminCommand, "uuid");
+		new DupeCommand(adminCommand, "dupe");
+		new ViewCommand(adminCommand, "view");
+		new RandomizeCommand(adminCommand, "randomize");
+		new ShutdownCommand(adminCommand, "shutdown");
+		new ReloadCommand(adminCommand, "reload");
+		new BypassCommand(adminCommand, "bypass");
+		new LockdownCommand(adminCommand, "lockdown");
+		new SetPrestigeCommand(setCommand, "prestige");
+		new SetLevelCommand(setCommand, "level");
+		new BountyCommand(setCommand, "bounty");
 
-		giveCommand.registerCommands(new JewelCommand("jewel"));
+		new JewelCommand(giveCommand, "jewel");
 
 		getCommand("atest").setExecutor(new ATestCommand());
 		getCommand("fps").setExecutor(new FPSCommand());
@@ -336,6 +333,7 @@ public class PitSim extends JavaPlugin {
 		getServer().getPluginManager().registerEvents(new MessageManager(), this);
 		getServer().getPluginManager().registerEvents(new TutorialManager(), this);
 		getServer().getPluginManager().registerEvents(new GuildIntegrationManager(), this);
+		getServer().getPluginManager().registerEvents(new UpgradeManager(), this);
 	}
 
 	public void registerBoosters() {
@@ -480,7 +478,6 @@ public class PitSim extends JavaPlugin {
 		EnchantManager.registerEnchant(new Stereo());
 //		EnchantManager.registerEnchant(new DiamondAllergy());
 //		EnchantManager.registerEnchant(new PitBlob());
-//		EnchantManager.registerEnchant(new WolfPack());
 
 //		Resource Enchants
 		EnchantManager.registerEnchant(new Moctezuma());

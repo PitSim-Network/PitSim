@@ -1,5 +1,6 @@
 package dev.kyro.pitsim.misc;
 
+import dev.kyro.arcticapi.data.APlayer;
 import dev.kyro.arcticapi.data.APlayerData;
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.arcticapi.misc.AUtil;
@@ -44,7 +45,8 @@ public class BackwardsCompatibility implements Listener {
 
 	public static void levelSystemConversion(Player player) {
 		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
-		FileConfiguration playerData = APlayerData.getPlayerData(player);
+		APlayer aPlayer = APlayerData.getPlayerData(player);
+		FileConfiguration playerData = aPlayer.playerData;
 		double version = pitPlayer.lastVersion;
 		if(version >= 2.0) return;
 
@@ -91,7 +93,9 @@ public class BackwardsCompatibility implements Listener {
 		pitPlayer.megastreak = new Overdrive(pitPlayer);
 		pitPlayer.goldGrinded = 0;
 
-		if(newPrestige  > 0) {
+		aPlayer.save();
+
+		if(newPrestige > 0) {
 			Sounds.COMPENSATION.play(player);
 			AOutput.send(player, "&a&lLEVEL SYSTEM REWORK!");
 			AOutput.send(player, "&7We have switched over to a prestige system!");
@@ -99,64 +103,5 @@ public class BackwardsCompatibility implements Listener {
 			AOutput.send(player, "&7You were given &e" + pitPlayer.renown + " &7renown.");
 			AOutput.send(player, "&cAll renown unlocks were cleared from you account.");
 		}
-
-
 	}
-
-//	public static void compensateRenown(Player player) {
-//		FileConfiguration playerData = APlayerData.getPlayerData(player);
-//		if(playerData.contains("lastversion") && playerData.getDouble("lastversion")  >= 1.0) return;
-//
-//		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
-//		int totalRenown = 0;
-//		for(int i = 0; i < pitPlayer.playerLevel; i++) {
-//			totalRenown += OldLevelManager.getRenownFromLevel(i);
-//		}
-//		pitPlayer.renown += totalRenown;
-//		playerData.set("renown", pitPlayer.renown);
-//		AOutput.send(player, "&a&lCOMPENSATION! &7Received &e+" + totalRenown + " Renown &7for your current level.");
-//		Sounds.COMPENSATION.play(player);
-//
-//		APlayerData.savePlayerData(player);
-//	}
-//
-//	public static void compensateFancyPants(Player player) {
-//		FileConfiguration playerData = APlayerData.getPlayerData(player);
-//		if(!playerData.contains("FANCY_PANTS")) return;
-//		playerData.set("FANCY_PANTS", null);
-//
-//		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
-//
-//		pitPlayer.renown += 10;
-//		playerData.set("renown", pitPlayer.renown);
-//		AOutput.send(player, "&a&lCOMPENSATION! &7Received &e+" + 10 + " Renown &7for the removal of &fFancy Pants");
-//		Sounds.COMPENSATION.play(player);
-//
-//		APlayerData.savePlayerData(player);
-//	}
-//
-//	public static void compensateRenownPerks(Player player) {
-//		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
-//		FileConfiguration playerData = APlayerData.getPlayerData(player);
-//		int renown = 0;
-//		for(RenownUpgrade upgrade : UpgradeManager.upgrades) {
-//			if(UpgradeManager.hasUpgrade(player, upgrade) && upgrade.prestigeReq > pitPlayer.prestige) {
-//				Bukkit.broadcastMessage(upgrade.name);
-//				if(upgrade.isTiered) {
-//					int tier = UpgradeManager.getTier(player, upgrade);
-//					for(int i = 0; i < tier; i++) {
-//						renown += upgrade.getTierCosts().get(i);
-//					}
-//				} else renown += upgrade.renownCost;
-//				playerData.set(upgrade.refName, null);
-//			}
-//		}
-//		pitPlayer.renown += renown;
-//
-//		if(renown == 0) return;
-//		playerData.set("renown", pitPlayer.renown);
-//		APlayerData.savePlayerData(player);
-//		AOutput.send(player, "&a&lCOMPENSATION! &7Received &e+" + renown + " Renown &7for recent renown shop changes.");
-//		Sounds.COMPENSATION.play(player);
-//	}
 }

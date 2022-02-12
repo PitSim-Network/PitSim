@@ -1,6 +1,6 @@
 package dev.kyro.pitsim.placeholders;
 
-import dev.kyro.arcticapi.hooks.APAPIPlaceholder;
+import dev.kyro.arcticapi.hooks.papi.APAPIPlaceholder;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.perks.AssistantToTheStreaker;
 import org.bukkit.entity.Player;

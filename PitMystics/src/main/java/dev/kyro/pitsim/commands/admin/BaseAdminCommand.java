@@ -1,25 +1,29 @@
 package dev.kyro.pitsim.commands.admin;
 
-import dev.kyro.arcticapi.commands.ABaseCommand;
-import dev.kyro.arcticapi.misc.AOutput;
+import dev.kyro.arcticapi.commands.AMultiCommand;
+import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import java.util.List;
 
-public class BaseAdminCommand extends ABaseCommand {
+public class BaseAdminCommand extends AMultiCommand {
 	public BaseAdminCommand(String executor) {
 		super(executor);
 	}
 
 	@Override
-	public void executeBase(CommandSender sender, List<String> args) {
-		if(!sender.isOp() && sender instanceof Player) return;
-		for(String line : createHelp().getMessage()) AOutput.sendIfPlayer(sender, line);
+	public void execute(CommandSender sender, Command command, String alias, List<String> args) {
+		if(!(sender instanceof Player)) return;
+		Player player = (Player) sender;
+		if(!player.isOp()) return;
+
+		super.execute(sender, command, alias, args);
 	}
 
 	@Override
-	public void executeFail(CommandSender sender, List<String> args) {
-		executeBase(sender, args);
+	public List<String> getTabComplete(Player player, String current, List<String> args) {
+		if(!player.isOp()) return null;
+		return null;
 	}
 }

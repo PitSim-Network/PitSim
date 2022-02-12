@@ -41,8 +41,6 @@ public class AttackEvent extends Event {
 			arrow = (Arrow) event.getDamager();
 		} else if(event.getDamager() instanceof Slime) {
 			pet = (LivingEntity) event.getDamager();
-		} else if(event.getDamager() instanceof Wolf) {
-			pet = (LivingEntity) event.getDamager();
 		}
 	}
 

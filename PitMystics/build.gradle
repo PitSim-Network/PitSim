@@ -39,7 +39,7 @@ dependencies {
     compileOnly group: "com.comphenix.protocol", name: "ProtocolLib", version: "4.5.1";
 
     compileOnly group: 'com.github.koca2000', name: 'NoteBlockAPI', version: '-SNAPSHOT'
-    compile 'com.github.ArcticDevelopment:ArcticAPI:fc630bd727'
+    compile 'com.github.ArcticDevelopment:ArcticAPI:47cd0616ed'
     compile 'de.tr7zw:item-nbt-api-plugin:2.8.0'// https://mvnrepository.com/artifact/com.googlecode.json-simple/json-simple
 //    compile group: 'com.googlecode.json-simple', name: 'json-simple', version: '1.1.1'
     compileOnly files('libs/FeatherBoard.jar')
@@ -52,4 +52,10 @@ shadowJar {
 
     relocate 'dev.kyro.arcticapi', 'dev.kyro.pitsim.arcticapi'
     relocate 'net.kyori', 'dev.kyro.pitsim.kyori'
+}
+
+gradle.projectsEvaluated {
+    tasks.withType(JavaCompile) {
+        options.compilerArgs << "-Xmaxerrs" << "1000"
+    }
 }

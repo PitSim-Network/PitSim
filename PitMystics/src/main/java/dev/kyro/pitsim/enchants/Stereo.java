@@ -5,19 +5,18 @@ import com.xxmicloxx.NoteBlockAPI.model.Song;
 import com.xxmicloxx.NoteBlockAPI.songplayer.EntitySongPlayer;
 import com.xxmicloxx.NoteBlockAPI.utils.NBSDecoder;
 import dev.kyro.arcticapi.builders.ALoreBuilder;
-import dev.kyro.arcticapi.events.armor.AChangeEquipmentEvent;
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.controllers.StereoManager;
 import dev.kyro.pitsim.controllers.objects.PitEnchant;
 import dev.kyro.pitsim.enums.ApplyType;
 import dev.kyro.pitsim.events.AttackEvent;
-import dev.kyro.pitsim.misc.Misc;
 import dev.kyro.pitsim.misc.Sounds;
 import org.bukkit.Bukkit;
 import org.bukkit.Effect;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.inventory.EquipmentSetEvent;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.io.File;
@@ -34,34 +33,29 @@ public class Stereo extends PitEnchant {
 	}
 
 	@EventHandler
-	public void onArmorEquip(AChangeEquipmentEvent event) {
+	public void onArmorEquip(EquipmentSetEvent event) {
+		Player player = (Player) event.getHumanEntity();
 
-		if(StereoManager.hasStereo(event.getPlayer())) {
+		if(StereoManager.hasStereo(player)) {
 
-			if(StereoManager.playerMusic.containsKey(event.getPlayer())) return;
+			if(StereoManager.playerMusic.containsKey(player)) return;
 
-			if(!event.getPlayer().hasPermission("pitsim.stereo")) {
-				AOutput.error(event.getPlayer(), "&c&lNOPE! &7You must have the &bMiraculous Rank &7or higher to use &9Stereo");
-				Sounds.NO.play(event.getPlayer());
+			if(!player.hasPermission("pitsim.stereo")) {
+				AOutput.error(player, "&c&lNOPE! &7You must have the &bMiraculous Rank &7or higher to use &9Stereo");
+				Sounds.NO.play(player);
 				return;
 			}
 
-
 			File exampleSong = new File("plugins/NoteBlockAPI/Songs/AllStar.nbs");
 			File dir = new File(exampleSong.getAbsoluteFile().getParent());
-
 			File[] files = dir.listFiles();
-
 			Random rand = new Random();
-
 			assert files != null;
 			File file = files[rand.nextInt(files.length)];
 
-
-
 			Song song = NBSDecoder.parse(file);
 			EntitySongPlayer esp = new EntitySongPlayer(song);
-			esp.setEntity(event.getPlayer());
+			esp.setEntity(player);
 			esp.setDistance(16);
 			esp.setRepeatMode(RepeatMode.ONE);
 
@@ -70,19 +64,14 @@ public class Stereo extends PitEnchant {
 				esp.addPlayer(onlinePlayer);
 			}
 
-
 			esp.setPlaying(true);
-			StereoManager.playerMusic.put(event.getPlayer(), esp);
+			StereoManager.playerMusic.put(player, esp);
 		} else {
-			EntitySongPlayer esp = StereoManager.playerMusic.get(event.getPlayer());
-
-			if(StereoManager.playerMusic.containsKey(event.getPlayer())) esp.destroy();
-			StereoManager.playerMusic.remove(event.getPlayer());
-
-
+			EntitySongPlayer esp = StereoManager.playerMusic.get(player);
+			if(StereoManager.playerMusic.containsKey(player)) esp.destroy();
+			StereoManager.playerMusic.remove(player);
 		}
-
-			}
+	}
 
 	static {
 		new BukkitRunnable() {
@@ -98,29 +87,11 @@ public class Stereo extends PitEnchant {
 		}.runTaskTimer(PitSim.INSTANCE, 0L, 4L);
 	}
 
-
-
-
-
 	@EventHandler
-	public void onAttack(AttackEvent.Apply attackEvent) {
-
-	}
-
+	public void onAttack(AttackEvent.Apply attackEvent) { }
 
 	@Override
 	public List<String> getDescription(int enchantLvl) {
-
 		return new ALoreBuilder("&7You play a tune while cruising", "&7around").getLore();
-	}
-
-	public int getNearbyPlayers(int enchantLvl) {
-
-		return Misc.linearEnchant(enchantLvl, 0.5, 1);
-	}
-
-	public double getDamageReduction(int enchantLvl) {
-
-		return Math.min(30 + enchantLvl * 10, 100);
 	}
 }

@@ -1,6 +1,7 @@
 package dev.kyro.pitsim.controllers.objects;
 
 import dev.kyro.arcticapi.data.AConfig;
+import dev.kyro.arcticapi.data.APlayer;
 import dev.kyro.arcticapi.data.APlayerData;
 import dev.kyro.pitsim.boosters.GoldBooster;
 import dev.kyro.pitsim.boosters.XPBooster;
@@ -96,10 +97,11 @@ public abstract class Booster implements Listener {
 
 	public static void saveBoosters(Player player) {
 		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
-		FileConfiguration playerData = APlayerData.getPlayerData(player);
+		APlayer aPlayer = APlayerData.getPlayerData(player);
+		FileConfiguration playerData = aPlayer.playerData;
 		for(Map.Entry<Booster, Integer> boosterIntegerEntry : pitPlayer.boosters.entrySet()) {
 			playerData.set("boosters." + boosterIntegerEntry.getKey().refName, boosterIntegerEntry.getValue());
 		}
-		APlayerData.savePlayerData(player);
+		aPlayer.save();
 	}
 }

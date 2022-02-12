@@ -1,7 +1,8 @@
 package dev.kyro.pitsim.commands;
 
 import de.tr7zw.nbtapi.NBTItem;
-import dev.kyro.arcticapi.commands.ASubCommand;
+import dev.kyro.arcticapi.commands.ACommand;
+import dev.kyro.arcticapi.commands.AMultiCommand;
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.arcticapi.misc.AUtil;
 import dev.kyro.pitsim.controllers.EnchantManager;
@@ -11,29 +12,25 @@ import dev.kyro.pitsim.enums.MysticType;
 import dev.kyro.pitsim.enums.NBTTag;
 import dev.kyro.pitsim.enums.PantColor;
 import dev.kyro.pitsim.misc.Constant;
+import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.List;
 
-public class JewelCommand extends ASubCommand {
-	public JewelCommand(String executor) {
-		super(executor);
+public class JewelCommand extends ACommand {
+	public JewelCommand(AMultiCommand base, String executor) {
+		super(base, executor);
 	}
 
 	@Override
-	public void execute(CommandSender sender, List<String> args) {
+	public void execute(CommandSender sender, Command command, String alias, List<String> args) {
 		if(!(sender instanceof Player)) return;
 		if(args.size() < 1) {
 			AOutput.error(sender, "Usage: /jewel <sword|bow|pants> [enchant] [max-lives]");
 			return;
 		}
-
-//		if(!(sender instanceof Player) || args.size() < 2) {
-//			AOutput.error(sender, "If you are sending through console you must name a target");
-//			return;
-//		}
 
 		MysticType mysticType = null;
 		String type = args.get(0).toLowerCase();
@@ -95,5 +92,10 @@ public class JewelCommand extends ASubCommand {
 
 		EnchantManager.setItemLore(jewel);
 		AUtil.giveItemSafely((Player) sender, jewel);
+	}
+
+	@Override
+	public List<String> getTabComplete(Player player, String current, List<String> args) {
+		return null;
 	}
 }

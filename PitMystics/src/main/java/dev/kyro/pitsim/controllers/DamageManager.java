@@ -9,7 +9,6 @@ import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.enchants.PitBlob;
 import dev.kyro.pitsim.enchants.Regularity;
 import dev.kyro.pitsim.enchants.Telebow;
-import dev.kyro.pitsim.enchants.WolfPack;
 import dev.kyro.pitsim.enums.NBTTag;
 import dev.kyro.pitsim.enums.NonTrait;
 import dev.kyro.pitsim.events.AttackEvent;
@@ -174,9 +173,6 @@ public class DamageManager implements Listener {
 		} else if(event.getDamager() instanceof Slime) {
 
 			preEvent = new AttackEvent.Pre(event, new HashMap<>(), defenderEnchantMap, fakeHit);
-		} else if(event.getDamager() instanceof Wolf) {
-
-			preEvent = new AttackEvent.Pre(event, new HashMap<>(), defenderEnchantMap, fakeHit);
 		}
 		if(preEvent == null) return;
 
@@ -248,7 +244,6 @@ public class DamageManager implements Listener {
 		if(damager instanceof Player) return (Player) damager;
 		if(damager instanceof Arrow) return (Player) ((Arrow) damager).getShooter();
 		if(damager instanceof Slime) return PitBlob.getOwner((Slime) damager);
-		if(damager instanceof Wolf) return WolfPack.getOwner((Wolf) damager);
 
 		return null;
 	}

@@ -93,12 +93,6 @@ public class FPSCommand implements CommandExecutor {
 
 		if(!(sender instanceof Player)) return false;
 		Player player = (Player) sender;
-//        if(!player.hasPermission("pitsim.bounty")) return false;
-
-//        FileConfiguration playerData = APlayerData.getPlayerData(player);
-//        boolean nonsHidden = playerData.getBoolean("misc.fps");
-//        playerData.set("misc.fps", !nonsHidden);
-//        APlayerData.savePlayerData(player);
 
 		if(fpsPlayers.contains(player)) {
 			for(Non non : NonManager.nons) player.showPlayer(non.non);

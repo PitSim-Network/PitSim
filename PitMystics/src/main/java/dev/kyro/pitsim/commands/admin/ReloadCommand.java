@@ -1,20 +1,22 @@
 package dev.kyro.pitsim.commands.admin;
 
-import dev.kyro.arcticapi.commands.ASubCommand;
+import dev.kyro.arcticapi.commands.ACommand;
+import dev.kyro.arcticapi.commands.AMultiCommand;
 import dev.kyro.arcticapi.misc.AOutput;
 import org.bukkit.Bukkit;
+import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import java.util.List;
 
-public class ReloadCommand extends ASubCommand {
-	public ReloadCommand(String executor) {
-		super(executor);
+public class ReloadCommand extends ACommand {
+	public ReloadCommand(AMultiCommand base, String executor) {
+		super(base, executor);
 	}
 
 	@Override
-	public void execute(CommandSender sender, List<String> args) {
+	public void execute(CommandSender sender, Command command, String alias, List<String> args) {
 		if(!(sender instanceof Player)) return;
 		Player player = (Player) sender;
 		if(!player.isOp()) {
@@ -25,5 +27,10 @@ public class ReloadCommand extends ASubCommand {
 		Bukkit.getServer().dispatchCommand(player, "plugman unload pitdiscord");
 		Bukkit.getServer().dispatchCommand(player, "plugman reload pitremake");
 		Bukkit.getServer().dispatchCommand(player, "plugman load Discord-1.0.0-all");
+	}
+
+	@Override
+	public List<String> getTabComplete(Player player, String current, List<String> args) {
+		return null;
 	}
 }

@@ -1,7 +1,6 @@
 package dev.kyro.pitsim.enchants;
 
 import dev.kyro.arcticapi.builders.ALoreBuilder;
-import dev.kyro.arcticapi.events.armor.AChangeEquipmentEvent;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.controllers.EnchantManager;
 import dev.kyro.pitsim.controllers.objects.PitEnchant;
@@ -11,6 +10,7 @@ import dev.kyro.pitsim.misc.Misc;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.inventory.EquipmentSetEvent;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.List;
@@ -38,9 +38,10 @@ public class Hearts extends PitEnchant {
 	}
 
 	@EventHandler
-	public void onArmorEquip(AChangeEquipmentEvent event) {
+	public void onArmorEquip(EquipmentSetEvent event) {
+		Player player = (Player) event.getHumanEntity();
 
-		PitPlayer pitPlayer = PitPlayer.getPitPlayer(event.getPlayer());
+		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
 		pitPlayer.updateMaxHealth();
 	}
 

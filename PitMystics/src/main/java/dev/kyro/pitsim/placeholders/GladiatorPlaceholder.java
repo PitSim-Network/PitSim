@@ -1,9 +1,7 @@
 package dev.kyro.pitsim.placeholders;
 
-import dev.kyro.arcticapi.hooks.APAPIPlaceholder;
-import dev.kyro.arcticapi.misc.AUtil;
+import dev.kyro.arcticapi.hooks.papi.APAPIPlaceholder;
 import dev.kyro.pitsim.perks.Gladiator;
-import dev.kyro.pitsim.perks.StrengthChaining;
 import org.bukkit.entity.Player;
 
 public class GladiatorPlaceholder implements APAPIPlaceholder {

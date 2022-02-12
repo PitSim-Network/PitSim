@@ -17,7 +17,10 @@ public class LeaderboardManager {
 	public static Map<FileConfiguration, Integer> levels = new HashMap<>();
 	public static Map<FileConfiguration, Integer> sortedMap = new HashMap<>();
 
-	static {
+	public static boolean hasRan = false;
+	public static int amount = 0;
+
+	public static void init() {
 		new BukkitRunnable() {
 			@Override
 			public void run() {
@@ -35,12 +38,20 @@ public class LeaderboardManager {
 		assert files != null;
 		for(File file : files) {
 			FileConfiguration data = YamlConfiguration.loadConfiguration(file);
-//            if(data.getInt("playerkills") == 0 && data.getInt("level") == 1) {
-//                file.delete();
-//                System.out.println("deleted file");
-//            }
+//			if(!hasRan) {
+//				boolean shouldDelete = false;
+//				if(data.getInt("level") == 1 && data.getInt("prestige") == 0) shouldDelete = true;
+//				if(file.length() == 0) shouldDelete = true;
+//				if(shouldDelete) {
+//                	file.delete();
+//					amount++;
+//					System.out.println("deleted: " + file.getName());
+//				}
+//			}
 			levels.put(data, (1000 * data.getInt("prestige") + data.getInt("level")));
 		}
+//		if(!hasRan) System.out.println(amount);
+//		hasRan = true;
 
 		 sortedMap = levels.entrySet().stream()
 				.sorted(Comparator.comparingInt(Map.Entry::getValue))

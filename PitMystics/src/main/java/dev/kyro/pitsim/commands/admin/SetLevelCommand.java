@@ -1,12 +1,15 @@
 package dev.kyro.pitsim.commands.admin;
 
-import dev.kyro.arcticapi.commands.ASubCommand;
+import dev.kyro.arcticapi.commands.ACommand;
+import dev.kyro.arcticapi.commands.AMultiCommand;
+import dev.kyro.arcticapi.data.APlayer;
 import dev.kyro.arcticapi.data.APlayerData;
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.controllers.PrestigeValues;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -17,13 +20,13 @@ import java.io.File;
 import java.util.List;
 import java.util.UUID;
 
-public class SetLevelCommand extends ASubCommand {
-    public SetLevelCommand(String executor) {
-        super(executor);
+public class SetLevelCommand extends ACommand {
+    public SetLevelCommand(AMultiCommand base, String executor) {
+        super(base, executor);
     }
 
     @Override
-    public void execute(CommandSender sender, List<String> args) {
+    public void execute(CommandSender sender, Command command, String alias, List<String> args) {
         if(!(sender instanceof Player)) return;
         Player player = (Player) sender;
 
@@ -61,6 +64,11 @@ public class SetLevelCommand extends ASubCommand {
         AOutput.error(player, "&cUnable to find player!");
     }
 
+    @Override
+    public List<String> getTabComplete(Player player, String current, List<String> args) {
+        return null;
+    }
+
     public void resetData(String levelArg, Player player, String uuid) {
         new BukkitRunnable() {
             @Override
@@ -79,7 +87,8 @@ public class SetLevelCommand extends ASubCommand {
                 }
 
                 UUID targetUUID = UUID.fromString(uuid.substring(0, uuid.length() - 4));
-                FileConfiguration playerData = APlayerData.getPlayerData(targetUUID);
+                APlayer aPlayer = APlayerData.getPlayerData(targetUUID);
+                FileConfiguration playerData = aPlayer.playerData;
 
                 playerData.set("level", level);
                 PrestigeValues.PrestigeInfo info = PrestigeValues.getPrestigeInfo(playerData.getInt("prestige"));
@@ -89,7 +98,7 @@ public class SetLevelCommand extends ASubCommand {
                 playerData.set("killstreak-1", "NoKillstreak");
                 playerData.set("killstreak-2", "NoKillstreak");
 
-                APlayerData.savePlayerData(targetUUID);
+                aPlayer.save();
                 AOutput.send(player, "&aSuccess!");
             }
         }.runTaskLater(PitSim.INSTANCE, 10L);

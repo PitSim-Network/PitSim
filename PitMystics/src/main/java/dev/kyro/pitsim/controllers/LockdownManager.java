@@ -1,6 +1,7 @@
 package dev.kyro.pitsim.controllers;
 
 import dev.kyro.arcticapi.data.AConfig;
+import dev.kyro.arcticapi.data.APlayer;
 import dev.kyro.arcticapi.data.APlayerData;
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.PitSim;
@@ -10,7 +11,7 @@ import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
-import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -117,39 +118,39 @@ public class LockdownManager implements Listener {
 
 	public static boolean isVerified(Player player) {
 		if(!requireVerification || player.hasPermission("pitsim.autoverify")) return true;
-		FileConfiguration playerData = APlayerData.getPlayerData(player);
+		APlayer aPlayer = APlayerData.getPlayerData(player);
 		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
 		if(pitPlayer.prestige > 0) return true;
-		return playerData.getLong("discord-id") != 0;
+		return aPlayer.playerData.getLong("discord-id") != 0;
 	}
 
 	public static boolean verify(String name, long discordId) {
 		UUID uuid = null;
-		FileConfiguration playerData = null;
+		APlayer aPlayer = null;
 		try {
 			uuid = UUID.fromString(name);
-			playerData = APlayerData.getPlayerData(uuid);
+			aPlayer = APlayerData.getPlayerData(uuid);
 		} catch(Exception ignored) {
-			for(Map.Entry<UUID, FileConfiguration> entry : APlayerData.getAllData().entrySet()) {
-				String testName = entry.getValue().getString("name");
-				if(testName == null || !testName.equalsIgnoreCase(name)) continue;
+			for(Map.Entry<UUID, APlayer> entry : APlayerData.getAllData().entrySet()) {
+				OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(entry.getKey());
+				if(offlinePlayer == null || offlinePlayer.getName().equalsIgnoreCase(name)) continue;
 				uuid = entry.getKey();
-				playerData = entry.getValue();
+				aPlayer = entry.getValue();
 				break;
 			}
-			if(uuid == null || playerData == null) return false;
+			if(uuid == null || aPlayer == null) return false;
 		}
-		playerData.set("discord-id", discordId);
-		APlayerData.savePlayerData(uuid);
+		aPlayer.playerData.set("discord-id", discordId);
+		aPlayer.save();
 		return true;
 	}
 
 	public static boolean removeVerifiedPlayer(long discordId) {
 		boolean mod = false;
-		for(Map.Entry<UUID, FileConfiguration> entry : APlayerData.getAllData().entrySet()) {
-			if(entry.getValue().getLong("discord-id") != discordId) continue;
-			entry.getValue().set("discord-id", null);
-			APlayerData.savePlayerData(entry.getKey());
+		for(Map.Entry<UUID, APlayer> entry : APlayerData.getAllData().entrySet()) {
+			if(entry.getValue().playerData.getLong("discord-id") != discordId) continue;
+			entry.getValue().playerData.set("discord-id", null);
+			entry.getValue().save();
 			mod = true;
 		}
 		return mod;

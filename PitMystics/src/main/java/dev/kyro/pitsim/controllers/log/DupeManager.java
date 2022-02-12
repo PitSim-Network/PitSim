@@ -2,6 +2,7 @@ package dev.kyro.pitsim.controllers.log;
 
 import de.tr7zw.nbtapi.NBTItem;
 import dev.kyro.arcticapi.data.AConfig;
+import dev.kyro.arcticapi.data.APlayer;
 import dev.kyro.arcticapi.data.APlayerData;
 import dev.kyro.arcticapi.libs.discord.DiscordWebhook;
 import dev.kyro.arcticapi.misc.AOutput;
@@ -14,7 +15,6 @@ import net.minecraft.server.v1_8_R3.NBTTagCompound;
 import net.minecraft.server.v1_8_R3.NBTTagList;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
-import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.craftbukkit.v1_8_R3.inventory.CraftItemStack;
 import org.bukkit.event.Listener;
 import org.bukkit.inventory.ItemStack;
@@ -130,7 +130,7 @@ public class DupeManager implements Listener {
 		AOutput.log("Stage 1 initiated");
 
 		List<UUID> allPlayerUUIDs = new ArrayList<>();
-		for(Map.Entry<UUID, FileConfiguration> entry : APlayerData.getAllData().entrySet()) allPlayerUUIDs.add(entry.getKey());
+		for(Map.Entry<UUID, APlayer> entry : APlayerData.getAllData().entrySet()) allPlayerUUIDs.add(entry.getKey());
 
 		int count = 0; int total = allPlayerUUIDs.size();
 		for(UUID uuid : allPlayerUUIDs) {

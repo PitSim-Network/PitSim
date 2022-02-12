@@ -1,6 +1,6 @@
 package dev.kyro.pitsim.placeholders;
 
-import dev.kyro.arcticapi.hooks.APAPIPlaceholder;
+import dev.kyro.arcticapi.hooks.papi.APAPIPlaceholder;
 import dev.kyro.arcticapi.misc.AUtil;
 import dev.kyro.pitsim.controllers.LeaderboardManager;
 import dev.kyro.pitsim.controllers.PrestigeValues;
