@@ -28,7 +28,7 @@ public class GuildIntegrationManager implements Listener {
 		return (int) (Math.random() * 300);
 	}
 	public static int getFeatherLossReputation() {
-		return (int) (Math.random() * 3_000);
+		return (int) (Math.random() * 2_000);
 	}
 
 	static {
