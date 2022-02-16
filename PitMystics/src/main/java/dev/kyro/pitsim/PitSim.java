@@ -2,6 +2,8 @@ package dev.kyro.pitsim;
 
 import com.comphenix.protocol.ProtocolLibrary;
 import com.comphenix.protocol.ProtocolManager;
+import com.mattmalec.pterodactyl4j.PteroBuilder;
+import com.mattmalec.pterodactyl4j.client.entities.PteroClient;
 import com.xxmicloxx.NoteBlockAPI.songplayer.EntitySongPlayer;
 import dev.kyro.arcticapi.ArcticAPI;
 import dev.kyro.arcticapi.commands.AMultiCommand;
@@ -58,6 +60,9 @@ public class PitSim extends JavaPlugin {
 	public static ProtocolManager PROTOCOL_MANAGER = null;
 
 	public static AData playerList;
+
+	public static PteroClient client = PteroBuilder.createClient("***REMOVED***",
+			"im4F1vVHTJKIjhRQcvJ8CAdOX3aCt99JmpukhFGbzQXI5BOQ");
 //	private BukkitAudiences adventure;
 //
 //	public BukkitAudiences adventure() {

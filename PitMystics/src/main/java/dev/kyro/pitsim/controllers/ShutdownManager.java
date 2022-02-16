@@ -1,10 +1,10 @@
 package dev.kyro.pitsim.controllers;
 
+import com.mattmalec.pterodactyl4j.client.entities.ClientServer;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.misc.Sounds;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
-import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
@@ -60,9 +60,8 @@ public class ShutdownManager {
     }
 
     public static void execute() {
-        ConsoleCommandSender console = Bukkit.getServer().getConsoleSender();
-        String command = "restart";
-		Bukkit.dispatchCommand(console, command);
+        PitSim.client.retrieveServerByIdentifier("pitsim")
+                .flatMap(ClientServer::restart).executeAsync();
     }
 
     public static void disableEnderChest() {
