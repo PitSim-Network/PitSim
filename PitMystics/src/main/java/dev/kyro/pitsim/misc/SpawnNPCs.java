@@ -12,6 +12,7 @@ import net.citizensnpcs.api.npc.NPC;
 import net.citizensnpcs.api.npc.NPCRegistry;
 import net.citizensnpcs.npc.skin.SkinnableEntity;
 import net.citizensnpcs.trait.LookClose;
+import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
@@ -20,6 +21,7 @@ import org.bukkit.event.Listener;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 public class SpawnNPCs implements Listener {
 
@@ -118,7 +120,7 @@ public class SpawnNPCs implements Listener {
 		NPC npc = registry.createNPC(EntityType.PLAYER, "&e&lSTATISTICS");
 		vnx.add(npc);
 		npc.spawn(MapManager.currentMap.getVnxNPCSpawn(world));
-		skin(npc, "vnxz");
+		skin(npc, Bukkit.getOfflinePlayer(UUID.fromString("e913fd01-e84e-4c6e-ad5b-7419a12de481")).getName());
 		npc.addTrait(LookClose.class);
 		npc.getTrait(LookClose.class).setRange(10);
 		npc.getTrait(LookClose.class).toggle();
