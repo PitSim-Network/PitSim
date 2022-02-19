@@ -14,29 +14,26 @@ import java.lang.reflect.Field;
 
 public class ArrowHitBlockEvent extends BlockEvent {
 
-    private static final HandlerList handlers = new HandlerList();
+	private static final HandlerList handlers = new HandlerList();
 
-    private Arrow arrow;
+	private Arrow arrow;
 
-    public ArrowHitBlockEvent(Arrow arrow, Block block) {
-        super(block);
-        this.arrow = arrow;
-    }
+	public ArrowHitBlockEvent(Arrow arrow, Block block) {
+		super(block);
+		this.arrow = arrow;
+	}
 
-    public Arrow getArrow() {
-        return arrow;
-    }
+	public Arrow getArrow() {
+		return arrow;
+	}
 
-    public HandlerList getHandlers() {
-        return handlers;
-    }
+	public HandlerList getHandlers() {
+		return handlers;
+	}
 
-    public static HandlerList getHandlerList() {
-        return handlers;
-    }
-
-
-
+	public static HandlerList getHandlerList() {
+		return handlers;
+	}
 
 
 }

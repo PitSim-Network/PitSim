@@ -30,17 +30,20 @@ public class Tenacity extends RenownUpgrade {
 		List<String> lore = new ArrayList<>();
 		if(UpgradeManager.hasUpgrade(player, this)) lore.add(ChatColor.translateAlternateColorCodes('&',
 				"&7Current: Heal &c" + 0.5 * UpgradeManager.getTier(player, this) + "\u2764 &7on kill."));
-		if(UpgradeManager.hasUpgrade(player, this)) lore.add(ChatColor.GRAY + "Tier: " + ChatColor.GREEN + AUtil.toRoman(UpgradeManager.getTier(player, this)));
+		if(UpgradeManager.hasUpgrade(player, this))
+			lore.add(ChatColor.GRAY + "Tier: " + ChatColor.GREEN + AUtil.toRoman(UpgradeManager.getTier(player, this)));
 		if(UpgradeManager.hasUpgrade(player, this)) lore.add("");
 		lore.add(ChatColor.GRAY + "Each tier:");
-		lore.add(ChatColor.GRAY + "Heal " + ChatColor.RED + "0.5\u2764 "  + ChatColor.GRAY + "on kill.");
+		lore.add(ChatColor.GRAY + "Heal " + ChatColor.RED + "0.5\u2764 " + ChatColor.GRAY + "on kill.");
 		meta.setLore(UpgradeManager.loreBuilder(this, player, lore, isCustomPanel));
 		item.setItemMeta(meta);
 		return item;
 	}
 
 	@Override
-	public AGUIPanel getCustomPanel() {return null;}
+	public AGUIPanel getCustomPanel() {
+		return null;
+	}
 
 	@Override
 	public List<Integer> getTierCosts() {

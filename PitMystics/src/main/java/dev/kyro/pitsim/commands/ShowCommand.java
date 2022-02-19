@@ -18,61 +18,61 @@ import org.bukkit.inventory.meta.ItemMeta;
 import java.util.List;
 
 public class ShowCommand implements CommandExecutor {
-    @Override
-    public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
+	@Override
+	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
 
-        if(!(sender instanceof Player)) return false;
+		if(!(sender instanceof Player)) return false;
 
-        Player player = (Player) sender;
-        ItemStack item = player.getItemInHand();
-        ItemMeta meta = item.getItemMeta();
-        List<String> lore = meta.getLore();
+		Player player = (Player) sender;
+		ItemStack item = player.getItemInHand();
+		ItemMeta meta = item.getItemMeta();
+		List<String> lore = meta.getLore();
 
-        if(!player.hasPermission("pitsim.show") && !player.isOp()) {
-            AOutput.error(player, "&cInsufficient Permissions");
-            return false;
-        }
+		if(!player.hasPermission("pitsim.show") && !player.isOp()) {
+			AOutput.error(player, "&cInsufficient Permissions");
+			return false;
+		}
 
-        if(!item.hasItemMeta()) {
-            AOutput.error(player, "&cThis item does not have lore!");
-            return false;
-        }
+		if(!item.hasItemMeta()) {
+			AOutput.error(player, "&cThis item does not have lore!");
+			return false;
+		}
 
-        StringBuilder builder = new StringBuilder();
-        builder.append(meta.getDisplayName() + "\n");
+		StringBuilder builder = new StringBuilder();
+		builder.append(meta.getDisplayName() + "\n");
 
-        int i = 0;
-        if(lore.size() < 1) {
-            AOutput.error(player, "&cThis item does not have lore!");
-            return false;
-        }
+		int i = 0;
+		if(lore.size() < 1) {
+			AOutput.error(player, "&cThis item does not have lore!");
+			return false;
+		}
 
-        for(String s : lore) {
+		for(String s : lore) {
 
-            if(i == lore.size() - 1) builder.append(s);
-            else builder.append(s).append("\n");
-            i++;
-        }
+			if(i == lore.size() - 1) builder.append(s);
+			else builder.append(s).append("\n");
+			i++;
+		}
 
-        String playername = "%luckperms_prefix%%essentials_nickname%";
-        String playernamecolor = PlaceholderAPI.setPlaceholders(player, playername);
+		String playername = "%luckperms_prefix%%essentials_nickname%";
+		String playernamecolor = PlaceholderAPI.setPlaceholders(player, playername);
 
 
-        BaseComponent[] hoverEventComponents = new BaseComponent[]{
-                new TextComponent(String.valueOf(builder))
-        };
+		BaseComponent[] hoverEventComponents = new BaseComponent[]{
+				new TextComponent(String.valueOf(builder))
+		};
 
-        TextComponent nonhover = new TextComponent(ChatColor.translateAlternateColorCodes('&',"&6SHOWOFF! " + playernamecolor + " &7shows off their "));
-        TextComponent hover = new TextComponent(ChatColor.translateAlternateColorCodes('&', meta.getDisplayName()));
-        hover.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, hoverEventComponents));
+		TextComponent nonhover = new TextComponent(ChatColor.translateAlternateColorCodes('&', "&6SHOWOFF! " + playernamecolor + " &7shows off their "));
+		TextComponent hover = new TextComponent(ChatColor.translateAlternateColorCodes('&', meta.getDisplayName()));
+		hover.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, hoverEventComponents));
 
-        nonhover.addExtra(hover);
+		nonhover.addExtra(hover);
 
-        for(Player onlinePlayer : Bukkit.getOnlinePlayers()) {
-            PitPlayer pitPlayer = PitPlayer.getPitPlayer(onlinePlayer);
-            if(!pitPlayer.playerChatDisabled)onlinePlayer.spigot().sendMessage(nonhover);
-        }
+		for(Player onlinePlayer : Bukkit.getOnlinePlayers()) {
+			PitPlayer pitPlayer = PitPlayer.getPitPlayer(onlinePlayer);
+			if(!pitPlayer.playerChatDisabled) onlinePlayer.spigot().sendMessage(nonhover);
+		}
 
-        return false;
-    }
+		return false;
+	}
 }

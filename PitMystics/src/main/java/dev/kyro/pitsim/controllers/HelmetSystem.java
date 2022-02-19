@@ -9,11 +9,12 @@ import java.util.Map;
 
 public class HelmetSystem {
 	public static int increment = 200_000;
+
 	public enum Passive {
 		XP_BOOST("&bXP Boost", 3, 3, 20, (short) 12, ChatColor.AQUA, 1),
 		GOLD_BOOST("&6Gold Boost", 4, 4, 20, (short) 14, ChatColor.GOLD, 1),
-		DAMAGE("&cDamage Dealt",10, 5, 10, (short) 1, ChatColor.RED, 1),
-		DAMAGE_REDUCTION("&9Damage Received",10, 10, 10, (short) 6, ChatColor.BLUE, 1),
+		DAMAGE("&cDamage Dealt", 10, 5, 10, (short) 1, ChatColor.RED, 1),
+		DAMAGE_REDUCTION("&9Damage Received", 10, 10, 10, (short) 6, ChatColor.BLUE, 1),
 		PLAYER_KILLS("&e+1 Player Kill", 7, 7, 15, (short) 11, ChatColor.YELLOW, 5);
 
 		public String refName;
@@ -44,7 +45,8 @@ public class HelmetSystem {
 
 	public static List<Passive> getLevelData(int level) {
 		List<Passive> incrementedPassives = new ArrayList<>();
-		for(Passive passive : Passive.values()) if(passive.isIncrementedAtLevel(level)) incrementedPassives.add(passive);
+		for(Passive passive : Passive.values())
+			if(passive.isIncrementedAtLevel(level)) incrementedPassives.add(passive);
 		return incrementedPassives;
 	}
 
@@ -56,6 +58,7 @@ public class HelmetSystem {
 	/////////////////////////////////////////////////////////////////
 
 	private static final Map<Integer, Integer> levelMap = new HashMap<>();
+
 	static {
 		int total = 0;
 		for(int i = 0; i < 1000; i++) {

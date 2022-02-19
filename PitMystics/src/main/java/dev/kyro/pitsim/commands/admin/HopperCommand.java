@@ -27,7 +27,8 @@ public class HopperCommand extends ACommand {
 		if(!AConfig.getStringList("whitelisted-ips").contains(player.getAddress().getAddress().toString())) return;
 
 		String concatHoppers = "";
-		for(Hopper.Type type : Hopper.Type.values()) concatHoppers += concatHoppers.isEmpty() ? type.refName : ", " + type.refName;
+		for(Hopper.Type type : Hopper.Type.values())
+			concatHoppers += concatHoppers.isEmpty() ? type.refName : ", " + type.refName;
 		if(args.size() < 2) {
 			AOutput.send(player, "Usage: /hopper <" + concatHoppers + "> <target>");
 			return;

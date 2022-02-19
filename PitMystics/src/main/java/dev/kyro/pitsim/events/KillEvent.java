@@ -14,7 +14,7 @@ import java.util.Map;
 public class KillEvent extends Event {
 	private static final HandlerList handlers = new HandlerList();
 
-//	public AttackEvent.Apply attackEvent;
+	//	public AttackEvent.Apply attackEvent;
 	public Player killer;
 	public Player dead;
 	private final Map<PitEnchant, Integer> killerEnchantMap;

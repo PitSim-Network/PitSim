@@ -27,7 +27,8 @@ public class aEntanglement extends PitEnchant {
 		int wornLvl = EnchantManager.getEnchantLevel(attackEvent.defender.getEquipment().getLeggings(), this);
 
 		if(heldLvl != 0) attackEvent.attacker.setItemInHand(scramble(attackEvent.attacker.getItemInHand(), heldLvl));
-		if(wornLvl != 0) attackEvent.defender.getEquipment().setLeggings(scramble(attackEvent.defender.getEquipment().getLeggings(), wornLvl));
+		if(wornLvl != 0)
+			attackEvent.defender.getEquipment().setLeggings(scramble(attackEvent.defender.getEquipment().getLeggings(), wornLvl));
 	}
 
 	public ItemStack scramble(ItemStack itemStack, int enchantLvl) {
@@ -37,14 +38,16 @@ public class aEntanglement extends PitEnchant {
 			if(thisLevel == 0) continue;
 			try {
 				itemStack = EnchantManager.addEnchant(itemStack, pitEnchant, 0, false);
-			} catch(Exception ignored) { }
+			} catch(Exception ignored) {
+			}
 		}
 		List<PitEnchant> enchantList = EnchantManager.getEnchants(MysticType.getMysticType(itemStack));
 		Collections.shuffle(enchantList);
 		for(int i = 0; i < 5; i++) {
 			try {
 				itemStack = EnchantManager.addEnchant(itemStack, enchantList.remove(0), enchantLvl + 1, false);
-			} catch(Exception ignore) { }
+			} catch(Exception ignore) {
+			}
 		}
 
 		return itemStack;

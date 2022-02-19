@@ -20,6 +20,7 @@ import java.util.List;
 
 public class Impatient extends RenownUpgrade {
 	public static RenownUpgrade INSTANCE;
+
 	public Impatient() {
 		super("Impatient", "IMPATIENT", 10, 14, 6, false, 0);
 		INSTANCE = this;
@@ -38,7 +39,9 @@ public class Impatient extends RenownUpgrade {
 	}
 
 	@Override
-	public AGUIPanel getCustomPanel() {return null;}
+	public AGUIPanel getCustomPanel() {
+		return null;
+	}
 
 	@Override
 	public List<Integer> getTierCosts() {

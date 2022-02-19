@@ -20,8 +20,7 @@ public class ItemBase64 {
 			// Serialize that array
 			dataOutput.close();
 			return Base64Coder.encodeLines(outputStream.toByteArray());
-		}
-		catch (Exception e) {
+		} catch(Exception e) {
 			throw new IllegalStateException("Unable to save item stack.", e);
 		}
 	}
@@ -35,8 +34,7 @@ public class ItemBase64 {
 			} finally {
 				dataInput.close();
 			}
-		}
-		catch (ClassNotFoundException e) {
+		} catch(ClassNotFoundException e) {
 			throw new IOException("Unable to decode class type.", e);
 		}
 	}

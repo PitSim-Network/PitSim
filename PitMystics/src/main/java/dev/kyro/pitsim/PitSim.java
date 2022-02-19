@@ -77,7 +77,7 @@ public class PitSim extends JavaPlugin {
 		INSTANCE = this;
 
 		RegisteredServiceProvider<LuckPerms> provider = Bukkit.getServicesManager().getRegistration(LuckPerms.class);
-		if (provider != null) {
+		if(provider != null) {
 			LUCKPERMS = provider.getProvider();
 		}
 
@@ -96,7 +96,7 @@ public class PitSim extends JavaPlugin {
 		SpawnNPCs.createNPCs();
 		LeaderboardManager.init();
 
-		if (!setupEconomy()) {
+		if(!setupEconomy()) {
 			AOutput.log(String.format("[%s] - Disabled due to no Vault dependency found!", getDescription().getName()));
 			getServer().getPluginManager().disablePlugin(this);
 			return;
@@ -112,7 +112,7 @@ public class PitSim extends JavaPlugin {
 		}
 
 		boolean NoteBlockAPI = true;
-		if (!Bukkit.getPluginManager().isPluginEnabled("NoteBlockAPI")){
+		if(!Bukkit.getPluginManager().isPluginEnabled("NoteBlockAPI")) {
 			getLogger().severe("*** NoteBlockAPI is not installed or not enabled. ***");
 			NoteBlockAPI = false;
 			return;
@@ -248,6 +248,7 @@ public class PitSim extends JavaPlugin {
 		PerkManager.registerMegastreak(new ToTheMoon(null));
 		PerkManager.registerMegastreak(new RNGesus(null));
 	}
+
 	private void registerCommands() {
 
 		AMultiCommand adminCommand = new BaseAdminCommand("pitsim");
@@ -389,11 +390,11 @@ public class PitSim extends JavaPlugin {
 	}
 
 	private boolean setupEconomy() {
-		if (getServer().getPluginManager().getPlugin("Vault") == null) {
+		if(getServer().getPluginManager().getPlugin("Vault") == null) {
 			return false;
 		}
 		RegisteredServiceProvider<Economy> rsp = getServer().getServicesManager().getRegistration(Economy.class);
-		if (rsp == null) {
+		if(rsp == null) {
 			return false;
 		}
 		VAULT = rsp.getProvider();

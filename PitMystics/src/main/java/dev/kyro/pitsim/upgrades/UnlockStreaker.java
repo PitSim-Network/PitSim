@@ -47,7 +47,9 @@ public class UnlockStreaker extends RenownUpgrade {
 	}
 
 	@Override
-	public AGUIPanel getCustomPanel() {return null;}
+	public AGUIPanel getCustomPanel() {
+		return null;
+	}
 
 	@Override
 	public List<Integer> getTierCosts() {

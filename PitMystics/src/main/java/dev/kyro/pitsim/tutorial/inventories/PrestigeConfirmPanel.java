@@ -26,6 +26,7 @@ public class PrestigeConfirmPanel extends AGUIPanel {
 	PrestigeValues.PrestigeInfo prestigeInfo = PrestigeValues.getPrestigeInfo(pitPlayer.prestige);
 	PrestigeValues.PrestigeInfo nextPrestigeInfo = PrestigeValues.getPrestigeInfo(pitPlayer.prestige + 1);
 	public PrestigeGUI prestigeGUI;
+
 	public PrestigeConfirmPanel(AGUI gui) {
 		super(gui);
 		prestigeGUI = (PrestigeGUI) gui;

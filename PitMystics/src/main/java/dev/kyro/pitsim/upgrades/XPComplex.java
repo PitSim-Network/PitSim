@@ -32,10 +32,14 @@ public class XPComplex extends RenownUpgrade {
 	}
 
 	@Override
-	public AGUIPanel getCustomPanel() {return null;}
+	public AGUIPanel getCustomPanel() {
+		return null;
+	}
 
 	@Override
-	public List<Integer> getTierCosts() {return null;}
+	public List<Integer> getTierCosts() {
+		return null;
+	}
 
 	@EventHandler
 	public void onKill(KillEvent killEvent) {

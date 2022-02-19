@@ -34,7 +34,9 @@ public abstract class PitEnchant implements Listener {
 	}
 
 	public abstract List<String> getDescription(int enchantLvl);
-	public void onDisable() {}
+
+	public void onDisable() {
+	}
 
 	public boolean canApply(AttackEvent attackEvent) {
 

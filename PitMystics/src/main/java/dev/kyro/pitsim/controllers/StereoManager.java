@@ -14,24 +14,24 @@ import java.util.Map;
 
 public class StereoManager implements Listener {
 
-    public static Map<Player, EntitySongPlayer> playerMusic = new HashMap<>();
-    public static List<Player> toggledPlayers = new ArrayList<>();
+	public static Map<Player, EntitySongPlayer> playerMusic = new HashMap<>();
+	public static List<Player> toggledPlayers = new ArrayList<>();
 
-    public static boolean hasStereo(Player player) {
-        ItemStack pants = player.getInventory().getLeggings();
-        if(pants == null) return false;
-        if(pants.getType() == Material.AIR) return false;
-        if(!pants.hasItemMeta()) return false;
-        ItemMeta meta = player.getInventory().getLeggings().getItemMeta();
-        if(!meta.hasLore()) return false;
-        List<String> lore = player.getInventory().getLeggings().getItemMeta().getLore();
+	public static boolean hasStereo(Player player) {
+		ItemStack pants = player.getInventory().getLeggings();
+		if(pants == null) return false;
+		if(pants.getType() == Material.AIR) return false;
+		if(!pants.hasItemMeta()) return false;
+		ItemMeta meta = player.getInventory().getLeggings().getItemMeta();
+		if(!meta.hasLore()) return false;
+		List<String> lore = player.getInventory().getLeggings().getItemMeta().getLore();
 
-        for(String s : lore) {
-            if(s.contains("Stereo")) {
-                return true;
-            }
-        }
+		for(String s : lore) {
+			if(s.contains("Stereo")) {
+				return true;
+			}
+		}
 
-        return false;
-    }
+		return false;
+	}
 }

@@ -12,7 +12,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 import java.util.ArrayList;
 import java.util.List;
 
-public  class FastPass extends RenownUpgrade {
+public class FastPass extends RenownUpgrade {
 	public FastPass() {
 		super("Fast Pass", "FAST_PASS", 100, 33, 38, false, 0);
 	}
@@ -31,7 +31,9 @@ public  class FastPass extends RenownUpgrade {
 	}
 
 	@Override
-	public AGUIPanel getCustomPanel() {return null;}
+	public AGUIPanel getCustomPanel() {
+		return null;
+	}
 
 	@Override
 	public List<Integer> getTierCosts() {

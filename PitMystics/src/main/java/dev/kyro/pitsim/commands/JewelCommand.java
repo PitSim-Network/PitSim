@@ -87,7 +87,8 @@ public class JewelCommand extends ACommand {
 			nbtItem.setInteger(NBTTag.CURRENT_LIVES.getRef(), maxLives);
 			try {
 				jewel = EnchantManager.addEnchant(nbtItem.getItem(), jewelEnchant, 3, false, true, -1);
-			} catch(Exception ignored) { }
+			} catch(Exception ignored) {
+			}
 		}
 
 		EnchantManager.setItemLore(jewel);

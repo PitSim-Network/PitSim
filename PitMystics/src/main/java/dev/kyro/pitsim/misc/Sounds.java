@@ -12,13 +12,13 @@ import java.util.List;
 
 public class Sounds {
 
-//	General
+	//	General
 	public static final SoundEffect SUCCESS = new SoundEffect(Sound.NOTE_PLING, 1, 2);
 	public static final SoundEffect ERROR = new SoundEffect(Sound.ENDERMAN_TELEPORT, 1, 0.5);
 	public static final SoundEffect NO = new SoundEffect(Sound.VILLAGER_NO, 1, 1);
 	public static final SoundEffect WARNING_LOUD = new SoundEffect(Sound.NOTE_PLING, 1000, 1);
 
-//	Game / Misc
+	//	Game / Misc
 	public static final SoundEffect LEVEL_UP = new SoundEffect(Sound.LEVEL_UP, 1, 1);
 	public static final SoundEffect PRESTIGE = new SoundEffect(Sound.ENDERDRAGON_GROWL, 1, 1);
 	public static final SoundEffect ASSIST = new SoundEffect(Sound.ORB_PICKUP, 1, 1.7301587);
@@ -49,7 +49,7 @@ public class Sounds {
 	public static final SoundEffect SHOCKWAVE = new SoundEffect(Sound.EXPLODE, 2, 1.6);
 	public static final SoundEffect BOOSTER_REMIND = new SoundEffect(Sound.CHICKEN_EGG_POP, 2, 1.6);
 
-//	Enchants
+	//	Enchants
 	public static final SoundEffect BILLIONAIRE = new SoundEffect(Sound.ORB_PICKUP, 1, 0.73);
 	public static final SoundEffect BULLET_TIME = new SoundEffect(Sound.FIZZ, 1, 1.5);
 	public static final SoundEffect COMBO_PROC = new SoundEffect(Sound.DONKEY_HIT, 1, 0.5);
@@ -69,7 +69,7 @@ public class Sounds {
 	public static final SoundEffect VENOM = new SoundEffect(Sound.SPIDER_IDLE, 1, 1);
 	public static final SoundEffect VOLLEY = new SoundEffect(Sound.SHOOT_ARROW, 1, 1);
 
-//	Megastreaks
+	//	Megastreaks
 	public static final SoundEffect MEGA_GENERAL = new SoundEffect(Sound.WITHER_SPAWN, 1000, 1);
 	public static final SoundEffect MEGA_RNGESUS = new SoundEffect(Sound.PORTAL_TRIGGER, 1000, 1);
 	public static final SoundEffect RNGESUS_DESTABILIZE = new SoundEffect(Sound.ENDERDRAGON_DEATH, 1000, 1);
@@ -79,10 +79,10 @@ public class Sounds {
 	public static final SoundEffect UBER_400 = new SoundEffect("mob.guardian.curse", 1000, 1);
 	public static final SoundEffect UBER_500 = new SoundEffect("mob.guardian.curse", 1000, 1);
 
-//	Upgrades
+	//	Upgrades
 	public static final SoundEffect STREAKER = new SoundEffect(Sound.BURP, 2, 1.2F);
 
-//	Helmets
+	//	Helmets
 	public static final SoundEffect HELMET_CRAFT = new SoundEffect(Sound.ORB_PICKUP, 2, 1.5F);
 	public static final SoundEffect HELMET_GUI_OPEN = new SoundEffect(Sound.ANVIL_BREAK, 1, 2);
 	public static final SoundEffect HELMET_DOWNGRADE = new SoundEffect(Sound.ANVIL_BREAK, 1, 2);
@@ -93,7 +93,7 @@ public class Sounds {
 	public static final SoundEffect LEAP = new SoundEffect(Sound.BAT_TAKEOFF, 1, 1);
 	public static final SoundEffect PHOENIX = new SoundEffect()
 			.add(new SoundMoment(0).add(Sound.ENDERDRAGON_GROWL, 1, 1).add(Sound.FIZZ, 1, 1));
-//	Judgement
+	//	Judgement
 	public static final SoundEffect JUDGEMENT_HEAL = new SoundEffect(Sound.BURP, 1, 1);
 	public static final SoundEffect JUDGEMENT_WITHER = new SoundEffect(Sound.WITHER_SHOOT, 1, 1);
 	public static final SoundEffect JUDGEMENT_RESISTANCE = new SoundEffect(Sound.IRONGOLEM_HIT, 1, 1);
@@ -105,8 +105,8 @@ public class Sounds {
 	public static final SoundEffect JUDGEMENT_ZEUS_DEFENDER = new SoundEffect(Sound.IRONGOLEM_DEATH, 1, 1);
 	public static final SoundEffect JUDGEMENT_HOPPER = new SoundEffect(Sound.ENDERMAN_TELEPORT, 1, 1);
 
-//	Events
-	public static final SoundEffect EVENT_START = new SoundEffect(Sound.ENDERDRAGON_GROWL, 2  , 1);
+	//	Events
+	public static final SoundEffect EVENT_START = new SoundEffect(Sound.ENDERDRAGON_GROWL, 2, 1);
 	public static final SoundEffect EVENT_PING = new SoundEffect(Sound.NOTE_PLING, 2, 1F);
 	public static final SoundEffect CTF_EXPLOSION = new SoundEffect(Sound.EXPLODE, 1, 2);
 	public static final SoundEffect CTF_FLAG_STEAL = new SoundEffect(Sound.NOTE_PLING, 2, 2F);
@@ -116,7 +116,7 @@ public class Sounds {
 	public static final SoundEffect JUGGERNAUT_EXPLOSION = new SoundEffect(Sound.EXPLODE, 1, 2);
 	public static final SoundEffect JUGGERNAUT_END = new SoundEffect(Sound.ENDERDRAGON_DEATH, 1, 2);
 
-//	Kill / Death Effects
+	//	Kill / Death Effects
 	public static final SoundEffect DEATH_GHAST_SCREAM = new SoundEffect(Sound.GHAST_SCREAM, 1, 1);
 	public static final SoundEffect KILL_FIRE = new SoundEffect(Sound.FIZZ, 2, 2);
 
@@ -156,7 +156,8 @@ public class Sounds {
 
 		public void play(Location location, double radius) {
 			for(Player onlinePlayer : Bukkit.getOnlinePlayers()) {
-				if(onlinePlayer.getWorld() != location.getWorld() || onlinePlayer.getLocation().distance(location) > radius) continue;
+				if(onlinePlayer.getWorld() != location.getWorld() || onlinePlayer.getLocation().distance(location) > radius)
+					continue;
 				play(onlinePlayer);
 			}
 		}
@@ -228,6 +229,7 @@ public class Sounds {
 			bukkitSounds.add(new BukkitSound(sound, volume, pitch));
 			return this;
 		}
+
 		public SoundMoment add(String soundString, int volume, double pitch) {
 			bukkitSounds.add(new BukkitSound(soundString, volume, pitch));
 			return this;
@@ -243,9 +245,11 @@ public class Sounds {
 				}
 			}
 		}
+
 		public void play(Location location) {
 			for(BukkitSound bukkitSound : bukkitSounds) {
-				if(bukkitSound.sound != null) location.getWorld().playSound(location, bukkitSound.sound, bukkitSound.volume, bukkitSound.pitch);
+				if(bukkitSound.sound != null)
+					location.getWorld().playSound(location, bukkitSound.sound, bukkitSound.volume, bukkitSound.pitch);
 			}
 		}
 

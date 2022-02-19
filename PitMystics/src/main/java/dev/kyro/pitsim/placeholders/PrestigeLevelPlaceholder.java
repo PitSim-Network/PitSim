@@ -25,7 +25,7 @@ public class PrestigeLevelPlaceholder implements APAPIPlaceholder {
 		PrestigeValues.PrestigeInfo prestigeInfo = PrestigeValues.getPrestigeInfo(pitPlayer.prestige);
 		builder.append(prestigeInfo.getOpenBracket());
 		builder.append(ChatColor.YELLOW).append(AUtil.toRoman(pitPlayer.prestige));
-	    builder.append(prestigeInfo.bracketColor);
+		builder.append(prestigeInfo.bracketColor);
 		builder.append("-");
 		builder.append(PrestigeValues.getLevelColor(pitPlayer.level)).append(pitPlayer.level);
 		builder.append(prestigeInfo.getCloseBracket());

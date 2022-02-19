@@ -35,7 +35,9 @@ public class Helmetry extends RenownUpgrade {
 	}
 
 	@Override
-	public AGUIPanel getCustomPanel() {return RenownShopGUI.helmetryPanel;}
+	public AGUIPanel getCustomPanel() {
+		return RenownShopGUI.helmetryPanel;
+	}
 
 	@Override
 	public List<Integer> getTierCosts() {

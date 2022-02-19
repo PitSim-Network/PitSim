@@ -22,6 +22,7 @@ import java.util.List;
 
 public class DoubleDeath extends RenownUpgrade {
 	public static DoubleDeath INSTANCE;
+
 	public DoubleDeath() {
 		super("Double-Death", "DOUBLE_DEATH", 15, 16, 9, true, 4);
 		INSTANCE = this;
@@ -35,7 +36,8 @@ public class DoubleDeath extends RenownUpgrade {
 		List<String> lore = new ArrayList<>();
 		if(UpgradeManager.hasUpgrade(player, this)) lore.add(ChatColor.translateAlternateColorCodes('&',
 				"&7Current: &d+" + 5 * UpgradeManager.getTier(player, this) + "% Chance"));
-		if(UpgradeManager.hasUpgrade(player, this)) lore.add(ChatColor.GRAY + "Tier: " + ChatColor.GREEN + AUtil.toRoman(UpgradeManager.getTier(player, this)));
+		if(UpgradeManager.hasUpgrade(player, this))
+			lore.add(ChatColor.GRAY + "Tier: " + ChatColor.GREEN + AUtil.toRoman(UpgradeManager.getTier(player, this)));
 		if(UpgradeManager.hasUpgrade(player, this)) lore.add("");
 		lore.add(ChatColor.GRAY + "Each tier:");
 		lore.add(ChatColor.GRAY + "Gain " + ChatColor.LIGHT_PURPLE + "+5% " + ChatColor.GRAY + "chance to double");
@@ -47,7 +49,9 @@ public class DoubleDeath extends RenownUpgrade {
 	}
 
 	@Override
-	public AGUIPanel getCustomPanel() {return null;}
+	public AGUIPanel getCustomPanel() {
+		return null;
+	}
 
 	@Override
 	public List<Integer> getTierCosts() {

@@ -19,6 +19,7 @@ import java.util.List;
 public class PrestigeConfirmPanel extends AGUIPanel {
 	public PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
 	public PrestigeGUI prestigeGUI;
+
 	public PrestigeConfirmPanel(AGUI gui) {
 		super(gui);
 		prestigeGUI = (PrestigeGUI) gui;

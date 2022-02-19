@@ -39,7 +39,7 @@ public class EnchantListCommand implements CommandExecutor {
 				listEnchants(player, MysticType.PANTS, args[1]);
 				break;
 			default:
-			AOutput.error(player, "Usage: /enchants <sword|bow|pants> <common|uncommon|rare|all>");
+				AOutput.error(player, "Usage: /enchants <sword|bow|pants> <common|uncommon|rare|all>");
 		}
 
 		return false;
@@ -52,16 +52,19 @@ public class EnchantListCommand implements CommandExecutor {
 
 		switch(rarity.toLowerCase()) {
 			case "common":
-				for(PitEnchant pitEnchant : EnchantManager.getEnchants(mysticType)) if(!pitEnchant.isUncommonEnchant && !pitEnchant.isRare)
+				for(PitEnchant pitEnchant : EnchantManager.getEnchants(mysticType))
+					if(!pitEnchant.isUncommonEnchant && !pitEnchant.isRare)
 						messageBuilder.addLine("&b * " + pitEnchant.getDisplayName());
 				break;
 			case "uncommon":
-				for(PitEnchant pitEnchant : EnchantManager.getEnchants(mysticType)) if(pitEnchant.isUncommonEnchant && !pitEnchant.isRare)
-					messageBuilder.addLine("&b * " + pitEnchant.getDisplayName());
+				for(PitEnchant pitEnchant : EnchantManager.getEnchants(mysticType))
+					if(pitEnchant.isUncommonEnchant && !pitEnchant.isRare)
+						messageBuilder.addLine("&b * " + pitEnchant.getDisplayName());
 				break;
 			case "rare":
-				for(PitEnchant pitEnchant : EnchantManager.getEnchants(mysticType)) if(pitEnchant.isRare)
-					messageBuilder.addLine("&b * " + pitEnchant.getDisplayName());
+				for(PitEnchant pitEnchant : EnchantManager.getEnchants(mysticType))
+					if(pitEnchant.isRare)
+						messageBuilder.addLine("&b * " + pitEnchant.getDisplayName());
 				break;
 			default:
 				for(PitEnchant pitEnchant : EnchantManager.getEnchants(mysticType))

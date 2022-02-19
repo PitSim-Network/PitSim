@@ -47,7 +47,7 @@ public class BulletTime extends PitEnchant {
 					"&7heals &c" + Misc.getHearts(getHealing(enchantLvl))).getLore();
 		}
 	}
-	
+
 	public int getHealing(int enchantLvl) {
 
 		return (int) (Math.pow(enchantLvl, 0.75) * 3 - 3);

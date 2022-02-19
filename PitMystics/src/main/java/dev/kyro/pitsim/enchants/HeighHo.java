@@ -24,7 +24,8 @@ public class HeighHo extends PitEnchant {
 
 		int defenderEnchantLvl = attackEvent.getDefenderEnchantLevel(this);
 		int attackerMirrorLvl = attackEvent.getAttackerEnchantLevel(EnchantManager.getEnchant("mirror"));
-		if(defenderEnchantLvl != 0 && attackerMirrorLvl != 0) attackEvent.multipliers.add(Misc.getReductionMultiplier(getReduction(defenderEnchantLvl)));
+		if(defenderEnchantLvl != 0 && attackerMirrorLvl != 0)
+			attackEvent.multipliers.add(Misc.getReductionMultiplier(getReduction(defenderEnchantLvl)));
 
 		int attackerEnchantLvl = attackEvent.getAttackerEnchantLevel(this);
 		if(attackerEnchantLvl == 0) return;

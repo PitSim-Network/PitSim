@@ -44,7 +44,7 @@ public class Shark extends PitEnchant {
 	}
 
 	public int getDamage(int enchantLvl) {
-		return (int) (Math.pow(enchantLvl, 1.2)  * 2);
+		return (int) (Math.pow(enchantLvl, 1.2) * 2);
 	}
 
 	public double getCap(int enchantLvl) {

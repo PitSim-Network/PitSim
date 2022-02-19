@@ -36,7 +36,8 @@ public class ComboStun extends PitEnchant {
 		if(!HitCounter.hasReachedThreshold(pitPlayer.player, this, 5)) return;
 
 		Cooldown cooldown = getCooldown(attackEvent.attacker, 8 * 20);
-		if(cooldown.isOnCooldown()) return; else cooldown.reset();
+		if(cooldown.isOnCooldown()) return;
+		else cooldown.reset();
 
 		Misc.applyPotionEffect(attackEvent.defender, PotionEffectType.SLOW, (int) getDuration(enchantLvl) * 20, 7, true, false);
 		Misc.applyPotionEffect(attackEvent.defender, PotionEffectType.JUMP, (int) getDuration(enchantLvl) * 20, 254, true, false);

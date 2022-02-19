@@ -177,7 +177,8 @@ public class RNGesus extends Megastreak {
 						AttackEvent attackEvent = new AttackEvent(ev, attackerEnchant, defenderEnchant, false);
 
 						double chance = damage / target.getMaxHealth();
-						if(Math.random() < chance) DamageManager.fakeKill(attackEvent, attackEvent.attacker, target, false);
+						if(Math.random() < chance)
+							DamageManager.fakeKill(attackEvent, attackEvent.attacker, target, false);
 					}
 				};
 
@@ -185,6 +186,7 @@ public class RNGesus extends Megastreak {
 			}
 		}
 	}
+
 	@EventHandler(priority = EventPriority.MONITOR)
 	public void kill(KillEvent killEvent) {
 		PitPlayer pitPlayer = PitPlayer.getPitPlayer(killEvent.killer);

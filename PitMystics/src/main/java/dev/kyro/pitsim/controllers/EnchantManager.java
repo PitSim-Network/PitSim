@@ -271,7 +271,8 @@ public class EnchantManager implements Listener {
 				itemMeta.setDisplayName(ChatColor.DARK_PURPLE + "Tier II Evil Pants");
 				loreBuilder.getLore().clear();
 				loreBuilder.addLore("&7Lives: &a140&7/140", "&7", "&9Somber", "&7You are unaffected by mystical", "&7enchantments.");
-				if(itemMeta instanceof LeatherArmorMeta) ((LeatherArmorMeta) itemMeta).setColor(Color.fromRGB(PantColor.DARK.hexColor));
+				if(itemMeta instanceof LeatherArmorMeta)
+					((LeatherArmorMeta) itemMeta).setColor(Color.fromRGB(PantColor.DARK.hexColor));
 			}
 
 			for(String key : enchantOrder) {
@@ -395,7 +396,8 @@ public class EnchantManager implements Listener {
 
 		try {
 			return EnchantManager.addEnchant(nbtItem.getItem(), jewelEnchant, 3, false, true, -1);
-		} catch(Exception ignored) { }
+		} catch(Exception ignored) {
+		}
 		return null;
 	}
 
@@ -477,7 +479,7 @@ public class EnchantManager implements Listener {
 
 		return enchantLvl <= 1 ? "" : " " + AUtil.toRoman(enchantLvl);
 	}
-	
+
 	public static int getEnchantLevel(Player player, PitEnchant pitEnchant) {
 		if(player == null) return 0;
 
@@ -538,7 +540,8 @@ public class EnchantManager implements Listener {
 			Map<PitEnchant, Integer> itemEnchantMap = getEnchantsOnItem(inUseArr[i], playerEnchantMap);
 			if(i == 4) {
 				for(Map.Entry<PitEnchant, Integer> entry : itemEnchantMap.entrySet())
-					if(entry.getKey().applyType != ApplyType.PANTS) playerEnchantMap.put(entry.getKey(), entry.getValue());
+					if(entry.getKey().applyType != ApplyType.PANTS)
+						playerEnchantMap.put(entry.getKey(), entry.getValue());
 			} else playerEnchantMap.putAll(itemEnchantMap);
 		}
 
@@ -567,9 +570,12 @@ public class EnchantManager implements Listener {
 //			if(currentEnchantMap.containsKey(pitEnchant) && currentEnchantMap.get(pitEnchant) >= enchantLvl) continue;
 //			itemEnchantMap.put(pitEnchant, enchantLvl);
 
-			if(currentEnchantMap.containsKey(pitEnchant) && currentEnchantMap.get(pitEnchant) >= enchantLvl && !pitEnchant.levelStacks) continue;
-			if(currentEnchantMap.containsKey(pitEnchant) && !pitEnchant.levelStacks) itemEnchantMap.put(pitEnchant, enchantLvl);
-			else itemEnchantMap.put(pitEnchant, (currentEnchantMap.get(pitEnchant) != null ? currentEnchantMap.get(pitEnchant) : 0) + enchantLvl);
+			if(currentEnchantMap.containsKey(pitEnchant) && currentEnchantMap.get(pitEnchant) >= enchantLvl && !pitEnchant.levelStacks)
+				continue;
+			if(currentEnchantMap.containsKey(pitEnchant) && !pitEnchant.levelStacks)
+				itemEnchantMap.put(pitEnchant, enchantLvl);
+			else
+				itemEnchantMap.put(pitEnchant, (currentEnchantMap.get(pitEnchant) != null ? currentEnchantMap.get(pitEnchant) : 0) + enchantLvl);
 		}
 
 		return itemEnchantMap;
@@ -586,13 +592,15 @@ public class EnchantManager implements Listener {
 
 			switch(applyType) {
 				case BOWS:
-					if(enchantApplyType == ApplyType.BOWS || enchantApplyType == ApplyType.WEAPONS) applicableEnchants.add(pitEnchant);
+					if(enchantApplyType == ApplyType.BOWS || enchantApplyType == ApplyType.WEAPONS)
+						applicableEnchants.add(pitEnchant);
 					break;
 				case PANTS:
 					if(enchantApplyType == ApplyType.PANTS) applicableEnchants.add(pitEnchant);
 					break;
 				case SWORDS:
-					if(enchantApplyType == ApplyType.SWORDS || enchantApplyType == ApplyType.WEAPONS) applicableEnchants.add(pitEnchant);
+					if(enchantApplyType == ApplyType.SWORDS || enchantApplyType == ApplyType.WEAPONS)
+						applicableEnchants.add(pitEnchant);
 					break;
 				case WEAPONS:
 					if(enchantApplyType == ApplyType.WEAPONS || enchantApplyType == ApplyType.BOWS
@@ -613,13 +621,15 @@ public class EnchantManager implements Listener {
 
 			switch(mystictype) {
 				case BOW:
-					if(enchantApplyType == ApplyType.BOWS || enchantApplyType == ApplyType.WEAPONS) applicableEnchants.add(pitEnchant);
+					if(enchantApplyType == ApplyType.BOWS || enchantApplyType == ApplyType.WEAPONS)
+						applicableEnchants.add(pitEnchant);
 					break;
 				case PANTS:
 					if(enchantApplyType == ApplyType.PANTS) applicableEnchants.add(pitEnchant);
 					break;
 				case SWORD:
-					if(enchantApplyType == ApplyType.SWORDS || enchantApplyType == ApplyType.WEAPONS) applicableEnchants.add(pitEnchant);
+					if(enchantApplyType == ApplyType.SWORDS || enchantApplyType == ApplyType.WEAPONS)
+						applicableEnchants.add(pitEnchant);
 					break;
 			}
 		}

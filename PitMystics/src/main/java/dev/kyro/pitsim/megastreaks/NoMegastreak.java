@@ -75,7 +75,8 @@ public class NoMegastreak extends Megastreak {
 	}
 
 	@Override
-	public void proc() { }
+	public void proc() {
+	}
 
 	@Override
 	public void reset() {

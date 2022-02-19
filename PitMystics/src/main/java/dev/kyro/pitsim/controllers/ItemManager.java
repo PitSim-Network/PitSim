@@ -39,7 +39,8 @@ public class ItemManager implements Listener {
 	@EventHandler
 	public static void onInventoryClick(InventoryClickEvent event) {
 		if(event.getAction() != InventoryAction.DROP_ALL_CURSOR && event.getAction() != InventoryAction.DROP_ALL_SLOT &&
-				event.getAction() != InventoryAction.DROP_ONE_CURSOR && event.getAction() != InventoryAction.DROP_ONE_SLOT) return;
+				event.getAction() != InventoryAction.DROP_ONE_CURSOR && event.getAction() != InventoryAction.DROP_ONE_SLOT)
+			return;
 
 		ItemStack itemStack = !Misc.isAirOrNull(event.getCursor()) ? event.getCursor() : event.getCurrentItem();
 		Player player = (Player) event.getWhoClicked();
@@ -78,7 +79,8 @@ public class ItemManager implements Listener {
 				new BukkitRunnable() {
 					@Override
 					public void run() {
-						if(pitPlayer.confirmedDrop != null && pitPlayer.confirmedDrop.equals(itemStack)) pitPlayer.confirmedDrop = null;
+						if(pitPlayer.confirmedDrop != null && pitPlayer.confirmedDrop.equals(itemStack))
+							pitPlayer.confirmedDrop = null;
 					}
 				}.runTaskLater(PitSim.INSTANCE, 60L);
 				pitPlayer.confirmedDrop = itemStack;

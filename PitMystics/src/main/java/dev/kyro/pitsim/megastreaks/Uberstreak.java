@@ -116,17 +116,20 @@ public class Uberstreak extends Megastreak {
 	@EventHandler
 	public void onPreAttack(AttackEvent.Pre attackEvent) {
 		PitPlayer pitAttacker = PitPlayer.getPitPlayer(attackEvent.attacker);
-		if(pitAttacker != this.pitPlayer || pitAttacker.megastreak.getClass() != Uberstreak.class || pitAttacker.megastreak.isOnMega()) return;
+		if(pitAttacker != this.pitPlayer || pitAttacker.megastreak.getClass() != Uberstreak.class || pitAttacker.megastreak.isOnMega())
+			return;
 
 		Map<PitEnchant, Integer> attackerEnchantMap = attackEvent.getAttackerEnchantMap();
 
 		PitEnchant exe = EnchantManager.getEnchant("executioner");
-		if(uberEffects.contains(UberEffect.EXE_SUCKS) && attackerEnchantMap.containsKey(exe)) attackerEnchantMap.put(exe,
-				Math.max(0, attackerEnchantMap.get(exe) - 1));
+		if(uberEffects.contains(UberEffect.EXE_SUCKS) && attackerEnchantMap.containsKey(exe))
+			attackerEnchantMap.put(exe,
+					Math.max(0, attackerEnchantMap.get(exe) - 1));
 
 		PitEnchant perun = EnchantManager.getEnchant("perun");
-		if(uberEffects.contains(UberEffect.PERUN_SUCKS) && attackerEnchantMap.containsKey(perun)) attackerEnchantMap.put(perun,
-				Math.max(0, attackerEnchantMap.get(perun) - 1));
+		if(uberEffects.contains(UberEffect.PERUN_SUCKS) && attackerEnchantMap.containsKey(perun))
+			attackerEnchantMap.put(perun,
+					Math.max(0, attackerEnchantMap.get(perun) - 1));
 	}
 
 	@EventHandler
@@ -197,6 +200,7 @@ public class Uberstreak extends Megastreak {
 	public void zoom() {
 		new BukkitRunnable() {
 			int count = 0;
+
 			@Override
 			public void run() {
 				if(count++ == 50) {
@@ -315,6 +319,7 @@ public class Uberstreak extends Megastreak {
 	}
 
 	public static List<Uberdrop> weightedDropList = new ArrayList<>();
+
 	public enum Uberdrop {
 		JEWEL_SWORD(5),
 		JEWEL_BOW(5),

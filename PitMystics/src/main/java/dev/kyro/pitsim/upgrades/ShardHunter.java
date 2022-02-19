@@ -45,7 +45,8 @@ public class ShardHunter extends RenownUpgrade {
 		List<String> lore = new ArrayList<>();
 		if(UpgradeManager.hasUpgrade(player, this)) lore.add(ChatColor.translateAlternateColorCodes('&',
 				"&7Current: &f" + 0.005 * UpgradeManager.getTier(player, this) + "&f% &7drop chance"));
-		if(UpgradeManager.hasUpgrade(player, this)) lore.add(ChatColor.GRAY + "Tier: " + ChatColor.GREEN + AUtil.toRoman(UpgradeManager.getTier(player, this)));
+		if(UpgradeManager.hasUpgrade(player, this))
+			lore.add(ChatColor.GRAY + "Tier: " + ChatColor.GREEN + AUtil.toRoman(UpgradeManager.getTier(player, this)));
 		if(UpgradeManager.hasUpgrade(player, this)) lore.add("");
 		lore.add(ChatColor.GRAY + "Each tier:");
 		lore.add(ChatColor.translateAlternateColorCodes('&', "&7Gain &f+0.005% &7chance to obtain a &aGem"));
@@ -78,7 +79,8 @@ public class ShardHunter extends RenownUpgrade {
 		double chance = 0.00005 * tier;
 
 		PitPlayer pitKiller = PitPlayer.getPitPlayer(killEvent.killer);
-		if(pitKiller.megastreak.isOnMega() && pitKiller.megastreak.getClass() == Uberstreak.class) chance *= Uberstreak.SHARD_MULTIPLIER;
+		if(pitKiller.megastreak.isOnMega() && pitKiller.megastreak.getClass() == Uberstreak.class)
+			chance *= Uberstreak.SHARD_MULTIPLIER;
 
 		boolean givesShard = Math.random() < chance;
 

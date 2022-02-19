@@ -55,7 +55,8 @@ public class ApplyEnchantPanel extends AGUIPanel {
 		}
 		List<PitEnchant> applicableEnchants = new ArrayList<>();
 		for(PitEnchant enchant : EnchantManager.getEnchants(MysticType.getMysticType(mystic))) {
-			if((!hasCommon || (previousEnchant != null && !previousEnchant.getKey().isUncommonEnchant)) && enchants >= 2 && enchant.isUncommonEnchant) continue;
+			if((!hasCommon || (previousEnchant != null && !previousEnchant.getKey().isUncommonEnchant)) && enchants >= 2 && enchant.isUncommonEnchant)
+				continue;
 			if(EnchantManager.getEnchantsOnItem(mystic).containsKey(enchant)) continue;
 			if(enchant.getClass() == SelfCheckout.class) continue;
 			applicableEnchants.add(enchant);
@@ -68,7 +69,8 @@ public class ApplyEnchantPanel extends AGUIPanel {
 			ItemStack displayItem = FreshCommand.getFreshItem(MysticType.getMysticType(mystic), PantColor.getPantColor(mystic));
 			try {
 				displayItem = EnchantManager.addEnchant(displayItem, applicableEnchants.get(count++), 3, false);
-			} catch(Exception ignored) { }
+			} catch(Exception ignored) {
+			}
 			getInventory().setItem(i, displayItem);
 		}
 	}
@@ -86,7 +88,8 @@ public class ApplyEnchantPanel extends AGUIPanel {
 	@Override
 	public void onClick(InventoryClickEvent event) {
 
-		if(TutorialManager.getTutorial(player) != null && TutorialManager.getTutorial(player).sequence.getClass() == ViewEnchantsSequence.class) return;
+		if(TutorialManager.getTutorial(player) != null && TutorialManager.getTutorial(player).sequence.getClass() == ViewEnchantsSequence.class)
+			return;
 
 
 		int hotbarSlot = event.getHotbarButton();

@@ -28,6 +28,7 @@ public class HelmetryPanel extends AGUIPanel {
 	PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
 	RenownUpgrade upgrade = null;
 	public RenownShopGUI renownShopGUI;
+
 	public HelmetryPanel(AGUI gui) {
 		super(gui);
 		renownShopGUI = (RenownShopGUI) gui;
@@ -131,7 +132,7 @@ public class HelmetryPanel extends AGUIPanel {
 
 		ItemStack gem = new ItemStack(Material.GOLD_HELMET);
 		ItemMeta meta = gem.getItemMeta();
-		if(pitPlayer.renown >= 5)meta.setDisplayName(ChatColor.YELLOW + "Craft Golden Helmet");
+		if(pitPlayer.renown >= 5) meta.setDisplayName(ChatColor.YELLOW + "Craft Golden Helmet");
 		else meta.setDisplayName(ChatColor.RED + "Craft Golden Helmet");
 		List<String> lore = new ArrayList<>();
 		lore.add("");
@@ -140,7 +141,7 @@ public class HelmetryPanel extends AGUIPanel {
 		lore.add(ChatColor.translateAlternateColorCodes('&', "&7put into it. Use abilities that cost"));
 		lore.add(ChatColor.translateAlternateColorCodes('&', "&6gold &7from the helmet."));
 		lore.add("");
-		if(pitPlayer.renown >= 10)lore.add(ChatColor.YELLOW + "Craft for 10 renown!");
+		if(pitPlayer.renown >= 10) lore.add(ChatColor.YELLOW + "Craft for 10 renown!");
 		else lore.add(ChatColor.RED + "Not enough renown!");
 		meta.setLore(lore);
 		gem.setItemMeta(meta);

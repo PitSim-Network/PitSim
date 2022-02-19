@@ -10,61 +10,61 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 public class ShutdownManager {
 
-    public static int minutes = 0;
-    public static int seconds = 0;
-    public static int counter = 0;
-    public static boolean enderchestDisabled = false;
-    public static boolean isShuttingDown = false;
+	public static int minutes = 0;
+	public static int seconds = 0;
+	public static int counter = 0;
+	public static boolean enderchestDisabled = false;
+	public static boolean isShuttingDown = false;
 
 
-    public static void initiateShutdown(int minute) {
-        isShuttingDown = true;
-        minutes = minute;
+	public static void initiateShutdown(int minute) {
+		isShuttingDown = true;
+		minutes = minute;
 
-        new BukkitRunnable() {
-            @Override
-            public void run() {
-                counter++;
-                if(counter >= 20) {
-                    counter = 0;
-                    if(seconds > 0) {
-                        seconds--;
-                    } else {
-                        if(minutes > 0) {
-                            minutes--;
-                            seconds = 60;
-                        } else {
-                            execute();
-                        }
-                    }
-                }
+		new BukkitRunnable() {
+			@Override
+			public void run() {
+				counter++;
+				if(counter >= 20) {
+					counter = 0;
+					if(seconds > 0) {
+						seconds--;
+					} else {
+						if(minutes > 0) {
+							minutes--;
+							seconds = 60;
+						} else {
+							execute();
+						}
+					}
+				}
 
-                if(seconds == 0 && counter == 1) {
-                    if(minutes == 1) {
-                        disableEnderChest();
-                        Bukkit.broadcastMessage(ChatColor.RED + "" + ChatColor.BOLD + "SERVER RESTARTING IN "
-                                + minutes + " MINUTE!");
-                    } else if(minutes != 0) {
-                        Bukkit.broadcastMessage(ChatColor.RED + "" + ChatColor.BOLD + "SERVER RESTARTING IN "
-                                + minutes + " MINUTES!");
-                    } else {
-                        Bukkit.broadcastMessage(ChatColor.RED + "" + ChatColor.BOLD + "SERVER RESTARTING!");
-                    }
-                    for(Player onlinePlayer : Bukkit.getOnlinePlayers()) {
-                        Sounds.CTF_FLAG_STOLEN.play(onlinePlayer);
-                        onlinePlayer.closeInventory();
-                    }
-                }
-            }
-        }.runTaskTimer(PitSim.INSTANCE, 1, 1);
-    }
+				if(seconds == 0 && counter == 1) {
+					if(minutes == 1) {
+						disableEnderChest();
+						Bukkit.broadcastMessage(ChatColor.RED + "" + ChatColor.BOLD + "SERVER RESTARTING IN "
+								+ minutes + " MINUTE!");
+					} else if(minutes != 0) {
+						Bukkit.broadcastMessage(ChatColor.RED + "" + ChatColor.BOLD + "SERVER RESTARTING IN "
+								+ minutes + " MINUTES!");
+					} else {
+						Bukkit.broadcastMessage(ChatColor.RED + "" + ChatColor.BOLD + "SERVER RESTARTING!");
+					}
+					for(Player onlinePlayer : Bukkit.getOnlinePlayers()) {
+						Sounds.CTF_FLAG_STOLEN.play(onlinePlayer);
+						onlinePlayer.closeInventory();
+					}
+				}
+			}
+		}.runTaskTimer(PitSim.INSTANCE, 1, 1);
+	}
 
-    public static void execute() {
-        PitSim.client.retrieveServerByIdentifier("pitsim")
-                .flatMap(ClientServer::restart).executeAsync();
-    }
+	public static void execute() {
+		PitSim.client.retrieveServerByIdentifier("pitsim")
+				.flatMap(ClientServer::restart).executeAsync();
+	}
 
-    public static void disableEnderChest() {
-        enderchestDisabled = true;
-    }
- }
+	public static void disableEnderChest() {
+		enderchestDisabled = true;
+	}
+}

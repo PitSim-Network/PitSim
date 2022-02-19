@@ -38,6 +38,7 @@ public class PrestigeValues {
 //			if(prestige == 50) return "&f&k|";
 			return bracketColor + "[";
 		}
+
 		public String getCloseBracket() {
 //			if(prestige == 50) return "&f&k|&r";
 			return bracketColor + "]";
@@ -47,6 +48,7 @@ public class PrestigeValues {
 //			if(prestige == 50) return "&f|";
 			return bracketColor + "[";
 		}
+
 		public String getCloseBracketNameTag() {
 //			if(prestige == 50) return "&f|";
 			return bracketColor + "]";

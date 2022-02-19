@@ -35,8 +35,6 @@ public enum PantColor {
 	HARVEST_RED("Harvest Red", ChatColor.RED, 0xEE3300),
 
 
-
-
 	//Special Colors
 	DARK("Dark", ChatColor.DARK_PURPLE, 0x000000),
 	JEWEL("Jewel", ChatColor.DARK_AQUA, 0x7DC383);
@@ -84,7 +82,7 @@ public enum PantColor {
 		LeatherArmorMeta leatherArmorMeta = (LeatherArmorMeta) itemStack.getItemMeta();
 
 		leatherArmorMeta.setColor(Color.fromRGB(pantColor.hexColor));
-		
+
 		leatherArmorMeta.setDisplayName(pantColor.chatColor + (ChatColor.RESET + leatherArmorMeta.getDisplayName()));
 		itemStack.setItemMeta(leatherArmorMeta);
 	}

@@ -53,6 +53,7 @@ public class EnchantingPanel extends AGUIPanel {
 	public static ItemStack mysticInWell;
 
 	public static Map<Player, ApplyEnchantPanel> enchantPanels = new HashMap<>();
+
 	static {
 		philo = new AItemStackBuilder(new ItemStack(Material.CACTUS))
 				.setName("&aPhilosopher's Cactus")
@@ -85,7 +86,6 @@ public class EnchantingPanel extends AGUIPanel {
 		mystic = new ItemStack(Material.AIR);
 
 
-
 		inventoryBuilder.setSlots(Material.STAINED_GLASS_PANE, 5, 0, 1, 2, 9, 11, 18, 19, 20)
 				.setSlots(Material.STAINED_GLASS_PANE, 4, 3, 4, 5, 12, 14, 21, 22, 23)
 				.setSlots(Material.STAINED_GLASS_PANE, 14, 6, 7, 8, 15, 17, 24, 25, 26)
@@ -93,7 +93,7 @@ public class EnchantingPanel extends AGUIPanel {
 				.setSlots(Material.STAINED_GLASS_PANE, 7, 30, 31, 32, 33, 34, 35, 39, 42, 44, 48, 49, 50, 51, 52, 53);
 
 		EnchantingPanel enchantingPanel = this;
-		int[] slots = new int[] { 27, 28, 29, 38, 47, 46, 45, 36 };
+		int[] slots = new int[]{27, 28, 29, 38, 47, 46, 45, 36};
 		runnable = new BukkitRunnable() {
 			@Override
 			public void run() {
@@ -194,7 +194,7 @@ public class EnchantingPanel extends AGUIPanel {
 								if(entry.getKey() instanceof MegaLongBow) hasMega = true;
 								if(entry.getKey() instanceof SprintDrain && entry.getValue() == 3) hasDrain = true;
 							}
-							if(hasDrain && hasMega)  {
+							if(hasDrain && hasMega) {
 								TaskListener.onMegaDrainEnchant(player);
 								hasCorrectItem = true;
 							}
@@ -217,8 +217,7 @@ public class EnchantingPanel extends AGUIPanel {
 					if(hasCorrectItem) {
 						player.getInventory().addItem(mystic);
 						hasGivenItemBack = true;
-					}
-					else {
+					} else {
 						AOutput.error(player, "&cPlease enchant the item the tutorial is instructing you to!");
 						Sounds.NO.play(player);
 					}
@@ -300,7 +299,8 @@ public class EnchantingPanel extends AGUIPanel {
 	}
 
 	@Override
-	public void onOpen(InventoryOpenEvent event) { }
+	public void onOpen(InventoryOpenEvent event) {
+	}
 
 	@Override
 	public void onClose(InventoryCloseEvent event) {
@@ -366,7 +366,8 @@ public class EnchantingPanel extends AGUIPanel {
 				assert pitEnchant != null;
 				try {
 					displayMystic = EnchantManager.addEnchant(displayMystic, pitEnchant, EnchantManager.getEnchantLevel(mystic, pitEnchant), false);
-				} catch(Exception ignored) { }
+				} catch(Exception ignored) {
+				}
 
 				getInventory().setItem(10 + (3 * i), displayMystic);
 			}
@@ -401,7 +402,8 @@ public class EnchantingPanel extends AGUIPanel {
 			for(int slot : value.slots) {
 				ItemStack itemStack = getInventory().getItem(slot);
 				if(Misc.isAirOrNull(itemStack)) continue;
-				if(itemStack.getType() == Material.STAINED_GLASS_PANE) itemStack.removeEnchantment(Enchantment.DURABILITY);
+				if(itemStack.getType() == Material.STAINED_GLASS_PANE)
+					itemStack.removeEnchantment(Enchantment.DURABILITY);
 				getInventory().setItem(slot, itemStack);
 			}
 		}
@@ -409,7 +411,9 @@ public class EnchantingPanel extends AGUIPanel {
 			ItemStack itemStack = getInventory().getItem(slot);
 			if(Misc.isAirOrNull(itemStack) || itemStack.getType() == Material.LEATHER_LEGGINGS) continue;
 			itemStack.addUnsafeEnchantment(Enchantment.DURABILITY, 1);
-			ItemMeta itemMeta = itemStack.getItemMeta(); itemMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS); itemStack.setItemMeta(itemMeta);
+			ItemMeta itemMeta = itemStack.getItemMeta();
+			itemMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
+			itemStack.setItemMeta(itemMeta);
 			getInventory().setItem(slot, itemStack);
 		}
 	}

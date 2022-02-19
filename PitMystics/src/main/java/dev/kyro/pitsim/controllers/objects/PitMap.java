@@ -18,12 +18,19 @@ public abstract class PitMap {
 	}
 
 	public abstract Location getSpawn(World world);
+
 	public abstract Location getNonSpawn(World world);
+
 	public abstract Location getMid(World world);
+
 	public abstract Location getUpgradeNPCSpawn(World world);
+
 	public abstract Location getPrestigeNPCSpawn(World world);
+
 	public abstract Location getKyroNPCSpawn(World world);
+
 	public abstract Location getWijiNPCSpawn(World world);
+
 	public abstract Location getVnxNPCSpawn(World world);
 
 	public double getY(World world) {
@@ -37,7 +44,7 @@ public abstract class PitMap {
 		}
 		return -1;
 	}
-	
+
 	public World getRandomOrFirst(World current) {
 		if(!lobbies.contains(current)) return firstLobby;
 		List<World> lobbies = new ArrayList<>(this.lobbies);

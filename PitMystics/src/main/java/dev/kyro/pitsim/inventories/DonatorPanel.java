@@ -26,6 +26,7 @@ public class DonatorPanel extends AGUIPanel {
 	PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
 
 	public DonatorGUI donatorGUI;
+
 	public DonatorPanel(AGUI gui) {
 		super(gui);
 		donatorGUI = (DonatorGUI) gui;
@@ -59,7 +60,7 @@ public class DonatorPanel extends AGUIPanel {
 			} else if(slot == 14) {
 				if(!player.hasPermission("pitsim.killeffect")) return;
 				openPanel(donatorGUI.killEffectPanel);
-			}  else if(slot == 15) {
+			} else if(slot == 15) {
 				if(!player.hasPermission("pitsim.itemrename")) return;
 				ItemStack heldItem = player.getItemInHand();
 				if(Misc.isAirOrNull(heldItem)) return;
@@ -95,7 +96,6 @@ public class DonatorPanel extends AGUIPanel {
 		pantsmeta.setLore(pantslore);
 		pants.setItemMeta(pantsmeta);
 		PantColor.setPantColor(pants, PantColor.HARVEST_RED);
-
 
 
 		ItemStack death = new ItemStack(Material.GHAST_TEAR);
@@ -238,12 +238,18 @@ public class DonatorPanel extends AGUIPanel {
 		else headlore.add(ChatColor.RED + "Stereo Pants");
 		if(player.hasPermission("pitsim.chatcolor")) headlore.add(ChatColor.GREEN + "Chat Colors");
 		else headlore.add(ChatColor.RED + "Chat Colors");
-		if(player.hasPermission("galacticvaults.limit.14")) headlore.add(ChatColor.GRAY + "14x " + ChatColor.DARK_PURPLE + "Ender Chest Pages");
-		else if(player.hasPermission("galacticvaults.limit.10")) headlore.add(ChatColor.GRAY + "10x " + ChatColor.DARK_PURPLE + "Ender Chest Pages");
-		else if(player.hasPermission("galacticvaults.limit.7")) headlore.add(ChatColor.GRAY + "7x " + ChatColor.DARK_PURPLE + "Ender Chest Pages");
-		else if(player.hasPermission("galacticvaults.limit.5")) headlore.add(ChatColor.GRAY + "5x " + ChatColor.DARK_PURPLE + "Ender Chest Pages");
-		else if(player.hasPermission("galacticvaults.limit.3")) headlore.add(ChatColor.GRAY + "3x " + ChatColor.DARK_PURPLE + "Ender Chest Pages");
-		else if(player.hasPermission("galacticvaults.limit.1")) headlore.add(ChatColor.GRAY + "1x " + ChatColor.DARK_PURPLE + "Ender Chest Pages");
+		if(player.hasPermission("galacticvaults.limit.14"))
+			headlore.add(ChatColor.GRAY + "14x " + ChatColor.DARK_PURPLE + "Ender Chest Pages");
+		else if(player.hasPermission("galacticvaults.limit.10"))
+			headlore.add(ChatColor.GRAY + "10x " + ChatColor.DARK_PURPLE + "Ender Chest Pages");
+		else if(player.hasPermission("galacticvaults.limit.7"))
+			headlore.add(ChatColor.GRAY + "7x " + ChatColor.DARK_PURPLE + "Ender Chest Pages");
+		else if(player.hasPermission("galacticvaults.limit.5"))
+			headlore.add(ChatColor.GRAY + "5x " + ChatColor.DARK_PURPLE + "Ender Chest Pages");
+		else if(player.hasPermission("galacticvaults.limit.3"))
+			headlore.add(ChatColor.GRAY + "3x " + ChatColor.DARK_PURPLE + "Ender Chest Pages");
+		else if(player.hasPermission("galacticvaults.limit.1"))
+			headlore.add(ChatColor.GRAY + "1x " + ChatColor.DARK_PURPLE + "Ender Chest Pages");
 		headmeta.setLore(headlore);
 		head.setItemMeta(headmeta);
 
@@ -259,5 +265,6 @@ public class DonatorPanel extends AGUIPanel {
 	}
 
 	@Override
-	public void onClose(InventoryCloseEvent event) { }
+	public void onClose(InventoryCloseEvent event) {
+	}
 }

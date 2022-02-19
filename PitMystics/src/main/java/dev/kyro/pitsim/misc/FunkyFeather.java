@@ -20,55 +20,55 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class FunkyFeather {
-    public static void giveFeather(Player player, int amount) {
-        ItemStack feather = new ItemStack(Material.FEATHER);
-        ItemMeta meta = feather.getItemMeta();
-        meta.setDisplayName(ChatColor.DARK_AQUA + "Funky Feather");
-        List<String> lore = new ArrayList<>();
-        lore.add(ChatColor.YELLOW + "Special item");
-        lore.add(ChatColor.GRAY + "protects your inventory but");
-        lore.add(ChatColor.GRAY + "gets consumed on death if");
-        lore.add(ChatColor.GRAY + "in your hotbar.");
-        meta.setLore(lore);
-        feather.setItemMeta(meta);
-        feather.setAmount(amount);
+	public static void giveFeather(Player player, int amount) {
+		ItemStack feather = new ItemStack(Material.FEATHER);
+		ItemMeta meta = feather.getItemMeta();
+		meta.setDisplayName(ChatColor.DARK_AQUA + "Funky Feather");
+		List<String> lore = new ArrayList<>();
+		lore.add(ChatColor.YELLOW + "Special item");
+		lore.add(ChatColor.GRAY + "protects your inventory but");
+		lore.add(ChatColor.GRAY + "gets consumed on death if");
+		lore.add(ChatColor.GRAY + "in your hotbar.");
+		meta.setLore(lore);
+		feather.setItemMeta(meta);
+		feather.setAmount(amount);
 
-        feather = ItemManager.enableDropConfirm(feather);
+		feather = ItemManager.enableDropConfirm(feather);
 
-        NBTItem nbtItem = new NBTItem(feather);
-        nbtItem.setBoolean(NBTTag.IS_FEATHER.getRef(), true);
-        for(Player onlinePlayer : Bukkit.getOnlinePlayers()) {
-            if(onlinePlayer ==  player) {
-                new BukkitRunnable() {
-                    @Override
-                    public void run() {
-                        AUtil.giveItemSafely(player, nbtItem.getItem(), true);
-                    }
-                }.runTaskLater(PitSim.INSTANCE, 10L);
-            }
-        }
-    }
+		NBTItem nbtItem = new NBTItem(feather);
+		nbtItem.setBoolean(NBTTag.IS_FEATHER.getRef(), true);
+		for(Player onlinePlayer : Bukkit.getOnlinePlayers()) {
+			if(onlinePlayer == player) {
+				new BukkitRunnable() {
+					@Override
+					public void run() {
+						AUtil.giveItemSafely(player, nbtItem.getItem(), true);
+					}
+				}.runTaskLater(PitSim.INSTANCE, 10L);
+			}
+		}
+	}
 
-    public static boolean useFeather(Player killer, Player dead, boolean isDivine) {
-        if(isDivine) return false;
+	public static boolean useFeather(Player killer, Player dead, boolean isDivine) {
+		if(isDivine) return false;
 
-        for(int i = 0; i < 9; i++) {
-            ItemStack itemStack = dead.getInventory().getItem(i);
-            if(Misc.isAirOrNull(itemStack)) continue;
-            NBTItem nbtItem = new NBTItem(itemStack);
-            if(nbtItem.hasKey(NBTTag.IS_FEATHER.getRef())) {
-                AOutput.send(dead, "&3&lFUNKY FEATHER! &7Inventory protected.");
-                if(itemStack.getAmount() > 1) itemStack.setAmount(itemStack.getAmount() - 1);
-                else dead.getInventory().setItem(i, null);
-                Sounds.FUNKY_FEATHER.play(dead);
+		for(int i = 0; i < 9; i++) {
+			ItemStack itemStack = dead.getInventory().getItem(i);
+			if(Misc.isAirOrNull(itemStack)) continue;
+			NBTItem nbtItem = new NBTItem(itemStack);
+			if(nbtItem.hasKey(NBTTag.IS_FEATHER.getRef())) {
+				AOutput.send(dead, "&3&lFUNKY FEATHER! &7Inventory protected.");
+				if(itemStack.getAmount() > 1) itemStack.setAmount(itemStack.getAmount() - 1);
+				else dead.getInventory().setItem(i, null);
+				Sounds.FUNKY_FEATHER.play(dead);
 
-                GuildIntegrationManager.handleFeather(killer, dead);
+				GuildIntegrationManager.handleFeather(killer, dead);
 
-                PitPlayer pitPlayer = PitPlayer.getPitPlayer(dead);
-                if(pitPlayer.stats != null) pitPlayer.stats.feathersLost++;
-                return true;
-            }
-        }
-        return false;
-    }
+				PitPlayer pitPlayer = PitPlayer.getPitPlayer(dead);
+				if(pitPlayer.stats != null) pitPlayer.stats.feathersLost++;
+				return true;
+			}
+		}
+		return false;
+	}
 }

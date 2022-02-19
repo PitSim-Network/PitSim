@@ -45,7 +45,7 @@ public class BoosterPanel extends AGUIPanel {
 		int slot = event.getSlot();
 		if(event.getClickedInventory().getHolder() == this) {
 			for(Booster booster : BoosterManager.boosterList) {
-				if(booster.slot ==  slot) {
+				if(booster.slot == slot) {
 					if(Booster.getBoosterAmount(player, booster) < 1) {
 						Sounds.SUCCESS.play(player);
 						AOutput.send(player, "&aBuy boosters at https://pitsim.tebex.io");
@@ -90,5 +90,6 @@ public class BoosterPanel extends AGUIPanel {
 	}
 
 	@Override
-	public void onClose(InventoryCloseEvent event) { }
+	public void onClose(InventoryCloseEvent event) {
+	}
 }

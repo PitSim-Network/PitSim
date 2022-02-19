@@ -21,14 +21,15 @@ public class Peroxide extends PitEnchant {
 	}
 
 	@EventHandler
-	public void onAttack(AttackEvent.Apply attackEvent	) {
+	public void onAttack(AttackEvent.Apply attackEvent) {
 		if(!canApply(attackEvent)) return;
 
 		int enchantLvl = attackEvent.getDefenderEnchantLevel(this);
 		if(enchantLvl == 0) return;
 
 		Cooldown cooldown = getCooldown(attackEvent.attacker, 51);
-		if(cooldown.isOnCooldown()) return; else cooldown.reset();
+		if(cooldown.isOnCooldown()) return;
+		else cooldown.reset();
 
 		Misc.applyPotionEffect(attackEvent.defender, PotionEffectType.REGENERATION, getDuration(enchantLvl),
 				getAmplifier(enchantLvl) - 1, false, false);
@@ -39,7 +40,7 @@ public class Peroxide extends PitEnchant {
 	public List<String> getDescription(int enchantLvl) {
 
 		return new ALoreBuilder("&7Gain &cRegen " + AUtil.toRoman(getAmplifier(enchantLvl)) + " &7(" +
-				getDuration(enchantLvl)/20 + "&7s) when hit").getLore();
+				getDuration(enchantLvl) / 20 + "&7s) when hit").getLore();
 	}
 
 	public int getAmplifier(int enchantLvl) {

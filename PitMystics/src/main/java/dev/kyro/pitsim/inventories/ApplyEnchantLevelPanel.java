@@ -30,6 +30,7 @@ public class ApplyEnchantLevelPanel extends AGUIPanel {
 	public boolean forcedClose = false;
 
 	public static ItemStack tooPowerful;
+
 	static {
 		tooPowerful = new AItemStackBuilder(new ItemStack(Material.BARRIER))
 				.setName("&cToo Powerful")
@@ -60,7 +61,8 @@ public class ApplyEnchantLevelPanel extends AGUIPanel {
 			ItemStack displayItem = FreshCommand.getFreshItem(MysticType.getMysticType(mystic), PantColor.getPantColor(mystic));
 			try {
 				displayItem = EnchantManager.addEnchant(displayItem, enchant, i + 1, false);
-			} catch(Exception ignored) { }
+			} catch(Exception ignored) {
+			}
 			getInventory().setItem(10 + i * 3, displayItem);
 		}
 
@@ -104,9 +106,11 @@ public class ApplyEnchantLevelPanel extends AGUIPanel {
 				applyLvl = 3;
 			} else return;
 			try {
-				if(previousEnchant != null) mystic = EnchantManager.addEnchant(mystic, previousEnchant.getKey(), 0, false);
+				if(previousEnchant != null)
+					mystic = EnchantManager.addEnchant(mystic, previousEnchant.getKey(), 0, false);
 				mystic = EnchantManager.addEnchant(mystic, enchant, applyLvl, false, false, enchantSlot - 1);
-			} catch(Exception ignored) { }
+			} catch(Exception ignored) {
+			}
 			enchantingGUI.updateMystic(mystic);
 			forcedClose = true;
 			openPanel(enchantingGUI.enchantingPanel);

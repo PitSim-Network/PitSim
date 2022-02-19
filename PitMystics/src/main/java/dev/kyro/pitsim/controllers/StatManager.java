@@ -68,7 +68,8 @@ public class StatManager implements Listener {
 
 		if(pitAttacker.stats != null) {
 			if(attackEvent.pet == null) {
-				if(attackEvent.arrow == null) pitAttacker.stats.swordHits++; else pitAttacker.stats.arrowHits++;
+				if(attackEvent.arrow == null) pitAttacker.stats.swordHits++;
+				else pitAttacker.stats.arrowHits++;
 			}
 			pitAttacker.stats.damageDealt += attackEvent.event.getFinalDamage();
 			pitAttacker.stats.trueDamageDealt += attackEvent.trueDamage + attackEvent.veryTrueDamage;

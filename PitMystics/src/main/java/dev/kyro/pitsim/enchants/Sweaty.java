@@ -36,8 +36,9 @@ public class Sweaty extends PitEnchant {
 	@Override
 	public List<String> getDescription(int enchantLvl) {
 
-		if(enchantLvl == 3) return new ALoreBuilder("&7Gain &b+" + getCapIncrease(enchantLvl) + " max xp&7. When combined",
-				"&7with another &bSweaty III &7item, earn", "&7a stacking &b+" + getXpIncrease(6) + " xp &7every other kill").getLore();
+		if(enchantLvl == 3)
+			return new ALoreBuilder("&7Gain &b+" + getCapIncrease(enchantLvl) + " max xp&7. When combined",
+					"&7with another &bSweaty III &7item, earn", "&7a stacking &b+" + getXpIncrease(6) + " xp &7every other kill").getLore();
 		return new ALoreBuilder("&7Gain &b+" + getCapIncrease(enchantLvl) + " max xp").getLore();
 
 //		if(enchantLvl != 3) {

@@ -21,94 +21,96 @@ import java.util.Map;
 
 public class VilePanel extends AGUIPanel {
 
-    public Map<Integer, Integer> slots = new HashMap<>();
-    public VileGUI vileGUI;
-    public VilePanel(AGUI gui) {
-        super(gui);
-        vileGUI = (VileGUI) gui;
+	public Map<Integer, Integer> slots = new HashMap<>();
+	public VileGUI vileGUI;
 
-    }
+	public VilePanel(AGUI gui) {
+		super(gui);
+		vileGUI = (VileGUI) gui;
 
-    @Override
-    public String getName() {
-        return "Choose an item to repair";
-    }
+	}
 
-    @Override
-    public int getRows() {
-        return 4;
-    }
+	@Override
+	public String getName() {
+		return "Choose an item to repair";
+	}
 
-    @Override
-    public void onClick(InventoryClickEvent event) {
-        int slot = event.getSlot();
-        if(event.getClickedInventory().getHolder() == this) {
+	@Override
+	public int getRows() {
+		return 4;
+	}
 
-            if(!    slots.containsKey(slot)) return;
-            int invSlot = slots.get(slot);
+	@Override
+	public void onClick(InventoryClickEvent event) {
+		int slot = event.getSlot();
+		if(event.getClickedInventory().getHolder() == this) {
 
-            for(int i = 0; i < player.getInventory().getSize(); i++) {
-                if(i == invSlot) {
-                    NBTItem nbtItem = new NBTItem(player.getInventory().getItem(i));
-                    nbtItem.setInteger(NBTTag.CURRENT_LIVES.getRef(), nbtItem.getInteger(NBTTag.CURRENT_LIVES.getRef()) + 1);
-                    EnchantManager.setItemLore(nbtItem.getItem());
-                    player.getInventory().setItem(i, nbtItem.getItem());
-                    player.closeInventory();
-                    AOutput.send(player,  "&5&lWITHERCRAFT! &7Repaired " + nbtItem.getItem().getItemMeta().getDisplayName() + "&7!");
-                    Sounds.WITHERCRAFT_1.play(player);
-                    Sounds.WITHERCRAFT_2.play(player);
+			if(!slots.containsKey(slot)) return;
+			int invSlot = slots.get(slot);
 
-                    int itemsToRemove = 1;
-                    for(int j = 0; j < player.getInventory().getContents().length; j++) {
-                        if(!Misc.isAirOrNull(player.getInventory().getItem(j))) {
-                            NBTItem nbtItem2 = new NBTItem(player.getInventory().getItem(j));
-                            if(nbtItem2.hasKey(NBTTag.IS_VILE.getRef())) {
-                                int preAmount = player.getInventory().getItem(j).getAmount();
-                                int newAmount = Math.max(0, preAmount - itemsToRemove);
-                                itemsToRemove = Math.max(0, itemsToRemove - preAmount);
-                                nbtItem2.getItem().setAmount(newAmount);
-                                player.getInventory().setItem(j, nbtItem2.getItem());
-                                if(itemsToRemove == 0) {
-                                    break;
-                                }
-                            }
-                        }
-                    }
-                }
-            }
+			for(int i = 0; i < player.getInventory().getSize(); i++) {
+				if(i == invSlot) {
+					NBTItem nbtItem = new NBTItem(player.getInventory().getItem(i));
+					nbtItem.setInteger(NBTTag.CURRENT_LIVES.getRef(), nbtItem.getInteger(NBTTag.CURRENT_LIVES.getRef()) + 1);
+					EnchantManager.setItemLore(nbtItem.getItem());
+					player.getInventory().setItem(i, nbtItem.getItem());
+					player.closeInventory();
+					AOutput.send(player, "&5&lWITHERCRAFT! &7Repaired " + nbtItem.getItem().getItemMeta().getDisplayName() + "&7!");
+					Sounds.WITHERCRAFT_1.play(player);
+					Sounds.WITHERCRAFT_2.play(player);
 
-        }
-        updateInventory();
-    }
+					int itemsToRemove = 1;
+					for(int j = 0; j < player.getInventory().getContents().length; j++) {
+						if(!Misc.isAirOrNull(player.getInventory().getItem(j))) {
+							NBTItem nbtItem2 = new NBTItem(player.getInventory().getItem(j));
+							if(nbtItem2.hasKey(NBTTag.IS_VILE.getRef())) {
+								int preAmount = player.getInventory().getItem(j).getAmount();
+								int newAmount = Math.max(0, preAmount - itemsToRemove);
+								itemsToRemove = Math.max(0, itemsToRemove - preAmount);
+								nbtItem2.getItem().setAmount(newAmount);
+								player.getInventory().setItem(j, nbtItem2.getItem());
+								if(itemsToRemove == 0) {
+									break;
+								}
+							}
+						}
+					}
+				}
+			}
 
-    @Override
-    public void onOpen(InventoryOpenEvent event) {
-        int slot = 0;
+		}
+		updateInventory();
+	}
 
-        for(int i = 0; i < player.getInventory().getSize(); i++) {
-            ItemStack item = player.getInventory().getItem(i);
+	@Override
+	public void onOpen(InventoryOpenEvent event) {
+		int slot = 0;
 
-            if(Misc.isAirOrNull(item)) continue;
+		for(int i = 0; i < player.getInventory().getSize(); i++) {
+			ItemStack item = player.getInventory().getItem(i);
 
-            NBTItem nbtItem = new NBTItem(item);
-            if(nbtItem.hasKey(NBTTag.ITEM_JEWEL_ENCHANT.getRef())) {
-                if(nbtItem.getInteger(NBTTag.CURRENT_LIVES.getRef()).equals(nbtItem.getInteger(NBTTag.MAX_LIVES.getRef()))) continue;
-                ItemMeta meta = nbtItem.getItem().getItemMeta();
-                List<String> lore = meta.getLore();
-                lore.add("");
-                lore.add(ChatColor.YELLOW + "Click to repair!");
-                meta.setLore(lore);
-                nbtItem.getItem().setItemMeta(meta);
-                getInventory().setItem(slot, nbtItem.getItem());
-                slots.put(slot, i);
-                slot++;
-            }
+			if(Misc.isAirOrNull(item)) continue;
 
-        }
-    }
+			NBTItem nbtItem = new NBTItem(item);
+			if(nbtItem.hasKey(NBTTag.ITEM_JEWEL_ENCHANT.getRef())) {
+				if(nbtItem.getInteger(NBTTag.CURRENT_LIVES.getRef()).equals(nbtItem.getInteger(NBTTag.MAX_LIVES.getRef())))
+					continue;
+				ItemMeta meta = nbtItem.getItem().getItemMeta();
+				List<String> lore = meta.getLore();
+				lore.add("");
+				lore.add(ChatColor.YELLOW + "Click to repair!");
+				meta.setLore(lore);
+				nbtItem.getItem().setItemMeta(meta);
+				getInventory().setItem(slot, nbtItem.getItem());
+				slots.put(slot, i);
+				slot++;
+			}
 
-    @Override
-    public void onClose(InventoryCloseEvent event) {
-    }
+		}
+	}
+
+	@Override
+	public void onClose(InventoryCloseEvent event) {
+	}
 
 }

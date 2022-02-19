@@ -58,13 +58,15 @@ import java.util.*;
 //import net.kyori.adventure.audience.Audience;
 
 public class PlayerManager implements Listener {
-//	public static Map<Player, BossBarManager> bossBars = new HashMap<>();
+	//	public static Map<Player, BossBarManager> bossBars = new HashMap<>();
 	static {
 		new BukkitRunnable() {
 			@Override
 			public void run() {
-				for(Non non : NonManager.nons) if(non.non != null) ((CraftPlayer) non.non).getHandle().getDataWatcher().watch(9, (byte) 0);
-				for(Player onlinePlayer : Bukkit.getOnlinePlayers()) ((CraftPlayer) onlinePlayer).getHandle().getDataWatcher().watch(9, (byte) 0);
+				for(Non non : NonManager.nons)
+					if(non.non != null) ((CraftPlayer) non.non).getHandle().getDataWatcher().watch(9, (byte) 0);
+				for(Player onlinePlayer : Bukkit.getOnlinePlayers())
+					((CraftPlayer) onlinePlayer).getHandle().getDataWatcher().watch(9, (byte) 0);
 			}
 		}.runTaskTimer(PitSim.INSTANCE, 0L, 20L);
 
@@ -98,7 +100,8 @@ public class PlayerManager implements Listener {
 			@Override
 			public void run() {
 				for(Player player : Bukkit.getOnlinePlayers()) {
-					if(!player.hasPermission("group.eternal") || !MapManager.currentMap.lobbies.contains(player.getWorld())) continue;
+					if(!player.hasPermission("group.eternal") || !MapManager.currentMap.lobbies.contains(player.getWorld()))
+						continue;
 					if(SpawnManager.isInSpawn(player.getLocation())) continue;
 					List<Player> nearbyNons = new ArrayList<>();
 					for(Entity nearbyEntity : player.getNearbyEntities(4, 4, 4)) {
@@ -219,12 +222,13 @@ public class PlayerManager implements Listener {
 			if(pitKiller.bounty + amount > maxBounty) {
 				amount = maxBounty - pitKiller.bounty;
 				pitKiller.bounty = maxBounty;
-			}  else {
+			} else {
 				pitKiller.bounty += amount;
 			}
 			String message = "&6&lBOUNTY!&7 bump &6&l" + amount + "g&7 on %luckperms_prefix%" + killEvent.killer.getDisplayName() +
 					"&7 for high streak";
-			if(!pitKiller.bountiesDisabled) AOutput.send(killEvent.killer, PlaceholderAPI.setPlaceholders(killEvent.killer, message));
+			if(!pitKiller.bountiesDisabled)
+				AOutput.send(killEvent.killer, PlaceholderAPI.setPlaceholders(killEvent.killer, message));
 			Sounds.BOUNTY.play(killEvent.killer);
 		}
 	}
@@ -240,6 +244,7 @@ public class PlayerManager implements Listener {
 
 	public static List<UUID> pantsSwapCooldown = new ArrayList<>();
 	public static List<UUID> helmetSwapCooldown = new ArrayList<>();
+
 	@EventHandler
 	public static void onClick(PlayerInteractEvent event) {
 		Player player = event.getPlayer();
@@ -247,7 +252,9 @@ public class PlayerManager implements Listener {
 		if(event.getAction() != Action.RIGHT_CLICK_AIR && event.getAction() != Action.RIGHT_CLICK_BLOCK) return;
 		if(Misc.isAirOrNull(player.getItemInHand())) return;
 
-		int firstArrow = -1; boolean multipleStacks = false; boolean hasSpace = false;
+		int firstArrow = -1;
+		boolean multipleStacks = false;
+		boolean hasSpace = false;
 		if(player.getItemInHand().getType() == Material.BOW) {
 
 			NBTItem nbtItem = new NBTItem(player.getItemInHand());
@@ -267,7 +274,8 @@ public class PlayerManager implements Listener {
 					continue;
 				}
 				if(itemStack.getType() != Material.ARROW) continue;
-				if(firstArrow == -1) firstArrow = i; else {
+				if(firstArrow == -1) firstArrow = i;
+				else {
 					multipleStacks = true;
 					break;
 				}
@@ -285,7 +293,7 @@ public class PlayerManager implements Listener {
 			}
 		}
 
-		if(player.getItemInHand().getType().toString().contains("LEGGINGS")){
+		if(player.getItemInHand().getType().toString().contains("LEGGINGS")) {
 			if(Misc.isAirOrNull(player.getInventory().getLeggings())) return;
 
 			if(pantsSwapCooldown.contains(player.getUniqueId())) {
@@ -308,7 +316,7 @@ public class PlayerManager implements Listener {
 			Sounds.ARMOR_SWAP.play(player);
 		}
 
-		if(player.getItemInHand().getType().toString().contains("HELMET")){
+		if(player.getItemInHand().getType().toString().contains("HELMET")) {
 			if(player.isSneaking()) return;
 			if(Misc.isAirOrNull(player.getInventory().getHelmet())) return;
 
@@ -353,7 +361,7 @@ public class PlayerManager implements Listener {
 	public void onMove(PlayerMoveEvent event) {
 		if(event.getPlayer().getLocation().getY() < 20 && event.getPlayer().getWorld() == Bukkit.getWorld("tutorial"))
 			DamageManager.death(event.getPlayer());
-		if(event.getPlayer().getLocation().getY() < 20 && MapManager.currentMap.lobbies.contains(event.getPlayer().getWorld()))  {
+		if(event.getPlayer().getLocation().getY() < 20 && MapManager.currentMap.lobbies.contains(event.getPlayer().getWorld())) {
 			DamageManager.death(event.getPlayer());
 		}
 	}
@@ -494,23 +502,23 @@ public class PlayerManager implements Listener {
 					pitPlayer.prefix = PrestigeValues.getPlayerPrefixNameTag(pitPlayer.player) + PlaceholderAPI.setPlaceholders(player, message);
 				}
 			}
-		}.runTaskLater(PitSim.INSTANCE,  5L);
+		}.runTaskLater(PitSim.INSTANCE, 5L);
 	}
 
 	public static void removeIllegalItems(Player player) {
-			int itemsRemoved = 0;
-			for(int i = 0; i < 36; i++) {
+		int itemsRemoved = 0;
+		for(int i = 0; i < 36; i++) {
 
-				ItemStack itemStack = player.getInventory().getItem(i);
-				if(EnchantManager.isIllegalItem(itemStack)) {
-					player.getInventory().setItem(i, new ItemStack(Material.AIR));
-					itemsRemoved++;
-				}
-			}
-			if(EnchantManager.isIllegalItem(player.getEquipment().getLeggings())) {
-				player.getEquipment().setLeggings(new ItemStack(Material.AIR));
+			ItemStack itemStack = player.getInventory().getItem(i);
+			if(EnchantManager.isIllegalItem(itemStack)) {
+				player.getInventory().setItem(i, new ItemStack(Material.AIR));
 				itemsRemoved++;
 			}
+		}
+		if(EnchantManager.isIllegalItem(player.getEquipment().getLeggings())) {
+			player.getEquipment().setLeggings(new ItemStack(Material.AIR));
+			itemsRemoved++;
+		}
 //			if(itemsRemoved != 0) AOutput.error(player, "&c" + itemsRemoved + " &7illegal item" +
 //					(itemsRemoved == 1 ? " was" : "s were") + " removed from your inventory");
 
@@ -518,7 +526,8 @@ public class PlayerManager implements Listener {
 
 	@EventHandler
 	public void onCraft(InventoryClickEvent event) {
-		if(event.getSlot() == 80 || event.getSlot() == 81 || event.getSlot() == 82 || event.getSlot() == 83) event.setCancelled(true);
+		if(event.getSlot() == 80 || event.getSlot() == 81 || event.getSlot() == 82 || event.getSlot() == 83)
+			event.setCancelled(true);
 	}
 
 	@EventHandler

@@ -132,14 +132,14 @@ public class DupeManager implements Listener {
 		List<UUID> allPlayerUUIDs = new ArrayList<>();
 		for(Map.Entry<UUID, APlayer> entry : APlayerData.getAllData().entrySet()) allPlayerUUIDs.add(entry.getKey());
 
-		int count = 0; int total = allPlayerUUIDs.size();
+		int count = 0;
+		int total = allPlayerUUIDs.size();
 		for(UUID uuid : allPlayerUUIDs) {
 			if(count++ % 100 == 0) AOutput.log("Stage 1: " + count + "/" + total);
 
 			setupMiscItemTracking(uuid);
 
-			try (FileReader reader = new FileReader("mstore/galacticvaults_players/" + uuid + ".json"))
-			{
+			try(FileReader reader = new FileReader("mstore/galacticvaults_players/" + uuid + ".json")) {
 				JSONObject data = (JSONObject) jsonParser.parse(reader);
 				JSONObject vaults = (JSONObject) data.get("vaultContents");
 				for(int i = 1; i < 19; i++) {
@@ -155,12 +155,14 @@ public class DupeManager implements Listener {
 
 						trackMiscItem(uuid, itemStack, nbtItem);
 
-						if(nbtItem.hasKey(NBTTag.GHELMET_UUID.getRef())) trackedItems.add(new TrackedItem(uuid, nbtItem, i, j));
-						if(!nbtItem.hasKey(NBTTag.ITEM_UUID.getRef()) || !nbtItem.hasKey(NBTTag.ITEM_JEWEL_ENCHANT.getRef())) continue;
+						if(nbtItem.hasKey(NBTTag.GHELMET_UUID.getRef()))
+							trackedItems.add(new TrackedItem(uuid, nbtItem, i, j));
+						if(!nbtItem.hasKey(NBTTag.ITEM_UUID.getRef()) || !nbtItem.hasKey(NBTTag.ITEM_JEWEL_ENCHANT.getRef()))
+							continue;
 						trackedItems.add(new TrackedItem(uuid, nbtItem, i, j));
 					}
 				}
-			} catch (IOException | ParseException e) {
+			} catch(IOException | ParseException e) {
 				if(!(e instanceof FileNotFoundException)) e.printStackTrace();
 			}
 
@@ -169,9 +171,9 @@ public class DupeManager implements Listener {
 				NBTTagCompound nbt = NBTCompressedStreamTools.a(new FileInputStream(inventoryFile));
 				NBTTagList inventory = (NBTTagList) nbt.get("Inventory");
 //                Inventory inv = new CraftInventoryCustom(null, inventory.size());
-				for (int i = 0; i < inventory.size(); i++) {
+				for(int i = 0; i < inventory.size(); i++) {
 					NBTTagCompound compound = inventory.get(i);
-					if (!compound.isEmpty()) {
+					if(!compound.isEmpty()) {
 						ItemStack itemStack = CraftItemStack.asBukkitCopy(net.minecraft.server.v1_8_R3.ItemStack.createStack(compound));
 //                        inv.setItem(i, itemStack);
 
@@ -180,13 +182,15 @@ public class DupeManager implements Listener {
 
 						trackMiscItem(uuid, itemStack, nbtItem);
 
-						if(nbtItem.hasKey(NBTTag.GHELMET_UUID.getRef())) trackedItems.add(new TrackedItem(uuid, nbtItem, i));
-						if(!nbtItem.hasKey(NBTTag.ITEM_UUID.getRef()) || !nbtItem.hasKey(NBTTag.ITEM_JEWEL_ENCHANT.getRef())) continue;
+						if(nbtItem.hasKey(NBTTag.GHELMET_UUID.getRef()))
+							trackedItems.add(new TrackedItem(uuid, nbtItem, i));
+						if(!nbtItem.hasKey(NBTTag.ITEM_UUID.getRef()) || !nbtItem.hasKey(NBTTag.ITEM_JEWEL_ENCHANT.getRef()))
+							continue;
 						trackedItems.add(new TrackedItem(uuid, nbtItem, i));
 					}
 				}
 
-			} catch (IOException e) {
+			} catch(IOException e) {
 				if(!(e instanceof FileNotFoundException)) e.printStackTrace();
 			}
 		}
@@ -241,7 +245,7 @@ public class DupeManager implements Listener {
 					.setColor(Color.BLACK);
 			discordWebhook.addEmbed(embedObject);
 
-			Stream<Map.Entry<UUID,Integer>> sorted = miscItem.itemMap.entrySet().stream()
+			Stream<Map.Entry<UUID, Integer>> sorted = miscItem.itemMap.entrySet().stream()
 					.sorted(Collections.reverseOrder(Map.Entry.comparingByValue()))
 					.limit(40);
 			AtomicInteger mapCount = new AtomicInteger(1);

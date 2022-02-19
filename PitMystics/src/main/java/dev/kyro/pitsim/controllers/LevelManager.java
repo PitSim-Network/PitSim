@@ -53,7 +53,7 @@ public class LevelManager {
 		Sounds.LEVEL_UP.play(player);
 		Misc.sendTitle(player, "&e&lLEVEL UP!", 40);
 		Misc.sendSubTitle(player, prestigeInfo.getOpenBracket() + PrestigeValues.getLevelColor(pitPlayer.level - 1) + (pitPlayer.level - 1) + prestigeInfo.getCloseBracket() + " &7\u279F " + prestigeInfo.getOpenBracket() + PrestigeValues.getLevelColor(pitPlayer.level) + pitPlayer.level + prestigeInfo.getCloseBracket(), 40);
-		AOutput.send(player,  "&e&lPIT LEVEL UP! " + prestigeInfo.getOpenBracket() + PrestigeValues.getLevelColor(pitPlayer.level - 1) + (pitPlayer.level - 1) + prestigeInfo.getCloseBracket() + " &7\u279F " + prestigeInfo.getOpenBracket() + PrestigeValues.getLevelColor(pitPlayer.level) + pitPlayer.level + prestigeInfo.getCloseBracket());
+		AOutput.send(player, "&e&lPIT LEVEL UP! " + prestigeInfo.getOpenBracket() + PrestigeValues.getLevelColor(pitPlayer.level - 1) + (pitPlayer.level - 1) + prestigeInfo.getCloseBracket() + " &7\u279F " + prestigeInfo.getOpenBracket() + PrestigeValues.getLevelColor(pitPlayer.level) + pitPlayer.level + prestigeInfo.getCloseBracket());
 
 		String message = "%luckperms_prefix%";
 		if(pitPlayer.megastreak.isOnMega()) {

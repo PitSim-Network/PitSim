@@ -120,7 +120,6 @@ public class PitBlob extends PitEnchant {
 		}
 
 
-
 		Slime slime = (Slime) event.getEntity();
 
 		if(getOwner(slime) == event.getEntity()) {

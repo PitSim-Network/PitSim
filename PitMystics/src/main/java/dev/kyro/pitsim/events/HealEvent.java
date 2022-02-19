@@ -43,7 +43,8 @@ public class HealEvent extends Event {
 
 	public double getEffectiveHeal() {
 		EntityPlayer nmsPlayer = ((CraftPlayer) player).getHandle();
-		if(healType != HealType.HEALTH && nmsPlayer.getAbsorptionHearts() < max) return Math.min(getFinalHeal(), max - nmsPlayer.getAbsorptionHearts());
+		if(healType != HealType.HEALTH && nmsPlayer.getAbsorptionHearts() < max)
+			return Math.min(getFinalHeal(), max - nmsPlayer.getAbsorptionHearts());
 		return Math.min(getFinalHeal(), player.getMaxHealth() - player.getHealth());
 	}
 

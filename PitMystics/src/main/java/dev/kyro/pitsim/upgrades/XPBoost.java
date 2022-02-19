@@ -29,7 +29,8 @@ public class XPBoost extends RenownUpgrade {
 		List<String> lore = new ArrayList<>();
 		if(UpgradeManager.hasUpgrade(player, this)) lore.add(ChatColor.translateAlternateColorCodes('&',
 				"&7Current: &b+" + 5 * UpgradeManager.getTier(player, this) + " &bXP"));
-		if(UpgradeManager.hasUpgrade(player, this)) lore.add(ChatColor.GRAY + "Tier: " + ChatColor.GREEN + AUtil.toRoman(UpgradeManager.getTier(player, this)));
+		if(UpgradeManager.hasUpgrade(player, this))
+			lore.add(ChatColor.GRAY + "Tier: " + ChatColor.GREEN + AUtil.toRoman(UpgradeManager.getTier(player, this)));
 		if(UpgradeManager.hasUpgrade(player, this)) lore.add("");
 		lore.add(ChatColor.GRAY + "Each tier:");
 		lore.add(ChatColor.GRAY + "Earn " + ChatColor.AQUA + "+5 XP " + ChatColor.GRAY + "from kills.");
@@ -39,7 +40,9 @@ public class XPBoost extends RenownUpgrade {
 	}
 
 	@Override
-	public AGUIPanel getCustomPanel() {return null;}
+	public AGUIPanel getCustomPanel() {
+		return null;
+	}
 
 	@Override
 	public List<Integer> getTierCosts() {

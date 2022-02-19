@@ -27,7 +27,8 @@ public class TaxEvasion extends RenownUpgrade {
 		List<String> lore = new ArrayList<>();
 		if(UpgradeManager.hasUpgrade(player, this)) lore.add(ChatColor.translateAlternateColorCodes('&',
 				"&7Current: &6-" + 5 * UpgradeManager.getTier(player, this) + "% Gold"));
-		if(UpgradeManager.hasUpgrade(player, this)) lore.add(ChatColor.GRAY + "Tier: " + ChatColor.GREEN + AUtil.toRoman(UpgradeManager.getTier(player, this)));
+		if(UpgradeManager.hasUpgrade(player, this))
+			lore.add(ChatColor.GRAY + "Tier: " + ChatColor.GREEN + AUtil.toRoman(UpgradeManager.getTier(player, this)));
 		if(UpgradeManager.hasUpgrade(player, this)) lore.add("");
 		lore.add(ChatColor.GRAY + "Each tier:");
 		lore.add(ChatColor.translateAlternateColorCodes('&', "&dRARE! &9Billionaire &7costs"));
@@ -38,7 +39,9 @@ public class TaxEvasion extends RenownUpgrade {
 	}
 
 	@Override
-	public AGUIPanel getCustomPanel() {return null;}
+	public AGUIPanel getCustomPanel() {
+		return null;
+	}
 
 	@Override
 	public List<Integer> getTierCosts() {

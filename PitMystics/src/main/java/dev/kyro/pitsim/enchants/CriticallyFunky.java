@@ -27,7 +27,6 @@ public class CriticallyFunky extends PitEnchant {
 		int defenderEnchantLvl = attackEvent.getDefenderEnchantLevel(this);
 
 
-
 		if(defenderEnchantLvl != 0 && Misc.isCritical(attackEvent.attacker)) {
 			HitCounter.setCharge(attackEvent.defender, this, 1);
 			attackEvent.multipliers.add(Misc.getReductionMultiplier(getReduction(defenderEnchantLvl)));
@@ -69,7 +68,7 @@ public class CriticallyFunky extends PitEnchant {
 		return 100;
 	}
 
-    public double getDamage(int enchantLvl) {
+	public double getDamage(int enchantLvl) {
 		return enchantLvl * 15 - 15;
-    }
+	}
 }

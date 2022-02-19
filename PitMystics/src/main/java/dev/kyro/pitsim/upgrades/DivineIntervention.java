@@ -19,6 +19,7 @@ import java.util.List;
 
 public class DivineIntervention extends RenownUpgrade {
 	public static DivineIntervention INSTANCE;
+
 	public DivineIntervention() {
 		super("Divine Intervention", "DIVINE_INTERVENTION", 25, 24, 16, true, 3);
 		INSTANCE = this;
@@ -32,7 +33,8 @@ public class DivineIntervention extends RenownUpgrade {
 		List<String> lore = new ArrayList<>();
 		if(UpgradeManager.hasUpgrade(player, this)) lore.add(ChatColor.translateAlternateColorCodes('&',
 				"&7Current: &e" + (5 * UpgradeManager.getTier(player, this)) + "% chance"));
-		if(UpgradeManager.hasUpgrade(player, this)) lore.add(ChatColor.GRAY + "Tier: " + ChatColor.GREEN + AUtil.toRoman(UpgradeManager.getTier(player, this)));
+		if(UpgradeManager.hasUpgrade(player, this))
+			lore.add(ChatColor.GRAY + "Tier: " + ChatColor.GREEN + AUtil.toRoman(UpgradeManager.getTier(player, this)));
 		if(UpgradeManager.hasUpgrade(player, this)) lore.add("");
 		lore.add(ChatColor.GRAY + "Each tier:");
 		lore.add(ChatColor.YELLOW + "+5% chance " + ChatColor.GRAY + "to keep your");
@@ -56,10 +58,10 @@ public class DivineIntervention extends RenownUpgrade {
 			AOutput.send(player, "&b&lDIVINE INTERVENTION! &7Inventory saved!");
 
 			Sounds.SoundMoment soundMoment = new Sounds.SoundMoment(3);
-			soundMoment.add(Sound.ZOMBIE_UNFECT,2, 1.5);
-			soundMoment.add(Sound.ZOMBIE_UNFECT,2, 1.6);
-			soundMoment.add(Sound.ZOMBIE_UNFECT,2, 1.7);
-			soundMoment.add(Sound.ZOMBIE_UNFECT,2, 1.7);
+			soundMoment.add(Sound.ZOMBIE_UNFECT, 2, 1.5);
+			soundMoment.add(Sound.ZOMBIE_UNFECT, 2, 1.6);
+			soundMoment.add(Sound.ZOMBIE_UNFECT, 2, 1.7);
+			soundMoment.add(Sound.ZOMBIE_UNFECT, 2, 1.7);
 			soundMoment.play(player);
 		}
 
@@ -67,7 +69,9 @@ public class DivineIntervention extends RenownUpgrade {
 	}
 
 	@Override
-	public AGUIPanel getCustomPanel() {return null;}
+	public AGUIPanel getCustomPanel() {
+		return null;
+	}
 
 	@Override
 	public List<Integer> getTierCosts() {

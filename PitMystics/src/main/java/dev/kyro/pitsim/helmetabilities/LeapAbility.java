@@ -19,7 +19,7 @@ import java.util.List;
 public class LeapAbility extends HelmetAbility {
 	public LeapAbility(Player player) {
 
-		super(player,"Leap", "leap", false, 10);
+		super(player, "Leap", "leap", false, 10);
 	}
 
 
@@ -44,7 +44,7 @@ public class LeapAbility extends HelmetAbility {
 
 		assert goldenHelmet != null;
 		if(!GoldenHelmet.withdrawGold(player, goldenHelmet, 10000)) {
-			AOutput.error(player,"&cNot enough gold!");
+			AOutput.error(player, "&cNot enough gold!");
 			Sounds.NO.play(player);
 			return;
 		}

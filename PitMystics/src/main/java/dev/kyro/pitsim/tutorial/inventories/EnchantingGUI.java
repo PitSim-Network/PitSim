@@ -12,6 +12,7 @@ public class EnchantingGUI extends AGUI {
 	public EnchantingPanel enchantingPanel;
 
 	public static ItemStack back;
+
 	static {
 		back = new AItemStackBuilder(new ItemStack(Material.BARRIER))
 				.setName("&cBack")

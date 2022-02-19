@@ -31,10 +31,11 @@ public class UberIncrease extends RenownUpgrade {
 		List<String> lore = new ArrayList<>();
 		if(UpgradeManager.hasUpgrade(player, this)) lore.add(ChatColor.translateAlternateColorCodes('&',
 				"&7Current: &f+" + UpgradeManager.getTier(player, this) + " &7daily &dUberstreaks"));
-		if(UpgradeManager.hasUpgrade(player, this)) lore.add(ChatColor.GRAY + "Tier: " + ChatColor.GREEN + AUtil.toRoman(UpgradeManager.getTier(player, this)));
+		if(UpgradeManager.hasUpgrade(player, this))
+			lore.add(ChatColor.GRAY + "Tier: " + ChatColor.GREEN + AUtil.toRoman(UpgradeManager.getTier(player, this)));
 		if(UpgradeManager.hasUpgrade(player, this)) lore.add("");
 		lore.add(ChatColor.GRAY + "Each tier:");
-		lore.add(ChatColor.GRAY + "Daily " + ChatColor.LIGHT_PURPLE + "Uberstreak "  + ChatColor.GRAY + "limit is");
+		lore.add(ChatColor.GRAY + "Daily " + ChatColor.LIGHT_PURPLE + "Uberstreak " + ChatColor.GRAY + "limit is");
 		lore.add(ChatColor.GRAY + "increased by " + ChatColor.WHITE + 1 + ChatColor.GRAY + ".");
 		meta.setLore(UpgradeManager.loreBuilder(this, player, lore, isCustomPanel));
 		item.setItemMeta(meta);
@@ -46,7 +47,9 @@ public class UberIncrease extends RenownUpgrade {
 	}
 
 	@Override
-	public AGUIPanel getCustomPanel() {return null;}
+	public AGUIPanel getCustomPanel() {
+		return null;
+	}
 
 	@Override
 	public List<Integer> getTierCosts() {

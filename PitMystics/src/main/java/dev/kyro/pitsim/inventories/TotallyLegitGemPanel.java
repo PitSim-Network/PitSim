@@ -22,112 +22,114 @@ import java.util.Map;
 
 public class TotallyLegitGemPanel extends AGUIPanel {
 
-    PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
-    public Map<Integer, Integer> slots = new HashMap<>();
-    public GemGUI gemGUI;
-    public TotallyLegitGemPanel(AGUI gui) {
-        super(gui);
-        gemGUI = (GemGUI) gui;
+	PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
+	public Map<Integer, Integer> slots = new HashMap<>();
+	public GemGUI gemGUI;
 
-    }
+	public TotallyLegitGemPanel(AGUI gui) {
+		super(gui);
+		gemGUI = (GemGUI) gui;
 
-    @Override
-    public String getName() {
-        return "Totally Legit Selector";
-    }
+	}
 
-    @Override
-    public int getRows() {
-        return 4;
-    }
+	@Override
+	public String getName() {
+		return "Totally Legit Selector";
+	}
 
-    @Override
-    public void onClick(InventoryClickEvent event) {
-        int slot = event.getSlot();
+	@Override
+	public int getRows() {
+		return 4;
+	}
 
-        if(event.getClickedInventory().getHolder() == this) {
+	@Override
+	public void onClick(InventoryClickEvent event) {
+		int slot = event.getSlot();
 
-            int invSlot = slots.get(slot);
+		if(event.getClickedInventory().getHolder() == this) {
 
-            for(int i = 0; i < player.getInventory().getSize(); i++) {
-                if(i == invSlot) {
-                    NBTItem nbtItem = new NBTItem(player.getInventory().getItem(i));
-                    nbtItem.setBoolean(NBTTag.IS_GEMMED.getRef(), true);
+			int invSlot = slots.get(slot);
 
-                    PitEnchant enchant = null;
-                    Map<PitEnchant, Integer> enchants = EnchantManager.getEnchantsOnItem(nbtItem.getItem());
-                    for(Map.Entry<PitEnchant, Integer> entry : enchants.entrySet()) {
-                        if(entry.getValue() == 2) enchant = entry.getKey();
-                    }
+			for(int i = 0; i < player.getInventory().getSize(); i++) {
+				if(i == invSlot) {
+					NBTItem nbtItem = new NBTItem(player.getInventory().getItem(i));
+					nbtItem.setBoolean(NBTTag.IS_GEMMED.getRef(), true);
 
-                    EnchantManager.setItemLore(nbtItem.getItem());
-                    try {
-                        player.getInventory().setItem(i, EnchantManager.addEnchant(nbtItem.getItem(), enchant, 3, false));
-                    } catch(Exception e) {
-                        e.printStackTrace();
-                    }
-                    player.closeInventory();
-                    Sounds.GEM_USE.play(player);
+					PitEnchant enchant = null;
+					Map<PitEnchant, Integer> enchants = EnchantManager.getEnchantsOnItem(nbtItem.getItem());
+					for(Map.Entry<PitEnchant, Integer> entry : enchants.entrySet()) {
+						if(entry.getValue() == 2) enchant = entry.getKey();
+					}
 
-                    PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
-                    if(pitPlayer.stats != null) pitPlayer.stats.itemsGemmed++;
+					EnchantManager.setItemLore(nbtItem.getItem());
+					try {
+						player.getInventory().setItem(i, EnchantManager.addEnchant(nbtItem.getItem(), enchant, 3, false));
+					} catch(Exception e) {
+						e.printStackTrace();
+					}
+					player.closeInventory();
+					Sounds.GEM_USE.play(player);
 
-                    int itemsToRemove = 1;
-                    for(int j = 0; j < player.getInventory().getContents().length; j++) {
-                        if(!Misc.isAirOrNull(player.getInventory().getItem(j))) {
-                            NBTItem nbtItem2 = new NBTItem(player.getInventory().getItem(j));
-                            if(nbtItem2.hasKey(NBTTag.IS_GEM.getRef())) {
-                                int preAmount = player.getInventory().getItem(j).getAmount();
-                                int newAmount = Math.max(0, preAmount - itemsToRemove);
-                                itemsToRemove = Math.max(0, itemsToRemove - preAmount);
-                                nbtItem2.getItem().setAmount(newAmount);
-                                player.getInventory().setItem(j, nbtItem2.getItem());
-                                if(itemsToRemove == 0) {
-                                    break;
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
-        updateInventory();
-    }
+					PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
+					if(pitPlayer.stats != null) pitPlayer.stats.itemsGemmed++;
 
-    @Override
-    public void onOpen(InventoryOpenEvent event) {
-        int slot = 0;
+					int itemsToRemove = 1;
+					for(int j = 0; j < player.getInventory().getContents().length; j++) {
+						if(!Misc.isAirOrNull(player.getInventory().getItem(j))) {
+							NBTItem nbtItem2 = new NBTItem(player.getInventory().getItem(j));
+							if(nbtItem2.hasKey(NBTTag.IS_GEM.getRef())) {
+								int preAmount = player.getInventory().getItem(j).getAmount();
+								int newAmount = Math.max(0, preAmount - itemsToRemove);
+								itemsToRemove = Math.max(0, itemsToRemove - preAmount);
+								nbtItem2.getItem().setAmount(newAmount);
+								player.getInventory().setItem(j, nbtItem2.getItem());
+								if(itemsToRemove == 0) {
+									break;
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+		updateInventory();
+	}
 
-        for(int i = 0; i < player.getInventory().getSize(); i++) {
-            ItemStack item = player.getInventory().getItem(i);
-            if(Misc.isAirOrNull(item)) continue;
+	@Override
+	public void onOpen(InventoryOpenEvent event) {
+		int slot = 0;
 
-            NBTItem nbtItem = new NBTItem(item);
-            if(nbtItem.hasKey(NBTTag.ITEM_JEWEL_ENCHANT.getRef()) && !nbtItem.hasKey(NBTTag.IS_GEMMED.getRef())) {
-                PitEnchant enchant = null;
-                if(nbtItem.getInteger(NBTTag.ITEM_ENCHANTS.getRef()) < 3 || nbtItem.getInteger(NBTTag.ITEM_TOKENS.getRef()) < 8) continue;
-                Map<PitEnchant, Integer> enchants = EnchantManager.getEnchantsOnItem(nbtItem.getItem());
-                for(Map.Entry<PitEnchant, Integer> entry : enchants.entrySet()) {
-                    if(entry.getValue() == 2) enchant = entry.getKey();
-                }
+		for(int i = 0; i < player.getInventory().getSize(); i++) {
+			ItemStack item = player.getInventory().getItem(i);
+			if(Misc.isAirOrNull(item)) continue;
 
-                if(enchant == null || enchant.isRare) continue;
-                ItemMeta meta = nbtItem.getItem().getItemMeta();
-                List<String> lore = meta.getLore();
-                lore.add("");
-                lore.add(ChatColor.YELLOW + "Click to upgrade!");
-                meta.setLore(lore);
-                nbtItem.getItem().setItemMeta(meta);
-                getInventory().setItem(slot, nbtItem.getItem());
-                slots.put(slot, i);
-                slot++;
-            }
+			NBTItem nbtItem = new NBTItem(item);
+			if(nbtItem.hasKey(NBTTag.ITEM_JEWEL_ENCHANT.getRef()) && !nbtItem.hasKey(NBTTag.IS_GEMMED.getRef())) {
+				PitEnchant enchant = null;
+				if(nbtItem.getInteger(NBTTag.ITEM_ENCHANTS.getRef()) < 3 || nbtItem.getInteger(NBTTag.ITEM_TOKENS.getRef()) < 8)
+					continue;
+				Map<PitEnchant, Integer> enchants = EnchantManager.getEnchantsOnItem(nbtItem.getItem());
+				for(Map.Entry<PitEnchant, Integer> entry : enchants.entrySet()) {
+					if(entry.getValue() == 2) enchant = entry.getKey();
+				}
 
-        }
-    }
+				if(enchant == null || enchant.isRare) continue;
+				ItemMeta meta = nbtItem.getItem().getItemMeta();
+				List<String> lore = meta.getLore();
+				lore.add("");
+				lore.add(ChatColor.YELLOW + "Click to upgrade!");
+				meta.setLore(lore);
+				nbtItem.getItem().setItemMeta(meta);
+				getInventory().setItem(slot, nbtItem.getItem());
+				slots.put(slot, i);
+				slot++;
+			}
 
-    @Override
-    public void onClose(InventoryCloseEvent event) {
-    }
+		}
+	}
+
+	@Override
+	public void onClose(InventoryCloseEvent event) {
+	}
 
 }

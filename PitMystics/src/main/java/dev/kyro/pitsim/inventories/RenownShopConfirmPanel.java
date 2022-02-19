@@ -29,6 +29,7 @@ import java.util.List;
 public class RenownShopConfirmPanel extends AGUIPanel {
 	public PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
 	public RenownShopGUI renownShopGUI;
+
 	public RenownShopConfirmPanel(AGUI gui) {
 		super(gui);
 		renownShopGUI = (RenownShopGUI) gui;
@@ -88,7 +89,7 @@ public class RenownShopConfirmPanel extends AGUIPanel {
 				}
 			}
 
-			if(slot == 15)  {
+			if(slot == 15) {
 				RenownShopGUI.purchaseConfirmations.remove(player);
 				openPanel(renownShopGUI.getHomePanel());
 			}
@@ -116,7 +117,6 @@ public class RenownShopConfirmPanel extends AGUIPanel {
 		confirm.setItemMeta(confirmMeta);
 
 		getInventory().setItem(11, confirm);
-
 
 
 		ItemStack cancel = new ItemStack(Material.STAINED_CLAY, 1, (short) 14);

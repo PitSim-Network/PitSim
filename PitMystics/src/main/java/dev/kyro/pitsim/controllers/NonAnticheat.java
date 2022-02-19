@@ -92,16 +92,19 @@ public class NonAnticheat implements Listener {
 			double abnormalAngle = getAbnormalAnglePercent();
 			double abnormalDistance = getAbnormalDistancePercent();
 			if(getRecentHits() < 10) return;
-			if(abnormalAngle < AConfig.getInt("anticheat.abnormal-angle") && abnormalDistance < AConfig.getInt("anticheat.abnormal-distance")) return;
-			if(recentAlertMap.containsKey(uuid) && recentAlertMap.get(uuid) + AConfig.getInt("anticheat.alert-interval") * 1000L >= System.currentTimeMillis()) return;
+			if(abnormalAngle < AConfig.getInt("anticheat.abnormal-angle") && abnormalDistance < AConfig.getInt("anticheat.abnormal-distance"))
+				return;
+			if(recentAlertMap.containsKey(uuid) && recentAlertMap.get(uuid) + AConfig.getInt("anticheat.alert-interval") * 1000L >= System.currentTimeMillis())
+				return;
 			recentAlertMap.put(uuid, System.currentTimeMillis());
 			DecimalFormat format = new DecimalFormat("0.0");
 			Player player = Bukkit.getPlayer(uuid);
 			if(player == null) return;
 			for(Player onlinePlayer : Bukkit.getOnlinePlayers()) {
 				if(!onlinePlayer.isOp()) continue;
-				if(!AConfig.getStringList("whitelisted-ips").contains(onlinePlayer.getAddress().getAddress().toString())) return;
-				AOutput.send(onlinePlayer, "&c&lANTICHEAT&6 " + name + " &fmay be cheating &7(p: " + ((CraftPlayer) player).getHandle().ping + "ms, d: "+
+				if(!AConfig.getStringList("whitelisted-ips").contains(onlinePlayer.getAddress().getAddress().toString()))
+					return;
+				AOutput.send(onlinePlayer, "&c&lANTICHEAT&6 " + name + " &fmay be cheating &7(p: " + ((CraftPlayer) player).getHandle().ping + "ms, d: " +
 						format.format(abnormalDistance) + ", a: " + format.format(abnormalAngle) + ")");
 			}
 		}

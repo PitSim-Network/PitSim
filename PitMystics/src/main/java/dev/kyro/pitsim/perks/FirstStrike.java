@@ -37,7 +37,7 @@ public class FirstStrike extends PitPerk {
 
 		if(!hitList.contains(attackEvent.defender)) {
 			attackEvent.increasePercent += 30 / 100D;
-			Misc.applyPotionEffect(attackEvent.attacker, PotionEffectType.SPEED, 5 * 20, 0 , false, false);
+			Misc.applyPotionEffect(attackEvent.attacker, PotionEffectType.SPEED, 5 * 20, 0, false, false);
 		}
 
 

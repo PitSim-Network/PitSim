@@ -20,7 +20,8 @@ public class BoosterCommand implements CommandExecutor {
 		if(player.isOp() && args.length != 0) {
 
 			String concatenatedBoosters = "";
-			for(Booster booster : BoosterManager.boosterList) concatenatedBoosters += concatenatedBoosters.isEmpty() ? booster.refName : ", " + booster.refName;
+			for(Booster booster : BoosterManager.boosterList)
+				concatenatedBoosters += concatenatedBoosters.isEmpty() ? booster.refName : ", " + booster.refName;
 			if(args.length < 2) {
 				AOutput.send(player, "Usage: /booster <" + concatenatedBoosters + "> <minutes|clear>");
 				return false;

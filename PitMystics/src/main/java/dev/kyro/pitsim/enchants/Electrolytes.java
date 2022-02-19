@@ -20,12 +20,12 @@ public class Electrolytes extends PitEnchant {
 		isUncommonEnchant = true;
 	}
 
-//	@EventHandler
+	//	@EventHandler
 	public void onAttack(AttackEvent.Apply attackEvent) {
 		if(!canApply(attackEvent)) return;
 
 		int attackerEnchantLevel = attackEvent.getAttackerEnchantLevel(this);
-		for (PotionEffect effect : attackEvent.attacker.getActivePotionEffects()) {
+		for(PotionEffect effect : attackEvent.attacker.getActivePotionEffects()) {
 			if(effect.getType().equals(PotionEffectType.SPEED) && effect.getAmplifier() == 3 && attackerEnchantLevel == 0 && effect.getDuration() > 85) {
 				attackEvent.attacker.removePotionEffect(PotionEffectType.SPEED);
 			}
@@ -40,9 +40,9 @@ public class Electrolytes extends PitEnchant {
 		if(killEvent.killer.hasPotionEffect(PotionEffectType.SPEED)) {
 
 			int speedDuration = 0;
-			for (PotionEffect potioneffect : killEvent.killer.getActivePotionEffects()) {
+			for(PotionEffect potioneffect : killEvent.killer.getActivePotionEffects()) {
 				int duration = potioneffect.getDuration();
-				if (potioneffect.getType() == PotionEffectType.SPEED) {
+				if(potioneffect.getType() == PotionEffectType.SPEED) {
 					speedDuration = duration;
 				}
 			}
@@ -56,21 +56,21 @@ public class Electrolytes extends PitEnchant {
 
 					if(activePotionEffect.getAmplifier() > 0) {
 
-						if(activePotionEffect.getDuration() + (getSeconds(enchantLvl) * 20) / 2> getMaxSeconds(enchantLvl) * 20) {
+						if(activePotionEffect.getDuration() + (getSeconds(enchantLvl) * 20) / 2 > getMaxSeconds(enchantLvl) * 20) {
 
-						Misc.applyPotionEffect(killEvent.killer, PotionEffectType.SPEED,getMaxSeconds(enchantLvl) * 20,
-								activePotionEffect.getAmplifier(), false, false);
+							Misc.applyPotionEffect(killEvent.killer, PotionEffectType.SPEED, getMaxSeconds(enchantLvl) * 20,
+									activePotionEffect.getAmplifier(), false, false);
 						} else {
-						Misc.applyPotionEffect(killEvent.killer, PotionEffectType.SPEED,(activePotionEffect.getDuration()
-								+ (getSeconds(enchantLvl) * 20) / 2), activePotionEffect.getAmplifier(), false, false);
+							Misc.applyPotionEffect(killEvent.killer, PotionEffectType.SPEED, (activePotionEffect.getDuration()
+									+ (getSeconds(enchantLvl) * 20) / 2), activePotionEffect.getAmplifier(), false, false);
 						}
 					} else {
 						if(activePotionEffect.getDuration() + (getSeconds(enchantLvl) * 20) > getMaxSeconds(enchantLvl) * 20) {
 
-							Misc.applyPotionEffect(killEvent.killer, PotionEffectType.SPEED,getMaxSeconds(enchantLvl) * 20,
+							Misc.applyPotionEffect(killEvent.killer, PotionEffectType.SPEED, getMaxSeconds(enchantLvl) * 20,
 									activePotionEffect.getAmplifier(), false, false);
 						} else {
-							Misc.applyPotionEffect(killEvent.killer, PotionEffectType.SPEED,(int)
+							Misc.applyPotionEffect(killEvent.killer, PotionEffectType.SPEED, (int)
 											activePotionEffect.getDuration() + (getSeconds(enchantLvl) * 20),
 									activePotionEffect.getAmplifier(), false, false);
 						}

@@ -30,13 +30,16 @@ public class PinDown extends PitEnchant {
 		if(enchantLvl == 0) return;
 
 		Cooldown cooldown = getCooldown(attackEvent.attacker, getDuration(enchantLvl) * 20);
-		if(cooldown.isOnCooldown()) return; else cooldown.reset();
+		if(cooldown.isOnCooldown()) return;
+		else cooldown.reset();
 
 		if(attackEvent.attacker == attackEvent.defender) return;
 		if(!attackEvent.arrow.isCritical()) return;
 
-		if(attackEvent.defender.hasPotionEffect(PotionEffectType.SPEED)) attackEvent.defender.removePotionEffect(PotionEffectType.SPEED);
-		if(attackEvent.defender.hasPotionEffect(PotionEffectType.JUMP)) attackEvent.defender.removePotionEffect(PotionEffectType.JUMP);
+		if(attackEvent.defender.hasPotionEffect(PotionEffectType.SPEED))
+			attackEvent.defender.removePotionEffect(PotionEffectType.SPEED);
+		if(attackEvent.defender.hasPotionEffect(PotionEffectType.JUMP))
+			attackEvent.defender.removePotionEffect(PotionEffectType.JUMP);
 		Sounds.PIN_DOWN.play(attackEvent.defender);
 		String pinMessage = "&c&lPINNED! &7by %luckperms_prefix%%player_name%&7. Speed and Jump Boost cancelled!";
 		String pinMessage2 = "&a&lITS A PIN! &7Removed Speed and Jump Boost from %luckperms_prefix%%player_name%&7!";

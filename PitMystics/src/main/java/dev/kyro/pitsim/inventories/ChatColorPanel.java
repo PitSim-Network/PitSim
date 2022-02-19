@@ -24,106 +24,107 @@ import java.util.List;
 import java.util.Map;
 
 public class ChatColorPanel extends AGUIPanel {
-    PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
-    public static Map<Player, AChatColor> playerChatColors = new HashMap<>();
+	PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
+	public static Map<Player, AChatColor> playerChatColors = new HashMap<>();
 
 
-    public DonatorGUI donatorGUI;
-    public ChatColorPanel(AGUI gui) {
-        super(gui);
-        donatorGUI = (DonatorGUI) gui;
+	public DonatorGUI donatorGUI;
 
-        inventoryBuilder.createBorder(Material.STAINED_GLASS_PANE, 8);
-    }
+	public ChatColorPanel(AGUI gui) {
+		super(gui);
+		donatorGUI = (DonatorGUI) gui;
 
-    @Override
-    public String getName() {
-        return "Chat Colors";
-    }
+		inventoryBuilder.createBorder(Material.STAINED_GLASS_PANE, 8);
+	}
 
-    @Override
-    public int getRows() {
-        return 4;
-    }
+	@Override
+	public String getName() {
+		return "Chat Colors";
+	}
 
-    @Override
-    public void onClick(InventoryClickEvent event) {
+	@Override
+	public int getRows() {
+		return 4;
+	}
 
-        int slot = event.getSlot();
-        if(event.getClickedInventory().getHolder() == this) {
+	@Override
+	public void onClick(InventoryClickEvent event) {
 
-            if(Misc.isAirOrNull(getInventory().getItem(slot))) return;
+		int slot = event.getSlot();
+		if(event.getClickedInventory().getHolder() == this) {
 
-            if(slot == 31) {
-                openPanel(donatorGUI.getHomePanel());
-            }
+			if(Misc.isAirOrNull(getInventory().getItem(slot))) return;
 
-            for(AChatColor chatColor : AChatColor.values()) {
-                if(getInventory().getItem(slot).getType().equals(chatColor.material) &&
-                        getInventory().getItem(slot).getDurability() == chatColor.data) {
+			if(slot == 31) {
+				openPanel(donatorGUI.getHomePanel());
+			}
 
-                    if(playerChatColors.containsKey(player) && playerChatColors.get(player).equals(chatColor)) {
-                        Sounds.ERROR.play(player);
-                        AOutput.error(player, "&cThat chat color is already equipped");
-                    } else {
-                        playerChatColors.put(player, chatColor);
-                        pitPlayer.chatColor = chatColor;
-                        Sounds.SUCCESS.play(player);
-                        openPanel(donatorGUI.chatColorPanel);
-                    }
-                }
-            }
-        }
-    }
+			for(AChatColor chatColor : AChatColor.values()) {
+				if(getInventory().getItem(slot).getType().equals(chatColor.material) &&
+						getInventory().getItem(slot).getDurability() == chatColor.data) {
 
-    @Override
-    public void onOpen(InventoryOpenEvent event) {
+					if(playerChatColors.containsKey(player) && playerChatColors.get(player).equals(chatColor)) {
+						Sounds.ERROR.play(player);
+						AOutput.error(player, "&cThat chat color is already equipped");
+					} else {
+						playerChatColors.put(player, chatColor);
+						pitPlayer.chatColor = chatColor;
+						Sounds.SUCCESS.play(player);
+						openPanel(donatorGUI.chatColorPanel);
+					}
+				}
+			}
+		}
+	}
 
-        ItemStack back = new ItemStack(Material.ARROW);
-        ItemMeta backmeta = back.getItemMeta();
-        backmeta.setDisplayName(ChatColor.GREEN + "Go Back");
-        List<String> backlore = new ArrayList<>();
-        backlore.add(ChatColor.GRAY + "To Donator Perks");
-        backmeta.setLore(backlore);
-        back.setItemMeta(backmeta);
+	@Override
+	public void onOpen(InventoryOpenEvent event) {
 
-        getInventory().setItem(31, back);
+		ItemStack back = new ItemStack(Material.ARROW);
+		ItemMeta backmeta = back.getItemMeta();
+		backmeta.setDisplayName(ChatColor.GREEN + "Go Back");
+		List<String> backlore = new ArrayList<>();
+		backlore.add(ChatColor.GRAY + "To Donator Perks");
+		backmeta.setLore(backlore);
+		back.setItemMeta(backmeta);
 
-        int i = 10;
+		getInventory().setItem(31, back);
 
-        for(AChatColor chatColor : AChatColor.values()) {
-            ItemStack color = new ItemStack(chatColor.material, 1, (short) chatColor.data);
-            ItemMeta colormeta = color.getItemMeta();
-            List<String> lore = new ArrayList<>();
-            lore.add("");
-            lore.add(ChatColor.GRAY + "Color: " + chatColor.chatColor + chatColor.refName);
-            lore.add(ChatColor.GRAY + "Code: " + ChatColor.WHITE + "&" + chatColor.code);
-            lore.add("");
-            if(playerChatColors.get(player) == chatColor) {
-                lore.add(ChatColor.GREEN + "Already selected!");
-                colormeta.setDisplayName(ChatColor.GREEN + chatColor.refName + " Chat Color");
-                colormeta.addEnchant(Enchantment.PROTECTION_ENVIRONMENTAL, 0, false);
-                colormeta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
-            } else {
-                lore.add(ChatColor.YELLOW + "Click to select!");
-                colormeta.setDisplayName(ChatColor.YELLOW + chatColor.refName + " Chat Color");
-            }
-            colormeta.setLore(lore);
-            color.setItemMeta(colormeta);
+		int i = 10;
 
-            getInventory().setItem(i, color);
+		for(AChatColor chatColor : AChatColor.values()) {
+			ItemStack color = new ItemStack(chatColor.material, 1, (short) chatColor.data);
+			ItemMeta colormeta = color.getItemMeta();
+			List<String> lore = new ArrayList<>();
+			lore.add("");
+			lore.add(ChatColor.GRAY + "Color: " + chatColor.chatColor + chatColor.refName);
+			lore.add(ChatColor.GRAY + "Code: " + ChatColor.WHITE + "&" + chatColor.code);
+			lore.add("");
+			if(playerChatColors.get(player) == chatColor) {
+				lore.add(ChatColor.GREEN + "Already selected!");
+				colormeta.setDisplayName(ChatColor.GREEN + chatColor.refName + " Chat Color");
+				colormeta.addEnchant(Enchantment.PROTECTION_ENVIRONMENTAL, 0, false);
+				colormeta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
+			} else {
+				lore.add(ChatColor.YELLOW + "Click to select!");
+				colormeta.setDisplayName(ChatColor.YELLOW + chatColor.refName + " Chat Color");
+			}
+			colormeta.setLore(lore);
+			color.setItemMeta(colormeta);
 
-            i++;
-            if(i == 18 || i == 26) {
-                i++;
-            }
-            if(i == 17) i=i+2;
-        }
+			getInventory().setItem(i, color);
 
-    }
+			i++;
+			if(i == 18 || i == 26) {
+				i++;
+			}
+			if(i == 17) i = i + 2;
+		}
 
-    @Override
-    public void onClose(InventoryCloseEvent event) {
+	}
 
-    }
+	@Override
+	public void onClose(InventoryCloseEvent event) {
+
+	}
 }

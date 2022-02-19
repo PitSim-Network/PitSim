@@ -25,13 +25,14 @@ public class Booboo extends PitEnchant {
 	}
 
 	@EventHandler
-	public void onAttack(AttackEvent.Apply attackEvent	) {
+	public void onAttack(AttackEvent.Apply attackEvent) {
 		if(!canApply(attackEvent)) return;
 
 		int enchantLvl = attackEvent.getDefenderEnchantLevel(this);
 		if(enchantLvl == 0) return;
 
 	}
+
 	public static int counter = 0;
 
 	static {

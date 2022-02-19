@@ -28,76 +28,76 @@ import java.util.Map;
 import java.util.UUID;
 
 public class ViewCommand extends ACommand {
-    public OfflinePlayer offlinePlayer = null;
-    public String uuidString = null;
+	public OfflinePlayer offlinePlayer = null;
+	public String uuidString = null;
 
-    public ViewCommand(AMultiCommand base, String executor) {
-        super(base, executor);
-    }
+	public ViewCommand(AMultiCommand base, String executor) {
+		super(base, executor);
+	}
 
-    @Override
-    public void execute(CommandSender sender, Command command, String alias, List<String> args) {
-        if(!(sender instanceof Player)) return;
-        Player player = (Player) sender;
+	@Override
+	public void execute(CommandSender sender, Command command, String alias, List<String> args) {
+		if(!(sender instanceof Player)) return;
+		Player player = (Player) sender;
 
-        if(args.size() != 1) {
-            AOutput.error(player, "&cUsage: /ps view <player>");
-            return;
-        }
-        String playerName = args.get(0);
-        AOutput.send(player, "&aLoading...");
+		if(args.size() != 1) {
+			AOutput.error(player, "&cUsage: /ps view <player>");
+			return;
+		}
+		String playerName = args.get(0);
+		AOutput.send(player, "&aLoading...");
 
-        new BukkitRunnable() {
-            @Override
-            public void run() {
+		new BukkitRunnable() {
+			@Override
+			public void run() {
 
-                for(Map.Entry<UUID, APlayer> entry : APlayerData.getAllData().entrySet()) {
-                    OfflinePlayer testPlayer = Bukkit.getOfflinePlayer(entry.getKey());
-                    if(testPlayer == null) continue;
-                    String offlineName = testPlayer.getName();
-                    if(offlineName.equalsIgnoreCase(playerName)) {
-                        offlinePlayer = testPlayer;
-                        break;
-                    }
-                }
+				for(Map.Entry<UUID, APlayer> entry : APlayerData.getAllData().entrySet()) {
+					OfflinePlayer testPlayer = Bukkit.getOfflinePlayer(entry.getKey());
+					if(testPlayer == null) continue;
+					String offlineName = testPlayer.getName();
+					if(offlineName.equalsIgnoreCase(playerName)) {
+						offlinePlayer = testPlayer;
+						break;
+					}
+				}
 
-                if(offlinePlayer == null) {
-                    AOutput.error(player, "&cPlayer not found!");
-                    return;
-                }
+				if(offlinePlayer == null) {
+					AOutput.error(player, "&cPlayer not found!");
+					return;
+				}
 
 
-                try {
-                    File inventoryFile = new File("world/playerdata/" + uuidString + ".dat");
-                    NBTTagCompound nbt = NBTCompressedStreamTools.a(new FileInputStream(inventoryFile));
-                    NBTTagList inventory = (NBTTagList) nbt.get("Inventory");
+				try {
+					File inventoryFile = new File("world/playerdata/" + uuidString + ".dat");
+					NBTTagCompound nbt = NBTCompressedStreamTools.a(new FileInputStream(inventoryFile));
+					NBTTagList inventory = (NBTTagList) nbt.get("Inventory");
 //                Inventory inv = new CraftInventoryCustom(player, inventory.size());
-                    AInventoryBuilder builder = new AInventoryBuilder(player, 36, "Player Inventory");
-                    for (int i = 0; i < inventory.size(); i++) {
-                        NBTTagCompound compound = inventory.get(i);
-                        if (!compound.isEmpty()) {
-                            ItemStack itemStack = CraftItemStack.asBukkitCopy(net.minecraft.server.v1_8_R3.ItemStack.createStack(compound));
+					AInventoryBuilder builder = new AInventoryBuilder(player, 36, "Player Inventory");
+					for(int i = 0; i < inventory.size(); i++) {
+						NBTTagCompound compound = inventory.get(i);
+						if(!compound.isEmpty()) {
+							ItemStack itemStack = CraftItemStack.asBukkitCopy(net.minecraft.server.v1_8_R3.ItemStack.createStack(compound));
 
-                            if(Misc.isAirOrNull(itemStack)) continue;
-                            builder.getInventory().setItem(i, itemStack);
-                        }
-                    }
-                    player.openInventory(builder.getInventory());
+							if(Misc.isAirOrNull(itemStack)) continue;
+							builder.getInventory().setItem(i, itemStack);
+						}
+					}
+					player.openInventory(builder.getInventory());
 
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+				} catch(IOException e) {
+					e.printStackTrace();
+				}
 
-                offlinePlayer = null;
-                uuidString = null;
+				offlinePlayer = null;
+				uuidString = null;
 
 
-            }
-        }.runTaskLaterAsynchronously(PitSim.INSTANCE, 1L);
-    }
+			}
+		}.runTaskLaterAsynchronously(PitSim.INSTANCE, 1L);
+	}
 
-    @Override
-    public List<String> getTabComplete(Player player, String current, List<String> args) {
-        return null;
-    }
+	@Override
+	public List<String> getTabComplete(Player player, String current, List<String> args) {
+		return null;
+	}
 }

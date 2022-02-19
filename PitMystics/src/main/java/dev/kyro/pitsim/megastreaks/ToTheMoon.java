@@ -83,7 +83,7 @@ public class ToTheMoon extends Megastreak {
 		lore.add(ChatColor.translateAlternateColorCodes('&', "&7Triggers on: &c100 kills"));
 		lore.add("");
 		lore.add(ChatColor.GRAY + "On trigger:");
- 		lore.add(ChatColor.translateAlternateColorCodes('&', "&a\u25a0 &7Earn &b+135% XP &7from kills"));
+		lore.add(ChatColor.translateAlternateColorCodes('&', "&a\u25a0 &7Earn &b+135% XP &7from kills"));
 		lore.add(ChatColor.translateAlternateColorCodes('&', "&a\u25a0 &7Gain &b+1.75 max XP &7per kill"));
 		lore.add("");
 		lore.add(ChatColor.GRAY + "BUT:");
@@ -115,7 +115,7 @@ public class ToTheMoon extends Megastreak {
 		if(pitPlayer != this.pitPlayer) return;
 		if(pitPlayer.megastreak.getClass() == ToTheMoon.class) {
 			if(pitPlayer.getKills() > 200) {
-				double increase = (5 * ((pitPlayer.getKills() - 200) / 20))/100D;
+				double increase = (5 * ((pitPlayer.getKills() - 200) / 20)) / 100D;
 				if(NonManager.getNon(attackEvent.attacker) == null) {
 					attackEvent.increasePercent += increase;
 				} else attackEvent.increasePercent += (increase * 3);

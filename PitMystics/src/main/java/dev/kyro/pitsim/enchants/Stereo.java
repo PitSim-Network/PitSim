@@ -80,7 +80,7 @@ public class Stereo extends PitEnchant {
 				for(Player player : Bukkit.getOnlinePlayers()) {
 					if(StereoManager.playerMusic.containsKey(player)) {
 						player.getWorld().spigot().playEffect(player.getLocation(),
-								Effect.NOTE, 0, 2, 0.5F, 0.5F, 0.5F,1, 5, 25);
+								Effect.NOTE, 0, 2, 0.5F, 0.5F, 0.5F, 1, 5, 25);
 					}
 				}
 			}
@@ -88,7 +88,8 @@ public class Stereo extends PitEnchant {
 	}
 
 	@EventHandler
-	public void onAttack(AttackEvent.Apply attackEvent) { }
+	public void onAttack(AttackEvent.Apply attackEvent) {
+	}
 
 	@Override
 	public List<String> getDescription(int enchantLvl) {

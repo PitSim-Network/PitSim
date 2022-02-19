@@ -30,6 +30,7 @@ public class ItemClearPanel extends AGUIPanel {
 	public PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
 	public Map<Integer, Integer> slots = new HashMap<>();
 	public RenownShopGUI renownShopGUI;
+
 	public ItemClearPanel(AGUI gui) {
 		super(gui);
 		renownShopGUI = (RenownShopGUI) gui;
@@ -59,7 +60,7 @@ public class ItemClearPanel extends AGUIPanel {
 					NBTItem nbtItem = new NBTItem(player.getInventory().getItem(i));
 
 
-					AOutput.send(player,  "&5&lWITHERCRAFT! &7Cleared enchants from " + nbtItem.getItem().getItemMeta().getDisplayName() + "&7!");
+					AOutput.send(player, "&5&lWITHERCRAFT! &7Cleared enchants from " + nbtItem.getItem().getItemMeta().getDisplayName() + "&7!");
 
 					if(nbtItem.hasKey(NBTTag.IS_GEMMED.getRef())) {
 						nbtItem.removeKey(NBTTag.IS_GEMMED.getRef());
@@ -67,7 +68,7 @@ public class ItemClearPanel extends AGUIPanel {
 						Random r = new Random();
 						int low = 32;
 						int high = 64;
-						int result = r.nextInt(high-low) + low;
+						int result = r.nextInt(high - low) + low;
 
 						AUtil.giveItemSafely(player, ShardHunter.getShardItem(result), true);
 
@@ -83,10 +84,13 @@ public class ItemClearPanel extends AGUIPanel {
 					int removedEnchants = 0;
 					for(Map.Entry<PitEnchant, Integer> entry : enchants.entrySet()) {
 
-						if((EnchantManager.getEnchant(nbtItem.getString(NBTTag.ITEM_JEWEL_ENCHANT.getRef())) == entry.getKey())) continue;
+						if((EnchantManager.getEnchant(nbtItem.getString(NBTTag.ITEM_JEWEL_ENCHANT.getRef())) == entry.getKey()))
+							continue;
 						try {
-							if(item1 == null) item1 = EnchantManager.addEnchant(nbtItem.getItem(), entry.getKey(), 0, true);
-							else player.getInventory().setItem(i, EnchantManager.addEnchant(item1, entry.getKey(), 0, true));
+							if(item1 == null)
+								item1 = EnchantManager.addEnchant(nbtItem.getItem(), entry.getKey(), 0, true);
+							else
+								player.getInventory().setItem(i, EnchantManager.addEnchant(item1, entry.getKey(), 0, true));
 							removedEnchants++;
 						} catch(Exception e) {
 							e.printStackTrace();

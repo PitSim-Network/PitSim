@@ -30,6 +30,7 @@ public class HelmetPanel extends AGUIPanel {
 	public ItemStack goldenHelmet = null;
 	public List<List<ItemStack>> columns = new ArrayList<>();
 	public HelmetGUI helmetGUI;
+
 	public HelmetPanel(AGUI gui) {
 		super(gui);
 		helmetGUI = (HelmetGUI) gui;
@@ -84,8 +85,7 @@ public class HelmetPanel extends AGUIPanel {
 			abilityBuilder.getItemStack().setType(ability.getDisplayItem().getType());
 			abilityLoreBuilder.addLore(ability.getDescription());
 			abilityLoreBuilder.addLore("", "&eClick to change ability!");
-		}
-		else {
+		} else {
 			abilityLoreBuilder.addLore("&7Selected: &cNONE", "&7Abilities let you spend the", "&6gold &7in your helmet on", "&7various buffs.");
 			abilityLoreBuilder.addLore("", "&eClick to choose an ability!");
 		}
@@ -197,7 +197,8 @@ public class HelmetPanel extends AGUIPanel {
 			loreBuilder.addLore("");
 			if(passive == HelmetSystem.Passive.DAMAGE_REDUCTION) {
 				loreBuilder.addLore("&7Each tier:", passive.color + "-" + passive.baseUnit + "% " + passive.refName, "", "&eLevel up helmet to upgrade!");
-			} else loreBuilder.addLore("&7Each tier:", passive.color + "+" + passive.baseUnit + "% " + passive.refName, "", "&eLevel up helmet to upgrade!");
+			} else
+				loreBuilder.addLore("&7Each tier:", passive.color + "+" + passive.baseUnit + "% " + passive.refName, "", "&eLevel up helmet to upgrade!");
 			builder.setLore(loreBuilder);
 			getInventory().setItem(k, builder.getItemStack());
 			k += 2;
@@ -235,7 +236,8 @@ public class HelmetPanel extends AGUIPanel {
 
 
 		List<HelmetSystem.Passive> passives;
-		if(HelmetSystem.getLevel(GoldenHelmet.getHelmetGold(goldenHelmet)) == 1) passives = HelmetSystem.getLevelData(level);
+		if(HelmetSystem.getLevel(GoldenHelmet.getHelmetGold(goldenHelmet)) == 1)
+			passives = HelmetSystem.getLevelData(level);
 		else passives = HelmetSystem.getLevelData(level);
 
 		DecimalFormat formatter = new DecimalFormat("#,###.#");
@@ -251,7 +253,7 @@ public class HelmetPanel extends AGUIPanel {
 			loreBuilder.addLore(passive.color + "+" + passive.baseUnit + "% " + passive.refName);
 		}
 		if(passives.size() > 1) builder.getItemStack().setType(Material.BEACON);
-		else if(passives.size() != 0){
+		else if(passives.size() != 0) {
 			builder.getItemStack().setType(Material.INK_SACK);
 			builder.getItemStack().setDurability(passives.get(0).data);
 		} else loreBuilder.addLore("&cNONE");
@@ -273,20 +275,21 @@ public class HelmetPanel extends AGUIPanel {
 		if(passives.size() > 1) {
 
 			getInventory().setItem(column + 18, builder.getItemStack());
-		}
-		else if(passives.size() == 1){
+		} else if(passives.size() == 1) {
 			columnList.get(1).setType(Material.INK_SACK);
 			columnList.get(1).setDurability(passives.get(0).data);
 			getInventory().setItem(column + 18, builder.getItemStack());
 		} else getInventory().setItem(column + 18, builder.getItemStack());
 
 	}
+
 	enum ColumnStatus {
 		UNLOCKED(ChatColor.GREEN),
 		UNLOCKING(ChatColor.GOLD),
 		LOCKED(ChatColor.RED);
 
 		public ChatColor color;
+
 		ColumnStatus(ChatColor color) {
 			this.color = color;
 		}

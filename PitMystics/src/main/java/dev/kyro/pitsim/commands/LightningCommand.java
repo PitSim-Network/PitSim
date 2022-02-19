@@ -20,8 +20,8 @@ public class LightningCommand implements CommandExecutor {
 		Player player = (Player) sender;
 		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
 
-        boolean lightningDisabled = pitPlayer.lightingDisabled;
-        pitPlayer.lightingDisabled = !lightningDisabled;
+		boolean lightningDisabled = pitPlayer.lightingDisabled;
+		pitPlayer.lightingDisabled = !lightningDisabled;
 
 		if(lightningDisabled) {
 			AOutput.send(player, "Lightning enabled");

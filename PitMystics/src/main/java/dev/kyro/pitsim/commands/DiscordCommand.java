@@ -7,14 +7,14 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 public class DiscordCommand implements CommandExecutor {
-    @Override
-    public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
+	@Override
+	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
 
-        if(!(sender instanceof Player)) return false;
-        Player player = (Player) sender;
+		if(!(sender instanceof Player)) return false;
+		Player player = (Player) sender;
 
-        AOutput.send(player, "&6PitSim Discord: &fdiscord.pitsim.net");
+		AOutput.send(player, "&6PitSim Discord: &fdiscord.pitsim.net");
 
-        return false;
-    }
+		return false;
+	}
 }

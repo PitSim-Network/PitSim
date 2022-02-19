@@ -22,7 +22,7 @@ import java.util.List;
 public class GoldRushAbility extends HelmetAbility {
 	public GoldRushAbility(Player player) {
 
-		super(player,"Gold Rush", "goldrush", true, 12);
+		super(player, "Gold Rush", "goldrush", true, 12);
 	}
 
 	@EventHandler
@@ -46,7 +46,7 @@ public class GoldRushAbility extends HelmetAbility {
 		ItemStack goldenHelmet = GoldenHelmet.getHelmet(killEvent.killer);
 		assert goldenHelmet != null;
 		if(!GoldenHelmet.withdrawGold(player, goldenHelmet, 2000)) {
-			AOutput.error(player,"&cNot enough gold!");
+			AOutput.error(player, "&cNot enough gold!");
 			GoldenHelmet.deactivate(player);
 			Sounds.NO.play(player);
 		}
@@ -69,7 +69,7 @@ public class GoldRushAbility extends HelmetAbility {
 
 		assert goldenHelmet != null;
 		if(!GoldenHelmet.withdrawGold(player, goldenHelmet, 2000)) {
-			AOutput.error(player,"&cNot enough gold!");
+			AOutput.error(player, "&cNot enough gold!");
 			Sounds.NO.play(player);
 			return false;
 		}
@@ -82,7 +82,8 @@ public class GoldRushAbility extends HelmetAbility {
 	}
 
 	@Override
-	public void onProc() { }
+	public void onProc() {
+	}
 
 	@Override
 	public List<String> getDescription() {

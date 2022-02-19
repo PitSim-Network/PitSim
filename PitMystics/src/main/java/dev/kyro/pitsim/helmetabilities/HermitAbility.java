@@ -24,9 +24,10 @@ import java.util.List;
 
 public class HermitAbility extends HelmetAbility {
 	public BukkitTask runnable;
+
 	public HermitAbility(Player player) {
 
-		super(player,"Hermit", "hermit", true, 14);
+		super(player, "Hermit", "hermit", true, 14);
 		cost = 1500;
 	}
 
@@ -40,15 +41,16 @@ public class HermitAbility extends HelmetAbility {
 	public void onActivate() {
 		runnable = new BukkitRunnable() {
 			int count = 0;
+
 			@Override
 			public void run() {
 				ItemStack goldenHelmet = GoldenHelmet.getHelmet(player);
 				assert goldenHelmet != null;
 				if(!GoldenHelmet.withdrawGold(player, goldenHelmet, cost)) {
-					AOutput.error(player,"&cNot enough gold!");
+					AOutput.error(player, "&cNot enough gold!");
 					GoldenHelmet.deactivate(player);
 					Sounds.NO.play(player);
-				}  else {
+				} else {
 					Sounds.HELMET_TICK.play(player);
 					if(count++ % 2 == 0) {
 						Misc.applyPotionEffect(player, PotionEffectType.SLOW, 100, 1, true, false);
@@ -66,7 +68,7 @@ public class HermitAbility extends HelmetAbility {
 		ItemStack goldenHelmet = GoldenHelmet.getHelmet(player);
 		assert goldenHelmet != null;
 		if(!GoldenHelmet.withdrawGold(player, goldenHelmet, cost * 10)) {
-			AOutput.error(player,"&cNot enough gold!");
+			AOutput.error(player, "&cNot enough gold!");
 			Sounds.NO.play(player);
 			return false;
 		}
@@ -80,7 +82,8 @@ public class HermitAbility extends HelmetAbility {
 	}
 
 	@Override
-	public void onProc() { }
+	public void onProc() {
+	}
 
 	@Override
 	public List<String> getDescription() {

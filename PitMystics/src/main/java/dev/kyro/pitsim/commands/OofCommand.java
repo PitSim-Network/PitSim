@@ -23,42 +23,42 @@ import java.util.UUID;
 
 public class OofCommand implements CommandExecutor {
 
-    @Override
-    public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
+	@Override
+	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
 
-        if(!(sender instanceof Player)) return false;
-        Player player = (Player) sender;
+		if(!(sender instanceof Player)) return false;
+		Player player = (Player) sender;
 
-        if(SpawnManager.isInSpawn(player.getLocation())) {
+		if(SpawnManager.isInSpawn(player.getLocation())) {
 
-            AOutput.send(player, "&c&lNOPE! &7Cant /oof in spawn!");
-            Sounds.ERROR.play(player);
-        } else {
+			AOutput.send(player, "&c&lNOPE! &7Cant /oof in spawn!");
+			Sounds.ERROR.play(player);
+		} else {
 
-            if(!CombatManager.taggedPlayers.containsKey(player.getUniqueId())) {
-                DamageManager.death(player);
-                return false;
-            }
+			if(!CombatManager.taggedPlayers.containsKey(player.getUniqueId())) {
+				DamageManager.death(player);
+				return false;
+			}
 
-            PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
-            UUID attackerUUID = pitPlayer.lastHitUUID;
-            for(Player onlinePlayer : Bukkit.getOnlinePlayers()) {
-                if(onlinePlayer.getUniqueId().equals(attackerUUID)) {
+			PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
+			UUID attackerUUID = pitPlayer.lastHitUUID;
+			for(Player onlinePlayer : Bukkit.getOnlinePlayers()) {
+				if(onlinePlayer.getUniqueId().equals(attackerUUID)) {
 
-                    Map<PitEnchant, Integer> attackerEnchant = new HashMap<>();
-                    Map<PitEnchant, Integer> defenderEnchant = new HashMap<>();
-                    EntityDamageByEntityEvent ev = new EntityDamageByEntityEvent(onlinePlayer, player, EntityDamageEvent.DamageCause.CUSTOM, 0);
-                    AttackEvent attackEvent = new AttackEvent(ev, attackerEnchant, defenderEnchant, false);
+					Map<PitEnchant, Integer> attackerEnchant = new HashMap<>();
+					Map<PitEnchant, Integer> defenderEnchant = new HashMap<>();
+					EntityDamageByEntityEvent ev = new EntityDamageByEntityEvent(onlinePlayer, player, EntityDamageEvent.DamageCause.CUSTOM, 0);
+					AttackEvent attackEvent = new AttackEvent(ev, attackerEnchant, defenderEnchant, false);
 
 
-                    DamageManager.kill(attackEvent, onlinePlayer, player, false);
-                    return false;
-                }
-            }
-            DamageManager.death(player);
-            OofEvent oofEvent = new OofEvent(player);
-            Bukkit.getPluginManager().callEvent(oofEvent);
-        }
-        return false;
-    }
+					DamageManager.kill(attackEvent, onlinePlayer, player, false);
+					return false;
+				}
+			}
+			DamageManager.death(player);
+			OofEvent oofEvent = new OofEvent(player);
+			Bukkit.getPluginManager().callEvent(oofEvent);
+		}
+		return false;
+	}
 }

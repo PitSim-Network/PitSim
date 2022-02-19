@@ -95,9 +95,9 @@ public class RetroGravityMicrocosm extends PitEnchant {
 	@Override
 	public List<String> getDescription(int enchantLvl) {
 
-			return new ALoreBuilder("&7When a player hits you from", "&7above ground &e3 times&7:",
-					"&7You heal &c" + Misc.getHearts(getHealing(enchantLvl)), "&7Gain &c" + Misc.getHearts(getDamagePerStack(enchantLvl)) + " &7damage vs them for 30s",
-					"&7Can have up to &6" + getMaxStacks(enchantLvl) + " &7stacks at a time").getLore();
+		return new ALoreBuilder("&7When a player hits you from", "&7above ground &e3 times&7:",
+				"&7You heal &c" + Misc.getHearts(getHealing(enchantLvl)), "&7Gain &c" + Misc.getHearts(getDamagePerStack(enchantLvl)) + " &7damage vs them for 30s",
+				"&7Can have up to &6" + getMaxStacks(enchantLvl) + " &7stacks at a time").getLore();
 	}
 
 	public double getDamagePerStack(int enchantLvl) {

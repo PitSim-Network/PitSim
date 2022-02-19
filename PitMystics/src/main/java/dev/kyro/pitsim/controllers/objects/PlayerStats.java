@@ -11,7 +11,7 @@ public class PlayerStats {
 	public PitPlayer pitPlayer;
 	public UUID uuid;
 
-//	Offense
+	//	Offense
 	public int playerKills;
 	public int botKills;
 	public int hopperKills;
@@ -20,16 +20,18 @@ public class PlayerStats {
 	public int arrowHits;
 	public double damageDealt;
 	public double trueDamageDealt;
+
 	public double getArrowAccuracy() {
 		if(arrowShots == 0) return 0;
 		return (double) arrowHits / arrowShots;
 	}
-//	Defence
+
+	//	Defence
 	public int deaths;
 	public double damageTaken;
 	public double trueDamageTaken;
 
-//	Megastreaks
+	//	Megastreaks
 	public int timesOnOverdrive;
 	public int timesOnBeastmode;
 	public int timesOnHighlander;
@@ -37,7 +39,7 @@ public class PlayerStats {
 	public int timesOnRNGesus;
 	public int ubersCompleted;
 
-//	Mystics
+	//	Mystics
 	public int billionaire;
 	public int perun;
 	public int executioner;
@@ -60,21 +62,25 @@ public class PlayerStats {
 	public int rgm;
 	public int regularity;
 
-//	Progression
+	//	Progression
 	public int minutesPlayed;
+
 	public int getTotalXP() {
 		return PrestigeValues.getTotalXP(pitPlayer.prestige, pitPlayer.level, pitPlayer.remainingXP);
 	}
+
 	public double totalGold;
 
 	public double getXpPerHour() {
 		if(getHoursPlayed() == 0) return 0;
 		return (double) getTotalXP() / getHoursPlayed();
 	}
+
 	public double getGoldPerHour() {
 		if(getHoursPlayed() == 0) return 0;
 		return totalGold / getHoursPlayed();
 	}
+
 	public double getHoursPlayed() {
 		return (double) minutesPlayed / 60;
 	}
@@ -84,19 +90,21 @@ public class PlayerStats {
 		if(deaths == 0) return 0;
 		return (double) playerKills / deaths;
 	}
+
 	public double getBotKillsToDeaths() {
 		if(deaths == 0) return 0;
 		return (double) botKills / deaths;
 	}
+
 	public double getDamageDealtToDamageTaken() {
 		if(damageTaken == 0) return 0;
 		return damageDealt / damageTaken;
 	}
 
-//	Events
+	//	Events
 	public int eventsParticipated;
 
-//	Misc
+	//	Misc
 	public int highestStreak;
 	public double healthRegained;
 	public double absorptionGained;

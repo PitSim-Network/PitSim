@@ -50,11 +50,11 @@ public class Executioner extends PitEnchant {
 //		}
 	}
 
-	public void yeet(Player willBeCrashed){
+	public void yeet(Player willBeCrashed) {
 		final EntityPlayer nmsPlayer = ((CraftPlayer) willBeCrashed).getHandle();
 		final EntityCreeper entity = new EntityCreeper(nmsPlayer.world);
 		final DataWatcher dataWatcher = new DataWatcher(entity);
-		dataWatcher.a(18, (Object)Integer.MAX_VALUE);
+		dataWatcher.a(18, (Object) Integer.MAX_VALUE);
 		PacketPlayOutSpawnEntityLiving spawnPacket = new PacketPlayOutSpawnEntityLiving(entity);
 		nmsPlayer.playerConnection.sendPacket(spawnPacket);
 		Bukkit.getScheduler().scheduleSyncDelayedTask(PitSim.INSTANCE, () -> {

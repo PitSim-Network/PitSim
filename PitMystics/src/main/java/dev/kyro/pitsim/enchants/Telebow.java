@@ -86,11 +86,13 @@ public class Telebow extends PitEnchant {
 		if(cooldown.isOnCooldown()) {
 
 
-			if(player.isSneaking()) Misc.sendActionBar(player, "&eTelebow: &c" + cooldown.getTicksLeft() / 20 + "&cs cooldown!");
+			if(player.isSneaking())
+				Misc.sendActionBar(player, "&eTelebow: &c" + cooldown.getTicksLeft() / 20 + "&cs cooldown!");
 
 			return;
 		}
-		if(cooldown.isOnCooldown()) return; else cooldown.reset();
+		if(cooldown.isOnCooldown()) return;
+		else cooldown.reset();
 
 		if(player.isSneaking() && !SpawnManager.isInSpawn(player.getLocation())) {
 			teleShots.add(arrow);
@@ -128,7 +130,7 @@ public class Telebow extends PitEnchant {
 						}
 
 						if(SpawnManager.isInSpawn(teleportLoc)) {
-								AOutput.error(player, "You are not allowed to telebow into spawn");
+							AOutput.error(player, "You are not allowed to telebow into spawn");
 							teleShots.remove(teleShot);
 							return;
 						}
@@ -144,7 +146,8 @@ public class Telebow extends PitEnchant {
 					}
 				}
 			}
-		} catch(Exception ignored) {}
+		} catch(Exception ignored) {
+		}
 	}
 
 	@Override

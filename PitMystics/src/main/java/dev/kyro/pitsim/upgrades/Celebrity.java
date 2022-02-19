@@ -21,7 +21,7 @@ public class Celebrity extends RenownUpgrade {
 
 	@Override
 	public ItemStack getDisplayItem(Player player, boolean isCustomPanel) {
-		ItemStack item = new ItemStack(Material.RAW_FISH,1, (short) 3);
+		ItemStack item = new ItemStack(Material.RAW_FISH, 1, (short) 3);
 		ItemMeta meta = item.getItemMeta();
 		meta.setDisplayName(UpgradeManager.itemNameString(this, player));
 		List<String> lore = new ALoreBuilder("&7Literally earn &62x gold &7from", "&7kills").getLore();
@@ -31,7 +31,9 @@ public class Celebrity extends RenownUpgrade {
 	}
 
 	@Override
-	public AGUIPanel getCustomPanel() {return null;}
+	public AGUIPanel getCustomPanel() {
+		return null;
+	}
 
 	@Override
 	public List<Integer> getTierCosts() {

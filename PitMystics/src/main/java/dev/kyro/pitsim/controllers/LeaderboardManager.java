@@ -53,12 +53,14 @@ public class LeaderboardManager {
 //		if(!hasRan) System.out.println(amount);
 //		hasRan = true;
 
-		 sortedMap = levels.entrySet().stream()
+		sortedMap = levels.entrySet().stream()
 				.sorted(Comparator.comparingInt(Map.Entry::getValue))
 				.collect(Collectors.toMap(
 						Map.Entry::getKey,
 						Map.Entry::getValue,
-						(a, b) -> { throw new AssertionError(); },
+						(a, b) -> {
+							throw new AssertionError();
+						},
 						LinkedHashMap::new
 				));
 	}

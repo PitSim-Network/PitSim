@@ -69,7 +69,9 @@ public class Beastmode extends Megastreak {
 	}
 
 	@Override
-	public int levelReq() {return 50;}
+	public int levelReq() {
+		return 50;
+	}
 
 	@Override
 	public ItemStack guiItem() {
@@ -169,13 +171,13 @@ public class Beastmode extends Megastreak {
 			pitPlayer.prefix = PrestigeValues.getPlayerPrefixNameTag(pitPlayer.player) + PlaceholderAPI.setPlaceholders(pitPlayer.player, message);
 		}
 
-        if(pitPlayer.megastreak.isOnMega()) {
+		if(pitPlayer.megastreak.isOnMega()) {
 			int randomNum = ThreadLocalRandom.current().nextInt(1000, 5000 + 1);
 			if(DoubleDeath.INSTANCE.isDoubleDeath(pitPlayer.player)) randomNum = randomNum * 2;
-            AOutput.send(pitPlayer.player, "&c&lBEASTMODE! &7Earned &b" + randomNum + "&b XP &7from megastreak!");
-	        LevelManager.addXP(pitPlayer.player, randomNum);
+			AOutput.send(pitPlayer.player, "&c&lBEASTMODE! &7Earned &b" + randomNum + "&b XP &7from megastreak!");
+			LevelManager.addXP(pitPlayer.player, randomNum);
 //	        OldLevelManager.incrementLevel(pitPlayer.player);
-        }
+		}
 	}
 
 	@Override

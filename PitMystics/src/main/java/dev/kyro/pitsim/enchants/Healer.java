@@ -15,7 +15,7 @@ import java.util.List;
 public class Healer extends PitEnchant {
 
 	public Healer() {
-		super("Healer", true , ApplyType.SWORDS,
+		super("Healer", true, ApplyType.SWORDS,
 				"healer", "heal");
 	}
 
@@ -29,12 +29,13 @@ public class Healer extends PitEnchant {
 		if(enchantLvl == 0) return;
 
 		Cooldown cooldown = getCooldown(attackEvent.attacker, 20);
-		if(cooldown.isOnCooldown()) return; else cooldown.reset();
+		if(cooldown.isOnCooldown()) return;
+		else cooldown.reset();
 
 		attackEvent.multipliers.add(0d);
 		pitAttacker.heal(0.5 + (0.5 * enchantLvl));
 		pitDefender.heal(getHealing(enchantLvl));
-		
+
 		attackEvent.defender.getWorld().spigot().playEffect(attackEvent.defender.getLocation().add(0, 1, 0),
 				Effect.HAPPY_VILLAGER, 0, 0, (float) 0.5, (float) 0.5, (float) 0.5, (float) 0.01, 20, 50);
 

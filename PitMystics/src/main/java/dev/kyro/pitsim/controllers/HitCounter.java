@@ -26,6 +26,7 @@ public class HitCounter {
 		pitPlayer.enchantHits.put(pitEnchant, 0);
 		return true;
 	}
+
 	public static void resetCombo(Player player, PitEnchant pitEnchant) {
 		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
 

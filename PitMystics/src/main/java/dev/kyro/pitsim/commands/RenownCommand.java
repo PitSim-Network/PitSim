@@ -8,22 +8,22 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 public class RenownCommand implements CommandExecutor {
-    @Override
-    public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
+	@Override
+	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
 
-        if(!(sender instanceof Player)) return false;
-        Player player = (Player) sender;
-        if(!player.isOp())  return false;
+		if(!(sender instanceof Player)) return false;
+		Player player = (Player) sender;
+		if(!player.isOp()) return false;
 
 
-        RenownShopGUI renownShopGUI = new RenownShopGUI(player);
-        renownShopGUI.open();
+		RenownShopGUI renownShopGUI = new RenownShopGUI(player);
+		renownShopGUI.open();
 
-        if(args.length > 0 && player.isOp()) {
-            PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
-            if(args[0].equalsIgnoreCase("renown")) pitPlayer.renown += 50;
-        }
+		if(args.length > 0 && player.isOp()) {
+			PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
+			if(args[0].equalsIgnoreCase("renown")) pitPlayer.renown += 50;
+		}
 
-        return false;
-    }
+		return false;
+	}
 }

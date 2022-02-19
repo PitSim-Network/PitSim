@@ -27,13 +27,14 @@ public class ChatManager implements Listener {
 		for(Player recipient : event.getRecipients()) {
 			PitPlayer recipientPlayer = PitPlayer.getPitPlayer(recipient);
 			if(recipientPlayer.playerChatDisabled) event.getRecipients().remove(recipient);
-			if(event.getPlayer().equals(recipient) && recipientPlayer.playerChatDisabled) AOutput.error(event.getPlayer(), "&cYou currently have the chat muted. To disable this, navigate to the Chat Options menu located in the &f/donator &cmenu.");
+			if(event.getPlayer().equals(recipient) && recipientPlayer.playerChatDisabled)
+				AOutput.error(event.getPlayer(), "&cYou currently have the chat muted. To disable this, navigate to the Chat Options menu located in the &f/donator &cmenu.");
 		}
 
 		if(ChatColorPanel.playerChatColors.containsKey(event.getPlayer()) && event.getPlayer().hasPermission("pitsim.chatcolor")) {
 			event.setMessage(ChatColorPanel.playerChatColors.get(event.getPlayer()).chatColor + event.getMessage());
 		}
-		if(ItemRename.renamePlayers.containsKey(event.getPlayer())){
+		if(ItemRename.renamePlayers.containsKey(event.getPlayer())) {
 			event.setCancelled(true);
 			ItemStack heldItem = ItemRename.renamePlayers.get(event.getPlayer());
 

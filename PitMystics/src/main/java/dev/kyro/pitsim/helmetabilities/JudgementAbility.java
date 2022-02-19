@@ -26,7 +26,7 @@ import java.util.List;
 public class JudgementAbility extends HelmetAbility {
 	public JudgementAbility(Player player) {
 
-		super(player,"Judgement", "judgement", true, 15);
+		super(player, "Judgement", "judgement", true, 15);
 	}
 
 	@EventHandler
@@ -35,7 +35,7 @@ public class JudgementAbility extends HelmetAbility {
 		ItemStack goldenHelmet = GoldenHelmet.getHelmet(attackEvent.attacker);
 		assert goldenHelmet != null;
 		if(!GoldenHelmet.withdrawGold(player, goldenHelmet, 5000)) {
-			AOutput.error(player,"&cNot enough gold!");
+			AOutput.error(player, "&cNot enough gold!");
 			GoldenHelmet.deactivate(player);
 			Sounds.NO.play(player);
 			return;
@@ -86,6 +86,7 @@ public class JudgementAbility extends HelmetAbility {
 			Sounds.JUDGEMENT_ZEUS_DEFENDER.play(attackEvent.defender);
 			new BukkitRunnable() {
 				int count = 0;
+
 				@Override
 				public void run() {
 					if(++count == 5) cancel();
@@ -116,7 +117,7 @@ public class JudgementAbility extends HelmetAbility {
 	@Override
 	public boolean shouldActivate() {
 		if(GoldenHelmet.getUsedHelmetGold(player) < 5000) {
-			AOutput.error(player,"&cNot enough gold!");
+			AOutput.error(player, "&cNot enough gold!");
 			Sounds.NO.play(player);
 			return false;
 		}
@@ -129,7 +130,8 @@ public class JudgementAbility extends HelmetAbility {
 	}
 
 	@Override
-	public void onProc() { }
+	public void onProc() {
+	}
 
 	@Override
 	public List<String> getDescription() {

@@ -25,8 +25,9 @@ public class SpeedyHit extends PitEnchant {
 		int enchantLvl = attackEvent.getAttackerEnchantLevel(this);
 		if(enchantLvl == 0) return;
 
-		Cooldown cooldown = getCooldown(attackEvent.attacker,(getCooldown(enchantLvl) * 20));
-		if(cooldown.isOnCooldown()) return; else cooldown.reset();
+		Cooldown cooldown = getCooldown(attackEvent.attacker, (getCooldown(enchantLvl) * 20));
+		if(cooldown.isOnCooldown()) return;
+		else cooldown.reset();
 
 		Misc.applyPotionEffect(attackEvent.attacker, PotionEffectType.SPEED, getDuration(enchantLvl) * 20, 0, true, false);
 	}

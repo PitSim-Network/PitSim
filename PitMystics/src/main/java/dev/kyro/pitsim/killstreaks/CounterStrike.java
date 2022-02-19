@@ -29,7 +29,7 @@ public class CounterStrike extends Killstreak {
 	@EventHandler
 	public void onhit(AttackEvent.Apply event) {
 		if(rewardPlayers.contains(event.attacker)) {
-			event.increasePercent += (10/ 100D);
+			event.increasePercent += (10 / 100D);
 			rewardPlayers.remove(event.attacker);
 		}
 		if(rewardPlayers.contains(event.defender)) {

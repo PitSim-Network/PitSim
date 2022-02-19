@@ -51,7 +51,7 @@ public class PerkGUI extends AGUI {
 	}
 
 	public void setPerk(PitPerk pitPerk, int perkNum) {
-		if(NonManager.getNon(player) !=  null) return;
+		if(NonManager.getNon(player) != null) return;
 		getActivePerks()[perkNum - 1] = pitPerk;
 	}
 

@@ -43,12 +43,12 @@ public class SpawnManager implements Listener {
 	static {
 		ProtocolLibrary.getProtocolManager().addPacketListener(
 				new PacketAdapter(PitSim.INSTANCE, PacketType.Play.Server.NAMED_SOUND_EFFECT) {
-			@Override
-			public void onPacketSending(PacketEvent event) {
-				String soundName = event.getPacket().getStrings().read(0);
-				event.setCancelled(soundName.equals("mob.villager.idle"));
-			}
-		});
+					@Override
+					public void onPacketSending(PacketEvent event) {
+						String soundName = event.getPacket().getStrings().read(0);
+						event.setCancelled(soundName.equals("mob.villager.idle"));
+					}
+				});
 	}
 
 	@EventHandler

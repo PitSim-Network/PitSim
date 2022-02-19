@@ -77,7 +77,7 @@ public class SpawnNonSequence extends TutorialSequence {
 			public void run() {
 				Bukkit.getWorld("tutorial").getBlockAt(tutorial.areaLocation).setType(Material.AIR);
 				tutorial.mysticWellHolo.delete();
-				NPC non  = CitizensAPI.getNPCRegistry().createNPC(EntityType.PLAYER, "Dummy");
+				NPC non = CitizensAPI.getNPCRegistry().createNPC(EntityType.PLAYER, "Dummy");
 				tutorial.nons.add(non);
 				non.spawn(tutorial.areaLocation);
 				non.setProtected(false);
@@ -90,9 +90,9 @@ public class SpawnNonSequence extends TutorialSequence {
 	public void skin(NPC npc, String name) {
 		npc.data().set(NPC.PLAYER_SKIN_UUID_METADATA, name);
 		npc.data().set(NPC.PLAYER_SKIN_USE_LATEST, false);
-		if (npc.isSpawned()) {
+		if(npc.isSpawned()) {
 			SkinnableEntity skinnable = (SkinnableEntity) npc.getEntity();
-			if (skinnable != null) {
+			if(skinnable != null) {
 				skinnable.setSkinName(name);
 			}
 		}

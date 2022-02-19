@@ -31,7 +31,8 @@ public class aRetroGravityMinikloon extends PitEnchant {
 
 	public void clear(Player player) {
 		rgmMap.remove(player.getUniqueId());
-		for(Map.Entry<UUID, Map<UUID, Integer>> entry : rgmMap.entrySet()) entry.getValue().remove(player.getUniqueId());
+		for(Map.Entry<UUID, Map<UUID, Integer>> entry : rgmMap.entrySet())
+			entry.getValue().remove(player.getUniqueId());
 	}
 
 	@EventHandler

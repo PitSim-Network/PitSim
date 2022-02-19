@@ -12,7 +12,8 @@ public class BiomesMap extends PitMap {
 
 	@Override
 	public Location getSpawn(World world) {
-		if(!lobbies.contains(world) || (!MapManager.multiLobbies && world != MapManager.currentMap.firstLobby)) return getSpawn(lobbies.get(0));
+		if(!lobbies.contains(world) || (!MapManager.multiLobbies && world != MapManager.currentMap.firstLobby))
+			return getSpawn(lobbies.get(0));
 		return new Location(world, 0.5, 88, 8.5, -180, 0);
 	}
 

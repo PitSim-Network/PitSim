@@ -34,7 +34,8 @@ public class Thick extends PitPerk {
 				try {
 					PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
 					pitPlayer.updateMaxHealth();
-				} catch(Exception ignored) { }
+				} catch(Exception ignored) {
+				}
 			}
 		}.runTaskLater(PitSim.INSTANCE, 1L);
 	}

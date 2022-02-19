@@ -27,7 +27,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class  PerkPanel extends AGUIPanel {
+public class PerkPanel extends AGUIPanel {
 	public List<Integer> killstreakLevels = Arrays.asList(0, 75, 90);
 	public PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
 	public PerkGUI perkGUI;
@@ -67,7 +67,7 @@ public class  PerkPanel extends AGUIPanel {
 					|| TutorialManager.getTutorial(player).sequence.getClass() == PerkSequence.class) return;
 
 			if(TutorialManager.getTutorial(player).sequence.getClass() != KillstreakSequence.class) {
-				if (slot == 34) {
+				if(slot == 34) {
 					openPanel(perkGUI.megastreakPanel);
 				}
 			}
@@ -195,5 +195,6 @@ public class  PerkPanel extends AGUIPanel {
 	}
 
 	@Override
-	public void onClose(InventoryCloseEvent event) { }
+	public void onClose(InventoryCloseEvent event) {
+	}
 }

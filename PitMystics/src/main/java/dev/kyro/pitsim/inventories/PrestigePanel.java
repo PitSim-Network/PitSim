@@ -24,6 +24,7 @@ public class PrestigePanel extends AGUIPanel {
 	PrestigeValues.PrestigeInfo prestigeInfo = PrestigeValues.getPrestigeInfo(pitPlayer.prestige);
 	PrestigeValues.PrestigeInfo nextPrestigeInfo = PrestigeValues.getPrestigeInfo(pitPlayer.prestige + 1);
 	public PrestigeGUI prestigeGUI;
+
 	public PrestigePanel(AGUI gui) {
 		super(gui);
 		prestigeGUI = (PrestigeGUI) gui;
@@ -56,7 +57,7 @@ public class PrestigePanel extends AGUIPanel {
 					openPanel(prestigeGUI.prestigeConfirmPanel);
 				} else {
 					AOutput.error(player, "&cYou do not meet the requirments to prestige!");
-						Sounds.NO.play(player);
+					Sounds.NO.play(player);
 				}
 			}
 			if(slot == 15) {
@@ -75,7 +76,8 @@ public class PrestigePanel extends AGUIPanel {
 		if(pitPlayer.prestige == PrestigeValues.MAX_PRESTIGE) {
 			prestigeLore.add(ChatColor.GREEN + "You've reached the maximum prestige, GG");
 		} else {
-			if(pitPlayer.prestige != 0) prestigeLore.add(ChatColor.translateAlternateColorCodes('&', "&7Current: &e" + AUtil.toRoman(pitPlayer.prestige)));
+			if(pitPlayer.prestige != 0)
+				prestigeLore.add(ChatColor.translateAlternateColorCodes('&', "&7Current: &e" + AUtil.toRoman(pitPlayer.prestige)));
 			prestigeLore.add(ChatColor.translateAlternateColorCodes('&', "&7Required Level: " + prestigeInfo.getOpenBracket() + "&b&l120" + prestigeInfo.getCloseBracket()));
 			DecimalFormat formatter = new DecimalFormat("#,###.#");
 			prestigeLore.add(ChatColor.translateAlternateColorCodes('&', "&7Grinded: &6" +
@@ -92,7 +94,8 @@ public class PrestigePanel extends AGUIPanel {
 			prestigeLore.add(ChatColor.translateAlternateColorCodes('&', "&7Reward: &e" + prestigeInfo.renownReward + " &eRenown"));
 			prestigeLore.add("");
 			prestigeLore.add(ChatColor.translateAlternateColorCodes('&', "&7New prestige: &e" + AUtil.toRoman(pitPlayer.prestige + 1)));
-			if(pitPlayer.prestige != 0) prestigeLore.add(ChatColor.translateAlternateColorCodes('&', "&b+" + (int) (100 * nextPrestigeInfo.xpMultiplier) + "&b% &7needed xp!"));
+			if(pitPlayer.prestige != 0)
+				prestigeLore.add(ChatColor.translateAlternateColorCodes('&', "&b+" + (int) (100 * nextPrestigeInfo.xpMultiplier) + "&b% &7needed xp!"));
 			prestigeLore.add("");
 			//TODO: Re-enable killreq
 			if(pitPlayer.level == 120 && pitPlayer.goldGrinded >= prestigeInfo.goldReq && pitPlayer.playerKills >= prestigeInfo.killReq) {
@@ -122,7 +125,6 @@ public class PrestigePanel extends AGUIPanel {
 		renownMeta.setLore(renownLore);
 		renown.setItemMeta(renownMeta);
 		getInventory().setItem(15, renown);
-
 
 
 	}

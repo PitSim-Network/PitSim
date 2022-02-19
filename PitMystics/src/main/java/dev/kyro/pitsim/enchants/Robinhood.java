@@ -62,7 +62,8 @@ public class Robinhood extends PitEnchant {
 		robinMap.add(arrow);
 
 		Cooldown cooldown = getCooldown(player, 60);
-		if(cooldown.isOnCooldown()) return; else cooldown.reset();
+		if(cooldown.isOnCooldown()) return;
+		else cooldown.reset();
 
 		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
 		if(pitPlayer.stats != null) pitPlayer.stats.robinhood++;

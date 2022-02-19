@@ -144,11 +144,12 @@ public class Tutorial {
 					runnable.cancel();
 				}
 			}
-		} catch(Exception ignored) { }
+		} catch(Exception ignored) {
+		}
 		SchematicPaste.loadSchematic(new File("plugins/WorldEdit/schematics/clear.schematic"), areaLocation);
 		TutorialManager.tutorials.remove(this.player);
 
-		for (NPC non : nons) {
+		for(NPC non : nons) {
 			non.destroy();
 		}
 

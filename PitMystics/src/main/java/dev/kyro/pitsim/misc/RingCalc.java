@@ -21,7 +21,7 @@ public class RingCalc {
 //		}
 //	}
 
-//	Spirals starting from (0, 0) and moving up first
+	//	Spirals starting from (0, 0) and moving up first
 	public static XYCoords getPosInRing(int position) {
 		if(position == 0) return new XYCoords(0, 0);
 		if(position == 1) return new XYCoords(0, 500);
@@ -52,7 +52,8 @@ public class RingCalc {
 				if(++currentPosition == position) return new XYCoords(x * 500, y * 500);
 			}
 			spiralHalfLength++;
-			y++; x++;
+			y++;
+			x++;
 			if(++currentPosition == position) return new XYCoords(x * 500, y * 500);
 		}
 	}

@@ -46,8 +46,8 @@ public class NewDeal extends PitEnchant {
 	public List<String> getDescription(int enchantLvl) {
 
 //		if(enchantLvl == 1) {
-			return new ALoreBuilder("&7You are immune to &6Billionaire&7,",
-					"&7but take &c" + Misc.getHearts(getTrueDamage(enchantLvl)) + " &7very true", "&7damage when hit").getLore();
+		return new ALoreBuilder("&7You are immune to &6Billionaire&7,",
+				"&7but take &c" + Misc.getHearts(getTrueDamage(enchantLvl)) + " &7very true", "&7damage when hit").getLore();
 //		} else {
 //			return new ALoreBuilder("&7Receive &9-" + Misc.roundString(getDamageReduction(enchantLvl)) + "% &7damage and you are",
 //					"&7immune to &6Billionaire").getLore();

@@ -30,7 +30,7 @@ public class PhoenixAbility extends HelmetAbility {
 
 	public PhoenixAbility(Player player) {
 
-		super(player,"Phoenix", "phoenix", false, 13);
+		super(player, "Phoenix", "phoenix", false, 13);
 	}
 
 	@EventHandler
@@ -66,7 +66,7 @@ public class PhoenixAbility extends HelmetAbility {
 
 		assert goldenHelmet != null;
 		if(!GoldenHelmet.withdrawGold(player, goldenHelmet, cost)) {
-			AOutput.error(player,"&cNot enough gold!");
+			AOutput.error(player, "&cNot enough gold!");
 			Sounds.NO.play(player);
 			return;
 		}
@@ -75,7 +75,7 @@ public class PhoenixAbility extends HelmetAbility {
 		pitPlayer.heal(player.getMaxHealth());
 		pitPlayer.heal(player.getMaxHealth() * 2, HealEvent.HealType.ABSORPTION, (int) player.getMaxHealth() * 2);
 		alreadyActivatedList.add(player.getUniqueId());
-		for (Entity entity : player.getNearbyEntities(5, 5, 5)) {
+		for(Entity entity : player.getNearbyEntities(5, 5, 5)) {
 			if(!(entity instanceof Player)) continue;
 			Player target = (Player) entity;
 			Non non = NonManager.getNon(target);
@@ -113,7 +113,8 @@ public class PhoenixAbility extends HelmetAbility {
 	}
 
 	@Override
-	public void onActivate() { }
+	public void onActivate() {
+	}
 
 	@Override
 	public boolean shouldActivate() {
@@ -121,5 +122,6 @@ public class PhoenixAbility extends HelmetAbility {
 	}
 
 	@Override
-	public void onDeactivate() { }
+	public void onDeactivate() {
+	}
 }

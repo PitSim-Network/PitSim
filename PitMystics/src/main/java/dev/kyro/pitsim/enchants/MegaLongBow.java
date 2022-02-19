@@ -54,7 +54,8 @@ public class MegaLongBow extends PitEnchant {
 //		}
 
 		Cooldown cooldown = getCooldown(player, 20);
-		if(cooldown.isOnCooldown()) return; else cooldown.reset();
+		if(cooldown.isOnCooldown()) return;
+		else cooldown.reset();
 
 		mlbShots.add(arrow.getUniqueId());
 		new BukkitRunnable() {

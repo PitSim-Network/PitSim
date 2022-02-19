@@ -18,7 +18,7 @@ public class PlayerKillsPlaceholder implements APAPIPlaceholder {
 
 		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
 		PrestigeValues.PrestigeInfo prestigeInfo = PrestigeValues.getPrestigeInfo(pitPlayer.prestige);
-			return ChatColor.translateAlternateColorCodes('&', "&a" + pitPlayer.playerKills + "&7/" + prestigeInfo.killReq);
+		return ChatColor.translateAlternateColorCodes('&', "&a" + pitPlayer.playerKills + "&7/" + prestigeInfo.killReq);
 
 	}
 }

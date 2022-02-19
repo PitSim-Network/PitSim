@@ -59,7 +59,8 @@ public class GoldenHelmet implements Listener {
 			return;
 		}
 
-		if(!abilities.get(player).refName.equals(Objects.requireNonNull(getAbility(getHelmet(player))).refName)) generateAbility(player);
+		if(!abilities.get(player).refName.equals(Objects.requireNonNull(getAbility(getHelmet(player))).refName))
+			generateAbility(player);
 
 		HelmetAbility ability = abilities.get(player);
 
@@ -187,13 +188,12 @@ public class GoldenHelmet implements Listener {
 		if(ability != null) {
 			loreBuilder.addLore("&7Ability: &9" + ability.name);
 			loreBuilder.addLore(ability.getDescription());
-		}
-		else loreBuilder.addLore("&7Ability: &cNONE");
+		} else loreBuilder.addLore("&7Ability: &cNONE");
 		loreBuilder.addLore("", "&7Passives:");
 		int passives = 0;
 		for(HelmetSystem.Passive passive : HelmetSystem.Passive.values()) {
 			int level = HelmetSystem.getLevel(gold);
-			int passiveLevel = HelmetSystem.getTotalStacks(passive,level - 1);
+			int passiveLevel = HelmetSystem.getTotalStacks(passive, level - 1);
 
 			if(passiveLevel == 0) continue;
 			passives++;
@@ -301,7 +301,7 @@ public class GoldenHelmet implements Listener {
 
 	@EventHandler
 	public void onChat(AsyncPlayerChatEvent event) {
-		if(HelmetGUI.depositPlayers.containsKey(event.getPlayer())){
+		if(HelmetGUI.depositPlayers.containsKey(event.getPlayer())) {
 			event.setCancelled(true);
 			ItemStack helmet = HelmetGUI.depositPlayers.get(event.getPlayer());
 
@@ -354,7 +354,7 @@ public class GoldenHelmet implements Listener {
 		if(!event.getPlayer().isSneaking()) return;
 		Player player = event.getPlayer();
 		Action action = event.getAction();
-		if ((action.equals(Action.RIGHT_CLICK_BLOCK) || action.equals(Action.RIGHT_CLICK_AIR)) && this.armorMaterials.contains(player.getItemInHand().getType())) {
+		if((action.equals(Action.RIGHT_CLICK_BLOCK) || action.equals(Action.RIGHT_CLICK_AIR)) && this.armorMaterials.contains(player.getItemInHand().getType())) {
 			event.setCancelled(true);
 			player.updateInventory();
 		}
@@ -381,11 +381,13 @@ public class GoldenHelmet implements Listener {
 
 		int attackLevel = 0;
 		if(attackerHelmet != null) attackLevel = HelmetSystem.getLevel(getUsedHelmetGold(attackEvent.attacker));
-		if(attackerHelmet != null) attackEvent.increasePercent += HelmetSystem.getTotalStacks(HelmetSystem.Passive.DAMAGE, attackLevel - 1) / 100D;
+		if(attackerHelmet != null)
+			attackEvent.increasePercent += HelmetSystem.getTotalStacks(HelmetSystem.Passive.DAMAGE, attackLevel - 1) / 100D;
 
 		int defenderLevel = 0;
 		if(defenderHelmet != null) defenderLevel = HelmetSystem.getLevel(getUsedHelmetGold(attackEvent.defender));
-		if(defenderHelmet != null) attackEvent.multipliers.add(Misc.getReductionMultiplier(HelmetSystem.getTotalStacks(HelmetSystem.Passive.DAMAGE_REDUCTION, defenderLevel - 1)));
+		if(defenderHelmet != null)
+			attackEvent.multipliers.add(Misc.getReductionMultiplier(HelmetSystem.getTotalStacks(HelmetSystem.Passive.DAMAGE_REDUCTION, defenderLevel - 1)));
 	}
 
 	@EventHandler
@@ -406,7 +408,7 @@ public class GoldenHelmet implements Listener {
 
 		int level = HelmetSystem.getLevel(getUsedHelmetGold(killEvent.killer));
 
-		killEvent.goldMultipliers.add(1 + HelmetSystem.getTotalStacks(HelmetSystem.Passive.GOLD_BOOST,  level  - 1) / 100D);
+		killEvent.goldMultipliers.add(1 + HelmetSystem.getTotalStacks(HelmetSystem.Passive.GOLD_BOOST, level - 1) / 100D);
 		killEvent.xpMultipliers.add(1 + HelmetSystem.getTotalStacks(HelmetSystem.Passive.XP_BOOST, level - 1) / 100D);
 
 		if(NonManager.getNon(killEvent.dead) == null) {

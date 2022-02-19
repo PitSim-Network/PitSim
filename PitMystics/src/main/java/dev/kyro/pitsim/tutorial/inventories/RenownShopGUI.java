@@ -15,7 +15,7 @@ public class RenownShopGUI extends AGUI {
 
 	public RenownShopPanel renownShopPanel;
 	public RenownShopConfirmPanel renownShopConfirmPanel;
-//	public static ShardHunterPanel shardHunterPanel;
+	//	public static ShardHunterPanel shardHunterPanel;
 //	public static WithercraftPanel withercraftPanel;
 //	public static ItemClearPanel itemClearPanel;
 //	public static HelmetryPanel helmetryPanel;

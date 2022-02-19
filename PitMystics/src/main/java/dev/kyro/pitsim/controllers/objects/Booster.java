@@ -32,6 +32,7 @@ public abstract class Booster implements Listener {
 	}
 
 	public abstract List<String> getDescription();
+
 	public abstract ItemStack getDisplayItem();
 
 	public void disable() {
@@ -79,13 +80,13 @@ public abstract class Booster implements Listener {
 		return null;
 	}
 
-	public static void setBooster(Player player, Booster booster, int amount)  {
+	public static void setBooster(Player player, Booster booster, int amount) {
 		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
 		pitPlayer.boosters.put(booster, amount);
 		saveBoosters(player);
 	}
 
-	public static void setBooster(Player player, String booster, int amount)  {
+	public static void setBooster(Player player, String booster, int amount) {
 		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
 		for(Booster booster1 : BoosterManager.boosterList) {
 			if(booster1.refName.equals(booster)) {

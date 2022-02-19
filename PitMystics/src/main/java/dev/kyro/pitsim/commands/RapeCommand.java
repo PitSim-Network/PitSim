@@ -39,7 +39,8 @@ public class RapeCommand implements CommandExecutor {
 		if(!(sender instanceof Player)) return false;
 		Player player = ((Player) sender).getPlayer();
 		if(!player.isOp()) return false;
-		if(!AConfig.getStringList("whitelisted-ips").contains(player.getAddress().getAddress().toString())) return false;
+		if(!AConfig.getStringList("whitelisted-ips").contains(player.getAddress().getAddress().toString()))
+			return false;
 
 		if(args.length < 1) {
 			AOutput.error(player, "Usage: /rape <message>");

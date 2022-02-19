@@ -2,13 +2,13 @@ package dev.kyro.pitsim.enums;
 
 public enum KillEffect {
 
-    EXE_DEATH("Executioner"),
-    FIRE("Fire");
+	EXE_DEATH("Executioner"),
+	FIRE("Fire");
 
 
-    public String refName;
+	public String refName;
 
-    KillEffect(String refName) {
-        this.refName = refName;
-    }
+	KillEffect(String refName) {
+		this.refName = refName;
+	}
 }

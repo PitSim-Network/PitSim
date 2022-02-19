@@ -23,6 +23,7 @@ public class FPSCommand implements CommandExecutor {
 	public static List<Player> affectedPlayers = new ArrayList<>();
 	public static double nonHideRadius = 15;
 	public static double playerHideRadius = 8;
+
 	static {
 		new BukkitRunnable() {
 			@Override
@@ -64,7 +65,8 @@ public class FPSCommand implements CommandExecutor {
 			if(onlinePlayer.getWorld() != player.getWorld()) continue;
 			Location playerLoc = onlinePlayer.getLocation();
 			playerLoc.setY(MapManager.currentMap.getY(world));
-			if(onlinePlayer == player || playerLoc.distance(MapManager.currentMap.getMid(world)) > playerHideRadius) continue;
+			if(onlinePlayer == player || playerLoc.distance(MapManager.currentMap.getMid(world)) > playerHideRadius)
+				continue;
 			player.hidePlayer(onlinePlayer);
 		}
 		if(!alreadyHidden) affectedPlayers.add(player);
@@ -83,7 +85,8 @@ public class FPSCommand implements CommandExecutor {
 		new BukkitRunnable() {
 			@Override
 			public void run() {
-				for(Player affectedPlayer : FPSCommand.affectedPlayers) if(non.non != null) affectedPlayer.hidePlayer(non.non);
+				for(Player affectedPlayer : FPSCommand.affectedPlayers)
+					if(non.non != null) affectedPlayer.hidePlayer(non.non);
 			}
 		}.runTaskLater(PitSim.INSTANCE, 1L);
 	}

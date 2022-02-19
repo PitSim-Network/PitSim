@@ -24,6 +24,7 @@ public class StatPanel extends AGUIPanel {
 
 	public PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
 	public PlayerStats stats;
+
 	public StatPanel(AGUI gui) {
 		super(gui);
 		statGUI = (StatGUI) gui;
@@ -63,7 +64,7 @@ public class StatPanel extends AGUIPanel {
 		statMap.put(10, combat.getItemStack());
 
 		Material megastreakMaterial = Math.random() < 0.25 ? Material.BLAZE_POWDER : (Math.random() < 0.5 ? Material.DIAMOND_HELMET : Math.random() < 0.75 ? Material.GOLD_BOOTS : Material.ENDER_STONE);
-				AItemStackBuilder megastreak = new AItemStackBuilder(megastreakMaterial)
+		AItemStackBuilder megastreak = new AItemStackBuilder(megastreakMaterial)
 				.setName("&9Megastreak Statistics")
 				.setLore(new ALoreBuilder(
 						"&7Overdrive Streaks: &e" + large(stats.timesOnOverdrive),
@@ -159,6 +160,7 @@ public class StatPanel extends AGUIPanel {
 		if(seconds < 60 * 60 * 24) return decimalFormat.format(seconds / 60.0 / 60.0) + " hours";
 		return decimalFormat.format(seconds / 60.0 / 60.0 / 24.0) + " days";
 	}
+
 	public String large(double large) {
 		DecimalFormat decimalFormat = new DecimalFormat("#,##0.#");
 		if(large < 1_000) return decimalFormat.format(large);
@@ -166,11 +168,13 @@ public class StatPanel extends AGUIPanel {
 		if(large < 1_000_000_000) return decimalFormat.format(large / 1_000_000.0) + "M";
 		return decimalFormat.format(large / 1_000_000_000) + "B";
 	}
+
 	public String ratio(double ratio) {
 		if(ratio < 1_000) return new DecimalFormat("#,##0.###").format(ratio);
 		if(ratio < 1_000_000) return new DecimalFormat("#,##0.#").format(ratio / 1_000) + "K";
 		return new DecimalFormat("#,##0.#").format(ratio / 1_000_000) + "M";
 	}
+
 	public String percent(double percent) {
 		return new DecimalFormat("0.0").format(percent * 100) + "%";
 	}
@@ -186,11 +190,14 @@ public class StatPanel extends AGUIPanel {
 	}
 
 	@Override
-	public void onClick(InventoryClickEvent event) { }
+	public void onClick(InventoryClickEvent event) {
+	}
 
 	@Override
-	public void onOpen(InventoryOpenEvent event) { }
+	public void onOpen(InventoryOpenEvent event) {
+	}
 
 	@Override
-	public void onClose(InventoryCloseEvent event) { }
+	public void onClose(InventoryCloseEvent event) {
+	}
 }

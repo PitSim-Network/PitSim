@@ -36,7 +36,8 @@ public class PushComesToShove extends PitEnchant {
 		if(!HitCounter.hasReachedThreshold(pitAttacker.player, this, 3)) return;
 
 		Cooldown cooldown = getCooldown(attackEvent.attacker, 200);
-		if(cooldown.isOnCooldown()) return; else cooldown.reset();
+		if(cooldown.isOnCooldown()) return;
+		else cooldown.reset();
 
 		if(pitDefender.megastreak.getClass() == Uberstreak.class && pitDefender.megastreak.isOnMega()) return;
 		Vector velocity = attackEvent.arrow.getVelocity().normalize().multiply(getPunchMultiplier(enchantLvl) / 2.35);

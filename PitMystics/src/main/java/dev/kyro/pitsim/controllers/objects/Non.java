@@ -170,7 +170,7 @@ public class Non {
 		Booster booster = BoosterManager.getBooster("chaos");
 		if(booster.isActive()) {
 			spawnLoc.add(0, -10, 0);
-		} else if(Math.random() < 0.5){
+		} else if(Math.random() < 0.5) {
 			spawnLoc.add(0, -5, 0);
 		}
 
@@ -261,9 +261,9 @@ public class Non {
 	public void skin(String name) {
 		npc.data().set(NPC.PLAYER_SKIN_UUID_METADATA, name);
 		npc.data().set(NPC.PLAYER_SKIN_USE_LATEST, false);
-		if (npc.isSpawned()) {
+		if(npc.isSpawned()) {
 			SkinnableEntity skinnable = (SkinnableEntity) npc.getEntity();
-			if (skinnable != null) {
+			if(skinnable != null) {
 				skinnable.setSkinName(name);
 			}
 		}

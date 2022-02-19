@@ -74,7 +74,8 @@ public class Hopper {
 		npc.setProtected(false);
 
 		Equipment equipment = npc.getTrait(Equipment.class);
-		for(Map.Entry<Equipment.EquipmentSlot, ItemStack> entry : type.getEquipment().entrySet()) equipment.set(entry.getKey(), entry.getValue());
+		for(Map.Entry<Equipment.EquipmentSlot, ItemStack> entry : type.getEquipment().entrySet())
+			equipment.set(entry.getKey(), entry.getValue());
 		if(type == Type.GSET) {
 			hopper.setMaxHealth(28);
 			hopper.setHealth(hopper.getMaxHealth());
@@ -96,7 +97,7 @@ public class Hopper {
 		if(count % 5 == 0) {
 			for(Player onlinePlayer : Bukkit.getOnlinePlayers()) {
 				if(!onlinePlayer.getWorld().equals(hopper.getWorld())) continue;
-				PacketPlayOutAnimation attackPacket = new PacketPlayOutAnimation(((CraftEntity)hopper).getHandle(), 0);
+				PacketPlayOutAnimation attackPacket = new PacketPlayOutAnimation(((CraftEntity) hopper).getHandle(), 0);
 				((CraftPlayer) onlinePlayer).getHandle().playerConnection.sendPacket(attackPacket);
 			}
 		}
@@ -157,7 +158,7 @@ public class Hopper {
 			} else {
 
 				Location rotLoc = entity.getLocation().clone();
-				rotLoc.setYaw(entity.getLocation().getYaw() + (dirClockwise ? - 70 : 70));
+				rotLoc.setYaw(entity.getLocation().getYaw() + (dirClockwise ? -70 : 70));
 				entity.setVelocity(npcVelo.add(rotLoc.getDirection().setY(0).normalize().multiply(speed))
 						.add(dir.setY(0).normalize().multiply(distanceFromOptimal / 20D)));
 			}
@@ -172,7 +173,8 @@ public class Hopper {
 
 				double range = 3.7;
 				if(!Misc.isAirOrNull(hopper.getEquipment().getLeggings()) &&
-						EnchantManager.getEnchantLevel(hopper.getEquipment().getLeggings(), EnchantManager.getEnchant("regularity")) != 0) range -= 0.7;
+						EnchantManager.getEnchantLevel(hopper.getEquipment().getLeggings(), EnchantManager.getEnchant("regularity")) != 0)
+					range -= 0.7;
 
 				double damage = 7.5;
 				if(isCritical) damage *= 1.5;
@@ -266,8 +268,10 @@ public class Hopper {
 					try {
 						mysticSword = EnchantManager.addEnchant(mysticSword, EnchantManager.getEnchant("sharpness"), (int) (Math.random() * 11), false);
 						mysticSword = EnchantManager.addEnchant(mysticSword, EnchantManager.getEnchant("lifesteal"), 2, false);
-						if(Math.random() < 0.25) mysticSword = EnchantManager.addEnchant(mysticSword, EnchantManager.getEnchant("perun"), 3, false);
-					} catch(Exception ignored) { }
+						if(Math.random() < 0.25)
+							mysticSword = EnchantManager.addEnchant(mysticSword, EnchantManager.getEnchant("perun"), 3, false);
+					} catch(Exception ignored) {
+					}
 					ItemStack mysticPants = FreshCommand.getFreshItem(MysticType.PANTS, PantColor.getNormalRandom());
 					try {
 						mysticPants = EnchantManager.addEnchant(mysticPants, EnchantManager.getEnchant("mirror"), 2, false);
@@ -277,7 +281,8 @@ public class Hopper {
 						} else if(Math.random() < 0.25) {
 							mysticPants = EnchantManager.addEnchant(mysticPants, EnchantManager.getEnchant("regularity"), 1, false);
 						}
-					} catch(Exception ignored) { }
+					} catch(Exception ignored) {
+					}
 
 					equipmentMap.put(Equipment.EquipmentSlot.HAND, mysticSword);
 					equipmentMap.put(Equipment.EquipmentSlot.HELMET, new ItemStack(Math.random() < 0.25 ? Material.DIAMOND_HELMET : Material.IRON_HELMET));
@@ -289,7 +294,8 @@ public class Hopper {
 					ItemStack venoms = FreshCommand.getFreshItem(MysticType.PANTS, PantColor.DARK);
 					try {
 						venoms = EnchantManager.addEnchant(venoms, EnchantManager.getEnchant("venom"), 1, false);
-					} catch(Exception ignored) { }
+					} catch(Exception ignored) {
+					}
 
 					equipmentMap.put(Equipment.EquipmentSlot.HAND, new ItemStack(Material.DIAMOND_SWORD));
 					equipmentMap.put(Equipment.EquipmentSlot.HELMET, new ItemStack(Math.random() < 0.25 ? Material.DIAMOND_HELMET : Material.IRON_HELMET));
@@ -305,7 +311,7 @@ public class Hopper {
 							gsetSword = EnchantManager.addEnchant(gsetSword, EnchantManager.getEnchant("bill"), 1, false);
 							gsetSword = EnchantManager.addEnchant(gsetSword, EnchantManager.getEnchant("perun"), 3, false);
 							gsetSword = EnchantManager.addEnchant(gsetSword, EnchantManager.getEnchant("comboheal"), 3, false);
-						} else if (random < 0.67) {
+						} else if(random < 0.67) {
 							gsetSword = EnchantManager.addEnchant(gsetSword, EnchantManager.getEnchant("lifesteal"), 3, false);
 							gsetSword = EnchantManager.addEnchant(gsetSword, EnchantManager.getEnchant("bill"), 3, false);
 						} else {
@@ -313,7 +319,8 @@ public class Hopper {
 //							gsetSword = EnchantManager.addEnchant(gsetSword, EnchantManager.getEnchant("bill"), 1, false);
 							gsetSword = EnchantManager.addEnchant(gsetSword, EnchantManager.getEnchant("painfocus"), 10, false);
 						}
-					} catch(Exception ignored) { }
+					} catch(Exception ignored) {
+					}
 					ItemStack gsetPants = FreshCommand.getFreshItem(MysticType.PANTS, PantColor.getNormalRandom());
 					try {
 
@@ -322,14 +329,15 @@ public class Hopper {
 						if(random < 0.33) {
 							gsetPants = EnchantManager.addEnchant(gsetPants, EnchantManager.getEnchant("mirror"), 3, false);
 							gsetPants = EnchantManager.addEnchant(gsetPants, EnchantManager.getEnchant("regularity"), 3, false);
-						} else if(random < 0.66){
+						} else if(random < 0.66) {
 							gsetPants = EnchantManager.addEnchant(gsetPants, EnchantManager.getEnchant("mirror"), 3, false);
 							gsetPants = EnchantManager.addEnchant(gsetPants, EnchantManager.getEnchant("rgm"), 3, false);
 						} else {
 							gsetPants = EnchantManager.addEnchant(gsetPants, EnchantManager.getEnchant("soli"), 3, false);
 							gsetPants = EnchantManager.addEnchant(gsetPants, EnchantManager.getEnchant("cf"), 3, false);
 						}
-					} catch(Exception ignored) { }
+					} catch(Exception ignored) {
+					}
 
 					equipmentMap.put(Equipment.EquipmentSlot.HAND, gsetSword);
 					equipmentMap.put(Equipment.EquipmentSlot.HELMET, new ItemStack(Material.GOLD_HELMET));

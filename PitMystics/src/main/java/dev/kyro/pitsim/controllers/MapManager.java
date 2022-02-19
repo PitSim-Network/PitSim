@@ -38,6 +38,7 @@ public class MapManager implements Listener {
 		}.runTaskLater(PitSim.INSTANCE, 20L);
 		new BukkitRunnable() {
 			int count = 0;
+
 			@Override
 			public void run() {
 				count++;
@@ -75,7 +76,8 @@ public class MapManager implements Listener {
 
 	@EventHandler
 	public void onPortal(PlayerPortalEvent event) {
-		if(currentMap.getClass() != BiomesMap.class || event.getCause() != PlayerTeleportEvent.TeleportCause.NETHER_PORTAL) return;
+		if(currentMap.getClass() != BiomesMap.class || event.getCause() != PlayerTeleportEvent.TeleportCause.NETHER_PORTAL)
+			return;
 		event.setCancelled(true);
 		Player player = event.getPlayer();
 		Location playerLoc = player.getLocation();

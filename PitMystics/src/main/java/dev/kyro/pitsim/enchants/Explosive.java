@@ -51,11 +51,12 @@ public class Explosive extends PitEnchant {
 		if(enchantLvl == 0) return;
 
 		Cooldown cooldown = getCooldown(shooter, getCooldown(enchantLvl));
-		if(cooldown.isOnCooldown()) return; else cooldown.reset();
+		if(cooldown.isOnCooldown()) return;
+		else cooldown.reset();
 
 		if(SpawnManager.isInSpawn(arrow.getLocation())) return;
 
-		for (Entity entity : arrow.getNearbyEntities(getRange(enchantLvl), getRange(enchantLvl), getRange(enchantLvl))) {
+		for(Entity entity : arrow.getNearbyEntities(getRange(enchantLvl), getRange(enchantLvl), getRange(enchantLvl))) {
 			if(entity instanceof Player) {
 				Player player = (Player) entity;
 				Non non = NonManager.getNon(player);
@@ -66,7 +67,8 @@ public class Explosive extends PitEnchant {
 
 					PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
 					if(NonManager.getNon(player) == null) {
-						if(pitPlayer.megastreak.getClass() == Uberstreak.class && pitPlayer.megastreak.isOnMega()) continue;
+						if(pitPlayer.megastreak.getClass() == Uberstreak.class && pitPlayer.megastreak.isOnMega())
+							continue;
 						Vector force = player.getLocation().toVector().subtract(arrow.getLocation().toVector())
 								.setY(1).normalize().multiply(non == null ? 1.15 : 5);
 						player.setVelocity(force);

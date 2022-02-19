@@ -23,7 +23,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class  PerkPanel extends AGUIPanel {
+public class PerkPanel extends AGUIPanel {
 	public List<Integer> killstreakLevels = Arrays.asList(0, 75, 90);
 	public PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
 	public PerkGUI perkGUI;
@@ -185,5 +185,6 @@ public class  PerkPanel extends AGUIPanel {
 	}
 
 	@Override
-	public void onClose(InventoryCloseEvent event) { }
+	public void onClose(InventoryCloseEvent event) {
+	}
 }

@@ -19,6 +19,7 @@ public abstract class TutorialSequence {
 	}
 
 	public abstract List<BukkitTask> getRunnables();
+
 	public abstract void play();
 
 }

@@ -101,7 +101,7 @@ public class TaskListener implements Listener {
 
 
 	@EventHandler
-	public void onClickEvent(NPCRightClickEvent event){
+	public void onClickEvent(NPCRightClickEvent event) {
 
 		Player player = event.getClicker();
 
@@ -126,7 +126,7 @@ public class TaskListener implements Listener {
 		if(tutorial == null) return;
 		if(!(tutorial.sequence instanceof EquipArmorSequence)) return;
 
-		for (ItemStack armorContent : player.getInventory().getArmorContents()) {
+		for(ItemStack armorContent : player.getInventory().getArmorContents()) {
 			if(Misc.isAirOrNull(armorContent)) {
 				return;
 			}

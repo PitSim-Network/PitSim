@@ -106,7 +106,8 @@ public class BoosterManager implements Listener {
 				for(Booster booster : boosterList) {
 					if(booster.minutes == 0) continue;
 					booster.minutes--;
-					if(booster.minutes == 0) booster.disable(); else booster.updateTime();
+					if(booster.minutes == 0) booster.disable();
+					else booster.updateTime();
 				}
 
 				donators.clear();
@@ -134,9 +135,10 @@ public class BoosterManager implements Listener {
 				if(getActiveBoosters() == 0) return;
 				if(getActiveBoosters() == 1) {
 					Bukkit.broadcastMessage(ChatColor.translateAlternateColorCodes('&', "&6&lBOOSTER! &eThere is currently &f1 &eactive booster on the server!"));
-				}  else Bukkit.broadcastMessage(ChatColor.translateAlternateColorCodes('&', "&6&lBOOSTER! &eThere are currently &f" + getActiveBoosters() + " &eactive boosters on the server!"));
+				} else
+					Bukkit.broadcastMessage(ChatColor.translateAlternateColorCodes('&', "&6&lBOOSTER! &eThere are currently &f" + getActiveBoosters() + " &eactive boosters on the server!"));
 
-				TextComponent nonClick = new TextComponent(ChatColor.translateAlternateColorCodes('&',"&eView active boosters by clicking "));
+				TextComponent nonClick = new TextComponent(ChatColor.translateAlternateColorCodes('&', "&eView active boosters by clicking "));
 				TextComponent click = new TextComponent(ChatColor.translateAlternateColorCodes('&', "&6&lhere."));
 				click.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/booster"));
 

@@ -12,19 +12,19 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 public class SpawnCommand implements CommandExecutor {
-    @Override
-    public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
+	@Override
+	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
 
-        Player player = (Player) sender;
-        SpawnManager.lastLocationMap.remove(player);
-        Location teleportLoc = MapManager.currentMap.getSpawn(player.getWorld());
-        player.teleport(teleportLoc);
-        PhoenixAbility.alreadyActivatedList.remove(player.getUniqueId());
-        for(Hopper hopper : HopperManager.hopperList) {
-            if(player != hopper.target) continue;
-            hopper.remove();
-        }
+		Player player = (Player) sender;
+		SpawnManager.lastLocationMap.remove(player);
+		Location teleportLoc = MapManager.currentMap.getSpawn(player.getWorld());
+		player.teleport(teleportLoc);
+		PhoenixAbility.alreadyActivatedList.remove(player.getUniqueId());
+		for(Hopper hopper : HopperManager.hopperList) {
+			if(player != hopper.target) continue;
+			hopper.remove();
+		}
 
-        return false;
-    }
+		return false;
+	}
 }

@@ -24,6 +24,7 @@ public class KillEffectPanel extends AGUIPanel {
 	public PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
 
 	public DonatorGUI donatorGUI;
+
 	public KillEffectPanel(AGUI gui) {
 		super(gui);
 		donatorGUI = (DonatorGUI) gui;
@@ -109,7 +110,7 @@ public class KillEffectPanel extends AGUIPanel {
 		if(pitPlayer.killEffect == null) {
 			nonelore.add(ChatColor.GREEN + "Already Selected!");
 			nonemeta.setDisplayName(ChatColor.GREEN + "None");
-			nonemeta.addEnchant(Enchantment.PROTECTION_ENVIRONMENTAL,0 , false);
+			nonemeta.addEnchant(Enchantment.PROTECTION_ENVIRONMENTAL, 0, false);
 			nonemeta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
 		} else {
 			nonelore.add(ChatColor.YELLOW + "Click to select!");
@@ -167,5 +168,6 @@ public class KillEffectPanel extends AGUIPanel {
 	}
 
 	@Override
-	public void onClose(InventoryCloseEvent event) { }
+	public void onClose(InventoryCloseEvent event) {
+	}
 }

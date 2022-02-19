@@ -10,10 +10,11 @@ import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.server.PluginDisableEvent;
 import org.bukkit.scheduler.BukkitRunnable;
 
-public  class PlayerDataManager implements Listener {
+public class PlayerDataManager implements Listener {
 	static {
 		new BukkitRunnable() {
 			int count = 0;
+
 			@Override
 			public void run() {
 				if(count++ % 60 == 0) {
@@ -28,7 +29,7 @@ public  class PlayerDataManager implements Listener {
 					}
 				}
 			}
-		}.runTaskTimer(PitSim.INSTANCE,  20L, 20);
+		}.runTaskTimer(PitSim.INSTANCE, 20L, 20);
 	}
 
 	@EventHandler

@@ -29,6 +29,7 @@ import java.util.List;
 public class MegastreakPanel extends AGUIPanel {
 	PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
 	public PerkGUI perkGUI;
+
 	public MegastreakPanel(AGUI gui) {
 		super(gui);
 		perkGUI = (PerkGUI) gui;
@@ -148,7 +149,7 @@ public class MegastreakPanel extends AGUIPanel {
 							AOutput.error(player, "&cYou do not have enough renown!");
 							Sounds.ERROR.play(player);
 						}
-					}else if(!prestige && !has && !uberCd && !level) {
+					} else if(!prestige && !has && !uberCd && !level) {
 						MegastreakEquipEvent msEvent = new MegastreakEquipEvent(player);
 						Bukkit.getServer().getPluginManager().callEvent(msEvent);
 						openPanel(perkGUI.getHomePanel());
@@ -192,8 +193,10 @@ public class MegastreakPanel extends AGUIPanel {
 					pitPlayer.dailyUbersLeft = 5 + UberIncrease.getUberIncrease(player);
 				}
 				int ubersLeft = pitPlayer.dailyUbersLeft;
-				if(ubersLeft == 0) lore.add(ChatColor.translateAlternateColorCodes('&', "&dDaily Uberstreaks remaining: &c0&7/" + (5 + UberIncrease.getUberIncrease(player))));
-				else lore.add(ChatColor.translateAlternateColorCodes('&', "&dDaily Uberstreaks remaining: &a" + ubersLeft + "&7/" + (5 + UberIncrease.getUberIncrease(player))));
+				if(ubersLeft == 0)
+					lore.add(ChatColor.translateAlternateColorCodes('&', "&dDaily Uberstreaks remaining: &c0&7/" + (5 + UberIncrease.getUberIncrease(player))));
+				else
+					lore.add(ChatColor.translateAlternateColorCodes('&', "&dDaily Uberstreaks remaining: &a" + ubersLeft + "&7/" + (5 + UberIncrease.getUberIncrease(player))));
 			}
 			if(megastreak.getClass() == RNGesus.class && isOnCooldown) {
 				lore.add(ChatColor.YELLOW + "Megastreak on cooldown! " + ChatColor.GRAY + "(" + RNGesus.getTime(player) + ")");
@@ -205,10 +208,10 @@ public class MegastreakPanel extends AGUIPanel {
 			} else if(pitPlayer.prestige < megastreak.prestigeReq() && megastreak.getClass() != NoMegastreak.class) {
 				lore.add(ChatColor.RED + "Unlocked at prestige " + ChatColor.YELLOW + AUtil.toRoman(megastreak.prestigeReq()));
 				meta.setDisplayName(ChatColor.RED + megastreak.getRawName());
-			} else if(megastreak.getClass() == Uberstreak.class && pitPlayer.dailyUbersLeft == 0){
+			} else if(megastreak.getClass() == Uberstreak.class && pitPlayer.dailyUbersLeft == 0) {
 				lore.add(ChatColor.RED + "Daily limit reached!");
 				meta.setDisplayName(ChatColor.RED + megastreak.getRawName());
-			} else if(pitPlayer.level < megastreak.levelReq()){
+			} else if(pitPlayer.level < megastreak.levelReq()) {
 				PrestigeValues.PrestigeInfo info = PrestigeValues.getPrestigeInfo(pitPlayer.prestige);
 				lore.add(ChatColor.translateAlternateColorCodes('&', "&cUnlocked at level " + info.getOpenBracket() + PrestigeValues.getLevelColor(megastreak.levelReq()) + megastreak.levelReq() + info.getCloseBracket()));
 				meta.setDisplayName(ChatColor.RED + megastreak.getRawName());
@@ -218,7 +221,7 @@ public class MegastreakPanel extends AGUIPanel {
 			} else if(megastreak.getClass() == RNGesus.class && pitPlayer.renown >= 1 && isOnCooldown) {
 				lore.add(ChatColor.YELLOW + "Click to select for " + RNGesus.RENOWN_COST + " renown!");
 				meta.setDisplayName(ChatColor.YELLOW + megastreak.getRawName());
-			}else if(megastreak.getClass() != NoMegastreak.class){
+			} else if(megastreak.getClass() != NoMegastreak.class) {
 				lore.add(ChatColor.YELLOW + "Click to select!");
 				meta.setDisplayName(ChatColor.YELLOW + megastreak.getRawName());
 			}
@@ -226,7 +229,7 @@ public class MegastreakPanel extends AGUIPanel {
 				meta.addEnchant(Enchantment.PROTECTION_ENVIRONMENTAL, 1, false);
 			}
 			if(megastreak.getClass() == NoMegastreak.class) {
-				meta.setDisplayName(ChatColor.RED +  megastreak.getRawName());
+				meta.setDisplayName(ChatColor.RED + megastreak.getRawName());
 				lore.add(ChatColor.YELLOW + "Click to remove megastreak!");
 			}
 			meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
@@ -249,5 +252,6 @@ public class MegastreakPanel extends AGUIPanel {
 	}
 
 	@Override
-	public void onClose(InventoryCloseEvent event) { }
+	public void onClose(InventoryCloseEvent event) {
+	}
 }

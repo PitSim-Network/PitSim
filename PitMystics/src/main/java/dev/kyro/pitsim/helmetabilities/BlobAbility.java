@@ -22,8 +22,9 @@ import java.util.List;
 
 public class BlobAbility extends HelmetAbility {
 	public BukkitTask runnable;
+
 	public BlobAbility(Player player) {
-		super(player,"Pit Blob", "pitblob", true, 11);
+		super(player, "Pit Blob", "pitblob", true, 11);
 	}
 
 	@Override
@@ -42,7 +43,7 @@ public class BlobAbility extends HelmetAbility {
 				ItemStack goldenHelmet = GoldenHelmet.getHelmet(player);
 				assert goldenHelmet != null;
 				if(!GoldenHelmet.withdrawGold(player, goldenHelmet, 4000)) {
-					AOutput.error(player,"&cNot enough gold!");
+					AOutput.error(player, "&cNot enough gold!");
 					GoldenHelmet.deactivate(player);
 					Sounds.NO.play(player);
 				} else {
@@ -55,7 +56,7 @@ public class BlobAbility extends HelmetAbility {
 	@Override
 	public boolean shouldActivate() {
 		if(GoldenHelmet.getUsedHelmetGold(player) < 4000) {
-			AOutput.error(player,"&cNot enough gold!");
+			AOutput.error(player, "&cNot enough gold!");
 			Sounds.NO.play(player);
 			return false;
 		}
@@ -77,7 +78,8 @@ public class BlobAbility extends HelmetAbility {
 	}
 
 	@Override
-	public void onProc() { }
+	public void onProc() {
+	}
 
 	@Override
 	public List<String> getDescription() {

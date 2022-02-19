@@ -13,35 +13,35 @@ import org.bukkit.entity.Player;
 
 public class TutorialCommand implements CommandExecutor {
 
-    @Override
-    public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
+	@Override
+	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
 
-        if(!(sender instanceof Player)) return false;
-        Player player = (Player) sender;
+		if(!(sender instanceof Player)) return false;
+		Player player = (Player) sender;
 
-        if(args.length < 1) {
-            AOutput.error(player, "&cUsage: /tutorial skip");
-            return false;
-        }
+		if(args.length < 1) {
+			AOutput.error(player, "&cUsage: /tutorial skip");
+			return false;
+		}
 
-        if(!args[0].equalsIgnoreCase("skip")) {
-            AOutput.error(player, "&cUsage: /tutorial skip");
-            return false;
-        }
+		if(!args[0].equalsIgnoreCase("skip")) {
+			AOutput.error(player, "&cUsage: /tutorial skip");
+			return false;
+		}
 
-        Tutorial tutorial = TutorialManager.getTutorial(player);
-        if(tutorial == null) {
-            AOutput.error(player, "&cYou are not in the tutorial!");
-            return false;
-        }
+		Tutorial tutorial = TutorialManager.getTutorial(player);
+		if(tutorial == null) {
+			AOutput.error(player, "&cYou are not in the tutorial!");
+			return false;
+		}
 
-        tutorial.cleanUp();
-        player.teleport(MapManager.currentMap.firstLobby.getSpawnLocation());
-        APlayer aPlayer = APlayerData.getPlayerData(player);
-        aPlayer.playerData.set("tutorial", true);
-        aPlayer.save();
-        AOutput.send(player, "&cYou have skipped the tutorial!");
+		tutorial.cleanUp();
+		player.teleport(MapManager.currentMap.firstLobby.getSpawnLocation());
+		APlayer aPlayer = APlayerData.getPlayerData(player);
+		aPlayer.playerData.set("tutorial", true);
+		aPlayer.save();
+		AOutput.send(player, "&cYou have skipped the tutorial!");
 
-        return false;
-    }
+		return false;
+	}
 }

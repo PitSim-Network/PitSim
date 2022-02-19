@@ -90,7 +90,8 @@ public class LuckyShot extends PitEnchant {
 					}
 				}
 			}
-		}catch(Exception ignored) {}
+		} catch(Exception ignored) {
+		}
 	}
 
 	@Override

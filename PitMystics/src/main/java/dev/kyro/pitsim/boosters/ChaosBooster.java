@@ -29,7 +29,7 @@ public class ChaosBooster extends Booster {
 	@Override
 	public ItemStack getDisplayItem() {
 		AItemStackBuilder builder = new AItemStackBuilder(Material.TNT);
-		ALoreBuilder loreBuilder = new ALoreBuilder("&7There are 2x bots in middle.",  "");
+		ALoreBuilder loreBuilder = new ALoreBuilder("&7There are 2x bots in middle.", "");
 		if(minutes > 0) {
 			builder.setName("&a" + name);
 			loreBuilder.addLore("&7Status: &aActive!", "&7Expires in: &e" + minutes + " minutes", "");

@@ -89,7 +89,7 @@ public class NonManager implements Listener {
 		NonManager.botIGNs = new ArrayList<>(botIGNs);
 	}
 
-//	@EventHandler(priority = EventPriority.LOW)
+	//	@EventHandler(priority = EventPriority.LOW)
 	public void onDamage(EntityDamageByEntityEvent event) {
 
 		if(!(event.getDamager() instanceof Player) || !(event.getEntity() instanceof Player)) return;

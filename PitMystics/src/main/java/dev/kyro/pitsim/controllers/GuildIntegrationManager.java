@@ -20,13 +20,15 @@ import java.util.Map;
 
 public class GuildIntegrationManager implements Listener {
 
-//	Reputation amounts
+	//	Reputation amounts
 	public static int getIdleReputation() {
 		return (int) (Math.random() * 40);
 	}
+
 	public static int getKillReputation() {
 		return (int) (Math.random() * 300);
 	}
+
 	public static int getFeatherLossReputation() {
 		return (int) (Math.random() * 2_000);
 	}
@@ -78,13 +80,15 @@ public class GuildIntegrationManager implements Listener {
 		if(defenceBuffLevel != 0) {
 			Map<GuildBuff.SubBuff, Double> buffs = defenceBuff.getBuffs(defenceBuffLevel);
 			for(Map.Entry<GuildBuff.SubBuff, Double> entry : buffs.entrySet()) {
-				if(entry.getKey().refName.equals("defence")) attackEvent.multipliers.add(Misc.getReductionMultiplier(entry.getValue()));
-				else if(entry.getKey().refName.equals("truedefence")) attackEvent.trueDamage = Math.max(attackEvent.trueDamage - entry.getValue(), 0);
+				if(entry.getKey().refName.equals("defence"))
+					attackEvent.multipliers.add(Misc.getReductionMultiplier(entry.getValue()));
+				else if(entry.getKey().refName.equals("truedefence"))
+					attackEvent.trueDamage = Math.max(attackEvent.trueDamage - entry.getValue(), 0);
 			}
 		}
 	}
 
-//	@EventHandler(priority = EventPriority.HIGH)
+	//	@EventHandler(priority = EventPriority.HIGH)
 	public void onAttack(AttackEvent.Pre attackEvent) {
 		Guild attackerGuild = GuildManager.getGuild(attackEvent.attacker);
 		Guild defenderGuild = GuildManager.getGuild(attackEvent.defender);

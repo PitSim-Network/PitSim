@@ -19,7 +19,7 @@ public class ResourcePackManager implements Listener {
 		if(pitPlayer.promptPack) {
 			event.getPlayer().setResourcePack("https://cdn.discordapp.com/attachments/803483152630677524/903075400442314772/PitSim.zip");
 		} else {
-			TextComponent nonClick = new TextComponent(ChatColor.translateAlternateColorCodes('&',"&c&lWe recommend you use our resource pack for a better\n&c&lgameplay experience. To do so, click "));
+			TextComponent nonClick = new TextComponent(ChatColor.translateAlternateColorCodes('&', "&c&lWe recommend you use our resource pack for a better\n&c&lgameplay experience. To do so, click "));
 			TextComponent click = new TextComponent(ChatColor.translateAlternateColorCodes('&', "&6&lhere."));
 			click.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/resource"));
 			nonClick.addExtra(click);

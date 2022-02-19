@@ -18,20 +18,31 @@ public abstract class Megastreak implements Listener {
 	}
 
 	public abstract String getName();
+
 	public abstract String getRawName();
+
 	public abstract String getPrefix();
+
 	public abstract List<String> getRefNames();
+
 	public abstract int getRequiredKills();
+
 	public abstract ItemStack guiItem();
+
 	public abstract int guiSlot();
+
 	public abstract int prestigeReq();
+
 	public abstract int levelReq();
 
 	public abstract void stop();
+
 	public abstract void proc();
+
 	public abstract void reset();
 
-	public void kill() {}
+	public void kill() {
+	}
 
 	public boolean isOnMega() {
 		return pitPlayer.getKills() >= getRequiredKills();

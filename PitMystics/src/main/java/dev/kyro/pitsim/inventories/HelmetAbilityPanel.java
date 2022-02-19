@@ -30,6 +30,7 @@ public class HelmetAbilityPanel extends AGUIPanel {
 	PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
 	ItemStack goldenHelmet = getHelm();
 	public HelmetGUI helmetGUI;
+
 	public HelmetAbilityPanel(AGUI gui) {
 		super(gui);
 		helmetGUI = (HelmetGUI) gui;
@@ -153,8 +154,6 @@ public class HelmetAbilityPanel extends AGUIPanel {
 	public HelmetAbility getAbility(ItemStack helmet) {
 		return GoldenHelmet.getAbility(helmet);
 	}
-
-
 
 
 	@Override

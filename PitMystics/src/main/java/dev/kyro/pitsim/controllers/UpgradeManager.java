@@ -19,7 +19,8 @@ public class UpgradeManager implements Listener {
 		APlayer aPlayer = APlayerData.getPlayerData(player);
 		Map<RenownUpgrade, Integer> playerMap = new HashMap<>();
 		for(RenownUpgrade upgrade : UpgradeManager.upgrades) {
-			if(aPlayer.playerData.contains(upgrade.refName)) playerMap.put(upgrade, aPlayer.playerData.getInt(upgrade.refName));
+			if(aPlayer.playerData.contains(upgrade.refName))
+				playerMap.put(upgrade, aPlayer.playerData.getInt(upgrade.refName));
 		}
 		upgradeMap.put(player.getUniqueId(), playerMap);
 	}
@@ -78,16 +79,19 @@ public class UpgradeManager implements Listener {
 		if(!upgrade.isTiered && hasUpgrade(player, upgrade)) return ChatColor.GREEN + upgrade.name;
 		if(upgrade.isTiered && getTier(player, upgrade) == upgrade.maxTiers) return ChatColor.GREEN + upgrade.name;
 		if(!upgrade.isTiered && pitPlayer.renown < upgrade.renownCost) return ChatColor.RED + upgrade.name;
-		if(upgrade.isTiered && pitPlayer.renown < upgrade.getTierCosts().get(getTier(player, upgrade))) return ChatColor.RED + upgrade.name;
+		if(upgrade.isTiered && pitPlayer.renown < upgrade.getTierCosts().get(getTier(player, upgrade)))
+			return ChatColor.RED + upgrade.name;
 		return ChatColor.YELLOW + upgrade.name;
 	}
 
 	public static String purchaseMessageString(RenownUpgrade upgrade, Player player) {
 		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
 		if(!upgrade.isTiered && hasUpgrade(player, upgrade)) return ChatColor.GREEN + "Unlocked!";
-		if(upgrade.isTiered && getTier(player, upgrade) == upgrade.maxTiers) return ChatColor.GREEN + "Max tier unlocked!";
+		if(upgrade.isTiered && getTier(player, upgrade) == upgrade.maxTiers)
+			return ChatColor.GREEN + "Max tier unlocked!";
 		if(!upgrade.isTiered && pitPlayer.renown < upgrade.renownCost) return ChatColor.RED + "Not enough renown!";
-		if(upgrade.isTiered && pitPlayer.renown < upgrade.getTierCosts().get(getTier(player, upgrade))) return ChatColor.RED + "Not enough renown!";
+		if(upgrade.isTiered && pitPlayer.renown < upgrade.getTierCosts().get(getTier(player, upgrade)))
+			return ChatColor.RED + "Not enough renown!";
 		return ChatColor.YELLOW + "Click to purchase!";
 	}
 

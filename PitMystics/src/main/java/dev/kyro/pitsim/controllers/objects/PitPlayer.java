@@ -53,7 +53,7 @@ public class PitPlayer {
 	public UUID lastHitUUID = null;
 	public ItemStack confirmedDrop = null;
 
-//	Savable
+	//	Savable
 	public int prestige;
 	public int level;
 	public int remainingXP = PrestigeValues.getXPForLevel(1);
@@ -100,7 +100,8 @@ public class PitPlayer {
 		playerData.set("ubersleft", dailyUbersLeft);
 		playerData.set("ubercooldown", uberReset);
 		playerData.set("goldgrinded", goldGrinded);
-		for(Map.Entry<Booster, Integer> entry : boosters.entrySet()) playerData.set("boosters." + entry.getKey().refName, entry.getValue());
+		for(Map.Entry<Booster, Integer> entry : boosters.entrySet())
+			playerData.set("boosters." + entry.getKey().refName, entry.getValue());
 
 		playerData.set("lastversion", PitSim.version);
 
@@ -132,8 +133,10 @@ public class PitPlayer {
 		playerData.set("ubersleft", dailyUbersLeft);
 		playerData.set("ubercooldown", uberReset);
 		playerData.set("goldgrinded", goldGrinded);
-		for(Map.Entry<Booster, Integer> entry : boosters.entrySet()) playerData.set("boosters." + entry.getKey().refName, entry.getValue());
-		for(Map.Entry<Booster, Integer> entry : boosterTime.entrySet()) playerData.set("booster-time." + entry.getKey().refName, entry.getValue());
+		for(Map.Entry<Booster, Integer> entry : boosters.entrySet())
+			playerData.set("boosters." + entry.getKey().refName, entry.getValue());
+		for(Map.Entry<Booster, Integer> entry : boosterTime.entrySet())
+			playerData.set("booster-time." + entry.getKey().refName, entry.getValue());
 
 		playerData.set("lastversion", PitSim.version);
 		if(killEffect != null) playerData.set("killeffect", killEffect.toString());
@@ -168,7 +171,8 @@ public class PitPlayer {
 			for(int i = 0; i < killstreaks.size(); i++) {
 				String killstreakString = playerData.getString("killstreak-" + i);
 				Killstreak savedKillstreak = killstreakString != null ? Killstreak.getKillstreak(killstreakString) : NoKillstreak.INSTANCE;
-				if(savedKillstreak == null) killstreaks.set(i, NoKillstreak.INSTANCE); else killstreaks.set(i, savedKillstreak);
+				if(savedKillstreak == null) killstreaks.set(i, NoKillstreak.INSTANCE);
+				else killstreaks.set(i, savedKillstreak);
 			}
 			String streak = playerData.getString("megastreak");
 			if(Objects.equals(streak, "Beastmode")) this.megastreak = new Beastmode(this);
@@ -317,7 +321,8 @@ public class PitPlayer {
 				}
 				recentDamageMap.putIfAbsent(player.getUniqueId(), 0D);
 				if(recentDamageMap.get(player.getUniqueId()) - damage != 0)
-					recentDamageMap.put(player.getUniqueId(), recentDamageMap.get(player.getUniqueId()) - damage); else recentDamageMap.remove(player.getUniqueId());
+					recentDamageMap.put(player.getUniqueId(), recentDamageMap.get(player.getUniqueId()) - damage);
+				else recentDamageMap.remove(player.getUniqueId());
 			}
 		}.runTaskLater(PitSim.INSTANCE, 200L);
 		assistRemove.add(bukkitTask);

@@ -127,12 +127,12 @@ public class SpawnNPCs implements Listener {
 	}
 
 	@EventHandler
-	public void onClickEvent(NPCRightClickEvent event){
+	public void onClickEvent(NPCRightClickEvent event) {
 
 		Player player = event.getClicker();
 
 		for(NPC npc : upgrade) {
-			if(event.getNPC().getId() == npc.getId())  {
+			if(event.getNPC().getId() == npc.getId()) {
 				PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
 				if(pitPlayer.megastreak.isOnMega()) {
 					AOutput.error(player, "&cYou cannot use this command while on a megastreak!");
@@ -165,9 +165,9 @@ public class SpawnNPCs implements Listener {
 	public static void skin(NPC npc, String name) {
 		npc.data().set(NPC.PLAYER_SKIN_UUID_METADATA, name);
 		npc.data().set(NPC.PLAYER_SKIN_USE_LATEST, false);
-		if (npc.isSpawned()) {
+		if(npc.isSpawned()) {
 			SkinnableEntity skinnable = (SkinnableEntity) npc.getEntity();
-			if (skinnable != null) {
+			if(skinnable != null) {
 				skinnable.setSkinName(name);
 			}
 		}

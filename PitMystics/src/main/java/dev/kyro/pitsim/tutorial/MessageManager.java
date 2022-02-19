@@ -52,6 +52,7 @@ public class MessageManager implements Listener {
 							if(TutorialManager.tutorials.containsKey(event.getPlayer())) event.setCancelled(true);
 						}
 					});
-		} catch(Exception ignored) { }
+		} catch(Exception ignored) {
+		}
 	}
 }

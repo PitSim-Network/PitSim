@@ -72,7 +72,8 @@ public class DamageManager implements Listener {
 
 	@EventHandler
 	public void onHeal(EntityRegainHealthEvent event) {
-		if(!(event.getEntity() instanceof Player) || event.getRegainReason() == EntityRegainHealthEvent.RegainReason.CUSTOM) return;
+		if(!(event.getEntity() instanceof Player) || event.getRegainReason() == EntityRegainHealthEvent.RegainReason.CUSTOM)
+			return;
 		Player player = (Player) event.getEntity();
 		event.setCancelled(true);
 
@@ -104,7 +105,7 @@ public class DamageManager implements Listener {
 //		Hit on non or by non
 		if((attackingNon != null && nonHitCooldownList.contains(defender)) ||
 				(attackingNon == null && defendingNon != null && hitCooldownList.contains(defender)) && !Regularity.toReg.contains(defender.getUniqueId()) &&
-				!(event.getDamager() instanceof Arrow)) {
+						!(event.getDamager() instanceof Arrow)) {
 			event.setCancelled(true);
 			return;
 		}
@@ -480,7 +481,8 @@ public class DamageManager implements Listener {
 		PitPlayer pitDefender = PitPlayer.getPitPlayer(dead);
 		double killstreak = pitDefender.getKills();
 
-		if(pitPlayer.stats != null && killstreak > pitPlayer.stats.highestStreak) pitPlayer.stats.highestStreak = (int) killstreak;
+		if(pitPlayer.stats != null && killstreak > pitPlayer.stats.highestStreak)
+			pitPlayer.stats.highestStreak = (int) killstreak;
 
 		pitDefender.endKillstreak();
 		pitDefender.bounty = 0;

@@ -107,7 +107,7 @@ public class InitialMysticWellSequence extends TutorialSequence {
 				holo.appendTextLine("&d&lMystic Well");
 				tutorial.mysticWellHolo = holo;
 
-				Location blockLocation = tutorial.areaLocation.add(0, -1 ,0);
+				Location blockLocation = tutorial.areaLocation.add(0, -1, 0);
 				Bukkit.getWorld("tutorial").getBlockAt(blockLocation).setType(Material.ENCHANTMENT_TABLE);
 			}
 		}.runTaskLater(PitSim.INSTANCE, 20L * waitTime);

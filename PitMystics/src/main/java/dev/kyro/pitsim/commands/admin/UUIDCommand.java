@@ -14,25 +14,25 @@ import org.bukkit.inventory.ItemStack;
 import java.util.List;
 
 public class UUIDCommand extends ACommand {
-    public UUIDCommand(AMultiCommand base, String executor) {
-        super(base, executor);
-    }
+	public UUIDCommand(AMultiCommand base, String executor) {
+		super(base, executor);
+	}
 
-    @Override
-    public void execute(CommandSender sender, Command command, String alias, List<String> args) {
-        if(!(sender instanceof Player)) return;
-        Player player = (Player) sender;
+	@Override
+	public void execute(CommandSender sender, Command command, String alias, List<String> args) {
+		if(!(sender instanceof Player)) return;
+		Player player = (Player) sender;
 
-        ItemStack itemStack = player.getItemInHand();
-        if(Misc.isAirOrNull(itemStack)) return;
+		ItemStack itemStack = player.getItemInHand();
+		if(Misc.isAirOrNull(itemStack)) return;
 
-        NBTItem nbtItem = new NBTItem(itemStack);
-        if(!nbtItem.hasKey(NBTTag.ITEM_UUID.getRef())) return;
-        AOutput.broadcast(nbtItem.getString(NBTTag.ITEM_UUID.getRef()) + "");
-    }
+		NBTItem nbtItem = new NBTItem(itemStack);
+		if(!nbtItem.hasKey(NBTTag.ITEM_UUID.getRef())) return;
+		AOutput.broadcast(nbtItem.getString(NBTTag.ITEM_UUID.getRef()) + "");
+	}
 
-    @Override
-    public List<String> getTabComplete(Player player, String current, List<String> args) {
-        return null;
-    }
+	@Override
+	public List<String> getTabComplete(Player player, String current, List<String> args) {
+		return null;
+	}
 }

@@ -27,7 +27,8 @@ public class Cooldown {
 
 		if(!enabled) return false;
 
-		if(ticksLeft > 0) ticksLeft--; else return true;
+		if(ticksLeft > 0) ticksLeft--;
+		else return true;
 		return false;
 	}
 

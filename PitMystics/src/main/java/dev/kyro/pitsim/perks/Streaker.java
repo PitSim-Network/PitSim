@@ -95,6 +95,7 @@ public class Streaker extends PitPerk {
 			}
 		}.runTaskTimer(PitSim.INSTANCE, 0L, 20L);
 	}
+
 	@EventHandler
 	public void onQuit(PlayerQuitEvent event) {
 

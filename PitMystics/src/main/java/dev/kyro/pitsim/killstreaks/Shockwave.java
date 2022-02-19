@@ -47,7 +47,7 @@ public class Shockwave extends Killstreak {
 			player.getWorld().playEffect(exploLoc, Effect.EXPLOSION_HUGE, 1);
 		}
 
-		List<Entity> entityList = player.getNearbyEntities(4, 4,4);
+		List<Entity> entityList = player.getNearbyEntities(4, 4, 4);
 		List<Player> nonList = new ArrayList<>();
 		for(Entity entity : entityList) {
 			if(entity instanceof Player && NonManager.getNon((Player) entity) != null && entity.getLocation().distance(player.getLocation()) < 4) {
