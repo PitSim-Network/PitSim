@@ -1,11 +1,14 @@
 package dev.kyro.pitsim.controllers;
 
+import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.arcticguilds.controllers.BuffManager;
 import dev.kyro.arcticguilds.controllers.GuildManager;
 import dev.kyro.arcticguilds.controllers.objects.Guild;
 import dev.kyro.arcticguilds.controllers.objects.GuildBuff;
 import dev.kyro.arcticguilds.events.GuildReputationEvent;
+import dev.kyro.arcticguilds.events.GuildWithdrawalEvent;
 import dev.kyro.pitsim.PitSim;
+import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.events.AttackEvent;
 import dev.kyro.pitsim.events.KillEvent;
 import dev.kyro.pitsim.misc.Misc;
@@ -148,6 +151,16 @@ public class GuildIntegrationManager implements Listener {
 				event.addMultiplier(1 + entry.getValue() / 100.0);
 				break;
 			}
+		}
+	}
+
+	@EventHandler
+	public void onWithdrawal(GuildWithdrawalEvent event) {
+		Player player = event.getPlayer();
+		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
+		if(pitPlayer.level < 100) {
+			event.setCancelled(true);
+			AOutput.error(event.getPlayer(), "&c&lNOPE! &7You cannot withdraw until you are level 100");
 		}
 	}
 }

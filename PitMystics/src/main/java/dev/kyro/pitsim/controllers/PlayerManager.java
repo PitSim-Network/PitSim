@@ -148,7 +148,7 @@ public class PlayerManager implements Listener {
 			PitPlayer pitPlayer = PitPlayer.getPitPlayer(event.getPlayer());
 			if(pitPlayer.level < 100) {
 				event.setCancelled(true);
-				AOutput.error(event.getPlayer(), "&c&lNOPE! &7You cannot trade until level 100");
+				AOutput.error(event.getPlayer(), "&c&lNOPE! &7You cannot trade until you are level 100");
 			}
 		}
 	}
