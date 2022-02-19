@@ -7,6 +7,7 @@ import dev.kyro.pitsim.misc.Misc;
 import dev.kyro.pitsim.controllers.HitCounter;
 import dev.kyro.pitsim.controllers.objects.PitEnchant;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
+import dev.kyro.pitsim.misc.Sounds;
 import org.bukkit.event.EventHandler;
 
 import java.util.List;
@@ -33,6 +34,8 @@ public class ComboDamage extends PitEnchant {
 		if(!HitCounter.hasReachedThreshold(pitPlayer.player, this, getStrikes(enchantLvl))) return;
 
 		attackEvent.increasePercent += getDamage(enchantLvl) / 100D;
+
+		Sounds.COMBO_PROC.play(attackEvent.attacker);
 	}
 
 	@Override
