@@ -22,6 +22,7 @@ repositories {
     maven { url "https://repo.dmulloy2.net/repository/public/" }
     maven { url "https://eldonexus.de/repository/maven-public" }
     maven { url "https://repo.codemc.io/repository/maven-public/" }
+    maven { url "https://repo.mattmalec.com/repository/releases" }
 }
 
 dependencies {
@@ -44,6 +45,7 @@ dependencies {
 //    compile group: 'com.googlecode.json-simple', name: 'json-simple', version: '1.1.1'
     compileOnly files('libs/FeatherBoard.jar')
     compileOnly files('libs/ArcticGuilds-1.0.0-all.jar')
+    implementation 'com.mattmalec:Pterodactyl4J:2.BETA_81'
 
     compileOnly 'net.luckperms:api:5.3'
 }
