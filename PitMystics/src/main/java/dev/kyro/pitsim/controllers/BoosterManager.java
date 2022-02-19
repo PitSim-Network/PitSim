@@ -7,6 +7,7 @@ import dev.kyro.pitsim.boosters.XPBooster;
 import dev.kyro.pitsim.controllers.objects.Booster;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.events.KillEvent;
+import dev.kyro.pitsim.misc.Misc;
 import dev.kyro.pitsim.misc.Sounds;
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.TextComponent;
@@ -124,7 +125,7 @@ public class BoosterManager implements Listener {
 					}
 				}
 			}
-		}.runTaskTimer(PitSim.INSTANCE, 20 * 60L, 20 * 60);
+		}.runTaskTimer(PitSim.INSTANCE, Misc.getRunnableOffset(1), 20 * 60);
 
 
 		new BukkitRunnable() {
@@ -147,7 +148,7 @@ public class BoosterManager implements Listener {
 				}
 
 			}
-		}.runTaskTimer(PitSim.INSTANCE, (60 * 5) * 20, (60 * 5) * 20);
+		}.runTaskTimer(PitSim.INSTANCE, Misc.getRunnableOffset(5), (60 * 5) * 20);
 	}
 
 	public static void registerBooster(Booster booster) {

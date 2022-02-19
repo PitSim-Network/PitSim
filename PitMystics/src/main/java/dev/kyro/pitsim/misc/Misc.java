@@ -212,4 +212,8 @@ public class Misc {
 			player.playSound(location, Sound.EXPLODE, 10, (float) (Math.random() * 0.2 + 0.6));
 		}
 	}
+
+	public static long getRunnableOffset(int minutes) {
+		return (long) (Math.random() * 20 * 60 * minutes);
+	}
 }

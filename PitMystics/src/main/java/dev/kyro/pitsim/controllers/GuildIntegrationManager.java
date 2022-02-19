@@ -42,7 +42,7 @@ public class GuildIntegrationManager implements Listener {
 					guild.addReputation(getIdleReputation());
 				}
 			}
-		}.runTaskTimer(PitSim.INSTANCE, 20 * 60, 20 * 60);
+		}.runTaskTimer(PitSim.INSTANCE, Misc.getRunnableOffset(1), 20 * 60);
 	}
 
 	public static void handleFeather(Player killer, Player dead) {

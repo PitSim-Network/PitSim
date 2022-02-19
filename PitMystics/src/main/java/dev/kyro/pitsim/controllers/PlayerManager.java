@@ -92,7 +92,7 @@ public class PlayerManager implements Listener {
 					AOutput.send(onlinePlayer, "&7You have been given &e1 renown &7for being active");
 				}
 			}
-		}.runTaskTimer(PitSim.INSTANCE, 20 * 60, 20 * 60 * 5);
+		}.runTaskTimer(PitSim.INSTANCE, Misc.getRunnableOffset(5), 20 * 60 * 5);
 
 		new BukkitRunnable() {
 			@Override

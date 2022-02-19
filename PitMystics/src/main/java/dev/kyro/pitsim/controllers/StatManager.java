@@ -7,6 +7,7 @@ import dev.kyro.pitsim.events.AttackEvent;
 import dev.kyro.pitsim.events.HealEvent;
 import dev.kyro.pitsim.events.KillEvent;
 import dev.kyro.pitsim.events.OofEvent;
+import dev.kyro.pitsim.misc.Misc;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -27,7 +28,7 @@ public class StatManager implements Listener {
 //					pitPlayer.stats.save();
 				}
 			}
-		}.runTaskTimer(PitSim.INSTANCE, 0L, 20 * 60L);
+		}.runTaskTimer(PitSim.INSTANCE, Misc.getRunnableOffset(1), 20 * 60L);
 	}
 
 	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
