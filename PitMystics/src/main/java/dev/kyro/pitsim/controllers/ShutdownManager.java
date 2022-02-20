@@ -60,7 +60,7 @@ public class ShutdownManager {
 	}
 
 	public static void execute() {
-		PitSim.client.retrieveServerByIdentifier("pitsim")
+		PitSim.client.retrieveServerByIdentifier("6f70808a")
 				.flatMap(ClientServer::restart).executeAsync();
 	}
 
