@@ -31,6 +31,5 @@ public class PrestigeLevelPlaceholder implements APAPIPlaceholder {
 		builder.append(prestigeInfo.getCloseBracket());
 		builder.append(" ");
 		return builder.toString();
-
 	}
 }

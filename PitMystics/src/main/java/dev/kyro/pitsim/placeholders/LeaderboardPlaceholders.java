@@ -36,7 +36,7 @@ public class LeaderboardPlaceholders extends PlaceholderExpansion {
 
 	@Override
 	public @NotNull String getIdentifier() {
-		return "pitsim";
+		return "pitsimlb";
 	}
 
 	@Override

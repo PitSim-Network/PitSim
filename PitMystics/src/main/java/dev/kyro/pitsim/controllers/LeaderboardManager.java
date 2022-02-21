@@ -4,7 +4,6 @@ import dev.kyro.arcticapi.data.APlayer;
 import dev.kyro.arcticapi.data.APlayerData;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.controllers.objects.Leaderboard;
-import dev.kyro.pitsim.misc.Misc;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.ArrayList;
@@ -14,6 +13,7 @@ import java.util.UUID;
 
 public class LeaderboardManager {
 	public static List<Leaderboard> leaderboards = new ArrayList<>();
+	public static List<Map.Entry<UUID, APlayer>> queue = new ArrayList<>();
 
 	public static void init() {
 //		new BukkitRunnable() {
@@ -50,13 +50,13 @@ public class LeaderboardManager {
 		new BukkitRunnable() {
 			@Override
 			public void run() {
-				for(Map.Entry<UUID, APlayer> entry : APlayerData.getAllData().entrySet()) {
-					for(Leaderboard leaderboard : leaderboards) {
-						leaderboard.calculate(entry.getKey(), entry.getValue());
-					}
+				for(int i = 0; i < 20; i++) {
+					if(queue.isEmpty()) queue.addAll(APlayerData.getAllData().entrySet());
+					Map.Entry<UUID, APlayer> entry = queue.remove(0);
+					for(Leaderboard leaderboard : leaderboards) leaderboard.calculate(entry.getKey(), entry.getValue());
 				}
 			}
-		}.runTaskTimerAsynchronously(PitSim.INSTANCE, Misc.getRunnableOffset(10), 20 * 60 * 10);
+		}.runTaskTimer(PitSim.INSTANCE, 20 * 60 + 10, 20);
 	}
 
 	public static void registerLeaderboard(Leaderboard leaderboard) {

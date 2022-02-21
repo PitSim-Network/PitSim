@@ -80,16 +80,13 @@ public abstract class Leaderboard {
 
 		LeaderboardPosition leaderboardPosition = new LeaderboardPosition(this, uuid);
 		setPosition(leaderboardPosition, aPlayer.playerData);
-		if(orderedLeaderboard.isEmpty()) {
-			orderedLeaderboard.add(leaderboardPosition);
-			return;
-		}
 		for(int i = 0; i < orderedLeaderboard.size(); i++) {
 			LeaderboardPosition testPosition = orderedLeaderboard.get(i);
 			if(testPosition.isMoreThanOrEqual(leaderboardPosition)) continue;
 			orderedLeaderboard.add(i, leaderboardPosition);
-			break;
+			return;
 		}
+		orderedLeaderboard.add(leaderboardPosition);
 	}
 
 	public void remove(UUID uuid) {
