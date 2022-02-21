@@ -1,6 +1,6 @@
 package dev.kyro.pitsim.commands;
 
-import dev.kyro.pitsim.inventories.StatGUI;
+import dev.kyro.pitsim.inventories.stats.StatGUI;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;

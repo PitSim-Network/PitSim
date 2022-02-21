@@ -1,68 +1,66 @@
 package dev.kyro.pitsim.controllers;
 
+import dev.kyro.arcticapi.data.APlayer;
+import dev.kyro.arcticapi.data.APlayerData;
 import dev.kyro.pitsim.PitSim;
-import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.configuration.file.YamlConfiguration;
+import dev.kyro.pitsim.controllers.objects.Leaderboard;
+import dev.kyro.pitsim.misc.Misc;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import java.io.File;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
+import java.util.UUID;
 
 public class LeaderboardManager {
-
-	public static Map<FileConfiguration, Integer> levels = new HashMap<>();
-	public static Map<FileConfiguration, Integer> sortedMap = new HashMap<>();
-
-	public static boolean hasRan = false;
-	public static int amount = 0;
+	public static List<Leaderboard> leaderboards = new ArrayList<>();
 
 	public static void init() {
+//		new BukkitRunnable() {
+//			int amount = 0;
+//			@Override
+//			public void run() {
+//				File directory = new File("plugins/PitRemake/playerdata");
+//				File[] files = directory.listFiles();
+//				assert files != null;
+//				for(File file : files) {
+//					FileConfiguration data = YamlConfiguration.loadConfiguration(file);
+//					boolean shouldDelete = false;
+//					if(data.getInt("level") == 1 && data.getInt("prestige") == 0) shouldDelete = true;
+//					if(file.length() == 0) shouldDelete = true;
+//					if(shouldDelete) {
+//						file.delete();
+//						amount++;
+//						System.out.println("deleted: " + file.getName());
+//					}
+//				}
+//			}
+//		}.runTaskAsynchronously(PitSim.INSTANCE);
+
 		new BukkitRunnable() {
 			@Override
 			public void run() {
-				calculate();
+				for(Map.Entry<UUID, APlayer> entry : APlayerData.getAllData().entrySet()) {
+					for(Leaderboard leaderboard : leaderboards) {
+						leaderboard.calculate(entry.getKey(), entry.getValue());
+					}
+				}
 			}
-		}.runTaskTimerAsynchronously(PitSim.INSTANCE, 0L, 4000L);
+		}.runTaskLater(PitSim.INSTANCE, 1L);
+		new BukkitRunnable() {
+			@Override
+			public void run() {
+				for(Map.Entry<UUID, APlayer> entry : APlayerData.getAllData().entrySet()) {
+					for(Leaderboard leaderboard : leaderboards) {
+						leaderboard.calculate(entry.getKey(), entry.getValue());
+					}
+				}
+			}
+		}.runTaskTimerAsynchronously(PitSim.INSTANCE, Misc.getRunnableOffset(10), 20 * 60 * 10);
 	}
 
-	public static void calculate() {
-		sortedMap.clear();
-		levels.clear();
-
-		File directory = new File("plugins/PitRemake/playerdata");
-		File[] files = directory.listFiles();
-		assert files != null;
-		for(File file : files) {
-			FileConfiguration data = YamlConfiguration.loadConfiguration(file);
-//			if(!hasRan) {
-//				boolean shouldDelete = false;
-//				if(data.getInt("level") == 1 && data.getInt("prestige") == 0) shouldDelete = true;
-//				if(file.length() == 0) shouldDelete = true;
-//				if(shouldDelete) {
-//                	file.delete();
-//					amount++;
-//					System.out.println("deleted: " + file.getName());
-//				}
-//			}
-			levels.put(data, (1000 * data.getInt("prestige") + data.getInt("level")));
-		}
-//		if(!hasRan) System.out.println(amount);
-//		hasRan = true;
-
-		sortedMap = levels.entrySet().stream()
-				.sorted(Comparator.comparingInt(Map.Entry::getValue))
-				.collect(Collectors.toMap(
-						Map.Entry::getKey,
-						Map.Entry::getValue,
-						(a, b) -> {
-							throw new AssertionError();
-						},
-						LinkedHashMap::new
-				));
+	public static void registerLeaderboard(Leaderboard leaderboard) {
+		leaderboards.add(leaderboard);
 	}
 }
 
