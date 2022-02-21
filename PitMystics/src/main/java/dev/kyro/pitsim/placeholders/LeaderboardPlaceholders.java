@@ -21,7 +21,7 @@ public class LeaderboardPlaceholders extends PlaceholderExpansion {
 		for(int i = 1; i <= 10; i++) {
 			String testString = "leader" + i;
 			if(!identifier.equalsIgnoreCase(testString)) continue;
-			LeaderboardPosition position = LeaderboardManager.leaderboards.get(0).orderedLeaderboard.get(i);
+			LeaderboardPosition position = LeaderboardManager.leaderboards.get(0).orderedLeaderboard.get(i - 1);
 			OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(position.uuid);
 			FileConfiguration playerData = APlayerData.getPlayerData(position.uuid).playerData;
 
