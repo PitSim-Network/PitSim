@@ -335,6 +335,10 @@ public class RNGesus extends Megastreak {
 
 	@Override
 	public void reset() {
+		if(pitPlayer.getKills() >= INSTABILITY_THRESHOLD) {
+			if(pitPlayer.stats != null) pitPlayer.stats.rngesusCompleted++;
+		}
+
 		if(isOnMega()) {
 			int xp = getXP(realityMap.get(Reality.XP).getLevel());
 			double gold = getGold(realityMap.get(Reality.GOLD).getLevel());

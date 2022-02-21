@@ -72,7 +72,7 @@ public class StatPanel extends AGUIPanel {
 						"&7Beastmode Streaks: &e" + Misc.formatLarge(stats.timesOnBeastmode),
 						"&7Highlander Streaks: &e" + Misc.formatLarge(stats.timesOnHighlander),
 						"&7To The Moon Streaks: &e" + Misc.formatLarge(stats.timesOnMoon),
-						"&7RNGesus Streaks: &e" + Misc.formatLarge(stats.timesOnRNGesus),
+						"&7RNGesus Completed: &e" + Misc.formatLarge(stats.rngesusCompleted),
 						"&7Uberstreaks Completed: &e" + Misc.formatLarge(stats.ubersCompleted)
 				));
 		statMap.put(11, megastreak.getItemStack());
