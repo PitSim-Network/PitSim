@@ -5,7 +5,7 @@ import dev.kyro.pitsim.controllers.MapManager;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.inventories.PerkGUI;
 import dev.kyro.pitsim.inventories.PrestigeGUI;
-import dev.kyro.pitsim.inventories.StatGUI;
+import dev.kyro.pitsim.inventories.stats.StatGUI;
 import net.citizensnpcs.api.CitizensAPI;
 import net.citizensnpcs.api.event.NPCRightClickEvent;
 import net.citizensnpcs.api.npc.NPC;
@@ -117,7 +117,7 @@ public class SpawnNPCs implements Listener {
 
 	public static void createVnx2NPC(World world) {
 		NPCRegistry registry = CitizensAPI.getNPCRegistry();
-		NPC npc = registry.createNPC(EntityType.PLAYER, "&e&lSTATISTICS");
+		NPC npc = registry.createNPC(EntityType.PLAYER, "&e&lLB AND STATS");
 		vnx.add(npc);
 		npc.spawn(MapManager.currentMap.getVnxNPCSpawn(world));
 		skin(npc, Bukkit.getOfflinePlayer(UUID.fromString("e913fd01-e84e-4c6e-ad5b-7419a12de481")).getName());

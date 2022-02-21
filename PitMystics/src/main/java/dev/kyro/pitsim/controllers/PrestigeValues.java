@@ -106,8 +106,12 @@ public class PrestigeValues {
 
 	public static String getPlayerPrefix(Player player) {
 		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
-		PrestigeInfo prestigeInfo = PrestigeValues.getPrestigeInfo(pitPlayer.prestige);
-		return prestigeInfo.getOpenBracket() + getLevelColor(pitPlayer.level) + pitPlayer.level + prestigeInfo.getCloseBracket();
+		return getPlayerPrefix(pitPlayer.prestige, pitPlayer.level);
+	}
+
+	public static String getPlayerPrefix(int prestige, int level) {
+		PrestigeInfo prestigeInfo = PrestigeValues.getPrestigeInfo(prestige);
+		return prestigeInfo.getOpenBracket() + getLevelColor(level) + level + prestigeInfo.getCloseBracket();
 	}
 
 	static {

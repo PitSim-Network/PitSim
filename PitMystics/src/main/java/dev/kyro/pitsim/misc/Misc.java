@@ -219,4 +219,30 @@ public class Misc {
 	public static long getRunnableOffset(int minutes) {
 		return (long) (Math.random() * 20 * 60 * minutes);
 	}
+
+	public static String formatDuration(double seconds) {
+		DecimalFormat decimalFormat = new DecimalFormat("0.#");
+		if(seconds < 60) return decimalFormat.format(seconds) + " seconds";
+		if(seconds < 60 * 60) return decimalFormat.format(seconds / 60.0) + " minutes";
+		if(seconds < 60 * 60 * 24) return decimalFormat.format(seconds / 60.0 / 60.0) + " hours";
+		return decimalFormat.format(seconds / 60.0 / 60.0 / 24.0) + " days";
+	}
+
+	public static String formatLarge(double large) {
+		DecimalFormat decimalFormat = new DecimalFormat("#,##0.#");
+		if(large < 1_000) return decimalFormat.format(large);
+		if(large < 1_000_000) return decimalFormat.format(large / 1_000.0) + "K";
+		if(large < 1_000_000_000) return decimalFormat.format(large / 1_000_000.0) + "M";
+		return decimalFormat.format(large / 1_000_000_000) + "B";
+	}
+
+	public static String formatRatio(double ratio) {
+		if(ratio < 1_000) return new DecimalFormat("#,##0.###").format(ratio);
+		if(ratio < 1_000_000) return new DecimalFormat("#,##0.#").format(ratio / 1_000) + "K";
+		return new DecimalFormat("#,##0.#").format(ratio / 1_000_000) + "M";
+	}
+
+	public static String formatPercent(double percent) {
+		return new DecimalFormat("0.0").format(percent * 100) + "%";
+	}
 }

@@ -23,6 +23,7 @@ import dev.kyro.pitsim.enchants.GoldBoost;
 import dev.kyro.pitsim.enchants.*;
 import dev.kyro.pitsim.helmetabilities.*;
 import dev.kyro.pitsim.killstreaks.*;
+import dev.kyro.pitsim.leaderboards.*;
 import dev.kyro.pitsim.megastreaks.*;
 import dev.kyro.pitsim.misc.*;
 import dev.kyro.pitsim.perks.*;
@@ -94,7 +95,6 @@ public class PitSim extends JavaPlugin {
 		MapManager.onStart();
 		NonManager.init();
 		SpawnNPCs.createNPCs();
-		LeaderboardManager.init();
 
 		if(!setupEconomy()) {
 			AOutput.log(String.format("[%s] - Disabled due to no Vault dependency found!", getDescription().getName()));
@@ -122,6 +122,8 @@ public class PitSim extends JavaPlugin {
 		registerPerks();
 		registerKillstreaks();
 		registerMegastreaks();
+		registerLeaderboards();
+		LeaderboardManager.init();
 
 		ArcticAPI.setupPlaceholderAPI("pitsim");
 		AHook.registerPlaceholder(new PrefixPlaceholder());
@@ -133,16 +135,6 @@ public class PitSim extends JavaPlugin {
 		AHook.registerPlaceholder(new ExperiencePlaceholder());
 		AHook.registerPlaceholder(new LevelPlaceholder());
 		AHook.registerPlaceholder(new PlayerKillsPlaceholder());
-		AHook.registerPlaceholder(new LeaderboardPlaceholder());
-		AHook.registerPlaceholder(new LeaderboardPlaceholder2());
-		AHook.registerPlaceholder(new LeaderboardPlaceholder3());
-		AHook.registerPlaceholder(new LeaderboardPlaceholder4());
-		AHook.registerPlaceholder(new LeaderboardPlaceholder5());
-		AHook.registerPlaceholder(new LeaderboardPlaceholder6());
-		AHook.registerPlaceholder(new LeaderboardPlaceholder7());
-		AHook.registerPlaceholder(new LeaderboardPlaceholder8());
-		AHook.registerPlaceholder(new LeaderboardPlaceholder9());
-		AHook.registerPlaceholder(new LeaderboardPlaceholder10());
 		AHook.registerPlaceholder(new GuildPlaceholder());
 		AHook.registerPlaceholder(new GuildPlaceholder2());
 		AHook.registerPlaceholder(new GuildPlaceholder3());
@@ -155,6 +147,7 @@ public class PitSim extends JavaPlugin {
 		AHook.registerPlaceholder(new GuildPlaceholder10());
 		AHook.registerPlaceholder(new PrestigeLevelPlaceholder());
 		AHook.registerPlaceholder(new PrestigePlaceholder());
+		new LeaderboardPlaceholders().register();
 
 		loadConfig();
 
@@ -239,7 +232,6 @@ public class PitSim extends JavaPlugin {
 	}
 
 	private void registerMegastreaks() {
-
 		PerkManager.registerMegastreak(new Overdrive(null));
 		PerkManager.registerMegastreak(new Highlander(null));
 		PerkManager.registerMegastreak(new Uberstreak(null));
@@ -247,6 +239,16 @@ public class PitSim extends JavaPlugin {
 		PerkManager.registerMegastreak(new Beastmode(null));
 		PerkManager.registerMegastreak(new ToTheMoon(null));
 		PerkManager.registerMegastreak(new RNGesus(null));
+	}
+
+	private void registerLeaderboards() {
+		LeaderboardManager.registerLeaderboard(new XPLeaderboard());
+		LeaderboardManager.registerLeaderboard(new GoldGrindedLeaderboard());
+		LeaderboardManager.registerLeaderboard(new PlayerKillsLeaderboard());
+		LeaderboardManager.registerLeaderboard(new BotKillsLeaderboard());
+		LeaderboardManager.registerLeaderboard(new PlaytimeLeaderboard());
+		LeaderboardManager.registerLeaderboard(new JewelsCompletedLeaderboard());
+		LeaderboardManager.registerLeaderboard(new FeathersLostLeaderboard());
 	}
 
 	private void registerCommands() {
