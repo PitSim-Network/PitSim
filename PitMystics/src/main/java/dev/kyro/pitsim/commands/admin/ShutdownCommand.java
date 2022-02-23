@@ -25,7 +25,7 @@ public class ShutdownCommand extends ACommand {
 			return;
 		}
 
-		int minutes = 0;
+		int minutes;
 		try {
 			minutes = Integer.parseInt(args.get(0));
 		} catch(Exception e) {

@@ -20,6 +20,7 @@ import net.citizensnpcs.api.CitizensAPI;
 import net.citizensnpcs.api.npc.NPC;
 import net.citizensnpcs.api.npc.NPCRegistry;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
@@ -116,7 +117,7 @@ public class Tutorial {
 
 	public void spawnUpgradesNPC() {
 		NPCRegistry registry = CitizensAPI.getNPCRegistry();
-		NPC npc = registry.createNPC(EntityType.VILLAGER, "&e&lUPGRADES AND KILLSTREAKS");
+		NPC npc = registry.createNPC(EntityType.VILLAGER, ChatColor.YELLOW + "" + ChatColor.BOLD + "UPGRADES AND KILLSTREAKS");
 //		Location location = areaLocation.clone();
 //		location.setPitch(-180);
 //		location.setY(0);
@@ -126,7 +127,7 @@ public class Tutorial {
 
 	public void spawnPrestigeNPC() {
 		NPCRegistry registry = CitizensAPI.getNPCRegistry();
-		NPC npc = registry.createNPC(EntityType.VILLAGER, "&e&lPRESTIGE AND RENOWN");
+		NPC npc = registry.createNPC(EntityType.VILLAGER, ChatColor.YELLOW + "" + ChatColor.BOLD + "PRESTIGE AND RENOWN");
 //		Location location = areaLocation.clone();
 //		location.setPitch(-180);
 //		location.setY(0);
