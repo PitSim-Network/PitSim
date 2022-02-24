@@ -263,7 +263,6 @@ public class PitSim extends JavaPlugin {
 		new DupeCommand(adminCommand, "dupe");
 		new ViewCommand(adminCommand, "view");
 		new RandomizeCommand(adminCommand, "randomize");
-		new ShutdownCommand(adminCommand, "shutdown");
 		new ReloadCommand(adminCommand, "reload");
 		new BypassCommand(adminCommand, "bypass");
 		new LockdownCommand(adminCommand, "lockdown");
@@ -302,6 +301,7 @@ public class PitSim extends JavaPlugin {
 		getCommand("switch").setExecutor(switchCommand);
 		getCommand("play").setExecutor(switchCommand);
 		getCommand("pay").setExecutor(new PayCommand());
+		getCommand("shutdown").setExecutor(new ShutdownCommand());
 		getCommand("tutorial").setExecutor(new TutorialCommand());
 	}
 

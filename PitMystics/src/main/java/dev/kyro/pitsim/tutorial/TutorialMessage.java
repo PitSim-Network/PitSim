@@ -6,9 +6,10 @@ import java.util.List;
 public enum TutorialMessage {
 	WELCOME1("&eHey there, Welcome to PitSim!", "Hey there, Welcome to PitSim!"),
 	WELCOME2("&eBefore you start playing, let me show you a little more about how PitSim works.", "Before you start playing, let me show you a little more about how PitSim works."),
-	WELCOME3("&eIf you're sure that you already know what you're doing, you may skip this tutorial with &f/tutorial skip&e.", "doing, you may skip this tutorial with"),
-	WELCOME4("&eHowever, I highly recommend taking the tutorial, as you might not know how to play otherwise.", "However, I highly recommend taking the tutorial, as you might not know how to play otherwise."),
-	WELCOME5("&eWith that being said, let's start the tutorial!", "With that being said, let"),
+	WELCOME3("&eIf you do not know about PitSim and its unique mechanics, it is ESSENTIAL to take this tutorial. ", "If you do not know about PitSim and its unique mechanics"),
+	WELCOME4("&eBut, if you're absolutely sure that you already know what you're doing, you may skip this tutorial with &f/tutorial skip&e.", "if you're absolutely sure that you already know what you're doing, you may skip this tutorial with"),
+	WELCOME5("&eHowever, I highly recommend taking the tutorial, as you might not know how to play otherwise.", "However, I highly recommend taking the tutorial, as you might not know how to play otherwise."),
+	WELCOME6("&eWith that being said, let's start the tutorial!", "With that being said, let"),
 	VAMPIRE1("&eBefore you can learn about PitSim's unique combat mechanics, let's start out with some basics.", "Before you can learn about PitSim"),
 	VAMPIRE2("&fPerks &eare abilities that give the player various buffs under certain circumstances.", "are abilities that give the player various buffs under certain circumstances."),
 	VAMPIRE3("&eThe one &fPerk &ethat is essential to nearly every situation is &cVampire&e.", "that is essential to nearly every situation is"),

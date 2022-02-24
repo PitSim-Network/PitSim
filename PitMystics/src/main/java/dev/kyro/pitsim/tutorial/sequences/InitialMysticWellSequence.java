@@ -10,6 +10,7 @@ import dev.kyro.pitsim.tutorial.inventories.EnchantingGUI;
 import dev.kyro.pitsim.tutorial.objects.Tutorial;
 import dev.kyro.pitsim.tutorial.objects.TutorialSequence;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -104,7 +105,7 @@ public class InitialMysticWellSequence extends TutorialSequence {
 
 				Location holoLocation = tutorial.areaLocation.clone().add(0, 3.5, 1);
 				Hologram holo = HologramsAPI.createHologram(PitSim.INSTANCE, tutorial.areaLocation);
-				holo.appendTextLine("&d&lMystic Well");
+				holo.appendTextLine(ChatColor.LIGHT_PURPLE + "" + ChatColor.BOLD + "Mystic Well");
 				tutorial.mysticWellHolo = holo;
 
 				Location blockLocation = tutorial.areaLocation.add(0, -1, 0);

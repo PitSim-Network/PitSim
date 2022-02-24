@@ -215,7 +215,7 @@ public class TutorialManager implements Listener {
 //		}
 //	}
 
-	public boolean isEligable(Player player) {
+	public static boolean isEligable(Player player) {
 		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
 		if(pitPlayer.prestige > 0) return false;
 		for(ItemStack itemStack : player.getInventory()) {

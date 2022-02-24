@@ -104,6 +104,7 @@ public class LockdownManager implements Listener {
 		Player player = event.getPlayer();
 		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
 		if(pitPlayer.prestige > 0) return;
+		if(TutorialManager.isEligable(player)) return;
 		new BukkitRunnable() {
 			@Override
 			public void run() {
