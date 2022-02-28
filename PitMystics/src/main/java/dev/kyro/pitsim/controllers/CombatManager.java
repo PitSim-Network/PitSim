@@ -129,17 +129,15 @@ public class CombatManager implements Listener {
 
 	@EventHandler
 	public static void onCommandSend(PlayerCommandPreprocessEvent event) {
-
-		List<String> BlockedCommands = new ArrayList<>();
-		BlockedCommands.add("/ec");
-		BlockedCommands.add("/echest");
-		BlockedCommands.add("/enderchest");
-		BlockedCommands.add("/perks");
-		BlockedCommands.add("/spawn");
-
+		List<String> blockedCommands = new ArrayList<>();
+		blockedCommands.add("/ec");
+		blockedCommands.add("/echest");
+		blockedCommands.add("/enderchest");
+		blockedCommands.add("/perks");
+		blockedCommands.add("/spawn");
 
 		if(taggedPlayers.containsKey(event.getPlayer().getUniqueId())) {
-			for(String cmd : BlockedCommands) {
+			for(String cmd : blockedCommands) {
 				if(cmd.equalsIgnoreCase(event.getMessage())) {
 					event.setCancelled(true);
 					AOutput.error(event.getPlayer(), "&c&c&lNOPE! &7You cannot use that while in combat!");

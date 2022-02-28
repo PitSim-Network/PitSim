@@ -117,8 +117,8 @@ public class SpawnManager implements Listener {
 		if(nbtItem.hasKey(NBTTag.DROP_CONFIRM.getRef())) return;
 		if(dropped.getType() == Material.ENDER_CHEST || dropped.getType() == Material.TRIPWIRE_HOOK) return;
 		event.getItemDrop().remove();
-		AOutput.send(event.getPlayer(), "&c&lITEM DELETED! &7Dropped in spawn area.");
 		Sounds.NO.play(event.getPlayer());
+		AOutput.send(event.getPlayer(), "&c&lITEM DELETED! &7Dropped in spawn area.");
 	}
 
 	public static Boolean isInSpawn(Location loc) {

@@ -23,6 +23,10 @@ import dev.kyro.pitsim.enchants.GoldBoost;
 import dev.kyro.pitsim.enchants.*;
 import dev.kyro.pitsim.helmetabilities.*;
 import dev.kyro.pitsim.killstreaks.*;
+import dev.kyro.pitsim.kits.EssentialKit;
+import dev.kyro.pitsim.kits.GoldKit;
+import dev.kyro.pitsim.kits.PvPKit;
+import dev.kyro.pitsim.kits.XPKit;
 import dev.kyro.pitsim.leaderboards.*;
 import dev.kyro.pitsim.megastreaks.*;
 import dev.kyro.pitsim.misc.*;
@@ -64,14 +68,6 @@ public class PitSim extends JavaPlugin {
 
 	public static PteroClient client = PteroBuilder.createClient("***REMOVED***",
 			"im4F1vVHTJKIjhRQcvJ8CAdOX3aCt99JmpukhFGbzQXI5BOQ");
-//	private BukkitAudiences adventure;
-//
-//	public BukkitAudiences adventure() {
-//		if(this.adventure == null) {
-//			throw new IllegalStateException("Tried to access Adventure when the plugin was disabled!");
-//		}
-//		return this.adventure;
-//	}
 
 	@Override
 	public void onEnable() {
@@ -161,6 +157,7 @@ public class PitSim extends JavaPlugin {
 		registerListeners();
 		registerBoosters();
 		registerHelmetAbilities();
+		registerKits();
 	}
 
 	@Override
@@ -303,6 +300,7 @@ public class PitSim extends JavaPlugin {
 		getCommand("pay").setExecutor(new PayCommand());
 		getCommand("shutdown").setExecutor(new ShutdownCommand());
 		getCommand("tutorial").setExecutor(new TutorialCommand());
+		getCommand("kit").setExecutor(new KitCommand());
 	}
 
 	private void registerListeners() {
@@ -342,6 +340,7 @@ public class PitSim extends JavaPlugin {
 		getServer().getPluginManager().registerEvents(new TutorialManager(), this);
 		getServer().getPluginManager().registerEvents(new GuildIntegrationManager(), this);
 		getServer().getPluginManager().registerEvents(new UpgradeManager(), this);
+		getServer().getPluginManager().registerEvents(new KitManager(), this);
 	}
 
 	public void registerBoosters() {
@@ -376,13 +375,20 @@ public class PitSim extends JavaPlugin {
 		UpgradeManager.registerUpgrade(new FastPass());
 	}
 
-	public void registerHelmetAbilities() {
+	private void registerHelmetAbilities() {
 		HelmetAbility.registerHelmetAbility(new LeapAbility(null));
 		HelmetAbility.registerHelmetAbility(new BlobAbility(null));
 		HelmetAbility.registerHelmetAbility(new GoldRushAbility(null));
 		HelmetAbility.registerHelmetAbility(new HermitAbility(null));
 		HelmetAbility.registerHelmetAbility(new JudgementAbility(null));
 		HelmetAbility.registerHelmetAbility(new PhoenixAbility(null));
+	}
+
+	private void registerKits() {
+		KitManager.registerKit(new EssentialKit());
+		KitManager.registerKit(new XPKit());
+		KitManager.registerKit(new GoldKit());
+		KitManager.registerKit(new PvPKit());
 	}
 
 	private void loadConfig() {

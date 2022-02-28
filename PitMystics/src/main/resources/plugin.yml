@@ -55,3 +55,6 @@ commands:
   pay:
   tutorial:
   shutdown:
+  kit:
+    aliases:
+      - kits
