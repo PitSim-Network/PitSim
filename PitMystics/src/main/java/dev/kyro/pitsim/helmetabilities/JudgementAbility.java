@@ -20,10 +20,14 @@ import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.text.DecimalFormat;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.UUID;
 
 public class JudgementAbility extends HelmetAbility {
+	public static List<UUID> cooldownList = new ArrayList<>();
+
 	public JudgementAbility(Player player) {
 
 		super(player, "Judgement", "judgement", true, 15);
@@ -116,9 +120,15 @@ public class JudgementAbility extends HelmetAbility {
 
 	@Override
 	public boolean shouldActivate() {
-		if(GoldenHelmet.getUsedHelmetGold(player) < 5000) {
-			AOutput.error(player, "&cNot enough gold!");
+		if(cooldownList.contains(player.getUniqueId())) {
 			Sounds.NO.play(player);
+			AOutput.error(player, "&c&lCOOLDOWN! &7Please wait before activating &9Judgement &7again");
+			return false;
+		}
+
+		if(GoldenHelmet.getUsedHelmetGold(player) < 5000) {
+			Sounds.NO.play(player);
+			AOutput.error(player, "&cNot enough gold!");
 			return false;
 		}
 		return true;
@@ -126,7 +136,16 @@ public class JudgementAbility extends HelmetAbility {
 
 	@Override
 	public void onDeactivate() {
-		AOutput.send(player, "&6&lGOLDEN HELMET! &cDeactivated &9Judgement&c.");
+		if(!cooldownList.contains(player.getUniqueId())) {
+			cooldownList.add(player.getUniqueId());
+			new BukkitRunnable() {
+				@Override
+				public void run() {
+					cooldownList.remove(player.getUniqueId());
+				}
+			}.runTaskLater(PitSim.INSTANCE, 20 * 60);
+			AOutput.send(player, "&6&lGOLDEN HELMET! &cDeactivated &9Judgement&c. &7(60s reactivation cooldown)");
+		}
 	}
 
 	@Override
