@@ -144,14 +144,24 @@ public class PlayerManager implements Listener {
 
 	@EventHandler
 	public void onCommand(PlayerCommandPreprocessEvent event) {
-		if(event.getPlayer().isOp()) return;
+		Player player = event.getPlayer();
+		if(player.isOp()) return;
 		if(ChatColor.stripColor(event.getMessage()).toLowerCase().startsWith("/trade")) {
-			PitPlayer pitPlayer = PitPlayer.getPitPlayer(event.getPlayer());
+			PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
 			if(pitPlayer.level < 100) {
 				event.setCancelled(true);
-				AOutput.error(event.getPlayer(), "&c&lNOPE! &7You cannot trade until you are level 100");
+				AOutput.error(player, "&c&lNOPE! &7You cannot trade until you are level 100");
 			}
 		}
+		if(ChatColor.stripColor(event.getMessage()).toLowerCase().startsWith("/invsee")) {
+			event.setCancelled(true);
+			AOutput.send(player, "Please use /view <player> instead");
+		}
+	}
+
+	@EventHandler
+	public void onCommand2(PlayerCommandPreprocessEvent event) {
+		if(event.getPlayer().isOp()) return;
 	}
 
 	@EventHandler

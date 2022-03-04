@@ -15,6 +15,7 @@ import dev.kyro.pitsim.boosters.GoldBooster;
 import dev.kyro.pitsim.boosters.PvPBooster;
 import dev.kyro.pitsim.boosters.XPBooster;
 import dev.kyro.pitsim.commands.*;
+import dev.kyro.pitsim.commands.ViewCommand;
 import dev.kyro.pitsim.commands.admin.*;
 import dev.kyro.pitsim.controllers.*;
 import dev.kyro.pitsim.controllers.log.DupeManager;
@@ -244,6 +245,7 @@ public class PitSim extends JavaPlugin {
 		LeaderboardManager.registerLeaderboard(new PlayerKillsLeaderboard());
 		LeaderboardManager.registerLeaderboard(new BotKillsLeaderboard());
 		LeaderboardManager.registerLeaderboard(new PlaytimeLeaderboard());
+		LeaderboardManager.registerLeaderboard(new UbersCompletedLeaderboard());
 		LeaderboardManager.registerLeaderboard(new JewelsCompletedLeaderboard());
 		LeaderboardManager.registerLeaderboard(new FeathersLostLeaderboard());
 	}
@@ -258,7 +260,6 @@ public class PitSim extends JavaPlugin {
 		new HopperCommand(adminCommand, "hopper");
 		new UUIDCommand(adminCommand, "uuid");
 		new DupeCommand(adminCommand, "dupe");
-		new ViewCommand(adminCommand, "view");
 		new RandomizeCommand(adminCommand, "randomize");
 		new ReloadCommand(adminCommand, "reload");
 		new BypassCommand(adminCommand, "bypass");
@@ -301,6 +302,7 @@ public class PitSim extends JavaPlugin {
 		getCommand("shutdown").setExecutor(new ShutdownCommand());
 		getCommand("tutorial").setExecutor(new TutorialCommand());
 		getCommand("kit").setExecutor(new KitCommand());
+		getCommand("view").setExecutor(new ViewCommand());
 	}
 
 	private void registerListeners() {

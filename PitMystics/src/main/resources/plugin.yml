@@ -58,3 +58,4 @@ commands:
   kit:
     aliases:
       - kits
+  view:

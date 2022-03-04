@@ -40,7 +40,7 @@ public class LeaderboardPanel extends AGUIPanel {
 
 	@Override
 	public int getRows() {
-		return 3;
+		return 4;
 	}
 
 	@Override
