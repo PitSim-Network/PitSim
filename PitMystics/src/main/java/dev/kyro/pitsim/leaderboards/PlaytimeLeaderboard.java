@@ -27,7 +27,7 @@ public class PlaytimeLeaderboard extends Leaderboard {
 
 	@Override
 	public String getDisplayValue(LeaderboardPosition position) {
-		return "&e" + new DecimalFormat("0.#").format(position.intValue / 60.0) + " hours";
+		return "&e" + new DecimalFormat("0.#").format(position.intValue / 60.0) + " hour" + (position.intValue / 60.0 == 1 ? "" : "s");
 	}
 
 	@Override

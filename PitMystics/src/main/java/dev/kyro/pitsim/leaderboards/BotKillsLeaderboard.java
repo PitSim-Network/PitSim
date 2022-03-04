@@ -27,7 +27,7 @@ public class BotKillsLeaderboard extends Leaderboard {
 
 	@Override
 	public String getDisplayValue(LeaderboardPosition position) {
-		return "&c" + Misc.formatLarge(position.intValue) + " kills";
+		return "&c" + Misc.formatLarge(position.intValue) + " kill" + (position.intValue == 1 ? "" : "s");
 	}
 
 	@Override

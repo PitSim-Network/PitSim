@@ -29,7 +29,7 @@ public class JewelsCompletedLeaderboard extends Leaderboard {
 
 	@Override
 	public String getDisplayValue(LeaderboardPosition position) {
-		return "&c" + Misc.formatLarge(position.intValue) + " jewels";
+		return "&c" + Misc.formatLarge(position.intValue) + " jewel" + (position.intValue == 1 ? "" : "s");
 	}
 
 	@Override

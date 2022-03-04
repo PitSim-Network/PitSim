@@ -27,7 +27,7 @@ public class FeathersLostLeaderboard extends Leaderboard {
 
 	@Override
 	public String getDisplayValue(LeaderboardPosition position) {
-		return "&f" + Misc.formatLarge(position.intValue) + " feathers";
+		return "&f" + Misc.formatLarge(position.intValue) + " feather" + (position.intValue == 1 ? "" : "s");
 	}
 
 	@Override
