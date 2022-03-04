@@ -155,7 +155,7 @@ public class PlayerManager implements Listener {
 		}
 		if(ChatColor.stripColor(event.getMessage()).toLowerCase().startsWith("/invsee")) {
 			event.setCancelled(true);
-			AOutput.send(player, "Please use /view <player> instead");
+			AOutput.send(player, "&c&lOUTDATED! &7Please use /view <player> instead");
 		}
 	}
 
