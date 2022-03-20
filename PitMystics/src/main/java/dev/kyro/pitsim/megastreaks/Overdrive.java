@@ -104,6 +104,7 @@ public class Overdrive extends Megastreak {
 
 	@EventHandler
 	public void onHit(AttackEvent.Apply attackEvent) {
+		if(!attackEvent.defenderIsPlayer) return;
 		PitPlayer pitPlayer = PitPlayer.getEntityPitPlayer(attackEvent.defender);
 		if(pitPlayer != this.pitPlayer) return;
 		if(pitPlayer.megastreak.isOnMega() && pitPlayer.megastreak.getClass() == Overdrive.class) {

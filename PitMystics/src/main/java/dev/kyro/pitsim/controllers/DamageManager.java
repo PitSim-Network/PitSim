@@ -362,7 +362,7 @@ public class DamageManager implements Listener {
 		}
 
 		if(killType != KillType.FAKE) {
-			if(killType != KillType.DEATH) {
+			if(killType != KillType.DEATH && deadIsPlayer) {
 
 
 			double finalDamage = 0;
@@ -423,13 +423,16 @@ public class DamageManager implements Listener {
 			}
 		}
 
-			pitDead.assistRemove.forEach(BukkitTask::cancel);
-			pitDead.assistRemove.clear();
+			if(deadIsPlayer) {
+				pitDead.assistRemove.forEach(BukkitTask::cancel);
+				pitDead.assistRemove.clear();
 
-			pitDead.recentDamageMap.clear();
+				pitDead.recentDamageMap.clear();
 
-			String message = "%luckperms_prefix%";
-			pitDead.prefix = PrestigeValues.getPlayerPrefixNameTag(pitDead.player) + PlaceholderAPI.setPlaceholders(pitDead.player, message);
+				String message = "%luckperms_prefix%";
+				pitDead.prefix = PrestigeValues.getPlayerPrefixNameTag(pitDead.player) + PlaceholderAPI.setPlaceholders(pitDead.player, message);
+
+			}
 
 			if(deadIsPlayer && BoosterManager.getBooster("pvp").minutes <= 0) {
 
