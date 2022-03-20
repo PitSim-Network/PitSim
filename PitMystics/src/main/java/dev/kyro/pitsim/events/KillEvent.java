@@ -41,6 +41,10 @@ public class KillEvent extends Event {
 		this.deadEnchantMap = killer == attackEvent.attacker ? attackEvent.getDefenderEnchantMap() : attackEvent.getAttackerEnchantMap();
 		this.killer = killer;
 		this.dead = dead;
+		this.killerIsPlayer = killer instanceof Player;
+		this.deadIsPlayer = dead instanceof Player;
+		this.killerPlayer = killerIsPlayer ? (Player) killer : null;
+		this.deadPlayer = deadIsPlayer ? (Player) dead : null;
 		this.exeDeath = exeDeath;
 
 		Non defendingNon = NonManager.getNon(this.dead);

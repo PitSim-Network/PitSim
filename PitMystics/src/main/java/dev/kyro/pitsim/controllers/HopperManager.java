@@ -37,7 +37,7 @@ public class HopperManager implements Listener {
 		}.runTaskTimer(PitSim.INSTANCE, 0L, 1L);
 	}
 
-	public static Hopper callHopper(String name, Hopper.Type type, LivingEntity target) {
+	public static Hopper callHopper(String name, Hopper.Type type, Player target) {
 		Hopper hopper = new Hopper(name, type, target);
 		hopperList.add(hopper);
 		return hopper;
@@ -46,8 +46,7 @@ public class HopperManager implements Listener {
 	@EventHandler(priority = EventPriority.HIGH)
 	public void onAttack(AttackEvent.Apply attackEvent) {
 		if(isHopper(attackEvent.defender)) {
-			Hopper hopper = getHopper(attackEvent.defender);
-			assert hopper != null;
+			Hopper hopper = getHopper(attackEvent.defenderPlayer);
 			attackEvent.multipliers.add(hopper.type.damageMultiplier);
 			if(attackEvent.arrow != null || attackEvent.pet != null) {
 				attackEvent.multipliers.add(0D);
@@ -55,7 +54,7 @@ public class HopperManager implements Listener {
 			}
 		}
 		if(isHopper(attackEvent.attacker)) {
-			Hopper hopper = getHopper(attackEvent.attacker);
+			Hopper hopper = getHopper(attackEvent.attackerPlayer);
 			if(hopper.type != Hopper.Type.CHAIN) {
 				PitPlayer pitHopper = PitPlayer.getPitPlayer(hopper.hopper);
 				double amount = 1;
@@ -73,7 +72,7 @@ public class HopperManager implements Listener {
 		}
 
 		if(isHopper(killEvent.dead)) {
-			Hopper hopper = HopperManager.getHopper(killEvent.dead);
+			Hopper hopper = HopperManager.getHopper(killEvent.deadPlayer);
 			hopper.remove();
 		}
 	}
@@ -105,14 +104,12 @@ public class HopperManager implements Listener {
 
 	public static boolean isHopper(LivingEntity checkPlayer) {
 		if(!(checkPlayer instanceof Player)) return false;
-
-		return getHopper(checkPlayer) != null;
+		Player player = (Player) checkPlayer;
+		return getHopper(player) != null;
 	}
 
-	public static Hopper getHopper(LivingEntity checkPlayer) {
-		if(!(checkPlayer instanceof Player)) return null;
-
-		for(Hopper hopper : hopperList) if(hopper.hopper == checkPlayer) return hopper;
+	public static Hopper getHopper(Player player) {
+		for(Hopper hopper : hopperList) if(hopper.hopper == player) return hopper;
 		return null;
 	}
 }
