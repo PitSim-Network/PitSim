@@ -49,7 +49,8 @@ public abstract class Megastreak implements Listener {
 	}
 
 	public boolean playerIsOnMega(KillEvent killEvent) {
-		return PitPlayer.getPitPlayer(killEvent.killer).getKills() >= getRequiredKills();
+		if(!killEvent.killerIsPlayer) return false;
+		return PitPlayer.getPitPlayer(killEvent.killerPlayer).getKills() >= getRequiredKills();
 	}
 
 

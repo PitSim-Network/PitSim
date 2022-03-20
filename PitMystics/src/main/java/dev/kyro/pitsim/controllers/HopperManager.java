@@ -6,6 +6,7 @@ import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.events.AttackEvent;
 import dev.kyro.pitsim.events.KillEvent;
 import dev.kyro.pitsim.events.OofEvent;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -36,7 +37,7 @@ public class HopperManager implements Listener {
 		}.runTaskTimer(PitSim.INSTANCE, 0L, 1L);
 	}
 
-	public static Hopper callHopper(String name, Hopper.Type type, Player target) {
+	public static Hopper callHopper(String name, Hopper.Type type, LivingEntity target) {
 		Hopper hopper = new Hopper(name, type, target);
 		hopperList.add(hopper);
 		return hopper;
@@ -46,6 +47,7 @@ public class HopperManager implements Listener {
 	public void onAttack(AttackEvent.Apply attackEvent) {
 		if(isHopper(attackEvent.defender)) {
 			Hopper hopper = getHopper(attackEvent.defender);
+			assert hopper != null;
 			attackEvent.multipliers.add(hopper.type.damageMultiplier);
 			if(attackEvent.arrow != null || attackEvent.pet != null) {
 				attackEvent.multipliers.add(0D);
@@ -101,12 +103,16 @@ public class HopperManager implements Listener {
 		}
 	}
 
-	public static boolean isHopper(Player player) {
-		return getHopper(player) != null;
+	public static boolean isHopper(LivingEntity checkPlayer) {
+		if(!(checkPlayer instanceof Player)) return false;
+
+		return getHopper(checkPlayer) != null;
 	}
 
-	public static Hopper getHopper(Player player) {
-		for(Hopper hopper : hopperList) if(hopper.hopper == player) return hopper;
+	public static Hopper getHopper(LivingEntity checkPlayer) {
+		if(!(checkPlayer instanceof Player)) return null;
+
+		for(Hopper hopper : hopperList) if(hopper.hopper == checkPlayer) return hopper;
 		return null;
 	}
 }

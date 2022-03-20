@@ -236,6 +236,26 @@ public class PitPlayer {
 		return pitPlayer;
 	}
 
+	public static PitPlayer getEntityPitPlayer(LivingEntity checkPlayer) {
+		if(!(checkPlayer instanceof Player)) return null;
+		Player player = (Player) checkPlayer;
+
+		PitPlayer pitPlayer = null;
+		for(PitPlayer testPitPlayer : pitPlayers) {
+
+			if(testPitPlayer.player != player) continue;
+			pitPlayer = testPitPlayer;
+			break;
+		}
+		if(pitPlayer == null) {
+
+			pitPlayer = new PitPlayer(player);
+			pitPlayers.add(pitPlayer);
+		}
+
+		return pitPlayer;
+	}
+
 	public void endKillstreak() {
 		megastreak.reset();
 		for(Killstreak killstreak : killstreaks) {

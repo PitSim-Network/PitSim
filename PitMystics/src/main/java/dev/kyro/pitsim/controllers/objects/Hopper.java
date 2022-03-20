@@ -25,6 +25,7 @@ import org.bukkit.craftbukkit.v1_8_R3.entity.CraftEntity;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.Vector;
@@ -37,7 +38,7 @@ public class Hopper {
 	public Player hopper;
 	public String name;
 	public Type type;
-	public Player target;
+	public LivingEntity target;
 	public List<UUID> team = new ArrayList<>();
 	public int count = 0;
 
@@ -55,7 +56,7 @@ public class Hopper {
 		start();
 	}
 
-	public Hopper(String name, Type type, Player target) {
+	public Hopper(String name, Type type, LivingEntity target) {
 		this.name = name;
 		this.type = type;
 		this.target = target;

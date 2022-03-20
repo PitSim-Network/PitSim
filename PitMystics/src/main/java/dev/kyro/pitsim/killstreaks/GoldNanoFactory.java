@@ -57,10 +57,11 @@ public class GoldNanoFactory extends Killstreak {
 
 	@EventHandler
 	public void onKill(KillEvent event) {
-		Player player = event.killer;
-		if(rewardPlayers.containsKey(player)) {
-			event.goldMultipliers.add(1 + (25 * rewardPlayers.get(player)) / 100D);
-			rewardPlayers.remove(player);
+		if(!event.killerIsPlayer) return;
+
+		if(rewardPlayers.containsKey(event.killerPlayer)) {
+			event.goldMultipliers.add(1 + (25 * rewardPlayers.get(event.killerPlayer)) / 100D);
+			rewardPlayers.remove(event.killerPlayer);
 		}
 	}
 

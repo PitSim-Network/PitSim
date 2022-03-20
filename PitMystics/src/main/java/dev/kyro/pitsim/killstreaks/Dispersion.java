@@ -11,6 +11,7 @@ import dev.kyro.pitsim.controllers.objects.PitEnchant;
 import dev.kyro.pitsim.events.AttackEvent;
 import dev.kyro.pitsim.events.HealEvent;
 import org.bukkit.Material;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.inventory.ItemStack;
@@ -22,7 +23,7 @@ import java.util.Map;
 
 public class Dispersion extends Killstreak {
 	public static Dispersion INSTANCE;
-	public static List<Player> rewardPlayers = new ArrayList<>();
+	public static List<LivingEntity> rewardPlayers = new ArrayList<>();
 
 	public Dispersion() {
 		super("Dispersion", "Dispersion", 3, 0);
@@ -31,8 +32,10 @@ public class Dispersion extends Killstreak {
 
 	@EventHandler
 	public void onAttack(AttackEvent.Pre attackEvent) {
+		if(!attackEvent.defenderIsPlayer) return;
+
 		if(!rewardPlayers.contains(attackEvent.defender)) return;
-		Guild defenderGuild = GuildManager.getGuild(attackEvent.defender);
+		Guild defenderGuild = GuildManager.getGuild(attackEvent.defenderPlayer);
 		if(defenderGuild != null) {
 			AOutput.error(attackEvent.defender, "Dispersion does not work if you are in a guild");
 			return;

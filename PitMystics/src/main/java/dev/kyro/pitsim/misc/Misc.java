@@ -15,6 +15,7 @@ import org.bukkit.Sound;
 import org.bukkit.craftbukkit.v1_8_R3.CraftWorld;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
@@ -44,12 +45,12 @@ public class Misc {
 		return "";
 	}
 
-	public static void applyPotionEffect(Player player, PotionEffectType type, int duration, int amplifier, boolean ambient, boolean particles) {
+	public static void applyPotionEffect(LivingEntity entity, PotionEffectType type, int duration, int amplifier, boolean ambient, boolean particles) {
 		if(amplifier < 0) return;
 		if(duration == 0) return;
 
-		if(NonManager.getNon(player) == null) {
-			PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
+		if(NonManager.getNon(entity) == null && entity instanceof Player) {
+			PitPlayer pitPlayer = PitPlayer.getPitPlayer((Player) entity);
 			if(pitPlayer.megastreak.getClass() == Uberstreak.class) {
 				Uberstreak uberstreak = (Uberstreak) pitPlayer.megastreak;
 				if(uberstreak.uberEffects.contains(Uberstreak.UberEffect.NO_SPEED) && type == PotionEffectType.SPEED)
@@ -57,18 +58,18 @@ public class Misc {
 			}
 		}
 
-		for(PotionEffect potionEffect : player.getActivePotionEffects()) {
+		for(PotionEffect potionEffect : entity.getActivePotionEffects()) {
 			if(!potionEffect.getType().equals(type) || potionEffect.getAmplifier() > amplifier) continue;
 			if(potionEffect.getAmplifier() == amplifier && potionEffect.getDuration() >= duration) continue;
-			player.removePotionEffect(type);
+			entity.removePotionEffect(type);
 			break;
 		}
-		player.addPotionEffect(new PotionEffect(type, duration, amplifier, ambient, particles));
+		entity.addPotionEffect(new PotionEffect(type, duration, amplifier, ambient, particles));
 		if(type == PotionEffectType.POISON) {
-			if(GoldenHelmet.abilities.get(player) != null) {
-				GoldenHelmet.abilities.get(player).onDeactivate();
+			if(GoldenHelmet.abilities.get(entity) != null) {
+				GoldenHelmet.abilities.get(entity).onDeactivate();
 			}
-			GoldenHelmet.toggledPlayers.remove(player);
+			GoldenHelmet.toggledPlayers.remove(entity);
 		}
 	}
 
