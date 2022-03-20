@@ -11,6 +11,7 @@ import dev.kyro.pitsim.enums.NBTTag;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -49,7 +50,7 @@ public class FunkyFeather {
 		}
 	}
 
-	public static boolean useFeather(Player killer, Player dead, boolean isDivine) {
+	public static boolean useFeather(LivingEntity killer, Player dead, boolean isDivine) {
 		if(isDivine) return false;
 
 		for(int i = 0; i < 9; i++) {

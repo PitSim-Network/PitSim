@@ -15,6 +15,7 @@ import org.bukkit.Sound;
 import org.bukkit.craftbukkit.v1_8_R3.CraftWorld;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
@@ -167,13 +168,13 @@ public class Misc {
 		((CraftPlayer) player).getHandle().playerConnection.sendPacket(subTitleLength);
 	}
 
-	public static boolean isCritical(Player player) {
-		return player.getFallDistance() > 0.0F &&
-				!player.isOnGround() &&
-				!player.isInsideVehicle() &&
-				!player.hasPotionEffect(PotionEffectType.BLINDNESS) &&
-				player.getLocation().getBlock().getType() != Material.LADDER &&
-				player.getLocation().getBlock().getType() != Material.VINE;
+	public static boolean isCritical(LivingEntity entity) {
+		return entity.getFallDistance() > 0.0F &&
+				!entity.isOnGround() &&
+				!entity.isInsideVehicle() &&
+				!entity.hasPotionEffect(PotionEffectType.BLINDNESS) &&
+				entity.getLocation().getBlock().getType() != Material.LADDER &&
+				entity.getLocation().getBlock().getType() != Material.VINE;
 	}
 
 	public static boolean isAirOrNull(ItemStack itemStack) {

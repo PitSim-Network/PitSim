@@ -33,13 +33,19 @@ public class AttackEvent extends Event {
 	public AttackEvent(EntityDamageByEntityEvent event, Map<PitEnchant, Integer> attackerEnchantMap, Map<PitEnchant, Integer> defenderEnchantMap, boolean fakeHit) {
 		this.event = event;
 		this.attacker = DamageManager.getAttacker(event.getDamager());
-		this.defender = (Player) event.getEntity();
+		this.defender = (LivingEntity) event.getEntity();
+		this.attackerIsPlayer = attacker instanceof Player;
+		this.defenderIsPlayer = defender instanceof Player;
+		this.attackerPlayer = attackerIsPlayer ? (Player) attacker : null;
+		this.defenderPlayer = defenderIsPlayer ? (Player) defender : null;
 		this.attackerEnchantMap = attackerEnchantMap;
 		this.defenderEnchantMap = defenderEnchantMap;
 		this.fakeHit = fakeHit;
 
-		PitPlayer pitPlayer = PitPlayer.getPitPlayer(defender);
-		if(!(pitPlayer.player == attacker)) pitPlayer.lastHitUUID = attacker.getUniqueId();
+		if(defenderIsPlayer) {
+			PitPlayer pitPlayer = PitPlayer.getPitPlayer(defenderPlayer);
+			if(!(pitPlayer.player == attacker)) pitPlayer.lastHitUUID = attacker.getUniqueId();
+		}
 
 		if(event.getDamager() instanceof Arrow) {
 			arrow = (Arrow) event.getDamager();

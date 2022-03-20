@@ -6,6 +6,7 @@ import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.events.AttackEvent;
 import dev.kyro.pitsim.events.KillEvent;
 import dev.kyro.pitsim.events.OofEvent;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -45,7 +46,7 @@ public class HopperManager implements Listener {
 	@EventHandler(priority = EventPriority.HIGH)
 	public void onAttack(AttackEvent.Apply attackEvent) {
 		if(isHopper(attackEvent.defender)) {
-			Hopper hopper = getHopper(attackEvent.defender);
+			Hopper hopper = getHopper(attackEvent.defenderPlayer);
 			attackEvent.multipliers.add(hopper.type.damageMultiplier);
 			if(attackEvent.arrow != null || attackEvent.pet != null) {
 				attackEvent.multipliers.add(0D);
@@ -53,7 +54,7 @@ public class HopperManager implements Listener {
 			}
 		}
 		if(isHopper(attackEvent.attacker)) {
-			Hopper hopper = getHopper(attackEvent.attacker);
+			Hopper hopper = getHopper(attackEvent.attackerPlayer);
 			if(hopper.type != Hopper.Type.CHAIN) {
 				PitPlayer pitHopper = PitPlayer.getPitPlayer(hopper.hopper);
 				double amount = 1;
@@ -71,7 +72,7 @@ public class HopperManager implements Listener {
 		}
 
 		if(isHopper(killEvent.dead)) {
-			Hopper hopper = HopperManager.getHopper(killEvent.dead);
+			Hopper hopper = HopperManager.getHopper(killEvent.deadPlayer);
 			hopper.remove();
 		}
 	}
@@ -101,7 +102,9 @@ public class HopperManager implements Listener {
 		}
 	}
 
-	public static boolean isHopper(Player player) {
+	public static boolean isHopper(LivingEntity checkPlayer) {
+		if(!(checkPlayer instanceof Player)) return false;
+		Player player = (Player) checkPlayer;
 		return getHopper(player) != null;
 	}
 

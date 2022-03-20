@@ -26,6 +26,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.Color;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -42,8 +43,9 @@ public class EnchantManager implements Listener {
 
 	@EventHandler
 	public static void onJewelAttack(AttackEvent.Pre attackEvent) {
+		if(!attackEvent.attackerIsPlayer) return;
 		if(!attackEvent.attacker.hasPermission("group.eternal")) return;
-		ItemStack hand = attackEvent.attacker.getItemInHand();
+		ItemStack hand = attackEvent.attackerPlayer.getItemInHand();
 		if(Misc.isAirOrNull(hand)) return;
 
 		if(isJewel(hand) && !isJewelComplete(hand)) {
@@ -524,7 +526,9 @@ public class EnchantManager implements Listener {
 		return 0;
 	}
 
-	public static Map<PitEnchant, Integer> getEnchantsOnPlayer(Player player) {
+	public static Map<PitEnchant, Integer> getEnchantsOnPlayer(LivingEntity checkPlayer) {
+		if(!(checkPlayer instanceof Player)) return new HashMap<>();
+		Player player = (Player) checkPlayer;
 
 		List<ItemStack> inUse = new ArrayList<>(Arrays.asList(player.getInventory().getArmorContents()));
 		inUse.add(player.getItemInHand());
