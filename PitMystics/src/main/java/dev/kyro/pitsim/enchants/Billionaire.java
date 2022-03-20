@@ -24,6 +24,7 @@ public class Billionaire extends PitEnchant {
 
 	@EventHandler
 	public void onAttack(AttackEvent.Apply attackEvent) {
+		if(!attackEvent.attackerIsPlayer) return;
 		if(!canApply(attackEvent)) return;
 
 		int enchantLvl = attackEvent.getAttackerEnchantLevel(this);
@@ -38,15 +39,15 @@ public class Billionaire extends PitEnchant {
 		if(NonManager.getNon(attackEvent.defender) == null) {
 			goldCost = getPlayerGoldCost(enchantLvl);
 		}
-		if(UpgradeManager.hasUpgrade(attackEvent.attacker, "TAX_EVASION")) {
-			goldCost = goldCost - (int) ((UpgradeManager.getTier(attackEvent.attacker, "TAX_EVASION") * 0.05) * goldCost);
+		if(UpgradeManager.hasUpgrade(attackEvent.attackerPlayer, "TAX_EVASION")) {
+			goldCost = goldCost - (int) ((UpgradeManager.getTier(attackEvent.attackerPlayer, "TAX_EVASION") * 0.05) * goldCost);
 		}
 
-		double finalBalance = PitSim.VAULT.getBalance(attackEvent.attacker) - goldCost;
+		double finalBalance = PitSim.VAULT.getBalance(attackEvent.attackerPlayer) - goldCost;
 		if(finalBalance < 0) return;
-		PitSim.VAULT.withdrawPlayer(attackEvent.attacker, goldCost);
+		PitSim.VAULT.withdrawPlayer(attackEvent.attackerPlayer, goldCost);
 
-		PitPlayer pitPlayer = PitPlayer.getPitPlayer(attackEvent.attacker);
+		PitPlayer pitPlayer = PitPlayer.getPitPlayer(attackEvent.attackerPlayer);
 		if(pitPlayer.stats != null) pitPlayer.stats.billionaire += goldCost;
 
 		attackEvent.multipliers.add(getDamageMultiplier(enchantLvl));

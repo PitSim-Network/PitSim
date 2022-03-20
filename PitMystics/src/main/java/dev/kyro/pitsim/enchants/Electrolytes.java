@@ -3,7 +3,6 @@ package dev.kyro.pitsim.enchants;
 import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.pitsim.controllers.objects.PitEnchant;
 import dev.kyro.pitsim.enums.ApplyType;
-import dev.kyro.pitsim.events.AttackEvent;
 import dev.kyro.pitsim.events.KillEvent;
 import dev.kyro.pitsim.misc.Misc;
 import org.bukkit.event.EventHandler;
@@ -19,19 +18,6 @@ public class Electrolytes extends PitEnchant {
 				"electrolytes", "electrolyte", "electro", "elec", "lytes");
 		isUncommonEnchant = true;
 	}
-
-	//	@EventHandler
-	public void onAttack(AttackEvent.Apply attackEvent) {
-		if(!canApply(attackEvent)) return;
-
-		int attackerEnchantLevel = attackEvent.getAttackerEnchantLevel(this);
-		for(PotionEffect effect : attackEvent.attacker.getActivePotionEffects()) {
-			if(effect.getType().equals(PotionEffectType.SPEED) && effect.getAmplifier() == 3 && attackerEnchantLevel == 0 && effect.getDuration() > 85) {
-				attackEvent.attacker.removePotionEffect(PotionEffectType.SPEED);
-			}
-		}
-	}
-
 
 	@EventHandler
 	public void onKill(KillEvent killEvent) {

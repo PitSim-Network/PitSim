@@ -21,14 +21,15 @@ public class Healer extends PitEnchant {
 
 	@EventHandler
 	public void onAttack(AttackEvent.Apply attackEvent) {
+		if(!attackEvent.attackerIsPlayer || !attackEvent.defenderIsPlayer) return;
 		if(!canApply(attackEvent)) return;
-		PitPlayer pitAttacker = PitPlayer.getPitPlayer(attackEvent.attacker);
-		PitPlayer pitDefender = PitPlayer.getPitPlayer(attackEvent.defender);
+		PitPlayer pitAttacker = PitPlayer.getPitPlayer(attackEvent.attackerPlayer);
+		PitPlayer pitDefender = PitPlayer.getPitPlayer(attackEvent.defenderPlayer);
 
 		int enchantLvl = attackEvent.getAttackerEnchantLevel(this);
 		if(enchantLvl == 0) return;
 
-		Cooldown cooldown = getCooldown(attackEvent.attacker, 20);
+		Cooldown cooldown = getCooldown(attackEvent.attackerPlayer, 20);
 		if(cooldown.isOnCooldown()) return;
 		else cooldown.reset();
 

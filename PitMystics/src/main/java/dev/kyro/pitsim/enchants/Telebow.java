@@ -33,26 +33,27 @@ public class Telebow extends PitEnchant {
 
 	@EventHandler
 	public void onAttack(AttackEvent.Apply attackEvent) {
+		if(!attackEvent.attackerIsPlayer) return;
 		if(!canApply(attackEvent)) return;
 		int enchantLvl = attackEvent.getAttackerEnchantLevel(this);
 		if(enchantLvl == 0) return;
 		if(attackEvent.arrow == null) return;
 
-		Cooldown cooldown = getCooldown(attackEvent.attacker, getCooldown(enchantLvl) * 20);
+		Cooldown cooldown = getCooldown(attackEvent.attackerPlayer, getCooldown(enchantLvl) * 20);
 		cooldown.reduceCooldown(40);
 
 		if(cooldown.isOnCooldown()) {
 			new BukkitRunnable() {
 				@Override
 				public void run() {
-					Misc.sendActionBar(attackEvent.attacker, "&eTelebow: &c" + cooldown.getTicksLeft() / 20 + "&cs cooldown!");
+					Misc.sendActionBar(attackEvent.attackerPlayer, "&eTelebow: &c" + cooldown.getTicksLeft() / 20 + "&cs cooldown!");
 				}
 			}.runTaskLater(PitSim.INSTANCE, 1L);
 		} else {
 			new BukkitRunnable() {
 				@Override
 				public void run() {
-					Misc.sendActionBar(attackEvent.attacker, "&eTelebow: &aReady!");
+					Misc.sendActionBar(attackEvent.attackerPlayer, "&eTelebow: &aReady!");
 				}
 			}.runTaskLater(PitSim.INSTANCE, 1L);
 		}

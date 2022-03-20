@@ -37,7 +37,8 @@ public class aRetroGravityMinikloon extends PitEnchant {
 
 	@EventHandler
 	public void onKill(KillEvent killEvent) {
-		clear(killEvent.dead);
+		if(!killEvent.deadIsPlayer) return;
+		clear(killEvent.deadPlayer);
 	}
 
 	@EventHandler
@@ -52,15 +53,16 @@ public class aRetroGravityMinikloon extends PitEnchant {
 
 	@EventHandler
 	public void onAttack(AttackEvent.Apply attackEvent) {
+		if(!attackEvent.attackerIsPlayer || !attackEvent.defenderIsPlayer) return;
 		if(!canApply(attackEvent) || attackEvent.fakeHit) return;
 
 		int attackerEnchantLvl = attackEvent.getAttackerEnchantLevel(this);
 		int defenderEnchantLvl = attackEvent.getDefenderEnchantLevel(this);
 
-		int attackingCharge = getCharge(attackEvent.attacker, attackEvent.defender) - 1;
+		int attackingCharge = getCharge(attackEvent.attackerPlayer, attackEvent.defenderPlayer) - 1;
 		if(attackingCharge >= 0) {
 			if(attackerEnchantLvl >= 1) {
-				PitPlayer pitAttacker = PitPlayer.getPitPlayer(attackEvent.attacker);
+				PitPlayer pitAttacker = PitPlayer.getPitPlayer(attackEvent.attackerPlayer);
 				pitAttacker.heal(getHealing(attackingCharge));
 			}
 			if(attackerEnchantLvl >= 2) {
@@ -72,17 +74,17 @@ public class aRetroGravityMinikloon extends PitEnchant {
 //				AOutput.broadcast(getDamage(attackingCharge) + "");
 			}
 //			setCharge(attackEvent.attacker, attackEvent.defender, 0);
-			setCharge(attackEvent.attacker, attackEvent.defender, Math.max(0, attackingCharge - 2));
+			setCharge(attackEvent.attackerPlayer, attackEvent.defenderPlayer, Math.max(0, attackingCharge - 2));
 		}
 
-		if(defenderEnchantLvl != 0 && !attackEvent.defender.isBlocking()) {
+		if(defenderEnchantLvl != 0 && !attackEvent.defenderPlayer.isBlocking()) {
 //			if(attackEvent.attacker.getLocation().add(0, -0.1, 0).getBlock().getType() != Material.AIR) return;
 
 //			HitCounter.incrementCounter(attackEvent.defender, this);
 //			if(!HitCounter.hasReachedThreshold(attackEvent.defender, this, getStrikes())) return;
 
-			int charge = getCharge(attackEvent.defender, attackEvent.attacker);
-			setCharge(attackEvent.defender, attackEvent.attacker, Math.min(++charge, getMaxStacks(defenderEnchantLvl)));
+			int charge = getCharge(attackEvent.defenderPlayer, attackEvent.attackerPlayer);
+			setCharge(attackEvent.defenderPlayer, attackEvent.attackerPlayer, Math.min(++charge, getMaxStacks(defenderEnchantLvl)));
 
 //			PitPlayer pitDefender = PitPlayer.getPitPlayer(attackEvent.defender);
 //			pitDefender.heal(getHealing(defenderEnchantLvl));

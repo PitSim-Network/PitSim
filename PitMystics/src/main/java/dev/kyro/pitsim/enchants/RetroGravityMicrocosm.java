@@ -13,6 +13,7 @@ import dev.kyro.pitsim.events.OofEvent;
 import dev.kyro.pitsim.misc.Misc;
 import dev.kyro.pitsim.misc.Sounds;
 import org.bukkit.Material;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.player.PlayerChangedWorldEvent;
@@ -26,7 +27,7 @@ import java.util.List;
 import java.util.Map;
 
 public class RetroGravityMicrocosm extends PitEnchant {
-	public static Map<Player, RGMInfo> rgmGlobalMap = new HashMap<>();
+	public static Map<LivingEntity, RGMInfo> rgmGlobalMap = new HashMap<>();
 
 	public RetroGravityMicrocosm() {
 		super("Retro-Gravity Microcosm", true, ApplyType.PANTS,
@@ -72,14 +73,14 @@ public class RetroGravityMicrocosm extends PitEnchant {
 			int charge = getProcs(attackEvent.defender, attackEvent.attacker);
 			attackEvent.increase += getDamagePerStack(attackerEnchantLvl) * Math.min(charge, getMaxStacks(attackerEnchantLvl));
 		}
-		if(defenderEnchantLvl != 0) {
+		if(attackEvent.defenderIsPlayer && defenderEnchantLvl != 0) {
 			if(attackEvent.attacker.getLocation().add(0, -0.1, 0).getBlock().getType() != Material.AIR) return;
 
-			HitCounter.incrementCounter(attackEvent.defender, this);
-			if(!HitCounter.hasReachedThreshold(attackEvent.defender, this, getStrikes())) return;
+			HitCounter.incrementCounter(attackEvent.defenderPlayer, this);
+			if(!HitCounter.hasReachedThreshold(attackEvent.defenderPlayer, this, getStrikes())) return;
 			add(attackEvent.attacker, attackEvent.defender);
 
-			PitPlayer pitDefender = PitPlayer.getPitPlayer(attackEvent.defender);
+			PitPlayer pitDefender = PitPlayer.getPitPlayer(attackEvent.defenderPlayer);
 			pitDefender.heal(getHealing(defenderEnchantLvl));
 
 			int charge = getProcs(attackEvent.attacker, attackEvent.defender);
@@ -117,14 +118,14 @@ public class RetroGravityMicrocosm extends PitEnchant {
 	}
 
 	//	Attacker is the player that will take more damage, defender is the player that will deal more damage
-	public static int getProcs(Player attacker, Player defender) {
+	public static int getProcs(LivingEntity attacker, LivingEntity defender) {
 		if(!rgmGlobalMap.containsKey(defender)) return 0;
 		RGMInfo rgmInfo = rgmGlobalMap.get(defender);
 		if(!rgmInfo.rgmPlayerProcMap.containsKey(attacker)) return 0;
 		return rgmInfo.rgmPlayerProcMap.get(attacker).size();
 	}
 
-	public static void add(Player attacker, Player defender) {
+	public static void add(LivingEntity attacker, LivingEntity defender) {
 		if(rgmGlobalMap.containsKey(defender)) {
 			rgmGlobalMap.get(defender).add(attacker);
 		} else {
@@ -134,33 +135,33 @@ public class RetroGravityMicrocosm extends PitEnchant {
 		}
 	}
 
-	public static void clearDefender(Player defender) {
+	public static void clearDefender(LivingEntity defender) {
 		rgmGlobalMap.remove(defender);
 	}
 
-	public static void clearAttacker(Player attacker) {
-		for(Map.Entry<Player, RGMInfo> entry : rgmGlobalMap.entrySet()) entry.getValue().clear(attacker);
+	public static void clearAttacker(LivingEntity attacker) {
+		for(Map.Entry<LivingEntity, RGMInfo> entry : rgmGlobalMap.entrySet()) entry.getValue().clear(attacker);
 	}
 
 	public static class RGMInfo {
-		private final Map<Player, List<BukkitTask>> rgmPlayerProcMap = new HashMap<>();
+		private final Map<LivingEntity, List<BukkitTask>> rgmPlayerProcMap = new HashMap<>();
 
-		private void add(Player player) {
-			rgmPlayerProcMap.putIfAbsent(player, new ArrayList<>());
-			rgmPlayerProcMap.get(player).add(new BukkitRunnable() {
+		private void add(LivingEntity entity) {
+			rgmPlayerProcMap.putIfAbsent(entity, new ArrayList<>());
+			rgmPlayerProcMap.get(entity).add(new BukkitRunnable() {
 				@Override
 				public void run() {
-					if(rgmPlayerProcMap.get(player) == null) return;
-					for(BukkitTask bukkitTask : rgmPlayerProcMap.get(player)) {
+					if(rgmPlayerProcMap.get(entity) == null) return;
+					for(BukkitTask bukkitTask : rgmPlayerProcMap.get(entity)) {
 						if(bukkitTask.getTaskId() != getTaskId()) continue;
-						rgmPlayerProcMap.get(player).remove(bukkitTask);
+						rgmPlayerProcMap.get(entity).remove(bukkitTask);
 						break;
 					}
 				}
 			}.runTaskLater(PitSim.INSTANCE, 30 * 20));
 		}
 
-		public void clear(Player player) {
+		public void clear(LivingEntity player) {
 			rgmPlayerProcMap.remove(player);
 		}
 	}

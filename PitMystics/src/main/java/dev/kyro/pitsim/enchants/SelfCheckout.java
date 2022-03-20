@@ -27,12 +27,13 @@ public class SelfCheckout extends PitEnchant {
 
 	@EventHandler
 	public void onKill(KillEvent killEvent) {
+		if(!killEvent.killerIsPlayer) return;
 
 		ItemStack leggings = killEvent.killer.getEquipment().getLeggings();
 		int enchantLvl = EnchantManager.getEnchantLevel(leggings, this);
 		if(enchantLvl == 0) return;
 
-		PitPlayer pitKiller = PitPlayer.getPitPlayer(killEvent.killer);
+		PitPlayer pitKiller = PitPlayer.getPitPlayer(killEvent.killerPlayer);
 		if(pitKiller.getKills() + 1 < 200 || pitKiller.megastreak.getClass() == Uberstreak.class || pitKiller.megastreak.getClass() == NoMegastreak.class)
 			return;
 

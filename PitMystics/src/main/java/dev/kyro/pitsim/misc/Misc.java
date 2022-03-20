@@ -5,13 +5,14 @@ import dev.kyro.pitsim.commands.LightningCommand;
 import dev.kyro.pitsim.controllers.NonManager;
 import dev.kyro.pitsim.controllers.objects.GoldenHelmet;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
+import dev.kyro.pitsim.events.HealEvent;
+import dev.kyro.pitsim.megastreaks.Overdrive;
 import dev.kyro.pitsim.megastreaks.RNGesus;
 import dev.kyro.pitsim.megastreaks.Uberstreak;
+import net.minecraft.server.v1_8_R3.World;
 import net.minecraft.server.v1_8_R3.*;
-import org.bukkit.ChatColor;
-import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.Sound;
+import org.bukkit.*;
 import org.bukkit.craftbukkit.v1_8_R3.CraftWorld;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
 import org.bukkit.entity.Entity;
@@ -55,7 +56,7 @@ public class Misc {
 				Uberstreak uberstreak = (Uberstreak) pitPlayer.megastreak;
 				if(uberstreak.uberEffects.contains(Uberstreak.UberEffect.NO_SPEED) && type == PotionEffectType.SPEED)
 					return;
-			}
+			} else if(pitPlayer.megastreak.getClass() != Overdrive.class && pitPlayer.megastreak.isOnMega() && type == PotionEffectType.SLOW) return;
 		}
 
 		for(PotionEffect potionEffect : entity.getActivePotionEffects()) {
@@ -245,5 +246,21 @@ public class Misc {
 
 	public static String formatPercent(double percent) {
 		return new DecimalFormat("0.0").format(percent * 100) + "%";
+	}
+
+	public static HealEvent heal(LivingEntity entity, double amount, HealEvent.HealType healType, int max) {
+		if(max == -1) max = Integer.MAX_VALUE;
+
+		HealEvent healEvent = new HealEvent(entity, amount, healType, max);
+		Bukkit.getServer().getPluginManager().callEvent(healEvent);
+
+		if(healType == HealEvent.HealType.HEALTH) {
+			entity.setHealth(Math.min(entity.getHealth() + healEvent.getFinalHeal(), entity.getMaxHealth()));
+		} else {
+			EntityPlayer nmsPlayer = ((CraftPlayer) entity).getHandle();
+			if(nmsPlayer.getAbsorptionHearts() < healEvent.max)
+				nmsPlayer.setAbsorptionHearts(Math.min((float) (nmsPlayer.getAbsorptionHearts() + healEvent.getFinalHeal()), max));
+		}
+		return healEvent;
 	}
 }

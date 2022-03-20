@@ -36,12 +36,10 @@ public class Explosive extends PitEnchant {
 
 		int enchantLvl = attackEvent.getAttackerEnchantLevel(this);
 		if(enchantLvl == 0) return;
-
 	}
 
 	@EventHandler
 	public void onShoot(ProjectileHitEvent event) {
-
 		if(!(event.getEntity() instanceof Arrow) || !(event.getEntity().getShooter() instanceof Player)) return;
 
 		Arrow arrow = (Arrow) event.getEntity();

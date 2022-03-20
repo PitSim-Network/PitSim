@@ -20,12 +20,13 @@ public class SpeedyHit extends PitEnchant {
 
 	@EventHandler
 	public void onAttack(AttackEvent.Apply attackEvent) {
+		if(!attackEvent.attackerIsPlayer) return;
 		if(!canApply(attackEvent)) return;
 
 		int enchantLvl = attackEvent.getAttackerEnchantLevel(this);
 		if(enchantLvl == 0) return;
 
-		Cooldown cooldown = getCooldown(attackEvent.attacker, (getCooldown(enchantLvl) * 20));
+		Cooldown cooldown = getCooldown(attackEvent.attackerPlayer, (getCooldown(enchantLvl) * 20));
 		if(cooldown.isOnCooldown()) return;
 		else cooldown.reset();
 

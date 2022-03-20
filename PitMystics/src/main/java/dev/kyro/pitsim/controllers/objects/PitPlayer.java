@@ -17,14 +17,13 @@ import dev.kyro.pitsim.inventories.ChatColorPanel;
 import dev.kyro.pitsim.killstreaks.Monster;
 import dev.kyro.pitsim.killstreaks.NoKillstreak;
 import dev.kyro.pitsim.megastreaks.*;
+import dev.kyro.pitsim.misc.Misc;
 import dev.kyro.pitsim.perks.NoPerk;
 import dev.kyro.pitsim.perks.Thick;
 import me.clip.placeholderapi.PlaceholderAPI;
-import net.minecraft.server.v1_8_R3.EntityPlayer;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -356,19 +355,7 @@ public class PitPlayer {
 	}
 
 	public HealEvent heal(double amount, HealEvent.HealType healType, int max) {
-		if(max == -1) max = Integer.MAX_VALUE;
-
-		HealEvent healEvent = new HealEvent(player, amount, healType, max);
-		Bukkit.getServer().getPluginManager().callEvent(healEvent);
-
-		if(healType == HealEvent.HealType.HEALTH) {
-			player.setHealth(Math.min(player.getHealth() + healEvent.getFinalHeal(), player.getMaxHealth()));
-		} else {
-			EntityPlayer nmsPlayer = ((CraftPlayer) player).getHandle();
-			if(nmsPlayer.getAbsorptionHearts() < healEvent.max)
-				nmsPlayer.setAbsorptionHearts(Math.min((float) (nmsPlayer.getAbsorptionHearts() + healEvent.getFinalHeal()), max));
-		}
-		return healEvent;
+		return Misc.heal(player, amount, healType, max);
 	}
 
 	public boolean hasPerk(PitPerk pitPerk) {

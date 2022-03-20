@@ -9,7 +9,6 @@ import dev.kyro.pitsim.enums.ApplyType;
 import dev.kyro.pitsim.events.AttackEvent;
 import dev.kyro.pitsim.events.HealEvent;
 import dev.kyro.pitsim.misc.Misc;
-import org.bukkit.entity.Arrow;
 import org.bukkit.event.EventHandler;
 import org.bukkit.scheduler.BukkitRunnable;
 
@@ -38,41 +37,38 @@ public class ReallyToxic extends PitEnchant {
 	@EventHandler
 	public void onAttack(AttackEvent.Apply attackEvent) {
 
-		int attackerCharge = HitCounter.getCharge(attackEvent.attacker, this);
-		if(attackerCharge != 0 && !toxicNotifCooldown.contains(attackEvent.attacker.getUniqueId())) {
-			AOutput.send(attackEvent.attacker, "&a&lTOXIC!&f You heal &a" + Math.min(attackerCharge, getMaxReduction()) + "% &aless");
-			toxicNotifCooldown.add(attackEvent.attacker.getUniqueId());
-			new BukkitRunnable() {
-				@Override
-				public void run() {
-					toxicNotifCooldown.remove(attackEvent.attacker.getUniqueId());
-				}
-			}.runTaskLater(PitSim.INSTANCE, 40L);
+		if(attackEvent.attackerIsPlayer) {
+			int attackerCharge = HitCounter.getCharge(attackEvent.attackerPlayer, this);
+			if(attackerCharge != 0 && !toxicNotifCooldown.contains(attackEvent.attacker.getUniqueId())) {
+				AOutput.send(attackEvent.attacker, "&a&lTOXIC!&f You heal &a" + Math.min(attackerCharge, getMaxReduction()) + "% &aless");
+				toxicNotifCooldown.add(attackEvent.attacker.getUniqueId());
+				new BukkitRunnable() {
+					@Override
+					public void run() {
+						toxicNotifCooldown.remove(attackEvent.attacker.getUniqueId());
+					}
+				}.runTaskLater(PitSim.INSTANCE, 40L);
+			}
 		}
 
 		if(!canApply(attackEvent)) return;
-		if(attackEvent.event.getDamager() instanceof Arrow) {
-
-		}
 
 		int enchantLvl = attackEvent.getAttackerEnchantLevel(this);
 		if(enchantLvl == 0) return;
 
-		int charge = HitCounter.getCharge(attackEvent.defender, this);
-		if(charge == 0) {
-//			ASound.play(attackEvent.attacker, Sound.SPIDER_IDLE, 1, 1);
-//			ASound.play(attackEvent.defender, Sound.SPIDER_IDLE, 1, 1);
-		}
-		HitCounter.setCharge(attackEvent.defender, this, charge + getReductionPerHit(enchantLvl));
+		if(attackEvent.defenderIsPlayer) {
+			int charge = HitCounter.getCharge(attackEvent.defenderPlayer, this);
+			HitCounter.setCharge(attackEvent.defenderPlayer, this, charge + getReductionPerHit(enchantLvl));
 
-		PitEnchant thisEnchant = this;
-		new BukkitRunnable() {
-			@Override
-			public void run() {
-				int charge = HitCounter.getCharge(attackEvent.defender, thisEnchant);
-				HitCounter.setCharge(attackEvent.defender, thisEnchant, charge - getReductionPerHit(enchantLvl));
-			}
-		}.runTaskLater(PitSim.INSTANCE, getStackTime(enchantLvl) * 20);
+			PitEnchant thisEnchant = this;
+			new BukkitRunnable() {
+				@Override
+				public void run() {
+					int charge = HitCounter.getCharge(attackEvent.defenderPlayer, thisEnchant);
+					HitCounter.setCharge(attackEvent.defenderPlayer, thisEnchant, charge - getReductionPerHit(enchantLvl));
+				}
+			}.runTaskLater(PitSim.INSTANCE, getStackTime(enchantLvl) * 20);
+		}
 	}
 
 	@Override

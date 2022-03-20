@@ -21,6 +21,7 @@ public class Pullbow extends PitEnchant {
 
 	@EventHandler
 	public void onAttack(AttackEvent.Apply attackEvent) {
+		if(!attackEvent.attackerIsPlayer) return;
 		if(!canApply(attackEvent)) return;
 
 		int enchantLvl = attackEvent.getAttackerEnchantLevel(this);
@@ -28,17 +29,19 @@ public class Pullbow extends PitEnchant {
 
 		if(attackEvent.attacker == attackEvent.defender) return;
 
-		Cooldown cooldown = getCooldown(attackEvent.attacker, 160);
+		Cooldown cooldown = getCooldown(attackEvent.attackerPlayer, 160);
 		if(cooldown.isOnCooldown()) return;
 		else cooldown.reset();
 
-		PitPlayer pitDefender = PitPlayer.getPitPlayer(attackEvent.defender);
-		if(pitDefender.megastreak.getClass() == Uberstreak.class && pitDefender.megastreak.isOnMega()) return;
+		if(attackEvent.defenderIsPlayer) {
+			PitPlayer pitDefender = PitPlayer.getPitPlayer(attackEvent.defenderPlayer);
+			if(pitDefender.megastreak.getClass() == Uberstreak.class && pitDefender.megastreak.isOnMega()) return;
+		}
 		Vector dirVector = attackEvent.attacker.getLocation().toVector().subtract(attackEvent.defender.getLocation().toVector()).setY(0);
 		Vector pullVector = dirVector.clone().normalize().setY(0.5).multiply(2.5).add(dirVector.clone().multiply(0.03));
 		attackEvent.defender.setVelocity(pullVector.multiply(getMultiplier(enchantLvl)));
 
-		PitPlayer pitAttacker = PitPlayer.getPitPlayer(attackEvent.attacker);
+		PitPlayer pitAttacker = PitPlayer.getPitPlayer(attackEvent.attackerPlayer);
 		if(pitAttacker.stats != null) pitAttacker.stats.pullbow++;
 	}
 
