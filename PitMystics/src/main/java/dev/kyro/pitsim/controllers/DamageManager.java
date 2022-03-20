@@ -86,7 +86,6 @@ public class DamageManager implements Listener {
 
 		if(!(event.getEntity() instanceof Player) || !(event.getProjectile() instanceof Arrow)) return;
 		Player shooter = (Player) event.getEntity();
-		Arrow arrow = (Arrow) event.getProjectile();
 		arrowMap.put(event, EnchantManager.getEnchantsOnPlayer(shooter));
 	}
 
@@ -221,8 +220,10 @@ public class DamageManager implements Listener {
 			}
 		}
 
-		PitPlayer pitPlayer = PitPlayer.getPitPlayer(attackEvent.defender);
-		pitPlayer.addDamage(attackEvent.attacker, attackEvent.event.getFinalDamage() + attackEvent.trueDamage);
+		if(attackEvent.defenderIsPlayer) {
+			PitPlayer pitPlayer = PitPlayer.getPitPlayer(attackEvent.defenderPlayer);
+			pitPlayer.addDamage(attackEvent.attacker, attackEvent.event.getFinalDamage() + attackEvent.trueDamage);
+		}
 
 //		AOutput.send(attackEvent.attacker, "Final Damage: " + attackEvent.event.getDamage());
 //		AOutput.send(attackEvent.attacker, "Final Damage: " + attackEvent.event.getFinalDamage());
@@ -249,18 +250,27 @@ public class DamageManager implements Listener {
 		return null;
 	}
 
-	public static void kill(AttackEvent attackEvent, Player killer, Player dead, boolean exeDeath) {
+	public static void kill(AttackEvent attackEvent, LivingEntity killer, LivingEntity dead, boolean exeDeath) {
+		boolean killerIsPlayer = killer instanceof Player;
+		boolean deadIsPlayer = dead instanceof Player;
+		Player killerPlayer = killerIsPlayer ? (Player) killer : null;
+		Player deadPlayer = deadIsPlayer ? (Player) dead : null;
 
 		KillEvent killEvent = new KillEvent(attackEvent, killer, dead, exeDeath);
 		Bukkit.getServer().getPluginManager().callEvent(killEvent);
 
-		EnchantManager.incrementKills(killer, dead);
+		if(killerIsPlayer && deadIsPlayer) {
+			EnchantManager.incrementKills(killerPlayer, deadPlayer);
+		}
 
-		PitPlayer pitAttacker = PitPlayer.getPitPlayer(killer);
-		PitPlayer pitDefender = PitPlayer.getPitPlayer(dead);
-		EntityPlayer nmsPlayer = ((CraftPlayer) dead).getHandle();
-		nmsPlayer.setAbsorptionHearts(0);
-		if(NonManager.getNon(dead) == null) pitDefender.endKillstreak();
+		PitPlayer pitAttacker = PitPlayer.getPitPlayer(killerPlayer);
+		PitPlayer pitDefender = PitPlayer.getPitPlayer(deadPlayer);
+
+		if(deadIsPlayer) {
+			EntityPlayer nmsPlayer = ((CraftPlayer) dead).getHandle();
+			nmsPlayer.setAbsorptionHearts(0);
+			if(NonManager.getNon(dead) == null) pitDefender.endKillstreak();
+		}
 
 		Telebow.teleShots.removeIf(teleShot -> teleShot.getShooter().equals(dead));
 
@@ -269,10 +279,10 @@ public class DamageManager implements Listener {
 		Sounds.DEATH_FALL.play(dead);
 		Sounds.DEATH_FALL.play(dead);
 		Regularity.toReg.remove(dead.getUniqueId());
-		Non attackingNon = NonManager.getNon(killer);
-		if(attackingNon == null) {
 
-			pitAttacker.incrementKills();
+		if(killerIsPlayer) {
+			Non attackingNon = NonManager.getNon(killer);
+			if(attackingNon == null) pitAttacker.incrementKills();
 		}
 
 		Misc.multiKill(killer);
@@ -294,7 +304,6 @@ public class DamageManager implements Listener {
 			defendingNon.respawn();
 		}
 
-
 		pitDefender.bounty = 0;
 		for(PotionEffect potionEffect : dead.getActivePotionEffects()) {
 			dead.removePotionEffect(potionEffect.getType());
@@ -303,14 +312,9 @@ public class DamageManager implements Listener {
 		Non killingNon = NonManager.getNon(killer);
 		if(killingNon != null) {
 			killingNon.rewardKill();
-		} else {
-//			Disabled auto-tenacity
-//			pitAttacker.heal(2);
 		}
 
-
 		LevelManager.addXP(pitAttacker.player, killEvent.getFinalXp());
-//		OldLevelManager.incrementLevel(killer);
 		LevelManager.addGold(killEvent.killer, (int) killEvent.getFinalGold());
 
 		DecimalFormat df = new DecimalFormat("##0.00");

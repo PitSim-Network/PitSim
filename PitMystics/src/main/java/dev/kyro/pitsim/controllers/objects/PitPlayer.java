@@ -25,6 +25,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -217,6 +218,7 @@ public class PitPlayer {
 	}
 
 	public static PitPlayer getPitPlayer(Player player) {
+		if(player == null) return null;
 
 		PitPlayer pitPlayer = null;
 		for(PitPlayer testPitPlayer : pitPlayers) {
@@ -305,11 +307,11 @@ public class PitPlayer {
 		return recentDamageMap;
 	}
 
-	public void addDamage(Player player, double damage) {
-		if(player == null) return;
+	public void addDamage(LivingEntity entity, double damage) {
+		if(entity == null) return;
 
-		recentDamageMap.putIfAbsent(player.getUniqueId(), 0D);
-		recentDamageMap.put(player.getUniqueId(), recentDamageMap.get(player.getUniqueId()) + damage);
+		recentDamageMap.putIfAbsent(entity.getUniqueId(), 0D);
+		recentDamageMap.put(entity.getUniqueId(), recentDamageMap.get(entity.getUniqueId()) + damage);
 
 		BukkitTask bukkitTask = new BukkitRunnable() {
 			@Override
@@ -319,10 +321,10 @@ public class PitPlayer {
 					assistRemove.remove(pendingTask);
 					break;
 				}
-				recentDamageMap.putIfAbsent(player.getUniqueId(), 0D);
-				if(recentDamageMap.get(player.getUniqueId()) - damage != 0)
-					recentDamageMap.put(player.getUniqueId(), recentDamageMap.get(player.getUniqueId()) - damage);
-				else recentDamageMap.remove(player.getUniqueId());
+				recentDamageMap.putIfAbsent(entity.getUniqueId(), 0D);
+				if(recentDamageMap.get(entity.getUniqueId()) - damage != 0)
+					recentDamageMap.put(entity.getUniqueId(), recentDamageMap.get(entity.getUniqueId()) - damage);
+				else recentDamageMap.remove(entity.getUniqueId());
 			}
 		}.runTaskLater(PitSim.INSTANCE, 200L);
 		assistRemove.add(bukkitTask);

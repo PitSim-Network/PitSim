@@ -15,11 +15,11 @@ public class DamageIndicator implements Listener {
 
 	//    @EventHandler(priority = EventPriority.MONITOR)
 	public static void onAttack(AttackEvent.Apply attackEvent) {
-
+		if(!attackEvent.attackerIsPlayer || !attackEvent.defenderIsPlayer) return;
 		if(attackEvent.fakeHit) return;
 
-		Player attacker = attackEvent.attacker;
-		Player defender = attackEvent.defender;
+		Player attacker = attackEvent.attackerPlayer;
+		Player defender = attackEvent.defenderPlayer;
 
 //        double maxHealth = defender.getMaxHealth() / 2;
 //        double currentHealth = defender.getHealth() / 2;
@@ -72,7 +72,7 @@ public class DamageIndicator implements Listener {
 		StringBuilder output = new StringBuilder();
 
 		String playername = "&7%luckperms_prefix%" + (defendingNon == null ? "%player_name%" : defendingNon.displayName) + " ";
-		output.append(PlaceholderAPI.setPlaceholders(attackEvent.defender, playername));
+		output.append(PlaceholderAPI.setPlaceholders(attackEvent.defenderPlayer, playername));
 
 		for(int i = 0; i < Math.max(originalHealth - roundedDamageTaken, 0); i++) {
 			output.append(ChatColor.DARK_RED).append("\u2764");

@@ -17,8 +17,12 @@ public class AttackEvent extends Event {
 	private static final HandlerList handlers = new HandlerList();
 
 	public EntityDamageByEntityEvent event;
-	public Player attacker;
-	public Player defender;
+	public LivingEntity attacker;
+	public LivingEntity defender;
+	public boolean attackerIsPlayer;
+	public boolean defenderIsPlayer;
+	public Player attackerPlayer;
+	public Player defenderPlayer;
 	public Arrow arrow;
 	public LivingEntity pet;
 	private final Map<PitEnchant, Integer> attackerEnchantMap;

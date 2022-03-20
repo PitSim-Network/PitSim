@@ -3,6 +3,7 @@ package dev.kyro.pitsim.events;
 import dev.kyro.pitsim.controllers.NonManager;
 import dev.kyro.pitsim.controllers.objects.Non;
 import dev.kyro.pitsim.controllers.objects.PitEnchant;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
@@ -15,8 +16,12 @@ public class KillEvent extends Event {
 	private static final HandlerList handlers = new HandlerList();
 
 	//	public AttackEvent.Apply attackEvent;
-	public Player killer;
-	public Player dead;
+	public LivingEntity killer;
+	public LivingEntity dead;
+	public boolean killerIsPlayer;
+	public boolean deadIsPlayer;
+	public Player killerPlayer;
+	public Player deadPlayer;
 	private final Map<PitEnchant, Integer> killerEnchantMap;
 	private final Map<PitEnchant, Integer> deadEnchantMap;
 
@@ -31,7 +36,7 @@ public class KillEvent extends Event {
 	public boolean isLuckyKill = false;
 	public int playerKillWorth = 1;
 
-	public KillEvent(AttackEvent attackEvent, Player killer, Player dead, boolean exeDeath) {
+	public KillEvent(AttackEvent attackEvent, LivingEntity killer, LivingEntity dead, boolean exeDeath) {
 		this.killerEnchantMap = killer == attackEvent.attacker ? attackEvent.getAttackerEnchantMap() : attackEvent.getDefenderEnchantMap();
 		this.deadEnchantMap = killer == attackEvent.attacker ? attackEvent.getDefenderEnchantMap() : attackEvent.getAttackerEnchantMap();
 		this.killer = killer;

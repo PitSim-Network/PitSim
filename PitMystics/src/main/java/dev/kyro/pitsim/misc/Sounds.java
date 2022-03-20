@@ -4,6 +4,7 @@ import dev.kyro.pitsim.PitSim;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Sound;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
@@ -162,7 +163,10 @@ public class Sounds {
 			}
 		}
 
-		public void play(Player player) {
+		public void play(LivingEntity checkPlayer) {
+			if(!(checkPlayer instanceof Player)) return;
+			Player player = (Player) checkPlayer;
+
 			if(!player.isOnline()) return;
 			if(soundMoment != null) {
 				soundMoment.play(player);

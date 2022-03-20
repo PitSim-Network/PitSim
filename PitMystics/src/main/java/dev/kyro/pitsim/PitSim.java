@@ -55,8 +55,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-//import net.kyori.adventure.platform.bukkit.BukkitAudiences;
-
 public class PitSim extends JavaPlugin {
 	public static double version = 2.0;
 

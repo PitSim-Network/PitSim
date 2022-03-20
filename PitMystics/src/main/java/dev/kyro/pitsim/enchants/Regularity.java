@@ -6,7 +6,7 @@ import dev.kyro.pitsim.controllers.objects.PitEnchant;
 import dev.kyro.pitsim.enums.ApplyType;
 import dev.kyro.pitsim.events.AttackEvent;
 import dev.kyro.pitsim.misc.Misc;
-import org.bukkit.entity.Player;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -69,8 +69,7 @@ public class Regularity extends PitEnchant {
 		}.runTaskLater(PitSim.INSTANCE, 11L);
 	}
 
-	public static boolean isRegHit(Player defender) {
-
+	public static boolean isRegHit(LivingEntity defender) {
 		return toReg.contains(defender.getUniqueId());
 	}
 
