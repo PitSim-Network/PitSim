@@ -190,18 +190,19 @@ public class PlayerManager implements Listener {
 
 	@EventHandler(priority = EventPriority.HIGHEST)
 	public static void onKill(KillEvent killEvent) {
+		if(!killEvent.deadIsPlayer || !killEvent.killerIsPlayer) return;
 
-		PitPlayer pitKiller = PitPlayer.getPitPlayer(killEvent.killer);
-		PitPlayer pitDead = PitPlayer.getPitPlayer(killEvent.dead);
+		PitPlayer pitKiller = PitPlayer.getPitPlayer(killEvent.killerPlayer);
+		PitPlayer pitDead = PitPlayer.getPitPlayer(killEvent.deadPlayer);
 		Non killingNon = NonManager.getNon(killEvent.killer);
 		Non deadNon = NonManager.getNon(killEvent.dead);
 
 		if(pitKiller.killEffect != null && killEvent.killer.hasPermission("pitsim.killeffect")) {
-			KillEffects.trigger(killEvent.killer, pitKiller.killEffect, killEvent.dead.getLocation());
+			KillEffects.trigger(killEvent.killerPlayer, pitKiller.killEffect, killEvent.dead.getLocation());
 		}
 
 		if(pitDead.deathCry != null && killEvent.dead.hasPermission("pitsim.deathcry")) {
-			DeathCrys.trigger(killEvent.dead, pitDead.deathCry, killEvent.dead.getLocation());
+			DeathCrys.trigger(killEvent.deadPlayer, pitDead.deathCry, killEvent.dead.getLocation());
 		}
 
 		if(pitDead.bounty != 0 && killingNon == null && pitKiller != pitDead) {
@@ -213,14 +214,14 @@ public class PlayerManager implements Listener {
 				if(pitPlayer.bountiesDisabled) continue;
 
 				String bounty1 = ChatColor.translateAlternateColorCodes('&',
-						"&6&lBOUNTY CLAIMED!&7 %luckperms_prefix%" + killEvent.killer.getDisplayName() + "&7 killed ");
-				String bounty2 = ChatColor.translateAlternateColorCodes('&', "%luckperms_prefix%" + killEvent.dead.getDisplayName()
+						"&6&lBOUNTY CLAIMED!&7 %luckperms_prefix%" + killEvent.killerPlayer.getDisplayName() + "&7 killed ");
+				String bounty2 = ChatColor.translateAlternateColorCodes('&', "%luckperms_prefix%" + killEvent.deadPlayer.getDisplayName()
 						+ "&7 for &6&l" + formatter.format(pitDead.bounty)) + "g";
-				String bounty3 = PlaceholderAPI.setPlaceholders(killEvent.killer, bounty1);
-				String bounty4 = PlaceholderAPI.setPlaceholders(killEvent.dead, bounty2);
+				String bounty3 = PlaceholderAPI.setPlaceholders(killEvent.killerPlayer, bounty1);
+				String bounty4 = PlaceholderAPI.setPlaceholders(killEvent.deadPlayer, bounty2);
 				player.sendMessage(bounty3 + bounty4);
 			}
-			LevelManager.addGold(killEvent.killer, pitDead.bounty);
+			LevelManager.addGold(killEvent.killerPlayer, pitDead.bounty);
 			if(pitDead.megastreak.getClass() != Highlander.class) pitDead.bounty = 0;
 
 			if(pitKiller.stats != null) pitKiller.stats.bountiesClaimed++;
@@ -236,10 +237,10 @@ public class PlayerManager implements Listener {
 			} else {
 				pitKiller.bounty += amount;
 			}
-			String message = "&6&lBOUNTY!&7 bump &6&l" + amount + "g&7 on %luckperms_prefix%" + killEvent.killer.getDisplayName() +
+			String message = "&6&lBOUNTY!&7 bump &6&l" + amount + "g&7 on %luckperms_prefix%" + killEvent.killerPlayer.getDisplayName() +
 					"&7 for high streak";
 			if(!pitKiller.bountiesDisabled)
-				AOutput.send(killEvent.killer, PlaceholderAPI.setPlaceholders(killEvent.killer, message));
+				AOutput.send(killEvent.killer, PlaceholderAPI.setPlaceholders(killEvent.killerPlayer, message));
 			Sounds.BOUNTY.play(killEvent.killer);
 		}
 	}
@@ -579,8 +580,9 @@ public class PlayerManager implements Listener {
 
 	@EventHandler
 	public void onDeath(KillEvent event) {
-		PitPlayer pitPlayer = PitPlayer.getPitPlayer(event.dead);
-		if(pitPlayer.megastreak.getClass() == RNGesus.class && RNGesus.isOnCooldown(event.dead)) {
+		if(!event.deadIsPlayer) return;
+		PitPlayer pitPlayer = PitPlayer.getPitPlayer(event.deadPlayer);
+		if(pitPlayer.megastreak.getClass() == RNGesus.class && RNGesus.isOnCooldown(event.deadPlayer)) {
 			new BukkitRunnable() {
 				@Override
 				public void run() {

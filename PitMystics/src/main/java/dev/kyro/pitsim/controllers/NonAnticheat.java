@@ -25,6 +25,7 @@ public class NonAnticheat implements Listener {
 
 	@EventHandler
 	public void onAttack(AttackEvent.Pre attackEvent) {
+		if(!attackEvent.attackerIsPlayer) return;
 		if(NonManager.getNon(attackEvent.attacker) != null || NonManager.getNon(attackEvent.defender) == null) return;
 		if(attackEvent.pet != null || attackEvent.arrow != null) return;
 		Location playerLoc = attackEvent.attacker.getLocation();
@@ -39,7 +40,7 @@ public class NonAnticheat implements Listener {
 		double angle = Math.acos(playerNonVector.dot(playerDir));
 		angle = Math.toDegrees(angle);
 
-		anticheatMap.putIfAbsent(attackEvent.attacker.getUniqueId(), new AnticheatData(attackEvent.attacker));
+		anticheatMap.putIfAbsent(attackEvent.attacker.getUniqueId(), new AnticheatData(attackEvent.attackerPlayer));
 		AnticheatData anticheatData = anticheatMap.get(attackEvent.attacker.getUniqueId());
 		anticheatData.addData(new AnticheatData.HitData(angle, distance));
 	}

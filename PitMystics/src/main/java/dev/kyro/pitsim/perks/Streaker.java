@@ -9,6 +9,7 @@ import dev.kyro.pitsim.events.KillEvent;
 import dev.kyro.pitsim.events.OofEvent;
 import dev.kyro.pitsim.misc.Sounds;
 import org.bukkit.Material;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.player.PlayerQuitEvent;
@@ -19,8 +20,8 @@ import java.text.DecimalFormat;
 import java.util.*;
 
 public class Streaker extends PitPerk {
-	public static Map<Player, Integer> playerTimes = new HashMap<>();
-	public Map<Player, Double> xpReward = new HashMap<>();
+	public static Map<LivingEntity, Integer> playerTimes = new HashMap<>();
+	public Map<LivingEntity, Double> xpReward = new HashMap<>();
 
 	public static Streaker INSTANCE;
 
@@ -40,11 +41,12 @@ public class Streaker extends PitPerk {
 
 		if(xpReward.containsKey(killEvent.killer)) killEvent.xpMultipliers.add(xpReward.get(killEvent.killer));
 
-		PitPlayer pitPlayer = PitPlayer.getPitPlayer(killEvent.killer);
+		if(!killEvent.killerIsPlayer) return;
+		PitPlayer pitPlayer = PitPlayer.getPitPlayer(killEvent.killerPlayer);
 
 		if(pitPlayer.getKills() + 1 >= pitPlayer.megastreak.getRequiredKills()) {
 			if(playerTimes.containsKey(killEvent.killer)) {
-				Player player = killEvent.killer;
+				Player player = killEvent.killerPlayer;
 				double xp = 0;
 
 //				TODO: Update lore
@@ -85,7 +87,7 @@ public class Streaker extends PitPerk {
 			public void run() {
 
 				List<UUID> toRemove = new ArrayList<>();
-				for(Map.Entry<Player, Integer> entry : playerTimes.entrySet()) {
+				for(Map.Entry<LivingEntity, Integer> entry : playerTimes.entrySet()) {
 					int time = entry.getValue();
 					time = time + 1;
 

@@ -104,7 +104,7 @@ public class Overdrive extends Megastreak {
 
 	@EventHandler
 	public void onHit(AttackEvent.Apply attackEvent) {
-		PitPlayer pitPlayer = PitPlayer.getPitPlayer(attackEvent.defender);
+		PitPlayer pitPlayer = PitPlayer.getEntityPitPlayer(attackEvent.defender);
 		if(pitPlayer != this.pitPlayer) return;
 		if(pitPlayer.megastreak.isOnMega() && pitPlayer.megastreak.getClass() == Overdrive.class) {
 			int ks = (int) Math.floor(pitPlayer.getKills());
@@ -116,7 +116,7 @@ public class Overdrive extends Megastreak {
 
 	@EventHandler
 	public void kill(KillEvent killEvent) {
-		PitPlayer pitPlayer = PitPlayer.getPitPlayer(killEvent.killer);
+		PitPlayer pitPlayer = PitPlayer.getEntityPitPlayer(killEvent.killer);
 		if(pitPlayer != this.pitPlayer) return;
 		if(pitPlayer.megastreak.isOnMega() && pitPlayer.megastreak.getClass() == Overdrive.class) {
 			killEvent.xpMultipliers.add(1.75);

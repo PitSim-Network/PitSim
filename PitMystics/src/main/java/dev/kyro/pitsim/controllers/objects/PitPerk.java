@@ -1,6 +1,7 @@
 package dev.kyro.pitsim.controllers.objects;
 
 import dev.kyro.arcticapi.builders.AItemStackBuilder;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 import org.bukkit.inventory.ItemStack;
@@ -35,7 +36,9 @@ public abstract class PitPerk implements Listener {
 
 	public abstract List<String> getDescription();
 
-	public boolean playerHasUpgrade(Player player) {
+	public boolean playerHasUpgrade(LivingEntity checkPlayer) {
+		if(!(checkPlayer instanceof Player)) return false;
+		Player player = (Player) checkPlayer;
 
 		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
 		for(PitPerk pitPerk : pitPlayer.pitPerks) {

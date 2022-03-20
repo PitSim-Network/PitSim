@@ -6,7 +6,7 @@ import dev.kyro.pitsim.controllers.objects.PitPerk;
 import dev.kyro.pitsim.events.AttackEvent;
 import dev.kyro.pitsim.misc.Misc;
 import org.bukkit.Material;
-import org.bukkit.entity.Player;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.event.EventHandler;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffectType;
@@ -18,7 +18,7 @@ import java.util.List;
 import java.util.Map;
 
 public class FirstStrike extends PitPerk {
-	public Map<Player, List<Player>> hitPlayers = new HashMap<>();
+	public Map<LivingEntity, List<LivingEntity>> hitPlayers = new HashMap<>();
 
 	public static FirstStrike INSTANCE;
 
@@ -33,7 +33,7 @@ public class FirstStrike extends PitPerk {
 		if(!playerHasUpgrade(attackEvent.attacker)) return;
 
 		if(!hitPlayers.containsKey(attackEvent.attacker)) hitPlayers.put(attackEvent.attacker, new ArrayList<>());
-		List<Player> hitList = hitPlayers.get(attackEvent.attacker);
+		List<LivingEntity> hitList = hitPlayers.get(attackEvent.attacker);
 
 		if(!hitList.contains(attackEvent.defender)) {
 			attackEvent.increasePercent += 30 / 100D;
@@ -41,7 +41,7 @@ public class FirstStrike extends PitPerk {
 		}
 
 
-		List<Player> newList = new ArrayList<>(hitList);
+		List<LivingEntity> newList = new ArrayList<>(hitList);
 		newList.add(attackEvent.defender);
 		hitPlayers.put(attackEvent.attacker, newList);
 

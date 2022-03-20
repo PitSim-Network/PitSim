@@ -37,7 +37,7 @@ public class HopperManager implements Listener {
 		}.runTaskTimer(PitSim.INSTANCE, 0L, 1L);
 	}
 
-	public static Hopper callHopper(String name, Hopper.Type type, Player target) {
+	public static Hopper callHopper(String name, Hopper.Type type, LivingEntity target) {
 		Hopper hopper = new Hopper(name, type, target);
 		hopperList.add(hopper);
 		return hopper;

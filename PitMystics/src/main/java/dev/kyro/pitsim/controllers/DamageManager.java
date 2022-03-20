@@ -9,6 +9,7 @@ import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.enchants.PitBlob;
 import dev.kyro.pitsim.enchants.Regularity;
 import dev.kyro.pitsim.enchants.Telebow;
+import dev.kyro.pitsim.enums.KillType;
 import dev.kyro.pitsim.enums.NBTTag;
 import dev.kyro.pitsim.enums.NonTrait;
 import dev.kyro.pitsim.events.AttackEvent;
@@ -201,7 +202,7 @@ public class DamageManager implements Listener {
 			double finalHealth = attackEvent.defender.getHealth() - attackEvent.trueDamage - attackEvent.veryTrueDamage;
 			if(finalHealth <= 0) {
 				attackEvent.event.setCancelled(true);
-				kill(attackEvent, attackEvent.attacker, attackEvent.defender, false);
+				kill(attackEvent, attackEvent.attacker, attackEvent.defender, false, KillType.DEFAULT);
 				return;
 			} else {
 				attackEvent.defender.setHealth(Math.max(finalHealth, 0));
@@ -212,7 +213,7 @@ public class DamageManager implements Listener {
 			double finalHealth = attackEvent.attacker.getHealth() - attackEvent.selfTrueDamage - attackEvent.selfVeryTrueDamage;
 			if(finalHealth <= 0) {
 				attackEvent.event.setCancelled(true);
-				kill(attackEvent, attackEvent.defender, attackEvent.attacker, false);
+				kill(attackEvent, attackEvent.defender, attackEvent.attacker, false, KillType.DEFAULT);
 				return;
 			} else {
 				attackEvent.attacker.setHealth(Math.max(finalHealth, 0));
@@ -231,11 +232,11 @@ public class DamageManager implements Listener {
 		if(attackEvent.event.getFinalDamage() >= attackEvent.defender.getHealth()) {
 
 			attackEvent.event.setCancelled(true);
-			kill(attackEvent, attackEvent.attacker, attackEvent.defender, false);
+			kill(attackEvent, attackEvent.attacker, attackEvent.defender, false, KillType.DEFAULT);
 		} else if(attackEvent.event.getFinalDamage() + attackEvent.executeUnder >= attackEvent.defender.getHealth()) {
 
 			attackEvent.event.setCancelled(true);
-			kill(attackEvent, attackEvent.attacker, attackEvent.defender, true);
+			kill(attackEvent, attackEvent.attacker, attackEvent.defender, true, KillType.DEFAULT);
 		}
 
 		DamageIndicator.onAttack(attackEvent);
@@ -250,14 +251,23 @@ public class DamageManager implements Listener {
 		return null;
 	}
 
-	public static void kill(AttackEvent attackEvent, LivingEntity killer, LivingEntity dead, boolean exeDeath) {
+	public static void kill(AttackEvent attackEvent, LivingEntity killer, LivingEntity dead, boolean exeDeath, KillType killType) {
 		boolean killerIsPlayer = killer instanceof Player;
 		boolean deadIsPlayer = dead instanceof Player;
 		Player killerPlayer = killerIsPlayer ? (Player) killer : null;
 		Player deadPlayer = deadIsPlayer ? (Player) dead : null;
 
-		KillEvent killEvent = new KillEvent(attackEvent, killer, dead, exeDeath);
-		Bukkit.getServer().getPluginManager().callEvent(killEvent);
+		KillEvent killEvent = null;
+		OofEvent oofEvent = null;
+
+		if(killType == KillType.DEATH) {
+			oofEvent = new OofEvent(deadPlayer);
+			Bukkit.getPluginManager().callEvent(oofEvent);
+		}
+		else {
+			killEvent = new KillEvent(attackEvent, killer, dead, exeDeath);
+			Bukkit.getServer().getPluginManager().callEvent(killEvent);
+		}
 
 		if(killerIsPlayer && deadIsPlayer) {
 			EnchantManager.incrementKills(killerPlayer, deadPlayer);
@@ -266,19 +276,20 @@ public class DamageManager implements Listener {
 		PitPlayer pitKiller = PitPlayer.getPitPlayer(killerPlayer);
 		PitPlayer pitDead = PitPlayer.getPitPlayer(deadPlayer);
 
-		if(deadIsPlayer) {
+		if(deadIsPlayer && killType != KillType.FAKE) {
 			EntityPlayer nmsPlayer = ((CraftPlayer) dead).getHandle();
 			nmsPlayer.setAbsorptionHearts(0);
 			if(NonManager.getNon(dead) == null) pitDead.endKillstreak();
+			Telebow.teleShots.removeIf(teleShot -> teleShot.getShooter().equals(dead));
 		}
 
-		Telebow.teleShots.removeIf(teleShot -> teleShot.getShooter().equals(dead));
-
-		dead.setHealth(dead.getMaxHealth());
-		dead.playEffect(EntityEffect.HURT);
-		Sounds.DEATH_FALL.play(dead);
-		Sounds.DEATH_FALL.play(dead);
-		Regularity.toReg.remove(dead.getUniqueId());
+		if(killType != KillType.FAKE) {
+			dead.setHealth(dead.getMaxHealth());
+			dead.playEffect(EntityEffect.HURT);
+			Sounds.DEATH_FALL.play(dead);
+			Sounds.DEATH_FALL.play(dead);
+			Regularity.toReg.remove(dead.getUniqueId());
+		}
 
 		Non killingNon = NonManager.getNon(killer);
 		if(killerIsPlayer) {
@@ -288,27 +299,31 @@ public class DamageManager implements Listener {
 		}
 
 		Non deadNon = NonManager.getNon(dead);
-		if(deadNon == null && dead.getWorld() != MapManager.getTutorial()) {
-			Location spawnLoc = MapManager.currentMap.getSpawn(dead.getWorld());
-			dead.teleport(spawnLoc);
+		if(deadIsPlayer) {
+			if(deadNon == null && dead.getWorld() != MapManager.getTutorial()) {
+				Location spawnLoc = MapManager.currentMap.getSpawn(dead.getWorld());
+				if(killType != KillType.FAKE)dead.teleport(spawnLoc);
 
 //			TODO: THIS IS NOT GOOD CODING
-			boolean realCheck = Bukkit.getOnlinePlayers().contains(dead);
-			if(killingNon == null && realCheck) {
-				if(killer != dead && !isNaked(dead)) {
-					if(killEvent.isLuckyKill) pitKiller.playerKills += killEvent.playerKillWorth * 3;
-					else pitKiller.playerKills += killEvent.playerKillWorth;
+				boolean realCheck = Bukkit.getOnlinePlayers().contains(dead);
+				if(killingNon == null && realCheck && killType != KillType.DEATH) {
+					if(killer != dead && !isNaked(dead)) {
+						if(killEvent.isLuckyKill) pitKiller.playerKills += killEvent.playerKillWorth * 3;
+						else pitKiller.playerKills += killEvent.playerKillWorth;
+					}
 				}
+			} else if(deadNon != null) {
+				deadNon.respawn();
 			}
-		} else if(deadNon != null) {
-			deadNon.respawn();
 		}
 
-		if(deadIsPlayer) {
-			pitDead.bounty = 0;
-		}
-		for(PotionEffect potionEffect : dead.getActivePotionEffects()) {
-			dead.removePotionEffect(potionEffect.getType());
+		if(killType != KillType.FAKE) {
+			if(deadIsPlayer) {
+				pitDead.bounty = 0;
+			}
+			for(PotionEffect potionEffect : dead.getActivePotionEffects()) {
+				dead.removePotionEffect(potionEffect.getType());
+			}
 		}
 
 		if(killingNon != null) {
@@ -321,135 +336,147 @@ public class DamageManager implements Listener {
 		}
 
 		DecimalFormat df = new DecimalFormat("##0.00");
-		String kill = "&a&lKILL!&7 on %luckperms_prefix%" + (deadNon == null ? "%player_name%" : deadNon.displayName)
+		String kill = null;
+		if(killType != KillType.DEATH) kill = "&a&lKILL!&7 on %luckperms_prefix%" + (deadNon == null ? "%player_name%" : deadNon.displayName)
 				+ " &b+" + killEvent.getFinalXp() + "XP" + " &6+" + df.format(killEvent.getFinalGold()) + "g";
-		String death = "&c&lDEATH! &7by %luckperms_prefix%" + (killingNon == null ? "%player_name%" : killingNon.displayName);
+		String death;
+		if(killType == KillType.DEFAULT) death = "&c&lDEATH! &7by %luckperms_prefix%" + (killingNon == null ? "%player_name%" : killingNon.displayName);
+		else death = "&c&lDEATH!";
 		String killActionBar = "&7%luckperms_prefix%" + (deadNon == null ? "%player_name%" : deadNon.displayName) + " &a&lKILL!";
 
 		if(killerIsPlayer && deadIsPlayer) {
-			if(!pitKiller.killFeedDisabled)
+			if(!pitKiller.killFeedDisabled && killType != KillType.DEATH)
 				AOutput.send(killEvent.killer, PlaceholderAPI.setPlaceholders(killEvent.deadPlayer, kill));
-			if(!pitDead.killFeedDisabled)
+			if(!pitDead.killFeedDisabled && killType != KillType.FAKE)
 				AOutput.send(killEvent.dead, PlaceholderAPI.setPlaceholders(killEvent.killerPlayer, death));
 			String actionBarPlaceholder = PlaceholderAPI.setPlaceholders(killEvent.deadPlayer, killActionBar);
-			new BukkitRunnable() {
-				@Override
-				public void run() {
-					Misc.sendActionBar(killEvent.killerPlayer, actionBarPlaceholder);
-				}
-			}.runTaskLater(PitSim.INSTANCE, 1L);
+			if(killType != KillType.DEATH) {
+				KillEvent finalKillEvent = killEvent;
+				new BukkitRunnable() {
+					@Override
+					public void run() {
+						Misc.sendActionBar(finalKillEvent.killerPlayer, actionBarPlaceholder);
+					}
+				}.runTaskLater(PitSim.INSTANCE, 1L);
+			}
 		}
 
-		double finalDamage = 0;
-		for(Map.Entry<UUID, Double> entry : pitDead.recentDamageMap.entrySet()) {
+		if(killType != KillType.FAKE) {
+			if(killType != KillType.DEATH) {
 
-			finalDamage += entry.getValue();
-		}
 
-		for(Map.Entry<UUID, Double> entry : pitDead.recentDamageMap.entrySet()) {
+			double finalDamage = 0;
+			for(Map.Entry<UUID, Double> entry : pitDead.recentDamageMap.entrySet()) {
 
-			if(entry.getKey().equals(killEvent.killer.getUniqueId())) continue;
+				finalDamage += entry.getValue();
+			}
 
-			Player assistPlayer = Bukkit.getPlayer(entry.getKey());
-			if(assistPlayer == null) continue;
+			for(Map.Entry<UUID, Double> entry : pitDead.recentDamageMap.entrySet()) {
+
+				if(entry.getKey().equals(killEvent.killer.getUniqueId())) continue;
+
+				Player assistPlayer = Bukkit.getPlayer(entry.getKey());
+				if(assistPlayer == null) continue;
 //			TODO: Fix assist erroring (its rare so not super important)
-			double assistPercent = Math.max(Math.min(entry.getValue() / finalDamage, 1), 0);
+				double assistPercent = Math.max(Math.min(entry.getValue() / finalDamage, 1), 0);
 
-			if(UpgradeManager.hasUpgrade(assistPlayer, "KILL_STEAL")) {
-				int tier = UpgradeManager.getTier(assistPlayer, "KILL_STEAL");
-				assistPercent += (tier * 10) / 100D;
-				if(assistPercent >= 1) {
-					Map<PitEnchant, Integer> attackerEnchant = new HashMap<>();
-					Map<PitEnchant, Integer> defenderEnchant = new HashMap<>();
-					EntityDamageByEntityEvent ev = new EntityDamageByEntityEvent(assistPlayer, dead, EntityDamageEvent.DamageCause.CUSTOM, 0);
-					AttackEvent aEvent = new AttackEvent(ev, attackerEnchant, defenderEnchant, false);
+				if(UpgradeManager.hasUpgrade(assistPlayer, "KILL_STEAL")) {
+					int tier = UpgradeManager.getTier(assistPlayer, "KILL_STEAL");
+					assistPercent += (tier * 10) / 100D;
+					if(assistPercent >= 1) {
+						Map<PitEnchant, Integer> attackerEnchant = EnchantManager.getEnchantsOnPlayer(assistPlayer);
+						Map<PitEnchant, Integer> defenderEnchant = new HashMap<>();
+						EntityDamageByEntityEvent ev = new EntityDamageByEntityEvent(assistPlayer, dead, EntityDamageEvent.DamageCause.CUSTOM, 0);
+						AttackEvent aEvent = new AttackEvent(ev, attackerEnchant, defenderEnchant, false);
 
-					DamageManager.fakeKill(attackEvent, assistPlayer, dead, false);
-					continue;
-				}
-			}
-
-			PitPlayer pitPlayer = PitPlayer.getPitPlayer(assistPlayer);
-			if(pitPlayer.hasPerk(AssistantToTheStreaker.INSTANCE)) {
-				pitPlayer.incrementAssist(assistPercent);
-			}
-
-			int xp = (int) Math.ceil(20 * assistPercent);
-			double gold = 20 * assistPercent;
-
-			PitPlayer assistPitPlayer = PitPlayer.getPitPlayer(assistPlayer);
-			LevelManager.addXP(assistPitPlayer.player, xp);
-//			OldLevelManager.incrementLevel(assistPlayer);
-
-			if(killEvent.getFinalGold() > 10) {
-				LevelManager.addGold(assistPlayer, 10);
-			} else {
-				LevelManager.addGold(assistPlayer, (int) gold);
-			}
-
-			Sounds.ASSIST.play(assistPlayer);
-			String assist = "&a&lASSIST!&7 " + Math.round(assistPercent * 100) + "% on %luckperms_prefix%" +
-					(deadNon == null ? "%player_name%" : deadNon.displayName) + " &b+" + xp + "XP" + " &6+" + df.format(gold) + "g";
-
-			if(deadIsPlayer) {
-				if(!assistPitPlayer.killFeedDisabled)
-					AOutput.send(assistPlayer, PlaceholderAPI.setPlaceholders(killEvent.deadPlayer, assist));
-			}
-		}
-
-		pitDead.assistRemove.forEach(BukkitTask::cancel);
-		pitDead.assistRemove.clear();
-
-		pitDead.recentDamageMap.clear();
-
-		String message = "%luckperms_prefix%";
-		pitDead.prefix = PrestigeValues.getPlayerPrefixNameTag(pitDead.player) + PlaceholderAPI.setPlaceholders(pitDead.player, message);
-
-		if(deadIsPlayer && BoosterManager.getBooster("pvp").minutes <= 0) {
-
-			boolean divine = DivineIntervention.INSTANCE.isDivine(deadPlayer);
-			boolean feather = FunkyFeather.useFeather(killer, deadPlayer, divine);
-
-			for(int i = 0; i < deadPlayer.getInventory().getSize(); i++) {
-				ItemStack itemStack = deadPlayer.getInventory().getItem(i);
-				if(Misc.isAirOrNull(itemStack)) continue;
-				NBTItem nbtItem = new NBTItem(itemStack);
-				if(nbtItem.hasKey(NBTTag.MAX_LIVES.getRef())) {
-					int lives = nbtItem.getInteger(NBTTag.CURRENT_LIVES.getRef());
-					if(feather || divine) return;
-					if(lives - 1 == 0) {
-						deadPlayer.getInventory().remove(itemStack);
-
-						if(pitDead.stats != null) pitDead.stats.itemsBroken++;
-					} else {
-						nbtItem.setInteger(NBTTag.CURRENT_LIVES.getRef(), nbtItem.getInteger(NBTTag.CURRENT_LIVES.getRef()) - 1);
-						EnchantManager.setItemLore(nbtItem.getItem());
-						deadPlayer.getInventory().setItem(i, nbtItem.getItem());
-
-						if(pitDead.stats != null) pitDead.stats.livesLost++;
+						DamageManager.fakeKill(aEvent, assistPlayer, dead, false);
+						continue;
 					}
 				}
+
+				PitPlayer pitPlayer = PitPlayer.getPitPlayer(assistPlayer);
+				if(pitPlayer.hasPerk(AssistantToTheStreaker.INSTANCE)) {
+					pitPlayer.incrementAssist(assistPercent);
+				}
+
+				int xp = (int) Math.ceil(20 * assistPercent);
+				double gold = 20 * assistPercent;
+
+				PitPlayer assistPitPlayer = PitPlayer.getPitPlayer(assistPlayer);
+				LevelManager.addXP(assistPitPlayer.player, xp);
+//			OldLevelManager.incrementLevel(assistPlayer);
+
+				if(killEvent.getFinalGold() > 10) {
+					LevelManager.addGold(assistPlayer, 10);
+				} else {
+					LevelManager.addGold(assistPlayer, (int) gold);
+				}
+
+				Sounds.ASSIST.play(assistPlayer);
+				String assist = "&a&lASSIST!&7 " + Math.round(assistPercent * 100) + "% on %luckperms_prefix%" +
+						(deadNon == null ? "%player_name%" : deadNon.displayName) + " &b+" + xp + "XP" + " &6+" + df.format(gold) + "g";
+
+				if(deadIsPlayer) {
+					if(!assistPitPlayer.killFeedDisabled)
+						AOutput.send(assistPlayer, PlaceholderAPI.setPlaceholders(killEvent.deadPlayer, assist));
+				}
 			}
-			if(!feather && !divine) {
-				ProtArmor.deleteArmor(deadPlayer);
-				YummyBread.deleteBread(deadPlayer);
-			}
-			if(!Misc.isAirOrNull(deadPlayer.getInventory().getLeggings())) {
-				ItemStack pants = deadPlayer.getInventory().getLeggings();
-				NBTItem nbtItem = new NBTItem(pants);
-				if(nbtItem.hasKey(NBTTag.MAX_LIVES.getRef())) {
-					int lives = nbtItem.getInteger(NBTTag.CURRENT_LIVES.getRef());
-					if(!feather && !divine) {
+		}
+
+			pitDead.assistRemove.forEach(BukkitTask::cancel);
+			pitDead.assistRemove.clear();
+
+			pitDead.recentDamageMap.clear();
+
+			String message = "%luckperms_prefix%";
+			pitDead.prefix = PrestigeValues.getPlayerPrefixNameTag(pitDead.player) + PlaceholderAPI.setPlaceholders(pitDead.player, message);
+
+			if(deadIsPlayer && BoosterManager.getBooster("pvp").minutes <= 0) {
+
+				boolean divine = DivineIntervention.INSTANCE.isDivine(deadPlayer);
+				boolean feather = FunkyFeather.useFeather(killer, deadPlayer, divine);
+
+				for(int i = 0; i < deadPlayer.getInventory().getSize(); i++) {
+					ItemStack itemStack = deadPlayer.getInventory().getItem(i);
+					if(Misc.isAirOrNull(itemStack)) continue;
+					NBTItem nbtItem = new NBTItem(itemStack);
+					if(nbtItem.hasKey(NBTTag.MAX_LIVES.getRef())) {
+						int lives = nbtItem.getInteger(NBTTag.CURRENT_LIVES.getRef());
+						if(feather || divine) return;
 						if(lives - 1 == 0) {
-							deadPlayer.getInventory().setLeggings(new ItemStack(Material.AIR));
+							deadPlayer.getInventory().remove(itemStack);
 
 							if(pitDead.stats != null) pitDead.stats.itemsBroken++;
 						} else {
 							nbtItem.setInteger(NBTTag.CURRENT_LIVES.getRef(), nbtItem.getInteger(NBTTag.CURRENT_LIVES.getRef()) - 1);
 							EnchantManager.setItemLore(nbtItem.getItem());
-							deadPlayer.getInventory().setLeggings(nbtItem.getItem());
+							deadPlayer.getInventory().setItem(i, nbtItem.getItem());
 
 							if(pitDead.stats != null) pitDead.stats.livesLost++;
+						}
+					}
+				}
+				if(!feather && !divine) {
+					ProtArmor.deleteArmor(deadPlayer);
+					YummyBread.deleteBread(deadPlayer);
+				}
+				if(!Misc.isAirOrNull(deadPlayer.getInventory().getLeggings())) {
+					ItemStack pants = deadPlayer.getInventory().getLeggings();
+					NBTItem nbtItem = new NBTItem(pants);
+					if(nbtItem.hasKey(NBTTag.MAX_LIVES.getRef())) {
+						int lives = nbtItem.getInteger(NBTTag.CURRENT_LIVES.getRef());
+						if(!feather && !divine) {
+							if(lives - 1 == 0) {
+								deadPlayer.getInventory().setLeggings(new ItemStack(Material.AIR));
+
+								if(pitDead.stats != null) pitDead.stats.itemsBroken++;
+							} else {
+								nbtItem.setInteger(NBTTag.CURRENT_LIVES.getRef(), nbtItem.getInteger(NBTTag.CURRENT_LIVES.getRef()) - 1);
+								EnchantManager.setItemLore(nbtItem.getItem());
+								deadPlayer.getInventory().setLeggings(nbtItem.getItem());
+
+								if(pitDead.stats != null) pitDead.stats.livesLost++;
+							}
 						}
 					}
 				}
@@ -457,162 +484,31 @@ public class DamageManager implements Listener {
 		}
 	}
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 	public static void death(LivingEntity dead) {
-//		Telebow.teleShots.removeIf(teleShot -> teleShot.getShooter().equals(dead));
-//
-//		dead.setHealth(dead.getMaxHealth());
-//		dead.playEffect(EntityEffect.HURT);
-//		EntityPlayer nmsPlayer = ((CraftPlayer) dead).getHandle();
-//		nmsPlayer.setAbsorptionHearts(0);
-//		Sounds.DEATH_FALL.play(dead);
-//		Sounds.DEATH_FALL.play(dead);
-//		Regularity.toReg.remove(dead.getUniqueId());
-//		CombatManager.taggedPlayers.remove(dead.getUniqueId());
-//		PitPlayer pitPlayer = PitPlayer.getPitPlayer(dead);
-//
-//		Location spawnLoc = MapManager.currentMap.getSpawn(dead.getWorld());
-//		dead.teleport(spawnLoc);
-//
-////		for(ItemStack itemStack : dead.getInventory()) {
-////
-////			if(Misc.isAirOrNull(itemStack)) continue;
-////			NBTItem nbtItem = new NBTItem(itemStack);
-////			if(nbtItem.hasKey(NBTTag.MAX_LIVES.getRef())) {
-////				Bukkit.broadcastMessage(itemStack.getItemMeta().getDisplayName());
-////				int lives = nbtItem.getInteger(NBTTag.CURRENT_LIVES.getRef());
-////				nbtItem.setInteger(NBTTag.CURRENT_LIVES.getRef(), nbtItem.getInteger(NBTTag.CURRENT_LIVES.getRef()) - 1);
-////				nbtItem.getItem();
-////				EnchantManager.setItemLore(itemStack);
-////				Bukkit.broadcastMessage(String.valueOf(nbtItem.getInteger(NBTTag.CURRENT_LIVES.getRef())));
-////			}
-////		}
-//		PitPlayer pitDefender = PitPlayer.getPitPlayer(dead);
-//		double killstreak = pitDefender.getKills();
-//
-//		if(pitPlayer.stats != null && killstreak > pitPlayer.stats.highestStreak)
-//			pitPlayer.stats.highestStreak = (int) killstreak;
-//
-//		pitDefender.endKillstreak();
-//		pitDefender.bounty = 0;
-//		for(PotionEffect potionEffect : dead.getActivePotionEffects()) {
-//			dead.removePotionEffect(potionEffect.getType());
-//		}
-//		AOutput.send(dead, "&c&lDEATH!");
-//		String message = "%luckperms_prefix%";
-//		pitDefender.prefix = PrestigeValues.getPlayerPrefixNameTag(pitDefender.player) + PlaceholderAPI.setPlaceholders(pitDefender.player, message);
-//
-//		if(EnchantManager.getEnchantLevel(dead.getInventory().getLeggings(), EnchantManager.getEnchant("sco")) > 0 && killstreak > 100) {
-//
-//		} else if(BoosterManager.getBooster("pvp").minutes <= 0) {
-//
-//			boolean divine = DivineIntervention.INSTANCE.isDivine(dead);
-//			boolean feather = FunkyFeather.useFeather(null, dead, divine);
-//
-//			for(int i = 0; i < dead.getInventory().getSize(); i++) {
-//				ItemStack itemStack = dead.getInventory().getItem(i);
-//				if(Misc.isAirOrNull(itemStack)) continue;
-//				NBTItem nbtItem = new NBTItem(itemStack);
-//				if(nbtItem.hasKey(NBTTag.MAX_LIVES.getRef())) {
-//					int lives = nbtItem.getInteger(NBTTag.CURRENT_LIVES.getRef());
-//					if(feather || divine) break;
-//					if(lives - 1 == 0) {
-//						dead.getInventory().remove(itemStack);
-//
-//						if(pitDefender.stats != null) pitDefender.stats.itemsBroken++;
-//					} else {
-//						nbtItem.setInteger(NBTTag.CURRENT_LIVES.getRef(), nbtItem.getInteger(NBTTag.CURRENT_LIVES.getRef()) - 1);
-//						EnchantManager.setItemLore(nbtItem.getItem());
-//						dead.getInventory().setItem(i, nbtItem.getItem());
-//
-//						if(pitDefender.stats != null) pitDefender.stats.livesLost++;
-//					}
-//				}
-//			}
-//
-//			if(!feather && !divine) {
-//				ProtArmor.deleteArmor(dead);
-//				YummyBread.deleteBread(dead);
-//			}
-//
-//			if(!Misc.isAirOrNull(dead.getInventory().getLeggings())) {
-//				ItemStack pants = dead.getInventory().getLeggings();
-//				NBTItem nbtItem = new NBTItem(pants);
-//				if(nbtItem.hasKey(NBTTag.MAX_LIVES.getRef())) {
-//					int lives = nbtItem.getInteger(NBTTag.CURRENT_LIVES.getRef());
-//					if(!feather) {
-//						if(lives - 1 == 0) {
-//							dead.getInventory().setLeggings(new ItemStack(Material.AIR));
-//
-//							if(pitDefender.stats != null) pitDefender.stats.itemsBroken++;
-//						} else {
-//							nbtItem.setInteger(NBTTag.CURRENT_LIVES.getRef(), nbtItem.getInteger(NBTTag.CURRENT_LIVES.getRef()) - 1);
-//							EnchantManager.setItemLore(nbtItem.getItem());
-//							dead.getInventory().setLeggings(nbtItem.getItem());
-//
-//							if(pitDefender.stats != null) pitDefender.stats.livesLost++;
-//						}
-//					}
-//				}
-//			}
-//		}
-//		OofEvent oofEvent = new OofEvent(dead);
-//		Bukkit.getPluginManager().callEvent(oofEvent);
+		kill(null, null, dead, false, KillType.DEATH);
 	}
 
 	public static void fakeKill(AttackEvent attackEvent, LivingEntity killer, LivingEntity dead, boolean exeDeath) {
-
-//		KillEvent killEvent = new KillEvent(attackEvent, killer, dead, exeDeath);
-//		Bukkit.getServer().getPluginManager().callEvent(killEvent);
-//
-//		EnchantManager.incrementKills(killer, dead);
-//
-//		PitPlayer pitAttacker = PitPlayer.getPitPlayer(killer);
-//		PitPlayer pitDefender = PitPlayer.getPitPlayer(dead);
-//
-//		Non attackingNon = NonManager.getNon(killer);
-//		Non defendingNon = NonManager.getNon(dead);
-//		if(attackingNon == null) {
-//
-//			pitAttacker.incrementKills();
-//		}
-//
-//		Misc.multiKill(killer);
-////		TODO: THIS IS NOT GOOD CODING
-//		boolean realCheck = Bukkit.getOnlinePlayers().contains(dead);
-//		if(attackingNon == null && defendingNon == null && realCheck) {
-//			if(killer != dead && !isNaked(dead)) {
-//				if(killEvent.isLuckyKill) pitAttacker.playerKills = pitAttacker.playerKills + 3;
-//				else pitAttacker.playerKills = pitAttacker.playerKills + 1;
-//			}
-//		}
-//
-//		if(attackingNon != null) {
-//			attackingNon.rewardKill();
-//		} else {
-////			Disabled auto-tenacity
-////			pitAttacker.heal(2);
-//		}
-//		LevelManager.addXP(pitAttacker.player, killEvent.getFinalXp());
-////		OldLevelManager.incrementLevel(killer);
-//		LevelManager.addGold(killEvent.killer, (int) killEvent.getFinalGold());
-//
-//		DecimalFormat df = new DecimalFormat("##0.00");
-//		String kill = "&a&lKILL!&7 on %luckperms_prefix%" + (defendingNon == null ? "%player_name%" : defendingNon.displayName)
-//				+ " &b+" + killEvent.getFinalXp() + "XP" + " &6+" + df.format(killEvent.getFinalGold()) + "g";
-//		String killActionBar = "&7%luckperms_prefix%" + (defendingNon == null ? "%player_name%" : defendingNon.displayName) + " &a&lKILL!";
-//
-//		PitPlayer pitKiller = PitPlayer.getPitPlayer(killer);
-//		if(!pitKiller.killFeedDisabled)
-//			AOutput.send(killEvent.killer, PlaceholderAPI.setPlaceholders(killEvent.dead, kill));
-//		PitPlayer pitDead = PitPlayer.getPitPlayer(dead);
-//		String actionBarPlaceholder = PlaceholderAPI.setPlaceholders(killEvent.dead, killActionBar);
-//		new BukkitRunnable() {
-//			@Override
-//			public void run() {
-//
-//				Misc.sendActionBar(killEvent.killer, actionBarPlaceholder);
-//			}
-//		}.runTaskLater(PitSim.INSTANCE, 1L);
+		kill(attackEvent, killer, dead, exeDeath, KillType.FAKE);
 	}
 
 	public static boolean isNaked(LivingEntity entity) {

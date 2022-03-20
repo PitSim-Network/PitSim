@@ -65,10 +65,11 @@ public class LuckyKill extends RenownUpgrade {
 
 	@EventHandler
 	public void onKill(KillEvent killEvent) {
-		if(!UpgradeManager.hasUpgrade(killEvent.killer, this)) return;
+		if(!killEvent.killerIsPlayer) return;
+		if(!UpgradeManager.hasUpgrade(killEvent.killerPlayer, this)) return;
 		if(!(NonManager.getNon(killEvent.dead) == null)) return;
 
-		int tier = UpgradeManager.getTier(killEvent.killer, this);
+		int tier = UpgradeManager.getTier(killEvent.killerPlayer, this);
 		if(tier == 0) return;
 
 		double chance = 0.01 * tier;
@@ -84,7 +85,7 @@ public class LuckyKill extends RenownUpgrade {
 			Song song = NBSDecoder.parse(file);
 			RadioSongPlayer rsp = new RadioSongPlayer(song);
 			rsp.setRepeatMode(RepeatMode.NO);
-			rsp.addPlayer(killEvent.killer);
+			rsp.addPlayer(killEvent.killerPlayer);
 			rsp.setPlaying(true);
 		}
 
