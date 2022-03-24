@@ -6,7 +6,10 @@ public enum MysticType {
 
 	SWORD("Sword"),
 	BOW("Bow"),
-	PANTS("Pants");
+	PANTS("Pants"),
+
+	TAINTED_SCYTHE("Tainted Scythe"),
+	TAINTED_CHESTPLATE("Tainted Chestplate");
 
 	public String displayName;
 
@@ -26,7 +29,15 @@ public enum MysticType {
 				return BOW;
 			case LEATHER_LEGGINGS:
 				return PANTS;
+			case GOLD_HOE:
+				return TAINTED_SCYTHE;
+			case LEATHER_CHESTPLATE:
+				return TAINTED_CHESTPLATE;
 		}
 		return null;
+	}
+
+	public boolean isTainted() {
+		return this == TAINTED_CHESTPLATE || this == TAINTED_SCYTHE;
 	}
 }

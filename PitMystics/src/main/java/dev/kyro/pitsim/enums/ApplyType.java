@@ -7,5 +7,9 @@ public enum ApplyType {
 	PANTS,
 	WEAPONS,
 	ALL,
-	NONE;
+	NONE,
+
+	CHESTPLATES,
+	SCYTHES,
+	TAINTED;
 }

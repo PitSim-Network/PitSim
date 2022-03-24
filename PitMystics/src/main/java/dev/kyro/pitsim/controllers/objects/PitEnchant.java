@@ -21,6 +21,7 @@ public abstract class PitEnchant implements Listener {
 	public boolean levelStacks = false;
 	public boolean meleOnly = false;
 	public boolean fakeHits = false;
+	public boolean tainted = false;
 	public Map<UUID, Cooldown> cooldowns = new HashMap<>();
 
 	private String overrideName;
@@ -65,7 +66,9 @@ public abstract class PitEnchant implements Listener {
 	}
 
 	public String getDisplayName() {
-
+		if(tainted) {
+			return overrideName != null ? overrideName : ChatColor.translateAlternateColorCodes('&', isRare ? "&dRARE! &5" + name : "&5" + name);
+		}
 		return overrideName != null ? overrideName : ChatColor.translateAlternateColorCodes('&', isRare ? "&dRARE! &9" + name : "&9" + name);
 	}
 

@@ -81,7 +81,7 @@ public class EnchantingPanel extends AGUIPanel {
 		super(gui);
 		enchantingGUI = (EnchantingGUI) gui;
 
-		mystic = FreshCommand.getFreshItem("sword");
+		mystic = FreshCommand.getFreshItem(player, "sword");
 		enchantPanels.put(player, new ApplyEnchantPanel(enchantingGUI, mystic, null, enchantingGUI.getEnchantSlot(1)));
 		mystic = new ItemStack(Material.AIR);
 

@@ -92,19 +92,6 @@ public class EnchantManager implements Listener {
 		return false;
 	}
 
-	public static String getMysticType(ItemStack itemStack) {
-
-		switch(itemStack.getType()) {
-			case GOLD_SWORD:
-				return "Sword";
-			case BOW:
-				return "Bow";
-			case LEATHER_LEGGINGS:
-				return "Pants";
-		}
-		return null;
-	}
-
 	public static ItemStack addEnchant(ItemStack itemStack, PitEnchant applyEnchant, int applyLvl, boolean safe) throws Exception {
 		return addEnchant(itemStack, applyEnchant, applyLvl, safe, false, -1);
 	}
@@ -182,7 +169,11 @@ public class EnchantManager implements Listener {
 		if(applyEnchant.refNames.get(0).equals("venom")) nbtItem.setBoolean(NBTTag.IS_VENOM.getRef(), true);
 
 		AItemStackBuilder itemStackBuilder = new AItemStackBuilder(nbtItem.getItem());
-		itemStackBuilder.setName("&cTier " + (enchantNum != 0 ? AUtil.toRoman(enchantNum) : 0) + " " + getMysticType(itemStack));
+		MysticType mysticType = MysticType.getMysticType(itemStack);
+		ChatColor chatColor = ChatColor.RED;
+		if(mysticType.isTainted()) chatColor = PantColor.TAINTED.chatColor;
+		if(mysticType == MysticType.PANTS) chatColor = PantColor.getPantColor(itemStack).chatColor;
+		itemStackBuilder.setName(chatColor + "Tier " + (enchantNum != 0 ? AUtil.toRoman(enchantNum) : 0) + " " + mysticType.displayName);
 
 		setItemLore(itemStackBuilder.getItemStack());
 		return itemStackBuilder.getItemStack();
@@ -243,7 +234,7 @@ public class EnchantManager implements Listener {
 		ItemMeta itemMeta = itemStack.getItemMeta();
 		if(isJewel && !isJewelComplete(itemStack)) {
 
-			if(getMysticType(itemStack) == "Pants") {
+			if(MysticType.getMysticType(itemStack) == MysticType.PANTS) {
 				itemMeta.setDisplayName(ChatColor.DARK_AQUA + "Hidden Jewel Pants");
 				loreBuilder.addLore("&7");
 				loreBuilder.addLore("&7Kill &c" + Constant.JEWEL_KILLS + " &7players to recycle");
@@ -251,7 +242,7 @@ public class EnchantManager implements Listener {
 				loreBuilder.addLore("&7enchant");
 				loreBuilder.addLore("&7Kills: &3" + jewelKills);
 			}
-			if(getMysticType(itemStack) == "Sword") {
+			if(MysticType.getMysticType(itemStack) == MysticType.SWORD) {
 				itemMeta.setDisplayName(ChatColor.YELLOW + "Hidden Jewel Sword");
 				loreBuilder.addLore("&7");
 				loreBuilder.addLore("&7Kill &c" + Constant.JEWEL_KILLS + " &7players to recycle");
@@ -259,7 +250,7 @@ public class EnchantManager implements Listener {
 				loreBuilder.addLore("&7III enchant");
 				loreBuilder.addLore("&7Kills: &3" + jewelKills);
 			}
-			if(getMysticType(itemStack) == "Bow") {
+			if(MysticType.getMysticType(itemStack) == MysticType.BOW) {
 				itemMeta.setDisplayName(ChatColor.AQUA + "Hidden Jewel Bow");
 				loreBuilder.addLore("&7");
 				loreBuilder.addLore("&7Kill &c" + Constant.JEWEL_KILLS + " &7players to recycle");
@@ -621,7 +612,7 @@ public class EnchantManager implements Listener {
 
 		for(PitEnchant pitEnchant : pitEnchants) {
 			ApplyType enchantApplyType = pitEnchant.applyType;
-			if(enchantApplyType == ApplyType.ALL) applicableEnchants.add(pitEnchant);
+			if(enchantApplyType == ApplyType.ALL && !mystictype.isTainted()) applicableEnchants.add(pitEnchant);
 
 			switch(mystictype) {
 				case BOW:
@@ -634,6 +625,12 @@ public class EnchantManager implements Listener {
 				case SWORD:
 					if(enchantApplyType == ApplyType.SWORDS || enchantApplyType == ApplyType.WEAPONS)
 						applicableEnchants.add(pitEnchant);
+					break;
+				case TAINTED_CHESTPLATE:
+					if(enchantApplyType == ApplyType.CHESTPLATES || enchantApplyType == ApplyType.TAINTED) applicableEnchants.add(pitEnchant);
+					break;
+				case TAINTED_SCYTHE:
+					if(enchantApplyType == ApplyType.SCYTHES || enchantApplyType == ApplyType.TAINTED) applicableEnchants.add(pitEnchant);
 					break;
 			}
 		}

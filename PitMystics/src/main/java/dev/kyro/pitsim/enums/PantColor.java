@@ -34,9 +34,9 @@ public enum PantColor {
 	NEON_GREEN("Neon Green", ChatColor.GREEN, 0xAAE100),
 	HARVEST_RED("Harvest Red", ChatColor.RED, 0xEE3300),
 
-
 	//Special Colors
 	DARK("Dark", ChatColor.DARK_PURPLE, 0x000000),
+	TAINTED("", ChatColor.DARK_PURPLE, 0x7100e3),
 	JEWEL("Jewel", ChatColor.DARK_AQUA, 0x7DC383);
 //	AQUA("", ChatColor.DARK_AQUA, 0x55FFFF);
 
