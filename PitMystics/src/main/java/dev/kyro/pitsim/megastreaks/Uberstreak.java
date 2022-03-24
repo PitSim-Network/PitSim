@@ -115,6 +115,7 @@ public class Uberstreak extends Megastreak {
 
 	@EventHandler
 	public void onPreAttack(AttackEvent.Pre attackEvent) {
+		if(!attackEvent.attackerIsPlayer) return;
 		PitPlayer pitAttacker = PitPlayer.getEntityPitPlayer(attackEvent.attacker);
 		if(pitAttacker != this.pitPlayer || pitAttacker.megastreak.getClass() != Uberstreak.class || pitAttacker.megastreak.isOnMega())
 			return;
@@ -141,6 +142,7 @@ public class Uberstreak extends Megastreak {
 			if(uberEffects.contains(UberEffect.TAKE_LESS_DAMAGE)) attackEvent.multipliers.add(0.9);
 		}
 
+		if(!attackEvent.attackerIsPlayer) return;
 		PitPlayer pitAttacker = PitPlayer.getEntityPitPlayer(attackEvent.attacker);
 		if(pitAttacker != this.pitPlayer || pitAttacker.megastreak.getClass() != Uberstreak.class) return;
 		if(pitAttacker.megastreak.isOnMega()) {
