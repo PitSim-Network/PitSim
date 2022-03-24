@@ -32,6 +32,7 @@ import dev.kyro.pitsim.kits.XPKit;
 import dev.kyro.pitsim.leaderboards.*;
 import dev.kyro.pitsim.megastreaks.*;
 import dev.kyro.pitsim.misc.*;
+import dev.kyro.pitsim.mobs.ZombieMob;
 import dev.kyro.pitsim.perks.*;
 import dev.kyro.pitsim.pitmaps.BiomesMap;
 import dev.kyro.pitsim.placeholders.*;
@@ -44,6 +45,7 @@ import net.citizensnpcs.api.CitizensAPI;
 import net.citizensnpcs.api.npc.NPC;
 import net.luckperms.api.LuckPerms;
 import net.milkbowl.vault.economy.Economy;
+import net.minecraft.server.v1_8_R3.EntityZombie;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageEvent;
@@ -158,6 +160,7 @@ public class PitSim extends JavaPlugin {
 		registerBoosters();
 		registerHelmetAbilities();
 		registerKits();
+		registerMobs();
 	}
 
 	@Override
@@ -247,6 +250,10 @@ public class PitSim extends JavaPlugin {
 		LeaderboardManager.registerLeaderboard(new UbersCompletedLeaderboard());
 		LeaderboardManager.registerLeaderboard(new JewelsCompletedLeaderboard());
 		LeaderboardManager.registerLeaderboard(new FeathersLostLeaderboard());
+	}
+
+	private void registerMobs() {
+		MobSpawnManager.registerEntity("ZombieMob", 54, EntityZombie.class, ZombieMob.class);
 	}
 
 	private void registerCommands() {

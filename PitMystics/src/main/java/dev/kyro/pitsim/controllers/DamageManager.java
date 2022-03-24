@@ -20,10 +20,7 @@ import dev.kyro.pitsim.perks.AssistantToTheStreaker;
 import dev.kyro.pitsim.upgrades.DivineIntervention;
 import me.clip.placeholderapi.PlaceholderAPI;
 import net.minecraft.server.v1_8_R3.EntityPlayer;
-import org.bukkit.Bukkit;
-import org.bukkit.EntityEffect;
-import org.bukkit.Location;
-import org.bukkit.Material;
+import org.bukkit.*;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
 import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
@@ -161,7 +158,10 @@ public class DamageManager implements Listener {
 		}
 
 		AttackEvent.Pre preEvent = null;
-		if(event.getDamager() instanceof Player) {
+		if(event.getDamager() instanceof Slime) {
+
+			preEvent = new AttackEvent.Pre(event, new HashMap<>(), defenderEnchantMap, fakeHit);
+		} else if(event.getDamager() instanceof LivingEntity) {
 
 			preEvent = new AttackEvent.Pre(event, EnchantManager.getEnchantsOnPlayer(attacker), defenderEnchantMap, fakeHit);
 		} else if(event.getDamager() instanceof Arrow) {
@@ -171,9 +171,6 @@ public class DamageManager implements Listener {
 				if(!entry.getKey().getProjectile().equals(event.getDamager())) continue;
 				preEvent = new AttackEvent.Pre(event, arrowMap.get(entry.getKey()), defenderEnchantMap, fakeHit);
 			}
-		} else if(event.getDamager() instanceof Slime) {
-
-			preEvent = new AttackEvent.Pre(event, new HashMap<>(), defenderEnchantMap, fakeHit);
 		}
 		if(preEvent == null) return;
 
@@ -315,6 +312,8 @@ public class DamageManager implements Listener {
 			} else if(deadNon != null) {
 				deadNon.respawn();
 			}
+		} else {
+			dead.remove();
 		}
 
 		if(killType != KillType.FAKE) {
@@ -337,20 +336,20 @@ public class DamageManager implements Listener {
 
 		DecimalFormat df = new DecimalFormat("##0.00");
 		String kill = null;
-		if(killType != KillType.DEATH) kill = "&a&lKILL!&7 on %luckperms_prefix%" + (deadNon == null ? "%player_name%" : deadNon.displayName)
-				+ " &b+" + killEvent.getFinalXp() + "XP" + " &6+" + df.format(killEvent.getFinalGold()) + "g";
+		if(!deadIsPlayer) kill = ChatColor.translateAlternateColorCodes('&', "&a&lKILL!&7 on " + dead.getCustomName());
+		else if(killType != KillType.DEATH) kill = PlaceholderAPI.setPlaceholders(killEvent.deadPlayer, "&a&lKILL!&7 on %luckperms_prefix%" + (deadNon == null ? "%player_name%" : deadNon.displayName)
+				+ " &b+" + killEvent.getFinalXp() + "XP" + " &6+" + df.format(killEvent.getFinalGold()) + "g");
 		String death;
-		if(killType == KillType.DEFAULT) death = "&c&lDEATH! &7by %luckperms_prefix%" + (killingNon == null ? "%player_name%" : killingNon.displayName);
+		if(killType == KillType.DEFAULT) death = PlaceholderAPI.setPlaceholders(killEvent.killerPlayer, "&c&lDEATH! &7by %luckperms_prefix%" + (killingNon == null ? "%player_name%" : killingNon.displayName));
 		else death = "&c&lDEATH!";
 		String killActionBar = "&7%luckperms_prefix%" + (deadNon == null ? "%player_name%" : deadNon.displayName) + " &a&lKILL!";
 
-		if(killerIsPlayer && deadIsPlayer) {
-			if(!pitKiller.killFeedDisabled && killType != KillType.DEATH)
+			if(killerIsPlayer && !pitKiller.killFeedDisabled && killType != KillType.DEATH)
 				AOutput.send(killEvent.killer, PlaceholderAPI.setPlaceholders(killEvent.deadPlayer, kill));
-			if(!pitDead.killFeedDisabled && killType != KillType.FAKE)
-				AOutput.send(killEvent.dead, PlaceholderAPI.setPlaceholders(killEvent.killerPlayer, death));
+			if(deadIsPlayer && !pitDead.killFeedDisabled && killType != KillType.FAKE)
+				AOutput.send(killEvent.dead, death);
 			String actionBarPlaceholder = PlaceholderAPI.setPlaceholders(killEvent.deadPlayer, killActionBar);
-			if(killType != KillType.DEATH) {
+			if(killerIsPlayer && killType != KillType.DEATH) {
 				KillEvent finalKillEvent = killEvent;
 				new BukkitRunnable() {
 					@Override
@@ -359,7 +358,7 @@ public class DamageManager implements Listener {
 					}
 				}.runTaskLater(PitSim.INSTANCE, 1L);
 			}
-		}
+
 
 		if(killType != KillType.FAKE) {
 			if(killType != KillType.DEATH && deadIsPlayer) {

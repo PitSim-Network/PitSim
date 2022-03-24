@@ -409,7 +409,7 @@ public class GoldenHelmet implements Listener {
 			}
 			toggledPlayers.remove(dead);
 		}
-		if(!killEvent.killerIsPlayer) {
+		if(killEvent.killerIsPlayer) {
 			if(NonManager.getNon(killEvent.killer) != null) return;
 			if(Misc.isAirOrNull(killEvent.killerPlayer.getInventory().getHelmet())) return;
 			if(killEvent.killerPlayer.getInventory().getHelmet().getType() != Material.GOLD_HELMET) return;

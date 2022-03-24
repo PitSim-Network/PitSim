@@ -7,6 +7,7 @@ import me.clip.placeholderapi.PlaceholderAPI;
 import net.minecraft.server.v1_8_R3.EntityPlayer;
 import org.bukkit.ChatColor;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 
@@ -15,11 +16,11 @@ public class DamageIndicator implements Listener {
 
 	//    @EventHandler(priority = EventPriority.MONITOR)
 	public static void onAttack(AttackEvent.Apply attackEvent) {
-		if(!attackEvent.attackerIsPlayer || !attackEvent.defenderIsPlayer) return;
+		if(!attackEvent.attackerIsPlayer) return;
 		if(attackEvent.fakeHit) return;
 
 		Player attacker = attackEvent.attackerPlayer;
-		Player defender = attackEvent.defenderPlayer;
+		LivingEntity defender = attackEvent.defender;
 
 //        double maxHealth = defender.getMaxHealth() / 2;
 //        double currentHealth = defender.getHealth() / 2;
@@ -48,12 +49,14 @@ public class DamageIndicator implements Listener {
 //
 //        Misc.sendActionBar(attacker, output.toString());
 
-		EntityPlayer player = ((CraftPlayer) defender).getHandle();
+		EntityPlayer entityPlayer = null;
+		if(defender instanceof Player) entityPlayer = ((CraftPlayer) defender).getHandle();
+		LivingEntity player = defender;
 
-		int roundedDamageTaken = ((int) attackEvent.event.getFinalDamage()) / 2;
+		int roundedDamageTaken = ((int) attackEvent.event.getFinalDamage()) / getNum(player);
 
-		int originalHealth = ((int) defender.getHealth()) / 2;
-		int maxHealth = ((int) defender.getMaxHealth()) / 2;
+		int originalHealth = ((int) defender.getHealth()) / getNum(player);
+		int maxHealth = ((int) defender.getMaxHealth()) / getNum(player);
 
 		int result = Math.max(originalHealth - roundedDamageTaken, 0);
 
@@ -72,24 +75,38 @@ public class DamageIndicator implements Listener {
 		StringBuilder output = new StringBuilder();
 
 		String playername = "&7%luckperms_prefix%" + (defendingNon == null ? "%player_name%" : defendingNon.displayName) + " ";
-		output.append(PlaceholderAPI.setPlaceholders(attackEvent.defenderPlayer, playername));
+		if(defender instanceof Player)output.append(PlaceholderAPI.setPlaceholders(attackEvent.defenderPlayer, playername));
+		else output.append(player.getCustomName() + " ");
 
 		for(int i = 0; i < Math.max(originalHealth - roundedDamageTaken, 0); i++) {
 			output.append(ChatColor.DARK_RED).append("\u2764");
 		}
 
-		for(int i = 0; i < roundedDamageTaken - (int) player.getAbsorptionHearts() / 2; i++) {
-			output.append(ChatColor.RED).append("\u2764");
+		if(defender instanceof Player) {
+			for(int i = 0; i < roundedDamageTaken - (int) entityPlayer.getAbsorptionHearts() / getNum(player); i++) {
+				output.append(ChatColor.RED).append("\u2764");
+			}
+		} else {
+			for(int i = 0; i < roundedDamageTaken; i++) {
+				output.append(ChatColor.RED).append("\u2764");
+			}
 		}
+
 
 		for(int i = originalHealth; i < maxHealth; i++) {
 			output.append(ChatColor.BLACK).append("\u2764");
 		}
 
-		for(int i = 0; i < (int) player.getAbsorptionHearts() / 2; i++) {
-			output.append(ChatColor.YELLOW).append("\u2764");
+		if(defender instanceof Player) {
+			for(int i = 0; i < (int) entityPlayer.getAbsorptionHearts() / getNum(player); i++) {
+				output.append(ChatColor.YELLOW).append("\u2764");
+			}
 		}
 
 		Misc.sendActionBar(attacker, output.toString());
+	}
+
+	public static int getNum(LivingEntity entity) {
+		return (int) (2 * (entity.getMaxHealth() / 20));
 	}
 }
