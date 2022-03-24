@@ -22,7 +22,7 @@ import dev.kyro.pitsim.controllers.log.DupeManager;
 import dev.kyro.pitsim.controllers.objects.*;
 import dev.kyro.pitsim.enchants.GoldBoost;
 import dev.kyro.pitsim.enchants.*;
-import dev.kyro.pitsim.enchants.tainted.TaintedSoul;
+import dev.kyro.pitsim.enchants.tainted.*;
 import dev.kyro.pitsim.helmetabilities.*;
 import dev.kyro.pitsim.killstreaks.*;
 import dev.kyro.pitsim.kits.EssentialKit;
@@ -503,5 +503,9 @@ public class PitSim extends JavaPlugin {
 //		EnchantManager.registerEnchant(new XpBump());
 
 		EnchantManager.registerEnchant(new TaintedSoul());
+		EnchantManager.registerEnchant(new MaxHealth());
+		EnchantManager.registerEnchant(new MaxMana());
+		EnchantManager.registerEnchant(new ManaRegeneration());
+		EnchantManager.registerEnchant(new EmotionalDamage());
 	}
 }

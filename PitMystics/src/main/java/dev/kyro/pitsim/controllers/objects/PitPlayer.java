@@ -3,11 +3,10 @@ package dev.kyro.pitsim.controllers.objects;
 import dev.kyro.arcticapi.data.APlayer;
 import dev.kyro.arcticapi.data.APlayerData;
 import dev.kyro.pitsim.PitSim;
-import dev.kyro.pitsim.controllers.BoosterManager;
-import dev.kyro.pitsim.controllers.LevelManager;
-import dev.kyro.pitsim.controllers.NonManager;
-import dev.kyro.pitsim.controllers.PrestigeValues;
+import dev.kyro.pitsim.controllers.*;
 import dev.kyro.pitsim.enchants.Hearts;
+import dev.kyro.pitsim.enchants.tainted.MaxHealth;
+import dev.kyro.pitsim.enchants.tainted.MaxMana;
 import dev.kyro.pitsim.enums.AChatColor;
 import dev.kyro.pitsim.enums.DeathCry;
 import dev.kyro.pitsim.enums.KillEffect;
@@ -52,6 +51,8 @@ public class PitPlayer {
 
 	public UUID lastHitUUID = null;
 	public ItemStack confirmedDrop = null;
+
+	public int mana = 0;
 
 	//	Savable
 	public int prestige;
@@ -212,7 +213,7 @@ public class PitPlayer {
 			}
 
 			stats = new PlayerStats(this, playerData);
-			LevelManager.setXPBar(player, this);
+			updateXPBar();
 		}
 	}
 
@@ -368,7 +369,10 @@ public class PitPlayer {
 
 		int maxHealth = 24;
 		if(hasPerk(Thick.INSTANCE)) maxHealth += 4;
-		if(Hearts.INSTANCE != null) maxHealth += Hearts.INSTANCE.getExtraHealth(this);
+
+		Map<PitEnchant, Integer> enchantMap = EnchantManager.getEnchantsOnPlayer(player);
+		if(Hearts.INSTANCE != null) maxHealth += Hearts.INSTANCE.getExtraHealth(enchantMap);
+		if(MaxHealth.INSTANCE != null) maxHealth += MaxHealth.INSTANCE.getExtraHealth(player, enchantMap);
 
 		if(megastreak.getClass() == Uberstreak.class) {
 			Uberstreak uberstreak = (Uberstreak) megastreak;
@@ -381,5 +385,41 @@ public class PitPlayer {
 
 		if(player.getMaxHealth() == maxHealth) return;
 		player.setMaxHealth(maxHealth);
+	}
+
+	public boolean useMana(int amount) {
+		if(amount > mana) return false;
+		mana -= amount;
+		return true;
+	}
+
+	public int getMaxMana() {
+		int maxMana = 100;
+
+		Map<PitEnchant, Integer> enchantMap = EnchantManager.getEnchantsOnPlayer(player);
+		if(MaxMana.INSTANCE != null) maxMana += MaxMana.INSTANCE.getExtraMana(enchantMap);
+
+		return maxMana;
+	}
+
+	public void updateXPBar() {
+		if(MapManager.inDarkzone(player)) {
+			player.setLevel(mana);
+			player.setExp(0);
+//			if(shield.isRecharging()) {
+//				player.setLevel(0);
+//				player.setExp((float) (shield.getRealShield() / shield.getMaxShield()));
+//			}
+		} else {
+			player.setLevel(level);
+			float remaining = remainingXP;
+			PrestigeValues.PrestigeInfo prestigeInfo = PrestigeValues.getPrestigeInfo(prestige);
+			float total = (float) (PrestigeValues.getXPForLevel(level) * prestigeInfo.xpMultiplier);
+
+			player.setLevel(level);
+			float xp = (total - remaining) / total;
+
+			player.setExp(xp);
+		}
 	}
 }

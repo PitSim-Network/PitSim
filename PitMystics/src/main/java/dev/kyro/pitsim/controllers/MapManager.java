@@ -136,4 +136,16 @@ public class MapManager implements Listener {
 	public static World getTutorial() {
 		return Bukkit.getWorld("tutorial");
 	}
+
+	public static World getDarkzone() {
+		return Bukkit.getWorld("darkzone");
+	}
+
+	public static boolean inDarkzone(Player player) {
+		return inDarkzone(player.getLocation());
+	}
+
+	public static boolean inDarkzone(Location location) {
+		return location.getWorld() == getDarkzone();
+	}
 }

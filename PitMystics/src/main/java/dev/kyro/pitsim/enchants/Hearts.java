@@ -2,7 +2,6 @@ package dev.kyro.pitsim.enchants;
 
 import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.pitsim.PitSim;
-import dev.kyro.pitsim.controllers.EnchantManager;
 import dev.kyro.pitsim.controllers.objects.PitEnchant;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.enums.ApplyType;
@@ -14,6 +13,7 @@ import org.bukkit.event.inventory.EquipmentSetEvent;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.List;
+import java.util.Map;
 
 public class Hearts extends PitEnchant {
 	public static Hearts INSTANCE;
@@ -45,10 +45,9 @@ public class Hearts extends PitEnchant {
 		pitPlayer.updateMaxHealth();
 	}
 
-	public int getExtraHealth(PitPlayer pitPlayer) {
-
-		int enchantLvl = EnchantManager.getEnchantLevel(pitPlayer.player, this);
-		if(enchantLvl == 0) return 0;
+	public int getExtraHealth(Map<PitEnchant, Integer> enchantMap) {
+		if(!enchantMap.containsKey(this)) return 0;
+		int enchantLvl = enchantMap.get(this);
 
 		return getExtraHealth(enchantLvl);
 	}

@@ -63,6 +63,22 @@ public class PlayerManager implements Listener {
 		new BukkitRunnable() {
 			@Override
 			public void run() {
+				for(PitPlayer pitPlayer : PitPlayer.pitPlayers) {
+					if(!MapManager.inDarkzone(pitPlayer.player)) continue;
+					int amount = 1;
+					if(pitPlayer.mana + amount > pitPlayer.getMaxMana()) {
+						pitPlayer.updateXPBar();
+						continue;
+					}
+					pitPlayer.mana += amount;
+					pitPlayer.updateXPBar();
+				}
+			}
+		}.runTaskTimerAsynchronously(PitSim.INSTANCE, 0L, 1L);
+
+		new BukkitRunnable() {
+			@Override
+			public void run() {
 				for(Non non : NonManager.nons)
 					if(non.non != null) ((CraftPlayer) non.non).getHandle().getDataWatcher().watch(9, (byte) 0);
 				for(Player onlinePlayer : Bukkit.getOnlinePlayers())
@@ -132,6 +148,13 @@ public class PlayerManager implements Listener {
 				}
 			}
 		}.runTaskTimer(PitSim.INSTANCE, 0L, 12L);
+	}
+
+	@EventHandler
+	public void onWorldChange(PlayerChangedWorldEvent event) {
+		Player player = event.getPlayer();
+		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
+		pitPlayer.updateXPBar();
 	}
 
 	@EventHandler

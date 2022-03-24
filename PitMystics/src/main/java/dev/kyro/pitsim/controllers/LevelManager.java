@@ -6,7 +6,6 @@ import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.killstreaks.NoKillstreak;
 import dev.kyro.pitsim.megastreaks.Overdrive;
-import dev.kyro.pitsim.megastreaks.RNGesus;
 import dev.kyro.pitsim.misc.Misc;
 import dev.kyro.pitsim.misc.Sounds;
 import me.clip.placeholderapi.PlaceholderAPI;
@@ -36,7 +35,7 @@ public class LevelManager {
 				pitPlayer.remainingXP -= xp;
 				xp = 0;
 			}
-			setXPBar(player, pitPlayer);
+			pitPlayer.updateXPBar();
 		}
 	}
 
@@ -48,7 +47,7 @@ public class LevelManager {
 
 		pitPlayer.level += 1;
 		pitPlayer.remainingXP = (int) ((PrestigeValues.getXPForLevel(pitPlayer.level) * prestigeInfo.xpMultiplier));
-		setXPBar(player, pitPlayer);
+		pitPlayer.updateXPBar();
 
 		Sounds.LEVEL_UP.play(player);
 		Misc.sendTitle(player, "&e&lLEVEL UP!", 40);
@@ -120,22 +119,4 @@ public class LevelManager {
 		Bukkit.broadcastMessage(PlaceholderAPI.setPlaceholders(player, message2));
 	}
 
-	public static void setXPBar(Player player, PitPlayer pitPlayer) {
-		if(NonManager.getNon(player) != null) return;
-
-		if(pitPlayer.megastreak.getClass() == RNGesus.class && pitPlayer.megastreak.isOnMega()) {
-			((RNGesus) pitPlayer.megastreak).setXPBar();
-			return;
-		}
-
-		player.setLevel(pitPlayer.level);
-		float remaining = pitPlayer.remainingXP;
-		PrestigeValues.PrestigeInfo prestigeInfo = PrestigeValues.getPrestigeInfo(pitPlayer.prestige);
-		float total = (float) (PrestigeValues.getXPForLevel(pitPlayer.level) * prestigeInfo.xpMultiplier);
-
-		player.setLevel(pitPlayer.level);
-		float xp = (total - remaining) / total;
-
-		player.setExp(xp);
-	}
 }
