@@ -9,9 +9,11 @@ import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Zombie;
 
 public class PitZombie extends PitMob {
+	public static PitZombie INSTANCE;
 
 	public PitZombie(Location spawnLoc) {
 		super(MobType.ZOMBIE, spawnLoc, 1, "&cZombie");
+		INSTANCE = this;
 	}
 
 	@Override
@@ -20,12 +22,10 @@ public class PitZombie extends PitMob {
 
 		zombie.setMaxHealth(50);
 		zombie.setHealth(50);
-
-		zombie.setCustomName(displayName);
+//		zombie.setCustomName(displayName);
 		zombie.setCustomNameVisible(false);
-
-		MobManager.makeTag(this);
-
+		zombie.setRemoveWhenFarAway(false);
+		MobManager.makeTag(zombie, displayName);
 		return zombie;
 	}
 }

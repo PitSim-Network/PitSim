@@ -15,7 +15,6 @@ import dev.kyro.pitsim.boosters.GoldBooster;
 import dev.kyro.pitsim.boosters.PvPBooster;
 import dev.kyro.pitsim.boosters.XPBooster;
 import dev.kyro.pitsim.commands.*;
-import dev.kyro.pitsim.commands.ViewCommand;
 import dev.kyro.pitsim.commands.admin.*;
 import dev.kyro.pitsim.controllers.*;
 import dev.kyro.pitsim.controllers.log.DupeManager;
@@ -32,7 +31,6 @@ import dev.kyro.pitsim.kits.XPKit;
 import dev.kyro.pitsim.leaderboards.*;
 import dev.kyro.pitsim.megastreaks.*;
 import dev.kyro.pitsim.misc.*;
-import dev.kyro.pitsim.mobs.ZombieMob;
 import dev.kyro.pitsim.perks.*;
 import dev.kyro.pitsim.pitmaps.BiomesMap;
 import dev.kyro.pitsim.placeholders.*;
@@ -45,7 +43,6 @@ import net.citizensnpcs.api.CitizensAPI;
 import net.citizensnpcs.api.npc.NPC;
 import net.luckperms.api.LuckPerms;
 import net.milkbowl.vault.economy.Economy;
-import net.minecraft.server.v1_8_R3.EntityZombie;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageEvent;
@@ -166,7 +163,14 @@ public class PitSim extends JavaPlugin {
 	@Override
 	public void onDisable() {
 
+		for(PitMob mob : MobManager.mobs) {
+			MobManager.nameTags.get(mob.entity).remove();
+			mob.entity.remove();
+		}
+
+
 		for(Tutorial value : TutorialManager.tutorials.values()) {
+			value.cleanUp();
 			value.cleanUp();
 		}
 
@@ -253,7 +257,6 @@ public class PitSim extends JavaPlugin {
 	}
 
 	private void registerMobs() {
-		MobSpawnManager.registerEntity("ZombieMob", 54, EntityZombie.class, ZombieMob.class);
 	}
 
 	private void registerCommands() {
@@ -349,8 +352,8 @@ public class PitSim extends JavaPlugin {
 		getServer().getPluginManager().registerEvents(new GuildIntegrationManager(), this);
 		getServer().getPluginManager().registerEvents(new UpgradeManager(), this);
 		getServer().getPluginManager().registerEvents(new KitManager(), this);
+		getServer().getPluginManager().registerEvents(new MobManager(), this);
 	}
-
 	public void registerBoosters() {
 		BoosterManager.registerBooster(new XPBooster());
 		BoosterManager.registerBooster(new GoldBooster());

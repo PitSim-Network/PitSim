@@ -29,4 +29,18 @@ public abstract class PitMob implements Listener {
 	}
 
 	public abstract LivingEntity spawnMob(Location spawnLoc);
+
+	public static boolean isPitMob(LivingEntity entity) {
+		for(PitMob mob : MobManager.mobs) {
+			if(mob.entity == entity) return true;
+		}
+		return false;
+	}
+
+	public static PitMob getPitMob(LivingEntity entity) {
+		for(PitMob mob : MobManager.mobs) {
+			if(mob.entity == entity) return mob;
+		}
+		return null;
+	}
 }

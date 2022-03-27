@@ -5,6 +5,7 @@ import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.controllers.objects.Non;
 import dev.kyro.pitsim.controllers.objects.PitEnchant;
+import dev.kyro.pitsim.controllers.objects.PitMob;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.enchants.PitBlob;
 import dev.kyro.pitsim.enchants.Regularity;
@@ -336,20 +337,22 @@ public class DamageManager implements Listener {
 
 		DecimalFormat df = new DecimalFormat("##0.00");
 		String kill = null;
-		if(!deadIsPlayer) kill = ChatColor.translateAlternateColorCodes('&', "&a&lKILL!&7 on " + dead.getCustomName());
+		if(!deadIsPlayer && PitMob.isPitMob(dead)) kill = ChatColor.translateAlternateColorCodes('&', "&a&lKILL!&7 on " + PitMob.getPitMob(dead).displayName);
 		else if(killType != KillType.DEATH) kill = PlaceholderAPI.setPlaceholders(killEvent.deadPlayer, "&a&lKILL!&7 on %luckperms_prefix%" + (deadNon == null ? "%player_name%" : deadNon.displayName)
 				+ " &b+" + killEvent.getFinalXp() + "XP" + " &6+" + df.format(killEvent.getFinalGold()) + "g");
 		String death;
 		if(killType == KillType.DEFAULT) death = PlaceholderAPI.setPlaceholders(killEvent.killerPlayer, "&c&lDEATH! &7by %luckperms_prefix%" + (killingNon == null ? "%player_name%" : killingNon.displayName));
 		else death = "&c&lDEATH!";
-		String killActionBar = "&7%luckperms_prefix%" + (deadNon == null ? "%player_name%" : deadNon.displayName) + " &a&lKILL!";
+		String killActionBar = null;
+		if(killerIsPlayer) killActionBar = "&7%luckperms_prefix%" + (deadNon == null ? "%player_name%" : deadNon.displayName) + " &a&lKILL!";
+		else if(PitMob.isPitMob(dead)) killActionBar = PitMob.getPitMob(dead).displayName + " &a&lKILL!";
 
 			if(killerIsPlayer && !pitKiller.killFeedDisabled && killType != KillType.DEATH)
 				AOutput.send(killEvent.killer, PlaceholderAPI.setPlaceholders(killEvent.deadPlayer, kill));
 			if(deadIsPlayer && !pitDead.killFeedDisabled && killType != KillType.FAKE)
 				AOutput.send(killEvent.dead, death);
 			String actionBarPlaceholder = PlaceholderAPI.setPlaceholders(killEvent.deadPlayer, killActionBar);
-			if(killerIsPlayer && killType != KillType.DEATH) {
+			if(killType != KillType.DEATH) {
 				KillEvent finalKillEvent = killEvent;
 				new BukkitRunnable() {
 					@Override

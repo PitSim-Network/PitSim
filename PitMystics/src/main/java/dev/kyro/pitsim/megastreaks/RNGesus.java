@@ -229,6 +229,7 @@ public class RNGesus extends Megastreak {
 
 	@EventHandler(priority = EventPriority.MONITOR)
 	public void attack(AttackEvent.Apply attackEvent) {
+		if(!attackEvent.attackerIsPlayer) return;
 		if(NonManager.getNon(attackEvent.defender) == null) return;
 		PitPlayer pitPlayer = PitPlayer.getEntityPitPlayer(attackEvent.attacker);
 		if(pitPlayer != this.pitPlayer) return;
