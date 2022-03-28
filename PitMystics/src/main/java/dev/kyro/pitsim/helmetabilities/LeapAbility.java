@@ -54,7 +54,7 @@ public class LeapAbility extends HelmetAbility {
 			AOutput.error(player, "&cAbility on cooldown!");
 			Sounds.NO.play(player);
 			return;
-		} else cooldown.reset();
+		} else cooldown.restart();
 
 		AOutput.send(player, "&6&lGOLDEN HELMET! &7Used &9Leap&7! (&6-10,000g&7)");
 		Sounds.LEAP.play(player);

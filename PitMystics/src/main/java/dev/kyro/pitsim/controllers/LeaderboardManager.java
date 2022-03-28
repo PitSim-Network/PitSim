@@ -1,5 +1,6 @@
 package dev.kyro.pitsim.controllers;
 
+import dev.kyro.arcticapi.data.AConfig;
 import dev.kyro.arcticapi.data.APlayer;
 import dev.kyro.arcticapi.data.APlayerData;
 import dev.kyro.pitsim.PitSim;
@@ -36,6 +37,8 @@ public class LeaderboardManager {
 //				}
 //			}
 //		}.runTaskAsynchronously(PitSim.INSTANCE);
+
+		if(!AConfig.getString("server").equals("pitsim-main")) return;
 
 		new BukkitRunnable() {
 			@Override

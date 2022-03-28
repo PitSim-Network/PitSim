@@ -31,7 +31,7 @@ public class Crush extends PitEnchant {
 
 		Cooldown cooldown = getCooldown(attackEvent.attackerPlayer, 2 * 20);
 		if(cooldown.isOnCooldown()) return;
-		else cooldown.reset();
+		else cooldown.restart();
 
 		Misc.applyPotionEffect(attackEvent.defender, PotionEffectType.WEAKNESS, getDuration(enchantLvl), enchantLvl + 3, true, false);
 		Sounds.CRUSH.play(attackEvent.attacker);

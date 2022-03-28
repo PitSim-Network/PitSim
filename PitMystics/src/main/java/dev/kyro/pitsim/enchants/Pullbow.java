@@ -31,7 +31,7 @@ public class Pullbow extends PitEnchant {
 
 		Cooldown cooldown = getCooldown(attackEvent.attackerPlayer, 160);
 		if(cooldown.isOnCooldown()) return;
-		else cooldown.reset();
+		else cooldown.restart();
 
 		if(attackEvent.defenderIsPlayer) {
 			PitPlayer pitDefender = PitPlayer.getPitPlayer(attackEvent.defenderPlayer);

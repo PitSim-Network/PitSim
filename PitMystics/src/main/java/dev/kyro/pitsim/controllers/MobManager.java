@@ -89,7 +89,6 @@ public class MobManager implements Listener {
 			}
 
 		}.runTaskTimer(PitSim.INSTANCE, 20 * 5, 20 * 5);
-
 	}
 
 	public static void makeTag(LivingEntity mob, String name) {

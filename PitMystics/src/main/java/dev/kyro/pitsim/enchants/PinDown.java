@@ -32,7 +32,7 @@ public class PinDown extends PitEnchant {
 
 		Cooldown cooldown = getCooldown(attackEvent.attackerPlayer, getDuration(enchantLvl) * 20);
 		if(cooldown.isOnCooldown()) return;
-		else cooldown.reset();
+		else cooldown.restart();
 
 		if(attackEvent.attacker == attackEvent.defender) return;
 		if(!attackEvent.arrow.isCritical()) return;

@@ -93,7 +93,7 @@ public class Telebow extends PitEnchant {
 			return;
 		}
 		if(cooldown.isOnCooldown()) return;
-		else cooldown.reset();
+		else cooldown.restart();
 
 		if(player.isSneaking() && !SpawnManager.isInSpawn(player.getLocation())) {
 			teleShots.add(arrow);

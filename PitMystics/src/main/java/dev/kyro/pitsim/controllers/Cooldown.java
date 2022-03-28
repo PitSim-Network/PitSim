@@ -32,7 +32,7 @@ public class Cooldown {
 		return false;
 	}
 
-	public void reset() {
+	public void restart() {
 
 		ticksLeft = initialTime;
 		CooldownManager.add(this);
