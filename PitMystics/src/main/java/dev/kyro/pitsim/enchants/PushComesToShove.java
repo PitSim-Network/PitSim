@@ -37,7 +37,7 @@ public class PushComesToShove extends PitEnchant {
 
 		Cooldown cooldown = getCooldown(attackEvent.attackerPlayer, 200);
 		if(cooldown.isOnCooldown()) return;
-		else cooldown.reset();
+		else cooldown.restart();
 
 		if(attackEvent.defenderIsPlayer) {
 			PitPlayer pitDefender = PitPlayer.getPitPlayer(attackEvent.defenderPlayer);

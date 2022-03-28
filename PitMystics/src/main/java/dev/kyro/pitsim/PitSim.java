@@ -72,6 +72,11 @@ public class PitSim extends JavaPlugin {
 	public void onEnable() {
 		INSTANCE = this;
 
+		loadConfig();
+
+		ArcticAPI.configInit(this, "prefix", "error-prefix");
+		playerList = new AData("player-list", "", false);
+
 		RegisteredServiceProvider<LuckPerms> provider = Bukkit.getServicesManager().getRegistration(LuckPerms.class);
 		if(provider != null) {
 			LUCKPERMS = provider.getProvider();
@@ -143,11 +148,6 @@ public class PitSim extends JavaPlugin {
 		AHook.registerPlaceholder(new PrestigeLevelPlaceholder());
 		AHook.registerPlaceholder(new PrestigePlaceholder());
 		new LeaderboardPlaceholders().register();
-
-		loadConfig();
-
-		ArcticAPI.configInit(this, "prefix", "error-prefix");
-		playerList = new AData("player-list", "", false);
 
 		CooldownManager.init();
 
@@ -517,5 +517,6 @@ public class PitSim extends JavaPlugin {
 		EnchantManager.registerEnchant(new MaxMana());
 		EnchantManager.registerEnchant(new ManaRegeneration());
 		EnchantManager.registerEnchant(new EmotionalDamage());
+		EnchantManager.registerEnchant(new FireballSpell());
 	}
 }

@@ -19,7 +19,6 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.ProjectileHitEvent;
-import org.bukkit.plugin.Plugin;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 
@@ -77,49 +76,47 @@ public class FasterThanTheirShadow extends PitEnchant implements Listener {
 
 	@EventHandler
 	public void onArrowHit(ProjectileHitEvent event) {
-		if(!(event.getEntity() instanceof Arrow || event.getEntity().getShooter() instanceof Player)) return;
+		if(!(event.getEntity() instanceof Arrow) || !(event.getEntity().getShooter() instanceof Player)) return;
 
 		net.minecraft.server.v1_8_R3.EntityArrow entityArrow = ((CraftArrow) event.getEntity()).getHandle();
-		Bukkit.getScheduler().scheduleSyncDelayedTask((Plugin) PitSim.INSTANCE, new Runnable() {
-			public void run() {
-				try {
+		Bukkit.getScheduler().scheduleSyncDelayedTask(PitSim.INSTANCE, () -> {
+			try {
 
-					Field fieldX = net.minecraft.server.v1_8_R3.EntityArrow.class
-							.getDeclaredField("d");
-					Field fieldY = net.minecraft.server.v1_8_R3.EntityArrow.class
-							.getDeclaredField("e");
-					Field fieldZ = net.minecraft.server.v1_8_R3.EntityArrow.class
-							.getDeclaredField("f");
+				Field fieldX = net.minecraft.server.v1_8_R3.EntityArrow.class
+						.getDeclaredField("d");
+				Field fieldY = net.minecraft.server.v1_8_R3.EntityArrow.class
+						.getDeclaredField("e");
+				Field fieldZ = net.minecraft.server.v1_8_R3.EntityArrow.class
+						.getDeclaredField("f");
 
-					fieldX.setAccessible(true);
-					fieldY.setAccessible(true);
-					fieldZ.setAccessible(true);
+				fieldX.setAccessible(true);
+				fieldY.setAccessible(true);
+				fieldZ.setAccessible(true);
 
-					int x = fieldX.getInt(entityArrow);
-					int y = fieldY.getInt(entityArrow);
-					int z = fieldZ.getInt(entityArrow);
+				int x = fieldX.getInt(entityArrow);
+				int y = fieldY.getInt(entityArrow);
+				int z = fieldZ.getInt(entityArrow);
 
-					if(isValidBlock(y)) {
-						Block block = event.getEntity().getWorld().getBlockAt(x, y, z);
-						Bukkit.getServer()
-								.getPluginManager()
-								.callEvent(
-										new ArrowHitBlockEvent((Arrow) event.getEntity(), block));
-					} else {
-						Block block = event.getEntity().getWorld().getBlockAt(x, y, z);
+				if(isValidBlock(y)) {
+					Block block = event.getEntity().getWorld().getBlockAt(x, y, z);
+					Bukkit.getServer()
+							.getPluginManager()
+							.callEvent(
+									new ArrowHitBlockEvent((Arrow) event.getEntity(), block));
+				} else {
+					Block block = event.getEntity().getWorld().getBlockAt(x, y, z);
 
-						if(block == null || event.getEntity() == null) return;
-						Bukkit.getServer()
-								.getPluginManager()
-								.callEvent(
-										new ArrowHitBlockEvent((Arrow) event.getEntity(), null));
-					}
-
-				} catch(NoSuchFieldException e1) {
-				} catch(SecurityException e1) {
-				} catch(IllegalArgumentException e1) {
-				} catch(IllegalAccessException e1) {
+					if(block == null || event.getEntity() == null) return;
+					Bukkit.getServer()
+							.getPluginManager()
+							.callEvent(
+									new ArrowHitBlockEvent((Arrow) event.getEntity(), null));
 				}
+
+			} catch(NoSuchFieldException e1) {
+			} catch(SecurityException e1) {
+			} catch(IllegalArgumentException e1) {
+			} catch(IllegalAccessException e1) {
 			}
 		});
 

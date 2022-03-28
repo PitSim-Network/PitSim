@@ -15,12 +15,10 @@ import dev.kyro.pitsim.controllers.objects.GoldenHelmet;
 import dev.kyro.pitsim.controllers.objects.Megastreak;
 import dev.kyro.pitsim.controllers.objects.Non;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
+import dev.kyro.pitsim.enums.MysticType;
 import dev.kyro.pitsim.enums.NBTTag;
 import dev.kyro.pitsim.enums.NonTrait;
-import dev.kyro.pitsim.events.AttackEvent;
-import dev.kyro.pitsim.events.IncrementKillsEvent;
-import dev.kyro.pitsim.events.KillEvent;
-import dev.kyro.pitsim.events.OofEvent;
+import dev.kyro.pitsim.events.*;
 import dev.kyro.pitsim.megastreaks.Highlander;
 import dev.kyro.pitsim.megastreaks.NoMegastreak;
 import dev.kyro.pitsim.megastreaks.RNGesus;
@@ -148,6 +146,20 @@ public class PlayerManager implements Listener {
 				}
 			}
 		}.runTaskTimer(PitSim.INSTANCE, 0L, 12L);
+	}
+
+	@EventHandler
+	public void onClick2(PlayerInteractEvent event) {
+		if(event.getAction() != Action.RIGHT_CLICK_AIR && event.getAction() != Action.RIGHT_CLICK_BLOCK) return;
+		Player player = event.getPlayer();
+		if(!MapManager.inDarkzone(player)) return;
+		ItemStack itemStack = player.getItemInHand();
+		if(Misc.isAirOrNull(itemStack)) return;
+		MysticType mysticType = MysticType.getMysticType(itemStack);
+		if(mysticType != MysticType.TAINTED_SCYTHE) return;
+
+		PitPlayerAttemptAbilityEvent newEvent = new PitPlayerAttemptAbilityEvent(player);
+		Bukkit.getPluginManager().callEvent(newEvent);
 	}
 
 	@EventHandler

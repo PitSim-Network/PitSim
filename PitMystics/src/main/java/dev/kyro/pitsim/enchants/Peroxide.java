@@ -30,7 +30,7 @@ public class Peroxide extends PitEnchant {
 
 		Cooldown cooldown = getCooldown(attackEvent.defenderPlayer, 51);
 		if(cooldown.isOnCooldown()) return;
-		else cooldown.reset();
+		else cooldown.restart();
 
 		Misc.applyPotionEffect(attackEvent.defender, PotionEffectType.REGENERATION, getDuration(enchantLvl),
 				getAmplifier(enchantLvl) - 1, false, false);

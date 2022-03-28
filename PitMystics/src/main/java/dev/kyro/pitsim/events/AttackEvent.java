@@ -24,6 +24,7 @@ public class AttackEvent extends Event {
 	public Player attackerPlayer;
 	public Player defenderPlayer;
 	public Arrow arrow;
+	public Fireball fireball;
 	public LivingEntity pet;
 	private final Map<PitEnchant, Integer> attackerEnchantMap;
 	private final Map<PitEnchant, Integer> defenderEnchantMap;
@@ -48,9 +49,11 @@ public class AttackEvent extends Event {
 		}
 
 		if(event.getDamager() instanceof Arrow) {
-			arrow = (Arrow) event.getDamager();
+			this.arrow = (Arrow) event.getDamager();
+		} else if(event.getDamager() instanceof Fireball) {
+			this.fireball = (Fireball) event.getDamager();
 		} else if(event.getDamager() instanceof Slime) {
-			pet = (LivingEntity) event.getDamager();
+			this.pet = (LivingEntity) event.getDamager();
 		}
 	}
 

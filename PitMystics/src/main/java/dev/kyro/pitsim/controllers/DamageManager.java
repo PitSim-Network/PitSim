@@ -160,18 +160,17 @@ public class DamageManager implements Listener {
 
 		AttackEvent.Pre preEvent = null;
 		if(event.getDamager() instanceof Slime) {
-
 			preEvent = new AttackEvent.Pre(event, new HashMap<>(), defenderEnchantMap, fakeHit);
-		} else if(event.getDamager() instanceof LivingEntity) {
-
-			preEvent = new AttackEvent.Pre(event, EnchantManager.getEnchantsOnPlayer(attacker), defenderEnchantMap, fakeHit);
 		} else if(event.getDamager() instanceof Arrow) {
 
 			for(Map.Entry<EntityShootBowEvent, Map<PitEnchant, Integer>> entry : arrowMap.entrySet()) {
-
 				if(!entry.getKey().getProjectile().equals(event.getDamager())) continue;
 				preEvent = new AttackEvent.Pre(event, arrowMap.get(entry.getKey()), defenderEnchantMap, fakeHit);
 			}
+		} else if(event.getDamager() instanceof Fireball) {
+			preEvent = new AttackEvent.Pre(event, new HashMap<>(), defenderEnchantMap, fakeHit);
+		} else if(event.getDamager() instanceof LivingEntity) {
+			preEvent = new AttackEvent.Pre(event, EnchantManager.getEnchantsOnPlayer(attacker), defenderEnchantMap, fakeHit);
 		}
 		if(preEvent == null) return;
 
@@ -243,6 +242,7 @@ public class DamageManager implements Listener {
 	public static LivingEntity getAttacker(Entity damager) {
 
 		if(damager instanceof Arrow) return (LivingEntity) ((Arrow) damager).getShooter();
+		if(damager instanceof Fireball) return (LivingEntity) ((Fireball) damager).getShooter();
 		if(damager instanceof Slime) return PitBlob.getOwner((Slime) damager);
 		if(damager instanceof LivingEntity) return (LivingEntity) damager;
 
