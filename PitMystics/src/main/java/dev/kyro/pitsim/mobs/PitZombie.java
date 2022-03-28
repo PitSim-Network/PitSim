@@ -7,6 +7,7 @@ import org.bukkit.Location;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Zombie;
+import org.bukkit.inventory.ItemStack;
 
 public class PitZombie extends PitMob {
 	public static PitZombie INSTANCE;
@@ -25,6 +26,9 @@ public class PitZombie extends PitMob {
 //		zombie.setCustomName(displayName);
 		zombie.setCustomNameVisible(false);
 		zombie.setRemoveWhenFarAway(false);
+		zombie.setBaby(false);
+		zombie.setVillager(false);
+		zombie.getEquipment().setArmorContents(new ItemStack[4]);
 		MobManager.makeTag(zombie, displayName);
 		return zombie;
 	}

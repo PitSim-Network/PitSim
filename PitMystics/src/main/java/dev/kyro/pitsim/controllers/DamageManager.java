@@ -304,7 +304,7 @@ public class DamageManager implements Listener {
 
 //			TODO: THIS IS NOT GOOD CODING
 				boolean realCheck = Bukkit.getOnlinePlayers().contains(dead);
-				if(killingNon == null && realCheck && killType != KillType.DEATH) {
+				if(killingNon == null && realCheck && killType != KillType.DEATH && killerIsPlayer) {
 					if(killer != dead && !isNaked(dead)) {
 						if(killEvent.isLuckyKill) pitKiller.playerKills += killEvent.playerKillWorth * 3;
 						else pitKiller.playerKills += killEvent.playerKillWorth;

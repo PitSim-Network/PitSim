@@ -9,7 +9,7 @@ import java.util.Arrays;
 import java.util.List;
 
 public enum SubLevel {
-	ZOMBIE_CAVE(1, 50, new Location(Bukkit.getWorld("darkzone"), 0, 71, 0), 25, Arrays.asList(PitZombie.class, PitSkeleton.class));
+	ZOMBIE_CAVE(1, 50, new Location(Bukkit.getWorld("darkzone"), 56, 53, -95), 25, Arrays.asList(PitZombie.class, PitSkeleton.class));
 //	CHARGED_CREEPER,
 //	SKELETON,
 //	MAGMA_CUBE,

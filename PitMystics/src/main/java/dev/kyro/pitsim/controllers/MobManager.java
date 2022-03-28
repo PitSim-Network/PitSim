@@ -3,10 +3,12 @@ package dev.kyro.pitsim.controllers;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.controllers.objects.PitMob;
 import dev.kyro.pitsim.enums.SubLevel;
+import dev.kyro.pitsim.events.AttackEvent;
 import dev.kyro.pitsim.events.KillEvent;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
@@ -55,18 +57,38 @@ public class MobManager implements Listener {
 						Class[] cArg = new Class[1];
 						cArg[0] = Location.class;
 
-						Location loc = new Location(Bukkit.getWorld("darkzone"), xLoc, level.middle.getY(), zLoc);
+						Location loc = new Location(Bukkit.getWorld("darkzone"), xLoc + level.middle.getX() + 0.5, level.middle.getY(), zLoc + level.middle.getZ() + 0.5);
+						while(loc.getBlock().getType() != Material.AIR) {
+							loc.setY(loc.getY() + 1);
+							if(loc.getY() >= level.middle.getY() + 10) continue;
+						}
 
 						randMob = (PitMob) randClass.getDeclaredConstructor(cArg).newInstance(loc);
 						System.out.println(randMob);
 
 						randMob = (PitMob) randClass.newInstance();
-					} catch(InstantiationException | IllegalAccessException | NoSuchMethodException | InvocationTargetException e) {
-						e.printStackTrace();
+					} catch(InstantiationException | IllegalAccessException | NoSuchMethodException | InvocationTargetException ignored) {
 					}
 				}
 			}
 		}.runTaskTimer(PitSim.INSTANCE, 10, 10);
+
+		new BukkitRunnable() {
+			@Override
+			public void run() {
+				List<PitMob> toRemove = new ArrayList<>();
+				for(PitMob mob : mobs) {
+					if(mob.entity.isDead()) {
+						nameTags.get(mob.entity).remove();
+						toRemove.add(mob);
+					}
+				}
+				for(PitMob pitMob : toRemove) {
+					mobs.remove(pitMob);
+				}
+			}
+
+		}.runTaskTimer(PitSim.INSTANCE, 20 * 5, 20 * 5);
 
 	}
 
@@ -81,6 +103,7 @@ public class MobManager implements Listener {
 		stand.setSmall(true);
 		mob.setPassenger(stand);
 		stand.setCustomName(ChatColor.translateAlternateColorCodes('&', name));
+
 		nameTags.put(mob, stand);
 
 //		nameTags.put(mob, stand);
@@ -89,12 +112,24 @@ public class MobManager implements Listener {
 	@EventHandler
 	public void onKill(KillEvent event) {
 		if(event.deadIsPlayer) return;
-
+		List<PitMob> toRemove = new ArrayList<>();
 		for(PitMob mob : mobs) {
 			if(mob.entity == event.dead) {
 				nameTags.get(event.dead).remove();
-				mobs.remove(mob);
+				toRemove.add(mob);
 			}
+		}
+		for(PitMob pitMob : toRemove) {
+			mobs.remove(pitMob);
+		}
+	}
+
+	@EventHandler(priority = EventPriority.HIGHEST)
+	public void onHit(AttackEvent.Pre event) {
+		if(!(event.defender instanceof ArmorStand)) return;
+
+		for(ArmorStand value : nameTags.values()) {
+			if(event.defender == value) event.setCancelled(true);
 		}
 	}
 

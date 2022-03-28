@@ -7,6 +7,7 @@ import org.bukkit.Location;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Skeleton;
+import org.bukkit.inventory.ItemStack;
 
 public class PitSkeleton extends PitMob {
 
@@ -24,7 +25,7 @@ public class PitSkeleton extends PitMob {
 		skeleton.setMaxHealth(50);
 		skeleton.setHealth(50);
 		skeleton.setRemoveWhenFarAway(false);
-
+		skeleton.getEquipment().setArmorContents(new ItemStack[4]);
 		skeleton.setCustomNameVisible(false);
 		MobManager.makeTag(skeleton, displayName);
 		return skeleton;
