@@ -7,6 +7,10 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.event.Listener;
+import org.bukkit.inventory.ItemStack;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public abstract class PitMob implements Listener {
 
@@ -30,16 +34,18 @@ public abstract class PitMob implements Listener {
 
 	public abstract LivingEntity spawnMob(Location spawnLoc);
 
+	public abstract Map<ItemStack, Integer> getDrops();
+
 	public static boolean isPitMob(LivingEntity entity) {
 		for(PitMob mob : MobManager.mobs) {
-			if(mob.entity == entity) return true;
+			if(mob.entity.getUniqueId().equals(entity.getUniqueId())) return true;
 		}
 		return false;
 	}
 
 	public static PitMob getPitMob(LivingEntity entity) {
 		for(PitMob mob : MobManager.mobs) {
-			if(mob.entity == entity) return mob;
+			if(mob.entity.getUniqueId().equals(entity.getUniqueId())) return mob;
 		}
 		return null;
 	}

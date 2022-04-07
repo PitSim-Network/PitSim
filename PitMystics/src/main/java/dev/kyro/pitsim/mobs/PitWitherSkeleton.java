@@ -8,6 +8,9 @@ import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Skeleton;
 import org.bukkit.entity.WitherSkeleton;
+import org.bukkit.inventory.ItemStack;
+
+import java.util.Map;
 
 public class PitWitherSkeleton extends PitMob {
 
@@ -26,5 +29,10 @@ public class PitWitherSkeleton extends PitMob {
 		witherSkeleton.setCustomNameVisible(false);
 		MobManager.makeTag(witherSkeleton, displayName);
 		return witherSkeleton;
+	}
+
+	@Override
+	public Map<ItemStack, Integer> getDrops() {
+		return null;
 	}
 }

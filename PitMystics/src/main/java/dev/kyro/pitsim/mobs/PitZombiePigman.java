@@ -7,6 +7,9 @@ import org.bukkit.Location;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.PigZombie;
+import org.bukkit.inventory.ItemStack;
+
+import java.util.Map;
 
 public class PitZombiePigman extends PitMob {
 
@@ -24,5 +27,10 @@ public class PitZombiePigman extends PitMob {
 		zombiePigman.setCustomNameVisible(false);
 		MobManager.makeTag(zombiePigman, displayName);
 		return zombiePigman;
+	}
+
+	@Override
+	public Map<ItemStack, Integer> getDrops() {
+		return null;
 	}
 }

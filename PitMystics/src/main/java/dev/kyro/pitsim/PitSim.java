@@ -55,7 +55,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-public class PitSim extends JavaPlugin {
+public
+class PitSim extends JavaPlugin {
 	public static double version = 2.0;
 
 	public static LuckPerms LUCKPERMS;

@@ -7,6 +7,9 @@ import org.bukkit.Location;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Spider;
+import org.bukkit.inventory.ItemStack;
+
+import java.util.Map;
 
 public class PitSpider extends PitMob {
 
@@ -24,5 +27,10 @@ public class PitSpider extends PitMob {
 		spider.setCustomNameVisible(false);
 		MobManager.makeTag(spider, displayName);
 		return spider;
+	}
+
+	@Override
+	public Map<ItemStack, Integer> getDrops() {
+		return null;
 	}
 }

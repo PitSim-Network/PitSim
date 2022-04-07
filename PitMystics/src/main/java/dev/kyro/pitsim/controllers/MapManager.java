@@ -4,6 +4,7 @@ import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.controllers.objects.PitMap;
 import dev.kyro.pitsim.misc.Misc;
+import dev.kyro.pitsim.misc.SchematicPaste;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
@@ -11,6 +12,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 import org.bukkit.scheduler.BukkitRunnable;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,7 +27,7 @@ public class MapManager implements Listener {
 		new BukkitRunnable() {
 			@Override
 			public void run() {
-				disableMultiLobbies(true);
+//				disableMultiLobbies(true);
 			}
 		}.runTaskLater(PitSim.INSTANCE, 20L);
 		new BukkitRunnable() {
@@ -39,7 +41,7 @@ public class MapManager implements Listener {
 				boolean chaos = BoosterManager.getBooster("chaos").minutes > 0;
 				if(multiLobbies) {
 					if(chaos) return;
-					if(count % (60 * 10) == 0 && players < ENABLE_THRESHOLD) disableMultiLobbies(false);
+//					if(count % (60 * 10) == 0 && players < ENABLE_THRESHOLD) disableMultiLobbies(false);
 				} else {
 					if(players >= ENABLE_THRESHOLD || chaos) enableMultiLobbies();
 				}
@@ -48,6 +50,7 @@ public class MapManager implements Listener {
 	}
 
 	public static void onStart() {
+		enableMultiLobbies();
 		for(Player onlinePlayer : Bukkit.getOnlinePlayers()) {
 			onlinePlayer.teleport(currentMap.getSpawn(currentMap.firstLobby));
 		}
@@ -118,7 +121,7 @@ public class MapManager implements Listener {
 	}
 
 	public static void enablePortal(World lobby) {
-//		SchematicPaste.loadSchematic(new File("plugins/WorldEdit/schematics/doorOpen.schematic"), new Location(lobby, -67, 72, 3));
+		SchematicPaste.loadSchematic(new File("plugins/WorldEdit/schematics/doorOpen.schematic"), new Location(lobby, -67, 72, 3));
 	}
 
 	public static void disablePortal(World lobby) {
