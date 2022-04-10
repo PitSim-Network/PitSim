@@ -10,10 +10,12 @@ repositories {
     mavenCentral()
     mavenLocal()
     maven { url 'https://m2.dv8tion.net/releases' }
+    maven { url 'https://hub.spigotmc.org/nexus/content/repositories/snapshots/' }
 }
 
 dependencies {
-    compileOnly 'org.bukkit:craftbukkit:1.8.8-R0.1-SNAPSHOT'
+    compileOnly 'org.spigotmc:spigot-api:1.8.8-R0.1-SNAPSHOT'
+//    compileOnly 'org.bukkit:craftbukkit:1.8.8-R0.1-SNAPSHOT'
     compile group: 'org.slf4j', name: 'slf4j-log4j12', version: '1.7.29'
     compile ('net.dv8tion:JDA:4.2.1_262') {
         exclude module: 'opus-java'
@@ -41,8 +43,9 @@ repositories {
 }
 
 dependencies {
+    compileOnly 'org.spigotmc:spigot-api:1.8.8-R0.1-SNAPSHOT'
     compileOnly 'org.jetbrains:annotations:20.1.0'
-    compileOnly 'org.bukkit:craftbukkit:1.8.8-R0.1-SNAPSHOT'
+//    compileOnly 'org.bukkit:craftbukkit:1.8.8-R0.1-SNAPSHOT'
     compileOnly 'net.citizensnpcs:citizens-main:2.0.24-SNAPSHOT'
     compileOnly "com.github.MilkBowl:VaultAPI:1.7"
 

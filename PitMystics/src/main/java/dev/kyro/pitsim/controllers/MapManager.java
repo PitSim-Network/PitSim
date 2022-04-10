@@ -5,18 +5,12 @@ import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.controllers.objects.PitMap;
 import dev.kyro.pitsim.misc.Misc;
 import dev.kyro.pitsim.misc.SchematicPaste;
-import dev.kyro.pitsim.pitmaps.BiomesMap;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
-import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.entity.EntityPortalEvent;
-import org.bukkit.event.player.PlayerPortalEvent;
-import org.bukkit.event.player.PlayerTeleportEvent;
 import org.bukkit.scheduler.BukkitRunnable;
-import org.bukkit.util.Vector;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -33,7 +27,7 @@ public class MapManager implements Listener {
 		new BukkitRunnable() {
 			@Override
 			public void run() {
-				disableMultiLobbies(true);
+//				disableMultiLobbies(true);
 			}
 		}.runTaskLater(PitSim.INSTANCE, 20L);
 		new BukkitRunnable() {
@@ -47,7 +41,7 @@ public class MapManager implements Listener {
 				boolean chaos = BoosterManager.getBooster("chaos").minutes > 0;
 				if(multiLobbies) {
 					if(chaos) return;
-					if(count % (60 * 10) == 0 && players < ENABLE_THRESHOLD) disableMultiLobbies(false);
+//					if(count % (60 * 10) == 0 && players < ENABLE_THRESHOLD) disableMultiLobbies(false);
 				} else {
 					if(players >= ENABLE_THRESHOLD || chaos) enableMultiLobbies();
 				}
@@ -56,6 +50,7 @@ public class MapManager implements Listener {
 	}
 
 	public static void onStart() {
+		enableMultiLobbies();
 		for(Player onlinePlayer : Bukkit.getOnlinePlayers()) {
 			onlinePlayer.teleport(currentMap.getSpawn(currentMap.firstLobby));
 		}
@@ -68,30 +63,30 @@ public class MapManager implements Listener {
 
 	public static Location playerSnow = new org.bukkit.Location(Bukkit.getWorld("pit"), -99, 46, 707, 0, 0);
 
-	@EventHandler
-	public void onPortal(EntityPortalEvent event) {
-		if(event.getEntity() instanceof Player) return;
-		event.setCancelled(true);
-	}
-
-	@EventHandler
-	public void onPortal(PlayerPortalEvent event) {
-		if(currentMap.getClass() != BiomesMap.class || event.getCause() != PlayerTeleportEvent.TeleportCause.NETHER_PORTAL)
-			return;
-		event.setCancelled(true);
-		Player player = event.getPlayer();
-		Location playerLoc = player.getLocation();
-
-		Location teleportLoc = playerLoc.clone();
-		teleportLoc.setWorld(MapManager.currentMap.getRandomOrFirst(player.getWorld()));
-		if(teleportLoc.getYaw() > 0 || teleportLoc.getYaw() < -180) teleportLoc.setYaw(-teleportLoc.getYaw());
-		teleportLoc.add(3, 0, 0);
-		teleportLoc.setY(72);
-
-		player.teleport(teleportLoc);
-		player.setVelocity(new Vector(1.5, 1, 0));
-		AOutput.send(player, "&7You have connected to lobby &6" + (MapManager.currentMap.getLobbyIndex(teleportLoc.getWorld()) + 1));
-	}
+//	@EventHandler
+//	public void onPortal(EntityPortalEvent event) {
+//		if(event.getEntity() instanceof Player) return;
+//		event.setCancelled(true);
+//	}
+//
+//	@EventHandler
+//	public void onPortal(PlayerPortalEvent event) {
+//		if(currentMap.getClass() != BiomesMap.class || event.getCause() != PlayerTeleportEvent.TeleportCause.NETHER_PORTAL)
+//			return;
+//		event.setCancelled(true);
+//		Player player = event.getPlayer();
+//		Location playerLoc = player.getLocation();
+//
+//		Location teleportLoc = playerLoc.clone();
+//		teleportLoc.setWorld(MapManager.currentMap.getRandomOrFirst(player.getWorld()));
+//		if(teleportLoc.getYaw() > 0 || teleportLoc.getYaw() < -180) teleportLoc.setYaw(-teleportLoc.getYaw());
+//		teleportLoc.add(3, 0, 0);
+//		teleportLoc.setY(72);
+//
+//		player.teleport(teleportLoc);
+//		player.setVelocity(new Vector(1.5, 1, 0));
+//		AOutput.send(player, "&7You have connected to lobby &6" + (MapManager.currentMap.getLobbyIndex(teleportLoc.getWorld()) + 1));
+//	}
 
 	public static void enableMultiLobbies() {
 		System.out.println(multiLobbies);
@@ -130,7 +125,7 @@ public class MapManager implements Listener {
 	}
 
 	public static void disablePortal(World lobby) {
-		SchematicPaste.loadSchematic(new File("plugins/WorldEdit/schematics/doorClosed.schematic"), new Location(lobby, -67, 72, 3));
+//		SchematicPaste.loadSchematic(new File("plugins/WorldEdit/schematics/doorClosed.schematic"), new Location(lobby, -67, 72, 3));
 	}
 
 	public static World getTutorial() {

@@ -55,7 +55,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-public class PitSim extends JavaPlugin {
+public
+class PitSim extends JavaPlugin {
 	public static double version = 2.0;
 
 	public static LuckPerms LUCKPERMS;
@@ -353,6 +354,7 @@ public class PitSim extends JavaPlugin {
 		getServer().getPluginManager().registerEvents(new UpgradeManager(), this);
 		getServer().getPluginManager().registerEvents(new KitManager(), this);
 		getServer().getPluginManager().registerEvents(new MobManager(), this);
+		getServer().getPluginManager().registerEvents(new PortalManager(), this);
 	}
 	public void registerBoosters() {
 		BoosterManager.registerBooster(new XPBooster());

@@ -7,6 +7,9 @@ import org.bukkit.Location;
 import org.bukkit.entity.Creeper;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
+import org.bukkit.inventory.ItemStack;
+
+import java.util.Map;
 
 public class PitCreeper extends PitMob {
 
@@ -24,5 +27,10 @@ public class PitCreeper extends PitMob {
 		creeper.setCustomNameVisible(false);
 		MobManager.makeTag(creeper, displayName);
 		return creeper;
+	}
+
+	@Override
+	public Map<ItemStack, Integer> getDrops() {
+		return null;
 	}
 }

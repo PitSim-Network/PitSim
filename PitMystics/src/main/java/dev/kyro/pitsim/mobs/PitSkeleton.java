@@ -1,13 +1,19 @@
 package dev.kyro.pitsim.mobs;
 
+import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.controllers.MobManager;
 import dev.kyro.pitsim.controllers.objects.PitMob;
 import dev.kyro.pitsim.enums.MobType;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Skeleton;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.scheduler.BukkitRunnable;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class PitSkeleton extends PitMob {
 
@@ -25,9 +31,20 @@ public class PitSkeleton extends PitMob {
 		skeleton.setMaxHealth(50);
 		skeleton.setHealth(50);
 		skeleton.setRemoveWhenFarAway(false);
-		skeleton.getEquipment().setArmorContents(new ItemStack[4]);
 		skeleton.setCustomNameVisible(false);
 		MobManager.makeTag(skeleton, displayName);
+		new BukkitRunnable() {
+			@Override
+			public void run() {
+				skeleton.getEquipment().clear();
+			}
+		}.runTaskLater(PitSim.INSTANCE, 2);
+
 		return skeleton;
+	}
+
+	@Override
+	public Map<ItemStack, Integer> getDrops() {
+		return new HashMap<>();
 	}
 }

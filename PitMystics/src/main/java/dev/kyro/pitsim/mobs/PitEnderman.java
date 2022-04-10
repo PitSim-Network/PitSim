@@ -7,6 +7,9 @@ import org.bukkit.Location;
 import org.bukkit.entity.Enderman;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
+import org.bukkit.inventory.ItemStack;
+
+import java.util.Map;
 
 public class PitEnderman extends PitMob {
 
@@ -24,5 +27,10 @@ public class PitEnderman extends PitMob {
 		enderman.setCustomNameVisible(false);
 		MobManager.makeTag(enderman, displayName);
 		return enderman;
+	}
+
+	@Override
+	public Map<ItemStack, Integer> getDrops() {
+		return null;
 	}
 }

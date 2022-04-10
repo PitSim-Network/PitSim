@@ -1,22 +1,25 @@
 package dev.kyro.pitsim.controllers;
 
 import dev.kyro.pitsim.PitSim;
+import dev.kyro.pitsim.controllers.objects.Non;
 import dev.kyro.pitsim.controllers.objects.PitMob;
 import dev.kyro.pitsim.enums.SubLevel;
 import dev.kyro.pitsim.events.AttackEvent;
 import dev.kyro.pitsim.events.KillEvent;
+import net.minecraft.server.v1_8_R3.EntityItem;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.entity.ArmorStand;
-import org.bukkit.entity.EntityType;
-import org.bukkit.entity.LivingEntity;
+import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.entity.EntityPickupItemEvent;
+import org.bukkit.event.inventory.EquipmentSetEvent;
 import org.bukkit.event.player.PlayerArmorStandManipulateEvent;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.lang.reflect.InvocationTargetException;
@@ -24,7 +27,7 @@ import java.util.*;
 
 public class MobManager implements Listener {
 	public static List<PitMob> mobs = new ArrayList<>();
-	public static Map<LivingEntity, ArmorStand> nameTags = new HashMap<>();
+	public static Map<UUID, ArmorStand> nameTags = new HashMap<>();
 	public static Map<ArmorStand, Location> locs = new HashMap<>();
 	public static Map<ArmorStand, Location> oldLocs = new HashMap<>();
 
@@ -35,6 +38,8 @@ public class MobManager implements Listener {
 			@Override
 			public void run() {
 				for(SubLevel level : SubLevel.values()) {
+
+
 					int currentMobs = 0;
 					for(PitMob mob : mobs) {
 						if(mob.subLevel == level.level) currentMobs++;
@@ -51,7 +56,6 @@ public class MobManager implements Listener {
 
 					Random rand = new Random();
 					Class randClass = level.mobs.get(rand.nextInt(level.mobs.size()));
-					PitMob randMob = null;
 					try {
 
 						Class[] cArg = new Class[1];
@@ -63,10 +67,9 @@ public class MobManager implements Listener {
 							if(loc.getY() >= level.middle.getY() + 10) continue;
 						}
 
-						randMob = (PitMob) randClass.getDeclaredConstructor(cArg).newInstance(loc);
-						System.out.println(randMob);
+						randClass.getDeclaredConstructor(cArg).newInstance(loc);
 
-						randMob = (PitMob) randClass.newInstance();
+//						randMob = (PitMob) randClass.newInstance();
 					} catch(InstantiationException | IllegalAccessException | NoSuchMethodException | InvocationTargetException ignored) {
 					}
 				}
@@ -79,7 +82,7 @@ public class MobManager implements Listener {
 				List<PitMob> toRemove = new ArrayList<>();
 				for(PitMob mob : mobs) {
 					if(mob.entity.isDead()) {
-						nameTags.get(mob.entity).remove();
+						nameTags.get(mob.entity.getUniqueId()).remove();
 						toRemove.add(mob);
 					}
 				}
@@ -89,6 +92,13 @@ public class MobManager implements Listener {
 			}
 
 		}.runTaskTimer(PitSim.INSTANCE, 20 * 5, 20 * 5);
+
+		new BukkitRunnable() {
+			@Override
+			public void run() {
+				clearMobs();
+			}
+		}.runTaskLater(PitSim.INSTANCE, 10);
 	}
 
 	public static void makeTag(LivingEntity mob, String name) {
@@ -103,24 +113,45 @@ public class MobManager implements Listener {
 		mob.setPassenger(stand);
 		stand.setCustomName(ChatColor.translateAlternateColorCodes('&', name));
 
-		nameTags.put(mob, stand);
+		nameTags.put(mob.getUniqueId(), stand);
 
 //		nameTags.put(mob, stand);
 	}
 
-	@EventHandler
+	@EventHandler(priority = EventPriority.LOW)
 	public void onKill(KillEvent event) {
 		if(event.deadIsPlayer) return;
+		clearMobs();
 		List<PitMob> toRemove = new ArrayList<>();
 		for(PitMob mob : mobs) {
-			if(mob.entity == event.dead) {
-				nameTags.get(event.dead).remove();
+			if(mob.entity.getUniqueId().equals(event.dead.getUniqueId())) {
+				for (Entity entity : Bukkit.getWorld("darkzone").getEntities()) {
+					if(entity.getUniqueId().equals(nameTags.get(mob.entity.getUniqueId()).getUniqueId())) {
+						entity.remove();
+					}
+				}
 				toRemove.add(mob);
+
+				Map<ItemStack, Integer> drops = mob.getDrops();
+				for (Map.Entry<ItemStack, Integer> entry : drops.entrySet()) {
+					Random r = new Random();
+					int low = 1;
+					int high = 100;
+					int result = r.nextInt(high-low) + low;
+
+					if(result > entry.getValue()) continue;
+					event.dead.getWorld().dropItemNaturally(event.dead.getLocation(), entry.getKey());
+				}
 			}
 		}
-		for(PitMob pitMob : toRemove) {
-			mobs.remove(pitMob);
-		}
+		new BukkitRunnable() {
+			@Override
+			public void run() {
+				for(PitMob pitMob : toRemove) {
+					mobs.remove(pitMob);
+				}
+			}
+		}.runTaskLater(PitSim.INSTANCE, 1);
 	}
 
 	@EventHandler(priority = EventPriority.HIGHEST)
@@ -128,16 +159,19 @@ public class MobManager implements Listener {
 		if(!(event.defender instanceof ArmorStand)) return;
 
 		for(ArmorStand value : nameTags.values()) {
-			if(event.defender == value) event.setCancelled(true);
+			if(event.defender.getUniqueId().equals(value.getUniqueId())) event.setCancelled(true);
 		}
 	}
 
 	@EventHandler(priority = EventPriority.HIGHEST)
 	public void onHit(EntityDamageByEntityEvent event) {
+		if(NonManager.getNon((LivingEntity) event.getDamager()) != null) return;
+
 		if(!(event.getEntity() instanceof ArmorStand)) return;
 
+
 		for(ArmorStand value : nameTags.values()) {
-			if(event.getEntity() == value) event.setCancelled(true);
+			if(event.getEntity().getUniqueId().equals(value.getUniqueId())) event.setCancelled(true);
 		}
 	}
 
@@ -146,9 +180,33 @@ public class MobManager implements Listener {
 		if(event.getRightClicked() == null) return;
 
 		for(ArmorStand value : nameTags.values()) {
-			if(event.getRightClicked() == value) event.setCancelled(true);
+			if(event.getRightClicked().getUniqueId().equals(value.getUniqueId())) event.setCancelled(true);
 		}
 	}
+
+	@EventHandler
+	public void onPickup(EntityPickupItemEvent event) {
+		if(event.getEntity() instanceof Player) return;
+		event.setCancelled(true);
+	}
+
+	public static void clearMobs() {
+		main:
+		for (Entity entity : Bukkit.getWorld("darkzone").getEntities()) {
+
+			if(entity instanceof Player) continue;
+			for (PitMob mob : mobs) {
+				if(mob.entity.getUniqueId().equals(entity.getUniqueId())) continue main;
+				if(nameTags.get(mob.entity.getUniqueId()).getUniqueId().equals(entity.getUniqueId())) continue main;
+			}
+			if(entity instanceof Item) continue;
+			if(entity instanceof Arrow) continue;
+
+			entity.remove();
+		}
+	}
+
+
 
 
 }

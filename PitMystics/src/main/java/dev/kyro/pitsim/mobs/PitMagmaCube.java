@@ -7,6 +7,9 @@ import org.bukkit.Location;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.MagmaCube;
+import org.bukkit.inventory.ItemStack;
+
+import java.util.Map;
 
 public class PitMagmaCube extends PitMob {
 
@@ -24,5 +27,10 @@ public class PitMagmaCube extends PitMob {
 		magmaCube.setCustomNameVisible(false);
 		MobManager.makeTag(magmaCube, displayName);
 		return magmaCube;
+	}
+
+	@Override
+	public Map<ItemStack, Integer> getDrops() {
+		return null;
 	}
 }
