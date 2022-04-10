@@ -86,7 +86,6 @@ public class Telebow extends PitEnchant {
 		Cooldown cooldown = getCooldown(player, getCooldown(enchantLvl) * 20);
 		if(cooldown.isOnCooldown()) {
 
-
 			if(player.isSneaking())
 				Misc.sendActionBar(player, "&eTelebow: &c" + cooldown.getTicksLeft() / 20 + "&cs cooldown!");
 
