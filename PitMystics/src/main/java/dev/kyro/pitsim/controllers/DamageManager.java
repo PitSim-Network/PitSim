@@ -341,7 +341,7 @@ public class DamageManager implements Listener {
 		else if(killType != KillType.DEATH) kill = PlaceholderAPI.setPlaceholders(killEvent.deadPlayer, "&a&lKILL!&7 on %luckperms_prefix%" + (deadNon == null ? "%player_name%" : deadNon.displayName)
 				+ " &b+" + killEvent.getFinalXp() + "XP" + " &6+" + df.format(killEvent.getFinalGold()) + "g");
 		String death;
-		if(!killerIsPlayer) death = ChatColor.translateAlternateColorCodes('&', "&c&lDEATH! &7by " + PitMob.getPitMob(killer).displayName);
+		if(!killerIsPlayer) death = ChatColor.translateAlternateColorCodes('&', "&c&lDEATH!");
 		else if(killType == KillType.DEFAULT) death = PlaceholderAPI.setPlaceholders(killEvent.killerPlayer, "&c&lDEATH! &7by %luckperms_prefix%" + (killingNon == null ? "%player_name%" : killingNon.displayName));
 		else death = "&c&lDEATH!";
 		String killActionBar = null;

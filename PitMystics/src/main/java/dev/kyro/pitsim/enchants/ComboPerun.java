@@ -10,6 +10,7 @@ import dev.kyro.pitsim.events.AttackEvent;
 import dev.kyro.pitsim.misc.Misc;
 import org.bukkit.Material;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.block.BlockIgniteEvent;
 
 import java.util.List;
 
@@ -62,6 +63,11 @@ public class ComboPerun extends PitEnchant {
 		}
 
 		Misc.strikeLightningForPlayers(attackEvent.defender.getLocation(), 10);
+	}
+
+	@EventHandler
+	public void onIgnite(BlockIgniteEvent event) {
+		if(event.getCause() == BlockIgniteEvent.IgniteCause.LIGHTNING) event.setCancelled(true);
 	}
 
 	@Override

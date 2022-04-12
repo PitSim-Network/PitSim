@@ -2,6 +2,7 @@ package dev.kyro.pitsim;
 
 import com.comphenix.protocol.ProtocolLibrary;
 import com.comphenix.protocol.ProtocolManager;
+import com.gmail.filoghost.holographicdisplays.api.Hologram;
 import com.mattmalec.pterodactyl4j.PteroBuilder;
 import com.mattmalec.pterodactyl4j.client.entities.PteroClient;
 import com.xxmicloxx.NoteBlockAPI.songplayer.EntitySongPlayer;
@@ -41,10 +42,14 @@ import dev.kyro.pitsim.tutorial.objects.Tutorial;
 import dev.kyro.pitsim.upgrades.*;
 import net.citizensnpcs.api.CitizensAPI;
 import net.citizensnpcs.api.npc.NPC;
+import net.kyori.adventure.platform.bukkit.BukkitAudiences;
 import net.luckperms.api.LuckPerms;
 import net.milkbowl.vault.economy.Economy;
 import org.bukkit.Bukkit;
+import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Player;
+import org.bukkit.entity.Villager;
+import org.bukkit.entity.Wither;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.RegisteredServiceProvider;
@@ -63,6 +68,7 @@ class PitSim extends JavaPlugin {
 	public static PitSim INSTANCE;
 	public static Economy VAULT = null;
 	public static ProtocolManager PROTOCOL_MANAGER = null;
+	public static BukkitAudiences adventure;
 
 	public static AData playerList;
 
@@ -74,6 +80,9 @@ class PitSim extends JavaPlugin {
 		INSTANCE = this;
 
 		loadConfig();
+		adventure = BukkitAudiences.create(this);
+		BossManager.onStart();
+		TaintedWell.onStart();
 
 		ArcticAPI.configInit(this, "prefix", "error-prefix");
 		playerList = new AData("player-list", "", false);
@@ -148,6 +157,7 @@ class PitSim extends JavaPlugin {
 		AHook.registerPlaceholder(new GuildPlaceholder10());
 		AHook.registerPlaceholder(new PrestigeLevelPlaceholder());
 		AHook.registerPlaceholder(new PrestigePlaceholder());
+		AHook.registerPlaceholder(new ZombieCavePlaceholder());
 		new LeaderboardPlaceholders().register();
 
 		CooldownManager.init();
@@ -164,11 +174,27 @@ class PitSim extends JavaPlugin {
 	@Override
 	public void onDisable() {
 
+		for (Wither value : BossBar.withers.values()) {
+			value.remove();
+		}
+
 		for(PitMob mob : MobManager.mobs) {
 			MobManager.nameTags.get(mob.entity).remove();
 			mob.entity.remove();
 		}
 
+		if(this.adventure != null) {
+			this.adventure.close();
+			this.adventure = null;
+		}
+
+		for (Hologram hologram : BossManager.holograms) {
+			hologram.delete();
+		}
+
+		for (Villager villager : BossManager.clickables.values()) {
+			villager.remove();
+		}
 
 		for(Tutorial value : TutorialManager.tutorials.values()) {
 			value.cleanUp();
@@ -234,6 +260,10 @@ class PitSim extends JavaPlugin {
 		PerkManager.registerKillstreak(new Spongesteve());
 		PerkManager.registerKillstreak(new GoldStack());
 		PerkManager.registerKillstreak(new Shockwave());
+	}
+
+	private void registerBosses() {
+
 	}
 
 	private void registerMegastreaks() {
@@ -355,6 +385,8 @@ class PitSim extends JavaPlugin {
 		getServer().getPluginManager().registerEvents(new KitManager(), this);
 		getServer().getPluginManager().registerEvents(new MobManager(), this);
 		getServer().getPluginManager().registerEvents(new PortalManager(), this);
+		getServer().getPluginManager().registerEvents(new BossManager(), this);
+		getServer().getPluginManager().registerEvents(new BossBar(), this);
 	}
 	public void registerBoosters() {
 		BoosterManager.registerBooster(new XPBooster());

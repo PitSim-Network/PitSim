@@ -2,6 +2,7 @@ package dev.kyro.pitsim.enchants;
 
 import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.pitsim.PitSim;
+import dev.kyro.pitsim.controllers.BossManager;
 import dev.kyro.pitsim.controllers.HopperManager;
 import dev.kyro.pitsim.controllers.NonManager;
 import dev.kyro.pitsim.controllers.UpgradeManager;
@@ -10,6 +11,8 @@ import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.enums.ApplyType;
 import dev.kyro.pitsim.events.AttackEvent;
 import dev.kyro.pitsim.misc.Sounds;
+import net.citizensnpcs.api.CitizensAPI;
+import net.citizensnpcs.api.npc.NPC;
 import org.bukkit.event.EventHandler;
 
 import java.text.DecimalFormat;
@@ -43,9 +46,11 @@ public class Billionaire extends PitEnchant {
 			goldCost = goldCost - (int) ((UpgradeManager.getTier(attackEvent.attackerPlayer, "TAX_EVASION") * 0.05) * goldCost);
 		}
 
-		double finalBalance = PitSim.VAULT.getBalance(attackEvent.attackerPlayer) - goldCost;
-		if(finalBalance < 0) return;
-		PitSim.VAULT.withdrawPlayer(attackEvent.attackerPlayer, goldCost);
+		if(!BossManager.bosses.containsKey(CitizensAPI.getNPCRegistry().getNPC(attackEvent.attacker))) {
+			double finalBalance = PitSim.VAULT.getBalance(attackEvent.attackerPlayer) - goldCost;
+			if(finalBalance < 0) return;
+			PitSim.VAULT.withdrawPlayer(attackEvent.attackerPlayer, goldCost);
+		}
 
 		PitPlayer pitPlayer = PitPlayer.getPitPlayer(attackEvent.attackerPlayer);
 		if(pitPlayer.stats != null) pitPlayer.stats.billionaire += goldCost;

@@ -37,6 +37,7 @@ public class MobManager implements Listener {
 
 			@Override
 			public void run() {
+				clearMobs();
 				for(SubLevel level : SubLevel.values()) {
 
 
@@ -73,6 +74,24 @@ public class MobManager implements Listener {
 					} catch(InstantiationException | IllegalAccessException | NoSuchMethodException | InvocationTargetException ignored) {
 					}
 				}
+
+				new BukkitRunnable() {
+					@Override
+					public void run() {
+						List<PitMob> toRemove = new ArrayList<>();
+						for (PitMob mob : mobs) {
+							if(mob instanceof Monster && ((Monster) mob.entity).getTarget() == null && mob.entity.getNearbyEntities(2, 2, 2).size() > 1) {
+								nameTags.get(mob.entity.getUniqueId()).remove();
+								mob.entity.remove();
+								toRemove.add(mob);
+							}
+						}
+
+						for (PitMob pitMob : toRemove) {
+							mobs.remove(pitMob);
+						}
+					}
+				}.runTaskTimer(PitSim.INSTANCE, 20 * 60, 20 * 60);
 			}
 		}.runTaskTimer(PitSim.INSTANCE, 10, 10);
 
@@ -156,6 +175,10 @@ public class MobManager implements Listener {
 
 	@EventHandler(priority = EventPriority.HIGHEST)
 	public void onHit(AttackEvent.Pre event) {
+		for (Villager value : BossManager.clickables.values()) {
+			if(event.defender.getUniqueId().equals(value.getUniqueId())) event.setCancelled(true);
+		}
+
 		if(!(event.defender instanceof ArmorStand)) return;
 
 		for(ArmorStand value : nameTags.values()) {
@@ -165,7 +188,12 @@ public class MobManager implements Listener {
 
 	@EventHandler(priority = EventPriority.HIGHEST)
 	public void onHit(EntityDamageByEntityEvent event) {
+		if(event.getDamager() instanceof Arrow) return;
 		if(NonManager.getNon((LivingEntity) event.getDamager()) != null) return;
+
+		for (Villager value : BossManager.clickables.values()) {
+			if(event.getEntity().getUniqueId().equals(value.getUniqueId())) event.setCancelled(true);
+		}
 
 		if(!(event.getEntity() instanceof ArmorStand)) return;
 
@@ -184,12 +212,6 @@ public class MobManager implements Listener {
 		}
 	}
 
-	@EventHandler
-	public void onPickup(EntityPickupItemEvent event) {
-		if(event.getEntity() instanceof Player) return;
-		event.setCancelled(true);
-	}
-
 	public static void clearMobs() {
 		main:
 		for (Entity entity : Bukkit.getWorld("darkzone").getEntities()) {
@@ -199,8 +221,13 @@ public class MobManager implements Listener {
 				if(mob.entity.getUniqueId().equals(entity.getUniqueId())) continue main;
 				if(nameTags.get(mob.entity.getUniqueId()).getUniqueId().equals(entity.getUniqueId())) continue main;
 			}
+
+			if(entity.getUniqueId().equals(TaintedWell.wellStand.getUniqueId())) continue;
 			if(entity instanceof Item) continue;
 			if(entity instanceof Arrow) continue;
+			if(entity instanceof Wither) continue;
+			if(entity instanceof Villager) continue;
+			if(entity instanceof Fireball) continue;
 
 			entity.remove();
 		}

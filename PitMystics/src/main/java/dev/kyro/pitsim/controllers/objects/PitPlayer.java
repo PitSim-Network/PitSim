@@ -20,6 +20,7 @@ import dev.kyro.pitsim.misc.Misc;
 import dev.kyro.pitsim.perks.NoPerk;
 import dev.kyro.pitsim.perks.Thick;
 import me.clip.placeholderapi.PlaceholderAPI;
+import net.citizensnpcs.api.CitizensAPI;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -87,6 +88,8 @@ public class PitPlayer {
 	public PlayerStats stats;
 
 	public void save() {
+		if(BossManager.bosses.containsKey(CitizensAPI.getNPCRegistry().getNPC(player))) return;
+
 		APlayer aPlayer = APlayerData.getPlayerData(player);
 		FileConfiguration playerData = aPlayer.playerData;
 
@@ -110,6 +113,8 @@ public class PitPlayer {
 	}
 
 	public void fullSave() {
+		if(BossManager.bosses.containsKey(CitizensAPI.getNPCRegistry().getNPC(player))) return;
+
 		APlayer aPlayer = APlayerData.getPlayerData(player);
 		FileConfiguration playerData = aPlayer.playerData;
 

@@ -32,6 +32,7 @@ public class PitSkeleton extends PitMob {
 		skeleton.setHealth(50);
 		skeleton.setRemoveWhenFarAway(false);
 		skeleton.setCustomNameVisible(false);
+		skeleton.setCanPickupItems(false);
 		MobManager.makeTag(skeleton, displayName);
 		new BukkitRunnable() {
 			@Override

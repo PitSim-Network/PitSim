@@ -40,6 +40,7 @@ public class PitZombie extends PitMob {
 		zombie.setRemoveWhenFarAway(false);
 		zombie.setBaby(false);
 		zombie.setVillager(false);
+		zombie.setCanPickupItems(false);
 		MobManager.makeTag(zombie, displayName);
 		new BukkitRunnable() {
 			@Override

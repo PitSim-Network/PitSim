@@ -45,6 +45,7 @@ public abstract class PitMob implements Listener {
 
 	public static PitMob getPitMob(LivingEntity entity) {
 		for(PitMob mob : MobManager.mobs) {
+			if(mob.entity == null) return null;
 			if(mob.entity.getUniqueId().equals(entity.getUniqueId())) return mob;
 		}
 		return null;
