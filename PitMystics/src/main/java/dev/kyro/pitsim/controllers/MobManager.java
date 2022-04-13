@@ -7,10 +7,16 @@ import dev.kyro.pitsim.enums.SubLevel;
 import dev.kyro.pitsim.events.AttackEvent;
 import dev.kyro.pitsim.events.KillEvent;
 import net.minecraft.server.v1_8_R3.EntityItem;
+import net.minecraft.server.v1_8_R3.EntityPlayer;
+import net.minecraft.server.v1_8_R3.PacketPlayOutEntity;
+import net.minecraft.server.v1_8_R3.PacketPlayOutEntityEquipment;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.craftbukkit.v1_8_R3.entity.CraftEntity;
+import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
+import org.bukkit.craftbukkit.v1_8_R3.inventory.CraftItemStack;
 import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -223,6 +229,13 @@ public class MobManager implements Listener {
 			}
 
 			if(entity.getUniqueId().equals(TaintedWell.wellStand.getUniqueId())) continue;
+//			if(entity.getUniqueId().equals(TaintedWell.removeStand.getUniqueId())) continue;
+			for (ArmorStand value : TaintedWell.enchantStands.values()) {
+				if(value.getUniqueId().equals(entity.getUniqueId())) continue main;
+			}
+			for (ArmorStand value : TaintedWell.removeStands.values()) {
+				if(value.getUniqueId().equals(entity.getUniqueId())) continue main;
+			}
 			if(entity instanceof Item) continue;
 			if(entity instanceof Arrow) continue;
 			if(entity instanceof Wither) continue;

@@ -26,6 +26,10 @@ public class ATestCommand implements CommandExecutor {
 
 		TaintedWell.onEnchant(player, player.getItemInHand());
 
+		if(args.length > 0) {
+			TaintedWell.onButtonPush(player, false);
+		}
+
 
 //		try {
 //			new ZombieBoss((Player) sender);
