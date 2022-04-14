@@ -212,6 +212,7 @@ public class MobManager implements Listener {
 	@EventHandler
 	public void onEquip(PlayerArmorStandManipulateEvent event) {
 		if(event.getRightClicked() == null) return;
+		event.setCancelled(true);
 
 		for(ArmorStand value : nameTags.values()) {
 			if(event.getRightClicked().getUniqueId().equals(value.getUniqueId())) event.setCancelled(true);
@@ -236,6 +237,10 @@ public class MobManager implements Listener {
 			for (ArmorStand value : TaintedWell.removeStands.values()) {
 				if(value.getUniqueId().equals(entity.getUniqueId())) continue main;
 			}
+			if(entity.getUniqueId().equals(TaintedWell.textLine1.getUniqueId())) continue;
+			if(entity.getUniqueId().equals(TaintedWell.textLine2.getUniqueId())) continue;
+			if(entity.getUniqueId().equals(TaintedWell.textLine3.getUniqueId())) continue;
+			if(entity.getUniqueId().equals(TaintedWell.textLine4.getUniqueId())) continue;
 			if(entity instanceof Item) continue;
 			if(entity instanceof Arrow) continue;
 			if(entity instanceof Wither) continue;
