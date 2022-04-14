@@ -38,6 +38,8 @@ import org.bukkit.inventory.meta.LeatherArmorMeta;
 
 import java.util.*;
 
+import static dev.kyro.pitsim.enums.ApplyType.CHESTPLATES;
+
 public class EnchantManager implements Listener {
 	public static List<PitEnchant> pitEnchants = new ArrayList<>();
 
@@ -602,7 +604,14 @@ public class EnchantManager implements Listener {
 					if(enchantApplyType == ApplyType.WEAPONS || enchantApplyType == ApplyType.BOWS
 							|| enchantApplyType == ApplyType.SWORDS) applicableEnchants.add(pitEnchant);
 					break;
-			}
+				case SCYTHES:
+					if (enchantApplyType == ApplyType.SCYTHES) applicableEnchants.add(pitEnchant);
+					break;
+				case CHESTPLATES:
+					if (enchantApplyType == CHESTPLATES) applicableEnchants.add(pitEnchant);
+					break;
+				}
+
 		}
 		return applicableEnchants;
 	}
@@ -628,7 +637,7 @@ public class EnchantManager implements Listener {
 						applicableEnchants.add(pitEnchant);
 					break;
 				case TAINTED_CHESTPLATE:
-					if(enchantApplyType == ApplyType.CHESTPLATES || enchantApplyType == ApplyType.TAINTED) applicableEnchants.add(pitEnchant);
+					if(enchantApplyType == CHESTPLATES || enchantApplyType == ApplyType.TAINTED) applicableEnchants.add(pitEnchant);
 					break;
 				case TAINTED_SCYTHE:
 					if(enchantApplyType == ApplyType.SCYTHES || enchantApplyType == ApplyType.TAINTED) applicableEnchants.add(pitEnchant);

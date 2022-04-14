@@ -32,8 +32,7 @@ public enum NBTTag {
 	IS_VERY_YUMMY_BREAD("pr-is-very-yummy-bread2"),
 	IS_PREMADE("pr-ispremade"),
 	IS_VENOM("pr-isvenom"),
-
-	//Tainted Mob Drops
+	TAINTED_TIER("pr-tainted-tier"),
 	ZOMBIE_FLESH("pr-zombie-flesh");
 
 	private final String ref;
