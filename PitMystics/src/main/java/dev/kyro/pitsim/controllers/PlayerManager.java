@@ -49,6 +49,7 @@ import org.bukkit.event.player.*;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.spigotmc.event.player.PlayerSpawnLocationEvent;
 
@@ -478,6 +479,8 @@ public class PlayerManager implements Listener {
 				}
 			}.runTaskLater(PitSim.INSTANCE, 1L);
 		}
+
+//		Misc.applyPotionEffect(player, PotionEffectType.NIGHT_VISION, 2000000, 2, false, false);
 
 		if(player.hasPermission("pitsim.autofps")) {
 			FPSCommand.fpsPlayers.add(player);

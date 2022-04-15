@@ -17,6 +17,16 @@ public abstract class PitMap {
 		for(String worldName : worldNames) lobbies.add(Bukkit.getWorld(worldName));
 	}
 
+	public abstract int getTeleportAdd();
+
+	public abstract int getTeleportY();
+
+	public abstract String getOpenSchematic();
+
+	public abstract String getClosedSchematic();
+
+	public abstract Location getSchematicPaste(World world);
+
 	public abstract Location getSpawn(World world);
 
 	public abstract Location getNonSpawn(World world);

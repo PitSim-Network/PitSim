@@ -5,8 +5,8 @@ import dev.kyro.pitsim.controllers.objects.PitMap;
 import org.bukkit.Location;
 import org.bukkit.World;
 
-public class BiomesMap extends PitMap {
-	public BiomesMap(String... worldNames) {
+public class DimensionsMap extends PitMap {
+	public DimensionsMap(String... worldNames) {
 		super(worldNames);
 	}
 
@@ -14,7 +14,7 @@ public class BiomesMap extends PitMap {
 	public Location getSpawn(World world) {
 		if(!lobbies.contains(world) || (!MapManager.multiLobbies && world != MapManager.currentMap.firstLobby))
 			return getSpawn(lobbies.get(0));
-		return new Location(world, 0.5, 88, 8.5, -180, 0);
+		return new Location(world, 0.5, 88, -5.5, 0, 0);
 	}
 
 	@Override
@@ -26,47 +26,47 @@ public class BiomesMap extends PitMap {
 	}
 
 	@Override
-	public int getTeleportAdd() { return 3; }
+	public int getTeleportAdd() { return -3; }
 
 	@Override
-	public int getTeleportY() { return 72;}
+	public int getTeleportY() { return 44;}
 
 	@Override
-	public String getOpenSchematic() { return "plugins/WorldEdit/schematics/doorOpen.schematic"; }
+	public String getOpenSchematic() { return "plugins/WorldEdit/schematics/map2DoorOpen.schematic"; }
 
 	@Override
-	public String getClosedSchematic() { return "plugins/WorldEdit/schematics/doorClosed.schematic"; }
+	public String getClosedSchematic() { return "plugins/WorldEdit/schematics/map2DoorClosed.schematic"; }
 
 	@Override
-	public Location getSchematicPaste(World world) { return new Location(world, -67, 72, 3); }
+	public Location getSchematicPaste(World world) { return new Location(world, 64, 44, 4); }
 
 	@Override
 	public Location getMid(World world) {
-		return new Location(world, 0.5, 70, 0.5);
+		return new Location(world, 0.5, 38, 0.5);
 	}
 
 	@Override
 	public Location getUpgradeNPCSpawn(World world) {
-		return new Location(world, 10.5, 88, 4.5, 90, 0);
+		return new Location(world, -7.5, 88, -1.5, -90, 0);
 	}
 
 	@Override
 	public Location getPrestigeNPCSpawn(World world) {
-		return new Location(world, -12.5, 88, -1.5, -90, 0);
+		return new Location(world, 9.5, 88, 0.5, 90, 0);
 	}
 
 	@Override
 	public Location getKyroNPCSpawn(World world) {
-		return new Location(world, 7.5, 92, -8.5, 22.5F, 11);
+		return new Location(world, -6.5, 89, 9.5, 180, 11);
 	}
 
 	@Override
 	public Location getWijiNPCSpawn(World world) {
-		return new Location(world, 0.5, 92, -11.5, 31, 10);
+		return new Location(world, 3.5, 89, 9.5, 180, 10);
 	}
 
 	@Override
 	public Location getVnxNPCSpawn(World world) {
-		return new Location(world, 2.5, 88, -8.5, 10, 0);
+		return new Location(world, -1.5, 88, 10.5, 180, 0);
 	}
 }

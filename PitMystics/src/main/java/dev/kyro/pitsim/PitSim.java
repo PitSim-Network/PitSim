@@ -33,6 +33,7 @@ import dev.kyro.pitsim.megastreaks.*;
 import dev.kyro.pitsim.misc.*;
 import dev.kyro.pitsim.perks.*;
 import dev.kyro.pitsim.pitmaps.BiomesMap;
+import dev.kyro.pitsim.pitmaps.DimensionsMap;
 import dev.kyro.pitsim.placeholders.*;
 import dev.kyro.pitsim.tutorial.MessageManager;
 import dev.kyro.pitsim.tutorial.TaskListener;
@@ -187,7 +188,8 @@ public class PitSim extends JavaPlugin {
 	}
 
 	private void registerMaps() {
-		MapManager.registerMap(new BiomesMap("biomes1", "biomes2"));
+		MapManager.registerMap(new DimensionsMap("dimensions1", "dimensions2"));
+//		MapManager.registerMap(new BiomesMap("biomes1", "biomes2"));
 	}
 
 	private void registerPerks() {

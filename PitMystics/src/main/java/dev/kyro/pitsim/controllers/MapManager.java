@@ -76,7 +76,7 @@ public class MapManager implements Listener {
 
 	@EventHandler
 	public void onPortal(PlayerPortalEvent event) {
-		if(currentMap.getClass() != BiomesMap.class || event.getCause() != PlayerTeleportEvent.TeleportCause.NETHER_PORTAL)
+		if(event.getCause() != PlayerTeleportEvent.TeleportCause.NETHER_PORTAL)
 			return;
 		event.setCancelled(true);
 		Player player = event.getPlayer();
@@ -85,8 +85,8 @@ public class MapManager implements Listener {
 		Location teleportLoc = playerLoc.clone();
 		teleportLoc.setWorld(MapManager.currentMap.getRandomOrFirst(player.getWorld()));
 		if(teleportLoc.getYaw() > 0 || teleportLoc.getYaw() < -180) teleportLoc.setYaw(-teleportLoc.getYaw());
-		teleportLoc.add(3, 0, 0);
-		teleportLoc.setY(72);
+		teleportLoc.add(currentMap.getTeleportAdd(), 0, 0);
+		teleportLoc.setY(currentMap.getTeleportY());
 
 		player.teleport(teleportLoc);
 		player.setVelocity(new Vector(1.5, 1, 0));
@@ -97,9 +97,7 @@ public class MapManager implements Listener {
 		System.out.println(multiLobbies);
 		if(multiLobbies) return;
 		multiLobbies = true;
-		for(World lobby : currentMap.lobbies) {
-			enablePortal(lobby);
-		}
+		enablePortal(currentMap);
 		for(Player onlinePlayer : Bukkit.getOnlinePlayers()) {
 			AOutput.send(onlinePlayer, "&6&lLOBBY! &7Use the portal to switch lobbies");
 			AOutput.send(onlinePlayer, "&6&lLOBBY! &7Use the portal to switch lobbies");
@@ -113,7 +111,7 @@ public class MapManager implements Listener {
 		multiLobbies = false;
 		List<World> disabledLobbies = new ArrayList<>(currentMap.lobbies);
 		disabledLobbies.remove(0);
-		disablePortal(currentMap.firstLobby);
+		disablePortal(currentMap);
 		if(!override) {
 			for(Player onlinePlayer : Bukkit.getOnlinePlayers()) {
 				if(!disabledLobbies.contains(onlinePlayer.getWorld())) continue;
@@ -125,12 +123,16 @@ public class MapManager implements Listener {
 		}
 	}
 
-	public static void enablePortal(World lobby) {
-		SchematicPaste.loadSchematic(new File("plugins/WorldEdit/schematics/doorOpen.schematic"), new Location(lobby, -67, 72, 3));
+	public static void enablePortal(PitMap currentMap) {
+		for (World lobby : currentMap.lobbies) {
+			SchematicPaste.loadSchematic(new File(currentMap.getOpenSchematic()), currentMap.getSchematicPaste(lobby));
+		}
 	}
 
-	public static void disablePortal(World lobby) {
-		SchematicPaste.loadSchematic(new File("plugins/WorldEdit/schematics/doorClosed.schematic"), new Location(lobby, -67, 72, 3));
+	public static void disablePortal(PitMap currentMap) {
+		for (World lobby : currentMap.lobbies) {
+			SchematicPaste.loadSchematic(new File(currentMap.getClosedSchematic()), currentMap.getSchematicPaste(lobby));
+		}
 	}
 
 	public static World getTutorial() {
