@@ -1,6 +1,7 @@
 package dev.kyro.pitsim.controllers;
 
 import dev.kyro.pitsim.PitSim;
+import dev.kyro.pitsim.brewing.ingredients.BrewingManager;
 import dev.kyro.pitsim.controllers.objects.Non;
 import dev.kyro.pitsim.controllers.objects.PitMob;
 import dev.kyro.pitsim.enums.SubLevel;
@@ -235,6 +236,9 @@ public class MobManager implements Listener {
 				if(value.getUniqueId().equals(entity.getUniqueId())) continue main;
 			}
 			for (ArmorStand value : TaintedWell.removeStands.values()) {
+				if(value.getUniqueId().equals(entity.getUniqueId())) continue main;
+			}
+			for (ArmorStand value : BrewingManager.brewingStands) {
 				if(value.getUniqueId().equals(entity.getUniqueId())) continue main;
 			}
 			if(entity.getUniqueId().equals(TaintedWell.textLine1.getUniqueId())) continue;

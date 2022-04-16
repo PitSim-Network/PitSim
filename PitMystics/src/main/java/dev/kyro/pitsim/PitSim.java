@@ -15,6 +15,9 @@ import dev.kyro.pitsim.boosters.ChaosBooster;
 import dev.kyro.pitsim.boosters.GoldBooster;
 import dev.kyro.pitsim.boosters.PvPBooster;
 import dev.kyro.pitsim.boosters.XPBooster;
+import dev.kyro.pitsim.brewing.ingredients.BrewingManager;
+import dev.kyro.pitsim.brewing.ingredients.RottenFlesh;
+import dev.kyro.pitsim.brewing.objects.BrewingIngredient;
 import dev.kyro.pitsim.commands.*;
 import dev.kyro.pitsim.commands.admin.*;
 import dev.kyro.pitsim.controllers.*;
@@ -83,6 +86,7 @@ class PitSim extends JavaPlugin {
 		adventure = BukkitAudiences.create(this);
 		BossManager.onStart();
 		TaintedWell.onStart();
+		BrewingManager.onStart();
 
 		ArcticAPI.configInit(this, "prefix", "error-prefix");
 		playerList = new AData("player-list", "", false);
@@ -169,6 +173,7 @@ class PitSim extends JavaPlugin {
 		registerHelmetAbilities();
 		registerKits();
 		registerMobs();
+		registerBrewingIngredients();
 	}
 
 	@Override
@@ -388,6 +393,7 @@ class PitSim extends JavaPlugin {
 		getServer().getPluginManager().registerEvents(new BossManager(), this);
 		getServer().getPluginManager().registerEvents(new BossBar(), this);
 		getServer().getPluginManager().registerEvents(new TaintedWell(), this);
+		getServer().getPluginManager().registerEvents(new BrewingManager(), this);
 	}
 	public void registerBoosters() {
 		BoosterManager.registerBooster(new XPBooster());
@@ -435,6 +441,10 @@ class PitSim extends JavaPlugin {
 		KitManager.registerKit(new XPKit());
 		KitManager.registerKit(new GoldKit());
 		KitManager.registerKit(new PvPKit());
+	}
+
+	private void registerBrewingIngredients() {
+		BrewingIngredient.registerIngredient(new RottenFlesh());
 	}
 
 	private void loadConfig() {

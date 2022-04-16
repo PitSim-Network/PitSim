@@ -58,7 +58,7 @@ import java.util.*;
 public class PlayerManager implements Listener {
 	//	public static Map<Player, BossBarManager> bossBars = new HashMap<>();
 	static {
-		new BukkitRunnable() {
+			new BukkitRunnable() {
 			@Override
 			public void run() {
 				for(PitPlayer pitPlayer : PitPlayer.pitPlayers) {

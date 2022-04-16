@@ -2,8 +2,8 @@ package dev.kyro.pitsim.enums;
 
 public enum MobType {
 	ZOMBIE,
-	CHARGED_CREEPER,
 	SKELETON,
+	CHARGED_CREEPER,
 	MAGMA_CUBE,
 	WITHER_SKELETON,
 	IRON_GOLEM,
