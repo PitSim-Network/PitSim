@@ -1,6 +1,8 @@
 package dev.kyro.pitsim.mobs;
 
 import dev.kyro.pitsim.PitSim;
+import dev.kyro.pitsim.brewing.ingredients.Bone;
+import dev.kyro.pitsim.brewing.ingredients.RottenFlesh;
 import dev.kyro.pitsim.controllers.MobManager;
 import dev.kyro.pitsim.controllers.objects.PitMob;
 import dev.kyro.pitsim.enums.MobType;
@@ -46,6 +48,9 @@ public class PitSkeleton extends PitMob {
 
 	@Override
 	public Map<ItemStack, Integer> getDrops() {
-		return new HashMap<>();
+		Map<ItemStack, Integer> drops = new HashMap<>();
+		drops.put(Bone.INSTANCE.getItem(), 50);
+
+		return drops;
 	}
 }

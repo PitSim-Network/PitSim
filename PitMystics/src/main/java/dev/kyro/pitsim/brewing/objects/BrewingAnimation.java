@@ -2,11 +2,10 @@ package dev.kyro.pitsim.brewing.objects;
 
 import dev.kyro.arcticapi.misc.AUtil;
 import dev.kyro.pitsim.PitSim;
-import dev.kyro.pitsim.brewing.ingredients.BrewingManager;
-import dev.kyro.pitsim.controllers.TaintedWell;
+import dev.kyro.pitsim.brewing.BrewingManager;
+import dev.kyro.pitsim.misc.Misc;
 import dev.kyro.pitsim.misc.Sounds;
 import net.minecraft.server.v1_8_R3.*;
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -17,10 +16,8 @@ import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerInteractAtEntityEvent;
-import org.bukkit.event.player.PlayerInteractEntityEvent;
+import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.EulerAngle;
@@ -32,6 +29,7 @@ public class BrewingAnimation {
     public Location location;
     public List<ArmorStand> stands = new ArrayList<>();
     public List<Player> players = new ArrayList<>();
+    public List<ArmorStand> personalStands = new ArrayList<>();
     
     public Map<Player, ArmorStand> identityStands = new HashMap<>();
     public Map<Player, ArmorStand> potencyStands = new HashMap<>();
@@ -42,7 +40,7 @@ public class BrewingAnimation {
     public List<Player> buttonPlayers = new ArrayList<>();
     public Map<Player, ItemStack[]> ingredients = new HashMap<>();
 
-    public List<String> originalMessages = Arrays.asList("&e&lBrewing Stand", "&7Use &5Tainted &7mob drops", "&7to change different", "&7aspects of the potion", "&eRight-Click the Barriers!");
+    public String[] originalMessages = new String[]{"&e&lBrewing Stand", "&7Use &5Tainted &7mob drops", "&7to change different", "&7aspects of the potion", "&eRight-Click the Barriers!"};
 
     public BrewingAnimation(Location location) {
         this.location = location;
@@ -51,7 +49,7 @@ public class BrewingAnimation {
         for (int i = 0; i < 5; i++) {
             ArmorStand stand = (ArmorStand) location.getWorld().spawnEntity(location.clone().add(0.5, (0.3 * (i + 1)), 0.5), EntityType.ARMOR_STAND);
             stand.setCustomNameVisible(true);
-            stand.setCustomName(ChatColor.translateAlternateColorCodes('&', originalMessages.get(originalMessages.size() - (i + 1))));
+            stand.setCustomName(ChatColor.translateAlternateColorCodes('&', "&c"));
             stand.setGravity(false);
             stand.setVisible(false);
             stands.add(stand);
@@ -87,7 +85,7 @@ public class BrewingAnimation {
 
         ItemStack duration = ingredients.get(player)[2];
         if(BrewingIngredient.isIngredient(duration) && BrewingIngredient.isIngredient(identifier)) strings[3] = ChatColor.LIGHT_PURPLE + "Duration: " +
-                ChatColor.DARK_PURPLE + Objects.requireNonNull(BrewingIngredient.getIngrediantFromItemStack(identifier)).getDuration(BrewingIngredient.getIngrediantFromItemStack(duration));
+                ChatColor.DARK_PURPLE + Misc.ticksToTime(Objects.requireNonNull(BrewingIngredient.getIngrediantFromItemStack(identifier)).getDuration(BrewingIngredient.getIngrediantFromItemStack(duration)));
         else strings[3] = ChatColor.LIGHT_PURPLE + "Duration: " + ChatColor.YELLOW + "Decided by Type!";
 
         ItemStack reduction = ingredients.get(player)[3];
@@ -107,6 +105,7 @@ public class BrewingAnimation {
 
     public void addPlayer(Player player) {
         players.add(player);
+        setText(player, originalMessages);
         ingredients.put(player, new ItemStack[]{null, null, null, null});
         showButtons(player);
     }
@@ -121,6 +120,7 @@ public class BrewingAnimation {
         identityStand.setRightArmPose(new EulerAngle(Math.toRadians(90), Math.toRadians(90), Math.toRadians(180)));
         identityStands.put(player, identityStand);
         BrewingManager.brewingStands.add(identityStand);
+        personalStands.add(identityStand);
 
         ArmorStand potencyStand = (ArmorStand) location.getWorld().spawnEntity(location.clone().add(0.5, 0, 0.5), EntityType.ARMOR_STAND);
         potencyStand.setCustomNameVisible(true);
@@ -131,6 +131,7 @@ public class BrewingAnimation {
         potencyStand.setRightArmPose(new EulerAngle(Math.toRadians(90), Math.toRadians(90), Math.toRadians(180)));
         potencyStands.put(player, potencyStand);
         BrewingManager.brewingStands.add(potencyStand);
+        personalStands.add(potencyStand);
 
         ArmorStand durationStand = (ArmorStand) location.getWorld().spawnEntity(location.clone().add(0.5, 0, 0.5), EntityType.ARMOR_STAND);
         durationStand.setCustomNameVisible(true);
@@ -141,6 +142,7 @@ public class BrewingAnimation {
         durationStand.setRightArmPose(new EulerAngle(Math.toRadians(90), Math.toRadians(90), Math.toRadians(180)));
         durationStands.put(player, durationStand);
         BrewingManager.brewingStands.add(durationStand);
+        personalStands.add(durationStand);
 
         ArmorStand brewingTimeStand = (ArmorStand) location.getWorld().spawnEntity(location.clone().add(0.5, 0, 0.5), EntityType.ARMOR_STAND);
         brewingTimeStand.setCustomNameVisible(true);
@@ -151,6 +153,7 @@ public class BrewingAnimation {
         brewingTimeStand.setRightArmPose(new EulerAngle(Math.toRadians(90), Math.toRadians(90), Math.toRadians(180)));
         brewingTimeStands.put(player, brewingTimeStand);
         BrewingManager.brewingStands.add(brewingTimeStand);
+        personalStands.add(brewingTimeStand);
 
         ArmorStand confirmStand = (ArmorStand) location.getWorld().spawnEntity(location.clone().add(0.5, -0.8, 1.5), EntityType.ARMOR_STAND);
         confirmStand.setCustomNameVisible(true);
@@ -161,6 +164,7 @@ public class BrewingAnimation {
         confirmStand.setHelmet(new ItemStack(Material.EMERALD_BLOCK));
         confirmStands.put(player, confirmStand);
         BrewingManager.brewingStands.add(confirmStand);
+        personalStands.add(confirmStand);
 
         ArmorStand cancelStand = (ArmorStand) location.getWorld().spawnEntity(location.clone().add(0.5, -0.8, -0.5), EntityType.ARMOR_STAND);
         cancelStand.setCustomNameVisible(true);
@@ -171,6 +175,7 @@ public class BrewingAnimation {
         cancelStand.setHelmet(new ItemStack(Material.REDSTONE_BLOCK));
         cancelStands.put(player, cancelStand);
         BrewingManager.brewingStands.add(cancelStand);
+        personalStands.add(cancelStand);
 
         PacketPlayOutEntity.PacketPlayOutRelEntityMoveLook identityTpPacket = new PacketPlayOutEntity.PacketPlayOutRelEntityMoveLook(getStandID(identityStand), (byte) 16, (byte) 0, (byte) -127, (byte) 0, (byte) 0, false);
         ((CraftPlayer)player).getHandle().playerConnection.sendPacket(identityTpPacket);
@@ -231,22 +236,28 @@ public class BrewingAnimation {
             public void run() {
                 BrewingManager.brewingStands.remove(identityStand);
                 identityStands.remove(player);
+                personalStands.remove(identityStand);
                 identityStand.remove();
                 BrewingManager.brewingStands.remove(potencyStand);
                 potencyStands.remove(player);
+                personalStands.remove(potencyStand);
                 potencyStand.remove();
                 BrewingManager.brewingStands.remove(durationStand);
                 durationStands.remove(player);
+                personalStands.remove(durationStand);
                 durationStand.remove();
                 BrewingManager.brewingStands.remove(brewingTimeStand);
                 brewingTimeStands.remove(player);
+                personalStands.remove(brewingTimeStand);
                 brewingTimeStand.remove();
 
                 BrewingManager.brewingStands.remove(cancelStand);
                 cancelStands.remove(player);
+                personalStands.remove(cancelStand);
                 cancelStand.remove();
                 BrewingManager.brewingStands.remove(confirmStand);
                 confirmStands.remove(player);
+                personalStands.remove(confirmStand);
                 confirmStand.remove();
 
                 players.remove(player);
@@ -278,20 +289,74 @@ public class BrewingAnimation {
                     players.remove(event.getPlayer());
                     buttonPlayers.remove(event.getPlayer());
                     for (ItemStack itemStack : ingredients.get(event.getPlayer())) {
-                        AUtil.giveItemSafely(event.getPlayer(), itemStack);
+                        if(itemStack != null) AUtil.giveItemSafely(event.getPlayer(), itemStack);
                     }
                     ingredients.remove(event.getPlayer());
+                    setText(event.getPlayer(), originalMessages);
 
                 }
             }.runTaskLater(PitSim.INSTANCE, 10);
 
         }
 
+        if(!buttonPlayers.contains(event.getPlayer()) && event.getRightClicked().getUniqueId().equals(confirmStands.get(event.getPlayer()).getUniqueId())) {
+            ArmorStand confirm = confirmStands.get(event.getPlayer());
+            buttonPlayers.add(event.getPlayer());
+            PacketPlayOutEntity.PacketPlayOutRelEntityMoveLook moveDown = new PacketPlayOutEntity.PacketPlayOutRelEntityMoveLook(getStandID(confirm), (byte) 0, (byte) -6.4, (byte) 0, (byte) 0, (byte) 0, false);
+            ((CraftPlayer) event.getPlayer()).getHandle().playerConnection.sendPacket(moveDown);
+            Sounds.BUTTON.play(event.getPlayer());
+
+
+            new BukkitRunnable() {
+                @Override
+                public void run() {
+                    PacketPlayOutEntity.PacketPlayOutRelEntityMoveLook moveUp = new PacketPlayOutEntity.PacketPlayOutRelEntityMoveLook(getStandID(confirm), (byte) 0, (byte) 6.4, (byte) 0, (byte) 0, (byte) 0, false);
+                    ((CraftPlayer) event.getPlayer()).getHandle().playerConnection.sendPacket(moveUp);
+                }
+            }.runTaskLater(PitSim.INSTANCE, 5);
+            new BukkitRunnable() {
+                @Override
+                public void run() {
+                    for (ItemStack itemStack : ingredients.get(event.getPlayer())) {
+                        if(Misc.isAirOrNull(itemStack)) {
+                            setText(event.getPlayer(), new String[]{"&e&lBrewing Stand", "&cYou must fill in all", "&cthe Ingredient Slots", "&cto start brewing a", "&cpotion!"});
+
+                            new BukkitRunnable() {
+                                @Override
+                                public void run() {
+                                    setItemText(event.getPlayer());
+                                    buttonPlayers.remove(event.getPlayer());
+                                }
+                            }.runTaskLater(PitSim.INSTANCE, 40);
+                            return;
+                        }
+                    }
+
+                    hideButtons(event.getPlayer());
+                    players.remove(event.getPlayer());
+                    buttonPlayers.remove(event.getPlayer());
+                    BrewingSession session = new BrewingSession(event.getPlayer(), BrewingManager.getBrewingSlot(event.getPlayer()), null,
+                            BrewingIngredient.getIngrediantFromItemStack(ingredients.get(event.getPlayer())[0]),
+                            BrewingIngredient.getIngrediantFromItemStack(ingredients.get(event.getPlayer())[1]),
+                            BrewingIngredient.getIngrediantFromItemStack(ingredients.get(event.getPlayer())[2]),
+                            BrewingIngredient.getIngrediantFromItemStack(ingredients.get(event.getPlayer())[3]));
+
+                    BrewingManager.brewingSessions.add(session);
+                    ingredients.remove(event.getPlayer());
+                    setText(event.getPlayer(), originalMessages);
+
+                }
+            }.runTaskLater(PitSim.INSTANCE, 10);
+
+        }
+
+
         if(event.getRightClicked().getUniqueId().equals(identityStands.get(event.getPlayer()).getUniqueId())) {
             ArmorStand identityStand = identityStands.get(event.getPlayer());
 
             ItemStack replace = whatToReplace(event.getPlayer(), 0);
             if(replace != null) {
+                if(ingredients.get(event.getPlayer())[0] != null) AUtil.giveItemSafely(event.getPlayer(), ingredients.get(event.getPlayer())[0]);
                 ingredients.get(event.getPlayer())[0] = replace;
                 PacketPlayOutEntityEquipment identityEquipmentPacket = new PacketPlayOutEntityEquipment(getStandID(identityStand), 0, CraftItemStack.asNMSCopy(replace));
                 ((CraftPlayer)event.getPlayer()).getHandle().playerConnection.sendPacket(identityEquipmentPacket);
@@ -306,11 +371,13 @@ public class BrewingAnimation {
             setItemText(event.getPlayer());
         }
 
+
         if(event.getRightClicked().getUniqueId().equals(potencyStands.get(event.getPlayer()).getUniqueId())) {
             ArmorStand potencyStand = potencyStands.get(event.getPlayer());
 
             ItemStack replace = whatToReplace(event.getPlayer(), 1);
             if(replace != null) {
+                if(ingredients.get(event.getPlayer())[1] != null) AUtil.giveItemSafely(event.getPlayer(), ingredients.get(event.getPlayer())[1]);
                 ingredients.get(event.getPlayer())[1] = replace;
                 PacketPlayOutEntityEquipment potencyEquipment = new PacketPlayOutEntityEquipment(getStandID(potencyStand), 0, CraftItemStack.asNMSCopy(replace));
                 ((CraftPlayer)event.getPlayer()).getHandle().playerConnection.sendPacket(potencyEquipment);
@@ -330,6 +397,7 @@ public class BrewingAnimation {
 
             ItemStack replace = whatToReplace(event.getPlayer(), 2);
             if(replace != null) {
+                if(ingredients.get(event.getPlayer())[2] != null) AUtil.giveItemSafely(event.getPlayer(), ingredients.get(event.getPlayer())[2]);
                 ingredients.get(event.getPlayer())[2] = replace;
                 PacketPlayOutEntityEquipment durationEquipment = new PacketPlayOutEntityEquipment(getStandID(durationStand), 0, CraftItemStack.asNMSCopy(replace));
                 ((CraftPlayer)event.getPlayer()).getHandle().playerConnection.sendPacket(durationEquipment);
@@ -349,6 +417,7 @@ public class BrewingAnimation {
 
             ItemStack replace = whatToReplace(event.getPlayer(), 3);
             if(replace != null) {
+                if(ingredients.get(event.getPlayer())[3] != null) AUtil.giveItemSafely(event.getPlayer(), ingredients.get(event.getPlayer())[3]);
                 ingredients.get(event.getPlayer())[3] = replace;
                 PacketPlayOutEntityEquipment brewingTimeEquipment = new PacketPlayOutEntityEquipment(getStandID(brewingTimeStand), 0, CraftItemStack.asNMSCopy(replace));
                 ((CraftPlayer)event.getPlayer()).getHandle().playerConnection.sendPacket(brewingTimeEquipment);
@@ -361,6 +430,18 @@ public class BrewingAnimation {
                 Sounds.BOOSTER_REMIND.play(event.getPlayer());
             }
             setItemText(event.getPlayer());
+        }
+    }
+
+    public void onMove(PlayerMoveEvent event) {
+        if(!players.contains(event.getPlayer())) return;
+        if(event.getPlayer().getLocation().distance(location) > 10) {
+            hideButtons(event.getPlayer());
+            players.remove(event.getPlayer());
+            for (ItemStack itemStack : ingredients.get(event.getPlayer())) {
+                if(itemStack != null) AUtil.giveItemSafely(event.getPlayer(), itemStack);
+            }
+            ingredients.remove(event.getPlayer());
         }
     }
 
@@ -379,8 +460,5 @@ public class BrewingAnimation {
             return returnStack;
         } else return null;
     }
-
-
-
 
 }

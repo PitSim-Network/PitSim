@@ -3,6 +3,8 @@ package dev.kyro.pitsim.controllers.objects;
 import dev.kyro.arcticapi.data.APlayer;
 import dev.kyro.arcticapi.data.APlayerData;
 import dev.kyro.pitsim.PitSim;
+import dev.kyro.pitsim.brewing.BrewingManager;
+import dev.kyro.pitsim.brewing.objects.BrewingSession;
 import dev.kyro.pitsim.controllers.*;
 import dev.kyro.pitsim.enchants.Hearts;
 import dev.kyro.pitsim.enchants.tainted.MaxHealth;
@@ -85,6 +87,8 @@ public class PitPlayer {
 	public DeathCry deathCry;
 	public AChatColor chatColor;
 
+	public String[] brewingSessions = new String[]{null, null, null};
+
 	public PlayerStats stats;
 
 	public void save() {
@@ -104,6 +108,11 @@ public class PitPlayer {
 		playerData.set("ubersleft", dailyUbersLeft);
 		playerData.set("ubercooldown", uberReset);
 		playerData.set("goldgrinded", goldGrinded);
+
+		for (int i = 0; i < brewingSessions.length; i++) {
+			playerData.set("brewingsession" + (i + 1), brewingSessions[i]);
+		}
+
 		for(Map.Entry<Booster, Integer> entry : boosters.entrySet())
 			playerData.set("boosters." + entry.getKey().refName, entry.getValue());
 
@@ -219,6 +228,19 @@ public class PitPlayer {
 
 			stats = new PlayerStats(this, playerData);
 			updateXPBar();
+
+			for (int i = 0; i < brewingSessions.length; i++) {
+				brewingSessions[i] = playerData.getString("brewingsession" + (i + 1));
+			}
+			for (int i = 0; i < brewingSessions.length; i++) {
+				if(brewingSessions[i] != null) BrewingManager.brewingSessions.add(new BrewingSession(player, i, brewingSessions[i], null, null, null, null));
+			}
+
+
+			if(chatColorString != null) {
+				chatColor = AChatColor.valueOf(chatColorString);
+				ChatColorPanel.playerChatColors.put(player, chatColor);
+			}
 		}
 	}
 

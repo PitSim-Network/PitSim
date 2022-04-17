@@ -33,7 +33,8 @@ public enum NBTTag {
 	IS_PREMADE("pr-ispremade"),
 	IS_VENOM("pr-isvenom"),
 	TAINTED_TIER("pr-tainted-tier"),
-	ZOMBIE_FLESH("pr-zombie-flesh");
+	ZOMBIE_FLESH("pr-zombie-flesh"),
+	SKELETON_BONE("pr-skeleton-bone");
 
 	private final String ref;
 

@@ -15,7 +15,8 @@ import dev.kyro.pitsim.boosters.ChaosBooster;
 import dev.kyro.pitsim.boosters.GoldBooster;
 import dev.kyro.pitsim.boosters.PvPBooster;
 import dev.kyro.pitsim.boosters.XPBooster;
-import dev.kyro.pitsim.brewing.ingredients.BrewingManager;
+import dev.kyro.pitsim.brewing.BrewingManager;
+import dev.kyro.pitsim.brewing.ingredients.Bone;
 import dev.kyro.pitsim.brewing.ingredients.RottenFlesh;
 import dev.kyro.pitsim.brewing.objects.BrewingIngredient;
 import dev.kyro.pitsim.commands.*;
@@ -49,7 +50,6 @@ import net.kyori.adventure.platform.bukkit.BukkitAudiences;
 import net.luckperms.api.LuckPerms;
 import net.milkbowl.vault.economy.Economy;
 import org.bukkit.Bukkit;
-import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Villager;
 import org.bukkit.entity.Wither;
@@ -445,6 +445,7 @@ class PitSim extends JavaPlugin {
 
 	private void registerBrewingIngredients() {
 		BrewingIngredient.registerIngredient(new RottenFlesh());
+		BrewingIngredient.registerIngredient(new Bone());
 	}
 
 	private void loadConfig() {

@@ -1,5 +1,6 @@
 package dev.kyro.pitsim.brewing.objects;
 
+import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import org.bukkit.entity.Player;
 
 import java.sql.Timestamp;
@@ -15,13 +16,22 @@ public class BrewingSession {
     public BrewingIngredient reduction;
     public long startTime;
 
-        public BrewingSession(Player player, int brewingSlot, String saveString) {
+    public BrewingSession(Player player, int brewingSlot, String saveString, BrewingIngredient identifier, BrewingIngredient potency, BrewingIngredient duration, BrewingIngredient reduction) {
         this.player = player;
         this.brewingSlot = brewingSlot;
         this.saveString = saveString;
 
         if(saveString != null) loadFromSave();
-        else startTime = System.currentTimeMillis();
+        else {
+            this.identifier = identifier;
+            this.potency = potency;
+            this.duration = duration;
+            this.reduction = reduction;
+            startTime = System.currentTimeMillis();
+            PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
+            pitPlayer.brewingSessions[brewingSlot - 1] = getSaveString();
+            pitPlayer.save();
+        }
     }
 
     public void loadFromSave() {

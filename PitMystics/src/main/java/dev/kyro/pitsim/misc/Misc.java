@@ -263,4 +263,12 @@ public class Misc {
 		}
 		return healEvent;
 	}
+
+	public static String ticksToTime(int ticks) {
+		int seconds = (int) Math.floor(ticks / 20);
+		int minutes = (int) Math.floor(seconds / 60);
+		if(minutes != 0 && seconds != 0) return minutes + "m " + (seconds - (minutes * 60)) + "s";
+		else if(seconds != 0) return seconds + "s";
+		else return minutes + "s";
+	}
 }
