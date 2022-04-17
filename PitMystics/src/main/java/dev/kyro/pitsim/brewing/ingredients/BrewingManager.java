@@ -8,6 +8,7 @@ import org.bukkit.entity.ArmorStand;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
+import org.bukkit.event.player.PlayerInteractAtEntityEvent;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 
@@ -33,7 +34,16 @@ public class BrewingManager implements Listener {
 
         event.setCancelled(true);
         for (BrewingAnimation brewingAnimation : brewingAnimations) {
-            if(brewingAnimation.location.equals(event.getClickedBlock().getLocation())) brewingAnimation.addPlayer(event.getPlayer());
+            if(brewingAnimation.location.equals(event.getClickedBlock().getLocation())) {
+                if(!brewingAnimation.players.contains(event.getPlayer())) brewingAnimation.addPlayer(event.getPlayer());
+            }
+        }
+    }
+
+    @EventHandler
+    public void onStandClick(PlayerInteractAtEntityEvent event) {
+        for (BrewingAnimation brewingAnimation : brewingAnimations) {
+            brewingAnimation.onButtonPush(event);
         }
     }
 }

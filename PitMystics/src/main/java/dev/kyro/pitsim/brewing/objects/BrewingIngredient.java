@@ -1,6 +1,10 @@
 package dev.kyro.pitsim.brewing.objects;
 
+import de.tr7zw.nbtapi.NBTItem;
 import dev.kyro.pitsim.enums.NBTTag;
+import dev.kyro.pitsim.misc.Misc;
+import org.bukkit.entity.Item;
+import org.bukkit.entity.Mule;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
@@ -10,12 +14,14 @@ import java.util.List;
 public abstract class BrewingIngredient {
     public int tier;
     public NBTTag nbtTag;
+    public String name;
 
     public static List<BrewingIngredient> ingredients = new ArrayList<>();
 
-    public BrewingIngredient(int tier, NBTTag nbtTag) {
+    public BrewingIngredient(int tier, NBTTag nbtTag, String name) {
         this.tier = tier;
         this.nbtTag = nbtTag;
+        this.name = name;
     }
 
     public abstract void administerEffect(Player player, BrewingIngredient potency, BrewingIngredient duration);
@@ -34,6 +40,36 @@ public abstract class BrewingIngredient {
             if(ingredient.tier == tier) return ingredient;
         }
         return null;
+    }
+
+    public static boolean isIngredient(ItemStack itemStack) {
+        if(Misc.isAirOrNull(itemStack)) return false;
+        NBTItem nbtItem = new NBTItem(itemStack);
+        for (BrewingIngredient ingredient : ingredients) {
+            if(nbtItem.hasKey(ingredient.nbtTag.getRef())) return true;
+        }
+        return false;
+    }
+
+    public static BrewingIngredient getIngrediantFromItemStack(ItemStack itemStack) {
+        if(Misc.isAirOrNull(itemStack)) return null;
+        NBTItem nbtItem = new NBTItem(itemStack);
+        for (BrewingIngredient ingredient : ingredients) {
+            if(nbtItem.hasKey(ingredient.nbtTag.getRef())) return ingredient;
+        }
+        return null;
+    }
+
+    public static boolean isSame(ItemStack item1, ItemStack item2) {
+        if(Misc.isAirOrNull(item1) || Misc.isAirOrNull(item2)) return false;
+        NBTItem nbtItem = new NBTItem(item1);
+        NBTItem nbtItem2 = new NBTItem(item2);
+        for (BrewingIngredient ingredient : ingredients) {
+            if(nbtItem.hasKey(ingredient.nbtTag.getRef())) {
+                if(nbtItem2.hasKey(ingredient.nbtTag.getRef())) return true;
+            }
+        }
+        return false;
     }
 
     public static void registerIngredient(BrewingIngredient ingredient) {

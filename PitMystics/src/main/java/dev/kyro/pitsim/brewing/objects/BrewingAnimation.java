@@ -1,8 +1,10 @@
 package dev.kyro.pitsim.brewing.objects;
 
+import dev.kyro.arcticapi.misc.AUtil;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.brewing.ingredients.BrewingManager;
 import dev.kyro.pitsim.controllers.TaintedWell;
+import dev.kyro.pitsim.misc.Sounds;
 import net.minecraft.server.v1_8_R3.*;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -15,6 +17,10 @@ import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
+import org.bukkit.event.player.PlayerInteractAtEntityEvent;
+import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.EulerAngle;
@@ -33,12 +39,14 @@ public class BrewingAnimation {
     public Map<Player, ArmorStand> brewingTimeStands = new HashMap<>();
     public Map<Player, ArmorStand> confirmStands = new HashMap<>();
     public Map<Player, ArmorStand> cancelStands = new HashMap<>();
+    public List<Player> buttonPlayers = new ArrayList<>();
+    public Map<Player, ItemStack[]> ingredients = new HashMap<>();
+
+    public List<String> originalMessages = Arrays.asList("&e&lBrewing Stand", "&7Use &5Tainted &7mob drops", "&7to change different", "&7aspects of the potion", "&eRight-Click the Barriers!");
 
     public BrewingAnimation(Location location) {
         this.location = location;
         location.getBlock().setType(Material.CAULDRON);
-
-        List<String> originalMessages = Arrays.asList("&e&lBrewing Stand", "&7Use &5Tainted &7mob drops", "&7to change different", "&7aspects of the potion", "&eRight-Click the Barriers!");
 
         for (int i = 0; i < 5; i++) {
             ArmorStand stand = (ArmorStand) location.getWorld().spawnEntity(location.clone().add(0.5, (0.3 * (i + 1)), 0.5), EntityType.ARMOR_STAND);
@@ -64,6 +72,31 @@ public class BrewingAnimation {
         }
     }
 
+    public void setItemText(Player player) {
+        String[] strings = new String[5];
+
+        strings[0] = ChatColor.YELLOW + "" + ChatColor.BOLD + "Brew Details";
+
+        ItemStack identifier = ingredients.get(player)[0];
+        if(BrewingIngredient.isIngredient(identifier)) strings[1] = ChatColor.LIGHT_PURPLE + "Type: " +  Objects.requireNonNull(BrewingIngredient.getIngrediantFromItemStack(identifier)).name;
+        else strings[1] = ChatColor.LIGHT_PURPLE + "Type: " + ChatColor.YELLOW + "Place an Item!";
+
+        ItemStack potency = ingredients.get(player)[1];
+        if(BrewingIngredient.isIngredient(potency)) strings[2] = ChatColor.LIGHT_PURPLE + "Potency: " + ChatColor.DARK_PURPLE + "Tier " + AUtil.toRoman(Objects.requireNonNull(BrewingIngredient.getIngrediantFromItemStack(potency)).tier);
+        else strings[2] = ChatColor.LIGHT_PURPLE + "Potency: " + ChatColor.YELLOW + "Place an Item!";
+
+        ItemStack duration = ingredients.get(player)[2];
+        if(BrewingIngredient.isIngredient(duration) && BrewingIngredient.isIngredient(identifier)) strings[3] = ChatColor.LIGHT_PURPLE + "Duration: " +
+                ChatColor.DARK_PURPLE + Objects.requireNonNull(BrewingIngredient.getIngrediantFromItemStack(identifier)).getDuration(BrewingIngredient.getIngrediantFromItemStack(duration));
+        else strings[3] = ChatColor.LIGHT_PURPLE + "Duration: " + ChatColor.YELLOW + "Decided by Type!";
+
+        ItemStack reduction = ingredients.get(player)[3];
+        if(BrewingIngredient.isIngredient(reduction)) strings[4] = ChatColor.LIGHT_PURPLE + "Brew Time: " + ChatColor.DARK_PURPLE + (105 - (Objects.requireNonNull(BrewingIngredient.getIngrediantFromItemStack(reduction)).tier * 10) + "m");
+        else strings[4] = ChatColor.LIGHT_PURPLE + "Brew Time: " + ChatColor.YELLOW + "Place an Item!";
+
+        setText(player, strings);
+    }
+
     public int getStandID(final ArmorStand stand) {
         for (Entity entity : location.getWorld().getNearbyEntities(location, 5.0, 5.0, 5.0)) {
             if (!(entity instanceof ArmorStand)) continue;
@@ -74,6 +107,7 @@ public class BrewingAnimation {
 
     public void addPlayer(Player player) {
         players.add(player);
+        ingredients.put(player, new ItemStack[]{null, null, null, null});
         showButtons(player);
     }
     
@@ -90,7 +124,7 @@ public class BrewingAnimation {
 
         ArmorStand potencyStand = (ArmorStand) location.getWorld().spawnEntity(location.clone().add(0.5, 0, 0.5), EntityType.ARMOR_STAND);
         potencyStand.setCustomNameVisible(true);
-        potencyStand.setCustomName(ChatColor.LIGHT_PURPLE + "Potion Potency");
+        potencyStand.setCustomName(ChatColor.LIGHT_PURPLE + "Potency");
         potencyStand.setGravity(false);
         potencyStand.setVisible(false);
         potencyStand.setArms(true);
@@ -100,7 +134,7 @@ public class BrewingAnimation {
 
         ArmorStand durationStand = (ArmorStand) location.getWorld().spawnEntity(location.clone().add(0.5, 0, 0.5), EntityType.ARMOR_STAND);
         durationStand.setCustomNameVisible(true);
-        durationStand.setCustomName(ChatColor.LIGHT_PURPLE + "Potion Duration");
+        durationStand.setCustomName(ChatColor.LIGHT_PURPLE + "Duration");
         durationStand.setGravity(false);
         durationStand.setVisible(false);
         durationStand.setArms(true);
@@ -138,24 +172,24 @@ public class BrewingAnimation {
         cancelStands.put(player, cancelStand);
         BrewingManager.brewingStands.add(cancelStand);
 
-        PacketPlayOutEntity.PacketPlayOutRelEntityMoveLook identityTpPacket = new PacketPlayOutEntity.PacketPlayOutRelEntityMoveLook(getStandID(identityStand), (byte) 0, (byte) 0, (byte) -127, (byte) 0, (byte) 0, false);
+        PacketPlayOutEntity.PacketPlayOutRelEntityMoveLook identityTpPacket = new PacketPlayOutEntity.PacketPlayOutRelEntityMoveLook(getStandID(identityStand), (byte) 16, (byte) 0, (byte) -127, (byte) 0, (byte) 0, false);
         ((CraftPlayer)player).getHandle().playerConnection.sendPacket(identityTpPacket);
-        PacketPlayOutEntity.PacketPlayOutRelEntityMoveLook potencyTpPacket = new PacketPlayOutEntity.PacketPlayOutRelEntityMoveLook(getStandID(potencyStand), (byte) 0, (byte) 0, (byte) -64, (byte) 0, (byte) 0, false);
+        PacketPlayOutEntity.PacketPlayOutRelEntityMoveLook potencyTpPacket = new PacketPlayOutEntity.PacketPlayOutRelEntityMoveLook(getStandID(potencyStand), (byte) 16, (byte) 0, (byte) -64, (byte) 0, (byte) 0, false);
         ((CraftPlayer)player).getHandle().playerConnection.sendPacket(potencyTpPacket);
-        PacketPlayOutEntity.PacketPlayOutRelEntityMoveLook durationTpPacket = new PacketPlayOutEntity.PacketPlayOutRelEntityMoveLook(getStandID(durationStand), (byte) 0, (byte) 0, (byte) 64, (byte) 0, (byte) 0, false);
+        PacketPlayOutEntity.PacketPlayOutRelEntityMoveLook durationTpPacket = new PacketPlayOutEntity.PacketPlayOutRelEntityMoveLook(getStandID(durationStand), (byte) 16, (byte) 0, (byte) 64, (byte) 0, (byte) 0, false);
         ((CraftPlayer)player).getHandle().playerConnection.sendPacket(durationTpPacket);
-        PacketPlayOutEntity.PacketPlayOutRelEntityMoveLook brewingTimeTpPacket = new PacketPlayOutEntity.PacketPlayOutRelEntityMoveLook(getStandID(brewingTimeStand), (byte) 0, (byte) 0, (byte) 127, (byte) 0, (byte) 0, false);
+        PacketPlayOutEntity.PacketPlayOutRelEntityMoveLook brewingTimeTpPacket = new PacketPlayOutEntity.PacketPlayOutRelEntityMoveLook(getStandID(brewingTimeStand), (byte) 16, (byte) 0, (byte) 127, (byte) 0, (byte) 0, false);
         ((CraftPlayer)player).getHandle().playerConnection.sendPacket(brewingTimeTpPacket);
 
 
         new BukkitRunnable() {
             @Override
             public void run() {
-                identityStand.teleport(identityStand.getLocation().clone().subtract(0, 0, 3.97));
+                identityStand.teleport(identityStand.getLocation().clone().subtract(-0.5, 0, 3.97));
                 identityStand.getLocation().setPitch(64);
-                potencyStand.teleport(potencyStand.getLocation().clone().subtract(0, 0, 2));
-                durationStand.teleport(durationStand.getLocation().clone().add(0, 0, 2));
-                brewingTimeStand.teleport(brewingTimeStand.getLocation().clone().add(0, 0, 3.97));
+                potencyStand.teleport(potencyStand.getLocation().clone().subtract(-0.5, 0, 2));
+                durationStand.teleport(durationStand.getLocation().clone().add(0.5, 0, 2));
+                brewingTimeStand.teleport(brewingTimeStand.getLocation().clone().add(0.5, 0, 3.97));
             }
         }.runTaskLater(PitSim.INSTANCE, 10);
 
@@ -172,6 +206,178 @@ public class BrewingAnimation {
                 ((CraftPlayer)player).getHandle().playerConnection.sendPacket(brewingTimeEquipmentPacket);
             }
         }.runTaskLater(PitSim.INSTANCE, 1);
+    }
+
+    public void hideButtons(Player player) {
+        ArmorStand identityStand = identityStands.get(player);
+        ArmorStand potencyStand = potencyStands.get(player);
+        ArmorStand durationStand = durationStands.get(player);
+        ArmorStand brewingTimeStand = brewingTimeStands.get(player);
+        ArmorStand confirmStand = confirmStands.get(player);
+        ArmorStand cancelStand = cancelStands.get(player)
+;
+        PacketPlayOutEntity.PacketPlayOutRelEntityMoveLook identityTpPacket = new PacketPlayOutEntity.PacketPlayOutRelEntityMoveLook(getStandID(identityStand), (byte) -16, (byte) 0, (byte) 127, (byte) 0, (byte) 0, false);
+        ((CraftPlayer)player).getHandle().playerConnection.sendPacket(identityTpPacket);
+        PacketPlayOutEntity.PacketPlayOutRelEntityMoveLook potencyTpPacket = new PacketPlayOutEntity.PacketPlayOutRelEntityMoveLook(getStandID(potencyStand), (byte) -16, (byte) 0, (byte) 64, (byte) 0, (byte) 0, false);
+        ((CraftPlayer)player).getHandle().playerConnection.sendPacket(potencyTpPacket);
+        PacketPlayOutEntity.PacketPlayOutRelEntityMoveLook durationTpPacket = new PacketPlayOutEntity.PacketPlayOutRelEntityMoveLook(getStandID(durationStand), (byte) -16, (byte) 0, (byte) -64, (byte) 0, (byte) 0, false);
+        ((CraftPlayer)player).getHandle().playerConnection.sendPacket(durationTpPacket);
+        PacketPlayOutEntity.PacketPlayOutRelEntityMoveLook brewingTimeTpPacket = new PacketPlayOutEntity.PacketPlayOutRelEntityMoveLook(getStandID(brewingTimeStand), (byte) -16, (byte) 0, (byte) -127, (byte) 0, (byte) 0, false);
+        ((CraftPlayer)player).getHandle().playerConnection.sendPacket(brewingTimeTpPacket);
+
+
+        new BukkitRunnable() {
+            @Override
+            public void run() {
+                BrewingManager.brewingStands.remove(identityStand);
+                identityStands.remove(player);
+                identityStand.remove();
+                BrewingManager.brewingStands.remove(potencyStand);
+                potencyStands.remove(player);
+                potencyStand.remove();
+                BrewingManager.brewingStands.remove(durationStand);
+                durationStands.remove(player);
+                durationStand.remove();
+                BrewingManager.brewingStands.remove(brewingTimeStand);
+                brewingTimeStands.remove(player);
+                brewingTimeStand.remove();
+
+                BrewingManager.brewingStands.remove(cancelStand);
+                cancelStands.remove(player);
+                cancelStand.remove();
+                BrewingManager.brewingStands.remove(confirmStand);
+                confirmStands.remove(player);
+                confirmStand.remove();
+
+                players.remove(player);
+            }
+        }.runTaskLater(PitSim.INSTANCE, 3);
+    }
+
+    public void onButtonPush(PlayerInteractAtEntityEvent event) {
+        if(!players.contains(event.getPlayer())) return;
+
+        if(!buttonPlayers.contains(event.getPlayer()) && event.getRightClicked().getUniqueId().equals(cancelStands.get(event.getPlayer()).getUniqueId())) {
+            ArmorStand cancel = cancelStands.get(event.getPlayer());
+            buttonPlayers.add(event.getPlayer());
+            PacketPlayOutEntity.PacketPlayOutRelEntityMoveLook moveDown = new PacketPlayOutEntity.PacketPlayOutRelEntityMoveLook(getStandID(cancel), (byte) 0, (byte) -6.4, (byte) 0, (byte) 0, (byte) 0, false);
+            ((CraftPlayer) event.getPlayer()).getHandle().playerConnection.sendPacket(moveDown);
+            Sounds.BUTTON.play(event.getPlayer());
+
+            new BukkitRunnable() {
+                @Override
+                public void run() {
+                    PacketPlayOutEntity.PacketPlayOutRelEntityMoveLook moveUp = new PacketPlayOutEntity.PacketPlayOutRelEntityMoveLook(getStandID(cancel), (byte) 0, (byte) 6.4, (byte) 0, (byte) 0, (byte) 0, false);
+                    ((CraftPlayer) event.getPlayer()).getHandle().playerConnection.sendPacket(moveUp);
+                }
+            }.runTaskLater(PitSim.INSTANCE, 5);
+            new BukkitRunnable() {
+                @Override
+                public void run() {
+                    hideButtons(event.getPlayer());
+                    players.remove(event.getPlayer());
+                    buttonPlayers.remove(event.getPlayer());
+                    for (ItemStack itemStack : ingredients.get(event.getPlayer())) {
+                        AUtil.giveItemSafely(event.getPlayer(), itemStack);
+                    }
+                    ingredients.remove(event.getPlayer());
+
+                }
+            }.runTaskLater(PitSim.INSTANCE, 10);
+
+        }
+
+        if(event.getRightClicked().getUniqueId().equals(identityStands.get(event.getPlayer()).getUniqueId())) {
+            ArmorStand identityStand = identityStands.get(event.getPlayer());
+
+            ItemStack replace = whatToReplace(event.getPlayer(), 0);
+            if(replace != null) {
+                ingredients.get(event.getPlayer())[0] = replace;
+                PacketPlayOutEntityEquipment identityEquipmentPacket = new PacketPlayOutEntityEquipment(getStandID(identityStand), 0, CraftItemStack.asNMSCopy(replace));
+                ((CraftPlayer)event.getPlayer()).getHandle().playerConnection.sendPacket(identityEquipmentPacket);
+                Sounds.BOOSTER_REMIND.play(event.getPlayer());
+            } else if(ingredients.get(event.getPlayer())[0] != null){
+                PacketPlayOutEntityEquipment identityEquipmentPacket = new PacketPlayOutEntityEquipment(getStandID(identityStand), 0, CraftItemStack.asNMSCopy(new ItemStack(Material.BARRIER)));
+                ((CraftPlayer)event.getPlayer()).getHandle().playerConnection.sendPacket(identityEquipmentPacket);
+                AUtil.giveItemSafely(event.getPlayer(), ingredients.get(event.getPlayer())[0]);
+                ingredients.get(event.getPlayer())[0] = null;
+                Sounds.BOOSTER_REMIND.play(event.getPlayer());
+            }
+            setItemText(event.getPlayer());
+        }
+
+        if(event.getRightClicked().getUniqueId().equals(potencyStands.get(event.getPlayer()).getUniqueId())) {
+            ArmorStand potencyStand = potencyStands.get(event.getPlayer());
+
+            ItemStack replace = whatToReplace(event.getPlayer(), 1);
+            if(replace != null) {
+                ingredients.get(event.getPlayer())[1] = replace;
+                PacketPlayOutEntityEquipment potencyEquipment = new PacketPlayOutEntityEquipment(getStandID(potencyStand), 0, CraftItemStack.asNMSCopy(replace));
+                ((CraftPlayer)event.getPlayer()).getHandle().playerConnection.sendPacket(potencyEquipment);
+                Sounds.BOOSTER_REMIND.play(event.getPlayer());
+            } else if(ingredients.get(event.getPlayer())[1] != null){
+                PacketPlayOutEntityEquipment potencyEquipment = new PacketPlayOutEntityEquipment(getStandID(potencyStand), 0, CraftItemStack.asNMSCopy(new ItemStack(Material.BARRIER)));
+                ((CraftPlayer)event.getPlayer()).getHandle().playerConnection.sendPacket(potencyEquipment);
+                AUtil.giveItemSafely(event.getPlayer(), ingredients.get(event.getPlayer())[1]);
+                ingredients.get(event.getPlayer())[1] = null;
+                Sounds.BOOSTER_REMIND.play(event.getPlayer());
+            }
+            setItemText(event.getPlayer());
+        }
+
+        if(event.getRightClicked().getUniqueId().equals(durationStands.get(event.getPlayer()).getUniqueId())) {
+            ArmorStand durationStand = durationStands.get(event.getPlayer());
+
+            ItemStack replace = whatToReplace(event.getPlayer(), 2);
+            if(replace != null) {
+                ingredients.get(event.getPlayer())[2] = replace;
+                PacketPlayOutEntityEquipment durationEquipment = new PacketPlayOutEntityEquipment(getStandID(durationStand), 0, CraftItemStack.asNMSCopy(replace));
+                ((CraftPlayer)event.getPlayer()).getHandle().playerConnection.sendPacket(durationEquipment);
+                Sounds.BOOSTER_REMIND.play(event.getPlayer());
+            } else if(ingredients.get(event.getPlayer())[2] != null){
+                PacketPlayOutEntityEquipment durationEquipment = new PacketPlayOutEntityEquipment(getStandID(durationStand), 0, CraftItemStack.asNMSCopy(new ItemStack(Material.BARRIER)));
+                ((CraftPlayer)event.getPlayer()).getHandle().playerConnection.sendPacket(durationEquipment);
+                AUtil.giveItemSafely(event.getPlayer(), ingredients.get(event.getPlayer())[2]);
+                ingredients.get(event.getPlayer())[2] = null;
+                Sounds.BOOSTER_REMIND.play(event.getPlayer());
+            }
+            setItemText(event.getPlayer());
+        }
+
+        if(event.getRightClicked().getUniqueId().equals(brewingTimeStands.get(event.getPlayer()).getUniqueId())) {
+            ArmorStand brewingTimeStand = brewingTimeStands.get(event.getPlayer());
+
+            ItemStack replace = whatToReplace(event.getPlayer(), 3);
+            if(replace != null) {
+                ingredients.get(event.getPlayer())[3] = replace;
+                PacketPlayOutEntityEquipment brewingTimeEquipment = new PacketPlayOutEntityEquipment(getStandID(brewingTimeStand), 0, CraftItemStack.asNMSCopy(replace));
+                ((CraftPlayer)event.getPlayer()).getHandle().playerConnection.sendPacket(brewingTimeEquipment);
+                Sounds.BOOSTER_REMIND.play(event.getPlayer());
+            } else if(ingredients.get(event.getPlayer())[3] != null){
+                PacketPlayOutEntityEquipment brewingTimeEquipment = new PacketPlayOutEntityEquipment(getStandID(brewingTimeStand), 0, CraftItemStack.asNMSCopy(new ItemStack(Material.BARRIER)));
+                ((CraftPlayer)event.getPlayer()).getHandle().playerConnection.sendPacket(brewingTimeEquipment);
+                AUtil.giveItemSafely(event.getPlayer(), ingredients.get(event.getPlayer())[3]);
+                ingredients.get(event.getPlayer())[3] = null;
+                Sounds.BOOSTER_REMIND.play(event.getPlayer());
+            }
+            setItemText(event.getPlayer());
+        }
+    }
+
+    public ItemStack whatToReplace(Player player, int index) {
+        ItemStack itemStack = player.getItemInHand();
+        if(BrewingIngredient.isIngredient(itemStack) && !BrewingIngredient.isSame(itemStack, ingredients.get(player)[index])) {
+            if(itemStack.getAmount() > 1) {
+                ItemStack newPlayerItem = itemStack.clone();
+                newPlayerItem.setAmount(newPlayerItem.getAmount() - 1);
+                player.setItemInHand(newPlayerItem);
+            } else {
+                player.setItemInHand(new ItemStack(Material.AIR));
+            }
+            ItemStack returnStack = itemStack.clone();
+            returnStack.setAmount(1);
+            return returnStack;
+        } else return null;
     }
 
 

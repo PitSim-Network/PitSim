@@ -49,6 +49,7 @@ public class Sounds {
 	public static final SoundEffect SURVIVOR_HEAL = new SoundEffect(Sound.SILVERFISH_KILL, 1, 1.8);
 	public static final SoundEffect SHOCKWAVE = new SoundEffect(Sound.EXPLODE, 2, 1.6);
 	public static final SoundEffect BOOSTER_REMIND = new SoundEffect(Sound.CHICKEN_EGG_POP, 2, 1.6);
+	public static final SoundEffect BUTTON = new SoundEffect(Sound.CLICK, 2, 1);
 
 	//	Enchants
 	public static final SoundEffect BILLIONAIRE = new SoundEffect(Sound.ORB_PICKUP, 1, 0.73);

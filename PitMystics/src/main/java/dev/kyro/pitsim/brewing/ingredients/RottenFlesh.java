@@ -16,7 +16,7 @@ public class RottenFlesh extends BrewingIngredient {
     public static RottenFlesh INSTANCE;
 
     public RottenFlesh() {
-        super(1, NBTTag.ZOMBIE_FLESH);
+        super(1, NBTTag.ZOMBIE_FLESH, ChatColor.GOLD + "Gold Boost");
         INSTANCE = this;
     }
 

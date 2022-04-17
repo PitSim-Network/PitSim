@@ -15,7 +15,7 @@ public class BrewingSession {
     public BrewingIngredient reduction;
     public long startTime;
 
-    public BrewingSession(Player player, int brewingSlot, String saveString) {
+        public BrewingSession(Player player, int brewingSlot, String saveString) {
         this.player = player;
         this.brewingSlot = brewingSlot;
         this.saveString = saveString;
