@@ -3,10 +3,12 @@ package dev.kyro.pitsim.brewing.objects;
 import de.tr7zw.nbtapi.NBTItem;
 import dev.kyro.pitsim.enums.NBTTag;
 import dev.kyro.pitsim.misc.Misc;
+import org.bukkit.ChatColor;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.Mule;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.potion.PotionType;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,18 +17,24 @@ public abstract class BrewingIngredient {
     public int tier;
     public NBTTag nbtTag;
     public String name;
+    public ChatColor color;
+    public PotionType potionType;
 
     public static List<BrewingIngredient> ingredients = new ArrayList<>();
 
-    public BrewingIngredient(int tier, NBTTag nbtTag, String name) {
+    public BrewingIngredient(int tier, NBTTag nbtTag, String name, ChatColor color, PotionType potionType) {
         this.tier = tier;
         this.nbtTag = nbtTag;
         this.name = name;
+        this.color = color;
+        this.potionType = potionType;
     }
 
     public abstract void administerEffect(Player player, BrewingIngredient potency, BrewingIngredient duration);
 
     public abstract Object getPotency(BrewingIngredient potencyIngredient);
+
+    public abstract List<String> getPotencyLore(BrewingIngredient potency);
 
     public abstract int getDuration(BrewingIngredient durationIngredient);
 

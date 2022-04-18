@@ -9,6 +9,8 @@ import net.minecraft.server.v1_8_R3.*;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.block.BlockState;
+import org.bukkit.craftbukkit.v1_8_R3.CraftWorld;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftEntity;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
 import org.bukkit.craftbukkit.v1_8_R3.inventory.CraftItemStack;
@@ -18,7 +20,9 @@ import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerInteractAtEntityEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
+import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.material.Cauldron;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.EulerAngle;
 
@@ -45,6 +49,11 @@ public class BrewingAnimation {
     public BrewingAnimation(Location location) {
         this.location = location;
         location.getBlock().setType(Material.CAULDRON);
+        Cauldron cauldron = (Cauldron) location.getBlock().getState().getData();
+
+        BlockState cauldronState = location.getBlock().getState();
+        cauldronState.getData().setData((byte) (cauldron.getData() + 3));
+        cauldronState.update();
 
         for (int i = 0; i < 5; i++) {
             ArmorStand stand = (ArmorStand) location.getWorld().spawnEntity(location.clone().add(0.5, (0.3 * (i + 1)), 0.5), EntityType.ARMOR_STAND);
@@ -61,12 +70,27 @@ public class BrewingAnimation {
     public void setText(Player player, String[] text) {
         for (int i = 0; i < stands.size(); i++) {
             PacketPlayOutSpawnEntityLiving spawn = new PacketPlayOutSpawnEntityLiving((EntityLiving)((CraftEntity) stands.get(i)).getHandle());
-            ((CraftPlayer)player).getHandle().playerConnection.sendPacket(spawn);
+
+            ArmorStand ogStand = stands.get(i);
+            EntityArmorStand test = new EntityArmorStand(((CraftWorld) ogStand.getWorld()).getHandle());
+            ArmorStand newStand = (ArmorStand) test.getBukkitEntity();
+            newStand.setVisible(false);
+            newStand.setGravity(false);
+            newStand.setCustomNameVisible(true);
+
             DataWatcher dw = ((CraftEntity)stands.get(i)).getHandle().getDataWatcher();
-            if(text[text.length - (i + 1)] == null) dw.watch(2, "§c");
-            else dw.watch(2, ChatColor.translateAlternateColorCodes('&', text[text.length - (i + 1)]));
-            PacketPlayOutEntityMetadata metaPacket = new PacketPlayOutEntityMetadata(getStandID(stands.get(i)), dw, false);
+            DataWatcher newDw = ((CraftEntity)newStand).getHandle().getDataWatcher();
+            newDw.watch(2, dw.getString(2));
+            newStand.remove();
+
+            ((CraftPlayer)player).getHandle().playerConnection.sendPacket(spawn);
+
+            String originalName = dw.getString(2);
+            if(text[text.length - (i + 1)] == null) newDw.watch(2, "§c");
+            else newDw.watch(2, ChatColor.translateAlternateColorCodes('&', text[text.length - (i + 1)]));
+            PacketPlayOutEntityMetadata metaPacket = new PacketPlayOutEntityMetadata(getStandID(stands.get(i)), newDw, false);
             ((CraftPlayer)player).getHandle().playerConnection.sendPacket(metaPacket);
+            dw.watch(2, originalName);
         }
     }
 
@@ -443,6 +467,16 @@ public class BrewingAnimation {
             }
             ingredients.remove(event.getPlayer());
         }
+    }
+
+    public void onQuit(PlayerQuitEvent event) {
+        if(!players.contains(event.getPlayer())) return;
+        hideButtons(event.getPlayer());
+        players.remove(event.getPlayer());
+        for (ItemStack itemStack : ingredients.get(event.getPlayer())) {
+            if(itemStack != null) AUtil.giveItemSafely(event.getPlayer(), itemStack);
+        }
+        ingredients.remove(event.getPlayer());
     }
 
     public ItemStack whatToReplace(Player player, int index) {

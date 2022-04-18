@@ -33,6 +33,9 @@ public enum NBTTag {
 	IS_PREMADE("pr-ispremade"),
 	IS_VENOM("pr-isvenom"),
 	TAINTED_TIER("pr-tainted-tier"),
+	POTION_IDENTIFIER("pr-potion-identifier"),
+	POTION_POTENCY("pr-potion-potency"),
+	POTION_DURATION("pr-potion-duration"),
 	ZOMBIE_FLESH("pr-zombie-flesh"),
 	SKELETON_BONE("pr-skeleton-bone");
 

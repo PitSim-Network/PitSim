@@ -8,7 +8,9 @@ import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.potion.PotionType;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -16,7 +18,7 @@ public class RottenFlesh extends BrewingIngredient {
     public static RottenFlesh INSTANCE;
 
     public RottenFlesh() {
-        super(1, NBTTag.ZOMBIE_FLESH, ChatColor.GOLD + "Gold Boost");
+        super(1, NBTTag.ZOMBIE_FLESH, ChatColor.GOLD + "Gold Boost", ChatColor.GOLD, PotionType.FIRE_RESISTANCE);
         INSTANCE = this;
     }
 
@@ -29,7 +31,17 @@ public class RottenFlesh extends BrewingIngredient {
     public Object getPotency(BrewingIngredient potencyIngredient) {
         int tier = potencyIngredient.tier;
 
-        return 10 * tier;
+        return 0.1 * tier;
+    }
+
+    @Override
+    public List<String> getPotencyLore(BrewingIngredient potency) {
+        List<String> lore = new ArrayList<>();
+
+        lore.add("");
+        lore.add(ChatColor.GRAY + "Earn " + ChatColor.GOLD + "+" + (int) ((double) getPotency(potency) * 10) + "% gold " + ChatColor.GRAY + "from");
+        lore.add(ChatColor.GRAY + "kills and assists");
+        return lore;
     }
 
     @Override

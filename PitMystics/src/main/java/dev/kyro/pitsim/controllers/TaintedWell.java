@@ -1,6 +1,7 @@
 package dev.kyro.pitsim.controllers;
 
 import dev.kyro.arcticapi.misc.AUtil;
+import dev.kyro.pitsim.events.AttackEvent;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Entity;
@@ -272,6 +273,23 @@ public class TaintedWell implements Listener
                 onButtonPush(event.getPlayer(), true);
             }
         }
+    }
+
+    @EventHandler
+    public void onHit(AttackEvent.Pre event) {
+        if(event.defender.getUniqueId().equals(wellStand.getUniqueId())) event.setCancelled(true);
+        if(event.defender.getUniqueId().equals(textLine1.getUniqueId())) event.setCancelled(true);
+        if(event.defender.getUniqueId().equals(textLine2.getUniqueId())) event.setCancelled(true);
+        if(event.defender.getUniqueId().equals(textLine3.getUniqueId())) event.setCancelled(true);
+        if(event.defender.getUniqueId().equals(textLine4.getUniqueId())) event.setCancelled(true);
+
+        for (ArmorStand value : enchantStands.values()) {
+            if(value.getUniqueId().equals(event.defender.getUniqueId())) event.setCancelled(true);
+        }
+        for (ArmorStand value : removeStands.values()) {
+            if(value.getUniqueId().equals(event.defender.getUniqueId())) event.setCancelled(true);
+        }
+
     }
 
     public static int getStandID(final ArmorStand stand) {

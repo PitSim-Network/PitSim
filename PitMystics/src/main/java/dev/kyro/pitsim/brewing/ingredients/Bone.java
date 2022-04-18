@@ -8,7 +8,9 @@ import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.potion.PotionType;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -16,7 +18,7 @@ public class Bone extends BrewingIngredient {
     public static Bone INSTANCE;
 
     public Bone() {
-        super(2, NBTTag.SKELETON_BONE, ChatColor.AQUA + "XP Boost");
+        super(2, NBTTag.SKELETON_BONE, ChatColor.AQUA + "XP Boost", ChatColor.AQUA, PotionType.SPEED);
         INSTANCE = this;
     }
 
@@ -29,7 +31,18 @@ public class Bone extends BrewingIngredient {
     public Object getPotency(BrewingIngredient potencyIngredient) {
         int tier = potencyIngredient.tier;
 
-        return 10 * tier;
+        return 25 * tier + "," + 100 * tier;
+    }
+
+    @Override
+    public List<String> getPotencyLore(BrewingIngredient potency) {
+        List<String> lore = new ArrayList<>();
+        String[] values = ((String)getPotency(potency)).split(",");
+
+        lore.add("");
+        lore.add(ChatColor.GRAY + "Earn " + ChatColor.AQUA + "+" + values[0] + " XP " + ChatColor.GRAY + "and " + ChatColor.AQUA + "+" + values[1] + " Max XP");
+        lore.add(ChatColor.GRAY + "from kills and assists");
+        return lore;
     }
 
     @Override
@@ -40,7 +53,7 @@ public class Bone extends BrewingIngredient {
 
     @Override
     public int getBrewingReductionMinutes() {
-        return 20;
+        return 104;
     }
 
     @Override
