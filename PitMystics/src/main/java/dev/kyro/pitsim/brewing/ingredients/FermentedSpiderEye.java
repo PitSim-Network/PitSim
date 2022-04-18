@@ -14,12 +14,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class Bone extends BrewingIngredient {
-    public static Bone INSTANCE;
-
-    public Bone() {
-        super(2, NBTTag.SKELETON_BONE, ChatColor.AQUA + "XP Boost", ChatColor.AQUA, PotionType.SPEED);
-        INSTANCE = this;
+public class FermentedSpiderEye extends BrewingIngredient {
+    public FermentedSpiderEye() {
+        super(5, NBTTag.CAVESPIDER_EYE, ChatColor.YELLOW + "Neutrality", ChatColor.YELLOW, PotionType.REGEN);
     }
 
     @Override
@@ -29,44 +26,39 @@ public class Bone extends BrewingIngredient {
 
     @Override
     public Object getPotency(BrewingIngredient potencyIngredient) {
-        int tier = potencyIngredient.tier;
-
-        return 25 * tier + "," + 100 * tier;
+        return 0.1 * potencyIngredient.tier;
     }
 
     @Override
     public List<String> getPotencyLore(BrewingIngredient potency) {
         List<String> lore = new ArrayList<>();
-        String[] values = ((String)getPotency(potency)).split(",");
-
         lore.add("");
-        lore.add(ChatColor.GRAY + "Earn " + ChatColor.AQUA + "+" + values[0] + " XP " + ChatColor.GRAY + "and " + ChatColor.AQUA + "+" + values[1] + " Max XP");
-        lore.add(ChatColor.GRAY + "from kills and assists.");
+        lore.add(ChatColor.WHITE + "" + (int) ((double) getPotency(potency) * 100) + "% " + ChatColor.GRAY + "chance to " + color + "deflect " + ChatColor.GRAY + " incoming hits");
+        lore.add(ChatColor.GRAY + "and " + color + "cancel " + ChatColor.GRAY + "out going hits.");
         return lore;
     }
 
     @Override
     public int getDuration(BrewingIngredient durationIngredient) {
-        int tier = durationIngredient.tier;
-        return (20 * 60 * 3) * tier;
+        return 0;
     }
 
     @Override
     public int getBrewingReductionMinutes() {
-        return 20;
+        return 50;
     }
 
     @Override
     public ItemStack getItem() {
-        ItemStack bone = new ItemStack(Material.BONE);
-        ItemMeta meta = bone.getItemMeta();
-        List<String> lore = Arrays.asList(ChatColor.GRAY + "Flesh gathered from the Skeletons", ChatColor.GRAY
-                + "of the Skeleton Caves", "", ChatColor.DARK_PURPLE + "Tainted Item");
+        ItemStack eye = new ItemStack(Material.FERMENTED_SPIDER_EYE);
+        ItemMeta meta = eye.getItemMeta();
+        List<String> lore = Arrays.asList(ChatColor.GRAY + "Fermented Eye gathered from the Spiders", ChatColor.GRAY
+                + "of the deeper Spider Cave", "", ChatColor.DARK_PURPLE + "Tainted Item");
         meta.setLore(lore);
-        meta.setDisplayName(ChatColor.GREEN + "Bone");
-        bone.setItemMeta(meta);
+        meta.setDisplayName(ChatColor.GREEN + "Fermented Spider Eye");
+        eye.setItemMeta(meta);
 
-        NBTItem nbtItem = new NBTItem(bone);
+        NBTItem nbtItem = new NBTItem(eye);
         nbtItem.setBoolean(nbtTag.getRef(), true);
         return nbtItem.getItem();
     }

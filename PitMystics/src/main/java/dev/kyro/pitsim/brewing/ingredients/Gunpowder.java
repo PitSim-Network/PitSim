@@ -14,12 +14,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class Bone extends BrewingIngredient {
-    public static Bone INSTANCE;
-
-    public Bone() {
-        super(2, NBTTag.SKELETON_BONE, ChatColor.AQUA + "XP Boost", ChatColor.AQUA, PotionType.SPEED);
-        INSTANCE = this;
+public class Gunpowder extends BrewingIngredient {
+    public Gunpowder() {
+        super(4, NBTTag.CREEPER_POWDER, ChatColor.RED + "Damage Boost", ChatColor.RED, PotionType.STRENGTH);
     }
 
     @Override
@@ -29,44 +26,39 @@ public class Bone extends BrewingIngredient {
 
     @Override
     public Object getPotency(BrewingIngredient potencyIngredient) {
-        int tier = potencyIngredient.tier;
-
-        return 25 * tier + "," + 100 * tier;
+        return 0.05 * potencyIngredient.tier;
     }
 
     @Override
     public List<String> getPotencyLore(BrewingIngredient potency) {
         List<String> lore = new ArrayList<>();
-        String[] values = ((String)getPotency(potency)).split(",");
-
         lore.add("");
-        lore.add(ChatColor.GRAY + "Earn " + ChatColor.AQUA + "+" + values[0] + " XP " + ChatColor.GRAY + "and " + ChatColor.AQUA + "+" + values[1] + " Max XP");
-        lore.add(ChatColor.GRAY + "from kills and assists.");
+        lore.add(ChatColor.GRAY + "Deal " + color + "+" + (int) ((double) getPotency(potency) * 100) + "% Damage");
+        lore.add(ChatColor.GRAY + "to bots and players.");
         return lore;
     }
 
     @Override
     public int getDuration(BrewingIngredient durationIngredient) {
-        int tier = durationIngredient.tier;
-        return (20 * 60 * 3) * tier;
+        return 20 * 60 * durationIngredient.tier;
     }
 
     @Override
     public int getBrewingReductionMinutes() {
-        return 20;
+        return 40;
     }
 
     @Override
     public ItemStack getItem() {
-        ItemStack bone = new ItemStack(Material.BONE);
-        ItemMeta meta = bone.getItemMeta();
-        List<String> lore = Arrays.asList(ChatColor.GRAY + "Flesh gathered from the Skeletons", ChatColor.GRAY
-                + "of the Skeleton Caves", "", ChatColor.DARK_PURPLE + "Tainted Item");
+        ItemStack powder = new ItemStack(Material.SULPHUR);
+        ItemMeta meta = powder.getItemMeta();
+        List<String> lore = Arrays.asList(ChatColor.GRAY + "Gunpowder gathered from the Creepers", ChatColor.GRAY
+                + "of the Creeper Caves", "", ChatColor.DARK_PURPLE + "Tainted Item");
         meta.setLore(lore);
-        meta.setDisplayName(ChatColor.GREEN + "Bone");
-        bone.setItemMeta(meta);
+        meta.setDisplayName(ChatColor.GREEN + "Gunpowder");
+        powder.setItemMeta(meta);
 
-        NBTItem nbtItem = new NBTItem(bone);
+        NBTItem nbtItem = new NBTItem(powder);
         nbtItem.setBoolean(nbtTag.getRef(), true);
         return nbtItem.getItem();
     }

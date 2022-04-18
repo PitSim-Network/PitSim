@@ -37,7 +37,10 @@ public enum NBTTag {
 	POTION_POTENCY("pr-potion-potency"),
 	POTION_DURATION("pr-potion-duration"),
 	ZOMBIE_FLESH("pr-zombie-flesh"),
-	SKELETON_BONE("pr-skeleton-bone");
+	SKELETON_BONE("pr-skeleton-bone"),
+	CREEPER_POWDER("pr-creeper-powder"),
+	SPIDER_EYE("pr-spider-eye"),
+	CAVESPIDER_EYE("pr-cavespider-eye");
 
 	private final String ref;
 

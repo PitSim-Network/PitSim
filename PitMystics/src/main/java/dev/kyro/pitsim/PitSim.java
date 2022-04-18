@@ -16,8 +16,7 @@ import dev.kyro.pitsim.boosters.GoldBooster;
 import dev.kyro.pitsim.boosters.PvPBooster;
 import dev.kyro.pitsim.boosters.XPBooster;
 import dev.kyro.pitsim.brewing.BrewingManager;
-import dev.kyro.pitsim.brewing.ingredients.Bone;
-import dev.kyro.pitsim.brewing.ingredients.RottenFlesh;
+import dev.kyro.pitsim.brewing.ingredients.*;
 import dev.kyro.pitsim.brewing.objects.BrewingIngredient;
 import dev.kyro.pitsim.commands.*;
 import dev.kyro.pitsim.commands.admin.*;
@@ -446,6 +445,9 @@ class PitSim extends JavaPlugin {
 	private void registerBrewingIngredients() {
 		BrewingIngredient.registerIngredient(new RottenFlesh());
 		BrewingIngredient.registerIngredient(new Bone());
+		BrewingIngredient.registerIngredient(new SpiderEye());
+		BrewingIngredient.registerIngredient(new Gunpowder());
+		BrewingIngredient.registerIngredient(new FermentedSpiderEye());
 	}
 
 	private void loadConfig() {
