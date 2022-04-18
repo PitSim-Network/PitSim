@@ -184,7 +184,7 @@ class PitSim extends JavaPlugin {
 		}
 
 		for(PitMob mob : MobManager.mobs) {
-			MobManager.nameTags.get(mob.entity).remove();
+			MobManager.nameTags.get(mob.entity.getUniqueId()).remove();
 			mob.entity.remove();
 		}
 
@@ -414,7 +414,7 @@ class PitSim extends JavaPlugin {
 		UpgradeManager.registerUpgrade(new Impatient());
 		UpgradeManager.registerUpgrade(new Helmetry());
 		UpgradeManager.registerUpgrade(new ShardHunter());
-		UpgradeManager.registerUpgrade(new ReportAccess());
+		UpgradeManager.registerUpgrade(new Chemist());
 //		UpgradeManager.registerUpgrade(new SelfConfidence());
 		UpgradeManager.registerUpgrade(new LuckyKill());
 		UpgradeManager.registerUpgrade(new LifeInsurance());

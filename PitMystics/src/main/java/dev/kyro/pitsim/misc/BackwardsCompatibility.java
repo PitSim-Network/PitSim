@@ -28,6 +28,25 @@ public class BackwardsCompatibility implements Listener {
 		levelSystemConversion(player);
 		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
 		pitPlayer.lastVersion = PitSim.version;
+		APlayer aPlayer = APlayerData.getPlayerData(player);
+		FileConfiguration playerData = aPlayer.playerData;
+		System.out.println(1);
+
+		if(playerData.getInt("SELF_CONFIDENCE") >-1) {
+			playerData.set("CHEMIST", 1);
+			playerData.set("SELF_CONFIDENCE", null);
+			AOutput.send(player, "&e&lUPDATE: &7Your &eSelf Confidence &7upgrade has been changed to &eChemist I&7.");
+			aPlayer.save();
+			UpgradeManager.updatePlayer(player);
+		}
+		if(playerData.getInt("REPORT_ACCESS") > -1) {
+			System.out.println(2);
+			playerData.set("CHEMIST", 1);
+			playerData.set("REPORT_ACCESS", null);
+			AOutput.send(player, "&e&lUPDATE: &7Your &eReport Access &7upgrade has been changed to &eChemist I&7.");
+			aPlayer.save();
+			UpgradeManager.updatePlayer(player);
+		}
 	}
 
 	public static Boolean isNew(Player player) {
