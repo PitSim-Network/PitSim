@@ -271,4 +271,14 @@ public class Misc {
 		else if(seconds != 0) return seconds + "s";
 		else return minutes + "s";
 	}
+
+	public static String ticksToTimeUnformatted(int ticks) {
+		int seconds = (int) Math.floor(ticks / 20);
+		int minutes = (int) Math.floor(seconds / 60);
+
+		int secondsLeft = (seconds - (minutes * 60));
+		String secondsString = (secondsLeft == 0 ? secondsLeft + "0" : String.valueOf(secondsLeft));
+
+		return minutes + ":" + secondsString;
+	}
 }

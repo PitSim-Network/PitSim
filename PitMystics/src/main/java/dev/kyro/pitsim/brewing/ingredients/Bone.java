@@ -53,7 +53,7 @@ public class Bone extends BrewingIngredient {
 
     @Override
     public int getBrewingReductionMinutes() {
-        return 104;
+        return 20;
     }
 
     @Override

@@ -39,7 +39,7 @@ public class RottenFlesh extends BrewingIngredient {
         List<String> lore = new ArrayList<>();
 
         lore.add("");
-        lore.add(ChatColor.GRAY + "Earn " + ChatColor.GOLD + "+" + (int) ((double) getPotency(potency) * 10) + "% gold " + ChatColor.GRAY + "from");
+        lore.add(ChatColor.GRAY + "Earn " + ChatColor.GOLD + "+" + (int) ((double) getPotency(potency) * 100) + "% gold " + ChatColor.GRAY + "from");
         lore.add(ChatColor.GRAY + "kills and assists");
         return lore;
     }

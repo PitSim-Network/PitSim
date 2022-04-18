@@ -67,11 +67,11 @@ public class SpawnManager implements Listener {
 			if(!lastLocationMap.containsKey(player)) return;
 
 			PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
-			if(pitPlayer.megastreak.getClass() == Uberstreak.class && pitPlayer.megastreak.isOnMega()) {
+			if(	pitPlayer.megastreak.isOnMega()) {
 				Location lastLocation = lastLocationMap.get(player);
 				player.teleport(lastLocation);
 				player.setVelocity(new Vector());
-				AOutput.error(event.getPlayer(), "&c&c&lNOPE! &7You cannot enter spawn while on an Uberstreak!");
+				AOutput.error(event.getPlayer(), "&c&c&lNOPE! &7You cannot enter spawn while on a Megastreak!");
 			} else if(CombatManager.isInCombat(player)) {
 				Location lastLocation = lastLocationMap.get(player);
 				player.teleport(lastLocation);

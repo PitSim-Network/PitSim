@@ -32,14 +32,14 @@ public class BackwardsCompatibility implements Listener {
 		FileConfiguration playerData = aPlayer.playerData;
 		System.out.println(1);
 
-		if(playerData.getInt("SELF_CONFIDENCE") >-1) {
+		if(playerData.getInt("SELF_CONFIDENCE") >= 1) {
 			playerData.set("CHEMIST", 1);
 			playerData.set("SELF_CONFIDENCE", null);
 			AOutput.send(player, "&e&lUPDATE: &7Your &eSelf Confidence &7upgrade has been changed to &eChemist I&7.");
 			aPlayer.save();
 			UpgradeManager.updatePlayer(player);
 		}
-		if(playerData.getInt("REPORT_ACCESS") > -1) {
+		if(playerData.getInt("REPORT_ACCESS") >= 1) {
 			System.out.println(2);
 			playerData.set("CHEMIST", 1);
 			playerData.set("REPORT_ACCESS", null);

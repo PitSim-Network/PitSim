@@ -4,6 +4,7 @@ import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.brewing.objects.BrewingAnimation;
 import dev.kyro.pitsim.brewing.objects.BrewingSession;
 import dev.kyro.pitsim.controllers.TaintedWell;
+import dev.kyro.pitsim.controllers.UpgradeManager;
 import dev.kyro.pitsim.controllers.objects.PitBoss;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.events.AttackEvent;
@@ -77,7 +78,8 @@ public class BrewingManager implements Listener {
                             int timeLeft = (int) ((int) (((session.startTime / 1000) * 20) + addTicks) - (((System.currentTimeMillis() / 1000) * 20)));
                             if(timeLeft < 0) text[i + 1] = "&a&lREADY!";
                             else text[i + 1] = session.identifier.name + " &f" + Misc.ticksToTime(timeLeft) + "";
-                        } else text[i + 1] = "&cSlot Empty!";
+                        } else if(UpgradeManager.getTier(player, "CHEMIST") >= i) text[i + 1] = "&cSlot Empty!";
+                        else text[i + 1] = "&cSlot Locked!";
                     }
 
                     if(hasReadyPotions(player)) text[4] = "&aRight-Click to collect!";
@@ -104,7 +106,7 @@ public class BrewingManager implements Listener {
                     ((CraftPlayer)player).getHandle().playerConnection.sendPacket(identityTpPacket);
                     player.playEffect(anim.location.clone().add(0.5, 1.0, 0.5), Effect.POTION_SWIRL, 0);
 
-                    i += 8;
+                    i += 4;
                     if(i >= 256) i = 0;
                 }
             }
@@ -207,7 +209,7 @@ public class BrewingManager implements Listener {
     public static int getBrewingSlot(Player player) {
         PitPlayer pitPlayer = PitPlayer.getPitPlayer(player.getPlayer());
         for (int i = 0; i < pitPlayer.brewingSessions.length; i++) {
-            if(pitPlayer.brewingSessions[i] == null) return i + 1;
+            if(pitPlayer.brewingSessions[i] == null && UpgradeManager.getTier(player, "CHEMIST") >= i) return i + 1;
         }
         return -1;
     }

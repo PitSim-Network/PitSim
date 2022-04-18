@@ -71,7 +71,9 @@ public class BrewingSession {
         meta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
         List<String> lore = new ArrayList<>(identifier.getPotencyLore(potency));
         lore.add("");
-        lore.add(ChatColor.GRAY + "Duration: " + ChatColor.WHITE + Misc.ticksToTime(identifier.getDuration(duration)));
+        lore.add(ChatColor.GRAY + "Duration: " + ChatColor.WHITE + Misc.ticksToTimeUnformatted(identifier.getDuration(duration)));
+        lore.add("");
+        lore.add(identifier.color + "Tainted Potion");
         meta.setLore(lore);
         potion.setItemMeta(meta);
         NBTItem nbtItem = new NBTItem(potion);
