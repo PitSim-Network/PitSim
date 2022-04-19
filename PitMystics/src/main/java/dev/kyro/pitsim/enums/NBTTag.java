@@ -40,7 +40,12 @@ public enum NBTTag {
 	SKELETON_BONE("pr-skeleton-bone"),
 	CREEPER_POWDER("pr-creeper-powder"),
 	SPIDER_EYE("pr-spider-eye"),
-	CAVESPIDER_EYE("pr-cavespider-eye");
+	CAVESPIDER_EYE("pr-cavespider-eye"),
+	MAGMACUBE_CREAM("pr-magmacube-cream"),
+	PIGMAN_PORK("pr-pigman-pork"),
+	WITHER_SKULL("pr-wither-skull"),
+	GOLEM_INGOT("pr-golem-ingot"),
+	ENDERMAN_PEARL("pr-enderman-pearl");
 
 	private final String ref;
 

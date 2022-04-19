@@ -448,6 +448,12 @@ class PitSim extends JavaPlugin {
 		BrewingIngredient.registerIngredient(new SpiderEye());
 		BrewingIngredient.registerIngredient(new Gunpowder());
 		BrewingIngredient.registerIngredient(new FermentedSpiderEye());
+		BrewingIngredient.registerIngredient(new MagmaCream());
+		BrewingIngredient.registerIngredient(new RawPork());
+		BrewingIngredient.registerIngredient(new WitherSkull());
+		BrewingIngredient.registerIngredient(new IronIngot());
+		BrewingIngredient.registerIngredient(new EnderPearl());
+
 	}
 
 	private void loadConfig() {

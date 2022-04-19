@@ -82,9 +82,9 @@ public class BossManager implements Listener {
     @EventHandler
     public void onTrade(PlayerInteractEntityEvent event) {
         if(event.getRightClicked() instanceof Villager) {
-            for (Villager value : clickables.values()) {
-                if(!value.getUniqueId().equals(event.getRightClicked().getUniqueId())) return;
-            }
+//            for (Villager value : clickables.values()) {
+//                if(!value.getUniqueId().equals(event.getRightClicked().getUniqueId())) return;
+//            }
             event.setCancelled(true);
 
             SubLevel level = null;
