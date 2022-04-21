@@ -34,7 +34,7 @@ public class IronIngot extends BrewingIngredient {
         List<String> lore = new ArrayList<>();
 
         lore.add("");
-        lore.add(ChatColor.GRAY + "Receive " + color + "-" + (int) ((double)getPotency(potency) * 100) + " Damage" +  ChatColor.GRAY + ".");
+        lore.add(ChatColor.GRAY + "Receive " + color + "-" + (int) ((double)getPotency(potency) * 100) + "% Damage" +  ChatColor.GRAY + ".");
         return lore;
     }
 

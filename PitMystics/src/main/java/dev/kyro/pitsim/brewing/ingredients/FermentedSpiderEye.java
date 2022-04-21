@@ -33,14 +33,14 @@ public class FermentedSpiderEye extends BrewingIngredient {
     public List<String> getPotencyLore(BrewingIngredient potency) {
         List<String> lore = new ArrayList<>();
         lore.add("");
-        lore.add(ChatColor.WHITE + "" + (int) ((double) getPotency(potency) * 100) + "% " + ChatColor.GRAY + "chance to " + color + "deflect " + ChatColor.GRAY + " incoming hits");
-        lore.add(ChatColor.GRAY + "and " + color + "cancel " + ChatColor.GRAY + "out going hits.");
+        lore.add(ChatColor.WHITE + "" + (int) ((double) getPotency(potency) * 100) + "% " + ChatColor.GRAY + "chance to " + color + "deflect " + ChatColor.GRAY + "incoming");
+        lore.add(ChatColor.GRAY + "hits and " + color + "cancel " + ChatColor.GRAY + "out going hits.");
         return lore;
     }
 
     @Override
     public int getDuration(BrewingIngredient durationIngredient) {
-        return 0;
+        return 2 * 60 * 20 * durationIngredient.tier;
     }
 
     @Override
