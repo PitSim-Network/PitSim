@@ -18,12 +18,12 @@ public class RottenFlesh extends BrewingIngredient {
     public static RottenFlesh INSTANCE;
 
     public RottenFlesh() {
-        super(1, NBTTag.ZOMBIE_FLESH, ChatColor.GOLD + "Gold Boost", ChatColor.GOLD, PotionType.FIRE_RESISTANCE);
+        super(1, NBTTag.ZOMBIE_FLESH, "Gold Boost", ChatColor.GOLD, PotionType.FIRE_RESISTANCE);
         INSTANCE = this;
     }
 
     @Override
-    public void administerEffect(Player player, BrewingIngredient potency, BrewingIngredient duration) {
+    public void administerEffect(Player player, BrewingIngredient potency, int duration) {
 
     }
 

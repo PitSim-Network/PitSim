@@ -16,11 +16,11 @@ import java.util.List;
 
 public class FermentedSpiderEye extends BrewingIngredient {
     public FermentedSpiderEye() {
-        super(5, NBTTag.CAVESPIDER_EYE, ChatColor.YELLOW + "Neutrality", ChatColor.YELLOW, PotionType.REGEN);
+        super(5, NBTTag.CAVESPIDER_EYE, "Neutrality", ChatColor.YELLOW, PotionType.REGEN);
     }
 
     @Override
-    public void administerEffect(Player player, BrewingIngredient potency, BrewingIngredient duration) {
+    public void administerEffect(Player player, BrewingIngredient potency, int duration) {
 
     }
 

@@ -279,6 +279,7 @@ public class Misc {
 		int secondsLeft = (seconds - (minutes * 60));
 		String secondsString = (secondsLeft == 0 ? secondsLeft + "0" : String.valueOf(secondsLeft));
 
+		if(secondsLeft < 10) return minutes + ":0" + secondsString;
 		return minutes + ":" + secondsString;
 	}
 }

@@ -16,11 +16,11 @@ import java.util.List;
 
 public class Gunpowder extends BrewingIngredient {
     public Gunpowder() {
-        super(4, NBTTag.CREEPER_POWDER, ChatColor.RED + "Damage Boost", ChatColor.RED, PotionType.STRENGTH);
+        super(4, NBTTag.CREEPER_POWDER, "Damage Boost", ChatColor.RED, PotionType.STRENGTH);
     }
 
     @Override
-    public void administerEffect(Player player, BrewingIngredient potency, BrewingIngredient duration) {
+    public void administerEffect(Player player, BrewingIngredient potency, int duration) {
 
     }
 

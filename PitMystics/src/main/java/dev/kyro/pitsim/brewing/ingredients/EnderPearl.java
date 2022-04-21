@@ -16,11 +16,11 @@ import java.util.List;
 
 public class EnderPearl extends BrewingIngredient {
     public EnderPearl() {
-        super(10, NBTTag.ENDERMAN_PEARL, ChatColor.GREEN + "Venom", ChatColor.GREEN, PotionType.POISON);
+        super(10, NBTTag.ENDERMAN_PEARL, "Venom", ChatColor.GREEN, PotionType.POISON);
     }
 
     @Override
-    public void administerEffect(Player player, BrewingIngredient potency, BrewingIngredient duration) {
+    public void administerEffect(Player player, BrewingIngredient potency, int duration) {
 
     }
 
@@ -34,7 +34,7 @@ public class EnderPearl extends BrewingIngredient {
         List<String> lore = new ArrayList<>();
 
         lore.add("");
-        lore.add(ChatColor.GRAY + "Disables " + color + getPotencyLore(potency) + " Mystic Tokens" +  ChatColor.GRAY + "from being");
+        lore.add(ChatColor.GRAY + "Disables " + color + getPotency(potency) + " Mystic Tokens " +  ChatColor.GRAY + "from being");
         lore.add(ChatColor.GRAY + "used in any way.");
         return lore;
     }

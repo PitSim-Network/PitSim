@@ -17,11 +17,11 @@ import java.util.List;
 public class SpiderEye extends BrewingIngredient {
 
     public SpiderEye() {
-        super(3, NBTTag.SPIDER_EYE, ChatColor.WHITE + "Cleanse", ChatColor.WHITE, PotionType.INVISIBILITY);
+        super(3, NBTTag.SPIDER_EYE, "Cleanse", ChatColor.WHITE, PotionType.INVISIBILITY);
     }
 
     @Override
-    public void administerEffect(Player player, BrewingIngredient potency, BrewingIngredient duration) {
+    public void administerEffect(Player player, BrewingIngredient potency, int duration) {
 
     }
 

@@ -16,11 +16,11 @@ import java.util.List;
 
 public class IronIngot extends BrewingIngredient {
     public IronIngot() {
-        super(9, NBTTag.GOLEM_INGOT, ChatColor.BLUE + "Defense", ChatColor.BLUE, PotionType.NIGHT_VISION);
+        super(9, NBTTag.GOLEM_INGOT, "Defense", ChatColor.BLUE, PotionType.NIGHT_VISION);
     }
 
     @Override
-    public void administerEffect(Player player, BrewingIngredient potency, BrewingIngredient duration) {
+    public void administerEffect(Player player, BrewingIngredient potency, int duration) {
 
     }
 

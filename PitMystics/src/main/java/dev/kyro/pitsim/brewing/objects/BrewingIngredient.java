@@ -7,13 +7,14 @@ import org.bukkit.ChatColor;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.Mule;
 import org.bukkit.entity.Player;
+import org.bukkit.event.Listener;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionType;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class BrewingIngredient {
+public abstract class BrewingIngredient implements Listener {
     public int tier;
     public NBTTag nbtTag;
     public String name;
@@ -30,7 +31,7 @@ public abstract class BrewingIngredient {
         this.potionType = potionType;
     }
 
-    public abstract void administerEffect(Player player, BrewingIngredient potency, BrewingIngredient duration);
+    public abstract void administerEffect(Player player, BrewingIngredient potency, int duration);
 
     public abstract Object getPotency(BrewingIngredient potencyIngredient);
 

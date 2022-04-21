@@ -16,6 +16,7 @@ import dev.kyro.pitsim.boosters.GoldBooster;
 import dev.kyro.pitsim.boosters.PvPBooster;
 import dev.kyro.pitsim.boosters.XPBooster;
 import dev.kyro.pitsim.brewing.BrewingManager;
+import dev.kyro.pitsim.brewing.PotionManager;
 import dev.kyro.pitsim.brewing.ingredients.*;
 import dev.kyro.pitsim.brewing.objects.BrewingIngredient;
 import dev.kyro.pitsim.commands.*;
@@ -393,6 +394,7 @@ class PitSim extends JavaPlugin {
 		getServer().getPluginManager().registerEvents(new BossBar(), this);
 		getServer().getPluginManager().registerEvents(new TaintedWell(), this);
 		getServer().getPluginManager().registerEvents(new BrewingManager(), this);
+		getServer().getPluginManager().registerEvents(new PotionManager(), this);
 	}
 	public void registerBoosters() {
 		BoosterManager.registerBooster(new XPBooster());
@@ -450,7 +452,7 @@ class PitSim extends JavaPlugin {
 		BrewingIngredient.registerIngredient(new FermentedSpiderEye());
 		BrewingIngredient.registerIngredient(new MagmaCream());
 		BrewingIngredient.registerIngredient(new RawPork());
-		BrewingIngredient.registerIngredient(new WitherSkull());
+		BrewingIngredient.registerIngredient(new Coal());
 		BrewingIngredient.registerIngredient(new IronIngot());
 		BrewingIngredient.registerIngredient(new EnderPearl());
 

@@ -77,7 +77,7 @@ public class BrewingManager implements Listener {
                             int addTicks = (105 - session.reduction.getBrewingReductionMinutes()) * 60 * 20;
                             int timeLeft = (int) ((int) (((session.startTime / 1000) * 20) + addTicks) - (((System.currentTimeMillis() / 1000) * 20)));
                             if(timeLeft < 0) text[i + 1] = "&a&lREADY!";
-                            else text[i + 1] = session.identifier.name + " &f" + Misc.ticksToTime(timeLeft) + "";
+                            else text[i + 1] = session.identifier.color + session.identifier.name + " &f" + Misc.ticksToTime(timeLeft) + "";
                         } else if(UpgradeManager.getTier(player, "CHEMIST") >= i) text[i + 1] = "&cSlot Empty!";
                         else text[i + 1] = "&cSlot Locked!";
                     }

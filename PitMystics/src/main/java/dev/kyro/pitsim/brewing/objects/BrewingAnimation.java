@@ -100,7 +100,7 @@ public class BrewingAnimation {
         strings[0] = ChatColor.YELLOW + "" + ChatColor.BOLD + "Brew Details";
 
         ItemStack identifier = ingredients.get(player)[0];
-        if(BrewingIngredient.isIngredient(identifier)) strings[1] = ChatColor.LIGHT_PURPLE + "Type: " +  Objects.requireNonNull(BrewingIngredient.getIngrediantFromItemStack(identifier)).name;
+        if(BrewingIngredient.isIngredient(identifier)) strings[1] = ChatColor.LIGHT_PURPLE + "Type: " +  Objects.requireNonNull(BrewingIngredient.getIngrediantFromItemStack(identifier)).color + Objects.requireNonNull(BrewingIngredient.getIngrediantFromItemStack(identifier)).name;
         else strings[1] = ChatColor.LIGHT_PURPLE + "Type: " + ChatColor.YELLOW + "Place an Item!";
 
         ItemStack potency = ingredients.get(player)[1];

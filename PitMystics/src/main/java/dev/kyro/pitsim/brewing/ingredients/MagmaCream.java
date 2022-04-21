@@ -17,11 +17,11 @@ import java.util.List;
 
 public class MagmaCream extends BrewingIngredient {
     public MagmaCream() {
-        super(6, NBTTag.MAGMACUBE_CREAM, ChatColor.LIGHT_PURPLE + "Mana Boost", ChatColor.LIGHT_PURPLE, PotionType.INSTANT_HEAL);
+        super(6, NBTTag.MAGMACUBE_CREAM, "Mana Boost", ChatColor.LIGHT_PURPLE, PotionType.INSTANT_HEAL);
     }
 
     @Override
-    public void administerEffect(Player player, BrewingIngredient potency, BrewingIngredient duration) {
+    public void administerEffect(Player player, BrewingIngredient potency, int duration) {
 
     }
 

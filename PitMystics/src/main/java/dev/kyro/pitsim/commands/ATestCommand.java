@@ -2,6 +2,7 @@ package dev.kyro.pitsim.commands;
 
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.arcticapi.misc.AUtil;
+import dev.kyro.pitsim.brewing.objects.BrewingIngredient;
 import dev.kyro.pitsim.controllers.MobManager;
 import dev.kyro.pitsim.controllers.TaintedWell;
 import dev.kyro.pitsim.enums.SubLevel;
@@ -24,10 +25,8 @@ public class ATestCommand implements CommandExecutor {
 		if(!(sender instanceof Player)) return false;
 		Player player = (Player) sender;
 
-		TaintedWell.onEnchant(player, player.getItemInHand());
-
-		if(args.length > 0) {
-			TaintedWell.onButtonPush(player, false);
+		for (BrewingIngredient ingredient : BrewingIngredient.ingredients) {
+			AUtil.giveItemSafely(player, ingredient.getItem());
 		}
 
 

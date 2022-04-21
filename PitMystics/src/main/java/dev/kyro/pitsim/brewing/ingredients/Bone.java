@@ -18,12 +18,12 @@ public class Bone extends BrewingIngredient {
     public static Bone INSTANCE;
 
     public Bone() {
-        super(2, NBTTag.SKELETON_BONE, ChatColor.AQUA + "XP Boost", ChatColor.AQUA, PotionType.SPEED);
+        super(2, NBTTag.SKELETON_BONE,"XP Boost", ChatColor.AQUA, PotionType.SPEED);
         INSTANCE = this;
     }
 
     @Override
-    public void administerEffect(Player player, BrewingIngredient potency, BrewingIngredient duration) {
+    public void administerEffect(Player player, BrewingIngredient potency, int duration) {
 
     }
 

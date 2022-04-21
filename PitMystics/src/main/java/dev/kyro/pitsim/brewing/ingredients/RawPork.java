@@ -16,11 +16,11 @@ import java.util.List;
 
 public class RawPork extends BrewingIngredient {
     public RawPork() {
-        super(7, NBTTag.PIGMAN_PORK, ChatColor.RED + "Regeneration", ChatColor.RED, PotionType.REGEN);
+        super(7, NBTTag.PIGMAN_PORK, "Regeneration", ChatColor.RED, PotionType.REGEN);
     }
 
     @Override
-    public void administerEffect(Player player, BrewingIngredient potency, BrewingIngredient duration) {
+    public void administerEffect(Player player, BrewingIngredient potency, int duration) {
 
     }
 
@@ -34,7 +34,7 @@ public class RawPork extends BrewingIngredient {
         List<String> lore = new ArrayList<>();
 
         lore.add("");
-        lore.add(ChatColor.GRAY + "Gain " + color + "+" + getPotency(potency) + "\u2764" + ChatColor.GRAY + "Every 5 seconds.");
+        lore.add(ChatColor.GRAY + "Gain " + color + "+" + getPotency(potency) + "\u2764 " + ChatColor.GRAY + "Every 5 seconds.");
         return lore;
     }
 
