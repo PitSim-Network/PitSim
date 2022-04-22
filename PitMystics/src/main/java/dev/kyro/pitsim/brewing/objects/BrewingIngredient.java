@@ -1,8 +1,10 @@
 package dev.kyro.pitsim.brewing.objects;
 
 import de.tr7zw.nbtapi.NBTItem;
+import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.enums.NBTTag;
 import dev.kyro.pitsim.misc.Misc;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.Mule;
@@ -83,5 +85,6 @@ public abstract class BrewingIngredient implements Listener {
 
     public static void registerIngredient(BrewingIngredient ingredient) {
         ingredients.add(ingredient);
+        Bukkit.getServer().getPluginManager().registerEvents(ingredient, PitSim.INSTANCE);
     }
 }

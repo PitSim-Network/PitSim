@@ -40,5 +40,7 @@ public class PotionEffect implements Listener {
     public void onExpire() {
         AOutput.send(player, "&5&lPOTION! " + potionType.color + potionType.name + " &7has expired");
         PotionManager.potionEffectList.remove(this);
+        if(PotionManager.playerIndex.get(player) > 0) PotionManager.playerIndex.put(player, PotionManager.playerIndex.get(player) - 1);
+        else PotionManager.playerIndex.remove(player);
     }
 }

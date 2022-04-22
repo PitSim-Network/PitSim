@@ -6,6 +6,7 @@ import dev.kyro.arcticapi.misc.AUtil;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.brewing.objects.BrewingIngredient;
 import dev.kyro.pitsim.brewing.objects.PotionEffect;
+import dev.kyro.pitsim.controllers.BossManager;
 import dev.kyro.pitsim.enums.NBTTag;
 import net.kyori.adventure.audience.Audience;
 import net.kyori.adventure.bossbar.BossBar;
@@ -13,6 +14,7 @@ import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -30,6 +32,7 @@ public class PotionManager implements Listener {
     public static List<PotionEffect> potionEffectList = new ArrayList<>();
     public static Map<Player, Integer> playerIndex = new HashMap<>();
     public static Map<Player, BossBar> bossBars = new HashMap<>();
+    public static int i = 0;
 
     static {
         new BukkitRunnable() {
@@ -48,6 +51,10 @@ public class PotionManager implements Listener {
                 for (Player player : Bukkit.getOnlinePlayers()) {
                     List<PotionEffect> effects = getPotionEffects(player);
                     if(effects.size() == 0) continue;
+                    if(BossManager.activePlayers.contains(player)) {
+                        hideActiveBossBar(PitSim.adventure.player(player), player);
+                        continue;
+                    }
 
                     playerIndex.putIfAbsent(player, 0);
                     int index = playerIndex.get(player);
@@ -65,16 +72,44 @@ public class PotionManager implements Listener {
                     float progress = (float) effects.get(index).getTimeLeft() / (float) effects.get(index).potionType.getDuration(effects.get(index).duration);
 
                     int maxI = effects.size() - 1;
-                    if(playerIndex.get(player) + 1 > maxI) {
-                        playerIndex.put(player, 0);
-                    } else playerIndex.put(player, playerIndex.get(player) + 1);
+                    if(i == 60) {
+                        if(playerIndex.get(player) + 1 > maxI) {
+                            playerIndex.put(player, 0);
+                        } else playerIndex.put(player, playerIndex.get(player) + 1);
+                    }
 
-
-
-                    showMyBossBar(PitSim.adventure.player(player), player, builder.toString(), progress);
+                    if(!bossBars.containsKey(player)) showMyBossBar(PitSim.adventure.player(player), player, builder.toString(), progress);
+                    else {
+                        bossBars.get(player).name(Component.text(builder.toString()));
+                        bossBars.get(player).progress(progress);
+                    }
+                    i++;
+                    if(i > 20 *3) i = 0;
                 }
             }
-        }.runTaskTimer(PitSim.INSTANCE, 20 * 3, 20 * 3);
+        }.runTaskTimer(PitSim.INSTANCE, 2, 2);
+
+//        new BukkitRunnable() {
+//            @Override
+//            public void run() {
+//                for (Player player : Bukkit.getOnlinePlayers()) {
+//                    List<PotionEffect> effects = getPotionEffects(player);
+//                    if(effects.size() == 0) continue;
+//                    if(!playerIndex.containsKey(player)) continue;
+//                    if(!bossBars.containsKey(player)) continue;
+//                    int index = playerIndex.get(player);
+//                    index++;
+//                    if(index + 1 >= (effects.size()) + 1) index = 0;
+//
+//
+//
+//                    PotionEffect effect = effects.get(index);
+//                    Bukkit.broadcastMessage(effect.potionType.name);
+//                    float progress = effect.getTimeLeft() / (float) effect.potionType.getDuration(effect.duration);
+//                    bossBars.put(player, bossBars.get(player).progress(progress));
+//                }
+//            }
+//        }.runTaskTimer(PitSim.INSTANCE, 2, 2);
     }
     
     @EventHandler
@@ -107,8 +142,12 @@ public class PotionManager implements Listener {
     @EventHandler
     public void onQuit(PlayerQuitEvent event) {
         Player player = event.getPlayer();
+        List<PotionEffect> toExpire = new ArrayList<>();
         for (PotionEffect potionEffect : potionEffectList) {
-            if(potionEffect.player == player) potionEffect.onExpire();
+            if(potionEffect.player == player) toExpire.add(potionEffect);
+        }
+        for (PotionEffect potionEffect : toExpire) {
+            potionEffect.onExpire();
         }
     }
 
@@ -145,6 +184,14 @@ public class PotionManager implements Listener {
         return effects;
     }
 
+    public static PotionEffect getEffect(LivingEntity player, BrewingIngredient type) {
+        if(!(player instanceof Player)) return null;
+        for (PotionEffect potionEffect : potionEffectList) {
+            if(potionEffect.player == player && potionEffect.potionType == type) return potionEffect;
+        }
+        return null;
+    }
+
 
     public static void showMyBossBar(final @NonNull Audience player, Player realPlayer, String text, float progress) {
         final Component name = Component.text(text);
@@ -154,7 +201,7 @@ public class PotionManager implements Listener {
         bossBars.put(realPlayer, fullBar);
     }
 
-    public void hideActiveBossBar(final @NonNull Audience player, Player realPlayer) {
+    public static void hideActiveBossBar(final @NonNull Audience player, Player realPlayer) {
         player.hideBossBar(bossBars.get(realPlayer));
         bossBars.remove(realPlayer);
     }

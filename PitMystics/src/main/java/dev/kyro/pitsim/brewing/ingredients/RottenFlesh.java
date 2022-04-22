@@ -1,11 +1,15 @@
 package dev.kyro.pitsim.brewing.ingredients;
 
 import de.tr7zw.nbtapi.NBTItem;
+import dev.kyro.pitsim.brewing.PotionManager;
 import dev.kyro.pitsim.brewing.objects.BrewingIngredient;
+import dev.kyro.pitsim.brewing.objects.PotionEffect;
 import dev.kyro.pitsim.enums.NBTTag;
+import dev.kyro.pitsim.events.KillEvent;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.potion.PotionType;
@@ -25,6 +29,14 @@ public class RottenFlesh extends BrewingIngredient {
     @Override
     public void administerEffect(Player player, BrewingIngredient potency, int duration) {
 
+    }
+
+    @EventHandler
+    public void onKill(KillEvent event) {
+        PotionEffect effect = PotionManager.getEffect(event.killer, this);
+        if(effect == null) return;
+
+        event.goldMultipliers.add((Double) getPotency(effect.potency) + 1);
     }
 
     @Override
