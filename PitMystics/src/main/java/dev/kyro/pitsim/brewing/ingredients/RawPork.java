@@ -2,26 +2,38 @@ package dev.kyro.pitsim.brewing.ingredients;
 
 import de.tr7zw.nbtapi.NBTItem;
 import dev.kyro.pitsim.brewing.objects.BrewingIngredient;
+import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.enums.NBTTag;
+import dev.kyro.pitsim.misc.Misc;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.potion.PotionEffectType;
 import org.bukkit.potion.PotionType;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 public class RawPork extends BrewingIngredient {
+    public Map<Player, Integer> tickMap = new HashMap<>();
+
     public RawPork() {
         super(7, NBTTag.PIGMAN_PORK, "Regeneration", ChatColor.RED, PotionType.REGEN);
     }
 
     @Override
     public void administerEffect(Player player, BrewingIngredient potency, int duration) {
+        if(duration == 0) tickMap.remove(player);
+        else tickMap.putIfAbsent(player, 1);
 
+        for (Map.Entry<Player, Integer> entry : tickMap.entrySet()) {
+            if(entry.getValue() - 1 == 0) {
+                PitPlayer.getPitPlayer(player).heal((Double) getPotency(potency) * 2);
+                tickMap.put(entry.getKey(), 5 * 20);
+            } else tickMap.put(entry.getKey(), entry.getValue() - 1);
+
+        }
     }
 
     @Override
