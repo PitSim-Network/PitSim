@@ -70,7 +70,6 @@ public class BossManager implements Listener {
             holograms.add(holo);
 
             Villager villager = Bukkit.getWorld("darkzone").spawn(level.middle.subtract(0, 1, 0), Villager.class);
-            System.out.println("Stand!");
             noAI(villager);
             villager.setAdult();
             villager.addPotionEffect(new PotionEffect(PotionEffectType.INVISIBILITY, Integer.MAX_VALUE, 0, false, false));
