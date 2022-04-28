@@ -14,6 +14,7 @@ import dev.kyro.pitsim.events.AttackEvent;
 import dev.kyro.pitsim.events.KillEvent;
 import dev.kyro.pitsim.misc.Misc;
 import dev.kyro.pitsim.misc.Sounds;
+import dev.kyro.pitsim.slayers.SkeletonBoss;
 import dev.kyro.pitsim.slayers.ZombieBoss;
 import net.citizensnpcs.Citizens;
 import net.citizensnpcs.api.CitizensAPI;
@@ -71,6 +72,7 @@ public class BossManager implements Listener {
             holograms.add(holo);
 
             Villager villager = Bukkit.getWorld("darkzone").spawn(level.middle.subtract(0, 1, 0), Villager.class);
+            System.out.println("Stand!");
             noAI(villager);
             villager.setAdult();
             villager.addPotionEffect(new PotionEffect(PotionEffectType.INVISIBILITY, Integer.MAX_VALUE, 0, false, false));
@@ -105,7 +107,9 @@ public class BossManager implements Listener {
                     level.middle.getWorld().playEffect(level.middle, Effect.EXPLOSION_HUGE, 100);
                     Sounds.PRESTIGE.play(level.middle);
                     try {
-                        new ZombieBoss(event.getPlayer());
+
+                        // Hard coding for now
+                        getBossType(level, event.getPlayer());
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -113,6 +117,16 @@ public class BossManager implements Listener {
             }
         }
 
+
+    }
+
+    private void getBossType(SubLevel level, Player player) throws Exception {
+
+        if(level.itemName.equals("&aRotten Flesh")){
+            new ZombieBoss(player);
+        }else if(level.itemName.equals("&aBone")){
+            new SkeletonBoss(player);
+        }
 
     }
 
