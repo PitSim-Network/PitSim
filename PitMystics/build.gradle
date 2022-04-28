@@ -27,7 +27,7 @@ repositories {
 }
 
 dependencies {
-    implementation 'org.jetbrains:annotations:22.0.0'
+    implementation 'org.jetbrains:annotations:23.0.0'
     implementation 'com.gmail.filoghost.holographicdisplays:holographicdisplays-api:2.4.9'
 //    compileOnly 'org.spigotmc:spigot:1.8.8-R0.1-SNAPSHOT'
     compileOnly files('libs/ispigot.jar')
@@ -39,9 +39,9 @@ dependencies {
     compileOnly 'com.sk89q.worldedit:worldedit-bukkit:6.0'
     compileOnly 'org.inventivetalent:bossbarapi:2.4.3-SNAPSHOT'
 //    implementation("net.kyori:adventure-platform-bukkit:4.0.0-SNAPSHOT")
-    compileOnly group: "com.comphenix.protocol", name: "ProtocolLib", version: "4.5.1";
+    compileOnly group: "com.comphenix.protocol", name: "ProtocolLib", version: "4.5.1"
 
-    compileOnly group: 'com.github.koca2000', name: 'NoteBlockAPI', version: '-SNAPSHOT'
+    compileOnly group: 'com.xxmicloxx', name: 'NoteBlockAPI', version: '1.6.2-SNAPSHOT'
     compile 'com.github.ArcticDevelopment:ArcticAPI:47cd0616ed'
     compile 'de.tr7zw:item-nbt-api-plugin:2.8.0'// https://mvnrepository.com/artifact/com.googlecode.json-simple/json-simple
 //    compile group: 'com.googlecode.json-simple', name: 'json-simple', version: '1.1.1'
@@ -49,7 +49,7 @@ dependencies {
     compileOnly files('libs/ArcticGuilds-1.0.0-all.jar')
     implementation 'com.mattmalec:Pterodactyl4J:2.BETA_81'
     implementation "net.kyori:adventure-platform-bukkit:4.1.0"
-    compileOnly 'net.luckperms:api:5.3'
+    compileOnly 'net.luckperms:api:5.4'
 }
 
 shadowJar {

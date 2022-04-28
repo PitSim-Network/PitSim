@@ -37,16 +37,17 @@ import org.fusesource.jansi.Ansi;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 
-public class ZombieBoss extends PitBoss {
+public class SkeletonBoss extends PitBoss {
     public NPC npc;
     public Player entity;
     public Player target;
-    public String name = "&c&lZombie Boss";
+    public String name = "&c&lSkeleton Boss";
     public SubLevel subLevel = SubLevel.ZOMBIE_CAVE;
     public BossBar activeBar;
 
-    public ZombieBoss(Player target) throws Exception {
+    public SkeletonBoss(Player target) throws Exception {
         super(target, SubLevel.ZOMBIE_CAVE);
         this.target = target;
 
@@ -62,13 +63,13 @@ public class ZombieBoss extends PitBoss {
 
         npc.setProtected(false);
 
-        skin(npc, "zombie");
+        skin(npc, "Napkings");
         spawn();
         entity = (Player) npc.getEntity();
         BossManager.bosses.put(npc, this);
 
-        entity.setMaxHealth(250);
-        entity.setHealth(250);
+        entity.setMaxHealth(350);
+        entity.setHealth(350);
         showMyBossBar(PitSim.adventure.player(target));
         BossManager.activePlayers.add(target);
     }
@@ -115,28 +116,30 @@ public class ZombieBoss extends PitBoss {
             public void run() {
                 if(npc.getEntity() == null) {return;}
 
-                List<Entity> entities = npc.getEntity().getNearbyEntities(4, 4, 4);
+                List<Entity> entities = npc.getEntity().getNearbyEntities(5, 5, 5);
                 if(!entities.contains(target)) {
                     try {
                         equipment.set(Equipment.EquipmentSlot.HAND, getPullbow());
 
                     } catch (Exception ignored) { }
-                    new BukkitRunnable() {
-                        @Override
-                        public void run() {
-                            try {
-                                LivingEntity shooter = ((LivingEntity) npc.getEntity());
-                                shooter.launchProjectile(Arrow.class);
-                                equipment.set(Equipment.EquipmentSlot.HAND, getBillionaire());
-                                //TODO: Just put pull code here fuck this lol
+                    try {
 
-                                Vector dirVector = npc.getEntity().getLocation().toVector().subtract(target.getLocation().toVector()).setY(0);
-                                Vector pullVector = dirVector.clone().normalize().setY(0.2).multiply(0.5).add(dirVector.clone().multiply(0.03));
-                                target.setVelocity(pullVector.multiply((0.5 * 0.2) + 1.15));
+                        double r = new Random().nextDouble();
 
-                            } catch (Exception ignored) { }
+                        if(r < 0.05){
+                            LivingEntity shooter = ((LivingEntity) npc.getEntity());
+                            shooter.launchProjectile(Arrow.class);
+                            equipment.set(Equipment.EquipmentSlot.HAND, getBillionaire());
+                            Vector dirVector = npc.getEntity().getLocation().toVector().subtract(target.getLocation().toVector()).setY(0);
+                            Vector pullVector = dirVector.clone().normalize().setY(0.2).multiply(0.5).add(dirVector.clone().multiply(0.03));
+                            target.setVelocity(pullVector.multiply((0.5 * 0.2) + 1.15));
+                        }else{
+                            npc.faceLocation(target.getLocation());
+                            LivingEntity shooter = ((LivingEntity) npc.getEntity());
+                            shooter.launchProjectile(Arrow.class);
                         }
-                    }.runTaskLater(PitSim.INSTANCE, 20);
+
+                    } catch (Exception ignored) { }
                 }
             }
         }.runTaskLater(PitSim.INSTANCE, 10);

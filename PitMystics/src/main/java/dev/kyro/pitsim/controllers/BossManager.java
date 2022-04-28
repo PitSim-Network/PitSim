@@ -61,6 +61,7 @@ public class BossManager implements Listener {
                 if(nearbyEntity instanceof Villager) nearbyEntity.remove();
             }
 
+
             bossItems.put(level, new HashMap<>());
 
             Hologram holo = HologramsAPI.createHologram(PitSim.INSTANCE, level.middle.add(0, 2, 0));
