@@ -10,9 +10,10 @@ import java.util.Arrays;
 import java.util.List;
 
 public enum SubLevel {
-	ZOMBIE_CAVE(1, 30, new Location(Bukkit.getWorld("darkzone"), 56, 53, -95), NBTTag.ZOMBIE_FLESH, "&aRotten Flesh", "%pitsim_zombiecave%", 25, Arrays.asList(PitZombie.class, PitSkeleton.class), ZombieBoss.class);
+	ZOMBIE_CAVE(1, 30, new Location(Bukkit.getWorld("darkzone"), 56, 53, -95), NBTTag.ZOMBIE_FLESH, "&aRotten Flesh", "%pitsim_zombiecave%", 25, Arrays.asList(PitZombie.class), ZombieBoss.class),
+	SKELETON_CAVE(2, 30, new Location(Bukkit.getWorld("darkzone"), 56, 44, -43), NBTTag.SKELETON_BONE, "&aBone", "%pitsim_skeletoncave%", 20, Arrays.asList(PitSkeleton.class), ZombieBoss.class);
 //	CHARGED_CREEPER,
-//	SKELETON,
+
 //	MAGMA_CUBE,
 //	WITHER_SKELETON,
 //	IRON_GOLEM,

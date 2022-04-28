@@ -22,7 +22,7 @@ public class PitSkeleton extends PitMob {
 	public static PitSkeleton INSTANCE;
 
 	public PitSkeleton(Location spawnLoc) {
-		super(MobType.SKELETON, spawnLoc, 1, "&cSkeleton");
+		super(MobType.SKELETON, spawnLoc, 2, "&cSkeleton");
 		INSTANCE = this;
 	}
 
