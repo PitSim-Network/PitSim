@@ -15,9 +15,11 @@ import java.util.Arrays;
 import java.util.List;
 
 public class SpiderEye extends BrewingIngredient {
+    public static SpiderEye INSTANCE;
 
     public SpiderEye() {
         super(3, NBTTag.SPIDER_EYE, "Cleanse", ChatColor.WHITE, PotionType.INVISIBILITY);
+        INSTANCE = this;
     }
 
     @Override
