@@ -2,6 +2,11 @@ package dev.kyro.pitsim.controllers;
 
 import com.gmail.filoghost.holographicdisplays.api.Hologram;
 import com.gmail.filoghost.holographicdisplays.api.HologramsAPI;
+import com.xxmicloxx.NoteBlockAPI.NoteBlockAPI;
+import com.xxmicloxx.NoteBlockAPI.model.RepeatMode;
+import com.xxmicloxx.NoteBlockAPI.model.Song;
+import com.xxmicloxx.NoteBlockAPI.songplayer.EntitySongPlayer;
+import com.xxmicloxx.NoteBlockAPI.utils.NBSDecoder;
 import de.tr7zw.nbtapi.NBTItem;
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.PitSim;
@@ -40,6 +45,7 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -67,7 +73,7 @@ public class BossManager implements Listener {
 
             Hologram holo = HologramsAPI.createHologram(PitSim.INSTANCE, level.middle.add(0, 2, 0));
             holo.setAllowPlaceholders(true);
-            holo.appendTextLine("&cPlace " + level.itemName);
+            holo.appendTextLine(ChatColor.RED + "Place " + ChatColor.translateAlternateColorCodes('&',level.itemName));
             holo.appendTextLine("{fast}" + level.placeholder + " ");
             holograms.add(holo);
 
@@ -207,6 +213,7 @@ public class BossManager implements Listener {
             } else if(entry.getValue().target == event.dead) {
                 entry.getKey().destroy();
                 toRemove.add(entry.getKey());
+                NoteBlockAPI.stopPlaying(event.deadPlayer);
                 activePlayers.remove(event.deadPlayer);
             }
         }
@@ -272,6 +279,18 @@ public class BossManager implements Listener {
         nmsEntity.c(tag);
         tag.setInt("NoAI", 1);
         nmsEntity.f(tag);
+    }
+
+    public static void playMusic(Player player, int level) {
+        System.out.println("Play!");
+        File file = new File("plugins/NoteBlockAPI/Effects/boss" + level + ".nbs");
+        Song song = NBSDecoder.parse(file);
+        EntitySongPlayer esp = new EntitySongPlayer(song);
+        esp.setEntity(player);
+        esp.setDistance(16);
+        esp.setRepeatMode(RepeatMode.ONE);
+        esp.addPlayer(player);
+        esp.setPlaying(true);
     }
 
 

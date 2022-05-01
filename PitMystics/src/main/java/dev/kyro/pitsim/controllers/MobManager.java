@@ -186,6 +186,7 @@ public class MobManager implements Listener {
 	@EventHandler(priority = EventPriority.HIGHEST)
 	public void onHit(EntityDamageByEntityEvent event) {
 		if(event.getDamager() instanceof Arrow) return;
+		if(event.getDamager() instanceof Fireball) return;
 		if(NonManager.getNon((LivingEntity) event.getDamager()) != null) return;
 
 		for (Villager value : BossManager.clickables.values()) {

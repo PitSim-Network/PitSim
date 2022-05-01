@@ -11,6 +11,7 @@ import net.minecraft.server.v1_8_R3.Entity;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
+import org.bukkit.block.data.type.Fire;
 import org.bukkit.craftbukkit.v1_8_R3.CraftWorld;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftEntity;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
@@ -106,6 +107,7 @@ public class BossBar implements Listener {
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onHit(EntityDamageByEntityEvent event) {
         if(event.getDamager() instanceof Arrow) return;
+        if(event.getDamager() instanceof Fireball) return;
         if(NonManager.getNon((LivingEntity) event.getDamager()) != null) return;
 
         if(!(event.getEntity() instanceof Wither)) return;

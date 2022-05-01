@@ -159,6 +159,7 @@ public class DamageManager implements Listener {
 		}
 
 		AttackEvent.Pre preEvent = null;
+		if(event.getEntity() instanceof Fireball) return;
 		if(event.getDamager() instanceof Slime) {
 			preEvent = new AttackEvent.Pre(event, new HashMap<>(), defenderEnchantMap, fakeHit);
 		} else if(event.getDamager() instanceof Arrow) {
@@ -350,7 +351,7 @@ public class DamageManager implements Listener {
 
 			if(killerIsPlayer && !pitKiller.killFeedDisabled && killType != KillType.DEATH)
 				AOutput.send(killEvent.killer, PlaceholderAPI.setPlaceholders(killEvent.deadPlayer, kill));
-			if(deadIsPlayer && !pitDead.killFeedDisabled && killType != KillType.FAKE)
+			if(deadIsPlayer && !pitDead.killFeedDisabled && killType != KillType.FAKE && killEvent != null)
 				AOutput.send(killEvent.dead, death);
 			String actionBarPlaceholder = PlaceholderAPI.setPlaceholders(killEvent.deadPlayer, killActionBar);
 			if(killType != KillType.DEATH) {

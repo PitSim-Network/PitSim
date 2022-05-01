@@ -1,5 +1,6 @@
 package dev.kyro.pitsim.slayers;
 
+import com.xxmicloxx.NoteBlockAPI.NoteBlockAPI;
 import dev.kyro.arcticapi.builders.AItemStackBuilder;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.commands.FreshCommand;
@@ -25,6 +26,7 @@ import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
+import org.bukkit.block.NoteBlock;
 import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -86,6 +88,7 @@ public class SkeletonBoss extends PitBoss {
 
         npc.spawn(subLevel.middle);
         npc.getNavigator().setTarget(target, true);
+        BossManager.playMusic(target, subLevel.level);
     }
 
     public void onAttack() throws Exception {
@@ -190,6 +193,7 @@ public class SkeletonBoss extends PitBoss {
     @Override
     public void onDeath() {
         hideActiveBossBar(PitSim.adventure.player(target));
+        NoteBlockAPI.stopPlaying(target);
     }
 
     @Override
