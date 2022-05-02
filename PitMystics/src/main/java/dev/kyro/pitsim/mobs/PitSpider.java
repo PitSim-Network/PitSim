@@ -26,6 +26,7 @@ public class PitSpider extends PitMob {
 
 		spider.setMaxHealth(50);
 		spider.setHealth(50);
+		spider.setRemoveWhenFarAway(false);
 
 		spider.setCustomNameVisible(false);
 		MobManager.makeTag(spider, displayName);

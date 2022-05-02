@@ -15,6 +15,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.entity.EntitySpawnEvent;
 import org.bukkit.event.player.PlayerArmorStandManipulateEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -168,6 +169,11 @@ public class MobManager implements Listener {
 				}
 			}
 		}.runTaskLater(PitSim.INSTANCE, 1);
+	}
+
+	@EventHandler
+	public void onSpawn(EntitySpawnEvent event) {
+		if(event.getLocation().getWorld() == Bukkit.getWorld("darkzone") && event.getEntity() instanceof Enderman && !event.getEntity().isCustomNameVisible()) event.setCancelled(true);
 	}
 
 	@EventHandler(priority = EventPriority.HIGHEST)
