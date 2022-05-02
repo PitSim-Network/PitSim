@@ -1,7 +1,9 @@
 package dev.kyro.pitsim.brewing.ingredients;
 
 import de.tr7zw.nbtapi.NBTItem;
+import dev.kyro.pitsim.brewing.PotionManager;
 import dev.kyro.pitsim.brewing.objects.BrewingIngredient;
+import dev.kyro.pitsim.brewing.objects.PotionEffect;
 import dev.kyro.pitsim.enums.NBTTag;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -24,7 +26,11 @@ public class SpiderEye extends BrewingIngredient {
 
     @Override
     public void administerEffect(Player player, BrewingIngredient potency, int duration) {
-
+        for (PotionEffect potionEffect : PotionManager.getPotionEffects(player)) {
+            int tier = potionEffect.potency.tier;
+            if(tier - potency.tier < 1) potionEffect.onExpire();
+            else potionEffect.potency = BrewingIngredient.getIngredientFromTier(tier - potency.tier);
+        }
     }
 
     @Override
