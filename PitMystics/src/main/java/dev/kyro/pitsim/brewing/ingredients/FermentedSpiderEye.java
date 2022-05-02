@@ -15,8 +15,10 @@ import java.util.Arrays;
 import java.util.List;
 
 public class FermentedSpiderEye extends BrewingIngredient {
+    public static FermentedSpiderEye INSTANCE;
     public FermentedSpiderEye() {
         super(5, NBTTag.CAVESPIDER_EYE, "Neutrality", ChatColor.YELLOW, PotionType.REGEN);
+        INSTANCE = this;
     }
 
     @Override
