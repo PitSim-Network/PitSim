@@ -80,8 +80,10 @@ public class MobManager implements Listener {
 					@Override
 					public void run() {
 						List<PitMob> toRemove = new ArrayList<>();
+						Bukkit.broadcastMessage("1");
 						for (PitMob mob : mobs) {
 							if(mob instanceof Monster && ((Monster) mob.entity).getTarget() == null && mob.entity.getNearbyEntities(2, 2, 2).size() > 1) {
+								Bukkit.broadcastMessage("2");
 								nameTags.get(mob.entity.getUniqueId()).remove();
 								mob.entity.remove();
 								toRemove.add(mob);
@@ -227,6 +229,9 @@ public class MobManager implements Listener {
 
 		PitMob mob = PitMob.getPitMob((LivingEntity) entity);
 		if(mob == null) return;
+		mobs.remove(mob);
+		nameTags.get(mob.entity.getUniqueId()).remove();
+		nameTags.remove(mob.entity.getUniqueId());
 		event.setRadius(0);
 
 		for (Entity player : entity.getNearbyEntities(5, 5, 5)) {
