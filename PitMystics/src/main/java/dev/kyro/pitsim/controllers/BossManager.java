@@ -14,6 +14,7 @@ import dev.kyro.pitsim.events.AttackEvent;
 import dev.kyro.pitsim.events.KillEvent;
 import dev.kyro.pitsim.misc.Misc;
 import dev.kyro.pitsim.misc.Sounds;
+import dev.kyro.pitsim.slayers.ChargedCreeperBoss;
 import dev.kyro.pitsim.slayers.SkeletonBoss;
 import dev.kyro.pitsim.slayers.ZombieBoss;
 import net.citizensnpcs.Citizens;
@@ -125,7 +126,8 @@ public class BossManager implements Listener {
         if(level.itemName.equals("&aRotten Flesh")){
             new ZombieBoss(player);
         }else if(level.itemName.equals("&aBone")){
-            new SkeletonBoss(player);
+            new ChargedCreeperBoss(player);
+            //new SkeletonBoss(player);
         }
 
     }
