@@ -3,6 +3,7 @@ package dev.kyro.pitsim.controllers;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.brewing.BrewingManager;
 import dev.kyro.pitsim.controllers.objects.PitMob;
+import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.enums.SubLevel;
 import dev.kyro.pitsim.events.AttackEvent;
 import dev.kyro.pitsim.events.KillEvent;
@@ -222,10 +223,17 @@ public class MobManager implements Listener {
 	@EventHandler
 	public void onExplode(ExplosionPrimeEvent event) {
 		Entity entity = event.getEntity();
-		if (!(entity instanceof Creeper)) {
-			return;
-		}
+		if (!(entity instanceof Creeper)) return;
+
+		PitMob mob = PitMob.getPitMob((LivingEntity) entity);
+		if(mob == null) return;
 		event.setRadius(0);
+
+		for (Entity player : entity.getNearbyEntities(5, 5, 5)) {
+			if(!(player instanceof Player)) continue;
+
+			PitPlayer.getPitPlayer((Player) player).damage(5.0, (LivingEntity) entity);
+		}
 	}
 
 	public static void clearMobs() {

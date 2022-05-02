@@ -1,5 +1,6 @@
 package dev.kyro.pitsim.mobs;
 
+import dev.kyro.pitsim.brewing.ingredients.Gunpowder;
 import dev.kyro.pitsim.brewing.ingredients.SpiderEye;
 import dev.kyro.pitsim.controllers.MobManager;
 import dev.kyro.pitsim.controllers.objects.PitMob;
@@ -36,7 +37,7 @@ public class PitCreeper extends PitMob {
 	@Override
 	public Map<ItemStack, Integer> getDrops() {
 		Map<ItemStack, Integer> drops = new HashMap<>();
-		drops.put(SpiderEye.INSTANCE.getItem(), 50);
+		drops.put(Gunpowder.INSTANCE.getItem(), 50);
 
 		return drops;
 	}

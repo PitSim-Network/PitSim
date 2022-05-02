@@ -15,8 +15,10 @@ import java.util.Arrays;
 import java.util.List;
 
 public class Gunpowder extends BrewingIngredient {
+    public static Gunpowder INSTANCE;
     public Gunpowder() {
         super(4, NBTTag.CREEPER_POWDER, "Damage Boost", ChatColor.RED, PotionType.STRENGTH);
+        INSTANCE = this;
     }
 
     @Override
