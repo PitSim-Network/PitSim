@@ -30,6 +30,7 @@ import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityTargetLivingEntityEvent;
+import org.bukkit.event.player.PlayerTeleportEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
@@ -72,6 +73,8 @@ public class ZombieBoss extends PitBoss {
         entity.setHealth(250);
         showMyBossBar(PitSim.adventure.player(target));
         BossManager.activePlayers.add(target);
+
+
     }
 
     public void spawn() throws Exception {
@@ -85,6 +88,7 @@ public class ZombieBoss extends PitBoss {
         equipment.set(Equipment.EquipmentSlot.BOOTS, new ItemStack(Material.DIAMOND_BOOTS));
 
         npc.spawn(subLevel.middle);
+        npc.teleport(subLevel.middle, PlayerTeleportEvent.TeleportCause.COMMAND);
         npc.getNavigator().setTarget(target, true);
         BossManager.playMusic(target, subLevel.level);
     }

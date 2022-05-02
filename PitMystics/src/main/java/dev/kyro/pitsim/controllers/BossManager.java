@@ -132,7 +132,7 @@ public class BossManager implements Listener {
         if(level.itemName.equals("&aRotten Flesh")){
             new ZombieBoss(player);
         }else if(level.itemName.equals("&aBone")){
-            new ChargedCreeperBoss(player);
+            new SkeletonBoss(player);
             //new SkeletonBoss(player);
         }
 
