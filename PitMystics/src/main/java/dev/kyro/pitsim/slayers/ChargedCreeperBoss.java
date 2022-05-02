@@ -48,7 +48,7 @@ public class ChargedCreeperBoss extends PitBoss {
     public BossBar activeBar;
 
     public ChargedCreeperBoss(Player target) throws Exception {
-        super(target, SubLevel.SKELETON_CAVE);
+        super(target, SubLevel.CREEPER_CAVE);
         this.target = target;
 
         npc = CitizensAPI.getNPCRegistry().createNPC(EntityType.PLAYER, name);

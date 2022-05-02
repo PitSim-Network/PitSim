@@ -36,12 +36,20 @@ public abstract class PitBoss {
         }
     }
 
-    public static void skin(NPC npc, String name, String texture_value, String texture_signature) {
-        npc.data().setPersistent(NPC.PLAYER_SKIN_UUID_METADATA, name);
-        npc.data().setPersistent(NPC.PLAYER_SKIN_TEXTURE_PROPERTIES_METADATA, texture_value);
-        npc.data().setPersistent(NPC.PLAYER_SKIN_TEXTURE_PROPERTIES_SIGN_METADATA, texture_signature);
+    public static void skin(NPC npc, String uuid, String texture_value, String texture_signature) {
+        //npc.data().setPersistent(NPC.PLAYER_SKIN_UUID_METADATA, name);
+        //npc.data().setPersistent(NPC.PLAYER_SKIN_TEXTURE_PROPERTIES_METADATA, texture_value);
+        //npc.data().setPersistent(NPC.PLAYER_SKIN_TEXTURE_PROPERTIES_SIGN_METADATA, texture_signature);
         npc.data().setPersistent(NPC.PLAYER_SKIN_USE_LATEST, false);
 
+        if (npc.isSpawned()) {
+
+            SkinnableEntity skinnable = npc.getEntity() instanceof SkinnableEntity ? (SkinnableEntity) npc.getEntity() : null;
+            if (skinnable != null) {
+                skinnable.setSkinPersistent(uuid, texture_value, texture_signature);
+
+            }
+        }
 
         // send skin change to online players by removing and adding this fake player
         if (npc.isSpawned()) {
@@ -51,6 +59,7 @@ public abstract class PitBoss {
         }
 
 
+        /*
         if (npc.isSpawned()) {
 
             SkinnableEntity skinnable = npc.getEntity() instanceof SkinnableEntity ? (SkinnableEntity) npc.getEntity() : null;
@@ -59,6 +68,10 @@ public abstract class PitBoss {
 
             }
         }
+
+         */
+
+
     }
 
 

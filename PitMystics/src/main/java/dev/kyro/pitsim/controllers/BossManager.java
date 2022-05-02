@@ -21,6 +21,7 @@ import dev.kyro.pitsim.misc.Misc;
 import dev.kyro.pitsim.misc.Sounds;
 import dev.kyro.pitsim.slayers.ChargedCreeperBoss;
 import dev.kyro.pitsim.slayers.SkeletonBoss;
+import dev.kyro.pitsim.slayers.SpiderBoss;
 import dev.kyro.pitsim.slayers.ZombieBoss;
 import net.citizensnpcs.Citizens;
 import net.citizensnpcs.api.CitizensAPI;
@@ -133,6 +134,12 @@ public class BossManager implements Listener {
             new ZombieBoss(player);
         }else if(level.itemName.equals("&aBone")){
             new SkeletonBoss(player);
+            //new SkeletonBoss(player);
+        }else if(level.itemName.equals("&aSpider Eye")){
+            new SpiderBoss(player);
+            //new SkeletonBoss(player);
+        }else if(level.itemName.equals("&aGunpowder")){
+            new ChargedCreeperBoss(player);
             //new SkeletonBoss(player);
         }
 
