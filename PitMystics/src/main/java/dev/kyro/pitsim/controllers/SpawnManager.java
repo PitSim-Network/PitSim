@@ -46,9 +46,7 @@ public class SpawnManager implements Listener {
 					@Override
 					public void onPacketSending(PacketEvent event) {
 						String soundName = event.getPacket().getStrings().read(0);
-						Bukkit.broadcastMessage(soundName);
 						if(soundName.equals("mob.villager.idle")) {
-							Bukkit.broadcastMessage(".");
 							event.setCancelled(true);
 						}
 					}

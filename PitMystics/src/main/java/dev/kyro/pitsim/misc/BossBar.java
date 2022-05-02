@@ -44,17 +44,6 @@ public class BossBar implements Listener {
                 }
             }
         }.runTaskTimer(PitSim.INSTANCE, 5, 5);
-
-
-        ProtocolLibrary.getProtocolManager().addPacketListener(
-                new PacketAdapter(PitSim.INSTANCE, PacketType.Play.Server.NAMED_SOUND_EFFECT) {
-                    @Override
-                    public void onPacketSending(PacketEvent event) {
-                        String soundName = event.getPacket().getStrings().read(0);
-                        event.setCancelled(soundName.equals("mob.wither.spawn"));
-                        event.setCancelled(soundName.equals("mob.wither.ambient"));
-                    }
-                });
     }
 
     public static void setBossBar(Player player, String message) {
