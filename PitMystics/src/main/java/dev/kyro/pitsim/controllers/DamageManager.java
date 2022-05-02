@@ -354,7 +354,7 @@ public class DamageManager implements Listener {
 			if(deadIsPlayer && !pitDead.killFeedDisabled && killType != KillType.FAKE && killEvent != null)
 				AOutput.send(killEvent.dead, death);
 			String actionBarPlaceholder = PlaceholderAPI.setPlaceholders(killEvent.deadPlayer, killActionBar);
-			if(killType != KillType.DEATH) {
+			if(killType != KillType.DEATH && killerIsPlayer) {
 				KillEvent finalKillEvent = killEvent;
 				new BukkitRunnable() {
 					@Override

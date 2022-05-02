@@ -3,6 +3,7 @@ package dev.kyro.pitsim.controllers;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.brewing.BrewingManager;
 import dev.kyro.pitsim.controllers.objects.PitMob;
+import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.enums.SubLevel;
 import dev.kyro.pitsim.events.AttackEvent;
 import dev.kyro.pitsim.events.KillEvent;
@@ -15,7 +16,9 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.entity.EntityExplodeEvent;
 import org.bukkit.event.entity.EntitySpawnEvent;
+import org.bukkit.event.entity.ExplosionPrimeEvent;
 import org.bukkit.event.player.PlayerArmorStandManipulateEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -214,6 +217,22 @@ public class MobManager implements Listener {
 
 		for(ArmorStand value : nameTags.values()) {
 			if(event.getRightClicked().getUniqueId().equals(value.getUniqueId())) event.setCancelled(true);
+		}
+	}
+
+	@EventHandler
+	public void onExplode(ExplosionPrimeEvent event) {
+		Entity entity = event.getEntity();
+		if (!(entity instanceof Creeper)) return;
+
+		PitMob mob = PitMob.getPitMob((LivingEntity) entity);
+		if(mob == null) return;
+		event.setRadius(0);
+
+		for (Entity player : entity.getNearbyEntities(5, 5, 5)) {
+			if(!(player instanceof Player)) continue;
+
+			PitPlayer.getPitPlayer((Player) player).damage(5.0, (LivingEntity) entity);
 		}
 	}
 
