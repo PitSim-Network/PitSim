@@ -75,28 +75,28 @@ public class MobManager implements Listener {
 					} catch(InstantiationException | IllegalAccessException | NoSuchMethodException | InvocationTargetException ignored) {
 					}
 				}
-
-				new BukkitRunnable() {
-					@Override
-					public void run() {
-						List<PitMob> toRemove = new ArrayList<>();
-						Bukkit.broadcastMessage("1");
-						for (PitMob mob : mobs) {
-							if(mob instanceof Monster && ((Monster) mob.entity).getTarget() == null && mob.entity.getNearbyEntities(2, 2, 2).size() > 1) {
-								Bukkit.broadcastMessage("2");
-								nameTags.get(mob.entity.getUniqueId()).remove();
-								mob.entity.remove();
-								toRemove.add(mob);
-							}
-						}
-
-						for (PitMob pitMob : toRemove) {
-							mobs.remove(pitMob);
-						}
-					}
-				}.runTaskTimer(PitSim.INSTANCE, 20 * 60, 20 * 60);
 			}
 		}.runTaskTimer(PitSim.INSTANCE, 10, 10);
+
+		new BukkitRunnable() {
+			@Override
+			public void run() {
+				List<PitMob> toRemove = new ArrayList<>();
+				for (PitMob mob : mobs) {
+
+					if(!(mob.entity instanceof Monster)) continue;
+					if(((Monster) mob.entity).getTarget() != null) continue;
+					if(mob.entity.getNearbyEntities(1, 1, 1).size() <= 1) continue;
+					nameTags.get(mob.entity.getUniqueId()).remove();
+					mob.entity.remove();
+					toRemove.add(mob);
+				}
+
+				for (PitMob pitMob : toRemove) {
+					mobs.remove(pitMob);
+				}
+			}
+		}.runTaskTimer(PitSim.INSTANCE, 20 * 20, 20 * 20);
 
 		new BukkitRunnable() {
 			@Override

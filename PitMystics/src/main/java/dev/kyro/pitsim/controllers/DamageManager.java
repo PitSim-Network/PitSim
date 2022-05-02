@@ -160,7 +160,7 @@ public class DamageManager implements Listener {
 
 		AttackEvent.Pre preEvent = null;
 		if(event.getEntity() instanceof Fireball) return;
-		if(event.getDamager() instanceof Slime) {
+		if(event.getDamager() instanceof Slime && !(event.getDamager() instanceof MagmaCube)) {
 			preEvent = new AttackEvent.Pre(event, new HashMap<>(), defenderEnchantMap, fakeHit);
 		} else if(event.getDamager() instanceof Arrow) {
 
@@ -244,7 +244,7 @@ public class DamageManager implements Listener {
 
 		if(damager instanceof Arrow) return (LivingEntity) ((Arrow) damager).getShooter();
 		if(damager instanceof Fireball) return (LivingEntity) ((Fireball) damager).getShooter();
-		if(damager instanceof Slime) return PitBlob.getOwner((Slime) damager);
+		if(damager instanceof Slime && !(damager instanceof MagmaCube)) return PitBlob.getOwner((Slime) damager);
 		if(damager instanceof LivingEntity) return (LivingEntity) damager;
 
 		return null;

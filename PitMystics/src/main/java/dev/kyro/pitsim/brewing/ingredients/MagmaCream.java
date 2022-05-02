@@ -16,8 +16,10 @@ import java.util.Arrays;
 import java.util.List;
 
 public class MagmaCream extends BrewingIngredient {
+    public static MagmaCream INSTANCE;
     public MagmaCream() {
         super(6, NBTTag.MAGMACUBE_CREAM, "Mana Boost", ChatColor.LIGHT_PURPLE, PotionType.INSTANT_HEAL);
+        INSTANCE = this;
     }
 
     @Override
