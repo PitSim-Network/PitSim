@@ -15,7 +15,9 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.entity.EntityExplodeEvent;
 import org.bukkit.event.entity.EntitySpawnEvent;
+import org.bukkit.event.entity.ExplosionPrimeEvent;
 import org.bukkit.event.player.PlayerArmorStandManipulateEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -215,6 +217,15 @@ public class MobManager implements Listener {
 		for(ArmorStand value : nameTags.values()) {
 			if(event.getRightClicked().getUniqueId().equals(value.getUniqueId())) event.setCancelled(true);
 		}
+	}
+
+	@EventHandler
+	public void onExplode(ExplosionPrimeEvent event) {
+		Entity entity = event.getEntity();
+		if (!(entity instanceof Creeper)) {
+			return;
+		}
+		event.setRadius(0);
 	}
 
 	public static void clearMobs() {
