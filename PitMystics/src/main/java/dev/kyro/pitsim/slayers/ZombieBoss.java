@@ -1,5 +1,6 @@
 package dev.kyro.pitsim.slayers;
 
+import com.xxmicloxx.NoteBlockAPI.NoteBlockAPI;
 import dev.kyro.arcticapi.builders.AItemStackBuilder;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.commands.FreshCommand;
@@ -85,6 +86,7 @@ public class ZombieBoss extends PitBoss {
 
         npc.spawn(subLevel.middle);
         npc.getNavigator().setTarget(target, true);
+        BossManager.playMusic(target, subLevel.level);
     }
 
     public void onAttack() throws Exception {
@@ -155,6 +157,7 @@ public class ZombieBoss extends PitBoss {
     @Override
     public void onDeath() {
         hideActiveBossBar(PitSim.adventure.player(target));
+        NoteBlockAPI.stopPlaying(target);
     }
 
     @Override

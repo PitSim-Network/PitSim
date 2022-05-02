@@ -11,6 +11,7 @@ import net.minecraft.server.v1_8_R3.Entity;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
+import org.bukkit.block.data.type.Fire;
 import org.bukkit.craftbukkit.v1_8_R3.CraftWorld;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftEntity;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
@@ -43,17 +44,6 @@ public class BossBar implements Listener {
                 }
             }
         }.runTaskTimer(PitSim.INSTANCE, 5, 5);
-
-
-        ProtocolLibrary.getProtocolManager().addPacketListener(
-                new PacketAdapter(PitSim.INSTANCE, PacketType.Play.Server.NAMED_SOUND_EFFECT) {
-                    @Override
-                    public void onPacketSending(PacketEvent event) {
-                        String soundName = event.getPacket().getStrings().read(0);
-                        event.setCancelled(soundName.equals("mob.wither.spawn"));
-                        event.setCancelled(soundName.equals("mob.wither.ambient"));
-                    }
-                });
     }
 
     public static void setBossBar(Player player, String message) {
@@ -106,6 +96,7 @@ public class BossBar implements Listener {
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onHit(EntityDamageByEntityEvent event) {
         if(event.getDamager() instanceof Arrow) return;
+        if(event.getDamager() instanceof Fireball) return;
         if(NonManager.getNon((LivingEntity) event.getDamager()) != null) return;
 
         if(!(event.getEntity() instanceof Wither)) return;

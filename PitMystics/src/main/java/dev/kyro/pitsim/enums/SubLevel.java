@@ -1,6 +1,7 @@
 package dev.kyro.pitsim.enums;
 
 import dev.kyro.pitsim.mobs.PitSkeleton;
+import dev.kyro.pitsim.mobs.PitSpider;
 import dev.kyro.pitsim.mobs.PitZombie;
 import dev.kyro.pitsim.slayers.SkeletonBoss;
 import dev.kyro.pitsim.slayers.ZombieBoss;
@@ -12,7 +13,8 @@ import java.util.List;
 
 public enum SubLevel {
 	ZOMBIE_CAVE(1, 30, new Location(Bukkit.getWorld("darkzone"), 56, 53, -95), NBTTag.ZOMBIE_FLESH, "&aRotten Flesh", "%pitsim_zombiecave%", 25, Arrays.asList(PitZombie.class), ZombieBoss.class),
-	SKELETON_CAVE(2, 30, new Location(Bukkit.getWorld("darkzone"), 56, 44, -43), NBTTag.SKELETON_BONE, "&aBone", "%pitsim_skeletoncave%", 20, Arrays.asList(PitSkeleton.class), SkeletonBoss.class);
+	SKELETON_CAVE(2, 30, new Location(Bukkit.getWorld("darkzone"), 56, 44, -43), NBTTag.SKELETON_BONE, "&aBone", "%pitsim_skeletoncave%", 20, Arrays.asList(PitSkeleton.class), SkeletonBoss.class),
+	SPIDER_CAVES(3, 30, new Location(Bukkit.getWorld("darkzone"), 102, 28, -69), NBTTag.SPIDER_EYE, "&aSpider Eye", "%pitsim_spidercave%", 20, Arrays.asList(PitSpider.class), SkeletonBoss.class);
 //	CHARGED_CREEPER,
 
 //	MAGMA_CUBE,
