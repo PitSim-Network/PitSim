@@ -10,6 +10,9 @@ import dev.kyro.arcticguilds.controllers.GuildManager;
 import dev.kyro.arcticguilds.controllers.objects.Guild;
 import dev.kyro.arcticguilds.controllers.objects.GuildBuff;
 import dev.kyro.pitsim.PitSim;
+import dev.kyro.pitsim.brewing.PotionManager;
+import dev.kyro.pitsim.brewing.ingredients.MagmaCream;
+import dev.kyro.pitsim.brewing.objects.PotionEffect;
 import dev.kyro.pitsim.commands.FPSCommand;
 import dev.kyro.pitsim.controllers.objects.GoldenHelmet;
 import dev.kyro.pitsim.controllers.objects.Megastreak;
@@ -63,7 +66,9 @@ public class PlayerManager implements Listener {
 			public void run() {
 				for(PitPlayer pitPlayer : PitPlayer.pitPlayers) {
 					if(!MapManager.inDarkzone(pitPlayer.player)) continue;
-					int amount = 1;
+					double amount = 1;
+					PotionEffect effect = PotionManager.getEffect(pitPlayer.player, MagmaCream.INSTANCE);
+					if(effect != null) amount += (Double) effect.potionType.getPotency(effect.potency);
 					if(pitPlayer.mana + amount > pitPlayer.getMaxMana()) {
 						pitPlayer.updateXPBar();
 						continue;

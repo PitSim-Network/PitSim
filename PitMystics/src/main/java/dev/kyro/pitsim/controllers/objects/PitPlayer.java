@@ -60,7 +60,7 @@ public class PitPlayer {
 	public UUID lastHitUUID = null;
 	public ItemStack confirmedDrop = null;
 
-	public int mana = 0;
+	public double mana = 0;
 
 	//	Savable
 	public int prestige;
@@ -450,7 +450,7 @@ public class PitPlayer {
 
 	public void updateXPBar() {
 		if(MapManager.inDarkzone(player)) {
-			player.setLevel(mana);
+			player.setLevel((int) Math.ceil(mana));
 			player.setExp(0);
 //			if(shield.isRecharging()) {
 //				player.setLevel(0);
