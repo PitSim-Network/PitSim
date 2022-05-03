@@ -451,6 +451,7 @@ public class PitPlayer {
 	public void updateXPBar() {
 		if(MapManager.inDarkzone(player)) {
 			player.setLevel((int) Math.ceil(mana));
+			if(mana >= getMaxMana() - 1) level = getMaxMana();
 			player.setExp(0);
 //			if(shield.isRecharging()) {
 //				player.setLevel(0);
