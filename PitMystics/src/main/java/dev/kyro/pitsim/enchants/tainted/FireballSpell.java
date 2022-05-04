@@ -12,6 +12,8 @@ import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Fireball;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityExplodeEvent;
 
 import java.util.List;
@@ -56,6 +58,13 @@ public class FireballSpell extends PitEnchant {
 	}
 
 	@EventHandler
+	public void onAttack(EntityDamageByEntityEvent event) {
+		if(event.getDamager() instanceof Fireball) {
+			if(((Fireball) event.getDamager()).getShooter() == event.getEntity()) event.setCancelled(true);
+		}
+	}
+
+	@EventHandler(priority = EventPriority.HIGHEST)
 	public void onEntityExplode(EntityExplodeEvent event) {
 		if(!(event.getEntity() instanceof Fireball)) return;
 		event.blockList().clear();

@@ -34,11 +34,11 @@ public class EnderPearl extends BrewingIngredient {
     }
 
     @EventHandler
-    public void onHit(AttackEvent.Apply attackEvent) {
+    public void onHit(AttackEvent.Pre attackEvent) {
         PotionEffect attackerEffect = PotionManager.getEffect(attackEvent.attackerPlayer, this);
         if(attackerEffect == null) return;
 
-        int tokensToRemove = (int) getPotency(attackerEffect.potency) / 2;
+        int tokensToRemove = (int) getPotency(attackerEffect.potency);
 
         for (Map.Entry<PitEnchant, Integer> entry : attackEvent.getAttackerEnchantMap().entrySet()) {
             if(entry.getKey().applyType != ApplyType.SWORDS && entry.getKey().applyType != ApplyType.BOWS) continue;

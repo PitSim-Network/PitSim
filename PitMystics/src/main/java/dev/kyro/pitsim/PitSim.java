@@ -167,6 +167,7 @@ class PitSim extends JavaPlugin {
 		AHook.registerPlaceholder(new CreeperCavePlaceholder());
 		AHook.registerPlaceholder(new DeepSpiderCavePlaceholder());
 		AHook.registerPlaceholder(new MagmaCavePlaceholder());
+		AHook.registerPlaceholder(new PigmanCavePlaceholder());
 		new LeaderboardPlaceholders().register();
 
 		CooldownManager.init();

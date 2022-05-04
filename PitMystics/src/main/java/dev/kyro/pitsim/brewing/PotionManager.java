@@ -4,6 +4,7 @@ import de.tr7zw.nbtapi.NBTItem;
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.arcticapi.misc.AUtil;
 import dev.kyro.pitsim.PitSim;
+import dev.kyro.pitsim.brewing.ingredients.SpiderEye;
 import dev.kyro.pitsim.brewing.objects.BrewingIngredient;
 import dev.kyro.pitsim.brewing.objects.PotionEffect;
 import dev.kyro.pitsim.controllers.BossManager;
@@ -136,7 +137,12 @@ public class PotionManager implements Listener {
 
         assert identifier != null;
         assert potency != null;
-        potionEffectList.add(new PotionEffect(player, identifier, potency, duration));
+
+        if(identifier instanceof SpiderEye) {
+            identifier.administerEffect(player, potency, 0);
+        } else {
+            potionEffectList.add(new PotionEffect(player, identifier, potency, duration));
+        }
     }
 
     @EventHandler
@@ -147,7 +153,7 @@ public class PotionManager implements Listener {
             if(potionEffect.player == player) toExpire.add(potionEffect);
         }
         for (PotionEffect potionEffect : toExpire) {
-            potionEffect.onExpire();
+            potionEffect.onExpire(false);
         }
     }
 
@@ -169,7 +175,7 @@ public class PotionManager implements Listener {
             if(potionEffect.potionType != identifier) continue;
 
             if(potionEffect.potency.tier <= potency.tier) {
-                potionEffect.onExpire();
+                potionEffect.onExpire(false);
                 return;
             }
         }

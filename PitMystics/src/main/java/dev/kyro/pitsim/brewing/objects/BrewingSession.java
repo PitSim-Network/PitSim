@@ -3,6 +3,7 @@ package dev.kyro.pitsim.brewing.objects;
 import de.tr7zw.nbtapi.NBTItem;
 import dev.kyro.arcticapi.misc.AUtil;
 import dev.kyro.pitsim.brewing.BrewingManager;
+import dev.kyro.pitsim.brewing.ingredients.SpiderEye;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.enums.NBTTag;
 import dev.kyro.pitsim.misc.Misc;
@@ -71,7 +72,8 @@ public class BrewingSession {
         meta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
         List<String> lore = new ArrayList<>(identifier.getPotencyLore(potency));
         lore.add("");
-        lore.add(ChatColor.GRAY + "Duration: " + ChatColor.WHITE + Misc.ticksToTimeUnformatted(identifier.getDuration(duration)));
+        if(identifier instanceof SpiderEye)  lore.add(ChatColor.GRAY + "Duration: " + ChatColor.WHITE + "INSTANT!");
+        else lore.add(ChatColor.GRAY + "Duration: " + ChatColor.WHITE + Misc.ticksToTimeUnformatted(identifier.getDuration(duration)));
         lore.add("");
         lore.add(identifier.color + "Tainted Potion");
         meta.setLore(lore);

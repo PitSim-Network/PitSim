@@ -14,7 +14,7 @@ import java.util.Map;
 public class PitZombiePigman extends PitMob {
 
 	public PitZombiePigman(Location spawnLoc) {
-		super(MobType.ZOMBIE_PIGMAN, spawnLoc, 1, "&cZombie Pigman");
+		super(MobType.ZOMBIE_PIGMAN, spawnLoc, 7, "&cZombie Pigman");
 	}
 
 	@Override

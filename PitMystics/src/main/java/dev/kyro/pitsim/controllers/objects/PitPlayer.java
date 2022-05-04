@@ -448,15 +448,11 @@ public class PitPlayer {
 		} else player.damage(damage);
 	}
 
-	public void updateXPBar() {
+	public void updateXPBar() {	
 		if(MapManager.inDarkzone(player)) {
 			player.setLevel((int) Math.ceil(mana));
 			if(mana >= getMaxMana() - 1) level = getMaxMana();
-			player.setExp(0);
-//			if(shield.isRecharging()) {
-//				player.setLevel(0);
-//				player.setExp((float) (shield.getRealShield() / shield.getMaxShield()));
-//			}
+			player.setExp((float) (mana / getMaxMana()));
 		} else {
 			player.setLevel(level);
 			float remaining = remainingXP;

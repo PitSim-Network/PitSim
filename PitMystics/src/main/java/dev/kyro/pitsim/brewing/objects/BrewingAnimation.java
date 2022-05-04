@@ -3,6 +3,7 @@ package dev.kyro.pitsim.brewing.objects;
 import dev.kyro.arcticapi.misc.AUtil;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.brewing.BrewingManager;
+import dev.kyro.pitsim.brewing.ingredients.SpiderEye;
 import dev.kyro.pitsim.misc.Misc;
 import dev.kyro.pitsim.misc.Sounds;
 import net.minecraft.server.v1_8_R3.*;
@@ -108,9 +109,11 @@ public class BrewingAnimation {
         else strings[2] = ChatColor.LIGHT_PURPLE + "Potency: " + ChatColor.YELLOW + "Place an Item!";
 
         ItemStack duration = ingredients.get(player)[2];
-        if(BrewingIngredient.isIngredient(duration) && BrewingIngredient.isIngredient(identifier)) strings[3] = ChatColor.LIGHT_PURPLE + "Duration: " +
+        if(BrewingIngredient.isIngredient(duration) && BrewingIngredient.isIngredient(identifier) && (!(BrewingIngredient.getIngrediantFromItemStack(identifier) instanceof SpiderEye))) strings[3] = ChatColor.LIGHT_PURPLE + "Duration: " +
                 ChatColor.DARK_PURPLE + Misc.ticksToTime(Objects.requireNonNull(BrewingIngredient.getIngrediantFromItemStack(identifier)).getDuration(BrewingIngredient.getIngrediantFromItemStack(duration)));
-        else strings[3] = ChatColor.LIGHT_PURPLE + "Duration: " + ChatColor.YELLOW + "Decided by Type!";
+        else if(BrewingIngredient.getIngrediantFromItemStack(identifier) instanceof SpiderEye) {
+            strings[3] = ChatColor.LIGHT_PURPLE + "Duration: " + ChatColor.DARK_PURPLE + "INSTANT!";
+        } else strings[3] = ChatColor.LIGHT_PURPLE + "Duration: " + ChatColor.YELLOW + "Decided by Type!";
 
         ItemStack reduction = ingredients.get(player)[3];
         if(BrewingIngredient.isIngredient(reduction)) strings[4] = ChatColor.LIGHT_PURPLE + "Brew Time: " + ChatColor.DARK_PURPLE + (105 - (Objects.requireNonNull(BrewingIngredient.getIngrediantFromItemStack(reduction)).tier * 10) + "m");
