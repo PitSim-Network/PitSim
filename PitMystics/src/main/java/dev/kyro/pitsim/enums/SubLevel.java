@@ -17,7 +17,7 @@ public enum SubLevel {
 	CREEPER_CAVE(4, 20, new Location(Bukkit.getWorld("darkzone"), 8, 32, -30), NBTTag.CREEPER_POWDER, "&aGunpowder", "%pitsim_creepercave%", 20, Arrays.asList(PitCreeper.class), SkeletonBoss.class),
 	DEEP_SPIDER_CAVE(5, 30, new Location(Bukkit.getWorld("darkzone"), -11, 22, -79), NBTTag.CAVESPIDER_EYE, "&aFermented Spider Eye", "%pitsim_deepspidercave%", 20, Arrays.asList(PitCaveSpider.class), SkeletonBoss.class),
 	MAGMA_CAVE(6, 20, new Location(Bukkit.getWorld("darkzone"), 14, 2, -132), NBTTag.MAGMACUBE_CREAM, "&aMagma Cream", "%pitsim_magmacave%", 20, Arrays.asList(PitMagmaCube.class), SkeletonBoss.class),
-	PIGMEN_CAVE(7, 20, new Location(Bukkit.getWorld("darkzone"), 0, 0 ,0), NBTTag.PIGMAN_PORK, "&aRaw Pork", "%pitsim_pigmencave%", 20, Arrays.asList(PitZombiePigman.class), SkeletonBoss.class),
+	PIGMEN_CAVE(7, 20, new Location(Bukkit.getWorld("darkzone"), 0, 0 ,0), NBTTag.PIGMAN_PORK, "&aRaw Pork", "%pitsim_pigmencave%", 20, Arrays.asList(PitZombiePigman.class), SkeletonBoss.class);
 //	MAGMA_CUBE,
 //	WITHER_SKELETON,
 //	IRON_GOLEM,

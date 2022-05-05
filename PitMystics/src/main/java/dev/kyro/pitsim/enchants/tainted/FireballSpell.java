@@ -19,7 +19,6 @@ import org.bukkit.event.entity.EntityExplodeEvent;
 import java.util.List;
 
 public class FireballSpell extends PitEnchant {
-	public static int MANA_COST = 30;
 
 	public FireballSpell() {
 		super("Fireball", true, ApplyType.SCYTHES,
@@ -40,12 +39,12 @@ public class FireballSpell extends PitEnchant {
 		int enchantLvl = event.getEnchantLevel(this);
 		if(enchantLvl == 0) return;
 
-		Cooldown cooldown = getCooldown(event.getPlayer(), 20);
+		Cooldown cooldown = getCooldown(event.getPlayer(), 10);
 		if(cooldown.isOnCooldown()) return;
 
 		Player player = event.getPlayer();
 		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
-		if(!pitPlayer.useMana(MANA_COST)) {
+		if(!pitPlayer.useMana(getManaCost(enchantLvl))) {
 			Sounds.NO.play(player);
 			return;
 		}
@@ -74,5 +73,9 @@ public class FireballSpell extends PitEnchant {
 	public List<String> getDescription(int enchantLvl) {
 
 		return new ALoreBuilder("&7Enjoy").getLore();
+	}
+
+	public static int getManaCost(int enchantLvl) {
+		return 120 - (30 * enchantLvl);
 	}
 }

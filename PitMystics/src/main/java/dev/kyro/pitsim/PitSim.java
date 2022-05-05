@@ -580,5 +580,6 @@ class PitSim extends JavaPlugin {
 		EnchantManager.registerEnchant(new ManaRegeneration());
 		EnchantManager.registerEnchant(new EmotionalDamage());
 		EnchantManager.registerEnchant(new FireballSpell());
+		EnchantManager.registerEnchant(new RepelSpell());
 	}
 }
