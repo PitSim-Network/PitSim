@@ -19,7 +19,7 @@ public class RawPork extends BrewingIngredient {
     public Map<Player, Integer> tickMap = new HashMap<>();
 
     public RawPork() {
-        super(7, NBTTag.PIGMAN_PORK, "Regeneration", ChatColor.RED, PotionType.REGEN);
+        super(7, NBTTag.PIGMAN_PORK, "Regeneration", ChatColor.RED, PotionType.INSTANT_HEAL);
     }
 
     @Override

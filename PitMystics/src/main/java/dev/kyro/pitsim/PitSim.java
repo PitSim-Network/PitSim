@@ -5,6 +5,7 @@ import com.comphenix.protocol.ProtocolManager;
 import com.gmail.filoghost.holographicdisplays.api.Hologram;
 import com.mattmalec.pterodactyl4j.PteroBuilder;
 import com.mattmalec.pterodactyl4j.client.entities.PteroClient;
+import com.sk89q.worldedit.EditSession;
 import com.xxmicloxx.NoteBlockAPI.songplayer.EntitySongPlayer;
 import dev.kyro.arcticapi.ArcticAPI;
 import dev.kyro.arcticapi.commands.AMultiCommand;
@@ -50,6 +51,8 @@ import net.kyori.adventure.platform.bukkit.BukkitAudiences;
 import net.luckperms.api.LuckPerms;
 import net.milkbowl.vault.economy.Economy;
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Villager;
 import org.bukkit.entity.Wither;
@@ -184,6 +187,14 @@ class PitSim extends JavaPlugin {
 
 	@Override
 	public void onDisable() {
+
+		for (EditSession session : FreezeSpell.sessions) {
+			session.undo(session);
+		}
+
+		for (Map.Entry<Location, Material> entry : FreezeSpell.blocks.entrySet()) {
+			entry.getKey().getBlock().setType(entry.getValue());
+		}
 
 		for (Wither value : BossBar.withers.values()) {
 			value.remove();
@@ -441,6 +452,7 @@ class PitSim extends JavaPlugin {
 		HelmetAbility.registerHelmetAbility(new HermitAbility(null));
 		HelmetAbility.registerHelmetAbility(new JudgementAbility(null));
 		HelmetAbility.registerHelmetAbility(new PhoenixAbility(null));
+		HelmetAbility.registerHelmetAbility(new ManaAbility(null));
 	}
 
 	private void registerKits() {
@@ -581,5 +593,6 @@ class PitSim extends JavaPlugin {
 		EnchantManager.registerEnchant(new EmotionalDamage());
 		EnchantManager.registerEnchant(new FireballSpell());
 		EnchantManager.registerEnchant(new RepelSpell());
+		EnchantManager.registerEnchant(new FreezeSpell());
 	}
 }

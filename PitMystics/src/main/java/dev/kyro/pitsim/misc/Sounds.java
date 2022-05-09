@@ -73,6 +73,8 @@ public class Sounds {
 	public static final SoundEffect VENOM = new SoundEffect(Sound.SPIDER_IDLE, 1, 1);
 	public static final SoundEffect VOLLEY = new SoundEffect(Sound.SHOOT_ARROW, 1, 1);
 	public static final SoundEffect REPEL = new SoundEffect(Sound.ANVIL_LAND, 1, 0.5);
+	public static final SoundEffect FREEZE1 = new SoundEffect(Sound.DIG_SNOW, 2, 0.5);
+	public static final SoundEffect FREEZE2 = new SoundEffect(Sound.GLASS, 1, 1.2);
 
 	//	Megastreaks
 	public static final SoundEffect MEGA_GENERAL = new SoundEffect(Sound.WITHER_SPAWN, 1000, 1);
@@ -96,6 +98,7 @@ public class Sounds {
 	public static final SoundEffect HELMET_TICK = new SoundEffect(Sound.NOTE_STICKS, 5, 1.5);
 	public static final SoundEffect GOLD_RUSH = new SoundEffect(Sound.ORB_PICKUP, 1, 0.9);
 	public static final SoundEffect LEAP = new SoundEffect(Sound.BAT_TAKEOFF, 1, 1);
+	public static final SoundEffect MANA = new SoundEffect(Sound.PORTAL_TRAVEL, 1, 2);
 	public static final SoundEffect PHOENIX = new SoundEffect()
 			.add(new SoundMoment(0).add(Sound.ENDERDRAGON_GROWL, 1, 1).add(Sound.FIZZ, 1, 1));
 	//	Judgement

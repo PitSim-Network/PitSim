@@ -185,6 +185,7 @@ public class GoldenHelmet implements Listener {
 		if(refName.equals("hermit")) return new HermitAbility(player);
 		if(refName.equals("judgement")) return new JudgementAbility(player);
 		if(refName.equals("phoenix")) return new PhoenixAbility(player);
+		if(refName.equals("mana")) return new ManaAbility(player);
 		return null;
 	}
 

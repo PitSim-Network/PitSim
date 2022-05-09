@@ -66,7 +66,7 @@ public class PlayerManager implements Listener {
 			public void run() {
 				for(PitPlayer pitPlayer : PitPlayer.pitPlayers) {
 					if(!MapManager.inDarkzone(pitPlayer.player)) continue;
-					double amount = 1;
+					double amount = 0.5;
 					PotionEffect effect = PotionManager.getEffect(pitPlayer.player, MagmaCream.INSTANCE);
 					if(effect != null) amount += (Double) effect.potionType.getPotency(effect.potency);
 					if(pitPlayer.mana + amount > pitPlayer.getMaxMana()) {

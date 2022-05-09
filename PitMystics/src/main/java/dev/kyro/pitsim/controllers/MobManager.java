@@ -271,6 +271,7 @@ public class MobManager implements Listener {
 			if(entity instanceof Wither) continue;
 			if(entity instanceof Villager) continue;
 			if(entity instanceof Fireball) continue;
+			if(entity instanceof Slime && !(entity instanceof MagmaCube)) return;
 
 			entity.remove();
 		}

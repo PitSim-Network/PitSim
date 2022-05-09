@@ -18,7 +18,7 @@ import java.util.List;
 public class MagmaCream extends BrewingIngredient {
     public static MagmaCream INSTANCE;
     public MagmaCream() {
-        super(6, NBTTag.MAGMACUBE_CREAM, "Mana Boost", ChatColor.LIGHT_PURPLE, PotionType.INSTANT_HEAL);
+        super(6, NBTTag.MAGMACUBE_CREAM, "Mana Boost", ChatColor.LIGHT_PURPLE, PotionType.REGEN);
         INSTANCE = this;
     }
 
@@ -29,7 +29,7 @@ public class MagmaCream extends BrewingIngredient {
 
     @Override
     public Object getPotency(BrewingIngredient potencyIngredient) {
-        return 0.1 * potencyIngredient.tier;
+        return 0.05 * potencyIngredient.tier;
     }
 
     @Override
