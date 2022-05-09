@@ -2,21 +2,27 @@ package dev.kyro.pitsim.enchants.tainted;
 
 import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.pitsim.controllers.Cooldown;
+import dev.kyro.pitsim.controllers.EnchantManager;
 import dev.kyro.pitsim.controllers.objects.PitEnchant;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.enums.ApplyType;
+import dev.kyro.pitsim.events.AttackEvent;
 import dev.kyro.pitsim.events.PitPlayerAttemptAbilityEvent;
 import dev.kyro.pitsim.misc.Sounds;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.util.Vector;
 
 import java.util.List;
 
 public class SweepingEdge extends PitEnchant {
     public SweepingEdge() {
-        super("Repel", true, ApplyType.SCYTHES, "repell", "rep", "repel");
+        super("Sweeping Edge", true, ApplyType.SCYTHES, "sweepingedge", "sweep", "sweeping_edge", "sweeping");
         tainted = true;
     }
 
@@ -38,17 +44,18 @@ public class SweepingEdge extends PitEnchant {
         cooldown.restart();
 
         Player player = event.getPlayer();
-        for (Entity entity : player.getNearbyEntities(6, 6, 6)) {
-            Vector dirVector = entity.getLocation().toVector().subtract(player.getLocation().toVector()).normalize();
-            Vector pullVector = dirVector.clone().normalize().setY(0.5).multiply(2.5).add(dirVector.clone().multiply(0.03));
-            entity.setVelocity(pullVector);
+        for (Entity entity : player.getNearbyEntities(10, 10, 10)) {
+            if(!(entity instanceof LivingEntity)) continue;
+            EntityDamageByEntityEvent damageEvent = new EntityDamageByEntityEvent(player, entity, EntityDamageEvent.DamageCause.ENTITY_ATTACK, 13);
+            Bukkit.getServer().getPluginManager().callEvent(damageEvent);
+            if(!damageEvent.isCancelled()) ((LivingEntity) entity).damage(6.5);
         }
 
     }
 
     @Override
     public List<String> getDescription(int enchantLvl) {
-        return new ALoreBuilder("&7Repel all nearby enemies from you", "&d&oCosts " + getManaCost(enchantLvl) + " Mana").getLore();
+        return new ALoreBuilder("&7his weapon hits all nearby enemies", "&d&oCosts " + getManaCost(enchantLvl) + " Mana").getLore();
     }
 
     public static int getManaCost(int enchantLvl) {

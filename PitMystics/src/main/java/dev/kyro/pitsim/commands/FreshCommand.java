@@ -96,7 +96,7 @@ public class FreshCommand implements CommandExecutor {
 					.setName("&5Fresh Tainted Scythe")
 					.setLore(new ALoreBuilder("&7Kept on death", "&f", "&f", "&7Used in the mystic well"))
 					.addUnbreakable(true).getItemStack();
-			mystic.addEnchantment(Enchantment.DAMAGE_ALL, 2);
+			mystic.addEnchantment(Enchantment.DURABILITY, 1);
 			ItemMeta itemMeta = mystic.getItemMeta();
 			itemMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
 			mystic.setItemMeta(itemMeta);
