@@ -404,7 +404,8 @@ public class PitPlayer {
 
 		Map<PitEnchant, Integer> enchantMap = EnchantManager.getEnchantsOnPlayer(player);
 		if(Hearts.INSTANCE != null) maxHealth += Hearts.INSTANCE.getExtraHealth(enchantMap);
-		if(MaxHealth.INSTANCE != null) maxHealth += MaxHealth.INSTANCE.getExtraHealth(player, enchantMap);
+		if(MaxHealth.INSTANCE != null) maxHealth += MaxHealth.INSTANCE.
+				getExtraHealth(player, enchantMap);
 
 		if(megastreak.getClass() == Uberstreak.class) {
 			Uberstreak uberstreak = (Uberstreak) megastreak;

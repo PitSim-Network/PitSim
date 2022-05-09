@@ -18,10 +18,8 @@ import org.bukkit.Effect;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
-import org.bukkit.entity.ArmorStand;
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.LivingEntity;
-import org.bukkit.entity.Player;
+import org.bukkit.craftbukkit.v1_8_R3.entity.CraftEntity;
+import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -78,6 +76,7 @@ public class FreezeSpell extends PitEnchant {
         for (Entity nearbyEntity : event.getPlayer().getNearbyEntities(6, 6, 6)) {
             if(!(nearbyEntity instanceof LivingEntity)) continue;
             if(nearbyEntity instanceof ArmorStand) continue;
+            if(nearbyEntity instanceof Villager) continue;
 
             Misc.applyPotionEffect((LivingEntity) nearbyEntity, PotionEffectType.SLOW, 40, 100, false, false);
             Misc.applyPotionEffect((LivingEntity) nearbyEntity, PotionEffectType.WEAKNESS, 40, 100, false, false);
@@ -94,6 +93,7 @@ public class FreezeSpell extends PitEnchant {
             }
 
             Location tp = nearbyEntity.getLocation().getBlock().getLocation().add(0.5, 0, 0.5);
+            ((CraftEntity) nearbyEntity).getHandle().setLocation(tp.getX(), tp.getY(), tp.getZ(), tp.getPitch(), tp.getYaw());
             nearbyEntity.teleport(tp);
 
         }
