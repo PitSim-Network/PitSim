@@ -1,6 +1,7 @@
 package dev.kyro.pitsim.events;
 
 import dev.kyro.pitsim.controllers.DamageManager;
+import dev.kyro.pitsim.controllers.EnchantManager;
 import dev.kyro.pitsim.controllers.objects.PitEnchant;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import org.bukkit.entity.*;
@@ -46,6 +47,11 @@ public class AttackEvent extends Event {
 		if(defenderIsPlayer) {
 			PitPlayer pitPlayer = PitPlayer.getPitPlayer(defenderPlayer);
 			if(!(pitPlayer.player == attacker)) pitPlayer.lastHitUUID = attacker.getUniqueId();
+		}
+
+		if(attackerEnchantMap.containsKey(EnchantManager.getEnchant("meteor"))) {
+			defenderEnchantMap.clear();
+			attackerEnchantMap.clear();
 		}
 
 		if(event.getDamager() instanceof Arrow) {

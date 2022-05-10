@@ -52,6 +52,7 @@ public class Sounds {
 	public static final SoundEffect BUTTON = new SoundEffect(Sound.CLICK, 2, 1);
 	public static final SoundEffect POTION_BUBBLE = new SoundEffect(Sound.LAVA, 1.5, 1);
 	public static final SoundEffect AEGIS = new SoundEffect(Sound.ANVIL_LAND, 1, 1.5);
+	public static final SoundEffect METEOR = new SoundEffect(Sound.FIZZ, 1, 0.7);
 
 	//	Enchants
 	public static final SoundEffect BILLIONAIRE = new SoundEffect(Sound.ORB_PICKUP, 1, 0.73);

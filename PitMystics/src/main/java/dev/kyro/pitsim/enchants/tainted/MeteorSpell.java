@@ -4,21 +4,22 @@ import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.controllers.Cooldown;
 import dev.kyro.pitsim.controllers.objects.PitEnchant;
+import dev.kyro.pitsim.controllers.objects.PitMob;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.enums.ApplyType;
 import dev.kyro.pitsim.events.AttackEvent;
 import dev.kyro.pitsim.events.PitPlayerAttemptAbilityEvent;
 import dev.kyro.pitsim.misc.Sounds;
+import org.bukkit.Bukkit;
 import org.bukkit.Effect;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
-import org.bukkit.entity.EntityType;
-import org.bukkit.entity.Fireball;
-import org.bukkit.entity.Player;
+import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityExplodeEvent;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
@@ -60,10 +61,19 @@ public class MeteorSpell extends PitEnchant {
 		cooldown.restart();
 
 		Set<Material> mat = null;
-		Block block = player.getTargetBlock(mat, 50);
+		Block block = player.getTargetBlock(mat, 20);
 
-		if(block.getType() == Material.AIR) {
+		while(block.getType() == Material.AIR) {
+			block = block.getLocation().subtract(0, 1, 0).getBlock();
+		}
 
+		for (Entity entity : player.getNearbyEntities(15, 15, 15)) {
+			Vector direction = player.getLocation().getDirection();
+			Vector towardsEntity = entity.getLocation().subtract(player.getLocation()).toVector().normalize();
+
+			if(direction.distance(towardsEntity) < 0.3) {
+				block = entity.getLocation().getBlock();
+			}
 		}
 
 		Vector diff = block.getLocation().subtract(block.getLocation().add(5, 20, 0)).toVector();
@@ -80,7 +90,23 @@ public class MeteorSpell extends PitEnchant {
 					 base.add(diff);
 					 base.getWorld().playEffect(base, Effect.EXPLOSION_LARGE, 1);
 					 base.getWorld().playEffect(base, Effect.LARGE_SMOKE, 1);
-					 base.getWorld().playEffect(base, Effect.BOW_FIRE, 1);
+					 base.getWorld().playEffect(base, Effect.PARTICLE_SMOKE, 1);
+					 Sounds.METEOR.play(base);
+					 if(add >= (add - 1)) {
+						 Sounds.EXPLOSIVE_3.play(base);
+
+						 for (Entity near : base.getWorld().getNearbyEntities(base, 5, 5, 5)) {
+							 if(near instanceof ArmorStand || near instanceof Villager) continue;
+							 if(!(near instanceof LivingEntity)) continue;
+							 if(near == player) continue;
+							 EntityDamageByEntityEvent damageEvent = new EntityDamageByEntityEvent(player, near, EntityDamageEvent.DamageCause.ENTITY_ATTACK, 13);
+							 damageEvent.setDamage(20);
+							 Bukkit.getServer().getPluginManager().callEvent(damageEvent);
+							 if(!damageEvent.isCancelled()) ((LivingEntity) near).damage(20);
+
+							 return;
+						 }
+					 }
 				 }
 			 }.runTaskLater(PitSim.INSTANCE, time);
 			time++;
