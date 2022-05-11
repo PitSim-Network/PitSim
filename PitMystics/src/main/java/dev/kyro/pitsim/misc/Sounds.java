@@ -76,6 +76,7 @@ public class Sounds {
 	public static final SoundEffect REPEL = new SoundEffect(Sound.ANVIL_LAND, 1, 0.5);
 	public static final SoundEffect FREEZE1 = new SoundEffect(Sound.DIG_SNOW, 2, 0.5);
 	public static final SoundEffect FREEZE2 = new SoundEffect(Sound.GLASS, 1, 1.2);
+	public static final SoundEffect SWEEP = new SoundEffect(Sound.BAT_TAKEOFF, 1, 0.5);
 
 	//	Megastreaks
 	public static final SoundEffect MEGA_GENERAL = new SoundEffect(Sound.WITHER_SPAWN, 1000, 1);

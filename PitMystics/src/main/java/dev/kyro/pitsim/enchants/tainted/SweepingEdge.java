@@ -40,22 +40,22 @@ public class SweepingEdge extends PitEnchant {
             return;
         }
 
-        Sounds.REPEL.play(event.getPlayer().getLocation());
+        Sounds.SWEEP.play(event.getPlayer().getLocation());
         cooldown.restart();
 
         Player player = event.getPlayer();
         for (Entity entity : player.getNearbyEntities(10, 10, 10)) {
             if(!(entity instanceof LivingEntity)) continue;
-            EntityDamageByEntityEvent damageEvent = new EntityDamageByEntityEvent(player, entity, EntityDamageEvent.DamageCause.ENTITY_ATTACK, 13);
+            EntityDamageByEntityEvent damageEvent = new EntityDamageByEntityEvent(player, entity, EntityDamageEvent.DamageCause.ENTITY_ATTACK, 1);
             Bukkit.getServer().getPluginManager().callEvent(damageEvent);
-            if(!damageEvent.isCancelled()) ((LivingEntity) entity).damage(6.5);
+            if(!damageEvent.isCancelled()) ((LivingEntity) entity).damage(1);
         }
 
     }
 
     @Override
     public List<String> getDescription(int enchantLvl) {
-        return new ALoreBuilder("&7his weapon hits all nearby enemies", "&d&oCosts " + getManaCost(enchantLvl) + " Mana").getLore();
+        return new ALoreBuilder("&7This weapon hits all nearby enemies", "&d&oCosts " + getManaCost(enchantLvl) + " Mana").getLore();
     }
 
     public static int getManaCost(int enchantLvl) {

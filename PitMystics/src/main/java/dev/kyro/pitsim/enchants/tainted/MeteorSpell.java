@@ -84,7 +84,8 @@ public class MeteorSpell extends PitEnchant {
 		int time = 1;
 
 		for (int i = 0; i < add; i++) {
-			 new BukkitRunnable() {
+			int finalI = i;
+			new BukkitRunnable() {
 				 @Override
 				 public void run() {
 					 base.add(diff);
@@ -92,7 +93,7 @@ public class MeteorSpell extends PitEnchant {
 					 base.getWorld().playEffect(base, Effect.LARGE_SMOKE, 1);
 					 base.getWorld().playEffect(base, Effect.PARTICLE_SMOKE, 1);
 					 Sounds.METEOR.play(base);
-					 if(add >= (add - 1)) {
+					 if(finalI >= (add - 1)) {
 						 Sounds.EXPLOSIVE_3.play(base);
 
 						 for (Entity near : base.getWorld().getNearbyEntities(base, 5, 5, 5)) {
@@ -102,7 +103,7 @@ public class MeteorSpell extends PitEnchant {
 							 EntityDamageByEntityEvent damageEvent = new EntityDamageByEntityEvent(player, near, EntityDamageEvent.DamageCause.ENTITY_ATTACK, 13);
 							 damageEvent.setDamage(20);
 							 Bukkit.getServer().getPluginManager().callEvent(damageEvent);
-							 if(!damageEvent.isCancelled()) ((LivingEntity) near).damage(20);
+							 if(!damageEvent.isCancelled()) ((LivingEntity) near).damage(30);
 
 							 return;
 						 }
@@ -130,8 +131,7 @@ public class MeteorSpell extends PitEnchant {
 
 	@Override
 	public List<String> getDescription(int enchantLvl) {
-
-		return new ALoreBuilder("&7Enjoy").getLore();
+		return new ALoreBuilder("&7Summon a meteor, causing large", "&7damage to a single target", "&d&oCosts " + getManaCost(enchantLvl) + " Mana").getLore();
 	}
 
 	public static int getManaCost(int enchantLvl) {
