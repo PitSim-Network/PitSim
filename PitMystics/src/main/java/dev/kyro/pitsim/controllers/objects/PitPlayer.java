@@ -17,6 +17,7 @@ import dev.kyro.pitsim.enums.KillType;
 import dev.kyro.pitsim.events.AttackEvent;
 import dev.kyro.pitsim.events.HealEvent;
 import dev.kyro.pitsim.events.IncrementKillsEvent;
+import dev.kyro.pitsim.events.OofEvent;
 import dev.kyro.pitsim.inventories.ChatColorPanel;
 import dev.kyro.pitsim.killstreaks.Monster;
 import dev.kyro.pitsim.killstreaks.NoKillstreak;
@@ -93,6 +94,8 @@ public class PitPlayer {
 	public AChatColor chatColor;
 
 	public String[] brewingSessions = new String[]{null, null, null};
+
+	public int graceTiers = 0;
 
 	public PlayerStats stats;
 
@@ -416,6 +419,33 @@ public class PitPlayer {
 			maxHealth += Monster.healthMap.get(player);
 		}
 
+		maxHealth -= (4 * graceTiers);
+
+		if(maxHealth <= 0) {
+			if(!CombatManager.taggedPlayers.containsKey(player.getUniqueId())) {
+				DamageManager.death(player);
+				return;
+			}
+
+			PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
+			UUID attackerUUID = pitPlayer.lastHitUUID;
+			for(Player onlinePlayer : Bukkit.getOnlinePlayers()) {
+				if(onlinePlayer.getUniqueId().equals(attackerUUID)) {
+
+					Map<PitEnchant, Integer> attackerEnchant = new HashMap<>();
+					Map<PitEnchant, Integer> defenderEnchant = new HashMap<>();
+					EntityDamageByEntityEvent ev = new EntityDamageByEntityEvent(onlinePlayer, player, EntityDamageEvent.DamageCause.CUSTOM, 0);
+					AttackEvent attackEvent = new AttackEvent(ev, attackerEnchant, defenderEnchant, false);
+
+					DamageManager.kill(attackEvent, onlinePlayer, player, false, KillType.DEATH);
+					return;
+				}
+			}
+			DamageManager.death(player);
+			OofEvent oofEvent = new OofEvent(player);
+			Bukkit.getPluginManager().callEvent(oofEvent);
+			return;
+		}
 		if(player.getMaxHealth() == maxHealth) return;
 		player.setMaxHealth(maxHealth);
 	}
