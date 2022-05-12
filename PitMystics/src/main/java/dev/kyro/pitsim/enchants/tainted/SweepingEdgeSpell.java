@@ -2,11 +2,9 @@ package dev.kyro.pitsim.enchants.tainted;
 
 import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.pitsim.controllers.Cooldown;
-import dev.kyro.pitsim.controllers.EnchantManager;
 import dev.kyro.pitsim.controllers.objects.PitEnchant;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.enums.ApplyType;
-import dev.kyro.pitsim.events.AttackEvent;
 import dev.kyro.pitsim.events.PitPlayerAttemptAbilityEvent;
 import dev.kyro.pitsim.misc.Sounds;
 import org.bukkit.Bukkit;
@@ -16,12 +14,11 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
-import org.bukkit.util.Vector;
 
 import java.util.List;
 
-public class SweepingEdge extends PitEnchant {
-    public SweepingEdge() {
+public class SweepingEdgeSpell extends PitEnchant {
+    public SweepingEdgeSpell() {
         super("Sweeping Edge", true, ApplyType.SCYTHES, "sweepingedge", "sweep", "sweeping_edge", "sweeping");
         tainted = true;
     }

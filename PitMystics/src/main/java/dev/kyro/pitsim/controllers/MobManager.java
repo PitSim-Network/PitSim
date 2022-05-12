@@ -4,7 +4,7 @@ import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.brewing.BrewingManager;
 import dev.kyro.pitsim.controllers.objects.PitMob;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
-import dev.kyro.pitsim.enchants.tainted.Cleave;
+import dev.kyro.pitsim.enchants.tainted.CleaveSpell;
 import dev.kyro.pitsim.enums.SubLevel;
 import dev.kyro.pitsim.events.AttackEvent;
 import dev.kyro.pitsim.events.KillEvent;
@@ -17,7 +17,6 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
-import org.bukkit.event.entity.EntityExplodeEvent;
 import org.bukkit.event.entity.EntitySpawnEvent;
 import org.bukkit.event.entity.ExplosionPrimeEvent;
 import org.bukkit.event.player.PlayerArmorStandManipulateEvent;
@@ -263,7 +262,7 @@ public class MobManager implements Listener {
 			for (ArmorStand value : BrewingManager.brewingStands) {
 				if(value.getUniqueId().equals(entity.getUniqueId())) continue main;
 			}
-			for (ArmorStand value : Cleave.stands.values()) {
+			for (ArmorStand value : CleaveSpell.stands.values()) {
 				if(value.getUniqueId().equals(entity.getUniqueId())) continue main;
 			}
 			if(entity.getUniqueId().equals(TaintedWell.textLine1.getUniqueId())) continue;

@@ -3,12 +3,10 @@ package dev.kyro.pitsim.enchants.tainted;
 import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.PitSim;
-import dev.kyro.pitsim.brewing.objects.BrewingAnimation;
 import dev.kyro.pitsim.controllers.Cooldown;
 import dev.kyro.pitsim.controllers.objects.PitEnchant;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.enums.ApplyType;
-import dev.kyro.pitsim.events.HealEvent;
 import dev.kyro.pitsim.events.KillEvent;
 import dev.kyro.pitsim.events.OofEvent;
 import dev.kyro.pitsim.events.PitPlayerAttemptAbilityEvent;
@@ -16,9 +14,7 @@ import dev.kyro.pitsim.misc.Sounds;
 import net.minecraft.server.v1_8_R3.EntityArmorStand;
 import net.minecraft.server.v1_8_R3.PacketPlayOutEntity;
 import org.bukkit.Bukkit;
-import org.bukkit.Effect;
 import org.bukkit.Material;
-import org.bukkit.Sound;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftEntity;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
 import org.bukkit.entity.*;
@@ -31,7 +27,7 @@ import org.bukkit.util.Vector;
 
 import java.util.*;
 
-public class Cleave extends PitEnchant {
+public class CleaveSpell extends PitEnchant {
 
     public static Map<UUID, ArmorStand> stands = new HashMap<>();
     public static int i;
@@ -85,7 +81,7 @@ public class Cleave extends PitEnchant {
         }.runTaskTimer(PitSim.INSTANCE, 2, 2);
     }
 
-    public Cleave() {
+    public CleaveSpell() {
         super("Cleave", true, ApplyType.SCYTHES, "cleave", "cleaver", "saving", "grace");
         tainted = true;
     }
