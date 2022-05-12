@@ -596,6 +596,7 @@ class PitSim extends JavaPlugin {
 		EnchantManager.registerEnchant(new FreezeSpell());
 		EnchantManager.registerEnchant(new SweepingEdge());
 		EnchantManager.registerEnchant(new MeteorSpell());
-		EnchantManager.registerEnchant(new SavingGrace());
+		EnchantManager.registerEnchant(new SavingGraceSpell());
+		EnchantManager.registerEnchant(new Cleave());
 	}
 }

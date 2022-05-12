@@ -35,13 +35,7 @@ public class MeteorSpell extends PitEnchant {
 		tainted = true;
 	}
 
-	@EventHandler
-	public void onDamage(AttackEvent.Pre attackEvent) {
-		if(attackEvent.fireball == null || attackEvent.attacker != attackEvent.defender) return;
-		attackEvent.getAttackerEnchantMap().clear();
-		attackEvent.getDefenderEnchantMap().clear();
-		attackEvent.event.setCancelled(true);
-	}
+
 
 	@EventHandler
 	public void onUse(PitPlayerAttemptAbilityEvent event) {
@@ -101,7 +95,7 @@ public class MeteorSpell extends PitEnchant {
 							 if(!(near instanceof LivingEntity)) continue;
 							 if(near == player) continue;
 							 EntityDamageByEntityEvent damageEvent = new EntityDamageByEntityEvent(player, near, EntityDamageEvent.DamageCause.ENTITY_ATTACK, 13);
-							 damageEvent.setDamage(20);
+							 damageEvent.setDamage(30);
 							 Bukkit.getServer().getPluginManager().callEvent(damageEvent);
 							 if(!damageEvent.isCancelled()) ((LivingEntity) near).damage(30);
 

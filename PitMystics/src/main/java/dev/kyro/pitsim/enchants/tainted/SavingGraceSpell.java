@@ -13,15 +13,13 @@ import dev.kyro.pitsim.events.PitPlayerAttemptAbilityEvent;
 import dev.kyro.pitsim.misc.Sounds;
 import org.bukkit.Effect;
 import org.bukkit.Sound;
-import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
-import org.bukkit.util.Vector;
 
 import java.util.List;
 
-public class SavingGrace extends PitEnchant {
-    public SavingGrace() {
+public class SavingGraceSpell extends PitEnchant {
+    public SavingGraceSpell() {
         super("Saving Grace", true, ApplyType.SCYTHES, "savinggrace", "save", "saving", "grace");
         tainted = true;
     }

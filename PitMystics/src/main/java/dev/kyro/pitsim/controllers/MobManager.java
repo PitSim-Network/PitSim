@@ -4,6 +4,7 @@ import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.brewing.BrewingManager;
 import dev.kyro.pitsim.controllers.objects.PitMob;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
+import dev.kyro.pitsim.enchants.tainted.Cleave;
 import dev.kyro.pitsim.enums.SubLevel;
 import dev.kyro.pitsim.events.AttackEvent;
 import dev.kyro.pitsim.events.KillEvent;
@@ -260,6 +261,9 @@ public class MobManager implements Listener {
 				if(value.getUniqueId().equals(entity.getUniqueId())) continue main;
 			}
 			for (ArmorStand value : BrewingManager.brewingStands) {
+				if(value.getUniqueId().equals(entity.getUniqueId())) continue main;
+			}
+			for (ArmorStand value : Cleave.stands.values()) {
 				if(value.getUniqueId().equals(entity.getUniqueId())) continue main;
 			}
 			if(entity.getUniqueId().equals(TaintedWell.textLine1.getUniqueId())) continue;
