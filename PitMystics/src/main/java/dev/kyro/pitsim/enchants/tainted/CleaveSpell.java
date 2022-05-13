@@ -60,9 +60,10 @@ public class CleaveSpell extends PitEnchant {
                         }
                         if(player == null) return;
                         if(nearbyEntity == player) continue;
-                        EntityDamageByEntityEvent damageEvent = new EntityDamageByEntityEvent(player, nearbyEntity, EntityDamageEvent.DamageCause.ENTITY_ATTACK, 13);
+                        EntityDamageByEntityEvent damageEvent = new EntityDamageByEntityEvent(player, nearbyEntity, EntityDamageEvent.DamageCause.CUSTOM, 13);
                         damageEvent.setDamage(15);
                         Bukkit.getServer().getPluginManager().callEvent(damageEvent);
+                        if(damageEvent.isCancelled()) damageEvent.setDamage(15);
                         Sounds.CLEAVE3.play(player);
                     }
                 }
@@ -100,13 +101,6 @@ public class CleaveSpell extends PitEnchant {
             return;
         }
 
-        pitPlayer.updateMaxHealth();
-        if(event.getPlayer().getMaxHealth() <= 4) {
-            AOutput.send(event.getPlayer(), "&c&lNOPE! &7Not enough health!");
-            Sounds.NO.play(event.getPlayer());
-            return;
-        }
-
         cooldown.restart();
 
         Player player = event.getPlayer();
@@ -135,19 +129,6 @@ public class CleaveSpell extends PitEnchant {
         Sounds.CLEAVE1.play(player);
 
 
-    }
-
-    @EventHandler
-    public void onKill(KillEvent event) {
-        if(!event.deadIsPlayer) return;
-        PitPlayer.getPitPlayer(event.deadPlayer).graceTiers = 0;
-        PitPlayer.getPitPlayer(event.deadPlayer).heal(event.deadPlayer.getMaxHealth());
-    }
-
-    @EventHandler
-    public void onOof(OofEvent event) {
-        PitPlayer.getPitPlayer(event.getPlayer()).graceTiers = 0;
-        PitPlayer.getPitPlayer(event.getPlayer()).heal(event.getPlayer().getMaxHealth());
     }
 
     @Override

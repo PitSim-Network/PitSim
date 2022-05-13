@@ -80,6 +80,8 @@ public class Sounds {
 	public static final SoundEffect CLEAVE1 = new SoundEffect(Sound.IRONGOLEM_THROW, 1, 0.5);
 	public static final SoundEffect CLEAVE2 = new SoundEffect(Sound.ITEM_BREAK, 1, 0.75);
 	public static final SoundEffect CLEAVE3 = new SoundEffect(Sound.HURT_FLESH, 1, 1.25);
+	public static final SoundEffect WARP = new SoundEffect(Sound.ENDERMAN_TELEPORT, 1, 1.25);
+	public static final SoundEffect EXTRACT = new SoundEffect(Sound.ZOMBIE_WOODBREAK, 1, 0.8);
 
 	//	Megastreaks
 	public static final SoundEffect MEGA_GENERAL = new SoundEffect(Sound.WITHER_SPAWN, 1000, 1);
