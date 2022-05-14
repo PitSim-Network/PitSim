@@ -4,6 +4,7 @@ public enum ApplyType {
 
 	BOWS,
 	SWORDS,
+	MELEE,
 	PANTS,
 	WEAPONS,
 	ALL,

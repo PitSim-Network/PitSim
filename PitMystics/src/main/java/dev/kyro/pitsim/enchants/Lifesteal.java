@@ -15,7 +15,7 @@ import java.util.List;
 public class Lifesteal extends PitEnchant {
 
 	public Lifesteal() {
-		super("Lifesteal", false, ApplyType.SWORDS,
+		super("Lifesteal", false, ApplyType.MELEE,
 				"ls", "lifesteal", "life");
 		isUncommonEnchant = true;
 	}

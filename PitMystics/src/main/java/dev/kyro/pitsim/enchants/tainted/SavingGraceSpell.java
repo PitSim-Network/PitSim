@@ -2,6 +2,7 @@ package dev.kyro.pitsim.enchants.tainted;
 
 import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.arcticapi.misc.AOutput;
+import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.controllers.Cooldown;
 import dev.kyro.pitsim.controllers.objects.PitEnchant;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
@@ -15,6 +16,7 @@ import org.bukkit.Effect;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.List;
 
@@ -79,13 +81,26 @@ public class SavingGraceSpell extends PitEnchant {
     public void onKill(KillEvent event) {
         if(!event.deadIsPlayer) return;
         PitPlayer.getPitPlayer(event.deadPlayer).graceTiers = 0;
-        PitPlayer.getPitPlayer(event.deadPlayer).heal(event.deadPlayer.getMaxHealth());
+
+        new BukkitRunnable() {
+            @Override
+            public void run() {
+                PitPlayer.getPitPlayer(event.deadPlayer).heal(event.deadPlayer.getMaxHealth());
+            }
+        }.runTaskLater(PitSim.INSTANCE, 2);
     }
 
     @EventHandler
     public void onOof(OofEvent event) {
         PitPlayer.getPitPlayer(event.getPlayer()).graceTiers = 0;
         PitPlayer.getPitPlayer(event.getPlayer()).heal(event.getPlayer().getMaxHealth());
+
+        new BukkitRunnable() {
+            @Override
+            public void run() {
+                PitPlayer.getPitPlayer(event.getPlayer()).heal(event.getPlayer().getMaxHealth());
+            }
+        }.runTaskLater(PitSim.INSTANCE, 2);
     }
 
     @Override

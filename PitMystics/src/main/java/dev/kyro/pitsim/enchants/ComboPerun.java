@@ -17,7 +17,7 @@ import java.util.List;
 public class ComboPerun extends PitEnchant {
 
 	public ComboPerun() {
-		super("Combo: Perun's Wrath", true, ApplyType.SWORDS,
+		super("Combo: Perun's Wrath", true, ApplyType.MELEE,
 				"perun", "lightning");
 	}
 

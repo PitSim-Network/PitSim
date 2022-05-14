@@ -41,7 +41,7 @@ public class EnderPearl extends BrewingIngredient {
         int tokensToRemove = (int) getPotency(attackerEffect.potency);
 
         for (Map.Entry<PitEnchant, Integer> entry : attackEvent.getAttackerEnchantMap().entrySet()) {
-            if(entry.getKey().applyType != ApplyType.SWORDS && entry.getKey().applyType != ApplyType.BOWS) continue;
+            if(entry.getKey().applyType != ApplyType.SWORDS && entry.getKey().applyType != ApplyType.BOWS && entry.getKey().applyType != ApplyType.MELEE) continue;
             for (int i = 0; i < entry.getValue(); i++) {
                 attackEvent.getAttackerEnchantMap().put(entry.getKey(), entry.getValue() - 1);
 

@@ -16,7 +16,7 @@ import java.util.List;
 public class ComboSwift extends PitEnchant {
 
 	public ComboSwift() {
-		super("Combo: Swift", false, ApplyType.SWORDS,
+		super("Combo: Swift", false, ApplyType.MELEE,
 				"comoswift", "swift", "cs", "combo-swift");
 		isUncommonEnchant = true;
 	}

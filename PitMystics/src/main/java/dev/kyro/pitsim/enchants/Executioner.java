@@ -21,7 +21,7 @@ import java.util.List;
 public class Executioner extends PitEnchant {
 
 	public Executioner() {
-		super("Executioner", true, ApplyType.SWORDS,
+		super("Executioner", true, ApplyType.MELEE,
 				"executioner", "exe");
 	}
 

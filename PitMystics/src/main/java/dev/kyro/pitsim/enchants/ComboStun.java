@@ -17,7 +17,7 @@ import java.util.List;
 public class ComboStun extends PitEnchant {
 
 	public ComboStun() {
-		super("Combo: Stun", true, ApplyType.SWORDS,
+		super("Combo: Stun", true, ApplyType.MELEE,
 				"combostun", "stun", "combo-stun", "cstun");
 	}
 

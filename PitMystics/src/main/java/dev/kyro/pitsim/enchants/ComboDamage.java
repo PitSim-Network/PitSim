@@ -15,7 +15,7 @@ import java.util.List;
 public class ComboDamage extends PitEnchant {
 
 	public ComboDamage() {
-		super("Combo: Damage", false, ApplyType.SWORDS,
+		super("Combo: Damage", false, ApplyType.MELEE,
 				"combodamage", "cd", "combo-damage", "cdamage");
 	}
 

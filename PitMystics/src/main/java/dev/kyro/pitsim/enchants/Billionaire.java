@@ -21,7 +21,7 @@ import java.util.List;
 public class Billionaire extends PitEnchant {
 
 	public Billionaire() {
-		super("Billionaire", true, ApplyType.SWORDS,
+		super("Billionaire", true, ApplyType.MELEE,
 				"bill", "billionaire");
 	}
 

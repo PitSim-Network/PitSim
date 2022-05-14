@@ -14,7 +14,7 @@ import java.util.List;
 public class SpeedyHit extends PitEnchant {
 
 	public SpeedyHit() {
-		super("Speedy Hit", true, ApplyType.SWORDS,
+		super("Speedy Hit", true, ApplyType.MELEE,
 				"speedyhit", "speedy", "speed", "sh", "speedy-hit");
 	}
 

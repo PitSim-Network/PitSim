@@ -85,7 +85,7 @@ public class EnchantManager implements Listener {
 		if(pitEnchant.applyType == ApplyType.ALL) return true;
 
 		if(itemStack.getType() == Material.GOLD_SWORD) {
-			return pitEnchant.applyType == ApplyType.WEAPONS || pitEnchant.applyType == ApplyType.SWORDS;
+			return pitEnchant.applyType == ApplyType.WEAPONS || pitEnchant.applyType == ApplyType.SWORDS || pitEnchant.applyType == ApplyType.MELEE;
 		} else if(itemStack.getType() == Material.BOW) {
 			return pitEnchant.applyType == ApplyType.WEAPONS || pitEnchant.applyType == ApplyType.BOWS;
 		} else if(itemStack.getType() == Material.LEATHER_LEGGINGS) {
@@ -173,9 +173,11 @@ public class EnchantManager implements Listener {
 
 		AItemStackBuilder itemStackBuilder = new AItemStackBuilder(nbtItem.getItem());
 		MysticType mysticType = MysticType.getMysticType(itemStack);
+		if(mysticType.isTainted()) enchantNum = new NBTItem(itemStack).getInteger(NBTTag.TAINTED_TIER.getRef()) + 1;
 		ChatColor chatColor = ChatColor.RED;
 		if(mysticType.isTainted()) chatColor = PantColor.TAINTED.chatColor;
 		if(mysticType == MysticType.PANTS) chatColor = PantColor.getPantColor(itemStack).chatColor;
+
 		itemStackBuilder.setName(chatColor + "Tier " + (enchantNum != 0 ? AUtil.toRoman(enchantNum) : 0) + " " + mysticType.displayName);
 
 		setItemLore(itemStackBuilder.getItemStack());
@@ -597,18 +599,21 @@ public class EnchantManager implements Listener {
 					if(enchantApplyType == ApplyType.PANTS) applicableEnchants.add(pitEnchant);
 					break;
 				case SWORDS:
-					if(enchantApplyType == ApplyType.SWORDS || enchantApplyType == ApplyType.WEAPONS)
+					if(enchantApplyType == ApplyType.SWORDS || enchantApplyType == ApplyType.WEAPONS || enchantApplyType == ApplyType.MELEE)
 						applicableEnchants.add(pitEnchant);
 					break;
 				case WEAPONS:
 					if(enchantApplyType == ApplyType.WEAPONS || enchantApplyType == ApplyType.BOWS
-							|| enchantApplyType == ApplyType.SWORDS) applicableEnchants.add(pitEnchant);
+							|| enchantApplyType == ApplyType.SWORDS || enchantApplyType == ApplyType.MELEE) applicableEnchants.add(pitEnchant);
 					break;
 				case SCYTHES:
-					if (enchantApplyType == ApplyType.SCYTHES) applicableEnchants.add(pitEnchant);
+					if (enchantApplyType == ApplyType.SCYTHES || enchantApplyType == ApplyType.MELEE) applicableEnchants.add(pitEnchant);
 					break;
 				case CHESTPLATES:
 					if (enchantApplyType == CHESTPLATES) applicableEnchants.add(pitEnchant);
+					break;
+				case MELEE:
+					if(enchantApplyType == ApplyType.MELEE) applicableEnchants.add(pitEnchant);
 					break;
 				}
 
@@ -633,14 +638,14 @@ public class EnchantManager implements Listener {
 					if(enchantApplyType == ApplyType.PANTS) applicableEnchants.add(pitEnchant);
 					break;
 				case SWORD:
-					if(enchantApplyType == ApplyType.SWORDS || enchantApplyType == ApplyType.WEAPONS)
+					if(enchantApplyType == ApplyType.SWORDS || enchantApplyType == ApplyType.WEAPONS || enchantApplyType == ApplyType.MELEE)
 						applicableEnchants.add(pitEnchant);
 					break;
 				case TAINTED_CHESTPLATE:
 					if(enchantApplyType == CHESTPLATES || enchantApplyType == ApplyType.TAINTED) applicableEnchants.add(pitEnchant);
 					break;
 				case TAINTED_SCYTHE:
-					if(enchantApplyType == ApplyType.SCYTHES || enchantApplyType == ApplyType.TAINTED) applicableEnchants.add(pitEnchant);
+					if(enchantApplyType == ApplyType.SCYTHES) applicableEnchants.add(pitEnchant);
 					break;
 			}
 		}

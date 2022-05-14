@@ -12,7 +12,7 @@ import java.util.List;
 public class Berserker extends PitEnchant {
 
 	public Berserker() {
-		super("Berserker", false, ApplyType.SWORDS,
+		super("Berserker", false, ApplyType.MELEE,
 				"berserker");
 		isUncommonEnchant = true;
 	}

@@ -16,7 +16,7 @@ import java.util.List;
 public class ComboHeal extends PitEnchant {
 
 	public ComboHeal() {
-		super("Combo: Heal", false, ApplyType.SWORDS,
+		super("Combo: Heal", false, ApplyType.MELEE,
 				"comboheal", "ch", "combo-heal", "cheal");
 		isUncommonEnchant = true;
 	}

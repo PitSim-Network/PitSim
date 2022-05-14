@@ -11,7 +11,7 @@ import java.util.List;
 public class KingBuster extends PitEnchant {
 
 	public KingBuster() {
-		super("King Buster", false, ApplyType.SWORDS,
+		super("King Buster", false, ApplyType.MELEE,
 				"kb", "kingbuster", "kbuster", "king-buster");
 	}
 

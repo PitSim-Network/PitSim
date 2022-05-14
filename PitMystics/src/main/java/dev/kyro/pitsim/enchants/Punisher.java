@@ -11,7 +11,7 @@ import java.util.List;
 public class Punisher extends PitEnchant {
 
 	public Punisher() {
-		super("Punisher", false, ApplyType.SWORDS,
+		super("Punisher", false, ApplyType.MELEE,
 				"pun", "punisher");
 	}
 

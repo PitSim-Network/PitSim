@@ -11,7 +11,7 @@ import java.util.List;
 public class Sharp extends PitEnchant {
 
 	public Sharp() {
-		super("Sharp", false, ApplyType.SWORDS,
+		super("Sharp", false, ApplyType.MELEE,
 				"sharp", "s");
 	}
 

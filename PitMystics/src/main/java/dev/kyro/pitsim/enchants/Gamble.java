@@ -14,7 +14,7 @@ import java.util.List;
 public class Gamble extends PitEnchant {
 
 	public Gamble() {
-		super("Gamble", true, ApplyType.SWORDS,
+		super("Gamble", true, ApplyType.MELEE,
 				"gamble", "gam");
 	}
 

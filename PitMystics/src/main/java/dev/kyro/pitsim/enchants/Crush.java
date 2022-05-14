@@ -16,7 +16,7 @@ import java.util.List;
 public class Crush extends PitEnchant {
 
 	public Crush() {
-		super("Crush", false, ApplyType.SWORDS,
+		super("Crush", false, ApplyType.MELEE,
 				"crush");
 		isUncommonEnchant = true;
 	}

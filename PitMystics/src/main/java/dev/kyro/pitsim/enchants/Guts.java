@@ -13,7 +13,7 @@ import java.util.List;
 public class Guts extends PitEnchant {
 
 	public Guts() {
-		super("Guts", false, ApplyType.SWORDS,
+		super("Guts", false, ApplyType.MELEE,
 				"guts", "gut");
 	}
 

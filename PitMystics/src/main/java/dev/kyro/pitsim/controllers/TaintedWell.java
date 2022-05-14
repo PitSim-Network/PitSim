@@ -157,21 +157,12 @@ public class TaintedWell implements Listener
                 }.runTaskLater(PitSim.INSTANCE, 40L);
                 return;
             }
-            final ItemStack freshItem = TaintedWell.playerItems.get(player);
-            List<PitEnchant> enchants;
-            if (freshItem.getType() == Material.GOLD_HOE) {
-                enchants = EnchantManager.getEnchants(ApplyType.SCYTHES);
-            }
-            else {
-                enchants = EnchantManager.getEnchants(ApplyType.CHESTPLATES);
-            }
-            Random rand;
-            PitEnchant randEnchant;
-            for (rand = new Random(), randEnchant = enchants.get(rand.nextInt(enchants.size())); EnchantManager.getEnchantsOnItem(freshItem).containsKey(randEnchant); randEnchant = enchants.get(rand.nextInt(enchants.size()))) {
-                rand = new Random();
-            }
+
+
+            ItemStack freshItem = TaintedWell.playerItems.get(player);
+
             try {
-                final ItemStack newItem = EnchantManager.addEnchant(freshItem, randEnchant, 3, false);
+                final ItemStack newItem = TaintedEnchanting.enchantScythe(freshItem, freshTier);
                 final NBTItem nbtItem = new NBTItem(newItem);
                 if (nbtItem.hasKey(NBTTag.TAINTED_TIER.getRef())) {
                     final int tier = nbtItem.getInteger(NBTTag.TAINTED_TIER.getRef());
@@ -368,10 +359,10 @@ public class TaintedWell implements Listener
         String enchant3 = "§c";
         enchant1 = enchants.get(0).getDisplayName() + " " + AUtil.toRoman(enchantMap.get(enchants.get(0)));
         if (enchants.size() > 1) {
-            enchant2 = enchants.get(1).getDisplayName() + " " + AUtil.toRoman(enchantMap.get(enchants.get(0)));
+            enchant2 = enchants.get(1).getDisplayName() + " " + AUtil.toRoman(enchantMap.get(enchants.get(1)));
         }
         if (enchants.size() > 2) {
-            enchant3 = enchants.get(2).getDisplayName() + " " + AUtil.toRoman(enchantMap.get(enchants.get(0)));
+            enchant3 = enchants.get(2).getDisplayName() + " " + AUtil.toRoman(enchantMap.get(enchants.get(2)));
         }
         setText(player, item.getItemMeta().getDisplayName(), enchant1, enchant2, enchant3);
     }
