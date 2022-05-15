@@ -457,7 +457,7 @@ public class DamageManager implements Listener {
 							if(pitDead.stats != null) pitDead.stats.itemsBroken++;
 						} else {
 							nbtItem.setInteger(NBTTag.CURRENT_LIVES.getRef(), nbtItem.getInteger(NBTTag.CURRENT_LIVES.getRef()) - 1);
-							EnchantManager.setItemLore(nbtItem.getItem());
+							EnchantManager.setItemLore(nbtItem.getItem(), deadPlayer);
 							deadPlayer.getInventory().setItem(i, nbtItem.getItem());
 
 							if(pitDead.stats != null) pitDead.stats.livesLost++;
@@ -480,7 +480,7 @@ public class DamageManager implements Listener {
 								if(pitDead.stats != null) pitDead.stats.itemsBroken++;
 							} else {
 								nbtItem.setInteger(NBTTag.CURRENT_LIVES.getRef(), nbtItem.getInteger(NBTTag.CURRENT_LIVES.getRef()) - 1);
-								EnchantManager.setItemLore(nbtItem.getItem());
+								EnchantManager.setItemLore(nbtItem.getItem(), deadPlayer);
 								deadPlayer.getInventory().setLeggings(nbtItem.getItem());
 
 								if(pitDead.stats != null) pitDead.stats.livesLost++;

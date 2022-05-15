@@ -412,6 +412,7 @@ class PitSim extends JavaPlugin {
 		getServer().getPluginManager().registerEvents(new TaintedWell(), this);
 		getServer().getPluginManager().registerEvents(new BrewingManager(), this);
 		getServer().getPluginManager().registerEvents(new PotionManager(), this);
+		getServer().getPluginManager().registerEvents(new TaintedManager(), this);
 	}
 	public void registerBoosters() {
 		BoosterManager.registerBooster(new XPBooster());

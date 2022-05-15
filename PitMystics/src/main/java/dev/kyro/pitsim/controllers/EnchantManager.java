@@ -180,7 +180,7 @@ public class EnchantManager implements Listener {
 
 		itemStackBuilder.setName(chatColor + "Tier " + (enchantNum != 0 ? AUtil.toRoman(enchantNum) : 0) + " " + mysticType.displayName);
 
-		setItemLore(itemStackBuilder.getItemStack());
+		setItemLore(itemStackBuilder.getItemStack(), null);
 		return itemStackBuilder.getItemStack();
 	}
 
@@ -212,7 +212,8 @@ public class EnchantManager implements Listener {
 		return !hasCommonEnchant && enchantNum == 3 && !isJewel(itemStack);
 	}
 
-	public static void setItemLore(ItemStack itemStack) {
+	public static void setItemLore(ItemStack itemStack, Player player) {
+		Bukkit.broadcastMessage(player + "");
 
 		NBTItem nbtItem = new NBTItem(itemStack);
 		NBTList<String> enchantOrder = nbtItem.getStringList(NBTTag.PIT_ENCHANT_ORDER.getRef());
@@ -279,14 +280,23 @@ public class EnchantManager implements Listener {
 				Integer enchantLvl = itemEnchants.getInteger(key);
 				if(enchant == null) continue;
 				loreBuilder.addLore("&f");
-				loreBuilder.addLore(enchant.getDisplayName() + enchantLevelToRoman(enchantLvl));
-				loreBuilder.addLore(enchant.getDescription(enchantLvl));
+
+				if(player != null && player.getWorld() == MapManager.getDarkzone()) {
+					Bukkit.broadcastMessage("1");
+					loreBuilder.addLore(TaintedManager.scramble(enchant.getDisplayName() + enchantLevelToRoman(enchantLvl)));
+					loreBuilder.addLore(TaintedManager.scramble(enchant.getDescription(enchantLvl)));
+				} else {
+					Bukkit.broadcastMessage("2");
+					loreBuilder.addLore(enchant.getDisplayName() + enchantLevelToRoman(enchantLvl));
+					loreBuilder.addLore(enchant.getDescription(enchantLvl));
+				}
 			}
 			if(isJewel) {
 				PitEnchant jewelEnchant = getEnchant(nbtItem.getString(NBTTag.ITEM_JEWEL_ENCHANT.getRef()));
 				assert jewelEnchant != null;
 				loreBuilder.addLore("&f");
-				loreBuilder.addLore("&3JEWEL!&9 " + jewelEnchant.getDisplayName());
+				if(player != null && player.getWorld() == MapManager.getDarkzone()) loreBuilder.addLore(TaintedManager.scramble("&3JEWEL!&9 " + jewelEnchant.getDisplayName()));
+				else loreBuilder.addLore("&3JEWEL!&9 " + jewelEnchant.getDisplayName());
 			}
 			if(nbtItem.getBoolean(NBTTag.IS_VENOM.getRef())) {
 				loreBuilder.addLore("&7", "&5Enchants require heresy", "&5As strong as leather");
@@ -426,7 +436,7 @@ public class EnchantManager implements Listener {
 			ItemStack jewelStack = completeJewel(attacker, nbtItem.getItem());
 			if(jewelStack != null) nbtItem = new NBTItem(jewelStack);
 
-			if(nbtItem.hasKey(NBTTag.ITEM_UUID.getRef())) setItemLore(nbtItem.getItem());
+			if(nbtItem.hasKey(NBTTag.ITEM_UUID.getRef())) setItemLore(nbtItem.getItem(), attacker);
 			attacker.setItemInHand(nbtItem.getItem());
 
 			for(int i = 0; i < 9; i++) {
@@ -442,7 +452,7 @@ public class EnchantManager implements Listener {
 				ItemStack hotbarJewelStack = completeJewel(attacker, hotbarNbtItem.getItem());
 				if(hotbarJewelStack != null) hotbarNbtItem = new NBTItem(hotbarJewelStack);
 
-				setItemLore(hotbarNbtItem.getItem());
+				setItemLore(hotbarNbtItem.getItem(), attacker);
 				attacker.getInventory().setItem(i, hotbarNbtItem.getItem());
 			}
 		}
@@ -457,7 +467,7 @@ public class EnchantManager implements Listener {
 			ItemStack jewelStack = completeJewel(attacker, nbtItem.getItem());
 			if(jewelStack != null) nbtItem = new NBTItem(jewelStack);
 
-			setItemLore(nbtItem.getItem());
+			setItemLore(nbtItem.getItem(), attacker);
 			attacker.getInventory().setLeggings(nbtItem.getItem());
 		}
 	}

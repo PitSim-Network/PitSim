@@ -359,7 +359,7 @@ public class Uberstreak extends Megastreak {
 				jewelSword = ItemManager.enableDropConfirm(jewelSword);
 				NBTItem nbtItemSword = new NBTItem(jewelSword);
 				nbtItemSword.setBoolean(NBTTag.IS_JEWEL.getRef(), true);
-				EnchantManager.setItemLore(nbtItemSword.getItem());
+				EnchantManager.setItemLore(nbtItemSword.getItem(), player);
 				AUtil.giveItemSafely(player, nbtItemSword.getItem());
 				uberMessage("&3Hidden Jewel " + MysticType.SWORD, pitPlayer);
 			} else if(this == JEWEL_BOW) {
@@ -367,7 +367,7 @@ public class Uberstreak extends Megastreak {
 				jewelBow = ItemManager.enableDropConfirm(jewelBow);
 				NBTItem nbtItemBow = new NBTItem(jewelBow);
 				nbtItemBow.setBoolean(NBTTag.IS_JEWEL.getRef(), true);
-				EnchantManager.setItemLore(nbtItemBow.getItem());
+				EnchantManager.setItemLore(nbtItemBow.getItem(), player);
 				AUtil.giveItemSafely(player, nbtItemBow.getItem());
 				uberMessage("&3Hidden Jewel " + MysticType.BOW, pitPlayer);
 			} else if(this == JEWEL_PANTS) {
@@ -375,7 +375,7 @@ public class Uberstreak extends Megastreak {
 				jewel = ItemManager.enableDropConfirm(jewel);
 				NBTItem nbtItem = new NBTItem(jewel);
 				nbtItem.setBoolean(NBTTag.IS_JEWEL.getRef(), true);
-				EnchantManager.setItemLore(nbtItem.getItem());
+				EnchantManager.setItemLore(nbtItem.getItem(), player);
 				AUtil.giveItemSafely(player, nbtItem.getItem());
 				uberMessage("&3Hidden Jewel " + MysticType.PANTS, pitPlayer);
 			} else if(this == JEWEL_BUNDLE) {
@@ -383,21 +383,21 @@ public class Uberstreak extends Megastreak {
 				jbsword = ItemManager.enableDropConfirm(jbsword);
 				NBTItem nbtjbsword = new NBTItem(jbsword);
 				nbtjbsword.setBoolean(NBTTag.IS_JEWEL.getRef(), true);
-				EnchantManager.setItemLore(nbtjbsword.getItem());
+				EnchantManager.setItemLore(nbtjbsword.getItem(), player);
 				AUtil.giveItemSafely(player, nbtjbsword.getItem());
 
 				ItemStack jbbow = FreshCommand.getFreshItem(MysticType.BOW, PantColor.JEWEL);
 				jbbow = ItemManager.enableDropConfirm(jbbow);
 				NBTItem nbtjbbow = new NBTItem(jbbow);
 				nbtjbbow.setBoolean(NBTTag.IS_JEWEL.getRef(), true);
-				EnchantManager.setItemLore(nbtjbbow.getItem());
+				EnchantManager.setItemLore(nbtjbbow.getItem(), player);
 				AUtil.giveItemSafely(player, nbtjbbow.getItem());
 
 				ItemStack jb = FreshCommand.getFreshItem(MysticType.PANTS, PantColor.JEWEL);
 				jb = ItemManager.enableDropConfirm(jb);
 				NBTItem nbtjb = new NBTItem(jb);
 				nbtjb.setBoolean(NBTTag.IS_JEWEL.getRef(), true);
-				EnchantManager.setItemLore(nbtjb.getItem());
+				EnchantManager.setItemLore(nbtjb.getItem(), player);
 				AUtil.giveItemSafely(player, nbtjb.getItem());
 
 				uberMessage("&3Hidden Jewel Bundle", pitPlayer);

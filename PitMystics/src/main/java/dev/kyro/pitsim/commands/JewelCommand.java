@@ -91,7 +91,7 @@ public class JewelCommand extends ACommand {
 			}
 		}
 
-		EnchantManager.setItemLore(jewel);
+		EnchantManager.setItemLore(jewel, null);
 		AUtil.giveItemSafely((Player) sender, jewel);
 	}
 

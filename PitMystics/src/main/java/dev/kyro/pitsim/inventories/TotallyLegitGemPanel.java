@@ -61,7 +61,7 @@ public class TotallyLegitGemPanel extends AGUIPanel {
 						if(entry.getValue() == 2) enchant = entry.getKey();
 					}
 
-					EnchantManager.setItemLore(nbtItem.getItem());
+					EnchantManager.setItemLore(nbtItem.getItem(), player);
 					try {
 						player.getInventory().setItem(i, EnchantManager.addEnchant(nbtItem.getItem(), enchant, 3, false));
 					} catch(Exception e) {

@@ -38,7 +38,7 @@ public class OldCrateGiveCommand implements CommandExecutor {
 				jewel = ItemManager.enableDropConfirm(jewel);
 				NBTItem nbtItem = new NBTItem(jewel);
 				nbtItem.setBoolean(NBTTag.IS_JEWEL.getRef(), true);
-				EnchantManager.setItemLore(nbtItem.getItem());
+				EnchantManager.setItemLore(nbtItem.getItem(), player);
 				AUtil.giveItemSafely(player, nbtItem.getItem());
 			}
 
@@ -50,7 +50,7 @@ public class OldCrateGiveCommand implements CommandExecutor {
 				jewelSword = ItemManager.enableDropConfirm(jewelSword);
 				NBTItem nbtItemSword = new NBTItem(jewelSword);
 				nbtItemSword.setBoolean(NBTTag.IS_JEWEL.getRef(), true);
-				EnchantManager.setItemLore(nbtItemSword.getItem());
+				EnchantManager.setItemLore(nbtItemSword.getItem(), player);
 				AUtil.giveItemSafely(player, nbtItemSword.getItem());
 			}
 			broadcast("&e2x Hidden Jewel Sword", player);
@@ -61,7 +61,7 @@ public class OldCrateGiveCommand implements CommandExecutor {
 				jewelBow = ItemManager.enableDropConfirm(jewelBow);
 				NBTItem nbtItemBow = new NBTItem(jewelBow);
 				nbtItemBow.setBoolean(NBTTag.IS_JEWEL.getRef(), true);
-				EnchantManager.setItemLore(nbtItemBow.getItem());
+				EnchantManager.setItemLore(nbtItemBow.getItem(), player);
 				AUtil.giveItemSafely(player, nbtItemBow.getItem());
 			}
 			broadcast("&b2x Hidden Jewel Bow", player);
@@ -129,7 +129,7 @@ public class OldCrateGiveCommand implements CommandExecutor {
 				jbsword = ItemManager.enableDropConfirm(jbsword);
 				NBTItem nbtjbsword = new NBTItem(jbsword);
 				nbtjbsword.setBoolean(NBTTag.IS_JEWEL.getRef(), true);
-				EnchantManager.setItemLore(nbtjbsword.getItem());
+				EnchantManager.setItemLore(nbtjbsword.getItem(), player);
 				AUtil.giveItemSafely(player, nbtjbsword.getItem());
 			}
 
@@ -138,7 +138,7 @@ public class OldCrateGiveCommand implements CommandExecutor {
 				jbbow = ItemManager.enableDropConfirm(jbbow);
 				NBTItem nbtjbbow = new NBTItem(jbbow);
 				nbtjbbow.setBoolean(NBTTag.IS_JEWEL.getRef(), true);
-				EnchantManager.setItemLore(nbtjbbow.getItem());
+				EnchantManager.setItemLore(nbtjbbow.getItem(), player);
 				AUtil.giveItemSafely(player, nbtjbbow.getItem());
 			}
 
@@ -147,7 +147,7 @@ public class OldCrateGiveCommand implements CommandExecutor {
 				jb = ItemManager.enableDropConfirm(jb);
 				NBTItem nbtjb = new NBTItem(jb);
 				nbtjb.setBoolean(NBTTag.IS_JEWEL.getRef(), true);
-				EnchantManager.setItemLore(nbtjb.getItem());
+				EnchantManager.setItemLore(nbtjb.getItem(), player);
 				AUtil.giveItemSafely(player, nbtjb.getItem());
 			}
 			broadcast("&bHidden Jewel Bundle", player);
