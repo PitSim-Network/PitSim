@@ -3,8 +3,14 @@ package dev.kyro.pitsim.controllers;
 import de.tr7zw.nbtapi.NBTItem;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.commands.FreshCommand;
+import dev.kyro.pitsim.controllers.objects.PitEnchant;
+import dev.kyro.pitsim.enums.MysticType;
 import dev.kyro.pitsim.enums.NBTTag;
+import dev.kyro.pitsim.enums.PantColor;
+import dev.kyro.pitsim.events.AttackEvent;
 import dev.kyro.pitsim.misc.Misc;
+import org.bukkit.Bukkit;
+import org.bukkit.Color;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -13,10 +19,13 @@ import org.bukkit.event.inventory.InventoryOpenEvent;
 import org.bukkit.event.player.PlayerTeleportEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.inventory.meta.LeatherArmorMeta;
 import org.bukkit.scheduler.BukkitRunnable;
+import org.checkerframework.checker.units.qual.C;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class TaintedManager implements Listener {
 
@@ -25,6 +34,43 @@ public class TaintedManager implements Listener {
         new BukkitRunnable() {
             @Override
             public void run() {
+
+                if(!Misc.isAirOrNull(event.getPlayer().getInventory().getChestplate())) {
+                    NBTItem chest = new NBTItem(event.getPlayer().getInventory().getChestplate());
+                    if(chest.hasKey(NBTTag.ITEM_UUID.getRef())) {
+                        LeatherArmorMeta meta;
+                        if(event.getPlayer().getWorld() == MapManager.getDarkzone()) {
+                            chest.getItem().setType(Material.LEATHER_CHESTPLATE);
+                            meta = (LeatherArmorMeta) chest.getItem().getItemMeta();
+                            meta.setColor(Color.fromRGB(PantColor.TAINTED.hexColor));
+                            chest.getItem().setItemMeta(meta);
+                        } else {
+                            chest.getItem().setType(Material.CHAINMAIL_CHESTPLATE);
+                        }
+                        event.getPlayer().getInventory().setChestplate(chest.getItem());
+                    }
+                }
+
+                if(!Misc.isAirOrNull(event.getPlayer().getInventory().getLeggings())) {
+                    NBTItem pants = new NBTItem(event.getPlayer().getInventory().getLeggings());
+                    if(pants.hasKey(NBTTag.ITEM_UUID.getRef())) {
+                        LeatherArmorMeta meta;
+                        if(event.getPlayer().getWorld() == MapManager.getDarkzone()) {
+                            pants.getItem().setType(Material.CHAINMAIL_LEGGINGS);
+                        } else {
+                            pants.getItem().setType(Material.LEATHER_LEGGINGS);
+                            meta = (LeatherArmorMeta) pants.getItem().getItemMeta();
+                            if(pants.hasKey(NBTTag.SAVED_PANTS_COLOR.getRef())) {
+                                meta.setColor(Color.fromRGB(Objects.requireNonNull(PantColor.getPantColor(pants.getString(NBTTag.SAVED_PANTS_COLOR.getRef()))).hexColor));
+                            pants.getItem().setItemMeta(meta);
+                            }
+                        }
+                        event.getPlayer().getInventory().setLeggings(pants.getItem());
+                    }
+                }
+
+
+
                 for (int i = 0; i < event.getPlayer().getInventory().getSize(); i++) {
                     ItemStack item = event.getPlayer().getInventory().getItem(i);
                     if(Misc.isAirOrNull(item)) continue;
@@ -32,39 +78,103 @@ public class TaintedManager implements Listener {
                     NBTItem nbtItem = new NBTItem(item);
                     if(!nbtItem.hasKey(NBTTag.ITEM_UUID.getRef())) continue;
 
+                    LeatherArmorMeta leatherMeta = null;
                     ItemMeta meta = nbtItem.getItem().getItemMeta();
+
                     if(event.getPlayer().getWorld() == MapManager.getDarkzone()) {
-                        if(item.getType() == Material.GOLD_SWORD || item.getType() == Material.STONE_SWORD ||
-                                item.getType() == Material.LEATHER_LEGGINGS ||
-                                item.getType() == Material.CHAINMAIL_LEGGINGS)meta.setLore(scramble(meta.getLore()));
-                        else meta.setLore(descramble(meta.getLore()));
-                        if(item.getType() == Material.GOLD_SWORD) nbtItem.getItem().setType(Material.STONE_SWORD);
-                        else if(item.getType() == Material.LEATHER_LEGGINGS) nbtItem.getItem().setType(Material.CHAINMAIL_LEGGINGS);
-                        else if(item.getType() == Material.STONE_HOE) nbtItem.getItem().setType(Material.GOLD_HOE);
-                        else if(item.getType() == Material.CHAINMAIL_CHESTPLATE) nbtItem.getItem().setType(Material.LEATHER_CHESTPLATE);
+
+                        switch (MysticType.getMysticType(item)) {
+                            case SWORD:
+                                meta.setLore(scramble(meta.getLore()));
+                                nbtItem.getItem().setType(Material.STONE_SWORD);
+                                break;
+                            case PANTS:
+//                                nbtItem.setString(NBTTag.SAVED_PANTS_COLOR.getRef(), Objects.requireNonNull(PantColor.getPantColor(nbtItem.getItem())).refName);
+                                nbtItem.getItem().setType(Material.CHAINMAIL_LEGGINGS);
+                                break;
+                            case TAINTED_SCYTHE:
+                                meta.setLore(descramble(meta.getLore()));
+                                nbtItem.getItem().setType(Material.GOLD_HOE);
+                                break;
+                            case TAINTED_CHESTPLATE:
+                                nbtItem.getItem().setType(Material.LEATHER_CHESTPLATE);
+                                leatherMeta = (LeatherArmorMeta) nbtItem.getItem().getItemMeta();
+                                leatherMeta.setColor(Color.fromRGB(PantColor.TAINTED.hexColor));
+                                break;
+                        }
+
                     } else {
-                        if(item.getType() == Material.GOLD_SWORD || item.getType() == Material.STONE_SWORD ||
-                                item.getType() == Material.LEATHER_LEGGINGS ||
-                                item.getType() == Material.CHAINMAIL_LEGGINGS)meta.setLore(descramble(meta.getLore()));
-                        else meta.setLore(scramble(meta.getLore()));
-                        if(item.getType() == Material.GOLD_HOE) nbtItem.getItem().setType(Material.STONE_HOE);
-                        else if(item.getType() == Material.LEATHER_CHESTPLATE) nbtItem.getItem().setType(Material.CHAINMAIL_CHESTPLATE);
-                        else if(item.getType() == Material.STONE_SWORD) nbtItem.getItem().setType(Material.GOLD_SWORD);
-                        else if(item.getType() == Material.CHAINMAIL_LEGGINGS) nbtItem.getItem().setType(Material.LEATHER_LEGGINGS);
+
+                        switch (MysticType.getMysticType(item)) {
+                            case SWORD:
+                                meta.setLore(descramble(meta.getLore()));
+                                nbtItem.getItem().setType(Material.GOLD_SWORD);
+                                break;
+                            case PANTS:
+                                nbtItem.getItem().setType(Material.LEATHER_LEGGINGS);
+                                leatherMeta = (LeatherArmorMeta) nbtItem.getItem().getItemMeta();
+                                if(nbtItem.hasKey(NBTTag.SAVED_PANTS_COLOR.getRef())) {
+                                    leatherMeta.setColor(Color.fromRGB(Objects.requireNonNull(PantColor.getPantColor(nbtItem.getString(NBTTag.SAVED_PANTS_COLOR.getRef()))).hexColor));
+                                }
+                                break;
+                            case TAINTED_SCYTHE:
+                                meta.setLore(scramble(meta.getLore()));
+                                nbtItem.getItem().setType(Material.STONE_HOE);
+                                break;
+                            case TAINTED_CHESTPLATE:
+                                nbtItem.getItem().setType(Material.CHAINMAIL_CHESTPLATE);
+                                 break;
+                        }
+
                     }
-                    nbtItem.getItem().setItemMeta(meta);
+
+                    if(leatherMeta != null) nbtItem.getItem().setItemMeta(leatherMeta);
+                    else {
+                        nbtItem.getItem().setItemMeta(meta);
+                    }
 
                     event.getPlayer().getInventory().setItem(i, nbtItem.getItem());
                 }
             }
         }.runTaskLater(PitSim.INSTANCE, 2);
-    }
 
-    @EventHandler
-    public void onOpen(InventoryOpenEvent event) {
+
+
+
+
+
         new BukkitRunnable() {
             @Override
             public void run() {
+
+                if(!Misc.isAirOrNull(event.getPlayer().getInventory().getChestplate())) {
+                    NBTItem chest = new NBTItem(event.getPlayer().getInventory().getChestplate());
+                    if(chest.hasKey(NBTTag.ITEM_UUID.getRef())) {
+                        ItemMeta meta = chest.getItem().getItemMeta();
+                        if(event.getPlayer().getWorld() == MapManager.getDarkzone()) {
+                            meta.setLore(descramble(meta.getLore()));
+                        } else {
+                            meta.setLore(scramble(meta.getLore()));
+                        }
+                        chest.getItem().setItemMeta(meta);
+                        event.getPlayer().getInventory().setChestplate(chest.getItem());
+                    }
+                }
+
+                if(!Misc.isAirOrNull(event.getPlayer().getInventory().getLeggings())) {
+                    NBTItem pants = new NBTItem(event.getPlayer().getInventory().getLeggings());
+                    if(pants.hasKey(NBTTag.ITEM_UUID.getRef())) {
+                        ItemMeta meta = pants.getItem().getItemMeta();
+                        if(event.getPlayer().getWorld() == MapManager.getDarkzone()) {
+                            meta.setLore(scramble(meta.getLore()));
+                        } else {
+                            meta.setLore(descramble(meta.getLore()));
+                        }
+                        pants.getItem().setItemMeta(meta);
+                        event.getPlayer().getInventory().setLeggings(pants.getItem());
+                    }
+                }
+
                 for (int i = 0; i < event.getPlayer().getInventory().getSize(); i++) {
                     ItemStack item = event.getPlayer().getInventory().getItem(i);
                     if(Misc.isAirOrNull(item)) continue;
@@ -73,14 +183,127 @@ public class TaintedManager implements Listener {
                     if(!nbtItem.hasKey(NBTTag.ITEM_UUID.getRef())) continue;
 
                     ItemMeta meta = nbtItem.getItem().getItemMeta();
-                    if(event.getPlayer().getWorld() == MapManager.getDarkzone()) meta.setLore(scramble(meta.getLore()));
-                    else meta.setLore(descramble(meta.getLore()));
+
+                    if(event.getPlayer().getWorld() == MapManager.getDarkzone()) {
+
+                        if(MysticType.getMysticType(item) == MysticType.PANTS) {
+                            meta.setLore(scramble(meta.getLore()));
+                        } else if(MysticType.getMysticType(item) == MysticType.TAINTED_CHESTPLATE) {
+                            meta.setLore(descramble(meta.getLore()));
+                        }
+
+                    } else {
+
+                        if(MysticType.getMysticType(item) == MysticType.PANTS) {
+                            meta.setLore(descramble(item.getItemMeta().getLore()));
+                        } else if(MysticType.getMysticType(item) == MysticType.TAINTED_CHESTPLATE) {
+                            meta.setLore(scramble(meta.getLore()));
+                        }
+
+                    }
+
                     nbtItem.getItem().setItemMeta(meta);
+
 
                     event.getPlayer().getInventory().setItem(i, nbtItem.getItem());
                 }
             }
-        }.runTaskLater(PitSim.INSTANCE, 1);
+        }.runTaskLater(PitSim.INSTANCE, 10);
+    }
+
+    @EventHandler
+    public void onAttack(AttackEvent.Pre event) {
+        Player player = event.attackerPlayer;
+        if(player == null) return;
+
+        if(player.getWorld() == MapManager.getDarkzone()) {
+            if(!Misc.isAirOrNull(player.getItemInHand())) {
+                NBTItem nbtItem = new NBTItem(player.getItemInHand());
+                if(nbtItem.hasKey(NBTTag.ITEM_UUID.getRef()) && MysticType.getMysticType(player.getItemInHand()) == MysticType.SWORD) {
+                    for (PitEnchant pitEnchant : EnchantManager.getEnchantsOnItem(player.getItemInHand()).keySet()) {
+                        event.getAttackerEnchantMap().remove(pitEnchant);
+                    }
+                }
+            }
+
+            if(!Misc.isAirOrNull(player.getInventory().getLeggings())) {
+                NBTItem nbtItem = new NBTItem(player.getInventory().getLeggings());
+                if(nbtItem.hasKey(NBTTag.ITEM_UUID.getRef()) && MysticType.getMysticType(player.getInventory().getLeggings()) == MysticType.PANTS) {
+                    for (PitEnchant pitEnchant : EnchantManager.getEnchantsOnItem(player.getInventory().getLeggings()).keySet()) {
+                        event.getAttackerEnchantMap().remove(pitEnchant);
+                    }
+                }
+            }
+
+        } else {
+
+            if(!Misc.isAirOrNull(player.getItemInHand())) {
+                NBTItem nbtItem = new NBTItem(player.getItemInHand());
+                if(nbtItem.hasKey(NBTTag.ITEM_UUID.getRef()) && MysticType.getMysticType(player.getItemInHand()) == MysticType.TAINTED_SCYTHE) {
+                    for (PitEnchant pitEnchant : EnchantManager.getEnchantsOnItem(player.getItemInHand()).keySet()) {
+                        event.getAttackerEnchantMap().remove(pitEnchant);
+                    }
+                }
+            }
+
+            if(!Misc.isAirOrNull(player.getInventory().getChestplate())) {
+                NBTItem nbtItem = new NBTItem(player.getInventory().getChestplate());
+                if(nbtItem.hasKey(NBTTag.ITEM_UUID.getRef()) && MysticType.getMysticType(player.getInventory().getChestplate()) == MysticType.TAINTED_CHESTPLATE) {
+                    for (PitEnchant pitEnchant : EnchantManager.getEnchantsOnItem(player.getInventory().getChestplate()).keySet()) {
+                        event.getAttackerEnchantMap().remove(pitEnchant);
+                    }
+                }
+            }
+        }
+    }
+
+
+    @EventHandler
+    public void onDefend(AttackEvent.Pre event) {
+        Player player = event.defenderPlayer;
+        if(player == null) return;
+
+        if(player.getWorld() == MapManager.getDarkzone()) {
+            if(!Misc.isAirOrNull(player.getItemInHand())) {
+                NBTItem nbtItem = new NBTItem(player.getItemInHand());
+                if(nbtItem.hasKey(NBTTag.ITEM_UUID.getRef()) && MysticType.getMysticType(player.getItemInHand()) == MysticType.SWORD) {
+                    for (PitEnchant pitEnchant : EnchantManager.getEnchantsOnItem(player.getItemInHand()).keySet()) {
+                        event.getDefenderEnchantMap().remove(pitEnchant);
+                    }
+                }
+            }
+
+            if(!Misc.isAirOrNull(player.getInventory().getLeggings())) {
+                NBTItem nbtItem = new NBTItem(player.getInventory().getLeggings());
+                if(nbtItem.hasKey(NBTTag.ITEM_UUID.getRef()) && MysticType.getMysticType(player.getInventory().getLeggings()) == MysticType.PANTS) {
+                    for (PitEnchant pitEnchant : EnchantManager.getEnchantsOnItem(player.getInventory().getLeggings()).keySet()) {
+                        event.getDefenderEnchantMap().remove(pitEnchant);
+                    }
+                }
+            }
+
+        } else {
+
+            if(player.getWorld() == MapManager.getDarkzone()) {
+                if(!Misc.isAirOrNull(player.getItemInHand())) {
+                    NBTItem nbtItem = new NBTItem(player.getItemInHand());
+                    if(nbtItem.hasKey(NBTTag.ITEM_UUID.getRef()) && MysticType.getMysticType(player.getItemInHand()) == MysticType.TAINTED_SCYTHE) {
+                        for (PitEnchant pitEnchant : EnchantManager.getEnchantsOnItem(player.getItemInHand()).keySet()) {
+                            event.getDefenderEnchantMap().remove(pitEnchant);
+                        }
+                    }
+                }
+
+                if(!Misc.isAirOrNull(player.getInventory().getChestplate())) {
+                    NBTItem nbtItem = new NBTItem(player.getInventory().getChestplate());
+                    if(nbtItem.hasKey(NBTTag.ITEM_UUID.getRef()) && MysticType.getMysticType(player.getInventory().getChestplate()) == MysticType.TAINTED_CHESTPLATE) {
+                        for (PitEnchant pitEnchant : EnchantManager.getEnchantsOnItem(player.getInventory().getChestplate()).keySet()) {
+                            event.getDefenderEnchantMap().remove(pitEnchant);
+                        }
+                    }
+                }
+            }
+        }
     }
 
     public static String scramble(String msg) {

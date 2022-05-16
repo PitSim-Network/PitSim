@@ -213,7 +213,18 @@ public class EnchantManager implements Listener {
 	}
 
 	public static void setItemLore(ItemStack itemStack, Player player) {
-		Bukkit.broadcastMessage(player + "");
+
+		if(player != null) {
+			if(player.getWorld() == MapManager.getDarkzone()) {
+				if(MysticType.getMysticType(itemStack) == MysticType.SWORD || MysticType.getMysticType(itemStack) == MysticType.PANTS) {
+					return;
+				}
+			} else {
+				if(MysticType.getMysticType(itemStack) == MysticType.TAINTED_SCYTHE || MysticType.getMysticType(itemStack) == MysticType.TAINTED_CHESTPLATE) {
+					return;
+				}
+			}
+		}
 
 		NBTItem nbtItem = new NBTItem(itemStack);
 		NBTList<String> enchantOrder = nbtItem.getStringList(NBTTag.PIT_ENCHANT_ORDER.getRef());
@@ -281,22 +292,15 @@ public class EnchantManager implements Listener {
 				if(enchant == null) continue;
 				loreBuilder.addLore("&f");
 
-				if(player != null && player.getWorld() == MapManager.getDarkzone()) {
-					Bukkit.broadcastMessage("1");
-					loreBuilder.addLore(TaintedManager.scramble(enchant.getDisplayName() + enchantLevelToRoman(enchantLvl)));
-					loreBuilder.addLore(TaintedManager.scramble(enchant.getDescription(enchantLvl)));
-				} else {
-					Bukkit.broadcastMessage("2");
-					loreBuilder.addLore(enchant.getDisplayName() + enchantLevelToRoman(enchantLvl));
-					loreBuilder.addLore(enchant.getDescription(enchantLvl));
-				}
+
+				loreBuilder.addLore(enchant.getDisplayName() + enchantLevelToRoman(enchantLvl));
+				loreBuilder.addLore(enchant.getDescription(enchantLvl));
 			}
 			if(isJewel) {
 				PitEnchant jewelEnchant = getEnchant(nbtItem.getString(NBTTag.ITEM_JEWEL_ENCHANT.getRef()));
 				assert jewelEnchant != null;
 				loreBuilder.addLore("&f");
-				if(player != null && player.getWorld() == MapManager.getDarkzone()) loreBuilder.addLore(TaintedManager.scramble("&3JEWEL!&9 " + jewelEnchant.getDisplayName()));
-				else loreBuilder.addLore("&3JEWEL!&9 " + jewelEnchant.getDisplayName());
+				loreBuilder.addLore("&3JEWEL!&9 " + jewelEnchant.getDisplayName());
 			}
 			if(nbtItem.getBoolean(NBTTag.IS_VENOM.getRef())) {
 				loreBuilder.addLore("&7", "&5Enchants require heresy", "&5As strong as leather");
@@ -391,7 +395,7 @@ public class EnchantManager implements Listener {
 //			break;
 //		}
 
-		PantColor.setPantColor(nbtItem.getItem(), PantColor.getNormalRandom());
+		nbtItem = new NBTItem(PantColor.setPantColor(nbtItem.getItem(), PantColor.getNormalRandom()));
 		int maxLives = getRandomMaxLives();
 		nbtItem.setInteger(NBTTag.MAX_LIVES.getRef(), maxLives);
 		nbtItem.setInteger(NBTTag.CURRENT_LIVES.getRef(), maxLives);

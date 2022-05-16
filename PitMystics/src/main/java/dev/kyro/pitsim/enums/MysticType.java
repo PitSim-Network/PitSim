@@ -24,14 +24,18 @@ public enum MysticType {
 		switch(itemStack.getType()) {
 
 			case GOLD_SWORD:
+			case STONE_SWORD:
 				return SWORD;
 			case BOW:
 				return BOW;
 			case LEATHER_LEGGINGS:
+			case CHAINMAIL_LEGGINGS:
 				return PANTS;
 			case GOLD_HOE:
+			case STONE_HOE:
 				return TAINTED_SCYTHE;
 			case LEATHER_CHESTPLATE:
+			case CHAINMAIL_CHESTPLATE:
 				return TAINTED_CHESTPLATE;
 		}
 		return null;

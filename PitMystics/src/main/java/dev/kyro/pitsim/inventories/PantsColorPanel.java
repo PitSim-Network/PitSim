@@ -81,7 +81,7 @@ public class PantsColorPanel extends AGUIPanel {
 
 			for(PantColor matchingPantColor : PantColor.values()) {
 				if(matchingPantColor.equals(pantColor)) {
-					PantColor.setPantColor(player.getInventory().getLeggings(), pantColor);
+					player.getInventory().setLeggings(PantColor.setPantColor(player.getInventory().getLeggings(), pantColor));
 					Sounds.SUCCESS.play(player);
 					player.closeInventory();
 				}
@@ -121,7 +121,7 @@ public class PantsColorPanel extends AGUIPanel {
 			pantslore.add(ChatColor.YELLOW + "Click to apply dye!");
 			meta.setLore(pantslore);
 			pants.setItemMeta(meta);
-			PantColor.setPantColor(pants, pantColor);
+			pants = PantColor.setPantColor(pants, pantColor);
 			getInventory().setItem(i, pants);
 			i++;
 		}
@@ -146,7 +146,7 @@ public class PantsColorPanel extends AGUIPanel {
 			originalMeta.setLore(originalLore);
 			original.setItemMeta(originalMeta);
 
-			PantColor.setPantColor(original, originalColor);
+			original = PantColor.setPantColor(original, originalColor);
 
 			getInventory().setItem(41, original);
 		}

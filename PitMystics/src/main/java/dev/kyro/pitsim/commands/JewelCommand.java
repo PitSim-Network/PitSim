@@ -82,7 +82,7 @@ public class JewelCommand extends ACommand {
 				maxLives = EnchantManager.getRandomMaxLives();
 			}
 
-			PantColor.setPantColor(nbtItem.getItem(), PantColor.getNormalRandom());
+			nbtItem = new NBTItem(PantColor.setPantColor(nbtItem.getItem(), PantColor.getNormalRandom()));
 			nbtItem.setInteger(NBTTag.MAX_LIVES.getRef(), maxLives);
 			nbtItem.setInteger(NBTTag.CURRENT_LIVES.getRef(), maxLives);
 			try {
