@@ -14,10 +14,8 @@ import dev.kyro.pitsim.brewing.PotionManager;
 import dev.kyro.pitsim.brewing.ingredients.MagmaCream;
 import dev.kyro.pitsim.brewing.objects.PotionEffect;
 import dev.kyro.pitsim.commands.FPSCommand;
-import dev.kyro.pitsim.controllers.objects.GoldenHelmet;
-import dev.kyro.pitsim.controllers.objects.Megastreak;
-import dev.kyro.pitsim.controllers.objects.Non;
-import dev.kyro.pitsim.controllers.objects.PitPlayer;
+import dev.kyro.pitsim.controllers.objects.*;
+import dev.kyro.pitsim.enums.ApplyType;
 import dev.kyro.pitsim.enums.MysticType;
 import dev.kyro.pitsim.enums.NBTTag;
 import dev.kyro.pitsim.enums.NonTrait;
@@ -60,15 +58,27 @@ import java.util.*;
 
 public class PlayerManager implements Listener {
 	//	public static Map<Player, BossBarManager> bossBars = new HashMap<>();
+
+
+
 	static {
 			new BukkitRunnable() {
 			@Override
 			public void run() {
 				for(PitPlayer pitPlayer : PitPlayer.pitPlayers) {
+					double reduction = 0.0;
+
+					for (Map.Entry<PitEnchant, Integer> entry : EnchantManager.getEnchantsOnPlayer(pitPlayer.player).entrySet()) {
+						if(!entry.getKey().tainted || entry.getKey().applyType != ApplyType.CHESTPLATES) continue;
+						reduction += (0.2 * entry.getValue());
+					}
+
 					if(!MapManager.inDarkzone(pitPlayer.player)) continue;
 					double amount = 0.5;
 					PotionEffect effect = PotionManager.getEffect(pitPlayer.player, MagmaCream.INSTANCE);
 					if(effect != null) amount += (Double) effect.potionType.getPotency(effect.potency);
+					amount *= (1 - reduction);
+
 					if(pitPlayer.mana + amount > pitPlayer.getMaxMana()) {
 						pitPlayer.updateXPBar();
 						continue;

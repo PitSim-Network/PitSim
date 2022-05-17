@@ -18,9 +18,8 @@ public class ManaRegeneration extends PitEnchant {
 	public static ManaRegeneration INSTANCE;
 
 	public ManaRegeneration() {
-		super("Mana Regeneration", false, ApplyType.CHESTPLATES,
+		super("Mana Regeneration", true, ApplyType.CHESTPLATES,
 				"manaregen", "manaregeneration");
-		isUncommonEnchant = true;
 		tainted = true;
 		INSTANCE = this;
 	}
@@ -36,11 +35,7 @@ public class ManaRegeneration extends PitEnchant {
 					PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
 					if(ComboVenom.isVenomed(player)) continue;
 
-					if(level == 1 && counter % 3 == 0) {
-						pitPlayer.heal(1);
-					} else if(level == 2 && counter % 2 == 0) {
-						pitPlayer.heal(1);
-					} else if(level >= 3) {
+					if(counter % 2 == 0) {
 						pitPlayer.heal(1);
 					}
 				}
@@ -53,5 +48,9 @@ public class ManaRegeneration extends PitEnchant {
 	public List<String> getDescription(int enchantLvl) {
 
 		return new ALoreBuilder("&7DEMON TIME").getLore();
+	}
+
+	public static int reduction(int enchantLvl) {
+		return 20 * enchantLvl;
 	}
 }
