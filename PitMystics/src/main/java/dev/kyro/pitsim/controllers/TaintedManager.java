@@ -29,8 +29,12 @@ import java.util.Objects;
 
 public class TaintedManager implements Listener {
 
+    public static List<Player> players = new ArrayList<>();
+
     @EventHandler
     public void onTeleport(PlayerTeleportEvent event) {
+        if(players.contains(event.getPlayer())) return;
+        players.add(event.getPlayer());
         new BukkitRunnable() {
             @Override
             public void run() {
@@ -136,7 +140,7 @@ public class TaintedManager implements Listener {
                     event.getPlayer().getInventory().setItem(i, nbtItem.getItem());
                 }
             }
-        }.runTaskLater(PitSim.INSTANCE, 2);
+        }.runTaskLater(PitSim.INSTANCE, 5);
 
 
 
@@ -208,7 +212,14 @@ public class TaintedManager implements Listener {
                     event.getPlayer().getInventory().setItem(i, nbtItem.getItem());
                 }
             }
-        }.runTaskLater(PitSim.INSTANCE, 10);
+        }.runTaskLater(PitSim.INSTANCE, 20);
+
+        new BukkitRunnable() {
+            @Override
+            public void run() {
+                players.remove(event.getPlayer());
+            }
+        }.runTaskLater(PitSim.INSTANCE, 40);
     }
 
     @EventHandler
@@ -306,6 +317,11 @@ public class TaintedManager implements Listener {
         }
     }
 
+    @EventHandler
+    public void onOpen(InventoryOpenEvent event) {
+        if(players.contains((Player) event.getPlayer())) event.setCancelled(true);
+    }
+
     public static String scramble(String msg) {
         StringBuilder builder = new StringBuilder();
 
@@ -330,6 +346,10 @@ public class TaintedManager implements Listener {
 
             char[] chars = msg.toCharArray();
             for (int i = 0; i < chars.length; i++) {
+
+                if(i + 1 <= chars.length && chars[i] == '§' && chars[i + 1] == 'k'){
+                    return messages;
+                }
                 if(chars[i] == '§') {
                     builder.append(chars[i]);
                     builder.append(chars[i + 1]);
