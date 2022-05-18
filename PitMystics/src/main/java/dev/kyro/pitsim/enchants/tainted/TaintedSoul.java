@@ -11,9 +11,8 @@ import java.util.List;
 public class TaintedSoul extends PitEnchant {
 
 	public TaintedSoul() {
-		super("Tainted Soul", false, ApplyType.TAINTED,
+		super("Tainted Soul", true, ApplyType.TAINTED,
 				"taintedsoul", "soul");
-		isUncommonEnchant = true;
 		tainted = true;
 	}
 
@@ -25,8 +24,10 @@ public class TaintedSoul extends PitEnchant {
 		int enchantLvl = attackEvent.getAttackerEnchantLevel(this);
 		if(enchantLvl == 0) return;
 
+		if(attackEvent.defender.getMaxHealth() >= 80) return;
+
 		if(attackEvent.defender.getHealth() > 1) {
-			attackEvent.defender.setHealth(attackEvent.defender.getHealth() / 2.0);
+			attackEvent.defender.setHealth(attackEvent.defender.getHealth() * 0.75);
 		} else {
 			attackEvent.veryTrueDamage = 1000;
 		}
@@ -36,6 +37,10 @@ public class TaintedSoul extends PitEnchant {
 	@Override
 	public List<String> getDescription(int enchantLvl) {
 
-		return new ALoreBuilder("&7Enjoy").getLore();
+		return new ALoreBuilder("&7Subtract &f1/4 &7of your enemy's", "&7current health", "&d&o-" + reduction(enchantLvl) + "% Mana Regen").getLore();
+	}
+
+	public static int reduction(int enchantLvl) {
+		return 80 - (20 * enchantLvl);
 	}
 }

@@ -18,8 +18,8 @@ public class ManaRegeneration extends PitEnchant {
 	public static ManaRegeneration INSTANCE;
 
 	public ManaRegeneration() {
-		super("Mana Regeneration", true, ApplyType.CHESTPLATES,
-				"manaregen", "manaregeneration");
+		super("Regeneration", true, ApplyType.CHESTPLATES,
+				"manaregen", "manaregeneration", "regen");
 		tainted = true;
 		INSTANCE = this;
 	}
@@ -47,7 +47,7 @@ public class ManaRegeneration extends PitEnchant {
 	@Override
 	public List<String> getDescription(int enchantLvl) {
 
-		return new ALoreBuilder("&7DEMON TIME").getLore();
+		return new ALoreBuilder("&7Heal significantly faster", "&d&o-" + reduction(enchantLvl) + "% Mana Regen").getLore();
 	}
 
 	public static int reduction(int enchantLvl) {
