@@ -100,7 +100,7 @@ public class ExtractSpell extends PitEnchant {
 
     @Override
     public List<String> getDescription(int enchantLvl) {
-        return new ALoreBuilder("&7Pull the most powerful", "&7mob out of a crowd", "&d&oCosts " + getManaCost(enchantLvl) + " Mana").getLore();
+        return new ALoreBuilder("&7Pull the most powerful", "&7mob out of a crowd", "&d&o-" + getManaCost(enchantLvl) + " Mana").getLore();
     }
 
     public static int getStandID(final ArmorStand stand) {

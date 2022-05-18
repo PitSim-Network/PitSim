@@ -70,7 +70,7 @@ public class PlayerManager implements Listener {
 
 					for (Map.Entry<PitEnchant, Integer> entry : EnchantManager.getEnchantsOnPlayer(pitPlayer.player).entrySet()) {
 						if(!entry.getKey().tainted || entry.getKey().applyType != ApplyType.CHESTPLATES) continue;
-						reduction += (0.2 * entry.getValue());
+						reduction += (0.8 - (0.2 * entry.getValue()));
 					}
 
 					if(!MapManager.inDarkzone(pitPlayer.player)) continue;

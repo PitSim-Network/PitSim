@@ -162,7 +162,9 @@ public class TaintedWell implements Listener
             ItemStack freshItem = TaintedWell.playerItems.get(player);
 
             try {
-                final ItemStack newItem = TaintedEnchanting.enchantScythe(freshItem, freshTier);
+                final ItemStack newItem;
+                if(MysticType.getMysticType(freshItem) == MysticType.TAINTED_SCYTHE) newItem = TaintedEnchanting.enchantScythe(freshItem, freshTier);
+                else newItem = TaintedEnchanting.enchantChestplate(freshItem, freshTier);
                 final NBTItem nbtItem = new NBTItem(newItem);
                 if (nbtItem.hasKey(NBTTag.TAINTED_TIER.getRef())) {
                     final int tier = nbtItem.getInteger(NBTTag.TAINTED_TIER.getRef());

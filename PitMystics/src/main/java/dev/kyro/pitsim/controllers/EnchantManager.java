@@ -213,7 +213,8 @@ public class EnchantManager implements Listener {
 	}
 
 	public static void setItemLore(ItemStack itemStack, Player player) {
-		Bukkit.broadcastMessage(player + "");
+
+		if(!Bukkit.getOnlinePlayers().contains(player)) player = null;
 
 		if(player != null) {
 			if(player.getWorld() == MapManager.getDarkzone()) {

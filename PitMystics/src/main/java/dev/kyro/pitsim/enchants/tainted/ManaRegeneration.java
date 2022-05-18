@@ -51,6 +51,6 @@ public class ManaRegeneration extends PitEnchant {
 	}
 
 	public static int reduction(int enchantLvl) {
-		return 20 * enchantLvl;
+		return 80 - (20 * enchantLvl);
 	}
 }

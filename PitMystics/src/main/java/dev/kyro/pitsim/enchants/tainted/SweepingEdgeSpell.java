@@ -52,7 +52,7 @@ public class SweepingEdgeSpell extends PitEnchant {
 
     @Override
     public List<String> getDescription(int enchantLvl) {
-        return new ALoreBuilder("&7This weapon hits all nearby enemies", "&d&oCosts " + getManaCost(enchantLvl) + " Mana").getLore();
+        return new ALoreBuilder("&7This weapon hits all nearby enemies", "&d&o-" + getManaCost(enchantLvl) + " Mana").getLore();
     }
 
     public static int getManaCost(int enchantLvl) {

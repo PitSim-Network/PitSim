@@ -85,7 +85,7 @@ public class WarpSpell extends PitEnchant {
 
     @Override
     public List<String> getDescription(int enchantLvl) {
-        return new ALoreBuilder("&7Teleports you forward", "&7Grants &eSpeed IV &7(2s)", "&d&oCosts " + getManaCost(enchantLvl) + " Mana").getLore();
+        return new ALoreBuilder("&7Teleports you forward", "&7Grants &eSpeed IV &7(2s)", "&d&o-" + getManaCost(enchantLvl) + " Mana").getLore();
     }
 
     public static int getStandID(final ArmorStand stand) {
