@@ -27,7 +27,7 @@ import org.bukkit.util.Vector;
 import java.util.List;
 import java.util.Set;
 
-public class ExtractSpell extends PitEnchant {
+public  class ExtractSpell extends PitEnchant {
 
 
 

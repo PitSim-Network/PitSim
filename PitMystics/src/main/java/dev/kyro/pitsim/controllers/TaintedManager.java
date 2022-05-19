@@ -34,6 +34,7 @@ public class TaintedManager implements Listener {
     @EventHandler
     public void onTeleport(PlayerTeleportEvent event) {
         if(players.contains(event.getPlayer())) return;
+        if(!Bukkit.getOnlinePlayers().contains(event.getPlayer())) return;
         players.add(event.getPlayer());
         new BukkitRunnable() {
             @Override

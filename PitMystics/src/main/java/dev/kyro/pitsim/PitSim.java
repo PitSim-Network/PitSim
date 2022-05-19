@@ -413,6 +413,7 @@ class PitSim extends JavaPlugin {
 		getServer().getPluginManager().registerEvents(new BrewingManager(), this);
 		getServer().getPluginManager().registerEvents(new PotionManager(), this);
 		getServer().getPluginManager().registerEvents(new TaintedManager(), this);
+		getServer().getPluginManager().registerEvents(new StereoManager(), this);
 	}
 	public void registerBoosters() {
 		BoosterManager.registerBooster(new XPBooster());
@@ -603,5 +604,7 @@ class PitSim extends JavaPlugin {
 		EnchantManager.registerEnchant(new ManaRegeneration());
 		EnchantManager.registerEnchant(new EmotionalDamage());
 		EnchantManager.registerEnchant(new Sonic());
+		EnchantManager.registerEnchant(new Inferno());
+		EnchantManager.registerEnchant(new Laser());
 	}
 }

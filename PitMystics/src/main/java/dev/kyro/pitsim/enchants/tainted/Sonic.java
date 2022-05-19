@@ -3,6 +3,7 @@ package dev.kyro.pitsim.enchants.tainted;
 import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.controllers.EnchantManager;
+import dev.kyro.pitsim.controllers.MapManager;
 import dev.kyro.pitsim.controllers.objects.PitEnchant;
 import dev.kyro.pitsim.enums.ApplyType;
 import dev.kyro.pitsim.misc.Misc;
@@ -32,10 +33,11 @@ public class Sonic extends PitEnchant {
                     Map<PitEnchant, Integer> enchantMap = EnchantManager.getEnchantsOnPlayer(player);
                     int enchantLvl = enchantMap.getOrDefault(INSTANCE, 0);
                     int oldEnchantLvl = speedMap.getOrDefault(player, 0);
+                    if(!MapManager.inDarkzone(player)) enchantLvl = 0;
 
                     if(enchantLvl != oldEnchantLvl) {
                         speedMap.put(player, enchantLvl);
-                        player.setWalkSpeed(getWalkSpeed());
+                        player.setWalkSpeed(getWalkSpeed(enchantLvl));
                     }
                 }
             }
@@ -46,11 +48,12 @@ public class Sonic extends PitEnchant {
 
     @Override
     public List<String> getDescription(int enchantLvl) {
-        return new ALoreBuilder("&7Move &e50% &7faster at all times", "&d&o-" + reduction(enchantLvl) + " Mana Regen").getLore();
+        return new ALoreBuilder("&7Move &e100% &7faster at all times", "&d&o-" + reduction(enchantLvl) + " Mana Regen").getLore();
     }
 
-    public static float getWalkSpeed() {
-        return 1F;
+    public static float getWalkSpeed(int enchantLvl) {
+        if(enchantLvl == 0) return 0.2F;
+        else return 0.5F;
     }
 
     public static int reduction(int enchantLvl) {

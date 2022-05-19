@@ -34,7 +34,7 @@ public class MaxHealth extends PitEnchant {
 	}
 
 	public int getExtraHealth(int enchantLvl) {
-		return enchantLvl * 6 + 2;
+		return 20;
 	}
 
 	public static int reduction(int enchantLvl) {
