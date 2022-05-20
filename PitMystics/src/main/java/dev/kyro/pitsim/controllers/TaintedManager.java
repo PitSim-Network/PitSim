@@ -32,6 +32,26 @@ public class TaintedManager implements Listener {
     public static List<Player> players = new ArrayList<>();
 
     @EventHandler
+    public void onAttack(AttackEvent.Apply event) {
+        if(!MapManager.inDarkzone(event.attacker) || !MapManager.inDarkzone(event.defender)) return;
+
+        if(event.attackerIsPlayer) {
+            ItemStack attack = event.attackerPlayer.getItemInHand();
+            if(!Misc.isAirOrNull(attack) && attack.getType() == Material.GOLD_HOE) {
+                event.increase += 6.5;
+            }
+        }
+
+        if(event.defenderIsPlayer) {
+            ItemStack defend = event.defenderPlayer.getInventory().getChestplate();
+            if(!Misc.isAirOrNull(defend) && defend.getType() == Material.LEATHER_CHESTPLATE) {
+                event.multipliers.add(Misc.getReductionMultiplier(4 * 8));
+            }
+        }
+
+    }
+
+    @EventHandler
     public void onTeleport(PlayerTeleportEvent event) {
         if(players.contains(event.getPlayer())) return;
         if(!Bukkit.getOnlinePlayers().contains(event.getPlayer())) return;

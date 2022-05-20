@@ -10,10 +10,7 @@ import dev.kyro.pitsim.events.AttackEvent;
 import org.bukkit.Bukkit;
 import org.bukkit.Effect;
 import org.bukkit.Location;
-import org.bukkit.entity.ArmorStand;
-import org.bukkit.entity.EntityType;
-import org.bukkit.entity.LivingEntity;
-import org.bukkit.entity.Player;
+import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
@@ -72,14 +69,13 @@ public class Forcefield extends PitEnchant {
         int enchantLvl = event.getDefenderEnchantLevel(this);
         if(enchantLvl == 0) return;
 
-        Vector dirVector = event.attacker.getLocation().toVector().subtract(event.defender.getLocation().toVector()).normalize();
-        Vector pullVector = dirVector.clone().normalize().setY(0.5).multiply(1.5).add(dirVector.clone().multiply(0.03));
-        event.attacker.setVelocity(pullVector);
         event.defender.setVelocity(event.defender.getVelocity().multiply(0));
 
-        EntityDamageByEntityEvent damageEvent = new EntityDamageByEntityEvent(event.defender, event.attacker, EntityDamageEvent.DamageCause.ENTITY_ATTACK, 13);
-        Bukkit.getServer().getPluginManager().callEvent(damageEvent);
-        if(!damageEvent.isCancelled()) ((LivingEntity) event.attacker).damage(13);
+        for (Entity entity : event.defender.getNearbyEntities(2, 2, 2)) {
+            Vector dirVector = entity.getLocation().toVector().subtract(event.defender.getLocation().toVector()).normalize();
+            Vector pullVector = dirVector.clone().normalize().setY(0.5).multiply(1.5).add(dirVector.clone().multiply(0.03));
+            entity.setVelocity(pullVector);
+        }
 
         new BukkitRunnable() {
             @Override
