@@ -606,5 +606,6 @@ class PitSim extends JavaPlugin {
 		EnchantManager.registerEnchant(new Sonic());
 		EnchantManager.registerEnchant(new Inferno());
 		EnchantManager.registerEnchant(new Laser());
+		EnchantManager.registerEnchant(new Forcefield());
 	}
 }
