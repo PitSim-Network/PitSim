@@ -7,6 +7,7 @@ import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.enums.NBTTag;
 import dev.kyro.pitsim.misc.Misc;
 import dev.kyro.pitsim.misc.Sounds;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -90,5 +91,21 @@ public class ItemManager implements Listener {
 				pitPlayer.confirmedDrop = null;
 			}
 		}
+	}
+
+
+	@EventHandler
+	public void onDrop(PlayerDropItemEvent event) {
+		ItemStack item = event.getItemDrop().getItemStack();
+		if(Misc.isAirOrNull(item)) return;
+
+		NBTItem nbtItem = new NBTItem(item);
+		if(nbtItem.hasKey(NBTTag.IS_GEM.getRef()) && !nbtItem.hasKey(NBTTag.UNDROPPABLE.getRef())) {
+			nbtItem.setBoolean(NBTTag.UNDROPPABLE.getRef(), true);
+			item.setType(Material.AIR);
+			event.getPlayer().setItemInHand(nbtItem.getItem());
+			event.setCancelled(true);
+		}
+
 	}
 }

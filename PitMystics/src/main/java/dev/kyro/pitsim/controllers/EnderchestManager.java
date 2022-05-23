@@ -42,22 +42,24 @@ public class EnderchestManager implements Listener {
 
 	@EventHandler
 	public void onInteract(PlayerInteractEvent event) {
-		Block block = event.getPlayer().getTargetBlock((HashSet<Byte>) null, 5);
-		if(block.getType().equals(Material.ENDER_CHEST)) {
-			if(ShutdownManager.enderchestDisabled) {
-				AOutput.error(event.getPlayer(), "&cYou may not open the Enderchest right now.");
-				event.setCancelled(true);
-				return;
-			}
-			new BukkitRunnable() {
-				@Override
-				public void run() {
-					Bukkit.dispatchCommand(event.getPlayer(), "pv 1");
-					Sounds.ENDERCHEST_OPEN.play(event.getPlayer());
+		try {
+			Block block = event.getPlayer().getTargetBlock((HashSet<Byte>) null, 5);
+			if(block.getType().equals(Material.ENDER_CHEST)) {
+				if(ShutdownManager.enderchestDisabled) {
+					AOutput.error(event.getPlayer(), "&cYou may not open the Enderchest right now.");
+					event.setCancelled(true);
+					return;
 				}
-			}.runTaskLater(PitSim.INSTANCE, 1L);
+				new BukkitRunnable() {
+					@Override
+					public void run() {
+						Bukkit.dispatchCommand(event.getPlayer(), "pv 1");
+						Sounds.ENDERCHEST_OPEN.play(event.getPlayer());
+					}
+				}.runTaskLater(PitSim.INSTANCE, 1L);
 
-		}
+			}
+		} catch (Exception ignored) { };
 	}
 
 	@EventHandler
