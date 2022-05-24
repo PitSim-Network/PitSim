@@ -56,8 +56,8 @@ public class SpiderBoss extends PitBoss {
         entity = (Player) npc.getEntity();
         BossManager.bosses.put(npc, this);
 
-        entity.setMaxHealth(250);
-        entity.setHealth(250);
+        entity.setMaxHealth(200);
+        entity.setHealth(200);
         showMyBossBar(PitSim.adventure.player(target));
         BossManager.activePlayers.add(target);
 
