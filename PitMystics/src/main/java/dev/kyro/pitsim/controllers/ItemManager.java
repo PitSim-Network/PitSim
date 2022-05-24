@@ -2,6 +2,7 @@ package dev.kyro.pitsim.controllers;
 
 import de.tr7zw.nbtapi.NBTItem;
 import dev.kyro.arcticapi.misc.AOutput;
+import dev.kyro.arcticapi.misc.AUtil;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.enums.NBTTag;
@@ -102,10 +103,17 @@ public class ItemManager implements Listener {
 		NBTItem nbtItem = new NBTItem(item);
 		if(nbtItem.hasKey(NBTTag.IS_GEM.getRef()) && !nbtItem.hasKey(NBTTag.UNDROPPABLE.getRef())) {
 			nbtItem.setBoolean(NBTTag.UNDROPPABLE.getRef(), true);
-			item.setType(Material.AIR);
-			event.getPlayer().setItemInHand(nbtItem.getItem());
+			event.getItemDrop().setItemStack(new ItemStack(Material.AIR));
+			AUtil.giveItemSafely(event.getPlayer(), nbtItem.getItem());
 			event.setCancelled(true);
 		}
+
+		new BukkitRunnable() {
+			@Override
+			public void run() {
+				event.getPlayer().getInventory().remove(Material.STONE);
+			}
+		}.runTaskLater(PitSim.INSTANCE, 1);
 
 	}
 }
