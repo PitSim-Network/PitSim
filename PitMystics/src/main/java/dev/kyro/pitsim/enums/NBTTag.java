@@ -46,7 +46,8 @@ public enum NBTTag {
 	WITHER_SKULL("pr-wither-skull"),
 	GOLEM_INGOT("pr-golem-ingot"),
 	ENDERMAN_PEARL("pr-enderman-pearl"),
-	SAVED_PANTS_COLOR("pr-saved-color");
+	SAVED_PANTS_COLOR("pr-saved-color"),
+	IS_TAINTED_SOUL("pr-tainted-soul");
 
 	private final String ref;
 
