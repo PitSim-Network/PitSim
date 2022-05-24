@@ -72,7 +72,7 @@ public class FireballSpell extends PitEnchant {
 	@Override
 	public List<String> getDescription(int enchantLvl) {
 
-		return new ALoreBuilder("&7Enjoy").getLore();
+		return new ALoreBuilder("&7Launch a large projectile, dealing", "&7knock-back and splash damage", "&d&o-" + getManaCost(enchantLvl) + " Mana").getLore();
 	}
 
 	public static int getManaCost(int enchantLvl) {

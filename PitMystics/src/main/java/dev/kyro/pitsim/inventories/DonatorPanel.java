@@ -95,7 +95,7 @@ public class DonatorPanel extends AGUIPanel {
 		}
 		pantsmeta.setLore(pantslore);
 		pants.setItemMeta(pantsmeta);
-		PantColor.setPantColor(pants, PantColor.HARVEST_RED);
+		pants = PantColor.setPantColor(pants, PantColor.HARVEST_RED);
 
 
 		ItemStack death = new ItemStack(Material.GHAST_TEAR);

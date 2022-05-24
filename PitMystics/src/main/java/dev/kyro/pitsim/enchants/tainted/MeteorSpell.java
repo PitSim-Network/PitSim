@@ -125,7 +125,7 @@ public class MeteorSpell extends PitEnchant {
 
 	@Override
 	public List<String> getDescription(int enchantLvl) {
-		return new ALoreBuilder("&7Summon a meteor, causing large", "&7damage to a single target", "&d&oCosts " + getManaCost(enchantLvl) + " Mana").getLore();
+		return new ALoreBuilder("&7Summon a meteor, causing large", "&7damage to a single target", "&d&o-" + getManaCost(enchantLvl) + " Mana").getLore();
 	}
 
 	public static int getManaCost(int enchantLvl) {

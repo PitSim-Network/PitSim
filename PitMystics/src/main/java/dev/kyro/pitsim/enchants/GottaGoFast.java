@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.Map;
 
 public class GottaGoFast extends PitEnchant {
-	public static Map<Player, Integer> gtgfMap = new HashMap<>();
+	public static Map<Player, Integer> speedMap = new HashMap<>();
 	public static GottaGoFast INSTANCE;
 
 	public GottaGoFast() {
@@ -32,10 +32,10 @@ public class GottaGoFast extends PitEnchant {
 				for(Player player : Bukkit.getOnlinePlayers()) {
 					Map<PitEnchant, Integer> enchantMap = EnchantManager.getEnchantsOnPlayer(player);
 					int enchantLvl = enchantMap.getOrDefault(INSTANCE, 0);
-					int oldEnchantLvl = gtgfMap.getOrDefault(player, 0);
+					int oldEnchantLvl = speedMap.getOrDefault(player, 0);
 
 					if(enchantLvl != oldEnchantLvl) {
-						gtgfMap.put(player, enchantLvl);
+						speedMap.put(player, enchantLvl);
 						player.setWalkSpeed(getWalkSpeed(enchantLvl));
 					}
 				}
@@ -45,7 +45,6 @@ public class GottaGoFast extends PitEnchant {
 
 	@Override
 	public List<String> getDescription(int enchantLvl) {
-
 		return new ALoreBuilder("&7Move &e" + Misc.roundString(getWalkSpeedLore(enchantLvl)) + "&e% faster &7at all times").getLore();
 	}
 

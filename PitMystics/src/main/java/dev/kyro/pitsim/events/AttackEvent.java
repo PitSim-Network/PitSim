@@ -29,6 +29,7 @@ public class AttackEvent extends Event {
 	public LivingEntity pet;
 	private final Map<PitEnchant, Integer> attackerEnchantMap;
 	private final Map<PitEnchant, Integer> defenderEnchantMap;
+	public boolean clearMaps;
 
 	public boolean fakeHit;
 
@@ -43,13 +44,14 @@ public class AttackEvent extends Event {
 		this.attackerEnchantMap = attackerEnchantMap;
 		this.defenderEnchantMap = defenderEnchantMap;
 		this.fakeHit = fakeHit;
+		this.clearMaps = false;
 
 		if(defenderIsPlayer) {
 			PitPlayer pitPlayer = PitPlayer.getPitPlayer(defenderPlayer);
 			if(!(pitPlayer.player == attacker)) pitPlayer.lastHitUUID = attacker.getUniqueId();
 		}
 
-		if(attackerEnchantMap.containsKey(EnchantManager.getEnchant("meteor"))) {
+		if(clearMaps) {
 			defenderEnchantMap.clear();
 			attackerEnchantMap.clear();
 		}

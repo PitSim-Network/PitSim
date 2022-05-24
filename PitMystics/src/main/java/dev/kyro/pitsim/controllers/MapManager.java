@@ -8,6 +8,7 @@ import dev.kyro.pitsim.misc.SchematicPaste;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -136,7 +137,7 @@ public class MapManager implements Listener {
 		return Bukkit.getWorld("darkzone");
 	}
 
-	public static boolean inDarkzone(Player player) {
+	public static boolean inDarkzone(LivingEntity player) {
 		return inDarkzone(player.getLocation());
 	}
 

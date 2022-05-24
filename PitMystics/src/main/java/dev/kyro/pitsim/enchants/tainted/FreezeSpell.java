@@ -119,7 +119,7 @@ public class FreezeSpell extends PitEnchant {
 
     @Override
     public List<String> getDescription(int enchantLvl) {
-        return new ALoreBuilder("&7Freeze all nearby enemies for 3s", "&d&oCosts " + getManaCost(enchantLvl) + " Mana").getLore();
+        return new ALoreBuilder("&7Freeze all nearby enemies for 3s", "&d&o-" + getManaCost(enchantLvl) + " Mana").getLore();
     }
 
     public static int getManaCost(int enchantLvl) {

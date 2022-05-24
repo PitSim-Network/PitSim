@@ -14,9 +14,8 @@ public class MaxHealth extends PitEnchant {
 	public static MaxHealth INSTANCE;
 
 	public MaxHealth() {
-		super("Max Health", false, ApplyType.CHESTPLATES,
+		super("Max Health", true, ApplyType.CHESTPLATES,
 				"manahealth");
-		isUncommonEnchant = true;
 		tainted = true;
 		INSTANCE = this;
 	}
@@ -31,11 +30,14 @@ public class MaxHealth extends PitEnchant {
 	@Override
 	public List<String> getDescription(int enchantLvl) {
 
-		return new ALoreBuilder("&7Increase your max health by &c" + Misc.getHearts(getExtraHealth(enchantLvl))).getLore();
+		return new ALoreBuilder("&7Increase your max health by &c" + Misc.getHearts(getExtraHealth(enchantLvl)), "&d&o-" + reduction(enchantLvl) + "% Mana Regen").getLore();
 	}
 
 	public int getExtraHealth(int enchantLvl) {
+		return 20;
+	}
 
-		return enchantLvl * 6 + 2;
+	public static int reduction(int enchantLvl) {
+		return 80 - (20 * enchantLvl);
 	}
 }

@@ -413,6 +413,7 @@ class PitSim extends JavaPlugin {
 		getServer().getPluginManager().registerEvents(new BrewingManager(), this);
 		getServer().getPluginManager().registerEvents(new PotionManager(), this);
 		getServer().getPluginManager().registerEvents(new TaintedManager(), this);
+		getServer().getPluginManager().registerEvents(new StereoManager(), this);
 	}
 	public void registerBoosters() {
 		BoosterManager.registerBooster(new XPBooster());
@@ -587,11 +588,6 @@ class PitSim extends JavaPlugin {
 		EnchantManager.registerEnchant(new Sweaty());
 //		EnchantManager.registerEnchant(new XpBump());
 
-		EnchantManager.registerEnchant(new TaintedSoul());
-		EnchantManager.registerEnchant(new MaxHealth());
-		EnchantManager.registerEnchant(new MaxMana());
-		EnchantManager.registerEnchant(new ManaRegeneration());
-		EnchantManager.registerEnchant(new EmotionalDamage());
 		EnchantManager.registerEnchant(new FireballSpell());
 		EnchantManager.registerEnchant(new RepelSpell());
 		EnchantManager.registerEnchant(new FreezeSpell());
@@ -601,5 +597,15 @@ class PitSim extends JavaPlugin {
 		EnchantManager.registerEnchant(new CleaveSpell());
 		EnchantManager.registerEnchant(new WarpSpell());
 		EnchantManager.registerEnchant(new ExtractSpell());
+
+		EnchantManager.registerEnchant(new TaintedSoul());
+		EnchantManager.registerEnchant(new MaxHealth());
+		EnchantManager.registerEnchant(new MaxMana());
+		EnchantManager.registerEnchant(new ManaRegeneration());
+		EnchantManager.registerEnchant(new EmotionalDamage());
+		EnchantManager.registerEnchant(new Sonic());
+		EnchantManager.registerEnchant(new Inferno());
+		EnchantManager.registerEnchant(new Laser());
+		EnchantManager.registerEnchant(new Forcefield());
 	}
 }

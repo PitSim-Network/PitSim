@@ -21,7 +21,6 @@ public class EmotionalDamage extends PitEnchant {
 	public EmotionalDamage() {
 		super("Emotional Damage", true, ApplyType.CHESTPLATES,
 				"aoe");
-		isUncommonEnchant = true;
 		tainted = true;
 		INSTANCE = this;
 	}
@@ -49,10 +48,14 @@ public class EmotionalDamage extends PitEnchant {
 	@Override
 	public List<String> getDescription(int enchantLvl) {
 
-		return new ALoreBuilder("&7EMOTIONAL DAMAGE!").getLore();
+		return new ALoreBuilder("&7Deal area damage to mobs around", "&7you", "&d&o-" + reduction(enchantLvl) + "% Mana Regen").getLore();
 	}
 
 	public static boolean shouldAdd(int level) {
 		return level * 0.2 > Math.random();
+	}
+
+	public static int reduction(int enchantLvl) {
+		return 80 - (20 * enchantLvl);
 	}
 }

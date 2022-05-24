@@ -119,9 +119,7 @@ public class FreshCommand implements CommandExecutor {
 					.setLore(new ALoreBuilder("&7Kept on death", "&f", "&f",
 							pantColor.chatColor + "Used in the mystic well", pantColor.chatColor + "Also, a fashion statement"))
 					.addUnbreakable(true).getItemStack();
-			LeatherArmorMeta meta = (LeatherArmorMeta) mystic.getItemMeta();
-			meta.setColor(Color.fromRGB(pantColor.hexColor));
-			mystic.setItemMeta(meta);
+			mystic = PantColor.setPantColor(mystic, pantColor);
 		}
 
 		if(mystic == null) return null;

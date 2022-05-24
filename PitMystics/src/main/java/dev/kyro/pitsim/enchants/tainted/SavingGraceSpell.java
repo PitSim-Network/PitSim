@@ -105,7 +105,7 @@ public class SavingGraceSpell extends PitEnchant {
 
     @Override
     public List<String> getDescription(int enchantLvl) {
-        return new ALoreBuilder("&7Heal your max health in &6\u2764", "&7but lose &c2\u2764 &7until you die", "&d&oCosts " + getManaCost(enchantLvl) + " Mana").getLore();
+        return new ALoreBuilder("&7Heal your max health in &6\u2764", "&7but lose &c2\u2764 &7until you die", "&d&o-" + getManaCost(enchantLvl) + " Mana").getLore();
     }
 
     public static int getManaCost(int enchantLvl) {

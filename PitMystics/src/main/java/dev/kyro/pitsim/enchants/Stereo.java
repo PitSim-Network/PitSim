@@ -7,20 +7,25 @@ import com.xxmicloxx.NoteBlockAPI.utils.NBSDecoder;
 import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.PitSim;
+import dev.kyro.pitsim.controllers.EnchantManager;
+import dev.kyro.pitsim.controllers.MapManager;
 import dev.kyro.pitsim.controllers.StereoManager;
 import dev.kyro.pitsim.controllers.objects.PitEnchant;
 import dev.kyro.pitsim.enums.ApplyType;
 import dev.kyro.pitsim.events.AttackEvent;
+import dev.kyro.pitsim.misc.Misc;
 import dev.kyro.pitsim.misc.Sounds;
 import org.bukkit.Bukkit;
 import org.bukkit.Effect;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.inventory.EquipmentSetEvent;
+import org.bukkit.event.player.PlayerTeleportEvent;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.io.File;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 
 public class Stereo extends PitEnchant {
@@ -36,15 +41,31 @@ public class Stereo extends PitEnchant {
 	public void onArmorEquip(EquipmentSetEvent event) {
 		Player player = (Player) event.getHumanEntity();
 
+		boolean stereoOnChest = false;
+		if(!Misc.isAirOrNull(event.getHumanEntity().getInventory().getChestplate())) {
+			if(!EnchantManager.getEnchantsOnItem(event.getHumanEntity().getInventory().getChestplate()).containsKey(this)) stereoOnChest = true;
+		}
+
+
 		if(StereoManager.hasStereo(player)) {
+
+			if(stereoOnChest && MapManager.inDarkzone(player)) {
+				EntitySongPlayer esp = StereoManager.playerMusic.get(player);
+				if(StereoManager.playerMusic.containsKey(player)) esp.destroy();
+				StereoManager.playerMusic.remove(player);
+				return;
+			}
 
 			if(StereoManager.playerMusic.containsKey(player)) return;
 
-			if(!player.hasPermission("pitsim.stereo")) {
+
+			if(!player.hasPermission("pitsim.stereo") && !stereoOnChest) {
 				AOutput.error(player, "&c&lNOPE! &7You must have the &bMiraculous Rank &7or higher to use &9Stereo");
 				Sounds.NO.play(player);
 				return;
 			}
+
+			if(!stereoOnChest && !MapManager.inDarkzone(player)) return;
 
 			File exampleSong = new File("plugins/NoteBlockAPI/Songs/AllStar.nbs");
 			File dir = new File(exampleSong.getAbsoluteFile().getParent());
@@ -85,10 +106,6 @@ public class Stereo extends PitEnchant {
 				}
 			}
 		}.runTaskTimer(PitSim.INSTANCE, 0L, 4L);
-	}
-
-	@EventHandler
-	public void onAttack(AttackEvent.Apply attackEvent) {
 	}
 
 	@Override

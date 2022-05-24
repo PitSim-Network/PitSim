@@ -20,9 +20,12 @@ import java.util.List;
 
 public class SelfCheckout extends PitEnchant {
 
+	public static SelfCheckout INSTANCE;
+
 	public SelfCheckout() {
 		super("Self-Checkout", true, ApplyType.PANTS,
 				"selfcheckout", "self-checkout", "sco", "selfcheck", "checkout", "soco");
+		INSTANCE = this;
 	}
 
 	@EventHandler
