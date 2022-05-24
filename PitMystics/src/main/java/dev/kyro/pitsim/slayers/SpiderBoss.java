@@ -17,8 +17,10 @@ import net.citizensnpcs.npc.ai.CitizensNavigator;
 import net.kyori.adventure.audience.Audience;
 import net.kyori.adventure.bossbar.BossBar;
 import net.kyori.adventure.text.Component;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
+import org.bukkit.block.Block;
 import org.bukkit.entity.*;
 import org.bukkit.event.player.PlayerTeleportEvent;
 import org.bukkit.inventory.ItemStack;
@@ -48,14 +50,12 @@ public class SpiderBoss extends PitBoss {
                 .attackDelayTicks(8)
                 .attackRange(10)
                 .updatePathRate(5)
-                .speed(2);
+                .speedModifier(5);
 
 
         npc.setProtected(false);
 
-        skin(npc, "19189ad0-c1ef-4989-83b5-aebc9d8e76d6",
-             "ewogICJ0aW1lc3RhbXAiIDogMTYzMDcxNTY1OTE4MSwKICAicHJvZmlsZUlkIiA6ICIwYWFjMWRlZjUwZmI0N2RjODNmOGU2Njk3MTg1ODRkZSIsCiAgInByb2ZpbGVOYW1lIiA6ICJ0aGVhcGlpc2JhZCIsCiAgInNpZ25hdHVyZVJlcXVpcmVkIiA6IHRydWUsCiAgInRleHR1cmVzIiA6IHsKICAgICJTS0lOIiA6IHsKICAgICAgInVybCIgOiAiaHR0cDovL3RleHR1cmVzLm1pbmVjcmFmdC5uZXQvdGV4dHVyZS81ZjdlODI0NDZmYWIxZTQxNTc3YmE3MGFiNDBlMjkwZWY4NDFjMjQ1MjMzMDExZjM5NDU5YWM2Zjg1MmM4MzMxIgogICAgfQogIH0KfQ==",
-           "oSfmv2qRtJPAY1MpoVmZGpZeQ7y1dg6S8TFJbOl3nAEWRjEfHWaaVdn8H0N0in/+EB+wX+HieRExKttAxUUKzPxKVDPAKCeoPxbmNMmSUNLQrDqkzdvB9copfgjIRQA+To7D67hFReb54HT0/23mT7YEnB6g4Z047ZMhyL0XNYisTt7GFz3z20PYsCT2NmUCXk3pdZCH5gO5kYi08KF69ryD/+JKAgTyhbc0q91EhnXnliHJWgBiUYDDD7gp2hiC7pyd9/oIL12QQidCssmWdaJXCfy6B0zQQ59aLPfuHDw7XVUps0K6kWktA8/GpgkYh98bk24Tf96st6dz6FaEeNRUqQ+81rY2qQ4oxxNQhnG5U1aqoRWIaVRasIKdUeYCo/56D+q1YyiWA3L5+KtHomXsK+MLFizpz0PvBbsjuIytnUqM5q8yj4j8MNnar57SHdEX5DrpqE9HEwq+2JFZNdxRi44ZTwukPYd+PY12XD0hvERMVK4wMu9licjJBonBzHZJ3QD+9QawSchTaBFLZogbpIjjHpKLZwIWUMLoHxO/PseNGAesblwncUdLzM6+BDaoffxWQ80bulEb0sNGfZk5v4ek/KcWJNgRz7m1fpkk+Bc9XnlCIAQ+MMu9krgsJisFg/g+fV73IB5AP7TD3NImGLfILDOqz8d8tvd5P7w=");
+        skin(npc, "l800");
         spawn();
         entity = (Player) npc.getEntity();
         BossManager.bosses.put(npc, this);
@@ -95,8 +95,21 @@ public class SpiderBoss extends PitBoss {
         else if(health < (maxHealth / 2) && !enchants.containsValue(EnchantManager.getEnchant("ls"))) {
             equipment.set(Equipment.EquipmentSlot.HAND, getExplosive());
 
-            if(target.getLocation().getBlock().getType() == null && target.getLocation().getBlock().getType() == Material.AIR){
-                target.getLocation().getBlock().setType(Material.WEB);
+            Block block = target.getLocation().getBlock();
+
+            if(block.getType() == Material.AIR){
+
+                block.setType(Material.WEB);
+
+                Bukkit.getScheduler().scheduleSyncDelayedTask(PitSim.INSTANCE, new Runnable() {
+
+                    @Override
+                    public void run() {
+
+                        block.setType(Material.AIR);
+
+                    }
+                }, 80L);
             }
 
             LivingEntity shooter = ((LivingEntity) npc.getEntity());
@@ -134,7 +147,7 @@ public class SpiderBoss extends PitBoss {
 
                                 Vector dirVector = target.getLocation().toVector().subtract(npc.getEntity().getLocation().toVector()).setY(0);
                                 Vector pullVector = dirVector.clone().normalize().setY(0.2).multiply(0.5).add(dirVector.clone().multiply(0.03));
-                                npc.getEntity().setVelocity(pullVector.multiply((0.5 * 0.2) + 1.15));
+                                npc.getEntity().setVelocity(pullVector.multiply((3 * 0.2) + 1.15));
 
                             } catch (Exception ignored) { }
                         }

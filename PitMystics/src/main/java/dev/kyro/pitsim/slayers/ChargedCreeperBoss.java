@@ -63,7 +63,9 @@ public class ChargedCreeperBoss extends PitBoss {
 
         npc.setProtected(false);
 
-        skin(npc, "agamae");
+        skin(npc,
+                "ewogICJ0aW1lc3RhbXAiIDogMTY1MjkyNTUzNjQ2NiwKICAicHJvZmlsZUlkIiA6ICIyYzEwNjRmY2Q5MTc0MjgyODRlM2JmN2ZhYTdlM2UxYSIsCiAgInByb2ZpbGVOYW1lIiA6ICJOYWVtZSIsCiAgInNpZ25hdHVyZVJlcXVpcmVkIiA6IHRydWUsCiAgInRleHR1cmVzIiA6IHsKICAgICJTS0lOIiA6IHsKICAgICAgInVybCIgOiAiaHR0cDovL3RleHR1cmVzLm1pbmVjcmFmdC5uZXQvdGV4dHVyZS9lNzcyYTNhNGY5ZmYzNTZiMjAxNDM2NDNiNDVhNmRjMTAyNTk1Y2YxZTgyOTVmMjM0NTMyNTA5ODg2OWNjMjIzIgogICAgfQogIH0KfQ",
+                "dHCHqekoP2N18e6MUoIV0rr9ozHQc2KheEAfZyWdZDGYlPc47VpuZve28bZUtQYoTZ2hJTzBMWVdDb");
         spawn();
         entity = (Player) npc.getEntity();
         BossManager.bosses.put(npc, this);
@@ -125,7 +127,7 @@ public class ChargedCreeperBoss extends PitBoss {
             public void run() {
                 if(npc.getEntity() == null) {return;}
 
-                List<Entity> entities = npc.getEntity().getNearbyEntities(4, 4, 4);
+                List<Entity> entities = npc.getEntity().getNearbyEntities(2, 2, 2);
                 if(!entities.contains(target)) {
                     try {
                         equipment.set(Equipment.EquipmentSlot.HAND, getPullbow());
@@ -136,8 +138,8 @@ public class ChargedCreeperBoss extends PitBoss {
                         public void run() {
                             try {
                                 LivingEntity shooter = ((LivingEntity) npc.getEntity());
-                                shooter.launchProjectile(Arrow.class);
-                                equipment.set(Equipment.EquipmentSlot.HAND, getBillionaire());
+                                //shooter.launchProjectile(Arrow.class);
+                                //equipment.set(Equipment.EquipmentSlot.HAND, getBillionaire());
                                 //TODO: Just put pull code here fuck this lol
 
                                 TNTPrimed tnt = (TNTPrimed) shooter.getWorld().spawn(shooter.getLocation(), TNTPrimed.class);

@@ -4,8 +4,13 @@ import dev.kyro.pitsim.enums.SubLevel;
 import net.citizensnpcs.api.npc.NPC;
 import net.citizensnpcs.npc.skin.Skin;
 import net.citizensnpcs.npc.skin.SkinnableEntity;
+import net.citizensnpcs.trait.SkinTrait;
 import org.bukkit.Location;
+import org.bukkit.Material;
+import org.bukkit.World;
+import org.bukkit.entity.FallingBlock;
 import org.bukkit.entity.Player;
+import org.bukkit.util.Vector;
 
 public abstract class PitBoss {
     public Player target;
@@ -36,20 +41,17 @@ public abstract class PitBoss {
         }
     }
 
-    public static void skin(NPC npc, String uuid, String texture_value, String texture_signature) {
+    public static void throwBlock(World world, Location location, Material material, Vector velocity){
+        FallingBlock block = world
+                .spawnFallingBlock(location, material, (byte) 0);
+        block.setVelocity(velocity);
+    }
+
+    public static void skin(NPC npc, String texture_value, String texture_signature) {
         //npc.data().setPersistent(NPC.PLAYER_SKIN_UUID_METADATA, name);
         //npc.data().setPersistent(NPC.PLAYER_SKIN_TEXTURE_PROPERTIES_METADATA, texture_value);
         //npc.data().setPersistent(NPC.PLAYER_SKIN_TEXTURE_PROPERTIES_SIGN_METADATA, texture_signature);
-        npc.data().setPersistent(NPC.PLAYER_SKIN_USE_LATEST, false);
-
-        if (npc.isSpawned()) {
-
-            SkinnableEntity skinnable = npc.getEntity() instanceof SkinnableEntity ? (SkinnableEntity) npc.getEntity() : null;
-            if (skinnable != null) {
-                skinnable.setSkinPersistent(uuid, texture_value, texture_signature);
-
-            }
-        }
+        npc.getOrAddTrait(SkinTrait.class).setTexture(texture_value, texture_signature);
 
         // send skin change to online players by removing and adding this fake player
         if (npc.isSpawned()) {
