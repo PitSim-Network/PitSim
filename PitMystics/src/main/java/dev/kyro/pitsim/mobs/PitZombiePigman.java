@@ -26,6 +26,7 @@ public class PitZombiePigman extends PitMob {
 
 		zombiePigman.setCustomNameVisible(false);
 		zombiePigman.setRemoveWhenFarAway(false);
+		zombiePigman.setBaby(false);
 		MobManager.makeTag(zombiePigman, displayName);
 		return zombiePigman;
 	}

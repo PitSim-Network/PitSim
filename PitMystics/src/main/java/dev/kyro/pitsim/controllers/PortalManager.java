@@ -28,18 +28,22 @@ public class PortalManager implements Listener {
 
 		Location teleportLoc;
 		if(player.getWorld() != Bukkit.getWorld("darkzone")) {
-			teleportLoc = playerLoc.clone().add(59, -1, -97);
+			teleportLoc = playerLoc.clone().add(235, 40, -97);
 			teleportLoc.setWorld(Bukkit.getWorld("darkzone"));
+			teleportLoc.setX(173);
+			teleportLoc.setY(92);
+			teleportLoc.setZ(-94);
 		}
 		else {
-			teleportLoc = playerLoc.clone().add(-59, 1, 97);
+			teleportLoc = playerLoc.clone().add(-240, -20, 97);
 			teleportLoc.setWorld(Bukkit.getWorld("biomes1"));
+			teleportLoc.setY(72);
 		}
 
 
 		if(teleportLoc.getYaw() > 0 || teleportLoc.getYaw() < -180) teleportLoc.setYaw(-teleportLoc.getYaw());
 		teleportLoc.add(3, 0, 0);
-		teleportLoc.setY(72);
+
 
 		player.teleport(teleportLoc);
 		player.setVelocity(new Vector(1.5, 1, 0));

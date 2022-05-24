@@ -11,13 +11,13 @@ import java.util.Arrays;
 import java.util.List;
 
 public enum SubLevel {
-	ZOMBIE_CAVE(1, 30, new Location(Bukkit.getWorld("darkzone"), 56, 53, -95), NBTTag.ZOMBIE_FLESH, "&aRotten Flesh", "%pitsim_zombiecave%", 25, Arrays.asList(PitZombie.class), ZombieBoss.class),
-	SKELETON_CAVE(2, 30, new Location(Bukkit.getWorld("darkzone"), 56, 44, -43), NBTTag.SKELETON_BONE, "&aBone", "%pitsim_skeletoncave%", 20, Arrays.asList(PitSkeleton.class), SkeletonBoss.class),
-	SPIDER_CAVE(3, 30, new Location(Bukkit.getWorld("darkzone"), 102, 28, -69), NBTTag.SPIDER_EYE, "&aSpider Eye", "%pitsim_spidercave%", 20, Arrays.asList(PitSpider.class), SkeletonBoss.class),
-	CREEPER_CAVE(4, 20, new Location(Bukkit.getWorld("darkzone"), 8, 32, -30), NBTTag.CREEPER_POWDER, "&aGunpowder", "%pitsim_creepercave%", 20, Arrays.asList(PitCreeper.class), SkeletonBoss.class),
-	DEEP_SPIDER_CAVE(5, 30, new Location(Bukkit.getWorld("darkzone"), -11, 22, -79), NBTTag.CAVESPIDER_EYE, "&aFermented Spider Eye", "%pitsim_deepspidercave%", 20, Arrays.asList(PitCaveSpider.class), SkeletonBoss.class),
-	MAGMA_CAVE(6, 20, new Location(Bukkit.getWorld("darkzone"), 14, 2, -132), NBTTag.MAGMACUBE_CREAM, "&aMagma Cream", "%pitsim_magmacave%", 20, Arrays.asList(PitMagmaCube.class), SkeletonBoss.class),
-	PIGMEN_CAVE(7, 20, new Location(Bukkit.getWorld("darkzone"), 0, 0 ,0), NBTTag.PIGMAN_PORK, "&aRaw Pork", "%pitsim_pigmencave%", 20, Arrays.asList(PitZombiePigman.class), SkeletonBoss.class);
+	ZOMBIE_CAVE(1, 20, new Location(Bukkit.getWorld("darkzone"), 327, 68, -143), NBTTag.ZOMBIE_FLESH, "&aRotten Flesh", "%pitsim_zombiecave%", 17, Arrays.asList(PitZombie.class), ZombieBoss.class),
+	SKELETON_CAVE(2, 20, new Location(Bukkit.getWorld("darkzone"), 424, 53, -128), NBTTag.SKELETON_BONE, "&aBone", "%pitsim_skeletoncave%", 17, Arrays.asList(PitSkeleton.class), SkeletonBoss.class),
+	SPIDER_CAVE(3, 20, new Location(Bukkit.getWorld("darkzone"), 463, 38, -72), NBTTag.SPIDER_EYE, "&aSpider Eye", "%pitsim_spidercave%", 17, Arrays.asList(PitSpider.class), SkeletonBoss.class),
+	CREEPER_CAVE(4, 20, new Location(Bukkit.getWorld("darkzone"), 419, 26, -27), NBTTag.CREEPER_POWDER, "&aGunpowder", "%pitsim_creepercave%", 17, Arrays.asList(PitCreeper.class), SkeletonBoss.class),
+	DEEP_SPIDER_CAVE(5, 20, new Location(Bukkit.getWorld("darkzone"), 342, 20, 15), NBTTag.CAVESPIDER_EYE, "&aFermented Spider Eye", "%pitsim_deepspidercave%", 17, Arrays.asList(PitCaveSpider.class), SkeletonBoss.class),
+	MAGMA_CAVE(6, 20, new Location(Bukkit.getWorld("darkzone"), 235, 20, -23), NBTTag.MAGMACUBE_CREAM, "&aMagma Cream", "%pitsim_magmacave%", 17, Arrays.asList(PitMagmaCube.class), SkeletonBoss.class),
+	PIGMEN_CAVE(7, 20, new Location(Bukkit.getWorld("darkzone"), 210, 20 ,-115), NBTTag.PIGMAN_PORK, "&aRaw Pork", "%pitsim_pigmencave%", 17, Arrays.asList(PitZombiePigman.class), SkeletonBoss.class);
 //	MAGMA_CUBE,
 //	WITHER_SKELETON,
 //	IRON_GOLEM,

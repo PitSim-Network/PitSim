@@ -73,13 +73,13 @@ public class BossManager implements Listener {
 
             bossItems.put(level, new HashMap<>());
 
-            Hologram holo = HologramsAPI.createHologram(PitSim.INSTANCE, level.middle.add(0, 2, 0));
+            Hologram holo = HologramsAPI.createHologram(PitSim.INSTANCE, level.middle.add(0.5, 1, 0.5));
             holo.setAllowPlaceholders(true);
             holo.appendTextLine(ChatColor.RED + "Place " + ChatColor.translateAlternateColorCodes('&',level.itemName));
             holo.appendTextLine("{fast}" + level.placeholder + " ");
             holograms.add(holo);
 
-            Villager villager = Bukkit.getWorld("darkzone").spawn(level.middle.subtract(0, 1, 0), Villager.class);
+            Villager villager = Bukkit.getWorld("darkzone").spawn(level.middle.add(0.5, -1, 0.5), Villager.class);
             System.out.println("Stand!");
             noAI(villager);
             villager.setAdult();

@@ -83,7 +83,7 @@ public class TaintedPanel extends AGUIPanel {
 		shredMeta.setDisplayName(ChatColor.YELLOW + "SHRED JEWEL ITEMS");
 		List<String> shredLore = new ArrayList<>();
 		shredLore.add(ChatColor.GRAY + "Turn " + ChatColor.DARK_AQUA + "JEWEL! " + ChatColor.GRAY + "items into");
-		shredLore.add(ChatColor.WHITE + "Tainbt")
+		shredLore.add(ChatColor.WHITE + "Tainbt");
 
 	}
 
