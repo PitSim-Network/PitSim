@@ -51,7 +51,6 @@ public class EndermanSlayer extends PitBoss {
 
         npc.setProtected(false);
 
-        skin(npc,"zombie");
         spawn();
         entity = (Player) npc.getEntity();
         BossManager.bosses.put(npc, this);

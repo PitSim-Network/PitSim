@@ -17,10 +17,8 @@ import net.citizensnpcs.npc.ai.CitizensNavigator;
 import net.kyori.adventure.audience.Audience;
 import net.kyori.adventure.bossbar.BossBar;
 import net.kyori.adventure.text.Component;
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
-import org.bukkit.block.Block;
 import org.bukkit.entity.*;
 import org.bukkit.event.player.PlayerTeleportEvent;
 import org.bukkit.inventory.ItemStack;
@@ -50,18 +48,16 @@ public class SpiderBoss extends PitBoss {
                 .attackDelayTicks(8)
                 .attackRange(10)
                 .updatePathRate(5)
-                .speedModifier(5);
+                .speed(2);
 
 
         npc.setProtected(false);
-
-        skin(npc, "l800");
         spawn();
         entity = (Player) npc.getEntity();
         BossManager.bosses.put(npc, this);
 
-        entity.setMaxHealth(250);
-        entity.setHealth(250);
+        entity.setMaxHealth(200);
+        entity.setHealth(200);
         showMyBossBar(PitSim.adventure.player(target));
         BossManager.activePlayers.add(target);
 
@@ -95,21 +91,8 @@ public class SpiderBoss extends PitBoss {
         else if(health < (maxHealth / 2) && !enchants.containsValue(EnchantManager.getEnchant("ls"))) {
             equipment.set(Equipment.EquipmentSlot.HAND, getExplosive());
 
-            Block block = target.getLocation().getBlock();
-
-            if(block.getType() == Material.AIR){
-
-                block.setType(Material.WEB);
-
-                Bukkit.getScheduler().scheduleSyncDelayedTask(PitSim.INSTANCE, new Runnable() {
-
-                    @Override
-                    public void run() {
-
-                        block.setType(Material.AIR);
-
-                    }
-                }, 80L);
+            if(target.getLocation().getBlock().getType() == null && target.getLocation().getBlock().getType() == Material.AIR){
+                target.getLocation().getBlock().setType(Material.WEB);
             }
 
             LivingEntity shooter = ((LivingEntity) npc.getEntity());
@@ -147,7 +130,7 @@ public class SpiderBoss extends PitBoss {
 
                                 Vector dirVector = target.getLocation().toVector().subtract(npc.getEntity().getLocation().toVector()).setY(0);
                                 Vector pullVector = dirVector.clone().normalize().setY(0.2).multiply(0.5).add(dirVector.clone().multiply(0.03));
-                                npc.getEntity().setVelocity(pullVector.multiply((3 * 0.2) + 1.15));
+                                npc.getEntity().setVelocity(pullVector.multiply((0.5 * 0.2) + 1.15));
 
                             } catch (Exception ignored) { }
                         }
@@ -219,20 +202,6 @@ public class SpiderBoss extends PitBoss {
         itemStack = EnchantManager.addEnchant(itemStack, EnchantManager.getEnchant("robin"), 3, false);
         return itemStack;
     }
-
-    /*
-    public void skin(String name) {
-        npc.data().set(NPC.PLAYER_SKIN_UUID_METADATA, name);
-        npc.data().set(NPC.PLAYER_SKIN_USE_LATEST, false);
-        if(npc.isSpawned()) {
-            SkinnableEntity skinnable = (SkinnableEntity) npc.getEntity();
-            if(skinnable != null) {
-                skinnable.setSkinName(name);
-            }
-        }
-    }
-
-     */
 
     public void showMyBossBar(final @NonNull Audience player) {
         final Component name = Component.text(ChatColor.RED + "" + ChatColor.BOLD + "Spider Boss");
