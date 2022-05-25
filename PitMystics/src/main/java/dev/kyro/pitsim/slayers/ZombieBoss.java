@@ -64,7 +64,7 @@ public class ZombieBoss extends PitBoss {
 
         npc.setProtected(false);
 
-        skin(npc, "zombie");
+//        skin(npc, "zombie");
         spawn();
         entity = (Player) npc.getEntity();
         BossManager.bosses.put(npc, this);

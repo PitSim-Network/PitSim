@@ -35,6 +35,8 @@ public class Sounds {
 	public static final SoundEffect MULTI_5 = new SoundEffect(Sound.ORB_PICKUP, 1, 1.9523809);
 	public static final SoundEffect GEM_CRAFT = new SoundEffect(Sound.ORB_PICKUP, 2, 1.5F);
 	public static final SoundEffect GEM_USE = new SoundEffect(Sound.GLASS, 1, 2);
+	public static final SoundEffect JEWEL_SHRED1 = new SoundEffect(Sound.HORSE_ARMOR, 1, 0.8);
+	public static final SoundEffect JEWEL_SHRED2 = new SoundEffect(Sound.ZOMBIE_WOODBREAK, 1, 0.75);
 	public static final SoundEffect SHARD_FIND = new SoundEffect(Sound.GLASS, 1, 2);
 	public static final SoundEffect WITHERCRAFT_1 = new SoundEffect(Sound.ENDERMAN_IDLE, 2F, 1.2F);
 	public static final SoundEffect WITHERCRAFT_2 = new SoundEffect(Sound.ENDERMAN_TELEPORT, 1, 1.5F);

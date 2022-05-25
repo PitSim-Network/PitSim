@@ -29,8 +29,6 @@ import org.checkerframework.checker.nullness.qual.NonNull;
 import java.util.List;
 import java.util.Map;
 
-import static dev.kyro.pitsim.controllers.objects.PitBoss.skin;
-
 public class ChargedCreeperBoss extends PitBoss {
 
     /*
@@ -63,9 +61,9 @@ public class ChargedCreeperBoss extends PitBoss {
 
         npc.setProtected(false);
 
-        skin(npc,
-                "ewogICJ0aW1lc3RhbXAiIDogMTY1MjkyNTUzNjQ2NiwKICAicHJvZmlsZUlkIiA6ICIyYzEwNjRmY2Q5MTc0MjgyODRlM2JmN2ZhYTdlM2UxYSIsCiAgInByb2ZpbGVOYW1lIiA6ICJOYWVtZSIsCiAgInNpZ25hdHVyZVJlcXVpcmVkIiA6IHRydWUsCiAgInRleHR1cmVzIiA6IHsKICAgICJTS0lOIiA6IHsKICAgICAgInVybCIgOiAiaHR0cDovL3RleHR1cmVzLm1pbmVjcmFmdC5uZXQvdGV4dHVyZS9lNzcyYTNhNGY5ZmYzNTZiMjAxNDM2NDNiNDVhNmRjMTAyNTk1Y2YxZTgyOTVmMjM0NTMyNTA5ODg2OWNjMjIzIgogICAgfQogIH0KfQ",
-                "dHCHqekoP2N18e6MUoIV0rr9ozHQc2KheEAfZyWdZDGYlPc47VpuZve28bZUtQYoTZ2hJTzBMWVdDb");
+//        skin(npc,
+//                "ewogICJ0aW1lc3RhbXAiIDogMTY1MjkyNTUzNjQ2NiwKICAicHJvZmlsZUlkIiA6ICIyYzEwNjRmY2Q5MTc0MjgyODRlM2JmN2ZhYTdlM2UxYSIsCiAgInByb2ZpbGVOYW1lIiA6ICJOYWVtZSIsCiAgInNpZ25hdHVyZVJlcXVpcmVkIiA6IHRydWUsCiAgInRleHR1cmVzIiA6IHsKICAgICJTS0lOIiA6IHsKICAgICAgInVybCIgOiAiaHR0cDovL3RleHR1cmVzLm1pbmVjcmFmdC5uZXQvdGV4dHVyZS9lNzcyYTNhNGY5ZmYzNTZiMjAxNDM2NDNiNDVhNmRjMTAyNTk1Y2YxZTgyOTVmMjM0NTMyNTA5ODg2OWNjMjIzIgogICAgfQogIH0KfQ",
+//                "dHCHqekoP2N18e6MUoIV0rr9ozHQc2KheEAfZyWdZDGYlPc47VpuZve28bZUtQYoTZ2hJTzBMWVdDb");
         spawn();
         entity = (Player) npc.getEntity();
         BossManager.bosses.put(npc, this);

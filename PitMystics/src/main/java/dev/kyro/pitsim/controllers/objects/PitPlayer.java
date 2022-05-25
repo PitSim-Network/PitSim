@@ -97,6 +97,8 @@ public class PitPlayer {
 
 	public int graceTiers = 0;
 
+	public int taintedSouls;
+
 	public PlayerStats stats;
 
 	public void save() {
@@ -116,6 +118,7 @@ public class PitPlayer {
 		playerData.set("ubersleft", dailyUbersLeft);
 		playerData.set("ubercooldown", uberReset);
 		playerData.set("goldgrinded", goldGrinded);
+		playerData.set("taintedsouls", taintedSouls);
 
 		for (int i = 0; i < brewingSessions.length; i++) {
 			playerData.set("brewingsession" + (i + 1), brewingSessions[i]);
@@ -243,6 +246,8 @@ public class PitPlayer {
 			for (int i = 0; i < brewingSessions.length; i++) {
 				if(brewingSessions[i] != null) BrewingManager.brewingSessions.add(new BrewingSession(player, i, brewingSessions[i], null, null, null, null));
 			}
+
+			taintedSouls = playerData.getInt("taintedsouls");
 
 
 			if(chatColorString != null) {
