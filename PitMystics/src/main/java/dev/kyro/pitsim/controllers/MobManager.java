@@ -18,6 +18,7 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntitySpawnEvent;
+import org.bukkit.event.entity.EntityTargetLivingEntityEvent;
 import org.bukkit.event.entity.ExplosionPrimeEvent;
 import org.bukkit.event.player.PlayerArmorStandManipulateEvent;
 import org.bukkit.inventory.ItemStack;
@@ -192,6 +193,11 @@ public class MobManager implements Listener {
 		for(ArmorStand value : nameTags.values()) {
 			if(event.defender.getUniqueId().equals(value.getUniqueId())) event.setCancelled(true);
 		}
+	}
+
+	@EventHandler
+	public void onTarget(EntityTargetLivingEntityEvent event) {
+		if(event.getTarget().getLocation().distance(event.getEntity().getLocation()) > 5) event.setCancelled(true);
 	}
 
 	@EventHandler(priority = EventPriority.HIGHEST)

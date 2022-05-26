@@ -128,7 +128,7 @@ public class BrewingManager implements Listener {
     }
 
     public static void onStart() {
-        brewingAnimations.add(new BrewingAnimation(new Location(Bukkit.getWorld("darkzone"), 10, 71, -80)));
+        brewingAnimations.add(new BrewingAnimation(new Location(Bukkit.getWorld("darkzone"), 202, 91, -81)));
         spinStand = (ArmorStand) brewingAnimations.get(0).location.getWorld().spawnEntity(brewingAnimations.get(0).location.clone().add(0.5, 0, 0.5), EntityType.ARMOR_STAND);
         spinStand.setItemInHand(new ItemStack(Material.STICK));
         spinStand.setArms(true);

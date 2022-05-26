@@ -9,6 +9,7 @@ import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.controllers.EnchantManager;
 import dev.kyro.pitsim.controllers.MapManager;
+import dev.kyro.pitsim.controllers.MusicManager;
 import dev.kyro.pitsim.controllers.StereoManager;
 import dev.kyro.pitsim.controllers.objects.PitEnchant;
 import dev.kyro.pitsim.enums.ApplyType;
@@ -79,6 +80,8 @@ public class Stereo extends PitEnchant {
 			esp.setEntity(player);
 			esp.setDistance(16);
 			esp.setRepeatMode(RepeatMode.ONE);
+
+			MusicManager.stopPlaying(player);
 
 			for(Player onlinePlayer : Bukkit.getOnlinePlayers()) {
 				if(StereoManager.toggledPlayers.contains(onlinePlayer)) return;
