@@ -66,7 +66,7 @@ public class SkeletonBoss extends PitBoss {
 
         npc.setProtected(false);
 
-        skin(npc, "Napkings");
+        //skin(npc, "Napkings");
         spawn();
         entity = (Player) npc.getEntity();
         BossManager.bosses.put(npc, this);
