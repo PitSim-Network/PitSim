@@ -34,6 +34,7 @@ public class NonManager implements Listener {
 					botIGNs.add("pogha");
 					botIGNs.add("robert_mugabe355");
 					botIGNs.add("xLava28");
+					botIGNs.add("TheAlpha64");
 				}
 				for(World world : MapManager.currentMap.lobbies) {
 					if(!MapManager.multiLobbies && world != MapManager.currentMap.firstLobby) continue;

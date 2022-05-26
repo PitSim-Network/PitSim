@@ -6,9 +6,13 @@ import dev.kyro.pitsim.controllers.BossManager;
 import dev.kyro.pitsim.controllers.EnchantManager;
 import dev.kyro.pitsim.controllers.objects.PitBoss;
 import dev.kyro.pitsim.controllers.objects.PitEnchant;
+import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.enums.MysticType;
 import dev.kyro.pitsim.enums.PantColor;
 import dev.kyro.pitsim.enums.SubLevel;
+import dev.kyro.pitsim.events.ThrowBlock;
+import dev.kyro.pitsim.misc.BossSkin;
+import dev.kyro.pitsim.misc.ThrowableBlock;
 import net.citizensnpcs.api.CitizensAPI;
 import net.citizensnpcs.api.npc.NPC;
 import net.citizensnpcs.api.trait.trait.Equipment;
@@ -28,6 +32,8 @@ import org.checkerframework.checker.nullness.qual.NonNull;
 
 import java.util.List;
 import java.util.Map;
+
+
 
 public class ChargedCreeperBoss extends PitBoss {
 
@@ -61,9 +67,6 @@ public class ChargedCreeperBoss extends PitBoss {
 
         npc.setProtected(false);
 
-//        skin(npc,
-//                "ewogICJ0aW1lc3RhbXAiIDogMTY1MjkyNTUzNjQ2NiwKICAicHJvZmlsZUlkIiA6ICIyYzEwNjRmY2Q5MTc0MjgyODRlM2JmN2ZhYTdlM2UxYSIsCiAgInByb2ZpbGVOYW1lIiA6ICJOYWVtZSIsCiAgInNpZ25hdHVyZVJlcXVpcmVkIiA6IHRydWUsCiAgInRleHR1cmVzIiA6IHsKICAgICJTS0lOIiA6IHsKICAgICAgInVybCIgOiAiaHR0cDovL3RleHR1cmVzLm1pbmVjcmFmdC5uZXQvdGV4dHVyZS9lNzcyYTNhNGY5ZmYzNTZiMjAxNDM2NDNiNDVhNmRjMTAyNTk1Y2YxZTgyOTVmMjM0NTMyNTA5ODg2OWNjMjIzIgogICAgfQogIH0KfQ",
-//                "dHCHqekoP2N18e6MUoIV0rr9ozHQc2KheEAfZyWdZDGYlPc47VpuZve28bZUtQYoTZ2hJTzBMWVdDb");
         spawn();
         entity = (Player) npc.getEntity();
         BossManager.bosses.put(npc, this);
@@ -75,17 +78,13 @@ public class ChargedCreeperBoss extends PitBoss {
     }
 
     public void spawn() throws Exception {
-        Equipment equipment = npc.getTrait(Equipment.class);
-
-
-        equipment.set(Equipment.EquipmentSlot.HAND, getBillionaire());
-        equipment.set(Equipment.EquipmentSlot.HELMET, new ItemStack(Material.DIAMOND_HELMET));
-        equipment.set(Equipment.EquipmentSlot.CHESTPLATE, new ItemStack(Material.DIAMOND_CHESTPLATE));
-        equipment.set(Equipment.EquipmentSlot.LEGGINGS, getSolitude());
-        equipment.set(Equipment.EquipmentSlot.BOOTS, new ItemStack(Material.DIAMOND_BOOTS));
-
-        npc.spawn(subLevel.middle);
-        npc.getNavigator().setTarget(target, true);
+        PitBoss.spawn(this.npc, this.target, this.subLevel,
+                new BossSkin(this.npc, "johum2718"),
+                getBillionaire(),
+                new ItemStack(Material.DIAMOND_HELMET),
+                new ItemStack(Material.DIAMOND_CHESTPLATE),
+                getSolitude(),
+                new ItemStack(Material.DIAMOND_BOOTS));
     }
 
     public void onAttack() throws Exception {
@@ -101,12 +100,16 @@ public class ChargedCreeperBoss extends PitBoss {
 
             // Very unoptimized code going here change later.
 
-            target.sendMessage(ChatColor.translateAlternateColorCodes('&', "&c&lNUCLEAR REACTOR! &7ouch, you're on fire!"));
+            target.sendMessage(ChatColor.translateAlternateColorCodes('&', "&c&lNUCLEAR REACTOR! &7ouch, you're on full blast!"));
 
             target.getWorld().playEffect(target.getLocation(), Effect.EXPLOSION_LARGE, 1);
+            if(npc.getEntity() != null){
+                for (Entity player : npc.getEntity().getNearbyEntities(10, 10, 10)) {
+                    if(player != target) continue;
+                    PitPlayer.getPitPlayer((Player) player).damage(15.0, (LivingEntity) npc.getEntity());
+                }
+            }
 
-
-            target.setFireTicks(50);
 
 
             new BukkitRunnable() {
@@ -134,20 +137,8 @@ public class ChargedCreeperBoss extends PitBoss {
                     new BukkitRunnable() {
                         @Override
                         public void run() {
-                            try {
-                                LivingEntity shooter = ((LivingEntity) npc.getEntity());
-                                //shooter.launchProjectile(Arrow.class);
-                                //equipment.set(Equipment.EquipmentSlot.HAND, getBillionaire());
-                                //TODO: Just put pull code here fuck this lol
-
-                                TNTPrimed tnt = (TNTPrimed) shooter.getWorld().spawn(shooter.getLocation(), TNTPrimed.class);
-                                tnt.setVelocity(shooter.getLocation().getDirection().normalize().multiply(2));
-
-                                //Vector dirVector = npc.getEntity().getLocation().toVector().subtract(target.getLocation().toVector()).setY(0);
-                                //Vector pullVector = dirVector.clone().normalize().setY(0.2).multiply(0.5).add(dirVector.clone().multiply(0.03));
-                                //target.setVelocity(pullVector.multiply((0.5 * 0.2) + 1.15));
-
-                            } catch (Exception ignored) { }
+                                if(npc.getEntity() != null)
+                                    ThrowBlock.addThrowableBlock(new ThrowableBlock(npc.getEntity(), Material.TNT));
                         }
                     }.runTaskLater(PitSim.INSTANCE, 20);
                 }

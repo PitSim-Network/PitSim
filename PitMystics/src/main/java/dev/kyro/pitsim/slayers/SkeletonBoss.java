@@ -11,6 +11,7 @@ import dev.kyro.pitsim.controllers.objects.PitEnchant;
 import dev.kyro.pitsim.enchants.Lifesteal;
 import dev.kyro.pitsim.enums.*;
 import dev.kyro.pitsim.events.AttackEvent;
+import dev.kyro.pitsim.misc.BossSkin;
 import me.confuser.barapi.BarAPI;
 import net.citizensnpcs.api.CitizensAPI;
 import net.citizensnpcs.api.ai.AttackStrategy;
@@ -66,7 +67,7 @@ public class SkeletonBoss extends PitBoss {
 
         npc.setProtected(false);
 
-//        skin(npc, "Napkings");
+        //skin(npc, "Napkings");
         spawn();
         entity = (Player) npc.getEntity();
         BossManager.bosses.put(npc, this);
@@ -78,19 +79,13 @@ public class SkeletonBoss extends PitBoss {
     }
 
     public void spawn() throws Exception {
-        Equipment equipment = npc.getTrait(Equipment.class);
-
-
-        equipment.set(Equipment.EquipmentSlot.HAND, getBillionaire());
-        equipment.set(Equipment.EquipmentSlot.HELMET, new ItemStack(Material.DIAMOND_HELMET));
-        equipment.set(Equipment.EquipmentSlot.CHESTPLATE, new ItemStack(Material.DIAMOND_CHESTPLATE));
-        equipment.set(Equipment.EquipmentSlot.LEGGINGS, getSolitude());
-        equipment.set(Equipment.EquipmentSlot.BOOTS, new ItemStack(Material.DIAMOND_BOOTS));
-
-        npc.spawn(subLevel.middle);
-        npc.teleport(subLevel.middle, PlayerTeleportEvent.TeleportCause.COMMAND);
-        npc.getNavigator().setTarget(target, true);
-        BossManager.playMusic(target, subLevel.level);
+        PitBoss.spawn(this.npc, this.target, this.subLevel,
+                new BossSkin(this.npc, "Napkings"),
+                getBillionaire(),
+                new ItemStack(Material.DIAMOND_HELMET),
+                new ItemStack(Material.DIAMOND_CHESTPLATE),
+                getSolitude(),
+                new ItemStack(Material.DIAMOND_BOOTS));
     }
 
     public void onAttack() throws Exception {

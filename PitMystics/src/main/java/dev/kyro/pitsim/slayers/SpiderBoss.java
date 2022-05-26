@@ -10,6 +10,7 @@ import dev.kyro.pitsim.controllers.objects.PitEnchant;
 import dev.kyro.pitsim.enums.MysticType;
 import dev.kyro.pitsim.enums.PantColor;
 import dev.kyro.pitsim.enums.SubLevel;
+import dev.kyro.pitsim.misc.BossSkin;
 import net.citizensnpcs.api.CitizensAPI;
 import net.citizensnpcs.api.npc.NPC;
 import net.citizensnpcs.api.trait.trait.Equipment;
@@ -65,19 +66,13 @@ public class SpiderBoss extends PitBoss {
     }
 
     public void spawn() throws Exception {
-        Equipment equipment = npc.getTrait(Equipment.class);
-
-
-        equipment.set(Equipment.EquipmentSlot.HAND, getBillionaire());
-        equipment.set(Equipment.EquipmentSlot.HELMET, new ItemStack(Material.DIAMOND_HELMET));
-        equipment.set(Equipment.EquipmentSlot.CHESTPLATE, new ItemStack(Material.DIAMOND_CHESTPLATE));
-        equipment.set(Equipment.EquipmentSlot.LEGGINGS, getSolitude());
-        equipment.set(Equipment.EquipmentSlot.BOOTS, new ItemStack(Material.DIAMOND_BOOTS));
-
-        npc.spawn(subLevel.middle);
-        npc.teleport(subLevel.middle, PlayerTeleportEvent.TeleportCause.COMMAND);
-        npc.getNavigator().setTarget(target, true);
-        BossManager.playMusic(target, subLevel.level);
+        PitBoss.spawn(this.npc, this.target, this.subLevel,
+                new BossSkin(this.npc, "shinhyeok0210"),
+                getBillionaire(),
+                new ItemStack(Material.DIAMOND_HELMET),
+                new ItemStack(Material.DIAMOND_CHESTPLATE),
+                getSolitude(),
+                new ItemStack(Material.DIAMOND_BOOTS));
     }
 
     public void onAttack() throws Exception {

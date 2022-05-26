@@ -28,6 +28,7 @@ import dev.kyro.pitsim.controllers.objects.*;
 import dev.kyro.pitsim.enchants.GoldBoost;
 import dev.kyro.pitsim.enchants.*;
 import dev.kyro.pitsim.enchants.tainted.*;
+import dev.kyro.pitsim.events.ThrowBlock;
 import dev.kyro.pitsim.helmetabilities.*;
 import dev.kyro.pitsim.killstreaks.*;
 import dev.kyro.pitsim.kits.EssentialKit;
@@ -370,6 +371,7 @@ class PitSim extends JavaPlugin {
 	private void registerListeners() {
 
 		getServer().getPluginManager().registerEvents(new DamageManager(), this);
+		getServer().getPluginManager().registerEvents(new ThrowBlock(), this);
 //		getServer().getPluginManager().registerEvents(new NonManager(), this);
 		getServer().getPluginManager().registerEvents(new PlayerManager(), this);
 		getServer().getPluginManager().registerEvents(new PlayerDataManager(), this);
