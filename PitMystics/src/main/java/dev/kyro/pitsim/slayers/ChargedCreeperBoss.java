@@ -106,7 +106,7 @@ public class ChargedCreeperBoss extends PitBoss {
             if(npc.getEntity() != null){
                 for (Entity player : npc.getEntity().getNearbyEntities(10, 10, 10)) {
                     if(player != target) continue;
-                    PitPlayer.getPitPlayer((Player) player).damage(15.0, (LivingEntity) npc.getEntity());
+                    PitPlayer.getPitPlayer((Player) player).damage(3.0, (LivingEntity) npc.getEntity());
                 }
             }
 

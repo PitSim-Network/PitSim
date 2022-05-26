@@ -106,8 +106,8 @@ public class BossManager implements Listener {
             }
             if(activePlayers.contains(event.getPlayer())) return;
 
-            assert level != null;
-            if(useItem(event.getPlayer(), level.bossItem)) {
+
+            if(level != null && level.bossItem != null && useItem(event.getPlayer(), level.bossItem)) {
                 Map<Player, Integer> players = bossItems.get(level);
                 if(players.containsKey(event.getPlayer())) players.put(event.getPlayer(), players.get(event.getPlayer()) + 1);
                 else players.put(event.getPlayer(), 1);

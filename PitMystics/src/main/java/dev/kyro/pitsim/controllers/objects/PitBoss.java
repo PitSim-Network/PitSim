@@ -47,7 +47,7 @@ public abstract class PitBoss {
         equipment.set(Equipment.EquipmentSlot.BOOTS, boots);
 
         npc.spawn(subLevel.middle);
-        npc.teleport(subLevel.middle, PlayerTeleportEvent.TeleportCause.COMMAND);
+        npc.teleport(subLevel.middle.add(0, 3, 0), PlayerTeleportEvent.TeleportCause.PLUGIN);
 
 
 
@@ -58,7 +58,7 @@ public abstract class PitBoss {
             double phiRand = 360 * Math.random();
 
 
-            for (int i = 0; i < 48; i++) {
+            for (int i = 0; i < (48) * 30; i++) {
                 double x2 = radius * Math.cos(phiRand) * Math.sin(thetaRand);
                 double z2 = radius * Math.sin(phiRand) * Math.sin(thetaRand);
                 double y2 = radius * Math.cos(thetaRand);
@@ -78,6 +78,7 @@ public abstract class PitBoss {
 
 
         npc.getNavigator().setTarget(target, true);
+        npc.setProtected(false);
         BossManager.playMusic(target, subLevel.level);
 
     }

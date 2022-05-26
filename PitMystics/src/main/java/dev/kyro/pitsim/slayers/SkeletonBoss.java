@@ -178,12 +178,6 @@ public class SkeletonBoss extends PitBoss {
                 npc.getEntity().setVelocity(new Vector(0, 0, 0));
                 target.damage(target.getLastDamage(), npc.getEntity());
             }
-        }else if(r < 0.25){
-            LivingEntity shooter = ((LivingEntity) npc.getEntity());
-            WitherSkull ws = shooter.launchProjectile(WitherSkull.class);
-            ws.setVelocity(shooter.getLocation().getDirection().multiply(2.90));
-            ws.setIsIncendiary(false);
-            ws.setYield(5.0F);
         }
     }
 
