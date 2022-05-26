@@ -8,9 +8,7 @@ import dev.kyro.pitsim.controllers.objects.PitEnchant;
 import dev.kyro.pitsim.enchants.ComboVenom;
 import dev.kyro.pitsim.enums.ApplyType;
 import org.bukkit.Bukkit;
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.LivingEntity;
-import org.bukkit.entity.Player;
+import org.bukkit.entity.*;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.List;
@@ -37,6 +35,7 @@ public class EmotionalDamage extends PitEnchant {
 					for(Entity nearbyEntity : player.getNearbyEntities(5, 5, 5)) {
 						if(!(nearbyEntity instanceof LivingEntity) || nearbyEntity instanceof Player) continue;
 						if(!shouldAdd(level)) continue;
+						if(nearbyEntity instanceof ArmorStand || nearbyEntity instanceof Villager) continue;
 						LivingEntity livingEntity = (LivingEntity) nearbyEntity;
 						livingEntity.damage(5, player);
 					}

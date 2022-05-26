@@ -1,6 +1,8 @@
 package dev.kyro.pitsim.controllers;
 
 import dev.kyro.arcticapi.misc.AOutput;
+import dev.kyro.pitsim.PitSim;
+import dev.kyro.pitsim.misc.Misc;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
@@ -9,6 +11,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityPortalEvent;
 import org.bukkit.event.player.PlayerPortalEvent;
 import org.bukkit.event.player.PlayerTeleportEvent;
+import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
 
 public class PortalManager implements Listener {
@@ -47,7 +50,28 @@ public class PortalManager implements Listener {
 
 		player.teleport(teleportLoc);
 		player.setVelocity(new Vector(1.5, 1, 0));
-		if(player.getWorld() == Bukkit.getWorld("darkzone")) AOutput.send(player, "&7You have been sent to the &d&k||&5&lDarkzone&d&k||&7.");
-		else AOutput.send(player, "&7You have been sent to the &a&lOverworld&7.");
+		if(player.getWorld() == Bukkit.getWorld("darkzone")) {
+			Misc.sendTitle(player, "&d&k||&5&lDarkzone&d&k||", 40);
+			Misc.sendSubTitle(player, "", 40);
+			AOutput.send(player, "&7You have been sent to the &d&k||&5&lDarkzone&d&k||&7.");
+		}
+		else {
+			Misc.sendTitle(player, "&a&lOverworld", 40);
+			Misc.sendSubTitle(player, "", 40);
+			AOutput.send(player, "&7You have been sent to the &a&lOverworld&7.");
+
+			MusicManager.stopPlaying(player);
+		}
+	}
+
+	@EventHandler
+	public static void onTp(PlayerTeleportEvent event) {
+		new BukkitRunnable() {
+			@Override
+			public void run() {
+				if(!MapManager.inDarkzone(event.getPlayer())) MusicManager.stopPlaying(event.getPlayer());
+			}
+		}.runTaskLater(PitSim.INSTANCE, 10);
+
 	}
 }

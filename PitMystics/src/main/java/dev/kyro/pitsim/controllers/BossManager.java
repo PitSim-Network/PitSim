@@ -17,6 +17,7 @@ import dev.kyro.pitsim.enums.NBTTag;
 import dev.kyro.pitsim.enums.SubLevel;
 import dev.kyro.pitsim.events.AttackEvent;
 import dev.kyro.pitsim.events.KillEvent;
+import dev.kyro.pitsim.events.OofEvent;
 import dev.kyro.pitsim.misc.Misc;
 import dev.kyro.pitsim.misc.Sounds;
 import dev.kyro.pitsim.slayers.ChargedCreeperBoss;
@@ -79,10 +80,11 @@ public class BossManager implements Listener {
             holo.appendTextLine("{fast}" + level.placeholder + " ");
             holograms.add(holo);
 
-            Villager villager = Bukkit.getWorld("darkzone").spawn(level.middle.add(0.5, -1, 0.5), Villager.class);
+            Villager villager = Bukkit.getWorld("darkzone").spawn(level.middle.add(0, -1, 0), Villager.class);
             System.out.println("Stand!");
             noAI(villager);
             villager.setAdult();
+            villager.setRemoveWhenFarAway(false);
             villager.addPotionEffect(new PotionEffect(PotionEffectType.INVISIBILITY, Integer.MAX_VALUE, 0, false, false));
             clickables.put(level, villager);
             System.out.println(villager.getLocation());
@@ -251,6 +253,24 @@ public class BossManager implements Listener {
     }
 
     @EventHandler
+    public void onOof(OofEvent event) {
+        List<NPC> toRemove = new ArrayList<>();
+        for (Map.Entry<NPC, PitBoss> entry : bosses.entrySet()) {
+
+            if(entry.getValue().target == event.getPlayer()) {
+                entry.getKey().destroy();
+                toRemove.add(entry.getKey());
+                NoteBlockAPI.stopPlaying(event.getPlayer());
+                activePlayers.remove(event.getPlayer());
+            }
+        }
+
+        for (NPC npc : toRemove) {
+            bosses.remove(npc);
+        }
+    }
+
+    @EventHandler
     public void onHit(AttackEvent.Apply event) throws Exception {
         if(bosses.containsKey(CitizensAPI.getNPCRegistry().getNPC(event.attacker)))
             bosses.get(CitizensAPI.getNPCRegistry().getNPC(event.attacker)).onAttack();
@@ -291,7 +311,7 @@ public class BossManager implements Listener {
     }
 
     public static void playMusic(Player player, int level) {
-        System.out.println("Play!");
+        MusicManager.stopPlaying(player);
         File file = new File("plugins/NoteBlockAPI/Effects/boss" + level + ".nbs");
         Song song = NBSDecoder.parse(file);
         EntitySongPlayer esp = new EntitySongPlayer(song);

@@ -31,6 +31,8 @@ public class SpawnNPCs implements Listener {
 	public static List<NPC> wiji = new ArrayList<>();
 	public static List<NPC> vnx = new ArrayList<>();
 
+	public static NPC taintedShop;
+
 	public static void createNPCs() {
 		for(World world : MapManager.currentMap.lobbies) {
 			createPrestigeNPC(world);
@@ -125,6 +127,19 @@ public class SpawnNPCs implements Listener {
 		npc.getTrait(LookClose.class).setRange(10);
 		npc.getTrait(LookClose.class).toggle();
 	}
+
+
+	public static void createTaintedShopNPC(World world) {
+		NPCRegistry registry = CitizensAPI.getNPCRegistry();
+		NPC npc = registry.createNPC(EntityType.PLAYER, "&d&lTAINTED CRAFTING");
+		vnx.add(npc);
+		npc.spawn(MapManager.currentMap.getVnxNPCSpawn(world));
+		skin(npc, Bukkit.getOfflinePlayer(UUID.fromString("e913fd01-e84e-4c6e-ad5b-7419a12de481")).getName());
+		npc.addTrait(LookClose.class);
+		npc.getTrait(LookClose.class).setRange(10);
+		npc.getTrait(LookClose.class).toggle();
+	}
+
 
 	@EventHandler
 	public void onClickEvent(NPCRightClickEvent event) {

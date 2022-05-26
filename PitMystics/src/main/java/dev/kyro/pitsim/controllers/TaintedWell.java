@@ -102,10 +102,10 @@ public class TaintedWell implements Listener
         ((CraftPlayer)player).getHandle().playerConnection.sendPacket(spawn);
         final PacketPlayOutSpawnEntityLiving enchantSpawn = new PacketPlayOutSpawnEntityLiving((EntityLiving)((CraftEntity)enchantStand).getHandle());
         ((CraftPlayer)player).getHandle().playerConnection.sendPacket(enchantSpawn);
-        removeStand.teleport(removeStand.getLocation().clone().subtract(0.0, 0.0, 2.0));
+        removeStand.teleport(removeStand.getLocation().clone().subtract(2.0, 0.0, 0.0));
         final PacketPlayOutEntityTeleport tpPacket = new PacketPlayOutEntityTeleport(((CraftEntity)removeStand).getHandle());
         ((CraftPlayer)player).getHandle().playerConnection.sendPacket(tpPacket);
-        enchantStand.teleport(enchantStand.getLocation().clone().add(0.0, 0.0, 2.0));
+        enchantStand.teleport(enchantStand.getLocation().clone().add(2.0, 0.0, 0.0));
         final PacketPlayOutEntityTeleport tpRemovePacket = new PacketPlayOutEntityTeleport(((CraftEntity)enchantStand).getHandle());
         ((CraftPlayer)player).getHandle().playerConnection.sendPacket(tpRemovePacket);
         setText(player, "§c", "§c", "§c", "§c");
@@ -215,7 +215,7 @@ public class TaintedWell implements Listener
             return;
         }
         final NBTItem nbtItem = new NBTItem(player.getItemInHand());
-        if (!nbtItem.hasKey(NBTTag.ITEM_UUID.getRef())) {
+        if (!nbtItem.hasKey(NBTTag.ITEM_UUID.getRef()) || MysticType.getMysticType(player.getItemInHand()) == MysticType.SWORD || MysticType.getMysticType(player.getItemInHand()) == MysticType.BOW || MysticType.getMysticType(player.getItemInHand()) == MysticType.PANTS) {
             setText(player, "§c", ChatColor.RED + "Invalid Item!", ChatColor.RED + "Please try again!", "§c");
             new BukkitRunnable() {
                 public void run() {
@@ -370,7 +370,7 @@ public class TaintedWell implements Listener
     }
 
     static {
-        TaintedWell.wellLocation = new Location(Bukkit.getWorld("darkzone"), 10.0, 71.0, -94.0);
+        TaintedWell.wellLocation = new Location(Bukkit.getWorld("darkzone"), 199.0, 92.0, -115.0);
         TaintedWell.removeStands = new HashMap<>();
         TaintedWell.enchantStands = new HashMap<>();
         TaintedWell.enchantingPlayers = new ArrayList<>();
