@@ -1,10 +1,12 @@
 package dev.kyro.pitsim.misc;
 
 import dev.kyro.arcticapi.misc.AOutput;
+import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.controllers.MapManager;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.inventories.PerkGUI;
 import dev.kyro.pitsim.inventories.PrestigeGUI;
+import dev.kyro.pitsim.inventories.TaintedGUI;
 import dev.kyro.pitsim.inventories.stats.StatGUI;
 import net.citizensnpcs.api.CitizensAPI;
 import net.citizensnpcs.api.event.NPCRightClickEvent;
@@ -13,11 +15,14 @@ import net.citizensnpcs.api.npc.NPCRegistry;
 import net.citizensnpcs.npc.skin.SkinnableEntity;
 import net.citizensnpcs.trait.LookClose;
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.World;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -40,10 +45,17 @@ public class SpawnNPCs implements Listener {
 			createKyroNPC(world);
 			createWijiNPC(world);
 			createVnx2NPC(world);
+
+			createTaintedShopNPC();
 		}
 	}
 
 	public static void removeNPCs() {
+		try {
+			taintedShop.destroy();
+		} catch(Exception ignored) {
+			System.out.println("error despawning npc");
+		}
 		try {
 			for(NPC npc : upgrade) {
 				npc.destroy();
@@ -129,15 +141,22 @@ public class SpawnNPCs implements Listener {
 	}
 
 
-	public static void createTaintedShopNPC(World world) {
+	public static void createTaintedShopNPC() {
 		NPCRegistry registry = CitizensAPI.getNPCRegistry();
-		NPC npc = registry.createNPC(EntityType.PLAYER, "&d&lTAINTED CRAFTING");
-		vnx.add(npc);
-		npc.spawn(MapManager.currentMap.getVnxNPCSpawn(world));
-		skin(npc, Bukkit.getOfflinePlayer(UUID.fromString("e913fd01-e84e-4c6e-ad5b-7419a12de481")).getName());
-		npc.addTrait(LookClose.class);
-		npc.getTrait(LookClose.class).setRange(10);
-		npc.getTrait(LookClose.class).toggle();
+		NPC npc = registry.createNPC(EntityType.PLAYER, "&d");
+		npc.spawn(new Location(MapManager.getDarkzone(), 214, 91, -113, 25, 0));
+		taintedShop = npc;
+		skin(npc, "Yeung_1217");
+
+		new BukkitRunnable() {
+			@Override
+			public void run() {
+				for (Entity nearbyEntity : taintedShop.getEntity().getNearbyEntities(2, 2, 2)) {
+					if(nearbyEntity == npc.getEntity()) continue;
+					if(registry.isNPC(nearbyEntity)) registry.getNPC(nearbyEntity).destroy();
+				}
+			}
+		}.runTaskLater(PitSim.INSTANCE, 100);
 	}
 
 
@@ -174,6 +193,11 @@ public class SpawnNPCs implements Listener {
 				statGUI.open();
 				return;
 			}
+		}
+
+		if(event.getNPC().getId() == taintedShop.getId()) {
+			TaintedGUI taintedGUI = new TaintedGUI(player);
+			taintedGUI.open();
 		}
 	}
 
