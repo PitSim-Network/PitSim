@@ -8,6 +8,8 @@ import dev.kyro.pitsim.enchants.tainted.CleaveSpell;
 import dev.kyro.pitsim.enums.SubLevel;
 import dev.kyro.pitsim.events.AttackEvent;
 import dev.kyro.pitsim.events.KillEvent;
+import net.citizensnpcs.api.CitizensAPI;
+import net.citizensnpcs.api.npc.NPC;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -187,7 +189,7 @@ public class MobManager implements Listener {
 
 	@EventHandler(priority = EventPriority.HIGHEST)
 	public void onHit(AttackEvent.Pre event) {
-		for (Villager value : BossManager.clickables.values()) {
+		for (NPC value : BossManager.clickables.values()) {
 			if(event.defender.getUniqueId().equals(value.getUniqueId())) event.setCancelled(true);
 		}
 
@@ -211,7 +213,7 @@ public class MobManager implements Listener {
 		if(event.getDamager() instanceof Fireball) return;
 		if(NonManager.getNon((LivingEntity) event.getDamager()) != null) return;
 
-		for (Villager value : BossManager.clickables.values()) {
+		for (NPC value : BossManager.clickables.values()) {
 			if(event.getEntity().getUniqueId().equals(value.getUniqueId())) event.setCancelled(true);
 		}
 
@@ -257,6 +259,9 @@ public class MobManager implements Listener {
 		for (Entity entity : Bukkit.getWorld("darkzone").getEntities()) {
 
 			if(entity instanceof Player) continue;
+			if(CitizensAPI.getNPCRegistry().isNPC(entity)) continue;
+
+
 			for (PitMob mob : mobs) {
 				if(mob.entity.getUniqueId().equals(entity.getUniqueId())) continue main;
 				if(nameTags.get(mob.entity.getUniqueId()).getUniqueId().equals(entity.getUniqueId())) continue main;

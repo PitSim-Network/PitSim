@@ -20,13 +20,16 @@ import dev.kyro.pitsim.events.KillEvent;
 import dev.kyro.pitsim.events.OofEvent;
 import dev.kyro.pitsim.misc.Misc;
 import dev.kyro.pitsim.misc.Sounds;
+import dev.kyro.pitsim.misc.SpawnNPCs;
 import dev.kyro.pitsim.slayers.ChargedCreeperBoss;
 import dev.kyro.pitsim.slayers.SkeletonBoss;
 import dev.kyro.pitsim.slayers.SpiderBoss;
 import dev.kyro.pitsim.slayers.ZombieBoss;
 import net.citizensnpcs.Citizens;
 import net.citizensnpcs.api.CitizensAPI;
+import net.citizensnpcs.api.event.NPCRightClickEvent;
 import net.citizensnpcs.api.npc.NPC;
+import net.citizensnpcs.api.npc.NPCRegistry;
 import net.minecraft.server.v1_8_R3.NBTTagCompound;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -59,7 +62,7 @@ public class BossManager implements Listener {
     public static List<Player> activePlayers = new ArrayList<>();
     public static Map<NPC, PitBoss> bosses = new HashMap<>();
     public static List<Hologram> holograms = new ArrayList<>();
-    public static Map<SubLevel, Villager> clickables = new HashMap<>();
+    public static Map<SubLevel, NPC> clickables = new HashMap<>();
     public static Map<SubLevel, Map<Player, Integer>> bossItems = new HashMap<>();
     public static void onStart() {
         for (Hologram hologram : HologramsAPI.getHolograms(PitSim.INSTANCE)) {
@@ -67,10 +70,6 @@ public class BossManager implements Listener {
         }
 
         for (SubLevel level : SubLevel.values()) {
-            for (Entity nearbyEntity : level.middle.getWorld().getNearbyEntities(level.middle, 5, 5, 5)) {
-                if(nearbyEntity instanceof Villager) nearbyEntity.remove();
-            }
-
 
             bossItems.put(level, new HashMap<>());
 
@@ -80,54 +79,45 @@ public class BossManager implements Listener {
             holo.appendTextLine("{fast}" + level.placeholder + " ");
             holograms.add(holo);
 
-            Villager villager = Bukkit.getWorld("darkzone").spawn(level.middle.add(0, -1, 0), Villager.class);
-            System.out.println("Stand!");
-            noAI(villager);
-            villager.setAdult();
-            villager.setRemoveWhenFarAway(false);
-            villager.addPotionEffect(new PotionEffect(PotionEffectType.INVISIBILITY, Integer.MAX_VALUE, 0, false, false));
-            clickables.put(level, villager);
-            System.out.println(villager.getLocation());
+            NPCRegistry registry = CitizensAPI.getNPCRegistry();
+            NPC npc = registry.createNPC(EntityType.MAGMA_CUBE, "");
+            npc.spawn(level.middle.add(0, -1, 0));
+            new BukkitRunnable() {
+                @Override
+                public void run() {
+                    if(npc.isSpawned()) ((LivingEntity) npc.getEntity()).addPotionEffect(new PotionEffect(PotionEffectType.INVISIBILITY, Integer.MAX_VALUE, 0, false, false));
+                }
+            }.runTaskLater(PitSim.INSTANCE, 40);
+            clickables.put(level, npc);
         }
     }
 
     @EventHandler
-    public void onTrade(PlayerInteractEntityEvent event) {
-        if(event.getRightClicked() instanceof Villager) {
-            if(event.getPlayer().getWorld() != Bukkit.getWorld("darkzone")) return;
-//            for (Villager value : clickables.values()) {
-//                if(!value.getUniqueId().equals(event.getRightClicked().getUniqueId())) return;
-//            }
-            event.setCancelled(true);
+    public void onClick(NPCRightClickEvent event) {
+        SubLevel level = null;
+        for (Map.Entry<SubLevel, NPC> entry : clickables.entrySet()) {
+            if(entry.getValue().getId() == event.getNPC().getId()) level = entry.getKey();
+        }
+        if(activePlayers.contains(event.getClicker())) return;
 
-            SubLevel level = null;
-            for (Map.Entry<SubLevel, Villager> entry : clickables.entrySet()) {
-                if(entry.getValue().getUniqueId().equals(event.getRightClicked().getUniqueId())) level = entry.getKey();
-            }
-            if(activePlayers.contains(event.getPlayer())) return;
+        if(level != null && level.bossItem != null && useItem(event.getClicker(), level.bossItem)) {
+            Map<Player, Integer> players = bossItems.get(level);
+            if(players.containsKey(event.getClicker())) players.put(event.getClicker(), players.get(event.getClicker()) + 1);
+            else players.put(event.getClicker(), 1);
 
+            if(players.get(event.getClicker()) == 10) {
+                players.remove(event.getClicker());
+                level.middle.getWorld().playEffect(level.middle, Effect.EXPLOSION_HUGE, 100);
+                Sounds.PRESTIGE.play(level.middle);
+                try {
 
-            if(level != null && level.bossItem != null && useItem(event.getPlayer(), level.bossItem)) {
-                Map<Player, Integer> players = bossItems.get(level);
-                if(players.containsKey(event.getPlayer())) players.put(event.getPlayer(), players.get(event.getPlayer()) + 1);
-                else players.put(event.getPlayer(), 1);
-
-                if(players.get(event.getPlayer()) == 10) {
-                    players.remove(event.getPlayer());
-                    level.middle.getWorld().playEffect(level.middle, Effect.EXPLOSION_HUGE, 100);
-                    Sounds.PRESTIGE.play(level.middle);
-                    try {
-
-                        // Hard coding for now
-                        getBossType(level, event.getPlayer());
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
+                    // Hard coding for now
+                    getBossType(level, event.getClicker());
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
             }
         }
-
-
     }
 
     private void getBossType(SubLevel level, Player player) throws Exception {

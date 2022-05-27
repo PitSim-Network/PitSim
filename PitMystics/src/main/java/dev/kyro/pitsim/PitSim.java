@@ -48,12 +48,14 @@ import dev.kyro.pitsim.tutorial.objects.Tutorial;
 import dev.kyro.pitsim.upgrades.*;
 import net.citizensnpcs.api.CitizensAPI;
 import net.citizensnpcs.api.npc.NPC;
+import net.citizensnpcs.api.npc.NPCRegistry;
 import net.kyori.adventure.platform.bukkit.BukkitAudiences;
 import net.luckperms.api.LuckPerms;
 import net.milkbowl.vault.economy.Economy;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.entity.MagmaCube;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Villager;
 import org.bukkit.entity.Wither;
@@ -103,7 +105,9 @@ class PitSim extends JavaPlugin {
 		PROTOCOL_MANAGER = ProtocolLibrary.getProtocolManager();
 
 		List<NPC> toRemove = new ArrayList<>();
-		CitizensAPI.getNPCRegistry().forEach(toRemove::add);
+		for (NPC npc : CitizensAPI.getNPCRegistry()) {
+			if(!(npc.getEntity() instanceof MagmaCube)) toRemove.add(npc);
+		}
 		while(!toRemove.isEmpty()) {
 			toRemove.get(0).destroy();
 			toRemove.remove(0);
@@ -189,6 +193,12 @@ class PitSim extends JavaPlugin {
 	@Override
 	public void onDisable() {
 
+		for (NPC value : BossManager.clickables.values()) {
+			value.destroy();
+			NPCRegistry registry = CitizensAPI.getNPCRegistry();
+			registry.deregister(value);
+		}
+
 		for (EditSession session : FreezeSpell.sessions) {
 			session.undo(session);
 		}
@@ -213,10 +223,6 @@ class PitSim extends JavaPlugin {
 
 		for (Hologram hologram : BossManager.holograms) {
 			hologram.delete();
-		}
-
-		for (Villager villager : BossManager.clickables.values()) {
-			villager.remove();
 		}
 
 		for(Tutorial value : TutorialManager.tutorials.values()) {
