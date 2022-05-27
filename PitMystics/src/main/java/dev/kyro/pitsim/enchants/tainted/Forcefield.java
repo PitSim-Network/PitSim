@@ -68,6 +68,7 @@ public class Forcefield extends PitEnchant {
     public void onAttack(AttackEvent.Apply event) {
         int enchantLvl = event.getDefenderEnchantLevel(this);
         if(enchantLvl == 0) return;
+        if(!MapManager.inDarkzone(event.defender)) return;
 
         event.defender.setVelocity(event.defender.getVelocity().multiply(0));
 

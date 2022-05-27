@@ -60,10 +60,10 @@ public class CleaveSpell extends PitEnchant {
                         }
                         if(player == null) return;
                         if(nearbyEntity == player) continue;
-                        EntityDamageByEntityEvent damageEvent = new EntityDamageByEntityEvent(player, nearbyEntity, EntityDamageEvent.DamageCause.CUSTOM, 13);
-                        damageEvent.setDamage(15);
+                        EntityDamageByEntityEvent damageEvent = new EntityDamageByEntityEvent(player, nearbyEntity, EntityDamageEvent.DamageCause.CUSTOM, 5);
+                        damageEvent.setDamage(5);
                         Bukkit.getServer().getPluginManager().callEvent(damageEvent);
-                        if(damageEvent.isCancelled()) damageEvent.setDamage(15);
+                        if(damageEvent.isCancelled()) damageEvent.setDamage(5);
                         Sounds.CLEAVE3.play(player);
                     }
                 }

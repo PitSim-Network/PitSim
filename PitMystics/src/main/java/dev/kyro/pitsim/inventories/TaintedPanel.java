@@ -49,6 +49,9 @@ public class TaintedPanel extends AGUIPanel {
 				if(hasJewels(player)) openPanel(taintedGUI.shredJewelPanel);
 				else Sounds.NO.play(player);
 			}
+			if(slot == 11) {
+				openPanel(taintedGUI.craftTaintedPanel);
+			}
 		}
 	}
 

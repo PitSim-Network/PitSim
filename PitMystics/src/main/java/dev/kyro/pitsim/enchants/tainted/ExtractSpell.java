@@ -61,6 +61,7 @@ public  class ExtractSpell extends PitEnchant {
                 for (Entity nearbyEntity : entity.getNearbyEntities(10, 10, 10)) {
                     if(!(nearbyEntity instanceof LivingEntity)) continue;
                     if(nearbyEntity instanceof ArmorStand) continue;
+                    if(nearbyEntity == player) return;
                     if(((LivingEntity) nearbyEntity).getHealth() > ((LivingEntity) entity).getHealth()) {
                         pullEntity = (LivingEntity) nearbyEntity;
                         vector = player.getLocation().toVector().subtract(nearbyEntity.getLocation().add(0, 1, 0).toVector()).setY(2).normalize().multiply(2);

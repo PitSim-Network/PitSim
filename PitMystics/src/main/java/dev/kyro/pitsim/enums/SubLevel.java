@@ -48,5 +48,12 @@ public enum SubLevel {
 		this.boss = boss;
 	}
 
+	public static SubLevel getLevel(int subLevel) {
+		for (SubLevel value : values()) {
+			if(value.level == subLevel) return value;
+		}
+		return null;
+	}
+
 
 }

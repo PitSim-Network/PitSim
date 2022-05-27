@@ -48,9 +48,9 @@ public class Laser extends PitEnchant {
 
         LivingEntity attacked;
         Set<Material> mat = null;
-        Block block = player.getTargetBlock(mat, 20);
+        Block block = player.getTargetBlock(mat, 10);
 
-        for (Entity entity : player.getNearbyEntities(20, 20, 20)) {
+        for (Entity entity : player.getNearbyEntities(10, 10, 10)) {
             if(!(entity instanceof LivingEntity)) continue;
             if(entity instanceof ArmorStand || entity instanceof Villager) continue;
 
@@ -61,9 +61,9 @@ public class Laser extends PitEnchant {
                 attacked = (LivingEntity) entity;
                 block = entity.getLocation().getBlock();
 
-                EntityDamageByEntityEvent damageEvent = new EntityDamageByEntityEvent(player, attacked, EntityDamageEvent.DamageCause.ENTITY_ATTACK, 13);
+                EntityDamageByEntityEvent damageEvent = new EntityDamageByEntityEvent(player, attacked, EntityDamageEvent.DamageCause.ENTITY_ATTACK, 4);
                 Bukkit.getServer().getPluginManager().callEvent(damageEvent);
-                if(!damageEvent.isCancelled()) attacked.damage(13, player);
+                if(!damageEvent.isCancelled()) attacked.damage(4, player);
             }
         }
 
@@ -81,7 +81,7 @@ public class Laser extends PitEnchant {
 
     @Override
     public List<String> getDescription(int enchantLvl) {
-        return new ALoreBuilder("&7Your melee attacks become ranged", "&7with &f+20 blocks &7of reach", "&d&o-" + reduction(enchantLvl) + "% Mana Regen").getLore();
+        return new ALoreBuilder("&7Your melee attacks become ranged", "&7with &f+5 blocks &7of reach", "&d&o-" + reduction(enchantLvl) + "% Mana Regen").getLore();
     }
 
     public static int reduction(int enchantLvl) {

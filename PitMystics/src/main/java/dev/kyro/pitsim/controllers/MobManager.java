@@ -85,9 +85,12 @@ public class MobManager implements Listener {
 				List<PitMob> toRemove = new ArrayList<>();
 				for (PitMob mob : mobs) {
 
-					if(!(mob.entity instanceof Monster)) continue;
-					if(((Monster) mob.entity).getTarget() != null) continue;
-					if(mob.entity.getNearbyEntities(1, 1, 1).size() <= 1) continue;
+					assert SubLevel.getLevel(mob.subLevel) != null;
+					if(mob.entity.getLocation().distance(SubLevel.getLevel(mob.subLevel).middle) <= SubLevel.getLevel(mob.subLevel).radius) {
+						if(!(mob.entity instanceof Monster)) continue;
+						if(((Monster) mob.entity).getTarget() != null) continue;
+						if(mob.entity.getNearbyEntities(1, 1, 1).size() <= 1) continue;
+					}
 					nameTags.get(mob.entity.getUniqueId()).remove();
 					mob.entity.remove();
 					toRemove.add(mob);
@@ -197,7 +200,9 @@ public class MobManager implements Listener {
 
 	@EventHandler
 	public void onTarget(EntityTargetLivingEntityEvent event) {
-		if(event.getTarget().getLocation().distance(event.getEntity().getLocation()) > 5) event.setCancelled(true);
+		try {
+			if(event.getTarget().getLocation().distance(event.getEntity().getLocation()) > 5) event.setCancelled(true);
+		} catch (Exception ignored) { }
 	}
 
 	@EventHandler(priority = EventPriority.HIGHEST)

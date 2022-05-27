@@ -115,7 +115,7 @@ public class TaintedWell implements Listener
     public static void onButtonPush(final Player player, final boolean enchant) {
         final ArmorStand removeStand = TaintedWell.removeStands.get(player);
         final ArmorStand enchantStand = TaintedWell.enchantStands.get(player);
-        final PacketPlayOutEntity.PacketPlayOutRelEntityMoveLook tpPacket = new PacketPlayOutEntity.PacketPlayOutRelEntityMoveLook(getStandID(removeStand), (byte)0, (byte)0, (byte)64, (byte)0, (byte)0, false);
+        final PacketPlayOutEntity.PacketPlayOutRelEntityMoveLook tpPacket = new PacketPlayOutEntity.PacketPlayOutRelEntityMoveLook(getStandID(removeStand), (byte)64, (byte)0, (byte)0, (byte)0, (byte)0, false);
         ((CraftPlayer)player).getHandle().playerConnection.sendPacket(tpPacket);
         new BukkitRunnable() {
             public void run() {
@@ -123,7 +123,7 @@ public class TaintedWell implements Listener
                 removeStand.remove();
             }
         }.runTaskLater(PitSim.INSTANCE, 2L);
-        final PacketPlayOutEntity.PacketPlayOutRelEntityMoveLook tpRemovePacket = new PacketPlayOutEntity.PacketPlayOutRelEntityMoveLook(getStandID(enchantStand), (byte)0, (byte)0, (byte)(-64), (byte)0, (byte)0, false);
+        final PacketPlayOutEntity.PacketPlayOutRelEntityMoveLook tpRemovePacket = new PacketPlayOutEntity.PacketPlayOutRelEntityMoveLook(getStandID(enchantStand), (byte)(-64), (byte)0, (byte)0, (byte)0, (byte)0, false);
         ((CraftPlayer)player).getHandle().playerConnection.sendPacket(tpRemovePacket);
         new BukkitRunnable() {
             public void run() {
@@ -132,6 +132,7 @@ public class TaintedWell implements Listener
             }
         }.runTaskLater(PitSim.INSTANCE, 2L);
         if (!enchant) {
+            TaintedWell.setText(player, ChatColor.DARK_PURPLE + "" + ChatColor.BOLD + "Tainted Well", ChatColor.GRAY + "Enchant Mystic Items found", ChatColor.GRAY + "in the Darkzone here", ChatColor.YELLOW + "Right-Click with an Item!");
             final ItemStack item = TaintedWell.playerItems.get(player);
             AUtil.giveItemSafely(player, item, true);
             TaintedWell.playerItems.remove(player);
@@ -383,6 +384,8 @@ public class TaintedWell implements Listener
                         continue;
                     }
                     Player player = (Player)entity;
+                    if(!enchantingPlayers.contains(player) && !removeStands.containsKey(player))  TaintedWell.setText(player, ChatColor.DARK_PURPLE + "" + ChatColor.BOLD + "Tainted Well", ChatColor.GRAY + "Enchant Mystic Items found", ChatColor.GRAY + "in the Darkzone here", ChatColor.YELLOW + "Right-Click with an Item!");
+
                     PacketPlayOutEntity.PacketPlayOutRelEntityMoveLook packet = new PacketPlayOutEntity.PacketPlayOutRelEntityMoveLook(TaintedWell.getStandID(TaintedWell.wellStand), (byte)0, (byte)0, (byte)0, (byte)TaintedWell.i, (byte)0, false);
                     EntityPlayer nmsPlayer = ((CraftPlayer)entity).getHandle();
                     nmsPlayer.playerConnection.sendPacket(packet);
@@ -415,5 +418,19 @@ public class TaintedWell implements Listener
                 }
             }
         }.runTaskTimer(PitSim.INSTANCE, 2L, 2L);
+
+        new BukkitRunnable() {
+            @Override
+            public void run() {
+                for (Entity entity : TaintedWell.wellStand.getNearbyEntities(25.0, 25.0, 25.0)) {
+                    if(!(entity instanceof Player)) {
+                        continue;
+                    }
+                    Player player = (Player) entity;
+                    if(!enchantingPlayers.contains(player) && !removeStands.containsKey(player))
+                        TaintedWell.setText(player, ChatColor.DARK_PURPLE + "" + ChatColor.BOLD + "Tainted Well", ChatColor.GRAY + "Enchant Mystic Items found", ChatColor.GRAY + "in the Darkzone here", ChatColor.YELLOW + "Right-Click with an Item!");
+                }
+            }
+        }.runTaskTimer(PitSim.INSTANCE, 100, 100);
     }
 }

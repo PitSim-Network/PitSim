@@ -94,10 +94,10 @@ public class MeteorSpell extends PitEnchant {
 							 if(near instanceof ArmorStand || near instanceof Villager) continue;
 							 if(!(near instanceof LivingEntity)) continue;
 							 if(near == player) continue;
-							 EntityDamageByEntityEvent damageEvent = new EntityDamageByEntityEvent(player, near, EntityDamageEvent.DamageCause.ENTITY_ATTACK, 13);
-							 damageEvent.setDamage(30);
+							 EntityDamageByEntityEvent damageEvent = new EntityDamageByEntityEvent(player, near, EntityDamageEvent.DamageCause.ENTITY_ATTACK, 10);
+							 damageEvent.setDamage(10);
 							 Bukkit.getServer().getPluginManager().callEvent(damageEvent);
-							 if(!damageEvent.isCancelled()) ((LivingEntity) near).damage(30);
+							 if(!damageEvent.isCancelled()) ((LivingEntity) near).damage(10);
 
 							 return;
 						 }

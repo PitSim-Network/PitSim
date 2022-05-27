@@ -65,7 +65,8 @@ public class PlayerManager implements Listener {
 			new BukkitRunnable() {
 			@Override
 			public void run() {
-				for(PitPlayer pitPlayer : PitPlayer.pitPlayers) {
+				for (Player onlinePlayer : Bukkit.getOnlinePlayers()) {
+					PitPlayer pitPlayer = PitPlayer.getPitPlayer(onlinePlayer);
 					double reduction = 0.0;
 
 					for (Map.Entry<PitEnchant, Integer> entry : EnchantManager.getEnchantsOnPlayer(pitPlayer.player).entrySet()) {
