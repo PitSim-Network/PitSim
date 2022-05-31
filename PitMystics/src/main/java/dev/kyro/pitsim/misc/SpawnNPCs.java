@@ -4,6 +4,7 @@ import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.controllers.MapManager;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
+import dev.kyro.pitsim.inventories.LeggingsGUI;
 import dev.kyro.pitsim.inventories.PerkGUI;
 import dev.kyro.pitsim.inventories.PrestigeGUI;
 import dev.kyro.pitsim.inventories.TaintedGUI;
@@ -227,7 +228,8 @@ public class SpawnNPCs implements Listener {
 		}
 
 		if(event.getNPC().getId() == leggingMerchant.getId()) {
-
+			LeggingsGUI leggingsGUI = new LeggingsGUI(player);
+			leggingsGUI.open();
 		}
 	}
 
