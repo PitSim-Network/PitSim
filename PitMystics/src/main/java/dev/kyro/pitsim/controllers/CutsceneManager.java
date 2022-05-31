@@ -136,7 +136,7 @@ public class CutsceneManager implements Listener {
         new BukkitRunnable() {
             @Override
             public void run() {
-                Misc.applyPotionEffect(player, PotionEffectType.BLINDNESS, 45, 100, false, false);
+                Misc.applyPotionEffect(player, PotionEffectType.BLINDNESS, 55, 100, false, false);
             }
         }.runTaskLater(PitSim.INSTANCE, 1635);
 
@@ -159,7 +159,7 @@ public class CutsceneManager implements Listener {
         new BukkitRunnable() {
             @Override
             public void run() {
-                Misc.applyPotionEffect(player, PotionEffectType.BLINDNESS, 45, 100, false, false);
+                Misc.applyPotionEffect(player, PotionEffectType.BLINDNESS, 55, 100, false, false);
             }
         }.runTaskLater(PitSim.INSTANCE, 1795);
 
@@ -198,7 +198,7 @@ public class CutsceneManager implements Listener {
         }.runTaskLater(PitSim.INSTANCE, 1980);
 
         sendTitle(player, "&d&k||&5&lDarkzone&d&k||", "&7A corrupted world", 20);
-        sendTitle(player, "&eDifferent Combat", "&7Your normal mystics won't work here", 200);
+        sendTitle(player, "&eEnhanced Combat", "&7Your normal mystics won't work here", 200);
         sendTitle(player, "&eMana Bar", "&7Use Mana to cast &dSPELL! &7Enchants", 320);
         sendTitle(player, "&eA New Realm", "&7There is plenty to explore", 500);
         sendTitle(player, "&eBe Wary", "&7Strange forces lurk here", 650);
@@ -208,7 +208,7 @@ public class CutsceneManager implements Listener {
         sendTitle(player, "&eStart your Decent", "&7Explore 10 Unique levels and Bosses", 1300);
         sendTitle(player, "&eReclaim the Dead", "&7Kill Bosses for &fTainted Souls", 1500);
 
-        sendTitle(player, "&eBrew Potions", "&f100,000 &7Possible potions with Mob Items", 1700);
+        sendTitle(player, "&eBrew Potions", "&f10,000 &7Possible potions with Mob Items", 1700);
 
         sendTitle(player, "&eReady to Start?", "&7Craft and Enchant your &5Tainted Items &7here", 1840);
     }

@@ -39,9 +39,11 @@ public class EnchantCommand implements CommandExecutor {
 			return false;
 		}
 
-		if(!player.isOp() || MysticType.getMysticType(player.getItemInHand()) == MysticType.TAINTED_CHESTPLATE || MysticType.getMysticType(player.getItemInHand()) == MysticType.TAINTED_SCYTHE) {
-			AOutput.error(player, "&cNice try.");
-			return false;
+		if(MysticType.getMysticType(player.getItemInHand()) == MysticType.TAINTED_CHESTPLATE || MysticType.getMysticType(player.getItemInHand()) == MysticType.TAINTED_SCYTHE) {
+			if(!player.isOp()) {
+				AOutput.error(player, "&cNice try.");
+				return false;
+			}
 		}
 
 		if(args.length < 2) {
@@ -57,7 +59,7 @@ public class EnchantCommand implements CommandExecutor {
 			AOutput.error(player, "That enchant does not exist");
 			return false;
 		}
-		if(pitEnchant.tainted) {
+		if(pitEnchant.tainted && !player.isOp()) {
 			AOutput.error(player, "&cNice try.");
 			return false;
 		}

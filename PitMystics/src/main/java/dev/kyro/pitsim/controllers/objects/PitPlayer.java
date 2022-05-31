@@ -247,7 +247,10 @@ public class PitPlayer {
 				if(brewingSessions[i] != null) BrewingManager.brewingSessions.add(new BrewingSession(player, i, brewingSessions[i], null, null, null, null));
 			}
 
-			taintedSouls = playerData.getInt("taintedsouls");
+			if(playerData.contains("taintedsouls")) {
+				taintedSouls = playerData.getInt("taintedsouls");
+			} else taintedSouls = 200;
+
 
 
 			if(chatColorString != null) {
