@@ -384,7 +384,6 @@ public class TaintedWell implements Listener
                         continue;
                     }
                     Player player = (Player)entity;
-                    if(!enchantingPlayers.contains(player) && !removeStands.containsKey(player))  TaintedWell.setText(player, ChatColor.DARK_PURPLE + "" + ChatColor.BOLD + "Tainted Well", ChatColor.GRAY + "Enchant Mystic Items found", ChatColor.GRAY + "in the Darkzone here", ChatColor.YELLOW + "Right-Click with an Item!");
 
                     PacketPlayOutEntity.PacketPlayOutRelEntityMoveLook packet = new PacketPlayOutEntity.PacketPlayOutRelEntityMoveLook(TaintedWell.getStandID(TaintedWell.wellStand), (byte)0, (byte)0, (byte)0, (byte)TaintedWell.i, (byte)0, false);
                     EntityPlayer nmsPlayer = ((CraftPlayer)entity).getHandle();

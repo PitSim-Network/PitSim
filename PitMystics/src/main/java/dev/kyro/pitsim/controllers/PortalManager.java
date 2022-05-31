@@ -49,7 +49,7 @@ public class PortalManager implements Listener {
 
 
 		player.teleport(teleportLoc);
-		player.setVelocity(new Vector(1.5, 1, 0));
+			player.setVelocity(new Vector(1.5, 1, 0).multiply(0.25));
 		if(player.getWorld() == Bukkit.getWorld("darkzone")) {
 			Misc.sendTitle(player, "&d&k||&5&lDarkzone&d&k||", 40);
 			Misc.sendSubTitle(player, "", 40);

@@ -49,6 +49,11 @@ public class FreshCommand implements CommandExecutor {
 			return false;
 		}
 
+		if(!player.isOp() || MysticType.getMysticType(mystic) == MysticType.TAINTED_CHESTPLATE || MysticType.getMysticType(mystic) == MysticType.TAINTED_SCYTHE) {
+			AOutput.error(player, "&cNice try.");
+			return false;
+		}
+
 		AUtil.giveItemSafely(player, mystic);
 		return false;
 	}

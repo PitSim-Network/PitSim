@@ -37,7 +37,7 @@ public class Bone extends BrewingIngredient {
         if(effect == null) return;
 
         String[] values = ((String) getPotency(effect.potency)).split(",");
-        event.xpMultipliers.add((double) Integer.parseInt(values[0]) / 100D);
+        event.bonusXpReward += Integer.parseInt(values[0]);
         event.maxXPMultipliers.add((double) Integer.parseInt(values[1]) / 100D);
     }
 

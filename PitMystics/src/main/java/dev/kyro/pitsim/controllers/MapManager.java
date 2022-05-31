@@ -96,12 +96,12 @@ public class MapManager implements Listener {
 		for(World lobby : currentMap.lobbies) {
 			enablePortal(lobby);
 		}
-		for(Player onlinePlayer : Bukkit.getOnlinePlayers()) {
-			AOutput.send(onlinePlayer, "&6&lLOBBY! &7Use the portal to switch lobbies");
-			AOutput.send(onlinePlayer, "&6&lLOBBY! &7Use the portal to switch lobbies");
-			AOutput.send(onlinePlayer, "&6&lLOBBY! &7Use the portal to switch lobbies");
-			Misc.sendTitle(onlinePlayer, "&6&l2ND LOBBY OPEN!", 40);
-		}
+//		for(Player onlinePlayer : Bukkit.getOnlinePlayers()) {
+//			AOutput.send(onlinePlayer, "&6&lLOBBY! &7Use the portal to switch lobbies");
+//			AOutput.send(onlinePlayer, "&6&lLOBBY! &7Use the portal to switch lobbies");
+//			AOutput.send(onlinePlayer, "&6&lLOBBY! &7Use the portal to switch lobbies");
+//			Misc.sendTitle(onlinePlayer, "&6&l2ND LOBBY OPEN!", 40);
+//		}
 	}
 
 	public static void disableMultiLobbies(boolean override) {

@@ -64,6 +64,18 @@ public class BossManager implements Listener {
     public static List<Hologram> holograms = new ArrayList<>();
     public static Map<SubLevel, NPC> clickables = new HashMap<>();
     public static Map<SubLevel, Map<Player, Integer>> bossItems = new HashMap<>();
+
+    static {
+        new BukkitRunnable() {
+            @Override
+            public void run() {
+                for (NPC npc : clickables.values()) {
+                    if(npc.isSpawned()) ((LivingEntity) npc.getEntity()).addPotionEffect(new PotionEffect(PotionEffectType.INVISIBILITY, Integer.MAX_VALUE, 0, false, false));
+                }
+            }
+        }.runTaskTimer(PitSim.INSTANCE, 20 * 5, 20 * 5);
+    }
+
     public static void onStart() {
         for (Hologram hologram : HologramsAPI.getHolograms(PitSim.INSTANCE)) {
             hologram.delete();
@@ -82,12 +94,6 @@ public class BossManager implements Listener {
             NPCRegistry registry = CitizensAPI.getNPCRegistry();
             NPC npc = registry.createNPC(EntityType.MAGMA_CUBE, "");
             npc.spawn(level.middle.add(0, -1, 0));
-            new BukkitRunnable() {
-                @Override
-                public void run() {
-                    if(npc.isSpawned()) ((LivingEntity) npc.getEntity()).addPotionEffect(new PotionEffect(PotionEffectType.INVISIBILITY, Integer.MAX_VALUE, 0, false, false));
-                }
-            }.runTaskLater(PitSim.INSTANCE, 40);
             clickables.put(level, npc);
         }
     }

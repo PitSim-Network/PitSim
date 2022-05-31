@@ -90,7 +90,6 @@ class PitSim extends JavaPlugin {
 
 		loadConfig();
 		adventure = BukkitAudiences.create(this);
-		BossManager.onStart();
 		TaintedWell.onStart();
 		BrewingManager.onStart();
 
@@ -106,7 +105,7 @@ class PitSim extends JavaPlugin {
 
 		List<NPC> toRemove = new ArrayList<>();
 		for (NPC npc : CitizensAPI.getNPCRegistry()) {
-			if(!(npc.getEntity() instanceof MagmaCube)) toRemove.add(npc);
+			toRemove.add(npc);
 		}
 		while(!toRemove.isEmpty()) {
 			toRemove.get(0).destroy();
@@ -114,6 +113,7 @@ class PitSim extends JavaPlugin {
 		}
 
 		registerMaps();
+		BossManager.onStart();
 		MapManager.onStart();
 		NonManager.init();
 		SpawnNPCs.createNPCs();
@@ -423,6 +423,7 @@ class PitSim extends JavaPlugin {
 		getServer().getPluginManager().registerEvents(new TaintedManager(), this);
 		getServer().getPluginManager().registerEvents(new StereoManager(), this);
 		getServer().getPluginManager().registerEvents(new MusicManager(), this);
+		getServer().getPluginManager().registerEvents(new CutsceneManager(), this);
 	}
 	public void registerBoosters() {
 		BoosterManager.registerBooster(new XPBooster());

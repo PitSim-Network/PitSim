@@ -487,7 +487,7 @@ public class PitPlayer {
 	public void updateXPBar() {	
 		if(MapManager.inDarkzone(player)) {
 			player.setLevel((int) Math.ceil(mana));
-			if(mana >= getMaxMana() - 1) level = getMaxMana();
+			if(mana >= getMaxMana() - 1) player.setLevel(getMaxMana());
 			player.setExp((float) (mana / getMaxMana()));
 		} else {
 			player.setLevel(level);

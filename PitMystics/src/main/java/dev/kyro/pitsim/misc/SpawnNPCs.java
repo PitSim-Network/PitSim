@@ -15,6 +15,7 @@ import net.citizensnpcs.api.npc.NPCRegistry;
 import net.citizensnpcs.npc.skin.SkinnableEntity;
 import net.citizensnpcs.trait.LookClose;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.entity.Entity;
@@ -37,6 +38,7 @@ public class SpawnNPCs implements Listener {
 	public static List<NPC> vnx = new ArrayList<>();
 
 	public static NPC taintedShop;
+	public static NPC leggingMerchant;
 
 	public static void createNPCs() {
 		for(World world : MapManager.currentMap.lobbies) {
@@ -47,12 +49,18 @@ public class SpawnNPCs implements Listener {
 			createVnx2NPC(world);
 
 			createTaintedShopNPC();
+			createLeggingNPC();
 		}
 	}
 
 	public static void removeNPCs() {
 		try {
 			taintedShop.destroy();
+		} catch(Exception ignored) {
+			System.out.println("error despawning npc");
+		}
+		try {
+			leggingMerchant.destroy();
 		} catch(Exception ignored) {
 			System.out.println("error despawning npc");
 		}
@@ -159,6 +167,24 @@ public class SpawnNPCs implements Listener {
 		}.runTaskLater(PitSim.INSTANCE, 100);
 	}
 
+	public static void createLeggingNPC() {
+		NPCRegistry registry = CitizensAPI.getNPCRegistry();
+		NPC npc = registry.createNPC(EntityType.PLAYER, ChatColor.AQUA + "" + ChatColor.BOLD + "ARMOR TRADER");
+		npc.spawn(new Location(MapManager.getDarkzone(), 186, 91, -103, -40, 0));
+		leggingMerchant = npc;
+		skin(npc, "Merchant");
+
+		new BukkitRunnable() {
+			@Override
+			public void run() {
+				for (Entity nearbyEntity : leggingMerchant.getEntity().getNearbyEntities(2, 2, 2)) {
+					if(nearbyEntity == npc.getEntity()) continue;
+					if(registry.isNPC(nearbyEntity)) registry.getNPC(nearbyEntity).destroy();
+				}
+			}
+		}.runTaskLater(PitSim.INSTANCE, 100);
+	}
+
 
 	@EventHandler
 	public void onClickEvent(NPCRightClickEvent event) {
@@ -198,6 +224,10 @@ public class SpawnNPCs implements Listener {
 		if(event.getNPC().getId() == taintedShop.getId()) {
 			TaintedGUI taintedGUI = new TaintedGUI(player);
 			taintedGUI.open();
+		}
+
+		if(event.getNPC().getId() == leggingMerchant.getId()) {
+
 		}
 	}
 

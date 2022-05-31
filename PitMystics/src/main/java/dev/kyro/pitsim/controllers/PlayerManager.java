@@ -28,10 +28,7 @@ import dev.kyro.pitsim.misc.KillEffects;
 import dev.kyro.pitsim.misc.Misc;
 import dev.kyro.pitsim.misc.Sounds;
 import me.clip.placeholderapi.PlaceholderAPI;
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.Location;
-import org.bukkit.Material;
+import org.bukkit.*;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Entity;
@@ -67,6 +64,10 @@ public class PlayerManager implements Listener {
 			public void run() {
 				for (Player onlinePlayer : Bukkit.getOnlinePlayers()) {
 					PitPlayer pitPlayer = PitPlayer.getPitPlayer(onlinePlayer);
+					if(!MapManager.inDarkzone(pitPlayer.player)) continue;
+
+					if(onlinePlayer.getLocation().getY() >= 85) onlinePlayer.spigot().playEffect(onlinePlayer.getLocation(), Effect.PORTAL, 0, 0, 10, 10, 10, 1, 128, 100);
+
 					double reduction = 0.0;
 
 					for (Map.Entry<PitEnchant, Integer> entry : EnchantManager.getEnchantsOnPlayer(pitPlayer.player).entrySet()) {
@@ -74,7 +75,6 @@ public class PlayerManager implements Listener {
 						reduction += (0.8 - (0.2 * entry.getValue()));
 					}
 
-					if(!MapManager.inDarkzone(pitPlayer.player)) continue;
 					double amount = 0.5;
 					PotionEffect effect = PotionManager.getEffect(pitPlayer.player, MagmaCream.INSTANCE);
 					if(effect != null) amount += (Double) effect.potionType.getPotency(effect.potency);
@@ -490,6 +490,8 @@ public class PlayerManager implements Listener {
 		new BukkitRunnable() {
 			@Override
 			public void run() {
+
+				player.setGameMode(GameMode.SURVIVAL);
 
 				if(!player.isOp() && !player.getName().equals("Fishduper")) {
 

@@ -4,6 +4,7 @@ import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.arcticapi.misc.AUtil;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.brewing.objects.BrewingIngredient;
+import dev.kyro.pitsim.controllers.CutsceneManager;
 import dev.kyro.pitsim.controllers.MobManager;
 import dev.kyro.pitsim.controllers.TaintedWell;
 import dev.kyro.pitsim.enums.SubLevel;
@@ -33,8 +34,10 @@ public class ATestCommand implements CommandExecutor {
 		if(!(sender instanceof Player)) return false;
 		Player player = (Player) sender;
 
-		TaintedGUI taintedGUI = new TaintedGUI(player);
-		taintedGUI.open();
+		CutsceneManager.play(player);
+
+//		TaintedGUI taintedGUI = new TaintedGUI(player);
+//		taintedGUI.open();
 
 //		for (BrewingIngredient ingredient : BrewingIngredient.ingredients) {
 //			AUtil.giveItemSafely(player, ingredient.getItem());
