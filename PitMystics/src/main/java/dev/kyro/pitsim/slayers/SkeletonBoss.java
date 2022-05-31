@@ -197,7 +197,7 @@ public class SkeletonBoss extends PitBoss {
         itemStack = FreshCommand.getFreshItem(MysticType.SWORD, PantColor.GREEN);
         itemStack = EnchantManager.addEnchant(itemStack, EnchantManager.getEnchant("bill"), 3, false);
         itemStack = EnchantManager.addEnchant(itemStack, EnchantManager.getEnchant("cd"), 3, false);
-        itemStack = EnchantManager.addEnchant(itemStack, EnchantManager.getEnchant("kb"), 2, false);
+        itemStack = EnchantManager.addEnchant(itemStack, EnchantManager.getEnchant("kb"), 3, false);
         return itemStack;
     }
 

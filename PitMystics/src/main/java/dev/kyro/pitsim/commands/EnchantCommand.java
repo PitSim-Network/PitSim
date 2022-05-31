@@ -57,7 +57,7 @@ public class EnchantCommand implements CommandExecutor {
 			AOutput.error(player, "That enchant does not exist");
 			return false;
 		}
-		if(pitEnchant.tainted) {
+		if(!player.isOp() && pitEnchant.tainted) {
 			AOutput.error(player, "&cNice try.");
 			return false;
 		}
