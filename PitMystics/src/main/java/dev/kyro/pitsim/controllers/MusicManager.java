@@ -6,6 +6,7 @@ import com.xxmicloxx.NoteBlockAPI.model.Song;
 import com.xxmicloxx.NoteBlockAPI.songplayer.EntitySongPlayer;
 import com.xxmicloxx.NoteBlockAPI.utils.NBSDecoder;
 import dev.kyro.pitsim.PitSim;
+import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
@@ -25,7 +26,7 @@ public class MusicManager implements Listener {
             @Override
             public void run() {
                 for (Player player : Bukkit.getOnlinePlayers()) {
-                    if(!MapManager.inDarkzone(player) || NoteBlockAPI.isReceivingSong(player)) continue;
+                    if(!MapManager.inDarkzone(player) || NoteBlockAPI.isReceivingSong(player) || PitPlayer.getPitPlayer(player).musicDisabled) continue;
                     File file = new File("plugins/NoteBlockAPI/Effects/darkzone.nbs");
                     Song song = NBSDecoder.parse(file);
                     EntitySongPlayer esp = new EntitySongPlayer(song);

@@ -292,7 +292,12 @@ public class DamageManager implements Listener {
 
 		Non killingNon = NonManager.getNon(killer);
 		if(killerIsPlayer) {
-			if(killingNon == null) pitKiller.incrementKills();
+			if(killingNon == null) {
+				Non deadNon = NonManager.getNon(dead);
+				if(deadNon != null || Bukkit.getOnlinePlayers().contains(deadPlayer)) {
+					pitKiller.incrementKills();
+				}
+			}
 
 			Misc.multiKill(killerPlayer);
 		}

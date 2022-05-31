@@ -12,6 +12,7 @@ import dev.kyro.pitsim.controllers.MapManager;
 import dev.kyro.pitsim.controllers.MusicManager;
 import dev.kyro.pitsim.controllers.StereoManager;
 import dev.kyro.pitsim.controllers.objects.PitEnchant;
+import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.enums.ApplyType;
 import dev.kyro.pitsim.events.AttackEvent;
 import dev.kyro.pitsim.misc.Misc;
@@ -84,7 +85,7 @@ public class Stereo extends PitEnchant {
 			MusicManager.stopPlaying(player);
 
 			for(Player onlinePlayer : Bukkit.getOnlinePlayers()) {
-				if(StereoManager.toggledPlayers.contains(onlinePlayer)) return;
+				if(PitPlayer.getPitPlayer(player).musicDisabled) continue;
 				esp.addPlayer(onlinePlayer);
 			}
 

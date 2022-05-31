@@ -372,6 +372,7 @@ class PitSim extends JavaPlugin {
 		getCommand("tutorial").setExecutor(new TutorialCommand());
 		getCommand("kit").setExecutor(new KitCommand());
 		getCommand("view").setExecutor(new ViewCommand());
+		getCommand("music").setExecutor(new MusicCommand());
 	}
 
 	private void registerListeners() {

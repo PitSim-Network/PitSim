@@ -1,10 +1,13 @@
 package dev.kyro.pitsim.controllers;
 
+import dev.kyro.arcticapi.data.APlayer;
+import dev.kyro.arcticapi.data.APlayerData;
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.misc.Misc;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -50,7 +53,15 @@ public class PortalManager implements Listener {
 
 		player.teleport(teleportLoc);
 			player.setVelocity(new Vector(1.5, 1, 0).multiply(0.25));
+
 		if(player.getWorld() == Bukkit.getWorld("darkzone")) {
+			APlayer aPlayer = APlayerData.getPlayerData(player);
+			FileConfiguration playerData = aPlayer.playerData;
+			if(!playerData.contains("darkzonepreview")) {
+				CutsceneManager.play(player);
+				return;
+			}
+
 			Misc.sendTitle(player, "&d&k||&5&lDarkzone&d&k||", 40);
 			Misc.sendSubTitle(player, "", 40);
 			AOutput.send(player, "&7You have been sent to the &d&k||&5&lDarkzone&d&k||&7.");

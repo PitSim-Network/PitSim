@@ -7,11 +7,15 @@ import com.xxmicloxx.NoteBlockAPI.model.RepeatMode;
 import com.xxmicloxx.NoteBlockAPI.model.Song;
 import com.xxmicloxx.NoteBlockAPI.songplayer.EntitySongPlayer;
 import com.xxmicloxx.NoteBlockAPI.utils.NBSDecoder;
+import dev.kyro.arcticapi.data.APlayer;
+import dev.kyro.arcticapi.data.APlayerData;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.misc.Misc;
 import eu.crushedpixel.camerastudio.CameraStudio;
+import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -136,7 +140,7 @@ public class CutsceneManager implements Listener {
         new BukkitRunnable() {
             @Override
             public void run() {
-                Misc.applyPotionEffect(player, PotionEffectType.BLINDNESS, 55, 100, false, false);
+                Misc.applyPotionEffect(player, PotionEffectType.BLINDNESS, 65, 100, false, false);
             }
         }.runTaskLater(PitSim.INSTANCE, 1635);
 
@@ -159,7 +163,7 @@ public class CutsceneManager implements Listener {
         new BukkitRunnable() {
             @Override
             public void run() {
-                Misc.applyPotionEffect(player, PotionEffectType.BLINDNESS, 55, 100, false, false);
+                Misc.applyPotionEffect(player, PotionEffectType.BLINDNESS, 65, 100, false, false);
             }
         }.runTaskLater(PitSim.INSTANCE, 1795);
 
@@ -194,6 +198,13 @@ public class CutsceneManager implements Listener {
                 esp.setPlaying(false);
                 FeatherBoardAPI.toggle(player);
                 NoteBlockAPI.stopPlaying(player);
+
+                APlayer aPlayer = APlayerData.getPlayerData(player);
+                FileConfiguration playerData = aPlayer.playerData;
+                if(player.isOnline()) {
+                    playerData.set("darkzonepreview", true);
+                    aPlayer.save();
+                }
             }
         }.runTaskLater(PitSim.INSTANCE, 1980);
 
@@ -205,7 +216,7 @@ public class CutsceneManager implements Listener {
 
         sendTitle(player, "&eEnter the Dungeon", "&7Fight monsters for unique Items", 820);
         sendTitle(player, "&eChallenge your Skill", "&7Use drops to spawn Bosses", 1060);
-        sendTitle(player, "&eStart your Decent", "&7Explore 10 Unique levels and Bosses", 1300);
+        sendTitle(player, "&eStart your Descent", "&7Explore 10 Unique levels and Bosses", 1300);
         sendTitle(player, "&eReclaim the Dead", "&7Kill Bosses for &fTainted Souls", 1500);
 
         sendTitle(player, "&eBrew Potions", "&f10,000 &7Possible potions with Mob Items", 1700);

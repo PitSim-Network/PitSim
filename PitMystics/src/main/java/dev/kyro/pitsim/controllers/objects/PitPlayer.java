@@ -78,6 +78,7 @@ public class PitPlayer {
 	public boolean bountiesDisabled;
 	public boolean streaksDisabled;
 	public boolean lightingDisabled;
+	public boolean musicDisabled;
 	public boolean promptPack;
 
 	public double goldStack;
@@ -152,6 +153,7 @@ public class PitPlayer {
 		playerData.set("disabledbounties", bountiesDisabled);
 		playerData.set("disabledstreaks", streaksDisabled);
 		playerData.set("settings.lightning", lightingDisabled);
+		playerData.set("settings.music", musicDisabled);
 		playerData.set("promptPack", promptPack);
 
 		playerData.set("goldstack", goldStack);
@@ -214,6 +216,7 @@ public class PitPlayer {
 			bountiesDisabled = playerData.getBoolean("disabledbounties");
 			streaksDisabled = playerData.getBoolean("disabledstreaks");
 			lightingDisabled = playerData.getBoolean("settings.lightning");
+			musicDisabled = playerData.getBoolean("settings.music");
 			promptPack = playerData.getBoolean("promptPack");
 
 			lastVersion = playerData.getDouble("lastversion");

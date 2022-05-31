@@ -307,6 +307,7 @@ public class BossManager implements Listener {
     }
 
     public static void playMusic(Player player, int level) {
+        if(PitPlayer.getPitPlayer(player).musicDisabled) return;
         MusicManager.stopPlaying(player);
         File file = new File("plugins/NoteBlockAPI/Effects/boss" + level + ".nbs");
         Song song = NBSDecoder.parse(file);
