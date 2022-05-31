@@ -46,6 +46,21 @@ public class FermentedSpiderEye extends BrewingIngredient {
                 Sounds.AEGIS.play(event.defenderPlayer.getLocation());
                 event.defenderPlayer.getWorld().playEffect(event.defenderPlayer.getLocation(), Effect.EXPLOSION_LARGE, Effect.EXPLOSION_LARGE.getData(), 100);
             }
+
+
+            PotionEffect attackerEffect = PotionManager.getEffect(event.attackerPlayer, this);
+
+            if(attackerEffect != null) {
+                double attackerChance = (double) getPotency(attackerEffect.potency);
+                boolean attackerIsProtected = Math.random() <= attackerChance;
+
+                if(attackerIsProtected) {
+                    event.setCancelled(true);
+                    event.event.setCancelled(true);
+                    Sounds.AEGIS.play(event.defenderPlayer.getLocation());
+                    event.defenderPlayer.getWorld().playEffect(event.defenderPlayer.getLocation(), Effect.EXPLOSION_LARGE, Effect.EXPLOSION_LARGE.getData(), 100);
+                }
+            }
         }
     }
 

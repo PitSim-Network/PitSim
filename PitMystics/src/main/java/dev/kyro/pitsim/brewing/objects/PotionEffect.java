@@ -44,7 +44,7 @@ public class PotionEffect implements Listener {
     public void onExpire(boolean hideMessage) {
         if(!hideMessage) AOutput.send(player, "&5&lPOTION! " + potionType.color + potionType.name + " &7has expired");
         PotionManager.potionEffectList.remove(this);
-        if(PotionManager.playerIndex.get(player) > 0) PotionManager.playerIndex.put(player, PotionManager.playerIndex.get(player) - 1);
+        if(PotionManager.playerIndex.containsKey(player) && PotionManager.playerIndex.get(player) > 0) PotionManager.playerIndex.put(player, PotionManager.playerIndex.get(player) - 1);
         else PotionManager.playerIndex.remove(player);
         if(PotionManager.getPotionEffects(player).size() == 0) PotionManager.hideActiveBossBar(PitSim.adventure.player(player), player);
     }

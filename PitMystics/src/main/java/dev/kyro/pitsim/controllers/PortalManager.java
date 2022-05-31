@@ -4,6 +4,7 @@ import dev.kyro.arcticapi.data.APlayer;
 import dev.kyro.arcticapi.data.APlayerData;
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.PitSim;
+import dev.kyro.pitsim.brewing.PotionManager;
 import dev.kyro.pitsim.misc.Misc;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -31,6 +32,8 @@ public class PortalManager implements Listener {
 		event.setCancelled(true);
 		Player player = event.getPlayer();
 		Location playerLoc = player.getLocation();
+
+		PotionManager.bossBars.remove(player);
 
 		Location teleportLoc;
 		if(player.getWorld() != Bukkit.getWorld("darkzone")) {

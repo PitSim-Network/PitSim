@@ -19,6 +19,7 @@ import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.entity.PotionSplashEvent;
 import org.bukkit.event.player.PlayerItemConsumeEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.ItemStack;
@@ -89,28 +90,6 @@ public class PotionManager implements Listener {
                 }
             }
         }.runTaskTimer(PitSim.INSTANCE, 2, 2);
-
-//        new BukkitRunnable() {
-//            @Override
-//            public void run() {
-//                for (Player player : Bukkit.getOnlinePlayers()) {
-//                    List<PotionEffect> effects = getPotionEffects(player);
-//                    if(effects.size() == 0) continue;
-//                    if(!playerIndex.containsKey(player)) continue;
-//                    if(!bossBars.containsKey(player)) continue;
-//                    int index = playerIndex.get(player);
-//                    index++;
-//                    if(index + 1 >= (effects.size()) + 1) index = 0;
-//
-//
-//
-//                    PotionEffect effect = effects.get(index);
-//                    Bukkit.broadcastMessage(effect.potionType.name);
-//                    float progress = effect.getTimeLeft() / (float) effect.potionType.getDuration(effect.duration);
-//                    bossBars.put(player, bossBars.get(player).progress(progress));
-//                }
-//            }
-//        }.runTaskTimer(PitSim.INSTANCE, 2, 2);
     }
     
     @EventHandler
@@ -142,6 +121,38 @@ public class PotionManager implements Listener {
             identifier.administerEffect(player, potency, 0);
         } else {
             potionEffectList.add(new PotionEffect(player, identifier, potency, duration));
+        }
+    }
+
+    @EventHandler
+    public void onSplash(PotionSplashEvent event) {
+        for (LivingEntity affectedEntity : event.getAffectedEntities()) {
+            if(!(affectedEntity instanceof Player)) continue;
+
+            Player player = (Player) affectedEntity;
+
+            ItemStack potion = event.getPotion().getItem();
+            NBTItem nbtItem = new NBTItem(potion);
+            if(!nbtItem.hasKey(NBTTag.POTION_IDENTIFIER.getRef())) return;
+
+            BrewingIngredient identifier = BrewingIngredient.getIngredientFromTier(nbtItem.getInteger(NBTTag.POTION_IDENTIFIER.getRef()));
+            BrewingIngredient potency = BrewingIngredient.getIngredientFromTier(nbtItem.getInteger(NBTTag.POTION_POTENCY.getRef()));
+            BrewingIngredient duration = BrewingIngredient.getIngredientFromTier(nbtItem.getInteger(NBTTag.POTION_DURATION.getRef()));
+
+            if(hasLesserEffect(player, identifier, potency)) {
+                AOutput.send(player, "&5&lPOTION! &7You already have a stonger tier of this effect!");
+                continue;
+            }
+            replaceLesserEffects(player, identifier, potency);
+
+            assert identifier != null;
+            assert potency != null;
+
+            if(identifier instanceof SpiderEye) {
+                identifier.administerEffect(player, potency, 0);
+            } else {
+                potionEffectList.add(new PotionEffect(player, identifier, potency, duration));
+            }
         }
     }
 

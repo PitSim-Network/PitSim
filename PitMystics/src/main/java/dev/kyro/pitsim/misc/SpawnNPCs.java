@@ -4,10 +4,7 @@ import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.controllers.MapManager;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
-import dev.kyro.pitsim.inventories.LeggingsGUI;
-import dev.kyro.pitsim.inventories.PerkGUI;
-import dev.kyro.pitsim.inventories.PrestigeGUI;
-import dev.kyro.pitsim.inventories.TaintedGUI;
+import dev.kyro.pitsim.inventories.*;
 import dev.kyro.pitsim.inventories.stats.StatGUI;
 import net.citizensnpcs.api.CitizensAPI;
 import net.citizensnpcs.api.event.NPCRightClickEvent;
@@ -40,6 +37,7 @@ public class SpawnNPCs implements Listener {
 
 	public static NPC taintedShop;
 	public static NPC leggingMerchant;
+	public static NPC potionMaster;
 
 	public static void createNPCs() {
 		for(World world : MapManager.currentMap.lobbies) {
@@ -51,10 +49,16 @@ public class SpawnNPCs implements Listener {
 
 			createTaintedShopNPC();
 			createLeggingNPC();
+			createPotionNPC();
 		}
 	}
 
 	public static void removeNPCs() {
+		try {
+			potionMaster.destroy();
+		} catch(Exception ignored) {
+			System.out.println("error despawning npc");
+		}
 		try {
 			taintedShop.destroy();
 		} catch(Exception ignored) {
@@ -186,6 +190,24 @@ public class SpawnNPCs implements Listener {
 		}.runTaskLater(PitSim.INSTANCE, 100);
 	}
 
+	public static void createPotionNPC() {
+		NPCRegistry registry = CitizensAPI.getNPCRegistry();
+		NPC npc = registry.createNPC(EntityType.PLAYER, ChatColor.LIGHT_PURPLE + "" + ChatColor.BOLD + "POTION MASTER");
+		npc.spawn(new Location(MapManager.getDarkzone(), 195.5, 91, -84.5, -147, 0));
+		potionMaster = npc;
+		skin(npc, "Wiizard");
+
+		new BukkitRunnable() {
+			@Override
+			public void run() {
+				for (Entity nearbyEntity : potionMaster.getEntity().getNearbyEntities(2, 2, 2)) {
+					if(nearbyEntity == npc.getEntity()) continue;
+					if(registry.isNPC(nearbyEntity)) registry.getNPC(nearbyEntity).destroy();
+				}
+			}
+		}.runTaskLater(PitSim.INSTANCE, 100);
+	}
+
 
 	@EventHandler
 	public void onClickEvent(NPCRightClickEvent event) {
@@ -230,6 +252,11 @@ public class SpawnNPCs implements Listener {
 		if(event.getNPC().getId() == leggingMerchant.getId()) {
 			LeggingsGUI leggingsGUI = new LeggingsGUI(player);
 			leggingsGUI.open();
+		}
+
+		if(event.getNPC().getId() == potionMaster.getId()) {
+			PotionMasterGUI potionMasterGUI = new PotionMasterGUI(player);
+			potionMasterGUI.open();
 		}
 	}
 
