@@ -20,10 +20,7 @@ import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
-import org.bukkit.event.entity.EntityDamageByEntityEvent;
-import org.bukkit.event.entity.EntitySpawnEvent;
-import org.bukkit.event.entity.EntityTargetLivingEntityEvent;
-import org.bukkit.event.entity.ExplosionPrimeEvent;
+import org.bukkit.event.entity.*;
 import org.bukkit.event.player.PlayerArmorStandManipulateEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -177,7 +174,9 @@ public class MobManager implements Listener {
 					int high = 100;
 					int result = r.nextInt(high-low) + low;
 
-					if(result + chance > entry.getValue()) continue;
+					result += result * (chance * 0.01);
+
+					if(result > entry.getValue()) continue;
 					event.dead.getWorld().dropItemNaturally(event.dead.getLocation(), entry.getKey());
 				}
 			}
@@ -191,11 +190,12 @@ public class MobManager implements Listener {
 			}
 		}.runTaskLater(PitSim.INSTANCE, 1);
 	}
-
-	@EventHandler
-	public void onSpawn(EntitySpawnEvent event) {
-		if(event.getLocation().getWorld() == Bukkit.getWorld("darkzone") && event.getEntity() instanceof Enderman && !event.getEntity().isCustomNameVisible()) event.setCancelled(true);
-	}
+//
+//	@EventHandler
+//	public void onSpawn(EntitySpawnEvent event) {
+//		if(event.getLocation().getWorld() == Bukkit.getWorld("darkzone") && event.getEntity() instanceof Enderman &&
+//				!PitMob.isPitMob((LivingEntity) event.getEntity())) event.setCancelled(true);
+//	}
 
 	@EventHandler(priority = EventPriority.HIGHEST)
 	public void onHit(AttackEvent.Pre event) {
@@ -208,6 +208,16 @@ public class MobManager implements Listener {
 		for(ArmorStand value : nameTags.values()) {
 			if(event.defender.getUniqueId().equals(value.getUniqueId())) event.setCancelled(true);
 		}
+	}
+
+	@EventHandler
+	public void onBlockPickup(EntityChangeBlockEvent event) {
+		if(event.getEntity() instanceof Enderman) event.setCancelled(true);
+	}
+
+	@EventHandler
+	public void onTeleport(EntityTeleportEvent event) {
+		if(event.getEntity() instanceof Enderman) event.setCancelled(true);
 	}
 
 	@EventHandler
@@ -300,7 +310,7 @@ public class MobManager implements Listener {
 			if(entity instanceof Wither) continue;
 			if(entity instanceof Villager) continue;
 			if(entity instanceof Fireball) continue;
-			if(entity instanceof Slime && !(entity instanceof MagmaCube)) return;
+			if(entity instanceof Slime && !(entity instanceof MagmaCube)) continue;
 
 			entity.remove();
 		}

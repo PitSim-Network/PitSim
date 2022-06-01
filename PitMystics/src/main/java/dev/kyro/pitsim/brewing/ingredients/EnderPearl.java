@@ -24,8 +24,10 @@ import java.util.List;
 import java.util.Map;
 
 public class EnderPearl extends BrewingIngredient {
+    public static EnderPearl INSTANCE;
     public EnderPearl() {
         super(10, NBTTag.ENDERMAN_PEARL, "Venom", ChatColor.GREEN, PotionType.POISON);
+        INSTANCE = this;
     }
 
     @Override

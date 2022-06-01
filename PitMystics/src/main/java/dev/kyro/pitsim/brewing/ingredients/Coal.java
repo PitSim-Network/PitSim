@@ -5,7 +5,6 @@ import dev.kyro.pitsim.brewing.objects.BrewingIngredient;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.enums.NBTTag;
 import dev.kyro.pitsim.misc.Misc;
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -19,10 +18,12 @@ import org.bukkit.potion.PotionType;
 import java.util.*;
 
 public class Coal extends BrewingIngredient {
+    public static Coal INSTANCE;
     public Map<Player, Integer> tickMap = new HashMap<>();
 
     public Coal() {
-        super(8, NBTTag.WITHER_SKULL, "Wither", ChatColor.DARK_GRAY, PotionType.WEAKNESS);
+        super(8, NBTTag.WITHER_SKELETON_COAL, "Wither", ChatColor.DARK_GRAY, PotionType.WEAKNESS);
+        INSTANCE = this;
     }
 
     @Override

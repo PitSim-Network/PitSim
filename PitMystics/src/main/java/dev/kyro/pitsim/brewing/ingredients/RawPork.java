@@ -16,10 +16,12 @@ import org.bukkit.potion.PotionType;
 import java.util.*;
 
 public class RawPork extends BrewingIngredient {
+    public static RawPork INSTANCE = new RawPork();
     public Map<Player, Integer> tickMap = new HashMap<>();
 
     public RawPork() {
         super(7, NBTTag.PIGMAN_PORK, "Regeneration", ChatColor.RED, PotionType.INSTANT_HEAL);
+        INSTANCE = this;
     }
 
     @Override

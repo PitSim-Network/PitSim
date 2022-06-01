@@ -19,8 +19,10 @@ import java.util.Arrays;
 import java.util.List;
 
 public class IronIngot extends BrewingIngredient {
+    public static IronIngot INSTANCE;
     public IronIngot() {
         super(9, NBTTag.GOLEM_INGOT, "Defense", ChatColor.BLUE, PotionType.NIGHT_VISION);
+        INSTANCE = this;
     }
 
     @Override
