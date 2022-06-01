@@ -46,6 +46,7 @@ import org.bukkit.event.entity.ProjectileLaunchEvent;
 import org.bukkit.event.player.PlayerArmorStandManipulateEvent;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
+import org.bukkit.event.player.PlayerTeleportEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
@@ -69,11 +70,12 @@ public class BossManager implements Listener {
         new BukkitRunnable() {
             @Override
             public void run() {
-                for (NPC npc : clickables.values()) {
-                    if(npc.isSpawned()) ((LivingEntity) npc.getEntity()).addPotionEffect(new PotionEffect(PotionEffectType.INVISIBILITY, Integer.MAX_VALUE, 0, false, false));
+                for (Map.Entry<SubLevel, NPC> entry : clickables.entrySet()) {
+                    entry.getValue().teleport(entry.getKey().middle, PlayerTeleportEvent.TeleportCause.UNKNOWN);
+                    if(entry.getValue().isSpawned()) ((LivingEntity) entry.getValue().getEntity()).addPotionEffect(new PotionEffect(PotionEffectType.INVISIBILITY, Integer.MAX_VALUE, 0, false, false));
                 }
             }
-        }.runTaskTimer(PitSim.INSTANCE, 20 * 5, 20 * 5);
+        }.runTaskTimer(PitSim.INSTANCE, 20, 20 * 5);
     }
 
     public static void onStart() {
@@ -215,6 +217,7 @@ public class BossManager implements Listener {
             if(entry.getKey().getEntity() == event.dead) {
                 entry.getKey().destroy();
                 entry.getValue().onDeath();
+                giveSouls(entry.getValue().target, entry.getValue().subLevel.level * 5);
                 toRemove.add(entry.getKey());
                 activePlayers.remove(entry.getValue().target);
             } else if(entry.getValue().target == event.dead) {
@@ -317,6 +320,13 @@ public class BossManager implements Listener {
         esp.setRepeatMode(RepeatMode.ONE);
         esp.addPlayer(player);
         esp.setPlaying(true);
+    }
+
+    public static void giveSouls(Player player, int amount) {
+        PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
+
+        pitPlayer.taintedSouls += amount;
+        AOutput.send(player, "&d&lTAINTED &7You have gained &f" + amount + "  Tainted Souls&7.");
     }
 
 

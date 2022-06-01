@@ -46,11 +46,10 @@ public class SpawnNPCs implements Listener {
 			createKyroNPC(world);
 			createWijiNPC(world);
 			createVnx2NPC(world);
-
-			createTaintedShopNPC();
-			createLeggingNPC();
-			createPotionNPC();
 		}
+		createTaintedShopNPC();
+		createLeggingNPC();
+		createPotionNPC();
 	}
 
 	public static void removeNPCs() {
@@ -169,7 +168,7 @@ public class SpawnNPCs implements Listener {
 					if(registry.isNPC(nearbyEntity)) registry.getNPC(nearbyEntity).destroy();
 				}
 			}
-		}.runTaskLater(PitSim.INSTANCE, 100);
+		}.runTaskLater(PitSim.INSTANCE, 20 * 10);
 	}
 
 	public static void createLeggingNPC() {
@@ -187,7 +186,7 @@ public class SpawnNPCs implements Listener {
 					if(registry.isNPC(nearbyEntity)) registry.getNPC(nearbyEntity).destroy();
 				}
 			}
-		}.runTaskLater(PitSim.INSTANCE, 100);
+		}.runTaskLater(PitSim.INSTANCE, 20 * 10);
 	}
 
 	public static void createPotionNPC() {
@@ -205,7 +204,7 @@ public class SpawnNPCs implements Listener {
 					if(registry.isNPC(nearbyEntity)) registry.getNPC(nearbyEntity).destroy();
 				}
 			}
-		}.runTaskLater(PitSim.INSTANCE, 100);
+		}.runTaskLater(PitSim.INSTANCE, 20 * 10);
 	}
 
 

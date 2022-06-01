@@ -67,7 +67,8 @@ public class PitPlayer {
 	public int prestige;
 	public int level;
 	public int remainingXP = PrestigeValues.getXPForLevel(1);
-	public int playerKills;
+	public int soulsGathered;
+
 	public int renown;
 	public PitPerk[] pitPerks = new PitPerk[4];
 	public List<Killstreak> killstreaks = Arrays.asList(NoKillstreak.INSTANCE, NoKillstreak.INSTANCE, NoKillstreak.INSTANCE);
@@ -111,7 +112,7 @@ public class PitPlayer {
 		playerData.set("prestige", prestige);
 		playerData.set("level", level);
 		playerData.set("xp", remainingXP);
-		playerData.set("playerkills", playerKills);
+		playerData.set("soulsgathered", soulsGathered);
 		playerData.set("renown", renown);
 
 		playerData.set("goldstack", goldStack);
@@ -142,7 +143,7 @@ public class PitPlayer {
 		playerData.set("prestige", prestige);
 		playerData.set("level", level);
 		playerData.set("xp", remainingXP);
-		playerData.set("playerkills", playerKills);
+		playerData.set("soulsgathered", soulsGathered);
 		playerData.set("renown", renown);
 		for(int i = 0; i < pitPerks.length; i++) playerData.set("perk-" + i, pitPerks[i].refName);
 		for(int i = 0; i < killstreaks.size(); i++) playerData.set("killstreak-" + i, killstreaks.get(i).refName);
@@ -189,7 +190,7 @@ public class PitPlayer {
 			prestige = playerData.getInt("prestige");
 			level = playerData.contains("level") ? playerData.getInt("level") : 1;
 			remainingXP = playerData.getInt("xp");
-			playerKills = playerData.getInt("playerkills");
+			soulsGathered = playerData.getInt("soulsgathered");
 			renown = playerData.getInt("renown");
 			for(int i = 0; i < pitPerks.length; i++) {
 				String perkString = playerData.getString("perk-" + i);

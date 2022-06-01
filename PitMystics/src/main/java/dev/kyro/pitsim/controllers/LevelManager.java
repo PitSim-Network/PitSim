@@ -83,7 +83,7 @@ public class LevelManager {
 		if(pitPlayer.level < 120) return;
 		if(pitPlayer.goldGrinded < prestigeInfo.goldReq) return;
 		//TODO: Re-enable killreq
-		if(pitPlayer.playerKills < prestigeInfo.killReq) return;
+		if(pitPlayer.soulsGathered < prestigeInfo.soulReq) return;
 
 		pitPlayer.prestige += 1;
 		if(UpgradeManager.hasUpgrade(player, "FAST_PASS")) {
@@ -98,7 +98,7 @@ public class LevelManager {
 		pitPlayer.megastreak = new Overdrive(pitPlayer);
 		pitPlayer.endKillstreak();
 		PitSim.VAULT.withdrawPlayer(player, PitSim.VAULT.getBalance(player));
-		pitPlayer.playerKills = 0;
+		pitPlayer.soulsGathered = 0;
 		pitPlayer.renown += prestigeInfo.renownReward;
 		pitPlayer.moonBonus = 0;
 		pitPlayer.goldStack = 0;

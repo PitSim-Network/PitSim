@@ -30,7 +30,7 @@ public class PrestigeValues {
 		public int prestige;
 		public double xpMultiplier;
 		public double goldReq;
-		public double killReq;
+		public double soulReq;
 		public int renownReward;
 		public final String bracketColor;
 
@@ -54,11 +54,11 @@ public class PrestigeValues {
 			return bracketColor + "]";
 		}
 
-		public PrestigeInfo(int prestige, double xpMultiplier, double goldReq, double killReq, int renownReward, String bracketColor) {
+		public PrestigeInfo(int prestige, double xpMultiplier, double goldReq, double soulReq, int renownReward, String bracketColor) {
 			this.prestige = prestige;
 			this.xpMultiplier = xpMultiplier;
 			this.goldReq = goldReq;
-			this.killReq = killReq;
+			this.soulReq = soulReq;
 			this.renownReward = renownReward;
 			this.bracketColor = bracketColor;
 		}
