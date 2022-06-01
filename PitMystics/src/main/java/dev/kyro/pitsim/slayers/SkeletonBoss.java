@@ -12,6 +12,8 @@ import dev.kyro.pitsim.enchants.Lifesteal;
 import dev.kyro.pitsim.enums.*;
 import dev.kyro.pitsim.events.AttackEvent;
 import dev.kyro.pitsim.misc.BossSkin;
+import dev.kyro.pitsim.slayers.tainted.SimpleBoss;
+import dev.kyro.pitsim.slayers.tainted.SimpleSkin;
 import me.confuser.barapi.BarAPI;
 import net.citizensnpcs.api.CitizensAPI;
 import net.citizensnpcs.api.ai.AttackStrategy;
@@ -50,34 +52,21 @@ public class SkeletonBoss extends PitBoss {
     public String name = "&c&lSkeleton Boss";
     public SubLevel subLevel = SubLevel.SKELETON_CAVE;
     public BossBar activeBar;
+    public SimpleBoss boss;
 
     public SkeletonBoss(Player target) throws Exception {
         super(target, SubLevel.SKELETON_CAVE);
-        this.target = target;
 
         npc = CitizensAPI.getNPCRegistry().createNPC(EntityType.PLAYER, name);
 
-        CitizensNavigator navigator = (CitizensNavigator) npc.getNavigator();
-        navigator.getDefaultParameters()
-                .attackDelayTicks(8)
-                .attackRange(10)
-                .updatePathRate(5)
-                .speedModifier(2);
+        this.boss = new SimpleBoss(npc, target, subLevel, 2, SimpleSkin.SKELETON);
+        this.entity = (Player) npc.getEntity();
 
 
-        npc.setProtected(false);
 
-        //skin(npc, "Napkings");
-        spawn();
-        entity = (Player) npc.getEntity();
-        BossManager.bosses.put(npc, this);
-
-        entity.setMaxHealth(250);
-        entity.setHealth(250);
-        showMyBossBar(PitSim.adventure.player(target));
-        BossManager.activePlayers.add(target);
+        boss.run();
     }
-
+/*
     public void spawn() throws Exception {
         PitBoss.spawn(this.npc, this.target, this.subLevel,
                 new BossSkin(this.npc, "Napkings"),
@@ -87,6 +76,8 @@ public class SkeletonBoss extends PitBoss {
                 getSolitude(),
                 new ItemStack(Material.DIAMOND_BOOTS));
     }
+
+ */
 
     public void onAttack() throws Exception {
         if(npc.getEntity().isOnGround()){
@@ -183,7 +174,7 @@ public class SkeletonBoss extends PitBoss {
 
     @Override
     public void onDeath() {
-        hideActiveBossBar(PitSim.adventure.player(target));
+        boss.hideActiveBossBar(PitSim.adventure.player(target));
         NoteBlockAPI.stopPlaying(target);
     }
 
