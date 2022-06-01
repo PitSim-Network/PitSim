@@ -2,12 +2,14 @@ package dev.kyro.pitsim.controllers;
 
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.brewing.BrewingManager;
+import dev.kyro.pitsim.controllers.objects.GoldenHelmet;
 import dev.kyro.pitsim.controllers.objects.PitMob;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.enchants.tainted.CleaveSpell;
 import dev.kyro.pitsim.enums.SubLevel;
 import dev.kyro.pitsim.events.AttackEvent;
 import dev.kyro.pitsim.events.KillEvent;
+import dev.kyro.pitsim.misc.Misc;
 import net.citizensnpcs.api.CitizensAPI;
 import net.citizensnpcs.api.npc.NPC;
 import org.bukkit.Bukkit;
@@ -161,13 +163,21 @@ public class MobManager implements Listener {
 				toRemove.add(mob);
 
 				Map<ItemStack, Integer> drops = mob.getDrops();
+
+				ItemStack helmet = GoldenHelmet.getHelmet(event.killerPlayer);
+
+				int level = 0;
+				double chance = 0;
+				if(helmet != null) level = HelmetSystem.getLevel(GoldenHelmet.getUsedHelmetGold(event.deadPlayer));
+				if(helmet != null) chance = 7.5 * HelmetSystem.getTotalStacks(HelmetSystem.Passive.DAMAGE_REDUCTION, level - 1);
+
 				for (Map.Entry<ItemStack, Integer> entry : drops.entrySet()) {
 					Random r = new Random();
 					int low = 1;
 					int high = 100;
 					int result = r.nextInt(high-low) + low;
 
-					if(result > entry.getValue()) continue;
+					if(result + chance > entry.getValue()) continue;
 					event.dead.getWorld().dropItemNaturally(event.dead.getLocation(), entry.getKey());
 				}
 			}
