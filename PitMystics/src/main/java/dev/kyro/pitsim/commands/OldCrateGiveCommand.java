@@ -3,6 +3,8 @@ package dev.kyro.pitsim.commands;
 import de.tr7zw.nbtapi.NBTItem;
 import dev.kyro.arcticapi.misc.AUtil;
 import dev.kyro.pitsim.PitSim;
+import dev.kyro.pitsim.brewing.ingredients.*;
+import dev.kyro.pitsim.controllers.BossManager;
 import dev.kyro.pitsim.controllers.EnchantManager;
 import dev.kyro.pitsim.controllers.ItemManager;
 import dev.kyro.pitsim.enums.MysticType;
@@ -14,13 +16,26 @@ import dev.kyro.pitsim.misc.ProtArmor;
 import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.Effect;
+import org.bukkit.Location;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.scheduler.BukkitRunnable;
 
 public class OldCrateGiveCommand implements CommandExecutor {
+
+	static {
+		new BukkitRunnable() {
+			@Override
+			public void run() {
+				Bukkit.getWorld("darkzone").playEffect(new Location(Bukkit.getWorld("darkzone"), 213.5, 91, -90.5), Effect.ENDER_SIGNAL, 0);
+			}
+		}.runTaskTimer(PitSim.INSTANCE, 2, 2);
+	}
+
 	@Override
 	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
 
@@ -168,6 +183,99 @@ public class OldCrateGiveCommand implements CommandExecutor {
 			ProtArmor.getArmor(player, "Boots");
 			broadcast("&bProtection I Diamond Boots", player);
 		}
+		if(args[0].equals("TS")) {
+			AUtil.giveItemSafely(player, FreshCommand.getFreshItem(MysticType.TAINTED_SCYTHE, PantColor.TAINTED));
+			taintedBroadcast("&5Fresh Tainted Scythe", player);
+		}
+		if(args[0].equals("TC")) {
+			AUtil.giveItemSafely(player, FreshCommand.getFreshItem(MysticType.TAINTED_CHESTPLATE, PantColor.TAINTED));
+			taintedBroadcast("&5Fresh Tainted Chestplate", player);
+		}
+		if(args[0].equals("25S")) {
+			BossManager.giveSouls(player, 25);
+			taintedBroadcast("&f25 Tainted Souls", player);
+		}
+		if(args[0].equals("50S")) {
+			BossManager.giveSouls(player, 50);
+			taintedBroadcast("&f50 Tainted Souls", player);
+		}
+		if(args[0].equals("75S")) {
+			BossManager.giveSouls(player, 75);
+			taintedBroadcast("&f75 Tainted Souls", player);
+		}
+		if(args[0].equals("100S")) {
+			BossManager.giveSouls(player, 100);
+			taintedBroadcast("&f100 Tainted Souls", player);
+		}
+		if(args[0].equals("125S")) {
+			BossManager.giveSouls(player, 125);
+			taintedBroadcast("&f125 Tainted Souls", player);
+		}
+		if(args[0].equals("150S")) {
+			BossManager.giveSouls(player, 150);
+			taintedBroadcast("&f150 Tainted Souls", player);
+		}
+		if(args[0].equals("FLESH")) {
+			ItemStack item = RottenFlesh.INSTANCE.getItem();
+			item.setAmount(10);
+			AUtil.giveItemSafely(player, item, true);
+			taintedBroadcast("&a10x Rotten Flesh", player);
+		}
+		if(args[0].equals("BONE")) {
+			ItemStack item = Bone.INSTANCE.getItem();
+			item.setAmount(10);
+			AUtil.giveItemSafely(player, item, true);
+			taintedBroadcast("&a10x Bone", player);
+		}
+		if(args[0].equals("EYE")) {
+			ItemStack item = SpiderEye.INSTANCE.getItem();
+			item.setAmount(10);
+			AUtil.giveItemSafely(player, item, true);
+			taintedBroadcast("&a10x Spider Eye", player);
+		}
+		if(args[0].equals("GUNPOWDER")) {
+			ItemStack item = Gunpowder.INSTANCE.getItem();
+			item.setAmount(10);
+			AUtil.giveItemSafely(player, item, true);
+			taintedBroadcast("&a10x Gunpowder", player);
+		}
+		if(args[0].equals("FERMENTED_EYE")) {
+			ItemStack item = FermentedSpiderEye.INSTANCE.getItem();
+			item.setAmount(10);
+			AUtil.giveItemSafely(player, item, true);
+			taintedBroadcast("&a10x Fermented Spider Eye", player);
+		}
+		if(args[0].equals("CREAM")) {
+			ItemStack item = MagmaCream.INSTANCE.getItem();
+			item.setAmount(10);
+			AUtil.giveItemSafely(player, item, true);
+			taintedBroadcast("&a10x Magma Cream", player);
+		}
+		if(args[0].equals("PORK")) {
+			ItemStack item = RawPork.INSTANCE.getItem();
+			item.setAmount(10);
+			AUtil.giveItemSafely(player, item, true);
+			taintedBroadcast("&a10x Raw Pork", player);
+		}
+		if(args[0].equals("COAL")) {
+			ItemStack item = Coal.INSTANCE.getItem();
+			item.setAmount(10);
+			AUtil.giveItemSafely(player, item, true);
+			taintedBroadcast("&a10x Coal", player);
+		}
+		if(args[0].equals("IRON")) {
+			ItemStack item = IronIngot.INSTANCE.getItem();
+			item.setAmount(10);
+			AUtil.giveItemSafely(player, item, true);
+			taintedBroadcast("&a10x Iron Ingot", player);
+		}
+		if(args[0].equals("PEARL")) {
+			ItemStack item = EnderPearl.INSTANCE.getItem();
+			item.setAmount(10);
+			AUtil.giveItemSafely(player, item, true);
+			taintedBroadcast("&a10x Ender Pearl", player);
+		}
+
 
 		return false;
 	}
@@ -176,6 +284,14 @@ public class OldCrateGiveCommand implements CommandExecutor {
 		for(Player onlinePlayer : Bukkit.getOnlinePlayers()) {
 			String message = ChatColor.translateAlternateColorCodes('&', "&e&lGG! %luckperms_prefix%"
 					+ player.getDisplayName() + " &7has won " + prize + " &7from the &6&lPit&e&lSim &7Crate!");
+			onlinePlayer.sendMessage(PlaceholderAPI.setPlaceholders(player, message));
+		}
+	}
+
+	public static void taintedBroadcast(String prize, Player player) {
+		for(Player onlinePlayer : Bukkit.getOnlinePlayers()) {
+			String message = ChatColor.translateAlternateColorCodes('&', "&e&lGG! %luckperms_prefix%"
+					+ player.getDisplayName() + " &7has won " + prize + " &7from the &5&lTainted &7Crate!");
 			onlinePlayer.sendMessage(PlaceholderAPI.setPlaceholders(player, message));
 		}
 	}

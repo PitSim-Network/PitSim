@@ -164,7 +164,7 @@ public class PlayerManager implements Listener {
 		}.runTaskTimer(PitSim.INSTANCE, 0L, 12L);
 	}
 
-	@EventHandler
+	@EventHandler(priority = EventPriority.MONITOR)
 	public void onClick2(PlayerInteractEvent event) {
 		if(event.getAction() != Action.RIGHT_CLICK_AIR && event.getAction() != Action.RIGHT_CLICK_BLOCK) return;
 		Player player = event.getPlayer();
@@ -173,6 +173,7 @@ public class PlayerManager implements Listener {
 		if(Misc.isAirOrNull(itemStack)) return;
 		MysticType mysticType = MysticType.getMysticType(itemStack);
 		if(mysticType != MysticType.TAINTED_SCYTHE) return;
+		if(SpawnManager.isInDarkzoneSpawn(player.getLocation())) return;
 
 		PitPlayerAttemptAbilityEvent newEvent = new PitPlayerAttemptAbilityEvent(player);
 		Bukkit.getPluginManager().callEvent(newEvent);

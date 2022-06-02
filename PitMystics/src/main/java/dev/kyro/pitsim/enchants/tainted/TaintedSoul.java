@@ -27,7 +27,7 @@ public class TaintedSoul extends PitEnchant {
 		if(attackEvent.defender.getMaxHealth() >= 80) return;
 
 		if(attackEvent.defender.getHealth() > 1) {
-			attackEvent.defender.setHealth(attackEvent.defender.getHealth() * 0.75);
+			attackEvent.defender.setHealth(attackEvent.defender.getHealth() * 0.80);
 		} else {
 			attackEvent.veryTrueDamage = 1000;
 		}
@@ -37,7 +37,7 @@ public class TaintedSoul extends PitEnchant {
 	@Override
 	public List<String> getDescription(int enchantLvl) {
 
-		return new ALoreBuilder("&7Subtract &f1/4 &7of your enemy's", "&7current health", "&d&o-" + reduction(enchantLvl) + "% Mana Regen").getLore();
+		return new ALoreBuilder("&7Subtract &f1/5 &7of your enemy's", "&7current health", "&d&o-" + reduction(enchantLvl) + "% Mana Regen").getLore();
 	}
 
 	public static int reduction(int enchantLvl) {

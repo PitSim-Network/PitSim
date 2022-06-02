@@ -43,9 +43,9 @@ public class SweepingEdgeSpell extends PitEnchant {
         Player player = event.getPlayer();
         for (Entity entity : player.getNearbyEntities(10, 10, 10)) {
             if(!(entity instanceof LivingEntity)) continue;
-            EntityDamageByEntityEvent damageEvent = new EntityDamageByEntityEvent(player, entity, EntityDamageEvent.DamageCause.ENTITY_ATTACK, 13);
+            EntityDamageByEntityEvent damageEvent = new EntityDamageByEntityEvent(player, entity, EntityDamageEvent.DamageCause.ENTITY_ATTACK, 2);
             Bukkit.getServer().getPluginManager().callEvent(damageEvent);
-            if(!damageEvent.isCancelled()) ((LivingEntity) entity).damage(13);
+            if(!damageEvent.isCancelled()) ((LivingEntity) entity).damage(2);
         }
 
     }

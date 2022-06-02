@@ -15,8 +15,10 @@ import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.enums.NBTTag;
+import dev.kyro.pitsim.events.AttackEvent;
 import dev.kyro.pitsim.events.KillEvent;
 import dev.kyro.pitsim.events.OofEvent;
+import dev.kyro.pitsim.events.PitPlayerAttemptAbilityEvent;
 import dev.kyro.pitsim.megastreaks.Uberstreak;
 import dev.kyro.pitsim.misc.Sounds;
 import org.bukkit.Bukkit;
@@ -25,9 +27,12 @@ import org.bukkit.Material;
 import org.bukkit.entity.Arrow;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
+import org.bukkit.event.block.Action;
 import org.bukkit.event.entity.EntityShootBowEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
+import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.ItemStack;
@@ -105,10 +110,31 @@ public class SpawnManager implements Listener {
 
 		Player player = (Player) event.getEntity();
 
-		if(isInSpawn(player.getLocation())) {
+		if(isInSpawn(player.getLocation()) || isInDarkzoneSpawn(player.getLocation())) {
 			event.setCancelled(true);
 			Sounds.NO.play(player);
 		}
+	}
+
+	@EventHandler(priority = EventPriority.HIGHEST)
+	public void onUse(PlayerInteractEvent event) {
+		Player player = event.getPlayer();
+		if(!isInDarkzoneSpawn(player.getLocation())) return;
+
+		ItemStack item = player.getInventory().getItemInHand();
+		if(event.getAction() == Action.RIGHT_CLICK_BLOCK || event.getAction() == Action.RIGHT_CLICK_AIR) {
+			if(item.getType() != Material.GOLD_HOE) return;
+			event.setCancelled(true);
+			AOutput.send(player, "&c&c&lNOPE! &7You cannot use this in the spawn area!");
+		}
+	}
+
+	@EventHandler
+	public void onAttack(AttackEvent.Pre event) {
+		Player player = event.attackerPlayer;
+		if(!isInDarkzoneSpawn(player.getLocation())) return;
+
+		event.setCancelled(true);
 	}
 
 	@EventHandler
@@ -131,6 +157,20 @@ public class SpawnManager implements Listener {
 
 		for(ProtectedRegion region : set) {
 			if(region.getId().equals("spawn") || region.getId().equals("spawn2")) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	public static Boolean isInDarkzoneSpawn(Location loc) {
+		RegionContainer container = WorldGuardPlugin.inst().getRegionContainer();
+		RegionManager regions = container.get(loc.getWorld());
+		assert regions != null;
+		ApplicableRegionSet set = regions.getApplicableRegions((BukkitUtil.toVector(loc)));
+
+		for(ProtectedRegion region : set) {
+			if(region.getId().equals("darkzonespawn")) {
 				return true;
 			}
 		}
