@@ -11,6 +11,7 @@ import org.bukkit.World;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
+import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.io.File;
@@ -28,7 +29,7 @@ public class MapManager implements Listener {
 		new BukkitRunnable() {
 			@Override
 			public void run() {
-//				disableMultiLobbies(true);
+				disableMultiLobbies(true);
 			}
 		}.runTaskLater(PitSim.INSTANCE, 20L);
 		new BukkitRunnable() {
@@ -42,7 +43,7 @@ public class MapManager implements Listener {
 				boolean chaos = BoosterManager.getBooster("chaos").minutes > 0;
 				if(multiLobbies) {
 					if(chaos) return;
-//					if(count % (60 * 10) == 0 && players < ENABLE_THRESHOLD) disableMultiLobbies(false);
+					if(count % (60 * 10) == 0 && players < ENABLE_THRESHOLD) disableMultiLobbies(false);
 				} else {
 					if(players >= ENABLE_THRESHOLD || chaos) enableMultiLobbies();
 				}
@@ -51,7 +52,9 @@ public class MapManager implements Listener {
 	}
 
 	public static void onStart() {
-		enableMultiLobbies();
+		for(World lobby : currentMap.lobbies) {
+			enablePortal(lobby);
+		}
 		for(Player onlinePlayer : Bukkit.getOnlinePlayers()) {
 			onlinePlayer.teleport(currentMap.getSpawn(currentMap.firstLobby));
 		}
@@ -93,15 +96,12 @@ public class MapManager implements Listener {
 		System.out.println(multiLobbies);
 		if(multiLobbies) return;
 		multiLobbies = true;
-		for(World lobby : currentMap.lobbies) {
-			enablePortal(lobby);
+		for(Player onlinePlayer : Bukkit.getOnlinePlayers()) {
+			AOutput.send(onlinePlayer, "&6&lLOBBY! &7Use the portal to switch lobbies");
+			AOutput.send(onlinePlayer, "&6&lLOBBY! &7Use the portal to switch lobbies");
+			AOutput.send(onlinePlayer, "&6&lLOBBY! &7Use the portal to switch lobbies");
+			Misc.sendTitle(onlinePlayer, "&6&l2ND LOBBY OPEN!", 40);
 		}
-//		for(Player onlinePlayer : Bukkit.getOnlinePlayers()) {
-//			AOutput.send(onlinePlayer, "&6&lLOBBY! &7Use the portal to switch lobbies");
-//			AOutput.send(onlinePlayer, "&6&lLOBBY! &7Use the portal to switch lobbies");
-//			AOutput.send(onlinePlayer, "&6&lLOBBY! &7Use the portal to switch lobbies");
-//			Misc.sendTitle(onlinePlayer, "&6&l2ND LOBBY OPEN!", 40);
-//		}
 	}
 
 	public static void disableMultiLobbies(boolean override) {
@@ -109,7 +109,6 @@ public class MapManager implements Listener {
 		multiLobbies = false;
 		List<World> disabledLobbies = new ArrayList<>(currentMap.lobbies);
 		disabledLobbies.remove(0);
-		disablePortal(currentMap.firstLobby);
 		if(!override) {
 			for(Player onlinePlayer : Bukkit.getOnlinePlayers()) {
 				if(!disabledLobbies.contains(onlinePlayer.getWorld())) continue;
@@ -121,13 +120,35 @@ public class MapManager implements Listener {
 		}
 	}
 
+	public static void changeLobbies(Player player) {
+		if(!multiLobbies && player.getLocation().getWorld() == currentMap.firstLobby) {
+			AOutput.send(player, "&c&lNOPE! &7The second lobby will open when there are 10 players online.");
+			return;
+		}
+		Location teleport = player.getLocation().clone();
+		if(player.getLocation().getWorld() == currentMap.firstLobby) {
+			teleport.setWorld(currentMap.lobbies.get(1));
+			AOutput.send(player, "&7You have connected to lobby &6" + (currentMap.getLobbyIndex(player.getWorld()) + 1));
+		} else {
+			teleport.setWorld(currentMap.lobbies.get(0));
+			AOutput.send(player, "&7You have connected to lobby &6" + (currentMap.getLobbyIndex(player.getWorld()) + 1));
+		}
+
+		Misc.applyPotionEffect(player, PotionEffectType.BLINDNESS, 40, 99, false, false);
+		Misc.applyPotionEffect(player, PotionEffectType.CONFUSION, 40, 0, false, false);
+
+		new BukkitRunnable() {
+			@Override
+			public void run() {
+				player.teleport(teleport);
+			}
+		}.runTaskLater(PitSim.INSTANCE, 20);
+	}
+
 	public static void enablePortal(World lobby) {
 		SchematicPaste.loadSchematic(new File("plugins/WorldEdit/schematics/doorOpen.schematic"), new Location(lobby, -67, 72, 3));
 	}
 
-	public static void disablePortal(World lobby) {
-//		SchematicPaste.loadSchematic(new File("plugins/WorldEdit/schematics/doorClosed.schematic"), new Location(lobby, -67, 72, 3));
-	}
 
 	public static World getTutorial() {
 		return Bukkit.getWorld("tutorial");

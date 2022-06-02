@@ -34,6 +34,7 @@ public class SpawnNPCs implements Listener {
 	public static List<NPC> kyro = new ArrayList<>();
 	public static List<NPC> wiji = new ArrayList<>();
 	public static List<NPC> vnx = new ArrayList<>();
+	public static List<NPC> keeper = new ArrayList<>();
 
 	public static NPC taintedShop;
 	public static NPC leggingMerchant;
@@ -46,6 +47,7 @@ public class SpawnNPCs implements Listener {
 			createKyroNPC(world);
 			createWijiNPC(world);
 			createVnx2NPC(world);
+			createKeeperNPC(world);
 		}
 		createTaintedShopNPC();
 		createLeggingNPC();
@@ -103,6 +105,13 @@ public class SpawnNPCs implements Listener {
 		} catch(Exception ignored) {
 			System.out.println("error despawning npc");
 		}
+		try {
+			for(NPC npc : keeper) {
+				npc.destroy();
+			}
+		} catch(Exception ignored) {
+			System.out.println("error despawning npc");
+		}
 	}
 
 	public static void createUpgradeNPC(World world) {
@@ -150,6 +159,14 @@ public class SpawnNPCs implements Listener {
 		npc.addTrait(LookClose.class);
 		npc.getTrait(LookClose.class).setRange(10);
 		npc.getTrait(LookClose.class).toggle();
+	}
+
+	public static void createKeeperNPC(World world) {
+		NPCRegistry registry = CitizensAPI.getNPCRegistry();
+		NPC npc = registry.createNPC(EntityType.PLAYER, "&2&lTHE KEEPER");
+		keeper.add(npc);
+		npc.spawn(MapManager.currentMap.getKeeperNPC(world));
+		skin(npc, "googasesportsog");
 	}
 
 
@@ -239,6 +256,13 @@ public class SpawnNPCs implements Listener {
 			if(event.getNPC().getId() == npc.getId()) {
 				StatGUI statGUI = new StatGUI(player);
 				statGUI.open();
+				return;
+			}
+		}
+
+		for(NPC npc : keeper) {
+			if(event.getNPC().getId() == npc.getId()) {
+				MapManager.changeLobbies(player);
 				return;
 			}
 		}
