@@ -19,6 +19,7 @@ import dev.kyro.pitsim.events.OofEvent;
 import dev.kyro.pitsim.misc.*;
 import dev.kyro.pitsim.perks.AssistantToTheStreaker;
 import dev.kyro.pitsim.upgrades.DivineIntervention;
+import dev.kyro.pitsim.upgrades.LifeInsurance;
 import me.clip.placeholderapi.PlaceholderAPI;
 import net.minecraft.server.v1_8_R3.EntityPlayer;
 import org.bukkit.*;
@@ -278,6 +279,9 @@ public class DamageManager implements Listener {
 		if(deadIsPlayer && killType != KillType.FAKE) {
 			EntityPlayer nmsPlayer = ((CraftPlayer) dead).getHandle();
 			nmsPlayer.setAbsorptionHearts(0);
+
+			if(!LifeInsurance.isApplicable(deadPlayer)) loseLives(dead, killer);
+
 			if(NonManager.getNon(dead) == null) pitDead.endKillstreak();
 			Telebow.teleShots.removeIf(teleShot -> teleShot.getShooter().equals(dead));
 		}
@@ -417,10 +421,8 @@ public class DamageManager implements Listener {
 				String assist = "&a&lASSIST!&7 " + Math.round(assistPercent * 100) + "% on %luckperms_prefix%" +
 						(deadNon == null ? "%player_name%" : deadNon.displayName) + " &b+" + xp + "XP" + " &6+" + df.format(gold) + "g";
 
-				if(deadIsPlayer) {
-					if(!assistPitPlayer.killFeedDisabled)
-						AOutput.send(assistPlayer, PlaceholderAPI.setPlaceholders(killEvent.deadPlayer, assist));
-				}
+				if(!assistPitPlayer.killFeedDisabled)
+					AOutput.send(assistPlayer, PlaceholderAPI.setPlaceholders(killEvent.deadPlayer, assist));
 			}
 		}
 
@@ -432,79 +434,66 @@ public class DamageManager implements Listener {
 
 				String message = "%luckperms_prefix%";
 				pitDead.prefix = PrestigeValues.getPlayerPrefixNameTag(pitDead.player) + PlaceholderAPI.setPlaceholders(pitDead.player, message);
-
 			}
+		}
+	}
 
-			if(deadIsPlayer && BoosterManager.getBooster("pvp").minutes <= 0) {
+	public static void loseLives(LivingEntity dead, LivingEntity killer) {
+		if(!(dead instanceof Player)) return;
+		if(BoosterManager.getBooster("pvp").minutes <= 0) {
+			Player deadPlayer = (Player) dead;
+			PitPlayer pitDead = PitPlayer.getPitPlayer(deadPlayer);
 
-				boolean divine = DivineIntervention.INSTANCE.isDivine(deadPlayer);
-				boolean feather = FunkyFeather.useFeather(killer, deadPlayer, divine);
 
-				for(int i = 0; i < deadPlayer.getInventory().getSize(); i++) {
-					ItemStack itemStack = deadPlayer.getInventory().getItem(i);
-					if(Misc.isAirOrNull(itemStack)) continue;
-					NBTItem nbtItem = new NBTItem(itemStack);
-					if(nbtItem.hasKey(NBTTag.MAX_LIVES.getRef())) {
-						int lives = nbtItem.getInteger(NBTTag.CURRENT_LIVES.getRef());
-						if(feather || divine) return;
+			boolean divine = DivineIntervention.INSTANCE.isDivine(deadPlayer);
+			boolean feather = FunkyFeather.useFeather(killer, deadPlayer, divine);
+
+			for(int i = 0; i < deadPlayer.getInventory().getSize(); i++) {
+				ItemStack itemStack = deadPlayer.getInventory().getItem(i);
+				if(Misc.isAirOrNull(itemStack)) continue;
+				NBTItem nbtItem = new NBTItem(itemStack);
+				if(nbtItem.hasKey(NBTTag.MAX_LIVES.getRef())) {
+					int lives = nbtItem.getInteger(NBTTag.CURRENT_LIVES.getRef());
+					if(feather || divine) return;
+					if(lives - 1 == 0) {
+						deadPlayer.getInventory().remove(itemStack);
+
+						if(pitDead.stats != null) pitDead.stats.itemsBroken++;
+					} else {
+						nbtItem.setInteger(NBTTag.CURRENT_LIVES.getRef(), nbtItem.getInteger(NBTTag.CURRENT_LIVES.getRef()) - 1);
+						EnchantManager.setItemLore(nbtItem.getItem(), deadPlayer);
+						deadPlayer.getInventory().setItem(i, nbtItem.getItem());
+
+						if(pitDead.stats != null) pitDead.stats.livesLost++;
+					}
+				}
+			}
+			if(!feather && !divine) {
+				ProtArmor.deleteArmor(deadPlayer);
+				YummyBread.deleteBread(deadPlayer);
+			}
+			if(!Misc.isAirOrNull(deadPlayer.getInventory().getLeggings())) {
+				ItemStack pants = deadPlayer.getInventory().getLeggings();
+				NBTItem nbtItem = new NBTItem(pants);
+				if(nbtItem.hasKey(NBTTag.MAX_LIVES.getRef())) {
+					int lives = nbtItem.getInteger(NBTTag.CURRENT_LIVES.getRef());
+					if(!feather && !divine) {
 						if(lives - 1 == 0) {
-							deadPlayer.getInventory().remove(itemStack);
+							deadPlayer.getInventory().setLeggings(new ItemStack(Material.AIR));
 
 							if(pitDead.stats != null) pitDead.stats.itemsBroken++;
 						} else {
 							nbtItem.setInteger(NBTTag.CURRENT_LIVES.getRef(), nbtItem.getInteger(NBTTag.CURRENT_LIVES.getRef()) - 1);
 							EnchantManager.setItemLore(nbtItem.getItem(), deadPlayer);
-							deadPlayer.getInventory().setItem(i, nbtItem.getItem());
+							deadPlayer.getInventory().setLeggings(nbtItem.getItem());
 
 							if(pitDead.stats != null) pitDead.stats.livesLost++;
-						}
-					}
-				}
-				if(!feather && !divine) {
-					ProtArmor.deleteArmor(deadPlayer);
-					YummyBread.deleteBread(deadPlayer);
-				}
-				if(!Misc.isAirOrNull(deadPlayer.getInventory().getLeggings())) {
-					ItemStack pants = deadPlayer.getInventory().getLeggings();
-					NBTItem nbtItem = new NBTItem(pants);
-					if(nbtItem.hasKey(NBTTag.MAX_LIVES.getRef())) {
-						int lives = nbtItem.getInteger(NBTTag.CURRENT_LIVES.getRef());
-						if(!feather && !divine) {
-							if(lives - 1 == 0) {
-								deadPlayer.getInventory().setLeggings(new ItemStack(Material.AIR));
-
-								if(pitDead.stats != null) pitDead.stats.itemsBroken++;
-							} else {
-								nbtItem.setInteger(NBTTag.CURRENT_LIVES.getRef(), nbtItem.getInteger(NBTTag.CURRENT_LIVES.getRef()) - 1);
-								EnchantManager.setItemLore(nbtItem.getItem(), deadPlayer);
-								deadPlayer.getInventory().setLeggings(nbtItem.getItem());
-
-								if(pitDead.stats != null) pitDead.stats.livesLost++;
-							}
 						}
 					}
 				}
 			}
 		}
 	}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 	public static void death(LivingEntity dead) {

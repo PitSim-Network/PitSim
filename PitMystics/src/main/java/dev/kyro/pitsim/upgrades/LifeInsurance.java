@@ -3,7 +3,9 @@ package dev.kyro.pitsim.upgrades;
 import dev.kyro.arcticapi.gui.AGUIPanel;
 import dev.kyro.arcticapi.misc.AUtil;
 import dev.kyro.pitsim.controllers.UpgradeManager;
+import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.controllers.objects.RenownUpgrade;
+import dev.kyro.pitsim.megastreaks.*;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -40,6 +42,18 @@ public class LifeInsurance extends RenownUpgrade {
 		meta.setLore(UpgradeManager.loreBuilder(this, player, lore, isCustomPanel));
 		item.setItemMeta(meta);
 		return item;
+	}
+
+	public static boolean isApplicable(Player player) {
+		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
+		int tier = UpgradeManager.getTier(player, "LIFE_INSURANCE");
+
+		if(pitPlayer.megastreak instanceof Overdrive && pitPlayer.getKills() >= 500 && tier >= 1) return true;
+		if(pitPlayer.megastreak instanceof Uberstreak && pitPlayer.getKills() >= 500 && tier >= 1) return true;
+		if(pitPlayer.megastreak instanceof Beastmode && pitPlayer.getKills() >= 1000 && tier >= 2) return true;
+		if(pitPlayer.megastreak instanceof Highlander && pitPlayer.getKills() >= 1000 && tier >= 2) return true;
+		if(pitPlayer.megastreak instanceof ToTheMoon && pitPlayer.getKills() >= 1000 && tier >= 2) return true;
+		return pitPlayer.megastreak instanceof RNGesus && pitPlayer.getKills() >= 4000 && tier >= 3;
 	}
 
 	@Override
