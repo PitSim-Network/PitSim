@@ -34,14 +34,16 @@ public class ATestCommand implements CommandExecutor {
 		if(!(sender instanceof Player)) return false;
 		Player player = (Player) sender;
 
-//		CutsceneManager.play(player);
+		if(!player.isOp()) return false;
+
+		CutsceneManager.play(player);
 
 //		TaintedGUI taintedGUI = new TaintedGUI(player);
 //		taintedGUI.open();
-
-		for (BrewingIngredient ingredient : BrewingIngredient.ingredients) {
-			AUtil.giveItemSafely(player, ingredient.getItem());
-		}
+//
+//		for (BrewingIngredient ingredient : BrewingIngredient.ingredients) {
+//			AUtil.giveItemSafely(player, ingredient.getItem());
+//		}
 //
 //		new BukkitRunnable() {
 //			@Override

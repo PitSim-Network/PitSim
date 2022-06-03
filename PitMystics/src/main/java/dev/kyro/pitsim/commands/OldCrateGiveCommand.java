@@ -191,29 +191,29 @@ public class OldCrateGiveCommand implements CommandExecutor {
 			AUtil.giveItemSafely(player, FreshCommand.getFreshItem(MysticType.TAINTED_CHESTPLATE, PantColor.TAINTED));
 			taintedBroadcast("&5Fresh Tainted Chestplate", player);
 		}
-		if(args[0].equals("25S")) {
-			BossManager.giveSouls(player, 25);
-			taintedBroadcast("&f25 Tainted Souls", player);
+		if(args[0].equals("15S")) {
+			BossManager.giveSouls(player, 15);
+			taintedBroadcast("&f15 Tainted Souls", player);
 		}
-		if(args[0].equals("50S")) {
-			BossManager.giveSouls(player, 50);
-			taintedBroadcast("&f50 Tainted Souls", player);
+		if(args[0].equals("30S")) {
+			BossManager.giveSouls(player, 30);
+			taintedBroadcast("&f30 Tainted Souls", player);
+		}
+		if(args[0].equals("45S")) {
+			BossManager.giveSouls(player, 45);
+			taintedBroadcast("&f45 Tainted Souls", player);
+		}
+		if(args[0].equals("60S")) {
+			BossManager.giveSouls(player, 60);
+			taintedBroadcast("&f60 Tainted Souls", player);
 		}
 		if(args[0].equals("75S")) {
 			BossManager.giveSouls(player, 75);
 			taintedBroadcast("&f75 Tainted Souls", player);
 		}
-		if(args[0].equals("100S")) {
-			BossManager.giveSouls(player, 100);
-			taintedBroadcast("&f100 Tainted Souls", player);
-		}
-		if(args[0].equals("125S")) {
-			BossManager.giveSouls(player, 125);
-			taintedBroadcast("&f125 Tainted Souls", player);
-		}
-		if(args[0].equals("150S")) {
-			BossManager.giveSouls(player, 150);
-			taintedBroadcast("&f150 Tainted Souls", player);
+		if(args[0].equals("90S")) {
+			BossManager.giveSouls(player, 90);
+			taintedBroadcast("&f90 Tainted Souls", player);
 		}
 		if(args[0].equals("FLESH")) {
 			ItemStack item = RottenFlesh.INSTANCE.getItem();

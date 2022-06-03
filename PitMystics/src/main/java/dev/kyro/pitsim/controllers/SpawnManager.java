@@ -132,6 +132,7 @@ public class SpawnManager implements Listener {
 	@EventHandler
 	public void onAttack(AttackEvent.Pre event) {
 		Player player = event.attackerPlayer;
+		if(!event.attackerIsPlayer) return;
 		if(!isInDarkzoneSpawn(player.getLocation())) return;
 
 		event.setCancelled(true);
