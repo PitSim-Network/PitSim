@@ -20,7 +20,7 @@ import java.util.Map;
 public class PitWitherSkeleton extends PitMob {
 
 	public PitWitherSkeleton(Location spawnLoc) {
-		super(MobType.SKELETON, spawnLoc, 8, "&cWither Skeleton");
+		super(MobType.SKELETON, spawnLoc, 8, 16, "&cWither Skeleton");
 	}
 
 	@Override
@@ -49,7 +49,7 @@ public class PitWitherSkeleton extends PitMob {
 	@Override
 	public Map<ItemStack, Integer> getDrops() {
 		Map<ItemStack, Integer> drops = new HashMap<>();
-		drops.put(Coal.INSTANCE.getItem(), 50);
+		drops.put(Coal.INSTANCE.getItem(), 6);
 
 		return drops;
 	}

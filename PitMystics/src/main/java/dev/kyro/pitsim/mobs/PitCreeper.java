@@ -17,7 +17,7 @@ import java.util.Map;
 public class PitCreeper extends PitMob {
 
 	public PitCreeper(Location spawnLoc) {
-		super(MobType.CHARGED_CREEPER, spawnLoc, 4, "&cCreeper");
+		super(MobType.CHARGED_CREEPER, spawnLoc, 4, 8, "&cCreeper");
 	}
 
 	@Override
@@ -37,7 +37,7 @@ public class PitCreeper extends PitMob {
 	@Override
 	public Map<ItemStack, Integer> getDrops() {
 		Map<ItemStack, Integer> drops = new HashMap<>();
-		drops.put(Gunpowder.INSTANCE.getItem(), 50);
+		drops.put(Gunpowder.INSTANCE.getItem(), 20);
 
 		return drops;
 	}

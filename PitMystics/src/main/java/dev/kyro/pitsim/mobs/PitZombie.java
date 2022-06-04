@@ -19,7 +19,7 @@ public class PitZombie extends PitMob {
 	public static PitZombie INSTANCE;
 
 	public PitZombie(Location spawnLoc) {
-		super(MobType.ZOMBIE, spawnLoc, 1, "&cZombie");
+		super(MobType.ZOMBIE, spawnLoc, 1, 2, "&cZombie");
 		INSTANCE = this;
 	}
 

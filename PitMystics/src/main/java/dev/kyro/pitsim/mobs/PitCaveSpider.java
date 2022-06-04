@@ -16,7 +16,7 @@ import java.util.Map;
 public class PitCaveSpider extends PitMob {
 
 	public PitCaveSpider(Location spawnLoc) {
-		super(MobType.CAVE_SPIDER, spawnLoc, 5, "&cCave Spider");
+		super(MobType.CAVE_SPIDER, spawnLoc, 5, 10, "&cCave Spider");
 	}
 
 	@Override
@@ -35,7 +35,7 @@ public class PitCaveSpider extends PitMob {
 	@Override
 	public Map<ItemStack, Integer> getDrops() {
 		Map<ItemStack, Integer> drops = new HashMap<>();
-		drops.put(FermentedSpiderEye.INSTANCE.getItem(), 50);
+		drops.put(FermentedSpiderEye.INSTANCE.getItem(), 15);
 		return drops;
 	}
 }

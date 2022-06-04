@@ -17,7 +17,7 @@ import java.util.Map;
 public class PitMagmaCube extends PitMob {
 
 	public PitMagmaCube(Location spawnLoc) {
-		super(MobType.MAGMA_CUBE, spawnLoc, 6, "&cMagma Cube");
+		super(MobType.MAGMA_CUBE, spawnLoc, 6, 12, "&cMagma Cube");
 	}
 
 	@Override
@@ -37,7 +37,7 @@ public class PitMagmaCube extends PitMob {
 	@Override
 	public Map<ItemStack, Integer> getDrops() {
 		Map<ItemStack, Integer> drops = new HashMap<>();
-		drops.put(MagmaCream.INSTANCE.getItem(), 50);
+		drops.put(MagmaCream.INSTANCE.getItem(), 10);
 		return drops;
 	}
 }

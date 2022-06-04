@@ -10,6 +10,9 @@ import dev.kyro.pitsim.enums.SubLevel;
 import dev.kyro.pitsim.events.AttackEvent;
 import dev.kyro.pitsim.events.KillEvent;
 import dev.kyro.pitsim.misc.Misc;
+import dev.kyro.pitsim.mobs.PitEnderman;
+import dev.kyro.pitsim.mobs.PitIronGolem;
+import dev.kyro.pitsim.mobs.PitMagmaCube;
 import net.citizensnpcs.api.CitizensAPI;
 import net.citizensnpcs.api.npc.NPC;
 import org.bukkit.Bukkit;
@@ -126,7 +129,21 @@ public class MobManager implements Listener {
 				clearMobs();
 			}
 		}.runTaskLater(PitSim.INSTANCE, 10);
-	}
+
+		new BukkitRunnable() {
+			@Override
+			public void run() {
+				for(PitMob mob : mobs) {
+					if(!(mob instanceof PitIronGolem) && (!(mob instanceof PitEnderman))) continue;
+					for (Entity nearbyEntity : mob.entity.getNearbyEntities(5, 5, 5)) {
+						if(nearbyEntity instanceof Player) {
+							((Creature) mob.entity).setTarget((LivingEntity) nearbyEntity);
+						}
+					}
+				}
+			}
+		}.runTaskTimer(PitSim.INSTANCE, 20, 20);
+		}
 
 	public static void makeTag(LivingEntity mob, String name) {
 		Location op = mob.getLocation();
@@ -211,6 +228,34 @@ public class MobManager implements Listener {
 	}
 
 	@EventHandler
+	public void onMobAttack(EntityDamageByEntityEvent event) {
+		if(event.getDamager() instanceof Player) return;
+		if(!(event.getDamager() instanceof LivingEntity)) return;
+		PitMob mob = PitMob.getPitMob((LivingEntity) event.getDamager());
+		if(mob == null) return;
+
+		if(mob instanceof PitMagmaCube) return;
+
+		if(event.getDamage() > 0) event.setDamage(EntityDamageEvent.DamageModifier.BASE, mob.damage);
+
+	}
+
+
+	@EventHandler
+	public void onMagmaCubeAttack(AttackEvent.Apply event) {
+		if(event.attacker instanceof Player) return;
+		PitMob mob = PitMob.getPitMob(event.attacker);
+		if(mob == null) return;
+
+		if(!(mob instanceof PitMagmaCube)) return;
+
+		if(event.fakeHit) return;
+
+		event.increase = mob.damage;
+
+	}
+
+	@EventHandler
 	public void onBlockPickup(EntityChangeBlockEvent event) {
 		if(event.getEntity() instanceof Enderman) event.setCancelled(true);
 	}
@@ -256,6 +301,11 @@ public class MobManager implements Listener {
 	}
 
 	@EventHandler
+	public void onSpawn(SpawnerSpawnEvent event) {
+		event.setCancelled(true);
+	}
+
+	@EventHandler
 	public void onExplode(ExplosionPrimeEvent event) {
 		Entity entity = event.getEntity();
 		if (!(entity instanceof Creeper)) return;
@@ -270,7 +320,7 @@ public class MobManager implements Listener {
 		for (Entity player : entity.getNearbyEntities(5, 5, 5)) {
 			if(!(player instanceof Player)) continue;
 
-			PitPlayer.getPitPlayer((Player) player).damage(5.0, (LivingEntity) entity);
+			PitPlayer.getPitPlayer((Player) player).damage(5, (LivingEntity) entity);
 		}
 	}
 

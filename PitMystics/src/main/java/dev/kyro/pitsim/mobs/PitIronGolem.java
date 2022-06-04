@@ -17,7 +17,7 @@ import java.util.Map;
 public class PitIronGolem extends PitMob {
 
 	public PitIronGolem(Location spawnLoc) {
-		super(MobType.IRON_GOLEM, spawnLoc, 9, "&cIron Golem");
+		super(MobType.IRON_GOLEM, spawnLoc, 9, 18, "&cIron Golem");
 	}
 
 	@Override
@@ -36,7 +36,7 @@ public class PitIronGolem extends PitMob {
 	@Override
 	public Map<ItemStack, Integer> getDrops() {
 		Map<ItemStack, Integer> drops = new HashMap<>();
-		drops.put(IronIngot.INSTANCE.getItem(), 50);
+		drops.put(IronIngot.INSTANCE.getItem(), 4);
 
 		return drops;
 	}

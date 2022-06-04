@@ -17,7 +17,7 @@ import java.util.Map;
 public class PitEnderman extends PitMob {
 
 	public PitEnderman(Location spawnLoc) {
-		super(MobType.ENDERMAN, spawnLoc, 10, "&cEnderman");
+		super(MobType.ENDERMAN, spawnLoc, 10, 20, "&cEnderman");
 	}
 
 	@Override
@@ -36,7 +36,7 @@ public class PitEnderman extends PitMob {
 	@Override
 	public Map<ItemStack, Integer> getDrops() {
 		Map<ItemStack, Integer> drops = new HashMap<>();
-		drops.put(EnderPearl.INSTANCE.getItem(), 50);
+		drops.put(EnderPearl.INSTANCE.getItem(), 2);
 
 		return drops;
 	}

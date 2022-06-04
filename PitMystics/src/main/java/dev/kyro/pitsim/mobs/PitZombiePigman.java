@@ -17,7 +17,7 @@ import java.util.Map;
 public class PitZombiePigman extends PitMob {
 
 	public PitZombiePigman(Location spawnLoc) {
-		super(MobType.ZOMBIE_PIGMAN, spawnLoc, 7, "&cZombie Pigman");
+		super(MobType.ZOMBIE_PIGMAN, spawnLoc, 7, 14, "&cZombie Pigman");
 	}
 
 	@Override
@@ -37,7 +37,7 @@ public class PitZombiePigman extends PitMob {
 	@Override
 	public Map<ItemStack, Integer> getDrops() {
 		Map<ItemStack, Integer> drops = new HashMap<>();
-		drops.put(RawPork.INSTANCE.getItem(), 50);
+		drops.put(RawPork.INSTANCE.getItem(), 8);
 
 		return drops;
 	}

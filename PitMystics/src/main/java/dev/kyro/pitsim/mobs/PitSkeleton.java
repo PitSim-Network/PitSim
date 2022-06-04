@@ -22,7 +22,7 @@ public class PitSkeleton extends PitMob {
 	public static PitSkeleton INSTANCE;
 
 	public PitSkeleton(Location spawnLoc) {
-		super(MobType.SKELETON, spawnLoc, 2, "&cSkeleton");
+		super(MobType.SKELETON, spawnLoc, 2, 4, "&cSkeleton");
 		INSTANCE = this;
 	}
 
@@ -49,7 +49,7 @@ public class PitSkeleton extends PitMob {
 	@Override
 	public Map<ItemStack, Integer> getDrops() {
 		Map<ItemStack, Integer> drops = new HashMap<>();
-		drops.put(Bone.INSTANCE.getItem(), 50);
+		drops.put(Bone.INSTANCE.getItem(), 40);
 
 		return drops;
 	}

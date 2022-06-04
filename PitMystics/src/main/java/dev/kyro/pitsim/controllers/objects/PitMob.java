@@ -18,12 +18,14 @@ public abstract class PitMob implements Listener {
 	public Location spawnLoc;
 	public int subLevel;
 	public LivingEntity entity;
+	public double damage;
 	public String displayName;
 
-	public PitMob(MobType type, Location spawnLoc, int subLevel, String displayName) {
+	public PitMob(MobType type, Location spawnLoc, int subLevel, double damage, String displayName) {
 		this.type = type;
 		this.spawnLoc = spawnLoc;
 		this.subLevel = subLevel;
+		this.damage = damage;
 		this.displayName = displayName;
 
 		Bukkit.getPluginManager().registerEvents(this, PitSim.INSTANCE);
