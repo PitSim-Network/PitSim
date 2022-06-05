@@ -97,9 +97,9 @@ public class MapManager implements Listener {
 		if(multiLobbies) return;
 		multiLobbies = true;
 		for(Player onlinePlayer : Bukkit.getOnlinePlayers()) {
-			AOutput.send(onlinePlayer, "&6&lLOBBY! &7Use the portal to switch lobbies");
-			AOutput.send(onlinePlayer, "&6&lLOBBY! &7Use the portal to switch lobbies");
-			AOutput.send(onlinePlayer, "&6&lLOBBY! &7Use the portal to switch lobbies");
+			AOutput.send(onlinePlayer, "&6&lLOBBY! &7Use the Keeper NPC to switch lobbies");
+			AOutput.send(onlinePlayer, "&6&lLOBBY! &7Use the Keeper NPC to switch lobbies");
+			AOutput.send(onlinePlayer, "&6&lLOBBY! &7Use the Keeper NPC to switch lobbies");
 			Misc.sendTitle(onlinePlayer, "&6&l2ND LOBBY OPEN!", 40);
 		}
 	}

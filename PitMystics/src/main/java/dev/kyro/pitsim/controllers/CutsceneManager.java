@@ -61,6 +61,13 @@ public class CutsceneManager implements Listener {
         new BukkitRunnable() {
             @Override
             public void run() {
+                player.setGameMode(GameMode.SPECTATOR);
+            }
+        }.runTaskLater(PitSim.INSTANCE, 10);
+
+        new BukkitRunnable() {
+            @Override
+            public void run() {
                 Misc.applyPotionEffect(player, PotionEffectType.BLINDNESS, 45, 100, false, false);
             }
         }.runTaskLater(PitSim.INSTANCE, 145);

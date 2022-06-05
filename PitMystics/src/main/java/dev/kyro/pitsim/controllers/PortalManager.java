@@ -5,7 +5,9 @@ import dev.kyro.arcticapi.data.APlayerData;
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.brewing.PotionManager;
+import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.misc.Misc;
+import dev.kyro.pitsim.misc.Sounds;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -29,6 +31,16 @@ public class PortalManager implements Listener {
 	@EventHandler
 	public void onPortal(PlayerPortalEvent event) {
 		if(event.getCause() != PlayerTeleportEvent.TeleportCause.NETHER_PORTAL) return;
+
+		PitPlayer pitPlayer = PitPlayer.getPitPlayer(event.getPlayer());
+		if(pitPlayer.prestige < 5) {
+			event.getPlayer().setVelocity(new Vector(3, 1, 0));
+			AOutput.error(event.getPlayer(), "&5&lDARKZONE &7You must be atleast prestige &eV &7to enter!");
+			Sounds.NO.play(event.getPlayer());
+			return;
+		}
+
+
 		event.setCancelled(true);
 		Player player = event.getPlayer();
 		Location playerLoc = player.getLocation();

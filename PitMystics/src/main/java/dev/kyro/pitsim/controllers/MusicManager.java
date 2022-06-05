@@ -26,7 +26,7 @@ public class MusicManager implements Listener {
             @Override
             public void run() {
                 for (Player player : Bukkit.getOnlinePlayers()) {
-                    if(!MapManager.inDarkzone(player) || NoteBlockAPI.isReceivingSong(player) || PitPlayer.getPitPlayer(player).musicDisabled) continue;
+                    if(!MapManager.inDarkzone(player) || CutsceneManager.cutscenePlayers.contains(player) || NoteBlockAPI.isReceivingSong(player) || PitPlayer.getPitPlayer(player).musicDisabled) continue;
                     File file = new File("plugins/NoteBlockAPI/Effects/darkzone.nbs");
                     Song song = NBSDecoder.parse(file);
                     EntitySongPlayer esp = new EntitySongPlayer(song);
