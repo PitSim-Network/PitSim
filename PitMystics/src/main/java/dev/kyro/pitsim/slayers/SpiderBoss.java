@@ -47,7 +47,9 @@ public class SpiderBoss extends PitBoss {
 
         npc = CitizensAPI.getNPCRegistry().createNPC(EntityType.PLAYER, name);
 
-        this.boss = new SimpleBoss(npc, target, subLevel, 3, SimpleSkin.SPIDER, this);
+        this.boss = new SimpleBoss(npc, target, subLevel, 3, SimpleSkin.SPIDER, this) {
+
+        };
         this.entity = (Player) npc.getEntity();
         this.target = target;
 

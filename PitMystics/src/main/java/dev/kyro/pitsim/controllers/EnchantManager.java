@@ -189,27 +189,37 @@ public class EnchantManager implements Listener {
 		NBTItem nbtItem = new NBTItem(itemStack);
 		if(!nbtItem.hasKey(NBTTag.ITEM_UUID.getRef())) return false;
 
-		NBTList<String> enchantOrder = nbtItem.getStringList(NBTTag.PIT_ENCHANT_ORDER.getRef());
-		NBTCompound itemEnchants = nbtItem.getCompound(NBTTag.PIT_ENCHANTS.getRef());
-		Integer enchantNum = nbtItem.getInteger(NBTTag.ITEM_ENCHANTS.getRef());
-		Integer tokenNum = nbtItem.getInteger(NBTTag.ITEM_TOKENS.getRef());
-		Integer rTokenNum = nbtItem.getInteger(NBTTag.ITEM_RTOKENS.getRef());
+		if(nbtItem.hasKey(NBTTag.TAINTED_TIER.getRef())) {
+			Map<PitEnchant, Integer> enchants = EnchantManager.getEnchantsOnItem(itemStack);
+			int tainted = 0;
+			for (PitEnchant pitEnchant : enchants.keySet()) {
+				if(pitEnchant.tainted) tainted++;
+			}
+			return tainted <= 1;
+		} else {
 
-		int maxTokens = nbtItem.getBoolean(NBTTag.IS_GEMMED.getRef()) ? 9 : 8;
-		if(enchantNum > 3 || tokenNum > maxTokens || rTokenNum > 4) return true;
-		for(PitEnchant pitEnchant : EnchantManager.pitEnchants) {
-			if(itemEnchants.getInteger(pitEnchant.refNames.get(0)) > 3) return true;
+			NBTList<String> enchantOrder = nbtItem.getStringList(NBTTag.PIT_ENCHANT_ORDER.getRef());
+			NBTCompound itemEnchants = nbtItem.getCompound(NBTTag.PIT_ENCHANTS.getRef());
+			Integer enchantNum = nbtItem.getInteger(NBTTag.ITEM_ENCHANTS.getRef());
+			Integer tokenNum = nbtItem.getInteger(NBTTag.ITEM_TOKENS.getRef());
+			Integer rTokenNum = nbtItem.getInteger(NBTTag.ITEM_RTOKENS.getRef());
+
+			int maxTokens = nbtItem.getBoolean(NBTTag.IS_GEMMED.getRef()) ? 9 : 8;
+			if(enchantNum > 3 || tokenNum > maxTokens || rTokenNum > 4) return true;
+			for (PitEnchant pitEnchant : EnchantManager.pitEnchants) {
+				if(itemEnchants.getInteger(pitEnchant.refNames.get(0)) > 3) return true;
+			}
+			boolean hasCommonEnchant = false;
+			for (String enchantString : enchantOrder) {
+				PitEnchant pitEnchant = EnchantManager.getEnchant(enchantString);
+				if(pitEnchant == EnchantManager.getEnchant("theking")) return true;
+				if(pitEnchant == null) continue;
+				if(pitEnchant.isUncommonEnchant) continue;
+				hasCommonEnchant = true;
+				break;
+			}
+			return !hasCommonEnchant && enchantNum == 3 && !isJewel(itemStack);
 		}
-		boolean hasCommonEnchant = false;
-		for(String enchantString : enchantOrder) {
-			PitEnchant pitEnchant = EnchantManager.getEnchant(enchantString);
-			if(pitEnchant == EnchantManager.getEnchant("theking")) return true;
-			if(pitEnchant == null) continue;
-			if(pitEnchant.isUncommonEnchant) continue;
-			hasCommonEnchant = true;
-			break;
-		}
-		return !hasCommonEnchant && enchantNum == 3 && !isJewel(itemStack);
 	}
 
 	public static void setItemLore(ItemStack itemStack, Player player) {

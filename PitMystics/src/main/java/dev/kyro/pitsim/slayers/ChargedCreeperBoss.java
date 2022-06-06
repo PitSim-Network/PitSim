@@ -57,7 +57,9 @@ public class ChargedCreeperBoss extends PitBoss {
         super(target, SubLevel.CREEPER_CAVE);
         npc = CitizensAPI.getNPCRegistry().createNPC(EntityType.PLAYER, name);
 
-        this.boss = new SimpleBoss(npc, target, subLevel, 4, SimpleSkin.CREEPER, this);
+        this.boss = new SimpleBoss(npc, target, subLevel, 4, SimpleSkin.CREEPER, this) {
+
+        };
         this.entity = (Player) npc.getEntity();
         this.target = target;
 
