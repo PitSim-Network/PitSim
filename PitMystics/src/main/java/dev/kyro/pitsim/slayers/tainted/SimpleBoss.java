@@ -11,8 +11,10 @@ import net.kyori.adventure.audience.Audience;
 import net.kyori.adventure.bossbar.BossBar;
 import net.kyori.adventure.text.Component;
 import org.bukkit.ChatColor;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.scheduler.BukkitRunnable;
 import org.checkerframework.checker.nullness.qual.NonNull;
 
 public class SimpleBoss {
@@ -22,6 +24,7 @@ public class SimpleBoss {
     SubLevel subLevel;
     BossBar activeBar;
     SimpleSkin skin;
+    PitBoss pitBoss;
 
     // There is no cap to difficulty level
     int difficulty;
@@ -42,13 +45,14 @@ public class SimpleBoss {
     ItemStack boots;
     ItemStack sword;
 
-    public SimpleBoss(NPC npc, Player target, SubLevel sublevel, int difficulty, SimpleSkin skin){
+    public SimpleBoss(NPC npc, Player target, SubLevel sublevel, int difficulty, SimpleSkin skin, PitBoss pitBoss){
 
         this.npc = npc;
         this.subLevel = sublevel;
         this.target = target;
         this.difficulty = difficulty;
         this.skin = skin;
+        this.pitBoss = pitBoss;
 
         modifiers();
 
@@ -63,15 +67,36 @@ public class SimpleBoss {
                 .updatePathRate(5)
                 .speedModifier(this.speed);
 
-        Player entity = (Player) npc.getEntity();
+        spawn();
 
-        entity.setMaxHealth(this.health);
-        entity.setHealth(this.health);
+        if(npc.isSpawned()){
+            if(npc.getEntity() != null) {
+                Player entity = (Player) npc.getEntity();
 
-        npc.setProtected(false);
+                entity.setMaxHealth(this.health);
+                entity.setHealth(this.health);
 
-        bossBar(PitSim.adventure.player(target));
-        BossManager.activePlayers.add(target);
+                npc.setProtected(false);
+
+                bossBar(PitSim.adventure.player(target));
+                BossManager.activePlayers.add(target);
+
+                BossManager.bosses.put(npc, this.pitBoss);
+            }
+        }
+
+        if(npc.isSpawned()){
+            new BukkitRunnable() {
+                @Override
+                public void run() {
+                    try {
+                        npc.getNavigator().setTarget(target, true);
+                    } catch (Exception ignored) { }
+                }
+            }.runTaskLater(PitSim.INSTANCE, 30);
+        }
+
+
     }
 
     public void spawn(){

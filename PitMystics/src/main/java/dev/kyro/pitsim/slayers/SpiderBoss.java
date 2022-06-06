@@ -20,6 +20,7 @@ import net.kyori.adventure.bossbar.BossBar;
 import net.kyori.adventure.text.Component;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
+import org.bukkit.block.Block;
 import org.bukkit.entity.*;
 import org.bukkit.event.player.PlayerTeleportEvent;
 import org.bukkit.inventory.ItemStack;
@@ -86,8 +87,17 @@ public class SpiderBoss extends PitBoss {
         else if(health < (maxHealth / 2) && !enchants.containsValue(EnchantManager.getEnchant("ls"))) {
             equipment.set(Equipment.EquipmentSlot.HAND, getExplosive());
 
-            if(target.getLocation().getBlock().getType() == null && target.getLocation().getBlock().getType() == Material.AIR){
-                target.getLocation().getBlock().setType(Material.WEB);
+            if(target.getLocation().getBlock().getType() == null || target.getLocation().getBlock().getType() == Material.AIR){
+                Block block = target.getLocation().getBlock();
+                block.setType(Material.WEB);
+                new BukkitRunnable() {
+                    @Override
+                    public void run() {
+                        try {
+                            block.setType(Material.AIR);
+                        } catch (Exception ignored) { }
+                    }
+                }.runTaskLater(PitSim.INSTANCE, 30);
             }
 
             LivingEntity shooter = ((LivingEntity) npc.getEntity());
