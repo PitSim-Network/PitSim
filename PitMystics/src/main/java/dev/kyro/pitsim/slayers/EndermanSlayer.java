@@ -131,4 +131,9 @@ public class EndermanSlayer extends PitBoss {
     public Player getEntity() {
         return null;
     }
+
+    @Override
+    public void setNPC(NPC npc) {
+        this.npc = npc;
+    }
 }

@@ -51,7 +51,6 @@ public class SkeletonBoss extends PitBoss {
     public Player target;
     public String name = "&c&lSkeleton Boss";
     public SubLevel subLevel = SubLevel.SKELETON_CAVE;
-    public BossBar activeBar;
     public SimpleBoss boss;
 
     public SkeletonBoss(Player target) throws Exception {
@@ -60,10 +59,8 @@ public class SkeletonBoss extends PitBoss {
         npc = CitizensAPI.getNPCRegistry().createNPC(EntityType.PLAYER, name);
 
         this.boss = new SimpleBoss(npc, target, subLevel, 2, SimpleSkin.SKELETON, this);
-        this.activeBar = boss.getActiveBar();
         this.entity = (Player) npc.getEntity();
-
-
+        this.target = target;
 
         boss.run();
     }
@@ -146,7 +143,7 @@ public class SkeletonBoss extends PitBoss {
         double health = ((LivingEntity) npc.getEntity()).getHealth();
         double maxHealth = ((LivingEntity) npc.getEntity()).getMaxHealth();
         float progress = (float) health / (float) maxHealth;
-        activeBar.progress(progress);
+        boss.getActiveBar().progress(progress);
 
         npc.getNavigator().setTarget(target, true);
 
@@ -175,13 +172,18 @@ public class SkeletonBoss extends PitBoss {
 
     @Override
     public void onDeath() {
-        boss.hideActiveBossBar(PitSim.adventure.player(target));
+        boss.hideActiveBossBar();
         NoteBlockAPI.stopPlaying(target);
     }
 
     @Override
     public Player getEntity() {
-        return entity;
+        return (Player) npc.getEntity();
+    }
+
+    @Override
+    public void setNPC(NPC npc) {
+        this.npc = npc;
     }
 
     public static ItemStack getBillionaire() throws Exception {
@@ -244,16 +246,4 @@ public class SkeletonBoss extends PitBoss {
 
      */
 
-    public void showMyBossBar(final @NonNull Audience player) {
-        final Component name = Component.text(ChatColor.RED + "" + ChatColor.BOLD + "Skeleton Boss");
-        final BossBar fullBar = BossBar.bossBar(name, 1F, BossBar.Color.PINK, BossBar.Overlay.PROGRESS);
-
-        player.showBossBar(fullBar);
-        this.activeBar = fullBar;
-    }
-
-    public void hideActiveBossBar(final @NonNull Audience player) {
-        player.hideBossBar(this.activeBar);
-        this.activeBar = null;
-    }
 }

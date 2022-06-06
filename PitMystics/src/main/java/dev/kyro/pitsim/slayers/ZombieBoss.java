@@ -220,6 +220,11 @@ public class ZombieBoss extends PitBoss {
 
      */
 
+    @Override
+    public void setNPC(NPC npc) {
+        this.npc = npc;
+    }
+
     public void showMyBossBar(final @NonNull Audience player) {
         final Component name = Component.text(ChatColor.RED + "" + ChatColor.BOLD + "Zombie Boss");
         final BossBar fullBar = BossBar.bossBar(name, 1F, BossBar.Color.PINK, BossBar.Overlay.PROGRESS);

@@ -162,6 +162,11 @@ public class SpiderBoss extends PitBoss {
     }
 
     @Override
+    public void setNPC(NPC npc) {
+        this.npc = npc;
+    }
+
+    @Override
     public Player getEntity() {
         return entity;
     }
