@@ -93,7 +93,7 @@ public class SimpleBoss {
                         npc.getNavigator().setTarget(target, true);
                     } catch (Exception ignored) { }
                 }
-            }.runTaskLater(PitSim.INSTANCE, 30);
+            }.runTaskLater(PitSim.INSTANCE, 20);
         }
 
 
