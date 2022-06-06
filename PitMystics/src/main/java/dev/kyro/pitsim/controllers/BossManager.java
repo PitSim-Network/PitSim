@@ -21,10 +21,7 @@ import dev.kyro.pitsim.events.OofEvent;
 import dev.kyro.pitsim.misc.Misc;
 import dev.kyro.pitsim.misc.Sounds;
 import dev.kyro.pitsim.misc.SpawnNPCs;
-import dev.kyro.pitsim.slayers.ChargedCreeperBoss;
-import dev.kyro.pitsim.slayers.SkeletonBoss;
-import dev.kyro.pitsim.slayers.SpiderBoss;
-import dev.kyro.pitsim.slayers.ZombieBoss;
+import dev.kyro.pitsim.slayers.*;
 import net.citizensnpcs.Citizens;
 import net.citizensnpcs.api.CitizensAPI;
 import net.citizensnpcs.api.event.NPCRightClickEvent;
@@ -130,19 +127,24 @@ public class BossManager implements Listener {
 
     private void getBossType(SubLevel level, Player player) throws Exception {
 
-        if(level.itemName.equals("&aRotten Flesh")){
-            new ZombieBoss(player);
-        }else if(level.itemName.equals("&aBone")){
-            new SkeletonBoss(player);
-            //new SkeletonBoss(player);
-        }else if(level.itemName.equals("&aSpider Eye")){
-            new SpiderBoss(player);
-            //new SkeletonBoss(player);
-        }else if(level.itemName.equals("&aGunpowder")){
-            new ChargedCreeperBoss(player);
-            //new SkeletonBoss(player);
-        }
+        switch (level.bossItem) {
+            case ZOMBIE_FLESH:
+                new ZombieBoss(player);
+                break;
+            case SKELETON_BONE:
+                new SkeletonBoss(player);
+                break;
+            case SPIDER_EYE:
+                new SpiderBoss(player);
+                break;
+            case CREEPER_POWDER:
+                new ChargedCreeperBoss(player);
+                break;
+            case CAVESPIDER_EYE:
+                new CaveSpiderBoss(player);
+                break;
 
+        }
     }
 
     @EventHandler(priority = EventPriority.HIGHEST)

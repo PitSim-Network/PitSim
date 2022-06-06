@@ -12,6 +12,8 @@ import dev.kyro.pitsim.enchants.Lifesteal;
 import dev.kyro.pitsim.enums.*;
 import dev.kyro.pitsim.events.AttackEvent;
 import dev.kyro.pitsim.misc.BossSkin;
+import dev.kyro.pitsim.slayers.tainted.SimpleBoss;
+import dev.kyro.pitsim.slayers.tainted.SimpleSkin;
 import me.confuser.barapi.BarAPI;
 import net.citizensnpcs.api.CitizensAPI;
 import net.citizensnpcs.api.ai.AttackStrategy;
@@ -48,6 +50,7 @@ public class ZombieBoss extends PitBoss {
     public String name = "&c&lZombie Boss";
     public SubLevel subLevel = SubLevel.ZOMBIE_CAVE;
     public BossBar activeBar;
+    public SimpleBoss boss;
 
     public ZombieBoss(Player target) throws Exception {
         super(target, SubLevel.ZOMBIE_CAVE);
@@ -55,24 +58,11 @@ public class ZombieBoss extends PitBoss {
 
         npc = CitizensAPI.getNPCRegistry().createNPC(EntityType.PLAYER, name);
 
-        CitizensNavigator navigator = (CitizensNavigator) npc.getNavigator();
-        navigator.getDefaultParameters()
-                .attackDelayTicks(8)
-                .attackRange(10)
-                .updatePathRate(5)
-                .speed(2);
+        this.boss = new SimpleBoss(npc, target, subLevel, 1, SimpleSkin.ZOMBIE, this);
+        this.entity = (Player) npc.getEntity();
+        this.target = target;
 
-
-        npc.setProtected(false);
-
-        spawn();
-        entity = (Player) npc.getEntity();
-        BossManager.bosses.put(npc, this);
-
-        entity.setMaxHealth(250);
-        entity.setHealth(250);
-        showMyBossBar(PitSim.adventure.player(target));
-        BossManager.activePlayers.add(target);
+        boss.run();
 
 
     }

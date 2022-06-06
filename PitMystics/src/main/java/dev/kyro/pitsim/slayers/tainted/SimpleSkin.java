@@ -5,7 +5,7 @@ public enum SimpleSkin {
     SKELETON("Napkings"),
     SPIDER("shinhyeok0210"),
     CREEPER("johum2718"),
-    CAVE_SPIDER("null"),
+    CAVE_SPIDER("shinhyeok0210"),
     PIGMAN("null"),
     MAGMA("null"),
     IRON_GOLEM("null"),
