@@ -59,7 +59,7 @@ public class SkeletonBoss extends PitBoss {
 
         npc = CitizensAPI.getNPCRegistry().createNPC(EntityType.PLAYER, name);
 
-        this.boss = new SimpleBoss(npc, target, subLevel, 2, SimpleSkin.SKELETON);
+        this.boss = new SimpleBoss(npc, target, subLevel, 2, SimpleSkin.SKELETON, this);
         this.entity = (Player) npc.getEntity();
 
 
