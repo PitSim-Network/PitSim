@@ -49,7 +49,6 @@ public class ZombieBoss extends PitBoss {
     public Player target;
     public String name = "&c&lZombie Boss";
     public SubLevel subLevel = SubLevel.ZOMBIE_CAVE;
-    public BossBar activeBar;
     public SimpleBoss boss;
 
     public ZombieBoss(Player target) throws Exception {
@@ -63,20 +62,7 @@ public class ZombieBoss extends PitBoss {
         this.target = target;
 
         boss.run();
-
-
     }
-
-    public void spawn() throws Exception {
-        PitBoss.spawn(this.npc, this.target, this.subLevel,
-                new BossSkin(this.npc, "zombie"),
-                getBillionaire(),
-                new ItemStack(Material.DIAMOND_HELMET),
-                new ItemStack(Material.DIAMOND_CHESTPLATE),
-                getSolitude(),
-                new ItemStack(Material.DIAMOND_BOOTS));
-    }
-
 
     public void onAttack() throws Exception {
         Equipment equipment = npc.getTrait(Equipment.class);
@@ -138,20 +124,20 @@ public class ZombieBoss extends PitBoss {
         double health = ((LivingEntity) npc.getEntity()).getHealth();
         double maxHealth = ((LivingEntity) npc.getEntity()).getMaxHealth();
         float progress = (float) health / (float) maxHealth;
-        activeBar.progress(progress);
+        boss.getActiveBar().progress(progress);
 
         npc.getNavigator().setTarget(target, true);
     }
 
     @Override
     public void onDeath() {
-        hideActiveBossBar(PitSim.adventure.player(target));
+        boss.hideActiveBossBar();
         NoteBlockAPI.stopPlaying(target);
     }
 
     @Override
     public Player getEntity() {
-        return entity;
+        return (Player) npc.getEntity();
     }
 
     public static ItemStack getBillionaire() throws Exception {
@@ -213,18 +199,5 @@ public class ZombieBoss extends PitBoss {
     @Override
     public void setNPC(NPC npc) {
         this.npc = npc;
-    }
-
-    public void showMyBossBar(final @NonNull Audience player) {
-        final Component name = Component.text(ChatColor.RED + "" + ChatColor.BOLD + "Zombie Boss");
-        final BossBar fullBar = BossBar.bossBar(name, 1F, BossBar.Color.PINK, BossBar.Overlay.PROGRESS);
-
-        player.showBossBar(fullBar);
-        this.activeBar = fullBar;
-    }
-
-    public void hideActiveBossBar(final @NonNull Audience player) {
-        player.hideBossBar(this.activeBar);
-        this.activeBar = null;
     }
 }

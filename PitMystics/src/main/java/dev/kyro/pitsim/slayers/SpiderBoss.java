@@ -11,6 +11,8 @@ import dev.kyro.pitsim.enums.MysticType;
 import dev.kyro.pitsim.enums.PantColor;
 import dev.kyro.pitsim.enums.SubLevel;
 import dev.kyro.pitsim.misc.BossSkin;
+import dev.kyro.pitsim.slayers.tainted.SimpleBoss;
+import dev.kyro.pitsim.slayers.tainted.SimpleSkin;
 import net.citizensnpcs.api.CitizensAPI;
 import net.citizensnpcs.api.npc.NPC;
 import net.citizensnpcs.api.trait.trait.Equipment;
@@ -36,8 +38,8 @@ public class SpiderBoss extends PitBoss {
     public Player entity;
     public Player target;
     public String name = "&c&lSpider Boss";
-    public SubLevel subLevel = SubLevel.ZOMBIE_CAVE;
-    public BossBar activeBar;
+    public SubLevel subLevel = SubLevel.SPIDER_CAVE;
+    public SimpleBoss boss;
 
     public SpiderBoss(Player target) throws Exception {
         super(target, SubLevel.SPIDER_CAVE);
@@ -45,35 +47,11 @@ public class SpiderBoss extends PitBoss {
 
         npc = CitizensAPI.getNPCRegistry().createNPC(EntityType.PLAYER, name);
 
-        CitizensNavigator navigator = (CitizensNavigator) npc.getNavigator();
-        navigator.getDefaultParameters()
-                .attackDelayTicks(8)
-                .attackRange(10)
-                .updatePathRate(5)
-                .speed(2);
+        this.boss = new SimpleBoss(npc, target, subLevel, 3, SimpleSkin.SPIDER, this);
+        this.entity = (Player) npc.getEntity();
+        this.target = target;
 
-
-        npc.setProtected(false);
-        spawn();
-        entity = (Player) npc.getEntity();
-        BossManager.bosses.put(npc, this);
-
-        entity.setMaxHealth(200);
-        entity.setHealth(200);
-        showMyBossBar(PitSim.adventure.player(target));
-        BossManager.activePlayers.add(target);
-
-
-    }
-
-    public void spawn() throws Exception {
-        PitBoss.spawn(this.npc, this.target, this.subLevel,
-                new BossSkin(this.npc, "shinhyeok0210"),
-                getBillionaire(),
-                new ItemStack(Material.DIAMOND_HELMET),
-                new ItemStack(Material.DIAMOND_CHESTPLATE),
-                getSolitude(),
-                new ItemStack(Material.DIAMOND_BOOTS));
+        boss.run();
     }
 
     public void onAttack() throws Exception {
@@ -150,14 +128,14 @@ public class SpiderBoss extends PitBoss {
         double health = ((LivingEntity) npc.getEntity()).getHealth();
         double maxHealth = ((LivingEntity) npc.getEntity()).getMaxHealth();
         float progress = (float) health / (float) maxHealth;
-        activeBar.progress(progress);
+        boss.getActiveBar().progress(progress);
 
         npc.getNavigator().setTarget(target, true);
     }
 
     @Override
     public void onDeath() {
-        hideActiveBossBar(PitSim.adventure.player(target));
+        boss.hideActiveBossBar();
         NoteBlockAPI.stopPlaying(target);
     }
 
@@ -168,7 +146,7 @@ public class SpiderBoss extends PitBoss {
 
     @Override
     public Player getEntity() {
-        return entity;
+        return (Player) npc.getEntity();
     }
 
     public static ItemStack getBillionaire() throws Exception {
@@ -211,19 +189,6 @@ public class SpiderBoss extends PitBoss {
 //        itemStack = EnchantManager.addEnchant(itemStack, EnchantManager.getEnchant("pull"), 3, false);
         itemStack = EnchantManager.addEnchant(itemStack, EnchantManager.getEnchant("robin"), 3, false);
         return itemStack;
-    }
-
-    public void showMyBossBar(final @NonNull Audience player) {
-        final Component name = Component.text(ChatColor.RED + "" + ChatColor.BOLD + "Spider Boss");
-        final BossBar fullBar = BossBar.bossBar(name, 1F, BossBar.Color.PINK, BossBar.Overlay.PROGRESS);
-
-        player.showBossBar(fullBar);
-        this.activeBar = fullBar;
-    }
-
-    public void hideActiveBossBar(final @NonNull Audience player) {
-        player.hideBossBar(this.activeBar);
-        this.activeBar = null;
     }
 
 }
