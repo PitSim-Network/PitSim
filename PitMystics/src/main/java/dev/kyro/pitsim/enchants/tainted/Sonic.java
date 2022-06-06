@@ -9,6 +9,9 @@ import dev.kyro.pitsim.enums.ApplyType;
 import dev.kyro.pitsim.misc.Misc;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.player.PlayerMoveEvent;
+import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.HashMap;
@@ -44,7 +47,10 @@ public class Sonic extends PitEnchant {
         }.runTaskTimerAsynchronously(PitSim.INSTANCE, 0, 20);
     }
 
-
+    @EventHandler
+    public void onQuit(PlayerQuitEvent event) {
+        event.getPlayer().setWalkSpeed(0.2F);
+    }
 
     @Override
     public List<String> getDescription(int enchantLvl) {

@@ -22,19 +22,24 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.scheduler.BukkitTask;
 
 import java.io.File;
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class CutsceneManager implements Listener {
 
-    public static List<Player> cutscenePlayers = new ArrayList<>();
+    public static Map<Player, List<BukkitTask>> cutscenePlayers = new HashMap<>();
+
+    //TODO: Cancel all runnables on leave
 
     public static void play(Player player) {
         FeatherBoardAPI.toggle(player);
-        cutscenePlayers.add(player);
+        List<BukkitTask> runnables = new ArrayList<>();
         Location originalLocation = player.getLocation();
 
         MusicManager.stopPlaying(player);
@@ -58,14 +63,14 @@ public class CutsceneManager implements Listener {
             e.printStackTrace();
         }
 
-        new BukkitRunnable() {
+        BukkitTask task1 = new BukkitRunnable() {
             @Override
             public void run() {
                 player.setGameMode(GameMode.SPECTATOR);
             }
         }.runTaskLater(PitSim.INSTANCE, 10);
 
-        new BukkitRunnable() {
+        BukkitTask task2 = new BukkitRunnable() {
             @Override
             public void run() {
                 Misc.applyPotionEffect(player, PotionEffectType.BLINDNESS, 45, 100, false, false);
@@ -78,7 +83,7 @@ public class CutsceneManager implements Listener {
         secondSequence.add(new Location(MapManager.getDarkzone(), 233, 133, -136, 33, 26));
         secondSequence.add(new Location(MapManager.getDarkzone(), 264, 131, -99, 92, 21));
 
-        new BukkitRunnable() {
+        BukkitTask task3 = new BukkitRunnable() {
             @Override
             public void run() {
                 try {
@@ -89,7 +94,7 @@ public class CutsceneManager implements Listener {
             }
         }.runTaskLater(PitSim.INSTANCE, 160);
 
-        new BukkitRunnable() {
+        BukkitTask task4 = new BukkitRunnable() {
             @Override
             public void run() {
                 Misc.applyPotionEffect(player, PotionEffectType.BLINDNESS, 45, 100, false, false);
@@ -103,7 +108,7 @@ public class CutsceneManager implements Listener {
         thirdSequence.add(new Location(MapManager.getDarkzone(), 288, 175, -19, -119, -28));
         thirdSequence.add(new Location(MapManager.getDarkzone(), 296, 189, -31, -90, -4));
 
-        new BukkitRunnable() {
+        BukkitTask task5 = new BukkitRunnable() {
             @Override
             public void run() {
                 try {
@@ -114,7 +119,7 @@ public class CutsceneManager implements Listener {
             }
         }.runTaskLater(PitSim.INSTANCE, 460);
 
-        new BukkitRunnable() {
+        BukkitTask task6 = new BukkitRunnable() {
             @Override
             public void run() {
                 Misc.applyPotionEffect(player, PotionEffectType.BLINDNESS, 45, 100, false, false);
@@ -132,7 +137,7 @@ public class CutsceneManager implements Listener {
         fourthSequence.add(new Location(MapManager.getDarkzone(), 367, 57, -125, -90, 0));
         fourthSequence.add(new Location(MapManager.getDarkzone(), 440, 54, -127.5, -90, 0));
 
-        new BukkitRunnable() {
+        BukkitTask task7 = new BukkitRunnable() {
             @Override
             public void run() {
                 try {
@@ -144,7 +149,7 @@ public class CutsceneManager implements Listener {
         }.runTaskLater(PitSim.INSTANCE, 760);
 
 
-        new BukkitRunnable() {
+        BukkitTask task8 = new BukkitRunnable() {
             @Override
             public void run() {
                 Misc.applyPotionEffect(player, PotionEffectType.BLINDNESS, 65, 100, false, false);
@@ -156,7 +161,7 @@ public class CutsceneManager implements Listener {
         fifthSequence.add(new Location(MapManager.getDarkzone(), 206, 93, -93, 14, 6));
         fifthSequence.add(new Location(MapManager.getDarkzone(), 214, 94, -90, 52, 10));
 
-        new BukkitRunnable() {
+        BukkitTask task9 = new BukkitRunnable() {
             @Override
             public void run() {
                 try {
@@ -167,7 +172,7 @@ public class CutsceneManager implements Listener {
             }
         }.runTaskLater(PitSim.INSTANCE, 1660);
 
-        new BukkitRunnable() {
+        BukkitTask task10 = new BukkitRunnable() {
             @Override
             public void run() {
                 Misc.applyPotionEffect(player, PotionEffectType.BLINDNESS, 65, 100, false, false);
@@ -178,7 +183,7 @@ public class CutsceneManager implements Listener {
         sixthSequence.add(new Location(MapManager.getDarkzone(), 221, 94, -105, 142, 17));
         sixthSequence.add(new Location(MapManager.getDarkzone(), 198, 94, -103, -177, 15));
 
-        new BukkitRunnable() {
+        BukkitTask task11 = new BukkitRunnable() {
             @Override
             public void run() {
                 try {
@@ -189,17 +194,17 @@ public class CutsceneManager implements Listener {
             }
         }.runTaskLater(PitSim.INSTANCE, 1820);
 
-        new BukkitRunnable() {
+        BukkitTask task12 = new BukkitRunnable() {
             @Override
             public void run() {
                 Misc.applyPotionEffect(player, PotionEffectType.BLINDNESS, 45, 100, false, false);
             }
         }.runTaskLater(PitSim.INSTANCE, 1955);
 
-        new BukkitRunnable() {
+        BukkitTask task13 = new BukkitRunnable() {
             @Override
             public void run() {
-               player.teleport(originalLocation);
+                player.teleport(originalLocation);
                 player.setGameMode(GameMode.SURVIVAL);
                 cutscenePlayers.remove(player);
                 esp.setPlaying(false);
@@ -214,6 +219,23 @@ public class CutsceneManager implements Listener {
                 }
             }
         }.runTaskLater(PitSim.INSTANCE, 1980);
+
+        runnables.add(task1);
+        runnables.add(task2);
+        runnables.add(task3);
+        runnables.add(task4);
+        runnables.add(task5);
+        runnables.add(task6);
+        runnables.add(task7);
+        runnables.add(task8);
+        runnables.add(task9);
+        runnables.add(task10);
+        runnables.add(task11);
+        runnables.add(task12);
+        runnables.add(task13);
+
+        cutscenePlayers.put(player, runnables);
+
 
         sendTitle(player, "&d&k||&5&lDarkzone&d&k||", "&7A corrupted world", 20);
         sendTitle(player, "&eEnhanced Combat", "&7Your normal mystics won't work here", 200);
@@ -233,10 +255,15 @@ public class CutsceneManager implements Listener {
 
     @EventHandler
     public void onLeave(PlayerQuitEvent event) {
-        if(cutscenePlayers.contains(event.getPlayer())) {
+
+        Player toRemove = null;
+        if(cutscenePlayers.containsKey(event.getPlayer())) {
+            cutscenePlayers.get(event.getPlayer()).forEach(BukkitTask::cancel);
             event.getPlayer().setGameMode(GameMode.SURVIVAL);
             FeatherBoardAPI.toggle(event.getPlayer());
+            toRemove = event.getPlayer();
         }
+        if(toRemove != null) cutscenePlayers.remove(toRemove);
     }
 
     public static void sendTitle(Player player, String title, String subtitle, int ticks) {
