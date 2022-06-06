@@ -23,7 +23,24 @@ public class CaveSpiderBoss extends PitBoss {
         super(target, SubLevel.DEEP_SPIDER_CAVE);
         npc = CitizensAPI.getNPCRegistry().createNPC(EntityType.PLAYER, name);
 
-        this.boss = new SimpleBoss(npc, target, subLevel, 5, SimpleSkin.CAVE_SPIDER, this);
+        this.boss = new SimpleBoss(npc, target, subLevel, 5, SimpleSkin.CAVE_SPIDER, this){
+
+            @Override
+            public void attackHigh(){
+
+            }
+
+            @Override
+            public void attackMedium(){
+
+            }
+
+            @Override
+            public void attackLow(){
+
+            }
+
+        };
         this.entity = (Player) npc.getEntity();
         this.target = target;
 

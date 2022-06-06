@@ -19,7 +19,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.checkerframework.checker.nullness.qual.NonNull;
 
-public class SimpleBoss {
+public abstract class SimpleBoss {
 
     NPC npc;
     Player target;
@@ -57,6 +57,37 @@ public class SimpleBoss {
         this.pitBoss = pitBoss;
 
         modifiers();
+
+    }
+
+    public void attackHigh(){
+
+    }
+
+    public void attackMedium(){
+
+    }
+
+    public void attackLow(){
+
+    }
+
+    private void attackAbility(){
+        int random = 10;
+        switch (random){
+            case 1:
+                attackHigh();
+                break;
+            case 2:
+                attackMedium();
+                break;
+            case 3:
+                attackLow();
+                break;
+        }
+    }
+
+    private void defendAbility(){
 
     }
 
