@@ -177,15 +177,6 @@ public class SpawnNPCs implements Listener {
 		taintedShop = npc;
 		skin(npc, "Yeung_1217");
 
-		new BukkitRunnable() {
-			@Override
-			public void run() {
-				for (Entity nearbyEntity : taintedShop.getEntity().getNearbyEntities(2, 2, 2)) {
-					if(nearbyEntity == npc.getEntity()) continue;
-					if(registry.isNPC(nearbyEntity)) registry.getNPC(nearbyEntity).destroy();
-				}
-			}
-		}.runTaskLater(PitSim.INSTANCE, 20 * 10);
 	}
 
 	public static void createLeggingNPC() {
@@ -195,15 +186,6 @@ public class SpawnNPCs implements Listener {
 		leggingMerchant = npc;
 		skin(npc, "Merchant");
 
-		new BukkitRunnable() {
-			@Override
-			public void run() {
-				for (Entity nearbyEntity : leggingMerchant.getEntity().getNearbyEntities(2, 2, 2)) {
-					if(nearbyEntity == npc.getEntity()) continue;
-					if(registry.isNPC(nearbyEntity)) registry.getNPC(nearbyEntity).destroy();
-				}
-			}
-		}.runTaskLater(PitSim.INSTANCE, 20 * 10);
 	}
 
 	public static void createPotionNPC() {
@@ -212,16 +194,6 @@ public class SpawnNPCs implements Listener {
 		npc.spawn(new Location(MapManager.getDarkzone(), 195.5, 91, -84.5, -147, 0));
 		potionMaster = npc;
 		skin(npc, "Wiizard");
-
-		new BukkitRunnable() {
-			@Override
-			public void run() {
-				for (Entity nearbyEntity : potionMaster.getEntity().getNearbyEntities(2, 2, 2)) {
-					if(nearbyEntity == npc.getEntity()) continue;
-					if(registry.isNPC(nearbyEntity)) registry.getNPC(nearbyEntity).destroy();
-				}
-			}
-		}.runTaskLater(PitSim.INSTANCE, 20 * 10);
 	}
 
 

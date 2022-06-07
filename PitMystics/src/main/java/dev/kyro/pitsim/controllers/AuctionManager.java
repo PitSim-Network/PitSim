@@ -18,6 +18,9 @@ public class AuctionManager {
         new BukkitRunnable() {
             @Override
             public void run() {
+
+                boolean showItems = false;
+
                 for (int i = 0; i < auctionItems.length; i++) {
                     AuctionItem item = auctionItems[i];
 
@@ -25,15 +28,12 @@ public class AuctionManager {
                         item.endAuction();
                         System.out.println(i + " Auction ended");
                         auctionItems[i] = new AuctionItem(generateItem(), 0, i, 0, null);
+                        showItems = true;
                     }
                 }
 
-                new BukkitRunnable() {
-                    @Override
-                    public void run() {
-                        AuctionDisplays.showItems();
-                    }
-                }.runTaskLater(PitSim.INSTANCE, 20);
+                if(showItems) AuctionDisplays.showItems();
+
             }
         }.runTaskTimer(PitSim.INSTANCE, 20 * 60, 20 * 60);
     }
@@ -41,7 +41,9 @@ public class AuctionManager {
     public static void onStart() {
 
         for (int i = 0; i < 3; i++) {
-            if(AConfig.getDouble("auctions." + i + ".item") == 0) continue;
+            if(AConfig.getInt("auctions.auction" + i + ".item") == 0) {
+                continue;
+            }
 
             int item = AConfig.getInt("auctions.auction" + i + ".item");
             int itemData = AConfig.getInt("auctions.auction" + i + ".itemdata");

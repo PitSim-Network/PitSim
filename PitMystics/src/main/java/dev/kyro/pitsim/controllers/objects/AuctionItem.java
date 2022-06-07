@@ -2,6 +2,8 @@ package dev.kyro.pitsim.controllers.objects;
 
 import de.tr7zw.nbtapi.NBTItem;
 import dev.kyro.arcticapi.data.AConfig;
+import dev.kyro.pitsim.controllers.AuctionDisplays;
+import dev.kyro.pitsim.controllers.AuctionManager;
 import dev.kyro.pitsim.enums.ItemType;
 import dev.kyro.pitsim.enums.NBTTag;
 import javafx.util.Pair;
@@ -63,16 +65,26 @@ public class AuctionItem {
         saveData();
     }
 
-    public Pair<UUID, Integer> getHighestBid() {
-        UUID player = null;
+    public int getHighestBid() {
         int highest = 0;
+        for(Map.Entry<UUID, Integer> entry : bidMap.entrySet()) {
+            if(entry.getValue() > highest) {
+                highest = entry.getValue();
+            }
+        }
+        return highest;
+    }
+
+    public UUID getHighestBidder() {
+        int highest = 0;
+        UUID player = null;
         for(Map.Entry<UUID, Integer> entry : bidMap.entrySet()) {
             if(entry.getValue() > highest) {
                 highest = entry.getValue();
                 player = entry.getKey();
             }
         }
-        return player == null ? null : new Pair<>(player, highest);
+        return player;
     }
 
     public int getBid(UUID player) {
@@ -80,7 +92,6 @@ public class AuctionItem {
     }
 
     public void endAuction() {
-
         AConfig.set("auctions.auction" + slot + ".item", (Object) null);
         AConfig.set("auctions.auction" + slot + ".itemdata", (Object) null);
         AConfig.set("auctions.auction" + slot + ".start", (Object) null);
@@ -89,5 +100,7 @@ public class AuctionItem {
         AConfig.set("auctions.auction" + slot, (Object) null);
 
         AConfig.saveConfig();
+
+        AuctionDisplays.getItem(AuctionDisplays.pedestalItems[slot]).remove();
     }
 }

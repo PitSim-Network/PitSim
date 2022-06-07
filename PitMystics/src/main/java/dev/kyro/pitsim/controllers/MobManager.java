@@ -9,7 +9,6 @@ import dev.kyro.pitsim.enchants.tainted.CleaveSpell;
 import dev.kyro.pitsim.enums.SubLevel;
 import dev.kyro.pitsim.events.AttackEvent;
 import dev.kyro.pitsim.events.KillEvent;
-import dev.kyro.pitsim.misc.Misc;
 import dev.kyro.pitsim.mobs.PitEnderman;
 import dev.kyro.pitsim.mobs.PitIronGolem;
 import dev.kyro.pitsim.mobs.PitMagmaCube;
@@ -351,19 +350,19 @@ public class MobManager implements Listener {
 			for (ArmorStand value : CleaveSpell.stands.values()) {
 				if(value.getUniqueId().equals(entity.getUniqueId())) continue main;
 			}
-			for (ArmorStand pedestalArmorStand : AuctionDisplays.pedestalArmorStands) {
-				if(pedestalArmorStand.getUniqueId().equals(entity.getUniqueId())) continue main;
+			for (UUID pedestalArmorStand : AuctionDisplays.pedestalArmorStands) {
+				if(pedestalArmorStand.equals(entity.getUniqueId())) continue main;
 			}
-			for (ArmorStand pedestalArmorStand : AuctionDisplays.highestBidderStands) {
-				if(pedestalArmorStand.getUniqueId().equals(entity.getUniqueId())) continue main;
+			for (UUID pedestalArmorStand : AuctionDisplays.highestBidderStands) {
+				if(pedestalArmorStand.equals(entity.getUniqueId())) continue main;
 			}
-			for (ArmorStand pedestalArmorStand : AuctionDisplays.highestBidStands) {
-				if(pedestalArmorStand.getUniqueId().equals(entity.getUniqueId())) continue main;
+			for (UUID pedestalArmorStand : AuctionDisplays.highestBidStands) {
+				if(pedestalArmorStand.equals(entity.getUniqueId())) continue main;
 			}
-			for (ArmorStand pedestalArmorStand : AuctionDisplays.rightClickStands) {
-				if(pedestalArmorStand.getUniqueId().equals(entity.getUniqueId())) continue main;
+			for (UUID pedestalArmorStand : AuctionDisplays.rightClickStands) {
+				if(pedestalArmorStand.equals(entity.getUniqueId())) continue main;
 			}
-			if(entity.getUniqueId().equals(AuctionDisplays.timerStand.getUniqueId())) continue;
+			if(entity.getUniqueId().equals(AuctionDisplays.timerStandUUID)) continue;
 
 			if(entity.getUniqueId().equals(TaintedWell.textLine1.getUniqueId())) continue;
 			if(entity.getUniqueId().equals(TaintedWell.textLine2.getUniqueId())) continue;
