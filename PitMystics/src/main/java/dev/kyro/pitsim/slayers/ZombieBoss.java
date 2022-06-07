@@ -58,7 +58,25 @@ public class ZombieBoss extends PitBoss {
         npc = CitizensAPI.getNPCRegistry().createNPC(EntityType.PLAYER, name);
 
         this.boss = new SimpleBoss(npc, target, subLevel, 1, SimpleSkin.ZOMBIE, this){
+            @Override
+            protected void attackHigh(){
 
+            }
+
+            @Override
+            protected void attackMedium(){
+
+            }
+
+            @Override
+            protected void attackLow(){
+
+            }
+
+            @Override
+            protected void defend() {
+
+            }
         };
         this.entity = (Player) npc.getEntity();
         this.target = target;
@@ -67,58 +85,7 @@ public class ZombieBoss extends PitBoss {
     }
 
     public void onAttack() throws Exception {
-        Equipment equipment = npc.getTrait(Equipment.class);
-        double health = ((LivingEntity) npc.getEntity()).getHealth();
-        double maxHealth = ((LivingEntity) npc.getEntity()).getMaxHealth();
-        Map<PitEnchant, Integer> enchants = EnchantManager.getEnchantsOnItem(equipment.get(Equipment.EquipmentSlot.HAND));
-        if(equipment.get(Equipment.EquipmentSlot.HAND).getType() == Material.BOW) {
-            equipment.set(Equipment.EquipmentSlot.HAND, getLifesteal());
-        }
-        else if(health < (maxHealth / 2) && !enchants.containsValue(EnchantManager.getEnchant("ls"))) {
-            equipment.set(Equipment.EquipmentSlot.HAND, getExplosive());
-            LivingEntity shooter = ((LivingEntity) npc.getEntity());
-            shooter.launchProjectile(Arrow.class);
-            new BukkitRunnable() {
-                @Override
-                public void run() {
-                    try {
-                        equipment.set(Equipment.EquipmentSlot.HAND, getLifesteal());
-                    } catch (Exception ignored) { }
-                }
-            }.runTaskLater(PitSim.INSTANCE, 10);
-        }
-        else equipment.set(Equipment.EquipmentSlot.HAND, getBillionaire());
-
-        new BukkitRunnable() {
-            @Override
-            public void run() {
-                if(npc.getEntity() == null) {return;}
-
-                List<Entity> entities = npc.getEntity().getNearbyEntities(4, 4, 4);
-                if(!entities.contains(target)) {
-                    try {
-                        equipment.set(Equipment.EquipmentSlot.HAND, getPullbow());
-
-                    } catch (Exception ignored) { }
-                    new BukkitRunnable() {
-                        @Override
-                        public void run() {
-                            try {
-                                LivingEntity shooter = ((LivingEntity) npc.getEntity());
-                                shooter.launchProjectile(Arrow.class);
-                                equipment.set(Equipment.EquipmentSlot.HAND, getBillionaire());
-                                //TODO: Just put pull code here fuck this lol
-
-                                Vector dirVector = npc.getEntity().getLocation().toVector().subtract(target.getLocation().toVector()).setY(0);
-                                Vector pullVector = dirVector.clone().normalize().setY(0.2).multiply(0.5).add(dirVector.clone().multiply(0.03));
-                                target.setVelocity(pullVector.multiply((0.5 * 0.2) + 1.15));
-
-                            } catch (Exception ignored) { }
-                        }
-                    }.runTaskLater(PitSim.INSTANCE, 20);
-                }
-            }
-        }.runTaskLater(PitSim.INSTANCE, 10);
+        boss.attackAbility();
     }
 
     @Override
@@ -141,62 +108,6 @@ public class ZombieBoss extends PitBoss {
     public Player getEntity() {
         return (Player) npc.getEntity();
     }
-
-    public static ItemStack getBillionaire() throws Exception {
-        ItemStack itemStack;
-        itemStack = FreshCommand.getFreshItem(MysticType.SWORD, PantColor.GREEN);
-        itemStack = EnchantManager.addEnchant(itemStack, EnchantManager.getEnchant("bill"), 3, false);
-        itemStack = EnchantManager.addEnchant(itemStack, EnchantManager.getEnchant("cd"), 3, false);
-        itemStack = EnchantManager.addEnchant(itemStack, EnchantManager.getEnchant("kb"), 2, false);
-        return itemStack;
-    }
-
-    public static ItemStack getLifesteal() throws Exception {
-        ItemStack itemStack;
-        itemStack = FreshCommand.getFreshItem(MysticType.SWORD, PantColor.GREEN);
-        itemStack = EnchantManager.addEnchant(itemStack, EnchantManager.getEnchant("ls"), 3, false);
-        itemStack = EnchantManager.addEnchant(itemStack, EnchantManager.getEnchant("pf"), 1, false);
-        itemStack = EnchantManager.addEnchant(itemStack, EnchantManager.getEnchant("cheal"), 2, false);
-        return itemStack;
-    }
-
-    public static ItemStack getSolitude() throws Exception {
-        ItemStack itemStack;
-        itemStack = FreshCommand.getFreshItem(MysticType.PANTS, PantColor.GREEN);
-        itemStack = EnchantManager.addEnchant(itemStack, EnchantManager.getEnchant("rgm"), 3, false);
-        itemStack = EnchantManager.addEnchant(itemStack, EnchantManager.getEnchant("mirror"), 3, false);
-        itemStack = EnchantManager.addEnchant(itemStack, EnchantManager.getEnchant("pero"), 2, false);
-        return itemStack;
-    }
-
-    public static ItemStack getExplosive() throws Exception {
-        ItemStack itemStack;
-        itemStack = FreshCommand.getFreshItem(MysticType.BOW, PantColor.GREEN);
-        itemStack = EnchantManager.addEnchant(itemStack, EnchantManager.getEnchant("explo"), 3, false);
-        return itemStack;
-    }
-
-    public static ItemStack getPullbow() throws Exception {
-        ItemStack itemStack;
-        itemStack = FreshCommand.getFreshItem(MysticType.BOW, PantColor.GREEN);
-//        itemStack = EnchantManager.addEnchant(itemStack, EnchantManager.getEnchant("pull"), 3, false);
-        itemStack = EnchantManager.addEnchant(itemStack, EnchantManager.getEnchant("robin"), 3, false);
-        return itemStack;
-    }
-
-    /*
-    public void skin(String name) {
-        npc.data().set(NPC.PLAYER_SKIN_UUID_METADATA, name);
-        npc.data().set(NPC.PLAYER_SKIN_USE_LATEST, false);
-        if(npc.isSpawned()) {
-            SkinnableEntity skinnable = (SkinnableEntity) npc.getEntity();
-            if(skinnable != null) {
-                skinnable.setSkinName(name);
-            }
-        }
-    }
-
-     */
 
     @Override
     public void setNPC(NPC npc) {

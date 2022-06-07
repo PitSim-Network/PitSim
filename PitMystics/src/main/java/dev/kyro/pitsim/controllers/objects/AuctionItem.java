@@ -1,10 +1,10 @@
 package dev.kyro.pitsim.controllers.objects;
 
+import com.comphenix.protocol.wrappers.Pair;
 import de.tr7zw.nbtapi.NBTItem;
 import dev.kyro.arcticapi.data.AConfig;
 import dev.kyro.pitsim.enums.ItemType;
 import dev.kyro.pitsim.enums.NBTTag;
-import javafx.util.Pair;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.HashMap;

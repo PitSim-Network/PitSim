@@ -1,11 +1,17 @@
 package dev.kyro.pitsim.slayers.tainted;
 
 import dev.kyro.pitsim.PitSim;
+import dev.kyro.pitsim.commands.FreshCommand;
 import dev.kyro.pitsim.controllers.BossManager;
+import dev.kyro.pitsim.controllers.EnchantManager;
 import dev.kyro.pitsim.controllers.objects.PitBoss;
+import dev.kyro.pitsim.controllers.objects.PitEnchant;
+import dev.kyro.pitsim.enums.MysticType;
+import dev.kyro.pitsim.enums.PantColor;
 import dev.kyro.pitsim.enums.SubLevel;
 import dev.kyro.pitsim.misc.BossSkin;
 import net.citizensnpcs.api.npc.NPC;
+import net.citizensnpcs.api.trait.trait.Equipment;
 import net.citizensnpcs.npc.ai.CitizensNavigator;
 import net.kyori.adventure.audience.Audience;
 import net.kyori.adventure.bossbar.BossBar;
@@ -14,10 +20,18 @@ import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
+import org.bukkit.entity.Arrow;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.util.Vector;
 import org.checkerframework.checker.nullness.qual.NonNull;
+
+import java.util.List;
+import java.util.Map;
+import java.util.Random;
 
 public abstract class SimpleBoss {
 
@@ -60,35 +74,37 @@ public abstract class SimpleBoss {
 
     }
 
-    public void attackHigh(){
+    public void attackAbility(){
+        double bound = new Random().nextDouble();
 
-    }
+        if(bound < .25){
+            attackHigh();
+        }else if(bound < .35){
+            attackMedium();
+        }else if (bound < .50){
+            attackLow();
+        }else{
+            try{
+                attackDefault();
+            }catch (Exception ignored){}
 
-    public void attackMedium(){
-
-    }
-
-    public void attackLow(){
-
-    }
-
-    private void attackAbility(){
-        int random = 10;
-        switch (random){
-            case 1:
-                attackHigh();
-                break;
-            case 2:
-                attackMedium();
-                break;
-            case 3:
-                attackLow();
-                break;
         }
+
     }
 
-    private void defendAbility(){
+    public void defendAbility(){
 
+        double health = ((LivingEntity) npc.getEntity()).getHealth();
+        double maxHealth = ((LivingEntity) npc.getEntity()).getMaxHealth();
+        float progress = (float) health / (float) maxHealth;
+
+        this.getActiveBar().progress(progress);
+
+        npc.getNavigator().setTarget(target, true);
+
+        double bound = new Random().nextDouble();
+
+        if(bound < .05){try{defend();}catch (Exception ignored){}}
     }
 
     public void run(){
@@ -320,5 +336,111 @@ public abstract class SimpleBoss {
 
     public void setActiveBar(BossBar activeBar) {
         this.activeBar = activeBar;
+    }
+
+
+    protected abstract void attackHigh();
+
+    protected abstract void attackMedium();
+    protected abstract void attackLow();
+
+    protected abstract void  defend();
+
+
+    public void attackDefault() throws Exception {
+        Equipment equipment = npc.getTrait(Equipment.class);
+        double health = ((LivingEntity) npc.getEntity()).getHealth();
+        double maxHealth = ((LivingEntity) npc.getEntity()).getMaxHealth();
+        Map<PitEnchant, Integer> enchants = EnchantManager.getEnchantsOnItem(equipment.get(Equipment.EquipmentSlot.HAND));
+        if(equipment.get(Equipment.EquipmentSlot.HAND).getType() == Material.BOW) {
+            equipment.set(Equipment.EquipmentSlot.HAND, getLifesteal());
+        }
+        else if(health < (maxHealth / 2) && !enchants.containsValue(EnchantManager.getEnchant("ls"))) {
+            equipment.set(Equipment.EquipmentSlot.HAND, getExplosive());
+            LivingEntity shooter = ((LivingEntity) npc.getEntity());
+            shooter.launchProjectile(Arrow.class);
+            new BukkitRunnable() {
+                @Override
+                public void run() {
+                    try {
+                        equipment.set(Equipment.EquipmentSlot.HAND, getLifesteal());
+                    } catch (Exception ignored) { }
+                }
+            }.runTaskLater(PitSim.INSTANCE, 10);
+        }
+        else equipment.set(Equipment.EquipmentSlot.HAND, getBillionaire());
+
+        new BukkitRunnable() {
+            @Override
+            public void run() {
+                if(npc.getEntity() == null) {return;}
+
+                List<Entity> entities = npc.getEntity().getNearbyEntities(4, 4, 4);
+                if(!entities.contains(target)) {
+                    try {
+                        equipment.set(Equipment.EquipmentSlot.HAND, getPullbow());
+
+                    } catch (Exception ignored) { }
+                    new BukkitRunnable() {
+                        @Override
+                        public void run() {
+                            try {
+                                LivingEntity shooter = ((LivingEntity) npc.getEntity());
+                                shooter.launchProjectile(Arrow.class);
+                                equipment.set(Equipment.EquipmentSlot.HAND, getBillionaire());
+
+
+                                Vector dirVector = npc.getEntity().getLocation().toVector().subtract(target.getLocation().toVector()).setY(0);
+                                Vector pullVector = dirVector.clone().normalize().setY(0.2).multiply(0.5).add(dirVector.clone().multiply(0.03));
+                                target.setVelocity(pullVector.multiply((0.5 * 0.2) + 1.15));
+
+                            } catch (Exception ignored) { }
+                        }
+                    }.runTaskLater(PitSim.INSTANCE, 20);
+                }
+            }
+        }.runTaskLater(PitSim.INSTANCE, 10);
+    }
+
+    public ItemStack getBillionaire() throws Exception {
+        ItemStack itemStack;
+        itemStack = FreshCommand.getFreshItem(MysticType.SWORD, PantColor.GREEN);
+        itemStack = EnchantManager.addEnchant(itemStack, EnchantManager.getEnchant("bill"), 3, false);
+        itemStack = EnchantManager.addEnchant(itemStack, EnchantManager.getEnchant("cd"), 3, false);
+        itemStack = EnchantManager.addEnchant(itemStack, EnchantManager.getEnchant("kb"), 2, false);
+        return itemStack;
+    }
+
+    public ItemStack getLifesteal() throws Exception {
+        ItemStack itemStack;
+        itemStack = FreshCommand.getFreshItem(MysticType.SWORD, PantColor.GREEN);
+        itemStack = EnchantManager.addEnchant(itemStack, EnchantManager.getEnchant("ls"), 3, false);
+        itemStack = EnchantManager.addEnchant(itemStack, EnchantManager.getEnchant("pf"), 1, false);
+        itemStack = EnchantManager.addEnchant(itemStack, EnchantManager.getEnchant("cheal"), 2, false);
+        return itemStack;
+    }
+
+    public ItemStack getSolitude() throws Exception {
+        ItemStack itemStack;
+        itemStack = FreshCommand.getFreshItem(MysticType.PANTS, PantColor.GREEN);
+        itemStack = EnchantManager.addEnchant(itemStack, EnchantManager.getEnchant("rgm"), 3, false);
+        itemStack = EnchantManager.addEnchant(itemStack, EnchantManager.getEnchant("mirror"), 3, false);
+        itemStack = EnchantManager.addEnchant(itemStack, EnchantManager.getEnchant("pero"), 2, false);
+        return itemStack;
+    }
+
+    public ItemStack getExplosive() throws Exception {
+        ItemStack itemStack;
+        itemStack = FreshCommand.getFreshItem(MysticType.BOW, PantColor.GREEN);
+        itemStack = EnchantManager.addEnchant(itemStack, EnchantManager.getEnchant("explo"), 3, false);
+        return itemStack;
+    }
+
+    public ItemStack getPullbow() throws Exception {
+        ItemStack itemStack;
+        itemStack = FreshCommand.getFreshItem(MysticType.BOW, PantColor.GREEN);
+//        itemStack = EnchantManager.addEnchant(itemStack, EnchantManager.getEnchant("pull"), 3, false);
+        itemStack = EnchantManager.addEnchant(itemStack, EnchantManager.getEnchant("robin"), 3, false);
+        return itemStack;
     }
 }

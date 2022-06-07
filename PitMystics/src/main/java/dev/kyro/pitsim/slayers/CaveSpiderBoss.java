@@ -26,17 +26,22 @@ public class CaveSpiderBoss extends PitBoss {
         this.boss = new SimpleBoss(npc, target, subLevel, 5, SimpleSkin.CAVE_SPIDER, this){
 
             @Override
-            public void attackHigh(){
+            protected void attackHigh(){
 
             }
 
             @Override
-            public void attackMedium(){
+            protected void attackMedium(){
 
             }
 
             @Override
-            public void attackLow(){
+            protected void attackLow(){
+
+            }
+
+            @Override
+            protected void defend() {
 
             }
 
@@ -45,19 +50,18 @@ public class CaveSpiderBoss extends PitBoss {
         this.target = target;
 
         boss.run();
+
+
     }
 
     @Override
     public void onAttack() throws Exception {
-
+        boss.attackAbility();
     }
 
     @Override
     public void onDefend() {
-        double health = ((LivingEntity) npc.getEntity()).getHealth();
-        double maxHealth = ((LivingEntity) npc.getEntity()).getMaxHealth();
-        float progress = (float) health / (float) maxHealth;
-        boss.getActiveBar().progress(progress);
+        boss.defendAbility();
     }
 
     @Override

@@ -143,7 +143,21 @@ public class BossManager implements Listener {
             case CAVESPIDER_EYE:
                 new CaveSpiderBoss(player);
                 break;
-
+            case PIGMAN_PORK:
+                new ZombiePigmanBoss(player);
+                break;
+            case MAGMACUBE_CREAM:
+                new MagmaCubeBoss(player);
+                break;
+            case WITHER_SKELETON_COAL:
+                new WitherSkeletonBoss(player);
+                break;
+            case GOLEM_INGOT:
+                new IronGolemBoss(player);
+                break;
+            case ENDERMAN_PEARL:
+                new EndermanSlayer(player);
+                break;
         }
     }
 

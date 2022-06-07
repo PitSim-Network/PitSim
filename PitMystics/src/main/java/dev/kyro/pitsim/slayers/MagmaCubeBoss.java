@@ -10,19 +10,19 @@ import net.citizensnpcs.api.npc.NPC;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 
-public class EndermanSlayer extends PitBoss {
+public class MagmaCubeBoss extends PitBoss {
     public NPC npc;
     public Player entity;
     public Player target;
-    public String name = "&c&lEnderman";
-    public SubLevel subLevel = SubLevel.ENDERMAN_CAVE;
+    public String name = "&c&lMagma Cube";
+    public SubLevel subLevel = SubLevel.MAGMA_CAVE;
     public SimpleBoss boss;
 
-    public EndermanSlayer(Player target) {
-        super(target, SubLevel.ENDERMAN_CAVE);
+    public MagmaCubeBoss(Player target) {
+        super(target, SubLevel.MAGMA_CAVE);
         npc = CitizensAPI.getNPCRegistry().createNPC(EntityType.PLAYER, name);
 
-        this.boss = new SimpleBoss(npc, target, subLevel, 5, SimpleSkin.ENDERMAN, this){
+        this.boss = new SimpleBoss(npc, target, subLevel, 5, SimpleSkin.MAGMA, this){
 
             @Override
             protected void attackHigh(){
