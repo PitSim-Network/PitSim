@@ -19,18 +19,21 @@ import dev.kyro.pitsim.boosters.XPBooster;
 import dev.kyro.pitsim.brewing.BrewingManager;
 import dev.kyro.pitsim.brewing.PotionManager;
 import dev.kyro.pitsim.brewing.ingredients.*;
+import dev.kyro.pitsim.brewing.ingredients.EnderPearl;
 import dev.kyro.pitsim.brewing.objects.BrewingIngredient;
 import dev.kyro.pitsim.commands.*;
 import dev.kyro.pitsim.commands.admin.*;
 import dev.kyro.pitsim.controllers.*;
 import dev.kyro.pitsim.controllers.log.DupeManager;
 import dev.kyro.pitsim.controllers.objects.*;
+import dev.kyro.pitsim.enchants.Explosive;
 import dev.kyro.pitsim.enchants.GoldBoost;
 import dev.kyro.pitsim.enchants.*;
 import dev.kyro.pitsim.enchants.tainted.*;
 import dev.kyro.pitsim.events.ThrowBlock;
 import dev.kyro.pitsim.helmetabilities.*;
 import dev.kyro.pitsim.killstreaks.*;
+import dev.kyro.pitsim.killstreaks.Monster;
 import dev.kyro.pitsim.kits.EssentialKit;
 import dev.kyro.pitsim.kits.GoldKit;
 import dev.kyro.pitsim.kits.PvPKit;
@@ -55,10 +58,7 @@ import net.milkbowl.vault.economy.Economy;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.entity.MagmaCube;
-import org.bukkit.entity.Player;
-import org.bukkit.entity.Villager;
-import org.bukkit.entity.Wither;
+import org.bukkit.entity.*;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.RegisteredServiceProvider;
@@ -97,6 +97,7 @@ class PitSim extends JavaPlugin {
 		playerList = new AData("player-list", "", false);
 
 		AuctionManager.onStart();
+		AuctionDisplays.onStart();
 
 		RegisteredServiceProvider<LuckPerms> provider = Bukkit.getServicesManager().getRegistration(LuckPerms.class);
 		if(provider != null) {
@@ -197,6 +198,12 @@ class PitSim extends JavaPlugin {
 
 	@Override
 	public void onDisable() {
+
+		for (Entity entity : MapManager.getDarkzone().getEntities()) {
+			if(entity instanceof Item) {
+				entity.remove();
+			}
+		}
 
 		for (NPC value : BossManager.clickables.values()) {
 			value.destroy();
@@ -430,6 +437,7 @@ class PitSim extends JavaPlugin {
 		getServer().getPluginManager().registerEvents(new StereoManager(), this);
 		getServer().getPluginManager().registerEvents(new MusicManager(), this);
 		getServer().getPluginManager().registerEvents(new CutsceneManager(), this);
+		getServer().getPluginManager().registerEvents(new AuctionDisplays(), this);
 	}
 	public void registerBoosters() {
 		BoosterManager.registerBooster(new XPBooster());

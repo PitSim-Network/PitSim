@@ -4,6 +4,7 @@ import dev.kyro.pitsim.controllers.EnchantManager;
 import dev.kyro.pitsim.controllers.objects.PitEnchant;
 import dev.kyro.pitsim.misc.ChunkOfVile;
 import dev.kyro.pitsim.misc.FunkyFeather;
+import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Item;
 import org.bukkit.inventory.ItemStack;
@@ -12,22 +13,24 @@ import java.util.Random;
 
 public enum ItemType {
 
-    FEATHERS_3(1, getFeathers(3), 75, 5),
-    FEATHERS_5(2, getFeathers(5), 25, 10),
-    VILE_3(3, getVile(3), 75, 5),
-    VILE_5(4, getVile(5), 25, 10);
+    FEATHERS_3(1, getFeathers(3), ChatColor.DARK_AQUA + "3x Funky Feather", 75, 5),
+    FEATHERS_5(2, getFeathers(5), ChatColor.DARK_AQUA + "5x Funky Feather", 25, 10),
+    VILE_3(3, getVile(3), ChatColor.DARK_PURPLE + "3x Chunk of Vile", 75, 5),
+    VILE_5(4, getVile(5), ChatColor.DARK_PURPLE + "3x Chunk of Vile", 25, 10);
 
 
 
 
     public final int id;
     public final ItemStack item;
+    public final String itemName;
     public final double chance;
     public final int startingBid;
 
-    ItemType(int id, ItemStack item, double chance, int startingBid) {
+    ItemType(int id, ItemStack item, String itemName, double chance, int startingBid) {
         this.id = id;
         this.item = item;
+        this.itemName = itemName;
         this.chance = chance;
         this.startingBid = startingBid;
     }
