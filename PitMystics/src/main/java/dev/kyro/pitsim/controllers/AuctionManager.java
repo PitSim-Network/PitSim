@@ -12,6 +12,8 @@ public class AuctionManager {
 
     public static AuctionItem[] auctionItems = new AuctionItem[3];
 
+    public static int minutes = 5;
+
     static {
         new BukkitRunnable() {
             @Override
@@ -19,12 +21,19 @@ public class AuctionManager {
                 for (int i = 0; i < auctionItems.length; i++) {
                     AuctionItem item = auctionItems[i];
 
-                    if(System.currentTimeMillis() - item.initTime > 60 * 1000) {
+                    if(System.currentTimeMillis() - item.initTime > minutes * 60000L) {
                         item.endAuction();
                         System.out.println(i + " Auction ended");
                         auctionItems[i] = new AuctionItem(generateItem(), 0, i, 0, null);
                     }
                 }
+
+                new BukkitRunnable() {
+                    @Override
+                    public void run() {
+                        AuctionDisplays.showItems();
+                    }
+                }.runTaskLater(PitSim.INSTANCE, 20);
             }
         }.runTaskTimer(PitSim.INSTANCE, 20 * 60, 20 * 60);
     }
@@ -55,6 +64,8 @@ public class AuctionManager {
 
             auctionItems[i] = new AuctionItem(generateItem(), 0, i, 0, null);
         }
+
+        AuctionDisplays.showItems();
     }
 
     public static ItemType generateItem() {

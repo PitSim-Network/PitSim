@@ -351,6 +351,20 @@ public class MobManager implements Listener {
 			for (ArmorStand value : CleaveSpell.stands.values()) {
 				if(value.getUniqueId().equals(entity.getUniqueId())) continue main;
 			}
+			for (ArmorStand pedestalArmorStand : AuctionDisplays.pedestalArmorStands) {
+				if(pedestalArmorStand.getUniqueId().equals(entity.getUniqueId())) continue main;
+			}
+			for (ArmorStand pedestalArmorStand : AuctionDisplays.highestBidderStands) {
+				if(pedestalArmorStand.getUniqueId().equals(entity.getUniqueId())) continue main;
+			}
+			for (ArmorStand pedestalArmorStand : AuctionDisplays.highestBidStands) {
+				if(pedestalArmorStand.getUniqueId().equals(entity.getUniqueId())) continue main;
+			}
+			for (ArmorStand pedestalArmorStand : AuctionDisplays.rightClickStands) {
+				if(pedestalArmorStand.getUniqueId().equals(entity.getUniqueId())) continue main;
+			}
+			if(entity.getUniqueId().equals(AuctionDisplays.timerStand.getUniqueId())) continue;
+
 			if(entity.getUniqueId().equals(TaintedWell.textLine1.getUniqueId())) continue;
 			if(entity.getUniqueId().equals(TaintedWell.textLine2.getUniqueId())) continue;
 			if(entity.getUniqueId().equals(TaintedWell.textLine3.getUniqueId())) continue;
