@@ -50,6 +50,27 @@ public class FunkyFeather {
 		}
 	}
 
+	public static ItemStack getFeather(int amount) {
+		ItemStack feather = new ItemStack(Material.FEATHER);
+		ItemMeta meta = feather.getItemMeta();
+		meta.setDisplayName(ChatColor.DARK_AQUA + "Funky Feather");
+		List<String> lore = new ArrayList<>();
+		lore.add(ChatColor.YELLOW + "Special item");
+		lore.add(ChatColor.GRAY + "protects your inventory but");
+		lore.add(ChatColor.GRAY + "gets consumed on death if");
+		lore.add(ChatColor.GRAY + "in your hotbar.");
+		meta.setLore(lore);
+		feather.setItemMeta(meta);
+		feather.setAmount(amount);
+
+		feather = ItemManager.enableDropConfirm(feather);
+
+		NBTItem nbtItem = new NBTItem(feather);
+		nbtItem.setBoolean(NBTTag.IS_FEATHER.getRef(), true);
+		return nbtItem.getItem();
+	}
+
+
 	public static boolean useFeather(LivingEntity killer, Player dead, boolean isDivine) {
 		if(isDivine) return false;
 

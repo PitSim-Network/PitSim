@@ -1,9 +1,11 @@
 package dev.kyro.pitsim.commands;
 
+import dev.kyro.arcticapi.data.AConfig;
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.arcticapi.misc.AUtil;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.brewing.objects.BrewingIngredient;
+import dev.kyro.pitsim.controllers.AuctionManager;
 import dev.kyro.pitsim.controllers.CutsceneManager;
 import dev.kyro.pitsim.controllers.MobManager;
 import dev.kyro.pitsim.controllers.TaintedWell;
@@ -36,7 +38,9 @@ public class ATestCommand implements CommandExecutor {
 
 		if(!player.isOp()) return false;
 
-		CutsceneManager.play(player);
+		AuctionManager.auctionItems[0].addBid(player.getUniqueId(), AuctionManager.auctionItems[0].getBid(player.getUniqueId()) + 100);
+
+//		CutsceneManager.play(player);
 
 //		TaintedGUI taintedGUI = new TaintedGUI(player);
 //		taintedGUI.open();

@@ -96,6 +96,8 @@ class PitSim extends JavaPlugin {
 		ArcticAPI.configInit(this, "prefix", "error-prefix");
 		playerList = new AData("player-list", "", false);
 
+		AuctionManager.onStart();
+
 		RegisteredServiceProvider<LuckPerms> provider = Bukkit.getServicesManager().getRegistration(LuckPerms.class);
 		if(provider != null) {
 			LUCKPERMS = provider.getProvider();
