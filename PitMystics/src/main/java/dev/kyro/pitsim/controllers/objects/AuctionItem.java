@@ -6,7 +6,6 @@ import dev.kyro.pitsim.controllers.AuctionDisplays;
 import dev.kyro.pitsim.controllers.AuctionManager;
 import dev.kyro.pitsim.enums.ItemType;
 import dev.kyro.pitsim.enums.NBTTag;
-import javafx.util.Pair;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Item;
 import org.bukkit.inventory.ItemStack;
