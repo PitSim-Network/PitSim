@@ -13,10 +13,10 @@ import java.util.Random;
 
 public enum ItemType {
 
-    FEATHERS_3(1, getFeathers(3), ChatColor.DARK_AQUA + "3x Funky Feather", 75, 5),
-    FEATHERS_5(2, getFeathers(5), ChatColor.DARK_AQUA + "5x Funky Feather", 25, 10),
-    VILE_3(3, getVile(3), ChatColor.DARK_PURPLE + "3x Chunk of Vile", 75, 5),
-    VILE_5(4, getVile(5), ChatColor.DARK_PURPLE + "3x Chunk of Vile", 25, 10);
+    FEATHERS_3(1, getFeathers(3), ChatColor.DARK_AQUA + "3x Funky Feather", 75, 10),
+    FEATHERS_5(2, getFeathers(5), ChatColor.DARK_AQUA + "5x Funky Feather", 25, 25),
+    VILE_3(3, getVile(3), ChatColor.DARK_PURPLE + "3x Chunk of Vile", 75, 10),
+    VILE_5(4, getVile(5), ChatColor.DARK_PURPLE + "3x Chunk of Vile", 25, 25);
 
 
 

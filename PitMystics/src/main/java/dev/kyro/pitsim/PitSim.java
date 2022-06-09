@@ -213,6 +213,12 @@ class PitSim extends JavaPlugin {
 			registry.deregister(value);
 		}
 
+		for (NPC clickable : AuctionDisplays.clickables) {
+			clickable.destroy();
+			NPCRegistry registry = CitizensAPI.getNPCRegistry();
+			registry.deregister(clickable);
+		}
+
 		for (EditSession session : FreezeSpell.sessions) {
 			session.undo(session);
 		}

@@ -3,18 +3,10 @@ package dev.kyro.pitsim.controllers.objects;
 import de.tr7zw.nbtapi.NBTItem;
 import dev.kyro.arcticapi.data.AConfig;
 import dev.kyro.pitsim.controllers.AuctionDisplays;
-import dev.kyro.pitsim.controllers.AuctionManager;
 import dev.kyro.pitsim.enums.ItemType;
 import dev.kyro.pitsim.enums.NBTTag;
-import javafx.util.Pair;
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.Item;
-import org.bukkit.inventory.ItemStack;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 public class AuctionItem {
 
@@ -30,7 +22,7 @@ public class AuctionItem {
        this.slot = slot;
        this.initTime = initTime == 0 ? System.currentTimeMillis() : initTime;
 
-       this.bidMap = bidMap == null ? new HashMap<>() : bidMap;
+       this.bidMap = bidMap == null ? new LinkedHashMap<>() : bidMap;
 
        NBTItem nbtItem = new NBTItem(this.item.item);
        if(this.itemData == 0 && nbtItem.hasKey(NBTTag.ITEM_JEWEL_ENCHANT.getRef())) this.itemData = ItemType.generateJewelData(this.item.item);
@@ -72,7 +64,7 @@ public class AuctionItem {
                 highest = entry.getValue();
             }
         }
-        return highest;
+        return highest == 0 ? item.startingBid : highest;
     }
 
     public UUID getHighestBidder() {
@@ -101,6 +93,6 @@ public class AuctionItem {
 
         AConfig.saveConfig();
 
-        AuctionDisplays.getItem(AuctionDisplays.pedestalItems[slot]).remove();
+        if(AuctionDisplays.pedestalItems[slot] != null) AuctionDisplays.getItem(AuctionDisplays.pedestalItems[slot]).remove();
     }
 }

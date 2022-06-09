@@ -50,7 +50,7 @@ public class AuctionManager {
             long startTime = (long) AConfig.getDouble("auctions.auction" + i + ".start");
 
             List<String> bids = AConfig.getStringList("auctions.auction" + i + ".bids");
-            Map<UUID, Integer> bidMap = new HashMap<>();
+            Map<UUID, Integer> bidMap = new LinkedHashMap<>();
             for (String bid : bids) {
                 String[] split = bid.split(":");
                 bidMap.put(UUID.fromString(split[0]), Integer.parseInt(split[1]));
