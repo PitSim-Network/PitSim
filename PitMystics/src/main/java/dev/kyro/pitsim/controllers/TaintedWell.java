@@ -41,6 +41,7 @@ public class TaintedWell implements Listener
     public static int i;
 
     public static void onStart() {
+        wellLocation.getChunk().load();
         (TaintedWell.wellStand = (ArmorStand)TaintedWell.wellLocation.getWorld().spawn(TaintedWell.wellLocation.clone().add(0.5, 0.5, 0.5), (Class)ArmorStand.class)).setGravity(false);
         TaintedWell.wellStand.setArms(true);
         TaintedWell.wellStand.setVisible(false);

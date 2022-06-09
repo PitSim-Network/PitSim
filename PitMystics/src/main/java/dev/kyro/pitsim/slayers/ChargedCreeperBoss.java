@@ -10,6 +10,7 @@ import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.enums.MysticType;
 import dev.kyro.pitsim.enums.PantColor;
 import dev.kyro.pitsim.enums.SubLevel;
+import dev.kyro.pitsim.events.AttackEvent;
 import dev.kyro.pitsim.events.ThrowBlock;
 import dev.kyro.pitsim.misc.BossSkin;
 import dev.kyro.pitsim.misc.ThrowableBlock;
@@ -93,8 +94,8 @@ public class ChargedCreeperBoss extends PitBoss {
         boss.run();
     }
 
-    public void onAttack() throws Exception {
-        boss.attackAbility();
+    public void onAttack(AttackEvent.Apply event) throws Exception {
+        boss.attackAbility(event);
     }
 
     @Override

@@ -15,7 +15,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 import java.util.HashMap;
 import java.util.Map;
 
-public class PitZombie extends PitMob {
+public 	class PitZombie extends PitMob {
 	public static PitZombie INSTANCE;
 
 	public PitZombie(Location spawnLoc) {

@@ -97,6 +97,7 @@ class PitSim extends JavaPlugin {
 		ArcticAPI.configInit(this, "prefix", "error-prefix");
 		playerList = new AData("player-list", "", false);
 
+
 		AuctionManager.onStart();
 		AuctionDisplays.onStart();
 

@@ -109,6 +109,9 @@ public class AuctionDisplays implements Listener {
         pedestalLocations[0] = new Location(MapManager.getDarkzone(), 237.5, 83, -292.5);
         pedestalLocations[1] = new Location(MapManager.getDarkzone(), 243.5, 83, -295.5);
         pedestalLocations[2] = new Location(MapManager.getDarkzone(), 249.5, 83, -292.5);
+        for (Location pedestalLocation : pedestalLocations) {
+            pedestalLocation.getChunk().load();
+        }
 
         for (int i = 0; i < pedestalLocations.length; i++) {
             Location pedestalLocation = pedestalLocations[i];

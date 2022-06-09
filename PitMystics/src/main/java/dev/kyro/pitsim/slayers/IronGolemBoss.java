@@ -3,6 +3,7 @@ package dev.kyro.pitsim.slayers;
 import com.xxmicloxx.NoteBlockAPI.NoteBlockAPI;
 import dev.kyro.pitsim.controllers.objects.PitBoss;
 import dev.kyro.pitsim.enums.SubLevel;
+import dev.kyro.pitsim.events.AttackEvent;
 import dev.kyro.pitsim.slayers.tainted.SimpleBoss;
 import dev.kyro.pitsim.slayers.tainted.SimpleSkin;
 import net.citizensnpcs.api.CitizensAPI;
@@ -54,8 +55,8 @@ public class IronGolemBoss extends PitBoss {
     }
 
     @Override
-    public void onAttack() throws Exception {
-        boss.attackAbility();
+    public void onAttack(AttackEvent.Apply event) throws Exception {
+        boss.attackAbility(event);
     }
 
     @Override

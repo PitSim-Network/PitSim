@@ -5,6 +5,7 @@ import dev.kyro.pitsim.commands.FreshCommand;
 import dev.kyro.pitsim.controllers.EnchantManager;
 import dev.kyro.pitsim.controllers.objects.PitBoss;
 import dev.kyro.pitsim.enums.*;
+import dev.kyro.pitsim.events.AttackEvent;
 import dev.kyro.pitsim.slayers.tainted.SimpleBoss;
 import dev.kyro.pitsim.slayers.tainted.SimpleSkin;
 import net.citizensnpcs.api.CitizensAPI;
@@ -68,7 +69,7 @@ public class SkeletonBoss extends PitBoss {
             }
 
             @Override
-            public void attackDefault() throws Exception{
+            public void attackDefault(AttackEvent.Apply event) throws Exception{
                 if(npc.getEntity() != null){
                     Equipment equipment = npc.getTrait(Equipment.class);
                     npc.faceLocation(target.getLocation());
@@ -86,8 +87,8 @@ public class SkeletonBoss extends PitBoss {
         boss.run();
     }
 
-    public void onAttack() throws Exception {
-        boss.attackAbility();
+    public void onAttack(AttackEvent.Apply event) throws Exception {
+        boss.attackAbility(event);
     }
 
     @Override

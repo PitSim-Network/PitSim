@@ -9,6 +9,7 @@ import dev.kyro.pitsim.controllers.objects.PitEnchant;
 import dev.kyro.pitsim.enums.MysticType;
 import dev.kyro.pitsim.enums.PantColor;
 import dev.kyro.pitsim.enums.SubLevel;
+import dev.kyro.pitsim.events.AttackEvent;
 import dev.kyro.pitsim.misc.BossSkin;
 import net.citizensnpcs.api.npc.NPC;
 import net.citizensnpcs.api.trait.trait.Equipment;
@@ -55,6 +56,8 @@ public abstract class SimpleBoss {
 
     int reach;
 
+    int damageIncrease;
+
     ItemStack helmet;
     ItemStack chestplate;
     ItemStack leggings;
@@ -74,7 +77,7 @@ public abstract class SimpleBoss {
 
     }
 
-    public void attackAbility(){
+    public void attackAbility(AttackEvent.Apply event){
         double bound = new Random().nextDouble();
 
         if(bound < .25){
@@ -85,7 +88,7 @@ public abstract class SimpleBoss {
             attackLow();
         }else{
             try{
-                attackDefault();
+                attackDefault(event);
             }catch (Exception ignored){}
 
         }
@@ -170,6 +173,8 @@ public abstract class SimpleBoss {
         this.reach = 10;
 
         this.health = Math.min((this.difficulty*20)*5, 1000);
+
+        this.damageIncrease = difficulty * 10;
 
         GearType type;
 
@@ -347,7 +352,9 @@ public abstract class SimpleBoss {
     protected abstract void  defend();
 
 
-    public void attackDefault() throws Exception {
+    public void attackDefault(AttackEvent.Apply event) throws Exception {
+        event.increase += damageIncrease;
+
         Equipment equipment = npc.getTrait(Equipment.class);
         double health = ((LivingEntity) npc.getEntity()).getHealth();
         double maxHealth = ((LivingEntity) npc.getEntity()).getMaxHealth();

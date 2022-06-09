@@ -4,6 +4,7 @@ import dev.kyro.pitsim.controllers.BossManager;
 import dev.kyro.pitsim.controllers.EnchantManager;
 import dev.kyro.pitsim.controllers.MapManager;
 import dev.kyro.pitsim.enums.SubLevel;
+import dev.kyro.pitsim.events.AttackEvent;
 import dev.kyro.pitsim.misc.BossSkin;
 import net.citizensnpcs.api.npc.NPC;
 import net.citizensnpcs.api.trait.trait.Equipment;
@@ -28,7 +29,7 @@ public abstract class PitBoss {
         this.subLevel = subLevel;
     }
 
-    public abstract void onAttack() throws Exception;
+    public abstract void onAttack(AttackEvent.Apply event) throws Exception;
 
     public abstract void onDefend();
 

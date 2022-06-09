@@ -3,12 +3,14 @@ package dev.kyro.pitsim.slayers;
 import com.xxmicloxx.NoteBlockAPI.NoteBlockAPI;
 import dev.kyro.pitsim.controllers.objects.PitBoss;
 import dev.kyro.pitsim.enums.SubLevel;
+import dev.kyro.pitsim.events.AttackEvent;
 import dev.kyro.pitsim.slayers.tainted.SimpleBoss;
 import dev.kyro.pitsim.slayers.tainted.SimpleSkin;
 import net.citizensnpcs.api.CitizensAPI;
 import net.citizensnpcs.api.npc.NPC;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
+import org.checkerframework.checker.units.qual.A;
 
 public class WitherSkeletonBoss extends PitBoss {
     public NPC npc;
@@ -54,8 +56,8 @@ public class WitherSkeletonBoss extends PitBoss {
     }
 
     @Override
-    public void onAttack() throws Exception {
-        boss.attackAbility();
+    public void onAttack(AttackEvent.Apply event) throws Exception {
+        boss.attackAbility(event);
     }
 
     @Override

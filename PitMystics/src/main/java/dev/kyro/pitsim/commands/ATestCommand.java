@@ -5,10 +5,7 @@ import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.arcticapi.misc.AUtil;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.brewing.objects.BrewingIngredient;
-import dev.kyro.pitsim.controllers.AuctionManager;
-import dev.kyro.pitsim.controllers.CutsceneManager;
-import dev.kyro.pitsim.controllers.MobManager;
-import dev.kyro.pitsim.controllers.TaintedWell;
+import dev.kyro.pitsim.controllers.*;
 import dev.kyro.pitsim.enums.SubLevel;
 import dev.kyro.pitsim.inventories.PerkGUI;
 import dev.kyro.pitsim.inventories.TaintedGUI;
@@ -40,7 +37,11 @@ public class ATestCommand implements CommandExecutor {
 
 //		AuctionManager.auctionItems[0].addBid(player.getUniqueId(), AuctionManager.auctionItems[0].getBid(player.getUniqueId()) + 100);
 
-		CutsceneManager.play(player);
+		if(args.length > 0) {
+			AuctionDisplays.showItems();
+		} else AuctionDisplays.onStart();
+
+//		CutsceneManager.play(player);
 
 //		TaintedGUI taintedGUI = new TaintedGUI(player);
 //		taintedGUI.open();

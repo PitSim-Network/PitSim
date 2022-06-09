@@ -10,6 +10,7 @@ import dev.kyro.pitsim.controllers.objects.PitEnchant;
 import dev.kyro.pitsim.enums.MysticType;
 import dev.kyro.pitsim.enums.PantColor;
 import dev.kyro.pitsim.enums.SubLevel;
+import dev.kyro.pitsim.events.AttackEvent;
 import dev.kyro.pitsim.misc.BossSkin;
 import dev.kyro.pitsim.slayers.tainted.SimpleBoss;
 import dev.kyro.pitsim.slayers.tainted.SimpleSkin;
@@ -92,8 +93,9 @@ public class SpiderBoss extends PitBoss {
         boss.run();
     }
 
-    public void onAttack() throws Exception {
-        boss.attackAbility();
+    @Override
+    public void onAttack(AttackEvent.Apply event) throws Exception {
+        boss.attackAbility(event);
     }
 
     @Override

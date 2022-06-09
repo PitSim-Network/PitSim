@@ -288,7 +288,7 @@ public class BossManager implements Listener {
     @EventHandler
     public void onHit(AttackEvent.Apply event) throws Exception {
         if(bosses.containsKey(CitizensAPI.getNPCRegistry().getNPC(event.attacker)))
-            bosses.get(CitizensAPI.getNPCRegistry().getNPC(event.attacker)).onAttack();
+            bosses.get(CitizensAPI.getNPCRegistry().getNPC(event.attacker)).onAttack(event);
         if(bosses.containsKey(CitizensAPI.getNPCRegistry().getNPC(event.defender)))
             bosses.get(CitizensAPI.getNPCRegistry().getNPC(event.defender)).onDefend();
     }

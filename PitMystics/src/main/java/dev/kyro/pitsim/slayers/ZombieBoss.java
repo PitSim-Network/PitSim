@@ -84,8 +84,9 @@ public class ZombieBoss extends PitBoss {
         boss.run();
     }
 
-    public void onAttack() throws Exception {
-        boss.attackAbility();
+    @Override
+    public void onAttack(AttackEvent.Apply event) throws Exception {
+        boss.attackAbility(event);
     }
 
     @Override
