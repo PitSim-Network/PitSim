@@ -74,7 +74,7 @@ public class AuctionItem {
 
         for (Map.Entry<UUID, Integer> entry : bidMap.entrySet()) {
             Player onlinePlayer = Bukkit.getOfflinePlayer(entry.getKey()).getPlayer();
-            if(!onlinePlayer.isOnline()) continue;
+            if(onlinePlayer == null || !onlinePlayer.isOnline()) continue;
 
             AOutput.send(onlinePlayer, "&5&lDARK AUCTION! &e" + bidPlayer + " &7bid &f" + bid + " Souls &7on " + item.itemName);
             Sounds.BOOSTER_REMIND.play(onlinePlayer);

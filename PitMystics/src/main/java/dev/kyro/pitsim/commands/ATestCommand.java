@@ -1,6 +1,6 @@
 package dev.kyro.pitsim.commands;
 
-import org.bukkit.Bukkit;
+import dev.kyro.pitsim.controllers.CutsceneManager;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -17,10 +17,10 @@ public class ATestCommand implements CommandExecutor {
 
 //		AuctionManager.auctionItems[0].addBid(player.getUniqueId(), AuctionManager.auctionItems[0].getBid(player.getUniqueId()) + 100);
 
-		Bukkit.broadcastMessage("\u00A7");
-		System.out.println("\u00A7");
+//		Bukkit.broadcastMessage("\u00A7");
+//		System.out.println("\u00A7");
 
-//		CutsceneManager.play(player);
+		CutsceneManager.play(player);
 
 //		TaintedGUI taintedGUI = new TaintedGUI(player);
 //		taintedGUI.open();
