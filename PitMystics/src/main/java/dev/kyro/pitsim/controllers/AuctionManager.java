@@ -26,7 +26,8 @@ public class AuctionManager implements Listener {
 
     public static AuctionItem[] auctionItems = new AuctionItem[3];
 
-    public static Location spawnLoc = new Location(MapManager.getDarkzone(), 243.5, 82, -282.5, 180, 0);
+    public static Location spawnLoc = new Location(MapManager.getDarkzone(), 178.5, 51, -1004.5, 180, 0);
+    public static Location returnLoc = new Location(MapManager.getDarkzone(), 255.5, 91, -134.5, -45, 0);
 
     public static int minutes = 60 * 24;
 
@@ -123,6 +124,22 @@ public class AuctionManager implements Listener {
                     @Override
                     public void run() {
                         player.teleport(spawnLoc);
+                        anim.remove(player);
+                    }
+                }.runTaskLater(PitSim.INSTANCE, 20);
+            }
+
+            if(region.getId().equals("darkauctionexit")) {
+
+                anim.add(player);
+                Misc.applyPotionEffect(player, PotionEffectType.BLINDNESS, 60, 99, false, false);
+                Misc.applyPotionEffect(player, PotionEffectType.CONFUSION, 60, 5, false, false);
+                Sounds.MANA.play(player);
+
+                new BukkitRunnable() {
+                    @Override
+                    public void run() {
+                        player.teleport(returnLoc);
                         anim.remove(player);
                     }
                 }.runTaskLater(PitSim.INSTANCE, 20);

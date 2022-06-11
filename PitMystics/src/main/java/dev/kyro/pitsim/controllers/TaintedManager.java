@@ -2,7 +2,6 @@ package dev.kyro.pitsim.controllers;
 
 import de.tr7zw.nbtapi.NBTItem;
 import dev.kyro.pitsim.PitSim;
-import dev.kyro.pitsim.commands.FreshCommand;
 import dev.kyro.pitsim.controllers.objects.PitEnchant;
 import dev.kyro.pitsim.enums.MysticType;
 import dev.kyro.pitsim.enums.NBTTag;
@@ -21,7 +20,6 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.LeatherArmorMeta;
 import org.bukkit.scheduler.BukkitRunnable;
-import org.checkerframework.checker.units.qual.C;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -348,10 +346,10 @@ public class TaintedManager implements Listener {
 
         char[] chars = msg.toCharArray();
         for (int i = 0; i < chars.length; i++) {
-            if(chars[i] == '§') {
+            if(chars[i] == '\u00A7') {
                 builder.append(chars[i]);
                 builder.append(chars[i + 1]);
-                builder.append("§k");
+                builder.append("\u00A7k");
                 i++;
             } else builder.append(chars[i]);
         }
@@ -368,13 +366,13 @@ public class TaintedManager implements Listener {
             char[] chars = msg.toCharArray();
             for (int i = 0; i < chars.length; i++) {
 
-                if(i + 1 <= chars.length && chars[i] == '§' && chars[i + 1] == 'k'){
+                if(i + 1 <= chars.length && chars[i] == '\u00A7' && chars[i + 1] == 'k'){
                     return messages;
                 }
-                if(chars[i] == '§') {
+                if(chars[i] == '\u00A7') {
                     builder.append(chars[i]);
                     builder.append(chars[i + 1]);
-                    builder.append("§k");
+                    builder.append("\u00A7k");
                     i++;
                 } else builder.append(chars[i]);
             }
@@ -391,7 +389,7 @@ public class TaintedManager implements Listener {
         char[] chars = msg.toCharArray();
         for (int i = 0; i < chars.length; i++) {
             if(i + 1 > chars.length) break;
-            if(chars[i] == '§' && chars[i + 1] == 'k') {
+            if(chars[i] == '\u00A7' && chars[i + 1] == 'k') {
                 i += 2;
             } else builder.append(chars[i]);
         }
@@ -408,7 +406,7 @@ public class TaintedManager implements Listener {
             char[] chars = msg.toCharArray();
             for (int i = 0; i < chars.length; i++) {
                 if(i + 1 > chars.length) break;
-                if(chars[i] == '§' && chars[i + 1] == 'k') {
+                if(chars[i] == '\u00A7' && chars[i + 1] == 'k') {
                     i++;
                 } else builder.append(chars[i]);
             }

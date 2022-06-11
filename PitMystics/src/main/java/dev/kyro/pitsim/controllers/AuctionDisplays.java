@@ -1,7 +1,6 @@
 package dev.kyro.pitsim.controllers;
 
 import dev.kyro.pitsim.PitSim;
-import dev.kyro.pitsim.enums.SubLevel;
 import dev.kyro.pitsim.events.AttackEvent;
 import dev.kyro.pitsim.inventories.BidGUI;
 import net.citizensnpcs.api.CitizensAPI;
@@ -13,11 +12,8 @@ import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
-import org.bukkit.event.block.Action;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.ItemDespawnEvent;
-import org.bukkit.event.player.PlayerInteractAtEntityEvent;
-import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerPickupItemEvent;
 import org.bukkit.event.player.PlayerTeleportEvent;
 import org.bukkit.inventory.ItemStack;
@@ -26,7 +22,10 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.UUID;
 
 public class AuctionDisplays implements Listener {
 
@@ -47,7 +46,7 @@ public class AuctionDisplays implements Listener {
             @Override
             public void run() {
 
-                if(!hasPlayers(MapManager.getDarkzone())) return;
+                if(!hasPlayers(pedestalLocations[0])) return;
 
                 for (int i = 0; i < 3; i++) {
 
@@ -88,11 +87,11 @@ public class AuctionDisplays implements Listener {
     }
 
     public static void onStart() {
-        pedestalLocations[0] = new Location(MapManager.getDarkzone(), 237.5, 83, -292.5);
-        pedestalLocations[1] = new Location(MapManager.getDarkzone(), 243.5, 83, -295.5);
-        pedestalLocations[2] = new Location(MapManager.getDarkzone(), 249.5, 83, -292.5);
+        pedestalLocations[0] = new Location(MapManager.getDarkzone(), 172.5, 52, -1013.5);
+        pedestalLocations[1] = new Location(MapManager.getDarkzone(), 178.5, 52, -1017.5);
+        pedestalLocations[2] = new Location(MapManager.getDarkzone(), 184.5, 52, -1013.5);
 
-        ArmorStand timerStand = (ArmorStand) MapManager.getDarkzone().spawnEntity(new Location(MapManager.getDarkzone(), 243.5, 81, -289.5), EntityType.ARMOR_STAND);
+        ArmorStand timerStand = (ArmorStand) MapManager.getDarkzone().spawnEntity(new Location(MapManager.getDarkzone(), 178.5, 50, -1011.5), EntityType.ARMOR_STAND);
         timerStand.setGravity(false);
         timerStand.setVisible(false);
         timerStand.setCustomNameVisible(true);
@@ -136,9 +135,9 @@ public class AuctionDisplays implements Listener {
     }
 
     public static void showItems() {
-        pedestalLocations[0] = new Location(MapManager.getDarkzone(), 237.5, 83, -292.5);
-        pedestalLocations[1] = new Location(MapManager.getDarkzone(), 243.5, 83, -295.5);
-        pedestalLocations[2] = new Location(MapManager.getDarkzone(), 249.5, 83, -292.5);
+        pedestalLocations[0] = new Location(MapManager.getDarkzone(), 172.5, 52, -1013.5);
+        pedestalLocations[1] = new Location(MapManager.getDarkzone(), 178.5, 52, -1017.5);
+        pedestalLocations[2] = new Location(MapManager.getDarkzone(), 184.5, 52, -1013.5);
         for (Location pedestalLocation : pedestalLocations) {
             pedestalLocation.getChunk().load();
         }
@@ -250,6 +249,14 @@ public class AuctionDisplays implements Listener {
     public static boolean hasPlayers(World world) {
         for (Player onlinePlayer : Bukkit.getOnlinePlayers()) {
             if(onlinePlayer.getWorld() == world) return true;
+        }
+        return false;
+    }
+
+
+    public static boolean hasPlayers(Location location) {
+        for(Entity entity : location.getWorld().getNearbyEntities(location, 50, 50, 50)) {
+            if(entity instanceof Player) return true;
         }
         return false;
     }

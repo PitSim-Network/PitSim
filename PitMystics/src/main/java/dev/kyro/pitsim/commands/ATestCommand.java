@@ -1,30 +1,10 @@
 package dev.kyro.pitsim.commands;
 
-import dev.kyro.arcticapi.data.AConfig;
-import dev.kyro.arcticapi.misc.AOutput;
-import dev.kyro.arcticapi.misc.AUtil;
-import dev.kyro.pitsim.PitSim;
-import dev.kyro.pitsim.brewing.objects.BrewingIngredient;
-import dev.kyro.pitsim.controllers.*;
-import dev.kyro.pitsim.enums.SubLevel;
-import dev.kyro.pitsim.inventories.PerkGUI;
-import dev.kyro.pitsim.inventories.TaintedGUI;
-import dev.kyro.pitsim.misc.BossBar;
-import dev.kyro.pitsim.mobs.PitZombie;
-import dev.kyro.pitsim.slayers.ZombieBoss;
 import org.bukkit.Bukkit;
-import org.bukkit.Effect;
-import org.bukkit.Location;
-import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Arrow;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.scheduler.BukkitRunnable;
-
-import java.util.Random;
 
 public class ATestCommand implements CommandExecutor {
 
@@ -37,8 +17,10 @@ public class ATestCommand implements CommandExecutor {
 
 //		AuctionManager.auctionItems[0].addBid(player.getUniqueId(), AuctionManager.auctionItems[0].getBid(player.getUniqueId()) + 100);
 
+		Bukkit.broadcastMessage("\u00A7");
+		System.out.println("\u00A7");
 
-		CutsceneManager.play(player);
+//		CutsceneManager.play(player);
 
 //		TaintedGUI taintedGUI = new TaintedGUI(player);
 //		taintedGUI.open();
