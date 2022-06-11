@@ -12,7 +12,7 @@ public class AuctionManager {
 
     public static AuctionItem[] auctionItems = new AuctionItem[3];
 
-    public static int minutes = 5;
+    public static int minutes = 60 * 24;
 
     static {
         new BukkitRunnable() {
@@ -35,7 +35,7 @@ public class AuctionManager {
                 if(showItems) AuctionDisplays.showItems();
 
             }
-        }.runTaskTimer(PitSim.INSTANCE, 20 * 60, 20 * 60);
+        }.runTaskTimer(PitSim.INSTANCE, 20, 20 * 60);
     }
 
     public static void onStart() {

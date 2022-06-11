@@ -46,10 +46,13 @@ public class AuctionDisplays implements Listener {
         new BukkitRunnable() {
             @Override
             public void run() {
+
+                if(!hasPlayers(MapManager.getDarkzone())) return;
+
                 for (int i = 0; i < 3; i++) {
 
                     Item item = getItem(pedestalItems[i]);
-                    item.teleport(pedestalLocations[i]);
+                    if(item != null) item.teleport(pedestalLocations[i]);
 
                     for (Entity nearbyEntity : MapManager.getDarkzone().getNearbyEntities(pedestalLocations[i], 1, 1, 1)) {
                         if(!(nearbyEntity instanceof Item)) continue;
@@ -242,6 +245,13 @@ public class AuctionDisplays implements Listener {
         long m = (seconds / 60) % 60;
         long h = (seconds / (60 * 60)) % 24;
         return String.format("%dh %02dm %02ds", h,m,s);
+    }
+
+    public static boolean hasPlayers(World world) {
+        for (Player onlinePlayer : Bukkit.getOnlinePlayers()) {
+            if(onlinePlayer.getWorld() == world) return true;
+        }
+        return false;
     }
 
 }

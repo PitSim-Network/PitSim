@@ -97,10 +97,6 @@ class PitSim extends JavaPlugin {
 		ArcticAPI.configInit(this, "prefix", "error-prefix");
 		playerList = new AData("player-list", "", false);
 
-
-		AuctionManager.onStart();
-		AuctionDisplays.onStart();
-
 		RegisteredServiceProvider<LuckPerms> provider = Bukkit.getServicesManager().getRegistration(LuckPerms.class);
 		if(provider != null) {
 			LUCKPERMS = provider.getProvider();
@@ -196,6 +192,9 @@ class PitSim extends JavaPlugin {
 		registerKits();
 		registerMobs();
 		registerBrewingIngredients();
+
+		AuctionManager.onStart();
+		AuctionDisplays.onStart();
 	}
 
 	@Override

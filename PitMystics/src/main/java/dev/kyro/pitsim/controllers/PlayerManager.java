@@ -4,7 +4,9 @@ import be.maximvdw.featherboard.api.FeatherBoardAPI;
 import de.tr7zw.nbtapi.NBTItem;
 import dev.kyro.arcticapi.data.APlayer;
 import dev.kyro.arcticapi.data.APlayerData;
+import dev.kyro.arcticapi.data.ASerializer;
 import dev.kyro.arcticapi.misc.AOutput;
+import dev.kyro.arcticapi.misc.AUtil;
 import dev.kyro.arcticguilds.controllers.BuffManager;
 import dev.kyro.arcticguilds.controllers.GuildManager;
 import dev.kyro.arcticguilds.controllers.objects.Guild;
@@ -15,10 +17,7 @@ import dev.kyro.pitsim.brewing.ingredients.MagmaCream;
 import dev.kyro.pitsim.brewing.objects.PotionEffect;
 import dev.kyro.pitsim.commands.FPSCommand;
 import dev.kyro.pitsim.controllers.objects.*;
-import dev.kyro.pitsim.enums.ApplyType;
-import dev.kyro.pitsim.enums.MysticType;
-import dev.kyro.pitsim.enums.NBTTag;
-import dev.kyro.pitsim.enums.NonTrait;
+import dev.kyro.pitsim.enums.*;
 import dev.kyro.pitsim.events.*;
 import dev.kyro.pitsim.megastreaks.Highlander;
 import dev.kyro.pitsim.megastreaks.NoMegastreak;
@@ -29,6 +28,7 @@ import dev.kyro.pitsim.misc.Misc;
 import dev.kyro.pitsim.misc.Sounds;
 import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.*;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Entity;
@@ -569,6 +569,75 @@ public class PlayerManager implements Listener {
 				}
 			}
 		}.runTaskLater(PitSim.INSTANCE, 5L);
+
+		new BukkitRunnable() {
+			@Override
+			public void run() {
+				for (AuctionItem auctionItem : AuctionManager.auctionItems) {
+					if(!auctionItem.bidMap.containsKey(player.getUniqueId())) continue;
+
+					if(auctionItem.getHighestBidder().equals(player.getUniqueId())) AOutput.send(player, "&5&lDARK AUCTION! &7You are currently holding the highest bid on " + auctionItem.item.itemName);
+					else AOutput.send(player, "&5&lDARK AUCTION! &7Current bid on " + auctionItem.item.itemName + " &7is &f" + auctionItem.getHighestBid() + " Souls &7by &e" + Bukkit.getOfflinePlayer(auctionItem.getHighestBidder()).getName() + "&7.");
+					Sounds.BOOSTER_REMIND.play(player);
+				}
+			}
+		}.runTaskLater(PitSim.INSTANCE, 10);
+
+		APlayer aPlayer = APlayerData.getPlayerData(player);
+		FileConfiguration playerData = aPlayer.playerData;
+
+		if(playerData.contains("auctionreturn")) {
+			String[] items = playerData.getString("auctionreturn").split(",");
+
+			for (String item : items) {
+				String[] data = item.split(":");
+
+				if(Integer.parseInt(data[1]) == 0) {
+					ItemStack itemStack = ItemType.getItemType(Integer.valueOf(data[0])).item;
+					AUtil.giveItemSafely(player, itemStack, true);
+
+					new BukkitRunnable() {
+						@Override
+						public void run() {
+							AOutput.send(player, "&5&lDARK AUCTION! &7Received " + itemStack.getItemMeta().getDisplayName() + "&7.");
+							Sounds.BOOSTER_REMIND.play(player);
+						}
+					}.runTaskLater(PitSim.INSTANCE, 10);
+				} else {
+					ItemStack itemStack = ItemType.getJewelItem(Integer.parseInt(data[0]), Integer.parseInt(data[1]));
+
+					AUtil.giveItemSafely(player, itemStack, true);
+					new BukkitRunnable() {
+						@Override
+						public void run() {
+							AOutput.send(player, "&5&lDARK AUCTION! &7Received " + itemStack.getItemMeta().getDisplayName() + "&7.");
+							Sounds.BOOSTER_REMIND.play(player);
+						}
+					}.runTaskLater(PitSim.INSTANCE, 10);
+				}
+			}
+
+			playerData.set("auctionreturn", null);
+			aPlayer.save();
+		}
+
+		if(playerData.contains("soulreturn")) {
+			int souls = playerData.getInt("soulreturn");
+
+			if(souls > 0) {
+				PitPlayer.getPitPlayer(player).taintedSouls += souls;
+				new BukkitRunnable() {
+					@Override
+					public void run() {
+						AOutput.send(player, "&5&lDARK AUCTION! &7Received &f" + souls + " Tainted Souls&7.");
+						Sounds.BOOSTER_REMIND.play(player);
+					}
+				}.runTaskLater(PitSim.INSTANCE, 10);
+			}
+
+			playerData.set("soulreturn", null);
+		}
+
 	}
 
 	public static void removeIllegalItems(Player player) {

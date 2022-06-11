@@ -14,6 +14,7 @@ import dev.kyro.pitsim.controllers.BoosterManager;
 import dev.kyro.pitsim.controllers.objects.AuctionItem;
 import dev.kyro.pitsim.controllers.objects.Booster;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
+import dev.kyro.pitsim.enums.ItemType;
 import dev.kyro.pitsim.misc.Sounds;
 import me.clip.placeholderapi.PlaceholderAPI;
 import net.milkbowl.vault.chat.Chat;
@@ -24,6 +25,7 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.inventory.InventoryOpenEvent;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
 
@@ -87,9 +89,11 @@ public class BidPanel extends AGUIPanel {
 			public void run() {
 				AuctionItem auctionItem = AuctionManager.auctionItems[slot];
 
-				AItemStackBuilder itemBuilder = new AItemStackBuilder(auctionItem.item.item.clone());
+				ItemStack item = auctionItem.itemData == 0 ? auctionItem.item.item.clone() : ItemType.getJewelItem(auctionItem.item.id, auctionItem.itemData);
+
+				AItemStackBuilder itemBuilder = new AItemStackBuilder(item);
 				itemBuilder.setName(auctionItem.item.itemName);
-				itemBuilder.setLore(auctionItem.item.item.getItemMeta().getLore());
+				if(auctionItem.itemData == 0) itemBuilder.setLore(auctionItem.item.item.getItemMeta().getLore());
 
 				getInventory().setItem(13, itemBuilder.getItemStack());
 
