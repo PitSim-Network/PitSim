@@ -37,11 +37,8 @@ public class ATestCommand implements CommandExecutor {
 
 //		AuctionManager.auctionItems[0].addBid(player.getUniqueId(), AuctionManager.auctionItems[0].getBid(player.getUniqueId()) + 100);
 
-		if(args.length > 0) {
-			AuctionDisplays.showItems();
-		} else AuctionDisplays.onStart();
 
-//		CutsceneManager.play(player);
+		CutsceneManager.play(player);
 
 //		TaintedGUI taintedGUI = new TaintedGUI(player);
 //		taintedGUI.open();

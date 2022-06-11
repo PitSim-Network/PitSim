@@ -392,6 +392,7 @@ class PitSim extends JavaPlugin {
 		getCommand("kit").setExecutor(new KitCommand());
 		getCommand("view").setExecutor(new ViewCommand());
 		getCommand("music").setExecutor(new MusicCommand());
+
 	}
 
 	private void registerListeners() {
@@ -445,6 +446,7 @@ class PitSim extends JavaPlugin {
 		getServer().getPluginManager().registerEvents(new MusicManager(), this);
 		getServer().getPluginManager().registerEvents(new CutsceneManager(), this);
 		getServer().getPluginManager().registerEvents(new AuctionDisplays(), this);
+		getServer().getPluginManager().registerEvents(new AuctionManager(), this);
 	}
 	public void registerBoosters() {
 		BoosterManager.registerBooster(new XPBooster());
