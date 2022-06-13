@@ -174,7 +174,7 @@ public abstract class SimpleBoss {
 
         this.health = Math.min((this.difficulty*20)*5, 1000);
 
-        this.damageIncrease = difficulty * 10;
+        this.damageIncrease = Math.min(25, this.difficulty*2);
 
         GearType type;
 
