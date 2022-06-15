@@ -2,6 +2,7 @@ package dev.kyro.pitsim.slayers;
 
 import com.xxmicloxx.NoteBlockAPI.NoteBlockAPI;
 import dev.kyro.pitsim.PitSim;
+import dev.kyro.pitsim.controllers.MapManager;
 import dev.kyro.pitsim.controllers.objects.PitBoss;
 import dev.kyro.pitsim.enums.SubLevel;
 import dev.kyro.pitsim.events.AttackEvent;
@@ -14,16 +15,19 @@ import org.bukkit.Effect;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
+import org.bukkit.craftbukkit.v1_8_R3.CraftServer;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftEnderCrystal;
 import org.bukkit.entity.*;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
-import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
 import org.bukkit.util.Vector;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Set;
 
 public class EndermanSlayer extends PitBoss {
     public NPC npc;
@@ -69,7 +73,14 @@ public class EndermanSlayer extends PitBoss {
 
                 block1.setType(Material.QUARTZ_BLOCK);
                 block2.setType(Material.SEA_LANTERN);
-                block3.setType(Material.QUARTZ_BLOCK);
+                block3.setType(Material.AIR);
+
+                org.bukkit.entity.EnderCrystal crystal = (org.bukkit.entity.EnderCrystal) MapManager.getDarkzone().spawnEntity(block3.getLocation(), EntityType.ENDER_CRYSTAL);
+
+                CraftEnderCrystal crystal1 = new CraftEnderCrystal(((CraftServer) Bukkit.getServer()), ((CraftEnderCrystal) crystal).getHandle()) {
+
+
+                };
 
                 BukkitTask runnable = new BukkitRunnable() {
                     @Override

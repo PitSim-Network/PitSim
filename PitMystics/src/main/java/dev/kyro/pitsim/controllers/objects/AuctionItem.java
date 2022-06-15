@@ -119,15 +119,13 @@ public class AuctionItem {
         AConfig.set("auctions.auction" + slot, (Object) null);
         AConfig.saveConfig();
 
-        if(AuctionDisplays.pedestalItems[slot] != null && !AuctionDisplays.hasPlayers(AuctionDisplays.pedestalLocations[0])) AuctionDisplays.getItem(AuctionDisplays.pedestalItems[slot]).remove();
-
         if(getHighestBidder() == null) return;
 
         OfflinePlayer winner = Bukkit.getOfflinePlayer(getHighestBidder());
 
         for (Map.Entry<UUID, Integer> entry : bidMap.entrySet()) {
             Player onlinePlayer = Bukkit.getOfflinePlayer(entry.getKey()).getPlayer();
-            if(!onlinePlayer.isOnline()) continue;
+            if(onlinePlayer != null && !onlinePlayer.isOnline()) continue;
 
             AOutput.send(onlinePlayer, "&5&lDARK AUCTION! &e" + winner + " &7won " + item.itemName + " &7for &f" + getHighestBid() + " Souls&7.");
             Sounds.BOOSTER_REMIND.play(onlinePlayer);
@@ -180,5 +178,9 @@ public class AuctionItem {
                 soulReturnPlayer.save();
             }
         }
+
+        try {
+            if(AuctionDisplays.pedestalItems[slot] != null && !AuctionDisplays.hasPlayers(AuctionDisplays.pedestalLocations[0])) AuctionDisplays.getItem(AuctionDisplays.pedestalItems[slot]).remove();
+        } catch(Exception ignored) { }
     }
 }
