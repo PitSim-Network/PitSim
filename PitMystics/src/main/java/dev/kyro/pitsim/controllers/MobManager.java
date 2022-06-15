@@ -336,6 +336,8 @@ public class MobManager implements Listener {
 				if(nameTags.get(mob.entity.getUniqueId()).getUniqueId().equals(entity.getUniqueId())) continue main;
 			}
 
+			if(entity instanceof ArmorStand && entity.getLocation().distance(AuctionManager.spawnLoc) < 50 && entity.getCustomName() == null) continue;
+
 			if(entity.getUniqueId().equals(TaintedWell.wellStand.getUniqueId())) continue;
 //			if(entity.getUniqueId().equals(TaintedWell.removeStand.getUniqueId())) continue;
 			for (ArmorStand value : TaintedWell.enchantStands.values()) {

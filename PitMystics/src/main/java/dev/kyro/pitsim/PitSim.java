@@ -97,10 +97,6 @@ class PitSim extends JavaPlugin {
 		ArcticAPI.configInit(this, "prefix", "error-prefix");
 		playerList = new AData("player-list", "", false);
 
-
-		AuctionManager.onStart();
-		AuctionDisplays.onStart();
-
 		RegisteredServiceProvider<LuckPerms> provider = Bukkit.getServicesManager().getRegistration(LuckPerms.class);
 		if(provider != null) {
 			LUCKPERMS = provider.getProvider();
@@ -196,6 +192,9 @@ class PitSim extends JavaPlugin {
 		registerKits();
 		registerMobs();
 		registerBrewingIngredients();
+
+		AuctionManager.onStart();
+		AuctionDisplays.onStart();
 	}
 
 	@Override
@@ -211,6 +210,12 @@ class PitSim extends JavaPlugin {
 			value.destroy();
 			NPCRegistry registry = CitizensAPI.getNPCRegistry();
 			registry.deregister(value);
+		}
+
+		for (NPC clickable : AuctionDisplays.clickables) {
+			clickable.destroy();
+			NPCRegistry registry = CitizensAPI.getNPCRegistry();
+			registry.deregister(clickable);
 		}
 
 		for (EditSession session : FreezeSpell.sessions) {
@@ -387,6 +392,7 @@ class PitSim extends JavaPlugin {
 		getCommand("kit").setExecutor(new KitCommand());
 		getCommand("view").setExecutor(new ViewCommand());
 		getCommand("music").setExecutor(new MusicCommand());
+
 	}
 
 	private void registerListeners() {
@@ -440,6 +446,7 @@ class PitSim extends JavaPlugin {
 		getServer().getPluginManager().registerEvents(new MusicManager(), this);
 		getServer().getPluginManager().registerEvents(new CutsceneManager(), this);
 		getServer().getPluginManager().registerEvents(new AuctionDisplays(), this);
+		getServer().getPluginManager().registerEvents(new AuctionManager(), this);
 	}
 	public void registerBoosters() {
 		BoosterManager.registerBooster(new XPBooster());

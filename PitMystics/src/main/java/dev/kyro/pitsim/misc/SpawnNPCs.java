@@ -39,6 +39,7 @@ public class SpawnNPCs implements Listener {
 	public static NPC taintedShop;
 	public static NPC leggingMerchant;
 	public static NPC potionMaster;
+	public static NPC auctioneer;
 
 	public static void createNPCs() {
 		for(World world : MapManager.currentMap.lobbies) {
@@ -52,6 +53,7 @@ public class SpawnNPCs implements Listener {
 		createTaintedShopNPC();
 		createLeggingNPC();
 		createPotionNPC();
+		createAuctioneer();
 	}
 
 	public static void removeNPCs() {
@@ -67,6 +69,11 @@ public class SpawnNPCs implements Listener {
 		}
 		try {
 			leggingMerchant.destroy();
+		} catch(Exception ignored) {
+			System.out.println("error despawning npc");
+		}
+		try {
+			auctioneer.destroy();
 		} catch(Exception ignored) {
 			System.out.println("error despawning npc");
 		}
@@ -196,6 +203,14 @@ public class SpawnNPCs implements Listener {
 		skin(npc, "Wiizard");
 	}
 
+	public static void createAuctioneer() {
+		NPCRegistry registry = CitizensAPI.getNPCRegistry();
+		NPC npc = registry.createNPC(EntityType.PLAYER, ChatColor.DARK_GRAY + "" + ChatColor.BOLD + "SHADY FIGURE");
+		npc.spawn(new Location(MapManager.getDarkzone(), 254.5, 91, -128.5, -14, 0));
+		auctioneer = npc;
+		skin(npc, "Itz_Aethan");
+	}
+
 
 	@EventHandler
 	public void onClickEvent(NPCRightClickEvent event) {
@@ -252,6 +267,10 @@ public class SpawnNPCs implements Listener {
 		if(event.getNPC().getId() == potionMaster.getId()) {
 			PotionMasterGUI potionMasterGUI = new PotionMasterGUI(player);
 			potionMasterGUI.open();
+		}
+
+		if(event.getNPC().getId() == auctioneer.getId()) {
+			AOutput.send(player, "&8&lSHADY FIGURE&7: &ePsst. Visit the door behind me to spend your &fTainted Souls&e.");
 		}
 	}
 
