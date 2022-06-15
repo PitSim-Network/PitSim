@@ -66,60 +66,45 @@ public class EndermanSlayer extends PitBoss {
 
                 Block block1 = locations.get(0).getBlock();
                 Block block2 = locations.get(0).add(0,1,0).getBlock();
-                
+
                 Location location = locations.get(0).add(0,1,0);
-                
+
                 Block block3 = location.getBlock();
 
                 block1.setType(Material.QUARTZ_BLOCK);
                 block2.setType(Material.SEA_LANTERN);
-                block3.setType(Material.AIR);
-
-                org.bukkit.entity.EnderCrystal crystal = (org.bukkit.entity.EnderCrystal) MapManager.getDarkzone().spawnEntity(block3.getLocation(), EntityType.ENDER_CRYSTAL);
-
-                CraftEnderCrystal crystal1 = new CraftEnderCrystal(((CraftServer) Bukkit.getServer()), ((CraftEnderCrystal) crystal).getHandle()) {
-
-
-                };
+                block3.setType(Material.QUARTZ_BLOCK);
 
                 BukkitTask runnable = new BukkitRunnable() {
                     @Override
                     public void run() {
                         try {
-                            LivingEntity attacked;
-                            Set<Material> mat = null;
-                            Block block = target.getTargetBlock(mat, 10);
-
-                            for (Entity entity : target.getNearbyEntities(10, 10, 10)) {
-                                if(!(entity instanceof LivingEntity)) continue;
-                                if(entity instanceof ArmorStand || entity instanceof Villager) continue;
-
-                                org.bukkit.util.Vector direction = location.add(0, 1, 0).getDirection();
-                                org.bukkit.util.Vector towardsEntity = entity.getLocation().subtract(location.add(0, 1, 0)).toVector().normalize();
-
-                                if(direction.distance(towardsEntity) < 0.1) {
-                                    attacked = (LivingEntity) entity;
-                                    block = entity.getLocation().getBlock();
-
-                                    EntityDamageByEntityEvent damageEvent = new EntityDamageByEntityEvent(target, attacked, EntityDamageEvent.DamageCause.ENTITY_ATTACK, 4);
-                                    Bukkit.getServer().getPluginManager().callEvent(damageEvent);
-                                    if(!damageEvent.isCancelled()) attacked.damage(4, target);
-                                }
-                            }
-
-                            org.bukkit.util.Vector diff = block.getLocation().add(0.5, 1, 0.5).subtract(location.add(0, 1, 0)).toVector();
+                            Vector diff = target.getLocation().add(0.5, 1, 0.5).subtract(location.add(0, 1, 0)).toVector();
                             Location base = location.add(0, 1, 0)/* the origin, where you are moving away from */;
                             double add = diff.length(); //example amount
                             diff.divide(new Vector(add, add, add));
 
                             for (int i = 0; i < add; i++) {
                                 base.add(diff);
-                                base.getWorld().spigot().playEffect(base, Effect.ENDER_SIGNAL, 0, 0, (float) 0, (float) 0/255, (float) 0/255, 1, 0, 64);
+                                EndermanSlayer.this.target.getWorld().spigot().playEffect(base, Effect.ENDER_SIGNAL, 0, 0, (float) 0, (float) 0/255, (float) 0/255, 1, 0, 64);
+                                EndermanSlayer.this.target.getWorld().spigot().playEffect(base, Effect.ENDER_SIGNAL, 0, 0, (float) 0, (float) 0/255, (float) 0/255, 1, 0, 64);
+                                EndermanSlayer.this.target.getWorld().spigot().playEffect(base, Effect.ENDER_SIGNAL, 0, 0, (float) 0, (float) 0/255, (float) 0/255, 1, 0, 64);
+                                EndermanSlayer.this.target.getWorld().spigot().playEffect(base, Effect.ENDER_SIGNAL, 0, 0, (float) 0, (float) 0/255, (float) 0/255, 1, 0, 64);
+                                EndermanSlayer.this.target.getWorld().spigot().playEffect(base, Effect.ENDER_SIGNAL, 0, 0, (float) 0, (float) 0/255, (float) 0/255, 1, 0, 64);
+                                EndermanSlayer.this.target.getWorld().spigot().playEffect(base, Effect.ENDER_SIGNAL, 0, 0, (float) 0, (float) 0/255, (float) 0/255, 1, 0, 64);
+                                EndermanSlayer.this.target.getWorld().spigot().playEffect(base, Effect.ENDER_SIGNAL, 0, 0, (float) 0, (float) 0/255, (float) 0/255, 1, 0, 64);
+                                EndermanSlayer.this.target.getWorld().spigot().playEffect(base, Effect.ENDER_SIGNAL, 0, 0, (float) 0, (float) 0/255, (float) 0/255, 1, 0, 64);
+                                EndermanSlayer.this.target.getWorld().spigot().playEffect(base, Effect.ENDER_SIGNAL, 0, 0, (float) 0, (float) 0/255, (float) 0/255, 1, 0, 64);
+                                EndermanSlayer.this.target.getWorld().spigot().playEffect(base, Effect.ENDER_SIGNAL, 0, 0, (float) 0, (float) 0/255, (float) 0/255, 1, 0, 64);
                             }
+
+                            //EntityDamageByEntityEvent damageEvent = new EntityDamageByEntityEvent(npc.getEntity(), EndermanSlayer.this.target, EntityDamageEvent.DamageCause.ENTITY_ATTACK, 4);
+                            //Bukkit.getServer().getPluginManager().callEvent(damageEvent);
+                            //if(!damageEvent.isCancelled()) EndermanSlayer.this.target.damage(4, target);
                         } catch (Exception ignored) {
                         }
                     }
-                }.runTaskTimer(PitSim.INSTANCE, 0, 10);
+                }.runTaskTimer(PitSim.INSTANCE, 0, 20);
 
                 new BukkitRunnable() {
                     @Override

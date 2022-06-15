@@ -25,7 +25,7 @@ public class ThrowableBlock implements Listener {
         this.block = owner.getWorld().spawnFallingBlock(owner.getLocation().add(0,1,0), this.material, (byte) 0);
         this.block.setDropItem(false);
         this.block.setHurtEntities(false);
-        this.block.setVelocity(owner.getLocation().getDirection().multiply(3));
+        this.block.setVelocity(owner.getLocation().getDirection().multiply(2));
     }
 
     public ThrowableBlock(Entity owner, Material material, Vector vector){
