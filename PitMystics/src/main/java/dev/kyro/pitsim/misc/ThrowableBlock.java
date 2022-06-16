@@ -16,7 +16,7 @@ public class ThrowableBlock implements Listener {
 
     FallingBlock block;
     Material material;
-    Entity owner;
+    public Entity owner;
 
     public ThrowableBlock(Entity owner, Material material){
         this.owner = owner;

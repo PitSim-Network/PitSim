@@ -125,6 +125,10 @@ public class Sounds {
 	public static final SoundEffect JUDGEMENT_ZEUS_DEFENDER = new SoundEffect(Sound.IRONGOLEM_DEATH, 1, 1);
 	public static final SoundEffect JUDGEMENT_HOPPER = new SoundEffect(Sound.ENDERMAN_TELEPORT, 1, 1);
 
+	public static final SoundEffect ANVIL_LAND = new SoundEffect(Sound.ANVIL_LAND, 1, 1);
+	public static final SoundEffect ANVIL_BREAK = new SoundEffect(Sound.ANVIL_BREAK, 1, 1);
+	public static final SoundEffect ANVIL_USE = new SoundEffect(Sound.ANVIL_USE, 1, 1);
+
 	//	Events
 	public static final SoundEffect EVENT_START = new SoundEffect(Sound.ENDERDRAGON_GROWL, 2, 1);
 	public static final SoundEffect EVENT_PING = new SoundEffect(Sound.NOTE_PLING, 2, 1F);
