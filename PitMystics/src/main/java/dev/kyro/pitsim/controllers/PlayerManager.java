@@ -636,6 +636,7 @@ public class PlayerManager implements Listener {
 			}
 
 			playerData.set("soulreturn", null);
+			aPlayer.save();
 		}
 
 	}
