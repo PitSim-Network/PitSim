@@ -3,6 +3,7 @@ package dev.kyro.pitsim.controllers;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.brewing.BrewingManager;
 import dev.kyro.pitsim.controllers.objects.GoldenHelmet;
+import dev.kyro.pitsim.controllers.objects.PitBoss;
 import dev.kyro.pitsim.controllers.objects.PitMob;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.enchants.tainted.CleaveSpell;
@@ -135,7 +136,7 @@ public class MobManager implements Listener {
 				for(PitMob mob : mobs) {
 					if(!(mob instanceof PitIronGolem) && (!(mob instanceof PitEnderman))) continue;
 					for (Entity nearbyEntity : mob.entity.getNearbyEntities(5, 5, 5)) {
-						if(nearbyEntity instanceof Player) {
+						if(nearbyEntity instanceof Player && !PitBoss.isPitBoss((Player) nearbyEntity)) {
 							((Creature) mob.entity).setTarget((LivingEntity) nearbyEntity);
 						}
 					}

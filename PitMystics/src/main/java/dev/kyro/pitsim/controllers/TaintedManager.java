@@ -358,6 +358,7 @@ public class TaintedManager implements Listener {
     }
 
     public static List<String> scramble(List<String> messages) {
+        if(messages == null) return null;
         List<String> finishedStrings = new ArrayList<>();
 
         for (String msg : messages) {
@@ -398,6 +399,7 @@ public class TaintedManager implements Listener {
     }
 
     public static List<String> descramble(List<String> messages) {
+        if(messages == null) return null;
         List<String> finishedStrings = new ArrayList<>();
 
         for (String msg : messages) {

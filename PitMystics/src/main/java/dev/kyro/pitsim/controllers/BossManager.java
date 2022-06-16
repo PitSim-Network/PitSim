@@ -308,6 +308,7 @@ public class BossManager implements Listener {
                 Sounds.BOOSTER_REMIND.play(player);
                 if(itemStack.getAmount() > 1) itemStack.setAmount(itemStack.getAmount() - 1);
                 else player.getInventory().setItem(i, null);
+                player.updateInventory();
                 return true;
             }
         }
