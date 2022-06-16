@@ -2,19 +2,27 @@ package dev.kyro.pitsim.slayers;
 
 import com.xxmicloxx.NoteBlockAPI.NoteBlockAPI;
 import dev.kyro.pitsim.PitSim;
+import dev.kyro.pitsim.brewing.PotionManager;
 import dev.kyro.pitsim.controllers.objects.PitBoss;
+import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.enums.SubLevel;
 import dev.kyro.pitsim.events.AttackEvent;
+import dev.kyro.pitsim.misc.Sounds;
 import dev.kyro.pitsim.slayers.tainted.SimpleBoss;
 import dev.kyro.pitsim.slayers.tainted.SimpleSkin;
 import net.citizensnpcs.api.CitizensAPI;
 import net.citizensnpcs.api.npc.NPC;
+import org.bukkit.ChatColor;
 import org.bukkit.Effect;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
 import org.bukkit.util.Vector;
@@ -39,6 +47,30 @@ public class EndermanSlayer extends PitBoss {
 
             @Override
             protected void attackHigh(){
+                EndermanSlayer.this.target.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 50, 50, true, true));
+                EndermanSlayer.this.target.getWorld().spigot().playEffect(EndermanSlayer.this.target.getLocation(), Effect.ENDER_SIGNAL, 0, 0, (float) 0, (float) 0/255, (float) 0/255, 1, 0, 64);
+                EndermanSlayer.this.target.getWorld().spigot().playEffect(EndermanSlayer.this.target.getLocation(), Effect.ENDER_SIGNAL, 0, 0, (float) 0, (float) 0/255, (float) 0/255, 1, 0, 64);
+                EndermanSlayer.this.target.getWorld().spigot().playEffect(EndermanSlayer.this.target.getLocation(), Effect.ENDER_SIGNAL, 0, 0, (float) 0, (float) 0/255, (float) 0/255, 1, 0, 64);
+                EndermanSlayer.this.target.getWorld().spigot().playEffect(EndermanSlayer.this.target.getLocation(), Effect.ENDER_SIGNAL, 0, 0, (float) 0, (float) 0/255, (float) 0/255, 1, 0, 64);
+                EndermanSlayer.this.target.getWorld().spigot().playEffect(EndermanSlayer.this.target.getLocation(), Effect.ENDER_SIGNAL, 0, 0, (float) 0, (float) 0/255, (float) 0/255, 1, 0, 64);
+                EndermanSlayer.this.target.getWorld().spigot().playEffect(EndermanSlayer.this.target.getLocation(), Effect.ENDER_SIGNAL, 0, 0, (float) 0, (float) 0/255, (float) 0/255, 1, 0, 64);
+
+                target.sendMessage(ChatColor.translateAlternateColorCodes('&', "&5This is my final message... &c&lGOODBYE!"));
+
+                new BukkitRunnable() {
+                    @Override
+                    public void run() {
+                        target.getWorld().playEffect(target.getLocation(), Effect.FIREWORKS_SPARK, 1);
+                        Sounds.PRESTIGE.play(EndermanSlayer.this.target);
+                        if(npc.getEntity() != null){
+                            for (Entity player : npc.getEntity().getNearbyEntities(5, 5, 5)) {
+                                if(player != target) continue;
+                                PitPlayer.getPitPlayer((Player) player).damage(EndermanSlayer.this.target.getHealth(), (LivingEntity) npc.getEntity());
+                            }
+                        }
+                        EndermanSlayer.this.target.removePotionEffect(PotionEffectType.SLOW);
+                    }
+                }.runTaskLater(PitSim.INSTANCE, 30);
 
             }
 
@@ -73,28 +105,42 @@ public class EndermanSlayer extends PitBoss {
                     @Override
                     public void run() {
                         try {
-                            Vector diff = target.getLocation().add(0.5, 1, 0.5).subtract(location.clone().add(0, 1, 0)).toVector();
-                            Location base = location.clone().add(0, 1, 0)/* the origin, where you are moving away from */;
-                            double add = diff.length(); //example amount
-                            diff.divide(new Vector(add, add, add));
+                            if(location.distance(EndermanSlayer.this.target.getLocation()) <= 7){
+                                Vector diff = target.getLocation().add(0.5, 1, 0.5).subtract(location.clone().add(0, 1, 0)).toVector();
+                                Location base = location.clone().add(0, 1, 0)/* the origin, where you are moving away from */;
+                                double add = diff.length(); //example amount
+                                diff.divide(new Vector(add, add, add));
 
-                            for (int i = 0; i < add; i++) {
-                                base.add(diff);
-                                EndermanSlayer.this.target.getWorld().spigot().playEffect(base, Effect.ENDER_SIGNAL, 0, 0, (float) 0, (float) 0/255, (float) 0/255, 1, 0, 64);
-                                EndermanSlayer.this.target.getWorld().spigot().playEffect(base, Effect.ENDER_SIGNAL, 0, 0, (float) 0, (float) 0/255, (float) 0/255, 1, 0, 64);
-                                EndermanSlayer.this.target.getWorld().spigot().playEffect(base, Effect.ENDER_SIGNAL, 0, 0, (float) 0, (float) 0/255, (float) 0/255, 1, 0, 64);
-                                EndermanSlayer.this.target.getWorld().spigot().playEffect(base, Effect.ENDER_SIGNAL, 0, 0, (float) 0, (float) 0/255, (float) 0/255, 1, 0, 64);
-                                EndermanSlayer.this.target.getWorld().spigot().playEffect(base, Effect.ENDER_SIGNAL, 0, 0, (float) 0, (float) 0/255, (float) 0/255, 1, 0, 64);
-                                EndermanSlayer.this.target.getWorld().spigot().playEffect(base, Effect.ENDER_SIGNAL, 0, 0, (float) 0, (float) 0/255, (float) 0/255, 1, 0, 64);
-                                EndermanSlayer.this.target.getWorld().spigot().playEffect(base, Effect.ENDER_SIGNAL, 0, 0, (float) 0, (float) 0/255, (float) 0/255, 1, 0, 64);
-                                EndermanSlayer.this.target.getWorld().spigot().playEffect(base, Effect.ENDER_SIGNAL, 0, 0, (float) 0, (float) 0/255, (float) 0/255, 1, 0, 64);
-                                EndermanSlayer.this.target.getWorld().spigot().playEffect(base, Effect.ENDER_SIGNAL, 0, 0, (float) 0, (float) 0/255, (float) 0/255, 1, 0, 64);
-                                EndermanSlayer.this.target.getWorld().spigot().playEffect(base, Effect.ENDER_SIGNAL, 0, 0, (float) 0, (float) 0/255, (float) 0/255, 1, 0, 64);
+                                for (int i = 0; i < add; i++) {
+                                    base.add(diff);
+                                    Sounds.RGM.play(EndermanSlayer.this.target);
+                                    EndermanSlayer.this.target.getWorld().spigot().playEffect(base, Effect.FLYING_GLYPH, 0, 0, (float) 0, (float) 0/255, (float) 0/255, 1, 0, 64);
+                                    EndermanSlayer.this.target.getWorld().spigot().playEffect(base, Effect.FLYING_GLYPH, 0, 0, (float) 0, (float) 0/255, (float) 0/255, 1, 0, 64);
+                                    EndermanSlayer.this.target.getWorld().spigot().playEffect(base, Effect.FLYING_GLYPH, 0, 0, (float) 0, (float) 0/255, (float) 0/255, 1, 0, 64);
+                                    EndermanSlayer.this.target.getWorld().spigot().playEffect(base, Effect.FLYING_GLYPH, 0, 0, (float) 0, (float) 0/255, (float) 0/255, 1, 0, 64);
+                                    EndermanSlayer.this.target.getWorld().spigot().playEffect(base, Effect.FLYING_GLYPH, 0, 0, (float) 0, (float) 0/255, (float) 0/255, 1, 0, 64);
+                                    EndermanSlayer.this.target.getWorld().spigot().playEffect(base, Effect.FLYING_GLYPH, 0, 0, (float) 0, (float) 0/255, (float) 0/255, 1, 0, 64);
+                                    EndermanSlayer.this.target.getWorld().spigot().playEffect(base, Effect.FLYING_GLYPH, 0, 0, (float) 0, (float) 0/255, (float) 0/255, 1, 0, 64);
+                                    EndermanSlayer.this.target.getWorld().spigot().playEffect(base, Effect.FLYING_GLYPH, 0, 0, (float) 0, (float) 0/255, (float) 0/255, 1, 0, 64);
+                                    EndermanSlayer.this.target.getWorld().spigot().playEffect(base, Effect.FLYING_GLYPH, 0, 0, (float) 0, (float) 0/255, (float) 0/255, 1, 0, 64);
+                                    EndermanSlayer.this.target.getWorld().spigot().playEffect(base, Effect.FLYING_GLYPH, 0, 0, (float) 0, (float) 0/255, (float) 0/255, 1, 0, 64);
+                                }
+
+                                if(EndermanSlayer.this.target.hasPotionEffect(PotionEffectType.SLOW)){
+                                    EndermanSlayer.this.target.removePotionEffect(PotionEffectType.SLOW);
+                                    EndermanSlayer.this.target.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 100, 9, true, true));
+                                }else EndermanSlayer.this.target.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 100, 9, true, true));
+
+                                if(EndermanSlayer.this.target.hasPotionEffect(PotionEffectType.WEAKNESS)){
+                                    EndermanSlayer.this.target.removePotionEffect(PotionEffectType.WEAKNESS);
+                                    EndermanSlayer.this.target.addPotionEffect(new PotionEffect(PotionEffectType.WEAKNESS, 100, 3, true, true));
+                                }else EndermanSlayer.this.target.addPotionEffect(new PotionEffect(PotionEffectType.WEAKNESS, 100, 3, true, true));
+
+                                //EntityDamageByEntityEvent damageEvent = new EntityDamageByEntityEvent(npc.getEntity(), EndermanSlayer.this.target, EntityDamageEvent.DamageCause.ENTITY_ATTACK, 4);
+                                //Bukkit.getServer().getPluginManager().callEvent(damageEvent);
+                                //if(!damageEvent.isCancelled()) EndermanSlayer.this.target.damage(4, target);
                             }
 
-                            //EntityDamageByEntityEvent damageEvent = new EntityDamageByEntityEvent(npc.getEntity(), EndermanSlayer.this.target, EntityDamageEvent.DamageCause.ENTITY_ATTACK, 4);
-                            //Bukkit.getServer().getPluginManager().callEvent(damageEvent);
-                            //if(!damageEvent.isCancelled()) EndermanSlayer.this.target.damage(4, target);
                         } catch (Exception ignored) {
                         }
                     }

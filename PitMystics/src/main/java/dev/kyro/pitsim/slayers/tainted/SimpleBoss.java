@@ -27,12 +27,14 @@ import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.scheduler.BukkitTask;
 import org.bukkit.util.Vector;
 import org.checkerframework.checker.nullness.qual.NonNull;
 
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
+import java.util.UUID;
 
 public abstract class SimpleBoss {
 
@@ -42,6 +44,11 @@ public abstract class SimpleBoss {
     BossBar activeBar;
     SimpleSkin skin;
     PitBoss pitBoss;
+
+    BukkitTask abs;
+    BukkitTask timerTask;
+
+    int time = 0;
 
     // There is no cap to difficulty level
     int difficulty;
@@ -77,23 +84,34 @@ public abstract class SimpleBoss {
 
     }
 
-    public void attackAbility(AttackEvent.Apply event){
-        double bound = new Random().nextDouble();
-
-        if(bound < .25){
-            attackHigh();
-        }else if(bound < .35){
-            attackMedium();
-        }else if (bound < .50){
-            attackLow();
-        }else{
-            try{
-                attackDefault(event);
-            }catch (Exception ignored){}
-
-        }
-
+    private void runAttackAbility(){
+        abs = new BukkitRunnable() {
+            @Override
+            public void run() {
+                if(npc.isSpawned()){
+                    double bound = new Random().nextDouble();
+                    if(bound < .15){
+                        attackHigh();
+                    }else if(bound < .25){
+                        attackMedium();
+                    }else if (bound < .35){
+                        attackLow();
+                    }
+                }
+            }
+        }.runTaskTimer(PitSim.INSTANCE, 50, 50);
     }
+
+    private void timer(){
+        timerTask = new BukkitRunnable() {
+            @Override
+            public void run() {
+                time++;
+            }
+        }.runTaskTimer(PitSim.INSTANCE, 20, 20);
+    }
+
+    public void attackAbility(AttackEvent.Apply event){try{attackDefault(event);}catch (Exception ignored){}}
 
     public void defendAbility(){
 
@@ -144,6 +162,8 @@ public abstract class SimpleBoss {
                     try {
                         npc.getNavigator().setTarget(target, true);
                     } catch (Exception ignored) { }
+
+                    runAttackAbility();
                 }
             }.runTaskLater(PitSim.INSTANCE, 20);
         }
@@ -246,7 +266,27 @@ public abstract class SimpleBoss {
         this.activeBar = fullBar;
     }
 
+    private void onDeath(){
+        abs.cancel();
+        timerTask.cancel();
+
+
+        // Basically adding a timing system to boss battles so it doesn't have to be done later
+        double finalTime = 0;
+        String stringTime;
+
+        if(this.time >= 60){
+            finalTime = this.time / 60;
+
+            stringTime = finalTime + " minutes";
+        }
+
+
+    }
+
     public void hideActiveBossBar() {
+        // Very scuffed method of calling on death
+        onDeath();
         Audience player = PitSim.adventure.player(target);
         player.hideBossBar(this.activeBar);
         this.activeBar = null;
@@ -424,15 +464,6 @@ public abstract class SimpleBoss {
         itemStack = EnchantManager.addEnchant(itemStack, EnchantManager.getEnchant("ls"), 3, false);
         itemStack = EnchantManager.addEnchant(itemStack, EnchantManager.getEnchant("pf"), 1, false);
         itemStack = EnchantManager.addEnchant(itemStack, EnchantManager.getEnchant("cheal"), 2, false);
-        return itemStack;
-    }
-
-    public ItemStack getSolitude() throws Exception {
-        ItemStack itemStack;
-        itemStack = FreshCommand.getFreshItem(MysticType.PANTS, PantColor.GREEN);
-        itemStack = EnchantManager.addEnchant(itemStack, EnchantManager.getEnchant("rgm"), 3, false);
-        itemStack = EnchantManager.addEnchant(itemStack, EnchantManager.getEnchant("mirror"), 3, false);
-        itemStack = EnchantManager.addEnchant(itemStack, EnchantManager.getEnchant("pero"), 2, false);
         return itemStack;
     }
 
