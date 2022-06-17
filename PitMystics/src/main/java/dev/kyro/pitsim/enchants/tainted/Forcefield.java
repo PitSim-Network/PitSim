@@ -9,12 +9,9 @@ import dev.kyro.pitsim.enums.ApplyType;
 import dev.kyro.pitsim.events.AttackEvent;
 import org.bukkit.Bukkit;
 import org.bukkit.Effect;
-import org.bukkit.Location;
-import org.bukkit.entity.*;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
-import org.bukkit.event.entity.EntityDamageByEntityEvent;
-import org.bukkit.event.entity.EntityDamageEvent;
-import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
 
@@ -88,9 +85,12 @@ public class Forcefield extends PitEnchant {
 
     @Override
     public List<String> getDescription(int enchantLvl) {
-        return new ALoreBuilder("test").getLore();
+        return new ALoreBuilder("&7Summon a powerful &eForcefield", "&7that reduces &fKnockback &7and", "repels enemies", "&d&o-" + getManaCost(enchantLvl) + " Mana").getLore();
 
     }
 
+    public static int getManaCost(int enchantLvl) {
+        return 30 * (4 - enchantLvl);
+    }
 
 }

@@ -12,8 +12,6 @@ import dev.kyro.pitsim.events.PitPlayerAttemptAbilityEvent;
 import dev.kyro.pitsim.misc.Misc;
 import dev.kyro.pitsim.misc.SchematicPaste;
 import dev.kyro.pitsim.misc.Sounds;
-import it.unimi.dsi.fastutil.Hash;
-import org.bukkit.Bukkit;
 import org.bukkit.Effect;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -23,7 +21,6 @@ import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
-import org.bukkit.util.Vector;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -83,11 +80,11 @@ public class FreezeSpell extends PitEnchant {
             nearbyEntity.getWorld().playEffect(nearbyEntity.getLocation(), Effect.SNOW_SHOVEL, 5);
             nearbyEntity.getWorld().playEffect(nearbyEntity.getLocation().add(0, 1, 0), Effect.SNOWBALL_BREAK, 5);
 
-            if(!blocks.containsKey(nearbyEntity.getLocation().getBlock().getLocation())) {
+            if(!blocks.containsKey(nearbyEntity.getLocation().getBlock().getLocation()) && nearbyEntity.getLocation().getBlock().getType() == Material.AIR) {
                 blocks.put(nearbyEntity.getLocation().getBlock().getLocation(), nearbyEntity.getLocation().getBlock().getType());
                 nearbyEntity.getLocation().getBlock().setType(Material.ICE);
             }
-            if(!blocks.containsKey(nearbyEntity.getLocation().add(0, 1, 0).getBlock().getLocation())) {
+            if(!blocks.containsKey(nearbyEntity.getLocation().add(0, 1, 0).getBlock().getLocation()) && nearbyEntity.getLocation().add(0, 1, 0).getBlock().getType() == Material.AIR) {
                 blocks.put(nearbyEntity.getLocation().add(0, 1, 0).getBlock().getLocation(), nearbyEntity.getLocation().add(0, 1, 0).getBlock().getType());
                 nearbyEntity.getLocation().add(0, 1, 0).getBlock().setType(Material.ICE);
             }

@@ -3,9 +3,7 @@ package dev.kyro.pitsim.brewing;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.brewing.objects.BrewingAnimation;
 import dev.kyro.pitsim.brewing.objects.BrewingSession;
-import dev.kyro.pitsim.controllers.TaintedWell;
 import dev.kyro.pitsim.controllers.UpgradeManager;
-import dev.kyro.pitsim.controllers.objects.PitBoss;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.events.AttackEvent;
 import dev.kyro.pitsim.misc.Misc;
@@ -24,7 +22,10 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
-import org.bukkit.event.player.*;
+import org.bukkit.event.player.PlayerInteractAtEntityEvent;
+import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.event.player.PlayerMoveEvent;
+import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.EulerAngle;
@@ -256,7 +257,10 @@ public class BrewingManager implements Listener {
     public void onThrow(PlayerInteractEvent event) {
         if(event.getAction() != Action.RIGHT_CLICK_AIR && event.getAction() != Action.RIGHT_CLICK_BLOCK) return;
         if(Misc.isAirOrNull(event.getPlayer().getItemInHand())) return;
-        if(event.getPlayer().getItemInHand().getType() == Material.ENDER_PEARL) event.setCancelled(true);
-        event.getPlayer().updateInventory();
+        if(event.getPlayer().getItemInHand().getType() == Material.ENDER_PEARL) {
+            event.setCancelled(true);
+            event.getPlayer().updateInventory();
+        }
+
     }
 }

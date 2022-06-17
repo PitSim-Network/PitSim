@@ -1,20 +1,12 @@
 package dev.kyro.pitsim.controllers.objects;
 
-import dev.kyro.pitsim.brewing.ingredients.RawPork;
 import dev.kyro.pitsim.controllers.BossManager;
-import dev.kyro.pitsim.controllers.EnchantManager;
-import dev.kyro.pitsim.controllers.MapManager;
 import dev.kyro.pitsim.enums.SubLevel;
 import dev.kyro.pitsim.events.AttackEvent;
 import dev.kyro.pitsim.misc.BossSkin;
 import net.citizensnpcs.api.npc.NPC;
 import net.citizensnpcs.api.trait.trait.Equipment;
-import net.citizensnpcs.npc.skin.Skin;
-import net.citizensnpcs.npc.skin.SkinnableEntity;
-import org.bukkit.Bukkit;
 import org.bukkit.Effect;
-import org.bukkit.Location;
-import org.bukkit.Material;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerTeleportEvent;
@@ -54,7 +46,7 @@ public abstract class PitBoss {
         equipment.set(Equipment.EquipmentSlot.BOOTS, boots);
 
         npc.spawn(subLevel.middle);
-        npc.teleport(subLevel.middle.add(0, 3, 0), PlayerTeleportEvent.TeleportCause.PLUGIN);
+        npc.teleport(subLevel.middle.clone().add(0, 3, 0), PlayerTeleportEvent.TeleportCause.PLUGIN);
 
 
         Entity player = npc.getEntity();
