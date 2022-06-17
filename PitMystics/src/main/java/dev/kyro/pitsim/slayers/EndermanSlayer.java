@@ -48,13 +48,10 @@ public class EndermanSlayer extends PitBoss {
             @Override
             protected void attackHigh(){
                 EndermanSlayer.this.target.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 50, 50, true, true));
-                EndermanSlayer.this.target.getWorld().spigot().playEffect(EndermanSlayer.this.target.getLocation(), Effect.ENDER_SIGNAL, 0, 0, (float) 0, (float) 0/255, (float) 0/255, 1, 0, 64);
-                EndermanSlayer.this.target.getWorld().spigot().playEffect(EndermanSlayer.this.target.getLocation(), Effect.ENDER_SIGNAL, 0, 0, (float) 0, (float) 0/255, (float) 0/255, 1, 0, 64);
-                EndermanSlayer.this.target.getWorld().spigot().playEffect(EndermanSlayer.this.target.getLocation(), Effect.ENDER_SIGNAL, 0, 0, (float) 0, (float) 0/255, (float) 0/255, 1, 0, 64);
-                EndermanSlayer.this.target.getWorld().spigot().playEffect(EndermanSlayer.this.target.getLocation(), Effect.ENDER_SIGNAL, 0, 0, (float) 0, (float) 0/255, (float) 0/255, 1, 0, 64);
-                EndermanSlayer.this.target.getWorld().spigot().playEffect(EndermanSlayer.this.target.getLocation(), Effect.ENDER_SIGNAL, 0, 0, (float) 0, (float) 0/255, (float) 0/255, 1, 0, 64);
-                EndermanSlayer.this.target.getWorld().spigot().playEffect(EndermanSlayer.this.target.getLocation(), Effect.ENDER_SIGNAL, 0, 0, (float) 0, (float) 0/255, (float) 0/255, 1, 0, 64);
 
+                for (int i = 0; i < 6; i++) {
+                    EndermanSlayer.this.target.getWorld().spigot().playEffect(EndermanSlayer.this.target.getLocation(), Effect.ENDER_SIGNAL, 0, 0, (float) 0, (float) 0/255, (float) 0/255, 1, 0, 64);
+                }
                 target.sendMessage(ChatColor.translateAlternateColorCodes('&', "&5This is my final message... &c&lGOODBYE!"));
 
                 new BukkitRunnable() {

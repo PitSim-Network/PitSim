@@ -1,5 +1,6 @@
 package dev.kyro.pitsim.controllers.objects;
 
+import dev.kyro.pitsim.brewing.ingredients.RawPork;
 import dev.kyro.pitsim.controllers.BossManager;
 import dev.kyro.pitsim.controllers.EnchantManager;
 import dev.kyro.pitsim.controllers.MapManager;
@@ -83,6 +84,13 @@ public abstract class PitBoss {
         npc.setProtected(false);
         BossManager.playMusic(target, subLevel.level);
 
+    }
+
+    public static boolean isPitBoss(Player player) {
+        for (PitBoss value : BossManager.bosses.values()) {
+            if(value.getEntity() == player) return true;
+        }
+        return false;
     }
 
 }

@@ -231,10 +231,6 @@ class PitSim extends JavaPlugin {
 			entry.getKey().getBlock().setType(entry.getValue());
 		}
 
-		for (Wither value : BossBar.withers.values()) {
-			value.remove();
-		}
-
 		for(PitMob mob : MobManager.mobs) {
 			MobManager.nameTags.get(mob.entity.getUniqueId()).remove();
 			mob.entity.remove();
@@ -442,7 +438,6 @@ class PitSim extends JavaPlugin {
 		getServer().getPluginManager().registerEvents(new MobManager(), this);
 		getServer().getPluginManager().registerEvents(new PortalManager(), this);
 		getServer().getPluginManager().registerEvents(new BossManager(), this);
-		getServer().getPluginManager().registerEvents(new BossBar(), this);
 		getServer().getPluginManager().registerEvents(new TaintedWell(), this);
 		getServer().getPluginManager().registerEvents(new BrewingManager(), this);
 		getServer().getPluginManager().registerEvents(new PotionManager(), this);

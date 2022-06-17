@@ -91,11 +91,11 @@ public abstract class SimpleBoss {
                 if(npc.isSpawned()){
                     double bound = new Random().nextDouble();
                     if(bound < .15){
-                        attackHigh();
+                        attackLow();
                     }else if(bound < .25){
                         attackMedium();
                     }else if (bound < .35){
-                        attackLow();
+                        attackHigh();
                     }
                 }
             }
@@ -267,8 +267,8 @@ public abstract class SimpleBoss {
     }
 
     private void onDeath(){
-        abs.cancel();
-        timerTask.cancel();
+        if(abs != null) abs.cancel();
+        if(timerTask != null) timerTask.cancel();
 
 
         // Basically adding a timing system to boss battles so it doesn't have to be done later

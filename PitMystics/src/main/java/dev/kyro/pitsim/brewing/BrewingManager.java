@@ -251,4 +251,12 @@ public class BrewingManager implements Listener {
         }
         return null;
     }
+
+    @EventHandler
+    public void onThrow(PlayerInteractEvent event) {
+        if(event.getAction() != Action.RIGHT_CLICK_AIR && event.getAction() != Action.RIGHT_CLICK_BLOCK) return;
+        if(Misc.isAirOrNull(event.getPlayer().getItemInHand())) return;
+        if(event.getPlayer().getItemInHand().getType() == Material.ENDER_PEARL) event.setCancelled(true);
+        event.getPlayer().updateInventory();
+    }
 }
