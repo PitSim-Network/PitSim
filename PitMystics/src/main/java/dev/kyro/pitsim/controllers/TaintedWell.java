@@ -41,6 +41,8 @@ public class TaintedWell implements Listener
     public static int i;
 
     public static void onStart() {
+        if(wellLocation == null) return;
+        if(wellLocation.getChunk() == null) return;
         wellLocation.getChunk().load();
         (TaintedWell.wellStand = (ArmorStand)TaintedWell.wellLocation.getWorld().spawn(TaintedWell.wellLocation.clone().add(0.5, 0.5, 0.5), (Class)ArmorStand.class)).setGravity(false);
         TaintedWell.wellStand.setArms(true);
@@ -380,42 +382,45 @@ public class TaintedWell implements Listener
         TaintedWell.i = 0;
         new BukkitRunnable() {
             public void run() {
-                for (Entity entity : TaintedWell.wellStand.getNearbyEntities(25.0, 25.0, 25.0)) {
-                    if (!(entity instanceof Player)) {
-                        continue;
-                    }
-                    Player player = (Player)entity;
+                if(TaintedWell.wellStand != null){
+                    for (Entity entity : TaintedWell.wellStand.getNearbyEntities(25.0, 25.0, 25.0)) {
+                        if (!(entity instanceof Player)) {
+                            continue;
+                        }
+                        Player player = (Player)entity;
 
-                    PacketPlayOutEntity.PacketPlayOutRelEntityMoveLook packet = new PacketPlayOutEntity.PacketPlayOutRelEntityMoveLook(TaintedWell.getStandID(TaintedWell.wellStand), (byte)0, (byte)0, (byte)0, (byte)TaintedWell.i, (byte)0, false);
-                    EntityPlayer nmsPlayer = ((CraftPlayer)entity).getHandle();
-                    nmsPlayer.playerConnection.sendPacket(packet);
-                    for (Map.Entry<Player, ArmorStand> entry : TaintedWell.enchantStands.entrySet()) {
-                        if (player == entry.getKey()) {
+                        PacketPlayOutEntity.PacketPlayOutRelEntityMoveLook packet = new PacketPlayOutEntity.PacketPlayOutRelEntityMoveLook(TaintedWell.getStandID(TaintedWell.wellStand), (byte)0, (byte)0, (byte)0, (byte)TaintedWell.i, (byte)0, false);
+                        EntityPlayer nmsPlayer = ((CraftPlayer)entity).getHandle();
+                        nmsPlayer.playerConnection.sendPacket(packet);
+                        for (Map.Entry<Player, ArmorStand> entry : TaintedWell.enchantStands.entrySet()) {
+                            if (player == entry.getKey()) {
+                                continue;
+                            }
+                            PacketPlayOutEntityDestroy destroyPacket = new PacketPlayOutEntityDestroy(TaintedWell.getStandID(entry.getValue()));
+                            nmsPlayer.playerConnection.sendPacket(destroyPacket);
+                        }
+                        for (Map.Entry<Player, ArmorStand> entry : TaintedWell.removeStands.entrySet()) {
+                            if (player == entry.getKey()) {
+                                continue;
+                            }
+                            PacketPlayOutEntityDestroy destroyPacket = new PacketPlayOutEntityDestroy(TaintedWell.getStandID(entry.getValue()));
+                            nmsPlayer.playerConnection.sendPacket(destroyPacket);
+                        }
+                        if (!TaintedWell.playerItems.containsKey(player)) {}
+                        if (TaintedWell.enchantingPlayers.contains(player)) {
+                            TaintedWell.i += 24;
+                            player.playEffect(TaintedWell.wellLocation.clone().add(0.0, 1.0, 0.0), Effect.ENDER_SIGNAL, 0);
+                        }
+                        else {
+                            TaintedWell.i += 8;
+                        }
+                        if (TaintedWell.i < 256) {
                             continue;
                         }
-                        PacketPlayOutEntityDestroy destroyPacket = new PacketPlayOutEntityDestroy(TaintedWell.getStandID(entry.getValue()));
-                        nmsPlayer.playerConnection.sendPacket(destroyPacket);
+                        TaintedWell.i = 0;
                     }
-                    for (Map.Entry<Player, ArmorStand> entry : TaintedWell.removeStands.entrySet()) {
-                        if (player == entry.getKey()) {
-                            continue;
-                        }
-                        PacketPlayOutEntityDestroy destroyPacket = new PacketPlayOutEntityDestroy(TaintedWell.getStandID(entry.getValue()));
-                        nmsPlayer.playerConnection.sendPacket(destroyPacket);
-                    }
-                    if (!TaintedWell.playerItems.containsKey(player)) {}
-                    if (TaintedWell.enchantingPlayers.contains(player)) {
-                        TaintedWell.i += 24;
-                        player.playEffect(TaintedWell.wellLocation.clone().add(0.0, 1.0, 0.0), Effect.ENDER_SIGNAL, 0);
-                    }
-                    else {
-                        TaintedWell.i += 8;
-                    }
-                    if (TaintedWell.i < 256) {
-                        continue;
-                    }
-                    TaintedWell.i = 0;
                 }
+
             }
         }.runTaskTimer(PitSim.INSTANCE, 2L, 2L);
 

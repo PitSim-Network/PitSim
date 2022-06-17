@@ -48,7 +48,6 @@ public class IronGolemBoss extends PitBoss {
 
             @Override
             protected void attackMedium(){
-                if(npc.getEntity().getLocation().distance(target.getLocation()) <= 7) {
                     Vector diff = target.getLocation().add(0.5, 1, 0.5).subtract(npc.getEntity().getLocation().clone().add(0, 1, 0)).toVector();
                     Location base = npc.getEntity().getLocation().clone().add(0, 1, 0)/* the origin, where you are moving away from */;
                     double add = diff.length(); //example amount
@@ -72,7 +71,7 @@ public class IronGolemBoss extends PitBoss {
                     EntityDamageByEntityEvent damageEvent = new EntityDamageByEntityEvent(npc.getEntity(), target, EntityDamageEvent.DamageCause.ENTITY_ATTACK, 4);
                     Bukkit.getServer().getPluginManager().callEvent(damageEvent);
                     if (!damageEvent.isCancelled()) target.damage(4, target);
-                }
+
             }
 
             @Override

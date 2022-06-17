@@ -200,11 +200,14 @@ class PitSim extends JavaPlugin {
 	@Override
 	public void onDisable() {
 
-		for (Entity entity : MapManager.getDarkzone().getEntities()) {
-			if(entity instanceof Item) {
-				entity.remove();
+		if(MapManager.getDarkzone() != null){
+			for (Entity entity : MapManager.getDarkzone().getEntities()) {
+				if(entity instanceof Item) {
+					entity.remove();
+				}
 			}
 		}
+
 
 		for (NPC value : BossManager.clickables.values()) {
 			value.destroy();
@@ -221,6 +224,8 @@ class PitSim extends JavaPlugin {
 		for (EditSession session : FreezeSpell.sessions) {
 			session.undo(session);
 		}
+
+		TempBlockHelper.restoreSessions();
 
 		for (Map.Entry<Location, Material> entry : FreezeSpell.blocks.entrySet()) {
 			entry.getKey().getBlock().setType(entry.getValue());
