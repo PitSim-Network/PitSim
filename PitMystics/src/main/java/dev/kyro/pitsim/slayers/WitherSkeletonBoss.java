@@ -1,15 +1,36 @@
 package dev.kyro.pitsim.slayers;
 
 import com.xxmicloxx.NoteBlockAPI.NoteBlockAPI;
+import dev.kyro.arcticapi.misc.AOutput;
+import dev.kyro.pitsim.PitSim;
+import dev.kyro.pitsim.controllers.MapManager;
 import dev.kyro.pitsim.controllers.objects.PitBoss;
+import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.enums.SubLevel;
 import dev.kyro.pitsim.events.AttackEvent;
+import dev.kyro.pitsim.events.ThrowBlock;
+import dev.kyro.pitsim.misc.Misc;
+import dev.kyro.pitsim.misc.Sounds;
+import dev.kyro.pitsim.misc.TempBlock;
+import dev.kyro.pitsim.misc.ThrowableBlock;
 import dev.kyro.pitsim.slayers.tainted.SimpleBoss;
 import dev.kyro.pitsim.slayers.tainted.SimpleSkin;
 import net.citizensnpcs.api.CitizensAPI;
 import net.citizensnpcs.api.npc.NPC;
+import org.bukkit.Effect;
+import org.bukkit.Location;
+import org.bukkit.Material;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
+import org.bukkit.event.entity.EntityChangeBlockEvent;
+import org.bukkit.event.player.PlayerTeleportEvent;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
+import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.util.Vector;
 import org.checkerframework.checker.units.qual.A;
 
 public class WitherSkeletonBoss extends PitBoss {
@@ -28,7 +49,28 @@ public class WitherSkeletonBoss extends PitBoss {
 
             @Override
             protected void attackHigh(){
+                AOutput.send(target, "&7&oThe Wither is forming its cage...");
 
+                new BukkitRunnable() {
+                    @Override
+                    public void run() {
+                        MapManager.getDarkzone().spigot().playEffect(npc.getEntity().getLocation(), Effect.EXPLOSION_HUGE);
+                        Sounds.EXPLOSIVE_1.play(target);
+                        if(!npc.getEntity().getNearbyEntities(10, 10, 10).contains(target)) return;
+
+                        Location location = new Location(MapManager.getDarkzone(), 240.5,21,-166.5);
+
+                        new TempBlock("plugins/WorldEdit/schematics/witherCage.schematic", location, 5);
+
+                        Misc.sendTitle(target, "&c&lTrapped!", 60);
+                        Misc.sendSubTitle(target, "&7For 5 Seconds", 60);
+                        Sounds.COMBO_STUN.play(target);
+
+                        AOutput.send(target, "&7&oYou have been trapped in the cage!");
+                        target.teleport(location);
+                        npc.teleport(WitherSkeletonBoss.this.target.getLocation(), PlayerTeleportEvent.TeleportCause.PLUGIN);
+                    }
+                }.runTaskLater(PitSim.INSTANCE, 40);
             }
 
             @Override
@@ -38,7 +80,26 @@ public class WitherSkeletonBoss extends PitBoss {
 
             @Override
             protected void attackLow(){
+                if(npc.getEntity() != null)
 
+                    ThrowBlock.addThrowableBlock(new ThrowableBlock(npc.getEntity(), Material.SOUL_SAND){
+                        @Override
+                        public void run(EntityChangeBlockEvent event){
+
+                            for (Entity player : event.getEntity().getNearbyEntities(5, 5, 5)) {
+
+                                if(!(player instanceof Player)) continue;
+
+                                if(target.hasPotionEffect(PotionEffectType.WITHER)){
+                                    target.removePotionEffect(PotionEffectType.WITHER);
+                                    target.addPotionEffect(new PotionEffect(PotionEffectType.WITHER, 100, 9, true, true));
+                                }else target.addPotionEffect(new PotionEffect(PotionEffectType.WITHER, 100, 9, true, true));
+
+                                Sounds.WITHER_SHOOT.play((LivingEntity) player);
+                                PitPlayer.getPitPlayer((Player) player).damage(5.0, (LivingEntity) this.owner);
+                            }
+                        }
+                    });
             }
 
             @Override

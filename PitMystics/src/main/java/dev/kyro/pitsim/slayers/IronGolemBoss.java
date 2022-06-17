@@ -43,17 +43,19 @@ public class IronGolemBoss extends PitBoss {
 
             @Override
             protected void attackHigh(){
-
+                Sounds.CLEAVE1.play(IronGolemBoss.this.target);
+                IronGolemBoss.this.target.setVelocity(new Vector(0, 10, 0));
             }
 
             @Override
             protected void attackMedium(){
+                for(int i = 0; i < 5; i++){
                     Vector diff = target.getLocation().add(0.5, 1, 0.5).subtract(npc.getEntity().getLocation().clone().add(0, 1, 0)).toVector();
                     Location base = npc.getEntity().getLocation().clone().add(0, 1, 0)/* the origin, where you are moving away from */;
                     double add = diff.length(); //example amount
                     diff.divide(new Vector(add, add, add));
 
-                    for (int i = 0; i < add; i++) {
+                    for (i = 0; i < add; i++) {
                         base.add(diff);
                         Sounds.RGM.play(target);
                         target.getWorld().spigot().playEffect(base, Effect.MAGIC_CRIT, 0, 0, (float) 0, (float) 0 / 255, (float) 0 / 255, 1, 0, 64);
@@ -70,8 +72,8 @@ public class IronGolemBoss extends PitBoss {
 
                     EntityDamageByEntityEvent damageEvent = new EntityDamageByEntityEvent(npc.getEntity(), target, EntityDamageEvent.DamageCause.ENTITY_ATTACK, 4);
                     Bukkit.getServer().getPluginManager().callEvent(damageEvent);
-                    if (!damageEvent.isCancelled()) target.damage(4, target);
-
+                    if (!damageEvent.isCancelled()) target.damage(8, target);
+                }
             }
 
             @Override

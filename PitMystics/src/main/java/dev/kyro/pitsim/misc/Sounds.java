@@ -129,6 +129,8 @@ public class Sounds {
 	public static final SoundEffect ANVIL_BREAK = new SoundEffect(Sound.ANVIL_BREAK, 1, 1);
 	public static final SoundEffect ANVIL_USE = new SoundEffect(Sound.ANVIL_USE, 1, 1);
 
+	public static final SoundEffect WITHER_SHOOT = new SoundEffect(Sound.WITHER_SHOOT, 1, 1);
+
 	//	Events
 	public static final SoundEffect EVENT_START = new SoundEffect(Sound.ENDERDRAGON_GROWL, 2, 1);
 	public static final SoundEffect EVENT_PING = new SoundEffect(Sound.NOTE_PLING, 2, 1F);
