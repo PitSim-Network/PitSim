@@ -26,7 +26,7 @@ public class PitZombiePigman extends PitMob {
 
 		zombiePigman.setMaxHealth(50);
 		zombiePigman.setHealth(50);
-
+		zombiePigman.setAngry(true);
 		zombiePigman.setCustomNameVisible(false);
 		zombiePigman.setRemoveWhenFarAway(false);
 		zombiePigman.setBaby(false);
