@@ -73,7 +73,7 @@ public class TempBlock {
                 deleteAction();
 
             }
-        }.runTaskLater(PitSim.INSTANCE, time* 20L);
+        }.runTaskLater(PitSim.INSTANCE, time * 20L);
     }
 
     public void deleteAction(){
