@@ -36,7 +36,7 @@ public class TaintedManager implements Listener {
         if(event.attackerIsPlayer) {
             ItemStack attack = event.attackerPlayer.getItemInHand();
             if(!Misc.isAirOrNull(attack) && attack.getType() == Material.GOLD_HOE) {
-                event.increase += 6.5;
+                event.increase += 13    ;
             }
         }
 
@@ -340,6 +340,7 @@ public class TaintedManager implements Listener {
     public void onOpen(InventoryOpenEvent event) {
         if(players.contains((Player) event.getPlayer())) event.setCancelled(true);
     }
+
 
     public static String scramble(String msg) {
         StringBuilder builder = new StringBuilder();

@@ -3,6 +3,8 @@ package dev.kyro.pitsim.misc;
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.controllers.MapManager;
+import dev.kyro.pitsim.controllers.NonManager;
+import dev.kyro.pitsim.controllers.SpawnManager;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.inventories.*;
 import dev.kyro.pitsim.inventories.stats.StatGUI;
@@ -18,9 +20,12 @@ import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.entity.EntityTeleportEvent;
+import org.bukkit.event.player.PlayerTeleportEvent;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.ArrayList;
@@ -40,6 +45,26 @@ public class SpawnNPCs implements Listener {
 	public static NPC leggingMerchant;
 	public static NPC potionMaster;
 	public static NPC auctioneer;
+
+//	@EventHandler
+//	public void onTeleport(PlayerTeleportEvent event) {
+//		List<NPC> destroy = new ArrayList<>();
+//
+//		for (NPC npc : CitizensAPI.getNPCRegistry()) {
+//			if(!(npc.getEntity() instanceof Player)) continue;
+//			if(NonManager.getNon((LivingEntity) npc.getEntity()) != null) continue;
+//			if(upgrade.contains(npc)) continue;
+//			if(prestige.contains(npc)) continue;
+//			if(kyro.contains(npc)) continue;
+//			if(keeper.contains(npc)) continue;
+//			if(wiji.contains(npc)) continue;
+//			if(!SpawnManager.isInSpawn(npc.getEntity().getLocation())) continue;
+//
+//			destroy.add(npc);
+//		}
+//
+//		destroy.forEach(NPC::destroy);
+//	}
 
 	public static void createNPCs() {
 		for(World world : MapManager.currentMap.lobbies) {

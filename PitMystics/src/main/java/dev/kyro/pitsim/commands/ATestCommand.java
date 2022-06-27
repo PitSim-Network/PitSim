@@ -1,10 +1,13 @@
 package dev.kyro.pitsim.commands;
 
+import dev.kyro.arcticapi.misc.AUtil;
+import dev.kyro.pitsim.brewing.objects.BrewingIngredient;
 import dev.kyro.pitsim.controllers.CutsceneManager;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 
 public class ATestCommand implements CommandExecutor {
 
@@ -13,7 +16,15 @@ public class ATestCommand implements CommandExecutor {
 		if(!(sender instanceof Player)) return false;
 		Player player = (Player) sender;
 
+		for (BrewingIngredient ingredient : BrewingIngredient.ingredients) {
+			ItemStack item = ingredient.getItem();
+			item.setAmount(64);
+			AUtil.giveItemSafely(player, item);
+		}
+
 		if(!player.isOp()) return false;
+
+		if(args.length < 1) return false;
 
 //		AuctionManager.auctionItems[0].addBid(player.getUniqueId(), AuctionManager.auctionItems[0].getBid(player.getUniqueId()) + 100);
 

@@ -1,6 +1,7 @@
 package dev.kyro.pitsim.upgrades;
 
 import dev.kyro.arcticapi.gui.AGUIPanel;
+import dev.kyro.arcticapi.misc.AUtil;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.controllers.SpawnManager;
 import dev.kyro.pitsim.controllers.UpgradeManager;
@@ -16,13 +17,14 @@ import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class Impatient extends RenownUpgrade {
 	public static RenownUpgrade INSTANCE;
 
 	public Impatient() {
-		super("Impatient", "IMPATIENT", 10, 14, 6, false, 0);
+		super("Impatient", "IMPATIENT", 10, 14, 6, true, 2);
 		INSTANCE = this;
 	}
 
@@ -32,7 +34,11 @@ public class Impatient extends RenownUpgrade {
 		ItemMeta meta = item.getItemMeta();
 		meta.setDisplayName(UpgradeManager.itemNameString(this, player));
 		List<String> lore = new ArrayList<>();
-		lore.add(ChatColor.GRAY + "Gain Speed II in spawn area.");
+		if(UpgradeManager.hasUpgrade(player, this))
+			lore.add(ChatColor.GRAY + "Tier: " + ChatColor.GREEN + AUtil.toRoman(UpgradeManager.getTier(player, this)));
+		if(UpgradeManager.hasUpgrade(player, this)) lore.add("");
+		lore.add(ChatColor.YELLOW + "Tier I: " + ChatColor.GRAY + "Gain Speed II in spawn area.");
+		lore.add(ChatColor.YELLOW + "Tier II: " + ChatColor.GRAY + "Gain Speed IV in Darkzone spawn.");
 		meta.setLore(UpgradeManager.loreBuilder(this, player, lore, isCustomPanel));
 		item.setItemMeta(meta);
 		return item;
@@ -45,7 +51,7 @@ public class Impatient extends RenownUpgrade {
 
 	@Override
 	public List<Integer> getTierCosts() {
-		return null;
+		return Arrays.asList(10, 25);
 	}
 
 	static {
@@ -55,6 +61,9 @@ public class Impatient extends RenownUpgrade {
 				for(Player player : Bukkit.getOnlinePlayers()) {
 					if(UpgradeManager.hasUpgrade(player, INSTANCE) && SpawnManager.isInSpawn(player.getLocation())) {
 						Misc.applyPotionEffect(player, PotionEffectType.SPEED, 40, 1, false, false);
+					}
+					if(UpgradeManager.getTier(player, INSTANCE) == 2 && SpawnManager.isInDarkzoneSpawn(player.getLocation())) {
+						Misc.applyPotionEffect(player, PotionEffectType.SPEED, 40, 3, false, false);
 					}
 				}
 			}

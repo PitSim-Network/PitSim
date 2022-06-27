@@ -195,7 +195,7 @@ public class EnchantManager implements Listener {
 			for (PitEnchant pitEnchant : enchants.keySet()) {
 				if(pitEnchant.tainted) tainted++;
 			}
-			return tainted <= 1;
+			return tainted > 1;
 		} else {
 
 			NBTList<String> enchantOrder = nbtItem.getStringList(NBTTag.PIT_ENCHANT_ORDER.getRef());
@@ -566,7 +566,7 @@ public class EnchantManager implements Listener {
 			Map<PitEnchant, Integer> itemEnchantMap = getEnchantsOnItem(inUseArr[i], playerEnchantMap);
 			if(i == 4) {
 				for(Map.Entry<PitEnchant, Integer> entry : itemEnchantMap.entrySet())
-					if(entry.getKey().applyType != ApplyType.PANTS)
+					if(entry.getKey().applyType != ApplyType.PANTS && entry.getKey().applyType != CHESTPLATES)
 						playerEnchantMap.put(entry.getKey(), entry.getValue());
 			} else playerEnchantMap.putAll(itemEnchantMap);
 		}

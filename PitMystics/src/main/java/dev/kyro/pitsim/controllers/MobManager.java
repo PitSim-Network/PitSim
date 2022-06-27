@@ -2,6 +2,7 @@ package dev.kyro.pitsim.controllers;
 
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.brewing.BrewingManager;
+import dev.kyro.pitsim.brewing.PotionManager;
 import dev.kyro.pitsim.controllers.objects.GoldenHelmet;
 import dev.kyro.pitsim.controllers.objects.PitBoss;
 import dev.kyro.pitsim.controllers.objects.PitMob;
@@ -26,6 +27,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.*;
 import org.bukkit.event.player.PlayerArmorStandManipulateEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.potion.Potion;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.lang.reflect.InvocationTargetException;
@@ -364,6 +366,9 @@ public class MobManager implements Listener {
 			}
 			for (UUID pedestalArmorStand : AuctionDisplays.rightClickStands) {
 				if(pedestalArmorStand.equals(entity.getUniqueId())) continue main;
+			}
+			for (Entity potion : PotionManager.potions) {
+				if(potion.getUniqueId().equals(entity.getUniqueId())) continue main;
 			}
 			if(entity.getUniqueId().equals(AuctionDisplays.timerStandUUID)) continue;
 
