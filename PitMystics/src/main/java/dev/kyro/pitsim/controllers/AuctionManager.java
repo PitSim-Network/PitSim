@@ -26,7 +26,7 @@ public class AuctionManager implements Listener {
 
     public static AuctionItem[] auctionItems = new AuctionItem[3];
 
-    public static Location spawnLoc = new Location(MapManager.getDarkzone(), 178.5, 51.25, -1004.5, 180, 0);
+    public static Location spawnLoc = new Location(MapManager.getDarkzone(), 178.5, 52, -1004.5, 180, 0);
     public static Location returnLoc = new Location(MapManager.getDarkzone(), 255.5, 91, -134.5, -45, 0);
 
     public static int minutes = 60 * 24;

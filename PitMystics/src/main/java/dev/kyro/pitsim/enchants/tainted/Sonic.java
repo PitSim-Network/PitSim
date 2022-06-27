@@ -18,7 +18,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class Sonic extends PitEnchant {
+public
+class Sonic extends PitEnchant {
     public static Map<Player, Integer> speedMap = new HashMap<>();
     public static Sonic INSTANCE;
 

@@ -6,6 +6,7 @@ import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.arcticapi.misc.AUtil;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.controllers.LevelManager;
+import dev.kyro.pitsim.controllers.TaintedManager;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.misc.Sounds;
 import org.bukkit.ChatColor;
@@ -84,7 +85,7 @@ public class ShredConfirmPanel extends AGUIPanel {
 		confirmLore.add(ChatColor.translateAlternateColorCodes('&', "&7The Following Item will be permanently lost:"));
 		confirmLore.add("");
 		confirmLore.add(item.getItemMeta().getDisplayName());
-		confirmLore.addAll(item.getItemMeta().getLore());
+		confirmLore.addAll(TaintedManager.descramble(item.getItemMeta().getLore()));
 		confirmLore.add("");
 		confirmLore.add(ChatColor.GREEN + "Click to Shred this Item!");
 		confirmMeta.setLore(confirmLore);

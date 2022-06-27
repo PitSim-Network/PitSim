@@ -5,6 +5,7 @@ import dev.kyro.arcticapi.gui.AGUI;
 import dev.kyro.arcticapi.gui.AGUIPanel;
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.controllers.EnchantManager;
+import dev.kyro.pitsim.controllers.TaintedManager;
 import dev.kyro.pitsim.enums.NBTTag;
 import dev.kyro.pitsim.misc.Misc;
 import dev.kyro.pitsim.misc.Sounds;
@@ -85,8 +86,12 @@ public class ShredJewelPanel extends AGUIPanel {
 
 		for(int i = 0; i < player.getInventory().getSize(); i++) {
 			ItemStack item = player.getInventory().getItem(i);
-
 			if(Misc.isAirOrNull(item)) continue;
+			item = item.clone();
+
+			ItemMeta ogMeta = item.getItemMeta();
+			ogMeta.setLore(TaintedManager.descramble(ogMeta.getLore()));
+			item.setItemMeta(ogMeta);
 
 			NBTItem nbtItem = new NBTItem(item);
 			if(nbtItem.hasKey(NBTTag.ITEM_JEWEL_ENCHANT.getRef())) {
