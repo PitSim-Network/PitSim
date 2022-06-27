@@ -15,6 +15,7 @@ import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -34,6 +35,7 @@ public class PotionManager implements Listener {
     public static List<PotionEffect> potionEffectList = new ArrayList<>();
     public static Map<Player, Integer> playerIndex = new HashMap<>();
     public static Map<Player, BossBar> bossBars = new HashMap<>();
+    public static List<Entity> potions = new ArrayList<>();
     public static int i = 0;
 
     static {
@@ -126,6 +128,8 @@ public class PotionManager implements Listener {
 
     @EventHandler
     public void onSplash(PotionSplashEvent event) {
+        potions.add(event.getPotion());
+
         for (LivingEntity affectedEntity : event.getAffectedEntities()) {
             if(!(affectedEntity instanceof Player)) continue;
 
@@ -153,6 +157,13 @@ public class PotionManager implements Listener {
             } else {
                 potionEffectList.add(new PotionEffect(player, identifier, potency, duration));
             }
+
+            new BukkitRunnable() {
+                @Override
+                public void run() {
+                    potions.remove(event.getPotion());
+                }
+            }.runTaskLater(PitSim.INSTANCE, 20);
         }
     }
 

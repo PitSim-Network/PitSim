@@ -138,6 +138,7 @@ public abstract class SimpleBoss {
                 .speedModifier(this.speed);
 
         spawn();
+        BossManager.activePlayers.add(target);
 
         if(npc.isSpawned()){
             new BukkitRunnable() {
@@ -152,7 +153,6 @@ public abstract class SimpleBoss {
                         npc.setProtected(false);
 
                         bossBar(PitSim.adventure.player(target), entity.getDisplayName());
-                        BossManager.activePlayers.add(target);
 
                         pitBoss.setNPC(npc);
 

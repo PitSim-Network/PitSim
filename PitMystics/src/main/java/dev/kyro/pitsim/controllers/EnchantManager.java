@@ -195,7 +195,7 @@ public class EnchantManager implements Listener {
 			for (PitEnchant pitEnchant : enchants.keySet()) {
 				if(pitEnchant.tainted) tainted++;
 			}
-			return tainted <= 1;
+			return tainted > 1;
 		} else {
 
 			NBTList<String> enchantOrder = nbtItem.getStringList(NBTTag.PIT_ENCHANT_ORDER.getRef());

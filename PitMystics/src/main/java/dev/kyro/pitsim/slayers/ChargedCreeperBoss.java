@@ -61,7 +61,7 @@ public class ChargedCreeperBoss extends PitBoss {
         this.boss = new SimpleBoss(npc, target, subLevel, 4, SimpleSkin.CREEPER, this) {
             @Override
             protected void attackHigh(){
-                target.sendMessage(ChatColor.translateAlternateColorCodes('&', "&c&lNUCLEAR REACTOR! &7ouch, you're on full blast!"));
+                target.sendMessage(ChatColor.translateAlternateColorCodes('&', "&c&lNUCLEAR REACTOR! &7Ouch, you're on full blast!"));
 
                 target.getWorld().playEffect(target.getLocation(), Effect.EXPLOSION_LARGE, 1);
                 if(npc.getEntity() != null){

@@ -133,7 +133,7 @@ public class CleaveSpell extends PitEnchant {
 
     @Override
     public List<String> getDescription(int enchantLvl) {
-        return new ALoreBuilder("&7Throw your scythe, dealing damage", "&7to all it hits", "&d&o-" + getManaCost(enchantLvl) + " Mana").getLore();
+        return new ALoreBuilder("&7Throw your scythe, dealing damage", "&7to all entities it hits", "&d&o-" + getManaCost(enchantLvl) + " Mana").getLore();
     }
 
     public static int getStandID(final ArmorStand stand) {
