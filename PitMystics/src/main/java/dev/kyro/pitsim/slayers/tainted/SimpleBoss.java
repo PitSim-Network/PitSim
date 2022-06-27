@@ -1,5 +1,6 @@
 package dev.kyro.pitsim.slayers.tainted;
 
+import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.commands.FreshCommand;
 import dev.kyro.pitsim.controllers.BossManager;
@@ -11,6 +12,8 @@ import dev.kyro.pitsim.enums.PantColor;
 import dev.kyro.pitsim.enums.SubLevel;
 import dev.kyro.pitsim.events.AttackEvent;
 import dev.kyro.pitsim.misc.BossSkin;
+import dev.kyro.pitsim.slayers.tainted.Loot.BossDrop;
+import dev.kyro.pitsim.slayers.tainted.Loot.LootTable;
 import net.citizensnpcs.api.npc.NPC;
 import net.citizensnpcs.api.trait.trait.Equipment;
 import net.citizensnpcs.npc.ai.CitizensNavigator;
@@ -273,13 +276,19 @@ public abstract class SimpleBoss {
 
         // Basically adding a timing system to boss battles so it doesn't have to be done later
         double finalTime = 0;
-        String stringTime;
+        String stringTime = null;
 
         if(this.time >= 60){
             finalTime = this.time / 60;
 
             stringTime = finalTime + " minutes";
         }
+
+        AOutput.send(target.getPlayer(), "&7You killed your boss in &a" + stringTime);
+
+        BossDrop bossDrop = new BossDrop(target.getPlayer(), LootTable.valueOf(subLevel.toString()));
+
+        bossDrop.run();
 
 
     }
