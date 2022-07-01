@@ -23,6 +23,9 @@ public class TempBlockHelper {
     }
 
     public static void removeBlockSession(Block block){
+
+        block.setType(preState.get(blocks.indexOf(block)));
+
         blocks.remove(block);
         preState.remove(blocks.indexOf(block));
     }

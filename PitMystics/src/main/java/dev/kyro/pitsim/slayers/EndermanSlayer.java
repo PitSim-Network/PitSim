@@ -8,6 +8,7 @@ import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.enums.SubLevel;
 import dev.kyro.pitsim.events.AttackEvent;
 import dev.kyro.pitsim.misc.Sounds;
+import dev.kyro.pitsim.misc.TempBlock;
 import dev.kyro.pitsim.slayers.tainted.SimpleBoss;
 import dev.kyro.pitsim.slayers.tainted.SimpleSkin;
 import net.citizensnpcs.api.CitizensAPI;
@@ -87,20 +88,11 @@ public class EndermanSlayer extends PitBoss {
 
                 Collections.shuffle(locations);
 
-                Block block1 = locations.get(0).getBlock();
-                Block block2 = locations.get(0).add(0,1,0).getBlock();
+                new TempBlock(locations.get(0), Material.QUARTZ_BLOCK, 10);
 
-                Location location = locations.get(0).add(0,1,0);
-
-                Block block3 = location.getBlock();
-
-                block1.setType(Material.QUARTZ_BLOCK);
-                block2.setType(Material.SEA_LANTERN);
-                block3.setType(Material.QUARTZ_BLOCK);
-
-                BukkitTask runnable = new BukkitRunnable() {
+                new TempBlock(locations.get(0).add(0,1,0), Material.SEA_LANTERN, 10){
                     @Override
-                    public void run() {
+                    public void aliveAction(){
                         try {
                             if(location.distance(EndermanSlayer.this.target.getLocation()) <= 7){
                                 Vector diff = target.getLocation().add(0.5, 1, 0.5).subtract(location.clone().add(0, 1, 0)).toVector();
@@ -141,19 +133,11 @@ public class EndermanSlayer extends PitBoss {
                         } catch (Exception ignored) {
                         }
                     }
-                }.runTaskTimer(PitSim.INSTANCE, 0, 20);
+                };
 
-                new BukkitRunnable() {
-                    @Override
-                    public void run() {
-                        try {
-                            runnable.cancel();
-                            block1.setType(Material.AIR);
-                            block2.setType(Material.AIR);
-                            block3.setType(Material.AIR);
-                        } catch (Exception ignored) { }
-                    }
-                }.runTaskLater(PitSim.INSTANCE, 200);
+                new TempBlock(locations.get(0).add(0,1,0), Material.QUARTZ_BLOCK, 10);
+
+
 
             }
 

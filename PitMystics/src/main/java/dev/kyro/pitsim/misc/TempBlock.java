@@ -32,7 +32,11 @@ public class TempBlock {
         this.time = time;
         this.block = location.getBlock();
 
+
+
         TempBlockHelper.addBlockSession(block, block.getType());
+
+        block.setType(this.material);
 
         createTask();
 

@@ -20,6 +20,7 @@ public enum NBTTag {
 	CURRENT_LIVES("pr-current-lives"),
 	MAX_LIVES("pr-max-lives"),
 	IS_FEATHER("pr-isfeather"),
+	IS_CORRUPTED_FEATHER("pr-iscfeather"),
 	IS_TOKEN("pr-istoken"),
 	IS_VILE("pr-isvile"),
 	IS_SHARD("pr-isshard"),

@@ -19,10 +19,7 @@ import net.citizensnpcs.api.trait.trait.Equipment;
 import net.citizensnpcs.npc.ai.CitizensNavigator;
 import net.kyori.adventure.audience.Audience;
 import net.kyori.adventure.bossbar.BossBar;
-import net.kyori.adventure.platform.bukkit.BukkitAudiences;
 import net.kyori.adventure.text.Component;
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Arrow;
 import org.bukkit.entity.Entity;
@@ -37,7 +34,6 @@ import org.checkerframework.checker.nullness.qual.NonNull;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
-import java.util.UUID;
 
 public abstract class SimpleBoss {
 
@@ -51,7 +47,7 @@ public abstract class SimpleBoss {
     BukkitTask abs;
     BukkitTask timerTask;
 
-    int time = 0;
+    int time = 1;
 
     // There is no cap to difficulty level
     int difficulty;
@@ -172,6 +168,8 @@ public abstract class SimpleBoss {
         }
 
 
+        timer();
+
     }
 
     public void spawn(){
@@ -215,51 +213,56 @@ public abstract class SimpleBoss {
 
     }
 
-//    public void bossBar(final @NonNull Audience player){
-//        if(subLevel.equals(SubLevel.ZOMBIE_CAVE)){
-//            final Component name = Component.text(ChatColor.RED + "" + ChatColor.BOLD + "Zombie Boss");
-//            final BossBar fullBar = BossBar.bossBar(name, 1F, BossBar.Color.PINK, BossBar.Overlay.PROGRESS);
-//
-//            player.showBossBar(fullBar);
-//            this.activeBar = fullBar;
-//        }else if(subLevel.equals(SubLevel.SKELETON_CAVE)){
-//            final Component name = Component.text(ChatColor.RED + "" + ChatColor.BOLD + "Skeleton Boss");
-//            final BossBar fullBar = BossBar.bossBar(name, 1F, BossBar.Color.PINK, BossBar.Overlay.PROGRESS);
-//
-//            player.showBossBar(fullBar);
-//            this.activeBar = fullBar;
-//        }else if(subLevel.equals(SubLevel.SPIDER_CAVE)){
-//            final Component name = Component.text(ChatColor.RED + "" + ChatColor.BOLD + "Spider Boss");
-//            final BossBar fullBar = BossBar.bossBar(name, 1F, BossBar.Color.PINK, BossBar.Overlay.PROGRESS);
-//
-//            player.showBossBar(fullBar);
-//            this.activeBar = fullBar;
-//        }else if(subLevel.equals(SubLevel.CREEPER_CAVE)){
-//            final Component name = Component.text(ChatColor.RED + "" + ChatColor.BOLD + "Creeper Boss");
-//            final BossBar fullBar = BossBar.bossBar(name, 1F, BossBar.Color.PINK, BossBar.Overlay.PROGRESS);
-//
-//            player.showBossBar(fullBar);
-//            this.activeBar = fullBar;
-//        }else if(subLevel.equals(SubLevel.DEEP_SPIDER_CAVE)){
-//            final Component name = Component.text(ChatColor.RED + "" + ChatColor.BOLD + "Deep Spider Boss");
-//            final BossBar fullBar = BossBar.bossBar(name, 1F, BossBar.Color.PINK, BossBar.Overlay.PROGRESS);
-//
-//            player.showBossBar(fullBar);
-//            this.activeBar = fullBar;
-//        }else if(subLevel.equals(SubLevel.PIGMEN_CAVE)){
-//            final Component name = Component.text(ChatColor.RED + "" + ChatColor.BOLD + "Pigman Boss");
-//            final BossBar fullBar = BossBar.bossBar(name, 1F, BossBar.Color.PINK, BossBar.Overlay.PROGRESS);
-//
-//            player.showBossBar(fullBar);
-//            this.activeBar = fullBar;
-//        }else if(subLevel.equals(SubLevel.MAGMA_CAVE)){
-//            final Component name = Component.text(ChatColor.RED + "" + ChatColor.BOLD + "Magma Boss");
-//            final BossBar fullBar = BossBar.bossBar(name, 1F, BossBar.Color.PINK, BossBar.Overlay.PROGRESS);
-//
-//            player.showBossBar(fullBar);
-//            this.activeBar = fullBar;
-//        }
-//    }
+    /*
+    public void bossBar(final @NonNull Audience player){
+        if(subLevel.equals(SubLevel.ZOMBIE_CAVE)){
+            final Component name = Component.text(ChatColor.RED + "" + ChatColor.BOLD + "Zombie Boss");
+            final BossBar fullBar = BossBar.bossBar(name, 1F, BossBar.Color.PINK, BossBar.Overlay.PROGRESS);
+
+            player.showBossBar(fullBar);
+            this.activeBar = fullBar;
+        }else if(subLevel.equals(SubLevel.SKELETON_CAVE)){
+            final Component name = Component.text(ChatColor.RED + "" + ChatColor.BOLD + "Skeleton Boss");
+        }
+            final BossBar fullBar = BossBar.bossBar(name, 1F, BossBar.Color.PINK, BossBar.Overlay.PROGRESS);
+
+            player.showBossBar(fullBar);
+            this.activeBar = fullBar;
+        }else if(subLevel.equals(SubLevel.SPIDER_CAVE)){
+            final Component name = Component.text(ChatColor.RED + "" + ChatColor.BOLD + "Spider Boss");
+            final BossBar fullBar = BossBar.bossBar(name, 1F, BossBar.Color.PINK, BossBar.Overlay.PROGRESS);
+
+            player.showBossBar(fullBar);
+            this.activeBar = fullBar;
+        }else if(subLevel.equals(SubLevel.CREEPER_CAVE)){
+            final Component name = Component.text(ChatColor.RED + "" + ChatColor.BOLD + "Creeper Boss");
+            final BossBar fullBar = BossBar.bossBar(name, 1F, BossBar.Color.PINK, BossBar.Overlay.PROGRESS);
+
+            player.showBossBar(fullBar);
+            this.activeBar = fullBar;
+        }else if(subLevel.equals(SubLevel.DEEP_SPIDER_CAVE)){
+            final Component name = Component.text(ChatColor.RED + "" + ChatColor.BOLD + "Deep Spider Boss");
+            final BossBar fullBar = BossBar.bossBar(name, 1F, BossBar.Color.PINK, BossBar.Overlay.PROGRESS);
+
+            player.showBossBar(fullBar);
+            this.activeBar = fullBar;
+        }else if(subLevel.equals(SubLevel.PIGMEN_CAVE)){
+            final Component name = Component.text(ChatColor.RED + "" + ChatColor.BOLD + "Pigman Boss");
+            final BossBar fullBar = BossBar.bossBar(name, 1F, BossBar.Color.PINK, BossBar.Overlay.PROGRESS);
+
+            player.showBossBar(fullBar);
+            this.activeBar = fullBar;
+        }else if(subLevel.equals(SubLevel.MAGMA_CAVE)){
+            final Component name = Component.text(ChatColor.RED + "" + ChatColor.BOLD + "Magma Boss");
+            final BossBar fullBar = BossBar.bossBar(name, 1F, BossBar.Color.PINK, BossBar.Overlay.PROGRESS);
+
+            player.showBossBar(fullBar);
+            this.activeBar = fullBar;
+        }
+    }
+
+
+     */
 
     public void bossBar(final @NonNull Audience player, String text) {
         final Component name = Component.text(text);
@@ -273,23 +276,22 @@ public abstract class SimpleBoss {
         if(abs != null) abs.cancel();
         if(timerTask != null) timerTask.cancel();
 
+        int finalTime = 0;
+        String stringTime;
 
-        // Basically adding a timing system to boss battles so it doesn't have to be done later
-        double finalTime = 0;
-        String stringTime = null;
-
-        if(this.time >= 60){
+        if(this.time >= 60) {
             finalTime = this.time / 60;
-
             stringTime = finalTime + " minutes";
+        }else{
+            stringTime = finalTime + " seconds";
         }
+
 
         AOutput.send(target.getPlayer(), "&7You killed your boss in &a" + stringTime);
 
         BossDrop bossDrop = new BossDrop(target.getPlayer(), LootTable.valueOf(subLevel.toString()));
 
         bossDrop.run();
-
 
     }
 
@@ -424,7 +426,7 @@ public abstract class SimpleBoss {
                 }
             }.runTaskLater(PitSim.INSTANCE, 10);
         }
-        else equipment.set(Equipment.EquipmentSlot.HAND, getBillionaire());
+        else equipment.set(Equipment.EquipmentSlot.HAND, this.sword);
 
         new BukkitRunnable() {
             @Override
@@ -443,7 +445,7 @@ public abstract class SimpleBoss {
                             try {
                                 LivingEntity shooter = ((LivingEntity) npc.getEntity());
                                 shooter.launchProjectile(Arrow.class);
-                                equipment.set(Equipment.EquipmentSlot.HAND, getBillionaire());
+                                equipment.set(Equipment.EquipmentSlot.HAND, sword);
 
 
                                 Vector dirVector = npc.getEntity().getLocation().toVector().subtract(target.getLocation().toVector()).setY(0);
@@ -456,15 +458,6 @@ public abstract class SimpleBoss {
                 }
             }
         }.runTaskLater(PitSim.INSTANCE, 10);
-    }
-
-    public ItemStack getBillionaire() throws Exception {
-        ItemStack itemStack;
-        itemStack = FreshCommand.getFreshItem(MysticType.SWORD, PantColor.GREEN);
-        itemStack = EnchantManager.addEnchant(itemStack, EnchantManager.getEnchant("bill"), 3, false);
-        itemStack = EnchantManager.addEnchant(itemStack, EnchantManager.getEnchant("cd"), 3, false);
-        itemStack = EnchantManager.addEnchant(itemStack, EnchantManager.getEnchant("kb"), 2, false);
-        return itemStack;
     }
 
     public ItemStack getLifesteal() throws Exception {
