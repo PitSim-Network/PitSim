@@ -18,7 +18,7 @@ public abstract class Leaderboard {
 	public List<LeaderboardPosition> orderedLeaderboard = new ArrayList<>();
 
 	public int slot;
-	public static List<Integer> slots = new ArrayList<>(Arrays.asList(10, 11, 12, 13, 14, 15, 16, 19, 20, 21, 22, 23, 24, 25));
+	public static List<Integer> slots = new ArrayList<>(Arrays.asList(10, 11, 12, 13, 14, 15, 16, 20, 21, 22, 23, 24));
 
 	public Leaderboard() {
 		this.slot = slots.remove(0);

@@ -331,7 +331,7 @@ public class DamageManager implements Listener {
 			killingNon.rewardKill();
 		}
 
-		if(killerIsPlayer) {
+		if(killerIsPlayer && killEvent != null) {
 			LevelManager.addXP(pitKiller.player, killEvent.getFinalXp());
 			LevelManager.addGold(killEvent.killerPlayer, (int) killEvent.getFinalGold());
 		}
@@ -349,8 +349,10 @@ public class DamageManager implements Listener {
 		if(killerIsPlayer) killActionBar = "&7%luckperms_prefix%" + (deadNon == null ? "%player_name%" : deadNon.displayName) + " &a&lKILL!";
 		else if(PitMob.isPitMob(dead)) killActionBar = PitMob.getPitMob(dead).displayName + " &a&lKILL!";
 
-			if(killerIsPlayer && !pitKiller.killFeedDisabled && killType != KillType.DEATH)
+			if(killerIsPlayer && !pitKiller.killFeedDisabled && killType != KillType.DEATH && NonManager.getNon(killerPlayer) == null) {
 				AOutput.send(killEvent.killer, PlaceholderAPI.setPlaceholders(killEvent.deadPlayer, kill));
+				pitKiller.stats.mobsKilled++;
+			}
 			if(deadIsPlayer && !pitDead.killFeedDisabled && killType != KillType.FAKE && killEvent != null)
 				AOutput.send(killEvent.dead, death);
 			String actionBarPlaceholder;

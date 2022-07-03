@@ -149,7 +149,10 @@ public class BrewingManager implements Listener {
 
                 int addTicks = (105 - session.reduction.getBrewingReductionMinutes()) * 60 * 20;
                 int timeLeft = (int) ((int) (((session.startTime / 1000) * 20) + addTicks) - (((System.currentTimeMillis() / 1000) * 20)));
-                if(timeLeft < 0) session.givePotion();
+                if(timeLeft < 0) {
+                    session.givePotion();
+                    PitPlayer.getPitPlayer(event.getPlayer()).stats.potionsBrewed++;
+                }
             }
             return;
         }

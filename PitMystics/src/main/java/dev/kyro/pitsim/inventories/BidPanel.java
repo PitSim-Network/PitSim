@@ -75,7 +75,8 @@ public class BidPanel extends AGUIPanel {
 				Sounds.RENOWN_SHOP_PURCHASE.play(player);
 				pitPlayer.taintedSouls -= minBid(auctionItem) - auctionItem.getBid(player.getUniqueId());
 
-				auctionItem.addBid(player.getUniqueId(), minBid(auctionItem	));
+				if(minBid(auctionItem) > pitPlayer.stats.highestBid) pitPlayer.stats.highestBid = minBid(auctionItem);
+				auctionItem.addBid(player.getUniqueId(), minBid(auctionItem));
 				player.closeInventory();
 			}
 

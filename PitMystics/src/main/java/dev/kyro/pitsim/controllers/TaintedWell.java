@@ -176,6 +176,7 @@ public class TaintedWell implements Listener
                 }
                 else {
                     nbtItem.setInteger(NBTTag.TAINTED_TIER.getRef(), 1);
+                    PitPlayer.getPitPlayer(player).stats.itemsEnchanted++;
                 }
                 TaintedWell.playerItems.put(player, nbtItem.getItem());
             }

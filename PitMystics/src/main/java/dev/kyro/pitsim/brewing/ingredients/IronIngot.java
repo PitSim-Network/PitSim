@@ -41,7 +41,7 @@ public class IronIngot extends BrewingIngredient {
 
     @Override
     public Object getPotency(BrewingIngredient potencyIngredient) {
-        return 0.1 * potencyIngredient.tier;
+        return (1 - 0.5 * potencyIngredient.tier);
     }
 
     @Override
@@ -49,7 +49,7 @@ public class IronIngot extends BrewingIngredient {
         List<String> lore = new ArrayList<>();
 
         lore.add("");
-        lore.add(ChatColor.GRAY + "Receive " + color + "-" + (int) ((double)getPotency(potency) * 100) + "% Damage" +  ChatColor.GRAY + ".");
+        lore.add(ChatColor.GRAY + "Receive " + color + "-" + (potency.tier * 10) + "% Damage" +  ChatColor.GRAY + ".");
         return lore;
     }
 

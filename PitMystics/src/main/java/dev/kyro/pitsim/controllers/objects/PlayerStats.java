@@ -101,8 +101,14 @@ public class PlayerStats {
 		return damageDealt / damageTaken;
 	}
 
-	//	Events
-	public int eventsParticipated;
+	//	Darkzone
+	public int bossesKilled;
+	public int mobsKilled;
+	public int lifetimeSouls;
+	public int itemsEnchanted;
+	public int potionsBrewed;
+	public int auctionsWon;
+	public int highestBid;
 
 	//	Misc
 	public int highestStreak;
@@ -163,8 +169,6 @@ public class PlayerStats {
 
 		rgm = playerData.getInt("stats.enchant.rgm");
 		regularity = playerData.getInt("stats.enchant.regularity");
-
-		eventsParticipated = playerData.getInt("stats.events.events-participated");
 
 		minutesPlayed = playerData.getInt("stats.progression.minutes-played");
 		totalGold = playerData.getDouble("stats.progression.total-gold");
@@ -229,7 +233,13 @@ public class PlayerStats {
 		playerData.set("stats.enchant.rgm", rgm);
 		playerData.set("stats.enchant.regularity", regularity);
 
-		playerData.set("stats.events.events-participated", eventsParticipated);
+		playerData.set("stats.darkzone.bosses-killed", bossesKilled);
+		playerData.set("stats.darkzone.mobs-killed", mobsKilled);
+		playerData.set("stats.darkzone.lifetime-souls", lifetimeSouls);
+		playerData.set("stats.darkzone.items-enchanted", itemsEnchanted);
+		playerData.set("stats.darkzone.potions-brewed", potionsBrewed);
+		playerData.set("stats.darkzone.auctions-won", auctionsWon);
+		playerData.set("stats.darkzone.highest-bid", highestBid);
 
 		playerData.set("stats.progression.minutes-played", minutesPlayed);
 		playerData.set("stats.progression.total-gold", totalGold);

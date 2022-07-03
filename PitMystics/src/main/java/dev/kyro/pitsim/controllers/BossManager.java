@@ -234,6 +234,7 @@ public class BossManager implements Listener {
                 entry.getKey().destroy();
                 entry.getValue().onDeath();
                 giveSouls(entry.getValue().target, entry.getValue().subLevel.level * 5);
+                PitPlayer.getPitPlayer(entry.getValue().target).stats.bossesKilled++;
                 toRemove.add(entry.getKey());
                 activePlayers.remove(entry.getValue().target);
             } else if(entry.getValue().target == event.dead) {
@@ -343,6 +344,8 @@ public class BossManager implements Listener {
         PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
 
         pitPlayer.taintedSouls += amount;
+        pitPlayer.soulsGathered += amount;
+        pitPlayer.stats.lifetimeSouls += amount;
         AOutput.send(player, "&d&lTAINTED &7You have gained &f" + amount + " Tainted Souls&7.");
     }
 

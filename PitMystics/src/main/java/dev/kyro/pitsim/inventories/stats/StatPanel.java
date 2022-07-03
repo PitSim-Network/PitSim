@@ -110,13 +110,21 @@ public class StatPanel extends AGUIPanel {
 
 		inventoryBuilder.setSlots(Material.STAINED_GLASS_PANE, 8, 13);
 
-		AItemStackBuilder events = new AItemStackBuilder(Material.WOOL, 1, (int) (Math.random() * 16))
-				.setName("&6Event Statistics")
+		AItemStackBuilder darkzone = new AItemStackBuilder(Material.GOLD_HOE)
+				.setName("&5Darkzone Statistics")
+				.addEnchantGlint(true)
 				.setLore(new ALoreBuilder(
-						"&7Events Participated: &e" + Misc.formatLarge(stats.eventsParticipated),
-						"&7Coming soon..."
+						"&7Bosses Killed: &e" + Misc.formatLarge(stats.bossesKilled),
+						"&7Mobs Killed: &e" + Misc.formatLarge(stats.mobsKilled),
+						"",
+						"&7Lifetime Souls: &e" + Misc.formatLarge(stats.lifetimeSouls),
+						"&7Items Enchanted: &e" + Misc.formatLarge(stats.itemsEnchanted),
+						"&7Potions Brewed: &e" + Misc.formatLarge(stats.potionsBrewed),
+						"",
+						"&7Auctions Won: &e" + Misc.formatLarge(stats.auctionsWon),
+						"&7Highest Bid: &e" + Misc.formatLarge(stats.highestBid)
 				));
-		statMap.put(14, events.getItemStack());
+		statMap.put(14, darkzone.getItemStack());
 
 		AItemStackBuilder progression = new AItemStackBuilder(Math.random() < 0.5 ? Material.WHEAT : Material.GOLD_INGOT)
 				.setName("&bProgression Statistics")

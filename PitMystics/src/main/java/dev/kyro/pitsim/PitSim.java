@@ -334,6 +334,11 @@ class PitSim extends JavaPlugin {
 		LeaderboardManager.registerLeaderboard(new UbersCompletedLeaderboard());
 		LeaderboardManager.registerLeaderboard(new JewelsCompletedLeaderboard());
 		LeaderboardManager.registerLeaderboard(new FeathersLostLeaderboard());
+		LeaderboardManager.registerLeaderboard(new BossesKilledLeaderboard());
+		LeaderboardManager.registerLeaderboard(new LifetimeSoulsLeaderboard());
+		LeaderboardManager.registerLeaderboard(new AuctionsWonLeaderboard());
+		LeaderboardManager.registerLeaderboard(new HighestBidLeaderboard());
+
 	}
 
 	private void registerMobs() {

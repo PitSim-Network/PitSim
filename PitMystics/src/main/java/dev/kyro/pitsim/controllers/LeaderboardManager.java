@@ -38,7 +38,7 @@ public class LeaderboardManager {
 //			}
 //		}.runTaskAsynchronously(PitSim.INSTANCE);
 
-		if(!AConfig.getString("server").equals("pitsim-main")) return;
+//		if(!AConfig.getString("server").equals("pitsim-main")) return;
 
 		new BukkitRunnable() {
 			@Override

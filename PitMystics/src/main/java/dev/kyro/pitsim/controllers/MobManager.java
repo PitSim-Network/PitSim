@@ -367,9 +367,6 @@ public class MobManager implements Listener {
 			for (UUID pedestalArmorStand : AuctionDisplays.rightClickStands) {
 				if(pedestalArmorStand.equals(entity.getUniqueId())) continue main;
 			}
-			for (Entity potion : PotionManager.potions) {
-				if(potion.getUniqueId().equals(entity.getUniqueId())) continue main;
-			}
 			if(entity.getUniqueId().equals(AuctionDisplays.timerStandUUID)) continue;
 
 			if(entity.getUniqueId().equals(TaintedWell.textLine1.getUniqueId())) continue;
@@ -379,6 +376,7 @@ public class MobManager implements Listener {
 			if(entity instanceof Item) continue;
 			if(entity instanceof Arrow) continue;
 			if(entity instanceof Wither) continue;
+			if(entity instanceof ThrownPotion) continue;
 			if(entity instanceof Villager) continue;
 			if(entity instanceof Fireball) continue;
 			if(entity instanceof Slime && !(entity instanceof MagmaCube)) continue;

@@ -117,7 +117,7 @@ public class CraftTaintedPanel extends AGUIPanel {
 		chestLore.add(ChatColor.GRAY + "Cost: " + ChatColor.WHITE + "100 Tainted Souls");
 		chestLore.add("");
 		if(canBuy(player, 100)) chestLore.add(ChatColor.GREEN + "Click to Craft!");
-		else scytheLore.add(ChatColor.RED + "Not enough Souls!");
+		else chestLore.add(ChatColor.RED + "Not enough Souls!");
 		chestMeta.setLore(chestLore);
 		chestplate.setItemMeta(chestMeta);
 		getInventory().setItem(15, chestplate);

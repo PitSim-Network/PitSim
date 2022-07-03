@@ -127,11 +127,13 @@ public class AuctionItem {
             Player onlinePlayer = Bukkit.getOfflinePlayer(entry.getKey()).getPlayer();
             if(onlinePlayer != null && !onlinePlayer.isOnline()) continue;
 
-            AOutput.send(onlinePlayer, "&5&lDARK AUCTION! &e" + winner + " &7won " + item.itemName + " &7for &f" + getHighestBid() + " Souls&7.");
+            AOutput.send(onlinePlayer, "&5&lDARK AUCTION! &e" + winner.getName() + " &7won " + item.itemName + " &7for &f" + getHighestBid() + " Souls&7.");
             Sounds.BOOSTER_REMIND.play(onlinePlayer);
         }
 
         if(winner.isOnline()) {
+
+            PitPlayer.getPitPlayer(winner.getPlayer()).stats.auctionsWon++;
 
             if(itemData == 0) {
                 AUtil.giveItemSafely(winner.getPlayer(), item.item.clone(), true);

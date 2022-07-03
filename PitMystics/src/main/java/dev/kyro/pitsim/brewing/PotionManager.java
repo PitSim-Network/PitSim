@@ -9,6 +9,7 @@ import dev.kyro.pitsim.brewing.objects.BrewingIngredient;
 import dev.kyro.pitsim.brewing.objects.PotionEffect;
 import dev.kyro.pitsim.controllers.BossManager;
 import dev.kyro.pitsim.enums.NBTTag;
+import dev.kyro.pitsim.misc.Misc;
 import net.kyori.adventure.audience.Audience;
 import net.kyori.adventure.bossbar.BossBar;
 import net.kyori.adventure.text.Component;
@@ -18,9 +19,12 @@ import org.bukkit.Material;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
+import org.bukkit.entity.SplashPotion;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.block.Action;
 import org.bukkit.event.entity.PotionSplashEvent;
+import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerItemConsumeEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.ItemStack;
@@ -126,9 +130,9 @@ public class PotionManager implements Listener {
         }
     }
 
+
     @EventHandler
     public void onSplash(PotionSplashEvent event) {
-        potions.add(event.getPotion());
 
         for (LivingEntity affectedEntity : event.getAffectedEntities()) {
             if(!(affectedEntity instanceof Player)) continue;
@@ -157,13 +161,6 @@ public class PotionManager implements Listener {
             } else {
                 potionEffectList.add(new PotionEffect(player, identifier, potency, duration));
             }
-
-            new BukkitRunnable() {
-                @Override
-                public void run() {
-                    potions.remove(event.getPotion());
-                }
-            }.runTaskLater(PitSim.INSTANCE, 20);
         }
     }
 

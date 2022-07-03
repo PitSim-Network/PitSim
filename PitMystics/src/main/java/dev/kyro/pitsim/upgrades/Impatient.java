@@ -34,7 +34,7 @@ public class Impatient extends RenownUpgrade {
 		ItemMeta meta = item.getItemMeta();
 		meta.setDisplayName(UpgradeManager.itemNameString(this, player));
 		List<String> lore = new ArrayList<>();
-		if(UpgradeManager.hasUpgrade(player, this))
+		if(UpgradeManager.hasUpgrade(player, this) && UpgradeManager.getTier(player, this) > 0)
 			lore.add(ChatColor.GRAY + "Tier: " + ChatColor.GREEN + AUtil.toRoman(UpgradeManager.getTier(player, this)));
 		if(UpgradeManager.hasUpgrade(player, this)) lore.add("");
 		lore.add(ChatColor.YELLOW + "Tier I: " + ChatColor.GRAY + "Gain Speed II in spawn area.");

@@ -617,6 +617,8 @@ public class PlayerManager implements Listener {
 				}
 			}
 
+			pitPlayer.stats.auctionsWon++;
+
 			playerData.set("auctionreturn", null);
 			aPlayer.save();
 		}
