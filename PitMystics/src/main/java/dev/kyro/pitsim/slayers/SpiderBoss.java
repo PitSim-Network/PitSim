@@ -12,6 +12,7 @@ import dev.kyro.pitsim.enums.PantColor;
 import dev.kyro.pitsim.enums.SubLevel;
 import dev.kyro.pitsim.events.AttackEvent;
 import dev.kyro.pitsim.misc.BossSkin;
+import dev.kyro.pitsim.misc.TempBlock;
 import dev.kyro.pitsim.slayers.tainted.SimpleBoss;
 import dev.kyro.pitsim.slayers.tainted.SimpleSkin;
 import net.citizensnpcs.api.CitizensAPI;
@@ -57,16 +58,7 @@ public class SpiderBoss extends PitBoss {
             @Override
             protected void attackMedium(){
                 if(target.getLocation().getBlock().getType() == null || target.getLocation().getBlock().getType() == Material.AIR){
-                    Block block = target.getLocation().getBlock();
-                    block.setType(Material.WEB);
-                    new BukkitRunnable() {
-                        @Override
-                        public void run() {
-                            try {
-                                block.setType(Material.AIR);
-                            } catch (Exception ignored) { }
-                        }
-                    }.runTaskLater(PitSim.INSTANCE, 30);
+                    new TempBlock(target.getLocation(), Material.WEB, 30);
                 }
             }
 

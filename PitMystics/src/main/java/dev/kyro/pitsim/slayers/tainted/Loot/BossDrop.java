@@ -1,5 +1,6 @@
 package dev.kyro.pitsim.slayers.tainted.Loot;
 
+import dev.kyro.arcticapi.misc.AUtil;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
@@ -22,15 +23,16 @@ public class BossDrop {
 
         LootRunnable lootRunnable = new LootRunnable(lootTable.toString() + ":DROP:" + ChatColor.stripColor(player.getDisplayName()));
 
-        if(bound < lootTable.chance1){
-            player.getInventory().addItem(lootTable.drop1);
-            lootRunnable.run(player, lootTable.drop1.getItemMeta().getDisplayName(),"&d&lRNG!");
-        }else if(bound < lootTable.chance2){
-            player.getInventory().addItem(lootTable.drop2);
-            lootRunnable.run(player, lootTable.drop2.getItemMeta().getDisplayName(),"&d&lRNG!");
-        }else if (bound < lootTable.chance3){
-            player.getInventory().addItem(lootTable.drop3);
+        if(bound < lootTable.chance3){
+
+            AUtil.giveItemSafely(player, lootTable.drop3, true);
             lootRunnable.run(player, lootTable.drop3.getItemMeta().getDisplayName(),"&d&lRNG!");
+        }else if(bound < lootTable.chance2){
+            AUtil.giveItemSafely(player, lootTable.drop2, true);
+            lootRunnable.run(player, lootTable.drop2.getItemMeta().getDisplayName(),"&d&lRNG!");
+        }else if (bound < lootTable.chance1){
+            AUtil.giveItemSafely(player, lootTable.drop1, true);
+            lootRunnable.run(player, lootTable.drop1.getItemMeta().getDisplayName(),"&d&lRNGeSUS!");
         }
     }
 

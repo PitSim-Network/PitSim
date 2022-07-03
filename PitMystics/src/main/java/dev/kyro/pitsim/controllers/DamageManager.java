@@ -17,6 +17,7 @@ import dev.kyro.pitsim.events.AttackEvent;
 import dev.kyro.pitsim.events.KillEvent;
 import dev.kyro.pitsim.events.OofEvent;
 import dev.kyro.pitsim.misc.*;
+import dev.kyro.pitsim.misc.tainted.CorruptedFeather;
 import dev.kyro.pitsim.perks.AssistantToTheStreaker;
 import dev.kyro.pitsim.upgrades.DivineIntervention;
 import dev.kyro.pitsim.upgrades.LifeInsurance;
@@ -470,6 +471,8 @@ public class DamageManager implements Listener {
 					}
 				}
 			}
+
+
 			if(!feather && !divine) {
 				ProtArmor.deleteArmor(deadPlayer);
 				YummyBread.deleteBread(deadPlayer);

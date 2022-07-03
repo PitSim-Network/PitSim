@@ -1,27 +1,30 @@
 package dev.kyro.pitsim.slayers.tainted.Loot;
 
+import dev.kyro.pitsim.misc.tainted.BloodyHeart;
+import dev.kyro.pitsim.misc.tainted.CorruptedFeather;
+import dev.kyro.pitsim.misc.tainted.SyntheticCube;
 import org.bukkit.inventory.ItemStack;
 
 public enum LootTable {
-    ZOMBIE_CAVE(null,null,null,
+    ZOMBIE_CAVE(CorruptedFeather.getCorruptedFeather(1), BloodyHeart.getBloodyHeart(1), SyntheticCube.getSyntheticCube(1),
     .35,.20,.15),
-    SKELETON_CAVE(null,null,null,
+    SKELETON_CAVE(CorruptedFeather.getCorruptedFeather(1), BloodyHeart.getBloodyHeart(1), SyntheticCube.getSyntheticCube(1),
+    .35,.20,.15),
+    SPIDER_CAVE(CorruptedFeather.getCorruptedFeather(1), BloodyHeart.getBloodyHeart(1), SyntheticCube.getSyntheticCube(1),
             .35,.20,.15),
-    SPIDER_CAVE(null,null,null,
+    CREEPER_CAVE(CorruptedFeather.getCorruptedFeather(1), BloodyHeart.getBloodyHeart(1), SyntheticCube.getSyntheticCube(1),
             .35,.20,.15),
-    CREEPER_CAVE(null,null,null,
+    DEEP_SPIDER_CAVE(CorruptedFeather.getCorruptedFeather(1), BloodyHeart.getBloodyHeart(1), SyntheticCube.getSyntheticCube(1),
             .35,.20,.15),
-    DEEP_SPIDER_CAVE(null,null,null,
+    PIGMEN_CAVE(CorruptedFeather.getCorruptedFeather(1), BloodyHeart.getBloodyHeart(1), SyntheticCube.getSyntheticCube(1),
             .35,.20,.15),
-    PIGMEN_CAVE(null,null,null,
+    MAGMA_CAVE(CorruptedFeather.getCorruptedFeather(1), BloodyHeart.getBloodyHeart(1), SyntheticCube.getSyntheticCube(1),
             .35,.20,.15),
-    MAGMA_CAVE(null,null,null,
+    WITHER_CAVE(CorruptedFeather.getCorruptedFeather(1), BloodyHeart.getBloodyHeart(1), SyntheticCube.getSyntheticCube(1),
             .35,.20,.15),
-    WITHER_CAVE(null,null,null,
+    GOLEM_CAVE(CorruptedFeather.getCorruptedFeather(1), BloodyHeart.getBloodyHeart(1), SyntheticCube.getSyntheticCube(1),
             .35,.20,.15),
-    GOLEM_CAVE(null,null,null,
-            .35,.20,.15),
-    ENDERMAN_CAVE(null,null,null,
+    ENDERMAN_CAVE(CorruptedFeather.getCorruptedFeather(1), BloodyHeart.getBloodyHeart(1), SyntheticCube.getSyntheticCube(1),
             .35,.20,.15);
 
 
