@@ -17,7 +17,7 @@ import java.util.Map;
 public class PitSpider extends PitMob {
 
 	public PitSpider(Location spawnLoc) {
-		super(MobType.SPIDER, spawnLoc, 3, 6,  "&cSpider");
+		super(MobType.SPIDER, spawnLoc, 3, 12,  "&cSpider", 1);
 	}
 
 	@Override

@@ -20,7 +20,7 @@ import java.util.Map;
 public class PitSpiderBrute extends PitMob {
 
 	public PitSpiderBrute(Location spawnLoc) {
-		super(MobType.SPIDER, spawnLoc, 5, 14,  "&c&lSpider Brute");
+		super(MobType.SPIDER, spawnLoc, 5, 14,  "&c&lSpider Brute", 5);
 	}
 
 	@Override
@@ -32,12 +32,6 @@ public class PitSpiderBrute extends PitMob {
 		spider.setRemoveWhenFarAway(false);
 
 		spider.setCustomNameVisible(false);
-		new BukkitRunnable() {
-			@Override
-			public void run() {
-				Misc.applyPotionEffect(spider, PotionEffectType.SPEED, 60 * 20 * 10, 4, false, false);
-			}
-		}.runTaskLater(PitSim.INSTANCE, 2);
 
 		MobManager.makeTag(spider, displayName);
 		return spider;

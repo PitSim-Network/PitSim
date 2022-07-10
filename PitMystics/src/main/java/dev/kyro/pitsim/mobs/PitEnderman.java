@@ -17,7 +17,7 @@ import java.util.Map;
 public class PitEnderman extends PitMob {
 
 	public PitEnderman(Location spawnLoc) {
-		super(MobType.ENDERMAN, spawnLoc, 10, 20, "&cEnderman");
+		super(MobType.ENDERMAN, spawnLoc, 10, 25, "&cEnderman", 3);
 	}
 
 	@Override

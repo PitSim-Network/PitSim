@@ -17,7 +17,7 @@ import java.util.Map;
 public class PitMagmaCube extends PitMob {
 
 	public PitMagmaCube(Location spawnLoc) {
-		super(MobType.MAGMA_CUBE, spawnLoc, 6, 12, "&cMagma Cube");
+		super(MobType.MAGMA_CUBE, spawnLoc, 6, 12, "&cMagma Cube", 0);
 	}
 
 	@Override

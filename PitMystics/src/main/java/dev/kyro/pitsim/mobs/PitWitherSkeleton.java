@@ -20,7 +20,7 @@ import java.util.Map;
 public class PitWitherSkeleton extends PitMob {
 
 	public PitWitherSkeleton(Location spawnLoc) {
-		super(MobType.SKELETON, spawnLoc, 8, 16, "&cWither Skeleton");
+		super(MobType.SKELETON, spawnLoc, 8, 16, "&cWither Skeleton", 3);
 	}
 
 	@Override

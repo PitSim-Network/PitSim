@@ -32,13 +32,13 @@ public class PortalManager implements Listener {
 	public void onPortal(PlayerPortalEvent event) {
 		if(event.getCause() != PlayerTeleportEvent.TeleportCause.NETHER_PORTAL) return;
 
-		PitPlayer pitPlayer = PitPlayer.getPitPlayer(event.getPlayer());
-		if(pitPlayer.prestige < 5) {
-			event.getPlayer().setVelocity(new Vector(3, 1, 0));
-			AOutput.error(event.getPlayer(), "&5&lDARKZONE &7You must be atleast prestige &eV &7to enter!");
-			Sounds.NO.play(event.getPlayer());
-			return;
-		}
+//		PitPlayer pitPlayer = PitPlayer.getPitPlayer(event.getPlayer());
+//		if(pitPlayer.prestige < 5) {
+//			event.getPlayer().setVelocity(new Vector(3, 1, 0));
+//			AOutput.error(event.getPlayer(), "&5&lDARKZONE &7You must be atleast prestige &eV &7to enter!");
+//			Sounds.NO.play(event.getPlayer());
+//			return;
+//		}
 
 
 		event.setCancelled(true);

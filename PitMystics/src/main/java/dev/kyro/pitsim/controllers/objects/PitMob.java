@@ -6,14 +6,17 @@ import dev.kyro.pitsim.controllers.MobManager;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.LivingEntity;
+import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 
 public abstract class PitMob implements Listener {
 
+	public Player target;
 	public MobType type;
 	public Location spawnLoc;
 	public int subLevel;

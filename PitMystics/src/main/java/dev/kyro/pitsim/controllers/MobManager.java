@@ -42,6 +42,25 @@ public class MobManager implements Listener {
 
 	static {
 		new BukkitRunnable() {
+			@Override
+			public void run() {
+				for (Entity entity : MapManager.getDarkzone().getEntities()) {
+
+					if(!(entity instanceof LivingEntity)) continue;
+					if(entity instanceof ArmorStand) continue;
+					if(entity instanceof Player) continue;
+
+					for(PitMob mob : new ArrayList<>(mobs)) {
+						if(mob.entity.getUniqueId().equals(entity.getUniqueId())) {
+							mob.entity = (LivingEntity) entity;
+							break;
+						}
+					}
+				}
+			}
+		}.runTaskTimerAsynchronously(PitSim.INSTANCE, 0, 1);
+
+		new BukkitRunnable() {
 
 			@Override
 			public void run() {
@@ -92,7 +111,7 @@ public class MobManager implements Listener {
 				for (PitMob mob : mobs) {
 
 					assert SubLevel.getLevel(mob.subLevel) != null;
-					if(mob.entity.getLocation().distance(SubLevel.getLevel(mob.subLevel).middle) <= SubLevel.getLevel(mob.subLevel).radius) {
+					if(mob.entity.getLocation().distance(SubLevel.getLevel(mob.subLevel).middle) <= SubLevel.getLevel(mob.subLevel).radius + 10) {
 						if(!(mob.entity instanceof Monster)) continue;
 						if(((Monster) mob.entity).getTarget() != null) continue;
 						if(mob.entity.getNearbyEntities(1, 1, 1).size() <= 1) continue;
@@ -135,17 +154,77 @@ public class MobManager implements Listener {
 		new BukkitRunnable() {
 			@Override
 			public void run() {
-				for(PitMob mob : mobs) {
-					if(!(mob instanceof PitIronGolem) && (!(mob instanceof PitEnderman))) continue;
-					for (Entity nearbyEntity : mob.entity.getNearbyEntities(3, 3, 3)) {
-						if(nearbyEntity instanceof Player && !PitBoss.isPitBoss((Player) nearbyEntity)) {
-							((Creature) mob.entity).setTarget((LivingEntity) nearbyEntity);
+				for(PitMob mob : MobManager.mobs) {
+					if(!(mob.entity instanceof Creature)) continue;
+					if(mob.target != null) ((Creature) mob.entity).setTarget(mob.target);
+				}
+				for(Player player : Bukkit.getOnlinePlayers()) {
+					if(!MapManager.inDarkzone(player.getLocation())) continue;
+
+					SubLevel subLevel = null;
+					double distanceToClosest = 0;
+                    for(SubLevel testSubLevel : SubLevel.values()) {
+						double distance = player.getLocation().distance(testSubLevel.middle);
+                        if(distance > testSubLevel.radius + 10) continue;
+						if(subLevel != null && distance >= distanceToClosest) continue;
+						subLevel = testSubLevel;
+						distanceToClosest = distance;
+                    }
+					if(subLevel == null) continue;
+
+					HashMap<PitMob, Double> noTarget = new HashMap<>();
+					int targets = 0;
+
+					List<PitMob> mobsCopy = new ArrayList<>(mobs);
+					Collections.shuffle(mobsCopy);
+					for(PitMob mob : mobsCopy) {
+						if(mob instanceof PitStrongPigman || mob instanceof PitSpiderBrute || !(mob.entity instanceof Creature)) continue;
+						if(mob.subLevel != subLevel.level) {
+							if(mob.target == player) {
+								mob.target = null;
+								((Creature) mob.entity).setTarget(null);
+							}
+							continue;
 						}
+						if(mob.target == null || !mob.target.isOnline()) {
+							noTarget.put(mob, mob.entity.getLocation().distance(player.getLocation()));
+							continue;
+						} else if(mob.target == player) {
+							if(targets > MAX_TARGETS + 2) {
+								mob.target = null;
+								((Creature) mob.entity).setTarget(null);
+								continue;
+							}
+							targets++;
+						}
+					}
+
+					if(targets >= MAX_TARGETS) continue;
+					noTarget = sortByValue(noTarget);
+					for(Map.Entry<PitMob, Double> entry : noTarget.entrySet()) {
+						PitMob pitMob = entry.getKey();
+						((Creature) pitMob.entity).setTarget(player);
+						pitMob.target = player;
+						targets++;
+						AOutput.send(player, "you are being targeted by " + pitMob.getClass());
+						if(targets >= MAX_TARGETS) break;
 					}
 				}
 			}
-		}.runTaskTimer(PitSim.INSTANCE, 20, 20);
+		}.runTaskTimer(PitSim.INSTANCE, 15, 20);
+	}
+
+	// function to sort hashmap by values
+	public static HashMap<PitMob, Double> sortByValue(HashMap<PitMob, Double> hm) {
+		List<Map.Entry<PitMob, Double> > list =
+				new LinkedList<>(hm.entrySet());
+		list.sort(Map.Entry.comparingByValue());
+		HashMap<PitMob, Double> temp = new LinkedHashMap<>();
+		for (Map.Entry<PitMob, Double> aa : list) {
+			temp.put(aa.getKey(), aa.getValue());
 		}
+		return temp;
+	}
 
 	public static void makeTag(LivingEntity mob, String name) {
 		Location op = mob.getLocation();
@@ -212,6 +291,9 @@ public class MobManager implements Listener {
 
 	@EventHandler(priority = EventPriority.HIGHEST)
 	public void onHit(AttackEvent.Pre event) {
+
+		if(event.attacker instanceof MagmaCube && (!(event.defender instanceof Player))) event.setCancelled(true);
+
 		for (NPC value : BossManager.clickables.values()) {
 			if(event.defender.getUniqueId().equals(value.getUniqueId())) event.setCancelled(true);
 		}
@@ -263,9 +345,7 @@ public class MobManager implements Listener {
 
 	@EventHandler
 	public void onTarget(EntityTargetLivingEntityEvent event) {
-		try {
-			if(event.getTarget().getLocation().distance(event.getEntity().getLocation()) > 5) event.setCancelled(true);
-		} catch (Exception ignored) { }
+		if(event.getReason() != EntityTargetEvent.TargetReason.CUSTOM && (!(event.getEntity() instanceof MagmaCube))) event.setCancelled(true);
 	}
 
 	@EventHandler(priority = EventPriority.HIGHEST)

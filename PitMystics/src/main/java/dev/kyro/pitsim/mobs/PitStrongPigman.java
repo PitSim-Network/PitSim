@@ -21,7 +21,7 @@ import java.util.Map;
 public class PitStrongPigman extends PitMob {
 
 	public PitStrongPigman(Location spawnLoc) {
-		super(MobType.ZOMBIE_PIGMAN, spawnLoc, 7, 30, "&c&lStrong Pigman");
+		super(MobType.ZOMBIE_PIGMAN, spawnLoc, 7, 30, "&c&lStrong Pigman", 5);
 	}
 
 	@Override
@@ -48,8 +48,6 @@ public class PitStrongPigman extends PitMob {
 				zombiePigman.getEquipment().setBootsDropChance(0);
 				zombiePigman.getEquipment().setItemInHand(new ItemStack(Material.GOLD_SWORD));
 				zombiePigman.getEquipment().setItemInHandDropChance(0);
-
-				Misc.applyPotionEffect(zombiePigman, PotionEffectType.SPEED, 20 * 60 * 10, 4, false, false);
 			}
 		}.runTaskLater(PitSim.INSTANCE, 2);
 

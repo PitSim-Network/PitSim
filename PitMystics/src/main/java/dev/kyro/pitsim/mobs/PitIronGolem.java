@@ -17,7 +17,7 @@ import java.util.Map;
 public class PitIronGolem extends PitMob {
 
 	public PitIronGolem(Location spawnLoc) {
-		super(MobType.IRON_GOLEM, spawnLoc, 9, 18, "&cIron Golem");
+		super(MobType.IRON_GOLEM, spawnLoc, 9, 18, "&cIron Golem", 4);
 	}
 
 	@Override
