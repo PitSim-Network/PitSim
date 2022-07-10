@@ -52,7 +52,7 @@ public class AuctionManager implements Listener {
                 if(showItems) AuctionDisplays.showItems();
 
             }
-        }.runTaskTimer(PitSim.INSTANCE, 20, 20 * 60);
+        }.runTaskTimer(PitSim.INSTANCE, 10, 10);
     }
 
     public static void onStart() {

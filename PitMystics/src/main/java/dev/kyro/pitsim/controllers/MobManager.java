@@ -137,7 +137,7 @@ public class MobManager implements Listener {
 			public void run() {
 				for(PitMob mob : mobs) {
 					if(!(mob instanceof PitIronGolem) && (!(mob instanceof PitEnderman))) continue;
-					for (Entity nearbyEntity : mob.entity.getNearbyEntities(5, 5, 5)) {
+					for (Entity nearbyEntity : mob.entity.getNearbyEntities(3, 3, 3)) {
 						if(nearbyEntity instanceof Player && !PitBoss.isPitBoss((Player) nearbyEntity)) {
 							((Creature) mob.entity).setTarget((LivingEntity) nearbyEntity);
 						}
@@ -209,12 +209,6 @@ public class MobManager implements Listener {
 			}
 		}.runTaskLater(PitSim.INSTANCE, 1);
 	}
-//
-//	@EventHandler
-//	public void onSpawn(EntitySpawnEvent event) {
-//		if(event.getLocation().getWorld() == Bukkit.getWorld("darkzone") && event.getEntity() instanceof Enderman &&
-//				!PitMob.isPitMob((LivingEntity) event.getEntity())) event.setCancelled(true);
-//	}
 
 	@EventHandler(priority = EventPriority.HIGHEST)
 	public void onHit(AttackEvent.Pre event) {

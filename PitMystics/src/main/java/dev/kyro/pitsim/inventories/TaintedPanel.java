@@ -65,9 +65,9 @@ public class TaintedPanel extends AGUIPanel {
 		soulLore.add(ChatColor.GRAY + "The lost souls of fallen warriors");
 		soulLore.add("");
 		soulLore.add(ChatColor.GRAY + "Obtained by:");
-		soulLore.add(ChatColor.DARK_GRAY + "- " + ChatColor.LIGHT_PURPLE + "Killing Bosses");
-		soulLore.add(ChatColor.DARK_GRAY + "- " + ChatColor.LIGHT_PURPLE + "Shredding " + ChatColor.DARK_AQUA + "JEWEL! " + ChatColor.LIGHT_PURPLE + "Items");
-		soulLore.add(ChatColor.DARK_GRAY + "- " + ChatColor.LIGHT_PURPLE + "Opening " + ChatColor.DARK_PURPLE + " Tainted Crates");
+		soulLore.add(ChatColor.DARK_GRAY + " - " + ChatColor.LIGHT_PURPLE + "Killing Bosses");
+		soulLore.add(ChatColor.DARK_GRAY + " - " + ChatColor.LIGHT_PURPLE + "Shredding " + ChatColor.DARK_AQUA + "JEWEL! " + ChatColor.LIGHT_PURPLE + "Items");
+		soulLore.add(ChatColor.DARK_GRAY + " - " + ChatColor.LIGHT_PURPLE + "Opening " + ChatColor.DARK_PURPLE + "Tainted Crates");
 		soulLore.add("");
 		soulLore.add(ChatColor.GRAY + "You have " + ChatColor.GREEN + countSouls(player) + ChatColor.GRAY + " Souls");
 		soulMeta.setLore(soulLore);
@@ -81,7 +81,7 @@ public class TaintedPanel extends AGUIPanel {
 		shredMeta.setDisplayName(ChatColor.YELLOW + "" + ChatColor.BOLD + "SHRED JEWEL ITEMS");
 		List<String> shredLore = new ArrayList<>();
 		shredLore.add(ChatColor.GRAY + "Turn " + ChatColor.DARK_AQUA + "JEWEL! " + ChatColor.GRAY + "items into");
-		shredLore.add(ChatColor.WHITE + "1-10 Tainted Souls" + ChatColor.GRAY + ".");
+		shredLore.add(ChatColor.WHITE + "1" + ChatColor.GRAY + "-" + ChatColor.WHITE + "10 Tainted Souls" + ChatColor.GRAY + ".");
 		shredLore.add("");
 		if(hasJewels(player)) shredLore.add(ChatColor.GREEN + "Click to shred Jewels!");
 		else shredLore.add(ChatColor.RED + "No Jewels available!");

@@ -7,8 +7,10 @@ import com.xxmicloxx.NoteBlockAPI.utils.NBSDecoder;
 import dev.kyro.arcticapi.gui.AGUIPanel;
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.arcticapi.misc.AUtil;
+import dev.kyro.pitsim.controllers.BossManager;
 import dev.kyro.pitsim.controllers.NonManager;
 import dev.kyro.pitsim.controllers.UpgradeManager;
+import dev.kyro.pitsim.controllers.objects.PitBoss;
 import dev.kyro.pitsim.controllers.objects.RenownUpgrade;
 import dev.kyro.pitsim.events.KillEvent;
 import org.bukkit.ChatColor;
@@ -68,6 +70,8 @@ public class LuckyKill extends RenownUpgrade {
 		if(!killEvent.killerIsPlayer) return;
 		if(!UpgradeManager.hasUpgrade(killEvent.killerPlayer, this)) return;
 		if(!(NonManager.getNon(killEvent.dead) == null)) return;
+		if(!(killEvent.dead instanceof Player)) return;
+		if(PitBoss.isPitBoss((Player) killEvent.dead)) return;
 
 		int tier = UpgradeManager.getTier(killEvent.killerPlayer, this);
 		if(tier == 0) return;

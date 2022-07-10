@@ -67,6 +67,7 @@ import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -268,6 +269,9 @@ class PitSim extends JavaPlugin {
 		}
 
 		for(PitPlayer pitPlayer : PitPlayer.pitPlayers) if(pitPlayer.stats != null) pitPlayer.stats.save();
+
+		File file = new File("plugins/Citizens/saves.yml");
+		if(file.exists()) file.deleteOnExit();
 	}
 
 	private void registerMaps() {
@@ -536,6 +540,12 @@ class PitSim extends JavaPlugin {
 		}
 		VAULT = rsp.getProvider();
 		return VAULT != null;
+	}
+
+	@Override
+	public void onLoad() {
+		File file = new File("plugins/Citizens/save.yml");
+		if(file.exists()) file.delete();
 	}
 
 	private void registerEnchants() {

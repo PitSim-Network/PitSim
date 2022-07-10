@@ -101,7 +101,8 @@ public class BidPanel extends AGUIPanel {
 				AItemStackBuilder bidsBuilder = new AItemStackBuilder(Material.MAP);
 				bidsBuilder.setName(ChatColor.YELLOW + "Current Bids");
 				List<String> bidsLore = new ArrayList<>();
-				bidsLore.add("");
+				if(auctionItem.bidMap.size() == 0) bidsLore.add(ChatColor.GRAY + "No Bids Yet!");
+				 else bidsLore.add("");
 				for (Map.Entry<UUID, Integer> entry : auctionItem.bidMap.entrySet()) {
 					bidsLore.add(ChatColor.GOLD + Bukkit.getOfflinePlayer(entry.getKey()).getName() + ChatColor.WHITE + " " + entry.getValue() + " Souls");
 				}
@@ -120,7 +121,10 @@ public class BidPanel extends AGUIPanel {
 				bidLore.add("");
 				bidLore.add(ChatColor.GRAY + "Your Souls: " + ChatColor.WHITE + pitPlayer.taintedSouls);
 				bidLore.add("");
-				bidLore.add(ChatColor.YELLOW + AuctionDisplays.getRemainingTime() + " Remaining");
+				if((AuctionManager.minutes * 60000L - (System.currentTimeMillis() - AuctionManager.auctionItems[0].initTime)) / 1000 < 0) {
+					bidLore.add(ChatColor.YELLOW + "Ending Soon");
+				}
+				else bidLore.add(ChatColor.YELLOW + AuctionDisplays.getRemainingTime() + " Remaining");;
 				bidLore.add("");
 
 				if(auctionItem.getHighestBidder() != null && auctionItem.getHighestBidder().equals(player.getUniqueId())) {

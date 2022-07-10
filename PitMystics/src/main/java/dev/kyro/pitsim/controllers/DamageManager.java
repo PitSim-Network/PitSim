@@ -443,6 +443,8 @@ public class DamageManager implements Listener {
 
 	public static void loseLives(LivingEntity dead, LivingEntity killer) {
 		if(!(dead instanceof Player)) return;
+		if(MapManager.inDarkzone(dead.getLocation())) return;
+
 		if(BoosterManager.getBooster("pvp").minutes <= 0) {
 			Player deadPlayer = (Player) dead;
 			PitPlayer pitDead = PitPlayer.getPitPlayer(deadPlayer);

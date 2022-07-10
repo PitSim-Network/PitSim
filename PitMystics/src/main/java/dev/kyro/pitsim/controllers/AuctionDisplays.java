@@ -80,8 +80,10 @@ public class AuctionDisplays implements Listener {
                     if(clickable.isSpawned()) ((LivingEntity) clickable.getEntity()).addPotionEffect(new PotionEffect(PotionEffectType.INVISIBILITY, Integer.MAX_VALUE, 0, false, false));
                 }
 
-
-                getStand(timerStandUUID).setCustomName(ChatColor.YELLOW + "Time Left: " + ChatColor.WHITE + getRemainingTime());
+                if((AuctionManager.minutes * 60000L - (System.currentTimeMillis() - AuctionManager.auctionItems[0].initTime)) / 1000 < 0) {
+                    getStand(timerStandUUID).setCustomName(ChatColor.YELLOW + "Ending Soon");
+                }
+                else getStand(timerStandUUID).setCustomName(ChatColor.YELLOW + "Time Left: " + ChatColor.WHITE + getRemainingTime());
             }
         }.runTaskTimer(PitSim.INSTANCE, 20, 20);
     }

@@ -289,9 +289,9 @@ public abstract class SimpleBoss {
 
         AOutput.send(target.getPlayer(), "&7You killed your boss in &a" + stringTime);
 
-        BossDrop bossDrop = new BossDrop(target.getPlayer(), LootTable.valueOf(subLevel.toString()));
-
-        bossDrop.run();
+//        BossDrop bossDrop = new BossDrop(target.getPlayer(), LootTable.valueOf(subLevel.toString()));
+//
+//        bossDrop.run();
 
     }
 

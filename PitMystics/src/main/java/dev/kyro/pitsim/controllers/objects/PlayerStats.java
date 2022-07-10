@@ -184,6 +184,14 @@ public class PlayerStats {
 		itemsBroken = playerData.getInt("stats.misc.items-broken");
 		feathersLost = playerData.getInt("stats.misc.feathers-lost");
 
+		bossesKilled = playerData.getInt("stats.darkzone.bosses-killed");
+		mobsKilled = playerData.getInt("stats.darkzone.mobs-killed");
+		lifetimeSouls = playerData.getInt("stats.darkzone.lifetime-souls");
+		itemsEnchanted = playerData.getInt("stats.darkzone.items-enchanted");
+		potionsBrewed = playerData.getInt("stats.darkzone.potions-brewed");
+		auctionsWon = playerData.getInt("stats.darkzone.auctions-won");
+		highestBid = playerData.getInt("stats.darkzone.highest-bid");
+
 		chatMessages = playerData.getInt("stats.misc.chat-messages");
 	}
 
