@@ -206,7 +206,6 @@ public class MobManager implements Listener {
 						((Creature) pitMob.entity).setTarget(player);
 						pitMob.target = player;
 						targets++;
-						AOutput.send(player, "you are being targeted by " + pitMob.getClass());
 						if(targets >= MAX_TARGETS) break;
 					}
 				}

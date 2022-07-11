@@ -55,7 +55,7 @@ public class Laser extends PitEnchant {
             if(entity instanceof ArmorStand || entity instanceof Villager) continue;
 
             Vector direction = player.getLocation().add(0, 1, 0).getDirection();
-            Vector towardsEntity = entity.getLocation().subtract(player.getLocation().add(0, 1, 0)).toVector().normalize();
+            Vector towardsEntity = entity.getLocation().add(0, 1, 0).subtract(player.getLocation().add(0, 1, 0)).toVector().normalize();
 
             if(direction.distance(towardsEntity) < 0.1) {
                 attacked = (LivingEntity) entity;

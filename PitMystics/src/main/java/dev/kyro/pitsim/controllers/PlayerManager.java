@@ -308,6 +308,7 @@ public class PlayerManager implements Listener {
 
 	public static List<UUID> pantsSwapCooldown = new ArrayList<>();
 	public static List<UUID> helmetSwapCooldown = new ArrayList<>();
+	public static List<UUID> chestplateSwapCooldown = new ArrayList<>();
 
 	@EventHandler
 	public static void onClick(PlayerInteractEvent event) {
@@ -405,6 +406,29 @@ public class PlayerManager implements Listener {
 				@Override
 				public void run() {
 					helmetSwapCooldown.remove(player.getUniqueId());
+				}
+			}.runTaskLater(PitSim.INSTANCE, 40L);
+			Sounds.ARMOR_SWAP.play(player);
+		}
+
+		if(player.getItemInHand().getType().toString().contains("CHESTPLATE")) {
+			if(Misc.isAirOrNull(player.getInventory().getChestplate())) return;
+
+			if(chestplateSwapCooldown.contains(player.getUniqueId())) {
+
+				Sounds.NO.play(player);
+				return;
+			}
+
+			ItemStack held = player.getItemInHand();
+			player.setItemInHand(player.getInventory().getChestplate());
+			player.getInventory().setChestplate(held);
+
+			chestplateSwapCooldown.add(player.getUniqueId());
+			new BukkitRunnable() {
+				@Override
+				public void run() {
+					chestplateSwapCooldown.remove(player.getUniqueId());
 				}
 			}.runTaskLater(PitSim.INSTANCE, 40L);
 			Sounds.ARMOR_SWAP.play(player);

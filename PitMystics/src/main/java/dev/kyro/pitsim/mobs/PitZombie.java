@@ -27,8 +27,8 @@ public 	class PitZombie extends PitMob {
 	public LivingEntity spawnMob(Location spawnLoc) {
 		Zombie zombie = (Zombie) spawnLoc.getWorld().spawnEntity(spawnLoc, EntityType.ZOMBIE);
 
-		zombie.setMaxHealth(50);
-		zombie.setHealth(50);
+		zombie.setMaxHealth(25);
+		zombie.setHealth(25);
 //		zombie.setCustomName(displayName);
 		zombie.setCustomNameVisible(false);
 		zombie.setRemoveWhenFarAway(false);

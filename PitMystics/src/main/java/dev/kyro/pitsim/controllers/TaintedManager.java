@@ -36,7 +36,7 @@ public class TaintedManager implements Listener {
         if(event.attackerIsPlayer) {
             ItemStack attack = event.attackerPlayer.getItemInHand();
             if(!Misc.isAirOrNull(attack) && attack.getType() == Material.GOLD_HOE) {
-                event.increase += 13    ;
+                event.increase += 7;
             }
         }
 
