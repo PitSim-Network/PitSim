@@ -48,6 +48,7 @@ public class MobManager implements Listener {
 		PitMob pitMob = PitMob.getPitMob(attackEvent.defender);
 		if(pitMob == null) return;
 		((Creature) attackEvent.defender).setTarget(attackEvent.attackerPlayer);
+		pitMob.lastHit = System.currentTimeMillis();
 		pitMob.target = attackEvent.attackerPlayer;
 	}
 
@@ -206,6 +207,10 @@ public class MobManager implements Listener {
 								targets--;
 								continue;
 							}
+							if(mob.lastHit + 10_000 < System.currentTimeMillis()) {
+								mob.remove();
+								targets--;
+							}
 						}
 					}
 
@@ -214,6 +219,7 @@ public class MobManager implements Listener {
 					for(Map.Entry<PitMob, Double> entry : noTarget.entrySet()) {
 						PitMob pitMob = entry.getKey();
 						((Creature) pitMob.entity).setTarget(player);
+						pitMob.lastHit = System.currentTimeMillis();
 						pitMob.target = player;
 						targets++;
 						if(targets >= MAX_TARGETS) break;
@@ -320,6 +326,8 @@ public class MobManager implements Listener {
 		if(!(event.getDamager() instanceof LivingEntity)) return;
 		PitMob mob = PitMob.getPitMob((LivingEntity) event.getDamager());
 		if(mob == null) return;
+
+		mob.lastHit = System.currentTimeMillis();
 
 		if(mob instanceof PitMagmaCube) return;
 

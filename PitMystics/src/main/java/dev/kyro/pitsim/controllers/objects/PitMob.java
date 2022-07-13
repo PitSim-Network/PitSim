@@ -24,6 +24,7 @@ public abstract class PitMob implements Listener {
 	public double damage;
 	public String displayName;
 	public int speedLevel;
+	public long lastHit;
 
 	public PitMob(MobType type, Location spawnLoc, int subLevel, double damage, String displayName, int speedLevel) {
 		this.type = type;
