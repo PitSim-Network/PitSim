@@ -12,9 +12,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 public abstract class PitMob implements Listener {
 
@@ -40,6 +38,12 @@ public abstract class PitMob implements Listener {
 
 		this.entity = spawnMob(spawnLoc);
 		if(speedLevel != 0) this.entity.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 9999, speedLevel - 1, true, false));
+	}
+
+	public void remove() {
+		MobManager.nameTags.get(this.entity.getUniqueId()).remove();
+		this.entity.remove();
+		MobManager.mobs.remove(this);
 	}
 
 	public abstract LivingEntity spawnMob(Location spawnLoc);

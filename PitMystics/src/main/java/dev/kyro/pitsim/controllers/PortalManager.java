@@ -45,9 +45,6 @@ public class PortalManager implements Listener {
 		Player player = event.getPlayer();
 		Location playerLoc = player.getLocation();
 
-		PitPlayer.getPitPlayer(player).updateMaxHealth();
-		player.setHealth(player.getMaxHealth());
-
 		PotionManager.bossBars.remove(player);
 
 		Location teleportLoc;
@@ -71,6 +68,9 @@ public class PortalManager implements Listener {
 
 		player.teleport(teleportLoc);
 			player.setVelocity(new Vector(1.5, 1, 0).multiply(0.25));
+
+		PitPlayer.getPitPlayer(player).updateMaxHealth();
+		player.setHealth(player.getMaxHealth());
 
 		if(player.getWorld() == Bukkit.getWorld("darkzone")) {
 			APlayer aPlayer = APlayerData.getPlayerData(player);
