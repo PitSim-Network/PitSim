@@ -89,11 +89,11 @@ public abstract class SimpleBoss {
             public void run() {
                 if(npc.isSpawned()){
                     double bound = new Random().nextDouble();
-                    if(bound < .15){
+                    if(bound < .25){
                         attackLow();
-                    }else if(bound < .25){
+                    }else if(bound < .35){
                         attackMedium();
-                    }else if (bound < .35){
+                    }else if (bound < .45){
                         attackHigh();
                     }
                 }
@@ -283,6 +283,7 @@ public abstract class SimpleBoss {
             finalTime = this.time / 60;
             stringTime = finalTime + " minutes";
         }else{
+            finalTime = time;
             stringTime = finalTime + " seconds";
         }
 

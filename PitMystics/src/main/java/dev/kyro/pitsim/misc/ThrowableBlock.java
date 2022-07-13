@@ -25,6 +25,7 @@ public class ThrowableBlock implements Listener {
         this.block = owner.getWorld().spawnFallingBlock(owner.getLocation().add(0,1,0), this.material, (byte) 0);
         this.block.setDropItem(false);
         this.block.setHurtEntities(false);
+
         this.block.setVelocity(owner.getLocation().getDirection().multiply(3));
     }
 
@@ -45,7 +46,7 @@ public class ThrowableBlock implements Listener {
     public void run(EntityChangeBlockEvent event){
         event.getEntity().getWorld().playEffect(event.getEntity().getLocation(), Effect.EXPLOSION_LARGE, 1);
 
-        for (Entity player : event.getEntity().getNearbyEntities(5, 5, 5)) {
+        for (Entity player : event.getEntity().getNearbyEntities(8, 8, 8)) {
             if(!(player instanceof Player)) continue;
             PitPlayer.getPitPlayer((Player) player).damage(5.0, (LivingEntity) this.owner);
         }

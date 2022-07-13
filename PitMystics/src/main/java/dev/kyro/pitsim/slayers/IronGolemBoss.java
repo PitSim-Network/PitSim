@@ -70,13 +70,16 @@ public class IronGolemBoss extends PitBoss {
 
             @Override
             protected void attackLow(){
+                Vector dirVector = IronGolemBoss.this.target.getLocation().toVector().subtract(npc.getEntity().getLocation().toVector()).setY(0);
+                Vector pullVector = dirVector.clone().normalize().setY(0.2).multiply(0.5).add(dirVector.clone().multiply(0.03));
+
                 if(npc.getEntity() != null)
-                    ThrowBlock.addThrowableBlock(new ThrowableBlock(npc.getEntity(), Material.ANVIL) {
+                    ThrowBlock.addThrowableBlock(new ThrowableBlock(npc.getEntity(), Material.ANVIL, pullVector.multiply((0.5 * 0.2) + 1.15)) {
                         @Override
                         public void run(EntityChangeBlockEvent event){
                             event.getEntity().getWorld().playEffect(event.getEntity().getLocation(), Effect.MAGIC_CRIT, 1);
 
-                            for (Entity player : event.getEntity().getNearbyEntities(5, 5, 5)) {
+                            for (Entity player : event.getEntity().getNearbyEntities(10, 10, 10)) {
                                 
                                 if(!(player instanceof Player)) continue;
                                 Sounds.ANVIL_LAND.play((LivingEntity) player);

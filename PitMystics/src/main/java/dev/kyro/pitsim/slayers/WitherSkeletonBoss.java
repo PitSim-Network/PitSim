@@ -58,9 +58,9 @@ public class WitherSkeletonBoss extends PitBoss {
                         Sounds.EXPLOSIVE_1.play(target);
                         if(!npc.getEntity().getNearbyEntities(10, 10, 10).contains(target)) return;
 
-                        Location location = new Location(MapManager.getDarkzone(), 240.5,21,-166.5);
+                        Location location = new Location(MapManager.getDarkzone(), 241.5,21,-168.5);
 
-                        new TempBlock("plugins/WorldEdit/schematics/witherCage.schematic", location, 5);
+                        new TempBlock("plugins/WorldEdit/schematics/witherCage.schematic", new Location(MapManager.getDarkzone(), 236.5,27,-172.5), 5);
 
                         Misc.sendTitle(target, "&c&lTrapped!", 60);
                         Misc.sendSubTitle(target, "&7For 5 Seconds", 60);
@@ -80,9 +80,14 @@ public class WitherSkeletonBoss extends PitBoss {
 
             @Override
             protected void attackLow(){
+                Vector dirVector = WitherSkeletonBoss.this.target.getLocation().toVector().subtract(npc.getEntity().getLocation().toVector()).setY(0);
+                Vector pullVector = dirVector.clone().normalize().setY(0.2).multiply(0.5).add(dirVector.clone().multiply(0.03));
+
                 if(npc.getEntity() != null)
 
-                    ThrowBlock.addThrowableBlock(new ThrowableBlock(npc.getEntity(), Material.SOUL_SAND){
+
+
+                    ThrowBlock.addThrowableBlock(new ThrowableBlock(npc.getEntity(), Material.SOUL_SAND, pullVector.multiply((0.5 * 0.2) + 1.15)){
                         @Override
                         public void run(EntityChangeBlockEvent event){
 

@@ -74,8 +74,11 @@ public class ChargedCreeperBoss extends PitBoss {
 
             @Override
             protected void attackMedium(){
+                Vector dirVector = ChargedCreeperBoss.this.target.getLocation().toVector().subtract(npc.getEntity().getLocation().toVector()).setY(0);
+                Vector pullVector = dirVector.clone().normalize().setY(0.2).multiply(0.5).add(dirVector.clone().multiply(0.03));
+
                 if(npc.getEntity() != null)
-                    ThrowBlock.addThrowableBlock(new ThrowableBlock(npc.getEntity(), Material.TNT));
+                    ThrowBlock.addThrowableBlock(new ThrowableBlock(npc.getEntity(), Material.TNT, pullVector.multiply((0.5 * 0.2) + 1.15)));
             }
 
             @Override

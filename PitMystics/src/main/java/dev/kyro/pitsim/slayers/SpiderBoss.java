@@ -58,15 +58,13 @@ public class SpiderBoss extends PitBoss {
             @Override
             protected void attackMedium(){
                 if(target.getLocation().getBlock().getType() == null || target.getLocation().getBlock().getType() == Material.AIR){
-                    new TempBlock(target.getLocation(), Material.WEB, 30);
+                    new TempBlock(target.getLocation(), Material.WEB, 3);
                 }
             }
 
             @Override
             protected void attackLow(){
                 if(npc.getEntity() != null){
-                    LivingEntity shooter = ((LivingEntity) npc.getEntity());
-
                     Vector dirVector = target.getLocation().toVector().subtract(npc.getEntity().getLocation().toVector()).setY(0);
                     Vector pullVector = dirVector.clone().normalize().setY(0.2).multiply(0.5).add(dirVector.clone().multiply(0.03));
                     npc.getEntity().setVelocity(pullVector.multiply((0.5 * 0.2) + 1.15));

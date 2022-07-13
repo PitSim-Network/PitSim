@@ -94,7 +94,7 @@ public class EndermanSlayer extends PitBoss {
                     @Override
                     public void aliveAction(){
                         try {
-                            if(location.distance(EndermanSlayer.this.target.getLocation()) <= 7){
+                            if(location.distance(EndermanSlayer.this.target.getLocation()) <= 15){
                                 Vector diff = target.getLocation().add(0.5, 1, 0.5).subtract(location.clone().add(0, 1, 0)).toVector();
                                 Location base = location.clone().add(0, 1, 0)/* the origin, where you are moving away from */;
                                 double add = diff.length(); //example amount
