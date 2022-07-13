@@ -47,10 +47,17 @@ public class PitCreeper extends PitMob {
 		MobManager.nameTags.remove(mob.entity.getUniqueId());
 		event.setRadius(0);
 
-		for (Entity player : entity.getNearbyEntities(5, 5, 5)) {
-			if(!(player instanceof Player)) continue;
+		for (Entity testEntity : entity.getNearbyEntities(7, 7, 7)) {
+			if(!(testEntity instanceof Player)) continue;
+			Player player = (Player) testEntity;
 
-			PitPlayer.getPitPlayer((Player) player).damage(mob.damage, (LivingEntity) entity);
+			double distance = testEntity.getLocation().distance(player.getLocation());
+			if(distance > 7) continue;
+			distance -= 2;
+			distance = Math.max(distance, 0);
+			double multiplier = 1 - distance * 0.2;
+
+			PitPlayer.getPitPlayer((Player) testEntity).damage(mob.damage * multiplier, (LivingEntity) testEntity);
 		}
 	}
 
