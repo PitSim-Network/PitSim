@@ -18,15 +18,15 @@ import java.util.Map;
 public class PitCreeper extends PitMob {
 
 	public PitCreeper(Location spawnLoc) {
-		super(MobType.CHARGED_CREEPER, spawnLoc, 4, 10, "&cCreeper", 7);
+		super(MobType.CHARGED_CREEPER, spawnLoc, 4, MobValues.creeperDamage, "&cCreeper", MobValues.creeperSpeed);
 	}
 
 	@Override
 	public LivingEntity spawnMob(Location spawnLoc) {
 		Creeper creeper = (Creeper) spawnLoc.getWorld().spawnEntity(spawnLoc, EntityType.CREEPER);
 
-		creeper.setMaxHealth(50);
-		creeper.setHealth(50);
+		creeper.setMaxHealth(MobValues.creeperHealth);
+		creeper.setHealth(MobValues.creeperHealth);
 		creeper.setPowered(true);
 		creeper.setRemoveWhenFarAway(false);
 

@@ -22,7 +22,7 @@ public class PitSkeleton extends PitMob {
 	public static PitSkeleton INSTANCE;
 
 	public PitSkeleton(Location spawnLoc) {
-		super(MobType.SKELETON, spawnLoc, 2, 8, "&cSkeleton", 1);
+		super(MobType.SKELETON, spawnLoc, 2, MobValues.skeletonDamage, "&cSkeleton", MobValues.skeletonSpeed);
 		INSTANCE = this;
 	}
 
@@ -30,8 +30,8 @@ public class PitSkeleton extends PitMob {
 	public LivingEntity spawnMob(Location spawnLoc) {
 		Skeleton skeleton = (Skeleton) spawnLoc.getWorld().spawnEntity(spawnLoc, EntityType.SKELETON);
 
-		skeleton.setMaxHealth(50);
-		skeleton.setHealth(50);
+		skeleton.setMaxHealth(MobValues.skeletonHealth);
+		skeleton.setHealth(MobValues.skeletonHealth);
 		skeleton.setRemoveWhenFarAway(false);
 		skeleton.setCustomNameVisible(false);
 		skeleton.setCanPickupItems(false);

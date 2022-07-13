@@ -45,6 +45,9 @@ public class PortalManager implements Listener {
 		Player player = event.getPlayer();
 		Location playerLoc = player.getLocation();
 
+		PitPlayer.getPitPlayer(player).updateMaxHealth();
+		player.setHealth(player.getMaxHealth());
+
 		PotionManager.bossBars.remove(player);
 
 		Location teleportLoc;

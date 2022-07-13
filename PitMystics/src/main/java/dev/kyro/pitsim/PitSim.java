@@ -43,6 +43,7 @@ import dev.kyro.pitsim.megastreaks.*;
 import dev.kyro.pitsim.misc.*;
 import dev.kyro.pitsim.misc.tainted.BloodyHeart;
 import dev.kyro.pitsim.misc.tainted.SyntheticCube;
+import dev.kyro.pitsim.mobs.MobValues;
 import dev.kyro.pitsim.perks.*;
 import dev.kyro.pitsim.pitmaps.BiomesMap;
 import dev.kyro.pitsim.placeholders.*;

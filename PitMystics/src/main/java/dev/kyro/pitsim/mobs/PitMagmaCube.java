@@ -1,5 +1,6 @@
 package dev.kyro.pitsim.mobs;
 
+import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.brewing.ingredients.FermentedSpiderEye;
 import dev.kyro.pitsim.brewing.ingredients.MagmaCream;
 import dev.kyro.pitsim.controllers.MobManager;
@@ -13,6 +14,7 @@ import org.bukkit.entity.MagmaCube;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -20,19 +22,26 @@ import java.util.Map;
 public class PitMagmaCube extends PitMob {
 
 	public PitMagmaCube(Location spawnLoc) {
-		super(MobType.MAGMA_CUBE, spawnLoc, 6, 12, "&cMagma Cube", 0);
+		super(MobType.MAGMA_CUBE, spawnLoc, 6, MobValues.magmaCubeDamage, "&cMagma Cube", MobValues.magmaCubeSpeed);
 	}
 
 	@Override
 	public LivingEntity spawnMob(Location spawnLoc) {
 		MagmaCube magmaCube = (MagmaCube) spawnLoc.getWorld().spawnEntity(spawnLoc, EntityType.MAGMA_CUBE);
 
-		magmaCube.setMaxHealth(50);
-		magmaCube.setHealth(50);
-		magmaCube.setRemoveWhenFarAway(false);
 		magmaCube.setSize(5);
-
+		magmaCube.setRemoveWhenFarAway(false);
 		magmaCube.setCustomNameVisible(false);
+
+		new BukkitRunnable() {
+			@Override
+			public void run() {
+				magmaCube.setMaxHealth(MobValues.magmaCubeHealth);
+				magmaCube.setHealth(MobValues.magmaCubeHealth);
+			}
+		}.runTaskLater(PitSim.INSTANCE, 5);
+
+
 		MobManager.makeTag(magmaCube, displayName);
 		return magmaCube;
 	}

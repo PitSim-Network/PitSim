@@ -39,6 +39,12 @@ public class Telebow extends PitEnchant {
 		if(enchantLvl == 0) return;
 		if(attackEvent.arrow == null) return;
 
+		if(attackEvent.attackerPlayer.isSneaking() && attackEvent.attackerPlayer.getWorld() == MapManager.getDarkzone()) {
+			AOutput.error(attackEvent.attackerPlayer, "&c&lNOPE! &7That enchant is disabled here!");
+			Sounds.NO.play(attackEvent.attackerPlayer);
+			return;
+		}
+
 		Cooldown cooldown = getCooldown(attackEvent.attackerPlayer, getCooldown(enchantLvl) * 20);
 		cooldown.reduceCooldown(40);
 

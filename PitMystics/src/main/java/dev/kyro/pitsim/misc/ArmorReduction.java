@@ -26,7 +26,6 @@ public class ArmorReduction {
 
 		ItemStack chestplate = entity.getEquipment().getChestplate();
 		if(!Misc.isAirOrNull(chestplate) && chestplate.getType() == Material.LEATHER_CHESTPLATE) {
-			AOutput.broadcast("chestplate");
 			missingPoints += 5;
 		}
 

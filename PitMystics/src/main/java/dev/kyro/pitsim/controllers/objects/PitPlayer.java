@@ -431,7 +431,7 @@ public class PitPlayer {
 			maxHealth += Monster.healthMap.get(player);
 		}
 
-		maxHealth -= (4 * graceTiers);
+		maxHealth -= (8 * graceTiers);
 
 		if(maxHealth <= 0) {
 			if(!CombatManager.taggedPlayers.containsKey(player.getUniqueId())) {

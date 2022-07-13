@@ -16,15 +16,15 @@ import java.util.Map;
 public class PitCaveSpider extends PitMob {
 
 	public PitCaveSpider(Location spawnLoc) {
-		super(MobType.CAVE_SPIDER, spawnLoc, 5, 15, "&cCave Spider", 2);
+		super(MobType.CAVE_SPIDER, spawnLoc, 5, MobValues.caveSpiderDamage, "&cCave Spider", MobValues.caveSpiderSpeed);
 	}
 
 	@Override
 	public LivingEntity spawnMob(Location spawnLoc) {
 		CaveSpider caveSpider = (CaveSpider) spawnLoc.getWorld().spawnEntity(spawnLoc, EntityType.CAVE_SPIDER);
 
-		caveSpider.setMaxHealth(50);
-		caveSpider.setHealth(50);
+		caveSpider.setMaxHealth(MobValues.caveSpiderHealth);
+		caveSpider.setHealth(MobValues.caveSpiderHealth);
 		caveSpider.setRemoveWhenFarAway(false);
 
 		caveSpider.setCustomNameVisible(false);

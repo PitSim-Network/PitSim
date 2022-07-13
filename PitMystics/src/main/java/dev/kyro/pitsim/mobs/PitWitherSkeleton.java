@@ -20,15 +20,15 @@ import java.util.Map;
 public class PitWitherSkeleton extends PitMob {
 
 	public PitWitherSkeleton(Location spawnLoc) {
-		super(MobType.SKELETON, spawnLoc, 8, 16, "&cWither Skeleton", 3);
+		super(MobType.SKELETON, spawnLoc, 8, MobValues.witherSkeletonDamage, "&cWither Skeleton", MobValues.witherSkeletonSpeed);
 	}
 
 	@Override
 	public LivingEntity spawnMob(Location spawnLoc) {
 		Skeleton witherSkeleton = (Skeleton) spawnLoc.getWorld().spawnEntity(spawnLoc, EntityType.SKELETON);
 
-		witherSkeleton.setMaxHealth(50);
-		witherSkeleton.setHealth(50);
+		witherSkeleton.setMaxHealth(MobValues.witherSkeletonHealth);
+		witherSkeleton.setHealth(MobValues.witherSkeletonHealth);
 		witherSkeleton.setRemoveWhenFarAway(false);
 
 		witherSkeleton.setSkeletonType(Skeleton.SkeletonType.WITHER);

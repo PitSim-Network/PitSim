@@ -17,15 +17,15 @@ import java.util.Map;
 public class PitSpider extends PitMob {
 
 	public PitSpider(Location spawnLoc) {
-		super(MobType.SPIDER, spawnLoc, 3, 12,  "&cSpider", 1);
+		super(MobType.SPIDER, spawnLoc, 3, MobValues.spiderDamage,  "&cSpider", MobValues.spiderSpeed);
 	}
 
 	@Override
 	public LivingEntity spawnMob(Location spawnLoc) {
 		Spider spider = (Spider) spawnLoc.getWorld().spawnEntity(spawnLoc, EntityType.SPIDER);
 
-		spider.setMaxHealth(50);
-		spider.setHealth(50);
+		spider.setMaxHealth(MobValues.spiderHealth);
+		spider.setHealth(MobValues.spiderHealth);
 		spider.setRemoveWhenFarAway(false);
 
 		spider.setCustomNameVisible(false);

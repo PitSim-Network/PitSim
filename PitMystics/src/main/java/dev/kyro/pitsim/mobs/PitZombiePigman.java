@@ -17,15 +17,15 @@ import java.util.Map;
 public class PitZombiePigman extends PitMob {
 
 	public PitZombiePigman(Location spawnLoc) {
-		super(MobType.ZOMBIE_PIGMAN, spawnLoc, 7, 14, "&cZombie Pigman", 3);
+		super(MobType.ZOMBIE_PIGMAN, spawnLoc, 7, MobValues.pigmanDamage, "&cZombie Pigman", MobValues.pigmanSpeed);
 	}
 
 	@Override
 	public LivingEntity spawnMob(Location spawnLoc) {
 		PigZombie zombiePigman = (PigZombie) spawnLoc.getWorld().spawnEntity(spawnLoc, EntityType.PIG_ZOMBIE);
 
-		zombiePigman.setMaxHealth(50);
-		zombiePigman.setHealth(50);
+		zombiePigman.setMaxHealth(MobValues.pigmanHealth);
+		zombiePigman.setHealth(MobValues.pigmanHealth);
 		zombiePigman.setAngry(true);
 		zombiePigman.setCustomNameVisible(false);
 		zombiePigman.setRemoveWhenFarAway(false);

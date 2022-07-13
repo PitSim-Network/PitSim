@@ -17,15 +17,15 @@ import java.util.Map;
 public class PitIronGolem extends PitMob {
 
 	public PitIronGolem(Location spawnLoc) {
-		super(MobType.IRON_GOLEM, spawnLoc, 9, 18, "&cIron Golem", 4);
+		super(MobType.IRON_GOLEM, spawnLoc, 9, MobValues.golemDamage, "&cIron Golem", MobValues.golemSpeed);
 	}
 
 	@Override
 	public LivingEntity spawnMob(Location spawnLoc) {
 		IronGolem ironGolem = (IronGolem) spawnLoc.getWorld().spawnEntity(spawnLoc, EntityType.IRON_GOLEM);
 
-		ironGolem.setMaxHealth(50);
-		ironGolem.setHealth(50);
+		ironGolem.setMaxHealth(MobValues.golemHealth);
+		ironGolem.setHealth(MobValues.golemHealth);
 		ironGolem.setRemoveWhenFarAway(false);
 
 		ironGolem.setCustomNameVisible(false);

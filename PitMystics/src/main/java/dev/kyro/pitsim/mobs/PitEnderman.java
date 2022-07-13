@@ -17,15 +17,15 @@ import java.util.Map;
 public class PitEnderman extends PitMob {
 
 	public PitEnderman(Location spawnLoc) {
-		super(MobType.ENDERMAN, spawnLoc, 10, 25, "&cEnderman", 3);
+		super(MobType.ENDERMAN, spawnLoc, 10, MobValues.endermanDamage, "&cEnderman", MobValues.endermanSpeed);
 	}
 
 	@Override
 	public LivingEntity spawnMob(Location spawnLoc) {
 		Enderman enderman = (Enderman) spawnLoc.getWorld().spawnEntity(spawnLoc, EntityType.ENDERMAN);
 
-		enderman.setMaxHealth(50);
-		enderman.setHealth(50);
+		enderman.setMaxHealth(MobValues.endermanHealth);
+		enderman.setHealth(MobValues.endermanHealth);
 
 		enderman.setCustomNameVisible(false);
 		enderman.setRemoveWhenFarAway(false);

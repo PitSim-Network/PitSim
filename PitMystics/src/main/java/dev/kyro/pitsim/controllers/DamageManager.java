@@ -3,6 +3,8 @@ package dev.kyro.pitsim.controllers;
 import de.tr7zw.nbtapi.NBTItem;
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.PitSim;
+import dev.kyro.pitsim.brewing.BrewingManager;
+import dev.kyro.pitsim.brewing.objects.BrewingIngredient;
 import dev.kyro.pitsim.controllers.objects.Non;
 import dev.kyro.pitsim.controllers.objects.PitEnchant;
 import dev.kyro.pitsim.controllers.objects.PitMob;
@@ -443,7 +445,18 @@ public class DamageManager implements Listener {
 
 	public static void loseLives(LivingEntity dead, LivingEntity killer) {
 		if(!(dead instanceof Player)) return;
-		if(MapManager.inDarkzone(dead.getLocation())) return;
+		if(MapManager.inDarkzone(dead.getLocation())) {
+			Player deadPlayer = (Player) dead;
+			for(int i = 0; i < deadPlayer.getInventory().getSize(); i++) {
+				if(BrewingIngredient.isIngredient(deadPlayer.getInventory().getItem(i))) {
+					ItemStack item = deadPlayer.getInventory().getItem(i);
+					BrewingIngredient ingredient = BrewingIngredient.getIngrediantFromItemStack(item);
+					AOutput.send(deadPlayer, "&c- &8" + item.getAmount() + "x " + ingredient.color + item.getItemMeta().getDisplayName());
+					deadPlayer.getInventory().setItem(i, new ItemStack(Material.AIR));
+				}
+			}
+			return;
+		}
 
 		if(BoosterManager.getBooster("pvp").minutes <= 0) {
 			Player deadPlayer = (Player) dead;
