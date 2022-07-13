@@ -7,6 +7,7 @@ import dev.kyro.pitsim.enums.MysticType;
 import dev.kyro.pitsim.enums.NBTTag;
 import dev.kyro.pitsim.enums.PantColor;
 import dev.kyro.pitsim.events.AttackEvent;
+import dev.kyro.pitsim.events.HealEvent;
 import dev.kyro.pitsim.misc.Misc;
 import org.bukkit.Bukkit;
 import org.bukkit.Color;
@@ -30,6 +31,13 @@ import java.util.Objects;
 public class TaintedManager implements Listener {
 
     public static List<Player> players = new ArrayList<>();
+
+    @EventHandler
+    public void onHeal(HealEvent event) {
+        if(!event.isPlayer) return;
+        if(!MapManager.inDarkzone(event.player)) return;
+        event.multipliers.add(0.5);
+    }
 
     @EventHandler
     public void onAttack(EntityDamageByEntityEvent event) {

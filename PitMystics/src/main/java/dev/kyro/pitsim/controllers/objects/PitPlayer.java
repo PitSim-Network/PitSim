@@ -417,6 +417,8 @@ public class PitPlayer {
 		int maxHealth = 24;
 		if(hasPerk(Thick.INSTANCE)) maxHealth += 4;
 
+		if(MapManager.inDarkzone(player)) maxHealth += 20;
+
 		Map<PitEnchant, Integer> enchantMap = EnchantManager.getEnchantsOnPlayer(player);
 		if(Hearts.INSTANCE != null) maxHealth += Hearts.INSTANCE.getExtraHealth(enchantMap);
 		if(MaxHealth.INSTANCE != null) maxHealth += MaxHealth.INSTANCE.

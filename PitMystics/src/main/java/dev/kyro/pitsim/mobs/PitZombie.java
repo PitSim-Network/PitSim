@@ -21,7 +21,7 @@ public 	class PitZombie extends PitMob {
 	public static PitZombie INSTANCE;
 
 	public PitZombie(Location spawnLoc) {
-		super(MobType.ZOMBIE, spawnLoc, 1, 5, "&cZombie", 2);
+		super(MobType.ZOMBIE, spawnLoc, 1, MobValues.zombieDamage, "&cZombie", MobValues.zombieSpeed);
 		INSTANCE = this;
 	}
 
@@ -29,8 +29,8 @@ public 	class PitZombie extends PitMob {
 	public LivingEntity spawnMob(Location spawnLoc) {
 		Zombie zombie = (Zombie) spawnLoc.getWorld().spawnEntity(spawnLoc, EntityType.ZOMBIE);
 
-		zombie.setMaxHealth(25);
-		zombie.setHealth(25);
+		zombie.setMaxHealth(MobValues.zombieHealth);
+		zombie.setHealth(MobValues.zombieHealth);
 //		zombie.setCustomName(displayName);
 		zombie.setCustomNameVisible(false);
 		zombie.setRemoveWhenFarAway(false);
