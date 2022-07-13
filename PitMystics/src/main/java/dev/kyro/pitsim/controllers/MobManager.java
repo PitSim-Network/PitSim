@@ -38,7 +38,7 @@ public class MobManager implements Listener {
 	public static Map<ArmorStand, Location> locs = new HashMap<>();
 	public static Map<ArmorStand, Location> oldLocs = new HashMap<>();
 
-	public static final int MAX_TARGETS = 3;
+	public static final int MAX_TARGETS = 4;
 
 	@EventHandler
 	public void onAttack(AttackEvent.Apply attackEvent) {
@@ -199,12 +199,13 @@ public class MobManager implements Listener {
 							noTarget.put(mob, mob.entity.getLocation().distance(player.getLocation()));
 							continue;
 						} else if(mob.target == player) {
+							targets++;
 							if(targets > MAX_TARGETS + 2) {
 								mob.target = null;
 								((Creature) mob.entity).setTarget(null);
+								targets--;
 								continue;
 							}
-							targets++;
 						}
 					}
 
