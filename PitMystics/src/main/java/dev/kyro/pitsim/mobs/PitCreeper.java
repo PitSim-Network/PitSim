@@ -4,11 +4,12 @@ import dev.kyro.pitsim.brewing.ingredients.Gunpowder;
 import dev.kyro.pitsim.brewing.ingredients.SpiderEye;
 import dev.kyro.pitsim.controllers.MobManager;
 import dev.kyro.pitsim.controllers.objects.PitMob;
+import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.enums.MobType;
 import org.bukkit.Location;
-import org.bukkit.entity.Creeper;
-import org.bukkit.entity.EntityType;
-import org.bukkit.entity.LivingEntity;
+import org.bukkit.entity.*;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.entity.ExplosionPrimeEvent;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.HashMap;
@@ -17,7 +18,7 @@ import java.util.Map;
 public class PitCreeper extends PitMob {
 
 	public PitCreeper(Location spawnLoc) {
-		super(MobType.CHARGED_CREEPER, spawnLoc, 4, 8, "&cCreeper");
+		super(MobType.CHARGED_CREEPER, spawnLoc, 4, 10, "&cCreeper", 7);
 	}
 
 	@Override
@@ -32,6 +33,25 @@ public class PitCreeper extends PitMob {
 		creeper.setCustomNameVisible(false);
 		MobManager.makeTag(creeper, displayName);
 		return creeper;
+	}
+
+	@EventHandler
+	public void onExplode(ExplosionPrimeEvent event) {
+		Entity entity = event.getEntity();
+		if (!(entity instanceof Creeper)) return;
+
+		PitMob mob = PitMob.getPitMob((LivingEntity) entity);
+		if(mob == null) return;
+		MobManager.mobs.remove(mob);
+		MobManager.nameTags.get(mob.entity.getUniqueId()).remove();
+		MobManager.nameTags.remove(mob.entity.getUniqueId());
+		event.setRadius(0);
+
+		for (Entity player : entity.getNearbyEntities(5, 5, 5)) {
+			if(!(player instanceof Player)) continue;
+
+			PitPlayer.getPitPlayer((Player) player).damage(mob.damage, (LivingEntity) entity);
+		}
 	}
 
 	@Override

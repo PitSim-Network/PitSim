@@ -9,6 +9,8 @@ import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -23,18 +25,21 @@ public abstract class PitMob implements Listener {
 	public LivingEntity entity;
 	public double damage;
 	public String displayName;
+	public int speedLevel;
 
-	public PitMob(MobType type, Location spawnLoc, int subLevel, double damage, String displayName) {
+	public PitMob(MobType type, Location spawnLoc, int subLevel, double damage, String displayName, int speedLevel) {
 		this.type = type;
 		this.spawnLoc = spawnLoc;
 		this.subLevel = subLevel;
 		this.damage = damage;
 		this.displayName = displayName;
+		this.speedLevel = speedLevel;
 
 		Bukkit.getPluginManager().registerEvents(this, PitSim.INSTANCE);
 		MobManager.mobs.add(this);
 
 		this.entity = spawnMob(spawnLoc);
+		if(speedLevel != 0) this.entity.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 9999, speedLevel - 1, true, false));
 	}
 
 	public abstract LivingEntity spawnMob(Location spawnLoc);

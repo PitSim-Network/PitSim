@@ -1,5 +1,6 @@
 package dev.kyro.pitsim.controllers;
 
+import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.brewing.BrewingManager;
 import dev.kyro.pitsim.brewing.PotionManager;
@@ -11,9 +12,7 @@ import dev.kyro.pitsim.enchants.tainted.CleaveSpell;
 import dev.kyro.pitsim.enums.SubLevel;
 import dev.kyro.pitsim.events.AttackEvent;
 import dev.kyro.pitsim.events.KillEvent;
-import dev.kyro.pitsim.mobs.PitEnderman;
-import dev.kyro.pitsim.mobs.PitIronGolem;
-import dev.kyro.pitsim.mobs.PitMagmaCube;
+import dev.kyro.pitsim.mobs.*;
 import net.citizensnpcs.api.CitizensAPI;
 import net.citizensnpcs.api.npc.NPC;
 import org.bukkit.Bukkit;
@@ -39,6 +38,18 @@ public class MobManager implements Listener {
 	public static Map<ArmorStand, Location> locs = new HashMap<>();
 	public static Map<ArmorStand, Location> oldLocs = new HashMap<>();
 
+	public static final int MAX_TARGETS = 3;
+
+	@EventHandler
+	public void onAttack(AttackEvent.Apply attackEvent) {
+		if(!attackEvent.attackerIsPlayer || attackEvent.defenderIsPlayer) return;
+		if(!MapManager.inDarkzone(attackEvent.attackerPlayer.getLocation())) return;
+		if(!(attackEvent.defender instanceof Creature)) return;
+		PitMob pitMob = PitMob.getPitMob(attackEvent.defender);
+		if(pitMob == null) return;
+		((Creature) attackEvent.defender).setTarget(attackEvent.attackerPlayer);
+		pitMob.target = attackEvent.attackerPlayer;
+	}
 
 	static {
 		new BukkitRunnable() {
@@ -67,14 +78,12 @@ public class MobManager implements Listener {
 				clearMobs();
 				for(SubLevel level : SubLevel.values()) {
 
-
 					int currentMobs = 0;
 					for(PitMob mob : mobs) {
 						if(mob.subLevel == level.level) currentMobs++;
 					}
 
 					if(currentMobs >= level.maxMobs) continue;
-
 
 					Random xRand = new Random();
 					int xLoc = xRand.nextInt(level.radius - (-1 * level.radius) + 1) + (-1 * level.radius);
@@ -92,7 +101,7 @@ public class MobManager implements Listener {
 						Location loc = new Location(Bukkit.getWorld("darkzone"), xLoc + level.middle.getX() + 0.5, level.middle.getY(), zLoc + level.middle.getZ() + 0.5);
 						while(loc.getBlock().getType() != Material.AIR) {
 							loc.setY(loc.getY() + 1);
-							if(loc.getY() >= level.middle.getY() + 10) continue;
+							if(loc.getY() >= level.middle.getY() + 3) continue;
 						}
 
 						randClass.getDeclaredConstructor(cArg).newInstance(loc);
@@ -314,22 +323,6 @@ public class MobManager implements Listener {
 		if(mob instanceof PitMagmaCube) return;
 
 		if(event.getDamage() > 0) event.setDamage(EntityDamageEvent.DamageModifier.BASE, mob.damage);
-
-	}
-
-
-	@EventHandler
-	public void onMagmaCubeAttack(AttackEvent.Apply event) {
-		if(event.attacker instanceof Player) return;
-		PitMob mob = PitMob.getPitMob(event.attacker);
-		if(mob == null) return;
-
-		if(!(mob instanceof PitMagmaCube)) return;
-
-		if(event.fakeHit) return;
-
-		event.increase = mob.damage;
-
 	}
 
 	@EventHandler
@@ -378,25 +371,6 @@ public class MobManager implements Listener {
 	@EventHandler
 	public void onSpawn(SpawnerSpawnEvent event) {
 		event.setCancelled(true);
-	}
-
-	@EventHandler
-	public void onExplode(ExplosionPrimeEvent event) {
-		Entity entity = event.getEntity();
-		if (!(entity instanceof Creeper)) return;
-
-		PitMob mob = PitMob.getPitMob((LivingEntity) entity);
-		if(mob == null) return;
-		mobs.remove(mob);
-		nameTags.get(mob.entity.getUniqueId()).remove();
-		nameTags.remove(mob.entity.getUniqueId());
-		event.setRadius(0);
-
-		for (Entity player : entity.getNearbyEntities(5, 5, 5)) {
-			if(!(player instanceof Player)) continue;
-
-			PitPlayer.getPitPlayer((Player) player).damage(5, (LivingEntity) entity);
-		}
 	}
 
 	public static void clearMobs() {
