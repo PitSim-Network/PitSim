@@ -11,9 +11,11 @@ import dev.kyro.pitsim.misc.Misc;
 import org.bukkit.Bukkit;
 import org.bukkit.Color;
 import org.bukkit.Material;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.inventory.InventoryOpenEvent;
 import org.bukkit.event.player.PlayerTeleportEvent;
 import org.bukkit.inventory.ItemStack;
@@ -30,23 +32,18 @@ public class TaintedManager implements Listener {
     public static List<Player> players = new ArrayList<>();
 
     @EventHandler
-    public void onAttack(AttackEvent.Apply event) {
-        if(!MapManager.inDarkzone(event.attacker) || !MapManager.inDarkzone(event.defender)) return;
+    public void onAttack(EntityDamageByEntityEvent event) {
+        if(!MapManager.inDarkzone((LivingEntity) event.getDamager()) || !MapManager.inDarkzone((LivingEntity) event.getEntity())) return;
 
-        if(event.attackerIsPlayer) {
-            ItemStack attack = event.attackerPlayer.getItemInHand();
-            if(!Misc.isAirOrNull(attack) && attack.getType() == Material.GOLD_HOE) {
-                event.increase += 7;
+        if(event.getDamager() instanceof Player) {
+            ItemStack held = ((Player) event.getDamager()).getItemInHand();
+            if(!Misc.isAirOrNull(held) && held.getType() == Material.GOLD_HOE) {
+                double multiplier = Misc.isCritical((Player) event.getDamager()) ? 1.5 : 1;
+                event.setDamage(8 * multiplier);
+            } else if(!Misc.isAirOrNull(held) && held.getType() == Material.STONE_SWORD) {
+                event.setDamage(0);
             }
         }
-
-        if(event.defenderIsPlayer) {
-            ItemStack defend = event.defenderPlayer.getInventory().getChestplate();
-            if(!Misc.isAirOrNull(defend) && defend.getType() == Material.LEATHER_CHESTPLATE) {
-                event.multipliers.add(Misc.getReductionMultiplier(4 * 8));
-            }
-        }
-
     }
 
     @EventHandler
