@@ -3,6 +3,7 @@ package dev.kyro.pitsim.mobs;
 import dev.kyro.pitsim.brewing.ingredients.Gunpowder;
 import dev.kyro.pitsim.brewing.ingredients.SpiderEye;
 import dev.kyro.pitsim.controllers.MobManager;
+import dev.kyro.pitsim.controllers.NonManager;
 import dev.kyro.pitsim.controllers.objects.PitMob;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.enums.MobType;
@@ -50,6 +51,7 @@ public class PitCreeper extends PitMob {
 		for (Entity testEntity : entity.getNearbyEntities(7, 7, 7)) {
 			if(!(testEntity instanceof Player)) continue;
 			Player player = (Player) testEntity;
+			if(NonManager.getNon(player) != null) continue;
 
 			double distance = testEntity.getLocation().distance(player.getLocation());
 			if(distance > 7) continue;
