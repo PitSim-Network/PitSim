@@ -87,7 +87,7 @@ public class SavingGraceSpell extends PitEnchant {
             public void run() {
                 PitPlayer.getPitPlayer(event.deadPlayer).heal(event.deadPlayer.getMaxHealth());
             }
-        }.runTaskLater(PitSim.INSTANCE, 2);
+        }.runTaskLater(PitSim.INSTANCE, 10);
     }
 
     @EventHandler

@@ -70,8 +70,7 @@ public class DamageManager implements Listener {
 	public void onWitherDamage(EntityDamageEvent event) {
 		if(event.getCause() != EntityDamageEvent.DamageCause.WITHER || !(event.getEntity() instanceof Player)) return;
 		Player player = (Player) event.getEntity();
-		EntityPlayer nmsPlayer = ((CraftPlayer) player).getHandle();
-		if(event.getFinalDamage() >= player.getHealth() + nmsPlayer.getAbsorptionHearts()) death(player);
+		if(event.getFinalDamage() >= player.getHealth()) death(player);
 	}
 
 	@EventHandler
@@ -232,13 +231,11 @@ public class DamageManager implements Listener {
 //		AOutput.send(attackEvent.attacker, "Final Damage: " + attackEvent.event.getDamage());
 //		AOutput.send(attackEvent.attacker, "Final Damage: " + attackEvent.event.getFinalDamage());
 
-		EntityPlayer nmsPlayer = ((CraftPlayer) attackEvent.defender).getHandle();
-
-		if(attackEvent.event.getFinalDamage() >= attackEvent.defender.getHealth() + nmsPlayer.getAbsorptionHearts()) {
+		if(attackEvent.event.getFinalDamage() >= attackEvent.defender.getHealth()) {
 
 			attackEvent.event.setCancelled(true);
 			kill(attackEvent, attackEvent.attacker, attackEvent.defender, false, KillType.DEFAULT);
-		} else if(attackEvent.event.getFinalDamage() + attackEvent.executeUnder >= attackEvent.defender.getHealth() + nmsPlayer.getAbsorptionHearts()	) {
+		} else if(attackEvent.event.getFinalDamage() + attackEvent.executeUnder >= attackEvent.defender.getHealth()) {
 
 			attackEvent.event.setCancelled(true);
 			kill(attackEvent, attackEvent.attacker, attackEvent.defender, true, KillType.DEFAULT);
@@ -458,6 +455,7 @@ public class DamageManager implements Listener {
 					deadPlayer.getInventory().setItem(i, new ItemStack(Material.AIR));
 				}
 			}
+
 			return;
 		}
 

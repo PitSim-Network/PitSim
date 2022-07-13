@@ -107,6 +107,11 @@ public class FreshCommand implements CommandExecutor {
 			ItemMeta itemMeta = mystic.getItemMeta();
 			itemMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
 			mystic.setItemMeta(itemMeta);
+
+			NBTItem nbtItem = new NBTItem(mystic);
+			nbtItem.setBoolean(NBTTag.DROP_CONFIRM.getRef(), true);
+			mystic = nbtItem.getItem();
+
 		} else if(type == MysticType.TAINTED_CHESTPLATE) {
 
 			pantColor = PantColor.TAINTED;
@@ -119,6 +124,10 @@ public class FreshCommand implements CommandExecutor {
 			LeatherArmorMeta meta = (LeatherArmorMeta) mystic.getItemMeta();
 			meta.setColor(Color.fromRGB(pantColor.hexColor));
 			mystic.setItemMeta(meta);
+
+			NBTItem nbtItem = new NBTItem(mystic);
+			nbtItem.setBoolean(NBTTag.DROP_CONFIRM.getRef(), true);
+			mystic = nbtItem.getItem();
 		} else {
 
 			mystic = new AItemStackBuilder(Material.LEATHER_LEGGINGS)
