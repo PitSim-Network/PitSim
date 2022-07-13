@@ -1,6 +1,7 @@
 package dev.kyro.pitsim.misc;
 
 import de.tr7zw.nbtapi.NBTItem;
+import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.enums.NBTTag;
 import org.bukkit.Material;
 import org.bukkit.entity.LivingEntity;
@@ -21,6 +22,12 @@ public class ArmorReduction {
 		ItemStack helmet = entity.getEquipment().getHelmet();
 		if(!Misc.isAirOrNull(helmet) && helmet.getType() == Material.GOLD_HELMET) {
 			missingPoints += 1;
+		}
+
+		ItemStack chestplate = entity.getEquipment().getChestplate();
+		if(!Misc.isAirOrNull(chestplate) && chestplate.getType() == Material.LEATHER_CHESTPLATE) {
+			AOutput.broadcast("chestplate");
+			missingPoints += 5;
 		}
 
 		double actualReduction = actualPoints * 4;
