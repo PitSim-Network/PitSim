@@ -213,57 +213,6 @@ public abstract class SimpleBoss {
 
     }
 
-    /*
-    public void bossBar(final @NonNull Audience player){
-        if(subLevel.equals(SubLevel.ZOMBIE_CAVE)){
-            final Component name = Component.text(ChatColor.RED + "" + ChatColor.BOLD + "Zombie Boss");
-            final BossBar fullBar = BossBar.bossBar(name, 1F, BossBar.Color.PINK, BossBar.Overlay.PROGRESS);
-
-            player.showBossBar(fullBar);
-            this.activeBar = fullBar;
-        }else if(subLevel.equals(SubLevel.SKELETON_CAVE)){
-            final Component name = Component.text(ChatColor.RED + "" + ChatColor.BOLD + "Skeleton Boss");
-        }
-            final BossBar fullBar = BossBar.bossBar(name, 1F, BossBar.Color.PINK, BossBar.Overlay.PROGRESS);
-
-            player.showBossBar(fullBar);
-            this.activeBar = fullBar;
-        }else if(subLevel.equals(SubLevel.SPIDER_CAVE)){
-            final Component name = Component.text(ChatColor.RED + "" + ChatColor.BOLD + "Spider Boss");
-            final BossBar fullBar = BossBar.bossBar(name, 1F, BossBar.Color.PINK, BossBar.Overlay.PROGRESS);
-
-            player.showBossBar(fullBar);
-            this.activeBar = fullBar;
-        }else if(subLevel.equals(SubLevel.CREEPER_CAVE)){
-            final Component name = Component.text(ChatColor.RED + "" + ChatColor.BOLD + "Creeper Boss");
-            final BossBar fullBar = BossBar.bossBar(name, 1F, BossBar.Color.PINK, BossBar.Overlay.PROGRESS);
-
-            player.showBossBar(fullBar);
-            this.activeBar = fullBar;
-        }else if(subLevel.equals(SubLevel.DEEP_SPIDER_CAVE)){
-            final Component name = Component.text(ChatColor.RED + "" + ChatColor.BOLD + "Deep Spider Boss");
-            final BossBar fullBar = BossBar.bossBar(name, 1F, BossBar.Color.PINK, BossBar.Overlay.PROGRESS);
-
-            player.showBossBar(fullBar);
-            this.activeBar = fullBar;
-        }else if(subLevel.equals(SubLevel.PIGMEN_CAVE)){
-            final Component name = Component.text(ChatColor.RED + "" + ChatColor.BOLD + "Pigman Boss");
-            final BossBar fullBar = BossBar.bossBar(name, 1F, BossBar.Color.PINK, BossBar.Overlay.PROGRESS);
-
-            player.showBossBar(fullBar);
-            this.activeBar = fullBar;
-        }else if(subLevel.equals(SubLevel.MAGMA_CAVE)){
-            final Component name = Component.text(ChatColor.RED + "" + ChatColor.BOLD + "Magma Boss");
-            final BossBar fullBar = BossBar.bossBar(name, 1F, BossBar.Color.PINK, BossBar.Overlay.PROGRESS);
-
-            player.showBossBar(fullBar);
-            this.activeBar = fullBar;
-        }
-    }
-
-
-     */
-
     public void bossBar(final @NonNull Audience player, String text) {
         final Component name = Component.text(text);
         final BossBar fullBar = BossBar.bossBar(name, 1F, BossBar.Color.PINK, BossBar.Overlay.PROGRESS);
@@ -290,9 +239,9 @@ public abstract class SimpleBoss {
 
         AOutput.send(target.getPlayer(), "&7You killed your boss in &a" + stringTime);
 
-//        BossDrop bossDrop = new BossDrop(target.getPlayer(), LootTable.valueOf(subLevel.toString()));
+        BossDrop bossDrop = new BossDrop(target.getPlayer(), LootTable.valueOf(subLevel.toString()));
 //
-//        bossDrop.run();
+       bossDrop.run();
 
     }
 
