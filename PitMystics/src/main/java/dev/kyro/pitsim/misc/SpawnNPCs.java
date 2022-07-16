@@ -3,11 +3,10 @@ package dev.kyro.pitsim.misc;
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.controllers.MapManager;
-import dev.kyro.pitsim.controllers.NonManager;
-import dev.kyro.pitsim.controllers.SpawnManager;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.inventories.*;
 import dev.kyro.pitsim.inventories.stats.StatGUI;
+import dev.kyro.pitsim.slayers.tainted.SimpleSkin;
 import net.citizensnpcs.api.CitizensAPI;
 import net.citizensnpcs.api.event.NPCRightClickEvent;
 import net.citizensnpcs.api.npc.NPC;
@@ -18,14 +17,10 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.World;
-import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
-import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.entity.EntityTeleportEvent;
-import org.bukkit.event.player.PlayerTeleportEvent;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.ArrayList;
@@ -45,6 +40,8 @@ public class SpawnNPCs implements Listener {
 	public static NPC leggingMerchant;
 	public static NPC potionMaster;
 	public static NPC auctioneer;
+
+	public static NPC skinTest;
 
 //	@EventHandler
 //	public void onTeleport(PlayerTeleportEvent event) {
@@ -233,6 +230,26 @@ public class SpawnNPCs implements Listener {
 		NPC npc = registry.createNPC(EntityType.PLAYER, ChatColor.DARK_GRAY + "" + ChatColor.BOLD + "SHADY FIGURE");
 		npc.spawn(new Location(MapManager.getDarkzone(), 254.5, 91, -128.5, -14, 0));
 		auctioneer = npc;
+		skin(npc, "Itz_Aethan");
+	}
+
+	public static void createSkinTest() {
+		NPCRegistry registry = CitizensAPI.getNPCRegistry();
+		NPC npc = registry.createNPC(EntityType.PLAYER, ChatColor.DARK_GRAY + "" + ChatColor.BOLD + "");
+		npc.spawn(new Location(MapManager.getDarkzone(), 155, 93, -118, -14, 0));
+		auctioneer = npc;
+
+
+		for(int i = 0; i < SimpleSkin.values().length; i++) {
+
+			int finalI = i;
+			new BukkitRunnable() {
+				@Override
+				public void run() {
+					skin(npc, SimpleSkin.values()[finalI].skin);
+				}
+			}.runTaskLater(PitSim.INSTANCE, i * 20L);
+		}
 		skin(npc, "Itz_Aethan");
 	}
 

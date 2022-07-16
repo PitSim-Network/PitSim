@@ -1,7 +1,6 @@
 package dev.kyro.pitsim.mobs;
 
 import dev.kyro.pitsim.brewing.ingredients.Gunpowder;
-import dev.kyro.pitsim.brewing.ingredients.SpiderEye;
 import dev.kyro.pitsim.controllers.MobManager;
 import dev.kyro.pitsim.controllers.NonManager;
 import dev.kyro.pitsim.controllers.objects.PitMob;
@@ -59,7 +58,7 @@ public class PitCreeper extends PitMob {
 			distance = Math.max(distance, 0);
 			double multiplier = 1 - distance * 0.2;
 
-			PitPlayer.getPitPlayer((Player) testEntity).damage(mob.damage * multiplier, (LivingEntity) testEntity);
+			PitPlayer.getPitPlayer((Player) testEntity).damage(mob.damage * multiplier, (LivingEntity) entity);
 		}
 	}
 
