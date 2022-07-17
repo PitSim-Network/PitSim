@@ -38,7 +38,7 @@ public class RepelSpell extends PitEnchant {
         cooldown.restart();
 
         Player player = event.getPlayer();
-        for (Entity entity : player.getNearbyEntities(6, 6, 6)) {
+        for (Entity entity : player.getNearbyEntities(4, 4, 4)) {
             Vector dirVector = entity.getLocation().toVector().subtract(player.getLocation().toVector()).normalize();
             Vector pullVector = dirVector.clone().normalize().setY(0.5).multiply(2.5).add(dirVector.clone().multiply(0.03));
             entity.setVelocity(pullVector);

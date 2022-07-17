@@ -12,7 +12,9 @@ import dev.kyro.pitsim.misc.Misc;
 import org.bukkit.Bukkit;
 import org.bukkit.Color;
 import org.bukkit.Material;
+import org.bukkit.craftbukkit.v1_8_R3.entity.CraftArrow;
 import org.bukkit.entity.Arrow;
+import org.bukkit.entity.Fireball;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -43,6 +45,8 @@ public class TaintedManager implements Listener {
     @EventHandler
     public void onAttack(EntityDamageByEntityEvent event) {
         if(event.getEntity() instanceof Arrow) return;
+        if(event.getEntity() instanceof CraftArrow) return;
+        if(event.getEntity() instanceof Fireball) return;
         if(!MapManager.inDarkzone((LivingEntity) event.getDamager()) || !MapManager.inDarkzone((LivingEntity) event.getEntity())) return;
 
         if(event.getDamager() instanceof Player) {

@@ -60,6 +60,7 @@ public class FireballSpell extends PitEnchant {
 	public void onAttack(EntityDamageByEntityEvent event) {
 		if(event.getDamager() instanceof Fireball) {
 			if(((Fireball) event.getDamager()).getShooter() == event.getEntity()) event.setCancelled(true);
+			event.setDamage(20);
 		}
 	}
 

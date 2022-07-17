@@ -4,10 +4,8 @@ import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.controllers.Cooldown;
 import dev.kyro.pitsim.controllers.objects.PitEnchant;
-import dev.kyro.pitsim.controllers.objects.PitMob;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.enums.ApplyType;
-import dev.kyro.pitsim.events.AttackEvent;
 import dev.kyro.pitsim.events.PitPlayerAttemptAbilityEvent;
 import dev.kyro.pitsim.misc.Sounds;
 import org.bukkit.Bukkit;
@@ -94,10 +92,13 @@ public class MeteorSpell extends PitEnchant {
 							 if(near instanceof ArmorStand || near instanceof Villager) continue;
 							 if(!(near instanceof LivingEntity)) continue;
 							 if(near == player) continue;
-							 EntityDamageByEntityEvent damageEvent = new EntityDamageByEntityEvent(player, near, EntityDamageEvent.DamageCause.ENTITY_ATTACK, 20);
-							 damageEvent.setDamage(20);
+							 if(near instanceof Player) {
+							 	((Player) near).damage(25, player);
+							 	return;
+							 }
+							 EntityDamageByEntityEvent damageEvent = new EntityDamageByEntityEvent(player, near, EntityDamageEvent.DamageCause.ENTITY_ATTACK, 50    );
+							 damageEvent.setDamage(50);
 							 Bukkit.getServer().getPluginManager().callEvent(damageEvent);
-							 if(!damageEvent.isCancelled()) ((LivingEntity) near).damage(20);
 
 							 return;
 						 }
@@ -110,12 +111,6 @@ public class MeteorSpell extends PitEnchant {
 
 	}
 
-	@EventHandler
-	public void onAttack(EntityDamageByEntityEvent event) {
-		if(event.getDamager() instanceof Fireball) {
-			if(((Fireball) event.getDamager()).getShooter() == event.getEntity()) event.setCancelled(true);
-		}
-	}
 
 	@EventHandler(priority = EventPriority.HIGHEST)
 	public void onEntityExplode(EntityExplodeEvent event) {
