@@ -3,6 +3,7 @@ package dev.kyro.pitsim.enchants.tainted;
 import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.controllers.Cooldown;
+import dev.kyro.pitsim.controllers.MapManager;
 import dev.kyro.pitsim.controllers.objects.PitEnchant;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.enums.ApplyType;
@@ -20,8 +21,9 @@ import org.bukkit.util.Vector;
 
 import java.util.List;
 import java.util.Set;
+import java.util.UUID;
 
-public  class ExtractSpell extends PitEnchant {
+public class ExtractSpell extends PitEnchant {
 
 
 
@@ -37,7 +39,7 @@ public  class ExtractSpell extends PitEnchant {
 
         Player player = event.getPlayer();
         Vector vector = player.getTargetBlock((Set<Material>) null, 30).getLocation().toVector().subtract(player.getLocation().add(0, 1, 0).toVector()).setY(2).multiply(0.1);
-        LivingEntity pullEntity = null;
+        UUID pullEntity = null;
 
         for (Entity entity : player.getNearbyEntities(15, 15, 15)) {
             if(!(entity instanceof LivingEntity)) continue;
@@ -47,21 +49,26 @@ public  class ExtractSpell extends PitEnchant {
 
             if(direction.distance(towardsEntity) < 0.3) {
                 vector = player.getLocation().toVector().subtract(entity.getLocation().add(0, 1, 0).toVector()).setY(2).normalize().multiply(2);
-                pullEntity = (LivingEntity) entity;
+                pullEntity = entity.getUniqueId();
 
                 for (Entity nearbyEntity : entity.getNearbyEntities(10, 10, 10)) {
                     if(!(nearbyEntity instanceof LivingEntity)) continue;
                     if(nearbyEntity instanceof ArmorStand) continue;
                     if(nearbyEntity == player) return;
                     if(((LivingEntity) nearbyEntity).getHealth() > ((LivingEntity) entity).getHealth()) {
-                        pullEntity = (LivingEntity) nearbyEntity;
+                        pullEntity = nearbyEntity.getUniqueId();
                         vector = player.getLocation().toVector().subtract(nearbyEntity.getLocation().add(0, 1, 0).toVector()).setY(2).normalize().multiply(2);
                     }
                 }
             }
         }
 
-        if(pullEntity == null) {
+        LivingEntity finalEntity = null;
+        for(Entity entity : MapManager.getDarkzone().getEntities()) {
+            if(entity.getUniqueId().equals(pullEntity)) finalEntity = (LivingEntity) entity;
+        }
+
+        if(finalEntity == null) {
             AOutput.send(player, "&c&lNOPE! &7No target found!");
             Sounds.NO.play(player);
             return;
@@ -79,8 +86,8 @@ public  class ExtractSpell extends PitEnchant {
         cooldown.restart();
 
         Sounds.EXTRACT.play(player);
-        Vector diff = player.getLocation().add(0, 1, 0).subtract(pullEntity.getLocation()).toVector();
-        Location base = pullEntity.getLocation(); /* the origin, where you are moving away from */;
+        Vector diff = player.getLocation().add(0, 1, 0).subtract(finalEntity.getLocation()).toVector();
+        Location base = finalEntity.getLocation(); /* the origin, where you are moving away from */;
         double add = diff.length(); //example amount
         diff.divide(new Vector(add, add, add));
 
@@ -89,7 +96,7 @@ public  class ExtractSpell extends PitEnchant {
             base.getWorld().playEffect(base, Effect.LAVADRIP, 10, 10);
         }
 
-        pullEntity.setVelocity(vector);
+        finalEntity.setVelocity(vector);
 
     }
 

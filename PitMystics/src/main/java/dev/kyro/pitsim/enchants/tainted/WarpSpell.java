@@ -1,7 +1,6 @@
 package dev.kyro.pitsim.enchants.tainted;
 
 import dev.kyro.arcticapi.builders.ALoreBuilder;
-import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.controllers.Cooldown;
 import dev.kyro.pitsim.controllers.objects.PitEnchant;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
@@ -52,10 +51,10 @@ public class WarpSpell extends PitEnchant {
         }
 
         if(teleportLoc.getBlock().getType() != Material.AIR && teleportLoc.clone().add(0, 1, 0).getBlock().getType() == Material.AIR) teleportLoc.add(0, 1, 0);
-        else if(teleportLoc.getBlock().getType() != Material.AIR) {
+        if(teleportLoc.clone().add(0, 1, 0).getBlock().getType() != Material.AIR) {
             Sounds.ERROR.play(player);
+            return;
         }
-
 
         Cooldown cooldown = getCooldown(event.getPlayer(), 10);
         if(cooldown.isOnCooldown()) return;
@@ -73,7 +72,7 @@ public class WarpSpell extends PitEnchant {
         teleportLoc.setPitch(pitch);
         teleportLoc.setYaw(yaw);
 
-        player.teleport(teleportLoc);
+        player.teleport(teleportLoc.add(0.5, 0, 0.5));
         player.getWorld().playEffect(player.getLocation(), Effect.ENDER_SIGNAL, 1);
         Misc.applyPotionEffect(player, PotionEffectType.SPEED, 40, 3, false, false);
         Sounds.WARP.play(player);
