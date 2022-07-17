@@ -1,6 +1,7 @@
 package dev.kyro.pitsim.slayers;
 
 import com.xxmicloxx.NoteBlockAPI.NoteBlockAPI;
+import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.brewing.PotionManager;
 import dev.kyro.pitsim.controllers.objects.PitBoss;
@@ -54,7 +55,13 @@ public class EndermanSlayer extends PitBoss {
                 for (int i = 0; i < 6; i++) {
                     EndermanSlayer.this.target.getWorld().spigot().playEffect(EndermanSlayer.this.target.getLocation(), Effect.ENDER_SIGNAL, 0, 0, (float) 0, (float) 0/255, (float) 0/255, 1, 0, 64);
                 }
-                Sounds.DEATH_GHAST_SCREAM.play(EndermanSlayer.this.target);
+
+                Sounds.UBER_100.play(EndermanSlayer.this.target);
+                Sounds.UBER_100.play(EndermanSlayer.this.target);
+                Sounds.UBER_100.play(EndermanSlayer.this.target);
+
+                AOutput.send(EndermanSlayer.this.target, "&c&lGOODBYE! &7Have a good time");
+
                 Misc.sendTitle(target, "&c&lGOODBYE!", 60);
                 Misc.sendSubTitle(target, "&7Have a good time!", 60);
 
