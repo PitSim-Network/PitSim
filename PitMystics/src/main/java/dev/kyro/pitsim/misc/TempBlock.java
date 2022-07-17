@@ -2,16 +2,11 @@ package dev.kyro.pitsim.misc;
 
 import com.sk89q.worldedit.EditSession;
 import dev.kyro.pitsim.PitSim;
-import dev.kyro.pitsim.slayers.EndermanSlayer;
-import org.bukkit.Effect;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
-import org.bukkit.potion.PotionEffect;
-import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
-import org.bukkit.util.Vector;
 
 import java.io.File;
 

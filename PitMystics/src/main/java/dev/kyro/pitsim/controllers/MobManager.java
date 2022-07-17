@@ -67,7 +67,7 @@ public class MobManager implements Listener {
 					}
 				}
 			}
-		}.runTaskTimerAsynchronously(PitSim.INSTANCE, 0, 1);
+		}.runTaskTimerAsynchronously(PitSim.INSTANCE, 0, 5);
 
 		new BukkitRunnable() {
 

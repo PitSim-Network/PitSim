@@ -47,7 +47,12 @@ public class TaintedManager implements Listener {
         if(event.getEntity() instanceof Arrow) return;
         if(event.getEntity() instanceof CraftArrow) return;
         if(event.getEntity() instanceof Fireball) return;
-        if(!MapManager.inDarkzone((LivingEntity) event.getDamager()) || !MapManager.inDarkzone((LivingEntity) event.getEntity())) return;
+        if(!(event.getEntity() instanceof LivingEntity)) return;
+
+        try {
+            if(!MapManager.inDarkzone((LivingEntity) event.getDamager()) || !MapManager.inDarkzone((LivingEntity) event.getEntity())) return;
+        } catch(ClassCastException ignored) { }
+
 
         if(event.getDamager() instanceof Player) {
             ItemStack held = ((Player) event.getDamager()).getItemInHand();

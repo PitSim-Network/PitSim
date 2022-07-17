@@ -19,21 +19,18 @@ import dev.kyro.pitsim.boosters.XPBooster;
 import dev.kyro.pitsim.brewing.BrewingManager;
 import dev.kyro.pitsim.brewing.PotionManager;
 import dev.kyro.pitsim.brewing.ingredients.*;
-import dev.kyro.pitsim.brewing.ingredients.EnderPearl;
 import dev.kyro.pitsim.brewing.objects.BrewingIngredient;
 import dev.kyro.pitsim.commands.*;
 import dev.kyro.pitsim.commands.admin.*;
 import dev.kyro.pitsim.controllers.*;
 import dev.kyro.pitsim.controllers.log.DupeManager;
 import dev.kyro.pitsim.controllers.objects.*;
-import dev.kyro.pitsim.enchants.Explosive;
 import dev.kyro.pitsim.enchants.GoldBoost;
 import dev.kyro.pitsim.enchants.*;
 import dev.kyro.pitsim.enchants.tainted.*;
 import dev.kyro.pitsim.events.ThrowBlock;
 import dev.kyro.pitsim.helmetabilities.*;
 import dev.kyro.pitsim.killstreaks.*;
-import dev.kyro.pitsim.killstreaks.Monster;
 import dev.kyro.pitsim.kits.EssentialKit;
 import dev.kyro.pitsim.kits.GoldKit;
 import dev.kyro.pitsim.kits.PvPKit;
@@ -43,7 +40,6 @@ import dev.kyro.pitsim.megastreaks.*;
 import dev.kyro.pitsim.misc.*;
 import dev.kyro.pitsim.misc.tainted.BloodyHeart;
 import dev.kyro.pitsim.misc.tainted.SyntheticCube;
-import dev.kyro.pitsim.mobs.MobValues;
 import dev.kyro.pitsim.perks.*;
 import dev.kyro.pitsim.pitmaps.BiomesMap;
 import dev.kyro.pitsim.placeholders.*;
@@ -61,13 +57,13 @@ import net.milkbowl.vault.economy.Economy;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.block.Block;
-import org.bukkit.entity.*;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.Item;
+import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.bukkit.scheduler.BukkitRunnable;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -228,7 +224,7 @@ class PitSim extends JavaPlugin {
 			registry.deregister(clickable);
 		}
 
-		for (EditSession session : FreezeSpell.sessions) {
+		for (EditSession session : FreezeSpell.sessions.keySet()) {
 			session.undo(session);
 		}
 

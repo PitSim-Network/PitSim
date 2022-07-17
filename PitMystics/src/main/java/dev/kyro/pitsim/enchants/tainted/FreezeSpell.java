@@ -23,13 +23,12 @@ import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.io.File;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 public class FreezeSpell extends PitEnchant {
-    public static List<EditSession> sessions = new ArrayList<>();
+    public static Map<EditSession, Location> sessions = new HashMap<>();
     public static Map<Location, Material> blocks = new HashMap<>();
 
     public FreezeSpell() {
@@ -60,6 +59,14 @@ public class FreezeSpell extends PitEnchant {
         }
 
         cooldown.restart();
+
+        for(Location value : sessions.values()) {
+            if(value.distance(event.getPlayer().getLocation()) < 12) {
+                AOutput.error(event.getPlayer(),  "&c&lNOPE! &7Too close to another spell!");
+                Sounds.NO.play(event.getPlayer());
+                return;
+            }
+        }
 
         Player player = event.getPlayer();
         Location location;
@@ -96,7 +103,7 @@ public class FreezeSpell extends PitEnchant {
         }
 
         EditSession session = SchematicPaste.loadSchematicAir(new File("plugins/WorldEdit/schematics/frozen.schematic"), location);
-        sessions.add(session);
+        sessions.put(session, player.getLocation());
 
         new BukkitRunnable() {
             @Override

@@ -66,6 +66,13 @@ public class BossManager implements Listener {
                     entry.getValue().teleport(entry.getKey().middle, PlayerTeleportEvent.TeleportCause.UNKNOWN);
                     if(entry.getValue().isSpawned()) ((LivingEntity) entry.getValue().getEntity()).addPotionEffect(new PotionEffect(PotionEffectType.INVISIBILITY, Integer.MAX_VALUE, 0, false, false));
                 }
+
+                for(Entity entity : MapManager.getDarkzone().getEntities()) {
+                    if(!(entity instanceof Arrow)) continue;
+
+                    Arrow arrow = (Arrow) entity;
+                    if(arrow.getTicksLived() > 100) arrow.remove();
+                }
             }
         }.runTaskTimer(PitSim.INSTANCE, 20, 20 * 5);
     }
@@ -151,7 +158,7 @@ public class BossManager implements Listener {
                 new IronGolemBoss(player);
                 break;
             case ENDERMAN_PEARL:
-                new EndermanSlayer(player);
+                new EndermanBoss(player);
                 break;
         }
     }
