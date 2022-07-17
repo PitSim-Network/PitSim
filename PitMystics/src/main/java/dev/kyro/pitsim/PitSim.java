@@ -61,6 +61,7 @@ import net.milkbowl.vault.economy.Economy;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.block.Block;
 import org.bukkit.entity.*;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.plugin.Plugin;
@@ -73,6 +74,8 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+
+import static dev.kyro.pitsim.misc.TempBlockHelper.restoreSessions;
 
 public
 class PitSim extends JavaPlugin {
@@ -229,7 +232,7 @@ class PitSim extends JavaPlugin {
 			session.undo(session);
 		}
 
-		TempBlockHelper.restoreSessions();
+		restoreSessions();
 
 		for (Map.Entry<Location, Material> entry : FreezeSpell.blocks.entrySet()) {
 			entry.getKey().getBlock().setType(entry.getValue());

@@ -11,9 +11,9 @@ import java.util.List;
 public class TempBlockHelper {
     public static List<EditSession> sessions = new ArrayList<>();
 
-    private static List<Block> blocks = new ArrayList<>();
+    public static List<Block> blocks = new ArrayList<>();
 
-    private static List<Material> preState = new ArrayList<>();
+    public static List<Material> preState = new ArrayList<>();
 
     public static void addBlockSession(Block block, Material originalMaterial){
 
@@ -27,7 +27,7 @@ public class TempBlockHelper {
         block.setType(preState.get(blocks.indexOf(block)));
 
         blocks.remove(block);
-        preState.remove(blocks.indexOf(block));
+        preState.remove(Math.max(blocks.indexOf(block), 0));
     }
 
     public static void restoreSessions(){

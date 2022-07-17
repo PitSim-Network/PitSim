@@ -29,7 +29,7 @@ public class CorruptedFeather  {
         meta.setDisplayName(ChatColor.DARK_PURPLE + "Corrupted Feather");
         List<String> lore = new ArrayList<>();
         lore.add(ChatColor.YELLOW + "Special item");
-        lore.add(ChatColor.GRAY + "protects your potions but");
+        lore.add(ChatColor.GRAY + "protects your Ingredients but");
         lore.add(ChatColor.GRAY + "gets consumed on death if");
         lore.add(ChatColor.GRAY + "in your hotbar.");
         meta.setLore(lore);
@@ -58,7 +58,7 @@ public class CorruptedFeather  {
         meta.setDisplayName(ChatColor.DARK_PURPLE + "Corrupted Feather");
         List<String> lore = new ArrayList<>();
         lore.add(ChatColor.YELLOW + "Special item");
-        lore.add(ChatColor.GRAY + "protects your potions but");
+        lore.add(ChatColor.GRAY + "protects your Ingredients but");
         lore.add(ChatColor.GRAY + "gets consumed on death if");
         lore.add(ChatColor.GRAY + "in your hotbar.");
         meta.setLore(lore);
@@ -80,13 +80,14 @@ public class CorruptedFeather  {
             if(Misc.isAirOrNull(itemStack)) continue;
             NBTItem nbtItem = new NBTItem(itemStack);
             if(nbtItem.hasKey(NBTTag.IS_CORRUPTED_FEATHER.getRef())) {
-                AOutput.send(dead, "&5&lCORRUPTED FEATHER! &7Potions protected.");
+                AOutput.send(dead, "&5&lCORRUPTED FEATHER! &7Ingredients protected.");
                 if(itemStack.getAmount() > 1) itemStack.setAmount(itemStack.getAmount() - 1);
                 else dead.getInventory().setItem(i, null);
                 Sounds.FUNKY_FEATHER.play(dead);
 
                 GuildIntegrationManager.handleFeather(killer, dead);
 
+                // Remove this if you don't want them counting for lb
                 PitPlayer pitPlayer = PitPlayer.getPitPlayer(dead);
                 if(pitPlayer.stats != null) pitPlayer.stats.feathersLost++;
                 return true;
