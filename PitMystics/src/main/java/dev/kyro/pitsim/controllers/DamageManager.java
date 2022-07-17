@@ -3,12 +3,8 @@ package dev.kyro.pitsim.controllers;
 import de.tr7zw.nbtapi.NBTItem;
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.PitSim;
-import dev.kyro.pitsim.brewing.BrewingManager;
 import dev.kyro.pitsim.brewing.objects.BrewingIngredient;
-import dev.kyro.pitsim.controllers.objects.Non;
-import dev.kyro.pitsim.controllers.objects.PitEnchant;
-import dev.kyro.pitsim.controllers.objects.PitMob;
-import dev.kyro.pitsim.controllers.objects.PitPlayer;
+import dev.kyro.pitsim.controllers.objects.*;
 import dev.kyro.pitsim.enchants.PitBlob;
 import dev.kyro.pitsim.enchants.Regularity;
 import dev.kyro.pitsim.enchants.Telebow;
@@ -48,6 +44,7 @@ public class DamageManager implements Listener {
 	public static List<LivingEntity> hitCooldownList = new ArrayList<>();
 	public static List<LivingEntity> hopperCooldownList = new ArrayList<>();
 	public static List<LivingEntity> nonHitCooldownList = new ArrayList<>();
+	public static List<LivingEntity> bossHitCooldown = new ArrayList<>();
 	public static Map<EntityShootBowEvent, Map<PitEnchant, Integer>> arrowMap = new HashMap<>();
 
 	static {
@@ -120,6 +117,11 @@ public class DamageManager implements Listener {
 			}
 		}
 
+		if( bossHitCooldown.contains(defender)) {
+			event.setCancelled(true);
+			return;
+		}
+
 		if(Regularity.regCooldown.contains(defender.getUniqueId()) && !Regularity.toReg.contains(defender.getUniqueId())) {
 			event.setCancelled(true);
 			return;
@@ -130,6 +132,10 @@ public class DamageManager implements Listener {
 			hitCooldownList.add(defender);
 			hopperCooldownList.add(defender);
 			nonHitCooldownList.add(defender);
+
+			boolean isBoss = (PitBoss.isPitBoss((Player) defender));
+			if(isBoss) bossHitCooldown.add(defender);
+
 			new BukkitRunnable() {
 				int count = 0;
 
@@ -140,6 +146,7 @@ public class DamageManager implements Listener {
 					if(count == 5) DamageManager.hitCooldownList.remove(defender);
 					if(count == 10) DamageManager.hopperCooldownList.remove(defender);
 					if(count == 15) DamageManager.nonHitCooldownList.remove(defender);
+					if(count == 10) DamageManager.bossHitCooldown.remove(defender);
 				}
 			}.runTaskTimer(PitSim.INSTANCE, 0L, 1L);
 		}

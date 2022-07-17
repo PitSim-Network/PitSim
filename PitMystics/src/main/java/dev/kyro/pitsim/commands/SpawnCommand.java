@@ -1,5 +1,6 @@
 package dev.kyro.pitsim.commands;
 
+import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.controllers.HopperManager;
 import dev.kyro.pitsim.controllers.MapManager;
 import dev.kyro.pitsim.controllers.SpawnManager;
@@ -16,6 +17,10 @@ public class SpawnCommand implements CommandExecutor {
 	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
 
 		Player player = (Player) sender;
+		if(player.getWorld() == MapManager.getDarkzone()) {
+			AOutput.error(player, "&c&lNOPE! &7You cannot spawn here.");
+			return false;
+		}
 		SpawnManager.lastLocationMap.remove(player);
 		Location teleportLoc = MapManager.currentMap.getSpawn(player.getWorld());
 		player.teleport(teleportLoc);

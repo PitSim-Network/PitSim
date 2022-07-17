@@ -13,10 +13,7 @@ import dev.kyro.pitsim.mobs.PitSpiderBrute;
 import dev.kyro.pitsim.mobs.PitStrongPigman;
 import net.citizensnpcs.api.CitizensAPI;
 import net.citizensnpcs.api.npc.NPC;
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.Location;
-import org.bukkit.Material;
+import org.bukkit.*;
 import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -44,9 +41,11 @@ public class MobManager implements Listener {
 		if(!(attackEvent.defender instanceof Creature)) return;
 		PitMob pitMob = PitMob.getPitMob(attackEvent.defender);
 		if(pitMob == null) return;
-		((Creature) attackEvent.defender).setTarget(attackEvent.attackerPlayer);
-		pitMob.lastHit = System.currentTimeMillis();
-		pitMob.target = attackEvent.attackerPlayer;
+		if(attackEvent.attackerPlayer.getGameMode() == GameMode.SURVIVAL) {
+			((Creature) attackEvent.defender).setTarget(attackEvent.attackerPlayer);
+			pitMob.lastHit = System.currentTimeMillis();
+			pitMob.target = attackEvent.attackerPlayer;
+		}
 	}
 
 	static {
@@ -67,7 +66,7 @@ public class MobManager implements Listener {
 					}
 				}
 			}
-		}.runTaskTimerAsynchronously(PitSim.INSTANCE, 0, 5);
+		}.runTaskTimer(PitSim.INSTANCE, 0, 10);
 
 		new BukkitRunnable() {
 
@@ -215,10 +214,12 @@ public class MobManager implements Listener {
 					noTarget = sortByValue(noTarget);
 					for(Map.Entry<PitMob, Double> entry : noTarget.entrySet()) {
 						PitMob pitMob = entry.getKey();
-						((Creature) pitMob.entity).setTarget(player);
-						pitMob.lastHit = System.currentTimeMillis();
-						pitMob.target = player;
-						targets++;
+						if(player.getGameMode() == GameMode.SURVIVAL) {
+							((Creature) pitMob.entity).setTarget(player);
+							pitMob.lastHit = System.currentTimeMillis();
+							pitMob.target = player;
+							targets++;
+						}
 						if(targets >= MAX_TARGETS) break;
 					}
 				}
@@ -343,7 +344,7 @@ public class MobManager implements Listener {
 
 	@EventHandler
 	public void onTarget(EntityTargetLivingEntityEvent event) {
-		if(event.getReason() != EntityTargetEvent.TargetReason.CUSTOM && (!(event.getEntity() instanceof MagmaCube))) event.setCancelled(true);
+		if(event.getReason() != EntityTargetEvent.TargetReason.CUSTOM && (!(event.getEntity() instanceof Slime))) event.setCancelled(true);
 	}
 
 	@EventHandler(priority = EventPriority.HIGHEST)

@@ -8,6 +8,7 @@ import dev.kyro.pitsim.enums.ApplyType;
 import dev.kyro.pitsim.events.PitPlayerAttemptAbilityEvent;
 import dev.kyro.pitsim.misc.Sounds;
 import org.bukkit.Bukkit;
+import org.bukkit.GameMode;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
@@ -47,6 +48,7 @@ public class SweepingEdgeSpell extends PitEnchant {
         for (Entity entity : player.getNearbyEntities(7, 7, 7)) {
             if(entities == 5) break;
             if(!(entity instanceof LivingEntity)) continue;
+            if(entity instanceof Player && ((Player) entity).getGameMode() == GameMode.SURVIVAL) continue;
             EntityDamageByEntityEvent damageEvent = new EntityDamageByEntityEvent(player, entity, EntityDamageEvent.DamageCause.ENTITY_ATTACK, 2);
             Bukkit.getServer().getPluginManager().callEvent(damageEvent);
             if(!damageEvent.isCancelled()) ((LivingEntity) entity).damage(2);
