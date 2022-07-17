@@ -447,8 +447,9 @@ public class DamageManager implements Listener {
 		if(!(dead instanceof Player)) return;
 		if(MapManager.inDarkzone(dead.getLocation())) {
 			Player deadPlayer = (Player) dead;
+			boolean corrupted_feather = CorruptedFeather.useCorruptedFeather(killer, deadPlayer);
 			for(int i = 0; i < deadPlayer.getInventory().getSize(); i++) {
-				if(BrewingIngredient.isIngredient(deadPlayer.getInventory().getItem(i))) {
+				if(!corrupted_feather && BrewingIngredient.isIngredient(deadPlayer.getInventory().getItem(i))) {
 					ItemStack item = deadPlayer.getInventory().getItem(i);
 					BrewingIngredient ingredient = BrewingIngredient.getIngrediantFromItemStack(item);
 					AOutput.send(deadPlayer, "&c- &8" + item.getAmount() + "x " + ingredient.color + item.getItemMeta().getDisplayName());
@@ -466,6 +467,7 @@ public class DamageManager implements Listener {
 
 			boolean divine = DivineIntervention.INSTANCE.isDivine(deadPlayer);
 			boolean feather = FunkyFeather.useFeather(killer, deadPlayer, divine);
+
 
 			for(int i = 0; i < deadPlayer.getInventory().getSize(); i++) {
 				ItemStack itemStack = deadPlayer.getInventory().getItem(i);

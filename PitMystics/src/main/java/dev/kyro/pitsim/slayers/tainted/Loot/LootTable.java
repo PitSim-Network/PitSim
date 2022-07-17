@@ -7,25 +7,25 @@ import org.bukkit.inventory.ItemStack;
 
 public enum LootTable {
     ZOMBIE_CAVE(CorruptedFeather.getCorruptedFeather(1), null, null,
-    .05,0,0),
+    .01,0,0),
     SKELETON_CAVE(CorruptedFeather.getCorruptedFeather(1), null, null,
-    .10,0,0),
+    .02,0,0),
     SPIDER_CAVE(CorruptedFeather.getCorruptedFeather(1), null, null,
-            .15,0,0),
+            .03,0,0),
     CREEPER_CAVE(CorruptedFeather.getCorruptedFeather(1), null, null,
-            .20,0,0),
+            .04,0,0),
     DEEP_SPIDER_CAVE(CorruptedFeather.getCorruptedFeather(1), null, null,
-            .25,0,0),
+            .05,0,0),
     PIGMEN_CAVE(CorruptedFeather.getCorruptedFeather(1), null, null,
-            .30,0,0),
+            .08,0,0),
     MAGMA_CAVE(CorruptedFeather.getCorruptedFeather(1), null, null,
-            .35,0,0),
+            .11,0,0),
     WITHER_CAVE(CorruptedFeather.getCorruptedFeather(1), null, null,
-            .40,0,0),
+            .14,0,0),
     GOLEM_CAVE(CorruptedFeather.getCorruptedFeather(1), null, null,
-            .45,0,0),
+            .17,0,0),
     ENDERMAN_CAVE(CorruptedFeather.getCorruptedFeather(1), null, null,
-            .50,0,0);
+            .20,0,0);
 
 
     public final ItemStack drop1;

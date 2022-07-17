@@ -241,7 +241,7 @@ public abstract class SimpleBoss {
 
         BossDrop bossDrop = new BossDrop(target.getPlayer(), LootTable.valueOf(subLevel.toString()));
 //
-       bossDrop.run();
+        bossDrop.run();
 
     }
 
