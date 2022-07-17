@@ -22,23 +22,23 @@ public class MobValues {
     public static int caveSpiderDamage = 24;
     public static int caveSpiderSpeed = 2;
 
-    public static int magmaCubeHealth = 90;
+    public static int magmaCubeHealth = 120;
     public static int magmaCubeDamage = 30;
     public static int magmaCubeSpeed = 0;
 
-    public static int pigmanHealth = 70;
+    public static int pigmanHealth = 85;
     public static int pigmanDamage = magmaCubeDamage;
     public static int pigmanSpeed = 3;
 
     public static int witherSkeletonHealth = pigmanHealth;
-    public static int witherSkeletonDamage = 34;
+    public static int witherSkeletonDamage = 37;
     public static int witherSkeletonSpeed = 3;
 
-    public static int golemHealth = 100;
+    public static int golemHealth = 150;
     public static int golemDamage = witherSkeletonDamage;
     public static int golemSpeed = 3;
 
-    public static int endermanHealth = 80;
-    public static int endermanDamage = 40;
+    public static int endermanHealth = 120;
+    public static int endermanDamage = 45;
     public static int endermanSpeed = 5;
 }
