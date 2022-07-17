@@ -7,6 +7,7 @@ import dev.kyro.pitsim.controllers.objects.PitBoss;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.enums.SubLevel;
 import dev.kyro.pitsim.events.AttackEvent;
+import dev.kyro.pitsim.misc.Misc;
 import dev.kyro.pitsim.misc.Sounds;
 import dev.kyro.pitsim.misc.TempBlock;
 import dev.kyro.pitsim.slayers.tainted.SimpleBoss;
@@ -53,7 +54,9 @@ public class EndermanSlayer extends PitBoss {
                 for (int i = 0; i < 6; i++) {
                     EndermanSlayer.this.target.getWorld().spigot().playEffect(EndermanSlayer.this.target.getLocation(), Effect.ENDER_SIGNAL, 0, 0, (float) 0, (float) 0/255, (float) 0/255, 1, 0, 64);
                 }
-                target.sendMessage(ChatColor.translateAlternateColorCodes('&', "&5This is my final message... &c&lGOODBYE!"));
+                Sounds.DEATH_GHAST_SCREAM.play(EndermanSlayer.this.target);
+                Misc.sendTitle(target, "&c&lGOODBYE!", 60);
+                Misc.sendSubTitle(target, "&7Have a good time!", 60);
 
                 new BukkitRunnable() {
                     @Override
