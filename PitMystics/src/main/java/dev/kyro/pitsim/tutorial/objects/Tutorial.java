@@ -141,7 +141,7 @@ public class Tutorial {
 	public void spawnSkipText() {
 		Location holoLocation = areaLocation.clone().add(0.5, 2.5, 4);
 		Hologram holo = HologramsAPI.createHologram(PitSim.INSTANCE, holoLocation);
-		holo.appendTextLine(ChatColor.YELLOW + "Skip tutorial with" + ChatColor.WHITE + "\"/tutorial skip\"" + ChatColor.YELLOW + ".");
+		holo.appendTextLine(ChatColor.YELLOW + "Skip tutorial with " + ChatColor.WHITE + "\"/tutorial skip\"" + ChatColor.YELLOW + ".");
 		mysticWellHolo = holo;
 	}
 

@@ -34,6 +34,8 @@ public class Gladiator extends PitPerk {
 			@Override
 			public void run() {
 				for(Player player : Bukkit.getOnlinePlayers()) {
+					if(!INSTANCE.hasPerk(player)) continue;
+
 					amplifierMap.putIfAbsent(player.getUniqueId(), 0);
 					List<Entity> players = player.getNearbyEntities(12, 12, 12);
 					players.removeIf(entity -> !(entity instanceof Player));

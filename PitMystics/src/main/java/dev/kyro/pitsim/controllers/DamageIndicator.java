@@ -109,6 +109,6 @@ public class DamageIndicator implements Listener {
 	}
 
 	public static int getNum(LivingEntity entity) {
-		return (int) (2 * (entity.getMaxHealth() / 20));
+		return Math.max(1, (int) (2 * (entity.getMaxHealth() / 20)));
 	}
 }

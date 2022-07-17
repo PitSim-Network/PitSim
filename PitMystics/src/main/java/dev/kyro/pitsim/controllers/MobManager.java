@@ -53,7 +53,7 @@ public class MobManager implements Listener {
 		new BukkitRunnable() {
 			@Override
 			public void run() {
-				for (Entity entity : MapManager.getDarkzone().getEntities()) {
+				for (Entity entity :new ArrayList<>(MapManager.getDarkzone().getEntities())) {
 
 					if(!(entity instanceof LivingEntity)) continue;
 					if(entity instanceof ArmorStand) continue;

@@ -4,6 +4,7 @@ import dev.kyro.arcticapi.misc.AUtil;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.brewing.BrewingManager;
 import dev.kyro.pitsim.brewing.ingredients.SpiderEye;
+import dev.kyro.pitsim.controllers.MapManager;
 import dev.kyro.pitsim.misc.Misc;
 import dev.kyro.pitsim.misc.Sounds;
 import net.minecraft.server.v1_8_R3.*;
@@ -462,7 +463,7 @@ public class BrewingAnimation {
 
     public void onMove(PlayerMoveEvent event) {
         if(!players.contains(event.getPlayer())) return;
-        if(event.getPlayer().getLocation().distance(location) > 10) {
+        if(event.getPlayer().getWorld() != MapManager.getDarkzone() || event.getPlayer().getLocation().distance(location) > 10) {
             hideButtons(event.getPlayer());
             players.remove(event.getPlayer());
             for (ItemStack itemStack : ingredients.get(event.getPlayer())) {

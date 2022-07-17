@@ -36,7 +36,13 @@ public class GottaGoFast extends PitEnchant {
 
 					if(enchantLvl != oldEnchantLvl) {
 						speedMap.put(player, enchantLvl);
-						player.setWalkSpeed(getWalkSpeed(enchantLvl));
+
+						new BukkitRunnable() {
+							@Override
+							public void run() {
+								player.setWalkSpeed(getWalkSpeed(enchantLvl));
+							}
+						}.runTask(PitSim.INSTANCE);
 					}
 				}
 			}

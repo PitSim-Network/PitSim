@@ -39,9 +39,14 @@ class Sonic extends PitEnchant {
 
                     if(enchantLvl != oldEnchantLvl) {
                         speedMap.put(player, enchantLvl);
-                        try {
-                            player.setWalkSpeed(getWalkSpeed(enchantLvl));
-                        } catch(Exception ignored) { }
+
+                        int finalEnchantLvl = enchantLvl;
+                        new BukkitRunnable() {
+                            @Override
+                            public void run() {
+                                player.setWalkSpeed(getWalkSpeed(finalEnchantLvl));
+                            }
+                        }.runTask(PitSim.INSTANCE);
                     }
                 }
             }
