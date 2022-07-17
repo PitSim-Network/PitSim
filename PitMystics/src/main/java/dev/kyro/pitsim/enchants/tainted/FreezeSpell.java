@@ -12,7 +12,6 @@ import dev.kyro.pitsim.events.PitPlayerAttemptAbilityEvent;
 import dev.kyro.pitsim.misc.Misc;
 import dev.kyro.pitsim.misc.SchematicPaste;
 import dev.kyro.pitsim.misc.Sounds;
-import dev.kyro.pitsim.misc.TempBlock;
 import org.bukkit.Effect;
 import org.bukkit.Location;
 import org.bukkit.Material;
