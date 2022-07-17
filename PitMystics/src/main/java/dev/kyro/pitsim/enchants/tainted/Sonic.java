@@ -6,11 +6,9 @@ import dev.kyro.pitsim.controllers.EnchantManager;
 import dev.kyro.pitsim.controllers.MapManager;
 import dev.kyro.pitsim.controllers.objects.PitEnchant;
 import dev.kyro.pitsim.enums.ApplyType;
-import dev.kyro.pitsim.misc.Misc;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
-import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.scheduler.BukkitRunnable;
 
@@ -41,7 +39,9 @@ class Sonic extends PitEnchant {
 
                     if(enchantLvl != oldEnchantLvl) {
                         speedMap.put(player, enchantLvl);
-                        player.setWalkSpeed(getWalkSpeed(enchantLvl));
+                        try {
+                            player.setWalkSpeed(getWalkSpeed(enchantLvl));
+                        } catch(Exception ignored) { }
                     }
                 }
             }

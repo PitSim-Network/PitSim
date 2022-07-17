@@ -43,6 +43,7 @@ public class EnderchestManager implements Listener {
 
 	@EventHandler
 	public void onInteract(PlayerInteractEvent event) {
+		if(MapManager.inDarkzone(event.getPlayer())) return;
 		try {
 			Block block = event.getPlayer().getTargetBlock((HashSet<Byte>) null, 5);
 			if(block.getType().equals(Material.ENDER_CHEST)) {

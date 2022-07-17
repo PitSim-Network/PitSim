@@ -42,7 +42,6 @@ import dev.kyro.pitsim.misc.tainted.BloodyHeart;
 import dev.kyro.pitsim.misc.tainted.SyntheticCube;
 import dev.kyro.pitsim.perks.*;
 import dev.kyro.pitsim.pitmaps.BiomesMap;
-import dev.kyro.pitsim.pitmaps.DimensionsMap;
 import dev.kyro.pitsim.placeholders.*;
 import dev.kyro.pitsim.tutorial.MessageManager;
 import dev.kyro.pitsim.tutorial.TaskListener;
@@ -76,7 +75,7 @@ import static dev.kyro.pitsim.misc.TempBlockHelper.restoreSessions;
 
 public
 class PitSim extends JavaPlugin {
-	public static double version = 2.0;
+	public static double version = 3.0;
 
 	public static LuckPerms LUCKPERMS;
 	public static PitSim INSTANCE;
@@ -276,8 +275,8 @@ class PitSim extends JavaPlugin {
 	}
 
 	private void registerMaps() {
-		MapManager.registerMap(new DimensionsMap("dimensions1", "dimensions2"));
-//		MapManager.registerMap(new BiomesMap("biomes1", "biomes2"));
+//		MapManager.registerMap(new DimensionsMap("dimensions1", "dimensions2"));
+		MapManager.registerMap(new BiomesMap("biomes1", "biomes2"));
 	}
 
 	private void registerPerks() {

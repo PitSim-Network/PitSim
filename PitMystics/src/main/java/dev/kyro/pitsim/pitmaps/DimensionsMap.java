@@ -69,4 +69,9 @@ public class DimensionsMap extends PitMap {
 	public Location getVnxNPCSpawn(World world) {
 		return new Location(world, -1.5, 88, 10.5, 180, 0);
 	}
+
+	@Override
+	public Location getKeeperNPC(World world)  {
+		return new Location(world, 4.5, 88, 7.5, 150, 0);
+	}
 }

@@ -16,13 +16,14 @@ public class ATestCommand implements CommandExecutor {
 		if(!(sender instanceof Player)) return false;
 		Player player = (Player) sender;
 
+		if(!player.isOp()) return false;
+
 		for (BrewingIngredient ingredient : BrewingIngredient.ingredients) {
 			ItemStack item = ingredient.getItem();
 			item.setAmount(64);
 			AUtil.giveItemSafely(player, item);
 		}
 
-		if(!player.isOp()) return false;
 
 		if(args.length < 1) return false;
 
