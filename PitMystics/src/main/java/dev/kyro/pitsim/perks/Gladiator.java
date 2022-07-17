@@ -43,10 +43,9 @@ public class Gladiator extends PitPerk {
 					if(reduction > 10) reduction = 10;
 					if(reduction < 3) reduction = 0;
 					amplifierMap.put(player.getUniqueId(), reduction);
-
 				}
 			}
-		}.runTaskTimer(PitSim.INSTANCE, 0L, 20L);
+		}.runTaskTimer(PitSim.INSTANCE, 9L, 40L);
 	}
 
 	@EventHandler
