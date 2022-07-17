@@ -12,8 +12,6 @@ import dev.kyro.pitsim.enums.PantColor;
 import dev.kyro.pitsim.enums.SubLevel;
 import dev.kyro.pitsim.events.AttackEvent;
 import dev.kyro.pitsim.misc.BossSkin;
-import dev.kyro.pitsim.slayers.tainted.Loot.BossDrop;
-import dev.kyro.pitsim.slayers.tainted.Loot.LootTable;
 import net.citizensnpcs.api.npc.NPC;
 import net.citizensnpcs.api.trait.trait.Equipment;
 import net.citizensnpcs.npc.ai.CitizensNavigator;
@@ -221,7 +219,7 @@ public abstract class SimpleBoss {
         this.activeBar = fullBar;
     }
 
-    private void onDeath(){
+    private void onDeath() {
         if(abs != null) abs.cancel();
         if(timerTask != null) timerTask.cancel();
 
@@ -238,11 +236,6 @@ public abstract class SimpleBoss {
 
 
         AOutput.send(target.getPlayer(), "&7You killed your boss in &a" + stringTime);
-
-        BossDrop bossDrop = new BossDrop(target.getPlayer(), LootTable.valueOf(subLevel.toString()));
-//
-       bossDrop.run();
-
     }
 
     public void hideActiveBossBar() {

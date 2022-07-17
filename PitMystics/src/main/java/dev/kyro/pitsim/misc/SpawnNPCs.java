@@ -76,6 +76,7 @@ public class SpawnNPCs implements Listener {
 		createLeggingNPC();
 		createPotionNPC();
 		createAuctioneer();
+		createSkinTest();
 	}
 
 	public static void removeNPCs() {
@@ -96,6 +97,11 @@ public class SpawnNPCs implements Listener {
 		}
 		try {
 			auctioneer.destroy();
+		} catch(Exception ignored) {
+			System.out.println("error despawning npc");
+		}
+		try {
+			skinTest.destroy();
 		} catch(Exception ignored) {
 			System.out.println("error despawning npc");
 		}
@@ -141,6 +147,7 @@ public class SpawnNPCs implements Listener {
 		} catch(Exception ignored) {
 			System.out.println("error despawning npc");
 		}
+
 	}
 
 	public static void createUpgradeNPC(World world) {
@@ -237,7 +244,7 @@ public class SpawnNPCs implements Listener {
 		NPCRegistry registry = CitizensAPI.getNPCRegistry();
 		NPC npc = registry.createNPC(EntityType.PLAYER, ChatColor.DARK_GRAY + "" + ChatColor.BOLD + "");
 		npc.spawn(new Location(MapManager.getDarkzone(), 155, 93, -118, -14, 0));
-		auctioneer = npc;
+		skinTest = npc;
 
 
 		for(int i = 0; i < SimpleSkin.values().length; i++) {
@@ -250,7 +257,6 @@ public class SpawnNPCs implements Listener {
 				}
 			}.runTaskLater(PitSim.INSTANCE, i * 20L);
 		}
-		skin(npc, "Itz_Aethan");
 	}
 
 

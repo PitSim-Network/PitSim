@@ -42,6 +42,7 @@ public class TaintedManager implements Listener {
 
     @EventHandler
     public void onAttack(EntityDamageByEntityEvent event) {
+        if(event.getEntity() instanceof Arrow) return;
         if(!MapManager.inDarkzone((LivingEntity) event.getDamager()) || !MapManager.inDarkzone((LivingEntity) event.getEntity())) return;
 
         if(event.getDamager() instanceof Player) {

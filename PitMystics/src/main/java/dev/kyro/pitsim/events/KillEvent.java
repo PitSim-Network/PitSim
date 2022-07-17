@@ -62,7 +62,9 @@ public class KillEvent extends Event {
 			xpCap *= maxXPMultiplier;
 		}
 		xpReward += bonusXpReward;
-		if(xpReward > xpCap) return xpCap;
+
+		if(!(dead instanceof Player)) return 0;
+		else if(xpReward > xpCap) return xpCap;
 		else return (int) xpReward;
 	}
 
@@ -71,7 +73,8 @@ public class KillEvent extends Event {
 		for(Double goldMultiplier : goldMultipliers) {
 			goldReward *= goldMultiplier;
 		}
-		return Math.min(goldReward, 2000);
+		if(!(dead instanceof Player)) return 0;
+		else return Math.min(goldReward, 2000);
 	}
 
 	@Override

@@ -2,35 +2,26 @@ package dev.kyro.pitsim.enchants.tainted;
 
 import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.arcticapi.misc.AOutput;
-import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.controllers.Cooldown;
 import dev.kyro.pitsim.controllers.objects.PitEnchant;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.enums.ApplyType;
-import dev.kyro.pitsim.events.KillEvent;
-import dev.kyro.pitsim.events.OofEvent;
 import dev.kyro.pitsim.events.PitPlayerAttemptAbilityEvent;
 import dev.kyro.pitsim.misc.Misc;
 import dev.kyro.pitsim.misc.Sounds;
-import net.minecraft.server.v1_8_R3.EntityArmorStand;
-import net.minecraft.server.v1_8_R3.PacketPlayOutEntity;
-import org.bukkit.Bukkit;
 import org.bukkit.Effect;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
-import org.bukkit.craftbukkit.v1_8_R3.entity.CraftEntity;
-import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
-import org.bukkit.entity.*;
+import org.bukkit.entity.ArmorStand;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
-import org.bukkit.event.entity.EntityDamageByEntityEvent;
-import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.potion.PotionEffectType;
-import org.bukkit.scheduler.BukkitRunnable;
-import org.bukkit.util.EulerAngle;
 import org.bukkit.util.Vector;
 
-import java.util.*;
+import java.util.List;
+import java.util.Set;
 
 public class WarpSpell extends PitEnchant {
 
@@ -46,17 +37,6 @@ public class WarpSpell extends PitEnchant {
         int enchantLvl = event.getEnchantLevel(this);
         if(enchantLvl == 0) return;
 
-        Cooldown cooldown = getCooldown(event.getPlayer(), 10);
-        if(cooldown.isOnCooldown()) return;
-
-        PitPlayer pitPlayer = PitPlayer.getPitPlayer(event.getPlayer());
-        if(!pitPlayer.useMana(getManaCost(enchantLvl))) {
-            Sounds.NO.play(event.getPlayer());
-            return;
-        }
-
-        cooldown.restart();
-
         Player player = event.getPlayer();
         Block lookBlock = player.getTargetBlock((Set<Material>) null, 15);;
 
@@ -70,6 +50,23 @@ public class WarpSpell extends PitEnchant {
                 teleportLoc = entity.getLocation();
             }
         }
+
+        if(teleportLoc.getBlock().getType() != Material.AIR && teleportLoc.clone().add(0, 1, 0).getBlock().getType() == Material.AIR) teleportLoc.add(0, 1, 0);
+        else if(teleportLoc.getBlock().getType() != Material.AIR) {
+            Sounds.ERROR.play(player);
+        }
+
+
+        Cooldown cooldown = getCooldown(event.getPlayer(), 10);
+        if(cooldown.isOnCooldown()) return;
+
+        PitPlayer pitPlayer = PitPlayer.getPitPlayer(event.getPlayer());
+        if(!pitPlayer.useMana(getManaCost(enchantLvl))) {
+            Sounds.NO.play(event.getPlayer());
+            return;
+        }
+
+        cooldown.restart();
 
         float pitch = player.getLocation().getPitch();
         float yaw = player.getLocation().getYaw();
