@@ -43,7 +43,8 @@ public class XPComplex extends RenownUpgrade {
 
 	@EventHandler
 	public void onKill(KillEvent killEvent) {
-		if(!UpgradeManager.hasUpgrade(killEvent.killer, this)) return;
+		if(!killEvent.killerIsPlayer) return;
+		if(!UpgradeManager.hasUpgrade(killEvent.killerPlayer, this)) return;
 
 		killEvent.xpCap += 150;
 	}

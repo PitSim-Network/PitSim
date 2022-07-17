@@ -2,30 +2,38 @@ package dev.kyro.pitsim.controllers.objects;
 
 import dev.kyro.arcticapi.data.APlayer;
 import dev.kyro.arcticapi.data.APlayerData;
+import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.PitSim;
-import dev.kyro.pitsim.controllers.BoosterManager;
-import dev.kyro.pitsim.controllers.LevelManager;
-import dev.kyro.pitsim.controllers.NonManager;
-import dev.kyro.pitsim.controllers.PrestigeValues;
+import dev.kyro.pitsim.brewing.BrewingManager;
+import dev.kyro.pitsim.brewing.objects.BrewingSession;
+import dev.kyro.pitsim.controllers.*;
 import dev.kyro.pitsim.enchants.Hearts;
+import dev.kyro.pitsim.enchants.tainted.MaxHealth;
+import dev.kyro.pitsim.enchants.tainted.MaxMana;
 import dev.kyro.pitsim.enums.AChatColor;
 import dev.kyro.pitsim.enums.DeathCry;
 import dev.kyro.pitsim.enums.KillEffect;
+import dev.kyro.pitsim.enums.KillType;
+import dev.kyro.pitsim.events.AttackEvent;
 import dev.kyro.pitsim.events.HealEvent;
 import dev.kyro.pitsim.events.IncrementKillsEvent;
+import dev.kyro.pitsim.events.OofEvent;
 import dev.kyro.pitsim.inventories.ChatColorPanel;
 import dev.kyro.pitsim.killstreaks.Monster;
 import dev.kyro.pitsim.killstreaks.NoKillstreak;
 import dev.kyro.pitsim.megastreaks.*;
+import dev.kyro.pitsim.misc.Misc;
 import dev.kyro.pitsim.perks.NoPerk;
 import dev.kyro.pitsim.perks.Thick;
 import me.clip.placeholderapi.PlaceholderAPI;
-import net.minecraft.server.v1_8_R3.EntityPlayer;
+import net.citizensnpcs.api.CitizensAPI;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
@@ -53,11 +61,14 @@ public class PitPlayer {
 	public UUID lastHitUUID = null;
 	public ItemStack confirmedDrop = null;
 
+	public double mana = 0;
+
 	//	Savable
 	public int prestige;
 	public int level;
 	public int remainingXP = PrestigeValues.getXPForLevel(1);
-	public int playerKills;
+	public int soulsGathered;
+
 	public int renown;
 	public PitPerk[] pitPerks = new PitPerk[4];
 	public List<Killstreak> killstreaks = Arrays.asList(NoKillstreak.INSTANCE, NoKillstreak.INSTANCE, NoKillstreak.INSTANCE);
@@ -68,6 +79,7 @@ public class PitPlayer {
 	public boolean bountiesDisabled;
 	public boolean streaksDisabled;
 	public boolean lightingDisabled;
+	public boolean musicDisabled;
 	public boolean promptPack;
 
 	public double goldStack;
@@ -83,16 +95,24 @@ public class PitPlayer {
 	public DeathCry deathCry;
 	public AChatColor chatColor;
 
+	public String[] brewingSessions = new String[]{null, null, null};
+
+	public int graceTiers = 0;
+
+	public int taintedSouls;
+
 	public PlayerStats stats;
 
 	public void save() {
+		if(BossManager.bosses.containsKey(CitizensAPI.getNPCRegistry().getNPC(player))) return;
+
 		APlayer aPlayer = APlayerData.getPlayerData(player);
 		FileConfiguration playerData = aPlayer.playerData;
 
 		playerData.set("prestige", prestige);
 		playerData.set("level", level);
 		playerData.set("xp", remainingXP);
-		playerData.set("playerkills", playerKills);
+		playerData.set("soulsgathered", soulsGathered);
 		playerData.set("renown", renown);
 
 		playerData.set("goldstack", goldStack);
@@ -100,6 +120,12 @@ public class PitPlayer {
 		playerData.set("ubersleft", dailyUbersLeft);
 		playerData.set("ubercooldown", uberReset);
 		playerData.set("goldgrinded", goldGrinded);
+		playerData.set("taintedsouls", taintedSouls);
+
+		for (int i = 0; i < brewingSessions.length; i++) {
+			playerData.set("brewingsession" + (i + 1), brewingSessions[i]);
+		}
+
 		for(Map.Entry<Booster, Integer> entry : boosters.entrySet())
 			playerData.set("boosters." + entry.getKey().refName, entry.getValue());
 
@@ -109,13 +135,15 @@ public class PitPlayer {
 	}
 
 	public void fullSave() {
+		if(BossManager.bosses.containsKey(CitizensAPI.getNPCRegistry().getNPC(player))) return;
+
 		APlayer aPlayer = APlayerData.getPlayerData(player);
 		FileConfiguration playerData = aPlayer.playerData;
 
 		playerData.set("prestige", prestige);
 		playerData.set("level", level);
 		playerData.set("xp", remainingXP);
-		playerData.set("playerkills", playerKills);
+		playerData.set("soulsgathered", soulsGathered);
 		playerData.set("renown", renown);
 		for(int i = 0; i < pitPerks.length; i++) playerData.set("perk-" + i, pitPerks[i].refName);
 		for(int i = 0; i < killstreaks.size(); i++) playerData.set("killstreak-" + i, killstreaks.get(i).refName);
@@ -126,6 +154,7 @@ public class PitPlayer {
 		playerData.set("disabledbounties", bountiesDisabled);
 		playerData.set("disabledstreaks", streaksDisabled);
 		playerData.set("settings.lightning", lightingDisabled);
+		playerData.set("settings.music", musicDisabled);
 		playerData.set("promptPack", promptPack);
 
 		playerData.set("goldstack", goldStack);
@@ -161,7 +190,7 @@ public class PitPlayer {
 			prestige = playerData.getInt("prestige");
 			level = playerData.contains("level") ? playerData.getInt("level") : 1;
 			remainingXP = playerData.getInt("xp");
-			playerKills = playerData.getInt("playerkills");
+			soulsGathered = playerData.getInt("soulsgathered");
 			renown = playerData.getInt("renown");
 			for(int i = 0; i < pitPerks.length; i++) {
 				String perkString = playerData.getString("perk-" + i);
@@ -188,6 +217,7 @@ public class PitPlayer {
 			bountiesDisabled = playerData.getBoolean("disabledbounties");
 			streaksDisabled = playerData.getBoolean("disabledstreaks");
 			lightingDisabled = playerData.getBoolean("settings.lightning");
+			musicDisabled = playerData.getBoolean("settings.music");
 			promptPack = playerData.getBoolean("promptPack");
 
 			lastVersion = playerData.getDouble("lastversion");
@@ -212,11 +242,50 @@ public class PitPlayer {
 			}
 
 			stats = new PlayerStats(this, playerData);
-			LevelManager.setXPBar(player, this);
+			updateXPBar();
+
+			for (int i = 0; i < brewingSessions.length; i++) {
+				brewingSessions[i] = playerData.getString("brewingsession" + (i + 1));
+			}
+			for (int i = 0; i < brewingSessions.length; i++) {
+				if(brewingSessions[i] != null) BrewingManager.brewingSessions.add(new BrewingSession(player, i, brewingSessions[i], null, null, null, null));
+			}
+
+			if(playerData.contains("taintedsouls")) {
+				taintedSouls = playerData.getInt("taintedsouls");
+			} else taintedSouls = 200;
+
+
+
+			if(chatColorString != null) {
+				chatColor = AChatColor.valueOf(chatColorString);
+				ChatColorPanel.playerChatColors.put(player, chatColor);
+			}
 		}
 	}
 
 	public static PitPlayer getPitPlayer(Player player) {
+		if(player == null) return null;
+
+		PitPlayer pitPlayer = null;
+		for(PitPlayer testPitPlayer : pitPlayers) {
+
+			if(testPitPlayer.player != player) continue;
+			pitPlayer = testPitPlayer;
+			break;
+		}
+		if(pitPlayer == null) {
+
+			pitPlayer = new PitPlayer(player);
+			pitPlayers.add(pitPlayer);
+		}
+
+		return pitPlayer;
+	}
+
+	public static PitPlayer getEntityPitPlayer(LivingEntity checkPlayer) {
+		if(!(checkPlayer instanceof Player)) return null;
+		Player player = (Player) checkPlayer;
 
 		PitPlayer pitPlayer = null;
 		for(PitPlayer testPitPlayer : pitPlayers) {
@@ -305,11 +374,11 @@ public class PitPlayer {
 		return recentDamageMap;
 	}
 
-	public void addDamage(Player player, double damage) {
-		if(player == null) return;
+	public void addDamage(LivingEntity entity, double damage) {
+		if(entity == null) return;
 
-		recentDamageMap.putIfAbsent(player.getUniqueId(), 0D);
-		recentDamageMap.put(player.getUniqueId(), recentDamageMap.get(player.getUniqueId()) + damage);
+		recentDamageMap.putIfAbsent(entity.getUniqueId(), 0D);
+		recentDamageMap.put(entity.getUniqueId(), recentDamageMap.get(entity.getUniqueId()) + damage);
 
 		BukkitTask bukkitTask = new BukkitRunnable() {
 			@Override
@@ -319,10 +388,10 @@ public class PitPlayer {
 					assistRemove.remove(pendingTask);
 					break;
 				}
-				recentDamageMap.putIfAbsent(player.getUniqueId(), 0D);
-				if(recentDamageMap.get(player.getUniqueId()) - damage != 0)
-					recentDamageMap.put(player.getUniqueId(), recentDamageMap.get(player.getUniqueId()) - damage);
-				else recentDamageMap.remove(player.getUniqueId());
+				recentDamageMap.putIfAbsent(entity.getUniqueId(), 0D);
+				if(recentDamageMap.get(entity.getUniqueId()) - damage != 0)
+					recentDamageMap.put(entity.getUniqueId(), recentDamageMap.get(entity.getUniqueId()) - damage);
+				else recentDamageMap.remove(entity.getUniqueId());
 			}
 		}.runTaskLater(PitSim.INSTANCE, 200L);
 		assistRemove.add(bukkitTask);
@@ -334,19 +403,7 @@ public class PitPlayer {
 	}
 
 	public HealEvent heal(double amount, HealEvent.HealType healType, int max) {
-		if(max == -1) max = Integer.MAX_VALUE;
-
-		HealEvent healEvent = new HealEvent(player, amount, healType, max);
-		Bukkit.getServer().getPluginManager().callEvent(healEvent);
-
-		if(healType == HealEvent.HealType.HEALTH) {
-			player.setHealth(Math.min(player.getHealth() + healEvent.getFinalHeal(), player.getMaxHealth()));
-		} else {
-			EntityPlayer nmsPlayer = ((CraftPlayer) player).getHandle();
-			if(nmsPlayer.getAbsorptionHearts() < healEvent.max)
-				nmsPlayer.setAbsorptionHearts(Math.min((float) (nmsPlayer.getAbsorptionHearts() + healEvent.getFinalHeal()), max));
-		}
-		return healEvent;
+		return Misc.heal(player, amount, healType, max);
 	}
 
 	public boolean hasPerk(PitPerk pitPerk) {
@@ -359,7 +416,13 @@ public class PitPlayer {
 
 		int maxHealth = 24;
 		if(hasPerk(Thick.INSTANCE)) maxHealth += 4;
-		if(Hearts.INSTANCE != null) maxHealth += Hearts.INSTANCE.getExtraHealth(this);
+
+		if(MapManager.inDarkzone(player)) maxHealth += 20;
+
+		Map<PitEnchant, Integer> enchantMap = EnchantManager.getEnchantsOnPlayer(player);
+		if(Hearts.INSTANCE != null) maxHealth += Hearts.INSTANCE.getExtraHealth(enchantMap);
+		if(MaxHealth.INSTANCE != null) maxHealth += MaxHealth.INSTANCE.
+				getExtraHealth(player, enchantMap);
 
 		if(megastreak.getClass() == Uberstreak.class) {
 			Uberstreak uberstreak = (Uberstreak) megastreak;
@@ -370,7 +433,81 @@ public class PitPlayer {
 			maxHealth += Monster.healthMap.get(player);
 		}
 
+		maxHealth -= (8 * graceTiers);
+
+		if(maxHealth <= 0) {
+			if(!CombatManager.taggedPlayers.containsKey(player.getUniqueId())) {
+				DamageManager.death(player);
+				return;
+			}
+
+			PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
+			UUID attackerUUID = pitPlayer.lastHitUUID;
+			for(Player onlinePlayer : Bukkit.getOnlinePlayers()) {
+				if(onlinePlayer.getUniqueId().equals(attackerUUID)) {
+
+					Map<PitEnchant, Integer> attackerEnchant = new HashMap<>();
+					Map<PitEnchant, Integer> defenderEnchant = new HashMap<>();
+					EntityDamageByEntityEvent ev = new EntityDamageByEntityEvent(onlinePlayer, player, EntityDamageEvent.DamageCause.CUSTOM, 0);
+					AttackEvent attackEvent = new AttackEvent(ev, attackerEnchant, defenderEnchant, false);
+
+					DamageManager.kill(attackEvent, onlinePlayer, player, false, KillType.DEATH);
+					return;
+				}
+			}
+			DamageManager.death(player);
+			OofEvent oofEvent = new OofEvent(player);
+			Bukkit.getPluginManager().callEvent(oofEvent);
+			return;
+		}
 		if(player.getMaxHealth() == maxHealth) return;
 		player.setMaxHealth(maxHealth);
+	}
+
+	public boolean useMana(int amount) {
+		if(amount > mana) return false;
+		mana -= amount;
+		return true;
+	}
+
+	public int getMaxMana() {
+		int maxMana = 100;
+
+		Map<PitEnchant, Integer> enchantMap = EnchantManager.getEnchantsOnPlayer(player);
+		if(MaxMana.INSTANCE != null) maxMana += MaxMana.INSTANCE.getExtraMana(enchantMap);
+
+		return maxMana;
+	}
+
+	public void damage(double damage, LivingEntity damager) {
+		if(player.getHealth() - damage <= 0) {
+			if(damager == null) {
+				DamageManager.death(player);
+				AOutput.send(player, "&c&lDEATH!");
+			} else {
+				EntityDamageByEntityEvent ev = new EntityDamageByEntityEvent(damager, player, EntityDamageEvent.DamageCause.CUSTOM, damage);
+				AttackEvent attackEvent = new AttackEvent(ev, EnchantManager.getEnchantsOnPlayer(damager), EnchantManager.getEnchantsOnPlayer(player), false);
+
+				DamageManager.kill(attackEvent, damager, player, false, KillType.DEFAULT);
+			}
+		} else player.damage(damage);
+	}
+
+	public void updateXPBar() {	
+		if(MapManager.inDarkzone(player)) {
+			player.setLevel((int) Math.ceil(mana));
+			if(mana >= getMaxMana() - 1) player.setLevel(getMaxMana());
+			player.setExp((float) (mana / getMaxMana()));
+		} else {
+			player.setLevel(level);
+			float remaining = remainingXP;
+			PrestigeValues.PrestigeInfo prestigeInfo = PrestigeValues.getPrestigeInfo(prestige);
+			float total = (float) (PrestigeValues.getXPForLevel(level) * prestigeInfo.xpMultiplier);
+
+			player.setLevel(level);
+			float xp = (total - remaining) / total;
+
+			player.setExp(xp);
+		}
 	}
 }

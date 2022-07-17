@@ -6,6 +6,7 @@ import dev.kyro.pitsim.controllers.objects.Killstreak;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.events.AttackEvent;
 import org.bukkit.Material;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -23,12 +24,12 @@ public class Leech extends Killstreak {
 		INSTANCE = this;
 	}
 
-	List<Player> rewardPlayers = new ArrayList<>();
+	List<LivingEntity> rewardPlayers = new ArrayList<>();
 
 	@EventHandler(priority = EventPriority.HIGH)
 	public void onHit(AttackEvent.Apply event) {
 		if(rewardPlayers.contains(event.attacker)) {
-			PitPlayer pitPlayer = PitPlayer.getPitPlayer(event.attacker);
+			PitPlayer pitPlayer = PitPlayer.getEntityPitPlayer(event.attacker);
 			pitPlayer.heal(event.getFinalDamageIncrease() * (getPercent() / 100D));
 			rewardPlayers.remove(event.attacker);
 		}

@@ -9,7 +9,6 @@ import dev.kyro.pitsim.controllers.objects.Non;
 import dev.kyro.pitsim.controllers.objects.PitEnchant;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.enums.ApplyType;
-import dev.kyro.pitsim.events.AttackEvent;
 import dev.kyro.pitsim.megastreaks.Uberstreak;
 import dev.kyro.pitsim.misc.Sounds;
 import org.bukkit.Effect;
@@ -31,17 +30,7 @@ public class Explosive extends PitEnchant {
 	}
 
 	@EventHandler
-	public void onAttack(AttackEvent.Apply attackEvent) {
-		if(!canApply(attackEvent)) return;
-
-		int enchantLvl = attackEvent.getAttackerEnchantLevel(this);
-		if(enchantLvl == 0) return;
-
-	}
-
-	@EventHandler
 	public void onShoot(ProjectileHitEvent event) {
-
 		if(!(event.getEntity() instanceof Arrow) || !(event.getEntity().getShooter() instanceof Player)) return;
 
 		Arrow arrow = (Arrow) event.getEntity();
@@ -52,7 +41,7 @@ public class Explosive extends PitEnchant {
 
 		Cooldown cooldown = getCooldown(shooter, getCooldown(enchantLvl));
 		if(cooldown.isOnCooldown()) return;
-		else cooldown.reset();
+		else cooldown.restart();
 
 		if(SpawnManager.isInSpawn(arrow.getLocation())) return;
 

@@ -20,19 +20,23 @@ import java.util.List;
 
 public class SelfCheckout extends PitEnchant {
 
+	public static SelfCheckout INSTANCE;
+
 	public SelfCheckout() {
 		super("Self-Checkout", true, ApplyType.PANTS,
 				"selfcheckout", "self-checkout", "sco", "selfcheck", "checkout", "soco");
+		INSTANCE = this;
 	}
 
 	@EventHandler
 	public void onKill(KillEvent killEvent) {
+		if(!killEvent.killerIsPlayer) return;
 
 		ItemStack leggings = killEvent.killer.getEquipment().getLeggings();
 		int enchantLvl = EnchantManager.getEnchantLevel(leggings, this);
 		if(enchantLvl == 0) return;
 
-		PitPlayer pitKiller = PitPlayer.getPitPlayer(killEvent.killer);
+		PitPlayer pitKiller = PitPlayer.getPitPlayer(killEvent.killerPlayer);
 		if(pitKiller.getKills() + 1 < 200 || pitKiller.megastreak.getClass() == Uberstreak.class || pitKiller.megastreak.getClass() == NoMegastreak.class)
 			return;
 
@@ -58,7 +62,7 @@ public class SelfCheckout extends PitEnchant {
 				if(pitKiller.stats != null) pitKiller.stats.itemsBroken++;
 			} else {
 				nbtItem.setInteger(NBTTag.CURRENT_LIVES.getRef(), nbtItem.getInteger(NBTTag.CURRENT_LIVES.getRef()) - 2);
-				EnchantManager.setItemLore(nbtItem.getItem());
+				EnchantManager.setItemLore(nbtItem.getItem(), pitKiller.player);
 				killEvent.killer.getEquipment().setLeggings(nbtItem.getItem());
 
 				if(pitKiller.stats != null) pitKiller.stats.livesLost += 2;

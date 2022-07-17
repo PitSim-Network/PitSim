@@ -4,6 +4,7 @@ import de.tr7zw.nbtapi.NBTItem;
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.controllers.EnchantManager;
 import dev.kyro.pitsim.controllers.objects.PitEnchant;
+import dev.kyro.pitsim.enums.MysticType;
 import dev.kyro.pitsim.enums.NBTTag;
 import dev.kyro.pitsim.exceptions.*;
 import dev.kyro.pitsim.misc.Misc;
@@ -38,6 +39,13 @@ public class EnchantCommand implements CommandExecutor {
 			return false;
 		}
 
+		if(MysticType.getMysticType(player.getItemInHand()) == MysticType.TAINTED_CHESTPLATE || MysticType.getMysticType(player.getItemInHand()) == MysticType.TAINTED_SCYTHE) {
+			if(!player.isOp()) {
+				AOutput.error(player, "&cNice try.");
+				return false;
+			}
+		}
+
 		if(args.length < 2) {
 
 			AOutput.error(player, "Usage: /enchant <name> <level>");
@@ -49,6 +57,10 @@ public class EnchantCommand implements CommandExecutor {
 		if(pitEnchant == null) {
 
 			AOutput.error(player, "That enchant does not exist");
+			return false;
+		}
+		if(pitEnchant.tainted && !player.isOp()) {
+			AOutput.error(player, "&cNice try.");
 			return false;
 		}
 

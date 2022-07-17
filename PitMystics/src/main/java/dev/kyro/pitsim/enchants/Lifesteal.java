@@ -15,15 +15,16 @@ import java.util.List;
 public class Lifesteal extends PitEnchant {
 
 	public Lifesteal() {
-		super("Lifesteal", false, ApplyType.SWORDS,
+		super("Lifesteal", false, ApplyType.MELEE,
 				"ls", "lifesteal", "life");
 		isUncommonEnchant = true;
 	}
 
 	@EventHandler(priority = EventPriority.HIGH)
 	public void onAttack(AttackEvent.Apply attackEvent) {
+		if(!attackEvent.attackerIsPlayer) return;
 		if(!canApply(attackEvent)) return;
-		PitPlayer pitAttacker = PitPlayer.getPitPlayer(attackEvent.attacker);
+		PitPlayer pitAttacker = PitPlayer.getPitPlayer(attackEvent.attackerPlayer);
 
 		int enchantLvl = attackEvent.getAttackerEnchantLevel(this);
 		if(enchantLvl == 0) return;

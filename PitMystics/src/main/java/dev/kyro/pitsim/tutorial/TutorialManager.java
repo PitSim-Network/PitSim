@@ -6,6 +6,7 @@ import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.controllers.DamageManager;
 import dev.kyro.pitsim.controllers.UpgradeManager;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
+import dev.kyro.pitsim.enums.KillType;
 import dev.kyro.pitsim.events.AttackEvent;
 import dev.kyro.pitsim.events.KillEvent;
 import dev.kyro.pitsim.events.OofEvent;
@@ -134,7 +135,7 @@ public class TutorialManager implements Listener {
 				for(NPC non : tutorial.nons) {
 					if(non.getEntity() == event.defender) {
 						event.event.setCancelled(true);
-						DamageManager.kill(event, event.attacker, event.defender, false);
+						DamageManager.kill(event, event.attacker, event.defender, false, KillType.DEFAULT);
 					}
 				}
 			}
@@ -158,7 +159,7 @@ public class TutorialManager implements Listener {
 
 	@EventHandler(priority = EventPriority.MONITOR)
 	public void onDeath(KillEvent event) {
-		Tutorial tutorial = getTutorial(event.dead);
+		Tutorial tutorial = getTutorial(event.deadPlayer);
 		if(tutorial == null) return;
 
 		event.dead.teleport(tutorial.playerSpawn);

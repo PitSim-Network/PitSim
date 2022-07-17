@@ -24,14 +24,15 @@ public class PinDown extends PitEnchant {
 
 	@EventHandler
 	public void onAttack(AttackEvent.Apply attackEvent) {
+		if(!attackEvent.attackerIsPlayer) return;
 		if(!canApply(attackEvent)) return;
 
 		int enchantLvl = attackEvent.getAttackerEnchantLevel(this);
 		if(enchantLvl == 0) return;
 
-		Cooldown cooldown = getCooldown(attackEvent.attacker, getDuration(enchantLvl) * 20);
+		Cooldown cooldown = getCooldown(attackEvent.attackerPlayer, getDuration(enchantLvl) * 20);
 		if(cooldown.isOnCooldown()) return;
-		else cooldown.reset();
+		else cooldown.restart();
 
 		if(attackEvent.attacker == attackEvent.defender) return;
 		if(!attackEvent.arrow.isCritical()) return;
@@ -43,10 +44,12 @@ public class PinDown extends PitEnchant {
 		Sounds.PIN_DOWN.play(attackEvent.defender);
 		String pinMessage = "&c&lPINNED! &7by %luckperms_prefix%%player_name%&7. Speed and Jump Boost cancelled!";
 		String pinMessage2 = "&a&lITS A PIN! &7Removed Speed and Jump Boost from %luckperms_prefix%%player_name%&7!";
-		AOutput.send(attackEvent.defender, PlaceholderAPI.setPlaceholders(attackEvent.attacker, pinMessage));
-		AOutput.send(attackEvent.attacker, PlaceholderAPI.setPlaceholders(attackEvent.defender, pinMessage2));
+		AOutput.send(attackEvent.defender, PlaceholderAPI.setPlaceholders(attackEvent.attackerPlayer, pinMessage));
+		if(attackEvent.defenderIsPlayer) {
+			AOutput.send(attackEvent.attacker, PlaceholderAPI.setPlaceholders(attackEvent.defenderPlayer, pinMessage2));
+		}
 
-		PitPlayer pitPlayer = PitPlayer.getPitPlayer(attackEvent.attacker);
+		PitPlayer pitPlayer = PitPlayer.getPitPlayer(attackEvent.attackerPlayer);
 		if(pitPlayer.stats != null) pitPlayer.stats.pin++;
 	}
 

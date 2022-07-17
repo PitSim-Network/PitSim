@@ -22,6 +22,7 @@ public class EnderchestManager implements Listener {
 
 	@EventHandler
 	public void onOpen(InventoryOpenEvent event) {
+		if(MapManager.inDarkzone(event.getPlayer())) return;
 		if(event.getInventory().getType().equals(InventoryType.ENDER_CHEST) && !event.getPlayer().isOp()) {
 			event.getPlayer().closeInventory();
 			if(ShutdownManager.enderchestDisabled) {

@@ -8,6 +8,7 @@ import dev.kyro.pitsim.events.AttackEvent;
 import dev.kyro.pitsim.misc.Sounds;
 import org.bukkit.Material;
 import org.bukkit.Sound;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -26,7 +27,7 @@ public class AuraOfProtection extends Killstreak {
 		INSTANCE = this;
 	}
 
-	List<Player> rewardPlayers = new ArrayList<>();
+	List<LivingEntity> rewardPlayers = new ArrayList<>();
 
 	@EventHandler(priority = EventPriority.HIGHEST)
 	public void onHit(AttackEvent.Apply event) {

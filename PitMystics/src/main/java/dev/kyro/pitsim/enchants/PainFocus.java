@@ -12,18 +12,19 @@ import java.util.List;
 public class PainFocus extends PitEnchant {
 
 	public PainFocus() {
-		super("Pain Focus", false, ApplyType.SWORDS,
+		super("Pain Focus", false, ApplyType.MELEE,
 				"painfocus", "pf", "pain-focus");
 	}
 
 	@EventHandler
 	public void onAttack(AttackEvent.Apply attackEvent) {
+		if(!attackEvent.attackerIsPlayer) return;
 		if(!canApply(attackEvent)) return;
 
 		int enchantLvl = attackEvent.getAttackerEnchantLevel(this);
 		if(enchantLvl == 0) return;
 
-		attackEvent.increasePercent += getDamage(attackEvent.attacker, enchantLvl) / 100;
+		attackEvent.increasePercent += getDamage(attackEvent.attackerPlayer, enchantLvl) / 100;
 	}
 
 	@Override

@@ -5,16 +5,18 @@ import dev.kyro.pitsim.commands.LightningCommand;
 import dev.kyro.pitsim.controllers.NonManager;
 import dev.kyro.pitsim.controllers.objects.GoldenHelmet;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
+import dev.kyro.pitsim.events.HealEvent;
+import dev.kyro.pitsim.megastreaks.Overdrive;
 import dev.kyro.pitsim.megastreaks.RNGesus;
 import dev.kyro.pitsim.megastreaks.Uberstreak;
+import net.minecraft.server.v1_8_R3.World;
 import net.minecraft.server.v1_8_R3.*;
-import org.bukkit.ChatColor;
-import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.Sound;
+import org.bukkit.*;
 import org.bukkit.craftbukkit.v1_8_R3.CraftWorld;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
@@ -44,31 +46,31 @@ public class Misc {
 		return "";
 	}
 
-	public static void applyPotionEffect(Player player, PotionEffectType type, int duration, int amplifier, boolean ambient, boolean particles) {
+	public static void applyPotionEffect(LivingEntity entity, PotionEffectType type, int duration, int amplifier, boolean ambient, boolean particles) {
 		if(amplifier < 0) return;
 		if(duration == 0) return;
 
-		if(NonManager.getNon(player) == null) {
-			PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
+		if(NonManager.getNon(entity) == null && entity instanceof Player) {
+			PitPlayer pitPlayer = PitPlayer.getPitPlayer((Player) entity);
 			if(pitPlayer.megastreak.getClass() == Uberstreak.class) {
 				Uberstreak uberstreak = (Uberstreak) pitPlayer.megastreak;
 				if(uberstreak.uberEffects.contains(Uberstreak.UberEffect.NO_SPEED) && type == PotionEffectType.SPEED)
 					return;
-			}
+			} else if(pitPlayer.megastreak.getClass() != Overdrive.class && pitPlayer.megastreak.isOnMega() && type == PotionEffectType.SLOW) return;
 		}
 
-		for(PotionEffect potionEffect : player.getActivePotionEffects()) {
+		for(PotionEffect potionEffect : entity.getActivePotionEffects()) {
 			if(!potionEffect.getType().equals(type) || potionEffect.getAmplifier() > amplifier) continue;
 			if(potionEffect.getAmplifier() == amplifier && potionEffect.getDuration() >= duration) continue;
-			player.removePotionEffect(type);
+			entity.removePotionEffect(type);
 			break;
 		}
-		player.addPotionEffect(new PotionEffect(type, duration, amplifier, ambient, particles));
+		entity.addPotionEffect(new PotionEffect(type, duration, amplifier, ambient, particles));
 		if(type == PotionEffectType.POISON) {
-			if(GoldenHelmet.abilities.get(player) != null) {
-				GoldenHelmet.abilities.get(player).onDeactivate();
+			if(GoldenHelmet.abilities.get(entity) != null) {
+				GoldenHelmet.abilities.get(entity).onDeactivate();
 			}
-			GoldenHelmet.toggledPlayers.remove(player);
+			GoldenHelmet.toggledPlayers.remove(entity);
 		}
 	}
 
@@ -167,13 +169,13 @@ public class Misc {
 		((CraftPlayer) player).getHandle().playerConnection.sendPacket(subTitleLength);
 	}
 
-	public static boolean isCritical(Player player) {
-		return player.getFallDistance() > 0.0F &&
-				!player.isOnGround() &&
-				!player.isInsideVehicle() &&
-				!player.hasPotionEffect(PotionEffectType.BLINDNESS) &&
-				player.getLocation().getBlock().getType() != Material.LADDER &&
-				player.getLocation().getBlock().getType() != Material.VINE;
+	public static boolean isCritical(LivingEntity entity) {
+		return entity.getFallDistance() > 0.0F &&
+				!entity.isOnGround() &&
+				!entity.isInsideVehicle() &&
+				!entity.hasPotionEffect(PotionEffectType.BLINDNESS) &&
+				entity.getLocation().getBlock().getType() != Material.LADDER &&
+				entity.getLocation().getBlock().getType() != Material.VINE;
 	}
 
 	public static boolean isAirOrNull(ItemStack itemStack) {
@@ -244,5 +246,40 @@ public class Misc {
 
 	public static String formatPercent(double percent) {
 		return new DecimalFormat("0.0").format(percent * 100) + "%";
+	}
+
+	public static HealEvent heal(LivingEntity entity, double amount, HealEvent.HealType healType, int max) {
+		if(max == -1) max = Integer.MAX_VALUE;
+
+		HealEvent healEvent = new HealEvent(entity, amount, healType, max);
+		Bukkit.getServer().getPluginManager().callEvent(healEvent);
+
+		if(healType == HealEvent.HealType.HEALTH) {
+			entity.setHealth(Math.min(entity.getHealth() + healEvent.getFinalHeal(), entity.getMaxHealth()));
+		} else {
+			EntityPlayer nmsPlayer = ((CraftPlayer) entity).getHandle();
+			if(nmsPlayer.getAbsorptionHearts() < healEvent.max)
+				nmsPlayer.setAbsorptionHearts(Math.min((float) (nmsPlayer.getAbsorptionHearts() + healEvent.getFinalHeal()), max));
+		}
+		return healEvent;
+	}
+
+	public static String ticksToTime(int ticks) {
+		int seconds = (int) Math.floor(ticks / 20);
+		int minutes = (int) Math.floor(seconds / 60);
+		if(minutes != 0 && seconds != 0) return minutes + "m " + (seconds - (minutes * 60)) + "s";
+		else if(seconds != 0) return seconds + "s";
+		else return minutes + "s";
+	}
+
+	public static String ticksToTimeUnformatted(int ticks) {
+		int seconds = (int) Math.floor(ticks / 20);
+		int minutes = (int) Math.floor(seconds / 60);
+
+		int secondsLeft = (seconds - (minutes * 60));
+		String secondsString = (secondsLeft == 0 ? secondsLeft + "0" : String.valueOf(secondsLeft));
+
+		if(secondsLeft < 10 && secondsLeft != 0) return minutes + ":0" + secondsString;
+		return minutes + ":" + secondsString;
 	}
 }

@@ -7,6 +7,7 @@ import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.events.AttackEvent;
 import dev.kyro.pitsim.misc.Misc;
 import org.bukkit.Material;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.inventory.ItemStack;
@@ -24,12 +25,12 @@ public class AssuredStrike extends Killstreak {
 		INSTANCE = this;
 	}
 
-	List<Player> rewardPlayers = new ArrayList<>();
+	List<LivingEntity> rewardPlayers = new ArrayList<>();
 
 	@EventHandler
 	public void onHit(AttackEvent.Apply event) {
 		if(rewardPlayers.contains(event.attacker)) {
-			PitPlayer pitPlayer = PitPlayer.getPitPlayer(event.attacker);
+			PitPlayer pitPlayer = PitPlayer.getEntityPitPlayer(event.attacker);
 			pitPlayer.heal(1.5 + (event.getFinalDamageIncrease() * (50 / 100D)));
 			rewardPlayers.remove(event.attacker);
 		}

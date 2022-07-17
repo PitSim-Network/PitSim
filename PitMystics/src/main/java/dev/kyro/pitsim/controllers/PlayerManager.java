@@ -4,23 +4,21 @@ import be.maximvdw.featherboard.api.FeatherBoardAPI;
 import de.tr7zw.nbtapi.NBTItem;
 import dev.kyro.arcticapi.data.APlayer;
 import dev.kyro.arcticapi.data.APlayerData;
+import dev.kyro.arcticapi.data.ASerializer;
 import dev.kyro.arcticapi.misc.AOutput;
+import dev.kyro.arcticapi.misc.AUtil;
 import dev.kyro.arcticguilds.controllers.BuffManager;
 import dev.kyro.arcticguilds.controllers.GuildManager;
 import dev.kyro.arcticguilds.controllers.objects.Guild;
 import dev.kyro.arcticguilds.controllers.objects.GuildBuff;
 import dev.kyro.pitsim.PitSim;
+import dev.kyro.pitsim.brewing.PotionManager;
+import dev.kyro.pitsim.brewing.ingredients.MagmaCream;
+import dev.kyro.pitsim.brewing.objects.PotionEffect;
 import dev.kyro.pitsim.commands.FPSCommand;
-import dev.kyro.pitsim.controllers.objects.GoldenHelmet;
-import dev.kyro.pitsim.controllers.objects.Megastreak;
-import dev.kyro.pitsim.controllers.objects.Non;
-import dev.kyro.pitsim.controllers.objects.PitPlayer;
-import dev.kyro.pitsim.enums.NBTTag;
-import dev.kyro.pitsim.enums.NonTrait;
-import dev.kyro.pitsim.events.AttackEvent;
-import dev.kyro.pitsim.events.IncrementKillsEvent;
-import dev.kyro.pitsim.events.KillEvent;
-import dev.kyro.pitsim.events.OofEvent;
+import dev.kyro.pitsim.controllers.objects.*;
+import dev.kyro.pitsim.enums.*;
+import dev.kyro.pitsim.events.*;
 import dev.kyro.pitsim.megastreaks.Highlander;
 import dev.kyro.pitsim.megastreaks.NoMegastreak;
 import dev.kyro.pitsim.megastreaks.RNGesus;
@@ -29,10 +27,8 @@ import dev.kyro.pitsim.misc.KillEffects;
 import dev.kyro.pitsim.misc.Misc;
 import dev.kyro.pitsim.misc.Sounds;
 import me.clip.placeholderapi.PlaceholderAPI;
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.Location;
-import org.bukkit.Material;
+import org.bukkit.*;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Entity;
@@ -60,7 +56,41 @@ import java.util.*;
 
 public class PlayerManager implements Listener {
 	//	public static Map<Player, BossBarManager> bossBars = new HashMap<>();
+
+
+
 	static {
+			new BukkitRunnable() {
+			@Override
+			public void run() {
+				for (Player onlinePlayer : Bukkit.getOnlinePlayers()) {
+					PitPlayer pitPlayer = PitPlayer.getPitPlayer(onlinePlayer);
+					if(!MapManager.inDarkzone(pitPlayer.player)) continue;
+
+					if(onlinePlayer.getLocation().getY() >= 85) onlinePlayer.spigot().playEffect(onlinePlayer.getLocation(), Effect.PORTAL, 0, 0, 10, 10, 10, 1, 128, 100);
+
+					double reduction = 0.0;
+
+					for (Map.Entry<PitEnchant, Integer> entry : EnchantManager.getEnchantsOnPlayer(pitPlayer.player).entrySet()) {
+						if(!entry.getKey().tainted || entry.getKey().applyType != ApplyType.CHESTPLATES) continue;
+						reduction += (0.8 - (0.2 * entry.getValue()));
+					}
+
+					double amount = 0.5;
+					PotionEffect effect = PotionManager.getEffect(pitPlayer.player, MagmaCream.INSTANCE);
+					if(effect != null) amount += (Double) effect.potionType.getPotency(effect.potency);
+					amount *= (1 - reduction);
+
+					if(pitPlayer.mana + amount > pitPlayer.getMaxMana()) {
+						pitPlayer.updateXPBar();
+						continue;
+					}
+					pitPlayer.mana += amount;
+					pitPlayer.updateXPBar();
+				}
+			}
+		}.runTaskTimerAsynchronously(PitSim.INSTANCE, 0L, 1L);
+
 		new BukkitRunnable() {
 			@Override
 			public void run() {
@@ -135,6 +165,28 @@ public class PlayerManager implements Listener {
 		}.runTaskTimer(PitSim.INSTANCE, 0L, 12L);
 	}
 
+	@EventHandler(priority = EventPriority.MONITOR)
+	public void onClick2(PlayerInteractEvent event) {
+		if(event.getAction() != Action.RIGHT_CLICK_AIR && event.getAction() != Action.RIGHT_CLICK_BLOCK) return;
+		Player player = event.getPlayer();
+		if(!MapManager.inDarkzone(player)) return;
+		ItemStack itemStack = player.getItemInHand();
+		if(Misc.isAirOrNull(itemStack)) return;
+		MysticType mysticType = MysticType.getMysticType(itemStack);
+		if(mysticType != MysticType.TAINTED_SCYTHE) return;
+		if(SpawnManager.isInDarkzoneSpawn(player.getLocation())) return;
+
+		PitPlayerAttemptAbilityEvent newEvent = new PitPlayerAttemptAbilityEvent(player);
+		Bukkit.getPluginManager().callEvent(newEvent);
+	}
+
+	@EventHandler
+	public void onWorldChange(PlayerChangedWorldEvent event) {
+		Player player = event.getPlayer();
+		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
+		pitPlayer.updateXPBar();
+	}
+
 	@EventHandler
 	public void onItemCraft(CraftItemEvent event) {
 		Player player = (Player) event.getWhoClicked();
@@ -191,18 +243,19 @@ public class PlayerManager implements Listener {
 
 	@EventHandler(priority = EventPriority.HIGHEST)
 	public static void onKill(KillEvent killEvent) {
+		if(!killEvent.deadIsPlayer || !killEvent.killerIsPlayer) return;
 
-		PitPlayer pitKiller = PitPlayer.getPitPlayer(killEvent.killer);
-		PitPlayer pitDead = PitPlayer.getPitPlayer(killEvent.dead);
+		PitPlayer pitKiller = PitPlayer.getPitPlayer(killEvent.killerPlayer);
+		PitPlayer pitDead = PitPlayer.getPitPlayer(killEvent.deadPlayer);
 		Non killingNon = NonManager.getNon(killEvent.killer);
 		Non deadNon = NonManager.getNon(killEvent.dead);
 
 		if(pitKiller.killEffect != null && killEvent.killer.hasPermission("pitsim.killeffect")) {
-			KillEffects.trigger(killEvent.killer, pitKiller.killEffect, killEvent.dead.getLocation());
+			KillEffects.trigger(killEvent.killerPlayer, pitKiller.killEffect, killEvent.dead.getLocation());
 		}
 
 		if(pitDead.deathCry != null && killEvent.dead.hasPermission("pitsim.deathcry")) {
-			DeathCrys.trigger(killEvent.dead, pitDead.deathCry, killEvent.dead.getLocation());
+			DeathCrys.trigger(killEvent.deadPlayer, pitDead.deathCry, killEvent.dead.getLocation());
 		}
 
 		if(pitDead.bounty != 0 && killingNon == null && pitKiller != pitDead) {
@@ -214,14 +267,14 @@ public class PlayerManager implements Listener {
 				if(pitPlayer.bountiesDisabled) continue;
 
 				String bounty1 = ChatColor.translateAlternateColorCodes('&',
-						"&6&lBOUNTY CLAIMED!&7 %luckperms_prefix%" + killEvent.killer.getDisplayName() + "&7 killed ");
-				String bounty2 = ChatColor.translateAlternateColorCodes('&', "%luckperms_prefix%" + killEvent.dead.getDisplayName()
+						"&6&lBOUNTY CLAIMED!&7 %luckperms_prefix%" + killEvent.killerPlayer.getDisplayName() + "&7 killed ");
+				String bounty2 = ChatColor.translateAlternateColorCodes('&', "%luckperms_prefix%" + killEvent.deadPlayer.getDisplayName()
 						+ "&7 for &6&l" + formatter.format(pitDead.bounty)) + "g";
-				String bounty3 = PlaceholderAPI.setPlaceholders(killEvent.killer, bounty1);
-				String bounty4 = PlaceholderAPI.setPlaceholders(killEvent.dead, bounty2);
+				String bounty3 = PlaceholderAPI.setPlaceholders(killEvent.killerPlayer, bounty1);
+				String bounty4 = PlaceholderAPI.setPlaceholders(killEvent.deadPlayer, bounty2);
 				player.sendMessage(bounty3 + bounty4);
 			}
-			LevelManager.addGold(killEvent.killer, pitDead.bounty);
+			LevelManager.addGold(killEvent.killerPlayer, pitDead.bounty);
 			if(pitDead.megastreak.getClass() != Highlander.class) pitDead.bounty = 0;
 
 			if(pitKiller.stats != null) pitKiller.stats.bountiesClaimed++;
@@ -237,10 +290,10 @@ public class PlayerManager implements Listener {
 			} else {
 				pitKiller.bounty += amount;
 			}
-			String message = "&6&lBOUNTY!&7 bump &6&l" + amount + "g&7 on %luckperms_prefix%" + killEvent.killer.getDisplayName() +
+			String message = "&6&lBOUNTY!&7 bump &6&l" + amount + "g&7 on %luckperms_prefix%" + killEvent.killerPlayer.getDisplayName() +
 					"&7 for high streak";
 			if(!pitKiller.bountiesDisabled)
-				AOutput.send(killEvent.killer, PlaceholderAPI.setPlaceholders(killEvent.killer, message));
+				AOutput.send(killEvent.killer, PlaceholderAPI.setPlaceholders(killEvent.killerPlayer, message));
 			Sounds.BOUNTY.play(killEvent.killer);
 		}
 	}
@@ -256,6 +309,7 @@ public class PlayerManager implements Listener {
 
 	public static List<UUID> pantsSwapCooldown = new ArrayList<>();
 	public static List<UUID> helmetSwapCooldown = new ArrayList<>();
+	public static List<UUID> chestplateSwapCooldown = new ArrayList<>();
 
 	@EventHandler
 	public static void onClick(PlayerInteractEvent event) {
@@ -357,6 +411,29 @@ public class PlayerManager implements Listener {
 			}.runTaskLater(PitSim.INSTANCE, 40L);
 			Sounds.ARMOR_SWAP.play(player);
 		}
+
+		if(player.getItemInHand().getType().toString().contains("CHESTPLATE")) {
+			if(Misc.isAirOrNull(player.getInventory().getChestplate())) return;
+
+			if(chestplateSwapCooldown.contains(player.getUniqueId())) {
+
+				Sounds.NO.play(player);
+				return;
+			}
+
+			ItemStack held = player.getItemInHand();
+			player.setItemInHand(player.getInventory().getChestplate());
+			player.getInventory().setChestplate(held);
+
+			chestplateSwapCooldown.add(player.getUniqueId());
+			new BukkitRunnable() {
+				@Override
+				public void run() {
+					chestplateSwapCooldown.remove(player.getUniqueId());
+				}
+			}.runTaskLater(PitSim.INSTANCE, 40L);
+			Sounds.ARMOR_SWAP.play(player);
+		}
 	}
 
 	@EventHandler
@@ -371,11 +448,11 @@ public class PlayerManager implements Listener {
 
 	@EventHandler
 	public void onMove(PlayerMoveEvent event) {
-		if(event.getPlayer().getLocation().getY() < 20 && event.getPlayer().getWorld() == Bukkit.getWorld("tutorial"))
+		if(event.getPlayer().getLocation().getY() < 10 && event.getPlayer().getWorld() == Bukkit.getWorld("tutorial"))
 			DamageManager.death(event.getPlayer());
-		if(event.getPlayer().getLocation().getY() < 20 && MapManager.currentMap.lobbies.contains(event.getPlayer().getWorld())) {
+		else if(event.getPlayer().getLocation().getY() < 10 && MapManager.currentMap.lobbies.contains(event.getPlayer().getWorld())) {
 			DamageManager.death(event.getPlayer());
-		}
+		} else if(event.getPlayer().getLocation().getY() < 10) DamageManager.death(event.getPlayer());
 	}
 
 	@EventHandler
@@ -388,9 +465,9 @@ public class PlayerManager implements Listener {
 
 		Non defendingNon = NonManager.getNon(attackEvent.defender);
 //		Arch chest
-		if(defendingNon == null) {
+		if(defendingNon == null && attackEvent.defenderIsPlayer) {
 			attackEvent.multipliers.add(0.9);
-		} else {
+		} else if(attackEvent.defenderIsPlayer) {
 //			Non defence
 			if(defendingNon.traits.contains(NonTrait.IRON_STREAKER)) attackEvent.multipliers.add(0.8);
 		}
@@ -439,6 +516,8 @@ public class PlayerManager implements Listener {
 		new BukkitRunnable() {
 			@Override
 			public void run() {
+
+				player.setGameMode(GameMode.SURVIVAL);
 
 				if(!player.isOp() && !player.getName().equals("Fishduper")) {
 
@@ -517,6 +596,78 @@ public class PlayerManager implements Listener {
 				}
 			}
 		}.runTaskLater(PitSim.INSTANCE, 5L);
+
+		new BukkitRunnable() {
+			@Override
+			public void run() {
+				for (AuctionItem auctionItem : AuctionManager.auctionItems) {
+					if(!auctionItem.bidMap.containsKey(player.getUniqueId())) continue;
+
+					if(auctionItem.getHighestBidder().equals(player.getUniqueId())) AOutput.send(player, "&5&lDARK AUCTION! &7You are currently holding the highest bid on " + auctionItem.item.itemName);
+					else AOutput.send(player, "&5&lDARK AUCTION! &7Current bid on " + auctionItem.item.itemName + " &7is &f" + auctionItem.getHighestBid() + " Souls &7by &e" + Bukkit.getOfflinePlayer(auctionItem.getHighestBidder()).getName() + "&7.");
+					Sounds.BOOSTER_REMIND.play(player);
+				}
+			}
+		}.runTaskLater(PitSim.INSTANCE, 10);
+
+		APlayer aPlayer = APlayerData.getPlayerData(player);
+		FileConfiguration playerData = aPlayer.playerData;
+
+		if(playerData.contains("auctionreturn")) {
+			String[] items = playerData.getString("auctionreturn").split(",");
+
+			for (String item : items) {
+				String[] data = item.split(":");
+
+				if(Integer.parseInt(data[1]) == 0) {
+					ItemStack itemStack = ItemType.getItemType(Integer.valueOf(data[0])).item;
+					AUtil.giveItemSafely(player, itemStack, true);
+
+					new BukkitRunnable() {
+						@Override
+						public void run() {
+							AOutput.send(player, "&5&lDARK AUCTION! &7Received " + itemStack.getItemMeta().getDisplayName() + "&7.");
+							Sounds.BOOSTER_REMIND.play(player);
+						}
+					}.runTaskLater(PitSim.INSTANCE, 10);
+				} else {
+					ItemStack itemStack = ItemType.getJewelItem(Integer.parseInt(data[0]), Integer.parseInt(data[1]));
+
+					AUtil.giveItemSafely(player, itemStack, true);
+					new BukkitRunnable() {
+						@Override
+						public void run() {
+							AOutput.send(player, "&5&lDARK AUCTION! &7Received " + itemStack.getItemMeta().getDisplayName() + "&7.");
+							Sounds.BOOSTER_REMIND.play(player);
+						}
+					}.runTaskLater(PitSim.INSTANCE, 10);
+				}
+			}
+
+			pitPlayer.stats.auctionsWon++;
+
+			playerData.set("auctionreturn", null);
+			aPlayer.save();
+		}
+
+		if(playerData.contains("soulreturn")) {
+			int souls = playerData.getInt("soulreturn");
+
+			if(souls > 0) {
+				PitPlayer.getPitPlayer(player).taintedSouls += souls;
+				new BukkitRunnable() {
+					@Override
+					public void run() {
+						AOutput.send(player, "&5&lDARK AUCTION! &7Received &f" + souls + " Tainted Souls&7.");
+						Sounds.BOOSTER_REMIND.play(player);
+					}
+				}.runTaskLater(PitSim.INSTANCE, 10);
+			}
+
+			playerData.set("soulreturn", null);
+			aPlayer.save();
+		}
+
 	}
 
 	public static void removeIllegalItems(Player player) {
@@ -582,8 +733,9 @@ public class PlayerManager implements Listener {
 
 	@EventHandler
 	public void onDeath(KillEvent event) {
-		PitPlayer pitPlayer = PitPlayer.getPitPlayer(event.dead);
-		if(pitPlayer.megastreak.getClass() == RNGesus.class && RNGesus.isOnCooldown(event.dead)) {
+		if(!event.deadIsPlayer) return;
+		PitPlayer pitPlayer = PitPlayer.getPitPlayer(event.deadPlayer);
+		if(pitPlayer.megastreak.getClass() == RNGesus.class && RNGesus.isOnCooldown(event.deadPlayer)) {
 			new BukkitRunnable() {
 				@Override
 				public void run() {

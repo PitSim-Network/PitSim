@@ -5,6 +5,7 @@ import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.pitsim.controllers.objects.Killstreak;
 import dev.kyro.pitsim.events.KillEvent;
 import org.bukkit.Material;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.inventory.ItemStack;
@@ -21,7 +22,7 @@ public class Explicious extends Killstreak {
 		INSTANCE = this;
 	}
 
-	List<Player> rewardPlayers = new ArrayList<>();
+	List<LivingEntity> rewardPlayers = new ArrayList<>();
 
 
 	@EventHandler

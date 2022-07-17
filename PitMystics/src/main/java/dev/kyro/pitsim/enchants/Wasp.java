@@ -2,6 +2,7 @@ package dev.kyro.pitsim.enchants;
 
 import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.arcticapi.misc.AUtil;
+import dev.kyro.pitsim.controllers.MapManager;
 import dev.kyro.pitsim.controllers.objects.PitEnchant;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.enums.ApplyType;
@@ -22,14 +23,17 @@ public class Wasp extends PitEnchant {
 
 	@EventHandler
 	public void onAttack(AttackEvent.Apply attackEvent) {
+		if(!attackEvent.attackerIsPlayer) return;
 		if(!canApply(attackEvent)) return;
 
 		int enchantLvl = attackEvent.getAttackerEnchantLevel(this);
 		if(enchantLvl == 0) return;
 
+		if(MapManager.inDarkzone(attackEvent.attacker)) return;
+
 		Misc.applyPotionEffect(attackEvent.defender, PotionEffectType.WEAKNESS, getDuration(enchantLvl) * 20, enchantLvl, true, false);
 
-		PitPlayer pitPlayer = PitPlayer.getPitPlayer(attackEvent.attacker);
+		PitPlayer pitPlayer = PitPlayer.getPitPlayer(attackEvent.attackerPlayer);
 		if(pitPlayer.stats != null) pitPlayer.stats.wasp++;
 	}
 

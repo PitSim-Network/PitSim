@@ -4,6 +4,7 @@ import dev.kyro.pitsim.PitSim;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Sound;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
@@ -34,6 +35,8 @@ public class Sounds {
 	public static final SoundEffect MULTI_5 = new SoundEffect(Sound.ORB_PICKUP, 1, 1.9523809);
 	public static final SoundEffect GEM_CRAFT = new SoundEffect(Sound.ORB_PICKUP, 2, 1.5F);
 	public static final SoundEffect GEM_USE = new SoundEffect(Sound.GLASS, 1, 2);
+	public static final SoundEffect JEWEL_SHRED1 = new SoundEffect(Sound.HORSE_ARMOR, 1, 0.8);
+	public static final SoundEffect JEWEL_SHRED2 = new SoundEffect(Sound.ZOMBIE_WOODBREAK, 1, 0.75);
 	public static final SoundEffect SHARD_FIND = new SoundEffect(Sound.GLASS, 1, 2);
 	public static final SoundEffect WITHERCRAFT_1 = new SoundEffect(Sound.ENDERMAN_IDLE, 2F, 1.2F);
 	public static final SoundEffect WITHERCRAFT_2 = new SoundEffect(Sound.ENDERMAN_TELEPORT, 1, 1.5F);
@@ -48,6 +51,13 @@ public class Sounds {
 	public static final SoundEffect SURVIVOR_HEAL = new SoundEffect(Sound.SILVERFISH_KILL, 1, 1.8);
 	public static final SoundEffect SHOCKWAVE = new SoundEffect(Sound.EXPLODE, 2, 1.6);
 	public static final SoundEffect BOOSTER_REMIND = new SoundEffect(Sound.CHICKEN_EGG_POP, 2, 1.6);
+	public static final SoundEffect BUTTON = new SoundEffect(Sound.CLICK, 2, 1);
+	public static final SoundEffect POTION_BUBBLE = new SoundEffect(Sound.LAVA, 1.5, 1);
+	public static final SoundEffect AEGIS = new SoundEffect(Sound.ANVIL_LAND, 1, 1.5);
+	public static final SoundEffect METEOR = new SoundEffect(Sound.FIZZ, 1, 0.7);
+	public static final SoundEffect TAINTED_CRAFT = new SoundEffect(Sound.ANVIL_USE, 2, 1.25F);
+	public static final SoundEffect SPLASH_CRAFT1 = new SoundEffect(Sound.GLASS, 2, 1.5F);
+	public static final SoundEffect SPLASH_CRAFT2 = new SoundEffect(Sound.LAVA, 2, 1.75F);
 
 	//	Enchants
 	public static final SoundEffect BILLIONAIRE = new SoundEffect(Sound.ORB_PICKUP, 1, 0.73);
@@ -68,6 +78,15 @@ public class Sounds {
 	public static final SoundEffect TELEBOW = new SoundEffect(Sound.ENDERMAN_TELEPORT, 1, 2);
 	public static final SoundEffect VENOM = new SoundEffect(Sound.SPIDER_IDLE, 1, 1);
 	public static final SoundEffect VOLLEY = new SoundEffect(Sound.SHOOT_ARROW, 1, 1);
+	public static final SoundEffect REPEL = new SoundEffect(Sound.ANVIL_LAND, 1, 0.5);
+	public static final SoundEffect FREEZE1 = new SoundEffect(Sound.DIG_SNOW, 2, 0.5);
+	public static final SoundEffect FREEZE2 = new SoundEffect(Sound.GLASS, 1, 1.2);
+	public static final SoundEffect SWEEP = new SoundEffect(Sound.BAT_TAKEOFF, 1, 0.5);
+	public static final SoundEffect CLEAVE1 = new SoundEffect(Sound.IRONGOLEM_THROW, 1, 0.5);
+	public static final SoundEffect CLEAVE2 = new SoundEffect(Sound.ITEM_BREAK, 1, 0.75);
+	public static final SoundEffect CLEAVE3 = new SoundEffect(Sound.HURT_FLESH, 1, 1.25);
+	public static final SoundEffect WARP = new SoundEffect(Sound.ENDERMAN_TELEPORT, 1, 1.25);
+	public static final SoundEffect EXTRACT = new SoundEffect(Sound.ZOMBIE_WOODBREAK, 1, 0.8);
 
 	//	Megastreaks
 	public static final SoundEffect MEGA_GENERAL = new SoundEffect(Sound.WITHER_SPAWN, 1000, 1);
@@ -91,6 +110,7 @@ public class Sounds {
 	public static final SoundEffect HELMET_TICK = new SoundEffect(Sound.NOTE_STICKS, 5, 1.5);
 	public static final SoundEffect GOLD_RUSH = new SoundEffect(Sound.ORB_PICKUP, 1, 0.9);
 	public static final SoundEffect LEAP = new SoundEffect(Sound.BAT_TAKEOFF, 1, 1);
+	public static final SoundEffect MANA = new SoundEffect(Sound.PORTAL_TRAVEL, 1, 2);
 	public static final SoundEffect PHOENIX = new SoundEffect()
 			.add(new SoundMoment(0).add(Sound.ENDERDRAGON_GROWL, 1, 1).add(Sound.FIZZ, 1, 1));
 	//	Judgement
@@ -104,6 +124,12 @@ public class Sounds {
 	public static final SoundEffect JUDGEMENT_ZEUS_ATTACKER = new SoundEffect(Sound.ENDERDRAGON_GROWL, 1, 1);
 	public static final SoundEffect JUDGEMENT_ZEUS_DEFENDER = new SoundEffect(Sound.IRONGOLEM_DEATH, 1, 1);
 	public static final SoundEffect JUDGEMENT_HOPPER = new SoundEffect(Sound.ENDERMAN_TELEPORT, 1, 1);
+
+	public static final SoundEffect ANVIL_LAND = new SoundEffect(Sound.ANVIL_LAND, 1, 1);
+	public static final SoundEffect ANVIL_BREAK = new SoundEffect(Sound.ANVIL_BREAK, 1, 1);
+	public static final SoundEffect ANVIL_USE = new SoundEffect(Sound.ANVIL_USE, 1, 1);
+
+	public static final SoundEffect WITHER_SHOOT = new SoundEffect(Sound.WITHER_SHOOT, 1, 1);
 
 	//	Events
 	public static final SoundEffect EVENT_START = new SoundEffect(Sound.ENDERDRAGON_GROWL, 2, 1);
@@ -162,7 +188,10 @@ public class Sounds {
 			}
 		}
 
-		public void play(Player player) {
+		public void play(LivingEntity checkPlayer) {
+			if(!(checkPlayer instanceof Player)) return;
+			Player player = (Player) checkPlayer;
+
 			if(!player.isOnline()) return;
 			if(soundMoment != null) {
 				soundMoment.play(player);

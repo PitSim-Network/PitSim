@@ -21,6 +21,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
 import org.bukkit.Material;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -39,8 +40,8 @@ import java.util.*;
 
 public class GoldenHelmet implements Listener {
 
-	public static Map<Player, HelmetAbility> abilities = new HashMap<>();
-	public static List<Player> toggledPlayers = new ArrayList<>();
+	public static Map<LivingEntity, HelmetAbility> abilities = new HashMap<>();
+	public static List<LivingEntity> toggledPlayers = new ArrayList<>();
 	public static DecimalFormat formatter = new DecimalFormat("#,###.#");
 	private final List<Material> armorMaterials = Collections.singletonList(Material.GOLD_HELMET);
 
@@ -79,7 +80,10 @@ public class GoldenHelmet implements Listener {
 		} else ability.onProc();
 	}
 
-	public static ItemStack getHelmet(Player player) {
+	public static ItemStack getHelmet(LivingEntity checkPlayer) {
+		if(!(checkPlayer instanceof Player)) return null;
+		Player player = (Player) checkPlayer;
+
 		if(Misc.isAirOrNull(player.getInventory().getHelmet())) return null;
 		NBTItem nbtItem = new NBTItem(player.getInventory().getHelmet());
 		if(!nbtItem.hasKey(NBTTag.GHELMET_UUID.getRef())) return null;
@@ -87,7 +91,10 @@ public class GoldenHelmet implements Listener {
 		return player.getInventory().getHelmet();
 	}
 
-	public static int getUsedHelmetGold(Player player) {
+	public static int getUsedHelmetGold(LivingEntity checkPlayer) {
+		if(!(checkPlayer instanceof Player)) return 0;
+		Player player = (Player) checkPlayer;
+
 		ItemStack helmet = getHelmet(player);
 		if(helmet == null) return 0;
 
@@ -157,7 +164,10 @@ public class GoldenHelmet implements Listener {
 		return true;
 	}
 
-	public static void deactivate(Player player) {
+	public static void deactivate(LivingEntity checkPlayer) {
+		if(!(checkPlayer instanceof Player)) return;
+		Player player = (Player) checkPlayer;
+
 		if(!abilities.containsKey(player)) return;
 		HelmetAbility ability = abilities.get(player);
 		if(!ability.isActive) return;
@@ -175,6 +185,7 @@ public class GoldenHelmet implements Listener {
 		if(refName.equals("hermit")) return new HermitAbility(player);
 		if(refName.equals("judgement")) return new JudgementAbility(player);
 		if(refName.equals("phoenix")) return new PhoenixAbility(player);
+		if(refName.equals("mana")) return new ManaAbility(player);
 		return null;
 	}
 
@@ -392,31 +403,33 @@ public class GoldenHelmet implements Listener {
 
 	@EventHandler
 	public void onKill(KillEvent killEvent) {
-
-		Player dead = killEvent.dead;
-		if(abilities.get(dead) != null) {
-			GoldenHelmet.deactivate(killEvent.dead);
-		}
-		toggledPlayers.remove(dead);
-
-		if(NonManager.getNon(killEvent.killer) != null) return;
-		if(Misc.isAirOrNull(killEvent.killer.getInventory().getHelmet())) return;
-		if(killEvent.killer.getInventory().getHelmet().getType() != Material.GOLD_HELMET) return;
-
-		ItemStack helmet = getHelmet(killEvent.killer);
-		if(helmet == null) return;
-
-		int level = HelmetSystem.getLevel(getUsedHelmetGold(killEvent.killer));
-
-		killEvent.goldMultipliers.add(1 + HelmetSystem.getTotalStacks(HelmetSystem.Passive.GOLD_BOOST, level - 1) / 100D);
-		killEvent.xpMultipliers.add(1 + HelmetSystem.getTotalStacks(HelmetSystem.Passive.XP_BOOST, level - 1) / 100D);
-
-		if(NonManager.getNon(killEvent.dead) == null) {
-			double chance = HelmetSystem.getTotalStacks(HelmetSystem.Passive.PLAYER_KILLS, level - 1) * HelmetSystem.Passive.PLAYER_KILLS.baseUnit;
-			if(chance > Math.random() * 100) {
-				killEvent.playerKillWorth++;
-				AOutput.send(killEvent.killer, "&6&lHELMET! &7+1 player kill");
+		if(killEvent.deadIsPlayer) {
+			LivingEntity dead = killEvent.dead;
+			if(abilities.get(dead) != null) {
+				GoldenHelmet.deactivate(killEvent.dead);
 			}
+			toggledPlayers.remove(dead);
 		}
+		if(killEvent.killerIsPlayer) {
+			if(NonManager.getNon(killEvent.killer) != null) return;
+			if(Misc.isAirOrNull(killEvent.killerPlayer.getInventory().getHelmet())) return;
+			if(killEvent.killerPlayer.getInventory().getHelmet().getType() != Material.GOLD_HELMET) return;
+
+			ItemStack helmet = getHelmet(killEvent.killer);
+			if(helmet == null) return;
+
+			int level = HelmetSystem.getLevel(getUsedHelmetGold(killEvent.killer));
+
+			killEvent.goldMultipliers.add(1 + HelmetSystem.getTotalStacks(HelmetSystem.Passive.GOLD_BOOST, level - 1) / 100D);
+			killEvent.xpMultipliers.add(1 + HelmetSystem.getTotalStacks(HelmetSystem.Passive.XP_BOOST, level - 1) / 100D);
+		}
+
+//		if(NonManager.getNon(killEvent.dead) == null) {
+//			double chance = HelmetSystem.getTotalStacks(HelmetSystem.Passive.PLAYER_KILLS, level - 1) * HelmetSystem.Passive.PLAYER_KILLS.baseUnit;
+//			if(chance > Math.random() * 100) {
+//				killEvent.playerKillWorth++;
+//				AOutput.send(killEvent.killer, "&6&lHELMET! &7+1 player kill");
+//			}
+//		}
 	}
 }

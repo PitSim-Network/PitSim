@@ -11,6 +11,7 @@ import dev.kyro.pitsim.enums.NBTTag;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -49,7 +50,28 @@ public class FunkyFeather {
 		}
 	}
 
-	public static boolean useFeather(Player killer, Player dead, boolean isDivine) {
+	public static ItemStack getFeather(int amount) {
+		ItemStack feather = new ItemStack(Material.FEATHER);
+		ItemMeta meta = feather.getItemMeta();
+		meta.setDisplayName(ChatColor.DARK_AQUA + "Funky Feather");
+		List<String> lore = new ArrayList<>();
+		lore.add(ChatColor.YELLOW + "Special item");
+		lore.add(ChatColor.GRAY + "protects your inventory but");
+		lore.add(ChatColor.GRAY + "gets consumed on death if");
+		lore.add(ChatColor.GRAY + "in your hotbar.");
+		meta.setLore(lore);
+		feather.setItemMeta(meta);
+		feather.setAmount(amount);
+
+		feather = ItemManager.enableDropConfirm(feather);
+
+		NBTItem nbtItem = new NBTItem(feather);
+		nbtItem.setBoolean(NBTTag.IS_FEATHER.getRef(), true);
+		return nbtItem.getItem();
+	}
+
+
+	public static boolean useFeather(LivingEntity killer, Player dead, boolean isDivine) {
 		if(isDivine) return false;
 
 		for(int i = 0; i < 9; i++) {

@@ -13,17 +13,18 @@ import java.util.List;
 public class Guts extends PitEnchant {
 
 	public Guts() {
-		super("Guts", false, ApplyType.SWORDS,
+		super("Guts", false, ApplyType.MELEE,
 				"guts", "gut");
 	}
 
 	@EventHandler
 	public void onAttack(KillEvent killEvent) {
+		if(!killEvent.killerIsPlayer) return;
 
 		int enchantLvl = killEvent.getKillerEnchantLevel(this);
 		if(enchantLvl == 0) return;
 
-		PitPlayer pitPlayer = PitPlayer.getPitPlayer(killEvent.killer);
+		PitPlayer pitPlayer = PitPlayer.getPitPlayer(killEvent.killerPlayer);
 		pitPlayer.heal(getHealing(enchantLvl));
 	}
 

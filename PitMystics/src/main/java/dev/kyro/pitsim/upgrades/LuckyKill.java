@@ -7,8 +7,10 @@ import com.xxmicloxx.NoteBlockAPI.utils.NBSDecoder;
 import dev.kyro.arcticapi.gui.AGUIPanel;
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.arcticapi.misc.AUtil;
+import dev.kyro.pitsim.controllers.BossManager;
 import dev.kyro.pitsim.controllers.NonManager;
 import dev.kyro.pitsim.controllers.UpgradeManager;
+import dev.kyro.pitsim.controllers.objects.PitBoss;
 import dev.kyro.pitsim.controllers.objects.RenownUpgrade;
 import dev.kyro.pitsim.events.KillEvent;
 import org.bukkit.ChatColor;
@@ -65,10 +67,14 @@ public class LuckyKill extends RenownUpgrade {
 
 	@EventHandler
 	public void onKill(KillEvent killEvent) {
-		if(!UpgradeManager.hasUpgrade(killEvent.killer, this)) return;
+		if(!killEvent.killerIsPlayer) return;
+		if(!UpgradeManager.hasUpgrade(killEvent.killerPlayer, this)) return;
 		if(!(NonManager.getNon(killEvent.dead) == null)) return;
+		if(!(killEvent.dead instanceof Player)) return;
+		if(PitBoss.isPitBoss((Player) killEvent.dead)) return;
+		if(!killEvent.deadIsPlayer) return;
 
-		int tier = UpgradeManager.getTier(killEvent.killer, this);
+		int tier = UpgradeManager.getTier(killEvent.killerPlayer, this);
 		if(tier == 0) return;
 
 		double chance = 0.01 * tier;
@@ -84,7 +90,7 @@ public class LuckyKill extends RenownUpgrade {
 			Song song = NBSDecoder.parse(file);
 			RadioSongPlayer rsp = new RadioSongPlayer(song);
 			rsp.setRepeatMode(RepeatMode.NO);
-			rsp.addPlayer(killEvent.killer);
+			rsp.addPlayer(killEvent.killerPlayer);
 			rsp.setPlaying(true);
 		}
 

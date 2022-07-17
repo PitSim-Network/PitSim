@@ -10,7 +10,7 @@ import dev.kyro.pitsim.enums.ApplyType;
 import dev.kyro.pitsim.events.AttackEvent;
 import dev.kyro.pitsim.misc.Misc;
 import dev.kyro.pitsim.misc.Sounds;
-import org.bukkit.entity.Player;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.potion.PotionEffectType;
@@ -25,8 +25,8 @@ public class ComboVenom extends PitEnchant {
 		isUncommonEnchant = true;
 	}
 
-	public static boolean isVenomed(Player player) {
-		return player.hasPotionEffect(PotionEffectType.POISON);
+	public static boolean isVenomed(LivingEntity entity) {
+		return entity.hasPotionEffect(PotionEffectType.POISON);
 	}
 
 	@EventHandler
@@ -34,35 +34,37 @@ public class ComboVenom extends PitEnchant {
 		if(event.getCause() == EntityDamageEvent.DamageCause.POISON) event.setCancelled(true);
 	}
 
-	@EventHandler
-	public void onVenomAttacked(AttackEvent.Pre attackEvent) {
-		if(isVenomed(attackEvent.attacker) || isVenomed(attackEvent.defender)) {
-			attackEvent.getAttackerEnchantMap().clear();
-			attackEvent.getDefenderEnchantMap().clear();
-		}
-	}
+//	@EventHandler
+//	public void onVenomAttacked(AttackEvent.Pre attackEvent) {
+//		if(isVenomed(attackEvent.attacker) || isVenomed(attackEvent.defender)) {
+//			attackEvent.getAttackerEnchantMap().clear();
+//			attackEvent.getDefenderEnchantMap().clear();
+//		}
+//	}
 
-	@EventHandler
-	public void onAttack(AttackEvent.Apply attackEvent) {
-		if(!canApply(attackEvent)) return;
-
-		if(attackEvent.attacker.hasPotionEffect(PotionEffectType.POISON) || attackEvent.defender.hasPotionEffect(PotionEffectType.POISON)) {
-			Non non = NonManager.getNon(attackEvent.defender);
-			if(non == null) attackEvent.multipliers.add(10 / 8.5D);
-		}
-
-		int enchantLvl = attackEvent.getAttackerEnchantLevel(this);
-		if(enchantLvl == 0 || attackEvent.arrow != null) return;
-
-		PitPlayer pitPlayer = PitPlayer.getPitPlayer(attackEvent.attacker);
-		HitCounter.incrementCounter(pitPlayer.player, this);
-		if(!HitCounter.hasReachedThreshold(pitPlayer.player, this, 3)) return;
-
-		Misc.applyPotionEffect(attackEvent.attacker, PotionEffectType.POISON, 20 * 24, 0, true, false);
-		Misc.applyPotionEffect(attackEvent.defender, PotionEffectType.POISON, 20 * 12, 0, true, false);
-		Sounds.VENOM.play(attackEvent.attacker);
-		Sounds.VENOM.play(attackEvent.defender);
-	}
+//	@EventHandler
+//	public void onAttack(AttackEvent.Apply attackEvent) {
+//		if(!canApply(attackEvent)) return;
+//
+//		if(attackEvent.attacker.hasPotionEffect(PotionEffectType.POISON) || attackEvent.defender.hasPotionEffect(PotionEffectType.POISON)) {
+//			Non non = NonManager.getNon(attackEvent.defender);
+//			if(non == null) attackEvent.multipliers.add(10 / 8.5D);
+//		}
+//
+//		int enchantLvl = attackEvent.getAttackerEnchantLevel(this);
+//		if(enchantLvl == 0 || attackEvent.arrow != null) return;
+//
+//		if(attackEvent.attackerIsPlayer) {
+//			PitPlayer pitPlayer = PitPlayer.getPitPlayer(attackEvent.attackerPlayer);
+//			HitCounter.incrementCounter(pitPlayer.player, this);
+//			if(!HitCounter.hasReachedThreshold(pitPlayer.player, this, 3)) return;
+//
+//			Misc.applyPotionEffect(attackEvent.attacker, PotionEffectType.POISON, 20 * 24, 0, true, false);
+//			Misc.applyPotionEffect(attackEvent.defender, PotionEffectType.POISON, 20 * 12, 0, true, false);
+//			Sounds.VENOM.play(attackEvent.attacker);
+//			Sounds.VENOM.play(attackEvent.defender);
+//		}
+//	}
 
 	@Override
 	public List<String> getDescription(int enchantLvl) {

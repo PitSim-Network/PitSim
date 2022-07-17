@@ -4,10 +4,12 @@ import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.controllers.objects.PitEnchant;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
+import dev.kyro.pitsim.enums.KillType;
 import dev.kyro.pitsim.events.AttackEvent;
 import dev.kyro.pitsim.events.KillEvent;
 import dev.kyro.pitsim.events.OofEvent;
 import org.bukkit.Bukkit;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -60,8 +62,8 @@ public class CombatManager implements Listener {
 
 	@EventHandler
 	public void onAttack(AttackEvent.Apply attackEvent) {
-		Player attacker = attackEvent.attacker;
-		Player defender = attackEvent.defender;
+		LivingEntity attacker = attackEvent.attacker;
+		LivingEntity defender = attackEvent.defender;
 
 		taggedPlayers.put(attacker.getUniqueId(), combatTime);
 		taggedPlayers.put(defender.getUniqueId(), combatTime);
@@ -92,7 +94,7 @@ public class CombatManager implements Listener {
 					EntityDamageByEntityEvent ev = new EntityDamageByEntityEvent(onlinePlayer, player, EntityDamageEvent.DamageCause.CUSTOM, 0);
 					AttackEvent attackEvent = new AttackEvent(ev, attackerEnchant, defenderEnchant, false);
 
-					DamageManager.kill(attackEvent, onlinePlayer, player, false);
+					DamageManager.kill(attackEvent, onlinePlayer, player, false, KillType.DEFAULT);
 					return;
 				}
 			}
@@ -118,7 +120,7 @@ public class CombatManager implements Listener {
 	@EventHandler
 	public static void onDeath(KillEvent event) {
 		taggedPlayers.remove(event.dead.getUniqueId());
-		PitPlayer.getPitPlayer(event.dead).lastHitUUID = null;
+		if(event.deadIsPlayer) PitPlayer.getPitPlayer(event.deadPlayer).lastHitUUID = null;
 	}
 
 	@EventHandler

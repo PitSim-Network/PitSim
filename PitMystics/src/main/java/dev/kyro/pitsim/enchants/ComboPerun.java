@@ -10,18 +10,20 @@ import dev.kyro.pitsim.events.AttackEvent;
 import dev.kyro.pitsim.misc.Misc;
 import org.bukkit.Material;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.block.BlockIgniteEvent;
 
 import java.util.List;
 
 public class ComboPerun extends PitEnchant {
 
 	public ComboPerun() {
-		super("Combo: Perun's Wrath", true, ApplyType.SWORDS,
+		super("Combo: Perun's Wrath", true, ApplyType.MELEE,
 				"perun", "lightning");
 	}
 
 	@EventHandler
 	public void onAttack(AttackEvent.Apply attackEvent) {
+		if(!attackEvent.attackerIsPlayer) return;
 		if(!canApply(attackEvent)) return;
 
 		int enchantLvl = attackEvent.getAttackerEnchantLevel(this);
@@ -30,7 +32,7 @@ public class ComboPerun extends PitEnchant {
 		int regLvl = attackEvent.getAttackerEnchantLevel(Regularity.INSTANCE);
 		if(Regularity.isRegHit(attackEvent.defender) && Regularity.skipIncrement(regLvl)) return;
 
-		PitPlayer pitPlayer = PitPlayer.getPitPlayer(attackEvent.attacker);
+		PitPlayer pitPlayer = PitPlayer.getPitPlayer(attackEvent.attackerPlayer);
 		HitCounter.incrementCounter(pitPlayer.player, this);
 		if(!HitCounter.hasReachedThreshold(pitPlayer.player, this, enchantLvl == 3 ? 4 : getStrikes(enchantLvl)))
 			return;
@@ -39,16 +41,16 @@ public class ComboPerun extends PitEnchant {
 
 		if(enchantLvl == 3) {
 			int damage = 2;
-			if(!(attackEvent.defender.getInventory().getHelmet() == null) && attackEvent.defender.getInventory().getHelmet().getType() == Material.DIAMOND_HELMET) {
+			if(!(attackEvent.defender.getEquipment().getHelmet() == null) && attackEvent.defender.getEquipment().getHelmet().getType() == Material.DIAMOND_HELMET) {
 				damage += 1;
 			}
-			if(!(attackEvent.defender.getInventory().getChestplate() == null) && attackEvent.defender.getInventory().getChestplate().getType() == Material.DIAMOND_CHESTPLATE) {
+			if(!(attackEvent.defender.getEquipment().getChestplate() == null) && attackEvent.defender.getEquipment().getChestplate().getType() == Material.DIAMOND_CHESTPLATE) {
 				damage += 1;
 			}
-			if(!(attackEvent.defender.getInventory().getLeggings() == null) && attackEvent.defender.getInventory().getLeggings().getType() == Material.DIAMOND_LEGGINGS) {
+			if(!(attackEvent.defender.getEquipment().getLeggings() == null) && attackEvent.defender.getEquipment().getLeggings().getType() == Material.DIAMOND_LEGGINGS) {
 				damage += 1;
 			}
-			if(!(attackEvent.defender.getInventory().getBoots() == null) && attackEvent.defender.getInventory().getBoots().getType() == Material.DIAMOND_BOOTS) {
+			if(!(attackEvent.defender.getEquipment().getBoots() == null) && attackEvent.defender.getEquipment().getBoots().getType() == Material.DIAMOND_BOOTS) {
 				damage += 1;
 			}
 
@@ -61,6 +63,11 @@ public class ComboPerun extends PitEnchant {
 		}
 
 		Misc.strikeLightningForPlayers(attackEvent.defender.getLocation(), 10);
+	}
+
+	@EventHandler
+	public void onIgnite(BlockIgniteEvent event) {
+		if(event.getCause() == BlockIgniteEvent.IgniteCause.LIGHTNING) event.setCancelled(true);
 	}
 
 	@Override

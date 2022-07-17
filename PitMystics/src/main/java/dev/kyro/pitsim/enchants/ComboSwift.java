@@ -16,13 +16,14 @@ import java.util.List;
 public class ComboSwift extends PitEnchant {
 
 	public ComboSwift() {
-		super("Combo: Swift", false, ApplyType.SWORDS,
+		super("Combo: Swift", false, ApplyType.MELEE,
 				"comoswift", "swift", "cs", "combo-swift");
 		isUncommonEnchant = true;
 	}
 
 	@EventHandler
 	public void onAttack(AttackEvent.Apply attackEvent) {
+		if(attackEvent.attackerIsPlayer) return;
 		if(!canApply(attackEvent)) return;
 
 		int enchantLvl = attackEvent.getAttackerEnchantLevel(this);
@@ -31,7 +32,7 @@ public class ComboSwift extends PitEnchant {
 		int regLvl = attackEvent.getAttackerEnchantLevel(Regularity.INSTANCE);
 		if(Regularity.isRegHit(attackEvent.defender) && Regularity.skipIncrement(regLvl)) return;
 
-		PitPlayer pitPlayer = PitPlayer.getPitPlayer(attackEvent.attacker);
+		PitPlayer pitPlayer = PitPlayer.getPitPlayer(attackEvent.attackerPlayer);
 		HitCounter.incrementCounter(pitPlayer.player, this);
 		if(!HitCounter.hasReachedThreshold(pitPlayer.player, this, getCombo(enchantLvl))) return;
 

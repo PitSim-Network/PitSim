@@ -51,9 +51,10 @@ public class XPBoost extends RenownUpgrade {
 
 	@EventHandler
 	public void onKill(KillEvent killEvent) {
-		if(!UpgradeManager.hasUpgrade(killEvent.killer, this)) return;
+		if(!killEvent.killerIsPlayer) return;
+		if(!UpgradeManager.hasUpgrade(killEvent.killerPlayer, this)) return;
 
-		int tier = UpgradeManager.getTier(killEvent.killer, this);
+		int tier = UpgradeManager.getTier(killEvent.killerPlayer, this);
 		if(tier == 0) return;
 
 		killEvent.xpReward += 5 * tier;

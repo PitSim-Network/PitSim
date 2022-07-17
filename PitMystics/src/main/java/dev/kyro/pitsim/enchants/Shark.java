@@ -13,7 +13,7 @@ import java.util.List;
 public class Shark extends PitEnchant {
 
 	public Shark() {
-		super("Shark", false, ApplyType.SWORDS,
+		super("Shark", false, ApplyType.MELEE,
 				"shark");
 	}
 

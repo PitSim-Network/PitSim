@@ -1,5 +1,6 @@
 package dev.kyro.pitsim.enums;
 
+import de.tr7zw.nbtapi.NBTItem;
 import dev.kyro.pitsim.misc.Misc;
 import org.bukkit.ChatColor;
 import org.bukkit.Color;
@@ -34,9 +35,9 @@ public enum PantColor {
 	NEON_GREEN("Neon Green", ChatColor.GREEN, 0xAAE100),
 	HARVEST_RED("Harvest Red", ChatColor.RED, 0xEE3300),
 
-
 	//Special Colors
 	DARK("Dark", ChatColor.DARK_PURPLE, 0x000000),
+	TAINTED("", ChatColor.DARK_PURPLE, 0x7100e3),
 	JEWEL("Jewel", ChatColor.DARK_AQUA, 0x7DC383);
 //	AQUA("", ChatColor.DARK_AQUA, 0x55FFFF);
 
@@ -77,13 +78,17 @@ public enum PantColor {
 		return null;
 	}
 
-	public static void setPantColor(ItemStack itemStack, PantColor pantColor) {
-		if(Misc.isAirOrNull(itemStack) || itemStack.getType() != Material.LEATHER_LEGGINGS) return;
+	public static ItemStack setPantColor(ItemStack itemStack, PantColor pantColor) {
+		if(Misc.isAirOrNull(itemStack) || itemStack.getType() != Material.LEATHER_LEGGINGS) return itemStack;
 		LeatherArmorMeta leatherArmorMeta = (LeatherArmorMeta) itemStack.getItemMeta();
 
 		leatherArmorMeta.setColor(Color.fromRGB(pantColor.hexColor));
 
 		leatherArmorMeta.setDisplayName(pantColor.chatColor + (ChatColor.RESET + leatherArmorMeta.getDisplayName()));
 		itemStack.setItemMeta(leatherArmorMeta);
+
+		NBTItem nbtItem = new NBTItem(itemStack);
+		nbtItem.setString(NBTTag.SAVED_PANTS_COLOR.getRef(), pantColor.refName);
+		return nbtItem.getItem();
 	}
 }

@@ -77,7 +77,7 @@ public class ItemClearPanel extends AGUIPanel {
 
 					}
 
-					EnchantManager.setItemLore(nbtItem.getItem());
+					EnchantManager.setItemLore(nbtItem.getItem(), player);
 
 					Map<PitEnchant, Integer> enchants = EnchantManager.getEnchantsOnItem(nbtItem.getItem());
 					ItemStack item1 = null;

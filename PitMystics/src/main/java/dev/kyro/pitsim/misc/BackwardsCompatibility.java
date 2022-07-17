@@ -1,5 +1,6 @@
 package dev.kyro.pitsim.misc;
 
+import de.tr7zw.nbtapi.NBTItem;
 import dev.kyro.arcticapi.data.APlayer;
 import dev.kyro.arcticapi.data.APlayerData;
 import dev.kyro.arcticapi.misc.AOutput;
@@ -10,13 +11,18 @@ import dev.kyro.pitsim.controllers.PrestigeValues;
 import dev.kyro.pitsim.controllers.UpgradeManager;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.controllers.objects.RenownUpgrade;
+import dev.kyro.pitsim.enums.MysticType;
+import dev.kyro.pitsim.enums.NBTTag;
+import dev.kyro.pitsim.enums.PantColor;
 import dev.kyro.pitsim.megastreaks.Overdrive;
 import dev.kyro.pitsim.perks.NoPerk;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.inventory.ItemStack;
 
 import java.io.File;
 
@@ -28,6 +34,81 @@ public class BackwardsCompatibility implements Listener {
 		levelSystemConversion(player);
 		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
 		pitPlayer.lastVersion = PitSim.version;
+		APlayer aPlayer = APlayerData.getPlayerData(player);
+		FileConfiguration playerData = aPlayer.playerData;
+
+		if(playerData.getInt("SELF_CONFIDENCE") >= 1) {
+			playerData.set("CHEMIST", 1);
+			playerData.set("SELF_CONFIDENCE", null);
+			AOutput.send(player, "&e&lUPDATE: &7Your &eSelf Confidence &7upgrade has been changed to &eChemist I&7.");
+			aPlayer.save();
+			UpgradeManager.updatePlayer(player);
+		}
+		if(playerData.getInt("REPORT_ACCESS") >= 1) {
+			System.out.println(2);
+			playerData.set("CHEMIST", 1);
+			playerData.set("REPORT_ACCESS", null);
+			AOutput.send(player, "&e&lUPDATE: &7Your &eReport Access &7upgrade has been changed to &eChemist I&7.");
+			aPlayer.save();
+			UpgradeManager.updatePlayer(player);
+		}
+
+		for (int i = 0; i < player.getInventory().getSize(); i++) {
+			ItemStack itemStack = player.getInventory().getItem(i);
+
+			if(Misc.isAirOrNull(itemStack)) continue;
+			NBTItem nbtItem = new NBTItem(itemStack);
+			if(MysticType.getMysticType(itemStack) != MysticType.PANTS) continue;
+			if(!nbtItem.hasKey(NBTTag.SAVED_PANTS_COLOR.getRef())) {
+				PantColor color = PantColor.getPantColor(itemStack);
+				if(color == null) continue;
+				nbtItem.setString(NBTTag.SAVED_PANTS_COLOR.getRef(), color.refName);
+				player.getInventory().setItem(i, nbtItem.getItem());
+				player.updateInventory();
+			}
+		}
+
+		if(!Misc.isAirOrNull(player.getInventory().getLeggings())) {
+			NBTItem nbtItem = new NBTItem(player.getInventory().getLeggings());
+			if(!nbtItem.hasKey(NBTTag.SAVED_PANTS_COLOR.getRef())) {
+				PantColor color = PantColor.getPantColor(player.getInventory().getLeggings());
+				if(color == null) return;
+				nbtItem.setString(NBTTag.SAVED_PANTS_COLOR.getRef(), color.refName);
+				player.getInventory().setLeggings(nbtItem.getItem());
+				player.updateInventory();
+			}
+		}
+	}
+
+	@EventHandler
+	public void onClose(InventoryCloseEvent event) {
+		Player player = (Player) event.getPlayer();
+
+		for (int i = 0; i < player.getInventory().getSize(); i++) {
+			ItemStack itemStack = player.getInventory().getItem(i);
+
+			if(Misc.isAirOrNull(itemStack)) continue;
+			NBTItem nbtItem = new NBTItem(itemStack);
+			if(MysticType.getMysticType(itemStack) != MysticType.PANTS) continue;
+			if(!nbtItem.hasKey(NBTTag.SAVED_PANTS_COLOR.getRef())) {
+				PantColor color = PantColor.getPantColor(itemStack);
+				if(color == null) continue;
+				nbtItem.setString(NBTTag.SAVED_PANTS_COLOR.getRef(), color.refName);
+				player.getInventory().setItem(i, nbtItem.getItem());
+				player.updateInventory();
+			}
+		}
+
+		if(!Misc.isAirOrNull(player.getInventory().getLeggings())) {
+			NBTItem nbtItem = new NBTItem(player.getInventory().getLeggings());
+			if(!nbtItem.hasKey(NBTTag.SAVED_PANTS_COLOR.getRef())) {
+				PantColor color = PantColor.getPantColor(player.getInventory().getLeggings());
+				if(color == null) return;
+				nbtItem.setString(NBTTag.SAVED_PANTS_COLOR.getRef(), color.refName);
+				player.getInventory().setLeggings(nbtItem.getItem());
+				player.updateInventory();
+			}
+		}
 	}
 
 	public static Boolean isNew(Player player) {
@@ -89,7 +170,7 @@ public class BackwardsCompatibility implements Listener {
 		pitPlayer.prestige = newPrestige;
 		pitPlayer.level = 1;
 		pitPlayer.remainingXP = (int) (PrestigeValues.getXPForLevel(1) * newPrestigeInfo.xpMultiplier);
-		pitPlayer.playerKills = 0;
+		pitPlayer.soulsGathered = 0;
 		pitPlayer.megastreak = new Overdrive(pitPlayer);
 		pitPlayer.goldGrinded = 0;
 

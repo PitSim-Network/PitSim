@@ -45,7 +45,7 @@ public class JudgementAbility extends HelmetAbility {
 			return;
 		}
 
-		PitPlayer pitAttacker = PitPlayer.getPitPlayer(attackEvent.attacker);
+		PitPlayer pitAttacker = PitPlayer.getEntityPitPlayer(attackEvent.attacker);
 
 		if(Math.random() < 0.25) {
 

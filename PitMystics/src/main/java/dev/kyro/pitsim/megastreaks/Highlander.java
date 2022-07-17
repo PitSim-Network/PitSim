@@ -106,7 +106,8 @@ public class Highlander extends Megastreak {
 
 	@EventHandler
 	public void onKill(KillEvent killEvent) {
-		PitPlayer pitPlayer = PitPlayer.getPitPlayer(killEvent.killer);
+		if(!killEvent.killerIsPlayer) return;
+		PitPlayer pitPlayer = PitPlayer.getEntityPitPlayer(killEvent.killer);
 		if(pitPlayer != this.pitPlayer) return;
 		if(pitPlayer.megastreak.playerIsOnMega(killEvent) && pitPlayer.megastreak.getClass() == Highlander.class) {
 			killEvent.goldMultipliers.add(2.35);
@@ -126,8 +127,8 @@ public class Highlander extends Megastreak {
 
 	@EventHandler
 	public void onAttack(AttackEvent.Apply attackEvent) {
-		PitPlayer pitPlayer = PitPlayer.getPitPlayer(attackEvent.attacker);
-		PitPlayer pitDefender = PitPlayer.getPitPlayer(attackEvent.defender);
+		if(!attackEvent.attackerIsPlayer) return;
+		PitPlayer pitPlayer = PitPlayer.getEntityPitPlayer(attackEvent.attacker);
 		if(pitPlayer != this.pitPlayer) return;
 		if(pitPlayer.megastreak.isOnMega() && pitPlayer.megastreak.getClass() == Highlander.class) {
 //			if(pitDefender.bounty > 0) {

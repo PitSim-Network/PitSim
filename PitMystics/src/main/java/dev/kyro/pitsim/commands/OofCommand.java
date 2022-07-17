@@ -6,6 +6,7 @@ import dev.kyro.pitsim.controllers.DamageManager;
 import dev.kyro.pitsim.controllers.SpawnManager;
 import dev.kyro.pitsim.controllers.objects.PitEnchant;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
+import dev.kyro.pitsim.enums.KillType;
 import dev.kyro.pitsim.events.AttackEvent;
 import dev.kyro.pitsim.events.OofEvent;
 import dev.kyro.pitsim.misc.Sounds;
@@ -50,8 +51,7 @@ public class OofCommand implements CommandExecutor {
 					EntityDamageByEntityEvent ev = new EntityDamageByEntityEvent(onlinePlayer, player, EntityDamageEvent.DamageCause.CUSTOM, 0);
 					AttackEvent attackEvent = new AttackEvent(ev, attackerEnchant, defenderEnchant, false);
 
-
-					DamageManager.kill(attackEvent, onlinePlayer, player, false);
+					DamageManager.kill(attackEvent, onlinePlayer, player, false, KillType.DEATH);
 					return false;
 				}
 			}

@@ -2,6 +2,7 @@ package dev.kyro.pitsim.enchants;
 
 import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.pitsim.PitSim;
+import dev.kyro.pitsim.brewing.ingredients.MagmaCream;
 import dev.kyro.pitsim.controllers.DamageManager;
 import dev.kyro.pitsim.controllers.NonManager;
 import dev.kyro.pitsim.controllers.objects.GoldenHelmet;
@@ -12,10 +13,7 @@ import dev.kyro.pitsim.enums.ApplyType;
 import dev.kyro.pitsim.events.KillEvent;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.EntityType;
-import org.bukkit.entity.Player;
-import org.bukkit.entity.Slime;
+import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
@@ -72,6 +70,7 @@ public class PitBlob extends PitEnchant {
 
 				for(Entity slime : entities) {
 					if(!(slime instanceof Slime)) continue;
+					if(slime instanceof MagmaCube) continue;
 
 					if(!blobMap.containsValue(slime)) slime.remove();
 				}
@@ -115,6 +114,8 @@ public class PitBlob extends PitEnchant {
 			return;
 		}
 
+		if(event.getEntity() instanceof MagmaCube) return;
+
 		if(!blobMap.containsValue((Slime) event.getEntity())) {
 			return;
 		}
@@ -155,7 +156,7 @@ public class PitBlob extends PitEnchant {
 
 	@EventHandler
 	public void onDamage(EntityDamageEvent event) {
-		if(event.getEntity() instanceof Slime) event.setCancelled(true);
+		if(event.getEntity() instanceof Slime && !(event.getEntity() instanceof MagmaCube)) event.setCancelled(true);
 
 
 	}
@@ -163,6 +164,7 @@ public class PitBlob extends PitEnchant {
 	@EventHandler
 	public void onDamage(EntityDamageByEntityEvent event) {
 		if(!(event.getDamager() instanceof Slime)) return;
+		if(event.getDamager() instanceof MagmaCube) return;
 		Player player = getOwner((Slime) event.getDamager());
 		if(event.getEntity() == player) event.setCancelled(true);
 	}

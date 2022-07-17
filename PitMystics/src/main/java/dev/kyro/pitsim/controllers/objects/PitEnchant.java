@@ -5,6 +5,7 @@ import dev.kyro.pitsim.enchants.Regularity;
 import dev.kyro.pitsim.enums.ApplyType;
 import dev.kyro.pitsim.enums.EnchantRarity;
 import dev.kyro.pitsim.events.AttackEvent;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
@@ -21,6 +22,7 @@ public abstract class PitEnchant implements Listener {
 	public boolean levelStacks = false;
 	public boolean meleOnly = false;
 	public boolean fakeHits = false;
+	public boolean tainted = false;
 	public Map<UUID, Cooldown> cooldowns = new HashMap<>();
 
 	private String overrideName;
@@ -65,7 +67,10 @@ public abstract class PitEnchant implements Listener {
 	}
 
 	public String getDisplayName() {
-
+		if(tainted) {
+			if(applyType == ApplyType.SCYTHES) return overrideName != null ? overrideName : ChatColor.translateAlternateColorCodes('&', isRare ? "&dSPELL! &5" + name : "&5" + name);
+			else return overrideName != null ? overrideName : ChatColor.translateAlternateColorCodes('&', isRare ? "&dEFFECT! &5" + name : "&5" + name);
+		}
 		return overrideName != null ? overrideName : ChatColor.translateAlternateColorCodes('&', isRare ? "&dRARE! &9" + name : "&9" + name);
 	}
 

@@ -2,6 +2,7 @@ package dev.kyro.pitsim.enchants;
 
 import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.pitsim.PitSim;
+import dev.kyro.pitsim.controllers.BossManager;
 import dev.kyro.pitsim.controllers.HopperManager;
 import dev.kyro.pitsim.controllers.NonManager;
 import dev.kyro.pitsim.controllers.UpgradeManager;
@@ -10,6 +11,8 @@ import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.enums.ApplyType;
 import dev.kyro.pitsim.events.AttackEvent;
 import dev.kyro.pitsim.misc.Sounds;
+import net.citizensnpcs.api.CitizensAPI;
+import net.citizensnpcs.api.npc.NPC;
 import org.bukkit.event.EventHandler;
 
 import java.text.DecimalFormat;
@@ -18,12 +21,13 @@ import java.util.List;
 public class Billionaire extends PitEnchant {
 
 	public Billionaire() {
-		super("Billionaire", true, ApplyType.SWORDS,
+		super("Billionaire", true, ApplyType.MELEE,
 				"bill", "billionaire");
 	}
 
 	@EventHandler
 	public void onAttack(AttackEvent.Apply attackEvent) {
+		if(!attackEvent.attackerIsPlayer) return;
 		if(!canApply(attackEvent)) return;
 
 		int enchantLvl = attackEvent.getAttackerEnchantLevel(this);
@@ -38,15 +42,17 @@ public class Billionaire extends PitEnchant {
 		if(NonManager.getNon(attackEvent.defender) == null) {
 			goldCost = getPlayerGoldCost(enchantLvl);
 		}
-		if(UpgradeManager.hasUpgrade(attackEvent.attacker, "TAX_EVASION")) {
-			goldCost = goldCost - (int) ((UpgradeManager.getTier(attackEvent.attacker, "TAX_EVASION") * 0.05) * goldCost);
+		if(UpgradeManager.hasUpgrade(attackEvent.attackerPlayer, "TAX_EVASION")) {
+			goldCost = goldCost - (int) ((UpgradeManager.getTier(attackEvent.attackerPlayer, "TAX_EVASION") * 0.05) * goldCost);
 		}
 
-		double finalBalance = PitSim.VAULT.getBalance(attackEvent.attacker) - goldCost;
-		if(finalBalance < 0) return;
-		PitSim.VAULT.withdrawPlayer(attackEvent.attacker, goldCost);
+		if(!BossManager.bosses.containsKey(CitizensAPI.getNPCRegistry().getNPC(attackEvent.attacker))) {
+			double finalBalance = PitSim.VAULT.getBalance(attackEvent.attackerPlayer) - goldCost;
+			if(finalBalance < 0) return;
+			PitSim.VAULT.withdrawPlayer(attackEvent.attackerPlayer, goldCost);
+		}
 
-		PitPlayer pitPlayer = PitPlayer.getPitPlayer(attackEvent.attacker);
+		PitPlayer pitPlayer = PitPlayer.getPitPlayer(attackEvent.attackerPlayer);
 		if(pitPlayer.stats != null) pitPlayer.stats.billionaire += goldCost;
 
 		attackEvent.multipliers.add(getDamageMultiplier(enchantLvl));

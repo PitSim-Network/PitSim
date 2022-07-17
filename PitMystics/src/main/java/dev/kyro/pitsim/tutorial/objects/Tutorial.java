@@ -1,6 +1,7 @@
 package dev.kyro.pitsim.tutorial.objects;
 
 import com.gmail.filoghost.holographicdisplays.api.Hologram;
+import com.gmail.filoghost.holographicdisplays.api.HologramsAPI;
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.controllers.MapManager;
@@ -45,6 +46,7 @@ public class Tutorial {
 	public ApplyEnchantPanel panel = null;
 	public List<NPC> nons = new ArrayList<>();
 	public Hologram mysticWellHolo;
+	public Hologram skipHolo;
 
 
 	public Tutorial(Player player, int position) {
@@ -68,6 +70,7 @@ public class Tutorial {
 		}
 
 		pitPlayer.megastreak = new NoMegastreak(pitPlayer);
+		spawnSkipText();
 	}
 
 	public void onTaskComplete(Task task) {
@@ -135,10 +138,18 @@ public class Tutorial {
 		prestigeNPC = npc;
 	}
 
+	public void spawnSkipText() {
+		Location holoLocation = areaLocation.clone().add(0.5, 2.5, 4);
+		Hologram holo = HologramsAPI.createHologram(PitSim.INSTANCE, holoLocation);
+		holo.appendTextLine(ChatColor.YELLOW + "Skip tutorial with" + ChatColor.WHITE + "\"/tutorial skip\"" + ChatColor.YELLOW + ".");
+		mysticWellHolo = holo;
+	}
+
 	public void cleanUp() {
 		if(upgradesNPC != null) upgradesNPC.destroy();
 		if(prestigeNPC != null) prestigeNPC.destroy();
 		if(mysticWellHolo != null) mysticWellHolo.delete();
+		if(skipHolo != null) skipHolo.delete();
 		try {
 			if(sequence.getRunnables() != null) {
 				for(BukkitTask runnable : sequence.getRunnables()) {

@@ -52,7 +52,7 @@ public class VilePanel extends AGUIPanel {
 				if(i == invSlot) {
 					NBTItem nbtItem = new NBTItem(player.getInventory().getItem(i));
 					nbtItem.setInteger(NBTTag.CURRENT_LIVES.getRef(), nbtItem.getInteger(NBTTag.CURRENT_LIVES.getRef()) + 1);
-					EnchantManager.setItemLore(nbtItem.getItem());
+					EnchantManager.setItemLore(nbtItem.getItem(), player);
 					player.getInventory().setItem(i, nbtItem.getItem());
 					player.closeInventory();
 					AOutput.send(player, "&5&lWITHERCRAFT! &7Repaired " + nbtItem.getItem().getItemMeta().getDisplayName() + "&7!");

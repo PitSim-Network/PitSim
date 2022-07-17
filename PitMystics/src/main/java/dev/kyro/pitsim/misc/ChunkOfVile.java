@@ -42,6 +42,26 @@ public class ChunkOfVile implements Listener {
 
 	}
 
+	public static ItemStack getVile(int amount) {
+		ItemStack vile = new ItemStack(Material.COAL);
+		ItemMeta meta = vile.getItemMeta();
+		meta.setDisplayName(ChatColor.DARK_PURPLE + "Chunk of Vile");
+		List<String> lore = new ArrayList<>();
+		lore.add(ChatColor.GRAY + "Kept on death");
+		lore.add("");
+		lore.add(ChatColor.RED + "Heretic artifact");
+		meta.setLore(lore);
+		vile.setItemMeta(meta);
+		vile.setAmount(amount);
+
+		vile = ItemManager.enableDropConfirm(vile);
+
+		NBTItem nbtItem = new NBTItem(vile);
+		nbtItem.setBoolean(NBTTag.IS_VILE.getRef(), true);
+
+		return nbtItem.getItem();
+	}
+
 	@EventHandler
 	public void onInteract(PlayerInteractEvent event) {
 		int items = 0;

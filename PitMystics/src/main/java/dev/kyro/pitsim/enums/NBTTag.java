@@ -20,6 +20,7 @@ public enum NBTTag {
 	CURRENT_LIVES("pr-current-lives"),
 	MAX_LIVES("pr-max-lives"),
 	IS_FEATHER("pr-isfeather"),
+	IS_CORRUPTED_FEATHER("pr-iscfeather"),
 	IS_TOKEN("pr-istoken"),
 	IS_VILE("pr-isvile"),
 	IS_SHARD("pr-isshard"),
@@ -31,8 +32,24 @@ public enum NBTTag {
 	IS_YUMMY_BREAD("pr-is-yummy-bread"),
 	IS_VERY_YUMMY_BREAD("pr-is-very-yummy-bread2"),
 	IS_PREMADE("pr-ispremade"),
-
-	IS_VENOM("pr-isvenom");
+	IS_VENOM("pr-isvenom"),
+	TAINTED_TIER("pr-tainted-tier"),
+	POTION_IDENTIFIER("pr-potion-identifier"),
+	POTION_POTENCY("pr-potion-potency"),
+	POTION_DURATION("pr-potion-duration"),
+	ZOMBIE_FLESH("pr-zombie-flesh"),
+	SKELETON_BONE("pr-skeleton-bone"),
+	CREEPER_POWDER("pr-creeper-powder"),
+	SPIDER_EYE("pr-spider-eye"),
+	CAVESPIDER_EYE("pr-cavespider-eye"),
+	MAGMACUBE_CREAM("pr-magmacube-cream"),
+	PIGMAN_PORK("pr-pigman-pork"),
+	WITHER_SKELETON_COAL("pr-wither-skull"),
+	GOLEM_INGOT("pr-golem-ingot"),
+	ENDERMAN_PEARL("pr-enderman-pearl"),
+	SAVED_PANTS_COLOR("pr-saved-color"),
+	IS_TAINTED_SOUL("pr-tainted-soul"),
+	IS_SPLASH_POTION("pr-is-splash-potion");
 
 	private final String ref;
 

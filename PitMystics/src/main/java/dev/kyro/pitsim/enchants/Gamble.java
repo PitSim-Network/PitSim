@@ -14,12 +14,13 @@ import java.util.List;
 public class Gamble extends PitEnchant {
 
 	public Gamble() {
-		super("Gamble", true, ApplyType.SWORDS,
+		super("Gamble", true, ApplyType.MELEE,
 				"gamble", "gam");
 	}
 
 	@EventHandler
 	public void onAttack(AttackEvent.Apply attackEvent) {
+		if(!attackEvent.attackerIsPlayer) return;
 		if(!canApply(attackEvent)) return;
 
 		int enchantLvl = attackEvent.getAttackerEnchantLevel(this);
@@ -36,7 +37,7 @@ public class Gamble extends PitEnchant {
 			Sounds.GAMBLE_NO.play(attackEvent.attacker);
 		}
 
-		PitPlayer pitPlayer = PitPlayer.getPitPlayer(attackEvent.attacker);
+		PitPlayer pitPlayer = PitPlayer.getPitPlayer(attackEvent.attackerPlayer);
 		if(pitPlayer.stats != null) pitPlayer.stats.gamble += getTrueDamage(enchantLvl);
 	}
 

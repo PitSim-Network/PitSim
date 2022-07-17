@@ -21,18 +21,19 @@ import java.util.List;
 public class Executioner extends PitEnchant {
 
 	public Executioner() {
-		super("Executioner", true, ApplyType.SWORDS,
+		super("Executioner", true, ApplyType.MELEE,
 				"executioner", "exe");
 	}
 
 	@EventHandler
 	public void onKill(KillEvent killEvent) {
+		if(!killEvent.killerIsPlayer) return;
 		if(!killEvent.exeDeath) return;
 
 		Sounds.EXE.play(killEvent.killer);
 		killEvent.dead.getWorld().playEffect(killEvent.dead.getLocation().add(0, 1, 0), Effect.STEP_SOUND, 152);
 
-		PitPlayer pitPlayer = PitPlayer.getPitPlayer(killEvent.killer);
+		PitPlayer pitPlayer = PitPlayer.getPitPlayer(killEvent.killerPlayer);
 		if(pitPlayer.stats != null) pitPlayer.stats.executioner++;
 	}
 

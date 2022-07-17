@@ -6,7 +6,6 @@ import dev.kyro.pitsim.controllers.objects.PitEnchant;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.enums.ApplyType;
 import dev.kyro.pitsim.events.AttackEvent;
-import dev.kyro.pitsim.megastreaks.Overdrive;
 import dev.kyro.pitsim.misc.Misc;
 import org.bukkit.event.EventHandler;
 import org.bukkit.potion.PotionEffectType;
@@ -23,6 +22,7 @@ public class SprintDrain extends PitEnchant {
 
 	@EventHandler
 	public void onAttack(AttackEvent.Apply attackEvent) {
+		if(!attackEvent.attackerIsPlayer) return;
 		if(!canApply(attackEvent)) return;
 
 		int enchantLvl = attackEvent.getAttackerEnchantLevel(this);
@@ -30,14 +30,11 @@ public class SprintDrain extends PitEnchant {
 
 		if(attackEvent.attacker.equals(attackEvent.defender)) return;
 
-		PitPlayer pitDefender = PitPlayer.getPitPlayer(attackEvent.defender);
-		if(pitDefender.megastreak.getClass() != Overdrive.class) {
-			Misc.applyPotionEffect(attackEvent.defender, PotionEffectType.SLOW, getSlowDuration(enchantLvl) * 20, 0, true, false);
-		}
+		Misc.applyPotionEffect(attackEvent.defender, PotionEffectType.SLOW, getSlowDuration(enchantLvl) * 20, 0, true, false);
 		Misc.applyPotionEffect(attackEvent.attacker, PotionEffectType.SPEED,
 				getSpeedDuration(enchantLvl) * 20, getSpeedAmplifier(enchantLvl) - 1, true, false);
 
-		PitPlayer pitAttacker = PitPlayer.getPitPlayer(attackEvent.attacker);
+		PitPlayer pitAttacker = PitPlayer.getPitPlayer(attackEvent.attackerPlayer);
 		if(pitAttacker.stats != null) pitAttacker.stats.drain++;
 	}
 

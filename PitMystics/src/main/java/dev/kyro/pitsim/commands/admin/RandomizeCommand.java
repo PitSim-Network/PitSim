@@ -36,7 +36,7 @@ public class RandomizeCommand extends ACommand {
 			return;
 		}
 
-		EnchantManager.setItemLore(nbtItem.getItem());
+		EnchantManager.setItemLore(nbtItem.getItem(), player);
 
 		nbtItem.setString(NBTTag.ITEM_UUID.getRef(), UUID.randomUUID().toString());
 		player.getInventory().setItemInHand(nbtItem.getItem());

@@ -46,7 +46,7 @@ public class PrestigePanel extends AGUIPanel {
 		if(event.getClickedInventory().getHolder() == this) {
 			if(slot == 11) {
 				//TODO: Re-enable killreq
-				if(pitPlayer.level == 120 && pitPlayer.goldGrinded >= prestigeInfo.goldReq && pitPlayer.playerKills >= prestigeInfo.killReq) {
+				if(pitPlayer.level == 120 && pitPlayer.goldGrinded >= prestigeInfo.goldReq && pitPlayer.soulsGathered >= prestigeInfo.soulReq) {
 					if(pitPlayer.prestige == PrestigeValues.MAX_PRESTIGE) {
 						AOutput.error(player, "&aYou are already the maximum prestige!");
 						Sounds.NO.play(player);
@@ -82,7 +82,7 @@ public class PrestigePanel extends AGUIPanel {
 			DecimalFormat formatter = new DecimalFormat("#,###.#");
 			prestigeLore.add(ChatColor.translateAlternateColorCodes('&', "&7Grinded: &6" +
 					formatter.format(pitPlayer.goldGrinded) + "&7/&6" + formatter.format(prestigeInfo.goldReq) + "g"));
-			prestigeLore.add(ChatColor.translateAlternateColorCodes('&', "&7Player Kills: &a" + pitPlayer.playerKills + "&7/" + (int) prestigeInfo.killReq));
+			prestigeLore.add(ChatColor.translateAlternateColorCodes('&', "&7Tainted Souls: &f" + pitPlayer.soulsGathered + "&7/" + (int) prestigeInfo.soulReq));
 			prestigeLore.add("");
 			prestigeLore.add(ChatColor.GRAY + "Costs:");
 			prestigeLore.add(ChatColor.translateAlternateColorCodes('&', "&c\u25a0 &c&lResets &blevel &cto 1"));
@@ -98,7 +98,7 @@ public class PrestigePanel extends AGUIPanel {
 				prestigeLore.add(ChatColor.translateAlternateColorCodes('&', "&b+" + (int) (100 * nextPrestigeInfo.xpMultiplier) + "&b% &7needed xp!"));
 			prestigeLore.add("");
 			//TODO: Re-enable killreq
-			if(pitPlayer.level == 120 && pitPlayer.goldGrinded >= prestigeInfo.goldReq && pitPlayer.playerKills >= prestigeInfo.killReq) {
+			if(pitPlayer.level == 120 && pitPlayer.goldGrinded >= prestigeInfo.goldReq && pitPlayer.taintedSouls >= prestigeInfo.soulReq) {
 				prestigeLore.add(ChatColor.YELLOW + "Click to purchase!");
 			} else {
 				prestigeLore.add(ChatColor.RED + "Requirements not met!");

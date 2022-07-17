@@ -2,8 +2,10 @@ package dev.kyro.pitsim;
 
 import com.comphenix.protocol.ProtocolLibrary;
 import com.comphenix.protocol.ProtocolManager;
+import com.gmail.filoghost.holographicdisplays.api.Hologram;
 import com.mattmalec.pterodactyl4j.PteroBuilder;
 import com.mattmalec.pterodactyl4j.client.entities.PteroClient;
+import com.sk89q.worldedit.EditSession;
 import com.xxmicloxx.NoteBlockAPI.songplayer.EntitySongPlayer;
 import dev.kyro.arcticapi.ArcticAPI;
 import dev.kyro.arcticapi.commands.AMultiCommand;
@@ -14,14 +16,19 @@ import dev.kyro.pitsim.boosters.ChaosBooster;
 import dev.kyro.pitsim.boosters.GoldBooster;
 import dev.kyro.pitsim.boosters.PvPBooster;
 import dev.kyro.pitsim.boosters.XPBooster;
+import dev.kyro.pitsim.brewing.BrewingManager;
+import dev.kyro.pitsim.brewing.PotionManager;
+import dev.kyro.pitsim.brewing.ingredients.*;
+import dev.kyro.pitsim.brewing.objects.BrewingIngredient;
 import dev.kyro.pitsim.commands.*;
-import dev.kyro.pitsim.commands.ViewCommand;
 import dev.kyro.pitsim.commands.admin.*;
 import dev.kyro.pitsim.controllers.*;
 import dev.kyro.pitsim.controllers.log.DupeManager;
 import dev.kyro.pitsim.controllers.objects.*;
 import dev.kyro.pitsim.enchants.GoldBoost;
 import dev.kyro.pitsim.enchants.*;
+import dev.kyro.pitsim.enchants.tainted.*;
+import dev.kyro.pitsim.events.ThrowBlock;
 import dev.kyro.pitsim.helmetabilities.*;
 import dev.kyro.pitsim.killstreaks.*;
 import dev.kyro.pitsim.kits.EssentialKit;
@@ -31,6 +38,8 @@ import dev.kyro.pitsim.kits.XPKit;
 import dev.kyro.pitsim.leaderboards.*;
 import dev.kyro.pitsim.megastreaks.*;
 import dev.kyro.pitsim.misc.*;
+import dev.kyro.pitsim.misc.tainted.BloodyHeart;
+import dev.kyro.pitsim.misc.tainted.SyntheticCube;
 import dev.kyro.pitsim.perks.*;
 import dev.kyro.pitsim.pitmaps.BiomesMap;
 import dev.kyro.pitsim.pitmaps.DimensionsMap;
@@ -42,29 +51,38 @@ import dev.kyro.pitsim.tutorial.objects.Tutorial;
 import dev.kyro.pitsim.upgrades.*;
 import net.citizensnpcs.api.CitizensAPI;
 import net.citizensnpcs.api.npc.NPC;
+import net.citizensnpcs.api.npc.NPCRegistry;
+import net.kyori.adventure.platform.bukkit.BukkitAudiences;
 import net.luckperms.api.LuckPerms;
 import net.milkbowl.vault.economy.Economy;
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
+import org.bukkit.Material;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-//import net.kyori.adventure.platform.bukkit.BukkitAudiences;
+import static dev.kyro.pitsim.misc.TempBlockHelper.restoreSessions;
 
-public class PitSim extends JavaPlugin {
+public
+class PitSim extends JavaPlugin {
 	public static double version = 2.0;
 
 	public static LuckPerms LUCKPERMS;
 	public static PitSim INSTANCE;
 	public static Economy VAULT = null;
 	public static ProtocolManager PROTOCOL_MANAGER = null;
+	public static BukkitAudiences adventure;
 
 	public static AData playerList;
 
@@ -75,6 +93,14 @@ public class PitSim extends JavaPlugin {
 	public void onEnable() {
 		INSTANCE = this;
 
+		loadConfig();
+		adventure = BukkitAudiences.create(this);
+		TaintedWell.onStart();
+		BrewingManager.onStart();
+
+		ArcticAPI.configInit(this, "prefix", "error-prefix");
+		playerList = new AData("player-list", "", false);
+
 		RegisteredServiceProvider<LuckPerms> provider = Bukkit.getServicesManager().getRegistration(LuckPerms.class);
 		if(provider != null) {
 			LUCKPERMS = provider.getProvider();
@@ -83,13 +109,16 @@ public class PitSim extends JavaPlugin {
 		PROTOCOL_MANAGER = ProtocolLibrary.getProtocolManager();
 
 		List<NPC> toRemove = new ArrayList<>();
-		CitizensAPI.getNPCRegistry().forEach(toRemove::add);
+		for (NPC npc : CitizensAPI.getNPCRegistry()) {
+			toRemove.add(npc);
+		}
 		while(!toRemove.isEmpty()) {
 			toRemove.get(0).destroy();
 			toRemove.remove(0);
 		}
 
 		registerMaps();
+		BossManager.onStart();
 		MapManager.onStart();
 		NonManager.init();
 		SpawnNPCs.createNPCs();
@@ -145,12 +174,17 @@ public class PitSim extends JavaPlugin {
 		AHook.registerPlaceholder(new GuildPlaceholder10());
 		AHook.registerPlaceholder(new PrestigeLevelPlaceholder());
 		AHook.registerPlaceholder(new PrestigePlaceholder());
+		AHook.registerPlaceholder(new ZombieCavePlaceholder());
+		AHook.registerPlaceholder(new SkeletonCavePlaceholder());
+		AHook.registerPlaceholder(new SpiderCavePlaceholder());
+		AHook.registerPlaceholder(new CreeperCavePlaceholder());
+		AHook.registerPlaceholder(new DeepSpiderCavePlaceholder());
+		AHook.registerPlaceholder(new MagmaCavePlaceholder());
+		AHook.registerPlaceholder(new PigmanCavePlaceholder());
+		AHook.registerPlaceholder(new WitherCavePlaceholder());
+		AHook.registerPlaceholder(new GolemCavePlaceholder());
+		AHook.registerPlaceholder(new EndermanCavePlaceholder());
 		new LeaderboardPlaceholders().register();
-
-		loadConfig();
-
-		ArcticAPI.configInit(this, "prefix", "error-prefix");
-		playerList = new AData("player-list", "", false);
 
 		CooldownManager.init();
 
@@ -160,12 +194,63 @@ public class PitSim extends JavaPlugin {
 		registerBoosters();
 		registerHelmetAbilities();
 		registerKits();
+		registerMobs();
+		registerBrewingIngredients();
+
+		AuctionManager.onStart();
+		AuctionDisplays.onStart();
 	}
 
 	@Override
 	public void onDisable() {
 
+		if(MapManager.getDarkzone() != null){
+			for (Entity entity : MapManager.getDarkzone().getEntities()) {
+				if(entity instanceof Item) {
+					entity.remove();
+				}
+			}
+		}
+
+
+		for (NPC value : BossManager.clickables.values()) {
+			value.destroy();
+			NPCRegistry registry = CitizensAPI.getNPCRegistry();
+			registry.deregister(value);
+		}
+
+		for (NPC clickable : AuctionDisplays.clickables) {
+			clickable.destroy();
+			NPCRegistry registry = CitizensAPI.getNPCRegistry();
+			registry.deregister(clickable);
+		}
+
+		for (EditSession session : FreezeSpell.sessions.keySet()) {
+			session.undo(session);
+		}
+
+		restoreSessions();
+
+		for (Map.Entry<Location, Material> entry : FreezeSpell.blocks.entrySet()) {
+			entry.getKey().getBlock().setType(entry.getValue());
+		}
+
+		for(PitMob mob : MobManager.mobs) {
+			MobManager.nameTags.get(mob.entity.getUniqueId()).remove();
+			mob.entity.remove();
+		}
+
+		if(this.adventure != null) {
+			this.adventure.close();
+			this.adventure = null;
+		}
+
+		for (Hologram hologram : BossManager.holograms) {
+			hologram.delete();
+		}
+
 		for(Tutorial value : TutorialManager.tutorials.values()) {
+			value.cleanUp();
 			value.cleanUp();
 		}
 
@@ -185,6 +270,9 @@ public class PitSim extends JavaPlugin {
 		}
 
 		for(PitPlayer pitPlayer : PitPlayer.pitPlayers) if(pitPlayer.stats != null) pitPlayer.stats.save();
+
+		File file = new File("plugins/Citizens/saves.yml");
+		if(file.exists()) file.deleteOnExit();
 	}
 
 	private void registerMaps() {
@@ -231,6 +319,10 @@ public class PitSim extends JavaPlugin {
 		PerkManager.registerKillstreak(new Shockwave());
 	}
 
+	private void registerBosses() {
+
+	}
+
 	private void registerMegastreaks() {
 		PerkManager.registerMegastreak(new Overdrive(null));
 		PerkManager.registerMegastreak(new Highlander(null));
@@ -250,6 +342,14 @@ public class PitSim extends JavaPlugin {
 		LeaderboardManager.registerLeaderboard(new UbersCompletedLeaderboard());
 		LeaderboardManager.registerLeaderboard(new JewelsCompletedLeaderboard());
 		LeaderboardManager.registerLeaderboard(new FeathersLostLeaderboard());
+		LeaderboardManager.registerLeaderboard(new BossesKilledLeaderboard());
+		LeaderboardManager.registerLeaderboard(new LifetimeSoulsLeaderboard());
+		LeaderboardManager.registerLeaderboard(new AuctionsWonLeaderboard());
+		LeaderboardManager.registerLeaderboard(new HighestBidLeaderboard());
+
+	}
+
+	private void registerMobs() {
 	}
 
 	private void registerCommands() {
@@ -305,11 +405,14 @@ public class PitSim extends JavaPlugin {
 		getCommand("tutorial").setExecutor(new TutorialCommand());
 		getCommand("kit").setExecutor(new KitCommand());
 		getCommand("view").setExecutor(new ViewCommand());
+		getCommand("music").setExecutor(new MusicCommand());
+
 	}
 
 	private void registerListeners() {
 
 		getServer().getPluginManager().registerEvents(new DamageManager(), this);
+		getServer().getPluginManager().registerEvents(new ThrowBlock(), this);
 //		getServer().getPluginManager().registerEvents(new NonManager(), this);
 		getServer().getPluginManager().registerEvents(new PlayerManager(), this);
 		getServer().getPluginManager().registerEvents(new PlayerDataManager(), this);
@@ -324,6 +427,8 @@ public class PitSim extends JavaPlugin {
 		getServer().getPluginManager().registerEvents(new EnchantManager(), this);
 		getServer().getPluginManager().registerEvents(new TotallyLegitGem(), this);
 		getServer().getPluginManager().registerEvents(new ChunkOfVile(), this);
+		getServer().getPluginManager().registerEvents(new BloodyHeart(), this);
+		getServer().getPluginManager().registerEvents(new SyntheticCube(), this);
 		getServer().getPluginManager().registerEvents(new ReachAutoBan(), this);
 //		getServer().getPluginManager().registerEvents(new NonAnticheat(), this);
 //		getServer().getPluginManager().registerEvents(new HelmetListeners(), this);
@@ -345,8 +450,19 @@ public class PitSim extends JavaPlugin {
 		getServer().getPluginManager().registerEvents(new GuildIntegrationManager(), this);
 		getServer().getPluginManager().registerEvents(new UpgradeManager(), this);
 		getServer().getPluginManager().registerEvents(new KitManager(), this);
+		getServer().getPluginManager().registerEvents(new MobManager(), this);
+		getServer().getPluginManager().registerEvents(new PortalManager(), this);
+		getServer().getPluginManager().registerEvents(new BossManager(), this);
+		getServer().getPluginManager().registerEvents(new TaintedWell(), this);
+		getServer().getPluginManager().registerEvents(new BrewingManager(), this);
+		getServer().getPluginManager().registerEvents(new PotionManager(), this);
+		getServer().getPluginManager().registerEvents(new TaintedManager(), this);
+		getServer().getPluginManager().registerEvents(new StereoManager(), this);
+		getServer().getPluginManager().registerEvents(new MusicManager(), this);
+		getServer().getPluginManager().registerEvents(new CutsceneManager(), this);
+		getServer().getPluginManager().registerEvents(new AuctionDisplays(), this);
+		getServer().getPluginManager().registerEvents(new AuctionManager(), this);
 	}
-
 	public void registerBoosters() {
 		BoosterManager.registerBooster(new XPBooster());
 		BoosterManager.registerBooster(new GoldBooster());
@@ -366,7 +482,7 @@ public class PitSim extends JavaPlugin {
 		UpgradeManager.registerUpgrade(new Impatient());
 		UpgradeManager.registerUpgrade(new Helmetry());
 		UpgradeManager.registerUpgrade(new ShardHunter());
-		UpgradeManager.registerUpgrade(new ReportAccess());
+		UpgradeManager.registerUpgrade(new Chemist());
 //		UpgradeManager.registerUpgrade(new SelfConfidence());
 		UpgradeManager.registerUpgrade(new LuckyKill());
 		UpgradeManager.registerUpgrade(new LifeInsurance());
@@ -386,6 +502,7 @@ public class PitSim extends JavaPlugin {
 		HelmetAbility.registerHelmetAbility(new HermitAbility(null));
 		HelmetAbility.registerHelmetAbility(new JudgementAbility(null));
 		HelmetAbility.registerHelmetAbility(new PhoenixAbility(null));
+		HelmetAbility.registerHelmetAbility(new ManaAbility(null));
 	}
 
 	private void registerKits() {
@@ -393,6 +510,20 @@ public class PitSim extends JavaPlugin {
 		KitManager.registerKit(new XPKit());
 		KitManager.registerKit(new GoldKit());
 		KitManager.registerKit(new PvPKit());
+	}
+
+	private void registerBrewingIngredients() {
+		BrewingIngredient.registerIngredient(new RottenFlesh());
+		BrewingIngredient.registerIngredient(new Bone());
+		BrewingIngredient.registerIngredient(new SpiderEye());
+		BrewingIngredient.registerIngredient(new Gunpowder());
+		BrewingIngredient.registerIngredient(new FermentedSpiderEye());
+		BrewingIngredient.registerIngredient(new MagmaCream());
+		BrewingIngredient.registerIngredient(new RawPork());
+		BrewingIngredient.registerIngredient(new Coal());
+		BrewingIngredient.registerIngredient(new IronIngot());
+		BrewingIngredient.registerIngredient(new EnderPearl());
+
 	}
 
 	private void loadConfig() {
@@ -411,6 +542,12 @@ public class PitSim extends JavaPlugin {
 		}
 		VAULT = rsp.getProvider();
 		return VAULT != null;
+	}
+
+	@Override
+	public void onLoad() {
+		File file = new File("plugins/Citizens/save.yml");
+		if(file.exists()) file.delete();
 	}
 
 	private void registerEnchants() {
@@ -504,5 +641,25 @@ public class PitSim extends JavaPlugin {
 
 		EnchantManager.registerEnchant(new Sweaty());
 //		EnchantManager.registerEnchant(new XpBump());
+
+		EnchantManager.registerEnchant(new FireballSpell());
+		EnchantManager.registerEnchant(new RepelSpell());
+		EnchantManager.registerEnchant(new FreezeSpell());
+		EnchantManager.registerEnchant(new SweepingEdgeSpell());
+		EnchantManager.registerEnchant(new MeteorSpell());
+		EnchantManager.registerEnchant(new SavingGraceSpell());
+		EnchantManager.registerEnchant(new CleaveSpell());
+		EnchantManager.registerEnchant(new WarpSpell());
+		EnchantManager.registerEnchant(new ExtractSpell());
+
+		EnchantManager.registerEnchant(new TaintedSoul());
+		EnchantManager.registerEnchant(new MaxHealth());
+		EnchantManager.registerEnchant(new MaxMana());
+		EnchantManager.registerEnchant(new ManaRegeneration());
+		EnchantManager.registerEnchant(new EmotionalDamage());
+		EnchantManager.registerEnchant(new Sonic());
+		EnchantManager.registerEnchant(new Inferno());
+		EnchantManager.registerEnchant(new Laser());
+		EnchantManager.registerEnchant(new Forcefield());
 	}
 }

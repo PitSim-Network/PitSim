@@ -53,36 +53,27 @@ public class JewelCommand extends ACommand {
 			return;
 		}
 
+		AUtil.giveItemSafely((Player) sender, getJewel(mysticType, args.get(1), Integer.parseInt(args.get(2))));
+	}
+
+	public static ItemStack getJewel(MysticType mysticType, String pitEnchant, int maxLives) {
 		ItemStack jewel = FreshCommand.getFreshItem(mysticType, PantColor.JEWEL);
 		jewel = ItemManager.enableDropConfirm(jewel);
 		assert jewel != null;
 		NBTItem nbtItem = new NBTItem(jewel);
 		nbtItem.setBoolean(NBTTag.IS_JEWEL.getRef(), true);
+		jewel = nbtItem.getItem();
 
-		if(args.size() >= 2) {
+		if(pitEnchant != null) {
 			nbtItem.setInteger(NBTTag.JEWEL_KILLS.getRef(), Constant.JEWEL_KILLS);
 
-			String enchantString = args.get(1);
-			PitEnchant jewelEnchant = EnchantManager.getEnchant(enchantString);
-			if(jewelEnchant == null) {
-				AOutput.error(sender, "Invalid enchant");
-				return;
-			}
+			PitEnchant jewelEnchant = EnchantManager.getEnchant(pitEnchant);
 
-			int maxLives;
-			if(args.size() >= 3) {
-				try {
-					maxLives = Integer.parseInt(args.get(2));
-					if(maxLives <= 0) throw new Exception();
-				} catch(Exception ignored) {
-					AOutput.error(sender, "Invalid max lives");
-					return;
-				}
-			} else {
+			if(maxLives <= 0) {
 				maxLives = EnchantManager.getRandomMaxLives();
 			}
 
-			PantColor.setPantColor(nbtItem.getItem(), PantColor.getNormalRandom());
+			nbtItem = new NBTItem(PantColor.setPantColor(nbtItem.getItem(), PantColor.getNormalRandom()));
 			nbtItem.setInteger(NBTTag.MAX_LIVES.getRef(), maxLives);
 			nbtItem.setInteger(NBTTag.CURRENT_LIVES.getRef(), maxLives);
 			try {
@@ -91,8 +82,9 @@ public class JewelCommand extends ACommand {
 			}
 		}
 
-		EnchantManager.setItemLore(jewel);
-		AUtil.giveItemSafely((Player) sender, jewel);
+		EnchantManager.setItemLore(jewel, null);
+
+		return jewel;
 	}
 
 	@Override

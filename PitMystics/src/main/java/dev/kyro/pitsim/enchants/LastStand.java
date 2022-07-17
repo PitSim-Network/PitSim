@@ -22,15 +22,16 @@ public class LastStand extends PitEnchant {
 
 	@EventHandler
 	public void onAttack(AttackEvent.Post attackEvent) {
+		if(!attackEvent.defenderIsPlayer) return;
 		if(!canApply(attackEvent)) return;
 
 		int enchantLvl = attackEvent.getDefenderEnchantLevel(this);
 		if(enchantLvl == 0) return;
 
 		if(attackEvent.defender.getHealth() - attackEvent.event.getFinalDamage() <= getProcHealth()) {
-			Cooldown cooldown = getCooldown(attackEvent.defender, getCooldownSeconds(enchantLvl) * 20);
+			Cooldown cooldown = getCooldown(attackEvent.defenderPlayer, getCooldownSeconds(enchantLvl) * 20);
 			if(cooldown.isOnCooldown()) return;
-			else cooldown.reset();
+			else cooldown.restart();
 			Sounds.LAST_STAND.play(attackEvent.defender);
 			Misc.applyPotionEffect(attackEvent.defender, PotionEffectType.DAMAGE_RESISTANCE, getSeconds(enchantLvl)
 					* 20, getAmplifier(enchantLvl) - 1, false, false);

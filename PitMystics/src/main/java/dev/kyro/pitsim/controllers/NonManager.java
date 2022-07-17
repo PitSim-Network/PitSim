@@ -7,6 +7,7 @@ import dev.kyro.pitsim.controllers.objects.Non;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
@@ -33,6 +34,7 @@ public class NonManager implements Listener {
 					botIGNs.add("pogha");
 					botIGNs.add("robert_mugabe355");
 					botIGNs.add("xLava28");
+					botIGNs.add("TheAlpha64");
 				}
 				for(World world : MapManager.currentMap.lobbies) {
 					if(!MapManager.multiLobbies && world != MapManager.currentMap.firstLobby) continue;
@@ -107,11 +109,11 @@ public class NonManager implements Listener {
 		if(event.getFinalDamage() < defender.getHealth()) return;
 	}
 
-	public static Non getNon(Player player) {
+	public static Non getNon(LivingEntity entity) {
 		try {
 			for(Non non : nons) {
 				if(non == null) continue;
-				if(non.non.getUniqueId().equals(player.getUniqueId())) return non;
+				if(non.non.getUniqueId().equals(entity.getUniqueId())) return non;
 			}
 		} catch(Exception exception) {
 			return null;

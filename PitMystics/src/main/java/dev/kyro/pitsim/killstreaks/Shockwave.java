@@ -9,6 +9,7 @@ import dev.kyro.pitsim.controllers.NonManager;
 import dev.kyro.pitsim.controllers.objects.Killstreak;
 import dev.kyro.pitsim.controllers.objects.PitEnchant;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
+import dev.kyro.pitsim.enums.KillType;
 import dev.kyro.pitsim.events.AttackEvent;
 import dev.kyro.pitsim.megastreaks.RNGesus;
 import org.bukkit.Effect;
@@ -63,10 +64,10 @@ public class Shockwave extends Killstreak {
 
 			double distance = non.getLocation().distance(player.getLocation());
 			if(distance < 2.5 && count < 15) {
-				DamageManager.kill(attackEvent, player, non, false);
+				DamageManager.kill(attackEvent, player, non, false, KillType.DEFAULT);
 				count++;
 				if(distance < 2) {
-					DamageManager.kill(attackEvent, player, non, false);
+					DamageManager.kill(attackEvent, player, non, false, KillType.DEFAULT);
 					count++;
 				}
 			} else {

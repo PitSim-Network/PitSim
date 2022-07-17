@@ -16,21 +16,22 @@ import java.util.List;
 public class Crush extends PitEnchant {
 
 	public Crush() {
-		super("Crush", false, ApplyType.SWORDS,
+		super("Crush", false, ApplyType.MELEE,
 				"crush");
 		isUncommonEnchant = true;
 	}
 
 	@EventHandler
 	public void onAttack(AttackEvent.Apply attackEvent) {
+		if(!attackEvent.attackerIsPlayer) return;
 		if(!canApply(attackEvent)) return;
 
 		int enchantLvl = attackEvent.getAttackerEnchantLevel(this);
 		if(enchantLvl == 0) return;
 
-		Cooldown cooldown = getCooldown(attackEvent.attacker, 2 * 20);
+		Cooldown cooldown = getCooldown(attackEvent.attackerPlayer, 2 * 20);
 		if(cooldown.isOnCooldown()) return;
-		else cooldown.reset();
+		else cooldown.restart();
 
 		Misc.applyPotionEffect(attackEvent.defender, PotionEffectType.WEAKNESS, getDuration(enchantLvl), enchantLvl + 3, true, false);
 		Sounds.CRUSH.play(attackEvent.attacker);

@@ -6,6 +6,7 @@ import dev.kyro.pitsim.controllers.objects.Killstreak;
 import dev.kyro.pitsim.events.AttackEvent;
 import dev.kyro.pitsim.misc.Misc;
 import org.bukkit.Material;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.inventory.ItemStack;
@@ -23,7 +24,7 @@ public class FightOrFlight extends Killstreak {
 		INSTANCE = this;
 	}
 
-	List<Player> rewardPlayers = new ArrayList<>();
+	List<LivingEntity> rewardPlayers = new ArrayList<>();
 
 	@EventHandler
 	public void onHit(AttackEvent.Apply event) {

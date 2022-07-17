@@ -33,26 +33,33 @@ public class Telebow extends PitEnchant {
 
 	@EventHandler
 	public void onAttack(AttackEvent.Apply attackEvent) {
+		if(!attackEvent.attackerIsPlayer) return;
 		if(!canApply(attackEvent)) return;
 		int enchantLvl = attackEvent.getAttackerEnchantLevel(this);
 		if(enchantLvl == 0) return;
 		if(attackEvent.arrow == null) return;
 
-		Cooldown cooldown = getCooldown(attackEvent.attacker, getCooldown(enchantLvl) * 20);
+		if(attackEvent.attackerPlayer.isSneaking() && attackEvent.attackerPlayer.getWorld() == MapManager.getDarkzone()) {
+			AOutput.error(attackEvent.attackerPlayer, "&c&lNOPE! &7That enchant is disabled here!");
+			Sounds.NO.play(attackEvent.attackerPlayer);
+			return;
+		}
+
+		Cooldown cooldown = getCooldown(attackEvent.attackerPlayer, getCooldown(enchantLvl) * 20);
 		cooldown.reduceCooldown(40);
 
 		if(cooldown.isOnCooldown()) {
 			new BukkitRunnable() {
 				@Override
 				public void run() {
-					Misc.sendActionBar(attackEvent.attacker, "&eTelebow: &c" + cooldown.getTicksLeft() / 20 + "&cs cooldown!");
+					Misc.sendActionBar(attackEvent.attackerPlayer, "&eTelebow: &c" + cooldown.getTicksLeft() / 20 + "&cs cooldown!");
 				}
 			}.runTaskLater(PitSim.INSTANCE, 1L);
 		} else {
 			new BukkitRunnable() {
 				@Override
 				public void run() {
-					Misc.sendActionBar(attackEvent.attacker, "&eTelebow: &aReady!");
+					Misc.sendActionBar(attackEvent.attackerPlayer, "&eTelebow: &aReady!");
 				}
 			}.runTaskLater(PitSim.INSTANCE, 1L);
 		}
@@ -85,16 +92,15 @@ public class Telebow extends PitEnchant {
 		Cooldown cooldown = getCooldown(player, getCooldown(enchantLvl) * 20);
 		if(cooldown.isOnCooldown()) {
 
-
 			if(player.isSneaking())
 				Misc.sendActionBar(player, "&eTelebow: &c" + cooldown.getTicksLeft() / 20 + "&cs cooldown!");
 
 			return;
 		}
 		if(cooldown.isOnCooldown()) return;
-		else cooldown.reset();
+		else cooldown.restart();
 
-		if(player.isSneaking() && !SpawnManager.isInSpawn(player.getLocation())) {
+		if(player.isSneaking() && !SpawnManager.isInSpawn(player.getLocation()) && !SpawnManager.isInDarkzoneSpawn(player.getLocation())) {
 			teleShots.add(arrow);
 		}
 	}

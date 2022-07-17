@@ -10,6 +10,7 @@ import dev.kyro.pitsim.controllers.PrestigeValues;
 import dev.kyro.pitsim.controllers.objects.Megastreak;
 import dev.kyro.pitsim.controllers.objects.PitEnchant;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
+import dev.kyro.pitsim.enums.KillType;
 import dev.kyro.pitsim.events.AttackEvent;
 import dev.kyro.pitsim.events.HealEvent;
 import dev.kyro.pitsim.events.KillEvent;
@@ -146,7 +147,8 @@ public class RNGesus extends Megastreak {
 
 	@EventHandler(priority = EventPriority.MONITOR)
 	public void onHit(AttackEvent.Apply attackEvent) {
-		PitPlayer pitPlayer = PitPlayer.getPitPlayer(attackEvent.attacker);
+		if(!attackEvent.attackerIsPlayer) return;
+		PitPlayer pitPlayer = PitPlayer.getEntityPitPlayer(attackEvent.attacker);
 		if(pitPlayer != this.pitPlayer || pitPlayer.megastreak.getClass() != RNGesus.class) return;
 		if(NonManager.getNon(attackEvent.attacker) != null) return;
 
@@ -182,14 +184,15 @@ public class RNGesus extends Megastreak {
 					}
 				};
 
-				new HomeParticle(attackEvent.attacker, attackEvent.defender.getLocation().add(0, 1, 0), target, 0.5, callback);
+				if(attackEvent.attackerIsPlayer) new HomeParticle(attackEvent.attackerPlayer, attackEvent.defender.getLocation().add(0, 1, 0), target, 0.5, callback);
 			}
 		}
 	}
 
 	@EventHandler(priority = EventPriority.MONITOR)
 	public void kill(KillEvent killEvent) {
-		PitPlayer pitPlayer = PitPlayer.getPitPlayer(killEvent.killer);
+		if(!killEvent.killerIsPlayer) return;
+		PitPlayer pitPlayer = PitPlayer.getEntityPitPlayer(killEvent.killer);
 		if(pitPlayer != this.pitPlayer) return;
 		if(pitPlayer.getKills() >= INSTABILITY_THRESHOLD && pitPlayer.megastreak.getClass() == RNGesus.class) {
 			killEvent.xpMultipliers.clear();
@@ -206,7 +209,8 @@ public class RNGesus extends Megastreak {
 
 	@EventHandler(priority = EventPriority.MONITOR)
 	public void kill2(KillEvent killEvent) {
-		PitPlayer pitPlayer = PitPlayer.getPitPlayer(killEvent.killer);
+		if(!killEvent.killerIsPlayer) return;
+		PitPlayer pitPlayer = PitPlayer.getEntityPitPlayer(killEvent.killer);
 		if(pitPlayer != this.pitPlayer) return;
 		if(pitPlayer.megastreak.getClass() == RNGesus.class) {
 			if((pitPlayer.getKills() + 1) % 100 == 0 && pitPlayer.getKills() + 1 < INSTABILITY_THRESHOLD) {
@@ -225,8 +229,9 @@ public class RNGesus extends Megastreak {
 
 	@EventHandler(priority = EventPriority.MONITOR)
 	public void attack(AttackEvent.Apply attackEvent) {
+		if(!attackEvent.attackerIsPlayer) return;
 		if(NonManager.getNon(attackEvent.defender) == null) return;
-		PitPlayer pitPlayer = PitPlayer.getPitPlayer(attackEvent.attacker);
+		PitPlayer pitPlayer = PitPlayer.getEntityPitPlayer(attackEvent.attacker);
 		if(pitPlayer != this.pitPlayer) return;
 		if(pitPlayer.megastreak.isOnMega() && pitPlayer.megastreak.getClass() == RNGesus.class) {
 
@@ -320,7 +325,7 @@ public class RNGesus extends Megastreak {
 								EntityDamageByEntityEvent ev = new EntityDamageByEntityEvent(onlinePlayer, pitPlayer.player, EntityDamageEvent.DamageCause.CUSTOM, 0);
 								AttackEvent attackEvent = new AttackEvent(ev, attackerEnchant, defenderEnchant, false);
 
-								DamageManager.kill(attackEvent, onlinePlayer, pitPlayer.player, false);
+								DamageManager.kill(attackEvent, onlinePlayer, pitPlayer.player, false, KillType.DEFAULT);
 								return;
 							}
 						}

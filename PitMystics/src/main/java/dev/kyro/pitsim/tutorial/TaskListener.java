@@ -136,7 +136,8 @@ public class TaskListener implements Listener {
 
 	@EventHandler
 	public void onKill(KillEvent event) {
-		Tutorial tutorial = TutorialManager.getTutorial(event.killer);
+		if(!event.killerIsPlayer) return;
+		Tutorial tutorial = TutorialManager.getTutorial(event.killerPlayer);
 		if(tutorial == null) return;
 
 		if(!(tutorial.sequence instanceof ActivateMegastreakSequence)) return;

@@ -43,22 +43,34 @@ public class FreshCommand implements CommandExecutor {
 		}
 
 		String type = args[0].toLowerCase();
-		ItemStack mystic = getFreshItem(type);
+		ItemStack mystic = getFreshItem(player, type);
 		if(mystic == null) {
-
 			AOutput.error(player, "Usage: /enchant <sword|bow|fresh>");
 			return false;
+		}
+
+		if(MysticType.getMysticType(mystic) == MysticType.TAINTED_CHESTPLATE || MysticType.getMysticType(mystic) == MysticType.TAINTED_SCYTHE) {
+			if(!player.isOp()) {
+				AOutput.error(player, "&cNice try.");
+				return false;
+			}
 		}
 
 		AUtil.giveItemSafely(player, mystic);
 		return false;
 	}
 
-	public static ItemStack getFreshItem(String type) {
+	public static ItemStack getFreshItem(Player player, String type) {
 		if(type.equals("sword")) {
 			return getFreshItem(MysticType.SWORD, null);
 		} else if(type.equals("bow")) {
 			return getFreshItem(MysticType.BOW, null);
+		} else if(type.equals("chestplate")) {
+			if(!player.isOp()) return null;
+			return getFreshItem(MysticType.TAINTED_CHESTPLATE, null);
+		} else if(type.equals("scythe")) {
+			if(!player.isOp()) return null;
+			return getFreshItem(MysticType.TAINTED_SCYTHE, null);
 		} else if(PantColor.getPantColor(type) != null) {
 			return getFreshItem(MysticType.PANTS, PantColor.getPantColor(type));
 		}
@@ -85,6 +97,37 @@ public class FreshCommand implements CommandExecutor {
 					.setName("&bMystic Bow")
 					.setLore(new ALoreBuilder("&7Kept on death", "&f", "&f", "&7Used in the mystic well"))
 					.addUnbreakable(true).getItemStack();
+		} else if(type == MysticType.TAINTED_SCYTHE) {
+
+			mystic = new AItemStackBuilder(Material.GOLD_HOE)
+					.setName("&5Fresh Tainted Scythe")
+					.setLore(new ALoreBuilder("&7Kept on death", "&f", "&f", "&7Used in the mystic well"))
+					.addUnbreakable(true).getItemStack();
+			mystic.addEnchantment(Enchantment.DURABILITY, 1);
+			ItemMeta itemMeta = mystic.getItemMeta();
+			itemMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
+			mystic.setItemMeta(itemMeta);
+
+			NBTItem nbtItem = new NBTItem(mystic);
+			nbtItem.setBoolean(NBTTag.DROP_CONFIRM.getRef(), true);
+			mystic = nbtItem.getItem();
+
+		} else if(type == MysticType.TAINTED_CHESTPLATE) {
+
+			pantColor = PantColor.TAINTED;
+			mystic = new AItemStackBuilder(Material.LEATHER_CHESTPLATE)
+					.setName(pantColor.chatColor + "Fresh Tainted Chestplate")
+					.setLore(new ALoreBuilder("&7Kept on death", "&f",
+							pantColor.chatColor + "Used in the mystic well", pantColor.chatColor + "Also, a fashion statement"))
+					.addUnbreakable(true)
+					.getItemStack();
+			LeatherArmorMeta meta = (LeatherArmorMeta) mystic.getItemMeta();
+			meta.setColor(Color.fromRGB(pantColor.hexColor));
+			mystic.setItemMeta(meta);
+
+			NBTItem nbtItem = new NBTItem(mystic);
+			nbtItem.setBoolean(NBTTag.DROP_CONFIRM.getRef(), true);
+			mystic = nbtItem.getItem();
 		} else {
 
 			mystic = new AItemStackBuilder(Material.LEATHER_LEGGINGS)
@@ -92,9 +135,7 @@ public class FreshCommand implements CommandExecutor {
 					.setLore(new ALoreBuilder("&7Kept on death", "&f", "&f",
 							pantColor.chatColor + "Used in the mystic well", pantColor.chatColor + "Also, a fashion statement"))
 					.addUnbreakable(true).getItemStack();
-			LeatherArmorMeta meta = (LeatherArmorMeta) mystic.getItemMeta();
-			meta.setColor(Color.fromRGB(pantColor.hexColor));
-			mystic.setItemMeta(meta);
+			mystic = PantColor.setPantColor(mystic, pantColor);
 		}
 
 		if(mystic == null) return null;

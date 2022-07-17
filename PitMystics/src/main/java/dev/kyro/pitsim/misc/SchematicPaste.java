@@ -25,6 +25,18 @@ public class SchematicPaste {
 		}
 	}
 
+	public static EditSession loadSchematicAir(File file, Location location) {
+		WorldEditPlugin worldEditPlugin = (WorldEditPlugin) Bukkit.getPluginManager().getPlugin("WorldEdit");
+		EditSession session = worldEditPlugin.getWorldEdit().getEditSessionFactory().getEditSession(new BukkitWorld(location.getWorld()), 100000);
+		try {
+			CuboidClipboard clipboard = MCEditSchematicFormat.getFormat(file).load(file);
+			clipboard.paste(session, new com.sk89q.worldedit.Vector(location.getX(), location.getY(), location.getZ()), true);
+		} catch(MaxChangedBlocksException | DataException | IOException e) {
+			e.printStackTrace();
+		}
+		return session;
+	}
+
 	public static void loadTutorialSchematic(File file, Location location) {
 		WorldEditPlugin worldEditPlugin = (WorldEditPlugin) Bukkit.getPluginManager().getPlugin("WorldEdit");
 		EditSession session = worldEditPlugin.getWorldEdit().getEditSessionFactory().getEditSession(new BukkitWorld(location.getWorld()), 100000);

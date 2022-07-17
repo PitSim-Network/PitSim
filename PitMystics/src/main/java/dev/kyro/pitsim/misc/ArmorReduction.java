@@ -1,26 +1,32 @@
 package dev.kyro.pitsim.misc;
 
 import de.tr7zw.nbtapi.NBTItem;
+import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.enums.NBTTag;
 import org.bukkit.Material;
-import org.bukkit.entity.Player;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.inventory.ItemStack;
 
 public class ArmorReduction {
 
-	public static double getReductionMultiplier(Player player) {
-		int actualPoints = getArmorPoints(player);
+	public static double getReductionMultiplier(LivingEntity entity) {
+		int actualPoints = getArmorPoints(entity);
 		int missingPoints = 0;
 
-		ItemStack leggings = player.getEquipment().getLeggings();
+		ItemStack leggings = entity.getEquipment().getLeggings();
 		if(!Misc.isAirOrNull(leggings) && leggings.getType() == Material.LEATHER_LEGGINGS) {
 			NBTItem pants = new NBTItem(leggings);
 			if(pants.hasKey(NBTTag.ITEM_UUID.getRef())) missingPoints += 3;
 		}
 
-		ItemStack helmet = player.getEquipment().getHelmet();
+		ItemStack helmet = entity.getEquipment().getHelmet();
 		if(!Misc.isAirOrNull(helmet) && helmet.getType() == Material.GOLD_HELMET) {
 			missingPoints += 1;
+		}
+
+		ItemStack chestplate = entity.getEquipment().getChestplate();
+		if(!Misc.isAirOrNull(chestplate) && chestplate.getType() == Material.LEATHER_CHESTPLATE) {
+			missingPoints += 5;
 		}
 
 		double actualReduction = actualPoints * 4;
@@ -29,12 +35,12 @@ public class ArmorReduction {
 		return (100 - actualReduction - missingReduction) / (100 - actualReduction);
 	}
 
-	public static int getArmorPoints(Player player) {
+	public static int getArmorPoints(LivingEntity entity) {
 		int points = 0;
-		points += getArmorPoints(player.getEquipment().getHelmet());
-		points += getArmorPoints(player.getEquipment().getChestplate());
-		points += getArmorPoints(player.getEquipment().getLeggings());
-		points += getArmorPoints(player.getEquipment().getBoots());
+		points += getArmorPoints(entity.getEquipment().getHelmet());
+		points += getArmorPoints(entity.getEquipment().getChestplate());
+		points += getArmorPoints(entity.getEquipment().getLeggings());
+		points += getArmorPoints(entity.getEquipment().getBoots());
 		return points;
 	}
 

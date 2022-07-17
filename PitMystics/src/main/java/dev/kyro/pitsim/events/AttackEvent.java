@@ -1,6 +1,7 @@
 package dev.kyro.pitsim.events;
 
 import dev.kyro.pitsim.controllers.DamageManager;
+import dev.kyro.pitsim.controllers.EnchantManager;
 import dev.kyro.pitsim.controllers.objects.PitEnchant;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import org.bukkit.entity.*;
@@ -17,30 +18,50 @@ public class AttackEvent extends Event {
 	private static final HandlerList handlers = new HandlerList();
 
 	public EntityDamageByEntityEvent event;
-	public Player attacker;
-	public Player defender;
+	public LivingEntity attacker;
+	public LivingEntity defender;
+	public boolean attackerIsPlayer;
+	public boolean defenderIsPlayer;
+	public Player attackerPlayer;
+	public Player defenderPlayer;
 	public Arrow arrow;
+	public Fireball fireball;
 	public LivingEntity pet;
 	private final Map<PitEnchant, Integer> attackerEnchantMap;
 	private final Map<PitEnchant, Integer> defenderEnchantMap;
+	public boolean clearMaps;
 
 	public boolean fakeHit;
 
 	public AttackEvent(EntityDamageByEntityEvent event, Map<PitEnchant, Integer> attackerEnchantMap, Map<PitEnchant, Integer> defenderEnchantMap, boolean fakeHit) {
 		this.event = event;
 		this.attacker = DamageManager.getAttacker(event.getDamager());
-		this.defender = (Player) event.getEntity();
+		this.defender = (LivingEntity) event.getEntity();
+		this.attackerIsPlayer = attacker instanceof Player;
+		this.defenderIsPlayer = defender instanceof Player;
+		this.attackerPlayer = attackerIsPlayer ? (Player) attacker : null;
+		this.defenderPlayer = defenderIsPlayer ? (Player) defender : null;
 		this.attackerEnchantMap = attackerEnchantMap;
 		this.defenderEnchantMap = defenderEnchantMap;
 		this.fakeHit = fakeHit;
+		this.clearMaps = false;
 
-		PitPlayer pitPlayer = PitPlayer.getPitPlayer(defender);
-		if(!(pitPlayer.player == attacker)) pitPlayer.lastHitUUID = attacker.getUniqueId();
+		if(defenderIsPlayer) {
+			PitPlayer pitPlayer = PitPlayer.getPitPlayer(defenderPlayer);
+			if(!(pitPlayer.player == attacker)) pitPlayer.lastHitUUID = attacker.getUniqueId();
+		}
+
+		if(clearMaps) {
+			defenderEnchantMap.clear();
+			attackerEnchantMap.clear();
+		}
 
 		if(event.getDamager() instanceof Arrow) {
-			arrow = (Arrow) event.getDamager();
+			this.arrow = (Arrow) event.getDamager();
+		} else if(event.getDamager() instanceof Fireball) {
+			this.fireball = (Fireball) event.getDamager();
 		} else if(event.getDamager() instanceof Slime) {
-			pet = (LivingEntity) event.getDamager();
+			this.pet = (LivingEntity) event.getDamager();
 		}
 	}
 

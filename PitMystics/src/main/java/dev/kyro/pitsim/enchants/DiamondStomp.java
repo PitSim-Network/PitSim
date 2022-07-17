@@ -13,7 +13,7 @@ import java.util.List;
 public class DiamondStomp extends PitEnchant {
 
 	public DiamondStomp() {
-		super("Diamond Stomp", false, ApplyType.SWORDS,
+		super("Diamond Stomp", false, ApplyType.MELEE,
 				"diamondstomp", "stomp", "ds", "dstomp", "diamond-stomp");
 	}
 
@@ -24,7 +24,7 @@ public class DiamondStomp extends PitEnchant {
 		int enchantLvl = attackEvent.getAttackerEnchantLevel(this);
 		if(enchantLvl == 0) return;
 
-		for(ItemStack armorContent : attackEvent.defender.getInventory().getArmorContents()) {
+		for(ItemStack armorContent : attackEvent.defender.getEquipment().getArmorContents()) {
 			if(!(armorContent.getType() == Material.DIAMOND_HELMET || armorContent.getType() == Material.DIAMOND_CHESTPLATE
 					|| armorContent.getType() == Material.DIAMOND_LEGGINGS || armorContent.getType() == Material.DIAMOND_BOOTS))
 				return;
