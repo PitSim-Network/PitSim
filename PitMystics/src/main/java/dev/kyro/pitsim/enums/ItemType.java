@@ -3,7 +3,6 @@ package dev.kyro.pitsim.enums;
 import dev.kyro.pitsim.commands.FreshCommand;
 import dev.kyro.pitsim.commands.JewelCommand;
 import dev.kyro.pitsim.controllers.EnchantManager;
-import dev.kyro.pitsim.inventories.ShardHunterPanel;
 import dev.kyro.pitsim.misc.ChunkOfVile;
 import dev.kyro.pitsim.misc.FunkyFeather;
 import dev.kyro.pitsim.upgrades.ShardHunter;
@@ -12,8 +11,9 @@ import org.bukkit.inventory.ItemStack;
 
 import java.util.Random;
 
-public enum ItemType {
+import static dev.kyro.pitsim.misc.tainted.CorruptedFeather.getCorruptedFeather;
 
+public enum ItemType {
     FEATHERS_3(1, getFeathers(3), ChatColor.DARK_AQUA + "3x Funky Feather", 50, 10),
     FEATHERS_5(2, getFeathers(5), ChatColor.DARK_AQUA + "5x Funky Feather", 25, 25),
     VILE_3(3, getVile(3), ChatColor.DARK_PURPLE + "3x Chunk of Vile", 50, 10),
@@ -26,7 +26,9 @@ public enum ItemType {
     JEWEL_PANTS(10, JewelCommand.getJewel(MysticType.PANTS, null, 0), ChatColor.DARK_AQUA + "Hidden Jewel Pants", 25, 25),
     GEM_SHARD_10(11, ShardHunter.getShardItem(10), ChatColor.GREEN + "10x Ancient Gem Shard", 10, 50),
     GEM_SHARD_25(12, ShardHunter.getShardItem(25), ChatColor.GREEN + "25x Ancient Gem Shard", 5, 100),
-    TOTALLY_LEGIT_GEM(13, ShardHunter.getGemItem(), ChatColor.GREEN + "Totally Legit Gem", 1, 250);
+    TOTALLY_LEGIT_GEM(13, ShardHunter.getGemItem(), ChatColor.GREEN + "Totally Legit Gem", 1, 250),
+    CORRUPTED_FEATHERS_3(14, getCorruptedFeather(3), ChatColor.DARK_PURPLE + "3x Corrupted Feather", 50, 10),
+    CORRUPTED_FEATHERS_5(15, getCorruptedFeather(5), ChatColor.DARK_PURPLE + "5x Corrupted Feather", 25, 25);
 
 
 

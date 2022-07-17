@@ -1,6 +1,8 @@
 package dev.kyro.pitsim.misc;
 
+import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
+import net.citizensnpcs.api.CitizensAPI;
 import org.bukkit.Effect;
 import org.bukkit.Material;
 import org.bukkit.entity.Entity;
@@ -23,8 +25,9 @@ public class ThrowableBlock implements Listener {
         this.material = material;
 
         this.block = owner.getWorld().spawnFallingBlock(owner.getLocation().add(0,1,0), this.material, (byte) 0);
-        this.block.setDropItem(false);
+        if(CitizensAPI.getNPCRegistry().isNPC(this.owner)) this.block.setDropItem(false);
         this.block.setHurtEntities(false);
+        this.block.setOp(true);
 
         this.block.setVelocity(owner.getLocation().getDirection().multiply(3));
     }
@@ -32,10 +35,10 @@ public class ThrowableBlock implements Listener {
     public ThrowableBlock(Entity owner, Material material, Vector vector){
         this.owner = owner;
         this.material = material;
-
         this.block = owner.getWorld().spawnFallingBlock(owner.getLocation().add(0,1,0), this.material, (byte) 0);
-        this.block.setDropItem(false);
+        if(CitizensAPI.getNPCRegistry().isNPC(this.owner)) this.block.setDropItem(false);
         this.block.setHurtEntities(false);
+        this.block.setOp(true);
         this.block.setVelocity(vector);
     }
 
@@ -44,7 +47,7 @@ public class ThrowableBlock implements Listener {
     }
 
     public void run(EntityChangeBlockEvent event){
-        event.getEntity().getWorld().playEffect(event.getEntity().getLocation(), Effect.EXPLOSION_LARGE, 1);
+        event.getEntity().getWorld().playEffect(event.getEntity().getLocation(), Effect.EXPLOSION_HUGE, 1);
 
         for (Entity player : event.getEntity().getNearbyEntities(8, 8, 8)) {
             if(!(player instanceof Player)) continue;

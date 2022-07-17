@@ -1,13 +1,20 @@
 package dev.kyro.pitsim.controllers.objects;
 
+import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.PitSim;
+import dev.kyro.pitsim.controllers.DamageManager;
+import dev.kyro.pitsim.controllers.EnchantManager;
+import dev.kyro.pitsim.enums.KillType;
 import dev.kyro.pitsim.enums.MobType;
 import dev.kyro.pitsim.controllers.MobManager;
+import dev.kyro.pitsim.events.AttackEvent;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
