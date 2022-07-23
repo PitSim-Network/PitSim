@@ -1,14 +1,11 @@
 package dev.kyro.pitsim.enchants.tainted;
 
 import dev.kyro.arcticapi.builders.ALoreBuilder;
-import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.controllers.Cooldown;
 import dev.kyro.pitsim.controllers.objects.PitEnchant;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.enums.ApplyType;
-import dev.kyro.pitsim.events.KillEvent;
-import dev.kyro.pitsim.events.OofEvent;
 import dev.kyro.pitsim.events.PitPlayerAttemptAbilityEvent;
 import dev.kyro.pitsim.misc.Sounds;
 import net.minecraft.server.v1_8_R3.EntityArmorStand;
@@ -73,9 +70,11 @@ public class CleaveSpell extends PitEnchant {
                         if(online.getUniqueId().equals(id)) player = online;
                     }
                     if(player == null) continue;
-                    stands.get(id).remove();
-                    stands.remove(id);
-                    Sounds.CLEAVE2.play(player);
+                    if(stands.containsKey(id)) {
+                        stands.get(id).remove();
+                        stands.remove(id);
+                        Sounds.CLEAVE2.play(player);
+                    }
                 }
                 remove.clear();
             }

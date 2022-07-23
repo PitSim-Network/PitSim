@@ -48,7 +48,10 @@ public class TotallyLegitGemPanel extends AGUIPanel {
 
 		if(event.getClickedInventory().getHolder() == this) {
 
-			int invSlot = slots.get(slot);
+			int invSlot = 0;
+			if(slots.containsKey(slot)) {
+				invSlot = slots.get(slot);
+			}
 
 			for(int i = 0; i < player.getInventory().getSize(); i++) {
 				if(i == invSlot) {

@@ -133,8 +133,10 @@ public class DamageManager implements Listener {
 			hopperCooldownList.add(defender);
 			nonHitCooldownList.add(defender);
 
-			boolean isBoss = (PitBoss.isPitBoss((Player) defender));
-			if(isBoss) bossHitCooldown.add(defender);
+			if(defender instanceof Player) {
+				boolean isBoss = (PitBoss.isPitBoss((Player) defender));
+				if(isBoss) bossHitCooldown.add(defender);
+			}
 
 			new BukkitRunnable() {
 				int count = 0;

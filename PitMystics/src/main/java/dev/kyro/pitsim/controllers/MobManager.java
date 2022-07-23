@@ -277,7 +277,7 @@ public class MobManager implements Listener {
 				int level = 0;
 				double chance = 0;
 				if(helmet != null) level = HelmetSystem.getLevel(GoldenHelmet.getUsedHelmetGold(event.deadPlayer));
-				if(helmet != null) chance = 7.5 * HelmetSystem.getTotalStacks(HelmetSystem.Passive.DAMAGE_REDUCTION, level - 1);
+				if(helmet != null) chance = 7.5 * HelmetSystem.getTotalStacks(HelmetSystem.Passive.DROP_CHANCE, level - 1);
 
 				for (Map.Entry<ItemStack, Integer> entry : drops.entrySet()) {
 					Random r = new Random();

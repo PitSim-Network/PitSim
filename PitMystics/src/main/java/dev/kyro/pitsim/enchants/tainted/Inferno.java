@@ -40,7 +40,7 @@ public class Inferno extends PitEnchant {
                         stackMap.put(defender.getUniqueId(), stackMap.get(defender.getUniqueId()) + 1);
                     } else stackMap.put(defender.getUniqueId(), 1);
 
-                    defender.damage(stackMap.get(defender.getUniqueId()), attacker);
+                    defender.damage(stackMap.get(defender.getUniqueId()));
 
                 }
             }

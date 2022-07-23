@@ -8,8 +8,8 @@ import java.util.Random;
 
 public class BossDrop {
 
-    Player player;
-    LootTable lootTable;
+    private final Player player;
+    private final LootTable lootTable;
 
     public BossDrop(Player player, LootTable lootTable) {
 
@@ -26,10 +26,10 @@ public class BossDrop {
         if(bound < lootTable.chance3 && lootTable.drop3 != null){
             AUtil.giveItemSafely(player, lootTable.drop3, true);
             lootRunnable.run(player, lootTable.drop3.getItemMeta().getDisplayName(),"&d&lRNG!");
-        }else if(bound < lootTable.chance2 && lootTable.drop2 != null){
+        } else if(bound < lootTable.chance2 && lootTable.drop2 != null){
             AUtil.giveItemSafely(player, lootTable.drop2, true);
             lootRunnable.run(player, lootTable.drop2.getItemMeta().getDisplayName(),"&d&lRNG!");
-        }else if (bound < lootTable.chance1 && lootTable.drop1 != null){
+        } else if (bound < lootTable.chance1 && lootTable.drop1 != null){
             AUtil.giveItemSafely(player, lootTable.drop1, true);
             lootRunnable.run(player, lootTable.drop1.getItemMeta().getDisplayName(),"&d&lRNG!");
         }

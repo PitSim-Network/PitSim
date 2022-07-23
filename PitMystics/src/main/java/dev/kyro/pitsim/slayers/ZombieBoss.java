@@ -26,7 +26,7 @@ public class ZombieBoss extends PitBoss {
 
         npc = CitizensAPI.getNPCRegistry().createNPC(EntityType.PLAYER, name);
 
-        this.boss = new SimpleBoss(npc, target, subLevel, 1, SimpleSkin.ZOMBIE, this){
+        this.boss = new SimpleBoss(npc, target, subLevel, 1, SimpleSkin.ZOMBIE, this) {
             @Override
             protected void attackHigh(){
 

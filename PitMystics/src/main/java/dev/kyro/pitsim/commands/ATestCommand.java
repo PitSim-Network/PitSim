@@ -1,15 +1,27 @@
 package dev.kyro.pitsim.commands;
 
-import dev.kyro.arcticapi.misc.AUtil;
-import dev.kyro.pitsim.brewing.objects.BrewingIngredient;
+import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.controllers.CutsceneManager;
+import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
+import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.scheduler.BukkitWorker;
 
 public class ATestCommand implements CommandExecutor {
+
+	static {
+		new BukkitRunnable() {
+			@Override
+			public void run() {
+				for(Player onlinePlayer : Bukkit.getOnlinePlayers()) {
+					onlinePlayer.sendMessage(Bukkit.getScheduler().getActiveWorkers().size() + " : " + Bukkit.getScheduler().getPendingTasks().size());
+				}
+			}
+		}.runTaskTimer(PitSim.INSTANCE, 20, 20);
+	}
 
 	@Override
 	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
@@ -18,11 +30,24 @@ public class ATestCommand implements CommandExecutor {
 
 		if(!player.isOp()) return false;
 
-		for (BrewingIngredient ingredient : BrewingIngredient.ingredients) {
-			ItemStack item = ingredient.getItem();
-			item.setAmount(64);
-			AUtil.giveItemSafely(player, item);
+
+		for(BukkitWorker activeWorker : Bukkit.getScheduler().getActiveWorkers()) {
+			System.out.println("--------------------------------");
+			System.out.println(activeWorker.getTaskId());
+			System.out.println(activeWorker.getOwner());
+			System.out.println("--------------------------------");
 		}
+		System.out.println(Bukkit.getScheduler().getActiveWorkers().size());
+
+
+
+
+		//
+//		for (BrewingIngredient ingredient : BrewingIngredient.ingredients) {
+//			ItemStack item = ingredient.getItem();
+//			item.setAmount(64);
+//			AUtil.giveItemSafely(player, item);
+//		}
 
 
 		if(args.length < 1) return false;

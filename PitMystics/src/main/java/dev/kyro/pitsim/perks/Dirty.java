@@ -5,6 +5,7 @@ import dev.kyro.pitsim.controllers.objects.PitPerk;
 import dev.kyro.pitsim.events.KillEvent;
 import dev.kyro.pitsim.misc.Misc;
 import org.bukkit.Material;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffectType;
@@ -24,12 +25,13 @@ public class Dirty extends PitPerk {
 	public void onKill(KillEvent killEvent) {
 
 		if(!playerHasUpgrade(killEvent.killer)) return;
+		if(!(killEvent.dead instanceof Player)) return;
 
 		Misc.applyPotionEffect(killEvent.killer, PotionEffectType.DAMAGE_RESISTANCE, 4 * 20, 1, true, false);
 	}
 
 	@Override
 	public List<String> getDescription() {
-		return new ALoreBuilder("&7Gain Resistance II (4s) on kill.").getLore();
+		return new ALoreBuilder("&7Gain Resistance II (4s) on", "&7player/bot kill.").getLore();
 	}
 }

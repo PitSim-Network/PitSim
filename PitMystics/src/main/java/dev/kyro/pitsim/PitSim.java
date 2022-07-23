@@ -60,7 +60,6 @@ import org.bukkit.Material;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
-import org.bukkit.event.block.BlockIgniteEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.RegisteredServiceProvider;
@@ -74,8 +73,7 @@ import java.util.Map;
 
 import static dev.kyro.pitsim.misc.TempBlockHelper.restoreSessions;
 
-public
-class PitSim extends JavaPlugin {
+public class PitSim extends JavaPlugin {
 	public static double version = 3.0;
 
 	public static LuckPerms LUCKPERMS;
@@ -131,9 +129,6 @@ class PitSim extends JavaPlugin {
 
 		Plugin essentials = Bukkit.getPluginManager().getPlugin("Essentials");
 		EntityDamageEvent.getHandlerList().unregister(essentials);
-
-		Plugin worldguard = Bukkit.getPluginManager().getPlugin("WorldGuard");
-		BlockIgniteEvent.getHandlerList().unregister(worldguard);
 
 		if(Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null) {
 		} else {
@@ -406,6 +401,7 @@ class PitSim extends JavaPlugin {
 		getCommand("pay").setExecutor(new PayCommand());
 		getCommand("shutdown").setExecutor(new ShutdownCommand());
 		getCommand("tutorial").setExecutor(new TutorialCommand());
+		getCommand("cutscene").setExecutor(new CutsceneCommand());
 		getCommand("kit").setExecutor(new KitCommand());
 		getCommand("view").setExecutor(new ViewCommand());
 		getCommand("music").setExecutor(new MusicCommand());

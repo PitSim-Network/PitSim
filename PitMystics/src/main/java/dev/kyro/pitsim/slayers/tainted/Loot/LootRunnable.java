@@ -8,11 +8,11 @@ import org.bukkit.entity.Player;
 public class LootRunnable {
     String profiler;
 
-    public LootRunnable(String profiler){
-        this.profiler=profiler;
+    public LootRunnable(String profiler) {
+        this.profiler = profiler;
     }
 
-    public void run(Player player, String itemName, String rare_type){
+    public void run(Player player, String itemName, String rare_type) {
         System.out.println(profiler);
 
         AOutput.send(player, rare_type + " &7you dropped a &c&l" + ChatColor.stripColor(itemName));

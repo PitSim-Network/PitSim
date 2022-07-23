@@ -1,18 +1,17 @@
 package dev.kyro.pitsim.controllers;
 
-import be.maximvdw.featherboard.FeatherBoard;
 import be.maximvdw.featherboard.api.FeatherBoardAPI;
 import com.xxmicloxx.NoteBlockAPI.NoteBlockAPI;
-import com.xxmicloxx.NoteBlockAPI.model.RepeatMode;
 import com.xxmicloxx.NoteBlockAPI.model.Song;
 import com.xxmicloxx.NoteBlockAPI.songplayer.EntitySongPlayer;
 import com.xxmicloxx.NoteBlockAPI.utils.NBSDecoder;
 import dev.kyro.arcticapi.data.APlayer;
 import dev.kyro.arcticapi.data.APlayerData;
+import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.misc.Misc;
+import dev.kyro.pitsim.misc.Sounds;
 import eu.crushedpixel.camerastudio.CameraStudio;
-import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -52,6 +51,12 @@ public class CutsceneManager implements Listener {
         esp.setPlaying(true);
 
         player.setGameMode(GameMode.SPECTATOR);
+
+        if(player.spigot().getPing() >= 100) {
+            AOutput.send(player, "&6&lHIGH PING? &7Run &f/cutscene skip &7to skip this tutorial.");
+            AOutput.send(player, "&7However, be warned, this tutorial contains vital information.");
+        }
+        Sounds.BOOSTER_REMIND.play(player);
 
         List<Location> firstSequence = new ArrayList<>();
         firstSequence.add(new Location(MapManager.getDarkzone(), 175, 95, -93, -90, 0));
@@ -264,6 +269,23 @@ public class CutsceneManager implements Listener {
             toRemove = event.getPlayer();
         }
         if(toRemove != null) cutscenePlayers.remove(toRemove);
+    }
+
+    public static void skip(Player player) {
+        if(cutscenePlayers.containsKey(player)) {
+            cutscenePlayers.get(player).forEach(BukkitTask::cancel);
+            player.setGameMode(GameMode.SURVIVAL);
+            player.teleport(new Location(MapManager.getDarkzone(), 176.5, 91, -93.5, -90, 0));
+            FeatherBoardAPI.toggle(player);
+            NoteBlockAPI.stopPlaying(player);
+            cutscenePlayers.remove(player);
+            APlayer aPlayer = APlayerData.getPlayerData(player);
+            FileConfiguration playerData = aPlayer.playerData;
+            if(player.isOnline()) {
+                playerData.set("darkzonepreview", true);
+                aPlayer.save();
+            }
+        }
     }
 
     public static void sendTitle(Player player, String title, String subtitle, int ticks) {

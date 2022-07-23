@@ -49,6 +49,7 @@ public class StrengthChaining extends PitPerk {
 	public void onKill(KillEvent killEvent) {
 
 		if(!playerHasUpgrade(killEvent.killer)) return;
+		if(!(killEvent.dead instanceof Player)) return;
 
 		amplifierMap.putIfAbsent(killEvent.killer.getUniqueId(), 0);
 		int level = amplifierMap.get(killEvent.killer.getUniqueId());
@@ -67,6 +68,6 @@ public class StrengthChaining extends PitPerk {
 
 	@Override
 	public List<String> getDescription() {
-		return new ALoreBuilder("&c+8% damage &7for 7s stacking", "&7on kill.").getLore();
+		return new ALoreBuilder("&c+8% damage &7for 7s stacking", "&7on player/bot kill.").getLore();
 	}
 }

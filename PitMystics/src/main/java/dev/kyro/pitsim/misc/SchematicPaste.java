@@ -9,6 +9,7 @@ import com.sk89q.worldedit.schematic.MCEditSchematicFormat;
 import com.sk89q.worldedit.world.DataException;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.entity.Bat;
 
 import java.io.File;
 import java.io.IOException;
@@ -23,6 +24,7 @@ public class SchematicPaste {
 		} catch(MaxChangedBlocksException | DataException | IOException e) {
 			e.printStackTrace();
 		}
+		Bat bat;
 	}
 
 	public static EditSession loadSchematicAir(File file, Location location) {

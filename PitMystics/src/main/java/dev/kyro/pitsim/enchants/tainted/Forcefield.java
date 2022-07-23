@@ -85,7 +85,7 @@ public class Forcefield extends PitEnchant {
 
     @Override
     public List<String> getDescription(int enchantLvl) {
-        return new ALoreBuilder("&7Summon a powerful &eForcefield", "&7that reduces &fKnockback &7and", "repels enemies", "&d&o-" + reduction(enchantLvl) + "% Mana Regen").getLore();
+        return new ALoreBuilder("&7Summon a powerful &eForcefield", "&7that reduces &fKnockback &7and", "&7repels enemies", "&d&o-" + reduction(enchantLvl) + "% Mana Regen").getLore();
 
     }
 

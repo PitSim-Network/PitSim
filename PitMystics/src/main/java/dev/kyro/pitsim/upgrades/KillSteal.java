@@ -1,24 +1,15 @@
 package dev.kyro.pitsim.upgrades;
 
-import com.xxmicloxx.NoteBlockAPI.model.RepeatMode;
-import com.xxmicloxx.NoteBlockAPI.model.Song;
-import com.xxmicloxx.NoteBlockAPI.songplayer.RadioSongPlayer;
-import com.xxmicloxx.NoteBlockAPI.utils.NBSDecoder;
 import dev.kyro.arcticapi.gui.AGUIPanel;
-import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.arcticapi.misc.AUtil;
-import dev.kyro.pitsim.controllers.NonManager;
 import dev.kyro.pitsim.controllers.UpgradeManager;
 import dev.kyro.pitsim.controllers.objects.RenownUpgrade;
-import dev.kyro.pitsim.events.KillEvent;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
-import org.bukkit.event.EventHandler;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -57,32 +48,4 @@ public class KillSteal extends RenownUpgrade {
 		return Arrays.asList(20, 30, 40);
 	}
 
-	@EventHandler
-	public void onKill(KillEvent killEvent) {
-		if(!killEvent.killerIsPlayer) return;
-		if(!UpgradeManager.hasUpgrade(killEvent.killerPlayer, this)) return;
-		if(!(NonManager.getNon(killEvent.dead) == null)) return;
-
-		int tier = UpgradeManager.getTier(killEvent.killerPlayer, this);
-		if(tier == 0) return;
-
-		double chance = 0.01 * tier;
-
-		boolean isLuckyKill = Math.random() < chance;
-
-		if(isLuckyKill) killEvent.isLuckyKill = true;
-
-		if(isLuckyKill) {
-			AOutput.send(killEvent.killer, "&d&lLUCKY KILL! &7Rewards tripled!");
-
-			File file = new File("plugins/NoteBlockAPI/Effects/LuckyKill.nbs");
-			Song song = NBSDecoder.parse(file);
-			RadioSongPlayer rsp = new RadioSongPlayer(song);
-			rsp.setRepeatMode(RepeatMode.NO);
-			rsp.addPlayer(killEvent.killerPlayer);
-			rsp.setPlaying(true);
-		}
-
-
-	}
 }

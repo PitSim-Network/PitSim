@@ -60,7 +60,7 @@ class Sonic extends PitEnchant {
 
     @Override
     public List<String> getDescription(int enchantLvl) {
-        return new ALoreBuilder("&7Move &e100% &7faster at all times", "&d&o-" + reduction(enchantLvl) + " Mana Regen").getLore();
+        return new ALoreBuilder("&7Move &e100% &7faster at all times", "&d&o-" + reduction(enchantLvl) + "% Mana Regen").getLore();
     }
 
     public static float getWalkSpeed(int enchantLvl) {

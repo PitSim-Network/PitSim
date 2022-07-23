@@ -1,30 +1,40 @@
 package dev.kyro.pitsim.controllers;
 
+import de.tr7zw.nbtapi.NBTItem;
 import dev.kyro.arcticapi.misc.AUtil;
+import dev.kyro.pitsim.PitSim;
+import dev.kyro.pitsim.controllers.objects.PitEnchant;
+import dev.kyro.pitsim.controllers.objects.PitPlayer;
+import dev.kyro.pitsim.enums.MysticType;
+import dev.kyro.pitsim.enums.NBTTag;
 import dev.kyro.pitsim.events.AttackEvent;
-import org.bukkit.Material;
-import org.bukkit.block.Block;
-import org.bukkit.entity.Entity;
-import org.bukkit.inventory.*;
-import org.bukkit.craftbukkit.v1_8_R3.inventory.*;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.scheduler.*;
-import dev.kyro.pitsim.*;
-import org.bukkit.plugin.*;
-import org.bukkit.craftbukkit.v1_8_R3.entity.*;
-import de.tr7zw.nbtapi.*;
-import dev.kyro.pitsim.enums.*;
-import dev.kyro.pitsim.controllers.objects.*;
-import org.bukkit.event.block.*;
-import org.bukkit.*;
-import dev.kyro.pitsim.tutorial.*;
-import dev.kyro.pitsim.misc.*;
-import org.bukkit.block.*;
-import org.bukkit.event.*;
-import org.bukkit.event.player.*;
-import org.bukkit.entity.*;
-import java.util.*;
+import dev.kyro.pitsim.misc.Misc;
+import dev.kyro.pitsim.misc.Sounds;
+import dev.kyro.pitsim.tutorial.TutorialManager;
 import net.minecraft.server.v1_8_R3.*;
+import org.bukkit.Material;
+import org.bukkit.*;
+import org.bukkit.block.Block;
+import org.bukkit.craftbukkit.v1_8_R3.entity.CraftEntity;
+import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
+import org.bukkit.craftbukkit.v1_8_R3.inventory.CraftItemStack;
+import org.bukkit.entity.ArmorStand;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
+import org.bukkit.event.block.Action;
+import org.bukkit.event.player.PlayerInteractAtEntityEvent;
+import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.event.player.PlayerMoveEvent;
+import org.bukkit.event.player.PlayerQuitEvent;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.scheduler.BukkitRunnable;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class TaintedWell implements Listener
 {
@@ -118,6 +128,9 @@ public class TaintedWell implements Listener
     public static void onButtonPush(final Player player, final boolean enchant) {
         final ArmorStand removeStand = TaintedWell.removeStands.get(player);
         final ArmorStand enchantStand = TaintedWell.enchantStands.get(player);
+
+        if(enchantStand == null || removeStand == null) return;
+
         final PacketPlayOutEntity.PacketPlayOutRelEntityMoveLook tpPacket = new PacketPlayOutEntity.PacketPlayOutRelEntityMoveLook(getStandID(removeStand), (byte)64, (byte)0, (byte)0, (byte)0, (byte)0, false);
         ((CraftPlayer)player).getHandle().playerConnection.sendPacket(tpPacket);
         new BukkitRunnable() {

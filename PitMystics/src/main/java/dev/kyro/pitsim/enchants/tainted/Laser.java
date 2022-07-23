@@ -1,15 +1,12 @@
 package dev.kyro.pitsim.enchants.tainted;
 
 import dev.kyro.arcticapi.builders.ALoreBuilder;
-import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.controllers.EnchantManager;
 import dev.kyro.pitsim.controllers.MapManager;
 import dev.kyro.pitsim.controllers.objects.PitEnchant;
 import dev.kyro.pitsim.enums.ApplyType;
 import dev.kyro.pitsim.enums.MysticType;
-import dev.kyro.pitsim.events.AttackEvent;
 import dev.kyro.pitsim.misc.Misc;
-import dev.kyro.pitsim.misc.Sounds;
 import org.bukkit.Bukkit;
 import org.bukkit.Effect;
 import org.bukkit.Location;
@@ -21,11 +18,9 @@ import org.bukkit.event.block.Action;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
-import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
 
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 public class Laser extends PitEnchant {
@@ -53,6 +48,8 @@ public class Laser extends PitEnchant {
         for (Entity entity : player.getNearbyEntities(10, 10, 10)) {
             if(!(entity instanceof LivingEntity)) continue;
             if(entity instanceof ArmorStand || entity instanceof Villager) continue;
+
+            if(entity.getWorld() != player.getWorld()) return;
 
             Vector direction = player.getLocation().add(0, 1, 0).getDirection();
             Vector towardsEntity = entity.getLocation().add(0, 1, 0).subtract(player.getLocation().add(0, 1, 0)).toVector().normalize();

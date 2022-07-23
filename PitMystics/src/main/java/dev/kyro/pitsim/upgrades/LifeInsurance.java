@@ -29,14 +29,14 @@ public class LifeInsurance extends RenownUpgrade {
 		List<String> lore = new ArrayList<>();
 		if(UpgradeManager.hasUpgrade(player, this) && UpgradeManager.getTier(player, this) > 0) lore.add(ChatColor.translateAlternateColorCodes('&',
 				"&7Current: &eTier " + AUtil.toRoman(UpgradeManager.getTier(player, this))));
-		if(UpgradeManager.hasUpgrade(player, this))
+		if(UpgradeManager.hasUpgrade(player, this) && UpgradeManager.getTier(player, this) > 0)
 			lore.add(ChatColor.GRAY + "Tier: " + ChatColor.GREEN + AUtil.toRoman(UpgradeManager.getTier(player, this)));
 		if(UpgradeManager.hasUpgrade(player, this)) lore.add("");
 		lore.add(ChatColor.GRAY + "Each tier:");
 		lore.add(ChatColor.translateAlternateColorCodes('&', "&7Retain mystic lives on death when on"));
 		lore.add(ChatColor.translateAlternateColorCodes('&', "&eTier I: &f500 &cOvrdrv&7, &dUber"));
 		lore.add(ChatColor.translateAlternateColorCodes('&', "&eTier II: &f1,000 &aBeast&7, &6High&7, &bMoon"));
-		lore.add(ChatColor.translateAlternateColorCodes('&', "&eTier III: &f4,000 &5RNG"));
+		lore.add(ChatColor.translateAlternateColorCodes('&', "&eTier III: &f3,000 &5RNG"));
 
 		//TODO Add functionality and decide on final values for Life Insurance
 		meta.setLore(UpgradeManager.loreBuilder(this, player, lore, isCustomPanel));
@@ -53,7 +53,7 @@ public class LifeInsurance extends RenownUpgrade {
 		if(pitPlayer.megastreak instanceof Beastmode && pitPlayer.getKills() >= 1000 && tier >= 2) return true;
 		if(pitPlayer.megastreak instanceof Highlander && pitPlayer.getKills() >= 1000 && tier >= 2) return true;
 		if(pitPlayer.megastreak instanceof ToTheMoon && pitPlayer.getKills() >= 1000 && tier >= 2) return true;
-		return pitPlayer.megastreak instanceof RNGesus && pitPlayer.getKills() >= 4000 && tier >= 3;
+		return pitPlayer.megastreak instanceof RNGesus && pitPlayer.getKills() >= 3000 && tier >= 3;
 	}
 
 	@Override

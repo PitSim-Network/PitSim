@@ -20,8 +20,6 @@ import dev.kyro.pitsim.events.OofEvent;
 import dev.kyro.pitsim.misc.Misc;
 import dev.kyro.pitsim.misc.Sounds;
 import dev.kyro.pitsim.slayers.*;
-import dev.kyro.pitsim.slayers.tainted.Loot.BossDrop;
-import dev.kyro.pitsim.slayers.tainted.Loot.LootTable;
 import net.citizensnpcs.api.CitizensAPI;
 import net.citizensnpcs.api.event.NPCRightClickEvent;
 import net.citizensnpcs.api.npc.NPC;
@@ -36,7 +34,6 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityTargetLivingEntityEvent;
-import org.bukkit.event.player.PlayerArmorStandManipulateEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerTeleportEvent;
 import org.bukkit.inventory.ItemStack;
@@ -163,39 +160,6 @@ public class BossManager implements Listener {
         }
     }
 
-    @EventHandler(priority = EventPriority.HIGHEST)
-    public void onEquip(PlayerArmorStandManipulateEvent event) {
-//        Bukkit.broadcastMessage("1");
-//        if(event.getRightClicked() == null) return;
-//        Bukkit.broadcastMessage(event.getRightClicked() + "");
-//        Bukkit.broadcastMessage(clickables + "");
-//        if(!clickables.containsValue(event.getRightClicked())) return;
-//        Bukkit.broadcastMessage("3");
-//
-//        SubLevel level = null;
-//        for (Map.Entry<SubLevel, ArmorStand> entry : clickables.entrySet()) {
-//            if(entry.getValue() == event.getRightClicked()) level = entry.getKey();
-//        }
-//        Bukkit.broadcastMessage("4");
-//        Bukkit.broadcastMessage(level + "");
-//
-//        assert level != null;
-//        if(useItem(event.getPlayer(), level.bossItem)) {
-//            Map<Player, Integer> players = bossItems.get(level);
-//            if(players.containsKey(event.getPlayer())) players.put(event.getPlayer(), players.get(event.getPlayer()) + 1);
-//            else players.put(event.getPlayer(), 1);
-//
-//            if(players.get(event.getPlayer()) == 10) {
-//                players.remove(event.getPlayer());
-//                try {
-//                    new ZombieBoss((Player) event.getPlayer());
-//                } catch (Exception e) {
-//                    e.printStackTrace();
-//                }
-//            }
-//        }
-    }
-
 
     static {
         new BukkitRunnable() {
@@ -237,9 +201,9 @@ public class BossManager implements Listener {
                 entry.getValue().onDeath();
                 giveSouls(entry.getValue().target, entry.getValue().subLevel.level * 5);
 
-                BossDrop bossDrop = new BossDrop(entry.getValue().target.getPlayer(), LootTable.valueOf(entry.getValue().subLevel.toString()));
+//                BossDrop bossDrop = new BossDrop(entry.getValue().target.getPlayer(), LootTable.valueOf(entry.getValue().subLevel.toString()));
 //
-                bossDrop.run();
+//                bossDrop.run();
 
                 PitPlayer.getPitPlayer(entry.getValue().target).stats.bossesKilled++;
                 toRemove.add(entry.getKey());

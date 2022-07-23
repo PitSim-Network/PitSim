@@ -36,7 +36,7 @@ public class ManaRegeneration extends PitEnchant {
 					if(ComboVenom.isVenomed(player)) continue;
 
 					if(counter % 2 == 0) {
-						pitPlayer.heal(1);
+						pitPlayer.heal(2);
 					}
 				}
 				counter++;
