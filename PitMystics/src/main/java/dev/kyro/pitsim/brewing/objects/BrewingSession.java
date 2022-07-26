@@ -82,6 +82,7 @@ public class BrewingSession {
         nbtItem.setInteger(NBTTag.POTION_IDENTIFIER.getRef(), identifier.tier);
         nbtItem.setInteger(NBTTag.POTION_POTENCY.getRef(), potency.tier);
         nbtItem.setInteger(NBTTag.POTION_DURATION.getRef(), duration.tier);
+        nbtItem.setBoolean(NBTTag.DROP_CONFIRM.getRef(), true);
         AUtil.giveItemSafely(player, nbtItem.getItem());
         BrewingManager.brewingSessions.remove(this);
         PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);

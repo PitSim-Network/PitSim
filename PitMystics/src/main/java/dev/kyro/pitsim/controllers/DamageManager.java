@@ -292,7 +292,9 @@ public class DamageManager implements Listener {
 			EntityPlayer nmsPlayer = ((CraftPlayer) dead).getHandle();
 			nmsPlayer.setAbsorptionHearts(0);
 
-			if(!LifeInsurance.isApplicable(deadPlayer)) loseLives(dead, killer);
+			if(EnchantManager.getEnchantLevel(deadPlayer, EnchantManager.getEnchant("sco")) == 0) {
+				if(!LifeInsurance.isApplicable(deadPlayer)) loseLives(dead, killer);
+			}
 
 			if(NonManager.getNon(dead) == null) pitDead.endKillstreak();
 			Telebow.teleShots.removeIf(teleShot -> teleShot.getShooter().equals(dead));

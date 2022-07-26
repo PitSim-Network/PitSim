@@ -51,6 +51,10 @@ public class PotionEffect implements Listener {
         return ticksLeft;
     }
 
+    public int getOriginalTime() {
+        return durationOverride == 0 ? potionType.getDuration(duration): durationOverride;
+    }
+
     public void onExpire(boolean hideMessage) {
         if(!hideMessage) AOutput.send(player, "&5&lPOTION! " + potionType.color + potionType.name + " &7has expired");
         PotionManager.potionEffectList.remove(this);

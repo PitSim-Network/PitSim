@@ -46,7 +46,7 @@ public class TaintedPanel extends AGUIPanel {
 		int slot = event.getSlot();
 		if(event.getClickedInventory().getHolder() == this) {
 			if(slot == 15) {
-				if(hasJewels(player)) openPanel(taintedGUI.shredJewelPanel);
+				if(hasShredables(player)) openPanel(taintedGUI.shredJewelPanel);
 				else Sounds.NO.play(player);
 			}
 			if(slot == 11) {
@@ -78,13 +78,16 @@ public class TaintedPanel extends AGUIPanel {
 		ItemMeta shredMeta = shred.getItemMeta();
 		shredMeta.addEnchant(Enchantment.DAMAGE_ALL, 1, false);
 		shredMeta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES, ItemFlag.HIDE_ENCHANTS);
-		shredMeta.setDisplayName(ChatColor.YELLOW + "" + ChatColor.BOLD + "SHRED JEWEL ITEMS");
+		shredMeta.setDisplayName(ChatColor.YELLOW + "" + ChatColor.BOLD + "SHRED ITEMS");
 		List<String> shredLore = new ArrayList<>();
 		shredLore.add(ChatColor.GRAY + "Turn " + ChatColor.DARK_AQUA + "JEWEL! " + ChatColor.GRAY + "items into");
 		shredLore.add(ChatColor.WHITE + "1" + ChatColor.GRAY + "-" + ChatColor.WHITE + "10 Tainted Souls" + ChatColor.GRAY + ".");
 		shredLore.add("");
-		if(hasJewels(player)) shredLore.add(ChatColor.GREEN + "Click to shred Jewels!");
-		else shredLore.add(ChatColor.RED + "No Jewels available!");
+		shredLore.add(ChatColor.GRAY + "Turn " + ChatColor.DARK_PURPLE + "TAINTED " + ChatColor.GRAY + "items into");
+		shredLore.add(ChatColor.WHITE + "20" + ChatColor.GRAY + "-" + ChatColor.WHITE + "30 Tainted Souls" + ChatColor.GRAY + ".");
+		shredLore.add("");
+		if(hasShredables(player)) shredLore.add(ChatColor.GREEN + "Click to shred Items!");
+		else shredLore.add(ChatColor.RED + "No Items available!");
 		shredMeta.setLore(shredLore);
 		shred.setItemMeta(shredMeta);
 		getInventory().setItem(15, shred);
@@ -108,12 +111,12 @@ public class TaintedPanel extends AGUIPanel {
 		return PitPlayer.getPitPlayer(player).taintedSouls;
 	}
 
-	public static boolean hasJewels(Player player) {
+	public static boolean hasShredables(Player player) {
 		for (ItemStack itemStack : player.getInventory()) {
 			if(Misc.isAirOrNull(itemStack)) continue;
 
 			NBTItem nbtItem = new NBTItem(itemStack);
-			if(nbtItem.hasKey(NBTTag.ITEM_JEWEL_ENCHANT.getRef())) return true;
+			if(nbtItem.hasKey(NBTTag.ITEM_JEWEL_ENCHANT.getRef()) || nbtItem.hasKey(NBTTag.TAINTED_TIER.getRef())) return true;
 		}
 		return false;
 	}

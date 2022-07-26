@@ -30,6 +30,7 @@ public class SavingGraceSpell extends PitEnchant {
     public void onUse(PitPlayerAttemptAbilityEvent event) {
         int enchantLvl = event.getEnchantLevel(this);
         if(enchantLvl == 0) return;
+        if(!event.getPlayer().isSneaking()) return;
 
         Cooldown cooldown = getCooldown(event.getPlayer(), 10);
         if(cooldown.isOnCooldown()) return;
@@ -105,7 +106,7 @@ public class SavingGraceSpell extends PitEnchant {
 
     @Override
     public List<String> getDescription(int enchantLvl) {
-        return new ALoreBuilder("&7Heal your max health in &6\u2764", "&7but lose &c2\u2764 &7until you die", "&d&o-" + getManaCost(enchantLvl) + " Mana").getLore();
+        return new ALoreBuilder("&7Heal your max health in &6\u2764", "&7but lose &c2\u2764 &7until you die", "&7(Shift Right-Click)", "&d&o-" + getManaCost(enchantLvl) + " Mana").getLore();
     }
 
     public static int getManaCost(int enchantLvl) {

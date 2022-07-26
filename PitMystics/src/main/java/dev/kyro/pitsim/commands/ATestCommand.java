@@ -12,17 +12,6 @@ import org.bukkit.scheduler.BukkitWorker;
 
 public class ATestCommand implements CommandExecutor {
 
-	static {
-		new BukkitRunnable() {
-			@Override
-			public void run() {
-				for(Player onlinePlayer : Bukkit.getOnlinePlayers()) {
-					onlinePlayer.sendMessage(Bukkit.getScheduler().getActiveWorkers().size() + " : " + Bukkit.getScheduler().getPendingTasks().size());
-				}
-			}
-		}.runTaskTimer(PitSim.INSTANCE, 20, 20);
-	}
-
 	@Override
 	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
 		if(!(sender instanceof Player)) return false;

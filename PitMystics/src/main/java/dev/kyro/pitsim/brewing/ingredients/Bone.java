@@ -18,7 +18,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class Bone extends BrewingIngredient {
+public
+class Bone extends BrewingIngredient {
     public static Bone INSTANCE;
 
     public Bone() {

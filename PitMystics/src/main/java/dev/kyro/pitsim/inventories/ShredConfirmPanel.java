@@ -1,13 +1,12 @@
 package dev.kyro.pitsim.inventories;
 
+import de.tr7zw.nbtapi.NBTItem;
 import dev.kyro.arcticapi.gui.AGUI;
 import dev.kyro.arcticapi.gui.AGUIPanel;
 import dev.kyro.arcticapi.misc.AOutput;
-import dev.kyro.arcticapi.misc.AUtil;
-import dev.kyro.pitsim.PitSim;
-import dev.kyro.pitsim.controllers.LevelManager;
 import dev.kyro.pitsim.controllers.TaintedManager;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
+import dev.kyro.pitsim.enums.NBTTag;
 import dev.kyro.pitsim.misc.Sounds;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -16,7 +15,6 @@ import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.inventory.InventoryOpenEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -47,8 +45,11 @@ public class ShredConfirmPanel extends AGUIPanel {
 		int slot = event.getSlot();
 		if(event.getClickedInventory().getHolder() == this) {
 			if(slot == 11) {
-				player.getInventory().remove(ShredJewelPanel.shredMap.get(player));
-				int souls = randNumber();
+				ItemStack itemStack = ShredJewelPanel.shredMap.get(player);
+				NBTItem nbtItem = new NBTItem(itemStack);
+				int souls = nbtItem.hasKey(NBTTag.TAINTED_TIER.getRef()) ? randTainted() : randJewel();
+
+				player.getInventory().remove(itemStack);
 				PitPlayer.getPitPlayer(player).taintedSouls += souls;
 				PitPlayer.getPitPlayer(player).stats.lifetimeSouls += souls;
 
@@ -58,7 +59,7 @@ public class ShredConfirmPanel extends AGUIPanel {
 				Sounds.JEWEL_SHRED1.play(player);
 				Sounds.JEWEL_SHRED2.play(player);
 
-				if(TaintedPanel.hasJewels(player)) {
+				if(TaintedPanel.hasShredables(player)) {
 					taintedGUI.shredJewelPanel = new ShredJewelPanel(taintedGUI);
 					openPanel(taintedGUI.shredJewelPanel);
 				} else openPanel(taintedGUI.taintedPanel);
@@ -108,9 +109,14 @@ public class ShredConfirmPanel extends AGUIPanel {
 
 	}
 
-	public static int randNumber() {
+	public static int randJewel() {
 		Random random = new Random();
 		return random.nextInt(10 - 1 + 1) + 1;
+	}
+
+	public static int randTainted() {
+		Random random = new Random();
+		return random.nextInt(30 - 20 + 1) + 20;
 	}
 
 	@Override

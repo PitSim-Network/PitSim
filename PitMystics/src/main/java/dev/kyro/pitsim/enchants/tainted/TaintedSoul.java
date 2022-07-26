@@ -14,6 +14,7 @@ public class TaintedSoul extends PitEnchant {
 		super("Tainted Soul", true, ApplyType.TAINTED,
 				"taintedsoul", "soul");
 		tainted = true;
+		meleOnly = true;
 	}
 
 	@EventHandler

@@ -72,7 +72,7 @@ public class PotionManager implements Listener {
                         else builder.append(effect.potionType.color + effect.potionType.name).append(" ").append(AUtil.toRoman(effect.potency.tier));
                         if(effect != effects.get(effects.size() - 1)) builder.append(ChatColor.GRAY + ", ");
                     }
-                    float progress = (float) effects.get(index).getTimeLeft() / (float) effects.get(index).potionType.getDuration(effects.get(index).duration);
+                    float progress = (float) effects.get(index).getTimeLeft() / (float) effects.get(index).getOriginalTime();
 
                     int maxI = effects.size() - 1;
                     if(i == 60) {
@@ -156,8 +156,7 @@ public class PotionManager implements Listener {
             if(identifier instanceof SpiderEye) {
                 identifier.administerEffect(player, potency, 0);
             } else {
-                potionEffectList.add(new PotionEffect(player, identifier, potency, durationTime
-                        / Math.max(1, durationTime / event.getAffectedEntities().size())));
+                potionEffectList.add(new PotionEffect(player, identifier, potency, Math.max(1, durationTime / event.getAffectedEntities().size())));
             }
         }
     }

@@ -21,6 +21,7 @@ public class EmotionalDamage extends PitEnchant {
 				"aoe");
 		tainted = true;
 		INSTANCE = this;
+		meleOnly = true;
 	}
 
 	static {
@@ -37,7 +38,13 @@ public class EmotionalDamage extends PitEnchant {
 						if(!shouldAdd(level)) continue;
 						if(nearbyEntity instanceof ArmorStand || nearbyEntity instanceof Villager) continue;
 						LivingEntity livingEntity = (LivingEntity) nearbyEntity;
-						livingEntity.damage(5, player);
+						double newHealth = livingEntity.getHealth() - 5;
+						if(newHealth <= 0) {
+							livingEntity.damage(1000, player);
+						} else {
+							livingEntity.damage(0);
+							livingEntity.setHealth(newHealth);
+						}
 					}
 				}
 			}

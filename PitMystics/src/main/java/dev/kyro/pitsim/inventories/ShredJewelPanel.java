@@ -39,7 +39,7 @@ public class ShredJewelPanel extends AGUIPanel {
 
 	@Override
 	public String getName() {
-		return "Choose a Jewel to Shred";
+		return "Choose an Item to Shred";
 	}
 
 	@Override
@@ -107,17 +107,29 @@ public class ShredJewelPanel extends AGUIPanel {
 				slot++;
 			}
 
-			ItemStack back = new ItemStack(Material.ARROW);
-			ItemMeta meta = back.getItemMeta();
-			meta.setDisplayName(ChatColor.GREEN + "Go Back");
-			List<String> lore = new ArrayList<>();
-			lore.add(ChatColor.GRAY + "To Tainted Menu");
-			meta.setLore(lore);
-			back.setItemMeta(meta);
-
-			getInventory().setItem(31, back);
-
+			if(nbtItem.hasKey(NBTTag.TAINTED_TIER.getRef())) {
+				ItemMeta meta = nbtItem.getItem().getItemMeta();
+				meta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
+				List<String> lore = meta.getLore();
+				lore.add("");
+				lore.add(ChatColor.RED + "Click to Shred for " + ChatColor.WHITE + "20-30 Souls" + ChatColor.RED + ".");
+				meta.setLore(lore);
+				nbtItem.getItem().setItemMeta(meta);
+				getInventory().setItem(slot, nbtItem.getItem());
+				slots.put(slot, i);
+				slot++;
+			}
 		}
+
+		ItemStack back = new ItemStack(Material.ARROW);
+		ItemMeta meta = back.getItemMeta();
+		meta.setDisplayName(ChatColor.GREEN + "Go Back");
+		List<String> lore = new ArrayList<>();
+		lore.add(ChatColor.GRAY + "To Tainted Menu");
+		meta.setLore(lore);
+		back.setItemMeta(meta);
+
+		getInventory().setItem(31, back);
 	}
 
 	@Override

@@ -24,6 +24,7 @@ public class Inferno extends PitEnchant {
     public Inferno() {
         super("Inferno", true, ApplyType.CHESTPLATES, "inferno", "fire", "inf");
         tainted = true;
+        meleOnly = true;
     }
 
     static {
@@ -40,8 +41,14 @@ public class Inferno extends PitEnchant {
                         stackMap.put(defender.getUniqueId(), stackMap.get(defender.getUniqueId()) + 1);
                     } else stackMap.put(defender.getUniqueId(), 1);
 
-                    defender.damage(stackMap.get(defender.getUniqueId()));
 
+                    double newHealth = defender.getHealth() - (stackMap.get(defender.getUniqueId()));
+                    if(newHealth <= 0) {
+                        defender.damage(1000, attacker);
+                    } else {
+                        defender.setHealth(newHealth);
+                        defender.damage(0);
+                    }
                 }
             }
         }.runTaskTimer(PitSim.INSTANCE, 20, 20);
