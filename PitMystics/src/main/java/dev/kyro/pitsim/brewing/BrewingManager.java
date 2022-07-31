@@ -3,7 +3,7 @@ package dev.kyro.pitsim.brewing;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.brewing.objects.BrewingAnimation;
 import dev.kyro.pitsim.brewing.objects.BrewingSession;
-import dev.kyro.pitsim.controllers.UpgradeManager;
+import dev.kyro.pitsim.controllers  .UpgradeManager;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.events.AttackEvent;
 import dev.kyro.pitsim.misc.Misc;

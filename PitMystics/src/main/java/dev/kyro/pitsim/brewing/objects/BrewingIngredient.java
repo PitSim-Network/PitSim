@@ -6,8 +6,6 @@ import dev.kyro.pitsim.enums.NBTTag;
 import dev.kyro.pitsim.misc.Misc;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
-import org.bukkit.entity.Item;
-import org.bukkit.entity.Mule;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 import org.bukkit.inventory.ItemStack;
@@ -62,11 +60,18 @@ public abstract class BrewingIngredient implements Listener {
         return false;
     }
 
-    public static BrewingIngredient getIngrediantFromItemStack(ItemStack itemStack) {
+    public static BrewingIngredient getIngredientFromItemStack(ItemStack itemStack) {
         if(Misc.isAirOrNull(itemStack)) return null;
         NBTItem nbtItem = new NBTItem(itemStack);
         for (BrewingIngredient ingredient : ingredients) {
             if(nbtItem.hasKey(ingredient.nbtTag.getRef())) return ingredient;
+        }
+        return null;
+    }
+
+    public static BrewingIngredient getIngredientFromName(String name) {
+        for (BrewingIngredient ingredient : ingredients) {
+            if(ingredient.name.equalsIgnoreCase(name)) return ingredient;
         }
         return null;
     }

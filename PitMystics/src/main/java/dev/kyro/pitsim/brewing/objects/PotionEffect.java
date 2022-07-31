@@ -14,6 +14,7 @@ public class PotionEffect implements Listener {
     public BrewingIngredient potency;
     public BrewingIngredient duration;
     public int durationOverride;
+    public long creationTime;
 
     public int ticksLeft;
 
@@ -22,6 +23,7 @@ public class PotionEffect implements Listener {
         this.potionType = potionType;
         this.potency = potency;
         this.duration = duration;
+        this.creationTime = System.currentTimeMillis();
 
         ticksLeft = potionType.getDuration(duration);
         AOutput.send(player, "&5&lPOTION! &7Effected with " + potionType.color + potionType.name + " " +

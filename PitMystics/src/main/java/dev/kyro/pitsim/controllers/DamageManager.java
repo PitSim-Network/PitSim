@@ -462,7 +462,7 @@ public class DamageManager implements Listener {
 			for(int i = 0; i < deadPlayer.getInventory().getSize(); i++) {
 				if(!corrupted_feather && BrewingIngredient.isIngredient(deadPlayer.getInventory().getItem(i))) {
 					ItemStack item = deadPlayer.getInventory().getItem(i);
-					BrewingIngredient ingredient = BrewingIngredient.getIngrediantFromItemStack(item);
+					BrewingIngredient ingredient = BrewingIngredient.getIngredientFromItemStack(item);
 					AOutput.send(deadPlayer, "&c- &8" + item.getAmount() + "x " + ingredient.color + item.getItemMeta().getDisplayName());
 					deadPlayer.getInventory().setItem(i, new ItemStack(Material.AIR));
 				}
