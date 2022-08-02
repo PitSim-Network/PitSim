@@ -107,12 +107,12 @@ public class TaskListener implements Listener {
 
 		for(Tutorial tutorial : TutorialManager.tutorials.values()) {
 			if(event.getNPC() == tutorial.upgradesNPC) {
-				if(player != tutorial.player) return;
+				if(player != tutorial.player) continue;
 				dev.kyro.pitsim.tutorial.inventories.PerkGUI perkGUI = new PerkGUI(player);
 				perkGUI.open();
 			}
 			if(event.getNPC() == tutorial.prestigeNPC) {
-				if(player != tutorial.player) return;
+				if(player != tutorial.player) continue;
 				PrestigeGUI prestigeGUI = new PrestigeGUI(player);
 				prestigeGUI.open();
 			}
