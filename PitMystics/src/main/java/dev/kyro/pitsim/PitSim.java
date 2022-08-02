@@ -60,6 +60,7 @@ import org.bukkit.Material;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
+import org.bukkit.event.block.BlockIgniteEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.RegisteredServiceProvider;
@@ -129,6 +130,9 @@ public class PitSim extends JavaPlugin {
 
 		Plugin essentials = Bukkit.getPluginManager().getPlugin("Essentials");
 		EntityDamageEvent.getHandlerList().unregister(essentials);
+
+		Plugin worldGuard = Bukkit.getPluginManager().getPlugin("WorldGuard");
+		BlockIgniteEvent.getHandlerList().unregister(worldGuard);
 
 		if(Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null) {
 		} else {
