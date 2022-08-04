@@ -16,6 +16,10 @@ public class TempBlockHelper {
 
     public static List<Material> preState = new ArrayList<>();
 
+    public static void init() {
+        System.out.println();
+    }
+
     public static void addBlockSession(Block block, Material originalMaterial){
 
         blocks.add(block);
