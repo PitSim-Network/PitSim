@@ -74,7 +74,7 @@ public class RetroGravityMicrocosm extends PitEnchant {
 			int charge = getProcs(attackEvent.defender, attackEvent.attacker);
 			attackEvent.increase += getDamagePerStack(attackerEnchantLvl) * Math.min(charge, getMaxStacks(attackerEnchantLvl));
 		}
-		if(attackEvent.defenderIsPlayer && defenderEnchantLvl != 0 && attackEvent.defenderPlayer.getWorld() == MapManager.getDarkzone()) {
+		if(attackEvent.defenderIsPlayer && defenderEnchantLvl != 0) {
 			if(attackEvent.attacker.getLocation().add(0, -0.1, 0).getBlock().getType() != Material.AIR) return;
 
 			HitCounter.incrementCounter(attackEvent.defenderPlayer, this);
