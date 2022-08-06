@@ -10,6 +10,8 @@ public class BiomesMap extends PitMap {
 		super(worldNames);
 	}
 
+	public static Location mid = new Location(null, 0.5, 70, 0.5);
+
 	@Override
 	public Location getSpawn(World world) {
 		if(!lobbies.contains(world) || (!MapManager.multiLobbies && world != MapManager.currentMap.firstLobby))
@@ -42,7 +44,9 @@ public class BiomesMap extends PitMap {
 
 	@Override
 	public Location getMid(World world) {
-		return new Location(world, 0.5, 70, 0.5);
+		Location location = mid.clone();
+		location.setWorld(world);
+		return location;
 	}
 
 	@Override

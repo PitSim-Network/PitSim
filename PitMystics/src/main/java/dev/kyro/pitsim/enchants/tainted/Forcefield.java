@@ -31,9 +31,10 @@ public class Forcefield extends PitEnchant {
             @Override
             public void run() {
                 for (Player player : Bukkit.getOnlinePlayers()) {
+                    if(!MapManager.inDarkzone(player)) continue;
+
                     int enchantLvl = EnchantManager.getEnchantLevel(player, INSTANCE);
                     if(enchantLvl == 0) continue;
-                    if(!MapManager.inDarkzone(player)) continue;
 
                     int radius = 2;
                     double thetaRand = 360 * Math.random();
@@ -58,7 +59,7 @@ public class Forcefield extends PitEnchant {
 
                 }
             }
-        }.runTaskTimer(PitSim.INSTANCE, 1, 1);
+        }.runTaskTimer(PitSim.INSTANCE, 1, 5);
     }
 
     @EventHandler

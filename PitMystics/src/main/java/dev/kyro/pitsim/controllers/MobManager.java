@@ -108,7 +108,7 @@ public class MobManager implements Listener {
 					}
 				}
 			}
-		}.runTaskTimer(PitSim.INSTANCE, 10, 10);
+		}.runTaskTimer(PitSim.INSTANCE, 40, 40);
 
 		new BukkitRunnable() {
 			@Override
@@ -387,15 +387,29 @@ public class MobManager implements Listener {
 			if(entity instanceof Player) continue;
 			if(CitizensAPI.getNPCRegistry().isNPC(entity)) continue;
 
+			if(entity.getUniqueId().equals(TaintedWell.textLine1.getUniqueId())) continue;
+			if(entity.getUniqueId().equals(TaintedWell.textLine2.getUniqueId())) continue;
+			if(entity.getUniqueId().equals(TaintedWell.textLine3.getUniqueId())) continue;
+			if(entity.getUniqueId().equals(TaintedWell.textLine4.getUniqueId())) continue;
+
+			if(entity instanceof Item) continue;
+			if(entity instanceof Arrow) continue;
+			if(entity instanceof Wither) continue;
+			if(entity instanceof ThrownPotion) continue;
+			if(entity instanceof Villager) continue;
+			if(entity instanceof Fireball) continue;
+			if(entity instanceof Slime && !(entity instanceof MagmaCube)) continue;
+
+			if(entity.getUniqueId().equals(AuctionDisplays.timerStandUUID)) continue;
+
+			if(entity instanceof ArmorStand && entity.getLocation().distance(AuctionManager.spawnLoc) < 50 && entity.getCustomName() == null) continue;
+
+			if(entity.getUniqueId().equals(TaintedWell.wellStand.getUniqueId())) continue;
 
 			for (PitMob mob : mobs) {
 				if(mob.entity.getUniqueId().equals(entity.getUniqueId())) continue main;
 				if(nameTags.get(mob.entity.getUniqueId()).getUniqueId().equals(entity.getUniqueId())) continue main;
 			}
-
-			if(entity instanceof ArmorStand && entity.getLocation().distance(AuctionManager.spawnLoc) < 50 && entity.getCustomName() == null) continue;
-
-			if(entity.getUniqueId().equals(TaintedWell.wellStand.getUniqueId())) continue;
 //			if(entity.getUniqueId().equals(TaintedWell.removeStand.getUniqueId())) continue;
 			for (ArmorStand value : TaintedWell.enchantStands.values()) {
 				if(value.getUniqueId().equals(entity.getUniqueId())) continue main;
@@ -421,19 +435,6 @@ public class MobManager implements Listener {
 			for (UUID pedestalArmorStand : AuctionDisplays.rightClickStands) {
 				if(pedestalArmorStand.equals(entity.getUniqueId())) continue main;
 			}
-			if(entity.getUniqueId().equals(AuctionDisplays.timerStandUUID)) continue;
-
-			if(entity.getUniqueId().equals(TaintedWell.textLine1.getUniqueId())) continue;
-			if(entity.getUniqueId().equals(TaintedWell.textLine2.getUniqueId())) continue;
-			if(entity.getUniqueId().equals(TaintedWell.textLine3.getUniqueId())) continue;
-			if(entity.getUniqueId().equals(TaintedWell.textLine4.getUniqueId())) continue;
-			if(entity instanceof Item) continue;
-			if(entity instanceof Arrow) continue;
-			if(entity instanceof Wither) continue;
-			if(entity instanceof ThrownPotion) continue;
-			if(entity instanceof Villager) continue;
-			if(entity instanceof Fireball) continue;
-			if(entity instanceof Slime && !(entity instanceof MagmaCube)) continue;
 
 			entity.remove();
 		}

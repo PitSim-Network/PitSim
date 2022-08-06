@@ -5,6 +5,7 @@ import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.server.PluginDisableEvent;
@@ -42,6 +43,13 @@ public class PlayerDataManager implements Listener {
 				pitPlayer.fullSave();
 			}
 		}.runTaskLater(PitSim.INSTANCE, 10L);
+	}
+
+	@EventHandler(priority = EventPriority.MONITOR)
+	public void onFinalQuit(PlayerQuitEvent event) {
+		Player player = event.getPlayer();
+		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
+		PitPlayer.pitPlayers.remove(pitPlayer);
 	}
 
 	@EventHandler
