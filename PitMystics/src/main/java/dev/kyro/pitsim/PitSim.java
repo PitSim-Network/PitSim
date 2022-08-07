@@ -10,6 +10,8 @@ import com.xxmicloxx.NoteBlockAPI.songplayer.EntitySongPlayer;
 import dev.kyro.arcticapi.ArcticAPI;
 import dev.kyro.arcticapi.commands.AMultiCommand;
 import dev.kyro.arcticapi.data.AData;
+import dev.kyro.arcticapi.data.APlayer;
+import dev.kyro.arcticapi.data.APlayerData;
 import dev.kyro.arcticapi.hooks.AHook;
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.boosters.ChaosBooster;
@@ -20,6 +22,7 @@ import dev.kyro.pitsim.brewing.BrewingManager;
 import dev.kyro.pitsim.brewing.PotionManager;
 import dev.kyro.pitsim.brewing.ingredients.*;
 import dev.kyro.pitsim.brewing.objects.BrewingIngredient;
+import dev.kyro.pitsim.brewing.objects.PotionEffect;
 import dev.kyro.pitsim.commands.*;
 import dev.kyro.pitsim.commands.admin.*;
 import dev.kyro.pitsim.controllers.*;
@@ -57,6 +60,7 @@ import net.milkbowl.vault.economy.Economy;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
@@ -213,6 +217,26 @@ public class PitSim extends JavaPlugin {
 					entity.remove();
 				}
 			}
+		}
+
+		for(Player player : Bukkit.getOnlinePlayers()) {
+			List<PotionEffect> toExpire = new ArrayList<>();
+			for (PotionEffect potionEffect : PotionManager.potionEffectList) {
+				if(potionEffect.player == player) toExpire.add(potionEffect);
+			}
+
+			APlayer aPlayer = APlayerData.getPlayerData(player);
+			FileConfiguration data = aPlayer.playerData;
+
+			for (PotionEffect potionEffect : toExpire) {
+
+				potionEffect.onExpire(true);
+
+				String time = String.valueOf(System.currentTimeMillis());
+				data.set("potions." + potionEffect.potionType.name, potionEffect.potency.tier + ":" + potionEffect.getTimeLeft() + ":" + time);
+
+			}
+			aPlayer.save();
 		}
 
 

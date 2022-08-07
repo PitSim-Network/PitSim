@@ -1,10 +1,10 @@
 package dev.kyro.pitsim.controllers;
 
 import be.maximvdw.featherboard.api.FeatherBoardAPI;
+import de.myzelyam.api.vanish.VanishAPI;
 import de.tr7zw.nbtapi.NBTItem;
 import dev.kyro.arcticapi.data.APlayer;
 import dev.kyro.arcticapi.data.APlayerData;
-import dev.kyro.arcticapi.data.ASerializer;
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.arcticapi.misc.AUtil;
 import dev.kyro.arcticguilds.controllers.BuffManager;
@@ -45,7 +45,6 @@ import org.bukkit.event.player.*;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.spigotmc.event.player.PlayerSpawnLocationEvent;
 
@@ -131,7 +130,7 @@ public class PlayerManager implements Listener {
 			@Override
 			public void run() {
 				for(Player player : Bukkit.getOnlinePlayers()) {
-					if(!player.hasPermission("group.eternal") || !MapManager.currentMap.lobbies.contains(player.getWorld()))
+					if(!player.hasPermission("group.eternal") || !MapManager.currentMap.lobbies.contains(player.getWorld()) || VanishAPI.isInvisible(player))
 						continue;
 					if(SpawnManager.isInSpawn(player.getLocation())) continue;
 					List<Player> nearbyNons = new ArrayList<>();
