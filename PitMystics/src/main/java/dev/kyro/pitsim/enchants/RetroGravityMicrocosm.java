@@ -4,7 +4,6 @@ import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.controllers.HitCounter;
-import dev.kyro.pitsim.controllers.MapManager;
 import dev.kyro.pitsim.controllers.objects.PitEnchant;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.enums.ApplyType;
@@ -86,7 +85,7 @@ public class RetroGravityMicrocosm extends PitEnchant {
 
 			int charge = getProcs(attackEvent.attacker, attackEvent.defender);
 			AOutput.send(attackEvent.defender, "&d&lRGM!&7 Procced against " +
-					Misc.getName(attackEvent.attacker) + " &8(" + Math.min(charge, getMaxStacks(defenderEnchantLvl)) + "x)");
+					attackEvent.attacker.getName() + " &8(" + Math.min(charge, getMaxStacks(defenderEnchantLvl)) + "x)");
 			Sounds.RGM.play(attackEvent.defender);
 			Sounds.RGM.play(attackEvent.attacker);
 

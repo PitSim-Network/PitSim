@@ -28,6 +28,7 @@ public class Healer extends PitEnchant {
 
 		int enchantLvl = attackEvent.getAttackerEnchantLevel(this);
 		if(enchantLvl == 0) return;
+		if(attackEvent.fakeHit) return;
 
 		Cooldown cooldown = getCooldown(attackEvent.attackerPlayer, 20);
 		if(cooldown.isOnCooldown()) return;
