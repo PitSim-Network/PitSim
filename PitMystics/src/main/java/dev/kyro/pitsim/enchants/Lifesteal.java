@@ -28,6 +28,7 @@ public class Lifesteal extends PitEnchant {
 
 		int enchantLvl = attackEvent.getAttackerEnchantLevel(this);
 		if(enchantLvl == 0) return;
+		if(attackEvent.fakeHit) return;
 
 		double damage = attackEvent.getFinalDamageIncrease();
 		HealEvent healEvent = pitAttacker.heal(damage * (getHealing(enchantLvl) / 100D) * (attackEvent.fakeHit ? 0.5 : 1));
