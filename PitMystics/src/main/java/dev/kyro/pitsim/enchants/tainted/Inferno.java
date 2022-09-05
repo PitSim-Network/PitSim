@@ -56,23 +56,23 @@ public class Inferno extends PitEnchant {
     }
 
     @EventHandler
-    public void onHit(AttackEvent.Apply event) {
-        Player player = event.attackerPlayer;
-        if(!event.attackerIsPlayer) return;
-        if(event.attacker == event.defender) return;
+    public void onHit(AttackEvent.Apply attackEvent) {
+        Player player = attackEvent.attackerPlayer;
+        if(!attackEvent.attackerIsPlayer || attackEvent.defenderIsPlayer) return;
+        if(attackEvent.attacker == attackEvent.defender) return;
 
-        int enchantLvl = event.getAttackerEnchantLevel(this);
+        int enchantLvl = attackEvent.getAttackerEnchantLevel(this);
         if(enchantLvl == 0) return;
 
-        if(fireMap.containsKey(event.defender.getUniqueId())) return;
-        fireMap.put(event.defender.getUniqueId(), player.getUniqueId());
-        event.defender.setFireTicks(10 * 20);
+        if(fireMap.containsKey(attackEvent.defender.getUniqueId())) return;
+        fireMap.put(attackEvent.defender.getUniqueId(), player.getUniqueId());
+        attackEvent.defender.setFireTicks(10 * 20);
 
         new BukkitRunnable() {
             @Override
             public void run() {
-                fireMap.remove(event.defender.getUniqueId());
-                stackMap.remove(event.defender.getUniqueId());
+                fireMap.remove(attackEvent.defender.getUniqueId());
+                stackMap.remove(attackEvent.defender.getUniqueId());
             }
         }.runTaskLater(PitSim.INSTANCE, 20 * 10);
 
