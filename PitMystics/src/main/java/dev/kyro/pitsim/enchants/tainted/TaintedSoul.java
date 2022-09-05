@@ -1,6 +1,7 @@
 package dev.kyro.pitsim.enchants.tainted;
 
 import dev.kyro.arcticapi.builders.ALoreBuilder;
+import dev.kyro.pitsim.controllers.MapManager;
 import dev.kyro.pitsim.controllers.objects.PitEnchant;
 import dev.kyro.pitsim.enums.ApplyType;
 import dev.kyro.pitsim.events.AttackEvent;
@@ -19,6 +20,7 @@ public class TaintedSoul extends PitEnchant {
 
 	@EventHandler
 	public void onAttack(AttackEvent.Apply attackEvent) {
+		if(!MapManager.inDarkzone(attackEvent.attacker)) return;
 		if(!canApply(attackEvent)) return;
 		if(!fakeHits && attackEvent.fakeHit) return;
 
