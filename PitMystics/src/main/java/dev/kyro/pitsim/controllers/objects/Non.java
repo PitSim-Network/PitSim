@@ -56,7 +56,7 @@ public class Non {
 
 		CitizensNavigator navigator = (CitizensNavigator) npc.getNavigator();
 		navigator.getDefaultParameters()
-				.attackDelayTicks(20)
+				.attackDelayTicks((int) (Math.random() * 4 + 4))
 				.attackRange(4)
 				.updatePathRate(40);
 		npc.setProtected(false);
@@ -91,7 +91,7 @@ public class Non {
 		}
 
 		if(npc.isSpawned()) {
-			if(count % 4 == 0) {
+			if(count % 12 == 0) {
 				pickTarget();
 				npc.getNavigator().setTarget(target, true);
 			}
@@ -130,14 +130,15 @@ public class Non {
 		Player closest = null;
 		double closestDistance = 100;
 		Location midLoc = MapManager.currentMap.getMid(world);
-		for(Entity nearbyEntity : non.getWorld().getNearbyEntities(midLoc, 5, 5, 5)) {
+		for(Entity nearbyEntity : non.getWorld().getNearbyEntities(midLoc, 3, 3, 3)) {
 
 			if(!(nearbyEntity instanceof Player) || nearbyEntity.getUniqueId().equals(non.getUniqueId())) continue;
+			if(nearbyEntity.getWorld() != non.getWorld()) continue;
+
 			double targetDistanceFromMid = Math.sqrt(Math.pow(nearbyEntity.getLocation().getX() - midLoc.getX(), 2) +
 					Math.pow(nearbyEntity.getLocation().getZ() - midLoc.getZ(), 2));
 			if(targetDistanceFromMid > 9) continue;
 
-			if(nearbyEntity.getWorld() != non.getWorld()) continue;
 			double distance = nearbyEntity.getLocation().distance(non.getLocation());
 			if(distance >= closestDistance) continue;
 
