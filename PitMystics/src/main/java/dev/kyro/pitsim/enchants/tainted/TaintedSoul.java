@@ -1,7 +1,10 @@
 package dev.kyro.pitsim.enchants.tainted;
 
 import dev.kyro.arcticapi.builders.ALoreBuilder;
+import dev.kyro.pitsim.controllers.BossManager;
+import dev.kyro.pitsim.controllers.Cooldown;
 import dev.kyro.pitsim.controllers.MapManager;
+import dev.kyro.pitsim.controllers.objects.PitBoss;
 import dev.kyro.pitsim.controllers.objects.PitEnchant;
 import dev.kyro.pitsim.enums.ApplyType;
 import dev.kyro.pitsim.events.AttackEvent;
@@ -27,7 +30,10 @@ public class TaintedSoul extends PitEnchant {
 		int enchantLvl = attackEvent.getAttackerEnchantLevel(this);
 		if(enchantLvl == 0) return;
 
-		if(attackEvent.defender.getMaxHealth() >= 80) return;
+		if(attackEvent.defenderIsPlayer && PitBoss.isPitBoss(attackEvent.defenderPlayer)) return;
+
+		Cooldown cooldown = getCooldown(attackEvent.attackerPlayer, getCooldown() * 20);
+		if(cooldown.isOnCooldown()) return; else cooldown.restart();
 
 		if(attackEvent.defender.getHealth() > 1) {
 			attackEvent.defender.setHealth(attackEvent.defender.getHealth() * 0.80);
@@ -40,7 +46,12 @@ public class TaintedSoul extends PitEnchant {
 	@Override
 	public List<String> getDescription(int enchantLvl) {
 
-		return new ALoreBuilder("&7Subtract &f1/5 &7of your enemy's", "&7current health", "&d&o-" + reduction(enchantLvl) + "% Mana Regen").getLore();
+		return new ALoreBuilder("&7Subtract &f1/5 &7of your enemy's", "&7current health (" + getCooldown() + "s cooldown)",
+				"&d&o-" + reduction(enchantLvl) + "% Mana Regen").getLore();
+	}
+
+	public static int getCooldown() {
+		return 3;
 	}
 
 	public static int reduction(int enchantLvl) {
