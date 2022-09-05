@@ -27,10 +27,10 @@ import java.util.*;
 public class CleaveSpell extends PitEnchant {
 
     public static Map<UUID, ArmorStand> stands = new HashMap<>();
+    public static List<UUID> remove = new ArrayList<>();
     public static int i;
 
     static {
-        List<UUID> remove = new ArrayList<>();
         new BukkitRunnable() {
             @Override
             public void run() {
@@ -126,6 +126,13 @@ public class CleaveSpell extends PitEnchant {
 
         stand.setVelocity(vector);
         Sounds.CLEAVE1.play(player);
+
+        new BukkitRunnable() {
+            @Override
+            public void run() {
+                remove.add(stand.getUniqueId());
+            }
+        }.runTaskLater(PitSim.INSTANCE, 40);
 
 
     }
