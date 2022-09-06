@@ -1,5 +1,6 @@
 package dev.kyro.pitsim.tutorial;
 
+import com.codingforcookies.armorequip.ArmorEquipEvent;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.controllers.objects.Killstreak;
 import dev.kyro.pitsim.controllers.objects.PitPerk;
@@ -120,8 +121,8 @@ public class TaskListener implements Listener {
 	}
 
 	@EventHandler
-	public void onEquip(EquipmentSetEvent event) {
-		Player player = (Player) event.getHumanEntity();
+	public void onEquip(ArmorEquipEvent event) {
+		Player player = (Player) event.getPlayer();
 		Tutorial tutorial = TutorialManager.getTutorial(player);
 		if(tutorial == null) return;
 		if(!(tutorial.sequence instanceof EquipArmorSequence)) return;

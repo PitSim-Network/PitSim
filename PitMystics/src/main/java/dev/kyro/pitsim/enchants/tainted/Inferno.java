@@ -2,6 +2,7 @@ package dev.kyro.pitsim.enchants.tainted;
 
 import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.pitsim.PitSim;
+import dev.kyro.pitsim.controllers.objects.PitBoss;
 import dev.kyro.pitsim.controllers.objects.PitEnchant;
 import dev.kyro.pitsim.enums.ApplyType;
 import dev.kyro.pitsim.events.AttackEvent;
@@ -58,7 +59,10 @@ public class Inferno extends PitEnchant {
     @EventHandler
     public void onHit(AttackEvent.Apply attackEvent) {
         Player player = attackEvent.attackerPlayer;
-        if(!attackEvent.attackerIsPlayer || attackEvent.defenderIsPlayer) return;
+        if(!attackEvent.attackerIsPlayer) return;
+
+        if(attackEvent.defenderIsPlayer && !PitBoss.isPitBoss(attackEvent.defenderPlayer)) return;
+
         if(attackEvent.attacker == attackEvent.defender) return;
 
         int enchantLvl = attackEvent.getAttackerEnchantLevel(this);

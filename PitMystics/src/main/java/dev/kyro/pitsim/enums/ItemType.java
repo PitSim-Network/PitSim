@@ -24,11 +24,10 @@ public enum ItemType {
     JEWEL_SWORD(8, JewelCommand.getJewel(MysticType.SWORD, null, 0), ChatColor.YELLOW + "Hidden Jewel Sword", 25, 25),
     JEWEL_BOW(9, JewelCommand.getJewel(MysticType.BOW, null, 0), ChatColor.AQUA + "Hidden Jewel Bow", 25, 25),
     JEWEL_PANTS(10, JewelCommand.getJewel(MysticType.PANTS, null, 0), ChatColor.DARK_AQUA + "Hidden Jewel Pants", 25, 25),
-    GEM_SHARD_10(11, ShardHunter.getShardItem(10), ChatColor.GREEN + "10x Ancient Gem Shard", 10, 50),
-    GEM_SHARD_25(12, ShardHunter.getShardItem(25), ChatColor.GREEN + "25x Ancient Gem Shard", 5, 100),
-    TOTALLY_LEGIT_GEM(13, ShardHunter.getGemItem(), ChatColor.GREEN + "Totally Legit Gem", 1, 250),
-    CORRUPTED_FEATHERS_3(14, getCorruptedFeather(3), ChatColor.DARK_PURPLE + "3x Corrupted Feather", 50, 10),
-    CORRUPTED_FEATHERS_5(15, getCorruptedFeather(5), ChatColor.DARK_PURPLE + "5x Corrupted Feather", 25, 25);
+    GEM_SHARD_10(11, ShardHunter.getShardItem(5), ChatColor.GREEN + "5x Ancient Gem Shard", 10, 50),
+    GEM_SHARD_25(12, ShardHunter.getShardItem(10), ChatColor.GREEN + "10x Ancient Gem Shard", 5, 100),
+    CORRUPTED_FEATHERS_3(13, getCorruptedFeather(3), ChatColor.DARK_PURPLE + "3x Corrupted Feather", 50, 10),
+    CORRUPTED_FEATHERS_5(14, getCorruptedFeather(5), ChatColor.DARK_PURPLE + "5x Corrupted Feather", 25, 25);
 
 
 

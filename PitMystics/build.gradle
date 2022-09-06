@@ -30,7 +30,6 @@ dependencies {
     implementation 'com.gmail.filoghost.holographicdisplays:holographicdisplays-api:2.4.9'
 //    compileOnly 'org.spigotmc:spigot:1.8.8-R0.1-SNAPSHOT'
     compileOnly files('libs/ispigot.jar')
-    compileOnly files('libs/BarAPI.jar')
     compileOnly 'net.citizensnpcs:citizens-main:2.0.27-SNAPSHOT'
     compileOnly "com.github.MilkBowl:VaultAPI:1.7"
     compileOnly "me.clip:placeholderapi:2.10.9"
@@ -48,6 +47,7 @@ dependencies {
     compileOnly files('libs/FeatherBoard.jar')
     compileOnly files('libs/CPCameraStudioReborn.jar')
     compileOnly files('libs/ArcticGuilds-1.0.0-all.jar')
+    compile files('libs/ArmorEquipEvent-1.7.2.jar')
     implementation 'com.mattmalec:Pterodactyl4J:2.BETA_81'
     implementation "net.kyori:adventure-platform-bukkit:4.1.0"
     compileOnly 'net.luckperms:api:5.4'

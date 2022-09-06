@@ -1,6 +1,8 @@
 package dev.kyro.pitsim.controllers;
 
 import be.maximvdw.featherboard.api.FeatherBoardAPI;
+import com.codingforcookies.armorequip.ArmorEquipEvent;
+import com.codingforcookies.armorequip.ArmorType;
 import de.myzelyam.api.vanish.VanishAPI;
 import de.tr7zw.nbtapi.NBTItem;
 import dev.kyro.arcticapi.data.APlayer;
@@ -368,6 +370,9 @@ public class PlayerManager implements Listener {
 			}
 
 			ItemStack held = player.getItemInHand();
+			ArmorEquipEvent equipEvent = new ArmorEquipEvent(player, ArmorEquipEvent.EquipMethod.HOTBAR_SWAP, ArmorType.LEGGINGS, player.getInventory().getLeggings(), held);
+			Bukkit.getPluginManager().callEvent(equipEvent);
+
 			player.setItemInHand(player.getInventory().getLeggings());
 			player.getInventory().setLeggings(held);
 
@@ -398,6 +403,9 @@ public class PlayerManager implements Listener {
 			}
 
 			ItemStack held = player.getItemInHand();
+			ArmorEquipEvent equipEvent = new ArmorEquipEvent(player, ArmorEquipEvent.EquipMethod.HOTBAR_SWAP, ArmorType.HELMET, player.getInventory().getHelmet(), held);
+			Bukkit.getPluginManager().callEvent(equipEvent);
+
 			player.setItemInHand(player.getInventory().getHelmet());
 			player.getInventory().setHelmet(held);
 
@@ -421,6 +429,9 @@ public class PlayerManager implements Listener {
 			}
 
 			ItemStack held = player.getItemInHand();
+			ArmorEquipEvent equipEvent = new ArmorEquipEvent(player, ArmorEquipEvent.EquipMethod.HOTBAR_SWAP, ArmorType.CHESTPLATE, player.getInventory().getChestplate(), held);
+			Bukkit.getPluginManager().callEvent(equipEvent);
+
 			player.setItemInHand(player.getInventory().getChestplate());
 			player.getInventory().setChestplate(held);
 
