@@ -46,7 +46,7 @@ public class Billionaire extends PitEnchant {
 			goldCost = goldCost - (int) ((UpgradeManager.getTier(attackEvent.attackerPlayer, "TAX_EVASION") * 0.05) * goldCost);
 		}
 
-		if(!BossManager.bosses.containsKey(CitizensAPI.getNPCRegistry().getNPC(attackEvent.attacker))) {
+		if(!BossManager.bosses.containsKey(CitizensAPI.getNPCRegistry().getNPC(attackEvent.attacker)) && HopperManager.isHopper(attackEvent.attacker)) {
 			double finalBalance = PitSim.VAULT.getBalance(attackEvent.attackerPlayer) - goldCost;
 			if(finalBalance < 0) return;
 			PitSim.VAULT.withdrawPlayer(attackEvent.attackerPlayer, goldCost);

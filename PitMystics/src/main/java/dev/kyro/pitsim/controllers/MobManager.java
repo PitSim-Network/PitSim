@@ -1,9 +1,13 @@
 package dev.kyro.pitsim.controllers;
 
+import dev.kyro.arcticapi.misc.AOutput;
+import dev.kyro.arcticapi.misc.AUtil;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.brewing.BrewingManager;
 import dev.kyro.pitsim.controllers.objects.GoldenHelmet;
 import dev.kyro.pitsim.controllers.objects.PitMob;
+import dev.kyro.pitsim.controllers.objects.PitPerk;
+import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.enchants.tainted.CleaveSpell;
 import dev.kyro.pitsim.enums.SubLevel;
 import dev.kyro.pitsim.events.AttackEvent;
@@ -11,6 +15,7 @@ import dev.kyro.pitsim.events.KillEvent;
 import dev.kyro.pitsim.mobs.PitMagmaCube;
 import dev.kyro.pitsim.mobs.PitSpiderBrute;
 import dev.kyro.pitsim.mobs.PitStrongPigman;
+import dev.kyro.pitsim.perks.Telekinesis;
 import net.citizensnpcs.api.CitizensAPI;
 import net.citizensnpcs.api.npc.NPC;
 import org.bukkit.*;
@@ -288,7 +293,11 @@ public class MobManager implements Listener {
 					result += result * (chance * 0.01);
 
 					if(result > entry.getValue()) continue;
-					event.dead.getWorld().dropItemNaturally(event.dead.getLocation(), entry.getKey());
+
+					PitPlayer pitPlayer = PitPlayer.getPitPlayer(event.killerPlayer);
+					if(pitPlayer.hasPerk(Telekinesis.INSTANCE)) {
+						AUtil.giveItemSafely(event.killerPlayer, entry.getKey());
+					} else event.dead.getWorld().dropItemNaturally(event.dead.getLocation(), entry.getKey());
 				}
 			}
 		}

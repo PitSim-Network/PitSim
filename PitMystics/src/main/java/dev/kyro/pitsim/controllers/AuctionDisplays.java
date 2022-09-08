@@ -179,6 +179,12 @@ public class AuctionDisplays implements Listener {
 
     @EventHandler
     public void onPickUp(PlayerPickupItemEvent event) {
+        if(pedestalLocations[0] == null) return;
+
+        if(pedestalLocations[0].distance(event.getPlayer().getLocation()) < 50) {
+            event.setCancelled(true);
+        }
+
         for (UUID pedestalItem : pedestalItems) {
             if(pedestalItem.equals(event.getItem().getUniqueId())) {
                 event.setCancelled(true);

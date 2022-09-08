@@ -8,6 +8,7 @@ import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.enums.NBTTag;
 import dev.kyro.pitsim.misc.Misc;
 import dev.kyro.pitsim.misc.Sounds;
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -66,7 +67,13 @@ public class ItemManager implements Listener {
 		if(Misc.isAirOrNull(itemStack)) return;
 		NBTItem nbtItem = new NBTItem(itemStack);
 
-		if(nbtItem.hasKey(NBTTag.UNDROPPABLE.getRef())) {
+		Location darkAuction = AuctionDisplays.pedestalLocations[0];
+		double distance = darkAuction.distance(event.getPlayer().getLocation());
+
+		boolean cancelDrop;
+		cancelDrop = event.getPlayer().getWorld() == MapManager.getDarkzone() && distance < 50;
+
+		if(nbtItem.hasKey(NBTTag.UNDROPPABLE.getRef()) || cancelDrop) {
 
 			event.setCancelled(true);
 			AOutput.error(player, "You are not able to drop that item");

@@ -319,6 +319,7 @@ public class PitSim extends JavaPlugin {
 		PerkManager.registerUpgrade(new FirstStrike());
 		PerkManager.registerUpgrade(new Streaker());
 		PerkManager.registerUpgrade(new CounterJanitor());
+		PerkManager.registerUpgrade(new Telekinesis());
 	}
 
 	private void registerKillstreaks() {
