@@ -4,6 +4,7 @@ import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.controllers.EnchantManager;
 import dev.kyro.pitsim.controllers.objects.PitEnchant;
+import dev.kyro.pitsim.enchants.tainted.Sonic;
 import dev.kyro.pitsim.enums.ApplyType;
 import dev.kyro.pitsim.misc.Misc;
 import org.bukkit.Bukkit;
@@ -33,6 +34,9 @@ public class GottaGoFast extends PitEnchant {
 					Map<PitEnchant, Integer> enchantMap = EnchantManager.getEnchantsOnPlayer(player);
 					int enchantLvl = enchantMap.getOrDefault(INSTANCE, 0);
 					int oldEnchantLvl = speedMap.getOrDefault(player, 0);
+
+					int sonicTier = EnchantManager.getEnchantLevel(player, Sonic.INSTANCE);
+					if(enchantLvl == oldEnchantLvl && sonicTier > 0) continue;
 
 					if(enchantLvl != oldEnchantLvl) {
 						speedMap.put(player, enchantLvl);

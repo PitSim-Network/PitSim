@@ -5,6 +5,7 @@ import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.controllers.EnchantManager;
 import dev.kyro.pitsim.controllers.MapManager;
 import dev.kyro.pitsim.controllers.objects.PitEnchant;
+import dev.kyro.pitsim.enchants.GottaGoFast;
 import dev.kyro.pitsim.enums.ApplyType;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -35,7 +36,11 @@ class Sonic extends PitEnchant {
                     Map<PitEnchant, Integer> enchantMap = EnchantManager.getEnchantsOnPlayer(player);
                     int enchantLvl = enchantMap.getOrDefault(INSTANCE, 0);
                     int oldEnchantLvl = speedMap.getOrDefault(player, 0);
+                    int gtgfTier = EnchantManager.getEnchantLevel(player, GottaGoFast.INSTANCE);
+
                     if(!MapManager.inDarkzone(player)) enchantLvl = 0;
+
+                    if(enchantLvl == oldEnchantLvl && gtgfTier > 0) continue;
 
                     if(enchantLvl != oldEnchantLvl) {
                         speedMap.put(player, enchantLvl);
