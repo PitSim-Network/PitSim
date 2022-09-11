@@ -193,6 +193,8 @@ public class PitSim extends JavaPlugin {
 		AHook.registerPlaceholder(new GolemCavePlaceholder());
 		AHook.registerPlaceholder(new EndermanCavePlaceholder());
 		AHook.registerPlaceholder(new GoldReqPlaceholder());
+		AHook.registerPlaceholder(new SoulPlaceholder());
+		AHook.registerPlaceholder(new SoulReqPlaceholder());
 		new LeaderboardPlaceholders().register();
 
 		CooldownManager.init();
@@ -493,6 +495,7 @@ public class PitSim extends JavaPlugin {
 		getServer().getPluginManager().registerEvents(new CutsceneManager(), this);
 		getServer().getPluginManager().registerEvents(new AuctionDisplays(), this);
 		getServer().getPluginManager().registerEvents(new AuctionManager(), this);
+		getServer().getPluginManager().registerEvents(new ScoreboardManager(), this);
 	}
 	public void registerBoosters() {
 		BoosterManager.registerBooster(new XPBooster());

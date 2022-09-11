@@ -1,26 +1,28 @@
 package dev.kyro.pitsim.controllers;
 
-import be.maximvdw.featherboard.FeatherBoard;
 import be.maximvdw.featherboard.api.FeatherBoardAPI;
 import dev.kyro.pitsim.PitSim;
-import dev.kyro.pitsim.controllers.objects.PitEnchant;
-import dev.kyro.pitsim.enchants.Moctezuma;
 import dev.kyro.pitsim.misc.Misc;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
+import org.bukkit.event.player.PlayerTeleportEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
-public class ScoreboardManager {
+public class ScoreboardManager implements Listener {
 
     public static void init() {};
 
     public static List<Player> goldScoreboardPlayers = new ArrayList<>();
+    public static List<Player> soulScoreboardPlayers = new ArrayList<>();
 
-    public static List<PitEnchant> goldEnchants = Arrays.asList(EnchantManager.getEnchant("moct"),
-            EnchantManager.getEnchant("gboost"), EnchantManager.getEnchant("gbump"));
+    public static List<String> goldEnchants = Arrays.asList("moct", "gboost", "gbump");
 
     static {
         new BukkitRunnable() {
@@ -28,11 +30,13 @@ public class ScoreboardManager {
             public void run() {
                 for(Player player : Bukkit.getOnlinePlayers()) {
                     ItemStack leggings = player.getInventory().getLeggings();
-                    if(Misc.isAirOrNull(leggings)) continue;
+
 
                     int count = 0;
-                    for(PitEnchant goldEnchant : goldEnchants) {
-                        if(EnchantManager.getEnchantsOnItem(leggings).containsKey(goldEnchant)) count++;
+
+                    for(String goldEnchant : goldEnchants) {
+                        if(Misc.isAirOrNull(leggings)) continue;
+                        if(EnchantManager.getEnchantsOnItem(leggings).containsKey(EnchantManager.getEnchant(goldEnchant))) count++;
                     }
 
                     if(count >= 2 && !goldScoreboardPlayers.contains(player) && player.getWorld() != MapManager.getDarkzone()) {
@@ -46,5 +50,30 @@ public class ScoreboardManager {
                 }
             }
         }.runTaskTimerAsynchronously(PitSim.INSTANCE, 20 * 5, 20 * 5);
+    }
+
+    @EventHandler
+    public void onTeleport(PlayerTeleportEvent event) {
+        Player player = event.getPlayer();
+        if(!Bukkit.getOnlinePlayers().contains(player)) return;
+
+        new BukkitRunnable() {
+            @Override
+            public void run() {
+                if(!soulScoreboardPlayers.contains(player)) {
+                    if(player.getWorld() == MapManager.getDarkzone()) {
+                        goldScoreboardPlayers.remove(player);
+                        soulScoreboardPlayers.add(player);
+                        FeatherBoardAPI.showScoreboard(player, "darkzone");
+                    }
+                } else {
+                    if(player.getWorld() != MapManager.getDarkzone()) {
+                        soulScoreboardPlayers.remove(player);
+                        FeatherBoardAPI.showScoreboard(player, "default");
+                    }
+                }
+                Bukkit.broadcastMessage(soulScoreboardPlayers + "");
+            }
+        }.runTaskLater(PitSim.INSTANCE, 5);
     }
 }

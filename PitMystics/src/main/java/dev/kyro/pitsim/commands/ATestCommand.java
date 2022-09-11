@@ -1,14 +1,10 @@
 package dev.kyro.pitsim.commands;
 
-import dev.kyro.pitsim.PitSim;
-import dev.kyro.pitsim.controllers.CutsceneManager;
-import org.bukkit.Bukkit;
+import be.maximvdw.featherboard.api.FeatherBoardAPI;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.bukkit.scheduler.BukkitRunnable;
-import org.bukkit.scheduler.BukkitWorker;
 
 public class ATestCommand implements CommandExecutor {
 
@@ -17,16 +13,18 @@ public class ATestCommand implements CommandExecutor {
 		if(!(sender instanceof Player)) return false;
 		Player player = (Player) sender;
 
-		if(!player.isOp()) return false;
+		FeatherBoardAPI.showScoreboard(player, args[0]);
 
-
-		for(BukkitWorker activeWorker : Bukkit.getScheduler().getActiveWorkers()) {
-			System.out.println("--------------------------------");
-			System.out.println(activeWorker.getTaskId());
-			System.out.println(activeWorker.getOwner());
-			System.out.println("--------------------------------");
-		}
-		System.out.println(Bukkit.getScheduler().getActiveWorkers().size());
+//		if(!player.isOp()) return false;
+//
+//
+//		for(BukkitWorker activeWorker : Bukkit.getScheduler().getActiveWorkers()) {
+//			System.out.println("--------------------------------");
+//			System.out.println(activeWorker.getTaskId());
+//			System.out.println(activeWorker.getOwner());
+//			System.out.println("--------------------------------");
+//		}
+//		System.out.println(Bukkit.getScheduler().getActiveWorkers().size());
 
 
 
@@ -46,7 +44,7 @@ public class ATestCommand implements CommandExecutor {
 //		Bukkit.broadcastMessage("\u00A7");
 //		System.out.println("\u00A7");
 
-		CutsceneManager.play(player);
+//		CutsceneManager.play(player);
 
 //		TaintedGUI taintedGUI = new TaintedGUI(player);
 //		taintedGUI.open();

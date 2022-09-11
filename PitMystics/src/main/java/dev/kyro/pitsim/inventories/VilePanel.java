@@ -42,6 +42,19 @@ public class VilePanel extends AGUIPanel {
 
 	@Override
 	public void onClick(InventoryClickEvent event) {
+
+		ItemStack itemStack = player.getItemInHand();
+		if(Misc.isAirOrNull(itemStack)) {
+			player.closeInventory();
+			return;
+		}
+
+		NBTItem held = new NBTItem(player.getItemInHand());
+		if(!held.hasKey(NBTTag.IS_VILE.getRef())) {
+			player.closeInventory();
+			return;
+		}
+
 		int slot = event.getSlot();
 		if(event.getClickedInventory().getHolder() == this) {
 
