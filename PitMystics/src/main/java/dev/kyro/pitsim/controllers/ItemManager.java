@@ -60,6 +60,7 @@ public class ItemManager implements Listener {
 
 	@EventHandler(ignoreCancelled = true)
 	public static void onItemDrop(PlayerDropItemEvent event) {
+		if(event.getPlayer().getWorld() == MapManager.getDarkzone()) return;
 
 		ItemStack itemStack = event.getItemDrop().getItemStack();
 		Player player = event.getPlayer();

@@ -72,7 +72,6 @@ public class ScoreboardManager implements Listener {
                         FeatherBoardAPI.showScoreboard(player, "default");
                     }
                 }
-                Bukkit.broadcastMessage(soulScoreboardPlayers + "");
             }
         }.runTaskLater(PitSim.INSTANCE, 5);
     }

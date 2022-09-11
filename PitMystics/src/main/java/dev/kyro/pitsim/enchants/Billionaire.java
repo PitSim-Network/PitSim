@@ -12,7 +12,6 @@ import dev.kyro.pitsim.enums.ApplyType;
 import dev.kyro.pitsim.events.AttackEvent;
 import dev.kyro.pitsim.misc.Sounds;
 import net.citizensnpcs.api.CitizensAPI;
-import net.citizensnpcs.api.npc.NPC;
 import org.bukkit.event.EventHandler;
 
 import java.text.DecimalFormat;
@@ -46,7 +45,7 @@ public class Billionaire extends PitEnchant {
 			goldCost = goldCost - (int) ((UpgradeManager.getTier(attackEvent.attackerPlayer, "TAX_EVASION") * 0.05) * goldCost);
 		}
 
-		if(!BossManager.bosses.containsKey(CitizensAPI.getNPCRegistry().getNPC(attackEvent.attacker)) && HopperManager.isHopper(attackEvent.attacker)) {
+		if(!BossManager.bosses.containsKey(CitizensAPI.getNPCRegistry().getNPC(attackEvent.attacker)) && !HopperManager.isHopper(attackEvent.attacker)) {
 			double finalBalance = PitSim.VAULT.getBalance(attackEvent.attackerPlayer) - goldCost;
 			if(finalBalance < 0) return;
 			PitSim.VAULT.withdrawPlayer(attackEvent.attackerPlayer, goldCost);
