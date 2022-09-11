@@ -100,6 +100,7 @@ public class PitSim extends JavaPlugin {
 		adventure = BukkitAudiences.create(this);
 		TaintedWell.onStart();
 		BrewingManager.onStart();
+		ScoreboardManager.init();
 
 		ArcticAPI.configInit(this, "prefix", "error-prefix");
 		playerList = new AData("player-list", "", false);
@@ -191,6 +192,7 @@ public class PitSim extends JavaPlugin {
 		AHook.registerPlaceholder(new WitherCavePlaceholder());
 		AHook.registerPlaceholder(new GolemCavePlaceholder());
 		AHook.registerPlaceholder(new EndermanCavePlaceholder());
+		AHook.registerPlaceholder(new GoldReqPlaceholder());
 		new LeaderboardPlaceholders().register();
 
 		CooldownManager.init();

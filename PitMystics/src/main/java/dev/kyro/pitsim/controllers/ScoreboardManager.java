@@ -15,6 +15,8 @@ import java.util.*;
 
 public class ScoreboardManager {
 
+    public static void init() {};
+
     public static List<Player> goldScoreboardPlayers = new ArrayList<>();
 
     public static List<PitEnchant> goldEnchants = Arrays.asList(EnchantManager.getEnchant("moct"),
