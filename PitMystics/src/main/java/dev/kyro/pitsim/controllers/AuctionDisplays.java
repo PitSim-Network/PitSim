@@ -179,6 +179,9 @@ public class AuctionDisplays implements Listener {
 
     @EventHandler
     public void onPickUp(PlayerPickupItemEvent event) {
+        if(event.getPlayer().getWorld() != MapManager.getDarkzone()) return;
+
+
         if(pedestalLocations[0] == null) return;
 
         if(pedestalLocations[0].distance(event.getPlayer().getLocation()) < 50) {
