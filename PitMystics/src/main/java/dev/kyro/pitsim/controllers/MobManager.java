@@ -275,30 +275,40 @@ public class MobManager implements Listener {
 				}
 				toRemove.add(mob);
 
-				Map<ItemStack, Integer> drops = mob.getDrops();
 
 				ItemStack helmet = GoldenHelmet.getHelmet(event.killerPlayer);
 
 				int level = 0;
 				double chance = 0;
 				if(helmet != null) level = HelmetSystem.getLevel(GoldenHelmet.getUsedHelmetGold(event.deadPlayer));
-				if(helmet != null) chance = 7.5 * HelmetSystem.getTotalStacks(HelmetSystem.Passive.DROP_CHANCE, level - 1);
+				if(helmet != null) chance = HelmetSystem.Passive.DROP_CHANCE.baseUnit * HelmetSystem.getTotalStacks(HelmetSystem.Passive.DROP_CHANCE, level - 1);
 
-				for (Map.Entry<ItemStack, Integer> entry : drops.entrySet()) {
-					Random r = new Random();
-					int low = 1;
-					int high = 100;
-					int result = r.nextInt(high-low) + low;
+				double multiplier = chance / 100.0 + 1;
 
-					result += result * (chance * 0.01);
+				List<ItemStack> drops = shouldGiveDrop(mob, multiplier);
 
-					if(result > entry.getValue()) continue;
-
+				for(ItemStack drop : drops) {
 					PitPlayer pitPlayer = PitPlayer.getPitPlayer(event.killerPlayer);
 					if(pitPlayer.hasPerk(Telekinesis.INSTANCE)) {
-						AUtil.giveItemSafely(event.killerPlayer, entry.getKey());
-					} else event.dead.getWorld().dropItemNaturally(event.dead.getLocation(), entry.getKey());
+						AUtil.giveItemSafely(event.killerPlayer, drop);
+					} else event.dead.getWorld().dropItemNaturally(event.dead.getLocation(), drop);
 				}
+
+//				for (Map.Entry<ItemStack, Integer> entry : drops.entrySet()) {
+//					Random r = new Random();
+//					int low = 1;
+//					int high = 100;
+//					int result = r.nextInt(high-low) + low;
+//
+//					result += result * (chance * 0.01);
+//
+//					if(result > entry.getValue()) continue;
+//
+//					PitPlayer pitPlayer = PitPlayer.getPitPlayer(event.killerPlayer);
+//					if(pitPlayer.hasPerk(Telekinesis.INSTANCE)) {
+//						AUtil.giveItemSafely(event.killerPlayer, entry.getKey());
+//					} else event.dead.getWorld().dropItemNaturally(event.dead.getLocation(), entry.getKey());
+//				}
 			}
 		}
 		new BukkitRunnable() {
@@ -309,6 +319,21 @@ public class MobManager implements Listener {
 				}
 			}
 		}.runTaskLater(PitSim.INSTANCE, 1);
+	}
+
+	public static List<ItemStack> shouldGiveDrop(PitMob pitMob, double multiplier) {
+		List<ItemStack> drops = new ArrayList<>();
+
+		for(Map.Entry<ItemStack, Integer> entry : pitMob.getDrops().entrySet()) {
+			ItemStack drop = entry.getKey();
+			double chance = entry.getValue();
+			chance *= multiplier;
+
+			if(chance < Math.random() * 100) continue;
+			drops.add(drop);
+		}
+
+		return drops;
 	}
 
 	@EventHandler(priority = EventPriority.HIGHEST)
