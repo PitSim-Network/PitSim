@@ -41,6 +41,8 @@ public abstract class PitMap {
 
 	public abstract Location getWijiNPCSpawn(World world);
 
+	public abstract Location getSplkNPCSpawn(World world);
+
 	public abstract Location getVnxNPCSpawn(World world);
 
 	public abstract Location getKeeperNPC(World world);

@@ -66,6 +66,11 @@ public class DimensionsMap extends PitMap {
 	}
 
 	@Override
+	public Location getSplkNPCSpawn(World world) {
+		return new Location(world, -7.5, 89, 9.5, 45, 0);
+	}
+
+	@Override
 	public Location getVnxNPCSpawn(World world) {
 		return new Location(world, -1.5, 88, 10.5, 180, 0);
 	}
