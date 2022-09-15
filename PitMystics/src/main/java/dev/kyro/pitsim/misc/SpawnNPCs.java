@@ -231,7 +231,7 @@ public class SpawnNPCs implements Listener {
 		NPC npc = registry.createNPC(EntityType.PLAYER, "&d");
 		npc.spawn(new Location(MapManager.getDarkzone(), 214, 91, -113, 25, 0));
 		taintedShop = npc;
-		skin(npc, "Yeung_1217");
+		skin(npc, "dominorift");
 
 	}
 
