@@ -38,6 +38,6 @@ public class XPLeaderboard extends Leaderboard {
 
 	@Override
 	public boolean isMoreThanOrEqual(LeaderboardPosition position, LeaderboardPosition otherPosition) {
-		return position.intValue >= otherPosition.intValue;
+		return position.longValue >= otherPosition.longValue;
 	}
 }
