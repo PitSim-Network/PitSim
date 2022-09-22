@@ -66,7 +66,7 @@ public class PitPlayer {
 	//	Savable
 	public int prestige;
 	public int level;
-	public int remainingXP = PrestigeValues.getXPForLevel(1);
+	public long remainingXP = PrestigeValues.getXPForLevel(1);
 	public int soulsGathered;
 
 	public int renown;

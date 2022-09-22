@@ -65,7 +65,7 @@ public class PlayerStats {
 	//	Progression
 	public int minutesPlayed;
 
-	public int getTotalXP() {
+	public long getTotalXP() {
 		return PrestigeValues.getTotalXP(pitPlayer.prestige, pitPlayer.level, pitPlayer.remainingXP);
 	}
 
