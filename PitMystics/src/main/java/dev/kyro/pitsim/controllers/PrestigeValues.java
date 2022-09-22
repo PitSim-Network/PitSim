@@ -7,21 +7,21 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 public class PrestigeValues {
-	public static int MAX_PRESTIGE = 55;
-	private static final Map<Integer, Integer> xpLevelMap = new LinkedHashMap<>();
+	public static int MAX_PRESTIGE = 60;
+	private static final Map<Integer, Long> xpLevelMap = new LinkedHashMap<>();
 	private static final Map<Integer, PrestigeInfo> prestigeMap = new LinkedHashMap<>();
 
-	public static Map<Integer, Integer> totalXPMap = new LinkedHashMap<>();
+	public static Map<Integer, Long> totalXPMap = new LinkedHashMap<>();
 
-	public static int getTotalXP(int prestige, int level, int remainingXP) {
+	public static long getTotalXP(int prestige, int level, long remainingXP) {
 		PrestigeInfo prestigeInfo = getPrestigeInfo(prestige);
-		int totalXP = getXpUpToPrestige(prestige);
+		long totalXP = getXpUpToPrestige(prestige);
 		for(int i = 1; i < level + 1; i++) totalXP += getXPForLevel(i) * prestigeInfo.xpMultiplier;
 		return totalXP - remainingXP;
 	}
 
-	public static int getXpUpToPrestige(int prestige) {
-		int totalXP = 0;
+	public static long getXpUpToPrestige(int prestige) {
+		long totalXP = 0;
 		for(int i = 0; i < prestige; i++) totalXP += totalXPMap.get(i);
 		return totalXP;
 	}
@@ -69,11 +69,11 @@ public class PrestigeValues {
 		return prestigeMap.get(prestige);
 	}
 
-	public static int getXPForLevel(int level) {
+	public static long getXPForLevel(int level) {
 		if(level >= 120) return 0;
 		if(level >= 110) return xpLevelMap.get(110);
 		if(xpLevelMap.containsKey(level)) return xpLevelMap.get(level);
-		for(Map.Entry<Integer, Integer> entry : xpLevelMap.entrySet()) {
+		for(Map.Entry<Integer, Long> entry : xpLevelMap.entrySet()) {
 			if(entry.getKey() < level) continue;
 			double diff = (entry.getValue() - xpLevelMap.get(entry.getKey() - 10)) / 10D;
 			return (int) (entry.getValue() - diff * (entry.getKey() - level));
@@ -115,18 +115,18 @@ public class PrestigeValues {
 	}
 
 	static {
-		xpLevelMap.put(0, 15);
-		xpLevelMap.put(10, 30);
-		xpLevelMap.put(20, 50);
-		xpLevelMap.put(30, 100);
-		xpLevelMap.put(40, 250);
-		xpLevelMap.put(50, 400);
-		xpLevelMap.put(60, 750);
-		xpLevelMap.put(70, 1000);
-		xpLevelMap.put(80, 1200);
-		xpLevelMap.put(90, 1400);
-		xpLevelMap.put(100, 1700);
-		xpLevelMap.put(110, 2500);
+		xpLevelMap.put(0, 15L);
+		xpLevelMap.put(10, 30L);
+		xpLevelMap.put(20, 50L);
+		xpLevelMap.put(30, 100L);
+		xpLevelMap.put(40, 250L);
+		xpLevelMap.put(50, 400L);
+		xpLevelMap.put(60, 750L);
+		xpLevelMap.put(70, 1000L);
+		xpLevelMap.put(80, 1200L);
+		xpLevelMap.put(90, 1400L);
+		xpLevelMap.put(100, 1700L);
+		xpLevelMap.put(110, 2500L);
 
 		prestigeMap.put(0, new PrestigeInfo(0, 1, 20_000, 0, 20, "&7"));
 		prestigeMap.put(1, new PrestigeInfo(1, 1.2, 40_000, 0, 10, "&9")); //tenacity gboost xp
@@ -185,15 +185,15 @@ public class PrestigeValues {
 		prestigeMap.put(54, new PrestigeInfo(54, 2250, 35_000_000, 2900, 100, "&2"));
 		prestigeMap.put(55, new PrestigeInfo(55, 2500, 40_000_000, 3000, 100, "&0"));
 
-		prestigeMap.put(56, new PrestigeInfo(56, 3000, 45_000_000, 3500, 120, "&0"));
-		prestigeMap.put(57, new PrestigeInfo(57, 4000, 50_000_000, 4500, 120, "&0"));
-		prestigeMap.put(58, new PrestigeInfo(58, 5000, 55_000_000, 5500, 120, "&0"));
-		prestigeMap.put(59, new PrestigeInfo(59, 6000, 60_000_000, 6500, 120, "&0"));
-		prestigeMap.put(60, new PrestigeInfo(60, 7500, 65_000_000, 7500, 120, "&4"));
+		prestigeMap.put(56, new PrestigeInfo(56, 15_000, 45_000_000, 3500, 120, "&0"));
+		prestigeMap.put(57, new PrestigeInfo(57, 30_000, 50_000_000, 4500, 120, "&0"));
+		prestigeMap.put(58, new PrestigeInfo(58, 45_000, 55_000_000, 5500, 120, "&0"));
+		prestigeMap.put(59, new PrestigeInfo(59, 60_000, 60_000_000, 6500, 120, "&0"));
+		prestigeMap.put(60, new PrestigeInfo(60, 75_000, 0, 0, 120, "&4"));
 
 		for(int i = 0; i < PrestigeValues.MAX_PRESTIGE + 1; i++) {
 			PrestigeInfo prestigeInfo = getPrestigeInfo(i);
-			int totalXp = 0;
+			long totalXp = 0;
 			for(int j = 1; j < 120; j++) totalXp += getXPForLevel(j) * prestigeInfo.xpMultiplier;
 			totalXPMap.put(i, totalXp);
 		}

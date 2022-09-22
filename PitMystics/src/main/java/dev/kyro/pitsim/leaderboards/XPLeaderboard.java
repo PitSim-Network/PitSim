@@ -33,7 +33,7 @@ public class XPLeaderboard extends Leaderboard {
 
 	@Override
 	public void setPosition(LeaderboardPosition position, FileConfiguration playerData) {
-		position.intValue = PrestigeValues.getTotalXP(playerData.getInt("prestige"), playerData.getInt("level"), playerData.getInt("xp"));
+		position.longValue = PrestigeValues.getTotalXP(playerData.getInt("prestige"), playerData.getInt("level"), playerData.getLong("xp"));
 	}
 
 	@Override

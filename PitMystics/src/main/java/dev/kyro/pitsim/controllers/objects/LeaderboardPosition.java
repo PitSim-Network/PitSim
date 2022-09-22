@@ -8,6 +8,7 @@ public class LeaderboardPosition {
 
 	public double doubleValue;
 	public int intValue;
+	public long longValue;
 
 	public LeaderboardPosition(Leaderboard leaderboard, UUID uuid) {
 		this.leaderboard = leaderboard;
