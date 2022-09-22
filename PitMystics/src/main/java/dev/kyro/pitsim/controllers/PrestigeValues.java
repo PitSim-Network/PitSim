@@ -7,7 +7,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 public class PrestigeValues {
-	public static int MAX_PRESTIGE = 55;
+	public static int MAX_PRESTIGE = 60;
 	private static final Map<Integer, Integer> xpLevelMap = new LinkedHashMap<>();
 	private static final Map<Integer, PrestigeInfo> prestigeMap = new LinkedHashMap<>();
 
