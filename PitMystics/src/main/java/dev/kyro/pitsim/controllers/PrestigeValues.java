@@ -185,11 +185,11 @@ public class PrestigeValues {
 		prestigeMap.put(54, new PrestigeInfo(54, 2250, 35_000_000, 2900, 100, "&2"));
 		prestigeMap.put(55, new PrestigeInfo(55, 2500, 40_000_000, 3000, 100, "&0"));
 
-		prestigeMap.put(56, new PrestigeInfo(56, 3000, 45_000_000, 3500, 120, "&0"));
-		prestigeMap.put(57, new PrestigeInfo(57, 4000, 50_000_000, 4500, 120, "&0"));
-		prestigeMap.put(58, new PrestigeInfo(58, 5000, 55_000_000, 5500, 120, "&0"));
-		prestigeMap.put(59, new PrestigeInfo(59, 6000, 60_000_000, 6500, 120, "&0"));
-		prestigeMap.put(60, new PrestigeInfo(60, 7500, 65_000_000, 75000, 120, "&4"));
+		prestigeMap.put(56, new PrestigeInfo(56, 15_000, 45_000_000, 3500, 120, "&0"));
+		prestigeMap.put(57, new PrestigeInfo(57, 30_000, 50_000_000, 4500, 120, "&0"));
+		prestigeMap.put(58, new PrestigeInfo(58, 45_000, 55_000_000, 5500, 120, "&0"));
+		prestigeMap.put(59, new PrestigeInfo(59, 60_000, 60_000_000, 6500, 120, "&0"));
+		prestigeMap.put(60, new PrestigeInfo(60, 75_000, 0, 0, 120, "&4"));
 
 		for(int i = 0; i < PrestigeValues.MAX_PRESTIGE + 1; i++) {
 			PrestigeInfo prestigeInfo = getPrestigeInfo(i);
