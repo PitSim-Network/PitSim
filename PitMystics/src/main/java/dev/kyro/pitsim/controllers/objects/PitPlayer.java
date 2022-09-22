@@ -180,9 +180,7 @@ public class PitPlayer {
 		this.player = player;
 		this.megastreak = new NoMegastreak(this);
 
-		Non non = NonManager.getNon(player);
-
-		if(non == null) {
+		if(!CitizensAPI.getNPCRegistry().isNPC(player)) {
 			prefix = "";
 			APlayer aPlayer = APlayerData.getPlayerData(player);
 			FileConfiguration playerData = aPlayer.playerData;

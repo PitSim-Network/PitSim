@@ -13,9 +13,10 @@ public class ATestCommand implements CommandExecutor {
 		if(!(sender instanceof Player)) return false;
 		Player player = (Player) sender;
 
+		if(!player.isOp()) return false;
+
 		FeatherBoardAPI.showScoreboard(player, args[0]);
 
-//		if(!player.isOp()) return false;
 //
 //
 //		for(BukkitWorker activeWorker : Bukkit.getScheduler().getActiveWorkers()) {
