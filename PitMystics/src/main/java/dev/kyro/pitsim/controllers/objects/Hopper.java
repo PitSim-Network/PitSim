@@ -184,6 +184,7 @@ public class Hopper {
 					range -= 0.5;
 				}
 
+				if(hopper.getWorld() != hitTarget.getWorld()) continue;
 				if(hopper.getLocation().distance(hitTarget.getLocation()) > range) continue;
 				if(!canHitOtherHoppers && HopperManager.isHopper(hitTarget)) continue;
 				hitTarget.damage(damage, hopper);

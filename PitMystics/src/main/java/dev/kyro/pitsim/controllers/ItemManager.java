@@ -60,8 +60,6 @@ public class ItemManager implements Listener {
 
 	@EventHandler(ignoreCancelled = true)
 	public static void onItemDrop(PlayerDropItemEvent event) {
-		if(event.getPlayer().getWorld() != MapManager.getDarkzone()) return;
-
 		ItemStack itemStack = event.getItemDrop().getItemStack();
 		Player player = event.getPlayer();
 		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
@@ -73,8 +71,15 @@ public class ItemManager implements Listener {
 
 		boolean cancelDrop;
 		cancelDrop = event.getPlayer().getWorld() == MapManager.getDarkzone() && distance < 50;
+		if(cancelDrop) {
+			event.setCancelled(true);
+			AOutput.error(player, "&cYou cannot drop items in this area!");
+			Sounds.WARNING_LOUD.play(player);
+			return;
+		}
 
-		if(nbtItem.hasKey(NBTTag.UNDROPPABLE.getRef()) || cancelDrop) {
+
+		if(nbtItem.hasKey(NBTTag.UNDROPPABLE.getRef())) {
 
 			event.setCancelled(true);
 			AOutput.error(player, "You are not able to drop that item");
