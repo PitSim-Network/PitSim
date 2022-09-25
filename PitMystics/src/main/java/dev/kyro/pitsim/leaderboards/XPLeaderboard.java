@@ -16,7 +16,8 @@ public class XPLeaderboard extends Leaderboard {
 	@Override
 	public ItemStack getDisplayStack(UUID uuid) {
 		ItemStack itemStack = new AItemStackBuilder(Material.WHEAT)
-				.setName("&bTotal XP")
+				.setName("&b" +
+						"Total XP")
 				.setLore(new ALoreBuilder(
 						"&7Players who have &bearned &7the", "&7most &bXP", ""
 				).addLore(getTopPlayers(uuid)).addLore(
@@ -28,7 +29,7 @@ public class XPLeaderboard extends Leaderboard {
 
 	@Override
 	public String getDisplayValue(LeaderboardPosition position) {
-		return "&b" + Misc.formatLarge(position.intValue);
+		return "&b" + Misc.formatLarge(position.longValue);
 	}
 
 	@Override
