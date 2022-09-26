@@ -8,6 +8,7 @@ import dev.kyro.arcticapi.gui.AGUI;
 import dev.kyro.arcticapi.gui.AGUIPanel;
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.controllers.BoosterManager;
+import dev.kyro.pitsim.controllers.FirestoreManager;
 import dev.kyro.pitsim.controllers.objects.Booster;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.misc.Sounds;
@@ -61,6 +62,7 @@ public class BoosterPanel extends AGUIPanel {
 						aPlayer.save();
 
 						booster.updateTime();
+						FirestoreManager.CONFIG.save();
 						String playerName = "%luckperms_prefix%%essentials_nickname%";
 						String playernamecolor = PlaceholderAPI.setPlaceholders(player, playerName);
 						Bukkit.broadcastMessage(ChatColor.translateAlternateColorCodes('&', "&6&lBOOSTER! " + playernamecolor + " &7has used a " + booster.color + booster.name));

@@ -3,7 +3,6 @@ package dev.kyro.pitdiscord;
 import dev.kyro.arcticapi.ArcticAPI;
 import dev.kyro.arcticapi.data.APlayerData;
 import dev.kyro.pitdiscord.commands.PingCommand;
-import dev.kyro.pitdiscord.commands.VerifyCommand;
 import dev.kyro.pitdiscord.controllers.DiscordManager;
 import net.luckperms.api.LuckPerms;
 import org.apache.log4j.BasicConfigurator;
@@ -35,7 +34,7 @@ public class DiscordPlugin extends JavaPlugin {
 		new DiscordManager();
 
 		DiscordManager.registerCommand(new PingCommand());
-		DiscordManager.registerCommand(new VerifyCommand());
+//		DiscordManager.registerCommand(new VerifyCommand());
 	}
 
 	@Override

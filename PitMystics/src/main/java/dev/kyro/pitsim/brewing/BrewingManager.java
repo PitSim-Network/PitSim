@@ -69,7 +69,7 @@ public class BrewingManager implements Listener {
                     PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
                     String[] text = new String[5];
                     text[0] = "&e&lActively Brewing Potions";
-                    for (int i = 0; i < pitPlayer.brewingSessions.length; i++) {
+                    for (int i = 0; i < pitPlayer.brewingSessions.size(); i++) {
                         BrewingSession session = getBrewingSession(player, i + 1);
                         if(session != null) {
                             int addTicks = (105 - session.reduction.getBrewingReductionMinutes()) * 60 * 20;
@@ -209,8 +209,8 @@ public class BrewingManager implements Listener {
 
     public static int getBrewingSlot(Player player) {
         PitPlayer pitPlayer = PitPlayer.getPitPlayer(player.getPlayer());
-        for (int i = 0; i < pitPlayer.brewingSessions.length; i++) {
-            if(pitPlayer.brewingSessions[i] == null && UpgradeManager.getTier(player, "CHEMIST") >= i) return i + 1;
+        for (int i = 0; i < pitPlayer.brewingSessions.size(); i++) {
+            if(pitPlayer.brewingSessions.get(i) == null && UpgradeManager.getTier(player, "CHEMIST") >= i) return i + 1;
         }
         return -1;
     }

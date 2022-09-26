@@ -1,12 +1,11 @@
 package dev.kyro.pitsim.controllers.objects;
 
-import de.tr7zw.nbtapi.NBTItem;
-import dev.kyro.arcticapi.data.AConfig;
 import dev.kyro.arcticapi.data.APlayer;
 import dev.kyro.arcticapi.data.APlayerData;
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.arcticapi.misc.AUtil;
 import dev.kyro.pitsim.controllers.AuctionDisplays;
+import dev.kyro.pitsim.controllers.FirestoreManager;
 import dev.kyro.pitsim.enums.ItemType;
 import dev.kyro.pitsim.misc.Sounds;
 import org.bukkit.Bukkit;
@@ -36,7 +35,6 @@ public class AuctionItem {
 
        this.bidMap = bidMap == null ? new LinkedHashMap<>() : bidMap;
 
-       NBTItem nbtItem = new NBTItem(this.item.item);
        if(this.itemData == 0) {
            if(item.id == 5 || item.id == 6 || item.id == 7) {
                this.itemData = ItemType.generateJewelData(this.item.item);
@@ -47,12 +45,14 @@ public class AuctionItem {
     }
 
     public void saveData() {
-        AConfig.set("auctions.auction" + slot + ".item", this.item.id);
-        AConfig.set("auctions.auction" + slot + ".itemdata", this.itemData);
-        AConfig.set("auctions.auction" + slot + ".start", this.initTime);
+        System.out.println(FirestoreManager.CONFIG.auctions);
+        FirestoreManager.CONFIG.auctions.set(slot, new Config.Auction());
+        FirestoreManager.CONFIG.auctions.get(slot).item = this.item.id;
+        FirestoreManager.CONFIG.auctions.get(slot).itemData = this.itemData;
+        FirestoreManager.CONFIG.auctions.get(slot).start = this.initTime;
 
         for (Map.Entry<UUID, Integer> entry : this.bidMap.entrySet()) {
-            List<String> bids = AConfig.getStringList("auctions.auction" + slot + ".bids");
+            List<String> bids = FirestoreManager.CONFIG.auctions.get(slot).bids;
 
             for (String bid : bids) {
                 String[] split = bid.split(":");
@@ -63,9 +63,9 @@ public class AuctionItem {
             }
 
             bids.add(entry.getKey() + ":" + entry.getValue());
-            AConfig.set("auctions.auction" + slot + ".bids", bids);
+            FirestoreManager.CONFIG.auctions.get(slot).bids = bids;
         }
-        AConfig.saveConfig();
+        FirestoreManager.CONFIG.save();
     }
 
     public void addBid(UUID player, int bid) {
@@ -111,13 +111,8 @@ public class AuctionItem {
     }
 
     public void endAuction() {
-        AConfig.set("auctions.auction" + slot + ".item", (Object) null);
-        AConfig.set("auctions.auction" + slot + ".itemdata", (Object) null);
-        AConfig.set("auctions.auction" + slot + ".start", (Object) null);
-        AConfig.set("auctions.auction" + slot + ".bids", (Object) null);
-
-        AConfig.set("auctions.auction" + slot, (Object) null);
-        AConfig.saveConfig();
+        FirestoreManager.CONFIG.auctions.set(slot, null);
+        FirestoreManager.CONFIG.save();
 
         if(getHighestBidder() == null) return;
 

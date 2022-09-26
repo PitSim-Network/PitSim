@@ -29,7 +29,7 @@ public class Leech extends Killstreak {
 	@EventHandler(priority = EventPriority.HIGH)
 	public void onHit(AttackEvent.Apply event) {
 		if(rewardPlayers.contains(event.attacker)) {
-			PitPlayer pitPlayer = PitPlayer.getEntityPitPlayer(event.attacker);
+			PitPlayer pitPlayer = PitPlayer.getPitPlayer(event.attacker);
 			pitPlayer.heal(event.getFinalDamageIncrease() * (getPercent() / 100D));
 			rewardPlayers.remove(event.attacker);
 		}

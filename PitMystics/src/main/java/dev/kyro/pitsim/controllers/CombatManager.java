@@ -12,12 +12,10 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
-import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
-import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.scheduler.BukkitRunnable;
 
@@ -67,19 +65,11 @@ public class CombatManager implements Listener {
 
 		taggedPlayers.put(attacker.getUniqueId(), combatTime);
 		taggedPlayers.put(defender.getUniqueId(), combatTime);
-
-	}
-
-	@EventHandler(priority = EventPriority.HIGHEST)
-	public static void onJoin(PlayerJoinEvent event) {
-
-
 	}
 
 	@EventHandler
 	public static void onLeave(PlayerQuitEvent event) {
 		Player player = event.getPlayer();
-		PitPlayer pitplayer = PitPlayer.getPitPlayer(event.getPlayer());
 		event.getPlayer().closeInventory();
 		if(NonManager.getNon(event.getPlayer()) != null) return;
 
@@ -103,21 +93,6 @@ public class CombatManager implements Listener {
 		if(player.getWorld() == MapManager.getDarkzone() && !SpawnManager.isInDarkzoneSpawn(player.getLocation())) {
 			DamageManager.death(player);
 		}
-
-//        Player player = event.getPlayer();
-//
-//        if(taggedPlayers.containsKey(player.getUniqueId()) && !player.hasPermission("pitsim.combatlog") && !player.isOp()) {
-//            player.teleport(Bukkit.getWorld("pit").getSpawnLocation());
-//            taggedPlayers.remove(player.getUniqueId());
-//
-//            bannedPlayers.add(player.getUniqueId());
-//            new BukkitRunnable() {
-//                @Override
-//                public void run() {
-//                    bannedPlayers.remove(player.getUniqueId());
-//                }
-//            }.runTaskLater(PitSim.INSTANCE, 60 * 20);
-//        }
 	}
 
 	@EventHandler

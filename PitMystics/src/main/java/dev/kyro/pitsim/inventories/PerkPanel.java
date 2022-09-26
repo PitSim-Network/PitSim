@@ -99,8 +99,8 @@ public class PerkPanel extends AGUIPanel {
 	public void onOpen(InventoryOpenEvent event) {
 
 		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
-		for(int i = 0; i < pitPlayer.pitPerks.length; i++) {
-			PitPerk pitPerk = pitPlayer.pitPerks[i];
+		for(int i = 0; i < pitPlayer.pitPerks.size(); i++) {
+			PitPerk pitPerk = pitPlayer.pitPerks.get(i);
 			if(pitPerk == null) continue;
 
 			ItemStack perkItem = new ItemStack(pitPerk.displayItem);

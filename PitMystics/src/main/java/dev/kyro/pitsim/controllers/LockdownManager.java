@@ -1,6 +1,5 @@
 package dev.kyro.pitsim.controllers;
 
-import dev.kyro.arcticapi.data.AConfig;
 import dev.kyro.arcticapi.data.APlayer;
 import dev.kyro.arcticapi.data.APlayerData;
 import dev.kyro.arcticapi.misc.AOutput;
@@ -23,6 +22,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.*;
 
+//This is disabled
 public class LockdownManager implements Listener {
 	public static List<Player> captchaPlayers = new ArrayList<>();
 	public static Map<Player, UUID> captchaAnswers = new HashMap<>();
@@ -31,8 +31,8 @@ public class LockdownManager implements Listener {
 	public static String verificationMessage = "&c&lVERIFICATION! &7Verify your account in discord.pitsim.net (.verify)";
 
 	static {
-		requireVerification = AConfig.getBoolean("security.require-verification");
-		requireCaptcha = AConfig.getBoolean("security.require-captcha");
+		requireVerification = FirestoreManager.CONFIG.security.requireVerification;
+		requireCaptcha = FirestoreManager.CONFIG.security.requireCaptcha;
 
 		new BukkitRunnable() {
 			@Override
@@ -175,29 +175,29 @@ public class LockdownManager implements Listener {
 	public static void enableVerification() {
 		if(requireVerification) return;
 		requireVerification = true;
-		AConfig.set("security.require-verification", true);
-		AConfig.saveConfig();
+		FirestoreManager.CONFIG.security.requireVerification = true;
+		FirestoreManager.CONFIG.save();
 	}
 
 	public static void disableVerification() {
 		if(!requireVerification) return;
 		requireVerification = false;
-		AConfig.set("security.require-verification", false);
-		AConfig.saveConfig();
+		FirestoreManager.CONFIG.security.requireVerification = false;
+		FirestoreManager.CONFIG.save();
 	}
 
 	public static void enableCaptcha() {
 		if(requireCaptcha) return;
 		requireCaptcha = true;
-		AConfig.set("security.require-captcha", true);
-		AConfig.saveConfig();
+		FirestoreManager.CONFIG.security.requireCaptcha = true;
+		FirestoreManager.CONFIG.save();
 	}
 
 	public static void disableCaptcha() {
 		if(!requireCaptcha) return;
 		requireCaptcha = false;
-		AConfig.set("security.require-captcha", false);
-		AConfig.saveConfig();
+		FirestoreManager.CONFIG.security.requireCaptcha = false;
+		FirestoreManager.CONFIG.save();
 	}
 
 	public static void passCaptcha(Player player) {

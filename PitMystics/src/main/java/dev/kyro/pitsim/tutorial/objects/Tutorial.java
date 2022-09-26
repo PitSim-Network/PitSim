@@ -30,7 +30,6 @@ import org.bukkit.scheduler.BukkitTask;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class Tutorial {
@@ -63,7 +62,10 @@ public class Tutorial {
 		sequence.play();
 
 		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
-		Arrays.fill(pitPlayer.pitPerks, NoPerk.INSTANCE);
+
+		for(int i = 0; i < pitPlayer.pitPerks.size(); i++) {
+			pitPlayer.pitPerks.set(i, NoPerk.INSTANCE);
+		}
 
 		for(int i = 0; i < pitPlayer.killstreaks.size(); i++) {
 			pitPlayer.killstreaks.set(i, NoKillstreak.INSTANCE);

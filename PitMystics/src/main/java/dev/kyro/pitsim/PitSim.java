@@ -96,6 +96,8 @@ public class PitSim extends JavaPlugin {
 	public void onEnable() {
 		INSTANCE = this;
 
+		FirestoreManager.init();
+
 		loadConfig();
 		adventure = BukkitAudiences.create(this);
 		TaintedWell.onStart();
@@ -215,6 +217,20 @@ public class PitSim extends JavaPlugin {
 	@Override
 	public void onDisable() {
 
+//		System.out.println("Disconnecting database");
+//		try {
+//			for(FirebaseApp app : new ArrayList<>(FirebaseApp.getApps())) app.delete();
+//		} catch(Exception exception) {
+//			exception.printStackTrace();
+//			System.out.println("Database failed to disconnect");
+//		}
+//		System.out.println("Database disconnected");
+
+		for(Player onlinePlayer : Bukkit.getOnlinePlayers()) {
+			PitPlayer pitPlayer = PitPlayer.getPitPlayer(onlinePlayer);
+			pitPlayer.save();
+		}
+
 		if(MapManager.getDarkzone() != null){
 			for (Entity entity : MapManager.getDarkzone().getEntities()) {
 				if(entity instanceof Item) {
@@ -223,6 +239,7 @@ public class PitSim extends JavaPlugin {
 			}
 		}
 
+//		TODO: Fix
 		for(Player player : Bukkit.getOnlinePlayers()) {
 			List<PotionEffect> toExpire = new ArrayList<>();
 			for (PotionEffect potionEffect : PotionManager.potionEffectList) {
@@ -299,8 +316,6 @@ public class PitSim extends JavaPlugin {
 			esp.destroy();
 			it.remove();
 		}
-
-		for(PitPlayer pitPlayer : PitPlayer.pitPlayers) if(pitPlayer.stats != null) pitPlayer.stats.save();
 
 		File file = new File("plugins/Citizens/saves.yml");
 		if(file.exists()) file.deleteOnExit();
@@ -428,7 +443,7 @@ public class PitSim extends JavaPlugin {
 		getCommand("resource").setExecutor(new ResourceCommand());
 		getCommand("lightning").setExecutor(new LightningCommand());
 		getCommand("stat").setExecutor(new StatCommand());
-		getCommand("captcha").setExecutor(new CaptchaCommand());
+//		getCommand("captcha").setExecutor(new CaptchaCommand());
 		SwitchCommand switchCommand = new SwitchCommand();
 		getCommand("switch").setExecutor(switchCommand);
 		getCommand("play").setExecutor(switchCommand);
@@ -473,7 +488,7 @@ public class PitSim extends JavaPlugin {
 		getServer().getPluginManager().registerEvents(new HopperManager(), this);
 		getServer().getPluginManager().registerEvents(new ResourcePackManager(), this);
 		getServer().getPluginManager().registerEvents(new StatManager(), this);
-		getServer().getPluginManager().registerEvents(new LockdownManager(), this);
+//		getServer().getPluginManager().registerEvents(new LockdownManager(), this);
 		getServer().getPluginManager().registerEvents(new DupeManager(), this);
 		getServer().getPluginManager().registerEvents(new GoldenHelmet(), this);
 		getServer().getPluginManager().registerEvents(new MapManager(), this);

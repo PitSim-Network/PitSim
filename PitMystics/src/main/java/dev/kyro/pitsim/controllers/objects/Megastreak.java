@@ -1,5 +1,6 @@
 package dev.kyro.pitsim.controllers.objects;
 
+import com.google.cloud.firestore.annotation.Exclude;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.events.KillEvent;
 import org.bukkit.Bukkit;
@@ -11,6 +12,9 @@ import java.util.List;
 public abstract class Megastreak implements Listener {
 
 	public PitPlayer pitPlayer;
+
+	public Megastreak() {
+	}
 
 	public Megastreak(PitPlayer pitPlayer) {
 		this.pitPlayer = pitPlayer;
@@ -44,14 +48,14 @@ public abstract class Megastreak implements Listener {
 	public void kill() {
 	}
 
+	@Exclude
 	public boolean isOnMega() {
 		return pitPlayer.getKills() >= getRequiredKills();
 	}
 
+	@Exclude
 	public boolean playerIsOnMega(KillEvent killEvent) {
 		if(!killEvent.killerIsPlayer) return false;
 		return PitPlayer.getPitPlayer(killEvent.killerPlayer).getKills() >= getRequiredKills();
 	}
-
-
 }

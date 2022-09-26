@@ -1,7 +1,6 @@
 package dev.kyro.pitsim.controllers.objects;
 
-import dev.kyro.arcticapi.data.APlayer;
-import dev.kyro.arcticapi.data.APlayerData;
+import com.google.cloud.firestore.annotation.Exclude;
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.brewing.BrewingManager;
@@ -26,10 +25,8 @@ import dev.kyro.pitsim.misc.Misc;
 import dev.kyro.pitsim.perks.NoPerk;
 import dev.kyro.pitsim.perks.Thick;
 import me.clip.placeholderapi.PlaceholderAPI;
-import net.citizensnpcs.api.CitizensAPI;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
-import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
@@ -39,40 +36,73 @@ import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
 
 import java.util.*;
+import java.util.concurrent.ExecutionException;
 
 public class PitPlayer {
-
+	@Exclude
 	public static List<PitPlayer> pitPlayers = new ArrayList<>();
 
-	public Player player;
-	public String prefix;
+	@Exclude
+	public boolean isNPC;
 
+	@Exclude
+	public boolean onSaveCooldown = false;
+	@Exclude
+	public boolean saveQueued = false;
+
+	@Exclude
+	public Player player;
+	@Exclude
+	public String prefix = "";
+
+	@Exclude
 	private int kills = 0;
+	@Exclude
 	public double assistAmount = 0;
+	@Exclude
 	public int bounty = 0;
+	@Exclude
 	public int latestKillAnnouncement = 0;
 
+	@Exclude
 	public Map<PitEnchant, Integer> enchantHits = new HashMap<>();
+	@Exclude
 	public Map<PitEnchant, Integer> enchantCharge = new HashMap<>();
 
+	@Exclude
 	public Map<UUID, Double> recentDamageMap = new HashMap<>();
+	@Exclude
 	public List<BukkitTask> assistRemove = new ArrayList<>();
 
+	@Exclude
 	public UUID lastHitUUID = null;
+	@Exclude
 	public ItemStack confirmedDrop = null;
 
+	@Exclude
 	public double mana = 0;
+	@Exclude
+	public int graceTiers = 0;
 
+	@Exclude
+	public UUID uuid;
 	//	Savable
 	public int prestige;
-	public int level;
+	public int level = 1;
 	public long remainingXP = PrestigeValues.getXPForLevel(1);
 	public int soulsGathered;
 
 	public int renown;
-	public PitPerk[] pitPerks = new PitPerk[4];
+	@Exclude
+	public List<PitPerk> pitPerks = Arrays.asList(NoPerk.INSTANCE, NoPerk.INSTANCE, NoPerk.INSTANCE, NoPerk.INSTANCE);
+	public List<String> pitPerksRef = Arrays.asList("none", "none", "none", "none");
+	@Exclude
 	public List<Killstreak> killstreaks = Arrays.asList(NoKillstreak.INSTANCE, NoKillstreak.INSTANCE, NoKillstreak.INSTANCE);
+	public List<String> killstreaksRef = Arrays.asList("NoKillstreak", "NoKillstreak", "NoKillstreak");
+	@Exclude
+//	TODO: Save megastreak ref, not megastreak
 	public Megastreak megastreak;
+	public String megastreakRef = "nomegastreak";
 
 	public boolean playerChatDisabled;
 	public boolean killFeedDisabled;
@@ -84,223 +114,284 @@ public class PitPlayer {
 
 	public double goldStack;
 	public int moonBonus;
-	public int dailyUbersLeft;
+	public int dailyUbersLeft = 5;
 	public long uberReset;
 	public int goldGrinded;
-	public Map<Booster, Integer> boosters = new HashMap<>();
-	public Map<Booster, Integer> boosterTime = new HashMap<>();
+	public Map<String, Integer> boosters = new HashMap<>();
+	public Map<String, Integer> boosterTime = new HashMap<>();
 
 	public double lastVersion;
 	public KillEffect killEffect;
 	public DeathCry deathCry;
-	public AChatColor chatColor;
+	public AChatColor chatColor = AChatColor.GRAY;
 
-	public String[] brewingSessions = new String[]{null, null, null};
-
-	public int graceTiers = 0;
-
-	public int taintedSouls;
+	public List<String> brewingSessions = Arrays.asList(null, null, null);
+	public int taintedSouls = 200;
 
 	public PlayerStats stats;
 
+	@Exclude
+	private void save(boolean block) {
+		if(onSaveCooldown && !saveQueued) {
+			saveQueued = true;
+			new Thread(() -> {
+				try {
+					Thread.sleep(1500);
+				} catch(InterruptedException e) {
+					e.printStackTrace();
+				}
+				saveQueued = false;
+				save(block);
+			}).start();
+		}
+		if(!saveQueued && !onSaveCooldown){
+			if(block) {
+				try {
+					FirestoreManager.FIRESTORE.collection(FirestoreManager.PLAYERDATA_COLLECTION).document(player.getUniqueId().toString()).set(this).get();
+					System.out.println("Saved Data: " + player.getName());
+				} catch(InterruptedException | ExecutionException e) {
+					e.printStackTrace();
+				}
+			} else {
+				FirestoreManager.FIRESTORE.collection(FirestoreManager.PLAYERDATA_COLLECTION).document(player.getUniqueId().toString()).set(this);
+				System.out.println("Saving Data: " + player.getName());
+			}
+
+			onSaveCooldown = true;
+			new Thread(() -> {
+				try {
+					Thread.sleep(1500);
+				} catch(InterruptedException e) {
+					e.printStackTrace();
+				}
+				onSaveCooldown = false;
+			}).start();
+		}
+	}
+
+	@Exclude
 	public void save() {
-		if(BossManager.bosses.containsKey(CitizensAPI.getNPCRegistry().getNPC(player))) return;
-
-		APlayer aPlayer = APlayerData.getPlayerData(player);
-		FileConfiguration playerData = aPlayer.playerData;
-
-		playerData.set("prestige", prestige);
-		playerData.set("level", level);
-		playerData.set("xp", remainingXP);
-		playerData.set("soulsgathered", soulsGathered);
-		playerData.set("renown", renown);
-
-		playerData.set("goldstack", goldStack);
-		playerData.set("moonbonus", moonBonus);
-		playerData.set("ubersleft", dailyUbersLeft);
-		playerData.set("ubercooldown", uberReset);
-		playerData.set("goldgrinded", goldGrinded);
-		playerData.set("taintedsouls", taintedSouls);
-
-		for (int i = 0; i < brewingSessions.length; i++) {
-			playerData.set("brewingsession" + (i + 1), brewingSessions[i]);
+		if(isNPC) {
+			System.out.println("complete development failure. " + player.getName() + " is attempting to save data and is not a real player");
+			return;
 		}
 
-		for(Map.Entry<Booster, Integer> entry : boosters.entrySet())
-			playerData.set("boosters." + entry.getKey().refName, entry.getValue());
+		megastreakRef = megastreak.getRefNames().get(0);
 
-		playerData.set("lastversion", PitSim.version);
+		for(int i = 0; i < pitPerks.size(); i++) {
+			PitPerk pitPerk = pitPerks.get(i);
+			pitPerksRef.set(i, pitPerk.refName);
+		}
 
-		aPlayer.save();
+		for(int i = 0; i < killstreaks.size(); i++) {
+			Killstreak killstreak = killstreaks.get(i);
+			killstreaksRef.set(i, killstreak.refName);
+		}
+
+		save(false);
 	}
 
-	public void fullSave() {
-		if(BossManager.bosses.containsKey(CitizensAPI.getNPCRegistry().getNPC(player))) return;
-
-		APlayer aPlayer = APlayerData.getPlayerData(player);
-		FileConfiguration playerData = aPlayer.playerData;
-
-		playerData.set("prestige", prestige);
-		playerData.set("level", level);
-		playerData.set("xp", remainingXP);
-		playerData.set("soulsgathered", soulsGathered);
-		playerData.set("renown", renown);
-		for(int i = 0; i < pitPerks.length; i++) playerData.set("perk-" + i, pitPerks[i].refName);
-		for(int i = 0; i < killstreaks.size(); i++) playerData.set("killstreak-" + i, killstreaks.get(i).refName);
-		playerData.set("megastreak", megastreak.getRawName());
-
-		playerData.set("disabledplayerchat", playerChatDisabled);
-		playerData.set("disabledkillfeed", killFeedDisabled);
-		playerData.set("disabledbounties", bountiesDisabled);
-		playerData.set("disabledstreaks", streaksDisabled);
-		playerData.set("settings.lightning", lightingDisabled);
-		playerData.set("settings.music", musicDisabled);
-		playerData.set("promptPack", promptPack);
-
-		playerData.set("goldstack", goldStack);
-		playerData.set("moonbonus", moonBonus);
-		playerData.set("ubersleft", dailyUbersLeft);
-		playerData.set("ubercooldown", uberReset);
-		playerData.set("goldgrinded", goldGrinded);
-		for(Map.Entry<Booster, Integer> entry : boosters.entrySet())
-			playerData.set("boosters." + entry.getKey().refName, entry.getValue());
-		for(Map.Entry<Booster, Integer> entry : boosterTime.entrySet())
-			playerData.set("booster-time." + entry.getKey().refName, entry.getValue());
-
-		playerData.set("lastversion", PitSim.version);
-		if(killEffect != null) playerData.set("killeffect", killEffect.toString());
-		if(deathCry != null) playerData.set("deathcry", deathCry.toString());
-		if(chatColor != null) playerData.set("chatcolor", chatColor.toString());
-
-		aPlayer.save();
-		stats.save();
-	}
-
+//	NPC Init
 	public PitPlayer(Player player) {
+		this.isNPC = true;
+
+		this.uuid = player.getUniqueId();
 		this.player = player;
 		this.megastreak = new NoMegastreak(this);
+	}
 
-		if(!CitizensAPI.getNPCRegistry().isNPC(player)) {
-			prefix = "";
-			APlayer aPlayer = APlayerData.getPlayerData(player);
-			FileConfiguration playerData = aPlayer.playerData;
-
-			prestige = playerData.getInt("prestige");
-			level = playerData.contains("level") ? playerData.getInt("level") : 1;
-			remainingXP = playerData.getInt("xp");
-			soulsGathered = playerData.getInt("soulsgathered");
-			renown = playerData.getInt("renown");
-			for(int i = 0; i < pitPerks.length; i++) {
-				String perkString = playerData.getString("perk-" + i);
-				PitPerk savedPerk = perkString != null ? PitPerk.getPitPerk(perkString) : NoPerk.INSTANCE;
-				pitPerks[i] = savedPerk != null ? savedPerk : NoPerk.INSTANCE;
-			}
-			for(int i = 0; i < killstreaks.size(); i++) {
-				String killstreakString = playerData.getString("killstreak-" + i);
-				Killstreak savedKillstreak = killstreakString != null ? Killstreak.getKillstreak(killstreakString) : NoKillstreak.INSTANCE;
-				if(savedKillstreak == null) killstreaks.set(i, NoKillstreak.INSTANCE);
-				else killstreaks.set(i, savedKillstreak);
-			}
-			String streak = playerData.getString("megastreak");
-			if(Objects.equals(streak, "Beastmode")) this.megastreak = new Beastmode(this);
-			if(Objects.equals(streak, "No Megastreak")) this.megastreak = new NoMegastreak(this);
-			if(Objects.equals(streak, "Highlander")) this.megastreak = new Highlander(this);
-			if(Objects.equals(streak, "Overdrive")) this.megastreak = new Overdrive(this);
-			if(Objects.equals(streak, "Uberstreak")) this.megastreak = new Uberstreak(this);
-			if(Objects.equals(streak, "To the Moon")) this.megastreak = new ToTheMoon(this);
-			if(Objects.equals(streak, "RNGesus")) this.megastreak = new RNGesus(this);
-
-			playerChatDisabled = playerData.getBoolean("disabledplayerchat");
-			killFeedDisabled = playerData.getBoolean("disabledkillfeed");
-			bountiesDisabled = playerData.getBoolean("disabledbounties");
-			streaksDisabled = playerData.getBoolean("disabledstreaks");
-			lightingDisabled = playerData.getBoolean("settings.lightning");
-			musicDisabled = playerData.getBoolean("settings.music");
-			promptPack = playerData.getBoolean("promptPack");
-
-			lastVersion = playerData.getDouble("lastversion");
-			String killEffectString = playerData.getString("killeffect");
-			if(killEffectString != null) killEffect = KillEffect.valueOf(killEffectString);
-			String deathCryString = playerData.getString("deathcry");
-			if(deathCryString != null) deathCry = DeathCry.valueOf(deathCryString);
-			String chatColorString = playerData.getString("chatcolor");
-			if(chatColorString != null) {
-				chatColor = AChatColor.valueOf(chatColorString);
-				ChatColorPanel.playerChatColors.put(player, chatColor);
-			}
-
-			goldStack = playerData.getDouble("goldstack");
-			moonBonus = playerData.getInt("moonbonus");
-			dailyUbersLeft = playerData.contains("ubersleft") ? playerData.getInt("ubersleft") : 5;
-			uberReset = playerData.getLong("ubercooldown");
-			goldGrinded = playerData.getInt("goldgrinded");
-			for(Booster booster : BoosterManager.boosterList) {
-				boosters.put(booster, playerData.getInt("boosters." + booster.refName));
-				boosterTime.put(booster, playerData.getInt("booster-time." + booster.refName));
-			}
-
-			stats = new PlayerStats(this, playerData);
-			updateXPBar();
-
-			for (int i = 0; i < brewingSessions.length; i++) {
-				brewingSessions[i] = playerData.getString("brewingsession" + (i + 1));
-			}
-			for (int i = 0; i < brewingSessions.length; i++) {
-				if(brewingSessions[i] != null) BrewingManager.brewingSessions.add(new BrewingSession(player, i, brewingSessions[i], null, null, null, null));
-			}
-
-			if(playerData.contains("taintedsouls")) {
-				taintedSouls = playerData.getInt("taintedsouls");
-			} else taintedSouls = 200;
-
-
-
-			if(chatColorString != null) {
-				chatColor = AChatColor.valueOf(chatColorString);
-				ChatColorPanel.playerChatColors.put(player, chatColor);
-			}
+	public PitPlayer() {
+		for(Booster booster : BoosterManager.boosterList) {
+			boosters.put(booster.refName, 0);
+			boosterTime.put(booster.refName, 0);
 		}
 	}
 
+//	public PitPlayer(Player player) {
+//		this.player = player;
+//		this.megastreak = new NoMegastreak(this);
+//
+//		if(!CitizensAPI.getNPCRegistry().isNPC(player)) {
+//			prefix = "";
+//			APlayer aPlayer = APlayerData.getPlayerData(player);
+//			FileConfiguration playerData = aPlayer.playerData;
+//
+//			prestige = playerData.getInt("prestige");
+//			level = playerData.contains("level") ? playerData.getInt("level") : 1;
+//			remainingXP = playerData.getInt("xp");
+//			soulsGathered = playerData.getInt("soulsgathered");
+//			renown = playerData.getInt("renown");
+//			for(int i = 0; i < pitPerks.size(); i++) {
+//				String perkString = playerData.getString("perk-" + i);
+//				PitPerk savedPerk = perkString != null ? PitPerk.getPitPerk(perkString) : NoPerk.INSTANCE;
+//				pitPerks.set(i, savedPerk != null ? savedPerk : NoPerk.INSTANCE);
+//			}
+//			for(int i = 0; i < killstreaks.size(); i++) {
+//				String killstreakString = playerData.getString("killstreak-" + i);
+//				Killstreak savedKillstreak = killstreakString != null ? Killstreak.getKillstreak(killstreakString) : NoKillstreak.INSTANCE;
+//				if(savedKillstreak == null) killstreaks.set(i, NoKillstreak.INSTANCE);
+//				else killstreaks.set(i, savedKillstreak);
+//			}
+//			String streak = playerData.getString("megastreak");
+//			if(Objects.equals(streak, "Beastmode")) this.megastreak = new Beastmode(this);
+//			if(Objects.equals(streak, "No Megastreak")) this.megastreak = new NoMegastreak(this);
+//			if(Objects.equals(streak, "Highlander")) this.megastreak = new Highlander(this);
+//			if(Objects.equals(streak, "Overdrive")) this.megastreak = new Overdrive(this);
+//			if(Objects.equals(streak, "Uberstreak")) this.megastreak = new Uberstreak(this);
+//			if(Objects.equals(streak, "To the Moon")) this.megastreak = new ToTheMoon(this);
+//			if(Objects.equals(streak, "RNGesus")) this.megastreak = new RNGesus(this);
+//
+//			playerChatDisabled = playerData.getBoolean("disabledplayerchat");
+//			killFeedDisabled = playerData.getBoolean("disabledkillfeed");
+//			bountiesDisabled = playerData.getBoolean("disabledbounties");
+//			streaksDisabled = playerData.getBoolean("disabledstreaks");
+//			lightingDisabled = playerData.getBoolean("settings.lightning");
+//			musicDisabled = playerData.getBoolean("settings.music");
+//			promptPack = playerData.getBoolean("promptPack");
+//
+//			lastVersion = playerData.getDouble("lastversion");
+//			String killEffectString = playerData.getString("killeffect");
+//			if(killEffectString != null) killEffect = KillEffect.valueOf(killEffectString);
+//			String deathCryString = playerData.getString("deathcry");
+//			if(deathCryString != null) deathCry = DeathCry.valueOf(deathCryString);
+//			String chatColorString = playerData.getString("chatcolor");
+//			if(chatColorString != null) {
+//				chatColor = AChatColor.valueOf(chatColorString);
+//				ChatColorPanel.playerChatColors.put(player, chatColor);
+//			}
+//
+//			goldStack = playerData.getDouble("goldstack");
+//			moonBonus = playerData.getInt("moonbonus");
+//			dailyUbersLeft = playerData.contains("ubersleft") ? playerData.getInt("ubersleft") : 5;
+//			uberReset = playerData.getLong("ubercooldown");
+//			goldGrinded = playerData.getInt("goldgrinded");
+//			for(Booster booster : BoosterManager.boosterList) {
+//				boosters.put(booster.refName, playerData.getInt("boosters." + booster.refName));
+//				boosterTime.put(booster.refName, playerData.getInt("booster-time." + booster.refName));
+//			}
+//
+//			stats = new PlayerStats(this, playerData);
+//			updateXPBar();
+//
+//			for(int i = 0; i < brewingSessions.size(); i++) {
+//				brewingSessions.set(i, playerData.getString("brewingsession" + (i + 1)));
+//			}
+//			for(int i = 0; i < brewingSessions.size(); i++) {
+//				if(brewingSessions.get(i) != null)
+//					BrewingManager.brewingSessions.add(new BrewingSession(player, i, brewingSessions.get(i), null, null, null, null));
+//			}
+//
+//			if(playerData.contains("taintedsouls")) {
+//				taintedSouls = playerData.getInt("taintedsouls");
+//			} else taintedSouls = 200;
+//
+//
+//			if(chatColorString != null) {
+//				chatColor = AChatColor.valueOf(chatColorString);
+//				ChatColorPanel.playerChatColors.put(player, chatColor);
+//			}
+//		}
+//	}
+
+	public void init(Player player) {
+		this.player = player;
+
+		ChatColorPanel.playerChatColors.put(player, chatColor);
+
+		if(megastreakRef.equals("nomegastreak")) this.megastreak = new NoMegastreak(this);
+		else if(megastreakRef.equals("beastmode")) this.megastreak = new Beastmode(this);
+		else if(megastreakRef.equals("highlander")) this.megastreak = new Highlander(this);
+		else if(megastreakRef.equals("overdrive")) this.megastreak = new Overdrive(this);
+		else if(megastreakRef.equals("uberstreak")) this.megastreak = new Uberstreak(this);
+		else if(megastreakRef.equals("moon")) this.megastreak = new ToTheMoon(this);
+		else if(megastreakRef.equals("rngesus")) this.megastreak = new RNGesus(this);
+
+		for(int i = 0; i < pitPerks.size(); i++) {
+			String perkString = pitPerksRef.get(i);
+			PitPerk savedPerk = perkString != null ? PitPerk.getPitPerk(perkString) : NoPerk.INSTANCE;
+			pitPerks.set(i, savedPerk);
+		}
+
+		for(int i = 0; i < killstreaks.size(); i++) {
+			String killstreakString = killstreaksRef.get(i);
+			Killstreak savedKillstreak = killstreakString != null ? Killstreak.getKillstreak(killstreakString) : NoKillstreak.INSTANCE;
+			killstreaks.set(i, savedKillstreak);
+		}
+
+		for(int i = 0; i < brewingSessions.size(); i++) {
+			if(brewingSessions.get(i) != null)
+				BrewingManager.brewingSessions.add(new BrewingSession(player, i, brewingSessions.get(i), null, null, null, null));
+		}
+
+		stats.init(this);
+		updateXPBar();
+	}
+
+	public static boolean loadPitPlayer(UUID playerUUID) {
+		for(PitPlayer testPitPlayer : pitPlayers) {
+			if(testPitPlayer.player == null) continue;
+			if(!testPitPlayer.player.getUniqueId().equals(playerUUID)) continue;
+			System.out.println("found duplicate pitplayer for " + testPitPlayer.player.getName());
+			return false;
+		}
+
+		PitPlayer pitPlayer;
+		try {
+			pitPlayer = FirestoreManager.FIRESTORE.collection(FirestoreManager.PLAYERDATA_COLLECTION)
+					.document(playerUUID.toString()).get().get().toObject(PitPlayer.class);
+			System.out.println("Loaded Data: " + Bukkit.getOfflinePlayer(playerUUID).getName());
+			assert pitPlayer != null;
+			pitPlayer.uuid = playerUUID;
+
+		} catch(Exception exception) {
+			System.out.println("--------------------------------------------------");
+			System.out.println("Playerdata for " + Bukkit.getOfflinePlayer(playerUUID).getName() + " failed to load");
+			System.out.println("Disconnecting player");
+			System.out.println();
+			exception.printStackTrace();
+			System.out.println("--------------------------------------------------");
+			return false;
+		}
+
+		pitPlayers.add(pitPlayer);
+		return true;
+	}
+
+	@Exclude
 	public static PitPlayer getPitPlayer(Player player) {
 		if(player == null) return null;
 
 		PitPlayer pitPlayer = null;
 		for(PitPlayer testPitPlayer : pitPlayers) {
-
-			if(testPitPlayer.player != player) continue;
+			if(!testPitPlayer.uuid.equals(player.getUniqueId())) continue;
 			pitPlayer = testPitPlayer;
+			if(pitPlayer.player == null) pitPlayer.init(player);
 			break;
 		}
 		if(pitPlayer == null) {
 
-			pitPlayer = new PitPlayer(player);
+			boolean isNPC = !Bukkit.getOnlinePlayers().contains(player);
+			if(isNPC) {
+				pitPlayer = new PitPlayer(player);
+			} else {
+				System.out.println("pitplayer is null and shouldn't be");
+				return null;
+			}
+
 			pitPlayers.add(pitPlayer);
 		}
 
 		return pitPlayer;
 	}
 
-	public static PitPlayer getEntityPitPlayer(LivingEntity checkPlayer) {
+	@Exclude
+	public static PitPlayer getPitPlayer(LivingEntity checkPlayer) {
 		if(!(checkPlayer instanceof Player)) return null;
 		Player player = (Player) checkPlayer;
-
-		PitPlayer pitPlayer = null;
-		for(PitPlayer testPitPlayer : pitPlayers) {
-
-			if(testPitPlayer.player != player) continue;
-			pitPlayer = testPitPlayer;
-			break;
-		}
-		if(pitPlayer == null) {
-
-			pitPlayer = new PitPlayer(player);
-			pitPlayers.add(pitPlayer);
-		}
-
-		return pitPlayer;
+		return getPitPlayer(player);
 	}
 
+	@Exclude
 	public void endKillstreak() {
 		megastreak.reset();
 		for(Killstreak killstreak : killstreaks) {
@@ -310,6 +401,7 @@ public class PitPlayer {
 		latestKillAnnouncement = 0;
 	}
 
+	@Exclude
 	public void incrementKills() {
 		kills++;
 		Bukkit.getPluginManager().callEvent(new IncrementKillsEvent(this.player, kills));
@@ -330,6 +422,7 @@ public class PitPlayer {
 		}
 	}
 
+	@Exclude
 	public void incrementAssist(double assistPercent) {
 		assistAmount = assistAmount + assistPercent;
 		if(assistAmount >= 1) {
@@ -356,10 +449,12 @@ public class PitPlayer {
 		}
 	}
 
+	@Exclude
 	public int getKills() {
 		return kills;
 	}
 
+	@Exclude
 	public void setKills(double kills) {
 
 		kills = Math.max(kills, 0);
@@ -368,10 +463,12 @@ public class PitPlayer {
 		for(int i = 0; i < kills; i++) incrementKills();
 	}
 
+	@Exclude
 	public Map<UUID, Double> getRecentDamageMap() {
 		return recentDamageMap;
 	}
 
+	@Exclude
 	public void addDamage(LivingEntity entity, double damage) {
 		if(entity == null) return;
 
@@ -395,21 +492,25 @@ public class PitPlayer {
 		assistRemove.add(bukkitTask);
 	}
 
+	@Exclude
 	public HealEvent heal(double amount) {
 
 		return heal(amount, HealEvent.HealType.HEALTH, -1);
 	}
 
+	@Exclude
 	public HealEvent heal(double amount, HealEvent.HealType healType, int max) {
 		return Misc.heal(player, amount, healType, max);
 	}
 
+	@Exclude
 	public boolean hasPerk(PitPerk pitPerk) {
 
 		for(PitPerk perk : pitPerks) if(perk == pitPerk) return true;
 		return false;
 	}
 
+	@Exclude
 	public void updateMaxHealth() {
 
 		int maxHealth = 24;
@@ -462,12 +563,14 @@ public class PitPlayer {
 		player.setMaxHealth(maxHealth);
 	}
 
+	@Exclude
 	public boolean useMana(int amount) {
 		if(amount > mana) return false;
 		mana -= amount;
 		return true;
 	}
 
+	@Exclude
 	public int getMaxMana() {
 		int maxMana = 100;
 
@@ -477,6 +580,7 @@ public class PitPlayer {
 		return maxMana;
 	}
 
+	@Exclude
 	public void damage(double damage, LivingEntity damager) {
 		if(player.getHealth() - damage <= 0) {
 			if(damager == null) {
@@ -491,7 +595,8 @@ public class PitPlayer {
 		} else player.damage(damage);
 	}
 
-	public void updateXPBar() {	
+	@Exclude
+	public void updateXPBar() {
 		if(MapManager.inDarkzone(player)) {
 			player.setLevel((int) Math.ceil(mana));
 			if(mana >= getMaxMana() - 1) player.setLevel(getMaxMana());

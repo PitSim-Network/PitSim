@@ -8,18 +8,14 @@ import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.enums.NBTTag;
 import dev.kyro.pitsim.misc.Misc;
 import org.bukkit.ChatColor;
-import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.PotionMeta;
 import org.bukkit.potion.Potion;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
-import org.bukkit.potion.PotionType;
 
-import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -47,7 +43,7 @@ public class BrewingSession {
             this.reduction = reduction;
             startTime = System.currentTimeMillis();
             PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
-            pitPlayer.brewingSessions[brewingSlot - 1] = getSaveString();
+            pitPlayer.brewingSessions.set(brewingSlot - 1, getSaveString());
             pitPlayer.save();
         }
     }
@@ -86,7 +82,7 @@ public class BrewingSession {
         AUtil.giveItemSafely(player, nbtItem.getItem());
         BrewingManager.brewingSessions.remove(this);
         PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
-        pitPlayer.brewingSessions[brewingSlot - 1] = null;
+        pitPlayer.brewingSessions.set(brewingSlot - 1, null);
         pitPlayer.save();
     }
 

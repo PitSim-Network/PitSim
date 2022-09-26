@@ -707,6 +707,16 @@ public class PlayerManager implements Listener {
 
 	@EventHandler
 	public void onJoin(AsyncPlayerPreLoginEvent event) {
+		UUID playerUUID = event.getUniqueId();
+		boolean success = PitPlayer.loadPitPlayer(playerUUID);
+		if(FirestoreManager.FIRESTORE == null) {
+			event.disallow(AsyncPlayerPreLoginEvent.Result.KICK_OTHER,
+					ChatColor.RED + "Server still starting up");
+		} else if(!success) {
+			event.disallow(AsyncPlayerPreLoginEvent.Result.KICK_OTHER,
+					ChatColor.RED + "Playerdata failed to load. Please open a support ticket: discord.pitsim.net");
+		}
+
 		Player player = Bukkit.getServer().getPlayerExact(event.getName());
 		if(player == null) return;
 		if(player.isOnline()) {
@@ -751,7 +761,7 @@ public class PlayerManager implements Listener {
 				public void run() {
 					pitPlayer.megastreak.stop();
 					pitPlayer.megastreak = new NoMegastreak(pitPlayer);
-					pitPlayer.fullSave();
+					pitPlayer.save();
 				}
 			}.runTaskLater(PitSim.INSTANCE, 1L);
 		}
@@ -766,7 +776,7 @@ public class PlayerManager implements Listener {
 				public void run() {
 					pitPlayer.megastreak.stop();
 					pitPlayer.megastreak = new NoMegastreak(pitPlayer);
-					pitPlayer.fullSave();
+					pitPlayer.save();
 				}
 			}.runTaskLater(PitSim.INSTANCE, 1L);
 		}

@@ -152,13 +152,13 @@ public class BackwardsCompatibility implements Listener {
 		}
 
 
-		for(int i = 0; i < pitPlayer.pitPerks.length; i++) {
-			if(pitPlayer.pitPerks[i].refName.equals("streaker")) {
-				pitPlayer.pitPerks[i] = NoPerk.INSTANCE;
+		for(int i = 0; i < pitPlayer.pitPerks.size(); i++) {
+			if(pitPlayer.pitPerks.get(i).refName.equals("streaker")) {
+				pitPlayer.pitPerks.set(i, NoPerk.INSTANCE);
 				playerData.set("perk-" + (i + 1), NoPerk.INSTANCE.refName);
 			}
-			if(pitPlayer.pitPerks[i].refName.equals("firststrike")) {
-				pitPlayer.pitPerks[i] = NoPerk.INSTANCE;
+			if(pitPlayer.pitPerks.get(i).refName.equals("firststrike")) {
+				pitPlayer.pitPerks.set(i, NoPerk.INSTANCE);
 				playerData.set("perk-" + (i + 1), NoPerk.INSTANCE.refName);
 			}
 		}
