@@ -18,7 +18,7 @@ public class Thick extends PitPerk {
 	public static Thick INSTANCE;
 
 	public Thick() {
-		super("Thick", "thick", new ItemStack(Material.APPLE, 1, (short) 0), 14, false, "", INSTANCE);
+		super("Thick", "thick", new ItemStack(Material.APPLE, 1, (short) 0), 14, false, "", INSTANCE, false);
 		INSTANCE = this;
 	}
 

@@ -45,7 +45,9 @@ public class ApplyPerkPanel extends AGUIPanel {
 
 				meta.setDisplayName(ChatColor.translateAlternateColorCodes('&', "&c" + pitPerk.name));
 
-				List<String> lore = new ArrayList<>(pitPerk.getDescription());
+				List<String> lore = new ArrayList<>();
+				if(pitPerk.healing) lore.add(ChatColor.RED + "Healing Perk");
+				lore.addAll(pitPerk.getDescription());
 				lore.add("");
 				lore.add(ChatColor.RED + "Unlocked in the Renown shop!");
 				meta.setLore(lore);
@@ -58,7 +60,9 @@ public class ApplyPerkPanel extends AGUIPanel {
 
 				meta.setDisplayName(ChatColor.translateAlternateColorCodes('&', "&a" + pitPerk.name));
 
-				List<String> lore = new ArrayList<>(pitPerk.getDescription());
+				List<String> lore = new ArrayList<>();
+				if(pitPerk.healing) lore.add(ChatColor.RED + "Healing Perk");
+				lore.addAll(pitPerk.getDescription());
 				lore.add("");
 
 				if(perkGUI.isActive(pitPerk))
@@ -129,6 +133,11 @@ public class ApplyPerkPanel extends AGUIPanel {
 				}
 
 				for(PitPerk activePerk : perkGUI.getActivePerks()) {
+					if(activePerk.healing && clickedPerk.healing) {
+						AOutput.error(player, "&cYou cannot select two healing perks!");
+						Sounds.ERROR.play(player);
+						return;
+					}
 					if(activePerk != clickedPerk || activePerk.name.equals("No Perk")) continue;
 					Sounds.ERROR.play(player);
 					AOutput.error(perkGUI.player, "&cThat perk is already equipped");

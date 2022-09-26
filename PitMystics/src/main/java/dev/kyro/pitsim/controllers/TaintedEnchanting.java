@@ -1,6 +1,6 @@
 package dev.kyro.pitsim.controllers;
 
-import dev.kyro.pitsim.controllers.objects.PitEnchant;
+import  dev.kyro.pitsim.controllers.objects.PitEnchant;
 import dev.kyro.pitsim.enchants.SelfCheckout;
 import dev.kyro.pitsim.enums.ApplyType;
 import dev.kyro.pitsim.enums.MysticType;
@@ -58,6 +58,9 @@ public class TaintedEnchanting {
 
                 if(forceNew || EnchantManager.getEnchantsOnItem(mystic).size() < 3 && newEnchantRand < 0.3) {
                     Random random = new Random();
+
+                    scytheEnchants.removeAll(EnchantManager.getEnchantsOnItem(mystic).keySet());
+
                     PitEnchant randEnchant = scytheEnchants.get(random.nextInt(scytheEnchants.size()));
 
                     try {

@@ -12,7 +12,7 @@ public class Telekinesis extends PitPerk {
 	public static Telekinesis INSTANCE;
 
 	public Telekinesis() {
-		super("Telekinesis", "telekinesis", new ItemStack(Material.ROTTEN_FLESH), 20, false, "", INSTANCE);
+		super("Telekinesis", "telekinesis", new ItemStack(Material.ROTTEN_FLESH), 20, false, "", INSTANCE, false);
 		INSTANCE = this;
 	}
 

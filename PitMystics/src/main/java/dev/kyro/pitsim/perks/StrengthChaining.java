@@ -25,7 +25,7 @@ public class StrengthChaining extends PitPerk {
 	public static Map<UUID, Integer> timerMap = new HashMap<>();
 
 	public StrengthChaining() {
-		super("Strength-Chaining", "strength", new ItemStack(Material.REDSTONE), 12, false, "", INSTANCE);
+		super("Strength-Chaining", "strength", new ItemStack(Material.REDSTONE), 12, false, "", INSTANCE, false);
 		INSTANCE = this;
 	}
 

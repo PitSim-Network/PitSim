@@ -67,7 +67,8 @@ public class ItemManager implements Listener {
 		NBTItem nbtItem = new NBTItem(itemStack);
 
 		Location darkAuction = AuctionDisplays.pedestalLocations[0];
-		double distance = darkAuction.distance(event.getPlayer().getLocation());
+		double distance = 50;
+		if(player.getWorld() == MapManager.getDarkzone()) distance = darkAuction.distance(event.getPlayer().getLocation());
 
 		boolean cancelDrop;
 		cancelDrop = event.getPlayer().getWorld() == MapManager.getDarkzone() && distance < 50;

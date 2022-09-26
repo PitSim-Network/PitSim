@@ -62,7 +62,6 @@ public class Stereo extends PitEnchant {
 //					}
 
 					if(StereoManager.playerMusic.containsKey(player)) return;
-					Bukkit.broadcastMessage("1");
 
 
 					if(!player.hasPermission("pitsim.stereo") && !stereoOnChest) {

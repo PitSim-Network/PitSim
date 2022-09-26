@@ -24,7 +24,7 @@ public class Gladiator extends PitPerk {
 	public static Map<UUID, Integer> amplifierMap = new HashMap<>();
 
 	public Gladiator() {
-		super("Gladiator", "gladiator", new ItemStack(Material.BONE, 1, (short) 0), 13, false, "", INSTANCE);
+		super("Gladiator", "gladiator", new ItemStack(Material.BONE, 1, (short) 0), 13, false, "", INSTANCE, false);
 		INSTANCE = this;
 	}
 

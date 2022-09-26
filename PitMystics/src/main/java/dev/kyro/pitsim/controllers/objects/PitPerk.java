@@ -20,8 +20,9 @@ public abstract class PitPerk implements Listener {
 	public boolean renownUnlockable;
 	public String upgradeRef;
 	public PitPerk INSTANCE;
+	public boolean healing;
 
-	public PitPerk(String name, String refName, ItemStack displayItem, int guiSlot, boolean renownUnlockable, String upgradeRef, PitPerk instance) {
+	public PitPerk(String name, String refName, ItemStack displayItem, int guiSlot, boolean renownUnlockable, String upgradeRef, PitPerk instance, boolean healing) {
 //        INSTANCE = this;
 		this.name = name;
 		this.refName = refName;
@@ -30,6 +31,7 @@ public abstract class PitPerk implements Listener {
 		this.renownUnlockable = renownUnlockable;
 		this.upgradeRef = upgradeRef;
 		this.INSTANCE = instance;
+		this.healing = healing;
 
 		pitPerks.add(this);
 	}

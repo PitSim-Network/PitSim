@@ -12,7 +12,7 @@ public class AssistantToTheStreaker extends PitPerk {
 	public static AssistantToTheStreaker INSTANCE;
 
 	public AssistantToTheStreaker() {
-		super("Assistant Streaker", "atts", new ItemStack(Material.SPRUCE_FENCE, 1, (short) 0), 15, false, "", INSTANCE);
+		super("Assistant Streaker", "atts", new ItemStack(Material.SPRUCE_FENCE, 1, (short) 0), 15, false, "", INSTANCE, false);
 		INSTANCE = this;
 	}
 
