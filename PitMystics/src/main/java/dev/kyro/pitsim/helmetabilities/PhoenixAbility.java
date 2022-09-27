@@ -9,6 +9,7 @@ import dev.kyro.pitsim.events.HealEvent;
 import dev.kyro.pitsim.events.KillEvent;
 import dev.kyro.pitsim.events.OofEvent;
 import dev.kyro.pitsim.megastreaks.Uberstreak;
+import dev.kyro.pitsim.misc.Misc;
 import dev.kyro.pitsim.misc.Sounds;
 import org.bukkit.Material;
 import org.bukkit.entity.Entity;
@@ -16,6 +17,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.potion.PotionEffectType;
 import org.bukkit.util.Vector;
 
 import java.text.DecimalFormat;
@@ -26,7 +28,7 @@ import java.util.UUID;
 
 public class PhoenixAbility extends HelmetAbility {
 	public static List<UUID> alreadyActivatedList = new ArrayList<>();
-	public static int cost = 69_420;
+	public static int cost = 75_000;
 
 	public PhoenixAbility(Player player) {
 
@@ -71,6 +73,8 @@ public class PhoenixAbility extends HelmetAbility {
 			return;
 		}
 
+		Misc.applyPotionEffect(player, PotionEffectType.INCREASE_DAMAGE, 200, 0, true, false);
+
 		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
 		pitPlayer.heal(player.getMaxHealth());
 		pitPlayer.heal(player.getMaxHealth() * 2, HealEvent.HealType.ABSORPTION, (int) player.getMaxHealth() * 2);
@@ -90,15 +94,20 @@ public class PhoenixAbility extends HelmetAbility {
 			}
 		}
 
-		AOutput.send(player, "&6&lGOLDEN HELMET! &7Used &9Phoenix&7! (&6-69,420g&7)");
+		DecimalFormat decimalFormat = new DecimalFormat("#,###");
+		AOutput.send(player, "&6&lGOLDEN HELMET! &7Used &9Phoenix&7! (&6-" + decimalFormat.format(cost) + "g&7)");
 		Sounds.PHOENIX.play(player);
 	}
 
 	@Override
 	public List<String> getDescription() {
 		DecimalFormat formatter = new DecimalFormat("#,###.#");
-		return Arrays.asList("&7Double-Sneak to rebirth:", "&7Heal to full HP and gain absorption",
-				"&7You cannot heal until you die or spawn", "", "&7Cost: &6" + formatter.format(cost) + "g");
+		return Arrays.asList("&7Double-Sneak to rebirth:",
+				"&a\u25a0 &7Heal to &cfull HP",
+				"&a\u25a0 &cStrength I &7(10s)",
+				"&a\u25a0 &7Gain &6absorption &7equal to 2x your max hp",
+				"&c\u25a0 &7You cannot heal until you die or spawn",
+				"", "&7Cost: &6" + formatter.format(cost) + "g");
 	}
 
 	@Override
