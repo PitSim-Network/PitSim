@@ -1,12 +1,9 @@
 package dev.kyro.pitsim.controllers;
 
-import dev.kyro.arcticapi.data.AConfig;
 import dev.kyro.arcticapi.data.APlayer;
 import dev.kyro.arcticapi.data.APlayerData;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.controllers.objects.Leaderboard;
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -63,7 +60,7 @@ public class LeaderboardManager {
 				for(int i = 0; i < 20; i++) {
 					if(queue.isEmpty()) {
 						queue.addAll(APlayerData.getAllData().entrySet());
-						Bukkit.broadcastMessage(ChatColor.translateAlternateColorCodes('&', "&b&lDEBUG! &7Refilling leaderboard queue!"));
+//						Bukkit.broadcastMessage(ChatColor.translateAlternateColorCodes('&', "&b&lDEBUG! &7Refilling leaderboard queue!"));
 					}
 					Map.Entry<UUID, APlayer> entry = queue.remove(0);
 					for(Leaderboard leaderboard : leaderboards) leaderboard.calculate(entry.getKey(), entry.getValue());
