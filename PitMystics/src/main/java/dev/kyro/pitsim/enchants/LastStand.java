@@ -46,7 +46,7 @@ public class LastStand extends PitEnchant {
 	}
 
 	public int getCooldownSeconds(int enchantLvl) {
-		return 15;
+		return 12;
 	}
 
 	public int getProcHealth() {
