@@ -33,7 +33,6 @@ public class KingBuster extends PitEnchant {
 	}
 
 	public int getDamage(int enchantLvl) {
-
-		return (int) (Math.floor(Math.pow(enchantLvl, 1.5) * 3.2) + 4);
+		return enchantLvl * 7 + 5;
 	}
 }
