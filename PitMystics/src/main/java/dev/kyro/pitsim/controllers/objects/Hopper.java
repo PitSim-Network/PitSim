@@ -7,6 +7,7 @@ import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.commands.FreshCommand;
 import dev.kyro.pitsim.controllers.EnchantManager;
 import dev.kyro.pitsim.controllers.HopperManager;
+import dev.kyro.pitsim.controllers.NonManager;
 import dev.kyro.pitsim.controllers.SpawnManager;
 import dev.kyro.pitsim.enums.MysticType;
 import dev.kyro.pitsim.enums.PantColor;
@@ -187,6 +188,7 @@ public class Hopper {
 				if(hopper.getWorld() != hitTarget.getWorld()) continue;
 				if(hopper.getLocation().distance(hitTarget.getLocation()) > range) continue;
 				if(!canHitOtherHoppers && HopperManager.isHopper(hitTarget)) continue;
+				if(NonManager.getNon(hitTarget) != null && Math.random() > 0.05) continue;
 				hitTarget.damage(damage, hopper);
 				if(hitTarget == target) lastHitTarget = System.currentTimeMillis();
 			}
