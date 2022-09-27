@@ -47,6 +47,6 @@ public class Crush extends PitEnchant {
 
 	public int getDuration(int enchantLvl) {
 
-		return (int) (Math.floor(Math.pow(enchantLvl, 0.7) * 2 + enchantLvl / 2D) * 2);
+		return enchantLvl * 6 + 2;
 	}
 }
