@@ -79,7 +79,6 @@ public class ItemManager implements Listener {
 			return;
 		}
 
-
 		if(nbtItem.hasKey(NBTTag.UNDROPPABLE.getRef())) {
 
 			event.setCancelled(true);
