@@ -29,7 +29,7 @@ import java.util.UUID;
 
 public class JudgementAbility extends HelmetAbility {
 	public static List<UUID> cooldownList = new ArrayList<>();
-	public static final int GOLD_COST = 5_000;
+	public static final int GOLD_COST = 7_000;
 	public BukkitTask runnable;
 
 	public JudgementAbility(Player player) {
