@@ -39,7 +39,7 @@ public class CounterOffensive extends PitEnchant {
 	}
 
 	public int getCombo(int enchantLvl) {
-		return Math.max(6 - enchantLvl, 1);
+		return Math.max(5 - enchantLvl, 1);
 	}
 
 	public int getAmplifier(int enchantLvl) {
@@ -47,7 +47,6 @@ public class CounterOffensive extends PitEnchant {
 	}
 
 	public int getSeconds(int enchantLvl) {
-		if(enchantLvl == 1) return 2;
-		return enchantLvl * 2 - 1;
+		return Misc.linearEnchant(enchantLvl, 0.5, 2);
 	}
 }
