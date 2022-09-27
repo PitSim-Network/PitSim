@@ -30,7 +30,7 @@ public class SpeedyHit extends PitEnchant {
 		if(cooldown.isOnCooldown()) return;
 		else cooldown.restart();
 
-		Misc.applyPotionEffect(attackEvent.attacker, PotionEffectType.SPEED, getDuration(enchantLvl) * 20, 0, true, false);
+		Misc.applyPotionEffect(attackEvent.attacker, PotionEffectType.SPEED, getDuration(enchantLvl) * 20, getAmplifier(enchantLvl), true, false);
 	}
 
 	@Override
@@ -38,6 +38,11 @@ public class SpeedyHit extends PitEnchant {
 
 		return new ALoreBuilder("&7Gain Speed I for &e" + getDuration(enchantLvl) + "s &7on hit (" +
 				getCooldown(enchantLvl) + "s", "&7cooldown)").getLore();
+	}
+
+	public int getAmplifier(int enchantLvl) {
+
+		return Misc.linearEnchant(enchantLvl, 0.5, 1);
 	}
 
 	public int getDuration(int enchantLvl) {
