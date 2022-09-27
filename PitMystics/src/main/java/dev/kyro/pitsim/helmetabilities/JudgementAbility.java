@@ -5,19 +5,21 @@ import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.controllers.HopperManager;
+import dev.kyro.pitsim.controllers.objects.GoldenHelmet;
 import dev.kyro.pitsim.controllers.objects.HelmetAbility;
 import dev.kyro.pitsim.controllers.objects.Hopper;
-import dev.kyro.pitsim.controllers.objects.GoldenHelmet;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.events.AttackEvent;
 import dev.kyro.pitsim.misc.Misc;
 import dev.kyro.pitsim.misc.Sounds;
+import org.bukkit.Effect;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.scheduler.BukkitTask;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -28,6 +30,7 @@ import java.util.UUID;
 public class JudgementAbility extends HelmetAbility {
 	public static List<UUID> cooldownList = new ArrayList<>();
 	public static final int GOLD_COST = 5_000;
+	public BukkitTask runnable;
 
 	public JudgementAbility(Player player) {
 
@@ -118,6 +121,13 @@ public class JudgementAbility extends HelmetAbility {
 		Sounds.HELMET_ACTIVATE.play(player);
 		DecimalFormat decimalFormat = new DecimalFormat("#,###");
 		AOutput.send(player, "&6&lGOLDEN HELMET! &aActivated &9Judgement&7. (&6-" + decimalFormat.format(GOLD_COST) + "g&7 per hit)");
+
+		runnable = new BukkitRunnable() {
+			@Override
+			public void run() {
+				player.getWorld().playEffect(player.getLocation().add(0, 2, 0), Effect.VILLAGER_THUNDERCLOUD, 1);
+			}
+		}.runTaskTimer(PitSim.INSTANCE, 0, 4);
 	}
 
 	@Override
@@ -148,6 +158,7 @@ public class JudgementAbility extends HelmetAbility {
 			}.runTaskLater(PitSim.INSTANCE, 20 * 60);
 			AOutput.send(player, "&6&lGOLDEN HELMET! &cDeactivated &9Judgement&c. &7(60s reactivation cooldown)");
 		}
+		if(runnable != null) runnable.cancel();
 	}
 
 	@Override
