@@ -9,6 +9,7 @@ import dev.kyro.pitsim.controllers.EnchantManager;
 import dev.kyro.pitsim.controllers.HopperManager;
 import dev.kyro.pitsim.controllers.NonManager;
 import dev.kyro.pitsim.controllers.SpawnManager;
+import dev.kyro.pitsim.enchants.Hearts;
 import dev.kyro.pitsim.enums.MysticType;
 import dev.kyro.pitsim.enums.PantColor;
 import dev.kyro.pitsim.misc.Misc;
@@ -79,7 +80,11 @@ public class Hopper {
 		for(Map.Entry<Equipment.EquipmentSlot, ItemStack> entry : type.getEquipment().entrySet())
 			equipment.set(entry.getKey(), entry.getValue());
 		if(type == Type.GSET) {
-			hopper.setMaxHealth(28);
+			int maxHealth = 28;
+			int heartsLvl = EnchantManager.getEnchantLevel(hopper.getEquipment().getLeggings(), EnchantManager.getEnchant("hearts"));
+			if(!Misc.isAirOrNull(hopper.getEquipment().getLeggings()) && heartsLvl != 0) maxHealth += Hearts.INSTANCE.getExtraHealth(heartsLvl);
+
+			hopper.setMaxHealth(maxHealth);
 			hopper.setHealth(hopper.getMaxHealth());
 		} else if(type == Type.VENOM) {
 			hopper.setMaxHealth(24);
@@ -174,9 +179,9 @@ public class Hopper {
 				if(SpawnManager.isInSpawn(hitTarget.getLocation())) continue;
 
 				double range = 3.7;
-				if(!Misc.isAirOrNull(hopper.getEquipment().getLeggings()) &&
-						EnchantManager.getEnchantLevel(hopper.getEquipment().getLeggings(), EnchantManager.getEnchant("regularity")) != 0)
-					range -= 0.7;
+//				if(!Misc.isAirOrNull(hopper.getEquipment().getLeggings()) &&
+//						EnchantManager.getEnchantLevel(hopper.getEquipment().getLeggings(), EnchantManager.getEnchant("regularity")) != 0)
+//					range -= 0.7;
 
 				double damage = 7.5;
 				if(isCritical) damage *= 1.5;
@@ -309,36 +314,36 @@ public class Hopper {
 					break;
 				case GSET:
 					ItemStack gsetSword = FreshCommand.getFreshItem(MysticType.SWORD, null);
-					double random = Math.random();
+//					double random = Math.random();
+					double random = 0.3;
 					try {
 						if(random < 0.33) {
-							gsetSword = EnchantManager.addEnchant(gsetSword, EnchantManager.getEnchant("bill"), 1, false);
+							gsetSword = EnchantManager.addEnchant(gsetSword, EnchantManager.getEnchant("bill"), 2, false);
 							gsetSword = EnchantManager.addEnchant(gsetSword, EnchantManager.getEnchant("perun"), 3, false);
 							gsetSword = EnchantManager.addEnchant(gsetSword, EnchantManager.getEnchant("comboheal"), 3, false);
 						} else if(random < 0.67) {
-							gsetSword = EnchantManager.addEnchant(gsetSword, EnchantManager.getEnchant("lifesteal"), 3, false);
-							gsetSword = EnchantManager.addEnchant(gsetSword, EnchantManager.getEnchant("bill"), 3, false);
+							gsetSword = EnchantManager.addEnchant(gsetSword, EnchantManager.getEnchant("lifesteal"), 1, false);
+							gsetSword = EnchantManager.addEnchant(gsetSword, EnchantManager.getEnchant("bill"), 8, false);
 						} else {
-							gsetSword = EnchantManager.addEnchant(gsetSword, EnchantManager.getEnchant("lifesteal"), 2, false);
-//							gsetSword = EnchantManager.addEnchant(gsetSword, EnchantManager.getEnchant("bill"), 1, false);
-							gsetSword = EnchantManager.addEnchant(gsetSword, EnchantManager.getEnchant("painfocus"), 10, false);
+//							gsetSword = EnchantManager.addEnchant(gsetSword, EnchantManager.getEnchant("lifesteal"), 1, false);
+							gsetSword = EnchantManager.addEnchant(gsetSword, EnchantManager.getEnchant("sharp"), 50, false);
+							gsetSword = EnchantManager.addEnchant(gsetSword, EnchantManager.getEnchant("painfocus"), 15, false);
 						}
 					} catch(Exception ignored) {
 					}
 					ItemStack gsetPants = FreshCommand.getFreshItem(MysticType.PANTS, PantColor.getNormalRandom());
 					try {
 
-						gsetPants = EnchantManager.addEnchant(gsetPants, EnchantManager.getEnchant("soli"), 3, false);
 						gsetPants = EnchantManager.addEnchant(gsetPants, EnchantManager.getEnchant("cf"), 3, false);
+						gsetPants = EnchantManager.addEnchant(gsetPants, EnchantManager.getEnchant("toxic"), 40, false);
 						if(random < 0.33) {
 							gsetPants = EnchantManager.addEnchant(gsetPants, EnchantManager.getEnchant("mirror"), 3, false);
-							gsetPants = EnchantManager.addEnchant(gsetPants, EnchantManager.getEnchant("regularity"), 3, false);
+							gsetPants = EnchantManager.addEnchant(gsetPants, EnchantManager.getEnchant("regularity"), 5, false);
 						} else if(random < 0.66) {
 							gsetPants = EnchantManager.addEnchant(gsetPants, EnchantManager.getEnchant("mirror"), 3, false);
-							gsetPants = EnchantManager.addEnchant(gsetPants, EnchantManager.getEnchant("rgm"), 3, false);
+							gsetPants = EnchantManager.addEnchant(gsetPants, EnchantManager.getEnchant("rgm"), 5, false);
 						} else {
-							gsetPants = EnchantManager.addEnchant(gsetPants, EnchantManager.getEnchant("soli"), 3, false);
-							gsetPants = EnchantManager.addEnchant(gsetPants, EnchantManager.getEnchant("cf"), 3, false);
+							gsetPants = EnchantManager.addEnchant(gsetPants, EnchantManager.getEnchant("hearts"), 39, false);
 						}
 					} catch(Exception ignored) {
 					}
