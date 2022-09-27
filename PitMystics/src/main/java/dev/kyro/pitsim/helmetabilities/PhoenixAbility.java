@@ -3,21 +3,30 @@ package dev.kyro.pitsim.helmetabilities;
 import dev.kyro.arcticapi.builders.AItemStackBuilder;
 import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.arcticapi.misc.AOutput;
+import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.controllers.NonManager;
-import dev.kyro.pitsim.controllers.objects.*;
+import dev.kyro.pitsim.controllers.SpawnManager;
+import dev.kyro.pitsim.controllers.objects.GoldenHelmet;
+import dev.kyro.pitsim.controllers.objects.HelmetAbility;
+import dev.kyro.pitsim.controllers.objects.Non;
+import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.events.HealEvent;
 import dev.kyro.pitsim.events.KillEvent;
 import dev.kyro.pitsim.events.OofEvent;
 import dev.kyro.pitsim.megastreaks.Uberstreak;
 import dev.kyro.pitsim.misc.Misc;
 import dev.kyro.pitsim.misc.Sounds;
+import org.bukkit.Effect;
+import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.World;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffectType;
+import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
 
 import java.text.DecimalFormat;
@@ -79,24 +88,51 @@ public class PhoenixAbility extends HelmetAbility {
 		pitPlayer.heal(player.getMaxHealth());
 		pitPlayer.heal(player.getMaxHealth() * 2, HealEvent.HealType.ABSORPTION, (int) player.getMaxHealth() * 2);
 		alreadyActivatedList.add(player.getUniqueId());
-		for(Entity entity : player.getNearbyEntities(5, 5, 5)) {
-			if(!(entity instanceof Player)) continue;
-			Player target = (Player) entity;
-			Non non = NonManager.getNon(target);
+		if(!SpawnManager.isInSpawn(player.getLocation())) {
+			for(Entity entity : player.getNearbyEntities(5, 5, 5)) {
+				if(!(entity instanceof Player)) continue;
+				Player target = (Player) entity;
+				Non non = NonManager.getNon(target);
 
-			if(target == player) continue;
-			PitPlayer pitTarget = PitPlayer.getPitPlayer(target);
-			if(non == null) {
-				if(pitTarget.megastreak.getClass() == Uberstreak.class && pitTarget.megastreak.isOnMega()) continue;
-				Vector force = target.getLocation().toVector().subtract(player.getLocation().toVector())
-						.setY(1).normalize().multiply(1.15);
-				target.setVelocity(force);
+				if(target == player) continue;
+				PitPlayer pitTarget = PitPlayer.getPitPlayer(target);
+				if(non == null) {
+					if(pitTarget.megastreak.getClass() == Uberstreak.class && pitTarget.megastreak.isOnMega()) continue;
+					if(SpawnManager.isInSpawn(target.getLocation())) continue;
+					Vector force = target.getLocation().toVector().subtract(player.getLocation().toVector())
+							.setY(1).normalize().multiply(1.15);
+					target.setVelocity(force);
+				}
 			}
 		}
 
 		DecimalFormat decimalFormat = new DecimalFormat("#,###");
 		AOutput.send(player, "&6&lGOLDEN HELMET! &7Used &9Phoenix&7! (&6-" + decimalFormat.format(cost) + "g&7)");
-		Sounds.PHOENIX.play(player);
+		Sounds.PHOENIX.play(player.getLocation(), 15);
+
+		World world = player.getWorld();
+		new BukkitRunnable() {
+			int count = 0;
+			@Override
+			public void run() {
+				if(count++ == 5) {
+					cancel();
+					return;
+				}
+
+				for(int i = 0; i < 50; i++) {
+					double x = player.getLocation().getX() + Math.random() * 20 - 10;
+					double y = player.getLocation().getY() + Math.random() * 12 - 2;
+					double z = player.getLocation().getZ() + Math.random() * 20 - 10;
+
+					Location particleLoc = new Location(world, x, y, z);
+					double distance = particleLoc.distance(player.getLocation());
+					if(Math.min(20 - distance, 10) > Math.random() * 20) continue;
+
+					world.playEffect(particleLoc, Effect.LAVA_POP, 1);
+				}
+			}
+		}.runTaskTimer(PitSim.INSTANCE, 0L, 1);
 	}
 
 	@Override
