@@ -197,6 +197,7 @@ public class Sounds {
 				soundMoment.play(player);
 				return;
 			}
+			List<SoundMoment> soundTimeList = new ArrayList<>(this.soundTimeList);
 			new BukkitRunnable() {
 				@Override
 				public void run() {
@@ -220,6 +221,7 @@ public class Sounds {
 				soundMoment.play(location);
 				return;
 			}
+			List<SoundMoment> soundTimeList = new ArrayList<>(this.soundTimeList);
 			new BukkitRunnable() {
 				@Override
 				public void run() {
