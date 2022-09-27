@@ -32,7 +32,6 @@ public class Berserker extends PitEnchant {
 	}
 
 	public int getChance(int enchantLvl) {
-		if(enchantLvl == 1) return 12;
-		return enchantLvl * 10;
+		return enchantLvl * 12 + 24;
 	}
 }
