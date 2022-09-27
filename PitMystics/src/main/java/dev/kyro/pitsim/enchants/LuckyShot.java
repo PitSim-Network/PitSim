@@ -42,7 +42,7 @@ public class LuckyShot extends PitEnchant {
 		for(Arrow luckyShot : luckyShots) {
 			if(luckyShot.equals(attackEvent.arrow)) {
 
-				attackEvent.multipliers.add(4.0);
+				attackEvent.multipliers.add(3.0);
 				String attack = "&e&lLUCKY SHOT! &7against %luckperms_prefix%%player_name%&7!";
 				String defend = "&c&lOUCH! %luckperms_prefix%%player_name% &7got a lucky shot against you!";
 				if(attackEvent.defenderIsPlayer) {
@@ -101,11 +101,10 @@ public class LuckyShot extends PitEnchant {
 	public List<String> getDescription(int enchantLvl) {
 
 		return new ALoreBuilder("&e" + getChance(enchantLvl) + "&e% &7chance for a shot to deal",
-				"&7quadruple damage").getLore();
+				"&7triple damage").getLore();
 	}
 
 	public int getChance(int enchantLvl) {
-
-		return Math.min((int) (Math.pow(enchantLvl, 1.5) * 2), 100);
+		return enchantLvl * 4 + 3;
 	}
 }
