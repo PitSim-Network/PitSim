@@ -78,6 +78,6 @@ public class Electrolytes extends PitEnchant {
 	}
 
 	public int getMaxSeconds(int enchantLvl) {
-		return 6;
+		return 8;
 	}
 }
