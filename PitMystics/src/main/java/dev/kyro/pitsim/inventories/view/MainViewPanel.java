@@ -9,6 +9,8 @@ import dev.kyro.pitsim.controllers.objects.PitPerk;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.killstreaks.NoKillstreak;
 import dev.kyro.pitsim.perks.NoPerk;
+import me.clip.placeholderapi.PlaceholderAPI;
+import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
@@ -36,8 +38,9 @@ public class MainViewPanel extends AGUIPanel {
 		}
 
 		ALoreBuilder skullLore = new ALoreBuilder();
+		String rankMessage = ChatColor.translateAlternateColorCodes('&', "&7To: &8[%luckperms_primary_group_name%&8] %luckperms_prefix%" + target.getName());
 		ItemStack skull = new AItemStackBuilder(Material.SKULL_ITEM, 1, 3)
-				.setName("&7" + player.getName())
+				.setName(PlaceholderAPI.setPlaceholders(target, rankMessage))
 				.setLore(skullLore)
 				.getItemStack();
 		SkullMeta skullMeta = (SkullMeta) skull.getItemMeta();
