@@ -1,6 +1,7 @@
 package dev.kyro.pitsim.enchants;
 
 import dev.kyro.arcticapi.builders.ALoreBuilder;
+import dev.kyro.arcticapi.misc.AUtil;
 import dev.kyro.pitsim.controllers.Cooldown;
 import dev.kyro.pitsim.controllers.objects.PitEnchant;
 import dev.kyro.pitsim.enums.ApplyType;
@@ -36,13 +37,13 @@ public class SpeedyHit extends PitEnchant {
 	@Override
 	public List<String> getDescription(int enchantLvl) {
 
-		return new ALoreBuilder("&7Gain Speed I for &e" + getDuration(enchantLvl) + "s &7on hit (" +
+		return new ALoreBuilder("&7Gain Speed " + AUtil.toRoman(getAmplifier(enchantLvl) + 1) + " for &e" + getDuration(enchantLvl) + "s &7on hit (" +
 				getCooldown(enchantLvl) + "s", "&7cooldown)").getLore();
 	}
 
 	public int getAmplifier(int enchantLvl) {
 
-		return Misc.linearEnchant(enchantLvl, 0.5, 1);
+		return Misc.linearEnchant(enchantLvl, 0.5, 0);
 	}
 
 	public int getDuration(int enchantLvl) {

@@ -12,6 +12,7 @@ import dev.kyro.pitsim.misc.Sounds;
 import org.bukkit.event.EventHandler;
 import org.bukkit.potion.PotionEffectType;
 
+import java.text.DecimalFormat;
 import java.util.List;
 
 public class ComboStun extends PitEnchant {
@@ -58,8 +59,8 @@ public class ComboStun extends PitEnchant {
 
 	@Override
 	public List<String> getDescription(int enchantLvl) {
-
-		return new ALoreBuilder("&7The &efifth &7strike on an enemy", "&7stuns them for " + getDuration(enchantLvl) + " &7seconds",
+		DecimalFormat decimalFormat = new DecimalFormat("0.0");
+		return new ALoreBuilder("&7The &efifth &7strike on an enemy", "&7stuns them for " + decimalFormat.format(getDuration(enchantLvl)) + " &7seconds",
 				"&7&o(Can only be stunned every 8s)").getLore();
 	}
 

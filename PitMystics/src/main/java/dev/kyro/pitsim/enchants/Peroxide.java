@@ -51,6 +51,6 @@ public class Peroxide extends PitEnchant {
 
 	public int getDuration(int enchantLvl) {
 
-		return Misc.linearEnchant(enchantLvl, 0.5, 2);
+		return Misc.linearEnchant(enchantLvl, 0.5, 2) * 20;
 	}
 }
