@@ -53,7 +53,7 @@ public class HermitAbility extends HelmetAbility {
 				} else {
 					Sounds.HELMET_TICK.play(player);
 					if(count++ % 2 == 0) {
-						Misc.applyPotionEffect(player, PotionEffectType.SLOW, 100, 1, true, false);
+						Misc.applyPotionEffect(player, PotionEffectType.SLOW, 100, 0, true, false);
 						Misc.applyPotionEffect(player, PotionEffectType.DAMAGE_RESISTANCE, 100, 1, true, false);
 					}
 				}
@@ -88,7 +88,7 @@ public class HermitAbility extends HelmetAbility {
 	@Override
 	public List<String> getDescription() {
 		DecimalFormat formatter = new DecimalFormat("#,###.#");
-		return Arrays.asList("&7Double-Sneak to toggle Hermit.", "&7Receive permanent resistance II,", "&7slowness II, and true damage immunity", "",
+		return Arrays.asList("&7Double-Sneak to toggle Hermit.", "&7Receive permanent resistance II,", "&7slowness I, and true damage immunity", "",
 				"&7Cost: &6" + formatter.format(cost * 10L) + "g &7on activation", "&7Cost: &6" + formatter.format(cost) + "g &7per second");
 	}
 
