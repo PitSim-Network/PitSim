@@ -43,6 +43,8 @@ public class PortalManager implements Listener {
 			return;
 		}
 
+		if(HopperManager.isHopper(player)) return;
+
 		boolean hasHopper = false;
 		for(Hopper hopper : HopperManager.hopperList) {
 			if(hopper.target != player) continue;
