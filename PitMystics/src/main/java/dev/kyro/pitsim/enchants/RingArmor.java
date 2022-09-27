@@ -49,6 +49,6 @@ public class RingArmor extends PitEnchant {
 
 	public int getDamageReduction(int enchantLvl) {
 
-		return enchantLvl * 15 + 5;
+		return enchantLvl * 15 + 15;
 	}
 }
