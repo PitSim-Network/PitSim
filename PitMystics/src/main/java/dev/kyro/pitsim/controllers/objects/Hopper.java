@@ -314,8 +314,8 @@ public class Hopper {
 					break;
 				case GSET:
 					ItemStack gsetSword = FreshCommand.getFreshItem(MysticType.SWORD, null);
-//					double random = Math.random();
-					double random = 0.3;
+					double random = Math.random();
+//					double random = 0.3;
 					try {
 						if(random < 0.33) {
 							gsetSword = EnchantManager.addEnchant(gsetSword, EnchantManager.getEnchant("bill"), 2, false);
