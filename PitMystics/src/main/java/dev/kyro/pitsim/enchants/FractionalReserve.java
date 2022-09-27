@@ -40,6 +40,6 @@ public class FractionalReserve extends PitEnchant {
 
 	public static double getReduction(int enchantLvl) {
 		if(enchantLvl == 1) return 2;
-		return enchantLvl * 2 - 0.5;
+		return enchantLvl * 1.5 + 0.5;
 	}
 }
