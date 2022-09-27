@@ -1,5 +1,6 @@
 package dev.kyro.pitsim.enchants;
 
+import de.myzelyam.api.vanish.VanishAPI;
 import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.controllers.Cooldown;
@@ -81,6 +82,7 @@ public class Robinhood extends PitEnchant {
 
 					if(!(nearbyEntity instanceof Player) || nearbyEntity.equals(player)) continue;
 					Player target = (Player) nearbyEntity;
+					if(VanishAPI.isInvisible(target)) continue;
 					if(NonManager.getNon(target) != null) continue;
 
 					double distance = arrow.getLocation().distance(target.getLocation());

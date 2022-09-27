@@ -1,12 +1,11 @@
 package dev.kyro.pitsim.controllers;
 
-import dev.kyro.arcticapi.misc.AOutput;
+import de.myzelyam.api.vanish.VanishAPI;
 import dev.kyro.arcticapi.misc.AUtil;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.brewing.BrewingManager;
 import dev.kyro.pitsim.controllers.objects.GoldenHelmet;
 import dev.kyro.pitsim.controllers.objects.PitMob;
-import dev.kyro.pitsim.controllers.objects.PitPerk;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.enchants.tainted.CleaveSpell;
 import dev.kyro.pitsim.enums.SubLevel;
@@ -46,6 +45,7 @@ public class MobManager implements Listener {
 		if(!(attackEvent.defender instanceof Creature)) return;
 		PitMob pitMob = PitMob.getPitMob(attackEvent.defender);
 		if(pitMob == null) return;
+		if(VanishAPI.isInvisible(attackEvent.attackerPlayer)) return;
 		if(attackEvent.attackerPlayer.getGameMode() == GameMode.SURVIVAL) {
 			((Creature) attackEvent.defender).setTarget(attackEvent.attackerPlayer);
 			pitMob.lastHit = System.currentTimeMillis();
@@ -219,7 +219,7 @@ public class MobManager implements Listener {
 					noTarget = sortByValue(noTarget);
 					for(Map.Entry<PitMob, Double> entry : noTarget.entrySet()) {
 						PitMob pitMob = entry.getKey();
-						if(player.getGameMode() == GameMode.SURVIVAL) {
+						if(player.getGameMode() == GameMode.SURVIVAL && !VanishAPI.isInvisible(player)) {
 							((Creature) pitMob.entity).setTarget(player);
 							pitMob.lastHit = System.currentTimeMillis();
 							pitMob.target = player;
