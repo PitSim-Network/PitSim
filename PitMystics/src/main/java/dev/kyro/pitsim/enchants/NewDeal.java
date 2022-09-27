@@ -61,6 +61,6 @@ public class NewDeal extends PitEnchant {
 
 	public double getTrueDamage(int enchantLvl) {
 
-		return Math.max(1.2 - enchantLvl * 0.2, 0);
+		return Math.max(1.1 - enchantLvl * 0.2, 0);
 	}
 }
