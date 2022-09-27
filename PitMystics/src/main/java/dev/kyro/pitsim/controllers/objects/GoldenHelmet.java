@@ -4,9 +4,7 @@ import de.tr7zw.nbtapi.NBTItem;
 import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.PitSim;
-import dev.kyro.pitsim.controllers.HelmetSystem;
-import dev.kyro.pitsim.controllers.NonManager;
-import dev.kyro.pitsim.controllers.UpgradeManager;
+import dev.kyro.pitsim.controllers.*;
 import dev.kyro.pitsim.enchants.ComboVenom;
 import dev.kyro.pitsim.enums.NBTTag;
 import dev.kyro.pitsim.events.AttackEvent;
@@ -72,12 +70,22 @@ public class GoldenHelmet implements Listener {
 				ability.isActive = false;
 				toggledPlayers.remove(player);
 			} else {
+				if(SpawnManager.isInSpawn(player.getLocation())) {
+					AOutput.error(player, "&c&lOOPS! &7You cannot do this in spawn");
+					return;
+				}
 				ability.onActivate();
 				ability.isActive = true;
 				toggledPlayers.add(player);
 			}
 
-		} else ability.onProc();
+		} else {
+			if(SpawnManager.isInSpawn(player.getLocation())) {
+				AOutput.error(player, "&c&lOOPS! &7You cannot do this in spawn");
+				return;
+			}
+			ability.onProc();
+		}
 	}
 
 	public static ItemStack getHelmet(LivingEntity checkPlayer) {
