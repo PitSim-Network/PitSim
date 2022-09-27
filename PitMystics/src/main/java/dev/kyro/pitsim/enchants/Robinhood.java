@@ -64,7 +64,7 @@ public class Robinhood extends PitEnchant {
 		if(enchantLvl == 0) return;
 		robinMap.add(arrow);
 
-		Cooldown cooldown = getCooldown(player, 60);
+		Cooldown cooldown = getCooldown(player, 40);
 		if(cooldown.isOnCooldown()) return;
 		else cooldown.restart();
 
@@ -114,6 +114,6 @@ public class Robinhood extends PitEnchant {
 	public List<String> getDescription(int enchantLvl) {
 		DecimalFormat format = new DecimalFormat("0.#");
 		return new ALoreBuilder("&7Your shots &ehome &7from &e" + format.format(getRange(enchantLvl)) + " &7block" + (getRange(enchantLvl) == 1 ? "" : "s"),
-				"&7away (3s cooldown)").getLore();
+				"&7away (2s cooldown)").getLore();
 	}
 }
