@@ -33,7 +33,7 @@ public class BackwardsCompatibility implements Listener {
 
 		levelSystemConversion(player);
 		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
-		pitPlayer.lastVersion = PitSim.version;
+		pitPlayer.lastVersion = PitSim.VERSION;
 		APlayer aPlayer = APlayerData.getPlayerData(player);
 		FileConfiguration playerData = aPlayer.playerData;
 

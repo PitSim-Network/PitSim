@@ -13,14 +13,14 @@ public class PlayerStats {
 	public UUID uuid;
 
 	//	Offense
-	public int playerKills;
-	public int botKills;
-	public int hopperKills;
-	public int swordHits;
-	public int arrowShots;
-	public int arrowHits;
-	public double damageDealt;
-	public double trueDamageDealt;
+	public int playerKills = 0;
+	public int botKills = 0;
+	public int hopperKills = 0;
+	public int swordHits = 0;
+	public int arrowShots = 0;
+	public int arrowHits = 0;
+	public double damageDealt = 0;
+	public double trueDamageDealt = 0;
 
 	@Exclude
 	public double getArrowAccuracy() {
@@ -29,43 +29,43 @@ public class PlayerStats {
 	}
 
 	//	Defence
-	public int deaths;
-	public double damageTaken;
-	public double trueDamageTaken;
+	public int deaths = 0;
+	public double damageTaken = 0;
+	public double trueDamageTaken = 0;
 
 	//	Megastreaks
-	public int timesOnOverdrive;
-	public int timesOnBeastmode;
-	public int timesOnHighlander;
-	public int timesOnMoon;
-	public int rngesusCompleted;
-	public int ubersCompleted;
+	public int timesOnOverdrive = 0;
+	public int timesOnBeastmode = 0;
+	public int timesOnHighlander = 0;
+	public int timesOnMoon = 0;
+	public int rngesusCompleted = 0;
+	public int ubersCompleted = 0;
 
 	//	Mystics
-	public int billionaire;
-	public int perun;
-	public int executioner;
-	public double gamble;
-	public double stun;
-	public double lifesteal;
+	public int billionaire = 0;
+	public int perun = 0;
+	public int executioner = 0;
+	public double gamble = 0;
+	public double stun = 0;
+	public double lifesteal = 0;
 
-	public int robinhood;
-	public int volley;
-	public int telebow;
-	public int pullbow;
-	public int explosive;
-	public int lucky;
-	public int drain;
-	public int wasp;
-	public int pin;
-	public int ftts;
-	public int pcts;
+	public int robinhood = 0;
+	public int volley = 0;
+	public int telebow = 0;
+	public int pullbow = 0;
+	public int explosive = 0;
+	public int lucky = 0;
+	public int drain = 0;
+	public int wasp = 0;
+	public int pin = 0;
+	public int ftts = 0;
+	public int pcts = 0;
 
-	public int rgm;
-	public int regularity;
+	public int rgm = 0;
+	public int regularity = 0;
 
 	//	Progression
-	public int minutesPlayed;
+	public int minutesPlayed = 0;
 
 	@Exclude
 	public long getTotalXP() {
