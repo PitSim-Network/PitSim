@@ -1,5 +1,7 @@
 package dev.kyro.pitsim.controllers.objects;
 
+import com.google.api.core.ApiFuture;
+import com.google.cloud.firestore.DocumentSnapshot;
 import dev.kyro.arcticapi.data.APlayer;
 import dev.kyro.arcticapi.data.APlayerData;
 import dev.kyro.arcticapi.misc.AOutput;
@@ -14,10 +16,7 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 public class AuctionItem {
 
@@ -140,17 +139,20 @@ public class AuctionItem {
 
             AOutput.send(winner.getPlayer(), "&5&lDARK AUCTION! &7Received " + item.itemName + "&7.");
         } else {
-            APlayer aPlayer = APlayerData.getPlayerData(winner);
-            FileConfiguration playerData = aPlayer.playerData;
 
-            if(playerData.contains("auctionreturn")) {
-                String returnData = playerData.getString("auctionreturn");
-                returnData += "," + item.id + ":" + itemData;
-                playerData.set("auctionreturn", returnData);
+            try {
+                ApiFuture<DocumentSnapshot> data = FirestoreManager.FIRESTORE.collection(FirestoreManager.PLAYERDATA_COLLECTION)
+                        .document(winner.getUniqueId().toString()).get();
+
+                List auctionReturn = data.get().get("auctionReturn", List.class);
+
+                auctionReturn.add(item.id + ":" + itemData + ":" + getHighestBid());
+
+                FirestoreManager.FIRESTORE.collection(FirestoreManager.PLAYERDATA_COLLECTION).document(winner.getUniqueId().toString()).update("auctionReturn", auctionReturn);
+
+            } catch(Exception e) {
+                e.printStackTrace();
             }
-            else playerData.set("auctionreturn", item.id + ":" + itemData);
-
-            aPlayer.save();
         }
 
         if(getHighestBidder() != null) bidMap.remove(getHighestBidder());
@@ -159,20 +161,23 @@ public class AuctionItem {
 
             OfflinePlayer player = Bukkit.getOfflinePlayer(entry.getKey());
 
-            APlayer soulReturnPlayer = APlayerData.getPlayerData(player);
-            FileConfiguration soulReturnPlayerData = soulReturnPlayer.playerData;
-
             if(player.isOnline()) {
                 PitPlayer.getPitPlayer(player.getPlayer()).taintedSouls += entry.getValue();
                 AOutput.send(player.getPlayer(), "&5&lDARK AUCTION! &7Received &f" + entry.getValue() + " Tainted Souls&7.");
             } else {
-                if(soulReturnPlayerData.contains("soulreturn")) {
-                    int soulReturn = soulReturnPlayerData.getInt("soulreturn");
+
+                try {
+                    ApiFuture<DocumentSnapshot> data = FirestoreManager.FIRESTORE.collection(FirestoreManager.PLAYERDATA_COLLECTION)
+                            .document(winner.getUniqueId().toString()).get();
+
+                    int soulReturn = data.get().get("soulReturn", Integer.class);
                     soulReturn += entry.getValue();
 
-                    soulReturnPlayerData.set("soulreturn", soulReturn);
-                } else soulReturnPlayerData.set("soulreturn", entry.getValue());
-                soulReturnPlayer.save();
+                    FirestoreManager.FIRESTORE.collection(FirestoreManager.PLAYERDATA_COLLECTION).document(winner.getUniqueId().toString()).update("soulReturn", soulReturn);
+
+                } catch(Exception e) {
+                    e.printStackTrace();
+                }
             }
         }
 

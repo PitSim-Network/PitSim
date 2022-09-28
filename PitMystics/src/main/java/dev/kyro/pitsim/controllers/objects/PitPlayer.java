@@ -102,7 +102,7 @@ public class PitPlayer {
 	public Megastreak megastreak;
 	public String megastreakRef = "nomegastreak";
 
-	public Map<String, Integer> upgrades;
+	public Map<String, Integer> upgrades = new HashMap<>();
 	public boolean playerChatDisabled = false;
 	public boolean killFeedDisabled = false;
 	public boolean bountiesDisabled = false;
@@ -128,7 +128,13 @@ public class PitPlayer {
 	public int taintedSouls = 200;
 
 	public PlayerStats stats = new PlayerStats();
-	public List<String> potionStrings;
+	public List<String> potionStrings = new ArrayList<>();
+
+	public List<String> auctionReturn = new ArrayList<>();
+	public int soulReturn = 0;
+
+	public boolean tutorial = false;
+	public boolean darkzoneCutscene = false;
 
 	@Exclude
 	public long lastSave;
@@ -259,15 +265,29 @@ public class PitPlayer {
 //			ChatColorPanel.playerChatColors.put(player, chatColor);
 		}
 
-		this.potionStrings = new ArrayList<>();
-
-		upgrades = new HashMap<>();
 
 		for(RenownUpgrade upgrade : UpgradeManager.upgrades) {
 			int tier = 0;
 			if(!upgrade.isTiered && playerData.contains(upgrade.refName)) tier = 1;
 			else if(upgrade.isTiered && playerData.contains(upgrade.refName)) tier = playerData.getInt(upgrade.refName);
 			upgrades.put(upgrade.refName, tier);
+		}
+
+
+		if(playerData.contains("auctionreturn")) {
+			auctionReturn = Arrays.asList(playerData.getString("auctionreturn").split(","));
+		}
+
+		if(playerData.contains("soulreturn")) {
+			soulReturn = playerData.getInt("soulreturn");
+		}
+
+		if(playerData.contains("tutorial")) {
+			tutorial = playerData.getBoolean("tutorial");
+		}
+
+		if(playerData.contains("darkzonepreview")) {
+			darkzoneCutscene = playerData.getBoolean("darkzonepreview");
 		}
 
 	}

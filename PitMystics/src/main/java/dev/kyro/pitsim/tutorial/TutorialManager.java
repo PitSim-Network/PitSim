@@ -1,7 +1,5 @@
 package dev.kyro.pitsim.tutorial;
 
-import dev.kyro.arcticapi.data.APlayer;
-import dev.kyro.arcticapi.data.APlayerData;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.controllers.DamageManager;
 import dev.kyro.pitsim.controllers.UpgradeManager;
@@ -225,11 +223,7 @@ public class TutorialManager implements Listener {
 
 		if(UpgradeManager.hasUpgrade(player, "TENACITY")) return false;
 
-		APlayer aPlayer = APlayerData.getPlayerData(player);
-		if(aPlayer.playerData.contains("tutorial")) {
-			return !aPlayer.playerData.getBoolean("tutorial");
-		}
-		return true;
+		return !pitPlayer.tutorial;
 	}
 
 	@EventHandler

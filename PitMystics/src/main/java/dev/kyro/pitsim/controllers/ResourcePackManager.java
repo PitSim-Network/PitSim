@@ -30,14 +30,12 @@ public class ResourcePackManager implements Listener {
 	@EventHandler
 	public void onPrompt(PlayerResourcePackStatusEvent event) {
 		if(event.getStatus() == PlayerResourcePackStatusEvent.Status.ACCEPTED) {
-			APlayer aPlayer = APlayerData.getPlayerData(event.getPlayer());
-			aPlayer.playerData.set("promptPack", true);
-			aPlayer.save();
+			PitPlayer pitPlayer = PitPlayer.getPitPlayer(event.getPlayer());
+			pitPlayer.promptPack = true;
 		}
 		if(event.getStatus() == PlayerResourcePackStatusEvent.Status.DECLINED) {
-			APlayer aPlayer = APlayerData.getPlayerData(event.getPlayer());
-			aPlayer.playerData.set("promptPack", false);
-			aPlayer.save();
+			PitPlayer pitPlayer = PitPlayer.getPitPlayer(event.getPlayer());
+			pitPlayer.promptPack = false;
 		}
 	}
 }

@@ -10,8 +10,6 @@ import com.xxmicloxx.NoteBlockAPI.songplayer.EntitySongPlayer;
 import dev.kyro.arcticapi.ArcticAPI;
 import dev.kyro.arcticapi.commands.AMultiCommand;
 import dev.kyro.arcticapi.data.AData;
-import dev.kyro.arcticapi.data.APlayer;
-import dev.kyro.arcticapi.data.APlayerData;
 import dev.kyro.arcticapi.hooks.AHook;
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.boosters.ChaosBooster;
@@ -245,18 +243,16 @@ public class PitSim extends JavaPlugin {
 				if(potionEffect.player == player) toExpire.add(potionEffect);
 			}
 
-			APlayer aPlayer = APlayerData.getPlayerData(player);
-			FileConfiguration data = aPlayer.playerData;
-
 			for (PotionEffect potionEffect : toExpire) {
 
 				potionEffect.onExpire(true);
 
 				String time = String.valueOf(System.currentTimeMillis());
-				data.set("potions." + potionEffect.potionType.name, potionEffect.potency.tier + ":" + potionEffect.getTimeLeft() + ":" + time);
+
+				PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
+				pitPlayer.potionStrings.add(potionEffect.potionType.name + ":" + potionEffect.potency.tier + ":" + potionEffect.getTimeLeft() + ":" + time);
 
 			}
-			aPlayer.save();
 		}
 
 

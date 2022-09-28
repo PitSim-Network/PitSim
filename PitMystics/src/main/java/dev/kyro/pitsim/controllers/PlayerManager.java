@@ -5,8 +5,6 @@ import com.codingforcookies.armorequip.ArmorEquipEvent;
 import com.codingforcookies.armorequip.ArmorType;
 import de.myzelyam.api.vanish.VanishAPI;
 import de.tr7zw.nbtapi.NBTItem;
-import dev.kyro.arcticapi.data.APlayer;
-import dev.kyro.arcticapi.data.APlayerData;
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.arcticapi.misc.AUtil;
 import dev.kyro.arcticguilds.controllers.BuffManager;
@@ -120,9 +118,6 @@ public class PlayerManager implements Listener {
 
 					PitPlayer pitPlayer = PitPlayer.getPitPlayer(onlinePlayer);
 					pitPlayer.renown++;
-					APlayer aPlayer = APlayerData.getPlayerData(onlinePlayer);
-					aPlayer.playerData.set("renown", pitPlayer.renown);
-					aPlayer.save();
 					AOutput.send(onlinePlayer, "&7You have been given &e1 renown &7for being active");
 				}
 			}
@@ -620,17 +615,12 @@ public class PlayerManager implements Listener {
 			}
 		}.runTaskLater(PitSim.INSTANCE, 10);
 
-		APlayer aPlayer = APlayerData.getPlayerData(player);
-		FileConfiguration playerData = aPlayer.playerData;
-
-		if(playerData.contains("auctionreturn")) {
-			String[] items = playerData.getString("auctionreturn").split(",");
-
-			for (String item : items) {
+		if(pitPlayer.auctionReturn.size() > 0) {
+			for(String item : pitPlayer.auctionReturn) {
 				String[] data = item.split(":");
 
 				if(Integer.parseInt(data[1]) == 0) {
-					ItemStack itemStack = ItemType.getItemType(Integer.valueOf(data[0])).item;
+					ItemStack itemStack = Objects.requireNonNull(ItemType.getItemType(Integer.parseInt(data[0]))).item;
 					AUtil.giveItemSafely(player, itemStack, true);
 
 					new BukkitRunnable() {
@@ -654,28 +644,21 @@ public class PlayerManager implements Listener {
 				}
 			}
 
+			pitPlayer.auctionReturn.clear();
 			pitPlayer.stats.auctionsWon++;
-
-			playerData.set("auctionreturn", null);
-			aPlayer.save();
 		}
 
-		if(playerData.contains("soulreturn")) {
-			int souls = playerData.getInt("soulreturn");
 
-			if(souls > 0) {
-				PitPlayer.getPitPlayer(player).taintedSouls += souls;
-				new BukkitRunnable() {
-					@Override
-					public void run() {
-						AOutput.send(player, "&5&lDARK AUCTION! &7Received &f" + souls + " Tainted Souls&7.");
-						Sounds.BOOSTER_REMIND.play(player);
-					}
-				}.runTaskLater(PitSim.INSTANCE, 10);
-			}
-
-			playerData.set("soulreturn", null);
-			aPlayer.save();
+		if(pitPlayer.soulReturn > 0) {
+			PitPlayer.getPitPlayer(player).taintedSouls += pitPlayer.soulReturn;
+			new BukkitRunnable() {
+				@Override
+				public void run() {
+					AOutput.send(player, "&5&lDARK AUCTION! &7Received &f" + pitPlayer.soulReturn + " Tainted Souls&7.");
+					Sounds.BOOSTER_REMIND.play(player);
+				}
+			}.runTaskLater(PitSim.INSTANCE, 10);
+			pitPlayer.soulReturn = 0;
 		}
 
 	}
