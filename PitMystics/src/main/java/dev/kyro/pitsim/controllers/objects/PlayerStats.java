@@ -136,9 +136,10 @@ public class PlayerStats {
 	public PlayerStats() {
 	}
 
+	@Deprecated
 	public PlayerStats(PitPlayer pitPlayer, FileConfiguration playerData) {
 		this.pitPlayer = pitPlayer;
-		this.uuid = pitPlayer.player.getUniqueId();
+//		this.uuid = pitPlayer.player.getUniqueId();
 
 		playerKills = playerData.getInt("stats.combat.player-kills");
 		botKills = playerData.getInt("stats.combat.bot-kills");

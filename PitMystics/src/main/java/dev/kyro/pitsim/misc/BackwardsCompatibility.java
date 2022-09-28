@@ -37,21 +37,21 @@ public class BackwardsCompatibility implements Listener {
 		APlayer aPlayer = APlayerData.getPlayerData(player);
 		FileConfiguration playerData = aPlayer.playerData;
 
-		if(playerData.getInt("SELF_CONFIDENCE") >= 1) {
-			playerData.set("CHEMIST", 1);
-			playerData.set("SELF_CONFIDENCE", null);
-			AOutput.send(player, "&e&lUPDATE: &7Your &eSelf Confidence &7upgrade has been changed to &eChemist I&7.");
-			aPlayer.save();
-			UpgradeManager.updatePlayer(player);
-		}
-		if(playerData.getInt("REPORT_ACCESS") >= 1) {
-			System.out.println(2);
-			playerData.set("CHEMIST", 1);
-			playerData.set("REPORT_ACCESS", null);
-			AOutput.send(player, "&e&lUPDATE: &7Your &eReport Access &7upgrade has been changed to &eChemist I&7.");
-			aPlayer.save();
-			UpgradeManager.updatePlayer(player);
-		}
+//		if(playerData.getInt("SELF_CONFIDENCE") >= 1) {
+//			playerData.set("CHEMIST", 1);
+//			playerData.set("SELF_CONFIDENCE", null);
+//			AOutput.send(player, "&e&lUPDATE: &7Your &eSelf Confidence &7upgrade has been changed to &eChemist I&7.");
+//			aPlayer.save();
+//			UpgradeManager.updatePlayer(player);
+//		}
+//		if(playerData.getInt("REPORT_ACCESS") >= 1) {
+//			System.out.println(2);
+//			playerData.set("CHEMIST", 1);
+//			playerData.set("REPORT_ACCESS", null);
+//			AOutput.send(player, "&e&lUPDATE: &7Your &eReport Access &7upgrade has been changed to &eChemist I&7.");
+//			aPlayer.save();
+//			UpgradeManager.updatePlayer(player);
+//		}
 
 		for (int i = 0; i < player.getInventory().getSize(); i++) {
 			ItemStack itemStack = player.getInventory().getItem(i);

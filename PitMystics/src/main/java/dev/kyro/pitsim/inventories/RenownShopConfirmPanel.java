@@ -54,18 +54,16 @@ public class RenownShopConfirmPanel extends AGUIPanel {
 
 			if(slot == 11) {
 				RenownUpgrade upgrade = RenownShopGUI.purchaseConfirmations.get(player);
-				APlayer aPlayer = APlayerData.getPlayerData(player);
-				FileConfiguration playerData = aPlayer.playerData;
+
 				if(upgrade.isTiered) {
 					int tier = UpgradeManager.getTier(player, upgrade);
-					playerData.set(upgrade.refName, tier + 1);
+					pitPlayer.upgrades.put(upgrade.refName, tier + 1);
 					pitPlayer.renown = pitPlayer.renown - upgrade.getTierCosts().get(tier);
 				} else {
-					playerData.set(upgrade.refName, 0);
+					pitPlayer.upgrades.put(upgrade.refName, 1);
 					pitPlayer.renown = pitPlayer.renown - upgrade.renownCost;
 				}
-				aPlayer.save();
-				UpgradeManager.updatePlayer(player);
+
 				RenownShopGUI.purchaseConfirmations.remove(player);
 				openPanel(renownShopGUI.getHomePanel());
 

@@ -89,8 +89,7 @@ public class PitSim extends JavaPlugin {
 
 	public static AData playerList;
 
-	public static PteroClient client = PteroBuilder.createClient("***REMOVED***",
-			"im4F1vVHTJKIjhRQcvJ8CAdOX3aCt99JmpukhFGbzQXI5BOQ");
+	public static PteroClient client = PteroBuilder.createClient("***REMOVED***", PrivateInfo.PTERO_KEY);
 
 	@Override
 	public void onEnable() {

@@ -12,18 +12,18 @@ import org.bukkit.event.Listener;
 import java.util.*;
 
 public class UpgradeManager implements Listener {
-	public static Map<UUID, Map<RenownUpgrade, Integer>> upgradeMap = new HashMap<>();
+//	public static Map<UUID, Map<RenownUpgrade, Integer>> upgradeMap = new HashMap<>();
 	public static List<RenownUpgrade> upgrades = new ArrayList<>();
 
-	public static void updatePlayer(Player player) {
-		APlayer aPlayer = APlayerData.getPlayerData(player);
-		Map<RenownUpgrade, Integer> playerMap = new HashMap<>();
-		for(RenownUpgrade upgrade : UpgradeManager.upgrades) {
-			if(aPlayer.playerData.contains(upgrade.refName))
-				playerMap.put(upgrade, aPlayer.playerData.getInt(upgrade.refName));
-		}
-		upgradeMap.put(player.getUniqueId(), playerMap);
-	}
+//	public static void updatePlayer(Player player) {
+//		APlayer aPlayer = APlayerData.getPlayerData(player);
+//		Map<RenownUpgrade, Integer> playerMap = new HashMap<>();
+//		for(RenownUpgrade upgrade : UpgradeManager.upgrades) {
+//			if(aPlayer.playerData.contains(upgrade.refName))
+//				playerMap.put(upgrade, aPlayer.playerData.getInt(upgrade.refName));
+//		}
+//		upgradeMap.put(player.getUniqueId(), playerMap);
+//	}
 
 	public static void registerUpgrade(RenownUpgrade upgrade) {
 		upgrades.add(upgrade);
@@ -32,8 +32,9 @@ public class UpgradeManager implements Listener {
 
 	public static boolean hasUpgrade(Player player, RenownUpgrade upgrade) {
 		if(NonManager.getNon(player) != null) return false;
-		if(!upgradeMap.containsKey(player.getUniqueId())) updatePlayer(player);
-		return upgradeMap.get(player.getUniqueId()).containsKey(upgrade);
+		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
+
+		return pitPlayer.upgrades.get(upgrade.refName) > 0;
 	}
 
 	public static boolean hasUpgrade(Player player, String refName) {
@@ -45,9 +46,9 @@ public class UpgradeManager implements Listener {
 
 	public static int getTier(Player player, RenownUpgrade upgrade) {
 		if(NonManager.getNon(player) != null) return 0;
-		if(!upgradeMap.containsKey(player.getUniqueId())) updatePlayer(player);
-		if(!upgradeMap.get(player.getUniqueId()).containsKey(upgrade)) return 0;
-		return upgradeMap.get(player.getUniqueId()).get(upgrade);
+		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
+
+		return pitPlayer.upgrades.get(upgrade.refName);
 	}
 
 	public static int getTier(Player player, String refName) {
@@ -64,15 +65,15 @@ public class UpgradeManager implements Listener {
 		return null;
 	}
 
-	public static String renownCostString(RenownUpgrade upgrade, Player player) {
-		if(!upgrade.isTiered) {
-			if(!hasUpgrade(player, upgrade)) return ChatColor.YELLOW + String.valueOf(upgrade.renownCost) + " Renown";
-			return ChatColor.GREEN + "Already unlocked!";
-		}
-		if(getTier(player, upgrade) == 0) return ChatColor.YELLOW + String.valueOf(upgrade.renownCost) + " Renown";
-		if(getTier(player, upgrade) == upgrade.maxTiers) return ChatColor.GREEN + "Fully upgraded!";
-		return ChatColor.YELLOW + upgrade.getTierCosts().get(getTier(player, upgrade)).toString() + " Renown";
-	}
+//	public static String renownCostString(RenownUpgrade upgrade, Player player) {
+//		if(!upgrade.isTiered) {
+//			if(!hasUpgrade(player, upgrade)) return ChatColor.YELLOW + String.valueOf(upgrade.renownCost) + " Renown";
+//			return ChatColor.GREEN + "Already unlocked!";
+//		}
+//		if(getTier(player, upgrade) == 0) return ChatColor.YELLOW + String.valueOf(upgrade.renownCost) + " Renown";
+//		if(getTier(player, upgrade) == upgrade.maxTiers) return ChatColor.GREEN + "Fully upgraded!";
+//		return ChatColor.YELLOW + upgrade.getTierCosts().get(getTier(player, upgrade)).toString() + " Renown";
+//	}
 
 	public static String itemNameString(RenownUpgrade upgrade, Player player) {
 		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);

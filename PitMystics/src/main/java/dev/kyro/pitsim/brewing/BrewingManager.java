@@ -8,6 +8,7 @@ import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.events.AttackEvent;
 import dev.kyro.pitsim.misc.Misc;
 import dev.kyro.pitsim.misc.Sounds;
+import net.citizensnpcs.api.CitizensAPI;
 import net.minecraft.server.v1_8_R3.PacketPlayOutEntity;
 import net.minecraft.server.v1_8_R3.PacketPlayOutEntityDestroy;
 import org.bukkit.Bukkit;
@@ -49,6 +50,7 @@ public class BrewingManager implements Listener {
                     List<ArmorStand> destroyStands = new ArrayList<>(anim.personalStands);
                     if(!(nearbyEntity instanceof Player)) continue;
                     Player player = (Player) nearbyEntity;
+                    if(CitizensAPI.getNPCRegistry().isNPC(player)) continue;
 
                     if(anim.players.contains(player)) {
                         destroyStands.remove(anim.cancelStands.get(player));
