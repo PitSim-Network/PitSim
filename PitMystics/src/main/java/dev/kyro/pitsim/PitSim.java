@@ -79,7 +79,7 @@ import java.util.Map;
 import static dev.kyro.pitsim.misc.TempBlockHelper.restoreSessions;
 
 public class PitSim extends JavaPlugin {
-	public static double version = 3.0;
+	public static final double VERSION = 3.0;
 
 	public static LuckPerms LUCKPERMS;
 	public static PitSim INSTANCE;

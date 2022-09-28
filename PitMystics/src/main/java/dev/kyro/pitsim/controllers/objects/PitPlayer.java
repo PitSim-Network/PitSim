@@ -36,7 +36,6 @@ import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
 
 import java.util.*;
-import java.util.concurrent.ExecutionException;
 
 public class PitPlayer {
 	@Exclude
@@ -44,11 +43,6 @@ public class PitPlayer {
 
 	@Exclude
 	public boolean isNPC;
-
-	@Exclude
-	public boolean onSaveCooldown = false;
-	@Exclude
-	public boolean saveQueued = false;
 
 	@Exclude
 	public Player player;
@@ -87,12 +81,12 @@ public class PitPlayer {
 	@Exclude
 	public UUID uuid;
 	//	Savable
-	public int prestige;
+	public int prestige = 0;
 	public int level = 1;
 	public long remainingXP = PrestigeValues.getXPForLevel(1);
-	public int soulsGathered;
+	public int soulsGathered = 0;
 
-	public int renown;
+	public int renown = 0;
 	@Exclude
 	public List<PitPerk> pitPerks = Arrays.asList(NoPerk.INSTANCE, NoPerk.INSTANCE, NoPerk.INSTANCE, NoPerk.INSTANCE);
 	public List<String> pitPerksRef = Arrays.asList("none", "none", "none", "none");
@@ -104,23 +98,23 @@ public class PitPlayer {
 	public Megastreak megastreak;
 	public String megastreakRef = "nomegastreak";
 
-	public boolean playerChatDisabled;
-	public boolean killFeedDisabled;
-	public boolean bountiesDisabled;
-	public boolean streaksDisabled;
-	public boolean lightingDisabled;
-	public boolean musicDisabled;
-	public boolean promptPack;
+	public boolean playerChatDisabled = false;
+	public boolean killFeedDisabled = false;
+	public boolean bountiesDisabled = false;
+	public boolean streaksDisabled = false;
+	public boolean lightingDisabled = false;
+	public boolean musicDisabled = false;
+	public boolean promptPack = false;
 
-	public double goldStack;
-	public int moonBonus;
+	public double goldStack = 0;
+	public int moonBonus = 0;
 	public int dailyUbersLeft = 5;
-	public long uberReset;
-	public int goldGrinded;
+	public long uberReset = 0;
+	public int goldGrinded = 0;
 	public Map<String, Integer> boosters = new HashMap<>();
 	public Map<String, Integer> boosterTime = new HashMap<>();
 
-	public double lastVersion;
+	public double lastVersion = PitSim.VERSION;
 	public KillEffect killEffect;
 	public DeathCry deathCry;
 	public AChatColor chatColor = AChatColor.GRAY;
@@ -128,49 +122,15 @@ public class PitPlayer {
 	public List<String> brewingSessions = Arrays.asList(null, null, null);
 	public int taintedSouls = 200;
 
-	public PlayerStats stats;
+	public PlayerStats stats = new PlayerStats();
 
 	@Exclude
-	private void save(boolean block) {
-		if(onSaveCooldown && !saveQueued) {
-			saveQueued = true;
-			new Thread(() -> {
-				try {
-					Thread.sleep(1500);
-				} catch(InterruptedException e) {
-					e.printStackTrace();
-				}
-				saveQueued = false;
-				save(block);
-			}).start();
-		}
-		if(!saveQueued && !onSaveCooldown){
-			if(block) {
-				try {
-					FirestoreManager.FIRESTORE.collection(FirestoreManager.PLAYERDATA_COLLECTION).document(player.getUniqueId().toString()).set(this).get();
-					System.out.println("Saved Data: " + player.getName());
-				} catch(InterruptedException | ExecutionException e) {
-					e.printStackTrace();
-				}
-			} else {
-				FirestoreManager.FIRESTORE.collection(FirestoreManager.PLAYERDATA_COLLECTION).document(player.getUniqueId().toString()).set(this);
-				System.out.println("Saving Data: " + player.getName());
-			}
-
-			onSaveCooldown = true;
-			new Thread(() -> {
-				try {
-					Thread.sleep(1500);
-				} catch(InterruptedException e) {
-					e.printStackTrace();
-				}
-				onSaveCooldown = false;
-			}).start();
-		}
-	}
-
+	public long lastSave;
 	@Exclude
 	public void save() {
+		if(lastSave + 1_500L > System.currentTimeMillis()) return;
+		lastSave = System.currentTimeMillis();
+
 		if(isNPC) {
 			System.out.println("complete development failure. " + player.getName() + " is attempting to save data and is not a real player");
 			return;
@@ -188,7 +148,8 @@ public class PitPlayer {
 			killstreaksRef.set(i, killstreak.refName);
 		}
 
-		save(false);
+		FirestoreManager.FIRESTORE.collection(FirestoreManager.PLAYERDATA_COLLECTION).document(player.getUniqueId().toString()).set(this);
+		System.out.println("Saving Data: " + player.getName());
 	}
 
 //	NPC Init
