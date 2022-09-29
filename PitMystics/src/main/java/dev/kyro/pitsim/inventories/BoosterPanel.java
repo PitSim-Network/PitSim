@@ -2,8 +2,6 @@ package dev.kyro.pitsim.inventories;
 
 import dev.kyro.arcticapi.builders.AItemStackBuilder;
 import dev.kyro.arcticapi.builders.ALoreBuilder;
-import dev.kyro.arcticapi.data.APlayer;
-import dev.kyro.arcticapi.data.APlayerData;
 import dev.kyro.arcticapi.gui.AGUI;
 import dev.kyro.arcticapi.gui.AGUIPanel;
 import dev.kyro.arcticapi.misc.AOutput;
@@ -16,7 +14,6 @@ import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
-import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.inventory.InventoryOpenEvent;
@@ -49,17 +46,14 @@ public class BoosterPanel extends AGUIPanel {
 				if(booster.slot == slot) {
 					if(Booster.getBoosterAmount(player, booster) < 1) {
 						Sounds.SUCCESS.play(player);
-						AOutput.send(player, "&aBuy boosters at https://pitsim.tebex.io");
+						AOutput.send(player, "&aBuy boosters at https://store.pitsim.net");
 						return;
 					} else {
 						Sounds.SUCCESS.play(player);
 						booster.minutes += 60;
 
-						APlayer aPlayer = APlayerData.getPlayerData(player);
-						FileConfiguration playerData = aPlayer.playerData;
-						int timeLeft = playerData.getInt("booster-time." + booster.refName) + 60;
-						playerData.set("booster-time." + booster.refName, timeLeft);
-						aPlayer.save();
+						int timeLeft = pitPlayer.boosterTime.get(booster.refName) + 60;
+						pitPlayer.boosterTime.put(booster.refName, timeLeft);
 
 						booster.updateTime();
 						FirestoreManager.CONFIG.save();

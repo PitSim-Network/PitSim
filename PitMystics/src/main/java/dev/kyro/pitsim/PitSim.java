@@ -96,6 +96,9 @@ public class PitSim extends JavaPlugin {
 		FirestoreManager.init();
 
 		loadConfig();
+
+		getServer().getMessenger().registerIncomingPluginChannel(this, "BungeeCord", new PluginMessageManager());
+		getServer().getMessenger().registerOutgoingPluginChannel(this, "BungeeCord");
 		adventure = BukkitAudiences.create(this);
 		TaintedWell.onStart();
 		BrewingManager.onStart();

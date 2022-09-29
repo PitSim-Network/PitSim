@@ -2,6 +2,7 @@ package dev.kyro.pitsim.commands;
 
 import be.maximvdw.featherboard.api.FeatherBoardAPI;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
+import dev.kyro.pitsim.controllers.objects.PluginMessage;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
@@ -13,6 +14,9 @@ public class ATestCommand implements CommandExecutor {
 
 	@Override
 	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
+
+		new PluginMessage().writeString("Hello!").writeInt(42).writeBoolean(false).send();
+
 //		if(!(sender instanceof Player)) return false;
 //		Player player = (Player) sender;
 //

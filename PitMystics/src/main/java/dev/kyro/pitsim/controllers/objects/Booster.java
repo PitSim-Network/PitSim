@@ -1,20 +1,16 @@
 package dev.kyro.pitsim.controllers.objects;
 
-import dev.kyro.arcticapi.data.APlayer;
-import dev.kyro.arcticapi.data.APlayerData;
 import dev.kyro.pitsim.boosters.GoldBooster;
 import dev.kyro.pitsim.boosters.XPBooster;
 import dev.kyro.pitsim.controllers.BoosterManager;
 import dev.kyro.pitsim.controllers.FirestoreManager;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
-import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.List;
-import java.util.Map;
 
 public abstract class Booster implements Listener {
 	public String name;
@@ -82,7 +78,7 @@ public abstract class Booster implements Listener {
 	public static void setBooster(Player player, Booster booster, int amount) {
 		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
 		pitPlayer.boosters.put(booster.refName, amount);
-		saveBoosters(player);
+//		saveBoosters(player);
 	}
 
 	public static void setBooster(Player player, String booster, int amount) {
@@ -92,16 +88,13 @@ public abstract class Booster implements Listener {
 				pitPlayer.boosters.put(booster1.refName, amount);
 			}
 		}
-		saveBoosters(player);
+//		saveBoosters(player);
 	}
 
-	public static void saveBoosters(Player player) {
-		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
-		APlayer aPlayer = APlayerData.getPlayerData(player);
-		FileConfiguration playerData = aPlayer.playerData;
-		for(Map.Entry<String, Integer> boosterIntegerEntry : pitPlayer.boosters.entrySet()) {
-			playerData.set("boosters." + boosterIntegerEntry.getKey(), boosterIntegerEntry.getValue());
-		}
-		aPlayer.save();
-	}
+//	public static void saveBoosters(Player player) {
+//		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
+//		for(Map.Entry<String, Integer> boosterIntegerEntry : pitPlayer.boosters.entrySet()) {
+//			playerData.set("boosters." + boosterIntegerEntry.getKey(), boosterIntegerEntry.getValue());
+//		}
+//	}
 }
