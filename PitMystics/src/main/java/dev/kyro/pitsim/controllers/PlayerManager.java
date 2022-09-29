@@ -474,9 +474,9 @@ public class PlayerManager implements Listener {
 	public void onAttack(AttackEvent.Apply attackEvent) {
 
 		Non defendingNon = NonManager.getNon(attackEvent.defender);
-//		Arch chest
+//		Arch chest archangel chestplate
 		if(defendingNon == null && attackEvent.defenderIsPlayer) {
-			attackEvent.multipliers.add(0.9);
+			attackEvent.multipliers.add(0.8);
 		} else if(attackEvent.defenderIsPlayer) {
 //			Non defence
 			if(defendingNon.traits.contains(NonTrait.IRON_STREAKER)) attackEvent.multipliers.add(0.8);

@@ -53,7 +53,7 @@ public class JudgementAbility extends HelmetAbility {
 
 		if(Math.random() < 0.25) {
 
-			pitAttacker.heal(1);
+			pitAttacker.heal(0.5);
 			Sounds.JUDGEMENT_HEAL.play(attackEvent.attacker);
 		}
 

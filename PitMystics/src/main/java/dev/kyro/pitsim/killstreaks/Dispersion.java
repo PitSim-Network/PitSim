@@ -2,14 +2,10 @@ package dev.kyro.pitsim.killstreaks;
 
 import dev.kyro.arcticapi.builders.AItemStackBuilder;
 import dev.kyro.arcticapi.builders.ALoreBuilder;
-import dev.kyro.arcticapi.misc.AOutput;
-import dev.kyro.arcticguilds.controllers.GuildManager;
-import dev.kyro.arcticguilds.controllers.objects.Guild;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.controllers.objects.Killstreak;
 import dev.kyro.pitsim.controllers.objects.PitEnchant;
 import dev.kyro.pitsim.events.AttackEvent;
-import dev.kyro.pitsim.events.HealEvent;
 import org.bukkit.Material;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
@@ -35,11 +31,6 @@ public class Dispersion extends Killstreak {
 		if(!attackEvent.defenderIsPlayer) return;
 
 		if(!rewardPlayers.contains(attackEvent.defender)) return;
-		Guild defenderGuild = GuildManager.getGuild(attackEvent.defenderPlayer);
-		if(defenderGuild != null) {
-			AOutput.error(attackEvent.defender, "Dispersion does not work if you are in a guild");
-			return;
-		}
 
 		List<PitEnchant> toRemove = new ArrayList<>();
 		for(Map.Entry<PitEnchant, Integer> entry : attackEvent.getAttackerEnchantMap().entrySet()) {
@@ -47,12 +38,6 @@ public class Dispersion extends Killstreak {
 			toRemove.add(entry.getKey());
 		}
 		for(PitEnchant pitEnchant : toRemove) attackEvent.getAttackerEnchantMap().remove(pitEnchant);
-	}
-
-	@EventHandler
-	public void onHeal(HealEvent healEvent) {
-		if(!rewardPlayers.contains(healEvent.player)) return;
-		if(healEvent.healType == HealEvent.HealType.HEALTH) healEvent.multipliers.add(1.25D);
 	}
 
 	@Override
@@ -71,6 +56,10 @@ public class Dispersion extends Killstreak {
 		rewardPlayers.remove(player);
 	}
 
+	public static int getChance() {
+		return 50;
+	}
+
 	@Override
 	public ItemStack getDisplayItem(Player player) {
 
@@ -83,9 +72,5 @@ public class Dispersion extends Killstreak {
 				"&7that are not in a guild)"));
 
 		return builder.getItemStack();
-	}
-
-	public static int getChance() {
-		return 50;
 	}
 }

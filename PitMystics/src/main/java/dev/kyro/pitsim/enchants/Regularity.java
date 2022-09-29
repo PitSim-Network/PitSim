@@ -5,7 +5,6 @@ import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.controllers.objects.PitEnchant;
 import dev.kyro.pitsim.enums.ApplyType;
 import dev.kyro.pitsim.events.AttackEvent;
-import dev.kyro.pitsim.misc.Misc;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.entity.EntityDamageEvent;
@@ -40,7 +39,9 @@ public class Regularity extends PitEnchant {
 		if(enchantLvl == 0) return;
 
 		double finalDamage = attackEvent.event.getFinalDamage();
-		if(finalDamage >= maxFinalDamage(enchantLvl)) return;
+
+		double random = Math.random() * (upperBoundFinalDamage(enchantLvl) - lowerBoundFinalDamage(enchantLvl)) + lowerBoundFinalDamage(enchantLvl);
+		if(finalDamage > random) return;
 
 		toReg.add(attackEvent.defender.getUniqueId());
 		regCooldown.add(attackEvent.defender.getUniqueId());
@@ -85,21 +86,25 @@ public class Regularity extends PitEnchant {
 	}
 
 	public static int secondHitDamage(int enchantLvl) {
-		return enchantLvl * 15 + 30;
+		return enchantLvl * 15;
 	}
 
 	public static int secondComboChance(int enchantLvl) {
 		return enchantLvl * 15 + 15;
 	}
 
-	public static double maxFinalDamage(int enchantLvl) {
-		return enchantLvl * 0.4 + 1.2;
+	public static double lowerBoundFinalDamage(int enchantLvl) {
+		return enchantLvl * 0.4 + 0.8;
+	}
+
+	public static double upperBoundFinalDamage(int enchantLvl) {
+		return enchantLvl * 0.4 + 1.6;
 	}
 
 	@Override
 	public List<String> getDescription(int enchantLvl) {
 
-		return new ALoreBuilder("&7If your strike deals less than &c" + Misc.getHearts(maxFinalDamage(enchantLvl)),
+		return new ALoreBuilder("&7If your strike does a low amount of",
 				"&7final damage, &astrike again &7for &c" + secondHitDamage(enchantLvl) + "%",
 				"&7damage. &7(Combo enchants have a", "&e" + secondComboChance(enchantLvl) + "% &7of incrementing the combo",
 				"&7on the second hit)").getLore();
