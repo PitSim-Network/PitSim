@@ -21,7 +21,6 @@ public class PluginMessageManager implements PluginMessageListener {
 //        String id = PitSim.INSTANCE.getConfig().getString("server-ID");
 //        if(id == null) return;
 
-        System.out.println(1);
 
 
         ByteArrayDataOutput out = ByteStreams.newDataOutput();
@@ -62,7 +61,6 @@ public class PluginMessageManager implements PluginMessageListener {
         Player p = Iterables.getFirst(Bukkit.getOnlinePlayers(), null);
         assert p != null;
         p.sendPluginMessage(PitSim.INSTANCE, "BungeeCord", out.toByteArray());
-        System.out.println(2);
     }
 
     @Override

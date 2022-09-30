@@ -35,7 +35,7 @@ public class PluginMessage {
         }
 
         for(int i = 0; i < integerCount; i++) {
-            integers.add((int) data.readLong());
+            integers.add(data.readInt());
         }
 
         for(int i = 0; i < booleanCount; i++) {
@@ -65,8 +65,9 @@ public class PluginMessage {
         return this;
     }
 
-    public void send() {
+    public PluginMessage send() {
         PluginMessageManager.sendMessage(this);
+        return this;
     }
 
     public List<String> getStrings() {

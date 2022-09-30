@@ -15,15 +15,19 @@ public class ATestCommand implements CommandExecutor {
 	@Override
 	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
 
-		new PluginMessage().writeString("Hello!").writeInt(42).writeBoolean(false).send();
+		if(args.length > 0) {
+			PitPlayer pitPlayer = new PitPlayer(Bukkit.getOfflinePlayer(args[0]).getUniqueId());
+			pitPlayer.save();
+			return false;
+		}
+
+
 
 //		if(!(sender instanceof Player)) return false;
 //		Player player = (Player) sender;
 //
 //		if(!player.isOp()) return false;
 
-		PitPlayer pitPlayer = new PitPlayer(Bukkit.getOfflinePlayer(args[0]).getUniqueId());
-		pitPlayer.save();
 
 //		FeatherBoardAPI.showScoreboard(player, args[0]);
 
