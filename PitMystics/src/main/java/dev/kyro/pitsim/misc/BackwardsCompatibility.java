@@ -1,8 +1,6 @@
 package dev.kyro.pitsim.misc;
 
 import de.tr7zw.nbtapi.NBTItem;
-import dev.kyro.arcticapi.data.APlayer;
-import dev.kyro.arcticapi.data.APlayerData;
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.arcticapi.misc.AUtil;
 import dev.kyro.pitsim.PitSim;
@@ -33,25 +31,21 @@ public class BackwardsCompatibility implements Listener {
 
 		levelSystemConversion(player);
 		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
-		pitPlayer.lastVersion = PitSim.version;
-		APlayer aPlayer = APlayerData.getPlayerData(player);
-		FileConfiguration playerData = aPlayer.playerData;
+		pitPlayer.lastVersion = PitSim.VERSION;
 
-		if(playerData.getInt("SELF_CONFIDENCE") >= 1) {
-			playerData.set("CHEMIST", 1);
-			playerData.set("SELF_CONFIDENCE", null);
-			AOutput.send(player, "&e&lUPDATE: &7Your &eSelf Confidence &7upgrade has been changed to &eChemist I&7.");
-			aPlayer.save();
-			UpgradeManager.updatePlayer(player);
-		}
-		if(playerData.getInt("REPORT_ACCESS") >= 1) {
-			System.out.println(2);
-			playerData.set("CHEMIST", 1);
-			playerData.set("REPORT_ACCESS", null);
-			AOutput.send(player, "&e&lUPDATE: &7Your &eReport Access &7upgrade has been changed to &eChemist I&7.");
-			aPlayer.save();
-			UpgradeManager.updatePlayer(player);
-		}
+//		if(playerData.getInt("SELF_CONFIDENCE") >= 1) {
+//			playerData.set("CHEMIST", 1);
+//			playerData.set("SELF_CONFIDENCE", null);
+//			AOutput.send(player, "&e&lUPDATE: &7Your &eSelf Confidence &7upgrade has been changed to &eChemist I&7.");
+//			UpgradeManager.updatePlayer(player);
+//		}
+//		if(playerData.getInt("REPORT_ACCESS") >= 1) {
+//			System.out.println(2);
+//			playerData.set("CHEMIST", 1);
+//			playerData.set("REPORT_ACCESS", null);
+//			AOutput.send(player, "&e&lUPDATE: &7Your &eReport Access &7upgrade has been changed to &eChemist I&7.");
+//			UpgradeManager.updatePlayer(player);
+//		}
 
 		for (int i = 0; i < player.getInventory().getSize(); i++) {
 			ItemStack itemStack = player.getInventory().getItem(i);
@@ -126,8 +120,6 @@ public class BackwardsCompatibility implements Listener {
 
 	public static void levelSystemConversion(Player player) {
 		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
-		APlayer aPlayer = APlayerData.getPlayerData(player);
-		FileConfiguration playerData = aPlayer.playerData;
 		double version = pitPlayer.lastVersion;
 		if(version >= 2.0) return;
 
@@ -147,19 +139,20 @@ public class BackwardsCompatibility implements Listener {
 
 		for(RenownUpgrade upgrade : UpgradeManager.upgrades) {
 			if(UpgradeManager.hasUpgrade(player, upgrade)) {
-				playerData.set(upgrade.refName, null);
+				pitPlayer.upgrades.put(upgrade.refName, 0);
+//				playerData.set(upgrade.refName, null);
 			}
 		}
 
 
-		for(int i = 0; i < pitPlayer.pitPerks.length; i++) {
-			if(pitPlayer.pitPerks[i].refName.equals("streaker")) {
-				pitPlayer.pitPerks[i] = NoPerk.INSTANCE;
-				playerData.set("perk-" + (i + 1), NoPerk.INSTANCE.refName);
+		for(int i = 0; i < pitPlayer.pitPerks.size(); i++) {
+			if(pitPlayer.pitPerks.get(i).refName.equals("streaker")) {
+				pitPlayer.pitPerks.set(i, NoPerk.INSTANCE);
+//				playerData.set("perk-" + (i + 1), NoPerk.INSTANCE.refName);
 			}
-			if(pitPlayer.pitPerks[i].refName.equals("firststrike")) {
-				pitPlayer.pitPerks[i] = NoPerk.INSTANCE;
-				playerData.set("perk-" + (i + 1), NoPerk.INSTANCE.refName);
+			if(pitPlayer.pitPerks.get(i).refName.equals("firststrike")) {
+				pitPlayer.pitPerks.set(i, NoPerk.INSTANCE);
+//				playerData.set("perk-" + (i + 1), NoPerk.INSTANCE.refName);
 			}
 		}
 
@@ -174,7 +167,6 @@ public class BackwardsCompatibility implements Listener {
 		pitPlayer.megastreak = new Overdrive(pitPlayer);
 		pitPlayer.goldGrinded = 0;
 
-		aPlayer.save();
 
 		if(newPrestige > 0) {
 			Sounds.COMPENSATION.play(player);

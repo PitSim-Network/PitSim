@@ -1,9 +1,8 @@
 package dev.kyro.pitsim.commands;
 
-import dev.kyro.arcticapi.data.APlayer;
-import dev.kyro.arcticapi.data.APlayerData;
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.controllers.MapManager;
+import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.tutorial.TutorialManager;
 import dev.kyro.pitsim.tutorial.objects.Tutorial;
 import org.bukkit.command.Command;
@@ -37,9 +36,7 @@ public class TutorialCommand implements CommandExecutor {
 
 		tutorial.cleanUp();
 		player.teleport(MapManager.currentMap.firstLobby.getSpawnLocation());
-		APlayer aPlayer = APlayerData.getPlayerData(player);
-		aPlayer.playerData.set("tutorial", true);
-		aPlayer.save();
+		PitPlayer.getPitPlayer(player).tutorial = true;
 		AOutput.send(player, "&cYou have skipped the tutorial!");
 
 		return false;

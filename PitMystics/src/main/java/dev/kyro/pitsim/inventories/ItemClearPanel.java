@@ -1,8 +1,6 @@
 package dev.kyro.pitsim.inventories;
 
 import de.tr7zw.nbtapi.NBTItem;
-import dev.kyro.arcticapi.data.APlayer;
-import dev.kyro.arcticapi.data.APlayerData;
 import dev.kyro.arcticapi.gui.AGUI;
 import dev.kyro.arcticapi.gui.AGUIPanel;
 import dev.kyro.arcticapi.misc.AOutput;
@@ -99,10 +97,7 @@ public class ItemClearPanel extends AGUIPanel {
 					}
 					if(removedEnchants == 1) player.getInventory().setItem(i, item1);
 
-					APlayer aPlayer = APlayerData.getPlayerData(player);
 					pitPlayer.renown -= 5;
-					aPlayer.playerData.set("renown", pitPlayer.renown);
-					aPlayer.save();
 
 					player.closeInventory();
 					Sounds.CLEAR_JEWEL.play(player);

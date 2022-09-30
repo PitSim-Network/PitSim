@@ -1,20 +1,16 @@
 package dev.kyro.pitsim.controllers.objects;
 
-import dev.kyro.arcticapi.data.AConfig;
-import dev.kyro.arcticapi.data.APlayer;
-import dev.kyro.arcticapi.data.APlayerData;
 import dev.kyro.pitsim.boosters.GoldBooster;
 import dev.kyro.pitsim.boosters.XPBooster;
 import dev.kyro.pitsim.controllers.BoosterManager;
+import dev.kyro.pitsim.controllers.FirestoreManager;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
-import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.List;
-import java.util.Map;
 
 public abstract class Booster implements Listener {
 	public String name;
@@ -28,7 +24,8 @@ public abstract class Booster implements Listener {
 		this.refName = refName;
 		this.slot = slot;
 		this.color = color;
-		minutes = Math.max(AConfig.getInt("boosters." + refName), getClass() == XPBooster.class || getClass() == GoldBooster.class ? 5 : 0);
+		minutes = Math.max(FirestoreManager.CONFIG.boosters.getOrDefault(refName, 0),
+				getClass() == XPBooster.class || getClass() == GoldBooster.class ? 5 : 0);
 	}
 
 	public abstract List<String> getDescription();
@@ -50,9 +47,7 @@ public abstract class Booster implements Listener {
 	}
 
 	public void updateTime() {
-
-		AConfig.set("boosters." + refName, minutes);
-		AConfig.saveConfig();
+		FirestoreManager.CONFIG.boosters.put(refName, minutes);
 	}
 
 
@@ -82,27 +77,24 @@ public abstract class Booster implements Listener {
 
 	public static void setBooster(Player player, Booster booster, int amount) {
 		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
-		pitPlayer.boosters.put(booster, amount);
-		saveBoosters(player);
+		pitPlayer.boosters.put(booster.refName, amount);
+//		saveBoosters(player);
 	}
 
 	public static void setBooster(Player player, String booster, int amount) {
 		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
 		for(Booster booster1 : BoosterManager.boosterList) {
 			if(booster1.refName.equals(booster)) {
-				pitPlayer.boosters.put(booster1, amount);
+				pitPlayer.boosters.put(booster1.refName, amount);
 			}
 		}
-		saveBoosters(player);
+//		saveBoosters(player);
 	}
 
-	public static void saveBoosters(Player player) {
-		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
-		APlayer aPlayer = APlayerData.getPlayerData(player);
-		FileConfiguration playerData = aPlayer.playerData;
-		for(Map.Entry<Booster, Integer> boosterIntegerEntry : pitPlayer.boosters.entrySet()) {
-			playerData.set("boosters." + boosterIntegerEntry.getKey().refName, boosterIntegerEntry.getValue());
-		}
-		aPlayer.save();
-	}
+//	public static void saveBoosters(Player player) {
+//		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
+//		for(Map.Entry<String, Integer> boosterIntegerEntry : pitPlayer.boosters.entrySet()) {
+//			playerData.set("boosters." + boosterIntegerEntry.getKey(), boosterIntegerEntry.getValue());
+//		}
+//	}
 }

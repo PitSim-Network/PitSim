@@ -92,7 +92,7 @@ public class PortalManager implements Listener {
 			APlayer aPlayer = APlayerData.getPlayerData(player);
 			FileConfiguration playerData = aPlayer.playerData;
 			Streaker.playerTimes.remove(player);
-			if(!playerData.contains("darkzonepreview")) {
+			if(!pitPlayer.darkzoneCutscene) {
 				CutsceneManager.play(player);
 				return;
 			}

@@ -1,8 +1,6 @@
 package dev.kyro.pitsim.brewing;
 
 import de.tr7zw.nbtapi.NBTItem;
-import dev.kyro.arcticapi.data.APlayer;
-import dev.kyro.arcticapi.data.APlayerData;
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.arcticapi.misc.AUtil;
 import dev.kyro.pitsim.PitSim;
@@ -10,6 +8,8 @@ import dev.kyro.pitsim.brewing.ingredients.SpiderEye;
 import dev.kyro.pitsim.brewing.objects.BrewingIngredient;
 import dev.kyro.pitsim.brewing.objects.PotionEffect;
 import dev.kyro.pitsim.controllers.BossManager;
+import dev.kyro.pitsim.controllers.objects.PitPlayer;
+import dev.kyro.pitsim.controllers.objects.PluginMessage;
 import dev.kyro.pitsim.enums.NBTTag;
 import net.kyori.adventure.audience.Audience;
 import net.kyori.adventure.bossbar.BossBar;
@@ -17,7 +17,6 @@ import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
-import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
@@ -173,44 +172,41 @@ public class PotionManager implements Listener {
             if(potionEffect.player == player) toExpire.add(potionEffect);
         }
 
-        APlayer aPlayer = APlayerData.getPlayerData(player);
-        FileConfiguration data = aPlayer.playerData;
-
         for (PotionEffect potionEffect : toExpire) {
 
             potionEffect.onExpire(true);
 
             String time = String.valueOf(System.currentTimeMillis());
-            data.set("potions." + potionEffect.potionType.name, potionEffect.potency.tier + ":" + potionEffect.getTimeLeft() + ":" + time);
+            PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
+            pitPlayer.potionStrings.add(potionEffect.potionType.name + ":" + potionEffect.potency.tier + ":" + potionEffect.getTimeLeft() + ":" + time);
 
         }
-        aPlayer.save();
     }
 
     @EventHandler
     public void onJoin(PlayerJoinEvent event) {
         Player player = event.getPlayer();
-        APlayer aPlayer = APlayerData.getPlayerData(player);
-        FileConfiguration data = aPlayer.playerData;
-        if(!data.contains("potions")) return;
-        for (String key : data.getConfigurationSection("potions").getKeys(false)) {
-            String[] split = data.getString("potions." + key).split(":");
+
+        PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
+        List<String> potionStrings = pitPlayer.potionStrings;
+        if(potionStrings == null || potionStrings.isEmpty()) return;
+
+        for(String potionString : potionStrings) {
+            String[] split = potionString.split(":");
             if(split.length != 3) continue;
 
-            int tier = Integer.parseInt(split[0]);
-            int timeLeft = Integer.parseInt(split[1]);
-            long time = Long.parseLong(split[2]);
+            int tier = Integer.parseInt(split[1]);
+            int timeLeft = Integer.parseInt(split[2]);
+            long time = Long.parseLong(split[3]);
 
             long passedTicks = ((System.currentTimeMillis() - time) / 1000) * 20;
             if(passedTicks > timeLeft) continue;
 
-            PotionEffect potionEffect = new PotionEffect(player, BrewingIngredient.getIngredientFromName(key), BrewingIngredient.getIngredientFromTier(tier), (int) (timeLeft - passedTicks));
-
+            PotionEffect potionEffect = new PotionEffect(player, BrewingIngredient.getIngredientFromName(split[0]), BrewingIngredient.getIngredientFromTier(tier), (int) (timeLeft - passedTicks));
             potionEffectList.add(potionEffect);
         }
 
-        data.set("potions", null);
-        aPlayer.save();
+        pitPlayer.potionStrings.clear();
     }
 
     public boolean hasLesserEffect(Player player, BrewingIngredient identifier, BrewingIngredient potency) {

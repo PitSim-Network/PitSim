@@ -1,9 +1,8 @@
 package dev.kyro.pitsim.tutorial.sequences;
 
-import dev.kyro.arcticapi.data.APlayer;
-import dev.kyro.arcticapi.data.APlayerData;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.controllers.MapManager;
+import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.tutorial.MessageManager;
 import dev.kyro.pitsim.tutorial.Task;
 import dev.kyro.pitsim.tutorial.TutorialMessage;
@@ -88,9 +87,8 @@ public class FinalSequence extends TutorialSequence {
 			@Override
 			public void run() {
 				tutorial.cleanUp();
-				APlayer aPlayer = APlayerData.getPlayerData(player);
-				aPlayer.playerData.set("tutorial", true);
-				aPlayer.save();
+				PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
+				pitPlayer.tutorial = true;
 			}
 		}.runTaskLater(PitSim.INSTANCE, 20L * waitTime);
 		runnableList.add(runnable);

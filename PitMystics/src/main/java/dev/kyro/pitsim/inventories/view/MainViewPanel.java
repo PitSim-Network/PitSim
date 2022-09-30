@@ -48,8 +48,8 @@ public class MainViewPanel extends AGUIPanel {
 		skull.setItemMeta(skullMeta);
 		getInventory().setItem(11, skull);
 
-		for(int i = 0; i < pitTarget.pitPerks.length; i++) {
-			PitPerk pitPerk = pitTarget.pitPerks[i];
+		for(int i = 0; i < pitTarget.pitPerks.size(); i++) {
+			PitPerk pitPerk = pitTarget.pitPerks.get(i);
 			ItemStack itemStack = pitPerk.getDisplayItem();
 			new AItemStackBuilder(itemStack)
 					.setName("&a" + itemStack.getItemMeta().getDisplayName());

@@ -1,101 +1,110 @@
 package dev.kyro.pitsim.controllers.objects;
 
-import dev.kyro.arcticapi.data.APlayer;
-import dev.kyro.arcticapi.data.APlayerData;
+import com.google.cloud.firestore.annotation.Exclude;
 import dev.kyro.pitsim.controllers.PrestigeValues;
 import org.bukkit.configuration.file.FileConfiguration;
 
 import java.util.UUID;
 
 public class PlayerStats {
+	@Exclude
 	public PitPlayer pitPlayer;
+	@Exclude
 	public UUID uuid;
 
 	//	Offense
-	public int playerKills;
-	public int botKills;
-	public int hopperKills;
-	public int swordHits;
-	public int arrowShots;
-	public int arrowHits;
-	public double damageDealt;
-	public double trueDamageDealt;
+	public int playerKills = 0;
+	public int botKills = 0;
+	public int hopperKills = 0;
+	public int swordHits = 0;
+	public int arrowShots = 0;
+	public int arrowHits = 0;
+	public double damageDealt = 0;
+	public double trueDamageDealt = 0;
 
+	@Exclude
 	public double getArrowAccuracy() {
 		if(arrowShots == 0) return 0;
 		return (double) arrowHits / arrowShots;
 	}
 
 	//	Defence
-	public int deaths;
-	public double damageTaken;
-	public double trueDamageTaken;
+	public int deaths = 0;
+	public double damageTaken = 0;
+	public double trueDamageTaken = 0;
 
 	//	Megastreaks
-	public int timesOnOverdrive;
-	public int timesOnBeastmode;
-	public int timesOnHighlander;
-	public int timesOnMoon;
-	public int rngesusCompleted;
-	public int ubersCompleted;
+	public int timesOnOverdrive = 0;
+	public int timesOnBeastmode = 0;
+	public int timesOnHighlander = 0;
+	public int timesOnMoon = 0;
+	public int rngesusCompleted = 0;
+	public int ubersCompleted = 0;
 
 	//	Mystics
-	public int billionaire;
-	public int perun;
-	public int executioner;
-	public double gamble;
-	public double stun;
-	public double lifesteal;
+	public int billionaire = 0;
+	public int perun = 0;
+	public int executioner = 0;
+	public double gamble = 0;
+	public double stun = 0;
+	public double lifesteal = 0;
 
-	public int robinhood;
-	public int volley;
-	public int telebow;
-	public int pullbow;
-	public int explosive;
-	public int lucky;
-	public int drain;
-	public int wasp;
-	public int pin;
-	public int ftts;
-	public int pcts;
+	public int robinhood = 0;
+	public int volley = 0;
+	public int telebow = 0;
+	public int pullbow = 0;
+	public int explosive = 0;
+	public int lucky = 0;
+	public int drain = 0;
+	public int wasp = 0;
+	public int pin = 0;
+	public int ftts = 0;
+	public int pcts = 0;
 
-	public int rgm;
-	public int regularity;
+	public int rgm = 0;
+	public int regularity = 0;
 
 	//	Progression
-	public int minutesPlayed;
+	public int minutesPlayed = 0;
 
+	@Exclude
 	public long getTotalXP() {
 		return PrestigeValues.getTotalXP(pitPlayer.prestige, pitPlayer.level, pitPlayer.remainingXP);
 	}
 
 	public double totalGold;
 
+	@Exclude
 	public double getXpPerHour() {
 		if(getHoursPlayed() == 0) return 0;
 		return (double) getTotalXP() / getHoursPlayed();
 	}
 
+	@Exclude
 	public double getGoldPerHour() {
 		if(getHoursPlayed() == 0) return 0;
 		return totalGold / getHoursPlayed();
 	}
 
+	@Exclude
 	public double getHoursPlayed() {
 		return (double) minutesPlayed / 60;
 	}
 
 	//	Ratios
+	@Exclude
 	public double getPlayerKillsToDeaths() {
 		if(deaths == 0) return 0;
 		return (double) playerKills / deaths;
 	}
 
+	@Exclude
 	public double getBotKillsToDeaths() {
 		if(deaths == 0) return 0;
 		return (double) botKills / deaths;
 	}
 
+	@Exclude
 	public double getDamageDealtToDamageTaken() {
 		if(damageTaken == 0) return 0;
 		return damageDealt / damageTaken;
@@ -124,9 +133,13 @@ public class PlayerStats {
 
 	public int chatMessages;
 
+	public PlayerStats() {
+	}
+
+	@Deprecated
 	public PlayerStats(PitPlayer pitPlayer, FileConfiguration playerData) {
 		this.pitPlayer = pitPlayer;
-		this.uuid = pitPlayer.player.getUniqueId();
+//		this.uuid = pitPlayer.player.getUniqueId();
 
 		playerKills = playerData.getInt("stats.combat.player-kills");
 		botKills = playerData.getInt("stats.combat.bot-kills");
@@ -195,76 +208,10 @@ public class PlayerStats {
 		chatMessages = playerData.getInt("stats.misc.chat-messages");
 	}
 
-	public void save() {
-		APlayer aPlayer = APlayerData.getPlayerData(uuid);
-		FileConfiguration playerData = aPlayer.playerData;
+	public PlayerStats init(PitPlayer pitPlayer) {
+		this.pitPlayer = pitPlayer;
+		this.uuid = pitPlayer.player.getUniqueId();
 
-		playerData.set("stats.combat.player-kills", playerKills);
-		playerData.set("stats.combat.bot-kills", botKills);
-		playerData.set("stats.combat.hopper-kills", hopperKills);
-		playerData.set("stats.combat.sword-hits", swordHits);
-		playerData.set("stats.combat.arrow-shots", arrowShots);
-		playerData.set("stats.combat.arrow-hits", arrowHits);
-		playerData.set("stats.combat.damage-dealt", damageDealt);
-		playerData.set("stats.combat.true-damage-dealt", trueDamageDealt);
-
-		playerData.set("stats.combat.deaths", deaths);
-		playerData.set("stats.combat.damage-taken", damageTaken);
-		playerData.set("stats.combat.true-damage-taken", trueDamageTaken);
-
-		playerData.set("stats.megastreak.overdrive", timesOnOverdrive);
-		playerData.set("stats.megastreak.beastmode", timesOnBeastmode);
-		playerData.set("stats.megastreak.highlander", timesOnHighlander);
-		playerData.set("stats.megastreak.moon", timesOnMoon);
-		playerData.set("stats.megastreak.rngesus", rngesusCompleted);
-		playerData.set("stats.megastreak.ubers-completed", ubersCompleted);
-
-		playerData.set("stats.enchant.billionaire", billionaire);
-		playerData.set("stats.enchant.perun", perun);
-		playerData.set("stats.enchant.executioner", executioner);
-		playerData.set("stats.enchant.gamble", gamble);
-		playerData.set("stats.enchant.stun", stun);
-		playerData.set("stats.enchant.lifesteal", lifesteal);
-
-		playerData.set("stats.enchant.robinhood", robinhood);
-		playerData.set("stats.enchant.volley", volley);
-		playerData.set("stats.enchant.telebow", telebow);
-		playerData.set("stats.enchant.pullbow", pullbow);
-		playerData.set("stats.enchant.explosive", explosive);
-		playerData.set("stats.enchant.lucky", lucky);
-		playerData.set("stats.enchant.drain", drain);
-		playerData.set("stats.enchant.wasp", wasp);
-		playerData.set("stats.enchant.pin", pin);
-		playerData.set("stats.enchant.ftts", ftts);
-		playerData.set("stats.enchant.pcts", pcts);
-
-		playerData.set("stats.enchant.rgm", rgm);
-		playerData.set("stats.enchant.regularity", regularity);
-
-		playerData.set("stats.darkzone.bosses-killed", bossesKilled);
-		playerData.set("stats.darkzone.mobs-killed", mobsKilled);
-		playerData.set("stats.darkzone.lifetime-souls", lifetimeSouls);
-		playerData.set("stats.darkzone.items-enchanted", itemsEnchanted);
-		playerData.set("stats.darkzone.potions-brewed", potionsBrewed);
-		playerData.set("stats.darkzone.auctions-won", auctionsWon);
-		playerData.set("stats.darkzone.highest-bid", highestBid);
-
-		playerData.set("stats.progression.minutes-played", minutesPlayed);
-		playerData.set("stats.progression.total-gold", totalGold);
-
-		playerData.set("stats.misc.highest-streak", highestStreak);
-		playerData.set("stats.misc.health-regained", healthRegained);
-		playerData.set("stats.misc.absorption-gained", absorptionGained);
-		playerData.set("stats.misc.bounties-claimed", bountiesClaimed);
-
-		playerData.set("stats.misc.jewels-completed", jewelsCompleted);
-		playerData.set("stats.misc.items-gemmed", itemsGemmed);
-		playerData.set("stats.misc.lives-lost", livesLost);
-		playerData.set("stats.misc.items-broken", itemsBroken);
-		playerData.set("stats.misc.feathers-lost", feathersLost);
-
-		playerData.set("stats.misc.chat-messages", chatMessages);
-
-		aPlayer.save();
+		return this;
 	}
 }

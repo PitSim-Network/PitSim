@@ -21,11 +21,6 @@ public class PlayerDataManager implements Listener {
 				if(count++ % 60 == 0) {
 					for(Player onlinePlayer : Bukkit.getOnlinePlayers()) {
 						PitPlayer pitPlayer = PitPlayer.getPitPlayer(onlinePlayer);
-						pitPlayer.fullSave();
-					}
-				} else {
-					for(Player onlinePlayer : Bukkit.getOnlinePlayers()) {
-						PitPlayer pitPlayer = PitPlayer.getPitPlayer(onlinePlayer);
 						pitPlayer.save();
 					}
 				}
@@ -40,7 +35,7 @@ public class PlayerDataManager implements Listener {
 		new BukkitRunnable() {
 			@Override
 			public void run() {
-				pitPlayer.fullSave();
+				pitPlayer.save();
 			}
 		}.runTaskLater(PitSim.INSTANCE, 10L);
 	}
@@ -58,7 +53,7 @@ public class PlayerDataManager implements Listener {
 
 		for(Player player : Bukkit.getOnlinePlayers()) {
 			PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
-			pitPlayer.fullSave();
+			pitPlayer.save();
 		}
 	}
 }

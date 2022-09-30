@@ -6,6 +6,8 @@ import dev.kyro.pitsim.controllers.objects.PitPerk;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import org.bukkit.entity.Player;
 
+import java.util.List;
+
 public class PerkGUI extends AGUI {
 
 	public PerkPanel perkPanel;
@@ -41,10 +43,10 @@ public class PerkGUI extends AGUI {
 
 	public PitPerk getActivePerk(int perkNum) {
 
-		return getActivePerks()[perkNum - 1];
+		return getActivePerks().get(perkNum - 1);
 	}
 
-	public PitPerk[] getActivePerks() {
+	public List<PitPerk> getActivePerks() {
 
 		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
 		return pitPlayer.pitPerks;
@@ -52,7 +54,7 @@ public class PerkGUI extends AGUI {
 
 	public void setPerk(PitPerk pitPerk, int perkNum) {
 		if(NonManager.getNon(player) != null) return;
-		getActivePerks()[perkNum - 1] = pitPerk;
+		getActivePerks().set(perkNum - 1, pitPerk);
 	}
 
 	public boolean isActive(PitPerk pitPerk) {

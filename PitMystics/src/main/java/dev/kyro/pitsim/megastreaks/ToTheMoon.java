@@ -112,7 +112,7 @@ public class ToTheMoon extends Megastreak {
 	@EventHandler
 	public void onHit(AttackEvent.Apply attackEvent) {
 		if(!attackEvent.defenderIsPlayer) return;
-		PitPlayer pitPlayer = PitPlayer.getEntityPitPlayer(attackEvent.defender);
+		PitPlayer pitPlayer = PitPlayer.getPitPlayer(attackEvent.defender);
 		if(pitPlayer != this.pitPlayer) return;
 		if(pitPlayer.megastreak.getClass() == ToTheMoon.class) {
 			if(pitPlayer.getKills() > 200) {
@@ -135,7 +135,7 @@ public class ToTheMoon extends Megastreak {
 	@EventHandler
 	public void onKill(KillEvent killEvent) {
 		if(!killEvent.killerIsPlayer) return;
-		PitPlayer pitPlayer = PitPlayer.getEntityPitPlayer(killEvent.killer);
+		PitPlayer pitPlayer = PitPlayer.getPitPlayer(killEvent.killer);
 		killEvent.xpCap += pitPlayer.moonBonus;
 		if(pitPlayer != this.pitPlayer) return;
 		if(!(pitPlayer.megastreak.getClass() == ToTheMoon.class)) return;

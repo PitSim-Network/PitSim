@@ -11,7 +11,6 @@ public abstract class Killstreak implements Listener {
 	public String refName;
 	public int killInterval;
 	public int prestige;
-	public Killstreak INSTANCE;
 
 	public Killstreak(String name, String refName, int killInterval, int prestige) {
 		this.name = name;

@@ -26,8 +26,8 @@ repositories {
 }
 
 dependencies {
-    implementation 'org.jetbrains:annotations:23.0.0'
-    implementation 'com.gmail.filoghost.holographicdisplays:holographicdisplays-api:2.4.9'
+    compileOnly 'org.jetbrains:annotations:23.0.0'
+    compileOnly 'com.gmail.filoghost.holographicdisplays:holographicdisplays-api:2.4.9'
 //    compileOnly 'org.spigotmc:spigot:1.8.8-R0.1-SNAPSHOT'
     compileOnly files('libs/ispigot.jar')
 //    compileOnly 'net.citizensnpcs:citizens-main:2.0.27-SNAPSHOT'
@@ -43,21 +43,23 @@ dependencies {
 
     compileOnly  'com.xxmicloxx:NoteBlockAPI:1.6.2-SNAPSHOT'
     compile 'com.github.ArcticDevelopment:ArcticAPI:47cd0616ed'
-    compile 'de.tr7zw:item-nbt-api-plugin:2.8.0'// https://mvnrepository.com/artifact/com.googlecode.json-simple/json-simple
+    compileOnly 'de.tr7zw:item-nbt-api-plugin:2.8.0'// https://mvnrepository.com/artifact/com.googlecode.json-simple/json-simple
 //    compile group: 'com.googlecode.json-simple', name: 'json-simple', version: '1.1.1'
     compileOnly files('libs/FeatherBoard.jar')
     compileOnly files('libs/CPCameraStudioReborn.jar')
     compileOnly files('libs/ArcticGuilds-1.0.0-all.jar')
-    compile files('libs/ArmorEquipEvent-1.7.2.jar')
-    implementation 'com.mattmalec:Pterodactyl4J:2.BETA_81'
-    implementation "net.kyori:adventure-platform-bukkit:4.1.0"
+    compileOnly files('libs/ArmorEquipEvent-1.7.2.jar')
+    compileOnly 'com.mattmalec:Pterodactyl4J:2.BETA_81'
+    compileOnly "net.kyori:adventure-platform-bukkit:4.1.0"
     compileOnly 'net.luckperms:api:5.4'
+    compileOnly 'com.google.firebase:firebase-admin:8.0.0'
 }
 
 shadowJar {
 
     relocate 'dev.kyro.arcticapi', 'dev.kyro.pitsim.arcticapi'
     relocate 'net.kyori', 'dev.kyro.pitsim.kyori'
+    relocate 'com.google', 'dev.kyro.pitsim.com.google'
 }
 
 gradle.projectsEvaluated {

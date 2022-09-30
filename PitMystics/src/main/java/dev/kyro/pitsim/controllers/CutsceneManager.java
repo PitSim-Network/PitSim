@@ -5,16 +5,14 @@ import com.xxmicloxx.NoteBlockAPI.NoteBlockAPI;
 import com.xxmicloxx.NoteBlockAPI.model.Song;
 import com.xxmicloxx.NoteBlockAPI.songplayer.EntitySongPlayer;
 import com.xxmicloxx.NoteBlockAPI.utils.NBSDecoder;
-import dev.kyro.arcticapi.data.APlayer;
-import dev.kyro.arcticapi.data.APlayerData;
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.PitSim;
+import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.misc.Misc;
 import dev.kyro.pitsim.misc.Sounds;
 import eu.crushedpixel.camerastudio.CameraStudio;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
-import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -216,11 +214,9 @@ public class CutsceneManager implements Listener {
                 FeatherBoardAPI.toggle(player);
                 NoteBlockAPI.stopPlaying(player);
 
-                APlayer aPlayer = APlayerData.getPlayerData(player);
-                FileConfiguration playerData = aPlayer.playerData;
+                PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
                 if(player.isOnline()) {
-                    playerData.set("darkzonepreview", true);
-                    aPlayer.save();
+                    pitPlayer.darkzoneCutscene = true;
                 }
             }
         }.runTaskLater(PitSim.INSTANCE, 1980);
@@ -279,11 +275,9 @@ public class CutsceneManager implements Listener {
             FeatherBoardAPI.toggle(player);
             NoteBlockAPI.stopPlaying(player);
             cutscenePlayers.remove(player);
-            APlayer aPlayer = APlayerData.getPlayerData(player);
-            FileConfiguration playerData = aPlayer.playerData;
+            PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
             if(player.isOnline()) {
-                playerData.set("darkzonepreview", true);
-                aPlayer.save();
+                pitPlayer.darkzoneCutscene = true;
             }
         }
     }

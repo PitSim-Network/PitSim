@@ -103,12 +103,15 @@ public class BoosterManager implements Listener {
 				}
 				donatorMessages.clear();
 
+				boolean boosterEnabled = false;
 				for(Booster booster : boosterList) {
 					if(booster.minutes == 0) continue;
+					boosterEnabled = true;
 					booster.minutes--;
 					if(booster.minutes == 0) booster.disable();
 					else booster.updateTime();
 				}
+				if(boosterEnabled) FirestoreManager.CONFIG.save();
 
 				donators.clear();
 				for(Player onlinePlayer : Bukkit.getOnlinePlayers()) {
@@ -117,7 +120,7 @@ public class BoosterManager implements Listener {
 					for(Booster booster : boosterList) {
 						int timeLeft = pitPlayer.boosterTime.get(booster);
 						if(timeLeft <= 0) continue;
-						pitPlayer.boosterTime.put(booster, pitPlayer.boosterTime.get(booster) - 1);
+						pitPlayer.boosterTime.put(booster.refName, pitPlayer.boosterTime.get(booster) - 1);
 
 //						TODO: Terrible fix lol
 						if(donators.containsKey(booster)) continue;

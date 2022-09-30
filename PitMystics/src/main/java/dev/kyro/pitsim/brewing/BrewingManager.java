@@ -8,6 +8,7 @@ import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.events.AttackEvent;
 import dev.kyro.pitsim.misc.Misc;
 import dev.kyro.pitsim.misc.Sounds;
+import net.citizensnpcs.api.CitizensAPI;
 import net.minecraft.server.v1_8_R3.PacketPlayOutEntity;
 import net.minecraft.server.v1_8_R3.PacketPlayOutEntityDestroy;
 import org.bukkit.Bukkit;
@@ -49,6 +50,7 @@ public class BrewingManager implements Listener {
                     List<ArmorStand> destroyStands = new ArrayList<>(anim.personalStands);
                     if(!(nearbyEntity instanceof Player)) continue;
                     Player player = (Player) nearbyEntity;
+                    if(CitizensAPI.getNPCRegistry().isNPC(player)) continue;
 
                     if(anim.players.contains(player)) {
                         destroyStands.remove(anim.cancelStands.get(player));
@@ -69,7 +71,7 @@ public class BrewingManager implements Listener {
                     PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
                     String[] text = new String[5];
                     text[0] = "&e&lActively Brewing Potions";
-                    for (int i = 0; i < pitPlayer.brewingSessions.length; i++) {
+                    for (int i = 0; i < pitPlayer.brewingSessions.size(); i++) {
                         BrewingSession session = getBrewingSession(player, i + 1);
                         if(session != null) {
                             int addTicks = (105 - session.reduction.getBrewingReductionMinutes()) * 60 * 20;
@@ -209,8 +211,8 @@ public class BrewingManager implements Listener {
 
     public static int getBrewingSlot(Player player) {
         PitPlayer pitPlayer = PitPlayer.getPitPlayer(player.getPlayer());
-        for (int i = 0; i < pitPlayer.brewingSessions.length; i++) {
-            if(pitPlayer.brewingSessions[i] == null && UpgradeManager.getTier(player, "CHEMIST") >= i) return i + 1;
+        for (int i = 0; i < pitPlayer.brewingSessions.size(); i++) {
+            if(pitPlayer.brewingSessions.get(i) == null && UpgradeManager.getTier(player, "CHEMIST") >= i) return i + 1;
         }
         return -1;
     }

@@ -8,6 +8,7 @@ import org.bukkit.entity.Player;
 
 import java.util.UUID;
 
+//This is disabled
 public class CaptchaCommand implements CommandExecutor {
 
 	@Override

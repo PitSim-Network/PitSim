@@ -12,6 +12,7 @@ depend:
   - NoteBlockAPI
   - ProtocolLib
   - Essentials
+  - PitRemakeDependencies
 commands:
   pitsim:
   ps:
@@ -38,7 +39,6 @@ commands:
   pitreload:
   setvalue:
   check:
-  rape:
   shop:
   store:
   discord:

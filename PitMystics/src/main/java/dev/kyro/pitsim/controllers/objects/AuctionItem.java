@@ -1,17 +1,15 @@
 package dev.kyro.pitsim.controllers.objects;
 
-import de.tr7zw.nbtapi.NBTItem;
-import dev.kyro.arcticapi.data.AConfig;
-import dev.kyro.arcticapi.data.APlayer;
-import dev.kyro.arcticapi.data.APlayerData;
+import com.google.api.core.ApiFuture;
+import com.google.cloud.firestore.DocumentSnapshot;
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.arcticapi.misc.AUtil;
 import dev.kyro.pitsim.controllers.AuctionDisplays;
+import dev.kyro.pitsim.controllers.FirestoreManager;
 import dev.kyro.pitsim.enums.ItemType;
 import dev.kyro.pitsim.misc.Sounds;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
-import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
@@ -36,7 +34,6 @@ public class AuctionItem {
 
        this.bidMap = bidMap == null ? new LinkedHashMap<>() : bidMap;
 
-       NBTItem nbtItem = new NBTItem(this.item.item);
        if(this.itemData == 0) {
            if(item.id == 5 || item.id == 6 || item.id == 7) {
                this.itemData = ItemType.generateJewelData(this.item.item);
@@ -47,12 +44,14 @@ public class AuctionItem {
     }
 
     public void saveData() {
-        AConfig.set("auctions.auction" + slot + ".item", this.item.id);
-        AConfig.set("auctions.auction" + slot + ".itemdata", this.itemData);
-        AConfig.set("auctions.auction" + slot + ".start", this.initTime);
+        System.out.println(FirestoreManager.CONFIG.auctions);
+        FirestoreManager.CONFIG.auctions.set(slot, new Config.Auction());
+        FirestoreManager.CONFIG.auctions.get(slot).item = this.item.id;
+        FirestoreManager.CONFIG.auctions.get(slot).itemData = this.itemData;
+        FirestoreManager.CONFIG.auctions.get(slot).start = this.initTime;
 
         for (Map.Entry<UUID, Integer> entry : this.bidMap.entrySet()) {
-            List<String> bids = AConfig.getStringList("auctions.auction" + slot + ".bids");
+            List<String> bids = FirestoreManager.CONFIG.auctions.get(slot).bids;
 
             for (String bid : bids) {
                 String[] split = bid.split(":");
@@ -63,9 +62,9 @@ public class AuctionItem {
             }
 
             bids.add(entry.getKey() + ":" + entry.getValue());
-            AConfig.set("auctions.auction" + slot + ".bids", bids);
+            FirestoreManager.CONFIG.auctions.get(slot).bids = bids;
         }
-        AConfig.saveConfig();
+        FirestoreManager.CONFIG.save();
     }
 
     public void addBid(UUID player, int bid) {
@@ -111,13 +110,8 @@ public class AuctionItem {
     }
 
     public void endAuction() {
-        AConfig.set("auctions.auction" + slot + ".item", (Object) null);
-        AConfig.set("auctions.auction" + slot + ".itemdata", (Object) null);
-        AConfig.set("auctions.auction" + slot + ".start", (Object) null);
-        AConfig.set("auctions.auction" + slot + ".bids", (Object) null);
-
-        AConfig.set("auctions.auction" + slot, (Object) null);
-        AConfig.saveConfig();
+        FirestoreManager.CONFIG.auctions.set(slot, null);
+        FirestoreManager.CONFIG.save();
 
         if(getHighestBidder() == null) return;
 
@@ -145,17 +139,20 @@ public class AuctionItem {
 
             AOutput.send(winner.getPlayer(), "&5&lDARK AUCTION! &7Received " + item.itemName + "&7.");
         } else {
-            APlayer aPlayer = APlayerData.getPlayerData(winner);
-            FileConfiguration playerData = aPlayer.playerData;
 
-            if(playerData.contains("auctionreturn")) {
-                String returnData = playerData.getString("auctionreturn");
-                returnData += "," + item.id + ":" + itemData;
-                playerData.set("auctionreturn", returnData);
+            try {
+                ApiFuture<DocumentSnapshot> data = FirestoreManager.FIRESTORE.collection(FirestoreManager.PLAYERDATA_COLLECTION)
+                        .document(winner.getUniqueId().toString()).get();
+
+                List auctionReturn = data.get().get("auctionReturn", List.class);
+
+                auctionReturn.add(item.id + ":" + itemData + ":" + getHighestBid());
+
+                FirestoreManager.FIRESTORE.collection(FirestoreManager.PLAYERDATA_COLLECTION).document(winner.getUniqueId().toString()).update("auctionReturn", auctionReturn);
+
+            } catch(Exception e) {
+                e.printStackTrace();
             }
-            else playerData.set("auctionreturn", item.id + ":" + itemData);
-
-            aPlayer.save();
         }
 
         if(getHighestBidder() != null) bidMap.remove(getHighestBidder());
@@ -164,20 +161,23 @@ public class AuctionItem {
 
             OfflinePlayer player = Bukkit.getOfflinePlayer(entry.getKey());
 
-            APlayer soulReturnPlayer = APlayerData.getPlayerData(player);
-            FileConfiguration soulReturnPlayerData = soulReturnPlayer.playerData;
-
             if(player.isOnline()) {
                 PitPlayer.getPitPlayer(player.getPlayer()).taintedSouls += entry.getValue();
                 AOutput.send(player.getPlayer(), "&5&lDARK AUCTION! &7Received &f" + entry.getValue() + " Tainted Souls&7.");
             } else {
-                if(soulReturnPlayerData.contains("soulreturn")) {
-                    int soulReturn = soulReturnPlayerData.getInt("soulreturn");
+
+                try {
+                    ApiFuture<DocumentSnapshot> data = FirestoreManager.FIRESTORE.collection(FirestoreManager.PLAYERDATA_COLLECTION)
+                            .document(winner.getUniqueId().toString()).get();
+
+                    int soulReturn = data.get().get("soulReturn", Integer.class);
                     soulReturn += entry.getValue();
 
-                    soulReturnPlayerData.set("soulreturn", soulReturn);
-                } else soulReturnPlayerData.set("soulreturn", entry.getValue());
-                soulReturnPlayer.save();
+                    FirestoreManager.FIRESTORE.collection(FirestoreManager.PLAYERDATA_COLLECTION).document(winner.getUniqueId().toString()).update("soulReturn", soulReturn);
+
+                } catch(Exception e) {
+                    e.printStackTrace();
+                }
             }
         }
 

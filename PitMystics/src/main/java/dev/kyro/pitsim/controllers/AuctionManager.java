@@ -6,7 +6,6 @@ import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
 import com.sk89q.worldguard.protection.ApplicableRegionSet;
 import com.sk89q.worldguard.protection.managers.RegionManager;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
-import dev.kyro.arcticapi.data.AConfig;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.controllers.objects.AuctionItem;
 import dev.kyro.pitsim.enums.ItemType;
@@ -58,15 +57,13 @@ public class AuctionManager implements Listener {
     public static void onStart() {
 
         for (int i = 0; i < 3; i++) {
-            if(AConfig.getInt("auctions.auction" + i + ".item") == 0) {
-                continue;
-            }
+            if(FirestoreManager.CONFIG.auctions.get(i) == null) continue;
 
-            int item = AConfig.getInt("auctions.auction" + i + ".item");
-            int itemData = AConfig.getInt("auctions.auction" + i + ".itemdata");
-            long startTime = (long) AConfig.getDouble("auctions.auction" + i + ".start");
+            int item = FirestoreManager.CONFIG.auctions.get(i).item;
+            int itemData = FirestoreManager.CONFIG.auctions.get(i).itemData;
+            long startTime = FirestoreManager.CONFIG.auctions.get(i).start;
 
-            List<String> bids = AConfig.getStringList("auctions.auction" + i + ".bids");
+            List<String> bids = FirestoreManager.CONFIG.auctions.get(i).bids;
             Map<UUID, Integer> bidMap = new LinkedHashMap<>();
             for (String bid : bids) {
                 String[] split = bid.split(":");

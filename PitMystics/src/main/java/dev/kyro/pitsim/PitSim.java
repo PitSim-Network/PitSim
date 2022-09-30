@@ -10,8 +10,6 @@ import com.xxmicloxx.NoteBlockAPI.songplayer.EntitySongPlayer;
 import dev.kyro.arcticapi.ArcticAPI;
 import dev.kyro.arcticapi.commands.AMultiCommand;
 import dev.kyro.arcticapi.data.AData;
-import dev.kyro.arcticapi.data.APlayer;
-import dev.kyro.arcticapi.data.APlayerData;
 import dev.kyro.arcticapi.hooks.AHook;
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.battlepass.PassManager;
@@ -80,7 +78,7 @@ import java.util.Map;
 import static dev.kyro.pitsim.misc.TempBlockHelper.restoreSessions;
 
 public class PitSim extends JavaPlugin {
-	public static double version = 3.0;
+	public static final double VERSION = 3.0;
 
 	public static LuckPerms LUCKPERMS;
 	public static PitSim INSTANCE;
@@ -90,14 +88,18 @@ public class PitSim extends JavaPlugin {
 
 	public static AData playerList;
 
-	public static PteroClient client = PteroBuilder.createClient("***REMOVED***",
-			"im4F1vVHTJKIjhRQcvJ8CAdOX3aCt99JmpukhFGbzQXI5BOQ");
+	public static PteroClient client = PteroBuilder.createClient("***REMOVED***", PrivateInfo.PTERO_KEY);
 
 	@Override
 	public void onEnable() {
 		INSTANCE = this;
 
+		FirestoreManager.init();
+
 		loadConfig();
+
+		getServer().getMessenger().registerIncomingPluginChannel(this, "BungeeCord", new PluginMessageManager());
+		getServer().getMessenger().registerOutgoingPluginChannel(this, "BungeeCord");
 		adventure = BukkitAudiences.create(this);
 		TaintedWell.onStart();
 		BrewingManager.onStart();
@@ -216,6 +218,20 @@ public class PitSim extends JavaPlugin {
 	@Override
 	public void onDisable() {
 
+//		System.out.println("Disconnecting database");
+//		try {
+//			for(FirebaseApp app : new ArrayList<>(FirebaseApp.getApps())) app.delete();
+//		} catch(Exception exception) {
+//			exception.printStackTrace();
+//			System.out.println("Database failed to disconnect");
+//		}
+//		System.out.println("Database disconnected");
+
+		for(Player onlinePlayer : Bukkit.getOnlinePlayers()) {
+			PitPlayer pitPlayer = PitPlayer.getPitPlayer(onlinePlayer);
+			pitPlayer.save();
+		}
+
 		if(MapManager.getDarkzone() != null){
 			for (Entity entity : MapManager.getDarkzone().getEntities()) {
 				if(entity instanceof Item) {
@@ -224,24 +240,23 @@ public class PitSim extends JavaPlugin {
 			}
 		}
 
+//		TODO: Fix
 		for(Player player : Bukkit.getOnlinePlayers()) {
 			List<PotionEffect> toExpire = new ArrayList<>();
 			for (PotionEffect potionEffect : PotionManager.potionEffectList) {
 				if(potionEffect.player == player) toExpire.add(potionEffect);
 			}
 
-			APlayer aPlayer = APlayerData.getPlayerData(player);
-			FileConfiguration data = aPlayer.playerData;
-
 			for (PotionEffect potionEffect : toExpire) {
 
 				potionEffect.onExpire(true);
 
 				String time = String.valueOf(System.currentTimeMillis());
-				data.set("potions." + potionEffect.potionType.name, potionEffect.potency.tier + ":" + potionEffect.getTimeLeft() + ":" + time);
+
+				PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
+				pitPlayer.potionStrings.add(potionEffect.potionType.name + ":" + potionEffect.potency.tier + ":" + potionEffect.getTimeLeft() + ":" + time);
 
 			}
-			aPlayer.save();
 		}
 
 
@@ -300,8 +315,6 @@ public class PitSim extends JavaPlugin {
 			esp.destroy();
 			it.remove();
 		}
-
-		for(PitPlayer pitPlayer : PitPlayer.pitPlayers) if(pitPlayer.stats != null) pitPlayer.stats.save();
 
 		File file = new File("plugins/Citizens/saves.yml");
 		if(file.exists()) file.deleteOnExit();
@@ -430,7 +443,7 @@ public class PitSim extends JavaPlugin {
 		getCommand("resource").setExecutor(new ResourceCommand());
 		getCommand("lightning").setExecutor(new LightningCommand());
 		getCommand("stat").setExecutor(new StatCommand());
-		getCommand("captcha").setExecutor(new CaptchaCommand());
+//		getCommand("captcha").setExecutor(new CaptchaCommand());
 		SwitchCommand switchCommand = new SwitchCommand();
 		getCommand("switch").setExecutor(switchCommand);
 		getCommand("play").setExecutor(switchCommand);
@@ -475,7 +488,7 @@ public class PitSim extends JavaPlugin {
 		getServer().getPluginManager().registerEvents(new HopperManager(), this);
 		getServer().getPluginManager().registerEvents(new ResourcePackManager(), this);
 		getServer().getPluginManager().registerEvents(new StatManager(), this);
-		getServer().getPluginManager().registerEvents(new LockdownManager(), this);
+//		getServer().getPluginManager().registerEvents(new LockdownManager(), this);
 		getServer().getPluginManager().registerEvents(new DupeManager(), this);
 		getServer().getPluginManager().registerEvents(new GoldenHelmet(), this);
 		getServer().getPluginManager().registerEvents(new MapManager(), this);

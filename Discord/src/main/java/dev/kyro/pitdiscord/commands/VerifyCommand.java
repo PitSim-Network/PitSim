@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+//This is disabled
 public class VerifyCommand extends DiscordCommand {
 	public static List<Long> recentVerificationPlayers = new ArrayList<>();
 
