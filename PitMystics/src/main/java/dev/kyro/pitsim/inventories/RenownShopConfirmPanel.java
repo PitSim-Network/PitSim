@@ -54,10 +54,10 @@ public class RenownShopConfirmPanel extends AGUIPanel {
 
 				if(upgrade.isTiered) {
 					int tier = UpgradeManager.getTier(player, upgrade);
-					pitPlayer.upgrades.put(upgrade.refName, tier + 1);
+					pitPlayer.renownUpgrades.put(upgrade.refName, tier + 1);
 					pitPlayer.renown = pitPlayer.renown - upgrade.getTierCosts().get(tier);
 				} else {
-					pitPlayer.upgrades.put(upgrade.refName, 1);
+					pitPlayer.renownUpgrades.put(upgrade.refName, 1);
 					pitPlayer.renown = pitPlayer.renown - upgrade.renownCost;
 				}
 

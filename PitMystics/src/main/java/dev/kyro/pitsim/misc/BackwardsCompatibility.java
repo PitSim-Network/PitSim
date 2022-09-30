@@ -14,7 +14,6 @@ import dev.kyro.pitsim.enums.NBTTag;
 import dev.kyro.pitsim.enums.PantColor;
 import dev.kyro.pitsim.megastreaks.Overdrive;
 import dev.kyro.pitsim.perks.NoPerk;
-import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -139,7 +138,7 @@ public class BackwardsCompatibility implements Listener {
 
 		for(RenownUpgrade upgrade : UpgradeManager.upgrades) {
 			if(UpgradeManager.hasUpgrade(player, upgrade)) {
-				pitPlayer.upgrades.put(upgrade.refName, 0);
+				pitPlayer.renownUpgrades.put(upgrade.refName, 0);
 //				playerData.set(upgrade.refName, null);
 			}
 		}

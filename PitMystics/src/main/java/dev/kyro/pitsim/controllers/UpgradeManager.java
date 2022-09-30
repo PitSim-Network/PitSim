@@ -1,7 +1,5 @@
 package dev.kyro.pitsim.controllers;
 
-import dev.kyro.arcticapi.data.APlayer;
-import dev.kyro.arcticapi.data.APlayerData;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.controllers.objects.RenownUpgrade;
@@ -34,7 +32,7 @@ public class UpgradeManager implements Listener {
 		if(NonManager.getNon(player) != null) return false;
 		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
 
-		return pitPlayer.upgrades.get(upgrade.refName) > 0;
+		return pitPlayer.renownUpgrades.get(upgrade.refName) > 0;
 	}
 
 	public static boolean hasUpgrade(Player player, String refName) {
@@ -48,7 +46,7 @@ public class UpgradeManager implements Listener {
 		if(NonManager.getNon(player) != null) return 0;
 		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
 
-		return pitPlayer.upgrades.get(upgrade.refName);
+		return pitPlayer.renownUpgrades.get(upgrade.refName);
 	}
 
 	public static int getTier(Player player, String refName) {

@@ -28,7 +28,6 @@ import dev.kyro.pitsim.misc.Misc;
 import dev.kyro.pitsim.perks.NoPerk;
 import dev.kyro.pitsim.perks.Thick;
 import me.clip.placeholderapi.PlaceholderAPI;
-import net.citizensnpcs.api.CitizensAPI;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -104,7 +103,7 @@ public class PitPlayer {
 	public Megastreak megastreak;
 	public String megastreakRef = "nomegastreak";
 
-	public Map<String, Integer> upgrades = new HashMap<>();
+	public Map<String, Integer> renownUpgrades = new HashMap<>();
 	public boolean playerChatDisabled = false;
 	public boolean killFeedDisabled = false;
 	public boolean bountiesDisabled = false;
@@ -274,7 +273,7 @@ public class PitPlayer {
 			int tier = 0;
 			if(!upgrade.isTiered && playerData.contains(upgrade.refName)) tier = 1;
 			else if(upgrade.isTiered && playerData.contains(upgrade.refName)) tier = playerData.getInt(upgrade.refName);
-			upgrades.put(upgrade.refName, tier);
+			renownUpgrades.put(upgrade.refName, tier);
 		}
 
 
@@ -326,11 +325,11 @@ public class PitPlayer {
 				BrewingManager.brewingSessions.add(new BrewingSession(player, i, brewingSessions.get(i), null, null, null, null));
 		}
 
-		if(upgrades == null) {
-			upgrades = new HashMap<>();
+		if(renownUpgrades == null) {
+			renownUpgrades = new HashMap<>();
 
 			for(RenownUpgrade upgrade : UpgradeManager.upgrades) {
-				upgrades.put(upgrade.refName, 0);
+				renownUpgrades.put(upgrade.refName, 0);
 			}
 		}
 
