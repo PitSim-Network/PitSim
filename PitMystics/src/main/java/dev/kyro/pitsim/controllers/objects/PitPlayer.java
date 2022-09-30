@@ -4,6 +4,7 @@ import dev.kyro.arcticapi.data.APlayer;
 import dev.kyro.arcticapi.data.APlayerData;
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.PitSim;
+import dev.kyro.pitsim.battlepass.PassData;
 import dev.kyro.pitsim.brewing.BrewingManager;
 import dev.kyro.pitsim.brewing.objects.BrewingSession;
 import dev.kyro.pitsim.controllers.*;
@@ -64,6 +65,7 @@ public class PitPlayer {
 	public double mana = 0;
 
 	//	Savable
+	public Date lastLogin = new Date(0);
 	public int prestige;
 	public int level;
 	public long remainingXP = PrestigeValues.getXPForLevel(1);
@@ -102,6 +104,7 @@ public class PitPlayer {
 	public int taintedSouls;
 
 	public PlayerStats stats;
+	public PassData passData;
 
 	public void save() {
 		if(BossManager.bosses.containsKey(CitizensAPI.getNPCRegistry().getNPC(player))) return;

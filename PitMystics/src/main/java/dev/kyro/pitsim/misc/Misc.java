@@ -23,11 +23,26 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 
+import java.text.DateFormat;
 import java.text.DecimalFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.TimeZone;
 
 public class Misc {
+
+	public static Date convertToEST(Date date) {
+		DateFormat formatter = new SimpleDateFormat("dd MMM yyyy HH:mm:ss z");
+		formatter.setTimeZone(TimeZone.getTimeZone("EST"));
+		try {
+			return formatter.parse((formatter.format(date)));
+		} catch(ParseException exception) {
+			return null;
+		}
+	}
 
 	public static String ordinalWords(int num) {
 

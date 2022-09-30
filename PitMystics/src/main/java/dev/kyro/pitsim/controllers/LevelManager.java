@@ -19,7 +19,7 @@ public class LevelManager {
 
 	}
 
-	public static void addXP(Player player, int xp) {
+	public static void addXP(Player player, long xp) {
 		if(!(NonManager.getNon(player) == null)) return;
 		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
 		while(xp > 0) {
