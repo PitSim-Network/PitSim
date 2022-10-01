@@ -18,6 +18,9 @@ public class Config {
 
 	public HashMap<String, Integer> boosters = new HashMap<>();
 
+//	PitSim pass stuff
+	public List<String> activeWeeklyQuests = new ArrayList<>();
+
 	public Security security = new Security();
 	public static class Security {
 		public boolean requireVerification = false;
