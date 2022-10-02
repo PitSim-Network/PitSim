@@ -1,6 +1,7 @@
 package dev.kyro.pitsim.perks;
 
 import dev.kyro.arcticapi.builders.ALoreBuilder;
+import dev.kyro.pitsim.controllers.MapManager;
 import dev.kyro.pitsim.controllers.objects.PitEnchant;
 import dev.kyro.pitsim.controllers.objects.PitPerk;
 import dev.kyro.pitsim.events.AttackEvent;
@@ -23,7 +24,10 @@ public class Dispersion extends PitPerk {
 	@EventHandler
 	public void onAttack(AttackEvent.Apply attackEvent) {
 		if(!attackEvent.attackerIsPlayer || !attackEvent.defenderIsPlayer) return;
-		if(!playerHasUpgrade(attackEvent.attacker)) return;
+		if(!playerHasUpgrade(attackEvent.defenderPlayer)) return;
+
+		if(!MapManager.currentMap.lobbies.contains(attackEvent.defenderPlayer.getWorld())) return;
+		if(MapManager.currentMap.getMid(attackEvent.defender.getWorld()).distance(attackEvent.defenderPlayer.getLocation()) > getRange()) return;
 
 		List<PitEnchant> toRemove = new ArrayList<>();
 		for(Map.Entry<PitEnchant, Integer> entry : attackEvent.getAttackerEnchantMap().entrySet()) {
@@ -37,10 +41,14 @@ public class Dispersion extends PitPerk {
 	public List<String> getDescription() {
 		return new ALoreBuilder("&dDisperse " + getChance() + "% &7of the enchants",
 				"&7on your opponent's attacks for",
-				"&7for 4 seconds").getLore();
+				"&7for 4 seconds while in middle").getLore();
+	}
+
+	public static int getRange() {
+		return 8;
 	}
 
 	public static int getChance() {
-		return 50;
+		return 40;
 	}
 }
