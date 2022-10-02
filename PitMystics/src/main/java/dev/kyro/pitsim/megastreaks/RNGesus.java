@@ -28,6 +28,7 @@ import org.bukkit.Sound;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
+import org.bukkit.entity.Slime;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.HandlerList;
@@ -162,11 +163,13 @@ public class RNGesus extends Megastreak {
 			double damage = getDamage(realityMap.get(Reality.DAMAGE).getLevel());
 			attackEvent.increase += damage;
 
+			if(attackEvent.event.getDamager() instanceof Slime && Math.random() > 0.1) return;
+
 			List<Entity> entities = attackEvent.defender.getNearbyEntities(20, 20, 20);
 			Collections.shuffle(entities);
 			int count = 0;
 			for(Entity entity : entities) {
-				if(count++ >= 5) break;
+				if(count++ >= 10) break;
 				if(!(entity instanceof Player)) continue;
 				Player target = (Player) entity;
 				if(NonManager.getNon(target) == null) continue;
@@ -185,7 +188,8 @@ public class RNGesus extends Megastreak {
 					}
 				};
 
-				if(attackEvent.attackerIsPlayer) new HomeParticle(attackEvent.attackerPlayer, attackEvent.defender.getLocation().add(0, 1, 0), target, 0.5, callback);
+				if(attackEvent.attackerIsPlayer) new HomeParticle(attackEvent.attackerPlayer,
+						attackEvent.defender.getLocation().add(0, 1, 0), target, 0.5, callback);
 			}
 		}
 	}
@@ -224,7 +228,7 @@ public class RNGesus extends Megastreak {
 			} else if(reality == Reality.GOLD) {
 				realityMap.get(reality).progression += killEvent.getFinalGold();
 			}
-			setXPBar();
+			if(pitPlayer.getKills() + 1 < INSTABILITY_THRESHOLD) setXPBar();
 		}
 	}
 
@@ -241,7 +245,7 @@ public class RNGesus extends Megastreak {
 			} else if(reality == Reality.ABSORPTION) {
 				realityMap.get(reality).progression += attackEvent.trueDamage;
 			}
-			setXPBar();
+			if(pitPlayer.getKills() + 1 < INSTABILITY_THRESHOLD) setXPBar();
 		}
 	}
 
@@ -451,8 +455,8 @@ public class RNGesus extends Megastreak {
 
 	public enum Reality {
 		NONE("&eAbnormal", "&e&lRNGSUS", 1),
-		XP("&bXP", "&b&lRNG&e&lSUS", 0.1),
-		GOLD("&6Gold", "&6&lRNG&e&lSUS", 20),
+		XP("&bXP", "&b&lRNG&e&lSUS", 0.05),
+		GOLD("&6Gold", "&6&lRNG&e&lSUS", 50),
 		DAMAGE("&cDamage", "&c&lRNG&e&lSUS", 1),
 		ABSORPTION("&6Absorption", "&9&lRNG&e&lSUS", 0.3);
 

@@ -66,7 +66,7 @@ public class Non {
 		persistence = (Math.random() * 3 + 94) / 100D;
 		if(traits.contains(NonTrait.IRON_STREAKER)) persistence -= 100 - persistence;
 
-		respawn();
+		respawn(false);
 		skin(name);
 	}
 
@@ -74,7 +74,7 @@ public class Non {
 		count++;
 		if(npc.getEntity() != null && non != npc.getEntity()) FPSCommand.hideNewNon(this);
 		non = (Player) npc.getEntity();
-		if(!npc.isSpawned()) respawn();
+		if(!npc.isSpawned()) respawn(false);
 		if(npc.isSpawned() && non.getLocation().getY() <= MapManager.currentMap.getY(world) - 0.1) {
 			Location teleportLoc = non.getLocation().clone();
 			teleportLoc.setY(MapManager.currentMap.getY(world) + 1.2);
@@ -83,7 +83,7 @@ public class Non {
 		}
 
 		if(nonState != NonState.FIGHTING) {
-			if(!npc.isSpawned()) respawn();
+			if(!npc.isSpawned()) respawn(false);
 			if(npc.isSpawned()) {
 				npc.getNavigator().setTarget(null, true);
 			}
@@ -95,7 +95,7 @@ public class Non {
 				pickTarget();
 				npc.getNavigator().setTarget(target, true);
 			}
-		} else respawn();
+		} else respawn(false);
 
 		if(target == null || !npc.isSpawned()) return;
 
@@ -159,14 +159,14 @@ public class Non {
 		npc.spawn(spawnLoc);
 	}
 
-	public void respawn() {
+	public void respawn(boolean fakeKill) {
 
 		if(!MapManager.multiLobbies && world != MapManager.currentMap.firstLobby) {
 			remove();
 			return;
 		}
 
-		nonState = NonState.RESPAWNING;
+		if(!fakeKill) nonState = NonState.RESPAWNING;
 		Location spawnLoc = MapManager.currentMap.getNonSpawn(world);
 		Booster booster = BoosterManager.getBooster("chaos");
 		if(booster.isActive()) {
@@ -178,7 +178,7 @@ public class Non {
 		if(!npc.isSpawned() || non == null) spawn();
 		try {
 
-			if(npc.isSpawned()) {
+			if(npc.isSpawned() && !fakeKill) {
 				non.teleport(spawnLoc, PlayerTeleportEvent.TeleportCause.PLUGIN);
 			}
 
@@ -192,7 +192,7 @@ public class Non {
 
 
 		if(npc.isSpawned()) {
-			non.setHealth(non.getMaxHealth());
+			if(!fakeKill) non.setHealth(non.getMaxHealth());
 
 			Equipment equipment = npc.getTrait(Equipment.class);
 			if(traits.contains(NonTrait.IRON_STREAKER)) {
@@ -222,13 +222,14 @@ public class Non {
 				}
 			}
 		}
-
-		new BukkitRunnable() {
-			@Override
-			public void run() {
-				nonState = NonState.FIGHTING;
-			}
-		}.runTaskLater(PitSim.INSTANCE, 20L);
+		if(!fakeKill) {
+			new BukkitRunnable() {
+				@Override
+				public void run() {
+					nonState = NonState.FIGHTING;
+				}
+			}.runTaskLater(PitSim.INSTANCE, 20L);
+		}
 	}
 
 	public void pickTraits() {
