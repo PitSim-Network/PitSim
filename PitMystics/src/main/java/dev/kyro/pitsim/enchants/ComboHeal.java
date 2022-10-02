@@ -53,7 +53,7 @@ public class ComboHeal extends PitEnchant {
 
 	public double getHealing(int enchantLvl) {
 
-		return enchantLvl * 0.4;
+		return enchantLvl * 0.8;
 	}
 
 	public double getAbsorption(int enchantLvl) {

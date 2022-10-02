@@ -82,7 +82,7 @@ public class ReallyToxic extends PitEnchant {
 	}
 
 	public int getMaxReduction() {
-		return 20;
+		return 30;
 	}
 
 	public long getStackTime(int enchantLvl) {

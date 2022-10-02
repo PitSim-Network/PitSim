@@ -94,11 +94,11 @@ public class Regularity extends PitEnchant {
 	}
 
 	public static double lowerBoundFinalDamage(int enchantLvl) {
-		return enchantLvl * 0.4 + 0.8;
+		return enchantLvl * 0.4 + 0.6;
 	}
 
 	public static double upperBoundFinalDamage(int enchantLvl) {
-		return enchantLvl * 0.4 + 1.6;
+		return enchantLvl * 0.4 + 1.4;
 	}
 
 	@Override

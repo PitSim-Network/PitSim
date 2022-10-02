@@ -1,7 +1,6 @@
 package dev.kyro.pitsim.enchants;
 
 import dev.kyro.arcticapi.builders.ALoreBuilder;
-import dev.kyro.pitsim.controllers.NonManager;
 import dev.kyro.pitsim.controllers.objects.PitEnchant;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.enums.ApplyType;
@@ -31,28 +30,18 @@ public class Lifesteal extends PitEnchant {
 		if(enchantLvl == 0) return;
 		if(attackEvent.fakeHit) return;
 
-		double damage = attackEvent.event.getFinalDamage();
+		double damage = attackEvent.getFinalDamageIncrease();
 		double healing = damage * (getHealing(enchantLvl) / 100D) * (attackEvent.fakeHit ? 0.5 : 1);
-		if(NonManager.getNon(attackEvent.defender) != null || !attackEvent.defenderIsPlayer) healing *= getNonPercentReduction() / 100.0;
 		HealEvent healEvent = pitAttacker.heal(healing);
 
 		if(pitAttacker.stats != null) pitAttacker.stats.lifesteal += healEvent.getEffectiveHeal();
 	}
-
 	@Override
 	public List<String> getDescription(int enchantLvl) {
-
-		return new ALoreBuilder("&7Heal for &c+" + Misc.roundString(getHealing(enchantLvl)) + "% &7(&c" +
-				getNonPercentReduction() + "% &7vs nons/mobs) &7", "&7of the damage your opponent", "&7takes").getLore();
-	}
-
-	public double getNonPercentReduction() {
-		return 0.5;
+		return new ALoreBuilder("&7Heal for &c+" + Misc.roundString(getHealing(enchantLvl)) + "% &7of damage dealt").getLore();
 	}
 
 	public double getHealing(int enchantLvl) {
-
-//		return (int) (Math.pow(enchantLvl, 1.1) * 4);
-		return enchantLvl * 5 + 15;
+		return enchantLvl * 3 - 2;
 	}
 }

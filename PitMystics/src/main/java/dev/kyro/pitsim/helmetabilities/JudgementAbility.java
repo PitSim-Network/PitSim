@@ -49,11 +49,11 @@ public class JudgementAbility extends HelmetAbility {
 			return;
 		}
 
-		PitPlayer pitAttacker = PitPlayer.getEntityPitPlayer(attackEvent.attacker);
+		PitPlayer pitAttacker = PitPlayer.getPitPlayer(attackEvent.attackerPlayer);
 
 		if(Math.random() < 0.25) {
 
-			pitAttacker.heal(0.5);
+			pitAttacker.heal(1);
 			Sounds.JUDGEMENT_HEAL.play(attackEvent.attacker);
 		}
 
@@ -75,20 +75,20 @@ public class JudgementAbility extends HelmetAbility {
 			Sounds.JUDGEMENT_STRENGTH.play(attackEvent.attacker);
 		}
 
-		if(Math.random() < 0.05) {
+		if(Math.random() < 0.07) {
 
 			Misc.applyPotionEffect(attackEvent.defender, PotionEffectType.SLOW, 40, 4, true, false);
 			Sounds.JUDGEMENT_SLOW.play(attackEvent.attacker);
 		}
 
-		if(Math.random() < 0.03) {
+		if(Math.random() < 0.05) {
 
-			attackEvent.defender.setHealth(attackEvent.defender.getHealth() / 2D);
+			attackEvent.defender.setHealth(attackEvent.defender.getHealth() * 3.0 / 4.0);
 			Sounds.JUDGEMENT_HALF_ATTACKER.play(attackEvent.attacker);
 			Sounds.JUDGEMENT_HALF_DEFENDER.play(attackEvent.defender);
 		}
 
-		if(Math.random() < 0.02) {
+		if(Math.random() < 0.03) {
 
 			Sounds.JUDGEMENT_ZEUS_ATTACKER.play(attackEvent.attacker);
 			Sounds.JUDGEMENT_ZEUS_DEFENDER.play(attackEvent.defender);

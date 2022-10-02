@@ -491,7 +491,9 @@ public class PitPlayer {
 		} else player.damage(damage);
 	}
 
-	public void updateXPBar() {	
+	public void updateXPBar() {
+		if(megastreak.getClass() == RNGesus.class && getKills() < RNGesus.INSTABILITY_THRESHOLD && getKills() >= 100) return;
+
 		if(MapManager.inDarkzone(player)) {
 			player.setLevel((int) Math.ceil(mana));
 			if(mana >= getMaxMana() - 1) player.setLevel(getMaxMana());
