@@ -44,7 +44,7 @@ public class AuctionItem {
     }
 
     public void saveData() {
-        System.out.println(FirestoreManager.CONFIG.auctions);
+//        System.out.println(FirestoreManager.CONFIG.auctions);
         FirestoreManager.CONFIG.auctions.set(slot, new Config.Auction());
         FirestoreManager.CONFIG.auctions.get(slot).item = this.item.id;
         FirestoreManager.CONFIG.auctions.get(slot).itemData = this.itemData;

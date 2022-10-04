@@ -42,7 +42,7 @@ public class AuctionManager implements Listener {
 
                     if(System.currentTimeMillis() - item.initTime > minutes * 60000L) {
                         item.endAuction();
-                        System.out.println(i + " Auction ended");
+//                        System.out.println(i + " Auction ended");
                         auctionItems[i] = new AuctionItem(generateItem(), 0, i, 0, null);
                         showItems = true;
                     }
@@ -70,8 +70,8 @@ public class AuctionManager implements Listener {
                 bidMap.put(UUID.fromString(split[0]), Integer.parseInt(split[1]));
             }
 
-            System.out.println("Loaded auction " + i);
-            System.out.println(item);
+//            System.out.println("Loaded auction " + i);
+//            System.out.println(item);
             auctionItems[i] = new AuctionItem(ItemType.getItemType(item), itemData, i, startTime, bidMap);
         }
 
