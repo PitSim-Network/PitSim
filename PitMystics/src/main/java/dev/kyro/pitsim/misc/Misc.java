@@ -15,10 +15,13 @@ import org.bukkit.Material;
 import org.bukkit.*;
 import org.bukkit.craftbukkit.v1_8_R3.CraftWorld;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -33,6 +36,12 @@ import java.util.List;
 import java.util.TimeZone;
 
 public class Misc {
+	public static void addEnchantGlint(ItemStack itemStack) {
+		itemStack.addUnsafeEnchantment(Enchantment.WATER_WORKER, 1);
+		ItemMeta itemMeta = itemStack.getItemMeta();
+		itemMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
+		itemStack.setItemMeta(itemMeta);
+	}
 
 	public static Date convertToEST(Date date) {
 		DateFormat formatter = new SimpleDateFormat("dd MMM yyyy HH:mm:ss z");

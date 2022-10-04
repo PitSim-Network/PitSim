@@ -25,7 +25,7 @@ public class ComboHeal extends PitEnchant {
 	public void onAttack(AttackEvent.Apply attackEvent) {
 		if(!attackEvent.attackerIsPlayer) return;
 		if(!canApply(attackEvent)) return;
-		PitPlayer pitAttacker = PitPlayer.getPitPlayer(attackEvent.attackerPlayer);
+		PitPlayer pitAttacker = attackEvent.attackerPitPlayer;
 
 		int enchantLvl = attackEvent.getAttackerEnchantLevel(this);
 		if(enchantLvl == 0) return;
@@ -34,9 +34,8 @@ public class ComboHeal extends PitEnchant {
 		int regLvl = attackEvent.getAttackerEnchantLevel(Regularity.INSTANCE);
 		if(Regularity.isRegHit(attackEvent.defender) && Regularity.skipIncrement(regLvl)) return;
 
-		PitPlayer pitPlayer = PitPlayer.getPitPlayer(attackEvent.attackerPlayer);
-		HitCounter.incrementCounter(pitPlayer.player, this);
-		if(!HitCounter.hasReachedThreshold(pitPlayer.player, this, 4)) return;
+		HitCounter.incrementCounter(pitAttacker.player, this);
+		if(!HitCounter.hasReachedThreshold(pitAttacker.player, this, 4)) return;
 
 		pitAttacker.heal(getHealing(enchantLvl));
 		pitAttacker.heal(getHealing(enchantLvl), HealEvent.HealType.ABSORPTION, 8);

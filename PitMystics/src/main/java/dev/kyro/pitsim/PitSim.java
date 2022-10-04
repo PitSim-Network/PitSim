@@ -57,9 +57,9 @@ import net.kyori.adventure.platform.bukkit.BukkitAudiences;
 import net.luckperms.api.LuckPerms;
 import net.milkbowl.vault.economy.Economy;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
@@ -95,6 +95,11 @@ public class PitSim extends JavaPlugin {
 		INSTANCE = this;
 
 		FirestoreManager.init();
+		for(Player onlinePlayer : Bukkit.getOnlinePlayers()) {
+			boolean success = PitPlayer.loadPitPlayer(onlinePlayer.getUniqueId());
+			if(success) continue;
+			onlinePlayer.kickPlayer(ChatColor.RED + "Playerdata failed to load. Please open a support ticket: discord.pitsim.net");
+		}
 
 		loadConfig();
 
@@ -454,6 +459,7 @@ public class PitSim extends JavaPlugin {
 		getCommand("kit").setExecutor(new KitCommand());
 		getCommand("view").setExecutor(new ViewCommand());
 		getCommand("music").setExecutor(new MusicCommand());
+		getCommand("migrate").setExecutor(new MigrateCommand());
 
 	}
 

@@ -97,6 +97,8 @@ public class DamageManager implements Listener {
 		LivingEntity attacker = getAttacker(event.getDamager());
 		LivingEntity defender = (LivingEntity) event.getEntity();
 
+		if(defender instanceof Slime && !(defender instanceof MagmaCube)) return;
+
 		Map<PitEnchant, Integer> defenderEnchantMap = EnchantManager.getEnchantsOnPlayer(defender);
 		boolean fakeHit = false;
 
@@ -118,7 +120,7 @@ public class DamageManager implements Listener {
 			}
 		}
 
-		if( bossHitCooldown.contains(defender)) {
+		if(bossHitCooldown.contains(defender)) {
 			event.setCancelled(true);
 			return;
 		}

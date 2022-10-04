@@ -64,8 +64,8 @@ public class StatManager implements Listener {
 	@EventHandler(priority = EventPriority.MONITOR)
 	public void onAttack(AttackEvent.Apply attackEvent) {
 		if(!attackEvent.attackerIsPlayer || !attackEvent.defenderIsPlayer) return;
-		PitPlayer pitAttacker = PitPlayer.getPitPlayer(attackEvent.attackerPlayer);
-		PitPlayer pitDefender = PitPlayer.getPitPlayer(attackEvent.defenderPlayer);
+		PitPlayer pitAttacker = attackEvent.attackerPitPlayer;
+		PitPlayer pitDefender = attackEvent.defenderPitPlayer;
 
 		if(pitAttacker.stats != null) {
 			if(attackEvent.pet == null) {

@@ -62,7 +62,7 @@ public class aRetroGravityMinikloon extends PitEnchant {
 		int attackingCharge = getCharge(attackEvent.attackerPlayer, attackEvent.defenderPlayer) - 1;
 		if(attackingCharge >= 0) {
 			if(attackerEnchantLvl >= 1) {
-				PitPlayer pitAttacker = PitPlayer.getPitPlayer(attackEvent.attackerPlayer);
+				PitPlayer pitAttacker = attackEvent.attackerPitPlayer;
 				pitAttacker.heal(getHealing(attackingCharge));
 			}
 			if(attackerEnchantLvl >= 2) {

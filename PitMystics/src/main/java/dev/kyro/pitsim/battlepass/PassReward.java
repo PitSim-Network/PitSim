@@ -1,8 +1,10 @@
 package dev.kyro.pitsim.battlepass;
 
-import org.bukkit.entity.Player;
+import dev.kyro.pitsim.controllers.objects.PitPlayer;
+import org.bukkit.inventory.ItemStack;
 
 public abstract class PassReward {
 
-	public abstract boolean give(Player player);
+	public abstract boolean giveReward(PitPlayer pitPlayer);
+	public abstract ItemStack getDisplayItem(boolean hasClaimed);
 }

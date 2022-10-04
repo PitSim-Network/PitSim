@@ -148,7 +148,7 @@ public class RNGesus extends Megastreak {
 	@EventHandler(priority = EventPriority.MONITOR)
 	public void onHit(AttackEvent.Apply attackEvent) {
 		if(!attackEvent.attackerIsPlayer) return;
-		PitPlayer pitPlayer = PitPlayer.getPitPlayer(attackEvent.attacker);
+		PitPlayer pitPlayer = attackEvent.attackerPitPlayer;
 		if(pitPlayer != this.pitPlayer || pitPlayer.megastreak.getClass() != RNGesus.class) return;
 		if(NonManager.getNon(attackEvent.attacker) != null) return;
 
@@ -231,7 +231,7 @@ public class RNGesus extends Megastreak {
 	public void attack(AttackEvent.Apply attackEvent) {
 		if(!attackEvent.attackerIsPlayer) return;
 		if(NonManager.getNon(attackEvent.defender) == null) return;
-		PitPlayer pitPlayer = PitPlayer.getPitPlayer(attackEvent.attacker);
+		PitPlayer pitPlayer = attackEvent.attackerPitPlayer;
 		if(pitPlayer != this.pitPlayer) return;
 		if(pitPlayer.megastreak.isOnMega() && pitPlayer.megastreak.getClass() == RNGesus.class) {
 

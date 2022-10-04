@@ -42,7 +42,7 @@ dependencies {
     compileOnly group: "com.comphenix.protocol", version: "4.8.0", name: "ProtocolLib"
 
     compileOnly  'com.xxmicloxx:NoteBlockAPI:1.6.2-SNAPSHOT'
-    compile 'com.github.ArcticDevelopment:ArcticAPI:47cd0616ed'
+    compile 'com.github.ArcticDevelopment:ArcticAPI:4372538d31'
     compileOnly 'de.tr7zw:item-nbt-api-plugin:2.8.0'// https://mvnrepository.com/artifact/com.googlecode.json-simple/json-simple
 //    compile group: 'com.googlecode.json-simple', name: 'json-simple', version: '1.1.1'
     compileOnly files('libs/FeatherBoard.jar')

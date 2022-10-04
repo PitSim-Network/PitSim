@@ -2,6 +2,7 @@ package dev.kyro.pitsim.controllers.objects;
 
 import com.google.cloud.firestore.annotation.Exclude;
 import dev.kyro.pitsim.controllers.FirestoreManager;
+import dev.kyro.pitsim.misc.PrivateInfo;
 
 import java.util.*;
 
@@ -13,13 +14,17 @@ public class Config {
 
 	public String prefix = "";
 	public String errorPrefix = "&c";
-	public List<String> whitelistedIPs = new ArrayList<>(Arrays.asList("/***REMOVED***", "/***REMOVED***"));
+	public List<String> whitelistedIPs = PrivateInfo.WHITELISTED_IPS;
 	public boolean nons = true;
 
 	public HashMap<String, Integer> boosters = new HashMap<>();
 
 //	PitSim pass stuff
-	public List<String> activeWeeklyQuests = new ArrayList<>();
+	public Date currentPass;
+	public Map<String, WeeklyQuestData> activeWeeklyQuests = new HashMap<>();
+	public static class WeeklyQuestData {
+		public int tier;
+	}
 
 	public Security security = new Security();
 	public static class Security {

@@ -34,7 +34,7 @@ public class Pullbow extends PitEnchant {
 		else cooldown.restart();
 
 		if(attackEvent.defenderIsPlayer) {
-			PitPlayer pitDefender = PitPlayer.getPitPlayer(attackEvent.defenderPlayer);
+			PitPlayer pitDefender = attackEvent.defenderPitPlayer;
 			if(pitDefender.megastreak.getClass() == Uberstreak.class && pitDefender.megastreak.isOnMega()) return;
 		}
 		Vector dirVector = attackEvent.attacker.getLocation().toVector().subtract(attackEvent.defender.getLocation().toVector()).setY(0);

@@ -2,11 +2,10 @@ package dev.kyro.pitsim.enchants;
 
 import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.pitsim.PitSim;
-import dev.kyro.pitsim.brewing.ingredients.MagmaCream;
 import dev.kyro.pitsim.controllers.DamageManager;
 import dev.kyro.pitsim.controllers.NonManager;
-import dev.kyro.pitsim.controllers.objects.GoldenHelmet;
 import dev.kyro.pitsim.controllers.SpawnManager;
+import dev.kyro.pitsim.controllers.objects.GoldenHelmet;
 import dev.kyro.pitsim.controllers.objects.Non;
 import dev.kyro.pitsim.controllers.objects.PitEnchant;
 import dev.kyro.pitsim.enums.ApplyType;
@@ -156,9 +155,10 @@ public class PitBlob extends PitEnchant {
 
 	@EventHandler
 	public void onDamage(EntityDamageEvent event) {
-		if(event.getEntity() instanceof Slime && !(event.getEntity() instanceof MagmaCube)) event.setCancelled(true);
-
-
+		if(event.getEntity() instanceof Slime && !(event.getEntity() instanceof MagmaCube)) {
+			event.setDamage(0);
+			if(SpawnManager.isInSpawn(event.getEntity().getLocation())) event.setCancelled(true);
+		}
 	}
 
 	@EventHandler

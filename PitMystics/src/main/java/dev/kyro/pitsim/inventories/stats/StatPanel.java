@@ -112,7 +112,6 @@ public class StatPanel extends AGUIPanel {
 
 		AItemStackBuilder darkzone = new AItemStackBuilder(Material.GOLD_HOE)
 				.setName("&5Darkzone Statistics")
-				.addEnchantGlint(true)
 				.setLore(new ALoreBuilder(
 						"&7Bosses Killed: &e" + Misc.formatLarge(stats.bossesKilled),
 						"&7Mobs Killed: &e" + Misc.formatLarge(stats.mobsKilled),
@@ -124,6 +123,7 @@ public class StatPanel extends AGUIPanel {
 						"&7Auctions Won: &e" + Misc.formatLarge(stats.auctionsWon),
 						"&7Highest Bid: &e" + Misc.formatLarge(stats.highestBid)
 				));
+		Misc.addEnchantGlint(darkzone.getItemStack());
 		statMap.put(14, darkzone.getItemStack());
 
 		AItemStackBuilder progression = new AItemStackBuilder(Math.random() < 0.5 ? Material.WHEAT : Material.GOLD_INGOT)

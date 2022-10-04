@@ -38,7 +38,7 @@ public class MainViewPanel extends AGUIPanel {
 		}
 
 		ALoreBuilder skullLore = new ALoreBuilder();
-		String rankMessage = ChatColor.translateAlternateColorCodes('&', "&7To: &8[%luckperms_primary_group_name%&8] %luckperms_prefix%" + target.getName());
+		String rankMessage = ChatColor.translateAlternateColorCodes('&', "&7&8[%luckperms_primary_group_name%&8] %luckperms_prefix%" + target.getName());
 		ItemStack skull = new AItemStackBuilder(Material.SKULL_ITEM, 1, 3)
 				.setName(PlaceholderAPI.setPlaceholders(target, rankMessage))
 				.setLore(skullLore)

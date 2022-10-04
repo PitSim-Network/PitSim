@@ -41,7 +41,7 @@ public class FasterThanTheirShadow extends PitEnchant implements Listener {
 		int enchantLvl = attackEvent.getAttackerEnchantLevel(this);
 		if(enchantLvl == 0) return;
 
-		PitPlayer pitPlayer = PitPlayer.getPitPlayer(attackEvent.attackerPlayer);
+		PitPlayer pitPlayer = attackEvent.attackerPitPlayer;
 		HitCounter.incrementCounter(pitPlayer.player, this);
 		if(!HitCounter.hasReachedThreshold(pitPlayer.player, this, getStrikes(enchantLvl))) return;
 

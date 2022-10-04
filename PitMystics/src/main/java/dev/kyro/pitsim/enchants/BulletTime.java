@@ -31,7 +31,7 @@ public class BulletTime extends PitEnchant {
 		Sounds.BULLET_TIME.play(attackEvent.defender);
 		attackEvent.arrow.getWorld().playEffect(attackEvent.arrow.getLocation(), Effect.EXPLOSION, 0, 30);
 
-		PitPlayer pitDefender = PitPlayer.getPitPlayer(attackEvent.defenderPlayer);
+		PitPlayer pitDefender = attackEvent.defenderPitPlayer;
 		pitDefender.heal(getHealing(enchantLvl));
 
 		attackEvent.setCancelled(true);

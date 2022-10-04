@@ -80,7 +80,7 @@ public class RetroGravityMicrocosm extends PitEnchant {
 			if(!HitCounter.hasReachedThreshold(attackEvent.defenderPlayer, this, getStrikes())) return;
 			add(attackEvent.attacker, attackEvent.defender);
 
-			PitPlayer pitDefender = PitPlayer.getPitPlayer(attackEvent.defenderPlayer);
+			PitPlayer pitDefender = attackEvent.defenderPitPlayer;
 			pitDefender.heal(getHealing(defenderEnchantLvl));
 
 			int charge = getProcs(attackEvent.attacker, attackEvent.defender);

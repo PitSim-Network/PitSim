@@ -116,7 +116,7 @@ public class Uberstreak extends Megastreak {
 	@EventHandler
 	public void onPreAttack(AttackEvent.Pre attackEvent) {
 		if(!attackEvent.attackerIsPlayer) return;
-		PitPlayer pitAttacker = PitPlayer.getPitPlayer(attackEvent.attacker);
+		PitPlayer pitAttacker = attackEvent.attackerPitPlayer;
 		if(pitAttacker != this.pitPlayer || pitAttacker.megastreak.getClass() != Uberstreak.class || pitAttacker.megastreak.isOnMega())
 			return;
 

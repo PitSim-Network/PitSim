@@ -9,6 +9,7 @@ import dev.kyro.pitsim.controllers.BoosterManager;
 import dev.kyro.pitsim.controllers.FirestoreManager;
 import dev.kyro.pitsim.controllers.objects.Booster;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
+import dev.kyro.pitsim.misc.Misc;
 import dev.kyro.pitsim.misc.Sounds;
 import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.Bukkit;
@@ -79,7 +80,7 @@ public class BoosterPanel extends AGUIPanel {
 				loreBuilder.addLore("&eClick to use booster!");
 			} else loreBuilder.addLore("&eClick to buy booster!");
 			builder.setLore(loreBuilder);
-			if(booster.minutes > 0) builder.addEnchantGlint(true);
+			if(booster.minutes > 0) Misc.addEnchantGlint(builder.getItemStack());
 			builder.getItemStack().setAmount(Math.min(booster.minutes, 64));
 			getInventory().setItem(booster.slot, builder.getItemStack());
 		}

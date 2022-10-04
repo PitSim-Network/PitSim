@@ -51,7 +51,7 @@ public class Billionaire extends PitEnchant {
 			PitSim.VAULT.withdrawPlayer(attackEvent.attackerPlayer, goldCost);
 		}
 
-		PitPlayer pitPlayer = PitPlayer.getPitPlayer(attackEvent.attackerPlayer);
+		PitPlayer pitPlayer = attackEvent.attackerPitPlayer;
 		if(pitPlayer.stats != null) pitPlayer.stats.billionaire += goldCost;
 
 		attackEvent.multipliers.add(getDamageMultiplier(enchantLvl));

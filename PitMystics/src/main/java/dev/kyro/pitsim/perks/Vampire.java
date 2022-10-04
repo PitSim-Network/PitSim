@@ -26,7 +26,7 @@ public class Vampire extends PitPerk {
 	public void onAttack(AttackEvent.Apply attackEvent) {
 		if(!attackEvent.attackerIsPlayer) return;
 		if(!playerHasUpgrade(attackEvent.attacker)) return;
-		PitPlayer pitAttacker = PitPlayer.getPitPlayer(attackEvent.attackerPlayer);
+		PitPlayer pitAttacker = attackEvent.attackerPitPlayer;
 
 		int healing = 1;
 		if(attackEvent.arrow != null && attackEvent.arrow.isCritical()) healing = 3;

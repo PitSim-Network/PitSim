@@ -10,6 +10,7 @@ import dev.kyro.pitsim.controllers.PerkManager;
 import dev.kyro.pitsim.controllers.objects.Killstreak;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.killstreaks.NoKillstreak;
+import dev.kyro.pitsim.misc.Misc;
 import dev.kyro.pitsim.misc.Sounds;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -109,7 +110,7 @@ public class KillstreakPanel extends AGUIPanel {
 		Builder3Kills.setName("&c3 Kills");
 		if(getKillstreakFromInterval(player, 3) != null) {
 			Builder3Kills.setLore(new ALoreBuilder("&7Selected: &e" + Objects.requireNonNull(getKillstreakFromInterval(player, 3)).name));
-			Builder3Kills.addEnchantGlint(true);
+			Misc.addEnchantGlint(Builder3Kills.getItemStack());
 		}
 		getInventory().setItem(10, Builder3Kills.getItemStack());
 
@@ -117,7 +118,7 @@ public class KillstreakPanel extends AGUIPanel {
 		Builder7Kills.setName("&c7 Kills");
 		if(getKillstreakFromInterval(player, 7) != null) {
 			Builder7Kills.setLore(new ALoreBuilder("&7Selected: &e" + Objects.requireNonNull(getKillstreakFromInterval(player, 7)).name));
-			Builder7Kills.addEnchantGlint(true);
+			Misc.addEnchantGlint(Builder7Kills.getItemStack());
 		}
 		getInventory().setItem(19, Builder7Kills.getItemStack());
 
@@ -125,7 +126,7 @@ public class KillstreakPanel extends AGUIPanel {
 		Builder15Kills.setName("&c15 Kills");
 		if(getKillstreakFromInterval(player, 15) != null) {
 			Builder15Kills.setLore(new ALoreBuilder("&7Selected: &e" + Objects.requireNonNull(getKillstreakFromInterval(player, 15)).name));
-			Builder15Kills.addEnchantGlint(true);
+			Misc.addEnchantGlint(Builder15Kills.getItemStack());
 		}
 		getInventory().setItem(28, Builder15Kills.getItemStack());
 
@@ -133,7 +134,7 @@ public class KillstreakPanel extends AGUIPanel {
 		Build40Kills.setName("&c40 Kills");
 		if(getKillstreakFromInterval(player, 40) != null) {
 			Build40Kills.setLore(new ALoreBuilder("&7Selected: &e" + Objects.requireNonNull(getKillstreakFromInterval(player, 40)).name));
-			Build40Kills.addEnchantGlint(true);
+			Misc.addEnchantGlint(Build40Kills.getItemStack());
 		}
 		getInventory().setItem(37, Build40Kills.getItemStack());
 
@@ -169,7 +170,7 @@ public class KillstreakPanel extends AGUIPanel {
 			if(hasKillstreakEquipped(player, killstreak)) {
 				builder.setName("&a" + killstreak.name);
 				loreBuilder.addLore("&aAlready selected!");
-				builder.addEnchantGlint(true);
+				Misc.addEnchantGlint(builder.getItemStack());
 			} else if(pitPlayer.prestige < killstreak.prestige) {
 				builder.setName("&c" + killstreak.name);
 				loreBuilder.addLore("&cUnlocked at prestige &e" + AUtil.toRoman(killstreak.prestige));

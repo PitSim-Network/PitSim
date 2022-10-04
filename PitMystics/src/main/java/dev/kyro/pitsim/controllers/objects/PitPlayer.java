@@ -137,7 +137,25 @@ public class PitPlayer {
 	public boolean darkzoneCutscene = false;
 
 	public PlayerStats stats = new PlayerStats();
-	public PassData passData;
+	private PassData passData = new PassData();
+
+	@Deprecated
+	public PassData getPassData() {
+		return passData;
+	}
+
+	public PassData getPassData(Date passDate) {
+		if(!passDate.equals(passData.currentPassDate)) {
+//			TODO: give unclaimed rewards
+			passData = new PassData(passDate);
+			save();
+		}
+		return passData;
+	}
+
+	public void setPassData(PassData passData) {
+		this.passData = passData;
+	}
 
 	@Exclude
 	public long lastSave;
@@ -380,7 +398,7 @@ public class PitPlayer {
 		}
 		if(pitPlayer == null) {
 
-			boolean isNPC = !Bukkit.getOnlinePlayers().contains(player);
+			boolean isNPC = !PlayerManager.realPlayers.contains(player.getUniqueId());
 			if(isNPC) {
 				pitPlayer = new PitPlayer(player);
 			} else {

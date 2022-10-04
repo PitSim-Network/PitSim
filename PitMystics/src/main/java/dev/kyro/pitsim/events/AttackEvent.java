@@ -1,7 +1,6 @@
 package dev.kyro.pitsim.events;
 
 import dev.kyro.pitsim.controllers.DamageManager;
-import dev.kyro.pitsim.controllers.EnchantManager;
 import dev.kyro.pitsim.controllers.objects.PitEnchant;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import org.bukkit.entity.*;
@@ -24,6 +23,8 @@ public class AttackEvent extends Event {
 	public boolean defenderIsPlayer;
 	public Player attackerPlayer;
 	public Player defenderPlayer;
+	public PitPlayer attackerPitPlayer;
+	public PitPlayer defenderPitPlayer;
 	public Arrow arrow;
 	public Fireball fireball;
 	public LivingEntity pet;
@@ -41,6 +42,8 @@ public class AttackEvent extends Event {
 		this.defenderIsPlayer = defender instanceof Player;
 		this.attackerPlayer = attackerIsPlayer ? (Player) attacker : null;
 		this.defenderPlayer = defenderIsPlayer ? (Player) defender : null;
+		this.attackerPitPlayer = attackerIsPlayer ? PitPlayer.getPitPlayer(attackerPlayer) : null;
+		this.defenderPitPlayer = defenderIsPlayer ? PitPlayer.getPitPlayer(defenderPlayer) : null;
 		this.attackerEnchantMap = attackerEnchantMap;
 		this.defenderEnchantMap = defenderEnchantMap;
 		this.fakeHit = fakeHit;

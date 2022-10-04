@@ -15,11 +15,11 @@ import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.brewing.PotionManager;
 import dev.kyro.pitsim.brewing.ingredients.MagmaCream;
 import dev.kyro.pitsim.brewing.objects.PotionEffect;
-import dev.kyro.pitsim.commands.ATestCommand;
 import dev.kyro.pitsim.commands.FPSCommand;
 import dev.kyro.pitsim.controllers.objects.*;
 import dev.kyro.pitsim.enums.*;
 import dev.kyro.pitsim.events.*;
+import dev.kyro.pitsim.inventories.view.ViewGUI;
 import dev.kyro.pitsim.megastreaks.Highlander;
 import dev.kyro.pitsim.megastreaks.NoMegastreak;
 import dev.kyro.pitsim.megastreaks.RNGesus;
@@ -29,7 +29,6 @@ import dev.kyro.pitsim.misc.Misc;
 import dev.kyro.pitsim.misc.Sounds;
 import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.*;
-import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Entity;
@@ -55,7 +54,12 @@ import java.util.*;
 //import net.kyori.adventure.audience.Audience;
 
 public class PlayerManager implements Listener {
-	//	public static Map<Player, BossBarManager> bossBars = new HashMap<>();
+	public static List<UUID> realPlayers = new ArrayList<>();
+
+	@EventHandler
+	public void onAttack3(AttackEvent attackEvent) {
+		if(!PlayerManager.realPlayers.contains(attackEvent.attacker.getUniqueId())) return;
+	}
 
 	static {
 			new BukkitRunnable() {
@@ -158,6 +162,18 @@ public class PlayerManager implements Listener {
 				}
 			}
 		}.runTaskTimer(PitSim.INSTANCE, 0L, 12L);
+	}
+
+	public Map<UUID, Long> viewShiftCooldown = new HashMap<>();
+	@EventHandler
+	public void onInteract(PlayerInteractAtEntityEvent event) {
+		Player player = event.getPlayer();
+		if(!(event.getRightClicked() instanceof Player)) return;
+		Player target = (Player) event.getRightClicked();
+		if(!player.isSneaking() || !SpawnManager.isInSpawn(player.getLocation()) || !SpawnManager.isInSpawn(target.getLocation())) return;
+		if(viewShiftCooldown.getOrDefault(player.getUniqueId(), 0L) + 500 > System.currentTimeMillis()) return;
+		viewShiftCooldown.put(player.getUniqueId(), System.currentTimeMillis());
+		new ViewGUI(player, target).open();
 	}
 
 	@EventHandler(priority = EventPriority.MONITOR)
@@ -554,17 +570,6 @@ public class PlayerManager implements Listener {
 		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
 		Location spawnLoc = MapManager.currentMap.getSpawn(MapManager.currentMap.firstLobby);
 
-		if(player.isOp()) {
-			new BukkitRunnable() {
-				@Override
-				public void run() {
-					Bukkit.dispatchCommand(player, "buzz exempt");
-				}
-			}.runTaskLater(PitSim.INSTANCE, 1L);
-		}
-
-//		Misc.applyPotionEffect(player, PotionEffectType.NIGHT_VISION, 2000000, 2, false, false);
-
 		if(player.hasPermission("pitsim.autofps")) {
 			FPSCommand.fpsPlayers.add(player);
 			for(Non non : NonManager.nons) player.hidePlayer(non.non);
@@ -690,6 +695,7 @@ public class PlayerManager implements Listener {
 	@EventHandler
 	public void onJoin(AsyncPlayerPreLoginEvent event) {
 		UUID playerUUID = event.getUniqueId();
+		if(!realPlayers.contains(playerUUID)) realPlayers.add(playerUUID);
 		boolean success = PitPlayer.loadPitPlayer(playerUUID);
 		if(FirestoreManager.FIRESTORE == null) {
 			event.disallow(AsyncPlayerPreLoginEvent.Result.KICK_OTHER,

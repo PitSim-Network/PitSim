@@ -1,10 +1,6 @@
 package dev.kyro.pitsim.commands;
 
-import be.maximvdw.featherboard.api.FeatherBoardAPI;
-import dev.kyro.pitsim.controllers.objects.PitPlayer;
-import dev.kyro.pitsim.controllers.objects.PluginMessage;
-import org.bukkit.Bukkit;
-import org.bukkit.OfflinePlayer;
+import dev.kyro.pitsim.battlepass.inventories.PassGUI;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -15,18 +11,13 @@ public class ATestCommand implements CommandExecutor {
 	@Override
 	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
 
-		if(args.length > 0) {
-			PitPlayer pitPlayer = new PitPlayer(Bukkit.getOfflinePlayer(args[0]).getUniqueId());
-			pitPlayer.save();
-			return false;
-		}
+		if(!(sender instanceof Player)) return false;
+		Player player = (Player) sender;
 
+		if(!player.isOp()) return false;
 
-
-//		if(!(sender instanceof Player)) return false;
-//		Player player = (Player) sender;
-//
-//		if(!player.isOp()) return false;
+		PassGUI passGUI = new PassGUI(player);
+		passGUI.open();
 
 
 //		FeatherBoardAPI.showScoreboard(player, args[0]);

@@ -31,7 +31,7 @@ public class ComboDamage extends PitEnchant {
 		int regLvl = attackEvent.getAttackerEnchantLevel(Regularity.INSTANCE);
 		if(Regularity.isRegHit(attackEvent.defender) && Regularity.skipIncrement(regLvl)) return;
 
-		PitPlayer pitPlayer = PitPlayer.getPitPlayer(attackEvent.attackerPlayer);
+		PitPlayer pitPlayer = attackEvent.attackerPitPlayer;
 		HitCounter.incrementCounter(pitPlayer.player, this);
 		if(!HitCounter.hasReachedThreshold(pitPlayer.player, this, getStrikes(enchantLvl))) return;
 

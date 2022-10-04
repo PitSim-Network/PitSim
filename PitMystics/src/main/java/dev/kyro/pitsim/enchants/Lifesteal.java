@@ -24,7 +24,7 @@ public class Lifesteal extends PitEnchant {
 	public void onAttack(AttackEvent.Apply attackEvent) {
 		if(!attackEvent.attackerIsPlayer) return;
 		if(!canApply(attackEvent)) return;
-		PitPlayer pitAttacker = PitPlayer.getPitPlayer(attackEvent.attackerPlayer);
+		PitPlayer pitAttacker = attackEvent.attackerPitPlayer;
 
 		int enchantLvl = attackEvent.getAttackerEnchantLevel(this);
 		if(enchantLvl == 0) return;
