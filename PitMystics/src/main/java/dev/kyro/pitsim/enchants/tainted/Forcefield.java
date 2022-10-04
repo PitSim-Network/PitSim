@@ -66,12 +66,12 @@ public class Forcefield extends PitEnchant {
     public void onAttack(AttackEvent.Apply event) {
         int enchantLvl = event.getDefenderEnchantLevel(this);
         if(enchantLvl == 0) return;
-        if(!MapManager.inDarkzone(event.defender)) return;
+        if(!MapManager.inDarkzone(event.getDefender())) return;
 
-        event.defender.setVelocity(event.defender.getVelocity().multiply(0));
+        event.getDefender().setVelocity(event.getDefender().getVelocity().multiply(0));
 
-        for (Entity entity : event.defender.getNearbyEntities(2, 2, 2)) {
-            Vector dirVector = entity.getLocation().toVector().subtract(event.defender.getLocation().toVector()).normalize();
+        for (Entity entity : event.getDefender().getNearbyEntities(2, 2, 2)) {
+            Vector dirVector = entity.getLocation().toVector().subtract(event.getDefender().getLocation().toVector()).normalize();
             Vector pullVector = dirVector.clone().normalize().setY(0.5).multiply(1.5).add(dirVector.clone().multiply(0.03));
             entity.setVelocity(pullVector);
         }
@@ -79,7 +79,7 @@ public class Forcefield extends PitEnchant {
         new BukkitRunnable() {
             @Override
             public void run() {
-                event.defender.setVelocity(event.defender.getVelocity().multiply(0));
+                event.getDefender().setVelocity(event.getDefender().getVelocity().multiply(0));
             }
         }.runTaskLater(PitSim.INSTANCE, 1);
     }

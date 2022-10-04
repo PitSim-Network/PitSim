@@ -21,16 +21,16 @@ public class Healer extends PitEnchant {
 
 	@EventHandler
 	public void onAttack(AttackEvent.Apply attackEvent) {
-		if(!attackEvent.attackerIsPlayer || !attackEvent.defenderIsPlayer) return;
+		if(!attackEvent.isAttackerIsPlayer() || !attackEvent.isDefenderIsPlayer()) return;
 		if(!canApply(attackEvent)) return;
-		PitPlayer pitAttacker = attackEvent.attackerPitPlayer;
-		PitPlayer pitDefender = attackEvent.defenderPitPlayer;
+		PitPlayer pitAttacker = attackEvent.getAttackerPitPlayer();
+		PitPlayer pitDefender = attackEvent.getDefenderPitPlayer();
 
 		int enchantLvl = attackEvent.getAttackerEnchantLevel(this);
 		if(enchantLvl == 0) return;
-		if(attackEvent.fakeHit) return;
+		if(attackEvent.isFakeHit()) return;
 
-		Cooldown cooldown = getCooldown(attackEvent.attackerPlayer, 20);
+		Cooldown cooldown = getCooldown(attackEvent.getAttackerPlayer(), 20);
 		if(cooldown.isOnCooldown()) return;
 		else cooldown.restart();
 
@@ -38,7 +38,7 @@ public class Healer extends PitEnchant {
 		pitAttacker.heal(0.5 + (0.5 * enchantLvl));
 		pitDefender.heal(getHealing(enchantLvl));
 
-		attackEvent.defender.getWorld().spigot().playEffect(attackEvent.defender.getLocation().add(0, 1, 0),
+		attackEvent.getDefender().getWorld().spigot().playEffect(attackEvent.getDefender().getLocation().add(0, 1, 0),
 				Effect.HAPPY_VILLAGER, 0, 0, (float) 0.5, (float) 0.5, (float) 0.5, (float) 0.01, 20, 50);
 
 	}

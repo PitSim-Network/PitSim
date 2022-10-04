@@ -53,20 +53,20 @@ public class aRetroGravityMinikloon extends PitEnchant {
 
 	@EventHandler
 	public void onAttack(AttackEvent.Apply attackEvent) {
-		if(!attackEvent.attackerIsPlayer || !attackEvent.defenderIsPlayer) return;
-		if(!canApply(attackEvent) || attackEvent.fakeHit) return;
+		if(!attackEvent.isAttackerIsPlayer() || !attackEvent.isDefenderIsPlayer()) return;
+		if(!canApply(attackEvent) || attackEvent.isFakeHit()) return;
 
 		int attackerEnchantLvl = attackEvent.getAttackerEnchantLevel(this);
 		int defenderEnchantLvl = attackEvent.getDefenderEnchantLevel(this);
 
-		int attackingCharge = getCharge(attackEvent.attackerPlayer, attackEvent.defenderPlayer) - 1;
+		int attackingCharge = getCharge(attackEvent.getAttackerPlayer(), attackEvent.getDefenderPlayer()) - 1;
 		if(attackingCharge >= 0) {
 			if(attackerEnchantLvl >= 1) {
-				PitPlayer pitAttacker = attackEvent.attackerPitPlayer;
+				PitPlayer pitAttacker = attackEvent.getAttackerPitPlayer();
 				pitAttacker.heal(getHealing(attackingCharge));
 			}
 			if(attackerEnchantLvl >= 2) {
-				Misc.applyPotionEffect(attackEvent.attacker, PotionEffectType.DAMAGE_RESISTANCE, 20 * attackingCharge, 0, true, false);
+				Misc.applyPotionEffect(attackEvent.getAttacker(), PotionEffectType.DAMAGE_RESISTANCE, 20 * attackingCharge, 0, true, false);
 			}
 			if(attackerEnchantLvl >= 3) {
 				attackEvent.increase += getDamage(attackingCharge);
@@ -74,17 +74,17 @@ public class aRetroGravityMinikloon extends PitEnchant {
 //				AOutput.broadcast(getDamage(attackingCharge) + "");
 			}
 //			setCharge(attackEvent.attacker, attackEvent.defender, 0);
-			setCharge(attackEvent.attackerPlayer, attackEvent.defenderPlayer, Math.max(0, attackingCharge - 2));
+			setCharge(attackEvent.getAttackerPlayer(), attackEvent.getDefenderPlayer(), Math.max(0, attackingCharge - 2));
 		}
 
-		if(defenderEnchantLvl != 0 && !attackEvent.defenderPlayer.isBlocking()) {
+		if(defenderEnchantLvl != 0 && !attackEvent.getDefenderPlayer().isBlocking()) {
 //			if(attackEvent.attacker.getLocation().add(0, -0.1, 0).getBlock().getType() != Material.AIR) return;
 
 //			HitCounter.incrementCounter(attackEvent.defender, this);
 //			if(!HitCounter.hasReachedThreshold(attackEvent.defender, this, getStrikes())) return;
 
-			int charge = getCharge(attackEvent.defenderPlayer, attackEvent.attackerPlayer);
-			setCharge(attackEvent.defenderPlayer, attackEvent.attackerPlayer, Math.min(++charge, getMaxStacks(defenderEnchantLvl)));
+			int charge = getCharge(attackEvent.getDefenderPlayer(), attackEvent.getAttackerPlayer());
+			setCharge(attackEvent.getDefenderPlayer(), attackEvent.getAttackerPlayer(), Math.min(++charge, getMaxStacks(defenderEnchantLvl)));
 
 //			PitPlayer pitDefender = PitPlayer.getPitPlayer(attackEvent.defender);
 //			pitDefender.heal(getHealing(defenderEnchantLvl));
@@ -97,10 +97,10 @@ public class aRetroGravityMinikloon extends PitEnchant {
 //			}.runTaskLater(PitSim.INSTANCE, 30 * 20);
 
 			if(charge > 1) {
-				AOutput.send(attackEvent.defender, "&d&lRGM!&7 Procced against " +
-						attackEvent.attacker.getName() + " &8(" + Math.min(--charge, getMaxStacks(defenderEnchantLvl) - 1) + "x)");
-				Sounds.RGM.play(attackEvent.defender);
-				Sounds.RGM.play(attackEvent.attacker);
+				AOutput.send(attackEvent.getDefender(), "&d&lRGM!&7 Procced against " +
+						attackEvent.getAttacker().getName() + " &8(" + Math.min(--charge, getMaxStacks(defenderEnchantLvl) - 1) + "x)");
+				Sounds.RGM.play(attackEvent.getDefender());
+				Sounds.RGM.play(attackEvent.getAttacker());
 			}
 		}
 	}

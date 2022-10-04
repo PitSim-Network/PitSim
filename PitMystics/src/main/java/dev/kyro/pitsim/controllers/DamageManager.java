@@ -207,50 +207,50 @@ public class DamageManager implements Listener {
 //		AOutput.send(attackEvent.attacker, "Initial Damage: " + attackEvent.event.getDamage());
 
 //		As strong as iron
-		attackEvent.multipliers.add(ArmorReduction.getReductionMultiplier(attackEvent.defender));
+		attackEvent.multipliers.add(ArmorReduction.getReductionMultiplier(attackEvent.getDefender()));
 
 		double damage = attackEvent.getFinalDamage();
-		attackEvent.event.setDamage(damage);
+		attackEvent.getEvent().setDamage(damage);
 
 		if(attackEvent.trueDamage != 0 || attackEvent.veryTrueDamage != 0) {
-			double finalHealth = attackEvent.defender.getHealth() - attackEvent.trueDamage - attackEvent.veryTrueDamage;
+			double finalHealth = attackEvent.getDefender().getHealth() - attackEvent.trueDamage - attackEvent.veryTrueDamage;
 			if(finalHealth <= 0) {
-				attackEvent.event.setCancelled(true);
-				kill(attackEvent, attackEvent.attacker, attackEvent.defender, false, KillType.DEFAULT);
+				attackEvent.getEvent().setCancelled(true);
+				kill(attackEvent, attackEvent.getAttacker(), attackEvent.getDefender(), false, KillType.DEFAULT);
 				return;
 			} else {
-				attackEvent.defender.setHealth(Math.max(finalHealth, 0));
+				attackEvent.getDefender().setHealth(Math.max(finalHealth, 0));
 			}
 		}
 
 		if(attackEvent.selfTrueDamage != 0 || attackEvent.selfVeryTrueDamage != 0) {
-			double finalHealth = attackEvent.attacker.getHealth() - attackEvent.selfTrueDamage - attackEvent.selfVeryTrueDamage;
+			double finalHealth = attackEvent.getAttacker().getHealth() - attackEvent.selfTrueDamage - attackEvent.selfVeryTrueDamage;
 			if(finalHealth <= 0) {
-				attackEvent.event.setCancelled(true);
-				kill(attackEvent, attackEvent.defender, attackEvent.attacker, false, KillType.DEFAULT);
+				attackEvent.getEvent().setCancelled(true);
+				kill(attackEvent, attackEvent.getDefender(), attackEvent.getAttacker(), false, KillType.DEFAULT);
 				return;
 			} else {
-				attackEvent.attacker.setHealth(Math.max(finalHealth, 0));
+				attackEvent.getAttacker().setHealth(Math.max(finalHealth, 0));
 //				attackEvent.attacker.damage(0);
 			}
 		}
 
-		if(attackEvent.defenderIsPlayer) {
-			PitPlayer pitPlayer = PitPlayer.getPitPlayer(attackEvent.defenderPlayer);
-			pitPlayer.addDamage(attackEvent.attacker, attackEvent.event.getFinalDamage() + attackEvent.trueDamage);
+		if(attackEvent.isDefenderIsPlayer()) {
+			PitPlayer pitPlayer = PitPlayer.getPitPlayer(attackEvent.getDefenderPlayer());
+			pitPlayer.addDamage(attackEvent.getAttacker(), attackEvent.getEvent().getFinalDamage() + attackEvent.trueDamage);
 		}
 
 //		AOutput.send(attackEvent.attacker, "Final Damage: " + attackEvent.event.getDamage());
 //		AOutput.send(attackEvent.attacker, "Final Damage: " + attackEvent.event.getFinalDamage());
 
-		if(attackEvent.event.getFinalDamage() >= attackEvent.defender.getHealth()) {
+		if(attackEvent.getEvent().getFinalDamage() >= attackEvent.getDefender().getHealth()) {
 
-			attackEvent.event.setCancelled(true);
-			kill(attackEvent, attackEvent.attacker, attackEvent.defender, false, KillType.DEFAULT);
-		} else if(attackEvent.event.getFinalDamage() + attackEvent.executeUnder >= attackEvent.defender.getHealth()) {
+			attackEvent.getEvent().setCancelled(true);
+			kill(attackEvent, attackEvent.getAttacker(), attackEvent.getDefender(), false, KillType.DEFAULT);
+		} else if(attackEvent.getEvent().getFinalDamage() + attackEvent.executeUnder >= attackEvent.getDefender().getHealth()) {
 
-			attackEvent.event.setCancelled(true);
-			kill(attackEvent, attackEvent.attacker, attackEvent.defender, true, KillType.DEFAULT);
+			attackEvent.getEvent().setCancelled(true);
+			kill(attackEvent, attackEvent.getAttacker(), attackEvent.getDefender(), true, KillType.DEFAULT);
 		}
 
 		DamageIndicator.onAttack(attackEvent);

@@ -33,33 +33,33 @@ public class Telebow extends PitEnchant {
 
 	@EventHandler
 	public void onAttack(AttackEvent.Apply attackEvent) {
-		if(!attackEvent.attackerIsPlayer) return;
+		if(!attackEvent.isAttackerIsPlayer()) return;
 		if(!canApply(attackEvent)) return;
 		int enchantLvl = attackEvent.getAttackerEnchantLevel(this);
 		if(enchantLvl == 0) return;
-		if(attackEvent.arrow == null) return;
+		if(attackEvent.getArrow() == null) return;
 
-		if(attackEvent.attackerPlayer.isSneaking() && attackEvent.attackerPlayer.getWorld() == MapManager.getDarkzone()) {
-			AOutput.error(attackEvent.attackerPlayer, "&c&lNOPE! &7That enchant is disabled here!");
-			Sounds.NO.play(attackEvent.attackerPlayer);
+		if(attackEvent.getAttackerPlayer().isSneaking() && attackEvent.getAttackerPlayer().getWorld() == MapManager.getDarkzone()) {
+			AOutput.error(attackEvent.getAttackerPlayer(), "&c&lNOPE! &7That enchant is disabled here!");
+			Sounds.NO.play(attackEvent.getAttackerPlayer());
 			return;
 		}
 
-		Cooldown cooldown = getCooldown(attackEvent.attackerPlayer, getCooldown(enchantLvl) * 20);
+		Cooldown cooldown = getCooldown(attackEvent.getAttackerPlayer(), getCooldown(enchantLvl) * 20);
 		cooldown.reduceCooldown(40);
 
 		if(cooldown.isOnCooldown()) {
 			new BukkitRunnable() {
 				@Override
 				public void run() {
-					Misc.sendActionBar(attackEvent.attackerPlayer, "&eTelebow: &c" + cooldown.getTicksLeft() / 20 + "&cs cooldown!");
+					Misc.sendActionBar(attackEvent.getAttackerPlayer(), "&eTelebow: &c" + cooldown.getTicksLeft() / 20 + "&cs cooldown!");
 				}
 			}.runTaskLater(PitSim.INSTANCE, 1L);
 		} else {
 			new BukkitRunnable() {
 				@Override
 				public void run() {
-					Misc.sendActionBar(attackEvent.attackerPlayer, "&eTelebow: &aReady!");
+					Misc.sendActionBar(attackEvent.getAttackerPlayer(), "&eTelebow: &aReady!");
 				}
 			}.runTaskLater(PitSim.INSTANCE, 1L);
 		}

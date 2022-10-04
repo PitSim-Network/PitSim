@@ -31,7 +31,7 @@ public class AuraOfProtection extends Killstreak {
 
 	@EventHandler(priority = EventPriority.HIGHEST)
 	public void onHit(AttackEvent.Apply event) {
-		if(rewardPlayers.contains(event.defender)) {
+		if(rewardPlayers.contains(event.getDefender())) {
 			event.trueDamage /= 2.0;
 		}
 	}

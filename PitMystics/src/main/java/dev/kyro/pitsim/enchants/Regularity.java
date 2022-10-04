@@ -32,39 +32,39 @@ public class Regularity extends PitEnchant {
 	@EventHandler
 	public void onAttack(AttackEvent.Post attackEvent) {
 		if(!canApply(attackEvent)) return;
-		if(!fakeHits && attackEvent.fakeHit) return;
+		if(!fakeHits && attackEvent.isFakeHit()) return;
 
-		if(toReg.contains(attackEvent.defender.getUniqueId())) return;
+		if(toReg.contains(attackEvent.getDefender().getUniqueId())) return;
 
 		int enchantLvl = attackEvent.getAttackerEnchantLevel(this);
 		if(enchantLvl == 0) return;
 
-		double finalDamage = attackEvent.event.getFinalDamage();
+		double finalDamage = attackEvent.getEvent().getFinalDamage();
 		if(finalDamage >= maxFinalDamage(enchantLvl)) return;
 
-		toReg.add(attackEvent.defender.getUniqueId());
-		regCooldown.add(attackEvent.defender.getUniqueId());
+		toReg.add(attackEvent.getDefender().getUniqueId());
+		regCooldown.add(attackEvent.getDefender().getUniqueId());
 		new BukkitRunnable() {
 			@Override
 			public void run() {
-				if(!toReg.contains(attackEvent.defender.getUniqueId())) return;
+				if(!toReg.contains(attackEvent.getDefender().getUniqueId())) return;
 
-				double damage = attackEvent.event.getOriginalDamage(EntityDamageEvent.DamageModifier.BASE);
-				attackEvent.defender.setNoDamageTicks(0);
-				attackEvent.defender.damage(damage * secondHitDamage(enchantLvl) / 100, attackEvent.attacker);
+				double damage = attackEvent.getEvent().getOriginalDamage(EntityDamageEvent.DamageModifier.BASE);
+				attackEvent.getDefender().setNoDamageTicks(0);
+				attackEvent.getDefender().damage(damage * secondHitDamage(enchantLvl) / 100, attackEvent.getAttacker());
 			}
 		}.runTaskLater(PitSim.INSTANCE, 3L);
 
 		new BukkitRunnable() {
 			@Override
 			public void run() {
-				toReg.remove(attackEvent.defender.getUniqueId());
+				toReg.remove(attackEvent.getDefender().getUniqueId());
 			}
 		}.runTaskLater(PitSim.INSTANCE, 4L);
 		new BukkitRunnable() {
 			@Override
 			public void run() {
-				regCooldown.remove(attackEvent.defender.getUniqueId());
+				regCooldown.remove(attackEvent.getDefender().getUniqueId());
 			}
 		}.runTaskLater(PitSim.INSTANCE, 11L);
 	}

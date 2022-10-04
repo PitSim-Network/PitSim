@@ -22,7 +22,7 @@ public class Chipping extends PitEnchant {
 		if(!canApply(attackEvent)) return;
 
 		int enchantLvl = attackEvent.getAttackerEnchantLevel(this);
-		if(enchantLvl == 0 || !attackEvent.arrow.isCritical()) return;
+		if(enchantLvl == 0 || !attackEvent.getArrow().isCritical()) return;
 
 		attackEvent.trueDamage += getDamage(enchantLvl);
 	}

@@ -18,19 +18,19 @@ public class RingArmor extends PitEnchant {
 
 	@EventHandler
 	public void onAttack(AttackEvent.Apply attackEvent) {
-		if(!attackEvent.defenderIsPlayer) return;
+		if(!attackEvent.isDefenderIsPlayer()) return;
 		if(!canApply(attackEvent)) return;
 
 		int attackerEnchantLvl = attackEvent.getAttackerEnchantLevel(this);
 		int defenderEnchantLvl = attackEvent.getDefenderEnchantLevel(this);
 
-		if(attackEvent.attackerIsPlayer && attackerEnchantLvl != 0 && attackEvent.arrow == null && HitCounter.getCharge(attackEvent.attackerPlayer, this) == 1) {
+		if(attackEvent.isAttackerIsPlayer() && attackerEnchantLvl != 0 && attackEvent.getArrow() == null && HitCounter.getCharge(attackEvent.getAttackerPlayer(), this) == 1) {
 			attackEvent.increasePercent += getDamageIncrease(attackerEnchantLvl) / 100D;
-			HitCounter.setCharge(attackEvent.attackerPlayer, this, 0);
+			HitCounter.setCharge(attackEvent.getAttackerPlayer(), this, 0);
 		}
 
-		if(defenderEnchantLvl != 0 && attackEvent.arrow != null) {
-			HitCounter.setCharge(attackEvent.defenderPlayer, this, 1);
+		if(defenderEnchantLvl != 0 && attackEvent.getArrow() != null) {
+			HitCounter.setCharge(attackEvent.getDefenderPlayer(), this, 1);
 			attackEvent.multipliers.add(getDamageMultiplier(defenderEnchantLvl));
 		}
 	}

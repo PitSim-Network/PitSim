@@ -45,20 +45,20 @@ public class HopperManager implements Listener {
 
 	@EventHandler(priority = EventPriority.HIGH)
 	public void onAttack(AttackEvent.Apply attackEvent) {
-		if(isHopper(attackEvent.defender)) {
-			Hopper hopper = getHopper(attackEvent.defenderPlayer);
+		if(isHopper(attackEvent.getDefender())) {
+			Hopper hopper = getHopper(attackEvent.getDefenderPlayer());
 			attackEvent.multipliers.add(hopper.type.damageMultiplier);
-			if(attackEvent.arrow != null || attackEvent.pet != null) {
+			if(attackEvent.getArrow() != null || attackEvent.getPet() != null) {
 				attackEvent.multipliers.add(0D);
 				attackEvent.trueDamage = 0;
 			}
 		}
-		if(isHopper(attackEvent.attacker)) {
-			Hopper hopper = getHopper(attackEvent.attackerPlayer);
+		if(isHopper(attackEvent.getAttacker())) {
+			Hopper hopper = getHopper(attackEvent.getAttackerPlayer());
 			if(hopper.type != Hopper.Type.CHAIN) {
-				PitPlayer pitHopper = attackEvent.attackerPitPlayer;
+				PitPlayer pitHopper = attackEvent.getAttackerPitPlayer();
 				double amount = 1;
-				if(hopper.target != null && hopper.target != attackEvent.defender) pitHopper.heal(amount / 2.0);
+				if(hopper.target != null && hopper.target != attackEvent.getDefender()) pitHopper.heal(amount / 2.0);
 				pitHopper.heal(amount);
 			}
 		}

@@ -23,16 +23,16 @@ public class ComboHeal extends PitEnchant {
 
 	@EventHandler
 	public void onAttack(AttackEvent.Apply attackEvent) {
-		if(!attackEvent.attackerIsPlayer) return;
+		if(!attackEvent.isAttackerIsPlayer()) return;
 		if(!canApply(attackEvent)) return;
-		PitPlayer pitAttacker = attackEvent.attackerPitPlayer;
+		PitPlayer pitAttacker = attackEvent.getAttackerPitPlayer();
 
 		int enchantLvl = attackEvent.getAttackerEnchantLevel(this);
 		if(enchantLvl == 0) return;
-		if(attackEvent.fakeHit) return;
+		if(attackEvent.isFakeHit()) return;
 
 		int regLvl = attackEvent.getAttackerEnchantLevel(Regularity.INSTANCE);
-		if(Regularity.isRegHit(attackEvent.defender) && Regularity.skipIncrement(regLvl)) return;
+		if(Regularity.isRegHit(attackEvent.getDefender()) && Regularity.skipIncrement(regLvl)) return;
 
 		HitCounter.incrementCounter(pitAttacker.player, this);
 		if(!HitCounter.hasReachedThreshold(pitAttacker.player, this, 4)) return;
@@ -40,7 +40,7 @@ public class ComboHeal extends PitEnchant {
 		pitAttacker.heal(getHealing(enchantLvl));
 		pitAttacker.heal(getHealing(enchantLvl), HealEvent.HealType.ABSORPTION, 8);
 
-		Sounds.COMBO_PROC.play(attackEvent.attacker);
+		Sounds.COMBO_PROC.play(attackEvent.getAttacker());
 	}
 
 	@Override

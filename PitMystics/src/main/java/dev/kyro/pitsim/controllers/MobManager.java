@@ -40,16 +40,16 @@ public class MobManager implements Listener {
 
 	@EventHandler
 	public void onAttack(AttackEvent.Apply attackEvent) {
-		if(!attackEvent.attackerIsPlayer || attackEvent.defenderIsPlayer) return;
-		if(!MapManager.inDarkzone(attackEvent.attackerPlayer.getLocation())) return;
-		if(!(attackEvent.defender instanceof Creature)) return;
-		PitMob pitMob = PitMob.getPitMob(attackEvent.defender);
+		if(!attackEvent.isAttackerIsPlayer() || attackEvent.isDefenderIsPlayer()) return;
+		if(!MapManager.inDarkzone(attackEvent.getAttackerPlayer().getLocation())) return;
+		if(!(attackEvent.getDefender() instanceof Creature)) return;
+		PitMob pitMob = PitMob.getPitMob(attackEvent.getDefender());
 		if(pitMob == null) return;
-		if(VanishAPI.isInvisible(attackEvent.attackerPlayer)) return;
-		if(attackEvent.attackerPlayer.getGameMode() == GameMode.SURVIVAL) {
-			((Creature) attackEvent.defender).setTarget(attackEvent.attackerPlayer);
+		if(VanishAPI.isInvisible(attackEvent.getAttackerPlayer())) return;
+		if(attackEvent.getAttackerPlayer().getGameMode() == GameMode.SURVIVAL) {
+			((Creature) attackEvent.getDefender()).setTarget(attackEvent.getAttackerPlayer());
 			pitMob.lastHit = System.currentTimeMillis();
-			pitMob.target = attackEvent.attackerPlayer;
+			pitMob.target = attackEvent.getAttackerPlayer();
 		}
 	}
 
@@ -339,16 +339,16 @@ public class MobManager implements Listener {
 	@EventHandler(priority = EventPriority.HIGHEST)
 	public void onHit(AttackEvent.Pre event) {
 
-		if(event.attacker instanceof MagmaCube && (!(event.defender instanceof Player))) event.setCancelled(true);
+		if(event.getAttacker() instanceof MagmaCube && (!(event.getDefender() instanceof Player))) event.setCancelled(true);
 
 		for (NPC value : BossManager.clickables.values()) {
-			if(event.defender.getUniqueId().equals(value.getUniqueId())) event.setCancelled(true);
+			if(event.getDefender().getUniqueId().equals(value.getUniqueId())) event.setCancelled(true);
 		}
 
-		if(!(event.defender instanceof ArmorStand)) return;
+		if(!(event.getDefender() instanceof ArmorStand)) return;
 
 		for(ArmorStand value : nameTags.values()) {
-			if(event.defender.getUniqueId().equals(value.getUniqueId())) event.setCancelled(true);
+			if(event.getDefender().getUniqueId().equals(value.getUniqueId())) event.setCancelled(true);
 		}
 	}
 

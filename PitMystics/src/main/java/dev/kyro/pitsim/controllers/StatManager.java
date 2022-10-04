@@ -63,24 +63,24 @@ public class StatManager implements Listener {
 
 	@EventHandler(priority = EventPriority.MONITOR)
 	public void onAttack(AttackEvent.Apply attackEvent) {
-		if(!attackEvent.attackerIsPlayer || !attackEvent.defenderIsPlayer) return;
-		PitPlayer pitAttacker = attackEvent.attackerPitPlayer;
-		PitPlayer pitDefender = attackEvent.defenderPitPlayer;
+		if(!attackEvent.isAttackerIsPlayer() || !attackEvent.isDefenderIsPlayer()) return;
+		PitPlayer pitAttacker = attackEvent.getAttackerPitPlayer();
+		PitPlayer pitDefender = attackEvent.getDefenderPitPlayer();
 
 		if(pitAttacker.stats != null) {
-			if(attackEvent.pet == null) {
-				if(attackEvent.arrow == null) pitAttacker.stats.swordHits++;
+			if(attackEvent.getPet() == null) {
+				if(attackEvent.getArrow() == null) pitAttacker.stats.swordHits++;
 				else pitAttacker.stats.arrowHits++;
 			}
-			pitAttacker.stats.damageDealt += attackEvent.event.getFinalDamage();
+			pitAttacker.stats.damageDealt += attackEvent.getEvent().getFinalDamage();
 			pitAttacker.stats.trueDamageDealt += attackEvent.trueDamage + attackEvent.veryTrueDamage;
 			pitAttacker.stats.trueDamageTaken += attackEvent.selfTrueDamage + attackEvent.selfVeryTrueDamage;
 
-			if(Regularity.isRegHit(attackEvent.defender)) pitAttacker.stats.regularity++;
+			if(Regularity.isRegHit(attackEvent.getDefender())) pitAttacker.stats.regularity++;
 		}
 
 		if(pitDefender.stats != null) {
-			pitDefender.stats.damageTaken += attackEvent.event.getFinalDamage();
+			pitDefender.stats.damageTaken += attackEvent.getEvent().getFinalDamage();
 			pitDefender.stats.trueDamageTaken += attackEvent.trueDamage + attackEvent.veryTrueDamage;
 		}
 	}

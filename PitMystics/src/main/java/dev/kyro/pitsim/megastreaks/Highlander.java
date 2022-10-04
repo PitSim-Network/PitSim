@@ -127,14 +127,14 @@ public class Highlander extends Megastreak {
 
 	@EventHandler
 	public void onAttack(AttackEvent.Apply attackEvent) {
-		if(!attackEvent.attackerIsPlayer) return;
-		PitPlayer pitPlayer = attackEvent.attackerPitPlayer;
+		if(!attackEvent.isAttackerIsPlayer()) return;
+		PitPlayer pitPlayer = attackEvent.getAttackerPitPlayer();
 		if(pitPlayer != this.pitPlayer) return;
 		if(pitPlayer.megastreak.isOnMega() && pitPlayer.megastreak.getClass() == Highlander.class) {
 //			if(pitDefender.bounty > 0) {
 //				attackEvent.increasePercent += 33 / 100D;
 //			}
-			if(NonManager.getNon(attackEvent.defender) != null) {
+			if(NonManager.getNon(attackEvent.getDefender()) != null) {
 				attackEvent.increasePercent += 25 / 100D;
 			}
 		}

@@ -21,15 +21,15 @@ public class aEntanglement extends PitEnchant {
 
 	@EventHandler
 	public void onAttack(AttackEvent.Apply attackEvent) {
-		if(!attackEvent.attackerIsPlayer) return;
+		if(!attackEvent.isAttackerIsPlayer()) return;
 		if(!canApply(attackEvent)) return;
 
-		int heldLvl = EnchantManager.getEnchantLevel(attackEvent.attackerPlayer.getItemInHand(), this);
-		int wornLvl = EnchantManager.getEnchantLevel(attackEvent.defender.getEquipment().getLeggings(), this);
+		int heldLvl = EnchantManager.getEnchantLevel(attackEvent.getAttackerPlayer().getItemInHand(), this);
+		int wornLvl = EnchantManager.getEnchantLevel(attackEvent.getDefender().getEquipment().getLeggings(), this);
 
-		if(heldLvl != 0) attackEvent.attackerPlayer.setItemInHand(scramble(attackEvent.attackerPlayer.getItemInHand(), heldLvl));
+		if(heldLvl != 0) attackEvent.getAttackerPlayer().setItemInHand(scramble(attackEvent.getAttackerPlayer().getItemInHand(), heldLvl));
 		if(wornLvl != 0)
-			attackEvent.defender.getEquipment().setLeggings(scramble(attackEvent.defender.getEquipment().getLeggings(), wornLvl));
+			attackEvent.getDefender().getEquipment().setLeggings(scramble(attackEvent.getDefender().getEquipment().getLeggings(), wornLvl));
 	}
 
 	public ItemStack scramble(ItemStack itemStack, int enchantLvl) {

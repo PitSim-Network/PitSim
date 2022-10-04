@@ -147,10 +147,10 @@ public class RNGesus extends Megastreak {
 
 	@EventHandler(priority = EventPriority.MONITOR)
 	public void onHit(AttackEvent.Apply attackEvent) {
-		if(!attackEvent.attackerIsPlayer) return;
-		PitPlayer pitPlayer = attackEvent.attackerPitPlayer;
+		if(!attackEvent.isAttackerIsPlayer()) return;
+		PitPlayer pitPlayer = attackEvent.getAttackerPitPlayer();
 		if(pitPlayer != this.pitPlayer || pitPlayer.megastreak.getClass() != RNGesus.class) return;
-		if(NonManager.getNon(attackEvent.attacker) != null) return;
+		if(NonManager.getNon(attackEvent.getAttacker()) != null) return;
 
 		if(pitPlayer.getKills() + 1 >= INSTABILITY_THRESHOLD) {
 			attackEvent.multipliers.clear();
@@ -161,7 +161,7 @@ public class RNGesus extends Megastreak {
 			double damage = getDamage(realityMap.get(Reality.DAMAGE).getLevel());
 			attackEvent.increase += damage;
 
-			List<Entity> entities = attackEvent.defender.getNearbyEntities(20, 20, 20);
+			List<Entity> entities = attackEvent.getDefender().getNearbyEntities(20, 20, 20);
 			Collections.shuffle(entities);
 			int count = 0;
 			for(Entity entity : entities) {
@@ -173,18 +173,18 @@ public class RNGesus extends Megastreak {
 				BukkitRunnable callback = new BukkitRunnable() {
 					@Override
 					public void run() {
-						Map<PitEnchant, Integer> attackerEnchant = EnchantManager.getEnchantsOnPlayer(attackEvent.attacker);
+						Map<PitEnchant, Integer> attackerEnchant = EnchantManager.getEnchantsOnPlayer(attackEvent.getAttacker());
 						Map<PitEnchant, Integer> defenderEnchant = new HashMap<>();
-						EntityDamageByEntityEvent ev = new EntityDamageByEntityEvent(attackEvent.attacker, target, EntityDamageEvent.DamageCause.CUSTOM, 0);
+						EntityDamageByEntityEvent ev = new EntityDamageByEntityEvent(attackEvent.getAttacker(), target, EntityDamageEvent.DamageCause.CUSTOM, 0);
 						AttackEvent attackEvent = new AttackEvent(ev, attackerEnchant, defenderEnchant, false);
 
 						double chance = damage / target.getMaxHealth();
 						if(Math.random() < chance)
-							DamageManager.fakeKill(attackEvent, attackEvent.attacker, target, false);
+							DamageManager.fakeKill(attackEvent, attackEvent.getAttacker(), target, false);
 					}
 				};
 
-				if(attackEvent.attackerIsPlayer) new HomeParticle(attackEvent.attackerPlayer, attackEvent.defender.getLocation().add(0, 1, 0), target, 0.5, callback);
+				if(attackEvent.isAttackerIsPlayer()) new HomeParticle(attackEvent.getAttackerPlayer(), attackEvent.getDefender().getLocation().add(0, 1, 0), target, 0.5, callback);
 			}
 		}
 	}
@@ -229,9 +229,9 @@ public class RNGesus extends Megastreak {
 
 	@EventHandler(priority = EventPriority.MONITOR)
 	public void attack(AttackEvent.Apply attackEvent) {
-		if(!attackEvent.attackerIsPlayer) return;
-		if(NonManager.getNon(attackEvent.defender) == null) return;
-		PitPlayer pitPlayer = attackEvent.attackerPitPlayer;
+		if(!attackEvent.isAttackerIsPlayer()) return;
+		if(NonManager.getNon(attackEvent.getDefender()) == null) return;
+		PitPlayer pitPlayer = attackEvent.getAttackerPitPlayer();
 		if(pitPlayer != this.pitPlayer) return;
 		if(pitPlayer.megastreak.isOnMega() && pitPlayer.megastreak.getClass() == RNGesus.class) {
 

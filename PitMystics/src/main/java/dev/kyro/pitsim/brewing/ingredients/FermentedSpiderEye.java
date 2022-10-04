@@ -34,7 +34,7 @@ public class FermentedSpiderEye extends BrewingIngredient {
 
     @EventHandler
     public void onHit(AttackEvent.Pre event) {
-        PotionEffect defenderEffect = PotionManager.getEffect(event.defenderPlayer, this);
+        PotionEffect defenderEffect = PotionManager.getEffect(event.getDefenderPlayer(), this);
 
         if(defenderEffect != null) {
             double chance = (double) getPotency(defenderEffect.potency);
@@ -42,13 +42,13 @@ public class FermentedSpiderEye extends BrewingIngredient {
 
             if(isProtected) {
                 event.setCancelled(true);
-                event.event.setCancelled(true);
-                Sounds.AEGIS.play(event.defenderPlayer.getLocation());
-                event.defenderPlayer.getWorld().playEffect(event.defenderPlayer.getLocation(), Effect.EXPLOSION_LARGE, Effect.EXPLOSION_LARGE.getData(), 100);
+                event.getEvent().setCancelled(true);
+                Sounds.AEGIS.play(event.getDefenderPlayer().getLocation());
+                event.getDefenderPlayer().getWorld().playEffect(event.getDefenderPlayer().getLocation(), Effect.EXPLOSION_LARGE, Effect.EXPLOSION_LARGE.getData(), 100);
             }
         }
 
-        PotionEffect attackerEffect = PotionManager.getEffect(event.attackerPlayer, this);
+        PotionEffect attackerEffect = PotionManager.getEffect(event.getAttackerPlayer(), this);
 
         if(attackerEffect != null) {
             double attackerChance = (double) getPotency(attackerEffect.potency);
@@ -56,9 +56,9 @@ public class FermentedSpiderEye extends BrewingIngredient {
 
             if(attackerIsProtected) {
                 event.setCancelled(true);
-                event.event.setCancelled(true);
-                Sounds.AEGIS.play(event.defenderPlayer.getLocation());
-                event.defenderPlayer.getWorld().playEffect(event.defenderPlayer.getLocation(), Effect.EXPLOSION_LARGE, Effect.EXPLOSION_LARGE.getData(), 100);
+                event.getEvent().setCancelled(true);
+                Sounds.AEGIS.play(event.getDefenderPlayer().getLocation());
+                event.getDefenderPlayer().getWorld().playEffect(event.getDefenderPlayer().getLocation(), Effect.EXPLOSION_LARGE, Effect.EXPLOSION_LARGE.getData(), 100);
             }
         }
     }

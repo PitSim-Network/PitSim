@@ -394,17 +394,17 @@ public class GoldenHelmet implements Listener {
 
 	@EventHandler
 	public void onAttack(AttackEvent.Apply attackEvent) {
-		if(NonManager.getNon(attackEvent.attacker) != null || NonManager.getNon(attackEvent.defender) != null) return;
-		ItemStack attackerHelmet = getHelmet(attackEvent.attacker);
-		ItemStack defenderHelmet = getHelmet(attackEvent.defender);
+		if(NonManager.getNon(attackEvent.getAttacker()) != null || NonManager.getNon(attackEvent.getDefender()) != null) return;
+		ItemStack attackerHelmet = getHelmet(attackEvent.getAttacker());
+		ItemStack defenderHelmet = getHelmet(attackEvent.getDefender());
 
 		int attackLevel = 0;
-		if(attackerHelmet != null) attackLevel = HelmetSystem.getLevel(getUsedHelmetGold(attackEvent.attacker));
+		if(attackerHelmet != null) attackLevel = HelmetSystem.getLevel(getUsedHelmetGold(attackEvent.getAttacker()));
 		if(attackerHelmet != null)
 			attackEvent.increasePercent += HelmetSystem.getTotalStacks(HelmetSystem.Passive.DAMAGE, attackLevel - 1) / 100D;
 
 		int defenderLevel = 0;
-		if(defenderHelmet != null) defenderLevel = HelmetSystem.getLevel(getUsedHelmetGold(attackEvent.defender));
+		if(defenderHelmet != null) defenderLevel = HelmetSystem.getLevel(getUsedHelmetGold(attackEvent.getDefender()));
 		if(defenderHelmet != null)
 			attackEvent.multipliers.add(Misc.getReductionMultiplier(HelmetSystem.getTotalStacks(HelmetSystem.Passive.DAMAGE_REDUCTION, defenderLevel - 1)));
 	}

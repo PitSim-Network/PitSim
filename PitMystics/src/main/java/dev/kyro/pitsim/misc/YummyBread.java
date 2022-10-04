@@ -27,9 +27,9 @@ public class YummyBread implements Listener {
 
 	@EventHandler
 	public void onHit(AttackEvent.Apply event) {
-		if(breadStacks.containsKey(event.attacker)) {
-			if(NonManager.getNon(event.defender) == null) return;
-			event.increasePercent += ((10 * breadStacks.get(event.attacker)) / 100D);
+		if(breadStacks.containsKey(event.getAttacker())) {
+			if(NonManager.getNon(event.getDefender()) == null) return;
+			event.increasePercent += ((10 * breadStacks.get(event.getAttacker())) / 100D);
 		}
 	}
 

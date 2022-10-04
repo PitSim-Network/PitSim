@@ -37,15 +37,15 @@ public class ReallyToxic extends PitEnchant {
 	@EventHandler
 	public void onAttack(AttackEvent.Apply attackEvent) {
 
-		if(attackEvent.attackerIsPlayer) {
-			int attackerCharge = HitCounter.getCharge(attackEvent.attackerPlayer, this);
-			if(attackerCharge != 0 && !toxicNotifCooldown.contains(attackEvent.attacker.getUniqueId())) {
-				AOutput.send(attackEvent.attacker, "&a&lTOXIC!&f You heal &a" + Math.min(attackerCharge, getMaxReduction()) + "% &aless");
-				toxicNotifCooldown.add(attackEvent.attacker.getUniqueId());
+		if(attackEvent.isAttackerIsPlayer()) {
+			int attackerCharge = HitCounter.getCharge(attackEvent.getAttackerPlayer(), this);
+			if(attackerCharge != 0 && !toxicNotifCooldown.contains(attackEvent.getAttacker().getUniqueId())) {
+				AOutput.send(attackEvent.getAttacker(), "&a&lTOXIC!&f You heal &a" + Math.min(attackerCharge, getMaxReduction()) + "% &aless");
+				toxicNotifCooldown.add(attackEvent.getAttacker().getUniqueId());
 				new BukkitRunnable() {
 					@Override
 					public void run() {
-						toxicNotifCooldown.remove(attackEvent.attacker.getUniqueId());
+						toxicNotifCooldown.remove(attackEvent.getAttacker().getUniqueId());
 					}
 				}.runTaskLater(PitSim.INSTANCE, 40L);
 			}
@@ -56,16 +56,16 @@ public class ReallyToxic extends PitEnchant {
 		int enchantLvl = attackEvent.getAttackerEnchantLevel(this);
 		if(enchantLvl == 0) return;
 
-		if(attackEvent.defenderIsPlayer) {
-			int charge = HitCounter.getCharge(attackEvent.defenderPlayer, this);
-			HitCounter.setCharge(attackEvent.defenderPlayer, this, charge + getReductionPerHit(enchantLvl));
+		if(attackEvent.isDefenderIsPlayer()) {
+			int charge = HitCounter.getCharge(attackEvent.getDefenderPlayer(), this);
+			HitCounter.setCharge(attackEvent.getDefenderPlayer(), this, charge + getReductionPerHit(enchantLvl));
 
 			PitEnchant thisEnchant = this;
 			new BukkitRunnable() {
 				@Override
 				public void run() {
-					int charge = HitCounter.getCharge(attackEvent.defenderPlayer, thisEnchant);
-					HitCounter.setCharge(attackEvent.defenderPlayer, thisEnchant, charge - getReductionPerHit(enchantLvl));
+					int charge = HitCounter.getCharge(attackEvent.getDefenderPlayer(), thisEnchant);
+					HitCounter.setCharge(attackEvent.getDefenderPlayer(), thisEnchant, charge - getReductionPerHit(enchantLvl));
 				}
 			}.runTaskLater(PitSim.INSTANCE, getStackTime(enchantLvl) * 20);
 		}

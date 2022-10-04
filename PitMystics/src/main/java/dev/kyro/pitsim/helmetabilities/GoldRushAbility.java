@@ -27,7 +27,7 @@ public class GoldRushAbility extends HelmetAbility {
 
 	@EventHandler
 	public void onAttack(AttackEvent.Apply attackEvent) {
-		if(!isActive || player != attackEvent.attacker) return;
+		if(!isActive || player != attackEvent.getAttacker()) return;
 //		GoldenHelmet goldenHelmet = HelmetListeners.getHelmetInstance(attackEvent.attacker);
 //		assert goldenHelmet != null;
 //		if(!goldenHelmet.withdrawGold(1200)) {
@@ -36,7 +36,7 @@ public class GoldRushAbility extends HelmetAbility {
 //			Sounds.NO.play(player);
 //			return;
 //		}
-		Sounds.GOLD_RUSH.play(attackEvent.attacker);
+		Sounds.GOLD_RUSH.play(attackEvent.getAttacker());
 	}
 
 	@EventHandler(priority = EventPriority.MONITOR)

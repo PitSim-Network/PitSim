@@ -21,23 +21,23 @@ public class ComboDamage extends PitEnchant {
 
 	@EventHandler
 	public void onAttack(AttackEvent.Apply attackEvent) {
-		if(!attackEvent.attackerIsPlayer) return;
+		if(!attackEvent.isAttackerIsPlayer()) return;
 		if(!canApply(attackEvent)) return;
 
 		int enchantLvl = attackEvent.getAttackerEnchantLevel(this);
 		if(enchantLvl == 0) return;
-		if(attackEvent.fakeHit) return;
+		if(attackEvent.isFakeHit()) return;
 
 		int regLvl = attackEvent.getAttackerEnchantLevel(Regularity.INSTANCE);
-		if(Regularity.isRegHit(attackEvent.defender) && Regularity.skipIncrement(regLvl)) return;
+		if(Regularity.isRegHit(attackEvent.getDefender()) && Regularity.skipIncrement(regLvl)) return;
 
-		PitPlayer pitPlayer = attackEvent.attackerPitPlayer;
+		PitPlayer pitPlayer = attackEvent.getAttackerPitPlayer();
 		HitCounter.incrementCounter(pitPlayer.player, this);
 		if(!HitCounter.hasReachedThreshold(pitPlayer.player, this, getStrikes(enchantLvl))) return;
 
 		attackEvent.increasePercent += getDamage(enchantLvl) / 100D;
 
-		Sounds.COMBO_PROC.play(attackEvent.attacker);
+		Sounds.COMBO_PROC.play(attackEvent.getAttacker());
 	}
 
 	@Override

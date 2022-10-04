@@ -19,17 +19,17 @@ public class BottomlessQuiver extends PitEnchant {
 
 	@EventHandler
 	public void onAttack(AttackEvent.Apply attackEvent) {
-		if(!attackEvent.attackerIsPlayer) return;
+		if(!attackEvent.isAttackerIsPlayer()) return;
 		if(!canApply(attackEvent)) return;
 
 		int enchantLvl = attackEvent.getAttackerEnchantLevel(this);
 		if(enchantLvl == 0) return;
 
-		if(attackEvent.attacker.equals(attackEvent.defender)) return;
+		if(attackEvent.getAttacker().equals(attackEvent.getDefender())) return;
 
 		ItemStack arrows = new ItemStack(Material.ARROW);
 		arrows.setAmount(getArrowAmount(enchantLvl));
-		attackEvent.attackerPlayer.getInventory().addItem(arrows);
+		attackEvent.getAttackerPlayer().getInventory().addItem(arrows);
 	}
 
 	@Override

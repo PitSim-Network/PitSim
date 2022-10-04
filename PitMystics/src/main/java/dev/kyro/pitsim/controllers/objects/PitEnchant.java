@@ -6,7 +6,6 @@ import dev.kyro.pitsim.enchants.Regularity;
 import dev.kyro.pitsim.enums.ApplyType;
 import dev.kyro.pitsim.enums.EnchantRarity;
 import dev.kyro.pitsim.events.AttackEvent;
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
@@ -43,16 +42,16 @@ public abstract class PitEnchant implements Listener {
 
 	public boolean canApply(AttackEvent attackEvent) {
 
-		if(!fakeHits && Regularity.isRegHit(attackEvent.defender) && attackEvent.fakeHit) return false;
+		if(!fakeHits && Regularity.isRegHit(attackEvent.getDefender()) && attackEvent.isFakeHit()) return false;
 //		Skip if fake hit and enchant doesn't handle fake hits
 //		if(!fakeHits && attackEvent.fakeHit) return false;
 //		Skip enchant application if the enchant is a bow enchant and is used in mele
-		if(applyType == ApplyType.BOWS && attackEvent.arrow == null) return false;
+		if(applyType == ApplyType.BOWS && attackEvent.getArrow() == null) return false;
 		if(applyType == ApplyType.SCYTHES || applyType == ApplyType.CHESTPLATES) {
-			if(attackEvent.attacker.getWorld() != MapManager.getDarkzone()) return false;
+			if(attackEvent.getAttacker().getWorld() != MapManager.getDarkzone()) return false;
 		}
 //		Skips enchant application if the enchant only works on mele hit and the event is from an arrow
-		if(meleOnly && attackEvent.arrow != null) return false;
+		if(meleOnly && attackEvent.getArrow() != null) return false;
 		return true;
 	}
 

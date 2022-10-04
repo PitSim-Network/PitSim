@@ -58,7 +58,7 @@ public class PlayerManager implements Listener {
 
 	@EventHandler
 	public void onAttack3(AttackEvent attackEvent) {
-		if(!PlayerManager.realPlayers.contains(attackEvent.attacker.getUniqueId())) return;
+		if(!PlayerManager.realPlayers.contains(attackEvent.getAttacker().getUniqueId())) return;
 	}
 
 	static {
@@ -483,11 +483,11 @@ public class PlayerManager implements Listener {
 	@EventHandler
 	public void onAttack(AttackEvent.Apply attackEvent) {
 
-		Non defendingNon = NonManager.getNon(attackEvent.defender);
+		Non defendingNon = NonManager.getNon(attackEvent.getDefender());
 //		Arch chest
-		if(defendingNon == null && attackEvent.defenderIsPlayer) {
+		if(defendingNon == null && attackEvent.isDefenderIsPlayer()) {
 			attackEvent.multipliers.add(0.9);
-		} else if(attackEvent.defenderIsPlayer) {
+		} else if(attackEvent.isDefenderIsPlayer()) {
 //			Non defence
 			if(defendingNon.traits.contains(NonTrait.IRON_STREAKER)) attackEvent.multipliers.add(0.8);
 		}

@@ -16,47 +16,38 @@ import java.util.Map;
 public class AttackEvent extends Event {
 	private static final HandlerList handlers = new HandlerList();
 
-	public EntityDamageByEntityEvent event;
-	public LivingEntity attacker;
-	public LivingEntity defender;
-	public boolean attackerIsPlayer;
-	public boolean defenderIsPlayer;
-	public Player attackerPlayer;
-	public Player defenderPlayer;
-	public PitPlayer attackerPitPlayer;
-	public PitPlayer defenderPitPlayer;
-	public Arrow arrow;
-	public Fireball fireball;
-	public LivingEntity pet;
+	private final EntityDamageByEntityEvent event;
+	private final LivingEntity attacker;
+	private final LivingEntity defender;
+	private final boolean attackerIsPlayer;
+	private final boolean defenderIsPlayer;
+	private final Player attackerPlayer;
+	private final Player defenderPlayer;
+	private PitPlayer attackerPitPlayer;
+	private PitPlayer defenderPitPlayer;
+	private Arrow arrow;
+	private Fireball fireball;
+	private LivingEntity pet;
 	private final Map<PitEnchant, Integer> attackerEnchantMap;
 	private final Map<PitEnchant, Integer> defenderEnchantMap;
-	public boolean clearMaps;
 
-	public boolean fakeHit;
+	private final boolean fakeHit;
 
 	public AttackEvent(EntityDamageByEntityEvent event, Map<PitEnchant, Integer> attackerEnchantMap, Map<PitEnchant, Integer> defenderEnchantMap, boolean fakeHit) {
 		this.event = event;
 		this.attacker = DamageManager.getAttacker(event.getDamager());
 		this.defender = (LivingEntity) event.getEntity();
-		this.attackerIsPlayer = attacker instanceof Player;
-		this.defenderIsPlayer = defender instanceof Player;
-		this.attackerPlayer = attackerIsPlayer ? (Player) attacker : null;
-		this.defenderPlayer = defenderIsPlayer ? (Player) defender : null;
-		this.attackerPitPlayer = attackerIsPlayer ? PitPlayer.getPitPlayer(attackerPlayer) : null;
-		this.defenderPitPlayer = defenderIsPlayer ? PitPlayer.getPitPlayer(defenderPlayer) : null;
+		this.attackerIsPlayer = getAttacker() instanceof Player;
+		this.defenderIsPlayer = getDefender() instanceof Player;
+		this.attackerPlayer = isAttackerIsPlayer() ? (Player) getAttacker() : null;
+		this.defenderPlayer = isDefenderIsPlayer() ? (Player) getDefender() : null;
 		this.attackerEnchantMap = attackerEnchantMap;
 		this.defenderEnchantMap = defenderEnchantMap;
 		this.fakeHit = fakeHit;
-		this.clearMaps = false;
 
-		if(defenderIsPlayer) {
-			PitPlayer pitPlayer = PitPlayer.getPitPlayer(defenderPlayer);
-			if(!(pitPlayer.player == attacker)) pitPlayer.lastHitUUID = attacker.getUniqueId();
-		}
-
-		if(clearMaps) {
-			defenderEnchantMap.clear();
-			attackerEnchantMap.clear();
+		if(isDefenderIsPlayer()) {
+			PitPlayer pitPlayer = PitPlayer.getPitPlayer(getDefenderPlayer());
+			if(!(pitPlayer.player == getAttacker())) pitPlayer.lastHitUUID = getAttacker().getUniqueId();
 		}
 
 		if(event.getDamager() instanceof Arrow) {
@@ -75,6 +66,60 @@ public class AttackEvent extends Event {
 
 	public static HandlerList getHandlerList() {
 		return handlers;
+	}
+
+	public EntityDamageByEntityEvent getEvent() {
+		return event;
+	}
+
+	public LivingEntity getAttacker() {
+		return attacker;
+	}
+
+	public LivingEntity getDefender() {
+		return defender;
+	}
+
+	public boolean isAttackerIsPlayer() {
+		return attackerIsPlayer;
+	}
+
+	public boolean isDefenderIsPlayer() {
+		return defenderIsPlayer;
+	}
+
+	public Player getAttackerPlayer() {
+		return attackerPlayer;
+	}
+
+	public Player getDefenderPlayer() {
+		return defenderPlayer;
+	}
+
+	public PitPlayer getAttackerPitPlayer() {
+		if(attackerPitPlayer == null && isAttackerIsPlayer()) attackerPitPlayer = PitPlayer.getPitPlayer(getAttackerPlayer());
+		return attackerPitPlayer;
+	}
+
+	public PitPlayer getDefenderPitPlayer() {
+		if(defenderPitPlayer == null && isDefenderIsPlayer()) defenderPitPlayer = PitPlayer.getPitPlayer(getDefenderPlayer());
+		return defenderPitPlayer;
+	}
+
+	public Arrow getArrow() {
+		return arrow;
+	}
+
+	public Fireball getFireball() {
+		return fireball;
+	}
+
+	public LivingEntity getPet() {
+		return pet;
+	}
+
+	public boolean isFakeHit() {
+		return fakeHit;
 	}
 
 	public static class Pre extends AttackEvent implements Cancellable {
@@ -109,12 +154,12 @@ public class AttackEvent extends Event {
 		public double executeUnder = 0;
 
 		public Apply(AttackEvent event) {
-			super(event.event, event.attackerEnchantMap, event.defenderEnchantMap, event.fakeHit);
+			super(event.getEvent(), event.attackerEnchantMap, event.defenderEnchantMap, event.isFakeHit());
 		}
 
 		public double getFinalDamage() {
 
-			double damage = event.getDamage();
+			double damage = getEvent().getDamage();
 			damage += increase;
 			damage *= 1 + increasePercent;
 			for(double multiplier : multipliers) damage *= multiplier;
@@ -126,7 +171,7 @@ public class AttackEvent extends Event {
 
 		public double getFinalDamageIncrease() {
 
-			double damage = event.getDamage();
+			double damage = getEvent().getDamage();
 			damage += increase;
 			damage *= 1 + increasePercent;
 			for(double multiplier : multipliers) {
@@ -141,7 +186,7 @@ public class AttackEvent extends Event {
 	public static class Post extends AttackEvent {
 
 		public Post(AttackEvent event) {
-			super(event.event, event.attackerEnchantMap, event.defenderEnchantMap, event.fakeHit);
+			super(event.getEvent(), event.attackerEnchantMap, event.defenderEnchantMap, event.isFakeHit());
 
 		}
 	}

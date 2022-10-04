@@ -18,13 +18,13 @@ public class PainFocus extends PitEnchant {
 
 	@EventHandler
 	public void onAttack(AttackEvent.Apply attackEvent) {
-		if(!attackEvent.attackerIsPlayer) return;
+		if(!attackEvent.isAttackerIsPlayer()) return;
 		if(!canApply(attackEvent)) return;
 
 		int enchantLvl = attackEvent.getAttackerEnchantLevel(this);
 		if(enchantLvl == 0) return;
 
-		attackEvent.increasePercent += getDamage(attackEvent.attackerPlayer, enchantLvl) / 100;
+		attackEvent.increasePercent += getDamage(attackEvent.getAttackerPlayer(), enchantLvl) / 100;
 	}
 
 	@Override

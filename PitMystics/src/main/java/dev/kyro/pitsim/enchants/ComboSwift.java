@@ -23,21 +23,21 @@ public class ComboSwift extends PitEnchant {
 
 	@EventHandler
 	public void onAttack(AttackEvent.Apply attackEvent) {
-		if(!attackEvent.attackerIsPlayer) return;
+		if(!attackEvent.isAttackerIsPlayer()) return;
 		if(!canApply(attackEvent)) return;
 
 		int enchantLvl = attackEvent.getAttackerEnchantLevel(this);
 		if(enchantLvl == 0) return;
-		if(attackEvent.fakeHit) return;
+		if(attackEvent.isFakeHit()) return;
 
 		int regLvl = attackEvent.getAttackerEnchantLevel(Regularity.INSTANCE);
-		if(Regularity.isRegHit(attackEvent.defender) && Regularity.skipIncrement(regLvl)) return;
+		if(Regularity.isRegHit(attackEvent.getDefender()) && Regularity.skipIncrement(regLvl)) return;
 
-		PitPlayer pitPlayer = attackEvent.attackerPitPlayer;
+		PitPlayer pitPlayer = attackEvent.getAttackerPitPlayer();
 		HitCounter.incrementCounter(pitPlayer.player, this);
 		if(!HitCounter.hasReachedThreshold(pitPlayer.player, this, getCombo(enchantLvl))) return;
 
-		Misc.applyPotionEffect(attackEvent.attacker, PotionEffectType.SPEED, (int) (enchantLvl + 2) * 20,
+		Misc.applyPotionEffect(attackEvent.getAttacker(), PotionEffectType.SPEED, (int) (enchantLvl + 2) * 20,
 				getSpeedAmplifier(enchantLvl) - 1, true, false);
 	}
 

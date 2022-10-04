@@ -32,7 +32,7 @@ public class IronIngot extends BrewingIngredient {
 
     @EventHandler
     public void onHit(AttackEvent.Apply event) {
-        PotionEffect effect = PotionManager.getEffect(event.defenderPlayer, this);
+        PotionEffect effect = PotionManager.getEffect(event.getDefenderPlayer(), this);
         if(effect == null) return;
 
         double defense = (double) getPotency(effect.potency);

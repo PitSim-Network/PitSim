@@ -26,8 +26,8 @@ public class Solitude extends PitEnchant {
 		if(enchantLvl == 0) return;
 
 		int nearbyPlayers = 0;
-		for(Entity nearby : attackEvent.defender.getNearbyEntities(7, 7, 7)) {
-			if(!(nearby instanceof Player) || nearby == attackEvent.defender) continue;
+		for(Entity nearby : attackEvent.getDefender().getNearbyEntities(7, 7, 7)) {
+			if(!(nearby instanceof Player) || nearby == attackEvent.getDefender()) continue;
 			nearbyPlayers++;
 		}
 

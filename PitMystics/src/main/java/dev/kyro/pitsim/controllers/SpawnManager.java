@@ -18,8 +18,6 @@ import dev.kyro.pitsim.enums.NBTTag;
 import dev.kyro.pitsim.events.AttackEvent;
 import dev.kyro.pitsim.events.KillEvent;
 import dev.kyro.pitsim.events.OofEvent;
-import dev.kyro.pitsim.events.PitPlayerAttemptAbilityEvent;
-import dev.kyro.pitsim.megastreaks.Uberstreak;
 import dev.kyro.pitsim.misc.Sounds;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -131,8 +129,8 @@ public class SpawnManager implements Listener {
 
 	@EventHandler
 	public void onAttack(AttackEvent.Pre event) {
-		Player player = event.attackerPlayer;
-		if(!event.attackerIsPlayer) return;
+		Player player = event.getAttackerPlayer();
+		if(!event.isAttackerIsPlayer()) return;
 		if(!isInDarkzoneSpawn(player.getLocation())) return;
 
 		event.setCancelled(true);

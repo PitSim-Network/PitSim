@@ -28,9 +28,9 @@ public class FightOrFlight extends Killstreak {
 
 	@EventHandler
 	public void onHit(AttackEvent.Apply event) {
-		if(rewardPlayers.contains(event.attacker)) {
+		if(rewardPlayers.contains(event.getAttacker())) {
 			event.increasePercent += 20 / 100D;
-			rewardPlayers.remove(event.attacker);
+			rewardPlayers.remove(event.getAttacker());
 		}
 	}
 

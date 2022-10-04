@@ -259,15 +259,15 @@ public class BossManager implements Listener {
 
     @EventHandler
     public void onHit(AttackEvent.Apply event) throws Exception {
-        if(bosses.containsKey(CitizensAPI.getNPCRegistry().getNPC(event.attacker)))
-            bosses.get(CitizensAPI.getNPCRegistry().getNPC(event.attacker)).onAttack(event);
-        if(bosses.containsKey(CitizensAPI.getNPCRegistry().getNPC(event.defender)))
-            bosses.get(CitizensAPI.getNPCRegistry().getNPC(event.defender)).onDefend();
+        if(bosses.containsKey(CitizensAPI.getNPCRegistry().getNPC(event.getAttacker())))
+            bosses.get(CitizensAPI.getNPCRegistry().getNPC(event.getAttacker())).onAttack(event);
+        if(bosses.containsKey(CitizensAPI.getNPCRegistry().getNPC(event.getDefender())))
+            bosses.get(CitizensAPI.getNPCRegistry().getNPC(event.getDefender())).onDefend();
     }
 
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onHit(AttackEvent.Pre event) {
-        if(event.defender instanceof Wither) event.setCancelled(true);
+        if(event.getDefender() instanceof Wither) event.setCancelled(true);
     }
 
     public static boolean useItem(Player player, NBTTag nbtTag) {

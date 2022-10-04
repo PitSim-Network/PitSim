@@ -17,11 +17,11 @@ public class DamageIndicator implements Listener {
 
 	//    @EventHandler(priority = EventPriority.MONITOR)
 	public static void onAttack(AttackEvent.Apply attackEvent) {
-		if(!attackEvent.attackerIsPlayer) return;
-		if(attackEvent.fakeHit) return;
+		if(!attackEvent.isAttackerIsPlayer()) return;
+		if(attackEvent.isFakeHit()) return;
 
-		Player attacker = attackEvent.attackerPlayer;
-		LivingEntity defender = attackEvent.defender;
+		Player attacker = attackEvent.getAttackerPlayer();
+		LivingEntity defender = attackEvent.getDefender();
 
 //        double maxHealth = defender.getMaxHealth() / 2;
 //        double currentHealth = defender.getHealth() / 2;
@@ -54,14 +54,14 @@ public class DamageIndicator implements Listener {
 		if(defender instanceof Player) entityPlayer = ((CraftPlayer) defender).getHandle();
 		LivingEntity player = defender;
 
-		int roundedDamageTaken = ((int) attackEvent.event.getFinalDamage()) / getNum(player);
+		int roundedDamageTaken = ((int) attackEvent.getEvent().getFinalDamage()) / getNum(player);
 
 		int originalHealth = ((int) defender.getHealth()) / getNum(player);
 		int maxHealth = ((int) defender.getMaxHealth()) / getNum(player);
 
 		int result = Math.max(originalHealth - roundedDamageTaken, 0);
 
-		if((defender.getHealth() - attackEvent.event.getFinalDamage()) % 2 < 1 && attackEvent.event.getFinalDamage() > 1)
+		if((defender.getHealth() - attackEvent.getEvent().getFinalDamage()) % 2 < 1 && attackEvent.getEvent().getFinalDamage() > 1)
 			roundedDamageTaken++;
 
 		if(result == 0) {
@@ -76,7 +76,7 @@ public class DamageIndicator implements Listener {
 		StringBuilder output = new StringBuilder();
 
 		String playername = "&7%luckperms_prefix%" + (defendingNon == null ? "%player_name%" : defendingNon.displayName) + " ";
-		if(defender instanceof Player)output.append(PlaceholderAPI.setPlaceholders(attackEvent.defenderPlayer, playername));
+		if(defender instanceof Player)output.append(PlaceholderAPI.setPlaceholders(attackEvent.getDefenderPlayer(), playername));
 		else if(PitMob.isPitMob(defender)) output.append(PitMob.getPitMob(defender).displayName).append(" ");
 		else output.append(player.getCustomName() + " ");
 

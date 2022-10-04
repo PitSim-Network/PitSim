@@ -30,25 +30,25 @@ public class FirstStrike extends PitPerk {
 	@EventHandler
 	public void onHit(AttackEvent.Apply attackEvent) {
 
-		if(!playerHasUpgrade(attackEvent.attacker)) return;
+		if(!playerHasUpgrade(attackEvent.getAttacker())) return;
 
-		if(!hitPlayers.containsKey(attackEvent.attacker)) hitPlayers.put(attackEvent.attacker, new ArrayList<>());
-		List<LivingEntity> hitList = hitPlayers.get(attackEvent.attacker);
+		if(!hitPlayers.containsKey(attackEvent.getAttacker())) hitPlayers.put(attackEvent.getAttacker(), new ArrayList<>());
+		List<LivingEntity> hitList = hitPlayers.get(attackEvent.getAttacker());
 
-		if(!hitList.contains(attackEvent.defender)) {
+		if(!hitList.contains(attackEvent.getDefender())) {
 			attackEvent.increasePercent += 30 / 100D;
-			Misc.applyPotionEffect(attackEvent.attacker, PotionEffectType.SPEED, 5 * 20, 0, false, false);
+			Misc.applyPotionEffect(attackEvent.getAttacker(), PotionEffectType.SPEED, 5 * 20, 0, false, false);
 		}
 
 
 		List<LivingEntity> newList = new ArrayList<>(hitList);
-		newList.add(attackEvent.defender);
-		hitPlayers.put(attackEvent.attacker, newList);
+		newList.add(attackEvent.getDefender());
+		hitPlayers.put(attackEvent.getAttacker(), newList);
 
 		new BukkitRunnable() {
 			@Override
 			public void run() {
-				hitPlayers.get(attackEvent.attacker).remove(attackEvent.defender);
+				hitPlayers.get(attackEvent.getAttacker()).remove(attackEvent.getDefender());
 			}
 		}.runTaskLater(PitSim.INSTANCE, 120L);
 	}

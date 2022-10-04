@@ -22,20 +22,20 @@ public class BulletTime extends PitEnchant {
 
 	@EventHandler
 	public void cancel(AttackEvent.Pre attackEvent) {
-		if(!attackEvent.defenderIsPlayer) return;
+		if(!attackEvent.isDefenderIsPlayer()) return;
 		if(!canApply(attackEvent)) return;
 
 		int enchantLvl = attackEvent.getDefenderEnchantLevel(this);
-		if(enchantLvl == 0 || attackEvent.arrow == null || !(attackEvent.defenderPlayer.isBlocking())) return;
+		if(enchantLvl == 0 || attackEvent.getArrow() == null || !(attackEvent.getDefenderPlayer().isBlocking())) return;
 
-		Sounds.BULLET_TIME.play(attackEvent.defender);
-		attackEvent.arrow.getWorld().playEffect(attackEvent.arrow.getLocation(), Effect.EXPLOSION, 0, 30);
+		Sounds.BULLET_TIME.play(attackEvent.getDefender());
+		attackEvent.getArrow().getWorld().playEffect(attackEvent.getArrow().getLocation(), Effect.EXPLOSION, 0, 30);
 
-		PitPlayer pitDefender = attackEvent.defenderPitPlayer;
+		PitPlayer pitDefender = attackEvent.getDefenderPitPlayer();
 		pitDefender.heal(getHealing(enchantLvl));
 
 		attackEvent.setCancelled(true);
-		attackEvent.arrow.remove();
+		attackEvent.getArrow().remove();
 	}
 
 	@Override

@@ -202,10 +202,10 @@ public class BrewingManager implements Listener {
 
     @EventHandler
     public void onHit(AttackEvent.Pre pre) {
-        if(!(pre.defender instanceof ArmorStand)) return;
-        if(pre.defender.getUniqueId().equals(spinStand.getUniqueId())) pre.setCancelled(true);
+        if(!(pre.getDefender() instanceof ArmorStand)) return;
+        if(pre.getDefender().getUniqueId().equals(spinStand.getUniqueId())) pre.setCancelled(true);
         for (ArmorStand brewingStand : brewingStands) {
-            if(brewingStand.getUniqueId().equals(pre.defender.getUniqueId())) pre.setCancelled(true);
+            if(brewingStand.getUniqueId().equals(pre.getDefender().getUniqueId())) pre.setCancelled(true);
         }
     }
 

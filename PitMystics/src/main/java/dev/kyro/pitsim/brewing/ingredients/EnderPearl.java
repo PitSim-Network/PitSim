@@ -37,7 +37,7 @@ public class EnderPearl extends BrewingIngredient {
 
     @EventHandler
     public void onHit(AttackEvent.Pre attackEvent) {
-        PotionEffect attackerEffect = PotionManager.getEffect(attackEvent.attackerPlayer, this);
+        PotionEffect attackerEffect = PotionManager.getEffect(attackEvent.getAttackerPlayer(), this);
         if(attackerEffect == null) return;
 
         int tokensToRemove = (int) getPotency(attackerEffect.potency);
@@ -55,7 +55,7 @@ public class EnderPearl extends BrewingIngredient {
 
     @EventHandler
     public void onDefend(AttackEvent.Apply defendEvent) {
-        PotionEffect defenderEffect = PotionManager.getEffect(defendEvent.defenderPlayer, this);
+        PotionEffect defenderEffect = PotionManager.getEffect(defendEvent.getDefenderPlayer(), this);
         if(defenderEffect == null) return;
 
         int tokensToRemove = (int) getPotency(defenderEffect.potency) / 2;

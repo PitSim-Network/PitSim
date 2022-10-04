@@ -20,13 +20,13 @@ public class Sufferance extends PitEnchant {
 
 	@EventHandler(priority = EventPriority.HIGHEST)
 	public void onAttack(AttackEvent.Apply attackEvent) {
-		if(!attackEvent.defenderIsPlayer) return;
+		if(!attackEvent.isDefenderIsPlayer()) return;
 		if(!canApply(attackEvent)) return;
 
 		int defenderLvl = attackEvent.getDefenderEnchantLevel(this);
 		if(defenderLvl == 0) return;
 
-		PitPlayer pitDefender = attackEvent.defenderPitPlayer;
+		PitPlayer pitDefender = attackEvent.getDefenderPitPlayer();
 		pitDefender.heal((attackEvent.trueDamage) * getReductionPercent(defenderLvl) / 100D,
 				HealEvent.HealType.ABSORPTION, 4);
 	}

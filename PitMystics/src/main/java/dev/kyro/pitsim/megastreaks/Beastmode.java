@@ -102,12 +102,12 @@ public class Beastmode extends Megastreak {
 
 	@EventHandler
 	public void onHit(AttackEvent.Apply attackEvent) {
-		if(!attackEvent.defenderIsPlayer) return;
-		PitPlayer pitPlayer = attackEvent.defenderPitPlayer;
+		if(!attackEvent.isDefenderIsPlayer()) return;
+		PitPlayer pitPlayer = attackEvent.getDefenderPitPlayer();
 		if(pitPlayer != this.pitPlayer) return;
 		if(pitPlayer.megastreak.isOnMega() && pitPlayer.megastreak.getClass() == Beastmode.class) {
 			int ks = (int) Math.floor(pitPlayer.getKills());
-			if(NonManager.getNon(attackEvent.attacker) == null) {
+			if(NonManager.getNon(attackEvent.getAttacker()) == null) {
 				attackEvent.increasePercent += (ks - 50) / 400D;
 			} else {
 				attackEvent.increasePercent += ((ks - 50) * 3) / 400D;
@@ -129,11 +129,11 @@ public class Beastmode extends Megastreak {
 
 	@EventHandler
 	public void onAttack(AttackEvent.Apply attackEvent) {
-		if(!attackEvent.attackerIsPlayer) return;
-		PitPlayer pitPlayer = attackEvent.attackerPitPlayer;
+		if(!attackEvent.isAttackerIsPlayer()) return;
+		PitPlayer pitPlayer = attackEvent.getAttackerPitPlayer();
 		if(pitPlayer != this.pitPlayer) return;
 		if(pitPlayer.megastreak.isOnMega() && pitPlayer.megastreak.getClass() == Beastmode.class) {
-			if(NonManager.getNon(attackEvent.defender) != null) {
+			if(NonManager.getNon(attackEvent.getDefender()) != null) {
 //				attackEvent.increasePercent += 25 / 100D;
 			}
 		}

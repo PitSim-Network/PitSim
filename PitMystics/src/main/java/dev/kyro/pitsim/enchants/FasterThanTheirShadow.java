@@ -35,17 +35,17 @@ public class FasterThanTheirShadow extends PitEnchant implements Listener {
 
 	@EventHandler
 	public void onAttack(AttackEvent.Apply attackEvent) {
-		if(!attackEvent.attackerIsPlayer) return;
+		if(!attackEvent.isAttackerIsPlayer()) return;
 		if(!canApply(attackEvent)) return;
 
 		int enchantLvl = attackEvent.getAttackerEnchantLevel(this);
 		if(enchantLvl == 0) return;
 
-		PitPlayer pitPlayer = attackEvent.attackerPitPlayer;
+		PitPlayer pitPlayer = attackEvent.getAttackerPitPlayer();
 		HitCounter.incrementCounter(pitPlayer.player, this);
 		if(!HitCounter.hasReachedThreshold(pitPlayer.player, this, getStrikes(enchantLvl))) return;
 
-		Misc.applyPotionEffect(attackEvent.attacker, PotionEffectType.SPEED,
+		Misc.applyPotionEffect(attackEvent.getAttacker(), PotionEffectType.SPEED,
 				4 * 20, getSpeedAmplifier(enchantLvl) - 1, true, false);
 
 		if(pitPlayer.stats != null) pitPlayer.stats.ftts++;

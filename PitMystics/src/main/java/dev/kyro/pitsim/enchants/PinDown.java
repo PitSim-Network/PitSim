@@ -24,32 +24,32 @@ public class PinDown extends PitEnchant {
 
 	@EventHandler
 	public void onAttack(AttackEvent.Apply attackEvent) {
-		if(!attackEvent.attackerIsPlayer) return;
+		if(!attackEvent.isAttackerIsPlayer()) return;
 		if(!canApply(attackEvent)) return;
 
 		int enchantLvl = attackEvent.getAttackerEnchantLevel(this);
 		if(enchantLvl == 0) return;
 
-		Cooldown cooldown = getCooldown(attackEvent.attackerPlayer, getDuration(enchantLvl) * 20);
+		Cooldown cooldown = getCooldown(attackEvent.getAttackerPlayer(), getDuration(enchantLvl) * 20);
 		if(cooldown.isOnCooldown()) return;
 		else cooldown.restart();
 
-		if(attackEvent.attacker == attackEvent.defender) return;
-		if(!attackEvent.arrow.isCritical()) return;
+		if(attackEvent.getAttacker() == attackEvent.getDefender()) return;
+		if(!attackEvent.getArrow().isCritical()) return;
 
-		if(attackEvent.defender.hasPotionEffect(PotionEffectType.SPEED))
-			attackEvent.defender.removePotionEffect(PotionEffectType.SPEED);
-		if(attackEvent.defender.hasPotionEffect(PotionEffectType.JUMP))
-			attackEvent.defender.removePotionEffect(PotionEffectType.JUMP);
-		Sounds.PIN_DOWN.play(attackEvent.defender);
+		if(attackEvent.getDefender().hasPotionEffect(PotionEffectType.SPEED))
+			attackEvent.getDefender().removePotionEffect(PotionEffectType.SPEED);
+		if(attackEvent.getDefender().hasPotionEffect(PotionEffectType.JUMP))
+			attackEvent.getDefender().removePotionEffect(PotionEffectType.JUMP);
+		Sounds.PIN_DOWN.play(attackEvent.getDefender());
 		String pinMessage = "&c&lPINNED! &7by %luckperms_prefix%%player_name%&7. Speed and Jump Boost cancelled!";
 		String pinMessage2 = "&a&lITS A PIN! &7Removed Speed and Jump Boost from %luckperms_prefix%%player_name%&7!";
-		AOutput.send(attackEvent.defender, PlaceholderAPI.setPlaceholders(attackEvent.attackerPlayer, pinMessage));
-		if(attackEvent.defenderIsPlayer) {
-			AOutput.send(attackEvent.attacker, PlaceholderAPI.setPlaceholders(attackEvent.defenderPlayer, pinMessage2));
+		AOutput.send(attackEvent.getDefender(), PlaceholderAPI.setPlaceholders(attackEvent.getAttackerPlayer(), pinMessage));
+		if(attackEvent.isDefenderIsPlayer()) {
+			AOutput.send(attackEvent.getAttacker(), PlaceholderAPI.setPlaceholders(attackEvent.getDefenderPlayer(), pinMessage2));
 		}
 
-		PitPlayer pitPlayer = PitPlayer.getPitPlayer(attackEvent.attackerPlayer);
+		PitPlayer pitPlayer = PitPlayer.getPitPlayer(attackEvent.getAttackerPlayer());
 		if(pitPlayer.stats != null) pitPlayer.stats.pin++;
 	}
 

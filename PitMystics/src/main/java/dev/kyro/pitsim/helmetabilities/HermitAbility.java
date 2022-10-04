@@ -33,7 +33,7 @@ public class HermitAbility extends HelmetAbility {
 
 	@EventHandler(priority = EventPriority.HIGH)
 	public void onAttack(AttackEvent.Apply attackEvent) {
-		if(!isActive || player != attackEvent.defender) return;
+		if(!isActive || player != attackEvent.getDefender()) return;
 		attackEvent.trueDamage = 0;
 	}
 

@@ -24,35 +24,35 @@ public class ComboStun extends PitEnchant {
 
 	@EventHandler
 	public void onAttack(AttackEvent.Apply attackEvent) {
-		if(!attackEvent.attackerIsPlayer) return;
+		if(!attackEvent.isAttackerIsPlayer()) return;
 		if(!canApply(attackEvent)) return;
 
 		int enchantLvl = attackEvent.getAttackerEnchantLevel(this);
 		if(enchantLvl == 0) return;
-		if(attackEvent.fakeHit) return;
+		if(attackEvent.isFakeHit()) return;
 
 		int regLvl = attackEvent.getAttackerEnchantLevel(Regularity.INSTANCE);
-		if(Regularity.isRegHit(attackEvent.defender) && Regularity.skipIncrement(regLvl)) return;
+		if(Regularity.isRegHit(attackEvent.getDefender()) && Regularity.skipIncrement(regLvl)) return;
 
-		PitPlayer pitPlayer = attackEvent.attackerPitPlayer;
+		PitPlayer pitPlayer = attackEvent.getAttackerPitPlayer();
 		HitCounter.incrementCounter(pitPlayer.player, this);
 		if(!HitCounter.hasReachedThreshold(pitPlayer.player, this, 5)) return;
 
-		Cooldown cooldown = getCooldown(attackEvent.attackerPlayer, 8 * 20);
+		Cooldown cooldown = getCooldown(attackEvent.getAttackerPlayer(), 8 * 20);
 		if(cooldown.isOnCooldown()) return;
 		else cooldown.restart();
 
-		Misc.applyPotionEffect(attackEvent.defender, PotionEffectType.SLOW, (int) getDuration(enchantLvl) * 20, 7, true, false);
-		Misc.applyPotionEffect(attackEvent.defender, PotionEffectType.JUMP, (int) getDuration(enchantLvl) * 20, 254, true, false);
-		Misc.applyPotionEffect(attackEvent.defender, PotionEffectType.SLOW_DIGGING, (int) getDuration(enchantLvl) * 20, 99, true, false);
+		Misc.applyPotionEffect(attackEvent.getDefender(), PotionEffectType.SLOW, (int) getDuration(enchantLvl) * 20, 7, true, false);
+		Misc.applyPotionEffect(attackEvent.getDefender(), PotionEffectType.JUMP, (int) getDuration(enchantLvl) * 20, 254, true, false);
+		Misc.applyPotionEffect(attackEvent.getDefender(), PotionEffectType.SLOW_DIGGING, (int) getDuration(enchantLvl) * 20, 99, true, false);
 
-		if(attackEvent.defenderIsPlayer) {
-			Misc.sendTitle(attackEvent.defenderPlayer, "&cSTUNNED", (int) getDuration(enchantLvl) * 20);
-			Misc.sendSubTitle(attackEvent.defenderPlayer, "&eYou cannot move!", (int) getDuration(enchantLvl) * 20);
+		if(attackEvent.isDefenderIsPlayer()) {
+			Misc.sendTitle(attackEvent.getDefenderPlayer(), "&cSTUNNED", (int) getDuration(enchantLvl) * 20);
+			Misc.sendSubTitle(attackEvent.getDefenderPlayer(), "&eYou cannot move!", (int) getDuration(enchantLvl) * 20);
 		}
 
-		Sounds.COMBO_STUN.play(attackEvent.attacker);
-		Sounds.COMBO_STUN.play(attackEvent.defender);
+		Sounds.COMBO_STUN.play(attackEvent.getAttacker());
+		Sounds.COMBO_STUN.play(attackEvent.getDefender());
 
 		if(pitPlayer.stats != null) pitPlayer.stats.stun += getDuration(enchantLvl);
 	}

@@ -21,7 +21,7 @@ public class Berserker extends PitEnchant {
 	public void onAttack(AttackEvent.Apply attackEvent) {
 		if(!canApply(attackEvent)) return;
 		int enchantLvl = attackEvent.getAttackerEnchantLevel(this);
-		if(!Misc.isCritical(attackEvent.attacker) || Math.random() > getChance(enchantLvl) / 100.0) return;
+		if(!Misc.isCritical(attackEvent.getAttacker()) || Math.random() > getChance(enchantLvl) / 100.0) return;
 		attackEvent.multipliers.add(1.5);
 	}
 

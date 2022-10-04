@@ -58,25 +58,25 @@ public class Inferno extends PitEnchant {
 
     @EventHandler
     public void onHit(AttackEvent.Apply attackEvent) {
-        Player player = attackEvent.attackerPlayer;
-        if(!attackEvent.attackerIsPlayer) return;
+        Player player = attackEvent.getAttackerPlayer();
+        if(!attackEvent.isAttackerIsPlayer()) return;
 
-        if(attackEvent.defenderIsPlayer && !PitBoss.isPitBoss(attackEvent.defenderPlayer)) return;
+        if(attackEvent.isDefenderIsPlayer() && !PitBoss.isPitBoss(attackEvent.getDefenderPlayer())) return;
 
-        if(attackEvent.attacker == attackEvent.defender) return;
+        if(attackEvent.getAttacker() == attackEvent.getDefender()) return;
 
         int enchantLvl = attackEvent.getAttackerEnchantLevel(this);
         if(enchantLvl == 0) return;
 
-        if(fireMap.containsKey(attackEvent.defender.getUniqueId())) return;
-        fireMap.put(attackEvent.defender.getUniqueId(), player.getUniqueId());
-        attackEvent.defender.setFireTicks(10 * 20);
+        if(fireMap.containsKey(attackEvent.getDefender().getUniqueId())) return;
+        fireMap.put(attackEvent.getDefender().getUniqueId(), player.getUniqueId());
+        attackEvent.getDefender().setFireTicks(10 * 20);
 
         new BukkitRunnable() {
             @Override
             public void run() {
-                fireMap.remove(attackEvent.defender.getUniqueId());
-                stackMap.remove(attackEvent.defender.getUniqueId());
+                fireMap.remove(attackEvent.getDefender().getUniqueId());
+                stackMap.remove(attackEvent.getDefender().getUniqueId());
             }
         }.runTaskLater(PitSim.INSTANCE, 20 * 10);
 

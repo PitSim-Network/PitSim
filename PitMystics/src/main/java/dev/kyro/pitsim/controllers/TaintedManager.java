@@ -259,7 +259,7 @@ public class TaintedManager implements Listener {
 
     @EventHandler
     public void onAttack(AttackEvent.Pre event) {
-        Player player = event.attackerPlayer;
+        Player player = event.getAttackerPlayer();
         if(player == null) return;
 
         if(player.getWorld() == MapManager.getDarkzone()) {
@@ -306,7 +306,7 @@ public class TaintedManager implements Listener {
 
     @EventHandler
     public void onDefend(AttackEvent.Pre event) {
-        Player player = event.defenderPlayer;
+        Player player = event.getDefenderPlayer();
         if(player == null) return;
 
         if(player.getWorld() == MapManager.getDarkzone()) {

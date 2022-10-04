@@ -20,25 +20,25 @@ public class Gamble extends PitEnchant {
 
 	@EventHandler
 	public void onAttack(AttackEvent.Apply attackEvent) {
-		if(!attackEvent.attackerIsPlayer) return;
+		if(!attackEvent.isAttackerIsPlayer()) return;
 		if(!canApply(attackEvent)) return;
 
 		int enchantLvl = attackEvent.getAttackerEnchantLevel(this);
 		if(enchantLvl == 0) return;
-		if(attackEvent.fakeHit) return;
+		if(attackEvent.isFakeHit()) return;
 
 		int regLvl = attackEvent.getAttackerEnchantLevel(Regularity.INSTANCE);
-		if(Regularity.isRegHit(attackEvent.defender) && Regularity.reduceDamage(regLvl)) return;
+		if(Regularity.isRegHit(attackEvent.getDefender()) && Regularity.reduceDamage(regLvl)) return;
 
 		if(Math.random() < 0.5) {
 			attackEvent.trueDamage += getTrueDamage(enchantLvl);
-			Sounds.GAMBLE_YES.play(attackEvent.attacker);
+			Sounds.GAMBLE_YES.play(attackEvent.getAttacker());
 		} else {
 			attackEvent.selfVeryTrueDamage += getTrueDamage(enchantLvl);
-			Sounds.GAMBLE_NO.play(attackEvent.attacker);
+			Sounds.GAMBLE_NO.play(attackEvent.getAttacker());
 		}
 
-		PitPlayer pitPlayer = PitPlayer.getPitPlayer(attackEvent.attackerPlayer);
+		PitPlayer pitPlayer = PitPlayer.getPitPlayer(attackEvent.getAttackerPlayer());
 		if(pitPlayer.stats != null) pitPlayer.stats.gamble += getTrueDamage(enchantLvl);
 	}
 

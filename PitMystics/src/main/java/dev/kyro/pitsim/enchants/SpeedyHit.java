@@ -21,17 +21,17 @@ public class SpeedyHit extends PitEnchant {
 
 	@EventHandler
 	public void onAttack(AttackEvent.Apply attackEvent) {
-		if(!attackEvent.attackerIsPlayer) return;
+		if(!attackEvent.isAttackerIsPlayer()) return;
 		if(!canApply(attackEvent)) return;
 
 		int enchantLvl = attackEvent.getAttackerEnchantLevel(this);
 		if(enchantLvl == 0) return;
 
-		Cooldown cooldown = getCooldown(attackEvent.attackerPlayer, (getCooldown(enchantLvl) * 20));
+		Cooldown cooldown = getCooldown(attackEvent.getAttackerPlayer(), (getCooldown(enchantLvl) * 20));
 		if(cooldown.isOnCooldown()) return;
 		else cooldown.restart();
 
-		Misc.applyPotionEffect(attackEvent.attacker, PotionEffectType.SPEED, getDuration(enchantLvl) * 20, getAmplifier(enchantLvl), true, false);
+		Misc.applyPotionEffect(attackEvent.getAttacker(), PotionEffectType.SPEED, getDuration(enchantLvl) * 20, getAmplifier(enchantLvl), true, false);
 	}
 
 	@Override

@@ -39,8 +39,8 @@ public class JudgementAbility extends HelmetAbility {
 
 	@EventHandler
 	public void onAttack(AttackEvent.Apply attackEvent) {
-		if(!isActive || player != attackEvent.attacker) return;
-		ItemStack goldenHelmet = GoldenHelmet.getHelmet(attackEvent.attacker);
+		if(!isActive || player != attackEvent.getAttacker()) return;
+		ItemStack goldenHelmet = GoldenHelmet.getHelmet(attackEvent.getAttacker());
 		assert goldenHelmet != null;
 		if(!GoldenHelmet.withdrawGold(player, goldenHelmet, GOLD_COST)) {
 			AOutput.error(player, "&cNot enough gold!");
@@ -49,67 +49,67 @@ public class JudgementAbility extends HelmetAbility {
 			return;
 		}
 
-		PitPlayer pitAttacker = attackEvent.attackerPitPlayer;
+		PitPlayer pitAttacker = attackEvent.getAttackerPitPlayer();
 
 		if(Math.random() < 0.25) {
 
 			pitAttacker.heal(1);
-			Sounds.JUDGEMENT_HEAL.play(attackEvent.attacker);
+			Sounds.JUDGEMENT_HEAL.play(attackEvent.getAttacker());
 		}
 
 		if(Math.random() < 0.20) {
 
-			Misc.applyPotionEffect(attackEvent.defender, PotionEffectType.WITHER, 60, 2, true, false);
-			Sounds.JUDGEMENT_WITHER.play(attackEvent.attacker);
+			Misc.applyPotionEffect(attackEvent.getDefender(), PotionEffectType.WITHER, 60, 2, true, false);
+			Sounds.JUDGEMENT_WITHER.play(attackEvent.getAttacker());
 		}
 
 		if(Math.random() < 0.15) {
 
-			Misc.applyPotionEffect(attackEvent.attacker, PotionEffectType.DAMAGE_RESISTANCE, 60, 0, true, false);
-			Sounds.JUDGEMENT_RESISTANCE.play(attackEvent.attacker);
+			Misc.applyPotionEffect(attackEvent.getAttacker(), PotionEffectType.DAMAGE_RESISTANCE, 60, 0, true, false);
+			Sounds.JUDGEMENT_RESISTANCE.play(attackEvent.getAttacker());
 		}
 
 		if(Math.random() < 0.10) {
 
-			Misc.applyPotionEffect(attackEvent.attacker, PotionEffectType.INCREASE_DAMAGE, 40, 0, true, false);
-			Sounds.JUDGEMENT_STRENGTH.play(attackEvent.attacker);
+			Misc.applyPotionEffect(attackEvent.getAttacker(), PotionEffectType.INCREASE_DAMAGE, 40, 0, true, false);
+			Sounds.JUDGEMENT_STRENGTH.play(attackEvent.getAttacker());
 		}
 
 		if(Math.random() < 0.05) {
 
-			Misc.applyPotionEffect(attackEvent.defender, PotionEffectType.SLOW, 40, 4, true, false);
-			Sounds.JUDGEMENT_SLOW.play(attackEvent.attacker);
+			Misc.applyPotionEffect(attackEvent.getDefender(), PotionEffectType.SLOW, 40, 4, true, false);
+			Sounds.JUDGEMENT_SLOW.play(attackEvent.getAttacker());
 		}
 
 		if(Math.random() < 0.03) {
 
-			attackEvent.defender.setHealth(attackEvent.defender.getHealth() / 2D);
-			Sounds.JUDGEMENT_HALF_ATTACKER.play(attackEvent.attacker);
-			Sounds.JUDGEMENT_HALF_DEFENDER.play(attackEvent.defender);
+			attackEvent.getDefender().setHealth(attackEvent.getDefender().getHealth() / 2D);
+			Sounds.JUDGEMENT_HALF_ATTACKER.play(attackEvent.getAttacker());
+			Sounds.JUDGEMENT_HALF_DEFENDER.play(attackEvent.getDefender());
 		}
 
 		if(Math.random() < 0.02) {
 
-			Sounds.JUDGEMENT_ZEUS_ATTACKER.play(attackEvent.attacker);
-			Sounds.JUDGEMENT_ZEUS_DEFENDER.play(attackEvent.defender);
+			Sounds.JUDGEMENT_ZEUS_ATTACKER.play(attackEvent.getAttacker());
+			Sounds.JUDGEMENT_ZEUS_DEFENDER.play(attackEvent.getDefender());
 			new BukkitRunnable() {
 				int count = 0;
 
 				@Override
 				public void run() {
 					if(++count == 5) cancel();
-					Misc.strikeLightningForPlayers(attackEvent.defender.getLocation(), 10);
-					attackEvent.defender.setHealth(Math.max(attackEvent.defender.getHealth() - 2, 1));
+					Misc.strikeLightningForPlayers(attackEvent.getDefender().getLocation(), 10);
+					attackEvent.getDefender().setHealth(Math.max(attackEvent.getDefender().getHealth() - 2, 1));
 				}
 			}.runTaskTimer(PitSim.INSTANCE, 0L, 2L);
 		}
 
-		if(Math.random() < 0.004 && !HopperManager.isHopper(attackEvent.defender)) {
+		if(Math.random() < 0.004 && !HopperManager.isHopper(attackEvent.getDefender())) {
 
-			Hopper hopper = HopperManager.callHopper("PayForTruce", Hopper.Type.GSET, attackEvent.defender);
-			hopper.team.add(attackEvent.attacker.getUniqueId());
-			Sounds.JUDGEMENT_HOPPER.play(attackEvent.attacker);
-			Sounds.JUDGEMENT_HOPPER.play(attackEvent.defender);
+			Hopper hopper = HopperManager.callHopper("PayForTruce", Hopper.Type.GSET, attackEvent.getDefender());
+			hopper.team.add(attackEvent.getAttacker().getUniqueId());
+			Sounds.JUDGEMENT_HOPPER.play(attackEvent.getAttacker());
+			Sounds.JUDGEMENT_HOPPER.play(attackEvent.getDefender());
 		}
 	}
 

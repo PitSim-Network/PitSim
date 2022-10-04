@@ -27,10 +27,10 @@ public class WitherSkullSpell extends PitEnchant {
 
     @EventHandler
     public void onDamage(AttackEvent.Pre attackEvent) {
-        if(attackEvent.fireball == null || attackEvent.attacker != attackEvent.defender) return;
+        if(attackEvent.getFireball() == null || attackEvent.getAttacker() != attackEvent.getDefender()) return;
         attackEvent.getAttackerEnchantMap().clear();
         attackEvent.getDefenderEnchantMap().clear();
-        attackEvent.event.setCancelled(true);
+        attackEvent.getEvent().setCancelled(true);
     }
 
     @EventHandler

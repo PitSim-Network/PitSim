@@ -24,7 +24,7 @@ public class DiamondAllergy extends PitEnchant {
 		int enchantLvl = attackEvent.getDefenderEnchantLevel(this);
 		if(enchantLvl == 0) return;
 
-		ItemStack weapon = attackEvent.attacker.getEquipment().getItemInHand();
+		ItemStack weapon = attackEvent.getAttacker().getEquipment().getItemInHand();
 		if(weapon == null) return;
 		if(weapon.getType() != Material.DIAMOND_SWORD && weapon.getType() != Material.DIAMOND_SPADE) return;
 

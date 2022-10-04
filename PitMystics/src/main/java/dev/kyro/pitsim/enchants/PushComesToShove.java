@@ -24,30 +24,30 @@ public class PushComesToShove extends PitEnchant {
 
 	@EventHandler
 	public void onAttack(AttackEvent.Apply attackEvent) {
-		if(!attackEvent.attackerIsPlayer) return;
+		if(!attackEvent.isAttackerIsPlayer()) return;
 		if(!canApply(attackEvent)) return;
 
-		if(attackEvent.arrow == null) return;
+		if(attackEvent.getArrow() == null) return;
 		int enchantLvl = attackEvent.getAttackerEnchantLevel(this);
 		if(enchantLvl == 0) return;
-		PitPlayer pitAttacker = attackEvent.attackerPitPlayer;
+		PitPlayer pitAttacker = attackEvent.getAttackerPitPlayer();
 
 		HitCounter.incrementCounter(pitAttacker.player, this);
 		if(!HitCounter.hasReachedThreshold(pitAttacker.player, this, 3)) return;
 
-		Cooldown cooldown = getCooldown(attackEvent.attackerPlayer, 200);
+		Cooldown cooldown = getCooldown(attackEvent.getAttackerPlayer(), 200);
 		if(cooldown.isOnCooldown()) return;
 		else cooldown.restart();
 
-		if(attackEvent.defenderIsPlayer) {
-			PitPlayer pitDefender = PitPlayer.getPitPlayer(attackEvent.defenderPlayer);
+		if(attackEvent.isDefenderIsPlayer()) {
+			PitPlayer pitDefender = PitPlayer.getPitPlayer(attackEvent.getDefenderPlayer());
 			if(pitDefender.megastreak.getClass() == Uberstreak.class && pitDefender.megastreak.isOnMega()) return;
 		}
 
-		Vector velocity = attackEvent.arrow.getVelocity().normalize().multiply(getPunchMultiplier(enchantLvl) / 2.35);
+		Vector velocity = attackEvent.getArrow().getVelocity().normalize().multiply(getPunchMultiplier(enchantLvl) / 2.35);
 		velocity.setY(0);
 
-		attackEvent.defender.setVelocity(velocity);
+		attackEvent.getDefender().setVelocity(velocity);
 
 		if(pitAttacker.stats != null) pitAttacker.stats.pcts++;
 	}

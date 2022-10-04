@@ -32,7 +32,7 @@ public class MegaLongBow extends PitEnchant {
 	@EventHandler
 	public void onAttack(AttackEvent.Apply attackEvent) {
 		if(!canApply(attackEvent)) return;
-		if(attackEvent.arrow == null || !mlbShots.contains(attackEvent.arrow.getUniqueId())) return;
+		if(attackEvent.getArrow() == null || !mlbShots.contains(attackEvent.getArrow().getUniqueId())) return;
 
 		attackEvent.increaseCalcDecrease.add(Misc.getReductionMultiplier(getReduction()));
 	}

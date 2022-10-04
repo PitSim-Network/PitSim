@@ -22,16 +22,16 @@ public class Lifesteal extends PitEnchant {
 
 	@EventHandler(priority = EventPriority.HIGH)
 	public void onAttack(AttackEvent.Apply attackEvent) {
-		if(!attackEvent.attackerIsPlayer) return;
+		if(!attackEvent.isAttackerIsPlayer()) return;
 		if(!canApply(attackEvent)) return;
-		PitPlayer pitAttacker = attackEvent.attackerPitPlayer;
+		PitPlayer pitAttacker = attackEvent.getAttackerPitPlayer();
 
 		int enchantLvl = attackEvent.getAttackerEnchantLevel(this);
 		if(enchantLvl == 0) return;
-		if(attackEvent.fakeHit) return;
+		if(attackEvent.isFakeHit()) return;
 
 		double damage = attackEvent.getFinalDamageIncrease();
-		HealEvent healEvent = pitAttacker.heal(damage * (getHealing(enchantLvl) / 100D) * (attackEvent.fakeHit ? 0.5 : 1));
+		HealEvent healEvent = pitAttacker.heal(damage * (getHealing(enchantLvl) / 100D) * (attackEvent.isFakeHit() ? 0.5 : 1));
 
 		if(pitAttacker.stats != null) pitAttacker.stats.lifesteal += healEvent.getEffectiveHeal();
 	}

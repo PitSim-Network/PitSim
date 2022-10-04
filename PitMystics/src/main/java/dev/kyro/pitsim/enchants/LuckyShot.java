@@ -33,25 +33,25 @@ public class LuckyShot extends PitEnchant {
 
 	@EventHandler
 	public void onAttack(AttackEvent.Apply attackEvent) {
-		if(!attackEvent.attackerIsPlayer) return;
+		if(!attackEvent.isAttackerIsPlayer()) return;
 		if(!canApply(attackEvent)) return;
 
 		int enchantLvl = attackEvent.getAttackerEnchantLevel(this);
 		if(enchantLvl == 0) return;
 
 		for(Arrow luckyShot : luckyShots) {
-			if(luckyShot.equals(attackEvent.arrow)) {
+			if(luckyShot.equals(attackEvent.getArrow())) {
 
 				attackEvent.multipliers.add(3.0);
 				String attack = "&e&lLUCKY SHOT! &7against %luckperms_prefix%%player_name%&7!";
 				String defend = "&c&lOUCH! %luckperms_prefix%%player_name% &7got a lucky shot against you!";
-				if(attackEvent.defenderIsPlayer) {
-					Misc.sendTitle(attackEvent.defenderPlayer, " ", 20);
-					Misc.sendSubTitle(attackEvent.defenderPlayer, "&c&lOUCH!", 20);
-					Sounds.LUCKY_SHOT.play(attackEvent.defender);
-					AOutput.send(attackEvent.attacker, PlaceholderAPI.setPlaceholders(attackEvent.defenderPlayer, attack));
+				if(attackEvent.isDefenderIsPlayer()) {
+					Misc.sendTitle(attackEvent.getDefenderPlayer(), " ", 20);
+					Misc.sendSubTitle(attackEvent.getDefenderPlayer(), "&c&lOUCH!", 20);
+					Sounds.LUCKY_SHOT.play(attackEvent.getDefender());
+					AOutput.send(attackEvent.getAttacker(), PlaceholderAPI.setPlaceholders(attackEvent.getDefenderPlayer(), attack));
 				}
-				AOutput.send(attackEvent.defender, PlaceholderAPI.setPlaceholders(attackEvent.attackerPlayer, defend));
+				AOutput.send(attackEvent.getDefender(), PlaceholderAPI.setPlaceholders(attackEvent.getAttackerPlayer(), defend));
 			}
 		}
 	}

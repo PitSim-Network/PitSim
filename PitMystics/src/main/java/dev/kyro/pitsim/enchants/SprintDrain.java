@@ -22,19 +22,19 @@ public class SprintDrain extends PitEnchant {
 
 	@EventHandler
 	public void onAttack(AttackEvent.Apply attackEvent) {
-		if(!attackEvent.attackerIsPlayer) return;
+		if(!attackEvent.isAttackerIsPlayer()) return;
 		if(!canApply(attackEvent)) return;
 
 		int enchantLvl = attackEvent.getAttackerEnchantLevel(this);
 		if(enchantLvl == 0) return;
 
-		if(attackEvent.attacker.equals(attackEvent.defender)) return;
+		if(attackEvent.getAttacker().equals(attackEvent.getDefender())) return;
 
-		Misc.applyPotionEffect(attackEvent.defender, PotionEffectType.SLOW, getSlowDuration(enchantLvl) * 20, 0, true, false);
-		Misc.applyPotionEffect(attackEvent.attacker, PotionEffectType.SPEED,
+		Misc.applyPotionEffect(attackEvent.getDefender(), PotionEffectType.SLOW, getSlowDuration(enchantLvl) * 20, 0, true, false);
+		Misc.applyPotionEffect(attackEvent.getAttacker(), PotionEffectType.SPEED,
 				getSpeedDuration(enchantLvl) * 20, getSpeedAmplifier(enchantLvl) - 1, true, false);
 
-		PitPlayer pitAttacker = attackEvent.attackerPitPlayer;
+		PitPlayer pitAttacker = attackEvent.getAttackerPitPlayer();
 		if(pitAttacker.stats != null) pitAttacker.stats.drain++;
 	}
 

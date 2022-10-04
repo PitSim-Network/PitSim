@@ -32,12 +32,12 @@ public class Dispersion extends Killstreak {
 
 	@EventHandler
 	public void onAttack(AttackEvent.Pre attackEvent) {
-		if(!attackEvent.defenderIsPlayer) return;
+		if(!attackEvent.isDefenderIsPlayer()) return;
 
-		if(!rewardPlayers.contains(attackEvent.defender)) return;
-		Guild defenderGuild = GuildManager.getGuild(attackEvent.defenderPlayer);
+		if(!rewardPlayers.contains(attackEvent.getDefender())) return;
+		Guild defenderGuild = GuildManager.getGuild(attackEvent.getDefenderPlayer());
 		if(defenderGuild != null) {
-			AOutput.error(attackEvent.defender, "Dispersion does not work if you are in a guild");
+			AOutput.error(attackEvent.getDefender(), "Dispersion does not work if you are in a guild");
 			return;
 		}
 

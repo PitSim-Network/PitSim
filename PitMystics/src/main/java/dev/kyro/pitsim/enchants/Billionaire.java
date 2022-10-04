@@ -26,37 +26,37 @@ public class Billionaire extends PitEnchant {
 
 	@EventHandler
 	public void onAttack(AttackEvent.Apply attackEvent) {
-		if(!attackEvent.attackerIsPlayer) return;
+		if(!attackEvent.isAttackerIsPlayer()) return;
 		if(!canApply(attackEvent)) return;
 
 		int enchantLvl = attackEvent.getAttackerEnchantLevel(this);
 		if(enchantLvl == 0) return;
 
-		if(NonManager.getNon(attackEvent.attacker) != null || HopperManager.isHopper(attackEvent.attacker)) {
+		if(NonManager.getNon(attackEvent.getAttacker()) != null || HopperManager.isHopper(attackEvent.getAttacker())) {
 			attackEvent.multipliers.add(getDamageMultiplier(enchantLvl));
 			return;
 		}
 
 		int goldCost = getGoldCost(enchantLvl);
-		if(NonManager.getNon(attackEvent.defender) == null) {
+		if(NonManager.getNon(attackEvent.getDefender()) == null) {
 			goldCost = getPlayerGoldCost(enchantLvl);
 		}
-		if(UpgradeManager.hasUpgrade(attackEvent.attackerPlayer, "TAX_EVASION")) {
-			goldCost = goldCost - (int) ((UpgradeManager.getTier(attackEvent.attackerPlayer, "TAX_EVASION") * 0.05) * goldCost);
+		if(UpgradeManager.hasUpgrade(attackEvent.getAttackerPlayer(), "TAX_EVASION")) {
+			goldCost = goldCost - (int) ((UpgradeManager.getTier(attackEvent.getAttackerPlayer(), "TAX_EVASION") * 0.05) * goldCost);
 		}
 
-		if(!BossManager.bosses.containsKey(CitizensAPI.getNPCRegistry().getNPC(attackEvent.attacker)) && !HopperManager.isHopper(attackEvent.attacker)) {
-			double finalBalance = PitSim.VAULT.getBalance(attackEvent.attackerPlayer) - goldCost;
+		if(!BossManager.bosses.containsKey(CitizensAPI.getNPCRegistry().getNPC(attackEvent.getAttacker())) && !HopperManager.isHopper(attackEvent.getAttacker())) {
+			double finalBalance = PitSim.VAULT.getBalance(attackEvent.getAttackerPlayer()) - goldCost;
 			if(finalBalance < 0) return;
-			PitSim.VAULT.withdrawPlayer(attackEvent.attackerPlayer, goldCost);
+			PitSim.VAULT.withdrawPlayer(attackEvent.getAttackerPlayer(), goldCost);
 		}
 
-		PitPlayer pitPlayer = attackEvent.attackerPitPlayer;
+		PitPlayer pitPlayer = attackEvent.getAttackerPitPlayer();
 		if(pitPlayer.stats != null) pitPlayer.stats.billionaire += goldCost;
 
 		attackEvent.multipliers.add(getDamageMultiplier(enchantLvl));
 //		attackEvent.increasePercent += getDamageIncrease(enchantLvl) / 100.0;
-		Sounds.BILLIONAIRE.play(attackEvent.attacker);
+		Sounds.BILLIONAIRE.play(attackEvent.getAttacker());
 	}
 
 	@Override

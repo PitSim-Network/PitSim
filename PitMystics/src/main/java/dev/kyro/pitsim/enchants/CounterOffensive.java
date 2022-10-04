@@ -20,15 +20,15 @@ public class CounterOffensive extends PitEnchant {
 
 	@EventHandler
 	public void onAttack(AttackEvent.Apply attackEvent) {
-		if(!attackEvent.defenderIsPlayer) return;
+		if(!attackEvent.isDefenderIsPlayer()) return;
 		if(!canApply(attackEvent)) return;
 
 		int enchantLvl = attackEvent.getDefenderEnchantLevel(this);
 		if(enchantLvl == 0) return;
 
-		HitCounter.incrementCounter(attackEvent.defenderPlayer, this);
-		if(!HitCounter.hasReachedThreshold(attackEvent.defenderPlayer, this, getCombo(enchantLvl))) return;
-		Misc.applyPotionEffect(attackEvent.defender, PotionEffectType.SPEED, getSeconds(enchantLvl) * 20, getAmplifier(enchantLvl), false, false);
+		HitCounter.incrementCounter(attackEvent.getDefenderPlayer(), this);
+		if(!HitCounter.hasReachedThreshold(attackEvent.getDefenderPlayer(), this, getCombo(enchantLvl))) return;
+		Misc.applyPotionEffect(attackEvent.getDefender(), PotionEffectType.SPEED, getSeconds(enchantLvl) * 20, getAmplifier(enchantLvl), false, false);
 	}
 
 	@Override

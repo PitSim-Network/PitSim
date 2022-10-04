@@ -66,10 +66,10 @@ public class GuildIntegrationManager implements Listener {
 
 	@EventHandler(priority = EventPriority.HIGH)
 	public void onAttack(AttackEvent.Apply attackEvent) {
-		if(!attackEvent.attackerIsPlayer || !attackEvent.defenderIsPlayer) return;
+		if(!attackEvent.isAttackerIsPlayer() || !attackEvent.isDefenderIsPlayer()) return;
 
-		Guild attackerGuild = GuildManager.getGuild(attackEvent.attackerPlayer);
-		Guild defenderGuild = GuildManager.getGuild(attackEvent.defenderPlayer);
+		Guild attackerGuild = GuildManager.getGuild(attackEvent.getAttackerPlayer());
+		Guild defenderGuild = GuildManager.getGuild(attackEvent.getDefenderPlayer());
 		if(attackerGuild == null || defenderGuild == null || attackerGuild == defenderGuild) return;
 
 		GuildBuff damageBuff = BuffManager.getBuff("damage");
@@ -99,10 +99,10 @@ public class GuildIntegrationManager implements Listener {
 
 	//	@EventHandler(priority = EventPriority.HIGH)
 	public void onAttack(AttackEvent.Pre attackEvent) {
-		if(!attackEvent.attackerIsPlayer || !attackEvent.defenderIsPlayer) return;
+		if(!attackEvent.isAttackerIsPlayer() || !attackEvent.isDefenderIsPlayer()) return;
 
-		Guild attackerGuild = GuildManager.getGuild(attackEvent.attackerPlayer);
-		Guild defenderGuild = GuildManager.getGuild(attackEvent.defenderPlayer);
+		Guild attackerGuild = GuildManager.getGuild(attackEvent.getAttackerPlayer());
+		Guild defenderGuild = GuildManager.getGuild(attackEvent.getDefenderPlayer());
 		if(attackerGuild == null || defenderGuild == null || attackerGuild == defenderGuild) return;
 
 		GuildBuff dispersionBuff = BuffManager.getBuff("dispersion");

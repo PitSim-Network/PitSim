@@ -60,8 +60,8 @@ public class CombatManager implements Listener {
 
 	@EventHandler
 	public void onAttack(AttackEvent.Apply attackEvent) {
-		LivingEntity attacker = attackEvent.attacker;
-		LivingEntity defender = attackEvent.defender;
+		LivingEntity attacker = attackEvent.getAttacker();
+		LivingEntity defender = attackEvent.getDefender();
 
 		taggedPlayers.put(attacker.getUniqueId(), combatTime);
 		taggedPlayers.put(defender.getUniqueId(), combatTime);

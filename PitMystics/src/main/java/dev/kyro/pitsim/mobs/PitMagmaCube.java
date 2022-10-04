@@ -1,7 +1,6 @@
 package dev.kyro.pitsim.mobs;
 
 import dev.kyro.pitsim.PitSim;
-import dev.kyro.pitsim.brewing.ingredients.FermentedSpiderEye;
 import dev.kyro.pitsim.brewing.ingredients.MagmaCream;
 import dev.kyro.pitsim.controllers.MobManager;
 import dev.kyro.pitsim.controllers.objects.PitMob;
@@ -48,13 +47,13 @@ public class PitMagmaCube extends PitMob {
 
 	@EventHandler
 	public void onMagmaCubeAttack(AttackEvent.Apply event) {
-		if(event.attacker instanceof Player) return;
-		PitMob mob = PitMob.getPitMob(event.attacker);
+		if(event.getAttacker() instanceof Player) return;
+		PitMob mob = PitMob.getPitMob(event.getAttacker());
 		if(mob == null) return;
 
 		if(!(mob instanceof PitMagmaCube)) return;
 
-		if(event.fakeHit) return;
+		if(event.isFakeHit()) return;
 
 		event.increase = mob.damage;
 

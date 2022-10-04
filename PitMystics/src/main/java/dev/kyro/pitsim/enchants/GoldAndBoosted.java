@@ -19,13 +19,13 @@ public class GoldAndBoosted extends PitEnchant {
 
 	@EventHandler
 	public void onAttack(AttackEvent.Apply attackEvent) {
-		if(!attackEvent.attackerIsPlayer) return;
+		if(!attackEvent.isAttackerIsPlayer()) return;
 		if(!canApply(attackEvent)) return;
 
 		int enchantLvl = attackEvent.getAttackerEnchantLevel(this);
 		if(enchantLvl == 0) return;
 
-		EntityLiving nmsPlayer = ((CraftLivingEntity) attackEvent.attacker).getHandle();
+		EntityLiving nmsPlayer = ((CraftLivingEntity) attackEvent.getAttacker()).getHandle();
 		if(nmsPlayer.getAbsorptionHearts() == 0) return;
 		attackEvent.increasePercent += getDamage(enchantLvl) / 100D;
 	}

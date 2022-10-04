@@ -129,11 +129,11 @@ public class TutorialManager implements Listener {
 	@EventHandler
 	public void onAttack(AttackEvent.Apply event) {
 		for(Tutorial tutorial : TutorialManager.tutorials.values()) {
-			if(tutorial.player == event.attacker) {
+			if(tutorial.player == event.getAttacker()) {
 				for(NPC non : tutorial.nons) {
-					if(non.getEntity() == event.defender) {
-						event.event.setCancelled(true);
-						DamageManager.kill(event, event.attacker, event.defender, false, KillType.DEFAULT);
+					if(non.getEntity() == event.getDefender()) {
+						event.getEvent().setCancelled(true);
+						DamageManager.kill(event, event.getAttacker(), event.getDefender(), false, KillType.DEFAULT);
 					}
 				}
 			}

@@ -32,7 +32,7 @@ public class Gunpowder extends BrewingIngredient {
 
     @EventHandler
     public void onHit(AttackEvent.Apply event) {
-        PotionEffect effect = PotionManager.getEffect(event.attackerPlayer, this);
+        PotionEffect effect = PotionManager.getEffect(event.getAttackerPlayer(), this);
         if(effect == null) return;
 
         double dmg = (double) getPotency(effect.potency);

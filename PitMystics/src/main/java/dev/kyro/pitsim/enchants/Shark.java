@@ -5,7 +5,6 @@ import dev.kyro.pitsim.controllers.objects.PitEnchant;
 import dev.kyro.pitsim.enums.ApplyType;
 import dev.kyro.pitsim.events.AttackEvent;
 import org.bukkit.entity.Entity;
-import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 
 import java.util.List;
@@ -24,7 +23,7 @@ public class Shark extends PitEnchant {
 		int enchantLvl = attackEvent.getAttackerEnchantLevel(this);
 		if(enchantLvl == 0) return;
 
-		List<Entity> entityList = attackEvent.attacker.getNearbyEntities(7, 7, 7);
+		List<Entity> entityList = attackEvent.getAttacker().getNearbyEntities(7, 7, 7);
 		int nearby = 0;
 
 		nearby = (int) Math.ceil(entityList.size() * 0.3);

@@ -24,7 +24,7 @@ public class DiamondStomp extends PitEnchant {
 		int enchantLvl = attackEvent.getAttackerEnchantLevel(this);
 		if(enchantLvl == 0) return;
 
-		for(ItemStack armorContent : attackEvent.defender.getEquipment().getArmorContents()) {
+		for(ItemStack armorContent : attackEvent.getDefender().getEquipment().getArmorContents()) {
 			if(!(armorContent.getType() == Material.DIAMOND_HELMET || armorContent.getType() == Material.DIAMOND_CHESTPLATE
 					|| armorContent.getType() == Material.DIAMOND_LEGGINGS || armorContent.getType() == Material.DIAMOND_BOOTS))
 				return;

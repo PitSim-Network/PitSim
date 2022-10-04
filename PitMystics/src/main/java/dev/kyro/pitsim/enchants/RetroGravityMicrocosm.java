@@ -70,24 +70,24 @@ public class RetroGravityMicrocosm extends PitEnchant {
 
 		if(attackerEnchantLvl != 0) {
 
-			int charge = getProcs(attackEvent.defender, attackEvent.attacker);
+			int charge = getProcs(attackEvent.getDefender(), attackEvent.getAttacker());
 			attackEvent.increase += getDamagePerStack(attackerEnchantLvl) * Math.min(charge, getMaxStacks(attackerEnchantLvl));
 		}
-		if(attackEvent.defenderIsPlayer && defenderEnchantLvl != 0) {
-			if(attackEvent.attacker.getLocation().add(0, -0.1, 0).getBlock().getType() != Material.AIR) return;
+		if(attackEvent.isDefenderIsPlayer() && defenderEnchantLvl != 0) {
+			if(attackEvent.getAttacker().getLocation().add(0, -0.1, 0).getBlock().getType() != Material.AIR) return;
 
-			HitCounter.incrementCounter(attackEvent.defenderPlayer, this);
-			if(!HitCounter.hasReachedThreshold(attackEvent.defenderPlayer, this, getStrikes())) return;
-			add(attackEvent.attacker, attackEvent.defender);
+			HitCounter.incrementCounter(attackEvent.getDefenderPlayer(), this);
+			if(!HitCounter.hasReachedThreshold(attackEvent.getDefenderPlayer(), this, getStrikes())) return;
+			add(attackEvent.getAttacker(), attackEvent.getDefender());
 
-			PitPlayer pitDefender = attackEvent.defenderPitPlayer;
+			PitPlayer pitDefender = attackEvent.getDefenderPitPlayer();
 			pitDefender.heal(getHealing(defenderEnchantLvl));
 
-			int charge = getProcs(attackEvent.attacker, attackEvent.defender);
-			AOutput.send(attackEvent.defender, "&d&lRGM!&7 Procced against " +
-					attackEvent.attacker.getName() + " &8(" + Math.min(charge, getMaxStacks(defenderEnchantLvl)) + "x)");
-			Sounds.RGM.play(attackEvent.defender);
-			Sounds.RGM.play(attackEvent.attacker);
+			int charge = getProcs(attackEvent.getAttacker(), attackEvent.getDefender());
+			AOutput.send(attackEvent.getDefender(), "&d&lRGM!&7 Procced against " +
+					attackEvent.getAttacker().getName() + " &8(" + Math.min(charge, getMaxStacks(defenderEnchantLvl)) + "x)");
+			Sounds.RGM.play(attackEvent.getDefender());
+			Sounds.RGM.play(attackEvent.getAttacker());
 
 			if(pitDefender.stats != null) pitDefender.stats.rgm++;
 		}

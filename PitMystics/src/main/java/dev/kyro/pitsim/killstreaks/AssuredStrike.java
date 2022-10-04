@@ -29,10 +29,10 @@ public class AssuredStrike extends Killstreak {
 
 	@EventHandler
 	public void onHit(AttackEvent.Apply attackEvent) {
-		if(rewardPlayers.contains(attackEvent.attacker)) {
-			PitPlayer pitPlayer = attackEvent.attackerPitPlayer;
+		if(rewardPlayers.contains(attackEvent.getAttacker())) {
+			PitPlayer pitPlayer = attackEvent.getAttackerPitPlayer();
 			pitPlayer.heal(1.5 + (attackEvent.getFinalDamageIncrease() * (50 / 100D)));
-			rewardPlayers.remove(attackEvent.attacker);
+			rewardPlayers.remove(attackEvent.getAttacker());
 		}
 	}
 

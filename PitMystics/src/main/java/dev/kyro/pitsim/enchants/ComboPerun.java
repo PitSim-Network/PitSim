@@ -23,17 +23,17 @@ public class ComboPerun extends PitEnchant {
 
 	@EventHandler
 	public void onAttack(AttackEvent.Apply attackEvent) {
-		if(!attackEvent.attackerIsPlayer) return;
+		if(!attackEvent.isAttackerIsPlayer()) return;
 		if(!canApply(attackEvent)) return;
 
 		int enchantLvl = attackEvent.getAttackerEnchantLevel(this);
 		if(enchantLvl == 0) return;
-		if(attackEvent.fakeHit) return;
+		if(attackEvent.isFakeHit()) return;
 
 		int regLvl = attackEvent.getAttackerEnchantLevel(Regularity.INSTANCE);
-		if(Regularity.isRegHit(attackEvent.defender) && Regularity.skipIncrement(regLvl)) return;
+		if(Regularity.isRegHit(attackEvent.getDefender()) && Regularity.skipIncrement(regLvl)) return;
 
-		PitPlayer pitPlayer = attackEvent.attackerPitPlayer;
+		PitPlayer pitPlayer = attackEvent.getAttackerPitPlayer();
 		HitCounter.incrementCounter(pitPlayer.player, this);
 		if(!HitCounter.hasReachedThreshold(pitPlayer.player, this, enchantLvl == 3 ? 4 : getStrikes(enchantLvl)))
 			return;
@@ -42,28 +42,28 @@ public class ComboPerun extends PitEnchant {
 
 		if(enchantLvl == 3) {
 			int damage = 2;
-			if(!(attackEvent.defender.getEquipment().getHelmet() == null) && attackEvent.defender.getEquipment().getHelmet().getType() == Material.DIAMOND_HELMET) {
+			if(!(attackEvent.getDefender().getEquipment().getHelmet() == null) && attackEvent.getDefender().getEquipment().getHelmet().getType() == Material.DIAMOND_HELMET) {
 				damage += 1;
 			}
-			if(!(attackEvent.defender.getEquipment().getChestplate() == null) && attackEvent.defender.getEquipment().getChestplate().getType() == Material.DIAMOND_CHESTPLATE) {
+			if(!(attackEvent.getDefender().getEquipment().getChestplate() == null) && attackEvent.getDefender().getEquipment().getChestplate().getType() == Material.DIAMOND_CHESTPLATE) {
 				damage += 1;
 			}
-			if(!(attackEvent.defender.getEquipment().getLeggings() == null) && attackEvent.defender.getEquipment().getLeggings().getType() == Material.DIAMOND_LEGGINGS) {
+			if(!(attackEvent.getDefender().getEquipment().getLeggings() == null) && attackEvent.getDefender().getEquipment().getLeggings().getType() == Material.DIAMOND_LEGGINGS) {
 				damage += 1;
 			}
-			if(!(attackEvent.defender.getEquipment().getBoots() == null) && attackEvent.defender.getEquipment().getBoots().getType() == Material.DIAMOND_BOOTS) {
+			if(!(attackEvent.getDefender().getEquipment().getBoots() == null) && attackEvent.getDefender().getEquipment().getBoots().getType() == Material.DIAMOND_BOOTS) {
 				damage += 1;
 			}
 
 			attackEvent.trueDamage += damage;
 		} else {
 			double damage = 2;
-			if(NonManager.getNon(attackEvent.defender) != null) damage += getTrueDamage(enchantLvl);
+			if(NonManager.getNon(attackEvent.getDefender()) != null) damage += getTrueDamage(enchantLvl);
 
 			attackEvent.trueDamage += damage;
 		}
 
-		Misc.strikeLightningForPlayers(attackEvent.defender.getLocation(), 10);
+		Misc.strikeLightningForPlayers(attackEvent.getDefender().getLocation(), 10);
 	}
 
 	@EventHandler

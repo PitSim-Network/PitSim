@@ -1,7 +1,6 @@
 package dev.kyro.pitsim.enchants.tainted;
 
 import dev.kyro.arcticapi.builders.ALoreBuilder;
-import dev.kyro.pitsim.controllers.BossManager;
 import dev.kyro.pitsim.controllers.Cooldown;
 import dev.kyro.pitsim.controllers.MapManager;
 import dev.kyro.pitsim.controllers.objects.PitBoss;
@@ -23,24 +22,24 @@ public class TaintedSoul extends PitEnchant {
 
 	@EventHandler
 	public void onAttack(AttackEvent.Apply attackEvent) {
-		if(!MapManager.inDarkzone(attackEvent.attacker)) return;
+		if(!MapManager.inDarkzone(attackEvent.getAttacker())) return;
 		if(!canApply(attackEvent)) return;
-		if(!fakeHits && attackEvent.fakeHit) return;
+		if(!fakeHits && attackEvent.isFakeHit()) return;
 
 		int enchantLvl = attackEvent.getAttackerEnchantLevel(this);
 		if(enchantLvl == 0) return;
 
-		if(attackEvent.defenderIsPlayer && PitBoss.isPitBoss(attackEvent.defenderPlayer)) return;
+		if(attackEvent.isDefenderIsPlayer() && PitBoss.isPitBoss(attackEvent.getDefenderPlayer())) return;
 
-		Cooldown cooldown = getCooldown(attackEvent.attackerPlayer, getCooldown() * 20);
+		Cooldown cooldown = getCooldown(attackEvent.getAttackerPlayer(), getCooldown() * 20);
 		if(cooldown.isOnCooldown()) return; else cooldown.restart();
 
-		if(attackEvent.defender.getHealth() > 1) {
-			attackEvent.defender.setHealth(attackEvent.defender.getHealth() * 0.80);
+		if(attackEvent.getDefender().getHealth() > 1) {
+			attackEvent.getDefender().setHealth(attackEvent.getDefender().getHealth() * 0.80);
 		} else {
 			attackEvent.veryTrueDamage = 1000;
 		}
-		attackEvent.defender.getWorld().strikeLightningEffect(attackEvent.defender.getLocation());
+		attackEvent.getDefender().getWorld().strikeLightningEffect(attackEvent.getDefender().getLocation());
 	}
 
 	@Override
