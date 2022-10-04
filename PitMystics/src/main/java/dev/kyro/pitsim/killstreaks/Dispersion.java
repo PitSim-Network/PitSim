@@ -32,7 +32,7 @@ public class Dispersion extends Killstreak {
 
 	@EventHandler
 	public void onAttack(AttackEvent.Pre attackEvent) {
-		if(!attackEvent.isDefenderIsPlayer()) return;
+		if(!attackEvent.isDefenderPlayer()) return;
 
 		if(!rewardPlayers.contains(attackEvent.getDefender())) return;
 		Guild defenderGuild = GuildManager.getGuild(attackEvent.getDefenderPlayer());

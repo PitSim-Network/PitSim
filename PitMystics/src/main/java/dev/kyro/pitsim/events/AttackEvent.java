@@ -39,13 +39,13 @@ public class AttackEvent extends Event {
 		this.defender = (LivingEntity) event.getEntity();
 		this.attackerIsPlayer = getAttacker() instanceof Player;
 		this.defenderIsPlayer = getDefender() instanceof Player;
-		this.attackerPlayer = isAttackerIsPlayer() ? (Player) getAttacker() : null;
-		this.defenderPlayer = isDefenderIsPlayer() ? (Player) getDefender() : null;
+		this.attackerPlayer = isAttackerPlayer() ? (Player) getAttacker() : null;
+		this.defenderPlayer = isDefenderPlayer() ? (Player) getDefender() : null;
 		this.attackerEnchantMap = attackerEnchantMap;
 		this.defenderEnchantMap = defenderEnchantMap;
 		this.fakeHit = fakeHit;
 
-		if(isDefenderIsPlayer()) {
+		if(isDefenderPlayer()) {
 			PitPlayer pitPlayer = PitPlayer.getPitPlayer(getDefenderPlayer());
 			if(!(pitPlayer.player == getAttacker())) pitPlayer.lastHitUUID = getAttacker().getUniqueId();
 		}
@@ -80,11 +80,11 @@ public class AttackEvent extends Event {
 		return defender;
 	}
 
-	public boolean isAttackerIsPlayer() {
+	public boolean isAttackerPlayer() {
 		return attackerIsPlayer;
 	}
 
-	public boolean isDefenderIsPlayer() {
+	public boolean isDefenderPlayer() {
 		return defenderIsPlayer;
 	}
 
@@ -97,12 +97,12 @@ public class AttackEvent extends Event {
 	}
 
 	public PitPlayer getAttackerPitPlayer() {
-		if(attackerPitPlayer == null && isAttackerIsPlayer()) attackerPitPlayer = PitPlayer.getPitPlayer(getAttackerPlayer());
+		if(attackerPitPlayer == null && attackerIsPlayer) attackerPitPlayer = PitPlayer.getPitPlayer(attackerPlayer);
 		return attackerPitPlayer;
 	}
 
 	public PitPlayer getDefenderPitPlayer() {
-		if(defenderPitPlayer == null && isDefenderIsPlayer()) defenderPitPlayer = PitPlayer.getPitPlayer(getDefenderPlayer());
+		if(defenderPitPlayer == null && defenderIsPlayer) defenderPitPlayer = PitPlayer.getPitPlayer(defenderPlayer);
 		return defenderPitPlayer;
 	}
 

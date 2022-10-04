@@ -192,27 +192,23 @@ public class BossManager implements Listener {
     }
 
     @EventHandler
-    public void onKill(KillEvent event) {
+    public void onKill(KillEvent killEvent) {
         List<NPC> toRemove = new ArrayList<>();
 
         for (Map.Entry<NPC, PitBoss> entry : bosses.entrySet()) {
-            if(entry.getKey().getEntity() == event.dead) {
+            if(entry.getKey().getEntity() == killEvent.getDead()) {
                 entry.getKey().destroy();
                 entry.getValue().onDeath();
                 giveSouls(entry.getValue().target, entry.getValue().subLevel.level * 5);
 
-//                BossDrop bossDrop = new BossDrop(entry.getValue().target.getPlayer(), LootTable.valueOf(entry.getValue().subLevel.toString()));
-//
-//                bossDrop.run();
-
-                PitPlayer.getPitPlayer(entry.getValue().target).stats.bossesKilled++;
+                killEvent.getDeadPitPlayer().stats.bossesKilled++;
                 toRemove.add(entry.getKey());
                 activePlayers.remove(entry.getValue().target);
-            } else if(entry.getValue().target == event.dead) {
+            } else if(entry.getValue().target == killEvent.getDead()) {
                 entry.getKey().destroy();
                 toRemove.add(entry.getKey());
-                NoteBlockAPI.stopPlaying(event.deadPlayer);
-                activePlayers.remove(event.deadPlayer);
+                NoteBlockAPI.stopPlaying(killEvent.getDeadPlayer());
+                activePlayers.remove(killEvent.getDeadPlayer());
             }
         }
 

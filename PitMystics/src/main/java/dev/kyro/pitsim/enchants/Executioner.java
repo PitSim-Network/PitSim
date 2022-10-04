@@ -27,13 +27,13 @@ public class Executioner extends PitEnchant {
 
 	@EventHandler
 	public void onKill(KillEvent killEvent) {
-		if(!killEvent.killerIsPlayer) return;
-		if(!killEvent.exeDeath) return;
+		if(!killEvent.isKillerPlayer()) return;
+		if(!killEvent.isExeDeath()) return;
 
-		Sounds.EXE.play(killEvent.killer);
-		killEvent.dead.getWorld().playEffect(killEvent.dead.getLocation().add(0, 1, 0), Effect.STEP_SOUND, 152);
+		Sounds.EXE.play(killEvent.getKiller());
+		killEvent.getDead().getWorld().playEffect(killEvent.getDead().getLocation().add(0, 1, 0), Effect.STEP_SOUND, 152);
 
-		PitPlayer pitPlayer = PitPlayer.getPitPlayer(killEvent.killerPlayer);
+		PitPlayer pitPlayer = killEvent.getKillerPitPlayer();
 		if(pitPlayer.stats != null) pitPlayer.stats.executioner++;
 	}
 

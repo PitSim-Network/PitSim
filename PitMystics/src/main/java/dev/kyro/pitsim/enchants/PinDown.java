@@ -24,7 +24,7 @@ public class PinDown extends PitEnchant {
 
 	@EventHandler
 	public void onAttack(AttackEvent.Apply attackEvent) {
-		if(!attackEvent.isAttackerIsPlayer()) return;
+		if(!attackEvent.isAttackerPlayer()) return;
 		if(!canApply(attackEvent)) return;
 
 		int enchantLvl = attackEvent.getAttackerEnchantLevel(this);
@@ -45,7 +45,7 @@ public class PinDown extends PitEnchant {
 		String pinMessage = "&c&lPINNED! &7by %luckperms_prefix%%player_name%&7. Speed and Jump Boost cancelled!";
 		String pinMessage2 = "&a&lITS A PIN! &7Removed Speed and Jump Boost from %luckperms_prefix%%player_name%&7!";
 		AOutput.send(attackEvent.getDefender(), PlaceholderAPI.setPlaceholders(attackEvent.getAttackerPlayer(), pinMessage));
-		if(attackEvent.isDefenderIsPlayer()) {
+		if(attackEvent.isDefenderPlayer()) {
 			AOutput.send(attackEvent.getAttacker(), PlaceholderAPI.setPlaceholders(attackEvent.getDefenderPlayer(), pinMessage2));
 		}
 

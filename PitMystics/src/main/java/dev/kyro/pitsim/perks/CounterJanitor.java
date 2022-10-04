@@ -26,10 +26,10 @@ public class CounterJanitor extends PitPerk {
 
 	@EventHandler
 	public void onKill(KillEvent killEvent) {
-		if(!playerHasUpgrade(killEvent.killer)) return;
-		if(killEvent.killerIsPlayer && NonManager.getNon(killEvent.dead) == null) {
-			PitPlayer pitPlayer = PitPlayer.getPitPlayer(killEvent.killerPlayer);
-			double missingHealth = killEvent.killer.getMaxHealth() - killEvent.killer.getHealth();
+		if(!playerHasUpgrade(killEvent.getKiller())) return;
+		if(killEvent.isKillerPlayer() && NonManager.getNon(killEvent.getDead()) == null) {
+			PitPlayer pitPlayer = killEvent.getKillerPitPlayer();
+			double missingHealth = killEvent.getKiller().getMaxHealth() - killEvent.getKiller().getHealth();
 			pitPlayer.heal(missingHealth / 2);
 		}
 	}

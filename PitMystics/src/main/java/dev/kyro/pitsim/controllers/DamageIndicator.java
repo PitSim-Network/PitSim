@@ -17,7 +17,7 @@ public class DamageIndicator implements Listener {
 
 	//    @EventHandler(priority = EventPriority.MONITOR)
 	public static void onAttack(AttackEvent.Apply attackEvent) {
-		if(!attackEvent.isAttackerIsPlayer()) return;
+		if(!attackEvent.isAttackerPlayer()) return;
 		if(attackEvent.isFakeHit()) return;
 
 		Player attacker = attackEvent.getAttackerPlayer();

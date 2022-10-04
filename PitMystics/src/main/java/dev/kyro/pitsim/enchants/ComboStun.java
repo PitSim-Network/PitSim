@@ -24,7 +24,7 @@ public class ComboStun extends PitEnchant {
 
 	@EventHandler
 	public void onAttack(AttackEvent.Apply attackEvent) {
-		if(!attackEvent.isAttackerIsPlayer()) return;
+		if(!attackEvent.isAttackerPlayer()) return;
 		if(!canApply(attackEvent)) return;
 
 		int enchantLvl = attackEvent.getAttackerEnchantLevel(this);
@@ -46,7 +46,7 @@ public class ComboStun extends PitEnchant {
 		Misc.applyPotionEffect(attackEvent.getDefender(), PotionEffectType.JUMP, (int) getDuration(enchantLvl) * 20, 254, true, false);
 		Misc.applyPotionEffect(attackEvent.getDefender(), PotionEffectType.SLOW_DIGGING, (int) getDuration(enchantLvl) * 20, 99, true, false);
 
-		if(attackEvent.isDefenderIsPlayer()) {
+		if(attackEvent.isDefenderPlayer()) {
 			Misc.sendTitle(attackEvent.getDefenderPlayer(), "&cSTUNNED", (int) getDuration(enchantLvl) * 20);
 			Misc.sendSubTitle(attackEvent.getDefenderPlayer(), "&eYou cannot move!", (int) getDuration(enchantLvl) * 20);
 		}

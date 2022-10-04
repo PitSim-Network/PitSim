@@ -19,12 +19,12 @@ public class Guts extends PitEnchant {
 
 	@EventHandler
 	public void onAttack(KillEvent killEvent) {
-		if(!killEvent.killerIsPlayer) return;
+		if(!killEvent.isKillerPlayer()) return;
 
 		int enchantLvl = killEvent.getKillerEnchantLevel(this);
 		if(enchantLvl == 0) return;
 
-		PitPlayer pitPlayer = PitPlayer.getPitPlayer(killEvent.killerPlayer);
+		PitPlayer pitPlayer = killEvent.getKillerPitPlayer();
 		pitPlayer.heal(getHealing(enchantLvl));
 	}
 

@@ -35,7 +35,7 @@ public class FasterThanTheirShadow extends PitEnchant implements Listener {
 
 	@EventHandler
 	public void onAttack(AttackEvent.Apply attackEvent) {
-		if(!attackEvent.isAttackerIsPlayer()) return;
+		if(!attackEvent.isAttackerPlayer()) return;
 		if(!canApply(attackEvent)) return;
 
 		int enchantLvl = attackEvent.getAttackerEnchantLevel(this);

@@ -45,7 +45,7 @@ public class EnchantManager implements Listener {
 
 	@EventHandler
 	public static void onJewelAttack(AttackEvent.Pre attackEvent) {
-		if(!attackEvent.isAttackerIsPlayer()) return;
+		if(!attackEvent.isAttackerPlayer()) return;
 		if(!attackEvent.getAttacker().hasPermission("group.eternal")) return;
 		ItemStack hand = attackEvent.getAttackerPlayer().getItemInHand();
 		if(Misc.isAirOrNull(hand)) return;

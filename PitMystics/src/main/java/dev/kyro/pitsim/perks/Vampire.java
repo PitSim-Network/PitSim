@@ -24,7 +24,7 @@ public class Vampire extends PitPerk {
 
 	@EventHandler
 	public void onAttack(AttackEvent.Apply attackEvent) {
-		if(!attackEvent.isAttackerIsPlayer()) return;
+		if(!attackEvent.isAttackerPlayer()) return;
 		if(!playerHasUpgrade(attackEvent.getAttacker())) return;
 		PitPlayer pitAttacker = attackEvent.getAttackerPitPlayer();
 
@@ -35,9 +35,9 @@ public class Vampire extends PitPerk {
 
 	@EventHandler
 	public void onKill(KillEvent killEvent) {
-		if(!playerHasUpgrade(killEvent.killer)) return;
+		if(!playerHasUpgrade(killEvent.getKiller())) return;
 
-		Misc.applyPotionEffect(killEvent.killer, PotionEffectType.REGENERATION, 160, 0, true, false);
+		Misc.applyPotionEffect(killEvent.getKiller(), PotionEffectType.REGENERATION, 160, 0, true, false);
 	}
 
 	@Override

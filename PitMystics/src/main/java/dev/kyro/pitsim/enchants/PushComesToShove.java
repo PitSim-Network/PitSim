@@ -24,7 +24,7 @@ public class PushComesToShove extends PitEnchant {
 
 	@EventHandler
 	public void onAttack(AttackEvent.Apply attackEvent) {
-		if(!attackEvent.isAttackerIsPlayer()) return;
+		if(!attackEvent.isAttackerPlayer()) return;
 		if(!canApply(attackEvent)) return;
 
 		if(attackEvent.getArrow() == null) return;
@@ -39,7 +39,7 @@ public class PushComesToShove extends PitEnchant {
 		if(cooldown.isOnCooldown()) return;
 		else cooldown.restart();
 
-		if(attackEvent.isDefenderIsPlayer()) {
+		if(attackEvent.isDefenderPlayer()) {
 			PitPlayer pitDefender = PitPlayer.getPitPlayer(attackEvent.getDefenderPlayer());
 			if(pitDefender.megastreak.getClass() == Uberstreak.class && pitDefender.megastreak.isOnMega()) return;
 		}

@@ -157,10 +157,10 @@ public class TutorialManager implements Listener {
 
 	@EventHandler(priority = EventPriority.MONITOR)
 	public void onDeath(KillEvent event) {
-		Tutorial tutorial = getTutorial(event.deadPlayer);
+		Tutorial tutorial = getTutorial(event.getDeadPlayer());
 		if(tutorial == null) return;
 
-		event.dead.teleport(tutorial.playerSpawn);
+		event.getDead().teleport(tutorial.playerSpawn);
 	}
 
 	@EventHandler(priority = EventPriority.MONITOR)

@@ -48,13 +48,13 @@ public class StrengthChaining extends PitPerk {
 	@EventHandler
 	public void onKill(KillEvent killEvent) {
 
-		if(!playerHasUpgrade(killEvent.killer)) return;
-		if(!(killEvent.dead instanceof Player)) return;
+		if(!playerHasUpgrade(killEvent.getKiller())) return;
+		if(!(killEvent.getDead() instanceof Player)) return;
 
-		amplifierMap.putIfAbsent(killEvent.killer.getUniqueId(), 0);
-		int level = amplifierMap.get(killEvent.killer.getUniqueId());
-		amplifierMap.put(killEvent.killer.getUniqueId(), Math.min(level + 1, 5));
-		timerMap.put(killEvent.killer.getUniqueId(), 160);
+		amplifierMap.putIfAbsent(killEvent.getKiller().getUniqueId(), 0);
+		int level = amplifierMap.get(killEvent.getKiller().getUniqueId());
+		amplifierMap.put(killEvent.getKiller().getUniqueId(), Math.min(level + 1, 5));
+		timerMap.put(killEvent.getKiller().getUniqueId(), 160);
 	}
 
 	@EventHandler

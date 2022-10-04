@@ -21,7 +21,7 @@ public class Healer extends PitEnchant {
 
 	@EventHandler
 	public void onAttack(AttackEvent.Apply attackEvent) {
-		if(!attackEvent.isAttackerIsPlayer() || !attackEvent.isDefenderIsPlayer()) return;
+		if(!attackEvent.isAttackerPlayer() || !attackEvent.isDefenderPlayer()) return;
 		if(!canApply(attackEvent)) return;
 		PitPlayer pitAttacker = attackEvent.getAttackerPitPlayer();
 		PitPlayer pitDefender = attackEvent.getDefenderPitPlayer();

@@ -37,8 +37,8 @@ public class aRetroGravityMinikloon extends PitEnchant {
 
 	@EventHandler
 	public void onKill(KillEvent killEvent) {
-		if(!killEvent.deadIsPlayer) return;
-		clear(killEvent.deadPlayer);
+		if(!killEvent.isDeadPlayer()) return;
+		clear(killEvent.getDeadPlayer());
 	}
 
 	@EventHandler
@@ -53,7 +53,7 @@ public class aRetroGravityMinikloon extends PitEnchant {
 
 	@EventHandler
 	public void onAttack(AttackEvent.Apply attackEvent) {
-		if(!attackEvent.isAttackerIsPlayer() || !attackEvent.isDefenderIsPlayer()) return;
+		if(!attackEvent.isAttackerPlayer() || !attackEvent.isDefenderPlayer()) return;
 		if(!canApply(attackEvent) || attackEvent.isFakeHit()) return;
 
 		int attackerEnchantLvl = attackEvent.getAttackerEnchantLevel(this);

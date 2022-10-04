@@ -97,8 +97,8 @@ public class CombatManager implements Listener {
 
 	@EventHandler
 	public static void onDeath(KillEvent event) {
-		taggedPlayers.remove(event.dead.getUniqueId());
-		if(event.deadIsPlayer) PitPlayer.getPitPlayer(event.deadPlayer).lastHitUUID = null;
+		taggedPlayers.remove(event.getDead().getUniqueId());
+		if(event.isDeadPlayer()) event.getDeadPitPlayer().lastHitUUID = null;
 	}
 
 	@EventHandler

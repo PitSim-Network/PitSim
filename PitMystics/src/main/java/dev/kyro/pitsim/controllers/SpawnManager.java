@@ -88,7 +88,7 @@ public class SpawnManager implements Listener {
 
 	@EventHandler
 	public void onKill(KillEvent killEvent) {
-		lastLocationMap.remove(killEvent.dead);
+		if(killEvent.isDeadPlayer()) lastLocationMap.remove(killEvent.getDeadPlayer());
 	}
 
 	@EventHandler
@@ -130,7 +130,7 @@ public class SpawnManager implements Listener {
 	@EventHandler
 	public void onAttack(AttackEvent.Pre event) {
 		Player player = event.getAttackerPlayer();
-		if(!event.isAttackerIsPlayer()) return;
+		if(!event.isAttackerPlayer()) return;
 		if(!isInDarkzoneSpawn(player.getLocation())) return;
 
 		event.setCancelled(true);

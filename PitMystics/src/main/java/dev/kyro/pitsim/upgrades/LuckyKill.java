@@ -7,7 +7,6 @@ import com.xxmicloxx.NoteBlockAPI.utils.NBSDecoder;
 import dev.kyro.arcticapi.gui.AGUIPanel;
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.arcticapi.misc.AUtil;
-import dev.kyro.pitsim.controllers.BossManager;
 import dev.kyro.pitsim.controllers.NonManager;
 import dev.kyro.pitsim.controllers.UpgradeManager;
 import dev.kyro.pitsim.controllers.objects.PitBoss;
@@ -67,14 +66,14 @@ public class LuckyKill extends RenownUpgrade {
 
 	@EventHandler
 	public void onKill(KillEvent killEvent) {
-		if(!killEvent.killerIsPlayer) return;
-		if(!UpgradeManager.hasUpgrade(killEvent.killerPlayer, this)) return;
-		if(!(NonManager.getNon(killEvent.dead) == null)) return;
-		if(!(killEvent.dead instanceof Player)) return;
-		if(PitBoss.isPitBoss((Player) killEvent.dead)) return;
-		if(!killEvent.deadIsPlayer) return;
+		if(!killEvent.isKillerPlayer()) return;
+		if(!UpgradeManager.hasUpgrade(killEvent.getKillerPlayer(), this)) return;
+		if(!(NonManager.getNon(killEvent.getDead()) == null)) return;
+		if(!(killEvent.getDead() instanceof Player)) return;
+		if(PitBoss.isPitBoss((Player) killEvent.getDead())) return;
+		if(!killEvent.isDeadPlayer()) return;
 
-		int tier = UpgradeManager.getTier(killEvent.killerPlayer, this);
+		int tier = UpgradeManager.getTier(killEvent.getKillerPlayer(), this);
 		if(tier == 0) return;
 
 		double chance = 0.01 * tier;
@@ -84,16 +83,14 @@ public class LuckyKill extends RenownUpgrade {
 		if(isLuckyKill) killEvent.isLuckyKill = true;
 
 		if(isLuckyKill) {
-			AOutput.send(killEvent.killer, "&d&lLUCKY KILL! &7Rewards tripled!");
+			AOutput.send(killEvent.getKiller(), "&d&lLUCKY KILL! &7Rewards tripled!");
 
 			File file = new File("plugins/NoteBlockAPI/Effects/LuckyKill.nbs");
 			Song song = NBSDecoder.parse(file);
 			RadioSongPlayer rsp = new RadioSongPlayer(song);
 			rsp.setRepeatMode(RepeatMode.NO);
-			rsp.addPlayer(killEvent.killerPlayer);
+			rsp.addPlayer(killEvent.getKillerPlayer());
 			rsp.setPlaying(true);
 		}
-
-
 	}
 }

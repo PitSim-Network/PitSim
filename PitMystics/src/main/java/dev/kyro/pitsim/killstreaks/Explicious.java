@@ -27,10 +27,10 @@ public class Explicious extends Killstreak {
 
 	@EventHandler
 	public void onKill(KillEvent killEvent) {
-		if(rewardPlayers.contains(killEvent.killer)) {
+		if(rewardPlayers.contains(killEvent.getKiller())) {
 			killEvent.xpReward += 50;
 			killEvent.xpCap += 50;
-			rewardPlayers.remove(killEvent.killer);
+			rewardPlayers.remove(killEvent.getKiller());
 		}
 	}
 

@@ -235,7 +235,7 @@ public class DamageManager implements Listener {
 			}
 		}
 
-		if(attackEvent.isDefenderIsPlayer()) {
+		if(attackEvent.isDefenderPlayer()) {
 			PitPlayer pitPlayer = PitPlayer.getPitPlayer(attackEvent.getDefenderPlayer());
 			pitPlayer.addDamage(attackEvent.getAttacker(), attackEvent.getEvent().getFinalDamage() + attackEvent.trueDamage);
 		}
@@ -350,36 +350,36 @@ public class DamageManager implements Listener {
 
 		if(killerIsPlayer && killEvent != null) {
 			LevelManager.addXP(pitKiller.player, killEvent.getFinalXp());
-			LevelManager.addGold(killEvent.killerPlayer, (int) killEvent.getFinalGold());
+			LevelManager.addGold(killEvent.getKillerPlayer(), (int) killEvent.getFinalGold());
 		}
 
 		DecimalFormat df = new DecimalFormat("##0.00");
 		String kill = null;
 		if(!deadIsPlayer && PitMob.isPitMob(dead)) kill = ChatColor.translateAlternateColorCodes('&', "&a&lKILL!&7 on " + PitMob.getPitMob(dead).displayName);
-		else if(killType != KillType.DEATH) kill = PlaceholderAPI.setPlaceholders(killEvent.deadPlayer, "&a&lKILL!&7 on %luckperms_prefix%" + (deadNon == null ? "%player_name%" : deadNon.displayName)
+		else if(killType != KillType.DEATH) kill = PlaceholderAPI.setPlaceholders(killEvent.getDeadPlayer(), "&a&lKILL!&7 on %luckperms_prefix%" + (deadNon == null ? "%player_name%" : deadNon.displayName)
 				+ " &b+" + killEvent.getFinalXp() + "XP" + " &6+" + df.format(killEvent.getFinalGold()) + "g");
 		String death;
 		if(!killerIsPlayer) death = ChatColor.translateAlternateColorCodes('&', "&c&lDEATH!");
-		else if(killType == KillType.DEFAULT) death = PlaceholderAPI.setPlaceholders(killEvent.killerPlayer, "&c&lDEATH! &7by %luckperms_prefix%" + (killingNon == null ? "%player_name%" : killingNon.displayName));
+		else if(killType == KillType.DEFAULT) death = PlaceholderAPI.setPlaceholders(killEvent.getKillerPlayer(), "&c&lDEATH! &7by %luckperms_prefix%" + (killingNon == null ? "%player_name%" : killingNon.displayName));
 		else death = "&c&lDEATH!";
 		String killActionBar = null;
 		if(killerIsPlayer) killActionBar = "&7%luckperms_prefix%" + (deadNon == null ? "%player_name%" : deadNon.displayName) + " &a&lKILL!";
 		else if(PitMob.isPitMob(dead)) killActionBar = PitMob.getPitMob(dead).displayName + " &a&lKILL!";
 
 			if(killerIsPlayer && !CitizensAPI.getNPCRegistry().isNPC(killer) && !pitKiller.killFeedDisabled && killType != KillType.DEATH) {
-				AOutput.send(killEvent.killer, PlaceholderAPI.setPlaceholders(killEvent.deadPlayer, kill));
+				AOutput.send(killEvent.getKiller(), PlaceholderAPI.setPlaceholders(killEvent.getDeadPlayer(), kill));
 					pitKiller.stats.mobsKilled++;
 			}
 			if(deadIsPlayer && !pitDead.killFeedDisabled && killType != KillType.FAKE && killEvent != null)
-				AOutput.send(killEvent.dead, death);
+				AOutput.send(killEvent.getDead(), death);
 			String actionBarPlaceholder;
 			if(killType != KillType.DEATH && killerIsPlayer) {
-				actionBarPlaceholder = PlaceholderAPI.setPlaceholders(killEvent.deadPlayer, killActionBar);
+				actionBarPlaceholder = PlaceholderAPI.setPlaceholders(killEvent.getDeadPlayer(), killActionBar);
 				KillEvent finalKillEvent = killEvent;
 				new BukkitRunnable() {
 					@Override
 					public void run() {
-						Misc.sendActionBar(finalKillEvent.killerPlayer, actionBarPlaceholder);
+						Misc.sendActionBar(finalKillEvent.getKillerPlayer(), actionBarPlaceholder);
 					}
 				}.runTaskLater(PitSim.INSTANCE, 1L);
 			}
@@ -397,7 +397,7 @@ public class DamageManager implements Listener {
 
 			for(Map.Entry<UUID, Double> entry : pitDead.recentDamageMap.entrySet()) {
 
-				if(entry.getKey().equals(killEvent.killer.getUniqueId())) continue;
+				if(entry.getKey().equals(killEvent.getKiller().getUniqueId())) continue;
 
 				Player assistPlayer = Bukkit.getPlayer(entry.getKey());
 				if(assistPlayer == null) continue;
@@ -441,7 +441,7 @@ public class DamageManager implements Listener {
 						(deadNon == null ? "%player_name%" : deadNon.displayName) + " &b+" + xp + "XP" + " &6+" + df.format(gold) + "g";
 
 				if(!assistPitPlayer.killFeedDisabled)
-					AOutput.send(assistPlayer, PlaceholderAPI.setPlaceholders(killEvent.deadPlayer, assist));
+					AOutput.send(assistPlayer, PlaceholderAPI.setPlaceholders(killEvent.getDeadPlayer(), assist));
 			}
 		}
 

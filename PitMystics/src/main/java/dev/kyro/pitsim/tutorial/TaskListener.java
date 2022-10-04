@@ -20,7 +20,6 @@ import net.citizensnpcs.api.event.NPCRightClickEvent;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.inventory.EquipmentSetEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 
@@ -136,14 +135,14 @@ public class TaskListener implements Listener {
 	}
 
 	@EventHandler
-	public void onKill(KillEvent event) {
-		if(!event.killerIsPlayer) return;
-		Tutorial tutorial = TutorialManager.getTutorial(event.killerPlayer);
+	public void onKill(KillEvent killEvent) {
+		if(!killEvent.isKillerPlayer()) return;
+		Tutorial tutorial = TutorialManager.getTutorial(killEvent.getKillerPlayer());
 		if(tutorial == null) return;
 
 		if(!(tutorial.sequence instanceof ActivateMegastreakSequence)) return;
 
-		PitPlayer pitPlayer = PitPlayer.getPitPlayer(tutorial.player);
+		PitPlayer pitPlayer = killEvent.getKillerPitPlayer();
 		if(pitPlayer.megastreak instanceof NoMegastreak) pitPlayer.megastreak = new Overdrive(pitPlayer);
 		if(pitPlayer.getKills() >= pitPlayer.megastreak.getRequiredKills() - 1) {
 			tutorial.onTaskComplete(Task.ACTIVATE_MEGASTREAK);

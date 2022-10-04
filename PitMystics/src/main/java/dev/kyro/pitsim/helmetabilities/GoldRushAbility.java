@@ -41,9 +41,9 @@ public class GoldRushAbility extends HelmetAbility {
 
 	@EventHandler(priority = EventPriority.MONITOR)
 	public void onKill(KillEvent killEvent) {
-		if(!isActive || player != killEvent.killer) return;
+		if(!isActive || player != killEvent.getKiller()) return;
 
-		ItemStack goldenHelmet = GoldenHelmet.getHelmet(killEvent.killer);
+		ItemStack goldenHelmet = GoldenHelmet.getHelmet(killEvent.getKiller());
 		assert goldenHelmet != null;
 		if(!GoldenHelmet.withdrawGold(player, goldenHelmet, 2000)) {
 			AOutput.error(player, "&cNot enough gold!");

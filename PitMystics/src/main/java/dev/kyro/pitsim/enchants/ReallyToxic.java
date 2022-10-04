@@ -37,7 +37,7 @@ public class ReallyToxic extends PitEnchant {
 	@EventHandler
 	public void onAttack(AttackEvent.Apply attackEvent) {
 
-		if(attackEvent.isAttackerIsPlayer()) {
+		if(attackEvent.isAttackerPlayer()) {
 			int attackerCharge = HitCounter.getCharge(attackEvent.getAttackerPlayer(), this);
 			if(attackerCharge != 0 && !toxicNotifCooldown.contains(attackEvent.getAttacker().getUniqueId())) {
 				AOutput.send(attackEvent.getAttacker(), "&a&lTOXIC!&f You heal &a" + Math.min(attackerCharge, getMaxReduction()) + "% &aless");
@@ -56,7 +56,7 @@ public class ReallyToxic extends PitEnchant {
 		int enchantLvl = attackEvent.getAttackerEnchantLevel(this);
 		if(enchantLvl == 0) return;
 
-		if(attackEvent.isDefenderIsPlayer()) {
+		if(attackEvent.isDefenderPlayer()) {
 			int charge = HitCounter.getCharge(attackEvent.getDefenderPlayer(), this);
 			HitCounter.setCharge(attackEvent.getDefenderPlayer(), this, charge + getReductionPerHit(enchantLvl));
 

@@ -3,6 +3,7 @@ package dev.kyro.pitsim.events;
 import dev.kyro.pitsim.controllers.NonManager;
 import dev.kyro.pitsim.controllers.objects.Non;
 import dev.kyro.pitsim.controllers.objects.PitEnchant;
+import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
@@ -15,17 +16,18 @@ import java.util.Map;
 public class KillEvent extends Event {
 	private static final HandlerList handlers = new HandlerList();
 
-	//	public AttackEvent.Apply attackEvent;
-	public LivingEntity killer;
-	public LivingEntity dead;
-	public boolean killerIsPlayer;
-	public boolean deadIsPlayer;
-	public Player killerPlayer;
-	public Player deadPlayer;
+	private LivingEntity killer;
+	private LivingEntity dead;
+	private boolean killerIsPlayer;
+	private boolean deadIsPlayer;
+	private Player killerPlayer;
+	private Player deadPlayer;
+	private PitPlayer killerPitPlayer;
+	private PitPlayer deadPitPlayer;
 	private final Map<PitEnchant, Integer> killerEnchantMap;
 	private final Map<PitEnchant, Integer> deadEnchantMap;
+	private boolean exeDeath;
 
-	public boolean exeDeath;
 	public int xpReward;
 	public int bonusXpReward;
 	public int xpCap = 50;
@@ -44,11 +46,11 @@ public class KillEvent extends Event {
 		this.dead = dead;
 		this.killerIsPlayer = killer instanceof Player;
 		this.deadIsPlayer = dead instanceof Player;
-		this.killerPlayer = killerIsPlayer ? (Player) killer : null;
-		this.deadPlayer = deadIsPlayer ? (Player) dead : null;
+		this.killerPlayer = isKillerPlayer() ? (Player) killer : null;
+		this.deadPlayer = isDeadPlayer() ? (Player) dead : null;
 		this.exeDeath = exeDeath;
 
-		Non defendingNon = NonManager.getNon(this.dead);
+		Non defendingNon = NonManager.getNon(this.getDead());
 		xpReward = defendingNon == null ? 5 : 20;
 	}
 
@@ -63,7 +65,7 @@ public class KillEvent extends Event {
 		}
 		xpReward += bonusXpReward;
 
-		if(!(dead instanceof Player)) return 0;
+		if(!(getDead() instanceof Player)) return 0;
 		else if(xpReward > xpCap) return xpCap;
 		else return (int) xpReward;
 	}
@@ -73,7 +75,7 @@ public class KillEvent extends Event {
 		for(Double goldMultiplier : goldMultipliers) {
 			goldReward *= goldMultiplier;
 		}
-		if(!(dead instanceof Player)) return 0;
+		if(!(getDead() instanceof Player)) return 0;
 		else return Math.min(goldReward, 2000);
 	}
 
@@ -102,5 +104,43 @@ public class KillEvent extends Event {
 
 	public Map<PitEnchant, Integer> getDeadEnchantMap() {
 		return deadEnchantMap;
+	}
+
+	public LivingEntity getKiller() {
+		return killer;
+	}
+
+	public LivingEntity getDead() {
+		return dead;
+	}
+
+	public boolean isKillerPlayer() {
+		return killerIsPlayer;
+	}
+
+	public boolean isDeadPlayer() {
+		return deadIsPlayer;
+	}
+
+	public Player getKillerPlayer() {
+		return killerPlayer;
+	}
+
+	public Player getDeadPlayer() {
+		return deadPlayer;
+	}
+
+	public PitPlayer getKillerPitPlayer() {
+		if(killerPitPlayer == null && killerIsPlayer) killerPitPlayer = PitPlayer.getPitPlayer(killerPlayer);
+		return killerPitPlayer;
+	}
+
+	public PitPlayer getDeadPitPlayer() {
+		if(deadPitPlayer == null && deadIsPlayer) deadPitPlayer = PitPlayer.getPitPlayer(deadPlayer);
+		return deadPitPlayer;
+	}
+
+	public boolean isExeDeath() {
+		return exeDeath;
 	}
 }

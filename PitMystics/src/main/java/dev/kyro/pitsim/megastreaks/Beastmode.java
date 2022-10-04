@@ -102,7 +102,7 @@ public class Beastmode extends Megastreak {
 
 	@EventHandler
 	public void onHit(AttackEvent.Apply attackEvent) {
-		if(!attackEvent.isDefenderIsPlayer()) return;
+		if(!attackEvent.isDefenderPlayer()) return;
 		PitPlayer pitPlayer = attackEvent.getDefenderPitPlayer();
 		if(pitPlayer != this.pitPlayer) return;
 		if(pitPlayer.megastreak.isOnMega() && pitPlayer.megastreak.getClass() == Beastmode.class) {
@@ -117,8 +117,8 @@ public class Beastmode extends Megastreak {
 
 	@EventHandler
 	public void kill(KillEvent killEvent) {
-		if(!killEvent.killerIsPlayer) return;
-		PitPlayer pitPlayer = PitPlayer.getPitPlayer(killEvent.killer);
+		if(!killEvent.isKillerPlayer()) return;
+		PitPlayer pitPlayer = killEvent.getKillerPitPlayer();
 		if(pitPlayer != this.pitPlayer) return;
 		if(pitPlayer.megastreak.isOnMega() && pitPlayer.megastreak.getClass() == Beastmode.class) {
 			killEvent.xpCap += 130;
@@ -129,7 +129,7 @@ public class Beastmode extends Megastreak {
 
 	@EventHandler
 	public void onAttack(AttackEvent.Apply attackEvent) {
-		if(!attackEvent.isAttackerIsPlayer()) return;
+		if(!attackEvent.isAttackerPlayer()) return;
 		PitPlayer pitPlayer = attackEvent.getAttackerPitPlayer();
 		if(pitPlayer != this.pitPlayer) return;
 		if(pitPlayer.megastreak.isOnMega() && pitPlayer.megastreak.getClass() == Beastmode.class) {

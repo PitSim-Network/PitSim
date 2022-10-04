@@ -34,7 +34,7 @@ class Bone extends BrewingIngredient {
 
     @EventHandler
     public void onKill(KillEvent event) {
-        PotionEffect effect = PotionManager.getEffect(event.killer, this);
+        PotionEffect effect = PotionManager.getEffect(event.getKiller(), this);
         if(effect == null) return;
 
         String[] values = ((String) getPotency(effect.potency)).split(",");

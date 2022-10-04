@@ -30,40 +30,40 @@ public class SelfCheckout extends PitEnchant {
 
 	@EventHandler
 	public void onKill(KillEvent killEvent) {
-		if(!killEvent.killerIsPlayer) return;
+		if(!killEvent.isKillerPlayer()) return;
 
-		ItemStack leggings = killEvent.killer.getEquipment().getLeggings();
+		ItemStack leggings = killEvent.getKiller().getEquipment().getLeggings();
 		int enchantLvl = EnchantManager.getEnchantLevel(leggings, this);
 		if(enchantLvl == 0) return;
 
-		PitPlayer pitKiller = PitPlayer.getPitPlayer(killEvent.killerPlayer);
+		PitPlayer pitKiller = killEvent.getKillerPitPlayer();
 		if(pitKiller.getKills() + 1 < 200 || pitKiller.megastreak.getClass() == Uberstreak.class || pitKiller.megastreak.getClass() == NoMegastreak.class)
 			return;
 
 		NBTItem nbtItem = new NBTItem(leggings);
 		if(!EnchantManager.isJewelComplete(leggings) || !nbtItem.getString(NBTTag.ITEM_JEWEL_ENCHANT.getRef()).equalsIgnoreCase(refNames.get(0))) {
-			AOutput.error(killEvent.killer, "Self-Checkout only works on jewel items");
+			AOutput.error(killEvent.getKiller(), "Self-Checkout only works on jewel items");
 			return;
 		}
 
 		int renown = Math.min((int) ((pitKiller.getKills() + 1) / 300), 4);
 		if(renown != 0) {
 			pitKiller.renown += renown;
-			AOutput.send(killEvent.killer, "&7You have been given &e" + renown + " renown");
+			AOutput.send(killEvent.getKiller(), "&7You have been given &e" + renown + " renown");
 		}
 
-		DamageManager.death(killEvent.killer);
+		DamageManager.death(killEvent.getKiller());
 
 		if(nbtItem.hasKey(NBTTag.CURRENT_LIVES.getRef())) {
 			int lives = nbtItem.getInteger(NBTTag.CURRENT_LIVES.getRef());
 			if(lives - 2 <= 0) {
-				killEvent.killer.getEquipment().setLeggings(new ItemStack(Material.AIR));
+				killEvent.getKiller().getEquipment().setLeggings(new ItemStack(Material.AIR));
 
 				if(pitKiller.stats != null) pitKiller.stats.itemsBroken++;
 			} else {
 				nbtItem.setInteger(NBTTag.CURRENT_LIVES.getRef(), nbtItem.getInteger(NBTTag.CURRENT_LIVES.getRef()) - 2);
 				EnchantManager.setItemLore(nbtItem.getItem(), pitKiller.player);
-				killEvent.killer.getEquipment().setLeggings(nbtItem.getItem());
+				killEvent.getKiller().getEquipment().setLeggings(nbtItem.getItem());
 
 				if(pitKiller.stats != null) pitKiller.stats.livesLost += 2;
 			}

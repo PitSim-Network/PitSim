@@ -66,7 +66,7 @@ public class GuildIntegrationManager implements Listener {
 
 	@EventHandler(priority = EventPriority.HIGH)
 	public void onAttack(AttackEvent.Apply attackEvent) {
-		if(!attackEvent.isAttackerIsPlayer() || !attackEvent.isDefenderIsPlayer()) return;
+		if(!attackEvent.isAttackerPlayer() || !attackEvent.isDefenderPlayer()) return;
 
 		Guild attackerGuild = GuildManager.getGuild(attackEvent.getAttackerPlayer());
 		Guild defenderGuild = GuildManager.getGuild(attackEvent.getDefenderPlayer());
@@ -99,7 +99,7 @@ public class GuildIntegrationManager implements Listener {
 
 	//	@EventHandler(priority = EventPriority.HIGH)
 	public void onAttack(AttackEvent.Pre attackEvent) {
-		if(!attackEvent.isAttackerIsPlayer() || !attackEvent.isDefenderIsPlayer()) return;
+		if(!attackEvent.isAttackerPlayer() || !attackEvent.isDefenderPlayer()) return;
 
 		Guild attackerGuild = GuildManager.getGuild(attackEvent.getAttackerPlayer());
 		Guild defenderGuild = GuildManager.getGuild(attackEvent.getDefenderPlayer());
@@ -119,10 +119,10 @@ public class GuildIntegrationManager implements Listener {
 
 	@EventHandler
 	public void onKill(KillEvent killEvent) {
-		if(!killEvent.killerIsPlayer || !killEvent.deadIsPlayer) return;
+		if(!killEvent.isKillerPlayer() || !killEvent.isDeadPlayer()) return;
 
-		Guild killerGuild = GuildManager.getGuild(killEvent.killerPlayer);
-		Guild deadGuild = GuildManager.getGuild(killEvent.deadPlayer);
+		Guild killerGuild = GuildManager.getGuild(killEvent.getKillerPlayer());
+		Guild deadGuild = GuildManager.getGuild(killEvent.getDeadPlayer());
 		if(killerGuild == null || killerGuild == deadGuild) return;
 
 		GuildBuff xpBuff = BuffManager.getBuff("xp");

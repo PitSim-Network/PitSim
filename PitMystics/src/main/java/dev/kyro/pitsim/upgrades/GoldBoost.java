@@ -55,10 +55,10 @@ public class GoldBoost extends RenownUpgrade {
 
 	@EventHandler
 	public void onKill(KillEvent killEvent) {
-		if(!killEvent.killerIsPlayer) return;
-		if(!UpgradeManager.hasUpgrade(killEvent.killerPlayer, this)) return;
+		if(!killEvent.isKillerPlayer()) return;
+		if(!UpgradeManager.hasUpgrade(killEvent.getKillerPlayer(), this)) return;
 
-		int tier = UpgradeManager.getTier(killEvent.killerPlayer, this);
+		int tier = UpgradeManager.getTier(killEvent.getKillerPlayer(), this);
 		if(tier == 0) return;
 
 		double percent = 2.5 * tier;

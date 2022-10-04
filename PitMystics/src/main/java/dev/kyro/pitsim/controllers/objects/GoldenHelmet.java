@@ -411,33 +411,25 @@ public class GoldenHelmet implements Listener {
 
 	@EventHandler
 	public void onKill(KillEvent killEvent) {
-		if(killEvent.deadIsPlayer) {
-			LivingEntity dead = killEvent.dead;
+		if(killEvent.isDeadPlayer()) {
+			LivingEntity dead = killEvent.getDead();
 			if(abilities.get(dead) != null) {
-				GoldenHelmet.deactivate(killEvent.dead);
+				GoldenHelmet.deactivate(killEvent.getDead());
 			}
 			toggledPlayers.remove(dead);
 		}
-		if(killEvent.killerIsPlayer) {
-			if(NonManager.getNon(killEvent.killer) != null) return;
-			if(Misc.isAirOrNull(killEvent.killerPlayer.getInventory().getHelmet())) return;
-			if(killEvent.killerPlayer.getInventory().getHelmet().getType() != Material.GOLD_HELMET) return;
+		if(killEvent.isKillerPlayer()) {
+			if(NonManager.getNon(killEvent.getKiller()) != null) return;
+			if(Misc.isAirOrNull(killEvent.getKillerPlayer().getInventory().getHelmet())) return;
+			if(killEvent.getKillerPlayer().getInventory().getHelmet().getType() != Material.GOLD_HELMET) return;
 
-			ItemStack helmet = getHelmet(killEvent.killer);
+			ItemStack helmet = getHelmet(killEvent.getKiller());
 			if(helmet == null) return;
 
-			int level = HelmetSystem.getLevel(getUsedHelmetGold(killEvent.killer));
+			int level = HelmetSystem.getLevel(getUsedHelmetGold(killEvent.getKiller()));
 
 			killEvent.goldMultipliers.add(1 + HelmetSystem.getTotalStacks(HelmetSystem.Passive.GOLD_BOOST, level - 1) / 100D);
 			killEvent.xpMultipliers.add(1 + HelmetSystem.getTotalStacks(HelmetSystem.Passive.XP_BOOST, level - 1) / 100D);
 		}
-
-//		if(NonManager.getNon(killEvent.dead) == null) {
-//			double chance = HelmetSystem.getTotalStacks(HelmetSystem.Passive.PLAYER_KILLS, level - 1) * HelmetSystem.Passive.PLAYER_KILLS.baseUnit;
-//			if(chance > Math.random() * 100) {
-//				killEvent.playerKillWorth++;
-//				AOutput.send(killEvent.killer, "&6&lHELMET! &7+1 player kill");
-//			}
-//		}
 	}
 }

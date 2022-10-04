@@ -71,30 +71,30 @@ public class ShardHunter extends RenownUpgrade {
 
 	@EventHandler
 	public void onKill(KillEvent killEvent) {
-		if(!killEvent.killerIsPlayer || !killEvent.deadIsPlayer) return;
+		if(!killEvent.isKillerPlayer() || !killEvent.isDeadPlayer()) return;
 
-		if(!UpgradeManager.hasUpgrade(killEvent.killerPlayer, this)) return;
+		if(!UpgradeManager.hasUpgrade(killEvent.getKillerPlayer(), this)) return;
 
-		int tier = UpgradeManager.getTier(killEvent.killerPlayer, this);
+		int tier = UpgradeManager.getTier(killEvent.getKillerPlayer(), this);
 		if(tier == 0) return;
 
 		double chance = 0.00005 * tier;
 
-		PitPlayer pitKiller = PitPlayer.getPitPlayer(killEvent.killerPlayer);
+		PitPlayer pitKiller = killEvent.getKillerPitPlayer();
 		if(pitKiller.megastreak.isOnMega() && pitKiller.megastreak.getClass() == Uberstreak.class)
 			chance *= Uberstreak.SHARD_MULTIPLIER;
 
 		boolean givesShard = Math.random() < chance;
 
 		if(!givesShard) return;
-		AUtil.giveItemSafely(killEvent.killerPlayer, getShardItem(1), true);
-		AOutput.send(killEvent.killer, "&d&lGEM SHARD! &7obtained from killing " + killEvent.deadPlayer.getDisplayName() + "!");
+		AUtil.giveItemSafely(killEvent.getKillerPlayer(), getShardItem(1), true);
+		AOutput.send(killEvent.getKiller(), "&d&lGEM SHARD! &7obtained from killing " + killEvent.getDeadPlayer().getDisplayName() + "!");
 
 		File file = new File("plugins/NoteBlockAPI/Effects/ShardHunter.nbs");
 		Song song = NBSDecoder.parse(file);
 		RadioSongPlayer rsp = new RadioSongPlayer(song);
 		rsp.setRepeatMode(RepeatMode.NO);
-		rsp.addPlayer(killEvent.killerPlayer);
+		rsp.addPlayer(killEvent.getKillerPlayer());
 		rsp.setPlaying(true);
 	}
 

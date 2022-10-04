@@ -46,7 +46,7 @@ public class PhoenixAbility extends HelmetAbility {
 
 	@EventHandler
 	public static void onKill(KillEvent killEvent) {
-		alreadyActivatedList.remove(killEvent.dead.getUniqueId());
+		alreadyActivatedList.remove(killEvent.getDead().getUniqueId());
 	}
 
 	@EventHandler

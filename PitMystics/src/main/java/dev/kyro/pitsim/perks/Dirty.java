@@ -24,10 +24,10 @@ public class Dirty extends PitPerk {
 	@EventHandler
 	public void onKill(KillEvent killEvent) {
 
-		if(!playerHasUpgrade(killEvent.killer)) return;
-		if(!(killEvent.dead instanceof Player)) return;
+		if(!playerHasUpgrade(killEvent.getKiller())) return;
+		if(!(killEvent.getDead() instanceof Player)) return;
 
-		Misc.applyPotionEffect(killEvent.killer, PotionEffectType.DAMAGE_RESISTANCE, 4 * 20, 1, true, false);
+		Misc.applyPotionEffect(killEvent.getKiller(), PotionEffectType.DAMAGE_RESISTANCE, 4 * 20, 1, true, false);
 	}
 
 	@Override

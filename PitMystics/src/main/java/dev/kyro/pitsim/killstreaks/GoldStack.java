@@ -22,10 +22,10 @@ public class GoldStack extends Killstreak {
 	}
 
 	@EventHandler
-	public void onKill(KillEvent event) {
-		if(!event.killerIsPlayer) return;
-		PitPlayer pitPlayer = PitPlayer.getPitPlayer(event.killer);
-		event.goldReward += pitPlayer.goldStack;
+	public void onKill(KillEvent killEvent) {
+		if(!killEvent.isKillerPlayer()) return;
+		PitPlayer pitPlayer = killEvent.getKillerPitPlayer();
+		killEvent.goldReward += pitPlayer.goldStack;
 	}
 
 

@@ -3,10 +3,8 @@ package dev.kyro.pitsim.boosters;
 import dev.kyro.arcticapi.builders.AItemStackBuilder;
 import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.pitsim.controllers.objects.Booster;
-import dev.kyro.pitsim.events.KillEvent;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
-import org.bukkit.event.EventHandler;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.List;
@@ -14,11 +12,6 @@ import java.util.List;
 public class ChaosBooster extends Booster {
 	public ChaosBooster() {
 		super("Chaos Booster", "chaos", 16, ChatColor.GREEN);
-	}
-
-	@EventHandler
-	public void onKill(KillEvent killEvent) {
-		if(!isActive()) return;
 	}
 
 	@Override

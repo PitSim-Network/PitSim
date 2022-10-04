@@ -22,14 +22,14 @@ public class Regenerative extends PitPerk {
 
     @EventHandler
     public void onKill(KillEvent event) {
-        if(!playerHasUpgrade(event.killerPlayer)) return;
+        if(!playerHasUpgrade(event.getKillerPlayer())) return;
 
-        double maxHealth = event.killerPlayer.getMaxHealth();
+        double maxHealth = event.getKillerPlayer().getMaxHealth();
         double extraHealth = maxHealth - 24;
         if(maxHealth <= 0) return;
 
         double regenLevel = Math.floor(extraHealth / 2);
-        Misc.applyPotionEffect(event.killerPlayer, PotionEffectType.REGENERATION, 100, (int) regenLevel, true, false);
+        Misc.applyPotionEffect(event.getKillerPlayer(), PotionEffectType.REGENERATION, 100, (int) regenLevel, true, false);
 
     }
 

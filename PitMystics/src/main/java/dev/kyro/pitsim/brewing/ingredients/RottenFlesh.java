@@ -33,7 +33,7 @@ public class RottenFlesh extends BrewingIngredient {
 
     @EventHandler
     public void onKill(KillEvent event) {
-        PotionEffect effect = PotionManager.getEffect(event.killer, this);
+        PotionEffect effect = PotionManager.getEffect(event.getKiller(), this);
         if(effect == null) return;
 
         event.goldMultipliers.add((Double) getPotency(effect.potency) + 1);

@@ -59,9 +59,9 @@ public class Inferno extends PitEnchant {
     @EventHandler
     public void onHit(AttackEvent.Apply attackEvent) {
         Player player = attackEvent.getAttackerPlayer();
-        if(!attackEvent.isAttackerIsPlayer()) return;
+        if(!attackEvent.isAttackerPlayer()) return;
 
-        if(attackEvent.isDefenderIsPlayer() && !PitBoss.isPitBoss(attackEvent.getDefenderPlayer())) return;
+        if(attackEvent.isDefenderPlayer() && !PitBoss.isPitBoss(attackEvent.getDefenderPlayer())) return;
 
         if(attackEvent.getAttacker() == attackEvent.getDefender()) return;
 

@@ -57,8 +57,8 @@ public class RetroGravityMicrocosm extends PitEnchant {
 
 	@EventHandler
 	public void onKill(KillEvent killEvent) {
-		clearAttacker(killEvent.dead);
-		clearDefender(killEvent.dead);
+		clearAttacker(killEvent.getDead());
+		clearDefender(killEvent.getDead());
 	}
 
 	@EventHandler
@@ -73,7 +73,7 @@ public class RetroGravityMicrocosm extends PitEnchant {
 			int charge = getProcs(attackEvent.getDefender(), attackEvent.getAttacker());
 			attackEvent.increase += getDamagePerStack(attackerEnchantLvl) * Math.min(charge, getMaxStacks(attackerEnchantLvl));
 		}
-		if(attackEvent.isDefenderIsPlayer() && defenderEnchantLvl != 0) {
+		if(attackEvent.isDefenderPlayer() && defenderEnchantLvl != 0) {
 			if(attackEvent.getAttacker().getLocation().add(0, -0.1, 0).getBlock().getType() != Material.AIR) return;
 
 			HitCounter.incrementCounter(attackEvent.getDefenderPlayer(), this);

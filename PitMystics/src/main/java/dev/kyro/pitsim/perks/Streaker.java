@@ -33,20 +33,20 @@ public 	class Streaker extends PitPerk {
 	@EventHandler
 	public void onKill(KillEvent killEvent) {
 
-		xpReward.remove(killEvent.dead);
-		playerTimes.remove(killEvent.dead);
+		xpReward.remove(killEvent.getDead());
+		playerTimes.remove(killEvent.getDead());
 
-		if(!playerHasUpgrade(killEvent.killer)) return;
+		if(!playerHasUpgrade(killEvent.getKiller())) return;
 		killEvent.xpCap += 80;
 
-		if(xpReward.containsKey(killEvent.killer)) killEvent.xpMultipliers.add(xpReward.get(killEvent.killer));
+		if(xpReward.containsKey(killEvent.getKiller())) killEvent.xpMultipliers.add(xpReward.get(killEvent.getKiller()));
 
-		if(!killEvent.killerIsPlayer) return;
-		PitPlayer pitPlayer = PitPlayer.getPitPlayer(killEvent.killerPlayer);
+		if(!killEvent.isKillerPlayer()) return;
+		PitPlayer pitPlayer = killEvent.getKillerPitPlayer();
 
 		if(pitPlayer.getKills() + 1 >= pitPlayer.megastreak.getRequiredKills()) {
-			if(playerTimes.containsKey(killEvent.killer)) {
-				Player player = killEvent.killerPlayer;
+			if(playerTimes.containsKey(killEvent.getKiller())) {
+				Player player = killEvent.getKillerPlayer();
 				double xp = 0;
 
 //				TODO: Update lore
@@ -73,10 +73,10 @@ public 	class Streaker extends PitPerk {
 			}
 		}
 
-		if(!playerTimes.containsKey(killEvent.killer) && !pitPlayer.megastreak.isOnMega()) {
-			playerTimes.put(killEvent.killer, 0);
-			AOutput.send(killEvent.killer, "&b&lSTREAKER! &7Streak timer started!");
-			Sounds.STREAKER.play(killEvent.killer);
+		if(!playerTimes.containsKey(killEvent.getKiller()) && !pitPlayer.megastreak.isOnMega()) {
+			playerTimes.put(killEvent.getKiller(), 0);
+			AOutput.send(killEvent.getKiller(), "&b&lSTREAKER! &7Streak timer started!");
+			Sounds.STREAKER.play(killEvent.getKiller());
 		}
 	}
 

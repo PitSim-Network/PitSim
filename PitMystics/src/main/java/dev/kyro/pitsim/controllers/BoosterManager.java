@@ -40,13 +40,13 @@ public class BoosterManager implements Listener {
 
 	@EventHandler(priority = EventPriority.MONITOR)
 	public void onKill(KillEvent killEvent) {
-		if(killEvent.killer.isOp()) return;
+		if(killEvent.getKiller().isOp()) return;
 
 		Booster goldBooster = BoosterManager.getBooster("gold");
 		donators.putIfAbsent(goldBooster, new ArrayList<>());
 		double gold = killEvent.getFinalGold();
 		for(UUID uuid : donators.get(goldBooster)) {
-			if(killEvent.killer.getUniqueId().equals(uuid)) continue;
+			if(killEvent.getKiller().getUniqueId().equals(uuid)) continue;
 			gold *= (1.0 / 10.0);
 			donatorMessages.putIfAbsent(uuid, new ArrayList<>());
 			donatorMessages.get(uuid).add(new BoosterReward(goldBooster, gold));
@@ -64,7 +64,7 @@ public class BoosterManager implements Listener {
 		donators.putIfAbsent(xpBooster, new ArrayList<>());
 		int xp = killEvent.getFinalXp();
 		for(UUID uuid : donators.get(xpBooster)) {
-			if(killEvent.killer.getUniqueId().equals(uuid)) continue;
+			if(killEvent.getKiller().getUniqueId().equals(uuid)) continue;
 			xp *= (0.5 / 10.0);
 			donatorMessages.putIfAbsent(uuid, new ArrayList<>());
 			donatorMessages.get(uuid).add(new BoosterReward(xpBooster, xp));

@@ -40,7 +40,7 @@ public class MobManager implements Listener {
 
 	@EventHandler
 	public void onAttack(AttackEvent.Apply attackEvent) {
-		if(!attackEvent.isAttackerIsPlayer() || attackEvent.isDefenderIsPlayer()) return;
+		if(!attackEvent.isAttackerPlayer() || attackEvent.isDefenderPlayer()) return;
 		if(!MapManager.inDarkzone(attackEvent.getAttackerPlayer().getLocation())) return;
 		if(!(attackEvent.getDefender() instanceof Creature)) return;
 		PitMob pitMob = PitMob.getPitMob(attackEvent.getDefender());
@@ -263,11 +263,11 @@ public class MobManager implements Listener {
 
 	@EventHandler(priority = EventPriority.LOW)
 	public void onKill(KillEvent event) {
-		if(event.deadIsPlayer) return;
+		if(event.isDeadPlayer()) return;
 		clearMobs();
 		List<PitMob> toRemove = new ArrayList<>();
 		for(PitMob mob : mobs) {
-			if(mob.entity.getUniqueId().equals(event.dead.getUniqueId())) {
+			if(mob.entity.getUniqueId().equals(event.getDead().getUniqueId())) {
 				for (Entity entity : Bukkit.getWorld("darkzone").getEntities()) {
 					if(entity.getUniqueId().equals(nameTags.get(mob.entity.getUniqueId()).getUniqueId())) {
 						entity.remove();
@@ -276,11 +276,11 @@ public class MobManager implements Listener {
 				toRemove.add(mob);
 
 
-				ItemStack helmet = GoldenHelmet.getHelmet(event.killerPlayer);
+				ItemStack helmet = GoldenHelmet.getHelmet(event.getKillerPlayer());
 
 				int level = 0;
 				double chance = 0;
-				if(helmet != null) level = HelmetSystem.getLevel(GoldenHelmet.getUsedHelmetGold(event.deadPlayer));
+				if(helmet != null) level = HelmetSystem.getLevel(GoldenHelmet.getUsedHelmetGold(event.getDeadPlayer()));
 				if(helmet != null) chance = HelmetSystem.Passive.DROP_CHANCE.baseUnit * HelmetSystem.getTotalStacks(HelmetSystem.Passive.DROP_CHANCE, level - 1);
 
 				double multiplier = chance / 100.0 + 1;
@@ -288,10 +288,10 @@ public class MobManager implements Listener {
 				List<ItemStack> drops = shouldGiveDrop(mob, multiplier);
 
 				for(ItemStack drop : drops) {
-					PitPlayer pitPlayer = PitPlayer.getPitPlayer(event.killerPlayer);
+					PitPlayer pitPlayer = PitPlayer.getPitPlayer(event.getKillerPlayer());
 					if(pitPlayer.hasPerk(Telekinesis.INSTANCE)) {
-						AUtil.giveItemSafely(event.killerPlayer, drop);
-					} else event.dead.getWorld().dropItemNaturally(event.dead.getLocation(), drop);
+						AUtil.giveItemSafely(event.getKillerPlayer(), drop);
+					} else event.getDead().getWorld().dropItemNaturally(event.getDead().getLocation(), drop);
 				}
 
 //				for (Map.Entry<ItemStack, Integer> entry : drops.entrySet()) {

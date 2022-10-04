@@ -33,7 +33,7 @@ public class LuckyShot extends PitEnchant {
 
 	@EventHandler
 	public void onAttack(AttackEvent.Apply attackEvent) {
-		if(!attackEvent.isAttackerIsPlayer()) return;
+		if(!attackEvent.isAttackerPlayer()) return;
 		if(!canApply(attackEvent)) return;
 
 		int enchantLvl = attackEvent.getAttackerEnchantLevel(this);
@@ -45,7 +45,7 @@ public class LuckyShot extends PitEnchant {
 				attackEvent.multipliers.add(3.0);
 				String attack = "&e&lLUCKY SHOT! &7against %luckperms_prefix%%player_name%&7!";
 				String defend = "&c&lOUCH! %luckperms_prefix%%player_name% &7got a lucky shot against you!";
-				if(attackEvent.isDefenderIsPlayer()) {
+				if(attackEvent.isDefenderPlayer()) {
 					Misc.sendTitle(attackEvent.getDefenderPlayer(), " ", 20);
 					Misc.sendSubTitle(attackEvent.getDefenderPlayer(), "&c&lOUCH!", 20);
 					Sounds.LUCKY_SHOT.play(attackEvent.getDefender());

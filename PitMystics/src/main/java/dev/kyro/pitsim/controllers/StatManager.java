@@ -63,7 +63,7 @@ public class StatManager implements Listener {
 
 	@EventHandler(priority = EventPriority.MONITOR)
 	public void onAttack(AttackEvent.Apply attackEvent) {
-		if(!attackEvent.isAttackerIsPlayer() || !attackEvent.isDefenderIsPlayer()) return;
+		if(!attackEvent.isAttackerPlayer() || !attackEvent.isDefenderPlayer()) return;
 		PitPlayer pitAttacker = attackEvent.getAttackerPitPlayer();
 		PitPlayer pitDefender = attackEvent.getDefenderPitPlayer();
 
@@ -87,14 +87,14 @@ public class StatManager implements Listener {
 
 	@EventHandler(priority = EventPriority.MONITOR)
 	public void onHit(KillEvent killEvent) {
-		if(!killEvent.killerIsPlayer || !killEvent.deadIsPlayer) return;
-		PitPlayer pitKiller = PitPlayer.getPitPlayer(killEvent.killerPlayer);
-		PitPlayer pitDead = PitPlayer.getPitPlayer(killEvent.deadPlayer);
+		if(!killEvent.isKillerPlayer() || !killEvent.isDeadPlayer()) return;
+		PitPlayer pitKiller = killEvent.getKillerPitPlayer();
+		PitPlayer pitDead = killEvent.getDeadPitPlayer();
 
 		if(pitKiller.stats != null) {
-			if(HopperManager.isHopper(killEvent.dead)) {
+			if(HopperManager.isHopper(killEvent.getDead())) {
 				pitKiller.stats.hopperKills++;
-			} else if(NonManager.getNon(killEvent.dead) == null) {
+			} else if(NonManager.getNon(killEvent.getDead()) == null) {
 				pitKiller.stats.playerKills++;
 			} else {
 				pitKiller.stats.botKills++;

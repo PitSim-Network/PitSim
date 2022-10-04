@@ -67,12 +67,12 @@ public class HopperManager implements Listener {
 	@EventHandler
 	public void onKill(KillEvent killEvent) {
 		for(Hopper hopper : hopperList) {
-			if(killEvent.dead != hopper.target) continue;
+			if(killEvent.getDead() != hopper.target) continue;
 			hopper.remove();
 		}
 
-		if(isHopper(killEvent.dead)) {
-			Hopper hopper = HopperManager.getHopper(killEvent.deadPlayer);
+		if(isHopper(killEvent.getDead())) {
+			Hopper hopper = HopperManager.getHopper(killEvent.getDeadPlayer());
 			hopper.remove();
 		}
 	}

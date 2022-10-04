@@ -21,12 +21,12 @@ public class GoldenHeart extends PitEnchant {
 
 	@EventHandler
 	public void onAttack(KillEvent killEvent) {
-		if(!killEvent.killerIsPlayer) return;
+		if(!killEvent.isKillerPlayer()) return;
 
 		int enchantLvl = killEvent.getKillerEnchantLevel(this);
 		if(enchantLvl == 0) return;
 
-		PitPlayer pitKiller = PitPlayer.getPitPlayer(killEvent.killerPlayer);
+		PitPlayer pitKiller = killEvent.getKillerPitPlayer();
 		pitKiller.heal(getHealing(enchantLvl), HealEvent.HealType.ABSORPTION, 12);
 	}
 

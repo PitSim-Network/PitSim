@@ -21,7 +21,7 @@ public class Pullbow extends PitEnchant {
 
 	@EventHandler
 	public void onAttack(AttackEvent.Apply attackEvent) {
-		if(!attackEvent.isAttackerIsPlayer()) return;
+		if(!attackEvent.isAttackerPlayer()) return;
 		if(!canApply(attackEvent)) return;
 
 		int enchantLvl = attackEvent.getAttackerEnchantLevel(this);
@@ -33,7 +33,7 @@ public class Pullbow extends PitEnchant {
 		if(cooldown.isOnCooldown()) return;
 		else cooldown.restart();
 
-		if(attackEvent.isDefenderIsPlayer()) {
+		if(attackEvent.isDefenderPlayer()) {
 			PitPlayer pitDefender = attackEvent.getDefenderPitPlayer();
 			if(pitDefender.megastreak.getClass() == Uberstreak.class && pitDefender.megastreak.isOnMega()) return;
 		}

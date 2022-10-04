@@ -21,7 +21,7 @@ public class aEntanglement extends PitEnchant {
 
 	@EventHandler
 	public void onAttack(AttackEvent.Apply attackEvent) {
-		if(!attackEvent.isAttackerIsPlayer()) return;
+		if(!attackEvent.isAttackerPlayer()) return;
 		if(!canApply(attackEvent)) return;
 
 		int heldLvl = EnchantManager.getEnchantLevel(attackEvent.getAttackerPlayer().getItemInHand(), this);

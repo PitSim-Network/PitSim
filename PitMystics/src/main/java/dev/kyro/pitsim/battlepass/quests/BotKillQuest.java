@@ -15,7 +15,7 @@ public class BotKillQuest extends PassQuest {
 
 	@EventHandler
 	public void onKill(KillEvent killEvent) {
-		if(!killEvent.killerIsPlayer || !killEvent.deadIsPlayer) return;
+		if(!killEvent.isKillerPlayer() || !killEvent.isDeadPlayer()) return;
 //		if(!canProgressQuest(killEvent.killerPlayer) || NonManager.getNon(killEvent.dead) == null) return;
 	}
 

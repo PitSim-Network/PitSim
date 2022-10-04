@@ -138,8 +138,8 @@ public class PitBlob extends PitEnchant {
 
 	@EventHandler
 	public void onKill(KillEvent killEvent) {
-		if(!blobMap.containsKey(killEvent.killer.getUniqueId())) return;
-		Slime slime = blobMap.get(killEvent.killer.getUniqueId());
+		if(!blobMap.containsKey(killEvent.getKiller().getUniqueId())) return;
+		Slime slime = blobMap.get(killEvent.getKiller().getUniqueId());
 		if(slime != null) {
 
 			boolean isMaxSize = slime.getSize() >= getMaxSlimeSize(3);
@@ -148,9 +148,9 @@ public class PitBlob extends PitEnchant {
 			return;
 		}
 
-		slime = (Slime) killEvent.killer.getWorld().spawnEntity(killEvent.killer.getLocation(), EntityType.SLIME);
+		slime = (Slime) killEvent.getKiller().getWorld().spawnEntity(killEvent.getKiller().getLocation(), EntityType.SLIME);
 		slime.setSize(1);
-		blobMap.put(killEvent.killer.getUniqueId(), slime);
+		blobMap.put(killEvent.getKiller().getUniqueId(), slime);
 	}
 
 	@EventHandler

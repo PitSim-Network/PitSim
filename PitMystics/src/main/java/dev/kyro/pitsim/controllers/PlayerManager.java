@@ -231,21 +231,21 @@ public class PlayerManager implements Listener {
 	@EventHandler
 	public void onKillForRank(KillEvent killEvent) {
 		double multiplier = 1;
-		if(killEvent.killer.hasPermission("group.nitro")) {
+		if(killEvent.getKiller().hasPermission("group.nitro")) {
 			multiplier += 0.1;
 		}
 
-		if(killEvent.killer.hasPermission("group.eternal")) {
+		if(killEvent.getKiller().hasPermission("group.eternal")) {
 			multiplier += 0.30;
-		} else if(killEvent.killer.hasPermission("group.unthinkable")) {
+		} else if(killEvent.getKiller().hasPermission("group.unthinkable")) {
 			multiplier += 0.25;
-		} else if(killEvent.killer.hasPermission("group.miraculous")) {
+		} else if(killEvent.getKiller().hasPermission("group.miraculous")) {
 			multiplier += 0.20;
-		} else if(killEvent.killer.hasPermission("group.extraordinary")) {
+		} else if(killEvent.getKiller().hasPermission("group.extraordinary")) {
 			multiplier += 0.15;
-		} else if(killEvent.killer.hasPermission("group.overpowered")) {
+		} else if(killEvent.getKiller().hasPermission("group.overpowered")) {
 			multiplier += 0.1;
-		} else if(killEvent.killer.hasPermission("group.legendary")) {
+		} else if(killEvent.getKiller().hasPermission("group.legendary")) {
 			multiplier += 0.05;
 		}
 		killEvent.xpMultipliers.add(multiplier);
@@ -254,19 +254,18 @@ public class PlayerManager implements Listener {
 
 	@EventHandler(priority = EventPriority.HIGHEST)
 	public static void onKill(KillEvent killEvent) {
-		if(!killEvent.deadIsPlayer || !killEvent.killerIsPlayer) return;
+		if(!killEvent.isDeadPlayer() || !killEvent.isKillerPlayer()) return;
 
-		PitPlayer pitKiller = PitPlayer.getPitPlayer(killEvent.killerPlayer);
-		PitPlayer pitDead = PitPlayer.getPitPlayer(killEvent.deadPlayer);
-		Non killingNon = NonManager.getNon(killEvent.killer);
-		Non deadNon = NonManager.getNon(killEvent.dead);
+		PitPlayer pitKiller = killEvent.getKillerPitPlayer();
+		PitPlayer pitDead = killEvent.getDeadPitPlayer();
+		Non killingNon = NonManager.getNon(killEvent.getKiller());
 
-		if(pitKiller.killEffect != null && killEvent.killer.hasPermission("pitsim.killeffect")) {
-			KillEffects.trigger(killEvent.killerPlayer, pitKiller.killEffect, killEvent.dead.getLocation());
+		if(pitKiller.killEffect != null && killEvent.getKiller().hasPermission("pitsim.killeffect")) {
+			KillEffects.trigger(killEvent.getKillerPlayer(), pitKiller.killEffect, killEvent.getDead().getLocation());
 		}
 
-		if(pitDead.deathCry != null && killEvent.dead.hasPermission("pitsim.deathcry")) {
-			DeathCrys.trigger(killEvent.deadPlayer, pitDead.deathCry, killEvent.dead.getLocation());
+		if(pitDead.deathCry != null && killEvent.getDead().hasPermission("pitsim.deathcry")) {
+			DeathCrys.trigger(killEvent.getDeadPlayer(), pitDead.deathCry, killEvent.getDead().getLocation());
 		}
 
 		if(pitDead.bounty != 0 && killingNon == null && pitKiller != pitDead) {
@@ -278,14 +277,14 @@ public class PlayerManager implements Listener {
 				if(pitPlayer.bountiesDisabled) continue;
 
 				String bounty1 = ChatColor.translateAlternateColorCodes('&',
-						"&6&lBOUNTY CLAIMED!&7 %luckperms_prefix%" + killEvent.killerPlayer.getDisplayName() + "&7 killed ");
-				String bounty2 = ChatColor.translateAlternateColorCodes('&', "%luckperms_prefix%" + killEvent.deadPlayer.getDisplayName()
+						"&6&lBOUNTY CLAIMED!&7 %luckperms_prefix%" + killEvent.getKillerPlayer().getDisplayName() + "&7 killed ");
+				String bounty2 = ChatColor.translateAlternateColorCodes('&', "%luckperms_prefix%" + killEvent.getDeadPlayer().getDisplayName()
 						+ "&7 for &6&l" + formatter.format(pitDead.bounty)) + "g";
-				String bounty3 = PlaceholderAPI.setPlaceholders(killEvent.killerPlayer, bounty1);
-				String bounty4 = PlaceholderAPI.setPlaceholders(killEvent.deadPlayer, bounty2);
+				String bounty3 = PlaceholderAPI.setPlaceholders(killEvent.getKillerPlayer(), bounty1);
+				String bounty4 = PlaceholderAPI.setPlaceholders(killEvent.getDeadPlayer(), bounty2);
 				player.sendMessage(bounty3 + bounty4);
 			}
-			LevelManager.addGold(killEvent.killerPlayer, pitDead.bounty);
+			LevelManager.addGold(killEvent.getKillerPlayer(), pitDead.bounty);
 			if(pitDead.megastreak.getClass() != Highlander.class) pitDead.bounty = 0;
 
 			if(pitKiller.stats != null) pitKiller.stats.bountiesClaimed++;
@@ -301,11 +300,11 @@ public class PlayerManager implements Listener {
 			} else {
 				pitKiller.bounty += amount;
 			}
-			String message = "&6&lBOUNTY!&7 bump &6&l" + amount + "g&7 on %luckperms_prefix%" + killEvent.killerPlayer.getDisplayName() +
+			String message = "&6&lBOUNTY!&7 bump &6&l" + amount + "g&7 on %luckperms_prefix%" + killEvent.getKillerPlayer().getDisplayName() +
 					"&7 for high streak";
 			if(!pitKiller.bountiesDisabled)
-				AOutput.send(killEvent.killer, PlaceholderAPI.setPlaceholders(killEvent.killerPlayer, message));
-			Sounds.BOUNTY.play(killEvent.killer);
+				AOutput.send(killEvent.getKiller(), PlaceholderAPI.setPlaceholders(killEvent.getKillerPlayer(), message));
+			Sounds.BOUNTY.play(killEvent.getKiller());
 		}
 	}
 
@@ -485,9 +484,9 @@ public class PlayerManager implements Listener {
 
 		Non defendingNon = NonManager.getNon(attackEvent.getDefender());
 //		Arch chest
-		if(defendingNon == null && attackEvent.isDefenderIsPlayer()) {
+		if(defendingNon == null && attackEvent.isDefenderPlayer()) {
 			attackEvent.multipliers.add(0.9);
-		} else if(attackEvent.isDefenderIsPlayer()) {
+		} else if(attackEvent.isDefenderPlayer()) {
 //			Non defence
 			if(defendingNon.traits.contains(NonTrait.IRON_STREAKER)) attackEvent.multipliers.add(0.8);
 		}
@@ -740,10 +739,10 @@ public class PlayerManager implements Listener {
 	}
 
 	@EventHandler
-	public void onDeath(KillEvent event) {
-		if(!event.deadIsPlayer) return;
-		PitPlayer pitPlayer = PitPlayer.getPitPlayer(event.deadPlayer);
-		if(pitPlayer.megastreak.getClass() == RNGesus.class && RNGesus.isOnCooldown(event.deadPlayer)) {
+	public void onDeath(KillEvent killEvent) {
+		if(!killEvent.isDeadPlayer()) return;
+		PitPlayer pitPlayer = killEvent.getDeadPitPlayer();
+		if(pitPlayer.megastreak.getClass() == RNGesus.class && RNGesus.isOnCooldown(killEvent.getDeadPlayer())) {
 			new BukkitRunnable() {
 				@Override
 				public void run() {
