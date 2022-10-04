@@ -1,19 +1,10 @@
-import java.util.Random;
-
 public class Test {
 	public static void main(String[] args) {
-		System.out.println(new Random().nextInt(1));
-		System.out.println(new Random().nextInt(1));
-		System.out.println(new Random().nextInt(1));
-		System.out.println(new Random().nextInt(1));
-		System.out.println(new Random().nextInt(1));
-		System.out.println(new Random().nextInt(1));
-		System.out.println(new Random().nextInt(1));
-		System.out.println(new Random().nextInt(1));
-		System.out.println(new Random().nextInt(1));
-		System.out.println(new Random().nextInt(1));
-		System.out.println(new Random().nextInt(1));
-		System.out.println(new Random().nextInt(1));
-		System.out.println(new Random().nextInt(1));
+
+		int totalPlayers = 17;
+		int totalServers = 4;
+		for(int i = 1 + (totalPlayers + 3) / 10; i < totalServers; i++) {
+			System.out.println("Shutting down server: " + (i + 1));
+		}
 	}
 }
