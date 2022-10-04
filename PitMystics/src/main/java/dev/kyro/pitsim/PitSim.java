@@ -97,6 +97,7 @@ public class PitSim extends JavaPlugin {
 
 		FirestoreManager.init();
 		for(Player onlinePlayer : Bukkit.getOnlinePlayers()) {
+			PlayerManager.addRealPlayer(onlinePlayer.getUniqueId());
 			boolean success = PitPlayer.loadPitPlayer(onlinePlayer.getUniqueId());
 			if(success) continue;
 			onlinePlayer.kickPlayer(ChatColor.RED + "Playerdata failed to load. Please open a support ticket: discord.pitsim.net");

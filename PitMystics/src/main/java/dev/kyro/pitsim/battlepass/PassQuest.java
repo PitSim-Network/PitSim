@@ -30,38 +30,51 @@ public abstract class PassQuest implements Listener {
 
 	public abstract ItemStack getDisplayItem(QuestLevel questLevel, double progression);
 
-	//	Only applies to weekly quests
-	public abstract List<QuestLevel> getPossibleStates();
+//	Only applies to daily quests
+	public abstract QuestLevel getDailyState();
 
-	public boolean canProgressQuest(QuestLevel questLevel, PitPlayer pitPlayer) {
+//	Only applies to weekly quests
+	public abstract List<QuestLevel> getWeeklyPossibleStates();
+
+	public QuestLevel getQuestLevel() {
+		if(questType == QuestType.DAILY) return getDailyState();
+		return PassManager.currentPass.weeklyQuests.getOrDefault(this, null);
+	}
+
+	public boolean canProgressQuest(PitPlayer pitPlayer) {
 		PassData passData = pitPlayer.getPassData(PassManager.currentPass.startDate);
 		if(questType == QuestType.WEEKLY && !PassManager.currentPass.weeklyQuests.containsKey(this)) return false;
 
-		double progression = passData.questCompletion.getOrDefault(questType.name(), 0.0);
-		if(progression > questLevel.requirement) return false;
-
-		return true;
+		double progression = passData.questCompletion.getOrDefault(refName, 0.0);
+		return progression < getQuestLevel().requirement;
 	}
 
-	public void progressQuest(QuestLevel questLevel, PitPlayer pitPlayer, double amount) {
-		if(!canProgressQuest(questLevel, pitPlayer)) return;
+	public void progressQuest(PitPlayer pitPlayer, double amount) {
+		if(!canProgressQuest(pitPlayer)) return;
 		PassData passData = pitPlayer.getPassData(PassManager.currentPass.startDate);
 		double newValue = passData.questCompletion.getOrDefault(refName, 0.0) + amount;
-		if(newValue >= questLevel.requirement) {
-			complete(questLevel, pitPlayer);
-			passData.questCompletion.put(refName, questLevel.requirement);
+		if(newValue >= getQuestLevel().requirement) {
+			complete(pitPlayer);
+			passData.questCompletion.put(refName, getQuestLevel().requirement);
 			return;
 		}
 		passData.questCompletion.put(refName, newValue);
 	}
 
-	public void complete(QuestLevel questLevel, PitPlayer pitPlayer) {
-
+//	TODO: Play sound and send message
+	public void complete(PitPlayer pitPlayer) {
+		PassData passData = pitPlayer.getPassData(PassManager.currentPass.startDate);
+		passData.totalPoints += getQuestLevel().rewardPoints;
 	}
 
 	public static class QuestLevel {
 		public double requirement;
 		public int rewardPoints;
+
+		public QuestLevel(double requirement, int rewardPoints) {
+			this.requirement = requirement;
+			this.rewardPoints = rewardPoints;
+		}
 	}
 
 	public enum QuestType {

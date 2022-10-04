@@ -54,7 +54,15 @@ import java.util.*;
 //import net.kyori.adventure.audience.Audience;
 
 public class PlayerManager implements Listener {
-	public static List<UUID> realPlayers = new ArrayList<>();
+	private static final List<UUID> realPlayers = new ArrayList<>();
+
+	public static void addRealPlayer(UUID uuid) {
+		realPlayers.add(uuid);
+	}
+
+	public static boolean isRealPlayer(Player player) {
+		return realPlayers.contains(player.getUniqueId());
+	}
 
 	@EventHandler
 	public void onAttack3(AttackEvent attackEvent) {

@@ -41,7 +41,7 @@ public class PitSimPass {
 		for(int i = 0; i < 6; i++) {
 			if(weeklyQuests.isEmpty()) break;
 			PassQuest passQuest = possibleWeeklyQuests.remove(0);
-			weeklyQuests.put(passQuest, passQuest.getPossibleStates().get(new Random().nextInt(passQuest.getPossibleStates().size())));
+			weeklyQuests.put(passQuest, passQuest.getWeeklyPossibleStates().get(new Random().nextInt(passQuest.getWeeklyPossibleStates().size())));
 		}
 	}
 

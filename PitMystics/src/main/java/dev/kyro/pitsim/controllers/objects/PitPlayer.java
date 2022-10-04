@@ -398,7 +398,7 @@ public class PitPlayer {
 		}
 		if(pitPlayer == null) {
 
-			boolean isNPC = !PlayerManager.realPlayers.contains(player.getUniqueId());
+			boolean isNPC = !PlayerManager.isRealPlayer(player);
 			if(isNPC) {
 				pitPlayer = new PitPlayer(player);
 			} else {

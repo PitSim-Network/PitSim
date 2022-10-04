@@ -68,19 +68,18 @@ public class QuestPanel extends AGUIPanel {
 
 	public void setDailyQuestPage() {
 		List<PassQuest> fullList = PassManager.getDailyQuests();
+		fullList.removeIf(passQuest -> !passQuest.canProgressQuest(passGUI.pitPlayer));
 		List<PassQuest> displayList = new ArrayList<>();
-		System.out.println("1");
 		for(int i = 0; i < dailyQuestSlots.size(); i++) {
 			int index = i + (dailyQuestPage - 1) * dailyQuestSlots.size();
 			if(index >= fullList.size()) break;
 			displayList.add(fullList.get(index));
 		}
-		System.out.println(displayList);
 
 		for(int i = 0; i < displayList.size(); i++) {
 			PassQuest toDisplay = displayList.get(i);
 			int slot = dailyQuestSlots.get(i);
-			getInventory().setItem(slot, toDisplay.getDisplayItem(null, PassManager.getProgression(passGUI.pitPlayer, toDisplay)));
+			getInventory().setItem(slot, toDisplay.getDisplayItem(toDisplay.getDailyState(), PassManager.getProgression(passGUI.pitPlayer, toDisplay)));
 		}
 	}
 

@@ -8,7 +8,7 @@ import java.util.Map;
 
 public class PassData {
 	public Date currentPassDate = new Date(0);
-	public int completedTiers = 0;
+	public int totalPoints;
 	public boolean hasPremium = false;
 
 //	Daily quest data
@@ -43,5 +43,10 @@ public class PassData {
 
 	public PassData(Date currentPassDate) {
 		this.currentPassDate = currentPassDate;
+	}
+
+	@Exclude
+	public int getCompletedTiers() {
+		return totalPoints / 200;
 	}
 }

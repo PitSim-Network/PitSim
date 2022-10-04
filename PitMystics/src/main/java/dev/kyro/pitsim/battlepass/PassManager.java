@@ -6,6 +6,7 @@ import dev.kyro.pitsim.controllers.FirestoreManager;
 import dev.kyro.pitsim.controllers.objects.Config;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.misc.Misc;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -27,6 +28,7 @@ public class PassManager implements Listener {
 	public static List<PassQuest> questList = new ArrayList<>();
 
 	public static void registerQuest(PassQuest quest) {
+		Bukkit.getPluginManager().registerEvents(quest, PitSim.INSTANCE);
 		questList.add(quest);
 	}
 
@@ -83,7 +85,7 @@ public class PassManager implements Listener {
 
 //	Check to see if a pitplayer has completed their pass
 	public static boolean hasCompletedPass(PitPlayer pitPlayer) {
-		return pitPlayer.getPassData(PassManager.currentPass.startDate).completedTiers >= currentPass.tiers;
+		return pitPlayer.getPassData(PassManager.currentPass.startDate).getCompletedTiers() >= currentPass.tiers;
 	}
 
 //	For a given reward type, check to see if it exists in the current pass for a given tier
@@ -110,7 +112,7 @@ public class PassManager implements Listener {
 //	Check to see if a player can claim a given reward
 	public static boolean canClaimReward(PitPlayer pitPlayer, PitSimPass.RewardType rewardType, int tier) {
 		PassData passData = pitPlayer.getPassData(currentPass.startDate);
-		if(passData.completedTiers < tier || hasClaimedReward(pitPlayer, rewardType, tier)) return false;
+		if(passData.getCompletedTiers() < tier || hasClaimedReward(pitPlayer, rewardType, tier)) return false;
 		if(rewardType == PitSimPass.RewardType.PREMIUM) return passData.hasPremium;
 		return true;
 	}
@@ -170,7 +172,7 @@ public class PassManager implements Listener {
 		for(Map.Entry<String, Integer> entry : FirestoreManager.CONFIG.currentPassData.activeWeeklyQuests.entrySet()) {
 			PassQuest passQuest = getQuest(entry.getKey());
 			if(passQuest == null) continue;
-			currentPass.weeklyQuests.put(passQuest, passQuest.getPossibleStates().get(entry.getValue()));
+			currentPass.weeklyQuests.put(passQuest, passQuest.getWeeklyPossibleStates().get(entry.getValue()));
 		}
 	}
 

@@ -78,12 +78,12 @@ public class PassPanel extends AGUIPanel {
 		getInventory().setItem(16, nextPageItem);
 
 		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
-		page = pitPlayer.getPassData(PassManager.currentPass.startDate).completedTiers / 9 + 1;
+		page = pitPlayer.getPassData(PassManager.currentPass.startDate).getCompletedTiers() / 9 + 1;
 		setPage(pitPlayer, page);
 	}
 
 	public void setPage(PitPlayer pitPlayer, int page) {
-		int passTier = pitPlayer.getPassData(PassManager.currentPass.startDate).completedTiers;
+		int passTier = pitPlayer.getPassData(PassManager.currentPass.startDate).getCompletedTiers();
 
 		for(int i = 0; i < 9; i++) {
 			int tier = (page - 1) * 9 + i + 1;
