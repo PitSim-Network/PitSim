@@ -136,6 +136,7 @@ public class PitSim extends JavaPlugin {
 		NonManager.init();
 		SpawnNPCs.createNPCs();
 		TempBlockHelper.init();
+		ReloadManager.init();
 
 		if(!setupEconomy()) {
 			AOutput.log(String.format("[%s] - Disabled due to no Vault dependency found!", getDescription().getName()));
@@ -155,10 +156,8 @@ public class PitSim extends JavaPlugin {
 			Bukkit.getPluginManager().disablePlugin(this);
 		}
 
-		boolean NoteBlockAPI = true;
 		if(!Bukkit.getPluginManager().isPluginEnabled("NoteBlockAPI")) {
 			getLogger().severe("*** NoteBlockAPI is not installed or not enabled. ***");
-			NoteBlockAPI = false;
 			return;
 		}
 
