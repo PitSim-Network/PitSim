@@ -60,13 +60,14 @@ public class TotallyLegitGemPanel extends AGUIPanel {
 
 		if(event.getClickedInventory().getHolder() == this) {
 
-			int invSlot = 0;
+			int invSlot;
 			if(slots.containsKey(slot)) {
 				invSlot = slots.get(slot);
-			}
+			} else return;
 
 			for(int i = 0; i < player.getInventory().getSize(); i++) {
 				if(i == invSlot) {
+					System.out.println(i + " " + invSlot);
 					NBTItem nbtItem = new NBTItem(player.getInventory().getItem(i));
 					nbtItem.setBoolean(NBTTag.IS_GEMMED.getRef(), true);
 
