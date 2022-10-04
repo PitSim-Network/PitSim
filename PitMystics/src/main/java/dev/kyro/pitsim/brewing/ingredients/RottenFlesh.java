@@ -43,7 +43,7 @@ public class RottenFlesh extends BrewingIngredient {
     public Object getPotency(BrewingIngredient potencyIngredient) {
         int tier = potencyIngredient.tier;
 
-        return 0.075 * tier;
+        return 0.050 * tier;
     }
 
     @Override
