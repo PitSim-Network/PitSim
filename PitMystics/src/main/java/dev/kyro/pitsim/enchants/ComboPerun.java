@@ -92,6 +92,6 @@ public class ComboPerun extends PitEnchant {
 
 	public int getStrikes(int enchantLvl) {
 
-		return Math.max(6 - enchantLvl, 1);
+		return Math.max(Misc.linearEnchant(enchantLvl, -0.5, 5), 1);
 	}
 }
