@@ -34,9 +34,9 @@ public class LifeInsurance extends RenownUpgrade {
 		if(UpgradeManager.hasUpgrade(player, this)) lore.add("");
 		lore.add(ChatColor.GRAY + "Each tier:");
 		lore.add(ChatColor.translateAlternateColorCodes('&', "&7Retain mystic lives on death when on"));
-		lore.add(ChatColor.translateAlternateColorCodes('&', "&eTier I: &f500 &cOvrdrv&7, &dUber"));
-		lore.add(ChatColor.translateAlternateColorCodes('&', "&eTier II: &f1,000 &aBeast&7, &6High&7, &bMoon"));
-		lore.add(ChatColor.translateAlternateColorCodes('&', "&eTier III: &f3,000 &5RNG"));
+		lore.add(ChatColor.translateAlternateColorCodes('&', "&eTier I: &f550 &dUber"));
+		lore.add(ChatColor.translateAlternateColorCodes('&', "&eTier II: &f525 &dUber"));
+		lore.add(ChatColor.translateAlternateColorCodes('&', "&eTier III: &f500 &dUber"));
 
 		//TODO Add functionality and decide on final values for Life Insurance
 		meta.setLore(UpgradeManager.loreBuilder(this, player, lore, isCustomPanel));
@@ -48,12 +48,15 @@ public class LifeInsurance extends RenownUpgrade {
 		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
 		int tier = UpgradeManager.getTier(player, "LIFE_INSURANCE");
 
-		if(pitPlayer.megastreak instanceof Overdrive && pitPlayer.getKills() >= 500 && tier >= 1) return true;
-		if(pitPlayer.megastreak instanceof Uberstreak && pitPlayer.getKills() >= 500 && tier >= 1) return true;
-		if(pitPlayer.megastreak instanceof Beastmode && pitPlayer.getKills() >= 1000 && tier >= 2) return true;
-		if(pitPlayer.megastreak instanceof Highlander && pitPlayer.getKills() >= 1000 && tier >= 2) return true;
-		if(pitPlayer.megastreak instanceof ToTheMoon && pitPlayer.getKills() >= 1000 && tier >= 2) return true;
-		return pitPlayer.megastreak instanceof RNGesus && pitPlayer.getKills() >= 3000 && tier >= 3;
+//		if(pitPlayer.megastreak instanceof Overdrive && pitPlayer.getKills() >= 500 && tier >= 1) return true;
+		if(pitPlayer.megastreak instanceof Uberstreak && pitPlayer.getKills() >= 500 && tier >= 3) return true;
+		if(pitPlayer.megastreak instanceof Uberstreak && pitPlayer.getKills() >= 525 && tier >= 2) return true;
+		if(pitPlayer.megastreak instanceof Uberstreak && pitPlayer.getKills() >= 550 && tier >= 1) return true;
+//		if(pitPlayer.megastreak instanceof Beastmode && pitPlayer.getKills() >= 1000 && tier >= 2) return true;
+//		if(pitPlayer.megastreak instanceof Highlander && pitPlayer.getKills() >= 1000 && tier >= 2) return true;
+//		if(pitPlayer.megastreak instanceof ToTheMoon && pitPlayer.getKills() >= 1000 && tier >= 2) return true;
+//		return pitPlayer.megastreak instanceof RNGesus/ayer.getKills() >= 3000 && tier >= 3;
+		return false;
 	}
 
 	@Override
