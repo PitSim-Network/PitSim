@@ -35,7 +35,7 @@ public abstract class PassQuest implements Listener {
 
 	public boolean canProgressQuest(QuestLevel questLevel, PitPlayer pitPlayer) {
 		PassData passData = pitPlayer.getPassData(PassManager.currentPass.startDate);
-		if(questType == QuestType.WEEKLY && !PassManager.currentPass.weeklyQuests.contains(this)) return false;
+		if(questType == QuestType.WEEKLY && !PassManager.currentPass.weeklyQuests.containsKey(this)) return false;
 
 		double progression = passData.questCompletion.getOrDefault(questType.name(), 0.0);
 		if(progression > questLevel.requirement) return false;

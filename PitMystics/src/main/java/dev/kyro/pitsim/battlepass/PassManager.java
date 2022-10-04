@@ -2,6 +2,8 @@ package dev.kyro.pitsim.battlepass;
 
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.battlepass.rewards.PassXpReward;
+import dev.kyro.pitsim.controllers.FirestoreManager;
+import dev.kyro.pitsim.controllers.objects.Config;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.misc.Misc;
 import org.bukkit.entity.Player;
@@ -15,6 +17,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 public class PassManager implements Listener {
@@ -67,6 +70,17 @@ public class PassManager implements Listener {
 		return weeklyQuests;
 	}
 
+//	fetch passquest by refname
+	public static PassQuest getQuest(String refName) {
+		for(PassQuest passQuest : questList) if(passQuest.refName.equals(refName)) return passQuest;
+		return null;
+	}
+
+	public static double getProgression(PitPlayer pitPlayer, PassQuest passQuest) {
+		PassData passData = pitPlayer.getPassData(currentPass.startDate);
+		return passData.questCompletion.getOrDefault(passQuest.refName, 0.0);
+	}
+
 //	Check to see if a pitplayer has completed their pass
 	public static boolean hasCompletedPass(PitPlayer pitPlayer) {
 		return pitPlayer.getPassData(PassManager.currentPass.startDate).completedTiers >= currentPass.tiers;
@@ -102,7 +116,7 @@ public class PassManager implements Listener {
 	}
 
 //	Claim a reward for a pitplayer
-public static void claimReward(PitPlayer pitPlayer, PitSimPass.RewardType rewardType, int tier) {
+	public static void claimReward(PitPlayer pitPlayer, PitSimPass.RewardType rewardType, int tier) {
 		PassData passData = pitPlayer.getPassData(currentPass.startDate);
 		if(rewardType == PitSimPass.RewardType.FREE) {
 			passData.claimedFreeRewards.put(tier, true);
@@ -131,21 +145,33 @@ public static void claimReward(PitPlayer pitPlayer, PitSimPass.RewardType reward
 	public static void updateCurrentPass() {
 		Date now = Misc.convertToEST(new Date());
 		PitSimPass newPass = null;
+		boolean foundCurrentPass = false;
 		for(int i = 0; i < pitSimPassList.size(); i++) {
 			PitSimPass testPass = pitSimPassList.get(i);
 			if(now.getTime() > testPass.startDate.getTime()) continue;
 			newPass = pitSimPassList.get(i - 1);
-			return;
+			foundCurrentPass = true;
+			break;
 		}
-		newPass = pitSimPassList.get(pitSimPassList.size() - 1);
+		if(!foundCurrentPass) newPass = pitSimPassList.get(pitSimPassList.size() - 1);
 
 		if(newPass == currentPass) return;
 		currentPass = newPass;
-		resetPassData();
+		loadPassData();
 	}
 
-	public static void resetPassData() {
+//	TODO: Main server only
+	public static void loadPassData() {
+		if(currentPass.startDate != FirestoreManager.CONFIG.currentPassStart) {
+			FirestoreManager.CONFIG.currentPassData = new Config.CurrentPassData();
+			FirestoreManager.CONFIG.save();
+		}
 
+		for(Map.Entry<String, Integer> entry : FirestoreManager.CONFIG.currentPassData.activeWeeklyQuests.entrySet()) {
+			PassQuest passQuest = getQuest(entry.getKey());
+			if(passQuest == null) continue;
+			currentPass.weeklyQuests.put(passQuest, passQuest.getPossibleStates().get(entry.getValue()));
+		}
 	}
 
 	public static Date getDate(String dateString) {

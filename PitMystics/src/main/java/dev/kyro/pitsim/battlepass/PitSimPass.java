@@ -9,7 +9,7 @@ public class PitSimPass {
 	public Map<Integer, PassReward> freePassRewards = new HashMap<>();
 	public Map<Integer, PassReward> premiumPassRewards = new HashMap<>();
 
-	public List<PassQuest> weeklyQuests = new ArrayList<>();
+	public Map<PassQuest, PassQuest.QuestLevel> weeklyQuests = new HashMap<>();
 
 	public PitSimPass(Date startDate) {
 		this.startDate = startDate;
@@ -36,11 +36,12 @@ public class PitSimPass {
 
 	public void runDailyTasks() {
 		List<PassQuest> possibleWeeklyQuests = PassManager.getWeeklyQuests();
-		possibleWeeklyQuests.removeAll(weeklyQuests);
+		possibleWeeklyQuests.removeAll(weeklyQuests.keySet());
 		Collections.shuffle(possibleWeeklyQuests);
 		for(int i = 0; i < 6; i++) {
 			if(weeklyQuests.isEmpty()) break;
-			weeklyQuests.add(possibleWeeklyQuests.remove(0));
+			PassQuest passQuest = possibleWeeklyQuests.remove(0);
+			weeklyQuests.put(passQuest, passQuest.getPossibleStates().get(new Random().nextInt(passQuest.getPossibleStates().size())));
 		}
 	}
 

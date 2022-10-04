@@ -13,6 +13,7 @@ import dev.kyro.arcticapi.data.AData;
 import dev.kyro.arcticapi.hooks.AHook;
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.battlepass.PassManager;
+import dev.kyro.pitsim.battlepass.quests.BotKillQuest;
 import dev.kyro.pitsim.boosters.ChaosBooster;
 import dev.kyro.pitsim.boosters.GoldBooster;
 import dev.kyro.pitsim.boosters.PvPBooster;
@@ -215,6 +216,7 @@ public class PitSim extends JavaPlugin {
 		registerKits();
 		registerMobs();
 		registerBrewingIngredients();
+		registerPassItems();
 
 		AuctionManager.onStart();
 		AuctionDisplays.onStart();
@@ -579,7 +581,10 @@ public class PitSim extends JavaPlugin {
 		BrewingIngredient.registerIngredient(new Coal());
 		BrewingIngredient.registerIngredient(new IronIngot());
 		BrewingIngredient.registerIngredient(new EnderPearl());
+	}
 
+	private void registerPassItems() {
+		PassManager.registerQuest(new BotKillQuest());
 	}
 
 	private void loadConfig() {

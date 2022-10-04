@@ -17,6 +17,8 @@ import org.bukkit.event.inventory.InventoryOpenEvent;
 import org.bukkit.inventory.ItemStack;
 
 public class PassPanel extends AGUIPanel {
+	public static PassGUI passGUI;
+
 	public static ItemStack previousPageItem;
 	public static ItemStack questItem;
 	public static ItemStack purchaseItem;
@@ -65,6 +67,7 @@ public class PassPanel extends AGUIPanel {
 
 	public PassPanel(AGUI gui) {
 		super(gui);
+		passGUI = (PassGUI) gui;
 
 		inventoryBuilder.setSlots(Material.STAINED_GLASS_PANE, 7, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 11, 15, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26);
 
@@ -195,6 +198,8 @@ public class PassPanel extends AGUIPanel {
 			} else {
 				Sounds.NO.play(player);
 			}
+		} else if(slot == 12) {
+			openPanel(passGUI.questPanel);
 		}
 	}
 
