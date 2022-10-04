@@ -2,6 +2,7 @@ package dev.kyro.pitsim.perks;
 
 import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.pitsim.controllers.EnchantManager;
+import dev.kyro.pitsim.controllers.MapManager;
 import dev.kyro.pitsim.controllers.objects.PitPerk;
 import dev.kyro.pitsim.events.AttackEvent;
 import org.bukkit.Material;
@@ -24,6 +25,11 @@ public class JewelHunter extends PitPerk {
 		if(!attackEvent.attackerIsPlayer || !attackEvent.defenderIsPlayer) return;
 		if(!playerHasUpgrade(attackEvent.attacker)) return;
 
+		if(MapManager.currentMap.lobbies.contains(attackEvent.defenderPlayer.getWorld()) &&
+				MapManager.currentMap.getMid(attackEvent.defender.getWorld()).distance(attackEvent.defenderPlayer.getLocation()) < getRange()) {
+			return;
+		}
+
 		double damageIncrease = 0;
 
 		ItemStack heldItem = attackEvent.defender.getEquipment().getItemInHand();
@@ -37,11 +43,15 @@ public class JewelHunter extends PitPerk {
 
 	@Override
 	public List<String> getDescription() {
-		return new ALoreBuilder("&7Deal &c+" + getDamageIncrease() + "% &7damage for each",
-				"&7jewel your opponent has (holding", "&7or wearing)").getLore();
+		return new ALoreBuilder("&7Outside &emiddle&7, Deal &c+" + getDamageIncrease() + "% &7damage for",
+				"&7each jewel your opponent has", "&7(holding or wearing)").getLore();
 	}
 
 	public int getDamageIncrease() {
 		return 30;
+	}
+
+	public static int getRange() {
+		return 12;
 	}
 }
