@@ -16,10 +16,7 @@ import dev.kyro.pitsim.events.OofEvent;
 import dev.kyro.pitsim.megastreaks.Uberstreak;
 import dev.kyro.pitsim.misc.Misc;
 import dev.kyro.pitsim.misc.Sounds;
-import org.bukkit.Effect;
-import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.World;
+import org.bukkit.*;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -46,7 +43,12 @@ public class PhoenixAbility extends HelmetAbility {
 
 	@EventHandler
 	public static void onKill(KillEvent killEvent) {
-		alreadyActivatedList.remove(killEvent.dead.getUniqueId());
+		if(killEvent.deadIsPlayer) alreadyActivatedList.remove(killEvent.deadPlayer.getUniqueId());
+
+//		TODO: Switch method
+		if(!killEvent.killerIsPlayer || !killEvent.deadIsPlayer ||
+				!Bukkit.getOnlinePlayers().contains(killEvent.killerPlayer) || !Bukkit.getOnlinePlayers().contains(killEvent.deadPlayer)) return;
+		alreadyActivatedList.remove(killEvent.killerPlayer.getUniqueId());
 	}
 
 	@EventHandler
@@ -70,7 +72,7 @@ public class PhoenixAbility extends HelmetAbility {
 		ItemStack goldenHelmet = GoldenHelmet.getHelmet(player);
 
 		if(alreadyActivatedList.contains(player.getUniqueId())) {
-			AOutput.error(player, "&cAbility can only be used once per life!");
+			AOutput.error(player, "&cAbility has already been used!");
 			Sounds.NO.play(player);
 			return;
 		}
@@ -141,8 +143,10 @@ public class PhoenixAbility extends HelmetAbility {
 		return Arrays.asList("&7Double-Sneak to rebirth:",
 				"&a\u25a0 &7Heal to &cfull HP",
 				"&a\u25a0 &cStrength I &7(10s)",
-				"&a\u25a0 &7Gain &6absorption &7equal to 2x your max hp",
-				"&c\u25a0 &7You cannot heal until you die or spawn",
+				"&a\u25a0 &7Gain &6absorption &7equal to",
+				"&72x your max hp",
+				"&c\u25a0 &7You cannot heal until you die,",
+				"&7spawn, or get a player kill",
 				"", "&7Cost: &6" + formatter.format(cost) + "g");
 	}
 
