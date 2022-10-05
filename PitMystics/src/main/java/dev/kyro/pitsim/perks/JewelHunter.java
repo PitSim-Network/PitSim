@@ -43,7 +43,7 @@ public class JewelHunter extends PitPerk {
 
 	@Override
 	public List<String> getDescription() {
-		return new ALoreBuilder("&7Outside &emiddle&7, Deal &c+" + getDamageIncrease() + "% &7damage for",
+		return new ALoreBuilder("&eOutside middle&7, Deal &c+" + getDamageIncrease() + "% &7damage for",
 				"&7each jewel your opponent has", "&7(holding or wearing)").getLore();
 	}
 
