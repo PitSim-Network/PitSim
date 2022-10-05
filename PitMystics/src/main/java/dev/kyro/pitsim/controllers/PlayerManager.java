@@ -58,8 +58,6 @@ import java.util.*;
 public class PlayerManager implements Listener {
 	//	public static Map<Player, BossBarManager> bossBars = new HashMap<>();
 
-
-
 	static {
 			new BukkitRunnable() {
 			@Override
@@ -164,6 +162,15 @@ public class PlayerManager implements Listener {
 				}
 			}
 		}.runTaskTimer(PitSim.INSTANCE, 0L, 12L);
+
+		new BukkitRunnable() {
+			@Override
+			public void run() {
+				for(Player onlinePlayer : Bukkit.getOnlinePlayers()) {
+					removeIllegalItems(onlinePlayer);
+				}
+			}
+		}.runTaskTimer(PitSim.INSTANCE, Misc.getRunnableOffset(1), 60 * 20);
 	}
 
 	@EventHandler(priority = EventPriority.MONITOR)
@@ -526,32 +533,35 @@ public class PlayerManager implements Listener {
 		new BukkitRunnable() {
 			@Override
 			public void run() {
-
 				player.setGameMode(GameMode.SURVIVAL);
-
-				if(!player.isOp() && !player.getName().equals("Fishduper")) {
-
-					int itemsRemoved = 0;
-					for(int i = 0; i < 36; i++) {
-
-						ItemStack itemStack = player.getInventory().getItem(i);
-						if(EnchantManager.isIllegalItem(itemStack)) {
-							player.getInventory().setItem(i, new ItemStack(Material.AIR));
-							itemsRemoved++;
-						}
-					}
-					if(EnchantManager.isIllegalItem(player.getEquipment().getLeggings())) {
-						player.getEquipment().setLeggings(new ItemStack(Material.AIR));
-						itemsRemoved++;
-					}
-					if(itemsRemoved != 0) AOutput.error(player, "&c" + itemsRemoved + " &7illegal item" +
-							(itemsRemoved == 1 ? " was" : "s were") + " removed from your inventory");
-				}
 
 				pitPlayer.updateMaxHealth();
 				player.setHealth(player.getMaxHealth());
 			}
 		}.runTaskLater(PitSim.INSTANCE, 1L);
+	}
+
+	public static void removeIllegalItems(Player player) {
+		if(!player.isOp()) {
+			int itemsRemoved = 0;
+			for(int i = 0; i < 36; i++) {
+
+				ItemStack itemStack = player.getInventory().getItem(i);
+				if(EnchantManager.isIllegalItem(itemStack)) {
+					player.getInventory().setItem(i, new ItemStack(Material.AIR));
+					itemsRemoved++;
+				}
+			}
+			if(EnchantManager.isIllegalItem(player.getEquipment().getLeggings())) {
+				player.getEquipment().setLeggings(new ItemStack(Material.AIR));
+				itemsRemoved++;
+			}
+			if(itemsRemoved != 0) {
+				AOutput.error(player, "&c" + itemsRemoved + " &7illegal item" +
+						(itemsRemoved == 1 ? " was" : "s were") + " removed from your inventory");
+				player.updateInventory();
+			}
+		}
 	}
 
 	@EventHandler
@@ -677,25 +687,6 @@ public class PlayerManager implements Listener {
 			playerData.set("soulreturn", null);
 			aPlayer.save();
 		}
-
-	}
-
-	public static void removeIllegalItems(Player player) {
-		int itemsRemoved = 0;
-		for(int i = 0; i < 36; i++) {
-
-			ItemStack itemStack = player.getInventory().getItem(i);
-			if(EnchantManager.isIllegalItem(itemStack)) {
-				player.getInventory().setItem(i, new ItemStack(Material.AIR));
-				itemsRemoved++;
-			}
-		}
-		if(EnchantManager.isIllegalItem(player.getEquipment().getLeggings())) {
-			player.getEquipment().setLeggings(new ItemStack(Material.AIR));
-			itemsRemoved++;
-		}
-//			if(itemsRemoved != 0) AOutput.error(player, "&c" + itemsRemoved + " &7illegal item" +
-//					(itemsRemoved == 1 ? " was" : "s were") + " removed from your inventory");
 
 	}
 

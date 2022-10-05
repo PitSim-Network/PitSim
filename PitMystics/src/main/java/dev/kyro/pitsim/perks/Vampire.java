@@ -4,6 +4,7 @@ import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.pitsim.controllers.objects.PitPerk;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.events.AttackEvent;
+import dev.kyro.pitsim.misc.Misc;
 import org.bukkit.Material;
 import org.bukkit.event.EventHandler;
 import org.bukkit.inventory.ItemStack;
@@ -11,8 +12,9 @@ import org.bukkit.inventory.ItemStack;
 import java.util.List;
 
 public class Vampire extends PitPerk {
-
 	public static Vampire INSTANCE;
+
+	public static double initialHealing = 1;
 
 	public Vampire() {
 		super("Vampire", "vampire", new ItemStack(Material.FERMENTED_SPIDER_EYE), 10, false, "", INSTANCE, true);
@@ -25,7 +27,7 @@ public class Vampire extends PitPerk {
 		if(!playerHasUpgrade(attackEvent.attacker)) return;
 		PitPlayer pitAttacker = PitPlayer.getPitPlayer(attackEvent.attackerPlayer);
 
-		double healing = 0.5;
+		double healing = initialHealing;
 		if(attackEvent.arrow != null && attackEvent.arrow.isCritical()) healing *= 3;
 		pitAttacker.heal(healing);
 	}
@@ -39,6 +41,6 @@ public class Vampire extends PitPerk {
 
 	@Override
 	public List<String> getDescription() {
-		return new ALoreBuilder("&7Heal &c0.25\u2764 &7on hit.", "&7Tripled on arrow crit.").getLore();
+		return new ALoreBuilder("&7Heal &c" + Misc.getHearts(initialHealing) + " &7on hit.", "&7Tripled on arrow crit.").getLore();
 	}
 }

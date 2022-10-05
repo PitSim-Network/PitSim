@@ -14,6 +14,7 @@ public class PainFocus extends PitEnchant {
 	public PainFocus() {
 		super("Pain Focus", false, ApplyType.MELEE,
 				"painfocus", "pf", "pain-focus");
+		isUncommonEnchant = true;
 	}
 
 	@EventHandler

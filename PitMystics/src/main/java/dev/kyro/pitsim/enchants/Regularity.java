@@ -86,11 +86,11 @@ public class Regularity extends PitEnchant {
 	}
 
 	public static int secondHitDamage(int enchantLvl) {
-		return enchantLvl * 15;
+		return enchantLvl * 15 + 30;
 	}
 
 	public static int secondComboChance(int enchantLvl) {
-		return enchantLvl * 15 + 15;
+		return 100;
 	}
 
 	public static double lowerBoundFinalDamage(int enchantLvl) {
@@ -104,9 +104,13 @@ public class Regularity extends PitEnchant {
 	@Override
 	public List<String> getDescription(int enchantLvl) {
 
+//		return new ALoreBuilder("&7If your strike does a low amount of",
+//				"&7final damage, &astrike again &7for &c" + secondHitDamage(enchantLvl) + "%",
+//				"&7damage. &7(Combo enchants have a", "&e" + secondComboChance(enchantLvl) + "% &7of incrementing the combo",
+//				"&7on the second hit)").getLore();
+
 		return new ALoreBuilder("&7If your strike does a low amount of",
 				"&7final damage, &astrike again &7for &c" + secondHitDamage(enchantLvl) + "%",
-				"&7damage. &7(Combo enchants have a", "&e" + secondComboChance(enchantLvl) + "% &7of incrementing the combo",
-				"&7on the second hit)").getLore();
+				"&7damage.").getLore();
 	}
 }
