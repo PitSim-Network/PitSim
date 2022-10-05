@@ -114,7 +114,7 @@ public class PlayerManager implements Listener {
 							if(entry.getKey().refName.equals("renown")) buff = entry.getValue();
 						}
 					}
-					if(Math.random() * 2 < 1 + buff / 100.0) continue;
+					if(Math.random() * 2 > 1 + buff / 100.0) continue;
 
 					PitPlayer pitPlayer = PitPlayer.getPitPlayer(onlinePlayer);
 					pitPlayer.renown++;
