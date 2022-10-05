@@ -49,6 +49,6 @@ public class Dispersion extends PitPerk {
 	}
 
 	public static int getChance() {
-		return 60;
+		return 40;
 	}
 }
