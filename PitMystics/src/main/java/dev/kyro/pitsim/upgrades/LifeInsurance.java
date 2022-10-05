@@ -20,7 +20,7 @@ public class LifeInsurance extends RenownUpgrade {
 	public static LifeInsurance INSTANCE;
 
 	public LifeInsurance() {
-		super("Life Insurance", "LIFE_INSURANCE", 75, 22, 12, true, 3);
+		super("Uber Insurance", "LIFE_INSURANCE", 75, 22, 12, true, 3);
 		INSTANCE = this;
 	}
 
