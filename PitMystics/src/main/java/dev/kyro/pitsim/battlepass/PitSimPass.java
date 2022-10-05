@@ -1,5 +1,7 @@
 package dev.kyro.pitsim.battlepass;
 
+import dev.kyro.pitsim.controllers.FirestoreManager;
+
 import java.util.*;
 
 public class PitSimPass {
@@ -34,15 +36,11 @@ public class PitSimPass {
 		return this;
 	}
 
-	public void runDailyTasks() {
-		List<PassQuest> possibleWeeklyQuests = PassManager.getWeeklyQuests();
-		possibleWeeklyQuests.removeAll(weeklyQuests.keySet());
-		Collections.shuffle(possibleWeeklyQuests);
-		for(int i = 0; i < 6; i++) {
-			if(weeklyQuests.isEmpty()) break;
-			PassQuest passQuest = possibleWeeklyQuests.remove(0);
-			weeklyQuests.put(passQuest, passQuest.getWeeklyPossibleStates().get(new Random().nextInt(passQuest.getWeeklyPossibleStates().size())));
-		}
+//	Only call this if you are sure that the current pass is supposed to be current
+	public void writeToConfig() {
+		FirestoreManager.CONFIG.currentPassData.activeWeeklyQuests.clear();
+		for(Map.Entry<PassQuest, PassQuest.QuestLevel> entry : weeklyQuests.entrySet())
+			FirestoreManager.CONFIG.currentPassData.activeWeeklyQuests.put(entry.getKey().refName, entry.getValue().rewardIndex);
 	}
 
 	public enum RewardType {

@@ -14,6 +14,7 @@ import dev.kyro.arcticapi.hooks.AHook;
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.battlepass.PassManager;
 import dev.kyro.pitsim.battlepass.quests.BotKillQuest;
+import dev.kyro.pitsim.battlepass.quests.PlayerKillQuest;
 import dev.kyro.pitsim.boosters.ChaosBooster;
 import dev.kyro.pitsim.boosters.GoldBooster;
 import dev.kyro.pitsim.boosters.PvPBooster;
@@ -462,7 +463,7 @@ public class PitSim extends JavaPlugin {
 		getCommand("view").setExecutor(new ViewCommand());
 		getCommand("music").setExecutor(new MusicCommand());
 		getCommand("migrate").setExecutor(new MigrateCommand());
-
+		getCommand("pass").setExecutor(new PassCommand());
 	}
 
 	private void registerListeners() {
@@ -584,7 +585,11 @@ public class PitSim extends JavaPlugin {
 	}
 
 	private void registerPassItems() {
+//		Daily quests
 		PassManager.registerQuest(new BotKillQuest());
+
+//		Weekly quests
+		PassManager.registerQuest(new PlayerKillQuest());
 	}
 
 	private void loadConfig() {

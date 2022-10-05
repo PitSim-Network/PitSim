@@ -37,7 +37,6 @@ public class KillEvent extends Event {
 	public List<Double> goldMultipliers = new ArrayList<>();
 
 	public boolean isLuckyKill = false;
-	public int playerKillWorth = 1;
 
 	public KillEvent(AttackEvent attackEvent, LivingEntity killer, LivingEntity dead, boolean exeDeath) {
 		this.killerEnchantMap = killer == attackEvent.getAttacker() ? attackEvent.getAttackerEnchantMap() : attackEvent.getDefenderEnchantMap();

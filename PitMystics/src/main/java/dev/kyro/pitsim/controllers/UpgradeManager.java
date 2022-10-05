@@ -46,7 +46,7 @@ public class UpgradeManager implements Listener {
 		if(NonManager.getNon(player) != null) return 0;
 		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
 
-		return pitPlayer.renownUpgrades.get(upgrade.refName);
+		return pitPlayer.renownUpgrades.getOrDefault(upgrade.refName, 0);
 	}
 
 	public static int getTier(Player player, String refName) {

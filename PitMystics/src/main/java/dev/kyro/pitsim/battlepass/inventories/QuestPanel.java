@@ -83,6 +83,24 @@ public class QuestPanel extends AGUIPanel {
 		}
 	}
 
+	public void setWeeklyQuestPage() {
+		List<PassQuest> fullList = PassManager.getWeeklyQuests();
+		fullList.removeIf(passQuest -> !passQuest.canProgressQuest(passGUI.pitPlayer));
+		List<PassQuest> displayList = new ArrayList<>();
+		for(int i = 0; i < weeklyQuestSlots.size(); i++) {
+			int index = i + (weeklyQuestPage - 1) * weeklyQuestSlots.size();
+			if(index >= fullList.size()) break;
+			displayList.add(fullList.get(index));
+		}
+
+		for(int i = 0; i < displayList.size(); i++) {
+			PassQuest toDisplay = displayList.get(i);
+			int slot = weeklyQuestSlots.get(i);
+			getInventory().setItem(slot, toDisplay.getDisplayItem(PassManager.currentPass.weeklyQuests.get(toDisplay),
+					PassManager.getProgression(passGUI.pitPlayer, toDisplay)));
+		}
+	}
+
 	@Override
 	public String getName() {
 		return ChatColor.GOLD + "" + ChatColor.BOLD + "Pit" + ChatColor.YELLOW + "" + ChatColor.BOLD + "Sim " + ChatColor.AQUA + "" + ChatColor.BOLD + "Quests";
@@ -107,6 +125,7 @@ public class QuestPanel extends AGUIPanel {
 	@Override
 	public void onOpen(InventoryOpenEvent event) {
 		setDailyQuestPage();
+		setWeeklyQuestPage();
 	}
 
 	@Override

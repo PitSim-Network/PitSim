@@ -118,9 +118,9 @@ public class BoosterManager implements Listener {
 					PitPlayer pitPlayer = PitPlayer.getPitPlayer(onlinePlayer);
 
 					for(Booster booster : boosterList) {
-						int timeLeft = pitPlayer.boosterTime.get(booster);
+						int timeLeft = pitPlayer.boosterTime.get(booster.refName);
 						if(timeLeft <= 0) continue;
-						pitPlayer.boosterTime.put(booster.refName, pitPlayer.boosterTime.get(booster) - 1);
+						pitPlayer.boosterTime.put(booster.refName, pitPlayer.boosterTime.get(booster.refName) - 1);
 
 //						TODO: Terrible fix lol
 						if(donators.containsKey(booster)) continue;

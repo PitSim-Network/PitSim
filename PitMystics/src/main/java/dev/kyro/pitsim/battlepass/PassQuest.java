@@ -11,6 +11,8 @@ public abstract class PassQuest implements Listener {
 	public String refName;
 	public QuestType questType;
 
+	public int nextRewardIndex = 0;
+
 	static {
 //		Quest ideas
 //		daily - player kills, bot kills, something darkzone
@@ -67,7 +69,9 @@ public abstract class PassQuest implements Listener {
 		passData.totalPoints += getQuestLevel().rewardPoints;
 	}
 
-	public static class QuestLevel {
+	public class QuestLevel {
+		public int rewardIndex = nextRewardIndex++;
+
 		public double requirement;
 		public int rewardPoints;
 

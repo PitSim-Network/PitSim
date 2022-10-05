@@ -15,10 +15,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 public class PassManager implements Listener {
@@ -26,6 +23,8 @@ public class PassManager implements Listener {
 	public static PitSimPass currentPass;
 
 	public static List<PassQuest> questList = new ArrayList<>();
+
+	public static final int QUESTS_PER_WEEK = 6;
 
 	public static void registerQuest(PassQuest quest) {
 		Bukkit.getPluginManager().registerEvents(quest, PitSim.INSTANCE);
@@ -43,6 +42,7 @@ public class PassManager implements Listener {
 			public void run() {
 				updateCurrentPass();
 			}
+//		}.runTaskTimer(PitSim.INSTANCE, 0, 100);
 		}.runTaskTimer(PitSim.INSTANCE, Misc.getRunnableOffset(1), 60 * 20);
 	}
 
@@ -157,7 +157,30 @@ public class PassManager implements Listener {
 		}
 		if(!foundCurrentPass) newPass = pitSimPassList.get(pitSimPassList.size() - 1);
 
-		if(newPass == currentPass) return;
+		if(newPass == currentPass) {
+			long daysPassed = TimeUnit.DAYS.convert(Misc.convertToEST(new Date()).getTime() - currentPass.startDate.getTime(), TimeUnit.MILLISECONDS);
+			int weeksPassed = (int) (daysPassed / 7) + 1;
+			int newQuests = weeksPassed * QUESTS_PER_WEEK - currentPass.weeklyQuests.size();
+
+			List<PassQuest> possibleWeeklyQuests = PassManager.getWeeklyQuests();
+			possibleWeeklyQuests.removeAll(currentPass.weeklyQuests.keySet());
+			Collections.shuffle(possibleWeeklyQuests);
+			for(int i = 0; i < newQuests; i++) {
+				if(possibleWeeklyQuests.isEmpty()) {
+					newQuests = 0;
+					break;
+				}
+				PassQuest passQuest = possibleWeeklyQuests.remove(0);
+				System.out.println(passQuest.getWeeklyPossibleStates());
+				currentPass.weeklyQuests.put(passQuest, passQuest.getWeeklyPossibleStates().get(new Random().nextInt(passQuest.getWeeklyPossibleStates().size())));
+			}
+			if(newQuests != 0) {
+				currentPass.writeToConfig();
+				FirestoreManager.CONFIG.save();
+			}
+			return;
+		}
+
 		currentPass = newPass;
 		loadPassData();
 	}
