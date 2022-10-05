@@ -34,7 +34,7 @@ import java.util.UUID;
 
 public class PhoenixAbility extends HelmetAbility {
 	public static List<UUID> alreadyActivatedList = new ArrayList<>();
-	public static int cost = 75_000;
+	public static int cost = 40_000;
 
 	public PhoenixAbility(Player player) {
 
