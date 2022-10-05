@@ -114,35 +114,35 @@ public class KitManager implements Listener {
 			itemStack = FreshCommand.getFreshItem(MysticType.SWORD, null);
 			itemStack = EnchantManager.addEnchant(itemStack, EnchantManager.getEnchant("bill"), 3, false);
 			itemStack = EnchantManager.addEnchant(itemStack, EnchantManager.getEnchant("stomp"), 3, false);
-			itemStack = EnchantManager.addEnchant(itemStack, EnchantManager.getEnchant("ls"), 2, false);
+			itemStack = EnchantManager.addEnchant(itemStack, EnchantManager.getEnchant("pun"), 2, false);
 			new AItemStackBuilder(itemStack).setName("&cDamage Billionaire &7(w/RGM)");
 			kitItemMap.put(KitItem.BILL_STOMP_LS, itemStack);
 
 			itemStack = FreshCommand.getFreshItem(MysticType.SWORD, null);
 			itemStack = EnchantManager.addEnchant(itemStack, EnchantManager.getEnchant("bill"), 3, false);
 			itemStack = EnchantManager.addEnchant(itemStack, EnchantManager.getEnchant("ls"), 3, false);
-			itemStack = EnchantManager.addEnchant(itemStack, EnchantManager.getEnchant("pf"), 2, false);
+			itemStack = EnchantManager.addEnchant(itemStack, EnchantManager.getEnchant("cd"), 2, false);
 			new AItemStackBuilder(itemStack).setName("&cPvP Lifesteal &7(w/RGM)");
 			kitItemMap.put(KitItem.BILL_LS_PF, itemStack);
 
 			itemStack = FreshCommand.getFreshItem(MysticType.SWORD, null);
 			itemStack = EnchantManager.addEnchant(itemStack, EnchantManager.getEnchant("ch"), 3, false);
 			itemStack = EnchantManager.addEnchant(itemStack, EnchantManager.getEnchant("ls"), 3, false);
-			itemStack = EnchantManager.addEnchant(itemStack, EnchantManager.getEnchant("stomp"), 2, false);
+			itemStack = EnchantManager.addEnchant(itemStack, EnchantManager.getEnchant("gab"), 2, false);
 			new AItemStackBuilder(itemStack).setName("&cPvP Lifesteal &7(w/Regularity)");
 			kitItemMap.put(KitItem.CH_LS, itemStack);
 
 			itemStack = FreshCommand.getFreshItem(MysticType.SWORD, null);
 			itemStack = EnchantManager.addEnchant(itemStack, EnchantManager.getEnchant("perun"), 3, false);
 			itemStack = EnchantManager.addEnchant(itemStack, EnchantManager.getEnchant("gamble"), 1, false);
-			itemStack = EnchantManager.addEnchant(itemStack, EnchantManager.getEnchant("stomp"), 3, false);
+			itemStack = EnchantManager.addEnchant(itemStack, EnchantManager.getEnchant("pun"), 3, false);
 			new AItemStackBuilder(itemStack).setName("&bTrue Damage &7(w/Regularity)");
 			kitItemMap.put(KitItem.PERUN_GAMBLE_STOMP, itemStack);
 
 			itemStack = FreshCommand.getFreshItem(MysticType.SWORD, null);
 			itemStack = EnchantManager.addEnchant(itemStack, EnchantManager.getEnchant("perun"), 3, false);
 			itemStack = EnchantManager.addEnchant(itemStack, EnchantManager.getEnchant("ch"), 3, false);
-			itemStack = EnchantManager.addEnchant(itemStack, EnchantManager.getEnchant("cd"), 2, false);
+			itemStack = EnchantManager.addEnchant(itemStack, EnchantManager.getEnchant("gab"), 2, false);
 			new AItemStackBuilder(itemStack).setName("&bTrue Damage &7(w/Regularity)");
 			kitItemMap.put(KitItem.PERUN_CHEAL_CD, itemStack);
 
