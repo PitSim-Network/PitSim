@@ -21,8 +21,6 @@ import java.util.List;
 import java.util.Map;
 
 public class TotallyLegitGemPanel extends AGUIPanel {
-
-	PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
 	public Map<Integer, Integer> slots = new HashMap<>();
 	public GemGUI gemGUI;
 
