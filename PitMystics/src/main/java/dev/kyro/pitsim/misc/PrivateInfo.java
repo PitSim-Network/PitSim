@@ -1,5 +1,5 @@
 package dev.kyro.pitsim.misc;
 
 public class PrivateInfo {
-	public static String PTERO_API_KEY = "4t1LoF4HF8cPHCDhScaXKxQkMLwnXRVBqFKvl0cAbYB0btzI";
+	public static String PTERO_API_KEY = "UrS2DSk13Dl7IQg3K1ZTDNE0oLXwKcxsLzCCoe1w8x9UoyJ5";
 }
