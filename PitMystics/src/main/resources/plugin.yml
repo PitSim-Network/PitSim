@@ -12,6 +12,7 @@ depend:
   - NoteBlockAPI
   - ProtocolLib
   - Essentials
+  - LiteBans
 commands:
   pitsim:
   ps:
