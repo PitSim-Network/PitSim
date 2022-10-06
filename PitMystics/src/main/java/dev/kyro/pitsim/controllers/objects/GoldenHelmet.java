@@ -1,5 +1,6 @@
 package dev.kyro.pitsim.controllers.objects;
 
+import de.myzelyam.api.vanish.VanishAPI;
 import de.tr7zw.nbtapi.NBTItem;
 import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.arcticapi.misc.AOutput;
@@ -45,10 +46,9 @@ public class GoldenHelmet implements Listener {
 
 	@EventHandler
 	public void onDoubleSneak(DoubleSneakEvent event) {
-
 		Player player = event.getPlayer();
 		if(getHelmet(player) == null) return;
-		ItemStack helmet = getHelmet(player);
+		if(VanishAPI.isInvisible(player)) return;
 
 		if(!abilities.containsKey(player)) generateAbility(player);
 
