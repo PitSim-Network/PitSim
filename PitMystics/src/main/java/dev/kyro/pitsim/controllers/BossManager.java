@@ -32,6 +32,7 @@ import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityTargetLivingEntityEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
@@ -285,6 +286,24 @@ public class BossManager implements Listener {
             }
         }
         return false;
+    }
+
+    @EventHandler
+    public void onVanillaAttack(EntityDamageByEntityEvent event) {
+        Entity damager = event.getDamager();
+        Entity defender = event.getEntity();
+
+        if(!(defender instanceof Player)) return;
+
+        if(PitBoss.isPitBoss((Player) defender) && damager instanceof Arrow) {
+            if(((Arrow) damager).getShooter() instanceof Player) {
+                damager = (Entity) ((Arrow) damager).getShooter();
+
+                if(PitBoss.isPitBoss((Player) damager)) {
+                    event.setCancelled(true);
+                }
+            }
+        }
     }
 
     public static void noAI(Entity bukkitEntity) {
