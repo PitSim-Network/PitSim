@@ -1,13 +1,17 @@
 package dev.kyro.pitsim.battlepass;
 
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
+import org.bukkit.ChatColor;
 import org.bukkit.event.Listener;
 import org.bukkit.inventory.ItemStack;
 
+import java.text.DecimalFormat;
 import java.util.List;
 
 public abstract class PassQuest implements Listener {
-	public String displayName;
+	public static DecimalFormat intFormat = new DecimalFormat("0.#");
+
+	private String displayName;
 	public String refName;
 	public QuestType questType;
 
@@ -30,7 +34,7 @@ public abstract class PassQuest implements Listener {
 		this.questType = questType;
 	}
 
-	public abstract ItemStack getDisplayItem(QuestLevel questLevel, double progression);
+	public abstract ItemStack getDisplayItem(QuestLevel questLevel, double progress);
 
 //	Only applies to daily quests
 	public abstract QuestLevel getDailyState();
@@ -67,6 +71,10 @@ public abstract class PassQuest implements Listener {
 	public void complete(PitPlayer pitPlayer) {
 		PassData passData = pitPlayer.getPassData(PassManager.currentPass.startDate);
 		passData.totalPoints += getQuestLevel().rewardPoints;
+	}
+
+	public String getDisplayName() {
+		return ChatColor.translateAlternateColorCodes('&', displayName);
 	}
 
 	public class QuestLevel {

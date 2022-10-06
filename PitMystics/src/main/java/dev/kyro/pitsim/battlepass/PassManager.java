@@ -26,6 +26,16 @@ public class PassManager implements Listener {
 
 	public static final int QUESTS_PER_WEEK = 6;
 
+	static {
+		new BukkitRunnable() {
+			@Override
+			public void run() {
+				updateCurrentPass();
+			}
+//		}.runTaskTimer(PitSim.INSTANCE, 0, 100);
+		}.runTaskTimer(PitSim.INSTANCE, Misc.getRunnableOffset(1) + 60 * 20, 60 * 20);
+	}
+
 	public static void registerQuest(PassQuest quest) {
 		Bukkit.getPluginManager().registerEvents(quest, PitSim.INSTANCE);
 		questList.add(quest);
@@ -34,16 +44,6 @@ public class PassManager implements Listener {
 	public static void registerPass(PitSimPass pass) {
 		pass.build();
 		pitSimPassList.add(pass);
-	}
-
-	static {
-		new BukkitRunnable() {
-			@Override
-			public void run() {
-				updateCurrentPass();
-			}
-//		}.runTaskTimer(PitSim.INSTANCE, 0, 100);
-		}.runTaskTimer(PitSim.INSTANCE, Misc.getRunnableOffset(1), 60 * 20);
 	}
 
 	@EventHandler
@@ -130,7 +130,7 @@ public class PassManager implements Listener {
 	}
 
 //	Create the passes
-	static {
+	public static void registerPasses() {
 		registerPass(new PitSimPass(getDate("9/1/2022")));
 
 		PitSimPass pitSimPass = new PitSimPass(getDate("10/1/2022"))
@@ -157,32 +157,29 @@ public class PassManager implements Listener {
 		}
 		if(!foundCurrentPass) newPass = pitSimPassList.get(pitSimPassList.size() - 1);
 
-		if(newPass == currentPass) {
-			long daysPassed = TimeUnit.DAYS.convert(Misc.convertToEST(new Date()).getTime() - currentPass.startDate.getTime(), TimeUnit.MILLISECONDS);
-			int weeksPassed = (int) (daysPassed / 7) + 1;
-			int newQuests = weeksPassed * QUESTS_PER_WEEK - currentPass.weeklyQuests.size();
-
-			List<PassQuest> possibleWeeklyQuests = PassManager.getWeeklyQuests();
-			possibleWeeklyQuests.removeAll(currentPass.weeklyQuests.keySet());
-			Collections.shuffle(possibleWeeklyQuests);
-			for(int i = 0; i < newQuests; i++) {
-				if(possibleWeeklyQuests.isEmpty()) {
-					newQuests = 0;
-					break;
-				}
-				PassQuest passQuest = possibleWeeklyQuests.remove(0);
-				System.out.println(passQuest.getWeeklyPossibleStates());
-				currentPass.weeklyQuests.put(passQuest, passQuest.getWeeklyPossibleStates().get(new Random().nextInt(passQuest.getWeeklyPossibleStates().size())));
-			}
-			if(newQuests != 0) {
-				currentPass.writeToConfig();
-				FirestoreManager.CONFIG.save();
-			}
-			return;
+		if(newPass != currentPass) {
+			currentPass = newPass;
+			loadPassData();
 		}
 
-		currentPass = newPass;
-		loadPassData();
+		long daysPassed = TimeUnit.DAYS.convert(Misc.convertToEST(new Date()).getTime() - currentPass.startDate.getTime(), TimeUnit.MILLISECONDS);
+		int weeksPassed = (int) (daysPassed / 7) + 1;
+		int newQuests = weeksPassed * QUESTS_PER_WEEK - currentPass.weeklyQuests.size();
+
+		List<PassQuest> possibleWeeklyQuests = PassManager.getWeeklyQuests();
+		possibleWeeklyQuests.removeAll(currentPass.weeklyQuests.keySet());
+		Collections.shuffle(possibleWeeklyQuests);
+		boolean addedQuests = false;
+		for(int i = 0; i < newQuests; i++) {
+			if(possibleWeeklyQuests.isEmpty()) break;
+			PassQuest passQuest = possibleWeeklyQuests.remove(0);
+			currentPass.weeklyQuests.put(passQuest, passQuest.getWeeklyPossibleStates().get(new Random().nextInt(passQuest.getWeeklyPossibleStates().size())));
+			addedQuests = true;
+		}
+		if(addedQuests) {
+			currentPass.writeToConfig();
+			FirestoreManager.CONFIG.save();
+		}
 	}
 
 //	TODO: Main server only

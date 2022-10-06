@@ -29,13 +29,13 @@ public class BotKillQuest extends PassQuest {
 	}
 
 	@Override
-	public ItemStack getDisplayItem(QuestLevel questLevel, double progression) {
+	public ItemStack getDisplayItem(QuestLevel questLevel, double progress) {
 		DecimalFormat decimalFormat = new DecimalFormat("0.#");
 		ItemStack itemStack = new AItemStackBuilder(Material.DIAMOND_SWORD)
-				.setName("&b&l" + displayName)
+				.setName("&b&l" + getDisplayName())
 				.setLore(new ALoreBuilder(
 						"&7Kill 30 bots",
-						"&7Progress: " + decimalFormat.format(progression) + "/" + decimalFormat.format(questLevel.requirement)
+						"&7Progress: " + decimalFormat.format(progress) + "/" + decimalFormat.format(questLevel.requirement)
 				))
 				.getItemStack();
 		return itemStack;

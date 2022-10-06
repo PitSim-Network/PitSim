@@ -168,6 +168,8 @@ public class PitSim extends JavaPlugin {
 		registerKillstreaks();
 		registerMegastreaks();
 		registerLeaderboards();
+		registerPassItems();
+		PassManager.registerPasses();
 		LeaderboardManager.init();
 
 		ArcticAPI.setupPlaceholderAPI("pitsim");
@@ -217,7 +219,6 @@ public class PitSim extends JavaPlugin {
 		registerKits();
 		registerMobs();
 		registerBrewingIngredients();
-		registerPassItems();
 
 		AuctionManager.onStart();
 		AuctionDisplays.onStart();
