@@ -12,6 +12,7 @@ import net.citizensnpcs.api.npc.NPC;
 import net.citizensnpcs.api.trait.trait.Equipment;
 import net.citizensnpcs.npc.ai.CitizensNavigator;
 import net.citizensnpcs.npc.skin.SkinnableEntity;
+import net.citizensnpcs.util.Util;
 import net.minecraft.server.v1_8_R3.EntityPlayer;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -91,15 +92,17 @@ public class Non {
 		}
 
 		if(npc.isSpawned()) {
-			if(count % 12 == 0) {
+			if(count % 5 == 0) {
 				pickTarget();
-				npc.getNavigator().setTarget(target, true);
+//				npc.getNavigator().setTarget(target, true);
+				target.damage(7, non);
 			}
+			if(count % 2 == 0 && target != null) Util.faceLocation(non, target.getLocation());
 		} else respawn(false);
 
 		if(target == null || !npc.isSpawned()) return;
 
-		if(count % 3 == 0 && (!traits.contains(NonTrait.NO_JUMP)) || Math.random() < 0.05) {
+		if(count % 7 == 0) {
 
 			if(npc.isSpawned()) {
 				Block underneath = non.getLocation().clone().subtract(0, 0.2, 0).getBlock();
@@ -114,7 +117,7 @@ public class Non {
 						Vector sprintVelo = target.getLocation().toVector().subtract(non.getLocation().toVector())
 								.normalize();
 
-						if(distance < Math.random() * 1.5 + 1.5) sprintVelo.multiply(-0.16).setY(0.4);
+						if(distance < Math.random() * 1.5 + 1.5) sprintVelo.multiply(0.16).setY(0.4);
 						else sprintVelo.multiply(0.4).setY(0.4);
 						non.setVelocity(sprintVelo);
 					} catch(Exception ignored) {
@@ -261,8 +264,8 @@ public class Non {
 	}
 
 	public void skin(String name) {
-		npc.data().set(NPC.PLAYER_SKIN_UUID_METADATA, name);
-		npc.data().set(NPC.PLAYER_SKIN_USE_LATEST, false);
+//		npc.data().set(NPC.PLAYER_SKIN_UUID_METADATA, name);
+//		npc.data().set(NPC.PLAYER_SKIN_USE_LATEST, false);
 		if(npc.isSpawned()) {
 			SkinnableEntity skinnable = (SkinnableEntity) npc.getEntity();
 			if(skinnable != null) {
