@@ -12,16 +12,20 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.plugin.messaging.PluginMessageListener;
+import septogeddon.pluginquery.PluginQuery;
+import septogeddon.pluginquery.api.QueryConnection;
+import septogeddon.pluginquery.api.QueryMessageListener;
+import septogeddon.pluginquery.api.QueryMessenger;
 
 import java.io.*;
 
-public class PluginMessageManager implements PluginMessageListener {
+public class PluginMessageManager implements QueryMessageListener {
     public static void sendMessage(PluginMessage message) {
 //
 //        String id = PitSim.INSTANCE.getConfig().getString("server-ID");
 //        if(id == null) return;
 
-
+        QueryMessenger messenger = PluginQuery.getMessenger();
 
         ByteArrayDataOutput out = ByteStreams.newDataOutput();
         out.writeUTF("Forward"); // So BungeeCord knows to forward it
@@ -58,13 +62,18 @@ public class PluginMessageManager implements PluginMessageListener {
         out.writeShort(msgbytes.toByteArray().length);
         out.write(msgbytes.toByteArray());
 
-        Player p = Iterables.getFirst(Bukkit.getOnlinePlayers(), null);
-        assert p != null;
-        p.sendPluginMessage(PitSim.INSTANCE, "BungeeCord", out.toByteArray());
+        if (!messenger.broadcastQuery("BungeeCord", out.toByteArray())) {
+            // it will return false if there is no active connections
+            throw new IllegalStateException("no active connections");
+        }
+
+//        Player p = Iterables.getFirst(Bukkit.getOnlinePlayers(), null);
+//        assert p != null;
+//        p.sendPluginMessage(PitSim.INSTANCE, "BungeeCord", out.toByteArray());
     }
 
     @Override
-    public void onPluginMessageReceived(String channel, Player player, byte[] message) {
+    public void onQueryReceived(QueryConnection connection, String channel, byte[] message) {
         try {
             if (!channel.equals("BungeeCord")) {
                 return;

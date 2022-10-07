@@ -9,6 +9,7 @@ import com.sk89q.worldedit.EditSession;
 import com.xxmicloxx.NoteBlockAPI.songplayer.EntitySongPlayer;
 import dev.kyro.arcticapi.ArcticAPI;
 import dev.kyro.arcticapi.commands.AMultiCommand;
+import dev.kyro.arcticapi.data.AConfig;
 import dev.kyro.arcticapi.data.AData;
 import dev.kyro.arcticapi.hooks.AHook;
 import dev.kyro.arcticapi.misc.AOutput;
@@ -67,6 +68,9 @@ import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.scheduler.BukkitRunnable;
+import septogeddon.pluginquery.PluginQuery;
+import septogeddon.pluginquery.api.QueryMessenger;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -87,6 +91,8 @@ public class PitSim extends JavaPlugin {
 
 	public static AData playerList;
 
+	public static String serverName;
+
 	public static PteroClient client = PteroBuilder.createClient("***REMOVED***", PrivateInfo.PTERO_KEY);
 
 	@Override
@@ -97,7 +103,6 @@ public class PitSim extends JavaPlugin {
 
 		loadConfig();
 
-		getServer().getMessenger().registerIncomingPluginChannel(this, "BungeeCord", new PluginMessageManager());
 		getServer().getMessenger().registerOutgoingPluginChannel(this, "BungeeCord");
 		adventure = BukkitAudiences.create(this);
 		TaintedWell.onStart();
@@ -105,6 +110,8 @@ public class PitSim extends JavaPlugin {
 		ScoreboardManager.init();
 
 		ArcticAPI.configInit(this, "prefix", "error-prefix");
+
+		serverName = AConfig.getString("server");
 		playerList = new AData("player-list", "", false);
 
 		RegisteredServiceProvider<LuckPerms> provider = Bukkit.getServicesManager().getRegistration(LuckPerms.class);
@@ -154,6 +161,9 @@ public class PitSim extends JavaPlugin {
 			NoteBlockAPI = false;
 			return;
 		}
+
+		QueryMessenger messenger = PluginQuery.getMessenger();
+		messenger.getEventBus().registerListener(new PluginMessageManager());
 
 		registerUpgrades();
 		registerPerks();
@@ -212,6 +222,13 @@ public class PitSim extends JavaPlugin {
 
 		AuctionManager.onStart();
 		AuctionDisplays.onStart();
+
+		new BukkitRunnable() {
+			@Override
+			public void run() {
+				ProxyMessaging.sendStartup();
+			}
+		}.runTaskLater(this, 20 * 10);
 	}
 
 	@Override
@@ -509,6 +526,7 @@ public class PitSim extends JavaPlugin {
 		getServer().getPluginManager().registerEvents(new AuctionDisplays(), this);
 		getServer().getPluginManager().registerEvents(new AuctionManager(), this);
 		getServer().getPluginManager().registerEvents(new ScoreboardManager(), this);
+		getServer().getPluginManager().registerEvents(new ProxyMessaging(), this);
 	}
 	public void registerBoosters() {
 		BoosterManager.registerBooster(new XPBooster());

@@ -15,11 +15,14 @@ public class ATestCommand implements CommandExecutor {
 	@Override
 	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
 
-		if(args.length > 0) {
-			PitPlayer pitPlayer = new PitPlayer(Bukkit.getOfflinePlayer(args[0]).getUniqueId());
-			pitPlayer.save();
-			return false;
-		}
+
+		new PluginMessage().writeString("QUEUE").writeString(((Player) sender).getName()).send();
+
+//		if(args.length > 0) {
+//			PitPlayer pitPlayer = new PitPlayer(Bukkit.getOfflinePlayer(args[0]).getUniqueId());
+//			pitPlayer.save();
+//			return false;
+//		}
 
 
 

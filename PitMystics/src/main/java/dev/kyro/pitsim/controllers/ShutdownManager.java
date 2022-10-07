@@ -28,6 +28,9 @@ public class ShutdownManager {
 				if(counter >= 20) {
 					counter = 0;
 					if(seconds > 0) {
+						if(seconds == 2 && minutes == 0) {
+							ProxyMessaging.sendShutdown();
+						}
 						seconds--;
 					} else {
 						if(minutes > 0) {
@@ -42,13 +45,13 @@ public class ShutdownManager {
 				if(seconds == 0 && counter == 1) {
 					if(minutes == 1) {
 						disableEnderChest();
-						Bukkit.broadcastMessage(ChatColor.RED + "" + ChatColor.BOLD + "SERVER RESTARTING IN "
+						Bukkit.broadcastMessage(ChatColor.RED + "" + ChatColor.BOLD + "INSTANCE SHUTDOWN IN "
 								+ minutes + " MINUTE!");
 					} else if(minutes != 0) {
-						Bukkit.broadcastMessage(ChatColor.RED + "" + ChatColor.BOLD + "SERVER RESTARTING IN "
+						Bukkit.broadcastMessage(ChatColor.RED + "" + ChatColor.BOLD + "INSTANCE SHUTDOWN IN "
 								+ minutes + " MINUTES!");
 					} else {
-						Bukkit.broadcastMessage(ChatColor.RED + "" + ChatColor.BOLD + "SERVER RESTARTING!");
+						Bukkit.broadcastMessage(ChatColor.RED + "" + ChatColor.BOLD + "INSTANCE SHUTDOWN!");
 					}
 					for(Player onlinePlayer : Bukkit.getOnlinePlayers()) {
 						Sounds.CTF_FLAG_STOLEN.play(onlinePlayer);
