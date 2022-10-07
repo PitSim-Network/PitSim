@@ -32,7 +32,7 @@ public class UpgradeManager implements Listener {
 		if(NonManager.getNon(player) != null) return false;
 		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
 
-		return pitPlayer.renownUpgrades.get(upgrade.refName) > 0;
+		return pitPlayer.renownUpgrades.getOrDefault(upgrade.refName, 0) > 0;
 	}
 
 	public static boolean hasUpgrade(Player player, String refName) {
