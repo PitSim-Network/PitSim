@@ -70,5 +70,5 @@ public class PrivateInfo {
 
 
 
-    public static final String PTERO_KEY = "im4F1vVHTJKIjhRQcvJ8CAdOX3aCt99JmpukhFGbzQXI5BOQ";
+    public static final String PTERO_KEY = "VILPyBXQfdJUEJEd4HUUbvTKsyDfbVD8KjYTOk2DMmyPfxCD";
 }

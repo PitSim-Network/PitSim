@@ -1,6 +1,7 @@
 package dev.kyro.pitsim.controllers;
 
 import com.mattmalec.pterodactyl4j.client.entities.ClientServer;
+import dev.kyro.arcticapi.data.AConfig;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.misc.Sounds;
 import org.bukkit.Bukkit;
@@ -63,7 +64,7 @@ public class ShutdownManager {
 	}
 
 	public static void execute() {
-		PitSim.client.retrieveServerByIdentifier("6f70808a")
+		PitSim.client.retrieveServerByIdentifier(AConfig.getString("pterodactyl-id"))
 				.flatMap(ClientServer::restart).executeAsync();
 	}
 
