@@ -65,7 +65,7 @@ public enum TutorialMessage {
 	PRESTIGE8("&eAlright, now go to the &f\"Prestige and Renown\" &evillager and prestige!", "villager and prestige!"),
 	TENACTITY1("&eCongratulations, now use your &fRenown &eto purchase &cTenacity I&e from the Renown shop.", "Congratulations, now use your"),
 	FINAL1("&eThis concludes the PitSim tutorial!", "This concludes the PitSim tutorial!"),
-	FINAL2("&eIf you're still confused, join our community Discord at &f&ndiscord.gg/pitsim", "still confused, join our community Discord at"),
+	FINAL2("&eIf you're still confused, join our community Discord at &f&ndiscord.pitsim.net", "still confused, join our community Discord at"),
 	FINAL3("&eWith that being said, have fun on your PitSim adventure!", "With that being said, have fun on your PitSim adventure!"),
 
 	SPACER("&8&m------------------------------------", "------------------------------------");
