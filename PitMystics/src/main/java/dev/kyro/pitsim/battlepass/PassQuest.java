@@ -20,10 +20,11 @@ public abstract class PassQuest implements Listener {
 	static {
 //		Quest ideas
 //		daily - player kills, bot kills, something darkzone
-//		weekly quests (grinding) - grind xp, grind gold, hours played, prestige, kill x (mobs), player kills, bot kills, ubers completed
-//		weekly quests (darkzone) - brew potions, kill bosses
+//		weekly quests (grinding) - grind xp, grind gold, hours played, prestige, kill x (mobs), player kills, bot kills/damage,
+//		ubers completed, go on a streak of a x times, harvest souls, do true damage to players/bots (different pick one)
+//		weekly quests (darkzone) - brew potions, kill bosses, incinerate drops
 //		weekly quests (anti-progression) - use helmet gold, win auctions
-//		weekly quests (misc) - earn guild rep, mlb hits
+//		weekly quests (misc) - earn guild rep, mlb hits, upgrade renown
 //		weekly quests (funny) - punch x unique players, kill a player with the judgement hopper,
 //		attack the pit blob x times, kill players while not wearing a chestplate, hit megastreak without armor
 //		weekly quests (enchant combinations) - Streak with unpopular enchants (don't include exe) Sweaty/Moct (cb damage, shark, beserker, king buster).
