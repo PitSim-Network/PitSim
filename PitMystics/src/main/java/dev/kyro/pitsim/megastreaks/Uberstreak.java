@@ -231,7 +231,7 @@ public class Uberstreak extends Megastreak {
 			PitPlayer pitPlayer2 = PitPlayer.getPitPlayer(player);
 			if(pitPlayer2.streaksDisabled) continue;
 			String message2 = ChatColor.translateAlternateColorCodes('&',
-					"&c&lMEGASTREAK!&7 %luckperms_prefix%" + pitPlayer.player.getDisplayName() + "&7 activated &d&lUBERSTREAK&7!");
+					"&c&lMEGASTREAK! %luckperms_prefix%" + pitPlayer.player.getDisplayName() + "&7 activated &d&lUBERSTREAK&7!");
 
 			player.sendMessage(PlaceholderAPI.setPlaceholders(pitPlayer.player, message2));
 		}
