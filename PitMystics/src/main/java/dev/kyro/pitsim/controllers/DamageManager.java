@@ -16,7 +16,6 @@ import dev.kyro.pitsim.events.KillEvent;
 import dev.kyro.pitsim.events.OofEvent;
 import dev.kyro.pitsim.misc.*;
 import dev.kyro.pitsim.misc.tainted.CorruptedFeather;
-import dev.kyro.pitsim.perks.AssistantToTheStreaker;
 import dev.kyro.pitsim.upgrades.DivineIntervention;
 import dev.kyro.pitsim.upgrades.LifeInsurance;
 import me.clip.placeholderapi.PlaceholderAPI;
@@ -414,11 +413,6 @@ public class DamageManager implements Listener {
 						DamageManager.fakeKill(aEvent, assistPlayer, dead, false);
 						continue;
 					}
-				}
-
-				PitPlayer pitPlayer = PitPlayer.getPitPlayer(assistPlayer);
-				if(pitPlayer.hasPerk(AssistantToTheStreaker.INSTANCE)) {
-					pitPlayer.incrementAssist(assistPercent);
 				}
 
 				int xp = (int) Math.ceil(20 * assistPercent);

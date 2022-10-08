@@ -120,7 +120,7 @@ public class Highlander extends Megastreak {
 		PitPlayer pitPlayer = PitPlayer.getPitPlayer(healEvent.player);
 		if(pitPlayer != this.pitPlayer) return;
 		if(pitPlayer.megastreak.isOnMega() && pitPlayer.megastreak.getClass() == Highlander.class) {
-			int ks = (int) Math.floor(pitPlayer.getKills());
+			int ks = pitPlayer.getKills();
 			healEvent.multipliers.add(1 / ((ks - 50) / 100D + 1));
 		}
 	}
