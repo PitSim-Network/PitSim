@@ -20,12 +20,17 @@ public abstract class PassQuest implements Listener {
 	static {
 //		Quest ideas
 //		daily - player kills, bot kills, something darkzone
-//		weekly quests (grinding) - grind xp, grind gold, hours played, prestige, kill x (mobs)
+//		weekly quests (grinding) - grind xp, grind gold, hours played, prestige, kill x (mobs), player kills, bot kills, ubers completed
 //		weekly quests (darkzone) - brew potions, kill bosses
 //		weekly quests (anti-progression) - use helmet gold, win auctions
 //		weekly quests (misc) - earn guild rep, mlb hits
-//		weekly quests (funny) - punch x unique players, kill a player with the judgement hopper, attack the pit blob x times
-//		weekly quests (dumb contracts) - kill players while not wearing a chestplate, hit megastreak without armor
+//		weekly quests (funny) - punch x unique players, kill a player with the judgement hopper,
+//		attack the pit blob x times, kill players while not wearing a chestplate, hit megastreak without armor
+//		weekly quests (enchant combinations) - Streak with unpopular enchants (don't include exe) Sweaty/Moct (cb damage, shark, beserker, king buster).
+
+
+//		ideas
+//		maybe add a few useless enchants and items to pair with quest
 	}
 
 	public PassQuest(String displayName, String refName, QuestType questType) {
