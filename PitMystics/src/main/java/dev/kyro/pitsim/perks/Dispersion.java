@@ -41,7 +41,7 @@ public class Dispersion extends PitPerk {
 	public List<String> getDescription() {
 		return new ALoreBuilder("&dDisperse " + getChance() + "% &7of the enchants",
 				"&7on your opponent's attacks for",
-				"&7for 4 seconds while in middle").getLore();
+				"&7while in middle").getLore();
 	}
 
 	public static int getRange() {
