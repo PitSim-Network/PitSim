@@ -13,6 +13,7 @@ import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.events.HealEvent;
 import dev.kyro.pitsim.events.KillEvent;
 import dev.kyro.pitsim.events.OofEvent;
+import dev.kyro.pitsim.megastreaks.RNGesus;
 import dev.kyro.pitsim.megastreaks.Uberstreak;
 import dev.kyro.pitsim.misc.Misc;
 import dev.kyro.pitsim.misc.Sounds;
@@ -71,6 +72,13 @@ public class PhoenixAbility extends HelmetAbility {
 	public void onProc() {
 		ItemStack goldenHelmet = GoldenHelmet.getHelmet(player);
 
+		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
+		if(pitPlayer.megastreak.getClass() == RNGesus.class) {
+			AOutput.error(player, "&c&lERROR!&7 You cannot do this while &e&lRNGESUS&7 is equipped");
+			Sounds.NO.play(player);
+			return;
+		}
+
 		if(alreadyActivatedList.contains(player.getUniqueId())) {
 			AOutput.error(player, "&cAbility has already been used!");
 			Sounds.NO.play(player);
@@ -86,7 +94,6 @@ public class PhoenixAbility extends HelmetAbility {
 
 		Misc.applyPotionEffect(player, PotionEffectType.INCREASE_DAMAGE, 200, 0, true, false);
 
-		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
 		pitPlayer.heal(player.getMaxHealth());
 		pitPlayer.heal(player.getMaxHealth() * 2, HealEvent.HealType.ABSORPTION, (int) player.getMaxHealth() * 2);
 		alreadyActivatedList.add(player.getUniqueId());
