@@ -117,8 +117,15 @@ public class Non {
 						Vector sprintVelo = target.getLocation().toVector().subtract(non.getLocation().toVector())
 								.normalize();
 
-						if(distance < Math.random() * 1.5 + 1.5) sprintVelo.multiply(0.16).setY(0.2);
-						else sprintVelo.multiply(0.4).setY(0.2);
+						double yVelo = 0.1;
+						double xMultiplier = 1;
+						if(traits.contains(NonTrait.NO_JUMP)) {
+							if(Math.random() < 0.1) {
+								yVelo = 0.4;
+							} else xMultiplier = 1.3;
+						} else yVelo = 0.4;
+						if(distance < Math.random() * 1.5 + 1.5) sprintVelo.multiply(0.16 * xMultiplier).setY(yVelo);
+						else sprintVelo.multiply(0.4 * xMultiplier).setY(yVelo);
 						non.setVelocity(sprintVelo);
 					} catch(Exception ignored) {
 						System.out.println("error with non targets (im assuming)");
@@ -238,7 +245,7 @@ public class Non {
 	public void pickTraits() {
 
 
-		if(Math.random() < 0.7) {
+		if(Math.random() < 0.8) {
 
 			traits.add(NonTrait.NO_JUMP);
 		}
