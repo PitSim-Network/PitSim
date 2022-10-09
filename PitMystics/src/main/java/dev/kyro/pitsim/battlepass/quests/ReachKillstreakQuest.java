@@ -4,40 +4,35 @@ import dev.kyro.arcticapi.builders.AItemStackBuilder;
 import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.arcticapi.misc.AUtil;
 import dev.kyro.pitsim.battlepass.PassQuest;
-import dev.kyro.pitsim.controllers.PlayerManager;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
-import dev.kyro.pitsim.events.KillEvent;
 import dev.kyro.pitsim.misc.Misc;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.EventPriority;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class KillPlayersQuest extends PassQuest {
+public class ReachKillstreakQuest extends PassQuest {
+	public static ReachKillstreakQuest INSTANCE;
+	public static final int KILLSTREAK_REQUIREMENT = 100;
 
-	public KillPlayersQuest() {
-		super("&c&l1v1 Legend", "killplayers", QuestType.WEEKLY);
+	public ReachKillstreakQuest() {
+		super("&e&lGod Tier Streaker", "reachkillstreak", QuestType.WEEKLY);
+		INSTANCE = this;
 	}
 
-	@EventHandler(priority = EventPriority.HIGHEST)
-	public void onKill(KillEvent killEvent) {
-		if(!killEvent.isKillerPlayer() || !killEvent.isDeadPlayer()) return;
-		if(!PlayerManager.isRealPlayer(killEvent.getKillerPlayer()) || !canProgressQuest(killEvent.getKillerPitPlayer())
-				|| !PlayerManager.isRealPlayer(killEvent.getDeadPlayer())) return;
-
-		progressQuest(killEvent.getKillerPitPlayer(), 1);
+	public void endStreak(PitPlayer pitPlayer, int streak) {
+		if(streak >= KILLSTREAK_REQUIREMENT) progressQuest(pitPlayer, 1);
 	}
 
 	@Override
 	public ItemStack getDisplayItem(PitPlayer pitPlayer, QuestLevel questLevel, double progress) {
-		ItemStack itemStack = new AItemStackBuilder(Material.DIAMOND_SWORD)
+		ItemStack itemStack = new AItemStackBuilder(Material.BLAZE_POWDER)
 				.setName(getDisplayName())
 				.setLore(new ALoreBuilder(
-						"&7Kill &c" + Misc.formatLarge(questLevel.getRequirement(pitPlayer)) + " &7players (not bots)",
+						"&7Reach a killstreak of at least &e" + KILLSTREAK_REQUIREMENT,
+						"&e" + Misc.formatLarge(questLevel.getRequirement(pitPlayer)) + " &7times",
 						"",
 						"&7Progress: &3" + Misc.formatLarge(progress) + "&7/&3" + Misc.formatLarge(questLevel.getRequirement(pitPlayer)) + " &8[" +
 								AUtil.createProgressBar("|", ChatColor.AQUA, ChatColor.GRAY, 20, progress / questLevel.getRequirement(pitPlayer)) + "&8]",

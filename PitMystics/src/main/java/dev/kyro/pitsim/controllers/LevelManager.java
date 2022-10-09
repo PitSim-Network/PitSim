@@ -3,6 +3,8 @@ package dev.kyro.pitsim.controllers;
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.arcticapi.misc.AUtil;
 import dev.kyro.pitsim.PitSim;
+import dev.kyro.pitsim.battlepass.quests.GrindGoldQuest;
+import dev.kyro.pitsim.battlepass.quests.GrindXPQuest;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.killstreaks.NoKillstreak;
 import dev.kyro.pitsim.megastreaks.Overdrive;
@@ -22,10 +24,12 @@ public class LevelManager {
 	public static void addXP(Player player, long xp) {
 		if(!(NonManager.getNon(player) == null)) return;
 		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
+		long addedXP = xp;
 		while(xp > 0) {
-			if(!(pitPlayer.level < 120)) {
+			if(pitPlayer.level >= 120) {
 				pitPlayer.remainingXP = 0;
-				return;
+				addedXP -= xp;
+				break;
 			}
 			if(pitPlayer.remainingXP - xp <= 0) {
 				xp -= pitPlayer.remainingXP;
@@ -37,6 +41,7 @@ public class LevelManager {
 			}
 			pitPlayer.updateXPBar();
 		}
+		GrindXPQuest.INSTANCE.gainXP(pitPlayer, addedXP);
 	}
 
 	public static void incrementLevel(Player player) {
@@ -66,9 +71,9 @@ public class LevelManager {
 		if(NonManager.getNon(player) != null) return;
 		if(HopperManager.isHopper(player)) return;
 
-
 		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
 
+		GrindGoldQuest.INSTANCE.gainGold(pitPlayer, amount);
 		pitPlayer.goldGrinded += amount;
 		PitSim.VAULT.depositPlayer(player, amount);
 	}

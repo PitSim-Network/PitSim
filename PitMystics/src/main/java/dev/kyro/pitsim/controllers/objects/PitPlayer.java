@@ -6,6 +6,7 @@ import dev.kyro.arcticapi.data.APlayerData;
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.battlepass.PassData;
+import dev.kyro.pitsim.battlepass.quests.ReachKillstreakQuest;
 import dev.kyro.pitsim.brewing.BrewingManager;
 import dev.kyro.pitsim.brewing.objects.BrewingSession;
 import dev.kyro.pitsim.controllers.*;
@@ -421,6 +422,7 @@ public class PitPlayer {
 
 	@Exclude
 	public void endKillstreak() {
+		ReachKillstreakQuest.INSTANCE.endStreak(this, kills);
 		megastreak.reset();
 		for(Killstreak killstreak : killstreaks) {
 			killstreak.reset(player);

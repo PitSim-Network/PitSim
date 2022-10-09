@@ -5,12 +5,9 @@ import org.bukkit.ChatColor;
 import org.bukkit.event.Listener;
 import org.bukkit.inventory.ItemStack;
 
-import java.text.DecimalFormat;
 import java.util.List;
 
 public abstract class PassQuest implements Listener {
-	public static DecimalFormat intFormat = new DecimalFormat("0.#");
-
 	private String displayName;
 	public String refName;
 	public QuestType questType;
@@ -20,9 +17,8 @@ public abstract class PassQuest implements Listener {
 	static {
 //		Quest ideas
 //		daily - player kills, bot kills, something darkzone
-//		weekly quests (grinding) - grind xp, grind gold, hours played, prestige, kill x (mobs), player kills, bot kills/damage,
-//		ubers completed, go on a streak of a x times, harvest souls, do true damage to players/bots (different pick one)
-//		weekly quests (darkzone) - brew potions, kill bosses, incinerate drops
+//		weekly quests (grinding) - hours played, prestige, kill x (mobs), player kills, bot kills/damage
+//		weekly quests (darkzone) - brew potions, kill bosses, incinerate drops, harvest souls
 //		weekly quests (anti-progression) - use helmet gold, win auctions
 //		weekly quests (misc) - earn guild rep, mlb hits, upgrade renown
 //		weekly quests (funny) - punch x unique players, kill a player with the judgement hopper,
@@ -42,13 +38,17 @@ public abstract class PassQuest implements Listener {
 		this.questType = questType;
 	}
 
-	public abstract ItemStack getDisplayItem(QuestLevel questLevel, double progress);
+	public abstract ItemStack getDisplayItem(PitPlayer pitPlayer, QuestLevel questLevel, double progress);
 
 //	Only applies to daily quests
 	public abstract QuestLevel getDailyState();
 
 //	Only applies to weekly quests
 	public abstract List<QuestLevel> getWeeklyPossibleStates();
+
+//	Multiplier to specific players requirement (would not advise making this number ever go down over time
+//	as the player could then have the quest jump from incomplete to complete)
+	public abstract double getMultiplier(PitPlayer pitPlayer);
 
 	public QuestLevel getQuestLevel() {
 		if(questType == QuestType.DAILY) return getDailyState();
@@ -60,16 +60,16 @@ public abstract class PassQuest implements Listener {
 		if(questType == QuestType.WEEKLY && !PassManager.currentPass.weeklyQuests.containsKey(this)) return false;
 
 		double progression = passData.questCompletion.getOrDefault(refName, 0.0);
-		return progression < getQuestLevel().requirement;
+		return progression < getQuestLevel().getRequirement(pitPlayer);
 	}
 
 	public void progressQuest(PitPlayer pitPlayer, double amount) {
 		if(!canProgressQuest(pitPlayer)) return;
 		PassData passData = pitPlayer.getPassData(PassManager.currentPass.startDate);
 		double newValue = passData.questCompletion.getOrDefault(refName, 0.0) + amount;
-		if(newValue >= getQuestLevel().requirement) {
+		if(newValue >= getQuestLevel().getRequirement(pitPlayer)) {
 			complete(pitPlayer);
-			passData.questCompletion.put(refName, getQuestLevel().requirement);
+			passData.questCompletion.put(refName, Double.MAX_VALUE);
 			return;
 		}
 		passData.questCompletion.put(refName, newValue);
@@ -88,12 +88,16 @@ public abstract class PassQuest implements Listener {
 	public class QuestLevel {
 		public int rewardIndex = nextRewardIndex++;
 
-		public double requirement;
+		private double requirement;
 		public int rewardPoints;
 
 		public QuestLevel(double requirement, int rewardPoints) {
 			this.requirement = requirement;
 			this.rewardPoints = rewardPoints;
+		}
+
+		public double getRequirement(PitPlayer pitPlayer) {
+			return requirement * getMultiplier(pitPlayer);
 		}
 	}
 

@@ -82,7 +82,8 @@ public class QuestPanel extends AGUIPanel {
 			PassQuest toDisplay = displayList.get(i);
 			int slot = dailyQuestSlots.get(i);
 
-			ItemStack itemStack = toDisplay.getDisplayItem(toDisplay.getDailyState(), PassManager.getProgression(passGUI.pitPlayer, toDisplay));
+			ItemStack itemStack = toDisplay.getDisplayItem(passGUI.pitPlayer, toDisplay.getDailyState(),
+					PassManager.getProgression(passGUI.pitPlayer, toDisplay));
 			ItemMeta itemMeta = itemStack.getItemMeta();
 			itemMeta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
 			itemStack.setItemMeta(itemMeta);
@@ -103,8 +104,13 @@ public class QuestPanel extends AGUIPanel {
 		for(int i = 0; i < displayList.size(); i++) {
 			PassQuest toDisplay = displayList.get(i);
 			int slot = weeklyQuestSlots.get(i);
-			getInventory().setItem(slot, toDisplay.getDisplayItem(PassManager.currentPass.weeklyQuests.get(toDisplay),
-					PassManager.getProgression(passGUI.pitPlayer, toDisplay)));
+
+			ItemStack itemStack = toDisplay.getDisplayItem(passGUI.pitPlayer, PassManager.currentPass.weeklyQuests.get(toDisplay),
+					PassManager.getProgression(passGUI.pitPlayer, toDisplay));
+			ItemMeta itemMeta = itemStack.getItemMeta();
+			itemMeta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
+			itemStack.setItemMeta(itemMeta);
+			getInventory().setItem(slot, itemStack);
 		}
 	}
 
