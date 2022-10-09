@@ -63,10 +63,7 @@ public class LevelManager {
 	}
 
 	public static void addGold(Player player, int amount) {
-		if(NonManager.getNon(player) != null) return;
-		if(HopperManager.isHopper(player)) return;
-
-
+		if(!PlayerManager.isRealPlayerTemp(player)) return;
 		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
 
 		pitPlayer.goldGrinded += amount;
@@ -74,7 +71,7 @@ public class LevelManager {
 	}
 
 	public static void addGoldReq(Player player, int amount) {
-		if(NonManager.getNon(player) != null) return;
+		if(!PlayerManager.isRealPlayerTemp(player)) return;
 		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
 
 		pitPlayer.goldGrinded += amount;

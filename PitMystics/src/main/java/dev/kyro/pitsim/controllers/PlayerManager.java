@@ -173,6 +173,10 @@ public class PlayerManager implements Listener {
 		}.runTaskTimer(PitSim.INSTANCE, Misc.getRunnableOffset(1), 60 * 20);
 	}
 
+	public static boolean isRealPlayerTemp(Player player) {
+		return Bukkit.getOnlinePlayers().contains(player);
+	}
+
 	@EventHandler(priority = EventPriority.MONITOR)
 	public void onClick2(PlayerInteractEvent event) {
 		if(event.getAction() != Action.RIGHT_CLICK_AIR && event.getAction() != Action.RIGHT_CLICK_BLOCK) return;
