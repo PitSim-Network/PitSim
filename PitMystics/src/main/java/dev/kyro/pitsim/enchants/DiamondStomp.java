@@ -15,6 +15,7 @@ public class DiamondStomp extends PitEnchant {
 	public DiamondStomp() {
 		super("Diamond Stomp", false, ApplyType.MELEE,
 				"diamondstomp", "stomp", "ds", "dstomp", "diamond-stomp");
+		isUncommonEnchant = true;
 	}
 
 	@EventHandler
@@ -41,7 +42,6 @@ public class DiamondStomp extends PitEnchant {
 	}
 
 	public int getDamage(int enchantLvl) {
-
-		return (int) (Math.pow(enchantLvl, 2.15) * 2 + 4);
+		return enchantLvl * 8 + 6;
 	}
 }

@@ -178,17 +178,17 @@ public class PrestigeValues {
 		prestigeMap.put(47, new PrestigeInfo(47, 450, 24_000_000, 600, 70, "&1"));
 		prestigeMap.put(48, new PrestigeInfo(48, 475, 26_000_000, 700, 80, "&1"));
 		prestigeMap.put(49, new PrestigeInfo(49, 500, 28_000_000, 1000, 100, "&1"));
-		prestigeMap.put(50, new PrestigeInfo(50, 5000, 50_000_000, 5000, 300, "&2"));
-		prestigeMap.put(51, new PrestigeInfo(51, 1000, 20_000_000, 2600, 100, "&2"));
-		prestigeMap.put(52, new PrestigeInfo(52, 1500, 30_000_000, 2700, 100, "&2"));
-		prestigeMap.put(53, new PrestigeInfo(53, 2000, 40_000_000, 2800, 100, "&2"));
-		prestigeMap.put(54, new PrestigeInfo(54, 2250, 45_000_000, 2900, 100, "&2"));
-		prestigeMap.put(55, new PrestigeInfo(55, 5000, 50_000_000, 3000, 100, "&0"));
-		prestigeMap.put(56, new PrestigeInfo(56, 15_000, 60_000_000, 3500, 120, "&0"));
-		prestigeMap.put(57, new PrestigeInfo(57, 30_000, 70_000_000, 4500, 120, "&0"));
-		prestigeMap.put(58, new PrestigeInfo(58, 45_000, 85_000_000, 5500, 120, "&0"));
-		prestigeMap.put(59, new PrestigeInfo(59, 60_000, 100_000_000, 6500, 120, "&0"));
-		prestigeMap.put(60, new PrestigeInfo(60, 75_000, 0, 0, 120, "&4"));
+		prestigeMap.put(50, new PrestigeInfo(50, 5_000, 50_000_000, 5000, 300, "&2"));
+		prestigeMap.put(51, new PrestigeInfo(51, 6_000, 20_000_000, 2600, 100, "&2"));
+		prestigeMap.put(52, new PrestigeInfo(52, 7_000, 30_000_000, 2700, 100, "&2"));
+		prestigeMap.put(53, new PrestigeInfo(53, 8_000, 40_000_000, 2800, 100, "&2"));
+		prestigeMap.put(54, new PrestigeInfo(54, 9_000, 45_000_000, 2900, 100, "&2"));
+		prestigeMap.put(55, new PrestigeInfo(55, 25_000, 50_000_000, 3000, 100, "&0"));
+		prestigeMap.put(56, new PrestigeInfo(56, 40_000, 60_000_000, 3500, 120, "&0"));
+		prestigeMap.put(57, new PrestigeInfo(57, 55_000, 70_000_000, 4500, 120, "&0"));
+		prestigeMap.put(58, new PrestigeInfo(58, 70_000, 85_000_000, 5500, 120, "&0"));
+		prestigeMap.put(59, new PrestigeInfo(59, 85_000, 100_000_000, 6500, 120, "&0"));
+		prestigeMap.put(60, new PrestigeInfo(60, 100_000, 0, 0, 120, "&4"));
 
 		for(int i = 0; i < PrestigeValues.MAX_PRESTIGE + 1; i++) {
 			PrestigeInfo prestigeInfo = getPrestigeInfo(i);

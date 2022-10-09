@@ -88,8 +88,8 @@ public class SpawnNonSequence extends TutorialSequence {
 	}
 
 	public void skin(NPC npc, String name) {
-		npc.data().set(NPC.PLAYER_SKIN_UUID_METADATA, name);
-		npc.data().set(NPC.PLAYER_SKIN_USE_LATEST, false);
+//		npc.data().set(NPC.PLAYER_SKIN_UUID_METADATA, name);
+//		npc.data().set(NPC.PLAYER_SKIN_USE_LATEST, false);
 		if(npc.isSpawned()) {
 			SkinnableEntity skinnable = (SkinnableEntity) npc.getEntity();
 			if(skinnable != null) {

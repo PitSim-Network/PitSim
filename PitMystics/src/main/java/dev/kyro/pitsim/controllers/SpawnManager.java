@@ -22,7 +22,9 @@ import dev.kyro.pitsim.misc.Sounds;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.World;
 import org.bukkit.entity.Arrow;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -37,7 +39,9 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class SpawnManager implements Listener {
@@ -54,6 +58,21 @@ public class SpawnManager implements Listener {
 						}
 					}
 				});
+
+		new BukkitRunnable() {
+			@Override
+			public void run() {
+				for(World world : Bukkit.getWorlds()) {
+					List<Entity> toRemove = new ArrayList<>();
+					for(Entity entity : world.getEntities()) {
+						if(!(entity instanceof Arrow)) continue;
+						if(!SpawnManager.isInSpawn(entity.getLocation())) continue;
+						toRemove.add(entity);
+					}
+					toRemove.forEach(Entity::remove);
+				}
+			}
+		}.runTaskTimer(PitSim.INSTANCE, 0L, 20);
 	}
 
 	@EventHandler

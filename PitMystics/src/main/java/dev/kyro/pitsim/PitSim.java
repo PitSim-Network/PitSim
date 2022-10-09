@@ -44,6 +44,7 @@ import dev.kyro.pitsim.misc.*;
 import dev.kyro.pitsim.misc.tainted.BloodyHeart;
 import dev.kyro.pitsim.misc.tainted.SyntheticCube;
 import dev.kyro.pitsim.perks.*;
+import dev.kyro.pitsim.perks.Dispersion;
 import dev.kyro.pitsim.pitmaps.BiomesMap;
 import dev.kyro.pitsim.placeholders.*;
 import dev.kyro.pitsim.tutorial.MessageManager;
@@ -347,12 +348,14 @@ public class PitSim extends JavaPlugin {
 		PerkManager.registerUpgrade(new CounterJanitor());
 		PerkManager.registerUpgrade(new Telekinesis());
 //		PerkManager.registerUpgrade(new Regenerative());
+		PerkManager.registerUpgrade(new JewelHunter());
+		PerkManager.registerUpgrade(new Dispersion());
 	}
 
 	private void registerKillstreaks() {
 		PerkManager.registerKillstreak(new NoKillstreak());
 
-		PerkManager.registerKillstreak(new Dispersion());
+//		PerkManager.registerKillstreak(new Dispersion());
 		PerkManager.registerKillstreak(new Explicious());
 		PerkManager.registerKillstreak(new AssuredStrike());
 		PerkManager.registerKillstreak(new Leech());

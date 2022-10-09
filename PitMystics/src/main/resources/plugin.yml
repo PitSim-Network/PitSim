@@ -13,6 +13,7 @@ depend:
   - ProtocolLib
   - Essentials
   - PitRemakeDependencies
+  - LiteBans
 commands:
   pitsim:
   ps:

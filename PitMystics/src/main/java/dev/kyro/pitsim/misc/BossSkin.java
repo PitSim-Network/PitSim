@@ -1,7 +1,6 @@
 package dev.kyro.pitsim.misc;
 
 import net.citizensnpcs.api.npc.NPC;
-import org.bukkit.Location;
 
 public class BossSkin {
 
@@ -14,7 +13,7 @@ public class BossSkin {
     }
 
     public void skin() {
-        this.npc.data().setPersistent(NPC.PLAYER_SKIN_UUID_METADATA, this.skinName);
-        this.npc.data().setPersistent(NPC.PLAYER_SKIN_USE_LATEST, false);
+//        this.npc.data().setPersistent(NPC.PLAYER_SKIN_UUID_METADATA, this.skinName);
+//        this.npc.data().setPersistent(NPC.PLAYER_SKIN_USE_LATEST, false);
     }
 }

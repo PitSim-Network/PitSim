@@ -14,6 +14,7 @@ public class PainFocus extends PitEnchant {
 	public PainFocus() {
 		super("Pain Focus", false, ApplyType.MELEE,
 				"painfocus", "pf", "pain-focus");
+		isUncommonEnchant = true;
 	}
 
 	@EventHandler
@@ -34,8 +35,7 @@ public class PainFocus extends PitEnchant {
 	}
 
 	public int getDamage(int enchantLvl) {
-		if(enchantLvl == 1) return 1;
-		return enchantLvl * 2 - 2;
+		return enchantLvl * 2 - 1;
 	}
 
 	public double getDamage(Player player, int enchantLvl) {

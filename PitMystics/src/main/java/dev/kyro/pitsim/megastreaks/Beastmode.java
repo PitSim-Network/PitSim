@@ -106,7 +106,7 @@ public class Beastmode extends Megastreak {
 		PitPlayer pitPlayer = attackEvent.getDefenderPitPlayer();
 		if(pitPlayer != this.pitPlayer) return;
 		if(pitPlayer.megastreak.isOnMega() && pitPlayer.megastreak.getClass() == Beastmode.class) {
-			int ks = (int) Math.floor(pitPlayer.getKills());
+			int ks = pitPlayer.getKills();
 			if(NonManager.getNon(attackEvent.getAttacker()) == null) {
 				attackEvent.increasePercent += (ks - 50) / 400D;
 			} else {

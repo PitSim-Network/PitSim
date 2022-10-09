@@ -13,13 +13,11 @@ import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.events.HealEvent;
 import dev.kyro.pitsim.events.KillEvent;
 import dev.kyro.pitsim.events.OofEvent;
+import dev.kyro.pitsim.megastreaks.RNGesus;
 import dev.kyro.pitsim.megastreaks.Uberstreak;
 import dev.kyro.pitsim.misc.Misc;
 import dev.kyro.pitsim.misc.Sounds;
-import org.bukkit.Effect;
-import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.World;
+import org.bukkit.*;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -37,7 +35,7 @@ import java.util.UUID;
 
 public class PhoenixAbility extends HelmetAbility {
 	public static List<UUID> alreadyActivatedList = new ArrayList<>();
-	public static int cost = 75_000;
+	public static int cost = 40_000;
 
 	public PhoenixAbility(Player player) {
 
@@ -46,7 +44,12 @@ public class PhoenixAbility extends HelmetAbility {
 
 	@EventHandler
 	public static void onKill(KillEvent killEvent) {
-		alreadyActivatedList.remove(killEvent.getDead().getUniqueId());
+		if(killEvent.isDeadPlayer()) alreadyActivatedList.remove(killEvent.deadPlayer.getUniqueId());
+
+//		TODO: Switch method
+		if(!killEvent.isKillerPlayer() || !killEvent.isDeadPlayer() ||
+				!Bukkit.getOnlinePlayers().contains(killEvent.getKillerPlayer()) || !Bukkit.getOnlinePlayers().contains(killEvent.getDeadPlayer())) return;
+		alreadyActivatedList.remove(killEvent.getKillerPlayer().getUniqueId());
 	}
 
 	@EventHandler
@@ -69,8 +72,15 @@ public class PhoenixAbility extends HelmetAbility {
 	public void onProc() {
 		ItemStack goldenHelmet = GoldenHelmet.getHelmet(player);
 
+		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
+		if(pitPlayer.megastreak.getClass() == RNGesus.class) {
+			AOutput.error(player, "&c&lERROR!&7 You cannot do this while &e&lRNGESUS&7 is equipped");
+			Sounds.NO.play(player);
+			return;
+		}
+
 		if(alreadyActivatedList.contains(player.getUniqueId())) {
-			AOutput.error(player, "&cAbility can only be used once per life!");
+			AOutput.error(player, "&cAbility has already been used!");
 			Sounds.NO.play(player);
 			return;
 		}
@@ -84,7 +94,6 @@ public class PhoenixAbility extends HelmetAbility {
 
 		Misc.applyPotionEffect(player, PotionEffectType.INCREASE_DAMAGE, 200, 0, true, false);
 
-		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
 		pitPlayer.heal(player.getMaxHealth());
 		pitPlayer.heal(player.getMaxHealth() * 2, HealEvent.HealType.ABSORPTION, (int) player.getMaxHealth() * 2);
 		alreadyActivatedList.add(player.getUniqueId());
@@ -141,8 +150,10 @@ public class PhoenixAbility extends HelmetAbility {
 		return Arrays.asList("&7Double-Sneak to rebirth:",
 				"&a\u25a0 &7Heal to &cfull HP",
 				"&a\u25a0 &cStrength I &7(10s)",
-				"&a\u25a0 &7Gain &6absorption &7equal to 2x your max hp",
-				"&c\u25a0 &7You cannot heal until you die or spawn",
+				"&a\u25a0 &7Gain &6absorption &7equal to",
+				"&72x your max hp",
+				"&c\u25a0 &7You cannot heal until you die,",
+				"&7spawn, or get a player kill",
 				"", "&7Cost: &6" + formatter.format(cost) + "g");
 	}
 

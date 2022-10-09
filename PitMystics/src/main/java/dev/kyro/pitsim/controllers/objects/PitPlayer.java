@@ -57,8 +57,6 @@ public class PitPlayer {
 	@Exclude
 	private int kills = 0;
 	@Exclude
-	public double assistAmount = 0;
-	@Exclude
 	public int bounty = 0;
 	@Exclude
 	public int latestKillAnnouncement = 0;
@@ -441,41 +439,15 @@ public class PitPlayer {
 			killstreak.proc(player);
 		}
 
-		if(Math.floor(kills) % 25 == 0) {
+		int everyX = megastreak.getClass() == RNGesus.class && kills > RNGesus.INSTABILITY_THRESHOLD ? 500 : 100;
+		if(kills % everyX == 0 && kills != megastreak.getRequiredKills()) {
 			for(Player onlinePlayer : Bukkit.getOnlinePlayers()) {
 				PitPlayer pitPlayer = PitPlayer.getPitPlayer(onlinePlayer);
 				if(pitPlayer.streaksDisabled) continue;
 				String message = ChatColor.translateAlternateColorCodes(
-						'&', "&c&lSTREAK!&7 of &c" + (int) Math.floor(kills) + " &7by %luckperms_prefix%" + player.getDisplayName());
+						'&', "&c&lSTREAK!&7 of &c" + kills + " &7by %luckperms_prefix%" + player.getDisplayName());
 				onlinePlayer.sendMessage(PlaceholderAPI.setPlaceholders(player, message));
 			}
-		}
-	}
-
-	@Exclude
-	public void incrementAssist(double assistPercent) {
-		assistAmount = assistAmount + assistPercent;
-		if(assistAmount >= 1) {
-			assistAmount = 0;
-			kills++;
-		}
-
-		Bukkit.getPluginManager().callEvent(new IncrementKillsEvent(this.player, kills));
-		if(kills >= megastreak.getRequiredKills() && megastreak.getClass() != NoMegastreak.class &
-				!megastreak.isOnMega()) megastreak.proc();
-		for(Killstreak killstreak : killstreaks) {
-			if(kills == 0 || kills % killstreak.killInterval != 0) continue;
-			killstreak.proc(player);
-		}
-		if(Math.floor(kills) % 25 == 0 && latestKillAnnouncement != Math.floor(kills)) {
-			for(Player onlinePlayer : Bukkit.getOnlinePlayers()) {
-				PitPlayer pitPlayer = PitPlayer.getPitPlayer(onlinePlayer);
-				if(pitPlayer.streaksDisabled) continue;
-				String message = ChatColor.translateAlternateColorCodes(
-						'&', "&c&lSTREAK!&7 of &c" + (int) Math.floor(kills) + " &7by %luckperms_prefix%" + player.getDisplayName());
-				onlinePlayer.sendMessage(PlaceholderAPI.setPlaceholders(player, message));
-			}
-			latestKillAnnouncement = (int) Math.floor(kills);
 		}
 	}
 
@@ -627,6 +599,8 @@ public class PitPlayer {
 
 	@Exclude
 	public void updateXPBar() {
+		if(megastreak.getClass() == RNGesus.class && getKills() < RNGesus.INSTABILITY_THRESHOLD && getKills() >= 100) return;
+
 		if(MapManager.inDarkzone(player)) {
 			player.setLevel((int) Math.ceil(mana));
 			if(mana >= getMaxMana() - 1) player.setLevel(getMaxMana());

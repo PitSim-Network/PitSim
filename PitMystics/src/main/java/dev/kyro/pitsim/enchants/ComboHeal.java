@@ -38,7 +38,7 @@ public class ComboHeal extends PitEnchant {
 		if(!HitCounter.hasReachedThreshold(pitAttacker.player, this, 4)) return;
 
 		pitAttacker.heal(getHealing(enchantLvl));
-		pitAttacker.heal(getHealing(enchantLvl), HealEvent.HealType.ABSORPTION, 8);
+		pitAttacker.heal(getAbsorption(enchantLvl), HealEvent.HealType.ABSORPTION, 8);
 
 		Sounds.COMBO_PROC.play(attackEvent.getAttacker());
 	}
@@ -47,10 +47,15 @@ public class ComboHeal extends PitEnchant {
 	public List<String> getDescription(int enchantLvl) {
 
 		return new ALoreBuilder("&7Every &efourth &7strike heals",
-				"&c" + Misc.getHearts(getHealing(enchantLvl)) + " &7and grants &6" + Misc.getHearts(getHealing(enchantLvl))).getLore();
+				"&c" + Misc.getHearts(getHealing(enchantLvl)) + " &7and grants &6" + Misc.getHearts(getAbsorption(enchantLvl))).getLore();
 	}
 
 	public double getHealing(int enchantLvl) {
+
+		return enchantLvl * 0.8;
+	}
+
+	public double getAbsorption(int enchantLvl) {
 
 		return enchantLvl * 0.8;
 	}

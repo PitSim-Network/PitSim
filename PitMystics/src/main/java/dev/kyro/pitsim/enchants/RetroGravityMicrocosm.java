@@ -110,11 +110,15 @@ public class RetroGravityMicrocosm extends PitEnchant {
 	}
 
 	public double getHealing(int enchantLvl) {
-		return enchantLvl;
+		return enchantLvl * 0.4 + 1.2;
 	}
 
 	public int getStrikes() {
 		return 3;
+	}
+
+	public static int getRGMStackTime() {
+		return 30 * 20;
 	}
 
 	//	Attacker is the player that will take more damage, defender is the player that will deal more damage
@@ -158,7 +162,7 @@ public class RetroGravityMicrocosm extends PitEnchant {
 						break;
 					}
 				}
-			}.runTaskLater(PitSim.INSTANCE, 30 * 20));
+			}.runTaskLater(PitSim.INSTANCE, getRGMStackTime()));
 		}
 
 		public void clear(LivingEntity player) {

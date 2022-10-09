@@ -1,6 +1,5 @@
 package dev.kyro.pitsim.mobs;
 
-import dev.kyro.pitsim.brewing.ingredients.RottenFlesh;
 import dev.kyro.pitsim.brewing.ingredients.SpiderEye;
 import dev.kyro.pitsim.controllers.MobManager;
 import dev.kyro.pitsim.controllers.objects.PitMob;

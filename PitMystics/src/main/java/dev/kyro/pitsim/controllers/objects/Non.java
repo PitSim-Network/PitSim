@@ -12,6 +12,7 @@ import net.citizensnpcs.api.npc.NPC;
 import net.citizensnpcs.api.trait.trait.Equipment;
 import net.citizensnpcs.npc.ai.CitizensNavigator;
 import net.citizensnpcs.npc.skin.SkinnableEntity;
+import net.citizensnpcs.util.Util;
 import net.minecraft.server.v1_8_R3.EntityPlayer;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -66,7 +67,7 @@ public class Non {
 		persistence = (Math.random() * 3 + 94) / 100D;
 		if(traits.contains(NonTrait.IRON_STREAKER)) persistence -= 100 - persistence;
 
-		respawn();
+		respawn(false);
 		skin(name);
 	}
 
@@ -74,7 +75,7 @@ public class Non {
 		count++;
 		if(npc.getEntity() != null && non != npc.getEntity()) FPSCommand.hideNewNon(this);
 		non = (Player) npc.getEntity();
-		if(!npc.isSpawned()) respawn();
+		if(!npc.isSpawned()) respawn(false);
 		if(npc.isSpawned() && non.getLocation().getY() <= MapManager.currentMap.getY(world) - 0.1) {
 			Location teleportLoc = non.getLocation().clone();
 			teleportLoc.setY(MapManager.currentMap.getY(world) + 1.2);
@@ -83,7 +84,7 @@ public class Non {
 		}
 
 		if(nonState != NonState.FIGHTING) {
-			if(!npc.isSpawned()) respawn();
+			if(!npc.isSpawned()) respawn(false);
 			if(npc.isSpawned()) {
 				npc.getNavigator().setTarget(null, true);
 			}
@@ -91,18 +92,20 @@ public class Non {
 		}
 
 		if(npc.isSpawned()) {
-			if(count % 12 == 0) {
+			if(count % 5 == 0) {
 				pickTarget();
-				npc.getNavigator().setTarget(target, true);
+//				npc.getNavigator().setTarget(target, true);
+				target.damage(7, non);
 			}
-		} else respawn();
+			if(count % 2 == 0 && target != null) Util.faceLocation(non, target.getLocation());
+		} else respawn(false);
 
 		if(target == null || !npc.isSpawned()) return;
 
-		if(count % 3 == 0 && (!traits.contains(NonTrait.NO_JUMP)) || Math.random() < 0.05) {
+		if(count % 7 == 0) {
 
 			if(npc.isSpawned()) {
-				Block underneath = non.getLocation().clone().subtract(0, 0.2, 0).getBlock();
+				Block underneath = non.getLocation().clone().subtract(0, 0.1, 0).getBlock();
 				if(underneath.getType() != Material.AIR && underneath.getType() != Material.CARPET) {
 
 					int rand = (int) (Math.random() * 2);
@@ -114,8 +117,8 @@ public class Non {
 						Vector sprintVelo = target.getLocation().toVector().subtract(non.getLocation().toVector())
 								.normalize();
 
-						if(distance < Math.random() * 1.5 + 1.5) sprintVelo.multiply(-0.16).setY(0.4);
-						else sprintVelo.multiply(0.4).setY(0.4);
+						if(distance < Math.random() * 1.5 + 1.5) sprintVelo.multiply(0.16).setY(0.2);
+						else sprintVelo.multiply(0.4).setY(0.2);
 						non.setVelocity(sprintVelo);
 					} catch(Exception ignored) {
 						System.out.println("error with non targets (im assuming)");
@@ -159,14 +162,14 @@ public class Non {
 		npc.spawn(spawnLoc);
 	}
 
-	public void respawn() {
+	public void respawn(boolean fakeKill) {
 
 		if(!MapManager.multiLobbies && world != MapManager.currentMap.firstLobby) {
 			remove();
 			return;
 		}
 
-		nonState = NonState.RESPAWNING;
+		if(!fakeKill) nonState = NonState.RESPAWNING;
 		Location spawnLoc = MapManager.currentMap.getNonSpawn(world);
 		Booster booster = BoosterManager.getBooster("chaos");
 		if(booster.isActive()) {
@@ -178,7 +181,7 @@ public class Non {
 		if(!npc.isSpawned() || non == null) spawn();
 		try {
 
-			if(npc.isSpawned()) {
+			if(npc.isSpawned() && !fakeKill) {
 				non.teleport(spawnLoc, PlayerTeleportEvent.TeleportCause.PLUGIN);
 			}
 
@@ -192,7 +195,7 @@ public class Non {
 
 
 		if(npc.isSpawned()) {
-			non.setHealth(non.getMaxHealth());
+			if(!fakeKill) non.setHealth(non.getMaxHealth());
 
 			Equipment equipment = npc.getTrait(Equipment.class);
 			if(traits.contains(NonTrait.IRON_STREAKER)) {
@@ -222,13 +225,14 @@ public class Non {
 				}
 			}
 		}
-
-		new BukkitRunnable() {
-			@Override
-			public void run() {
-				nonState = NonState.FIGHTING;
-			}
-		}.runTaskLater(PitSim.INSTANCE, 20L);
+		if(!fakeKill) {
+			new BukkitRunnable() {
+				@Override
+				public void run() {
+					nonState = NonState.FIGHTING;
+				}
+			}.runTaskLater(PitSim.INSTANCE, 20L);
+		}
 	}
 
 	public void pickTraits() {
@@ -260,8 +264,8 @@ public class Non {
 	}
 
 	public void skin(String name) {
-		npc.data().set(NPC.PLAYER_SKIN_UUID_METADATA, name);
-		npc.data().set(NPC.PLAYER_SKIN_USE_LATEST, false);
+//		npc.data().set(NPC.PLAYER_SKIN_UUID_METADATA, name);
+//		npc.data().set(NPC.PLAYER_SKIN_USE_LATEST, false);
 		if(npc.isSpawned()) {
 			SkinnableEntity skinnable = (SkinnableEntity) npc.getEntity();
 			if(skinnable != null) {

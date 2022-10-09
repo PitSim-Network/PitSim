@@ -126,7 +126,7 @@ public class PlayerManager implements Listener {
 							if(entry.getKey().refName.equals("renown")) buff = entry.getValue();
 						}
 					}
-					if(Math.random() * 2 < 1 + buff / 100.0) continue;
+					if(Math.random() * 2 > 1 + buff / 100.0) continue;
 
 					PitPlayer pitPlayer = PitPlayer.getPitPlayer(onlinePlayer);
 					pitPlayer.renown++;
@@ -171,6 +171,19 @@ public class PlayerManager implements Listener {
 				}
 			}
 		}.runTaskTimer(PitSim.INSTANCE, 0L, 12L);
+
+		new BukkitRunnable() {
+			@Override
+			public void run() {
+				for(Player onlinePlayer : Bukkit.getOnlinePlayers()) {
+					removeIllegalItems(onlinePlayer);
+				}
+			}
+		}.runTaskTimer(PitSim.INSTANCE, Misc.getRunnableOffset(1), 60 * 20);
+	}
+
+	public static boolean isRealPlayerTemp(Player player) {
+		return Bukkit.getOnlinePlayers().contains(player);
 	}
 
 	public Map<UUID, Long> viewShiftCooldown = new HashMap<>();
@@ -492,9 +505,9 @@ public class PlayerManager implements Listener {
 	public void onAttack(AttackEvent.Apply attackEvent) {
 
 		Non defendingNon = NonManager.getNon(attackEvent.getDefender());
-//		Arch chest
+//		Arch chest archangel chestplate
 		if(defendingNon == null && attackEvent.isDefenderPlayer()) {
-			attackEvent.multipliers.add(0.9);
+			attackEvent.multipliers.add(0.8);
 		} else if(attackEvent.isDefenderPlayer()) {
 //			Non defence
 			if(defendingNon.traits.contains(NonTrait.IRON_STREAKER)) attackEvent.multipliers.add(0.8);
@@ -544,32 +557,35 @@ public class PlayerManager implements Listener {
 		new BukkitRunnable() {
 			@Override
 			public void run() {
-
-				player.setGameMode(GameMode.SURVIVAL);
-
-				if(!player.isOp() && !player.getName().equals("Fishduper")) {
-
-					int itemsRemoved = 0;
-					for(int i = 0; i < 36; i++) {
-
-						ItemStack itemStack = player.getInventory().getItem(i);
-						if(EnchantManager.isIllegalItem(itemStack)) {
-							player.getInventory().setItem(i, new ItemStack(Material.AIR));
-							itemsRemoved++;
-						}
-					}
-					if(EnchantManager.isIllegalItem(player.getEquipment().getLeggings())) {
-						player.getEquipment().setLeggings(new ItemStack(Material.AIR));
-						itemsRemoved++;
-					}
-					if(itemsRemoved != 0) AOutput.error(player, "&c" + itemsRemoved + " &7illegal item" +
-							(itemsRemoved == 1 ? " was" : "s were") + " removed from your inventory");
-				}
+				player.setGameMode(GameMode.ADVENTURE);
 
 				pitPlayer.updateMaxHealth();
 				player.setHealth(player.getMaxHealth());
 			}
 		}.runTaskLater(PitSim.INSTANCE, 1L);
+	}
+
+	public static void removeIllegalItems(Player player) {
+		if(!player.isOp()) {
+			int itemsRemoved = 0;
+			for(int i = 0; i < 36; i++) {
+
+				ItemStack itemStack = player.getInventory().getItem(i);
+				if(EnchantManager.isIllegalItem(itemStack)) {
+					player.getInventory().setItem(i, new ItemStack(Material.AIR));
+					itemsRemoved++;
+				}
+			}
+			if(EnchantManager.isIllegalItem(player.getEquipment().getLeggings())) {
+				player.getEquipment().setLeggings(new ItemStack(Material.AIR));
+				itemsRemoved++;
+			}
+			if(itemsRemoved != 0) {
+				AOutput.error(player, "&c" + itemsRemoved + " &7illegal item" +
+						(itemsRemoved == 1 ? " was" : "s were") + " removed from your inventory");
+				player.updateInventory();
+			}
+		}
 	}
 
 	@EventHandler
@@ -672,25 +688,6 @@ public class PlayerManager implements Listener {
 			}.runTaskLater(PitSim.INSTANCE, 10);
 			pitPlayer.soulReturn = 0;
 		}
-
-	}
-
-	public static void removeIllegalItems(Player player) {
-		int itemsRemoved = 0;
-		for(int i = 0; i < 36; i++) {
-
-			ItemStack itemStack = player.getInventory().getItem(i);
-			if(EnchantManager.isIllegalItem(itemStack)) {
-				player.getInventory().setItem(i, new ItemStack(Material.AIR));
-				itemsRemoved++;
-			}
-		}
-		if(EnchantManager.isIllegalItem(player.getEquipment().getLeggings())) {
-			player.getEquipment().setLeggings(new ItemStack(Material.AIR));
-			itemsRemoved++;
-		}
-//			if(itemsRemoved != 0) AOutput.error(player, "&c" + itemsRemoved + " &7illegal item" +
-//					(itemsRemoved == 1 ? " was" : "s were") + " removed from your inventory");
 
 	}
 

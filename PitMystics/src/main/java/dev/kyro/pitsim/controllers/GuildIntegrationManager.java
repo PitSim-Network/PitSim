@@ -5,7 +5,6 @@ import dev.kyro.arcticguilds.controllers.BuffManager;
 import dev.kyro.arcticguilds.controllers.GuildManager;
 import dev.kyro.arcticguilds.controllers.objects.Guild;
 import dev.kyro.arcticguilds.controllers.objects.GuildBuff;
-import dev.kyro.arcticguilds.events.GuildReputationEvent;
 import dev.kyro.arcticguilds.events.GuildWithdrawalEvent;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
@@ -149,20 +148,20 @@ public class GuildIntegrationManager implements Listener {
 		}
 	}
 
-	@EventHandler
-	public void onReputation(GuildReputationEvent event) {
-		Guild guild = event.getGuild();
-
-		GuildBuff renownBuff = BuffManager.getBuff("renown");
-		int renownBuffLevel = guild.getLevel(renownBuff);
-		if(renownBuffLevel != 0) {
-			Map<GuildBuff.SubBuff, Double> buffs = renownBuff.getBuffs(renownBuffLevel);
-			for(Map.Entry<GuildBuff.SubBuff, Double> entry : buffs.entrySet()) {
-				event.addMultiplier(1 + entry.getValue() / 100.0);
-				break;
-			}
-		}
-	}
+//	@EventHandler
+//	public void onReputation(GuildReputationEvent event) {
+//		Guild guild = event.getGuild();
+//
+//		GuildBuff renownBuff = BuffManager.getBuff("renown");
+//		int renownBuffLevel = guild.getLevel(renownBuff);
+//		if(renownBuffLevel != 0) {
+//			Map<GuildBuff.SubBuff, Double> buffs = renownBuff.getBuffs(renownBuffLevel);
+//			for(Map.Entry<GuildBuff.SubBuff, Double> entry : buffs.entrySet()) {
+//				event.addMultiplier(1 + entry.getValue() / 100.0);
+//				break;
+//			}
+//		}
+//	}
 
 	@EventHandler
 	public void onWithdrawal(GuildWithdrawalEvent event) {

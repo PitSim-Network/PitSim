@@ -18,7 +18,6 @@ repositories {
     maven { url "https://repo.codemc.org/repository/maven-public" }
     maven { url "http://repo.citizensnpcs.co" }
     maven { url "https://repo.extendedclip.com/content/repositories/placeholderapi/" }
-    maven { url "http://maven.sk89q.com/repo/" }
     maven { url "https://maven.enginehub.org/repo/" }
     maven { url "https://repo.inventivetalent.org/content/repositories/snapshots" }
     maven { url "https://repo.dmulloy2.net/repository/public/" }
@@ -33,13 +32,15 @@ dependencies {
 //    compileOnly 'org.spigotmc:spigot:1.8.8-R0.1-SNAPSHOT'
     compileOnly files('libs/ispigot.jar')
 //    compileOnly 'net.citizensnpcs:citizens-main:2.0.27-SNAPSHOT'
-    compileOnly files('libs/Citizens.jar')
+//    compileOnly files('libs/Citizens.jar')
+    compileOnly files('libs/Citizens-2.0.30-Kyro.jar')
     compileOnly "com.github.MilkBowl:VaultAPI:1.7"
     compileOnly "me.clip:placeholderapi:2.10.9"
     compileOnly 'com.sk89q.worldguard:worldguard-legacy:6.2'
     compileOnly 'com.sk89q.worldedit:worldedit-bukkit:6.0'
-    compileOnly 'com.github.LeonMangler:PremiumVanishAPI:2.7.3'
+    compileOnly 'com.github.LeonMangler:PremiumVanishAPI:2.7.11-2'
     compileOnly 'org.inventivetalent:bossbarapi:2.4.3-SNAPSHOT'
+    compileOnly 'com.gitlab.ruany:LiteBansAPI:0.3.5'
 //    implementation("net.kyori:adventure-platform-bukkit:4.0.0-SNAPSHOT")
     compileOnly group: "com.comphenix.protocol", version: "4.8.0", name: "ProtocolLib"
 

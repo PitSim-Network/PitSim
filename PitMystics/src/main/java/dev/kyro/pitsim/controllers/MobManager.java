@@ -46,8 +46,8 @@ public class MobManager implements Listener {
 		PitMob pitMob = PitMob.getPitMob(attackEvent.getDefender());
 		if(pitMob == null) return;
 		if(VanishAPI.isInvisible(attackEvent.getAttackerPlayer())) return;
-		if(attackEvent.getAttackerPlayer().getGameMode() == GameMode.SURVIVAL) {
-			((Creature) attackEvent.getDefender()).setTarget(attackEvent.getAttackerPlayer());
+		if(attackEvent.getAttackerPlayer().getGameMode() == GameMode.ADVENTURE) {
+			((Creature) attackEvent.getDefender()).setTarget(attackEvent.attackerPlayer);
 			pitMob.lastHit = System.currentTimeMillis();
 			pitMob.target = attackEvent.getAttackerPlayer();
 		}
@@ -219,7 +219,7 @@ public class MobManager implements Listener {
 					noTarget = sortByValue(noTarget);
 					for(Map.Entry<PitMob, Double> entry : noTarget.entrySet()) {
 						PitMob pitMob = entry.getKey();
-						if(player.getGameMode() == GameMode.SURVIVAL && !VanishAPI.isInvisible(player)) {
+						if(player.getGameMode() == GameMode.ADVENTURE && !VanishAPI.isInvisible(player)) {
 							((Creature) pitMob.entity).setTarget(player);
 							pitMob.lastHit = System.currentTimeMillis();
 							pitMob.target = player;

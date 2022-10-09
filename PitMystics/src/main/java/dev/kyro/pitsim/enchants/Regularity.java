@@ -40,7 +40,9 @@ public class Regularity extends PitEnchant {
 		if(enchantLvl == 0) return;
 
 		double finalDamage = attackEvent.getEvent().getFinalDamage();
-		if(finalDamage >= maxFinalDamage(enchantLvl)) return;
+
+		double random = Math.random() * (upperBoundFinalDamage(enchantLvl) - lowerBoundFinalDamage(enchantLvl)) + lowerBoundFinalDamage(enchantLvl);
+		if(finalDamage > random) return;
 
 		toReg.add(attackEvent.getDefender().getUniqueId());
 		regCooldown.add(attackEvent.getDefender().getUniqueId());
@@ -89,19 +91,33 @@ public class Regularity extends PitEnchant {
 	}
 
 	public static int secondComboChance(int enchantLvl) {
-		return enchantLvl * 15 + 15;
+		return 100;
 	}
 
-	public static double maxFinalDamage(int enchantLvl) {
-		return enchantLvl * 0.4 + 1.2;
+	public static double lowerBoundFinalDamage(int enchantLvl) {
+		return enchantLvl * 0.4 + 0.6;
+	}
+
+	public static double upperBoundFinalDamage(int enchantLvl) {
+		return enchantLvl * 0.4 + 1.4;
 	}
 
 	@Override
 	public List<String> getDescription(int enchantLvl) {
 
-		return new ALoreBuilder("&7If your strike deals less than &c" + Misc.getHearts(maxFinalDamage(enchantLvl)),
-				"&7final damage, &astrike again &7for &c" + secondHitDamage(enchantLvl) + "%",
-				"&7damage. &7(Combo enchants have a", "&e" + secondComboChance(enchantLvl) + "% &7of incrementing the combo",
-				"&7on the second hit)").getLore();
+//		return new ALoreBuilder("&7If your strike does a low amount of",
+//				"&7final damage, &astrike again &7for &c" + secondHitDamage(enchantLvl) + "%",
+//				"&7damage. &7(Combo enchants have a", "&e" + secondComboChance(enchantLvl) + "% &7of incrementing the combo",
+//				"&7on the second hit)").getLore();
+
+//		return new ALoreBuilder("&7If your strike does a low amount of",
+//				"&7final damage, &astrike again &7for &c" + secondHitDamage(enchantLvl) + "%",
+//				"&7damage.").getLore();
+
+		return new ALoreBuilder("&7Your hits have a chance to &astrike",
+				"&aagain &7for &c" + secondHitDamage(enchantLvl) + "% &7damage if the final",
+				"&7damage of your strike is low enough",
+				"&7(&e100% &7below &c" + Misc.getHearts(lowerBoundFinalDamage(enchantLvl)) + "&7, &e0% &7above &c" +
+						Misc.getHearts(upperBoundFinalDamage(enchantLvl)) + "&7)").getLore();
 	}
 }

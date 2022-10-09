@@ -31,20 +31,17 @@ public class Lifesteal extends PitEnchant {
 		if(attackEvent.isFakeHit()) return;
 
 		double damage = attackEvent.getFinalDamageIncrease();
-		HealEvent healEvent = pitAttacker.heal(damage * (getHealing(enchantLvl) / 100D) * (attackEvent.isFakeHit() ? 0.5 : 1));
+		double healing = damage * (getHealing(enchantLvl) / 100D) * (attackEvent.isFakeHit() ? 0.5 : 1);
+		HealEvent healEvent = pitAttacker.heal(healing);
 
 		if(pitAttacker.stats != null) pitAttacker.stats.lifesteal += healEvent.getEffectiveHeal();
 	}
-
 	@Override
 	public List<String> getDescription(int enchantLvl) {
-
 		return new ALoreBuilder("&7Heal for &c+" + Misc.roundString(getHealing(enchantLvl)) + "% &7of damage dealt").getLore();
 	}
 
 	public double getHealing(int enchantLvl) {
-
-//		return (int) (Math.pow(enchantLvl, 1.1) * 4);
-		return enchantLvl * 3 + 1;
+		return enchantLvl * 3 - 2;
 	}
 }
