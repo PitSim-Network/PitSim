@@ -1,6 +1,7 @@
 package dev.kyro.pitsim.perks;
 
 import dev.kyro.arcticapi.builders.ALoreBuilder;
+import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.controllers.EnchantManager;
 import dev.kyro.pitsim.controllers.MapManager;
 import dev.kyro.pitsim.controllers.objects.PitPerk;
@@ -27,6 +28,12 @@ public class JewelHunter extends PitPerk {
 
 		if(MapManager.currentMap.lobbies.contains(attackEvent.defenderPlayer.getWorld()) &&
 				MapManager.currentMap.getMid(attackEvent.defender.getWorld()).distance(attackEvent.defenderPlayer.getLocation()) < getRange()) {
+			return;
+		}
+
+		if(EnchantManager.isJewel(attackEvent.attackerPlayer.getEquipment().getItemInHand()) ||
+				EnchantManager.isJewel(attackEvent.attackerPlayer.getEquipment().getLeggings())) {
+			AOutput.error(attackEvent.attackerPlayer, "&3&lJEWEL HUNTER! &7Does not work when you are using jewels");
 			return;
 		}
 
