@@ -23,26 +23,26 @@ public class JewelHunter extends PitPerk {
 
 	@EventHandler
 	public void onAttack(AttackEvent.Apply attackEvent) {
-		if(!attackEvent.attackerIsPlayer || !attackEvent.defenderIsPlayer) return;
-		if(!playerHasUpgrade(attackEvent.attacker)) return;
+		if(!attackEvent.isAttackerPlayer() || !attackEvent.isDefenderPlayer()) return;
+		if(!playerHasUpgrade(attackEvent.getAttacker())) return;
 
-		if(MapManager.currentMap.lobbies.contains(attackEvent.defenderPlayer.getWorld()) &&
-				MapManager.currentMap.getMid(attackEvent.defender.getWorld()).distance(attackEvent.defenderPlayer.getLocation()) < getRange()) {
+		if(MapManager.currentMap.lobbies.contains(attackEvent.getDefenderPlayer().getWorld()) &&
+				MapManager.currentMap.getMid(attackEvent.getDefender().getWorld()).distance(attackEvent.getDefenderPlayer().getLocation()) < getRange()) {
 			return;
 		}
 
-		if(EnchantManager.isJewel(attackEvent.attackerPlayer.getEquipment().getItemInHand()) ||
-				EnchantManager.isJewel(attackEvent.attackerPlayer.getEquipment().getLeggings())) {
-			AOutput.error(attackEvent.attackerPlayer, "&3&lJEWEL HUNTER! &7Does not work when you are using jewels");
+		if(EnchantManager.isJewel(attackEvent.getAttackerPlayer().getEquipment().getItemInHand()) ||
+				EnchantManager.isJewel(attackEvent.getAttackerPlayer().getEquipment().getLeggings())) {
+			AOutput.error(attackEvent.getAttackerPlayer(), "&3&lJEWEL HUNTER! &7Does not work when you are using jewels");
 			return;
 		}
 
 		double damageIncrease = 0;
 
-		ItemStack heldItem = attackEvent.defender.getEquipment().getItemInHand();
+		ItemStack heldItem = attackEvent.getDefender().getEquipment().getItemInHand();
 		if(EnchantManager.isJewel(heldItem)) damageIncrease += getDamageIncrease() / 100.0;
 
-		ItemStack pantsItem = attackEvent.defender.getEquipment().getLeggings();
+		ItemStack pantsItem = attackEvent.getDefender().getEquipment().getLeggings();
 		if(EnchantManager.isJewel(pantsItem)) damageIncrease += getDamageIncrease() / 100.0;
 
 		attackEvent.increasePercent += damageIncrease;

@@ -47,7 +47,7 @@ public class MobManager implements Listener {
 		if(pitMob == null) return;
 		if(VanishAPI.isInvisible(attackEvent.getAttackerPlayer())) return;
 		if(attackEvent.getAttackerPlayer().getGameMode() == GameMode.ADVENTURE) {
-			((Creature) attackEvent.getDefender()).setTarget(attackEvent.attackerPlayer);
+			((Creature) attackEvent.getDefender()).setTarget(attackEvent.getAttackerPlayer());
 			pitMob.lastHit = System.currentTimeMillis();
 			pitMob.target = attackEvent.getAttackerPlayer();
 		}

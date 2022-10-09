@@ -188,7 +188,7 @@ public class RNGesus extends Megastreak {
 					}
 				};
 
-				if(attackEvent.isAttackerPlayer()) new HomeParticle(attackEvent.attackerPlayer,
+				if(attackEvent.isAttackerPlayer()) new HomeParticle(attackEvent.getAttackerPlayer(),
 						attackEvent.getDefender().getLocation().add(0, 1, 0), target, 0.5, callback);
 			}
 		}

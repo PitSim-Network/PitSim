@@ -23,11 +23,11 @@ public class Dispersion extends PitPerk {
 
 	@EventHandler
 	public void onAttack(AttackEvent.Apply attackEvent) {
-		if(!attackEvent.attackerIsPlayer || !attackEvent.defenderIsPlayer) return;
-		if(!playerHasUpgrade(attackEvent.defenderPlayer)) return;
+		if(!attackEvent.isAttackerPlayer() || !attackEvent.isDefenderPlayer()) return;
+		if(!playerHasUpgrade(attackEvent.getDefenderPlayer())) return;
 
-		if(!MapManager.currentMap.lobbies.contains(attackEvent.defenderPlayer.getWorld())) return;
-		if(MapManager.currentMap.getMid(attackEvent.defender.getWorld()).distance(attackEvent.defenderPlayer.getLocation()) > getRange()) return;
+		if(!MapManager.currentMap.lobbies.contains(attackEvent.getDefenderPlayer().getWorld())) return;
+		if(MapManager.currentMap.getMid(attackEvent.getDefender().getWorld()).distance(attackEvent.getDefenderPlayer().getLocation()) > getRange()) return;
 
 		List<PitEnchant> toRemove = new ArrayList<>();
 		for(Map.Entry<PitEnchant, Integer> entry : attackEvent.getAttackerEnchantMap().entrySet()) {

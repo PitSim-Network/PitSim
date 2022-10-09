@@ -32,7 +32,7 @@ public class Billionaire extends PitEnchant {
 		int enchantLvl = attackEvent.getAttackerEnchantLevel(this);
 		if(enchantLvl == 0) return;
 
-		if(NonManager.getNon(attackEvent.getAttacker()) != null || HopperManager.isHopper(attackEvent.attacker)) {
+		if(NonManager.getNon(attackEvent.getAttacker()) != null || HopperManager.isHopper(attackEvent.getAttacker())) {
 //			Hoppers & (i think) bosses still use the old attack values so we don't have to change their stuff
 			attackEvent.multipliers.add(getDamageMultiplier(enchantLvl));
 			return;

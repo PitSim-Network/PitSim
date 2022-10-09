@@ -44,7 +44,7 @@ public class PhoenixAbility extends HelmetAbility {
 
 	@EventHandler
 	public static void onKill(KillEvent killEvent) {
-		if(killEvent.isDeadPlayer()) alreadyActivatedList.remove(killEvent.deadPlayer.getUniqueId());
+		if(killEvent.isDeadPlayer()) alreadyActivatedList.remove(killEvent.getDeadPlayer().getUniqueId());
 
 //		TODO: Switch method
 		if(!killEvent.isKillerPlayer() || !killEvent.isDeadPlayer() ||
