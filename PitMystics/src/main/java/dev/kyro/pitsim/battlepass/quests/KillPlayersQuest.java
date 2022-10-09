@@ -17,10 +17,10 @@ import org.bukkit.inventory.meta.ItemMeta;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PlayerKillQuest extends PassQuest {
+public class KillPlayersQuest extends PassQuest {
 
-	public PlayerKillQuest() {
-		super("&91v1 Legend", "playerkills", QuestType.WEEKLY);
+	public KillPlayersQuest() {
+		super("&91v1 Legend", "killplayers", QuestType.WEEKLY);
 	}
 
 	@EventHandler(priority = EventPriority.HIGHEST)
