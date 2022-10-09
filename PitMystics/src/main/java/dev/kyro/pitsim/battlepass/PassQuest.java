@@ -17,7 +17,7 @@ public abstract class PassQuest implements Listener {
 	static {
 //		Quest ideas
 //		daily - player kills, bot kills, something darkzone
-//		weekly quests (grinding) - hours played, prestige, kill x (mobs), player kills, bot kills/damage
+//		weekly quests (grinding) - kill x (mobs)
 //		weekly quests (darkzone) - brew potions, kill bosses, incinerate drops, harvest souls
 //		weekly quests (anti-progression) - use helmet gold, win auctions
 //		weekly quests (misc) - earn guild rep, mlb hits, upgrade renown
