@@ -596,6 +596,7 @@ public class PitSim extends JavaPlugin {
 		PassManager.registerQuest(new ReachKillstreakQuest());
 		PassManager.registerQuest(new GrindXPQuest());
 		PassManager.registerQuest(new GrindGoldQuest());
+		PassManager.registerQuest(new HoursPlayedQuest());
 	}
 
 	private void loadConfig() {
