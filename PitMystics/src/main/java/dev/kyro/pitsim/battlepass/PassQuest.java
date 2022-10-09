@@ -29,7 +29,6 @@ public abstract class PassQuest implements Listener {
 //		attack the pit blob x times, kill players while not wearing a chestplate, hit megastreak without armor
 //		weekly quests (enchant combinations) - Streak with unpopular enchants (don't include exe) Sweaty/Moct (cb damage, shark, beserker, king buster).
 
-
 //		ideas
 //		maybe add a few useless enchants and items to pair with quest
 	}
