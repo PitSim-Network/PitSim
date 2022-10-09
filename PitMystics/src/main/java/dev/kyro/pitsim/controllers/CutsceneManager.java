@@ -210,7 +210,7 @@ public class CutsceneManager implements Listener {
             @Override
             public void run() {
                 player.teleport(originalLocation);
-                player.setGameMode(GameMode.SURVIVAL);
+                player.setGameMode(GameMode.ADVENTURE);
                 cutscenePlayers.remove(player);
                 esp.setPlaying(false);
                 FeatherBoardAPI.toggle(player);
@@ -264,7 +264,7 @@ public class CutsceneManager implements Listener {
         Player toRemove = null;
         if(cutscenePlayers.containsKey(event.getPlayer())) {
             cutscenePlayers.get(event.getPlayer()).forEach(BukkitTask::cancel);
-            event.getPlayer().setGameMode(GameMode.SURVIVAL);
+            event.getPlayer().setGameMode(GameMode.ADVENTURE);
             FeatherBoardAPI.toggle(event.getPlayer());
             toRemove = event.getPlayer();
         }
@@ -274,7 +274,7 @@ public class CutsceneManager implements Listener {
     public static void skip(Player player) {
         if(cutscenePlayers.containsKey(player)) {
             cutscenePlayers.get(player).forEach(BukkitTask::cancel);
-            player.setGameMode(GameMode.SURVIVAL);
+            player.setGameMode(GameMode.ADVENTURE);
             player.teleport(new Location(MapManager.getDarkzone(), 176.5, 91, -93.5, -90, 0));
             FeatherBoardAPI.toggle(player);
             NoteBlockAPI.stopPlaying(player);
