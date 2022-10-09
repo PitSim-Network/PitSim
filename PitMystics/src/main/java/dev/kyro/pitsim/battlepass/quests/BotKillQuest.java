@@ -2,26 +2,26 @@ package dev.kyro.pitsim.battlepass.quests;
 
 import dev.kyro.arcticapi.builders.AItemStackBuilder;
 import dev.kyro.arcticapi.builders.ALoreBuilder;
+import dev.kyro.arcticapi.misc.AUtil;
 import dev.kyro.pitsim.battlepass.PassQuest;
 import dev.kyro.pitsim.controllers.NonManager;
 import dev.kyro.pitsim.controllers.PlayerManager;
 import dev.kyro.pitsim.events.KillEvent;
+import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.event.EventHandler;
 import org.bukkit.inventory.ItemStack;
 
-import java.text.DecimalFormat;
 import java.util.List;
 
 public class BotKillQuest extends PassQuest {
 
 	public BotKillQuest() {
-		super("Bot Kills", "botkills", QuestType.DAILY);
+		super("&c&lBot Kills", "botkills", QuestType.DAILY);
 	}
 
 	@EventHandler
 	public void onKill(KillEvent killEvent) {
-		if(!killEvent.isKillerPlayer() || !killEvent.isDeadPlayer()) return;
 		if(!PlayerManager.isRealPlayer(killEvent.getKillerPlayer()) || !canProgressQuest(killEvent.getKillerPitPlayer())
 				|| NonManager.getNon(killEvent.getDead()) == null) return;
 
@@ -30,12 +30,14 @@ public class BotKillQuest extends PassQuest {
 
 	@Override
 	public ItemStack getDisplayItem(QuestLevel questLevel, double progress) {
-		DecimalFormat decimalFormat = new DecimalFormat("0.#");
 		ItemStack itemStack = new AItemStackBuilder(Material.DIAMOND_SWORD)
-				.setName("&b&l" + getDisplayName())
+				.setName(getDisplayName())
 				.setLore(new ALoreBuilder(
-						"&7Kill 30 bots",
-						"&7Progress: " + decimalFormat.format(progress) + "/" + decimalFormat.format(questLevel.requirement)
+						"&7Kill &c" + intFormat.format(questLevel.requirement) + " &7bots",
+						"",
+						"&7Progress: &3" + intFormat.format(progress) + "&7/&3" + intFormat.format(questLevel.requirement) + " &8[" +
+								AUtil.createProgressBar("|", ChatColor.AQUA, ChatColor.GRAY, 20, progress / questLevel.requirement) + "&8]",
+						"&7Reward: &3" + questLevel.rewardPoints + " &7Quest Points"
 				))
 				.getItemStack();
 		return itemStack;

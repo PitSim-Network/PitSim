@@ -11,7 +11,9 @@ import org.bukkit.Material;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.inventory.InventoryOpenEvent;
+import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -79,7 +81,12 @@ public class QuestPanel extends AGUIPanel {
 		for(int i = 0; i < displayList.size(); i++) {
 			PassQuest toDisplay = displayList.get(i);
 			int slot = dailyQuestSlots.get(i);
-			getInventory().setItem(slot, toDisplay.getDisplayItem(toDisplay.getDailyState(), PassManager.getProgression(passGUI.pitPlayer, toDisplay)));
+
+			ItemStack itemStack = toDisplay.getDisplayItem(toDisplay.getDailyState(), PassManager.getProgression(passGUI.pitPlayer, toDisplay));
+			ItemMeta itemMeta = itemStack.getItemMeta();
+			itemMeta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
+			itemStack.setItemMeta(itemMeta);
+			getInventory().setItem(slot, itemStack);
 		}
 	}
 

@@ -4,7 +4,7 @@ import de.tr7zw.nbtapi.NBTItem;
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.arcticapi.misc.AUtil;
 import dev.kyro.pitsim.PitSim;
-import dev.kyro.pitsim.battlepass.quests.UberQuest;
+import dev.kyro.pitsim.battlepass.quests.CompleteUbersQuest;
 import dev.kyro.pitsim.commands.FreshCommand;
 import dev.kyro.pitsim.controllers.EnchantManager;
 import dev.kyro.pitsim.controllers.ItemManager;
@@ -269,7 +269,7 @@ public class Uberstreak extends Megastreak {
 		uberdrop.give(pitPlayer);
 
 		if(pitPlayer.stats != null) pitPlayer.stats.ubersCompleted++;
-		UberQuest.INSTANCE.attemptQuestIncrement(pitPlayer);
+		CompleteUbersQuest.INSTANCE.attemptQuestIncrement(pitPlayer);
 	}
 
 	public static void uberMessage(String message, PitPlayer pitPlayer) {

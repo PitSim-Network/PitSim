@@ -13,9 +13,7 @@ import dev.kyro.arcticapi.data.AData;
 import dev.kyro.arcticapi.hooks.AHook;
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.battlepass.PassManager;
-import dev.kyro.pitsim.battlepass.quests.BotKillQuest;
-import dev.kyro.pitsim.battlepass.quests.KillPlayersQuest;
-import dev.kyro.pitsim.battlepass.quests.UberQuest;
+import dev.kyro.pitsim.battlepass.quests.*;
 import dev.kyro.pitsim.boosters.ChaosBooster;
 import dev.kyro.pitsim.boosters.GoldBooster;
 import dev.kyro.pitsim.boosters.PvPBooster;
@@ -592,7 +590,9 @@ public class PitSim extends JavaPlugin {
 
 //		Weekly quests
 		PassManager.registerQuest(new KillPlayersQuest());
-		PassManager.registerQuest(new UberQuest());
+		PassManager.registerQuest(new CompleteUbersQuest());
+		PassManager.registerQuest(new DoTrueDamageVSBotsQuest());
+		PassManager.registerQuest(new DoTrueDamageVSPlayersQuest());
 	}
 
 	private void loadConfig() {

@@ -31,6 +31,9 @@ public abstract class PassQuest implements Listener {
 
 //		ideas
 //		maybe add a few useless enchants and items to pair with quest
+//		mess with perks
+//		they have feelings too - healer on nons
+//		welcome/gg quests
 	}
 
 	public PassQuest(String displayName, String refName, QuestType questType) {
