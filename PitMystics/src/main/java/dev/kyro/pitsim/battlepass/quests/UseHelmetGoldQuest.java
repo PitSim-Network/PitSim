@@ -13,11 +13,11 @@ import org.bukkit.inventory.ItemStack;
 import java.util.ArrayList;
 import java.util.List;
 
-public class HoursPlayedQuest extends PassQuest {
-	public static HoursPlayedQuest INSTANCE;
+public class UseHelmetGoldQuest extends PassQuest {
+	public static UseHelmetGoldQuest INSTANCE;
 
-	public HoursPlayedQuest() {
-		super("&e&lMaster Procrastinator", "hoursplayed", QuestType.WEEKLY);
+	public UseHelmetGoldQuest() {
+		super("&6&lSuperfluous Spending", "usehelmetgold", QuestType.WEEKLY);
 		INSTANCE = this;
 	}
 
@@ -27,7 +27,7 @@ public class HoursPlayedQuest extends PassQuest {
 
 	@Override
 	public ItemStack getDisplayItem(PitPlayer pitPlayer, QuestLevel questLevel, double progress) {
-		ItemStack itemStack = new AItemStackBuilder(Material.WATCH)
+		ItemStack itemStack = new AItemStackBuilder(Material.GOLD_NUGGET)
 				.setName(getDisplayName())
 				.setLore(new ALoreBuilder(
 						"&7Spend &e" + Misc.formatLarge(questLevel.getRequirement(pitPlayer) / 60) + " &7hours on the server",

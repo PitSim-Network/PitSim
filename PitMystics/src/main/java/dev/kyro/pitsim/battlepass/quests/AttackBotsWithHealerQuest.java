@@ -13,26 +13,27 @@ import org.bukkit.inventory.ItemStack;
 import java.util.ArrayList;
 import java.util.List;
 
-public class HoursPlayedQuest extends PassQuest {
-	public static HoursPlayedQuest INSTANCE;
+public class AttackBotsWithHealerQuest extends PassQuest {
+	public static AttackBotsWithHealerQuest INSTANCE;
 
-	public HoursPlayedQuest() {
-		super("&e&lMaster Procrastinator", "hoursplayed", QuestType.WEEKLY);
+	public AttackBotsWithHealerQuest() {
+		super("&c&lThey Have Feelings Too", "healbots", QuestType.WEEKLY);
 		INSTANCE = this;
 	}
 
-	public void progressTime(PitPlayer pitPlayer) {
-		progressQuest(pitPlayer, 1);
+	public void healPlayer(PitPlayer pitPlayer, double amount) {
+		progressQuest(pitPlayer, amount);
 	}
 
 	@Override
 	public ItemStack getDisplayItem(PitPlayer pitPlayer, QuestLevel questLevel, double progress) {
-		ItemStack itemStack = new AItemStackBuilder(Material.WATCH)
+		ItemStack itemStack = new AItemStackBuilder(Material.GOLDEN_APPLE)
 				.setName(getDisplayName())
 				.setLore(new ALoreBuilder(
-						"&7Spend &e" + Misc.formatLarge(questLevel.getRequirement(pitPlayer) / 60) + " &7hours on the server",
+						"&cHeal &7nons &c" + Misc.getHearts(questLevel.getRequirement(pitPlayer)) + " &7with the",
+						"&7enchant &9Healer",
 						"",
-						"&7Progress: &3" + Misc.formatLarge(progress / 60) + "&7/&3" + Misc.formatLarge(questLevel.getRequirement(pitPlayer) / 20) + " &8[" +
+						"&7Progress: &3" + Misc.formatLarge(progress / 2) + "&7/&3" + Misc.formatLarge(questLevel.getRequirement(pitPlayer) / 2) + " &8[" +
 								AUtil.createProgressBar("|", ChatColor.AQUA, ChatColor.GRAY, 20,
 								progress / questLevel.getRequirement(pitPlayer)) + "&8]",
 						"&7Reward: &3" + questLevel.rewardPoints + " &7Quest Points"
@@ -49,7 +50,7 @@ public class HoursPlayedQuest extends PassQuest {
 	@Override
 	public List<QuestLevel> getWeeklyPossibleStates() {
 		List<QuestLevel> questLevels = new ArrayList<>();
-		questLevels.add(new QuestLevel(10 * 60, 100));
+		questLevels.add(new QuestLevel(30.0, 100));
 		return questLevels;
 	}
 

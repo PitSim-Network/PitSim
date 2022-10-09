@@ -22,11 +22,13 @@ import java.util.List;
 import java.util.UUID;
 
 public class MegaLongBow extends PitEnchant {
+	public static MegaLongBow INSTANCE;
 	public static List<UUID> mlbShots = new ArrayList<>();
 
 	public MegaLongBow() {
 		super("Mega Longbow", true, ApplyType.BOWS,
 				"megalongbow", "mega-longbow", "mlb", "mega");
+		INSTANCE = this;
 	}
 
 	@EventHandler

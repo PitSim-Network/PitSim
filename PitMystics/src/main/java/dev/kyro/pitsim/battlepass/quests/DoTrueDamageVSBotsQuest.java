@@ -25,7 +25,7 @@ public class DoTrueDamageVSBotsQuest extends PassQuest {
 	}
 
 	@EventHandler(priority = EventPriority.MONITOR)
-	public void onKill(AttackEvent.Apply attackEvent) {
+	public void onAttack(AttackEvent.Apply attackEvent) {
 		if(!PlayerManager.isRealPlayer(attackEvent.getAttackerPlayer()) || !canProgressQuest(attackEvent.getAttackerPitPlayer())
 				|| NonManager.getNon(attackEvent.getDefender()) == null) return;
 		progressQuest(attackEvent.getAttackerPitPlayer(), attackEvent.trueDamage);

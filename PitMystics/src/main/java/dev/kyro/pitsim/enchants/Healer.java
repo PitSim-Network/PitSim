@@ -1,6 +1,7 @@
 package dev.kyro.pitsim.enchants;
 
 import dev.kyro.arcticapi.builders.ALoreBuilder;
+import dev.kyro.pitsim.battlepass.quests.AttackBotsWithHealerQuest;
 import dev.kyro.pitsim.controllers.Cooldown;
 import dev.kyro.pitsim.controllers.objects.PitEnchant;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
@@ -37,10 +38,10 @@ public class Healer extends PitEnchant {
 		attackEvent.multipliers.add(0d);
 		pitAttacker.heal(0.5 + (0.5 * enchantLvl));
 		pitDefender.heal(getHealing(enchantLvl));
+		AttackBotsWithHealerQuest.INSTANCE.healPlayer(pitAttacker, getHealing(enchantLvl));
 
 		attackEvent.getDefender().getWorld().spigot().playEffect(attackEvent.getDefender().getLocation().add(0, 1, 0),
 				Effect.HAPPY_VILLAGER, 0, 0, (float) 0.5, (float) 0.5, (float) 0.5, (float) 0.01, 20, 50);
-
 	}
 
 	@Override

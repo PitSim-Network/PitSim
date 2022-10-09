@@ -20,7 +20,7 @@ public abstract class PassQuest implements Listener {
 //		weekly quests (grinding) - kill x (mobs)
 //		weekly quests (darkzone) - brew potions, kill bosses, incinerate drops, harvest souls
 //		weekly quests (anti-progression) - use helmet gold, win auctions
-//		weekly quests (misc) - earn guild rep, mlb hits, upgrade renown
+//		weekly quests (misc) - earn guild rep, upgrade renown
 //		weekly quests (funny) - punch x unique players, kill a player with the judgement hopper,
 //		attack the pit blob x times, kill players while not wearing a chestplate, hit megastreak without armor
 //		weekly quests (enchant combinations) - Streak with unpopular enchants (don't include exe) Sweaty/Moct (cb damage, shark, beserker, king buster).
@@ -28,7 +28,6 @@ public abstract class PassQuest implements Listener {
 //		ideas
 //		maybe add a few useless enchants and items to pair with quest
 //		mess with perks
-//		they have feelings too - healer on nons
 //		welcome/gg quests
 	}
 

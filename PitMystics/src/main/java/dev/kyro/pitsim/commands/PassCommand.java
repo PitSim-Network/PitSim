@@ -11,7 +11,7 @@ public class PassCommand implements CommandExecutor {
 	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
 		if(!(sender instanceof Player)) return false;
 		Player player = (Player) sender;
-		if(!player.isOp()) return false;
+//		if(!player.isOp()) return false;
 
 		PassGUI passGUI = new PassGUI(player);
 		passGUI.open();
