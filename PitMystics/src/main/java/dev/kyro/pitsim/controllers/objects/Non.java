@@ -105,7 +105,7 @@ public class Non {
 		if(count % 7 == 0) {
 
 			if(npc.isSpawned()) {
-				Block underneath = non.getLocation().clone().subtract(0, 0.2, 0).getBlock();
+				Block underneath = non.getLocation().clone().subtract(0, 0.1, 0).getBlock();
 				if(underneath.getType() != Material.AIR && underneath.getType() != Material.CARPET) {
 
 					int rand = (int) (Math.random() * 2);
@@ -117,8 +117,8 @@ public class Non {
 						Vector sprintVelo = target.getLocation().toVector().subtract(non.getLocation().toVector())
 								.normalize();
 
-						if(distance < Math.random() * 1.5 + 1.5) sprintVelo.multiply(0.16).setY(0.4);
-						else sprintVelo.multiply(0.4).setY(0.4);
+						if(distance < Math.random() * 1.5 + 1.5) sprintVelo.multiply(0.16).setY(0.2);
+						else sprintVelo.multiply(0.4).setY(0.2);
 						non.setVelocity(sprintVelo);
 					} catch(Exception ignored) {
 						System.out.println("error with non targets (im assuming)");
