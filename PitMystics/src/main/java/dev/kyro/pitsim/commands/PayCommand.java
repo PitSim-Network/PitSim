@@ -1,5 +1,6 @@
 package dev.kyro.pitsim.commands;
 
+import de.myzelyam.api.vanish.VanishAPI;
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
@@ -32,6 +33,7 @@ public class PayCommand implements CommandExecutor {
 		Player target = null;
 		for(Player onlinePlayer : Bukkit.getOnlinePlayers()) {
 			if(!onlinePlayer.getName().equalsIgnoreCase(args[0])) continue;
+			if(VanishAPI.isInvisible(onlinePlayer)) continue;
 			target = onlinePlayer;
 			break;
 		}
