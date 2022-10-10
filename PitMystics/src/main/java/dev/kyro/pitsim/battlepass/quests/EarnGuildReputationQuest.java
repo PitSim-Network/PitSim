@@ -30,8 +30,8 @@ public class EarnGuildReputationQuest extends PassQuest {
 		ItemStack itemStack = new AItemStackBuilder(Material.BANNER)
 				.setName(getDisplayName())
 				.setLore(new ALoreBuilder(
-						"&7Earn &a" + Misc.formatLarge(questLevel.getRequirement(pitPlayer)) + " &7reputation points for",
-						"&7your &aguild",
+						"&7Earn &a" + Misc.formatLarge(questLevel.getRequirement(pitPlayer)) + " &7reputation points",
+						"&7for your &aguild",
 						"",
 						"&7Progress: &3" + Misc.formatLarge(progress) + "&7/&3" + Misc.formatLarge(questLevel.getRequirement(pitPlayer)) + " &8[" +
 								AUtil.createProgressBar("|", ChatColor.AQUA, ChatColor.GRAY, 20,

@@ -27,7 +27,7 @@ public class AttackBotsWithHealerQuest extends PassQuest {
 
 	@Override
 	public ItemStack getDisplayItem(PitPlayer pitPlayer, QuestLevel questLevel, double progress) {
-		ItemStack itemStack = new AItemStackBuilder(Material.GOLDEN_APPLE)
+		ItemStack itemStack = new AItemStackBuilder(Material.GOLDEN_CARROT)
 				.setName(getDisplayName())
 				.setLore(new ALoreBuilder(
 						"&cHeal &7nons &c" + Misc.getHearts(questLevel.getRequirement(pitPlayer)) + " &7with the",

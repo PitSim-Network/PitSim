@@ -33,11 +33,11 @@ public class GainAbsorptionQuest extends PassQuest {
 
 	@Override
 	public ItemStack getDisplayItem(PitPlayer pitPlayer, QuestLevel questLevel, double progress) {
-		ItemStack itemStack = new AItemStackBuilder(Material.WATCH)
+		ItemStack itemStack = new AItemStackBuilder(Material.GOLDEN_APPLE)
 				.setName(getDisplayName())
 				.setLore(new ALoreBuilder(
-						"&7Gain &6" + Misc.getHearts(questLevel.getRequirement(pitPlayer) / 2) + " &7of absorption from",
-						"&7enchants",
+						"&7Gain &6" + Misc.getHearts(questLevel.getRequirement(pitPlayer) / 2) + " &7of absorption",
+						"&7from enchants",
 						"",
 						"&7Progress: &3" + Misc.formatLarge(progress / 60) + "&7/&3" + Misc.formatLarge(questLevel.getRequirement(pitPlayer) / 20) + " &8[" +
 								AUtil.createProgressBar("|", ChatColor.AQUA, ChatColor.GRAY, 20,

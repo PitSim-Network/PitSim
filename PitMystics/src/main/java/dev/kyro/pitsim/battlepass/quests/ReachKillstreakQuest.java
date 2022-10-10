@@ -31,8 +31,8 @@ public class ReachKillstreakQuest extends PassQuest {
 		ItemStack itemStack = new AItemStackBuilder(Material.BLAZE_POWDER)
 				.setName(getDisplayName())
 				.setLore(new ALoreBuilder(
-						"&7Reach a killstreak of at least &e" + KILLSTREAK_REQUIREMENT,
-						"&e" + Misc.formatLarge(questLevel.getRequirement(pitPlayer)) + " &7times",
+						"&7Reach a killstreak of at",
+						"&7least " + KILLSTREAK_REQUIREMENT + " &e" + Misc.formatLarge(questLevel.getRequirement(pitPlayer)) + " &7times",
 						"",
 						"&7Progress: &3" + Misc.formatLarge(progress) + "&7/&3" + Misc.formatLarge(questLevel.getRequirement(pitPlayer)) + " &8[" +
 								AUtil.createProgressBar("|", ChatColor.AQUA, ChatColor.GRAY, 20, progress / questLevel.getRequirement(pitPlayer)) + "&8]",
