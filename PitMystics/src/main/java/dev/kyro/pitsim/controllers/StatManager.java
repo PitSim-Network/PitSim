@@ -1,5 +1,6 @@
 package dev.kyro.pitsim.controllers;
 
+import de.myzelyam.api.vanish.VanishAPI;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.enchants.Regularity;
@@ -24,8 +25,9 @@ public class StatManager implements Listener {
 			public void run() {
 				for(Player player : Bukkit.getOnlinePlayers()) {
 					PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
-					if(!AFKManager.AFKPlayers.contains(player)) pitPlayer.stats.minutesPlayed++;
-//					pitPlayer.stats.save();
+					if(AFKManager.AFKPlayers.contains(player)) continue;
+					if(VanishAPI.isInvisible(player)) continue;
+					pitPlayer.stats.minutesPlayed++;
 				}
 			}
 		}.runTaskTimer(PitSim.INSTANCE, Misc.getRunnableOffset(1), 20 * 60L);
