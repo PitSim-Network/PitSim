@@ -37,7 +37,7 @@ public 	class Streaker extends PitPerk {
 		playerTimes.remove(killEvent.dead);
 
 		if(!playerHasUpgrade(killEvent.killer)) return;
-		if(NonManager.getNon(killEvent.dead) == null) return;
+		if(!killEvent.deadIsPlayer || NonManager.getNon(killEvent.dead) == null) return;
 		killEvent.xpCap += 80;
 
 		if(xpReward.containsKey(killEvent.killer)) killEvent.xpMultipliers.add(xpReward.get(killEvent.killer));
