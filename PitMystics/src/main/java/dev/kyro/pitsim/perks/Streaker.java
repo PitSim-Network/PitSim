@@ -21,7 +21,7 @@ import java.util.*;
 
 public 	class Streaker extends PitPerk {
 	public static Map<LivingEntity, Integer> playerTimes = new HashMap<>();
-	public Map<LivingEntity, Double> xpReward = new HashMap<>();
+	public static Map<LivingEntity, Double> xpReward = new HashMap<>();
 
 	public static Streaker INSTANCE;
 
@@ -32,7 +32,6 @@ public 	class Streaker extends PitPerk {
 
 	@EventHandler
 	public void onKill(KillEvent killEvent) {
-
 		xpReward.remove(killEvent.dead);
 		playerTimes.remove(killEvent.dead);
 
@@ -81,19 +80,15 @@ public 	class Streaker extends PitPerk {
 	}
 
 	static {
-
 		new BukkitRunnable() {
 			@Override
 			public void run() {
-
-				List<UUID> toRemove = new ArrayList<>();
 				for(Map.Entry<LivingEntity, Integer> entry : playerTimes.entrySet()) {
 					int time = entry.getValue();
 					time = time + 1;
 
 					playerTimes.put(entry.getKey(), time);
 				}
-
 			}
 		}.runTaskTimer(PitSim.INSTANCE, 0L, 20L);
 	}
@@ -103,7 +98,6 @@ public 	class Streaker extends PitPerk {
 
 		xpReward.remove(event.getPlayer());
 		playerTimes.remove(event.getPlayer());
-
 	}
 
 	@EventHandler
