@@ -19,8 +19,8 @@ public abstract class PassQuest implements Listener {
 //		daily - player kills, bot kills, something darkzone
 //		weekly quests (grinding) - kill x (mobs)
 //		weekly quests (darkzone) - brew potions, kill bosses, incinerate drops, harvest souls
-//		weekly quests (anti-progression) - use helmet gold, win auctions
-//		weekly quests (misc) - earn guild rep, upgrade renown
+//		weekly quests (anti-progression) -
+//		weekly quests (misc) - upgrade renown
 //		weekly quests (funny) - punch x unique players, kill a player with the judgement hopper,
 //		attack the pit blob x times, kill players while not wearing a chestplate, hit megastreak without armor
 //		weekly quests (enchant combinations) - Streak with unpopular enchants (don't include exe) Sweaty/Moct (cb damage, shark, beserker, king buster).

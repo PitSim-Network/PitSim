@@ -12,6 +12,7 @@ import dev.kyro.arcticguilds.controllers.GuildManager;
 import dev.kyro.arcticguilds.controllers.objects.Guild;
 import dev.kyro.arcticguilds.controllers.objects.GuildBuff;
 import dev.kyro.pitsim.PitSim;
+import dev.kyro.pitsim.battlepass.quests.WinAuctionsQuest;
 import dev.kyro.pitsim.brewing.PotionManager;
 import dev.kyro.pitsim.brewing.ingredients.MagmaCream;
 import dev.kyro.pitsim.brewing.objects.PotionEffect;
@@ -674,8 +675,8 @@ public class PlayerManager implements Listener {
 
 			pitPlayer.auctionReturn.clear();
 			pitPlayer.stats.auctionsWon++;
+			WinAuctionsQuest.INSTANCE.winAuction(pitPlayer);
 		}
-
 
 		if(pitPlayer.soulReturn > 0) {
 			PitPlayer.getPitPlayer(player).taintedSouls += pitPlayer.soulReturn;

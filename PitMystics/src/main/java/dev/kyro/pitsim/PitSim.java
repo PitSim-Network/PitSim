@@ -603,6 +603,9 @@ public class PitSim extends JavaPlugin {
 		PassManager.registerQuest(new AttackBotsWithHealerQuest());
 		PassManager.registerQuest(new LandMLBShotsQuest());
 		PassManager.registerQuest(new UseHelmetGoldQuest());
+		PassManager.registerQuest(new WinAuctionsQuest());
+		PassManager.registerQuest(new EarnGuildReputationQuest());
+		PassManager.registerQuest(new EarnRenownQuest());
 	}
 
 	private void loadConfig() {

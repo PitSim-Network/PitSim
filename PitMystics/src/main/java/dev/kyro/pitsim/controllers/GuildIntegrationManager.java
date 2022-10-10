@@ -7,6 +7,7 @@ import dev.kyro.arcticguilds.controllers.objects.Guild;
 import dev.kyro.arcticguilds.controllers.objects.GuildBuff;
 import dev.kyro.arcticguilds.events.GuildWithdrawalEvent;
 import dev.kyro.pitsim.PitSim;
+import dev.kyro.pitsim.battlepass.quests.EarnGuildReputationQuest;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.events.AttackEvent;
 import dev.kyro.pitsim.events.KillEvent;
@@ -45,6 +46,8 @@ public class GuildIntegrationManager implements Listener {
 					Guild guild = GuildManager.getGuild(onlinePlayer);
 					if(guild == null) continue;
 					guild.addReputation(getIdleReputation());
+					PitPlayer pitPlayer = PitPlayer.getPitPlayer(onlinePlayer);
+					EarnGuildReputationQuest.INSTANCE.gainReputation(pitPlayer, getIdleReputation());
 				}
 			}
 		}.runTaskTimer(PitSim.INSTANCE, Misc.getRunnableOffset(1), 20 * 60);
@@ -60,6 +63,8 @@ public class GuildIntegrationManager implements Listener {
 
 		if(killerGuild != null && deadGuild != null) {
 			killerGuild.addReputation(getFeatherLossReputation());
+			PitPlayer pitPlayer = PitPlayer.getPitPlayer(killer);
+			EarnGuildReputationQuest.INSTANCE.gainReputation(pitPlayer, getFeatherLossReputation());
 		}
 	}
 
@@ -145,6 +150,7 @@ public class GuildIntegrationManager implements Listener {
 
 		if(deadGuild != null) {
 			killerGuild.addReputation(getKillReputation());
+			EarnGuildReputationQuest.INSTANCE.gainReputation(killEvent.getKillerPitPlayer(), getKillReputation());
 		}
 	}
 

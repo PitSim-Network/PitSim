@@ -4,6 +4,7 @@ import com.google.api.core.ApiFuture;
 import com.google.cloud.firestore.DocumentSnapshot;
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.arcticapi.misc.AUtil;
+import dev.kyro.pitsim.battlepass.quests.WinAuctionsQuest;
 import dev.kyro.pitsim.controllers.AuctionDisplays;
 import dev.kyro.pitsim.controllers.FirestoreManager;
 import dev.kyro.pitsim.enums.ItemType;
@@ -126,8 +127,9 @@ public class AuctionItem {
         }
 
         if(winner.isOnline()) {
-
-            PitPlayer.getPitPlayer(winner.getPlayer()).stats.auctionsWon++;
+            PitPlayer pitPlayer = PitPlayer.getPitPlayer(winner.getPlayer());
+            pitPlayer.stats.auctionsWon++;
+            WinAuctionsQuest.INSTANCE.winAuction(pitPlayer);
 
             if(itemData == 0) {
                 AUtil.giveItemSafely(winner.getPlayer(), item.item.clone(), true);

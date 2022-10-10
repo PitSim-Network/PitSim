@@ -3,6 +3,7 @@ package dev.kyro.pitsim.controllers;
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.arcticapi.misc.AUtil;
 import dev.kyro.pitsim.PitSim;
+import dev.kyro.pitsim.battlepass.quests.EarnRenownQuest;
 import dev.kyro.pitsim.battlepass.quests.GrindGoldQuest;
 import dev.kyro.pitsim.battlepass.quests.GrindXPQuest;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
@@ -106,6 +107,7 @@ public class LevelManager {
 		PitSim.VAULT.withdrawPlayer(player, PitSim.VAULT.getBalance(player));
 		pitPlayer.soulsGathered = 0;
 		pitPlayer.renown += prestigeInfo.renownReward;
+		EarnRenownQuest.INSTANCE.gainRenown(pitPlayer, prestigeInfo.renownReward);
 		pitPlayer.moonBonus = 0;
 		pitPlayer.goldStack = 0;
 		pitPlayer.killstreaks.set(1, NoKillstreak.INSTANCE);

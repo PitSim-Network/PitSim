@@ -13,25 +13,25 @@ import org.bukkit.inventory.ItemStack;
 import java.util.ArrayList;
 import java.util.List;
 
-public class UseHelmetGoldQuest extends PassQuest {
-	public static UseHelmetGoldQuest INSTANCE;
+public class EarnGuildReputationQuest extends PassQuest {
+	public static EarnGuildReputationQuest INSTANCE;
 
-	public UseHelmetGoldQuest() {
-		super("&6&lSuperfluous Spending", "usehelmetgold", QuestType.WEEKLY);
+	public EarnGuildReputationQuest() {
+		super("&a&lTeam Carrier", "earnguildrep", QuestType.WEEKLY);
 		INSTANCE = this;
 	}
 
-	public void spendGold(PitPlayer pitPlayer, int gold) {
-		progressQuest(pitPlayer, gold);
+	public void gainReputation(PitPlayer pitPlayer, int amount) {
+		progressQuest(pitPlayer, amount);
 	}
 
 	@Override
 	public ItemStack getDisplayItem(PitPlayer pitPlayer, QuestLevel questLevel, double progress) {
-		ItemStack itemStack = new AItemStackBuilder(Material.GOLD_NUGGET)
+		ItemStack itemStack = new AItemStackBuilder(Material.BANNER)
 				.setName(getDisplayName())
 				.setLore(new ALoreBuilder(
-						"&7Spend &6" + Misc.formatLarge(questLevel.getRequirement(pitPlayer)) + "g &7on helmet abilities",
-						"&7(&6Golden Helmet&7) required",
+						"&7Earn &a" + Misc.formatLarge(questLevel.getRequirement(pitPlayer)) + " &7reputation points for",
+						"&7your &aguild",
 						"",
 						"&7Progress: &3" + Misc.formatLarge(progress) + "&7/&3" + Misc.formatLarge(questLevel.getRequirement(pitPlayer)) + " &8[" +
 								AUtil.createProgressBar("|", ChatColor.AQUA, ChatColor.GRAY, 20,
@@ -50,13 +50,12 @@ public class UseHelmetGoldQuest extends PassQuest {
 	@Override
 	public List<QuestLevel> getWeeklyPossibleStates() {
 		List<QuestLevel> questLevels = new ArrayList<>();
-		questLevels.add(new QuestLevel(100, 100));
+		questLevels.add(new QuestLevel(3, 100));
 		return questLevels;
 	}
 
 	@Override
 	public double getMultiplier(PitPlayer pitPlayer) {
-		if(pitPlayer.prestige == 0) return 1;
-		return pitPlayer.prestige;
+		return 1;
 	}
 }

@@ -5,6 +5,7 @@ import de.tr7zw.nbtapi.NBTItem;
 import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.PitSim;
+import dev.kyro.pitsim.battlepass.quests.UseHelmetGoldQuest;
 import dev.kyro.pitsim.controllers.*;
 import dev.kyro.pitsim.enchants.ComboVenom;
 import dev.kyro.pitsim.enums.NBTTag;
@@ -169,6 +170,8 @@ public class GoldenHelmet implements Listener {
 			player.getInventory().setHelmet(nbtItem.getItem());
 			player.updateInventory();
 		}
+		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
+		UseHelmetGoldQuest.INSTANCE.spendGold(pitPlayer, gold);
 		return true;
 	}
 

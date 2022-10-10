@@ -3,6 +3,7 @@ package dev.kyro.pitsim.enchants;
 import de.tr7zw.nbtapi.NBTItem;
 import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.arcticapi.misc.AOutput;
+import dev.kyro.pitsim.battlepass.quests.EarnRenownQuest;
 import dev.kyro.pitsim.controllers.DamageManager;
 import dev.kyro.pitsim.controllers.EnchantManager;
 import dev.kyro.pitsim.controllers.objects.PitEnchant;
@@ -49,6 +50,7 @@ public class SelfCheckout extends PitEnchant {
 		int renown = Math.min((int) ((pitKiller.getKills() + 1) / 300), 4);
 		if(renown != 0) {
 			pitKiller.renown += renown;
+			EarnRenownQuest.INSTANCE.gainRenown(pitKiller, renown);
 			AOutput.send(killEvent.getKiller(), "&7You have been given &e" + renown + " renown");
 		}
 
