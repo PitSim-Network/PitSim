@@ -50,7 +50,7 @@ public class EarnGuildReputationQuest extends PassQuest {
 	@Override
 	public List<QuestLevel> getWeeklyPossibleStates() {
 		List<QuestLevel> questLevels = new ArrayList<>();
-		questLevels.add(new QuestLevel(3, 100));
+		questLevels.add(new QuestLevel(3_000_000, 100));
 		return questLevels;
 	}
 

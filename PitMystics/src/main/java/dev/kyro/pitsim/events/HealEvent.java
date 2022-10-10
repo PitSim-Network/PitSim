@@ -1,5 +1,6 @@
 package dev.kyro.pitsim.events;
 
+import dev.kyro.pitsim.controllers.objects.PitEnchant;
 import net.minecraft.server.v1_8_R3.EntityPlayer;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
 import org.bukkit.entity.LivingEntity;
@@ -20,6 +21,9 @@ public class HealEvent extends Event {
 	public HealType healType;
 	public int max;
 	public List<Double> multipliers = new ArrayList<>();
+
+//	Optional/Nullable
+	public PitEnchant pitEnchant;
 
 	public HealEvent(LivingEntity entity, double initialHeal, HealType healType, int max) {
 		this.entity = entity;

@@ -606,6 +606,8 @@ public class PitSim extends JavaPlugin {
 		PassManager.registerQuest(new WinAuctionsQuest());
 		PassManager.registerQuest(new EarnGuildReputationQuest());
 		PassManager.registerQuest(new EarnRenownQuest());
+		PassManager.registerQuest(new PunchUniquePlayers());
+		PassManager.registerQuest(new GainAbsorptionQuest());
 	}
 
 	private void loadConfig() {

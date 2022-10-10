@@ -131,9 +131,9 @@ public class PassManager implements Listener {
 
 //	Create the passes
 	public static void registerPasses() {
-		registerPass(new PitSimPass(getDate("9/1/2022")));
+		registerPass(new PitSimPass(getDate("1/1/2022")));
 
-		PitSimPass pitSimPass = new PitSimPass(getDate("10/1/2022"))
+		PitSimPass pitSimPass = new PitSimPass(getDate("9/1/2022"))
 				.registerReward(new PassXpReward(20L), PitSimPass.RewardType.FREE, 1)
 				.registerReward(new PassXpReward(40L), PitSimPass.RewardType.PREMIUM, 2)
 				.registerReward(new PassXpReward(60L), PitSimPass.RewardType.FREE, 2)

@@ -20,8 +20,8 @@ public abstract class PassQuest implements Listener {
 //		weekly quests (grinding) - kill x (mobs)
 //		weekly quests (darkzone) - brew potions, kill bosses, incinerate drops, harvest souls
 //		weekly quests (anti-progression) -
-//		weekly quests (misc) - upgrade renown
-//		weekly quests (funny) - punch x unique players, kill a player with the judgement hopper,
+//		weekly quests (misc) - upgrade renown, have speed for a time (not in dz or spawn)
+//		weekly quests (funny) - kill a player with the judgement hopper,
 //		attack the pit blob x times, kill players while not wearing a chestplate, hit megastreak without armor
 //		weekly quests (enchant combinations) - Streak with unpopular enchants (don't include exe) Sweaty/Moct (cb damage, shark, beserker, king buster).
 
@@ -59,14 +59,14 @@ public abstract class PassQuest implements Listener {
 		if(questType == QuestType.WEEKLY && !PassManager.currentPass.weeklyQuests.containsKey(this)) return false;
 
 		double progression = passData.questCompletion.getOrDefault(refName, 0.0);
-		return progression < getQuestLevel().getRequirement(pitPlayer);
+		return progression < getQuestLevel().getRequirement(pitPlayer) * getMultiplier(pitPlayer);
 	}
 
 	public void progressQuest(PitPlayer pitPlayer, double amount) {
 		if(!canProgressQuest(pitPlayer)) return;
 		PassData passData = pitPlayer.getPassData(PassManager.currentPass.startDate);
 		double newValue = passData.questCompletion.getOrDefault(refName, 0.0) + amount;
-		if(newValue >= getQuestLevel().getRequirement(pitPlayer)) {
+		if(newValue >= getQuestLevel().getRequirement(pitPlayer) * getMultiplier(pitPlayer)) {
 			complete(pitPlayer);
 			passData.questCompletion.put(refName, Double.MAX_VALUE);
 			return;

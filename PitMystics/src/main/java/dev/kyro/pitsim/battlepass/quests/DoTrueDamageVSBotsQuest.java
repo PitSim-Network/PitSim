@@ -21,7 +21,7 @@ import java.util.List;
 public class DoTrueDamageVSBotsQuest extends PassQuest {
 
 	public DoTrueDamageVSBotsQuest() {
-		super("&9&lMenace Streaking", "truedamagebots", QuestType.WEEKLY);
+		super("&9&lMenace Streaker", "truedamagebots", QuestType.WEEKLY);
 	}
 
 	@EventHandler(priority = EventPriority.MONITOR)

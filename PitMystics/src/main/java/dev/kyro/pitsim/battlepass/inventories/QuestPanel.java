@@ -22,8 +22,6 @@ import java.util.List;
 public class QuestPanel extends AGUIPanel {
 	public static PassGUI passGUI;
 
-	public static ItemStack dailyQuestItem;
-	public static ItemStack weeklyQuestItem;
 	public static ItemStack backItem;
 
 	public int dailyQuestPage = 1;
@@ -33,20 +31,6 @@ public class QuestPanel extends AGUIPanel {
 	public List<Integer> weeklyQuestSlots = Arrays.asList(14, 15, 16, 23, 24, 25, 32, 33, 34, 41, 42, 43);
 
 	static {
-		dailyQuestItem = new AItemStackBuilder(Material.PAPER)
-				.setName("&e&lDaily Quests")
-				.setLore(new ALoreBuilder(
-						"&7Active daily quests"
-				))
-				.getItemStack();
-
-		weeklyQuestItem = new AItemStackBuilder(Material.BOOK)
-				.setName("&e&lWeekly Quests")
-				.setLore(new ALoreBuilder(
-						"&7Active weekly quests"
-				))
-				.getItemStack();
-
 		backItem = new AItemStackBuilder(Material.BARRIER)
 				.setName("&c&lBack")
 				.setLore(new ALoreBuilder(
@@ -62,56 +46,92 @@ public class QuestPanel extends AGUIPanel {
 		inventoryBuilder.createBorder(Material.STAINED_GLASS_PANE, 7)
 				.setSlots(Material.STAINED_GLASS_PANE, 7, 13, 22, 31, 40);
 
-		getInventory().setItem(2, dailyQuestItem);
 		getInventory().setItem(4, PassPanel.purchaseItem);
-		getInventory().setItem(6, weeklyQuestItem);
 		getInventory().setItem(49, backItem);
 	}
 
-	public void setDailyQuestPage() {
+	public void setDailyQuestPage(int page) {
+		ItemStack dailyQuestItem = new AItemStackBuilder(Material.PAPER)
+				.setName("&e&lDaily Quests")
+				.setLore(new ALoreBuilder(
+						"&7Active daily quests",
+						"",
+						"&7Page: &3" + dailyQuestPage + "&7/&3" + getDailyPages()
+				))
+				.getItemStack();
+		getInventory().setItem(2, dailyQuestItem);
+
 		List<PassQuest> fullList = PassManager.getDailyQuests();
 		fullList.removeIf(passQuest -> !passQuest.canProgressQuest(passGUI.pitPlayer));
 		List<PassQuest> displayList = new ArrayList<>();
-		for(int i = 0; i < dailyQuestSlots.size(); i++) {
-			int index = i + (dailyQuestPage - 1) * dailyQuestSlots.size();
+		for(int i = 0; i < dailyQuestSlots.size() + 1; i++) {
+			int index = i + (page - 1) * dailyQuestSlots.size();
 			if(index >= fullList.size()) break;
 			displayList.add(fullList.get(index));
 		}
 
-		for(int i = 0; i < displayList.size(); i++) {
-			PassQuest toDisplay = displayList.get(i);
+		for(int i = 0; i < dailyQuestSlots.size(); i++) {
 			int slot = dailyQuestSlots.get(i);
+			if(i < displayList.size()) {
+				PassQuest toDisplay = displayList.get(i);
 
-			ItemStack itemStack = toDisplay.getDisplayItem(passGUI.pitPlayer, toDisplay.getDailyState(),
-					PassManager.getProgression(passGUI.pitPlayer, toDisplay));
-			ItemMeta itemMeta = itemStack.getItemMeta();
-			itemMeta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
-			itemStack.setItemMeta(itemMeta);
-			getInventory().setItem(slot, itemStack);
+				ItemStack itemStack = toDisplay.getDisplayItem(passGUI.pitPlayer, toDisplay.getDailyState(),
+						PassManager.getProgression(passGUI.pitPlayer, toDisplay));
+				ItemMeta itemMeta = itemStack.getItemMeta();
+				itemMeta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
+				itemStack.setItemMeta(itemMeta);
+				getInventory().setItem(slot, itemStack);
+			} else {
+				ItemStack itemStack = new ItemStack(Material.AIR);
+				getInventory().setItem(slot, itemStack);
+			}
 		}
 	}
 
-	public void setWeeklyQuestPage() {
+	public void setWeeklyQuestPage(int page) {
+		ItemStack weeklyQuestItem = new AItemStackBuilder(Material.BOOK)
+				.setName("&e&lWeekly Quests")
+				.setLore(new ALoreBuilder(
+						"&7Active weekly quests",
+						"",
+						"&7Page: &3" + weeklyQuestPage + "&7/&3" + getWeeklyPages()
+				))
+				.getItemStack();
+		getInventory().setItem(6, weeklyQuestItem);
+
 		List<PassQuest> fullList = PassManager.getWeeklyQuests();
 		fullList.removeIf(passQuest -> !passQuest.canProgressQuest(passGUI.pitPlayer));
 		List<PassQuest> displayList = new ArrayList<>();
-		for(int i = 0; i < weeklyQuestSlots.size(); i++) {
-			int index = i + (weeklyQuestPage - 1) * weeklyQuestSlots.size();
+		for(int i = 0; i < weeklyQuestSlots.size() + 1; i++) {
+			int index = i + (page - 1) * weeklyQuestSlots.size();
 			if(index >= fullList.size()) break;
 			displayList.add(fullList.get(index));
 		}
 
-		for(int i = 0; i < displayList.size(); i++) {
-			PassQuest toDisplay = displayList.get(i);
+		for(int i = 0; i < weeklyQuestSlots.size(); i++) {
 			int slot = weeklyQuestSlots.get(i);
+			if(i < displayList.size()) {
+				PassQuest toDisplay = displayList.get(i);
 
-			ItemStack itemStack = toDisplay.getDisplayItem(passGUI.pitPlayer, PassManager.currentPass.weeklyQuests.get(toDisplay),
-					PassManager.getProgression(passGUI.pitPlayer, toDisplay));
-			ItemMeta itemMeta = itemStack.getItemMeta();
-			itemMeta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
-			itemStack.setItemMeta(itemMeta);
-			getInventory().setItem(slot, itemStack);
+				ItemStack itemStack = toDisplay.getDisplayItem(passGUI.pitPlayer, PassManager.currentPass.weeklyQuests.get(toDisplay),
+						PassManager.getProgression(passGUI.pitPlayer, toDisplay));
+				ItemMeta itemMeta = itemStack.getItemMeta();
+				itemMeta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
+				itemStack.setItemMeta(itemMeta);
+				getInventory().setItem(slot, itemStack);
+			} else {
+				ItemStack itemStack = new ItemStack(Material.AIR);
+				getInventory().setItem(slot, itemStack);
+			}
 		}
+	}
+
+	public int getDailyPages() {
+		return PassManager.getDailyQuests().size() / dailyQuestSlots.size() + 1;
+	}
+
+	public int getWeeklyPages() {
+		return PassManager.getWeeklyQuests().size() / weeklyQuestSlots.size() + 1;
 	}
 
 	@Override
@@ -129,16 +149,24 @@ public class QuestPanel extends AGUIPanel {
 		if(event.getClickedInventory().getHolder() != this) return;
 		int slot = event.getSlot();
 
-//		go to the previous page when the back item is clicked
-		if(slot == 49) {
+		if(slot == 2) {
+
+		} else if(slot == 6) {
+			if(weeklyQuestPage < getWeeklyPages()) {
+				weeklyQuestPage++;
+			} else {
+				weeklyQuestPage = 1;
+			}
+			setWeeklyQuestPage(weeklyQuestPage);
+		} else if(slot == 49) {
 			openPreviousGUI();
 		}
 	}
 
 	@Override
 	public void onOpen(InventoryOpenEvent event) {
-		setDailyQuestPage();
-		setWeeklyQuestPage();
+		setDailyQuestPage(dailyQuestPage);
+		setWeeklyQuestPage(weeklyQuestPage);
 	}
 
 	@Override

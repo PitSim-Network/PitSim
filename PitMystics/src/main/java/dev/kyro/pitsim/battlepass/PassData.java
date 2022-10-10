@@ -2,14 +2,15 @@ package dev.kyro.pitsim.battlepass;
 
 import com.google.cloud.firestore.annotation.Exclude;
 
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 public class PassData {
 	public Date currentPassDate = new Date(0);
 	public int totalPoints;
 	public boolean hasPremium = false;
+
+//	Unique weekly quest data
+	public List<String> uniquePlayersPunched = new ArrayList<>();
 
 //	Daily quest data
 	public Map<String, Double> questCompletion = new HashMap<>();
