@@ -3,6 +3,7 @@ package dev.kyro.pitsim.perks;
 import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.PitSim;
+import dev.kyro.pitsim.controllers.NonManager;
 import dev.kyro.pitsim.controllers.objects.PitPerk;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.events.KillEvent;
@@ -36,6 +37,7 @@ public 	class Streaker extends PitPerk {
 		playerTimes.remove(killEvent.dead);
 
 		if(!playerHasUpgrade(killEvent.killer)) return;
+		if(NonManager.getNon(killEvent.dead) == null) return;
 		killEvent.xpCap += 80;
 
 		if(xpReward.containsKey(killEvent.killer)) killEvent.xpMultipliers.add(xpReward.get(killEvent.killer));
