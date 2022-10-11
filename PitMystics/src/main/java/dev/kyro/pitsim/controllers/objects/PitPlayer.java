@@ -318,7 +318,7 @@ public class PitPlayer {
 			killstreak.proc(player);
 		}
 
-		int everyX = megastreak.getClass() == RNGesus.class && kills > RNGesus.INSTABILITY_THRESHOLD ? 500 : 100;
+		int everyX = megastreak.getClass() == RNGesus.class && kills > RNGesus.INSTABILITY_THRESHOLD ? 250 : 100;
 		if(kills % everyX == 0 && kills != megastreak.getRequiredKills()) {
 			for(Player onlinePlayer : Bukkit.getOnlinePlayers()) {
 				PitPlayer pitPlayer = PitPlayer.getPitPlayer(onlinePlayer);
