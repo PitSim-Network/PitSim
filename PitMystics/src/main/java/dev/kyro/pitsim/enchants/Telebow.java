@@ -69,10 +69,20 @@ public class Telebow extends PitEnchant {
 		new BukkitRunnable() {
 			@Override
 			public void run() {
+				List<Arrow> toRemove = new ArrayList<>();
+
 				for(Arrow arrow : teleShots) {
+					if(arrow.isDead()) {
+						toRemove.add(arrow);
+						continue;
+					}
+
 					for(int j = 0; j < 10; j++)
 						arrow.getWorld().playEffect(arrow.getLocation(), Effect.POTION_SWIRL, 0, 30);
 				}
+
+				toRemove.forEach(teleShots::remove);
+
 			}
 		}.runTaskTimer(PitSim.INSTANCE, 0L, 1L);
 	}
@@ -113,47 +123,44 @@ public class Telebow extends PitEnchant {
 		if(teleShots.size() == 0) return;
 		try {
 			for(Arrow teleShot : teleShots) {
-				if(teleShot.equals(event.getEntity())) {
 
-					Arrow teleArrow = (Arrow) event.getEntity();
-					if(teleArrow.equals(teleShot)) {
+				Arrow teleArrow = (Arrow) event.getEntity();
+				if(!teleShot.equals(event.getEntity()) || !teleArrow.equals(teleShot)) continue;
 
-						Location teleportLoc = teleArrow.getLocation().clone();
-						teleportLoc.setYaw(-teleArrow.getLocation().getYaw());
-						teleportLoc.setPitch(-teleArrow.getLocation().getPitch());
+				Location teleportLoc = teleArrow.getLocation().clone();
+				teleportLoc.setYaw(-teleArrow.getLocation().getYaw());
+				teleportLoc.setPitch(-teleArrow.getLocation().getPitch());
 
-						if(MapManager.currentMap.lobbies.contains(teleportLoc.getWorld())) {
-							Location midTeleportLoc = teleportLoc.clone();
-							midTeleportLoc.setY(MapManager.currentMap.getY(teleportLoc.getWorld()));
-							if(midTeleportLoc.getWorld() == teleportLoc.getWorld()) {
-								double distance = MapManager.currentMap.getMid(teleportLoc.getWorld()).distance(midTeleportLoc);
-								if(distance < 12) {
-									AOutput.error(player, "You are not allowed to telebow into mid");
-									teleShots.remove(teleShot);
-									return;
-								}
-							}
-						}
-
-						if(SpawnManager.isInSpawn(teleportLoc)) {
-							AOutput.error(player, "You are not allowed to telebow into spawn");
+				if(MapManager.currentMap.lobbies.contains(teleportLoc.getWorld())) {
+					Location midTeleportLoc = teleportLoc.clone();
+					midTeleportLoc.setY(MapManager.currentMap.getY(teleportLoc.getWorld()));
+					if(midTeleportLoc.getWorld() == teleportLoc.getWorld()) {
+						double distance = MapManager.currentMap.getMid(teleportLoc.getWorld()).distance(midTeleportLoc);
+						if(distance < 12) {
+							AOutput.error(player, "You are not allowed to telebow into mid");
 							teleShots.remove(teleShot);
 							return;
 						}
-
-						player.teleport(teleportLoc);
-						Sounds.TELEBOW.play(teleArrow.getLocation());
-
-						teleShots.remove(teleShot);
-
-						PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
-						if(pitPlayer.stats != null) pitPlayer.stats.telebow++;
-						return;
 					}
 				}
+
+				if(SpawnManager.isInSpawn(teleportLoc)) {
+					AOutput.error(player, "You are not allowed to telebow into spawn");
+					teleShots.remove(teleShot);
+					return;
+				}
+
+				player.teleport(teleportLoc);
+				Sounds.TELEBOW.play(teleArrow.getLocation());
+
+				teleShots.remove(teleShot);
+
+				PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
+				if(pitPlayer.stats != null) pitPlayer.stats.telebow++;
+				return;
 			}
-		} catch(Exception ignored) {
-		}
+
+		} catch(Exception ignored) { }
 	}
 
 	@Override
