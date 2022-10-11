@@ -6,6 +6,7 @@ import dev.kyro.arcticapi.misc.AUtil;
 import dev.kyro.pitsim.battlepass.PassQuest;
 import dev.kyro.pitsim.controllers.PlayerManager;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
+import dev.kyro.pitsim.controllers.objects.PlayerToPlayerCooldown;
 import dev.kyro.pitsim.events.KillEvent;
 import dev.kyro.pitsim.misc.Misc;
 import org.bukkit.ChatColor;
@@ -13,13 +14,10 @@ import org.bukkit.Material;
 import org.bukkit.event.EventHandler;
 import org.bukkit.inventory.ItemStack;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.UUID;
 
 public class DailyPlayerKillQuest extends PassQuest {
-	public static Map<UUID, Map<UUID, Long>> cooldownMap = new HashMap<>();
+	public PlayerToPlayerCooldown cooldown = new PlayerToPlayerCooldown(20 * 60 * 2);
 
 	public DailyPlayerKillQuest() {
 		super("&c&lPlayer Kills", "dailyplayerkills", QuestType.DAILY);
@@ -30,10 +28,7 @@ public class DailyPlayerKillQuest extends PassQuest {
 		if(!PlayerManager.isRealPlayer(killEvent.getKillerPlayer()) || !canProgressQuest(killEvent.getKillerPitPlayer())
 				|| !PlayerManager.isRealPlayer(killEvent.getDeadPlayer())) return;
 
-		Map<UUID, Long> playerCooldownMap = cooldownMap.getOrDefault(killEvent.getKillerPlayer().getUniqueId(), new HashMap<>());
-		Long cooldown = playerCooldownMap.getOrDefault(killEvent.getDeadPlayer().getUniqueId(), 0L);
-		if(cooldown + 60 * 1000 > System.currentTimeMillis()) return;
-		playerCooldownMap.put(killEvent.getDeadPlayer().getUniqueId(), System.currentTimeMillis());
+		if(cooldown.isOnCooldown(killEvent.getKillerPlayer(), killEvent.getDeadPlayer())) return;
 
 		progressQuest(killEvent.getKillerPitPlayer(), 1);
 	}
@@ -56,7 +51,7 @@ public class DailyPlayerKillQuest extends PassQuest {
 
 	@Override
 	public QuestLevel getDailyState() {
-		return new QuestLevel(30.0, 100);
+		return new QuestLevel(300.0, 100);
 	}
 
 	@Override

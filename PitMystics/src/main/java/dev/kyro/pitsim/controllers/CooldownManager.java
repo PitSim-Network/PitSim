@@ -7,7 +7,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CooldownManager {
-
 	public static List<Cooldown> cooldownList = new ArrayList<>();
 
 	public static void init() {
@@ -15,6 +14,10 @@ public class CooldownManager {
 		new BukkitRunnable() {
 			@Override
 			public void run() {
+//				Other cooldown systems
+				PitSim.currentTick++;
+
+//				This cooldown system
 				List<Cooldown> toRemove = new ArrayList<>();
 				for(Cooldown cooldownCooldown : cooldownList) {
 					boolean shouldRemove = cooldownCooldown.tick();

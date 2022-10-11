@@ -29,7 +29,7 @@ public abstract class PassQuest implements Listener {
 //		maybe add a few useless enchants and items to pair with quest
 //		mess with perks
 //		welcome/gg prestige/gf loss
-//		bounties claimed, sneaking bot kills, walk distance
+//		bounties claimed
 	}
 
 	public PassQuest(String displayName, String refName, QuestType questType) {

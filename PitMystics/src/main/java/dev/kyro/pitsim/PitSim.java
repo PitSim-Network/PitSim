@@ -16,6 +16,7 @@ import dev.kyro.pitsim.battlepass.PassManager;
 import dev.kyro.pitsim.battlepass.quests.*;
 import dev.kyro.pitsim.battlepass.quests.daily.DailyBotKillQuest;
 import dev.kyro.pitsim.battlepass.quests.daily.DailyPlayerKillQuest;
+import dev.kyro.pitsim.battlepass.quests.daily.SneakingBotKillQuest;
 import dev.kyro.pitsim.boosters.ChaosBooster;
 import dev.kyro.pitsim.boosters.GoldBooster;
 import dev.kyro.pitsim.boosters.PvPBooster;
@@ -92,6 +93,8 @@ public class PitSim extends JavaPlugin {
 	public static AData playerList;
 
 	public static PteroClient client = PteroBuilder.createClient("***REMOVED***", PrivateInfo.PTERO_KEY);
+
+	public static long currentTick = 0;
 
 	@Override
 	public void onEnable() {
@@ -610,6 +613,8 @@ public class PitSim extends JavaPlugin {
 		PassManager.registerQuest(new EarnRenownQuest());
 		PassManager.registerQuest(new PunchUniquePlayers());
 		PassManager.registerQuest(new GainAbsorptionQuest());
+		PassManager.registerQuest(new SneakingBotKillQuest());
+		PassManager.registerQuest(new WalkDistanceQuest());
 	}
 
 	private void loadConfig() {
