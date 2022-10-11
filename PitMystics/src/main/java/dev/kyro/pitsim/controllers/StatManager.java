@@ -8,6 +8,7 @@ import dev.kyro.pitsim.events.AttackEvent;
 import dev.kyro.pitsim.events.HealEvent;
 import dev.kyro.pitsim.events.KillEvent;
 import dev.kyro.pitsim.events.OofEvent;
+import dev.kyro.pitsim.megastreaks.NoMegastreak;
 import dev.kyro.pitsim.misc.Misc;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -49,7 +50,13 @@ public class StatManager implements Listener {
 	@EventHandler(priority = EventPriority.MONITOR)
 	public void onOof(OofEvent event) {
 		PitPlayer pitPlayer = PitPlayer.getPitPlayer(event.getPlayer());
-		if(pitPlayer.stats != null) pitPlayer.stats.deaths++;
+		if(pitPlayer.stats == null) return;
+
+		pitPlayer.stats.deaths++;
+		if(pitPlayer.megastreak.getClass() != NoMegastreak.class) {
+			pitPlayer.stats.deaths++;
+			if(pitPlayer.getKills() > pitPlayer.stats.highestStreak) pitPlayer.stats.highestStreak = pitPlayer.getKills();
+		}
 	}
 
 	@EventHandler(priority = EventPriority.MONITOR)
@@ -89,25 +96,26 @@ public class StatManager implements Listener {
 
 	@EventHandler(priority = EventPriority.MONITOR)
 	public void onHit(KillEvent killEvent) {
-		if(!killEvent.killerIsPlayer || !killEvent.deadIsPlayer) return;
 		PitPlayer pitKiller = PitPlayer.getPitPlayer(killEvent.killerPlayer);
 		PitPlayer pitDead = PitPlayer.getPitPlayer(killEvent.deadPlayer);
 
-		if(pitKiller.stats != null) {
-			if(HopperManager.isHopper(killEvent.dead)) {
-				pitKiller.stats.hopperKills++;
-			} else if(NonManager.getNon(killEvent.dead) == null) {
-				pitKiller.stats.playerKills++;
-			} else {
-				pitKiller.stats.botKills++;
-			}
+		if(pitKiller != null) {
+			if(pitKiller.stats != null) {
+				if(HopperManager.isHopper(killEvent.dead)) {
+					pitKiller.stats.hopperKills++;
+				} else if(NonManager.getNon(killEvent.dead) == null) {
+					pitKiller.stats.playerKills++;
+				} else {
+					pitKiller.stats.botKills++;
+				}
 
-			pitKiller.stats.totalGold += killEvent.getFinalGold();
+				pitKiller.stats.totalGold += killEvent.getFinalGold();
+			}
 		}
 
-		if(pitDead.stats != null) {
+		if(pitDead != null && pitDead.stats != null && pitDead.megastreak.getClass() != NoMegastreak.class) {
 			pitDead.stats.deaths++;
-			if(pitDead.getKills() > pitDead.stats.highestStreak) pitDead.stats.highestStreak = (int) pitDead.getKills();
+			if(pitDead.getKills() > pitDead.stats.highestStreak) pitDead.stats.highestStreak = pitDead.getKills();
 		}
 	}
 }
