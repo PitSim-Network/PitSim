@@ -3,10 +3,7 @@ package dev.kyro.pitsim.megastreaks;
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.arcticapi.misc.ASound;
 import dev.kyro.pitsim.PitSim;
-import dev.kyro.pitsim.controllers.DamageManager;
-import dev.kyro.pitsim.controllers.EnchantManager;
-import dev.kyro.pitsim.controllers.NonManager;
-import dev.kyro.pitsim.controllers.PrestigeValues;
+import dev.kyro.pitsim.controllers.*;
 import dev.kyro.pitsim.controllers.objects.Megastreak;
 import dev.kyro.pitsim.controllers.objects.PitEnchant;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
@@ -21,10 +18,7 @@ import me.clip.placeholderapi.PlaceholderAPI;
 import net.minecraft.server.v1_8_R3.EntityPlayer;
 import net.minecraft.server.v1_8_R3.IChatBaseComponent;
 import net.minecraft.server.v1_8_R3.PacketPlayOutChat;
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.Material;
-import org.bukkit.Sound;
+import org.bukkit.*;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
@@ -129,7 +123,7 @@ public class RNGesus extends Megastreak {
 		lore.add(ChatColor.translateAlternateColorCodes('&', "&e\u25a0 &7Build up stats for each reality as you streak"));
 		lore.add("");
 		lore.add(ChatColor.GRAY + "At 1000 kills:");
-		lore.add(ChatColor.translateAlternateColorCodes('&', "&e&k\u25a0&f Reality destabilizes"));
+		lore.add(ChatColor.translateAlternateColorCodes('&', "&e&k\u25a0&7 Reality &fdestabilizes"));
 		lore.add(ChatColor.translateAlternateColorCodes('&', "&a\u25a0 &7Use the stats earned from each reality as"));
 		lore.add(ChatColor.translateAlternateColorCodes('&', "&7&cdamage&7, &9health&7, &bXP&7, and &6gold &7on each kill"));
 		lore.add(ChatColor.translateAlternateColorCodes('&', "&c\u25a0 &7You can no longer heal"));
@@ -145,6 +139,18 @@ public class RNGesus extends Megastreak {
 		super(pitPlayer);
 		for(Reality value : Reality.values()) realityMap.put(value, new RealityInfo(value));
 		generateRealityOrder();
+	}
+
+	@EventHandler
+	public void onAttack(EntityDamageByEntityEvent event) {
+		if(!(event.getDamager() instanceof Player) || !(event.getEntity() instanceof Player)) return;
+		Player attackerPlayer = (Player) event.getDamager();
+		Player defenderPlayer = (Player) event.getEntity();
+		PitPlayer pitDefender = PitPlayer.getEntityPitPlayer(defenderPlayer);
+		if(pitDefender != this.pitPlayer || !PlayerManager.isRealPlayerTemp(attackerPlayer) || pitPlayer.megastreak.getClass() != RNGesus.class ||
+				attackerPlayer == defenderPlayer || pitPlayer.getKills() < INSTABILITY_THRESHOLD) return;
+
+		event.setCancelled(true);
 	}
 
 	@EventHandler(priority = EventPriority.MONITOR)
@@ -280,8 +286,17 @@ public class RNGesus extends Megastreak {
 		}
 
 		runnable = new BukkitRunnable() {
+			int count = 0;
 			@Override
 			public void run() {
+				if(pitPlayer.getKills() > INSTABILITY_THRESHOLD) {
+					for(int i = 0; i < 3; i++) {
+						pitPlayer.player.getWorld().playEffect(pitPlayer.player.getLocation()
+								.add(Math.random() * 0.2 - 0.1, Math.random() * 0.2 + 2.1, Math.random() * 0.2 - 0.1), Effect.HAPPY_VILLAGER, 1);
+					}
+				}
+				if(count++ % 5 != 0) return;
+
 				if(pitPlayer.megastreak.getClass() != RNGesus.class) return;
 				if(pitPlayer.getKills() < INSTABILITY_THRESHOLD && isOnMega()) {
 					DecimalFormat decimalFormat = new DecimalFormat("#,####,##0");
@@ -338,7 +353,7 @@ public class RNGesus extends Megastreak {
 					}
 				}
 			}
-		}.runTaskTimer(PitSim.INSTANCE, 0L, 20L);
+		}.runTaskTimer(PitSim.INSTANCE, 0L, 4L);
 
 		if(pitPlayer.stats != null) pitPlayer.stats.timesOnOverdrive++;
 	}
