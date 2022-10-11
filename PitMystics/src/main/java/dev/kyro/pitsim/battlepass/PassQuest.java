@@ -16,7 +16,7 @@ public abstract class PassQuest implements Listener {
 
 	static {
 //		Quest ideas
-//		daily - player kills, bot kills, something darkzone
+//		daily - player kills, bot kills, something darkzone, sw game played
 //		weekly quests (grinding) - kill x (mobs)
 //		weekly quests (darkzone) - brew potions, kill bosses, incinerate drops, harvest souls
 //		weekly quests (anti-progression) -
@@ -28,7 +28,8 @@ public abstract class PassQuest implements Listener {
 //		ideas
 //		maybe add a few useless enchants and items to pair with quest
 //		mess with perks
-//		welcome/gg quests
+//		welcome/gg prestige/gf loss
+//		bounties claimed, sneaking bot kills, walk distance
 	}
 
 	public PassQuest(String displayName, String refName, QuestType questType) {
