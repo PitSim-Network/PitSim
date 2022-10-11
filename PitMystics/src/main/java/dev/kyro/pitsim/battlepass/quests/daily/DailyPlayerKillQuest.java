@@ -1,10 +1,9 @@
-package dev.kyro.pitsim.battlepass.quests;
+package dev.kyro.pitsim.battlepass.quests.daily;
 
 import dev.kyro.arcticapi.builders.AItemStackBuilder;
 import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.arcticapi.misc.AUtil;
 import dev.kyro.pitsim.battlepass.PassQuest;
-import dev.kyro.pitsim.controllers.NonManager;
 import dev.kyro.pitsim.controllers.PlayerManager;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.events.KillEvent;
@@ -14,10 +13,13 @@ import org.bukkit.Material;
 import org.bukkit.event.EventHandler;
 import org.bukkit.inventory.ItemStack;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.UUID;
 
 public class DailyPlayerKillQuest extends PassQuest {
-	public static Map<UUID, Map<UUID, Long>> cooldownMap = new Hashmap<>();
+	public static Map<UUID, Map<UUID, Long>> cooldownMap = new HashMap<>();
 
 	public DailyPlayerKillQuest() {
 		super("&c&lPlayer Kills", "dailyplayerkills", QuestType.DAILY);
@@ -28,10 +30,10 @@ public class DailyPlayerKillQuest extends PassQuest {
 		if(!PlayerManager.isRealPlayer(killEvent.getKillerPlayer()) || !canProgressQuest(killEvent.getKillerPitPlayer())
 				|| !PlayerManager.isRealPlayer(killEvent.getDeadPlayer())) return;
 
-		Map<UUID, Long> playerCooldownMap = cooldownMap.getOrDefault(killEvent.getKillerPlayer().getUniqueIdentifier(), new Hashmap<>());
-		Long cooldown = playerCooldownMap.getOrDefault(killEvent.getDeadPlayer().getUniqueIdentifier(), 0L);
-		if(cooldown + 60 * 1000 > System.currentTimeMilis()) return;
-		playerCooldownMap.put(killEvent.getDeadPlayer().getUniqueIdentifier(), System.currentTimeMilis());
+		Map<UUID, Long> playerCooldownMap = cooldownMap.getOrDefault(killEvent.getKillerPlayer().getUniqueId(), new HashMap<>());
+		Long cooldown = playerCooldownMap.getOrDefault(killEvent.getDeadPlayer().getUniqueId(), 0L);
+		if(cooldown + 60 * 1000 > System.currentTimeMillis()) return;
+		playerCooldownMap.put(killEvent.getDeadPlayer().getUniqueId(), System.currentTimeMillis());
 
 		progressQuest(killEvent.getKillerPitPlayer(), 1);
 	}

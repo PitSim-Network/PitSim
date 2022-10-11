@@ -1,4 +1,4 @@
-package dev.kyro.pitsim.battlepass.quests;
+package dev.kyro.pitsim.battlepass.quests.daily;
 
 import dev.kyro.arcticapi.builders.AItemStackBuilder;
 import dev.kyro.arcticapi.builders.ALoreBuilder;
