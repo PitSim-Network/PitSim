@@ -537,7 +537,7 @@ public class PlayerManager implements Listener {
 		new BukkitRunnable() {
 			@Override
 			public void run() {
-				player.setGameMode(GameMode.ADVENTURE);
+				player.setGameMode(GameMode.SURVIVAL);
 
 				pitPlayer.updateMaxHealth();
 				player.setHealth(player.getMaxHealth());
