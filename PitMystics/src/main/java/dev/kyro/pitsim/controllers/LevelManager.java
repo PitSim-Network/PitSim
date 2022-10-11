@@ -3,6 +3,7 @@ package dev.kyro.pitsim.controllers;
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.arcticapi.misc.AUtil;
 import dev.kyro.pitsim.PitSim;
+import dev.kyro.pitsim.battlepass.quests.CongratulatePrestigeQuest;
 import dev.kyro.pitsim.battlepass.quests.EarnRenownQuest;
 import dev.kyro.pitsim.battlepass.quests.GrindGoldQuest;
 import dev.kyro.pitsim.battlepass.quests.GrindXPQuest;
@@ -125,6 +126,7 @@ public class LevelManager {
 		Misc.sendSubTitle(player, "&7You unlocked prestige &e" + AUtil.toRoman(pitPlayer.prestige), 40);
 		String message2 = ChatColor.translateAlternateColorCodes('&', "&e&lPRESTIGE! %luckperms_prefix%%player_name% &7unlocked prestige &e" + AUtil.toRoman(pitPlayer.prestige) + "&7, gg!");
 		Bukkit.broadcastMessage(PlaceholderAPI.setPlaceholders(player, message2));
-	}
 
+		CongratulatePrestigeQuest.updateRecentlyPrestiged(player);
+	}
 }
