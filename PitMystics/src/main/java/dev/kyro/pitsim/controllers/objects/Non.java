@@ -5,6 +5,7 @@ import dev.kyro.pitsim.commands.FPSCommand;
 import dev.kyro.pitsim.controllers.BoosterManager;
 import dev.kyro.pitsim.controllers.MapManager;
 import dev.kyro.pitsim.controllers.NonManager;
+import dev.kyro.pitsim.controllers.SpawnManager;
 import dev.kyro.pitsim.enums.NonState;
 import dev.kyro.pitsim.enums.NonTrait;
 import net.citizensnpcs.api.CitizensAPI;
@@ -14,6 +15,7 @@ import net.citizensnpcs.npc.ai.CitizensNavigator;
 import net.citizensnpcs.npc.skin.SkinnableEntity;
 import net.citizensnpcs.util.Util;
 import net.minecraft.server.v1_8_R3.EntityPlayer;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
@@ -140,14 +142,26 @@ public class Non {
 		Player closest = null;
 		double closestDistance = 100;
 		Location midLoc = MapManager.currentMap.getMid(world);
-		for(Entity nearbyEntity : non.getWorld().getNearbyEntities(midLoc, 3, 3, 3)) {
+
+		List<Player> nearbyPlayers = new ArrayList<>();
+		for(Player onlinePlayer : Bukkit.getOnlinePlayers()) {
+			if(onlinePlayer.getWorld() != non.getWorld()) continue;
+			if(SpawnManager.isInSpawn(onlinePlayer.getLocation())) continue;
+			nearbyPlayers.add(onlinePlayer);
+		}
+		for(Entity nearbyEntity : non.getWorld().getNearbyEntities(midLoc, 3.5, 3, 3.5)) {
+			if(!(nearbyEntity instanceof Player)) continue;
+			if(!nearbyPlayers.contains(nearbyEntity)) nearbyPlayers.add((Player) nearbyEntity);
+		}
+
+		for(Entity nearbyEntity : nearbyPlayers) {
 
 			if(!(nearbyEntity instanceof Player) || nearbyEntity.getUniqueId().equals(non.getUniqueId())) continue;
 			if(nearbyEntity.getWorld() != non.getWorld()) continue;
 
 			double targetDistanceFromMid = Math.sqrt(Math.pow(nearbyEntity.getLocation().getX() - midLoc.getX(), 2) +
 					Math.pow(nearbyEntity.getLocation().getZ() - midLoc.getZ(), 2));
-			if(targetDistanceFromMid > 9) continue;
+			if(targetDistanceFromMid > 8) continue;
 
 			double distance = nearbyEntity.getLocation().distance(non.getLocation());
 			if(distance >= closestDistance) continue;
