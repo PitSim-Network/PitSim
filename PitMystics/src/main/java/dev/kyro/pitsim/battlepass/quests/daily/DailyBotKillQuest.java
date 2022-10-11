@@ -16,10 +16,10 @@ import org.bukkit.inventory.ItemStack;
 
 import java.util.List;
 
-public class BotKillQuest extends PassQuest {
+public class DailyBotKillQuest extends PassQuest {
 
-	public BotKillQuest() {
-		super("&c&lBot Kills", "botkills", QuestType.DAILY);
+	public DailyBotKillQuest() {
+		super("&c&lBot Kills", "dailybotkills", QuestType.DAILY);
 	}
 
 	@EventHandler

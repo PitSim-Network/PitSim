@@ -589,7 +589,8 @@ public class PitSim extends JavaPlugin {
 
 	private void registerPassItems() {
 //		Daily quests
-		PassManager.registerQuest(new BotKillQuest());
+		PassManager.registerQuest(new DailyBotKillQuest());
+		PassManager.registerQuest(new DailyPlayerKillQuest());
 
 //		Weekly quests
 		PassManager.registerQuest(new KillPlayersQuest());
