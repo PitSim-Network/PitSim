@@ -135,7 +135,7 @@ public class TutorialManager implements Listener {
 				for(NPC non : tutorial.nons) {
 					if(non.getEntity() == event.defender) {
 						event.event.setCancelled(true);
-						DamageManager.kill(event, event.attacker, event.defender, false, KillType.DEFAULT);
+						DamageManager.kill(event, event.attacker, event.defender, KillType.DEFAULT);
 					}
 				}
 			}

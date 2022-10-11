@@ -94,7 +94,7 @@ public class CombatManager implements Listener {
 					EntityDamageByEntityEvent ev = new EntityDamageByEntityEvent(onlinePlayer, player, EntityDamageEvent.DamageCause.CUSTOM, 0);
 					AttackEvent attackEvent = new AttackEvent(ev, attackerEnchant, defenderEnchant, false);
 
-					DamageManager.kill(attackEvent, onlinePlayer, player, false, KillType.DEFAULT);
+					DamageManager.kill(attackEvent, onlinePlayer, player, KillType.DEFAULT);
 					return;
 				}
 			}
