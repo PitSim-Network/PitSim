@@ -269,7 +269,7 @@ public class Uberstreak extends Megastreak {
 		uberdrop.give(pitPlayer);
 
 		if(pitPlayer.stats != null) pitPlayer.stats.ubersCompleted++;
-		CompleteUbersQuest.INSTANCE.attemptQuestIncrement(pitPlayer);
+		CompleteUbersQuest.INSTANCE.completeUber(pitPlayer);
 	}
 
 	public static void uberMessage(String message, PitPlayer pitPlayer) {

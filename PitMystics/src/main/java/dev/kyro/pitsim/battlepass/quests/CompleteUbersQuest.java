@@ -21,8 +21,7 @@ public class CompleteUbersQuest extends PassQuest {
 		INSTANCE = this;
 	}
 
-	public void attemptQuestIncrement(PitPlayer pitPlayer) {
-		if(!canProgressQuest(pitPlayer)) return;
+	public void completeUber(PitPlayer pitPlayer) {
 		progressQuest(pitPlayer, 1);
 	}
 
