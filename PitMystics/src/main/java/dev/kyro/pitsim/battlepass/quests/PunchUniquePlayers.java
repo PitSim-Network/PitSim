@@ -31,6 +31,7 @@ public class PunchUniquePlayers extends PassQuest {
 		if(!PlayerManager.isRealPlayer(attackEvent.getAttackerPlayer()) || !PlayerManager.isRealPlayer(attackEvent.getDefenderPlayer()) ||
 				attackEvent.getAttacker() == attackEvent.getDefender() || attackEvent.getArrow() != null || attackEvent.getPet() != null) return;
 
+//		TODO: make u have to use fist
 		PassData passData = attackEvent.getAttackerPitPlayer().getPassData(PassManager.currentPass.startDate);
 		if(passData.uniquePlayersPunched.contains(attackEvent.getDefenderPlayer().getUniqueId().toString())) return;
 		passData.uniquePlayersPunched.add(attackEvent.getDefenderPlayer().getUniqueId().toString());

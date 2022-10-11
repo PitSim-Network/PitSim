@@ -30,6 +30,7 @@ public abstract class PassQuest implements Listener {
 //		mess with perks
 //		welcome/gg prestige/gf loss
 //		bounties claimed
+//		use perun without reg
 	}
 
 	public PassQuest(String displayName, String refName, QuestType questType) {
