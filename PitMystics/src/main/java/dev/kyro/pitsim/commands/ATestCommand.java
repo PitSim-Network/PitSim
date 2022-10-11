@@ -1,8 +1,11 @@
 package dev.kyro.pitsim.commands;
 
 import be.maximvdw.featherboard.api.FeatherBoardAPI;
+import dev.kyro.pitsim.PitSim;
+import dev.kyro.pitsim.controllers.PrestigeValues;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.controllers.objects.PluginMessage;
+import dev.kyro.pitsim.controllers.objects.ServerData;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
@@ -16,13 +19,28 @@ public class ATestCommand implements CommandExecutor {
 	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
 
 
-		new PluginMessage().writeString("QUEUE").writeString(((Player) sender).getName()).send();
 
-//		if(args.length > 0) {
-//			PitPlayer pitPlayer = new PitPlayer(Bukkit.getOfflinePlayer(args[0]).getUniqueId());
-//			pitPlayer.save();
-//			return false;
-//		}
+//		new PluginMessage().writeString("QUEUE").writeString(((Player) sender).getName()).send();
+
+		PluginMessage message = new PluginMessage();
+		message.writeString("SERVER DATA").writeString(PitSim.serverName);
+		for(Player onlinePlayer : Bukkit.getOnlinePlayers()) {
+			PitPlayer pitPlayer = PitPlayer.getPitPlayer(onlinePlayer);
+			message.writeString(onlinePlayer.getName());
+		}
+		message.send();
+
+		for(ServerData value : ServerData.servers.values()) {
+			for(String playerString : value.getPlayerStrings()) {
+				Bukkit.broadcastMessage(playerString);
+			}
+		}
+
+		if(args.length > 0) {
+			PitPlayer pitPlayer = new PitPlayer(Bukkit.getOfflinePlayer(args[0]).getUniqueId());
+			pitPlayer.save();
+			return false;
+		}
 
 
 
