@@ -1,16 +1,16 @@
 package dev.kyro.pitsim.slayers.tainted;
 
 public enum SimpleSkin {
-    ZOMBIE("zombie"),
-    SKELETON("Napkings"),
-    SPIDER("Happy_Cherry_OwO"),
-    CREEPER("Metalingus"),
-    CAVE_SPIDER("HawaiiFox"),
-    PIGMAN("MetalPhoto"),
-    MAGMA("Onaliear"),
-    IRON_GOLEM("Obliteratron09"),
-    WITHER_SKELETON("Zryrr"),
-    ENDERMAN("MonkeyLover3000");
+    ZOMBIE("Zombie"),
+    SKELETON("Skeleton"),
+    SPIDER("1spider"),
+    CREEPER("Creeper"),
+    CAVE_SPIDER("Cave_Spider"),
+    PIGMAN("Pigman"),
+    MAGMA("Magma_Cube"),
+    IRON_GOLEM("_Iron_Golem_"),
+    WITHER_SKELETON("Wither_Skeleton"),
+    ENDERMAN("_Enderman_");
 
     public String skin;
 

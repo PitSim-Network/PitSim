@@ -2,6 +2,7 @@ package dev.kyro.pitsim.tutorial;
 
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.controllers.DamageManager;
+import dev.kyro.pitsim.controllers.SkinManager;
 import dev.kyro.pitsim.controllers.UpgradeManager;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.enums.KillType;
@@ -38,11 +39,16 @@ import java.util.Map;
 public class TutorialManager implements Listener {
 	public static Map<Player, Tutorial> tutorials = new HashMap<>();
 
+	public static final String DUMMY_SKIN_NAME = "wiji1";
+
+	static {
+		SkinManager.loadSkin(DUMMY_SKIN_NAME);
+	}
+
 	public static void createTutorial(Player player) {
 		Tutorial tutorial = new Tutorial(player, getOpenPosition());
 		tutorials.put(player, tutorial);
 	}
-
 
 	public static Tutorial getTutorial(Player player) {
 		if(!tutorials.containsKey(player)) return null;
@@ -133,7 +139,7 @@ public class TutorialManager implements Listener {
 				for(NPC non : tutorial.nons) {
 					if(non.getEntity() == event.getDefender()) {
 						event.getEvent().setCancelled(true);
-						DamageManager.kill(event, event.getAttacker(), event.getDefender(), false, KillType.DEFAULT);
+						DamageManager.kill(event, event.getAttacker(), event.getDefender(), KillType.DEFAULT);
 					}
 				}
 			}

@@ -8,6 +8,7 @@ import dev.kyro.pitsim.controllers.objects.*;
 import dev.kyro.pitsim.enchants.PitBlob;
 import dev.kyro.pitsim.enchants.Regularity;
 import dev.kyro.pitsim.enchants.Telebow;
+import dev.kyro.pitsim.enums.KillModifier;
 import dev.kyro.pitsim.enums.KillType;
 import dev.kyro.pitsim.enums.NBTTag;
 import dev.kyro.pitsim.enums.NonTrait;
@@ -215,7 +216,7 @@ public class DamageManager implements Listener {
 			double finalHealth = attackEvent.getDefender().getHealth() - attackEvent.trueDamage - attackEvent.veryTrueDamage;
 			if(finalHealth <= 0) {
 				attackEvent.getEvent().setCancelled(true);
-				kill(attackEvent, attackEvent.getAttacker(), attackEvent.getDefender(), false, KillType.DEFAULT);
+				kill(attackEvent, attackEvent.getAttacker(), attackEvent.getDefender(), KillType.DEFAULT);
 				return;
 			} else {
 				attackEvent.getDefender().setHealth(Math.max(finalHealth, 0));
@@ -226,7 +227,7 @@ public class DamageManager implements Listener {
 			double finalHealth = attackEvent.getAttacker().getHealth() - attackEvent.selfTrueDamage - attackEvent.selfVeryTrueDamage;
 			if(finalHealth <= 0) {
 				attackEvent.getEvent().setCancelled(true);
-				kill(attackEvent, attackEvent.getDefender(), attackEvent.getAttacker(), false, KillType.DEFAULT);
+				kill(attackEvent, attackEvent.getDefender(), attackEvent.getAttacker(), KillType.DEFAULT);
 				return;
 			} else {
 				attackEvent.getAttacker().setHealth(Math.max(finalHealth, 0));
@@ -245,11 +246,11 @@ public class DamageManager implements Listener {
 		if(attackEvent.getEvent().getFinalDamage() >= attackEvent.getDefender().getHealth()) {
 
 			attackEvent.getEvent().setCancelled(true);
-			kill(attackEvent, attackEvent.getAttacker(), attackEvent.getDefender(), false, KillType.DEFAULT);
-		} else if(attackEvent.getEvent().getFinalDamage() + attackEvent.executeUnder >= attackEvent.getDefender().getHealth()) {
+			kill(attackEvent, attackEvent.getAttacker(), attackEvent.getDefender(), KillType.DEFAULT);
+		} else if(attackEvent.getEvent().getFinalDamage() + attackEvent.executeUnder >= attackEvent.defender.getHealth()) {
 
 			attackEvent.getEvent().setCancelled(true);
-			kill(attackEvent, attackEvent.getAttacker(), attackEvent.getDefender(), true, KillType.DEFAULT);
+			kill(attackEvent, attackEvent.getAttacker(), attackEvent.getDefender(), KillType.DEFAULT, KillModifier.EXE_DEATH);
 		}
 
 		DamageIndicator.onAttack(attackEvent);
@@ -265,7 +266,7 @@ public class DamageManager implements Listener {
 		return null;
 	}
 
-	public static void kill(AttackEvent attackEvent, LivingEntity killer, LivingEntity dead, boolean exeDeath, KillType killType) {
+	public static void kill(AttackEvent attackEvent, LivingEntity killer, LivingEntity dead, KillType killType, KillModifier... killModifiers) {
 		boolean killerIsPlayer = killer instanceof Player;
 		boolean deadIsPlayer = dead instanceof Player;
 		Player killerPlayer = killerIsPlayer ? (Player) killer : null;
@@ -279,7 +280,7 @@ public class DamageManager implements Listener {
 			Bukkit.getPluginManager().callEvent(oofEvent);
 		}
 		else {
-			killEvent = new KillEvent(attackEvent, killer, dead, exeDeath);
+			killEvent = new KillEvent(attackEvent, killer, dead, hasModifier(KillModifier.EXE_DEATH, killModifiers));
 			Bukkit.getServer().getPluginManager().callEvent(killEvent);
 		}
 
@@ -294,9 +295,8 @@ public class DamageManager implements Listener {
 			EntityPlayer nmsPlayer = ((CraftPlayer) dead).getHandle();
 			nmsPlayer.setAbsorptionHearts(0);
 
-			if(EnchantManager.getEnchantLevel(deadPlayer, EnchantManager.getEnchant("sco")) == 0) {
-				if(!LifeInsurance.isApplicable(deadPlayer)) loseLives(dead, killer);
-			}
+			if(!LifeInsurance.isApplicable(deadPlayer) && !hasModifier(KillModifier.SELF_CHECKOUT, killModifiers))
+					loseLives(dead, killer);
 
 			if(NonManager.getNon(dead) == null) pitDead.endKillstreak();
 			Telebow.teleShots.removeIf(teleShot -> teleShot.getShooter().equals(dead));
@@ -412,7 +412,7 @@ public class DamageManager implements Listener {
 						EntityDamageByEntityEvent ev = new EntityDamageByEntityEvent(assistPlayer, dead, EntityDamageEvent.DamageCause.CUSTOM, 0);
 						AttackEvent aEvent = new AttackEvent(ev, attackerEnchant, defenderEnchant, false);
 
-						DamageManager.fakeKill(aEvent, assistPlayer, dead, false);
+						DamageManager.fakeKill(aEvent, assistPlayer, dead);
 						continue;
 					}
 				}
@@ -472,10 +472,8 @@ public class DamageManager implements Listener {
 			Player deadPlayer = (Player) dead;
 			PitPlayer pitDead = PitPlayer.getPitPlayer(deadPlayer);
 
-
 			boolean divine = DivineIntervention.INSTANCE.isDivine(deadPlayer);
 			boolean feather = FunkyFeather.useFeather(killer, deadPlayer, divine);
-
 
 			for(int i = 0; i < deadPlayer.getInventory().getSize(); i++) {
 				ItemStack itemStack = deadPlayer.getInventory().getItem(i);
@@ -526,13 +524,16 @@ public class DamageManager implements Listener {
 		}
 	}
 
-
-	public static void death(LivingEntity dead) {
-		kill(null, null, dead, false, KillType.DEATH);
+	public static boolean hasModifier(KillModifier killModifier, KillModifier... killModifiers) {
+		return Arrays.asList(killModifiers).contains(killModifier);
 	}
 
-	public static void fakeKill(AttackEvent attackEvent, LivingEntity killer, LivingEntity dead, boolean exeDeath) {
-		kill(attackEvent, killer, dead, exeDeath, KillType.FAKE);
+	public static void death(LivingEntity dead, KillModifier... killModifiers) {
+		kill(null, null, dead, KillType.DEATH, killModifiers);
+	}
+
+	public static void fakeKill(AttackEvent attackEvent, LivingEntity killer, LivingEntity dead, KillModifier... killModifiers) {
+		kill(attackEvent, killer, dead, KillType.FAKE, killModifiers);
 	}
 
 	public static boolean isNaked(LivingEntity entity) {

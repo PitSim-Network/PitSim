@@ -93,6 +93,7 @@ public class Stereo extends PitEnchant {
 						esp.addPlayer(onlinePlayer);
 					}
 
+					esp.setAutoDestroy(true);
 					esp.setPlaying(true);
 					StereoManager.playerMusic.put(player, esp);
 				} else {

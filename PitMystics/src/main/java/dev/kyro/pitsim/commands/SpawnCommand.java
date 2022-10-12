@@ -6,6 +6,7 @@ import dev.kyro.pitsim.controllers.MapManager;
 import dev.kyro.pitsim.controllers.SpawnManager;
 import dev.kyro.pitsim.controllers.objects.Hopper;
 import dev.kyro.pitsim.helmetabilities.PhoenixAbility;
+import dev.kyro.pitsim.perks.Streaker;
 import org.bukkit.Location;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -30,6 +31,9 @@ public class SpawnCommand implements CommandExecutor {
 			if(player != hopper.target) continue;
 			hopper.remove();
 		}
+
+		Streaker.xpReward.remove(player);
+		Streaker.playerTimes.remove(player);
 
 		return false;
 	}

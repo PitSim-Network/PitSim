@@ -150,6 +150,12 @@ public class PitSim extends JavaPlugin {
 			return;
 		}
 
+		if(!Bukkit.getServer().getPluginManager().getPlugin("NoteBlockAPI").getDescription().getVersion().toLowerCase().contains("kyro")) {
+			AOutput.log("Wrong version of NoteBlockAPI found");
+			getServer().getPluginManager().disablePlugin(this);
+			return;
+		}
+
 		Plugin essentials = Bukkit.getPluginManager().getPlugin("Essentials");
 		EntityDamageEvent.getHandlerList().unregister(essentials);
 
@@ -167,6 +173,7 @@ public class PitSim extends JavaPlugin {
 			return;
 		}
 
+		registerBoosters();
 		registerUpgrades();
 		registerPerks();
 		registerKillstreaks();
@@ -218,7 +225,6 @@ public class PitSim extends JavaPlugin {
 		registerEnchants();
 		registerCommands();
 		registerListeners();
-		registerBoosters();
 		registerHelmetAbilities();
 		registerKits();
 		registerMobs();
@@ -528,7 +534,9 @@ public class PitSim extends JavaPlugin {
 		getServer().getPluginManager().registerEvents(new AuctionManager(), this);
 		getServer().getPluginManager().registerEvents(new ScoreboardManager(), this);
 		getServer().getPluginManager().registerEvents(new PassManager(), this);
+		getServer().getPluginManager().registerEvents(new SkinManager(), this);
 	}
+
 	public void registerBoosters() {
 		BoosterManager.registerBooster(new XPBooster());
 		BoosterManager.registerBooster(new GoldBooster());

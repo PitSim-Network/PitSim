@@ -70,8 +70,6 @@ public class AuctionManager implements Listener {
                 bidMap.put(UUID.fromString(split[0]), Integer.parseInt(split[1]));
             }
 
-//            System.out.println("Loaded auction " + i);
-//            System.out.println(item);
             auctionItems[i] = new AuctionItem(ItemType.getItemType(item), itemData, i, startTime, bidMap);
         }
 

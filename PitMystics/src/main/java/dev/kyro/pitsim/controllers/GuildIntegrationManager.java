@@ -1,5 +1,6 @@
 package dev.kyro.pitsim.controllers;
 
+import de.myzelyam.api.vanish.VanishAPI;
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.arcticguilds.controllers.BuffManager;
 import dev.kyro.arcticguilds.controllers.GuildManager;
@@ -43,6 +44,7 @@ public class GuildIntegrationManager implements Listener {
 			public void run() {
 				for(Player onlinePlayer : Bukkit.getOnlinePlayers()) {
 					if(AFKManager.AFKPlayers.contains(onlinePlayer)) continue;
+					if(VanishAPI.isInvisible(onlinePlayer)) continue;
 					Guild guild = GuildManager.getGuild(onlinePlayer);
 					if(guild == null) continue;
 					guild.addReputation(getIdleReputation());

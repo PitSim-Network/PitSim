@@ -2,18 +2,20 @@ package dev.kyro.pitsim.controllers.objects;
 
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.commands.FPSCommand;
-import dev.kyro.pitsim.controllers.BoosterManager;
 import dev.kyro.pitsim.controllers.MapManager;
 import dev.kyro.pitsim.controllers.NonManager;
+import dev.kyro.pitsim.controllers.SkinManager;
+import dev.kyro.pitsim.controllers.SpawnManager;
 import dev.kyro.pitsim.enums.NonState;
 import dev.kyro.pitsim.enums.NonTrait;
 import net.citizensnpcs.api.CitizensAPI;
 import net.citizensnpcs.api.npc.NPC;
 import net.citizensnpcs.api.trait.trait.Equipment;
 import net.citizensnpcs.npc.ai.CitizensNavigator;
-import net.citizensnpcs.npc.skin.SkinnableEntity;
+import net.citizensnpcs.util.PlayerAnimation;
 import net.citizensnpcs.util.Util;
 import net.minecraft.server.v1_8_R3.EntityPlayer;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
@@ -42,7 +44,7 @@ public class Non {
 	public List<NonTrait> traits = new ArrayList<>();
 	public double persistence;
 	public NonState nonState = NonState.RESPAWNING;
-	public int count = 0;
+	public int count = (int) (Math.random() * 20);
 
 	public Non(String name, World world) {
 		this.name = name;
@@ -50,7 +52,10 @@ public class Non {
 
 		displayName = "&7" + name;
 		this.npc = CitizensAPI.getNPCRegistry().createNPC(EntityType.PLAYER, displayName);
+
 		spawn();
+		SkinManager.skinNPC(npc, name);
+
 		this.non = (Player) npc.getEntity();
 		FPSCommand.hideNewNon(this);
 		NonManager.nons.add(this);
@@ -68,7 +73,6 @@ public class Non {
 		if(traits.contains(NonTrait.IRON_STREAKER)) persistence -= 100 - persistence;
 
 		respawn(false);
-		skin(name);
 	}
 
 	public void tick() {
@@ -95,9 +99,20 @@ public class Non {
 			if(count % 5 == 0) {
 				pickTarget();
 //				npc.getNavigator().setTarget(target, true);
-				target.damage(7, non);
+				if(target != null) {
+					target.damage(7, non);
+					if(Math.random() < 0.5) PlayerAnimation.ARM_SWING.play(non);
+				}
 			}
 			if(count % 2 == 0 && target != null) Util.faceLocation(non, target.getLocation());
+			if(count % 20 == 0) {
+				Location midLoc = MapManager.currentMap.getMid(world);
+				double distanceFromMid = Math.sqrt(Math.pow(midLoc.getX() - non.getLocation().getX(), 2) + Math.pow(midLoc.getZ() - non.getLocation().getZ(), 2));
+				if(distanceFromMid >= NonManager.MAX_DISTANCE_FROM_MID) {
+					non.setHealth(non.getMaxHealth());
+					non.teleport(MapManager.currentMap.getNonSpawn(world));
+				}
+			}
 		} else respawn(false);
 
 		if(target == null || !npc.isSpawned()) return;
@@ -140,14 +155,26 @@ public class Non {
 		Player closest = null;
 		double closestDistance = 100;
 		Location midLoc = MapManager.currentMap.getMid(world);
-		for(Entity nearbyEntity : non.getWorld().getNearbyEntities(midLoc, 3, 3, 3)) {
+
+		List<Player> nearbyPlayers = new ArrayList<>();
+		for(Player onlinePlayer : Bukkit.getOnlinePlayers()) {
+			if(onlinePlayer.getWorld() != non.getWorld()) continue;
+			if(SpawnManager.isInSpawn(onlinePlayer.getLocation())) continue;
+			nearbyPlayers.add(onlinePlayer);
+		}
+		for(Entity nearbyEntity : non.getWorld().getNearbyEntities(midLoc, 3.5, 3, 3.5)) {
+			if(!(nearbyEntity instanceof Player)) continue;
+			if(!nearbyPlayers.contains(nearbyEntity)) nearbyPlayers.add((Player) nearbyEntity);
+		}
+
+		for(Entity nearbyEntity : nearbyPlayers) {
 
 			if(!(nearbyEntity instanceof Player) || nearbyEntity.getUniqueId().equals(non.getUniqueId())) continue;
 			if(nearbyEntity.getWorld() != non.getWorld()) continue;
 
 			double targetDistanceFromMid = Math.sqrt(Math.pow(nearbyEntity.getLocation().getX() - midLoc.getX(), 2) +
 					Math.pow(nearbyEntity.getLocation().getZ() - midLoc.getZ(), 2));
-			if(targetDistanceFromMid > 9) continue;
+			if(targetDistanceFromMid > 8) continue;
 
 			double distance = nearbyEntity.getLocation().distance(non.getLocation());
 			if(distance >= closestDistance) continue;
@@ -178,12 +205,6 @@ public class Non {
 
 		if(!fakeKill) nonState = NonState.RESPAWNING;
 		Location spawnLoc = MapManager.currentMap.getNonSpawn(world);
-		Booster booster = BoosterManager.getBooster("chaos");
-		if(booster.isActive()) {
-			spawnLoc.add(0, -10, 0);
-		} else if(Math.random() < 0.5) {
-			spawnLoc.add(0, -5, 0);
-		}
 
 		if(!npc.isSpawned() || non == null) spawn();
 		try {
@@ -268,16 +289,5 @@ public class Non {
 
 		NonManager.nons.remove(this);
 		npc.destroy();
-	}
-
-	public void skin(String name) {
-//		npc.data().set(NPC.PLAYER_SKIN_UUID_METADATA, name);
-//		npc.data().set(NPC.PLAYER_SKIN_USE_LATEST, false);
-		if(npc.isSpawned()) {
-			SkinnableEntity skinnable = (SkinnableEntity) npc.getEntity();
-			if(skinnable != null) {
-				skinnable.setSkinName(name);
-			}
-		}
 	}
 }

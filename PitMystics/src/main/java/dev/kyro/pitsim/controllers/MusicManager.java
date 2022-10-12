@@ -5,17 +5,19 @@ import com.xxmicloxx.NoteBlockAPI.model.RepeatMode;
 import com.xxmicloxx.NoteBlockAPI.model.Song;
 import com.xxmicloxx.NoteBlockAPI.songplayer.EntitySongPlayer;
 import com.xxmicloxx.NoteBlockAPI.utils.NBSDecoder;
+import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 public class MusicManager implements Listener {
 
@@ -25,8 +27,16 @@ public class MusicManager implements Listener {
         new BukkitRunnable() {
             @Override
             public void run() {
+                int songCount = NoteBlockAPI.getAPI().getPlayingSongCount();
+                AOutput.log("NOTEBLOCK DEBUG: " + songCount + " playing song" + (songCount == 1 ? "" : "s"));
+            }
+        }.runTaskTimer(PitSim.INSTANCE, 0, 20 * 60 * 5);
+        new BukkitRunnable() {
+            @Override
+            public void run() {
                 for (Player player : Bukkit.getOnlinePlayers()) {
-                    if(!MapManager.inDarkzone(player) || CutsceneManager.cutscenePlayers.containsKey(player) || NoteBlockAPI.isReceivingSong(player) || PitPlayer.getPitPlayer(player).musicDisabled) continue;
+                    if(!MapManager.inDarkzone(player) || CutsceneManager.cutscenePlayers.containsKey(player) ||
+                            NoteBlockAPI.isReceivingSong(player) || PitPlayer.getPitPlayer(player).musicDisabled) continue;
                     File file = new File("plugins/NoteBlockAPI/Effects/darkzone.nbs");
                     Song song = NBSDecoder.parse(file);
                     EntitySongPlayer esp = new EntitySongPlayer(song);
@@ -34,6 +44,7 @@ public class MusicManager implements Listener {
                     esp.setDistance(16);
                     esp.setRepeatMode(RepeatMode.ONE);
                     esp.addPlayer(player);
+                    esp.setAutoDestroy(true);
                     esp.setPlaying(true);
                     songs.add(esp);
                 }
@@ -41,15 +52,14 @@ public class MusicManager implements Listener {
         }.runTaskTimer(PitSim.INSTANCE, 20, 20);
     }
 
-    public static boolean playerIsListening(Player player) {
-        for (EntitySongPlayer song : songs) {
-            if(song.getEntity() == player) return true;
-        }
-        return false;
+    @EventHandler
+    public static void onQuit(PlayerQuitEvent event) {
+        Player player = event.getPlayer();
+        stopPlaying(player);
     }
 
-
     public static void stopPlaying(Player player) {
+        if(!PlayerManager.isRealPlayerTemp(player)) return;
         NoteBlockAPI.stopPlaying(player);
         EntitySongPlayer toRemove = null;
         for (EntitySongPlayer song : songs) {

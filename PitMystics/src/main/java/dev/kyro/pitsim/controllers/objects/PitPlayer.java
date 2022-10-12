@@ -439,7 +439,7 @@ public class PitPlayer {
 			killstreak.proc(player);
 		}
 
-		int everyX = megastreak.getClass() == RNGesus.class && kills > RNGesus.INSTABILITY_THRESHOLD ? 500 : 100;
+		int everyX = megastreak.getClass() == RNGesus.class && kills > RNGesus.INSTABILITY_THRESHOLD ? 250 : 100;
 		if(kills % everyX == 0 && kills != megastreak.getRequiredKills()) {
 			for(Player onlinePlayer : Bukkit.getOnlinePlayers()) {
 				PitPlayer pitPlayer = PitPlayer.getPitPlayer(onlinePlayer);
@@ -552,7 +552,7 @@ public class PitPlayer {
 					EntityDamageByEntityEvent ev = new EntityDamageByEntityEvent(onlinePlayer, player, EntityDamageEvent.DamageCause.CUSTOM, 0);
 					AttackEvent attackEvent = new AttackEvent(ev, attackerEnchant, defenderEnchant, false);
 
-					DamageManager.kill(attackEvent, onlinePlayer, player, false, KillType.DEATH);
+					DamageManager.kill(attackEvent, onlinePlayer, player, KillType.DEATH);
 					return;
 				}
 			}
@@ -592,7 +592,7 @@ public class PitPlayer {
 				EntityDamageByEntityEvent ev = new EntityDamageByEntityEvent(damager, player, EntityDamageEvent.DamageCause.CUSTOM, damage);
 				AttackEvent attackEvent = new AttackEvent(ev, EnchantManager.getEnchantsOnPlayer(damager), EnchantManager.getEnchantsOnPlayer(player), false);
 
-				DamageManager.kill(attackEvent, damager, player, false, KillType.DEFAULT);
+				DamageManager.kill(attackEvent, damager, player, KillType.DEFAULT);
 			}
 		} else player.damage(damage);
 	}

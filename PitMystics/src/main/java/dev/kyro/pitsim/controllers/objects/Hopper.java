@@ -5,15 +5,11 @@ import com.comphenix.protocol.events.PacketContainer;
 import com.comphenix.protocol.wrappers.WrappedDataWatcher;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.commands.FreshCommand;
-import dev.kyro.pitsim.controllers.EnchantManager;
-import dev.kyro.pitsim.controllers.HopperManager;
-import dev.kyro.pitsim.controllers.NonManager;
-import dev.kyro.pitsim.controllers.SpawnManager;
+import dev.kyro.pitsim.controllers.*;
 import dev.kyro.pitsim.enchants.Hearts;
 import dev.kyro.pitsim.enums.MysticType;
 import dev.kyro.pitsim.enums.PantColor;
 import dev.kyro.pitsim.misc.Misc;
-import dev.kyro.pitsim.misc.SpawnNPCs;
 import net.citizensnpcs.api.CitizensAPI;
 import net.citizensnpcs.api.npc.NPC;
 import net.citizensnpcs.api.trait.trait.Equipment;
@@ -70,8 +66,9 @@ public class Hopper {
 	public void start() {
 		npc = CitizensAPI.getNPCRegistry().createNPC(EntityType.PLAYER, type.colorCode + name);
 
+		SkinManager.loadSkin(name);
 		npc.spawn(target.getLocation());
-		SpawnNPCs.skin(npc, name);
+		SkinManager.skinNPC(npc, name);
 		hopper = (Player) npc.getEntity();
 
 		npc.setProtected(false);

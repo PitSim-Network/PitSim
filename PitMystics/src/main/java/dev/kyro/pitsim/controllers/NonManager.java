@@ -9,7 +9,6 @@ import org.bukkit.World;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
-import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.ArrayList;
@@ -17,29 +16,44 @@ import java.util.List;
 
 public class NonManager implements Listener {
 	public static List<String> botIGNs = new ArrayList<>();
+	public static boolean defaultNons = true;
+	public static List<String> skinLoadedBotIGNS = new ArrayList<>();
 	public static List<Non> nons = new ArrayList<>();
+
+	static {
+		botIGNs.add("KyroKrypt");
+		botIGNs.add("BHunter");
+		botIGNs.add("PayForTruce");
+		botIGNs.add("Fishduper");
+		botIGNs.add("wiji1");
+		botIGNs.add("Muruseni");
+		botIGNs.add("ObvEndyy");
+	}
+
+	public static final int MAX_DISTANCE_FROM_MID = 10;
 
 	public static void init() {
 		new BukkitRunnable() {
 			@Override
 			public void run() {
 				if(!FirestoreManager.CONFIG.nons) return;
-				if(botIGNs.isEmpty()) {
-					botIGNs.add("KyroKrypt");
-					botIGNs.add("wiji1");
-					botIGNs.add("Chantingshoe");
-					botIGNs.add("ObvEndyy");
-					botIGNs.add("OPeterIsCracked");
-					botIGNs.add("pogha");
-					botIGNs.add("robert_mugabe355");
-					botIGNs.add("xLava28");
-					botIGNs.add("TheAlpha64");
+
+				for(String botIGN : new ArrayList<>(botIGNs)) {
+					if(!SkinManager.isSkinLoaded(botIGN)) {
+						SkinManager.loadSkin(botIGN);
+						continue;
+					}
+					skinLoadedBotIGNS.add(botIGN);
+					botIGNs.remove(botIGN);
 				}
+
+				if(skinLoadedBotIGNS.isEmpty()) return;
 				for(World world : MapManager.currentMap.lobbies) {
 					if(!MapManager.multiLobbies && world != MapManager.currentMap.firstLobby) continue;
 					for(int i = 0; i < 3; i++) {
 						if(getNonsInLobby(world) >= getMaxNons(world)) break;
-						Non non = new Non(botIGNs.get((int) (Math.random() * botIGNs.size())), world);
+
+						Non non = new Non(skinLoadedBotIGNS.get((int) (Math.random() * skinLoadedBotIGNS.size())), world);
 						new BukkitRunnable() {
 							@Override
 							public void run() {
@@ -85,27 +99,25 @@ public class NonManager implements Listener {
 		return Math.min(playersNearMid * 3 + base, max);
 	}
 
-	public static void updateNons(List<String> botIGNs) {
-
-		NonManager.botIGNs = new ArrayList<>(botIGNs);
-	}
-
-	//	@EventHandler(priority = EventPriority.LOW)
-	public void onDamage(EntityDamageByEntityEvent event) {
-
-		if(!(event.getDamager() instanceof Player) || !(event.getEntity() instanceof Player)) return;
-		Player defender = (Player) event.getEntity();
-
-		Non non = getNon(defender);
-		if(non == null) return;
-
-		if(DamageManager.hitCooldownList.contains(non.non)) {
-
-			event.setCancelled(true);
-			return;
+	public static void updateNons(List<String> newBotIGNs) {
+		if(!newBotIGNs.contains("KyroKrypt")) newBotIGNs.add("KyroKrypt");
+		if(defaultNons) {
+			defaultNons = false;
+			botIGNs.clear();
+			skinLoadedBotIGNS.clear();
 		}
-
-		if(event.getFinalDamage() < defender.getHealth()) return;
+		for(String name : newBotIGNs) {
+			if(skinLoadedBotIGNS.contains(name) || botIGNs.contains(name)) continue;
+			botIGNs.add(name);
+		}
+		for(String name : skinLoadedBotIGNS) {
+			if(newBotIGNs.contains(name)) continue;
+			skinLoadedBotIGNS.remove(name);
+		}
+		for(String name : botIGNs) {
+			if(newBotIGNs.contains(name)) continue;
+			botIGNs.remove(name);
+		}
 	}
 
 	public static Non getNon(LivingEntity entity) {
