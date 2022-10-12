@@ -247,7 +247,7 @@ public class DamageManager implements Listener {
 
 			attackEvent.getEvent().setCancelled(true);
 			kill(attackEvent, attackEvent.getAttacker(), attackEvent.getDefender(), KillType.DEFAULT);
-		} else if(attackEvent.getEvent().getFinalDamage() + attackEvent.executeUnder >= attackEvent.defender.getHealth()) {
+		} else if(attackEvent.getEvent().getFinalDamage() + attackEvent.executeUnder >= attackEvent.getDefender().getHealth()) {
 
 			attackEvent.getEvent().setCancelled(true);
 			kill(attackEvent, attackEvent.getAttacker(), attackEvent.getDefender(), KillType.DEFAULT, KillModifier.EXE_DEATH);

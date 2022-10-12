@@ -143,11 +143,9 @@ public class RNGesus extends Megastreak {
 
 	@EventHandler
 	public void onAttack(AttackEvent.Pre attackEvent) {
-		if(!PlayerManager.isRealPlayerTemp(attackEvent.attackerPlayer) || !PlayerManager.isRealPlayerTemp(attackEvent.defenderPlayer)) return;
-		PitPlayer pitAttacker = PitPlayer.getEntityPitPlayer(attackEvent.attackerPlayer);
-		PitPlayer pitDefender = PitPlayer.getEntityPitPlayer(attackEvent.defenderPlayer);
-		if((pitAttacker == pitPlayer || pitDefender == pitPlayer) && pitPlayer.megastreak.getClass() == RNGesus.class &&
-				attackEvent.attackerPlayer != attackEvent.defenderPlayer && pitPlayer.getKills() >= INSTABILITY_THRESHOLD) {
+		if(!PlayerManager.isRealPlayerTemp(attackEvent.getAttackerPlayer()) || !PlayerManager.isRealPlayerTemp(attackEvent.getDefenderPlayer())) return;
+		if((attackEvent.getDefenderPitPlayer() == pitPlayer || attackEvent.getDefenderPitPlayer() == pitPlayer) && pitPlayer.megastreak.getClass() == RNGesus.class &&
+				attackEvent.getAttackerPlayer() != attackEvent.getDefenderPlayer() && pitPlayer.getKills() >= INSTABILITY_THRESHOLD) {
 			attackEvent.setCancelled(true);
 		}
 	}
