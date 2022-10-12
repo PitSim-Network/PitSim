@@ -17,6 +17,7 @@ public class DimensionsMap extends PitMap {
 		return new Location(world, 0.5, 88, -5.5, 0, 0);
 	}
 
+//	TODO: chaos
 	@Override
 	public Location getNonSpawn(World world) {
 		Location spawn = new Location(world, 0.5, 86, 0.5);

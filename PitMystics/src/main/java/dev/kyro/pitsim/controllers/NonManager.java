@@ -11,7 +11,6 @@ import org.bukkit.World;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
-import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.ArrayList;
@@ -21,6 +20,8 @@ public class NonManager implements Listener {
 	public static List<String> botIGNs = new ArrayList<>();
 	public static List<String> skinLoadedBotIGNS = new ArrayList<>();
 	public static List<Non> nons = new ArrayList<>();
+
+	public static final int MAX_DISTANCE_FROM_MID = 10;
 
 	public static void init() {
 		new BukkitRunnable() {
@@ -79,7 +80,6 @@ public class NonManager implements Listener {
 	}
 
 	public static int getMaxNons(World world) {
-//		if(true) return 1;
 		int base = 25;
 		int max = 40;
 
@@ -102,24 +102,6 @@ public class NonManager implements Listener {
 	public static void updateNons(List<String> botIGNs) {
 
 		NonManager.botIGNs = new ArrayList<>(botIGNs);
-	}
-
-	//	@EventHandler(priority = EventPriority.LOW)
-	public void onDamage(EntityDamageByEntityEvent event) {
-
-		if(!(event.getDamager() instanceof Player) || !(event.getEntity() instanceof Player)) return;
-		Player defender = (Player) event.getEntity();
-
-		Non non = getNon(defender);
-		if(non == null) return;
-
-		if(DamageManager.hitCooldownList.contains(non.non)) {
-
-			event.setCancelled(true);
-			return;
-		}
-
-		if(event.getFinalDamage() < defender.getHealth()) return;
 	}
 
 	public static Non getNon(LivingEntity entity) {

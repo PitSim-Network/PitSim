@@ -2,7 +2,6 @@ package dev.kyro.pitsim.controllers.objects;
 
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.commands.FPSCommand;
-import dev.kyro.pitsim.controllers.BoosterManager;
 import dev.kyro.pitsim.controllers.MapManager;
 import dev.kyro.pitsim.controllers.NonManager;
 import dev.kyro.pitsim.controllers.SpawnManager;
@@ -106,6 +105,14 @@ public class Non {
 				}
 			}
 			if(count % 2 == 0 && target != null) Util.faceLocation(non, target.getLocation());
+			if(count % 20 == 0) {
+				Location midLoc = MapManager.currentMap.getMid(world);
+				double distanceFromMid = Math.sqrt(Math.pow(midLoc.getX() - non.getLocation().getX(), 2) + Math.pow(midLoc.getZ() - non.getLocation().getZ(), 2));
+				if(distanceFromMid >= NonManager.MAX_DISTANCE_FROM_MID) {
+					non.setHealth(non.getMaxHealth());
+					non.teleport(MapManager.currentMap.getNonSpawn(world));
+				}
+			}
 		} else respawn(false);
 
 		if(target == null || !npc.isSpawned()) return;
@@ -198,12 +205,6 @@ public class Non {
 
 		if(!fakeKill) nonState = NonState.RESPAWNING;
 		Location spawnLoc = MapManager.currentMap.getNonSpawn(world);
-		Booster booster = BoosterManager.getBooster("chaos");
-		if(booster.isActive()) {
-			spawnLoc.add(0, -10, 0);
-		} else if(Math.random() < 0.5) {
-			spawnLoc.add(0, -5, 0);
-		}
 
 		if(!npc.isSpawned() || non == null) spawn();
 		try {
