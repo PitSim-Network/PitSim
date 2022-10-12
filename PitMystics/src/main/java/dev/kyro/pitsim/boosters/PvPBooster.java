@@ -31,7 +31,7 @@ public class PvPBooster extends Booster {
 	@Override
 	public ItemStack getDisplayItem() {
 		AItemStackBuilder builder = new AItemStackBuilder(Material.GOLD_SWORD);
-		ALoreBuilder loreBuilder = new ALoreBuilder("&7Earn &e2x &7player kills and don't", "&7loose lives on &3Jewel Items&7.", "");
+		ALoreBuilder loreBuilder = new ALoreBuilder("&7Earn &e2x &7player kills and don't", "&7lose lives on &3Jewel Items&7.", "");
 		if(minutes > 0) {
 			builder.setName("&a" + name);
 			loreBuilder.addLore("&7Status: &aActive!", "&7Expires in: &e" + minutes + " minutes", "");
