@@ -6,6 +6,7 @@ import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.controllers.objects.PluginMessage;
 import dev.kyro.pitsim.controllers.objects.ServerData;
 import dev.kyro.pitsim.events.MessageEvent;
+import dev.kyro.pitsim.inventories.KeeperPanel;
 import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -16,6 +17,7 @@ import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 public class ProxyMessaging implements Listener {
 
@@ -76,6 +78,38 @@ public class ProxyMessaging implements Listener {
 
 			ShutdownManager.isRestart = booleans.get(0);
 			ShutdownManager.initiateShutdown(minutes);
+		}
+
+		if(strings.size() >= 2 && strings.get(0).equals("SAVE DATA")) {
+			System.out.println("saving data");
+
+			String playerName = strings.get(1);
+			Player player = Bukkit.getPlayer(playerName);
+			if(player == null) return;
+
+			PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
+			System.out.println(playerName);
+			System.out.println(player.getName());
+
+			new BukkitRunnable() {
+				@Override
+				public void run() {
+					LobbySwitchManager.setSwitchingPlayer(player);
+				}
+			}.runTask(PitSim.INSTANCE);
+
+			BukkitRunnable runnable = new BukkitRunnable() {
+				@Override
+				public void run() {
+					new PluginMessage().writeString("QUEUE").writeString(player.getName()).writeInt(0).send();
+				}
+			};
+
+			try {
+				pitPlayer.save(true, runnable);
+			} catch(ExecutionException | InterruptedException e) {
+				throw new RuntimeException(e);
+			}
 		}
 
 

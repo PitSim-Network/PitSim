@@ -2,6 +2,7 @@ package dev.kyro.pitsim.misc;
 
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.PitSim;
+import dev.kyro.pitsim.controllers.LobbySwitchManager;
 import dev.kyro.pitsim.controllers.MapManager;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.inventories.*;
@@ -317,6 +318,12 @@ public class SpawnNPCs implements Listener {
 
 		for(NPC npc : keeper) {
 			if(event.getNPC().getId() == npc.getId()) {
+
+				if(LobbySwitchManager.recentlyJoined.contains(event.getClicker())) {
+					AOutput.error(event.getClicker(), "&c&lNOPE! &7You cannot use this command for 5 seconds after joining!");
+					return;
+				}
+
 				KeeperGUI keeperGUI = new KeeperGUI(player);
 				keeperGUI.open();
 			}
