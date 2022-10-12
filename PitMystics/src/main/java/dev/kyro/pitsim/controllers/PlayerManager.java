@@ -174,6 +174,7 @@ public class PlayerManager implements Listener {
 	}
 
 	public static boolean isRealPlayerTemp(Player player) {
+		if(player == null) return false;
 		return Bukkit.getOnlinePlayers().contains(player);
 	}
 
