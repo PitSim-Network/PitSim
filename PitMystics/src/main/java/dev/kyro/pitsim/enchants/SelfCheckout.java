@@ -31,7 +31,7 @@ public class SelfCheckout extends PitEnchant {
 
 	@EventHandler
 	public void onKill(KillEvent killEvent) {
-		if(!killEvent.killerIsPlayer) return;
+		if(!killEvent.killerIsPlayer || killEvent.killer == killEvent.dead) return;
 
 		ItemStack leggings = killEvent.killer.getEquipment().getLeggings();
 		int enchantLvl = EnchantManager.getEnchantLevel(leggings, this);
