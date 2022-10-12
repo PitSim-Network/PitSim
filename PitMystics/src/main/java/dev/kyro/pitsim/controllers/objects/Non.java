@@ -36,16 +36,14 @@ public class Non {
 	public Player target;
 	public String name;
 	public String displayName;
-	public World world;
 
 	public List<NonTrait> traits = new ArrayList<>();
 	public double persistence;
 	public NonState nonState = NonState.RESPAWNING;
 	public int count = 0;
 
-	public Non(String name, World world) {
+	public Non(String name) {
 		this.name = name;
-		this.world = world;
 
 		displayName = "&7" + name;
 		this.npc = CitizensAPI.getNPCRegistry().createNPC(EntityType.PLAYER, displayName);
@@ -75,9 +73,9 @@ public class Non {
 		if(npc.getEntity() != null && non != npc.getEntity()) FPSCommand.hideNewNon(this);
 		non = (Player) npc.getEntity();
 		if(!npc.isSpawned()) respawn();
-		if(npc.isSpawned() && non.getLocation().getY() <= MapManager.currentMap.getY(world) - 0.1) {
+		if(npc.isSpawned() && non.getLocation().getY() <= MapManager.currentMap.getY() - 0.1) {
 			Location teleportLoc = non.getLocation().clone();
-			teleportLoc.setY(MapManager.currentMap.getY(world) + 1.2);
+			teleportLoc.setY(MapManager.currentMap.getY() + 1.2);
 			non.teleport(teleportLoc);
 			return;
 		}
@@ -129,7 +127,7 @@ public class Non {
 
 		Player closest = null;
 		double closestDistance = 100;
-		Location midLoc = MapManager.currentMap.getMid(world);
+		Location midLoc = MapManager.currentMap.getMid();
 		for(Entity nearbyEntity : non.getWorld().getNearbyEntities(midLoc, 3, 3, 3)) {
 
 			if(!(nearbyEntity instanceof Player) || nearbyEntity.getUniqueId().equals(non.getUniqueId())) continue;
@@ -149,25 +147,20 @@ public class Non {
 	}
 
 	public void setDisabled(Boolean toggled) {
-		Location spawnLoc = MapManager.currentMap.getNonSpawn(world);
+		Location spawnLoc = MapManager.currentMap.getNonSpawn();
 		if(toggled) npc.despawn();
 		else npc.spawn(spawnLoc);
 	}
 
 	public void spawn() {
-		Location spawnLoc = MapManager.currentMap.getNonSpawn(world);
+		Location spawnLoc = MapManager.currentMap.getNonSpawn();
 		npc.spawn(spawnLoc);
 	}
 
 	public void respawn() {
 
-		if(!MapManager.multiLobbies && world != MapManager.currentMap.firstLobby) {
-			remove();
-			return;
-		}
-
 		nonState = NonState.RESPAWNING;
-		Location spawnLoc = MapManager.currentMap.getNonSpawn(world);
+		Location spawnLoc = MapManager.currentMap.getNonSpawn();
 		Booster booster = BoosterManager.getBooster("chaos");
 		if(booster.isActive()) {
 			spawnLoc.add(0, -10, 0);

@@ -76,7 +76,7 @@ public class FinalSequence extends TutorialSequence {
 		BukkitTask runnable = new BukkitRunnable() {
 			@Override
 			public void run() {
-				player.teleport(MapManager.currentMap.firstLobby.getSpawnLocation());
+				player.teleport(MapManager.currentMap.world.getSpawnLocation());
 			}
 		}.runTaskLater(PitSim.INSTANCE, 20L * waitTime);
 		runnableList.add(runnable);

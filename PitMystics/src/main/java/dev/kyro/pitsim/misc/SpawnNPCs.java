@@ -65,15 +65,15 @@ public class SpawnNPCs implements Listener {
 //	}
 
 	public static void createNPCs() {
-		for(World world : MapManager.currentMap.lobbies) {
-			createPrestigeNPC(world);
-			createUpgradeNPC(world);
-			createKyroNPC(world);
-			createWijiNPC(world);
-			createSplkNPC(world);
-			createVnx2NPC(world);
-			createKeeperNPC(world);
-		}
+		World world = MapManager.currentMap.world;
+		createPrestigeNPC(world);
+		createUpgradeNPC(world);
+		createKyroNPC(world);
+		createWijiNPC(world);
+		createSplkNPC(world);
+		createVnx2NPC(world);
+		createKeeperNPC(world);
+
 		createTaintedShopNPC();
 		createLeggingNPC();
 		createPotionNPC();
@@ -163,21 +163,21 @@ public class SpawnNPCs implements Listener {
 		NPCRegistry registry = CitizensAPI.getNPCRegistry();
 		NPC npc = registry.createNPC(EntityType.VILLAGER, " ");
 		upgrade.add(npc);
-		npc.spawn(MapManager.currentMap.getUpgradeNPCSpawn(world));
+		npc.spawn(MapManager.currentMap.getUpgradeNPCSpawn());
 	}
 
 	public static void createPrestigeNPC(World world) {
 		NPCRegistry registry = CitizensAPI.getNPCRegistry();
 		NPC npc = registry.createNPC(EntityType.VILLAGER, " ");
 		prestige.add(npc);
-		npc.spawn(MapManager.currentMap.getPrestigeNPCSpawn(world));
+		npc.spawn(MapManager.currentMap.getPrestigeNPCSpawn());
 	}
 
 	public static void createKyroNPC(World world) {
 		NPCRegistry registry = CitizensAPI.getNPCRegistry();
 		NPC npc = registry.createNPC(EntityType.PLAYER, "&9KyroKrypt");
 		kyro.add(npc);
-		npc.spawn(MapManager.currentMap.getKyroNPCSpawn(world));
+		npc.spawn(MapManager.currentMap.getKyroNPCSpawn());
 		skin(npc, "KyroKrypt");
 		npc.addTrait(LookClose.class);
 		npc.getTrait(LookClose.class).setRange(10);
@@ -188,7 +188,7 @@ public class SpawnNPCs implements Listener {
 		NPCRegistry registry = CitizensAPI.getNPCRegistry();
 		NPC npc = registry.createNPC(EntityType.PLAYER, "&9wiji1");
 		wiji.add(npc);
-		npc.spawn(MapManager.currentMap.getWijiNPCSpawn(world));
+		npc.spawn(MapManager.currentMap.getWijiNPCSpawn());
 		skin(npc, "wiji1");
 		npc.addTrait(LookClose.class);
 		npc.getTrait(LookClose.class).setRange(10);
@@ -199,7 +199,7 @@ public class SpawnNPCs implements Listener {
 		NPCRegistry registry = CitizensAPI.getNPCRegistry();
 		NPC npc = registry.createNPC(EntityType.PLAYER, "&9Splkpig");
 		splk.add(npc);
-		npc.spawn(MapManager.currentMap.getSplkNPCSpawn(world));
+		npc.spawn(MapManager.currentMap.getSplkNPCSpawn());
 		skin(npc, "Splkpig");
 		npc.addTrait(LookClose.class);
 		npc.getTrait(LookClose.class).setRange(10);
@@ -210,7 +210,7 @@ public class SpawnNPCs implements Listener {
 		NPCRegistry registry = CitizensAPI.getNPCRegistry();
 		NPC npc = registry.createNPC(EntityType.PLAYER, "&e&lLB AND STATS");
 		vnx.add(npc);
-		npc.spawn(MapManager.currentMap.getVnxNPCSpawn(world));
+		npc.spawn(MapManager.currentMap.getVnxNPCSpawn());
 		skin(npc, Bukkit.getOfflinePlayer(UUID.fromString("e913fd01-e84e-4c6e-ad5b-7419a12de481")).getName());
 		npc.addTrait(LookClose.class);
 		npc.getTrait(LookClose.class).setRange(10);
@@ -221,7 +221,7 @@ public class SpawnNPCs implements Listener {
 		NPCRegistry registry = CitizensAPI.getNPCRegistry();
 		NPC npc = registry.createNPC(EntityType.PLAYER, "&2&lTHE KEEPER");
 		keeper.add(npc);
-		npc.spawn(MapManager.currentMap.getKeeperNPC(world));
+		npc.spawn(MapManager.currentMap.getKeeperNPC());
 		skin(npc, "googasesportsog");
 	}
 
@@ -317,8 +317,8 @@ public class SpawnNPCs implements Listener {
 
 		for(NPC npc : keeper) {
 			if(event.getNPC().getId() == npc.getId()) {
-				MapManager.changeLobbies(player);
-				return;
+				KeeperGUI keeperGUI = new KeeperGUI(player);
+				keeperGUI.open();
 			}
 		}
 

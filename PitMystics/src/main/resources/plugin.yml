@@ -51,7 +51,6 @@ commands:
   stat:
   captcha:
   play:
-  switch:
   pay:
   tutorial:
   shutdown:

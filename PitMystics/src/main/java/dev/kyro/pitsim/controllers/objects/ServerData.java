@@ -1,5 +1,6 @@
 package dev.kyro.pitsim.controllers.objects;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -14,44 +15,32 @@ public class ServerData {
 
 	private boolean isRunning;
 	private int playerCount;
+	private List<String> stringData;
 
-	public ServerData(int index, List<String> stringData, List<Integer> intData, List<Boolean> booleanData) {
+	public ServerData(int index, List<String> initialStringData, List<Integer> intData, List<Boolean> booleanData) {
 
 		this.index = index;
 
 		playerCount = intData.get(index);
 		isRunning = booleanData.get(index);
+		stringData = new ArrayList<>(initialStringData);
 
-		System.out.println(stringData);
+		List<List<String>> indexData = new ArrayList<>();
 
-		for(int i = 0; i < index; i++) {
-			int otherIndex = intData.get(i);
-
-			if(otherIndex > 0) {
-				stringData.subList(0, otherIndex - 1).clear();
+		for(Integer intDatum : intData) {
+			if(intDatum == 0) {
+				indexData.add(new ArrayList<>());
+				continue;
 			}
+
+
+			List<String> data = stringData.subList(0, intDatum);
+			indexData.add(new ArrayList<>(data));
+			stringData.subList(0, intDatum).clear();
 		}
-
-		System.out.println(stringData);
-
-		for(int i = index; i < intData.size(); i++) {
-			int otherIndex = intData.get(i);
-
-			if(otherIndex > 0) {
-				stringData.subList(otherIndex, stringData.size() - 1).clear();
-			}
-		}
-
-		System.out.println(stringData);
-
-		playerStrings = stringData.subList(0, playerCount);
+		playerStrings = indexData.get(index);
 
 		servers.put(index, this);
-
-		System.out.println("e");
-		for(ServerData value : servers.values()) {
-			System.out.println(value.playerStrings);
-		}
 	}
 
 

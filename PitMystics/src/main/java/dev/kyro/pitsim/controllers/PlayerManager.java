@@ -15,7 +15,6 @@ import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.brewing.PotionManager;
 import dev.kyro.pitsim.brewing.ingredients.MagmaCream;
 import dev.kyro.pitsim.brewing.objects.PotionEffect;
-import dev.kyro.pitsim.commands.ATestCommand;
 import dev.kyro.pitsim.commands.FPSCommand;
 import dev.kyro.pitsim.controllers.objects.*;
 import dev.kyro.pitsim.enums.*;
@@ -29,7 +28,6 @@ import dev.kyro.pitsim.misc.Misc;
 import dev.kyro.pitsim.misc.Sounds;
 import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.*;
-import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Entity;
@@ -128,7 +126,7 @@ public class PlayerManager implements Listener {
 			@Override
 			public void run() {
 				for(Player player : Bukkit.getOnlinePlayers()) {
-					if(!player.hasPermission("group.eternal") || !MapManager.currentMap.lobbies.contains(player.getWorld()) || VanishAPI.isInvisible(player))
+					if(!player.hasPermission("group.eternal") || MapManager.currentMap.world != player.getWorld() || VanishAPI.isInvisible(player))
 						continue;
 					if(SpawnManager.isInSpawn(player.getLocation())) continue;
 					List<Player> nearbyNons = new ArrayList<>();
@@ -447,7 +445,7 @@ public class PlayerManager implements Listener {
 		new BukkitRunnable() {
 			@Override
 			public void run() {
-				event.getPlayer().teleport(MapManager.currentMap.getSpawn(event.getPlayer().getWorld()));
+				event.getPlayer().teleport(MapManager.currentMap.getSpawn());
 			}
 		}.runTaskLater(PitSim.INSTANCE, 10L);
 	}
@@ -456,7 +454,7 @@ public class PlayerManager implements Listener {
 	public void onMove(PlayerMoveEvent event) {
 		if(event.getPlayer().getLocation().getY() < 10 && event.getPlayer().getWorld() == Bukkit.getWorld("tutorial"))
 			DamageManager.death(event.getPlayer());
-		else if(event.getPlayer().getLocation().getY() < 10 && MapManager.currentMap.lobbies.contains(event.getPlayer().getWorld())) {
+		else if(event.getPlayer().getLocation().getY() < 10 && MapManager.currentMap.world == event.getPlayer().getWorld()) {
 			DamageManager.death(event.getPlayer());
 		} else if(event.getPlayer().getLocation().getY() < 10) DamageManager.death(event.getPlayer());
 	}
@@ -554,7 +552,7 @@ public class PlayerManager implements Listener {
 	public void onJoin(PlayerSpawnLocationEvent event) {
 		Player player = event.getPlayer();
 		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
-		Location spawnLoc = MapManager.currentMap.getSpawn(MapManager.currentMap.firstLobby);
+		Location spawnLoc = MapManager.currentMap.getSpawn();
 
 		if(player.isOp()) {
 			new BukkitRunnable() {

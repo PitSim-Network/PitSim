@@ -6,6 +6,7 @@ import dev.kyro.pitsim.controllers.PrestigeValues;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.controllers.objects.PluginMessage;
 import dev.kyro.pitsim.controllers.objects.ServerData;
+import dev.kyro.pitsim.inventories.KeeperGUI;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
@@ -22,19 +23,14 @@ public class ATestCommand implements CommandExecutor {
 
 //		new PluginMessage().writeString("QUEUE").writeString(((Player) sender).getName()).send();
 
-		PluginMessage message = new PluginMessage();
-		message.writeString("SERVER DATA").writeString(PitSim.serverName);
-		for(Player onlinePlayer : Bukkit.getOnlinePlayers()) {
-			PitPlayer pitPlayer = PitPlayer.getPitPlayer(onlinePlayer);
-			message.writeString(onlinePlayer.getName());
-		}
-		message.send();
+		KeeperGUI keeperGUI = new KeeperGUI((Player) sender);
+		keeperGUI.open();
 
-		for(ServerData value : ServerData.servers.values()) {
-			for(String playerString : value.getPlayerStrings()) {
-				Bukkit.broadcastMessage(playerString);
-			}
-		}
+//		for(ServerData value : ServerData.servers.values()) {
+//			for(String playerString : value.getPlayerStrings()) {
+//				Bukkit.broadcastMessage(playerString);
+//			}
+//		}
 
 		if(args.length > 0) {
 			PitPlayer pitPlayer = new PitPlayer(Bukkit.getOfflinePlayer(args[0]).getUniqueId());

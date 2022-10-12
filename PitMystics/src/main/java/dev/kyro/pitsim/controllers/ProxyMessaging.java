@@ -1,15 +1,32 @@
 package dev.kyro.pitsim.controllers;
 
+import de.myzelyam.api.vanish.VanishAPI;
 import dev.kyro.pitsim.PitSim;
+import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.controllers.objects.PluginMessage;
 import dev.kyro.pitsim.controllers.objects.ServerData;
 import dev.kyro.pitsim.events.MessageEvent;
+import me.clip.placeholderapi.PlaceholderAPI;
+import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.event.player.PlayerQuitEvent;
+import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.List;
 
 public class ProxyMessaging implements Listener {
+
+	static {
+		new BukkitRunnable() {
+			@Override
+			public void run() {
+				sendServerData();
+			}
+		}.runTaskTimer(PitSim.INSTANCE, 20 * 5, 20 * 5);
+	}
 
 
 	public static void sendStartup() {
@@ -23,26 +40,30 @@ public class ProxyMessaging implements Listener {
 
 	public static void sendServerData() {
 		PluginMessage message = new PluginMessage();
+		message.writeString("SERVER DATA").writeString(PitSim.serverName);
+		for(Player onlinePlayer : Bukkit.getOnlinePlayers()) {
+			if(VanishAPI.isInvisible(onlinePlayer)) continue;
+
+			String builder = PrestigeValues.getPlayerPrefix(onlinePlayer) +
+					PlaceholderAPI.setPlaceholders(onlinePlayer, " %luckperms_prefix%%player_name%");
+			message.writeString(builder);
+		}
+		message.send();
 	}
 
 	@EventHandler
 	public void onMessage(MessageEvent event) {
-		System.out.println("Message received");
 		PluginMessage message = event.getMessage();
 		List<String> strings = event.getMessage().getStrings();
 		List<Integer> integers = event.getMessage().getIntegers();
 		List<Boolean> booleans = event.getMessage().getBooleans();
 
-		System.out.println(strings);
-
 		if(strings.size() >= 1 && strings.get(0).equals("SERVER DATA")) {
-			System.out.println("Server data received");
 			strings.remove(0);
 
 			for(int i = 0; i < integers.size(); i++) {
-				System.out.println(i);
 
-				new ServerData(integers.get(i), strings, integers, booleans);
+				new ServerData(i, strings, integers, booleans);
 			}
 		}
 
@@ -51,6 +72,26 @@ public class ProxyMessaging implements Listener {
 		}
 
 
+	}
+
+	@EventHandler
+	public void onJoin(PlayerJoinEvent event) {
+		new BukkitRunnable() {
+			@Override
+			public void run() {
+				sendServerData();
+			}
+		}.runTaskLater(PitSim.INSTANCE, 5L);
+	}
+
+	@EventHandler
+	public void onLeave(PlayerQuitEvent event) {
+		new BukkitRunnable() {
+			@Override
+			public void run() {
+				sendServerData();
+			}
+		}.runTaskLater(PitSim.INSTANCE, 5L);
 	}
 
 }

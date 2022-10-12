@@ -35,7 +35,7 @@ public class TutorialCommand implements CommandExecutor {
 		}
 
 		tutorial.cleanUp();
-		player.teleport(MapManager.currentMap.firstLobby.getSpawnLocation());
+		player.teleport(MapManager.currentMap.world.getSpawnLocation());
 		PitPlayer.getPitPlayer(player).tutorial = true;
 		AOutput.send(player, "&cYou have skipped the tutorial!");
 

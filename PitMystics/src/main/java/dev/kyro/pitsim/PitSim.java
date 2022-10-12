@@ -59,7 +59,6 @@ import net.milkbowl.vault.economy.Economy;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
@@ -132,7 +131,7 @@ public class PitSim extends JavaPlugin {
 
 		registerMaps();
 		BossManager.onStart();
-		MapManager.onStart();
+		MapManager.openPortal();
 		NonManager.init();
 		SpawnNPCs.createNPCs();
 		TempBlockHelper.init();
@@ -338,7 +337,7 @@ public class PitSim extends JavaPlugin {
 
 	private void registerMaps() {
 //		MapManager.registerMap(new DimensionsMap("dimensions1", "dimensions2"));
-		MapManager.registerMap(new BiomesMap("biomes1", "biomes2"));
+		MapManager.registerMap(new BiomesMap("biomes1"));
 	}
 
 	private void registerPerks() {
@@ -459,9 +458,6 @@ public class PitSim extends JavaPlugin {
 		getCommand("lightning").setExecutor(new LightningCommand());
 		getCommand("stat").setExecutor(new StatCommand());
 //		getCommand("captcha").setExecutor(new CaptchaCommand());
-		SwitchCommand switchCommand = new SwitchCommand();
-		getCommand("switch").setExecutor(switchCommand);
-		getCommand("play").setExecutor(switchCommand);
 		getCommand("pay").setExecutor(new PayCommand());
 		getCommand("shutdown").setExecutor(new ShutdownCommand());
 		getCommand("tutorial").setExecutor(new TutorialCommand());

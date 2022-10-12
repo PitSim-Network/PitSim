@@ -35,18 +35,16 @@ public class NonManager implements Listener {
 					botIGNs.add("xLava28");
 					botIGNs.add("TheAlpha64");
 				}
-				for(World world : MapManager.currentMap.lobbies) {
-					if(!MapManager.multiLobbies && world != MapManager.currentMap.firstLobby) continue;
-					for(int i = 0; i < 3; i++) {
-						if(getNonsInLobby(world) >= getMaxNons(world)) break;
-						Non non = new Non(botIGNs.get((int) (Math.random() * botIGNs.size())), world);
-						new BukkitRunnable() {
-							@Override
-							public void run() {
-								non.remove();
-							}
-						}.runTaskLater(PitSim.INSTANCE, (long) (20 * 60 * (Math.random() * 10 + 5)));
-					}
+
+				for(int i = 0; i < 3; i++) {
+					if(nons.size() >= getMaxNons()) break;
+					Non non = new Non(botIGNs.get((int) (Math.random() * botIGNs.size())));
+					new BukkitRunnable() {
+						@Override
+						public void run() {
+							non.remove();
+						}
+					}.runTaskLater(PitSim.INSTANCE, (long) (20 * 60 * (Math.random() * 10 + 5)));
 				}
 			}
 		}.runTaskTimer(PitSim.INSTANCE, 40L, 20);
@@ -59,13 +57,7 @@ public class NonManager implements Listener {
 		}.runTaskTimer(PitSim.INSTANCE, 0L, 1L);
 	}
 
-	public static int getNonsInLobby(World world) {
-		int nonCount = 0;
-		for(Non non : nons) if(non.world == world) nonCount++;
-		return nonCount;
-	}
-
-	public static int getMaxNons(World world) {
+	public static int getMaxNons() {
 		int base = 25;
 		int max = 40;
 
@@ -75,10 +67,10 @@ public class NonManager implements Listener {
 			base = 60;
 		}
 
-		Location mid = MapManager.currentMap.getMid(world);
+		Location mid = MapManager.currentMap.getMid();
 		int playersNearMid = 0;
 		for(Player onlinePlayer : Bukkit.getOnlinePlayers()) {
-			if(onlinePlayer.getWorld() != world) continue;
+			if(onlinePlayer.getWorld() != MapManager.currentMap.world) continue;
 			double distance = mid.distance(onlinePlayer.getLocation());
 			if(distance < 15) playersNearMid++;
 		}

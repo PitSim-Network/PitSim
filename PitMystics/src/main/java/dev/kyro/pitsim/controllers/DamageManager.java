@@ -324,7 +324,7 @@ public class DamageManager implements Listener {
 		Non deadNon = NonManager.getNon(dead);
 		if(deadIsPlayer) {
 			if(deadNon == null && dead.getWorld() != MapManager.getTutorial()) {
-				Location spawnLoc = MapManager.currentMap.getSpawn(dead.getWorld());
+				Location spawnLoc = MapManager.currentMap.getSpawn();
 				if(killType != KillType.FAKE)dead.teleport(spawnLoc);
 			} else if(deadNon != null) {
 				deadNon.respawn();

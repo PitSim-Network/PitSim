@@ -22,7 +22,7 @@ public class SpawnCommand implements CommandExecutor {
 			return false;
 		}
 		SpawnManager.lastLocationMap.remove(player);
-		Location teleportLoc = MapManager.currentMap.getSpawn(player.getWorld());
+		Location teleportLoc = MapManager.currentMap.getSpawn();
 		player.teleport(teleportLoc);
 		PhoenixAbility.alreadyActivatedList.remove(player.getUniqueId());
 		for(Hopper hopper : HopperManager.hopperList) {
