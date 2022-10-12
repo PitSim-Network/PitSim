@@ -20,7 +20,6 @@ import dev.kyro.pitsim.events.HealEvent;
 import dev.kyro.pitsim.events.IncrementKillsEvent;
 import dev.kyro.pitsim.events.OofEvent;
 import dev.kyro.pitsim.inventories.ChatColorPanel;
-import dev.kyro.pitsim.inventories.KeeperPanel;
 import dev.kyro.pitsim.killstreaks.Monster;
 import dev.kyro.pitsim.killstreaks.NoKillstreak;
 import dev.kyro.pitsim.megastreaks.*;
@@ -45,6 +44,9 @@ import java.util.concurrent.ExecutionException;
 public class PitPlayer {
 	@Exclude
 	public static List<PitPlayer> pitPlayers = new ArrayList<>();
+
+	@Exclude
+	public static final long SAVE_COOLDOWN = 1_100;
 
 	@Exclude
 	public boolean isNPC;
@@ -146,23 +148,25 @@ public class PitPlayer {
 		} catch(ExecutionException | InterruptedException ignored) {}
 	}
 	@Exclude
-	public void save(boolean block, BukkitRunnable callback) throws ExecutionException, InterruptedException {
-		if(lastSave + 1_500L > System.currentTimeMillis()) {
+	public void save(boolean finalSave, BukkitRunnable callback) throws ExecutionException, InterruptedException {
+		if(finalSave && lastSave + SAVE_COOLDOWN > System.currentTimeMillis()) {
+			long timeUntilSave = lastSave + SAVE_COOLDOWN - System.currentTimeMillis();
 			new Thread(() -> {
 				try {
-					Thread.sleep(100);
-				} catch(Exception ignored) {}
-			}).start();
+					Thread.sleep(timeUntilSave);
+					save(true, callback);
+				} catch(Exception exception) {
+					System.out.println("--------------------------------------------------");
+					System.out.println("CRITICAL ERROR: data for " + player.getName() + " failed to final save");
+					System.out.println();
+					exception.printStackTrace();
+					System.out.println("--------------------------------------------------");
+				}
+			});
+			return;
 		}
 
-
-
-
-
-
-
-
-
+		if(lastSave + SAVE_COOLDOWN > System.currentTimeMillis()) return;
 		lastSave = System.currentTimeMillis();
 
 		if(isNPC) {
@@ -182,11 +186,9 @@ public class PitPlayer {
 			killstreaksRef.set(i, killstreak.refName);
 		}
 
-		if(block) {
+		if(finalSave) {
 			FirestoreManager.FIRESTORE.collection(FirestoreManager.PLAYERDATA_COLLECTION).document(uuid.toString())
-					.set(this).addListener(callback, command -> {
-						callback.runTask(PitSim.INSTANCE);
-					});
+					.set(this).addListener(callback, command -> {});
 			System.out.println("Saving Data (Blocking Thread): " + uuid.toString());
 		} else {
 			FirestoreManager.FIRESTORE.collection(FirestoreManager.PLAYERDATA_COLLECTION).document(uuid.toString()).set(this);
