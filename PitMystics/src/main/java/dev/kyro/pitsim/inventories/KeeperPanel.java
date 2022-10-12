@@ -4,9 +4,13 @@ import com.mojang.authlib.GameProfile;
 import com.mojang.authlib.properties.Property;
 import dev.kyro.arcticapi.gui.AGUI;
 import dev.kyro.arcticapi.gui.AGUIPanel;
+import dev.kyro.arcticapi.misc.AOutput;
+import dev.kyro.pitsim.PitSim;
+import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.controllers.objects.PluginMessage;
 import dev.kyro.pitsim.controllers.objects.ServerData;
 import dev.kyro.pitsim.misc.HeadLib;
+import dev.kyro.pitsim.misc.Sounds;
 import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -17,9 +21,11 @@ import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.inventory.InventoryOpenEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.SkullMeta;
+import org.bukkit.scheduler.BukkitRunnable;
 
 import java.lang.reflect.Field;
 import java.util.*;
+import java.util.concurrent.ExecutionException;
 
 public class KeeperPanel extends AGUIPanel {
 	public KeeperPanel(AGUI gui) {
@@ -27,6 +33,8 @@ public class KeeperPanel extends AGUIPanel {
 
 		inventoryBuilder.createBorder(Material.STAINED_GLASS_PANE, 7);
 	}
+
+	public static Map<Player, PluginMessage> queuedMessages = new HashMap<>();
 
 	Map<Integer, Integer> slots = new HashMap<>();
 
@@ -45,7 +53,36 @@ public class KeeperPanel extends AGUIPanel {
 		int slot = event.getSlot();
 		if(event.getClickedInventory().getHolder() == this) {
 			if(slots.containsKey(slot)) {
-				new PluginMessage().writeString("QUEUE").writeString(String.valueOf(((Player) event.getWhoClicked()).getName())).writeInt(slots.get(slot) + 1).send();
+
+				String serverString = "pitsim-" + (slots.get(slot) + 1);
+				if(PitSim.serverName.equals(serverString)) {
+					AOutput.send(player, "&aYou are already on this server!");
+					Sounds.NO.play(player);
+					return;
+				}
+
+				queuedMessages.put(player, new PluginMessage().writeString("QUEUE").writeString(String.valueOf(((Player)
+						event.getWhoClicked()).getName())).writeInt(slots.get(slot) + 1));
+
+
+				PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
+
+				BukkitRunnable runnable = new BukkitRunnable() {
+					@Override
+					public void run() {
+//						if(KeeperPanel.queuedMessages.containsValue(player)) {
+//							PluginMessage message = KeeperPanel.queuedMessages.get(player);
+//							message.send();
+//							KeeperPanel.queuedMessages.remove(player);
+//						}
+					}
+				};
+
+				try {
+					pitPlayer.save(true, runnable);
+				} catch(ExecutionException | InterruptedException e) {
+					throw new RuntimeException(e);
+				}
 			}
 		}
 	}

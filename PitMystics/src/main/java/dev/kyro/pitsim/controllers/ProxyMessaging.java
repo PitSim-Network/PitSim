@@ -68,7 +68,13 @@ public class ProxyMessaging implements Listener {
 		}
 
 		if(strings.size() >= 1 && booleans.size() >= 1 && strings.get(0).equals("SHUTDOWN")) {
-			ShutdownManager.initiateShutdown(5);
+
+			int minutes = 5;
+			if(integers.size() >= 1 && integers.get(0) > 0) {
+				minutes = integers.get(0);
+			}
+
+			ShutdownManager.initiateShutdown(minutes);
 		}
 
 

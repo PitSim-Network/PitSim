@@ -20,6 +20,7 @@ import dev.kyro.pitsim.events.HealEvent;
 import dev.kyro.pitsim.events.IncrementKillsEvent;
 import dev.kyro.pitsim.events.OofEvent;
 import dev.kyro.pitsim.inventories.ChatColorPanel;
+import dev.kyro.pitsim.inventories.KeeperPanel;
 import dev.kyro.pitsim.killstreaks.Monster;
 import dev.kyro.pitsim.killstreaks.NoKillstreak;
 import dev.kyro.pitsim.megastreaks.*;
@@ -146,7 +147,22 @@ public class PitPlayer {
 	}
 	@Exclude
 	public void save(boolean block, BukkitRunnable callback) throws ExecutionException, InterruptedException {
-		if(lastSave + 1_500L > System.currentTimeMillis()) return;
+		if(lastSave + 1_500L > System.currentTimeMillis()) {
+			new Thread(() -> {
+				try {
+					Thread.sleep(100);
+				} catch(Exception ignored) {}
+			}).start();
+		}
+
+
+
+
+
+
+
+
+
 		lastSave = System.currentTimeMillis();
 
 		if(isNPC) {
@@ -168,7 +184,9 @@ public class PitPlayer {
 
 		if(block) {
 			FirestoreManager.FIRESTORE.collection(FirestoreManager.PLAYERDATA_COLLECTION).document(uuid.toString())
-					.set(this).addListener(callback, command -> {});
+					.set(this).addListener(callback, command -> {
+						callback.runTask(PitSim.INSTANCE);
+					});
 			System.out.println("Saving Data (Blocking Thread): " + uuid.toString());
 		} else {
 			FirestoreManager.FIRESTORE.collection(FirestoreManager.PLAYERDATA_COLLECTION).document(uuid.toString()).set(this);
