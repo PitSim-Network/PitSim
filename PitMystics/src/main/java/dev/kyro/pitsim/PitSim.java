@@ -136,6 +136,12 @@ public class PitSim extends JavaPlugin {
 			return;
 		}
 
+		if(!Bukkit.getServer().getPluginManager().getPlugin("NoteBlockAPI").getDescription().getVersion().toLowerCase().contains("kyro")) {
+			AOutput.log("Wrong version of NoteBlockAPI found");
+			getServer().getPluginManager().disablePlugin(this);
+			return;
+		}
+
 		Plugin essentials = Bukkit.getPluginManager().getPlugin("Essentials");
 		EntityDamageEvent.getHandlerList().unregister(essentials);
 

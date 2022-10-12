@@ -48,6 +48,7 @@ public class CutsceneManager implements Listener {
         esp.setEntity(player);
         esp.setDistance(16);
         esp.addPlayer(player);
+        esp.setAutoDestroy(true);
         esp.setPlaying(true);
 
         player.setGameMode(GameMode.SPECTATOR);

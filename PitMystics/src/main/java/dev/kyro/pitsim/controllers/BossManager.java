@@ -327,6 +327,7 @@ public class BossManager implements Listener {
         esp.setDistance(16);
         esp.setRepeatMode(RepeatMode.ONE);
         esp.addPlayer(player);
+        esp.setAutoDestroy(true);
         esp.setPlaying(true);
     }
 
