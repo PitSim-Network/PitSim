@@ -4,6 +4,7 @@ import dev.kyro.arcticapi.data.AConfig;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.controllers.objects.Booster;
 import dev.kyro.pitsim.controllers.objects.Non;
+import dev.kyro.pitsim.misc.Misc;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
@@ -18,6 +19,7 @@ import java.util.List;
 
 public class NonManager implements Listener {
 	public static List<String> botIGNs = new ArrayList<>();
+	public static List<String> skinLoadedBotIGNS = new ArrayList<>();
 	public static List<Non> nons = new ArrayList<>();
 
 	public static void init() {
@@ -27,20 +29,30 @@ public class NonManager implements Listener {
 				if(AConfig.getString("nons").equals("false")) return;
 				if(botIGNs.isEmpty()) {
 					botIGNs.add("KyroKrypt");
+					botIGNs.add("BHunter");
+					botIGNs.add("PayForTruce");
+					botIGNs.add("Fishduper");
 					botIGNs.add("wiji1");
-					botIGNs.add("Chantingshoe");
+					botIGNs.add("Muruseni");
 					botIGNs.add("ObvEndyy");
-					botIGNs.add("OPeterIsCracked");
-					botIGNs.add("pogha");
-					botIGNs.add("robert_mugabe355");
-					botIGNs.add("xLava28");
-					botIGNs.add("TheAlpha64");
 				}
+
+				for(String botIGN : new ArrayList<>(botIGNs)) {
+					if(!Misc.isSkinLoaded(botIGN)) {
+						Misc.loadSkin(botIGN);
+						continue;
+					}
+					skinLoadedBotIGNS.add(botIGN);
+					botIGNs.remove(botIGN);
+				}
+
+				if(skinLoadedBotIGNS.isEmpty()) return;
 				for(World world : MapManager.currentMap.lobbies) {
 					if(!MapManager.multiLobbies && world != MapManager.currentMap.firstLobby) continue;
 					for(int i = 0; i < 3; i++) {
 						if(getNonsInLobby(world) >= getMaxNons(world)) break;
-						Non non = new Non(botIGNs.get((int) (Math.random() * botIGNs.size())), world);
+
+						Non non = new Non(skinLoadedBotIGNS.get((int) (Math.random() * skinLoadedBotIGNS.size())), world);
 						new BukkitRunnable() {
 							@Override
 							public void run() {
@@ -67,6 +79,7 @@ public class NonManager implements Listener {
 	}
 
 	public static int getMaxNons(World world) {
+//		if(true) return 1;
 		int base = 25;
 		int max = 40;
 

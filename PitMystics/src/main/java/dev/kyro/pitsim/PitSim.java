@@ -155,6 +155,7 @@ public class PitSim extends JavaPlugin {
 			return;
 		}
 
+		registerBoosters();
 		registerUpgrades();
 		registerPerks();
 		registerKillstreaks();
@@ -204,7 +205,6 @@ public class PitSim extends JavaPlugin {
 		registerEnchants();
 		registerCommands();
 		registerListeners();
-		registerBoosters();
 		registerHelmetAbilities();
 		registerKits();
 		registerMobs();
@@ -502,6 +502,7 @@ public class PitSim extends JavaPlugin {
 		getServer().getPluginManager().registerEvents(new AuctionManager(), this);
 		getServer().getPluginManager().registerEvents(new ScoreboardManager(), this);
 	}
+
 	public void registerBoosters() {
 		BoosterManager.registerBooster(new XPBooster());
 		BoosterManager.registerBooster(new GoldBooster());

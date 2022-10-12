@@ -8,11 +8,12 @@ import dev.kyro.pitsim.controllers.NonManager;
 import dev.kyro.pitsim.controllers.SpawnManager;
 import dev.kyro.pitsim.enums.NonState;
 import dev.kyro.pitsim.enums.NonTrait;
+import dev.kyro.pitsim.misc.Misc;
 import net.citizensnpcs.api.CitizensAPI;
 import net.citizensnpcs.api.npc.NPC;
 import net.citizensnpcs.api.trait.trait.Equipment;
 import net.citizensnpcs.npc.ai.CitizensNavigator;
-import net.citizensnpcs.npc.skin.SkinnableEntity;
+import net.citizensnpcs.util.PlayerAnimation;
 import net.citizensnpcs.util.Util;
 import net.minecraft.server.v1_8_R3.EntityPlayer;
 import org.bukkit.Bukkit;
@@ -44,7 +45,7 @@ public class Non {
 	public List<NonTrait> traits = new ArrayList<>();
 	public double persistence;
 	public NonState nonState = NonState.RESPAWNING;
-	public int count = 0;
+	public int count = (int) (Math.random() * 20);
 
 	public Non(String name, World world) {
 		this.name = name;
@@ -52,7 +53,10 @@ public class Non {
 
 		displayName = "&7" + name;
 		this.npc = CitizensAPI.getNPCRegistry().createNPC(EntityType.PLAYER, displayName);
+
 		spawn();
+		Misc.skinNPC(npc, name);
+
 		this.non = (Player) npc.getEntity();
 		FPSCommand.hideNewNon(this);
 		NonManager.nons.add(this);
@@ -70,7 +74,6 @@ public class Non {
 		if(traits.contains(NonTrait.IRON_STREAKER)) persistence -= 100 - persistence;
 
 		respawn(false);
-		skin(name);
 	}
 
 	public void tick() {
@@ -97,7 +100,10 @@ public class Non {
 			if(count % 5 == 0) {
 				pickTarget();
 //				npc.getNavigator().setTarget(target, true);
-				target.damage(7, non);
+				if(target != null) {
+					target.damage(7, non);
+					if(Math.random() < 0.5) PlayerAnimation.ARM_SWING.play(non);
+				}
 			}
 			if(count % 2 == 0 && target != null) Util.faceLocation(non, target.getLocation());
 		} else respawn(false);
@@ -282,16 +288,5 @@ public class Non {
 
 		NonManager.nons.remove(this);
 		npc.destroy();
-	}
-
-	public void skin(String name) {
-//		npc.data().set(NPC.PLAYER_SKIN_UUID_METADATA, name);
-//		npc.data().set(NPC.PLAYER_SKIN_USE_LATEST, false);
-		if(npc.isSpawned()) {
-			SkinnableEntity skinnable = (SkinnableEntity) npc.getEntity();
-			if(skinnable != null) {
-				skinnable.setSkinName(name);
-			}
-		}
 	}
 }
