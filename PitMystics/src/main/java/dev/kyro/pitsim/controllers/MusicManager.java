@@ -52,13 +52,6 @@ public class MusicManager implements Listener {
         }.runTaskTimer(PitSim.INSTANCE, 20, 20);
     }
 
-    public static boolean playerIsListening(Player player) {
-        for (EntitySongPlayer song : songs) {
-            if(song.getEntity() == player) return true;
-        }
-        return false;
-    }
-
     @EventHandler
     public static void onQuit(PlayerQuitEvent event) {
         Player player = event.getPlayer();
