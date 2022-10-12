@@ -188,7 +188,9 @@ public class PitPlayer {
 
 		if(finalSave) {
 			FirestoreManager.FIRESTORE.collection(FirestoreManager.PLAYERDATA_COLLECTION).document(uuid.toString())
-					.set(this).addListener(callback, command -> {});
+					.set(this).addListener(callback, command -> {
+						callback.runTask(PitSim.INSTANCE);
+					});
 			System.out.println("Saving Data (Blocking Thread): " + uuid.toString());
 		} else {
 			FirestoreManager.FIRESTORE.collection(FirestoreManager.PLAYERDATA_COLLECTION).document(uuid.toString()).set(this);

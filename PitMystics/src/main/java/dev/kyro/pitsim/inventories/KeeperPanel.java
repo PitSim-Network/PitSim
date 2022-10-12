@@ -6,12 +6,14 @@ import dev.kyro.arcticapi.gui.AGUI;
 import dev.kyro.arcticapi.gui.AGUIPanel;
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.PitSim;
+import dev.kyro.pitsim.controllers.LobbySwitchManager;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.controllers.objects.PluginMessage;
 import dev.kyro.pitsim.controllers.objects.ServerData;
 import dev.kyro.pitsim.misc.HeadLib;
 import dev.kyro.pitsim.misc.Sounds;
 import me.clip.placeholderapi.PlaceholderAPI;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Arrow;
@@ -27,7 +29,7 @@ import java.lang.reflect.Field;
 import java.util.*;
 import java.util.concurrent.ExecutionException;
 
-public class KeeperPanel extends AGUIPanel {
+public class KeeperPanel extends AGUIPanel{
 	public KeeperPanel(AGUI gui) {
 		super(gui);
 
@@ -64,17 +66,19 @@ public class KeeperPanel extends AGUIPanel {
 				queuedMessages.put(player, new PluginMessage().writeString("QUEUE").writeString(String.valueOf(((Player)
 						event.getWhoClicked()).getName())).writeInt(slots.get(slot) + 1));
 
+				LobbySwitchManager.setSwitchingPlayer(player);
+
 
 				PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
 
 				BukkitRunnable runnable = new BukkitRunnable() {
 					@Override
 					public void run() {
-//						if(KeeperPanel.queuedMessages.containsValue(player)) {
-//							PluginMessage message = KeeperPanel.queuedMessages.get(player);
-//							message.send();
-//							KeeperPanel.queuedMessages.remove(player);
-//						}
+						if(KeeperPanel.queuedMessages.containsKey(player)) {
+							PluginMessage message = KeeperPanel.queuedMessages.get(player);
+							message.send();
+							KeeperPanel.queuedMessages.remove(player);
+						}
 					}
 				};
 

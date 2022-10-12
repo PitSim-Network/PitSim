@@ -74,6 +74,7 @@ public class ProxyMessaging implements Listener {
 				minutes = integers.get(0);
 			}
 
+			ShutdownManager.isRestart = booleans.get(0);
 			ShutdownManager.initiateShutdown(minutes);
 		}
 

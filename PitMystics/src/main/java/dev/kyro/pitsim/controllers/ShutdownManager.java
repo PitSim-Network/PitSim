@@ -17,10 +17,14 @@ public class ShutdownManager {
 	public static boolean enderchestDisabled = false;
 	public static boolean isShuttingDown = false;
 
+	public static boolean isRestart = false;
 
-	public static void initiateShutdown(int minute) {
+
+	public static void initiateShutdown(int minutes) {
+		if(isShuttingDown) return;
+
 		isShuttingDown = true;
-		minutes = minute;
+		ShutdownManager.minutes = minutes;
 
 		new BukkitRunnable() {
 			@Override
@@ -29,13 +33,13 @@ public class ShutdownManager {
 				if(counter >= 20) {
 					counter = 0;
 					if(seconds > 0) {
-						if(seconds == 2 && minutes == 0) {
+						if(seconds == 2 && ShutdownManager.minutes == 0) {
 							ProxyMessaging.sendShutdown();
 						}
 						seconds--;
 					} else {
-						if(minutes > 0) {
-							minutes--;
+						if(ShutdownManager.minutes > 0) {
+							ShutdownManager.minutes--;
 							seconds = 60;
 						} else {
 							execute();
@@ -44,13 +48,13 @@ public class ShutdownManager {
 				}
 
 				if(seconds == 0 && counter == 1) {
-					if(minutes == 1) {
+					if(ShutdownManager.minutes == 1) {
 						disableEnderChest();
 						Bukkit.broadcastMessage(ChatColor.RED + "" + ChatColor.BOLD + "INSTANCE SHUTDOWN IN "
-								+ minutes + " MINUTE!");
-					} else if(minutes != 0) {
+								+ ShutdownManager.minutes + " MINUTE!");
+					} else if(ShutdownManager.minutes != 0) {
 						Bukkit.broadcastMessage(ChatColor.RED + "" + ChatColor.BOLD + "INSTANCE SHUTDOWN IN "
-								+ minutes + " MINUTES!");
+								+ ShutdownManager.minutes + " MINUTES!");
 					} else {
 						Bukkit.broadcastMessage(ChatColor.RED + "" + ChatColor.BOLD + "INSTANCE SHUTDOWN!");
 					}
@@ -64,8 +68,14 @@ public class ShutdownManager {
 	}
 
 	public static void execute() {
-		PitSim.client.retrieveServerByIdentifier(AConfig.getString("pterodactyl-id"))
-				.flatMap(ClientServer::restart).executeAsync();
+		if(isRestart) {
+			PitSim.client.retrieveServerByIdentifier(AConfig.getString("pterodactyl-id"))
+					.flatMap(ClientServer::restart).executeAsync();
+		} else {
+			PitSim.client.retrieveServerByIdentifier(AConfig.getString("pterodactyl-id"))
+					.flatMap(ClientServer::stop).executeAsync();
+		}
+
 	}
 
 	public static void disableEnderChest() {

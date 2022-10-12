@@ -459,7 +459,7 @@ public class PitSim extends JavaPlugin {
 		getCommand("stat").setExecutor(new StatCommand());
 //		getCommand("captcha").setExecutor(new CaptchaCommand());
 		getCommand("pay").setExecutor(new PayCommand());
-		getCommand("shutdown").setExecutor(new ShutdownCommand());
+//		getCommand("shutdown").setExecutor(new ShutdownCommand());
 		getCommand("tutorial").setExecutor(new TutorialCommand());
 		getCommand("cutscene").setExecutor(new CutsceneCommand());
 		getCommand("kit").setExecutor(new KitCommand());
@@ -523,6 +523,7 @@ public class PitSim extends JavaPlugin {
 		getServer().getPluginManager().registerEvents(new AuctionManager(), this);
 		getServer().getPluginManager().registerEvents(new ScoreboardManager(), this);
 		getServer().getPluginManager().registerEvents(new ProxyMessaging(), this);
+		getServer().getPluginManager().registerEvents(new LobbySwitchManager(), this);
 	}
 	public void registerBoosters() {
 		BoosterManager.registerBooster(new XPBooster());
