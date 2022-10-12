@@ -10,10 +10,12 @@ import org.bukkit.event.EventHandler;
 import java.util.List;
 
 public class Prick extends PitEnchant {
+	public Prick INSTANCE;
 
 	public Prick() {
 		super("Prick", false, ApplyType.PANTS,
 				"prick", "thorns");
+		INSTANCE = this;
 	}
 
 	@EventHandler
