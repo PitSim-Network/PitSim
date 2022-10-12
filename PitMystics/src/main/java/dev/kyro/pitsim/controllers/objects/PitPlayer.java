@@ -27,7 +27,6 @@ import dev.kyro.pitsim.misc.Misc;
 import dev.kyro.pitsim.perks.NoPerk;
 import dev.kyro.pitsim.perks.Thick;
 import me.clip.placeholderapi.PlaceholderAPI;
-import net.citizensnpcs.api.CitizensAPI;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -40,6 +39,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
 
 import java.util.*;
+import java.util.concurrent.ExecutionException;
 
 public class PitPlayer {
 	@Exclude
@@ -140,6 +140,12 @@ public class PitPlayer {
 	public long lastSave;
 	@Exclude
 	public void save() {
+		try {
+			save(false, null);
+		} catch(ExecutionException | InterruptedException ignored) {}
+	}
+	@Exclude
+	public void save(boolean block, BukkitRunnable callback) throws ExecutionException, InterruptedException {
 		if(lastSave + 1_500L > System.currentTimeMillis()) return;
 		lastSave = System.currentTimeMillis();
 
@@ -160,8 +166,14 @@ public class PitPlayer {
 			killstreaksRef.set(i, killstreak.refName);
 		}
 
-		FirestoreManager.FIRESTORE.collection(FirestoreManager.PLAYERDATA_COLLECTION).document(uuid.toString()).set(this);
-		System.out.println("Saving Data: " + uuid.toString());
+		if(block) {
+			FirestoreManager.FIRESTORE.collection(FirestoreManager.PLAYERDATA_COLLECTION).document(uuid.toString())
+					.set(this).addListener(callback, command -> {});
+			System.out.println("Saving Data (Blocking Thread): " + uuid.toString());
+		} else {
+			FirestoreManager.FIRESTORE.collection(FirestoreManager.PLAYERDATA_COLLECTION).document(uuid.toString()).set(this);
+			System.out.println("Saving Data: " + uuid.toString());
+		}
 	}
 
 //	NPC Init
