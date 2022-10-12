@@ -46,6 +46,9 @@ public class PitPlayer {
 	public static List<PitPlayer> pitPlayers = new ArrayList<>();
 
 	@Exclude
+	public static final long SAVE_COOLDOWN = 1_100;
+
+	@Exclude
 	public boolean isNPC;
 
 	@Exclude
@@ -145,8 +148,25 @@ public class PitPlayer {
 		} catch(ExecutionException | InterruptedException ignored) {}
 	}
 	@Exclude
-	public void save(boolean block, BukkitRunnable callback) throws ExecutionException, InterruptedException {
-		if(lastSave + 1_500L > System.currentTimeMillis()) return;
+	public void save(boolean finalSave, BukkitRunnable callback) throws ExecutionException, InterruptedException {
+		if(finalSave && lastSave + SAVE_COOLDOWN > System.currentTimeMillis()) {
+			long timeUntilSave = lastSave + SAVE_COOLDOWN - System.currentTimeMillis();
+			new Thread(() -> {
+				try {
+					Thread.sleep(timeUntilSave);
+					save(true, callback);
+				} catch(Exception exception) {
+					System.out.println("--------------------------------------------------");
+					System.out.println("CRITICAL ERROR: data for " + player.getName() + " failed to final save");
+					System.out.println();
+					exception.printStackTrace();
+					System.out.println("--------------------------------------------------");
+				}
+			});
+			return;
+		}
+
+		if(lastSave + SAVE_COOLDOWN > System.currentTimeMillis()) return;
 		lastSave = System.currentTimeMillis();
 
 		if(isNPC) {
@@ -166,7 +186,7 @@ public class PitPlayer {
 			killstreaksRef.set(i, killstreak.refName);
 		}
 
-		if(block) {
+		if(finalSave) {
 			FirestoreManager.FIRESTORE.collection(FirestoreManager.PLAYERDATA_COLLECTION).document(uuid.toString())
 					.set(this).addListener(callback, command -> {});
 			System.out.println("Saving Data (Blocking Thread): " + uuid.toString());
