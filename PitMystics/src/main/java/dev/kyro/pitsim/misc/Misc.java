@@ -1,6 +1,5 @@
 package dev.kyro.pitsim.misc;
 
-import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.commands.LightningCommand;
 import dev.kyro.pitsim.controllers.NonManager;
@@ -10,10 +9,6 @@ import dev.kyro.pitsim.events.HealEvent;
 import dev.kyro.pitsim.megastreaks.Overdrive;
 import dev.kyro.pitsim.megastreaks.RNGesus;
 import dev.kyro.pitsim.megastreaks.Uberstreak;
-import net.citizensnpcs.api.CitizensAPI;
-import net.citizensnpcs.api.npc.NPC;
-import net.citizensnpcs.npc.skin.Skin;
-import net.citizensnpcs.trait.SkinTrait;
 import net.minecraft.server.v1_8_R3.World;
 import net.minecraft.server.v1_8_R3.*;
 import org.bukkit.Material;
@@ -30,62 +25,9 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class Misc {
-
-	public static Map<String, List<BukkitRunnable>> callbackMap = new HashMap<>();
-	public static List<String> loadingSkins = new ArrayList<>();
-	static {
-		new BukkitRunnable() {
-			@Override
-			public void run() {
-				for(Map.Entry<String, List<BukkitRunnable>> entry : new HashMap<>(callbackMap).entrySet()) {
-					if(!isSkinLoaded(entry.getKey())) continue;
-					for(BukkitRunnable runnable : callbackMap.remove(entry.getKey())) runnable.runTask(PitSim.INSTANCE);
-				}
-			}
-		}.runTaskTimer(PitSim.INSTANCE, 0L, 20L);
-	}
-	public static void skinNPC(NPC npc, String name) {
-		if(!isSkinLoaded(name)) {
-			AOutput.log("Skin isn't loaded for npc " + name);
-			return;
-		}
-		if(npc.isSpawned()) {
-//			npc.addTrait(SkinTrait.class);
-//			npc.getTrait(SkinTrait.class).setSkinName(name);
-			SkinTrait skinTrait = CitizensAPI.getTraitFactory().getTrait(SkinTrait.class);
-			npc.addTrait(skinTrait);
-			skinTrait.setSkinName(name);
-		} else {
-			System.out.println("could not skin " + name + " npc as it is not spawned");
-		}
-	}
-
-	public static void loadAndSkinNPC(String name, BukkitRunnable callback) {
-		if(isSkinLoaded(name)) {
-			callback.runTask(PitSim.INSTANCE);
-			return;
-		}
-		loadSkin(name);
-		callbackMap.putIfAbsent(name, new ArrayList<>());
-		callbackMap.get(name).add(callback);
-	}
-
-	public static void loadSkin(String name) {
-		if(isSkinLoaded(name)) return;
-
-		if(loadingSkins.contains(name)) return;
-		loadingSkins.add(name);
-		Skin.get(name, true);
-	}
-
-	public static boolean isSkinLoaded(String name) {
-		return Skin.get(name, false).getSkinId() != null;
-	}
 
 	public static String ordinalWords(int num) {
 

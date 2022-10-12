@@ -23,6 +23,7 @@ public class HopperManager implements Listener {
 	public static List<Hopper> toRemove = new ArrayList<>();
 
 	public HopperManager() {
+		SkinManager.loadSkin("PayForTruce");
 
 		new BukkitRunnable() {
 			@Override

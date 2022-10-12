@@ -16,7 +16,6 @@ public abstract class PitBoss {
     public Player target;
     public SubLevel subLevel;
 
-
     public PitBoss(Player target, SubLevel subLevel) {
         this.target = target;
         this.subLevel = subLevel;
@@ -32,12 +31,8 @@ public abstract class PitBoss {
 
     public abstract void setNPC(NPC npc);
 
-
     public static void spawn(NPC npc, Player target, SubLevel subLevel, BossSkin skin, ItemStack hand, ItemStack helmet, ItemStack chestplate, ItemStack leggings, ItemStack boots){
-        skin.skin();
-
         Equipment equipment = npc.getTrait(Equipment.class);
-
 
         equipment.set(Equipment.EquipmentSlot.HAND, hand);
         equipment.set(Equipment.EquipmentSlot.HELMET, helmet);
@@ -46,15 +41,14 @@ public abstract class PitBoss {
         equipment.set(Equipment.EquipmentSlot.BOOTS, boots);
 
         npc.spawn(subLevel.middle);
+        skin.skin();
         npc.teleport(subLevel.middle.clone().add(0, 3, 0), PlayerTeleportEvent.TeleportCause.PLUGIN);
-
 
         Entity player = npc.getEntity();
 
         int radius = 2;
         double thetaRand = 360 * Math.random();
         double phiRand = 360 * Math.random();
-
 
         for (int i = 0; i < (48) * 30; i++) {
             double x2 = radius * Math.cos(phiRand) * Math.sin(thetaRand);
@@ -69,13 +63,9 @@ public abstract class PitBoss {
             phiRand = 360 * Math.random();
         }
 
-
-
-
         npc.getNavigator().setTarget(target, true);
         npc.setProtected(false);
         BossManager.playMusic(target, subLevel.level);
-
     }
 
     public static boolean isPitBoss(Player player) {
@@ -84,5 +74,4 @@ public abstract class PitBoss {
         }
         return false;
     }
-
 }

@@ -3,6 +3,7 @@ package dev.kyro.pitsim.tutorial.sequences;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.tutorial.MessageManager;
 import dev.kyro.pitsim.tutorial.Task;
+import dev.kyro.pitsim.tutorial.TutorialManager;
 import dev.kyro.pitsim.tutorial.TutorialMessage;
 import dev.kyro.pitsim.tutorial.objects.Tutorial;
 import dev.kyro.pitsim.tutorial.objects.TutorialSequence;
@@ -81,7 +82,7 @@ public class SpawnNonSequence extends TutorialSequence {
 				tutorial.nons.add(non);
 				non.spawn(tutorial.areaLocation);
 				non.setProtected(false);
-				skin(non, "dropping_");
+				skin(non, TutorialManager.DUMMY_SKIN_NAME);
 			}
 		}.runTaskLater(PitSim.INSTANCE, 20L * waitTime);
 		runnableList.add(runnable);
@@ -97,6 +98,4 @@ public class SpawnNonSequence extends TutorialSequence {
 			}
 		}
 	}
-
-
 }

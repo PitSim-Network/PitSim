@@ -39,8 +39,8 @@ public class NonManager implements Listener {
 				}
 
 				for(String botIGN : new ArrayList<>(botIGNs)) {
-					if(!Misc.isSkinLoaded(botIGN)) {
-						Misc.loadSkin(botIGN);
+					if(!SkinManager.isSkinLoaded(botIGN)) {
+						SkinManager.loadSkin(botIGN);
 						continue;
 					}
 					skinLoadedBotIGNS.add(botIGN);

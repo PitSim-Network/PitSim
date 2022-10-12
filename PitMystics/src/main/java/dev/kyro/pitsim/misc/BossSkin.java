@@ -1,5 +1,6 @@
 package dev.kyro.pitsim.misc;
 
+import dev.kyro.pitsim.controllers.SkinManager;
 import net.citizensnpcs.api.npc.NPC;
 
 public class BossSkin {
@@ -13,7 +14,6 @@ public class BossSkin {
     }
 
     public void skin() {
-//        this.npc.data().setPersistent(NPC.PLAYER_SKIN_UUID_METADATA, this.skinName);
-//        this.npc.data().setPersistent(NPC.PLAYER_SKIN_USE_LATEST, false);
+        SkinManager.skinNPC(npc, skinName);
     }
 }

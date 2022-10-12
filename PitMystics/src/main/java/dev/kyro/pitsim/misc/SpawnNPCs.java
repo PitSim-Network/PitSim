@@ -2,6 +2,7 @@ package dev.kyro.pitsim.misc;
 
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.controllers.MapManager;
+import dev.kyro.pitsim.controllers.SkinManager;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.inventories.*;
 import dev.kyro.pitsim.inventories.stats.StatGUI;
@@ -10,7 +11,6 @@ import net.citizensnpcs.api.CitizensAPI;
 import net.citizensnpcs.api.event.NPCRightClickEvent;
 import net.citizensnpcs.api.npc.NPC;
 import net.citizensnpcs.api.npc.NPCRegistry;
-import net.citizensnpcs.npc.skin.SkinnableEntity;
 import net.citizensnpcs.trait.LookClose;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -77,7 +77,7 @@ public class SpawnNPCs implements Listener {
 		createLeggingNPC();
 		createPotionNPC();
 		createAuctioneer();
-		createSkinTest();
+		createSkins();
 	}
 
 	public static void removeNPCs() {
@@ -174,13 +174,13 @@ public class SpawnNPCs implements Listener {
 
 	public static void createKyroNPC(World world) {
 		NPCRegistry registry = CitizensAPI.getNPCRegistry();
-		Misc.loadAndSkinNPC("KyroKrypt", new BukkitRunnable() {
+		SkinManager.loadAndSkinNPC("KyroKrypt", new BukkitRunnable() {
 			@Override
 			public void run() {
 				NPC npc = registry.createNPC(EntityType.PLAYER, "&9KyroKrypt");
 				kyro.add(npc);
 				npc.spawn(MapManager.currentMap.getKyroNPCSpawn(world));
-				Misc.skinNPC(npc, "KyroKrypt");
+				SkinManager.skinNPC(npc, "KyroKrypt");
 				npc.addTrait(LookClose.class);
 				npc.getTrait(LookClose.class).setRange(10);
 				npc.getTrait(LookClose.class).toggle();
@@ -190,13 +190,13 @@ public class SpawnNPCs implements Listener {
 
 	public static void createWijiNPC(World world) {
 		NPCRegistry registry = CitizensAPI.getNPCRegistry();
-		Misc.loadAndSkinNPC("wiji1", new BukkitRunnable() {
+		SkinManager.loadAndSkinNPC("wiji1", new BukkitRunnable() {
 			@Override
 			public void run() {
 				NPC npc = registry.createNPC(EntityType.PLAYER, "&9wiji1");
 				wiji.add(npc);
 				npc.spawn(MapManager.currentMap.getWijiNPCSpawn(world));
-				Misc.skinNPC(npc, "wiji1");
+				SkinManager.skinNPC(npc, "wiji1");
 				npc.addTrait(LookClose.class);
 				npc.getTrait(LookClose.class).setRange(10);
 				npc.getTrait(LookClose.class).toggle();
@@ -206,13 +206,13 @@ public class SpawnNPCs implements Listener {
 
 	public static void createSplkNPC(World world) {
 		NPCRegistry registry = CitizensAPI.getNPCRegistry();
-		Misc.loadAndSkinNPC("Splkpig", new BukkitRunnable() {
+		SkinManager.loadAndSkinNPC("Splkpig", new BukkitRunnable() {
 			@Override
 			public void run() {
 				NPC npc = registry.createNPC(EntityType.PLAYER, "&9Splkpig");
 				splk.add(npc);
 				npc.spawn(MapManager.currentMap.getSplkNPCSpawn(world));
-				Misc.skinNPC(npc, "Splkpig");
+				SkinManager.skinNPC(npc, "Splkpig");
 				npc.addTrait(LookClose.class);
 				npc.getTrait(LookClose.class).setRange(10);
 				npc.getTrait(LookClose.class).toggle();
@@ -223,13 +223,13 @@ public class SpawnNPCs implements Listener {
 	public static void createVnx2NPC(World world) {
 		NPCRegistry registry = CitizensAPI.getNPCRegistry();
 		String name = Bukkit.getOfflinePlayer(UUID.fromString("e913fd01-e84e-4c6e-ad5b-7419a12de481")).getName();
-		Misc.loadAndSkinNPC(name, new BukkitRunnable() {
+		SkinManager.loadAndSkinNPC(name, new BukkitRunnable() {
 			@Override
 			public void run() {
 				NPC npc = registry.createNPC(EntityType.PLAYER, "&e&lLB AND STATS");
 				vnx.add(npc);
 				npc.spawn(MapManager.currentMap.getVnxNPCSpawn(world));
-				Misc.skinNPC(npc, name);
+				SkinManager.skinNPC(npc, name);
 				npc.addTrait(LookClose.class);
 				npc.getTrait(LookClose.class).setRange(10);
 				npc.getTrait(LookClose.class).toggle();
@@ -239,79 +239,78 @@ public class SpawnNPCs implements Listener {
 
 	public static void createKeeperNPC(World world) {
 		NPCRegistry registry = CitizensAPI.getNPCRegistry();
-		Misc.loadAndSkinNPC("googasesportsog", new BukkitRunnable() {
+		SkinManager.loadAndSkinNPC("googasesportsog", new BukkitRunnable() {
 			@Override
 			public void run() {
 				NPC npc = registry.createNPC(EntityType.PLAYER, "&2&lTHE KEEPER");
 				keeper.add(npc);
 				npc.spawn(MapManager.currentMap.getKeeperNPC(world));
-				Misc.skinNPC(npc, "googasesportsog");
+				SkinManager.skinNPC(npc, "googasesportsog");
 			}
 		});
 	}
 
 	public static void createTaintedShopNPC() {
 		NPCRegistry registry = CitizensAPI.getNPCRegistry();
-		Misc.loadAndSkinNPC("dominorift", new BukkitRunnable() {
+		SkinManager.loadAndSkinNPC("dominorift", new BukkitRunnable() {
 			@Override
 			public void run() {
 				NPC npc = registry.createNPC(EntityType.PLAYER, "&d");
 				taintedShop = npc;
 				npc.spawn(new Location(MapManager.getDarkzone(), 214, 91, -113, 25, 0));
-				Misc.skinNPC(npc, "dominorift");
+				SkinManager.skinNPC(npc, "dominorift");
 			}
 		});
 	}
 
 	public static void createLeggingNPC() {
 		NPCRegistry registry = CitizensAPI.getNPCRegistry();
-		Misc.loadAndSkinNPC("Merchant", new BukkitRunnable() {
+		SkinManager.loadAndSkinNPC("Merchant", new BukkitRunnable() {
 			@Override
 			public void run() {
 				NPC npc = registry.createNPC(EntityType.PLAYER, ChatColor.AQUA + "" + ChatColor.BOLD + "ARMOR TRADER");
 				leggingMerchant = npc;
 				npc.spawn(new Location(MapManager.getDarkzone(), 186, 91, -103, -40, 0));
-				Misc.skinNPC(npc, "Merchant");
+				SkinManager.skinNPC(npc, "Merchant");
 			}
 		});
 	}
 
 	public static void createPotionNPC() {
 		NPCRegistry registry = CitizensAPI.getNPCRegistry();
-		Misc.loadAndSkinNPC("Wiizard", new BukkitRunnable() {
+		SkinManager.loadAndSkinNPC("Wiizard", new BukkitRunnable() {
 			@Override
 			public void run() {
 				NPC npc = registry.createNPC(EntityType.PLAYER, ChatColor.LIGHT_PURPLE + "" + ChatColor.BOLD + "POTIONS");
 				potionMaster = npc;
 				npc.spawn(new Location(MapManager.getDarkzone(), 195.5, 91, -84.5, -147, 0));
-				Misc.skinNPC(npc, "Wiizard");
+				SkinManager.skinNPC(npc, "Wiizard");
 			}
 		});
 	}
 
 	public static void createAuctioneer() {
 		NPCRegistry registry = CitizensAPI.getNPCRegistry();
-		Misc.loadAndSkinNPC("Itz_Aethan", new BukkitRunnable() {
+		SkinManager.loadAndSkinNPC("Itz_Aethan", new BukkitRunnable() {
 			@Override
 			public void run() {
 				NPC npc = registry.createNPC(EntityType.PLAYER, ChatColor.DARK_GRAY + "" + ChatColor.BOLD + "SHADY FIGURE");
 				auctioneer = npc;
 				npc.spawn(new Location(MapManager.getDarkzone(), 254.5, 91, -128.5, -14, 0));
-				Misc.skinNPC(npc, "Itz_Aethan");
+				SkinManager.skinNPC(npc, "Itz_Aethan");
 			}
 		});
 	}
 
-	public static void createSkinTest() {
+	public static void createSkins() {
 		for(int i = 0; i < SimpleSkin.values().length; i++) {
-			Misc.loadSkin(SimpleSkin.values()[i].skin);
+			SkinManager.loadSkin(SimpleSkin.values()[i].skin);
 		}
 	}
 
 
 	@EventHandler
 	public void onClickEvent(NPCRightClickEvent event) {
-
 		Player player = event.getClicker();
 
 		for(NPC npc : upgrade) {
@@ -368,17 +367,6 @@ public class SpawnNPCs implements Listener {
 
 		if(event.getNPC().getId() == auctioneer.getId()) {
 			AOutput.send(player, "&8&lSHADY FIGURE&7: &ePsst. Visit the door behind me to spend your &fTainted Souls&e.");
-		}
-	}
-
-	public static void skin(NPC npc, String name) {
-//		npc.data().set(NPC.PLAYER_SKIN_UUID_METADATA, name);
-//		npc.data().set(NPC.PLAYER_SKIN_USE_LATEST, false);
-		if(npc.isSpawned()) {
-			SkinnableEntity skinnable = (SkinnableEntity) npc.getEntity();
-			if(skinnable != null) {
-				skinnable.setSkinName(name);
-			}
 		}
 	}
 }

@@ -4,6 +4,7 @@ import dev.kyro.arcticapi.data.APlayer;
 import dev.kyro.arcticapi.data.APlayerData;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.controllers.DamageManager;
+import dev.kyro.pitsim.controllers.SkinManager;
 import dev.kyro.pitsim.controllers.UpgradeManager;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.enums.KillType;
@@ -40,11 +41,16 @@ import java.util.Map;
 public class TutorialManager implements Listener {
 	public static Map<Player, Tutorial> tutorials = new HashMap<>();
 
+	public static final String DUMMY_SKIN_NAME = "wiji1";
+
+	static {
+		SkinManager.loadSkin(DUMMY_SKIN_NAME);
+	}
+
 	public static void createTutorial(Player player) {
 		Tutorial tutorial = new Tutorial(player, getOpenPosition());
 		tutorials.put(player, tutorial);
 	}
-
 
 	public static Tutorial getTutorial(Player player) {
 		if(!tutorials.containsKey(player)) return null;

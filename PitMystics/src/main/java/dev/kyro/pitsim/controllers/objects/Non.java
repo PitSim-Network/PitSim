@@ -4,10 +4,10 @@ import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.commands.FPSCommand;
 import dev.kyro.pitsim.controllers.MapManager;
 import dev.kyro.pitsim.controllers.NonManager;
+import dev.kyro.pitsim.controllers.SkinManager;
 import dev.kyro.pitsim.controllers.SpawnManager;
 import dev.kyro.pitsim.enums.NonState;
 import dev.kyro.pitsim.enums.NonTrait;
-import dev.kyro.pitsim.misc.Misc;
 import net.citizensnpcs.api.CitizensAPI;
 import net.citizensnpcs.api.npc.NPC;
 import net.citizensnpcs.api.trait.trait.Equipment;
@@ -54,7 +54,7 @@ public class Non {
 		this.npc = CitizensAPI.getNPCRegistry().createNPC(EntityType.PLAYER, displayName);
 
 		spawn();
-		Misc.skinNPC(npc, name);
+		SkinManager.skinNPC(npc, name);
 
 		this.non = (Player) npc.getEntity();
 		FPSCommand.hideNewNon(this);
