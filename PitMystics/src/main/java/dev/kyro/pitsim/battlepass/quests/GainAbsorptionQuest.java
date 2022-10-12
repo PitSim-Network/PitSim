@@ -20,7 +20,7 @@ public class GainAbsorptionQuest extends PassQuest {
 	public static GainAbsorptionQuest INSTANCE;
 
 	public GainAbsorptionQuest() {
-		super("&6&l", "gainabsorption", QuestType.WEEKLY);
+		super("&6&lFat", "gainabsorption", QuestType.WEEKLY);
 		INSTANCE = this;
 	}
 

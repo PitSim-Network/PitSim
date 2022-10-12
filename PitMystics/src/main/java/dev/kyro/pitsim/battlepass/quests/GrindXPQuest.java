@@ -18,7 +18,7 @@ public class GrindXPQuest extends PassQuest {
 	public static GrindXPQuest INSTANCE;
 
 	public GrindXPQuest() {
-		super("&b&lstek", "grindxp", QuestType.WEEKLY);
+		super("&b&lEXPert", "grindxp", QuestType.WEEKLY);
 		INSTANCE = this;
 	}
 

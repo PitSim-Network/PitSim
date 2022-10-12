@@ -19,7 +19,7 @@ import java.util.List;
 public class DailyBotKillQuest extends PassQuest {
 
 	public DailyBotKillQuest() {
-		super("&c&lBot Kills", "dailybotkills", QuestType.DAILY);
+		super("&c&lKill Bots", "dailybotkills", QuestType.DAILY);
 	}
 
 	@EventHandler

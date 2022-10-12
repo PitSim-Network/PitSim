@@ -17,7 +17,7 @@ public class EarnGuildReputationQuest extends PassQuest {
 	public static EarnGuildReputationQuest INSTANCE;
 
 	public EarnGuildReputationQuest() {
-		super("&a&lTeam Carrier", "earnguildrep", QuestType.WEEKLY);
+		super("&a&lTeam Carry", "earnguildrep", QuestType.WEEKLY);
 		INSTANCE = this;
 	}
 

@@ -22,7 +22,7 @@ public class KillPlayersQuest extends PassQuest {
 	public PlayerToPlayerCooldown cooldown = new PlayerToPlayerCooldown(20 * 60 * 2);
 
 	public KillPlayersQuest() {
-		super("&c&l1v1 Legend", "killplayers", QuestType.WEEKLY);
+		super("&c&l1v1 God", "killplayers", QuestType.WEEKLY);
 	}
 
 	@EventHandler(priority = EventPriority.HIGHEST)

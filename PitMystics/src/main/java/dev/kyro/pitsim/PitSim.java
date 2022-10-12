@@ -16,7 +16,7 @@ import dev.kyro.pitsim.battlepass.PassManager;
 import dev.kyro.pitsim.battlepass.quests.*;
 import dev.kyro.pitsim.battlepass.quests.daily.DailyBotKillQuest;
 import dev.kyro.pitsim.battlepass.quests.daily.DailyPlayerKillQuest;
-import dev.kyro.pitsim.battlepass.quests.daily.SneakingBotKillQuest;
+import dev.kyro.pitsim.battlepass.quests.SneakingBotKillQuest;
 import dev.kyro.pitsim.boosters.ChaosBooster;
 import dev.kyro.pitsim.boosters.GoldBooster;
 import dev.kyro.pitsim.boosters.PvPBooster;

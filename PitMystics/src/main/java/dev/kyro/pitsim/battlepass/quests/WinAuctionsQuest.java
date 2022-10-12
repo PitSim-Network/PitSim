@@ -17,7 +17,7 @@ public class WinAuctionsQuest extends PassQuest {
 	public static WinAuctionsQuest INSTANCE;
 
 	public WinAuctionsQuest() {
-		super("&f&lBuy the Server", "winauctions", QuestType.WEEKLY);
+		super("&f&lMoneybags", "winauctions", QuestType.WEEKLY);
 		INSTANCE = this;
 	}
 

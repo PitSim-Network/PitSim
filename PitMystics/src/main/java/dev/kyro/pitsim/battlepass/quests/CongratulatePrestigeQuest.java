@@ -26,7 +26,7 @@ public class CongratulatePrestigeQuest extends PassQuest {
 	public static List<UUID> alreadyCompleted = new ArrayList<>();
 
 	public CongratulatePrestigeQuest() {
-		super("&e&l", "congratulateprestige", QuestType.WEEKLY);
+		super("&e&lGood Game", "congratulateprestige", QuestType.WEEKLY);
 		INSTANCE = this;
 	}
 
@@ -59,7 +59,7 @@ public class CongratulatePrestigeQuest extends PassQuest {
 		ItemStack itemStack = new AItemStackBuilder(Material.FIREWORK)
 				.setName(getDisplayName())
 				.setLore(new ALoreBuilder(
-						"&7Say &egg! to &e" + Misc.formatLarge(questLevel.getRequirement(pitPlayer)) + " &7players",
+						"&7Say &egg! &7dwto &e" + Misc.formatLarge(questLevel.getRequirement(pitPlayer)) + " &7players",
 						"&7after they prestige",
 						"",
 						"&7Progress: &3" + Misc.formatLarge(progress) + "&7/&3" + Misc.formatLarge(questLevel.getRequirement(pitPlayer)) + " &8[" +

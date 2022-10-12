@@ -20,7 +20,7 @@ public class DailyPlayerKillQuest extends PassQuest {
 	public PlayerToPlayerCooldown cooldown = new PlayerToPlayerCooldown(20 * 60 * 2);
 
 	public DailyPlayerKillQuest() {
-		super("&c&lPlayer Kills", "dailyplayerkills", QuestType.DAILY);
+		super("&c&lKill Players", "dailyplayerkills", QuestType.DAILY);
 	}
 
 	@EventHandler
@@ -35,7 +35,7 @@ public class DailyPlayerKillQuest extends PassQuest {
 
 	@Override
 	public ItemStack getDisplayItem(PitPlayer pitPlayer, QuestLevel questLevel, double progress) {
-		ItemStack itemStack = new AItemStackBuilder(Material.DIAMOND_SWORD)
+		ItemStack itemStack = new AItemStackBuilder(Material.IRON_SWORD)
 				.setName(getDisplayName())
 				.setLore(new ALoreBuilder(
 						"&7Kill &c" + Misc.formatLarge(questLevel.getRequirement(pitPlayer)) + " &7players",

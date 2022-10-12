@@ -1,4 +1,4 @@
-package dev.kyro.pitsim.battlepass.quests.daily;
+package dev.kyro.pitsim.battlepass.quests;
 
 import dev.kyro.arcticapi.builders.AItemStackBuilder;
 import dev.kyro.arcticapi.builders.ALoreBuilder;
@@ -36,10 +36,11 @@ public class SneakingBotKillQuest extends PassQuest {
 //	TODO: needs to say to sneak
 	@Override
 	public ItemStack getDisplayItem(PitPlayer pitPlayer, QuestLevel questLevel, double progress) {
-		ItemStack itemStack = new AItemStackBuilder(Material.DIAMOND_SWORD)
+		ItemStack itemStack = new AItemStackBuilder(Material.WOOD_SWORD)
 				.setName(getDisplayName())
 				.setLore(new ALoreBuilder(
-						"&7Kill &c" + Misc.formatLarge(questLevel.getRequirement(pitPlayer)) + " &7bots without a",
+						"&7Kill &c" + Misc.formatLarge(questLevel.getRequirement(pitPlayer)) + " &7bots while sneaking",
+						"&7and without having a",
 						"&7megastreak equipped",
 						"",
 						"&7Progress: &3" + Misc.formatLarge(progress) + "&7/&3" + Misc.formatLarge(questLevel.getRequirement(pitPlayer)) + " &8[" +
