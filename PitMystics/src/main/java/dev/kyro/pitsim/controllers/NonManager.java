@@ -4,7 +4,6 @@ import dev.kyro.arcticapi.data.AConfig;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.controllers.objects.Booster;
 import dev.kyro.pitsim.controllers.objects.Non;
-import dev.kyro.pitsim.misc.Misc;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
@@ -18,8 +17,19 @@ import java.util.List;
 
 public class NonManager implements Listener {
 	public static List<String> botIGNs = new ArrayList<>();
+	public static boolean defaultNons = true;
 	public static List<String> skinLoadedBotIGNS = new ArrayList<>();
 	public static List<Non> nons = new ArrayList<>();
+
+	static {
+		botIGNs.add("KyroKrypt");
+		botIGNs.add("BHunter");
+		botIGNs.add("PayForTruce");
+		botIGNs.add("Fishduper");
+		botIGNs.add("wiji1");
+		botIGNs.add("Muruseni");
+		botIGNs.add("ObvEndyy");
+	}
 
 	public static final int MAX_DISTANCE_FROM_MID = 10;
 
@@ -28,15 +38,6 @@ public class NonManager implements Listener {
 			@Override
 			public void run() {
 				if(AConfig.getString("nons").equals("false")) return;
-				if(botIGNs.isEmpty()) {
-					botIGNs.add("KyroKrypt");
-					botIGNs.add("BHunter");
-					botIGNs.add("PayForTruce");
-					botIGNs.add("Fishduper");
-					botIGNs.add("wiji1");
-					botIGNs.add("Muruseni");
-					botIGNs.add("ObvEndyy");
-				}
 
 				for(String botIGN : new ArrayList<>(botIGNs)) {
 					if(!SkinManager.isSkinLoaded(botIGN)) {
@@ -99,9 +100,25 @@ public class NonManager implements Listener {
 		return Math.min(playersNearMid * 3 + base, max);
 	}
 
-	public static void updateNons(List<String> botIGNs) {
-
-		NonManager.botIGNs = new ArrayList<>(botIGNs);
+	public static void updateNons(List<String> newBotIGNs) {
+		if(!newBotIGNs.contains("KyroKrypt")) newBotIGNs.add("KyroKrypt");
+		if(defaultNons) {
+			defaultNons = false;
+			botIGNs.clear();
+			skinLoadedBotIGNS.clear();
+		}
+		for(String name : newBotIGNs) {
+			if(skinLoadedBotIGNS.contains(name) || botIGNs.contains(name)) continue;
+			botIGNs.add(name);
+		}
+		for(String name : skinLoadedBotIGNS) {
+			if(newBotIGNs.contains(name)) continue;
+			skinLoadedBotIGNS.remove(name);
+		}
+		for(String name : botIGNs) {
+			if(newBotIGNs.contains(name)) continue;
+			botIGNs.remove(name);
+		}
 	}
 
 	public static Non getNon(LivingEntity entity) {
