@@ -45,8 +45,6 @@ import dev.kyro.pitsim.kits.XPKit;
 import dev.kyro.pitsim.leaderboards.*;
 import dev.kyro.pitsim.megastreaks.*;
 import dev.kyro.pitsim.misc.*;
-import dev.kyro.pitsim.misc.tainted.BloodyHeart;
-import dev.kyro.pitsim.misc.tainted.SyntheticCube;
 import dev.kyro.pitsim.perks.*;
 import dev.kyro.pitsim.pitmaps.BiomesMap;
 import dev.kyro.pitsim.placeholders.*;
@@ -498,8 +496,6 @@ public class PitSim extends JavaPlugin {
 		getServer().getPluginManager().registerEvents(new EnchantManager(), this);
 		getServer().getPluginManager().registerEvents(new TotallyLegitGem(), this);
 		getServer().getPluginManager().registerEvents(new ChunkOfVile(), this);
-		getServer().getPluginManager().registerEvents(new BloodyHeart(), this);
-		getServer().getPluginManager().registerEvents(new SyntheticCube(), this);
 		getServer().getPluginManager().registerEvents(new ReachAutoBan(), this);
 //		getServer().getPluginManager().registerEvents(new NonAnticheat(), this);
 //		getServer().getPluginManager().registerEvents(new HelmetListeners(), this);

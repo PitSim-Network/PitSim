@@ -1,8 +1,6 @@
 package dev.kyro.pitsim.slayers.tainted.Loot;
 
-import dev.kyro.pitsim.misc.tainted.BloodyHeart;
 import dev.kyro.pitsim.misc.tainted.CorruptedFeather;
-import dev.kyro.pitsim.misc.tainted.SyntheticCube;
 import org.bukkit.inventory.ItemStack;
 
 public enum LootTable {
