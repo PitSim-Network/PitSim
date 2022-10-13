@@ -26,6 +26,21 @@ public class PassManager implements Listener {
 
 	public static final int QUESTS_PER_WEEK = 6;
 
+	//	Create the passes
+	public static void registerPasses() {
+		registerPass(new PitSimPass(getDate("1/1/2022")));
+
+		PitSimPass pitSimPass = new PitSimPass(getDate("10/12/2022"))
+				.registerReward(new PassXpReward(20L), PitSimPass.RewardType.FREE, 1)
+				.registerReward(new PassXpReward(40L), PitSimPass.RewardType.PREMIUM, 2)
+				.registerReward(new PassXpReward(60L), PitSimPass.RewardType.FREE, 2)
+				.registerReward(new PassXpReward(80L), PitSimPass.RewardType.PREMIUM, 3)
+				.registerReward(new PassXpReward(800_000L), PitSimPass.RewardType.PREMIUM, 30);
+		registerPass(pitSimPass);
+
+		updateCurrentPass();
+	}
+
 	static {
 		new BukkitRunnable() {
 			@Override
@@ -70,6 +85,12 @@ public class PassManager implements Listener {
 		List<PassQuest> weeklyQuests = new ArrayList<>();
 		for(PassQuest passQuest : questList) if(passQuest.questType == PassQuest.QuestType.WEEKLY) weeklyQuests.add(passQuest);
 		return weeklyQuests;
+	}
+
+	public static List<PassQuest> getWeightedRandomQuests(List<PassQuest> possibleQuests) {
+		List<PassQuest> weightedRandomQuests = new ArrayList<>();
+		for(PassQuest quest : possibleQuests) weightedRandomQuests.addAll(Collections.nCopies(quest.weight, quest));
+		return weightedRandomQuests;
 	}
 
 //	fetch passquest by refname
@@ -129,21 +150,6 @@ public class PassManager implements Listener {
 		}
 	}
 
-//	Create the passes
-	public static void registerPasses() {
-		registerPass(new PitSimPass(getDate("1/1/2022")));
-
-		PitSimPass pitSimPass = new PitSimPass(getDate("9/1/2022"))
-				.registerReward(new PassXpReward(20L), PitSimPass.RewardType.FREE, 1)
-				.registerReward(new PassXpReward(40L), PitSimPass.RewardType.PREMIUM, 2)
-				.registerReward(new PassXpReward(60L), PitSimPass.RewardType.FREE, 2)
-				.registerReward(new PassXpReward(80L), PitSimPass.RewardType.PREMIUM, 3)
-				.registerReward(new PassXpReward(800_000L), PitSimPass.RewardType.PREMIUM, 30);
-		registerPass(pitSimPass);
-
-		updateCurrentPass();
-	}
-
 	public static void updateCurrentPass() {
 		Date now = Misc.convertToEST(new Date());
 		PitSimPass newPass = null;
@@ -166,13 +172,14 @@ public class PassManager implements Listener {
 		int weeksPassed = (int) (daysPassed / 7) + 1;
 		int newQuests = weeksPassed * QUESTS_PER_WEEK - currentPass.weeklyQuests.size();
 
-		List<PassQuest> possibleWeeklyQuests = PassManager.getWeeklyQuests();
+		List<PassQuest> possibleWeeklyQuests = getWeeklyQuests();
 		possibleWeeklyQuests.removeAll(currentPass.weeklyQuests.keySet());
-		Collections.shuffle(possibleWeeklyQuests);
+		List<PassQuest> weightedWeeklyQuests = getWeightedRandomQuests(possibleWeeklyQuests);
 		boolean addedQuests = false;
 		for(int i = 0; i < newQuests; i++) {
-			if(possibleWeeklyQuests.isEmpty()) break;
-			PassQuest passQuest = possibleWeeklyQuests.remove(0);
+			if(weightedWeeklyQuests.isEmpty()) break;
+			PassQuest passQuest = weightedWeeklyQuests.get(new Random().nextInt(weightedWeeklyQuests.size()));
+			weightedWeeklyQuests.removeAll(Collections.singleton(passQuest));
 			currentPass.weeklyQuests.put(passQuest, passQuest.getWeeklyPossibleStates().get(new Random().nextInt(passQuest.getWeeklyPossibleStates().size())));
 			addedQuests = true;
 		}
@@ -184,7 +191,8 @@ public class PassManager implements Listener {
 
 //	TODO: Main server only
 	public static void loadPassData() {
-		if(currentPass.startDate != FirestoreManager.CONFIG.currentPassStart) {
+		if(!currentPass.startDate.equals(FirestoreManager.CONFIG.currentPassStart)) {
+			FirestoreManager.CONFIG.currentPassStart = currentPass.startDate;
 			FirestoreManager.CONFIG.currentPassData = new Config.CurrentPassData();
 			FirestoreManager.CONFIG.save();
 		}
@@ -192,6 +200,7 @@ public class PassManager implements Listener {
 		for(Map.Entry<String, Integer> entry : FirestoreManager.CONFIG.currentPassData.activeWeeklyQuests.entrySet()) {
 			PassQuest passQuest = getQuest(entry.getKey());
 			if(passQuest == null) continue;
+			System.out.println(passQuest.getDisplayName());
 			currentPass.weeklyQuests.put(passQuest, passQuest.getWeeklyPossibleStates().get(entry.getValue()));
 		}
 	}

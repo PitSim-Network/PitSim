@@ -11,8 +11,9 @@ public abstract class PassQuest implements Listener {
 	private String displayName;
 	public String refName;
 	public QuestType questType;
+	public int weight = 5;
 
-	public int nextRewardIndex = 0;
+	private int nextRewardIndex = 0;
 
 	static {
 //		Quest ideas
