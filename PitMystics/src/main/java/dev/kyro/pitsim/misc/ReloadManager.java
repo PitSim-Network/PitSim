@@ -29,12 +29,7 @@ public class ReloadManager {
 					if(file.lastModified() == lastModified && startedUpload) {
 						cancel();
 						System.out.println("Jar upload finished. Restarting plugin");
-						new BukkitRunnable() {
-							@Override
-							public void run() {
-								Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), "plugman reload pitremake");
-							}
-						}.runTask(PitSim.INSTANCE);
+						Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), "plugman reload pitremake");
 						return;
 					}
 
@@ -47,6 +42,6 @@ public class ReloadManager {
 					throw new RuntimeException(exception);
 				}
 			}
-		}.runTaskTimerAsynchronously(PitSim.INSTANCE, 0L, 10L);
+		}.runTaskTimer(PitSim.INSTANCE, 0L, 10L);
 	}
 }
