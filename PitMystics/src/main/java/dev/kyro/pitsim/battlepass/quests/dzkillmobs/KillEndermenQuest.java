@@ -9,7 +9,7 @@ import dev.kyro.pitsim.controllers.PlayerManager;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.events.KillEvent;
 import dev.kyro.pitsim.misc.Misc;
-import dev.kyro.pitsim.mobs.PitZombie;
+import dev.kyro.pitsim.mobs.PitEnderman;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.event.EventHandler;
@@ -18,26 +18,26 @@ import org.bukkit.inventory.ItemStack;
 import java.util.ArrayList;
 import java.util.List;
 
-public class KillZombiesQuest extends PassQuest {
+public class KillEndermenQuest extends PassQuest {
 
-	public KillZombiesQuest() {
-		super("&c&lZombie Slayer", "killzombies", QuestType.WEEKLY);
+	public KillEndermenQuest() {
+		super("&c&lEnderman Slayer", "killendermen", QuestType.WEEKLY);
 	}
 
 	@EventHandler
 	public void onKill(KillEvent killEvent) {
 		if(!PlayerManager.isRealPlayer(killEvent.getKillerPlayer())) return;
-		if(!MobManager.mobIsType(killEvent.getDead(), PitZombie.class)) return;
+		if(!MobManager.mobIsType(killEvent.getDead(), PitEnderman.class)) return;
 
 		progressQuest(killEvent.getKillerPitPlayer(), 1);
 	}
 
 	@Override
 	public ItemStack getDisplayItem(PitPlayer pitPlayer, QuestLevel questLevel, double progress) {
-		ItemStack itemStack = new AItemStackBuilder(Material.DIAMOND_SWORD)
+		ItemStack itemStack = new AItemStackBuilder(Material.ENDER_PEARL)
 				.setName(getDisplayName())
 				.setLore(new ALoreBuilder(
-						"&7Kill &c" + Misc.formatLarge(questLevel.getRequirement(pitPlayer)) + " &7zombies",
+						"&7Kill &c" + Misc.formatLarge(questLevel.getRequirement(pitPlayer)) + " &7endermen",
 						"",
 						"&7Progress: &3" + Misc.formatLarge(progress) + "&7/&3" + Misc.formatLarge(questLevel.getRequirement(pitPlayer)) + " &8[" +
 								AUtil.createProgressBar("|", ChatColor.AQUA, ChatColor.GRAY, 20, progress / questLevel.getRequirement(pitPlayer)) + "&8]",

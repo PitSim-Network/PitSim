@@ -232,6 +232,16 @@ public class MobManager implements Listener {
 		}.runTaskTimer(PitSim.INSTANCE, 15, 20);
 	}
 
+	public static boolean mobIsType(LivingEntity mob, Class... classes) {
+		if(mob == null) return false;
+		PitMob pitMob = PitMob.getPitMob(mob);
+		if(pitMob == null) return false;
+		for(Class clazz : classes) {
+			if(pitMob.getClass() == clazz) return true;
+		}
+		return false;
+	}
+
 	// function to sort hashmap by values
 	public static HashMap<PitMob, Double> sortByValue(HashMap<PitMob, Double> hm) {
 		List<Map.Entry<PitMob, Double> > list =
