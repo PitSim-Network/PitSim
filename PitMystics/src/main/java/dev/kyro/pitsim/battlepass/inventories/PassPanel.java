@@ -17,7 +17,7 @@ import org.bukkit.event.inventory.InventoryOpenEvent;
 import org.bukkit.inventory.ItemStack;
 
 public class PassPanel extends AGUIPanel {
-	public static PassGUI passGUI;
+	public PassGUI passGUI;
 
 	public static ItemStack previousPageItem;
 	public static ItemStack questItem;
