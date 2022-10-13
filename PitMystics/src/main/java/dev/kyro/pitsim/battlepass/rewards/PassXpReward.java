@@ -20,7 +20,7 @@ public class PassXpReward extends PassReward {
 	@Override
 	public boolean giveReward(PitPlayer pitPlayer) {
 		LevelManager.addXP(pitPlayer.player, xp);
-		Sounds.LEVEL_UP.play(pitPlayer.player);
+		Sounds.GIVE_REWARD.play(pitPlayer.player);
 		return true;
 	}
 

@@ -2,6 +2,7 @@ package dev.kyro.pitsim.battlepass.quests;
 
 import dev.kyro.arcticapi.builders.AItemStackBuilder;
 import dev.kyro.arcticapi.builders.ALoreBuilder;
+import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.arcticapi.misc.AUtil;
 import dev.kyro.pitsim.battlepass.PassData;
 import dev.kyro.pitsim.battlepass.PassManager;
@@ -10,6 +11,8 @@ import dev.kyro.pitsim.controllers.PlayerManager;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.events.AttackEvent;
 import dev.kyro.pitsim.misc.Misc;
+import dev.kyro.pitsim.misc.Sounds;
+import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.event.EventHandler;
@@ -29,13 +32,18 @@ public class PunchUniquePlayers extends PassQuest {
 	@EventHandler
 	public void onAttack(AttackEvent.Apply attackEvent) {
 		if(!PlayerManager.isRealPlayer(attackEvent.getAttackerPlayer()) || !PlayerManager.isRealPlayer(attackEvent.getDefenderPlayer()) ||
-				attackEvent.getAttacker() == attackEvent.getDefender() || attackEvent.getArrow() != null || attackEvent.getPet() != null) return;
+				attackEvent.getAttacker() == attackEvent.getDefender() || attackEvent.getArrow() != null || attackEvent.getPet() != null ||
+				!canProgressQuest(attackEvent.getAttackerPitPlayer())) return;
 
-//		TODO: make u have to use fist
+		if(!Misc.isAirOrNull(attackEvent.getAttackerPlayer().getItemInHand())) return;
 		PassData passData = attackEvent.getAttackerPitPlayer().getPassData(PassManager.currentPass.startDate);
 		if(passData.uniquePlayersPunched.contains(attackEvent.getDefenderPlayer().getUniqueId().toString())) return;
 		passData.uniquePlayersPunched.add(attackEvent.getDefenderPlayer().getUniqueId().toString());
 		progressQuest(attackEvent.getAttackerPitPlayer(), 1);
+		Sounds.PUNCH_UNIQUE_PLAYER.play(attackEvent.getAttackerPlayer());
+		String playerName = PlaceholderAPI.setPlaceholders(attackEvent.getDefenderPlayer(),
+				ChatColor.translateAlternateColorCodes('&', "%luckperms_prefix%" + attackEvent.getDefenderPlayer().getName()));
+		AOutput.send(attackEvent.getAttackerPlayer(), "&f&lGREETING!&7 You greeted " + playerName);
 	}
 
 	@Override
@@ -63,7 +71,7 @@ public class PunchUniquePlayers extends PassQuest {
 	@Override
 	public List<QuestLevel> getWeeklyPossibleStates() {
 		List<QuestLevel> questLevels = new ArrayList<>();
-		questLevels.add(new QuestLevel(30.0, 100));
+		questLevels.add(new QuestLevel(300, 100));
 		return questLevels;
 	}
 

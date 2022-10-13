@@ -146,6 +146,11 @@ public class Sounds {
 	public static final SoundEffect DEATH_GHAST_SCREAM = new SoundEffect(Sound.GHAST_SCREAM, 1, 1);
 	public static final SoundEffect KILL_FIRE = new SoundEffect(Sound.FIZZ, 2, 2);
 
+//	Quests
+	public static final SoundEffect COMPLETE_QUEST = new SoundEffect(Sound.LEVEL_UP, 1, 1);
+	public static final SoundEffect GIVE_REWARD = new SoundEffect(Sound.LEVEL_UP, 1, 1);
+	public static final SoundEffect PUNCH_UNIQUE_PLAYER = new SoundEffect(Sound.VILLAGER_YES, 1, 1);
+
 	/*
 	public static final SoundEffect SIMPLE_SOUND = new SoundEffect(Sound.ZOMBIE_WOODBREAK, 1, 1);
 	public static final SoundEffect COMPLEX_SOUND = new SoundEffect();

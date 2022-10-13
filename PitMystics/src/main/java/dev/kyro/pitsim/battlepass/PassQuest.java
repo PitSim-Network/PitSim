@@ -1,6 +1,7 @@
 package dev.kyro.pitsim.battlepass;
 
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
+import dev.kyro.pitsim.misc.Sounds;
 import org.bukkit.ChatColor;
 import org.bukkit.event.Listener;
 import org.bukkit.inventory.ItemStack;
@@ -81,10 +82,11 @@ public abstract class PassQuest implements Listener {
 		passData.questCompletion.put(refName, newValue);
 	}
 
-//	TODO: Play sound and send message
+//	TODO: Send message
 	public void complete(PitPlayer pitPlayer) {
 		PassData passData = pitPlayer.getPassData(PassManager.currentPass.startDate);
 		passData.totalPoints += getQuestLevel().rewardPoints;
+		Sounds.COMPLETE_QUEST.play(pitPlayer.player);
 	}
 
 	public String getDisplayName() {

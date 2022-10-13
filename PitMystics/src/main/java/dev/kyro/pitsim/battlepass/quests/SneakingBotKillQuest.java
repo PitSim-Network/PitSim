@@ -33,7 +33,6 @@ public class SneakingBotKillQuest extends PassQuest {
 		progressQuest(killEvent.getKillerPitPlayer(), 1);
 	}
 
-//	TODO: needs to say to sneak
 	@Override
 	public ItemStack getDisplayItem(PitPlayer pitPlayer, QuestLevel questLevel, double progress) {
 		ItemStack itemStack = new AItemStackBuilder(Material.WOOD_SWORD)
