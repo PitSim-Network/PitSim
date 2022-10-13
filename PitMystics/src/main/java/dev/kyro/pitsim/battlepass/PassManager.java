@@ -193,16 +193,15 @@ public class PassManager implements Listener {
 
 //	TODO: Main server only
 	public static void loadPassData() {
-//		if(!currentPass.startDate.equals(FirestoreManager.CONFIG.currentPassStart)) {
+		if(!currentPass.startDate.equals(FirestoreManager.CONFIG.currentPassStart)) {
 			FirestoreManager.CONFIG.currentPassStart = currentPass.startDate;
 			FirestoreManager.CONFIG.currentPassData = new Config.CurrentPassData();
 			FirestoreManager.CONFIG.save();
-//		}
+		}
 
 		for(Map.Entry<String, Integer> entry : FirestoreManager.CONFIG.currentPassData.activeWeeklyQuests.entrySet()) {
 			PassQuest passQuest = getQuest(entry.getKey());
 			if(passQuest == null) continue;
-			System.out.println(passQuest.getDisplayName());
 			currentPass.weeklyQuests.put(passQuest, passQuest.getWeeklyPossibleStates().get(entry.getValue()));
 		}
 	}

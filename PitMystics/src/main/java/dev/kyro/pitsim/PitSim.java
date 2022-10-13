@@ -595,7 +595,7 @@ public class PitSim extends JavaPlugin {
 		BrewingIngredient.registerIngredient(new FermentedSpiderEye());
 		BrewingIngredient.registerIngredient(new MagmaCream());
 		BrewingIngredient.registerIngredient(new RawPork());
-		BrewingIngredient.registerIngredient(new Coal());
+		BrewingIngredient.registerIngredient(new WitherSkull());
 		BrewingIngredient.registerIngredient(new IronIngot());
 		BrewingIngredient.registerIngredient(new EnderPearl());
 	}
@@ -626,6 +626,7 @@ public class PitSim extends JavaPlugin {
 		PassManager.registerQuest(new SneakingBotKillQuest());
 		PassManager.registerQuest(new WalkDistanceQuest());
 		PassManager.registerQuest(new CongratulatePrestigeQuest());
+		PassManager.registerQuest(new HaveSpeedQuest());
 
 		PassManager.registerQuest(new KillCaveSpidersQuest());
 		PassManager.registerQuest(new KillCreepersQuest());

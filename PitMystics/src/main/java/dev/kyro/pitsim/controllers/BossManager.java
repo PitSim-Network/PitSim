@@ -149,7 +149,7 @@ public class BossManager implements Listener {
             case MAGMACUBE_CREAM:
                 new MagmaCubeBoss(player);
                 break;
-            case WITHER_SKELETON_COAL:
+            case WITHER_SKELETON_SKULL:
                 new WitherSkeletonBoss(player);
                 break;
             case GOLEM_INGOT:

@@ -36,7 +36,7 @@ public class KillZombiesQuest extends PassQuest {
 
 	@Override
 	public ItemStack getDisplayItem(PitPlayer pitPlayer, QuestLevel questLevel, double progress) {
-		ItemStack itemStack = new AItemStackBuilder(Material.DIAMOND_SWORD)
+		ItemStack itemStack = new AItemStackBuilder(Material.ROTTEN_FLESH)
 				.setName(getDisplayName())
 				.setLore(new ALoreBuilder(
 						"&7Kill &c" + Misc.formatLarge(questLevel.getRequirement(pitPlayer)) + " &7zombies",

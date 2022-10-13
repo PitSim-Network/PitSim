@@ -1,6 +1,7 @@
 package dev.kyro.pitsim.controllers.objects;
 
 import com.google.cloud.firestore.annotation.Exclude;
+import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.controllers.FirestoreManager;
 import dev.kyro.pitsim.misc.PrivateInfo;
 
@@ -44,6 +45,14 @@ public class Config {
 
 	@Exclude
 	public void save() {
+		if(!PitSim.INSTANCE.isEnabled()) {
+			try {
+				throw new Exception();
+			} catch(Exception exception) {
+				exception.printStackTrace();
+			}
+			return;
+		}
 		if(onSaveCooldown && !saveQueued) {
 			saveQueued = true;
 			new Thread(() -> {

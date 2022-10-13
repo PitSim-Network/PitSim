@@ -44,7 +44,7 @@ public enum NBTTag {
 	CAVESPIDER_EYE("pr-cavespider-eye"),
 	MAGMACUBE_CREAM("pr-magmacube-cream"),
 	PIGMAN_PORK("pr-pigman-pork"),
-	WITHER_SKELETON_COAL("pr-wither-skull"),
+	WITHER_SKELETON_SKULL("pr-wither-skull"),
 	GOLEM_INGOT("pr-golem-ingot"),
 	ENDERMAN_PEARL("pr-enderman-pearl"),
 	SAVED_PANTS_COLOR("pr-saved-color"),

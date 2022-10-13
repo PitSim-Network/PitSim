@@ -258,7 +258,7 @@ public class OldCrateGiveCommand implements CommandExecutor {
 			taintedBroadcast("&a10x Raw Pork", player);
 		}
 		if(args[0].equals("COAL")) {
-			ItemStack item = Coal.INSTANCE.getItem();
+			ItemStack item = WitherSkull.INSTANCE.getItem();
 			item.setAmount(10);
 			AUtil.giveItemSafely(player, item, true);
 			taintedBroadcast("&a10x Coal", player);

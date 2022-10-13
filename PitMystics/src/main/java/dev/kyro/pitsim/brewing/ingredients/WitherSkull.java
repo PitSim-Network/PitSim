@@ -17,12 +17,12 @@ import org.bukkit.potion.PotionType;
 
 import java.util.*;
 
-public class Coal extends BrewingIngredient {
-    public static Coal INSTANCE;
+public class WitherSkull extends BrewingIngredient {
+    public static WitherSkull INSTANCE;
     public Map<Player, Integer> tickMap = new HashMap<>();
 
-    public Coal() {
-        super(8, NBTTag.WITHER_SKELETON_COAL, "Wither", ChatColor.DARK_GRAY, PotionType.WEAKNESS);
+    public WitherSkull() {
+        super(8, NBTTag.WITHER_SKELETON_SKULL, "Wither", ChatColor.DARK_GRAY, PotionType.WEAKNESS);
         INSTANCE = this;
     }
 
@@ -75,7 +75,7 @@ public class Coal extends BrewingIngredient {
 
     @Override
     public ItemStack getItem() {
-        ItemStack skull = new ItemStack(Material.COAL);
+        ItemStack skull = new ItemStack(Material.SKULL_ITEM, 1, (byte) 1);
         ItemMeta meta = skull.getItemMeta();
         List<String> lore = Arrays.asList(ChatColor.GRAY + "Coal gathered from the Skeletons", ChatColor.GRAY
                 + "of the Wither Caves", "", ChatColor.DARK_PURPLE + "Tainted Item");

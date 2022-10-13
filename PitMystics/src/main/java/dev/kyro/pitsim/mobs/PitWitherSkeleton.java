@@ -1,8 +1,7 @@
 package dev.kyro.pitsim.mobs;
 
 import dev.kyro.pitsim.PitSim;
-import dev.kyro.pitsim.brewing.ingredients.Coal;
-import dev.kyro.pitsim.brewing.ingredients.RawPork;
+import dev.kyro.pitsim.brewing.ingredients.WitherSkull;
 import dev.kyro.pitsim.controllers.MobManager;
 import dev.kyro.pitsim.controllers.objects.PitMob;
 import dev.kyro.pitsim.enums.MobType;
@@ -10,7 +9,6 @@ import org.bukkit.Location;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Skeleton;
-import org.bukkit.entity.WitherSkeleton;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 
@@ -49,7 +47,7 @@ public class PitWitherSkeleton extends PitMob {
 	@Override
 	public Map<ItemStack, Integer> getDrops() {
 		Map<ItemStack, Integer> drops = new HashMap<>();
-		drops.put(Coal.INSTANCE.getItem(), 6);
+		drops.put(WitherSkull.INSTANCE.getItem(), 6);
 
 		return drops;
 	}
