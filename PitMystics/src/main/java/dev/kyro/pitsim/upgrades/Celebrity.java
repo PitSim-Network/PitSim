@@ -31,11 +31,6 @@ public class Celebrity extends RenownUpgrade {
 	}
 
 	@Override
-	public AGUIPanel getCustomPanel() {
-		return null;
-	}
-
-	@Override
 	public List<Integer> getTierCosts() {
 		return Arrays.asList(10, 50);
 	}

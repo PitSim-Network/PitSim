@@ -67,10 +67,6 @@ public class RenownShopPanel extends AGUIPanel {
 						continue;
 					}
 					if(upgrade.isTiered) {
-						if(UpgradeManager.hasUpgrade(player, upgrade) && upgrade.getCustomPanel() != null) {
-							openPanel(upgrade.getCustomPanel());
-							continue;
-						}
 						if(upgrade.maxTiers != UpgradeManager.getTier(player, upgrade) && upgrade.getTierCosts().get(UpgradeManager.getTier(player, upgrade)) > pitPlayer.renown) {
 							AOutput.error(player, "&cYou do not have enough renown!");
 							Sounds.NO.play(player);
@@ -92,10 +88,6 @@ public class RenownShopPanel extends AGUIPanel {
 						RenownShopGUI.purchaseConfirmations.put(player, upgrade);
 						openPanel(renownShopGUI.renownShopConfirmPanel);
 					} else {
-						if(UpgradeManager.hasUpgrade(player, upgrade) && upgrade.getCustomPanel() != null) {
-							openPanel(upgrade.getCustomPanel());
-							continue;
-						}
 						AOutput.error(player, "&aYou already unlocked this upgrade!");
 						Sounds.NO.play(player);
 					}

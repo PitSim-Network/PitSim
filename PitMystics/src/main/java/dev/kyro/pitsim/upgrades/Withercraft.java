@@ -34,11 +34,6 @@ public class Withercraft extends RenownUpgrade {
 	}
 
 	@Override
-	public AGUIPanel getCustomPanel() {
-		return RenownShopGUI.withercraftPanel;
-	}
-
-	@Override
 	public List<Integer> getTierCosts() {
 		return null;
 	}

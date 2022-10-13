@@ -64,11 +64,6 @@ public class ShardHunter extends RenownUpgrade {
 		return Arrays.asList(10, 13, 16, 19, 22, 25, 30, 35, 40, 50);
 	}
 
-	@Override
-	public AGUIPanel getCustomPanel() {
-		return RenownShopGUI.shardHunterPanel;
-	}
-
 	@EventHandler
 	public void onKill(KillEvent killEvent) {
 		if(!killEvent.killerIsPlayer || !killEvent.deadIsPlayer) return;

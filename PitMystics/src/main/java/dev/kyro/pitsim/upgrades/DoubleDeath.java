@@ -49,11 +49,6 @@ public class DoubleDeath extends RenownUpgrade {
 	}
 
 	@Override
-	public AGUIPanel getCustomPanel() {
-		return null;
-	}
-
-	@Override
 	public List<Integer> getTierCosts() {
 		return Arrays.asList(5, 5, 10, 10);
 	}

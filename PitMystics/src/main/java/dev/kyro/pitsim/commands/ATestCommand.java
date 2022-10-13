@@ -23,8 +23,8 @@ public class ATestCommand implements CommandExecutor {
 
 //		new PluginMessage().writeString("QUEUE").writeString(((Player) sender).getName()).send();
 
-		KeeperGUI keeperGUI = new KeeperGUI((Player) sender);
-		keeperGUI.open();
+//		KeeperGUI keeperGUI = new KeeperGUI((Player) sender);
+//		keeperGUI.open();
 
 //		for(ServerData value : ServerData.servers.values()) {
 //			for(String playerString : value.getPlayerStrings()) {

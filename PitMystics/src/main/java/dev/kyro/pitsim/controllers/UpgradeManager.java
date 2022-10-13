@@ -100,7 +100,7 @@ public class UpgradeManager implements Listener {
 		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
 		List<String> lore = new ArrayList<>(originalLore);
 		lore.add("");
-		if(!isCustomPanel && upgrade.getCustomPanel() != null && hasUpgrade(player, upgrade)) {
+		if(!isCustomPanel && hasUpgrade(player, upgrade)) {
 			lore.add(ChatColor.YELLOW + "Click to open menu!");
 			return lore;
 		}

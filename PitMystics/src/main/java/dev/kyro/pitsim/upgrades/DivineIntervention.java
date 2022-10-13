@@ -69,11 +69,6 @@ public class DivineIntervention extends RenownUpgrade {
 	}
 
 	@Override
-	public AGUIPanel getCustomPanel() {
-		return null;
-	}
-
-	@Override
 	public List<Integer> getTierCosts() {
 		return Arrays.asList(25, 50, 75);
 	}
