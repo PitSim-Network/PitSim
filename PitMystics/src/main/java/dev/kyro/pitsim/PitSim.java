@@ -17,6 +17,8 @@ import dev.kyro.pitsim.battlepass.quests.*;
 import dev.kyro.pitsim.battlepass.quests.daily.DailyBotKillQuest;
 import dev.kyro.pitsim.battlepass.quests.daily.DailyPlayerKillQuest;
 import dev.kyro.pitsim.battlepass.quests.SneakingBotKillQuest;
+import dev.kyro.pitsim.battlepass.quests.daily.DailySWGamePlayedQuest;
+import dev.kyro.pitsim.battlepass.quests.dzkillmobs.KillZombiesQuest;
 import dev.kyro.pitsim.boosters.ChaosBooster;
 import dev.kyro.pitsim.boosters.GoldBooster;
 import dev.kyro.pitsim.boosters.PvPBooster;
@@ -603,6 +605,7 @@ public class PitSim extends JavaPlugin {
 //		Daily quests
 		PassManager.registerQuest(new DailyBotKillQuest());
 		PassManager.registerQuest(new DailyPlayerKillQuest());
+		PassManager.registerQuest(new DailySWGamePlayedQuest());
 
 //		Weekly quests
 		PassManager.registerQuest(new KillPlayersQuest());
@@ -624,6 +627,8 @@ public class PitSim extends JavaPlugin {
 		PassManager.registerQuest(new SneakingBotKillQuest());
 		PassManager.registerQuest(new WalkDistanceQuest());
 		PassManager.registerQuest(new CongratulatePrestigeQuest());
+
+		PassManager.registerQuest(new KillZombiesQuest());
 	}
 
 	private void loadConfig() {

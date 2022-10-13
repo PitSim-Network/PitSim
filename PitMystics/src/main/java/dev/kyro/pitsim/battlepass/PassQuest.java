@@ -16,7 +16,6 @@ public abstract class PassQuest implements Listener {
 
 	static {
 //		Quest ideas
-//		daily - player kills, bot kills, something darkzone, sw game played
 //		weekly quests (grinding) - kill x (mobs)
 //		weekly quests (darkzone) - brew potions, kill bosses, incinerate drops, harvest souls
 //		weekly quests (anti-progression) -
