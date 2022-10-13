@@ -3,6 +3,7 @@ package dev.kyro.pitsim.battlepass.quests.dzkillmobs;
 import dev.kyro.arcticapi.builders.AItemStackBuilder;
 import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.arcticapi.misc.AUtil;
+import dev.kyro.pitsim.battlepass.PassManager;
 import dev.kyro.pitsim.battlepass.PassQuest;
 import dev.kyro.pitsim.controllers.MobManager;
 import dev.kyro.pitsim.controllers.PlayerManager;
@@ -22,6 +23,7 @@ public class KillZombiesQuest extends PassQuest {
 
 	public KillZombiesQuest() {
 		super("&c&lZombie Slayer", "killzombies", QuestType.WEEKLY);
+		weight = PassManager.DARKZONE_KILL_QUEST_WEIGHT;
 	}
 
 	@EventHandler

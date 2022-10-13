@@ -25,6 +25,8 @@ public class PassManager implements Listener {
 	public static List<PassQuest> questList = new ArrayList<>();
 
 	public static final int QUESTS_PER_WEEK = 6;
+	public static final int DEFAULT_QUEST_WEIGHT = 10;
+	public static final int DARKZONE_KILL_QUEST_WEIGHT = 5;
 
 	//	Create the passes
 	public static void registerPasses() {
@@ -191,11 +193,11 @@ public class PassManager implements Listener {
 
 //	TODO: Main server only
 	public static void loadPassData() {
-		if(!currentPass.startDate.equals(FirestoreManager.CONFIG.currentPassStart)) {
+//		if(!currentPass.startDate.equals(FirestoreManager.CONFIG.currentPassStart)) {
 			FirestoreManager.CONFIG.currentPassStart = currentPass.startDate;
 			FirestoreManager.CONFIG.currentPassData = new Config.CurrentPassData();
 			FirestoreManager.CONFIG.save();
-		}
+//		}
 
 		for(Map.Entry<String, Integer> entry : FirestoreManager.CONFIG.currentPassData.activeWeeklyQuests.entrySet()) {
 			PassQuest passQuest = getQuest(entry.getKey());
