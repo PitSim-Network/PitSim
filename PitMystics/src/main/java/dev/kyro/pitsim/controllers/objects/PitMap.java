@@ -24,6 +24,8 @@ public abstract class PitMap {
 
 	public abstract Location getSpawn();
 
+	public abstract Location getDarkzoneJoinSpawn();
+
 	public abstract Location getNonSpawn();
 
 	public abstract Location getMid();

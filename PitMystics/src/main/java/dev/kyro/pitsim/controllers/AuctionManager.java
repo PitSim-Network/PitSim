@@ -34,6 +34,7 @@ public class AuctionManager implements Listener {
         new BukkitRunnable() {
             @Override
             public void run() {
+                if(!PitSim.isDarkzone()) return;
 
                 boolean showItems = false;
 

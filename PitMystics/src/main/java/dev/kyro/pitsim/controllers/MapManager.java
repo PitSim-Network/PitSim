@@ -22,7 +22,9 @@ public class MapManager implements Listener {
 	public static List<PitMap> mapList = new ArrayList<>();
 	public static PitMap currentMap;
 
-	public static int ENABLE_THRESHOLD = 10;
+	public static Location darkzoneSpawn = new Location(getDarkzone(), 178.5, 91, -93.5, -90, 0);
+
+	public static Location initialDarkzoneSpawn = new Location(getDarkzone(), 173, 92, -93.5, -90, 0);
 
 	public static void openPortal() {
 		enablePortal(currentMap.world);
@@ -49,6 +51,14 @@ public class MapManager implements Listener {
 
 	public static World getDarkzone() {
 		return Bukkit.getWorld("darkzone");
+	}
+
+	public static Location getDarkzoneSpawn() {
+		return darkzoneSpawn;
+	}
+
+	public static Location getInitialDarkzoneSpawn() {
+		return initialDarkzoneSpawn;
 	}
 
 	public static boolean inDarkzone(LivingEntity player) {

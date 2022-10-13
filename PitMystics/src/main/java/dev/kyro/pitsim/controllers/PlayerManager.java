@@ -45,8 +45,10 @@ import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.util.Vector;
 import org.spigotmc.event.player.PlayerSpawnLocationEvent;
 
+import javax.persistence.Lob;
 import java.text.DecimalFormat;
 import java.util.*;
 
@@ -553,6 +555,8 @@ public class PlayerManager implements Listener {
 		Player player = event.getPlayer();
 		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
 		Location spawnLoc = MapManager.currentMap.getSpawn();
+		if(PitSim.isDarkzone()) spawnLoc = MapManager.getInitialDarkzoneSpawn();
+		if(LobbySwitchManager.joinedFromDarkzone.contains(player.getUniqueId())) spawnLoc = MapManager.currentMap.getDarkzoneJoinSpawn();
 
 		if(player.isOp()) {
 			new BukkitRunnable() {
@@ -565,7 +569,7 @@ public class PlayerManager implements Listener {
 
 //		Misc.applyPotionEffect(player, PotionEffectType.NIGHT_VISION, 2000000, 2, false, false);
 
-		if(player.hasPermission("pitsim.autofps")) {
+		if(!PitSim.isDarkzone() && player.hasPermission("pitsim.autofps")) {
 			FPSCommand.fpsPlayers.add(player);
 			for(Non non : NonManager.nons) player.hidePlayer(non.non);
 
@@ -577,20 +581,42 @@ public class PlayerManager implements Listener {
 				}
 			}.runTaskLater(PitSim.INSTANCE, 1L);
 
+			Location finalSpawnLoc = spawnLoc;
 			new BukkitRunnable() {
 				@Override
 				public void run() {
-					player.teleport(spawnLoc);
+					player.teleport(finalSpawnLoc);
 				}
 			}.runTaskLater(PitSim.INSTANCE, 60L);
 			return;
 		}
 
 		player.teleport(spawnLoc);
+
+		Location finalSpawnLoc1 = spawnLoc;
 		new BukkitRunnable() {
 			@Override
 			public void run() {
-				player.teleport(spawnLoc);
+				player.teleport(finalSpawnLoc1);
+
+				if(PitSim.isDarkzone()) {
+					player.setVelocity(new Vector(1.5, 1, 0).multiply(0.5));
+					Misc.sendTitle(player, "&d&k||&5&lDarkzone&d&k||", 40);
+					Misc.sendSubTitle(player, "", 40);
+					AOutput.send(player, "&7You have been sent to the &d&k||&5&lDarkzone&d&k||&7.");
+
+
+					if(!pitPlayer.darkzoneCutscene) {
+						CutsceneManager.play(player);
+						return;
+					}
+
+				} else if(LobbySwitchManager.joinedFromDarkzone.contains(player.getUniqueId())) {
+					player.setVelocity(new Vector(1.5, 1, 0));
+					Misc.sendTitle(player, "&a&lOverworld", 40);
+					Misc.sendSubTitle(player, "", 40);
+					AOutput.send(player, "&7You have been sent to the &a&lOverworld&7.");
+				}
 
 				String message = "%luckperms_prefix%";
 				if(pitPlayer.megastreak.isOnMega()) {
@@ -601,18 +627,22 @@ public class PlayerManager implements Listener {
 			}
 		}.runTaskLater(PitSim.INSTANCE, 5L);
 
-		new BukkitRunnable() {
-			@Override
-			public void run() {
-				for (AuctionItem auctionItem : AuctionManager.auctionItems) {
-					if(!auctionItem.bidMap.containsKey(player.getUniqueId())) continue;
+		if(PitSim.isDarkzone()) {
+			new BukkitRunnable() {
+				@Override
+				public void run() {
+					for(AuctionItem auctionItem : AuctionManager.auctionItems) {
+						if(!auctionItem.bidMap.containsKey(player.getUniqueId())) continue;
 
-					if(auctionItem.getHighestBidder().equals(player.getUniqueId())) AOutput.send(player, "&5&lDARK AUCTION! &7You are currently holding the highest bid on " + auctionItem.item.itemName);
-					else AOutput.send(player, "&5&lDARK AUCTION! &7Current bid on " + auctionItem.item.itemName + " &7is &f" + auctionItem.getHighestBid() + " Souls &7by &e" + Bukkit.getOfflinePlayer(auctionItem.getHighestBidder()).getName() + "&7.");
-					Sounds.BOOSTER_REMIND.play(player);
+						if(auctionItem.getHighestBidder().equals(player.getUniqueId()))
+							AOutput.send(player, "&5&lDARK AUCTION! &7You are currently holding the highest bid on " + auctionItem.item.itemName);
+						else
+							AOutput.send(player, "&5&lDARK AUCTION! &7Current bid on " + auctionItem.item.itemName + " &7is &f" + auctionItem.getHighestBid() + " Souls &7by &e" + Bukkit.getOfflinePlayer(auctionItem.getHighestBidder()).getName() + "&7.");
+						Sounds.BOOSTER_REMIND.play(player);
+					}
 				}
-			}
-		}.runTaskLater(PitSim.INSTANCE, 10);
+			}.runTaskLater(PitSim.INSTANCE, 10);
+		}
 
 		if(pitPlayer.auctionReturn.size() > 0) {
 			for(String item : pitPlayer.auctionReturn) {

@@ -45,6 +45,7 @@ public class AuctionDisplays implements Listener {
         new BukkitRunnable() {
             @Override
             public void run() {
+                if(!PitSim.isDarkzone()) return;
 
                 if(!hasPlayers(pedestalLocations[0])) return;
 

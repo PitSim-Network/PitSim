@@ -61,6 +61,7 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Item;
+import org.bukkit.entity.Mob;
 import org.bukkit.entity.Player;
 import org.bukkit.event.block.BlockIgniteEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
@@ -101,16 +102,17 @@ public class PitSim extends JavaPlugin {
 		FirestoreManager.init();
 
 		loadConfig();
+		ArcticAPI.configInit(this, "prefix", "error-prefix");
+		serverName = AConfig.getString("server");
+
+		if(!isDarkzone()) MobManager.clearMobs();
 
 		getServer().getMessenger().registerOutgoingPluginChannel(this, "BungeeCord");
 		adventure = BukkitAudiences.create(this);
-		TaintedWell.onStart();
-		BrewingManager.onStart();
+		if(isDarkzone()) TaintedWell.onStart();
+		if(isDarkzone()) BrewingManager.onStart();
 		ScoreboardManager.init();
 
-		ArcticAPI.configInit(this, "prefix", "error-prefix");
-
-		serverName = AConfig.getString("server");
 		playerList = new AData("player-list", "", false);
 
 		RegisteredServiceProvider<LuckPerms> provider = Bukkit.getServicesManager().getRegistration(LuckPerms.class);
@@ -130,9 +132,9 @@ public class PitSim extends JavaPlugin {
 		}
 
 		registerMaps();
-		BossManager.onStart();
+		if(isDarkzone()) BossManager.onStart();
 		MapManager.openPortal();
-		NonManager.init();
+		if(!isDarkzone()) NonManager.init();
 		SpawnNPCs.createNPCs();
 		TempBlockHelper.init();
 
@@ -168,8 +170,8 @@ public class PitSim extends JavaPlugin {
 		registerPerks();
 		registerKillstreaks();
 		registerMegastreaks();
-		registerLeaderboards();
-		LeaderboardManager.init();
+		if(!isDarkzone()) registerLeaderboards();
+		if(!isDarkzone()) LeaderboardManager.init();
 
 		ArcticAPI.setupPlaceholderAPI("pitsim");
 		AHook.registerPlaceholder(new PrefixPlaceholder());
@@ -216,11 +218,11 @@ public class PitSim extends JavaPlugin {
 		registerBoosters();
 		registerHelmetAbilities();
 		registerKits();
-		registerMobs();
+		if(isDarkzone()) registerMobs();
 		registerBrewingIngredients();
 
-		AuctionManager.onStart();
-		AuctionDisplays.onStart();
+		if(isDarkzone()) AuctionManager.onStart();
+		if(isDarkzone()) AuctionDisplays.onStart();
 
 		new BukkitRunnable() {
 			@Override
@@ -255,6 +257,8 @@ public class PitSim extends JavaPlugin {
 			}
 		}
 
+		MobManager.clearMobs();
+
 //		TODO: Fix
 		for(Player player : Bukkit.getOnlinePlayers()) {
 			List<PotionEffect> toExpire = new ArrayList<>();
@@ -275,16 +279,18 @@ public class PitSim extends JavaPlugin {
 		}
 
 
-		for (NPC value : BossManager.clickables.values()) {
-			value.destroy();
-			NPCRegistry registry = CitizensAPI.getNPCRegistry();
-			registry.deregister(value);
-		}
+		if(isDarkzone()) {
+			for(NPC value : BossManager.clickables.values()) {
+				value.destroy();
+				NPCRegistry registry = CitizensAPI.getNPCRegistry();
+				registry.deregister(value);
+			}
 
-		for (NPC clickable : AuctionDisplays.clickables) {
-			clickable.destroy();
-			NPCRegistry registry = CitizensAPI.getNPCRegistry();
-			registry.deregister(clickable);
+			for(NPC clickable : AuctionDisplays.clickables) {
+				clickable.destroy();
+				NPCRegistry registry = CitizensAPI.getNPCRegistry();
+				registry.deregister(clickable);
+			}
 		}
 
 		for (EditSession session : FreezeSpell.sessions.keySet()) {
@@ -509,18 +515,18 @@ public class PitSim extends JavaPlugin {
 		getServer().getPluginManager().registerEvents(new GuildIntegrationManager(), this);
 		getServer().getPluginManager().registerEvents(new UpgradeManager(), this);
 		getServer().getPluginManager().registerEvents(new KitManager(), this);
-		getServer().getPluginManager().registerEvents(new MobManager(), this);
+		if(isDarkzone()) getServer().getPluginManager().registerEvents(new MobManager(), this);
 		getServer().getPluginManager().registerEvents(new PortalManager(), this);
-		getServer().getPluginManager().registerEvents(new BossManager(), this);
-		getServer().getPluginManager().registerEvents(new TaintedWell(), this);
-		getServer().getPluginManager().registerEvents(new BrewingManager(), this);
+		if(isDarkzone()) getServer().getPluginManager().registerEvents(new BossManager(), this);
+		if(isDarkzone()) getServer().getPluginManager().registerEvents(new TaintedWell(), this);
+		if(isDarkzone()) getServer().getPluginManager().registerEvents(new BrewingManager(), this);
 		getServer().getPluginManager().registerEvents(new PotionManager(), this);
 		getServer().getPluginManager().registerEvents(new TaintedManager(), this);
 		getServer().getPluginManager().registerEvents(new StereoManager(), this);
-		getServer().getPluginManager().registerEvents(new MusicManager(), this);
-		getServer().getPluginManager().registerEvents(new CutsceneManager(), this);
-		getServer().getPluginManager().registerEvents(new AuctionDisplays(), this);
-		getServer().getPluginManager().registerEvents(new AuctionManager(), this);
+		if(isDarkzone()) getServer().getPluginManager().registerEvents(new MusicManager(), this);
+		if(isDarkzone()) getServer().getPluginManager().registerEvents(new CutsceneManager(), this);
+		if(isDarkzone()) getServer().getPluginManager().registerEvents(new AuctionDisplays(), this);
+		if(isDarkzone()) getServer().getPluginManager().registerEvents(new AuctionManager(), this);
 		getServer().getPluginManager().registerEvents(new ScoreboardManager(), this);
 		getServer().getPluginManager().registerEvents(new ProxyMessaging(), this);
 		getServer().getPluginManager().registerEvents(new LobbySwitchManager(), this);
@@ -723,5 +729,9 @@ public class PitSim extends JavaPlugin {
 		EnchantManager.registerEnchant(new Inferno());
 		EnchantManager.registerEnchant(new Laser());
 		EnchantManager.registerEnchant(new Forcefield());
+	}
+
+	public static boolean isDarkzone() {
+		return serverName.contains("darkzone");
 	}
 }

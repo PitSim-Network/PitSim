@@ -9,6 +9,7 @@ import dev.kyro.pitsim.events.MessageEvent;
 import dev.kyro.pitsim.inventories.KeeperPanel;
 import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.Bukkit;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -17,6 +18,7 @@ import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.List;
+import java.util.UUID;
 import java.util.concurrent.ExecutionException;
 
 public class ProxyMessaging implements Listener {
@@ -81,15 +83,12 @@ public class ProxyMessaging implements Listener {
 		}
 
 		if(strings.size() >= 2 && strings.get(0).equals("SAVE DATA")) {
-			System.out.println("saving data");
 
 			String playerName = strings.get(1);
 			Player player = Bukkit.getPlayer(playerName);
 			if(player == null) return;
 
 			PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
-			System.out.println(playerName);
-			System.out.println(player.getName());
 
 			new BukkitRunnable() {
 				@Override
@@ -112,7 +111,22 @@ public class ProxyMessaging implements Listener {
 			}
 		}
 
+		if(strings.size() >= 2 && strings.get(0).equals("DARKZONE JOIN")) {
+			System.out.println(1);
+			if(booleans.size() >= 1 && booleans.get(0)) {
+				System.out.println(2);
+				UUID uuid = UUID.fromString(strings.get(1));
+				LobbySwitchManager.joinedFromDarkzone.add(uuid);
+				System.out.println(uuid + "joined from darkzone");
 
+				new BukkitRunnable() {
+					@Override
+					public void run() {
+						LobbySwitchManager.joinedFromDarkzone.remove(uuid);
+					}
+				}.runTaskLater(PitSim.INSTANCE, 20 * 5);
+			}
+		}
 	}
 
 	@EventHandler

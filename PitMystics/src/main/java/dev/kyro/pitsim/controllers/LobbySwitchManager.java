@@ -15,11 +15,13 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 public class LobbySwitchManager implements Listener {
 
 	public static List<Player> recentlyJoined = new ArrayList<>();
 	public static List<Player> switchingPlayers = new ArrayList<>();
+	public static List<UUID> joinedFromDarkzone = new ArrayList<>();
 
 	@EventHandler
 	public void onInteract(PlayerInteractEvent event) {

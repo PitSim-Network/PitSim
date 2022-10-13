@@ -24,6 +24,11 @@ public class DimensionsMap extends PitMap {
 	}
 
 	@Override
+	public Location getDarkzoneJoinSpawn() {
+		return new Location(world, -67, 72, 3, -90, 0);
+	}
+
+	@Override
 	public int getTeleportAdd() { return -3; }
 
 	@Override
