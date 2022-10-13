@@ -4,6 +4,7 @@ import de.tr7zw.nbtapi.NBTItem;
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.arcticapi.misc.AUtil;
 import dev.kyro.pitsim.controllers.ItemManager;
+import dev.kyro.pitsim.controllers.MapManager;
 import dev.kyro.pitsim.controllers.UpgradeManager;
 import dev.kyro.pitsim.enums.NBTTag;
 import dev.kyro.pitsim.inventories.VileGUI;
@@ -78,6 +79,12 @@ public class ChunkOfVile implements Listener {
 				return;
 			}
 
+			if(MapManager.inDarkzone(event.getPlayer())) {
+				AOutput.error(event.getPlayer(), "&c&lWITHERFAIL! &7You cannot repair items while in the darkzone!");
+				Sounds.ERROR.play(event.getPlayer());
+				return;
+			}
+
 			for(int i = 0; i < event.getPlayer().getInventory().getSize(); i++) {
 				ItemStack item = event.getPlayer().getInventory().getItem(i);
 
@@ -97,7 +104,6 @@ public class ChunkOfVile implements Listener {
 				Sounds.ERROR.play(event.getPlayer());
 				return;
 			}
-
 
 			VileGUI vileGUI = new VileGUI(event.getPlayer());
 			vileGUI.open();
