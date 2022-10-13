@@ -20,7 +20,7 @@ import java.util.Arrays;
 import java.util.List;
 
 public class QuestPanel extends AGUIPanel {
-	public static PassGUI passGUI;
+	public PassGUI passGUI;
 
 	public static ItemStack backItem;
 
