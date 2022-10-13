@@ -181,7 +181,7 @@ public class PitPlayer {
 		}
 
 		FirestoreManager.FIRESTORE.collection(FirestoreManager.PLAYERDATA_COLLECTION).document(uuid.toString()).set(this);
-		System.out.println("Saving Data: " + player.getName());
+		System.out.println("Saving Data: " + Bukkit.getOfflinePlayer(uuid).getName());
 	}
 
 //	NPC Init

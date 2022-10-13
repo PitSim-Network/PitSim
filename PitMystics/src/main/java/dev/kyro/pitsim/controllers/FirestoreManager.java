@@ -15,10 +15,10 @@ import java.io.InputStream;
 public class FirestoreManager {
 	public static Firestore FIRESTORE;
 
-	public static final String SERVER_COLLECTION = "pitsim";
+	public static final String SERVER_COLLECTION = "kyro-pitsim";
 	public static final String CONFIG_DOCUMENT = "config";
 
-	public static final String PLAYERDATA_COLLECTION = "pitsim-playerdata";
+	public static final String PLAYERDATA_COLLECTION = "kyro-pitsim-playerdata";
 
 	public static Config CONFIG;
 
