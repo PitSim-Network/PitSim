@@ -26,7 +26,6 @@ public class HaveSpeedQuest extends PassQuest {
 	public HaveSpeedQuest() {
 		super("&f&lZooooom", "havespeed", QuestType.WEEKLY);
 		INSTANCE = this;
-		weight = 10000;
 	}
 
 	static {
