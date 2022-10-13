@@ -40,6 +40,40 @@ public class ProxyMessaging implements Listener {
 
 	public static void sendShutdown() {
 		new PluginMessage().writeString("INITIATE FINAL SHUTDOWN").writeString(PitSim.serverName).send();
+
+
+		for(Player player : Bukkit.getOnlinePlayers()) {
+			PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
+			LobbySwitchManager.setSwitchingPlayer(player);
+
+			if(PitSim.isDarkzone()) {
+				BukkitRunnable runnable = new BukkitRunnable() {
+					@Override
+					public void run() {
+						new PluginMessage().writeString("QUEUE DARKZONE").writeString(player.getName()).send();
+					}
+				};
+
+				try {
+					pitPlayer.save(true, runnable);
+				} catch(ExecutionException | InterruptedException e) {
+					throw new RuntimeException(e);
+				}
+			} else {
+				BukkitRunnable runnable = new BukkitRunnable() {
+					@Override
+					public void run() {
+						new PluginMessage().writeString("QUEUE").writeString(player.getName()).writeBoolean(true).send();
+					}
+				};
+
+				try {
+					pitPlayer.save(true, runnable);
+				} catch(ExecutionException | InterruptedException e) {
+					throw new RuntimeException(e);
+				}
+			}
+		}
 	}
 
 	public static void sendServerData() {
