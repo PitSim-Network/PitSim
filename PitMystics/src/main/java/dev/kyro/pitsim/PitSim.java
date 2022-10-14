@@ -623,6 +623,7 @@ public class PitSim extends JavaPlugin {
 		PassManager.registerQuest(new WalkDistanceQuest());
 		PassManager.registerQuest(new CongratulatePrestigeQuest());
 		PassManager.registerQuest(new HaveSpeedQuest());
+		PassManager.registerQuest(new JudgementHopperQuest());
 
 		PassManager.registerQuest(new KillCaveSpidersQuest());
 		PassManager.registerQuest(new KillCreepersQuest());

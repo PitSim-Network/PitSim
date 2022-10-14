@@ -37,6 +37,7 @@ public class Hopper {
 	public String name;
 	public Type type;
 	public LivingEntity target;
+	public Player judgementPlayer;
 	public List<UUID> team = new ArrayList<>();
 	public int count = 0;
 
