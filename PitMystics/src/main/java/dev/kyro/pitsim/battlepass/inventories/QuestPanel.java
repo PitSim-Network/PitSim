@@ -127,11 +127,15 @@ public class QuestPanel extends AGUIPanel {
 	}
 
 	public int getDailyPages() {
-		return PassManager.getDailyQuests().size() / dailyQuestSlots.size() + 1;
+		List<PassQuest> dailyQuests = PassManager.getDailyQuests();
+		dailyQuests.removeIf(passQuest -> !passQuest.canProgressQuest(passGUI.pitPlayer));
+		return dailyQuests.size() / dailyQuestSlots.size() + 1;
 	}
 
 	public int getWeeklyPages() {
-		return PassManager.getWeeklyQuests().size() / weeklyQuestSlots.size() + 1;
+		List<PassQuest> weeklyQuests = PassManager.getWeeklyQuests();
+		weeklyQuests.removeIf(passQuest -> !passQuest.canProgressQuest(passGUI.pitPlayer));
+		return weeklyQuests.size() / weeklyQuestSlots.size() + 1;
 	}
 
 	@Override
