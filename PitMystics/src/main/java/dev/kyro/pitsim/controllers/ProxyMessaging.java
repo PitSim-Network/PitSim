@@ -2,9 +2,7 @@ package dev.kyro.pitsim.controllers;
 
 import de.myzelyam.api.vanish.VanishAPI;
 import dev.kyro.pitsim.PitSim;
-import dev.kyro.pitsim.controllers.objects.PitPlayer;
-import dev.kyro.pitsim.controllers.objects.PluginMessage;
-import dev.kyro.pitsim.controllers.objects.ServerData;
+import dev.kyro.pitsim.controllers.objects.*;
 import dev.kyro.pitsim.events.MessageEvent;
 import dev.kyro.pitsim.inventories.KeeperPanel;
 import me.clip.placeholderapi.PlaceholderAPI;
@@ -166,6 +164,25 @@ public class ProxyMessaging implements Listener {
 
 		if(strings.size() >= 1 && strings.get(0).equals("CANCEL SHUTDOWN")) {
 			ShutdownManager.cancelShutdown();
+		}
+
+		if(strings.size() >= 2 && strings.get(0).equals("LEADERBOARD PLAYER DATA")) {
+			UUID uuid = UUID.fromString(strings.get(1));
+			strings.remove(0);
+			strings.remove(0);
+
+			new LeaderboardPlayerData(uuid, strings);
+		}
+
+		if(strings.size() >= 2 && strings.get(0).equals("LEADERBOARD DATA")) {
+			strings.remove(0);
+
+			for(int i = 0; i < strings.size(); i++) {
+				Leaderboard leaderboard = LeaderboardManager.leaderboards.get(i);
+
+				new LeaderboardData(leaderboard, strings.get(i));
+			}
+
 		}
 	}
 

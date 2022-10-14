@@ -3,7 +3,9 @@ package dev.kyro.pitsim.leaderboards;
 import dev.kyro.arcticapi.builders.AItemStackBuilder;
 import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.pitsim.controllers.objects.Leaderboard;
+import dev.kyro.pitsim.controllers.objects.LeaderboardData;
 import dev.kyro.pitsim.controllers.objects.LeaderboardPosition;
+import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.inventory.ItemStack;
@@ -12,6 +14,10 @@ import java.text.DecimalFormat;
 import java.util.UUID;
 
 public class PlaytimeLeaderboard extends Leaderboard {
+	public PlaytimeLeaderboard() {
+		super("minutes-played");
+	}
+
 	@Override
 	public ItemStack getDisplayStack(UUID uuid) {
 		ItemStack itemStack = new AItemStackBuilder(Material.WATCH)
@@ -31,8 +37,15 @@ public class PlaytimeLeaderboard extends Leaderboard {
 	}
 
 	@Override
-	public void setPosition(LeaderboardPosition position, FileConfiguration playerData) {
-		position.intValue = playerData.getInt("stats.progression.minutes-played");
+	public String getDisplayValue(PitPlayer pitPlayer) {
+		return "&e" + new DecimalFormat("0.#").format(pitPlayer.stats.minutesPlayed / 60.0) + " hour" + (new DecimalFormat("0.#").format(pitPlayer.stats.minutesPlayed / 60.0).equals("1") ? "" : "s");
+	}
+
+	@Override
+	public void setPosition(LeaderboardPosition position) {
+		LeaderboardData data = LeaderboardData.getLeaderboardData(this);
+
+		position.intValue = (int) data.getValue(position.uuid).primaryValue;
 	}
 
 	@Override
