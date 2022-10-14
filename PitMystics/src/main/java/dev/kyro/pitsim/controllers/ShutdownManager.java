@@ -8,6 +8,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.scheduler.BukkitTask;
 
 public class ShutdownManager {
 
@@ -19,6 +20,7 @@ public class ShutdownManager {
 
 	public static boolean isRestart = false;
 
+	public static BukkitTask runnable;
 
 	public static void initiateShutdown(int minutes) {
 		if(isShuttingDown) return;
@@ -26,7 +28,7 @@ public class ShutdownManager {
 		isShuttingDown = true;
 		ShutdownManager.minutes = minutes;
 
-		new BukkitRunnable() {
+		runnable = new BukkitRunnable() {
 			@Override
 			public void run() {
 				counter++;
@@ -76,6 +78,22 @@ public class ShutdownManager {
 					.flatMap(ClientServer::stop).executeAsync();
 		}
 
+	}
+
+	public static void cancelShutdown() {
+		Bukkit.broadcastMessage(ChatColor.RED + "" + ChatColor.BOLD + "INSTANCE SHUTDOWN CANCELED!");
+		for(Player onlinePlayer : Bukkit.getOnlinePlayers()) {
+			Sounds.CTF_FLAG_STOLEN.play(onlinePlayer);
+		}
+
+		if(!isShuttingDown) return;
+		isShuttingDown = false;
+		runnable.cancel();
+		seconds = 0;
+		minutes = 0;
+		counter = 0;
+		enderchestDisabled = false;
+		isRestart = false;
 	}
 
 	public static void disableEnderChest() {

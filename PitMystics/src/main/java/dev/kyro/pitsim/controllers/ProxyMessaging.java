@@ -9,6 +9,7 @@ import dev.kyro.pitsim.events.MessageEvent;
 import dev.kyro.pitsim.inventories.KeeperPanel;
 import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -160,6 +161,11 @@ public class ProxyMessaging implements Listener {
 					}
 				}.runTaskLater(PitSim.INSTANCE, 20 * 5);
 			}
+		}
+
+
+		if(strings.size() >= 1 && strings.get(0).equals("CANCEL SHUTDOWN")) {
+			ShutdownManager.cancelShutdown();
 		}
 	}
 

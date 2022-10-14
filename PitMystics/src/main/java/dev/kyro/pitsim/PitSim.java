@@ -432,6 +432,7 @@ public class PitSim extends JavaPlugin {
 		new RandomizeCommand(adminCommand, "randomize");
 		new ReloadCommand(adminCommand, "reload");
 		new BypassCommand(adminCommand, "bypass");
+		new ExtendCommand(adminCommand, "extend");
 		new LockdownCommand(adminCommand, "lockdown");
 		new SetPrestigeCommand(setCommand, "prestige");
 		new SetLevelCommand(setCommand, "level");

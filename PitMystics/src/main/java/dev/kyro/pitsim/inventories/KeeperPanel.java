@@ -63,6 +63,12 @@ public class KeeperPanel extends AGUIPanel{
 					return;
 				}
 
+				if(!ServerData.getServerData((slots.get(slot))).isRunning()) {
+					AOutput.send(player, "&cThis server is currently unavailable!");
+					Sounds.NO.play(player);
+					return;
+				}
+
 				queuedMessages.put(player, new PluginMessage().writeString("QUEUE").writeString(String.valueOf(((Player)
 						event.getWhoClicked()).getName())).writeInt(slots.get(slot) + 1));
 
