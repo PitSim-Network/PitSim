@@ -5,10 +5,10 @@ import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import org.bukkit.entity.Player;
 
 public class PassGUI extends AGUI {
+	public PitPlayer pitPlayer;
+
 	public PassPanel passPanel;
 	public QuestPanel questPanel;
-
-	public PitPlayer pitPlayer;
 
 	public PassGUI(Player player) {
 		super(player);
