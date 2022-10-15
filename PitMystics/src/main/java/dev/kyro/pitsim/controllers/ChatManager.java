@@ -51,7 +51,7 @@ public class ChatManager implements Listener {
 
 		message = ChatColor.stripColor(ChatColor.translateAlternateColorCodes('&', message));
 		if(ChatColorPanel.playerChatColors.containsKey(event.getPlayer()) && event.getPlayer().hasPermission("pitsim.chatcolor")) {
-			event.setMessage(ChatColorPanel.playerChatColors.get(event.getPlayer()).chatColor + message);
+			message = ChatColorPanel.playerChatColors.get(event.getPlayer()).chatColor + message;
 		}
 
 		message = message.replaceAll("pitsandbox", "shitsandbox")
