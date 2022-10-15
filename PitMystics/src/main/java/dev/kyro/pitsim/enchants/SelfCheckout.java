@@ -47,12 +47,14 @@ public class SelfCheckout extends PitEnchant {
 			return;
 		}
 
+		String scoMessage = "&9&lSCO!&7 Self-Checkout pants activated";
 		int renown = Math.min((pitKiller.getKills() + 1) / 300, 4);
 		if(renown != 0) {
 			pitKiller.renown += renown;
-			AOutput.send(killEvent.killer, "&7You have been given &e" + renown + " renown");
+			scoMessage += " giving &e" + renown + " &7 renown";
 		}
 
+		AOutput.send(killEvent.killerPlayer, scoMessage);
 		DamageManager.death(killEvent.killer, KillModifier.SELF_CHECKOUT);
 
 		if(nbtItem.hasKey(NBTTag.CURRENT_LIVES.getRef())) {
