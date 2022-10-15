@@ -73,11 +73,9 @@ public class EnderchestManager implements Listener {
 				ChatColor.stripColor(message).toLowerCase().startsWith("/playervault") ||
 				ChatColor.stripColor(message).toLowerCase().startsWith("/vault")) {
 			Block block = player.getTargetBlock((HashSet<Byte>) null, 5);
-			if(!block.getType().equals(Material.ENDER_CHEST) || ShutdownManager.enderchestDisabled) {
+			if(!block.getType().equals(Material.ENDER_CHEST) || ShutdownManager.enderchestDisabled || MapManager.inDarkzone(player)) {
 				event.setCancelled(true);
 				AOutput.error(player, "&c&lERROR!&7 You cannot do this right now!");
-			} else if(MapManager.inDarkzone(player)) {
-				event.setCancelled(true);
 			}
 		}
 	}
