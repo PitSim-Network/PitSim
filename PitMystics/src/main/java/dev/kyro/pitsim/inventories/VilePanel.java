@@ -3,11 +3,11 @@ package dev.kyro.pitsim.inventories;
 import de.tr7zw.nbtapi.NBTItem;
 import dev.kyro.arcticapi.gui.AGUI;
 import dev.kyro.arcticapi.gui.AGUIPanel;
-import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.controllers.EnchantManager;
 import dev.kyro.pitsim.enums.NBTTag;
 import dev.kyro.pitsim.misc.Misc;
 import dev.kyro.pitsim.misc.Sounds;
+import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.ChatColor;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
@@ -68,7 +68,12 @@ public class VilePanel extends AGUIPanel {
 					EnchantManager.setItemLore(nbtItem.getItem(), player);
 					player.getInventory().setItem(i, nbtItem.getItem());
 					player.closeInventory();
-					AOutput.send(player, "&5&lWITHERCRAFT! &7Repaired " + nbtItem.getItem().getItemMeta().getDisplayName() + "&7!");
+
+					TextComponent message = new TextComponent(ChatColor.translateAlternateColorCodes('&', "&5WITHERCRAFT! &7Repaired "));
+					message.addExtra(Misc.createItemHover(nbtItem.getItem()));
+					message.addExtra(new TextComponent(ChatColor.translateAlternateColorCodes('&', "&7!")));
+					player.sendMessage(message);
+
 					Sounds.WITHERCRAFT_1.play(player);
 					Sounds.WITHERCRAFT_2.play(player);
 
@@ -90,7 +95,6 @@ public class VilePanel extends AGUIPanel {
 					}
 				}
 			}
-
 		}
 		updateInventory();
 	}
