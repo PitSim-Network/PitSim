@@ -193,6 +193,10 @@ public class PlayerManager implements Listener {
 		player.sendMessage(message);
 	}
 
+	public static void sendLivesLostMessage(Player player, int livesLost) {
+		AOutput.error(player, "&c&lRIP!&7 You lost lives on &f" + livesLost + " &7item" + (livesLost == 1 ? "" : "s"));
+	}
+
 	@EventHandler(priority = EventPriority.MONITOR)
 	public void onClick2(PlayerInteractEvent event) {
 		if(event.getAction() != Action.RIGHT_CLICK_AIR && event.getAction() != Action.RIGHT_CLICK_BLOCK) return;

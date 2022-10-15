@@ -473,6 +473,8 @@ public class DamageManager implements Listener {
 			boolean divine = DivineIntervention.INSTANCE.isDivine(deadPlayer);
 			boolean feather = FunkyFeather.useFeather(killer, deadPlayer, divine);
 
+			int livesLost = 0;
+
 			for(int i = 0; i < deadPlayer.getInventory().getSize(); i++) {
 				ItemStack itemStack = deadPlayer.getInventory().getItem(i);
 				if(Misc.isAirOrNull(itemStack)) continue;
@@ -489,12 +491,10 @@ public class DamageManager implements Listener {
 						nbtItem.setInteger(NBTTag.CURRENT_LIVES.getRef(), nbtItem.getInteger(NBTTag.CURRENT_LIVES.getRef()) - 1);
 						EnchantManager.setItemLore(nbtItem.getItem(), deadPlayer);
 						deadPlayer.getInventory().setItem(i, nbtItem.getItem());
-
-						if(pitDead.stats != null) pitDead.stats.livesLost++;
+						livesLost++;
 					}
 				}
 			}
-
 
 			if(!feather && !divine) {
 				ProtArmor.deleteArmor(deadPlayer);
@@ -515,12 +515,14 @@ public class DamageManager implements Listener {
 							nbtItem.setInteger(NBTTag.CURRENT_LIVES.getRef(), nbtItem.getInteger(NBTTag.CURRENT_LIVES.getRef()) - 1);
 							EnchantManager.setItemLore(nbtItem.getItem(), deadPlayer);
 							deadPlayer.getInventory().setLeggings(nbtItem.getItem());
-
-							if(pitDead.stats != null) pitDead.stats.livesLost++;
+							livesLost++;
 						}
 					}
 				}
 			}
+
+			if(pitDead.stats != null) pitDead.stats.livesLost += livesLost;
+			PlayerManager.sendLivesLostMessage(deadPlayer, livesLost);
 		}
 	}
 
