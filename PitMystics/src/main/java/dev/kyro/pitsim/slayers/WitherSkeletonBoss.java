@@ -8,7 +8,7 @@ import dev.kyro.pitsim.controllers.objects.PitBoss;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.enums.SubLevel;
 import dev.kyro.pitsim.events.AttackEvent;
-import dev.kyro.pitsim.events.ThrowBlock;
+import dev.kyro.pitsim.events.ThrowBlockEvent;
 import dev.kyro.pitsim.misc.Misc;
 import dev.kyro.pitsim.misc.Sounds;
 import dev.kyro.pitsim.misc.TempBlock;
@@ -26,12 +26,10 @@ import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityChangeBlockEvent;
 import org.bukkit.event.player.PlayerTeleportEvent;
-import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
-import org.checkerframework.checker.units.qual.A;
 
 public class WitherSkeletonBoss extends PitBoss {
     public NPC npc;
@@ -87,7 +85,7 @@ public class WitherSkeletonBoss extends PitBoss {
 
 
 
-                    ThrowBlock.addThrowableBlock(new ThrowableBlock(npc.getEntity(), Material.SOUL_SAND, pullVector.multiply((0.5 * 0.2) + 1.15)){
+                    ThrowBlockEvent.addThrowableBlock(new ThrowableBlock(npc.getEntity(), Material.SOUL_SAND, pullVector.multiply((0.5 * 0.2) + 1.15)){
                         @Override
                         public void run(EntityChangeBlockEvent event){
 

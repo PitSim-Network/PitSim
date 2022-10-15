@@ -5,7 +5,7 @@ import dev.kyro.pitsim.controllers.objects.PitBoss;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.enums.SubLevel;
 import dev.kyro.pitsim.events.AttackEvent;
-import dev.kyro.pitsim.events.ThrowBlock;
+import dev.kyro.pitsim.events.ThrowBlockEvent;
 import dev.kyro.pitsim.misc.Sounds;
 import dev.kyro.pitsim.misc.ThrowableBlock;
 import dev.kyro.pitsim.slayers.tainted.SimpleBoss;
@@ -23,8 +23,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityChangeBlockEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
-import org.bukkit.potion.PotionEffect;
-import org.bukkit.potion.PotionEffectType;
 import org.bukkit.util.Vector;
 
 public class IronGolemBoss extends PitBoss {
@@ -74,7 +72,7 @@ public class IronGolemBoss extends PitBoss {
                 Vector pullVector = dirVector.clone().normalize().setY(0.2).multiply(0.5).add(dirVector.clone().multiply(0.03));
 
                 if(npc.getEntity() != null)
-                    ThrowBlock.addThrowableBlock(new ThrowableBlock(npc.getEntity(), Material.ANVIL, pullVector.multiply((0.5 * 0.2) + 1.15)) {
+                    ThrowBlockEvent.addThrowableBlock(new ThrowableBlock(npc.getEntity(), Material.ANVIL, pullVector.multiply((0.5 * 0.2) + 1.15)) {
                         @Override
                         public void run(EntityChangeBlockEvent event){
                             event.getEntity().getWorld().playEffect(event.getEntity().getLocation(), Effect.MAGIC_CRIT, 1);

@@ -1,41 +1,22 @@
 package dev.kyro.pitsim.events;
 
 import dev.kyro.arcticapi.misc.AOutput;
-import dev.kyro.pitsim.PitSim;
-import dev.kyro.pitsim.controllers.objects.PitMob;
-import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.misc.Misc;
 import dev.kyro.pitsim.misc.Sounds;
 import dev.kyro.pitsim.misc.ThrowableBlock;
-import dev.kyro.pitsim.slayers.IronGolemBoss;
-import net.citizensnpcs.api.CitizensAPI;
-import net.minecraft.server.v1_8_R3.EntityFallingBlock;
-import org.bukkit.Bukkit;
-import org.bukkit.Effect;
 import org.bukkit.Material;
-import org.bukkit.entity.Entity;
 import org.bukkit.entity.FallingBlock;
-import org.bukkit.entity.LivingEntity;
-import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
-import org.bukkit.event.block.BlockBreakEvent;
-import org.bukkit.event.block.BlockCanBuildEvent;
-import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.EntityChangeBlockEvent;
-import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.potion.PotionEffect;
-import org.bukkit.potion.PotionEffectType;
-import org.bukkit.scheduler.BukkitRunnable;
-import org.bukkit.util.Vector;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class ThrowBlock implements Listener {
+public class ThrowBlockEvent implements Listener {
 
     public static List<ThrowableBlock> ThrowableBlockClassHandler = new ArrayList();
 
