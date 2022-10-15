@@ -326,6 +326,8 @@ public class Misc {
 		if(rankColorMap.containsKey(uuid)) return rankColorMap.get(uuid);
 		try {
 			String rankColor = PitSim.LUCKPERMS.getUserManager().loadUser(uuid).get().getCachedData().getMetaData().getPrefix();
+//			TODO: Check-in with players to make sure this fixed it and it wasn't returning "null" as a string
+			if(rankColor == null) throw new Exception();
 			rankColorMap.put(uuid, rankColor);
 			return rankColor;
 		} catch(Exception ignored) {
