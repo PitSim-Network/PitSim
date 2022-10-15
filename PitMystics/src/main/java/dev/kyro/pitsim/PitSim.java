@@ -235,7 +235,6 @@ public class PitSim extends JavaPlugin {
 
 	@Override
 	public void onDisable() {
-
 //		System.out.println("Disconnecting database");
 //		try {
 //			for(FirebaseApp app : new ArrayList<>(FirebaseApp.getApps())) app.delete();
@@ -624,6 +623,7 @@ public class PitSim extends JavaPlugin {
 		PassManager.registerQuest(new CongratulatePrestigeQuest());
 		PassManager.registerQuest(new HaveSpeedQuest());
 		PassManager.registerQuest(new JudgementHopperQuest());
+		PassManager.registerQuest(new BrewPotionsQuest());
 
 		PassManager.registerQuest(new KillCaveSpidersQuest());
 		PassManager.registerQuest(new KillCreepersQuest());

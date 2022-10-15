@@ -281,7 +281,7 @@ public class SpawnNPCs implements Listener {
 		SkinManager.loadAndSkinNPC("Wiizard", new BukkitRunnable() {
 			@Override
 			public void run() {
-				NPC npc = registry.createNPC(EntityType.PLAYER, ChatColor.LIGHT_PURPLE + "" + ChatColor.BOLD + "POTIONS");
+				NPC npc = registry.createNPC(EntityType.PLAYER, ChatColor.LIGHT_PURPLE + "" + ChatColor.BOLD + "ALCHEMIST");
 				potionMaster = npc;
 				npc.spawn(new Location(MapManager.getDarkzone(), 195.5, 91, -84.5, -147, 0));
 				SkinManager.skinNPC(npc, "Wiizard");

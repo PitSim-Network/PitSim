@@ -1,6 +1,7 @@
 package dev.kyro.pitsim.brewing;
 
 import dev.kyro.pitsim.PitSim;
+import dev.kyro.pitsim.battlepass.quests.BrewPotionsQuest;
 import dev.kyro.pitsim.brewing.objects.BrewingAnimation;
 import dev.kyro.pitsim.brewing.objects.BrewingSession;
 import dev.kyro.pitsim.controllers  .UpgradeManager;
@@ -141,30 +142,33 @@ public class BrewingManager implements Listener {
 
     @EventHandler
     public void onInteract(PlayerInteractEvent event) {
+        Player player = event.getPlayer();
         if(event.getAction() != Action.RIGHT_CLICK_BLOCK) return;
         if(event.getClickedBlock().getType() != Material.CAULDRON) return;
-        if(event.getPlayer().getWorld() != Bukkit.getWorld("darkzone")) return;
-        if(hasReadyPotions(event.getPlayer())) {
+        if(player.getWorld() != Bukkit.getWorld("darkzone")) return;
+        if(hasReadyPotions(player)) {
             for (int i = 0; i < 3; i++) {
-                BrewingSession session = getBrewingSession(event.getPlayer(), i + 1);
+                BrewingSession session = getBrewingSession(player, i + 1);
                 if(session == null) continue;
 
                 int addTicks = (105 - session.reduction.getBrewingReductionMinutes()) * 60 * 20;
                 int timeLeft = (int) ((int) (((session.startTime / 1000) * 20) + addTicks) - (((System.currentTimeMillis() / 1000) * 20)));
                 if(timeLeft < 0) {
                     session.givePotion();
-                    PitPlayer.getPitPlayer(event.getPlayer()).stats.potionsBrewed++;
+                    PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
+                    pitPlayer.stats.potionsBrewed++;
+                    BrewPotionsQuest.INSTANCE.brewPotion(pitPlayer);
                 }
             }
             return;
         }
-        if(getBrewingSlot(event.getPlayer()) < 0) {
-            pausePlayers.add(event.getPlayer());
-            brewingAnimations.get(0).setText(event.getPlayer(), new String[]{"&cAll of your Brewing Slots", "&care full!", "&c", "&cYou may unlock up to 3", "&cin the &eRenown Shop&c."});
+        if(getBrewingSlot(player) < 0) {
+            pausePlayers.add(player);
+            brewingAnimations.get(0).setText(player, new String[]{"&cAll of your Brewing Slots", "&care full!", "&c", "&cYou may unlock up to 3", "&cin the &eRenown Shop&c."});
             new BukkitRunnable() {
                 @Override
                 public void run() {
-                    pausePlayers.remove(event.getPlayer());
+                    pausePlayers.remove(player);
                 }
             }.runTaskLater(PitSim.INSTANCE, 40);
             event.setCancelled(true);
@@ -174,7 +178,7 @@ public class BrewingManager implements Listener {
         event.setCancelled(true);
         for (BrewingAnimation brewingAnimation : brewingAnimations) {
             if(brewingAnimation.location.equals(event.getClickedBlock().getLocation())) {
-                if(!brewingAnimation.players.contains(event.getPlayer())) brewingAnimation.addPlayer(event.getPlayer());
+                if(!brewingAnimation.players.contains(player)) brewingAnimation.addPlayer(player);
             }
         }
     }
