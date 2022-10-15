@@ -158,8 +158,7 @@ public class PassPanel extends AGUIPanel {
 	@Override
 	public void onClick(InventoryClickEvent event) {
 		if(event.getClickedInventory().getHolder() != this) return;
-
-		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
+		PitPlayer pitPlayer = passGUI.pitPlayer;
 		int slot = event.getSlot();
 
 		if(slot == 16) {
