@@ -1,6 +1,8 @@
 package dev.kyro.pitsim.commands;
 
-import be.maximvdw.featherboard.api.FeatherBoardAPI;
+import dev.kyro.arcticapi.misc.AOutput;
+import dev.kyro.pitsim.misc.Misc;
+import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -12,10 +14,14 @@ public class ATestCommand implements CommandExecutor {
 	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
 		if(!(sender instanceof Player)) return false;
 		Player player = (Player) sender;
-
 		if(!player.isOp()) return false;
 
-		FeatherBoardAPI.showScoreboard(player, args[0]);
+		TextComponent itemHover = Misc.createItemHover(player.getItemInHand());
+		if(itemHover == null) {
+			AOutput.error(player, "You are not holding an item");
+			return false;
+		}
+		player.sendMessage(itemHover);
 
 //
 //
