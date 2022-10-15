@@ -5,6 +5,7 @@ import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.controllers.DamageManager;
 import dev.kyro.pitsim.controllers.EnchantManager;
+import dev.kyro.pitsim.controllers.PlayerManager;
 import dev.kyro.pitsim.controllers.objects.PitEnchant;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.enums.ApplyType;
@@ -20,8 +21,8 @@ import org.bukkit.inventory.ItemStack;
 import java.util.List;
 
 public class SelfCheckout extends PitEnchant {
-
 	public static SelfCheckout INSTANCE;
+	public static final int LIVES_ON_USE = 3;
 
 	public SelfCheckout() {
 		super("Self-Checkout", true, ApplyType.PANTS,
@@ -38,8 +39,8 @@ public class SelfCheckout extends PitEnchant {
 		if(enchantLvl == 0) return;
 
 		PitPlayer pitKiller = PitPlayer.getPitPlayer(killEvent.killerPlayer);
-		if(pitKiller.getKills() + 1 < 200 || pitKiller.megastreak.getClass() == Uberstreak.class || pitKiller.megastreak.getClass() == NoMegastreak.class)
-			return;
+		if(pitKiller.getKills() + 1 < 200 || pitKiller.megastreak.getClass() == Uberstreak.class ||
+				pitKiller.megastreak.getClass() == NoMegastreak.class) return;
 
 		NBTItem nbtItem = new NBTItem(leggings);
 		if(!EnchantManager.isJewelComplete(leggings) || !nbtItem.getString(NBTTag.ITEM_JEWEL_ENCHANT.getRef()).equalsIgnoreCase(refNames.get(0))) {
@@ -59,18 +60,18 @@ public class SelfCheckout extends PitEnchant {
 
 		if(nbtItem.hasKey(NBTTag.CURRENT_LIVES.getRef())) {
 			int lives = nbtItem.getInteger(NBTTag.CURRENT_LIVES.getRef());
-			if(lives - 3 <= 0) {
+			if(lives - LIVES_ON_USE <= 0) {
 				killEvent.killerPlayer.getEquipment().setLeggings(new ItemStack(Material.AIR));
 				killEvent.killerPlayer.updateInventory();
-
+				PlayerManager.sendItemBreakMessage(killEvent.killerPlayer, leggings);
 				if(pitKiller.stats != null) pitKiller.stats.itemsBroken++;
 			} else {
-				nbtItem.setInteger(NBTTag.CURRENT_LIVES.getRef(), nbtItem.getInteger(NBTTag.CURRENT_LIVES.getRef()) - 3);
+				nbtItem.setInteger(NBTTag.CURRENT_LIVES.getRef(), nbtItem.getInteger(NBTTag.CURRENT_LIVES.getRef()) - LIVES_ON_USE);
 				EnchantManager.setItemLore(nbtItem.getItem(), pitKiller.player);
 				killEvent.killerPlayer.getEquipment().setLeggings(nbtItem.getItem());
 				killEvent.killerPlayer.updateInventory();
 
-				if(pitKiller.stats != null) pitKiller.stats.livesLost += 3;
+				if(pitKiller.stats != null) pitKiller.stats.livesLost += LIVES_ON_USE;
 			}
 		}
 	}
@@ -81,6 +82,6 @@ public class SelfCheckout extends PitEnchant {
 		return new ALoreBuilder("&7On kill, if you have a killstreak", "&7of at least 200, &eExplode:",
 				"&e\u25a0 &7Die! Keep jewel lives on death",
 				"&a\u25a0 &7Gain &e+1 renown &7for every 300 killstreak (max 4)",
-				"&c\u25a0 &7Lose &c3 lives &7on this item").getLore();
+				"&c\u25a0 &7Lose &c" + LIVES_ON_USE + " lives &7on this item").getLore();
 	}
 }

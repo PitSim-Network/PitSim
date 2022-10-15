@@ -29,6 +29,7 @@ import dev.kyro.pitsim.misc.KillEffects;
 import dev.kyro.pitsim.misc.Misc;
 import dev.kyro.pitsim.misc.Sounds;
 import me.clip.placeholderapi.PlaceholderAPI;
+import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.*;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
@@ -176,6 +177,20 @@ public class PlayerManager implements Listener {
 	public static boolean isRealPlayerTemp(Player player) {
 		if(player == null) return false;
 		return Bukkit.getOnlinePlayers().contains(player);
+	}
+
+	public static void sendItemBreakMessage(Player player, ItemStack itemStack) {
+		if(Misc.isAirOrNull(itemStack)) return;
+
+		NBTItem nbtItem = new NBTItem(itemStack);
+		nbtItem.setInteger(NBTTag.CURRENT_LIVES.getRef(), 0);
+		EnchantManager.setItemLore(nbtItem.getItem(), player);
+
+		TextComponent message = new TextComponent(ChatColor.translateAlternateColorCodes('&', "&cRIP!&7 Your "));
+		message.addExtra(Misc.createItemHover(nbtItem.getItem()));
+		message.addExtra(new TextComponent(ChatColor.translateAlternateColorCodes('&', "&7 broke")));
+
+		player.sendMessage(message);
 	}
 
 	@EventHandler(priority = EventPriority.MONITOR)
