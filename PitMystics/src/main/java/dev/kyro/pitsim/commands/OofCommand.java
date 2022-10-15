@@ -3,6 +3,7 @@ package dev.kyro.pitsim.commands;
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.controllers.CombatManager;
 import dev.kyro.pitsim.controllers.DamageManager;
+import dev.kyro.pitsim.controllers.MapManager;
 import dev.kyro.pitsim.controllers.SpawnManager;
 import dev.kyro.pitsim.controllers.objects.PitEnchant;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
@@ -30,35 +31,39 @@ public class OofCommand implements CommandExecutor {
 		if(!(sender instanceof Player)) return false;
 		Player player = (Player) sender;
 
-		if(SpawnManager.isInSpawn(player.getLocation())) {
+		if(player.getWorld() == MapManager.getDarkzone() && !player.isOp()) {
+			AOutput.send(player, "&c&lNOPE! &7Cant /oof in the darkzone!");
+			return false;
+		}
 
+		if(SpawnManager.isInSpawn(player.getLocation())) {
 			AOutput.send(player, "&c&lNOPE! &7Cant /oof in spawn!");
 			Sounds.ERROR.play(player);
-		} else {
+			return false;
+		}
 
-			if(!CombatManager.taggedPlayers.containsKey(player.getUniqueId())) {
-				DamageManager.death(player);
+		if(!CombatManager.taggedPlayers.containsKey(player.getUniqueId())) {
+			DamageManager.death(player);
+			return false;
+		}
+
+		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
+		UUID attackerUUID = pitPlayer.lastHitUUID;
+		for(Player onlinePlayer : Bukkit.getOnlinePlayers()) {
+			if(onlinePlayer.getUniqueId().equals(attackerUUID)) {
+
+				Map<PitEnchant, Integer> attackerEnchant = new HashMap<>();
+				Map<PitEnchant, Integer> defenderEnchant = new HashMap<>();
+				EntityDamageByEntityEvent ev = new EntityDamageByEntityEvent(onlinePlayer, player, EntityDamageEvent.DamageCause.CUSTOM, 0);
+				AttackEvent attackEvent = new AttackEvent(ev, attackerEnchant, defenderEnchant, false);
+
+				DamageManager.kill(attackEvent, onlinePlayer, player, KillType.DEFAULT);
 				return false;
 			}
-
-			PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
-			UUID attackerUUID = pitPlayer.lastHitUUID;
-			for(Player onlinePlayer : Bukkit.getOnlinePlayers()) {
-				if(onlinePlayer.getUniqueId().equals(attackerUUID)) {
-
-					Map<PitEnchant, Integer> attackerEnchant = new HashMap<>();
-					Map<PitEnchant, Integer> defenderEnchant = new HashMap<>();
-					EntityDamageByEntityEvent ev = new EntityDamageByEntityEvent(onlinePlayer, player, EntityDamageEvent.DamageCause.CUSTOM, 0);
-					AttackEvent attackEvent = new AttackEvent(ev, attackerEnchant, defenderEnchant, false);
-
-					DamageManager.kill(attackEvent, onlinePlayer, player, KillType.DEFAULT);
-					return false;
-				}
-			}
-			DamageManager.death(player);
-			OofEvent oofEvent = new OofEvent(player);
-			Bukkit.getPluginManager().callEvent(oofEvent);
 		}
+		DamageManager.death(player);
+		OofEvent oofEvent = new OofEvent(player);
+		Bukkit.getPluginManager().callEvent(oofEvent);
 		return false;
 	}
 }

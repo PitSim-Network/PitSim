@@ -20,8 +20,8 @@ public class SpawnCommand implements CommandExecutor {
 	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
 
 		Player player = (Player) sender;
-		if(player.getWorld() == MapManager.getDarkzone()) {
-			AOutput.error(player, "&c&lNOPE! &7You cannot spawn here.");
+		if(player.getWorld() == MapManager.getDarkzone() && !player.isOp()) {
+			AOutput.error(player, "&c&lNOPE! &7You cannot /spawn in the darkzone.");
 			return false;
 		}
 
