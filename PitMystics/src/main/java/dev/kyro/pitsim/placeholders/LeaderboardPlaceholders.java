@@ -5,6 +5,7 @@ import dev.kyro.arcticapi.misc.AUtil;
 import dev.kyro.pitsim.controllers.LeaderboardManager;
 import dev.kyro.pitsim.controllers.PrestigeValues;
 import dev.kyro.pitsim.controllers.objects.LeaderboardPosition;
+import dev.kyro.pitsim.misc.Misc;
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
@@ -28,7 +29,8 @@ public class LeaderboardPlaceholders extends PlaceholderExpansion {
 			int prestige = playerData.getInt("prestige");
 			int level = playerData.getInt("level");
 			PrestigeValues.PrestigeInfo info = PrestigeValues.getPrestigeInfo(prestige);
-			return "&7" + i + ". &6" + offlinePlayer.getName() + "&7 - " + info.getOpenBracket() + "&e" + AUtil.toRoman(prestige) +
+			String rankColor = Misc.getRankColor(position.uuid);
+			return "&7" + i + ". " + rankColor + offlinePlayer.getName() + "&7 - " + info.getOpenBracket() + "&e" + AUtil.toRoman(prestige) +
 					info.bracketColor + "-" + PrestigeValues.getLevelColor(level) + level + info.getCloseBracket();
 		}
 		return null;

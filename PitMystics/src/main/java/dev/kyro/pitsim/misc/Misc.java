@@ -29,8 +29,7 @@ import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.text.DecimalFormat;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 public class Misc {
 
@@ -320,5 +319,17 @@ public class Misc {
 		TextComponent hoverComponent = new TextComponent(ChatColor.translateAlternateColorCodes('&', displayName));
 		hoverComponent.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, hoverEventComponents));
 		return hoverComponent;
+	}
+
+	public static Map<UUID, String> rankColorMap = new HashMap<>();
+	public static String getRankColor(UUID uuid) {
+		if(rankColorMap.containsKey(uuid)) return rankColorMap.get(uuid);
+		try {
+			String rankColor = PitSim.LUCKPERMS.getUserManager().loadUser(uuid).get().getCachedData().getMetaData().getPrefix();
+			rankColorMap.put(uuid, rankColor);
+			return rankColor;
+		} catch(Exception ignored) {
+			return "&7";
+		}
 	}
 }
