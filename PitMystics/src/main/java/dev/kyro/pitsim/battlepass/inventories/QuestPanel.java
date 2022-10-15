@@ -34,7 +34,7 @@ public class QuestPanel extends AGUIPanel {
 		backItem = new AItemStackBuilder(Material.BARRIER)
 				.setName("&c&lBack")
 				.setLore(new ALoreBuilder(
-						"&7Click to go to the previous page"
+						"&7Click to go to the previous screen"
 				))
 				.getItemStack();
 	}

@@ -12,6 +12,9 @@ import dev.kyro.arcticapi.commands.AMultiCommand;
 import dev.kyro.arcticapi.data.AData;
 import dev.kyro.arcticapi.hooks.AHook;
 import dev.kyro.arcticapi.misc.AOutput;
+import dev.kyro.pitsim.acosmetics.CosmeticManager;
+import dev.kyro.pitsim.acosmetics.PitCosmetic;
+import dev.kyro.pitsim.acosmetics.capes.SolidCape;
 import dev.kyro.pitsim.battlepass.PassManager;
 import dev.kyro.pitsim.battlepass.quests.*;
 import dev.kyro.pitsim.battlepass.quests.daily.DailyBotKillQuest;
@@ -228,6 +231,7 @@ public class PitSim extends JavaPlugin {
 		registerKits();
 		registerMobs();
 		registerBrewingIngredients();
+		registerCosmetics();
 
 		AuctionManager.onStart();
 		AuctionDisplays.onStart();
@@ -247,6 +251,10 @@ public class PitSim extends JavaPlugin {
 		for(Player onlinePlayer : Bukkit.getOnlinePlayers()) {
 			PitPlayer pitPlayer = PitPlayer.getPitPlayer(onlinePlayer);
 			pitPlayer.save();
+
+//			disable cosmetics
+			List<PitCosmetic> activeCosmetics = CosmeticManager.getActiveCosmetics(pitPlayer);
+			for(PitCosmetic activeCosmetic : activeCosmetics) activeCosmetic.onDisable(pitPlayer);
 		}
 
 		if(MapManager.getDarkzone() != null){
@@ -475,6 +483,9 @@ public class PitSim extends JavaPlugin {
 		getCommand("music").setExecutor(new MusicCommand());
 		getCommand("migrate").setExecutor(new MigrateCommand());
 		getCommand("pass").setExecutor(new PassCommand());
+		SettingsCommand settingsCommand = new SettingsCommand();
+		getCommand("settings").setExecutor(settingsCommand);
+		getCommand("setting").setExecutor(settingsCommand);
 	}
 
 	private void registerListeners() {
@@ -531,6 +542,7 @@ public class PitSim extends JavaPlugin {
 		getServer().getPluginManager().registerEvents(new ScoreboardManager(), this);
 		getServer().getPluginManager().registerEvents(new PassManager(), this);
 		getServer().getPluginManager().registerEvents(new SkinManager(), this);
+		getServer().getPluginManager().registerEvents(new CosmeticManager(), this);
 	}
 
 	public void registerBoosters() {
@@ -635,6 +647,12 @@ public class PitSim extends JavaPlugin {
 		PassManager.registerQuest(new KillWitherSkeletonsQuest());
 		PassManager.registerQuest(new KillZombiePigmenQuest());
 		PassManager.registerQuest(new KillZombiesQuest());
+	}
+
+	private void registerCosmetics() {
+		CosmeticManager.registerCosmetic(new SolidCape());
+
+		CosmeticManager.loadForOnlinePlayers();
 	}
 
 	private void loadConfig() {

@@ -27,7 +27,7 @@ public class EarnGuildReputationQuest extends PassQuest {
 
 	@Override
 	public ItemStack getDisplayItem(PitPlayer pitPlayer, QuestLevel questLevel, double progress) {
-		ItemStack itemStack = new AItemStackBuilder(Material.BANNER)
+		ItemStack itemStack = new AItemStackBuilder(Material.BANNER, 1, 15)
 				.setName(getDisplayName())
 				.setLore(new ALoreBuilder(
 						"&7Earn &a" + Misc.formatLarge(questLevel.getRequirement(pitPlayer)) + " &7reputation points",

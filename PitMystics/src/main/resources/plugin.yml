@@ -64,3 +64,5 @@ commands:
   cutscene:
   migrate:
   pass:
+  settings:
+  setting:
