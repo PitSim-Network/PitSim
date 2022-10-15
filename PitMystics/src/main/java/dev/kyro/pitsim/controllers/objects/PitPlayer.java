@@ -87,7 +87,6 @@ public class PitPlayer {
 	public long uberReset;
 	public int goldGrinded;
 	public Map<Booster, Integer> boosters = new HashMap<>();
-	public Map<Booster, Integer> boosterTime = new HashMap<>();
 
 	public double lastVersion;
 	public KillEffect killEffect;
@@ -163,8 +162,6 @@ public class PitPlayer {
 		playerData.set("goldgrinded", goldGrinded);
 		for(Map.Entry<Booster, Integer> entry : boosters.entrySet())
 			playerData.set("boosters." + entry.getKey().refName, entry.getValue());
-		for(Map.Entry<Booster, Integer> entry : boosterTime.entrySet())
-			playerData.set("booster-time." + entry.getKey().refName, entry.getValue());
 
 		playerData.set("lastversion", PitSim.version);
 		if(killEffect != null) playerData.set("killeffect", killEffect.toString());
@@ -235,7 +232,6 @@ public class PitPlayer {
 			goldGrinded = playerData.getInt("goldgrinded");
 			for(Booster booster : BoosterManager.boosterList) {
 				boosters.put(booster, playerData.getInt("boosters." + booster.refName));
-				boosterTime.put(booster, playerData.getInt("booster-time." + booster.refName));
 			}
 
 			stats = new PlayerStats(this, playerData);

@@ -5,18 +5,13 @@ import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.boosters.GoldBooster;
 import dev.kyro.pitsim.boosters.XPBooster;
 import dev.kyro.pitsim.controllers.objects.Booster;
-import dev.kyro.pitsim.controllers.objects.PitPlayer;
-import dev.kyro.pitsim.events.KillEvent;
 import dev.kyro.pitsim.misc.Misc;
 import dev.kyro.pitsim.misc.Sounds;
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
-import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.scheduler.BukkitRunnable;
 
@@ -25,7 +20,6 @@ import java.util.*;
 
 public class BoosterManager implements Listener {
 	public static List<Booster> boosterList = new ArrayList<>();
-	public static Map<Booster, List<UUID>> donators = new HashMap<>();
 	public static Map<UUID, List<BoosterReward>> donatorMessages = new HashMap<>();
 
 	class BoosterReward {
@@ -35,43 +29,6 @@ public class BoosterManager implements Listener {
 		public BoosterReward(Booster booster, double amount) {
 			this.booster = booster;
 			this.amount = amount;
-		}
-	}
-
-	@EventHandler(priority = EventPriority.MONITOR)
-	public void onKill(KillEvent killEvent) {
-		if(killEvent.killer.isOp()) return;
-
-		Booster goldBooster = BoosterManager.getBooster("gold");
-		donators.putIfAbsent(goldBooster, new ArrayList<>());
-		double gold = killEvent.getFinalGold();
-		for(UUID uuid : donators.get(goldBooster)) {
-			if(killEvent.killer.getUniqueId().equals(uuid)) continue;
-			gold *= (1.0 / 10.0);
-			donatorMessages.putIfAbsent(uuid, new ArrayList<>());
-			donatorMessages.get(uuid).add(new BoosterReward(goldBooster, gold));
-			OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(uuid);
-			PitSim.VAULT.depositPlayer(offlinePlayer, gold);
-
-			for(Player onlinePlayer : Bukkit.getOnlinePlayers()) {
-				if(!onlinePlayer.getUniqueId().equals(uuid)) continue;
-				PitPlayer pitPlayer = PitPlayer.getPitPlayer(onlinePlayer);
-				pitPlayer.goldGrinded += gold;
-			}
-		}
-
-		Booster xpBooster = BoosterManager.getBooster("xp");
-		donators.putIfAbsent(xpBooster, new ArrayList<>());
-		int xp = killEvent.getFinalXp();
-		for(UUID uuid : donators.get(xpBooster)) {
-			if(killEvent.killer.getUniqueId().equals(uuid)) continue;
-			xp *= (0.5 / 10.0);
-			donatorMessages.putIfAbsent(uuid, new ArrayList<>());
-			donatorMessages.get(uuid).add(new BoosterReward(xpBooster, xp));
-			for(Player onlinePlayer : Bukkit.getOnlinePlayers()) {
-				if(!onlinePlayer.getUniqueId().equals(uuid)) continue;
-				LevelManager.addXP(onlinePlayer, xp);
-			}
 		}
 	}
 
@@ -108,22 +65,6 @@ public class BoosterManager implements Listener {
 					booster.minutes--;
 					if(booster.minutes == 0) booster.disable();
 					else booster.updateTime();
-				}
-
-				donators.clear();
-				for(Player onlinePlayer : Bukkit.getOnlinePlayers()) {
-					PitPlayer pitPlayer = PitPlayer.getPitPlayer(onlinePlayer);
-
-					for(Booster booster : boosterList) {
-						int timeLeft = pitPlayer.boosterTime.get(booster);
-						if(timeLeft <= 0) continue;
-						pitPlayer.boosterTime.put(booster, pitPlayer.boosterTime.get(booster) - 1);
-
-//						TODO: Terrible fix lol
-						if(donators.containsKey(booster)) continue;
-						donators.putIfAbsent(booster, new ArrayList<>());
-						donators.get(booster).add(onlinePlayer.getUniqueId());
-					}
 				}
 			}
 		}.runTaskTimer(PitSim.INSTANCE, Misc.getRunnableOffset(1), 20 * 60);
