@@ -5,8 +5,10 @@ import dev.kyro.pitsim.controllers.HopperManager;
 import dev.kyro.pitsim.controllers.MapManager;
 import dev.kyro.pitsim.controllers.SpawnManager;
 import dev.kyro.pitsim.controllers.objects.Hopper;
+import dev.kyro.pitsim.events.PlayerSpawnEvent;
 import dev.kyro.pitsim.helmetabilities.PhoenixAbility;
 import dev.kyro.pitsim.perks.Streaker;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -22,6 +24,10 @@ public class SpawnCommand implements CommandExecutor {
 			AOutput.error(player, "&c&lNOPE! &7You cannot spawn here.");
 			return false;
 		}
+
+		//TODO: Implement cancellable
+		Bukkit.getPluginManager().callEvent(new PlayerSpawnEvent(player));
+
 		SpawnManager.lastLocationMap.remove(player);
 		Location teleportLoc = MapManager.currentMap.getSpawn(player.getWorld());
 		player.teleport(teleportLoc);
