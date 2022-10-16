@@ -194,6 +194,7 @@ public class PlayerManager implements Listener {
 	}
 
 	public static void sendLivesLostMessage(Player player, int livesLost) {
+		if(livesLost == 0) return;
 		AOutput.error(player, "&c&lRIP!&7 You lost lives on &f" + livesLost + " &7item" + (livesLost == 1 ? "" : "s"));
 	}
 
