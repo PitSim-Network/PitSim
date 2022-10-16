@@ -144,7 +144,8 @@ public class PitSim extends JavaPlugin {
 		NonManager.init();
 		SpawnNPCs.createNPCs();
 		TempBlockHelper.init();
-		ReloadManager.init();
+//		TODO: Temporary
+//		ReloadManager.init();
 
 		if(!setupEconomy()) {
 			AOutput.log(String.format("[%s] - Disabled due to no Vault dependency found!", getDescription().getName()));
@@ -440,6 +441,7 @@ public class PitSim extends JavaPlugin {
 		new ReloadCommand(adminCommand, "reload");
 		new BypassCommand(adminCommand, "bypass");
 		new LockdownCommand(adminCommand, "lockdown");
+		new UnlockCosmeticCommand(adminCommand, "unlockcosmetic");
 		new SetPrestigeCommand(setCommand, "prestige");
 		new SetLevelCommand(setCommand, "level");
 		new BountyCommand(setCommand, "bounty");

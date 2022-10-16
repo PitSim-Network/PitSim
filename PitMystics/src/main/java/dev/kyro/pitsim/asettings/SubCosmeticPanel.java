@@ -4,9 +4,11 @@ import dev.kyro.arcticapi.builders.AItemStackBuilder;
 import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.arcticapi.gui.AGUI;
 import dev.kyro.arcticapi.gui.AGUIPanel;
+import dev.kyro.pitsim.RedstoneColor;
 import dev.kyro.pitsim.acosmetics.CosmeticManager;
 import dev.kyro.pitsim.acosmetics.CosmeticType;
 import dev.kyro.pitsim.acosmetics.PitCosmetic;
+import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.misc.Sounds;
 import org.bukkit.Material;
 import org.bukkit.event.inventory.InventoryClickEvent;
@@ -55,7 +57,7 @@ public abstract class SubCosmeticPanel extends AGUIPanel {
 				))
 				.getItemStack();
 
-		for(int i = 10; i < 45; i++) {
+		for(int i = 9; i < 45; i++) {
 			if(i % 9 == 0 || (i + 1) % 9 == 0) continue;
 			cosmeticSlots.add(i);
 		}
@@ -76,7 +78,6 @@ public abstract class SubCosmeticPanel extends AGUIPanel {
 			getInventory().setItem(getRows() * 9 - 1, nextPageItem);
 		}
 
-//		TODO: create a list of slots that are possible to assign cosmetics to (save globally for recalling on click)
 		for(int i = 10; i < settingsGUI.getRows(this) * 9 - 9; i++) {
 			if(i % 9 == 0 || (i + 1) % 9 == 0) continue;
 			cosmeticMap.put(i, null);
@@ -85,12 +86,24 @@ public abstract class SubCosmeticPanel extends AGUIPanel {
 		setPage(1);
 	}
 
-//	TODO: Implement
-	public void selectCosmetic(int slot) {
-		PitCosmetic cosmetic = cosmeticMap.get(slot);
-		if(cosmetic == null) return;
+	public void selectCosmetic(PitCosmetic pitCosmetic) {
+		selectCosmetic(pitCosmetic, null);
+	}
 
-
+	public void selectCosmetic(PitCosmetic pitCosmetic, RedstoneColor redstoneColor) {
+		if(settingsGUI.pitPlayer.equippedCosmeticMap.containsKey(cosmeticType.name())) {
+			PitPlayer.EquippedCosmeticData cosmeticData = settingsGUI.pitPlayer.equippedCosmeticMap.get(cosmeticType.name());
+			if(cosmeticData != null) {
+				if(pitCosmetic.refName.equals(cosmeticData.refName) && redstoneColor == null) {
+					Sounds.NO.play(player);
+					return;
+				} else if(redstoneColor != null && redstoneColor == cosmeticData.redstoneColor) {
+					Sounds.NO.play(player);
+					return;
+				}
+			}
+		}
+		settingsGUI.pitPlayer.equippedCosmeticMap.put(cosmeticType.name(), new PitPlayer.EquippedCosmeticData(pitCosmetic.refName, redstoneColor));
 	}
 
 	public void setPage(int page) {
@@ -107,7 +120,8 @@ public abstract class SubCosmeticPanel extends AGUIPanel {
 
 			PitCosmetic pitCosmetic = unlockedCosmetics.get(i);
 			cosmeticMap.put(slot, pitCosmetic);
-			getInventory().setItem(slot, pitCosmetic.getDisplayItem(pitCosmetic.isEnabled(settingsGUI.pitPlayer)));
+//			TODO: Add text if color, add enchant glint if equipped
+			getInventory().setItem(slot, pitCosmetic.getDisplayItem(pitCosmetic.isEquipped(settingsGUI.pitPlayer)));
 		}
 	}
 
@@ -131,7 +145,14 @@ public abstract class SubCosmeticPanel extends AGUIPanel {
 		if(event.getClickedInventory().getHolder() != this) return;
 		int slot = event.getSlot();
 
-		if(slot == getRows() * 9 - 9) {
+		if(cosmeticMap.get(slot) != null) {
+			PitCosmetic pitCosmetic = cosmeticMap.get(slot);
+			if(pitCosmetic.isColorCosmetic) {
+				openPanel(new ColorCosmeticPanel(gui, this, pitCosmetic));
+			} else {
+				selectCosmetic(pitCosmetic);
+			}
+		} else if(slot == getRows() * 9 - 9) {
 			if(page > 1) {
 				setPage(page - 1);
 			} else {
