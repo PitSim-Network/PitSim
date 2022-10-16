@@ -1,5 +1,6 @@
 package dev.kyro.pitsim.acosmetics;
 
+import dev.kyro.pitsim.RedstoneColor;
 import net.minecraft.server.v1_8_R3.EntityPlayer;
 import org.bukkit.Location;
 
@@ -32,10 +33,10 @@ public class ParticleCollection {
 		return this;
 	}
 
-	public void display(EntityPlayer entityPlayer, Location location) {
+	public void display(EntityPlayer entityPlayer, Location location, RedstoneColor redstoneColor) {
 		for(Map.Entry<String, List<ParticleData>> entry : particleCollectionMap.entrySet()) {
 			for(ParticleData particleData : entry.getValue()) {
-				particleData.pitParticle.display(entityPlayer, location, particleData.particleOffset);
+				particleData.pitParticle.display(entityPlayer, location, particleData.particleOffset, redstoneColor);
 			}
 		}
 	}

@@ -4,7 +4,9 @@ import dev.kyro.arcticapi.builders.AItemStackBuilder;
 import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.arcticapi.gui.AGUI;
 import dev.kyro.arcticapi.gui.AGUIPanel;
+import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.RedstoneColor;
+import dev.kyro.pitsim.acosmetics.ColorableCosmetic;
 import dev.kyro.pitsim.acosmetics.CosmeticManager;
 import dev.kyro.pitsim.acosmetics.CosmeticType;
 import dev.kyro.pitsim.acosmetics.PitCosmetic;
@@ -86,24 +88,43 @@ public abstract class SubCosmeticPanel extends AGUIPanel {
 		setPage(1);
 	}
 
-	public void selectCosmetic(PitCosmetic pitCosmetic) {
-		selectCosmetic(pitCosmetic, null);
+	public void deselectCosmetic(CosmeticType cosmeticType) {
+		PitPlayer.EquippedCosmeticData cosmeticData = settingsGUI.pitPlayer.equippedCosmeticMap.get(cosmeticType.name());
+		if(cosmeticData != null) {
+			PitCosmetic pitCosmetic = CosmeticManager.getCosmetic(cosmeticData.refName);
+			if(pitCosmetic != null) pitCosmetic.onDisable(settingsGUI.pitPlayer);
+		}
+		settingsGUI.pitPlayer.equippedCosmeticMap.put(cosmeticType.name(), null);
 	}
 
-	public void selectCosmetic(PitCosmetic pitCosmetic, RedstoneColor redstoneColor) {
+	public boolean selectCosmetic(PitCosmetic pitCosmetic) {
+		return selectCosmetic(pitCosmetic, null);
+	}
+
+	public boolean selectCosmetic(PitCosmetic pitCosmetic, RedstoneColor redstoneColor) {
 		if(settingsGUI.pitPlayer.equippedCosmeticMap.containsKey(cosmeticType.name())) {
 			PitPlayer.EquippedCosmeticData cosmeticData = settingsGUI.pitPlayer.equippedCosmeticMap.get(cosmeticType.name());
 			if(cosmeticData != null) {
-				if(pitCosmetic.refName.equals(cosmeticData.refName) && redstoneColor == null) {
-					Sounds.NO.play(player);
-					return;
-				} else if(redstoneColor != null && redstoneColor == cosmeticData.redstoneColor) {
-					Sounds.NO.play(player);
-					return;
+				if(!pitCosmetic.isColorCosmetic) {
+					if(pitCosmetic.refName.equals(cosmeticData.refName)) {
+						Sounds.NO.play(player);
+						return false;
+					}
+					deselectCosmetic(pitCosmetic.cosmeticType);
+				} else {
+					if(pitCosmetic.refName.equals(cosmeticData.refName)) {
+						if(redstoneColor == cosmeticData.redstoneColor) {
+							Sounds.NO.play(player);
+							return false;
+						}
+						ColorableCosmetic colorableCosmetic = (ColorableCosmetic) pitCosmetic;
+						colorableCosmetic.setRedstoneColor(player, redstoneColor);
+					}
 				}
 			}
 		}
 		settingsGUI.pitPlayer.equippedCosmeticMap.put(cosmeticType.name(), new PitPlayer.EquippedCosmeticData(pitCosmetic.refName, redstoneColor));
+		return true;
 	}
 
 	public void setPage(int page) {
@@ -150,7 +171,12 @@ public abstract class SubCosmeticPanel extends AGUIPanel {
 			if(pitCosmetic.isColorCosmetic) {
 				openPanel(new ColorCosmeticPanel(gui, this, pitCosmetic));
 			} else {
-				selectCosmetic(pitCosmetic);
+				boolean success = selectCosmetic(pitCosmetic);
+				if(success) {
+					player.closeInventory();
+					Sounds.SUCCESS.play(player);
+					AOutput.send(player, "&7Equipped your " + pitCosmetic.getDisplayName());
+				}
 			}
 		} else if(slot == getRows() * 9 - 9) {
 			if(page > 1) {
@@ -167,6 +193,7 @@ public abstract class SubCosmeticPanel extends AGUIPanel {
 				Sounds.NO.play(player);
 			}
 		}
+//		TODO: Remove button
 	}
 
 	@Override

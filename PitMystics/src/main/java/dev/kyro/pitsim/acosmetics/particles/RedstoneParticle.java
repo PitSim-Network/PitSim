@@ -9,15 +9,12 @@ import net.minecraft.server.v1_8_R3.PacketPlayOutWorldParticles;
 import org.bukkit.Location;
 
 public class RedstoneParticle extends PitParticle {
-	public RedstoneColor redstoneColor;
-
-	public RedstoneParticle(PitCosmetic pitCosmetic, RedstoneColor redstoneColor) {
+	public RedstoneParticle(PitCosmetic pitCosmetic) {
 		super(pitCosmetic);
-		this.redstoneColor = redstoneColor;
 	}
 
 	@Override
-	public void display(EntityPlayer entityPlayer, Location location) {
+	public void display(EntityPlayer entityPlayer, Location location, RedstoneColor redstoneColor) {
 		entityPlayer.playerConnection.sendPacket(new PacketPlayOutWorldParticles(
 				EnumParticle.REDSTONE, true, (float) location.getX(), (float) location.getY(), (float) location.getZ(),
 				redstoneColor.red, redstoneColor.green, redstoneColor.blue, redstoneColor.brightness, 0

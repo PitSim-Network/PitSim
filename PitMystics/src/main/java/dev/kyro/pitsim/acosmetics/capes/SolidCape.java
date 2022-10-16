@@ -3,10 +3,10 @@ package dev.kyro.pitsim.acosmetics.capes;
 import dev.kyro.arcticapi.builders.AItemStackBuilder;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.RedstoneColor;
+import dev.kyro.pitsim.acosmetics.ColorableCosmetic;
 import dev.kyro.pitsim.acosmetics.CosmeticType;
 import dev.kyro.pitsim.acosmetics.ParticleCollection;
 import dev.kyro.pitsim.acosmetics.ParticleOffset;
-import dev.kyro.pitsim.acosmetics.PitCosmetic;
 import dev.kyro.pitsim.acosmetics.particles.RedstoneParticle;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import net.minecraft.server.v1_8_R3.EntityPlayer;
@@ -18,7 +18,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 
-public class SolidCape extends PitCosmetic {
+public class SolidCape extends ColorableCosmetic {
 	public ParticleCollection particleCollection = new ParticleCollection();
 
 	public SolidCape() {
@@ -27,7 +27,7 @@ public class SolidCape extends PitCosmetic {
 		isColorCosmetic = true;
 
 		RedstoneColor redstoneColor = RedstoneColor.RED;
-		RedstoneParticle particle = new RedstoneParticle(this, redstoneColor);
+		RedstoneParticle particle = new RedstoneParticle(this);
 		for(int i = 0; i < 4; i++) {
 			for(int j = 0; j < 7; j++) {
 				particleCollection.addParticle("main", particle,
@@ -38,7 +38,7 @@ public class SolidCape extends PitCosmetic {
 
 	@Override
 	public void onEnable(PitPlayer pitPlayer) {
-		runnable = new BukkitRunnable() {
+		runnableMap.put(pitPlayer.player.getUniqueId(), new BukkitRunnable() {
 			@Override
 			public void run() {
 				Location displayLocation = pitPlayer.player.getLocation();
@@ -46,15 +46,15 @@ public class SolidCape extends PitCosmetic {
 
 				for(Player onlinePlayer : Bukkit.getOnlinePlayers()) {
 					EntityPlayer entityPlayer = ((CraftPlayer) onlinePlayer).getHandle();
-					particleCollection.display(entityPlayer, displayLocation);
+					particleCollection.display(entityPlayer, displayLocation, getRedstoneColor(pitPlayer.player));
 				}
 			}
-		}.runTaskTimer(PitSim.INSTANCE, 0L, 4L);
+		}.runTaskTimer(PitSim.INSTANCE, 0L, 4L));
 	}
 
 	@Override
 	public void onDisable(PitPlayer pitPlayer) {
-		runnable.cancel();
+		runnableMap.get(pitPlayer.player.getUniqueId()).cancel();
 	}
 
 	@Override

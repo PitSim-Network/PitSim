@@ -28,6 +28,7 @@ public class CosmeticManager implements Listener {
 			PitPlayer pitPlayer = PitPlayer.getPitPlayer(onlinePlayer);
 			List<PitCosmetic> activeCosmetics = CosmeticManager.getActiveCosmetics(pitPlayer);
 			for(PitCosmetic activeCosmetic : activeCosmetics) {
+				activeCosmetic.loadColor(pitPlayer);
 				activeCosmetic.onEnable(pitPlayer);
 			}
 		}
@@ -47,11 +48,10 @@ public class CosmeticManager implements Listener {
 	}
 
 	public static void unlockCosmetic(PitPlayer pitPlayer, PitCosmetic pitCosmetic, RedstoneColor redstoneColor) {
-		PitPlayer.UnlockedCosmeticData cosmeticData = new PitPlayer.UnlockedCosmeticData();
+		PitPlayer.UnlockedCosmeticData cosmeticData = pitPlayer.unlockedCosmeticsMap.get(pitCosmetic.refName);
+		if(cosmeticData == null) cosmeticData = new PitPlayer.UnlockedCosmeticData();
 		if(pitCosmetic.isColorCosmetic) {
-			if(!pitPlayer.unlockedCosmeticsMap.containsKey(pitCosmetic.refName)) {
-				cosmeticData.unlockedColors = new ArrayList<>();
-			}
+			if(cosmeticData.unlockedColors == null) cosmeticData.unlockedColors = new ArrayList<>();
 			cosmeticData.unlockedColors.add(redstoneColor);
 		}
 		pitPlayer.unlockedCosmeticsMap.put(pitCosmetic.refName, cosmeticData);
@@ -82,7 +82,10 @@ public class CosmeticManager implements Listener {
 		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
 
 		List<PitCosmetic> activeCosmetics = getActiveCosmetics(pitPlayer);
-		for(PitCosmetic activeCosmetic : activeCosmetics) activeCosmetic.onEnable(pitPlayer);
+		for(PitCosmetic activeCosmetic : activeCosmetics) {
+			activeCosmetic.loadColor(pitPlayer);
+			activeCosmetic.onEnable(pitPlayer);
+		}
 	}
 
 	@EventHandler

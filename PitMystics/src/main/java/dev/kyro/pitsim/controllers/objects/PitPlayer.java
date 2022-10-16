@@ -148,6 +148,9 @@ public class PitPlayer {
 		public String refName;
 		public RedstoneColor redstoneColor;
 
+		public EquippedCosmeticData() {
+		}
+
 		public EquippedCosmeticData(String refName, RedstoneColor redstoneColor) {
 			this.refName = refName;
 			this.redstoneColor = redstoneColor;

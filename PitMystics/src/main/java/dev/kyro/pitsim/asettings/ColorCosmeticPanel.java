@@ -2,8 +2,11 @@ package dev.kyro.pitsim.asettings;
 
 import dev.kyro.arcticapi.gui.AGUI;
 import dev.kyro.arcticapi.gui.AGUIPanel;
+import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.RedstoneColor;
 import dev.kyro.pitsim.acosmetics.PitCosmetic;
+import dev.kyro.pitsim.misc.Sounds;
+import org.bukkit.Material;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.inventory.InventoryOpenEvent;
@@ -37,12 +40,14 @@ public class ColorCosmeticPanel extends AGUIPanel {
 		this.unlockedColors = pitCosmetic.getUnlockedColors(settingsGUI.pitPlayer);
 		buildInventory();
 
-		for(int i = 0; i < RedstoneColor.values().length; i++) {
-			RedstoneColor redstoneColor = RedstoneColor.values()[i];
-			colorMap.put(i, redstoneColor);
+		inventoryBuilder.createBorder(Material.STAINED_GLASS_PANE, 7);
+		for(int i = 0; i < unlockedColors.size(); i++) {
+			RedstoneColor unlockedColor = unlockedColors.get(i);
+			int slot = cosmeticSlots.get(i);
+			colorMap.put(slot, unlockedColor);
+			boolean isEquipped = pitCosmetic.isEquipped(settingsGUI.pitPlayer, unlockedColor);
+			getInventory().setItem(slot, unlockedColor.getDisplayItem(isEquipped));
 		}
-
-//		TODO: Actually set items (requires items to be generated)
 	}
 
 	@Override
@@ -62,8 +67,14 @@ public class ColorCosmeticPanel extends AGUIPanel {
 
 		if(colorMap.containsKey(slot)) {
 			RedstoneColor redstoneColor = colorMap.get(slot);
-			subPanel.selectCosmetic(pitCosmetic, redstoneColor);
+			boolean success = subPanel.selectCosmetic(pitCosmetic, redstoneColor);
+			if(success) {
+				player.closeInventory();
+				Sounds.SUCCESS.play(player);
+				AOutput.send(player, "&7Equipped your " + redstoneColor.displayName + "&7 " + pitCosmetic.getDisplayName());
+			}
 		}
+//		TODO: Back button
 	}
 
 	@Override
