@@ -2,11 +2,7 @@ package dev.kyro.pitsim.acosmetics.capes;
 
 import dev.kyro.arcticapi.builders.AItemStackBuilder;
 import dev.kyro.pitsim.PitSim;
-import dev.kyro.pitsim.RedstoneColor;
-import dev.kyro.pitsim.acosmetics.ColorableCosmetic;
-import dev.kyro.pitsim.acosmetics.CosmeticType;
-import dev.kyro.pitsim.acosmetics.ParticleCollection;
-import dev.kyro.pitsim.acosmetics.ParticleOffset;
+import dev.kyro.pitsim.acosmetics.*;
 import dev.kyro.pitsim.acosmetics.particles.RedstoneParticle;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import net.minecraft.server.v1_8_R3.EntityPlayer;
@@ -19,19 +15,22 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 
 public class SolidCape extends ColorableCosmetic {
-	public ParticleCollection particleCollection = new ParticleCollection();
+	public ParticleCollection standingCape = new ParticleCollection();
+	public ParticleCollection sneakingCape = new ParticleCollection();
 
 	public SolidCape() {
 		super("&fSolid Cape", "solidcape", CosmeticType.CAPE);
 		accountForPitch = false;
 		isColorCosmetic = true;
+		isPermissionRequired = true;
 
-		RedstoneColor redstoneColor = RedstoneColor.RED;
 		RedstoneParticle particle = new RedstoneParticle(this);
 		for(int i = 0; i < 4; i++) {
 			for(int j = 0; j < 7; j++) {
-				particleCollection.addParticle("main", particle,
+				standingCape.addParticle("main", particle,
 						new ParticleOffset(-0.225 + 0.15 * i, -0.15 * j, -0.25 - 0.04 * j));
+				sneakingCape.addParticle("main", particle,
+						new ParticleOffset(-0.225 + 0.15 * i, -0.15 * j, -0.25 - 0.08 * j));
 			}
 		}
 	}
@@ -41,15 +40,23 @@ public class SolidCape extends ColorableCosmetic {
 		runnableMap.put(pitPlayer.player.getUniqueId(), new BukkitRunnable() {
 			@Override
 			public void run() {
+				if(!CosmeticManager.isStandingStill(pitPlayer.player)) return;
+
 				Location displayLocation = pitPlayer.player.getLocation();
-				displayLocation.add(0, 1.4, 0);
+				double increase = 1.4;
+				if(pitPlayer.player.isSneaking()) increase -= 0.25;
+				displayLocation.add(0, increase, 0);
 
 				for(Player onlinePlayer : Bukkit.getOnlinePlayers()) {
 					EntityPlayer entityPlayer = ((CraftPlayer) onlinePlayer).getHandle();
-					particleCollection.display(entityPlayer, displayLocation, getRedstoneColor(pitPlayer.player));
+					if(pitPlayer.player.isSneaking()) {
+						sneakingCape.display(entityPlayer, displayLocation, getRedstoneColor(pitPlayer.player));
+					} else {
+						standingCape.display(entityPlayer, displayLocation, getRedstoneColor(pitPlayer.player));
+					}
 				}
 			}
-		}.runTaskTimer(PitSim.INSTANCE, 0L, 4L));
+		}.runTaskTimer(PitSim.INSTANCE, 0L, 2L));
 	}
 
 	@Override

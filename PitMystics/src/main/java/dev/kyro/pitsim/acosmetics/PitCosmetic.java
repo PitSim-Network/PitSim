@@ -16,6 +16,7 @@ public abstract class PitCosmetic {
 	public boolean accountForYaw = true;
 	public boolean accountForPitch = true;
 	public boolean isColorCosmetic = false;
+	public boolean isPermissionRequired = false;
 
 	public Map<UUID, BukkitTask> runnableMap = new HashMap<>();
 
@@ -41,11 +42,25 @@ public abstract class PitCosmetic {
 		return itemStack;
 	}
 
+	private boolean hasPermission(PitPlayer pitPlayer, RedstoneColor redstoneColor) {
+		String permission = "pitsim.cosmetic." + cosmeticType.refName + "." + refName;
+		if(redstoneColor == null) {
+			for(RedstoneColor testColor : RedstoneColor.values()) {
+				if(pitPlayer.player.hasPermission(permission + "." +
+						testColor.name().toLowerCase().replaceAll("_", ""))) return true;
+			}
+			return false;
+		}
+		permission += "." + redstoneColor.name().toLowerCase().replaceAll("_", "");
+		return pitPlayer.player.hasPermission(permission);
+	}
+
 	public boolean isUnlocked(PitPlayer pitPlayer) {
 		return isUnlocked(pitPlayer, null);
 	}
 
 	public boolean isUnlocked(PitPlayer pitPlayer, RedstoneColor redstoneColor) {
+		if(isPermissionRequired) return hasPermission(pitPlayer, redstoneColor);
 		PitPlayer.UnlockedCosmeticData unlockedCosmeticData = pitPlayer.unlockedCosmeticsMap.get(refName);
 		if(unlockedCosmeticData == null) return false;
 		if(isColorCosmetic && redstoneColor != null) {
@@ -57,6 +72,14 @@ public abstract class PitCosmetic {
 	public List<RedstoneColor> getUnlockedColors(PitPlayer pitPlayer) {
 		List<RedstoneColor> redstoneColors = new ArrayList<>();
 		if(!isUnlocked(pitPlayer)) return redstoneColors;
+
+		if(isPermissionRequired) {
+			for(RedstoneColor redstoneColor : RedstoneColor.values()) {
+				if(hasPermission(pitPlayer, redstoneColor)) redstoneColors.add(redstoneColor);
+			}
+			return redstoneColors;
+		}
+
 		List<RedstoneColor> unorderedColors = pitPlayer.unlockedCosmeticsMap.get(refName).unlockedColors;
 		for(RedstoneColor redstoneColor : RedstoneColor.values()) {
 			if(unorderedColors.contains(redstoneColor)) redstoneColors.add(redstoneColor);
@@ -66,13 +89,14 @@ public abstract class PitCosmetic {
 
 //	Returns true if color cosmetic if any color is equipped
 	public boolean isEquipped(PitPlayer pitPlayer) {
+		if(!isUnlocked(pitPlayer)) return false;
 		if(!pitPlayer.equippedCosmeticMap.containsKey(cosmeticType.name())) return false;
 		PitPlayer.EquippedCosmeticData cosmeticData = pitPlayer.equippedCosmeticMap.get(cosmeticType.name());
 		return cosmeticData.refName.equals(refName);
 	}
 
 	public boolean isEquipped(PitPlayer pitPlayer, RedstoneColor redstoneColor) {
-		if(!isEquipped(pitPlayer)) return false;
+		if(!isEquipped(pitPlayer) || !isUnlocked(pitPlayer, redstoneColor)) return false;
 		PitPlayer.EquippedCosmeticData cosmeticData = pitPlayer.equippedCosmeticMap.get(cosmeticType.name());
 		return cosmeticData.redstoneColor == redstoneColor;
 	}
@@ -80,6 +104,7 @@ public abstract class PitCosmetic {
 	public RedstoneColor getColor(PitPlayer pitPlayer) {
 		if(!isEquipped(pitPlayer)) return null;
 		PitPlayer.EquippedCosmeticData cosmeticData = pitPlayer.equippedCosmeticMap.get(cosmeticType.name());
+		if(cosmeticData == null) return null;
 		return cosmeticData.redstoneColor;
 	}
 

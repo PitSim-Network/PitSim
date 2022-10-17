@@ -9,21 +9,23 @@ import java.util.Arrays;
 import java.util.List;
 
 public enum CosmeticType {
-	KILL_EFFECT("", null),
-	DEATH_EFFECT("", null),
-	BOUNTY_CLAIM_MESSAGE("", null),
-	CAPE("&fCapes", CapesPanel.class),
-	PARTICLE_TRAIL("", null),
-	AURA("", null),
-	MISC("", null);
+	KILL_EFFECT("", "", null),
+	DEATH_EFFECT("", "", null),
+	BOUNTY_CLAIM_MESSAGE("", "", null),
+	CAPE("&fCapes", "capes", CapesPanel.class),
+	PARTICLE_TRAIL("", "", null),
+	AURA("", "", null),
+	MISC("", "", null);
 
 	private static List<Integer> settingsGUISlots = new ArrayList<>(Arrays.asList(10, 11, 12, 13, 14, 15, 16));
 
 	private String panelName;
+	public String refName;
 	public Class<? extends SubCosmeticPanel> panelClazz;
 
-	CosmeticType(String panelName, Class<? extends SubCosmeticPanel> panelClazz) {
+	CosmeticType(String panelName, String refName, Class<? extends SubCosmeticPanel> panelClazz) {
 		this.panelName = panelName;
+		this.refName = refName;
 		this.panelClazz = panelClazz;
 	}
 

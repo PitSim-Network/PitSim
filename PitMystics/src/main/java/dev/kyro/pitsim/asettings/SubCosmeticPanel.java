@@ -4,7 +4,6 @@ import dev.kyro.arcticapi.builders.AItemStackBuilder;
 import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.arcticapi.gui.AGUI;
 import dev.kyro.arcticapi.gui.AGUIPanel;
-import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.RedstoneColor;
 import dev.kyro.pitsim.acosmetics.ColorableCosmetic;
 import dev.kyro.pitsim.acosmetics.CosmeticManager;
@@ -124,6 +123,7 @@ public abstract class SubCosmeticPanel extends AGUIPanel {
 			}
 		}
 		settingsGUI.pitPlayer.equippedCosmeticMap.put(cosmeticType.name(), new PitPlayer.EquippedCosmeticData(pitCosmetic.refName, redstoneColor));
+		pitCosmetic.onEnable(settingsGUI.pitPlayer);
 		return true;
 	}
 
@@ -175,7 +175,7 @@ public abstract class SubCosmeticPanel extends AGUIPanel {
 				if(success) {
 					player.closeInventory();
 					Sounds.SUCCESS.play(player);
-					AOutput.send(player, "&7Equipped your " + pitCosmetic.getDisplayName());
+					CosmeticManager.sendEquipMessage(settingsGUI.pitPlayer, pitCosmetic, null);
 				}
 			}
 		} else if(slot == getRows() * 9 - 9) {

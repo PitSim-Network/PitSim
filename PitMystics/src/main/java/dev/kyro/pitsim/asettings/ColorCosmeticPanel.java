@@ -1,15 +1,18 @@
 package dev.kyro.pitsim.asettings;
 
+import dev.kyro.arcticapi.builders.AItemStackBuilder;
+import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.arcticapi.gui.AGUI;
 import dev.kyro.arcticapi.gui.AGUIPanel;
-import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.RedstoneColor;
+import dev.kyro.pitsim.acosmetics.CosmeticManager;
 import dev.kyro.pitsim.acosmetics.PitCosmetic;
 import dev.kyro.pitsim.misc.Sounds;
 import org.bukkit.Material;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.inventory.InventoryOpenEvent;
+import org.bukkit.inventory.ItemStack;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -22,11 +25,20 @@ public class ColorCosmeticPanel extends AGUIPanel {
 	public PitCosmetic pitCosmetic;
 	public List<RedstoneColor> unlockedColors;
 
+	public static ItemStack backItem;
+
 	public static List<Integer> cosmeticSlots = new ArrayList<>();
 	public Map<Integer, RedstoneColor> colorMap = new HashMap<>();
 
 	static {
-		for(int i = 9; i < 27; i++) {
+		backItem = new AItemStackBuilder(Material.BARRIER)
+				.setName("&c&lBack")
+				.setLore(new ALoreBuilder(
+						"&7Click to go to the previous screen"
+				))
+				.getItemStack();
+
+		for(int i = 9; i < 36; i++) {
 			if(i % 9 == 0 || (i + 1) % 9 == 0) continue;
 			cosmeticSlots.add(i);
 		}
@@ -41,6 +53,8 @@ public class ColorCosmeticPanel extends AGUIPanel {
 		buildInventory();
 
 		inventoryBuilder.createBorder(Material.STAINED_GLASS_PANE, 7);
+		getInventory().setItem(getRows() * 9 - 5, backItem);
+
 		for(int i = 0; i < unlockedColors.size(); i++) {
 			RedstoneColor unlockedColor = unlockedColors.get(i);
 			int slot = cosmeticSlots.get(i);
@@ -71,10 +85,11 @@ public class ColorCosmeticPanel extends AGUIPanel {
 			if(success) {
 				player.closeInventory();
 				Sounds.SUCCESS.play(player);
-				AOutput.send(player, "&7Equipped your " + redstoneColor.displayName + "&7 " + pitCosmetic.getDisplayName());
+				CosmeticManager.sendEquipMessage(settingsGUI.pitPlayer, pitCosmetic, redstoneColor);
 			}
+		} else if(slot == getRows() * 9 - 5) {
+			openPreviousGUI();
 		}
-//		TODO: Back button
 	}
 
 	@Override
