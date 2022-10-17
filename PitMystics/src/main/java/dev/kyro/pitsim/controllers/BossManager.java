@@ -337,8 +337,6 @@ public class BossManager implements Listener {
         pitPlayer.taintedSouls += amount;
         pitPlayer.soulsGathered += amount;
         pitPlayer.stats.lifetimeSouls += amount;
-        AOutput.send(player, "&d&lTAINTED &7You have gained &f" + amount + " Tainted Souls&7.");
+        AOutput.send(player, "&d&lTAINTED!&7 You have gained &f" + amount + " Tainted Souls&7.");
     }
-
-
 }
