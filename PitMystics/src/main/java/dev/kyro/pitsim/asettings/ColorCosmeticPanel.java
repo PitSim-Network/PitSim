@@ -4,7 +4,7 @@ import dev.kyro.arcticapi.builders.AItemStackBuilder;
 import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.arcticapi.gui.AGUI;
 import dev.kyro.arcticapi.gui.AGUIPanel;
-import dev.kyro.pitsim.RedstoneColor;
+import dev.kyro.pitsim.ParticleColor;
 import dev.kyro.pitsim.acosmetics.CosmeticManager;
 import dev.kyro.pitsim.acosmetics.PitCosmetic;
 import dev.kyro.pitsim.misc.Sounds;
@@ -23,12 +23,12 @@ public class ColorCosmeticPanel extends AGUIPanel {
 	public SettingsGUI settingsGUI;
 	public SubCosmeticPanel subPanel;
 	public PitCosmetic pitCosmetic;
-	public List<RedstoneColor> unlockedColors;
+	public List<ParticleColor> unlockedColors;
 
 	public static ItemStack backItem;
 
 	public static List<Integer> cosmeticSlots = new ArrayList<>();
-	public Map<Integer, RedstoneColor> colorMap = new HashMap<>();
+	public Map<Integer, ParticleColor> colorMap = new HashMap<>();
 
 	static {
 		backItem = new AItemStackBuilder(Material.BARRIER)
@@ -56,7 +56,7 @@ public class ColorCosmeticPanel extends AGUIPanel {
 		getInventory().setItem(getRows() * 9 - 5, backItem);
 
 		for(int i = 0; i < unlockedColors.size(); i++) {
-			RedstoneColor unlockedColor = unlockedColors.get(i);
+			ParticleColor unlockedColor = unlockedColors.get(i);
 			int slot = cosmeticSlots.get(i);
 			colorMap.put(slot, unlockedColor);
 			boolean isEquipped = pitCosmetic.isEquipped(settingsGUI.pitPlayer, unlockedColor);
@@ -80,12 +80,12 @@ public class ColorCosmeticPanel extends AGUIPanel {
 		int slot = event.getSlot();
 
 		if(colorMap.containsKey(slot)) {
-			RedstoneColor redstoneColor = colorMap.get(slot);
-			boolean success = subPanel.selectCosmetic(pitCosmetic, redstoneColor);
+			ParticleColor particleColor = colorMap.get(slot);
+			boolean success = subPanel.selectCosmetic(pitCosmetic, particleColor);
 			if(success) {
 				player.closeInventory();
 				Sounds.SUCCESS.play(player);
-				CosmeticManager.sendEquipMessage(settingsGUI.pitPlayer, pitCosmetic, redstoneColor);
+				CosmeticManager.sendEquipMessage(settingsGUI.pitPlayer, pitCosmetic, particleColor);
 			}
 		} else if(slot == getRows() * 9 - 5) {
 			openPreviousGUI();

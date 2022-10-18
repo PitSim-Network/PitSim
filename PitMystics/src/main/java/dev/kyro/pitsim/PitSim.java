@@ -14,7 +14,8 @@ import dev.kyro.arcticapi.hooks.AHook;
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.acosmetics.CosmeticManager;
 import dev.kyro.pitsim.acosmetics.PitCosmetic;
-import dev.kyro.pitsim.acosmetics.aura.SmokeTrail;
+import dev.kyro.pitsim.acosmetics.aura.VillagerHappyAura;
+import dev.kyro.pitsim.acosmetics.trails.SmokeTrail;
 import dev.kyro.pitsim.acosmetics.capes.FireCape;
 import dev.kyro.pitsim.acosmetics.capes.MagicCape;
 import dev.kyro.pitsim.acosmetics.capes.SolidCape;
@@ -663,6 +664,8 @@ public class PitSim extends JavaPlugin {
 		CosmeticManager.registerCosmetic(new MagicCape());
 
 		CosmeticManager.registerCosmetic(new SmokeTrail());
+
+		CosmeticManager.registerCosmetic(new VillagerHappyAura());
 
 		CosmeticManager.loadForOnlinePlayers();
 	}

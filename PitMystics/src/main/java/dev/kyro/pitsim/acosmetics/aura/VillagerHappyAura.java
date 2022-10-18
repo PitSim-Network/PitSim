@@ -4,7 +4,7 @@ import dev.kyro.arcticapi.builders.AItemStackBuilder;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.acosmetics.*;
 import dev.kyro.pitsim.acosmetics.collections.ParticleCollection;
-import dev.kyro.pitsim.acosmetics.particles.SmokeParticle;
+import dev.kyro.pitsim.acosmetics.particles.VillagerHappyParticle;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import net.minecraft.server.v1_8_R3.EntityPlayer;
 import org.bukkit.Location;
@@ -13,21 +13,17 @@ import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
-import org.bukkit.util.Vector;
 
-public class SmokeTrail extends PitCosmetic {
+public class VillagerHappyAura extends PitCosmetic {
 	public ParticleCollection collection = new ParticleCollection();
 
-	public SmokeTrail() {
-		super("&8Smoke Trail", "smoketrail", CosmeticType.PARTICLE_TRAIL);
+	public VillagerHappyAura() {
+		super("&aLively Aura", "livelyaura", CosmeticType.AURA);
 		accountForPitch = false;
 
-		PitParticle particle = new SmokeParticle(this);
-
-		for(int i = 0; i < 2; i++) {
-			Vector vector = new Vector(0, 0, 0);
-			collection.addParticle("main", particle, new ParticleOffset(vector, 1, 1, 1));
-		}
+		PitParticle particle = new VillagerHappyParticle(this);
+		double distance = 10;
+		collection.addParticle("main", particle, new ParticleOffset(0, distance / 4 - 2, 0, distance, distance / 2 + 1, distance));
 	}
 
 	@Override
@@ -35,11 +31,11 @@ public class SmokeTrail extends PitCosmetic {
 		runnableMap.put(pitPlayer.player.getUniqueId(), new BukkitRunnable() {
 			@Override
 			public void run() {
-				if(CosmeticManager.isStandingStill(pitPlayer.player)) return;
 				Location displayLocation = pitPlayer.player.getLocation();
+
 				for(Player onlinePlayer : CosmeticManager.getDisplayPlayers(pitPlayer.player, displayLocation)) {
 					EntityPlayer entityPlayer = ((CraftPlayer) onlinePlayer).getHandle();
-					collection.displayAll(entityPlayer, displayLocation);
+					for(int i = 0; i < 5; i++) collection.display("main", entityPlayer, displayLocation);
 				}
 			}
 		}.runTaskTimer(PitSim.INSTANCE, 0L, 1L));
@@ -52,7 +48,7 @@ public class SmokeTrail extends PitCosmetic {
 
 	@Override
 	public ItemStack getRawDisplayItem() {
-		ItemStack itemStack = new AItemStackBuilder(Material.BLAZE_POWDER)
+		ItemStack itemStack = new AItemStackBuilder(Material.EMERALD_ORE)
 				.setName(getDisplayName())
 				.getItemStack();
 		return itemStack;

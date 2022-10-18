@@ -27,7 +27,7 @@ public class SolidCape extends ColorableCosmetic {
 		runnableMap.put(pitPlayer.player.getUniqueId(), new BukkitRunnable() {
 			@Override
 			public void run() {
-				cape.draw(SolidCape.this, pitPlayer, getRedstoneColor(pitPlayer.player));
+				cape.draw(SolidCape.this, pitPlayer, getParticleColor(pitPlayer.player));
 			}
 		}.runTaskTimer(PitSim.INSTANCE, 0L, 2L));
 	}

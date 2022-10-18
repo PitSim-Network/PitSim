@@ -4,7 +4,7 @@ import dev.kyro.arcticapi.builders.AItemStackBuilder;
 import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.arcticapi.gui.AGUI;
 import dev.kyro.arcticapi.gui.AGUIPanel;
-import dev.kyro.pitsim.RedstoneColor;
+import dev.kyro.pitsim.ParticleColor;
 import dev.kyro.pitsim.acosmetics.ColorableCosmetic;
 import dev.kyro.pitsim.acosmetics.CosmeticManager;
 import dev.kyro.pitsim.acosmetics.CosmeticType;
@@ -106,7 +106,7 @@ public abstract class SubCosmeticPanel extends AGUIPanel {
 		return selectCosmetic(pitCosmetic, null);
 	}
 
-	public boolean selectCosmetic(PitCosmetic pitCosmetic, RedstoneColor redstoneColor) {
+	public boolean selectCosmetic(PitCosmetic pitCosmetic, ParticleColor particleColor) {
 		PitPlayer.EquippedCosmeticData cosmeticData = settingsGUI.pitPlayer.equippedCosmeticMap.get(cosmeticType.name());
 		if(cosmeticData != null) {
 			if(!pitCosmetic.isColorCosmetic) {
@@ -117,18 +117,18 @@ public abstract class SubCosmeticPanel extends AGUIPanel {
 				deselectCosmetic(pitCosmetic.cosmeticType);
 			} else {
 				if(pitCosmetic.refName.equals(cosmeticData.refName)) {
-					if(redstoneColor == cosmeticData.redstoneColor) {
+					if(particleColor == cosmeticData.particleColor) {
 						Sounds.NO.play(player);
 						return false;
 					}
-					ColorableCosmetic colorableCosmetic = (ColorableCosmetic) pitCosmetic;
-					colorableCosmetic.setRedstoneColor(player, redstoneColor);
 				} else {
 					deselectCosmetic(pitCosmetic.cosmeticType);
 				}
+				ColorableCosmetic colorableCosmetic = (ColorableCosmetic) pitCosmetic;
+				colorableCosmetic.setParticleColor(player, particleColor);
 			}
 		}
-		settingsGUI.pitPlayer.equippedCosmeticMap.put(cosmeticType.name(), new PitPlayer.EquippedCosmeticData(pitCosmetic.refName, redstoneColor));
+		settingsGUI.pitPlayer.equippedCosmeticMap.put(cosmeticType.name(), new PitPlayer.EquippedCosmeticData(pitCosmetic.refName, particleColor));
 		pitCosmetic.onEnable(settingsGUI.pitPlayer);
 		return true;
 	}

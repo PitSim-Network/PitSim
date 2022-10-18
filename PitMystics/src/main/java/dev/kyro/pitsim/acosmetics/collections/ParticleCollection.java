@@ -1,6 +1,6 @@
 package dev.kyro.pitsim.acosmetics.collections;
 
-import dev.kyro.pitsim.RedstoneColor;
+import dev.kyro.pitsim.ParticleColor;
 import dev.kyro.pitsim.acosmetics.ParticleOffset;
 import dev.kyro.pitsim.acosmetics.PitParticle;
 import net.minecraft.server.v1_8_R3.EntityPlayer;
@@ -47,13 +47,13 @@ public class ParticleCollection {
 		display(ref, entityPlayer, location, null);
 	}
 
-	public void display(int ref, EntityPlayer entityPlayer, Location location, RedstoneColor redstoneColor) {
-		display(String.valueOf(ref), entityPlayer, location, redstoneColor);
+	public void display(int ref, EntityPlayer entityPlayer, Location location, ParticleColor particleColor) {
+		display(String.valueOf(ref), entityPlayer, location, particleColor);
 	}
 
-	public void display(String ref, EntityPlayer entityPlayer, Location location, RedstoneColor redstoneColor) {
+	public void display(String ref, EntityPlayer entityPlayer, Location location, ParticleColor particleColor) {
 		for(ParticleData particleData : particleCollectionMap.get(ref)) {
-			particleData.pitParticle.display(entityPlayer, location, particleData.particleOffset, redstoneColor);
+			particleData.pitParticle.display(entityPlayer, location, particleData.particleOffset, particleColor);
 		}
 	}
 
@@ -61,10 +61,10 @@ public class ParticleCollection {
 		displayAll(entityPlayer, location, null);
 	}
 
-	public void displayAll(EntityPlayer entityPlayer, Location location, RedstoneColor redstoneColor) {
+	public void displayAll(EntityPlayer entityPlayer, Location location, ParticleColor particleColor) {
 		for(Map.Entry<String, List<ParticleData>> entry : particleCollectionMap.entrySet()) {
 			for(ParticleData particleData : entry.getValue()) {
-				particleData.pitParticle.display(entityPlayer, location, particleData.particleOffset, redstoneColor);
+				particleData.pitParticle.display(entityPlayer, location, particleData.particleOffset, particleColor);
 			}
 		}
 	}

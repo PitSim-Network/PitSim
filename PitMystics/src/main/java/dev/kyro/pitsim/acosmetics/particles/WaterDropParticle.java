@@ -1,6 +1,6 @@
 package dev.kyro.pitsim.acosmetics.particles;
 
-import dev.kyro.pitsim.RedstoneColor;
+import dev.kyro.pitsim.ParticleColor;
 import dev.kyro.pitsim.acosmetics.PitCosmetic;
 import dev.kyro.pitsim.acosmetics.PitParticle;
 import net.minecraft.server.v1_8_R3.EntityPlayer;
@@ -8,15 +8,15 @@ import net.minecraft.server.v1_8_R3.EnumParticle;
 import net.minecraft.server.v1_8_R3.PacketPlayOutWorldParticles;
 import org.bukkit.Location;
 
-public class MagicParticle extends PitParticle {
-	public MagicParticle(PitCosmetic pitCosmetic) {
+public class WaterDropParticle extends PitParticle {
+	public WaterDropParticle(PitCosmetic pitCosmetic) {
 		super(pitCosmetic);
 	}
 
 	@Override
-	public void display(EntityPlayer entityPlayer, Location location, RedstoneColor redstoneColor) {
+	public void display(EntityPlayer entityPlayer, Location location, ParticleColor particleColor) {
 		entityPlayer.playerConnection.sendPacket(new PacketPlayOutWorldParticles(
-				EnumParticle.ENCHANTMENT_TABLE, true, (float) location.getX(), (float) location.getY(), (float) location.getZ(),
+				EnumParticle.WATER_DROP, true, (float) location.getX(), (float) location.getY(), (float) location.getZ(),
 				0, 0, 0, 0, 0
 		));
 	}

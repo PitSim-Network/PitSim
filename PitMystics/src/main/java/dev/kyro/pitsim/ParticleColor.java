@@ -6,7 +6,7 @@ import dev.kyro.pitsim.misc.Misc;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 
-public enum RedstoneColor {
+public enum ParticleColor {
 	DARK_RED("&4Dark Red", 1,  0.66406F, 0F, 0F, 1),
 	RED("&cRed", 1,  1F, 0.33203F, 0.33203F, 1),
 	GOLD("&6Orange", 14,  1F, 0.66406F, 0F, 1),
@@ -31,7 +31,7 @@ public enum RedstoneColor {
 	public float blue;
 	public float brightness;
 
-	RedstoneColor(String displayName, int data, float red, float green, float blue, float brightness) {
+	ParticleColor(String displayName, int data, float red, float green, float blue, float brightness) {
 		this.displayName = displayName;
 		this.data = data;
 		this.red = red;
@@ -51,8 +51,8 @@ public enum RedstoneColor {
 		return itemStack;
 	}
 
-	public static RedstoneColor getRedstoneColor(String refName) {
-		for(RedstoneColor value : values()) {
+	public static ParticleColor getParticleColor(String refName) {
+		for(ParticleColor value : values()) {
 			if(refName.equalsIgnoreCase(value.name().replaceAll("_", ""))) return value;
 		}
 		return null;

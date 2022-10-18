@@ -1,6 +1,6 @@
 package dev.kyro.pitsim.acosmetics;
 
-import dev.kyro.pitsim.RedstoneColor;
+import dev.kyro.pitsim.ParticleColor;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.misc.Misc;
 import org.bukkit.ChatColor;
@@ -33,7 +33,7 @@ public abstract class PitCosmetic {
 	public void loadColor(PitPlayer pitPlayer) {
 		if(!(this instanceof ColorableCosmetic)) return;
 		ColorableCosmetic colorableCosmetic = (ColorableCosmetic) this;
-		colorableCosmetic.setRedstoneColor(pitPlayer.player, getColor(pitPlayer));
+		colorableCosmetic.setParticleColor(pitPlayer.player, getColor(pitPlayer));
 	}
 
 	public ItemStack getDisplayItem(boolean equipped) {
@@ -42,16 +42,16 @@ public abstract class PitCosmetic {
 		return itemStack;
 	}
 
-	private boolean hasPermission(PitPlayer pitPlayer, RedstoneColor redstoneColor) {
+	private boolean hasPermission(PitPlayer pitPlayer, ParticleColor particleColor) {
 		String permission = "pitsim.cosmetic." + cosmeticType.refName + "." + refName;
-		if(redstoneColor == null) {
-			for(RedstoneColor testColor : RedstoneColor.values()) {
+		if(particleColor == null) {
+			for(ParticleColor testColor : ParticleColor.values()) {
 				if(pitPlayer.player.hasPermission(permission + "." +
 						testColor.name().toLowerCase().replaceAll("_", ""))) return true;
 			}
 			return false;
 		}
-		permission += "." + redstoneColor.name().toLowerCase().replaceAll("_", "");
+		permission += "." + particleColor.name().toLowerCase().replaceAll("_", "");
 		return pitPlayer.player.hasPermission(permission);
 	}
 
@@ -59,32 +59,32 @@ public abstract class PitCosmetic {
 		return isUnlocked(pitPlayer, null);
 	}
 
-	public boolean isUnlocked(PitPlayer pitPlayer, RedstoneColor redstoneColor) {
-		if(isPermissionRequired) return hasPermission(pitPlayer, redstoneColor);
+	public boolean isUnlocked(PitPlayer pitPlayer, ParticleColor particleColor) {
+		if(isPermissionRequired) return hasPermission(pitPlayer, particleColor);
 		PitPlayer.UnlockedCosmeticData unlockedCosmeticData = pitPlayer.unlockedCosmeticsMap.get(refName);
 		if(unlockedCosmeticData == null) return false;
-		if(isColorCosmetic && redstoneColor != null) {
-			return unlockedCosmeticData.unlockedColors.contains(redstoneColor);
+		if(isColorCosmetic && particleColor != null) {
+			return unlockedCosmeticData.unlockedColors.contains(particleColor);
 		}
 		return true;
 	}
 
-	public List<RedstoneColor> getUnlockedColors(PitPlayer pitPlayer) {
-		List<RedstoneColor> redstoneColors = new ArrayList<>();
-		if(!isUnlocked(pitPlayer)) return redstoneColors;
+	public List<ParticleColor> getUnlockedColors(PitPlayer pitPlayer) {
+		List<ParticleColor> particleColors = new ArrayList<>();
+		if(!isUnlocked(pitPlayer)) return particleColors;
 
 		if(isPermissionRequired) {
-			for(RedstoneColor redstoneColor : RedstoneColor.values()) {
-				if(hasPermission(pitPlayer, redstoneColor)) redstoneColors.add(redstoneColor);
+			for(ParticleColor particleColor : ParticleColor.values()) {
+				if(hasPermission(pitPlayer, particleColor)) particleColors.add(particleColor);
 			}
-			return redstoneColors;
+			return particleColors;
 		}
 
-		List<RedstoneColor> unorderedColors = pitPlayer.unlockedCosmeticsMap.get(refName).unlockedColors;
-		for(RedstoneColor redstoneColor : RedstoneColor.values()) {
-			if(unorderedColors.contains(redstoneColor)) redstoneColors.add(redstoneColor);
+		List<ParticleColor> unorderedColors = pitPlayer.unlockedCosmeticsMap.get(refName).unlockedColors;
+		for(ParticleColor particleColor : ParticleColor.values()) {
+			if(unorderedColors.contains(particleColor)) particleColors.add(particleColor);
 		}
-		return redstoneColors;
+		return particleColors;
 	}
 
 //	Returns true if color cosmetic if any color is equipped
@@ -96,17 +96,17 @@ public abstract class PitCosmetic {
 		return cosmeticData.refName.equals(refName);
 	}
 
-	public boolean isEquipped(PitPlayer pitPlayer, RedstoneColor redstoneColor) {
-		if(!isEquipped(pitPlayer) || !isUnlocked(pitPlayer, redstoneColor)) return false;
+	public boolean isEquipped(PitPlayer pitPlayer, ParticleColor particleColor) {
+		if(!isEquipped(pitPlayer) || !isUnlocked(pitPlayer, particleColor)) return false;
 		PitPlayer.EquippedCosmeticData cosmeticData = pitPlayer.equippedCosmeticMap.get(cosmeticType.name());
-		return cosmeticData.redstoneColor == redstoneColor;
+		return cosmeticData.particleColor == particleColor;
 	}
 
-	public RedstoneColor getColor(PitPlayer pitPlayer) {
+	public ParticleColor getColor(PitPlayer pitPlayer) {
 		if(!isEquipped(pitPlayer)) return null;
 		PitPlayer.EquippedCosmeticData cosmeticData = pitPlayer.equippedCosmeticMap.get(cosmeticType.name());
 		if(cosmeticData == null) return null;
-		return cosmeticData.redstoneColor;
+		return cosmeticData.particleColor;
 	}
 
 	public String getDisplayName() {

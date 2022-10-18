@@ -2,7 +2,7 @@ package dev.kyro.pitsim.acosmetics;
 
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.PitSim;
-import dev.kyro.pitsim.RedstoneColor;
+import dev.kyro.pitsim.ParticleColor;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -66,15 +66,17 @@ public class CosmeticManager implements Listener {
 		return displayPlayers;
 	}
 
-	public static void sendEquipMessage(PitPlayer pitPlayer, PitCosmetic pitCosmetic, RedstoneColor redstoneColor) {
+	public static void sendEquipMessage(PitPlayer pitPlayer, PitCosmetic pitCosmetic, ParticleColor particleColor) {
+		if(pitCosmetic == null) return;
 		if(pitCosmetic.isColorCosmetic) {
-			AOutput.send(pitPlayer.player, "&e&lFANCY!&7 Equipped " + pitCosmetic.getDisplayName() + " &7(" + redstoneColor.displayName + "&7)");
+			AOutput.send(pitPlayer.player, "&e&lFANCY!&7 Equipped " + pitCosmetic.getDisplayName() + " &7(" + particleColor.displayName + "&7)");
 		} else {
 			AOutput.send(pitPlayer.player, "&e&lFANCY!&7 Equipped " + pitCosmetic.getDisplayName());
 		}
 	}
 
 	public static void sendDisableMessage(PitPlayer pitPlayer, PitCosmetic pitCosmetic) {
+		if(pitCosmetic == null) return;
 		AOutput.send(pitPlayer.player, "&e&lFANCY!&7 disabled " + pitCosmetic.getDisplayName());
 	}
 
@@ -109,12 +111,12 @@ public class CosmeticManager implements Listener {
 		return null;
 	}
 
-	public static void unlockCosmetic(PitPlayer pitPlayer, PitCosmetic pitCosmetic, RedstoneColor redstoneColor) {
+	public static void unlockCosmetic(PitPlayer pitPlayer, PitCosmetic pitCosmetic, ParticleColor particleColor) {
 		PitPlayer.UnlockedCosmeticData cosmeticData = pitPlayer.unlockedCosmeticsMap.get(pitCosmetic.refName);
 		if(cosmeticData == null) cosmeticData = new PitPlayer.UnlockedCosmeticData();
 		if(pitCosmetic.isColorCosmetic) {
 			if(cosmeticData.unlockedColors == null) cosmeticData.unlockedColors = new ArrayList<>();
-			cosmeticData.unlockedColors.add(redstoneColor);
+			cosmeticData.unlockedColors.add(particleColor);
 		}
 		pitPlayer.unlockedCosmeticsMap.put(pitCosmetic.refName, cosmeticData);
 	}

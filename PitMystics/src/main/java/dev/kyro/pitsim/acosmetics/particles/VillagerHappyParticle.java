@@ -1,6 +1,6 @@
 package dev.kyro.pitsim.acosmetics.particles;
 
-import dev.kyro.pitsim.RedstoneColor;
+import dev.kyro.pitsim.ParticleColor;
 import dev.kyro.pitsim.acosmetics.PitCosmetic;
 import dev.kyro.pitsim.acosmetics.PitParticle;
 import net.minecraft.server.v1_8_R3.EntityPlayer;
@@ -14,7 +14,7 @@ public class VillagerHappyParticle extends PitParticle {
 	}
 
 	@Override
-	public void display(EntityPlayer entityPlayer, Location location, RedstoneColor redstoneColor) {
+	public void display(EntityPlayer entityPlayer, Location location, ParticleColor particleColor) {
 		entityPlayer.playerConnection.sendPacket(new PacketPlayOutWorldParticles(
 				EnumParticle.VILLAGER_HAPPY, true, (float) location.getX(), (float) location.getY(), (float) location.getZ(),
 				0, 0, 0, 0, 0

@@ -1,6 +1,6 @@
 package dev.kyro.pitsim.acosmetics.collections;
 
-import dev.kyro.pitsim.RedstoneColor;
+import dev.kyro.pitsim.ParticleColor;
 import dev.kyro.pitsim.acosmetics.CosmeticManager;
 import dev.kyro.pitsim.acosmetics.ParticleOffset;
 import dev.kyro.pitsim.acosmetics.PitCosmetic;
@@ -24,7 +24,7 @@ public class CapeCollection extends ParticleCollection {
 		}
 	}
 
-	public void draw(PitCosmetic pitCosmetic, PitPlayer pitPlayer, RedstoneColor redstoneColor) {
+	public void draw(PitCosmetic pitCosmetic, PitPlayer pitPlayer, ParticleColor particleColor) {
 		if(!CosmeticManager.isStandingStill(pitPlayer.player)) return;
 
 		Location displayLocation = pitPlayer.player.getLocation();
@@ -35,9 +35,9 @@ public class CapeCollection extends ParticleCollection {
 		for(Player onlinePlayer : CosmeticManager.getDisplayPlayers(pitPlayer.player, displayLocation)) {
 			EntityPlayer entityPlayer = ((CraftPlayer) onlinePlayer).getHandle();
 			if(pitPlayer.player.isSneaking()) {
-				display("sneaking", entityPlayer, displayLocation, redstoneColor);
+				display("sneaking", entityPlayer, displayLocation, particleColor);
 			} else {
-				display("standing", entityPlayer, displayLocation, redstoneColor);
+				display("standing", entityPlayer, displayLocation, particleColor);
 			}
 		}
 	}

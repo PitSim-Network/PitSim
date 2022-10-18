@@ -5,7 +5,7 @@ import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.acosmetics.CosmeticType;
 import dev.kyro.pitsim.acosmetics.PitCosmetic;
 import dev.kyro.pitsim.acosmetics.collections.CapeCollection;
-import dev.kyro.pitsim.acosmetics.particles.MagicParticle;
+import dev.kyro.pitsim.acosmetics.particles.EnchantmentTableParticle;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
@@ -18,7 +18,7 @@ public class MagicCape extends PitCosmetic {
 		super("&5Magic Cape", "magiccape", CosmeticType.CAPE);
 		accountForPitch = false;
 
-		cape = new CapeCollection(new MagicParticle(this));
+		cape = new CapeCollection(new EnchantmentTableParticle(this));
 	}
 
 	@Override

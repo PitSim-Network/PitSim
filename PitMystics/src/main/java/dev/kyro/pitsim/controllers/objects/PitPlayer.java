@@ -5,7 +5,7 @@ import dev.kyro.arcticapi.data.APlayer;
 import dev.kyro.arcticapi.data.APlayerData;
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.PitSim;
-import dev.kyro.pitsim.RedstoneColor;
+import dev.kyro.pitsim.ParticleColor;
 import dev.kyro.pitsim.battlepass.PassData;
 import dev.kyro.pitsim.battlepass.quests.ReachKillstreakQuest;
 import dev.kyro.pitsim.brewing.BrewingManager;
@@ -141,19 +141,19 @@ public class PitPlayer {
 
 	public Map<String, UnlockedCosmeticData> unlockedCosmeticsMap = new HashMap<>();
 	public static class UnlockedCosmeticData {
-		public List<RedstoneColor> unlockedColors;
+		public List<ParticleColor> unlockedColors;
 	}
 	public Map<String, EquippedCosmeticData> equippedCosmeticMap = new HashMap<>();
 	public static class EquippedCosmeticData {
 		public String refName;
-		public RedstoneColor redstoneColor;
+		public ParticleColor particleColor;
 
 		public EquippedCosmeticData() {
 		}
 
-		public EquippedCosmeticData(String refName, RedstoneColor redstoneColor) {
+		public EquippedCosmeticData(String refName, ParticleColor particleColor) {
 			this.refName = refName;
-			this.redstoneColor = redstoneColor;
+			this.particleColor = particleColor;
 		}
 	}
 

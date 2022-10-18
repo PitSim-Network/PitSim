@@ -3,7 +3,7 @@ package dev.kyro.pitsim.commands.admin;
 import dev.kyro.arcticapi.commands.ACommand;
 import dev.kyro.arcticapi.commands.AMultiCommand;
 import dev.kyro.arcticapi.misc.AOutput;
-import dev.kyro.pitsim.RedstoneColor;
+import dev.kyro.pitsim.ParticleColor;
 import dev.kyro.pitsim.acosmetics.CosmeticManager;
 import dev.kyro.pitsim.acosmetics.PitCosmetic;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
@@ -50,10 +50,10 @@ public class UnlockCosmeticCommand extends ACommand {
 			AOutput.error(player, "&7Usage: /unlockcosmetic <player> <cosmetic> <color>");
 			return;
 		}
-		RedstoneColor redstoneColor = null;
+		ParticleColor particleColor = null;
 		if(pitCosmetic.isColorCosmetic) {
-			redstoneColor = RedstoneColor.getRedstoneColor(args.get(2));
-			if(redstoneColor == null) {
+			particleColor = ParticleColor.getParticleColor(args.get(2));
+			if(particleColor == null) {
 				AOutput.error(player, "&7That color does not exist");
 				return;
 			}
@@ -65,15 +65,15 @@ public class UnlockCosmeticCommand extends ACommand {
 			if(!pitCosmetic.isColorCosmetic) {
 				AOutput.error(player, "&7The player already has that cosmetic");
 				return;
-			} else if(cosmeticData.unlockedColors.contains(redstoneColor)) {
+			} else if(cosmeticData.unlockedColors.contains(particleColor)) {
 				AOutput.error(player, "&7The player already has that cosmetic in that color");
 				return;
 			}
 		}
 
-		CosmeticManager.unlockCosmetic(pitTarget, pitCosmetic, redstoneColor);
+		CosmeticManager.unlockCosmetic(pitTarget, pitCosmetic, particleColor);
 		if(pitCosmetic.isColorCosmetic) {
-			AOutput.send(player, "&7Unlocked " + pitCosmetic.getDisplayName() + "&7in color " + redstoneColor.displayName + " &7for " + target.getName());
+			AOutput.send(player, "&7Unlocked " + pitCosmetic.getDisplayName() + "&7in color " + particleColor.displayName + " &7for " + target.getName());
 		} else {
 			AOutput.send(player, "&7Unlocked " + pitCosmetic.getDisplayName() + "&7 for " + target.getName());
 		}

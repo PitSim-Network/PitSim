@@ -10,6 +10,9 @@ public class ParticleOffset {
 	public double randomY = 0;
 	public double randomZ = 0;
 
+	public ParticleOffset() {
+	}
+
 	public ParticleOffset(double offsetX, double offsetY, double offsetZ) {
 		this.offset = new Vector(offsetX, offsetY, offsetZ);
 	}
