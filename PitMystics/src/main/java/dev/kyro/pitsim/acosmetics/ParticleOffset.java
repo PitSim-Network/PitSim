@@ -6,8 +6,30 @@ import org.bukkit.util.Vector;
 public class ParticleOffset {
 	public Vector offset;
 
+	public double randomX = 0;
+	public double randomY = 0;
+	public double randomZ = 0;
+
 	public ParticleOffset(double offsetX, double offsetY, double offsetZ) {
 		this.offset = new Vector(offsetX, offsetY, offsetZ);
+	}
+
+	public ParticleOffset(double offsetX, double offsetY, double offsetZ, double randomX, double randomY, double randomZ) {
+		this(offsetX, offsetY, offsetZ);
+		this.randomX = randomX;
+		this.randomY = randomY;
+		this.randomZ = randomZ;
+	}
+
+	public ParticleOffset(Vector offset) {
+		this.offset = offset.clone();
+	}
+
+	public ParticleOffset(Vector offset, double randomX, double randomY, double randomZ) {
+		this.offset = offset.clone();
+		this.randomX = randomX;
+		this.randomY = randomY;
+		this.randomZ = randomZ;
 	}
 
 	public Location applyOffset(Location location, boolean accountForYaw, boolean accountForPitch) {
@@ -24,6 +46,11 @@ public class ParticleOffset {
 		if(accountForPitch) pitch = location.getPitch();
 		if(accountForYaw | accountForPitch) RotationTools.rotate(newOffset, yaw, pitch, 0);
 
+		location.add(random(randomX), random(randomY), random(randomZ));
 		return location.add(newOffset);
+	}
+
+	public double random(double variance) {
+		return Math.random() * variance - variance / 2;
 	}
 }

@@ -14,7 +14,11 @@ import dev.kyro.arcticapi.hooks.AHook;
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.acosmetics.CosmeticManager;
 import dev.kyro.pitsim.acosmetics.PitCosmetic;
+import dev.kyro.pitsim.acosmetics.aura.SmokeTrail;
+import dev.kyro.pitsim.acosmetics.capes.FireCape;
+import dev.kyro.pitsim.acosmetics.capes.MagicCape;
 import dev.kyro.pitsim.acosmetics.capes.SolidCape;
+import dev.kyro.pitsim.acosmetics.misc.RingCosmetic;
 import dev.kyro.pitsim.battlepass.PassManager;
 import dev.kyro.pitsim.battlepass.quests.*;
 import dev.kyro.pitsim.battlepass.quests.daily.DailyBotKillQuest;
@@ -652,7 +656,13 @@ public class PitSim extends JavaPlugin {
 	}
 
 	private void registerCosmetics() {
+		CosmeticManager.registerCosmetic(new RingCosmetic());
+
 		CosmeticManager.registerCosmetic(new SolidCape());
+		CosmeticManager.registerCosmetic(new FireCape());
+		CosmeticManager.registerCosmetic(new MagicCape());
+
+		CosmeticManager.registerCosmetic(new SmokeTrail());
 
 		CosmeticManager.loadForOnlinePlayers();
 	}

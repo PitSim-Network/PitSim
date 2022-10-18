@@ -24,8 +24,8 @@ public class SettingsGUI extends AGUI {
 		cosmeticPanel = new CosmeticPanel(this);
 
 		Class<? extends SubCosmeticPanel>[] constructorParameters = new Class[] {AGUI.class};
-		for(CosmeticType value : CosmeticType.values()) {
-			Class<? extends SubCosmeticPanel> clazz = value.panelClazz;
+		for(CosmeticType cosmeticType : CosmeticType.values()) {
+			Class<? extends SubCosmeticPanel> clazz = cosmeticType.panelClazz;
 			if(clazz == null) continue;
 			SubCosmeticPanel panel;
 			try {
@@ -35,18 +35,20 @@ public class SettingsGUI extends AGUI {
 				exception.printStackTrace();
 				continue;
 			}
-			cosmeticPanelMap.put(value, panel);
+			cosmeticPanelMap.put(cosmeticType, panel);
 		}
 
 //		TODO: correct home panel
 		setHomePanel(cosmeticPanel);
 	}
 
+//	For cosmetic panel
 	public int getPages(SubCosmeticPanel panel) {
 //		TODO: page calc
 		return 1;
 	}
 
+	//	For cosmetic panel
 	public int getRows(SubCosmeticPanel panel) {
 		if(getPages(panel) > 1) return 6;
 //		TODO: row calc

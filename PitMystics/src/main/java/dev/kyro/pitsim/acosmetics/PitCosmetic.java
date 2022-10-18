@@ -92,6 +92,7 @@ public abstract class PitCosmetic {
 		if(!isUnlocked(pitPlayer)) return false;
 		if(!pitPlayer.equippedCosmeticMap.containsKey(cosmeticType.name())) return false;
 		PitPlayer.EquippedCosmeticData cosmeticData = pitPlayer.equippedCosmeticMap.get(cosmeticType.name());
+		if(cosmeticData == null) return false;
 		return cosmeticData.refName.equals(refName);
 	}
 
@@ -110,5 +111,9 @@ public abstract class PitCosmetic {
 
 	public String getDisplayName() {
 		return ChatColor.translateAlternateColorCodes('&', displayName);
+	}
+
+	public double random(double variance) {
+		return Math.random() * variance - variance / 2;
 	}
 }

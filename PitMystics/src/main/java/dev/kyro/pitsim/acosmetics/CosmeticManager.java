@@ -53,12 +53,29 @@ public class CosmeticManager implements Listener {
 		}.runTaskTimer(PitSim.INSTANCE, 0L, 4L);
 	}
 
+	public static List<Player> getDisplayPlayers(Player mainPlayer, Location location) {
+		List<Player> displayPlayers = new ArrayList<>();
+		for(Player onlinePlayer : Bukkit.getOnlinePlayers()) {
+			if(onlinePlayer.getWorld() != location.getWorld()) continue;
+			Location testLocation = onlinePlayer.getLocation();
+			if(Math.abs(testLocation.getX() - location.getX()) > 20 || Math.abs(testLocation.getY() - location.getY()) > 20 ||
+					Math.abs(testLocation.getZ() - location.getZ()) > 20) continue;
+			displayPlayers.add(onlinePlayer);
+		}
+		if(!displayPlayers.contains(mainPlayer)) displayPlayers.add(mainPlayer);
+		return displayPlayers;
+	}
+
 	public static void sendEquipMessage(PitPlayer pitPlayer, PitCosmetic pitCosmetic, RedstoneColor redstoneColor) {
 		if(pitCosmetic.isColorCosmetic) {
 			AOutput.send(pitPlayer.player, "&e&lFANCY!&7 Equipped " + pitCosmetic.getDisplayName() + " &7(" + redstoneColor.displayName + "&7)");
 		} else {
 			AOutput.send(pitPlayer.player, "&e&lFANCY!&7 Equipped " + pitCosmetic.getDisplayName());
 		}
+	}
+
+	public static void sendDisableMessage(PitPlayer pitPlayer, PitCosmetic pitCosmetic) {
+		AOutput.send(pitPlayer.player, "&e&lFANCY!&7 disabled " + pitCosmetic.getDisplayName());
 	}
 
 	public static boolean isStandingStill(Player player) {

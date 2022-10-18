@@ -17,10 +17,7 @@ import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.inventory.InventoryOpenEvent;
 import org.bukkit.inventory.ItemStack;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public abstract class SubCosmeticPanel extends AGUIPanel {
 	public SettingsGUI settingsGUI;
@@ -28,6 +25,7 @@ public abstract class SubCosmeticPanel extends AGUIPanel {
 	public static ItemStack previousPageItem;
 	public static ItemStack nextPageItem;
 	public static ItemStack backItem;
+	public static ItemStack disableItem;
 
 	public CosmeticType cosmeticType;
 	public int slot;
@@ -58,6 +56,13 @@ public abstract class SubCosmeticPanel extends AGUIPanel {
 				))
 				.getItemStack();
 
+		disableItem = new AItemStackBuilder(Material.BARRIER)
+				.setName("&c&lDisable")
+				.setLore(new ALoreBuilder(
+						"&7Click to disable your active cosmetic"
+				))
+				.getItemStack();
+
 		for(int i = 9; i < 45; i++) {
 			if(i % 9 == 0 || (i + 1) % 9 == 0) continue;
 			cosmeticSlots.add(i);
@@ -74,6 +79,7 @@ public abstract class SubCosmeticPanel extends AGUIPanel {
 		inventoryBuilder.createBorder(Material.STAINED_GLASS_PANE, 7);
 
 		getInventory().setItem(getRows() * 9 - 5, backItem);
+		getInventory().setItem(getRows() * 9 - 4, disableItem);
 		if(getPages() != 1) {
 			getInventory().setItem(getRows() * 9 - 9, previousPageItem);
 			getInventory().setItem(getRows() * 9 - 1, nextPageItem);
@@ -101,24 +107,24 @@ public abstract class SubCosmeticPanel extends AGUIPanel {
 	}
 
 	public boolean selectCosmetic(PitCosmetic pitCosmetic, RedstoneColor redstoneColor) {
-		if(settingsGUI.pitPlayer.equippedCosmeticMap.containsKey(cosmeticType.name())) {
-			PitPlayer.EquippedCosmeticData cosmeticData = settingsGUI.pitPlayer.equippedCosmeticMap.get(cosmeticType.name());
-			if(cosmeticData != null) {
-				if(!pitCosmetic.isColorCosmetic) {
-					if(pitCosmetic.refName.equals(cosmeticData.refName)) {
+		PitPlayer.EquippedCosmeticData cosmeticData = settingsGUI.pitPlayer.equippedCosmeticMap.get(cosmeticType.name());
+		if(cosmeticData != null) {
+			if(!pitCosmetic.isColorCosmetic) {
+				if(pitCosmetic.refName.equals(cosmeticData.refName)) {
+					Sounds.NO.play(player);
+					return false;
+				}
+				deselectCosmetic(pitCosmetic.cosmeticType);
+			} else {
+				if(pitCosmetic.refName.equals(cosmeticData.refName)) {
+					if(redstoneColor == cosmeticData.redstoneColor) {
 						Sounds.NO.play(player);
 						return false;
 					}
-					deselectCosmetic(pitCosmetic.cosmeticType);
+					ColorableCosmetic colorableCosmetic = (ColorableCosmetic) pitCosmetic;
+					colorableCosmetic.setRedstoneColor(player, redstoneColor);
 				} else {
-					if(pitCosmetic.refName.equals(cosmeticData.refName)) {
-						if(redstoneColor == cosmeticData.redstoneColor) {
-							Sounds.NO.play(player);
-							return false;
-						}
-						ColorableCosmetic colorableCosmetic = (ColorableCosmetic) pitCosmetic;
-						colorableCosmetic.setRedstoneColor(player, redstoneColor);
-					}
+					deselectCosmetic(pitCosmetic.cosmeticType);
 				}
 			}
 		}
@@ -186,6 +192,17 @@ public abstract class SubCosmeticPanel extends AGUIPanel {
 			}
 		} else if(slot == getRows() * 9 - 5) {
 			openPreviousGUI();
+		} else if(slot == getRows() * 9 - 4) {
+			PitPlayer.EquippedCosmeticData cosmeticData = settingsGUI.pitPlayer.equippedCosmeticMap.get(cosmeticType.name());
+			if(cosmeticData != null) {
+				deselectCosmetic(cosmeticType);
+				player.closeInventory();
+				Sounds.SUCCESS.play(player);
+				PitCosmetic pitCosmetic = Objects.requireNonNull(CosmeticManager.getCosmetic(cosmeticData.refName));
+				CosmeticManager.sendEquipMessage(settingsGUI.pitPlayer, pitCosmetic, null);
+			} else {
+				Sounds.NO.play(player);
+			}
 		} else if(slot == getRows() * 9 - 1) {
 			if(page < settingsGUI.getPages(this)) {
 				setPage(page + 1);

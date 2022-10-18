@@ -2,24 +2,23 @@ package dev.kyro.pitsim.acosmetics.capes;
 
 import dev.kyro.arcticapi.builders.AItemStackBuilder;
 import dev.kyro.pitsim.PitSim;
-import dev.kyro.pitsim.acosmetics.ColorableCosmetic;
 import dev.kyro.pitsim.acosmetics.CosmeticType;
+import dev.kyro.pitsim.acosmetics.PitCosmetic;
 import dev.kyro.pitsim.acosmetics.collections.CapeCollection;
-import dev.kyro.pitsim.acosmetics.particles.RedstoneParticle;
+import dev.kyro.pitsim.acosmetics.particles.FireParticle;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 
-public class SolidCape extends ColorableCosmetic {
+public class FireCape extends PitCosmetic {
 	public CapeCollection cape;
 
-	public SolidCape() {
-		super("&fSolid Cape", "solidcape", CosmeticType.CAPE);
+	public FireCape() {
+		super("&cFire Cape", "firecape", CosmeticType.CAPE);
 		accountForPitch = false;
-		isColorCosmetic = true;
 
-		cape = new CapeCollection(new RedstoneParticle(this));
+		cape = new CapeCollection(new FireParticle(this));
 	}
 
 	@Override
@@ -27,9 +26,9 @@ public class SolidCape extends ColorableCosmetic {
 		runnableMap.put(pitPlayer.player.getUniqueId(), new BukkitRunnable() {
 			@Override
 			public void run() {
-				cape.draw(SolidCape.this, pitPlayer, getRedstoneColor(pitPlayer.player));
+				cape.draw(FireCape.this, pitPlayer, null);
 			}
-		}.runTaskTimer(PitSim.INSTANCE, 0L, 2L));
+		}.runTaskTimer(PitSim.INSTANCE, 0L, 10L));
 	}
 
 	@Override
@@ -39,7 +38,7 @@ public class SolidCape extends ColorableCosmetic {
 
 	@Override
 	public ItemStack getRawDisplayItem() {
-		ItemStack itemStack = new AItemStackBuilder(Material.BANNER, 1, 15)
+		ItemStack itemStack = new AItemStackBuilder(Material.BLAZE_POWDER)
 				.setName(getDisplayName())
 				.getItemStack();
 		return itemStack;

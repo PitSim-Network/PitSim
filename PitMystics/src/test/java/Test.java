@@ -2,7 +2,9 @@ import java.text.DecimalFormat;
 
 public class Test {
 	public static void main(String[] args) {
-		System.out.println(-1/7);
+		for(int i = 0; i < 10; i++) {
+			System.out.println(Math.random() * 1.5 / 2);
+		}
 	}
 
 	public static String convert(String hex) {

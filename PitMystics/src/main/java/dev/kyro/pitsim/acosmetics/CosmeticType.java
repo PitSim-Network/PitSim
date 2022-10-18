@@ -1,7 +1,7 @@
 package dev.kyro.pitsim.acosmetics;
 
 import dev.kyro.pitsim.asettings.SubCosmeticPanel;
-import dev.kyro.pitsim.asettings.cosmeticsub.CapesPanel;
+import dev.kyro.pitsim.asettings.cosmeticsub.*;
 import org.bukkit.ChatColor;
 
 import java.util.ArrayList;
@@ -9,13 +9,13 @@ import java.util.Arrays;
 import java.util.List;
 
 public enum CosmeticType {
-	KILL_EFFECT("", "", null),
-	DEATH_EFFECT("", "", null),
-	BOUNTY_CLAIM_MESSAGE("", "", null),
-	CAPE("&fCapes", "capes", CapesPanel.class),
-	PARTICLE_TRAIL("", "", null),
-	AURA("", "", null),
-	MISC("", "", null);
+	KILL_EFFECT("&c&lKill Effects", "", KillEffectsPanel.class),
+	DEATH_EFFECT("&9&lDeath Effects", "", DeathEffectsPanel.class),
+	BOUNTY_CLAIM_MESSAGE("&6&lBounty Messages", "", BountyMessagesPanel.class),
+	CAPE("&f&lCapes", "capes", CapesPanel.class),
+	PARTICLE_TRAIL("&e&lParticle Trails", "", ParticleTrailsPanel.class),
+	AURA("&a&lAuras", "", AurasPanel.class),
+	MISC("&e&lMisc", "", MiscPanel.class);
 
 	private static List<Integer> settingsGUISlots = new ArrayList<>(Arrays.asList(10, 11, 12, 13, 14, 15, 16));
 
