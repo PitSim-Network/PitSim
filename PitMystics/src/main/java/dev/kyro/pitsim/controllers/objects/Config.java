@@ -1,6 +1,7 @@
 package dev.kyro.pitsim.controllers.objects;
 
 import com.google.cloud.firestore.annotation.Exclude;
+import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.controllers.FirestoreManager;
 
 import java.util.*;
@@ -36,6 +37,7 @@ public class Config {
 
 	@Exclude
 	public void save() {
+		if(!Objects.equals(PitSim.serverName, "pitsim-1")) return;
 		if(onSaveCooldown && !saveQueued) {
 			saveQueued = true;
 			new Thread(() -> {

@@ -7,6 +7,7 @@ import dev.kyro.arcticapi.gui.AGUIPanel;
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.controllers.BoosterManager;
 import dev.kyro.pitsim.controllers.FirestoreManager;
+import dev.kyro.pitsim.controllers.ProxyMessaging;
 import dev.kyro.pitsim.controllers.objects.Booster;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.misc.Sounds;
@@ -50,17 +51,10 @@ public class BoosterPanel extends AGUIPanel {
 						return;
 					} else {
 						Sounds.SUCCESS.play(player);
-						booster.minutes += 60;
-
 						int timeLeft = pitPlayer.boosterTime.get(booster.refName) + 60;
 						pitPlayer.boosterTime.put(booster.refName, timeLeft);
-
-						booster.updateTime();
-						FirestoreManager.CONFIG.save();
-						String playerName = "%luckperms_prefix%%essentials_nickname%";
-						String playernamecolor = PlaceholderAPI.setPlaceholders(player, playerName);
-						Bukkit.broadcastMessage(ChatColor.translateAlternateColorCodes('&', "&6&lBOOSTER! " + playernamecolor + " &7has used a " + booster.color + booster.name));
 						Booster.setBooster(player, booster, Booster.getBoosterAmount(player, booster) - 1);
+						ProxyMessaging.sendBoosterUse(booster, player);
 					}
 
 					player.closeInventory();

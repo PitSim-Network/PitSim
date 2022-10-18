@@ -75,6 +75,15 @@ public class ProxyMessaging implements Listener {
 		}
 	}
 
+	public static void sendBoosterUse(Booster booster, Player player) {
+
+		String playerName = "%luckperms_prefix%" + player.getName();
+		String playerNameColored = PlaceholderAPI.setPlaceholders(player, playerName);
+
+		new PluginMessage().writeString("BOOSTER USE").writeString(booster.refName).writeString(ChatColor.
+				translateAlternateColorCodes('&', "&6&lBOOSTER! " + playerNameColored + " &7has used a " + booster.color + booster.name)).send();
+	}
+
 	public static void sendServerData() {
 		PluginMessage message = new PluginMessage();
 		message.writeString("SERVER DATA").writeString(PitSim.serverName);
@@ -183,6 +192,18 @@ public class ProxyMessaging implements Listener {
 				new LeaderboardData(leaderboard, strings.get(i));
 			}
 
+		}
+
+		if(strings.size() >= 3 && strings.get(0).equals("BOOSTER USE")) {
+			String boosterString = strings.get(1);
+			Booster booster = BoosterManager.getBooster(boosterString);
+
+			assert booster != null;
+			booster.minutes += 60;
+			booster.updateTime();
+			FirestoreManager.CONFIG.save();
+
+			Bukkit.broadcastMessage(strings.get(2));
 		}
 	}
 
