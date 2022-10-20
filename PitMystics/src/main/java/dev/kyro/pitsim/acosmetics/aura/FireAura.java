@@ -4,7 +4,8 @@ import dev.kyro.arcticapi.builders.AItemStackBuilder;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.acosmetics.*;
 import dev.kyro.pitsim.acosmetics.collections.ParticleCollection;
-import dev.kyro.pitsim.acosmetics.particles.VillagerHappyParticle;
+import dev.kyro.pitsim.acosmetics.particles.FlameParticle;
+import dev.kyro.pitsim.acosmetics.particles.LavaParticle;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import net.minecraft.server.v1_8_R3.EntityPlayer;
 import org.bukkit.Location;
@@ -14,16 +15,18 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 
-public class VillagerHappyAura extends PitCosmetic {
+public class FireAura extends PitCosmetic {
 	public ParticleCollection collection = new ParticleCollection();
 
-	public VillagerHappyAura() {
-		super("&aLively Aura", "livelyaura", CosmeticType.AURA);
+	public FireAura() {
+		super("&cFire Aura", "fireaura", CosmeticType.AURA);
 		accountForPitch = false;
 
-		PitParticle particle = new VillagerHappyParticle(this);
+		PitParticle fireParticle = new FlameParticle(this);
+		PitParticle lavalParticle = new LavaParticle(this);
 		double distance = 6;
-		collection.addParticle("main", particle, new ParticleOffset(0, distance / 4, 0, distance, distance / 2 + 2, distance));
+		collection.addParticle("fire", fireParticle, new ParticleOffset(0, distance / 4, 0, distance, distance / 2 + 2, distance));
+		collection.addParticle("lava", lavalParticle, new ParticleOffset(0, distance / 4, 0, distance, distance / 2 + 2, distance));
 	}
 
 	@Override
@@ -35,7 +38,11 @@ public class VillagerHappyAura extends PitCosmetic {
 
 				for(Player onlinePlayer : CosmeticManager.getDisplayPlayers(pitPlayer.player, displayLocation)) {
 					EntityPlayer entityPlayer = ((CraftPlayer) onlinePlayer).getHandle();
-					collection.display("main", entityPlayer, displayLocation);
+					if(Math.random() < 0.67) {
+						collection.display("fire", entityPlayer, displayLocation);
+					} else {
+						collection.display("lava", entityPlayer, displayLocation);
+					}
 				}
 			}
 		}.runTaskTimer(PitSim.INSTANCE, 0L, 1L));
@@ -48,7 +55,7 @@ public class VillagerHappyAura extends PitCosmetic {
 
 	@Override
 	public ItemStack getRawDisplayItem() {
-		ItemStack itemStack = new AItemStackBuilder(Material.EMERALD_ORE)
+		ItemStack itemStack = new AItemStackBuilder(Material.BLAZE_POWDER)
 				.setName(getDisplayName())
 				.getItemStack();
 		return itemStack;

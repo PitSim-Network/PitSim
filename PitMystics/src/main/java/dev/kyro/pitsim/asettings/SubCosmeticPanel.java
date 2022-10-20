@@ -56,6 +56,7 @@ public abstract class SubCosmeticPanel extends AGUIPanel {
 				))
 				.getItemStack();
 
+//		TODO: make it pull the material from the active cosmetic
 		disableItem = new AItemStackBuilder(Material.BARRIER)
 				.setName("&c&lDisable")
 				.setLore(new ALoreBuilder(

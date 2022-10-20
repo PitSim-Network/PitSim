@@ -14,11 +14,14 @@ import dev.kyro.arcticapi.hooks.AHook;
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.acosmetics.CosmeticManager;
 import dev.kyro.pitsim.acosmetics.PitCosmetic;
+import dev.kyro.pitsim.acosmetics.aura.FireAura;
+import dev.kyro.pitsim.acosmetics.aura.PotionAura;
 import dev.kyro.pitsim.acosmetics.aura.VillagerHappyAura;
+import dev.kyro.pitsim.acosmetics.aura.WaterAura;
+import dev.kyro.pitsim.acosmetics.capes.*;
+import dev.kyro.pitsim.acosmetics.trails.AidsTrail;
+import dev.kyro.pitsim.acosmetics.trails.FootstepTrail;
 import dev.kyro.pitsim.acosmetics.trails.SmokeTrail;
-import dev.kyro.pitsim.acosmetics.capes.FireCape;
-import dev.kyro.pitsim.acosmetics.capes.MagicCape;
-import dev.kyro.pitsim.acosmetics.capes.SolidCape;
 import dev.kyro.pitsim.acosmetics.misc.RingCosmetic;
 import dev.kyro.pitsim.battlepass.PassManager;
 import dev.kyro.pitsim.battlepass.quests.*;
@@ -662,10 +665,17 @@ public class PitSim extends JavaPlugin {
 		CosmeticManager.registerCosmetic(new SolidCape());
 		CosmeticManager.registerCosmetic(new FireCape());
 		CosmeticManager.registerCosmetic(new MagicCape());
+		CosmeticManager.registerCosmetic(new CritCape());
+		CosmeticManager.registerCosmetic(new CritMagicCape());
 
 		CosmeticManager.registerCosmetic(new SmokeTrail());
+		CosmeticManager.registerCosmetic(new FootstepTrail());
+		CosmeticManager.registerCosmetic(new AidsTrail());
 
 		CosmeticManager.registerCosmetic(new VillagerHappyAura());
+		CosmeticManager.registerCosmetic(new PotionAura());
+		CosmeticManager.registerCosmetic(new WaterAura());
+		CosmeticManager.registerCosmetic(new FireAura());
 
 		CosmeticManager.loadForOnlinePlayers();
 	}

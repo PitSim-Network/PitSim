@@ -60,6 +60,8 @@ public abstract class PitCosmetic {
 	}
 
 	public boolean isUnlocked(PitPlayer pitPlayer, ParticleColor particleColor) {
+//		TODO: Probably should remove this later (temporary)
+		if(true) return true;
 		if(isPermissionRequired) return hasPermission(pitPlayer, particleColor);
 		PitPlayer.UnlockedCosmeticData unlockedCosmeticData = pitPlayer.unlockedCosmeticsMap.get(refName);
 		if(unlockedCosmeticData == null) return false;

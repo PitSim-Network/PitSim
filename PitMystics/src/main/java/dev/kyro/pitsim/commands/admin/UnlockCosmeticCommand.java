@@ -73,7 +73,7 @@ public class UnlockCosmeticCommand extends ACommand {
 
 		CosmeticManager.unlockCosmetic(pitTarget, pitCosmetic, particleColor);
 		if(pitCosmetic.isColorCosmetic) {
-			AOutput.send(player, "&7Unlocked " + pitCosmetic.getDisplayName() + "&7in color " + particleColor.displayName + " &7for " + target.getName());
+			AOutput.send(player, "&7Unlocked " + pitCosmetic.getDisplayName() + "&7 in color " + particleColor.displayName + " &7for " + target.getName());
 		} else {
 			AOutput.send(player, "&7Unlocked " + pitCosmetic.getDisplayName() + "&7 for " + target.getName());
 		}
