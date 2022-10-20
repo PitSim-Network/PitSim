@@ -13,9 +13,9 @@ public abstract class PitCosmetic {
 	private String displayName;
 	public String refName;
 	public CosmeticType cosmeticType;
+	public boolean isColorCosmetic;
 	public boolean accountForYaw = true;
 	public boolean accountForPitch = true;
-	public boolean isColorCosmetic = false;
 	public boolean isPermissionRequired = false;
 
 	public Map<UUID, BukkitTask> runnableMap = new HashMap<>();
@@ -24,6 +24,7 @@ public abstract class PitCosmetic {
 		this.displayName = displayName;
 		this.refName = refName;
 		this.cosmeticType = cosmeticType;
+		this.isColorCosmetic = this instanceof ColorableCosmetic;
 	}
 
 	public abstract void onEnable(PitPlayer pitPlayer);
@@ -74,6 +75,12 @@ public abstract class PitCosmetic {
 	public List<ParticleColor> getUnlockedColors(PitPlayer pitPlayer) {
 		List<ParticleColor> particleColors = new ArrayList<>();
 		if(!isUnlocked(pitPlayer)) return particleColors;
+
+//		TODO: Probably should remove this later (temporary)
+		if(true) {
+			particleColors.addAll(Arrays.asList(ParticleColor.values()));
+			return particleColors;
+		}
 
 		if(isPermissionRequired) {
 			for(ParticleColor particleColor : ParticleColor.values()) {

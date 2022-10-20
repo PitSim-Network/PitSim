@@ -19,10 +19,10 @@ import dev.kyro.pitsim.acosmetics.aura.PotionAura;
 import dev.kyro.pitsim.acosmetics.aura.VillagerHappyAura;
 import dev.kyro.pitsim.acosmetics.aura.WaterAura;
 import dev.kyro.pitsim.acosmetics.capes.*;
-import dev.kyro.pitsim.acosmetics.trails.AidsTrail;
-import dev.kyro.pitsim.acosmetics.trails.FootstepTrail;
-import dev.kyro.pitsim.acosmetics.trails.SmokeTrail;
 import dev.kyro.pitsim.acosmetics.misc.RingCosmetic;
+import dev.kyro.pitsim.acosmetics.trails.FootstepTrail;
+import dev.kyro.pitsim.acosmetics.trails.IceTrail;
+import dev.kyro.pitsim.acosmetics.trails.SmokeTrail;
 import dev.kyro.pitsim.battlepass.PassManager;
 import dev.kyro.pitsim.battlepass.quests.*;
 import dev.kyro.pitsim.battlepass.quests.daily.DailyBotKillQuest;
@@ -670,7 +670,7 @@ public class PitSim extends JavaPlugin {
 
 		CosmeticManager.registerCosmetic(new SmokeTrail());
 		CosmeticManager.registerCosmetic(new FootstepTrail());
-		CosmeticManager.registerCosmetic(new AidsTrail());
+		CosmeticManager.registerCosmetic(new IceTrail());
 
 		CosmeticManager.registerCosmetic(new VillagerHappyAura());
 		CosmeticManager.registerCosmetic(new PotionAura());

@@ -23,7 +23,6 @@ public class PotionAura extends ColorableCosmetic {
 		super("&dPotion Aura", "potionaura", CosmeticType.AURA);
 		accountForYaw = false;
 		accountForPitch = false;
-		isColorCosmetic = true;
 
 		PitParticle particle = new SpellMobParticle(this);
 		double distance = 6;

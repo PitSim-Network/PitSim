@@ -42,12 +42,11 @@ public class RingCosmetic extends PitCosmetic {
 
 				Location displayLocation = pitPlayer.player.getLocation();
 				double increase = 2.2;
-//				if(pitPlayer.player.isSneaking()) increase -= 0.25;
 				displayLocation.add(0, increase, 0);
 
 				for(Player onlinePlayer : CosmeticManager.getDisplayPlayers(pitPlayer.player, displayLocation)) {
 					EntityPlayer entityPlayer = ((CraftPlayer) onlinePlayer).getHandle();
-					collection.display(String.valueOf(count++ % collection.particleCollectionMap.size()), entityPlayer, displayLocation);
+					collection.display(count++ % collection.particleCollectionMap.size(), entityPlayer, displayLocation);
 				}
 			}
 		}.runTaskTimer(PitSim.INSTANCE, 0L, 1L));

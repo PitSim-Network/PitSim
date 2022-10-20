@@ -16,11 +16,11 @@ import org.bukkit.material.MaterialData;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
 
-public class AidsTrail extends PitCosmetic {
+public class IceTrail extends PitCosmetic {
 	public ParticleCollection collection = new ParticleCollection();
 
-	public AidsTrail() {
-		super("&aAids Trail", "aidstrail", CosmeticType.PARTICLE_TRAIL);
+	public IceTrail() {
+		super("&bIce Trail", "icetrail", CosmeticType.PARTICLE_TRAIL);
 		accountForPitch = false;
 
 		PitParticle particle = new BlockCrackParticle(this, new MaterialData(Material.PACKED_ICE));
@@ -50,7 +50,7 @@ public class AidsTrail extends PitCosmetic {
 
 	@Override
 	public ItemStack getRawDisplayItem() {
-		ItemStack itemStack = new AItemStackBuilder(Material.BLAZE_POWDER)
+		ItemStack itemStack = new AItemStackBuilder(Material.PACKED_ICE)
 				.setName(getDisplayName())
 				.getItemStack();
 		return itemStack;

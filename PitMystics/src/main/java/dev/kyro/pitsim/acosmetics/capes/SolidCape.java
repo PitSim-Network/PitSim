@@ -1,6 +1,7 @@
 package dev.kyro.pitsim.acosmetics.capes;
 
 import dev.kyro.arcticapi.builders.AItemStackBuilder;
+import dev.kyro.pitsim.ParticleColor;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.acosmetics.ColorableCosmetic;
 import dev.kyro.pitsim.acosmetics.CosmeticType;
@@ -17,17 +18,17 @@ public class SolidCape extends ColorableCosmetic {
 	public SolidCape() {
 		super("&fSolid Cape", "solidcape", CosmeticType.CAPE);
 		accountForPitch = false;
-		isColorCosmetic = true;
 
 		cape = new CapeCollection(new RedstoneParticle(this));
 	}
 
 	@Override
 	public void onEnable(PitPlayer pitPlayer) {
+		ParticleColor particleColor = getColor(pitPlayer);
 		runnableMap.put(pitPlayer.player.getUniqueId(), new BukkitRunnable() {
 			@Override
 			public void run() {
-				cape.draw(SolidCape.this, pitPlayer, getParticleColor(pitPlayer.player));
+				cape.draw(SolidCape.this, pitPlayer, particleColor);
 			}
 		}.runTaskTimer(PitSim.INSTANCE, 0L, 2L));
 	}
