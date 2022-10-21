@@ -24,9 +24,10 @@ public class LeaderboardData {
 				UUID uuid = UUID.fromString(playerData[0]);
 				double value = Double.parseDouble(playerData[1]);
 				leaderboardDataMap.put(uuid, new PlayerData(value));
+			} else {
+				leaderboardDataMap.put(UUID.fromString(playerData[0]), new PlayerData(Integer.parseInt(playerData[1]),
+						Integer.parseInt(playerData[1]), Long.parseLong(playerData[1])));
 			}
-			leaderboardDataMap.put(UUID.fromString(playerData[0]), new PlayerData(Integer.parseInt(playerData[1]),
-					Integer.parseInt(playerData[1]), Long.parseLong(playerData[1])));
 		}
 
 		leaderboards.put(leaderboard, this);

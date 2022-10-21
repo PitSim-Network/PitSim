@@ -48,6 +48,10 @@ public abstract class Leaderboard {
 		ALoreBuilder aLoreBuilder = new ALoreBuilder();
 		boolean isOnLeaderboard = false;
 		for(int i = 0; i < 10; i++) {
+			if(orderedLeaderboard.size() < i + 1)  {
+				aLoreBuilder.addLore("&e" + (i + 1) + ". &cERROR");
+				continue;
+			}
 			LeaderboardPosition position = orderedLeaderboard.get(i);
 			if(position.uuid.equals(uuid)) isOnLeaderboard = true;
 			OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(position.uuid);
