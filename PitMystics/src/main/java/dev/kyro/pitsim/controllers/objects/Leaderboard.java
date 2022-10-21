@@ -53,10 +53,15 @@ public abstract class Leaderboard {
 				continue;
 			}
 			LeaderboardPosition position = orderedLeaderboard.get(i);
+			LeaderboardData data = LeaderboardData.getLeaderboardData(this);
 			if(position.uuid.equals(uuid)) isOnLeaderboard = true;
 			OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(position.uuid);
 			String rankColor = getRankColor(position.uuid);
-			aLoreBuilder.addLore("&e" + (i + 1) + ". " + getPrestigeBrackets(position.uuid) + " " + rankColor + offlinePlayer.getName() + "&7 - " + getDisplayValue(position));
+			if(data.getPrefix(position.uuid) == null) {
+				aLoreBuilder.addLore("&e" + (i + 1) + ". &cERROR");
+				continue;
+			}
+			aLoreBuilder.addLore("&e" + (i + 1) + ". " + data.getPrefix(position.uuid) + " " + rankColor + offlinePlayer.getName() + "&7 - " + getDisplayValue(position));
 		}
 
 		LeaderboardPlayerData data = LeaderboardPlayerData.getData(uuid);

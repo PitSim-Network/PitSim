@@ -20,13 +20,20 @@ public class LeaderboardData {
 		String[] playerSplit = leaderboardData.split("\\|");
 		for(String data : playerSplit) {
 			String[] playerData = data.split(",");
-			if(playerData.length == 2) {
+			if(playerData.length == 3) {
 				UUID uuid = UUID.fromString(playerData[0]);
-				double value = Double.parseDouble(playerData[1]);
-				leaderboardDataMap.put(uuid, new PlayerData(value));
+				double value = Double.parseDouble(playerData[2]);
+				leaderboardDataMap.put(uuid, new PlayerData(value, playerData[1]));
 			} else {
-				leaderboardDataMap.put(UUID.fromString(playerData[0]), new PlayerData(Integer.parseInt(playerData[1]),
-						Integer.parseInt(playerData[1]), Long.parseLong(playerData[1])));
+				System.out.println("--------------");
+				System.out.println(playerData[2]);
+				System.out.println(playerData[3]);
+				System.out.println(playerData[4]);
+				System.out.println(playerData[1]);
+				System.out.println("--------------");
+
+				leaderboardDataMap.put(UUID.fromString(playerData[0]), new PlayerData(Integer.parseInt(playerData[2]),
+						Integer.parseInt(playerData[3]), Long.parseLong(playerData[4]), playerData[1]));
 			}
 		}
 
@@ -45,6 +52,11 @@ public class LeaderboardData {
 		return leaderboardDataMap;
 	}
 
+	public String getPrefix(UUID uuid) {
+		if(!leaderboardDataMap.containsKey(uuid)) return null;
+		return leaderboardDataMap.get(uuid).prefix;
+	}
+
 	public PlayerData getValue(UUID uuid) {
 		return leaderboardDataMap.get(uuid);
 	}
@@ -59,15 +71,18 @@ public class LeaderboardData {
 		public int prestige;
 		public int level;
 		public long xp;
+		public String prefix;
 
-		public PlayerData(int prestige, int level, long xp) {
+		public PlayerData(int prestige, int level, long xp, String prefix) {
 			this.prestige = prestige;
 			this.level = level;
 			this.xp = xp;
+			this.prefix = prefix;
 		}
 
-		public PlayerData(double primaryValue) {
+		public PlayerData(double primaryValue, String prefix) {
 			this.primaryValue = primaryValue;
+			this.prefix = prefix;
 		}
 	}
 
