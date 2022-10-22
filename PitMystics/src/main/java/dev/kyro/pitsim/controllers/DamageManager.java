@@ -118,7 +118,7 @@ public class DamageManager implements Listener {
 			}
 		}
 
-		if( bossHitCooldown.contains(defender)) {
+		if(bossHitCooldown.contains(defender)) {
 			event.setCancelled(true);
 			return;
 		}
