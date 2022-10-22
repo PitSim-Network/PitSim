@@ -48,7 +48,7 @@ public class XPLeaderboard extends Leaderboard {
 		LeaderboardData data = LeaderboardData.getLeaderboardData(this);
 		LeaderboardData.PlayerData playerData = data.getValue(position.uuid);
 
-		position.longValue = PrestigeValues.getTotalXP(playerData.prestige, playerData.level, playerData.xp);
+		position.longValue = (long) playerData.primaryValue;
 	}
 
 	@Override

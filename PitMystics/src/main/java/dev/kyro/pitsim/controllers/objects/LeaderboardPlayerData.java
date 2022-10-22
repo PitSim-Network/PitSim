@@ -14,16 +14,14 @@ public class LeaderboardPlayerData {
 	public static List<LeaderboardPlayerData> leaderboardPlayerData = new ArrayList<>();
 
 	private final UUID uuid;
-	private final List<Double> leaderboardData;
+	private final List<Integer> leaderboardData;
 	private Player player;
 
-	public LeaderboardPlayerData(UUID uuid, List<String> leaderboardData) {
+	public LeaderboardPlayerData(UUID uuid, List<Integer> leaderboardData) {
 
 		this.uuid = uuid;
 		this.leaderboardData = new ArrayList<>();
-		for(String leaderboardDatum : leaderboardData) {
-			this.leaderboardData.add(Double.parseDouble(leaderboardDatum));
-		}
+		this.leaderboardData.addAll(leaderboardData);
 
 		OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(uuid);
 		if(offlinePlayer.isOnline()) player = offlinePlayer.getPlayer();
@@ -35,7 +33,7 @@ public class LeaderboardPlayerData {
 		return uuid;
 	}
 
-	public List<Double> getLeaderboardData() {
+	public List<Integer> getLeaderboardData() {
 		return leaderboardData;
 	}
 
@@ -43,7 +41,7 @@ public class LeaderboardPlayerData {
 		return player;
 	}
 
-	public double getData(Leaderboard leaderboard) {
+	public int getData(Leaderboard leaderboard) {
 		int leaderboardIndex = LeaderboardManager.leaderboards.indexOf(leaderboard);
 		return leaderboardData.get(leaderboardIndex);
 	}

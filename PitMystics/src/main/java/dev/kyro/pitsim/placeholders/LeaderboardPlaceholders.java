@@ -4,6 +4,8 @@ import dev.kyro.arcticapi.data.APlayerData;
 import dev.kyro.arcticapi.misc.AUtil;
 import dev.kyro.pitsim.controllers.LeaderboardManager;
 import dev.kyro.pitsim.controllers.PrestigeValues;
+import dev.kyro.pitsim.controllers.objects.Leaderboard;
+import dev.kyro.pitsim.controllers.objects.LeaderboardData;
 import dev.kyro.pitsim.controllers.objects.LeaderboardPosition;
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
 import org.bukkit.Bukkit;
@@ -15,7 +17,7 @@ import org.jetbrains.annotations.NotNull;
 public class LeaderboardPlaceholders extends PlaceholderExpansion {
 
 	@Override
-	public String onPlaceholderRequest(Player player, @NotNull String identifier){
+	public String onPlaceholderRequest(Player player, @NotNull String identifier) {
 		if(player == null) return "";
 
 		for(int i = 1; i <= 10; i++) {
@@ -23,13 +25,10 @@ public class LeaderboardPlaceholders extends PlaceholderExpansion {
 			if(!identifier.equalsIgnoreCase(testString)) continue;
 			LeaderboardPosition position = LeaderboardManager.leaderboards.get(0).orderedLeaderboard.get(i - 1);
 			OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(position.uuid);
-			FileConfiguration playerData = APlayerData.getPlayerData(position.uuid).playerData;
+			LeaderboardData.PlayerData data = LeaderboardData.getLeaderboardData(LeaderboardManager.leaderboards.get(0)).getValue(offlinePlayer.getUniqueId());
+			String rankColor = Leaderboard.getRankColor(offlinePlayer.getUniqueId());
 
-			int prestige = playerData.getInt("prestige");
-			int level = playerData.getInt("level");
-			PrestigeValues.PrestigeInfo info = PrestigeValues.getPrestigeInfo(prestige);
-			return "&7" + i + ". &6" + offlinePlayer.getName() + "&7 - " + info.getOpenBracket() + "&e" + AUtil.toRoman(prestige) +
-					info.bracketColor + "-" + PrestigeValues.getLevelColor(level) + level + info.getCloseBracket();
+			return "&7" + i + ". " + rankColor + offlinePlayer.getName() + "&7 - " + data.prefix;
 		}
 		return null;
 	}

@@ -177,10 +177,8 @@ public class ProxyMessaging implements Listener {
 
 		if(strings.size() >= 2 && strings.get(0).equals("LEADERBOARD PLAYER DATA")) {
 			UUID uuid = UUID.fromString(strings.get(1));
-			strings.remove(0);
-			strings.remove(0);
 
-			new LeaderboardPlayerData(uuid, strings);
+			new LeaderboardPlayerData(uuid, integers);
 		}
 
 		if(strings.size() >= 2 && strings.get(0).equals("LEADERBOARD DATA")) {

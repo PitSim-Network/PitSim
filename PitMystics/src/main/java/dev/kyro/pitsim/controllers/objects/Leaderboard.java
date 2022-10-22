@@ -76,7 +76,7 @@ public abstract class Leaderboard {
 			} else {
 				PitSim.LUCKPERMS.getUserManager().loadUser(uuid);
 				String rankColor = getRankColor(uuid);
-				aLoreBuilder.addLore("&7...", "&e" + data.getData(this) + ". " + getPrestigeBrackets(uuid) + " " +
+				aLoreBuilder.addLore("&7...", "&e" + data.getData(this) + ". " + getPrestigeBrackets(pitPlayer) + " " +
 						rankColor + offlinePlayer.getName() + "&7 - " + getDisplayValue(pitPlayer));
 			}
 		}
@@ -84,9 +84,8 @@ public abstract class Leaderboard {
 		return aLoreBuilder.getLore();
 	}
 
-	private static String getPrestigeBrackets(UUID uuid) {
-		FileConfiguration playerData = APlayerData.getPlayerData(uuid).playerData;
-		return PrestigeValues.getPlayerPrefix(playerData.getInt("prestige"), playerData.getInt("level"));
+	private static String getPrestigeBrackets(PitPlayer pitPlayer) {
+		return PrestigeValues.getPlayerPrefix(pitPlayer.prestige, pitPlayer.level);
 	}
 
 	public void calculate(UUID uuid) {
