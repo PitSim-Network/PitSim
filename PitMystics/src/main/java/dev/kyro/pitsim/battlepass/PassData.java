@@ -48,6 +48,11 @@ public class PassData {
 
 	@Exclude
 	public int getCompletedTiers() {
-		return totalPoints / 200;
+		return totalPoints / PassManager.POINTS_PER_TIER;
+	}
+
+	@Exclude
+	public int getPointsForTier() {
+		return totalPoints % PassManager.POINTS_PER_TIER;
 	}
 }

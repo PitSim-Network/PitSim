@@ -1,0 +1,67 @@
+package dev.kyro.pitsim.battlepass.rewards;
+
+import dev.kyro.arcticapi.builders.AItemStackBuilder;
+import dev.kyro.arcticapi.builders.ALoreBuilder;
+import dev.kyro.arcticapi.misc.AOutput;
+import dev.kyro.pitsim.ParticleColor;
+import dev.kyro.pitsim.acosmetics.CosmeticManager;
+import dev.kyro.pitsim.acosmetics.PitCosmetic;
+import dev.kyro.pitsim.battlepass.PassReward;
+import dev.kyro.pitsim.controllers.objects.PitPlayer;
+import dev.kyro.pitsim.misc.Misc;
+import org.bukkit.Material;
+import org.bukkit.inventory.ItemFlag;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
+
+public class PassCosmeticReward extends PassReward {
+	public Material material;
+	public int data;
+	public PitCosmetic pitCosmetic;
+	public ParticleColor particleColor;
+
+	public PassCosmeticReward(Material material, PitCosmetic pitCosmetic, ParticleColor particleColor) {
+		this(material, 0, pitCosmetic, particleColor);
+	}
+
+	public PassCosmeticReward(Material material, int data, PitCosmetic pitCosmetic, ParticleColor particleColor) {
+		this.material = material;
+		this.data = data;
+		this.pitCosmetic = pitCosmetic;
+		this.particleColor = particleColor;
+	}
+
+	@Override
+	public boolean giveReward(PitPlayer pitPlayer) {
+		if(Misc.getEmptyInventorySlots(pitPlayer.player) < 1) {
+			AOutput.error(pitPlayer.player, "&7Please make space in your inventory");
+			return false;
+		}
+
+		PitPlayer.UnlockedCosmeticData cosmeticData = pitPlayer.unlockedCosmeticsMap.get(pitCosmetic.refName);
+		if(cosmeticData != null) {
+			if(!pitCosmetic.isColorCosmetic || cosmeticData.unlockedColors.contains(particleColor)) return true;
+		}
+
+		CosmeticManager.unlockCosmetic(pitPlayer, pitCosmetic, particleColor);
+		if(particleColor != null) {
+			AOutput.send(pitPlayer.player, "&e&lFANCY!&7 Unlocked " + pitCosmetic.getDisplayName() + "&7(" + particleColor.displayName + "&7)");
+		} else {
+			AOutput.send(pitPlayer.player, "&e&lFANCY!&7 Unlocked " + pitCosmetic.getDisplayName());
+		}
+		return true;
+	}
+
+	@Override
+	public ItemStack getDisplayItem(PitPlayer pitPlayer, boolean hasClaimed) {
+		ALoreBuilder loreBuilder = new ALoreBuilder("&7Reward: " + pitCosmetic.getDisplayName());
+		if(particleColor != null) loreBuilder.addLore("&7Color: " + particleColor.displayName);
+		ItemStack itemStack = new AItemStackBuilder(material, 1, data)
+				.setName("&e&lCosmetic Reward")
+				.setLore(loreBuilder).getItemStack();
+		ItemMeta itemMeta = itemStack.getItemMeta();
+		if(itemStack.getType() == Material.POTION) itemMeta.addItemFlags(ItemFlag.HIDE_POTION_EFFECTS);
+		itemStack.setItemMeta(itemMeta);
+		return itemStack;
+	}
+}

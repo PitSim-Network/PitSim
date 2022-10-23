@@ -4,37 +4,36 @@ import dev.kyro.arcticapi.builders.AItemStackBuilder;
 import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.pitsim.battlepass.PassReward;
 import dev.kyro.pitsim.controllers.LevelManager;
-import dev.kyro.pitsim.controllers.PrestigeValues;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.misc.Misc;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 
-public class PassXpReward extends PassReward {
-	public long xp;
+public class PassGoldReward extends PassReward {
+	public int gold;
 
-	public PassXpReward(long xp) {
-		this.xp = xp;
+	public PassGoldReward(int gold) {
+		this.gold = gold;
 	}
 
 	@Override
 	public boolean giveReward(PitPlayer pitPlayer) {
-		LevelManager.addXP(pitPlayer.player, (long) (xp * getMultiplier(pitPlayer)));
+		LevelManager.addGold(pitPlayer.player, (int) (gold * getMultiplier(pitPlayer)));
 		return true;
 	}
 
 	@Override
 	public double getMultiplier(PitPlayer pitPlayer) {
-		PrestigeValues.PrestigeInfo prestigeInfo = PrestigeValues.getPrestigeInfo(pitPlayer.prestige);
-		return Math.sqrt(prestigeInfo.xpMultiplier);
+		if(pitPlayer.prestige == 0) return 1;
+		return pitPlayer.prestige;
 	}
 
 	@Override
 	public ItemStack getDisplayItem(PitPlayer pitPlayer, boolean hasClaimed) {
-		ItemStack itemStack = new AItemStackBuilder(Material.INK_SACK, 1, 12)
-				.setName("&b&lXP Reward")
+		ItemStack itemStack = new AItemStackBuilder(Material.GOLD_INGOT)
+				.setName("&6&lGold Reward")
 				.setLore(new ALoreBuilder(
-						"&7Reward: &b+" + Misc.formatLarge((long) (xp * getMultiplier(pitPlayer))) + " XP"
+						"&7Reward: &6" + Misc.formatLarge((int) (gold * getMultiplier(pitPlayer))) + "g"
 				)).getItemStack();
 		return itemStack;
 	}

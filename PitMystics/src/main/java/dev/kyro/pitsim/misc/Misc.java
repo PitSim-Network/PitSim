@@ -37,6 +37,11 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 
 public class Misc {
+	public static int getEmptyInventorySlots(Player player) {
+		int emptySlots = 0;
+		for(int i = 0; i < 36; i++) if(Misc.isAirOrNull(player.getInventory().getItem(i))) emptySlots++;
+		return emptySlots;
+	}
 
 	public static String getStateMessage(boolean state) {
 		return state ? "&a&lENABLED" : "&c&lDISABLED";

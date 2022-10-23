@@ -83,7 +83,6 @@ public enum PantColor {
 		LeatherArmorMeta leatherArmorMeta = (LeatherArmorMeta) itemStack.getItemMeta();
 
 		leatherArmorMeta.setColor(Color.fromRGB(pantColor.hexColor));
-
 		leatherArmorMeta.setDisplayName(pantColor.chatColor + (ChatColor.RESET + leatherArmorMeta.getDisplayName()));
 		itemStack.setItemMeta(leatherArmorMeta);
 

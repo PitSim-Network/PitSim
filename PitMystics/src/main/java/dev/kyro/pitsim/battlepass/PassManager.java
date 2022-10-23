@@ -1,12 +1,16 @@
 package dev.kyro.pitsim.battlepass;
 
+import dev.kyro.pitsim.ParticleColor;
 import dev.kyro.pitsim.PitSim;
-import dev.kyro.pitsim.battlepass.rewards.PassXpReward;
+import dev.kyro.pitsim.acosmetics.CosmeticManager;
+import dev.kyro.pitsim.battlepass.rewards.*;
 import dev.kyro.pitsim.controllers.FirestoreManager;
 import dev.kyro.pitsim.controllers.objects.Config;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.misc.Misc;
+import dev.kyro.pitsim.misc.Sounds;
 import org.bukkit.Bukkit;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -27,17 +31,25 @@ public class PassManager implements Listener {
 	public static final int QUESTS_PER_WEEK = 6;
 	public static final int DEFAULT_QUEST_WEIGHT = 10;
 	public static final int DARKZONE_KILL_QUEST_WEIGHT = 5;
+	public static final int POINTS_PER_TIER = 200;
 
 	//	Create the passes
 	public static void registerPasses() {
 		registerPass(new PitSimPass(getDate("1/1/2022")));
 
 		PitSimPass pitSimPass = new PitSimPass(getDate("10/12/2022"))
-				.registerReward(new PassXpReward(20L), PitSimPass.RewardType.FREE, 1)
-				.registerReward(new PassXpReward(40L), PitSimPass.RewardType.PREMIUM, 2)
-				.registerReward(new PassXpReward(60L), PitSimPass.RewardType.FREE, 2)
-				.registerReward(new PassXpReward(80L), PitSimPass.RewardType.PREMIUM, 3)
-				.registerReward(new PassXpReward(800_000L), PitSimPass.RewardType.PREMIUM, 30);
+				.registerReward(new PassXpReward(2_500L), PitSimPass.RewardType.FREE, 1)
+				.registerReward(new PassXpReward(5_000L), PitSimPass.RewardType.PREMIUM, 1)
+				.registerReward(new PassGoldReward(50_000), PitSimPass.RewardType.PREMIUM, 2)
+				.registerReward(new PassRenownReward(4), PitSimPass.RewardType.PREMIUM, 3)
+				.registerReward(new PassVileReward(10), PitSimPass.RewardType.PREMIUM, 4)
+				.registerReward(new PassFeatherReward(1), PitSimPass.RewardType.PREMIUM, 5)
+				.registerReward(new PassSwordReward(2), PitSimPass.RewardType.PREMIUM, 6)
+				.registerReward(new PassPantsReward(2), PitSimPass.RewardType.PREMIUM, 7)
+				.registerReward(new PassBowReward(2), PitSimPass.RewardType.PREMIUM, 8)
+				.registerReward(new PassCosmeticReward(Material.POTION, 16430, CosmeticManager.getCosmetic("potionaura"),
+						ParticleColor.AQUA), PitSimPass.RewardType.PREMIUM, 9)
+				.registerReward(new PassXpReward(800_000L), PitSimPass.RewardType.PREMIUM, 27);
 		registerPass(pitSimPass);
 
 		updateCurrentPass();
@@ -143,12 +155,18 @@ public class PassManager implements Listener {
 //	Claim a reward for a pitplayer
 	public static void claimReward(PitPlayer pitPlayer, PitSimPass.RewardType rewardType, int tier) {
 		PassData passData = pitPlayer.getPassData(currentPass.startDate);
+		boolean success = false;
 		if(rewardType == PitSimPass.RewardType.FREE) {
 			passData.claimedFreeRewards.put(tier, true);
-			currentPass.freePassRewards.get(tier).giveReward(pitPlayer);
+			success = currentPass.freePassRewards.get(tier).giveReward(pitPlayer);
 		} else if(rewardType == PitSimPass.RewardType.PREMIUM) {
 			passData.claimedPremiumRewards.put(tier, true);
-			currentPass.premiumPassRewards.get(tier).giveReward(pitPlayer);
+			success = currentPass.premiumPassRewards.get(tier).giveReward(pitPlayer);
+		}
+		if(success) {
+			Sounds.GIVE_REWARD.play(pitPlayer.player);
+		} else {
+			Sounds.NO.play(pitPlayer.player);
 		}
 	}
 
@@ -191,7 +209,7 @@ public class PassManager implements Listener {
 		}
 	}
 
-//	TODO: Main server only
+//	TODO: Main server only, but also run when you send updated data via plugin message (wiji)
 	public static void loadPassData() {
 		if(!currentPass.startDate.equals(FirestoreManager.CONFIG.currentPassStart)) {
 			FirestoreManager.CONFIG.currentPassStart = currentPass.startDate;

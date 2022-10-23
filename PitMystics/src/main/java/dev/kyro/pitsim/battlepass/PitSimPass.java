@@ -37,6 +37,7 @@ public class PitSimPass {
 	}
 
 //	Only call this if you are sure that the current pass is supposed to be current
+//	TODO: Main server only + use this on main server as the point to send the plugin message (wiji)
 	public void writeToConfig() {
 		FirestoreManager.CONFIG.currentPassData.activeWeeklyQuests.clear();
 		for(Map.Entry<PassQuest, PassQuest.QuestLevel> entry : weeklyQuests.entrySet())

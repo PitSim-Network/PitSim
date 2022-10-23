@@ -6,5 +6,9 @@ import org.bukkit.inventory.ItemStack;
 public abstract class PassReward {
 
 	public abstract boolean giveReward(PitPlayer pitPlayer);
-	public abstract ItemStack getDisplayItem(boolean hasClaimed);
+	public abstract ItemStack getDisplayItem(PitPlayer pitPlayer, boolean hasClaimed);
+
+	public double getMultiplier(PitPlayer pitPlayer) {
+		return 1;
+	}
 }

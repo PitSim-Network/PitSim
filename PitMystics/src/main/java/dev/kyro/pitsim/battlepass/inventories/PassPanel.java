@@ -4,6 +4,8 @@ import dev.kyro.arcticapi.builders.AItemStackBuilder;
 import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.arcticapi.gui.AGUI;
 import dev.kyro.arcticapi.gui.AGUIPanel;
+import dev.kyro.arcticapi.misc.AUtil;
+import dev.kyro.pitsim.battlepass.PassData;
 import dev.kyro.pitsim.battlepass.PassManager;
 import dev.kyro.pitsim.battlepass.PitSimPass;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
@@ -83,7 +85,8 @@ public class PassPanel extends AGUIPanel {
 	}
 
 	public void setPage(PitPlayer pitPlayer, int page) {
-		int passTier = pitPlayer.getPassData(PassManager.currentPass.startDate).getCompletedTiers();
+		PassData passData = pitPlayer.getPassData(PassManager.currentPass.startDate);
+		int passTier = passData.getCompletedTiers();
 
 		for(int i = 0; i < 9; i++) {
 			int tier = (page - 1) * 9 + i + 1;
@@ -96,35 +99,40 @@ public class PassPanel extends AGUIPanel {
 
 //			Set up the glass panes
 			if(tier - 1 > passTier) {
-				getInventory().setItem(i + 36, new AItemStackBuilder(Material.STAINED_GLASS_PANE, 1, (short) 8)
+				getInventory().setItem(i + 36, new AItemStackBuilder(Material.STAINED_GLASS_PANE, 1, (short) 7)
 						.setName("&c&lTier " + tier)
 						.setLore(new ALoreBuilder(
-								"&7You have not unlocked this tier yet"
+								"&7Tier locked. Complete the tiers",
+								"&7before this one to unlock"
 						))
 						.getItemStack());
 			} else if(tier - 1 == passTier && !PassManager.hasCompletedPass(pitPlayer)) {
 				getInventory().setItem(i + 36, new AItemStackBuilder(Material.STAINED_GLASS_PANE, 1, (short) 1)
 						.setName("&6&lTier " + tier)
 						.setLore(new ALoreBuilder(
-								"&7You are currently on this tier"
+								"&7Progress: &6" + Misc.formatLarge(passData.getPointsForTier()) + "&7/&6" + Misc.formatLarge(PassManager.POINTS_PER_TIER) +
+										" &8[" + AUtil.createProgressBar("|", ChatColor.GOLD, ChatColor.GRAY, 20,
+										(double) passData.getPointsForTier() / PassManager.POINTS_PER_TIER) + "&8]"
 						))
 						.getItemStack());
 			} else {
 				getInventory().setItem(i + 36, new AItemStackBuilder(Material.STAINED_GLASS_PANE, 1, (short) 5)
 						.setName("&a&lTier " + tier)
 						.setLore(new ALoreBuilder(
-								"&7You have unlocked this tier"
+								"&7Tier complete!"
 						))
 						.getItemStack());
 			}
 
 			if(PassManager.hasReward(PitSimPass.RewardType.PREMIUM, tier)) {
 				boolean hasClaimed = PassManager.hasClaimedReward(pitPlayer, PitSimPass.RewardType.PREMIUM, tier);
-				ItemStack itemStack = PassManager.currentPass.premiumPassRewards.get(tier).getDisplayItem(hasClaimed);
+				ItemStack itemStack = PassManager.currentPass.premiumPassRewards.get(tier).getDisplayItem(pitPlayer, hasClaimed);
+				setLore(itemStack, passData.getCompletedTiers() >= tier, true);
 				if(PassManager.canClaimReward(pitPlayer, PitSimPass.RewardType.FREE, tier)) {
 					Misc.addEnchantGlint(itemStack);
 				} else if(hasClaimed) {
-					itemStack.setType(Material.BARRIER);
+					itemStack.setType(Material.INK_SACK);
+					itemStack.setDurability((short) 8);
 				}
 				getInventory().setItem(i + 27, itemStack);
 			} else {
@@ -132,11 +140,13 @@ public class PassPanel extends AGUIPanel {
 			}
 			if(PassManager.hasReward(PitSimPass.RewardType.FREE, tier)) {
 				boolean hasClaimed = PassManager.hasClaimedReward(pitPlayer, PitSimPass.RewardType.FREE, tier);
-				ItemStack itemStack = PassManager.currentPass.freePassRewards.get(tier).getDisplayItem(hasClaimed);
+				ItemStack itemStack = PassManager.currentPass.freePassRewards.get(tier).getDisplayItem(pitPlayer, hasClaimed);
+				setLore(itemStack, passData.getCompletedTiers() >= tier, true);
 				if(PassManager.canClaimReward(pitPlayer, PitSimPass.RewardType.FREE, tier)) {
 					Misc.addEnchantGlint(itemStack);
 				} else if(hasClaimed) {
-					itemStack.setType(Material.BARRIER);
+					itemStack.setType(Material.INK_SACK);
+					itemStack.setDurability((short) 8);
 				}
 				getInventory().setItem(i + 45, itemStack);
 			} else {
@@ -159,6 +169,7 @@ public class PassPanel extends AGUIPanel {
 	public void onClick(InventoryClickEvent event) {
 		if(event.getClickedInventory().getHolder() != this) return;
 		PitPlayer pitPlayer = passGUI.pitPlayer;
+		PassData passData = pitPlayer.getPassData(PassManager.currentPass.startDate);
 		int slot = event.getSlot();
 
 		if(slot == 16) {
@@ -179,8 +190,10 @@ public class PassPanel extends AGUIPanel {
 			if(PassManager.canClaimReward(pitPlayer, PitSimPass.RewardType.PREMIUM, clickedReward)) {
 				PassManager.claimReward(pitPlayer, PitSimPass.RewardType.PREMIUM, clickedReward);
 
-				ItemStack itemStack = PassManager.currentPass.premiumPassRewards.get(clickedReward).getDisplayItem(true);
-				itemStack.setType(Material.BARRIER);
+				ItemStack itemStack = PassManager.currentPass.premiumPassRewards.get(clickedReward).getDisplayItem(pitPlayer, true);
+				setLore(itemStack, passData.getCompletedTiers() >= clickedReward, true);
+				itemStack.setType(Material.INK_SACK);
+				itemStack.setDurability((short) 8);
 				getInventory().setItem(slot, itemStack);
 			} else {
 				Sounds.NO.play(player);
@@ -191,8 +204,10 @@ public class PassPanel extends AGUIPanel {
 			if(PassManager.canClaimReward(pitPlayer, PitSimPass.RewardType.FREE, clickedReward)) {
 				PassManager.claimReward(pitPlayer, PitSimPass.RewardType.FREE, clickedReward);
 
-				ItemStack itemStack = PassManager.currentPass.freePassRewards.get(clickedReward).getDisplayItem(true);
-				itemStack.setType(Material.BARRIER);
+				ItemStack itemStack = PassManager.currentPass.freePassRewards.get(clickedReward).getDisplayItem(pitPlayer, true);
+				setLore(itemStack, passData.getCompletedTiers() >= clickedReward, true);
+				itemStack.setType(Material.INK_SACK);
+				itemStack.setDurability((short) 8);
 				getInventory().setItem(slot, itemStack);
 			} else {
 				Sounds.NO.play(player);
@@ -210,5 +225,17 @@ public class PassPanel extends AGUIPanel {
 	@Override
 	public void onClose(InventoryCloseEvent event) {
 
+	}
+
+	public void setLore(ItemStack itemStack, boolean tierUnlocked, boolean claimed) {
+		ALoreBuilder loreBuilder = new ALoreBuilder(itemStack.getItemMeta().getLore()).addLore("");
+		if(!tierUnlocked) {
+			loreBuilder.addLore("&7Tier is incomplete");
+		} else if(!claimed) {
+			loreBuilder.addLore("&7Previously claimed");
+		} else {
+			loreBuilder.addLore("&7Click to claim!");
+		}
+		new AItemStackBuilder(itemStack).setLore(loreBuilder);
 	}
 }

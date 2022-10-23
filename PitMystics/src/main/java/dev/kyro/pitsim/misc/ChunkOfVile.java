@@ -39,7 +39,6 @@ public class ChunkOfVile implements Listener {
 		nbtItem.setBoolean(NBTTag.IS_VILE.getRef(), true);
 
 		AUtil.giveItemSafely(player, nbtItem.getItem(), true);
-
 	}
 
 	public static ItemStack getVile(int amount) {
