@@ -1,4 +1,4 @@
-package dev.kyro.pitsim.acosmetics.deatheffects;
+package dev.kyro.pitsim.acosmetics.killeffectsplayer;
 
 import dev.kyro.arcticapi.builders.AItemStackBuilder;
 import dev.kyro.pitsim.acosmetics.CosmeticType;
@@ -10,21 +10,22 @@ import org.bukkit.Material;
 import org.bukkit.event.EventHandler;
 import org.bukkit.inventory.ItemStack;
 
-public class DeathScream extends PitCosmetic {
+public class DeathHowl extends PitCosmetic {
 
-	public DeathScream() {
-		super("&fScream", "deathscreem", CosmeticType.DEATH_EFFECT);
+	public DeathHowl() {
+		super("&8Howl", "howl", CosmeticType.PLAYER_KILL_EFFECT);
 	}
 
 	@EventHandler
 	public void onKill(KillEvent killEvent) {
-		if(!PlayerManager.isRealPlayer(killEvent.getDeadPlayer()) || !isEnabled(killEvent.getDeadPitPlayer())) return;
-		Sounds.DEATH_GHAST_SCREAM.play(killEvent.getDeadPlayer().getLocation(), range);
+		if(!PlayerManager.isRealPlayer(killEvent.getDeadPlayer()) || !isEnabled(killEvent.getKillerPitPlayer()) ||
+				nearMid(killEvent.getDeadPlayer())) return;
+		Sounds.DEATH_HOWL.play(killEvent.getDeadPlayer().getLocation(), SOUND_RANGE);
 	}
 
 	@Override
 	public ItemStack getRawDisplayItem() {
-		ItemStack itemStack = new AItemStackBuilder(Material.GHAST_TEAR)
+		ItemStack itemStack = new AItemStackBuilder(Material.BONE)
 				.setName(getDisplayName())
 				.getItemStack();
 		return itemStack;

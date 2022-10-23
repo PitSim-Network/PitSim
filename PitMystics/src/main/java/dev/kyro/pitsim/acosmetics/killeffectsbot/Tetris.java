@@ -1,9 +1,9 @@
-package dev.kyro.pitsim.acosmetics.killeffects;
+package dev.kyro.pitsim.acosmetics.killeffectsbot;
 
 import dev.kyro.arcticapi.builders.AItemStackBuilder;
 import dev.kyro.pitsim.acosmetics.CosmeticType;
 import dev.kyro.pitsim.acosmetics.PitCosmetic;
-import dev.kyro.pitsim.controllers.PlayerManager;
+import dev.kyro.pitsim.controllers.NonManager;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.enums.NotePitch;
 import dev.kyro.pitsim.events.KillEvent;
@@ -89,13 +89,13 @@ public class Tetris extends PitCosmetic {
 	}
 
 	public Tetris() {
-		super("&cT&6e&et&ar&bi&ds&9!", "tetris", CosmeticType.KILL_EFFECT);
+		super("&cT&6e&et&ar&bi&ds&9!", "tetris", CosmeticType.BOT_KILL_EFFECT);
 		preventKillSound = true;
 	}
 
 	@EventHandler
 	public void onKill(KillEvent killEvent) {
-		if(!PlayerManager.isRealPlayer(killEvent.getKillerPlayer()) || !isEnabled(killEvent.getKillerPitPlayer())) return;
+		if(NonManager.getNon(killEvent.getDead()) == null || !isEnabled(killEvent.getKillerPitPlayer())) return;
 		int count = playerSongPositionMap.getOrDefault(killEvent.getKillerPlayer().getUniqueId(), 0);
 		killEvent.getKillerPlayer().playSound(killEvent.getKillerPlayer().getLocation(), Sound.NOTE_PLING, 1, tetrisThemeNotes.get(count));
 		playerSongPositionMap.put(killEvent.getKillerPlayer().getUniqueId(), (count + 1) % tetrisThemeNotes.size());

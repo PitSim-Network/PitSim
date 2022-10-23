@@ -21,12 +21,10 @@ import dev.kyro.pitsim.acosmetics.aura.VillagerHappyAura;
 import dev.kyro.pitsim.acosmetics.aura.WaterAura;
 import dev.kyro.pitsim.acosmetics.bounty.*;
 import dev.kyro.pitsim.acosmetics.capes.*;
-import dev.kyro.pitsim.acosmetics.deatheffects.DeathHowl;
-import dev.kyro.pitsim.acosmetics.deatheffects.DeathScream;
-import dev.kyro.pitsim.acosmetics.deatheffects.SuperMarioDeath;
-import dev.kyro.pitsim.acosmetics.killeffects.AlwaysExe;
-import dev.kyro.pitsim.acosmetics.killeffects.OnlyExe;
-import dev.kyro.pitsim.acosmetics.killeffects.Tetris;
+import dev.kyro.pitsim.acosmetics.killeffectsplayer.*;
+import dev.kyro.pitsim.acosmetics.killeffectsbot.AlwaysExe;
+import dev.kyro.pitsim.acosmetics.killeffectsbot.OnlyExe;
+import dev.kyro.pitsim.acosmetics.killeffectsbot.Tetris;
 import dev.kyro.pitsim.acosmetics.misc.RingCosmetic;
 import dev.kyro.pitsim.acosmetics.trails.FootstepTrail;
 import dev.kyro.pitsim.acosmetics.trails.IceTrail;
@@ -676,7 +674,9 @@ public class PitSim extends JavaPlugin {
 
 		CosmeticManager.registerCosmetic(new DeathHowl());
 		CosmeticManager.registerCosmetic(new DeathScream());
-		CosmeticManager.registerCosmetic(new SuperMarioDeath());
+		CosmeticManager.registerCosmetic(new SuperMario());
+		CosmeticManager.registerCosmetic(new DeathExplosion());
+		CosmeticManager.registerCosmetic(new DeathFirework());
 
 		CosmeticManager.registerCosmetic(new BountyBlueShell());
 		CosmeticManager.registerCosmetic(new BountyBullied());

@@ -37,6 +37,14 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 
 public class Misc {
+	public static double randomOffset(double variance) {
+		return Math.random() * variance - variance / 2;
+	}
+
+	public static double randomOffsetPositive(double variance) {
+		return Math.random() * variance / 2;
+	}
+
 	public static String getBountyClaimedMessage(PitPlayer pitKiller, PitPlayer pitDead, String bounty) {
 		PitCosmetic pitCosmetic = null;
 		for(PitCosmetic equippedCosmetic : CosmeticManager.getEquippedCosmetics(pitKiller)) {
@@ -142,7 +150,7 @@ public class Misc {
 	public static void playKillSound(PitPlayer pitPlayer) {
 		PitCosmetic pitCosmetic = null;
 		for(PitCosmetic equippedCosmetic : CosmeticManager.getEquippedCosmetics(pitPlayer)) {
-			if(equippedCosmetic.cosmeticType != CosmeticType.KILL_EFFECT) continue;
+			if(equippedCosmetic.cosmeticType != CosmeticType.BOT_KILL_EFFECT) continue;
 			pitCosmetic = equippedCosmetic;
 			break;
 		}

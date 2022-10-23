@@ -4,8 +4,8 @@ import dev.kyro.arcticapi.gui.AGUI;
 import dev.kyro.pitsim.acosmetics.CosmeticType;
 import dev.kyro.pitsim.asettings.SubCosmeticPanel;
 
-public class KillEffectsPanel extends SubCosmeticPanel {
-	public KillEffectsPanel(AGUI gui) {
-		super(gui, CosmeticType.KILL_EFFECT);
+public class BotKillEffectsPanel extends SubCosmeticPanel {
+	public BotKillEffectsPanel(AGUI gui) {
+		super(gui, CosmeticType.BOT_KILL_EFFECT);
 	}
 }

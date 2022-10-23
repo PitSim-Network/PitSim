@@ -9,8 +9,8 @@ import java.util.Arrays;
 import java.util.List;
 
 public enum CosmeticType {
-	KILL_EFFECT("&c&lKill Effects", "", KillEffectsPanel.class),
-	DEATH_EFFECT("&9&lDeath Effects", "", DeathEffectsPanel.class),
+	PLAYER_KILL_EFFECT("&4&lPlayer Kill Effects", "", PlayerKillEffectsPanel.class),
+	BOT_KILL_EFFECT("&c&lBot Kill Effects", "", BotKillEffectsPanel.class),
 	BOUNTY_CLAIM_MESSAGE("&6&lBounty Messages", "", BountyMessagesPanel.class),
 	CAPE("&f&lCapes", "capes", CapesPanel.class),
 	PARTICLE_TRAIL("&e&lParticle Trails", "", ParticleTrailsPanel.class),

@@ -1,10 +1,10 @@
-package dev.kyro.pitsim.acosmetics.killeffects;
+package dev.kyro.pitsim.acosmetics.killeffectsbot;
 
 import dev.kyro.arcticapi.builders.AItemStackBuilder;
 import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.pitsim.acosmetics.CosmeticType;
 import dev.kyro.pitsim.acosmetics.PitCosmetic;
-import dev.kyro.pitsim.controllers.PlayerManager;
+import dev.kyro.pitsim.controllers.NonManager;
 import dev.kyro.pitsim.events.KillEvent;
 import dev.kyro.pitsim.misc.Sounds;
 import org.bukkit.Effect;
@@ -15,13 +15,13 @@ import org.bukkit.inventory.ItemStack;
 public class OnlyExe extends PitCosmetic {
 
 	public OnlyExe() {
-		super("&cOnly Exe", "onlyexe", CosmeticType.KILL_EFFECT);
+		super("&cOnly Exe", "onlyexe", CosmeticType.BOT_KILL_EFFECT);
 		preventKillSound = true;
 	}
 
 	@EventHandler
 	public void onKill(KillEvent killEvent) {
-		if(!PlayerManager.isRealPlayer(killEvent.getKillerPlayer()) || !isEnabled(killEvent.getKillerPitPlayer()) || killEvent.isExeDeath()) return;
+		if(NonManager.getNon(killEvent.getDead()) == null || !isEnabled(killEvent.getKillerPitPlayer()) || killEvent.isExeDeath()) return;
 		Sounds.EXE.play(killEvent.getKillerPlayer());
 		killEvent.getKillerPlayer().playEffect(killEvent.getDeadPlayer().getLocation().add(0, 1, 0), Effect.STEP_SOUND, 152);
 	}

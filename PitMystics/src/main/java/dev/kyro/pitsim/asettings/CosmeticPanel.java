@@ -17,8 +17,8 @@ import java.util.Map;
 public class CosmeticPanel extends AGUIPanel {
 	public SettingsGUI settingsGUI;
 
-	public static ItemStack killEffectItem;
-	public static ItemStack deathEffectItem;
+	public static ItemStack playerKillEffects;
+	public static ItemStack botKillEffects;
 	public static ItemStack bountyMessageItem;
 	public static ItemStack capesItem;
 	public static ItemStack particleTrailItem;
@@ -27,16 +27,16 @@ public class CosmeticPanel extends AGUIPanel {
 	public static ItemStack backItem;
 
 	static {
-		killEffectItem = new AItemStackBuilder(Material.DIAMOND_SWORD)
-				.setName("&c&lKill Effects")
+		playerKillEffects = new AItemStackBuilder(Material.SKULL_ITEM, 1, 1)
+				.setName("&4&lPlayer Kill Effects")
 				.setLore(new ALoreBuilder(
-						"&7Click to pick your kill effect"
+						"&7Click to pick your player kill effect"
 				))
 				.getItemStack();
-		deathEffectItem = new AItemStackBuilder(Material.SKULL_ITEM, 1, 1)
-				.setName("&9&lDeath Effects")
+		botKillEffects = new AItemStackBuilder(Material.DIAMOND_SWORD)
+				.setName("&c&lBot Kill Effects")
 				.setLore(new ALoreBuilder(
-						"&7Click to pick your death effect"
+						"&7Click to pick your bot kill effect"
 				))
 				.getItemStack();
 		bountyMessageItem = new AItemStackBuilder(Material.GOLD_INGOT)
@@ -83,8 +83,8 @@ public class CosmeticPanel extends AGUIPanel {
 
 		inventoryBuilder.createBorder(Material.STAINED_GLASS_PANE, 7);
 
-		getInventory().setItem(10, killEffectItem);
-		getInventory().setItem(11, deathEffectItem);
+		getInventory().setItem(10, playerKillEffects);
+		getInventory().setItem(11, botKillEffects);
 		getInventory().setItem(12, bountyMessageItem);
 		getInventory().setItem(13, capesItem);
 		getInventory().setItem(14, particleTrailItem);

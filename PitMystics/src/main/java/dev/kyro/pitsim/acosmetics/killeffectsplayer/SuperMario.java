@@ -1,4 +1,4 @@
-package dev.kyro.pitsim.acosmetics.deatheffects;
+package dev.kyro.pitsim.acosmetics.killeffectsplayer;
 
 import com.xxmicloxx.NoteBlockAPI.model.RepeatMode;
 import com.xxmicloxx.NoteBlockAPI.model.Song;
@@ -17,21 +17,22 @@ import org.bukkit.inventory.ItemStack;
 
 import java.io.File;
 
-public class SuperMarioDeath extends PitCosmetic {
+public class SuperMario extends PitCosmetic {
 
-	public SuperMarioDeath() {
-		super("&fSuper Mario", "supermario", CosmeticType.DEATH_EFFECT);
+	public SuperMario() {
+		super("&fSuper Mario", "supermario", CosmeticType.PLAYER_KILL_EFFECT);
 	}
 
 	@EventHandler
 	public void onKill(KillEvent killEvent) {
-		if(!PlayerManager.isRealPlayer(killEvent.getDeadPlayer()) || !isEnabled(killEvent.getDeadPitPlayer())) return;
+		if(!PlayerManager.isRealPlayer(killEvent.getDeadPlayer()) || !isEnabled(killEvent.getKillerPitPlayer()) ||
+				nearMid(killEvent.getDeadPlayer())) return;
 
 		File file = new File("plugins/NoteBlockAPI/Effects/mariodeath.nbs");
 		Song song = NBSDecoder.parse(file);
 		PositionSongPlayer psp = new PositionSongPlayer(song);
 		psp.setTargetLocation(killEvent.getDeadPlayer().getLocation());
-		psp.setDistance(range);
+		psp.setDistance(SOUND_RANGE);
 		psp.setRepeatMode(RepeatMode.NO);
 		for(Player onlinePlayer : Bukkit.getOnlinePlayers()) psp.addPlayer(onlinePlayer);
 		psp.setPlaying(true);

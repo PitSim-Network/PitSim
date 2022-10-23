@@ -2,10 +2,12 @@ package dev.kyro.pitsim.acosmetics;
 
 import dev.kyro.pitsim.ParticleColor;
 import dev.kyro.pitsim.PitSim;
+import dev.kyro.pitsim.controllers.MapManager;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.misc.Misc;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitTask;
@@ -23,7 +25,8 @@ public abstract class PitCosmetic implements Listener {
 	public boolean isPermissionRequired = false;
 
 	public boolean preventKillSound = false;
-	public final int range = 10;
+	public final int SOUND_RANGE = 10;
+	public final int MID_RANGE = 10;
 
 	public Map<UUID, BukkitTask> runnableMap = new HashMap<>();
 
@@ -119,7 +122,7 @@ public abstract class PitCosmetic implements Listener {
 
 //	Returns true if color cosmetic if any color is equipped
 	public boolean isEnabled(PitPlayer pitPlayer) {
-		if(!isUnlocked(pitPlayer)) return false;
+		if(pitPlayer == null || !isUnlocked(pitPlayer)) return false;
 		if(!pitPlayer.equippedCosmeticMap.containsKey(cosmeticType.name())) return false;
 		PitPlayer.EquippedCosmeticData cosmeticData = pitPlayer.equippedCosmeticMap.get(cosmeticType.name());
 		if(cosmeticData == null) return false;
@@ -149,5 +152,9 @@ public abstract class PitCosmetic implements Listener {
 
 	public String getBountyClaimMessage(String killerName, String deadName, String bounty) {
 		return null;
+	}
+
+	public boolean nearMid(Player player) {
+		return !MapManager.inDarkzone(player) && MapManager.currentMap.getMid(player.getWorld()).distance(player.getLocation()) < MID_RANGE;
 	}
 }
