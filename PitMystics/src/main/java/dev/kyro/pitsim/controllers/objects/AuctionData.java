@@ -6,30 +6,24 @@ import dev.kyro.pitsim.controllers.FirestoreManager;
 
 import java.util.*;
 
-public class Config {
+public class AuctionData {
 	@Exclude
 	public boolean onSaveCooldown = false;
 	@Exclude
 	public boolean saveQueued = false;
 
-	public String prefix = "";
-	public String errorPrefix = "&c";
-	public List<String> whitelistedIPs = new ArrayList<>(Arrays.asList("/***REMOVED***", "/***REMOVED***"));
-	public boolean nons = true;
-
-	public HashMap<String, Integer> boosters = new HashMap<>();
-
-	public Security security = new Security();
-	public static class Security {
-		public boolean requireVerification = false;
-		public boolean requireCaptcha = false;
+	public List<Auction> auctions = Arrays.asList(null, null, null);
+	public static class Auction {
+		public int item;
+		public int itemData;
+		public long start;
+		public List<String> bids = new ArrayList<>();
 	}
 
-	public Config() {}
+	public AuctionData() {}
 
 	@Exclude
 	public void save() {
-		if(!Objects.equals(PitSim.serverName, "pitsim-1")) return;
 		if(onSaveCooldown && !saveQueued) {
 			saveQueued = true;
 			new Thread(() -> {
@@ -43,8 +37,8 @@ public class Config {
 			}).start();
 		}
 		if(!saveQueued && !onSaveCooldown) {
-			FirestoreManager.FIRESTORE.collection(FirestoreManager.SERVER_COLLECTION).document(FirestoreManager.CONFIG_DOCUMENT).set(this);
-			System.out.println("Saving PitSim Config");
+			FirestoreManager.FIRESTORE.collection(FirestoreManager.SERVER_COLLECTION).document(FirestoreManager.AUCTION_DOCUMENT).set(this);
+			System.out.println("Saving PitSim Auction data");
 			onSaveCooldown = true;
 			new Thread(() -> {
 				try {

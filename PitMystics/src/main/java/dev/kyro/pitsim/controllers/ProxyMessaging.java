@@ -1,8 +1,11 @@
 package dev.kyro.pitsim.controllers;
 
 import de.myzelyam.api.vanish.VanishAPI;
+import dev.kyro.arcticapi.misc.AOutput;
+import dev.kyro.arcticapi.misc.AUtil;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.controllers.objects.*;
+import dev.kyro.pitsim.enums.ItemType;
 import dev.kyro.pitsim.events.MessageEvent;
 import dev.kyro.pitsim.inventories.KeeperPanel;
 import me.clip.placeholderapi.PlaceholderAPI;
@@ -14,6 +17,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.List;
@@ -202,6 +206,30 @@ public class ProxyMessaging implements Listener {
 			FirestoreManager.CONFIG.save();
 
 			Bukkit.broadcastMessage(strings.get(2));
+		}
+
+		if(strings.size() >= 2 && strings.get(0).equals("AUCTION ITEM REQUEST")) {
+			UUID uuid = UUID.fromString(strings.get(4));
+			Player winner = Bukkit.getPlayer(uuid);
+			int id = integers.get(0);
+			int itemData = integers.get(1);
+			int highestBid = integers.get(2);
+
+			ItemType item = ItemType.getItemType(id);
+			assert item != null;
+
+			PitPlayer.getPitPlayer(winner.getPlayer()).stats.auctionsWon++;
+
+			if(itemData == 0) {
+				AUtil.giveItemSafely(winner.getPlayer(), item.item.clone(), true);
+			} else {
+				ItemStack jewel = ItemType.getJewelItem(item.id, itemData);
+
+				AUtil.giveItemSafely(winner.getPlayer(), jewel, true);
+
+				AOutput.send(winner.getPlayer(), "&5&lDARK AUCTION! &7Received " + item.itemName + "&7.");
+			}
+
 		}
 	}
 

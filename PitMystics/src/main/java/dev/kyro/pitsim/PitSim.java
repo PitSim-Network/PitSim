@@ -531,6 +531,7 @@ public class PitSim extends JavaPlugin {
 		getServer().getPluginManager().registerEvents(new ScoreboardManager(), this);
 		getServer().getPluginManager().registerEvents(new ProxyMessaging(), this);
 		getServer().getPluginManager().registerEvents(new LobbySwitchManager(), this);
+		getServer().getPluginManager().registerEvents(new AuctionManager(), this);
 	}
 	public void registerBoosters() {
 		BoosterManager.registerBooster(new XPBooster());
