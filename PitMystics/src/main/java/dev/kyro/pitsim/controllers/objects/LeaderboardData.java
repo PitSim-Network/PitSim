@@ -1,8 +1,11 @@
 package dev.kyro.pitsim.controllers.objects;
 
-import javafx.util.Pair;
+import dev.kyro.pitsim.controllers.PrestigeValues;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.Map;
+import java.util.UUID;
 
 public class LeaderboardData {
 
@@ -20,11 +23,12 @@ public class LeaderboardData {
 		String[] playerSplit = leaderboardData.split("\\|");
 		for(String data : playerSplit) {
 			String[] playerData = data.split(",");
-			if(playerData.length == 3) {
-				UUID uuid = UUID.fromString(playerData[0]);
-				double value = Double.parseDouble(playerData[2]);
-				leaderboardDataMap.put(uuid, new PlayerData(value, playerData[1]));
-			}
+			UUID uuid = UUID.fromString(playerData[0]);
+			double value = Double.parseDouble(playerData[2]);
+
+			String[] prestigeAndLevel = playerData[1].split(" ");
+			leaderboardDataMap.put(uuid, new PlayerData(value, PrestigeValues.getPlayerPrefix(
+					Integer.parseInt(prestigeAndLevel[0]), Integer.parseInt(prestigeAndLevel[1]))));
 		}
 
 		leaderboards.put(leaderboard, this);
