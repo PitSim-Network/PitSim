@@ -16,16 +16,15 @@ import dev.kyro.arcticapi.hooks.AHook;
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.acosmetics.CosmeticManager;
 import dev.kyro.pitsim.acosmetics.PitCosmetic;
-import dev.kyro.pitsim.acosmetics.aura.FireAura;
-import dev.kyro.pitsim.acosmetics.aura.PotionAura;
-import dev.kyro.pitsim.acosmetics.aura.VillagerHappyAura;
-import dev.kyro.pitsim.acosmetics.aura.WaterAura;
+import dev.kyro.pitsim.acosmetics.aura.*;
 import dev.kyro.pitsim.acosmetics.bounty.*;
 import dev.kyro.pitsim.acosmetics.capes.*;
 import dev.kyro.pitsim.acosmetics.killeffectsbot.AlwaysExe;
 import dev.kyro.pitsim.acosmetics.killeffectsbot.OnlyExe;
 import dev.kyro.pitsim.acosmetics.killeffectsbot.Tetris;
 import dev.kyro.pitsim.acosmetics.killeffectsplayer.*;
+import dev.kyro.pitsim.acosmetics.misc.KyroCosmetic;
+import dev.kyro.pitsim.acosmetics.misc.Ring2Cosmetic;
 import dev.kyro.pitsim.acosmetics.misc.RingCosmetic;
 import dev.kyro.pitsim.acosmetics.trails.*;
 import dev.kyro.pitsim.battlepass.PassManager;
@@ -510,6 +509,7 @@ public class PitSim extends JavaPlugin {
 		SettingsCommand settingsCommand = new SettingsCommand();
 		getCommand("settings").setExecutor(settingsCommand);
 		getCommand("setting").setExecutor(settingsCommand);
+		getCommand("set").setExecutor(settingsCommand);
 	}
 
 	private void registerListeners() {
@@ -700,7 +700,9 @@ public class PitSim extends JavaPlugin {
 		CosmeticManager.registerCosmetic(new BountySystemMalfunction());
 		CosmeticManager.registerCosmetic(new BountyTookTheL());
 
+		CosmeticManager.registerCosmetic(new KyroCosmetic());
 		CosmeticManager.registerCosmetic(new RingCosmetic());
+		CosmeticManager.registerCosmetic(new Ring2Cosmetic());
 
 		CosmeticManager.registerCosmetic(new SolidCape());
 		CosmeticManager.registerCosmetic(new FireCape());
@@ -718,11 +720,15 @@ public class PitSim extends JavaPlugin {
 		CosmeticManager.registerCosmetic(new LapisTrail());
 		CosmeticManager.registerCosmetic(new DiamondTrail());
 		CosmeticManager.registerCosmetic(new EmeraldTrail());
+		CosmeticManager.registerCosmetic(new SlimeTrail());
+		CosmeticManager.registerCosmetic(new LavaTrail());
 
 		CosmeticManager.registerCosmetic(new VillagerHappyAura());
 		CosmeticManager.registerCosmetic(new PotionAura());
 		CosmeticManager.registerCosmetic(new WaterAura());
 		CosmeticManager.registerCosmetic(new FireAura());
+		CosmeticManager.registerCosmetic(new MagicAura());
+		CosmeticManager.registerCosmetic(new FireworkAura());
 
 		CosmeticManager.loadForOnlinePlayers();
 	}

@@ -16,7 +16,7 @@ public class RotationTools {
 
 		double[][] vectorMatrix = {
 				new double[] {vector.getX()},
-				new double[] {-vector.getZ()},
+				new double[] {vector.getZ()},
 				new double[] {vector.getY()}
 		};
 

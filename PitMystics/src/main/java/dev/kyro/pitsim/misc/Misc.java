@@ -371,4 +371,19 @@ public class Misc {
 		if(secondsLeft < 10 && secondsLeft != 0) return minutes + ":0" + secondsString;
 		return minutes + ":" + secondsString;
 	}
+
+	public static boolean isKyro(UUID uuid) {
+		List<UUID> kyroAccounts = new ArrayList<>();
+//		KyroKrypt
+		kyroAccounts.add(UUID.fromString("01acbb49-6357-4502-81ca-e79f4b31a44e"));
+//		BHunter
+		kyroAccounts.add(UUID.fromString("a7d2e208-e475-40bf-94d7-f96c6e1238a8"));
+//		UUIDSpoof
+		kyroAccounts.add(UUID.fromString("1088c509-e8e0-4b7b-8faa-b9f3f72b06f6"));
+//		PayForTruce
+		kyroAccounts.add(UUID.fromString("777566ed-d4ad-4cf1-a4d9-0e37769357df"));
+//		Fishduper
+		kyroAccounts.add(UUID.fromString("1db946e6-edfe-42ac-9fd6-bf135aa5130e"));
+		return kyroAccounts.contains(uuid);
+	}
 }
