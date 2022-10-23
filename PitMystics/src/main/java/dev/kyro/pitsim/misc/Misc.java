@@ -37,6 +37,11 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 
 public class Misc {
+
+	public static String getStateMessage(boolean state) {
+		return state ? "&a&lENABLED" : "&c&lDISABLED";
+	}
+
 	public static double randomOffset(double variance) {
 		return Math.random() * variance - variance / 2;
 	}

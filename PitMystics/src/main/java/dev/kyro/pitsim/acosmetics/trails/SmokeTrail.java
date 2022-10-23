@@ -38,6 +38,9 @@ public class SmokeTrail extends PitCosmetic {
 				if(CosmeticManager.isStandingStill(pitPlayer.player)) return;
 				Location displayLocation = pitPlayer.player.getLocation();
 				for(Player onlinePlayer : CosmeticManager.getDisplayPlayers(pitPlayer.player, displayLocation)) {
+					PitPlayer onlinePitPlayer = PitPlayer.getPitPlayer(onlinePlayer);
+					if(onlinePlayer != pitPlayer.player && !onlinePitPlayer.playerSettings.trailParticles) continue;
+
 					EntityPlayer entityPlayer = ((CraftPlayer) onlinePlayer).getHandle();
 					collection.displayAll(entityPlayer, displayLocation);
 				}

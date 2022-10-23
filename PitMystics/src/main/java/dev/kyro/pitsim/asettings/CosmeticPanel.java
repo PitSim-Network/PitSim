@@ -95,7 +95,7 @@ public class CosmeticPanel extends AGUIPanel {
 
 	@Override
 	public String getName() {
-		return ChatColor.YELLOW + "Cosmetics";
+		return ChatColor.YELLOW + "" + ChatColor.BOLD + "Cosmetics";
 	}
 
 	@Override

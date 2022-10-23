@@ -37,6 +37,9 @@ public class PotionAura extends ColorableCosmetic {
 				Location displayLocation = pitPlayer.player.getLocation();
 
 				for(Player onlinePlayer : CosmeticManager.getDisplayPlayers(pitPlayer.player, displayLocation)) {
+					PitPlayer onlinePitPlayer = PitPlayer.getPitPlayer(onlinePlayer);
+					if(onlinePlayer != pitPlayer.player && !onlinePitPlayer.playerSettings.auraParticles) continue;
+
 					EntityPlayer entityPlayer = ((CraftPlayer) onlinePlayer).getHandle();
 					collection.display("main", entityPlayer, displayLocation, getColor(pitPlayer));
 				}

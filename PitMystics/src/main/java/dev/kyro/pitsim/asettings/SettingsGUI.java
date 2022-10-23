@@ -17,6 +17,7 @@ public class SettingsGUI extends AGUI {
 
 	public SettingsPanel settingsPanel;
 	public CosmeticPanel cosmeticPanel;
+	public ParticlesPanel particlesPanel;
 	public Map<CosmeticType, SubCosmeticPanel> cosmeticPanelMap = new HashMap<>();
 
 	public SettingsGUI(Player player) {
@@ -25,6 +26,7 @@ public class SettingsGUI extends AGUI {
 
 		settingsPanel = new SettingsPanel(this);
 		cosmeticPanel = new CosmeticPanel(this);
+		particlesPanel = new ParticlesPanel(this);
 
 		Class<? extends SubCosmeticPanel>[] constructorParameters = new Class[] {AGUI.class};
 		for(CosmeticType cosmeticType : CosmeticType.values()) {
@@ -41,8 +43,7 @@ public class SettingsGUI extends AGUI {
 			cosmeticPanelMap.put(cosmeticType, panel);
 		}
 
-//		TODO: correct home panel
-		setHomePanel(cosmeticPanel);
+		setHomePanel(settingsPanel);
 	}
 
 //	For cosmetic panel
@@ -51,12 +52,12 @@ public class SettingsGUI extends AGUI {
 		return (getItemsToDisplay(panel) - 1) / SubCosmeticPanel.cosmeticSlots.size() + 1;
 	}
 
-	//	For cosmetic panel
+//	For cosmetic panel
 	public int getRows(SubCosmeticPanel panel) {
 		return (getItemsToDisplay(panel) - 1) / 7 + 3;
 	}
 
-	//	For cosmetic panel
+//	For cosmetic panel
 	public int getItemsToDisplay(SubCosmeticPanel panel) {
 		List<PitCosmetic> unlockedCosmetics = CosmeticManager.getUnlockedCosmetics(pitPlayer, panel.cosmeticType);
 		return Math.min(unlockedCosmetics.size() - SubCosmeticPanel.cosmeticSlots.size() * (panel.page - 1), SubCosmeticPanel.cosmeticSlots.size());

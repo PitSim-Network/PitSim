@@ -126,6 +126,11 @@ public class CosmeticManager implements Listener {
 		return cosmeticList;
 	}
 
+	public static PitCosmetic getEquippedCosmetic(PitPlayer pitPlayer, CosmeticType cosmeticType) {
+		for(PitCosmetic pitCosmetic : cosmeticMap.get(cosmeticType)) if(pitCosmetic.isEnabled(pitPlayer)) return pitCosmetic;
+		return null;
+	}
+
 	public static List<PitCosmetic> getEquippedCosmetics(PitPlayer pitPlayer) {
 		List<PitCosmetic> activeCosmetics = new ArrayList<>();
 		loop:

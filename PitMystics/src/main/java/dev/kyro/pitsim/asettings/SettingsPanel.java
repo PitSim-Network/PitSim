@@ -14,24 +14,38 @@ import org.bukkit.inventory.ItemStack;
 public class SettingsPanel extends AGUIPanel {
 	public SettingsGUI settingsGUI;
 
+	public static ItemStack cosmeticItem;
+	public static ItemStack particleItem;
+
+	static {
+		cosmeticItem = new AItemStackBuilder(Material.RED_ROSE)
+				.setName("&c&lCosmetics")
+				.setLore(new ALoreBuilder(
+						"&7Click to open the cosmetics menu"
+				))
+				.getItemStack();
+
+		particleItem = new AItemStackBuilder(Material.SEEDS)
+				.setName("&a&lParticle Settings")
+				.setLore(new ALoreBuilder(
+						"&7Click to open the particles menu"
+				))
+				.getItemStack();
+	}
+
 	public SettingsPanel(AGUI gui) {
 		super(gui);
 		settingsGUI = (SettingsGUI) gui;
 
 		inventoryBuilder.createBorder(Material.STAINED_GLASS_PANE, 7);
 
-		ItemStack cosmeticItem = new AItemStackBuilder(Material.RED_ROSE)
-				.setName("&c&lCosmetics")
-				.setLore(new ALoreBuilder(
-						"&7Click to open the cosmetics menu"
-				))
-				.getItemStack();
 		getInventory().setItem(10, cosmeticItem);
+		getInventory().setItem(11, particleItem);
 	}
 
 	@Override
 	public String getName() {
-		return ChatColor.WHITE + "Settings";
+		return ChatColor.WHITE + "" + ChatColor.BOLD + "Settings";
 	}
 
 	@Override
@@ -46,6 +60,8 @@ public class SettingsPanel extends AGUIPanel {
 
 		if(slot == 10) {
 			openPanel(settingsGUI.cosmeticPanel);
+		} else if(slot == 11) {
+			openPanel(settingsGUI.particlesPanel);
 		}
 	}
 

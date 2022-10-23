@@ -25,7 +25,7 @@ public abstract class SubCosmeticPanel extends AGUIPanel {
 	public static ItemStack previousPageItem;
 	public static ItemStack nextPageItem;
 	public static ItemStack backItem;
-	public static ItemStack disableItem;
+	public ItemStack disableItem;
 
 	public CosmeticType cosmeticType;
 	public int slot;
@@ -56,14 +56,6 @@ public abstract class SubCosmeticPanel extends AGUIPanel {
 				))
 				.getItemStack();
 
-//		TODO: make it pull the material from the active cosmetic
-		disableItem = new AItemStackBuilder(Material.BARRIER)
-				.setName("&c&lDisable")
-				.setLore(new ALoreBuilder(
-						"&7Click to disable your active cosmetic"
-				))
-				.getItemStack();
-
 		for(int i = 9; i < 45; i++) {
 			if(i % 9 == 0 || (i + 1) % 9 == 0) continue;
 			cosmeticSlots.add(i);
@@ -80,7 +72,18 @@ public abstract class SubCosmeticPanel extends AGUIPanel {
 		inventoryBuilder.createBorder(Material.STAINED_GLASS_PANE, 7);
 
 		getInventory().setItem(getRows() * 9 - 5, backItem);
-		getInventory().setItem(getRows() * 9 - 4, disableItem);
+
+		PitCosmetic activeCosmetic = CosmeticManager.getEquippedCosmetic(settingsGUI.pitPlayer, cosmeticType);
+		if(activeCosmetic != null) {
+			ItemStack disableItem = activeCosmetic.getDisplayItem(true);
+			new AItemStackBuilder(disableItem)
+					.setName("&c&lDisable")
+					.setLore(new ALoreBuilder(
+							"&7Click to disable your active cosmetic"
+					));
+			getInventory().setItem(getRows() * 9 - 4, disableItem);
+		}
+
 		if(getPages() != 1) {
 			getInventory().setItem(getRows() * 9 - 9, previousPageItem);
 			getInventory().setItem(getRows() * 9 - 1, nextPageItem);
@@ -198,10 +201,6 @@ public abstract class SubCosmeticPanel extends AGUIPanel {
 				deselectCosmetic(cosmeticType);
 				player.closeInventory();
 				Sounds.SUCCESS.play(player);
-//				PitCosmetic pitCosmetic = Objects.requireNonNull(CosmeticManager.getCosmetic(cosmeticData.refName));
-//				CosmeticManager.sendDisableMessage(settingsGUI.pitPlayer, pitCosmetic);
-			} else {
-				Sounds.NO.play(player);
 			}
 		} else if(slot == getRows() * 9 - 1) {
 			if(page < settingsGUI.getPages(this)) {

@@ -34,6 +34,9 @@ public class WaterAura extends PitCosmetic {
 				Location displayLocation = pitPlayer.player.getLocation();
 
 				for(Player onlinePlayer : CosmeticManager.getDisplayPlayers(pitPlayer.player, displayLocation)) {
+					PitPlayer onlinePitPlayer = PitPlayer.getPitPlayer(onlinePlayer);
+					if(onlinePlayer != pitPlayer.player && !onlinePitPlayer.playerSettings.auraParticles) continue;
+
 					EntityPlayer entityPlayer = ((CraftPlayer) onlinePlayer).getHandle();
 					for(int i = 0; i < 3; i++) collection.display("main", entityPlayer, displayLocation);
 				}

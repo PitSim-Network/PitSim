@@ -157,6 +157,13 @@ public class PitPlayer {
 		}
 	}
 
+	public PlayerSettings playerSettings = new PlayerSettings();
+	public static class PlayerSettings {
+//		Particle Settings
+		public boolean auraParticles = true;
+		public boolean trailParticles = true;
+	}
+
 	@Deprecated
 	public PassData getPassData() {
 		return passData;
