@@ -32,7 +32,7 @@ public class CosmeticPanel extends AGUIPanel {
 	public static ItemStack backItem;
 
 	static {
-		playerKillEffects = new AItemStackBuilder(Material.DIAMOND_SWORD, 1, 1)
+		playerKillEffects = new AItemStackBuilder(Material.DIAMOND_SWORD)
 				.setName("&4&lPlayer Kill Effects")
 				.setLore(new ALoreBuilder(
 						"&7Click to pick your player kill effect"

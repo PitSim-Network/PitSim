@@ -16,21 +16,39 @@ import org.bukkit.material.MaterialData;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
 
-public class IceTrail extends PitCosmetic {
+public class RainbowTrail extends PitCosmetic {
 	public ParticleCollection collection = new ParticleCollection();
 
-	public IceTrail() {
-		super("&bIce Trail", "icetrail", CosmeticType.PARTICLE_TRAIL);
+	public RainbowTrail() {
+		super("&cRainbow Trail", "rainbowtrail", CosmeticType.PARTICLE_TRAIL);
 		accountForPitch = false;
 
-		PitParticle particle = new BlockCrackParticle(this, new MaterialData(Material.PACKED_ICE));
 		Vector vector = new Vector(0, 0.2, 0);
-		collection.addParticle("main", particle, new ParticleOffset(vector, 0.5, 0, 0.5));
+		int ref = 0;
+		collection.addParticle(ref++, new BlockCrackParticle(this, new MaterialData(Material.WOOL, (byte) 14)),
+				new ParticleOffset(vector, 0.5, 0, 0.5));
+		collection.addParticle(ref++, new BlockCrackParticle(this, new MaterialData(Material.WOOL, (byte) 1)),
+				new ParticleOffset(vector, 0.5, 0, 0.5));
+		collection.addParticle(ref++, new BlockCrackParticle(this, new MaterialData(Material.WOOL, (byte) 4)),
+				new ParticleOffset(vector, 0.5, 0, 0.5));
+		collection.addParticle(ref++, new BlockCrackParticle(this, new MaterialData(Material.WOOL, (byte) 5)),
+				new ParticleOffset(vector, 0.5, 0, 0.5));
+		collection.addParticle(ref++, new BlockCrackParticle(this, new MaterialData(Material.WOOL, (byte) 13)),
+				new ParticleOffset(vector, 0.5, 0, 0.5));
+		collection.addParticle(ref++, new BlockCrackParticle(this, new MaterialData(Material.WOOL, (byte) 9)),
+				new ParticleOffset(vector, 0.5, 0, 0.5));
+		collection.addParticle(ref++, new BlockCrackParticle(this, new MaterialData(Material.WOOL, (byte) 11)),
+				new ParticleOffset(vector, 0.5, 0, 0.5));
+		collection.addParticle(ref++, new BlockCrackParticle(this, new MaterialData(Material.WOOL, (byte) 10)),
+				new ParticleOffset(vector, 0.5, 0, 0.5));
+		collection.addParticle(ref++, new BlockCrackParticle(this, new MaterialData(Material.WOOL, (byte) 2)),
+				new ParticleOffset(vector, 0.5, 0, 0.5));
 	}
 
 	@Override
 	public void onEnable(PitPlayer pitPlayer) {
 		runnableMap.put(pitPlayer.player.getUniqueId(), new BukkitRunnable() {
+			private int count = 0;
 			@Override
 			public void run() {
 				if(CosmeticManager.isStandingStill(pitPlayer.player)) return;
@@ -41,7 +59,7 @@ public class IceTrail extends PitCosmetic {
 
 					EntityPlayer entityPlayer = ((CraftPlayer) onlinePlayer).getHandle();
 					for(int i = 0; i < 2; i++)
-							collection.displayAll(entityPlayer, displayLocation);
+						collection.display((count++ / 10) % collection.particleCollectionMap.size(), entityPlayer, displayLocation);
 				}
 			}
 		}.runTaskTimer(PitSim.INSTANCE, 0L, 1L));
@@ -54,7 +72,7 @@ public class IceTrail extends PitCosmetic {
 
 	@Override
 	public ItemStack getRawDisplayItem() {
-		ItemStack itemStack = new AItemStackBuilder(Material.PACKED_ICE)
+		ItemStack itemStack = new AItemStackBuilder(Material.WOOL, 1, 14)
 				.setName(getDisplayName())
 				.getItemStack();
 		return itemStack;

@@ -3,6 +3,7 @@ package dev.kyro.pitsim.enums;
 public enum NBTTag {
 
 	ITEM_UUID("pr-uuid"),
+	RANODM_UUID("pr-random-uuid"),
 	PIT_ENCHANTS("pr-enchants"),
 	PIT_ENCHANT_ORDER("pr-enchant-order"),
 	ITEM_JEWEL_ENCHANT("pr-jewel-enchant"),
@@ -49,7 +50,8 @@ public enum NBTTag {
 	ENDERMAN_PEARL("pr-enderman-pearl"),
 	SAVED_PANTS_COLOR("pr-saved-color"),
 	IS_TAINTED_SOUL("pr-tainted-soul"),
-	IS_SPLASH_POTION("pr-is-splash-potion");
+	IS_SPLASH_POTION("pr-is-splash-potion"),
+	CANNOT_PICKUP("pr-cannot-pickup");
 
 	private final String ref;
 

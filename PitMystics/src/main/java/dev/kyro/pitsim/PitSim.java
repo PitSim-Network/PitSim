@@ -8,6 +8,7 @@ import com.mattmalec.pterodactyl4j.client.entities.PteroClient;
 import com.sk89q.worldedit.EditSession;
 import com.xxmicloxx.NoteBlockAPI.songplayer.EntitySongPlayer;
 import de.myzelyam.api.vanish.VanishAPI;
+import de.tr7zw.nbtapi.NBTItem;
 import dev.kyro.arcticapi.ArcticAPI;
 import dev.kyro.arcticapi.commands.AMultiCommand;
 import dev.kyro.arcticapi.data.AData;
@@ -26,9 +27,7 @@ import dev.kyro.pitsim.acosmetics.killeffectsbot.OnlyExe;
 import dev.kyro.pitsim.acosmetics.killeffectsbot.Tetris;
 import dev.kyro.pitsim.acosmetics.killeffectsplayer.*;
 import dev.kyro.pitsim.acosmetics.misc.RingCosmetic;
-import dev.kyro.pitsim.acosmetics.trails.FootstepTrail;
-import dev.kyro.pitsim.acosmetics.trails.IceTrail;
-import dev.kyro.pitsim.acosmetics.trails.SmokeTrail;
+import dev.kyro.pitsim.acosmetics.trails.*;
 import dev.kyro.pitsim.battlepass.PassManager;
 import dev.kyro.pitsim.battlepass.quests.*;
 import dev.kyro.pitsim.battlepass.quests.daily.DailyBotKillQuest;
@@ -52,6 +51,7 @@ import dev.kyro.pitsim.controllers.objects.*;
 import dev.kyro.pitsim.enchants.GoldBoost;
 import dev.kyro.pitsim.enchants.*;
 import dev.kyro.pitsim.enchants.tainted.*;
+import dev.kyro.pitsim.enums.NBTTag;
 import dev.kyro.pitsim.events.ThrowBlock;
 import dev.kyro.pitsim.helmetabilities.*;
 import dev.kyro.pitsim.killstreaks.*;
@@ -76,15 +76,13 @@ import net.citizensnpcs.api.npc.NPCRegistry;
 import net.kyori.adventure.platform.bukkit.BukkitAudiences;
 import net.luckperms.api.LuckPerms;
 import net.milkbowl.vault.economy.Economy;
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.Location;
-import org.bukkit.Material;
+import org.bukkit.*;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.event.block.BlockIgniteEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -274,6 +272,15 @@ public class PitSim extends JavaPlugin {
 			}
 		}
 
+		for(World world : Bukkit.getWorlds()) {
+			for(Entity entity : new ArrayList<>(world.getEntities())) {
+				if(!(entity instanceof Item)) continue;
+				ItemStack itemStack = ((Item) entity).getItemStack();
+				NBTItem nbtItem = new NBTItem(itemStack);
+				if(nbtItem.hasKey(NBTTag.CANNOT_PICKUP.getRef())) entity.remove();
+			}
+		}
+
 		if(MapManager.getDarkzone() != null){
 			for (Entity entity : MapManager.getDarkzone().getEntities()) {
 				if(entity instanceof Item) {
@@ -300,7 +307,6 @@ public class PitSim extends JavaPlugin {
 
 			}
 		}
-
 
 		for (NPC value : BossManager.clickables.values()) {
 			value.destroy();
@@ -705,6 +711,13 @@ public class PitSim extends JavaPlugin {
 		CosmeticManager.registerCosmetic(new SmokeTrail());
 		CosmeticManager.registerCosmetic(new FootstepTrail());
 		CosmeticManager.registerCosmetic(new IceTrail());
+		CosmeticManager.registerCosmetic(new RainbowTrail());
+		CosmeticManager.registerCosmetic(new CoalTrail());
+		CosmeticManager.registerCosmetic(new IornTrail());
+		CosmeticManager.registerCosmetic(new RedstoneTrail());
+		CosmeticManager.registerCosmetic(new LapisTrail());
+		CosmeticManager.registerCosmetic(new DiamondTrail());
+		CosmeticManager.registerCosmetic(new EmeraldTrail());
 
 		CosmeticManager.registerCosmetic(new VillagerHappyAura());
 		CosmeticManager.registerCosmetic(new PotionAura());

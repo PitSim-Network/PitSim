@@ -64,11 +64,6 @@ public class PlayerManager implements Listener {
 		return realPlayers.contains(player.getUniqueId());
 	}
 
-	@EventHandler
-	public void onAttack3(AttackEvent attackEvent) {
-		if(!PlayerManager.realPlayers.contains(attackEvent.getAttacker().getUniqueId())) return;
-	}
-
 	static {
 			new BukkitRunnable() {
 			@Override
@@ -211,6 +206,15 @@ public class PlayerManager implements Listener {
 
 		PitPlayerAttemptAbilityEvent newEvent = new PitPlayerAttemptAbilityEvent(player);
 		Bukkit.getPluginManager().callEvent(newEvent);
+	}
+
+	@EventHandler
+	public void onPickup(PlayerPickupItemEvent event) {
+		ItemStack itemStack = event.getItem().getItemStack();
+		if(Misc.isAirOrNull(itemStack)) return;
+		NBTItem nbtItem = new NBTItem(itemStack);
+		if(!nbtItem.hasKey(NBTTag.CANNOT_PICKUP.getRef())) return;
+		event.setCancelled(true);
 	}
 
 	@EventHandler

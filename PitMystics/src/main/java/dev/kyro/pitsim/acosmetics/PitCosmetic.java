@@ -1,15 +1,20 @@
 package dev.kyro.pitsim.acosmetics;
 
+import de.tr7zw.nbtapi.NBTItem;
 import dev.kyro.pitsim.ParticleColor;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.controllers.MapManager;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
+import dev.kyro.pitsim.enums.NBTTag;
 import dev.kyro.pitsim.misc.Misc;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.Location;
+import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
 
 import java.util.*;
@@ -156,5 +161,21 @@ public abstract class PitCosmetic implements Listener {
 
 	public boolean nearMid(Player player) {
 		return !MapManager.inDarkzone(player) && MapManager.currentMap.getMid(player.getWorld()).distance(player.getLocation()) < MID_RANGE;
+	}
+
+	public void dropItem(ItemStack itemStack, Location location, double randomX, double randomY, double randomZ) {
+		NBTItem nbtItem = new NBTItem(itemStack);
+		nbtItem.setString(NBTTag.RANODM_UUID.getRef(), UUID.randomUUID().toString());
+		nbtItem.setBoolean(NBTTag.CANNOT_PICKUP.getRef(), true);
+		itemStack = nbtItem.getItem();
+
+		location.clone().add(Misc.randomOffset(randomX), Misc.randomOffsetPositive(randomY), Misc.randomOffset(randomZ));
+		Item item = location.getWorld().dropItemNaturally(location, itemStack);
+		new BukkitRunnable() {
+			@Override
+			public void run() {
+				if(!item.isDead()) item.remove();
+			}
+		}.runTaskLater(PitSim.INSTANCE, 40);
 	}
 }
