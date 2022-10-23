@@ -42,6 +42,7 @@ import java.util.*;
 import java.util.concurrent.ExecutionException;
 
 public class PitPlayer {
+//	TODO: Players added to this that cancel their login may not be removed
 	@Exclude
 	public static List<PitPlayer> pitPlayers = new ArrayList<>();
 
