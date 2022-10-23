@@ -294,19 +294,13 @@ public class PlayerManager implements Listener {
 
 		if(pitDead.bounty != 0 && killingNon == null && pitKiller != pitDead) {
 			if(killEvent.isLuckyKill) pitDead.bounty = pitDead.bounty * 3;
-			DecimalFormat formatter = new DecimalFormat("#,###.#");
 
+			DecimalFormat formatter = new DecimalFormat("#,###.#");
+			String bountyMessage = Misc.getBountyClaimedMessage(pitKiller, pitDead, "&6&l" + formatter.format(pitDead.bounty) + "g");
 			for(Player player : Bukkit.getOnlinePlayers()) {
 				PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
 				if(pitPlayer.bountiesDisabled) continue;
-
-				String bounty1 = ChatColor.translateAlternateColorCodes('&',
-						"&6&lBOUNTY CLAIMED!&7 %luckperms_prefix%" + killEvent.getKillerPlayer().getDisplayName() + "&7 killed ");
-				String bounty2 = ChatColor.translateAlternateColorCodes('&', "%luckperms_prefix%" + killEvent.getDeadPlayer().getDisplayName()
-						+ "&7 for &6&l" + formatter.format(pitDead.bounty)) + "g";
-				String bounty3 = PlaceholderAPI.setPlaceholders(killEvent.getKillerPlayer(), bounty1);
-				String bounty4 = PlaceholderAPI.setPlaceholders(killEvent.getDeadPlayer(), bounty2);
-				player.sendMessage(bounty3 + bounty4);
+				AOutput.send(player, bountyMessage);
 			}
 			LevelManager.addGold(killEvent.getKillerPlayer(), pitDead.bounty);
 			if(pitDead.megastreak.getClass() != Highlander.class) pitDead.bounty = 0;

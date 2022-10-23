@@ -1,6 +1,9 @@
 package dev.kyro.pitsim.misc;
 
 import dev.kyro.pitsim.PitSim;
+import dev.kyro.pitsim.acosmetics.CosmeticManager;
+import dev.kyro.pitsim.acosmetics.CosmeticType;
+import dev.kyro.pitsim.acosmetics.PitCosmetic;
 import dev.kyro.pitsim.commands.LightningCommand;
 import dev.kyro.pitsim.controllers.NonManager;
 import dev.kyro.pitsim.controllers.objects.GoldenHelmet;
@@ -9,6 +12,7 @@ import dev.kyro.pitsim.events.HealEvent;
 import dev.kyro.pitsim.megastreaks.Overdrive;
 import dev.kyro.pitsim.megastreaks.RNGesus;
 import dev.kyro.pitsim.megastreaks.Uberstreak;
+import me.clip.placeholderapi.PlaceholderAPI;
 import net.minecraft.server.v1_8_R3.World;
 import net.minecraft.server.v1_8_R3.*;
 import org.bukkit.Material;
@@ -30,12 +34,49 @@ import java.text.DateFormat;
 import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.TimeZone;
+import java.util.*;
 
 public class Misc {
+	public static String getBountyClaimedMessage(PitPlayer pitKiller, PitPlayer pitDead, String bounty) {
+		PitCosmetic pitCosmetic = null;
+		for(PitCosmetic equippedCosmetic : CosmeticManager.getEquippedCosmetics(pitKiller)) {
+			if(equippedCosmetic.cosmeticType != CosmeticType.BOUNTY_CLAIM_MESSAGE) continue;
+			pitCosmetic = equippedCosmetic;
+			break;
+		}
+
+		String killerName = PlaceholderAPI.setPlaceholders(pitKiller.player, "%luckperms_prefix%" + pitKiller.player.getDisplayName());
+		String deadName = PlaceholderAPI.setPlaceholders(pitDead.player, "%luckperms_prefix%" + pitDead.player.getDisplayName());
+
+		String message = "&6&lCLAIM!&7 ";
+		if(pitCosmetic != null) {
+			message += pitCosmetic.getBountyClaimMessage(killerName, deadName, bounty);
+		} else {
+			message += killerName + "&7 killed " + deadName + "&7 for " + bounty;
+		}
+
+		return message;
+	}
+
+	public static byte getTetrisWoolColor() {
+		int randomInt = new Random().nextInt(6);
+		switch(randomInt) {
+			case 0:
+				return 1;
+			case 1:
+				return 2;
+			case 2:
+				return 3;
+			case 3:
+				return 4;
+			case 4:
+				return 5;
+			case 5:
+				return 14;
+		}
+		return -1;
+	}
+
 	public static void addEnchantGlint(ItemStack itemStack) {
 		itemStack.addUnsafeEnchantment(Enchantment.WATER_WORKER, 1);
 		ItemMeta itemMeta = itemStack.getItemMeta();
@@ -98,29 +139,35 @@ public class Misc {
 		}
 	}
 
-	public static void multiKill(Player player) {
+	public static void playKillSound(PitPlayer pitPlayer) {
+		PitCosmetic pitCosmetic = null;
+		for(PitCosmetic equippedCosmetic : CosmeticManager.getEquippedCosmetics(pitPlayer)) {
+			if(equippedCosmetic.cosmeticType != CosmeticType.KILL_EFFECT) continue;
+			pitCosmetic = equippedCosmetic;
+			break;
+		}
 
+		if(pitCosmetic != null && pitCosmetic.preventKillSound) return;
 		new BukkitRunnable() {
 			int count = 0;
-
 			@Override
 			public void run() {
 
 				switch(count) {
 					case 0:
-						Sounds.MULTI_1.play(player);
+						Sounds.MULTI_1.play(pitPlayer.player);
 						break;
 					case 1:
-						Sounds.MULTI_2.play(player);
+						Sounds.MULTI_2.play(pitPlayer.player);
 						break;
 					case 2:
-						Sounds.MULTI_3.play(player);
+						Sounds.MULTI_3.play(pitPlayer.player);
 						break;
 					case 3:
-						Sounds.MULTI_4.play(player);
+						Sounds.MULTI_4.play(pitPlayer.player);
 						break;
 					case 4:
-						Sounds.MULTI_5.play(player);
+						Sounds.MULTI_5.play(pitPlayer.player);
 						break;
 				}
 

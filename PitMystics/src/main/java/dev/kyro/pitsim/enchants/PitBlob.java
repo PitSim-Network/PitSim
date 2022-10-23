@@ -38,6 +38,7 @@ public class PitBlob extends PitEnchant {
 		new BukkitRunnable() {
 			@Override
 			public void run() {
+//				TODO: Make the blob focus mid
 				for(Map.Entry<UUID, Slime> entry : blobMap.entrySet()) {
 					double damage = (entry.getValue().getSize() - 1);
 					entry.getValue().setHealth(entry.getValue().getMaxHealth());
@@ -156,8 +157,10 @@ public class PitBlob extends PitEnchant {
 	@EventHandler
 	public void onDamage(EntityDamageEvent event) {
 		if(event.getEntity() instanceof Slime && !(event.getEntity() instanceof MagmaCube)) {
-			event.setDamage(0);
-			if(SpawnManager.isInSpawn(event.getEntity().getLocation())) event.setCancelled(true);
+//			swap to enable blob fishing (fishing rod causes errors though)
+//			event.setDamage(0);
+//			if(SpawnManager.isInSpawn(event.getEntity().getLocation())) event.setCancelled(true);
+			event.setCancelled(true);
 		}
 	}
 

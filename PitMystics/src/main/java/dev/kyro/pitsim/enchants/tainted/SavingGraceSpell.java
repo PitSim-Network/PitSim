@@ -99,6 +99,7 @@ public class SavingGraceSpell extends PitEnchant {
         new BukkitRunnable() {
             @Override
             public void run() {
+                if(!event.getPlayer().isOnline()) return;
                 PitPlayer.getPitPlayer(event.getPlayer()).heal(event.getPlayer().getMaxHealth());
             }
         }.runTaskLater(PitSim.INSTANCE, 2);

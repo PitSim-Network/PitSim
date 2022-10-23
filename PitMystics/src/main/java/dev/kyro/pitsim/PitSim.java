@@ -7,6 +7,7 @@ import com.mattmalec.pterodactyl4j.PteroBuilder;
 import com.mattmalec.pterodactyl4j.client.entities.PteroClient;
 import com.sk89q.worldedit.EditSession;
 import com.xxmicloxx.NoteBlockAPI.songplayer.EntitySongPlayer;
+import de.myzelyam.api.vanish.VanishAPI;
 import dev.kyro.arcticapi.ArcticAPI;
 import dev.kyro.arcticapi.commands.AMultiCommand;
 import dev.kyro.arcticapi.data.AData;
@@ -18,7 +19,14 @@ import dev.kyro.pitsim.acosmetics.aura.FireAura;
 import dev.kyro.pitsim.acosmetics.aura.PotionAura;
 import dev.kyro.pitsim.acosmetics.aura.VillagerHappyAura;
 import dev.kyro.pitsim.acosmetics.aura.WaterAura;
+import dev.kyro.pitsim.acosmetics.bounty.*;
 import dev.kyro.pitsim.acosmetics.capes.*;
+import dev.kyro.pitsim.acosmetics.deatheffects.DeathHowl;
+import dev.kyro.pitsim.acosmetics.deatheffects.DeathScream;
+import dev.kyro.pitsim.acosmetics.deatheffects.SuperMarioDeath;
+import dev.kyro.pitsim.acosmetics.killeffects.AlwaysExe;
+import dev.kyro.pitsim.acosmetics.killeffects.OnlyExe;
+import dev.kyro.pitsim.acosmetics.killeffects.Tetris;
 import dev.kyro.pitsim.acosmetics.misc.RingCosmetic;
 import dev.kyro.pitsim.acosmetics.trails.FootstepTrail;
 import dev.kyro.pitsim.acosmetics.trails.IceTrail;
@@ -262,8 +270,10 @@ public class PitSim extends JavaPlugin {
 			pitPlayer.save();
 
 //			disable cosmetics
-			List<PitCosmetic> activeCosmetics = CosmeticManager.getActiveCosmetics(pitPlayer);
-			for(PitCosmetic activeCosmetic : activeCosmetics) activeCosmetic.onDisable(pitPlayer);
+			if(!VanishAPI.isInvisible(onlinePlayer)) {
+				List<PitCosmetic> activeCosmetics = CosmeticManager.getEquippedCosmetics(pitPlayer);
+				for(PitCosmetic activeCosmetic : activeCosmetics) activeCosmetic.disable(pitPlayer);
+			}
 		}
 
 		if(MapManager.getDarkzone() != null){
@@ -660,6 +670,30 @@ public class PitSim extends JavaPlugin {
 	}
 
 	private void registerCosmetics() {
+		CosmeticManager.registerCosmetic(new AlwaysExe());
+		CosmeticManager.registerCosmetic(new OnlyExe());
+		CosmeticManager.registerCosmetic(new Tetris());
+
+		CosmeticManager.registerCosmetic(new DeathHowl());
+		CosmeticManager.registerCosmetic(new DeathScream());
+		CosmeticManager.registerCosmetic(new SuperMarioDeath());
+
+		CosmeticManager.registerCosmetic(new BountyBlueShell());
+		CosmeticManager.registerCosmetic(new BountyBullied());
+		CosmeticManager.registerCosmetic(new BountyCope());
+		CosmeticManager.registerCosmetic(new BountyDropped());
+		CosmeticManager.registerCosmetic(new BountyEmbarrassed());
+		CosmeticManager.registerCosmetic(new BountyForgotToPay());
+		CosmeticManager.registerCosmetic(new BountyHunted());
+		CosmeticManager.registerCosmetic(new BountyPacking());
+		CosmeticManager.registerCosmetic(new BountyRailed());
+		CosmeticManager.registerCosmetic(new BountyRatted());
+		CosmeticManager.registerCosmetic(new BountyReaper());
+		CosmeticManager.registerCosmetic(new BountyRobbed());
+		CosmeticManager.registerCosmetic(new BountySuffocated());
+		CosmeticManager.registerCosmetic(new BountySystemMalfunction());
+		CosmeticManager.registerCosmetic(new BountyTookTheL());
+
 		CosmeticManager.registerCosmetic(new RingCosmetic());
 
 		CosmeticManager.registerCosmetic(new SolidCape());

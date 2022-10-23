@@ -319,7 +319,7 @@ public class DamageManager implements Listener {
 				}
 			}
 
-			Misc.multiKill(killerPlayer);
+			Misc.playKillSound(pitKiller);
 		}
 
 		Non deadNon = NonManager.getNon(dead);

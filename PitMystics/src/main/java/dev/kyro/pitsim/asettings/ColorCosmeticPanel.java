@@ -5,7 +5,6 @@ import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.arcticapi.gui.AGUI;
 import dev.kyro.arcticapi.gui.AGUIPanel;
 import dev.kyro.pitsim.ParticleColor;
-import dev.kyro.pitsim.acosmetics.CosmeticManager;
 import dev.kyro.pitsim.acosmetics.PitCosmetic;
 import dev.kyro.pitsim.misc.Sounds;
 import org.bukkit.Material;
@@ -59,7 +58,7 @@ public class ColorCosmeticPanel extends AGUIPanel {
 			ParticleColor unlockedColor = unlockedColors.get(i);
 			int slot = cosmeticSlots.get(i);
 			colorMap.put(slot, unlockedColor);
-			boolean isEquipped = pitCosmetic.isEquipped(settingsGUI.pitPlayer, unlockedColor);
+			boolean isEquipped = pitCosmetic.isEnabled(settingsGUI.pitPlayer, unlockedColor);
 			getInventory().setItem(slot, unlockedColor.getDisplayItem(isEquipped));
 		}
 	}
@@ -85,7 +84,6 @@ public class ColorCosmeticPanel extends AGUIPanel {
 			if(success) {
 				player.closeInventory();
 				Sounds.SUCCESS.play(player);
-				CosmeticManager.sendEquipMessage(settingsGUI.pitPlayer, pitCosmetic, particleColor);
 			}
 		} else if(slot == getRows() * 9 - 5) {
 			openPreviousGUI();

@@ -94,7 +94,6 @@ public class MapManager implements Listener {
 //	}
 
 	public static void enableMultiLobbies() {
-		System.out.println(multiLobbies);
 		if(multiLobbies) return;
 		multiLobbies = true;
 		for(Player onlinePlayer : Bukkit.getOnlinePlayers()) {

@@ -30,7 +30,7 @@ public abstract class SubCosmeticPanel extends AGUIPanel {
 	public CosmeticType cosmeticType;
 	public int slot;
 
-	public int page;
+	public int page = 1;
 	public static List<Integer> cosmeticSlots = new ArrayList<>();
 	public Map<Integer, PitCosmetic> cosmeticMap = new HashMap<>();
 
@@ -98,7 +98,7 @@ public abstract class SubCosmeticPanel extends AGUIPanel {
 		PitPlayer.EquippedCosmeticData cosmeticData = settingsGUI.pitPlayer.equippedCosmeticMap.get(cosmeticType.name());
 		if(cosmeticData != null) {
 			PitCosmetic pitCosmetic = CosmeticManager.getCosmetic(cosmeticData.refName);
-			if(pitCosmetic != null) pitCosmetic.onDisable(settingsGUI.pitPlayer);
+			if(pitCosmetic != null) pitCosmetic.disable(settingsGUI.pitPlayer);
 		}
 		settingsGUI.pitPlayer.equippedCosmeticMap.put(cosmeticType.name(), null);
 	}
@@ -130,7 +130,7 @@ public abstract class SubCosmeticPanel extends AGUIPanel {
 			}
 		}
 		settingsGUI.pitPlayer.equippedCosmeticMap.put(cosmeticType.name(), new PitPlayer.EquippedCosmeticData(pitCosmetic.refName, particleColor));
-		pitCosmetic.onEnable(settingsGUI.pitPlayer);
+		pitCosmetic.enable(settingsGUI.pitPlayer);
 		return true;
 	}
 
@@ -149,7 +149,7 @@ public abstract class SubCosmeticPanel extends AGUIPanel {
 			PitCosmetic pitCosmetic = unlockedCosmetics.get(i);
 			cosmeticMap.put(slot, pitCosmetic);
 //			TODO: Add text if color, add enchant glint if equipped
-			getInventory().setItem(slot, pitCosmetic.getDisplayItem(pitCosmetic.isEquipped(settingsGUI.pitPlayer)));
+			getInventory().setItem(slot, pitCosmetic.getDisplayItem(pitCosmetic.isEnabled(settingsGUI.pitPlayer)));
 		}
 	}
 
@@ -182,7 +182,6 @@ public abstract class SubCosmeticPanel extends AGUIPanel {
 				if(success) {
 					player.closeInventory();
 					Sounds.SUCCESS.play(player);
-					CosmeticManager.sendEquipMessage(settingsGUI.pitPlayer, pitCosmetic, null);
 				}
 			}
 		} else if(slot == getRows() * 9 - 9) {
@@ -199,8 +198,8 @@ public abstract class SubCosmeticPanel extends AGUIPanel {
 				deselectCosmetic(cosmeticType);
 				player.closeInventory();
 				Sounds.SUCCESS.play(player);
-				PitCosmetic pitCosmetic = Objects.requireNonNull(CosmeticManager.getCosmetic(cosmeticData.refName));
-				CosmeticManager.sendEquipMessage(settingsGUI.pitPlayer, pitCosmetic, null);
+//				PitCosmetic pitCosmetic = Objects.requireNonNull(CosmeticManager.getCosmetic(cosmeticData.refName));
+//				CosmeticManager.sendDisableMessage(settingsGUI.pitPlayer, pitCosmetic);
 			} else {
 				Sounds.NO.play(player);
 			}

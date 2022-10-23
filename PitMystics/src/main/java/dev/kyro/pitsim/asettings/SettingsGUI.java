@@ -1,12 +1,15 @@
 package dev.kyro.pitsim.asettings;
 
 import dev.kyro.arcticapi.gui.AGUI;
+import dev.kyro.pitsim.acosmetics.CosmeticManager;
 import dev.kyro.pitsim.acosmetics.CosmeticType;
+import dev.kyro.pitsim.acosmetics.PitCosmetic;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import org.bukkit.entity.Player;
 
 import java.lang.reflect.Constructor;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class SettingsGUI extends AGUI {
@@ -44,14 +47,18 @@ public class SettingsGUI extends AGUI {
 
 //	For cosmetic panel
 	public int getPages(SubCosmeticPanel panel) {
-//		TODO: page calc
-		return 1;
+//		TODO: implement pages
+		return (getItemsToDisplay(panel) - 1) / SubCosmeticPanel.cosmeticSlots.size() + 1;
 	}
 
 	//	For cosmetic panel
 	public int getRows(SubCosmeticPanel panel) {
-		if(getPages(panel) > 1) return 6;
-//		TODO: row calc
-		return 3;
+		return (getItemsToDisplay(panel) - 1) / 7 + 3;
+	}
+
+	//	For cosmetic panel
+	public int getItemsToDisplay(SubCosmeticPanel panel) {
+		List<PitCosmetic> unlockedCosmetics = CosmeticManager.getUnlockedCosmetics(pitPlayer, panel.cosmeticType);
+		return Math.min(unlockedCosmetics.size() - SubCosmeticPanel.cosmeticSlots.size() * (panel.page - 1), SubCosmeticPanel.cosmeticSlots.size());
 	}
 }

@@ -23,7 +23,7 @@ public class Sounds {
 	public static final SoundEffect LEVEL_UP = new SoundEffect(Sound.LEVEL_UP, 1, 1);
 	public static final SoundEffect PRESTIGE = new SoundEffect(Sound.ENDERDRAGON_GROWL, 1, 1);
 	public static final SoundEffect ASSIST = new SoundEffect(Sound.ORB_PICKUP, 1, 1.7301587);
-	public static final SoundEffect BOUNTY = new SoundEffect(Sound.WITHER_SPAWN, 1, 1);
+	public static final SoundEffect BOUNTY = new SoundEffect();
 	public static final SoundEffect DEATH_FALL = new SoundEffect(Sound.FALL_BIG, 1000, 1);
 	public static final SoundEffect JEWEL_FIND = new SoundEffect(Sound.ENDERDRAGON_GROWL, 1, 1);
 	public static final SoundEffect MYSTIC_WELL_OPEN_1 = new SoundEffect(Sound.GHAST_FIREBALL, 0.1F, 0.5F);
@@ -143,8 +143,9 @@ public class Sounds {
 	public static final SoundEffect JUGGERNAUT_END = new SoundEffect(Sound.ENDERDRAGON_DEATH, 1, 2);
 
 	//	Kill / Death Effects
-	public static final SoundEffect DEATH_GHAST_SCREAM = new SoundEffect(Sound.GHAST_SCREAM, 1, 1);
 	public static final SoundEffect KILL_FIRE = new SoundEffect(Sound.FIZZ, 2, 2);
+	public static final SoundEffect DEATH_GHAST_SCREAM = new SoundEffect(Sound.GHAST_SCREAM, 1, 1);
+	public static final SoundEffect DEATH_HOWL = new SoundEffect(Sound.WOLF_HOWL, 1, 1);
 
 //	Quests
 	public static final SoundEffect COMPLETE_QUEST = new SoundEffect(Sound.LEVEL_UP, 1, 1);

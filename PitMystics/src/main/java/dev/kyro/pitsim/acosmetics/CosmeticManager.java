@@ -1,5 +1,7 @@
 package dev.kyro.pitsim.acosmetics;
 
+import de.myzelyam.api.vanish.PlayerVanishStateChangeEvent;
+import de.myzelyam.api.vanish.VanishAPI;
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.ParticleColor;
@@ -66,18 +68,18 @@ public class CosmeticManager implements Listener {
 		return displayPlayers;
 	}
 
-	public static void sendEquipMessage(PitPlayer pitPlayer, PitCosmetic pitCosmetic, ParticleColor particleColor) {
+	public static void sendEnableMessage(PitPlayer pitPlayer, PitCosmetic pitCosmetic, ParticleColor particleColor) {
 		if(pitCosmetic == null) return;
 		if(pitCosmetic.isColorCosmetic) {
-			AOutput.send(pitPlayer.player, "&e&lFANCY!&7 Equipped " + pitCosmetic.getDisplayName() + " &7(" + particleColor.displayName + "&7)");
+			AOutput.send(pitPlayer.player, "&e&lFANCY!&7 Enabled " + pitCosmetic.getDisplayName() + " &7(" + particleColor.displayName + "&7)");
 		} else {
-			AOutput.send(pitPlayer.player, "&e&lFANCY!&7 Equipped " + pitCosmetic.getDisplayName());
+			AOutput.send(pitPlayer.player, "&e&lFANCY!&7 Enabled " + pitCosmetic.getDisplayName());
 		}
 	}
 
 	public static void sendDisableMessage(PitPlayer pitPlayer, PitCosmetic pitCosmetic) {
 		if(pitCosmetic == null) return;
-		AOutput.send(pitPlayer.player, "&e&lFANCY!&7 disabled " + pitCosmetic.getDisplayName());
+		AOutput.send(pitPlayer.player, "&e&lFANCY!&7 Disabled " + pitCosmetic.getDisplayName());
 	}
 
 	public static boolean isStandingStill(Player player) {
@@ -88,13 +90,10 @@ public class CosmeticManager implements Listener {
 
 	public static void loadForOnlinePlayers() {
 		for(Player onlinePlayer : Bukkit.getOnlinePlayers()) {
+			if(VanishAPI.isInvisible(onlinePlayer)) continue;
 			PitPlayer pitPlayer = PitPlayer.getPitPlayer(onlinePlayer);
-			List<PitCosmetic> activeCosmetics = CosmeticManager.getActiveCosmetics(pitPlayer);
-			for(PitCosmetic activeCosmetic : activeCosmetics) {
-				activeCosmetic.loadColor(pitPlayer);
-				activeCosmetic.onEnable(pitPlayer);
-				CosmeticManager.sendEquipMessage(pitPlayer, activeCosmetic, activeCosmetic.getColor(pitPlayer));
-			}
+			List<PitCosmetic> activeCosmetics = CosmeticManager.getEquippedCosmetics(pitPlayer);
+			for(PitCosmetic activeCosmetic : activeCosmetics) activeCosmetic.enable(pitPlayer);
 		}
 	}
 
@@ -127,12 +126,12 @@ public class CosmeticManager implements Listener {
 		return cosmeticList;
 	}
 
-	public static List<PitCosmetic> getActiveCosmetics(PitPlayer pitPlayer) {
+	public static List<PitCosmetic> getEquippedCosmetics(PitPlayer pitPlayer) {
 		List<PitCosmetic> activeCosmetics = new ArrayList<>();
 		loop:
 		for(Map.Entry<CosmeticType, List<PitCosmetic>> entry : cosmeticMap.entrySet()) {
 			for(PitCosmetic pitCosmetic : entry.getValue()) {
-				if(!pitCosmetic.isEquipped(pitPlayer, pitCosmetic.getColor(pitPlayer))) continue;
+				if(!pitCosmetic.isEnabled(pitPlayer, pitCosmetic.getColor(pitPlayer))) continue;
 				activeCosmetics.add(pitCosmetic);
 				continue loop;
 			}
@@ -144,22 +143,31 @@ public class CosmeticManager implements Listener {
 	public void onJoin(PlayerJoinEvent event) {
 		Player player = event.getPlayer();
 		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
+		if(VanishAPI.isInvisible(player)) return;
 
-		List<PitCosmetic> activeCosmetics = getActiveCosmetics(pitPlayer);
-		for(PitCosmetic activeCosmetic : activeCosmetics) {
-			activeCosmetic.loadColor(pitPlayer);
-			activeCosmetic.onEnable(pitPlayer);
-			CosmeticManager.sendEquipMessage(pitPlayer, activeCosmetic, activeCosmetic.getColor(pitPlayer));
-		}
+		List<PitCosmetic> activeCosmetics = getEquippedCosmetics(pitPlayer);
+		for(PitCosmetic activeCosmetic : activeCosmetics) activeCosmetic.enable(pitPlayer);
 	}
 
 	@EventHandler
-	public void onJoin(PlayerQuitEvent event) {
+	public void onQuit(PlayerQuitEvent event) {
 		Player player = event.getPlayer();
 		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
+		if(VanishAPI.isInvisible(player)) return;
 
-		List<PitCosmetic> activeCosmetics = getActiveCosmetics(pitPlayer);
-		for(PitCosmetic activeCosmetic : activeCosmetics) activeCosmetic.onDisable(pitPlayer);
+		List<PitCosmetic> activeCosmetics = getEquippedCosmetics(pitPlayer);
+		for(PitCosmetic activeCosmetic : activeCosmetics) activeCosmetic.disable(pitPlayer);
+	}
+
+	@EventHandler
+	public void onVanish(PlayerVanishStateChangeEvent event) {
+		PitPlayer pitPlayer = PitPlayer.getPitPlayer(Bukkit.getPlayer(event.getUUID()));
+		List<PitCosmetic> activeCosmetics = getEquippedCosmetics(pitPlayer);
+		if(event.isVanishing()) {
+			for(PitCosmetic activeCosmetic : activeCosmetics) activeCosmetic.disable(pitPlayer);
+		} else {
+			for(PitCosmetic activeCosmetic : activeCosmetics) activeCosmetic.enable(pitPlayer);
+		}
 	}
 
 	public static class LocationData {

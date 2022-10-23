@@ -304,7 +304,6 @@ public class EnchantManager implements Listener {
 				if(enchant == null) continue;
 				loreBuilder.addLore("&f");
 
-
 				loreBuilder.addLore(enchant.getDisplayName() + enchantLevelToRoman(enchantLvl));
 				loreBuilder.addLore(enchant.getDescription(enchantLvl));
 			}
@@ -318,7 +317,6 @@ public class EnchantManager implements Listener {
 				loreBuilder.addLore("&7", "&5Enchants require heresy", "&5As strong as leather");
 			}
 		}
-
 
 		itemMeta.setLore(loreBuilder.getLore());
 		itemStack.setItemMeta(itemMeta);

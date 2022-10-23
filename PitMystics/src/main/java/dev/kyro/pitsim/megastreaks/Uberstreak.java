@@ -213,7 +213,7 @@ public class Uberstreak extends Megastreak {
 				}
 
 				pitPlayer.incrementKills();
-				Misc.multiKill(pitPlayer.player);
+				Misc.playKillSound(pitPlayer);
 			}
 		}.runTaskTimer(PitSim.INSTANCE, 0L, 3L);
 	}
