@@ -14,7 +14,6 @@ import org.bukkit.Material;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.inventory.InventoryOpenEvent;
-import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.SkullMeta;
@@ -54,12 +53,6 @@ public class DonatorPanel extends AGUIPanel {
 			} else if(slot == 12) {
 				if(!player.hasPermission("pitsim.pantscolor")) return;
 				openPanel(donatorGUI.pantsColorPanel);
-			} else if(slot == 13) {
-				if(!player.hasPermission("pitsim.deathcry")) return;
-				openPanel(donatorGUI.deathCryPanel);
-			} else if(slot == 14) {
-				if(!player.hasPermission("pitsim.killeffect")) return;
-				openPanel(donatorGUI.killEffectPanel);
 			} else if(slot == 15) {
 				if(!player.hasPermission("pitsim.itemrename")) return;
 				ItemStack heldItem = player.getItemInHand();
@@ -96,50 +89,6 @@ public class DonatorPanel extends AGUIPanel {
 		pantsmeta.setLore(pantslore);
 		pants.setItemMeta(pantsmeta);
 		pants = PantColor.setPantColor(pants, PantColor.HARVEST_RED);
-
-
-		ItemStack death = new ItemStack(Material.GHAST_TEAR);
-		ItemMeta deathmeta = death.getItemMeta();
-		List<String> deathlore = new ArrayList<>();
-		deathlore.add(ChatColor.GRAY + "Choose from a variety of sound effects");
-		deathlore.add(ChatColor.GRAY + "that play to others when you die");
-		deathlore.add("");
-		if(pitPlayer.deathCry != null && player.hasPermission("pitsim.deathcry")) {
-			deathlore.add(ChatColor.GRAY + "Selected: " + ChatColor.GREEN + pitPlayer.deathCry.refName);
-			deathlore.add("");
-		}
-		if(player.hasPermission("pitsim.deathcry")) {
-			deathlore.add(ChatColor.YELLOW + "Click to select!");
-			deathmeta.setDisplayName(ChatColor.YELLOW + "Death Cries");
-		} else {
-			deathlore.add(ChatColor.translateAlternateColorCodes('&', "&cRequires &5Overpowered &crank!"));
-			deathmeta.setDisplayName(ChatColor.RED + "Death Cries");
-		}
-		deathmeta.setLore(deathlore);
-		death.setItemMeta(deathmeta);
-
-
-		ItemStack kill = new ItemStack(Material.DIAMOND_SWORD);
-		ItemMeta killmeta = kill.getItemMeta();
-		List<String> killlore = new ArrayList<>();
-		killlore.add(ChatColor.GRAY + "Choose from a variety of sound and");
-		killlore.add(ChatColor.GRAY + "particle effects that play when you");
-		killlore.add(ChatColor.GRAY + "kill an enemy");
-		killlore.add("");
-		if(pitPlayer.killEffect != null && player.hasPermission("pitsim.killeffect")) {
-			killlore.add(ChatColor.GRAY + "Selected: " + ChatColor.GREEN + pitPlayer.killEffect.refName);
-			killlore.add("");
-		}
-		if(player.hasPermission("pitsim.killeffect")) {
-			killlore.add(ChatColor.YELLOW + "Click to select!");
-			killmeta.setDisplayName(ChatColor.YELLOW + "Kill Effects");
-		} else {
-			killlore.add(ChatColor.translateAlternateColorCodes('&', "&cRequires &3Extraordinary &crank!"));
-			killmeta.setDisplayName(ChatColor.RED + "Kill Effects");
-		}
-		killmeta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
-		killmeta.setLore(killlore);
-		kill.setItemMeta(killmeta);
 
 
 		ItemStack rename = new ItemStack(Material.NAME_TAG);
@@ -256,8 +205,6 @@ public class DonatorPanel extends AGUIPanel {
 		getInventory().setItem(10, head);
 		getInventory().setItem(11, filter);
 		getInventory().setItem(12, pants);
-		getInventory().setItem(13, death);
-		getInventory().setItem(14, kill);
 		getInventory().setItem(15, rename);
 		getInventory().setItem(16, chat);
 

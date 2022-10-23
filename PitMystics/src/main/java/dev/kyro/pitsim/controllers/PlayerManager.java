@@ -24,8 +24,6 @@ import dev.kyro.pitsim.inventories.view.ViewGUI;
 import dev.kyro.pitsim.megastreaks.Highlander;
 import dev.kyro.pitsim.megastreaks.NoMegastreak;
 import dev.kyro.pitsim.megastreaks.RNGesus;
-import dev.kyro.pitsim.misc.DeathCrys;
-import dev.kyro.pitsim.misc.KillEffects;
 import dev.kyro.pitsim.misc.Misc;
 import dev.kyro.pitsim.misc.Sounds;
 import me.clip.placeholderapi.PlaceholderAPI;
@@ -283,14 +281,6 @@ public class PlayerManager implements Listener {
 		PitPlayer pitKiller = killEvent.getKillerPitPlayer();
 		PitPlayer pitDead = killEvent.getDeadPitPlayer();
 		Non killingNon = NonManager.getNon(killEvent.getKiller());
-
-		if(pitKiller.killEffect != null && killEvent.getKiller().hasPermission("pitsim.killeffect")) {
-			KillEffects.trigger(killEvent.getKillerPlayer(), pitKiller.killEffect, killEvent.getDead().getLocation());
-		}
-
-		if(pitDead.deathCry != null && killEvent.getDead().hasPermission("pitsim.deathcry")) {
-			DeathCrys.trigger(killEvent.getDeadPlayer(), pitDead.deathCry, killEvent.getDead().getLocation());
-		}
 
 		if(pitDead.bounty != 0 && killingNon == null && pitKiller != pitDead) {
 			if(killEvent.isLuckyKill) pitDead.bounty = pitDead.bounty * 3;
