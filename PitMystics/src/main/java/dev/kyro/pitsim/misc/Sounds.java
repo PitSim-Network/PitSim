@@ -142,11 +142,13 @@ public class Sounds {
 	public static final SoundEffect JUGGERNAUT_EXPLOSION = new SoundEffect(Sound.EXPLODE, 1, 2);
 	public static final SoundEffect JUGGERNAUT_END = new SoundEffect(Sound.ENDERDRAGON_DEATH, 1, 2);
 
-	//	Player/Bot Kill Effects
+	//	Cosmetics
 	public static final SoundEffect KILL_FIRE = new SoundEffect(Sound.FIZZ, 2, 2);
 	public static final SoundEffect DEATH_GHAST_SCREAM = new SoundEffect(Sound.GHAST_SCREAM, 1, 1);
 	public static final SoundEffect DEATH_HOWL = new SoundEffect(Sound.WOLF_HOWL, 1, 1);
 	public static final SoundEffect DEATH_EXPLOSION = new SoundEffect(Sound.EXPLODE, 1, 1);
+	public static final SoundEffect KYRO_LIFESTEAL_LOSE = new SoundEffect(Sound.FIZZ, 1, 1);
+	public static final SoundEffect KYRO_LIFESTEAL_GAIN = new SoundEffect(Sound.BURP, 1, 1);
 
 //	Quests
 	public static final SoundEffect COMPLETE_QUEST = new SoundEffect(Sound.LEVEL_UP, 1, 1);

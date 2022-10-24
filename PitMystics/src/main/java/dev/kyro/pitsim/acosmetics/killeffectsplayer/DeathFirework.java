@@ -61,8 +61,8 @@ public class DeathFirework extends PitCosmetic {
 		else type = FireworkEffect.Type.STAR;
 
 		//Get our random colours
-		Color color1 = getColor(random.nextInt(18));
-		Color color2 = getColor(random.nextInt(18));
+		Color color1 = getColor(random.nextInt(17));
+		Color color2 = getColor(random.nextInt(17));
 
 		//Create our effect with this
 		FireworkEffect effect = FireworkEffect.builder().flicker(random.nextBoolean()).withColor(color1).withFade(color2).with(type).trail(random.nextBoolean()).build();
@@ -86,7 +86,7 @@ public class DeathFirework extends PitCosmetic {
 
 	private Color getColor(int i) {
 		Color color = null;
-		if(i == 0) color=Color.AQUA;
+		if(i == 0) color = Color.AQUA;
 		else if(i == 1) color = Color.BLACK;
 		else if(i == 2) color = Color.BLUE;
 		else if(i == 3) color = Color.FUCHSIA;

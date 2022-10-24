@@ -90,7 +90,7 @@ public abstract class PitCosmetic implements Listener {
 	}
 
 	public boolean isUnlocked(PitPlayer pitPlayer, ParticleColor particleColor) {
-		if(refName.equals("kyro")) return Misc.isKyro(pitPlayer.player.getUniqueId());
+		if(refName.contains("kyro")) return Misc.isKyro(pitPlayer.player.getUniqueId());
 //		TODO: Probably should remove this later (temporary) maybe change to is op
 		if(true) return true;
 		if(isPermissionRequired) return hasPermission(pitPlayer, particleColor);

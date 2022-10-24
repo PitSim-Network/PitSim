@@ -65,10 +65,14 @@ public class DamageManager implements Listener {
 	}
 
 	@EventHandler
-	public void onWitherDamage(EntityDamageEvent event) {
-		if(event.getCause() != EntityDamageEvent.DamageCause.WITHER || !(event.getEntity() instanceof Player)) return;
+	public void onDamage(EntityDamageEvent event) {
+		if(!(event.getEntity() instanceof Player)) return;
+		if(event.getCause() != EntityDamageEvent.DamageCause.WITHER && event.getCause() != EntityDamageEvent.DamageCause.CUSTOM) return;
 		Player player = (Player) event.getEntity();
-		if(event.getFinalDamage() >= player.getHealth()) death(player);
+		if(event.getFinalDamage() >= player.getHealth()) {
+			event.setCancelled(true);
+			death(player);
+		}
 	}
 
 	@EventHandler

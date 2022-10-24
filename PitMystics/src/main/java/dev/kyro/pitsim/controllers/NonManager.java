@@ -80,6 +80,7 @@ public class NonManager implements Listener {
 	}
 
 	public static int getMaxNons(World world) {
+		if(true) return 0;
 		int base = 25;
 		int max = 40;
 

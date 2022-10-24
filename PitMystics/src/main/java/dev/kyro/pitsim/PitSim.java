@@ -23,6 +23,7 @@ import dev.kyro.pitsim.acosmetics.killeffectsbot.AlwaysExe;
 import dev.kyro.pitsim.acosmetics.killeffectsbot.OnlyExe;
 import dev.kyro.pitsim.acosmetics.killeffectsbot.Tetris;
 import dev.kyro.pitsim.acosmetics.killeffectsplayer.*;
+import dev.kyro.pitsim.acosmetics.aura.KyroAura;
 import dev.kyro.pitsim.acosmetics.misc.KyroCosmetic;
 import dev.kyro.pitsim.acosmetics.misc.Ring2Cosmetic;
 import dev.kyro.pitsim.acosmetics.misc.RingCosmetic;
@@ -723,6 +724,7 @@ public class PitSim extends JavaPlugin {
 		CosmeticManager.registerCosmetic(new SlimeTrail());
 		CosmeticManager.registerCosmetic(new LavaTrail());
 
+		CosmeticManager.registerCosmetic(new KyroAura());
 		CosmeticManager.registerCosmetic(new VillagerHappyAura());
 		CosmeticManager.registerCosmetic(new PotionAura());
 		CosmeticManager.registerCosmetic(new WaterAura());
