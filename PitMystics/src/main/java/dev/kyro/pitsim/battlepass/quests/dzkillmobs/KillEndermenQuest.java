@@ -58,8 +58,8 @@ public class KillEndermenQuest extends PassQuest {
 	public List<QuestLevel> getWeeklyPossibleStates() {
 		List<QuestLevel> questLevels = new ArrayList<>();
 		questLevels.add(new QuestLevel(100, 100));
-		questLevels.add(new QuestLevel(100, 150));
-		questLevels.add(new QuestLevel(100, 200));
+		questLevels.add(new QuestLevel(150, 150));
+		questLevels.add(new QuestLevel(200, 200));
 		return questLevels;
 	}
 

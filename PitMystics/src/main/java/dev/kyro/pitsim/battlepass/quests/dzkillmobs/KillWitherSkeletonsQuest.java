@@ -58,8 +58,8 @@ public class KillWitherSkeletonsQuest extends PassQuest {
 	public List<QuestLevel> getWeeklyPossibleStates() {
 		List<QuestLevel> questLevels = new ArrayList<>();
 		questLevels.add(new QuestLevel(300, 100));
-		questLevels.add(new QuestLevel(300, 150));
-		questLevels.add(new QuestLevel(300, 200));
+		questLevels.add(new QuestLevel(450, 150));
+		questLevels.add(new QuestLevel(600, 200));
 		return questLevels;
 	}
 

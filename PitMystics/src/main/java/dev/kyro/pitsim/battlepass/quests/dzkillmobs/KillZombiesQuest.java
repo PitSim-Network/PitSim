@@ -58,8 +58,8 @@ public class KillZombiesQuest extends PassQuest {
 	public List<QuestLevel> getWeeklyPossibleStates() {
 		List<QuestLevel> questLevels = new ArrayList<>();
 		questLevels.add(new QuestLevel(1000, 100));
-		questLevels.add(new QuestLevel(1000, 150));
-		questLevels.add(new QuestLevel(1000, 200));
+		questLevels.add(new QuestLevel(1500, 150));
+		questLevels.add(new QuestLevel(2000, 200));
 		return questLevels;
 	}
 
