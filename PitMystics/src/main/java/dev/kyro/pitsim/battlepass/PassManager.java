@@ -32,7 +32,7 @@ public class PassManager implements Listener {
 	public static final int QUESTS_PER_WEEK = 6;
 	public static final int DEFAULT_QUEST_WEIGHT = 10;
 	public static final int DARKZONE_KILL_QUEST_WEIGHT = 5;
-	public static final int POINTS_PER_TIER = 200;
+	public static final int POINTS_PER_TIER = 150;
 
 	//	Create the passes
 	public static void registerPasses() {
