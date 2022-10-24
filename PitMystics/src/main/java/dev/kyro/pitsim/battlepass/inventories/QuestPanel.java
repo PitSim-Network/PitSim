@@ -140,7 +140,7 @@ public class QuestPanel extends AGUIPanel {
 
 	@Override
 	public String getName() {
-		return ChatColor.GOLD + "" + ChatColor.BOLD + "Pit" + ChatColor.YELLOW + "" + ChatColor.BOLD + "Sim " + ChatColor.AQUA + "" + ChatColor.BOLD + "Quests";
+		return "" + ChatColor.GOLD + ChatColor.BOLD + "Pit" + ChatColor.YELLOW + ChatColor.BOLD + "Sim " + ChatColor.DARK_AQUA + ChatColor.BOLD + "Quests";
 	}
 
 	@Override

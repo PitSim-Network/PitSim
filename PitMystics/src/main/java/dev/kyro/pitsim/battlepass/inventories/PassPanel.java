@@ -46,7 +46,7 @@ public class PassPanel extends AGUIPanel {
 				.getItemStack();
 
 		purchaseItem = new AItemStackBuilder(Material.DOUBLE_PLANT)
-				.setName("&6&lPit&e&lSim &7&lPass")
+				.setName("&6&lPit&e&lSim &3&lPass")
 				.setLore(new ALoreBuilder(
 						"&7Click to be taken to the",
 						"&7store to purchase the pass"
@@ -73,7 +73,9 @@ public class PassPanel extends AGUIPanel {
 		passInfo = new AItemStackBuilder(Material.BEACON)
 				.setName("&b&lPass Info")
 				.setLore(new ALoreBuilder(
-						"&7Pass Tier: &3" + passData.getCompletedTiers() + "&7/&3" + PassManager.currentPass.tiers
+						"&7Pass Level: " + (passData.hasPremium ? "&e&lPREMIUM" : "&7&lFREE"),
+						"&7Pass Tier: &3" + passData.getCompletedTiers() + "&7/&3" + PassManager.currentPass.tiers,
+						"&7Remaining Time: " + PassManager.getFormattedTimeUntilNextPass()
 				))
 				.getItemStack();
 
@@ -162,7 +164,7 @@ public class PassPanel extends AGUIPanel {
 
 	@Override
 	public String getName() {
-		return ChatColor.GOLD + "" + ChatColor.BOLD + "Pit" + ChatColor.YELLOW + "" + ChatColor.BOLD + "Sim " + ChatColor.AQUA + "" + ChatColor.BOLD + "Pass";
+		return "" + ChatColor.GOLD + ChatColor.BOLD + "Pit" + ChatColor.YELLOW + ChatColor.BOLD + "Sim " + ChatColor.DARK_AQUA + ChatColor.BOLD + "Pass";
 	}
 
 	@Override

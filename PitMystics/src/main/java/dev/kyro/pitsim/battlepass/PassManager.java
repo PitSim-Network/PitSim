@@ -17,6 +17,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.scheduler.BukkitRunnable;
 
+import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -52,6 +53,8 @@ public class PassManager implements Listener {
 				.registerReward(new PassXpReward(800_000L), PitSimPass.RewardType.PREMIUM, 27);
 		registerPass(pitSimPass);
 
+		registerPass(new PitSimPass(getDate("1/1/2023")));
+
 		updateCurrentPass();
 	}
 
@@ -63,6 +66,29 @@ public class PassManager implements Listener {
 			}
 //		}.runTaskTimer(PitSim.INSTANCE, 0, 100);
 		}.runTaskTimer(PitSim.INSTANCE, Misc.getRunnableOffset(1) + 60 * 20, 60 * 20);
+	}
+
+	public static String getFormattedTimeUntilNextPass() {
+		DecimalFormat format = new DecimalFormat("#00");
+		long timeUntil = getTimeUntilNextPass();
+		if(timeUntil == -1) return "&c&lINDEFINITE";
+		long days = timeUntil / (1000 * 60 * 60 * 24);
+		timeUntil %= (1000 * 60 * 60 * 24);
+		long hours = timeUntil / (1000 * 60 * 60);
+		timeUntil %= (1000 * 60 * 60);
+		long minutes = timeUntil / (1000 * 60);
+		return "&3" + format.format(days) + "&7d &3" + format.format(hours) + "&7h &3" + format.format(minutes) + "&7m";
+	}
+
+	public static long getTimeUntilNextPass() {
+		for(int i = 0; i < pitSimPassList.size(); i++) {
+			PitSimPass testPass = pitSimPassList.get(i);
+			if(testPass != currentPass) continue;
+			if(i + 1 == pitSimPassList.size()) return -1;
+			PitSimPass nextPass = pitSimPassList.get(i + 1);
+			return nextPass.startDate.getTime() - Misc.convertToEST(new Date()).getTime();
+		}
+		return -1;
 	}
 
 	public static void registerQuest(PassQuest quest) {
