@@ -21,7 +21,7 @@ public class XPBooster extends Booster {
 	public void onKill(KillEvent killEvent) {
 		if(!isActive()) return;
 		killEvent.xpMultipliers.add(1.5);
-		killEvent.xpCap *= 1.3;
+		killEvent.xpMultipliers.add(1.3);
 	}
 
 	@Override
