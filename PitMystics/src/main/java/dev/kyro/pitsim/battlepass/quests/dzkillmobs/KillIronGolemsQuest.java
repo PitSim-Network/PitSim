@@ -57,7 +57,9 @@ public class KillIronGolemsQuest extends PassQuest {
 	@Override
 	public List<QuestLevel> getWeeklyPossibleStates() {
 		List<QuestLevel> questLevels = new ArrayList<>();
-		questLevels.add(new QuestLevel(300.0, 100));
+		questLevels.add(new QuestLevel(200, 100));
+		questLevels.add(new QuestLevel(200, 150));
+		questLevels.add(new QuestLevel(200, 200));
 		return questLevels;
 	}
 

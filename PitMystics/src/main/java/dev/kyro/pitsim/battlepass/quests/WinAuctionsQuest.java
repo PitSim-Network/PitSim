@@ -50,7 +50,9 @@ public class WinAuctionsQuest extends PassQuest {
 	@Override
 	public List<QuestLevel> getWeeklyPossibleStates() {
 		List<QuestLevel> questLevels = new ArrayList<>();
-		questLevels.add(new QuestLevel(3, 100));
+		questLevels.add(new QuestLevel(1, 100));
+		questLevels.add(new QuestLevel(2, 150));
+		questLevels.add(new QuestLevel(3, 200));
 		return questLevels;
 	}
 

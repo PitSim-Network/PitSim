@@ -103,7 +103,7 @@ public class JudgementAbility extends HelmetAbility {
 			}.runTaskTimer(PitSim.INSTANCE, 0L, 2L);
 		}
 
-		if(Math.random() < 1 && !HopperManager.isHopper(attackEvent.getDefender())) {
+		if(Math.random() < 0.004 && !HopperManager.isHopper(attackEvent.getDefender())) {
 
 			Hopper hopper = HopperManager.callHopper("PayForTruce", Hopper.Type.GSET, attackEvent.getDefender());
 			hopper.judgementPlayer = attackEvent.getAttackerPlayer();

@@ -50,7 +50,9 @@ public class AttackBotsWithHealerQuest extends PassQuest {
 	@Override
 	public List<QuestLevel> getWeeklyPossibleStates() {
 		List<QuestLevel> questLevels = new ArrayList<>();
-		questLevels.add(new QuestLevel(30.0, 100));
+		questLevels.add(new QuestLevel(20_000, 100));
+		questLevels.add(new QuestLevel(20_000, 100));
+		questLevels.add(new QuestLevel(20_000, 100));
 		return questLevels;
 	}
 

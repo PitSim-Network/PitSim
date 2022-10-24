@@ -57,7 +57,9 @@ public class KillCreepersQuest extends PassQuest {
 	@Override
 	public List<QuestLevel> getWeeklyPossibleStates() {
 		List<QuestLevel> questLevels = new ArrayList<>();
-		questLevels.add(new QuestLevel(300.0, 100));
+		questLevels.add(new QuestLevel(700, 100));
+		questLevels.add(new QuestLevel(700, 150));
+		questLevels.add(new QuestLevel(700, 200));
 		return questLevels;
 	}
 

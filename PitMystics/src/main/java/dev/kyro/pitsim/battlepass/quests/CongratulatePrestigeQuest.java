@@ -59,7 +59,7 @@ public class CongratulatePrestigeQuest extends PassQuest {
 		ItemStack itemStack = new AItemStackBuilder(Material.FIREWORK)
 				.setName(getDisplayName())
 				.setLore(new ALoreBuilder(
-						"&7Say &egg! &7dwto &e" + Misc.formatLarge(questLevel.getRequirement(pitPlayer)) + " &7players",
+						"&7Say &egg! &7to &e" + Misc.formatLarge(questLevel.getRequirement(pitPlayer)) + " &7players",
 						"&7after they prestige",
 						"",
 						"&7Progress: &3" + Misc.formatLarge(progress) + "&7/&3" + Misc.formatLarge(questLevel.getRequirement(pitPlayer)) + " &8[" +
@@ -79,7 +79,9 @@ public class CongratulatePrestigeQuest extends PassQuest {
 	@Override
 	public List<QuestLevel> getWeeklyPossibleStates() {
 		List<QuestLevel> questLevels = new ArrayList<>();
-		questLevels.add(new QuestLevel(1_000, 100));
+		questLevels.add(new QuestLevel(8, 100));
+		questLevels.add(new QuestLevel(12, 150));
+		questLevels.add(new QuestLevel(16, 200));
 		return questLevels;
 	}
 

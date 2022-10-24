@@ -528,7 +528,12 @@ public class PitPlayer {
 
 	@Exclude
 	public HealEvent heal(double amount, HealEvent.HealType healType, int max) {
-		return Misc.heal(player, amount, healType, max);
+		return heal(amount, healType, max, null);
+	}
+
+	@Exclude
+	public HealEvent heal(double amount, HealEvent.HealType healType, int max, PitEnchant pitEnchant) {
+		return Misc.heal(player, amount, healType, max, pitEnchant);
 	}
 
 	@Exclude

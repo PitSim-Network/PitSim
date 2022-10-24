@@ -57,7 +57,9 @@ public class KillMagmaCubesQuest extends PassQuest {
 	@Override
 	public List<QuestLevel> getWeeklyPossibleStates() {
 		List<QuestLevel> questLevels = new ArrayList<>();
-		questLevels.add(new QuestLevel(300.0, 100));
+		questLevels.add(new QuestLevel(500, 100));
+		questLevels.add(new QuestLevel(500, 150));
+		questLevels.add(new QuestLevel(500, 200));
 		return questLevels;
 	}
 

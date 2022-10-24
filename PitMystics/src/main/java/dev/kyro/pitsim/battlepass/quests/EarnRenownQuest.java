@@ -49,12 +49,15 @@ public class EarnRenownQuest extends PassQuest {
 	@Override
 	public List<QuestLevel> getWeeklyPossibleStates() {
 		List<QuestLevel> questLevels = new ArrayList<>();
-		questLevels.add(new QuestLevel(3, 100));
+		questLevels.add(new QuestLevel(5, 100));
+		questLevels.add(new QuestLevel(7, 150));
+		questLevels.add(new QuestLevel(10, 200));
 		return questLevels;
 	}
 
 	@Override
 	public double getMultiplier(PitPlayer pitPlayer) {
-		return 1;
+		if(pitPlayer.prestige == 0) return 1;
+		return Math.pow(pitPlayer.prestige, 2.0/3.0);
 	}
 }

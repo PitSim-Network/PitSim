@@ -48,7 +48,7 @@ public class DailyBotKillQuest extends PassQuest {
 
 	@Override
 	public QuestLevel getDailyState() {
-		return new QuestLevel(30.0, 100);
+		return new QuestLevel(2_000.0, 20);
 	}
 
 	@Override

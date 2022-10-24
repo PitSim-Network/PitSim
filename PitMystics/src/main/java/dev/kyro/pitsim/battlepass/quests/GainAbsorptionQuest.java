@@ -36,10 +36,10 @@ public class GainAbsorptionQuest extends PassQuest {
 		ItemStack itemStack = new AItemStackBuilder(Material.GOLDEN_APPLE)
 				.setName(getDisplayName())
 				.setLore(new ALoreBuilder(
-						"&7Gain &6" + Misc.getHearts(questLevel.getRequirement(pitPlayer) / 2) + " &7of absorption",
+						"&7Gain &6" + Misc.getHearts(questLevel.getRequirement(pitPlayer)) + " &7of absorption",
 						"&7from enchants",
 						"",
-						"&7Progress: &3" + Misc.formatLarge(progress / 60) + "&7/&3" + Misc.formatLarge(questLevel.getRequirement(pitPlayer) / 20) + " &8[" +
+						"&7Progress: &3" + Misc.formatLarge(progress / 2) + "&7/&3" + Misc.formatLarge(questLevel.getRequirement(pitPlayer) / 2) + " &8[" +
 								AUtil.createProgressBar("|", ChatColor.AQUA, ChatColor.GRAY, 20,
 								progress / questLevel.getRequirement(pitPlayer)) + "&8]",
 						"&7Reward: &3" + questLevel.rewardPoints + " &7Quest Points"
@@ -56,7 +56,9 @@ public class GainAbsorptionQuest extends PassQuest {
 	@Override
 	public List<QuestLevel> getWeeklyPossibleStates() {
 		List<QuestLevel> questLevels = new ArrayList<>();
-		questLevels.add(new QuestLevel(1_000, 100));
+		questLevels.add(new QuestLevel(20_000, 100));
+		questLevels.add(new QuestLevel(30_000, 150));
+		questLevels.add(new QuestLevel(40_000, 200));
 		return questLevels;
 	}
 

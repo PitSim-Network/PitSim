@@ -50,6 +50,8 @@ public class GrindXPQuest extends PassQuest {
 	public List<QuestLevel> getWeeklyPossibleStates() {
 		List<QuestLevel> questLevels = new ArrayList<>();
 		questLevels.add(new QuestLevel(25_000.0, 100));
+		questLevels.add(new QuestLevel(37_500.0, 150));
+		questLevels.add(new QuestLevel(50_000.0, 200));
 		return questLevels;
 	}
 

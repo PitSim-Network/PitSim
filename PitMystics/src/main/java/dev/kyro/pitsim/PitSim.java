@@ -662,16 +662,16 @@ public class PitSim extends JavaPlugin {
 		PassManager.registerQuest(new JudgementHopperQuest());
 		PassManager.registerQuest(new BrewPotionsQuest());
 
-		PassManager.registerQuest(new KillCaveSpidersQuest());
-		PassManager.registerQuest(new KillCreepersQuest());
-		PassManager.registerQuest(new KillEndermenQuest());
-		PassManager.registerQuest(new KillIronGolemsQuest());
-		PassManager.registerQuest(new KillMagmaCubesQuest());
+		PassManager.registerQuest(new KillZombiesQuest());
 		PassManager.registerQuest(new KillSkeletonsQuest());
 		PassManager.registerQuest(new KillSpidersQuest());
-		PassManager.registerQuest(new KillWitherSkeletonsQuest());
+		PassManager.registerQuest(new KillCreepersQuest());
+		PassManager.registerQuest(new KillCaveSpidersQuest());
+		PassManager.registerQuest(new KillMagmaCubesQuest());
 		PassManager.registerQuest(new KillZombiePigmenQuest());
-		PassManager.registerQuest(new KillZombiesQuest());
+		PassManager.registerQuest(new KillWitherSkeletonsQuest());
+		PassManager.registerQuest(new KillIronGolemsQuest());
+		PassManager.registerQuest(new KillEndermenQuest());
 	}
 
 	private void registerCosmetics() {

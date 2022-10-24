@@ -12,6 +12,7 @@ import dev.kyro.arcticguilds.controllers.GuildManager;
 import dev.kyro.arcticguilds.controllers.objects.Guild;
 import dev.kyro.arcticguilds.controllers.objects.GuildBuff;
 import dev.kyro.pitsim.PitSim;
+import dev.kyro.pitsim.battlepass.quests.EarnRenownQuest;
 import dev.kyro.pitsim.battlepass.quests.WinAuctionsQuest;
 import dev.kyro.pitsim.brewing.PotionManager;
 import dev.kyro.pitsim.brewing.ingredients.MagmaCream;
@@ -124,6 +125,7 @@ public class PlayerManager implements Listener {
 
 					PitPlayer pitPlayer = PitPlayer.getPitPlayer(onlinePlayer);
 					pitPlayer.renown++;
+					EarnRenownQuest.INSTANCE.gainRenown(pitPlayer, 1);
 					AOutput.send(onlinePlayer, "&7You have been given &e1 renown &7for being active");
 				}
 			}

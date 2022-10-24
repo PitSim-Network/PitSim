@@ -48,7 +48,9 @@ public class CompleteUbersQuest extends PassQuest {
 	@Override
 	public List<QuestLevel> getWeeklyPossibleStates() {
 		List<QuestLevel> questLevels = new ArrayList<>();
-		questLevels.add(new QuestLevel(10.0, 100));
+		questLevels.add(new QuestLevel(25.0, 100));
+		questLevels.add(new QuestLevel(35.0, 150));
+		questLevels.add(new QuestLevel(50.0, 200));
 		return questLevels;
 	}
 

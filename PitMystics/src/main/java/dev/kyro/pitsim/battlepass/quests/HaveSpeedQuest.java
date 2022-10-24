@@ -69,7 +69,9 @@ public class HaveSpeedQuest extends PassQuest {
 	@Override
 	public List<QuestLevel> getWeeklyPossibleStates() {
 		List<QuestLevel> questLevels = new ArrayList<>();
-		questLevels.add(new QuestLevel(60 * 45, 100));
+		questLevels.add(new QuestLevel(60 * 60, 100));
+		questLevels.add(new QuestLevel(60 * 90, 100));
+		questLevels.add(new QuestLevel(60 * 120, 100));
 		return questLevels;
 	}
 

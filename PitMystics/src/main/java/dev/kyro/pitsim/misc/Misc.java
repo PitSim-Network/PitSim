@@ -7,6 +7,7 @@ import dev.kyro.pitsim.acosmetics.PitCosmetic;
 import dev.kyro.pitsim.commands.LightningCommand;
 import dev.kyro.pitsim.controllers.NonManager;
 import dev.kyro.pitsim.controllers.objects.GoldenHelmet;
+import dev.kyro.pitsim.controllers.objects.PitEnchant;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.events.HealEvent;
 import dev.kyro.pitsim.megastreaks.Overdrive;
@@ -337,10 +338,11 @@ public class Misc {
 		return new DecimalFormat("0.0").format(percent * 100) + "%";
 	}
 
-	public static HealEvent heal(LivingEntity entity, double amount, HealEvent.HealType healType, int max) {
+	public static HealEvent heal(LivingEntity entity, double amount, HealEvent.HealType healType, int max, PitEnchant pitEnchant) {
 		if(max == -1) max = Integer.MAX_VALUE;
 
 		HealEvent healEvent = new HealEvent(entity, amount, healType, max);
+		healEvent.pitEnchant = pitEnchant;
 		Bukkit.getServer().getPluginManager().callEvent(healEvent);
 
 		if(healType == HealEvent.HealType.HEALTH) {

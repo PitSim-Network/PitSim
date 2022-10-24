@@ -4,12 +4,10 @@ import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.controllers.objects.PitPerk;
 import dev.kyro.pitsim.events.AttackEvent;
-import dev.kyro.pitsim.misc.Misc;
 import org.bukkit.Material;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.event.EventHandler;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.ArrayList;
@@ -37,9 +35,8 @@ public class FirstStrike extends PitPerk {
 
 		if(!hitList.contains(attackEvent.getDefender())) {
 			attackEvent.increasePercent += 30 / 100D;
-			Misc.applyPotionEffect(attackEvent.getAttacker(), PotionEffectType.SPEED, 5 * 20, 0, false, false);
+//			Misc.applyPotionEffect(attackEvent.getAttacker(), PotionEffectType.SPEED, 5 * 20, 0, false, false);
 		}
-
 
 		List<LivingEntity> newList = new ArrayList<>(hitList);
 		newList.add(attackEvent.getDefender());
@@ -55,6 +52,6 @@ public class FirstStrike extends PitPerk {
 
 	@Override
 	public List<String> getDescription() {
-		return new ALoreBuilder("&7First hit on a player deals", "&c+30% damage &7and grants", "&eSpeed I &7(5s).").getLore();
+		return new ALoreBuilder("&7First hit on a player deals", "&c+30% damage.").getLore();
 	}
 }

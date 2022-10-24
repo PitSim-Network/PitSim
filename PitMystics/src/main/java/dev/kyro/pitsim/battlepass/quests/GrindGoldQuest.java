@@ -4,6 +4,7 @@ import dev.kyro.arcticapi.builders.AItemStackBuilder;
 import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.arcticapi.misc.AUtil;
 import dev.kyro.pitsim.battlepass.PassQuest;
+import dev.kyro.pitsim.controllers.PrestigeValues;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.misc.Misc;
 import org.bukkit.ChatColor;
@@ -48,13 +49,14 @@ public class GrindGoldQuest extends PassQuest {
 	@Override
 	public List<QuestLevel> getWeeklyPossibleStates() {
 		List<QuestLevel> questLevels = new ArrayList<>();
-		questLevels.add(new QuestLevel(25_000.0, 100));
+		questLevels.add(new QuestLevel(0.75, 100));
+		questLevels.add(new QuestLevel(1, 150));
+		questLevels.add(new QuestLevel(1.25, 200));
 		return questLevels;
 	}
 
 	@Override
 	public double getMultiplier(PitPlayer pitPlayer) {
-		if(pitPlayer.prestige == 0) return 1;
-		return pitPlayer.prestige;
+		return PrestigeValues.getPrestigeInfo(pitPlayer.prestige).goldReq;
 	}
 }

@@ -9,6 +9,7 @@ import dev.kyro.pitsim.controllers.PlayerManager;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.events.KillEvent;
 import dev.kyro.pitsim.megastreaks.NoMegastreak;
+import dev.kyro.pitsim.megastreaks.RNGesus;
 import dev.kyro.pitsim.misc.Misc;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -28,7 +29,8 @@ public class SneakingBotKillQuest extends PassQuest {
 	public void onKill(KillEvent killEvent) {
 		if(!PlayerManager.isRealPlayer(killEvent.getKillerPlayer()) || !canProgressQuest(killEvent.getKillerPitPlayer()) ||
 				NonManager.getNon(killEvent.getDead()) == null || !killEvent.getKillerPlayer().isSneaking() ||
-				killEvent.getKillerPitPlayer().megastreak.getClass() != NoMegastreak.class) return;
+				killEvent.getKillerPitPlayer().megastreak.getClass() == NoMegastreak.class ||
+				killEvent.getKillerPitPlayer().megastreak.getClass() == RNGesus.class) return;
 
 		progressQuest(killEvent.getKillerPitPlayer(), 1);
 	}
@@ -59,7 +61,9 @@ public class SneakingBotKillQuest extends PassQuest {
 	@Override
 	public List<QuestLevel> getWeeklyPossibleStates() {
 		List<QuestLevel> questLevels = new ArrayList<>();
-		questLevels.add(new QuestLevel(300.0, 100));
+		questLevels.add(new QuestLevel(10_000.0, 100));
+		questLevels.add(new QuestLevel(15_000.0, 150));
+		questLevels.add(new QuestLevel(20_000.0, 200));
 		return questLevels;
 	}
 

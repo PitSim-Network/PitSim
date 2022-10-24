@@ -4,14 +4,10 @@ import dev.kyro.arcticapi.builders.AItemStackBuilder;
 import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.arcticapi.misc.AUtil;
 import dev.kyro.pitsim.battlepass.PassQuest;
-import dev.kyro.pitsim.controllers.NonManager;
-import dev.kyro.pitsim.controllers.PlayerManager;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
-import dev.kyro.pitsim.events.KillEvent;
 import dev.kyro.pitsim.misc.Misc;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
-import org.bukkit.event.EventHandler;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.List;
@@ -20,14 +16,6 @@ public class DailySWGamePlayedQuest extends PassQuest {
 
 	public DailySWGamePlayedQuest() {
 		super("&f&lPlay Skywars", "dailyskywars", QuestType.DAILY);
-	}
-
-	@EventHandler
-	public void onKill(KillEvent killEvent) {
-		if(!PlayerManager.isRealPlayer(killEvent.getKillerPlayer()) || !canProgressQuest(killEvent.getKillerPitPlayer())
-				|| NonManager.getNon(killEvent.getDead()) == null) return;
-
-		progressQuest(killEvent.getKillerPitPlayer(), 1);
 	}
 
 	@Override
@@ -49,7 +37,7 @@ public class DailySWGamePlayedQuest extends PassQuest {
 
 	@Override
 	public QuestLevel getDailyState() {
-		return new QuestLevel(2, 100);
+		return new QuestLevel(2, 20);
 	}
 
 	@Override
