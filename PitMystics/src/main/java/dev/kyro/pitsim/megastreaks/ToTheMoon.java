@@ -84,7 +84,7 @@ public class ToTheMoon extends Megastreak {
 		lore.add("");
 		lore.add(ChatColor.GRAY + "On trigger:");
 		lore.add(ChatColor.translateAlternateColorCodes('&', "&a\u25a0 &7Earn &b+135% XP &7from kills"));
-		lore.add(ChatColor.translateAlternateColorCodes('&', "&a\u25a0 &7Gain &b+330 max XP&7"));
+		lore.add(ChatColor.translateAlternateColorCodes('&', "&a\u25a0 &7Gain &b+330 max XP &7from kills"));
 		lore.add(ChatColor.translateAlternateColorCodes('&', "&a\u25a0 &7Gain &b+1 max XP &7per kill"));
 		lore.add("");
 		lore.add(ChatColor.GRAY + "BUT:");
