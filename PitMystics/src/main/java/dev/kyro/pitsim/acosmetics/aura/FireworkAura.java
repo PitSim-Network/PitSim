@@ -52,7 +52,7 @@ public class FireworkAura extends PitCosmetic {
 
 	@Override
 	public ItemStack getRawDisplayItem() {
-		ItemStack itemStack = new AItemStackBuilder(Material.LEVER)
+		ItemStack itemStack = new AItemStackBuilder(Material.REDSTONE_TORCH_ON)
 				.setName(getDisplayName())
 				.setLore(new ALoreBuilder(
 						"&7The brilliance of a thousand",

@@ -5,7 +5,7 @@ import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.acosmetics.*;
 import dev.kyro.pitsim.acosmetics.collections.ParticleCollection;
-import dev.kyro.pitsim.acosmetics.particles.EnchantmentTableParticle;
+import dev.kyro.pitsim.acosmetics.particles.VillagerHappyParticle;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import net.minecraft.server.v1_8_R3.EntityPlayer;
 import org.bukkit.Location;
@@ -29,11 +29,11 @@ public class KyroAura extends PitCosmetic {
 		accountForPitch = false;
 		accountForYaw = false;
 
-		collection.addParticle("1", new EnchantmentTableParticle(this),
+		collection.addParticle("1", new VillagerHappyParticle(this),
 				new ParticleOffset(0, 0, 0, RANDOM, RANDOM, RANDOM));
-		collection.addParticle("2", new EnchantmentTableParticle(this),
+		collection.addParticle("2", new VillagerHappyParticle(this),
 				new ParticleOffset(0, 0, 0, RANDOM, RANDOM, RANDOM));
-		collection.addParticle("3", new EnchantmentTableParticle(this),
+		collection.addParticle("3", new VillagerHappyParticle(this),
 				new ParticleOffset(0, 0, 0, RANDOM, RANDOM, RANDOM));
 	}
 
@@ -66,7 +66,7 @@ public class KyroAura extends PitCosmetic {
 				RotationTools.rotate(rollVector, rollX * SPEED, rollY * SPEED, 0);
 				Location displayLocation3 = pitPlayer.player.getLocation().add(0, 1, 0).add(rollVector);
 
-				for(Player onlinePlayer : CosmeticManager.getDisplayPlayers(pitPlayer.player, pitPlayer.player.getLocation())) {
+				for(Player onlinePlayer : CosmeticManager.getDisplayPlayers(pitPlayer.player, pitPlayer.player.getLocation(), 50)) {
 					EntityPlayer entityPlayer = ((CraftPlayer) onlinePlayer).getHandle();
 					collection.display("1", entityPlayer, displayLocation1);
 					collection.display("2", entityPlayer, displayLocation2);

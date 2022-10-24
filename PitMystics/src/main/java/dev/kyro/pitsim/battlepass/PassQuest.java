@@ -1,5 +1,6 @@
 package dev.kyro.pitsim.battlepass;
 
+import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.misc.Sounds;
 import org.bukkit.ChatColor;
@@ -82,11 +83,12 @@ public abstract class PassQuest implements Listener {
 		passData.questCompletion.put(refName, newValue);
 	}
 
-//	TODO: Send message
 	public void complete(PitPlayer pitPlayer) {
 		PassData passData = pitPlayer.getPassData(PassManager.currentPass.startDate);
 		passData.totalPoints += getQuestLevel().rewardPoints;
 		Sounds.COMPLETE_QUEST.play(pitPlayer.player);
+		AOutput.send(pitPlayer.player, "&e&lQUEST!&7 You completed the quest " + getDisplayName() +
+				"&7 for &3" + getQuestLevel().rewardPoints + " &7quest points");
 	}
 
 	public String getDisplayName() {

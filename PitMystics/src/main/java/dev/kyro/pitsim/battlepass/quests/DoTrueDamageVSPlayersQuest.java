@@ -17,7 +17,6 @@ import org.bukkit.inventory.ItemStack;
 import java.util.ArrayList;
 import java.util.List;
 
-//TODO: Make the player have to be off the ground or up in the air by a bit
 public class DoTrueDamageVSPlayersQuest extends PassQuest {
 
 	public DoTrueDamageVSPlayersQuest() {
@@ -27,7 +26,7 @@ public class DoTrueDamageVSPlayersQuest extends PassQuest {
 	@EventHandler(priority = EventPriority.MONITOR)
 	public void onAttack(AttackEvent.Apply attackEvent) {
 		if(!PlayerManager.isRealPlayer(attackEvent.getAttackerPlayer()) || !canProgressQuest(attackEvent.getAttackerPitPlayer())
-				|| !PlayerManager.isRealPlayer(attackEvent.getDefenderPlayer())) return;
+				|| !PlayerManager.isRealPlayer(attackEvent.getDefenderPlayer()) || attackEvent.getDefenderPlayer().isOnGround()) return;
 		progressQuest(attackEvent.getAttackerPitPlayer(), attackEvent.trueDamage);
 	}
 
@@ -37,7 +36,8 @@ public class DoTrueDamageVSPlayersQuest extends PassQuest {
 				.setName(getDisplayName())
 				.setLore(new ALoreBuilder(
 						"&7Deal &9" + Misc.getHearts(questLevel.getRequirement(pitPlayer)) + " &7of true damage to",
-						"&7other players",
+						"&7other players that are not",
+						"&7on the ground",
 						"",
 						"&7Progress: &3" + Misc.formatLarge(progress / 2) + "&7/&3" + Misc.formatLarge(questLevel.getRequirement(pitPlayer) / 2) + " &8[" +
 								AUtil.createProgressBar("|", ChatColor.AQUA, ChatColor.GRAY, 20, progress / questLevel.getRequirement(pitPlayer)) + "&8]",

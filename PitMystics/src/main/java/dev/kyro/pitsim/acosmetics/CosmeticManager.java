@@ -56,12 +56,16 @@ public class CosmeticManager implements Listener {
 	}
 
 	public static List<Player> getDisplayPlayers(Player mainPlayer, Location location) {
+		return getDisplayPlayers(mainPlayer, location, 20);
+	}
+
+	public static List<Player> getDisplayPlayers(Player mainPlayer, Location location, double range) {
 		List<Player> displayPlayers = new ArrayList<>();
 		for(Player onlinePlayer : Bukkit.getOnlinePlayers()) {
 			if(onlinePlayer.getWorld() != location.getWorld()) continue;
 			Location testLocation = onlinePlayer.getLocation();
-			if(Math.abs(testLocation.getX() - location.getX()) > 20 || Math.abs(testLocation.getY() - location.getY()) > 20 ||
-					Math.abs(testLocation.getZ() - location.getZ()) > 20) continue;
+			if(Math.abs(testLocation.getX() - location.getX()) > range || Math.abs(testLocation.getY() - location.getY()) > range ||
+					Math.abs(testLocation.getZ() - location.getZ()) > range) continue;
 			displayPlayers.add(onlinePlayer);
 		}
 		if(!displayPlayers.contains(mainPlayer)) displayPlayers.add(mainPlayer);

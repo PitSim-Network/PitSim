@@ -20,7 +20,8 @@ public class LifestealParticle extends AIParticle {
 	@Override
 	public void tick() {
 		if(state == State.ATTACK && target.getLocation().distance(owner.getLocation()) > 25) {
-			pickTarget();
+			state = State.IDLE;
+			ticksUntilGoal = 0;
 		}
 		if(state == State.ATTACK) {
 			updateAttackStepVector();

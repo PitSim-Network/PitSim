@@ -65,6 +65,6 @@ public abstract class AIParticle {
 	}
 
 	public void display(Effect effect) {
-		for(Player player : CosmeticManager.getDisplayPlayers(owner, particleLocation)) player.playEffect(particleLocation, effect, 1);
+		for(Player player : CosmeticManager.getDisplayPlayers(owner, particleLocation, 50)) player.playEffect(particleLocation, effect, 1);
 	}
 }

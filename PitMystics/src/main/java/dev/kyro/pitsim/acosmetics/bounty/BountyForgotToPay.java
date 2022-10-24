@@ -23,7 +23,7 @@ public class BountyForgotToPay extends PitCosmetic {
 		ItemStack itemStack = new AItemStackBuilder(Material.EMERALD)
 				.setName(getDisplayName())
 				.setLore(new ALoreBuilder(
-						"&Their truce payment has run",
+						"&7Their truce payment has run",
 						"&7out. Time to end their streaks!"
 				))
 				.getItemStack();

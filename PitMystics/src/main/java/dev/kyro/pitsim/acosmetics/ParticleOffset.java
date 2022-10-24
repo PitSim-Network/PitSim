@@ -43,7 +43,6 @@ public class ParticleOffset {
 		if(accountForYaw) {
 			yaw = location.getYaw();
 			if(yaw < 0) yaw += 360;
-			yaw = (yaw + 180) % 360;
 		}
 		double pitch = 0;
 		if(accountForPitch) pitch = location.getPitch();

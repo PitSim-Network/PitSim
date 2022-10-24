@@ -63,7 +63,7 @@ public class EmeraldTrail extends PitCosmetic {
 		ItemStack itemStack = new AItemStackBuilder(Material.EMERALD)
 				.setName(getDisplayName())
 				.setLore(new ALoreBuilder(
-						"&Ah yes... the art of market",
+						"&yAh yes... the art of market",
 						"&7manipulation. Poor villagers..."
 				))
 				.getItemStack();

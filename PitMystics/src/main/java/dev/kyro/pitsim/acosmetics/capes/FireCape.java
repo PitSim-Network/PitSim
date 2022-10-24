@@ -43,7 +43,7 @@ public class FireCape extends PitCosmetic {
 				.setName(getDisplayName())
 				.setLore(new ALoreBuilder(
 						"&7Is it getting hot in here",
-						"&7or is it just me"
+						"&7or is it just me?"
 				))
 				.getItemStack();
 		return itemStack;

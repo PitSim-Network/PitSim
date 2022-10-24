@@ -37,7 +37,7 @@ public class PassManager implements Listener {
 	public static void registerPasses() {
 		registerPass(new PitSimPass(getDate("1/1/2022")));
 
-		PitSimPass pitSimPass = new PitSimPass(getDate("10/12/2022"))
+		PitSimPass pitSimPass = new PitSimPass(getDate("9/12/2022"))
 				.registerReward(new PassXpReward(2_500L), PitSimPass.RewardType.FREE, 1)
 				.registerReward(new PassXpReward(5_000L), PitSimPass.RewardType.PREMIUM, 1)
 				.registerReward(new PassGoldReward(50_000), PitSimPass.RewardType.PREMIUM, 2)
@@ -83,7 +83,8 @@ public class PassManager implements Listener {
 		long previousDays = TimeUnit.DAYS.convert(pitPlayer.lastLogin.getTime(), TimeUnit.MILLISECONDS);
 		long currentDays = TimeUnit.DAYS.convert(Misc.convertToEST(new Date()).getTime(), TimeUnit.MILLISECONDS);
 		if(previousDays != currentDays) {
-//			TODO: Reset daily quests
+			PassData passData = pitPlayer.getPassData(currentPass.startDate);
+//			passData.questCompletion
 		}
 
 		pitPlayer.lastLogin = Misc.convertToEST(new Date());
