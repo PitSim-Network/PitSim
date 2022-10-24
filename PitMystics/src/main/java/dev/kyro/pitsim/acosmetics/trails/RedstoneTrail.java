@@ -1,6 +1,7 @@
 package dev.kyro.pitsim.acosmetics.trails;
 
 import dev.kyro.arcticapi.builders.AItemStackBuilder;
+import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.acosmetics.*;
 import dev.kyro.pitsim.acosmetics.collections.ParticleCollection;
@@ -21,7 +22,7 @@ public class RedstoneTrail extends PitCosmetic {
 	public ItemStack dropStack;
 
 	public RedstoneTrail() {
-		super("&cRedstone Trail", "redstonetrail", CosmeticType.PARTICLE_TRAIL);
+		super("&4Redstone &cTrail", "redstonetrail", CosmeticType.PARTICLE_TRAIL);
 		accountForPitch = false;
 
 		PitParticle particle = new BlockCrackParticle(this, new MaterialData(Material.REDSTONE_BLOCK));
@@ -61,6 +62,11 @@ public class RedstoneTrail extends PitCosmetic {
 	public ItemStack getRawDisplayItem() {
 		ItemStack itemStack = new AItemStackBuilder(Material.REDSTONE)
 				.setName(getDisplayName())
+				.setLore(new ALoreBuilder(
+						"&7An ancient work of art previously",
+						"&7used to lay redstone communication",
+						"&7lines"
+				))
 				.getItemStack();
 		return itemStack;
 	}

@@ -25,8 +25,8 @@ import dev.kyro.pitsim.acosmetics.killeffectsbot.Tetris;
 import dev.kyro.pitsim.acosmetics.killeffectsplayer.*;
 import dev.kyro.pitsim.acosmetics.aura.KyroAura;
 import dev.kyro.pitsim.acosmetics.misc.KyroCosmetic;
-import dev.kyro.pitsim.acosmetics.misc.Ring2Cosmetic;
-import dev.kyro.pitsim.acosmetics.misc.RingCosmetic;
+import dev.kyro.pitsim.acosmetics.misc.ElectricPresence;
+import dev.kyro.pitsim.acosmetics.misc.MysticPresence;
 import dev.kyro.pitsim.acosmetics.trails.*;
 import dev.kyro.pitsim.battlepass.PassManager;
 import dev.kyro.pitsim.battlepass.quests.*;
@@ -686,9 +686,9 @@ public class PitSim extends JavaPlugin {
 		CosmeticManager.registerCosmetic(new DeathFirework());
 
 		CosmeticManager.registerCosmetic(new BountyBlueShell());
-		CosmeticManager.registerCosmetic(new BountyBullied());
+		CosmeticManager.registerCosmetic(new BountyBully());
 		CosmeticManager.registerCosmetic(new BountyCope());
-		CosmeticManager.registerCosmetic(new BountyDropped());
+		CosmeticManager.registerCosmetic(new BountyQuickDropped());
 		CosmeticManager.registerCosmetic(new BountyEmbarrassed());
 		CosmeticManager.registerCosmetic(new BountyForgotToPay());
 		CosmeticManager.registerCosmetic(new BountyHunted());
@@ -696,14 +696,14 @@ public class PitSim extends JavaPlugin {
 		CosmeticManager.registerCosmetic(new BountyRailed());
 		CosmeticManager.registerCosmetic(new BountyRatted());
 		CosmeticManager.registerCosmetic(new BountyReaper());
-		CosmeticManager.registerCosmetic(new BountyRobbed());
+		CosmeticManager.registerCosmetic(new BountyRobbery());
 		CosmeticManager.registerCosmetic(new BountySuffocated());
 		CosmeticManager.registerCosmetic(new BountySystemMalfunction());
-		CosmeticManager.registerCosmetic(new BountyTookTheL());
+		CosmeticManager.registerCosmetic(new BountyTakeTheL());
 
 		CosmeticManager.registerCosmetic(new KyroCosmetic());
-		CosmeticManager.registerCosmetic(new RingCosmetic());
-		CosmeticManager.registerCosmetic(new Ring2Cosmetic());
+		CosmeticManager.registerCosmetic(new MysticPresence());
+		CosmeticManager.registerCosmetic(new ElectricPresence());
 
 		CosmeticManager.registerCosmetic(new SolidCape());
 		CosmeticManager.registerCosmetic(new FireCape());
@@ -716,7 +716,7 @@ public class PitSim extends JavaPlugin {
 		CosmeticManager.registerCosmetic(new IceTrail());
 		CosmeticManager.registerCosmetic(new RainbowTrail());
 		CosmeticManager.registerCosmetic(new CoalTrail());
-		CosmeticManager.registerCosmetic(new IornTrail());
+		CosmeticManager.registerCosmetic(new IronTrail());
 		CosmeticManager.registerCosmetic(new RedstoneTrail());
 		CosmeticManager.registerCosmetic(new LapisTrail());
 		CosmeticManager.registerCosmetic(new DiamondTrail());
@@ -725,11 +725,11 @@ public class PitSim extends JavaPlugin {
 		CosmeticManager.registerCosmetic(new LavaTrail());
 
 		CosmeticManager.registerCosmetic(new KyroAura());
-		CosmeticManager.registerCosmetic(new VillagerHappyAura());
+		CosmeticManager.registerCosmetic(new LivelyAura());
 		CosmeticManager.registerCosmetic(new PotionAura());
 		CosmeticManager.registerCosmetic(new WaterAura());
 		CosmeticManager.registerCosmetic(new FireAura());
-		CosmeticManager.registerCosmetic(new MagicAura());
+		CosmeticManager.registerCosmetic(new MysticAura());
 		CosmeticManager.registerCosmetic(new FireworkAura());
 
 		CosmeticManager.loadForOnlinePlayers();

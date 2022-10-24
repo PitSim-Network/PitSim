@@ -1,10 +1,11 @@
 package dev.kyro.pitsim.acosmetics.misc;
 
 import dev.kyro.arcticapi.builders.AItemStackBuilder;
+import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.acosmetics.*;
 import dev.kyro.pitsim.acosmetics.collections.ParticleCollection;
-import dev.kyro.pitsim.acosmetics.particles.FireworkSparkParticle;
+import dev.kyro.pitsim.acosmetics.particles.EnchantmentTableParticle;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import net.minecraft.server.v1_8_R3.EntityPlayer;
 import org.bukkit.Location;
@@ -15,14 +16,14 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
 
-public class Ring2Cosmetic extends PitCosmetic {
+public class MysticPresence extends PitCosmetic {
 	public ParticleCollection collection = new ParticleCollection();
 
-	public Ring2Cosmetic() {
-		super("&9Ring2 Cosmetic", "ring2", CosmeticType.MISC);
+	public MysticPresence() {
+		super("&5Mystic &dPresence", "mysticpresence", CosmeticType.MISC);
 		accountForPitch = false;
 
-		PitParticle particle = new FireworkSparkParticle(this);
+		PitParticle particle = new EnchantmentTableParticle(this);
 
 		for(int i = 0; i < 40; i++) {
 			Vector vector = new Vector(1, 0, 0);
@@ -59,8 +60,12 @@ public class Ring2Cosmetic extends PitCosmetic {
 
 	@Override
 	public ItemStack getRawDisplayItem() {
-		ItemStack itemStack = new AItemStackBuilder(Material.FIREWORK)
+		ItemStack itemStack = new AItemStackBuilder(Material.ENCHANTMENT_TABLE)
 				.setName(getDisplayName())
+				.setLore(new ALoreBuilder(
+						"&7Encase yourself in a protective",
+						"&7spell"
+				))
 				.getItemStack();
 		return itemStack;
 	}

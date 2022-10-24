@@ -1,6 +1,7 @@
 package dev.kyro.pitsim.acosmetics.trails;
 
 import dev.kyro.arcticapi.builders.AItemStackBuilder;
+import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.acosmetics.*;
 import dev.kyro.pitsim.acosmetics.collections.ParticleCollection;
@@ -21,7 +22,7 @@ public class EmeraldTrail extends PitCosmetic {
 	public ItemStack dropStack;
 
 	public EmeraldTrail() {
-		super("&aEmerald Trail", "emeraldtrail", CosmeticType.PARTICLE_TRAIL);
+		super("&aEmerald &2Trail", "emeraldtrail", CosmeticType.PARTICLE_TRAIL);
 		accountForPitch = false;
 
 		PitParticle particle = new BlockCrackParticle(this, new MaterialData(Material.EMERALD_BLOCK));
@@ -61,6 +62,10 @@ public class EmeraldTrail extends PitCosmetic {
 	public ItemStack getRawDisplayItem() {
 		ItemStack itemStack = new AItemStackBuilder(Material.EMERALD)
 				.setName(getDisplayName())
+				.setLore(new ALoreBuilder(
+						"&Ah yes... the art of market",
+						"&7manipulation. Poor villagers..."
+				))
 				.getItemStack();
 		return itemStack;
 	}

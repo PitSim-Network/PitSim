@@ -15,7 +15,7 @@ import org.bukkit.inventory.ItemStack;
 public class OnlyExe extends PitCosmetic {
 
 	public OnlyExe() {
-		super("&cOnly Exe", "onlyexe", CosmeticType.BOT_KILL_EFFECT);
+		super("&c&lOnly &6Exe", "onlyexe", CosmeticType.BOT_KILL_EFFECT);
 		preventKillSound = true;
 	}
 
@@ -33,8 +33,8 @@ public class OnlyExe extends PitCosmetic {
 				.setLore(new ALoreBuilder(
 						"",
 						"&dRARE! &9Executioner",
-						"&7Only applies the executioner",
-						"&7kill effect"
+						"&7The classic executioner effect will",
+						"&7only play whenever you kill bots!"
 				))
 				.getItemStack();
 		return itemStack;

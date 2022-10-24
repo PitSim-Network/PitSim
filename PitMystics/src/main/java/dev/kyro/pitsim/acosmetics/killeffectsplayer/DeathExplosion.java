@@ -1,6 +1,7 @@
 package dev.kyro.pitsim.acosmetics.killeffectsplayer;
 
 import dev.kyro.arcticapi.builders.AItemStackBuilder;
+import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.pitsim.acosmetics.CosmeticType;
 import dev.kyro.pitsim.acosmetics.PitCosmetic;
 import dev.kyro.pitsim.controllers.PlayerManager;
@@ -16,7 +17,7 @@ import org.bukkit.inventory.ItemStack;
 public class DeathExplosion extends PitCosmetic {
 
 	public DeathExplosion() {
-		super("&9BANG!", "explosion", CosmeticType.PLAYER_KILL_EFFECT);
+		super("&8&lBOOM!", "explode", CosmeticType.PLAYER_KILL_EFFECT);
 	}
 
 	@EventHandler
@@ -34,8 +35,12 @@ public class DeathExplosion extends PitCosmetic {
 
 	@Override
 	public ItemStack getRawDisplayItem() {
-		ItemStack itemStack = new AItemStackBuilder(Material.BONE)
+		ItemStack itemStack = new AItemStackBuilder(Material.TNT)
 				.setName(getDisplayName())
+				.setLore(new ALoreBuilder(
+						"&7Your enemies explode when they",
+						"&7die! Now that's the bomb!"
+				))
 				.getItemStack();
 		return itemStack;
 	}

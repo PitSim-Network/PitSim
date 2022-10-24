@@ -1,6 +1,7 @@
 package dev.kyro.pitsim.acosmetics.trails;
 
 import dev.kyro.arcticapi.builders.AItemStackBuilder;
+import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.acosmetics.*;
 import dev.kyro.pitsim.acosmetics.collections.ParticleCollection;
@@ -20,7 +21,7 @@ public class RainbowTrail extends PitCosmetic {
 	public ParticleCollection collection = new ParticleCollection();
 
 	public RainbowTrail() {
-		super("&cRainbow Trail", "rainbowtrail", CosmeticType.PARTICLE_TRAIL);
+		super("&c&lR&6&la&e&li&a&ln&2&lb&b&lo&9&lw &1&lT&5&lr&d&la&c&li&6&ll", "rainbowtrail", CosmeticType.PARTICLE_TRAIL);
 		accountForPitch = false;
 
 		Vector vector = new Vector(0, 0.2, 0);
@@ -72,8 +73,12 @@ public class RainbowTrail extends PitCosmetic {
 
 	@Override
 	public ItemStack getRawDisplayItem() {
-		ItemStack itemStack = new AItemStackBuilder(Material.WOOL, 1, 14)
+		ItemStack itemStack = new AItemStackBuilder(Material.WOOL, 1, 6)
 				.setName(getDisplayName())
+				.setLore(new ALoreBuilder(
+						"&7Legend says this trail will",
+						"&7lead you to a pot of gold!"
+				))
 				.getItemStack();
 		return itemStack;
 	}

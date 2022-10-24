@@ -1,6 +1,7 @@
 package dev.kyro.pitsim.acosmetics.bounty;
 
 import dev.kyro.arcticapi.builders.AItemStackBuilder;
+import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.pitsim.acosmetics.CosmeticType;
 import dev.kyro.pitsim.acosmetics.PitCosmetic;
 import org.bukkit.Material;
@@ -9,7 +10,7 @@ import org.bukkit.inventory.ItemStack;
 public class BountyForgotToPay extends PitCosmetic {
 
 	public BountyForgotToPay() {
-		super("&9Forgot To Pay", "forgottopay", CosmeticType.BOUNTY_CLAIM_MESSAGE);
+		super("&c&lForgot To &a&lPay", "forgottopay", CosmeticType.BOUNTY_CLAIM_MESSAGE);
 	}
 
 	@Override
@@ -19,8 +20,12 @@ public class BountyForgotToPay extends PitCosmetic {
 
 	@Override
 	public ItemStack getRawDisplayItem() {
-		ItemStack itemStack = new AItemStackBuilder(Material.BONE)
+		ItemStack itemStack = new AItemStackBuilder(Material.EMERALD)
 				.setName(getDisplayName())
+				.setLore(new ALoreBuilder(
+						"&Their truce payment has run",
+						"&7out. Time to end their streaks!"
+				))
 				.getItemStack();
 		return itemStack;
 	}

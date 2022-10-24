@@ -1,6 +1,7 @@
 package dev.kyro.pitsim.acosmetics.trails;
 
 import dev.kyro.arcticapi.builders.AItemStackBuilder;
+import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.acosmetics.*;
 import dev.kyro.pitsim.acosmetics.collections.ParticleCollection;
@@ -62,6 +63,10 @@ public class CoalTrail extends PitCosmetic {
 	public ItemStack getRawDisplayItem() {
 		ItemStack itemStack = new AItemStackBuilder(Material.COAL)
 				.setName(getDisplayName())
+				.setLore(new ALoreBuilder(
+						"&7Nothing like a long days work",
+						"&7in the coal mines"
+				))
 				.getItemStack();
 		return itemStack;
 	}

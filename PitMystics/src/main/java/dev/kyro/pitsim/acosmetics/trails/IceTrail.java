@@ -1,6 +1,7 @@
 package dev.kyro.pitsim.acosmetics.trails;
 
 import dev.kyro.arcticapi.builders.AItemStackBuilder;
+import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.acosmetics.*;
 import dev.kyro.pitsim.acosmetics.collections.ParticleCollection;
@@ -20,7 +21,7 @@ public class IceTrail extends PitCosmetic {
 	public ParticleCollection collection = new ParticleCollection();
 
 	public IceTrail() {
-		super("&bIce Trail", "icetrail", CosmeticType.PARTICLE_TRAIL);
+		super("&bI&9c&be &9T&br&9a&bi&9l", "icetrail", CosmeticType.PARTICLE_TRAIL);
 		accountForPitch = false;
 
 		PitParticle particle = new BlockCrackParticle(this, new MaterialData(Material.PACKED_ICE));
@@ -56,6 +57,9 @@ public class IceTrail extends PitCosmetic {
 	public ItemStack getRawDisplayItem() {
 		ItemStack itemStack = new AItemStackBuilder(Material.PACKED_ICE)
 				.setName(getDisplayName())
+				.setLore(new ALoreBuilder(
+						"&7Don't slip on the ice now!"
+				))
 				.getItemStack();
 		return itemStack;
 	}

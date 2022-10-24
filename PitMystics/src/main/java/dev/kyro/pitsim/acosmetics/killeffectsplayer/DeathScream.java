@@ -1,6 +1,7 @@
 package dev.kyro.pitsim.acosmetics.killeffectsplayer;
 
 import dev.kyro.arcticapi.builders.AItemStackBuilder;
+import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.pitsim.acosmetics.CosmeticType;
 import dev.kyro.pitsim.acosmetics.PitCosmetic;
 import dev.kyro.pitsim.controllers.PlayerManager;
@@ -13,7 +14,7 @@ import org.bukkit.inventory.ItemStack;
 public class DeathScream extends PitCosmetic {
 
 	public DeathScream() {
-		super("&fScream", "scream", CosmeticType.PLAYER_KILL_EFFECT);
+		super("&4Wretched Scream", "scream", CosmeticType.PLAYER_KILL_EFFECT);
 	}
 
 	@EventHandler
@@ -27,6 +28,10 @@ public class DeathScream extends PitCosmetic {
 	public ItemStack getRawDisplayItem() {
 		ItemStack itemStack = new AItemStackBuilder(Material.GHAST_TEAR)
 				.setName(getDisplayName())
+				.setLore(new ALoreBuilder(
+						"&7Hear your enemies scream at",
+						"&7the top of their lungs!"
+				))
 				.getItemStack();
 		return itemStack;
 	}

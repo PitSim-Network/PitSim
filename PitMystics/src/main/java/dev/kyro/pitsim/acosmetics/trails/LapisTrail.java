@@ -1,6 +1,7 @@
 package dev.kyro.pitsim.acosmetics.trails;
 
 import dev.kyro.arcticapi.builders.AItemStackBuilder;
+import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.acosmetics.*;
 import dev.kyro.pitsim.acosmetics.collections.ParticleCollection;
@@ -21,7 +22,7 @@ public class LapisTrail extends PitCosmetic {
 	public ItemStack dropStack;
 
 	public LapisTrail() {
-		super("&9Lapis Trail", "lapistrail", CosmeticType.PARTICLE_TRAIL);
+		super("&9Lapis &1Trail", "lapistrail", CosmeticType.PARTICLE_TRAIL);
 		accountForPitch = false;
 
 		PitParticle particle = new BlockCrackParticle(this, new MaterialData(Material.LAPIS_BLOCK));
@@ -61,6 +62,10 @@ public class LapisTrail extends PitCosmetic {
 	public ItemStack getRawDisplayItem() {
 		ItemStack itemStack = new AItemStackBuilder(Material.INK_SACK, 1, 4)
 				.setName(getDisplayName())
+				.setLore(new ALoreBuilder(
+						"&7Do you think mojang will",
+						"&7ever make this item useful?"
+				))
 				.getItemStack();
 		return itemStack;
 	}

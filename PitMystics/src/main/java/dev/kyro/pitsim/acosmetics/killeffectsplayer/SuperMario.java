@@ -5,6 +5,7 @@ import com.xxmicloxx.NoteBlockAPI.model.Song;
 import com.xxmicloxx.NoteBlockAPI.songplayer.PositionSongPlayer;
 import com.xxmicloxx.NoteBlockAPI.utils.NBSDecoder;
 import dev.kyro.arcticapi.builders.AItemStackBuilder;
+import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.pitsim.acosmetics.CosmeticType;
 import dev.kyro.pitsim.acosmetics.PitCosmetic;
 import dev.kyro.pitsim.controllers.PlayerManager;
@@ -20,7 +21,7 @@ import java.io.File;
 public class SuperMario extends PitCosmetic {
 
 	public SuperMario() {
-		super("&fSuper Mario", "supermario", CosmeticType.PLAYER_KILL_EFFECT);
+		super("&b&lS&e&lU&c&lP&a&lE&e&lR &c&lM&a&lA&e&lR&b&lI&e&lO", "supermario", CosmeticType.PLAYER_KILL_EFFECT);
 	}
 
 	@EventHandler
@@ -42,6 +43,10 @@ public class SuperMario extends PitCosmetic {
 	public ItemStack getRawDisplayItem() {
 		ItemStack itemStack = new AItemStackBuilder(Material.RED_MUSHROOM)
 				.setName(getDisplayName())
+				.setLore(new ALoreBuilder(
+						"&7A &8&lSUPER&7 tune for a &8&lSUPER",
+						"&7kill!"
+				))
 				.getItemStack();
 		return itemStack;
 	}

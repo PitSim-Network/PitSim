@@ -1,6 +1,7 @@
 package dev.kyro.pitsim.acosmetics.trails;
 
 import dev.kyro.arcticapi.builders.AItemStackBuilder;
+import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.acosmetics.*;
 import dev.kyro.pitsim.acosmetics.collections.ParticleCollection;
@@ -21,7 +22,7 @@ public class DiamondTrail extends PitCosmetic {
 	public ItemStack dropStack;
 
 	public DiamondTrail() {
-		super("&bDiamond Trail", "diamondtrail", CosmeticType.PARTICLE_TRAIL);
+		super("&bDiamond &3Trail", "diamondtrail", CosmeticType.PARTICLE_TRAIL);
 		accountForPitch = false;
 
 		PitParticle particle = new BlockCrackParticle(this, new MaterialData(Material.DIAMOND_BLOCK));
@@ -61,6 +62,10 @@ public class DiamondTrail extends PitCosmetic {
 	public ItemStack getRawDisplayItem() {
 		ItemStack itemStack = new AItemStackBuilder(Material.DIAMOND)
 				.setName(getDisplayName())
+				.setLore(new ALoreBuilder(
+						"&7You've struck gold! Or well,",
+						"&7diamonds! Even more valuable!"
+				))
 				.getItemStack();
 		return itemStack;
 	}

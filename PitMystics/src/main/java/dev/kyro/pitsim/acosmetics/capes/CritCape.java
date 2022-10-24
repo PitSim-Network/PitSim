@@ -1,6 +1,7 @@
 package dev.kyro.pitsim.acosmetics.capes;
 
 import dev.kyro.arcticapi.builders.AItemStackBuilder;
+import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.acosmetics.CosmeticType;
 import dev.kyro.pitsim.acosmetics.PitCosmetic;
@@ -15,7 +16,7 @@ public class CritCape extends PitCosmetic {
 	public CapeCollection cape;
 
 	public CritCape() {
-		super("&7Crit Cape", "critcape", CosmeticType.CAPE);
+		super("&4&lCritical &c&lHit!", "critcape", CosmeticType.CAPE);
 		accountForPitch = false;
 
 		cape = new CapeCollection(new CritParticle(this));
@@ -38,8 +39,12 @@ public class CritCape extends PitCosmetic {
 
 	@Override
 	public ItemStack getRawDisplayItem() {
-		ItemStack itemStack = new AItemStackBuilder(Material.ENCHANTMENT_TABLE)
+		ItemStack itemStack = new AItemStackBuilder(Material.DIAMOND_SWORD)
 				.setName(getDisplayName())
+				.setLore(new ALoreBuilder(
+						"&7Wear the marks of combat proudly",
+						"&7on your back"
+				))
 				.getItemStack();
 		return itemStack;
 	}

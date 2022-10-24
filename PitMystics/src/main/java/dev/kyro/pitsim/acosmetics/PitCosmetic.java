@@ -1,6 +1,8 @@
 package dev.kyro.pitsim.acosmetics;
 
 import de.tr7zw.nbtapi.NBTItem;
+import dev.kyro.arcticapi.builders.AItemStackBuilder;
+import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.pitsim.ParticleColor;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.controllers.MapManager;
@@ -68,7 +70,14 @@ public abstract class PitCosmetic implements Listener {
 
 	public ItemStack getDisplayItem(boolean equipped) {
 		ItemStack itemStack = getRawDisplayItem();
-		if(equipped) Misc.addEnchantGlint(itemStack);
+		ALoreBuilder loreBuilder = new ALoreBuilder(itemStack.getItemMeta().getLore());
+		if(equipped) {
+			Misc.addEnchantGlint(itemStack);
+			loreBuilder.addLore("", "&aThis cosmetic is active!");
+		} else {
+			loreBuilder.addLore("", "&eClick to equip!");
+		}
+		new AItemStackBuilder(itemStack).setLore(loreBuilder);
 		return itemStack;
 	}
 

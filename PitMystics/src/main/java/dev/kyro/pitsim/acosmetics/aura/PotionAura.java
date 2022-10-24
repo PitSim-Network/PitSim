@@ -1,6 +1,7 @@
 package dev.kyro.pitsim.acosmetics.aura;
 
 import dev.kyro.arcticapi.builders.AItemStackBuilder;
+import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.acosmetics.*;
 import dev.kyro.pitsim.acosmetics.collections.ParticleCollection;
@@ -11,16 +12,14 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.scheduler.BukkitRunnable;
 
 public class PotionAura extends ColorableCosmetic {
 	public ParticleCollection collection = new ParticleCollection();
 
 	public PotionAura() {
-		super("&dPotion Aura", "potionaura", CosmeticType.AURA);
+		super("&5Potion Aura", "potionaura", CosmeticType.AURA);
 		accountForYaw = false;
 		accountForPitch = false;
 
@@ -54,12 +53,12 @@ public class PotionAura extends ColorableCosmetic {
 
 	@Override
 	public ItemStack getRawDisplayItem() {
-		ItemStack itemStack = new AItemStackBuilder(Material.POTION, 1, 16430)
+		ItemStack itemStack = new AItemStackBuilder(Material.BREWING_STAND_ITEM)
 				.setName(getDisplayName())
+				.setLore(new ALoreBuilder(
+						"&7Collect all the colors!"
+				))
 				.getItemStack();
-		ItemMeta itemMeta = itemStack.getItemMeta();
-		itemMeta.addItemFlags(ItemFlag.HIDE_POTION_EFFECTS);
-		itemStack.setItemMeta(itemMeta);
 		return itemStack;
 	}
 }

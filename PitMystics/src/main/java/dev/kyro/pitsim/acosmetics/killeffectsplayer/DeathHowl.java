@@ -1,6 +1,7 @@
 package dev.kyro.pitsim.acosmetics.killeffectsplayer;
 
 import dev.kyro.arcticapi.builders.AItemStackBuilder;
+import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.pitsim.acosmetics.CosmeticType;
 import dev.kyro.pitsim.acosmetics.PitCosmetic;
 import dev.kyro.pitsim.controllers.PlayerManager;
@@ -13,7 +14,7 @@ import org.bukkit.inventory.ItemStack;
 public class DeathHowl extends PitCosmetic {
 
 	public DeathHowl() {
-		super("&8Howl", "howl", CosmeticType.PLAYER_KILL_EFFECT);
+		super("&7Howl", "howl", CosmeticType.PLAYER_KILL_EFFECT);
 	}
 
 	@EventHandler
@@ -27,6 +28,10 @@ public class DeathHowl extends PitCosmetic {
 	public ItemStack getRawDisplayItem() {
 		ItemStack itemStack = new AItemStackBuilder(Material.BONE)
 				.setName(getDisplayName())
+				.setLore(new ALoreBuilder(
+						"&7Devour your enemies and",
+						"&7howl like a werewolf!"
+				))
 				.getItemStack();
 		return itemStack;
 	}

@@ -22,16 +22,34 @@ import java.util.Map;
 public class CosmeticPanel extends AGUIPanel {
 	public SettingsGUI settingsGUI;
 
-	public static ItemStack playerKillEffects;
-	public static ItemStack botKillEffects;
-	public static ItemStack bountyMessageItem;
-	public static ItemStack capesItem;
-	public static ItemStack particleTrailItem;
-	public static ItemStack auraItem;
-	public static ItemStack miscItem;
+	public ItemStack playerKillEffects;
+	public ItemStack botKillEffects;
+	public ItemStack bountyMessageItem;
+	public ItemStack capesItem;
+	public ItemStack particleTrailItem;
+	public ItemStack auraItem;
+	public ItemStack miscItem;
 	public static ItemStack backItem;
 
 	static {
+		backItem = new AItemStackBuilder(Material.BARRIER)
+				.setName("&c&lBack")
+				.setLore(new ALoreBuilder(
+						"&7Click to go back"
+				))
+				.getItemStack();
+	}
+
+	public CosmeticPanel(AGUI gui) {
+		super(gui);
+		settingsGUI = (SettingsGUI) gui;
+
+		inventoryBuilder.createBorder(Material.STAINED_GLASS_PANE, 7);
+
+		List<CosmeticType> equippedCosmeticTypes = new ArrayList<>();
+		for(PitCosmetic pitCosmetic : CosmeticManager.getEquippedCosmetics(settingsGUI.pitPlayer))
+			equippedCosmeticTypes.add(pitCosmetic.cosmeticType);
+
 		playerKillEffects = new AItemStackBuilder(Material.DIAMOND_SWORD)
 				.setName("&4&lPlayer Kill Effects")
 				.setLore(new ALoreBuilder(
@@ -74,23 +92,7 @@ public class CosmeticPanel extends AGUIPanel {
 						"&7Click to pick a misc cosmetic"
 				))
 				.getItemStack();
-		backItem = new AItemStackBuilder(Material.BARRIER)
-				.setName("&c&lBack")
-				.setLore(new ALoreBuilder(
-						"&7Click to go back"
-				))
-				.getItemStack();
-	}
 
-	public CosmeticPanel(AGUI gui) {
-		super(gui);
-		settingsGUI = (SettingsGUI) gui;
-
-		inventoryBuilder.createBorder(Material.STAINED_GLASS_PANE, 7);
-
-		List<CosmeticType> equippedCosmeticTypes = new ArrayList<>();
-		for(PitCosmetic pitCosmetic : CosmeticManager.getEquippedCosmetics(settingsGUI.pitPlayer))
-			equippedCosmeticTypes.add(pitCosmetic.cosmeticType);
 		if(equippedCosmeticTypes.contains(CosmeticType.PLAYER_KILL_EFFECT)) Misc.addEnchantGlint(playerKillEffects);
 		if(equippedCosmeticTypes.contains(CosmeticType.BOT_KILL_EFFECT)) Misc.addEnchantGlint(botKillEffects);
 		if(equippedCosmeticTypes.contains(CosmeticType.BOUNTY_CLAIM_MESSAGE)) Misc.addEnchantGlint(bountyMessageItem);

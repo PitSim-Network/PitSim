@@ -1,6 +1,7 @@
 package dev.kyro.pitsim.acosmetics.aura;
 
 import dev.kyro.arcticapi.builders.AItemStackBuilder;
+import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.acosmetics.*;
 import dev.kyro.pitsim.acosmetics.collections.ParticleCollection;
@@ -18,7 +19,7 @@ public class WaterAura extends PitCosmetic {
 	public ParticleCollection collection = new ParticleCollection();
 
 	public WaterAura() {
-		super("&9Water Aura", "wateraura", CosmeticType.AURA);
+		super("&9Water &bAura", "wateraura", CosmeticType.AURA);
 		accountForPitch = false;
 
 		PitParticle particle = new WaterDropParticle(this);
@@ -53,6 +54,9 @@ public class WaterAura extends PitCosmetic {
 	public ItemStack getRawDisplayItem() {
 		ItemStack itemStack = new AItemStackBuilder(Material.WATER_BUCKET)
 				.setName(getDisplayName())
+				.setLore(new ALoreBuilder(
+						"&7*Splish Splash*"
+				))
 				.getItemStack();
 		return itemStack;
 	}

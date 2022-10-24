@@ -1,6 +1,7 @@
 package dev.kyro.pitsim.acosmetics.aura;
 
 import dev.kyro.arcticapi.builders.AItemStackBuilder;
+import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.acosmetics.*;
 import dev.kyro.pitsim.acosmetics.collections.ParticleCollection;
@@ -58,8 +59,12 @@ public class FireAura extends PitCosmetic {
 
 	@Override
 	public ItemStack getRawDisplayItem() {
-		ItemStack itemStack = new AItemStackBuilder(Material.BLAZE_POWDER)
+		ItemStack itemStack = new AItemStackBuilder(Material.FLINT_AND_STEEL)
 				.setName(getDisplayName())
+				.setLore(new ALoreBuilder(
+						"&7Everything around you is set",
+						"&7ablaze!"
+				))
 				.getItemStack();
 		return itemStack;
 	}

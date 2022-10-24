@@ -1,6 +1,7 @@
 package dev.kyro.pitsim.acosmetics.capes;
 
 import dev.kyro.arcticapi.builders.AItemStackBuilder;
+import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.acosmetics.CosmeticType;
 import dev.kyro.pitsim.acosmetics.PitCosmetic;
@@ -15,7 +16,7 @@ public class MagicCape extends PitCosmetic {
 	public CapeCollection cape;
 
 	public MagicCape() {
-		super("&5Magic Cape", "magiccape", CosmeticType.CAPE);
+		super("&5Enchanted Cloak", "magiccape", CosmeticType.CAPE);
 		accountForPitch = false;
 
 		cape = new CapeCollection(new EnchantmentTableParticle(this));
@@ -38,8 +39,12 @@ public class MagicCape extends PitCosmetic {
 
 	@Override
 	public ItemStack getRawDisplayItem() {
-		ItemStack itemStack = new AItemStackBuilder(Material.ENCHANTMENT_TABLE)
+		ItemStack itemStack = new AItemStackBuilder(Material.EXP_BOTTLE)
 				.setName(getDisplayName())
+				.setLore(new ALoreBuilder(
+						"&7Show off your &5magical &7style",
+						"&7with this mythical cape!"
+				))
 				.getItemStack();
 		return itemStack;
 	}

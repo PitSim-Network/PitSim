@@ -1,6 +1,7 @@
 package dev.kyro.pitsim.acosmetics.trails;
 
 import dev.kyro.arcticapi.builders.AItemStackBuilder;
+import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.acosmetics.*;
 import dev.kyro.pitsim.acosmetics.collections.ParticleCollection;
@@ -20,7 +21,7 @@ public class SlimeTrail extends PitCosmetic {
 	public ItemStack dropStack;
 
 	public SlimeTrail() {
-		super("&2Slime Trail", "slimetrail", CosmeticType.PARTICLE_TRAIL);
+		super("&2Slime &7Trail", "slimetrail", CosmeticType.PARTICLE_TRAIL);
 		accountForPitch = false;
 
 		PitParticle particle = new SlimeParticle(this);
@@ -61,6 +62,9 @@ public class SlimeTrail extends PitCosmetic {
 	public ItemStack getRawDisplayItem() {
 		ItemStack itemStack = new AItemStackBuilder(Material.SLIME_BALL)
 				.setName(getDisplayName())
+				.setLore(new ALoreBuilder(
+						"&7Quite the sticky situation"
+				))
 				.getItemStack();
 		return itemStack;
 	}

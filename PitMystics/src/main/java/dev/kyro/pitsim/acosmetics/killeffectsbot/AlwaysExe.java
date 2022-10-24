@@ -15,7 +15,7 @@ import org.bukkit.inventory.ItemStack;
 public class AlwaysExe extends PitCosmetic {
 
 	public AlwaysExe() {
-		super("&aAlways Exe", "alwaysexe", CosmeticType.BOT_KILL_EFFECT);
+		super("&a&lAlways &6Exe", "alwaysexe", CosmeticType.BOT_KILL_EFFECT);
 	}
 
 	@EventHandler
@@ -32,8 +32,8 @@ public class AlwaysExe extends PitCosmetic {
 				.setLore(new ALoreBuilder(
 						"",
 						"&dRARE! &9Executioner",
-						"&7Always applies the executioner",
-						"&7kill effect"
+						"&7The classic executioner effect will",
+						"&7always play whenever you kill bots!"
 				))
 				.getItemStack();
 		return itemStack;

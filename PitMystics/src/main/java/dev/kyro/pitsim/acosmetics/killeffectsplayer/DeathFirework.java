@@ -1,6 +1,7 @@
 package dev.kyro.pitsim.acosmetics.killeffectsplayer;
 
 import dev.kyro.arcticapi.builders.AItemStackBuilder;
+import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.acosmetics.CosmeticType;
 import dev.kyro.pitsim.acosmetics.PitCosmetic;
@@ -23,7 +24,7 @@ import java.util.Random;
 public class DeathFirework extends PitCosmetic {
 
 	public DeathFirework() {
-		super("&8Celebration", "firework", CosmeticType.PLAYER_KILL_EFFECT);
+		super("&dC&ce&dl&ce&db&cr&da&ct&di&co&dn", "firework", CosmeticType.PLAYER_KILL_EFFECT);
 	}
 
 	@EventHandler
@@ -78,8 +79,12 @@ public class DeathFirework extends PitCosmetic {
 
 	@Override
 	public ItemStack getRawDisplayItem() {
-		ItemStack itemStack = new AItemStackBuilder(Material.BONE)
+		ItemStack itemStack = new AItemStackBuilder(Material.CAKE)
 				.setName(getDisplayName())
+				.setLore(new ALoreBuilder(
+						"&7It's time to celebrate your",
+						"&7latest victory!"
+				))
 				.getItemStack();
 		return itemStack;
 	}

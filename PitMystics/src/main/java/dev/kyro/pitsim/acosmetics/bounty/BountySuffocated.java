@@ -1,6 +1,7 @@
 package dev.kyro.pitsim.acosmetics.bounty;
 
 import dev.kyro.arcticapi.builders.AItemStackBuilder;
+import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.pitsim.acosmetics.CosmeticType;
 import dev.kyro.pitsim.acosmetics.PitCosmetic;
 import org.bukkit.Material;
@@ -9,7 +10,7 @@ import org.bukkit.inventory.ItemStack;
 public class BountySuffocated extends PitCosmetic {
 
 	public BountySuffocated() {
-		super("&9Asphyxiation", "suffocate", CosmeticType.BOUNTY_CLAIM_MESSAGE);
+		super("&7S&2u&7f&2f&7o&2c&7a&2t&7i&2o&7n", "suffocate", CosmeticType.BOUNTY_CLAIM_MESSAGE);
 	}
 
 	@Override
@@ -19,8 +20,12 @@ public class BountySuffocated extends PitCosmetic {
 
 	@Override
 	public ItemStack getRawDisplayItem() {
-		ItemStack itemStack = new AItemStackBuilder(Material.BONE)
+		ItemStack itemStack = new AItemStackBuilder(Material.INK_SACK, 1, 15)
 				.setName(getDisplayName())
+				.setLore(new ALoreBuilder(
+						"&7Is it legal to cement them into",
+						"&7the walls of this place?"
+				))
 				.getItemStack();
 		return itemStack;
 	}

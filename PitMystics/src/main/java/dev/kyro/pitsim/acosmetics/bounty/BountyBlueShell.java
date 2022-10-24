@@ -1,6 +1,7 @@
 package dev.kyro.pitsim.acosmetics.bounty;
 
 import dev.kyro.arcticapi.builders.AItemStackBuilder;
+import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.pitsim.acosmetics.CosmeticType;
 import dev.kyro.pitsim.acosmetics.PitCosmetic;
 import org.bukkit.Material;
@@ -9,7 +10,7 @@ import org.bukkit.inventory.ItemStack;
 public class BountyBlueShell extends PitCosmetic {
 
 	public BountyBlueShell() {
-		super("&9Blue Shell", "blueshell", CosmeticType.BOUNTY_CLAIM_MESSAGE);
+		super("&9Blue &bShell", "blueshell", CosmeticType.BOUNTY_CLAIM_MESSAGE);
 	}
 
 	@Override
@@ -19,8 +20,12 @@ public class BountyBlueShell extends PitCosmetic {
 
 	@Override
 	public ItemStack getRawDisplayItem() {
-		ItemStack itemStack = new AItemStackBuilder(Material.BONE)
+		ItemStack itemStack = new AItemStackBuilder(Material.LAPIS_BLOCK)
 				.setName(getDisplayName())
+				.setLore(new ALoreBuilder(
+						"&7You'll always overtake first",
+						"&7place now!"
+				))
 				.getItemStack();
 		return itemStack;
 	}

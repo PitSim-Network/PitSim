@@ -1,6 +1,7 @@
 package dev.kyro.pitsim.acosmetics.trails;
 
 import dev.kyro.arcticapi.builders.AItemStackBuilder;
+import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.acosmetics.*;
 import dev.kyro.pitsim.acosmetics.collections.ParticleCollection;
@@ -55,8 +56,12 @@ public class SmokeTrail extends PitCosmetic {
 
 	@Override
 	public ItemStack getRawDisplayItem() {
-		ItemStack itemStack = new AItemStackBuilder(Material.BLAZE_POWDER)
+		ItemStack itemStack = new AItemStackBuilder(Material.FIREWORK_CHARGE)
 				.setName(getDisplayName())
+				.setLore(new ALoreBuilder(
+						"&7Your feet move so fast they",
+						"&7could probably start a fire!"
+				))
 				.getItemStack();
 		return itemStack;
 	}

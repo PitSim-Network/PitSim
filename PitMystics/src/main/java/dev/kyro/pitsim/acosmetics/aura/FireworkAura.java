@@ -1,6 +1,7 @@
 package dev.kyro.pitsim.acosmetics.aura;
 
 import dev.kyro.arcticapi.builders.AItemStackBuilder;
+import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.acosmetics.*;
 import dev.kyro.pitsim.acosmetics.collections.ParticleCollection;
@@ -18,7 +19,7 @@ public class FireworkAura extends PitCosmetic {
 	public ParticleCollection collection = new ParticleCollection();
 
 	public FireworkAura() {
-		super("&fSpark Aura", "fireworkaura", CosmeticType.AURA);
+		super("&eSpark Aura", "fireworkaura", CosmeticType.AURA);
 		accountForPitch = false;
 
 		PitParticle particle = new FireworkSparkParticle(this);
@@ -51,8 +52,12 @@ public class FireworkAura extends PitCosmetic {
 
 	@Override
 	public ItemStack getRawDisplayItem() {
-		ItemStack itemStack = new AItemStackBuilder(Material.WATER_BUCKET)
+		ItemStack itemStack = new AItemStackBuilder(Material.LEVER)
 				.setName(getDisplayName())
+				.setLore(new ALoreBuilder(
+						"&7The brilliance of a thousand",
+						"&7suns"
+				))
 				.getItemStack();
 		return itemStack;
 	}

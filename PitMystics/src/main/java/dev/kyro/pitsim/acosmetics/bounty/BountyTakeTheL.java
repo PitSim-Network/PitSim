@@ -1,15 +1,16 @@
 package dev.kyro.pitsim.acosmetics.bounty;
 
 import dev.kyro.arcticapi.builders.AItemStackBuilder;
+import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.pitsim.acosmetics.CosmeticType;
 import dev.kyro.pitsim.acosmetics.PitCosmetic;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 
-public class BountyTookTheL extends PitCosmetic {
+public class BountyTakeTheL extends PitCosmetic {
 
-	public BountyTookTheL() {
-		super("&9Take the L", "tookthel", CosmeticType.BOUNTY_CLAIM_MESSAGE);
+	public BountyTakeTheL() {
+		super("&5&lTake The &6&lL", "takethel", CosmeticType.BOUNTY_CLAIM_MESSAGE);
 	}
 
 	@Override
@@ -19,8 +20,11 @@ public class BountyTookTheL extends PitCosmetic {
 
 	@Override
 	public ItemStack getRawDisplayItem() {
-		ItemStack itemStack = new AItemStackBuilder(Material.BONE)
+		ItemStack itemStack = new AItemStackBuilder(Material.SIGN)
 				.setName(getDisplayName())
+				.setLore(new ALoreBuilder(
+						"&7Quite unfortunate... for them"
+				))
 				.getItemStack();
 		return itemStack;
 	}

@@ -1,6 +1,7 @@
 package dev.kyro.pitsim.acosmetics.capes;
 
 import dev.kyro.arcticapi.builders.AItemStackBuilder;
+import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.acosmetics.CosmeticType;
 import dev.kyro.pitsim.acosmetics.PitCosmetic;
@@ -15,7 +16,7 @@ public class FireCape extends PitCosmetic {
 	public CapeCollection cape;
 
 	public FireCape() {
-		super("&cFire Cape", "firecape", CosmeticType.CAPE);
+		super("&6F&ci&6r&ce", "firecape", CosmeticType.CAPE);
 		accountForPitch = false;
 
 		cape = new CapeCollection(new FlameParticle(this));
@@ -40,6 +41,10 @@ public class FireCape extends PitCosmetic {
 	public ItemStack getRawDisplayItem() {
 		ItemStack itemStack = new AItemStackBuilder(Material.BLAZE_POWDER)
 				.setName(getDisplayName())
+				.setLore(new ALoreBuilder(
+						"&7Is it getting hot in here",
+						"&7or is it just me"
+				))
 				.getItemStack();
 		return itemStack;
 	}

@@ -1,6 +1,7 @@
 package dev.kyro.pitsim.acosmetics.bounty;
 
 import dev.kyro.arcticapi.builders.AItemStackBuilder;
+import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.pitsim.acosmetics.CosmeticType;
 import dev.kyro.pitsim.acosmetics.PitCosmetic;
 import org.bukkit.Material;
@@ -9,7 +10,7 @@ import org.bukkit.inventory.ItemStack;
 public class BountyCope extends PitCosmetic {
 
 	public BountyCope() {
-		super("&9Cope", "cope", CosmeticType.BOUNTY_CLAIM_MESSAGE);
+		super("&2Cope", "cope", CosmeticType.BOUNTY_CLAIM_MESSAGE);
 	}
 
 	@Override
@@ -19,8 +20,12 @@ public class BountyCope extends PitCosmetic {
 
 	@Override
 	public ItemStack getRawDisplayItem() {
-		ItemStack itemStack = new AItemStackBuilder(Material.BONE)
+		ItemStack itemStack = new AItemStackBuilder(Material.POTION)
 				.setName(getDisplayName())
+				.setLore(new ALoreBuilder(
+						"&7It's only a game. Why do",
+						"&7they get so mad?"
+				))
 				.getItemStack();
 		return itemStack;
 	}

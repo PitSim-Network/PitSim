@@ -1,6 +1,7 @@
 package dev.kyro.pitsim.acosmetics.bounty;
 
 import dev.kyro.arcticapi.builders.AItemStackBuilder;
+import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.pitsim.acosmetics.CosmeticType;
 import dev.kyro.pitsim.acosmetics.PitCosmetic;
 import org.bukkit.Material;
@@ -9,7 +10,7 @@ import org.bukkit.inventory.ItemStack;
 public class BountyPacking extends PitCosmetic {
 
 	public BountyPacking() {
-		super("&9Packing", "packing", CosmeticType.BOUNTY_CLAIM_MESSAGE);
+		super("&7Packing", "packing", CosmeticType.BOUNTY_CLAIM_MESSAGE);
 	}
 
 	@Override
@@ -19,8 +20,11 @@ public class BountyPacking extends PitCosmetic {
 
 	@Override
 	public ItemStack getRawDisplayItem() {
-		ItemStack itemStack = new AItemStackBuilder(Material.BONE)
+		ItemStack itemStack = new AItemStackBuilder(Material.CHEST)
 				.setName(getDisplayName())
+				.setLore(new ALoreBuilder(
+						"&7Send your foes packing!"
+				))
 				.getItemStack();
 		return itemStack;
 	}

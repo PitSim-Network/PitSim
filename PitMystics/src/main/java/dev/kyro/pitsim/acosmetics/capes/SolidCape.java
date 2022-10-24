@@ -1,6 +1,7 @@
 package dev.kyro.pitsim.acosmetics.capes;
 
 import dev.kyro.arcticapi.builders.AItemStackBuilder;
+import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.pitsim.ParticleColor;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.acosmetics.ColorableCosmetic;
@@ -16,7 +17,7 @@ public class SolidCape extends ColorableCosmetic {
 	public CapeCollection cape;
 
 	public SolidCape() {
-		super("&fSolid Cape", "solidcape", CosmeticType.CAPE);
+		super("&7&lSolid", "solidcape", CosmeticType.CAPE);
 		accountForPitch = false;
 
 		cape = new CapeCollection(new RedstoneParticle(this));
@@ -42,6 +43,9 @@ public class SolidCape extends ColorableCosmetic {
 	public ItemStack getRawDisplayItem() {
 		ItemStack itemStack = new AItemStackBuilder(Material.BANNER, 1, 15)
 				.setName(getDisplayName())
+				.setLore(new ALoreBuilder(
+						"&7Collect all the colors!"
+				))
 				.getItemStack();
 		return itemStack;
 	}

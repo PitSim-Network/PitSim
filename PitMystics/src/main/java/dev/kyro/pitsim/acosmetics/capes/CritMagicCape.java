@@ -1,6 +1,7 @@
 package dev.kyro.pitsim.acosmetics.capes;
 
 import dev.kyro.arcticapi.builders.AItemStackBuilder;
+import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.acosmetics.CosmeticType;
 import dev.kyro.pitsim.acosmetics.PitCosmetic;
@@ -40,6 +41,9 @@ public class CritMagicCape extends PitCosmetic {
 	public ItemStack getRawDisplayItem() {
 		ItemStack itemStack = new AItemStackBuilder(Material.ENCHANTMENT_TABLE)
 				.setName(getDisplayName())
+				.setLore(new ALoreBuilder(
+						"&7nice"
+				))
 				.getItemStack();
 		return itemStack;
 	}

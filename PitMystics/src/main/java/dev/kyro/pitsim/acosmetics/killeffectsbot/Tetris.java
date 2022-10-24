@@ -1,6 +1,7 @@
 package dev.kyro.pitsim.acosmetics.killeffectsbot;
 
 import dev.kyro.arcticapi.builders.AItemStackBuilder;
+import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.pitsim.acosmetics.CosmeticType;
 import dev.kyro.pitsim.acosmetics.PitCosmetic;
 import dev.kyro.pitsim.controllers.NonManager;
@@ -89,7 +90,7 @@ public class Tetris extends PitCosmetic {
 	}
 
 	public Tetris() {
-		super("&cT&6e&et&ar&bi&ds&9!", "tetris", CosmeticType.BOT_KILL_EFFECT);
+		super("&c&lT&6&lE&e&lT&a&lR&b&lI&d&lS&9&l!", "tetris", CosmeticType.BOT_KILL_EFFECT);
 		preventKillSound = true;
 	}
 
@@ -129,6 +130,11 @@ public class Tetris extends PitCosmetic {
 	public ItemStack getRawDisplayItem() {
 		ItemStack itemStack = new AItemStackBuilder(Material.WOOL, 1, Misc.getTetrisWoolColor())
 				.setName(getDisplayName())
+				.setLore(new ALoreBuilder(
+						"&7Go for a new high streak",
+						"&7while playing the Tetris",
+						"&7theme!"
+				))
 				.getItemStack();
 		return itemStack;
 	}

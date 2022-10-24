@@ -1,6 +1,7 @@
 package dev.kyro.pitsim.acosmetics.trails;
 
 import dev.kyro.arcticapi.builders.AItemStackBuilder;
+import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.acosmetics.*;
 import dev.kyro.pitsim.acosmetics.collections.ParticleCollection;
@@ -19,7 +20,7 @@ public class LavaTrail extends PitCosmetic {
 	public ParticleCollection collection = new ParticleCollection();
 
 	public LavaTrail() {
-		super("&cLava Trail", "lavatrail", CosmeticType.PARTICLE_TRAIL);
+		super("&6Lava &4Trail", "lavatrail", CosmeticType.PARTICLE_TRAIL);
 		accountForPitch = false;
 
 		PitParticle particle = new LavaParticle(this);
@@ -55,6 +56,9 @@ public class LavaTrail extends PitCosmetic {
 	public ItemStack getRawDisplayItem() {
 		ItemStack itemStack = new AItemStackBuilder(Material.LAVA_BUCKET)
 				.setName(getDisplayName())
+				.setLore(new ALoreBuilder(
+						"&7Quick! The floor is lava!"
+				))
 				.getItemStack();
 		return itemStack;
 	}

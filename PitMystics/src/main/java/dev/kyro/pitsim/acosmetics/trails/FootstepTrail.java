@@ -1,6 +1,7 @@
 package dev.kyro.pitsim.acosmetics.trails;
 
 import dev.kyro.arcticapi.builders.AItemStackBuilder;
+import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.acosmetics.*;
 import dev.kyro.pitsim.acosmetics.collections.ParticleCollection;
@@ -19,7 +20,7 @@ public class FootstepTrail extends PitCosmetic {
 	public ParticleCollection collection = new ParticleCollection();
 
 	public FootstepTrail() {
-		super("&fFootstep Trail", "footsteptrail", CosmeticType.PARTICLE_TRAIL);
+		super("&7Footstep Trail", "footsteptrail", CosmeticType.PARTICLE_TRAIL);
 		accountForPitch = false;
 
 		PitParticle particle = new FootstepParticle(this);
@@ -52,8 +53,12 @@ public class FootstepTrail extends PitCosmetic {
 
 	@Override
 	public ItemStack getRawDisplayItem() {
-		ItemStack itemStack = new AItemStackBuilder(Material.BLAZE_POWDER)
+		ItemStack itemStack = new AItemStackBuilder(Material.LEATHER_BOOTS)
 				.setName(getDisplayName())
+				.setLore(new ALoreBuilder(
+						"&7Retrace your steps. What if",
+						"&7you missed something?!?"
+				))
 				.getItemStack();
 		return itemStack;
 	}
