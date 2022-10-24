@@ -47,7 +47,7 @@ public class PassManager implements Listener {
 				.registerReward(new PassSwordReward(2), PitSimPass.RewardType.PREMIUM, 6)
 				.registerReward(new PassPantsReward(2), PitSimPass.RewardType.PREMIUM, 7)
 				.registerReward(new PassBowReward(2), PitSimPass.RewardType.PREMIUM, 8)
-				.registerReward(new PassCosmeticReward(Material.POTION, 16430, CosmeticManager.getCosmetic("potionaura"),
+				.registerReward(new PassCosmeticReward(Material.BREWING_STAND_ITEM, CosmeticManager.getCosmetic("potionaura"),
 						ParticleColor.AQUA), PitSimPass.RewardType.PREMIUM, 9)
 				.registerReward(new PassXpReward(800_000L), PitSimPass.RewardType.PREMIUM, 27);
 		registerPass(pitSimPass);
@@ -153,21 +153,22 @@ public class PassManager implements Listener {
 	}
 
 //	Claim a reward for a pitplayer
-	public static void claimReward(PitPlayer pitPlayer, PitSimPass.RewardType rewardType, int tier) {
+	public static boolean claimReward(PitPlayer pitPlayer, PitSimPass.RewardType rewardType, int tier) {
 		PassData passData = pitPlayer.getPassData(currentPass.startDate);
 		boolean success = false;
 		if(rewardType == PitSimPass.RewardType.FREE) {
-			passData.claimedFreeRewards.put(tier, true);
 			success = currentPass.freePassRewards.get(tier).giveReward(pitPlayer);
+			if(success) passData.claimedFreeRewards.put(tier, true);
 		} else if(rewardType == PitSimPass.RewardType.PREMIUM) {
-			passData.claimedPremiumRewards.put(tier, true);
 			success = currentPass.premiumPassRewards.get(tier).giveReward(pitPlayer);
+			if(success) passData.claimedPremiumRewards.put(tier, true);
 		}
 		if(success) {
 			Sounds.GIVE_REWARD.play(pitPlayer.player);
 		} else {
 			Sounds.NO.play(pitPlayer.player);
 		}
+		return success;
 	}
 
 	public static void updateCurrentPass() {

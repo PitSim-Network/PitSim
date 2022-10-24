@@ -8,7 +8,6 @@ import dev.kyro.pitsim.acosmetics.CosmeticManager;
 import dev.kyro.pitsim.acosmetics.PitCosmetic;
 import dev.kyro.pitsim.battlepass.PassReward;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
-import dev.kyro.pitsim.misc.Misc;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
@@ -33,11 +32,6 @@ public class PassCosmeticReward extends PassReward {
 
 	@Override
 	public boolean giveReward(PitPlayer pitPlayer) {
-		if(Misc.getEmptyInventorySlots(pitPlayer.player) < 1) {
-			AOutput.error(pitPlayer.player, "&7Please make space in your inventory");
-			return false;
-		}
-
 		PitPlayer.UnlockedCosmeticData cosmeticData = pitPlayer.unlockedCosmeticsMap.get(pitCosmetic.refName);
 		if(cosmeticData != null) {
 			if(!pitCosmetic.isColorCosmetic || cosmeticData.unlockedColors.contains(particleColor)) return true;

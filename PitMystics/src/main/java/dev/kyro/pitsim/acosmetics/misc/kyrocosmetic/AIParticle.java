@@ -5,6 +5,7 @@ import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.acosmetics.CosmeticManager;
 import org.bukkit.Bukkit;
 import org.bukkit.Effect;
+import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -52,7 +53,8 @@ public abstract class AIParticle {
 		Player closestPlayer = null;
 		double distance = Double.MAX_VALUE;
 		for(Player onlinePlayer : Bukkit.getOnlinePlayers()) {
-			if(onlinePlayer == owner || onlinePlayer.getWorld() != owner.getWorld() || VanishAPI.isInvisible(onlinePlayer)) continue;
+			if(onlinePlayer == owner || onlinePlayer.getWorld() != owner.getWorld() || VanishAPI.isInvisible(onlinePlayer) ||
+					onlinePlayer.getGameMode() == GameMode.CREATIVE || onlinePlayer.getGameMode() == GameMode.SPECTATOR) continue;
 			double testDistance = onlinePlayer.getLocation().distance(owner.getLocation());
 			if(testDistance > 15 || testDistance > distance) continue;
 			closestPlayer = onlinePlayer;

@@ -49,6 +49,7 @@ public class PassPantsReward extends PassReward {
 				.setLore(new ALoreBuilder(
 						"&7Reward: &3" + count + "x Hidden Jewel Pants"
 				));
+		itemStack.setAmount(count);
 		return itemStack;
 	}
 }

@@ -4,6 +4,8 @@ import de.tr7zw.nbtapi.NBTItem;
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.arcticapi.misc.AUtil;
 import dev.kyro.pitsim.PitSim;
+import dev.kyro.pitsim.battlepass.PassData;
+import dev.kyro.pitsim.battlepass.PassManager;
 import dev.kyro.pitsim.controllers.EnchantManager;
 import dev.kyro.pitsim.controllers.ItemManager;
 import dev.kyro.pitsim.controllers.LevelManager;
@@ -38,11 +40,19 @@ public class CrateGiveCommand implements CommandExecutor {
 		}
 		if(player == null) return false;
 		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
+		PassData passData = pitPlayer.getPassData(PassManager.currentPass.startDate);
 
 		String item = args[1].toLowerCase();
 		int amount = args.length < 3 ? 1 : Integer.parseInt(args[2]);
 
 		switch(item) {
+			case "pass":
+				passData.hasPremium = true;
+			case "passboost":
+				if(!passData.hasPremium) passData.totalPoints += PassManager.POINTS_PER_TIER * 9;
+				passData.hasPremium = true;
+			case "passtiers":
+				passData.totalPoints += amount * PassManager.POINTS_PER_TIER;
 			case "hjsword":
 				for(int i = 0; i < amount; i++) {
 					ItemStack jewelSword = FreshCommand.getFreshItem(MysticType.SWORD, PantColor.JEWEL);

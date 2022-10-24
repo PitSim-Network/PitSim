@@ -4,6 +4,7 @@ import dev.kyro.arcticapi.builders.AItemStackBuilder;
 import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.arcticapi.gui.AGUI;
 import dev.kyro.arcticapi.gui.AGUIPanel;
+import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.arcticapi.misc.AUtil;
 import dev.kyro.pitsim.battlepass.PassData;
 import dev.kyro.pitsim.battlepass.PassManager;
@@ -24,7 +25,7 @@ public class PassPanel extends AGUIPanel {
 	public static ItemStack previousPageItem;
 	public static ItemStack questItem;
 	public static ItemStack purchaseItem;
-	public static ItemStack passInfo;
+	public ItemStack passInfo;
 	public static ItemStack nextPageItem;
 
 	public int page;
@@ -52,13 +53,6 @@ public class PassPanel extends AGUIPanel {
 				))
 				.getItemStack();
 
-		passInfo = new AItemStackBuilder(Material.BEACON)
-				.setName("&b&lPass Info")
-				.setLore(new ALoreBuilder(
-						"&7put pass info here"
-				))
-				.getItemStack();
-
 		nextPageItem = new AItemStackBuilder(Material.PAPER)
 				.setName("&f&lNext Page")
 				.setLore(new ALoreBuilder(
@@ -73,14 +67,23 @@ public class PassPanel extends AGUIPanel {
 
 		inventoryBuilder.setSlots(Material.STAINED_GLASS_PANE, 7, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 11, 15, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26);
 
+		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
+		PassData passData = pitPlayer.getPassData(PassManager.currentPass.startDate);
+
+		passInfo = new AItemStackBuilder(Material.BEACON)
+				.setName("&b&lPass Info")
+				.setLore(new ALoreBuilder(
+						"&7Pass Tier: &3" + passData.getCompletedTiers() + "&7/&3" + PassManager.currentPass.tiers
+				))
+				.getItemStack();
+
 		getInventory().setItem(10, previousPageItem);
 		getInventory().setItem(12, questItem);
 		getInventory().setItem(13, purchaseItem);
 		getInventory().setItem(14, passInfo);
 		getInventory().setItem(16, nextPageItem);
 
-		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
-		page = pitPlayer.getPassData(PassManager.currentPass.startDate).getCompletedTiers() / 9 + 1;
+		page = passData.getCompletedTiers() / 9 + 1;
 		setPage(pitPlayer, page);
 	}
 
@@ -127,12 +130,13 @@ public class PassPanel extends AGUIPanel {
 			if(PassManager.hasReward(PitSimPass.RewardType.PREMIUM, tier)) {
 				boolean hasClaimed = PassManager.hasClaimedReward(pitPlayer, PitSimPass.RewardType.PREMIUM, tier);
 				ItemStack itemStack = PassManager.currentPass.premiumPassRewards.get(tier).getDisplayItem(pitPlayer, hasClaimed);
-				setLore(itemStack, passData.getCompletedTiers() >= tier, true);
-				if(PassManager.canClaimReward(pitPlayer, PitSimPass.RewardType.FREE, tier)) {
+				setLore(PitSimPass.RewardType.PREMIUM, itemStack, passData.getCompletedTiers() >= tier, hasClaimed, passData.hasPremium);
+				if(PassManager.canClaimReward(pitPlayer, PitSimPass.RewardType.PREMIUM, tier)) {
 					Misc.addEnchantGlint(itemStack);
 				} else if(hasClaimed) {
 					itemStack.setType(Material.INK_SACK);
 					itemStack.setDurability((short) 8);
+					itemStack.setAmount(1);
 				}
 				getInventory().setItem(i + 27, itemStack);
 			} else {
@@ -141,12 +145,13 @@ public class PassPanel extends AGUIPanel {
 			if(PassManager.hasReward(PitSimPass.RewardType.FREE, tier)) {
 				boolean hasClaimed = PassManager.hasClaimedReward(pitPlayer, PitSimPass.RewardType.FREE, tier);
 				ItemStack itemStack = PassManager.currentPass.freePassRewards.get(tier).getDisplayItem(pitPlayer, hasClaimed);
-				setLore(itemStack, passData.getCompletedTiers() >= tier, true);
+				setLore(PitSimPass.RewardType.FREE, itemStack, passData.getCompletedTiers() >= tier, hasClaimed, passData.hasPremium);
 				if(PassManager.canClaimReward(pitPlayer, PitSimPass.RewardType.FREE, tier)) {
 					Misc.addEnchantGlint(itemStack);
 				} else if(hasClaimed) {
 					itemStack.setType(Material.INK_SACK);
 					itemStack.setDurability((short) 8);
+					itemStack.setAmount(1);
 				}
 				getInventory().setItem(i + 45, itemStack);
 			} else {
@@ -172,7 +177,10 @@ public class PassPanel extends AGUIPanel {
 		PassData passData = pitPlayer.getPassData(PassManager.currentPass.startDate);
 		int slot = event.getSlot();
 
-		if(slot == 16) {
+		if(slot == 13) {
+			player.closeInventory();
+			AOutput.send(player, "");
+		} else if(slot == 16) {
 			if(page < PassManager.currentPass.tiers / 9 + 1) {
 				setPage(pitPlayer, ++page);
 			} else {
@@ -188,13 +196,16 @@ public class PassPanel extends AGUIPanel {
 			int clickedReward = (page - 1) * 9 + slot - 26;
 			if(!PassManager.hasReward(PitSimPass.RewardType.PREMIUM, clickedReward)) return;
 			if(PassManager.canClaimReward(pitPlayer, PitSimPass.RewardType.PREMIUM, clickedReward)) {
-				PassManager.claimReward(pitPlayer, PitSimPass.RewardType.PREMIUM, clickedReward);
-
-				ItemStack itemStack = PassManager.currentPass.premiumPassRewards.get(clickedReward).getDisplayItem(pitPlayer, true);
-				setLore(itemStack, passData.getCompletedTiers() >= clickedReward, true);
-				itemStack.setType(Material.INK_SACK);
-				itemStack.setDurability((short) 8);
-				getInventory().setItem(slot, itemStack);
+				boolean success = PassManager.claimReward(pitPlayer, PitSimPass.RewardType.PREMIUM, clickedReward);
+				if(success) {
+					ItemStack itemStack = PassManager.currentPass.premiumPassRewards.get(clickedReward).getDisplayItem(pitPlayer, true);
+					setLore(PitSimPass.RewardType.PREMIUM, itemStack, passData.getCompletedTiers() >= clickedReward, true, passData.hasPremium);
+					itemStack.setType(Material.INK_SACK);
+					itemStack.setDurability((short) 8);
+					itemStack.setAmount(1);
+					getInventory().setItem(slot, itemStack);
+					player.updateInventory();
+				}
 			} else {
 				Sounds.NO.play(player);
 			}
@@ -202,13 +213,16 @@ public class PassPanel extends AGUIPanel {
 			int clickedReward = (page - 1) * 9 + slot - 44;
 			if(!PassManager.hasReward(PitSimPass.RewardType.FREE, clickedReward)) return;
 			if(PassManager.canClaimReward(pitPlayer, PitSimPass.RewardType.FREE, clickedReward)) {
-				PassManager.claimReward(pitPlayer, PitSimPass.RewardType.FREE, clickedReward);
-
-				ItemStack itemStack = PassManager.currentPass.freePassRewards.get(clickedReward).getDisplayItem(pitPlayer, true);
-				setLore(itemStack, passData.getCompletedTiers() >= clickedReward, true);
-				itemStack.setType(Material.INK_SACK);
-				itemStack.setDurability((short) 8);
-				getInventory().setItem(slot, itemStack);
+				boolean success = PassManager.claimReward(pitPlayer, PitSimPass.RewardType.FREE, clickedReward);
+				if(success) {
+					ItemStack itemStack = PassManager.currentPass.freePassRewards.get(clickedReward).getDisplayItem(pitPlayer, true);
+					setLore(PitSimPass.RewardType.FREE, itemStack, passData.getCompletedTiers() >= clickedReward, true, passData.hasPremium);
+					itemStack.setType(Material.INK_SACK);
+					itemStack.setDurability((short) 8);
+					itemStack.setAmount(1);
+					getInventory().setItem(slot, itemStack);
+					player.updateInventory();
+				}
 			} else {
 				Sounds.NO.play(player);
 			}
@@ -227,14 +241,16 @@ public class PassPanel extends AGUIPanel {
 
 	}
 
-	public void setLore(ItemStack itemStack, boolean tierUnlocked, boolean claimed) {
+	public void setLore(PitSimPass.RewardType rewardType, ItemStack itemStack, boolean tierUnlocked, boolean claimed, boolean hasPremium) {
 		ALoreBuilder loreBuilder = new ALoreBuilder(itemStack.getItemMeta().getLore()).addLore("");
-		if(!tierUnlocked) {
-			loreBuilder.addLore("&7Tier is incomplete");
-		} else if(!claimed) {
+		if(rewardType == PitSimPass.RewardType.PREMIUM && !hasPremium) {
+			loreBuilder.addLore("&cYou do not have premium");
+		} else if(!tierUnlocked) {
+			loreBuilder.addLore("&cTier is incomplete");
+		} else if(claimed) {
 			loreBuilder.addLore("&7Previously claimed");
 		} else {
-			loreBuilder.addLore("&7Click to claim!");
+			loreBuilder.addLore("&eClick to claim!");
 		}
 		new AItemStackBuilder(itemStack).setLore(loreBuilder);
 	}

@@ -46,7 +46,7 @@ dependencies {
 
 //    compileOnly  'com.xxmicloxx:NoteBlockAPI:1.6.2-SNAPSHOT'
     compileOnly files('libs/NoteBlockAPI-1.6.2-Kyro.jar')
-    compile 'com.github.ArcticDevelopment:ArcticAPI:c205648d66'
+    compile 'com.github.ArcticDevelopment:ArcticAPI:2a704a71cd'
     compileOnly 'de.tr7zw:item-nbt-api-plugin:2.8.0'// https://mvnrepository.com/artifact/com.googlecode.json-simple/json-simple
 //    compile group: 'com.googlecode.json-simple', name: 'json-simple', version: '1.1.1'
     compileOnly files('libs/FeatherBoard.jar')

@@ -31,10 +31,10 @@ public class PassData {
 	public Map<Integer, Boolean> claimedPremiumRewards = new HashMap<>();
 	private Map<String, Boolean> stringClaimedPremiumRewards = new HashMap<>();
 	public Map<String, Boolean> getStringClaimedPremiumRewards() {
+		claimedPremiumRewards.forEach((tier, claimed) -> stringClaimedPremiumRewards.put(tier.toString(), claimed));
 		return stringClaimedPremiumRewards;
 	}
 	public void setStringClaimedPremiumRewards(Map<String, Boolean> stringClaimedPremiumRewards) {
-		claimedPremiumRewards.forEach((tier, claimed) -> stringClaimedPremiumRewards.put(tier.toString(), claimed));
 		this.stringClaimedPremiumRewards = stringClaimedPremiumRewards;
 		stringClaimedPremiumRewards.forEach((tier, claimed) -> claimedPremiumRewards.put(Integer.parseInt(tier), claimed));
 	}

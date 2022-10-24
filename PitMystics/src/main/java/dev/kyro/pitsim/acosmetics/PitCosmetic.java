@@ -100,8 +100,7 @@ public abstract class PitCosmetic implements Listener {
 
 	public boolean isUnlocked(PitPlayer pitPlayer, ParticleColor particleColor) {
 		if(refName.contains("kyro")) return Misc.isKyro(pitPlayer.player.getUniqueId());
-//		TODO: Probably should remove this later (temporary) maybe change to is op
-		if(true) return true;
+		if(pitPlayer.player.isOp()) return true;
 		if(isPermissionRequired) return hasPermission(pitPlayer, particleColor);
 		PitPlayer.UnlockedCosmeticData unlockedCosmeticData = pitPlayer.unlockedCosmeticsMap.get(refName);
 		if(unlockedCosmeticData == null) return false;
@@ -115,8 +114,7 @@ public abstract class PitCosmetic implements Listener {
 		List<ParticleColor> particleColors = new ArrayList<>();
 		if(!isUnlocked(pitPlayer)) return particleColors;
 
-//		TODO: Probably should remove this later (temporary)
-		if(true) {
+		if(pitPlayer.player.isOp()) {
 			particleColors.addAll(Arrays.asList(ParticleColor.values()));
 			return particleColors;
 		}
