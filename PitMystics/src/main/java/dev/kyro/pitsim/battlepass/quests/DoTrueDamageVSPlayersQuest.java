@@ -56,7 +56,7 @@ public class DoTrueDamageVSPlayersQuest extends PassQuest {
 	public List<QuestLevel> getWeeklyPossibleStates() {
 		List<QuestLevel> questLevels = new ArrayList<>();
 		questLevels.add(new QuestLevel(2_500.0, 100));
-		questLevels.add(new QuestLevel(3_750.0, 150));
+		questLevels.add(new QuestLevel(3_500.0, 150));
 		questLevels.add(new QuestLevel(5_000.0, 200));
 		return questLevels;
 	}
