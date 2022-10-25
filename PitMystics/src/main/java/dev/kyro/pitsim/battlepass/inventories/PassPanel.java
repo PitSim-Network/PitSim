@@ -183,7 +183,7 @@ public class PassPanel extends AGUIPanel {
 			player.closeInventory();
 			AOutput.send(player, "&e&lPREMIUM PASS!&7 Purchase the &6&lPit&e&lSim &3&lPass&7 at store.pitsim.net");
 		} else if(slot == 16) {
-			if(page < PassManager.currentPass.tiers / 9 + 1) {
+			if(page < (PassManager.currentPass.tiers - 1) / 9 + 1) {
 				setPage(pitPlayer, ++page);
 			} else {
 				Sounds.NO.play(player);

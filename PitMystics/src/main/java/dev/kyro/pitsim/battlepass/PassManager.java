@@ -37,20 +37,60 @@ public class PassManager implements Listener {
 	//	Create the passes
 	public static void registerPasses() {
 		registerPass(new PitSimPass(getDate("1/1/2022")));
+		int tier = 1;
 
 		PitSimPass pitSimPass = new PitSimPass(getDate("9/12/2022"))
-				.registerReward(new PassXpReward(2_500L), PitSimPass.RewardType.FREE, 1)
-				.registerReward(new PassXpReward(5_000L), PitSimPass.RewardType.PREMIUM, 1)
-				.registerReward(new PassGoldReward(50_000), PitSimPass.RewardType.PREMIUM, 2)
-				.registerReward(new PassRenownReward(4), PitSimPass.RewardType.PREMIUM, 3)
-				.registerReward(new PassVileReward(10), PitSimPass.RewardType.PREMIUM, 4)
-				.registerReward(new PassFeatherReward(1), PitSimPass.RewardType.PREMIUM, 5)
-				.registerReward(new PassSwordReward(2), PitSimPass.RewardType.PREMIUM, 6)
-				.registerReward(new PassPantsReward(2), PitSimPass.RewardType.PREMIUM, 7)
-				.registerReward(new PassBowReward(2), PitSimPass.RewardType.PREMIUM, 8)
+				.registerReward(new PassFeatherReward(1), PitSimPass.RewardType.FREE, 1)
+				.registerReward(new PassGoldReward(10_000), PitSimPass.RewardType.FREE, 3)
+				.registerReward(new PassVileReward(3), PitSimPass.RewardType.FREE, 5)
+				.registerReward(new PassXpReward(2_500), PitSimPass.RewardType.FREE, 7)
+				.registerReward(new PassBowReward(1), PitSimPass.RewardType.FREE, 9)
+				.registerReward(new PassVileReward(2), PitSimPass.RewardType.FREE, 10)
+				.registerReward(new PassGoldReward(5_000), PitSimPass.RewardType.FREE, 12)
+				.registerReward(new PassSwordReward(1), PitSimPass.RewardType.FREE, 14)
+				.registerReward(new PassXpReward(2_500), PitSimPass.RewardType.FREE, 16)
+				.registerReward(new PassDarkzoneDropReward(10, 2), PitSimPass.RewardType.FREE, 18)
+				.registerReward(new PassVileReward(1), PitSimPass.RewardType.FREE, 19)
+				.registerReward(new PassGoldReward(2_500), PitSimPass.RewardType.FREE, 21)
+				.registerReward(new PassPantsReward(1), PitSimPass.RewardType.FREE, 23)
+				.registerReward(new PassXpReward(2_500), PitSimPass.RewardType.FREE, 25)
+				.registerReward(new PassCosmeticReward(Material.IRON_HOE, CosmeticManager.getCosmetic("reaper"),
+						null), PitSimPass.RewardType.FREE, 27)
+
+
+
+				.registerReward(new PassXpReward(5_000), PitSimPass.RewardType.PREMIUM, tier++)
+				.registerReward(new PassVileReward(10), PitSimPass.RewardType.PREMIUM, tier++)
+				.registerReward(new PassSwordReward(2), PitSimPass.RewardType.PREMIUM, tier++)
+				.registerReward(new PassDarkzoneDropReward(7, 5), PitSimPass.RewardType.PREMIUM, tier++)
+				.registerReward(new PassGoldReward(15_000), PitSimPass.RewardType.PREMIUM, tier++)
+				.registerReward(new PassRenownReward(3), PitSimPass.RewardType.PREMIUM, tier++)
+				.registerReward(new PassBowReward(2), PitSimPass.RewardType.PREMIUM, tier++)
+				.registerReward(new PassDarkzoneDropReward(10, 3), PitSimPass.RewardType.PREMIUM, tier++)
 				.registerReward(new PassCosmeticReward(Material.BREWING_STAND_ITEM, CosmeticManager.getCosmetic("potionaura"),
-						ParticleColor.AQUA), PitSimPass.RewardType.PREMIUM, 9)
-				.registerReward(new PassXpReward(800_000L), PitSimPass.RewardType.PREMIUM, 27);
+						ParticleColor.AQUA), PitSimPass.RewardType.PREMIUM, tier++)
+
+				.registerReward(new PassXpReward(7_500), PitSimPass.RewardType.PREMIUM, tier++)
+				.registerReward(new PassVileReward(10), PitSimPass.RewardType.PREMIUM, tier++)
+				.registerReward(new PassPantsReward(2), PitSimPass.RewardType.PREMIUM, tier++)
+				.registerReward(new PassDarkzoneDropReward(9, 6), PitSimPass.RewardType.PREMIUM, tier++)
+				.registerReward(new PassGoldReward(20_000), PitSimPass.RewardType.PREMIUM, tier++)
+				.registerReward(new PassFeatherReward(3), PitSimPass.RewardType.PREMIUM, tier++)
+				.registerReward(new PassSwordReward(2), PitSimPass.RewardType.PREMIUM, tier++)
+				.registerReward(new PassDarkzoneDropReward(8, 5), PitSimPass.RewardType.PREMIUM, tier++)
+				.registerReward(new PassCosmeticReward(Material.GOLD_SWORD, CosmeticManager.getCosmetic("alwaysexe"),
+						null), PitSimPass.RewardType.PREMIUM, tier++)
+
+				.registerReward(new PassXpReward(10_000), PitSimPass.RewardType.PREMIUM, tier++)
+				.registerReward(new PassVileReward(10), PitSimPass.RewardType.PREMIUM, tier++)
+				.registerReward(new PassBowReward(2), PitSimPass.RewardType.PREMIUM, tier++)
+				.registerReward(new PassDarkzoneDropReward(7, 5), PitSimPass.RewardType.PREMIUM, tier++)
+				.registerReward(new PassGoldReward(25_000), PitSimPass.RewardType.PREMIUM, tier++)
+				.registerReward(new PassRenownReward(7), PitSimPass.RewardType.PREMIUM, tier++)
+				.registerReward(new PassPantsReward(2), PitSimPass.RewardType.PREMIUM, tier++)
+				.registerReward(new PassDarkzoneDropReward(10, 4), PitSimPass.RewardType.PREMIUM, tier++)
+				.registerReward(new PassCosmeticReward(Material.WOOL, 6, CosmeticManager.getCosmetic("rainbowtrail"),
+						null), PitSimPass.RewardType.PREMIUM, tier++);
 		registerPass(pitSimPass);
 
 		registerPass(new PitSimPass(getDate("1/1/2023")));
