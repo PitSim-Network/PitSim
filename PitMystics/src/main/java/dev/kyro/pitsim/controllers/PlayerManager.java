@@ -179,6 +179,13 @@ public class PlayerManager implements Listener {
 		return Bukkit.getOnlinePlayers().contains(player);
 	}
 
+	@EventHandler
+	public void giveMoonCap(KillEvent killEvent) {
+		if(!PlayerManager.isRealPlayerTemp(killEvent.killerPlayer)) return;
+		PitPlayer pitPlayer = PitPlayer.getPitPlayer(killEvent.killerPlayer);
+		killEvent.xpCap += pitPlayer.moonBonus;
+	}
+
 	public static void sendItemBreakMessage(Player player, ItemStack itemStack) {
 		if(Misc.isAirOrNull(itemStack)) return;
 
