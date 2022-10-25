@@ -48,7 +48,6 @@ public class SettingsGUI extends AGUI {
 
 //	For cosmetic panel
 	public int getPages(SubCosmeticPanel panel) {
-//		TODO: implement pages
 		return (getItemsToDisplay(panel) - 1) / SubCosmeticPanel.cosmeticSlots.size() + 1;
 	}
 

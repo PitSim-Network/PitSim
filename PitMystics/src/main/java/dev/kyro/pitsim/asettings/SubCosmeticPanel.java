@@ -151,7 +151,6 @@ public abstract class SubCosmeticPanel extends AGUIPanel {
 
 			PitCosmetic pitCosmetic = unlockedCosmetics.get(i);
 			cosmeticMap.put(slot, pitCosmetic);
-//			TODO: Add text if color, add enchant glint if equipped
 			getInventory().setItem(slot, pitCosmetic.getDisplayItem(pitCosmetic.isEnabled(settingsGUI.pitPlayer)));
 		}
 	}
@@ -209,7 +208,6 @@ public abstract class SubCosmeticPanel extends AGUIPanel {
 				Sounds.NO.play(player);
 			}
 		}
-//		TODO: Remove button
 	}
 
 	@Override
