@@ -4,6 +4,7 @@ import dev.kyro.arcticapi.builders.AItemStackBuilder;
 import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.arcticapi.gui.AGUI;
 import dev.kyro.arcticapi.gui.AGUIPanel;
+import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.battlepass.PassManager;
 import dev.kyro.pitsim.battlepass.PassQuest;
 import org.bukkit.ChatColor;
@@ -153,8 +154,16 @@ public class QuestPanel extends AGUIPanel {
 		if(event.getClickedInventory().getHolder() != this) return;
 		int slot = event.getSlot();
 
-		if(slot == 2) {
-
+		if(slot == 4) {
+			player.closeInventory();
+			AOutput.send(player, "&e&lPREMIUM PASS!&7 Purchase the &6&lPit&e&lSim &3&lPass&7 at store.pitsim.net");
+		} else if(slot == 2) {
+			if(dailyQuestPage < getDailyPages()) {
+				dailyQuestPage++;
+			} else {
+				dailyQuestPage = 1;
+			}
+			setWeeklyQuestPage(weeklyQuestPage);
 		} else if(slot == 6) {
 			if(weeklyQuestPage < getWeeklyPages()) {
 				weeklyQuestPage++;
