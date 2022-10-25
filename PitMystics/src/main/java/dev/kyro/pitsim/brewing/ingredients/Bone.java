@@ -46,7 +46,7 @@ class Bone extends BrewingIngredient {
     public Object getPotency(BrewingIngredient potencyIngredient) {
         int tier = potencyIngredient.tier;
 
-        return 10 * tier + "," + 20 * tier;
+        return 10 * tier + "," + 40 * tier;
     }
 
     @Override
