@@ -20,6 +20,12 @@ public class LeaderboardManager {
 
 	public static void init() {
 
+//		Wipe all player kills
+//		for(Map.Entry<UUID, APlayer> entry : APlayerData.getAllData().entrySet()) {
+//			entry.getValue().playerData.set("stats.combat.player-kills", null);
+//			entry.getValue().save();
+//		}
+
 		new BukkitRunnable() {
 			int amount = 0;
 			@Override
