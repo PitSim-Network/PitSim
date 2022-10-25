@@ -4,21 +4,18 @@ import de.tr7zw.nbtapi.NBTItem;
 import dev.kyro.arcticapi.gui.AGUI;
 import dev.kyro.arcticapi.gui.AGUIPanel;
 import dev.kyro.arcticapi.misc.AOutput;
-import dev.kyro.pitsim.brewing.objects.BrewingIngredient;
+import dev.kyro.pitsim.brewing.PotionManager;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.enums.NBTTag;
 import dev.kyro.pitsim.misc.Misc;
 import dev.kyro.pitsim.misc.Sounds;
 import org.bukkit.ChatColor;
-import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.inventory.InventoryOpenEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.inventory.meta.PotionMeta;
-import org.bukkit.potion.Potion;
 
 import java.util.HashMap;
 import java.util.List;
@@ -63,10 +60,8 @@ public class PotionMasterPanel extends AGUIPanel {
                 int cost = nbtItem.getInteger(NBTTag.POTION_POTENCY.getRef());
 
                 if(pitPlayer.taintedSouls >= cost) {
-                    nbtItem.getItem().setDurability((short) (nbtItem.getItem().getDurability() + 16384));
-                    nbtItem.setBoolean(NBTTag.IS_SPLASH_POTION.getRef(), true);
-
-                    player.getInventory().setItem(entry.getValue(), nbtItem.getItem());
+                    ItemStack splashPotion = PotionManager.createSplashPotion(item);
+                    player.getInventory().setItem(entry.getValue(), splashPotion);
 
                     pitPlayer.taintedSouls -= cost;
                     player.closeInventory();

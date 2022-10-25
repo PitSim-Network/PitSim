@@ -20,7 +20,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 import java.text.DecimalFormat;
 import java.util.*;
 
-public 	class Streaker extends PitPerk {
+public class Streaker extends PitPerk {
 	public static Map<LivingEntity, Integer> playerTimes = new HashMap<>();
 	public static Map<LivingEntity, Double> xpReward = new HashMap<>();
 

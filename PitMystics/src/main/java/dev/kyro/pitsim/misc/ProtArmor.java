@@ -11,9 +11,18 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 public class ProtArmor {
 
-
 	public static void getArmor(Player player, String type) {
+		ItemStack armorPiece = getArmor(type);
 
+		new BukkitRunnable() {
+			@Override
+			public void run() {
+				AUtil.giveItemSafely(player, armorPiece, true);
+			}
+		}.runTaskLater(PitSim.INSTANCE, 10L);
+	}
+
+	public static ItemStack getArmor(String type) {
 		ItemStack helmet = new ItemStack(Material.DIAMOND_HELMET);
 		ItemMeta helmetMeta = helmet.getItemMeta();
 		helmetMeta.addEnchant(Enchantment.PROTECTION_ENVIRONMENTAL, 1, true);
@@ -26,11 +35,11 @@ public class ProtArmor {
 		chestMeta.spigot().setUnbreakable(true);
 		chestplate.setItemMeta(chestMeta);
 
-		ItemStack legs = new ItemStack(Material.DIAMOND_LEGGINGS);
-		ItemMeta legsMeta = legs.getItemMeta();
+		ItemStack leggings = new ItemStack(Material.DIAMOND_LEGGINGS);
+		ItemMeta legsMeta = leggings.getItemMeta();
 		legsMeta.addEnchant(Enchantment.PROTECTION_ENVIRONMENTAL, 1, true);
 		legsMeta.spigot().setUnbreakable(true);
-		legs.setItemMeta(legsMeta);
+		leggings.setItemMeta(legsMeta);
 
 		ItemStack boots = new ItemStack(Material.DIAMOND_BOOTS);
 		ItemMeta bootsmeta = boots.getItemMeta();
@@ -38,22 +47,16 @@ public class ProtArmor {
 		bootsmeta.spigot().setUnbreakable(true);
 		boots.setItemMeta(bootsmeta);
 
-		new BukkitRunnable() {
-			@Override
-			public void run() {
-				if(type.equalsIgnoreCase("helmet")) {
-					AUtil.giveItemSafely(player, helmet, true);
-				} else if(type.equalsIgnoreCase("chestplate")) {
-					AUtil.giveItemSafely(player, chestplate, true);
-				} else if(type.equalsIgnoreCase("leggings")) {
-					AUtil.giveItemSafely(player, legs, true);
-				} else if(type.equalsIgnoreCase("boots")) {
-					AUtil.giveItemSafely(player, boots, true);
-				}
-			}
-		}.runTaskLater(PitSim.INSTANCE, 10L);
-
-
+		if(type.equalsIgnoreCase("helmet")) {
+			return helmet;
+		} else if(type.equalsIgnoreCase("chestplate")) {
+			return chestplate;
+		} else if(type.equalsIgnoreCase("leggings")) {
+			return leggings;
+		} else if(type.equalsIgnoreCase("boots")) {
+			return boots;
+		}
+		return null;
 	}
 
 	public static void deleteArmor(Player player) {

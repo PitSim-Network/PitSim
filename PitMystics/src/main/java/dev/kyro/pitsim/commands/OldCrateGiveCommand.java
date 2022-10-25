@@ -261,7 +261,7 @@ public class OldCrateGiveCommand implements CommandExecutor {
 			ItemStack item = WitherSkull.INSTANCE.getItem();
 			item.setAmount(10);
 			AUtil.giveItemSafely(player, item, true);
-			taintedBroadcast("&a10x Coal", player);
+			taintedBroadcast("&a10x Wither Skull", player);
 		}
 		if(args[0].equals("IRON")) {
 			ItemStack item = IronIngot.INSTANCE.getItem();

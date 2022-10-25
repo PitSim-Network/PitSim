@@ -16,6 +16,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerItemConsumeEvent;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.HashMap;
@@ -88,28 +89,40 @@ public class YummyBread implements Listener {
 	}
 
 	public static void giveVeryYummyBread(Player player, int amount) {
-		AItemStackBuilder veryBuilder = new AItemStackBuilder(Material.BREAD, amount);
-		veryBuilder.setName("&6Very yummy bread");
-		ALoreBuilder veryLoreBuilder = new ALoreBuilder("&7Heals &c" + Misc.getHearts(12), "&7Grants &6" + Misc.getHearts(4));
-		veryBuilder.setLore(veryLoreBuilder);
-
-		NBTItem nbtItem = new NBTItem(veryBuilder.getItemStack());
-		nbtItem.setBoolean(NBTTag.IS_VERY_YUMMY_BREAD.getRef(), true);
-
-		AUtil.giveItemSafely(player, nbtItem.getItem(), true);
+		ItemStack itemStack = getBread(amount, true);
+		AUtil.giveItemSafely(player, itemStack, true);
 		player.updateInventory();
 	}
 
 	public static void giveYummyBread(Player player, int amount) {
-		AItemStackBuilder veryBuilder = new AItemStackBuilder(Material.BREAD, amount);
-		veryBuilder.setName("&6Yummy bread");
-		ALoreBuilder veryLoreBuilder = new ALoreBuilder("&7Deal &c+10% &7damage to bots", "&7for 20 seconds. (Stacking)");
-		veryBuilder.setLore(veryLoreBuilder);
-
-		NBTItem nbtItem = new NBTItem(veryBuilder.getItemStack());
-		nbtItem.setBoolean(NBTTag.IS_YUMMY_BREAD.getRef(), true);
-
-		AUtil.giveItemSafely(player, nbtItem.getItem(), true);
+		ItemStack itemStack = getBread(amount, false);
+		AUtil.giveItemSafely(player, itemStack, true);
 		player.updateInventory();
+	}
+
+	public static ItemStack getBread(int amount, boolean veryYummy) {
+		ItemStack itemStack;
+		NBTItem nbtItem;
+		if(veryYummy) {
+			itemStack = new AItemStackBuilder(Material.BREAD, amount)
+					.setName("&6Very yummy bread")
+					.setLore(new ALoreBuilder(
+							"&7Heals &c" + Misc.getHearts(12),
+							"&7Grants &6" + Misc.getHearts(4)
+					)).getItemStack();
+			nbtItem = new NBTItem(itemStack);
+			nbtItem.setBoolean(NBTTag.IS_VERY_YUMMY_BREAD.getRef(), true);
+		} else {
+			itemStack = new AItemStackBuilder(Material.BREAD, amount)
+					.setName("&6Yummy bread")
+					.setLore(new ALoreBuilder(
+							"&7Deal &c+10% &7damage to bots",
+							"&7for 20 seconds. (Stacking)"
+					)).getItemStack();
+			nbtItem = new NBTItem(itemStack);
+			nbtItem.setBoolean(NBTTag.IS_YUMMY_BREAD.getRef(), true);
+		}
+		nbtItem.getItem().setAmount(amount);
+		return nbtItem.getItem();
 	}
 }

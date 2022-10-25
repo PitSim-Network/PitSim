@@ -9,8 +9,8 @@ import dev.kyro.pitsim.brewing.objects.BrewingIngredient;
 import dev.kyro.pitsim.brewing.objects.PotionEffect;
 import dev.kyro.pitsim.controllers.BossManager;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
-import dev.kyro.pitsim.controllers.objects.PluginMessage;
 import dev.kyro.pitsim.enums.NBTTag;
+import dev.kyro.pitsim.misc.Misc;
 import net.kyori.adventure.audience.Audience;
 import net.kyori.adventure.bossbar.BossBar;
 import net.kyori.adventure.text.Component;
@@ -26,7 +26,11 @@ import org.bukkit.event.entity.PotionSplashEvent;
 import org.bukkit.event.player.PlayerItemConsumeEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
+import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.PotionMeta;
+import org.bukkit.potion.Potion;
+import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.checkerframework.checker.nullness.qual.NonNull;
 
@@ -94,6 +98,41 @@ public class PotionManager implements Listener {
                 }
             }
         }.runTaskTimer(PitSim.INSTANCE, 2, 2);
+    }
+
+    public static ItemStack createPotion(BrewingIngredient identifier, BrewingIngredient potency, BrewingIngredient duration) {
+        Potion rawPotion = new Potion(identifier.potionType);
+        ItemStack potionStack = rawPotion.toItemStack(1);
+        PotionMeta meta = (PotionMeta) potionStack.getItemMeta();
+        meta.addCustomEffect(new org.bukkit.potion.PotionEffect(PotionEffectType.FIRE_RESISTANCE, 1, 0, false, false), true);
+        meta.setDisplayName(identifier.color + "Tier " + AUtil.toRoman(potency.tier) + " " + identifier.name + " Potion");
+        meta.addItemFlags(ItemFlag.HIDE_POTION_EFFECTS);
+        meta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
+        List<String> lore = new ArrayList<>(identifier.getPotencyLore(potency));
+        lore.add("");
+        if(identifier instanceof SpiderEye)  lore.add(ChatColor.GRAY + "Duration: " + ChatColor.WHITE + "INSTANT!");
+        else lore.add(ChatColor.GRAY + "Duration: " + ChatColor.WHITE + Misc.ticksToTimeUnformatted(identifier.getDuration(duration)));
+        lore.add("");
+        lore.add(identifier.color + "Tainted Potion");
+        meta.setLore(lore);
+        potionStack.setItemMeta(meta);
+        NBTItem nbtItem = new NBTItem(potionStack);
+        nbtItem.setInteger(NBTTag.POTION_IDENTIFIER.getRef(), identifier.tier);
+        nbtItem.setInteger(NBTTag.POTION_POTENCY.getRef(), potency.tier);
+        nbtItem.setInteger(NBTTag.POTION_DURATION.getRef(), duration.tier);
+        nbtItem.setBoolean(NBTTag.DROP_CONFIRM.getRef(), true);
+        return nbtItem.getItem();
+    }
+
+    public static ItemStack createSplashPotion(BrewingIngredient identifier, BrewingIngredient potency, BrewingIngredient duration) {
+        return createSplashPotion(createPotion(identifier, potency, duration));
+    }
+
+    public static ItemStack createSplashPotion(ItemStack potionStack) {
+        NBTItem nbtItem = new NBTItem(potionStack);
+        nbtItem.getItem().setDurability((short) (nbtItem.getItem().getDurability() + 16384));
+        nbtItem.setBoolean(NBTTag.IS_SPLASH_POTION.getRef(), true);
+        return nbtItem.getItem();
     }
     
     @EventHandler

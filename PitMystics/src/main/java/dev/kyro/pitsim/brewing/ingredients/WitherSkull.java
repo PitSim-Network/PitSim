@@ -77,10 +77,10 @@ public class WitherSkull extends BrewingIngredient {
     public ItemStack getItem() {
         ItemStack skull = new ItemStack(Material.SKULL_ITEM, 1, (byte) 1);
         ItemMeta meta = skull.getItemMeta();
-        List<String> lore = Arrays.asList(ChatColor.GRAY + "Coal gathered from the Skeletons", ChatColor.GRAY
+        List<String> lore = Arrays.asList(ChatColor.GRAY + "Skulls gathered from the Skeletons", ChatColor.GRAY
                 + "of the Wither Caves", "", ChatColor.DARK_PURPLE + "Tainted Item");
         meta.setLore(lore);
-        meta.setDisplayName(ChatColor.GREEN + "Coal");
+        meta.setDisplayName(ChatColor.GREEN + "Wither Skull");
         skull.setItemMeta(meta);
 
         NBTItem nbtItem = new NBTItem(skull);

@@ -99,6 +99,10 @@ public class ShardHunter extends RenownUpgrade {
 	}
 
 	public static ItemStack getGemItem() {
+		return getGemItem(1);
+	}
+
+	public static ItemStack getGemItem(int amount) {
 		ItemStack gem = new ItemStack(Material.EMERALD);
 		ItemMeta meta = gem.getItemMeta();
 		meta.setDisplayName(ChatColor.GREEN + "Totally Legit Gem");
@@ -112,6 +116,7 @@ public class ShardHunter extends RenownUpgrade {
 		lore.add(ChatColor.YELLOW + "Hold and right-click to use!");
 		meta.setLore(lore);
 		gem.setItemMeta(meta);
+		gem.setAmount(amount);
 
 		gem = ItemManager.enableDropConfirm(gem);
 
