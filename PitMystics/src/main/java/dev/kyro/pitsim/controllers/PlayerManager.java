@@ -180,6 +180,13 @@ public class PlayerManager implements Listener {
 	}
 
 	@EventHandler
+	public void onItemPickup(PlayerPickupItemEvent event) {
+		ItemStack itemStack = event.getItem().getItemStack();
+		if(Misc.isAirOrNull(itemStack) || itemStack.getType() != Material.ARROW) return;
+		event.setCancelled(true);
+	}
+
+	@EventHandler
 	public void giveMoonCap(KillEvent killEvent) {
 		if(!PlayerManager.isRealPlayerTemp(killEvent.killerPlayer)) return;
 		PitPlayer pitPlayer = PitPlayer.getPitPlayer(killEvent.killerPlayer);
