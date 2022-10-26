@@ -18,22 +18,22 @@ import java.util.List;
 
 public class ThrowBlockEvent implements Listener {
 
-    public static List<ThrowableBlock> ThrowableBlockClassHandler = new ArrayList();
+    public static List<ThrowableBlock> throwableBlockClassHandler = new ArrayList();
 
     public static void addThrowableBlock(ThrowableBlock block){
-        ThrowableBlockClassHandler.add(block);
+        throwableBlockClassHandler.add(block);
     }
 
     @EventHandler
     public void onFall(EntityChangeBlockEvent event){
         if(event.getEntity() instanceof FallingBlock){
-            for(ThrowableBlock block : ThrowableBlockClassHandler){
+            for(ThrowableBlock block : new ArrayList<>(throwableBlockClassHandler)){
                 if(block.getBlock().equals(event.getEntity())){
                     event.setCancelled(true);
 
                     block.run(event);
                     event.getEntity().remove();
-                    ThrowableBlockClassHandler.remove(block);
+                    throwableBlockClassHandler.remove(block);
                 }
             }
 
