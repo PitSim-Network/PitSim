@@ -96,6 +96,7 @@ public class DamageManager implements Listener {
 		if(!(event.getEntity() instanceof LivingEntity)) return;
 		LivingEntity attacker = getAttacker(event.getDamager());
 		LivingEntity defender = (LivingEntity) event.getEntity();
+		if(defender instanceof ArmorStand) return;
 
 		Map<PitEnchant, Integer> defenderEnchantMap = EnchantManager.getEnchantsOnPlayer(defender);
 		boolean fakeHit = false;
