@@ -36,7 +36,7 @@ public class CaveSpiderBoss extends PitBoss {
     public List<PitMob> spiderBrutes = new ArrayList<>();
 
     public CaveSpiderBoss(Player target) {
-        super(target, SubLevel.DEEP_SPIDER_CAVE);
+        super(target, SubLevel.DEEP_SPIDER_CAVE, 15);
         npc = CitizensAPI.getNPCRegistry().createNPC(EntityType.PLAYER, name);
 
         this.boss = new SimpleBoss(npc, target, subLevel, 5, SimpleSkin.CAVE_SPIDER, this){

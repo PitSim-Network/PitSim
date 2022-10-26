@@ -1,5 +1,6 @@
 package dev.kyro.pitsim.enums;
 
+import dev.kyro.pitsim.misc.Misc;
 import dev.kyro.pitsim.mobs.*;
 import dev.kyro.pitsim.slayers.SkeletonBoss;
 import dev.kyro.pitsim.slayers.ZombieBoss;
@@ -38,6 +39,7 @@ public enum SubLevel {
 	public int radius;
 	public List<Class> mobs;
 	public Class boss;
+	public int spawnBossItemCount;
 
 	SubLevel(int level, int maxMobs, Location middle, NBTTag bossItem, String itemName, String placeholder, int radius, List<Class> mobs, Class Boss) {
 		this.level = level;
@@ -49,6 +51,14 @@ public enum SubLevel {
 		this.radius = radius;
 		this.mobs = mobs;
 		this.boss = boss;
+
+		if(level == 1) {
+			spawnBossItemCount = 10;
+		} else if(level == 2) {
+			spawnBossItemCount = 9;
+		} else {
+			spawnBossItemCount = Misc.linearEnchant(level, -0.5, 10);
+		}
 	}
 
 	public static SubLevel getLevel(int subLevel) {

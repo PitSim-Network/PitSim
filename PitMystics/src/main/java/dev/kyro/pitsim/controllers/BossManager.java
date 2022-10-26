@@ -110,14 +110,12 @@ public class BossManager implements Listener {
             if(players.containsKey(event.getClicker())) players.put(event.getClicker(), players.get(event.getClicker()) + 1);
             else players.put(event.getClicker(), 1);
 
-            if(players.get(event.getClicker()) == 10) {
+            if(players.get(event.getClicker()) == level.spawnBossItemCount) {
                 players.remove(event.getClicker());
                 level.middle.getWorld().playEffect(level.middle, Effect.EXPLOSION_HUGE, 100);
                 Sounds.PRESTIGE.play(level.middle);
                 try {
-
-                    // Hard coding for now
-                    getBossType(level, event.getClicker());
+                    spawnBoss(level, event.getClicker());
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -125,8 +123,7 @@ public class BossManager implements Listener {
         }
     }
 
-    private void getBossType(SubLevel level, Player player) throws Exception {
-
+    private void spawnBoss(SubLevel level, Player player) throws Exception {
         switch (level.bossItem) {
             case ZOMBIE_FLESH:
                 new ZombieBoss(player);
@@ -200,7 +197,7 @@ public class BossManager implements Listener {
             if(entry.getKey().getEntity() == event.dead) {
                 entry.getKey().destroy();
                 entry.getValue().onDeath();
-                giveSouls(entry.getValue().target, entry.getValue().subLevel.level * 5);
+                giveSouls(entry.getValue().target, entry.getValue().soulReward);
 
 //                BossDrop bossDrop = new BossDrop(entry.getValue().target.getPlayer(), LootTable.valueOf(entry.getValue().subLevel.toString()));
 //

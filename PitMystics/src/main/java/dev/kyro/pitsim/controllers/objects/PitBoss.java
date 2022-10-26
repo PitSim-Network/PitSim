@@ -6,6 +6,7 @@ import dev.kyro.pitsim.events.AttackEvent;
 import dev.kyro.pitsim.misc.BossSkin;
 import net.citizensnpcs.api.npc.NPC;
 import net.citizensnpcs.api.trait.trait.Equipment;
+import net.citizensnpcs.npc.ai.CitizensNavigator;
 import org.bukkit.Effect;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
@@ -15,20 +16,18 @@ import org.bukkit.inventory.ItemStack;
 public abstract class PitBoss {
     public Player target;
     public SubLevel subLevel;
+    public int soulReward;
 
-    public PitBoss(Player target, SubLevel subLevel) {
+    public PitBoss(Player target, SubLevel subLevel, int soulReward) {
         this.target = target;
         this.subLevel = subLevel;
+        this.soulReward = soulReward;
     }
 
     public abstract void onAttack(AttackEvent.Apply event) throws Exception;
-
     public abstract void onDefend();
-
     public abstract void onDeath();
-
     public abstract Player getEntity();
-
     public abstract void setNPC(NPC npc);
 
     public static void spawn(NPC npc, Player target, SubLevel subLevel, BossSkin skin, ItemStack hand, ItemStack helmet, ItemStack chestplate, ItemStack leggings, ItemStack boots){
@@ -63,6 +62,10 @@ public abstract class PitBoss {
             phiRand = 360 * Math.random();
         }
 
+        CitizensNavigator navigator = (CitizensNavigator) npc.getNavigator();
+        navigator.getDefaultParameters()
+                        .attackDelayTicks(10)
+                        .attackRange(4);
         npc.getNavigator().setTarget(target, true);
         npc.setProtected(false);
         BossManager.playMusic(target, subLevel.level);

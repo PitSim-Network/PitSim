@@ -11,7 +11,6 @@ import dev.kyro.pitsim.slayers.tainted.SimpleSkin;
 import net.citizensnpcs.api.CitizensAPI;
 import net.citizensnpcs.api.npc.NPC;
 import org.bukkit.Effect;
-import org.bukkit.Location;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -26,7 +25,7 @@ public class MagmaCubeBoss extends PitBoss {
     public SimpleBoss boss;
 
     public MagmaCubeBoss(Player target) {
-        super(target, SubLevel.MAGMA_CAVE);
+        super(target, SubLevel.MAGMA_CAVE, 25);
         npc = CitizensAPI.getNPCRegistry().createNPC(EntityType.PLAYER, name);
 
         this.boss = new SimpleBoss(npc, target, subLevel, 5, SimpleSkin.MAGMA, this){

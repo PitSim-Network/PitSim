@@ -8,7 +8,6 @@ import dev.kyro.pitsim.enums.SubLevel;
 import dev.kyro.pitsim.events.AttackEvent;
 import dev.kyro.pitsim.misc.Sounds;
 import dev.kyro.pitsim.mobs.PitStrongPigman;
-import dev.kyro.pitsim.mobs.PitZombiePigman;
 import dev.kyro.pitsim.slayers.tainted.SimpleBoss;
 import dev.kyro.pitsim.slayers.tainted.SimpleSkin;
 import net.citizensnpcs.api.CitizensAPI;
@@ -34,7 +33,7 @@ public class ZombiePigmanBoss extends PitBoss {
     public List<PitMob> pigmen = new ArrayList<>();
 
     public ZombiePigmanBoss(Player target) {
-        super(target, SubLevel.PIGMEN_CAVE);
+        super(target, SubLevel.PIGMEN_CAVE, 50);
         npc = CitizensAPI.getNPCRegistry().createNPC(EntityType.PLAYER, name);
 
         this.boss = new SimpleBoss(npc, target, subLevel, 5, SimpleSkin.PIGMAN, this){
