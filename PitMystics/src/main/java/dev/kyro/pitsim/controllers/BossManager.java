@@ -167,18 +167,18 @@ public class BossManager implements Listener {
             @Override
             public void run() {
                 for (Map.Entry<NPC, PitBoss> entry : bosses.entrySet()) {
-                   if(entry.getValue().target.getWorld() == entry.getValue().getEntity().getWorld() && entry.getValue().subLevel.middle.distance(entry.getValue().target.getLocation()) < 40) continue;
-                    entry.getValue().onDeath();
-                    NPC npc;
-                    if(entry.getKey() == null) npc = CitizensAPI.getNPCRegistry().getNPC(entry.getValue().getEntity());
-                    else npc = entry.getKey();
-                    npc.destroy();
-                    AOutput.send(entry.getValue().target, "&c&lDESPAWN! &7Your boss has despawned because you went to far away.");
-                    bosses.remove(npc);
-                    activePlayers.remove(entry.getValue().target);
+                   if(entry.getValue().getEntity().getWorld() == MapManager.getDarkzone() && entry.getValue().subLevel.middle.distance(entry.getValue().target.getLocation()) < 40) continue;
+                   entry.getValue().onDeath();
+                   NPC npc;
+                   if(entry.getKey() == null) npc = CitizensAPI.getNPCRegistry().getNPC(entry.getValue().getEntity());
+                   else npc = entry.getKey();
+                   npc.destroy();
+                   AOutput.send(entry.getValue().target, "&c&lDESPAWN! &7Your boss has despawned because you went to far away.");
+                   bosses.remove(npc);
+                   activePlayers.remove(entry.getValue().target);
                 }
             }
-        }.runTaskTimer(PitSim.INSTANCE, 200, 200);
+        }.runTaskTimer(PitSim.INSTANCE, 20 * 4, 20 * 4);
     }
 
     @EventHandler
