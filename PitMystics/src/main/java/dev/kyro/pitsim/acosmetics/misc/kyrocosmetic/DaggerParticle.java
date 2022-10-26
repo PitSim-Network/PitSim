@@ -71,6 +71,7 @@ public class DaggerParticle extends AIParticle {
 		stepVector = target.getLocation().add(0, 1, 0).toVector().subtract(particleLocation.toVector());
 		ticksUntilGoal = (int) (stepVector.length() / 1) + 1;
 		stepVector.multiply(1.0 / ticksUntilGoal);
+		ticksUntilGoal += 10;
 	}
 
 	public Location getIdleLocation() {

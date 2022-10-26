@@ -3,6 +3,7 @@ package dev.kyro.pitsim.acosmetics.misc.kyrocosmetic;
 import de.myzelyam.api.vanish.VanishAPI;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.acosmetics.CosmeticManager;
+import dev.kyro.pitsim.controllers.SpawnManager;
 import org.bukkit.Bukkit;
 import org.bukkit.Effect;
 import org.bukkit.GameMode;
@@ -54,7 +55,8 @@ public abstract class AIParticle {
 		double distance = Double.MAX_VALUE;
 		for(Player onlinePlayer : Bukkit.getOnlinePlayers()) {
 			if(onlinePlayer == owner || onlinePlayer.getWorld() != owner.getWorld() || VanishAPI.isInvisible(onlinePlayer) ||
-					onlinePlayer.getGameMode() == GameMode.CREATIVE || onlinePlayer.getGameMode() == GameMode.SPECTATOR) continue;
+					onlinePlayer.getGameMode() == GameMode.CREATIVE || onlinePlayer.getGameMode() == GameMode.SPECTATOR ||
+					SpawnManager.isInSpawn(onlinePlayer.getLocation()) || SpawnManager.isInSpawn(owner.getLocation())) continue;
 			double testDistance = onlinePlayer.getLocation().distance(owner.getLocation());
 			if(testDistance > 15 || testDistance > distance) continue;
 			closestPlayer = onlinePlayer;

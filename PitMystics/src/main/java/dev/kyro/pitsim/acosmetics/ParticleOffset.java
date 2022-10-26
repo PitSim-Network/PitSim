@@ -45,7 +45,7 @@ public class ParticleOffset {
 			if(yaw < 0) yaw += 360;
 		}
 		double pitch = 0;
-		if(accountForPitch) pitch = location.getPitch();
+		if(accountForPitch) pitch = -location.getPitch();
 		if(accountForYaw | accountForPitch) RotationTools.rotate(newOffset, yaw, pitch, 0);
 
 		location.add(random(randomX), random(randomY), random(randomZ));

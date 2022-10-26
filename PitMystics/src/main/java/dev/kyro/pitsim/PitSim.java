@@ -24,6 +24,7 @@ import dev.kyro.pitsim.acosmetics.killeffectsbot.OnlyExe;
 import dev.kyro.pitsim.acosmetics.killeffectsbot.Tetris;
 import dev.kyro.pitsim.acosmetics.killeffectsplayer.*;
 import dev.kyro.pitsim.acosmetics.aura.KyroAura;
+import dev.kyro.pitsim.acosmetics.misc.Halo;
 import dev.kyro.pitsim.acosmetics.misc.KyroCosmetic;
 import dev.kyro.pitsim.acosmetics.misc.ElectricPresence;
 import dev.kyro.pitsim.acosmetics.misc.MysticPresence;
@@ -702,10 +703,6 @@ public class PitSim extends JavaPlugin {
 		CosmeticManager.registerCosmetic(new BountySystemMalfunction());
 		CosmeticManager.registerCosmetic(new BountyTakeTheL());
 
-		CosmeticManager.registerCosmetic(new KyroCosmetic());
-		CosmeticManager.registerCosmetic(new MysticPresence());
-		CosmeticManager.registerCosmetic(new ElectricPresence());
-
 		CosmeticManager.registerCosmetic(new SolidCape());
 		CosmeticManager.registerCosmetic(new FireCape());
 		CosmeticManager.registerCosmetic(new MagicCape());
@@ -732,6 +729,11 @@ public class PitSim extends JavaPlugin {
 		CosmeticManager.registerCosmetic(new FireAura());
 		CosmeticManager.registerCosmetic(new MysticAura());
 		CosmeticManager.registerCosmetic(new FireworkAura());
+
+		CosmeticManager.registerCosmetic(new KyroCosmetic());
+		CosmeticManager.registerCosmetic(new MysticPresence());
+		CosmeticManager.registerCosmetic(new ElectricPresence());
+		CosmeticManager.registerCosmetic(new Halo());
 
 		CosmeticManager.loadForOnlinePlayers();
 	}

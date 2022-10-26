@@ -65,7 +65,7 @@ public class LifestealParticle extends AIParticle {
 	}
 
 	public void updateAttackStepVector() {
-		stepVector = target.getLocation().add(0, 1, 0).toVector().subtract(particleLocation.toVector()).normalize().multiply(0.3);
+		stepVector = target.getLocation().add(0, 1, 0).toVector().subtract(particleLocation.toVector()).normalize().multiply(0.35);
 	}
 
 	public void updateReturnStepVector() {
