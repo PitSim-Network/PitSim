@@ -37,7 +37,7 @@ public class DailySWGamePlayedQuest extends PassQuest {
 
 	@Override
 	public QuestLevel getDailyState() {
-		return new QuestLevel(2, 20);
+		return new QuestLevel(2, 40);
 	}
 
 	@Override
