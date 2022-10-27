@@ -40,7 +40,7 @@ public class WitherSkeletonBoss extends PitBoss {
     public SimpleBoss boss;
 
     public WitherSkeletonBoss(Player target) {
-        super(target, SubLevel.WITHER_CAVE, 40);
+        super(target, SubLevel.WITHER_CAVE, 50);
         npc = CitizensAPI.getNPCRegistry().createNPC(EntityType.PLAYER, name);
 
         this.boss = new SimpleBoss(npc, target, subLevel, 5, SimpleSkin.WITHER_SKELETON, this){

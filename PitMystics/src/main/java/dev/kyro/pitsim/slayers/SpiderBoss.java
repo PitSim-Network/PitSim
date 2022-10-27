@@ -23,7 +23,7 @@ public class SpiderBoss extends PitBoss {
     public SimpleBoss boss;
 
     public SpiderBoss(Player target) throws Exception {
-        super(target, SubLevel.SPIDER_CAVE, 7);
+        super(target, SubLevel.SPIDER_CAVE, 16);
         this.target = target;
 
         npc = CitizensAPI.getNPCRegistry().createNPC(EntityType.PLAYER, name);

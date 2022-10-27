@@ -26,7 +26,7 @@ public class SkeletonBoss extends PitBoss {
     public SimpleBoss boss;
 
     public SkeletonBoss(Player target) throws Exception {
-        super(target, SubLevel.SKELETON_CAVE, 4);
+        super(target, SubLevel.SKELETON_CAVE, 12);
 
         npc = CitizensAPI.getNPCRegistry().createNPC(EntityType.PLAYER, name);
 

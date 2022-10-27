@@ -39,7 +39,7 @@ public class EndermanBoss extends PitBoss {
     public SimpleBoss boss;
 
     public EndermanBoss(Player target) {
-        super(target, SubLevel.ENDERMAN_CAVE, 100);
+        super(target, SubLevel.ENDERMAN_CAVE, 150);
         npc = CitizensAPI.getNPCRegistry().createNPC(EntityType.PLAYER, name);
 
         this.boss = new SimpleBoss(npc, target, subLevel, 7, SimpleSkin.ENDERMAN, this){

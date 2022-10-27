@@ -33,7 +33,7 @@ public class ZombiePigmanBoss extends PitBoss {
     public List<PitMob> pigmen = new ArrayList<>();
 
     public ZombiePigmanBoss(Player target) {
-        super(target, SubLevel.PIGMEN_CAVE, 50);
+        super(target, SubLevel.PIGMEN_CAVE, 60);
         npc = CitizensAPI.getNPCRegistry().createNPC(EntityType.PLAYER, name);
 
         this.boss = new SimpleBoss(npc, target, subLevel, 5, SimpleSkin.PIGMAN, this){

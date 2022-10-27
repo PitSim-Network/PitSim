@@ -34,7 +34,7 @@ public class IronGolemBoss extends PitBoss {
     public SimpleBoss boss;
 
     public IronGolemBoss(Player target) {
-        super(target, SubLevel.GOLEM_CAVE, 80);
+        super(target, SubLevel.GOLEM_CAVE, 100);
         npc = CitizensAPI.getNPCRegistry().createNPC(EntityType.PLAYER, name);
 
         this.boss = new SimpleBoss(npc, target, subLevel, 5, SimpleSkin.IRON_GOLEM, this){

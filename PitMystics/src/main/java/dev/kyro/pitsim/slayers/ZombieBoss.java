@@ -21,7 +21,7 @@ public class ZombieBoss extends PitBoss {
     public SimpleBoss boss;
 
     public ZombieBoss(Player target) throws Exception {
-        super(target, SubLevel.ZOMBIE_CAVE, 2);
+        super(target, SubLevel.ZOMBIE_CAVE, 6);
         this.target = target;
 
         npc = CitizensAPI.getNPCRegistry().createNPC(EntityType.PLAYER, name);

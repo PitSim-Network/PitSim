@@ -25,7 +25,7 @@ public class MagmaCubeBoss extends PitBoss {
     public SimpleBoss boss;
 
     public MagmaCubeBoss(Player target) {
-        super(target, SubLevel.MAGMA_CAVE, 25);
+        super(target, SubLevel.MAGMA_CAVE, 35);
         npc = CitizensAPI.getNPCRegistry().createNPC(EntityType.PLAYER, name);
 
         this.boss = new SimpleBoss(npc, target, subLevel, 5, SimpleSkin.MAGMA, this){
