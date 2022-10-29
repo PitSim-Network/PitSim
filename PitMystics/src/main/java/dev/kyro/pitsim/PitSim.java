@@ -340,7 +340,7 @@ public class PitSim extends JavaPlugin {
 	private void registerKillstreaks() {
 		PerkManager.registerKillstreak(new NoKillstreak());
 
-//		PerkManager.registerKillstreak(new Dispersion());
+		PerkManager.registerKillstreak(new Limiter());
 		PerkManager.registerKillstreak(new Explicious());
 		PerkManager.registerKillstreak(new AssuredStrike());
 		PerkManager.registerKillstreak(new Leech());
