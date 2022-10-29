@@ -28,15 +28,9 @@ public class CounterStrike extends Killstreak {
 	List<LivingEntity> rewardPlayers = new ArrayList<>();
 
 	@EventHandler
-	public void onhit(AttackEvent.Apply event) {
-		if(rewardPlayers.contains(event.attacker)) {
-			event.increasePercent += (10 / 100D);
-			rewardPlayers.remove(event.attacker);
-		}
-		if(rewardPlayers.contains(event.defender)) {
-			event.multipliers.add(Misc.getReductionMultiplier(20));
-			rewardPlayers.remove(event.defender);
-		}
+	public void onHit(AttackEvent.Apply event) {
+		if(rewardPlayers.contains(event.attacker)) event.increasePercent += (10 / 100D);
+		if(rewardPlayers.contains(event.defender)) event.multipliers.add(Misc.getReductionMultiplier(20));
 	}
 
 	@Override
