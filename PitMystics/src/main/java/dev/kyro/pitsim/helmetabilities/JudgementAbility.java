@@ -88,7 +88,7 @@ public class JudgementAbility extends HelmetAbility {
 			Sounds.JUDGEMENT_HALF_DEFENDER.play(attackEvent.defender);
 		}
 
-		if(Math.random() < 0.03) {
+		if(Math.random() < 0.02) {
 
 			Sounds.JUDGEMENT_ZEUS_ATTACKER.play(attackEvent.attacker);
 			Sounds.JUDGEMENT_ZEUS_DEFENDER.play(attackEvent.defender);
