@@ -43,6 +43,13 @@ public class PortalManager implements Listener {
 			return;
 		}
 
+		if(CombatManager.isInCombat(player)) {
+			player.setVelocity(new Vector(3, 1, 0));
+			AOutput.error(event.getPlayer(), "&5&lDARKZONE &7You cannot be in combat and enter the darkzone!");
+			Sounds.NO.play(event.getPlayer());
+			return;
+		}
+
 		if(HopperManager.isHopper(player)) return;
 
 		boolean hasHopper = false;
