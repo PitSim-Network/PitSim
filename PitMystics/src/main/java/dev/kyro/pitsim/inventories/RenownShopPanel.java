@@ -12,6 +12,7 @@ import dev.kyro.pitsim.controllers.objects.RenownUpgrade;
 import dev.kyro.pitsim.misc.Sounds;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.inventory.InventoryOpenEvent;
@@ -116,6 +117,8 @@ public class RenownShopPanel extends AGUIPanel {
 				lore.remove(lore.size() - 1);
 				loreBuilder = new ALoreBuilder(lore).addLore("&cUnlock Prestige: &e" + AUtil.toRoman(upgrade.prestigeReq));
 				new AItemStackBuilder(itemStack).setLore(loreBuilder);
+				itemStack.setType(Material.BEDROCK);
+				itemStack.removeEnchantment(Enchantment.ARROW_FIRE);
 			}
 			getInventory().setItem(upgrade.guiSlot, itemStack);
 		}
