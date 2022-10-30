@@ -28,7 +28,7 @@ public class Limiter extends Killstreak {
 
 	@EventHandler(priority = EventPriority.HIGHEST)
 	public void onHit(AttackEvent.Apply event) {
-		if(rewardPlayers.contains(event.defender)) event.trueDamage = Math.max(event.trueDamage, 2);
+		if(rewardPlayers.contains(event.defender)) event.trueDamage = Math.min(event.trueDamage, 2);
 	}
 
 	@Override
