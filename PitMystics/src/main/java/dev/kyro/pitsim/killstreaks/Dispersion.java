@@ -3,8 +3,7 @@ package dev.kyro.pitsim.killstreaks;
 import dev.kyro.arcticapi.builders.AItemStackBuilder;
 import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.arcticapi.misc.AOutput;
-import dev.kyro.arcticguilds.controllers.GuildManager;
-import dev.kyro.arcticguilds.controllers.objects.Guild;
+import dev.kyro.arcticguilds.GuildData;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.controllers.objects.Killstreak;
 import dev.kyro.pitsim.controllers.objects.PitEnchant;
@@ -35,8 +34,8 @@ public class Dispersion extends Killstreak {
 		if(!attackEvent.defenderIsPlayer) return;
 
 		if(!rewardPlayers.contains(attackEvent.defender)) return;
-		Guild defenderGuild = GuildManager.getGuild(attackEvent.defenderPlayer);
-		if(defenderGuild != null) {
+
+		if(GuildData.getGuildData(attackEvent.defenderPlayer) != null) {
 			AOutput.error(attackEvent.defender, "Dispersion does not work if you are in a guild");
 			return;
 		}

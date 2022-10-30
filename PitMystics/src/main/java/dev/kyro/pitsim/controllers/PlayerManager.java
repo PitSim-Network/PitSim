@@ -7,10 +7,9 @@ import de.myzelyam.api.vanish.VanishAPI;
 import de.tr7zw.nbtapi.NBTItem;
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.arcticapi.misc.AUtil;
-import dev.kyro.arcticguilds.controllers.BuffManager;
-import dev.kyro.arcticguilds.controllers.GuildManager;
-import dev.kyro.arcticguilds.controllers.objects.Guild;
-import dev.kyro.arcticguilds.controllers.objects.GuildBuff;
+import dev.kyro.arcticguilds.BuffManager;
+import dev.kyro.arcticguilds.GuildBuff;
+import dev.kyro.arcticguilds.GuildData;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.brewing.PotionManager;
 import dev.kyro.pitsim.brewing.ingredients.MagmaCream;
@@ -48,7 +47,6 @@ import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
 import org.spigotmc.event.player.PlayerSpawnLocationEvent;
 
-import javax.persistence.Lob;
 import java.text.DecimalFormat;
 import java.util.*;
 
@@ -107,11 +105,11 @@ public class PlayerManager implements Listener {
 				for(Player onlinePlayer : Bukkit.getOnlinePlayers()) {
 					if(AFKManager.AFKPlayers.contains(onlinePlayer) || Math.random() > (1.0 / 3.0)) continue;
 
-					Guild guild = GuildManager.getGuild(onlinePlayer);
+					GuildData guild = GuildData.getGuildData(onlinePlayer);
 					GuildBuff renownBuff = BuffManager.getBuff("renown");
 					double buff = 0;
 					if(guild != null) {
-						for(Map.Entry<GuildBuff.SubBuff, Double> entry : renownBuff.getBuffs(guild.getLevel(renownBuff)).entrySet()) {
+						for(Map.Entry<GuildBuff.SubBuff, Double> entry : renownBuff.getBuffs(guild.getBuffLevel(renownBuff)).entrySet()) {
 							if(entry.getKey().refName.equals("renown")) buff = entry.getValue();
 						}
 					}

@@ -1,15 +1,11 @@
 package dev.kyro.pitsim.placeholders;
 
 import dev.kyro.arcticapi.hooks.papi.APAPIPlaceholder;
-import dev.kyro.arcticguilds.controllers.objects.Guild;
 import dev.kyro.pitsim.controllers.BossManager;
-import dev.kyro.pitsim.controllers.GuildLeaderboard;
 import dev.kyro.pitsim.enums.SubLevel;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
-import java.text.DecimalFormat;
-import java.util.HashMap;
 import java.util.Map;
 
 public class ZombieCavePlaceholder implements APAPIPlaceholder {
