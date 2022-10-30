@@ -33,7 +33,7 @@ public class GoldenHeart extends PitEnchant {
 	@Override
 	public List<String> getDescription(int enchantLvl) {
 
-		return new ALoreBuilder("&7gain &6+" + Misc.getHearts(getHealing(enchantLvl)) + " &7absorption on kill",
+		return new ALoreBuilder("&7Gain &6+" + Misc.getHearts(getHealing(enchantLvl)) + " &7absorption on kill",
 				"&7(max &6" + Misc.getHearts(12) + "&7)").getLore();
 	}
 
