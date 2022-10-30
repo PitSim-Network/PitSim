@@ -1,5 +1,7 @@
 package dev.kyro.pitsim.inventories;
 
+import dev.kyro.arcticapi.builders.AItemStackBuilder;
+import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.arcticapi.gui.AGUI;
 import dev.kyro.arcticapi.gui.AGUIPanel;
 import dev.kyro.arcticapi.misc.AOutput;
@@ -17,7 +19,6 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 public class RenownShopPanel extends AGUIPanel {
@@ -107,19 +108,16 @@ public class RenownShopPanel extends AGUIPanel {
 	}
 
 	public void refresh() {
-
-		ItemStack item = new ItemStack(Material.BEDROCK);
-		ItemMeta meta = item.getItemMeta();
-		meta.setDisplayName(ChatColor.RED + "Unknown upgrade");
-
-
-		for(RenownUpgrade upg : UpgradeManager.upgrades) {
-			if(upg.prestigeReq > pitPlayer.prestige) {
-				List<String> lore = Collections.singletonList(ChatColor.GRAY + "Prestige: " + ChatColor.YELLOW + AUtil.toRoman(upg.prestigeReq));
-				meta.setLore(lore);
-				item.setItemMeta(meta);
-				getInventory().setItem(upg.guiSlot, item);
-			} else getInventory().setItem(upg.guiSlot, upg.getDisplayItem(player, false));
+		for(RenownUpgrade upgrade : UpgradeManager.upgrades) {
+			ItemStack itemStack = upgrade.getDisplayItem(player, false);
+			if(upgrade.prestigeReq > pitPlayer.prestige) {
+				ALoreBuilder loreBuilder = new ALoreBuilder(itemStack);
+				List<String> lore = loreBuilder.getLore();
+				lore.remove(lore.size() - 1);
+				loreBuilder = new ALoreBuilder(lore).addLore("&cUnlock Prestige: &e" + AUtil.toRoman(upgrade.prestigeReq));
+				new AItemStackBuilder(itemStack).setLore(loreBuilder);
+			}
+			getInventory().setItem(upgrade.guiSlot, itemStack);
 		}
 
 		ItemStack back = new ItemStack(Material.ARROW);
