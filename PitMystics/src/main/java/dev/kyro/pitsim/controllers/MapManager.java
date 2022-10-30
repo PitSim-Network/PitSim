@@ -56,8 +56,7 @@ public class MapManager implements Listener {
 			enablePortal(lobby);
 		}
 		for(Player onlinePlayer : Bukkit.getOnlinePlayers()) {
-//			TODO: Temporary
-//			onlinePlayer.teleport(currentMap.getSpawn(currentMap.firstLobby));
+			onlinePlayer.teleport(currentMap.getSpawn(currentMap.firstLobby));
 		}
 	}
 

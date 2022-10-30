@@ -157,8 +157,7 @@ public class PitSim extends JavaPlugin {
 		NonManager.init();
 		SpawnNPCs.createNPCs();
 		TempBlockHelper.init();
-//		TODO: Temporary
-//		ReloadManager.init();
+		ReloadManager.init();
 
 		if(!setupEconomy()) {
 			AOutput.log(String.format("[%s] - Disabled due to no Vault dependency found!", getDescription().getName()));
