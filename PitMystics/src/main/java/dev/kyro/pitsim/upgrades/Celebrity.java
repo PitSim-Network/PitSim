@@ -16,7 +16,7 @@ import java.util.List;
 
 public class Celebrity extends RenownUpgrade {
 	public Celebrity() {
-		super("Celebrity", "CELEBRITY", 300, 34, 40, false, 0);
+		super("Celebrity", "CELEBRITY", 300, 40, 40, false, 0);
 	}
 
 	@Override

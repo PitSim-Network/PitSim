@@ -23,14 +23,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class RenownShopPanel extends AGUIPanel {
-
-	PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
+	public PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
 	public RenownShopGUI renownShopGUI;
 
 	public RenownShopPanel(AGUI gui) {
 		super(gui);
 		renownShopGUI = (RenownShopGUI) gui;
-
 	}
 
 	@Override

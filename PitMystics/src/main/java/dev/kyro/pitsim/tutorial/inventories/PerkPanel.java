@@ -15,6 +15,7 @@ import dev.kyro.pitsim.tutorial.TutorialManager;
 import dev.kyro.pitsim.tutorial.sequences.KillstreakSequence;
 import dev.kyro.pitsim.tutorial.sequences.PerkSequence;
 import dev.kyro.pitsim.tutorial.sequences.VampireSequence;
+import dev.kyro.pitsim.upgrades.TheWay;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.event.inventory.InventoryClickEvent;
@@ -73,7 +74,7 @@ public class PerkPanel extends AGUIPanel {
 			}
 
 			if(slot == 32) {
-				if(pitPlayer.level < killstreakLevels.get(2)) {
+				if(pitPlayer.level < killstreakLevels.get(2) - TheWay.INSTANCE.getLevelReduction(pitPlayer.player)) {
 					Sounds.NO.play(player);
 					AOutput.error(player, "&cYou are too low level to use this slot!");
 					return;
@@ -83,7 +84,7 @@ public class PerkPanel extends AGUIPanel {
 			}
 
 			if(slot == 30) {
-				if(pitPlayer.level < killstreakLevels.get(1)) {
+				if(pitPlayer.level < killstreakLevels.get(1) - TheWay.INSTANCE.getLevelReduction(pitPlayer.player)) {
 					Sounds.NO.play(player);
 					AOutput.error(player, "&cYou are too low level to use this slot!");
 					return;
@@ -93,7 +94,7 @@ public class PerkPanel extends AGUIPanel {
 			}
 
 			if(slot == 28) {
-				if(pitPlayer.level < killstreakLevels.get(0)) {
+				if(pitPlayer.level < killstreakLevels.get(0) - TheWay.INSTANCE.getLevelReduction(pitPlayer.player)) {
 					Sounds.NO.play(player);
 					AOutput.error(player, "&cYou are too low level to use this slot!");
 					return;

@@ -102,7 +102,7 @@ public class RNGesus extends Megastreak {
 	}
 
 	@Override
-	public int levelReq() {
+	public int initialLevelReq() {
 		return 0;
 	}
 

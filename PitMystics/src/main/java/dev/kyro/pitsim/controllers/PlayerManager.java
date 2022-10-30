@@ -28,6 +28,7 @@ import dev.kyro.pitsim.misc.DeathCrys;
 import dev.kyro.pitsim.misc.KillEffects;
 import dev.kyro.pitsim.misc.Misc;
 import dev.kyro.pitsim.misc.Sounds;
+import dev.kyro.pitsim.upgrades.TheWay;
 import me.clip.placeholderapi.PlaceholderAPI;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.*;
@@ -248,9 +249,10 @@ public class PlayerManager implements Listener {
 		if(player.isOp()) return;
 		if(ChatColor.stripColor(event.getMessage()).toLowerCase().startsWith("/trade")) {
 			PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
-			if(pitPlayer.level < 100) {
+			int levelRequired = 100 - TheWay.INSTANCE.getLevelReduction(pitPlayer.player);
+			if(pitPlayer.level < levelRequired) {
 				event.setCancelled(true);
-				AOutput.error(player, "&c&lNOPE! &7You cannot trade until you are level 100");
+				AOutput.error(player, "&c&lNOPE! &7You cannot trade until you are level " + levelRequired);
 			}
 		}
 		if(ChatColor.stripColor(event.getMessage()).toLowerCase().startsWith("/invsee")) {

@@ -528,18 +528,19 @@ public class PitSim extends JavaPlugin {
 		UpgradeManager.registerUpgrade(new UnlockFirstStrike());
 		UpgradeManager.registerUpgrade(new Impatient());
 		UpgradeManager.registerUpgrade(new Helmetry());
-		UpgradeManager.registerUpgrade(new ShardHunter());
 		UpgradeManager.registerUpgrade(new Chemist());
 //		UpgradeManager.registerUpgrade(new SelfConfidence());
+		UpgradeManager.registerUpgrade(new UnlockCounterJanitor());
 		UpgradeManager.registerUpgrade(new LuckyKill());
 		UpgradeManager.registerUpgrade(new LifeInsurance());
 		UpgradeManager.registerUpgrade(new TaxEvasion());
 		UpgradeManager.registerUpgrade(new DoubleDeath());
 		UpgradeManager.registerUpgrade(new XPComplex());
 		UpgradeManager.registerUpgrade(new KillSteal());
-		UpgradeManager.registerUpgrade(new UnlockCounterJanitor());
-		UpgradeManager.registerUpgrade(new Celebrity());
+		UpgradeManager.registerUpgrade(new ShardHunter());
+		UpgradeManager.registerUpgrade(new TheWay());
 		UpgradeManager.registerUpgrade(new FastPass());
+		UpgradeManager.registerUpgrade(new Celebrity());
 	}
 
 	private void registerHelmetAbilities() {

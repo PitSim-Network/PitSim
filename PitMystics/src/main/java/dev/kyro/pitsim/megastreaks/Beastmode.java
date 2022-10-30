@@ -69,7 +69,7 @@ public class Beastmode extends Megastreak {
 	}
 
 	@Override
-	public int levelReq() {
+	public int initialLevelReq() {
 		return 50;
 	}
 
