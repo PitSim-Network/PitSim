@@ -208,6 +208,13 @@ public class DamageManager implements Listener {
 //		As strong as iron
 		attackEvent.multipliers.add(ArmorReduction.getReductionMultiplier(attackEvent.defender));
 
+//		Darkzone player vs player defence
+		if(PlayerManager.isRealPlayerTemp(attackEvent.attackerPlayer) && PlayerManager.isRealPlayerTemp(attackEvent.defenderPlayer) &&
+				MapManager.inDarkzone(attackEvent.attackerPlayer)) {
+			attackEvent.multipliers.add(0.5);
+			attackEvent.trueDamage /= 2.0;
+		}
+
 		double damage = attackEvent.getFinalDamage();
 		attackEvent.event.setDamage(damage);
 
