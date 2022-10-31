@@ -36,14 +36,14 @@ public class PortalManager implements Listener {
 
 		Player player = event.getPlayer();
 		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
-		if(pitPlayer.prestige < 5) {
+		if(pitPlayer.prestige < 5 && !player.isOp()) {
 			player.setVelocity(new Vector(3, 1, 0));
 			AOutput.error(event.getPlayer(), "&5&lDARKZONE &7You must be atleast prestige &eV &7to enter!");
 			Sounds.NO.play(event.getPlayer());
 			return;
 		}
 
-		if(CombatManager.isInCombat(player)) {
+		if(CombatManager.isInCombat(player) && !player.isOp()) {
 			player.setVelocity(new Vector(3, 1, 0));
 			AOutput.error(event.getPlayer(), "&5&lDARKZONE &7You cannot be in combat and enter the darkzone!");
 			Sounds.NO.play(event.getPlayer());
@@ -58,7 +58,7 @@ public class PortalManager implements Listener {
 			hasHopper = true;
 			break;
 		}
-		if(hasHopper) {
+		if(hasHopper && !player.isOp()) {
 			player.setVelocity(new Vector(3, 1, 0));
 			AOutput.error(event.getPlayer(), "&c&lYOU WISH! &7Kill that hopper first :P");
 			Sounds.NO.play(event.getPlayer());
@@ -84,10 +84,8 @@ public class PortalManager implements Listener {
 			teleportLoc.setY(72);
 		}
 
-
 		if(teleportLoc.getYaw() > 0 || teleportLoc.getYaw() < -180) teleportLoc.setYaw(-teleportLoc.getYaw());
 		teleportLoc.add(3, 0, 0);
-
 
 		player.teleport(teleportLoc);
 			player.setVelocity(new Vector(1.5, 1, 0).multiply(0.25));
