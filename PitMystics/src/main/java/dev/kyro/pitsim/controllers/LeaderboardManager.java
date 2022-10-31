@@ -17,6 +17,7 @@ import java.util.UUID;
 public class LeaderboardManager {
 	public static List<Leaderboard> leaderboards = new ArrayList<>();
 	public static List<Map.Entry<UUID, APlayer>> queue = new ArrayList<>();
+	public static boolean refillingQueue = false;
 
 	public static void init() {
 
@@ -65,8 +66,17 @@ public class LeaderboardManager {
 			public void run() {
 				for(int i = 0; i < 20; i++) {
 					if(queue.isEmpty()) {
-						queue.addAll(APlayerData.getAllData().entrySet());
-//						Bukkit.broadcastMessage(ChatColor.translateAlternateColorCodes('&', "&b&lDEBUG! &7Refilling leaderboard queue!"));
+						if(refillingQueue) return;
+						refillingQueue = true;
+						new BukkitRunnable() {
+							@Override
+							public void run() {
+								queue = new ArrayList<>(APlayerData.getAllData().entrySet());
+								refillingQueue = false;
+//								AOutput.broadcast("&b&lDEBUG! &7Refilled leaderboard queue!");
+							}
+						}.runTaskAsynchronously(PitSim.INSTANCE);
+						return;
 					}
 					Map.Entry<UUID, APlayer> entry = queue.remove(0);
 					for(Leaderboard leaderboard : leaderboards) leaderboard.calculate(entry.getKey(), entry.getValue());
