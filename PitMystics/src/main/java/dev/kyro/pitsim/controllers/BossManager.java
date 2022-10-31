@@ -330,6 +330,7 @@ public class BossManager implements Listener {
 
     public static void giveSouls(Player player, int amount) {
         PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
+        amount *= TimeManager.getHalloweenSoulMultiplier();
 
         pitPlayer.taintedSouls += amount;
         pitPlayer.soulsGathered += amount;
