@@ -149,6 +149,8 @@ public class GuildIntegrationManager implements Listener {
 
 	@EventHandler
 	public void onWithdrawal(GuildWithdrawalEvent event) {
+		System.out.println("Withdrawal event");
+
 		Player player = event.getPlayer();
 		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
 		if(pitPlayer.level < 100) {
