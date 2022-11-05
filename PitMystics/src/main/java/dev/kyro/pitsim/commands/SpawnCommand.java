@@ -1,11 +1,10 @@
 package dev.kyro.pitsim.commands;
 
-import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.controllers.HopperManager;
 import dev.kyro.pitsim.controllers.MapManager;
 import dev.kyro.pitsim.controllers.SpawnManager;
 import dev.kyro.pitsim.controllers.objects.Hopper;
-import dev.kyro.pitsim.events.PlayerSpawnEvent;
+import dev.kyro.pitsim.events.PlayerSpawnCommandEvent;
 import dev.kyro.pitsim.helmetabilities.PhoenixAbility;
 import dev.kyro.pitsim.perks.Streaker;
 import org.bukkit.Bukkit;
@@ -18,15 +17,12 @@ import org.bukkit.entity.Player;
 public class SpawnCommand implements CommandExecutor {
 	@Override
 	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
-
+		if(!(sender instanceof Player)) return false;
 		Player player = (Player) sender;
-		if(player.getWorld() == MapManager.getDarkzone() && !player.isOp()) {
-			AOutput.error(player, "&c&lNOPE! &7You cannot /spawn in the darkzone.");
-			return false;
-		}
 
-		//TODO: Implement cancellable
-		Bukkit.getPluginManager().callEvent(new PlayerSpawnEvent(player));
+		PlayerSpawnCommandEvent event = new PlayerSpawnCommandEvent(player);
+		Bukkit.getPluginManager().callEvent(event);
+		if(event.isCancelled() && !player.isOp()) return false;
 
 		SpawnManager.lastLocationMap.remove(player);
 		Location teleportLoc = MapManager.currentMap.getSpawn(player.getWorld());

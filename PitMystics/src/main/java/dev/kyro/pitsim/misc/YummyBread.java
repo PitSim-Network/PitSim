@@ -76,7 +76,7 @@ public class YummyBread implements Listener {
 	}
 
 	@EventHandler
-	public void onSpawn(PlayerSpawnEvent event) {
+	public void onSpawn(PlayerSpawnCommandEvent event) {
 		Player player = event.getPlayer();
 		breadCooldownLength.remove(player.getUniqueId());
 		breadCooldown.remove(player.getUniqueId());

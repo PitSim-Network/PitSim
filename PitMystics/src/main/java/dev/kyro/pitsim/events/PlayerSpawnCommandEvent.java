@@ -5,11 +5,11 @@ import org.bukkit.event.Cancellable;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.player.PlayerEvent;
 
-public class PlayerSpawnEvent extends PlayerEvent implements Cancellable {
+public class PlayerSpawnCommandEvent extends PlayerEvent implements Cancellable {
 	private static final HandlerList HANDLERS_LIST = new HandlerList();
 	private boolean isCancelled;
 
-	public PlayerSpawnEvent(Player player) {
+	public PlayerSpawnCommandEvent(Player player) {
 		super(player);
 	}
 
