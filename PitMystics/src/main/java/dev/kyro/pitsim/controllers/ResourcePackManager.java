@@ -1,7 +1,5 @@
 package dev.kyro.pitsim.controllers;
 
-import dev.kyro.arcticapi.data.APlayer;
-import dev.kyro.arcticapi.data.APlayerData;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.TextComponent;
@@ -17,7 +15,9 @@ public class ResourcePackManager implements Listener {
 	public void onJoin(PlayerJoinEvent event) {
 		PitPlayer pitPlayer = PitPlayer.getPitPlayer(event.getPlayer());
 		if(pitPlayer.promptPack) {
-			event.getPlayer().setResourcePack("https://cdn.discordapp.com/attachments/803483152630677524/903075400442314772/PitSim.zip");
+			event.getPlayer().setResourcePack("https://cdn.discordapp.com/attachments/803483152630677524/1035038648552394782/Nebula_PitEdit.zip");
+
+//			event.getPlayer().setResourcePack("https://cdn.discordapp.com/attachments/803483152630677524/903075400442314772/PitSim.zip");
 		} else {
 			TextComponent nonClick = new TextComponent(ChatColor.translateAlternateColorCodes('&', "&c&lWe recommend you use our resource pack for a better\n&c&lgameplay experience. To do so, click "));
 			TextComponent click = new TextComponent(ChatColor.translateAlternateColorCodes('&', "&6&lhere."));

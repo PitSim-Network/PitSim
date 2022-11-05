@@ -1,7 +1,6 @@
 package dev.kyro.pitsim.misc;
 
 import de.tr7zw.nbtapi.NBTItem;
-import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.enums.NBTTag;
 import org.bukkit.Material;
 import org.bukkit.entity.LivingEntity;

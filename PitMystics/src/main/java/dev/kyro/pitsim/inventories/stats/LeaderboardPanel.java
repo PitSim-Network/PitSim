@@ -2,12 +2,10 @@ package dev.kyro.pitsim.inventories.stats;
 
 import dev.kyro.arcticapi.gui.AGUI;
 import dev.kyro.arcticapi.gui.AGUIPanel;
-import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.controllers.LeaderboardManager;
 import dev.kyro.pitsim.controllers.objects.Leaderboard;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.controllers.objects.PlayerStats;
-import dev.kyro.pitsim.misc.Sounds;
 import org.bukkit.Material;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
@@ -45,9 +43,7 @@ public class LeaderboardPanel extends AGUIPanel {
 
 	@Override
 	public void onClick(InventoryClickEvent event) {
-		if(event.getClickedInventory().getHolder() != this) return;
-		Sounds.NO.play(player);
-		AOutput.error(player, "This feature is still under development");
+
 	}
 
 	@Override
