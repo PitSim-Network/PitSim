@@ -40,7 +40,7 @@ public class Tutorial {
 			completedObjectives.add(objective);
 		}
 
-//		if(!isActive()) return;
+		if(!isActive()) return;
 		updateBossBar();
 		startRunnable();
 	}
