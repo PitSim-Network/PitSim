@@ -24,7 +24,7 @@ public class StatsNPC extends PitNPC {
 
 	@Override
 	public Location getFinalLocation(World world) {
-		return MapManager.currentMap.getVnxNPCSpawn(world);
+		return MapManager.currentMap.getStatsNPCSpawn();
 	}
 
 	@Override

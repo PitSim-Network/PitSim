@@ -6,15 +6,11 @@ import dev.kyro.arcticapi.gui.AGUI;
 import dev.kyro.arcticapi.gui.AGUIPanel;
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.controllers.BoosterManager;
-import dev.kyro.pitsim.controllers.FirestoreManager;
 import dev.kyro.pitsim.controllers.ProxyMessaging;
 import dev.kyro.pitsim.controllers.objects.Booster;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.misc.Misc;
 import dev.kyro.pitsim.misc.Sounds;
-import me.clip.placeholderapi.PlaceholderAPI;
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
@@ -52,8 +48,6 @@ public class BoosterPanel extends AGUIPanel {
 						return;
 					} else {
 						Sounds.SUCCESS.play(player);
-						int timeLeft = pitPlayer.boosterTime.get(booster.refName) + 60;
-						pitPlayer.boosterTime.put(booster.refName, timeLeft);
 						Booster.setBooster(player, booster, Booster.getBoosterAmount(player, booster) - 1);
 						ProxyMessaging.sendBoosterUse(booster, player);
 					}

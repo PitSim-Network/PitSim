@@ -341,7 +341,7 @@ public class DamageManager implements Listener {
 				if(PitSim.isDarkzone()) spawnLoc = MapManager.getDarkzoneSpawn();
 
 				if(killType != KillType.FAKE) dead.teleport(spawnLoc);
-			} else if(deadNon != null) {S
+			} else if(deadNon != null) {
 				deadNon.respawn(killType == KillType.FAKE);
 			}
 		} else {

@@ -1,5 +1,6 @@
 package dev.kyro.pitsim.tutorial;
 
+import com.google.cloud.firestore.annotation.Exclude;
 import dev.kyro.arcticapi.data.APlayer;
 import dev.kyro.arcticapi.data.APlayerData;
 import dev.kyro.arcticapi.misc.AOutput;
@@ -17,27 +18,36 @@ import java.util.List;
 import java.util.UUID;
 
 public class Tutorial {
-	private final UUID uuid;
-	private final PitPlayer pitPlayer;
+	@Exclude
+	public PitPlayer pitPlayer;
+	@Exclude
+	public UUID uuid;
+	@Exclude
 	private BossBar bossBar;
 
 	public List<TutorialObjective> completedObjectives = new ArrayList<>();
 
+	public Tutorial() {
+	}
+
 	public Tutorial(PitPlayer pitPlayer, FileConfiguration playerData) {
-		this.uuid = pitPlayer.player.getUniqueId();
 		this.pitPlayer = pitPlayer;
 
 		for(String string : playerData.getStringList("tutorial.completed-objectives")) {
 			completedObjectives.add(TutorialObjective.getByRefName(string));
 		}
-
-		if(!isActive()) return;
-
-		updateBossBar();
-
-
 	}
 
+	@Exclude
+	public Tutorial init(PitPlayer pitPlayer) {
+		this.pitPlayer = pitPlayer;
+		this.uuid = pitPlayer.player.getUniqueId();
+
+		if(isActive()) updateBossBar();
+		return this;
+	}
+
+	@Exclude
 	public void save() {
 		APlayer aPlayer = APlayerData.getPlayerData(uuid);
 		FileConfiguration playerData = aPlayer.playerData;
@@ -51,6 +61,7 @@ public class Tutorial {
 		aPlayer.save();
 	}
 
+	@Exclude
 	public void completeObjective(TutorialObjective objective, long delay) {
 		if(isCompleted(objective)) return;
 
@@ -71,10 +82,12 @@ public class Tutorial {
 		else runnable.runTaskLater(PitSim.INSTANCE, delay);
 	}
 
+	@Exclude
 	public boolean isCompleted(TutorialObjective objective) {
 		return completedObjectives.contains(objective);
 	}
 
+	@Exclude
 	public void updateBossBar() {
 		Audience audience = PitSim.adventure.player(uuid);
 		TutorialObjective objective = getNextObjective();
@@ -89,6 +102,7 @@ public class Tutorial {
 		this.bossBar = fullBar;
 	}
 
+	@Exclude
 	public TutorialObjective getNextObjective() {
 		for(TutorialObjective value : TutorialObjective.values()) {
 			if(!completedObjectives.contains(value)) return value;
@@ -96,14 +110,17 @@ public class Tutorial {
 		return null;
 	}
 
+	@Exclude
 	public UUID getUUID() {
 		return uuid;
 	}
 
+	@Exclude
 	public boolean isActive() {
-		return pitPlayer.prestige <= 1 || completedObjectives.size() < TutorialObjective.values().length;
+		return pitPlayer.prestige <= 1 && completedObjectives.size() < TutorialObjective.values().length;
 	}
 
+	@Exclude
 	public void sendMessage(String text, long ticks) {
 		new BukkitRunnable() {
 			@Override

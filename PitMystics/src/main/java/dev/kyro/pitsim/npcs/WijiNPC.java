@@ -21,7 +21,7 @@ public class WijiNPC extends PitNPC {
 
 	@Override
 	public Location getFinalLocation(World world) {
-		return MapManager.currentMap.getWijiNPCSpawn(world);
+		return MapManager.currentMap.getWijiNPCSpawn();
 	}
 
 	@Override

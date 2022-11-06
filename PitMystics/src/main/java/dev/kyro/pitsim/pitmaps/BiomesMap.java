@@ -1,11 +1,9 @@
 package dev.kyro.pitsim.pitmaps;
 
 import dev.kyro.pitsim.controllers.BoosterManager;
-import dev.kyro.pitsim.controllers.MapManager;
 import dev.kyro.pitsim.controllers.objects.Booster;
 import dev.kyro.pitsim.controllers.objects.PitMap;
 import org.bukkit.Location;
-import org.bukkit.World;
 
 public class BiomesMap extends PitMap {
 	public BiomesMap(String worldName) {
@@ -62,7 +60,7 @@ public class BiomesMap extends PitMap {
 	}
 
 	@Override
-	public Location getUpgradeNPCSpawn() {
+	public Location getUpgradesNPCSpawn() {
 		return new Location(world, 10.5, 88, 4.5, 90, 0);
 	}
 
@@ -87,7 +85,7 @@ public class BiomesMap extends PitMap {
 	}
 
 	@Override
-	public Location getVnxNPCSpawn() {
+	public Location getStatsNPCSpawn() {
 		return new Location(world, 2.5, 88, -8.5, 10, 0);
 	}
 
@@ -97,7 +95,7 @@ public class BiomesMap extends PitMap {
 	}
 
 	@Override
-	public Location getKitNPCSpawn(World world) {
+	public Location getKitsNPCSpawn() {
 		return new Location(world, -2.5, 90, 12.5, -145, 15);
 	}
 }

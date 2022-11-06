@@ -140,8 +140,8 @@ public class PitPlayer {
 
 	public boolean darkzoneCutscene = false;
 
-	public Tutorial tutorial;
 	public PlayerStats stats = new PlayerStats();
+	public Tutorial tutorial = new Tutorial();
 	private PassData passData = new PassData();
 
 	public Map<String, UnlockedCosmeticData> unlockedCosmeticsMap = new HashMap<>();
@@ -392,6 +392,7 @@ public class PitPlayer {
 		}
 
 		stats.init(this);
+		tutorial.init(this);
 		updateXPBar();
 	}
 

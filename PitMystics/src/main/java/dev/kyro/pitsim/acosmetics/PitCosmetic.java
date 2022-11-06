@@ -168,7 +168,7 @@ public abstract class PitCosmetic implements Listener {
 	}
 
 	public boolean nearMid(Player player) {
-		return !MapManager.inDarkzone(player) && MapManager.currentMap.getMid(player.getWorld()).distance(player.getLocation()) < MID_RANGE;
+		return !MapManager.inDarkzone(player) && MapManager.currentMap.getMid().distance(player.getLocation()) < MID_RANGE;
 	}
 
 	public void dropItem(ItemStack itemStack, Location location, double randomX, double randomY, double randomZ) {

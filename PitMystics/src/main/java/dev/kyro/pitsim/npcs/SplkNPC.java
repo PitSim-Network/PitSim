@@ -21,7 +21,7 @@ public class SplkNPC extends PitNPC {
 
 	@Override
 	public Location getFinalLocation(World world) {
-		return MapManager.currentMap.getSplkNPCSpawn(world);
+		return MapManager.currentMap.getSplkNPCSpawn();
 	}
 
 	@Override

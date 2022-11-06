@@ -27,7 +27,7 @@ public class KitNPC extends PitNPC {
 
 	@Override
 	public Location getFinalLocation(World world) {
-		return MapManager.currentMap.getKitNPCSpawn(world);
+		return MapManager.currentMap.getKitsNPCSpawn();
 	}
 
 	@Override

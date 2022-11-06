@@ -1,10 +1,8 @@
 package dev.kyro.pitsim.controllers;
 
 import dev.kyro.arcticapi.misc.AOutput;
-import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.controllers.objects.PitMap;
 import dev.kyro.pitsim.events.PlayerSpawnCommandEvent;
-import dev.kyro.pitsim.misc.Misc;
 import dev.kyro.pitsim.misc.SchematicPaste;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -13,8 +11,6 @@ import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.potion.PotionEffectType;
-import org.bukkit.scheduler.BukkitRunnable;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -28,7 +24,7 @@ public class MapManager implements Listener {
 
 	public static Location initialDarkzoneSpawn = new Location(getDarkzone(), 173, 92, -93.5, -90, 0);
 
-	public static void openPortal() {
+	public static void onStart() {
 		enablePortal(currentMap.world);
 
 		for(Player onlinePlayer : Bukkit.getOnlinePlayers()) {

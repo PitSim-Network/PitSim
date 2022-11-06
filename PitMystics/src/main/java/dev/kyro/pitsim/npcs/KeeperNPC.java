@@ -1,7 +1,10 @@
 package dev.kyro.pitsim.npcs;
 
+import dev.kyro.arcticapi.misc.AOutput;
+import dev.kyro.pitsim.controllers.LobbySwitchManager;
 import dev.kyro.pitsim.controllers.MapManager;
 import dev.kyro.pitsim.controllers.objects.PitNPC;
+import dev.kyro.pitsim.inventories.KeeperGUI;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
@@ -21,7 +24,7 @@ public class KeeperNPC extends PitNPC {
 
 	@Override
 	public Location getFinalLocation(World world) {
-		return MapManager.currentMap.getKeeperNPCSpawn(world);
+		return MapManager.currentMap.getKeeperNPCSpawn();
 	}
 
 	@Override
@@ -31,6 +34,12 @@ public class KeeperNPC extends PitNPC {
 
 	@Override
 	public void onClick(Player player) {
-		MapManager.changeLobbies(player);
+		if(LobbySwitchManager.recentlyJoined.contains(player)) {
+			AOutput.error(player, "&c&lNOPE! &7You cannot use this command for 5 seconds after joining!");
+			return;
+		}
+
+		KeeperGUI keeperGUI = new KeeperGUI(player);
+		keeperGUI.open();
 	}
 }

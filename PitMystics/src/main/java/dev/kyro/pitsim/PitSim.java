@@ -461,14 +461,15 @@ public class PitSim extends JavaPlugin {
 	}
 
 	private void registerNPCs() {
-		NPCManager.registerNPC(new UpgradeNPC(MapManager.currentMap.lobbies));
-		NPCManager.registerNPC(new PrestigeNPC(MapManager.currentMap.lobbies));
-		NPCManager.registerNPC(new KeeperNPC(MapManager.currentMap.lobbies));
-		NPCManager.registerNPC(new KitNPC(MapManager.currentMap.lobbies));
+		NPCManager.registerNPC(new UpgradeNPC(Collections.singletonList(MapManager.currentMap.world)));
+		NPCManager.registerNPC(new PrestigeNPC(Collections.singletonList(MapManager.currentMap.world)));
+		NPCManager.registerNPC(new KeeperNPC(Collections.singletonList(MapManager.currentMap.world)));
+		NPCManager.registerNPC(new KitNPC(Collections.singletonList(MapManager.currentMap.world)));
+		NPCManager.registerNPC(new StatsNPC(Collections.singletonList(MapManager.currentMap.world)));
 
-		NPCManager.registerNPC(new KyroNPC(MapManager.currentMap.lobbies));
-		NPCManager.registerNPC(new WijiNPC(MapManager.currentMap.lobbies));
-		NPCManager.registerNPC(new SplkNPC(MapManager.currentMap.lobbies));
+		NPCManager.registerNPC(new KyroNPC(Collections.singletonList(MapManager.currentMap.world)));
+		NPCManager.registerNPC(new WijiNPC(Collections.singletonList(MapManager.currentMap.world)));
+		NPCManager.registerNPC(new SplkNPC(Collections.singletonList(MapManager.currentMap.world)));
 
 		NPCManager.registerNPC(new TaintedShopNPC(Collections.singletonList(MapManager.getDarkzone())));
 		NPCManager.registerNPC(new LeggingsShopNPC(Collections.singletonList(MapManager.getDarkzone())));

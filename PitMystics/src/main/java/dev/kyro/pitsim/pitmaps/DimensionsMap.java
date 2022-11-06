@@ -1,9 +1,7 @@
 package dev.kyro.pitsim.pitmaps;
 
-import dev.kyro.pitsim.controllers.MapManager;
 import dev.kyro.pitsim.controllers.objects.PitMap;
 import org.bukkit.Location;
-import org.bukkit.World;
 
 public class DimensionsMap extends PitMap {
 	public DimensionsMap(String worldName) {
@@ -50,7 +48,7 @@ public class DimensionsMap extends PitMap {
 	}
 
 	@Override
-	public Location getUpgradeNPCSpawn() {
+	public Location getUpgradesNPCSpawn() {
 		return new Location(world, -7.5, 88, -1.5, -90, 0);
 	}
 
@@ -75,7 +73,7 @@ public class DimensionsMap extends PitMap {
 	}
 
 	@Override
-	public Location getVnxNPCSpawn() {
+	public Location getStatsNPCSpawn() {
 		return new Location(world, -1.5, 88, 10.5, 180, 0);
 	}
 
@@ -86,7 +84,7 @@ public class DimensionsMap extends PitMap {
 
 //	TODO: Add
 	@Override
-	public Location getKitNPCSpawn(World world) {
+	public Location getKitsNPCSpawn() {
 		return null;
 	}
 }

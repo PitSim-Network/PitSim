@@ -30,7 +30,7 @@ public abstract class PitMap {
 
 	public abstract Location getMid();
 
-	public abstract Location getUpgradeNPCSpawn();
+	public abstract Location getUpgradesNPCSpawn();
 
 	public abstract Location getPrestigeNPCSpawn();
 
@@ -40,11 +40,11 @@ public abstract class PitMap {
 
 	public abstract Location getSplkNPCSpawn();
 
+	public abstract Location getStatsNPCSpawn();
+
 	public abstract Location getKeeperNPCSpawn();
 
-	public abstract Location getKitNPCSpawn();
-
-	public abstract Location getKeeperNPC();
+	public abstract Location getKitsNPCSpawn();
 
 	public double getY() {
 		return getMid().getY();

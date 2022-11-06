@@ -18,7 +18,6 @@ import net.minecraft.server.v1_8_R3.EntityPlayer;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
 import org.bukkit.entity.Entity;
@@ -104,11 +103,11 @@ public class Non {
 			}
 			if(count % 2 == 0 && target != null) Util.faceLocation(non, target.getLocation());
 			if(count % 20 == 0) {
-				Location midLoc = MapManager.currentMap.getMid(world);
+				Location midLoc = MapManager.currentMap.getMid();
 				double distanceFromMid = Math.sqrt(Math.pow(midLoc.getX() - non.getLocation().getX(), 2) + Math.pow(midLoc.getZ() - non.getLocation().getZ(), 2));
 				if(distanceFromMid >= NonManager.MAX_DISTANCE_FROM_MID) {
 					non.setHealth(non.getMaxHealth());
-					non.teleport(MapManager.currentMap.getNonSpawn(world));
+					non.teleport(MapManager.currentMap.getNonSpawn());
 				}
 			}
 		} else respawn(false);
@@ -196,7 +195,7 @@ public class Non {
 
 	public void respawn(boolean fakeKill) {
 		if(!fakeKill) nonState = NonState.RESPAWNING;
-		Location spawnLoc = MapManager.currentMap.getNonSpawn(world);
+		Location spawnLoc = MapManager.currentMap.getNonSpawn();
 
 		if(!npc.isSpawned() || non == null) spawn();
 		try {

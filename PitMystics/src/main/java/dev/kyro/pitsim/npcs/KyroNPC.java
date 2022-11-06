@@ -21,7 +21,7 @@ public class KyroNPC extends PitNPC {
 
 	@Override
 	public Location getFinalLocation(World world) {
-		return MapManager.currentMap.getKyroNPCSpawn(world);
+		return MapManager.currentMap.getKyroNPCSpawn();
 	}
 
 	@Override

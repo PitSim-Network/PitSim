@@ -22,7 +22,7 @@ public class PrestigeNPC extends PitNPC {
 
 	@Override
 	public Location getFinalLocation(World world) {
-		return MapManager.currentMap.getPrestigeNPCSpawn(world);
+		return MapManager.currentMap.getPrestigeNPCSpawn();
 	}
 
 	@Override

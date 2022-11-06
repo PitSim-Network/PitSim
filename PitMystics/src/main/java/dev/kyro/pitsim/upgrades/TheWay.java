@@ -1,6 +1,5 @@
 package dev.kyro.pitsim.upgrades;
 
-import dev.kyro.arcticapi.gui.AGUIPanel;
 import dev.kyro.arcticapi.misc.AUtil;
 import dev.kyro.pitsim.controllers.UpgradeManager;
 import dev.kyro.pitsim.controllers.objects.RenownUpgrade;
@@ -39,11 +38,6 @@ public class TheWay extends RenownUpgrade {
 		meta.setLore(UpgradeManager.loreBuilder(this, player, lore, isCustomPanel));
 		item.setItemMeta(meta);
 		return item;
-	}
-
-	@Override
-	public AGUIPanel getCustomPanel() {
-		return null;
 	}
 
 	@Override

@@ -5,7 +5,6 @@ import dev.kyro.pitsim.controllers.objects.Booster;
 import dev.kyro.pitsim.controllers.objects.Non;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
-import org.bukkit.World;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
@@ -48,19 +47,16 @@ public class NonManager implements Listener {
 				}
 
 				if(skinLoadedBotIGNS.isEmpty()) return;
-				for(World world : MapManager.currentMap.lobbies) {
-					if(!MapManager.multiLobbies && world != MapManager.currentMap.firstLobby) continue;
-					for(int i = 0; i < 3; i++) {
-						if(nons.size() >= getMaxNons(world)) break;
+				for(int i = 0; i < 3; i++) {
+					if(nons.size() >= getMaxNons()) break;
 
-						Non non = new Non(skinLoadedBotIGNS.get((int) (Math.random() * skinLoadedBotIGNS.size())), world);
-						new BukkitRunnable() {
-							@Override
-							public void run() {
-								non.remove();
-							}
-						}.runTaskLater(PitSim.INSTANCE, (long) (20 * 60 * (Math.random() * 10 + 5)));
-					}
+					Non non = new Non(skinLoadedBotIGNS.get((int) (Math.random() * skinLoadedBotIGNS.size())));
+					new BukkitRunnable() {
+						@Override
+						public void run() {
+							non.remove();
+						}
+					}.runTaskLater(PitSim.INSTANCE, (long) (20 * 60 * (Math.random() * 10 + 5)));
 				}
 			}
 		}.runTaskTimer(PitSim.INSTANCE, 40L, 20);
