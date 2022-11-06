@@ -331,9 +331,9 @@ public class Uberstreak extends Megastreak {
 		FEATHER_1(3),
 		FEATHER_2(2),
 		FEATHER_3(1),
-		VILE_3(6),
-		VILE_5(4),
-		VILE_10(2),
+		VILE_2(6),
+		VILE_3(4),
+		VILE_5(2),
 		P1_HELMET(5),
 		P1_CHESTPLATE(5),
 		P1_LEGGINGS(7),
@@ -410,15 +410,15 @@ public class Uberstreak extends Megastreak {
 			} else if(this == FEATHER_3) {
 				FunkyFeather.giveFeather(player, 3);
 				uberMessage("&33x Funky Feather", pitPlayer);
+			} else if(this == VILE_2) {
+				ChunkOfVile.giveVile(player, 2);
+				uberMessage("&52x Chunk of Vile", pitPlayer);
 			} else if(this == VILE_3) {
 				ChunkOfVile.giveVile(player, 3);
 				uberMessage("&53x Chunk of Vile", pitPlayer);
 			} else if(this == VILE_5) {
 				ChunkOfVile.giveVile(player, 5);
 				uberMessage("&55x Chunk of Vile", pitPlayer);
-			} else if(this == VILE_10) {
-				ChunkOfVile.giveVile(player, 10);
-				uberMessage("&510x Chunk of Vile", pitPlayer);
 			} else if(this == P1_HELMET) {
 				ProtArmor.getArmor(player, "helmet");
 				uberMessage("&bProtection I Diamond Helmet", pitPlayer);
