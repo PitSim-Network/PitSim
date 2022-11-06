@@ -172,6 +172,7 @@ public class PitPlayer {
 
 		aPlayer.save();
 		stats.save();
+		tutorial.save();
 	}
 
 	public PitPlayer(Player player) {
@@ -237,6 +238,7 @@ public class PitPlayer {
 			}
 
 			stats = new PlayerStats(this, playerData);
+			tutorial = new TutorialData(this, playerData);
 			updateXPBar();
 
 			for (int i = 0; i < brewingSessions.length; i++) {
