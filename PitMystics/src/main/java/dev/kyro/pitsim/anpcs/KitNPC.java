@@ -33,10 +33,11 @@ public class KitNPC extends PitNPC {
 	@Override
 	public void createNPC(Location location) {
 		NPCRegistry registry = CitizensAPI.getNPCRegistry();
-		NPC npc = registry.createNPC(EntityType.RABBIT, "");
+		NPC npc = registry.createNPC(EntityType.RABBIT, " ");
 		npc.spawn(location);
 		Rabbit rabbit = (Rabbit) npc.getEntity();
 		rabbit.setRabbitType(Rabbit.Type.WHITE);
+		npc.getEntity().setCustomNameVisible(false);
 		npcs.add(npc);
 	}
 

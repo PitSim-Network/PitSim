@@ -29,7 +29,7 @@ public class UpgradeNPC extends PitNPC {
 
 	@Override
 	public void createNPC(Location location) {
-		spawnVillagerNPC("", location);
+		spawnVillagerNPC(" ", location);
 	}
 
 	@Override
