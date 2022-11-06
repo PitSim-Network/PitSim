@@ -28,8 +28,12 @@ public class ResourceCommand implements CommandExecutor {
 			} else {
 				AOutput.error(player, "&cCorrect usage: /resource toggle");
 			}
-		} else
-			player.setResourcePack("https://cdn.discordapp.com/attachments/803483152630677524/903075400442314772/PitSim.zip");
+		} else {
+//			ube
+//			player.setResourcePack("https://cdn.discordapp.com/attachments/803483152630677524/903075400442314772/PitSim.zip");
+//			neverglitch
+			player.setResourcePack("https://cdn.discordapp.com/attachments/801905085130211388/1038659555791474718/Nebula_PitEdit.zip");
+		}
 
 
 		return false;
