@@ -109,7 +109,7 @@ public class Tutorial {
 	}
 
 	public boolean isActive() {
-		return pitPlayer.prestige <= 1 || completedObjectives.size() < TutorialObjective.values().length;
+		return pitPlayer.prestige <= 1 && completedObjectives.size() < TutorialObjective.values().length;
 	}
 
 	public void sendMessage(String text, long ticks) {

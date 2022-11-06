@@ -30,7 +30,7 @@ public class PrestigeNPC extends PitNPC {
 
 	@Override
 	public void createNPC(Location location) {
-		spawnVillagerNPC("", location);
+		spawnVillagerNPC(" ", location);
 	}
 
 	@Override

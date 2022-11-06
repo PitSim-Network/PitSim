@@ -26,17 +26,15 @@ import java.util.*;
 
 public class CleaveSpell extends PitEnchant {
 
-    public static Map<UUID, ArmorStand> stands = new HashMap<>();
-    public static List<UUID> remove = new ArrayList<>();
+    public static Map<UUID, ArmorStand> standMap = new HashMap<>();
     public static int i;
 
     static {
         new BukkitRunnable() {
             @Override
             public void run() {
-                for (Map.Entry<UUID, ArmorStand> entry : stands.entrySet()) {
+                for (Map.Entry<UUID, ArmorStand> entry : standMap.entrySet()) {
                     entry.getValue().setVelocity(entry.getValue().getVelocity().clone().setY(0));
-                    if(entry.getValue().getVelocity().getX() == 0) remove.add(entry.getKey());
                     for (Entity nearbyEntity : entry.getValue().getNearbyEntities(40, 40, 40)) {
                         if(!(nearbyEntity instanceof Player)) continue;
                         Player player = (Player) nearbyEntity;
@@ -64,19 +62,6 @@ public class CleaveSpell extends PitEnchant {
                         Sounds.CLEAVE3.play(player);
                     }
                 }
-                for (UUID id : remove) {
-                    Player player = null;
-                    for (Player online : Bukkit.getOnlinePlayers()) {
-                        if(online.getUniqueId().equals(id)) player = online;
-                    }
-                    if(player == null) continue;
-                    if(stands.containsKey(id)) {
-                        stands.get(id).remove();
-                        stands.remove(id);
-                        Sounds.CLEAVE2.play(player);
-                    }
-                }
-                remove.clear();
             }
         }.runTaskTimer(PitSim.INSTANCE, 2, 2);
     }
@@ -104,7 +89,8 @@ public class CleaveSpell extends PitEnchant {
 
         Player player = event.getPlayer();
         ArmorStand stand = (ArmorStand) player.getWorld().spawnEntity(player.getLocation().add(0, 1, 0), EntityType.ARMOR_STAND);
-        stands.put(player.getUniqueId(), stand);
+        if(standMap.containsKey(player.getUniqueId())) standMap.remove(player.getUniqueId()).remove();
+        standMap.put(player.getUniqueId(), stand);
         stand.setGravity(true);
         Vector vector = player.getTargetBlock((Set<Material>) null, 30).getLocation().toVector().subtract(player.getLocation().add(0, 1, 0).toVector()).setY(2).multiply(0.1);
 
@@ -130,7 +116,8 @@ public class CleaveSpell extends PitEnchant {
         new BukkitRunnable() {
             @Override
             public void run() {
-                remove.add(stand.getUniqueId());
+                standMap.remove(player.getUniqueId(), stand);
+                stand.remove();
             }
         }.runTaskLater(PitSim.INSTANCE, 40);
     }

@@ -63,6 +63,7 @@ public abstract class PitNPC implements Listener {
 	public void spawnVillagerNPC(String name, Location location) {
 		NPC npc = registry.createNPC(EntityType.VILLAGER, name);
 		npc.spawn(location);
+		npc.getEntity().setCustomNameVisible(false);
 		npcs.add(npc);
 	}
 

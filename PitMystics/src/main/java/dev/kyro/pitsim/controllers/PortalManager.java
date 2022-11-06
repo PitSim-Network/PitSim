@@ -9,7 +9,6 @@ import dev.kyro.pitsim.controllers.objects.Hopper;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.misc.Misc;
 import dev.kyro.pitsim.misc.Sounds;
-import dev.kyro.pitsim.perks.Streaker;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -96,7 +95,6 @@ public class PortalManager implements Listener {
 		if(player.getWorld() == Bukkit.getWorld("darkzone")) {
 			APlayer aPlayer = APlayerData.getPlayerData(player);
 			FileConfiguration playerData = aPlayer.playerData;
-			Streaker.playerTimes.remove(player);
 			if(!playerData.contains("darkzonepreview")) {
 				CutsceneManager.play(player);
 				return;

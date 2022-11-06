@@ -184,6 +184,7 @@ public class EnchantManager implements Listener {
 
 	public static boolean isIllegalItem(ItemStack itemStack) {
 		if(Misc.isAirOrNull(itemStack)) return false;
+		if(itemStack.getType() == Material.FISHING_ROD) return true;
 		NBTItem nbtItem = new NBTItem(itemStack);
 		if(!nbtItem.hasKey(NBTTag.ITEM_UUID.getRef())) return false;
 

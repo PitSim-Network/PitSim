@@ -454,7 +454,7 @@ public class MobManager implements Listener {
 			for (ArmorStand value : BrewingManager.brewingStands) {
 				if(value.getUniqueId().equals(entity.getUniqueId())) continue main;
 			}
-			for (ArmorStand value : CleaveSpell.stands.values()) {
+			for (ArmorStand value : CleaveSpell.standMap.values()) {
 				if(value.getUniqueId().equals(entity.getUniqueId())) continue main;
 			}
 			for (UUID pedestalArmorStand : AuctionDisplays.pedestalArmorStands) {
