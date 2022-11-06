@@ -5,6 +5,7 @@ import dev.kyro.pitsim.controllers.MapManager;
 import dev.kyro.pitsim.controllers.SkinManager;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.inventories.*;
+import dev.kyro.pitsim.inventories.help.HelpGUI;
 import dev.kyro.pitsim.inventories.stats.StatGUI;
 import dev.kyro.pitsim.slayers.tainted.SimpleSkin;
 import net.citizensnpcs.api.CitizensAPI;
@@ -18,6 +19,7 @@ import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
+import org.bukkit.entity.Rabbit;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -35,6 +37,7 @@ public class SpawnNPCs implements Listener {
 	public static List<NPC> splk = new ArrayList<>();
 	public static List<NPC> vnx = new ArrayList<>();
 	public static List<NPC> keeper = new ArrayList<>();
+	public static List<NPC> kitRabbit = new ArrayList<>();
 
 	public static NPC taintedShop;
 	public static NPC leggingMerchant;
@@ -72,6 +75,7 @@ public class SpawnNPCs implements Listener {
 			createSplkNPC(world);
 			createVnx2NPC(world);
 			createKeeperNPC(world);
+			createKitRabbitNPC(world);
 		}
 		createTaintedShopNPC();
 		createLeggingNPC();
@@ -155,7 +159,13 @@ public class SpawnNPCs implements Listener {
 		} catch(Exception ignored) {
 			System.out.println("error despawning npc");
 		}
-
+		try {
+			for(NPC npc : kitRabbit) {
+				npc.destroy();
+			}
+		} catch(Exception ignored) {
+			System.out.println("error despawning npc");
+		}
 	}
 
 	public static void createUpgradeNPC(World world) {
@@ -244,10 +254,19 @@ public class SpawnNPCs implements Listener {
 			public void run() {
 				NPC npc = registry.createNPC(EntityType.PLAYER, "&2&lTHE KEEPER");
 				keeper.add(npc);
-				npc.spawn(MapManager.currentMap.getKeeperNPC(world));
+				npc.spawn(MapManager.currentMap.getKeeperNPCSpawn(world));
 				SkinManager.skinNPC(npc, "googasesportsog");
 			}
 		});
+	}
+
+	public static void createKitRabbitNPC(World world) {
+		NPCRegistry registry = CitizensAPI.getNPCRegistry();
+		NPC npc = registry.createNPC(EntityType.RABBIT, "");
+		kitRabbit.add(npc);
+		npc.spawn(MapManager.currentMap.getKitRabbitNPCSpawn(world));
+		Rabbit rabbit = (Rabbit) npc.getEntity();
+		rabbit.setRabbitType(Rabbit.Type.WHITE);
 	}
 
 	public static void createTaintedShopNPC() {
@@ -346,6 +365,14 @@ public class SpawnNPCs implements Listener {
 		for(NPC npc : keeper) {
 			if(event.getNPC().getId() == npc.getId()) {
 				MapManager.changeLobbies(player);
+				return;
+			}
+		}
+
+		for(NPC npc : kitRabbit) {
+			if(event.getNPC().getId() == npc.getId()) {
+				HelpGUI helpGUI = new HelpGUI(player);
+				helpGUI.kitPanel.openPanel(helpGUI.kitPanel);
 				return;
 			}
 		}

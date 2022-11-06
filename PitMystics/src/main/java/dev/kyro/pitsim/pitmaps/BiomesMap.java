@@ -89,7 +89,12 @@ public class BiomesMap extends PitMap {
 	}
 
 	@Override
-	public Location getKeeperNPC(World world) {
+	public Location getKeeperNPCSpawn(World world) {
 		return new Location(world, -2.5, 88, -10, 10, 0);
+	}
+
+	@Override
+	public Location getKitRabbitNPCSpawn(World world) {
+		return new Location(world, -2.5, 90, 12.5, -145, 15);
 	}
 }

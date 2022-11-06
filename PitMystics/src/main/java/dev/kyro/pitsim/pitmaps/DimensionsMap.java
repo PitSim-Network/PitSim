@@ -77,7 +77,13 @@ public class DimensionsMap extends PitMap {
 	}
 
 	@Override
-	public Location getKeeperNPC(World world)  {
+	public Location getKeeperNPCSpawn(World world)  {
 		return new Location(world, 4.5, 88, 7.5, 150, 0);
+	}
+
+//	TODO: Add
+	@Override
+	public Location getKitRabbitNPCSpawn(World world) {
+		return null;
 	}
 }
