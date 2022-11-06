@@ -2,7 +2,10 @@ package dev.kyro.pitsim.npcs;
 
 import dev.kyro.pitsim.controllers.MapManager;
 import dev.kyro.pitsim.controllers.objects.PitNPC;
+import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.inventories.PrestigeGUI;
+import dev.kyro.pitsim.tutorial.Tutorial;
+import dev.kyro.pitsim.tutorial.TutorialObjective;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
@@ -32,6 +35,18 @@ public class PrestigeNPC extends PitNPC {
 
 	@Override
 	public void onClick(Player player) {
+
+		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
+		Tutorial tutorial = pitPlayer.tutorial;
+		if(tutorial.isActive() && !tutorial.isCompleted(TutorialObjective.PRESTIGE) && !tutorial.isInObjective) {
+
+			tutorial.sendMessage(" ", 10);
+			tutorial.sendMessage(" ", 20);
+			tutorial.completeObjective(TutorialObjective.PRESTIGE, 2 * 20);
+
+			return;
+		}
+
 		PrestigeGUI prestigeGUI = new PrestigeGUI(player);
 		prestigeGUI.open();
 	}

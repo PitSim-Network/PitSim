@@ -1,10 +1,10 @@
 package dev.kyro.pitsim.tutorial;
 
 public enum TutorialObjective {
-	PERKS("", ""),
-	KITS("", ""),
-	PRESTIGE("", ""),
-	KEEPER("", "");
+	PERKS("perks", "&ePerks and Killstreaks"),
+	KITS("kits", "&eKits"),
+	PRESTIGE("prestige", "&ePrestige and Renown"),
+	KEEPER("keeper", "&2The Keeper");
 
 	public String refName;
 	public String display;
