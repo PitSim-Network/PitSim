@@ -4,7 +4,7 @@ import dev.kyro.arcticapi.data.APlayer;
 import dev.kyro.arcticapi.data.APlayerData;
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.PitSim;
-import dev.kyro.pitsim.atutorial.TutorialData;
+import dev.kyro.pitsim.tutorial.Tutorial;
 import dev.kyro.pitsim.brewing.BrewingManager;
 import dev.kyro.pitsim.brewing.objects.BrewingSession;
 import dev.kyro.pitsim.controllers.*;
@@ -101,7 +101,7 @@ public class PitPlayer {
 	public int taintedSouls;
 
 	public PlayerStats stats;
-	public TutorialData tutorial;
+	public Tutorial tutorial;
 
 	public void save() {
 		if(BossManager.bosses.containsKey(CitizensAPI.getNPCRegistry().getNPC(player))) return;
@@ -238,7 +238,7 @@ public class PitPlayer {
 			}
 
 			stats = new PlayerStats(this, playerData);
-			tutorial = new TutorialData(this, playerData);
+			tutorial = new Tutorial(this, playerData);
 			updateXPBar();
 
 			for (int i = 0; i < brewingSessions.length; i++) {

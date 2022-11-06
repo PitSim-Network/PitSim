@@ -1,4 +1,4 @@
-package dev.kyro.pitsim.anpcs;
+package dev.kyro.pitsim.npcs;
 
 import dev.kyro.pitsim.controllers.MapManager;
 import dev.kyro.pitsim.controllers.objects.PitNPC;
@@ -8,9 +8,9 @@ import org.bukkit.entity.Player;
 
 import java.util.List;
 
-public class KyroNPC extends PitNPC {
+public class KeeperNPC extends PitNPC {
 
-	public KyroNPC(List<World> worlds) {
+	public KeeperNPC(List<World> worlds) {
 		super(worlds);
 	}
 
@@ -21,14 +21,16 @@ public class KyroNPC extends PitNPC {
 
 	@Override
 	public Location getFinalLocation(World world) {
-		return MapManager.currentMap.getKyroNPCSpawn(world);
+		return MapManager.currentMap.getKeeperNPCSpawn(world);
 	}
 
 	@Override
 	public void createNPC(Location location) {
-		spawnPlayerNPC("&9KyroKrypt", "KyroKrypt", location);
+		spawnPlayerNPC("&2&lTHE KEEPER", "googasesportsog", location);
 	}
 
 	@Override
-	public void onClick(Player player) {}
+	public void onClick(Player player) {
+		MapManager.changeLobbies(player);
+	}
 }

@@ -1,4 +1,4 @@
-package dev.kyro.pitsim.anpcs;
+package dev.kyro.pitsim.npcs;
 
 import dev.kyro.pitsim.controllers.MapManager;
 import dev.kyro.pitsim.controllers.objects.PitNPC;
@@ -8,9 +8,9 @@ import org.bukkit.entity.Player;
 
 import java.util.List;
 
-public class WijiNPC extends PitNPC {
+public class SplkNPC extends PitNPC {
 
-	public WijiNPC(List<World> worlds) {
+	public SplkNPC(List<World> worlds) {
 		super(worlds);
 	}
 
@@ -21,12 +21,12 @@ public class WijiNPC extends PitNPC {
 
 	@Override
 	public Location getFinalLocation(World world) {
-		return MapManager.currentMap.getWijiNPCSpawn(world);
+		return MapManager.currentMap.getSplkNPCSpawn(world);
 	}
 
 	@Override
 	public void createNPC(Location location) {
-		spawnPlayerNPC("&9wiji1", "wiji1", location);
+		spawnPlayerNPC("&9Splkpig", "Splkpig", location);
 	}
 
 	@Override
