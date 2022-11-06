@@ -33,7 +33,7 @@ public abstract class PitMap {
 
 	public abstract Location getMid(World world);
 
-	public abstract Location getUpgradeNPCSpawn(World world);
+	public abstract Location getPerksNPCSpawn(World world);
 
 	public abstract Location getPrestigeNPCSpawn(World world);
 

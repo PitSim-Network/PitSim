@@ -47,7 +47,7 @@ public class DimensionsMap extends PitMap {
 	}
 
 	@Override
-	public Location getUpgradeNPCSpawn(World world) {
+	public Location getPerksNPCSpawn(World world) {
 		return new Location(world, -7.5, 88, -1.5, -90, 0);
 	}
 

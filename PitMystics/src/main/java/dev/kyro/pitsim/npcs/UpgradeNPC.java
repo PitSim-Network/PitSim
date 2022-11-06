@@ -26,7 +26,7 @@ public class UpgradeNPC extends PitNPC {
 
 	@Override
 	public Location getFinalLocation(World world) {
-		return MapManager.currentMap.getUpgradeNPCSpawn(world);
+		return MapManager.currentMap.getPerksNPCSpawn(world);
 	}
 
 	@Override
