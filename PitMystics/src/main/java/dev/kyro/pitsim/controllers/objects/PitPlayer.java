@@ -4,6 +4,8 @@ import dev.kyro.arcticapi.data.APlayer;
 import dev.kyro.arcticapi.data.APlayerData;
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.PitSim;
+import dev.kyro.pitsim.killstreaks.Limiter;
+import dev.kyro.pitsim.perks.*;
 import dev.kyro.pitsim.tutorial.Tutorial;
 import dev.kyro.pitsim.brewing.BrewingManager;
 import dev.kyro.pitsim.brewing.objects.BrewingSession;
@@ -24,8 +26,6 @@ import dev.kyro.pitsim.killstreaks.Monster;
 import dev.kyro.pitsim.killstreaks.NoKillstreak;
 import dev.kyro.pitsim.megastreaks.*;
 import dev.kyro.pitsim.misc.Misc;
-import dev.kyro.pitsim.perks.NoPerk;
-import dev.kyro.pitsim.perks.Thick;
 import me.clip.placeholderapi.PlaceholderAPI;
 import net.citizensnpcs.api.CitizensAPI;
 import org.bukkit.Bukkit;
@@ -71,7 +71,7 @@ public class PitPlayer {
 
 	public int renown;
 	public PitPerk[] pitPerks = new PitPerk[4];
-	public List<Killstreak> killstreaks = Arrays.asList(NoKillstreak.INSTANCE, NoKillstreak.INSTANCE, NoKillstreak.INSTANCE);
+	public List<Killstreak> killstreaks = Arrays.asList(Limiter.INSTANCE, NoKillstreak.INSTANCE, NoKillstreak.INSTANCE);
 	public Megastreak megastreak;
 
 	public boolean playerChatDisabled;
@@ -190,14 +190,23 @@ public class PitPlayer {
 			soulsGathered = playerData.getInt("soulsgathered");
 			renown = playerData.getInt("renown");
 			for(int i = 0; i < pitPerks.length; i++) {
+				PitPerk defaultPerk = NoPerk.INSTANCE;
+				if(i == 0) defaultPerk = Vampire.INSTANCE;
+				else if(i == 1) defaultPerk = StrengthChaining.INSTANCE;
+				else if(i == 2) defaultPerk = Dirty.INSTANCE;
+				else if(i == 3) defaultPerk = Dispersion.INSTANCE;
+
 				String perkString = playerData.getString("perk-" + i);
-				PitPerk savedPerk = perkString != null ? PitPerk.getPitPerk(perkString) : NoPerk.INSTANCE;
-				pitPerks[i] = savedPerk != null ? savedPerk : NoPerk.INSTANCE;
+				PitPerk savedPerk = perkString != null ? PitPerk.getPitPerk(perkString) : defaultPerk;
+				pitPerks[i] = savedPerk != null ? savedPerk : defaultPerk;
 			}
 			for(int i = 0; i < killstreaks.size(); i++) {
+				Killstreak defaultKillstreak = NoKillstreak.INSTANCE;
+				if(i == 0) defaultKillstreak = Limiter.INSTANCE;
+
 				String killstreakString = playerData.getString("killstreak-" + i);
-				Killstreak savedKillstreak = killstreakString != null ? Killstreak.getKillstreak(killstreakString) : NoKillstreak.INSTANCE;
-				if(savedKillstreak == null) killstreaks.set(i, NoKillstreak.INSTANCE);
+				Killstreak savedKillstreak = killstreakString != null ? Killstreak.getKillstreak(killstreakString) : defaultKillstreak;
+				if(savedKillstreak == null) killstreaks.set(i, defaultKillstreak);
 				else killstreaks.set(i, savedKillstreak);
 			}
 			String streak = playerData.getString("megastreak");

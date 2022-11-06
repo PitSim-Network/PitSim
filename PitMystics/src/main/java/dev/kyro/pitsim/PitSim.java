@@ -383,6 +383,7 @@ public class PitSim extends JavaPlugin {
 		NPCManager.registerNPC(new PrestigeNPC(MapManager.currentMap.lobbies));
 		NPCManager.registerNPC(new KeeperNPC(MapManager.currentMap.lobbies));
 		NPCManager.registerNPC(new KitNPC(MapManager.currentMap.lobbies));
+		NPCManager.registerNPC(new StatsNPC(MapManager.currentMap.lobbies));
 
 		NPCManager.registerNPC(new KyroNPC(MapManager.currentMap.lobbies));
 		NPCManager.registerNPC(new WijiNPC(MapManager.currentMap.lobbies));
@@ -647,10 +648,9 @@ public class PitSim extends JavaPlugin {
 		EnchantManager.registerEnchant(new Parasite());
 		EnchantManager.registerEnchant(new Chipping());
 		EnchantManager.registerEnchant(new Fletching());
-		EnchantManager.registerEnchant(new aBowPlaceholder());
-		EnchantManager.registerEnchant(new aBowPlaceholder());
-		EnchantManager.registerEnchant(new aBowPlaceholder());
-//		EnchantManager.registerEnchant(new BottomlessQuiver());
+		EnchantManager.registerEnchant(new Sniper());
+		EnchantManager.registerEnchant(new SpammerAndProud());
+		EnchantManager.registerEnchant(new Jumpspammer());
 
 		EnchantManager.registerEnchant(new RetroGravityMicrocosm());
 		EnchantManager.registerEnchant(new Regularity());

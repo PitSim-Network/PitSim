@@ -212,7 +212,19 @@ public class DamageManager implements Listener {
 		if(PlayerManager.isRealPlayerTemp(attackEvent.attackerPlayer) && PlayerManager.isRealPlayerTemp(attackEvent.defenderPlayer) &&
 				MapManager.inDarkzone(attackEvent.attackerPlayer)) {
 			attackEvent.multipliers.add(0.5);
-			attackEvent.trueDamage /= 2.0;
+			attackEvent.trueDamage *= 0.5;
+		}
+
+//		New player defence
+		if(PlayerManager.isRealPlayerTemp(attackEvent.defenderPlayer) && PlayerManager.isRealPlayerTemp(attackEvent.attackerPlayer) &&
+				attackEvent.defenderPlayer.getLocation().distance(MapManager.currentMap.getMid(attackEvent.defenderPlayer.getWorld())) < 12) {
+			PitPlayer pitDefender = PitPlayer.getPitPlayer(attackEvent.defenderPlayer);
+			if(pitDefender.prestige < 10) {
+				int minutesPlayed = pitDefender.stats.minutesPlayed;
+				double reduction = Math.max(50 - (minutesPlayed / 8.0), 0);
+				attackEvent.multipliers.add(Misc.getReductionMultiplier(reduction));
+				attackEvent.trueDamage *= Misc.getReductionMultiplier(reduction);
+			}
 		}
 
 		double damage = attackEvent.getFinalDamage();
