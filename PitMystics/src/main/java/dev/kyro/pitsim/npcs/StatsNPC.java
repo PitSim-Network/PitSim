@@ -29,7 +29,7 @@ public class StatsNPC extends PitNPC {
 
 	@Override
 	public void createNPC(Location location) {
-		spawnPlayerNPC("&e&lLB AND STATS", Bukkit.getOfflinePlayer(UUID.fromString("e913fd01-e84e-4c6e-ad5b-7419a12de481")).getName(), location);
+		spawnPlayerNPC("&e&lLB AND STATS", Bukkit.getOfflinePlayer(UUID.fromString("e913fd01-e84e-4c6e-ad5b-7419a12de481")).getName(), location, false);
 	}
 
 	@Override

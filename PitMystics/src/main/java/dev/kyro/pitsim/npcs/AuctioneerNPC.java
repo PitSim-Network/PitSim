@@ -22,7 +22,7 @@ public class AuctioneerNPC extends PitNPC {
 
 	@Override
 	public void createNPC(Location location) {
-		spawnPlayerNPC("&8&lSHADY FIGURE", "Itz_Aethan", location);
+		spawnPlayerNPC("&8&lSHADY FIGURE", "Itz_Aethan", location, true);
 	}
 
 	@Override

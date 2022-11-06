@@ -22,7 +22,7 @@ public class PotionMasterNPC extends PitNPC {
 
 	@Override
 	public void createNPC(Location location) {
-		spawnPlayerNPC("&d&lPOTIONS", "Wiizard", location);
+		spawnPlayerNPC("&d&lPOTIONS", "Wiizard", location, false);
 	}
 
 	@Override

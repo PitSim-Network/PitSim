@@ -29,7 +29,7 @@ public class KeeperNPC extends PitNPC {
 
 	@Override
 	public void createNPC(Location location) {
-		spawnPlayerNPC("&2&lTHE KEEPER", "googasesportsog", location);
+		spawnPlayerNPC("&2&lTHE KEEPER", "googasesportsog", location, false);
 	}
 
 	@Override
