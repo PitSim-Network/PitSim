@@ -5,9 +5,9 @@ import dev.kyro.pitsim.controllers.objects.PitEnchant;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.enums.ApplyType;
 import dev.kyro.pitsim.events.KillEvent;
-import dev.kyro.pitsim.megastreaks.NoMegastreak;
 import org.bukkit.event.EventHandler;
 
+import java.text.DecimalFormat;
 import java.util.List;
 
 public class Sweaty extends PitEnchant {
@@ -26,52 +26,24 @@ public class Sweaty extends PitEnchant {
 		if(enchantLvl == 0) return;
 
 		PitPlayer pitPlayer = PitPlayer.getPitPlayer(killEvent.killerPlayer);
-		if(pitPlayer.megastreak.getClass() != NoMegastreak.class && pitPlayer.megastreak.isOnMega()) {
-			killEvent.xpCap += getCapIncrease(enchantLvl);
-			int megaKills = (int) (pitPlayer.getKills() - pitPlayer.megastreak.getRequiredKills());
-			int xp = megaKills * getXpIncrease(enchantLvl) / 2;
-			killEvent.xpReward += xp;
-		}
+		killEvent.xpCap += getCapIncrease(enchantLvl);
+		int xp = (int) ((pitPlayer.getKills() / 10) * getXpIncrease(enchantLvl));
+		killEvent.xpReward += xp;
 	}
 
 	@Override
 	public List<String> getDescription(int enchantLvl) {
-
-		if(enchantLvl == 3)
-			return new ALoreBuilder("&7Gain &b+" + getCapIncrease(enchantLvl) + " max xp&7. When combined",
-					"&7with another &bSweaty III &7item, earn", "&7a stacking &b+" + getXpIncrease(6) + " xp &7every other kill").getLore();
-		return new ALoreBuilder("&7Gain &b+" + getCapIncrease(enchantLvl) + " max xp").getLore();
-
-//		if(enchantLvl != 3) {
-//			return new ALoreBuilder("&7Earn a stacking &b+1 XP &7every",
-//					" &7kill and &b+" + getCapIncrease(enchantLvl) + " max XP &7per kill", "&7(Must be on a megastreak)").getLore();
-//		} else {
-//			return new ALoreBuilder("&7Earn a stacking &b+1 XP &7every",
-//					"&7kill and &b+" + getCapIncrease(enchantLvl) + " max XP &7per kill", "&7(Must be on a megastreak)").getLore();
-//		}
+		DecimalFormat decimalFormat = new DecimalFormat("0.#");
+		return new ALoreBuilder("&7Gain &b+" + getCapIncrease(enchantLvl) + " max XP &7on kill. Also",
+				"&7gain &b+" + decimalFormat.format(getXpIncrease(enchantLvl)) + " XP &7on kill per 10", "&7killstreak").getLore();
 	}
 
-	public int getXpIncrease(int enchantLvl) {
-		return enchantLvl == 6 ? 1 : 0;
+//	Has to be proportional
+	public double getXpIncrease(int enchantLvl) {
+		return enchantLvl * 1.0;
 	}
 
 	public int getCapIncrease(int enchantLvl) {
 		return enchantLvl * 15;
-
-//		switch(enchantLvl) {
-//			case 1:
-//				return 10;
-//			case 2:
-//				return 20;
-//			case 3:
-//				return 35;
-//			case 4:
-//				return 45;
-//			case 5:
-//				return 55;
-//			case 6:
-//				return 70;
-//		}
-//		return 0;
 	}
 }
