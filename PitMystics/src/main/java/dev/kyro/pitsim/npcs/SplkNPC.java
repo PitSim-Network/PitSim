@@ -1,17 +1,16 @@
-package dev.kyro.pitsim.anpcs;
+package dev.kyro.pitsim.npcs;
 
 import dev.kyro.pitsim.controllers.MapManager;
 import dev.kyro.pitsim.controllers.objects.PitNPC;
-import dev.kyro.pitsim.inventories.PrestigeGUI;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
 
 import java.util.List;
 
-public class PrestigeNPC extends PitNPC {
+public class SplkNPC extends PitNPC {
 
-	public PrestigeNPC(List<World> worlds) {
+	public SplkNPC(List<World> worlds) {
 		super(worlds);
 	}
 
@@ -22,17 +21,14 @@ public class PrestigeNPC extends PitNPC {
 
 	@Override
 	public Location getFinalLocation(World world) {
-		return MapManager.currentMap.getPrestigeNPCSpawn(world);
+		return MapManager.currentMap.getSplkNPCSpawn(world);
 	}
 
 	@Override
 	public void createNPC(Location location) {
-		spawnVillagerNPC(" ", location);
+		spawnPlayerNPC("&9Splkpig", "Splkpig", location);
 	}
 
 	@Override
-	public void onClick(Player player) {
-		PrestigeGUI prestigeGUI = new PrestigeGUI(player);
-		prestigeGUI.open();
-	}
+	public void onClick(Player player) {}
 }

@@ -1,4 +1,4 @@
-package dev.kyro.pitsim.anpcs;
+package dev.kyro.pitsim.npcs;
 
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.controllers.MapManager;
