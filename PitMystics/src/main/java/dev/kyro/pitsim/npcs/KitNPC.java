@@ -2,7 +2,10 @@ package dev.kyro.pitsim.npcs;
 
 import dev.kyro.pitsim.controllers.MapManager;
 import dev.kyro.pitsim.controllers.objects.PitNPC;
+import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.inventories.help.HelpGUI;
+import dev.kyro.pitsim.tutorial.Tutorial;
+import dev.kyro.pitsim.tutorial.TutorialObjective;
 import net.citizensnpcs.api.CitizensAPI;
 import net.citizensnpcs.api.npc.NPC;
 import net.citizensnpcs.api.npc.NPCRegistry;
@@ -43,6 +46,18 @@ public class KitNPC extends PitNPC {
 
 	@Override
 	public void onClick(Player player) {
+
+		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
+		Tutorial tutorial = pitPlayer.tutorial;
+		if(tutorial.isActive() && !tutorial.isCompleted(TutorialObjective.KITS) && !tutorial.isInObjective) {
+
+			tutorial.sendMessage(" ", 10);
+			tutorial.sendMessage(" ", 20);
+			tutorial.completeObjective(TutorialObjective.KITS, 2 * 20);
+
+			return;
+		}
+
 		HelpGUI helpGUI = new HelpGUI(player);
 		helpGUI.kitPanel.openPanel(helpGUI.kitPanel);
 	}

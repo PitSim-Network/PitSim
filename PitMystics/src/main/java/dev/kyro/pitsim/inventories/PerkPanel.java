@@ -11,6 +11,7 @@ import dev.kyro.pitsim.controllers.objects.PitPerk;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.megastreaks.NoMegastreak;
 import dev.kyro.pitsim.misc.Sounds;
+import dev.kyro.pitsim.tutorial.HelpItemStacks;
 import dev.kyro.pitsim.upgrades.TheWay;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -160,6 +161,8 @@ public class PerkPanel extends AGUIPanel {
 			getInventory().setItem(28 + (2 * i), builder.getItemStack());
 
 		}
+
+		getInventory().setItem(44, HelpItemStacks.getPerksItemStack());
 
 		ItemStack megaStreak = new ItemStack(pitPlayer.megastreak.guiItem().getType());
 		ItemMeta msMeta = megaStreak.getItemMeta();

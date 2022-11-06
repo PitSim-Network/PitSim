@@ -7,6 +7,7 @@ import dev.kyro.arcticapi.misc.AUtil;
 import dev.kyro.pitsim.controllers.PrestigeValues;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.misc.Sounds;
+import dev.kyro.pitsim.tutorial.HelpItemStacks;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.event.inventory.InventoryClickEvent;
@@ -20,6 +21,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class PrestigePanel extends AGUIPanel {
+
 	PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
 	PrestigeValues.PrestigeInfo prestigeInfo = PrestigeValues.getPrestigeInfo(pitPlayer.prestige);
 	PrestigeValues.PrestigeInfo nextPrestigeInfo = PrestigeValues.getPrestigeInfo(pitPlayer.prestige + 1);
@@ -107,6 +109,8 @@ public class PrestigePanel extends AGUIPanel {
 		prestigeMeta.setLore(prestigeLore);
 		prestige.setItemMeta(prestigeMeta);
 		getInventory().setItem(11, prestige);
+
+		getInventory().setItem(26, HelpItemStacks.getPrestigeItemStack());
 
 		ItemStack renown = new ItemStack(Material.BEACON);
 		ItemMeta renownMeta = renown.getItemMeta();

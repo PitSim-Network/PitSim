@@ -21,6 +21,8 @@ public class Tutorial {
 	private final PitPlayer pitPlayer;
 	private BossBar bossBar;
 
+	public boolean isInObjective = false;
+
 	public List<TutorialObjective> completedObjectives = new ArrayList<>();
 
 	public Tutorial(PitPlayer pitPlayer, FileConfiguration playerData) {
@@ -28,10 +30,12 @@ public class Tutorial {
 		this.pitPlayer = pitPlayer;
 
 		for(String string : playerData.getStringList("tutorial.completed-objectives")) {
-			completedObjectives.add(TutorialObjective.getByRefName(string));
+			TutorialObjective objective = TutorialObjective.getByRefName(string);
+			if(objective == null) continue;
+			completedObjectives.add(objective);
 		}
 
-		if(!isActive()) return;
+//		if(!isActive()) return;
 
 		updateBossBar();
 
@@ -46,6 +50,7 @@ public class Tutorial {
 		for(TutorialObjective completedObjective : completedObjectives) {
 			rawData.add(completedObjective.refName);
 		}
+		System.out.println(rawData);
 		playerData.set("tutorial.completed-objectives", rawData);
 
 		aPlayer.save();
@@ -53,17 +58,20 @@ public class Tutorial {
 
 	public void completeObjective(TutorialObjective objective, long delay) {
 		if(isCompleted(objective)) return;
+		isInObjective = true;
 
 		BukkitRunnable runnable = new BukkitRunnable() {
 			@Override
 			public void run() {
 				completedObjectives.add(objective);
 				updateBossBar();
+				AOutput.send(pitPlayer.player, "&a&lTUTORIAL!&7 Completed objective: " + objective.display);
 
 				if(completedObjectives.size() == TutorialObjective.values().length) {
 					//Tutorial Completion Code
 					//Hide Bossbar
 				}
+				isInObjective = false;
 			}
 		};
 
