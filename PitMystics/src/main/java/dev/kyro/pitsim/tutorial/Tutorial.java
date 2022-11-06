@@ -5,6 +5,7 @@ import dev.kyro.arcticapi.data.APlayerData;
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
+import dev.kyro.pitsim.misc.Sounds;
 import net.kyori.adventure.audience.Audience;
 import net.kyori.adventure.bossbar.BossBar;
 import net.kyori.adventure.text.Component;
@@ -66,10 +67,11 @@ public class Tutorial {
 				completedObjectives.add(objective);
 				updateBossBar();
 				AOutput.send(pitPlayer.player, "&a&lTUTORIAL!&7 Completed objective: " + objective.display);
+				Sounds.LEVEL_UP.play(pitPlayer.player);
 
 				if(completedObjectives.size() == TutorialObjective.values().length) {
-					//Tutorial Completion Code
-					//Hide Bossbar
+					Audience audience = PitSim.adventure.player(uuid);
+					audience.hideBossBar(bossBar);
 				}
 				isInObjective = false;
 			}
@@ -89,12 +91,11 @@ public class Tutorial {
 
 		Component name = Component.text(ChatColor.translateAlternateColorCodes('&', "&a&lOBJECTIVE: &7Interact with NPCs &7("
 				+ completedObjectives.size() + "/" +  TutorialObjective.values().length + ")"));
-		float progress = (TutorialObjective.getIndex(objective) + 1) / TutorialObjective.values().length;
+		float progress = ((float) completedObjectives.size()) / (float) TutorialObjective.values().length;
 
-		BossBar fullBar = bossBar == null ? BossBar.bossBar(name, progress, BossBar.Color.PINK, BossBar.Overlay.PROGRESS) : bossBar;
+		bossBar = BossBar.bossBar(name, progress, BossBar.Color.PINK, BossBar.Overlay.PROGRESS);
 
-		audience.showBossBar(fullBar);
-		this.bossBar = fullBar;
+		audience.showBossBar(bossBar);
 	}
 
 	public TutorialObjective getNextObjective() {
