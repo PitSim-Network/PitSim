@@ -3,7 +3,9 @@ package dev.kyro.pitsim.leaderboards;
 import dev.kyro.arcticapi.builders.AItemStackBuilder;
 import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.pitsim.controllers.objects.Leaderboard;
+import dev.kyro.pitsim.controllers.objects.LeaderboardData;
 import dev.kyro.pitsim.controllers.objects.LeaderboardPosition;
+import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.misc.Misc;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -12,6 +14,10 @@ import org.bukkit.inventory.ItemStack;
 import java.util.UUID;
 
 public class BossesKilledLeaderboard extends Leaderboard {
+	public BossesKilledLeaderboard() {
+		super("bosses-killed");
+	}
+
 	@Override
 	public ItemStack getDisplayStack(UUID uuid) {
 		ItemStack itemStack = new AItemStackBuilder(Material.MOB_SPAWNER)
@@ -31,8 +37,15 @@ public class BossesKilledLeaderboard extends Leaderboard {
 	}
 
 	@Override
-	public void setPosition(LeaderboardPosition position, FileConfiguration playerData) {
-		position.intValue = playerData.getInt("stats.darkzone.bosses-killed");
+	public String getDisplayValue(PitPlayer pitPlayer) {
+		return "&5" + Misc.formatLarge(pitPlayer.stats.bossesKilled) + " boss" + (pitPlayer.stats.bossesKilled == 1 ? "" : "es");
+	}
+
+	@Override
+	public void setPosition(LeaderboardPosition position) {
+		LeaderboardData data = LeaderboardData.getLeaderboardData(this);
+
+		position.intValue = (int) data.getValue(position.uuid).primaryValue;
 	}
 
 	@Override

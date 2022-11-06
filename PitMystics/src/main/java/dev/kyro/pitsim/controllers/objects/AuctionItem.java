@@ -1,23 +1,26 @@
 package dev.kyro.pitsim.controllers.objects;
 
 import com.google.api.core.ApiFuture;
+import com.google.cloud.firestore.DocumentReference;
 import com.google.cloud.firestore.DocumentSnapshot;
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.arcticapi.misc.AUtil;
+import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.battlepass.quests.WinAuctionsQuest;
 import dev.kyro.pitsim.controllers.AuctionDisplays;
 import dev.kyro.pitsim.controllers.FirestoreManager;
 import dev.kyro.pitsim.enums.ItemType;
+import dev.kyro.pitsim.events.MessageEvent;
 import dev.kyro.pitsim.misc.Sounds;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
 import org.bukkit.inventory.ItemStack;
 
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
+import java.util.concurrent.ExecutionException;
 
 public class AuctionItem {
 
@@ -26,6 +29,8 @@ public class AuctionItem {
     public int slot;
     public long initTime;
     public Map<UUID, Integer> bidMap;
+
+    public static List<PluginMessage> waitingMessages = new ArrayList<>();
 
     public AuctionItem(ItemType item, int itemData, int slot, long initTime, Map<UUID, Integer> bidMap) {
        this.item = item;
@@ -45,14 +50,13 @@ public class AuctionItem {
     }
 
     public void saveData() {
-//        System.out.println(FirestoreManager.CONFIG.auctions);
-        FirestoreManager.CONFIG.auctions.set(slot, new Config.Auction());
-        FirestoreManager.CONFIG.auctions.get(slot).item = this.item.id;
-        FirestoreManager.CONFIG.auctions.get(slot).itemData = this.itemData;
-        FirestoreManager.CONFIG.auctions.get(slot).start = this.initTime;
+        FirestoreManager.AUCTION.auctions.set(slot, new AuctionData.Auction());
+        FirestoreManager.AUCTION.auctions.get(slot).item = this.item.id;
+        FirestoreManager.AUCTION.auctions.get(slot).itemData = this.itemData;
+        FirestoreManager.AUCTION.auctions.get(slot).start = this.initTime;
 
         for (Map.Entry<UUID, Integer> entry : this.bidMap.entrySet()) {
-            List<String> bids = FirestoreManager.CONFIG.auctions.get(slot).bids;
+            List<String> bids = FirestoreManager.AUCTION.auctions.get(slot).bids;
 
             for (String bid : bids) {
                 String[] split = bid.split(":");
@@ -63,25 +67,28 @@ public class AuctionItem {
             }
 
             bids.add(entry.getKey() + ":" + entry.getValue());
-            FirestoreManager.CONFIG.auctions.get(slot).bids = bids;
+            FirestoreManager.AUCTION.auctions.get(slot).bids = bids;
         }
-        FirestoreManager.CONFIG.save();
+        FirestoreManager.AUCTION.save();
     }
 
     public void addBid(UUID player, int bid) {
 
-        String bidPlayer = Bukkit.getOfflinePlayer(player).getName();
-
-        for (Map.Entry<UUID, Integer> entry : bidMap.entrySet()) {
-            Player onlinePlayer = Bukkit.getOfflinePlayer(entry.getKey()).getPlayer();
-            if(onlinePlayer == null || !onlinePlayer.isOnline()) continue;
-
-            AOutput.send(onlinePlayer, "&5&lDARK AUCTION! &e" + bidPlayer + " &7bid &f" + bid + " Souls &7on " + item.itemName);
-            Sounds.BOOSTER_REMIND.play(onlinePlayer);
-        }
-
         bidMap.put(player, bid);
         saveData();
+
+        String bidPlayer = Bukkit.getOfflinePlayer(player).getName();
+
+        PluginMessage message = new PluginMessage().writeString("AUCTION NOTIFY");
+        message.writeInt(bid);
+        message.writeString(bidPlayer);
+        message.writeString(item.itemName);
+
+        for (Map.Entry<UUID, Integer> entry : bidMap.entrySet()) {
+            message.writeString(entry.getKey().toString());
+        }
+
+        message.send();
     }
 
     public int getHighestBid() {
@@ -111,20 +118,12 @@ public class AuctionItem {
     }
 
     public void endAuction() {
-        FirestoreManager.CONFIG.auctions.set(slot, null);
-        FirestoreManager.CONFIG.save();
+        FirestoreManager.AUCTION.auctions.set(slot, null);
+        FirestoreManager.AUCTION.save();
 
         if(getHighestBidder() == null) return;
 
         OfflinePlayer winner = Bukkit.getOfflinePlayer(getHighestBidder());
-
-        for (Map.Entry<UUID, Integer> entry : bidMap.entrySet()) {
-            Player onlinePlayer = Bukkit.getOfflinePlayer(entry.getKey()).getPlayer();
-            if(onlinePlayer != null && !onlinePlayer.isOnline()) continue;
-
-            AOutput.send(onlinePlayer, "&5&lDARK AUCTION! &e" + winner.getName() + " &7won " + item.itemName + " &7for &f" + getHighestBid() + " Souls&7.");
-            Sounds.BOOSTER_REMIND.play(onlinePlayer);
-        }
 
         if(winner.isOnline()) {
             PitPlayer pitPlayer = PitPlayer.getPitPlayer(winner.getPlayer());
@@ -139,18 +138,21 @@ public class AuctionItem {
                 AUtil.giveItemSafely(winner.getPlayer(), jewel, true);
             }
 
-            AOutput.send(winner.getPlayer(), "&5&lDARK AUCTION! &7Received " + item.itemName + "&7.");
         } else {
 
             try {
-                ApiFuture<DocumentSnapshot> data = FirestoreManager.FIRESTORE.collection(FirestoreManager.PLAYERDATA_COLLECTION)
-                        .document(winner.getUniqueId().toString()).get();
 
-                List auctionReturn = data.get().get("auctionReturn", List.class);
+                PluginMessage message = new PluginMessage().writeString("AUCTION ITEM REQUEST");
+                message.writeString(winner.getName());
+                message.writeString(PitSim.serverName);
+                message.writeString(item.itemName);
+                message.writeString(winner.getUniqueId().toString());
+                message.writeInt(item.id);
+                message.writeInt(itemData);
+                message.writeInt(getHighestBid());
+                message.send();
 
-                auctionReturn.add(item.id + ":" + itemData + ":" + getHighestBid());
-
-                FirestoreManager.FIRESTORE.collection(FirestoreManager.PLAYERDATA_COLLECTION).document(winner.getUniqueId().toString()).update("auctionReturn", auctionReturn);
+                waitingMessages.add(message);
 
             } catch(Exception e) {
                 e.printStackTrace();

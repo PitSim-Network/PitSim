@@ -36,5 +36,4 @@ public abstract class RenownUpgrade implements Listener {
 
 	public abstract ItemStack getDisplayItem(Player player, boolean isCustomPanel);
 	public abstract List<Integer> getTierCosts();
-	public abstract AGUIPanel getCustomPanel();
 }

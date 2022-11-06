@@ -26,7 +26,7 @@ public class SpawnCommand implements CommandExecutor {
 		if(event.isCancelled() && !player.isOp()) return false;
 
 		SpawnManager.lastLocationMap.remove(player);
-		Location teleportLoc = MapManager.currentMap.getSpawn(player.getWorld());
+		Location teleportLoc = MapManager.currentMap.getSpawn();
 		player.teleport(teleportLoc);
 		PhoenixAbility.alreadyActivatedList.remove(player.getUniqueId());
 		for(Hopper hopper : HopperManager.hopperList) {

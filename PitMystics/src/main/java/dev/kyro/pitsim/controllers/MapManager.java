@@ -24,41 +24,15 @@ public class MapManager implements Listener {
 	public static List<PitMap> mapList = new ArrayList<>();
 	public static PitMap currentMap;
 
-	public static boolean multiLobbies = false;
-	public static int ENABLE_THRESHOLD = 10;
+	public static Location darkzoneSpawn = new Location(getDarkzone(), 178.5, 91, -93.5, -90, 0);
 
-	static {
-		new BukkitRunnable() {
-			@Override
-			public void run() {
-				disableMultiLobbies(true);
-			}
-		}.runTaskLater(PitSim.INSTANCE, 20L);
-		new BukkitRunnable() {
-			int count = 0;
+	public static Location initialDarkzoneSpawn = new Location(getDarkzone(), 173, 92, -93.5, -90, 0);
 
-			@Override
-			public void run() {
-				count++;
+	public static void openPortal() {
+		enablePortal(currentMap.world);
 
-				int players = AFKManager.onlineActivePlayers;
-				boolean chaos = BoosterManager.getBooster("chaos").minutes > 0;
-				if(multiLobbies) {
-					if(chaos) return;
-					if(count % (60 * 10) == 0 && players < ENABLE_THRESHOLD) disableMultiLobbies(false);
-				} else {
-					if(players >= ENABLE_THRESHOLD || chaos) enableMultiLobbies();
-				}
-			}
-		}.runTaskTimer(PitSim.INSTANCE, 40L, 20L);
-	}
-
-	public static void onStart() {
-		for(World lobby : currentMap.lobbies) {
-			enablePortal(lobby);
-		}
 		for(Player onlinePlayer : Bukkit.getOnlinePlayers()) {
-			onlinePlayer.teleport(currentMap.getSpawn(currentMap.firstLobby));
+			onlinePlayer.teleport(currentMap.getSpawn());
 		}
 	}
 
@@ -77,58 +51,6 @@ public class MapManager implements Listener {
 		AOutput.error(event.getPlayer(), "&c&c&lNOPE! &7You cannot use that while in combat!");
 	}
 
-	public static void enableMultiLobbies() {
-		if(multiLobbies) return;
-		multiLobbies = true;
-		for(Player onlinePlayer : Bukkit.getOnlinePlayers()) {
-			AOutput.send(onlinePlayer, "&6&lLOBBY! &7Use the Keeper NPC to switch lobbies");
-			AOutput.send(onlinePlayer, "&6&lLOBBY! &7Use the Keeper NPC to switch lobbies");
-			AOutput.send(onlinePlayer, "&6&lLOBBY! &7Use the Keeper NPC to switch lobbies");
-			Misc.sendTitle(onlinePlayer, "&6&l2ND LOBBY OPEN!", 40);
-		}
-	}
-
-	public static void disableMultiLobbies(boolean override) {
-		if(!multiLobbies && !override) return;
-		multiLobbies = false;
-		List<World> disabledLobbies = new ArrayList<>(currentMap.lobbies);
-		disabledLobbies.remove(0);
-		if(!override) {
-			for(Player onlinePlayer : Bukkit.getOnlinePlayers()) {
-				if(!disabledLobbies.contains(onlinePlayer.getWorld())) continue;
-				AOutput.send(onlinePlayer, "&c&lINSTANCE SHUTDOWN! &7not enough players");
-				AOutput.send(onlinePlayer, "&c&lINSTANCE SHUTDOWN! &7not enough players");
-				AOutput.send(onlinePlayer, "&c&lINSTANCE SHUTDOWN! &7not enough players");
-				Misc.sendTitle(onlinePlayer, "&c&lINSTANCE SHUTDOWN!", 40);
-			}
-		}
-	}
-
-	public static void changeLobbies(Player player) {
-		if(!multiLobbies && player.getLocation().getWorld() == currentMap.firstLobby) {
-			AOutput.send(player, "&c&lNOPE! &7The second lobby will open when there are 10 players online.");
-			return;
-		}
-		Location teleport = player.getLocation().clone();
-		if(player.getLocation().getWorld() == currentMap.firstLobby) {
-			teleport.setWorld(currentMap.lobbies.get(1));
-			AOutput.send(player, "&7You have connected to lobby &6" + (currentMap.getLobbyIndex(player.getWorld()) + 1));
-		} else {
-			teleport.setWorld(currentMap.lobbies.get(0));
-			AOutput.send(player, "&7You have connected to lobby &6" + (currentMap.getLobbyIndex(player.getWorld()) + 1));
-		}
-
-		Misc.applyPotionEffect(player, PotionEffectType.BLINDNESS, 40, 99, false, false);
-		Misc.applyPotionEffect(player, PotionEffectType.CONFUSION, 40, 0, false, false);
-
-		new BukkitRunnable() {
-			@Override
-			public void run() {
-				player.teleport(teleport);
-			}
-		}.runTaskLater(PitSim.INSTANCE, 20);
-	}
-
 	public static void enablePortal(World lobby) {
 		SchematicPaste.loadSchematic(new File("plugins/WorldEdit/schematics/doorOpen.schematic"), new Location(lobby, -67, 72, 3));
 	}
@@ -139,6 +61,14 @@ public class MapManager implements Listener {
 
 	public static World getDarkzone() {
 		return Bukkit.getWorld("darkzone");
+	}
+
+	public static Location getDarkzoneSpawn() {
+		return darkzoneSpawn;
+	}
+
+	public static Location getInitialDarkzoneSpawn() {
+		return initialDarkzoneSpawn;
 	}
 
 	public static boolean inDarkzone(LivingEntity player) {

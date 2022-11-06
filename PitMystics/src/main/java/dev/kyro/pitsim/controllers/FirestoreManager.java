@@ -6,6 +6,7 @@ import com.google.firebase.FirebaseApp;
 import com.google.firebase.FirebaseOptions;
 import com.google.firebase.cloud.FirestoreClient;
 import dev.kyro.pitsim.PitSim;
+import dev.kyro.pitsim.controllers.objects.AuctionData;
 import dev.kyro.pitsim.controllers.objects.Config;
 import dev.kyro.pitsim.misc.FileResourcesUtils;
 
@@ -17,10 +18,12 @@ public class FirestoreManager {
 
 	public static final String SERVER_COLLECTION = "kyro-pitsim";
 	public static final String CONFIG_DOCUMENT = "config";
+	public static final String AUCTION_DOCUMENT = "auction";
 
 	public static final String PLAYERDATA_COLLECTION = "kyro-pitsim-playerdata";
 
 	public static Config CONFIG;
+	public static AuctionData AUCTION;
 
 	public static void init() {
 
@@ -55,8 +58,12 @@ public class FirestoreManager {
 			if(!FIRESTORE.collection(SERVER_COLLECTION).document(CONFIG_DOCUMENT).get().get().exists()) {
 				CONFIG = new Config();
 				CONFIG.save();
-			}
-			CONFIG = FIRESTORE.collection(SERVER_COLLECTION).document(CONFIG_DOCUMENT).get().get().toObject(Config.class);
+			} else CONFIG = FIRESTORE.collection(SERVER_COLLECTION).document(CONFIG_DOCUMENT).get().get().toObject(Config.class);
+
+			if(!FIRESTORE.collection(SERVER_COLLECTION).document(AUCTION_DOCUMENT).get().get().exists()) {
+				AUCTION = new AuctionData();
+				AUCTION.save();
+			} else AUCTION = FIRESTORE.collection(SERVER_COLLECTION).document(AUCTION_DOCUMENT).get().get().toObject(AuctionData.class);
 
 		} catch(Exception exception) {
 			exception.printStackTrace();

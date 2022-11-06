@@ -19,8 +19,7 @@ public class NonCommand implements CommandExecutor {
 
 		if(!player.isOp()) return false;
 
-		for(World world : MapManager.currentMap.lobbies)
-			new Non(NonManager.botIGNs.get((int) (Math.random() * NonManager.botIGNs.size())), world);
+		new Non(NonManager.botIGNs.get((int) (Math.random() * NonManager.botIGNs.size())));
 
 		return false;
 	}

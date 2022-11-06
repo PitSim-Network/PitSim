@@ -39,11 +39,6 @@ public class KillSteal extends RenownUpgrade {
 	}
 
 	@Override
-	public AGUIPanel getCustomPanel() {
-		return null;
-	}
-
-	@Override
 	public List<Integer> getTierCosts() {
 		return Arrays.asList(20, 30, 40);
 	}

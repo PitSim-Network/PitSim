@@ -57,6 +57,8 @@ public class MobManager implements Listener {
 		new BukkitRunnable() {
 			@Override
 			public void run() {
+				if(!PitSim.isDarkzone()) return;
+
 				for (Entity entity :new ArrayList<>(MapManager.getDarkzone().getEntities())) {
 
 					if(!(entity instanceof LivingEntity)) continue;
@@ -77,6 +79,8 @@ public class MobManager implements Listener {
 
 			@Override
 			public void run() {
+				if(!PitSim.isDarkzone()) return;
+
 				clearMobs();
 				for(SubLevel level : SubLevel.values()) {
 
@@ -118,6 +122,7 @@ public class MobManager implements Listener {
 		new BukkitRunnable() {
 			@Override
 			public void run() {
+				if(!PitSim.isDarkzone()) return;
 				List<PitMob> toRemove = new ArrayList<>();
 				for (PitMob mob : mobs) {
 
@@ -141,6 +146,7 @@ public class MobManager implements Listener {
 		new BukkitRunnable() {
 			@Override
 			public void run() {
+				if(!PitSim.isDarkzone()) return;
 				List<PitMob> toRemove = new ArrayList<>();
 				for(PitMob mob : mobs) {
 					if(mob.entity.isDead()) {
@@ -158,6 +164,7 @@ public class MobManager implements Listener {
 		new BukkitRunnable() {
 			@Override
 			public void run() {
+				if(!PitSim.isDarkzone()) return;
 				clearMobs();
 			}
 		}.runTaskLater(PitSim.INSTANCE, 10);
@@ -165,6 +172,7 @@ public class MobManager implements Listener {
 		new BukkitRunnable() {
 			@Override
 			public void run() {
+				if(!PitSim.isDarkzone()) return;
 				for(PitMob mob : MobManager.mobs) {
 					if(!(mob.entity instanceof Creature)) continue;
 					if(mob.target != null) ((Creature) mob.entity).setTarget(mob.target);
@@ -431,53 +439,56 @@ public class MobManager implements Listener {
 			if(entity instanceof Player) continue;
 			if(CitizensAPI.getNPCRegistry().isNPC(entity)) continue;
 
-			if(entity.getUniqueId().equals(TaintedWell.textLine1.getUniqueId())) continue;
-			if(entity.getUniqueId().equals(TaintedWell.textLine2.getUniqueId())) continue;
-			if(entity.getUniqueId().equals(TaintedWell.textLine3.getUniqueId())) continue;
-			if(entity.getUniqueId().equals(TaintedWell.textLine4.getUniqueId())) continue;
+			if(PitSim.isDarkzone()) {
+				if(entity.getUniqueId().equals(TaintedWell.textLine1.getUniqueId())) continue;
+				if(entity.getUniqueId().equals(TaintedWell.textLine2.getUniqueId())) continue;
+				if(entity.getUniqueId().equals(TaintedWell.textLine3.getUniqueId())) continue;
+				if(entity.getUniqueId().equals(TaintedWell.textLine4.getUniqueId())) continue;
 
-			if(entity instanceof Item) continue;
-			if(entity instanceof Arrow) continue;
-			if(entity instanceof Wither) continue;
-			if(entity instanceof ThrownPotion) continue;
-			if(entity instanceof Villager) continue;
-			if(entity instanceof Fireball) continue;
-			if(entity instanceof Slime && !(entity instanceof MagmaCube)) continue;
+				if(entity instanceof Item) continue;
+				if(entity instanceof Arrow) continue;
+				if(entity instanceof Wither) continue;
+				if(entity instanceof ThrownPotion) continue;
+				if(entity instanceof Villager) continue;
+				if(entity instanceof Fireball) continue;
+				if(entity instanceof Slime && !(entity instanceof MagmaCube)) continue;
 
-			if(entity.getUniqueId().equals(AuctionDisplays.timerStandUUID)) continue;
+				if(entity.getUniqueId().equals(AuctionDisplays.timerStandUUID)) continue;
 
-			if(entity instanceof ArmorStand && entity.getLocation().distance(AuctionManager.spawnLoc) < 50 && entity.getCustomName() == null) continue;
+				if(entity instanceof ArmorStand && entity.getLocation().distance(AuctionManager.spawnLoc) < 50 && entity.getCustomName() == null)
+					continue;
 
-			if(entity.getUniqueId().equals(TaintedWell.wellStand.getUniqueId())) continue;
+				if(entity.getUniqueId().equals(TaintedWell.wellStand.getUniqueId())) continue;
 
-			for (PitMob mob : mobs) {
-				if(mob.entity.getUniqueId().equals(entity.getUniqueId())) continue main;
-				if(nameTags.get(mob.entity.getUniqueId()).getUniqueId().equals(entity.getUniqueId())) continue main;
-			}
+				for(PitMob mob : mobs) {
+					if(mob.entity.getUniqueId().equals(entity.getUniqueId())) continue main;
+					if(nameTags.get(mob.entity.getUniqueId()).getUniqueId().equals(entity.getUniqueId())) continue main;
+				}
 //			if(entity.getUniqueId().equals(TaintedWell.removeStand.getUniqueId())) continue;
-			for (ArmorStand value : TaintedWell.enchantStands.values()) {
-				if(value.getUniqueId().equals(entity.getUniqueId())) continue main;
-			}
-			for (ArmorStand value : TaintedWell.removeStands.values()) {
-				if(value.getUniqueId().equals(entity.getUniqueId())) continue main;
-			}
-			for (ArmorStand value : BrewingManager.brewingStands) {
-				if(value.getUniqueId().equals(entity.getUniqueId())) continue main;
-			}
-			for (ArmorStand value : CleaveSpell.stands.values()) {
-				if(value.getUniqueId().equals(entity.getUniqueId())) continue main;
-			}
-			for (UUID pedestalArmorStand : AuctionDisplays.pedestalArmorStands) {
-				if(pedestalArmorStand.equals(entity.getUniqueId())) continue main;
-			}
-			for (UUID pedestalArmorStand : AuctionDisplays.highestBidderStands) {
-				if(pedestalArmorStand.equals(entity.getUniqueId())) continue main;
-			}
-			for (UUID pedestalArmorStand : AuctionDisplays.highestBidStands) {
-				if(pedestalArmorStand.equals(entity.getUniqueId())) continue main;
-			}
-			for (UUID pedestalArmorStand : AuctionDisplays.rightClickStands) {
-				if(pedestalArmorStand.equals(entity.getUniqueId())) continue main;
+				for(ArmorStand value : TaintedWell.enchantStands.values()) {
+					if(value.getUniqueId().equals(entity.getUniqueId())) continue main;
+				}
+				for(ArmorStand value : TaintedWell.removeStands.values()) {
+					if(value.getUniqueId().equals(entity.getUniqueId())) continue main;
+				}
+				for(ArmorStand value : BrewingManager.brewingStands) {
+					if(value.getUniqueId().equals(entity.getUniqueId())) continue main;
+				}
+				for(ArmorStand value : CleaveSpell.stands.values()) {
+					if(value.getUniqueId().equals(entity.getUniqueId())) continue main;
+				}
+				for(UUID pedestalArmorStand : AuctionDisplays.pedestalArmorStands) {
+					if(pedestalArmorStand.equals(entity.getUniqueId())) continue main;
+				}
+				for(UUID pedestalArmorStand : AuctionDisplays.highestBidderStands) {
+					if(pedestalArmorStand.equals(entity.getUniqueId())) continue main;
+				}
+				for(UUID pedestalArmorStand : AuctionDisplays.highestBidStands) {
+					if(pedestalArmorStand.equals(entity.getUniqueId())) continue main;
+				}
+				for(UUID pedestalArmorStand : AuctionDisplays.rightClickStands) {
+					if(pedestalArmorStand.equals(entity.getUniqueId())) continue main;
+				}
 			}
 
 			entity.remove();

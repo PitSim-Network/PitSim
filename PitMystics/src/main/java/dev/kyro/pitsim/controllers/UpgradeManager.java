@@ -1,13 +1,15 @@
 package dev.kyro.pitsim.controllers;
 
 import dev.kyro.pitsim.PitSim;
+import dev.kyro.pitsim.controllers.objects.PitBoss;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.controllers.objects.RenownUpgrade;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class UpgradeManager implements Listener {
 //	public static Map<UUID, Map<RenownUpgrade, Integer>> upgradeMap = new HashMap<>();
@@ -50,7 +52,7 @@ public class UpgradeManager implements Listener {
 	}
 
 	public static int getTier(Player player, String refName) {
-		if(NonManager.getNon(player) != null) return 0;
+		if(NonManager.getNon(player) != null || PitBoss.isPitBoss(player)) return 0;
 		RenownUpgrade upgrade = getUpgrade(refName);
 		return getTier(player, upgrade);
 	}
@@ -98,7 +100,7 @@ public class UpgradeManager implements Listener {
 		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
 		List<String> lore = new ArrayList<>(originalLore);
 		lore.add("");
-		if(!isCustomPanel && upgrade.getCustomPanel() != null && hasUpgrade(player, upgrade)) {
+		if(!isCustomPanel && hasUpgrade(player, upgrade)) {
 			lore.add(ChatColor.YELLOW + "Click to open menu!");
 			return lore;
 		}

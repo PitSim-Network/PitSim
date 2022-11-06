@@ -9,6 +9,7 @@ import dev.kyro.pitsim.misc.Misc;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.*;
@@ -18,14 +19,17 @@ public abstract class Leaderboard {
 
 	public int slot;
 	public static List<Integer> slots = new ArrayList<>(Arrays.asList(10, 11, 12, 13, 14, 15, 16, 20, 21, 22, 23, 24));
+	public String refName;
 
-	public Leaderboard() {
+	public Leaderboard(String refName) {
 		this.slot = slots.remove(0);
+		this.refName = refName;
 	}
 
 	public abstract ItemStack getDisplayStack(UUID uuid);
 	public abstract String getDisplayValue(LeaderboardPosition position);
-	public abstract void setPosition(LeaderboardPosition position, FileConfiguration playerData);
+	public abstract String getDisplayValue(PitPlayer pitPlayer);
+	public abstract void setPosition(LeaderboardPosition position);
 	public abstract boolean isMoreThanOrEqual(LeaderboardPosition position, LeaderboardPosition otherPosition);
 
 	public static String getRankColor(UUID uuid) {
@@ -36,42 +40,51 @@ public abstract class Leaderboard {
 		ALoreBuilder aLoreBuilder = new ALoreBuilder();
 		boolean isOnLeaderboard = false;
 		for(int i = 0; i < 10; i++) {
+			if(orderedLeaderboard.size() < i + 1)  {
+				aLoreBuilder.addLore("&e" + (i + 1) + ". &cERROR");
+				continue;
+			}
 			LeaderboardPosition position = orderedLeaderboard.get(i);
+			LeaderboardData data = LeaderboardData.getLeaderboardData(this);
 			if(position.uuid.equals(uuid)) isOnLeaderboard = true;
 			OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(position.uuid);
 			String rankColor = getRankColor(position.uuid);
-			aLoreBuilder.addLore("&e" + (i + 1) + ". " + getPrestigeBrackets(position.uuid) + " " + rankColor + offlinePlayer.getName() + "&7 - " + getDisplayValue(position));
+			if(data.getPrefix(position.uuid) == null) {
+				aLoreBuilder.addLore("&e" + (i + 1) + ". &cERROR");
+				continue;
+			}
+			aLoreBuilder.addLore("&e" + (i + 1) + ". " + data.getPrefix(position.uuid) + " " + rankColor + offlinePlayer.getName() + "&7 - " + getDisplayValue(position));
 		}
-		LeaderboardPosition position = null;
-		for(LeaderboardPosition leaderboardPosition : new ArrayList<>(orderedLeaderboard)) {
-			if(!leaderboardPosition.uuid.equals(uuid)) continue;
-			position = leaderboardPosition;
-			break;
-		}
-		if(isOnLeaderboard) {
-		} else if(position == null) {
-			aLoreBuilder.addLore("", "&7You are not on this leaderboard");
-		} else {
-			OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(uuid);
-			PitSim.LUCKPERMS.getUserManager().loadUser(position.uuid);
-			String rankColor = getRankColor(uuid);
-			aLoreBuilder.addLore("&7...", "&e" + (orderedLeaderboard.indexOf(position) + 1) + ". " + getPrestigeBrackets(position.uuid) + " " +
-					rankColor + offlinePlayer.getName() + "&7 - " + getDisplayValue(position));
+
+		LeaderboardPlayerData data = LeaderboardPlayerData.getData(uuid);
+		OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(uuid);
+		if(offlinePlayer.isOnline()) {
+			Player player = offlinePlayer.getPlayer();
+			PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
+
+			if(isOnLeaderboard) {
+			} else if(data == null) {
+				aLoreBuilder.addLore("", "&7You are not on this leaderboard");
+			} else {
+				PitSim.LUCKPERMS.getUserManager().loadUser(uuid);
+				String rankColor = getRankColor(uuid);
+				aLoreBuilder.addLore("&7...", "&e" + data.getData(this) + ". " + getPrestigeBrackets(pitPlayer) + " " +
+						rankColor + offlinePlayer.getName() + "&7 - " + getDisplayValue(pitPlayer));
+			}
 		}
 
 		return aLoreBuilder.getLore();
 	}
 
-	private static String getPrestigeBrackets(UUID uuid) {
-		FileConfiguration playerData = APlayerData.getPlayerData(uuid).playerData;
-		return PrestigeValues.getPlayerPrefix(playerData.getInt("prestige"), playerData.getInt("level"));
+	private static String getPrestigeBrackets(PitPlayer pitPlayer) {
+		return PrestigeValues.getPlayerPrefix(pitPlayer.prestige, pitPlayer.level);
 	}
 
-	public void calculate(UUID uuid, APlayer aPlayer) {
+	public void calculate(UUID uuid) {
 		remove(uuid);
 
 		LeaderboardPosition leaderboardPosition = new LeaderboardPosition(this, uuid);
-		setPosition(leaderboardPosition, aPlayer.playerData);
+		setPosition(leaderboardPosition);
 		for(int i = 0; i < orderedLeaderboard.size(); i++) {
 			LeaderboardPosition testPosition = orderedLeaderboard.get(i);
 			if(testPosition.isMoreThanOrEqual(leaderboardPosition)) continue;

@@ -39,16 +39,14 @@ public class Non {
 	public Player target;
 	public String name;
 	public String displayName;
-	public World world;
 
 	public List<NonTrait> traits = new ArrayList<>();
 	public double persistence;
 	public NonState nonState = NonState.RESPAWNING;
 	public int count = (int) (Math.random() * 20);
 
-	public Non(String name, World world) {
+	public Non(String name) {
 		this.name = name;
-		this.world = world;
 
 		displayName = "&7" + name;
 		this.npc = CitizensAPI.getNPCRegistry().createNPC(EntityType.PLAYER, displayName);
@@ -80,9 +78,9 @@ public class Non {
 		if(npc.getEntity() != null && non != npc.getEntity()) FPSCommand.hideNewNon(this);
 		non = (Player) npc.getEntity();
 		if(!npc.isSpawned()) respawn(false);
-		if(npc.isSpawned() && non.getLocation().getY() <= MapManager.currentMap.getY(world) - 0.1) {
+		if(npc.isSpawned() && non.getLocation().getY() <= MapManager.currentMap.getY() - 0.1) {
 			Location teleportLoc = non.getLocation().clone();
-			teleportLoc.setY(MapManager.currentMap.getY(world) + 1.2);
+			teleportLoc.setY(MapManager.currentMap.getY() + 1.2);
 			non.teleport(teleportLoc);
 			return;
 		}
@@ -154,7 +152,7 @@ public class Non {
 
 		Player closest = null;
 		double closestDistance = 100;
-		Location midLoc = MapManager.currentMap.getMid(world);
+		Location midLoc = MapManager.currentMap.getMid();
 
 		List<Player> nearbyPlayers = new ArrayList<>();
 		for(Player onlinePlayer : Bukkit.getOnlinePlayers()) {
@@ -186,23 +184,17 @@ public class Non {
 	}
 
 	public void setDisabled(Boolean toggled) {
-		Location spawnLoc = MapManager.currentMap.getNonSpawn(world);
+		Location spawnLoc = MapManager.currentMap.getNonSpawn();
 		if(toggled) npc.despawn();
 		else npc.spawn(spawnLoc);
 	}
 
 	public void spawn() {
-		Location spawnLoc = MapManager.currentMap.getNonSpawn(world);
+		Location spawnLoc = MapManager.currentMap.getNonSpawn();
 		npc.spawn(spawnLoc);
 	}
 
 	public void respawn(boolean fakeKill) {
-
-		if(!MapManager.multiLobbies && world != MapManager.currentMap.firstLobby) {
-			remove();
-			return;
-		}
-
 		if(!fakeKill) nonState = NonState.RESPAWNING;
 		Location spawnLoc = MapManager.currentMap.getNonSpawn(world);
 

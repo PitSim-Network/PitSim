@@ -392,6 +392,7 @@ public class TaintedWell implements Listener
         TaintedWell.i = 0;
         new BukkitRunnable() {
             public void run() {
+                if(!PitSim.isDarkzone()) return;
                 if(TaintedWell.wellStand != null){
                     for (Entity entity : TaintedWell.wellStand.getNearbyEntities(25.0, 25.0, 25.0)) {
                         if (!(entity instanceof Player)) {
@@ -437,6 +438,7 @@ public class TaintedWell implements Listener
         new BukkitRunnable() {
             @Override
             public void run() {
+                if(!PitSim.isDarkzone()) return;
                 for (Entity entity : TaintedWell.wellStand.getNearbyEntities(25.0, 25.0, 25.0)) {
                     if(!(entity instanceof Player)) {
                         continue;

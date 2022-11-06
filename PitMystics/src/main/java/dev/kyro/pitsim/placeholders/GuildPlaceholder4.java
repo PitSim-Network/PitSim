@@ -1,8 +1,7 @@
 package dev.kyro.pitsim.placeholders;
 
 import dev.kyro.arcticapi.hooks.papi.APAPIPlaceholder;
-import dev.kyro.arcticguilds.controllers.objects.Guild;
-import dev.kyro.pitsim.controllers.GuildLeaderboard;
+import dev.kyro.arcticguilds.GuildLeaderboardData;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
@@ -17,8 +16,8 @@ public class GuildPlaceholder4 implements APAPIPlaceholder {
 
 	@Override
 	public String getValue(Player player) {
-		if(GuildLeaderboard.topGuilds.size() < 4) return "&cNone!";
-		Guild guild = GuildLeaderboard.topGuilds.get(3);
+		GuildLeaderboardData guild = GuildLeaderboardData.getGuildData(3);
+		if(guild == null) return "&cNone!";
 		DecimalFormat formatter = new DecimalFormat("#,###.#");
 		StringBuilder string = new StringBuilder("&74. ");
 		string.append(guild.getColor()).append(guild.name).append(" &7- &e").append(formatter.format(guild.reputation));

@@ -42,11 +42,6 @@ public class Chemist extends RenownUpgrade {
 	}
 
 	@Override
-	public AGUIPanel getCustomPanel() {
-		return null;
-	}
-
-	@Override
 	public List<Integer> getTierCosts() {
 		return Arrays.asList(30, 45);
 	}

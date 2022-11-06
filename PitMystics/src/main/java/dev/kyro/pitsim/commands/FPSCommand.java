@@ -30,11 +30,11 @@ public class FPSCommand implements CommandExecutor {
 			public void run() {
 				for(Player onlinePlayer : Bukkit.getOnlinePlayers()) {
 					World world = onlinePlayer.getWorld();
-					Location mid = MapManager.currentMap.getMid(world);
-					double y = MapManager.currentMap.getY(world);
+					Location mid = MapManager.currentMap.getMid();
+					double y = MapManager.currentMap.getY();
 
 					if(!fpsPlayers.contains(onlinePlayer)) continue;
-					if(!MapManager.currentMap.lobbies.contains(world)) continue;
+					if(MapManager.currentMap.world != world) continue;
 					Location playerLoc = onlinePlayer.getLocation();
 					playerLoc.setY(y);
 					if(world != mid.getWorld()) continue;
@@ -64,8 +64,8 @@ public class FPSCommand implements CommandExecutor {
 		for(Player onlinePlayer : Bukkit.getOnlinePlayers()) {
 			if(onlinePlayer.getWorld() != player.getWorld()) continue;
 			Location playerLoc = onlinePlayer.getLocation();
-			playerLoc.setY(MapManager.currentMap.getY(world));
-			if(onlinePlayer == player || playerLoc.distance(MapManager.currentMap.getMid(world)) > playerHideRadius)
+			playerLoc.setY(MapManager.currentMap.getY());
+			if(onlinePlayer == player || playerLoc.distance(MapManager.currentMap.getMid()) > playerHideRadius)
 				continue;
 			player.hidePlayer(onlinePlayer);
 		}

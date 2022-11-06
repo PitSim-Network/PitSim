@@ -1,14 +1,13 @@
 package dev.kyro.pitsim.controllers;
 
 import dev.kyro.arcticapi.data.APlayer;
-import dev.kyro.arcticapi.data.APlayerData;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.controllers.objects.Leaderboard;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
+import dev.kyro.pitsim.controllers.objects.LeaderboardData;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -27,59 +26,40 @@ public class LeaderboardManager {
 //			entry.getValue().save();
 //		}
 
-		new BukkitRunnable() {
-			int amount = 0;
-			@Override
-			public void run() {
-				File directory = new File("plugins/PitRemake/playerdata");
-				File[] files = directory.listFiles();
-				assert files != null;
-				for(File file : files) {
-					FileConfiguration data = YamlConfiguration.loadConfiguration(file);
-					boolean shouldDelete = false;
-					if(data.getInt("level") == 1 && data.getInt("prestige") == 0) shouldDelete = true;
-					if(!data.contains("prestige")) shouldDelete = true;
-					if(file.length() == 0) shouldDelete = true;
-					if(shouldDelete) {
-						file.delete();
-						amount++;
-						System.out.println("deleted: " + file.getName());
-					}
-				}
-			}
-		}.runTaskAsynchronously(PitSim.INSTANCE);
+//		new BukkitRunnable() {
+//			int amount = 0;
+//			@Override
+//			public void run() {
+//				File directory = new File("plugins/PitRemake/playerdata");
+//				File[] files = directory.listFiles();
+//				assert files != null;
+//				for(File file : files) {
+//					FileConfiguration data = YamlConfiguration.loadConfiguration(file);
+//					boolean shouldDelete = false;
+//					if(data.getInt("level") == 1 && data.getInt("prestige") == 0) shouldDelete = true;
+//					if(!data.contains("prestige")) shouldDelete = true;
+//					if(file.length() == 0) shouldDelete = true;
+//					if(shouldDelete) {
+//						file.delete();
+//						amount++;
+//						System.out.println("deleted: " + file.getName());
+//					}
+//				}
+//			}
+//		}.runTaskAsynchronously(PitSim.INSTANCE);
 
 //		if(!AConfig.getString("server").equals("pitsim-main")) return;
 
 		new BukkitRunnable() {
 			@Override
 			public void run() {
-				for(Map.Entry<UUID, APlayer> entry : APlayerData.getAllData().entrySet()) {
-					for(Leaderboard leaderboard : leaderboards) {
-						leaderboard.calculate(entry.getKey(), entry.getValue());
+				for(Leaderboard leaderboard : leaderboards) {
+					LeaderboardData data = LeaderboardData.getLeaderboardData(leaderboard);
+					if(data == null) continue;
+
+					for(UUID uuid : data.getLeaderboardDataMap().keySet()) {
+						leaderboard.calculate(uuid);
 					}
-				}
-			}
-		}.runTaskLater(PitSim.INSTANCE, 1L);
-		new BukkitRunnable() {
-			@Override
-			public void run() {
-				for(int i = 0; i < 20; i++) {
-					if(queue.isEmpty()) {
-						if(refillingQueue) return;
-						refillingQueue = true;
-						new BukkitRunnable() {
-							@Override
-							public void run() {
-								queue = new ArrayList<>(APlayerData.getAllData().entrySet());
-								refillingQueue = false;
-//								AOutput.broadcast("&b&lDEBUG! &7Refilled leaderboard queue!");
-							}
-						}.runTaskAsynchronously(PitSim.INSTANCE);
-						return;
-					}
-					Map.Entry<UUID, APlayer> entry = queue.remove(0);
-					for(Leaderboard leaderboard : leaderboards) leaderboard.calculate(entry.getKey(), entry.getValue());
 				}
 			}
 		}.runTaskTimer(PitSim.INSTANCE, 20 * 60 + 10, 20);
@@ -87,6 +67,13 @@ public class LeaderboardManager {
 
 	public static void registerLeaderboard(Leaderboard leaderboard) {
 		leaderboards.add(leaderboard);
+	}
+
+	public static Leaderboard getLeaderboard(String name) {
+		for(Leaderboard leaderboard : leaderboards) {
+			if(leaderboard.refName.equalsIgnoreCase(name)) return leaderboard;
+		}
+		return null;
 	}
 }
 

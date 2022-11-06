@@ -63,11 +63,6 @@ public class LifeInsurance extends RenownUpgrade {
 	}
 
 	@Override
-	public AGUIPanel getCustomPanel() {
-		return null;
-	}
-
-	@Override
 	public List<Integer> getTierCosts() {
 		return Arrays.asList(40, 75, 150);
 	}

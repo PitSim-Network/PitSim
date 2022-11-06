@@ -55,11 +55,6 @@ public class LuckyKill extends RenownUpgrade {
 	}
 
 	@Override
-	public AGUIPanel getCustomPanel() {
-		return null;
-	}
-
-	@Override
 	public List<Integer> getTierCosts() {
 		return Arrays.asList(10, 20, 30, 40);
 	}

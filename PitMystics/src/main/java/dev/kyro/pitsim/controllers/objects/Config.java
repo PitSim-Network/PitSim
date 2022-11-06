@@ -33,26 +33,11 @@ public class Config {
 		public boolean requireCaptcha = false;
 	}
 
-	public List<Auction> auctions = Arrays.asList(null, null, null);
-	public static class Auction {
-		public int item;
-		public int itemData;
-		public long start;
-		public List<String> bids = new ArrayList<>();
-	}
-
 	public Config() {}
 
 	@Exclude
 	public void save() {
-		if(!PitSim.INSTANCE.isEnabled()) {
-			try {
-				throw new Exception();
-			} catch(Exception exception) {
-				exception.printStackTrace();
-			}
-			return;
-		}
+		if(!Objects.equals(PitSim.serverName, "pitsim-1")) return;
 		if(onSaveCooldown && !saveQueued) {
 			saveQueued = true;
 			new Thread(() -> {

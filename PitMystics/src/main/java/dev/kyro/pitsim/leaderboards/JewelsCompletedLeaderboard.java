@@ -4,7 +4,9 @@ import dev.kyro.arcticapi.builders.AItemStackBuilder;
 import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.pitsim.commands.FreshCommand;
 import dev.kyro.pitsim.controllers.objects.Leaderboard;
+import dev.kyro.pitsim.controllers.objects.LeaderboardData;
 import dev.kyro.pitsim.controllers.objects.LeaderboardPosition;
+import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.enums.MysticType;
 import dev.kyro.pitsim.enums.PantColor;
 import dev.kyro.pitsim.misc.Misc;
@@ -14,6 +16,10 @@ import org.bukkit.inventory.ItemStack;
 import java.util.UUID;
 
 public class JewelsCompletedLeaderboard extends Leaderboard {
+	public JewelsCompletedLeaderboard() {
+		super("jewels-completed");
+	}
+
 	@Override
 	public ItemStack getDisplayStack(UUID uuid) {
 		ItemStack itemStack = new AItemStackBuilder(FreshCommand.getFreshItem(MysticType.PANTS, PantColor.JEWEL))
@@ -33,8 +39,15 @@ public class JewelsCompletedLeaderboard extends Leaderboard {
 	}
 
 	@Override
-	public void setPosition(LeaderboardPosition position, FileConfiguration playerData) {
-		position.intValue = playerData.getInt("stats.misc.jewels-completed");
+	public String getDisplayValue(PitPlayer pitPlayer) {
+		return "&c" + Misc.formatLarge(pitPlayer.stats.jewelsCompleted) + " jewel" + (pitPlayer.stats.jewelsCompleted == 1 ? "" : "s");
+	}
+
+	@Override
+	public void setPosition(LeaderboardPosition position) {
+		LeaderboardData data = LeaderboardData.getLeaderboardData(this);
+
+		position.intValue = (int) data.getValue(position.uuid).primaryValue;
 	}
 
 	@Override

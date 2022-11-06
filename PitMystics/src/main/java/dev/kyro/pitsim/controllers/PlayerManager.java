@@ -7,10 +7,9 @@ import de.myzelyam.api.vanish.VanishAPI;
 import de.tr7zw.nbtapi.NBTItem;
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.arcticapi.misc.AUtil;
-import dev.kyro.arcticguilds.controllers.BuffManager;
-import dev.kyro.arcticguilds.controllers.GuildManager;
-import dev.kyro.arcticguilds.controllers.objects.Guild;
-import dev.kyro.arcticguilds.controllers.objects.GuildBuff;
+import dev.kyro.arcticguilds.BuffManager;
+import dev.kyro.arcticguilds.GuildBuff;
+import dev.kyro.arcticguilds.GuildData;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.battlepass.quests.EarnRenownQuest;
 import dev.kyro.pitsim.battlepass.quests.WinAuctionsQuest;
@@ -48,6 +47,7 @@ import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.util.Vector;
 import org.spigotmc.event.player.PlayerSpawnLocationEvent;
 
 import java.text.DecimalFormat;
@@ -115,11 +115,11 @@ public class PlayerManager implements Listener {
 				for(Player onlinePlayer : Bukkit.getOnlinePlayers()) {
 					if(AFKManager.AFKPlayers.contains(onlinePlayer) || Math.random() > (1.0 / 3.0)) continue;
 
-					Guild guild = GuildManager.getGuild(onlinePlayer);
+					GuildData guild = GuildData.getGuildData(onlinePlayer);
 					GuildBuff renownBuff = BuffManager.getBuff("renown");
 					double buff = 0;
 					if(guild != null) {
-						for(Map.Entry<GuildBuff.SubBuff, Double> entry : renownBuff.getBuffs(guild.getLevel(renownBuff)).entrySet()) {
+						for(Map.Entry<GuildBuff.SubBuff, Double> entry : renownBuff.getBuffs(guild.getBuffLevel(renownBuff)).entrySet()) {
 							if(entry.getKey().refName.equals("renown")) buff = entry.getValue();
 						}
 					}
@@ -137,7 +137,7 @@ public class PlayerManager implements Listener {
 			@Override
 			public void run() {
 				for(Player player : Bukkit.getOnlinePlayers()) {
-					if(!player.hasPermission("group.eternal") || !MapManager.currentMap.lobbies.contains(player.getWorld()) || VanishAPI.isInvisible(player))
+					if(!player.hasPermission("group.eternal") || MapManager.currentMap.world != player.getWorld() || VanishAPI.isInvisible(player))
 						continue;
 					if(SpawnManager.isInSpawn(player.getLocation())) continue;
 					List<Player> nearbyNons = new ArrayList<>();
@@ -510,7 +510,7 @@ public class PlayerManager implements Listener {
 		new BukkitRunnable() {
 			@Override
 			public void run() {
-				event.getPlayer().teleport(MapManager.currentMap.getSpawn(event.getPlayer().getWorld()));
+				event.getPlayer().teleport(MapManager.currentMap.getSpawn());
 			}
 		}.runTaskLater(PitSim.INSTANCE, 10L);
 	}
@@ -519,7 +519,7 @@ public class PlayerManager implements Listener {
 	public void onMove(PlayerMoveEvent event) {
 		if(event.getPlayer().getLocation().getY() < 10 && event.getPlayer().getWorld() == Bukkit.getWorld("tutorial"))
 			DamageManager.death(event.getPlayer());
-		else if(event.getPlayer().getLocation().getY() < 10 && MapManager.currentMap.lobbies.contains(event.getPlayer().getWorld())) {
+		else if(event.getPlayer().getLocation().getY() < 10 && MapManager.currentMap.world == event.getPlayer().getWorld()) {
 			DamageManager.death(event.getPlayer());
 		} else if(event.getPlayer().getLocation().getY() < 10) DamageManager.death(event.getPlayer());
 	}
@@ -620,9 +620,11 @@ public class PlayerManager implements Listener {
 	public void onJoin(PlayerSpawnLocationEvent event) {
 		Player player = event.getPlayer();
 		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
-		Location spawnLoc = MapManager.currentMap.getSpawn(MapManager.currentMap.firstLobby);
+		Location spawnLoc = MapManager.currentMap.getSpawn();
+		if(PitSim.isDarkzone()) spawnLoc = MapManager.getInitialDarkzoneSpawn();
+		if(LobbySwitchManager.joinedFromDarkzone.contains(player.getUniqueId())) spawnLoc = MapManager.currentMap.getDarkzoneJoinSpawn();
 
-		if(player.hasPermission("pitsim.autofps")) {
+		if(!PitSim.isDarkzone() && player.hasPermission("pitsim.autofps")) {
 			FPSCommand.fpsPlayers.add(player);
 			for(Non non : NonManager.nons) player.hidePlayer(non.non);
 
@@ -634,20 +636,42 @@ public class PlayerManager implements Listener {
 				}
 			}.runTaskLater(PitSim.INSTANCE, 1L);
 
+			Location finalSpawnLoc = spawnLoc;
 			new BukkitRunnable() {
 				@Override
 				public void run() {
-					player.teleport(spawnLoc);
+					player.teleport(finalSpawnLoc);
 				}
 			}.runTaskLater(PitSim.INSTANCE, 60L);
 			return;
 		}
 
 		player.teleport(spawnLoc);
+
+		Location finalSpawnLoc1 = spawnLoc;
 		new BukkitRunnable() {
 			@Override
 			public void run() {
-				player.teleport(spawnLoc);
+				player.teleport(finalSpawnLoc1);
+
+				if(PitSim.isDarkzone()) {
+					player.setVelocity(new Vector(1.5, 1, 0).multiply(0.5));
+					Misc.sendTitle(player, "&d&k||&5&lDarkzone&d&k||", 40);
+					Misc.sendSubTitle(player, "", 40);
+					AOutput.send(player, "&7You have been sent to the &d&k||&5&lDarkzone&d&k||&7.");
+
+
+					if(!pitPlayer.darkzoneCutscene) {
+						CutsceneManager.play(player);
+						return;
+					}
+
+				} else if(LobbySwitchManager.joinedFromDarkzone.contains(player.getUniqueId())) {
+					player.setVelocity(new Vector(1.5, 1, 0));
+					Misc.sendTitle(player, "&a&lOverworld", 40);
+					Misc.sendSubTitle(player, "", 40);
+					AOutput.send(player, "&7You have been sent to the &a&lOverworld&7.");
+				}
 
 				String message = "%luckperms_prefix%";
 				if(pitPlayer.megastreak.isOnMega()) {
@@ -658,18 +682,22 @@ public class PlayerManager implements Listener {
 			}
 		}.runTaskLater(PitSim.INSTANCE, 5L);
 
-		new BukkitRunnable() {
-			@Override
-			public void run() {
-				for (AuctionItem auctionItem : AuctionManager.auctionItems) {
-					if(!auctionItem.bidMap.containsKey(player.getUniqueId())) continue;
+		if(PitSim.isDarkzone()) {
+			new BukkitRunnable() {
+				@Override
+				public void run() {
+					for(AuctionItem auctionItem : AuctionManager.auctionItems) {
+						if(!auctionItem.bidMap.containsKey(player.getUniqueId())) continue;
 
-					if(auctionItem.getHighestBidder().equals(player.getUniqueId())) AOutput.send(player, "&5&lDARK AUCTION! &7You are currently holding the highest bid on " + auctionItem.item.itemName);
-					else AOutput.send(player, "&5&lDARK AUCTION! &7Current bid on " + auctionItem.item.itemName + " &7is &f" + auctionItem.getHighestBid() + " Souls &7by &e" + Bukkit.getOfflinePlayer(auctionItem.getHighestBidder()).getName() + "&7.");
-					Sounds.BOOSTER_REMIND.play(player);
+						if(auctionItem.getHighestBidder().equals(player.getUniqueId()))
+							AOutput.send(player, "&5&lDARK AUCTION! &7You are currently holding the highest bid on " + auctionItem.item.itemName);
+						else
+							AOutput.send(player, "&5&lDARK AUCTION! &7Current bid on " + auctionItem.item.itemName + " &7is &f" + auctionItem.getHighestBid() + " Souls &7by &e" + Bukkit.getOfflinePlayer(auctionItem.getHighestBidder()).getName() + "&7.");
+						Sounds.BOOSTER_REMIND.play(player);
+					}
 				}
-			}
-		}.runTaskLater(PitSim.INSTANCE, 10);
+			}.runTaskLater(PitSim.INSTANCE, 10);
+		}
 
 		if(pitPlayer.auctionReturn.size() > 0) {
 			for(String item : pitPlayer.auctionReturn) {
