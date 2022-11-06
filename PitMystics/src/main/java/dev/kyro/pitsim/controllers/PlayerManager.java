@@ -175,6 +175,7 @@ public class PlayerManager implements Listener {
 		}.runTaskTimer(PitSim.INSTANCE, Misc.getRunnableOffset(1), 60 * 20);
 	}
 
+//	TODO: Remove and refactor
 	public static boolean isRealPlayerTemp(Player player) {
 		if(player == null) return false;
 		return Bukkit.getOnlinePlayers().contains(player);
@@ -522,10 +523,10 @@ public class PlayerManager implements Listener {
 	public void onAttack(AttackEvent.Apply attackEvent) {
 
 		Non defendingNon = NonManager.getNon(attackEvent.defender);
-//		Arch chest archangel chestplate
-		if(defendingNon == null && attackEvent.defenderIsPlayer) {
+		if(PlayerManager.isRealPlayerTemp(attackEvent.defenderPlayer)) {
+//			Arch chest archangel chestplate
 			attackEvent.multipliers.add(0.8);
-		} else if(attackEvent.defenderIsPlayer) {
+		} else if(defendingNon != null) {
 //			Non defence
 			if(defendingNon.traits.contains(NonTrait.IRON_STREAKER)) attackEvent.multipliers.add(0.8);
 		}
