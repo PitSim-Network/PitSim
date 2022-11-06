@@ -49,7 +49,9 @@ public class KitNPC extends PitNPC {
 
 		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
 		Tutorial tutorial = pitPlayer.tutorial;
-		if(tutorial.isActive() && !tutorial.isCompleted(TutorialObjective.KITS) && !tutorial.isInObjective) {
+
+		if(tutorial.isInObjective) return;
+		if(tutorial.isActive() && !tutorial.isCompleted(TutorialObjective.KITS)) {
 
 			tutorial.sendMessage(" ", 10);
 			tutorial.sendMessage(" ", 20);
