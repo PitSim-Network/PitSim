@@ -10,7 +10,6 @@ import dev.kyro.pitsim.enums.NBTTag;
 import dev.kyro.pitsim.events.AttackEvent;
 import dev.kyro.pitsim.misc.Misc;
 import dev.kyro.pitsim.misc.Sounds;
-import dev.kyro.pitsim.tutorial.TutorialManager;
 import net.minecraft.server.v1_8_R3.*;
 import org.bukkit.Material;
 import org.bukkit.*;
@@ -224,9 +223,6 @@ public class TaintedWell implements Listener
         }
         event.setCancelled(true);
         if (TaintedWell.playerItems.containsKey(event.getPlayer())) {
-            return;
-        }
-        if (TutorialManager.tutorials.containsKey(event.getPlayer())) {
             return;
         }
         if (Misc.isAirOrNull(player.getItemInHand())) {

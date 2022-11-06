@@ -20,7 +20,6 @@ import dev.kyro.pitsim.inventories.EnchantingGUI;
 import dev.kyro.pitsim.misc.Constant;
 import dev.kyro.pitsim.misc.Misc;
 import dev.kyro.pitsim.misc.Sounds;
-import dev.kyro.pitsim.tutorial.TutorialManager;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Color;
@@ -58,7 +57,6 @@ public class EnchantManager implements Listener {
 
 	@EventHandler
 	public static void onEnchantingTableClick(PlayerInteractEvent event) {
-		if(TutorialManager.tutorials.containsKey(event.getPlayer())) return;
 		if(event.getAction() != Action.LEFT_CLICK_BLOCK && event.getAction() != Action.RIGHT_CLICK_BLOCK) return;
 		Player player = event.getPlayer();
 		Block block = event.getClickedBlock();

@@ -44,13 +44,8 @@ import dev.kyro.pitsim.misc.*;
 import dev.kyro.pitsim.misc.tainted.BloodyHeart;
 import dev.kyro.pitsim.misc.tainted.SyntheticCube;
 import dev.kyro.pitsim.perks.*;
-import dev.kyro.pitsim.perks.Dispersion;
 import dev.kyro.pitsim.pitmaps.BiomesMap;
 import dev.kyro.pitsim.placeholders.*;
-import dev.kyro.pitsim.tutorial.MessageManager;
-import dev.kyro.pitsim.tutorial.TaskListener;
-import dev.kyro.pitsim.tutorial.TutorialManager;
-import dev.kyro.pitsim.tutorial.objects.Tutorial;
 import dev.kyro.pitsim.upgrades.*;
 import net.citizensnpcs.api.CitizensAPI;
 import net.citizensnpcs.api.npc.NPC;
@@ -288,11 +283,6 @@ public class PitSim extends JavaPlugin {
 			hologram.delete();
 		}
 
-		for(Tutorial value : TutorialManager.tutorials.values()) {
-			value.cleanUp();
-			value.cleanUp();
-		}
-
 		SpawnNPCs.removeNPCs();
 		List<Non> copyList = new ArrayList<>(NonManager.nons);
 		for(Non non : copyList) {
@@ -445,7 +435,6 @@ public class PitSim extends JavaPlugin {
 		getCommand("play").setExecutor(switchCommand);
 		getCommand("pay").setExecutor(new PayCommand());
 		getCommand("shutdown").setExecutor(new ShutdownCommand());
-		getCommand("tutorial").setExecutor(new TutorialCommand());
 		getCommand("cutscene").setExecutor(new CutsceneCommand());
 		getCommand("kit").setExecutor(new KitCommand());
 		getCommand("view").setExecutor(new ViewCommand());
@@ -488,9 +477,6 @@ public class PitSim extends JavaPlugin {
 		getServer().getPluginManager().registerEvents(new DupeManager(), this);
 		getServer().getPluginManager().registerEvents(new GoldenHelmet(), this);
 		getServer().getPluginManager().registerEvents(new MapManager(), this);
-		getServer().getPluginManager().registerEvents(new TaskListener(), this);
-		getServer().getPluginManager().registerEvents(new MessageManager(), this);
-		getServer().getPluginManager().registerEvents(new TutorialManager(), this);
 		getServer().getPluginManager().registerEvents(new GuildIntegrationManager(), this);
 		getServer().getPluginManager().registerEvents(new UpgradeManager(), this);
 		getServer().getPluginManager().registerEvents(new KitManager(), this);
