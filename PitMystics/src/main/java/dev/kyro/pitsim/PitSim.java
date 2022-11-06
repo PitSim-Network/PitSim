@@ -383,6 +383,7 @@ public class PitSim extends JavaPlugin {
 		NPCManager.registerNPC(new PrestigeNPC(MapManager.currentMap.lobbies));
 		NPCManager.registerNPC(new KeeperNPC(MapManager.currentMap.lobbies));
 		NPCManager.registerNPC(new KitNPC(MapManager.currentMap.lobbies));
+		NPCManager.registerNPC(new StatsNPC(MapManager.currentMap.lobbies));
 
 		NPCManager.registerNPC(new KyroNPC(MapManager.currentMap.lobbies));
 		NPCManager.registerNPC(new WijiNPC(MapManager.currentMap.lobbies));
