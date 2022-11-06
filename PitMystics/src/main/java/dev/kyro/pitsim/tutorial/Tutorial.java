@@ -5,6 +5,7 @@ import dev.kyro.arcticapi.data.APlayerData;
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
+import dev.kyro.pitsim.misc.Sounds;
 import net.kyori.adventure.audience.Audience;
 import net.kyori.adventure.bossbar.BossBar;
 import net.kyori.adventure.text.Component;
@@ -41,8 +42,20 @@ public class Tutorial {
 		}
 
 		if(!isActive()) return;
-		updateBossBar();
-		startRunnable();
+
+		isInObjective = true;
+		sendMessage("&eHello! Welcome to PitSim.", 10);
+		sendMessage("&eBefore you get started, we need to cover some basics.", 70);
+		sendMessage("&eInteract with various NPCs around spawn to learn about how to play", 130);
+
+		new BukkitRunnable() {
+			@Override
+			public void run() {
+				isInObjective = false;
+				updateBossBar();
+				startRunnable();
+			}
+		}.runTaskLater(PitSim.INSTANCE, 100);
 	}
 
 	public void save() {
@@ -68,12 +81,32 @@ public class Tutorial {
 			public void run() {
 				completedObjectives.add(objective);
 				updateBossBar();
+				System.out.println(completedObjectives);
 				AOutput.send(pitPlayer.player, "&a&lTUTORIAL!&7 Completed objective: " + objective.display);
+				Sounds.LEVEL_UP.play(pitPlayer.player);
 
 				if(completedObjectives.size() == TutorialObjective.values().length) {
-					//Tutorial Completion Code
-					//Hide Bossbar
 					if(particleRunnable != null) particleRunnable.cancel();
+
+					new BukkitRunnable() {
+						@Override
+						public void run() {
+							AOutput.send(pitPlayer.player, "&a&lTUTORIAL COMPLETED!");
+							Sounds.LEVEL_UP.play(pitPlayer.player);
+						}
+					}.runTaskLater(PitSim.INSTANCE, 30);
+
+					sendMessage("&eIf you forget any of the information, each NPC has a help menu in the bottom right corner.", 90);
+					sendMessage("&eYou can also join our discord server at &f&ndiscord.pitsim.net &efor more help.", 150);
+					sendMessage("&eWith that being said, enjoy the server!", 210);
+
+					new BukkitRunnable() {
+						@Override
+						public void run() {
+							Audience audience = PitSim.adventure.player(uuid);
+							audience.hideBossBar(bossBar);
+						}
+					}.runTaskLater(PitSim.INSTANCE, 60);
 				}
 				isInObjective = false;
 			}
@@ -89,7 +122,7 @@ public class Tutorial {
 
 	public void updateBossBar() {
 		Audience audience = PitSim.adventure.player(uuid);
-		TutorialObjective objective = getNextObjective();
+		audience.hideBossBar(bossBar);
 
 		Component name = Component.text(ChatColor.translateAlternateColorCodes('&', "&a&lOBJECTIVE: &7Interact with NPCs &7("
 				+ completedObjectives.size() + "/" +  TutorialObjective.values().length + ")"));
@@ -119,6 +152,7 @@ public class Tutorial {
 		new BukkitRunnable() {
 			@Override
 			public void run() {
+				Sounds.BOOSTER_REMIND.play(pitPlayer.player);
 				AOutput.send(pitPlayer.player, text);
 			}
 		}.runTaskLater(PitSim.INSTANCE, ticks);

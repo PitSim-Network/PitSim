@@ -38,7 +38,8 @@ public class PrestigeNPC extends PitNPC {
 
 		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
 		Tutorial tutorial = pitPlayer.tutorial;
-		if(tutorial.isActive() && !tutorial.isCompleted(TutorialObjective.PRESTIGE) && !tutorial.isInObjective) {
+		if(tutorial.isInObjective) return;
+		if(tutorial.isActive() && !tutorial.isCompleted(TutorialObjective.PRESTIGE)) {
 
 			tutorial.sendMessage(" ", 10);
 			tutorial.sendMessage(" ", 20);

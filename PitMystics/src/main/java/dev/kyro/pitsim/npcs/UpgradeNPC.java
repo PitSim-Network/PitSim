@@ -43,7 +43,9 @@ public class UpgradeNPC extends PitNPC {
 		}
 
 		Tutorial tutorial = pitPlayer.tutorial;
-		if(tutorial.isActive() && !tutorial.isCompleted(TutorialObjective.PERKS) && !tutorial.isInObjective) {
+
+		if(tutorial.isInObjective) return;
+		if(tutorial.isActive() && !tutorial.isCompleted(TutorialObjective.PERKS)) {
 
 			tutorial.sendMessage(" ", 10);
 			tutorial.sendMessage(" ", 20);
