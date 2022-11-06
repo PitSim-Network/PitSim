@@ -9,7 +9,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public abstract class RenownUpgrade implements Listener {
-
 	public static List<RenownUpgrade> upgrades = new ArrayList<>();
 
 	public String name;
@@ -19,7 +18,6 @@ public abstract class RenownUpgrade implements Listener {
 	public int prestigeReq;
 	public boolean isTiered;
 	public int maxTiers;
-
 
 	public RenownUpgrade INSTANCE;
 
@@ -33,15 +31,10 @@ public abstract class RenownUpgrade implements Listener {
 		this.isTiered = isTiered;
 		this.maxTiers = maxTiers;
 
-
 		upgrades.add(this);
 	}
 
 	public abstract ItemStack getDisplayItem(Player player, boolean isCustomPanel);
-
 	public abstract List<Integer> getTierCosts();
-
 	public abstract AGUIPanel getCustomPanel();
-
-
 }

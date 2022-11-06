@@ -4,6 +4,7 @@ import de.myzelyam.api.vanish.VanishAPI;
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
+import dev.kyro.pitsim.upgrades.TheWay;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -25,8 +26,9 @@ public class PayCommand implements CommandExecutor {
 		}
 
 		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
-		if(pitPlayer.level < 100 && !player.isOp()) {
-			AOutput.error(player, "&c&lNOPE! &7You cannot trade until level 100");
+		int levelRequired = 100 - TheWay.INSTANCE.getLevelReduction(pitPlayer.player);
+		if(pitPlayer.level < levelRequired && !player.isOp()) {
+			AOutput.error(player, "&c&lNOPE! &7You cannot trade until level " + levelRequired);
 			return false;
 		}
 
@@ -46,8 +48,9 @@ public class PayCommand implements CommandExecutor {
 		}
 
 		PitPlayer pitTarget = PitPlayer.getPitPlayer(target);
-		if(pitTarget.level < 100 && !player.isOp()) {
-			AOutput.error(player, "&c&lNOPE! &7That player is not level 100+");
+		int levelRequiredTarget = 100 - TheWay.INSTANCE.getLevelReduction(pitTarget.player);
+		if(pitTarget.level < levelRequiredTarget && !player.isOp()) {
+			AOutput.error(player, "&c&lNOPE! &7That player is not level " + levelRequiredTarget);
 			return false;
 		}
 

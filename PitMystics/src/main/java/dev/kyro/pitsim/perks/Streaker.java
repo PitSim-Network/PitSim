@@ -4,6 +4,7 @@ import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.controllers.NonManager;
+import dev.kyro.pitsim.controllers.SpawnManager;
 import dev.kyro.pitsim.controllers.objects.PitPerk;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.events.KillEvent;
@@ -74,10 +75,10 @@ public class Streaker extends PitPerk {
 			}
 		}
 
-		if(!playerTimes.containsKey(killEvent.getKiller()) && !pitPlayer.megastreak.isOnMega()) {
+		if(!playerTimes.containsKey(killEvent.getKiller()) && !pitPlayer.megastreak.isOnMega() && !SpawnManager.isInSpawn(pitPlayer.player.getLocation())) {
 			playerTimes.put(killEvent.getKiller(), 0);
-			AOutput.send(killEvent.getKiller(), "&b&lSTREAKER! &7Streak timer started!");
 			Sounds.STREAKER.play(killEvent.getKiller());
+			AOutput.send(killEvent.getKiller(), "&b&lSTREAKER! &7Streak timer started!");
 		}
 	}
 

@@ -45,7 +45,9 @@ public abstract class PitMap {
 
 	public abstract Location getVnxNPCSpawn(World world);
 
-	public abstract Location getKeeperNPC(World world);
+	public abstract Location getKeeperNPCSpawn(World world);
+
+	public abstract Location getKitNPCSpawn(World world);
 
 	public double getY(World world) {
 		return getMid(world).getY();

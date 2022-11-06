@@ -69,7 +69,7 @@ public class Beastmode extends Megastreak {
 	}
 
 	@Override
-	public int levelReq() {
+	public int initialLevelReq() {
 		return 50;
 	}
 
@@ -85,11 +85,11 @@ public class Beastmode extends Megastreak {
 		lore.add(ChatColor.GRAY + "On trigger:");
 //		lore.add(ChatColor.translateAlternateColorCodes('&', "&a\u25a0 &7Deal &c+25% &7damage to bots"));
 		lore.add(ChatColor.translateAlternateColorCodes('&', "&a\u25a0 &7Earn &b+100% XP &7from kills"));
-		lore.add(ChatColor.translateAlternateColorCodes('&', "&a\u25a0 &7Gain &b+130 max XP&7"));
+		lore.add(ChatColor.translateAlternateColorCodes('&', "&a\u25a0 &7Gain &b+130 max XP &7from kills"));
 		lore.add("");
 		lore.add(ChatColor.GRAY + "BUT:");
-		lore.add(ChatColor.translateAlternateColorCodes('&', "&c\u25a0 &7Receive &c+0.25% &7damage per kill over 50"));
-		lore.add(ChatColor.translateAlternateColorCodes('&', "&7(Damage tripled for bots)"));
+		lore.add(ChatColor.translateAlternateColorCodes('&', "&c\u25a0 &7Receive &c+0.15% &7damage per kill over 50"));
+		lore.add(ChatColor.translateAlternateColorCodes('&', "&7(5x damage from bots)"));
 		lore.add(ChatColor.translateAlternateColorCodes('&', "&c\u25a0 &7Earn &c-50% &7gold from kills"));
 		lore.add("");
 		lore.add(ChatColor.GRAY + "On death:");
@@ -108,9 +108,9 @@ public class Beastmode extends Megastreak {
 		if(pitPlayer.megastreak.isOnMega() && pitPlayer.megastreak.getClass() == Beastmode.class) {
 			int ks = pitPlayer.getKills();
 			if(NonManager.getNon(attackEvent.getAttacker()) == null) {
-				attackEvent.increasePercent += (ks - 50) / 400D;
+				attackEvent.increasePercent += (ks - 50) * 0.15 / 100D;
 			} else {
-				attackEvent.increasePercent += ((ks - 50) * 3) / 400D;
+				attackEvent.increasePercent += ((ks - 50) * 5) * 0.15 / 100D;
 			}
 		}
 	}

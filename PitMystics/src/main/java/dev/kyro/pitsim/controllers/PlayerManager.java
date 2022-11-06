@@ -27,7 +27,9 @@ import dev.kyro.pitsim.megastreaks.NoMegastreak;
 import dev.kyro.pitsim.megastreaks.RNGesus;
 import dev.kyro.pitsim.misc.Misc;
 import dev.kyro.pitsim.misc.Sounds;
+import dev.kyro.pitsim.upgrades.TheWay;
 import me.clip.placeholderapi.PlaceholderAPI;
+import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.*;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
 import org.bukkit.enchantments.Enchantment;
@@ -183,6 +185,39 @@ public class PlayerManager implements Listener {
 		return Bukkit.getOnlinePlayers().contains(player);
 	}
 
+	@EventHandler
+	public void onItemPickup(PlayerPickupItemEvent event) {
+		ItemStack itemStack = event.getItem().getItemStack();
+		if(Misc.isAirOrNull(itemStack) || itemStack.getType() != Material.ARROW) return;
+		event.setCancelled(true);
+	}
+
+	@EventHandler
+	public void giveMoonCap(KillEvent killEvent) {
+		if(!PlayerManager.isRealPlayerTemp(killEvent.killerPlayer)) return;
+		PitPlayer pitPlayer = PitPlayer.getPitPlayer(killEvent.killerPlayer);
+		killEvent.xpCap += pitPlayer.moonBonus;
+	}
+
+	public static void sendItemBreakMessage(Player player, ItemStack itemStack) {
+		if(Misc.isAirOrNull(itemStack)) return;
+
+		NBTItem nbtItem = new NBTItem(itemStack);
+		nbtItem.setInteger(NBTTag.CURRENT_LIVES.getRef(), 0);
+		EnchantManager.setItemLore(nbtItem.getItem(), player);
+
+		TextComponent message = new TextComponent(ChatColor.translateAlternateColorCodes('&', "&cRIP!&7 Your "));
+		message.addExtra(Misc.createItemHover(nbtItem.getItem()));
+		message.addExtra(new TextComponent(ChatColor.translateAlternateColorCodes('&', "&7 broke")));
+
+		player.sendMessage(message);
+	}
+
+	public static void sendLivesLostMessage(Player player, int livesLost) {
+		if(livesLost == 0) return;
+		AOutput.error(player, "&c&lRIP!&7 You lost lives on &f" + livesLost + " &7item" + (livesLost == 1 ? "" : "s"));
+	}
+
 	public Map<UUID, Long> viewShiftCooldown = new HashMap<>();
 	@EventHandler
 	public void onInteract(PlayerInteractAtEntityEvent event) {
@@ -240,9 +275,10 @@ public class PlayerManager implements Listener {
 		if(player.isOp()) return;
 		if(ChatColor.stripColor(event.getMessage()).toLowerCase().startsWith("/trade")) {
 			PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
-			if(pitPlayer.level < 100) {
+			int levelRequired = 100 - TheWay.INSTANCE.getLevelReduction(pitPlayer.player);
+			if(pitPlayer.level < levelRequired) {
 				event.setCancelled(true);
-				AOutput.error(player, "&c&lNOPE! &7You cannot trade until you are level 100");
+				AOutput.error(player, "&c&lNOPE! &7You cannot trade until you are level " + levelRequired);
 			}
 		}
 		if(ChatColor.stripColor(event.getMessage()).toLowerCase().startsWith("/invsee")) {

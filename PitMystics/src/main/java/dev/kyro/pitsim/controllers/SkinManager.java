@@ -30,9 +30,9 @@ public class SkinManager implements Listener {
 			}
 		}.runTaskTimer(PitSim.INSTANCE, 0L, 20L);
 	}
-	public static void skinNPC(NPC npc, String name) {
-		if(!isSkinLoaded(name)) {
-			AOutput.log("Skin isn't loaded for npc " + name);
+	public static void skinNPC(NPC npc, String skinName) {
+		if(!isSkinLoaded(skinName)) {
+			AOutput.log("Skin isn't loaded for npc " + skinName);
 			return;
 		}
 		if(npc.isSpawned()) {
@@ -40,31 +40,31 @@ public class SkinManager implements Listener {
 //			npc.getTrait(SkinTrait.class).setSkinName(name);
 			SkinTrait skinTrait = CitizensAPI.getTraitFactory().getTrait(SkinTrait.class);
 			npc.addTrait(skinTrait);
-			skinTrait.setSkinName(name);
+			skinTrait.setSkinName(skinName);
 		} else {
-			System.out.println("could not skin " + name + " npc as it is not spawned");
+			System.out.println("could not skin " + skinName + " npc as it is not spawned");
 		}
 	}
 
-	public static void loadAndSkinNPC(String name, BukkitRunnable callback) {
-		if(isSkinLoaded(name)) {
+	public static void loadAndSkinNPC(String skinName, BukkitRunnable callback) {
+		if(isSkinLoaded(skinName)) {
 			callback.runTask(PitSim.INSTANCE);
 			return;
 		}
-		loadSkin(name);
-		callbackMap.putIfAbsent(name, new ArrayList<>());
-		callbackMap.get(name).add(callback);
+		loadSkin(skinName);
+		callbackMap.putIfAbsent(skinName, new ArrayList<>());
+		callbackMap.get(skinName).add(callback);
 	}
 
-	public static void loadSkin(String name) {
-		if(isSkinLoaded(name)) return;
+	public static void loadSkin(String skinName) {
+		if(isSkinLoaded(skinName)) return;
 
-		if(loadingSkins.contains(name)) return;
-		loadingSkins.add(name);
-		Skin.get(name, true);
+		if(loadingSkins.contains(skinName)) return;
+		loadingSkins.add(skinName);
+		Skin.get(skinName, true);
 	}
 
-	public static boolean isSkinLoaded(String name) {
-		return Skin.get(name, false).getSkinId() != null;
+	public static boolean isSkinLoaded(String skinName) {
+		return Skin.get(skinName, false).getSkinId() != null;
 	}
 }

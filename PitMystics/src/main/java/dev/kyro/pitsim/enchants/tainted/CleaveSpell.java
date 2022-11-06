@@ -133,8 +133,6 @@ public class CleaveSpell extends PitEnchant {
                 remove.add(stand.getUniqueId());
             }
         }.runTaskLater(PitSim.INSTANCE, 40);
-
-
     }
 
     @Override

@@ -3,6 +3,7 @@ package dev.kyro.pitsim.controllers;
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.controllers.objects.PitMap;
+import dev.kyro.pitsim.events.PlayerSpawnCommandEvent;
 import dev.kyro.pitsim.misc.Misc;
 import dev.kyro.pitsim.misc.SchematicPaste;
 import org.bukkit.Bukkit;
@@ -10,6 +11,7 @@ import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -67,30 +69,13 @@ public class MapManager implements Listener {
 
 	public static Location playerSnow = new org.bukkit.Location(Bukkit.getWorld("pit"), -99, 46, 707, 0, 0);
 
-//	@EventHandler
-//	public void onPortal(EntityPortalEvent event) {
-//		if(event.getEntity() instanceof Player) return;
-//		event.setCancelled(true);
-//	}
-//
-//	@EventHandler
-//	public void onPortal(PlayerPortalEvent event) {
-//		if(currentMap.getClass() != BiomesMap.class || event.getCause() != PlayerTeleportEvent.TeleportCause.NETHER_PORTAL)
-//			return;
-//		event.setCancelled(true);
-//		Player player = event.getPlayer();
-//		Location playerLoc = player.getLocation();
-//
-//		Location teleportLoc = playerLoc.clone();
-//		teleportLoc.setWorld(MapManager.currentMap.getRandomOrFirst(player.getWorld()));
-//		if(teleportLoc.getYaw() > 0 || teleportLoc.getYaw() < -180) teleportLoc.setYaw(-teleportLoc.getYaw());
-//		teleportLoc.add(3, 0, 0);
-//		teleportLoc.setY(72);
-//
-//		player.teleport(teleportLoc);
-//		player.setVelocity(new Vector(1.5, 1, 0));
-//		AOutput.send(player, "&7You have connected to lobby &6" + (MapManager.currentMap.getLobbyIndex(teleportLoc.getWorld()) + 1));
-//	}
+	@EventHandler
+	public void onSpawn(PlayerSpawnCommandEvent event) {
+		Player player = event.getPlayer();
+		if(player.getWorld() != MapManager.getDarkzone()) return;
+		event.setCancelled(true);
+		AOutput.error(event.getPlayer(), "&c&c&lNOPE! &7You cannot use that while in combat!");
+	}
 
 	public static void enableMultiLobbies() {
 		if(multiLobbies) return;
@@ -147,7 +132,6 @@ public class MapManager implements Listener {
 	public static void enablePortal(World lobby) {
 		SchematicPaste.loadSchematic(new File("plugins/WorldEdit/schematics/doorOpen.schematic"), new Location(lobby, -67, 72, 3));
 	}
-
 
 	public static World getTutorial() {
 		return Bukkit.getWorld("tutorial");

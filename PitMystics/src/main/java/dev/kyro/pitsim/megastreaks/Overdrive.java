@@ -70,7 +70,7 @@ public class Overdrive extends Megastreak {
 	}
 
 	@Override
-	public int levelReq() {
+	public int initialLevelReq() {
 		return 0;
 	}
 
@@ -89,7 +89,7 @@ public class Overdrive extends Megastreak {
 		lore.add("");
 		lore.add(ChatColor.GRAY + "BUT:");
 		lore.add(ChatColor.translateAlternateColorCodes('&', "&c\u25a0 &7Receive &c+" + Misc.getHearts(0.2) + " &7very true"));
-		lore.add(ChatColor.translateAlternateColorCodes('&', "&7damage per 10 kills (only from nons)"));
+		lore.add(ChatColor.translateAlternateColorCodes('&', "&7damage per 10 kills (only from bots)"));
 		lore.add("");
 		lore.add(ChatColor.GRAY + "On death:");
 		lore.add(ChatColor.translateAlternateColorCodes('&', "&e\u25a0 &7Earn between &61000 &7and &65000 gold&7"));

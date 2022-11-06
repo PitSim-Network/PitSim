@@ -5,6 +5,7 @@ import dev.kyro.arcticapi.data.APlayer;
 import dev.kyro.arcticapi.data.APlayerData;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.controllers.PrestigeValues;
+import dev.kyro.pitsim.misc.Misc;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -13,8 +14,6 @@ import org.bukkit.inventory.ItemStack;
 import java.util.*;
 
 public abstract class Leaderboard {
-	public static Map<UUID, String> rankColorMap = new HashMap<>();
-
 	public List<LeaderboardPosition> orderedLeaderboard = new ArrayList<>();
 
 	public int slot;
@@ -30,14 +29,7 @@ public abstract class Leaderboard {
 	public abstract boolean isMoreThanOrEqual(LeaderboardPosition position, LeaderboardPosition otherPosition);
 
 	public static String getRankColor(UUID uuid) {
-		if(rankColorMap.containsKey(uuid)) return rankColorMap.get(uuid);
-		try {
-			String rankColor = PitSim.LUCKPERMS.getUserManager().loadUser(uuid).get().getCachedData().getMetaData().getPrefix();
-			rankColorMap.put(uuid, rankColor);
-			return rankColor;
-		} catch(Exception ignored) {
-			return "&7";
-		}
+		return Misc.getRankColor(uuid);
 	}
 
 	public List<String> getTopPlayers(UUID uuid) {

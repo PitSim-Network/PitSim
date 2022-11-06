@@ -1,39 +1,18 @@
 package dev.kyro.pitsim.slayers;
 
 import com.xxmicloxx.NoteBlockAPI.NoteBlockAPI;
-import dev.kyro.pitsim.PitSim;
-import dev.kyro.pitsim.commands.FreshCommand;
-import dev.kyro.pitsim.controllers.BossManager;
-import dev.kyro.pitsim.controllers.EnchantManager;
 import dev.kyro.pitsim.controllers.objects.PitBoss;
-import dev.kyro.pitsim.controllers.objects.PitEnchant;
-import dev.kyro.pitsim.enums.MysticType;
-import dev.kyro.pitsim.enums.PantColor;
 import dev.kyro.pitsim.enums.SubLevel;
 import dev.kyro.pitsim.events.AttackEvent;
-import dev.kyro.pitsim.misc.BossSkin;
 import dev.kyro.pitsim.misc.TempBlock;
 import dev.kyro.pitsim.slayers.tainted.SimpleBoss;
 import dev.kyro.pitsim.slayers.tainted.SimpleSkin;
 import net.citizensnpcs.api.CitizensAPI;
 import net.citizensnpcs.api.npc.NPC;
-import net.citizensnpcs.api.trait.trait.Equipment;
-import net.citizensnpcs.npc.ai.CitizensNavigator;
-import net.kyori.adventure.audience.Audience;
-import net.kyori.adventure.bossbar.BossBar;
-import net.kyori.adventure.text.Component;
-import org.bukkit.ChatColor;
 import org.bukkit.Material;
-import org.bukkit.block.Block;
-import org.bukkit.entity.*;
-import org.bukkit.event.player.PlayerTeleportEvent;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.entity.EntityType;
+import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
-import org.checkerframework.checker.nullness.qual.NonNull;
-
-import java.util.List;
-import java.util.Map;
 
 public class SpiderBoss extends PitBoss {
     public NPC npc;
@@ -44,7 +23,7 @@ public class SpiderBoss extends PitBoss {
     public SimpleBoss boss;
 
     public SpiderBoss(Player target) throws Exception {
-        super(target, SubLevel.SPIDER_CAVE);
+        super(target, SubLevel.SPIDER_CAVE, 16);
         this.target = target;
 
         npc = CitizensAPI.getNPCRegistry().createNPC(EntityType.PLAYER, name);

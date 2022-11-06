@@ -11,6 +11,7 @@ import dev.kyro.pitsim.controllers.objects.PitPerk;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.megastreaks.NoMegastreak;
 import dev.kyro.pitsim.misc.Sounds;
+import dev.kyro.pitsim.upgrades.TheWay;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.event.inventory.InventoryClickEvent;
@@ -63,7 +64,7 @@ public class PerkPanel extends AGUIPanel {
 			}
 
 			if(slot == 32) {
-				if(pitPlayer.level < killstreakLevels.get(2)) {
+				if(pitPlayer.level < killstreakLevels.get(2) - TheWay.INSTANCE.getLevelReduction(player)) {
 					Sounds.NO.play(player);
 					AOutput.error(player, "&cYou are too low level to use this slot!");
 					return;
@@ -73,7 +74,7 @@ public class PerkPanel extends AGUIPanel {
 			}
 
 			if(slot == 30) {
-				if(pitPlayer.level < killstreakLevels.get(1)) {
+				if(pitPlayer.level < killstreakLevels.get(1) - TheWay.INSTANCE.getLevelReduction(player)) {
 					Sounds.NO.play(player);
 					AOutput.error(player, "&cYou are too low level to use this slot!");
 					return;
@@ -83,7 +84,7 @@ public class PerkPanel extends AGUIPanel {
 			}
 
 			if(slot == 28) {
-				if(pitPlayer.level < killstreakLevels.get(0)) {
+				if(pitPlayer.level < killstreakLevels.get(0) - TheWay.INSTANCE.getLevelReduction(player)) {
 					Sounds.NO.play(player);
 					AOutput.error(player, "&cYou are too low level to use this slot!");
 					return;
@@ -133,10 +134,11 @@ public class PerkPanel extends AGUIPanel {
 		}
 
 		for(int i = 0; i < pitPlayer.killstreaks.size(); i++) {
-			if(pitPlayer.level < killstreakLevels.get(i)) {
+			int unlockLevel = Math.max(killstreakLevels.get(i) - TheWay.INSTANCE.getLevelReduction(player), 0);
+			if(pitPlayer.level < unlockLevel) {
 				AItemStackBuilder lockedBuilder = new AItemStackBuilder(Material.BEDROCK);
 				lockedBuilder.setLore(new ALoreBuilder("&7Required level: [" + PrestigeValues.
-						getLevelColor(killstreakLevels.get(i)) + killstreakLevels.get(i) + "&7]"));
+						getLevelColor(unlockLevel) + unlockLevel + "&7]"));
 				lockedBuilder.setName("&cKillstreak slot #" + (i + 1));
 				getInventory().setItem(28 + (2 * i), lockedBuilder.getItemStack());
 				continue;

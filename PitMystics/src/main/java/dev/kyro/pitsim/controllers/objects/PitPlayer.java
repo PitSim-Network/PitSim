@@ -5,6 +5,7 @@ import dev.kyro.arcticapi.data.APlayer;
 import dev.kyro.arcticapi.data.APlayerData;
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.PitSim;
+import dev.kyro.pitsim.tutorial.Tutorial;
 import dev.kyro.pitsim.ParticleColor;
 import dev.kyro.pitsim.battlepass.PassData;
 import dev.kyro.pitsim.battlepass.quests.ReachKillstreakQuest;
@@ -118,7 +119,6 @@ public class PitPlayer {
 	public long uberReset = 0;
 	public int goldGrinded = 0;
 	public Map<String, Integer> boosters = new HashMap<>();
-	public Map<String, Integer> boosterTime = new HashMap<>();
 
 	public double lastVersion = PitSim.VERSION;
 	public KillEffect killEffect;
@@ -163,6 +163,8 @@ public class PitPlayer {
 		public boolean auraParticles = true;
 		public boolean trailParticles = true;
 	}
+
+	public Tutorial tutorial;
 
 	@Deprecated
 	public PassData getPassData() {
@@ -281,7 +283,7 @@ public class PitPlayer {
 
 		goldStack = playerData.getDouble("goldstack");
 		moonBonus = playerData.getInt("moonbonus");
-		dailyUbersLeft = playerData.contains("uberslef	t") ? playerData.getInt("ubersleft") : 5;
+		dailyUbersLeft = playerData.contains("ubersleft") ? playerData.getInt("ubersleft") : 5;
 		uberReset = playerData.getLong("ubercooldown");
 		goldGrinded = playerData.getInt("goldgrinded");
 		for(Booster booster : BoosterManager.boosterList) {
@@ -289,8 +291,9 @@ public class PitPlayer {
 			boosterTime.put(booster.refName, playerData.getInt("booster-time." + booster.refName));
 		}
 
-		stats = new PlayerStats(this, playerData);
-//		updateXPBar();
+			stats = new PlayerStats(this, playerData);
+			tutorial = new Tutorial(this, playerData);
+//			updateXPBar();
 
 		for(int i = 0; i < brewingSessions.size(); i++) {
 			brewingSessions.set(i, playerData.getString("brewingsession" + (i + 1)));

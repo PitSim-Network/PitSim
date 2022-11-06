@@ -110,14 +110,12 @@ public class BossManager implements Listener {
             if(players.containsKey(event.getClicker())) players.put(event.getClicker(), players.get(event.getClicker()) + 1);
             else players.put(event.getClicker(), 1);
 
-            if(players.get(event.getClicker()) == 10) {
+            if(players.get(event.getClicker()) == level.spawnBossItemCount) {
                 players.remove(event.getClicker());
                 level.middle.getWorld().playEffect(level.middle, Effect.EXPLOSION_HUGE, 100);
                 Sounds.PRESTIGE.play(level.middle);
                 try {
-
-                    // Hard coding for now
-                    getBossType(level, event.getClicker());
+                    spawnBoss(level, event.getClicker());
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -125,8 +123,7 @@ public class BossManager implements Listener {
         }
     }
 
-    private void getBossType(SubLevel level, Player player) throws Exception {
-
+    private void spawnBoss(SubLevel level, Player player) throws Exception {
         switch (level.bossItem) {
             case ZOMBIE_FLESH:
                 new ZombieBoss(player);
@@ -167,18 +164,18 @@ public class BossManager implements Listener {
             @Override
             public void run() {
                 for (Map.Entry<NPC, PitBoss> entry : bosses.entrySet()) {
-                   if(entry.getValue().target.getWorld() == entry.getValue().getEntity().getWorld() && entry.getValue().subLevel.middle.distance(entry.getValue().target.getLocation()) < 40) continue;
-                    entry.getValue().onDeath();
-                    NPC npc;
-                    if(entry.getKey() == null) npc = CitizensAPI.getNPCRegistry().getNPC(entry.getValue().getEntity());
-                    else npc = entry.getKey();
-                    npc.destroy();
-                    AOutput.send(entry.getValue().target, "&c&lDESPAWN! &7Your boss has despawned because you went to far away.");
-                    bosses.remove(npc);
-                    activePlayers.remove(entry.getValue().target);
+                   if(entry.getValue().getEntity().getWorld() == MapManager.getDarkzone() && entry.getValue().subLevel.middle.distance(entry.getValue().target.getLocation()) < 40) continue;
+                   entry.getValue().onDeath();
+                   NPC npc;
+                   if(entry.getKey() == null) npc = CitizensAPI.getNPCRegistry().getNPC(entry.getValue().getEntity());
+                   else npc = entry.getKey();
+                   npc.destroy();
+                   AOutput.send(entry.getValue().target, "&c&lDESPAWN! &7Your boss has despawned because you went to far away.");
+                   bosses.remove(npc);
+                   activePlayers.remove(entry.getValue().target);
                 }
             }
-        }.runTaskTimer(PitSim.INSTANCE, 200, 200);
+        }.runTaskTimer(PitSim.INSTANCE, 20 * 4, 20 * 4);
     }
 
     @EventHandler
@@ -200,7 +197,7 @@ public class BossManager implements Listener {
             if(entry.getKey().getEntity() == killEvent.getDead()) {
                 entry.getKey().destroy();
                 entry.getValue().onDeath();
-                giveSouls(entry.getValue().target, entry.getValue().subLevel.level * 5);
+                giveSouls(entry.getValue().target, entry.getValue().soulReward);
 
                 killEvent.getDeadPitPlayer().stats.bossesKilled++;
                 toRemove.add(entry.getKey());
@@ -329,12 +326,11 @@ public class BossManager implements Listener {
 
     public static void giveSouls(Player player, int amount) {
         PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
+        amount *= TimeManager.getHalloweenSoulMultiplier();
 
         pitPlayer.taintedSouls += amount;
         pitPlayer.soulsGathered += amount;
         pitPlayer.stats.lifetimeSouls += amount;
-        AOutput.send(player, "&d&lTAINTED &7You have gained &f" + amount + " Tainted Souls&7.");
+        AOutput.send(player, "&d&lTAINTED!&7 You have gained &f" + amount + " Tainted Souls&7.");
     }
-
-
 }

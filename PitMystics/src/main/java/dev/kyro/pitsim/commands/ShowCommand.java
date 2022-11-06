@@ -3,10 +3,9 @@ package dev.kyro.pitsim.commands;
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
+import dev.kyro.pitsim.misc.Misc;
 import litebans.api.Database;
 import me.clip.placeholderapi.PlaceholderAPI;
-import net.md_5.bungee.api.chat.BaseComponent;
-import net.md_5.bungee.api.chat.HoverEvent;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -15,10 +14,7 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.scheduler.BukkitRunnable;
-
-import java.util.List;
 
 public class ShowCommand implements CommandExecutor {
 	@Override
@@ -27,9 +23,7 @@ public class ShowCommand implements CommandExecutor {
 		if(!(sender instanceof Player)) return false;
 
 		Player player = (Player) sender;
-		ItemStack item = player.getItemInHand();
-		ItemMeta meta = item.getItemMeta();
-		List<String> lore = meta.getLore();
+		ItemStack itemStack = player.getItemInHand();
 
 		if(!player.hasPermission("pitsim.show") && !player.isOp()) {
 			AOutput.error(player, "&cInsufficient Permissions");
@@ -49,43 +43,20 @@ public class ShowCommand implements CommandExecutor {
 				new BukkitRunnable() {
 					@Override
 					public void run() {
-						if(!item.hasItemMeta()) {
-							AOutput.error(player, "&cThis item does not have lore!");
+						if(Misc.isAirOrNull(itemStack)) {
+							AOutput.error(player, "&c&lERROR!&7 You are not holding an item");
 							return;
 						}
 
-						StringBuilder builder = new StringBuilder();
-						builder.append(meta.getDisplayName() + "\n");
+						String playerName = "%luckperms_prefix%%essentials_nickname%";
+						String prefix = PlaceholderAPI.setPlaceholders(player, playerName);
 
-						int i = 0;
-						if(lore.size() < 1) {
-							AOutput.error(player, "&cThis item does not have lore!");
-							return;
-						}
-
-						for(String s : lore) {
-							if(i == lore.size() - 1) builder.append(s);
-							else builder.append(s).append("\n");
-							i++;
-						}
-
-						String playername = "%luckperms_prefix%%essentials_nickname%";
-						String playernamecolor = PlaceholderAPI.setPlaceholders(player, playername);
-
-
-						BaseComponent[] hoverEventComponents = new BaseComponent[]{
-								new TextComponent(String.valueOf(builder))
-						};
-
-						TextComponent nonhover = new TextComponent(ChatColor.translateAlternateColorCodes('&', "&6SHOWOFF! " + playernamecolor + " &7shows off their "));
-						TextComponent hover = new TextComponent(ChatColor.translateAlternateColorCodes('&', meta.getDisplayName()));
-						hover.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, hoverEventComponents));
-
-						nonhover.addExtra(hover);
+						TextComponent message = new TextComponent(ChatColor.translateAlternateColorCodes('&', "&6SHOWOFF! " + prefix + " &7shows off their "));
+						message.addExtra(Misc.createItemHover(itemStack));
 
 						for(Player onlinePlayer : Bukkit.getOnlinePlayers()) {
 							PitPlayer pitPlayer = PitPlayer.getPitPlayer(onlinePlayer);
-							if(!pitPlayer.playerChatDisabled) onlinePlayer.spigot().sendMessage(nonhover);
+							if(!pitPlayer.playerChatDisabled) onlinePlayer.spigot().sendMessage(message);
 						}
 					}
 				}.runTask(PitSim.INSTANCE);

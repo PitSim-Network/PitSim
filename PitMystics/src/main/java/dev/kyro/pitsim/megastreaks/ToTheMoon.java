@@ -70,7 +70,7 @@ public class ToTheMoon extends Megastreak {
 	}
 
 	@Override
-	public int levelReq() {
+	public int initialLevelReq() {
 		return 60;
 	}
 
@@ -84,13 +84,14 @@ public class ToTheMoon extends Megastreak {
 		lore.add("");
 		lore.add(ChatColor.GRAY + "On trigger:");
 		lore.add(ChatColor.translateAlternateColorCodes('&', "&a\u25a0 &7Earn &b+135% XP &7from kills"));
-		lore.add(ChatColor.translateAlternateColorCodes('&', "&a\u25a0 &7Gain &b+1.5 max XP &7per kill"));
+		lore.add(ChatColor.translateAlternateColorCodes('&', "&a\u25a0 &7Gain &b+330 max XP &7from kills"));
+		lore.add(ChatColor.translateAlternateColorCodes('&', "&a\u25a0 &7Gain &b+1 max XP &7per kill"));
 		lore.add("");
 		lore.add(ChatColor.GRAY + "BUT:");
-		lore.add(ChatColor.translateAlternateColorCodes('&', "&c\u25a0 &7Starting from 200, receive &c+5%"));
-		lore.add(ChatColor.translateAlternateColorCodes('&', "&7damage per 20 kills. (Tripled for bots)"));
+		lore.add(ChatColor.translateAlternateColorCodes('&', "&c\u25a0 &7Starting from 200, receive &c+3%"));
+		lore.add(ChatColor.translateAlternateColorCodes('&', "&7damage per 20 kills. (5x damage from bots)"));
 		lore.add(ChatColor.translateAlternateColorCodes('&', "&c\u25a0 &7Starting from 400, receive &c+" + Misc.getHearts(0.2)));
-		lore.add(ChatColor.translateAlternateColorCodes('&', "&7damage per 50 kills. (Tripled for bots)"));
+		lore.add(ChatColor.translateAlternateColorCodes('&', "&7damage per 100 kills. (5x damage from bots)"));
 		lore.add(ChatColor.translateAlternateColorCodes('&', "&c\u25a0 &7Starting from 700, receive &c+" + Misc.getHearts(0.2)));
 		lore.add(ChatColor.translateAlternateColorCodes('&', "&7very true damage per 10 kills."));
 		lore.add(ChatColor.translateAlternateColorCodes('&', "&c\u25a0 &7Earn &c-50% &7gold from kills"));
@@ -116,15 +117,15 @@ public class ToTheMoon extends Megastreak {
 		if(pitPlayer != this.pitPlayer) return;
 		if(pitPlayer.megastreak.getClass() == ToTheMoon.class) {
 			if(pitPlayer.getKills() > 200) {
-				double increase = (5 * ((pitPlayer.getKills() - 200) / 20)) / 100D;
-				if(NonManager.getNon(attackEvent.getAttacker()) == null) {
+				double increase = (3 * ((pitPlayer.getKills() - 200) / 20)) / 100D;
+				if(NonManager.getNon(attackEvent.attacker) == null) {
 					attackEvent.increasePercent += increase;
-				} else attackEvent.increasePercent += (increase * 3);
+				} else attackEvent.increasePercent += (increase * 5);
 			}
 			if(pitPlayer.getKills() > 400) {
-				if(NonManager.getNon(attackEvent.getAttacker()) == null) {
-					attackEvent.increase += 0.2 * ((pitPlayer.getKills() - 400) / 50);
-				} else attackEvent.increase += 0.6 * ((pitPlayer.getKills() - 400) / 50);
+				if(NonManager.getNon(attackEvent.attacker) == null) {
+					attackEvent.increase += 0.2 * ((pitPlayer.getKills() - 400) / 100);
+				} else attackEvent.increase += 1.0 * ((pitPlayer.getKills() - 400) / 100);
 			}
 			if(pitPlayer.getKills() > 700) {
 				attackEvent.veryTrueDamage += 0.2 * ((pitPlayer.getKills() - 700) / 10);
@@ -134,18 +135,18 @@ public class ToTheMoon extends Megastreak {
 
 	@EventHandler
 	public void onKill(KillEvent killEvent) {
-		if(!killEvent.isKillerPlayer()) return;
-		PitPlayer pitPlayer = killEvent.getKillerPitPlayer();
-		killEvent.xpCap += pitPlayer.moonBonus;
+		if(!killEvent.killerIsPlayer) return;
+		PitPlayer pitPlayer = PitPlayer.getEntityPitPlayer(killEvent.killer);
 		if(pitPlayer != this.pitPlayer) return;
 		if(!(pitPlayer.megastreak.getClass() == ToTheMoon.class)) return;
 		if(!playerIsOnMega(killEvent)) return;
 
-		killEvent.xpCap += (pitPlayer.getKills() - 100) * 1.5;
+		killEvent.xpCap += 330;
+		killEvent.xpCap += (pitPlayer.getKills() - 100) * 1.0;
 		killEvent.xpMultipliers.add(2.35);
 		killEvent.goldMultipliers.add(0.5);
 
-		if(pitPlayer.getKills() > 1200 && !hasCalledHopper) {
+		if(pitPlayer.getKills() > 1500 && !hasCalledHopper) {
 			HopperManager.callHopper("PayForTruce", Hopper.Type.VENOM, killEvent.getKiller());
 			hasCalledHopper = true;
 		}

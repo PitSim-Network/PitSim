@@ -1,5 +1,6 @@
 package dev.kyro.pitsim.controllers;
 
+import de.myzelyam.api.vanish.VanishAPI;
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.misc.Misc;
@@ -30,7 +31,7 @@ public class AFKManager implements Listener {
 			public void run() {
 				onlineActivePlayers = 0;
 				for(Player player : Bukkit.getOnlinePlayers()) {
-					if(AFKPlayers.contains(player)) continue;
+					if(AFKPlayers.contains(player) || VanishAPI.isInvisible(player)) continue;
 
 					onlineActivePlayers++;
 					Location playerLoc = player.getLocation();

@@ -3,7 +3,6 @@ package dev.kyro.pitsim.slayers;
 import com.xxmicloxx.NoteBlockAPI.NoteBlockAPI;
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.PitSim;
-import dev.kyro.pitsim.brewing.PotionManager;
 import dev.kyro.pitsim.controllers.objects.PitBoss;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.enums.SubLevel;
@@ -15,11 +14,9 @@ import dev.kyro.pitsim.slayers.tainted.SimpleBoss;
 import dev.kyro.pitsim.slayers.tainted.SimpleSkin;
 import net.citizensnpcs.api.CitizensAPI;
 import net.citizensnpcs.api.npc.NPC;
-import org.bukkit.ChatColor;
 import org.bukkit.Effect;
 import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.block.Block;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
@@ -27,7 +24,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
-import org.bukkit.scheduler.BukkitTask;
 import org.bukkit.util.Vector;
 
 import java.util.ArrayList;
@@ -43,7 +39,7 @@ public class EndermanBoss extends PitBoss {
     public SimpleBoss boss;
 
     public EndermanBoss(Player target) {
-        super(target, SubLevel.ENDERMAN_CAVE);
+        super(target, SubLevel.ENDERMAN_CAVE, 150);
         npc = CitizensAPI.getNPCRegistry().createNPC(EntityType.PLAYER, name);
 
         this.boss = new SimpleBoss(npc, target, subLevel, 7, SimpleSkin.ENDERMAN, this){

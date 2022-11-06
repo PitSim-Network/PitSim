@@ -12,7 +12,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
-import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
@@ -20,39 +19,43 @@ public class ChatManager implements Listener {
 
 	@EventHandler
 	public void autoCorrect(AsyncPlayerChatEvent event) {
+		Player player = event.getPlayer();
+		String message = event.getMessage();
 
 		for(Player recipient : event.getRecipients()) {
 			PitPlayer recipientPlayer = PitPlayer.getPitPlayer(recipient);
 			if(recipientPlayer.playerChatDisabled) event.getRecipients().remove(recipient);
-			if(event.getPlayer().equals(recipient) && recipientPlayer.playerChatDisabled)
-				AOutput.error(event.getPlayer(), "&cYou currently have the chat muted. To disable this, navigate to the Chat Options menu located in the &f/donator &cmenu.");
+			if(player.equals(recipient) && recipientPlayer.playerChatDisabled)
+				AOutput.error(player, "&cYou currently have the chat muted. To disable this," +
+						"navigate to the Chat Options menu located in the &f/donator &cmenu.");
 		}
 
-		if(ChatColorPanel.playerChatColors.containsKey(event.getPlayer()) && event.getPlayer().hasPermission("pitsim.chatcolor")) {
-			event.setMessage(ChatColorPanel.playerChatColors.get(event.getPlayer()).chatColor + event.getMessage());
-		}
-		if(ItemRename.renamePlayers.containsKey(event.getPlayer())) {
+		if(ItemRename.renamePlayers.containsKey(player)) {
+			ItemStack heldItem = ItemRename.renamePlayers.get(player);
 			event.setCancelled(true);
-			ItemStack heldItem = ItemRename.renamePlayers.get(event.getPlayer());
 
 			if(Misc.isAirOrNull(heldItem)) {
-				ItemRename.renamePlayers.remove(event.getPlayer());
+				ItemRename.renamePlayers.remove(player);
 				return;
 			}
 			NBTItem nbtItem = new NBTItem(heldItem);
 			if(!nbtItem.hasKey(NBTTag.ITEM_UUID.getRef())) {
-				AOutput.error(event.getPlayer(), "&cYou can only name mystic items!");
+				AOutput.error(player, "&cYou can only name mystic items!");
 				return;
 			}
 			ItemMeta meta = heldItem.getItemMeta();
-			meta.setDisplayName(ChatColor.translateAlternateColorCodes('&', event.getMessage()));
+			meta.setDisplayName(ChatColor.translateAlternateColorCodes('&', message));
 			heldItem.setItemMeta(meta);
-			AOutput.send(event.getPlayer(), "&aSuccessfully renamed item!");
-			ItemRename.renamePlayers.remove(event.getPlayer());
+			AOutput.send(player, "&aSuccessfully renamed item!");
+			ItemRename.renamePlayers.remove(player);
 		}
 
-		String message = event.getMessage()
-				.replaceAll("pitsandbox", "shitsandbox")
+		if(!player.isOp()) message = ChatColor.stripColor(ChatColor.translateAlternateColorCodes('&', message));
+		if(ChatColorPanel.playerChatColors.containsKey(player) && player.hasPermission("pitsim.chatcolor")) {
+			message = ChatColorPanel.playerChatColors.get(player).chatColor + message;
+		}
+
+		message = message.replaceAll("pitsandbox", "shitsandbox")
 				.replaceAll("Pitsandbox", "Shitsandbox")
 				.replaceAll("PitSandbox", "ShitSandbox")
 				.replaceAll("pit sandbox", "shit sandbox")
@@ -65,20 +68,5 @@ public class ChatManager implements Listener {
 				.replaceAll("(?i)harry", "hairy");
 
 		event.setMessage(message);
-	}
-
-	@EventHandler
-	public void onCommandSend(PlayerCommandPreprocessEvent event) {
-//		if(ChatColor.stripColor(event.getMessage()).startsWith("/view")) {
-//			String newCommand = "invsee";
-//			String[] splited = event.getMessage().split("\\s+");
-//			if(splited.length < 2) return;
-//
-//			newCommand += " " + splited[1];
-//			if(splited.length >= 3) newCommand += " " + splited[2];
-//
-//			event.setCancelled(true);
-//			event.getPlayer().performCommand(newCommand);
-//		}
 	}
 }

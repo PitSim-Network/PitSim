@@ -14,6 +14,7 @@ import dev.kyro.arcticapi.commands.AMultiCommand;
 import dev.kyro.arcticapi.data.AData;
 import dev.kyro.arcticapi.hooks.AHook;
 import dev.kyro.arcticapi.misc.AOutput;
+import dev.kyro.pitsim.npcs.*;
 import dev.kyro.pitsim.acosmetics.CosmeticManager;
 import dev.kyro.pitsim.acosmetics.PitCosmetic;
 import dev.kyro.pitsim.acosmetics.aura.*;
@@ -52,6 +53,7 @@ import dev.kyro.pitsim.controllers.objects.*;
 import dev.kyro.pitsim.enchants.GoldBoost;
 import dev.kyro.pitsim.enchants.*;
 import dev.kyro.pitsim.enchants.tainted.*;
+import dev.kyro.pitsim.events.ThrowBlockEvent;
 import dev.kyro.pitsim.enums.NBTTag;
 import dev.kyro.pitsim.events.ThrowBlock;
 import dev.kyro.pitsim.helmetabilities.*;
@@ -66,10 +68,6 @@ import dev.kyro.pitsim.misc.*;
 import dev.kyro.pitsim.perks.*;
 import dev.kyro.pitsim.pitmaps.BiomesMap;
 import dev.kyro.pitsim.placeholders.*;
-import dev.kyro.pitsim.tutorial.MessageManager;
-import dev.kyro.pitsim.tutorial.TaskListener;
-import dev.kyro.pitsim.tutorial.TutorialManager;
-import dev.kyro.pitsim.tutorial.objects.Tutorial;
 import dev.kyro.pitsim.upgrades.*;
 import net.citizensnpcs.api.CitizensAPI;
 import net.citizensnpcs.api.npc.NPC;
@@ -89,10 +87,7 @@ import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import static dev.kyro.pitsim.misc.TempBlockHelper.restoreSessions;
 
@@ -155,7 +150,6 @@ public class PitSim extends JavaPlugin {
 		BossManager.onStart();
 		MapManager.onStart();
 		NonManager.init();
-		SpawnNPCs.createNPCs();
 		TempBlockHelper.init();
 		ReloadManager.init();
 
@@ -243,6 +237,7 @@ public class PitSim extends JavaPlugin {
 		registerKits();
 		registerMobs();
 		registerBrewingIngredients();
+		registerNPCs();
 		registerCosmetics();
 
 		PassManager.registerPasses();
@@ -340,16 +335,11 @@ public class PitSim extends JavaPlugin {
 			this.adventure = null;
 		}
 
-		for (Hologram hologram : BossManager.holograms) {
+		for(Hologram hologram : BossManager.holograms) {
 			hologram.delete();
 		}
 
-		for(Tutorial value : TutorialManager.tutorials.values()) {
-			value.cleanUp();
-			value.cleanUp();
-		}
-
-		SpawnNPCs.removeNPCs();
+		NPCManager.onDisable();
 		List<Non> copyList = new ArrayList<>(NonManager.nons);
 		for(Non non : copyList) {
 			non.remove();
@@ -394,7 +384,7 @@ public class PitSim extends JavaPlugin {
 	private void registerKillstreaks() {
 		PerkManager.registerKillstreak(new NoKillstreak());
 
-//		PerkManager.registerKillstreak(new Dispersion());
+		PerkManager.registerKillstreak(new Limiter());
 		PerkManager.registerKillstreak(new Explicious());
 		PerkManager.registerKillstreak(new AssuredStrike());
 		PerkManager.registerKillstreak(new Leech());
@@ -443,7 +433,22 @@ public class PitSim extends JavaPlugin {
 		LeaderboardManager.registerLeaderboard(new LifetimeSoulsLeaderboard());
 		LeaderboardManager.registerLeaderboard(new AuctionsWonLeaderboard());
 		LeaderboardManager.registerLeaderboard(new HighestBidLeaderboard());
+	}
 
+	private void registerNPCs() {
+		NPCManager.registerNPC(new UpgradeNPC(MapManager.currentMap.lobbies));
+		NPCManager.registerNPC(new PrestigeNPC(MapManager.currentMap.lobbies));
+		NPCManager.registerNPC(new KeeperNPC(MapManager.currentMap.lobbies));
+		NPCManager.registerNPC(new KitNPC(MapManager.currentMap.lobbies));
+
+		NPCManager.registerNPC(new KyroNPC(MapManager.currentMap.lobbies));
+		NPCManager.registerNPC(new WijiNPC(MapManager.currentMap.lobbies));
+		NPCManager.registerNPC(new SplkNPC(MapManager.currentMap.lobbies));
+
+		NPCManager.registerNPC(new TaintedShopNPC(Collections.singletonList(MapManager.getDarkzone())));
+		NPCManager.registerNPC(new LeggingsShopNPC(Collections.singletonList(MapManager.getDarkzone())));
+		NPCManager.registerNPC(new PotionMasterNPC(Collections.singletonList(MapManager.getDarkzone())));
+		NPCManager.registerNPC(new AuctioneerNPC(Collections.singletonList(MapManager.getDarkzone())));
 	}
 
 	private void registerMobs() {
@@ -501,7 +506,6 @@ public class PitSim extends JavaPlugin {
 		getCommand("play").setExecutor(switchCommand);
 		getCommand("pay").setExecutor(new PayCommand());
 		getCommand("shutdown").setExecutor(new ShutdownCommand());
-		getCommand("tutorial").setExecutor(new TutorialCommand());
 		getCommand("cutscene").setExecutor(new CutsceneCommand());
 		getCommand("kit").setExecutor(new KitCommand());
 		getCommand("view").setExecutor(new ViewCommand());
@@ -517,7 +521,7 @@ public class PitSim extends JavaPlugin {
 	private void registerListeners() {
 
 		getServer().getPluginManager().registerEvents(new DamageManager(), this);
-		getServer().getPluginManager().registerEvents(new ThrowBlock(), this);
+		getServer().getPluginManager().registerEvents(new ThrowBlockEvent(), this);
 //		getServer().getPluginManager().registerEvents(new NonManager(), this);
 		getServer().getPluginManager().registerEvents(new PlayerManager(), this);
 		getServer().getPluginManager().registerEvents(new PlayerDataManager(), this);
@@ -536,7 +540,6 @@ public class PitSim extends JavaPlugin {
 //		getServer().getPluginManager().registerEvents(new NonAnticheat(), this);
 //		getServer().getPluginManager().registerEvents(new HelmetListeners(), this);
 		getServer().getPluginManager().registerEvents(new PitBlob(), this);
-		getServer().getPluginManager().registerEvents(new SpawnNPCs(), this);
 		getServer().getPluginManager().registerEvents(new BackwardsCompatibility(), this);
 		getServer().getPluginManager().registerEvents(new YummyBread(), this);
 		getServer().getPluginManager().registerEvents(new BoosterManager(), this);
@@ -547,9 +550,6 @@ public class PitSim extends JavaPlugin {
 		getServer().getPluginManager().registerEvents(new DupeManager(), this);
 		getServer().getPluginManager().registerEvents(new GoldenHelmet(), this);
 		getServer().getPluginManager().registerEvents(new MapManager(), this);
-		getServer().getPluginManager().registerEvents(new TaskListener(), this);
-		getServer().getPluginManager().registerEvents(new MessageManager(), this);
-		getServer().getPluginManager().registerEvents(new TutorialManager(), this);
 		getServer().getPluginManager().registerEvents(new GuildIntegrationManager(), this);
 		getServer().getPluginManager().registerEvents(new UpgradeManager(), this);
 		getServer().getPluginManager().registerEvents(new KitManager(), this);
@@ -568,6 +568,8 @@ public class PitSim extends JavaPlugin {
 		getServer().getPluginManager().registerEvents(new ScoreboardManager(), this);
 		getServer().getPluginManager().registerEvents(new PassManager(), this);
 		getServer().getPluginManager().registerEvents(new SkinManager(), this);
+		getServer().getPluginManager().registerEvents(new TimeManager(), this);
+		getServer().getPluginManager().registerEvents(new NPCManager(), this);
 		getServer().getPluginManager().registerEvents(new CosmeticManager(), this);
 	}
 
@@ -589,18 +591,19 @@ public class PitSim extends JavaPlugin {
 		UpgradeManager.registerUpgrade(new UnlockFirstStrike());
 		UpgradeManager.registerUpgrade(new Impatient());
 		UpgradeManager.registerUpgrade(new Helmetry());
-		UpgradeManager.registerUpgrade(new ShardHunter());
 		UpgradeManager.registerUpgrade(new Chemist());
 //		UpgradeManager.registerUpgrade(new SelfConfidence());
+		UpgradeManager.registerUpgrade(new UnlockCounterJanitor());
 		UpgradeManager.registerUpgrade(new LuckyKill());
 		UpgradeManager.registerUpgrade(new LifeInsurance());
 		UpgradeManager.registerUpgrade(new TaxEvasion());
 		UpgradeManager.registerUpgrade(new DoubleDeath());
 		UpgradeManager.registerUpgrade(new XPComplex());
 		UpgradeManager.registerUpgrade(new KillSteal());
-		UpgradeManager.registerUpgrade(new UnlockCounterJanitor());
-		UpgradeManager.registerUpgrade(new Celebrity());
+		UpgradeManager.registerUpgrade(new ShardHunter());
+		UpgradeManager.registerUpgrade(new TheWay());
 		UpgradeManager.registerUpgrade(new FastPass());
+		UpgradeManager.registerUpgrade(new Celebrity());
 	}
 
 	private void registerHelmetAbilities() {

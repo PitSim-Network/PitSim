@@ -66,15 +66,16 @@ public class EnderchestManager implements Listener {
 
 	@EventHandler
 	public void onCommand(PlayerCommandPreprocessEvent event) {
-		if(event.getPlayer().isOp() || event.getPlayer().hasPermission("galacticvaults.openothers")) return;
-		if(event.getPlayer().getWorld() == MapManager.getDarkzone()) return;
-		if(ChatColor.stripColor(event.getMessage()).toLowerCase().startsWith("/pv") ||
-				ChatColor.stripColor(event.getMessage()).toLowerCase().startsWith("/playervault") ||
-				ChatColor.stripColor(event.getMessage()).toLowerCase().startsWith("/vault")) {
-			Block block = event.getPlayer().getTargetBlock((HashSet<Byte>) null, 5);
-			if(!block.getType().equals(Material.ENDER_CHEST) || ShutdownManager.enderchestDisabled) {
-				event.getPlayer().sendMessage(ChatColor.RED + "You cannot do this right now!");
+		String message = event.getMessage();
+		Player player = event.getPlayer();
+		if(player.isOp() || player.hasPermission("galacticvaults.openothers")) return;
+		if(ChatColor.stripColor(message).toLowerCase().startsWith("/pv") ||
+				ChatColor.stripColor(message).toLowerCase().startsWith("/playervault") ||
+				ChatColor.stripColor(message).toLowerCase().startsWith("/vault")) {
+			Block block = player.getTargetBlock((HashSet<Byte>) null, 5);
+			if(!block.getType().equals(Material.ENDER_CHEST) || ShutdownManager.enderchestDisabled || MapManager.inDarkzone(player)) {
 				event.setCancelled(true);
+				AOutput.error(player, "&c&lERROR!&7 You cannot do this right now!");
 			}
 		}
 	}

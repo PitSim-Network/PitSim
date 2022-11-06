@@ -74,7 +74,7 @@ public class Highlander extends Megastreak {
 	}
 
 	@Override
-	public int levelReq() {
+	public int initialLevelReq() {
 		return 90;
 	}
 
@@ -93,7 +93,7 @@ public class Highlander extends Megastreak {
 		lore.add(ChatColor.translateAlternateColorCodes('&', "&a\u25a0 &7Deal &c+25% &7damage vs bots"));
 		lore.add("");
 		lore.add(ChatColor.GRAY + "BUT:");
-		lore.add(ChatColor.translateAlternateColorCodes('&', "&c\u25a0 &7Heal &cless &7per kill over 50"));
+		lore.add(ChatColor.translateAlternateColorCodes('&', "&c\u25a0 &7Heal &cless &7per kill over 200"));
 		lore.add(ChatColor.translateAlternateColorCodes('&', "&c\u25a0 &7Earn &c-50% &7XP from kills"));
 		lore.add("");
 		lore.add(ChatColor.GRAY + "On death:");
@@ -121,7 +121,7 @@ public class Highlander extends Megastreak {
 		if(pitPlayer != this.pitPlayer) return;
 		if(pitPlayer.megastreak.isOnMega() && pitPlayer.megastreak.getClass() == Highlander.class) {
 			int ks = pitPlayer.getKills();
-			healEvent.multipliers.add(1 / ((ks - 50) / 100D + 1));
+			if(ks > 200) healEvent.multipliers.add(1 / ((ks - 200) / 100D + 1));
 		}
 	}
 

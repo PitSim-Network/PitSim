@@ -14,7 +14,7 @@ import java.util.List;
 
 public class FastPass extends RenownUpgrade {
 	public FastPass() {
-		super("Fast Pass", "FAST_PASS", 100, 33, 38, false, 0);
+		super("Fast Pass", "FAST_PASS", 100, 34, 38, false, 0);
 	}
 
 	@Override

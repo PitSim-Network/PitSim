@@ -13,6 +13,9 @@ import dev.kyro.pitsim.events.HealEvent;
 import dev.kyro.pitsim.megastreaks.Overdrive;
 import dev.kyro.pitsim.megastreaks.RNGesus;
 import dev.kyro.pitsim.megastreaks.Uberstreak;
+import net.md_5.bungee.api.chat.BaseComponent;
+import net.md_5.bungee.api.chat.HoverEvent;
+import net.md_5.bungee.api.chat.TextComponent;
 import me.clip.placeholderapi.PlaceholderAPI;
 import net.minecraft.server.v1_8_R3.World;
 import net.minecraft.server.v1_8_R3.*;
@@ -20,6 +23,7 @@ import org.bukkit.Material;
 import org.bukkit.*;
 import org.bukkit.craftbukkit.v1_8_R3.CraftWorld;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
+import org.bukkit.craftbukkit.v1_8_R3.inventory.CraftItemStack;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
@@ -101,6 +105,16 @@ public class Misc {
 		ItemMeta itemMeta = itemStack.getItemMeta();
 		itemMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
 		itemStack.setItemMeta(itemMeta);
+	}
+
+	public static Date convertToEST(Date date) {
+		DateFormat formatter = new SimpleDateFormat("dd MMM yyyy HH:mm:ss z");
+		formatter.setTimeZone(TimeZone.getTimeZone("EST"));
+		try {
+			return formatter.parse((formatter.format(date)));
+		} catch(ParseException exception) {
+			return null;
+		}
 	}
 
 	public static Date convertToEST(Date date) {
@@ -387,5 +401,53 @@ public class Misc {
 //		Fishduper
 		kyroAccounts.add(UUID.fromString("1db946e6-edfe-42ac-9fd6-bf135aa5130e"));
 		return kyroAccounts.contains(uuid);
+	}
+
+	public static TextComponent createItemHover(ItemStack itemStack) {
+		if(Misc.isAirOrNull(itemStack)) {
+			return null;
+		}
+
+		ItemMeta itemMeta = itemStack.hasItemMeta() ? itemStack.getItemMeta() : Bukkit.getItemFactory().getItemMeta(itemStack.getType());
+		String displayName = itemMeta.getDisplayName();
+		if(displayName == null) {
+			net.minecraft.server.v1_8_R3.ItemStack nmsStack = CraftItemStack.asNMSCopy(itemStack);
+			displayName = nmsStack.getName();
+		}
+
+		StringBuilder stringBuilder = new StringBuilder();
+		stringBuilder.append(displayName);
+
+		List<String> lore = itemMeta.getLore();
+		if(itemMeta.hasLore()) {
+			for(int i = 0; i < lore.size(); i++) {
+				stringBuilder.append("\n");
+				stringBuilder.append(lore.get(i));
+			}
+		} else {
+			stringBuilder.append("\n").append(ChatColor.GRAY).append("Just a plain ").append(displayName);
+		}
+
+		BaseComponent[] hoverEventComponents = new BaseComponent[]{
+				new TextComponent(String.valueOf(stringBuilder))
+		};
+
+		TextComponent hoverComponent = new TextComponent(ChatColor.translateAlternateColorCodes('&', displayName));
+		hoverComponent.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, hoverEventComponents));
+		return hoverComponent;
+	}
+
+	public static Map<UUID, String> rankColorMap = new HashMap<>();
+	public static String getRankColor(UUID uuid) {
+		if(rankColorMap.containsKey(uuid)) return rankColorMap.get(uuid);
+		try {
+			String rankColor = PitSim.LUCKPERMS.getUserManager().loadUser(uuid).get().getCachedData().getMetaData().getPrefix();
+//			TODO: Check-in with players to make sure this fixed it and it wasn't returning "null" as a string
+			if(rankColor == null) throw new Exception();
+			rankColorMap.put(uuid, rankColor);
+			return rankColor;
+		} catch(Exception ignored) {
+			return "&7";
+		}
 	}
 }

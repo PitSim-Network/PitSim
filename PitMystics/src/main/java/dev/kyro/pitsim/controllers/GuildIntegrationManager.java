@@ -13,6 +13,7 @@ import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.events.AttackEvent;
 import dev.kyro.pitsim.events.KillEvent;
 import dev.kyro.pitsim.misc.Misc;
+import dev.kyro.pitsim.upgrades.TheWay;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
@@ -175,9 +176,10 @@ public class GuildIntegrationManager implements Listener {
 	public void onWithdrawal(GuildWithdrawalEvent event) {
 		Player player = event.getPlayer();
 		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
-		if(pitPlayer.level < 100) {
+		int levelRequired = 100 - TheWay.INSTANCE.getLevelReduction(pitPlayer.player);
+		if(pitPlayer.level < levelRequired) {
 			event.setCancelled(true);
-			AOutput.error(event.getPlayer(), "&c&lNOPE! &7You cannot withdraw until you are level 100");
+			AOutput.error(event.getPlayer(), "&c&lNOPE! &7You cannot withdraw until you are level " + levelRequired);
 		}
 	}
 }

@@ -8,6 +8,7 @@ import dev.kyro.pitsim.enums.KillType;
 import dev.kyro.pitsim.events.AttackEvent;
 import dev.kyro.pitsim.events.KillEvent;
 import dev.kyro.pitsim.events.OofEvent;
+import dev.kyro.pitsim.events.PlayerSpawnCommandEvent;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
@@ -15,6 +16,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -108,21 +110,10 @@ public class CombatManager implements Listener {
 	}
 
 	@EventHandler
-	public static void onCommandSend(PlayerCommandPreprocessEvent event) {
-		List<String> blockedCommands = new ArrayList<>();
-		blockedCommands.add("/ec");
-		blockedCommands.add("/echest");
-		blockedCommands.add("/enderchest");
-		blockedCommands.add("/perks");
-		blockedCommands.add("/spawn");
-
-		if(taggedPlayers.containsKey(event.getPlayer().getUniqueId())) {
-			for(String cmd : blockedCommands) {
-				if(cmd.equalsIgnoreCase(event.getMessage())) {
-					event.setCancelled(true);
-					AOutput.error(event.getPlayer(), "&c&c&lNOPE! &7You cannot use that while in combat!");
-				}
-			}
-		}
+	public void onSpawn(PlayerSpawnCommandEvent event) {
+		Player player = event.getPlayer();
+		if(!taggedPlayers.containsKey(player.getUniqueId())) return;
+		event.setCancelled(true);
+		AOutput.error(event.getPlayer(), "&c&c&lNOPE! &7You cannot use that while in combat!");
 	}
 }

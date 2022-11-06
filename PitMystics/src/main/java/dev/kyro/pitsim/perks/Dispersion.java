@@ -45,10 +45,10 @@ public class Dispersion extends PitPerk {
 	}
 
 	public static int getRange() {
-		return 8;
+		return 10;
 	}
 
 	public static int getChance() {
-		return 40;
+		return 60;
 	}
 }

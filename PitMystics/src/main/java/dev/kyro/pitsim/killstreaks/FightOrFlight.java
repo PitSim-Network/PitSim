@@ -2,6 +2,7 @@ package dev.kyro.pitsim.killstreaks;
 
 import dev.kyro.arcticapi.builders.AItemStackBuilder;
 import dev.kyro.arcticapi.builders.ALoreBuilder;
+import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.controllers.objects.Killstreak;
 import dev.kyro.pitsim.events.AttackEvent;
 import dev.kyro.pitsim.misc.Misc;
@@ -11,6 +12,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffectType;
+import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,10 +30,7 @@ public class FightOrFlight extends Killstreak {
 
 	@EventHandler
 	public void onHit(AttackEvent.Apply event) {
-		if(rewardPlayers.contains(event.getAttacker())) {
-			event.increasePercent += 20 / 100D;
-			rewardPlayers.remove(event.getAttacker());
-		}
+		if(rewardPlayers.contains(event.getAttacker())) event.increasePercent += 20 / 100D;
 	}
 
 
@@ -41,6 +40,13 @@ public class FightOrFlight extends Killstreak {
 			Misc.applyPotionEffect(player, PotionEffectType.SPEED, 20 * 7, 2, true, false);
 		} else {
 			rewardPlayers.add(player);
+
+			new BukkitRunnable() {
+				@Override
+				public void run() {
+					rewardPlayers.remove(player);
+				}
+			}.runTaskLater(PitSim.INSTANCE, 7 * 20L);
 		}
 	}
 

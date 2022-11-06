@@ -100,6 +100,7 @@ public class DamageManager implements Listener {
 		if(!(event.getEntity() instanceof LivingEntity)) return;
 		LivingEntity attacker = getAttacker(event.getDamager());
 		LivingEntity defender = (LivingEntity) event.getEntity();
+		if(defender instanceof ArmorStand) return;
 
 		if(defender instanceof Slime && !(defender instanceof MagmaCube)) return;
 
@@ -212,6 +213,13 @@ public class DamageManager implements Listener {
 
 //		As strong as iron
 		attackEvent.multipliers.add(ArmorReduction.getReductionMultiplier(attackEvent.getDefender()));
+
+//		Darkzone player vs player defence
+		if(PlayerManager.isRealPlayerTemp(attackEvent.attackerPlayer) && PlayerManager.isRealPlayerTemp(attackEvent.defenderPlayer) &&
+				MapManager.inDarkzone(attackEvent.attackerPlayer)) {
+			attackEvent.multipliers.add(0.5);
+			attackEvent.trueDamage /= 2.0;
+		}
 
 		double damage = attackEvent.getFinalDamage();
 		attackEvent.getEvent().setDamage(damage);
@@ -479,6 +487,8 @@ public class DamageManager implements Listener {
 			boolean divine = DivineIntervention.INSTANCE.isDivine(deadPlayer);
 			boolean feather = FunkyFeather.useFeather(killer, deadPlayer, divine);
 
+			int livesLost = 0;
+
 			for(int i = 0; i < deadPlayer.getInventory().getSize(); i++) {
 				ItemStack itemStack = deadPlayer.getInventory().getItem(i);
 				if(Misc.isAirOrNull(itemStack)) continue;
@@ -488,18 +498,17 @@ public class DamageManager implements Listener {
 					if(feather || divine) return;
 					if(lives - 1 == 0) {
 						deadPlayer.getInventory().remove(itemStack);
-
+						deadPlayer.updateInventory();
+						PlayerManager.sendItemBreakMessage(deadPlayer, itemStack);
 						if(pitDead.stats != null) pitDead.stats.itemsBroken++;
 					} else {
 						nbtItem.setInteger(NBTTag.CURRENT_LIVES.getRef(), nbtItem.getInteger(NBTTag.CURRENT_LIVES.getRef()) - 1);
 						EnchantManager.setItemLore(nbtItem.getItem(), deadPlayer);
 						deadPlayer.getInventory().setItem(i, nbtItem.getItem());
-
-						if(pitDead.stats != null) pitDead.stats.livesLost++;
+						livesLost++;
 					}
 				}
 			}
-
 
 			if(!feather && !divine) {
 				ProtArmor.deleteArmor(deadPlayer);
@@ -513,18 +522,21 @@ public class DamageManager implements Listener {
 					if(!feather && !divine) {
 						if(lives - 1 == 0) {
 							deadPlayer.getInventory().setLeggings(new ItemStack(Material.AIR));
-
+							deadPlayer.updateInventory();
+							PlayerManager.sendItemBreakMessage(deadPlayer, pants);
 							if(pitDead.stats != null) pitDead.stats.itemsBroken++;
 						} else {
 							nbtItem.setInteger(NBTTag.CURRENT_LIVES.getRef(), nbtItem.getInteger(NBTTag.CURRENT_LIVES.getRef()) - 1);
 							EnchantManager.setItemLore(nbtItem.getItem(), deadPlayer);
 							deadPlayer.getInventory().setLeggings(nbtItem.getItem());
-
-							if(pitDead.stats != null) pitDead.stats.livesLost++;
+							livesLost++;
 						}
 					}
 				}
 			}
+
+			if(pitDead.stats != null) pitDead.stats.livesLost += livesLost;
+			PlayerManager.sendLivesLostMessage(deadPlayer, livesLost);
 		}
 	}
 
