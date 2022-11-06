@@ -57,11 +57,11 @@ import net.kyori.adventure.platform.bukkit.BukkitAudiences;
 import net.luckperms.api.LuckPerms;
 import net.milkbowl.vault.economy.Economy;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Item;
-import org.bukkit.entity.Mob;
 import org.bukkit.entity.Player;
 import org.bukkit.event.block.BlockIgniteEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
@@ -100,6 +100,12 @@ public class PitSim extends JavaPlugin {
 		INSTANCE = this;
 
 		FirestoreManager.init();
+		for(Player onlinePlayer : Bukkit.getOnlinePlayers()) {
+			PlayerManager.addRealPlayer(onlinePlayer.getUniqueId());
+			boolean success = PitPlayer.loadPitPlayer(onlinePlayer.getUniqueId());
+			if(success) continue;
+			onlinePlayer.kickPlayer(ChatColor.RED + "Playerdata failed to load. Please open a support ticket: discord.pitsim.net");
+		}
 
 		loadConfig();
 		ArcticAPI.configInit(this, "prefix", "error-prefix");

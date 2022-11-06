@@ -53,9 +53,16 @@ import java.util.*;
 //import net.kyori.adventure.audience.Audience;
 
 public class PlayerManager implements Listener {
-	//	public static Map<Player, BossBarManager> bossBars = new HashMap<>();
+	private static final List<UUID> realPlayers = new ArrayList<>();
 
+	public static void addRealPlayer(UUID uuid) {
+		realPlayers.add(uuid);
+	}
 
+	public static boolean isRealPlayer(Player player) {
+		if(player == null) return false;
+		return realPlayers.contains(player.getUniqueId());
+	}
 
 	static {
 			new BukkitRunnable() {

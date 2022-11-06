@@ -1,7 +1,5 @@
 package dev.kyro.pitsim.controllers;
 
-import dev.kyro.arcticapi.data.APlayer;
-import dev.kyro.arcticapi.data.APlayerData;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.controllers.objects.PitBoss;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
@@ -10,7 +8,8 @@ import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class UpgradeManager implements Listener {
 //	public static Map<UUID, Map<RenownUpgrade, Integer>> upgradeMap = new HashMap<>();
@@ -35,7 +34,7 @@ public class UpgradeManager implements Listener {
 		if(NonManager.getNon(player) != null) return false;
 		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
 
-		return pitPlayer.upgrades.get(upgrade.refName) > 0;
+		return pitPlayer.upgrades.getOrDefault(upgrade.refName, 0) > 0;
 	}
 
 	public static boolean hasUpgrade(Player player, String refName) {
