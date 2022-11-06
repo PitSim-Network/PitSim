@@ -83,7 +83,7 @@ public class DimensionsMap extends PitMap {
 
 //	TODO: Add
 	@Override
-	public Location getKitRabbitNPCSpawn(World world) {
+	public Location getKitNPCSpawn(World world) {
 		return null;
 	}
 }

@@ -14,6 +14,7 @@ import dev.kyro.arcticapi.data.APlayer;
 import dev.kyro.arcticapi.data.APlayerData;
 import dev.kyro.arcticapi.hooks.AHook;
 import dev.kyro.arcticapi.misc.AOutput;
+import dev.kyro.pitsim.anpcs.*;
 import dev.kyro.pitsim.boosters.ChaosBooster;
 import dev.kyro.pitsim.boosters.GoldBooster;
 import dev.kyro.pitsim.boosters.PvPBooster;
@@ -67,10 +68,7 @@ import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import static dev.kyro.pitsim.misc.TempBlockHelper.restoreSessions;
 
@@ -121,7 +119,6 @@ public class PitSim extends JavaPlugin {
 		BossManager.onStart();
 		MapManager.onStart();
 		NonManager.init();
-		SpawnNPCs.createNPCs();
 		TempBlockHelper.init();
 		ReloadManager.init();
 
@@ -210,6 +207,7 @@ public class PitSim extends JavaPlugin {
 		registerKits();
 		registerMobs();
 		registerBrewingIngredients();
+		registerNPCs();
 
 		AuctionManager.onStart();
 		AuctionDisplays.onStart();
@@ -246,7 +244,6 @@ public class PitSim extends JavaPlugin {
 			aPlayer.save();
 		}
 
-
 		for (NPC value : BossManager.clickables.values()) {
 			value.destroy();
 			NPCRegistry registry = CitizensAPI.getNPCRegistry();
@@ -279,11 +276,11 @@ public class PitSim extends JavaPlugin {
 			this.adventure = null;
 		}
 
-		for (Hologram hologram : BossManager.holograms) {
+		for(Hologram hologram : BossManager.holograms) {
 			hologram.delete();
 		}
 
-		SpawnNPCs.removeNPCs();
+		NPCManager.onDisable();
 		List<Non> copyList = new ArrayList<>(NonManager.nons);
 		for(Non non : copyList) {
 			non.remove();
@@ -379,7 +376,22 @@ public class PitSim extends JavaPlugin {
 		LeaderboardManager.registerLeaderboard(new LifetimeSoulsLeaderboard());
 		LeaderboardManager.registerLeaderboard(new AuctionsWonLeaderboard());
 		LeaderboardManager.registerLeaderboard(new HighestBidLeaderboard());
+	}
 
+	private void registerNPCs() {
+		NPCManager.registerNPC(new UpgradeNPC(MapManager.currentMap.lobbies));
+		NPCManager.registerNPC(new PrestigeNPC(MapManager.currentMap.lobbies));
+		NPCManager.registerNPC(new KeeperNPC(MapManager.currentMap.lobbies));
+		NPCManager.registerNPC(new KitNPC(MapManager.currentMap.lobbies));
+
+		NPCManager.registerNPC(new KyroNPC(MapManager.currentMap.lobbies));
+		NPCManager.registerNPC(new WijiNPC(MapManager.currentMap.lobbies));
+		NPCManager.registerNPC(new SplkNPC(MapManager.currentMap.lobbies));
+
+		NPCManager.registerNPC(new TaintedShopNPC(Collections.singletonList(MapManager.getDarkzone())));
+		NPCManager.registerNPC(new LeggingsShopNPC(Collections.singletonList(MapManager.getDarkzone())));
+		NPCManager.registerNPC(new PotionMasterNPC(Collections.singletonList(MapManager.getDarkzone())));
+		NPCManager.registerNPC(new AuctioneerNPC(Collections.singletonList(MapManager.getDarkzone())));
 	}
 
 	private void registerMobs() {
@@ -466,7 +478,6 @@ public class PitSim extends JavaPlugin {
 //		getServer().getPluginManager().registerEvents(new NonAnticheat(), this);
 //		getServer().getPluginManager().registerEvents(new HelmetListeners(), this);
 		getServer().getPluginManager().registerEvents(new PitBlob(), this);
-		getServer().getPluginManager().registerEvents(new SpawnNPCs(), this);
 		getServer().getPluginManager().registerEvents(new BackwardsCompatibility(), this);
 		getServer().getPluginManager().registerEvents(new YummyBread(), this);
 		getServer().getPluginManager().registerEvents(new BoosterManager(), this);
@@ -495,6 +506,7 @@ public class PitSim extends JavaPlugin {
 		getServer().getPluginManager().registerEvents(new ScoreboardManager(), this);
 		getServer().getPluginManager().registerEvents(new SkinManager(), this);
 		getServer().getPluginManager().registerEvents(new TimeManager(), this);
+		getServer().getPluginManager().registerEvents(new NPCManager(), this);
 	}
 
 	public void registerBoosters() {

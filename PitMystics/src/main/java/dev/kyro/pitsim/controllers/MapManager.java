@@ -134,7 +134,6 @@ public class MapManager implements Listener {
 		SchematicPaste.loadSchematic(new File("plugins/WorldEdit/schematics/doorOpen.schematic"), new Location(lobby, -67, 72, 3));
 	}
 
-
 	public static World getTutorial() {
 		return Bukkit.getWorld("tutorial");
 	}

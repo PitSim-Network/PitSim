@@ -4,6 +4,7 @@ import dev.kyro.arcticapi.data.APlayer;
 import dev.kyro.arcticapi.data.APlayerData;
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.PitSim;
+import dev.kyro.pitsim.atutorial.TutorialData;
 import dev.kyro.pitsim.brewing.BrewingManager;
 import dev.kyro.pitsim.brewing.objects.BrewingSession;
 import dev.kyro.pitsim.controllers.*;
@@ -100,6 +101,7 @@ public class PitPlayer {
 	public int taintedSouls;
 
 	public PlayerStats stats;
+	public TutorialData tutorial;
 
 	public void save() {
 		if(BossManager.bosses.containsKey(CitizensAPI.getNPCRegistry().getNPC(player))) return;
