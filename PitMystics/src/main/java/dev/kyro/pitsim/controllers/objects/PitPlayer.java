@@ -133,9 +133,9 @@ public class PitPlayer {
 	public List<String> auctionReturn = new ArrayList<>();
 	public int soulReturn = 0;
 
-	public boolean tutorial = false;
 	public boolean darkzoneCutscene = false;
 
+	public Tutorial tutorial;
 	public PlayerStats stats = new PlayerStats();
 	private PassData passData = new PassData();
 
@@ -163,8 +163,6 @@ public class PitPlayer {
 		public boolean auraParticles = true;
 		public boolean trailParticles = true;
 	}
-
-	public Tutorial tutorial;
 
 	@Deprecated
 	public PassData getPassData() {
@@ -222,10 +220,7 @@ public class PitPlayer {
 	}
 
 	public PitPlayer() {
-		for(Booster booster : BoosterManager.boosterList) {
-			boosters.put(booster.refName, 0);
-			boosterTime.put(booster.refName, 0);
-		}
+		for(Booster booster : BoosterManager.boosterList) boosters.put(booster.refName, 0);
 	}
 
 	@Deprecated
@@ -286,10 +281,7 @@ public class PitPlayer {
 		dailyUbersLeft = playerData.contains("ubersleft") ? playerData.getInt("ubersleft") : 5;
 		uberReset = playerData.getLong("ubercooldown");
 		goldGrinded = playerData.getInt("goldgrinded");
-		for(Booster booster : BoosterManager.boosterList) {
-			boosters.put(booster.refName, playerData.getInt("boosters." + booster.refName));
-			boosterTime.put(booster.refName, playerData.getInt("booster-time." + booster.refName));
-		}
+		for(Booster booster : BoosterManager.boosterList) boosters.put(booster.refName, playerData.getInt("boosters." + booster.refName));
 
 			stats = new PlayerStats(this, playerData);
 			tutorial = new Tutorial(this, playerData);
@@ -308,12 +300,10 @@ public class PitPlayer {
 			taintedSouls = playerData.getInt("taintedsouls");
 		} else taintedSouls = 200;
 
-
 		if(chatColorString != null) {
 			chatColor = AChatColor.valueOf(chatColorString);
 //			ChatColorPanel.playerChatColors.put(player, chatColor);
 		}
-
 
 		for(RenownUpgrade upgrade : UpgradeManager.upgrades) {
 			int tier = 0;
@@ -322,23 +312,9 @@ public class PitPlayer {
 			renownUpgrades.put(upgrade.refName, tier);
 		}
 
-
-		if(playerData.contains("auctionreturn")) {
-			auctionReturn = Arrays.asList(playerData.getString("auctionreturn").split(","));
-		}
-
-		if(playerData.contains("soulreturn")) {
-			soulReturn = playerData.getInt("soulreturn");
-		}
-
-		if(playerData.contains("tutorial")) {
-			tutorial = playerData.getBoolean("tutorial");
-		}
-
-		if(playerData.contains("darkzonepreview")) {
-			darkzoneCutscene = playerData.getBoolean("darkzonepreview");
-		}
-
+		if(playerData.contains("auctionreturn")) auctionReturn = Arrays.asList(playerData.getString("auctionreturn").split(","));
+		if(playerData.contains("soulreturn")) soulReturn = playerData.getInt("soulreturn");
+		if(playerData.contains("darkzonepreview")) darkzoneCutscene = playerData.getBoolean("darkzonepreview");
 	}
 
 	public void init(Player player) {

@@ -52,10 +52,6 @@ public class BoosterPanel extends AGUIPanel {
 					} else {
 						Sounds.SUCCESS.play(player);
 						booster.minutes += 60;
-
-						int timeLeft = pitPlayer.boosterTime.get(booster.refName) + 60;
-						pitPlayer.boosterTime.put(booster.refName, timeLeft);
-
 						booster.updateTime();
 						FirestoreManager.CONFIG.save();
 						String playerName = "%luckperms_prefix%%essentials_nickname%";

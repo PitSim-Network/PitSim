@@ -118,12 +118,12 @@ public class ToTheMoon extends Megastreak {
 		if(pitPlayer.megastreak.getClass() == ToTheMoon.class) {
 			if(pitPlayer.getKills() > 200) {
 				double increase = (3 * ((pitPlayer.getKills() - 200) / 20)) / 100D;
-				if(NonManager.getNon(attackEvent.attacker) == null) {
+				if(NonManager.getNon(attackEvent.getAttacker()) == null) {
 					attackEvent.increasePercent += increase;
 				} else attackEvent.increasePercent += (increase * 5);
 			}
 			if(pitPlayer.getKills() > 400) {
-				if(NonManager.getNon(attackEvent.attacker) == null) {
+				if(NonManager.getNon(attackEvent.getAttacker()) == null) {
 					attackEvent.increase += 0.2 * ((pitPlayer.getKills() - 400) / 100);
 				} else attackEvent.increase += 1.0 * ((pitPlayer.getKills() - 400) / 100);
 			}
@@ -135,8 +135,8 @@ public class ToTheMoon extends Megastreak {
 
 	@EventHandler
 	public void onKill(KillEvent killEvent) {
-		if(!killEvent.killerIsPlayer) return;
-		PitPlayer pitPlayer = PitPlayer.getEntityPitPlayer(killEvent.killer);
+		if(!killEvent.isKillerPlayer()) return;
+		PitPlayer pitPlayer = killEvent.getKillerPitPlayer();
 		if(pitPlayer != this.pitPlayer) return;
 		if(!(pitPlayer.megastreak.getClass() == ToTheMoon.class)) return;
 		if(!playerIsOnMega(killEvent)) return;

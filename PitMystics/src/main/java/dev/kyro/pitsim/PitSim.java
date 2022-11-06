@@ -55,7 +55,6 @@ import dev.kyro.pitsim.enchants.*;
 import dev.kyro.pitsim.enchants.tainted.*;
 import dev.kyro.pitsim.events.ThrowBlockEvent;
 import dev.kyro.pitsim.enums.NBTTag;
-import dev.kyro.pitsim.events.ThrowBlock;
 import dev.kyro.pitsim.helmetabilities.*;
 import dev.kyro.pitsim.killstreaks.*;
 import dev.kyro.pitsim.kits.EssentialKit;

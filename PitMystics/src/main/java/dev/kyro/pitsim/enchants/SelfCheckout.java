@@ -39,7 +39,7 @@ public class SelfCheckout extends PitEnchant {
 		int enchantLvl = EnchantManager.getEnchantLevel(leggings, this);
 		if(enchantLvl == 0) return;
 
-		PitPlayer pitKiller = PitPlayer.getPitPlayer(killEvent.killerPlayer);
+		PitPlayer pitKiller = PitPlayer.getPitPlayer(killEvent.getKillerPlayer());
 		if(pitKiller.getKills() + 1 < 200 || pitKiller.megastreak.getClass() == Uberstreak.class ||
 				pitKiller.megastreak.getClass() == NoMegastreak.class) return;
 
@@ -57,15 +57,15 @@ public class SelfCheckout extends PitEnchant {
 			scoMessage += " giving &e" + renown + " &7 renown";
 		}
 
-		AOutput.send(killEvent.killerPlayer, scoMessage);
-		DamageManager.death(killEvent.killer, KillModifier.SELF_CHECKOUT);
+		AOutput.send(killEvent.getKillerPlayer(), scoMessage);
+		DamageManager.death(killEvent.getKiller(), KillModifier.SELF_CHECKOUT);
 
 		if(nbtItem.hasKey(NBTTag.CURRENT_LIVES.getRef())) {
 			int lives = nbtItem.getInteger(NBTTag.CURRENT_LIVES.getRef());
 			if(lives - LIVES_ON_USE <= 0) {
-				killEvent.killerPlayer.getEquipment().setLeggings(new ItemStack(Material.AIR));
-				killEvent.killerPlayer.updateInventory();
-				PlayerManager.sendItemBreakMessage(killEvent.killerPlayer, leggings);
+				killEvent.getKillerPlayer().getEquipment().setLeggings(new ItemStack(Material.AIR));
+				killEvent.getKillerPlayer().updateInventory();
+				PlayerManager.sendItemBreakMessage(killEvent.getKillerPlayer(), leggings);
 				if(pitKiller.stats != null) pitKiller.stats.itemsBroken++;
 			} else {
 				nbtItem.setInteger(NBTTag.CURRENT_LIVES.getRef(), nbtItem.getInteger(NBTTag.CURRENT_LIVES.getRef()) - LIVES_ON_USE);

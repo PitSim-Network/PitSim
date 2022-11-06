@@ -25,7 +25,7 @@ public class Sweaty extends PitEnchant {
 		int enchantLvl = killEvent.getKillerEnchantLevel(this);
 		if(enchantLvl == 0) return;
 
-		PitPlayer pitPlayer = PitPlayer.getPitPlayer(killEvent.killerPlayer);
+		PitPlayer pitPlayer = PitPlayer.getPitPlayer(killEvent.getKillerPlayer());
 		killEvent.xpCap += getCapIncrease(enchantLvl);
 		int xp = (int) ((pitPlayer.getKills() / 10) * getXpIncrease(enchantLvl));
 		killEvent.xpReward += xp;

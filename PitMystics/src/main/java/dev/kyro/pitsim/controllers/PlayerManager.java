@@ -194,8 +194,8 @@ public class PlayerManager implements Listener {
 
 	@EventHandler
 	public void giveMoonCap(KillEvent killEvent) {
-		if(!PlayerManager.isRealPlayerTemp(killEvent.killerPlayer)) return;
-		PitPlayer pitPlayer = PitPlayer.getPitPlayer(killEvent.killerPlayer);
+		if(!PlayerManager.isRealPlayerTemp(killEvent.getKillerPlayer())) return;
+		PitPlayer pitPlayer = PitPlayer.getPitPlayer(killEvent.getKillerPlayer());
 		killEvent.xpCap += pitPlayer.moonBonus;
 	}
 

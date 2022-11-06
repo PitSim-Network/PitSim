@@ -105,7 +105,7 @@ public class StatManager implements Listener {
 			if(pitKiller.stats != null) {
 				if(HopperManager.isHopper(killEvent.getDead())) {
 					pitKiller.stats.hopperKills++;
-				} else if(PlayerManager.isRealPlayerTemp(killEvent.deadPlayer)) {
+				} else if(PlayerManager.isRealPlayerTemp(killEvent.getDeadPlayer())) {
 					pitKiller.stats.playerKills++;
 				} else {
 					pitKiller.stats.botKills++;

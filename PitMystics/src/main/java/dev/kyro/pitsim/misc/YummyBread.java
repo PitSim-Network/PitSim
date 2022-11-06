@@ -48,18 +48,18 @@ public class YummyBread implements Listener {
 
 	@EventHandler
 	public void onHit(AttackEvent.Apply attackEvent) {
-		if(!attackEvent.attackerIsPlayer) return;
-		if(breadStacks.containsKey(attackEvent.attackerPlayer)) {
-			if(NonManager.getNon(attackEvent.defender) == null) return;
-			attackEvent.increasePercent += ((10 * breadStacks.get(attackEvent.attackerPlayer)) / 100D);
+		if(!attackEvent.isAttackerPlayer()) return;
+		if(breadStacks.containsKey(attackEvent.getAttackerPlayer())) {
+			if(NonManager.getNon(attackEvent.getDefender()) == null) return;
+			attackEvent.increasePercent += ((10 * breadStacks.get(attackEvent.getAttackerPlayer())) / 100D);
 		}
 	}
 
 	@EventHandler
 	public void onKill(KillEvent killEvent) {
-		if(!killEvent.deadIsPlayer) return;
-		breadCooldownLength.remove(killEvent.deadPlayer.getUniqueId());
-		breadCooldown.remove(killEvent.deadPlayer.getUniqueId());
+		if(!killEvent.isDeadPlayer()) return;
+		breadCooldownLength.remove(killEvent.getDeadPlayer().getUniqueId());
+		breadCooldown.remove(killEvent.getDeadPlayer().getUniqueId());
 	}
 
 	@EventHandler

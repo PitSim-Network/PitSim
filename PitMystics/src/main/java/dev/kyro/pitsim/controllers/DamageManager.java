@@ -215,8 +215,8 @@ public class DamageManager implements Listener {
 		attackEvent.multipliers.add(ArmorReduction.getReductionMultiplier(attackEvent.getDefender()));
 
 //		Darkzone player vs player defence
-		if(PlayerManager.isRealPlayerTemp(attackEvent.attackerPlayer) && PlayerManager.isRealPlayerTemp(attackEvent.defenderPlayer) &&
-				MapManager.inDarkzone(attackEvent.attackerPlayer)) {
+		if(PlayerManager.isRealPlayerTemp(attackEvent.getAttackerPlayer()) && PlayerManager.isRealPlayerTemp(attackEvent.getDefenderPlayer()) &&
+				MapManager.inDarkzone(attackEvent.getAttackerPlayer())) {
 			attackEvent.multipliers.add(0.5);
 			attackEvent.trueDamage /= 2.0;
 		}

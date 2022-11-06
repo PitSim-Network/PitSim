@@ -52,7 +52,7 @@ public class Telebow extends PitEnchant {
 			new BukkitRunnable() {
 				@Override
 				public void run() {
-					Misc.sendActionBar(attackEvent.attackerPlayer, "&eTelebow: &c" + cooldown.getTicksLeft() / 20 + "s cooldown!");
+					Misc.sendActionBar(attackEvent.getAttackerPlayer(), "&eTelebow: &c" + cooldown.getTicksLeft() / 20 + "s cooldown!");
 				}
 			}.runTaskLater(PitSim.INSTANCE, 1L);
 		} else {
