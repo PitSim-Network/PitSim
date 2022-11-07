@@ -26,9 +26,9 @@ public class HelpItemStacks {
 				.setName("&ePerks, Killstreaks, and Megastreaks")
 				.setLore(new ALoreBuilder(
 						"&8&m----------------------------",
-						"&ePerks &7are abilities that passively help you in combat.",
-						"&eKillstreaks &7are abilities that activate when streaking",
-						"&eMegastreaks &7shape the style of your streak",
+						"&ePerks &7are abilities that passively", "&7help you in combat",
+						"&eKillstreaks &7are abilities that", "&7activate when streaking",
+						"&eMegastreaks &7shape the style of", "&7your streak",
 						"&8&m----------------------------"
 				))
 				.getItemStack();
@@ -39,10 +39,12 @@ public class HelpItemStacks {
 				.setName("&dMystic Item Kits")
 				.setLore(new ALoreBuilder(
 						"&8&m----------------------------",
-						"&dMystic Items &7are the core of PitSim combat",
-						"&7Here you can get kits specialized for &cPvP&7, and &bStreaking",
-						"&7You can experiment with other &eEnchant Combinations &7in the",
-						"&dMystic Well",
+						"&dMystic Items &7are the core of",
+						"&6&lPit&e&lSim&7 combat. &7Here you can,",
+						"&7get kits specialized &7for &cPvP&7, and",
+						"&bStreaking&7. You can experiment with",
+						"&7other &eEnchant Combinations &7in the",
+						"&dWell &dMystic",
 						"&8&m----------------------------"
 				))
 				.getItemStack();
@@ -53,10 +55,12 @@ public class HelpItemStacks {
 				.setName("&ePrestige and Renown")
 				.setLore(new ALoreBuilder(
 						"&8&m----------------------------",
-						"&7Upon reaching level &f[&b&l120&f], you can &ePrestige",
-						"&7This will reset your level to &f[&71&f]&7, and remove your &6gold",
-						"&7In exchange, you gain &eRenown&7, which can be used to purchase",
-						"&d7powerful upgrades from the &eRenown Shop",
+						"&7Upon reaching level &f[&b&l120&f]&7,",
+						"&7you can &ePrestige. &7This will reset",
+						"&7your level to &f[&71&f]&7, &7and remove",
+						"&7your &6gold. &7In exchange, you gain &eRenown&7,",
+						"&7which can be used to purchase powerful",
+						"&7upgrades from the &eRenown Shop",
 						"&8&m----------------------------"
 				))
 				.getItemStack();
@@ -67,8 +71,9 @@ public class HelpItemStacks {
 				.setName("&ePrestige and Renown")
 				.setLore(new ALoreBuilder(
 						"&8&m----------------------------",
-						"&7Do you feel like there are too many players in the middle?",
-						"&7Here you can go to other PitSim &2Lobbies &7if they're open",
+						"&7Do you feel like there are too many",
+						"&7players in the middle? &7Here you can go",
+						"&7to other PitSim &2Lobbies &7if they're open",
 						"&8&m----------------------------"
 				))
 				.getItemStack();
