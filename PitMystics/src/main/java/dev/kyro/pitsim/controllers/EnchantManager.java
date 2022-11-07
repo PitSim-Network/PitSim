@@ -20,6 +20,7 @@ import dev.kyro.pitsim.inventories.EnchantingGUI;
 import dev.kyro.pitsim.misc.Constant;
 import dev.kyro.pitsim.misc.Misc;
 import dev.kyro.pitsim.misc.Sounds;
+import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Color;
@@ -409,17 +410,25 @@ public class EnchantManager implements Listener {
 		int maxLives = getRandomMaxLives();
 		nbtItem.setInteger(NBTTag.MAX_LIVES.getRef(), maxLives);
 		nbtItem.setInteger(NBTTag.CURRENT_LIVES.getRef(), maxLives);
-		Bukkit.broadcastMessage(ChatColor.translateAlternateColorCodes(
-				'&', "&3&lJEWEL!&7 " + player.getDisplayName() + " &7found " + jewelEnchant.getDisplayName()));
-		Sounds.JEWEL_FIND.play(player);
 
 		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
 		if(pitPlayer.stats != null) pitPlayer.stats.jewelsCompleted++;
 
 		try {
-			return EnchantManager.addEnchant(nbtItem.getItem(), jewelEnchant, 3, false, true, -1);
-		} catch(Exception ignored) {
-		}
+			ItemStack jewelStack = EnchantManager.addEnchant(nbtItem.getItem(), jewelEnchant, 3, false, true, -1);
+
+			ItemStack displayStack = new AItemStackBuilder(jewelStack.clone())
+					.setName(jewelEnchant.getDisplayName())
+					.getItemStack();
+			TextComponent message = new TextComponent(ChatColor.translateAlternateColorCodes('&', "&3&lJEWEL!&7 " + player.getDisplayName() + " &7found "));
+			message.addExtra(Misc.createItemHover(displayStack));
+			message.addExtra(new TextComponent(ChatColor.translateAlternateColorCodes('&', "&7!")));
+			player.sendMessage(message);
+			Sounds.JEWEL_FIND.play(player);
+
+			return jewelStack;
+		} catch(Exception ignored) {}
+
 		return null;
 	}
 
