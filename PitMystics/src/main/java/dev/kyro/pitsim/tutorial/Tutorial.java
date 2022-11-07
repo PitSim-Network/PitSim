@@ -80,7 +80,6 @@ public class Tutorial {
 		for(TutorialObjective completedObjective : completedObjectives) {
 			rawData.add(completedObjective.refName);
 		}
-		System.out.println(rawData);
 		playerData.set("tutorial.has-started", hasStartedTutorial);
 		playerData.set("tutorial.completed-objectives", rawData);
 
@@ -96,7 +95,6 @@ public class Tutorial {
 			public void run() {
 				completedObjectives.add(objective);
 				updateBossBar();
-				System.out.println(completedObjectives);
 				AOutput.send(pitPlayer.player, "&a&lTUTORIAL!&7 Completed objective: " + objective.display);
 				Sounds.LEVEL_UP.play(pitPlayer.player);
 
