@@ -41,9 +41,10 @@ public class PrestigeNPC extends PitNPC {
 		if(tutorial.isInObjective) return;
 		if(tutorial.isActive() && !tutorial.isCompleted(TutorialObjective.PRESTIGE)) {
 
-			tutorial.sendMessage(" ", 10);
-			tutorial.sendMessage(" ", 20);
-			tutorial.completeObjective(TutorialObjective.PRESTIGE, 2 * 20);
+			tutorial.sendMessage("&b&lPRESTIGE: &eHave you reached &7[&b&l120&7] &eand can't level up anymore?", 0);
+			tutorial.sendMessage("&b&lPRESTIGE: &eYou might finally be ready to prestige then!", 20 * 4);
+			tutorial.sendMessage("&b&lPRESTIGE: &ePrestiging resets you to &9[&71&9]&e, but allows you unlock new upgrades with renown! Click on me to learn more!", 20 * 7);
+			tutorial.completeObjective(TutorialObjective.PRESTIGE, 20 * 12);
 
 			return;
 		}

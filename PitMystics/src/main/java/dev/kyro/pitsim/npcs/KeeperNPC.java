@@ -3,6 +3,7 @@ package dev.kyro.pitsim.npcs;
 import dev.kyro.pitsim.controllers.MapManager;
 import dev.kyro.pitsim.controllers.objects.PitNPC;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
+import dev.kyro.pitsim.misc.Misc;
 import dev.kyro.pitsim.tutorial.Tutorial;
 import dev.kyro.pitsim.tutorial.TutorialObjective;
 import org.bukkit.Location;
@@ -39,9 +40,11 @@ public class KeeperNPC extends PitNPC {
 		Tutorial tutorial = pitPlayer.tutorial;
 		if(tutorial.isActive() && !tutorial.isCompleted(TutorialObjective.KEEPER) && !tutorial.isInObjective) {
 
-			tutorial.sendMessage(" ", 10);
-			tutorial.sendMessage(" ", 20);
-			tutorial.completeObjective(TutorialObjective.KEEPER, 2 * 20);
+			String playerName = Misc.getRankColor(player.getUniqueId()) + player.getDisplayName();
+			tutorial.sendMessage("&2&lKEEPER: &eHi there " + playerName + "&e! Can't find any players or can't streak as efficiently?", 0);
+			tutorial.sendMessage("&2&lKEEPER: &e I may be able to help you with that, as long as there's enough players online!", 20 * 4);
+			tutorial.sendMessage("&2&lKEEPER: &eClick on me again and I'll take you to the other lobby if able to!", 20 * 8);
+			tutorial.completeObjective(TutorialObjective.KEEPER, 20 * 12);
 
 			return;
 		}

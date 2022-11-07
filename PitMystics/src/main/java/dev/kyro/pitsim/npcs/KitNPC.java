@@ -53,9 +53,10 @@ public class KitNPC extends PitNPC {
 		if(tutorial.isInObjective) return;
 		if(tutorial.isActive() && !tutorial.isCompleted(TutorialObjective.KITS)) {
 
-			tutorial.sendMessage(" ", 10);
-			tutorial.sendMessage(" ", 20);
-			tutorial.completeObjective(TutorialObjective.KITS, 2 * 20);
+			tutorial.sendMessage("&c&lKITS: &eIf you don't know what to use, you'll be nothing but a sitting duck...", 0);
+			tutorial.sendMessage("&c&lKITS: &eLuckily, I have the essentials you'll need to play like a pro!", 20 * 4);
+			tutorial.sendMessage("&c&lKITS: &eClick on me again to access the kits. Best to take 1 of each!", 20 * 8);
+			tutorial.completeObjective(TutorialObjective.KITS, 20 * 12);
 
 			return;
 		}

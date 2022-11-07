@@ -58,6 +58,7 @@ public class Sounds {
 	public static final SoundEffect TAINTED_CRAFT = new SoundEffect(Sound.ANVIL_USE, 2, 1.25F);
 	public static final SoundEffect SPLASH_CRAFT1 = new SoundEffect(Sound.GLASS, 2, 1.5F);
 	public static final SoundEffect SPLASH_CRAFT2 = new SoundEffect(Sound.LAVA, 2, 1.75F);
+	public static final SoundEffect TUTORIAL_MESSAGE = new SoundEffect(Sound.CHICKEN_EGG_POP, 2, 1.6);
 
 	//	Enchants
 	public static final SoundEffect BILLIONAIRE = new SoundEffect(Sound.ORB_PICKUP, 1, 0.73);

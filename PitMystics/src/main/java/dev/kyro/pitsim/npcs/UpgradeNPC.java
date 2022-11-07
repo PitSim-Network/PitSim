@@ -5,6 +5,7 @@ import dev.kyro.pitsim.controllers.MapManager;
 import dev.kyro.pitsim.controllers.objects.PitNPC;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.inventories.PerkGUI;
+import dev.kyro.pitsim.misc.Misc;
 import dev.kyro.pitsim.tutorial.Tutorial;
 import dev.kyro.pitsim.tutorial.TutorialObjective;
 import org.bukkit.Location;
@@ -47,9 +48,11 @@ public class UpgradeNPC extends PitNPC {
 		if(tutorial.isInObjective) return;
 		if(tutorial.isActive() && !tutorial.isCompleted(TutorialObjective.PERKS)) {
 
-			tutorial.sendMessage(" ", 10);
-			tutorial.sendMessage(" ", 20);
-			tutorial.completeObjective(TutorialObjective.PERKS, 2 * 20);
+			String playerName = Misc.getRankColor(player.getUniqueId()) + player.getDisplayName();
+			tutorial.sendMessage("&a&lUPGRADES: &eOh, hello there " + playerName + "&e! Do you need a boost to help you out?", 0);
+			tutorial.sendMessage("&a&lUPGRADES: &eWell you came to the right guy! With me, you can set up perks, killstreaks, & mega streaks, which will up your game!", 20 * 3);
+			tutorial.sendMessage("&a&lUPGRADES: &eUse these upgrades to be the best at whatever you do! With me, the possibilities are endless!", 20 * 8);
+			tutorial.completeObjective(TutorialObjective.PERKS, 20 * 12);
 
 			return;
 		}

@@ -29,12 +29,14 @@ public class Tutorial {
 
 	public boolean isInObjective = false;
 
+	public boolean hasStartedTutorial = false;
 	public List<TutorialObjective> completedObjectives = new ArrayList<>();
 
 	public Tutorial(PitPlayer pitPlayer, FileConfiguration playerData) {
 		this.uuid = pitPlayer.player.getUniqueId();
 		this.pitPlayer = pitPlayer;
 
+		this.hasStartedTutorial = playerData.getBoolean("tutorial.has-started");
 		for(String string : playerData.getStringList("tutorial.completed-objectives")) {
 			TutorialObjective objective = TutorialObjective.getByRefName(string);
 			if(objective == null) continue;
@@ -43,19 +45,26 @@ public class Tutorial {
 
 		if(!isActive()) return;
 
-		isInObjective = true;
-		sendMessage("&eHello! Welcome to PitSim.", 10);
-		sendMessage("&eBefore you get started, we need to cover some basics.", 70);
-		sendMessage("&eInteract with various NPCs around spawn to learn about how to play", 130);
+		if(!hasStartedTutorial) {
+			isInObjective = true;
+			hasStartedTutorial = true;
+			sendMessage("&eHello! Welcome to &6&lPit&e&lSim&e!", 0);
+			sendMessage("&eBefore you get started, we need to cover some basics.", 20 * 2);
+			sendMessage("&eInteract with various NPCs around spawn to learn about how to play", 20 * 6);
 
-		new BukkitRunnable() {
-			@Override
-			public void run() {
-				isInObjective = false;
-				updateBossBar();
-				startRunnable();
-			}
-		}.runTaskLater(PitSim.INSTANCE, 100);
+			new BukkitRunnable() {
+				@Override
+				public void run() {
+					isInObjective = false;
+					updateBossBar();
+					startRunnable();
+					Sounds.TUTORIAL_MESSAGE.play(pitPlayer.player);
+				}
+			}.runTaskLater(PitSim.INSTANCE, 20 * 4);
+		} else {
+			updateBossBar();
+			startRunnable();
+		}
 	}
 
 	public void save() {
@@ -67,6 +76,7 @@ public class Tutorial {
 			rawData.add(completedObjective.refName);
 		}
 		System.out.println(rawData);
+		playerData.set("tutorial.has-started", hasStartedTutorial);
 		playerData.set("tutorial.completed-objectives", rawData);
 
 		aPlayer.save();
@@ -152,7 +162,7 @@ public class Tutorial {
 		new BukkitRunnable() {
 			@Override
 			public void run() {
-				Sounds.BOOSTER_REMIND.play(pitPlayer.player);
+				Sounds.TUTORIAL_MESSAGE.play(pitPlayer.player);
 				AOutput.send(pitPlayer.player, text);
 			}
 		}.runTaskLater(PitSim.INSTANCE, ticks);
