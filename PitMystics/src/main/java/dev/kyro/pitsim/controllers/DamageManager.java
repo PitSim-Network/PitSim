@@ -385,7 +385,7 @@ public class DamageManager implements Listener {
 
 			if(killerIsPlayer && !CitizensAPI.getNPCRegistry().isNPC(killer) && !pitKiller.killFeedDisabled && killType != KillType.DEATH) {
 				AOutput.send(killEvent.killer, PlaceholderAPI.setPlaceholders(killEvent.deadPlayer, kill));
-					pitKiller.stats.mobsKilled++;
+				pitKiller.stats.mobsKilled++;
 			}
 			if(deadIsPlayer && !pitDead.killFeedDisabled && killType != KillType.FAKE && killEvent != null)
 				AOutput.send(killEvent.dead, death);
