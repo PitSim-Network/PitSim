@@ -62,8 +62,13 @@ public class Tutorial {
 				}
 			}.runTaskLater(PitSim.INSTANCE, 20 * 4);
 		} else {
-			updateBossBar();
-			startRunnable();
+			new BukkitRunnable() {
+				@Override
+				public void run() {
+					updateBossBar();
+					startRunnable();
+				}
+			}.runTaskLater(PitSim.INSTANCE, 20);
 		}
 	}
 
