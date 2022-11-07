@@ -38,7 +38,8 @@ public class KeeperNPC extends PitNPC {
 
 		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
 		Tutorial tutorial = pitPlayer.tutorial;
-		if(tutorial.isActive() && !tutorial.isCompleted(TutorialObjective.KEEPER) && !tutorial.isInObjective) {
+		if(tutorial.isInObjective) return;
+		if(tutorial.isActive() && !tutorial.isCompleted(TutorialObjective.KEEPER)) {
 
 			String playerName = Misc.getRankColor(player.getUniqueId()) + player.getDisplayName();
 			tutorial.sendMessage("&2&lKEEPER: &eHi there " + playerName + "&e! Can't find any players or can't streak as efficiently?", 0);

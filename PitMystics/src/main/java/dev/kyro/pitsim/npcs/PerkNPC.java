@@ -14,9 +14,9 @@ import org.bukkit.entity.Player;
 
 import java.util.List;
 
-public class UpgradeNPC extends PitNPC {
+public class PerkNPC extends PitNPC {
 
-	public UpgradeNPC(List<World> worlds) {
+	public PerkNPC(List<World> worlds) {
 		super(worlds);
 	}
 
@@ -44,14 +44,13 @@ public class UpgradeNPC extends PitNPC {
 		}
 
 		Tutorial tutorial = pitPlayer.tutorial;
-
 		if(tutorial.isInObjective) return;
 		if(tutorial.isActive() && !tutorial.isCompleted(TutorialObjective.PERKS)) {
 
 			String playerName = Misc.getRankColor(player.getUniqueId()) + player.getDisplayName();
-			tutorial.sendMessage("&a&lUPGRADES: &eOh, hello there " + playerName + "&e! Do you need a boost to help you out?", 0);
-			tutorial.sendMessage("&a&lUPGRADES: &eWell you came to the right guy! With me, you can set up perks, killstreaks, & mega streaks, which will up your game!", 20 * 3);
-			tutorial.sendMessage("&a&lUPGRADES: &eUse these upgrades to be the best at whatever you do! With me, the possibilities are endless!", 20 * 8);
+			tutorial.sendMessage("&a&lPERKS: &eOh, hello there " + playerName + "&e! Do you need a boost to help you out?", 0);
+			tutorial.sendMessage("&a&lPERKS: &eWell you came to the right guy! With me, you can set up perks, killstreaks, & mega streaks, which will up your game!", 20 * 3);
+			tutorial.sendMessage("&a&lPERKS: &eUse these upgrades to be the best at whatever you do! With me, the possibilities are endless!", 20 * 8);
 			tutorial.completeObjective(TutorialObjective.PERKS, 20 * 12);
 
 			return;
