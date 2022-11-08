@@ -448,50 +448,51 @@ public class EnchantManager implements Listener {
 		Non non = NonManager.getNon(killed);
 		String ref = non == null ? NBTTag.PLAYER_KILLS.getRef() : NBTTag.BOT_KILLS.getRef();
 
-		if(!Misc.isAirOrNull(attacker.getItemInHand())) {
-			ItemStack itemStack = attacker.getItemInHand();
-			NBTItem nbtItem = new NBTItem(itemStack);
-			nbtItem.setInteger(ref, nbtItem.getInteger(ref) + 1);
+		ItemStack heldStack = attacker.getItemInHand();
+		NBTItem heldNBTItem = null;
+		if(!Misc.isAirOrNull(heldStack)) heldNBTItem = new NBTItem(heldStack);
+		ItemStack pantsStack = attacker.getInventory().getLeggings();
+		NBTItem pantsNBTItem = null;
+		if(!Misc.isAirOrNull(pantsStack)) pantsNBTItem = new NBTItem(pantsStack);
+		if(!Misc.isAirOrNull(heldStack) && heldNBTItem.hasKey(NBTTag.ITEM_UUID.getRef())) {
+			heldNBTItem.setInteger(ref, heldNBTItem.getInteger(ref) + 1);
 
-			if(isJewel(itemStack) && !isJewelComplete(itemStack))
-				nbtItem.setInteger(NBTTag.JEWEL_KILLS.getRef(), nbtItem.getInteger(NBTTag.JEWEL_KILLS.getRef()) + 1);
+			if(isJewel(heldStack) && !isJewelComplete(heldStack))
+				heldNBTItem.setInteger(NBTTag.JEWEL_KILLS.getRef(), heldNBTItem.getInteger(NBTTag.JEWEL_KILLS.getRef()) + 1);
 
-			ItemStack jewelStack = completeJewel(attacker, nbtItem.getItem());
-			if(jewelStack != null) nbtItem = new NBTItem(jewelStack);
+			ItemStack jewelStack = completeJewel(attacker, heldNBTItem.getItem());
+			if(jewelStack != null) heldNBTItem = new NBTItem(jewelStack);
 
-			if(nbtItem.hasKey(NBTTag.ITEM_UUID.getRef())) setItemLore(nbtItem.getItem(), attacker);
-			attacker.setItemInHand(nbtItem.getItem());
-
-			for(int i = 0; i < 9; i++) {
-				if(i == attacker.getInventory().getHeldItemSlot()) continue;
-
-				ItemStack hotbarStack = attacker.getInventory().getItem(i);
-				if(Misc.isAirOrNull(hotbarStack) || hotbarStack.getType() != Material.BOW) continue;
-				NBTItem hotbarNbtItem = new NBTItem(hotbarStack);
-
-				if(isJewel(hotbarStack) && !isJewelComplete(hotbarStack))
-					hotbarNbtItem.setInteger(NBTTag.JEWEL_KILLS.getRef(), hotbarNbtItem.getInteger(NBTTag.JEWEL_KILLS.getRef()) + 1);
-
-				ItemStack hotbarJewelStack = completeJewel(attacker, hotbarNbtItem.getItem());
-				if(hotbarJewelStack != null) hotbarNbtItem = new NBTItem(hotbarJewelStack);
-
-				setItemLore(hotbarNbtItem.getItem(), attacker);
-				attacker.getInventory().setItem(i, hotbarNbtItem.getItem());
-			}
+			if(heldNBTItem.hasKey(NBTTag.ITEM_UUID.getRef())) setItemLore(heldNBTItem.getItem(), attacker);
+			attacker.setItemInHand(heldNBTItem.getItem());
 		}
-		if(!Misc.isAirOrNull(attacker.getInventory().getLeggings())) {
-			ItemStack itemStack = attacker.getInventory().getLeggings();
-			NBTItem nbtItem = new NBTItem(itemStack);
-			nbtItem.setInteger(ref, nbtItem.getInteger(ref) + 1);
+		if(!Misc.isAirOrNull(pantsStack) && pantsNBTItem.hasKey(NBTTag.ITEM_UUID.getRef())) {
+			pantsNBTItem.setInteger(ref, pantsNBTItem.getInteger(ref) + 1);
 
-			if(isJewel(itemStack) && !isJewelComplete(itemStack))
-				nbtItem.setInteger(NBTTag.JEWEL_KILLS.getRef(), nbtItem.getInteger(NBTTag.JEWEL_KILLS.getRef()) + 1);
+			if(isJewel(pantsStack) && !isJewelComplete(pantsStack))
+				pantsNBTItem.setInteger(NBTTag.JEWEL_KILLS.getRef(), pantsNBTItem.getInteger(NBTTag.JEWEL_KILLS.getRef()) + 1);
 
-			ItemStack jewelStack = completeJewel(attacker, nbtItem.getItem());
-			if(jewelStack != null) nbtItem = new NBTItem(jewelStack);
+			ItemStack jewelStack = completeJewel(attacker, pantsNBTItem.getItem());
+			if(jewelStack != null) pantsNBTItem = new NBTItem(jewelStack);
 
-			setItemLore(nbtItem.getItem(), attacker);
-			attacker.getInventory().setLeggings(nbtItem.getItem());
+			setItemLore(pantsNBTItem.getItem(), attacker);
+			attacker.getInventory().setLeggings(pantsNBTItem.getItem());
+		}
+		for(int i = 0; i < 9; i++) {
+			if(i == attacker.getInventory().getHeldItemSlot()) continue;
+
+			ItemStack hotbarStack = attacker.getInventory().getItem(i);
+			if(Misc.isAirOrNull(hotbarStack) || hotbarStack.getType() != Material.BOW) continue;
+			NBTItem hotbarNbtItem = new NBTItem(hotbarStack);
+
+			if(isJewel(hotbarStack) && !isJewelComplete(hotbarStack))
+				hotbarNbtItem.setInteger(NBTTag.JEWEL_KILLS.getRef(), hotbarNbtItem.getInteger(NBTTag.JEWEL_KILLS.getRef()) + 1);
+
+			ItemStack hotbarJewelStack = completeJewel(attacker, hotbarNbtItem.getItem());
+			if(hotbarJewelStack != null) hotbarNbtItem = new NBTItem(hotbarJewelStack);
+
+			setItemLore(hotbarNbtItem.getItem(), attacker);
+			attacker.getInventory().setItem(i, hotbarNbtItem.getItem());
 		}
 	}
 
