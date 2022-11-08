@@ -137,7 +137,7 @@ public class PlayerManager implements Listener {
 					if(SpawnManager.isInSpawn(player.getLocation())) continue;
 					List<Player> nearbyNons = new ArrayList<>();
 					for(Entity nearbyEntity : player.getNearbyEntities(4, 4, 4)) {
-						if(nearbyEntity.getWorld() == Bukkit.getWorld("tutorial")) continue;
+//						if(nearbyEntity.getWorld() == Bukkit.getWorld("tutorial")) continue;
 						if(!(nearbyEntity instanceof Player)) continue;
 						Player nearby = (Player) nearbyEntity;
 						if(NonManager.getNon(nearby) == null || SpawnManager.isInSpawn(nearby.getLocation())) continue;
@@ -163,7 +163,7 @@ public class PlayerManager implements Listener {
 					}
 				}
 			}
-		}.runTaskTimer(PitSim.INSTANCE, 0L, 12L);
+		}.runTaskTimer(PitSim.INSTANCE, 0L, 18L);
 
 		new BukkitRunnable() {
 			@Override
