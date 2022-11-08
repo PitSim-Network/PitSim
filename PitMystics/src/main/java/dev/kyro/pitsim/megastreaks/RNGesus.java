@@ -115,7 +115,7 @@ public class RNGesus extends Megastreak {
 		lore.add("");
 		lore.add(ChatColor.GRAY + "On trigger:");
 		lore.add(ChatColor.translateAlternateColorCodes('&', "&a\u25a0 &7Shift into an &fAbnormal &7reality"));
-		lore.add(ChatColor.translateAlternateColorCodes('&', "&c\u25a0 &7Start a &b20 minute &7cooldown for this streak"));
+		lore.add(ChatColor.translateAlternateColorCodes('&', "&c\u25a0 &7Start a &b1 hour &7cooldown for this streak"));
 		lore.add("");
 		lore.add(ChatColor.GRAY + "Every 100 kills:");
 		lore.add(ChatColor.translateAlternateColorCodes('&', "&e\u25a0 &eShift &7into a random reality (&6Gold&7, &bXP&7,"));
