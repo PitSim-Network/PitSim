@@ -423,7 +423,7 @@ public class EnchantManager implements Listener {
 			TextComponent message = new TextComponent(ChatColor.translateAlternateColorCodes('&', "&3&lJEWEL!&7 " + player.getDisplayName() + " &7found "));
 			message.addExtra(Misc.createItemHover(displayStack));
 			message.addExtra(new TextComponent(ChatColor.translateAlternateColorCodes('&', "&7!")));
-			player.sendMessage(message);
+			Bukkit.broadcast(message);
 			Sounds.JEWEL_FIND.play(player);
 
 			return jewelStack;
