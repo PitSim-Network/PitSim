@@ -185,14 +185,14 @@ public class KitManager implements Listener {
 			itemStack = EnchantManager.addEnchant(itemStack, EnchantManager.getEnchant("mlb"), 1, false);
 			itemStack = EnchantManager.addEnchant(itemStack, EnchantManager.getEnchant("pin"), 3, false);
 			itemStack = EnchantManager.addEnchant(itemStack, EnchantManager.getEnchant("fletching"), 3, false);
-			new AItemStackBuilder(itemStack).setName("&2MLB Drain &7(Anti-Combos)");
+			new AItemStackBuilder(itemStack).setName("&2MLB Pin &7(Anti-Combos)");
 			kitItemMap.put(KitItem.MLB_PIN, itemStack);
 
 			itemStack = FreshCommand.getFreshItem(MysticType.BOW, null);
 			itemStack = EnchantManager.addEnchant(itemStack, EnchantManager.getEnchant("mlb"), 1, false);
 			itemStack = EnchantManager.addEnchant(itemStack, EnchantManager.getEnchant("wasp"), 3, false);
 			itemStack = EnchantManager.addEnchant(itemStack, EnchantManager.getEnchant("fletching"), 3, false);
-			new AItemStackBuilder(itemStack).setName("&2MLB Drain &7(Tanking)");
+			new AItemStackBuilder(itemStack).setName("&2MLB Wasp &7(Tanking)");
 			kitItemMap.put(KitItem.MLB_WASP, itemStack);
 
 			itemStack = FreshCommand.getFreshItem(MysticType.BOW, null);
