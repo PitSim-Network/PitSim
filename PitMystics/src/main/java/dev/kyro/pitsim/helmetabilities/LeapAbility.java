@@ -67,7 +67,7 @@ public class LeapAbility extends HelmetAbility {
 	@Override
 	public List<String> getDescription() {
 		DecimalFormat formatter = new DecimalFormat("#,###.#");
-		return Arrays.asList("&7Double-Sneak to launch", "&7yourself forwards (5s cd)", "", "&7Cost: &6" + formatter.format(10000) + "g");
+		return Arrays.asList("&7Double-Sneak to launch", "&7yourself forwards (5s cooldown)", "", "&7Cost: &6" + formatter.format(10000) + "g");
 	}
 
 	@Override

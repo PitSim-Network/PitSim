@@ -79,7 +79,7 @@ public class MegaLongBow extends PitEnchant {
 	public List<String> getDescription(int enchantLvl) {
 
 		return new ALoreBuilder("&7One shot per second, this bow is",
-				"&7automatically fully drawn and", "&7grants &aJump Boost " + AUtil.toRoman(getJumpMultiplier(enchantLvl) + 1) + " &7(2s)",
+				"&7automatically fully drawn and", "&7grants &aJump Boost " + AUtil.toRoman(getJumpMultiplier(enchantLvl) + 1) + " &7(2s).",
 				"&7Arrows deal &c-" + getReduction() + "% &7damage").getLore();
 	}
 
