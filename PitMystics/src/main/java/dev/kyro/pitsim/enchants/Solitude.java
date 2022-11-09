@@ -1,5 +1,6 @@
 package dev.kyro.pitsim.enchants;
 
+import de.myzelyam.api.vanish.VanishAPI;
 import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.pitsim.controllers.objects.PitEnchant;
 import dev.kyro.pitsim.enums.ApplyType;
@@ -28,6 +29,8 @@ public class Solitude extends PitEnchant {
 		int nearbyPlayers = 0;
 		for(Entity nearby : attackEvent.defender.getNearbyEntities(7, 7, 7)) {
 			if(!(nearby instanceof Player) || nearby == attackEvent.defender) continue;
+			Player player = (Player) nearby;
+			if(VanishAPI.isInvisible(player)) continue;
 			nearbyPlayers++;
 		}
 
