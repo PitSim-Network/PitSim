@@ -67,7 +67,7 @@ public abstract class HelmetAbility implements Listener {
 			return cooldown;
 		}
 
-		Cooldown cooldown = new Cooldown(time);
+		Cooldown cooldown = new Cooldown(player.getUniqueId(), time);
 		cooldown.ticksLeft = 0;
 		cooldowns.put(player.getUniqueId(), cooldown);
 		return cooldown;

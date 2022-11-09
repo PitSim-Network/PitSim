@@ -6,7 +6,6 @@ import dev.kyro.pitsim.enchants.Regularity;
 import dev.kyro.pitsim.enums.ApplyType;
 import dev.kyro.pitsim.enums.EnchantRarity;
 import dev.kyro.pitsim.events.AttackEvent;
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
@@ -64,7 +63,7 @@ public abstract class PitEnchant implements Listener {
 			return cooldown;
 		}
 
-		Cooldown cooldown = new Cooldown(time);
+		Cooldown cooldown = new Cooldown(player.getUniqueId(), time);
 		cooldown.ticksLeft = 0;
 		cooldowns.put(player.getUniqueId(), cooldown);
 		return cooldown;

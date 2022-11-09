@@ -3,6 +3,7 @@ package dev.kyro.pitsim.enchants;
 import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.controllers.Cooldown;
+import dev.kyro.pitsim.controllers.CooldownManager;
 import dev.kyro.pitsim.controllers.objects.PitEnchant;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.enums.ApplyType;
@@ -30,12 +31,15 @@ public class PinDown extends PitEnchant {
 		int enchantLvl = attackEvent.getAttackerEnchantLevel(this);
 		if(enchantLvl == 0) return;
 
+		if(attackEvent.attacker == attackEvent.defender) return;
+		if(!attackEvent.arrow.isCritical()) return;
+
 		Cooldown cooldown = getCooldown(attackEvent.attackerPlayer, getDuration(enchantLvl) * 20);
 		if(cooldown.isOnCooldown()) return;
 		else cooldown.restart();
 
-		if(attackEvent.attacker == attackEvent.defender) return;
-		if(!attackEvent.arrow.isCritical()) return;
+		if(attackEvent.defenderIsPlayer) CooldownManager.addModifierForPlayer(attackEvent.defenderPlayer,
+				new CooldownManager.CooldownData(Cooldown.CooldownModifier.TELEBOW, 20 * 5));
 
 		if(attackEvent.defender.hasPotionEffect(PotionEffectType.SPEED))
 			attackEvent.defender.removePotionEffect(PotionEffectType.SPEED);
