@@ -184,7 +184,7 @@ public class Telebow extends PitEnchant {
 			case 2:
 				return 45;
 			case 3:
-				return 20;
+				return 25;
 			case 4:
 				return 10;
 			case 5:
