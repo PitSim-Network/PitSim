@@ -60,11 +60,12 @@ public class PinDown extends PitEnchant {
 	@Override
 	public List<String> getDescription(int enchantLvl) {
 
-		return new ALoreBuilder("&7Fully charged shots pin the victim", "&7down, removing their Speed and", "&7Jump Boost (" + getDuration(enchantLvl) + "s cd)").getLore();
+		return new ALoreBuilder("&7Fully charged shots pin the victim", "&7down, removing their Speed and",
+				"&7Jump Boost (" + getDuration(enchantLvl) + "s cd)").getLore();
 	}
 
 	public int getDuration(int enchantLvl) {
 
-		return Math.max(8 - enchantLvl * 2, 0);
+		return Math.max(11 - enchantLvl * 2, 0);
 	}
 }

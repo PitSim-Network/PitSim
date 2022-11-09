@@ -36,6 +36,6 @@ public class Sniper extends PitEnchant {
 
 	public int getDamage(int enchantLvl) {
 
-		return enchantLvl * 12 + 24;
+		return enchantLvl * 12 + 48;
 	}
 }

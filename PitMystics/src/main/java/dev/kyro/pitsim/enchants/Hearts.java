@@ -60,6 +60,6 @@ public class Hearts extends PitEnchant {
 
 	public int getExtraHealth(int enchantLvl) {
 
-		return enchantLvl + 1;
+		return enchantLvl * 2;
 	}
 }

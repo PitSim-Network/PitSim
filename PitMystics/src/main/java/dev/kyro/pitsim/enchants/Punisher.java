@@ -33,7 +33,6 @@ public class Punisher extends PitEnchant {
 	}
 
 	public int getDamage(int enchantLvl) {
-
-		return enchantLvl * 6;
+		return enchantLvl * 6 + 6;
 	}
 }
