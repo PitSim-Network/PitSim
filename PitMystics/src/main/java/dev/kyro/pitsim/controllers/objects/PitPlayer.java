@@ -4,9 +4,8 @@ import com.google.cloud.firestore.annotation.Exclude;
 import dev.kyro.arcticapi.data.APlayer;
 import dev.kyro.arcticapi.data.APlayerData;
 import dev.kyro.arcticapi.misc.AOutput;
-import dev.kyro.pitsim.PitSim;
-import dev.kyro.pitsim.tutorial.Tutorial;
 import dev.kyro.pitsim.ParticleColor;
+import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.battlepass.PassData;
 import dev.kyro.pitsim.battlepass.quests.ReachKillstreakQuest;
 import dev.kyro.pitsim.brewing.BrewingManager;
@@ -30,6 +29,7 @@ import dev.kyro.pitsim.megastreaks.*;
 import dev.kyro.pitsim.misc.Misc;
 import dev.kyro.pitsim.perks.NoPerk;
 import dev.kyro.pitsim.perks.Thick;
+import dev.kyro.pitsim.tutorial.Tutorial;
 import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -117,6 +117,8 @@ public class PitPlayer {
 	public boolean lightingDisabled = false;
 	public boolean musicDisabled = false;
 	public boolean promptPack = false;
+
+	public double gold = 0;
 
 	public double goldStack = 0;
 	public int moonBonus = 0;
@@ -224,6 +226,8 @@ public class PitPlayer {
 
 		megastreakRef = megastreak.getRefNames().get(0);
 
+		gold = PitSim.VAULT.getBalance(player);
+
 		for(int i = 0; i < pitPerks.size(); i++) {
 			PitPerk pitPerk = pitPerks.get(i);
 			pitPerksRef.set(i, pitPerk.refName);
@@ -272,6 +276,7 @@ public class PitPlayer {
 		level = playerData.contains("level") ? playerData.getInt("level") : 1;
 		remainingXP = playerData.getInt("xp");
 		soulsGathered = playerData.getInt("soulsgathered");
+		gold = PitSim.VAULT.getBalance(Bukkit.getOfflinePlayer(uuid));
 		renown = playerData.getInt("renown");
 		for(int i = 0; i < pitPerks.size(); i++) {
 			String perkString = playerData.getString("perk-" + i);
@@ -355,6 +360,10 @@ public class PitPlayer {
 
 	public void init(Player player) {
 		this.player = player;
+
+		PitSim.VAULT.withdrawPlayer(player, PitSim.VAULT.getBalance(player));
+		PitSim.VAULT.depositPlayer(player, gold);
+		System.out.println("Current gold: " + gold + " " + PitSim.VAULT.getBalance(player));
 
 		ChatColorPanel.playerChatColors.put(player, chatColor);
 
