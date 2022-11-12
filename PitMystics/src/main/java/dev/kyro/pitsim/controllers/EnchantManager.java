@@ -225,6 +225,23 @@ public class EnchantManager implements Listener {
 	public static void setItemLore(ItemStack itemStack, Player player) {
 		if(!PlayerManager.isRealPlayerTemp(player)) player = null;
 
+		if(player != null && !player.isOp() && itemStack.hasItemMeta()) {
+			ItemMeta itemMeta = itemStack.getItemMeta();
+			if(itemMeta.hasDisplayName()) {
+				String displayName = itemMeta.getDisplayName();
+				String newDisplayName = displayName
+						.replaceAll("\u00A7k", "")
+						.replaceAll("\u00A7l", "")
+						.replaceAll("\u00A7m", "")
+						.replaceAll("\u00A7n", "")
+						.replaceAll("\u00A7o", "");
+				if(!displayName.equals(newDisplayName)) {
+					itemMeta.setDisplayName(newDisplayName);
+					itemStack.setItemMeta(itemMeta);
+				}
+			}
+		}
+
 		if(player != null) {
 			if(player.getWorld() == MapManager.getDarkzone()) {
 				if(MysticType.getMysticType(itemStack) == MysticType.SWORD || MysticType.getMysticType(itemStack) == MysticType.PANTS) {

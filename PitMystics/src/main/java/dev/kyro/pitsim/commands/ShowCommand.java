@@ -2,6 +2,7 @@ package dev.kyro.pitsim.commands;
 
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.PitSim;
+import dev.kyro.pitsim.controllers.EnchantManager;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.misc.Misc;
 import litebans.api.Database;
@@ -23,7 +24,6 @@ public class ShowCommand implements CommandExecutor {
 		if(!(sender instanceof Player)) return false;
 
 		Player player = (Player) sender;
-		ItemStack itemStack = player.getItemInHand();
 
 		if(!player.hasPermission("pitsim.show") && !player.isOp()) {
 			AOutput.error(player, "&cInsufficient Permissions");
@@ -43,10 +43,14 @@ public class ShowCommand implements CommandExecutor {
 				new BukkitRunnable() {
 					@Override
 					public void run() {
+						ItemStack itemStack = player.getItemInHand();
 						if(Misc.isAirOrNull(itemStack)) {
 							AOutput.error(player, "&c&lERROR!&7 You are not holding an item");
 							return;
 						}
+						EnchantManager.setItemLore(itemStack, player);
+						player.setItemInHand(itemStack);
+						player.updateInventory();
 
 						String playerName = "%luckperms_prefix%%essentials_nickname%";
 						String prefix = PlaceholderAPI.setPlaceholders(player, playerName);
