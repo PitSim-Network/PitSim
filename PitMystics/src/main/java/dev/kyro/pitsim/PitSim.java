@@ -15,6 +15,7 @@ import dev.kyro.arcticapi.data.AConfig;
 import dev.kyro.arcticapi.data.AData;
 import dev.kyro.arcticapi.hooks.AHook;
 import dev.kyro.arcticapi.misc.AOutput;
+import dev.kyro.pitsim.alogging.LogManager;
 import dev.kyro.pitsim.npcs.*;
 import dev.kyro.pitsim.cosmetics.CosmeticManager;
 import dev.kyro.pitsim.cosmetics.PitCosmetic;
@@ -597,6 +598,7 @@ public class PitSim extends JavaPlugin {
 		getServer().getPluginManager().registerEvents(new TimeManager(), this);
 		getServer().getPluginManager().registerEvents(new NPCManager(), this);
 		getServer().getPluginManager().registerEvents(new CosmeticManager(), this);
+		getServer().getPluginManager().registerEvents(new LogManager(), this);
 	}
 
 	public void registerBoosters() {
