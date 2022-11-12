@@ -1,9 +1,9 @@
 package dev.kyro.pitsim.misc;
 
 import dev.kyro.pitsim.PitSim;
-import dev.kyro.pitsim.acosmetics.CosmeticManager;
-import dev.kyro.pitsim.acosmetics.CosmeticType;
-import dev.kyro.pitsim.acosmetics.PitCosmetic;
+import dev.kyro.pitsim.cosmetics.CosmeticManager;
+import dev.kyro.pitsim.cosmetics.CosmeticType;
+import dev.kyro.pitsim.cosmetics.PitCosmetic;
 import dev.kyro.pitsim.commands.LightningCommand;
 import dev.kyro.pitsim.controllers.NonManager;
 import dev.kyro.pitsim.controllers.objects.GoldenHelmet;

@@ -2,7 +2,7 @@ package dev.kyro.pitsim.battlepass;
 
 import dev.kyro.pitsim.ParticleColor;
 import dev.kyro.pitsim.PitSim;
-import dev.kyro.pitsim.acosmetics.CosmeticManager;
+import dev.kyro.pitsim.cosmetics.CosmeticManager;
 import dev.kyro.pitsim.battlepass.rewards.*;
 import dev.kyro.pitsim.controllers.FirestoreManager;
 import dev.kyro.pitsim.controllers.objects.Config;
