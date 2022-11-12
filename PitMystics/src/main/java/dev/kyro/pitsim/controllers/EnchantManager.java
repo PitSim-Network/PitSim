@@ -225,7 +225,18 @@ public class EnchantManager implements Listener {
 	public static void setItemLore(ItemStack itemStack, Player player) {
 		if(!PlayerManager.isRealPlayerTemp(player)) player = null;
 
-		if(player != null && !player.isOp() && itemStack.hasItemMeta()) {
+		NBTItem nbtItem = new NBTItem(itemStack);
+		NBTList<String> enchantOrder = nbtItem.getStringList(NBTTag.PIT_ENCHANT_ORDER.getRef());
+		NBTCompound itemEnchants = nbtItem.getCompound(NBTTag.PIT_ENCHANTS.getRef());
+		int playerKills = nbtItem.getInteger(NBTTag.PLAYER_KILLS.getRef());
+		int botKills = nbtItem.getInteger(NBTTag.BOT_KILLS.getRef());
+		int currentLives = nbtItem.getInteger(NBTTag.CURRENT_LIVES.getRef());
+		int maxLives = nbtItem.getInteger(NBTTag.MAX_LIVES.getRef());
+		int jewelKills = nbtItem.getInteger(NBTTag.JEWEL_KILLS.getRef());
+		boolean isJewel = isJewel(itemStack);
+		char c = 'a';
+
+		if(player != null && !player.isOp() && nbtItem.hasKey(NBTTag.ITEM_UUID.getRef())) {
 			ItemMeta itemMeta = itemStack.getItemMeta();
 			if(itemMeta.hasDisplayName()) {
 				String displayName = itemMeta.getDisplayName();
@@ -253,17 +264,6 @@ public class EnchantManager implements Listener {
 				}
 			}
 		}
-
-		NBTItem nbtItem = new NBTItem(itemStack);
-		NBTList<String> enchantOrder = nbtItem.getStringList(NBTTag.PIT_ENCHANT_ORDER.getRef());
-		NBTCompound itemEnchants = nbtItem.getCompound(NBTTag.PIT_ENCHANTS.getRef());
-		int playerKills = nbtItem.getInteger(NBTTag.PLAYER_KILLS.getRef());
-		int botKills = nbtItem.getInteger(NBTTag.BOT_KILLS.getRef());
-		int currentLives = nbtItem.getInteger(NBTTag.CURRENT_LIVES.getRef());
-		int maxLives = nbtItem.getInteger(NBTTag.MAX_LIVES.getRef());
-		int jewelKills = nbtItem.getInteger(NBTTag.JEWEL_KILLS.getRef());
-		boolean isJewel = isJewel(itemStack);
-		char c = 'a';
 
 		ALoreBuilder loreBuilder = new ALoreBuilder();
 
