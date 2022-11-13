@@ -16,7 +16,7 @@ public class LogManager implements Listener {
 	@EventHandler
 	public void onSneak(PlayerToggleSneakEvent event) {
 		Player player = event.getPlayer();
-		sendLogMessage(LogType.TEST, player.getName() + " either started or stopped sneaking");
+//		sendLogMessage(LogType.TEST, player.getName() + " either started or stopped sneaking");
 	}
 
 	public static void sendLogMessage(LogType logType, String message) {
