@@ -212,7 +212,7 @@ public class EnchantManager implements Listener {
 			boolean hasCommonEnchant = false;
 			for (String enchantString : enchantOrder) {
 				PitEnchant pitEnchant = EnchantManager.getEnchant(enchantString);
-				if(pitEnchant == EnchantManager.getEnchant("theking")) return true;
+//				if(pitEnchant == EnchantManager.getEnchant("theking")) return true;
 				if(pitEnchant == null) continue;
 				if(pitEnchant.isUncommonEnchant) continue;
 				hasCommonEnchant = true;
