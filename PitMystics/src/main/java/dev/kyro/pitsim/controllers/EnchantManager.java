@@ -204,7 +204,7 @@ public class EnchantManager implements Listener {
 			Integer tokenNum = nbtItem.getInteger(NBTTag.ITEM_TOKENS.getRef());
 			Integer rTokenNum = nbtItem.getInteger(NBTTag.ITEM_RTOKENS.getRef());
 
-			int maxTokens = nbtItem.getBoolean(NBTTag.IS_GEMMED.getRef()) ? 9 : 8;
+			int maxTokens = nbtItem.getBoolean(NBTTag.IS_GEMMED.getRef()) && nbtItem.hasKey(NBTTag.IS_JEWEL.getRef()) ? 9 : 8;
 			if(enchantNum > 3 || tokenNum > maxTokens || rTokenNum > 4) return true;
 			for (PitEnchant pitEnchant : EnchantManager.pitEnchants) {
 				if(itemEnchants.getInteger(pitEnchant.refNames.get(0)) > 3) return true;
@@ -225,7 +225,10 @@ public class EnchantManager implements Listener {
 	public static void setItemLore(ItemStack itemStack, Player player) {
 		if(!PlayerManager.isRealPlayerTemp(player)) player = null;
 
+		if(Misc.isAirOrNull(itemStack)) return;
 		NBTItem nbtItem = new NBTItem(itemStack);
+		if(!nbtItem.hasKey(NBTTag.ITEM_UUID.getRef())) return;
+
 		NBTList<String> enchantOrder = nbtItem.getStringList(NBTTag.PIT_ENCHANT_ORDER.getRef());
 		NBTCompound itemEnchants = nbtItem.getCompound(NBTTag.PIT_ENCHANTS.getRef());
 		int playerKills = nbtItem.getInteger(NBTTag.PLAYER_KILLS.getRef());
@@ -236,7 +239,7 @@ public class EnchantManager implements Listener {
 		boolean isJewel = isJewel(itemStack);
 		char c = 'a';
 
-		if(player != null && !player.isOp() && nbtItem.hasKey(NBTTag.ITEM_UUID.getRef())) {
+		if(player != null && !player.isOp()) {
 			ItemMeta itemMeta = itemStack.getItemMeta();
 			if(itemMeta.hasDisplayName()) {
 				String displayName = itemMeta.getDisplayName();
