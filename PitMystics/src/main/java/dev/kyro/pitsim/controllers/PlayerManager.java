@@ -43,6 +43,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
+import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.inventory.CraftItemEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.*;
@@ -803,5 +804,12 @@ public class PlayerManager implements Listener {
 				}
 			}.runTaskLater(PitSim.INSTANCE, 1L);
 		}
+	}
+
+	@EventHandler
+	public void onDamage(EntityDamageEvent event) {
+		if(event.getCause() == EntityDamageEvent.DamageCause.FIRE || event.getCause() == EntityDamageEvent.DamageCause.FIRE_TICK ||
+				event.getCause() == EntityDamageEvent.DamageCause.LAVA || event.getCause() == EntityDamageEvent.DamageCause.DROWNING ||
+				event.getCause() == EntityDamageEvent.DamageCause.FALL) event.setCancelled(true);
 	}
 }
