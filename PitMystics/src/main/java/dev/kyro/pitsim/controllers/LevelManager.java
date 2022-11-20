@@ -86,6 +86,10 @@ public class LevelManager {
 		if(pitPlayer.soulsGathered < prestigeInfo.soulReq) return;
 
 		pitPlayer.prestige += 1;
+		if(pitPlayer.prestige == 5) {
+			pitPlayer.taintedSouls = 0;
+		}
+
 		if(UpgradeManager.hasUpgrade(player, "FAST_PASS")) {
 			pitPlayer.level = 50;
 			pitPlayer.remainingXP = (int) (PrestigeValues.getXPForLevel(50) * prestigeInfo.xpMultiplier);

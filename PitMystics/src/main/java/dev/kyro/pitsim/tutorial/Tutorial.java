@@ -9,7 +9,6 @@ import dev.kyro.pitsim.misc.Sounds;
 import net.kyori.adventure.audience.Audience;
 import net.kyori.adventure.bossbar.BossBar;
 import net.kyori.adventure.text.Component;
-import org.bukkit.ChatColor;
 import org.bukkit.Effect;
 import org.bukkit.Location;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -17,11 +16,10 @@ import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 
-public class Tutorial {
+public abstract class Tutorial {
 	private final UUID uuid;
 	private final PitPlayer pitPlayer;
 	private BossBar bossBar;
@@ -32,12 +30,25 @@ public class Tutorial {
 	public boolean hasStartedTutorial = false;
 	public List<TutorialObjective> completedObjectives = new ArrayList<>();
 
-	public Tutorial(PitPlayer pitPlayer, FileConfiguration playerData) {
+	public String refName;
+	public boolean ordered;
+
+	public abstract void sendStartMessages();
+
+	public abstract void sendEndMessages();
+
+	public abstract boolean canBeActive();
+
+	public abstract String getBossBarDisplay(int completedObjectives);
+
+	public Tutorial(PitPlayer pitPlayer, FileConfiguration playerData, String refName, boolean ordered) {
 		this.uuid = pitPlayer.player.getUniqueId();
 		this.pitPlayer = pitPlayer;
+		this.refName = refName;
+		this.ordered = ordered;
 
-		this.hasStartedTutorial = playerData.getBoolean("tutorial.has-started");
-		for(String string : playerData.getStringList("tutorial.completed-objectives")) {
+		this.hasStartedTutorial = playerData.getBoolean("tutorial." + refName + ".has-started");
+		for(String string : playerData.getStringList("tutorial." + refName + ".completed-objectives")) {
 			TutorialObjective objective = TutorialObjective.getByRefName(string);
 			if(objective == null) continue;
 			completedObjectives.add(objective);
@@ -48,9 +59,8 @@ public class Tutorial {
 		if(!hasStartedTutorial) {
 			isInObjective = true;
 			hasStartedTutorial = true;
-			sendMessage("&eHello! Welcome to &6&lPit&e&lSim&e!", 0);
-			sendMessage("&eBefore you get started, we need to cover some basics.", 20 * 2);
-			sendMessage("&eInteract with various NPCs around spawn to learn about how to play", 20 * 6);
+
+			sendStartMessages();
 
 			new BukkitRunnable() {
 				@Override
@@ -80,14 +90,17 @@ public class Tutorial {
 		for(TutorialObjective completedObjective : completedObjectives) {
 			rawData.add(completedObjective.refName);
 		}
-		playerData.set("tutorial.has-started", hasStartedTutorial);
-		playerData.set("tutorial.completed-objectives", rawData);
+		playerData.set("tutorial." + refName + ".has-started", hasStartedTutorial);
+		playerData.set("tutorial." + refName + ".completed-objectives", rawData);
 
 		aPlayer.save();
 	}
 
 	public void completeObjective(TutorialObjective objective, long delay) {
 		if(isCompleted(objective)) return;
+
+		if(ordered && objective != getNextObjective()) return;
+
 		isInObjective = true;
 
 		BukkitRunnable runnable = new BukkitRunnable() {
@@ -98,7 +111,7 @@ public class Tutorial {
 				AOutput.send(pitPlayer.player, "&a&lTUTORIAL!&7 Completed objective: " + objective.display);
 				Sounds.LEVEL_UP.play(pitPlayer.player);
 
-				if(completedObjectives.size() == TutorialObjective.values().length) {
+				if(completedObjectives.size() == TutorialObjective.getSize(Tutorial.this.getClass())) {
 					if(particleRunnable != null) particleRunnable.cancel();
 
 					new BukkitRunnable() {
@@ -109,9 +122,7 @@ public class Tutorial {
 						}
 					}.runTaskLater(PitSim.INSTANCE, 30);
 
-					sendMessage("&eIf you forget any of the information, each NPC has a help menu in the bottom right corner.", 90);
-					sendMessage("&eYou can also join our discord server at &f&ndiscord.pitsim.net &efor more help.", 150);
-					sendMessage("&eWith that being said, enjoy the server!", 210);
+					sendEndMessages();
 
 					new BukkitRunnable() {
 						@Override
@@ -129,6 +140,12 @@ public class Tutorial {
 		else runnable.runTaskLater(PitSim.INSTANCE, delay);
 	}
 
+	public TutorialObjective getNextObjective() {
+		if(!ordered) return null;
+
+		return TutorialObjective.getObjective(completedObjectives.size(), getClass());
+	}
+
 	public boolean isCompleted(TutorialObjective objective) {
 		return completedObjectives.contains(objective);
 	}
@@ -137,20 +154,12 @@ public class Tutorial {
 		Audience audience = PitSim.adventure.player(uuid);
 		audience.hideBossBar(bossBar);
 
-		Component name = Component.text(ChatColor.translateAlternateColorCodes('&', "&a&lOBJECTIVE: &7Interact with NPCs &7("
-				+ completedObjectives.size() + "/" +  TutorialObjective.values().length + ")"));
-		float progress = ((float) completedObjectives.size()) / (float) TutorialObjective.values().length;
+		Component name = Component.text(getBossBarDisplay(completedObjectives.size()));
+		float progress = ((float) completedObjectives.size()) / (float) TutorialObjective.getSize(getClass());
 
 		bossBar = BossBar.bossBar(name, progress, BossBar.Color.PINK, BossBar.Overlay.PROGRESS);
 
 		audience.showBossBar(bossBar);
-	}
-
-	public TutorialObjective getNextObjective() {
-		for(TutorialObjective value : TutorialObjective.values()) {
-			if(!completedObjectives.contains(value)) return value;
-		}
-		return null;
 	}
 
 	public UUID getUUID() {
@@ -158,7 +167,7 @@ public class Tutorial {
 	}
 
 	public boolean isActive() {
-		return pitPlayer.prestige <= 1 && completedObjectives.size() < TutorialObjective.values().length;
+		return canBeActive() && completedObjectives.size() < TutorialObjective.getSize(getClass());
 	}
 
 	public void sendMessage(String text, long ticks) {
@@ -179,7 +188,7 @@ public class Tutorial {
 					cancel();
 					return;
 				}
-				List<TutorialObjective> tutorialObjectives = new ArrayList<>(Arrays.asList(TutorialObjective.values()));
+				List<TutorialObjective> tutorialObjectives = TutorialObjective.getObjectives(Tutorial.this.getClass());
 				tutorialObjectives.removeAll(completedObjectives);
 				for(TutorialObjective objective : tutorialObjectives) {
 					if(objective.particleDisplayHeight < 2 && Math.random() < 0.4) continue;

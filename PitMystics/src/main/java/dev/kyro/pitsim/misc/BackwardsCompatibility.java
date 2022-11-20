@@ -31,6 +31,7 @@ public class BackwardsCompatibility implements Listener {
 	public void onJoin(PlayerJoinEvent event) {
 		Player player = event.getPlayer();
 
+		darkzoneConversion(player);
 		levelSystemConversion(player);
 		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
 		pitPlayer.lastVersion = PitSim.version;
@@ -122,6 +123,18 @@ public class BackwardsCompatibility implements Listener {
 
 		}
 		return true;
+	}
+
+	public static void darkzoneConversion(Player player) {
+		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
+
+		if(!(pitPlayer.lastVersion < 3.1)) return;
+
+		APlayer aPlayer = APlayerData.getPlayerData(player);
+		FileConfiguration playerData = aPlayer.playerData;
+
+		if(playerData.contains("darkzonepreview")) playerData.set("hasJoinedDarkzone", true);
+		aPlayer.save();
 	}
 
 	public static void levelSystemConversion(Player player) {
