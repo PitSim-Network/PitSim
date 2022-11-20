@@ -44,6 +44,10 @@ public class TotallyLegitGemPanel extends AGUIPanel {
 	public void onClick(InventoryClickEvent event) {
 		int slot = event.getSlot();
 
+		if(Misc.isAirOrNull(event.getCurrentItem())) {
+			return;
+		}
+
 		ItemStack itemStack = player.getItemInHand();
 		if(Misc.isAirOrNull(itemStack)) {
 			player.closeInventory();

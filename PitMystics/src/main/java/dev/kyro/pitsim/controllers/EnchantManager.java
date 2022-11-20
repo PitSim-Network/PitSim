@@ -190,6 +190,7 @@ public class EnchantManager implements Listener {
 		if(!nbtItem.hasKey(NBTTag.ITEM_UUID.getRef())) return false;
 
 		if(nbtItem.hasKey(NBTTag.TAINTED_TIER.getRef())) {
+			if(nbtItem.hasKey(NBTTag.IS_GEMMED.getRef())) return true;
 			Map<PitEnchant, Integer> enchants = EnchantManager.getEnchantsOnItem(itemStack);
 			int tainted = 0;
 			for (PitEnchant pitEnchant : enchants.keySet()) {
