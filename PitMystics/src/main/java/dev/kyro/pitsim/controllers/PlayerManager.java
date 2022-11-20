@@ -180,11 +180,6 @@ public class PlayerManager implements Listener {
 		}.runTaskTimer(PitSim.INSTANCE, Misc.getRunnableOffset(1), 60 * 20);
 	}
 
-	public static boolean isRealPlayerTemp(Player player) {
-		if(player == null) return false;
-		return Bukkit.getOnlinePlayers().contains(player);
-	}
-
 	@EventHandler
 	public void onItemPickup(PlayerPickupItemEvent event) {
 		ItemStack itemStack = event.getItem().getItemStack();
@@ -194,7 +189,7 @@ public class PlayerManager implements Listener {
 
 	@EventHandler
 	public void giveMoonCap(KillEvent killEvent) {
-		if(!PlayerManager.isRealPlayerTemp(killEvent.getKillerPlayer())) return;
+		if(!PlayerManager.isRealPlayer(killEvent.getKillerPlayer())) return;
 		PitPlayer pitPlayer = PitPlayer.getPitPlayer(killEvent.getKillerPlayer());
 		killEvent.xpCap += pitPlayer.moonBonus;
 	}

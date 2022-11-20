@@ -3,6 +3,7 @@ package dev.kyro.pitsim.inventories;
 import de.tr7zw.nbtapi.NBTItem;
 import dev.kyro.arcticapi.gui.AGUI;
 import dev.kyro.arcticapi.gui.AGUIPanel;
+import dev.kyro.pitsim.alogging.LogManager;
 import dev.kyro.pitsim.controllers.EnchantManager;
 import dev.kyro.pitsim.controllers.objects.PitEnchant;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
@@ -83,6 +84,7 @@ public class TotallyLegitGemPanel extends AGUIPanel {
 					}
 					player.closeInventory();
 					Sounds.GEM_USE.play(player);
+					LogManager.onItemGem(player, nbtItem.getItem());
 
 					PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
 					if(pitPlayer.stats != null) pitPlayer.stats.itemsGemmed++;

@@ -7,6 +7,7 @@ import dev.kyro.arcticapi.builders.AItemStackBuilder;
 import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.arcticapi.misc.AUtil;
 import dev.kyro.pitsim.PitSim;
+import dev.kyro.pitsim.alogging.LogManager;
 import dev.kyro.pitsim.controllers.objects.Non;
 import dev.kyro.pitsim.controllers.objects.PitEnchant;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
@@ -221,7 +222,7 @@ public class EnchantManager implements Listener {
 	}
 
 	public static void setItemLore(ItemStack itemStack, Player player) {
-		if(!PlayerManager.isRealPlayerTemp(player)) player = null;
+		if(!PlayerManager.isRealPlayer(player)) player = null;
 
 		if(player != null) {
 			if(player.getWorld() == MapManager.getDarkzone()) {
@@ -409,6 +410,7 @@ public class EnchantManager implements Listener {
 		Bukkit.broadcastMessage(ChatColor.translateAlternateColorCodes(
 				'&', "&3&lJEWEL!&7 " + player.getDisplayName() + " &7found " + jewelEnchant.getDisplayName()));
 		Sounds.JEWEL_FIND.play(player);
+		LogManager.onJewelComplete(player, jewelEnchant, maxLives);
 
 		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
 		if(pitPlayer.stats != null) pitPlayer.stats.jewelsCompleted++;
@@ -424,7 +426,7 @@ public class EnchantManager implements Listener {
 		if(Math.random() < 0.001) return 420;
 		if(Math.random() < 0.01) return 100;
 		int maxLives = 10;
-		if(Math.random() < 0.67) {
+		if(Math.random() < 0.75) {
 			maxLives += (int) (Math.random() * 11);
 		} else {
 			maxLives += (int) (Math.random() * 31 + 10);

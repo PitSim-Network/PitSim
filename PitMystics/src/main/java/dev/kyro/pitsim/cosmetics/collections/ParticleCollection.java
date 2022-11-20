@@ -1,6 +1,6 @@
 package dev.kyro.pitsim.cosmetics.collections;
 
-import dev.kyro.pitsim.ParticleColor;
+import dev.kyro.pitsim.cosmetics.particles.ParticleColor;
 import dev.kyro.pitsim.cosmetics.ParticleOffset;
 import dev.kyro.pitsim.cosmetics.PitParticle;
 import net.minecraft.server.v1_8_R3.EntityPlayer;

@@ -1,6 +1,5 @@
 package dev.kyro.pitsim.controllers;
 
-import com.google.common.collect.Iterables;
 import com.google.common.io.ByteArrayDataInput;
 import com.google.common.io.ByteArrayDataOutput;
 import com.google.common.io.ByteStreams;
@@ -8,10 +7,6 @@ import dev.kyro.arcticapi.data.AConfig;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.controllers.objects.PluginMessage;
 import dev.kyro.pitsim.events.MessageEvent;
-import org.bukkit.Bukkit;
-import org.bukkit.entity.Player;
-import org.bukkit.event.EventHandler;
-import org.bukkit.plugin.messaging.PluginMessageListener;
 import septogeddon.pluginquery.PluginQuery;
 import septogeddon.pluginquery.api.QueryConnection;
 import septogeddon.pluginquery.api.QueryMessageListener;
@@ -41,6 +36,7 @@ public class PluginMessageManager implements QueryMessageListener {
 
             msgout.writeInt(message.getStrings().size());
             msgout.writeInt(message.getIntegers().size());
+            msgout.writeInt(message.getLongs().size());
             msgout.writeInt(message.getBooleans().size());
 
             for(String string : message.getStrings()) {
@@ -49,6 +45,10 @@ public class PluginMessageManager implements QueryMessageListener {
 
             for(int integer : message.getIntegers()) {
                 msgout.writeInt(integer);
+            }
+
+            for(long longValue : message.getLongs()) {
+                msgout.writeLong(longValue);
             }
 
             for(Boolean bool : message.getBooleans()) {

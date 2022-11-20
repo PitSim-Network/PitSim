@@ -3,6 +3,7 @@ package dev.kyro.pitsim.enchants;
 import de.tr7zw.nbtapi.NBTItem;
 import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.arcticapi.misc.AOutput;
+import dev.kyro.pitsim.alogging.LogManager;
 import dev.kyro.pitsim.battlepass.quests.EarnRenownQuest;
 import dev.kyro.pitsim.controllers.DamageManager;
 import dev.kyro.pitsim.controllers.EnchantManager;
@@ -66,7 +67,10 @@ public class SelfCheckout extends PitEnchant {
 				killEvent.getKillerPlayer().getEquipment().setLeggings(new ItemStack(Material.AIR));
 				killEvent.getKillerPlayer().updateInventory();
 				PlayerManager.sendItemBreakMessage(killEvent.getKillerPlayer(), leggings);
-				if(pitKiller.stats != null) pitKiller.stats.itemsBroken++;
+				if(pitKiller.stats != null) {
+					pitKiller.stats.itemsBroken++;
+					LogManager.onItemBreak(killEvent.getKillerPlayer(), nbtItem.getItem());
+				}
 			} else {
 				nbtItem.setInteger(NBTTag.CURRENT_LIVES.getRef(), nbtItem.getInteger(NBTTag.CURRENT_LIVES.getRef()) - LIVES_ON_USE);
 				EnchantManager.setItemLore(nbtItem.getItem(), pitKiller.player);

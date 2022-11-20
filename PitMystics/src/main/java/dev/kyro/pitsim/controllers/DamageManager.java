@@ -3,6 +3,7 @@ package dev.kyro.pitsim.controllers;
 import de.tr7zw.nbtapi.NBTItem;
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.PitSim;
+import dev.kyro.pitsim.alogging.LogManager;
 import dev.kyro.pitsim.brewing.objects.BrewingIngredient;
 import dev.kyro.pitsim.controllers.objects.*;
 import dev.kyro.pitsim.enchants.PitBlob;
@@ -215,7 +216,7 @@ public class DamageManager implements Listener {
 		attackEvent.multipliers.add(ArmorReduction.getReductionMultiplier(attackEvent.getDefender()));
 
 //		Darkzone player vs player defence
-		if(PlayerManager.isRealPlayerTemp(attackEvent.getAttackerPlayer()) && PlayerManager.isRealPlayerTemp(attackEvent.getDefenderPlayer()) &&
+		if(PlayerManager.isRealPlayer(attackEvent.getAttackerPlayer()) && PlayerManager.isRealPlayer(attackEvent.getDefenderPlayer()) &&
 				MapManager.inDarkzone(attackEvent.getAttackerPlayer())) {
 			attackEvent.multipliers.add(0.5);
 			attackEvent.trueDamage /= 2.0;
@@ -502,12 +503,16 @@ public class DamageManager implements Listener {
 						deadPlayer.getInventory().remove(itemStack);
 						deadPlayer.updateInventory();
 						PlayerManager.sendItemBreakMessage(deadPlayer, itemStack);
-						if(pitDead.stats != null) pitDead.stats.itemsBroken++;
+						if(pitDead.stats != null) {
+							pitDead.stats.itemsBroken++;
+							LogManager.onItemBreak(deadPlayer, nbtItem.getItem());
+						}
 					} else {
 						nbtItem.setInteger(NBTTag.CURRENT_LIVES.getRef(), nbtItem.getInteger(NBTTag.CURRENT_LIVES.getRef()) - 1);
 						EnchantManager.setItemLore(nbtItem.getItem(), deadPlayer);
 						deadPlayer.getInventory().setItem(i, nbtItem.getItem());
 						livesLost++;
+						LogManager.onItemLifeLost(deadPlayer, nbtItem.getItem());
 					}
 				}
 			}
@@ -526,12 +531,16 @@ public class DamageManager implements Listener {
 							deadPlayer.getInventory().setLeggings(new ItemStack(Material.AIR));
 							deadPlayer.updateInventory();
 							PlayerManager.sendItemBreakMessage(deadPlayer, pants);
-							if(pitDead.stats != null) pitDead.stats.itemsBroken++;
+							if(pitDead.stats != null) {
+								pitDead.stats.itemsBroken++;
+								LogManager.onItemBreak(deadPlayer, nbtItem.getItem());
+							}
 						} else {
 							nbtItem.setInteger(NBTTag.CURRENT_LIVES.getRef(), nbtItem.getInteger(NBTTag.CURRENT_LIVES.getRef()) - 1);
 							EnchantManager.setItemLore(nbtItem.getItem(), deadPlayer);
 							deadPlayer.getInventory().setLeggings(nbtItem.getItem());
 							livesLost++;
+							LogManager.onItemLifeLost(deadPlayer, nbtItem.getItem());
 						}
 					}
 				}

@@ -1,6 +1,6 @@
 package dev.kyro.pitsim.cosmetics;
 
-import dev.kyro.pitsim.ParticleColor;
+import dev.kyro.pitsim.cosmetics.particles.ParticleColor;
 import net.minecraft.server.v1_8_R3.EntityPlayer;
 import org.bukkit.Location;
 

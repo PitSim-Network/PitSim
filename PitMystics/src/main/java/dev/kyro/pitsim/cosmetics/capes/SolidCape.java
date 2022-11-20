@@ -2,7 +2,7 @@ package dev.kyro.pitsim.cosmetics.capes;
 
 import dev.kyro.arcticapi.builders.AItemStackBuilder;
 import dev.kyro.arcticapi.builders.ALoreBuilder;
-import dev.kyro.pitsim.ParticleColor;
+import dev.kyro.pitsim.cosmetics.particles.ParticleColor;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.cosmetics.ColorableCosmetic;
 import dev.kyro.pitsim.cosmetics.CosmeticType;

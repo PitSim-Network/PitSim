@@ -1,6 +1,6 @@
 package dev.kyro.pitsim.cosmetics;
 
-import dev.kyro.pitsim.ParticleColor;
+import dev.kyro.pitsim.cosmetics.particles.ParticleColor;
 import org.bukkit.entity.Player;
 
 import java.util.HashMap;

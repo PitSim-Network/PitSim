@@ -3,6 +3,7 @@ package dev.kyro.pitsim.inventories;
 import de.tr7zw.nbtapi.NBTItem;
 import dev.kyro.arcticapi.gui.AGUI;
 import dev.kyro.arcticapi.gui.AGUIPanel;
+import dev.kyro.pitsim.alogging.LogManager;
 import dev.kyro.pitsim.controllers.EnchantManager;
 import dev.kyro.pitsim.enums.NBTTag;
 import dev.kyro.pitsim.misc.Misc;
@@ -73,6 +74,8 @@ public class VilePanel extends AGUIPanel {
 					message.addExtra(Misc.createItemHover(nbtItem.getItem()));
 					message.addExtra(new TextComponent(ChatColor.translateAlternateColorCodes('&', "&7!")));
 					player.sendMessage(message);
+
+					LogManager.onItemRepair(player, nbtItem.getItem());
 
 					Sounds.WITHERCRAFT_1.play(player);
 					Sounds.WITHERCRAFT_2.play(player);

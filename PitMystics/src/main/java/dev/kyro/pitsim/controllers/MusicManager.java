@@ -59,7 +59,7 @@ public class MusicManager implements Listener {
     }
 
     public static void stopPlaying(Player player) {
-        if(!PlayerManager.isRealPlayerTemp(player)) return;
+        if(!PlayerManager.isRealPlayer(player)) return;
         NoteBlockAPI.stopPlaying(player);
         EntitySongPlayer toRemove = null;
         for (EntitySongPlayer song : songs) {

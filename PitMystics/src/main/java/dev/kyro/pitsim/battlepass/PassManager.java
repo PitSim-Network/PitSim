@@ -1,6 +1,6 @@
 package dev.kyro.pitsim.battlepass;
 
-import dev.kyro.pitsim.ParticleColor;
+import dev.kyro.pitsim.cosmetics.particles.ParticleColor;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.cosmetics.CosmeticManager;
 import dev.kyro.pitsim.battlepass.rewards.*;

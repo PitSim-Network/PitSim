@@ -1,4 +1,4 @@
-package dev.kyro.pitsim;
+package dev.kyro.pitsim.cosmetics.particles;
 
 import dev.kyro.arcticapi.builders.AItemStackBuilder;
 import dev.kyro.arcticapi.builders.ALoreBuilder;

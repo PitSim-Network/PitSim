@@ -70,7 +70,7 @@ public class LevelManager {
 	}
 
 	public static void addGold(Player player, int amount) {
-		if(!PlayerManager.isRealPlayerTemp(player)) return;
+		if(!PlayerManager.isRealPlayer(player)) return;
 		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
 
 		GrindGoldQuest.INSTANCE.gainGold(pitPlayer, amount);
@@ -79,7 +79,7 @@ public class LevelManager {
 	}
 
 	public static void addGoldReq(Player player, int amount) {
-		if(!PlayerManager.isRealPlayerTemp(player)) return;
+		if(!PlayerManager.isRealPlayer(player)) return;
 		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
 
 		pitPlayer.goldGrinded += amount;
