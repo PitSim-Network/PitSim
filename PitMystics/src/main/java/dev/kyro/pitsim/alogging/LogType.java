@@ -23,7 +23,7 @@ public enum LogType {
 	ITEM_BROKEN(LogFile.COMBAT, LogFile.MAJOR),
 	LIFE_LOST(LogFile.COMBAT),
 
-	//	Guilds TODO: actually implement
+	//	Guilds
 	GUILD_CREATE(LogFile.GUILDS, LogFile.MAJOR),
 	GUILD_CHAT(LogFile.GUILDS, LogFile.CHAT),
 
