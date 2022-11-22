@@ -247,7 +247,7 @@ public class PitPlayer {
 			}
 
 			stats = new PlayerStats(this, playerData);
-//			tutorial = new Tutorial(this, playerData);
+			tutorial = new Tutorial(this, playerData);
 			updateXPBar();
 
 			for (int i = 0; i < brewingSessions.length; i++) {
@@ -259,7 +259,7 @@ public class PitPlayer {
 
 			if(playerData.contains("taintedsouls")) {
 				taintedSouls = playerData.getInt("taintedsouls");
-			} else taintedSouls = 0;
+			} else taintedSouls = 200;
 
 
 
