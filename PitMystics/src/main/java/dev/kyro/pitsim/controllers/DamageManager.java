@@ -148,13 +148,11 @@ public class DamageManager implements Listener {
 
 		if(bossHitCooldown.containsKey(defender.getUniqueId())) {
 			event.setCancelled(true);
-			System.out.println("cancelled");
 			return;
 		}
 
 		if(Regularity.regCooldown.contains(defender.getUniqueId()) && !Regularity.toReg.contains(defender.getUniqueId())) {
 			event.setCancelled(true);
-			System.out.println("cancelled");
 			return;
 		}
 
