@@ -21,10 +21,8 @@ import dev.kyro.pitsim.upgrades.DivineIntervention;
 import dev.kyro.pitsim.upgrades.LifeInsurance;
 import me.clip.placeholderapi.PlaceholderAPI;
 import net.citizensnpcs.api.CitizensAPI;
-import net.minecraft.server.v1_8_R3.EntityLiving;
 import net.minecraft.server.v1_8_R3.EntityPlayer;
 import org.bukkit.*;
-import org.bukkit.craftbukkit.v1_8_R3.entity.CraftLivingEntity;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
 import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
@@ -44,22 +42,13 @@ import java.util.*;
 
 public class DamageManager implements Listener {
 
-	public static Map<UUID, Integer> hitCooldownList = new HashMap<>();
-	public static Map<UUID, Integer> hopperCooldownList = new HashMap<>();
-	public static Map<UUID, Integer> nonHitCooldownList = new HashMap<>();
-	public static Map<UUID, Integer> bossHitCooldown = new HashMap<>();
+	public static List<LivingEntity> hitCooldownList = new ArrayList<>();
+	public static List<LivingEntity> hopperCooldownList = new ArrayList<>();
+	public static List<LivingEntity> nonHitCooldownList = new ArrayList<>();
+	public static List<LivingEntity> bossHitCooldown = new ArrayList<>();
 	public static Map<EntityShootBowEvent, Map<PitEnchant, Integer>> arrowMap = new HashMap<>();
 
 	static {
-		new BukkitRunnable() {
-			@Override
-			public void run() {
-				reduceCooldown(hitCooldownList);
-				reduceCooldown(hopperCooldownList);
-				reduceCooldown(nonHitCooldownList);
-				reduceCooldown(bossHitCooldown);
-			}
-		}.runTaskTimer(PitSim.INSTANCE, 0L, 1L);
 		new BukkitRunnable() {
 			@Override
 			public void run() {
@@ -73,17 +62,6 @@ public class DamageManager implements Listener {
 				}
 			}
 		}.runTaskTimer(PitSim.INSTANCE, 0L, 1L);
-	}
-
-	private static void reduceCooldown(Map<UUID, Integer> cooldownMap) {
-		for(Map.Entry<UUID, Integer> entry : new ArrayList<>(cooldownMap.entrySet())) {
-			int cooldown = entry.getValue();
-			if(--cooldown != 0) {
-				cooldownMap.put(entry.getKey(), cooldown);
-			} else {
-				cooldownMap.remove(entry.getKey());
-			}
-		}
 	}
 
 	@EventHandler
@@ -126,27 +104,22 @@ public class DamageManager implements Listener {
 		Non attackingNon = NonManager.getNon(attacker);
 		Non defendingNon = NonManager.getNon(defender);
 //		Hit on non or by non
-		if((attackingNon != null && nonHitCooldownList.containsKey(defender.getUniqueId())) ||
-				(attackingNon == null && defendingNon != null && hitCooldownList.containsKey(defender.getUniqueId())) &&
-				!Regularity.toReg.contains(defender.getUniqueId()) && !(event.getDamager() instanceof Arrow)) {
+		if((attackingNon != null && nonHitCooldownList.contains(defender)) ||
+				(attackingNon == null && defendingNon != null && hitCooldownList.contains(defender)) && !Regularity.toReg.contains(defender.getUniqueId()) &&
+						!(event.getDamager() instanceof Arrow)) {
 			event.setCancelled(true);
 			return;
 		}
 //		Regular player to player hit
-		if(attackingNon == null && defendingNon == null && !Regularity.toReg.contains(defender.getUniqueId())) {
-			EntityLiving nmsEntity = ((CraftLivingEntity) defender).getHandle();
-			fakeHit = hitCooldownList.containsKey(defender.getUniqueId());
-			if(fakeHit) event.setCancelled(true);
-
-//			old code
-//			fakeHit = hitCooldownList.containsKey(defender.getUniqueId());
-//			if(hopperCooldownList.containsKey(defender.getUniqueId()) && HopperManager.isHopper(defender)) {
-//				event.setCancelled(true);
-//				return;
-//			}
+		if(attackingNon == null && !Regularity.toReg.contains(defender.getUniqueId())) {
+			fakeHit = hitCooldownList.contains(defender);
+			if(hopperCooldownList.contains(defender) && HopperManager.isHopper(defender)) {
+				event.setCancelled(true);
+				return;
+			}
 		}
 
-		if(bossHitCooldown.containsKey(defender.getUniqueId())) {
+		if(bossHitCooldown.contains(defender)) {
 			event.setCancelled(true);
 			return;
 		}
@@ -158,14 +131,28 @@ public class DamageManager implements Listener {
 
 		if(!fakeHit) {
 //			if(attackingNon == null) attacker.setHealth(Math.min(attacker.getHealth() + 1, attacker.getMaxHealth()));
-			hitCooldownList.put(defender.getUniqueId(), 10);
-			hopperCooldownList.put(defender.getUniqueId(), 10);
-			nonHitCooldownList.put(defender.getUniqueId(), 15);
+			hitCooldownList.add(defender);
+			hopperCooldownList.add(defender);
+			nonHitCooldownList.add(defender);
 
 			if(defender instanceof Player) {
 				boolean isBoss = (PitBoss.isPitBoss((Player) defender));
-				if(isBoss) bossHitCooldown.put(defender.getUniqueId(), 10);
+				if(isBoss) bossHitCooldown.add(defender);
 			}
+
+			new BukkitRunnable() {
+				int count = 0;
+
+				@Override
+				public void run() {
+					if(++count == 15) cancel();
+
+					if(count == 5) DamageManager.hitCooldownList.remove(defender);
+					if(count == 10) DamageManager.hopperCooldownList.remove(defender);
+					if(count == 15) DamageManager.nonHitCooldownList.remove(defender);
+					if(count == 10) DamageManager.bossHitCooldown.remove(defender);
+				}
+			}.runTaskTimer(PitSim.INSTANCE, 0L, 1L);
 		}
 
 //		Reduce cpu load by not handling non v non
