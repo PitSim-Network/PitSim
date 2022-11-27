@@ -29,6 +29,7 @@ import dev.kyro.pitsim.misc.KillEffects;
 import dev.kyro.pitsim.misc.Misc;
 import dev.kyro.pitsim.misc.Sounds;
 import dev.kyro.pitsim.upgrades.TheWay;
+import dev.kyro.pitsim.upgrades.UberIncrease;
 import me.clip.placeholderapi.PlaceholderAPI;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.*;
@@ -547,6 +548,11 @@ public class PlayerManager implements Listener {
 
 		FeatherBoardAPI.resetDefaultScoreboard(event.getPlayer());
 		FeatherBoardAPI.showScoreboard(event.getPlayer(), "default");
+
+		if((System.currentTimeMillis() / 1000L) - 60 * 60 * 20 > pitPlayer.uberReset) {
+			pitPlayer.uberReset = 0;
+			pitPlayer.dailyUbersLeft = 5 + UberIncrease.getUberIncrease(player);
+		}
 
 //		if(!bossBars.containsKey(event.getPlayer())) {
 //			BossBarManager bm = new BossBarManager();
