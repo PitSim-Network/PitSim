@@ -73,7 +73,7 @@ import java.util.*;
 import static dev.kyro.pitsim.misc.TempBlockHelper.restoreSessions;
 
 public class PitSim extends JavaPlugin {
-	public static double version = 3.1;
+	public static double version = 3.0;
 
 	public static LuckPerms LUCKPERMS;
 	public static PitSim INSTANCE;
@@ -366,7 +366,7 @@ public class PitSim extends JavaPlugin {
 	private void registerLeaderboards() {
 		LeaderboardManager.registerLeaderboard(new XPLeaderboard());
 		LeaderboardManager.registerLeaderboard(new GoldGrindedLeaderboard());
-		LeaderboardManager.registerLeaderboard(new PlayerKillsLeaderboard());
+//		LeaderboardManager.registerLeaderboard(new PlayerKillsLeaderboard());
 		LeaderboardManager.registerLeaderboard(new BotKillsLeaderboard());
 		LeaderboardManager.registerLeaderboard(new PlaytimeLeaderboard());
 		LeaderboardManager.registerLeaderboard(new UbersCompletedLeaderboard());

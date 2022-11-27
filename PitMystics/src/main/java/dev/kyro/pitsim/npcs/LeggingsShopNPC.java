@@ -2,7 +2,7 @@ package dev.kyro.pitsim.npcs;
 
 import dev.kyro.pitsim.controllers.MapManager;
 import dev.kyro.pitsim.controllers.objects.PitNPC;
-import dev.kyro.pitsim.inventories.GearGUI;
+import dev.kyro.pitsim.inventories.LeggingsGUI;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
@@ -22,12 +22,12 @@ public class LeggingsShopNPC extends PitNPC {
 
 	@Override
 	public void createNPC(Location location) {
-		spawnPlayerNPC("&b&lGEAR TRADER", "Merchant", location, true);
+		spawnPlayerNPC("&b&lARMOR TRADER", "Merchant", location, true);
 	}
 
 	@Override
 	public void onClick(Player player) {
-		GearGUI gearGUI = new GearGUI(player);
-		gearGUI.open();
+		LeggingsGUI leggingsGUI = new LeggingsGUI(player);
+		leggingsGUI.open();
 	}
 }

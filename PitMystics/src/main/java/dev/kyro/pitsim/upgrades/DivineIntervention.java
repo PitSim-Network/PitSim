@@ -21,7 +21,7 @@ public class DivineIntervention extends RenownUpgrade {
 	public static DivineIntervention INSTANCE;
 
 	public DivineIntervention() {
-		super("Divine Intervention", "DIVINE_INTERVENTION", 25, 24, 16, true, 3);
+		super("Divine Intervention", "DIVINE_INTERVENTION", 25, 24, 16, true, 5);
 		INSTANCE = this;
 	}
 
@@ -75,6 +75,6 @@ public class DivineIntervention extends RenownUpgrade {
 
 	@Override
 	public List<Integer> getTierCosts() {
-		return Arrays.asList(25, 50, 75);
+		return Arrays.asList(25, 50, 75, 100, 125);
 	}
 }

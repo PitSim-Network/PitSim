@@ -95,15 +95,8 @@ public class PortalManager implements Listener {
 		if(player.getWorld() == Bukkit.getWorld("darkzone")) {
 			APlayer aPlayer = APlayerData.getPlayerData(player);
 			FileConfiguration playerData = aPlayer.playerData;
-
-			if(!playerData.contains("hasJoinedDarkzone")) {
-				PitPlayer.getPitPlayer(player).taintedSouls = 0;
-				playerData.set("hasJoinedDarkzone", true);
-			}
-
 			if(!playerData.contains("darkzonepreview")) {
-				//TODO: Start darkzone tutorial
-//				CutsceneManager.play(player);
+				CutsceneManager.play(player);
 				return;
 			}
 
