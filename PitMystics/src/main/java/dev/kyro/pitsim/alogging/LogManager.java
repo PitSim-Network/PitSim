@@ -86,7 +86,7 @@ public class LogManager implements Listener {
 					nbtItem.getInteger(NBTTag.CURRENT_LIVES.getRef()) + "/" + nbtItem.getInteger(NBTTag.MAX_LIVES.getRef());
 			if(nbtItem.hasKey(NBTTag.IS_GEMMED.getRef())) serializedItem += " Gemmed";
 			if(EnchantManager.isJewelComplete(itemStack)) serializedItem += " Jewel: " +
-					EnchantManager.getEnchant(nbtItem.getString(NBTTag.ITEM_JEWEL_ENCHANT.getRef()));
+					EnchantManager.getEnchant(nbtItem.getString(NBTTag.ITEM_JEWEL_ENCHANT.getRef())).getDisplayName();
 			serializedItem += " Enchants:";
 			for(Map.Entry<PitEnchant, Integer> entry : EnchantManager.getEnchantsOnItem(itemStack).entrySet()) {
 				serializedItem += " " + entry.getKey().getDisplayName() + " " + entry.getValue();
