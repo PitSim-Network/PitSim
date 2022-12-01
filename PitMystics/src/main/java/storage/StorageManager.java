@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class StorageManager {
-	private static List<StorageProfile> profiles = new ArrayList<>();
+	private static final List<StorageProfile> profiles = new ArrayList<>();
 
 	public static StorageProfile getProfile(Player player) {
 		for(StorageProfile profile : profiles) {
