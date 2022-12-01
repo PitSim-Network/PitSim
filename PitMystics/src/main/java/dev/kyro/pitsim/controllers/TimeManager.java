@@ -40,17 +40,21 @@ public class TimeManager implements Listener {
 		Calendar eventStart = Calendar.getInstance(TimeZone.getTimeZone("EST"));
 		Calendar eventEnd = Calendar.getInstance(TimeZone.getTimeZone("EST"));
 
-		setDate(eventStart, Calendar.DECEMBER, 24);
-		setDate(eventEnd, Calendar.JANUARY, 28);
+		setDate(eventStart, Calendar.DECEMBER, 1);
+		setDate(eventEnd, Calendar.JANUARY, 7, true);
 
 		Calendar currentTime = Calendar.getInstance(TimeZone.getTimeZone("EST"));
 		return currentTime.after(eventStart) && currentTime.before(eventEnd);
 	}
 
 	private static void setDate(Calendar calendar, int month, int date) {
+		setDate(calendar, month, date, false);
+	}
+
+	private static void setDate(Calendar calendar, int month, int date, boolean nextYear) {
 		calendar.clear();
 		calendar.set(Calendar.YEAR,
-				Calendar.getInstance(TimeZone.getTimeZone("EST")).get(Calendar.YEAR));
+				Calendar.getInstance(TimeZone.getTimeZone("EST")).get(Calendar.YEAR) + (nextYear ? 1 : 0));
 		calendar.set(Calendar.MONTH, month);
 		calendar.set(Calendar.DATE, date);
 		calendar.set(Calendar.HOUR_OF_DAY, 0);
