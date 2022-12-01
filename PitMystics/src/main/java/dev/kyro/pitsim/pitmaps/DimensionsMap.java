@@ -81,6 +81,11 @@ public class DimensionsMap extends PitMap {
 		return new Location(world, 4.5, 88, 7.5, 150, 0);
 	}
 
+	@Override
+	public Location getPortalRespawn(World world) {
+		return new Location(world, -56, 73, 0.5, -90, 0);
+	}
+
 //	TODO: Add
 	@Override
 	public Location getKitNPCSpawn(World world) {

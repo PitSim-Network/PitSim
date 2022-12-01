@@ -46,6 +46,7 @@ import dev.kyro.pitsim.misc.tainted.SyntheticCube;
 import dev.kyro.pitsim.npcs.*;
 import dev.kyro.pitsim.perks.*;
 import dev.kyro.pitsim.pitmaps.BiomesMap;
+import dev.kyro.pitsim.pitmaps.XmasMap;
 import dev.kyro.pitsim.placeholders.*;
 import dev.kyro.pitsim.upgrades.*;
 import net.citizensnpcs.api.CitizensAPI;
@@ -57,6 +58,7 @@ import net.milkbowl.vault.economy.Economy;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.World;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Item;
@@ -303,7 +305,18 @@ public class PitSim extends JavaPlugin {
 
 	private void registerMaps() {
 //		MapManager.registerMap(new DimensionsMap("dimensions1", "dimensions2"));
+
+		if(TimeManager.isChristmasSeason()) {
+			MapManager.registerMap(new XmasMap("xmas1", "xmas2"));
+			for(World lobby : MapManager.currentMap.lobbies) {
+				lobby.setStorm(true);
+				lobby.setWeatherDuration(Integer.MAX_VALUE);
+			}
+			return;
+		}
+
 		MapManager.registerMap(new BiomesMap("biomes1", "biomes2"));
+
 	}
 
 	private void registerPerks() {

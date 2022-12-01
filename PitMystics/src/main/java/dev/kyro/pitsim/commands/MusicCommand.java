@@ -2,6 +2,7 @@ package dev.kyro.pitsim.commands;
 
 import com.xxmicloxx.NoteBlockAPI.NoteBlockAPI;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
+import dev.kyro.pitsim.pitmaps.XmasMap;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -19,10 +20,16 @@ public class MusicCommand implements CommandExecutor {
         if(pitPlayer.musicDisabled) {
             pitPlayer.musicDisabled = false;
             player.sendMessage(ChatColor.GREEN + "Music enabled!");
+
+            if(XmasMap.radio != null && !XmasMap.isListening(player.getUniqueId())) {
+                XmasMap.addToRadio(player);
+            }
         } else {
             pitPlayer.musicDisabled = true;
             player.sendMessage(ChatColor.RED + "Music disabled!");
             NoteBlockAPI.stopPlaying(player);
+
+            if(XmasMap.radio != null) XmasMap.removeFromRadio(player);
         }
         return false;
     }

@@ -2,6 +2,7 @@ package dev.kyro.pitsim.commands;
 
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.controllers.MapManager;
+import dev.kyro.pitsim.pitmaps.XmasMap;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.command.Command;
@@ -17,7 +18,9 @@ public class SwitchCommand implements CommandExecutor {
 
 		World newWorld = MapManager.currentMap.getRandomOrFirst(player.getWorld());
 		Location spawnLocation = MapManager.currentMap.getSpawn(newWorld);
+		XmasMap.removeFromRadio(player);
 		player.teleport(spawnLocation);
+		XmasMap.addToRadio(player);
 		AOutput.send(player, "&7You have connected to lobby &6" + (MapManager.currentMap.getLobbyIndex(spawnLocation.getWorld()) + 1));
 		return false;
 	}

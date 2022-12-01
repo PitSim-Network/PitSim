@@ -28,6 +28,7 @@ import dev.kyro.pitsim.misc.DeathCrys;
 import dev.kyro.pitsim.misc.KillEffects;
 import dev.kyro.pitsim.misc.Misc;
 import dev.kyro.pitsim.misc.Sounds;
+import dev.kyro.pitsim.pitmaps.XmasMap;
 import dev.kyro.pitsim.upgrades.TheWay;
 import dev.kyro.pitsim.upgrades.UberIncrease;
 import me.clip.placeholderapi.PlaceholderAPI;
@@ -271,6 +272,15 @@ public class PlayerManager implements Listener {
 
 	@EventHandler
 	public void onKillForRank(KillEvent killEvent) {
+
+		XmasMap.removeFromRadio(killEvent.deadPlayer);
+		new BukkitRunnable() {
+			@Override
+			public void run() {
+				XmasMap.addToRadio(killEvent.deadPlayer);
+			}
+		}.runTaskLater(PitSim.INSTANCE, 20);
+
 		double multiplier = 1;
 		if(killEvent.killer.hasPermission("group.nitro")) {
 			multiplier += 0.1;
@@ -628,6 +638,15 @@ public class PlayerManager implements Listener {
 			}.runTaskLater(PitSim.INSTANCE, 1L);
 		}
 
+		new BukkitRunnable() {
+			@Override
+			public void run() {
+				if(!pitPlayer.musicDisabled && XmasMap.radio != null) {
+					XmasMap.addToRadio(player);
+				}
+			}
+		}.runTaskLater(PitSim.INSTANCE, 20);
+
 //		Misc.applyPotionEffect(player, PotionEffectType.NIGHT_VISION, 2000000, 2, false, false);
 
 		if(player.hasPermission("pitsim.autofps")) {
@@ -774,26 +793,11 @@ public class PlayerManager implements Listener {
 
 	@EventHandler
 	public void onQuit(PlayerQuitEvent event) {
+		XmasMap.removeFromRadio(event.getPlayer());
 		PitPlayer pitPlayer = PitPlayer.getPitPlayer(event.getPlayer());
 		if(pitPlayer.megastreak.getClass() == RNGesus.class && RNGesus.isOnCooldown(event.getPlayer())) {
 			pitPlayer.megastreak.stop();
 			pitPlayer.megastreak = new NoMegastreak(pitPlayer);
-		}
-	}
-
-	@EventHandler
-	public void onDeath(KillEvent event) {
-		if(!event.deadIsPlayer) return;
-		PitPlayer pitPlayer = PitPlayer.getPitPlayer(event.deadPlayer);
-		if(pitPlayer.megastreak.getClass() == RNGesus.class && RNGesus.isOnCooldown(event.deadPlayer)) {
-			new BukkitRunnable() {
-				@Override
-				public void run() {
-					pitPlayer.megastreak.stop();
-					pitPlayer.megastreak = new NoMegastreak(pitPlayer);
-					pitPlayer.fullSave();
-				}
-			}.runTaskLater(PitSim.INSTANCE, 1L);
 		}
 	}
 

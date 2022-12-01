@@ -15,6 +15,8 @@ import dev.kyro.pitsim.enums.NonTrait;
 import dev.kyro.pitsim.events.AttackEvent;
 import dev.kyro.pitsim.events.KillEvent;
 import dev.kyro.pitsim.events.OofEvent;
+import dev.kyro.pitsim.megastreaks.NoMegastreak;
+import dev.kyro.pitsim.megastreaks.RNGesus;
 import dev.kyro.pitsim.misc.*;
 import dev.kyro.pitsim.misc.tainted.CorruptedFeather;
 import dev.kyro.pitsim.upgrades.DivineIntervention;
@@ -293,6 +295,20 @@ public class DamageManager implements Listener {
 		KillEvent killEvent = null;
 		OofEvent oofEvent = null;
 
+		if(deadIsPlayer) {
+			PitPlayer pitPlayer = PitPlayer.getPitPlayer(deadPlayer);
+			if(pitPlayer.megastreak.getClass() == RNGesus.class && RNGesus.isOnCooldown(deadPlayer)) {
+				new BukkitRunnable() {
+					@Override
+					public void run() {
+						pitPlayer.megastreak.stop();
+						pitPlayer.megastreak = new NoMegastreak(pitPlayer);
+						pitPlayer.fullSave();
+					}
+				}.runTaskLater(PitSim.INSTANCE, 1L);
+			}
+		}
+
 		if(killType == KillType.DEATH) {
 			oofEvent = new OofEvent(deadPlayer);
 			Bukkit.getPluginManager().callEvent(oofEvent);
@@ -343,8 +359,13 @@ public class DamageManager implements Listener {
 		Non deadNon = NonManager.getNon(dead);
 		if(deadIsPlayer) {
 			if(deadNon == null && dead.getWorld() != MapManager.getTutorial()) {
-				Location spawnLoc = new Location(MapManager.getDarkzone(), 178, 92, -94, -90, 0);
-				dead.teleport(spawnLoc);
+				Location location;
+
+				if(deadPlayer.getWorld() == MapManager.getDarkzone()) {
+					location = new Location(MapManager.getDarkzone(), 178, 92, -94, -90, 0);
+				} else location = MapManager.currentMap.getSpawn(MapManager.currentMap.getRandomOrFirst(MapManager.getDarkzone()));
+
+				dead.teleport(location);
 			} else if(deadNon != null) {
 				deadNon.respawn(killType == KillType.FAKE);
 			}

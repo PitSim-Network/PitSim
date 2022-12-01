@@ -3,9 +3,10 @@ package dev.kyro.pitsim.controllers;
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.controllers.objects.PitMap;
+import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.events.PlayerSpawnCommandEvent;
 import dev.kyro.pitsim.misc.Misc;
-import dev.kyro.pitsim.misc.SchematicPaste;
+import dev.kyro.pitsim.pitmaps.XmasMap;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
@@ -16,7 +17,6 @@ import org.bukkit.event.Listener;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -109,6 +109,7 @@ public class MapManager implements Listener {
 			AOutput.send(player, "&c&lNOPE! &7The second lobby will open when there are 10 players online.");
 			return;
 		}
+		XmasMap.removeFromRadio(player);
 		Location teleport = player.getLocation().clone();
 		if(player.getLocation().getWorld() == currentMap.firstLobby) {
 			teleport.setWorld(currentMap.lobbies.get(1));
@@ -127,10 +128,17 @@ public class MapManager implements Listener {
 				player.teleport(teleport);
 			}
 		}.runTaskLater(PitSim.INSTANCE, 20);
+
+		new BukkitRunnable() {
+			@Override
+			public void run() {
+				if(!PitPlayer.getPitPlayer(player).musicDisabled) XmasMap.addToRadio(player);
+			}
+		}.runTaskLater(PitSim.INSTANCE, 40);
 	}
 
 	public static void enablePortal(World lobby) {
-		SchematicPaste.loadSchematic(new File("plugins/WorldEdit/schematics/doorOpen.schematic"), new Location(lobby, -67, 72, 3));
+//		SchematicPaste.loadSchematic(new File("plugins/WorldEdit/schematics/doorOpen.schematic"), new Location(lobby, -67, 72, 3));
 	}
 
 	public static World getTutorial() {

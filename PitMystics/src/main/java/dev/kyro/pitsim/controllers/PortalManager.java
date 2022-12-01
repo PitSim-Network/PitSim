@@ -11,6 +11,7 @@ import dev.kyro.pitsim.misc.Misc;
 import dev.kyro.pitsim.misc.Sounds;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.World;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -78,8 +79,9 @@ public class PortalManager implements Listener {
 			teleportLoc.setZ(-94);
 		}
 		else {
-			teleportLoc = playerLoc.clone().add(-240, -20, 97);
-			teleportLoc.setWorld(Bukkit.getWorld("biomes1"));
+			World destination = MapManager.currentMap.getRandomOrFirst(Bukkit.getWorld("darkzone"));
+			teleportLoc = MapManager.currentMap.getPortalRespawn(destination);
+			teleportLoc.setWorld(destination);
 			teleportLoc.setY(72);
 		}
 

@@ -1,15 +1,54 @@
 package dev.kyro.pitsim.pitmaps;
 
+import com.xxmicloxx.NoteBlockAPI.model.Playlist;
+import com.xxmicloxx.NoteBlockAPI.model.RepeatMode;
+import com.xxmicloxx.NoteBlockAPI.songplayer.PositionSongPlayer;
+import com.xxmicloxx.NoteBlockAPI.utils.NBSDecoder;
 import dev.kyro.pitsim.controllers.BoosterManager;
 import dev.kyro.pitsim.controllers.MapManager;
 import dev.kyro.pitsim.controllers.objects.Booster;
 import dev.kyro.pitsim.controllers.objects.PitMap;
 import org.bukkit.Location;
 import org.bukkit.World;
+import org.bukkit.entity.Player;
 
-public class BiomesMap extends PitMap {
-	public BiomesMap(String... worldNames) {
+import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
+
+public class XmasMap extends PitMap {
+
+	public static List<PositionSongPlayer> radio = new ArrayList<>();
+
+	public XmasMap(String... worldNames) {
 		super(worldNames);
+
+		File exampleSong = new File("plugins/NoteBlockAPI/Xmas/Frosty the Snowman.nbs");
+		File dir = new File(exampleSong.getAbsoluteFile().getParent());
+		File[] files = dir.listFiles();
+		assert files != null;
+
+
+		Playlist playlist = new Playlist(NBSDecoder.parse(files[0]));
+
+		for(int i = 1; i < files.length; i++) {
+			playlist.add(NBSDecoder.parse(files[i]));
+		}
+
+		PositionSongPlayer esp = new PositionSongPlayer(playlist);
+		esp.setDistance(18);
+		esp.setRepeatMode(RepeatMode.ALL);
+		esp.setTargetLocation(getMid(lobbies.get(0)).add(0, 20, 0));
+		esp.setPlaying(true);
+		radio.add(esp);
+
+		PositionSongPlayer esp2 = new PositionSongPlayer(playlist);
+		esp2.setDistance(18);
+		esp2.setRepeatMode(RepeatMode.ALL);
+		esp2.setTargetLocation(getMid(lobbies.get(1)).add(0, 20, 0));
+		esp2.setPlaying(true);
+		radio.add(esp2);
 	}
 
 	public static Location mid = new Location(null, 0.5, 70, 0.5);
@@ -34,6 +73,26 @@ public class BiomesMap extends PitMap {
 			spawn.add(0, -5, 0);
 		}
 		return spawn;
+	}
+
+	public static void addToRadio(Player player) {
+		for(PositionSongPlayer positionSongPlayer : radio) {
+			positionSongPlayer.addPlayer(player);
+			System.out.println(positionSongPlayer.getSong());
+		}
+	}
+
+	public static void removeFromRadio(Player player) {
+		for(PositionSongPlayer positionSongPlayer : radio) {
+			positionSongPlayer.removePlayer(player);
+		}
+	}
+
+	public static boolean isListening(UUID uuid) {
+		for(PositionSongPlayer positionSongPlayer : radio) {
+			if(positionSongPlayer.getPlayerUUIDs().contains(uuid)) return true;
+		}
+		return false;
 	}
 
 	@Override
