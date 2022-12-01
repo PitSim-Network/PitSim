@@ -25,6 +25,28 @@ public class TimeManager implements Listener {
 		return currentTime.after(eventStart) && currentTime.before(eventEnd);
 	}
 
+	public static boolean isChristmasSeason() {
+		Calendar eventStart = Calendar.getInstance(TimeZone.getTimeZone("EST"));
+		Calendar eventEnd = Calendar.getInstance(TimeZone.getTimeZone("EST"));
+
+		setDate(eventStart, Calendar.DECEMBER, 1);
+		setDate(eventEnd, Calendar.JANUARY, 1);
+
+		Calendar currentTime = Calendar.getInstance(TimeZone.getTimeZone("EST"));
+		return currentTime.after(eventStart) && currentTime.before(eventEnd);
+	}
+
+	public static boolean isChristmasImminent() {
+		Calendar eventStart = Calendar.getInstance(TimeZone.getTimeZone("EST"));
+		Calendar eventEnd = Calendar.getInstance(TimeZone.getTimeZone("EST"));
+
+		setDate(eventStart, Calendar.DECEMBER, 24);
+		setDate(eventEnd, Calendar.JANUARY, 28);
+
+		Calendar currentTime = Calendar.getInstance(TimeZone.getTimeZone("EST"));
+		return currentTime.after(eventStart) && currentTime.before(eventEnd);
+	}
+
 	private static void setDate(Calendar calendar, int month, int date) {
 		calendar.clear();
 		calendar.set(Calendar.YEAR,
