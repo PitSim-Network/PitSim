@@ -14,6 +14,12 @@ import java.util.Calendar;
 import java.util.TimeZone;
 
 public class TimeManager implements Listener {
+	private static boolean isChristmasSeason;
+
+	static {
+		setChristmasSeason();
+	}
+
 	public static boolean isHalloween() {
 		Calendar eventStart = Calendar.getInstance(TimeZone.getTimeZone("EST"));
 		Calendar eventEnd = Calendar.getInstance(TimeZone.getTimeZone("EST"));
@@ -26,6 +32,10 @@ public class TimeManager implements Listener {
 	}
 
 	public static boolean isChristmasSeason() {
+		return isChristmasSeason;
+	}
+
+	public static void setChristmasSeason() {
 		Calendar eventStart = Calendar.getInstance(TimeZone.getTimeZone("EST"));
 		Calendar eventEnd = Calendar.getInstance(TimeZone.getTimeZone("EST"));
 
@@ -33,7 +43,7 @@ public class TimeManager implements Listener {
 		setDate(eventEnd, Calendar.JANUARY, 9, true);
 
 		Calendar currentTime = Calendar.getInstance(TimeZone.getTimeZone("EST"));
-		return currentTime.after(eventStart) && currentTime.before(eventEnd);
+		isChristmasSeason = currentTime.after(eventStart) && currentTime.before(eventEnd);
 	}
 
 	public static boolean isChristmasImminent() {
