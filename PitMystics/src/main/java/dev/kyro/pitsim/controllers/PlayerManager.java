@@ -217,6 +217,13 @@ public class PlayerManager implements Listener {
 		AOutput.error(player, "&c&lRIP!&7 You lost lives on &f" + livesLost + " &7item" + (livesLost == 1 ? "" : "s"));
 	}
 
+	@EventHandler
+	public void onAnvil(PlayerInteractEvent event) {
+		if(event.getAction() == Action.RIGHT_CLICK_BLOCK && event.getClickedBlock().getType() == Material.ANVIL) {
+			event.setCancelled(true);
+		}
+	}
+
 	@EventHandler(priority = EventPriority.MONITOR)
 	public void onClick2(PlayerInteractEvent event) {
 		if(event.getAction() != Action.RIGHT_CLICK_AIR && event.getAction() != Action.RIGHT_CLICK_BLOCK) return;

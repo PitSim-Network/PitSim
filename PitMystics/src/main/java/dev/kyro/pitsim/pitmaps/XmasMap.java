@@ -45,6 +45,7 @@ public class XmasMap extends PitMap {
 
 		PositionSongPlayer esp2 = new PositionSongPlayer(playlist);
 		esp2.setDistance(18);
+		esp2.setVolume((byte) 100);
 		esp2.setRepeatMode(RepeatMode.ALL);
 		esp2.setTargetLocation(getMid(lobbies.get(1)).add(0, 20, 0));
 		esp2.setPlaying(true);

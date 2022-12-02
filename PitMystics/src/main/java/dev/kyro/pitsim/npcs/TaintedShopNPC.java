@@ -22,7 +22,7 @@ public class TaintedShopNPC extends PitNPC {
 
 	@Override
 	public void createNPC(Location location) {
-		spawnPlayerNPC("", "dominorift", location, false);
+		spawnPlayerNPC("", "debrided", location, false);
 	}
 
 	@Override

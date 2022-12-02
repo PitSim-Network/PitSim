@@ -26,6 +26,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.Color;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -186,6 +187,14 @@ public class EnchantManager implements Listener {
 	public static boolean isIllegalItem(ItemStack itemStack) {
 		if(Misc.isAirOrNull(itemStack)) return false;
 		if(itemStack.getType() == Material.FISHING_ROD) return true;
+
+		if(itemStack.getType() == Material.DIAMOND_HELMET || itemStack.getType() == Material.DIAMOND_CHESTPLATE ||
+				itemStack.getType() == Material.DIAMOND_LEGGINGS || itemStack.getType() == Material.DIAMOND_BOOTS ||
+				itemStack.getType() == Material.DIAMOND_SWORD) {
+
+			if(itemStack.getEnchantmentLevel(Enchantment.DAMAGE_ALL) > 1 || itemStack.getEnchantmentLevel(Enchantment.PROTECTION_ENVIRONMENTAL) > 1) return true;
+		}
+
 		NBTItem nbtItem = new NBTItem(itemStack);
 		if(!nbtItem.hasKey(NBTTag.ITEM_UUID.getRef())) return false;
 
