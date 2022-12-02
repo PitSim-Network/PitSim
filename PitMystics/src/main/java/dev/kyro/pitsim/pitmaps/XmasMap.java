@@ -78,7 +78,6 @@ public class XmasMap extends PitMap {
 	public static void addToRadio(Player player) {
 		for(PositionSongPlayer positionSongPlayer : radio) {
 			positionSongPlayer.addPlayer(player);
-			System.out.println(positionSongPlayer.getSong());
 		}
 	}
 
