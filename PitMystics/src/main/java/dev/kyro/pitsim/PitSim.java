@@ -307,6 +307,7 @@ public class PitSim extends JavaPlugin {
 //		MapManager.registerMap(new DimensionsMap("dimensions1", "dimensions2"));
 
 		if(TimeManager.isChristmasSeason()) {
+			System.out.println();
 			MapManager.registerMap(new XmasMap("xmas1", "xmas2"));
 			for(World lobby : MapManager.currentMap.lobbies) {
 				lobby.setStorm(true);

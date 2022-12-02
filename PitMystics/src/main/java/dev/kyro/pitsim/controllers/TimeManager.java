@@ -39,8 +39,8 @@ public class TimeManager implements Listener {
 		Calendar eventStart = Calendar.getInstance(TimeZone.getTimeZone("EST"));
 		Calendar eventEnd = Calendar.getInstance(TimeZone.getTimeZone("EST"));
 
-		setDate(eventStart, Calendar.NOVEMBER, 29);
-		setDate(eventEnd, Calendar.JANUARY, 1);
+		setDate(eventStart, Calendar.DECEMBER, 1);
+		setDate(eventEnd, Calendar.JANUARY, 9, true);
 
 		Calendar currentTime = Calendar.getInstance(TimeZone.getTimeZone("EST"));
 		isChristmasSeason = currentTime.after(eventStart) && currentTime.before(eventEnd);
