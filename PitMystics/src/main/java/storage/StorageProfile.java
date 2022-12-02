@@ -1,25 +1,38 @@
 package storage;
 
+import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.controllers.objects.PluginMessage;
 import dev.kyro.pitsim.exceptions.DataNotLoadedException;
 import dev.kyro.pitsim.exceptions.NoCommonEnchantException;
 import net.minecraft.server.v1_8_R3.MojangsonParseException;
 import net.minecraft.server.v1_8_R3.MojangsonParser;
 import net.minecraft.server.v1_8_R3.NBTTagCompound;
+import org.bukkit.Bukkit;
 import org.bukkit.craftbukkit.v1_8_R3.inventory.CraftItemStack;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.scheduler.BukkitTask;
 
 import java.util.List;
 import java.util.UUID;
 
 public class StorageProfile {
 
-	private ItemStack[][]enderChest;
+	private Inventory[]enderChest;
 	private ItemStack[] inventory;
 	private ItemStack[] armor;
 
 	private final Player player;
+
+	private PluginMessage enderchestSave;
+	private PluginMessage inventorySave;
+
+	private BukkitTask enderchestSaveTask;
+	private BukkitTask inventorySaveTask;
+
+	private boolean saving = false;
 
 	public StorageProfile(Player player) {
 		this.player = player;
@@ -31,12 +44,16 @@ public class StorageProfile {
 		strings.remove(0);
 
 		int pages = message.getIntegers().get(0);
-		enderChest = new ItemStack[27][pages];
+		enderChest = new Inventory[pages];
+		for(int i = 0; i < pages; i++) {
+			enderChest[i] = player.getServer().createInventory(null, 27, "Enderchest - Page " + (i + 1));
+		}
 
 		for(int i = 0; i < strings.size(); i++) {
 			int page = i / 27;
 
-			enderChest[i % 27][page] = deserialize(strings.get(i));
+			Inventory inventory = enderChest[page];
+			inventory.setItem(i % 27, deserialize(strings.get(i)));
 		}
 	}
 
@@ -59,20 +76,42 @@ public class StorageProfile {
 
 	public void saveEnderchest() {
 		PluginMessage message = new PluginMessage().writeString("ENDERCHEST").writeString(player.getUniqueId().toString());
-		for(ItemStack[] items : enderChest) {
+		message.writeString(PitSim.serverName);
+		for(Inventory items : enderChest) {
 			for(ItemStack item : items) {
 				message.writeString(serialize(item));
 			}
 		}
+
+		enderchestSave = message;
+		saving = true;
+
+		enderchestSaveTask = new BukkitRunnable() {
+			@Override
+			public void run() {
+				player.kickPlayer("§cYour playerdata failed to save. Please report this issue");
+			}
+		}.runTaskLater(PitSim.INSTANCE, 40);
 
 		message.send();
 	}
 
 	public void saveInventory() {
 		PluginMessage message = new PluginMessage().writeString("INVENTORY").writeString(player.getUniqueId().toString());
+		message.writeString(PitSim.serverName);
 		for(ItemStack itemStack : inventory) {
 			message.writeString(serialize(itemStack));
 		}
+
+		inventorySave = message;
+		saving = true;
+
+		inventorySaveTask = new BukkitRunnable() {
+			@Override
+			public void run() {
+				player.kickPlayer("§cYour playerdata failed to save. Please report this issue");
+			}
+		}.runTaskLater(PitSim.INSTANCE, 40);
 
 		message.send();
 	}
@@ -81,14 +120,14 @@ public class StorageProfile {
 		return player;
 	}
 
-	public ItemStack[][] getEnderchest() {
+	public Inventory getEnderchest(int page) {
 		if(enderChest == null) {
 			try {
 				throw new DataNotLoadedException();
 			} catch(DataNotLoadedException ignored) { }
 		}
 
-		return enderChest;
+		return enderChest[page - 1];
 	}
 
 	public ItemStack[] getInventory() {
@@ -128,6 +167,24 @@ public class StorageProfile {
 		NBTTagCompound comp = new NBTTagCompound();
 		cis.save(comp);
 		return comp.toString();
+	}
+
+	public boolean hasData() {
+		return enderChest != null && inventory != null && armor != null;
+	}
+
+	public boolean isSaving() {
+		return saving;
+	}
+
+	protected void receiveSaveConfirmation(PluginMessage message) {
+		if(message.getStrings().get(0).equals("ENDERCHEST SAVE")) {
+			enderchestSaveTask.cancel();
+		} else if(message.getStrings().get(0).equals("INVENTORY SAVE")) {
+			inventorySaveTask.cancel();
+		}
+
+		saving = false;
 	}
 
 }

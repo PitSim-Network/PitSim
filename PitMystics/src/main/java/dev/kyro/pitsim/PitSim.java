@@ -93,6 +93,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
 import septogeddon.pluginquery.PluginQuery;
 import septogeddon.pluginquery.api.QueryMessenger;
+import storage.StorageManager;
 
 import java.io.File;
 import java.util.*;
@@ -599,6 +600,7 @@ public class PitSim extends JavaPlugin {
 		getServer().getPluginManager().registerEvents(new NPCManager(), this);
 		getServer().getPluginManager().registerEvents(new CosmeticManager(), this);
 		getServer().getPluginManager().registerEvents(new LogManager(), this);
+		getServer().getPluginManager().registerEvents(new StorageManager(), this);
 	}
 
 	public void registerBoosters() {
