@@ -96,10 +96,9 @@ public class MeteorSpell extends PitEnchant {
 							 	((Player) near).damage(25, player);
 							 	return;
 							 }
-							 EntityDamageByEntityEvent damageEvent = new EntityDamageByEntityEvent(player, near, EntityDamageEvent.DamageCause.ENTITY_ATTACK, 50    );
+							 EntityDamageByEntityEvent damageEvent = new EntityDamageByEntityEvent(player, near, EntityDamageEvent.DamageCause.ENTITY_ATTACK, 50);
 							 damageEvent.setDamage(50);
 							 Bukkit.getServer().getPluginManager().callEvent(damageEvent);
-
 							 return;
 						 }
 					 }
@@ -107,10 +106,7 @@ public class MeteorSpell extends PitEnchant {
 			 }.runTaskLater(PitSim.INSTANCE, time);
 			time++;
 		}
-
-
 	}
-
 
 	@EventHandler(priority = EventPriority.HIGHEST)
 	public void onEntityExplode(EntityExplodeEvent event) {
