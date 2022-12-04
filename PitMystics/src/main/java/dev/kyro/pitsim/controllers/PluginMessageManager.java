@@ -13,6 +13,7 @@ import septogeddon.pluginquery.api.QueryMessageListener;
 import septogeddon.pluginquery.api.QueryMessenger;
 
 import java.io.*;
+import java.util.Arrays;
 
 public class PluginMessageManager implements QueryMessageListener {
     public static void sendMessage(PluginMessage message) {
@@ -40,6 +41,7 @@ public class PluginMessageManager implements QueryMessageListener {
             msgout.writeInt(message.getBooleans().size());
 
             for(String string : message.getStrings()) {
+                System.out.println(string);
                 msgout.writeUTF(string);
             }
 
@@ -59,7 +61,7 @@ public class PluginMessageManager implements QueryMessageListener {
             exception.printStackTrace();
         }
 
-        out.writeShort(msgbytes.toByteArray().length);
+        out.writeInt(msgbytes.toByteArray().length);
         out.write(msgbytes.toByteArray());
 
         if (!messenger.broadcastQuery("BungeeCord", out.toByteArray())) {
@@ -85,7 +87,7 @@ public class PluginMessageManager implements QueryMessageListener {
 
             if(!subChannel.equals("PitSim")) return;
 
-            short len = in.readShort();
+            int len = in.readInt();
             byte[] msgbytes = new byte[len];
             in.readFully(msgbytes);
             DataInputStream subDIS = new DataInputStream(new ByteArrayInputStream(msgbytes));
