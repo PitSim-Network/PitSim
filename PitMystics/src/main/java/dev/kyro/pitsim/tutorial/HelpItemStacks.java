@@ -40,11 +40,11 @@ public class HelpItemStacks {
 				.setLore(new ALoreBuilder(
 						"&8&m----------------------------",
 						"&dMystic Items &7are the core of",
-						"&6&lPit&e&lSim&7 combat. &7Here you can,",
-						"&7get kits specialized &7for &cPvP&7, and",
+						"&6&lPit&e&lSim&7 combat. &7Here you can",
+						"&7get kits specialized &7for &cPvP&7 and",
 						"&bStreaking&7. You can experiment with",
 						"&7other &eEnchant Combinations &7in the",
-						"&dWell &dMystic",
+						"&dMystic Well",
 						"&8&m----------------------------"
 				))
 				.getItemStack();
