@@ -1,5 +1,6 @@
 package storage;
 
+import be.maximvdw.featherboard.B;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.controllers.objects.PluginMessage;
 import dev.kyro.pitsim.exceptions.DataNotLoadedException;
@@ -26,6 +27,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 
@@ -73,12 +75,16 @@ public class StorageProfile {
 					if(base64String == null) continue;
 					ItemStack itemStack = Base64.itemFrom64(base64String);
 
-					inventory.setItem(j - 8, itemStack);
+					inventory.setItem(j - 9, itemStack);
 				}
 			}
 		} catch(IOException | ParseException e) {
 			if(!(e instanceof FileNotFoundException)) e.printStackTrace();
 		}
+
+		cachedInventory = new ItemStack[36];
+		armor = new ItemStack[4];
+		int armorIndex = 0;
 
 		try {
 			File inventoryFile = new File("world/playerdata/" + player + ".dat");
@@ -86,14 +92,20 @@ public class StorageProfile {
 			NBTTagList playerInventory = (NBTTagList) nbt.get("Inventory");
 			for(int i = 0; i < playerInventory.size(); i++) {
 				NBTTagCompound compound = playerInventory.get(i);
+				int slot = compound.getByte("Slot") & 0xFF;
+				Bukkit.broadcastMessage(slot + "");
 				if(!compound.isEmpty()) {
 					ItemStack itemStack = CraftItemStack.asBukkitCopy(net.minecraft.server.v1_8_R3.ItemStack.createStack(compound));
-					cachedInventory = new ItemStack[36];
-					armor = new ItemStack[4];
-					if(i < 36) cachedInventory[i] = itemStack;
-					else armor[i - 36] = itemStack;
+					if(slot < 36) cachedInventory[slot] = itemStack;
+					else {
+						armor[armorIndex] = itemStack;
+						armorIndex++;
+					}
 				}
 			}
+
+			Bukkit.broadcastMessage(Arrays.toString(armor) + "");
+
 
 		} catch(IOException e) {
 			if(!(e instanceof FileNotFoundException)) e.printStackTrace();
@@ -134,7 +146,8 @@ public class StorageProfile {
 		}
 
 		for(int i = 0; i < 4; i++) {
-			armor[i] = strings.get(i).isEmpty() ? new ItemStack(Material.AIR) : deserialize(strings.get(i));
+			System.out.println(strings.size());
+			armor[i] = strings.get(i + 36).isEmpty() ? new ItemStack(Material.AIR) : deserialize(strings.get(i + 36));
 		}
 	}
 
@@ -266,10 +279,9 @@ public class StorageProfile {
 
 	protected void receiveSaveConfirmation(PluginMessage message) {
 		if(message.getStrings().get(0).equals("ENDERCHEST SAVE")) {
-			System.out.println("Save!");
-			enderchestSaveTask.cancel();
+			if(enderchestSaveTask != null) enderchestSaveTask.cancel();
 		} else if(message.getStrings().get(0).equals("INVENTORY SAVE")) {
-			inventorySaveTask.cancel();
+			if(inventorySaveTask != null) inventorySaveTask.cancel();
 		}
 
 		saving = false;

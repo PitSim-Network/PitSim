@@ -73,6 +73,8 @@ public class StorageManager implements Listener {
 
 		profile.saveEnderchest();
 		profile.saveInventory();
+
+		profiles.remove(profile);
 	}
 
 	@EventHandler
