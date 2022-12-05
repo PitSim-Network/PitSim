@@ -29,7 +29,7 @@ import java.util.UUID;
 
 public class StorageProfile {
 
-	private Inventory[]enderChest;
+	private Inventory[] enderChest;
 	private ItemStack[] cachedInventory;
 	private ItemStack[] armor;
 
@@ -56,12 +56,8 @@ public class StorageProfile {
 			enderChest[i] = PitSim.INSTANCE.getServer().createInventory(null, 27, "Enderchest - Page " + (i + 1));
 		}
 
-		System.out.println("1");
-
 		this.uuid = player;
 		JSONParser jsonParser = new JSONParser();
-
-		System.out.println("1.5");
 
 		try(FileReader reader = new FileReader("mstore/galacticvaults_players/" + player.toString() + ".json")) {
 			JSONObject data = (JSONObject) jsonParser.parse(reader);
@@ -82,8 +78,6 @@ public class StorageProfile {
 			if(!(e instanceof FileNotFoundException)) e.printStackTrace();
 		}
 
-		System.out.println("2");
-
 
 		try {
 			File inventoryFile = new File("world/playerdata/" + player + ".dat");
@@ -94,8 +88,9 @@ public class StorageProfile {
 				if(!compound.isEmpty()) {
 					ItemStack itemStack = CraftItemStack.asBukkitCopy(net.minecraft.server.v1_8_R3.ItemStack.createStack(compound));
 					cachedInventory = new ItemStack[27];
+					armor = new ItemStack[4];
 					if(i < 27) cachedInventory[i] = itemStack;
-					else armor[i] = itemStack;
+					else armor[i - 27] = itemStack;
 				}
 			}
 
@@ -103,18 +98,15 @@ public class StorageProfile {
 			if(!(e instanceof FileNotFoundException)) e.printStackTrace();
 		}
 
-		System.out.println("3");
-
 		saveEnderchest();
 		saveInventory();
 
-		System.out.println("4");
 	}
 
 	public void setEnderchest(PluginMessage message) {
 		List<String> strings = message.getStrings();
-		UUID playerUUID = UUID.fromString(strings.get(0));
-		strings.remove(0);
+
+		System.out.println();
 
 		int pages = message.getIntegers().get(0);
 		enderChest = new Inventory[pages];
@@ -132,8 +124,6 @@ public class StorageProfile {
 
 	public void setInventory(PluginMessage message) {
 		List<String> strings = message.getStrings();
-		UUID playerUUID = UUID.fromString(strings.get(0));
-		strings.remove(0);
 
 		cachedInventory = new ItemStack[36];
 		armor = new ItemStack[4];
@@ -150,11 +140,11 @@ public class StorageProfile {
 	public void saveEnderchest() {
 		PluginMessage message = new PluginMessage().writeString("ENDERCHEST").writeString(uuid.toString());
 		message.writeString(PitSim.serverName);
-//		for(Inventory items : enderChest) {
-//			for(ItemStack item : items) {
-//				message.writeString(serialize(item));
-//			}
-//		}
+		for(Inventory items : enderChest) {
+			for(ItemStack item : items) {
+				message.writeString(serialize(item));
+			}
+		}
 
 		enderchestSave = message;
 		saving = true;
@@ -168,14 +158,12 @@ public class StorageProfile {
 			}
 		}.runTaskLater(PitSim.INSTANCE, 40);
 
-		System.out.println(message.getStrings().get(0));
 		message.writeInt(87654);
 		message.send();
 	}
 
 	public void saveInventory() {
 		OfflinePlayer player = Bukkit.getOfflinePlayer(uuid);
-		if(!player.isOnline()) return;
 		PluginMessage message = new PluginMessage().writeString("INVENTORY").writeString(player.getUniqueId().toString());
 		message.writeString(PitSim.serverName);
 		if(player.isOnline()) {
@@ -259,6 +247,10 @@ public class StorageProfile {
 	}
 
 	public boolean hasData() {
+
+		System.out.println(enderChest);
+		System.out.println(cachedInventory);;
+		System.out.println(armor);
 		return enderChest != null && cachedInventory != null && armor != null;
 	}
 
@@ -268,6 +260,7 @@ public class StorageProfile {
 
 	protected void receiveSaveConfirmation(PluginMessage message) {
 		if(message.getStrings().get(0).equals("ENDERCHEST SAVE")) {
+			System.out.println("Save!");
 			enderchestSaveTask.cancel();
 		} else if(message.getStrings().get(0).equals("INVENTORY SAVE")) {
 			inventorySaveTask.cancel();

@@ -41,6 +41,8 @@ import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
+import storage.StorageManager;
+import storage.StorageProfile;
 
 import java.util.*;
 import java.util.concurrent.ExecutionException;
@@ -218,6 +220,10 @@ public class PitPlayer {
 
 		if(lastSave + SAVE_COOLDOWN > System.currentTimeMillis()) return;
 		lastSave = System.currentTimeMillis();
+
+		StorageProfile profile = StorageManager.getProfile(player.getUniqueId());
+		profile.saveEnderchest();
+		profile.saveInventory();
 
 		if(isNPC) {
 			System.out.println("complete development failure. " + player.getName() + " is attempting to save data and is not a real player");

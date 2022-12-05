@@ -41,7 +41,6 @@ public class PluginMessageManager implements QueryMessageListener {
             msgout.writeInt(message.getBooleans().size());
 
             for(String string : message.getStrings()) {
-                System.out.println(string);
                 msgout.writeUTF(string);
             }
 

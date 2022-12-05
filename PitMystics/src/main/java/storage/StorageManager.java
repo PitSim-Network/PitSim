@@ -46,8 +46,10 @@ public class StorageManager implements Listener {
 	public void onJoin(PlayerJoinEvent event) {
 		Player player = event.getPlayer();
 		StorageProfile profile = getProfile(player);
+
 		if(!profile.hasData()) {
-//			player.kickPlayer(ChatColor.RED + "An error occurred when loading your data. Please report this issue.");
+			player.kickPlayer(ChatColor.RED + "An error occurred when loading your data. Please report this issue.");
+			return;
 		}
 
 		player.getInventory().setContents(profile.getCachedInventory());
@@ -63,14 +65,18 @@ public class StorageManager implements Listener {
 		if(strings.size() < 2) return;
 
 		if(strings.get(0).equals("ENDERCHEST SAVE") || strings.get(0).equals("INVENTORY SAVE")) {
+			System.out.println(1);
 			UUID uuid = UUID.fromString(strings.get(1));
 			Player player = Bukkit.getPlayer(uuid);
 			if(player == null) return;
+			System.out.println(2);
 
 			StorageProfile profile = getProfile(player);
 			if(!profile.hasData()) return;
+			System.out.println(3);
 
 			profile.receiveSaveConfirmation(message);
+			System.out.println(4);
 		}
 
 		if(strings.get(0).equals("LOAD REQUEST")) {
@@ -79,6 +85,28 @@ public class StorageManager implements Listener {
 
 			StorageProfile profile = getProfile(uuid);
 			System.out.println(profile);
+		}
+
+
+
+
+
+		if(strings.get(0).equals("ENDERCHEST")) {
+			UUID uuid = UUID.fromString(strings.get(1));
+
+			StorageProfile profile = getProfile(uuid);
+			message.getStrings().remove(0);
+			message.getStrings().remove(0);
+			profile.setEnderchest(message);
+		}
+
+		if(strings.get(0).equals("INVENTORY")) {
+			UUID uuid = UUID.fromString(strings.get(1));
+
+			StorageProfile profile = getProfile(uuid);
+			message.getStrings().remove(0);
+			message.getStrings().remove(0);
+			profile.setInventory(message);
 		}
 	}
 
