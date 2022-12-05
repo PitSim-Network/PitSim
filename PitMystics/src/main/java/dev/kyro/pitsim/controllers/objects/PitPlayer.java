@@ -4,13 +4,13 @@ import com.google.cloud.firestore.annotation.Exclude;
 import dev.kyro.arcticapi.data.APlayer;
 import dev.kyro.arcticapi.data.APlayerData;
 import dev.kyro.arcticapi.misc.AOutput;
-import dev.kyro.pitsim.cosmetics.particles.ParticleColor;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.battlepass.PassData;
 import dev.kyro.pitsim.battlepass.quests.ReachKillstreakQuest;
 import dev.kyro.pitsim.brewing.BrewingManager;
 import dev.kyro.pitsim.brewing.objects.BrewingSession;
 import dev.kyro.pitsim.controllers.*;
+import dev.kyro.pitsim.cosmetics.particles.ParticleColor;
 import dev.kyro.pitsim.enchants.Hearts;
 import dev.kyro.pitsim.enchants.tainted.MaxHealth;
 import dev.kyro.pitsim.enchants.tainted.MaxMana;
@@ -41,8 +41,6 @@ import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
-import storage.StorageManager;
-import storage.StorageProfile;
 
 import java.util.*;
 import java.util.concurrent.ExecutionException;
@@ -221,9 +219,6 @@ public class PitPlayer {
 		if(lastSave + SAVE_COOLDOWN > System.currentTimeMillis()) return;
 		lastSave = System.currentTimeMillis();
 
-		StorageProfile profile = StorageManager.getProfile(player.getUniqueId());
-		profile.saveEnderchest();
-		profile.saveInventory();
 
 		if(isNPC) {
 			System.out.println("complete development failure. " + player.getName() + " is attempting to save data and is not a real player");

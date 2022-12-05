@@ -1,6 +1,5 @@
 package storage;
 
-import dev.kyro.pitsim.controllers.PlayerManager;
 import dev.kyro.pitsim.controllers.objects.PluginMessage;
 import dev.kyro.pitsim.events.MessageEvent;
 import org.bukkit.Bukkit;
@@ -11,11 +10,10 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryDragEvent;
-import org.bukkit.event.inventory.InventoryInteractEvent;
-import org.bukkit.event.inventory.InventoryPickupItemEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerPickupItemEvent;
+import org.bukkit.event.player.PlayerQuitEvent;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,13 +27,24 @@ public class StorageManager implements Listener {
 			if(profile.getUUID().equals(player.getUniqueId())) return profile;
 		}
 
-		StorageProfile profile = new StorageProfile(player);
+		StorageProfile profile = new StorageProfile(player.getUniqueId());
 		profiles.add(profile);
 
 		return profile;
 	}
 
 	public static StorageProfile getProfile(UUID uuid) {
+		for(StorageProfile profile : profiles) {
+			if(profile.getUUID().equals(uuid)) return profile;
+		}
+
+		StorageProfile profile = new StorageProfile(uuid);
+		profiles.add(profile);
+
+		return profile;
+	}
+
+	public static StorageProfile getInitialProfile(UUID uuid) {
 		StorageProfile profile = new StorageProfile(uuid, 18);
 		profiles.add(profile);
 
@@ -57,6 +66,15 @@ public class StorageManager implements Listener {
 		player.updateInventory();
 	}
 
+	@EventHandler(priority = EventPriority.HIGHEST)
+	public void onQuit(PlayerQuitEvent event) {
+		Player player = event.getPlayer();
+		StorageProfile profile = getProfile(player);
+
+		profile.saveEnderchest();
+		profile.saveInventory();
+	}
+
 	@EventHandler
 	public void onPluginMessage(MessageEvent event) {
 		PluginMessage message = event.getMessage();
@@ -65,7 +83,8 @@ public class StorageManager implements Listener {
 		if(strings.size() < 2) return;
 
 		if(strings.get(0).equals("ENDERCHEST SAVE") || strings.get(0).equals("INVENTORY SAVE")) {
-			System.out.println(1);
+			System.out.println("Save confirm attempt");
+			System.out.println(strings.get(1));
 			UUID uuid = UUID.fromString(strings.get(1));
 			Player player = Bukkit.getPlayer(uuid);
 			if(player == null) return;
@@ -83,13 +102,9 @@ public class StorageManager implements Listener {
 			System.out.println("Load!");
 			UUID uuid = UUID.fromString(strings.get(1));
 
-			StorageProfile profile = getProfile(uuid);
+			StorageProfile profile = getInitialProfile(uuid);
 			System.out.println(profile);
 		}
-
-
-
-
 
 		if(strings.get(0).equals("ENDERCHEST")) {
 			UUID uuid = UUID.fromString(strings.get(1));

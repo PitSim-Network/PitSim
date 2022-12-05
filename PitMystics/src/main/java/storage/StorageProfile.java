@@ -1,19 +1,18 @@
 package storage;
 
-import de.tr7zw.nbtapi.NBTItem;
 import dev.kyro.pitsim.PitSim;
-import dev.kyro.pitsim.controllers.log.DupeManager;
 import dev.kyro.pitsim.controllers.objects.PluginMessage;
-import dev.kyro.pitsim.enums.NBTTag;
 import dev.kyro.pitsim.exceptions.DataNotLoadedException;
-import dev.kyro.pitsim.exceptions.NoCommonEnchantException;
 import dev.kyro.pitsim.misc.Base64;
 import dev.kyro.pitsim.misc.Misc;
-import net.minecraft.server.v1_8_R3.*;
+import net.minecraft.server.v1_8_R3.NBTCompressedStreamTools;
+import net.minecraft.server.v1_8_R3.NBTTagCompound;
+import net.minecraft.server.v1_8_R3.NBTTagList;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
+import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.craftbukkit.v1_8_R3.inventory.CraftItemStack;
-import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -22,12 +21,16 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
-import java.io.*;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 import java.nio.file.Files;
 import java.util.List;
 import java.util.UUID;
 
 public class StorageProfile {
+	public static final int ENDERCHEST_PAGES = 18;
 
 	private Inventory[] enderChest;
 	private ItemStack[] cachedInventory;
@@ -38,14 +41,13 @@ public class StorageProfile {
 	private PluginMessage enderchestSave;
 	private PluginMessage inventorySave;
 
-
 	private BukkitTask enderchestSaveTask;
 	private BukkitTask inventorySaveTask;
 
 	private boolean saving = false;
 
-	public StorageProfile(Player player) {
-		this.uuid = player.getUniqueId();
+	public StorageProfile(UUID uuid) {
+		this.uuid = uuid;
 	}
 
 	public StorageProfile(UUID player, int enderChestPages) {
@@ -62,11 +64,11 @@ public class StorageProfile {
 		try(FileReader reader = new FileReader("mstore/galacticvaults_players/" + player.toString() + ".json")) {
 			JSONObject data = (JSONObject) jsonParser.parse(reader);
 			JSONObject vaults = (JSONObject) data.get("vaultContents");
-			for(int i = 1; i < 18; i++) {
+			for(int i = 1; i < ENDERCHEST_PAGES + 1; i++) {
 				Inventory inventory = enderChest[i - 1];
 				JSONObject vault = (JSONObject) vaults.get(i + "");
 				if(vault == null) continue;
-				for(int j = 8; j < 35; j++) {
+				for(int j = 9; j < 36; j++) {
 					String base64String = (String) vault.get(j + "");
 					if(base64String == null) continue;
 					ItemStack itemStack = Base64.itemFrom64(base64String);
@@ -78,7 +80,6 @@ public class StorageProfile {
 			if(!(e instanceof FileNotFoundException)) e.printStackTrace();
 		}
 
-
 		try {
 			File inventoryFile = new File("world/playerdata/" + player + ".dat");
 			NBTTagCompound nbt = NBTCompressedStreamTools.a(Files.newInputStream(inventoryFile.toPath()));
@@ -87,10 +88,10 @@ public class StorageProfile {
 				NBTTagCompound compound = playerInventory.get(i);
 				if(!compound.isEmpty()) {
 					ItemStack itemStack = CraftItemStack.asBukkitCopy(net.minecraft.server.v1_8_R3.ItemStack.createStack(compound));
-					cachedInventory = new ItemStack[27];
+					cachedInventory = new ItemStack[36];
 					armor = new ItemStack[4];
-					if(i < 27) cachedInventory[i] = itemStack;
-					else armor[i - 27] = itemStack;
+					if(i < 36) cachedInventory[i] = itemStack;
+					else armor[i - 36] = itemStack;
 				}
 			}
 
@@ -115,10 +116,10 @@ public class StorageProfile {
 		}
 
 		for(int i = 0; i < strings.size(); i++) {
-			int page = i / 18;
+			int page = (i - 1) / 27;
 
 			Inventory inventory = enderChest[page];
-			inventory.setItem(i % 18, deserialize(strings.get(i)));
+			inventory.setItem(i % 27, deserialize(strings.get(i)));
 		}
 	}
 
@@ -129,11 +130,11 @@ public class StorageProfile {
 		armor = new ItemStack[4];
 
 		for(int i = 0; i < 36; i++) {
-			cachedInventory[i] = deserialize(strings.get(i));
+			cachedInventory[i] = strings.get(i).isEmpty() ? new ItemStack(Material.AIR) : deserialize(strings.get(i));
 		}
 
 		for(int i = 0; i < 4; i++) {
-			armor[i] = deserialize(strings.get(36 + i));
+			armor[i] = strings.get(i).isEmpty() ? new ItemStack(Material.AIR) : deserialize(strings.get(i));
 		}
 	}
 
@@ -152,9 +153,11 @@ public class StorageProfile {
 		enderchestSaveTask = new BukkitRunnable() {
 			@Override
 			public void run() {
+				//TODO: Discord alert
+
 				OfflinePlayer player = Bukkit.getOfflinePlayer(uuid);
 				if(!player.isOnline()) return;
-				player.getPlayer().kickPlayer("§cYour playerdata failed to save. Please report this issue");
+				player.getPlayer().kickPlayer(ChatColor.RED + "Your playerdata failed to save. Please report this issue");
 			}
 		}.runTaskLater(PitSim.INSTANCE, 40);
 
@@ -190,9 +193,11 @@ public class StorageProfile {
 		inventorySaveTask = new BukkitRunnable() {
 			@Override
 			public void run() {
+				//TODO: Discord alert
+
 				OfflinePlayer player = Bukkit.getOfflinePlayer(uuid);
 				if(!player.isOnline()) return;
-				player.getPlayer().kickPlayer("§cYour playerdata failed to save. Please report this issue");
+				player.getPlayer().kickPlayer(ChatColor.RED + "Your playerdata failed to save. Please report this issue");
 			}
 		}.runTaskLater(PitSim.INSTANCE, 40);
 
@@ -233,8 +238,8 @@ public class StorageProfile {
 		return armor;
 	}
 
-
 	public static ItemStack deserialize(String string) {
+		if(string.isEmpty()) return new ItemStack(Material.AIR);
 		try {
 			return Base64.itemFrom64(string);
 		} catch(IOException e) {
@@ -243,13 +248,14 @@ public class StorageProfile {
 	}
 
 	public static String serialize(ItemStack item) {
+		if(Misc.isAirOrNull(item)) return "";
 		return Base64.itemTo64(item);
 	}
 
 	public boolean hasData() {
 
 		System.out.println(enderChest);
-		System.out.println(cachedInventory);;
+		System.out.println(cachedInventory);
 		System.out.println(armor);
 		return enderChest != null && cachedInventory != null && armor != null;
 	}
@@ -276,5 +282,4 @@ public class StorageProfile {
 	public PluginMessage getInventorySave() {
 		return inventorySave;
 	}
-
 }

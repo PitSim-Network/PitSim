@@ -1,12 +1,10 @@
 package dev.kyro.pitsim.commands;
 
-import dev.kyro.pitsim.misc.Base64;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
-import org.bukkit.inventory.ItemStack;
 import storage.StorageManager;
 import storage.StorageProfile;
 
@@ -22,6 +20,9 @@ public class ATestCommand implements CommandExecutor {
 
 		StorageProfile profile = StorageManager.getProfile(player);
 		Inventory inv = profile.getEnderchest(page);
+
+		System.out.println(profile);
+		System.out.println(inv);
 
 		player.openInventory(inv);
 
