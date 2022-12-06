@@ -33,6 +33,7 @@ import dev.kyro.pitsim.tutorial.Tutorial;
 import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
@@ -227,7 +228,8 @@ public class PitPlayer {
 
 		megastreakRef = megastreak.getRefNames().get(0);
 
-		gold = PitSim.VAULT.getBalance(player);
+		OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(uuid);
+		gold = PitSim.VAULT.getBalance(offlinePlayer);
 
 		for(int i = 0; i < pitPerks.size(); i++) {
 			PitPerk pitPerk = pitPerks.get(i);

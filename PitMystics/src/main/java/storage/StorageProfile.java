@@ -1,6 +1,5 @@
 package storage;
 
-import be.maximvdw.featherboard.B;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.controllers.objects.PluginMessage;
 import dev.kyro.pitsim.exceptions.DataNotLoadedException;
@@ -128,7 +127,7 @@ public class StorageProfile {
 		}
 
 		for(int i = 0; i < strings.size(); i++) {
-			int page = (i - 1) / 27;
+			int page = i / 27;
 
 			Inventory inventory = enderChest[page];
 			inventory.setItem(i % 27, deserialize(strings.get(i)));
@@ -183,6 +182,7 @@ public class StorageProfile {
 		PluginMessage message = new PluginMessage().writeString("INVENTORY").writeString(player.getUniqueId().toString());
 		message.writeString(PitSim.serverName);
 		if(player.isOnline()) {
+			System.out.println("Online!");
 			for(ItemStack itemStack : player.getPlayer().getInventory()) {
 				message.writeString(serialize(itemStack));
 			}
@@ -191,6 +191,7 @@ public class StorageProfile {
 				message.writeString(serialize(itemStack));
 			}
 		} else {
+			System.out.println("Offline!");
 			for(ItemStack itemStack : cachedInventory) {
 				message.writeString(serialize(itemStack));
 			}
@@ -266,10 +267,6 @@ public class StorageProfile {
 	}
 
 	public boolean hasData() {
-
-		System.out.println(enderChest);
-		System.out.println(cachedInventory);
-		System.out.println(armor);
 		return enderChest != null && cachedInventory != null && armor != null;
 	}
 
