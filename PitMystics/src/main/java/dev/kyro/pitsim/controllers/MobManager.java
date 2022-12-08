@@ -57,7 +57,7 @@ public class MobManager implements Listener {
 		new BukkitRunnable() {
 			@Override
 			public void run() {
-				if(!PitSim.isDarkzone()) return;
+				if(!PitSim.getStatus().isDarkzone()) return;
 
 				for (Entity entity :new ArrayList<>(MapManager.getDarkzone().getEntities())) {
 
@@ -79,7 +79,7 @@ public class MobManager implements Listener {
 
 			@Override
 			public void run() {
-				if(!PitSim.isDarkzone()) return;
+				if(!PitSim.getStatus().isDarkzone()) return;
 
 				clearMobs();
 				for(SubLevel level : SubLevel.values()) {
@@ -122,7 +122,7 @@ public class MobManager implements Listener {
 		new BukkitRunnable() {
 			@Override
 			public void run() {
-				if(!PitSim.isDarkzone()) return;
+				if(!PitSim.getStatus().isDarkzone()) return;
 				List<PitMob> toRemove = new ArrayList<>();
 				for (PitMob mob : mobs) {
 
@@ -146,7 +146,7 @@ public class MobManager implements Listener {
 		new BukkitRunnable() {
 			@Override
 			public void run() {
-				if(!PitSim.isDarkzone()) return;
+				if(!PitSim.getStatus().isDarkzone()) return;
 				List<PitMob> toRemove = new ArrayList<>();
 				for(PitMob mob : mobs) {
 					if(mob.entity.isDead()) {
@@ -164,7 +164,7 @@ public class MobManager implements Listener {
 		new BukkitRunnable() {
 			@Override
 			public void run() {
-				if(!PitSim.isDarkzone()) return;
+				if(!PitSim.getStatus().isDarkzone()) return;
 				clearMobs();
 			}
 		}.runTaskLater(PitSim.INSTANCE, 10);
@@ -172,7 +172,7 @@ public class MobManager implements Listener {
 		new BukkitRunnable() {
 			@Override
 			public void run() {
-				if(!PitSim.isDarkzone()) return;
+				if(!PitSim.getStatus().isDarkzone()) return;
 				for(PitMob mob : MobManager.mobs) {
 					if(!(mob.entity instanceof Creature)) continue;
 					if(mob.target != null) ((Creature) mob.entity).setTarget(mob.target);
@@ -439,7 +439,7 @@ public class MobManager implements Listener {
 			if(entity instanceof Player) continue;
 			if(CitizensAPI.getNPCRegistry().isNPC(entity)) continue;
 
-			if(PitSim.isDarkzone()) {
+			if(PitSim.getStatus().isDarkzone()) {
 				if(entity.getUniqueId().equals(TaintedWell.textLine1.getUniqueId())) continue;
 				if(entity.getUniqueId().equals(TaintedWell.textLine2.getUniqueId())) continue;
 				if(entity.getUniqueId().equals(TaintedWell.textLine3.getUniqueId())) continue;
@@ -478,16 +478,16 @@ public class MobManager implements Listener {
 					if(value.getUniqueId().equals(entity.getUniqueId())) continue main;
 				}
 				for(UUID pedestalArmorStand : AuctionDisplays.pedestalArmorStands) {
-					if(pedestalArmorStand.equals(entity.getUniqueId())) continue main;
+					if(pedestalArmorStand != null && pedestalArmorStand.equals(entity.getUniqueId())) continue main;
 				}
 				for(UUID pedestalArmorStand : AuctionDisplays.highestBidderStands) {
-					if(pedestalArmorStand.equals(entity.getUniqueId())) continue main;
+					if(pedestalArmorStand != null && pedestalArmorStand.equals(entity.getUniqueId())) continue main;
 				}
 				for(UUID pedestalArmorStand : AuctionDisplays.highestBidStands) {
-					if(pedestalArmorStand.equals(entity.getUniqueId())) continue main;
+					if(pedestalArmorStand != null && pedestalArmorStand.equals(entity.getUniqueId())) continue main;
 				}
 				for(UUID pedestalArmorStand : AuctionDisplays.rightClickStands) {
-					if(pedestalArmorStand.equals(entity.getUniqueId())) continue main;
+					if(pedestalArmorStand != null && pedestalArmorStand.equals(entity.getUniqueId())) continue main;
 				}
 			}
 

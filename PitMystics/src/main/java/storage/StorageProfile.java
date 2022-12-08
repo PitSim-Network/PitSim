@@ -103,9 +103,6 @@ public class StorageProfile {
 				}
 			}
 
-			Bukkit.broadcastMessage(Arrays.toString(armor) + "");
-
-
 		} catch(IOException e) {
 			if(!(e instanceof FileNotFoundException)) e.printStackTrace();
 		}

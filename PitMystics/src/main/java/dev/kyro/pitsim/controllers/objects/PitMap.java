@@ -46,6 +46,8 @@ public abstract class PitMap {
 
 	public abstract Location getKitsNPCSpawn();
 
+	public abstract Location getStandAlonePortalRespawn();
+
 	public double getY() {
 		return getMid().getY();
 	}

@@ -7,7 +7,6 @@ import com.sk89q.worldguard.protection.ApplicableRegionSet;
 import com.sk89q.worldguard.protection.managers.RegionManager;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import dev.kyro.pitsim.PitSim;
-import dev.kyro.pitsim.controllers.objects.AuctionData;
 import dev.kyro.pitsim.controllers.objects.AuctionItem;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.controllers.objects.PluginMessage;
@@ -39,7 +38,7 @@ public class AuctionManager implements Listener {
         new BukkitRunnable() {
             @Override
             public void run() {
-                if(!PitSim.isDarkzone()) return;
+                if(!PitSim.getStatus().isDarkzone()) return;
 
                 boolean showItems = false;
 

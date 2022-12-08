@@ -49,7 +49,7 @@ public class PluginMessage {
     }
 
     public PluginMessage() {
-        messageID  = UUID.randomUUID();
+        messageID = UUID.randomUUID();
         responseID = UUID.randomUUID();
     }
 

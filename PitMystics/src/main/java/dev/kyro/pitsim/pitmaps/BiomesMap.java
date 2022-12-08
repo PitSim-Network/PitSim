@@ -98,4 +98,9 @@ public class BiomesMap extends PitMap {
 	public Location getKitsNPCSpawn() {
 		return new Location(world, -2.5, 90, 12.5, -145, 15);
 	}
+
+	@Override
+	public Location getStandAlonePortalRespawn() {
+		return new Location(world, -56, 73, 0.5, -90, 0);
+	}
 }

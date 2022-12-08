@@ -1,5 +1,6 @@
 package storage;
 
+import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.controllers.objects.PluginMessage;
 import dev.kyro.pitsim.events.MessageEvent;
 import org.bukkit.Bukkit;
@@ -53,6 +54,8 @@ public class StorageManager implements Listener {
 
 	@EventHandler(priority = EventPriority.HIGHEST)
 	public void onJoin(PlayerJoinEvent event) {
+		if(PitSim.getStatus() == PitSim.ServerStatus.ALL) return;
+
 		Player player = event.getPlayer();
 		StorageProfile profile = getProfile(player);
 
@@ -68,6 +71,8 @@ public class StorageManager implements Listener {
 
 	@EventHandler(priority = EventPriority.HIGHEST)
 	public void onQuit(PlayerQuitEvent event) {
+		if(PitSim.getStatus() == PitSim.ServerStatus.ALL) return;
+
 		Player player = event.getPlayer();
 		StorageProfile profile = getProfile(player);
 

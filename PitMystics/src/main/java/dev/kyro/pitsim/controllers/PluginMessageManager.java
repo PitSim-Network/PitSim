@@ -17,6 +17,8 @@ import java.util.Arrays;
 
 public class PluginMessageManager implements QueryMessageListener {
     public static void sendMessage(PluginMessage message) {
+
+        if(PitSim.getStatus() == PitSim.ServerStatus.ALL) return;
 //
 //        String id = PitSim.INSTANCE.getConfig().getString("server-ID");
 //        if(id == null) return;

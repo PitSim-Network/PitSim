@@ -10,9 +10,9 @@ import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.controllers.objects.PluginMessage;
 import dev.kyro.pitsim.misc.Misc;
 import dev.kyro.pitsim.misc.Sounds;
-import dev.kyro.pitsim.perks.Streaker;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.World;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -23,7 +23,6 @@ import org.bukkit.event.player.PlayerTeleportEvent;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
 
-import javax.persistence.Lob;
 import java.util.concurrent.ExecutionException;
 
 public class PortalManager implements Listener {
@@ -70,14 +69,65 @@ public class PortalManager implements Listener {
 			return;
 		}
 
+		if(PitSim.getStatus() == PitSim.ServerStatus.ALL) {
+			Location playerLoc = player.getLocation();
+
+			PotionManager.bossBars.remove(player);
+
+			Location teleportLoc;
+			if(player.getWorld() != Bukkit.getWorld("darkzone")) {
+				teleportLoc = playerLoc.clone().add(235, 40, -97);
+				teleportLoc.setWorld(Bukkit.getWorld("darkzone"));
+				teleportLoc.setX(173);
+				teleportLoc.setY(92);
+				teleportLoc.setZ(-94);
+			}
+			else {
+				World destination = MapManager.currentMap.world;
+				teleportLoc = MapManager.currentMap.getStandAlonePortalRespawn();
+				teleportLoc.setWorld(destination);
+				teleportLoc.setY(72);
+			}
+
+			if(teleportLoc.getYaw() > 0 || teleportLoc.getYaw() < -180) teleportLoc.setYaw(-teleportLoc.getYaw());
+			teleportLoc.add(3, 0, 0);
+
+			player.teleport(teleportLoc);
+			player.setVelocity(new Vector(1.5, 1, 0).multiply(0.25));
+
+			PitPlayer.getPitPlayer(player).updateMaxHealth();
+			player.setHealth(player.getMaxHealth());
+
+			if(player.getWorld() == Bukkit.getWorld("darkzone")) {
+				APlayer aPlayer = APlayerData.getPlayerData(player);
+				FileConfiguration playerData = aPlayer.playerData;
+				if(!playerData.contains("darkzonepreview")) {
+					CutsceneManager.play(player);
+					return;
+				}
+
+				Misc.sendTitle(player, "&d&k||&5&lDarkzone&d&k||", 40);
+				Misc.sendSubTitle(player, "", 40);
+				AOutput.send(player, "&7You have been sent to the &d&k||&5&lDarkzone&d&k||&7.");
+			}
+			else {
+				Misc.sendTitle(player, "&a&lOverworld", 40);
+				Misc.sendSubTitle(player, "", 40);
+				AOutput.send(player, "&7You have been sent to the &a&lOverworld&7.");
+
+				MusicManager.stopPlaying(player);
+			}
+			return;
+		}
+
 		LobbySwitchManager.setSwitchingPlayer(event.getPlayer());
 
-		if(PitSim.isDarkzone()) {
+		if(PitSim.getStatus().isDarkzone()) {
 
 			BukkitRunnable runnable = new BukkitRunnable() {
 				@Override
 				public void run() {
-					new PluginMessage().writeString("QUEUE").writeString(event.getPlayer().getName()).writeBoolean(true).send();
+					new PluginMessage().writeString("QUEUE").writeString(event.getPlayer().getName()).writeString("true").send();
 				}
 			};
 

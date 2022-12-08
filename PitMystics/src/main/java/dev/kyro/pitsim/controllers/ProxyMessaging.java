@@ -7,11 +7,9 @@ import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.controllers.objects.*;
 import dev.kyro.pitsim.enums.ItemType;
 import dev.kyro.pitsim.events.MessageEvent;
-import dev.kyro.pitsim.inventories.KeeperPanel;
 import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
-import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -49,7 +47,7 @@ public class ProxyMessaging implements Listener {
 			PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
 			LobbySwitchManager.setSwitchingPlayer(player);
 
-			if(PitSim.isDarkzone()) {
+			if(PitSim.getStatus() == PitSim.ServerStatus.DARKZONE) {
 				BukkitRunnable runnable = new BukkitRunnable() {
 					@Override
 					public void run() {
@@ -62,7 +60,7 @@ public class ProxyMessaging implements Listener {
 				} catch(ExecutionException | InterruptedException e) {
 					throw new RuntimeException(e);
 				}
-			} else {
+			} else if (PitSim.getStatus() == PitSim.ServerStatus.PITSIM) {
 				BukkitRunnable runnable = new BukkitRunnable() {
 					@Override
 					public void run() {

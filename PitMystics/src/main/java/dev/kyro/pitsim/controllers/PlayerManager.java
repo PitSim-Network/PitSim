@@ -616,10 +616,10 @@ public class PlayerManager implements Listener {
 		Player player = event.getPlayer();
 		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
 		Location spawnLoc = MapManager.currentMap.getSpawn();
-		if(PitSim.isDarkzone()) spawnLoc = MapManager.getInitialDarkzoneSpawn();
+		if(PitSim.getStatus() == PitSim.ServerStatus.DARKZONE) spawnLoc = MapManager.getInitialDarkzoneSpawn();
 		if(LobbySwitchManager.joinedFromDarkzone.contains(player.getUniqueId())) spawnLoc = MapManager.currentMap.getDarkzoneJoinSpawn();
 
-		if(!PitSim.isDarkzone() && player.hasPermission("pitsim.autofps")) {
+		if(PitSim.getStatus().isPitsim() && player.hasPermission("pitsim.autofps")) {
 			FPSCommand.fpsPlayers.add(player);
 			for(Non non : NonManager.nons) player.hidePlayer(non.non);
 
@@ -649,7 +649,7 @@ public class PlayerManager implements Listener {
 			public void run() {
 				player.teleport(finalSpawnLoc1);
 
-				if(PitSim.isDarkzone()) {
+				if(PitSim.getStatus() == PitSim.ServerStatus.DARKZONE) {
 					player.setVelocity(new Vector(1.5, 1, 0).multiply(0.5));
 					Misc.sendTitle(player, "&d&k||&5&lDarkzone&d&k||", 40);
 					Misc.sendSubTitle(player, "", 40);
@@ -661,7 +661,7 @@ public class PlayerManager implements Listener {
 						return;
 					}
 
-				} else if(LobbySwitchManager.joinedFromDarkzone.contains(player.getUniqueId())) {
+				} else if(PitSim.getStatus() == PitSim.ServerStatus.PITSIM && LobbySwitchManager.joinedFromDarkzone.contains(player.getUniqueId())) {
 					player.setVelocity(new Vector(1.5, 1, 0));
 					Misc.sendTitle(player, "&a&lOverworld", 40);
 					Misc.sendSubTitle(player, "", 40);
@@ -677,7 +677,7 @@ public class PlayerManager implements Listener {
 			}
 		}.runTaskLater(PitSim.INSTANCE, 5L);
 
-		if(PitSim.isDarkzone()) {
+		if(PitSim.getStatus().isDarkzone()) {
 			new BukkitRunnable() {
 				@Override
 				public void run() {
