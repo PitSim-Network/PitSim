@@ -127,7 +127,7 @@ public class PortalManager implements Listener {
 			BukkitRunnable runnable = new BukkitRunnable() {
 				@Override
 				public void run() {
-					new PluginMessage().writeString("QUEUE").writeString(event.getPlayer().getName()).writeString("true").send();
+					new PluginMessage().writeString("QUEUE").writeString(event.getPlayer().getName()).writeBoolean(true).send();
 				}
 			};
 
