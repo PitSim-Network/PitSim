@@ -1,5 +1,6 @@
 package dev.kyro.pitsim.commands;
 
+import dev.kyro.pitsim.storage.EnderchestGUI;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -16,15 +17,18 @@ public class ATestCommand implements CommandExecutor {
 		Player player = (Player) sender;
 		if(!player.isOp()) return false;
 
-		int page = Integer.parseInt(args[0]);
+		EnderchestGUI gui = new EnderchestGUI(player);
+		gui.open();
 
-		StorageProfile profile = StorageManager.getProfile(player);
-		Inventory inv = profile.getEnderchest(page);
+//		int page = Integer.parseInt(args[0]);
 
-		System.out.println(profile);
-		System.out.println(inv);
-
-		player.openInventory(inv);
+//		StorageProfile profile = StorageManager.getProfile(player);
+//		Inventory inv = profile.getEnderchest(page);
+//
+//		System.out.println(profile);
+//		System.out.println(inv);
+//
+//		player.openInventory(inv);
 
 //		ItemStack itemStack = player.getItemInHand();
 //		System.out.println(Base64.itemTo64(itemStack));
