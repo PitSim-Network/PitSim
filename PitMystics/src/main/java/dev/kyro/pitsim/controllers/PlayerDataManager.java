@@ -18,7 +18,7 @@ public class PlayerDataManager implements Listener {
 
 			@Override
 			public void run() {
-				if(count++ % 60 == 0) {
+				if(count++ % (60 * 5) == 0) {
 					for(Player onlinePlayer : Bukkit.getOnlinePlayers()) {
 						PitPlayer pitPlayer = PitPlayer.getPitPlayer(onlinePlayer);
 						pitPlayer.save();

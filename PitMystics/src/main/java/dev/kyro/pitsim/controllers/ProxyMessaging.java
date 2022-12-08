@@ -17,6 +17,7 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
+import dev.kyro.pitsim.storage.StorageManager;
 
 import java.util.List;
 import java.util.UUID;
@@ -51,7 +52,16 @@ public class ProxyMessaging implements Listener {
 				BukkitRunnable runnable = new BukkitRunnable() {
 					@Override
 					public void run() {
-						new PluginMessage().writeString("QUEUE DARKZONE").writeString(player.getName()).send();
+
+						BukkitRunnable itemRunnable = new BukkitRunnable() {
+							@Override
+							public void run() {
+								new PluginMessage().writeString("QUEUE DARKZONE").writeString(player.getName()).send();
+							}
+						};
+
+						StorageManager.getProfile(player).saveData(itemRunnable);
+
 					}
 				};
 
@@ -64,7 +74,14 @@ public class ProxyMessaging implements Listener {
 				BukkitRunnable runnable = new BukkitRunnable() {
 					@Override
 					public void run() {
-						new PluginMessage().writeString("QUEUE").writeString(player.getName()).writeBoolean(true).send();
+						BukkitRunnable itemRunnable = new BukkitRunnable() {
+							@Override
+							public void run() {
+								new PluginMessage().writeString("QUEUE").writeString(player.getName()).writeBoolean(true).send();
+							}
+						};
+
+						StorageManager.getProfile(player).saveData(itemRunnable);
 					}
 				};
 

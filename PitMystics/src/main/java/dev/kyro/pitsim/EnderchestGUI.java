@@ -1,7 +1,8 @@
-package storage;
+package dev.kyro.pitsim;
 
 import dev.kyro.arcticapi.gui.AGUI;
 import org.bukkit.entity.Player;
+import dev.kyro.pitsim.storage.EnderchestPanel;
 
 public class EnderchestGUI extends AGUI {
 

@@ -1,4 +1,4 @@
-package storage;
+package dev.kyro.pitsim.storage;
 
 import dev.kyro.arcticapi.gui.AGUI;
 import dev.kyro.arcticapi.gui.AGUIPanel;

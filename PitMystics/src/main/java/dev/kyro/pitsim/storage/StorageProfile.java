@@ -1,4 +1,4 @@
-package storage;
+package dev.kyro.pitsim.storage;
 
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.controllers.objects.PluginMessage;
@@ -44,6 +44,8 @@ public class StorageProfile {
 
 	private BukkitTask enderchestSaveTask;
 	private BukkitTask inventorySaveTask;
+
+	private BukkitRunnable saveRunnable;
 
 	private boolean saving = false;
 
@@ -110,6 +112,14 @@ public class StorageProfile {
 		saveEnderchest();
 		saveInventory();
 
+	}
+
+	public void saveData(BukkitRunnable runnable) {
+		saveRunnable = runnable;
+		if(saving) return;
+		saving = true;
+		saveEnderchest();
+		saveInventory();
 	}
 
 	public void setEnderchest(PluginMessage message) {
@@ -273,8 +283,12 @@ public class StorageProfile {
 
 	protected void receiveSaveConfirmation(PluginMessage message) {
 		if(message.getStrings().get(0).equals("ENDERCHEST SAVE")) {
+			if(saveRunnable != null) saveRunnable.run();
+			saveRunnable = null;
 			if(enderchestSaveTask != null) enderchestSaveTask.cancel();
 		} else if(message.getStrings().get(0).equals("INVENTORY SAVE")) {
+			if(saveRunnable != null) saveRunnable.run();
+			saveRunnable = null;
 			if(inventorySaveTask != null) inventorySaveTask.cancel();
 		}
 

@@ -1,4 +1,4 @@
-package storage;
+package dev.kyro.pitsim.storage;
 
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.controllers.objects.PluginMessage;
@@ -52,7 +52,7 @@ public class StorageManager implements Listener {
 		return profile;
 	}
 
-	@EventHandler(priority = EventPriority.HIGHEST)
+	@EventHandler(priority = EventPriority.LOWEST)
 	public void onJoin(PlayerJoinEvent event) {
 		if(PitSim.getStatus() == PitSim.ServerStatus.ALL) return;
 
@@ -69,7 +69,7 @@ public class StorageManager implements Listener {
 		player.updateInventory();
 	}
 
-	@EventHandler(priority = EventPriority.HIGHEST)
+	@EventHandler(priority = EventPriority.MONITOR)
 	public void onQuit(PlayerQuitEvent event) {
 		if(PitSim.getStatus() == PitSim.ServerStatus.ALL) return;
 

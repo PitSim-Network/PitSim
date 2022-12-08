@@ -42,6 +42,8 @@ import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
+import dev.kyro.pitsim.storage.StorageManager;
+import dev.kyro.pitsim.storage.StorageProfile;
 
 import java.util.*;
 import java.util.concurrent.ExecutionException;
@@ -225,6 +227,10 @@ public class PitPlayer {
 			System.out.println("complete development failure. " + player.getName() + " is attempting to save data and is not a real player");
 			return;
 		}
+
+		StorageProfile profile = StorageManager.getProfile(uuid);
+		profile.saveInventory();
+		profile.saveEnderchest();
 
 		megastreakRef = megastreak.getRefNames().get(0);
 

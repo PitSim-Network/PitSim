@@ -22,6 +22,7 @@ import org.bukkit.event.player.PlayerPortalEvent;
 import org.bukkit.event.player.PlayerTeleportEvent;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
+import dev.kyro.pitsim.storage.StorageManager;
 
 import java.util.concurrent.ExecutionException;
 
@@ -127,7 +128,15 @@ public class PortalManager implements Listener {
 			BukkitRunnable runnable = new BukkitRunnable() {
 				@Override
 				public void run() {
-					new PluginMessage().writeString("QUEUE").writeString(event.getPlayer().getName()).writeBoolean(true).send();
+
+					BukkitRunnable itemRunnable = new BukkitRunnable() {
+						@Override
+						public void run() {
+							new PluginMessage().writeString("QUEUE").writeString(event.getPlayer().getName()).writeBoolean(true).send();
+						}
+					};
+
+					StorageManager.getProfile(player).saveData(itemRunnable);
 				}
 			};
 
@@ -141,7 +150,14 @@ public class PortalManager implements Listener {
 			BukkitRunnable runnable = new BukkitRunnable() {
 				@Override
 				public void run() {
-					new PluginMessage().writeString("QUEUE DARKZONE").writeString(event.getPlayer().getName()).send();
+					BukkitRunnable itemRunnable = new BukkitRunnable() {
+						@Override
+						public void run() {
+							new PluginMessage().writeString("QUEUE DARKZONE").writeString(event.getPlayer().getName()).send();
+						}
+					};
+
+					StorageManager.getProfile(player).saveData(itemRunnable);
 				}
 			};
 
