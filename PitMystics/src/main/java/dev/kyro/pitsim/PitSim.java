@@ -286,7 +286,7 @@ public class PitSim extends JavaPlugin {
 
 		for(Player onlinePlayer : Bukkit.getOnlinePlayers()) {
 			PitPlayer pitPlayer = PitPlayer.getPitPlayer(onlinePlayer);
-			pitPlayer.save();
+			pitPlayer.save(true);
 
 //			disable cosmetics
 			if(!VanishAPI.isInvisible(onlinePlayer)) {

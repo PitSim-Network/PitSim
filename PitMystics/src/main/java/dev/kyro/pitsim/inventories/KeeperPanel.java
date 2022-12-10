@@ -89,7 +89,7 @@ public class KeeperPanel extends AGUIPanel{
 				};
 
 				try {
-					pitPlayer.save(true, runnable);
+					pitPlayer.save(true, runnable, true);
 				} catch(ExecutionException | InterruptedException e) {
 					throw new RuntimeException(e);
 				}

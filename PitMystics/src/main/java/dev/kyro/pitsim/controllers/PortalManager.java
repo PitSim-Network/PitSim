@@ -141,7 +141,7 @@ public class PortalManager implements Listener {
 			};
 
 			try {
-				pitPlayer.save(true, runnable);
+				pitPlayer.save(true, runnable, false);
 			} catch(ExecutionException | InterruptedException e) {
 				throw new RuntimeException(e);
 			}
@@ -150,9 +150,11 @@ public class PortalManager implements Listener {
 			BukkitRunnable runnable = new BukkitRunnable() {
 				@Override
 				public void run() {
+					System.out.println("Runnable");
 					BukkitRunnable itemRunnable = new BukkitRunnable() {
 						@Override
 						public void run() {
+							System.out.println("Item runnable");
 							new PluginMessage().writeString("QUEUE DARKZONE").writeString(event.getPlayer().getName()).send();
 						}
 					};
@@ -162,7 +164,7 @@ public class PortalManager implements Listener {
 			};
 
 			try {
-				pitPlayer.save(true, runnable);
+				pitPlayer.save(true, runnable, false);
 			} catch(ExecutionException | InterruptedException e) {
 				throw new RuntimeException(e);
 			}

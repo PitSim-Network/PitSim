@@ -66,7 +66,7 @@ public class ProxyMessaging implements Listener {
 				};
 
 				try {
-					pitPlayer.save(true, runnable);
+					pitPlayer.save(true, runnable, false);
 				} catch(ExecutionException | InterruptedException e) {
 					throw new RuntimeException(e);
 				}
@@ -86,7 +86,7 @@ public class ProxyMessaging implements Listener {
 				};
 
 				try {
-					pitPlayer.save(true, runnable);
+					pitPlayer.save(true, runnable, false);
 				} catch(ExecutionException | InterruptedException e) {
 					throw new RuntimeException(e);
 				}
@@ -166,7 +166,7 @@ public class ProxyMessaging implements Listener {
 			};
 
 			try {
-				pitPlayer.save(true, runnable);
+				pitPlayer.save(true, runnable, false);
 			} catch(ExecutionException | InterruptedException e) {
 				throw new RuntimeException(e);
 			}

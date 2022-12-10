@@ -7,6 +7,7 @@ import net.luckperms.api.model.user.User;
 import net.luckperms.api.model.user.UserManager;
 import org.bukkit.entity.Player;
 
+import java.util.*;
 import java.util.concurrent.CompletableFuture;
 
 public class EnderchestGUI extends AGUI {
@@ -37,7 +38,11 @@ public class EnderchestGUI extends AGUI {
 		}
 
 		public static EnderchestPages getRank(Player player) {
-			for(EnderchestPages value : values()) {
+
+			List<EnderchestPages> ranks = new ArrayList<>(Arrays.asList(values()));
+			Collections.reverse(ranks);
+
+			for(EnderchestPages value : ranks) {
 				if(player.hasPermission(value.permission)) {
 					return value;
 				}

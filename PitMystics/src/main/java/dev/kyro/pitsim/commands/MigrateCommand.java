@@ -13,7 +13,7 @@ public class MigrateCommand implements CommandExecutor {
 
 		if(args.length > 0) {
 			PitPlayer pitPlayer = new PitPlayer(Bukkit.getOfflinePlayer(args[0]).getUniqueId());
-			pitPlayer.save();
+			pitPlayer.save(true);
 			return false;
 		}
 

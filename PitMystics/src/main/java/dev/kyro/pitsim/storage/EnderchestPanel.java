@@ -29,7 +29,7 @@ public class EnderchestPanel extends AGUIPanel {
 
 	@Override
 	public int getRows() {
-		return 5;
+		return 4;
 	}
 
 	@Override
@@ -45,14 +45,15 @@ public class EnderchestPanel extends AGUIPanel {
 		if((slot - 9) + 1 > rank.pages) {
 			event.setCancelled(true);
 			AOutput.error(player, "&cYou do not have permission to access this page!");
-			AOutput.send(player, "&c7Purchase more at &f&bhttps://store.pitsim.net");
+			AOutput.send(player, "&7Purchase more at &f&nhttps://store.pitsim.net");
 			return;
 		}
 
 		StorageProfile profile = StorageManager.getProfile(player);
 		if(!profile.hasData() || profile.isSaving()) return;
 
-		Inventory inventory = profile.getEnderchest(slot - 9);
+		player.closeInventory();
+		Inventory inventory = profile.getEnderchest(slot - 8);
 		player.openInventory(inventory);
 	}
 
@@ -65,7 +66,7 @@ public class EnderchestPanel extends AGUIPanel {
 			getInventory().setItem(i, new ItemStack(Material.STAINED_GLASS_PANE, 1, (short) 15));
 		}
 
-		for(int i = 36; i < 45; i++) {
+		for(int i = 27; i < 36; i++) {
 			getInventory().setItem(i, new ItemStack(Material.STAINED_GLASS_PANE, 1, (short) 15));
 		}
 

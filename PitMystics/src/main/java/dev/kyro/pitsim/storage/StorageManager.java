@@ -15,6 +15,7 @@ import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerPickupItemEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
+import org.bukkit.inventory.Inventory;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -58,6 +59,7 @@ public class StorageManager implements Listener {
 
 		Player player = event.getPlayer();
 		StorageProfile profile = getProfile(player);
+		profile.playerHasBeenOnline = true;
 
 		if(!profile.hasData()) {
 			player.kickPlayer(ChatColor.RED + "An error occurred when loading your data. Please report this issue.");
@@ -76,8 +78,8 @@ public class StorageManager implements Listener {
 		Player player = event.getPlayer();
 		StorageProfile profile = getProfile(player);
 
-		profile.saveEnderchest();
-		profile.saveInventory();
+//		profile.saveEnderchest();
+//		profile.saveInventory();
 
 		profiles.remove(profile);
 	}
@@ -91,18 +93,14 @@ public class StorageManager implements Listener {
 
 		if(strings.get(0).equals("ENDERCHEST SAVE") || strings.get(0).equals("INVENTORY SAVE")) {
 			System.out.println("Save confirm attempt");
-			System.out.println(strings.get(1));
 			UUID uuid = UUID.fromString(strings.get(1));
 			Player player = Bukkit.getPlayer(uuid);
 			if(player == null) return;
-			System.out.println(2);
 
 			StorageProfile profile = getProfile(player);
 			if(!profile.hasData()) return;
-			System.out.println(3);
 
 			profile.receiveSaveConfirmation(message);
-			System.out.println(4);
 		}
 
 		if(strings.get(0).equals("LOAD REQUEST")) {
@@ -166,7 +164,17 @@ public class StorageManager implements Listener {
 		if(profile.hasData() && profile.isSaving()) {
 			event.setCancelled(true);
 		}
+
+		for(Inventory inv : profile.enderChest) {
+
+			if(inv.equals(event.getWhoClicked().getOpenInventory().getTopInventory())) {
+				if(event.getSlot() < 9 || event.getSlot() > 34) {
+					event.setCancelled(true);
+				}
+			}
+		}
 	}
+
 
 
 }

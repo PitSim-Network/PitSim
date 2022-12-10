@@ -183,7 +183,7 @@ public class PitPlayer {
 		if(!passDate.equals(passData.currentPassDate)) {
 //			TODO: give unclaimed rewards
 			passData = new PassData(passDate);
-			save();
+			save(true);
 		}
 		return passData;
 	}
@@ -195,19 +195,19 @@ public class PitPlayer {
 	@Exclude
 	public long lastSave;
 	@Exclude
-	public void save() {
+	public void save(boolean itemData) {
 		try {
-			save(false, null);
+			save(false, null, itemData);
 		} catch(ExecutionException | InterruptedException ignored) {}
 	}
 	@Exclude
-	public void save(boolean finalSave, BukkitRunnable callback) throws ExecutionException, InterruptedException {
+	public void save(boolean finalSave, BukkitRunnable callback, boolean itemData) throws ExecutionException, InterruptedException {
 		if(finalSave && lastSave + SAVE_COOLDOWN > System.currentTimeMillis()) {
 			long timeUntilSave = lastSave + SAVE_COOLDOWN - System.currentTimeMillis();
 			new Thread(() -> {
 				try {
 					Thread.sleep(timeUntilSave);
-					save(true, callback);
+					save(true, callback, itemData);
 				} catch(Exception exception) {
 					System.out.println("--------------------------------------------------");
 					System.out.println("CRITICAL ERROR: data for " + player.getName() + " failed to final save");
@@ -228,9 +228,11 @@ public class PitPlayer {
 			return;
 		}
 
-		StorageProfile profile = StorageManager.getProfile(uuid);
-		profile.saveInventory();
-		profile.saveEnderchest();
+		if(itemData) {
+			StorageProfile profile = StorageManager.getProfile(uuid);
+			profile.saveInventory();
+			profile.saveEnderchest();
+		}
 
 		megastreakRef = megastreak.getRefNames().get(0);
 
