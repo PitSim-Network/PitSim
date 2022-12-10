@@ -144,7 +144,7 @@ public class StorageProfile {
 	public void setEnderchest(PluginMessage message) {
 		List<String> strings = message.getStrings();
 
-		System.out.println();
+		System.out.println("Set echest");
 
 		int pages = message.getIntegers().get(0);
 		enderChest = new Inventory[pages];
@@ -176,6 +176,12 @@ public class StorageProfile {
 				inventory.setItem(j, pane);
 			}
 		}
+
+		for(Inventory itemStacks : enderChest) {
+			for(ItemStack itemStack : itemStacks) {
+				System.out.println(itemStack);
+			}
+		}
 	}
 
 	public void setInventory(PluginMessage message) {
@@ -197,6 +203,9 @@ public class StorageProfile {
 
 	public void saveEnderchest() {
 		PluginMessage message = new PluginMessage().writeString("ENDERCHEST").writeString(uuid.toString());
+
+		System.out.println("Enderchest: " + Arrays.toString(enderChest));
+
 		message.writeString(PitSim.serverName);
 		for(Inventory items : enderChest) {
 			for(int i = 9; i < items.getSize() - 9; i++) {
