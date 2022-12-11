@@ -37,14 +37,9 @@ public class StorageManager implements Listener {
 	}
 
 	public static StorageProfile getProfile(UUID uuid) {
-
-		System.out.println(profiles);
-
 		for(StorageProfile profile : profiles) {
 			if(profile.getUUID().equals(uuid)) return profile;
 		}
-
-		System.out.println("New Profile!");
 
 		StorageProfile profile = new StorageProfile(uuid);
 		profiles.add(profile);
@@ -104,23 +99,18 @@ public class StorageManager implements Listener {
 		if(strings.get(0).equals("SAVE CONFIRMATION")) {
 			UUID uuid = UUID.fromString(strings.get(1));
 			Player player = Bukkit.getPlayer(uuid);
-			System.out.println(5);
 			if(player == null) return;
-			System.out.println(6);
 
 			StorageProfile profile = getProfile(player);
 			if(!profile.hasData()) return;
-			System.out.println(7);
 
 			profile.receiveSaveConfirmation(message);
 		}
 
 		if(strings.get(0).equals("LOAD REQUEST")) {
-			System.out.println("Load!");
 			UUID uuid = UUID.fromString(strings.get(1));
 
 			StorageProfile profile = getInitialProfile(uuid);
-			System.out.println(profile);
 		}
 
 		if(strings.get(0).equals("PLAYER DATA")) {

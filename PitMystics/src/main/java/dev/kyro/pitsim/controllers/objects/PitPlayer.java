@@ -373,7 +373,6 @@ public class PitPlayer {
 
 		PitSim.VAULT.withdrawPlayer(player, PitSim.VAULT.getBalance(player));
 		PitSim.VAULT.depositPlayer(player, gold);
-		System.out.println("Current gold: " + gold + " " + PitSim.VAULT.getBalance(player));
 
 		ChatColorPanel.playerChatColors.put(player, chatColor);
 

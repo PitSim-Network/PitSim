@@ -59,9 +59,6 @@ public enum ItemType {
         MysticType mysticType = MysticType.getMysticType(item);
         if(mysticType == null) return 0;
 
-        System.out.println(EnchantManager.getEnchants(mysticType).size());
-        System.out.println(mysticType);
-
         return new Random().nextInt(EnchantManager.getEnchants(mysticType).size() - 1);
     }
 

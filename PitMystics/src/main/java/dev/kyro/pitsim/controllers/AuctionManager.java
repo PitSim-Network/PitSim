@@ -165,8 +165,6 @@ public class AuctionManager implements Listener {
 
             assert pitPlayer != null;
             List<Integer> ints = initialMessage.getIntegers();
-            System.out.println(pitPlayer);
-            System.out.println(ints);
             pitPlayer.auctionReturn.add(ints.get(0) + ":" + ints.get(1) + ":" + ints.get(2));
 
             FirestoreManager.FIRESTORE.collection(FirestoreManager.PLAYERDATA_COLLECTION).document(initialMessage.getStrings().get(4)).set(pitPlayer);

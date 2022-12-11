@@ -13,8 +13,6 @@ public class LootRunnable {
     }
 
     public void run(Player player, String itemName, String rare_type) {
-        System.out.println(profiler);
-
         AOutput.send(player, rare_type + " &7you dropped a &c&l" + ChatColor.stripColor(itemName));
 
         Sounds.EVENT_START.play(player);

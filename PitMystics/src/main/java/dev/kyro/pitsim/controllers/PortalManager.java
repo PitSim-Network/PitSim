@@ -150,11 +150,9 @@ public class PortalManager implements Listener {
 			BukkitRunnable runnable = new BukkitRunnable() {
 				@Override
 				public void run() {
-					System.out.println("Runnable");
 					BukkitRunnable itemRunnable = new BukkitRunnable() {
 						@Override
 						public void run() {
-							System.out.println("Item runnable");
 							new PluginMessage().writeString("QUEUE DARKZONE").writeString(event.getPlayer().getName()).send();
 						}
 					};

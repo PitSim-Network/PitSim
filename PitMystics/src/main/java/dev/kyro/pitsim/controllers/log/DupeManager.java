@@ -224,7 +224,7 @@ public class DupeManager implements Listener {
 		for(TrackedItem trackedItem : trackedItems) trackedItem.populate();
 		for(UUID playerUUID : playerUUIDs) {
 			OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(playerUUID);
-			System.out.println(offlinePlayer.getName());
+			System.out.println("player with duped item: " + offlinePlayer.getName());
 		}
 
 		AOutput.log("Check completed, posting results");

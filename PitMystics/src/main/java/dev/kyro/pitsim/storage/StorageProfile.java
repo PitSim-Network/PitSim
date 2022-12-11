@@ -3,7 +3,7 @@ package dev.kyro.pitsim.storage;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.controllers.objects.PluginMessage;
 import dev.kyro.pitsim.exceptions.DataNotLoadedException;
-import dev.kyro.pitsim.misc.Base64;
+import dev.kyro.pitsim.misc.CustomSerializer;
 import dev.kyro.pitsim.misc.Misc;
 import net.minecraft.server.v1_8_R3.NBTCompressedStreamTools;
 import net.minecraft.server.v1_8_R3.NBTTagCompound;
@@ -52,8 +52,6 @@ public class StorageProfile {
 	}
 
 	public StorageProfile(UUID player, int enderChestPages) {
-		System.out.println("New profile");
-
 		enderChest = new Inventory[enderChestPages];
 		for(int i = 0; i < enderChestPages; i++) {
 			enderChest[i] = PitSim.INSTANCE.getServer().createInventory(null, 45, "Enderchest - Page " + (i + 1));
@@ -72,7 +70,8 @@ public class StorageProfile {
 				for(int j = 9; j < 36; j++) {
 					String base64String = (String) vault.get(j + "");
 					if(base64String == null) continue;
-					ItemStack itemStack = Base64.itemFrom64(base64String);
+//					ItemStack itemStack = Base64.itemFrom64(base64String);
+					ItemStack itemStack = CustomSerializer.deserialize(base64String);
 
 					inventory.setItem(j, itemStack);
 				}
@@ -147,7 +146,6 @@ public class StorageProfile {
 		}
 
 		for(int i = 0; i < 4; i++) {
-			System.out.println(strings.size());
 			armor[i] = strings.get(i + 36).isEmpty() ? new ItemStack(Material.AIR) : deserialize(strings.get(i + 36));
 		}
 
@@ -205,12 +203,6 @@ public class StorageProfile {
 			menu.setAmount(i + 1);
 			inventory.setItem(40, menu);
 		}
-
-		for(Inventory itemStacks : enderChest) {
-			for(ItemStack itemStack : itemStacks) {
-				System.out.println(itemStack);
-			}
-		}
 	}
 
 	public void saveData() {
@@ -226,18 +218,14 @@ public class StorageProfile {
 		OfflinePlayer player = Bukkit.getOfflinePlayer(uuid);
 
 		if(player.getPlayer() != null) {
-			System.out.println("Online2!");
 			for(ItemStack itemStack : player.getPlayer().getInventory()) {
 				message.writeString(serialize(itemStack));
 			}
-
-			System.out.println(message.getStrings().get(3));
 
 			for(ItemStack itemStack : player.getPlayer().getInventory().getArmorContents()) {
 				message.writeString(serialize(itemStack));
 			}
 		} else if(cachedInventory != null) {
-			System.out.println("Offline!");
 			for(ItemStack itemStack : cachedInventory) {
 				message.writeString(serialize(itemStack));
 			}
@@ -293,15 +281,18 @@ public class StorageProfile {
 	public static ItemStack deserialize(String string) {
 		if(string.isEmpty()) return new ItemStack(Material.AIR);
 		try {
-			return Base64.itemFrom64(string);
-		} catch(IOException e) {
+//			return Base64.itemFrom64(string);
+			return CustomSerializer.deserialize(string);
+//		} catch(IOException e) {
+		} catch(Exception e) {
 			throw new RuntimeException(e);
 		}
 	}
 
 	public static String serialize(ItemStack item) {
 		if(Misc.isAirOrNull(item)) return "";
-		return Base64.itemTo64(item);
+//		return Base64.itemTo64(item);
+		return CustomSerializer.serialize(item);
 	}
 
 	public boolean hasData() {
