@@ -218,6 +218,14 @@ public class ProxyMessaging implements Listener {
 
 		}
 
+		if(strings.size() >= 2 && strings.get(0).equals("MIGRATE")) {
+			UUID uuid = UUID.fromString(strings.get(1));
+
+			PitPlayer pitPlayer = new PitPlayer(Bukkit.getOfflinePlayer(uuid).getUniqueId());
+			pitPlayer.save(true);
+			System.out.println("Migrating Player: " + uuid);
+		}
+
 		if(strings.size() >= 2 && strings.get(0).equals("REQUEST SWITCH")) {
 			UUID uuid = UUID.fromString(strings.get(1));
 			Player player = Bukkit.getPlayer(uuid);
