@@ -16,22 +16,6 @@ import dev.kyro.arcticapi.data.AData;
 import dev.kyro.arcticapi.hooks.AHook;
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.alogging.LogManager;
-import dev.kyro.pitsim.npcs.*;
-import dev.kyro.pitsim.cosmetics.CosmeticManager;
-import dev.kyro.pitsim.cosmetics.PitCosmetic;
-import dev.kyro.pitsim.cosmetics.aura.*;
-import dev.kyro.pitsim.cosmetics.bounty.*;
-import dev.kyro.pitsim.cosmetics.capes.*;
-import dev.kyro.pitsim.cosmetics.killeffectsbot.AlwaysExe;
-import dev.kyro.pitsim.cosmetics.killeffectsbot.OnlyExe;
-import dev.kyro.pitsim.cosmetics.killeffectsbot.Tetris;
-import dev.kyro.pitsim.cosmetics.killeffectsplayer.*;
-import dev.kyro.pitsim.cosmetics.aura.KyroAura;
-import dev.kyro.pitsim.cosmetics.misc.Halo;
-import dev.kyro.pitsim.cosmetics.misc.KyroCosmetic;
-import dev.kyro.pitsim.cosmetics.misc.ElectricPresence;
-import dev.kyro.pitsim.cosmetics.misc.MysticPresence;
-import dev.kyro.pitsim.cosmetics.trails.*;
 import dev.kyro.pitsim.battlepass.PassManager;
 import dev.kyro.pitsim.battlepass.quests.*;
 import dev.kyro.pitsim.battlepass.quests.daily.DailyBotKillQuest;
@@ -52,11 +36,25 @@ import dev.kyro.pitsim.commands.admin.*;
 import dev.kyro.pitsim.controllers.*;
 import dev.kyro.pitsim.controllers.log.DupeManager;
 import dev.kyro.pitsim.controllers.objects.*;
+import dev.kyro.pitsim.cosmetics.CosmeticManager;
+import dev.kyro.pitsim.cosmetics.PitCosmetic;
+import dev.kyro.pitsim.cosmetics.aura.*;
+import dev.kyro.pitsim.cosmetics.bounty.*;
+import dev.kyro.pitsim.cosmetics.capes.*;
+import dev.kyro.pitsim.cosmetics.killeffectsbot.AlwaysExe;
+import dev.kyro.pitsim.cosmetics.killeffectsbot.OnlyExe;
+import dev.kyro.pitsim.cosmetics.killeffectsbot.Tetris;
+import dev.kyro.pitsim.cosmetics.killeffectsplayer.*;
+import dev.kyro.pitsim.cosmetics.misc.ElectricPresence;
+import dev.kyro.pitsim.cosmetics.misc.Halo;
+import dev.kyro.pitsim.cosmetics.misc.KyroCosmetic;
+import dev.kyro.pitsim.cosmetics.misc.MysticPresence;
+import dev.kyro.pitsim.cosmetics.trails.*;
 import dev.kyro.pitsim.enchants.GoldBoost;
 import dev.kyro.pitsim.enchants.*;
 import dev.kyro.pitsim.enchants.tainted.*;
-import dev.kyro.pitsim.events.ThrowBlockEvent;
 import dev.kyro.pitsim.enums.NBTTag;
+import dev.kyro.pitsim.events.ThrowBlockEvent;
 import dev.kyro.pitsim.helmetabilities.*;
 import dev.kyro.pitsim.killstreaks.*;
 import dev.kyro.pitsim.kits.EssentialKit;
@@ -66,9 +64,11 @@ import dev.kyro.pitsim.kits.XPKit;
 import dev.kyro.pitsim.leaderboards.*;
 import dev.kyro.pitsim.megastreaks.*;
 import dev.kyro.pitsim.misc.*;
+import dev.kyro.pitsim.npcs.*;
 import dev.kyro.pitsim.perks.*;
 import dev.kyro.pitsim.pitmaps.BiomesMap;
 import dev.kyro.pitsim.placeholders.*;
+import dev.kyro.pitsim.storage.StorageManager;
 import dev.kyro.pitsim.upgrades.*;
 import net.citizensnpcs.api.CitizensAPI;
 import net.citizensnpcs.api.npc.NPC;
@@ -76,10 +76,6 @@ import net.citizensnpcs.api.npc.NPCRegistry;
 import net.kyori.adventure.platform.bukkit.BukkitAudiences;
 import net.luckperms.api.LuckPerms;
 import net.milkbowl.vault.economy.Economy;
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.Location;
-import org.bukkit.Material;
 import org.bukkit.*;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Item;
@@ -93,7 +89,6 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
 import septogeddon.pluginquery.PluginQuery;
 import septogeddon.pluginquery.api.QueryMessenger;
-import dev.kyro.pitsim.storage.StorageManager;
 
 import java.io.File;
 import java.util.*;
@@ -311,7 +306,7 @@ public class PitSim extends JavaPlugin {
 			}
 		}
 
-		MobManager.clearMobs();
+		if(status.isDarkzone()) MobManager.clearMobs();
 
 //		TODO: Fix
 		for(Player player : Bukkit.getOnlinePlayers()) {
@@ -332,7 +327,7 @@ public class PitSim extends JavaPlugin {
 			}
 		}
 
-		if(getStatus().isAll()) {
+		if(getStatus().isDarkzone()) {
 			for(NPC value : BossManager.clickables.values()) {
 				value.destroy();
 				NPCRegistry registry = CitizensAPI.getNPCRegistry();
@@ -356,9 +351,11 @@ public class PitSim extends JavaPlugin {
 			entry.getKey().getBlock().setType(entry.getValue());
 		}
 
-		for(PitMob mob : MobManager.mobs) {
-			MobManager.nameTags.get(mob.entity.getUniqueId()).remove();
-			mob.entity.remove();
+		if(status.isDarkzone()) {
+			for(PitMob mob : MobManager.mobs) {
+				MobManager.nameTags.get(mob.entity.getUniqueId()).remove();
+				mob.entity.remove();
+			}
 		}
 
 		if(this.adventure != null) {
@@ -366,8 +363,10 @@ public class PitSim extends JavaPlugin {
 			this.adventure = null;
 		}
 
-		for(Hologram hologram : BossManager.holograms) {
-			hologram.delete();
+		if(status.isDarkzone()) {
+			for(Hologram hologram : BossManager.holograms) {
+				hologram.delete();
+			}
 		}
 
 		NPCManager.onDisable();

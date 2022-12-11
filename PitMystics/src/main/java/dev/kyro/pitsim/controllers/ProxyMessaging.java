@@ -77,7 +77,7 @@ public class ProxyMessaging implements Listener {
 						BukkitRunnable itemRunnable = new BukkitRunnable() {
 							@Override
 							public void run() {
-								new PluginMessage().writeString("QUEUE").writeString(player.getName()).writeBoolean(true).send();
+								new PluginMessage().writeString("QUEUE").writeString(player.getName()).writeBoolean(false).send();
 							}
 						};
 

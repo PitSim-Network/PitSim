@@ -104,10 +104,13 @@ public class StorageManager implements Listener {
 		if(strings.get(0).equals("SAVE CONFIRMATION")) {
 			UUID uuid = UUID.fromString(strings.get(1));
 			Player player = Bukkit.getPlayer(uuid);
+			System.out.println(5);
 			if(player == null) return;
+			System.out.println(6);
 
 			StorageProfile profile = getProfile(player);
 			if(!profile.hasData()) return;
+			System.out.println(7);
 
 			profile.receiveSaveConfirmation(message);
 		}
@@ -165,10 +168,31 @@ public class StorageManager implements Listener {
 			event.setCancelled(true);
 		}
 
-		for(Inventory inv : profile.enderChest) {
+		for(int i = 0; i < profile.enderChest.length; i++) {
+			Inventory inv = profile.enderChest[i];
 
 			if(inv.equals(event.getWhoClicked().getOpenInventory().getTopInventory())) {
-				if(event.getSlot() < 9 || event.getSlot() > 34) {
+
+				if(event.getSlot() == 36 && i > 0) {
+					player.openInventory(profile.enderChest[i - 1]);
+					event.setCancelled(true);
+					return;
+				}
+
+				if(event.getSlot() == 44 && (i + 1) < StorageProfile.ENDERCHEST_PAGES) {
+					player.openInventory(profile.enderChest[i + 1]);
+					event.setCancelled(true);
+					return;
+				}
+
+				if(event.getSlot() == 40) {
+					EnderchestGUI gui = new EnderchestGUI(player);
+					gui.open();
+					event.setCancelled(true);
+					return;
+				}
+
+				if(event.getSlot() < 9 || event.getSlot() > 35) {
 					event.setCancelled(true);
 				}
 			}

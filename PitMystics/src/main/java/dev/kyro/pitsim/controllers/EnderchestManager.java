@@ -3,7 +3,7 @@ package dev.kyro.pitsim.controllers;
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.misc.Sounds;
-import org.bukkit.Bukkit;
+import dev.kyro.pitsim.storage.EnderchestGUI;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -30,13 +30,19 @@ public class EnderchestManager implements Listener {
 				event.setCancelled(true);
 				return;
 			}
+
+			EnderchestGUI gui = new EnderchestGUI((Player) event.getPlayer());
+			gui.open();
+			if(event.getPlayer() instanceof Player) Sounds.ENDERCHEST_OPEN.play(event.getPlayer());
+
 			new BukkitRunnable() {
-				@Override
-				public void run() {
-					Bukkit.dispatchCommand(event.getPlayer(), "pv 1");
-					if(event.getPlayer() instanceof Player) Sounds.ENDERCHEST_OPEN.play((Player) event.getPlayer());
-				}
-			}.runTaskLater(PitSim.INSTANCE, 1L);
+					@Override
+					public void run() {
+						EnderchestGUI gui = new EnderchestGUI((Player) event.getPlayer());
+						gui.open();
+						Sounds.ENDERCHEST_OPEN.play(event.getPlayer());
+					}
+				}.runTaskLater(PitSim.INSTANCE, 1L);
 
 		}
 	}
@@ -55,7 +61,8 @@ public class EnderchestManager implements Listener {
 				new BukkitRunnable() {
 					@Override
 					public void run() {
-						Bukkit.dispatchCommand(event.getPlayer(), "pv 1");
+						EnderchestGUI gui = new EnderchestGUI(event.getPlayer());
+						gui.open();
 						Sounds.ENDERCHEST_OPEN.play(event.getPlayer());
 					}
 				}.runTaskLater(PitSim.INSTANCE, 1L);

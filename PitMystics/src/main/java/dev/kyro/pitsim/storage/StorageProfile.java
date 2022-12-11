@@ -134,50 +134,6 @@ public class StorageProfile {
 		saveData();
 	}
 
-//	public void setEnderchest(PluginMessage message) {
-//		List<String> strings = message.getStrings();
-//
-//		System.out.println("Set echest");
-//
-//		int pages = message.getIntegers().get(0);
-//		enderChest = new Inventory[pages];
-//		for(int i = 0; i < pages; i++) {
-//			enderChest[i] = PitSim.INSTANCE.getServer().createInventory(null, 45, "Enderchest - Page " + (i + 1));
-//		}
-//
-//		for(int i = 0; i < strings.size(); i++) {
-//			int page = i / 27;
-//
-//			Inventory inventory = enderChest[page];
-//			inventory.setItem((i % 27) + 9, deserialize(strings.get(i)));
-//		}
-//
-//		for(Inventory inventory : enderChest) {
-//			for(int j = 0; j < 9; j++) {
-//				ItemStack pane = new ItemStack(Material.STAINED_GLASS_PANE, 1, (short) 15);
-//				ItemMeta meta = pane.getItemMeta();
-//				meta.setDisplayName(" ");
-//				pane.setItemMeta(meta);
-//				inventory.setItem(j, pane);
-//			}
-//
-//			for(int j = 36; j < inventory.getSize(); j++) {
-//				ItemStack pane = new ItemStack(Material.STAINED_GLASS_PANE, 1, (short) 15);
-//				ItemMeta meta = pane.getItemMeta();
-//				meta.setDisplayName(" ");
-//				pane.setItemMeta(meta);
-//				inventory.setItem(j, pane);
-//			}
-//		}
-//
-//		for(Inventory itemStacks : enderChest) {
-//			for(ItemStack itemStack : itemStacks) {
-//				System.out.println(itemStack);
-//			}
-//		}
-//		System.out.println(hashCode());
-//	}
-
 	public void setData(PluginMessage message) {
 		List<String> strings = message.getStrings();
 		List<Integer> ints = message.getIntegers();
@@ -195,10 +151,6 @@ public class StorageProfile {
 			armor[i] = strings.get(i + 36).isEmpty() ? new ItemStack(Material.AIR) : deserialize(strings.get(i + 36));
 		}
 
-
-
-
-
 		enderChest = new Inventory[ENDERCHEST_PAGES];
 		for(int i = 0; i < ENDERCHEST_PAGES; i++) {
 			enderChest[i] = PitSim.INSTANCE.getServer().createInventory(null, 45, "Enderchest - Page " + (i + 1));
@@ -211,7 +163,9 @@ public class StorageProfile {
 			inventory.setItem((i % 27) + 9, deserialize(strings.get(i + invCount)));
 		}
 
-		for(Inventory inventory : enderChest) {
+		for(int i = 0; i < enderChest.length; i++) {
+			Inventory inventory = enderChest[i];
+
 			for(int j = 0; j < 9; j++) {
 				ItemStack pane = new ItemStack(Material.STAINED_GLASS_PANE, 1, (short) 15);
 				ItemMeta meta = pane.getItemMeta();
@@ -227,6 +181,29 @@ public class StorageProfile {
 				pane.setItemMeta(meta);
 				inventory.setItem(j, pane);
 			}
+
+			ItemStack back = new ItemStack(Material.PAPER);
+			ItemMeta backMeta = back.getItemMeta();
+			if(i == 0) backMeta.setDisplayName(ChatColor.RED + "Previous Page");
+			else backMeta.setDisplayName(ChatColor.GREEN + "Previous Page");
+			back.setItemMeta(backMeta);
+			back.setAmount(i == 0 ? 1 : i);
+			inventory.setItem(36, back);
+
+			ItemStack next = new ItemStack(Material.PAPER);
+			ItemMeta nextMeta = next.getItemMeta();
+			if(i == ENDERCHEST_PAGES - 1) nextMeta.setDisplayName(ChatColor.RED + "Next Page");
+			else nextMeta.setDisplayName(ChatColor.GREEN + "Previous Page");
+			next.setItemMeta(nextMeta);
+			next.setAmount(i == (ENDERCHEST_PAGES - 1) ? 1 : i + 1);
+			inventory.setItem(44, next);
+
+			ItemStack menu = new ItemStack(Material.COMPASS);
+			ItemMeta menuMeta = menu.getItemMeta();
+			menuMeta.setDisplayName(ChatColor.DARK_PURPLE + "Back to Menu");
+			menu.setItemMeta(menuMeta);
+			menu.setAmount(i + 1);
+			inventory.setItem(40, menu);
 		}
 
 		for(Inventory itemStacks : enderChest) {
@@ -235,23 +212,6 @@ public class StorageProfile {
 			}
 		}
 	}
-
-//	public void setInventory(PluginMessage message) {
-//		List<String> strings = message.getStrings();
-//
-//		System.out.println("Setting Inventory");
-//		cachedInventory = new ItemStack[36];
-//		armor = new ItemStack[4];
-//
-//		for(int i = 0; i < 36; i++) {
-//			cachedInventory[i] = strings.get(i).isEmpty() ? new ItemStack(Material.AIR) : deserialize(strings.get(i));
-//		}
-//
-//		for(int i = 0; i < 4; i++) {
-//			System.out.println(strings.size());
-//			armor[i] = strings.get(i + 36).isEmpty() ? new ItemStack(Material.AIR) : deserialize(strings.get(i + 36));
-//		}
-//	}
 
 	public void saveData() {
 		PluginMessage message = new PluginMessage().writeString("ITEM DATA SAVE").writeString(uuid.toString());
@@ -302,89 +262,13 @@ public class StorageProfile {
 		message.send();
 	}
 
-//	public void saveEnderchest() {
-//		PluginMessage message = new PluginMessage().writeString("ENDERCHEST").writeString(uuid.toString());
-//
-//		System.out.println(hashCode());
-//		System.out.println("Enderchest: " + Arrays.toString(enderChest));
-//
-//		message.writeString(PitSim.serverName);
-//		for(Inventory items : enderChest) {
-//			for(int i = 9; i < items.getSize() - 9; i++) {
-//				message.writeString(serialize(items.getItem(i)));
-//			}
-//		}
-//
-//		enderchestSave = message;
-//		saving = true;
-//
-//		enderchestSaveTask = new BukkitRunnable() {
-//			@Override
-//			public void run() {
-//				//TODO: Discord alert
-//
-//				OfflinePlayer player = Bukkit.getOfflinePlayer(uuid);
-//				if(!player.isOnline()) return;
-//				player.getPlayer().kickPlayer(ChatColor.RED + "Your playerdata failed to save. Please report this issue");
-//			}
-//		}.runTaskLater(PitSim.INSTANCE, 40);
-//
-//		message.writeInt(87654);
-//		message.send();
-//	}
-
-//	public void saveInventory() {
-//		OfflinePlayer player = Bukkit.getOfflinePlayer(uuid);
-//		PluginMessage message = new PluginMessage().writeString("INVENTORY").writeString(player.getUniqueId().toString());
-//		message.writeString(PitSim.serverName);
-//		if(player.getPlayer() != null) {
-//			System.out.println("Online2!");
-//			for(ItemStack itemStack : player.getPlayer().getInventory()) {
-//				message.writeString(serialize(itemStack));
-//			}
-//
-//			System.out.println(message.getStrings().get(3));
-//
-//			for(ItemStack itemStack : player.getPlayer().getInventory().getArmorContents()) {
-//				message.writeString(serialize(itemStack));
-//			}
-//		} else if(cachedInventory != null) {
-//			System.out.println("Offline!");
-//			for(ItemStack itemStack : cachedInventory) {
-//				message.writeString(serialize(itemStack));
-//			}
-//
-//			for(ItemStack itemStack : armor) {
-//				message.writeString(serialize(itemStack));
-//			}
-//		}
-//
-//		inventorySave = message;
-//		saving = true;
-//
-//		inventorySaveTask = new BukkitRunnable() {
-//			@Override
-//			public void run() {
-//				//TODO: Discord alert
-//
-//				OfflinePlayer player = Bukkit.getOfflinePlayer(uuid);
-//				if(!player.isOnline()) return;
-//				player.getPlayer().kickPlayer(ChatColor.RED + "Your playerdata failed to save. Please report this issue");
-//			}
-//		}.runTaskLater(PitSim.INSTANCE, 40);
-//
-//		message.send();
-//	}
-
 	public UUID getUUID() {
 		return uuid;
 	}
 
 	public Inventory getEnderchest(int page) {
 		if(enderChest == null) {
-			try {
-				throw new DataNotLoadedException();
-			} catch(DataNotLoadedException ignored) { }
+			throw new DataNotLoadedException();
 		}
 
 		return enderChest[page - 1];
@@ -392,9 +276,7 @@ public class StorageProfile {
 
 	public ItemStack[] getCachedInventory() {
 		if(cachedInventory == null) {
-			try {
-				throw new DataNotLoadedException();
-			} catch(DataNotLoadedException ignored) { }
+			throw new DataNotLoadedException();
 		}
 
 		return cachedInventory;
@@ -402,9 +284,7 @@ public class StorageProfile {
 
 	public ItemStack[] getArmor() {
 		if(armor == null) {
-			try {
-				throw new DataNotLoadedException();
-			} catch(DataNotLoadedException ignored) { }
+			throw new DataNotLoadedException();
 		}
 
 		return armor;
@@ -435,6 +315,7 @@ public class StorageProfile {
 
 	protected void receiveSaveConfirmation(PluginMessage message) {
 		if(message.getStrings().get(0).equals("SAVE CONFIRMATION")) {
+
 			if(saveRunnable != null) {
 				saveRunnable.run();
 			}
