@@ -32,7 +32,6 @@ public class BrewingSession {
             startTime = System.currentTimeMillis();
             PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
             pitPlayer.brewingSessions.set(brewingSlot - 1, getSaveString());
-            pitPlayer.save(true);
         }
     }
 
@@ -52,7 +51,6 @@ public class BrewingSession {
         BrewingManager.brewingSessions.remove(this);
         PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
         pitPlayer.brewingSessions.set(brewingSlot - 1, null);
-        pitPlayer.save(true);
     }
 
 
