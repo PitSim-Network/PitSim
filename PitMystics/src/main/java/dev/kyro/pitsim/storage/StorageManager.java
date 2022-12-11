@@ -15,7 +15,6 @@ import org.bukkit.event.inventory.InventoryDragEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerPickupItemEvent;
-import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
@@ -38,9 +37,14 @@ public class StorageManager implements Listener {
 	}
 
 	public static StorageProfile getProfile(UUID uuid) {
+
+		System.out.println(profiles);
+
 		for(StorageProfile profile : profiles) {
 			if(profile.getUUID().equals(uuid)) return profile;
 		}
+
+		System.out.println("New Profile!");
 
 		StorageProfile profile = new StorageProfile(uuid);
 		profiles.add(profile);
@@ -73,15 +77,17 @@ public class StorageManager implements Listener {
 		player.updateInventory();
 	}
 
-	@EventHandler(priority = EventPriority.MONITOR)
-	public void onQuit(PlayerQuitEvent event) {
-		if(PitSim.getStatus() == PitSim.ServerStatus.ALL) return;
-
-		Player player = event.getPlayer();
+	public static void quitInitiate(Player player) {
 		StorageProfile profile = getProfile(player);
 
-//		profile.saveEnderchest();
-//		profile.saveInventory();
+		profile.cachedInventory = player.getInventory().getContents();
+		profile.armor = player.getInventory().getArmorContents();
+	}
+
+	public static void quitCleanup(Player player) {
+		if(PitSim.getStatus() == PitSim.ServerStatus.ALL) return;
+
+		StorageProfile profile = getProfile(player);
 
 		profiles.remove(profile);
 		player.getInventory().clear();
@@ -95,8 +101,7 @@ public class StorageManager implements Listener {
 
 		if(strings.size() < 2) return;
 
-		if(strings.get(0).equals("ENDERCHEST SAVE") || strings.get(0).equals("INVENTORY SAVE")) {
-			System.out.println("Save confirm attempt");
+		if(strings.get(0).equals("SAVE CONFIRMATION")) {
 			UUID uuid = UUID.fromString(strings.get(1));
 			Player player = Bukkit.getPlayer(uuid);
 			if(player == null) return;
@@ -115,22 +120,13 @@ public class StorageManager implements Listener {
 			System.out.println(profile);
 		}
 
-		if(strings.get(0).equals("ENDERCHEST")) {
+		if(strings.get(0).equals("PLAYER DATA")) {
 			UUID uuid = UUID.fromString(strings.get(1));
 
 			StorageProfile profile = getProfile(uuid);
 			message.getStrings().remove(0);
 			message.getStrings().remove(0);
-			profile.setEnderchest(message);
-		}
-
-		if(strings.get(0).equals("INVENTORY")) {
-			UUID uuid = UUID.fromString(strings.get(1));
-
-			StorageProfile profile = getProfile(uuid);
-			message.getStrings().remove(0);
-			message.getStrings().remove(0);
-			profile.setInventory(message);
+			profile.setData(message);
 		}
 	}
 

@@ -1,6 +1,5 @@
 package dev.kyro.pitsim.controllers;
 
-import com.google.cloud.firestore.annotation.Exclude;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.misc.Misc;
 import org.bukkit.entity.Player;
@@ -61,7 +60,7 @@ public class LobbySwitchManager implements Listener {
 			public void run() {
 				switchingPlayers.remove(player);
 			}
-		}.runTaskLater(PitSim.INSTANCE, 40);
+		}.runTaskLater(PitSim.INSTANCE, 40 + 5);
 	}
 
 }

@@ -230,8 +230,7 @@ public class PitPlayer {
 
 		if(itemData) {
 			StorageProfile profile = StorageManager.getProfile(uuid);
-			profile.saveInventory();
-			profile.saveEnderchest();
+			profile.saveData();
 		}
 
 		megastreakRef = megastreak.getRefNames().get(0);

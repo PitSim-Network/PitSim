@@ -7,6 +7,7 @@ import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.controllers.objects.*;
 import dev.kyro.pitsim.enums.ItemType;
 import dev.kyro.pitsim.events.MessageEvent;
+import dev.kyro.pitsim.storage.StorageManager;
 import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -17,7 +18,6 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
-import dev.kyro.pitsim.storage.StorageManager;
 
 import java.util.List;
 import java.util.UUID;
@@ -143,35 +143,6 @@ public class ProxyMessaging implements Listener {
 			ShutdownManager.initiateShutdown(minutes);
 		}
 
-		if(strings.size() >= 2 && strings.get(0).equals("SAVE DATA")) {
-
-			String playerName = strings.get(1);
-			Player player = Bukkit.getPlayer(playerName);
-			if(player == null) return;
-
-			PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
-
-			new BukkitRunnable() {
-				@Override
-				public void run() {
-					LobbySwitchManager.setSwitchingPlayer(player);
-				}
-			}.runTask(PitSim.INSTANCE);
-
-			BukkitRunnable runnable = new BukkitRunnable() {
-				@Override
-				public void run() {
-					new PluginMessage().writeString("QUEUE").writeString(player.getName()).writeInt(0).send();
-				}
-			};
-
-			try {
-				pitPlayer.save(true, runnable, false);
-			} catch(ExecutionException | InterruptedException e) {
-				throw new RuntimeException(e);
-			}
-		}
-
 		if(strings.size() >= 2 && strings.get(0).equals("DARKZONE JOIN")) {
 			System.out.println(1);
 			if(booleans.size() >= 1 && booleans.get(0)) {
@@ -243,6 +214,43 @@ public class ProxyMessaging implements Listener {
 				AUtil.giveItemSafely(winner.getPlayer(), jewel, true);
 
 				AOutput.send(winner.getPlayer(), "&5&lDARK AUCTION! &7Received " + item.itemName + "&7.");
+			}
+
+		}
+
+		if(strings.size() >= 2 && strings.get(0).equals("REQUEST SWITCH")) {
+			UUID uuid = UUID.fromString(strings.get(1));
+			Player player = Bukkit.getPlayer(uuid);
+			if(player == null) return;
+			PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
+
+			new BukkitRunnable() {
+				@Override
+				public void run() {
+					LobbySwitchManager.setSwitchingPlayer(player);
+				}
+			}.runTask(PitSim.INSTANCE);
+
+			BukkitRunnable runnable = new BukkitRunnable() {
+				@Override
+				public void run() {
+
+					BukkitRunnable itemRunnable = new BukkitRunnable() {
+						@Override
+						public void run() {
+							new PluginMessage().writeString("QUEUE").writeString(player.getName()).writeBoolean(PitSim.getStatus() == PitSim.ServerStatus.DARKZONE).send();
+						}
+					};
+
+					StorageManager.getProfile(player).saveData(itemRunnable);
+
+				}
+			};
+
+			try {
+				pitPlayer.save(true, runnable, false);
+			} catch(ExecutionException | InterruptedException e) {
+				throw new RuntimeException(e);
 			}
 
 		}

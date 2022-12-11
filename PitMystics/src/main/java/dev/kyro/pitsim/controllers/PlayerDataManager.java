@@ -2,6 +2,7 @@ package dev.kyro.pitsim.controllers;
 
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
+import dev.kyro.pitsim.storage.StorageManager;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -35,7 +36,9 @@ public class PlayerDataManager implements Listener {
 		new BukkitRunnable() {
 			@Override
 			public void run() {
-				pitPlayer.save(!LobbySwitchManager.switchingPlayers.contains(player));
+				StorageManager.quitInitiate(player);
+				if(!LobbySwitchManager.switchingPlayers.contains(player)) pitPlayer.save(!LobbySwitchManager.switchingPlayers.contains(player));
+				StorageManager.quitCleanup(player);
 			}
 		}.runTaskLater(PitSim.INSTANCE, 10L);
 	}
