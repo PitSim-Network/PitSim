@@ -40,9 +40,9 @@ public class EnderchestPanel extends AGUIPanel {
 		if(event.getClickedInventory().getHolder() != this) return;
 		int slot = event.getSlot();
 
-		if(slot < 9 || slot > 36) return;
+		if(slot < 9 || slot > 27) return;
 
-		if((slot - 9) + 1 > rank.pages && slot < 27) {
+		if((slot - 9) + 1 > rank.pages) {
 			event.setCancelled(true);
 			AOutput.error(player, "&cYou do not have permission to access this page!");
 			AOutput.send(player, "&7Purchase more at &f&nhttps://store.pitsim.net");
