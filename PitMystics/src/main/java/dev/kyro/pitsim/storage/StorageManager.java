@@ -3,7 +3,6 @@ package dev.kyro.pitsim.storage;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.controllers.objects.PluginMessage;
 import dev.kyro.pitsim.events.MessageEvent;
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -98,10 +97,8 @@ public class StorageManager implements Listener {
 
 		if(strings.get(0).equals("SAVE CONFIRMATION")) {
 			UUID uuid = UUID.fromString(strings.get(1));
-			Player player = Bukkit.getPlayer(uuid);
-			if(player == null) return;
 
-			StorageProfile profile = getProfile(player);
+			StorageProfile profile = getProfile(uuid);
 			if(!profile.hasData()) return;
 
 			profile.receiveSaveConfirmation(message);
@@ -109,6 +106,7 @@ public class StorageManager implements Listener {
 
 		if(strings.get(0).equals("LOAD REQUEST")) {
 			UUID uuid = UUID.fromString(strings.get(1));
+			System.out.println("Loading profile for: " + uuid);
 
 			StorageProfile profile = getInitialProfile(uuid);
 		}

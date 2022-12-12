@@ -12,6 +12,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.material.MaterialData;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -67,6 +68,7 @@ public class CustomSerializer {
 	@SuppressWarnings("deprecation")
 	public static ItemStack deserialize(String p) {
 		String[] a = p.split(";");
+		System.out.println(Arrays.toString(a));
 		ItemStack i = new ItemStack(Material.getMaterial(a[0]), Integer.parseInt(a[1]));
 		i.setDurability((short) Integer.parseInt(a[2]));
 		ItemMeta meta = i.getItemMeta();

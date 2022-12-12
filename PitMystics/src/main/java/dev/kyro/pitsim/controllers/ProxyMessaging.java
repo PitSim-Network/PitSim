@@ -222,7 +222,7 @@ public class ProxyMessaging implements Listener {
 			UUID uuid = UUID.fromString(strings.get(1));
 
 			PitPlayer pitPlayer = new PitPlayer(Bukkit.getOfflinePlayer(uuid).getUniqueId());
-			pitPlayer.save(true);
+			pitPlayer.save(false);
 			System.out.println("Migrating Player: " + uuid);
 		}
 

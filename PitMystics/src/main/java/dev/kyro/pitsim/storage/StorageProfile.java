@@ -122,6 +122,7 @@ public class StorageProfile {
 			if(!(e instanceof FileNotFoundException)) e.printStackTrace();
 		}
 
+		System.out.println("Initial data load for: " + player);
 		saveData();
 
 	}
