@@ -159,7 +159,7 @@ public class StorageManager implements Listener {
 		for(int i = 0; i < profile.enderChest.length; i++) {
 			Inventory inv = profile.enderChest[i];
 
-			if(inv.equals(event.getWhoClicked().getOpenInventory().getTopInventory())) {
+			if(inv.equals(event.getClickedInventory())) {
 
 				if(event.getSlot() == 36 && i > 0) {
 					player.openInventory(profile.enderChest[i - 1]);

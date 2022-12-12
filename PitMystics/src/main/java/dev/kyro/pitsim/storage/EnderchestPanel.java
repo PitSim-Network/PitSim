@@ -42,7 +42,7 @@ public class EnderchestPanel extends AGUIPanel {
 
 		if(slot < 9 || slot > 36) return;
 
-		if((slot - 9) + 1 > rank.pages) {
+		if((slot - 9) + 1 > rank.pages && slot < 27) {
 			event.setCancelled(true);
 			AOutput.error(player, "&cYou do not have permission to access this page!");
 			AOutput.send(player, "&7Purchase more at &f&nhttps://store.pitsim.net");
@@ -52,7 +52,7 @@ public class EnderchestPanel extends AGUIPanel {
 		StorageProfile profile = StorageManager.getProfile(player);
 		if(!profile.hasData() || profile.isSaving()) return;
 
-		player.closeInventory();
+//		player.closeInventory();
 		Inventory inventory = profile.getEnderchest(slot - 8);
 		player.openInventory(inventory);
 	}
