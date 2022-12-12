@@ -40,7 +40,7 @@ public class EnderchestPanel extends AGUIPanel {
 		if(event.getClickedInventory().getHolder() != this) return;
 		int slot = event.getSlot();
 
-		if(slot < 9 || slot > 27) return;
+		if(slot < 9 || slot >= 27) return;
 
 		if((slot - 9) + 1 > rank.pages) {
 			event.setCancelled(true);

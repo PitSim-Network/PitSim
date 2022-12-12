@@ -30,7 +30,8 @@ public class WinAuctionsQuest extends PassQuest {
 		ItemStack itemStack = new AItemStackBuilder(Material.DIAMOND)
 				.setName(getDisplayName())
 				.setLore(new ALoreBuilder(
-						"&7Win &f" + Misc.formatLarge(questLevel.getRequirement(pitPlayer)) + " &7actions (found in",
+						"&7Win &f" + Misc.formatLarge(questLevel.getRequirement(pitPlayer)) + " &7action" +
+								(questLevel.getRequirement(pitPlayer) == 1 ? "" : "s") + " (found in",
 						"&7the &5darkzone&7)",
 						"",
 						"&7Progress: &3" + Misc.formatLarge(progress) + "&7/&3" + Misc.formatLarge(questLevel.getRequirement(pitPlayer)) + " &8[" +
