@@ -99,7 +99,6 @@ public class StorageManager implements Listener {
 			UUID uuid = UUID.fromString(strings.get(1));
 
 			StorageProfile profile = getProfile(uuid);
-			if(!profile.hasData()) return;
 
 			profile.receiveSaveConfirmation(message);
 		}
