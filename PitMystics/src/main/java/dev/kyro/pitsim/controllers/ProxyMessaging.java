@@ -144,9 +144,7 @@ public class ProxyMessaging implements Listener {
 		}
 
 		if(strings.size() >= 2 && strings.get(0).equals("DARKZONE JOIN")) {
-			System.out.println(1);
 			if(booleans.size() >= 1 && booleans.get(0)) {
-				System.out.println(2);
 				UUID uuid = UUID.fromString(strings.get(1));
 				LobbySwitchManager.joinedFromDarkzone.add(uuid);
 				System.out.println(uuid + "joined from darkzone");
@@ -222,8 +220,7 @@ public class ProxyMessaging implements Listener {
 			UUID uuid = UUID.fromString(strings.get(1));
 
 			PitPlayer pitPlayer = new PitPlayer(Bukkit.getOfflinePlayer(uuid).getUniqueId());
-			pitPlayer.save(true);
-			System.out.println("Migrating Player: " + uuid);
+			pitPlayer.save(false);
 		}
 
 		if(strings.size() >= 2 && strings.get(0).equals("REQUEST SWITCH")) {
