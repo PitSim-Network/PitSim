@@ -35,7 +35,7 @@ public class DailyBotKillQuest extends PassQuest {
 		ItemStack itemStack = new AItemStackBuilder(Material.DIAMOND_SWORD)
 				.setName(getDisplayName())
 				.setLore(new ALoreBuilder(
-						"&7Kill &c" + Misc.formatLarge(questLevel.getRequirement(pitPlayer)) + " &7bots (not bots)",
+						"&7Kill &c" + Misc.formatLarge(questLevel.getRequirement(pitPlayer)) + " &7bots",
 						"",
 						"&7Progress: &3" + Misc.formatLarge(progress) + "&7/&3" + Misc.formatLarge(questLevel.getRequirement(pitPlayer)) + " &8[" +
 								AUtil.createProgressBar("|", ChatColor.AQUA, ChatColor.GRAY, 20,
