@@ -131,7 +131,6 @@ public class StorageProfile {
 	public void saveData(BukkitRunnable runnable) {
 		saveRunnable = runnable;
 		if(saving) return;
-		saving = true;
 		saveData();
 	}
 
@@ -307,6 +306,9 @@ public class StorageProfile {
 
 
 	protected void receiveSaveConfirmation(PluginMessage message) {
+
+		saving = false;
+
 		if(message.getStrings().get(0).equals("SAVE CONFIRMATION")) {
 
 			if(saveRunnable != null) {
@@ -315,7 +317,5 @@ public class StorageProfile {
 			saveRunnable = null;
 			if(saveTask != null) saveTask.cancel();
 		}
-
-		saving = false;
 	}
 }
