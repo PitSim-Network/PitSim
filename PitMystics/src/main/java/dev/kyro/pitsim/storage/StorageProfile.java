@@ -28,6 +28,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.nio.file.NoSuchFileException;
 import java.util.List;
 import java.util.UUID;
 
@@ -119,8 +120,8 @@ public class StorageProfile {
 				}
 			}
 
-		} catch(IOException e) {
-			if(!(e instanceof FileNotFoundException)) e.printStackTrace();
+		} catch(IOException exception) {
+			if(!(exception instanceof FileNotFoundException) && !(exception instanceof NoSuchFileException)) exception.printStackTrace();
 		}
 
 		saveData();
@@ -192,9 +193,9 @@ public class StorageProfile {
 			ItemStack next = new ItemStack(Material.PAPER);
 			ItemMeta nextMeta = next.getItemMeta();
 			if(i == ENDERCHEST_PAGES - 1) nextMeta.setDisplayName(ChatColor.RED + "Next Page");
-			else nextMeta.setDisplayName(ChatColor.GREEN + "Previous Page");
+			else nextMeta.setDisplayName(ChatColor.GREEN + "Next Page");
 			next.setItemMeta(nextMeta);
-			next.setAmount(i == (ENDERCHEST_PAGES - 1) ? 1 : i + 1);
+			next.setAmount(i == (ENDERCHEST_PAGES - 1) ? 1 : i + 2);
 			inventory.setItem(44, next);
 
 			ItemStack menu = new ItemStack(Material.COMPASS);
