@@ -1,5 +1,6 @@
 package dev.kyro.pitsim.commands;
 
+import dev.kyro.pitsim.misc.Base64;
 import dev.kyro.pitsim.misc.CustomSerializer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -14,7 +15,7 @@ public class ATestCommand implements CommandExecutor {
 		Player player = (Player) sender;
 		if(!player.isOp()) return false;
 
-		System.out.println(player.getItemInHand().getItemMeta().getClass());
+		System.out.println(Base64.itemTo64(player.getItemInHand()));
 		System.out.println(CustomSerializer.serialize(player.getItemInHand()));
 
 		return false;

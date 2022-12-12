@@ -25,7 +25,7 @@ public class CustomSerializer {
 		parts[4] = String.valueOf(i.getData().getData());
 		parts[5] = getEnchants(i);
 		parts[6] = getNBT(i);
-		return StringUtils.join(parts, ";");
+		return StringUtils.join(parts, "\t");
 	}
 
 	public static String getEnchants(ItemStack i) {
@@ -43,7 +43,6 @@ public class CustomSerializer {
 	}
 
 	public static String getNBT(ItemStack i) {
-
 		net.minecraft.server.v1_8_R3.ItemStack nmsStack = CraftItemStack.asNMSCopy(i);
 		NBTTagCompound compound = nmsStack.hasTag() ? nmsStack.getTag() : new NBTTagCompound();
 		return compound.toString();
@@ -51,6 +50,9 @@ public class CustomSerializer {
 	}
 
 	public static ItemStack setNBT(ItemStack i, String NBT) {
+//		net.minecraft.server.v1_8_R3.ItemStack nmsStack = CraftItemStack.asNMSCopy(i);
+//		NBTTagCompound compound = (NBTTagCompound) new NBTContainer(nbt).getCompound();
+//		nmsStack.setTag(compound);
 
 		net.minecraft.server.v1_8_R3.ItemStack nmsStack = CraftItemStack.asNMSCopy(i);
 		try {
@@ -66,7 +68,7 @@ public class CustomSerializer {
 
 	@SuppressWarnings("deprecation")
 	public static ItemStack deserialize(String p) {
-		String[] a = p.split(";");
+		String[] a = p.split("\t");
 		ItemStack i = new ItemStack(Material.getMaterial(a[0]), Integer.parseInt(a[1]));
 		i.setDurability((short) Integer.parseInt(a[2]));
 		ItemMeta meta = i.getItemMeta();
