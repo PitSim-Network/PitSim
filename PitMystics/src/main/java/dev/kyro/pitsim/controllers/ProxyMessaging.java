@@ -229,6 +229,12 @@ public class ProxyMessaging implements Listener {
 			if(player == null) return;
 			PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
 
+			int requestedServer = 0;
+
+			if(integers.size() >= 1) {
+				requestedServer = integers.get(0);
+			}
+
 			new BukkitRunnable() {
 				@Override
 				public void run() {
@@ -236,6 +242,7 @@ public class ProxyMessaging implements Listener {
 				}
 			}.runTask(PitSim.INSTANCE);
 
+			int finalRequestedServer = requestedServer;
 			BukkitRunnable runnable = new BukkitRunnable() {
 				@Override
 				public void run() {
@@ -243,7 +250,51 @@ public class ProxyMessaging implements Listener {
 					BukkitRunnable itemRunnable = new BukkitRunnable() {
 						@Override
 						public void run() {
-							new PluginMessage().writeString("QUEUE").writeString(player.getName()).writeBoolean(PitSim.getStatus() == PitSim.ServerStatus.DARKZONE).send();
+							new PluginMessage().writeString("QUEUE").writeString(player.getName()).writeInt(finalRequestedServer).writeBoolean(PitSim.getStatus() == PitSim.ServerStatus.DARKZONE).send();
+						}
+					};
+
+					StorageManager.getProfile(player).saveData(itemRunnable);
+
+				}
+			};
+
+			try {
+				pitPlayer.save(true, runnable, false);
+			} catch(ExecutionException | InterruptedException e) {
+				throw new RuntimeException(e);
+			}
+
+		}
+
+		if(strings.size() >= 2 && strings.get(0).equals("REQUEST DARKZONE SWITCH")) {
+			UUID uuid = UUID.fromString(strings.get(1));
+			Player player = Bukkit.getPlayer(uuid);
+			if(player == null) return;
+			PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
+
+			int requestedServer = 0;
+
+			if(integers.size() >= 1) {
+				requestedServer = integers.get(0);
+			}
+
+			new BukkitRunnable() {
+				@Override
+				public void run() {
+					LobbySwitchManager.setSwitchingPlayer(player);
+				}
+			}.runTask(PitSim.INSTANCE);
+
+			int finalRequestedServer = requestedServer;
+			BukkitRunnable runnable = new BukkitRunnable() {
+				@Override
+				public void run() {
+
+					BukkitRunnable itemRunnable = new BukkitRunnable() {
+						@Override
+						public void run() {
+							new PluginMessage().writeString("QUEUE DARKZONE").writeString(player.getName()).writeInt(finalRequestedServer).send();
 						}
 					};
 
