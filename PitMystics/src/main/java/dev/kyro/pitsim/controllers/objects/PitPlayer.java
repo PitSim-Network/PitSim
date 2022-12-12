@@ -342,11 +342,6 @@ public class PitPlayer {
 		for(int i = 0; i < brewingSessions.size(); i++) {
 			brewingSessions.set(i, playerData.getString("brewingsession" + (i + 1)));
 		}
-		for(int i = 0; i < brewingSessions.size(); i++) {
-			if(brewingSessions.get(i) != null) {
-//				BrewingManager.brewingSessions.add(new BrewingSession(player, i, brewingSessions.get(i), null, null, null, null));
-			}
-		}
 
 		if(playerData.contains("taintedsouls")) {
 			taintedSouls = playerData.getInt("taintedsouls");
@@ -397,9 +392,11 @@ public class PitPlayer {
 			killstreaks.set(i, savedKillstreak);
 		}
 
-		for(int i = 0; i < brewingSessions.size(); i++) {
-			if(brewingSessions.get(i) != null)
-				BrewingManager.brewingSessions.add(new BrewingSession(player, i, brewingSessions.get(i), null, null, null, null));
+		if(PitSim.getStatus().isDarkzone()) {
+			for(int i = 0; i < brewingSessions.size(); i++) {
+				if(brewingSessions.get(i) != null)
+					BrewingManager.brewingSessions.add(new BrewingSession(player, i, brewingSessions.get(i), null, null, null, null));
+			}
 		}
 
 		if(renownUpgrades == null) {
