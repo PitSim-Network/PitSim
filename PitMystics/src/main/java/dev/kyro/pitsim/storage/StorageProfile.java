@@ -3,6 +3,7 @@ package dev.kyro.pitsim.storage;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.controllers.objects.PluginMessage;
 import dev.kyro.pitsim.exceptions.DataNotLoadedException;
+import dev.kyro.pitsim.misc.Base64;
 import dev.kyro.pitsim.misc.CustomSerializer;
 import dev.kyro.pitsim.misc.Misc;
 import net.minecraft.server.v1_8_R3.NBTCompressedStreamTools;
@@ -70,8 +71,8 @@ public class StorageProfile {
 				for(int j = 9; j < 36; j++) {
 					String base64String = (String) vault.get(j + "");
 					if(base64String == null) continue;
-//					ItemStack itemStack = Base64.itemFrom64(base64String);
-					ItemStack itemStack = CustomSerializer.deserialize(base64String);
+					ItemStack itemStack = Base64.itemFrom64(base64String);
+//					ItemStack itemStack = CustomSerializer.deserialize(base64String);
 
 					inventory.setItem(j, itemStack);
 				}
