@@ -67,16 +67,18 @@ public abstract class PitNPC implements Listener {
 		npcs.add(npc);
 	}
 
-	public void spawnPlayerNPC(String name, String skinName, Location location) {
+	public void spawnPlayerNPC(String name, String skinName, Location location, boolean lookClose) {
 		SkinManager.loadAndSkinNPC(skinName, new BukkitRunnable() {
 			@Override
 			public void run() {
 				NPC npc = registry.createNPC(EntityType.PLAYER, name);
 				npc.spawn(location);
 				SkinManager.skinNPC(npc, skinName);
-				npc.addTrait(LookClose.class);
-				npc.getTrait(LookClose.class).setRange(10);
-				npc.getTrait(LookClose.class).toggle();
+				if(lookClose) {
+					npc.addTrait(LookClose.class);
+					npc.getTrait(LookClose.class).setRange(10);
+					npc.getTrait(LookClose.class).toggle();
+				}
 				npcs.add(npc);
 			}
 		});

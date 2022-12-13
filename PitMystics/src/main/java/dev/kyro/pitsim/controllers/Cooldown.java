@@ -1,14 +1,23 @@
 package dev.kyro.pitsim.controllers;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.UUID;
+
 public class Cooldown {
 
+	public UUID playerUUID;
 	public int initialTime;
 	public int ticksLeft;
 	public boolean enabled = true;
+	private final List<CooldownModifier> cooldownModifiers;
 
-	public Cooldown(int time) {
+	public Cooldown(UUID playerUUID, int time, CooldownModifier... cooldownModifiers) {
+		this.playerUUID = playerUUID;
 		this.initialTime = time;
 		this.ticksLeft = time;
+		this.cooldownModifiers = new ArrayList<>(Arrays.asList(cooldownModifiers));
 		CooldownManager.add(this);
 	}
 
@@ -52,5 +61,21 @@ public class Cooldown {
 		for(int i = 0; i < ticks; i++) tick();
 
 		return ticksLeft;
+	}
+
+	public List<CooldownModifier> getCooldownModifiers() {
+		return cooldownModifiers;
+	}
+
+	public void addModifier(CooldownModifier cooldownModifier) {
+		if(!cooldownModifiers.contains(cooldownModifier)) cooldownModifiers.add(cooldownModifier);
+	}
+
+	public boolean hasModifier(CooldownModifier modifier) {
+		return cooldownModifiers.contains(modifier);
+	}
+
+	public enum CooldownModifier {
+		TELEBOW
 	}
 }

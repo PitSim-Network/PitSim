@@ -70,7 +70,7 @@ class Sonic extends PitEnchant {
 
     public static float getWalkSpeed(int enchantLvl) {
         if(enchantLvl == 0) return 0.2F;
-        else return 0.5F;
+        else return 0.4F;
     }
 
     public static int reduction(int enchantLvl) {

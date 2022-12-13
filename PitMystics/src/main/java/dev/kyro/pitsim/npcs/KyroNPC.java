@@ -26,7 +26,7 @@ public class KyroNPC extends PitNPC {
 
 	@Override
 	public void createNPC(Location location) {
-		spawnPlayerNPC("&9KyroKrypt", "KyroKrypt", location);
+		spawnPlayerNPC("&9KyroKrypt", "revernal", location, true);
 	}
 
 	@Override

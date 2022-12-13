@@ -2,14 +2,12 @@ package dev.kyro.pitsim.controllers;
 
 import de.tr7zw.nbtapi.NBTItem;
 import dev.kyro.arcticapi.misc.AOutput;
-import dev.kyro.arcticapi.misc.AUtil;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.enums.NBTTag;
 import dev.kyro.pitsim.misc.Misc;
 import dev.kyro.pitsim.misc.Sounds;
 import org.bukkit.Location;
-import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -105,28 +103,5 @@ public class ItemManager implements Listener {
 				pitPlayer.confirmedDrop = null;
 			}
 		}
-	}
-
-
-	@EventHandler
-	public void onDrop(PlayerDropItemEvent event) {
-		ItemStack item = event.getItemDrop().getItemStack();
-		if(Misc.isAirOrNull(item)) return;
-
-		NBTItem nbtItem = new NBTItem(item);
-		if(nbtItem.hasKey(NBTTag.IS_GEM.getRef()) && !nbtItem.hasKey(NBTTag.UNDROPPABLE.getRef())) {
-			nbtItem.setBoolean(NBTTag.UNDROPPABLE.getRef(), true);
-			event.getItemDrop().setItemStack(new ItemStack(Material.AIR));
-			AUtil.giveItemSafely(event.getPlayer(), nbtItem.getItem());
-			event.setCancelled(true);
-		}
-
-		new BukkitRunnable() {
-			@Override
-			public void run() {
-				event.getPlayer().getInventory().remove(Material.STONE);
-			}
-		}.runTaskLater(PitSim.INSTANCE, 1);
-
 	}
 }

@@ -3,19 +3,16 @@ package dev.kyro.pitsim.helmetabilities;
 import dev.kyro.arcticapi.builders.AItemStackBuilder;
 import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.arcticapi.misc.AOutput;
-import dev.kyro.pitsim.brewing.objects.PotionEffect;
 import dev.kyro.pitsim.controllers.Cooldown;
 import dev.kyro.pitsim.controllers.objects.GoldenHelmet;
 import dev.kyro.pitsim.controllers.objects.HelmetAbility;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.misc.Sounds;
 import org.bukkit.Material;
-import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.PotionMeta;
 import org.bukkit.potion.PotionEffectType;
-import org.bukkit.util.Vector;
 
 import java.text.DecimalFormat;
 import java.util.Arrays;
@@ -71,7 +68,7 @@ public class ManaAbility extends HelmetAbility {
 	@Override
 	public List<String> getDescription() {
 		DecimalFormat formatter = new DecimalFormat("#,###.#");
-		return Arrays.asList("&7Double-Sneak to recharge", "&7your mana to full. (5s cd)", "&7Only works in the &5Darkzone&7.", "", "&7Cost: &6" + formatter.format(10000) + "g");
+		return Arrays.asList("&7Double-Sneak to recharge", "&7your mana to full. (5s cooldown)", "&7Only works in the &5Darkzone&7.", "", "&7Cost: &6" + formatter.format(10000) + "g");
 	}
 
 	@Override

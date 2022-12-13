@@ -14,6 +14,12 @@ import java.util.Calendar;
 import java.util.TimeZone;
 
 public class TimeManager implements Listener {
+	private static boolean isChristmasSeason;
+
+	static {
+		setChristmasSeason();
+	}
+
 	public static boolean isHalloween() {
 		Calendar eventStart = Calendar.getInstance(TimeZone.getTimeZone("EST"));
 		Calendar eventEnd = Calendar.getInstance(TimeZone.getTimeZone("EST"));
@@ -25,10 +31,40 @@ public class TimeManager implements Listener {
 		return currentTime.after(eventStart) && currentTime.before(eventEnd);
 	}
 
+	public static boolean isChristmasSeason() {
+		return isChristmasSeason;
+	}
+
+	public static void setChristmasSeason() {
+		Calendar eventStart = Calendar.getInstance(TimeZone.getTimeZone("EST"));
+		Calendar eventEnd = Calendar.getInstance(TimeZone.getTimeZone("EST"));
+
+		setDate(eventStart, Calendar.DECEMBER, 1);
+		setDate(eventEnd, Calendar.JANUARY, 9, true);
+
+		Calendar currentTime = Calendar.getInstance(TimeZone.getTimeZone("EST"));
+		isChristmasSeason = currentTime.after(eventStart) && currentTime.before(eventEnd);
+	}
+
+	public static boolean isChristmasImminent() {
+		Calendar eventStart = Calendar.getInstance(TimeZone.getTimeZone("EST"));
+		Calendar eventEnd = Calendar.getInstance(TimeZone.getTimeZone("EST"));
+
+		setDate(eventStart, Calendar.DECEMBER, 1);
+		setDate(eventEnd, Calendar.JANUARY, 7, true);
+
+		Calendar currentTime = Calendar.getInstance(TimeZone.getTimeZone("EST"));
+		return currentTime.after(eventStart) && currentTime.before(eventEnd);
+	}
+
 	private static void setDate(Calendar calendar, int month, int date) {
+		setDate(calendar, month, date, false);
+	}
+
+	private static void setDate(Calendar calendar, int month, int date, boolean nextYear) {
 		calendar.clear();
 		calendar.set(Calendar.YEAR,
-				Calendar.getInstance(TimeZone.getTimeZone("EST")).get(Calendar.YEAR));
+				Calendar.getInstance(TimeZone.getTimeZone("EST")).get(Calendar.YEAR) + (nextYear ? 1 : 0));
 		calendar.set(Calendar.MONTH, month);
 		calendar.set(Calendar.DATE, date);
 		calendar.set(Calendar.HOUR_OF_DAY, 0);

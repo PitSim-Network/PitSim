@@ -21,11 +21,13 @@ import dev.kyro.pitsim.inventories.EnchantingGUI;
 import dev.kyro.pitsim.misc.Constant;
 import dev.kyro.pitsim.misc.Misc;
 import dev.kyro.pitsim.misc.Sounds;
+import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Color;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -185,10 +187,20 @@ public class EnchantManager implements Listener {
 
 	public static boolean isIllegalItem(ItemStack itemStack) {
 		if(Misc.isAirOrNull(itemStack)) return false;
+		if(itemStack.getType() == Material.FISHING_ROD) return true;
+
+		if(itemStack.getType() == Material.DIAMOND_HELMET || itemStack.getType() == Material.DIAMOND_CHESTPLATE ||
+				itemStack.getType() == Material.DIAMOND_LEGGINGS || itemStack.getType() == Material.DIAMOND_BOOTS ||
+				itemStack.getType() == Material.DIAMOND_SWORD) {
+
+			if(itemStack.getEnchantmentLevel(Enchantment.DAMAGE_ALL) > 1 || itemStack.getEnchantmentLevel(Enchantment.PROTECTION_ENVIRONMENTAL) > 1) return true;
+		}
+
 		NBTItem nbtItem = new NBTItem(itemStack);
 		if(!nbtItem.hasKey(NBTTag.ITEM_UUID.getRef())) return false;
 
 		if(nbtItem.hasKey(NBTTag.TAINTED_TIER.getRef())) {
+			if(nbtItem.hasKey(NBTTag.IS_GEMMED.getRef())) return true;
 			Map<PitEnchant, Integer> enchants = EnchantManager.getEnchantsOnItem(itemStack);
 			int tainted = 0;
 			for (PitEnchant pitEnchant : enchants.keySet()) {
@@ -203,7 +215,7 @@ public class EnchantManager implements Listener {
 			Integer tokenNum = nbtItem.getInteger(NBTTag.ITEM_TOKENS.getRef());
 			Integer rTokenNum = nbtItem.getInteger(NBTTag.ITEM_RTOKENS.getRef());
 
-			int maxTokens = nbtItem.getBoolean(NBTTag.IS_GEMMED.getRef()) ? 9 : 8;
+			int maxTokens = nbtItem.getBoolean(NBTTag.IS_GEMMED.getRef()) && nbtItem.hasKey(NBTTag.IS_JEWEL.getRef()) ? 9 : 8;
 			if(enchantNum > 3 || tokenNum > maxTokens || rTokenNum > 4) return true;
 			for (PitEnchant pitEnchant : EnchantManager.pitEnchants) {
 				if(itemEnchants.getInteger(pitEnchant.refNames.get(0)) > 3) return true;
@@ -211,7 +223,7 @@ public class EnchantManager implements Listener {
 			boolean hasCommonEnchant = false;
 			for (String enchantString : enchantOrder) {
 				PitEnchant pitEnchant = EnchantManager.getEnchant(enchantString);
-				if(pitEnchant == EnchantManager.getEnchant("theking")) return true;
+//				if(pitEnchant == EnchantManager.getEnchant("theking")) return true;
 				if(pitEnchant == null) continue;
 				if(pitEnchant.isUncommonEnchant) continue;
 				hasCommonEnchant = true;
@@ -224,6 +236,37 @@ public class EnchantManager implements Listener {
 	public static void setItemLore(ItemStack itemStack, Player player) {
 		if(!PlayerManager.isRealPlayer(player)) player = null;
 
+		if(Misc.isAirOrNull(itemStack)) return;
+		NBTItem nbtItem = new NBTItem(itemStack);
+		if(!nbtItem.hasKey(NBTTag.ITEM_UUID.getRef())) return;
+
+		NBTList<String> enchantOrder = nbtItem.getStringList(NBTTag.PIT_ENCHANT_ORDER.getRef());
+		NBTCompound itemEnchants = nbtItem.getCompound(NBTTag.PIT_ENCHANTS.getRef());
+		int playerKills = nbtItem.getInteger(NBTTag.PLAYER_KILLS.getRef());
+		int botKills = nbtItem.getInteger(NBTTag.BOT_KILLS.getRef());
+		int currentLives = nbtItem.getInteger(NBTTag.CURRENT_LIVES.getRef());
+		int maxLives = nbtItem.getInteger(NBTTag.MAX_LIVES.getRef());
+		int jewelKills = nbtItem.getInteger(NBTTag.JEWEL_KILLS.getRef());
+		boolean isJewel = isJewel(itemStack);
+		char c = 'a';
+
+		if(player != null && !player.isOp()) {
+			ItemMeta itemMeta = itemStack.getItemMeta();
+			if(itemMeta.hasDisplayName()) {
+				String displayName = itemMeta.getDisplayName();
+				String newDisplayName = displayName
+						.replaceAll("\u00A7k", "")
+						.replaceAll("\u00A7l", "")
+						.replaceAll("\u00A7m", "")
+						.replaceAll("\u00A7n", "")
+						.replaceAll("\u00A7o", "");
+				if(!displayName.equals(newDisplayName)) {
+					itemMeta.setDisplayName(newDisplayName);
+					itemStack.setItemMeta(itemMeta);
+				}
+			}
+		}
+
 		if(player != null) {
 			if(player.getWorld() == MapManager.getDarkzone()) {
 				if(MysticType.getMysticType(itemStack) == MysticType.SWORD || MysticType.getMysticType(itemStack) == MysticType.PANTS) {
@@ -235,17 +278,6 @@ public class EnchantManager implements Listener {
 				}
 			}
 		}
-
-		NBTItem nbtItem = new NBTItem(itemStack);
-		NBTList<String> enchantOrder = nbtItem.getStringList(NBTTag.PIT_ENCHANT_ORDER.getRef());
-		NBTCompound itemEnchants = nbtItem.getCompound(NBTTag.PIT_ENCHANTS.getRef());
-		int playerKills = nbtItem.getInteger(NBTTag.PLAYER_KILLS.getRef());
-		int botKills = nbtItem.getInteger(NBTTag.BOT_KILLS.getRef());
-		int currentLives = nbtItem.getInteger(NBTTag.CURRENT_LIVES.getRef());
-		int maxLives = nbtItem.getInteger(NBTTag.MAX_LIVES.getRef());
-		int jewelKills = nbtItem.getInteger(NBTTag.JEWEL_KILLS.getRef());
-		boolean isJewel = isJewel(itemStack);
-		char c = 'a';
 
 		ALoreBuilder loreBuilder = new ALoreBuilder();
 
@@ -407,18 +439,26 @@ public class EnchantManager implements Listener {
 		int maxLives = getRandomMaxLives();
 		nbtItem.setInteger(NBTTag.MAX_LIVES.getRef(), maxLives);
 		nbtItem.setInteger(NBTTag.CURRENT_LIVES.getRef(), maxLives);
-		Bukkit.broadcastMessage(ChatColor.translateAlternateColorCodes(
-				'&', "&3&lJEWEL!&7 " + player.getDisplayName() + " &7found " + jewelEnchant.getDisplayName()));
-		Sounds.JEWEL_FIND.play(player);
-		LogManager.onJewelComplete(player, jewelEnchant, maxLives);
 
 		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
 		if(pitPlayer.stats != null) pitPlayer.stats.jewelsCompleted++;
 
 		try {
-			return EnchantManager.addEnchant(nbtItem.getItem(), jewelEnchant, 3, false, true, -1);
-		} catch(Exception ignored) {
-		}
+			ItemStack jewelStack = EnchantManager.addEnchant(nbtItem.getItem(), jewelEnchant, 3, false, true, -1);
+
+			ItemStack displayStack = new AItemStackBuilder(jewelStack.clone())
+					.setName(jewelEnchant.getDisplayName())
+					.getItemStack();
+			TextComponent message = new TextComponent(ChatColor.translateAlternateColorCodes('&', "&3&lJEWEL!&7 " + player.getDisplayName() + " &7found "));
+			message.addExtra(Misc.createItemHover(displayStack));
+			message.addExtra(new TextComponent(ChatColor.translateAlternateColorCodes('&', "&7!")));
+			Bukkit.broadcast(message);
+			LogManager.onJewelComplete(player, jewelEnchant, maxLives);
+			Sounds.JEWEL_FIND.play(player);
+
+			return jewelStack;
+		} catch(Exception ignored) {}
+
 		return null;
 	}
 
@@ -438,50 +478,51 @@ public class EnchantManager implements Listener {
 		Non non = NonManager.getNon(killed);
 		String ref = non == null ? NBTTag.PLAYER_KILLS.getRef() : NBTTag.BOT_KILLS.getRef();
 
-		if(!Misc.isAirOrNull(attacker.getItemInHand())) {
-			ItemStack itemStack = attacker.getItemInHand();
-			NBTItem nbtItem = new NBTItem(itemStack);
-			nbtItem.setInteger(ref, nbtItem.getInteger(ref) + 1);
+		ItemStack heldStack = attacker.getItemInHand();
+		NBTItem heldNBTItem = null;
+		if(!Misc.isAirOrNull(heldStack)) heldNBTItem = new NBTItem(heldStack);
+		ItemStack pantsStack = attacker.getInventory().getLeggings();
+		NBTItem pantsNBTItem = null;
+		if(!Misc.isAirOrNull(pantsStack)) pantsNBTItem = new NBTItem(pantsStack);
+		if(!Misc.isAirOrNull(heldStack) && heldNBTItem.hasKey(NBTTag.ITEM_UUID.getRef())) {
+			heldNBTItem.setInteger(ref, heldNBTItem.getInteger(ref) + 1);
 
-			if(isJewel(itemStack) && !isJewelComplete(itemStack))
-				nbtItem.setInteger(NBTTag.JEWEL_KILLS.getRef(), nbtItem.getInteger(NBTTag.JEWEL_KILLS.getRef()) + 1);
+			if(isJewel(heldStack) && !isJewelComplete(heldStack))
+				heldNBTItem.setInteger(NBTTag.JEWEL_KILLS.getRef(), heldNBTItem.getInteger(NBTTag.JEWEL_KILLS.getRef()) + 1);
 
-			ItemStack jewelStack = completeJewel(attacker, nbtItem.getItem());
-			if(jewelStack != null) nbtItem = new NBTItem(jewelStack);
+			ItemStack jewelStack = completeJewel(attacker, heldNBTItem.getItem());
+			if(jewelStack != null) heldNBTItem = new NBTItem(jewelStack);
 
-			if(nbtItem.hasKey(NBTTag.ITEM_UUID.getRef())) setItemLore(nbtItem.getItem(), attacker);
-			attacker.setItemInHand(nbtItem.getItem());
-
-			for(int i = 0; i < 9; i++) {
-				if(i == attacker.getInventory().getHeldItemSlot()) continue;
-
-				ItemStack hotbarStack = attacker.getInventory().getItem(i);
-				if(Misc.isAirOrNull(hotbarStack) || hotbarStack.getType() != Material.BOW) continue;
-				NBTItem hotbarNbtItem = new NBTItem(hotbarStack);
-
-				if(isJewel(hotbarStack) && !isJewelComplete(hotbarStack))
-					hotbarNbtItem.setInteger(NBTTag.JEWEL_KILLS.getRef(), hotbarNbtItem.getInteger(NBTTag.JEWEL_KILLS.getRef()) + 1);
-
-				ItemStack hotbarJewelStack = completeJewel(attacker, hotbarNbtItem.getItem());
-				if(hotbarJewelStack != null) hotbarNbtItem = new NBTItem(hotbarJewelStack);
-
-				setItemLore(hotbarNbtItem.getItem(), attacker);
-				attacker.getInventory().setItem(i, hotbarNbtItem.getItem());
-			}
+			if(heldNBTItem.hasKey(NBTTag.ITEM_UUID.getRef())) setItemLore(heldNBTItem.getItem(), attacker);
+			attacker.setItemInHand(heldNBTItem.getItem());
 		}
-		if(!Misc.isAirOrNull(attacker.getInventory().getLeggings())) {
-			ItemStack itemStack = attacker.getInventory().getLeggings();
-			NBTItem nbtItem = new NBTItem(itemStack);
-			nbtItem.setInteger(ref, nbtItem.getInteger(ref) + 1);
+		if(!Misc.isAirOrNull(pantsStack) && pantsNBTItem.hasKey(NBTTag.ITEM_UUID.getRef())) {
+			pantsNBTItem.setInteger(ref, pantsNBTItem.getInteger(ref) + 1);
 
-			if(isJewel(itemStack) && !isJewelComplete(itemStack))
-				nbtItem.setInteger(NBTTag.JEWEL_KILLS.getRef(), nbtItem.getInteger(NBTTag.JEWEL_KILLS.getRef()) + 1);
+			if(isJewel(pantsStack) && !isJewelComplete(pantsStack))
+				pantsNBTItem.setInteger(NBTTag.JEWEL_KILLS.getRef(), pantsNBTItem.getInteger(NBTTag.JEWEL_KILLS.getRef()) + 1);
 
-			ItemStack jewelStack = completeJewel(attacker, nbtItem.getItem());
-			if(jewelStack != null) nbtItem = new NBTItem(jewelStack);
+			ItemStack jewelStack = completeJewel(attacker, pantsNBTItem.getItem());
+			if(jewelStack != null) pantsNBTItem = new NBTItem(jewelStack);
 
-			setItemLore(nbtItem.getItem(), attacker);
-			attacker.getInventory().setLeggings(nbtItem.getItem());
+			setItemLore(pantsNBTItem.getItem(), attacker);
+			attacker.getInventory().setLeggings(pantsNBTItem.getItem());
+		}
+		for(int i = 0; i < 9; i++) {
+			if(i == attacker.getInventory().getHeldItemSlot()) continue;
+
+			ItemStack hotbarStack = attacker.getInventory().getItem(i);
+			if(Misc.isAirOrNull(hotbarStack) || hotbarStack.getType() != Material.BOW) continue;
+			NBTItem hotbarNbtItem = new NBTItem(hotbarStack);
+
+			if(isJewel(hotbarStack) && !isJewelComplete(hotbarStack))
+				hotbarNbtItem.setInteger(NBTTag.JEWEL_KILLS.getRef(), hotbarNbtItem.getInteger(NBTTag.JEWEL_KILLS.getRef()) + 1);
+
+			ItemStack hotbarJewelStack = completeJewel(attacker, hotbarNbtItem.getItem());
+			if(hotbarJewelStack != null) hotbarNbtItem = new NBTItem(hotbarJewelStack);
+
+			setItemLore(hotbarNbtItem.getItem(), attacker);
+			attacker.getInventory().setItem(i, hotbarNbtItem.getItem());
 		}
 	}
 

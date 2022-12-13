@@ -2,7 +2,10 @@ package dev.kyro.pitsim.controllers;
 
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.controllers.objects.PitMap;
+import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.events.PlayerSpawnCommandEvent;
+import dev.kyro.pitsim.misc.Misc;
+import dev.kyro.pitsim.pitmaps.XmasMap;
 import dev.kyro.pitsim.misc.SchematicPaste;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -12,7 +15,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -48,7 +50,7 @@ public class MapManager implements Listener {
 	}
 
 	public static void enablePortal(World lobby) {
-		SchematicPaste.loadSchematic(new File("plugins/WorldEdit/schematics/doorOpen.schematic"), new Location(lobby, -67, 72, 3));
+//		SchematicPaste.loadSchematic(new File("plugins/WorldEdit/schematics/doorOpen.schematic"), new Location(lobby, -67, 72, 3));
 	}
 
 	public static World getTutorial() {

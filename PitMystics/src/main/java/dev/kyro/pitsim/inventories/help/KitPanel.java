@@ -9,6 +9,7 @@ import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.controllers.objects.PlayerStats;
 import dev.kyro.pitsim.exceptions.PitException;
 import dev.kyro.pitsim.misc.Sounds;
+import dev.kyro.pitsim.tutorial.HelpItemStacks;
 import org.bukkit.Material;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
@@ -28,6 +29,8 @@ public class KitPanel extends AGUIPanel {
 		inventoryBuilder.createBorder(Material.STAINED_GLASS_PANE, 8);
 
 		for(Kit kit : KitManager.kits) getInventory().setItem(kit.slot, kit.getDisplayItem());
+
+		getInventory().setItem(26, HelpItemStacks.getKitsItemStack());
 
 		updateInventory();
 	}

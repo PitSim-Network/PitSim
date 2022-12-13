@@ -26,7 +26,9 @@ import dev.kyro.pitsim.megastreaks.NoMegastreak;
 import dev.kyro.pitsim.megastreaks.RNGesus;
 import dev.kyro.pitsim.misc.Misc;
 import dev.kyro.pitsim.misc.Sounds;
+import dev.kyro.pitsim.pitmaps.XmasMap;
 import dev.kyro.pitsim.upgrades.TheWay;
+import dev.kyro.pitsim.upgrades.UberIncrease;
 import me.clip.placeholderapi.PlaceholderAPI;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.*;
@@ -143,7 +145,7 @@ public class PlayerManager implements Listener {
 					if(SpawnManager.isInSpawn(player.getLocation())) continue;
 					List<Player> nearbyNons = new ArrayList<>();
 					for(Entity nearbyEntity : player.getNearbyEntities(4, 4, 4)) {
-						if(nearbyEntity.getWorld() == Bukkit.getWorld("tutorial")) continue;
+//						if(nearbyEntity.getWorld() == Bukkit.getWorld("tutorial")) continue;
 						if(!(nearbyEntity instanceof Player)) continue;
 						Player nearby = (Player) nearbyEntity;
 						if(NonManager.getNon(nearby) == null || SpawnManager.isInSpawn(nearby.getLocation())) continue;
@@ -169,7 +171,7 @@ public class PlayerManager implements Listener {
 					}
 				}
 			}
-		}.runTaskTimer(PitSim.INSTANCE, 0L, 12L);
+		}.runTaskTimer(PitSim.INSTANCE, 0L, 18L);
 
 		new BukkitRunnable() {
 			@Override
@@ -179,6 +181,11 @@ public class PlayerManager implements Listener {
 				}
 			}
 		}.runTaskTimer(PitSim.INSTANCE, Misc.getRunnableOffset(1), 60 * 20);
+	}
+
+	public static boolean isRealPlayerTemp(Player player) {
+		if(player == null) return false;
+		return Bukkit.getOnlinePlayers().contains(player);
 	}
 
 	@EventHandler
@@ -224,6 +231,13 @@ public class PlayerManager implements Listener {
 		if(viewShiftCooldown.getOrDefault(player.getUniqueId(), 0L) + 500 > System.currentTimeMillis()) return;
 		viewShiftCooldown.put(player.getUniqueId(), System.currentTimeMillis());
 		new ViewGUI(player, target).open();
+	}
+
+	@EventHandler
+	public void onAnvil(PlayerInteractEvent event) {
+		if(event.getAction() == Action.RIGHT_CLICK_BLOCK && event.getClickedBlock().getType() == Material.ANVIL) {
+			event.setCancelled(true);
+		}
 	}
 
 	@EventHandler(priority = EventPriority.MONITOR)
@@ -290,6 +304,15 @@ public class PlayerManager implements Listener {
 
 	@EventHandler
 	public void onKillForRank(KillEvent killEvent) {
+
+		XmasMap.removeFromRadio(killEvent.deadPlayer);
+		new BukkitRunnable() {
+			@Override
+			public void run() {
+				XmasMap.addToRadio(killEvent.deadPlayer);
+			}
+		}.runTaskLater(PitSim.INSTANCE, 20);
+
 		double multiplier = 1;
 		if(killEvent.getKiller().hasPermission("group.nitro")) {
 			multiplier += 0.1;
@@ -529,10 +552,10 @@ public class PlayerManager implements Listener {
 	public void onAttack(AttackEvent.Apply attackEvent) {
 
 		Non defendingNon = NonManager.getNon(attackEvent.getDefender());
-//		Arch chest archangel chestplate
-		if(defendingNon == null && attackEvent.isDefenderPlayer()) {
+		if(PlayerManager.isRealPlayerTemp(attackEvent.getDefenderPlayer())) {
+//			Arch chest archangel chestplate
 			attackEvent.multipliers.add(0.8);
-		} else if(attackEvent.isDefenderPlayer()) {
+		} else if(defendingNon != null) {
 //			Non defence
 			if(defendingNon.traits.contains(NonTrait.IRON_STREAKER)) attackEvent.multipliers.add(0.8);
 		}
@@ -552,6 +575,11 @@ public class PlayerManager implements Listener {
 
 		FeatherBoardAPI.resetDefaultScoreboard(event.getPlayer());
 		FeatherBoardAPI.showScoreboard(event.getPlayer(), "default");
+
+		if((System.currentTimeMillis() / 1000L) - 60 * 60 * 20 > pitPlayer.uberReset) {
+			pitPlayer.uberReset = 0;
+			pitPlayer.dailyUbersLeft = 5 + UberIncrease.getUberIncrease(player);
+		}
 
 //		if(!bossBars.containsKey(event.getPlayer())) {
 //			BossBarManager bm = new BossBarManager();
@@ -619,6 +647,15 @@ public class PlayerManager implements Listener {
 		Location spawnLoc = MapManager.currentMap.getSpawn();
 		if(PitSim.getStatus() == PitSim.ServerStatus.DARKZONE) spawnLoc = MapManager.getInitialDarkzoneSpawn();
 		if(LobbySwitchManager.joinedFromDarkzone.contains(player.getUniqueId())) spawnLoc = MapManager.currentMap.getDarkzoneJoinSpawn();
+
+		new BukkitRunnable() {
+			@Override
+			public void run() {
+				if(!pitPlayer.musicDisabled && XmasMap.radio != null) {
+					XmasMap.addToRadio(player);
+				}
+			}
+		}.runTaskLater(PitSim.INSTANCE, 20);
 
 		if(PitSim.getStatus().isPitsim() && player.hasPermission("pitsim.autofps")) {
 			FPSCommand.fpsPlayers.add(player);
@@ -789,26 +826,11 @@ public class PlayerManager implements Listener {
 
 	@EventHandler
 	public void onQuit(PlayerQuitEvent event) {
+		XmasMap.removeFromRadio(event.getPlayer());
 		PitPlayer pitPlayer = PitPlayer.getPitPlayer(event.getPlayer());
 		if(pitPlayer.megastreak.getClass() == RNGesus.class && RNGesus.isOnCooldown(event.getPlayer())) {
 			pitPlayer.megastreak.stop();
 			pitPlayer.megastreak = new NoMegastreak(pitPlayer);
-		}
-	}
-
-	@EventHandler
-	public void onDeath(KillEvent killEvent) {
-		if(!killEvent.isDeadPlayer()) return;
-		PitPlayer pitPlayer = killEvent.getDeadPitPlayer();
-		if(pitPlayer.megastreak.getClass() == RNGesus.class && RNGesus.isOnCooldown(killEvent.getDeadPlayer())) {
-			new BukkitRunnable() {
-				@Override
-				public void run() {
-					pitPlayer.megastreak.stop();
-					pitPlayer.megastreak = new NoMegastreak(pitPlayer);
-					pitPlayer.save(true);
-				}
-			}.runTaskLater(PitSim.INSTANCE, 1L);
 		}
 	}
 

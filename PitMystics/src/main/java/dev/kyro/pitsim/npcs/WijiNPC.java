@@ -26,7 +26,7 @@ public class WijiNPC extends PitNPC {
 
 	@Override
 	public void createNPC(Location location) {
-		spawnPlayerNPC("&9wiji1", "wiji1", location);
+		spawnPlayerNPC("&9wiji1", "wiji1", location, true);
 	}
 
 	@Override

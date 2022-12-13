@@ -22,7 +22,7 @@ public class LeggingsShopNPC extends PitNPC {
 
 	@Override
 	public void createNPC(Location location) {
-		spawnPlayerNPC("&b&lARMOR TRADER", "Merchant", location);
+		spawnPlayerNPC("&b&lARMOR TRADER", "Merchant", location, true);
 	}
 
 	@Override

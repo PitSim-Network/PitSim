@@ -64,9 +64,13 @@ import dev.kyro.pitsim.kits.XPKit;
 import dev.kyro.pitsim.leaderboards.*;
 import dev.kyro.pitsim.megastreaks.*;
 import dev.kyro.pitsim.misc.*;
+import dev.kyro.pitsim.misc.tainted.BloodyHeart;
+import dev.kyro.pitsim.misc.tainted.SyntheticCube;
+import dev.kyro.pitsim.npcs.*;
 import dev.kyro.pitsim.npcs.*;
 import dev.kyro.pitsim.perks.*;
 import dev.kyro.pitsim.pitmaps.BiomesMap;
+import dev.kyro.pitsim.pitmaps.XmasMap;
 import dev.kyro.pitsim.placeholders.*;
 import dev.kyro.pitsim.storage.StorageManager;
 import dev.kyro.pitsim.upgrades.*;
@@ -76,6 +80,11 @@ import net.citizensnpcs.api.npc.NPCRegistry;
 import net.kyori.adventure.platform.bukkit.BukkitAudiences;
 import net.luckperms.api.LuckPerms;
 import net.milkbowl.vault.economy.Economy;
+import org.bukkit.Bukkit;
+import org.bukkit.Location;
+import org.bukkit.Material;
+import org.bukkit.World;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.*;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Item;
@@ -390,7 +399,19 @@ public class PitSim extends JavaPlugin {
 
 	private void registerMaps() {
 //		MapManager.registerMap(new DimensionsMap("dimensions1", "dimensions2"));
+
+		if(TimeManager.isChristmasSeason()) {
+			System.out.println();
+			MapManager.registerMap(new XmasMap("xmas1"));
+			for(World lobby : MapManager.currentMap.lobbies) {
+				lobby.setStorm(true);
+				lobby.setWeatherDuration(Integer.MAX_VALUE);
+			}
+			return;
+		}
+
 		MapManager.registerMap(new BiomesMap("biomes1"));
+
 	}
 
 	private void registerPerks() {
@@ -453,7 +474,7 @@ public class PitSim extends JavaPlugin {
 	private void registerLeaderboards() {
 		LeaderboardManager.registerLeaderboard(new XPLeaderboard());
 		LeaderboardManager.registerLeaderboard(new GoldGrindedLeaderboard());
-		LeaderboardManager.registerLeaderboard(new PlayerKillsLeaderboard());
+//		LeaderboardManager.registerLeaderboard(new PlayerKillsLeaderboard());
 		LeaderboardManager.registerLeaderboard(new BotKillsLeaderboard());
 		LeaderboardManager.registerLeaderboard(new PlaytimeLeaderboard());
 		LeaderboardManager.registerLeaderboard(new UbersCompletedLeaderboard());
@@ -466,7 +487,7 @@ public class PitSim extends JavaPlugin {
 	}
 
 	private void registerNPCs() {
-		NPCManager.registerNPC(new UpgradeNPC(Collections.singletonList(MapManager.currentMap.world)));
+		NPCManager.registerNPC(new PerkNPC(Collections.singletonList(MapManager.currentMap.world)));
 		NPCManager.registerNPC(new PrestigeNPC(Collections.singletonList(MapManager.currentMap.world)));
 		NPCManager.registerNPC(new KeeperNPC(Collections.singletonList(MapManager.currentMap.world)));
 		NPCManager.registerNPC(new KitNPC(Collections.singletonList(MapManager.currentMap.world)));
@@ -847,10 +868,9 @@ public class PitSim extends JavaPlugin {
 		EnchantManager.registerEnchant(new Parasite());
 		EnchantManager.registerEnchant(new Chipping());
 		EnchantManager.registerEnchant(new Fletching());
-		EnchantManager.registerEnchant(new aBowPlaceholder());
-		EnchantManager.registerEnchant(new aBowPlaceholder());
-		EnchantManager.registerEnchant(new aBowPlaceholder());
-//		EnchantManager.registerEnchant(new BottomlessQuiver());
+		EnchantManager.registerEnchant(new Sniper());
+		EnchantManager.registerEnchant(new SpammerAndProud());
+		EnchantManager.registerEnchant(new Jumpspammer());
 
 		EnchantManager.registerEnchant(new RetroGravityMicrocosm());
 		EnchantManager.registerEnchant(new Regularity());

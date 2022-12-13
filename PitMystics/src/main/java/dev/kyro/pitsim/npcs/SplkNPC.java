@@ -26,7 +26,7 @@ public class SplkNPC extends PitNPC {
 
 	@Override
 	public void createNPC(Location location) {
-		spawnPlayerNPC("&9Splkpig", "Splkpig", location);
+		spawnPlayerNPC("&9Splkpig", "Splkpig", location, true);
 	}
 
 	@Override

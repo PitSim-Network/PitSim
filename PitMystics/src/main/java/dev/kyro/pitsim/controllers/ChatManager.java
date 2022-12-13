@@ -22,6 +22,12 @@ public class ChatManager implements Listener {
 		Player player = event.getPlayer();
 		String message = event.getMessage();
 
+		if(message.contains("I joined using ChatCraft")) {
+			AOutput.send(player, "&c&lCOPE!&7 We literally don't care! :)");
+			event.setCancelled(true);
+			return;
+		}
+
 		for(Player recipient : event.getRecipients()) {
 			PitPlayer recipientPlayer = PitPlayer.getPitPlayer(recipient);
 			if(recipientPlayer.playerChatDisabled) event.getRecipients().remove(recipient);

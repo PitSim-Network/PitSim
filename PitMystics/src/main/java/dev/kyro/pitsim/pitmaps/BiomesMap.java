@@ -60,7 +60,7 @@ public class BiomesMap extends PitMap {
 	}
 
 	@Override
-	public Location getUpgradesNPCSpawn() {
+	public Location getPerksNPCSpawn() {
 		return new Location(world, 10.5, 88, 4.5, 90, 0);
 	}
 

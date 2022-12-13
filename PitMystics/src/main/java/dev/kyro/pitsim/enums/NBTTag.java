@@ -15,7 +15,7 @@ public enum NBTTag {
 	JEWEL_KILLS("pr-jewel-kills"),
 	IS_JEWEL("pr-isjewel"),
 	IS_GEMMED("pr-isgemmed"),
-	UNDROPPABLE("pr-undroppable"),
+	UNDROPPABLE("pr-undroppable-2"),
 	DROP_CONFIRM("pr-dropconfirm"),
 	ORIGINAL_COLOR("pr-original-color"),
 	CURRENT_LIVES("pr-current-lives"),

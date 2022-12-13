@@ -5,6 +5,9 @@ import dev.kyro.arcticapi.data.APlayer;
 import dev.kyro.arcticapi.data.APlayerData;
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.PitSim;
+import dev.kyro.pitsim.killstreaks.Limiter;
+import dev.kyro.pitsim.perks.*;
+import dev.kyro.pitsim.tutorial.Tutorial;
 import dev.kyro.pitsim.battlepass.PassData;
 import dev.kyro.pitsim.battlepass.quests.ReachKillstreakQuest;
 import dev.kyro.pitsim.brewing.BrewingManager;
@@ -102,11 +105,11 @@ public class PitPlayer {
 
 	public int renown = 0;
 	@Exclude
-	public List<PitPerk> pitPerks = Arrays.asList(NoPerk.INSTANCE, NoPerk.INSTANCE, NoPerk.INSTANCE, NoPerk.INSTANCE);
-	public List<String> pitPerksRef = Arrays.asList("none", "none", "none", "none");
+	public List<PitPerk> pitPerks = Arrays.asList(Vampire.INSTANCE, StrengthChaining.INSTANCE, Dirty.INSTANCE, Dispersion.INSTANCE);
+	public List<String> pitPerksRef = Arrays.asList("vampire", "strength", "dirty", "dispersion");
 	@Exclude
-	public List<Killstreak> killstreaks = Arrays.asList(NoKillstreak.INSTANCE, NoKillstreak.INSTANCE, NoKillstreak.INSTANCE);
-	public List<String> killstreaksRef = Arrays.asList("NoKillstreak", "NoKillstreak", "NoKillstreak");
+	public List<Killstreak> killstreaks = Arrays.asList(Limiter.INSTANCE, NoKillstreak.INSTANCE, NoKillstreak.INSTANCE);
+	public List<String> killstreaksRef = Arrays.asList("Limiter", "NoKillstreak", "NoKillstreak");
 	@Exclude
 //	TODO: Save megastreak ref, not megastreak
 	public Megastreak megastreak;
@@ -282,32 +285,41 @@ public class PitPlayer {
 		APlayer aPlayer = APlayerData.getPlayerData(uuid);
 		FileConfiguration playerData = aPlayer.playerData;
 
-		prestige = playerData.getInt("prestige");
-		level = playerData.contains("level") ? playerData.getInt("level") : 1;
-		remainingXP = playerData.getInt("xp");
-		soulsGathered = playerData.getInt("soulsgathered");
+			prestige = playerData.getInt("prestige");
+			level = playerData.contains("level") ? playerData.getInt("level") : 1;
+			remainingXP = playerData.getInt("xp");
+			soulsGathered = playerData.getInt("soulsgathered");
 		OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(uuid);
 		if(offlinePlayer.getName() != null && PitSim.VAULT.hasAccount(offlinePlayer)) gold = PitSim.VAULT.getBalance(offlinePlayer);
-		renown = playerData.getInt("renown");
-		for(int i = 0; i < pitPerks.size(); i++) {
-			String perkString = playerData.getString("perk-" + i);
-			PitPerk savedPerk = perkString != null ? PitPerk.getPitPerk(perkString) : NoPerk.INSTANCE;
-			pitPerks.set(i, savedPerk != null ? savedPerk : NoPerk.INSTANCE);
-		}
-		for(int i = 0; i < killstreaks.size(); i++) {
-			String killstreakString = playerData.getString("killstreak-" + i);
-			Killstreak savedKillstreak = killstreakString != null ? Killstreak.getKillstreak(killstreakString) : NoKillstreak.INSTANCE;
-			if(savedKillstreak == null) killstreaks.set(i, NoKillstreak.INSTANCE);
-			else killstreaks.set(i, savedKillstreak);
-		}
-		String streak = playerData.getString("megastreak");
-		if(Objects.equals(streak, "Beastmode")) this.megastreak = new Beastmode(this);
-		if(Objects.equals(streak, "No Megastreak")) this.megastreak = new NoMegastreak(this);
-		if(Objects.equals(streak, "Highlander")) this.megastreak = new Highlander(this);
-		if(Objects.equals(streak, "Overdrive")) this.megastreak = new Overdrive(this);
-		if(Objects.equals(streak, "Uberstreak")) this.megastreak = new Uberstreak(this);
-		if(Objects.equals(streak, "To the Moon")) this.megastreak = new ToTheMoon(this);
-		if(Objects.equals(streak, "RNGesus")) this.megastreak = new RNGesus(this);
+			renown = playerData.getInt("renown");
+			for(int i = 0; i < pitPerks.size(); i++) {
+				PitPerk defaultPerk = NoPerk.INSTANCE;
+				if(i == 0) defaultPerk = Vampire.INSTANCE;
+				else if(i == 1) defaultPerk = StrengthChaining.INSTANCE;
+				else if(i == 2) defaultPerk = Dirty.INSTANCE;
+				else if(i == 3) defaultPerk = Dispersion.INSTANCE;
+
+				String perkString = playerData.getString("perk-" + i);
+				PitPerk savedPerk = perkString != null ? PitPerk.getPitPerk(perkString) : defaultPerk;
+				pitPerks.set(i, savedPerk != null ? savedPerk : defaultPerk);
+			}
+			for(int i = 0; i < killstreaks.size(); i++) {
+				Killstreak defaultKillstreak = NoKillstreak.INSTANCE;
+				if(i == 0) defaultKillstreak = Limiter.INSTANCE;
+
+				String killstreakString = playerData.getString("killstreak-" + i);
+				Killstreak savedKillstreak = killstreakString != null ? Killstreak.getKillstreak(killstreakString) : NoKillstreak.INSTANCE;
+				if(savedKillstreak == null) killstreaks.set(i, defaultKillstreak);
+				else killstreaks.set(i, savedKillstreak);
+			}
+			String streak = playerData.getString("megastreak");
+			if(Objects.equals(streak, "Beastmode")) this.megastreak = new Beastmode(this);
+			if(Objects.equals(streak, "No Megastreak")) this.megastreak = new NoMegastreak(this);
+			if(Objects.equals(streak, "Highlander")) this.megastreak = new Highlander(this);
+			if(Objects.equals(streak, "Overdrive")) this.megastreak = new Overdrive(this);
+			if(Objects.equals(streak, "Uberstreak")) this.megastreak = new Uberstreak(this);
+			if(Objects.equals(streak, "To the Moon")) this.megastreak = new ToTheMoon(this);
+			if(Objects.equals(streak, "RNGesus")) this.megastreak = new RNGesus(this);
 
 		playerChatDisabled = playerData.getBoolean("disabledplayerchat");
 		killFeedDisabled = playerData.getBoolean("disabledkillfeed");

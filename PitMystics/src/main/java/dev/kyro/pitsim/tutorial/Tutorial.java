@@ -6,14 +6,19 @@ import dev.kyro.arcticapi.data.APlayerData;
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
+import dev.kyro.pitsim.misc.Sounds;
 import net.kyori.adventure.audience.Audience;
 import net.kyori.adventure.bossbar.BossBar;
 import net.kyori.adventure.text.Component;
 import org.bukkit.ChatColor;
+import org.bukkit.Effect;
+import org.bukkit.Location;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.scheduler.BukkitTask;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 
@@ -24,7 +29,11 @@ public class Tutorial {
 	public UUID uuid;
 	@Exclude
 	private BossBar bossBar;
+	private BukkitTask particleRunnable;
 
+	public boolean isInObjective = false;
+
+	public boolean hasStartedTutorial = false;
 	public List<TutorialObjective> completedObjectives = new ArrayList<>();
 
 	public Tutorial() {
@@ -33,18 +42,39 @@ public class Tutorial {
 	public Tutorial(PitPlayer pitPlayer, FileConfiguration playerData) {
 		this.pitPlayer = pitPlayer;
 
+		this.hasStartedTutorial = playerData.getBoolean("tutorial.has-started");
 		for(String string : playerData.getStringList("tutorial.completed-objectives")) {
-			completedObjectives.add(TutorialObjective.getByRefName(string));
+			TutorialObjective objective = TutorialObjective.getByRefName(string);
+			if(objective == null) continue;
+			completedObjectives.add(objective);
 		}
 	}
 
-	@Exclude
-	public Tutorial init(PitPlayer pitPlayer) {
-		this.pitPlayer = pitPlayer;
-		this.uuid = pitPlayer.player.getUniqueId();
+		if(!hasStartedTutorial) {
+			isInObjective = true;
+			hasStartedTutorial = true;
+			sendMessage("&eHello! Welcome to &6&lPit&e&lSim&e!", 0);
+			sendMessage("&eBefore you get started, we need to cover some basics.", 20 * 2);
+			sendMessage("&eInteract with various NPCs around spawn to learn about how to play", 20 * 6);
 
-		if(isActive()) updateBossBar();
-		return this;
+			new BukkitRunnable() {
+				@Override
+				public void run() {
+					isInObjective = false;
+					updateBossBar();
+					startRunnable();
+					Sounds.TUTORIAL_MESSAGE.play(pitPlayer.player);
+				}
+			}.runTaskLater(PitSim.INSTANCE, 20 * 4);
+		} else {
+			new BukkitRunnable() {
+				@Override
+				public void run() {
+					updateBossBar();
+					startRunnable();
+				}
+			}.runTaskLater(PitSim.INSTANCE, 20);
+		}
 	}
 
 	@Exclude
@@ -56,6 +86,7 @@ public class Tutorial {
 		for(TutorialObjective completedObjective : completedObjectives) {
 			rawData.add(completedObjective.refName);
 		}
+		playerData.set("tutorial.has-started", hasStartedTutorial);
 		playerData.set("tutorial.completed-objectives", rawData);
 
 		aPlayer.save();
@@ -64,17 +95,40 @@ public class Tutorial {
 	@Exclude
 	public void completeObjective(TutorialObjective objective, long delay) {
 		if(isCompleted(objective)) return;
+		isInObjective = true;
 
 		BukkitRunnable runnable = new BukkitRunnable() {
 			@Override
 			public void run() {
 				completedObjectives.add(objective);
 				updateBossBar();
+				AOutput.send(pitPlayer.player, "&a&lTUTORIAL!&7 Completed objective: " + objective.display);
+				Sounds.LEVEL_UP.play(pitPlayer.player);
 
 				if(completedObjectives.size() == TutorialObjective.values().length) {
-					//Tutorial Completion Code
-					//Hide Bossbar
+					if(particleRunnable != null) particleRunnable.cancel();
+
+					new BukkitRunnable() {
+						@Override
+						public void run() {
+							AOutput.send(pitPlayer.player, "&a&lTUTORIAL COMPLETED!");
+							Sounds.LEVEL_UP.play(pitPlayer.player);
+						}
+					}.runTaskLater(PitSim.INSTANCE, 30);
+
+					sendMessage("&eIf you forget any of the information, each NPC has a help menu in the bottom right corner.", 90);
+					sendMessage("&eYou can also join our discord server at &f&ndiscord.pitsim.net &efor more help.", 150);
+					sendMessage("&eWith that being said, enjoy the server!", 210);
+
+					new BukkitRunnable() {
+						@Override
+						public void run() {
+							Audience audience = PitSim.adventure.player(uuid);
+							audience.hideBossBar(bossBar);
+						}
+					}.runTaskLater(PitSim.INSTANCE, 60);
 				}
+				isInObjective = false;
 			}
 		};
 
@@ -90,16 +144,15 @@ public class Tutorial {
 	@Exclude
 	public void updateBossBar() {
 		Audience audience = PitSim.adventure.player(uuid);
-		TutorialObjective objective = getNextObjective();
+		audience.hideBossBar(bossBar);
 
 		Component name = Component.text(ChatColor.translateAlternateColorCodes('&', "&a&lOBJECTIVE: &7Interact with NPCs &7("
 				+ completedObjectives.size() + "/" +  TutorialObjective.values().length + ")"));
-		float progress = (TutorialObjective.getIndex(objective) + 1) / TutorialObjective.values().length;
+		float progress = ((float) completedObjectives.size()) / (float) TutorialObjective.values().length;
 
-		BossBar fullBar = bossBar == null ? BossBar.bossBar(name, progress, BossBar.Color.PINK, BossBar.Overlay.PROGRESS) : bossBar;
+		bossBar = BossBar.bossBar(name, progress, BossBar.Color.PINK, BossBar.Overlay.PROGRESS);
 
-		audience.showBossBar(fullBar);
-		this.bossBar = fullBar;
+		audience.showBossBar(bossBar);
 	}
 
 	@Exclude
@@ -125,8 +178,31 @@ public class Tutorial {
 		new BukkitRunnable() {
 			@Override
 			public void run() {
+				Sounds.TUTORIAL_MESSAGE.play(pitPlayer.player);
 				AOutput.send(pitPlayer.player, text);
 			}
 		}.runTaskLater(PitSim.INSTANCE, ticks);
+	}
+
+	private void startRunnable() {
+		particleRunnable = new BukkitRunnable() {
+			@Override
+			public void run() {
+				if(!pitPlayer.player.isOnline()) {
+					cancel();
+					return;
+				}
+				List<TutorialObjective> tutorialObjectives = new ArrayList<>(Arrays.asList(TutorialObjective.values()));
+				tutorialObjectives.removeAll(completedObjectives);
+				for(TutorialObjective objective : tutorialObjectives) {
+					if(objective.particleDisplayHeight < 2 && Math.random() < 0.4) continue;
+					Location location = objective.getParticleLocation(pitPlayer.player.getWorld());
+					double random = 1.4;
+					location.add(Math.random() * random - random / 2.0, Math.random() * objective.particleDisplayHeight,
+							Math.random() * random - random / 2.0);
+					pitPlayer.player.playEffect(location, Effect.HAPPY_VILLAGER, 1);
+				}
+			}
+		}.runTaskTimer(PitSim.INSTANCE, 0L, 2L);
 	}
 }

@@ -30,6 +30,8 @@ public abstract class PitMap {
 
 	public abstract Location getMid();
 
+	public abstract Location getPerksNPCSpawn();
+
 	public abstract Location getUpgradesNPCSpawn();
 
 	public abstract Location getPrestigeNPCSpawn();
@@ -51,5 +53,4 @@ public abstract class PitMap {
 	public double getY() {
 		return getMid().getY();
 	}
-
 }

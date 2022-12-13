@@ -5,6 +5,7 @@ import dev.kyro.pitsim.controllers.MapManager;
 import dev.kyro.pitsim.controllers.objects.PitNPC;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.inventories.PerkGUI;
+import dev.kyro.pitsim.misc.Misc;
 import dev.kyro.pitsim.tutorial.Tutorial;
 import dev.kyro.pitsim.tutorial.TutorialObjective;
 import org.bukkit.Location;
@@ -13,9 +14,9 @@ import org.bukkit.entity.Player;
 
 import java.util.List;
 
-public class UpgradeNPC extends PitNPC {
+public class PerkNPC extends PitNPC {
 
-	public UpgradeNPC(List<World> worlds) {
+	public PerkNPC(List<World> worlds) {
 		super(worlds);
 	}
 
@@ -26,7 +27,7 @@ public class UpgradeNPC extends PitNPC {
 
 	@Override
 	public Location getFinalLocation(World world) {
-		return MapManager.currentMap.getUpgradesNPCSpawn();
+		return MapManager.currentMap.getPerksNPCSpawn();
 	}
 
 	@Override
@@ -43,11 +44,14 @@ public class UpgradeNPC extends PitNPC {
 		}
 
 		Tutorial tutorial = pitPlayer.tutorial;
+		if(tutorial.isInObjective) return;
 		if(tutorial.isActive() && !tutorial.isCompleted(TutorialObjective.PERKS)) {
 
-			tutorial.sendMessage(" ", 10);
-			tutorial.sendMessage(" ", 20);
-			tutorial.completeObjective(TutorialObjective.PERKS, 2 * 20);
+			String playerName = Misc.getRankColor(player.getUniqueId()) + player.getDisplayName();
+			tutorial.sendMessage("&a&lPERKS: &eOh, hello there " + playerName + "&e! Do you need a boost to help you out?", 0);
+			tutorial.sendMessage("&a&lPERKS: &eWell you came to the right guy! With me, you can set up perks, killstreaks, & mega streaks, which will up your game!", 20 * 3);
+			tutorial.sendMessage("&a&lPERKS: &eUse these upgrades to be the best at whatever you do! With me, the possibilities are endless!", 20 * 8);
+			tutorial.completeObjective(TutorialObjective.PERKS, 20 * 12);
 
 			return;
 		}

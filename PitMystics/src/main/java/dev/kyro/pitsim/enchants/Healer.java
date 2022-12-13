@@ -48,7 +48,7 @@ public class Healer extends PitEnchant {
 	public List<String> getDescription(int enchantLvl) {
 
 		return new ALoreBuilder("&7Your hits &aheal &7you for &c" + Misc.getHearts(0.5 + (0.5 * enchantLvl)),
-				"&7and them for &c" + Misc.getHearts(getHealing(enchantLvl)) + " &7(1s cd)").getLore();
+				"&7and them for &c" + Misc.getHearts(getHealing(enchantLvl)) + " &7(1s cooldown)").getLore();
 	}
 
 	public double getHealing(int enchantLvl) {

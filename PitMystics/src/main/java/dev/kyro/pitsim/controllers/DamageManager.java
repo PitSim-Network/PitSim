@@ -16,6 +16,8 @@ import dev.kyro.pitsim.enums.NonTrait;
 import dev.kyro.pitsim.events.AttackEvent;
 import dev.kyro.pitsim.events.KillEvent;
 import dev.kyro.pitsim.events.OofEvent;
+import dev.kyro.pitsim.megastreaks.NoMegastreak;
+import dev.kyro.pitsim.megastreaks.RNGesus;
 import dev.kyro.pitsim.misc.*;
 import dev.kyro.pitsim.misc.tainted.CorruptedFeather;
 import dev.kyro.pitsim.upgrades.DivineIntervention;
@@ -219,7 +221,19 @@ public class DamageManager implements Listener {
 		if(PlayerManager.isRealPlayer(attackEvent.getAttackerPlayer()) && PlayerManager.isRealPlayer(attackEvent.getDefenderPlayer()) &&
 				MapManager.inDarkzone(attackEvent.getAttackerPlayer())) {
 			attackEvent.multipliers.add(0.5);
-			attackEvent.trueDamage /= 2.0;
+			attackEvent.trueDamage *= 0.5;
+		}
+
+//		New player defence
+		if(PlayerManager.isRealPlayerTemp(attackEvent.defenderPlayer) && PlayerManager.isRealPlayerTemp(attackEvent.attackerPlayer) &&
+				attackEvent.defenderPlayer.getLocation().distance(MapManager.currentMap.getMid(attackEvent.defenderPlayer.getWorld())) < 12) {
+			PitPlayer pitDefender = PitPlayer.getPitPlayer(attackEvent.defenderPlayer);
+			if(pitDefender.prestige < 10) {
+				int minutesPlayed = pitDefender.stats.minutesPlayed;
+				double reduction = Math.max(50 - (minutesPlayed / 8.0), 0);
+				attackEvent.multipliers.add(Misc.getReductionMultiplier(reduction));
+				attackEvent.trueDamage *= Misc.getReductionMultiplier(reduction);
+			}
 		}
 
 		double damage = attackEvent.getFinalDamage();
@@ -287,6 +301,20 @@ public class DamageManager implements Listener {
 
 		KillEvent killEvent = null;
 		OofEvent oofEvent = null;
+
+		if(deadIsPlayer) {
+			PitPlayer pitPlayer = PitPlayer.getPitPlayer(deadPlayer);
+			if(pitPlayer.megastreak.getClass() == RNGesus.class && RNGesus.isOnCooldown(deadPlayer)) {
+				new BukkitRunnable() {
+					@Override
+					public void run() {
+						pitPlayer.megastreak.stop();
+						pitPlayer.megastreak = new NoMegastreak(pitPlayer);
+						pitPlayer.fullSave();
+					}
+				}.runTaskLater(PitSim.INSTANCE, 1L);
+			}
+		}
 
 		if(killType == KillType.DEATH) {
 			oofEvent = new OofEvent(deadPlayer);
@@ -381,8 +409,8 @@ public class DamageManager implements Listener {
 		else if(PitMob.isPitMob(dead)) killActionBar = PitMob.getPitMob(dead).displayName + " &a&lKILL!";
 
 			if(killerIsPlayer && !CitizensAPI.getNPCRegistry().isNPC(killer) && !pitKiller.killFeedDisabled && killType != KillType.DEATH) {
-				AOutput.send(killEvent.getKiller(), PlaceholderAPI.setPlaceholders(killEvent.getDeadPlayer(), kill));
-					pitKiller.stats.mobsKilled++;
+				AOutput.send(killEvent.killer, PlaceholderAPI.setPlaceholders(killEvent.getDeadPlayer(), kill));
+				pitKiller.stats.mobsKilled++;
 			}
 			if(deadIsPlayer && !pitDead.killFeedDisabled && killType != KillType.FAKE && killEvent != null)
 				AOutput.send(killEvent.getDead(), death);

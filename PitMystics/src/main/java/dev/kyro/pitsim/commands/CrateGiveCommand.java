@@ -135,6 +135,9 @@ public class CrateGiveCommand implements CommandExecutor {
 			case "vile":
 				ChunkOfVile.giveVile(player, amount);
 				return false;
+			case "xp":
+				LevelManager.addXP(player, amount);
+				return false;
 			case "gold":
 				LevelManager.addGold(player, amount);
 				return false;
