@@ -305,11 +305,11 @@ public class PlayerManager implements Listener {
 	@EventHandler
 	public void onKillForRank(KillEvent killEvent) {
 
-		XmasMap.removeFromRadio(killEvent.deadPlayer);
+		XmasMap.removeFromRadio(killEvent.getDeadPlayer());
 		new BukkitRunnable() {
 			@Override
 			public void run() {
-				XmasMap.addToRadio(killEvent.deadPlayer);
+				XmasMap.addToRadio(killEvent.getDeadPlayer());
 			}
 		}.runTaskLater(PitSim.INSTANCE, 20);
 

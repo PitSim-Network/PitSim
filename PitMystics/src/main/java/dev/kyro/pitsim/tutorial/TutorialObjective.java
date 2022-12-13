@@ -2,7 +2,6 @@ package dev.kyro.pitsim.tutorial;
 
 import dev.kyro.pitsim.controllers.MapManager;
 import org.bukkit.Location;
-import org.bukkit.World;
 
 public enum TutorialObjective {
 	PERKS("perks", "&ePerks and Killstreaks", 2.3),
@@ -27,11 +26,11 @@ public enum TutorialObjective {
 		return null;
 	}
 
-	public Location getParticleLocation(World world) {
-		if(this == PERKS) return MapManager.currentMap.getPerksNPCSpawn(world);
-		else if(this == KITS) return MapManager.currentMap.getKitNPCSpawn(world);
-		else if(this == PRESTIGE) return MapManager.currentMap.getPrestigeNPCSpawn(world);
-		else if(this == KEEPER) return MapManager.currentMap.getKeeperNPCSpawn(world);
+	public Location getParticleLocation() {
+		if(this == PERKS) return MapManager.currentMap.getPerksNPCSpawn();
+		else if(this == KITS) return MapManager.currentMap.getKitsNPCSpawn();
+		else if(this == PRESTIGE) return MapManager.currentMap.getPrestigeNPCSpawn();
+		else if(this == KEEPER) return MapManager.currentMap.getKeeperNPCSpawn();
 		return null;
 	}
 }

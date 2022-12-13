@@ -69,9 +69,9 @@ public class Telebow extends PitEnchant {
 
 		Cooldown cooldown = getCooldown(attackEvent.getAttackerPlayer(), getCooldown(enchantLvl) * 20);
 		cooldown.addModifier(Cooldown.CooldownModifier.TELEBOW);
-		if(CooldownManager.hasModifier(attackEvent.attackerPlayer, Cooldown.CooldownModifier.TELEBOW)) {
-			AOutput.error(attackEvent.attackerPlayer, "&c&lPINNED! Your telebow cooldown cannot be reduced right now!");
-			Sounds.PIN_DOWN.play(attackEvent.attackerPlayer);
+		if(CooldownManager.hasModifier(attackEvent.getAttackerPlayer(), Cooldown.CooldownModifier.TELEBOW)) {
+			AOutput.error(attackEvent.getAttackerPlayer(), "&c&lPINNED! Your telebow cooldown cannot be reduced right now!");
+			Sounds.PIN_DOWN.play(attackEvent.getAttackerPlayer());
 			return;
 		} else {
 			cooldown.reduceCooldown(40);

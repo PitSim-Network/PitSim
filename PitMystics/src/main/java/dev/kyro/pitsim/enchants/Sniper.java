@@ -18,8 +18,8 @@ public class Sniper extends PitEnchant {
 	@EventHandler
 	public void onAttack(AttackEvent.Apply attackEvent) {
 		if(!canApply(attackEvent)) return;
-		if(!attackEvent.attackerIsPlayer) return;
-		if(attackEvent.attacker.getLocation().distance(attackEvent.defender.getLocation()) < 16) return;
+		if(!attackEvent.isAttackerPlayer()) return;
+		if(attackEvent.getAttacker().getLocation().distance(attackEvent.getDefender().getLocation()) < 16) return;
 
 		int enchantLvl = attackEvent.getAttackerEnchantLevel(this);
 		if(enchantLvl == 0) return;

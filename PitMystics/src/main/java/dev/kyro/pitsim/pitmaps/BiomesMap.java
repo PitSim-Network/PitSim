@@ -101,6 +101,6 @@ public class BiomesMap extends PitMap {
 
 	@Override
 	public Location getStandAlonePortalRespawn() {
-		return new Location(world, -56, 73, 0.5, -90, 0);
+		return new Location(null, -56, 73, 0.5, -90, 0);
 	}
 }

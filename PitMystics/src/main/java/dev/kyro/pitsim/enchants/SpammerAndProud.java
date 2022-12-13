@@ -18,8 +18,8 @@ public class SpammerAndProud extends PitEnchant {
 	@EventHandler
 	public void onAttack(AttackEvent.Apply attackEvent) {
 		if(!canApply(attackEvent)) return;
-		if(!attackEvent.attackerIsPlayer) return;
-		if(attackEvent.attacker.getLocation().distance(attackEvent.defender.getLocation()) > 8) return;
+		if(!attackEvent.isAttackerPlayer()) return;
+		if(attackEvent.getAttacker().getLocation().distance(attackEvent.getDefender().getLocation()) > 8) return;
 
 		int enchantLvl = attackEvent.getAttackerEnchantLevel(this);
 		if(enchantLvl == 0) return;

@@ -50,32 +50,32 @@ public class Tutorial {
 		}
 	}
 
-		if(!hasStartedTutorial) {
-			isInObjective = true;
-			hasStartedTutorial = true;
-			sendMessage("&eHello! Welcome to &6&lPit&e&lSim&e!", 0);
-			sendMessage("&eBefore you get started, we need to cover some basics.", 20 * 2);
-			sendMessage("&eInteract with various NPCs around spawn to learn about how to play", 20 * 6);
-
-			new BukkitRunnable() {
-				@Override
-				public void run() {
-					isInObjective = false;
-					updateBossBar();
-					startRunnable();
-					Sounds.TUTORIAL_MESSAGE.play(pitPlayer.player);
-				}
-			}.runTaskLater(PitSim.INSTANCE, 20 * 4);
-		} else {
-			new BukkitRunnable() {
-				@Override
-				public void run() {
-					updateBossBar();
-					startRunnable();
-				}
-			}.runTaskLater(PitSim.INSTANCE, 20);
-		}
-	}
+//		if(!hasStartedTutorial) {
+//			isInObjective = true;
+//			hasStartedTutorial = true;
+//			sendMessage("&eHello! Welcome to &6&lPit&e&lSim&e!", 0);
+//			sendMessage("&eBefore you get started, we need to cover some basics.", 20 * 2);
+//			sendMessage("&eInteract with various NPCs around spawn to learn about how to play", 20 * 6);
+//
+//			new BukkitRunnable() {
+//				@Override
+//				public void run() {
+//					isInObjective = false;
+//					updateBossBar();
+//					startRunnable();
+//					Sounds.TUTORIAL_MESSAGE.play(pitPlayer.player);
+//				}
+//			}.runTaskLater(PitSim.INSTANCE, 20 * 4);
+//		} else {
+//			new BukkitRunnable() {
+//				@Override
+//				public void run() {
+//					updateBossBar();
+//					startRunnable();
+//				}
+//			}.runTaskLater(PitSim.INSTANCE, 20);
+//		}
+//	}
 
 	@Exclude
 	public void save() {
@@ -170,6 +170,8 @@ public class Tutorial {
 
 	@Exclude
 	public boolean isActive() {
+//		TODO: Remove this once the tutorial is fixed again
+		if(true) return false;
 		return pitPlayer.prestige <= 1 && completedObjectives.size() < TutorialObjective.values().length;
 	}
 
@@ -196,7 +198,7 @@ public class Tutorial {
 				tutorialObjectives.removeAll(completedObjectives);
 				for(TutorialObjective objective : tutorialObjectives) {
 					if(objective.particleDisplayHeight < 2 && Math.random() < 0.4) continue;
-					Location location = objective.getParticleLocation(pitPlayer.player.getWorld());
+					Location location = objective.getParticleLocation();
 					double random = 1.4;
 					location.add(Math.random() * random - random / 2.0, Math.random() * objective.particleDisplayHeight,
 							Math.random() * random - random / 2.0);

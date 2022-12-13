@@ -5,11 +5,9 @@ import com.xxmicloxx.NoteBlockAPI.model.RepeatMode;
 import com.xxmicloxx.NoteBlockAPI.songplayer.PositionSongPlayer;
 import com.xxmicloxx.NoteBlockAPI.utils.NBSDecoder;
 import dev.kyro.pitsim.controllers.BoosterManager;
-import dev.kyro.pitsim.controllers.MapManager;
 import dev.kyro.pitsim.controllers.objects.Booster;
 import dev.kyro.pitsim.controllers.objects.PitMap;
 import org.bukkit.Location;
-import org.bukkit.World;
 import org.bukkit.entity.Player;
 
 import java.io.File;
@@ -21,15 +19,13 @@ public class XmasMap extends PitMap {
 
 	public static List<PositionSongPlayer> radio = new ArrayList<>();
 
-	public XmasMap(String... worldNames) {
-		super(worldNames);
+	public XmasMap(String worldName) {
+		super(worldName);
 
 		File exampleSong = new File("plugins/NoteBlockAPI/Xmas/Frosty the Snowman.nbs");
 		File dir = new File(exampleSong.getAbsoluteFile().getParent());
 		File[] files = dir.listFiles();
 		assert files != null;
-
-
 		Playlist playlist = new Playlist(NBSDecoder.parse(files[0]));
 
 		for(int i = 1; i < files.length; i++) {
@@ -39,7 +35,7 @@ public class XmasMap extends PitMap {
 		PositionSongPlayer esp = new PositionSongPlayer(playlist);
 		esp.setDistance(18);
 		esp.setRepeatMode(RepeatMode.ALL);
-		esp.setTargetLocation(getMid(lobbies.get(0)).add(0, 20, 0));
+		esp.setTargetLocation(getMid().add(0, 20, 0));
 		esp.setPlaying(true);
 		radio.add(esp);
 
@@ -47,7 +43,7 @@ public class XmasMap extends PitMap {
 		esp2.setDistance(18);
 		esp2.setVolume((byte) 100);
 		esp2.setRepeatMode(RepeatMode.ALL);
-		esp2.setTargetLocation(getMid(lobbies.get(1)).add(0, 20, 0));
+		esp2.setTargetLocation(getMid().add(0, 20, 0));
 		esp2.setPlaying(true);
 		radio.add(esp2);
 	}
@@ -55,14 +51,17 @@ public class XmasMap extends PitMap {
 	public static Location mid = new Location(null, 0.5, 70, 0.5);
 
 	@Override
-	public Location getSpawn(World world) {
-		if(!lobbies.contains(world) || (!MapManager.multiLobbies && world != MapManager.currentMap.firstLobby))
-			return getSpawn(lobbies.get(0));
+	public Location getSpawn() {
 		return new Location(world, 0.5, 88, 8.5, -180, 0);
 	}
 
 	@Override
-	public Location getNonSpawn(World world) {
+	public Location getDarkzoneJoinSpawn() {
+		return new Location(world, -56, 73, 0.5, -90, 0);
+	}
+
+	@Override
+	public Location getNonSpawn() {
 		Location spawn = new Location(world, 0.5, 86, 0.5);
 		spawn.setX(spawn.getX() + (Math.random() * 6 - 3));
 		spawn.setZ(spawn.getZ() + (Math.random() * 6 - 3));
@@ -108,57 +107,57 @@ public class XmasMap extends PitMap {
 	public String getClosedSchematic() { return "plugins/WorldEdit/schematics/doorClosed.schematic"; }
 
 	@Override
-	public Location getSchematicPaste(World world) { return new Location(world, -67, 72, 3); }
+	public Location getSchematicPaste() { return new Location(world, -67, 72, 3); }
 
 	@Override
-	public Location getMid(World world) {
+	public Location getMid() {
 		Location location = mid.clone();
 		location.setWorld(world);
 		return location;
 	}
 
 	@Override
-	public Location getPerksNPCSpawn(World world) {
+	public Location getPerksNPCSpawn() {
 		return new Location(world, 10.5, 88, 4.5, 90, 0);
 	}
 
 	@Override
-	public Location getPrestigeNPCSpawn(World world) {
+	public Location getPrestigeNPCSpawn() {
 		return new Location(world, -12.5, 88, -1.5, -90, 0);
 	}
 
 	@Override
-	public Location getKyroNPCSpawn(World world) {
+	public Location getKyroNPCSpawn() {
 		return new Location(world, 7.5, 92, -8.5, 22.5F, 11);
 	}
 
 	@Override
-	public Location getWijiNPCSpawn(World world) {
+	public Location getWijiNPCSpawn() {
 		return new Location(world, 0.5, 92, -11.5, 31, 10);
 	}
 
 	@Override
-	public Location getSplkNPCSpawn(World world) {
+	public Location getSplkNPCSpawn() {
 		return new Location(world, 8.5, 90, -7.5, 45, 0);
 	}
 
 	@Override
-	public Location getVnxNPCSpawn(World world) {
+	public Location getStatsNPCSpawn() {
 		return new Location(world, 2.5, 88, -8.5, 10, 0);
 	}
 
 	@Override
-	public Location getKeeperNPCSpawn(World world) {
+	public Location getKeeperNPCSpawn() {
 		return new Location(world, -2.5, 88, -10, 10, 0);
 	}
 
 	@Override
-	public Location getKitNPCSpawn(World world) {
+	public Location getKitsNPCSpawn() {
 		return new Location(world, -2.5, 90, 12.5, -145, 15);
 	}
 
 	@Override
-	public Location getPortalRespawn(World world) {
-		return new Location(world, -56, 73, 0.5, -90, 0);
+	public Location getStandAlonePortalRespawn() {
+		return new Location(null, -56, 73, 0.5, -90, 0);
 	}
 }

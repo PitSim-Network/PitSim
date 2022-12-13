@@ -64,9 +64,6 @@ import dev.kyro.pitsim.kits.XPKit;
 import dev.kyro.pitsim.leaderboards.*;
 import dev.kyro.pitsim.megastreaks.*;
 import dev.kyro.pitsim.misc.*;
-import dev.kyro.pitsim.misc.tainted.BloodyHeart;
-import dev.kyro.pitsim.misc.tainted.SyntheticCube;
-import dev.kyro.pitsim.npcs.*;
 import dev.kyro.pitsim.npcs.*;
 import dev.kyro.pitsim.perks.*;
 import dev.kyro.pitsim.pitmaps.BiomesMap;
@@ -80,11 +77,6 @@ import net.citizensnpcs.api.npc.NPCRegistry;
 import net.kyori.adventure.platform.bukkit.BukkitAudiences;
 import net.luckperms.api.LuckPerms;
 import net.milkbowl.vault.economy.Economy;
-import org.bukkit.Bukkit;
-import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.World;
-import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.*;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Item;
@@ -403,10 +395,8 @@ public class PitSim extends JavaPlugin {
 		if(TimeManager.isChristmasSeason()) {
 			System.out.println();
 			MapManager.registerMap(new XmasMap("xmas1"));
-			for(World lobby : MapManager.currentMap.lobbies) {
-				lobby.setStorm(true);
-				lobby.setWeatherDuration(Integer.MAX_VALUE);
-			}
+			MapManager.currentMap.world.setStorm(true);
+			MapManager.currentMap.world.setWeatherDuration(Integer.MAX_VALUE);
 			return;
 		}
 

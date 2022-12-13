@@ -20,12 +20,12 @@ public class Jumpspammer extends PitEnchant {
 	public void onAttack(AttackEvent.Apply attackEvent) {
 //		if(!canApply(attackEvent)) return; // needs to be off for this enchant
 
-		if(attackEvent.attackerIsPlayer && !attackEvent.attackerPlayer.isOnGround()) {
+		if(attackEvent.isAttackerPlayer() && !attackEvent.getAttackerPlayer().isOnGround()) {
 			int enchantLvl = attackEvent.getAttackerEnchantLevel(this);
 			if(enchantLvl != 0) attackEvent.increasePercent += getDamage(enchantLvl) / 100D;
 		}
 
-		if(attackEvent.defenderIsPlayer && !attackEvent.defenderPlayer.isOnGround()) {
+		if(attackEvent.isDefenderPlayer() && !attackEvent.getDefenderPlayer().isOnGround()) {
 			int enchantLvl = attackEvent.getDefenderEnchantLevel(this);
 			if(enchantLvl != 0) attackEvent.multipliers.add(Misc.getReductionMultiplier(getReduction(enchantLvl)));
 		}

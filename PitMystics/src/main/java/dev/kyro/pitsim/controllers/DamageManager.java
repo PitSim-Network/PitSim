@@ -225,9 +225,9 @@ public class DamageManager implements Listener {
 		}
 
 //		New player defence
-		if(PlayerManager.isRealPlayerTemp(attackEvent.defenderPlayer) && PlayerManager.isRealPlayerTemp(attackEvent.attackerPlayer) &&
-				attackEvent.defenderPlayer.getLocation().distance(MapManager.currentMap.getMid(attackEvent.defenderPlayer.getWorld())) < 12) {
-			PitPlayer pitDefender = PitPlayer.getPitPlayer(attackEvent.defenderPlayer);
+		if(PlayerManager.isRealPlayerTemp(attackEvent.getDefenderPlayer()) && PlayerManager.isRealPlayerTemp(attackEvent.getAttackerPlayer()) &&
+				attackEvent.getDefenderPlayer().getLocation().distance(MapManager.currentMap.getMid()) < 12) {
+			PitPlayer pitDefender = PitPlayer.getPitPlayer(attackEvent.getDefenderPlayer());
 			if(pitDefender.prestige < 10) {
 				int minutesPlayed = pitDefender.stats.minutesPlayed;
 				double reduction = Math.max(50 - (minutesPlayed / 8.0), 0);
@@ -300,7 +300,7 @@ public class DamageManager implements Listener {
 		Player deadPlayer = deadIsPlayer ? (Player) dead : null;
 
 		KillEvent killEvent = null;
-		OofEvent oofEvent = null;
+		OofEvent oofEvent;
 
 		if(deadIsPlayer) {
 			PitPlayer pitPlayer = PitPlayer.getPitPlayer(deadPlayer);
@@ -310,7 +310,6 @@ public class DamageManager implements Listener {
 					public void run() {
 						pitPlayer.megastreak.stop();
 						pitPlayer.megastreak = new NoMegastreak(pitPlayer);
-						pitPlayer.fullSave();
 					}
 				}.runTaskLater(PitSim.INSTANCE, 1L);
 			}
@@ -409,7 +408,7 @@ public class DamageManager implements Listener {
 		else if(PitMob.isPitMob(dead)) killActionBar = PitMob.getPitMob(dead).displayName + " &a&lKILL!";
 
 			if(killerIsPlayer && !CitizensAPI.getNPCRegistry().isNPC(killer) && !pitKiller.killFeedDisabled && killType != KillType.DEATH) {
-				AOutput.send(killEvent.killer, PlaceholderAPI.setPlaceholders(killEvent.getDeadPlayer(), kill));
+				AOutput.send(killEvent.getKiller(), PlaceholderAPI.setPlaceholders(killEvent.getDeadPlayer(), kill));
 				pitKiller.stats.mobsKilled++;
 			}
 			if(deadIsPlayer && !pitDead.killFeedDisabled && killType != KillType.FAKE && killEvent != null)

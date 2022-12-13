@@ -9,7 +9,6 @@ public abstract class PitMap {
 
 	public PitMap(String worldName) {
 		world = Bukkit.getWorld(worldName);
-
 	}
 
 	public abstract int getTeleportAdd();
@@ -31,8 +30,6 @@ public abstract class PitMap {
 	public abstract Location getMid();
 
 	public abstract Location getPerksNPCSpawn();
-
-	public abstract Location getUpgradesNPCSpawn();
 
 	public abstract Location getPrestigeNPCSpawn();
 

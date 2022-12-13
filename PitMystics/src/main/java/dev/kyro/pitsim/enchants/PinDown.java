@@ -31,14 +31,14 @@ public class PinDown extends PitEnchant {
 		int enchantLvl = attackEvent.getAttackerEnchantLevel(this);
 		if(enchantLvl == 0) return;
 
-		if(attackEvent.attacker == attackEvent.defender) return;
-		if(!attackEvent.arrow.isCritical()) return;
+		if(attackEvent.getAttacker() == attackEvent.getDefender()) return;
+		if(!attackEvent.getArrow().isCritical()) return;
 
 		Cooldown cooldown = getCooldown(attackEvent.getAttackerPlayer(), getDuration(enchantLvl) * 20);
 		if(cooldown.isOnCooldown()) return;
 		else cooldown.restart();
 
-		if(attackEvent.defenderIsPlayer) CooldownManager.addModifierForPlayer(attackEvent.getDefenderPlayer(),
+		if(attackEvent.isDefenderPlayer()) CooldownManager.addModifierForPlayer(attackEvent.getDefenderPlayer(),
 				new CooldownManager.CooldownData(Cooldown.CooldownModifier.TELEBOW, 20 * 5));
 
 		if(attackEvent.getDefender().hasPotionEffect(PotionEffectType.SPEED))

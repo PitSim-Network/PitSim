@@ -2,7 +2,6 @@ package dev.kyro.pitsim.pitmaps;
 
 import dev.kyro.pitsim.controllers.objects.PitMap;
 import org.bukkit.Location;
-import org.bukkit.World;
 
 public class DimensionsMap extends PitMap {
 	public DimensionsMap(String worldName) {
@@ -85,7 +84,7 @@ public class DimensionsMap extends PitMap {
 
 	@Override
 	public Location getStandAlonePortalRespawn() {
-		return new Location(world, -56, 73, 0.5, -90, 0);
+		return new Location(null, -56, 73, 0.5, -90, 0);
 	}
 
 //	TODO: Add

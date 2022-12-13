@@ -5,9 +5,6 @@ import dev.kyro.arcticapi.data.APlayer;
 import dev.kyro.arcticapi.data.APlayerData;
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.PitSim;
-import dev.kyro.pitsim.killstreaks.Limiter;
-import dev.kyro.pitsim.perks.*;
-import dev.kyro.pitsim.tutorial.Tutorial;
 import dev.kyro.pitsim.battlepass.PassData;
 import dev.kyro.pitsim.battlepass.quests.ReachKillstreakQuest;
 import dev.kyro.pitsim.brewing.BrewingManager;
@@ -26,12 +23,14 @@ import dev.kyro.pitsim.events.HealEvent;
 import dev.kyro.pitsim.events.IncrementKillsEvent;
 import dev.kyro.pitsim.events.OofEvent;
 import dev.kyro.pitsim.inventories.ChatColorPanel;
+import dev.kyro.pitsim.killstreaks.Limiter;
 import dev.kyro.pitsim.killstreaks.Monster;
 import dev.kyro.pitsim.killstreaks.NoKillstreak;
 import dev.kyro.pitsim.megastreaks.*;
 import dev.kyro.pitsim.misc.Misc;
-import dev.kyro.pitsim.perks.NoPerk;
-import dev.kyro.pitsim.perks.Thick;
+import dev.kyro.pitsim.perks.*;
+import dev.kyro.pitsim.storage.StorageManager;
+import dev.kyro.pitsim.storage.StorageProfile;
 import dev.kyro.pitsim.tutorial.Tutorial;
 import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.Bukkit;
@@ -45,8 +44,6 @@ import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
-import dev.kyro.pitsim.storage.StorageManager;
-import dev.kyro.pitsim.storage.StorageProfile;
 
 import java.util.*;
 import java.util.concurrent.ExecutionException;
@@ -420,7 +417,6 @@ public class PitPlayer {
 		}
 
 		stats.init(this);
-		tutorial.init(this);
 		updateXPBar();
 	}
 
