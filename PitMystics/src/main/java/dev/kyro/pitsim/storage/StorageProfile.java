@@ -256,11 +256,17 @@ public class StorageProfile {
 	}
 
 	public Inventory getEnderchest(int page) {
-		if(enderChest == null) {
-			throw new DataNotLoadedException();
-		}
+		if(enderChest == null) throw new DataNotLoadedException();
 
 		return enderChest[page - 1];
+	}
+
+	public int getEnderchestItemCount(int page) {
+		if(enderChest == null) throw new DataNotLoadedException();
+
+		int total = 0;
+		for(int i = 9; i < 36; i++) if(!Misc.isAirOrNull(enderChest[page - 1].getItem(i))) total++;
+		return total;
 	}
 
 	public ItemStack[] getCachedInventory() {
