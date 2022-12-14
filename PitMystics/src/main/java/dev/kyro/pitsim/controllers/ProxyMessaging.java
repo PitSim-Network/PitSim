@@ -235,37 +235,9 @@ public class ProxyMessaging implements Listener {
 				requestedServer = integers.get(0);
 			}
 
-			new BukkitRunnable() {
-				@Override
-				public void run() {
-					LobbySwitchManager.setSwitchingPlayer(player);
-				}
-			}.runTask(PitSim.INSTANCE);
-
-			int finalRequestedServer = requestedServer;
-			BukkitRunnable runnable = new BukkitRunnable() {
-				@Override
-				public void run() {
-
-					BukkitRunnable itemRunnable = new BukkitRunnable() {
-						@Override
-						public void run() {
-							new PluginMessage().writeString("QUEUE").writeString(player.getName()).writeInt(finalRequestedServer).writeBoolean(PitSim.getStatus() == PitSim.ServerStatus.DARKZONE).send();
-						}
-					};
-
-					StorageManager.getProfile(player).saveData(itemRunnable);
-
-				}
-			};
-
-			try {
-				pitPlayer.save(true, runnable, false);
-			} catch(ExecutionException | InterruptedException e) {
-				throw new RuntimeException(e);
-			}
-
+			switchPlayer(player, requestedServer);
 		}
+
 
 		if(strings.size() >= 2 && strings.get(0).equals("REQUEST DARKZONE SWITCH")) {
 			UUID uuid = UUID.fromString(strings.get(1));
@@ -279,36 +251,7 @@ public class ProxyMessaging implements Listener {
 				requestedServer = integers.get(0);
 			}
 
-			new BukkitRunnable() {
-				@Override
-				public void run() {
-					LobbySwitchManager.setSwitchingPlayer(player);
-				}
-			}.runTask(PitSim.INSTANCE);
-
-			int finalRequestedServer = requestedServer;
-			BukkitRunnable runnable = new BukkitRunnable() {
-				@Override
-				public void run() {
-
-					BukkitRunnable itemRunnable = new BukkitRunnable() {
-						@Override
-						public void run() {
-							new PluginMessage().writeString("QUEUE DARKZONE").writeString(player.getName()).writeInt(finalRequestedServer).send();
-						}
-					};
-
-					StorageManager.getProfile(player).saveData(itemRunnable);
-
-				}
-			};
-
-			try {
-				pitPlayer.save(true, runnable, false);
-			} catch(ExecutionException | InterruptedException e) {
-				throw new RuntimeException(e);
-			}
-
+			darkzoneSwitchPlayer(player, requestedServer);
 		}
 	}
 
@@ -330,6 +273,72 @@ public class ProxyMessaging implements Listener {
 				sendServerData();
 			}
 		}.runTaskLater(PitSim.INSTANCE, 5L);
+	}
+
+	public static void switchPlayer(Player player, int requestedServer) {
+		new BukkitRunnable() {
+			@Override
+			public void run() {
+				LobbySwitchManager.setSwitchingPlayer(player);
+			}
+		}.runTask(PitSim.INSTANCE);
+
+		BukkitRunnable runnable = new BukkitRunnable() {
+			@Override
+			public void run() {
+
+				BukkitRunnable itemRunnable = new BukkitRunnable() {
+					@Override
+					public void run() {
+						new PluginMessage().writeString("QUEUE").writeString(player.getName()).writeInt(requestedServer).writeBoolean(PitSim.getStatus() == PitSim.ServerStatus.DARKZONE).send();
+					}
+				};
+
+				StorageManager.getProfile(player).saveData(itemRunnable);
+
+			}
+		};
+
+		try {
+			PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
+			pitPlayer.save(true, runnable, false);
+		} catch(ExecutionException | InterruptedException e) {
+			throw new RuntimeException(e);
+		}
+
+	}
+
+	public static void darkzoneSwitchPlayer(Player player, int requestedServer) {
+		new BukkitRunnable() {
+			@Override
+			public void run() {
+				LobbySwitchManager.setSwitchingPlayer(player);
+			}
+		}.runTask(PitSim.INSTANCE);
+
+		BukkitRunnable runnable = new BukkitRunnable() {
+			@Override
+			public void run() {
+
+				BukkitRunnable itemRunnable = new BukkitRunnable() {
+					@Override
+					public void run() {
+						new PluginMessage().writeString("QUEUE DARKZONE").writeString(player.getName()).writeInt(requestedServer).send();
+					}
+				};
+
+				StorageManager.getProfile(player).saveData(itemRunnable);
+
+			}
+		};
+
+		try {
+			PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
+			pitPlayer.save(true, runnable, false);
+		} catch(ExecutionException | InterruptedException e) {
+			throw new RuntimeException(e);
+		}
+
 	}
 
 }
