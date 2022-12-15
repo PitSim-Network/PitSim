@@ -5,6 +5,7 @@ import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.arcticapi.gui.AGUI;
 import dev.kyro.arcticapi.gui.AGUIPanel;
 import dev.kyro.arcticapi.misc.AOutput;
+import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.misc.Misc;
 import org.bukkit.Material;
 import org.bukkit.event.inventory.InventoryClickEvent;
@@ -12,6 +13,7 @@ import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.inventory.InventoryOpenEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.Objects;
 import java.util.UUID;
@@ -44,7 +46,12 @@ public class EnderchestPanel extends AGUIPanel {
 		int slot = event.getSlot();
 
 		if(slot == 8 && !player.getUniqueId().equals(profile.getUUID())) {
-			player.openInventory(Objects.requireNonNull(StorageManager.getSession(player)).inventory);
+			new BukkitRunnable() {
+				@Override
+				public void run() {
+					player.openInventory(Objects.requireNonNull(StorageManager.getSession(player)).inventory.getInventory());
+				}
+			}.runTaskLater(PitSim.INSTANCE, 2);
 		}
 
 		if(slot < 9 || slot >= 27) return;

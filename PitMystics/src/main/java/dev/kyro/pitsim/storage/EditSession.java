@@ -2,11 +2,15 @@ package dev.kyro.pitsim.storage;
 
 import dev.kyro.arcticapi.builders.AItemStackBuilder;
 import dev.kyro.pitsim.PitSim;
+import dev.kyro.pitsim.controllers.ChatManager;
 import dev.kyro.pitsim.controllers.objects.PluginMessage;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
+import org.bukkit.event.HandlerList;
+import org.bukkit.event.Listener;
 import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.UUID;
@@ -23,7 +27,7 @@ public class EditSession {
 
 	public boolean hasResponded = false;
 
-	protected Inventory inventory = null;
+	protected InventoryHolder inventory = null;
 
 	public EditSession(Player staffMember, UUID playerUUID, String playerServer, boolean isPlayerOnline) {
 		this.staffMember = staffMember;
@@ -69,24 +73,15 @@ public class EditSession {
 
 		PluginMessage message = new PluginMessage().writeString("EDIT SESSION END");
 		message.writeString(playerUUID.toString()).send();
+
+		if(inventory != null) ((EditInventoryPanel) inventory).close();
 	}
 
 	private void createInventory() {
-		inventory = Bukkit.createInventory(null, 9 * 5, "Player Inventory");
+		inventory = new EditInventoryPanel(this);
+		PitSim.INSTANCE.getServer().getPluginManager().registerEvents((Listener) inventory, PitSim.INSTANCE);
 
-		for(int i = 0; i < 4; i++) {
-			inventory.setItem(i, storageProfile.armor[i]);
-		}
-
-		for(int i = 9; i < inventory.getSize(); i++) {
-			inventory.setItem(i, storageProfile.cachedInventory[i - 9]);
-		}
-
-		AItemStackBuilder builder = new AItemStackBuilder(Material.ENDER_CHEST);
-		builder.setName("&5View Enderchest");
-		inventory.setItem(8, builder.getItemStack());
-
-		staffMember.openInventory(inventory);
+		staffMember.openInventory(inventory.getInventory());
 	}
 
 	public Player getStaffMember() {

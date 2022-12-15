@@ -244,61 +244,6 @@ public class StorageManager implements Listener {
 	}
 
 	@EventHandler
-	public void onEditSessionClick(InventoryClickEvent event) {
-		Player player = (Player) event.getWhoClicked();
-		EditSession session = getSession(player);
-		if(session == null || session.inventory == null) return;
-		Inventory inventory = session.inventory;
-		if(!inventory.equals(event.getClickedInventory())) return;
-
-		if(event.getSlot() == 8) {
-			EnderchestGUI gui = new EnderchestGUI(session.getStaffMember(), session.getPlayerUUID());
-			gui.open();
-		}
-
-		if(event.getSlot() > 3 && event.getSlot() < 9) event.setCancelled(true);
-
-		for(int i = 0; i < 4; i++) {
-			session.getStorageProfile().armor[i] = inventory.getItem(i);
-		}
-
-		for(int i = 9; i < inventory.getSize(); i++) {
-			session.getStorageProfile().cachedInventory[i - 9] = inventory.getItem(i);
-		}
-
-		if(session.getEditType() == EditType.ONLINE) {
-			Player onlinePlayer = Bukkit.getPlayer(session.getPlayerUUID());
-			onlinePlayer.getInventory().setContents(session.getStorageProfile().cachedInventory);
-			onlinePlayer.getInventory().setArmorContents(session.getStorageProfile().armor);
-			onlinePlayer.updateInventory();
-		}
-	}
-
-	@EventHandler
-	public void onEditSessionClick(InventoryDragEvent event) {
-		Player player = (Player) event.getWhoClicked();
-		EditSession session = getSession(player);
-		if(session == null || session.inventory == null) return;
-		Inventory inventory = session.inventory;
-		if(!inventory.equals(event.getInventory())) return;
-
-		for(int i = 0; i < 4; i++) {
-			session.getStorageProfile().armor[i] = inventory.getItem(i);
-		}
-
-		for(int i = 9; i < inventory.getSize(); i++) {
-			session.getStorageProfile().cachedInventory[i - 9] = inventory.getItem(i);
-		}
-
-		if(session.getEditType() == EditType.ONLINE) {
-			Player onlinePlayer = Bukkit.getPlayer(session.getPlayerUUID());
-			onlinePlayer.getInventory().setContents(session.getStorageProfile().cachedInventory);
-			onlinePlayer.getInventory().setArmorContents(session.getStorageProfile().armor);
-			onlinePlayer.updateInventory();
-		}
-	}
-
-	@EventHandler
 	public void onQuit(PlayerQuitEvent event) {
 		EditSession endSession = null;
 

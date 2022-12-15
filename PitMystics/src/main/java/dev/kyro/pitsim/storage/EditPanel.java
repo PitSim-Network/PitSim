@@ -83,14 +83,14 @@ public class EditPanel extends AGUIPanel {
 			onlineBuilder.getItemStack().setDurability((short) 4);
 			onlineBuilder.setName("&e&lONLINE EDIT");
 			onlineLore.addLore("&7The player is currently in another instance", "&7You cannot edit their inventory from here",
-					"", "&e&lClick to transfer to the player's instance");
+					"", "&eClick to transfer to the player's instance");
 			onlineBuilder.setLore(onlineLore);
 		} else {
 			ALoreBuilder onlineLore = new ALoreBuilder();
 			onlineBuilder.getItemStack().setDurability((short) 14);
 			onlineBuilder.setName("&c&lONLINE EDIT");
 			onlineLore.addLore("&7The player is currently offline", "&7You cannot edit their inventory from here",
-					"", "&c&lClick to Close this Menu");
+					"", "&cClick to Close this Menu");
 			onlineBuilder.setLore(onlineLore);
 		}
 		getInventory().setItem(11, onlineBuilder.getItemStack());
