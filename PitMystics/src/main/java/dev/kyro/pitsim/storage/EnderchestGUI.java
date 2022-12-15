@@ -3,19 +3,18 @@ package dev.kyro.pitsim.storage;
 import dev.kyro.arcticapi.gui.AGUI;
 import org.bukkit.entity.Player;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 public class EnderchestGUI extends AGUI {
 
 	public EnderchestPanel panel;
+	public UUID storagePlayer;
 
-	public EnderchestGUI(Player player) {
-		super(player);
+	public EnderchestGUI(Player openPlayer, UUID storagePlayer) {
+		super(openPlayer);
 
-		this.panel = new EnderchestPanel(this);
+		this.storagePlayer = storagePlayer;
+		this.panel = new EnderchestPanel(this, storagePlayer);
 		setHomePanel(panel);
 	}
 

@@ -258,7 +258,7 @@ public class EnchantManager implements Listener {
 						.replaceAll("\u00A7k", "")
 						.replaceAll("\u00A7l", "")
 						.replaceAll("\u00A7m", "")
-						.replaceAll("\u00A7n", "")
+						.replaceAll("\u00A7n",  "")
 						.replaceAll("\u00A7o", "");
 				if(!displayName.equals(newDisplayName)) {
 					itemMeta.setDisplayName(newDisplayName);

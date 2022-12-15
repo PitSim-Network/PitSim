@@ -31,14 +31,14 @@ public class EnderchestManager implements Listener {
 				return;
 			}
 
-			EnderchestGUI gui = new EnderchestGUI((Player) event.getPlayer());
+			EnderchestGUI gui = new EnderchestGUI((Player) event.getPlayer(), event.getPlayer().getUniqueId());
 			gui.open();
 			if(event.getPlayer() instanceof Player) Sounds.ENDERCHEST_OPEN.play(event.getPlayer());
 
 			new BukkitRunnable() {
 					@Override
 					public void run() {
-						EnderchestGUI gui = new EnderchestGUI((Player) event.getPlayer());
+						EnderchestGUI gui = new EnderchestGUI((Player) event.getPlayer(), event.getPlayer().getUniqueId());
 						gui.open();
 						Sounds.ENDERCHEST_OPEN.play(event.getPlayer());
 					}
@@ -61,7 +61,7 @@ public class EnderchestManager implements Listener {
 				new BukkitRunnable() {
 					@Override
 					public void run() {
-						EnderchestGUI gui = new EnderchestGUI(event.getPlayer());
+						EnderchestGUI gui = new EnderchestGUI(event.getPlayer(), event.getPlayer().getUniqueId());
 						gui.open();
 						Sounds.ENDERCHEST_OPEN.play(event.getPlayer());
 					}

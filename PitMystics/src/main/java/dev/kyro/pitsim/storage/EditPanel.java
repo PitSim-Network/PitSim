@@ -1,6 +1,5 @@
 package dev.kyro.pitsim.storage;
 
-import com.sun.org.apache.bcel.internal.generic.IF_ACMPEQ;
 import dev.kyro.arcticapi.builders.AItemStackBuilder;
 import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.arcticapi.gui.AGUI;
@@ -43,24 +42,27 @@ public class EditPanel extends AGUIPanel {
 				if(Bukkit.getPlayer(session.getPlayerUUID()) == null) {
 					AOutput.error(session.getStaffMember(), "&cThe player is no longer online!");
 					session.respond(EditType.CANCELED);
-				} else if(session.isPlayerOnline()){
-					String[] server = session.getPlayerServer().split("-");
-					if(server.length != 2) return;
-					int serverNum = Integer.parseInt(server[1]);
+				} else session.respond(EditType.ONLINE);
+			} else if(session.isPlayerOnline()) {
+				String[] server = session.getPlayerServer().split("-");
+				if(!session.getPlayerServer().contains("pitsim") && !session.getPlayerServer().contains("darkzone")) return;
+				if(server.length != 2) return;
+				int serverNum = Integer.parseInt(server[1]);
 
-					if(server[0].equalsIgnoreCase("pitsim")) {
-						ProxyMessaging.switchPlayer(player, serverNum);
-						session.respond(EditType.OFFLINE);
-					}
-
-					if(server[0].equalsIgnoreCase("darkzone")) {
-						ProxyMessaging.darkzoneSwitchPlayer(player, serverNum);
-						session.respond(EditType.OFFLINE);
-					}
+				if(server[0].equalsIgnoreCase("pitsim")) {
+					ProxyMessaging.switchPlayer(player, serverNum);
+					session.respond(EditType.CANCELED);
 				}
+
+				if(server[0].equalsIgnoreCase("darkzone")) {
+					ProxyMessaging.darkzoneSwitchPlayer(player, serverNum);
+					session.respond(EditType.CANCELED);
+				}
+			} else {
+				session.respond(EditType.CANCELED);
+				player.closeInventory();
 			}
 		} else if(slot == 15) {
-			if(!session.getPlayerServer().contains("pitsim") && !session.getPlayerServer().contains("darkzone")) return;
 			if(!session.isPlayerOnline()) {
 				session.respond(EditType.OFFLINE);
 			} else session.respond(EditType.OFFLINE_KICK);
@@ -78,14 +80,14 @@ public class EditPanel extends AGUIPanel {
 			onlineBuilder.setLore(onlineLore);
 		} else if(session.isPlayerOnline()) {
 			ALoreBuilder onlineLore = new ALoreBuilder();
-			onlineBuilder.getItemStack().setTypeId(4);
+			onlineBuilder.getItemStack().setDurability((short) 4);
 			onlineBuilder.setName("&e&lONLINE EDIT");
 			onlineLore.addLore("&7The player is currently in another instance", "&7You cannot edit their inventory from here",
 					"", "&e&lClick to transfer to the player's instance");
 			onlineBuilder.setLore(onlineLore);
 		} else {
 			ALoreBuilder onlineLore = new ALoreBuilder();
-			onlineBuilder.getItemStack().setTypeId(14);
+			onlineBuilder.getItemStack().setDurability((short) 14);
 			onlineBuilder.setName("&c&lONLINE EDIT");
 			onlineLore.addLore("&7The player is currently offline", "&7You cannot edit their inventory from here",
 					"", "&c&lClick to Close this Menu");
@@ -102,10 +104,10 @@ public class EditPanel extends AGUIPanel {
 			offlineBuilder.setLore(offlineLore);
 		} else {
 			ALoreBuilder offlineLore = new ALoreBuilder();
-			offlineBuilder.getItemStack().setTypeId(4);
+			offlineBuilder.getItemStack().setDurability((short) 4);
 			offlineBuilder.setName("&e&lOFFLINE EDIT");
 			offlineLore.addLore("&7The player is currently online", "&7They will have to leave to be edited",
-					"", "&e&lClick to Kick and Edit Inventory");
+					"", "&eClick to Kick and Edit Inventory");
 			offlineBuilder.setLore(offlineLore);
 		}
 		getInventory().setItem(15, offlineBuilder.getItemStack());

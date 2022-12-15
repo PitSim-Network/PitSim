@@ -13,9 +13,16 @@ import org.bukkit.event.inventory.InventoryOpenEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
+import java.util.Objects;
+import java.util.UUID;
+
 public class EnderchestPanel extends AGUIPanel {
-	public EnderchestPanel(AGUI gui) {
+
+	public StorageProfile profile;
+	public EnderchestPanel(AGUI gui, UUID storagePlayer) {
 		super(gui);
+
+		profile = StorageManager.getProfile(storagePlayer);
 	}
 
 	@Override
@@ -36,6 +43,10 @@ public class EnderchestPanel extends AGUIPanel {
 		if(event.getClickedInventory().getHolder() != this) return;
 		int slot = event.getSlot();
 
+		if(slot == 8 && !player.getUniqueId().equals(profile.getUUID())) {
+			player.openInventory(Objects.requireNonNull(StorageManager.getSession(player)).inventory);
+		}
+
 		if(slot < 9 || slot >= 27) return;
 
 		if((slot - 9) + 1 > rank.pages) {
@@ -44,7 +55,6 @@ public class EnderchestPanel extends AGUIPanel {
 			return;
 		}
 
-		StorageProfile profile = StorageManager.getProfile(player);
 		if(!profile.hasData() || profile.isSaving()) return;
 
 		Inventory inventory = profile.getEnderchest(slot - 8);
@@ -53,7 +63,6 @@ public class EnderchestPanel extends AGUIPanel {
 
 	@Override
 	public void onOpen(InventoryOpenEvent event) {
-		StorageProfile profile = StorageManager.getProfile(player);
 		EnderchestGUI.EnderchestPages rank = EnderchestGUI.EnderchestPages.getRank(player);
 
 		for(int i = 0; i < 9; i++) {
@@ -92,6 +101,12 @@ public class EnderchestPanel extends AGUIPanel {
 
 			stackBuilder.setLore(lore);
 			getInventory().setItem(i, stackBuilder.getItemStack());
+
+			if(player.getUniqueId().equals(profile.getUUID())) return;
+
+			AItemStackBuilder builder = new AItemStackBuilder(Material.CHEST);
+			builder.setName("&6View Inventory");
+			getInventory().setItem(8, builder.getItemStack());
 		}
 	}
 

@@ -209,6 +209,10 @@ public class StorageProfile {
 	public void saveData() {
 		PluginMessage message = new PluginMessage().writeString("ITEM DATA SAVE").writeString(uuid.toString());
 
+		System.out.println(StorageManager.isEditing(uuid) + " | " + StorageManager.editSessions);
+		if(StorageManager.isEditing(uuid) || StorageManager.isBeingEdited(uuid)) return;
+		System.out.println(uuid);
+
 		message.writeString(PitSim.serverName);
 		for(Inventory items : enderChest) {
 			for(int i = 9; i < items.getSize() - 9; i++) {

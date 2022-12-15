@@ -7,6 +7,7 @@ import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.controllers.objects.*;
 import dev.kyro.pitsim.enums.ItemType;
 import dev.kyro.pitsim.events.MessageEvent;
+import dev.kyro.pitsim.storage.EditSession;
 import dev.kyro.pitsim.storage.StorageManager;
 import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.Bukkit;
@@ -49,47 +50,9 @@ public class ProxyMessaging implements Listener {
 			LobbySwitchManager.setSwitchingPlayer(player);
 
 			if(PitSim.getStatus() == PitSim.ServerStatus.DARKZONE) {
-				BukkitRunnable runnable = new BukkitRunnable() {
-					@Override
-					public void run() {
-
-						BukkitRunnable itemRunnable = new BukkitRunnable() {
-							@Override
-							public void run() {
-								new PluginMessage().writeString("QUEUE DARKZONE").writeString(player.getName()).send();
-							}
-						};
-
-						StorageManager.getProfile(player).saveData(itemRunnable);
-
-					}
-				};
-
-				try {
-					pitPlayer.save(true, runnable, false);
-				} catch(ExecutionException | InterruptedException e) {
-					throw new RuntimeException(e);
-				}
+				darkzoneSwitchPlayer(player, 0);
 			} else if (PitSim.getStatus() == PitSim.ServerStatus.PITSIM) {
-				BukkitRunnable runnable = new BukkitRunnable() {
-					@Override
-					public void run() {
-						BukkitRunnable itemRunnable = new BukkitRunnable() {
-							@Override
-							public void run() {
-								new PluginMessage().writeString("QUEUE").writeString(player.getName()).writeBoolean(false).send();
-							}
-						};
-
-						StorageManager.getProfile(player).saveData(itemRunnable);
-					}
-				};
-
-				try {
-					pitPlayer.save(true, runnable, false);
-				} catch(ExecutionException | InterruptedException e) {
-					throw new RuntimeException(e);
-				}
+				switchPlayer(player, 0);
 			}
 		}
 	}
@@ -276,6 +239,23 @@ public class ProxyMessaging implements Listener {
 	}
 
 	public static void switchPlayer(Player player, int requestedServer) {
+
+		if(StorageManager.isBeingEdited(player.getUniqueId())) {
+			EditSession session = StorageManager.getSession(player.getUniqueId());
+			assert session != null;
+			session.end();
+
+			AOutput.error(session.getStaffMember(), "&cYour session ended because the player switched instances!");
+			session.getStaffMember().closeInventory();
+		}
+
+		if(StorageManager.isEditing(player)) {
+			EditSession session = StorageManager.getSession(player);
+			assert session != null;
+			session.end();
+		}
+
+
 		new BukkitRunnable() {
 			@Override
 			public void run() {
@@ -309,6 +289,22 @@ public class ProxyMessaging implements Listener {
 	}
 
 	public static void darkzoneSwitchPlayer(Player player, int requestedServer) {
+
+		if(StorageManager.isBeingEdited(player.getUniqueId())) {
+			EditSession session = StorageManager.getSession(player.getUniqueId());
+			assert session != null;
+			session.end();
+
+			AOutput.error(session.getStaffMember(), "&cYour session ended because the player switched instances!");
+			session.getStaffMember().closeInventory();
+		}
+
+		if(StorageManager.isEditing(player)) {
+			EditSession session = StorageManager.getSession(player);
+			assert session != null;
+			session.end();
+		}
+
 		new BukkitRunnable() {
 			@Override
 			public void run() {
