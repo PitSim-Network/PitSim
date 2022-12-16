@@ -3,17 +3,19 @@ package dev.kyro.pitsim.controllers;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.controllers.objects.Booster;
 import dev.kyro.pitsim.controllers.objects.Non;
+import dev.kyro.pitsim.events.MessageEvent;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class NonManager implements Listener {
+public class NonManager {
 	public static List<String> botIGNs = new ArrayList<>();
 	public static boolean defaultNons = true;
 	public static List<String> skinLoadedBotIGNS = new ArrayList<>();
