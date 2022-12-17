@@ -210,7 +210,10 @@ public class StorageProfile {
 		PluginMessage message = new PluginMessage().writeString("ITEM DATA SAVE").writeString(uuid.toString());
 
 		System.out.println(StorageManager.isEditing(uuid) + " | " + StorageManager.editSessions);
-		if(StorageManager.isEditing(uuid) || StorageManager.isBeingEdited(uuid)) return;
+		System.out.println(Bukkit.getPlayer(uuid) != null);
+		if(StorageManager.isEditing(uuid) && Bukkit.getPlayer(uuid) != null) return;
+		if(StorageManager.isBeingEdited(uuid) && Bukkit.getPlayer(uuid) != null) return;
+
 		System.out.println(uuid);
 
 		message.writeString(PitSim.serverName);
