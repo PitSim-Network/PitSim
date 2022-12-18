@@ -183,7 +183,7 @@ public class PitPlayer {
 		if(!passDate.equals(passData.currentPassDate)) {
 //			TODO: give unclaimed rewards
 			passData = new PassData(passDate);
-			save(true);
+			save(true, false);
 		}
 		return passData;
 	}
@@ -195,9 +195,9 @@ public class PitPlayer {
 	@Exclude
 	public long lastSave;
 	@Exclude
-	public void save(boolean itemData) {
+	public void save(boolean itemData, boolean finalSave) {
 		try {
-			save(false, null, itemData);
+			save(finalSave, null, itemData);
 		} catch(ExecutionException | InterruptedException ignored) {}
 	}
 	@Exclude
@@ -230,7 +230,7 @@ public class PitPlayer {
 
 		if(itemData) {
 			StorageProfile profile = StorageManager.getProfile(uuid);
-			profile.saveData();
+			profile.saveData(finalSave);
 		}
 
 		megastreakRef = megastreak.getRefNames().get(0);

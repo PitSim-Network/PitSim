@@ -63,7 +63,7 @@ public class EditSession {
 
 	public void end() {
 		StorageManager.editSessions.remove(this);
-		if(editType != EditType.CANCELED) storageProfile.saveData();
+		if(editType != EditType.CANCELED) storageProfile.saveData(true);
 
 		PluginMessage message = new PluginMessage().writeString("EDIT SESSION END");
 		message.writeString(playerUUID.toString()).send();

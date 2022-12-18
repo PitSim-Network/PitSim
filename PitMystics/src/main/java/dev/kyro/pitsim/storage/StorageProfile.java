@@ -124,14 +124,14 @@ public class StorageProfile {
 			if(!(exception instanceof FileNotFoundException) && !(exception instanceof NoSuchFileException)) exception.printStackTrace();
 		}
 
-		saveData();
+		saveData(false);
 
 	}
 
-	public void saveData(BukkitRunnable runnable) {
+	public void saveData(BukkitRunnable runnable, boolean logout) {
 		saveRunnable = runnable;
 		if(saving) return;
-		saveData();
+		saveData(logout);
 	}
 
 	public void setData(PluginMessage message) {
@@ -206,9 +206,10 @@ public class StorageProfile {
 		}
 	}
 
-	public void saveData() {
+	public void saveData(boolean logout) {
 		PluginMessage message = new PluginMessage().writeString("ITEM DATA SAVE").writeString(uuid.toString());
 
+		message.writeBoolean(logout);
 		System.out.println(StorageManager.isEditing(uuid) + " | " + StorageManager.editSessions);
 		System.out.println(Bukkit.getPlayer(uuid) != null);
 		if(StorageManager.isEditing(uuid) && Bukkit.getPlayer(uuid) != null) return;

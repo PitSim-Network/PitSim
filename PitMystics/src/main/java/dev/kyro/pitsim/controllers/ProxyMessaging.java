@@ -189,7 +189,7 @@ public class ProxyMessaging implements Listener {
 			UUID uuid = UUID.fromString(strings.get(1));
 
 			PitPlayer pitPlayer = new PitPlayer(Bukkit.getOfflinePlayer(uuid).getUniqueId());
-			pitPlayer.save(false);
+			pitPlayer.save(false, false);
 		}
 
 		if(strings.size() >= 2 && strings.get(0).equals("REQUEST SWITCH")) {
@@ -280,7 +280,7 @@ public class ProxyMessaging implements Listener {
 					}
 				};
 
-				StorageManager.getProfile(player).saveData(itemRunnable);
+				StorageManager.getProfile(player).saveData(itemRunnable, false);
 
 			}
 		};
@@ -329,7 +329,7 @@ public class ProxyMessaging implements Listener {
 					}
 				};
 
-				StorageManager.getProfile(player).saveData(itemRunnable);
+				StorageManager.getProfile(player).saveData(itemRunnable, false);
 
 			}
 		};

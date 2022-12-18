@@ -136,7 +136,7 @@ public class PortalManager implements Listener {
 						}
 					};
 
-					StorageManager.getProfile(player).saveData(itemRunnable);
+					StorageManager.getProfile(player).saveData(false);
 				}
 			};
 
@@ -157,7 +157,7 @@ public class PortalManager implements Listener {
 						}
 					};
 
-					StorageManager.getProfile(player).saveData(itemRunnable);
+					StorageManager.getProfile(player).saveData(false);
 				}
 			};
 
