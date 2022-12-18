@@ -1,6 +1,8 @@
 package dev.kyro.pitsim.misc;
 
+import de.tr7zw.nbtapi.NBTItem;
 import dev.kyro.pitsim.PitSim;
+import dev.kyro.pitsim.controllers.EnchantManager;
 import dev.kyro.pitsim.cosmetics.CosmeticManager;
 import dev.kyro.pitsim.cosmetics.CosmeticType;
 import dev.kyro.pitsim.cosmetics.PitCosmetic;
@@ -9,6 +11,7 @@ import dev.kyro.pitsim.controllers.NonManager;
 import dev.kyro.pitsim.controllers.objects.GoldenHelmet;
 import dev.kyro.pitsim.controllers.objects.PitEnchant;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
+import dev.kyro.pitsim.enums.NBTTag;
 import dev.kyro.pitsim.events.HealEvent;
 import dev.kyro.pitsim.megastreaks.Overdrive;
 import dev.kyro.pitsim.megastreaks.RNGesus;
@@ -48,6 +51,36 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 
 public class Misc {
+	public static String stringifyItem(ItemStack itemStack) {
+		String serializedItem = "";
+		if(Misc.isAirOrNull(itemStack)) return addBraces(serializedItem);
+		if(!itemStack.hasItemMeta()) return addBraces(itemStack.getType().toString());
+		serializedItem += itemStack.getAmount() + "x";
+
+		NBTItem nbtItem = new NBTItem(itemStack);
+		ItemMeta itemMeta = itemStack.getItemMeta();
+		serializedItem += " " + itemStack.getType();
+
+		if(nbtItem.hasKey(NBTTag.ITEM_UUID.getRef())) {
+			serializedItem += " " + nbtItem.getString(NBTTag.ITEM_UUID.getRef()) + " " +
+					nbtItem.getInteger(NBTTag.CURRENT_LIVES.getRef()) + "/" + nbtItem.getInteger(NBTTag.MAX_LIVES.getRef());
+			if(nbtItem.hasKey(NBTTag.IS_GEMMED.getRef())) serializedItem += " Gemmed";
+			if(EnchantManager.isJewelComplete(itemStack)) serializedItem += " Jewel: " +
+					EnchantManager.getEnchant(nbtItem.getString(NBTTag.ITEM_JEWEL_ENCHANT.getRef())).getDisplayName();
+			serializedItem += " Enchants:";
+			for(Map.Entry<PitEnchant, Integer> entry : EnchantManager.getEnchantsOnItem(itemStack).entrySet()) {
+				serializedItem += " " + entry.getKey().getDisplayName() + " " + entry.getValue();
+			}
+		}
+		if(!itemMeta.hasDisplayName()) return addBraces(serializedItem);
+		serializedItem += " " + ChatColor.stripColor(itemMeta.getDisplayName());
+		return addBraces(serializedItem);
+	}
+
+	public static String addBraces(String string) {
+		return "{" + string + "}";
+	}
+
 	public static int getEmptyInventorySlots(Player player) {
 		int emptySlots = 0;
 		for(int i = 0; i < 36; i++) if(Misc.isAirOrNull(player.getInventory().getItem(i))) emptySlots++;
