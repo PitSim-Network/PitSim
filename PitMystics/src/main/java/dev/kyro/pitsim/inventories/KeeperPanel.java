@@ -12,11 +12,9 @@ import dev.kyro.pitsim.controllers.objects.PluginMessage;
 import dev.kyro.pitsim.controllers.objects.ServerData;
 import dev.kyro.pitsim.misc.HeadLib;
 import dev.kyro.pitsim.misc.Sounds;
-import me.clip.placeholderapi.PlaceholderAPI;
-import org.bukkit.Bukkit;
+import dev.kyro.pitsim.tutorial.HelpItemStacks;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
-import org.bukkit.entity.Arrow;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
@@ -34,6 +32,8 @@ public class KeeperPanel extends AGUIPanel{
 		super(gui);
 
 		inventoryBuilder.createBorder(Material.STAINED_GLASS_PANE, 7);
+
+		getInventory().setItem(26, HelpItemStacks.getKeeperItemStack());
 	}
 
 	public static Map<Player, PluginMessage> queuedMessages = new HashMap<>();
@@ -101,7 +101,6 @@ public class KeeperPanel extends AGUIPanel{
 	public void onOpen(InventoryOpenEvent event) {
 		List<Integer> slots = getSlots(ServerData.getServerCount());
 		int slotsIndex = 0;
-
 
 		for(Map.Entry<Integer, ServerData> entry : ServerData.servers.entrySet()) {
 			int serverIndex = entry.getKey();

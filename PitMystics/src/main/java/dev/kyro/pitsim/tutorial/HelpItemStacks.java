@@ -20,7 +20,6 @@ public class HelpItemStacks {
 		BASE_ITEMSTACK = getCustomHead("badc048a7ce78f7dad72a07da27d85c0916881e5522eeed1e3daf217a38c1a");
 	}
 
-
 	public static ItemStack getPerksItemStack() {
 		return new AItemStackBuilder(BASE_ITEMSTACK.clone())
 				.setName("&ePerks, Killstreaks, and Megastreaks")
