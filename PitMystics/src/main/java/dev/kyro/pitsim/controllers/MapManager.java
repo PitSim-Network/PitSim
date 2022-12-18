@@ -2,11 +2,7 @@ package dev.kyro.pitsim.controllers;
 
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.controllers.objects.PitMap;
-import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.events.PlayerSpawnCommandEvent;
-import dev.kyro.pitsim.misc.Misc;
-import dev.kyro.pitsim.pitmaps.XmasMap;
-import dev.kyro.pitsim.misc.SchematicPaste;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
@@ -24,7 +20,7 @@ public class MapManager implements Listener {
 
 	public static Location darkzoneSpawn = new Location(getDarkzone(), 178.5, 91, -93.5, -90, 0);
 
-	public static Location initialDarkzoneSpawn = new Location(getDarkzone(), 173, 92, -93.5, -90, 0);
+	public static Location initialDarkzoneSpawn = new Location(getDarkzone(), 177.5, 92, -93.5, -90, 0);
 
 	public static void onStart() {
 		enablePortal(currentMap.world);
