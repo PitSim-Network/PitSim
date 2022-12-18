@@ -62,3 +62,7 @@ commands:
   view:
   music:
   cutscene:
+  potions:
+    aliases:
+      - pot
+      - potion
