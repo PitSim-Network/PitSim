@@ -5,11 +5,9 @@ import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.controllers.objects.PluginMessage;
 import dev.kyro.pitsim.events.MessageEvent;
 import dev.kyro.pitsim.misc.Misc;
-import net.minecraft.server.v1_8_R3.NBTCompressedStreamTools;
-import net.minecraft.server.v1_8_R3.NBTTagCompound;
-import net.minecraft.server.v1_8_R3.NBTTagList;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -21,10 +19,6 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.NoSuchFileException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -110,16 +104,12 @@ public class StorageManager implements Listener {
 		StorageProfile profile = getProfile(player);
 
 		if(!isBeingEdited(player.getUniqueId())) profiles.remove(profile);
+		File file = new File("world/playerdata/" + player.getUniqueId().toString() + ".dat");
+		file.delete();
 
-		try {
-			File inventoryFile = new File("world/playerdata/" + player + ".dat");
-			NBTTagCompound nbt = NBTCompressedStreamTools.a(Files.newInputStream(inventoryFile.toPath()));
-			nbt.set("Inventory", new NBTTagList());
+		player.getInventory().clear();
 
-
-		} catch(IOException exception) {
-			if(!(exception instanceof FileNotFoundException) && !(exception instanceof NoSuchFileException)) exception.printStackTrace();
-		}
+		player.getInventory().setArmorContents(new ItemStack[] {new ItemStack(Material.AIR), new ItemStack(Material.AIR), new ItemStack(Material.AIR), new ItemStack(Material.AIR)});
 	}
 
 	public static boolean isEditing(Player player) {

@@ -196,7 +196,6 @@ public class ProxyMessaging implements Listener {
 			UUID uuid = UUID.fromString(strings.get(1));
 			Player player = Bukkit.getPlayer(uuid);
 			if(player == null) return;
-			PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
 
 			int requestedServer = 0;
 
@@ -272,15 +271,17 @@ public class ProxyMessaging implements Listener {
 		BukkitRunnable runnable = new BukkitRunnable() {
 			@Override
 			public void run() {
+				System.out.println("runnable 1");
 
 				BukkitRunnable itemRunnable = new BukkitRunnable() {
 					@Override
 					public void run() {
+						System.out.println("runnable 2");
 						new PluginMessage().writeString("QUEUE").writeString(player.getName()).writeInt(requestedServer).writeBoolean(PitSim.getStatus() == PitSim.ServerStatus.DARKZONE).send();
 					}
 				};
 
-				StorageManager.getProfile(player).saveData(itemRunnable, false);
+				StorageManager.getProfile(player).saveData(itemRunnable, true);
 
 			}
 		};
@@ -329,7 +330,7 @@ public class ProxyMessaging implements Listener {
 					}
 				};
 
-				StorageManager.getProfile(player).saveData(itemRunnable, false);
+				StorageManager.getProfile(player).saveData(itemRunnable, true);
 
 			}
 		};

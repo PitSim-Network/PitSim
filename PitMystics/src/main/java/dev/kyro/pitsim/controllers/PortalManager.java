@@ -7,7 +7,6 @@ import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.brewing.PotionManager;
 import dev.kyro.pitsim.controllers.objects.Hopper;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
-import dev.kyro.pitsim.controllers.objects.PluginMessage;
 import dev.kyro.pitsim.misc.Misc;
 import dev.kyro.pitsim.misc.Sounds;
 import org.bukkit.Bukkit;
@@ -22,9 +21,6 @@ import org.bukkit.event.player.PlayerPortalEvent;
 import org.bukkit.event.player.PlayerTeleportEvent;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
-import dev.kyro.pitsim.storage.StorageManager;
-
-import java.util.concurrent.ExecutionException;
 
 public class PortalManager implements Listener {
 
@@ -124,48 +120,9 @@ public class PortalManager implements Listener {
 		LobbySwitchManager.setSwitchingPlayer(event.getPlayer());
 
 		if(PitSim.getStatus().isDarkzone()) {
-
-			BukkitRunnable runnable = new BukkitRunnable() {
-				@Override
-				public void run() {
-
-					BukkitRunnable itemRunnable = new BukkitRunnable() {
-						@Override
-						public void run() {
-							new PluginMessage().writeString("QUEUE").writeString(event.getPlayer().getName()).writeBoolean(true).send();
-						}
-					};
-
-					StorageManager.getProfile(player).saveData(false);
-				}
-			};
-
-			try {
-				pitPlayer.save(true, runnable, false);
-			} catch(ExecutionException | InterruptedException e) {
-				throw new RuntimeException(e);
-			}
+			ProxyMessaging.switchPlayer(player, 0);
 		} else {
-
-			BukkitRunnable runnable = new BukkitRunnable() {
-				@Override
-				public void run() {
-					BukkitRunnable itemRunnable = new BukkitRunnable() {
-						@Override
-						public void run() {
-							new PluginMessage().writeString("QUEUE DARKZONE").writeString(event.getPlayer().getName()).send();
-						}
-					};
-
-					StorageManager.getProfile(player).saveData(false);
-				}
-			};
-
-			try {
-				pitPlayer.save(true, runnable, false);
-			} catch(ExecutionException | InterruptedException e) {
-				throw new RuntimeException(e);
-			}
+			ProxyMessaging.darkzoneSwitchPlayer(player, 0);
 		}
 	}
 
