@@ -53,7 +53,8 @@ import java.util.*;
 public class Misc {
 	public static String stringifyItem(ItemStack itemStack) {
 		String serializedItem = "";
-		if(Misc.isAirOrNull(itemStack) || !itemStack.hasItemMeta()) return addBraces(serializedItem);
+		if(Misc.isAirOrNull(itemStack)) return addBraces(serializedItem);
+		if(!itemStack.hasItemMeta()) return addBraces(itemStack.getType().toString());
 		serializedItem += itemStack.getAmount() + "x";
 
 		NBTItem nbtItem = new NBTItem(itemStack);
