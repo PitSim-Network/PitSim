@@ -7,7 +7,6 @@ import dev.kyro.pitsim.events.MessageEvent;
 import dev.kyro.pitsim.misc.Misc;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
-import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -18,7 +17,6 @@ import org.bukkit.event.player.*;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -74,12 +72,13 @@ public class StorageManager implements Listener {
 			break;
 		}
 
-		if(hasItem || !Misc.isAirOrNull(player.getInventory().getHelmet()) ||
-				!Misc.isAirOrNull(player.getInventory().getChestplate()) ||
-				!Misc.isAirOrNull(player.getInventory().getLeggings()) ||
-				!Misc.isAirOrNull(player.getInventory().getBoots())) {
-			Misc.alertDiscord("@everyone " + player.getName() + " logged in to server " + PitSim.serverName + " with items in their inventory");
-		}
+//		Disabled because the deletion/clear method was disabled
+//		if(hasItem || !Misc.isAirOrNull(player.getInventory().getHelmet()) ||
+//				!Misc.isAirOrNull(player.getInventory().getChestplate()) ||
+//				!Misc.isAirOrNull(player.getInventory().getLeggings()) ||
+//				!Misc.isAirOrNull(player.getInventory().getBoots())) {
+//			Misc.alertDiscord("@everyone " + player.getName() + " logged in to server " + PitSim.serverName + " with items in their inventory");
+//		}
 
 		if(!profile.hasData()) {
 			player.kickPlayer(ChatColor.RED + "An error occurred when loading your data. Please report this issue.");
@@ -104,12 +103,11 @@ public class StorageManager implements Listener {
 		StorageProfile profile = getProfile(player);
 
 		if(!isBeingEdited(player.getUniqueId())) profiles.remove(profile);
-		File file = new File("world/playerdata/" + player.getUniqueId().toString() + ".dat");
-		file.delete();
+//		File file = new File("world/playerdata/" + player.getUniqueId().toString() + ".dat");
+//		file.delete();
 
-		player.getInventory().clear();
-
-		player.getInventory().setArmorContents(new ItemStack[] {new ItemStack(Material.AIR), new ItemStack(Material.AIR), new ItemStack(Material.AIR), new ItemStack(Material.AIR)});
+//		player.getInventory().clear();
+//		player.getInventory().setArmorContents(new ItemStack[] {new ItemStack(Material.AIR), new ItemStack(Material.AIR), new ItemStack(Material.AIR), new ItemStack(Material.AIR)});
 	}
 
 	public static boolean isEditing(Player player) {
