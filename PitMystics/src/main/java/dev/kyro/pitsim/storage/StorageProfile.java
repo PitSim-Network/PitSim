@@ -146,11 +146,11 @@ public class StorageProfile {
 		armor = new ItemStack[4];
 
 		for(int i = 0; i < 36; i++) {
-			cachedInventory[i] = strings.get(i).isEmpty() ? new ItemStack(Material.AIR) : deserialize(offlinePlayer, strings.get(i));
+			cachedInventory[i] = strings.get(i).isEmpty() ? new ItemStack(Material.AIR) : deserialize(strings.get(i));
 		}
 
 		for(int i = 0; i < 4; i++) {
-			armor[i] = strings.get(i + 36).isEmpty() ? new ItemStack(Material.AIR) : deserialize(offlinePlayer, strings.get(i + 36));
+			armor[i] = strings.get(i + 36).isEmpty() ? new ItemStack(Material.AIR) : deserialize(strings.get(i + 36));
 		}
 
 		enderChest = new Inventory[ENDERCHEST_MAX_PAGES];
@@ -162,7 +162,7 @@ public class StorageProfile {
 			int page = i / 27;
 
 			Inventory inventory = enderChest[page];
-			inventory.setItem((i % 27) + 9, deserialize(offlinePlayer, strings.get(i + invCount)));
+			inventory.setItem((i % 27) + 9, deserialize(strings.get(i + invCount)));
 		}
 
 		for(int i = 0; i < enderChest.length; i++) {
@@ -213,37 +213,35 @@ public class StorageProfile {
 		PluginMessage message = new PluginMessage().writeString("ITEM DATA SAVE").writeString(uuid.toString());
 
 		message.writeBoolean(logout);
-		System.out.println(StorageManager.isEditing(uuid) + " | " + StorageManager.editSessions);
-		System.out.println(Bukkit.getPlayer(uuid) != null);
+//		System.out.println(StorageManager.isEditing(uuid) + " | " + StorageManager.editSessions);
+//		System.out.println(Bukkit.getPlayer(uuid) != null);
 		if(StorageManager.isEditing(uuid) && Bukkit.getPlayer(uuid) != null) return;
 		if(StorageManager.isBeingEdited(uuid) && Bukkit.getPlayer(uuid) != null) return;
 
-		System.out.println(uuid);
-
+		OfflinePlayer player = Bukkit.getOfflinePlayer(uuid);
 		message.writeString(PitSim.serverName);
 		for(Inventory items : enderChest) {
 			for(int i = 9; i < items.getSize() - 9; i++) {
-				message.writeString(serialize(items.getItem(i)));
+				message.writeString(serialize(player, items.getItem(i)));
 			}
 		}
 
-		OfflinePlayer player = Bukkit.getOfflinePlayer(uuid);
 
 		if(player.getPlayer() != null) {
 			for(ItemStack itemStack : player.getPlayer().getInventory()) {
-				message.writeString(serialize(itemStack));
+				message.writeString(serialize(player, itemStack));
 			}
 
 			for(ItemStack itemStack : player.getPlayer().getInventory().getArmorContents()) {
-				message.writeString(serialize(itemStack));
+				message.writeString(serialize(player, itemStack));
 			}
 		} else if(cachedInventory != null) {
 			for(ItemStack itemStack : cachedInventory) {
-				message.writeString(serialize(itemStack));
+				message.writeString(serialize(player, itemStack));
 			}
 
 			for(ItemStack itemStack : armor) {
-				message.writeString(serialize(itemStack));
+				message.writeString(serialize(player, itemStack));
 			}
 		}
 
@@ -296,26 +294,25 @@ public class StorageProfile {
 		return armor;
 	}
 
-	public static ItemStack deserialize(OfflinePlayer player, String string) {
+	public static ItemStack deserialize(String string) {
 		if(string.isEmpty()) return new ItemStack(Material.AIR);
 		try {
 //			return Base64.itemFrom64(string);
-			ItemStack itemStack = CustomSerializer.deserialize(string);
-			if(EnchantManager.isIllegalItem(itemStack) && !player.isOp()) {
-				System.out.println("Did not save illegal item: " + Misc.stringifyItem(itemStack));
-				LogManager.onIllegalItemRemoved(player, itemStack);
-				return new ItemStack(Material.AIR);
-			}
-			return itemStack;
+			return CustomSerializer.deserialize(string);
 //		} catch(IOException e) {
 		} catch(Exception e) {
 			throw new RuntimeException(e);
 		}
 	}
 
-	public static String serialize(ItemStack itemStack) {
+	public static String serialize(OfflinePlayer player, ItemStack itemStack) {
 		if(Misc.isAirOrNull(itemStack)) return "";
 //		return Base64.itemTo64(itemStack);
+		if(EnchantManager.isIllegalItem(itemStack) && !player.isOp()) {
+			System.out.println("Did not save illegal item: " + Misc.stringifyItem(itemStack));
+			LogManager.onIllegalItemRemoved(player, itemStack);
+			return "";
+		}
 		return CustomSerializer.serialize(itemStack);
 	}
 
