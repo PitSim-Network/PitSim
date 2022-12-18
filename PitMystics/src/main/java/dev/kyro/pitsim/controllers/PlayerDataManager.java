@@ -41,7 +41,7 @@ public class PlayerDataManager implements Listener {
 				StorageManager.quitCleanup(player);
 				PitPlayer.pitPlayers.remove(pitPlayer);
 			}
-		}.runTaskLater(PitSim.INSTANCE, 10L);
+		}.runTaskLater(PitSim.INSTANCE, 1L);
 	}
 
 	@EventHandler(priority = EventPriority.MONITOR)

@@ -56,7 +56,7 @@ public class EditSession {
 			public void run() {
 				createInventory();
 			}
-		}.runTaskLater(PitSim.INSTANCE, 40);
+		}.runTaskLater(PitSim.INSTANCE, 10);
 
 
 	}

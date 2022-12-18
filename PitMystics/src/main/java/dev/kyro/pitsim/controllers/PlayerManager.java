@@ -600,6 +600,7 @@ public class PlayerManager implements Listener {
 		new BukkitRunnable() {
 			@Override
 			public void run() {
+				if(!player.isOnline()) return;
 				player.setGameMode(GameMode.SURVIVAL);
 
 				pitPlayer.updateMaxHealth();
@@ -619,6 +620,7 @@ public class PlayerManager implements Listener {
 		new BukkitRunnable() {
 			@Override
 			public void run() {
+				if(!player.isOnline()) return;
 				if(!pitPlayer.musicDisabled && XmasMap.radio != null) {
 					XmasMap.addToRadio(player);
 				}
@@ -632,6 +634,7 @@ public class PlayerManager implements Listener {
 			new BukkitRunnable() {
 				@Override
 				public void run() {
+					if(!player.isOnline()) return;
 					for(Non non : NonManager.nons) player.hidePlayer(non.non);
 					player.teleport(MapManager.playerSnow);
 				}
@@ -641,6 +644,7 @@ public class PlayerManager implements Listener {
 			new BukkitRunnable() {
 				@Override
 				public void run() {
+					if(!player.isOnline()) return;
 					player.teleport(finalSpawnLoc);
 				}
 			}.runTaskLater(PitSim.INSTANCE, 60L);
@@ -653,6 +657,7 @@ public class PlayerManager implements Listener {
 		new BukkitRunnable() {
 			@Override
 			public void run() {
+				if(!player.isOnline()) return;
 				player.teleport(finalSpawnLoc1);
 
 				if(PitSim.getStatus() == PitSim.ServerStatus.DARKZONE) {

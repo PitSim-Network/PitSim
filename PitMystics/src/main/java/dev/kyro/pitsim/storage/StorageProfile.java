@@ -34,7 +34,7 @@ import java.util.List;
 import java.util.UUID;
 
 public class StorageProfile {
-	public static final int ENDERCHEST_PAGES = 18;
+	public static final int ENDERCHEST_MAX_PAGES = 18;
 
 	protected Inventory[] enderChest;
 	protected ItemStack[] cachedInventory;
@@ -66,7 +66,7 @@ public class StorageProfile {
 		try(FileReader reader = new FileReader("mstore/galacticvaults_players/" + player.toString() + ".json")) {
 			JSONObject data = (JSONObject) jsonParser.parse(reader);
 			JSONObject vaults = (JSONObject) data.get("vaultContents");
-			for(int i = 1; i < ENDERCHEST_PAGES + 1; i++) {
+			for(int i = 1; i < ENDERCHEST_MAX_PAGES + 1; i++) {
 				Inventory inventory = enderChest[i - 1];
 				JSONObject vault = (JSONObject) vaults.get(i + "");
 				if(vault == null) continue;
@@ -151,8 +151,8 @@ public class StorageProfile {
 			armor[i] = strings.get(i + 36).isEmpty() ? new ItemStack(Material.AIR) : deserialize(strings.get(i + 36));
 		}
 
-		enderChest = new Inventory[ENDERCHEST_PAGES];
-		for(int i = 0; i < ENDERCHEST_PAGES; i++) {
+		enderChest = new Inventory[ENDERCHEST_MAX_PAGES];
+		for(int i = 0; i < ENDERCHEST_MAX_PAGES; i++) {
 			enderChest[i] = PitSim.INSTANCE.getServer().createInventory(null, 45, "Enderchest - Page " + (i + 1));
 		}
 
@@ -192,10 +192,10 @@ public class StorageProfile {
 
 			ItemStack next = new ItemStack(Material.PAPER);
 			ItemMeta nextMeta = next.getItemMeta();
-			if(i == ENDERCHEST_PAGES - 1) nextMeta.setDisplayName(ChatColor.RED + "Next Page");
+			if(i == ENDERCHEST_MAX_PAGES - 1) nextMeta.setDisplayName(ChatColor.RED + "Next Page");
 			else nextMeta.setDisplayName(ChatColor.GREEN + "Next Page");
 			next.setItemMeta(nextMeta);
-			next.setAmount(i == (ENDERCHEST_PAGES - 1) ? 1 : i + 2);
+			next.setAmount(i == (ENDERCHEST_MAX_PAGES - 1) ? 1 : i + 2);
 			inventory.setItem(44, next);
 
 			ItemStack menu = new ItemStack(Material.COMPASS);

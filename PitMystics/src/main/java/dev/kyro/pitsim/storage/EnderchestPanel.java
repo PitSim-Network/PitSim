@@ -45,6 +45,10 @@ public class EnderchestPanel extends AGUIPanel {
 		if(event.getClickedInventory().getHolder() != this) return;
 		int slot = event.getSlot();
 
+		int accessiblePages = rank.pages;
+
+		if(!profile.getUUID().equals(player.getUniqueId())) accessiblePages = StorageProfile.ENDERCHEST_MAX_PAGES;
+
 		if(slot == 8 && !player.getUniqueId().equals(profile.getUUID())) {
 			new BukkitRunnable() {
 				@Override
@@ -56,7 +60,7 @@ public class EnderchestPanel extends AGUIPanel {
 
 		if(slot < 9 || slot >= 27) return;
 
-		if((slot - 9) + 1 > rank.pages) {
+		if((slot - 9) + 1 > accessiblePages) {
 			event.setCancelled(true);
 			AOutput.error(player, "&5&lRANK REQUIRED!&7 Browse ranks at &d&nhttps://store.pitsim.net");
 			return;
@@ -87,7 +91,11 @@ public class EnderchestPanel extends AGUIPanel {
 			ALoreBuilder lore = new ALoreBuilder();
 			String enderchestName = "&5&lENDERCHEST &7Page " + (i - 8);
 
-			if(!(page > rank.pages)) {
+			int accessiblePages = rank.pages;
+
+			if(!profile.getUUID().equals(player.getUniqueId())) accessiblePages = StorageProfile.ENDERCHEST_MAX_PAGES;
+
+			if(page <= accessiblePages) {
 				stackBuilder = new AItemStackBuilder(Material.ENDER_CHEST);
 				stackBuilder.setName(enderchestName);
 				lore.addLore(
@@ -109,7 +117,7 @@ public class EnderchestPanel extends AGUIPanel {
 			stackBuilder.setLore(lore);
 			getInventory().setItem(i, stackBuilder.getItemStack());
 
-			if(player.getUniqueId().equals(profile.getUUID())) return;
+			if(player.getUniqueId().equals(profile.getUUID())) continue;
 
 			AItemStackBuilder builder = new AItemStackBuilder(Material.CHEST);
 			builder.setName("&6View Inventory");

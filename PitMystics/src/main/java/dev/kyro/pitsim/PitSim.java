@@ -392,7 +392,7 @@ public class PitSim extends JavaPlugin {
 	private void registerMaps() {
 //		MapManager.registerMap(new DimensionsMap("dimensions1", "dimensions2"));
 
-		if(TimeManager.isChristmasSeason()) {
+		if(TimeManager.isChristmasSeason() && status != ServerStatus.DARKZONE) {
 			System.out.println();
 			MapManager.registerMap(new XmasMap("xmas1"));
 			MapManager.currentMap.world.setStorm(true);
