@@ -103,8 +103,7 @@ public class EnderchestPanel extends AGUIPanel {
 						"&7Items: &d" + profile.getEnderchestItemCount(page) + "&7/&d27"
 				);
 				Misc.addEnchantGlint(stackBuilder.getItemStack());
-			}
-			else {
+			} else {
 				stackBuilder = new AItemStackBuilder(Material.BARRIER);
 				stackBuilder.setName(enderchestName);
 				lore.addLore(
