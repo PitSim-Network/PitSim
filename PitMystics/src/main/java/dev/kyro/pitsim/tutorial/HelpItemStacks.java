@@ -79,6 +79,19 @@ public class HelpItemStacks {
 				.getItemStack();
 	}
 
+	public static ItemStack getEditItemStack() {
+		return new AItemStackBuilder(BASE_ITEMSTACK.clone())
+				.setName("&eInventory Editing")
+				.setLore(new ALoreBuilder(
+						"&8&m----------------------------",
+						"&7The space to the right is &bArmor",
+						"&7The row below is the &eHotbar",
+						"&7Access the &5Ender Chest &7on the right",
+						"&8&m----------------------------"
+				))
+				.getItemStack();
+	}
+
 
 
 

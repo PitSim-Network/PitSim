@@ -2,6 +2,7 @@ package dev.kyro.pitsim.storage;
 
 import dev.kyro.arcticapi.builders.AItemStackBuilder;
 import dev.kyro.pitsim.PitSim;
+import dev.kyro.pitsim.tutorial.HelpItemStacks;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -12,6 +13,8 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryDragEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
 
@@ -27,14 +30,13 @@ public class EditInventoryPanel implements InventoryHolder, Listener {
 		this.session = session;
 		buildInventory();
 
-		if(session.getEditType() != EditType.ONLINE) return;
 		runnable = new BukkitRunnable() {
 			@Override
 			public void run() {
-				Player player = Bukkit.getPlayer(session.getPlayerUUID());
-				if(!playerEdit) {
-					for(int i = 0; i < 4; i++) {
-						session.getStorageProfile().armor[i] = inventory.getItem(i);
+
+				if(!playerEdit || session.getEditType() != EditType.ONLINE) {
+					for(int i = 1; i < 5; i++) {
+						session.getStorageProfile().armor[i - 1] = inventory.getItem(i);
 					}
 
 					for(int i = 9; i < inventory.getSize(); i++) {
@@ -48,8 +50,9 @@ public class EditInventoryPanel implements InventoryHolder, Listener {
 						onlinePlayer.updateInventory();
 					}
 				} else {
-					for(int i = 0; i < 4; i++) {
-						inventory.setItem(i, player.getInventory().getArmorContents()[i]);
+					Player player = Bukkit.getPlayer(session.getPlayerUUID());
+					for(int i = 1; i < 5; i++) {
+						inventory.setItem(i, player.getInventory().getArmorContents()[i - 1]);
 					}
 
 					for(int i = 9; i < inventory.getSize(); i++) {
@@ -68,8 +71,8 @@ public class EditInventoryPanel implements InventoryHolder, Listener {
 	public void buildInventory() {
 		inventory = Bukkit.createInventory(this, 9 * 5, "Player Inventory");
 
-		for(int i = 0; i < 4; i++) {
-			inventory.setItem(i, session.getStorageProfile().armor[i]);
+		for(int i = 1; i < 5; i++) {
+			inventory.setItem(i, session.getStorageProfile().armor[i - 1]);
 		}
 
 		for(int i = 9; i < inventory.getSize(); i++) {
@@ -79,6 +82,16 @@ public class EditInventoryPanel implements InventoryHolder, Listener {
 		AItemStackBuilder builder = new AItemStackBuilder(Material.ENDER_CHEST);
 		builder.setName("&5View Enderchest");
 		inventory.setItem(8, builder.getItemStack());
+
+		getInventory().setItem(0, HelpItemStacks.getEditItemStack());
+
+		for(int i = 5; i < 8; i++) {
+			ItemStack pane = new ItemStack(Material.STAINED_GLASS_PANE, 1 , (short) 15);
+			ItemMeta paneMeta = pane.getItemMeta();
+			paneMeta.setDisplayName("");
+			pane.setItemMeta(paneMeta);
+			getInventory().setItem(i, pane);
+		}
 	}
 
 	public void close() {
@@ -103,7 +116,9 @@ public class EditInventoryPanel implements InventoryHolder, Listener {
 			gui.open();
 		}
 
-		if(event.getSlot() > 3 && event.getSlot() < 9) event.setCancelled(true);
+		if(event.getSlot() == 0 || event.getSlot() > 4 && event.getSlot() < 9) event.setCancelled(true);
+
+		if(session.getEditType() != EditType.ONLINE) return;
 
 		if(event.getWhoClicked() == session.getStaffMember()) playerEdit = false;
 		new BukkitRunnable() {
@@ -124,6 +139,8 @@ public class EditInventoryPanel implements InventoryHolder, Listener {
 		}
 
 		if(inventory.getHolder() != this) return;
+
+		if(session.getEditType() != EditType.ONLINE) return;
 
 		if(event.getWhoClicked() == session.getStaffMember()) playerEdit = false;
 		new BukkitRunnable() {

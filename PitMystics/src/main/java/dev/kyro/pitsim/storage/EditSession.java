@@ -1,15 +1,9 @@
 package dev.kyro.pitsim.storage;
 
-import dev.kyro.arcticapi.builders.AItemStackBuilder;
 import dev.kyro.pitsim.PitSim;
-import dev.kyro.pitsim.controllers.ChatManager;
 import dev.kyro.pitsim.controllers.objects.PluginMessage;
-import org.bukkit.Bukkit;
-import org.bukkit.Material;
 import org.bukkit.entity.Player;
-import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
-import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.scheduler.BukkitRunnable;
 
@@ -62,14 +56,14 @@ public class EditSession {
 			public void run() {
 				createInventory();
 			}
-		}.runTaskLater(PitSim.INSTANCE, 10);
+		}.runTaskLater(PitSim.INSTANCE, 40);
 
 
 	}
 
 	public void end() {
 		StorageManager.editSessions.remove(this);
-		if(editType == EditType.OFFLINE || editType == EditType.OFFLINE_KICK) storageProfile.saveData();
+		if(editType != EditType.CANCELED) storageProfile.saveData();
 
 		PluginMessage message = new PluginMessage().writeString("EDIT SESSION END");
 		message.writeString(playerUUID.toString()).send();
