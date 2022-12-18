@@ -34,7 +34,6 @@ import dev.kyro.pitsim.brewing.objects.PotionEffect;
 import dev.kyro.pitsim.commands.*;
 import dev.kyro.pitsim.commands.admin.*;
 import dev.kyro.pitsim.controllers.*;
-import dev.kyro.pitsim.controllers.log.DupeManager;
 import dev.kyro.pitsim.controllers.objects.*;
 import dev.kyro.pitsim.cosmetics.CosmeticManager;
 import dev.kyro.pitsim.cosmetics.PitCosmetic;
@@ -505,7 +504,6 @@ public class PitSim extends JavaPlugin {
 //		adminCommand.registerCommand(new AnticheatCommand("check"));
 		new HopperCommand(adminCommand, "hopper");
 		new UUIDCommand(adminCommand, "uuid");
-		new DupeCommand(adminCommand, "dupe");
 		new RandomizeCommand(adminCommand, "randomize");
 		new ReloadCommand(adminCommand, "reload");
 		new BypassCommand(adminCommand, "bypass");
@@ -586,7 +584,6 @@ public class PitSim extends JavaPlugin {
 		getServer().getPluginManager().registerEvents(new ResourcePackManager(), this);
 		getServer().getPluginManager().registerEvents(new StatManager(), this);
 //		getServer().getPluginManager().registerEvents(new LockdownManager(), this);
-		getServer().getPluginManager().registerEvents(new DupeManager(), this);
 		getServer().getPluginManager().registerEvents(new GoldenHelmet(), this);
 		getServer().getPluginManager().registerEvents(new MapManager(), this);
 		getServer().getPluginManager().registerEvents(new GuildIntegrationManager(), this);

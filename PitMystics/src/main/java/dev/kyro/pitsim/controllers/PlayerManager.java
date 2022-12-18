@@ -572,31 +572,6 @@ public class PlayerManager implements Listener {
 			pitPlayer.dailyUbersLeft = 5 + UberIncrease.getUberIncrease(player);
 		}
 
-//		if(!bossBars.containsKey(event.getPlayer())) {
-//			BossBarManager bm = new BossBarManager();
-//			Audience audiences = PitSim.INSTANCE.adventure().player(event.getPlayer());
-//			bossBars.put(event.getPlayer(), bm);
-//		}
-
-//		if(!player.isOp()) {
-//			BypassManager.bypassAll.add(player);
-//			Misc.sendTitle(player, ChatColor.translateAlternateColorCodes('&', "&c&lSYNCING WORLD"), 200);
-//			new BukkitRunnable() {
-//				int count = 0;
-//				@Override
-//				public void run() {
-//					if((count != 0 && !player.isOnline()) || count++ >= 80) {
-//						cancel();
-//						BypassManager.bypassAll.remove(player);
-//						return;
-//					}
-//
-//					Location spawnLoc = new Location(Bukkit.getWorld("pit"), -108.5, 86, 194.5, 45, 0);
-//					player.teleport(spawnLoc);
-//				}
-//			}.runTaskTimer(PitSim.INSTANCE, 0L, 1L);
-//		}
-
 		new BukkitRunnable() {
 			@Override
 			public void run() {

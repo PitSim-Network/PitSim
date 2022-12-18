@@ -4,6 +4,7 @@ import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.controllers.objects.PluginMessage;
 import dev.kyro.pitsim.events.MessageEvent;
+import dev.kyro.pitsim.misc.Misc;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -62,6 +63,21 @@ public class StorageManager implements Listener {
 		Player player = event.getPlayer();
 		StorageProfile profile = getProfile(player);
 		profile.playerHasBeenOnline = true;
+
+		boolean hasItem = false;
+		for(int i = 0; i < 36; i++) {
+			ItemStack itemStack = player.getInventory().getItem(i);
+			if(Misc.isAirOrNull(itemStack)) continue;
+			hasItem = true;
+			break;
+		}
+
+		if(hasItem || !Misc.isAirOrNull(player.getInventory().getHelmet()) ||
+				!Misc.isAirOrNull(player.getInventory().getChestplate()) ||
+				!Misc.isAirOrNull(player.getInventory().getLeggings()) ||
+				!Misc.isAirOrNull(player.getInventory().getBoots())) {
+			Misc.alertDiscord("@everyone " + player.getName() + " logged in to server " + PitSim.serverName + " with items in their inventory");
+		}
 
 		if(!profile.hasData()) {
 			player.kickPlayer(ChatColor.RED + "An error occurred when loading your data. Please report this issue.");

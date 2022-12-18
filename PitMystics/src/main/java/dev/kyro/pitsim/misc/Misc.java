@@ -1,6 +1,7 @@
 package dev.kyro.pitsim.misc;
 
 import de.tr7zw.nbtapi.NBTItem;
+import dev.kyro.arcticapi.libs.discord.DiscordWebhook;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.controllers.EnchantManager;
 import dev.kyro.pitsim.cosmetics.CosmeticManager;
@@ -41,6 +42,7 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -51,6 +53,22 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 
 public class Misc {
+	public static final String ALERTS_WEBHOOK = "***REMOVED***";
+	public static void alertDiscord(String message) {
+		DiscordWebhook discordWebhook = new DiscordWebhook(ALERTS_WEBHOOK);
+		discordWebhook.setContent(message);
+		new BukkitRunnable() {
+			@Override
+			public void run() {
+				try {
+					discordWebhook.execute();
+				} catch(IOException exception) {
+					exception.printStackTrace();
+				}
+			}
+		}.runTaskAsynchronously(PitSim.INSTANCE);
+	}
+
 	public static String stringifyItem(ItemStack itemStack) {
 		String serializedItem = "";
 		if(Misc.isAirOrNull(itemStack)) return addBraces(serializedItem);
