@@ -1,6 +1,7 @@
 package dev.kyro.pitsim.storage;
 
 import dev.kyro.pitsim.PitSim;
+import dev.kyro.pitsim.controllers.EnchantManager;
 import dev.kyro.pitsim.controllers.objects.PluginMessage;
 import dev.kyro.pitsim.exceptions.DataNotLoadedException;
 import dev.kyro.pitsim.misc.Base64;
@@ -293,17 +294,22 @@ public class StorageProfile {
 		if(string.isEmpty()) return new ItemStack(Material.AIR);
 		try {
 //			return Base64.itemFrom64(string);
-			return CustomSerializer.deserialize(string);
+			ItemStack itemStack = CustomSerializer.deserialize(string);
+			if(EnchantManager.isIllegalItem(itemStack)) {
+				System.out.println("Did not save illegal item: " + Misc.stringifyItem(itemStack));
+				return new ItemStack(Material.AIR);
+			}
+			return itemStack;
 //		} catch(IOException e) {
 		} catch(Exception e) {
 			throw new RuntimeException(e);
 		}
 	}
 
-	public static String serialize(ItemStack item) {
-		if(Misc.isAirOrNull(item)) return "";
-//		return Base64.itemTo64(item);
-		return CustomSerializer.serialize(item);
+	public static String serialize(ItemStack itemStack) {
+		if(Misc.isAirOrNull(itemStack)) return "";
+//		return Base64.itemTo64(itemStack);
+		return CustomSerializer.serialize(itemStack);
 	}
 
 	public boolean hasData() {
