@@ -60,7 +60,7 @@ public class EditInventoryPanel implements InventoryHolder, Listener {
 					}
 				}
 			}
-		}.runTaskTimer(PitSim.INSTANCE, 2, 0);
+		}.runTaskTimer(PitSim.INSTANCE, 0, 1);
 	}
 
 	@Override
