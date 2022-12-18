@@ -1,6 +1,7 @@
 package dev.kyro.pitsim.storage;
 
 import dev.kyro.pitsim.PitSim;
+import dev.kyro.pitsim.alogging.LogManager;
 import dev.kyro.pitsim.controllers.EnchantManager;
 import dev.kyro.pitsim.controllers.objects.PluginMessage;
 import dev.kyro.pitsim.exceptions.DataNotLoadedException;
@@ -136,6 +137,7 @@ public class StorageProfile {
 	}
 
 	public void setData(PluginMessage message) {
+		OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(uuid);
 		List<String> strings = message.getStrings();
 		List<Integer> ints = message.getIntegers();
 		int invCount = ints.get(0);
@@ -144,11 +146,11 @@ public class StorageProfile {
 		armor = new ItemStack[4];
 
 		for(int i = 0; i < 36; i++) {
-			cachedInventory[i] = strings.get(i).isEmpty() ? new ItemStack(Material.AIR) : deserialize(strings.get(i));
+			cachedInventory[i] = strings.get(i).isEmpty() ? new ItemStack(Material.AIR) : deserialize(offlinePlayer, strings.get(i));
 		}
 
 		for(int i = 0; i < 4; i++) {
-			armor[i] = strings.get(i + 36).isEmpty() ? new ItemStack(Material.AIR) : deserialize(strings.get(i + 36));
+			armor[i] = strings.get(i + 36).isEmpty() ? new ItemStack(Material.AIR) : deserialize(offlinePlayer, strings.get(i + 36));
 		}
 
 		enderChest = new Inventory[ENDERCHEST_PAGES];
@@ -160,7 +162,7 @@ public class StorageProfile {
 			int page = i / 27;
 
 			Inventory inventory = enderChest[page];
-			inventory.setItem((i % 27) + 9, deserialize(strings.get(i + invCount)));
+			inventory.setItem((i % 27) + 9, deserialize(offlinePlayer, strings.get(i + invCount)));
 		}
 
 		for(int i = 0; i < enderChest.length; i++) {
@@ -294,13 +296,14 @@ public class StorageProfile {
 		return armor;
 	}
 
-	public static ItemStack deserialize(String string) {
+	public static ItemStack deserialize(OfflinePlayer player, String string) {
 		if(string.isEmpty()) return new ItemStack(Material.AIR);
 		try {
 //			return Base64.itemFrom64(string);
 			ItemStack itemStack = CustomSerializer.deserialize(string);
-			if(EnchantManager.isIllegalItem(itemStack)) {
+			if(EnchantManager.isIllegalItem(itemStack) && !player.isOp()) {
 				System.out.println("Did not save illegal item: " + Misc.stringifyItem(itemStack));
+				LogManager.onIllegalItemRemoved(player, itemStack);
 				return new ItemStack(Material.AIR);
 			}
 			return itemStack;

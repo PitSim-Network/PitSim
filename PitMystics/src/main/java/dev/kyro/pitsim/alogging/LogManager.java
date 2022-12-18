@@ -8,6 +8,7 @@ import dev.kyro.pitsim.controllers.objects.PluginMessage;
 import dev.kyro.pitsim.events.KillEvent;
 import dev.kyro.pitsim.misc.Misc;
 import org.bukkit.ChatColor;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -41,6 +42,10 @@ public class LogManager implements Listener {
 
 	public static void onItemLifeLost(Player player, ItemStack itemStack) {
 		sendLogMessage(LogType.LIFE_LOST, player.getName() + " lost a life on " + Misc.stringifyItem(itemStack));
+	}
+
+	public static void onIllegalItemRemoved(OfflinePlayer player, ItemStack itemStack) {
+		sendLogMessage(LogType.ILLEGAL_ITEM_REMOVED, player.getName() + " had an illegal item removed: " + Misc.stringifyItem(itemStack));
 	}
 
 	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
