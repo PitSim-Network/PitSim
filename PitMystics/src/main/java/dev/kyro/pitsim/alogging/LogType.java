@@ -22,6 +22,7 @@ public enum LogType {
 	PLAYER_CHAT(LogFile.CHAT),
 	ITEM_BROKEN(LogFile.COMBAT, LogFile.MAJOR),
 	LIFE_LOST(LogFile.COMBAT),
+	ILLEGAL_ITEM_REMOVED(LogFile.EXPLOIT_PREVENTION, LogFile.MAJOR),
 
 	//	Guilds
 	GUILD_CREATE(LogFile.GUILDS, LogFile.MAJOR),
