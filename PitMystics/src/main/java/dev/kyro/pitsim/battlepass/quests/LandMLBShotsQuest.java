@@ -39,7 +39,7 @@ public class LandMLBShotsQuest extends PassQuest {
 				.setName(getDisplayName())
 				.setLore(new ALoreBuilder(
 						"&7Land &a" + Misc.formatLarge(questLevel.getRequirement(pitPlayer)) + " &7shots using a",
-						"&7bow with &aMLB",
+						"&7bow with &aMLB &7on players",
 						"",
 						"&7Progress: &3" + Misc.formatLarge(progress) + "&7/&3" + Misc.formatLarge(questLevel.getRequirement(pitPlayer)) + " &8[" +
 								AUtil.createProgressBar("|", ChatColor.AQUA, ChatColor.GRAY, 20,
