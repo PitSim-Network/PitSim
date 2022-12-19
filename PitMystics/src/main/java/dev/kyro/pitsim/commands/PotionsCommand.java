@@ -21,12 +21,12 @@ public class PotionsCommand implements CommandExecutor {
 			return false;
 		}
 
-		AOutput.send(player, "&d&m----------&d<&5&lPOTIONS&d>&m----------");
+		AOutput.send(player, "&d&m--------------------&d<&5&lPOTIONS&d>&m--------------------");
 		for(PotionEffect potionEffect : PotionManager.getPotionEffects(player)) {
 			AOutput.send(player, "&d * &5" + potionEffect.potionType.color + potionEffect.potionType.name + " " +
 					AUtil.toRoman(potionEffect.potency.tier) + ": &f" + Misc.ticksToTime(potionEffect.ticksLeft));
 		}
-		AOutput.send(player, "&d&m----------&d<&5&lPOTIONS&d>&m----------");
+		AOutput.send(player, "&d&m--------------------&d<&5&lPOTIONS&d>&m--------------------");
 
 		return false;
 	}
