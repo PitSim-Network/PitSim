@@ -1,6 +1,7 @@
 package dev.kyro.pitsim.battlepass;
 
 import dev.kyro.arcticapi.misc.AOutput;
+import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.misc.Sounds;
 import org.bukkit.ChatColor;
@@ -59,11 +60,13 @@ public abstract class PassQuest implements Listener {
 	}
 
 	public boolean isQuestActive() {
+		if(!PitSim.PASS_ENABLED) return false;
 		if(questType == QuestType.WEEKLY && !PassManager.currentPass.weeklyQuests.containsKey(this)) return false;
 		return true;
 	}
 
 	public boolean canProgressQuest(PitPlayer pitPlayer) {
+		if(!PitSim.PASS_ENABLED) return false;
 		PassData passData = pitPlayer.getPassData(PassManager.currentPass.startDate);
 		if(questType == QuestType.WEEKLY && !PassManager.currentPass.weeklyQuests.containsKey(this)) return false;
 

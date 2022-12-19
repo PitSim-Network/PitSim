@@ -97,6 +97,7 @@ import static dev.kyro.pitsim.misc.TempBlockHelper.restoreSessions;
 
 public class PitSim extends JavaPlugin {
 	public static final double VERSION = 3.0;
+	public static final boolean PASS_ENABLED = false;
 
 	public static LuckPerms LUCKPERMS;
 	public static PitSim INSTANCE;
@@ -203,7 +204,7 @@ public class PitSim extends JavaPlugin {
 		registerPerks();
 		registerKillstreaks();
 		registerMegastreaks();
-		registerPassItems();
+		registerPassQuests();
 		if(getStatus().isPitsim()) registerLeaderboards();
 		if(getStatus().isPitsim()) LeaderboardManager.init();
 
@@ -548,7 +549,7 @@ public class PitSim extends JavaPlugin {
 		getCommand("view").setExecutor(new ViewCommand());
 		getCommand("music").setExecutor(new MusicCommand());
 		getCommand("migrate").setExecutor(new MigrateCommand());
-		getCommand("pass").setExecutor(new PassCommand());
+		if(PASS_ENABLED) getCommand("pass").setExecutor(new PassCommand());
 		SettingsCommand settingsCommand = new SettingsCommand();
 		getCommand("settings").setExecutor(settingsCommand);
 		getCommand("setting").setExecutor(settingsCommand);
@@ -608,7 +609,7 @@ public class PitSim extends JavaPlugin {
 		getServer().getPluginManager().registerEvents(new ProxyMessaging(), this);
 		getServer().getPluginManager().registerEvents(new LobbySwitchManager(), this);
 		getServer().getPluginManager().registerEvents(new AuctionManager(), this);
-		getServer().getPluginManager().registerEvents(new PassManager(), this);
+		if(PASS_ENABLED) getServer().getPluginManager().registerEvents(new PassManager(), this);
 		getServer().getPluginManager().registerEvents(new SkinManager(), this);
 		getServer().getPluginManager().registerEvents(new TimeManager(), this);
 		getServer().getPluginManager().registerEvents(new NPCManager(), this);
@@ -680,7 +681,7 @@ public class PitSim extends JavaPlugin {
 		BrewingIngredient.registerIngredient(new EnderPearl());
 	}
 
-	private void registerPassItems() {
+	private void registerPassQuests() {
 //		Daily quests
 		PassManager.registerQuest(new DailyBotKillQuest());
 		PassManager.registerQuest(new DailyPlayerKillQuest());
