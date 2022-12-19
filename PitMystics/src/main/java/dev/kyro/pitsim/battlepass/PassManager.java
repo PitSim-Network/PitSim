@@ -1,5 +1,6 @@
 package dev.kyro.pitsim.battlepass;
 
+import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.cosmetics.particles.ParticleColor;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.cosmetics.CosmeticManager;
@@ -300,10 +301,12 @@ public class PassManager implements Listener {
 		currentPass.weeklyQuests.clear();
 		if(!currentPass.startDate.equals(FirestoreManager.CONFIG.currentPassStart)) {
 			if(PitSim.serverName.equals("pitsim-1")) {
+				AOutput.log("Creating new pass");
 				FirestoreManager.CONFIG.currentPassStart = currentPass.startDate;
 				FirestoreManager.CONFIG.currentPassData = new Config.CurrentPassData();
 				FirestoreManager.CONFIG.save();
 			} else {
+				AOutput.log("Attempting to load new pass data");
 				new BukkitRunnable() {
 					@Override
 					public void run() {
