@@ -50,7 +50,7 @@ public class BoosterPanel extends AGUIPanel {
 					} else {
 						Sounds.SUCCESS.play(player);
 						Booster.setBooster(player, booster, Booster.getBoosterAmount(player, booster) - 1);
-						ProxyMessaging.sendBoosterUse(booster, player);
+						ProxyMessaging.sendBoosterUse(booster, player, 60, true);
 						LogManager.onBoosterActivate(player, booster);
 					}
 

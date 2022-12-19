@@ -107,12 +107,6 @@ public class BoosterManager implements Listener {
 		return null;
 	}
 
-	public static void addTime(Booster booster, int minutes) {
-		if(minutes == 0) return;
-		booster.minutes += minutes;
-		booster.updateTime();
-	}
-
 	public static int getActiveBoosters() {
 		int active = 0;
 		for(Booster booster : boosterList) {

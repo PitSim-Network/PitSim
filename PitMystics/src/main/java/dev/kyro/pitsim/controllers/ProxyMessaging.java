@@ -9,6 +9,7 @@ import dev.kyro.pitsim.enums.ItemType;
 import dev.kyro.pitsim.events.MessageEvent;
 import dev.kyro.pitsim.storage.EditSession;
 import dev.kyro.pitsim.storage.StorageManager;
+import dev.kyro.pitsim.storage.StorageProfile;
 import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -57,13 +58,15 @@ public class ProxyMessaging implements Listener {
 		}
 	}
 
-	public static void sendBoosterUse(Booster booster, Player player) {
+	public static void sendBoosterUse(Booster booster, Player player, int time, boolean message) {
 
 		String playerName = "%luckperms_prefix%" + player.getName();
 		String playerNameColored = PlaceholderAPI.setPlaceholders(player, playerName);
 
-		new PluginMessage().writeString("BOOSTER USE").writeString(booster.refName).writeString(ChatColor.
-				translateAlternateColorCodes('&', "&6&lBOOSTER! " + playerNameColored + " &7has used a " + booster.color + booster.name)).send();
+		String announcement = message ? ChatColor.
+				translateAlternateColorCodes('&', "&6&lBOOSTER! " + playerNameColored + " &7has used a " + booster.color + booster.name) : "";
+
+		new PluginMessage().writeString("BOOSTER USE").writeString(booster.refName).writeString(announcement).writeInt(time).send();
 	}
 
 	public static void sendServerData() {
@@ -154,11 +157,12 @@ public class ProxyMessaging implements Listener {
 			Booster booster = BoosterManager.getBooster(boosterString);
 
 			assert booster != null;
-			booster.minutes += 60;
+			booster.minutes += integers.get(0);
 			booster.updateTime();
 			FirestoreManager.CONFIG.save();
 
-			Bukkit.broadcastMessage(strings.get(2));
+			String announcement = strings.get(2);
+			if(!announcement.isEmpty()) Bukkit.broadcastMessage(strings.get(2));
 		}
 
 		if(strings.size() >= 2 && strings.get(0).equals("AUCTION ITEM REQUEST")) {
@@ -188,8 +192,7 @@ public class ProxyMessaging implements Listener {
 		if(strings.size() >= 2 && strings.get(0).equals("MIGRATE")) {
 			UUID uuid = UUID.fromString(strings.get(1));
 
-			PitPlayer pitPlayer = new PitPlayer(Bukkit.getOfflinePlayer(uuid).getUniqueId());
-			pitPlayer.save(false, false);
+			migrate(uuid);
 		}
 
 		if(strings.size() >= 2 && strings.get(0).equals("REQUEST SWITCH")) {
@@ -342,6 +345,13 @@ public class ProxyMessaging implements Listener {
 			throw new RuntimeException(e);
 		}
 
+	}
+
+	public static void migrate(UUID uuid) {
+		PitPlayer pitPlayer = new PitPlayer(Bukkit.getOfflinePlayer(uuid).getUniqueId());
+		pitPlayer.save(false, false);
+
+		StorageProfile profile = StorageManager.getInitialProfile(uuid);
 	}
 
 }

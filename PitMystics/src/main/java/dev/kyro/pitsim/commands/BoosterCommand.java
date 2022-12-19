@@ -2,6 +2,7 @@ package dev.kyro.pitsim.commands;
 
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.controllers.BoosterManager;
+import dev.kyro.pitsim.controllers.ProxyMessaging;
 import dev.kyro.pitsim.controllers.objects.Booster;
 import dev.kyro.pitsim.inventories.BoosterGUI;
 import org.bukkit.command.Command;
@@ -46,9 +47,10 @@ public class BoosterCommand implements CommandExecutor {
 				return false;
 			}
 
-			BoosterManager.addTime(booster, minutes);
-			AOutput.send(player, "&7Added &b" + minutes + " &7minutes to the booster. The booster will be active for &b" + booster.minutes + " &7more minute" +
+			AOutput.send(player, "&7Added &b" + minutes + " &7minutes to the booster. The booster will be active for &b" + (booster.minutes + minutes) + " &7more minute" +
 					(booster.minutes == 1 ? "" : "s"));
+
+			ProxyMessaging.sendBoosterUse(booster, player, minutes, false);
 
 			return false;
 		} else {

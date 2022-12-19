@@ -85,6 +85,7 @@ public class StorageManager implements Listener {
 			return;
 		}
 
+		player.setItemOnCursor(null);
 		player.getInventory().setContents(profile.getCachedInventory());
 		player.getInventory().setArmorContents(profile.getArmor());
 		player.updateInventory();
@@ -160,12 +161,9 @@ public class StorageManager implements Listener {
 			profile.receiveSaveConfirmation(message);
 		}
 
-		if(strings.get(0).equals("LOAD REQUEST")) {
-			UUID uuid = UUID.fromString(strings.get(1));
-			System.out.println("Loading profile for: " + uuid);
-
-			StorageProfile profile = getInitialProfile(uuid);
-		}
+//		if(strings.get(0).equals("LOAD REQUEST")) {
+//
+//		}
 
 		if(strings.get(0).equals("PLAYER DATA")) {
 			UUID uuid = UUID.fromString(strings.get(1));

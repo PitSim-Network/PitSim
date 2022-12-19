@@ -66,3 +66,4 @@ commands:
   settings:
   setting:
   set:
+  massmigrate:
