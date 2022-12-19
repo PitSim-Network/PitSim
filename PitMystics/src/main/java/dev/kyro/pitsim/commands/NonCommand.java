@@ -1,9 +1,7 @@
 package dev.kyro.pitsim.commands;
 
-import dev.kyro.pitsim.controllers.MapManager;
 import dev.kyro.pitsim.controllers.NonManager;
 import dev.kyro.pitsim.controllers.objects.Non;
-import org.bukkit.World;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -19,7 +17,7 @@ public class NonCommand implements CommandExecutor {
 
 		if(!player.isOp()) return false;
 
-		new Non(NonManager.botIGNs.get((int) (Math.random() * NonManager.botIGNs.size())));
+		new Non(NonManager.skinLoadedBotIGNS.get((int) (Math.random() * NonManager.skinLoadedBotIGNS.size())));
 
 		return false;
 	}
