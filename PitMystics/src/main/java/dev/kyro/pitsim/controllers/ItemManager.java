@@ -64,6 +64,12 @@ public class ItemManager implements Listener {
 		if(Misc.isAirOrNull(itemStack)) return;
 		NBTItem nbtItem = new NBTItem(itemStack);
 
+		if(ShutdownManager.isShuttingDown) {
+			event.setCancelled(true);
+			AOutput.send(player, "&c&lERROR!&7 You cannot drop items while the server is shutting down");
+			return;
+		}
+
 		Location darkAuction = AuctionDisplays.pedestalLocations[0];
 		double distance = 50;
 		if(player.getWorld() == MapManager.getDarkzone()) distance = darkAuction.distance(event.getPlayer().getLocation());
