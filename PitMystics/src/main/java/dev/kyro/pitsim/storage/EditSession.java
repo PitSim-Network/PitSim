@@ -2,6 +2,7 @@ package dev.kyro.pitsim.storage;
 
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.controllers.objects.PluginMessage;
+import dev.kyro.pitsim.misc.Sounds;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 import org.bukkit.inventory.InventoryHolder;
@@ -51,6 +52,8 @@ public class EditSession {
 			return;
 		}
 
+		Sounds.LOAD_INITIAL.play(staffMember);
+
 		new BukkitRunnable() {
 			@Override
 			public void run() {
@@ -76,6 +79,7 @@ public class EditSession {
 		PitSim.INSTANCE.getServer().getPluginManager().registerEvents((Listener) inventory, PitSim.INSTANCE);
 
 		staffMember.openInventory(inventory.getInventory());
+		Sounds.LOAD_FINAL.play(staffMember);
 	}
 
 	public Player getStaffMember() {

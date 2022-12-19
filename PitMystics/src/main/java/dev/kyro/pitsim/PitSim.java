@@ -553,6 +553,9 @@ public class PitSim extends JavaPlugin {
 		getCommand("settings").setExecutor(settingsCommand);
 		getCommand("setting").setExecutor(settingsCommand);
 		getCommand("set").setExecutor(settingsCommand);
+
+		getCommand("massmigrate").setExecutor(new MassMigrateCommand());
+		//TODO: Remove this
 	}
 
 	private void registerListeners() {

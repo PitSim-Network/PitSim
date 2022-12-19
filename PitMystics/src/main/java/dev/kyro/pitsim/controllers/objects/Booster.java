@@ -1,7 +1,5 @@
 package dev.kyro.pitsim.controllers.objects;
 
-import dev.kyro.pitsim.boosters.GoldBooster;
-import dev.kyro.pitsim.boosters.XPBooster;
 import dev.kyro.pitsim.controllers.BoosterManager;
 import dev.kyro.pitsim.controllers.FirestoreManager;
 import org.bukkit.Bukkit;
@@ -24,8 +22,7 @@ public abstract class Booster implements Listener {
 		this.refName = refName;
 		this.slot = slot;
 		this.color = color;
-		minutes = Math.max(FirestoreManager.CONFIG.boosters.getOrDefault(refName, 0),
-				getClass() == XPBooster.class || getClass() == GoldBooster.class ? 5 : 0);
+		this.minutes = FirestoreManager.CONFIG.boosters.getOrDefault(refName, 0);
 	}
 
 	public abstract List<String> getDescription();
@@ -53,14 +50,14 @@ public abstract class Booster implements Listener {
 
 	public static int getBoosterAmount(Player player, Booster booster) {
 		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
-		return pitPlayer.boosters.getOrDefault(booster, 0);
+		return pitPlayer.boosters.getOrDefault(booster.refName, 0);
 	}
 
 	public static int getBoosterAmount(Player player, String booster) {
 		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
 		for(Booster booster1 : BoosterManager.boosterList) {
 			if(booster1.refName.equals(booster)) {
-				return pitPlayer.boosters.getOrDefault(booster1, 0);
+				return pitPlayer.boosters.getOrDefault(booster1.refName, 0);
 			}
 		}
 		return 0;

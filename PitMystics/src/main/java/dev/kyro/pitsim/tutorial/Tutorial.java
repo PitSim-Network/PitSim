@@ -23,25 +23,31 @@ import java.util.List;
 import java.util.UUID;
 
 public class Tutorial {
+
 	@Exclude
-	public PitPlayer pitPlayer;
+	private UUID uuid;
+
 	@Exclude
-	public UUID uuid;
+	private PitPlayer pitPlayer;
+
 	@Exclude
 	private BossBar bossBar;
+
+	@Exclude
 	private BukkitTask particleRunnable;
 
+	@Exclude
 	public boolean isInObjective = false;
 
 	public boolean hasStartedTutorial = false;
+
 	public List<TutorialObjective> completedObjectives = new ArrayList<>();
 
 	public Tutorial() {
+
 	}
 
 	public Tutorial(PitPlayer pitPlayer, FileConfiguration playerData) {
-		this.pitPlayer = pitPlayer;
-
 		this.hasStartedTutorial = playerData.getBoolean("tutorial.has-started");
 		for(String string : playerData.getStringList("tutorial.completed-objectives")) {
 			TutorialObjective objective = TutorialObjective.getByRefName(string);
@@ -50,34 +56,42 @@ public class Tutorial {
 		}
 	}
 
-//		if(!hasStartedTutorial) {
-//			isInObjective = true;
-//			hasStartedTutorial = true;
-//			sendMessage("&eHello! Welcome to &6&lPit&e&lSim&e!", 0);
-//			sendMessage("&eBefore you get started, we need to cover some basics.", 20 * 2);
-//			sendMessage("&eInteract with various NPCs around spawn to learn about how to play", 20 * 6);
-//
-//			new BukkitRunnable() {
-//				@Override
-//				public void run() {
-//					isInObjective = false;
-//					updateBossBar();
-//					startRunnable();
-//					Sounds.TUTORIAL_MESSAGE.play(pitPlayer.player);
-//				}
-//			}.runTaskLater(PitSim.INSTANCE, 20 * 4);
-//		} else {
-//			new BukkitRunnable() {
-//				@Override
-//				public void run() {
-//					updateBossBar();
-//					startRunnable();
-//				}
-//			}.runTaskLater(PitSim.INSTANCE, 20);
-//		}
-//	}
 
-	@Exclude
+	public void init(PitPlayer pitPlayer) {
+		this.uuid = pitPlayer.player.getUniqueId();
+		this.pitPlayer = pitPlayer;
+
+
+		System.out.println(completedObjectives);
+		if(!isActive()) return;
+
+		if(!hasStartedTutorial) {
+			isInObjective = true;
+			hasStartedTutorial = true;
+			sendMessage("&eHello! Welcome to &6&lPit&e&lSim&e!", 0);
+			sendMessage("&eBefore you get started, we need to cover some basics.", 20 * 2);
+			sendMessage("&eInteract with various NPCs around spawn to learn about how to play", 20 * 6);
+
+			new BukkitRunnable() {
+				@Override
+				public void run() {
+					isInObjective = false;
+					updateBossBar();
+					startRunnable();
+					Sounds.TUTORIAL_MESSAGE.play(pitPlayer.player);
+				}
+			}.runTaskLater(PitSim.INSTANCE, 20 * 4);
+		} else {
+			new BukkitRunnable() {
+				@Override
+				public void run() {
+					updateBossBar();
+					startRunnable();
+				}
+			}.runTaskLater(PitSim.INSTANCE, 20);
+		}
+	}
+
 	public void save() {
 		APlayer aPlayer = APlayerData.getPlayerData(uuid);
 		FileConfiguration playerData = aPlayer.playerData;
@@ -168,10 +182,9 @@ public class Tutorial {
 		return uuid;
 	}
 
+
 	@Exclude
 	public boolean isActive() {
-//		TODO: Remove this once the tutorial is fixed again
-		if(true) return false;
 		return pitPlayer.prestige <= 1 && completedObjectives.size() < TutorialObjective.values().length;
 	}
 
@@ -186,6 +199,7 @@ public class Tutorial {
 		}.runTaskLater(PitSim.INSTANCE, ticks);
 	}
 
+	@Exclude
 	private void startRunnable() {
 		particleRunnable = new BukkitRunnable() {
 			@Override
@@ -207,4 +221,5 @@ public class Tutorial {
 			}
 		}.runTaskTimer(PitSim.INSTANCE, 0L, 2L);
 	}
+
 }

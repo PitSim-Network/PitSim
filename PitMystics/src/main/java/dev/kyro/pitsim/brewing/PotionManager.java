@@ -232,7 +232,7 @@ public class PotionManager implements Listener {
 
         for(String potionString : potionStrings) {
             String[] split = potionString.split(":");
-            if(split.length != 3) continue;
+            if(split.length != 4) continue;
 
             int tier = Integer.parseInt(split[1]);
             int timeLeft = Integer.parseInt(split[2]);
