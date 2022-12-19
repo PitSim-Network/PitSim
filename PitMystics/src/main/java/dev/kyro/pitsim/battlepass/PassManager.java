@@ -39,7 +39,7 @@ public class PassManager implements Listener {
 		registerPass(new PitSimPass(getDate("1/1/2022")));
 		int tier = 1;
 
-		PitSimPass pitSimPass = new PitSimPass(getDate("9/12/2022"))
+		PitSimPass pitSimPass = new PitSimPass(getDate("12/12/2022"))
 				.registerReward(new PassRenownReward(5), PitSimPass.RewardType.FREE, 1)
 				.registerReward(new PassGoldReward(10_000), PitSimPass.RewardType.FREE, 3)
 				.registerReward(new PassVileReward(5), PitSimPass.RewardType.FREE, 5)
@@ -269,42 +269,54 @@ public class PassManager implements Listener {
 
 		if(newPass != currentPass) {
 			currentPass = newPass;
-			loadPassData();
 		}
+		loadPassData();
 
-		long daysPassed = TimeUnit.DAYS.convert(Misc.convertToEST(new Date()).getTime() - currentPass.startDate.getTime(), TimeUnit.MILLISECONDS);
-		int weeksPassed = (int) (daysPassed / 7) + 1;
-		int newQuests = weeksPassed * QUESTS_PER_WEEK - currentPass.weeklyQuests.size();
+		if(PitSim.serverName.equals("pitsim-1")) {
+			long daysPassed = TimeUnit.DAYS.convert(Misc.convertToEST(new Date()).getTime() - currentPass.startDate.getTime(), TimeUnit.MILLISECONDS);
+			int weeksPassed = (int) (daysPassed / 7) + 1;
+			int newQuests = weeksPassed * QUESTS_PER_WEEK - currentPass.weeklyQuests.size();
 
-		List<PassQuest> possibleWeeklyQuests = getWeeklyQuests();
-		possibleWeeklyQuests.removeAll(currentPass.weeklyQuests.keySet());
-		List<PassQuest> weightedWeeklyQuests = getWeightedRandomQuests(possibleWeeklyQuests);
-		boolean addedQuests = false;
-		for(int i = 0; i < newQuests; i++) {
-			if(weightedWeeklyQuests.isEmpty()) break;
-			PassQuest passQuest = weightedWeeklyQuests.get(new Random().nextInt(weightedWeeklyQuests.size()));
-			weightedWeeklyQuests.removeAll(Collections.singleton(passQuest));
-			currentPass.weeklyQuests.put(passQuest, passQuest.getWeeklyPossibleStates().get(new Random().nextInt(passQuest.getWeeklyPossibleStates().size())));
-			addedQuests = true;
-		}
-		if(addedQuests) {
-			currentPass.writeToConfig();
-			FirestoreManager.CONFIG.save();
+			List<PassQuest> possibleWeeklyQuests = getWeeklyQuests();
+			possibleWeeklyQuests.removeAll(currentPass.weeklyQuests.keySet());
+			List<PassQuest> weightedWeeklyQuests = getWeightedRandomQuests(possibleWeeklyQuests);
+			boolean addedQuests = false;
+			for(int i = 0; i < newQuests; i++) {
+				if(weightedWeeklyQuests.isEmpty()) break;
+				PassQuest passQuest = weightedWeeklyQuests.get(new Random().nextInt(weightedWeeklyQuests.size()));
+				weightedWeeklyQuests.removeAll(Collections.singleton(passQuest));
+				currentPass.weeklyQuests.put(passQuest, passQuest.getWeeklyPossibleStates().get(new Random().nextInt(passQuest.getWeeklyPossibleStates().size())));
+				addedQuests = true;
+			}
+			if(addedQuests) {
+				currentPass.writeToConfig();
+				FirestoreManager.CONFIG.save();
+			}
 		}
 	}
 
 //	TODO: Main server only, but also run when you send updated data via plugin message (wiji)
 	public static void loadPassData() {
+		currentPass.weeklyQuests.clear();
 		if(!currentPass.startDate.equals(FirestoreManager.CONFIG.currentPassStart)) {
-			FirestoreManager.CONFIG.currentPassStart = currentPass.startDate;
-			FirestoreManager.CONFIG.currentPassData = new Config.CurrentPassData();
-			FirestoreManager.CONFIG.save();
-		}
-
-		for(Map.Entry<String, Integer> entry : FirestoreManager.CONFIG.currentPassData.activeWeeklyQuests.entrySet()) {
-			PassQuest passQuest = getQuest(entry.getKey());
-			if(passQuest == null) continue;
-			currentPass.weeklyQuests.put(passQuest, passQuest.getWeeklyPossibleStates().get(entry.getValue()));
+			if(PitSim.serverName.equals("pitsim-1")) {
+				FirestoreManager.CONFIG.currentPassStart = currentPass.startDate;
+				FirestoreManager.CONFIG.currentPassData = new Config.CurrentPassData();
+				FirestoreManager.CONFIG.save();
+			} else {
+				new BukkitRunnable() {
+					@Override
+					public void run() {
+						FirestoreManager.CONFIG.load();
+					}
+				}.runTaskAsynchronously(PitSim.INSTANCE);
+			}
+		} else {
+			for(Map.Entry<String, Integer> entry : FirestoreManager.CONFIG.currentPassData.activeWeeklyQuests.entrySet()) {
+				PassQuest passQuest = getQuest(entry.getKey());
+				if(passQuest == null) continue;
+				currentPass.weeklyQuests.put(passQuest, passQuest.getWeeklyPossibleStates().get(entry.getValue()));
+			}
 		}
 	}
 

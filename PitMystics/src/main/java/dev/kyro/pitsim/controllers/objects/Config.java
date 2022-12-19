@@ -6,6 +6,7 @@ import dev.kyro.pitsim.controllers.FirestoreManager;
 import dev.kyro.pitsim.misc.PrivateInfo;
 
 import java.util.*;
+import java.util.concurrent.ExecutionException;
 
 public class Config {
 	@Exclude
@@ -62,6 +63,16 @@ public class Config {
 				}
 				onSaveCooldown = false;
 			}).start();
+		}
+	}
+
+	@Exclude
+	public void load() {
+		try {
+			FirestoreManager.CONFIG = FirestoreManager.FIRESTORE.collection(FirestoreManager.SERVER_COLLECTION)
+					.document(FirestoreManager.CONFIG_DOCUMENT).get().get().toObject(Config.class);
+		} catch(InterruptedException | ExecutionException exception) {
+			throw new RuntimeException(exception);
 		}
 	}
 }

@@ -3,24 +3,24 @@ package dev.kyro.pitsim.misc;
 import de.tr7zw.nbtapi.NBTItem;
 import dev.kyro.arcticapi.libs.discord.DiscordWebhook;
 import dev.kyro.pitsim.PitSim;
-import dev.kyro.pitsim.controllers.EnchantManager;
-import dev.kyro.pitsim.cosmetics.CosmeticManager;
-import dev.kyro.pitsim.cosmetics.CosmeticType;
-import dev.kyro.pitsim.cosmetics.PitCosmetic;
 import dev.kyro.pitsim.commands.LightningCommand;
+import dev.kyro.pitsim.controllers.EnchantManager;
 import dev.kyro.pitsim.controllers.NonManager;
 import dev.kyro.pitsim.controllers.objects.GoldenHelmet;
 import dev.kyro.pitsim.controllers.objects.PitEnchant;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
+import dev.kyro.pitsim.cosmetics.CosmeticManager;
+import dev.kyro.pitsim.cosmetics.CosmeticType;
+import dev.kyro.pitsim.cosmetics.PitCosmetic;
 import dev.kyro.pitsim.enums.NBTTag;
 import dev.kyro.pitsim.events.HealEvent;
 import dev.kyro.pitsim.megastreaks.Overdrive;
 import dev.kyro.pitsim.megastreaks.RNGesus;
 import dev.kyro.pitsim.megastreaks.Uberstreak;
+import me.clip.placeholderapi.PlaceholderAPI;
 import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.api.chat.HoverEvent;
 import net.md_5.bungee.api.chat.TextComponent;
-import me.clip.placeholderapi.PlaceholderAPI;
 import net.minecraft.server.v1_8_R3.World;
 import net.minecraft.server.v1_8_R3.*;
 import org.bukkit.Material;
@@ -195,7 +195,7 @@ public class Misc {
 		try {
 			return formatter.parse((formatter.format(date)));
 		} catch(ParseException exception) {
-			return null;
+			throw new RuntimeException();
 		}
 	}
 
