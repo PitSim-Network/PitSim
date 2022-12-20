@@ -90,7 +90,6 @@ public class ProxyMessaging implements Listener {
 		List<Boolean> booleans = event.getMessage().getBooleans();
 
 		if(strings.size() > 1 && strings.get(0).equals("NITRO PLAYERS")) {
-			System.out.println("Nitro");
 			strings.remove(0);
 			NonManager.updateNons(strings);
 		}
