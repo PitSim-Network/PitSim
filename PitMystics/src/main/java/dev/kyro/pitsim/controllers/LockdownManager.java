@@ -173,28 +173,24 @@ public class LockdownManager implements Listener {
 		if(requireVerification) return;
 		requireVerification = true;
 		FirestoreManager.CONFIG.security.requireVerification = true;
-		FirestoreManager.CONFIG.save();
 	}
 
 	public static void disableVerification() {
 		if(!requireVerification) return;
 		requireVerification = false;
 		FirestoreManager.CONFIG.security.requireVerification = false;
-		FirestoreManager.CONFIG.save();
 	}
 
 	public static void enableCaptcha() {
 		if(requireCaptcha) return;
 		requireCaptcha = true;
 		FirestoreManager.CONFIG.security.requireCaptcha = true;
-		FirestoreManager.CONFIG.save();
 	}
 
 	public static void disableCaptcha() {
 		if(!requireCaptcha) return;
 		requireCaptcha = false;
 		FirestoreManager.CONFIG.security.requireCaptcha = false;
-		FirestoreManager.CONFIG.save();
 	}
 
 	public static void passCaptcha(Player player) {
