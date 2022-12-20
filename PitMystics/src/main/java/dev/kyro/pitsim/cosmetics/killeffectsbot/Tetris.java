@@ -9,11 +9,13 @@ import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.enums.NotePitch;
 import dev.kyro.pitsim.events.KillEvent;
 import dev.kyro.pitsim.events.OofEvent;
+import dev.kyro.pitsim.events.PlayerSpawnCommandEvent;
 import dev.kyro.pitsim.misc.Misc;
 import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.*;
@@ -119,12 +121,16 @@ public class Tetris extends PitCosmetic {
 	}
 
 	@EventHandler
-	public void onDeath(OofEvent event) {
+	public void onOof(OofEvent event) {
 		Player player = event.getPlayer();
 		playerSongPositionMap.remove(player.getUniqueId());
 	}
 
-//	TODO: Add on spawn when spawnevent is added
+	@EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
+	public void onSpawn(PlayerSpawnCommandEvent event) {
+		Player player = event.getPlayer();
+		playerSongPositionMap.remove(player.getUniqueId());
+	}
 
 	@Override
 	public ItemStack getRawDisplayItem() {

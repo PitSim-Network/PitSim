@@ -1,11 +1,10 @@
 package dev.kyro.pitsim.upgrades;
 
-import dev.kyro.arcticapi.gui.AGUIPanel;
 import dev.kyro.arcticapi.misc.AUtil;
 import dev.kyro.pitsim.controllers.UpgradeManager;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.controllers.objects.RenownUpgrade;
-import dev.kyro.pitsim.megastreaks.*;
+import dev.kyro.pitsim.megastreaks.Uberstreak;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -41,7 +40,6 @@ public class LifeInsurance extends RenownUpgrade {
 		lore.add(ChatColor.translateAlternateColorCodes('&', "&eTier II: &f450 &dUber"));
 		lore.add(ChatColor.translateAlternateColorCodes('&', "&eTier III: &f400 &dUber"));
 
-		//TODO Add functionality and decide on final values for Life Insurance
 		meta.setLore(UpgradeManager.loreBuilder(this, player, lore, isCustomPanel));
 		item.setItemMeta(meta);
 		return item;

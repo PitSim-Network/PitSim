@@ -37,7 +37,6 @@ import org.bukkit.scheduler.BukkitTask;
 import java.text.DecimalFormat;
 import java.util.*;
 
-//TODO: Buff XP and add blob cooldown
 public class RNGesus extends Megastreak {
 	public static int RENOWN_COST = 3;
 	public static int COOLDOWN_MINUTES = 60;

@@ -90,7 +90,6 @@ public class LevelManager {
 		PrestigeValues.PrestigeInfo prestigeInfo = PrestigeValues.getPrestigeInfo(pitPlayer.prestige);
 		if(pitPlayer.level < 120) return;
 		if(pitPlayer.goldGrinded < prestigeInfo.goldReq) return;
-		//TODO: Re-enable killreq
 		if(pitPlayer.soulsGathered < prestigeInfo.soulReq) return;
 
 		pitPlayer.prestige += 1;

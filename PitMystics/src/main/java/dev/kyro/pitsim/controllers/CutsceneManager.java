@@ -32,8 +32,6 @@ public class CutsceneManager implements Listener {
 
     public static Map<Player, List<BukkitTask>> cutscenePlayers = new HashMap<>();
 
-    //TODO: Cancel all runnables on leave
-
     public static void play(Player player) {
         FeatherBoardAPI.toggle(player);
         List<BukkitTask> runnables = new ArrayList<>();

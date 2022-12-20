@@ -249,7 +249,7 @@ public class StorageProfile {
 		saveTask = new BukkitRunnable() {
 			@Override
 			public void run() {
-				//TODO: Discord alert
+				Misc.alertDiscord("@everyone Critical save error with " + uuid);
 
 				OfflinePlayer player = Bukkit.getOfflinePlayer(uuid);
 				if(!player.isOnline()) return;

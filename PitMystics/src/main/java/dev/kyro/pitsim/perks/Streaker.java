@@ -51,7 +51,6 @@ public class Streaker extends PitPerk {
 				Player player = killEvent.getKillerPlayer();
 				double xp = 0;
 
-//				TODO: Update lore
 				if(playerTimes.get(player) > 90) xp = 1;
 				if(playerTimes.get(player) <= 90) xp = 1.1;
 				if(playerTimes.get(player) <= 80) xp = 1.2;

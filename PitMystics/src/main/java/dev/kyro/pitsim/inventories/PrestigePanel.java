@@ -47,7 +47,6 @@ public class PrestigePanel extends AGUIPanel {
 		int slot = event.getSlot();
 		if(event.getClickedInventory().getHolder() == this) {
 			if(slot == 11) {
-				//TODO: Re-enable killreq
 				if(pitPlayer.level == 120 && pitPlayer.goldGrinded >= prestigeInfo.goldReq && pitPlayer.soulsGathered >= prestigeInfo.soulReq) {
 					if(pitPlayer.prestige == PrestigeValues.MAX_PRESTIGE) {
 						AOutput.error(player, "&aYou are already the maximum prestige!");
@@ -99,7 +98,6 @@ public class PrestigePanel extends AGUIPanel {
 			if(pitPlayer.prestige != 0)
 				prestigeLore.add(ChatColor.translateAlternateColorCodes('&', "&b+" + (int) (100 * nextPrestigeInfo.xpMultiplier) + "&b% &7needed xp!"));
 			prestigeLore.add("");
-			//TODO: Re-enable killreq
 			if(pitPlayer.level == 120 && pitPlayer.goldGrinded >= prestigeInfo.goldReq && pitPlayer.taintedSouls >= prestigeInfo.soulReq) {
 				prestigeLore.add(ChatColor.YELLOW + "Click to purchase!");
 			} else {

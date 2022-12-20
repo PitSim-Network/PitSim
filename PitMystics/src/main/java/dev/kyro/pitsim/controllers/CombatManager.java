@@ -16,8 +16,6 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
-import org.bukkit.event.player.PlayerJoinEvent;
-import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.scheduler.BukkitRunnable;
 
@@ -112,8 +110,16 @@ public class CombatManager implements Listener {
 	@EventHandler
 	public void onSpawn(PlayerSpawnCommandEvent event) {
 		Player player = event.getPlayer();
-		if(!taggedPlayers.containsKey(player.getUniqueId())) return;
-		event.setCancelled(true);
-		AOutput.error(event.getPlayer(), "&c&c&lNOPE! &7You cannot use that while in combat!");
+		if(taggedPlayers.containsKey(player.getUniqueId())) {
+			event.setCancelled(true);
+			AOutput.error(event.getPlayer(), "&c&c&lNOPE! &7You cannot use that while in combat!");
+			return;
+		}
+
+		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
+		if(pitPlayer.megastreak.isOnMega()) {
+			event.setCancelled(true);
+			return;
+		}
 	}
 }
