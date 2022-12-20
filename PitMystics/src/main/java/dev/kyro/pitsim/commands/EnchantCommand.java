@@ -4,6 +4,7 @@ import de.tr7zw.nbtapi.NBTItem;
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.controllers.EnchantManager;
 import dev.kyro.pitsim.controllers.objects.PitEnchant;
+import dev.kyro.pitsim.enchants.SelfCheckout;
 import dev.kyro.pitsim.enums.MysticType;
 import dev.kyro.pitsim.enums.NBTTag;
 import dev.kyro.pitsim.exceptions.*;
@@ -59,7 +60,7 @@ public class EnchantCommand implements CommandExecutor {
 			AOutput.error(player, "That enchant does not exist");
 			return false;
 		}
-		if(pitEnchant.tainted && !player.isOp()) {
+		if((pitEnchant.tainted || pitEnchant == SelfCheckout.INSTANCE) && !player.isOp()) {
 			AOutput.error(player, "&cNice try.");
 			return false;
 		}
