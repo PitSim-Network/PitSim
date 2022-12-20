@@ -25,8 +25,7 @@ public class LeaderboardData {
 				double value = Double.parseDouble(playerData[2]);
 
 				String[] prestigeAndLevel = playerData[1].split(" ");
-				PlayerData dataObject = new PlayerData(value, PrestigeValues.getPlayerPrefix(
-						Integer.parseInt(prestigeAndLevel[0]), Integer.parseInt(prestigeAndLevel[1])));
+				PlayerData dataObject = new PlayerData(value, Integer.parseInt(prestigeAndLevel[0]), Integer.parseInt(prestigeAndLevel[1]));
 
 
 				leaderboardDataMap.put(uuid, dataObject);
@@ -66,9 +65,14 @@ public class LeaderboardData {
 		public double primaryValue;
 		public String prefix;
 
-		public PlayerData(double primaryValue, String prefix) {
+		public int level;
+		public int prestige;
+
+		public PlayerData(double primaryValue, int prestige, int level) {
 			this.primaryValue = primaryValue;
-			this.prefix = prefix;
+			this.prestige = prestige;
+			this.level = level;
+			this.prefix = PrestigeValues.getPlayerPrefix(prestige, level);
 		}
 	}
 

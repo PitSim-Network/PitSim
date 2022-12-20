@@ -32,6 +32,7 @@ public class ReloadManager {
 						System.out.println("Jar upload finished. Restarting plugin");
 						for(Player onlinePlayer : Bukkit.getOnlinePlayers()) onlinePlayer.kickPlayer("reloading plugin");
 						Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), "plugman reload pitremake");
+
 						return;
 					}
 

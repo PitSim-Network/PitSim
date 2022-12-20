@@ -9,7 +9,6 @@ import dev.kyro.pitsim.controllers.objects.LeaderboardPosition;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.misc.Misc;
 import org.bukkit.Material;
-import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.UUID;
@@ -48,7 +47,7 @@ public class XPLeaderboard extends Leaderboard {
 		LeaderboardData data = LeaderboardData.getLeaderboardData(this);
 		LeaderboardData.PlayerData playerData = data.getValue(position.uuid);
 
-		position.longValue = (long) playerData.primaryValue;
+		position.longValue = PrestigeValues.getTotalXP(playerData.prestige, playerData.level, 0);
 	}
 
 	@Override

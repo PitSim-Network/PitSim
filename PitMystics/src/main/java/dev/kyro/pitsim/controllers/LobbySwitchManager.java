@@ -6,6 +6,7 @@ import dev.kyro.pitsim.misc.Misc;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.inventory.InventoryOpenEvent;
 import org.bukkit.event.player.*;
 import org.bukkit.potion.PotionEffectType;
@@ -55,7 +56,13 @@ public class LobbySwitchManager implements Listener {
 
 	@EventHandler
 	public void onHit(AttackEvent.Pre event) {
-		if(switchingPlayers.contains(event.getDefenderPlayer())) event.setCancelled(true);
+		if(switchingPlayers.contains(event.getDefenderPlayer()) || switchingPlayers.contains(event.getAttackerPlayer())) event.setCancelled(true);
+	}
+
+	@EventHandler
+	public void onVanillaHit(EntityDamageByEntityEvent event) {
+		if(!(event.getEntity() instanceof Player)) return;
+		if(switchingPlayers.contains((Player) event.getDamager())) event.setCancelled(true);
 	}
 
 	@EventHandler

@@ -42,9 +42,7 @@ public abstract class Leaderboard {
 		boolean isOnLeaderboard = false;
 		for(int i = 0; i < 10; i++) {
 			if(orderedLeaderboard.size() < i + 1)  {
-				System.out.println(orderedLeaderboard.size());
 				aLoreBuilder.addLore("&e" + (i + 1) + ". &cERROR");
-				System.out.println("Error 1");
 				continue;
 			}
 			LeaderboardPosition position = orderedLeaderboard.get(i);
@@ -54,7 +52,6 @@ public abstract class Leaderboard {
 			String rankColor = getRankColor(position.uuid);
 			if(data.getPrefix(position.uuid) == null) {
 				aLoreBuilder.addLore("&e" + (i + 1) + ". &cERROR");
-				System.out.println("Error 2");
 				continue;
 			}
 			aLoreBuilder.addLore("&e" + (i + 1) + ". " + data.getPrefix(position.uuid) + " " + rankColor + offlinePlayer.getName() + "&7 - " + getDisplayValue(position));

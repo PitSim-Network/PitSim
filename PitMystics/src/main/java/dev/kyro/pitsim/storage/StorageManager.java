@@ -12,6 +12,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.inventory.InventoryDragEvent;
 import org.bukkit.event.player.*;
 import org.bukkit.inventory.Inventory;
@@ -136,7 +137,7 @@ public class StorageManager implements Listener {
 		for(EditSession editSession : editSessions) {
 			if(editSession.getStaffMember() == staff) return editSession;
 		}
-		return null;
+		throw new RuntimeException();
 	}
 
 	public static EditSession getSession(UUID playerUUID) {
@@ -236,21 +237,26 @@ public class StorageManager implements Listener {
 			if(inv.equals(event.getClickedInventory())) {
 
 				if(event.getSlot() == 36 && i > 0) {
+					if(isEditing(player)) getSession(player).playerClosed = false;
 					player.openInventory(profile.enderChest[i - 1]);
+					if(isEditing(player)) getSession(player).playerClosed = true;
 					event.setCancelled(true);
 					return;
 				}
 
 				if(event.getSlot() == 44 && (i + 1) < StorageProfile.ENDERCHEST_MAX_PAGES) {
-
+					if(isEditing(player)) getSession(player).playerClosed = false;
 					player.openInventory(profile.enderChest[i + 1]);
+					if(isEditing(player)) getSession(player).playerClosed = true;
 					event.setCancelled(true);
 					return;
 				}
 
 				if(event.getSlot() == 40) {
+					if(isEditing(player)) getSession(player).playerClosed = false;
 					EnderchestGUI gui = new EnderchestGUI(player, profile.getUUID());
 					gui.open();
+					if(isEditing(player)) getSession(player).playerClosed = true;
 					event.setCancelled(true);
 					return;
 				}
@@ -258,6 +264,23 @@ public class StorageManager implements Listener {
 				if(event.getSlot() < 9 || event.getSlot() > 35) {
 					event.setCancelled(true);
 				}
+			}
+		}
+	}
+
+	@EventHandler
+	public void onClose(InventoryCloseEvent event) {
+		Player player = (Player) event.getPlayer();
+		if(!isEditing(player)) return;
+		EditSession session = getSession(player);
+		StorageProfile profile = session.getStorageProfile();
+
+		if(profile.enderChest == null) return;
+		for(int i = 0; i < profile.enderChest.length; i++) {
+			Inventory inv = profile.enderChest[i];
+			if(!inv.equals(event.getInventory())) continue;
+			if(session.playerClosed) {
+				session.end();
 			}
 		}
 	}
@@ -280,16 +303,4 @@ public class StorageManager implements Listener {
 
 		if(endSession != null) endSession.end();
 	}
-
-	@EventHandler
-	public void onMove(PlayerMoveEvent event) {
-		if(!isEditing(event.getPlayer())) return;
-		EditSession session = getSession(event.getPlayer());
-		assert session != null;
-		session.end();
-		session.getStaffMember().closeInventory();
-	}
-
-
-
 }

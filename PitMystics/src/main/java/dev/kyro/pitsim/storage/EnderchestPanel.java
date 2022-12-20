@@ -5,17 +5,15 @@ import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.arcticapi.gui.AGUI;
 import dev.kyro.arcticapi.gui.AGUIPanel;
 import dev.kyro.arcticapi.misc.AOutput;
-import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.misc.Misc;
 import org.bukkit.Material;
+import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.inventory.InventoryOpenEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.scheduler.BukkitRunnable;
 
-import java.util.Objects;
 import java.util.UUID;
 
 public class EnderchestPanel extends AGUIPanel {
@@ -50,12 +48,21 @@ public class EnderchestPanel extends AGUIPanel {
 		if(!profile.getUUID().equals(player.getUniqueId())) accessiblePages = StorageProfile.ENDERCHEST_MAX_PAGES;
 
 		if(slot == 8 && !player.getUniqueId().equals(profile.getUUID())) {
-			new BukkitRunnable() {
-				@Override
-				public void run() {
-					player.openInventory(Objects.requireNonNull(StorageManager.getSession(player)).inventory.getInventory());
-				}
-			}.runTaskLater(PitSim.INSTANCE, 2);
+			System.out.println(StorageManager.editSessions);
+
+			EditSession session = StorageManager.getSession(player);
+			session.playerClosed = false;
+			player.openInventory(session.inventory.getInventory());
+			session.playerClosed = true;
+//			new BukkitRunnable() {
+//				@Override
+//				public void run() {
+//					EditSession session = StorageManager.getSession(player);
+//					session.playerClosed = false;
+//					player.openInventory(session.inventory.getInventory());
+//					session.playerClosed = true;
+//				}
+//			}.runTaskLater(PitSim.INSTANCE, 2);
 		}
 
 		if(slot < 9 || slot >= 27) return;
@@ -69,6 +76,15 @@ public class EnderchestPanel extends AGUIPanel {
 		if(!profile.hasData() || profile.isSaving()) return;
 
 		Inventory inventory = profile.getEnderchest(slot - 8);
+
+		if(StorageManager.isEditing(player)) {
+			EditSession session = StorageManager.getSession(player);
+			session.playerClosed = false;
+			player.openInventory(inventory);
+			session.playerClosed = true;
+			return;
+		}
+
 		player.openInventory(inventory);
 	}
 
@@ -126,6 +142,10 @@ public class EnderchestPanel extends AGUIPanel {
 
 	@Override
 	public void onClose(InventoryCloseEvent event) {
+		if(!StorageManager.isEditing((Player) event.getPlayer())) return;
+		EditSession session = StorageManager.getSession(player);
 
+		if(!session.playerClosed) return;
+		session.end();
 	}
 }

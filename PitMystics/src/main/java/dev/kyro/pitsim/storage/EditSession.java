@@ -22,6 +22,8 @@ public class EditSession {
 
 	public boolean hasResponded = false;
 
+	public boolean playerClosed = true;
+
 	protected InventoryHolder inventory = null;
 
 	public EditSession(Player staffMember, UUID playerUUID, String playerServer, boolean isPlayerOnline) {
@@ -70,11 +72,9 @@ public class EditSession {
 
 		PluginMessage message = new PluginMessage().writeString("EDIT SESSION END");
 		message.writeString(playerUUID.toString()).send();
-
-		if(inventory != null) ((EditInventoryPanel) inventory).close();
 	}
 
-	private void createInventory() {
+	public void createInventory() {
 		inventory = new EditInventoryPanel(this);
 		PitSim.INSTANCE.getServer().getPluginManager().registerEvents((Listener) inventory, PitSim.INSTANCE);
 

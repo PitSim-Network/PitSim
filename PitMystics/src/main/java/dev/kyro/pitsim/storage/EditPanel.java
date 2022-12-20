@@ -16,6 +16,7 @@ import org.bukkit.event.inventory.InventoryOpenEvent;
 public class EditPanel extends AGUIPanel {
 
 	public EditSession session;
+	public boolean playerClosed = true;
 
 	public EditPanel(AGUI gui, EditSession session) {
 		super(gui);

@@ -1,7 +1,6 @@
 package dev.kyro.pitsim.controllers.objects;
 
 import com.google.api.core.ApiFuture;
-import com.google.cloud.firestore.DocumentReference;
 import com.google.cloud.firestore.DocumentSnapshot;
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.arcticapi.misc.AUtil;
@@ -10,17 +9,11 @@ import dev.kyro.pitsim.battlepass.quests.WinAuctionsQuest;
 import dev.kyro.pitsim.controllers.AuctionDisplays;
 import dev.kyro.pitsim.controllers.FirestoreManager;
 import dev.kyro.pitsim.enums.ItemType;
-import dev.kyro.pitsim.events.MessageEvent;
-import dev.kyro.pitsim.misc.Sounds;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
-import org.bukkit.entity.Player;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.Listener;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.*;
-import java.util.concurrent.ExecutionException;
 
 public class AuctionItem {
 
@@ -69,7 +62,7 @@ public class AuctionItem {
             bids.add(entry.getKey() + ":" + entry.getValue());
             FirestoreManager.AUCTION.auctions.get(slot).bids = bids;
         }
-        FirestoreManager.AUCTION.save();
+//        FirestoreManager.AUCTION.save();
     }
 
     public void addBid(UUID player, int bid) {

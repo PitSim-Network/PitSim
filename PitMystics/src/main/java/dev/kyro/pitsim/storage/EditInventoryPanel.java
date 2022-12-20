@@ -10,6 +10,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.inventory.InventoryDragEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
@@ -94,25 +95,46 @@ public class EditInventoryPanel implements InventoryHolder, Listener {
 		}
 	}
 
-	public void close() {
+	@EventHandler
+	public void onClose(InventoryCloseEvent event) {
+		if(session == null || session.inventory == null) return;
+		Inventory inventory = event.getInventory();
+
+		if(inventory.getHolder() != this) return;
+		session.inventory = this;
+
+
+		if(!session.playerClosed) {
+			session.playerClosed = true;
+			return;
+		}
+
 		HandlerList.unregisterAll(this);
 		if(runnable != null) runnable.cancel();
+
+		session.end();
 	}
+
 
 
 	@EventHandler
 	public void onEditSessionClick(InventoryClickEvent event) {
+		System.out.println(1);
 		if(session == null || session.inventory == null) return;
-		Inventory inventory = getInventory();
+		System.out.println(2);
+		Inventory inventory = event.getInventory();
+
+		if(inventory.getHolder() != this) return;
+		System.out.println(3);
 
 		if(event.getWhoClicked().getUniqueId().equals(session.getPlayerUUID()) && !playerEdit) {
 			event.setCancelled(true);
+			return;
 		}
-
-		if(inventory.getHolder() != this) return;
 
 		if(event.getSlot() == 8) {
 			EnderchestGUI gui = new EnderchestGUI(session.getStaffMember(), session.getPlayerUUID());
+			session.playerClosed = false;
 			gui.open();
 		}
 
@@ -132,13 +154,14 @@ public class EditInventoryPanel implements InventoryHolder, Listener {
 	@EventHandler
 	public void onEditSessionClick(InventoryDragEvent event) {
 		if(session == null || session.inventory == null) return;
-		Inventory inventory = getInventory();
+		Inventory inventory = event.getInventory();
+
+		if(inventory.getHolder() != this) return;
 
 		if(event.getWhoClicked().getUniqueId().equals(session.getPlayerUUID()) && !playerEdit) {
 			event.setCancelled(true);
+			return;
 		}
-
-		if(inventory.getHolder() != this) return;
 
 		if(session.getEditType() != EditType.ONLINE) return;
 

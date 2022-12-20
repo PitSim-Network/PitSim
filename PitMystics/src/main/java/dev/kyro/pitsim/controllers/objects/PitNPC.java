@@ -14,13 +14,13 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 public abstract class PitNPC implements Listener {
 	public static NPCRegistry registry = CitizensAPI.getNPCRegistry();
 
 	public List<NPC> npcs = new ArrayList<>();
+	public long cooldown = 0;
 
 	public PitNPC(List<World> worlds) {
 		this(worlds.toArray(new World[0]));
@@ -41,6 +41,18 @@ public abstract class PitNPC implements Listener {
 
 		for(NPC npc : npcs) {
 			if(event.getNPC().getId() != npc.getId()) continue;
+
+			boolean canOpen;
+			if(cooldown != 0) {
+				canOpen = 1000 + cooldown < System.currentTimeMillis();
+				if(canOpen) cooldown = 0;
+			} else {
+				canOpen = true;
+				cooldown = System.currentTimeMillis();
+			}
+
+			if(!canOpen) return;
+
 			onClick(player);
 			return;
 		}

@@ -151,14 +151,19 @@ public class PitSim extends JavaPlugin {
 
 		PROTOCOL_MANAGER = ProtocolLibrary.getProtocolManager();
 
-		List<NPC> toRemove = new ArrayList<>();
-		for (NPC npc : CitizensAPI.getNPCRegistry()) {
-			toRemove.add(npc);
-		}
-		while(!toRemove.isEmpty()) {
-			toRemove.get(0).destroy();
-			toRemove.remove(0);
-		}
+		new BukkitRunnable() {
+			@Override
+			public void run() {
+				List<NPC> toRemove = new ArrayList<>();
+				for (NPC npc : CitizensAPI.getNPCRegistry()) {
+					toRemove.add(npc);
+				}
+				while(!toRemove.isEmpty()) {
+					toRemove.get(0).destroy();
+					toRemove.remove(0);
+				}
+			}
+		}.runTaskLater(PitSim.INSTANCE, 10);
 
 		registerMaps();
 		if(getStatus().isDarkzone()) BossManager.onStart();
@@ -254,7 +259,6 @@ public class PitSim extends JavaPlugin {
 		registerKits();
 		if(getStatus().isDarkzone()) registerMobs();
 		registerBrewingIngredients();
-		registerNPCs();
 		registerCosmetics();
 
 		PassManager.registerPasses();
@@ -267,6 +271,14 @@ public class PitSim extends JavaPlugin {
 				ProxyMessaging.sendStartup();
 			}
 		}.runTaskLater(this, 20 * 10);
+
+		new BukkitRunnable() {
+			@Override
+			public void run() {
+				registerNPCs();
+			}
+		}.runTaskLater(PitSim.INSTANCE, 20);
+
 	}
 
 	@Override
@@ -279,6 +291,8 @@ public class PitSim extends JavaPlugin {
 //			System.out.println("Database failed to disconnect");
 //		}
 //		System.out.println("Database disconnected");
+
+		FirestoreManager.AUCTION.save();
 
 		for(Player onlinePlayer : Bukkit.getOnlinePlayers()) {
 			PitPlayer pitPlayer = PitPlayer.getPitPlayer(onlinePlayer);
