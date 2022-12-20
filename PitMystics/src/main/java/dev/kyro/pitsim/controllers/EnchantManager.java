@@ -11,6 +11,7 @@ import dev.kyro.pitsim.alogging.LogManager;
 import dev.kyro.pitsim.controllers.objects.Non;
 import dev.kyro.pitsim.controllers.objects.PitEnchant;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
+import dev.kyro.pitsim.enchants.SelfCheckout;
 import dev.kyro.pitsim.enums.ApplyType;
 import dev.kyro.pitsim.enums.MysticType;
 import dev.kyro.pitsim.enums.NBTTag;
@@ -214,8 +215,9 @@ public class EnchantManager implements Listener {
 			Integer enchantNum = nbtItem.getInteger(NBTTag.ITEM_ENCHANTS.getRef());
 			Integer tokenNum = nbtItem.getInteger(NBTTag.ITEM_TOKENS.getRef());
 			Integer rTokenNum = nbtItem.getInteger(NBTTag.ITEM_RTOKENS.getRef());
+			boolean isGemmed = nbtItem.getBoolean(NBTTag.IS_GEMMED.getRef());
 
-			int maxTokens = nbtItem.getBoolean(NBTTag.IS_GEMMED.getRef()) && nbtItem.hasKey(NBTTag.IS_JEWEL.getRef()) ? 9 : 8;
+			int maxTokens = isGemmed && nbtItem.hasKey(NBTTag.IS_JEWEL.getRef()) ? 9 : 8;
 			if(enchantNum > 3 || tokenNum > maxTokens || rTokenNum > 4) return true;
 			for (PitEnchant pitEnchant : EnchantManager.pitEnchants) {
 				if(itemEnchants.getInteger(pitEnchant.refNames.get(0)) > 3) return true;
@@ -224,6 +226,7 @@ public class EnchantManager implements Listener {
 			for (String enchantString : enchantOrder) {
 				PitEnchant pitEnchant = EnchantManager.getEnchant(enchantString);
 //				if(pitEnchant == EnchantManager.getEnchant("theking")) return true;
+				if(pitEnchant == SelfCheckout.INSTANCE && !isGemmed) return true;
 				if(pitEnchant == null) continue;
 				if(pitEnchant.isUncommonEnchant) continue;
 				hasCommonEnchant = true;
