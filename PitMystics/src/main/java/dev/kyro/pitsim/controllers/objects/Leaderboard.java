@@ -1,18 +1,18 @@
 package dev.kyro.pitsim.controllers.objects;
 
 import dev.kyro.arcticapi.builders.ALoreBuilder;
-import dev.kyro.arcticapi.data.APlayer;
-import dev.kyro.arcticapi.data.APlayerData;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.controllers.PrestigeValues;
 import dev.kyro.pitsim.misc.Misc;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
-import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.UUID;
 
 public abstract class Leaderboard {
 	public List<LeaderboardPosition> orderedLeaderboard = new ArrayList<>();
@@ -42,7 +42,9 @@ public abstract class Leaderboard {
 		boolean isOnLeaderboard = false;
 		for(int i = 0; i < 10; i++) {
 			if(orderedLeaderboard.size() < i + 1)  {
+				System.out.println(orderedLeaderboard.size());
 				aLoreBuilder.addLore("&e" + (i + 1) + ". &cERROR");
+				System.out.println("Error 1");
 				continue;
 			}
 			LeaderboardPosition position = orderedLeaderboard.get(i);
@@ -52,6 +54,7 @@ public abstract class Leaderboard {
 			String rankColor = getRankColor(position.uuid);
 			if(data.getPrefix(position.uuid) == null) {
 				aLoreBuilder.addLore("&e" + (i + 1) + ". &cERROR");
+				System.out.println("Error 2");
 				continue;
 			}
 			aLoreBuilder.addLore("&e" + (i + 1) + ". " + data.getPrefix(position.uuid) + " " + rankColor + offlinePlayer.getName() + "&7 - " + getDisplayValue(position));

@@ -242,6 +242,7 @@ public class StorageManager implements Listener {
 				}
 
 				if(event.getSlot() == 44 && (i + 1) < StorageProfile.ENDERCHEST_MAX_PAGES) {
+
 					player.openInventory(profile.enderChest[i + 1]);
 					event.setCancelled(true);
 					return;

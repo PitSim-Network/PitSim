@@ -25,7 +25,7 @@ public class LeaderboardManager {
 					}
 				}
 			}
-		}.runTaskTimer(PitSim.INSTANCE, 20 * 60 + 10, 20);
+		}.runTaskTimer(PitSim.INSTANCE, 20, 20 * 60 + 10);
 	}
 
 	public static void registerLeaderboard(Leaderboard leaderboard) {

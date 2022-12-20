@@ -1,5 +1,6 @@
 package dev.kyro.pitsim.controllers.objects;
 
+import com.google.cloud.firestore.DocumentSnapshot;
 import com.google.cloud.firestore.annotation.Exclude;
 import dev.kyro.arcticapi.data.APlayer;
 import dev.kyro.arcticapi.data.APlayerData;
@@ -431,10 +432,18 @@ public class PitPlayer {
 
 		PitPlayer pitPlayer;
 		try {
-			pitPlayer = FirestoreManager.FIRESTORE.collection(FirestoreManager.PLAYERDATA_COLLECTION)
-					.document(playerUUID.toString()).get().get().toObject(PitPlayer.class);
+			DocumentSnapshot documentSnapshot = FirestoreManager.FIRESTORE.collection(FirestoreManager.PLAYERDATA_COLLECTION)
+					.document(playerUUID.toString()).get().get();
+
+			if(documentSnapshot.exists()) {
+				pitPlayer = documentSnapshot.toObject(PitPlayer.class);
+			} else {
+				pitPlayer = new PitPlayer();
+			}
+
 			System.out.println("Loaded Data: " + Bukkit.getOfflinePlayer(playerUUID).getName());
 			assert pitPlayer != null;
+
 			pitPlayer.uuid = playerUUID;
 
 		} catch(Exception exception) {

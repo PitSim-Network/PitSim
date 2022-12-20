@@ -1,14 +1,13 @@
 package dev.kyro.pitsim.controllers;
 
 import dev.kyro.pitsim.PitSim;
+import dev.kyro.pitsim.events.AttackEvent;
 import dev.kyro.pitsim.misc.Misc;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryOpenEvent;
-import org.bukkit.event.player.PlayerCommandPreprocessEvent;
-import org.bukkit.event.player.PlayerInteractEvent;
-import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.event.player.*;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 
@@ -33,8 +32,30 @@ public class LobbySwitchManager implements Listener {
 	}
 
 	@EventHandler
+	public void onDrop(PlayerDropItemEvent event) {
+		if(switchingPlayers.contains((Player) event.getPlayer())) event.setCancelled(true);
+	}
+
+	@EventHandler
+	public void onPickup(PlayerPickupItemEvent event) {
+		if(switchingPlayers.contains((Player) event.getPlayer())) event.setCancelled(true);
+	}
+
+
+
+	@EventHandler
 	public void onCommandSend(PlayerCommandPreprocessEvent event) {
 		if(switchingPlayers.contains(event.getPlayer())) event.setCancelled(true);
+	}
+
+	@EventHandler
+	public void onSneak(PlayerToggleSneakEvent event) {
+		if(switchingPlayers.contains(event.getPlayer())) event.setCancelled(true);
+	}
+
+	@EventHandler
+	public void onHit(AttackEvent.Pre event) {
+		if(switchingPlayers.contains(event.getDefenderPlayer())) event.setCancelled(true);
 	}
 
 	@EventHandler
@@ -55,12 +76,17 @@ public class LobbySwitchManager implements Listener {
 		switchingPlayers.add(player);
 		Misc.applyPotionEffect(player, PotionEffectType.BLINDNESS, 40, 100, false, false);
 
-		new BukkitRunnable() {
-			@Override
-			public void run() {
-				switchingPlayers.remove(player);
-			}
-		}.runTaskLater(PitSim.INSTANCE, 40 + 5);
+//		new BukkitRunnable() {
+//			@Override
+//			public void run() {
+//				switchingPlayers.remove(player);
+//			}
+//		}.runTaskLater(PitSim.INSTANCE, 40 + 5);
+	}
+
+	@EventHandler
+	public void onQuit(PlayerQuitEvent event) {
+		switchingPlayers.remove(event.getPlayer());
 	}
 
 }
