@@ -27,6 +27,8 @@ import java.util.concurrent.ExecutionException;
 
 public class ProxyMessaging implements Listener {
 
+	public static int playersOnline = 0;
+
 	static {
 		new BukkitRunnable() {
 			@Override
@@ -129,6 +131,9 @@ public class ProxyMessaging implements Listener {
 			}
 		}
 
+		if(strings.size() >= 1 && strings.get(0).equals("PLAYER COUNT")) {
+			playersOnline = integers.get(0);
+		}
 
 		if(strings.size() >= 1 && strings.get(0).equals("CANCEL SHUTDOWN")) {
 			ShutdownManager.cancelShutdown();

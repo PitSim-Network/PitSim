@@ -248,6 +248,7 @@ public class PitSim extends JavaPlugin {
 		AHook.registerPlaceholder(new GoldReqPlaceholder());
 		AHook.registerPlaceholder(new SoulPlaceholder());
 		AHook.registerPlaceholder(new SoulReqPlaceholder());
+		AHook.registerPlaceholder(new PlayerCountPlaceholder());
 		new LeaderboardPlaceholders().register();
 
 		CooldownManager.init();

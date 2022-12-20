@@ -296,7 +296,6 @@ public class PassManager implements Listener {
 		}
 	}
 
-//	TODO: Main server only, but also run when you send updated data via plugin message (wiji)
 	public static void loadPassData() {
 		currentPass.weeklyQuests.clear();
 		if(!currentPass.startDate.equals(FirestoreManager.CONFIG.currentPassStart)) {

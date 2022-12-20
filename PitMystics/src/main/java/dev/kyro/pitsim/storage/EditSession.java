@@ -4,6 +4,7 @@ import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.controllers.objects.PluginMessage;
 import dev.kyro.pitsim.misc.Sounds;
 import org.bukkit.entity.Player;
+import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
 import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -72,6 +73,10 @@ public class EditSession {
 
 		PluginMessage message = new PluginMessage().writeString("EDIT SESSION END");
 		message.writeString(playerUUID.toString()).send();
+
+		if(inventory == null) return;
+		HandlerList.unregisterAll((Listener) inventory);
+		if(((EditInventoryPanel) inventory).runnable != null) ((EditInventoryPanel) inventory).runnable.cancel();
 	}
 
 	public void createInventory() {

@@ -119,13 +119,10 @@ public class EditInventoryPanel implements InventoryHolder, Listener {
 
 	@EventHandler
 	public void onEditSessionClick(InventoryClickEvent event) {
-		System.out.println(1);
 		if(session == null || session.inventory == null) return;
-		System.out.println(2);
 		Inventory inventory = event.getInventory();
 
 		if(inventory.getHolder() != this) return;
-		System.out.println(3);
 
 		if(event.getWhoClicked().getUniqueId().equals(session.getPlayerUUID()) && !playerEdit) {
 			event.setCancelled(true);
