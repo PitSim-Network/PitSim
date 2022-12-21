@@ -52,20 +52,30 @@ public class ShowCommand implements CommandExecutor {
 						player.setItemInHand(itemStack);
 						player.updateInventory();
 
-						String playerName = "%luckperms_prefix%%essentials_nickname%";
-						String prefix = PlaceholderAPI.setPlaceholders(player, playerName);
+						sendShowMessage(player, itemStack);
 
-						TextComponent message = new TextComponent(ChatColor.translateAlternateColorCodes('&', "&6SHOWOFF! " + prefix + " &7shows off their "));
-						message.addExtra(Misc.createItemHover(itemStack));
-
-						for(Player onlinePlayer : Bukkit.getOnlinePlayers()) {
-							PitPlayer pitPlayer = PitPlayer.getPitPlayer(onlinePlayer);
-							if(!pitPlayer.playerChatDisabled) onlinePlayer.spigot().sendMessage(message);
-						}
+//						PluginMessage pluginMessage = new PluginMessage()
+//								.writeString("ITEMSHOW")
+//								.writeString(PitSim.serverName)
+//								.writeString(CustomSerializer.serialize(itemStack));
+//						pluginMessage.send();
 					}
 				}.runTask(PitSim.INSTANCE);
 			}
 		}.runTaskAsynchronously(PitSim.INSTANCE);
 		return false;
+	}
+
+	public static void sendShowMessage(Player player, ItemStack itemStack) {
+		String playerName = "%luckperms_prefix%%essentials_nickname%";
+		String prefix = PlaceholderAPI.setPlaceholders(player, playerName);
+
+		TextComponent message = new TextComponent(ChatColor.translateAlternateColorCodes('&', "&6SHOWOFF! " + prefix + " &7shows off their "));
+		message.addExtra(Misc.createItemHover(itemStack));
+
+		for(Player onlinePlayer : Bukkit.getOnlinePlayers()) {
+			PitPlayer pitPlayer = PitPlayer.getPitPlayer(onlinePlayer);
+			if(!pitPlayer.playerChatDisabled) onlinePlayer.spigot().sendMessage(message);
+		}
 	}
 }

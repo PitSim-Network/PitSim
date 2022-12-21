@@ -67,3 +67,7 @@ commands:
   setting:
   set:
   massmigrate:
+  potions:
+    aliases:
+      - pot
+      - potion

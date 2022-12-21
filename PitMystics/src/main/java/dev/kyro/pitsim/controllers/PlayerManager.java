@@ -296,13 +296,15 @@ public class PlayerManager implements Listener {
 	@EventHandler
 	public void onKillForRank(KillEvent killEvent) {
 
-		XmasMap.removeFromRadio(killEvent.getDeadPlayer());
-		new BukkitRunnable() {
-			@Override
-			public void run() {
-				XmasMap.addToRadio(killEvent.getDeadPlayer());
-			}
-		}.runTaskLater(PitSim.INSTANCE, 20);
+		if(killEvent.deadIsPlayer) {
+			XmasMap.removeFromRadio(killEvent.deadPlayer);
+			new BukkitRunnable() {
+				@Override
+				public void run() {
+					XmasMap.addToRadio(killEvent.deadPlayer);
+				}
+			}.runTaskLater(PitSim.INSTANCE, 20);
+		}
 
 		double multiplier = 1;
 		if(killEvent.getKiller().hasPermission("group.nitro")) {
