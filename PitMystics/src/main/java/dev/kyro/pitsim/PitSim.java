@@ -411,13 +411,13 @@ public class PitSim extends JavaPlugin {
 
 		if(TimeManager.isChristmasSeason() && status != ServerStatus.DARKZONE) {
 			System.out.println();
-			MapManager.registerMap(new XmasMap("xmas1"));
+			MapManager.registerMap(new XmasMap("xmas"));
 			MapManager.currentMap.world.setStorm(true);
 			MapManager.currentMap.world.setWeatherDuration(Integer.MAX_VALUE);
 			return;
 		}
 
-		MapManager.registerMap(new BiomesMap("biomes1"));
+		MapManager.registerMap(new BiomesMap("biomes"));
 
 	}
 
