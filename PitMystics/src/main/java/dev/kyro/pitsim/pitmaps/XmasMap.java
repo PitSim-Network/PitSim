@@ -36,20 +36,14 @@ public class XmasMap extends PitMap {
 			playlist.add(NBSDecoder.parse(files[i]));
 		}
 
-		PositionSongPlayer esp = new PositionSongPlayer(playlist);
-		esp.setDistance(18);
-		esp.setRepeatMode(RepeatMode.ALL);
-		esp.setTargetLocation(getMid(lobbies.get(0)).add(0, 20, 0));
-		esp.setPlaying(true);
-		radio.add(esp);
-
-		PositionSongPlayer esp2 = new PositionSongPlayer(playlist);
-		esp2.setDistance(18);
-		esp2.setVolume((byte) 100);
-		esp2.setRepeatMode(RepeatMode.ALL);
-		esp2.setTargetLocation(getMid(lobbies.get(1)).add(0, 20, 0));
-		esp2.setPlaying(true);
-		radio.add(esp2);
+		for(World lobby : lobbies) {
+			PositionSongPlayer esp = new PositionSongPlayer(playlist);
+			esp.setDistance(18);
+			esp.setRepeatMode(RepeatMode.ALL);
+			esp.setTargetLocation(getMid(lobby).add(0, 20, 0));
+			esp.setPlaying(true);
+			radio.add(esp);
+		}
 	}
 
 	public static Location mid = new Location(null, 0.5, 70, 0.5);
