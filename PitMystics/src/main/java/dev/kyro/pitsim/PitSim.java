@@ -308,7 +308,7 @@ public class PitSim extends JavaPlugin {
 
 		if(TimeManager.isChristmasSeason()) {
 			System.out.println();
-			MapManager.registerMap(new XmasMap("xmas1", "xmas2"));
+			MapManager.registerMap(new XmasMap("xmas"));
 			for(World lobby : MapManager.currentMap.lobbies) {
 				lobby.setStorm(true);
 				lobby.setWeatherDuration(Integer.MAX_VALUE);
@@ -316,7 +316,7 @@ public class PitSim extends JavaPlugin {
 			return;
 		}
 
-		MapManager.registerMap(new BiomesMap("biomes1", "biomes2"));
+		MapManager.registerMap(new BiomesMap("biomes"));
 
 	}
 
