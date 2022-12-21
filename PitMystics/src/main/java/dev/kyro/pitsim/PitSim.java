@@ -407,7 +407,7 @@ public class PitSim extends JavaPlugin {
 	}
 
 	private void registerMaps() {
-//		MapManager.registerMap(new DimensionsMap("dimensions1", "dimensions2"));
+//		MapManager.registerMap(new DimensionsMap("dimensions");
 
 		if(TimeManager.isChristmasSeason() && status != ServerStatus.DARKZONE) {
 			System.out.println();
@@ -418,7 +418,6 @@ public class PitSim extends JavaPlugin {
 		}
 
 		MapManager.registerMap(new BiomesMap("biomes"));
-
 	}
 
 	private void registerPerks() {
