@@ -216,8 +216,9 @@ public class EnchantManager implements Listener {
 			Integer tokenNum = nbtItem.getInteger(NBTTag.ITEM_TOKENS.getRef());
 			Integer rTokenNum = nbtItem.getInteger(NBTTag.ITEM_RTOKENS.getRef());
 			boolean isGemmed = nbtItem.getBoolean(NBTTag.IS_GEMMED.getRef());
+			boolean isJewel = nbtItem.hasKey(NBTTag.IS_JEWEL.getRef());
 
-			int maxTokens = isGemmed && nbtItem.hasKey(NBTTag.IS_JEWEL.getRef()) ? 9 : 8;
+			int maxTokens = isGemmed && isJewel ? 9 : 8;
 			if(enchantNum > 3 || tokenNum > maxTokens || rTokenNum > 4) return true;
 			for (PitEnchant pitEnchant : EnchantManager.pitEnchants) {
 				if(itemEnchants.getInteger(pitEnchant.refNames.get(0)) > 3) return true;
@@ -226,7 +227,7 @@ public class EnchantManager implements Listener {
 			for (String enchantString : enchantOrder) {
 				PitEnchant pitEnchant = EnchantManager.getEnchant(enchantString);
 //				if(pitEnchant == EnchantManager.getEnchant("theking")) return true;
-				if(pitEnchant == SelfCheckout.INSTANCE && !isGemmed) return true;
+				if(pitEnchant == SelfCheckout.INSTANCE && !isJewel) return true;
 				if(pitEnchant == null) continue;
 				if(pitEnchant.isUncommonEnchant) continue;
 				hasCommonEnchant = true;
