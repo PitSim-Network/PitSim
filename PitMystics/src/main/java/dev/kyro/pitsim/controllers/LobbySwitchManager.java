@@ -34,15 +34,13 @@ public class LobbySwitchManager implements Listener {
 
 	@EventHandler
 	public void onDrop(PlayerDropItemEvent event) {
-		if(switchingPlayers.contains((Player) event.getPlayer())) event.setCancelled(true);
+		if(switchingPlayers.contains(event.getPlayer())) event.setCancelled(true);
 	}
 
 	@EventHandler
 	public void onPickup(PlayerPickupItemEvent event) {
-		if(switchingPlayers.contains((Player) event.getPlayer())) event.setCancelled(true);
+		if(switchingPlayers.contains(event.getPlayer())) event.setCancelled(true);
 	}
-
-
 
 	@EventHandler
 	public void onCommandSend(PlayerCommandPreprocessEvent event) {
