@@ -1,12 +1,10 @@
 package dev.kyro.pitsim.misc;
 
 import com.sk89q.worldedit.EditSession;
-import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 public class TempBlockHelper {
@@ -17,7 +15,7 @@ public class TempBlockHelper {
     public static List<Material> preState = new ArrayList<>();
 
     public static void init() {
-        System.out.println();
+
     }
 
     public static void addBlockSession(Block block, Material originalMaterial){

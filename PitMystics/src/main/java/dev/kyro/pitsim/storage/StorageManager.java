@@ -69,7 +69,6 @@ public class StorageManager implements Listener {
 			ItemStack itemStack = player.getInventory().getItem(i);
 			if(Misc.isAirOrNull(itemStack)) continue;
 			hasItem = true;
-			System.out.println("Item: " + itemStack);
 			break;
 		}
 
