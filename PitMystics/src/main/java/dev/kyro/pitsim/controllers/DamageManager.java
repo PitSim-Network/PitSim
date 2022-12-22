@@ -225,7 +225,7 @@ public class DamageManager implements Listener {
 		}
 
 //		New player defence
-		if(PlayerManager.isRealPlayerTemp(attackEvent.getDefenderPlayer()) && PlayerManager.isRealPlayerTemp(attackEvent.getAttackerPlayer()) &&
+		if(PlayerManager.isRealPlayer(attackEvent.getDefenderPlayer()) && PlayerManager.isRealPlayer(attackEvent.getAttackerPlayer()) &&
 				attackEvent.getDefenderPlayer().getLocation().distance(MapManager.currentMap.getMid()) < 12) {
 			PitPlayer pitDefender = PitPlayer.getPitPlayer(attackEvent.getDefenderPlayer());
 			if(pitDefender.prestige < 10) {

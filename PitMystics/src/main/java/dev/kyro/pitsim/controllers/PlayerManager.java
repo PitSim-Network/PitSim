@@ -65,7 +65,7 @@ public class PlayerManager implements Listener {
 		realPlayers.add(uuid);
 	}
 
-	public static boolean isRealPlayer(Player player) {
+	public static boolean  isRealPlayer(Player player) {
 		if(player == null) return false;
 		return realPlayers.contains(player.getUniqueId());
 	}
@@ -172,11 +172,6 @@ public class PlayerManager implements Listener {
 				}
 			}
 		}.runTaskTimer(PitSim.INSTANCE, 0L, 18L);
-	}
-
-	public static boolean isRealPlayerTemp(Player player) {
-		if(player == null) return false;
-		return Bukkit.getOnlinePlayers().contains(player);
 	}
 
 	@EventHandler
@@ -545,7 +540,7 @@ public class PlayerManager implements Listener {
 	public void onAttack(AttackEvent.Apply attackEvent) {
 
 		Non defendingNon = NonManager.getNon(attackEvent.getDefender());
-		if(PlayerManager.isRealPlayerTemp(attackEvent.getDefenderPlayer())) {
+		if(PlayerManager.isRealPlayer(attackEvent.getDefenderPlayer())) {
 //			Arch chest archangel chestplate
 			attackEvent.multipliers.add(0.8);
 		} else if(defendingNon != null) {
