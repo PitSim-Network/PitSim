@@ -243,6 +243,7 @@ public class StorageManager implements Listener {
 					return;
 				}
 
+
 				if(event.getSlot() == 44 && (i + 1) < StorageProfile.ENDERCHEST_MAX_PAGES) {
 					if(isEditing(player)) getSession(player).playerClosed = false;
 					player.openInventory(profile.enderChest[i + 1]);
