@@ -2,6 +2,7 @@ package dev.kyro.pitsim.perks;
 
 import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.pitsim.controllers.MapManager;
+import dev.kyro.pitsim.controllers.NonManager;
 import dev.kyro.pitsim.controllers.objects.PitEnchant;
 import dev.kyro.pitsim.controllers.objects.PitPerk;
 import dev.kyro.pitsim.events.AttackEvent;
@@ -24,6 +25,7 @@ public class Dispersion extends PitPerk {
 	@EventHandler
 	public void onAttack(AttackEvent.Apply attackEvent) {
 		if(!attackEvent.isAttackerPlayer() || !attackEvent.isDefenderPlayer()) return;
+		if(NonManager.getNon(attackEvent.getDefender()) != null) return;
 		if(!playerHasUpgrade(attackEvent.getDefenderPlayer())) return;
 
 		if(MapManager.currentMap.world != attackEvent.getDefenderPlayer().getWorld()) return;
