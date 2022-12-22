@@ -62,7 +62,7 @@ public class LobbySwitchManager implements Listener {
 	@EventHandler
 	public void onVanillaHit(EntityDamageByEntityEvent event) {
 		if(!(event.getEntity() instanceof Player)) return;
-		if(switchingPlayers.contains((Player) event.getDamager())) event.setCancelled(true);
+		if(switchingPlayers.contains((Player) event.getEntity())) event.setCancelled(true);
 	}
 
 	@EventHandler

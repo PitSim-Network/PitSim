@@ -1,6 +1,8 @@
 package dev.kyro.pitsim.controllers;
 
+import dev.kyro.arcticapi.misc.AUtil;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
+import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
 import java.util.LinkedHashMap;
@@ -112,6 +114,12 @@ public class PrestigeValues {
 	public static String getPlayerPrefix(int prestige, int level) {
 		PrestigeInfo prestigeInfo = PrestigeValues.getPrestigeInfo(prestige);
 		return prestigeInfo.getOpenBracket() + getLevelColor(level) + level + prestigeInfo.getCloseBracket();
+	}
+
+	public static String getLeaderboardPrefix(int prestige, int level) {
+		PrestigeInfo prestigeInfo = PrestigeValues.getPrestigeInfo(prestige);
+		return prestigeInfo.getOpenBracket() + ChatColor.YELLOW + AUtil.toRoman(prestige) + prestigeInfo.bracketColor + "-" +
+				getLevelColor(level) + level + prestigeInfo.getCloseBracket();
 	}
 
 	static {

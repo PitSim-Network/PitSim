@@ -121,6 +121,9 @@ public class PitSim extends JavaPlugin {
 	public void onEnable() {
 		INSTANCE = this;
 
+		loadConfig();
+		ArcticAPI.configInit(this, "prefix", "error-prefix");
+		serverName = AConfig.getString("server");
 		FirestoreManager.init();
 		for(Player onlinePlayer : Bukkit.getOnlinePlayers()) {
 			PlayerManager.addRealPlayer(onlinePlayer.getUniqueId());
@@ -128,10 +131,6 @@ public class PitSim extends JavaPlugin {
 			if(success) continue;
 			onlinePlayer.kickPlayer(ChatColor.RED + "Playerdata failed to load. Please open a support ticket: discord.pitsim.net");
 		}
-
-		loadConfig();
-		ArcticAPI.configInit(this, "prefix", "error-prefix");
-		serverName = AConfig.getString("server");
 
 		if(AConfig.getBoolean("standalone-server")) status = ServerStatus.ALL;
 		else status = serverName.contains("darkzone") ? ServerStatus.DARKZONE : ServerStatus.PITSIM	;
@@ -493,20 +492,24 @@ public class PitSim extends JavaPlugin {
 	}
 
 	private void registerNPCs() {
-		NPCManager.registerNPC(new PerkNPC(Collections.singletonList(MapManager.currentMap.world)));
-		NPCManager.registerNPC(new PrestigeNPC(Collections.singletonList(MapManager.currentMap.world)));
-		NPCManager.registerNPC(new KeeperNPC(Collections.singletonList(MapManager.currentMap.world)));
-		NPCManager.registerNPC(new KitNPC(Collections.singletonList(MapManager.currentMap.world)));
-		NPCManager.registerNPC(new StatsNPC(Collections.singletonList(MapManager.currentMap.world)));
+		if(status.isDarkzone()) {
+			NPCManager.registerNPC(new TaintedShopNPC(Collections.singletonList(MapManager.getDarkzone())));
+			NPCManager.registerNPC(new LeggingsShopNPC(Collections.singletonList(MapManager.getDarkzone())));
+			NPCManager.registerNPC(new PotionMasterNPC(Collections.singletonList(MapManager.getDarkzone())));
+			NPCManager.registerNPC(new AuctioneerNPC(Collections.singletonList(MapManager.getDarkzone())));
+		}
 
-		NPCManager.registerNPC(new KyroNPC(Collections.singletonList(MapManager.currentMap.world)));
-		NPCManager.registerNPC(new WijiNPC(Collections.singletonList(MapManager.currentMap.world)));
-		NPCManager.registerNPC(new SplkNPC(Collections.singletonList(MapManager.currentMap.world)));
+		if(status.isPitsim()) {
+			NPCManager.registerNPC(new PerkNPC(Collections.singletonList(MapManager.currentMap.world)));
+			NPCManager.registerNPC(new PrestigeNPC(Collections.singletonList(MapManager.currentMap.world)));
+			NPCManager.registerNPC(new KeeperNPC(Collections.singletonList(MapManager.currentMap.world)));
+			NPCManager.registerNPC(new KitNPC(Collections.singletonList(MapManager.currentMap.world)));
+			NPCManager.registerNPC(new StatsNPC(Collections.singletonList(MapManager.currentMap.world)));
 
-		NPCManager.registerNPC(new TaintedShopNPC(Collections.singletonList(MapManager.getDarkzone())));
-		NPCManager.registerNPC(new LeggingsShopNPC(Collections.singletonList(MapManager.getDarkzone())));
-		NPCManager.registerNPC(new PotionMasterNPC(Collections.singletonList(MapManager.getDarkzone())));
-		NPCManager.registerNPC(new AuctioneerNPC(Collections.singletonList(MapManager.getDarkzone())));
+			NPCManager.registerNPC(new KyroNPC(Collections.singletonList(MapManager.currentMap.world)));
+			NPCManager.registerNPC(new WijiNPC(Collections.singletonList(MapManager.currentMap.world)));
+			NPCManager.registerNPC(new SplkNPC(Collections.singletonList(MapManager.currentMap.world)));
+		}
 	}
 
 	private void registerMobs() {
@@ -571,7 +574,7 @@ public class PitSim extends JavaPlugin {
 		getCommand("setting").setExecutor(settingsCommand);
 		getCommand("set").setExecutor(settingsCommand);
 		getCommand("potions").setExecutor(new PotionsCommand());
-//		getCommand("massmigrate").setExecutor(new MassMigrateCommand());
+		getCommand("massmigrate").setExecutor(new MassMigrateCommand());
 		//TODO: Remove this
 
 	}

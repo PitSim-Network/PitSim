@@ -243,8 +243,9 @@ public class StorageManager implements Listener {
 					return;
 				}
 
+				EnderchestGUI.EnderchestPages rank = EnderchestGUI.EnderchestPages.getRank(player);
 
-				if(event.getSlot() == 44 && (i + 1) < StorageProfile.ENDERCHEST_MAX_PAGES) {
+				if(event.getSlot() == 44 && (i + 1) < StorageProfile.ENDERCHEST_MAX_PAGES && i + 2 <= rank.pages) {
 					if(isEditing(player)) getSession(player).playerClosed = false;
 					player.openInventory(profile.enderChest[i + 1]);
 					if(isEditing(player)) getSession(player).playerClosed = true;
