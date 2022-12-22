@@ -11,13 +11,11 @@ import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.UUID;
 
 public class XmasMap extends PitMap {
 
-	public static List<PositionSongPlayer> radio = new ArrayList<>();
+	public static PositionSongPlayer radio;
 
 	public XmasMap(String worldName) {
 		super(worldName);
@@ -37,15 +35,7 @@ public class XmasMap extends PitMap {
 		esp.setRepeatMode(RepeatMode.ALL);
 		esp.setTargetLocation(getMid().add(0, 20, 0));
 		esp.setPlaying(true);
-		radio.add(esp);
-
-		PositionSongPlayer esp2 = new PositionSongPlayer(playlist);
-		esp2.setDistance(18);
-		esp2.setVolume((byte) 100);
-		esp2.setRepeatMode(RepeatMode.ALL);
-		esp2.setTargetLocation(getMid().add(0, 20, 0));
-		esp2.setPlaying(true);
-		radio.add(esp2);
+		radio = esp;
 	}
 
 	public static Location mid = new Location(null, 0.5, 70, 0.5);
@@ -76,22 +66,15 @@ public class XmasMap extends PitMap {
 	}
 
 	public static void addToRadio(Player player) {
-		for(PositionSongPlayer positionSongPlayer : radio) {
-			positionSongPlayer.addPlayer(player);
-		}
+		radio.addPlayer(player);
 	}
 
 	public static void removeFromRadio(Player player) {
-		for(PositionSongPlayer positionSongPlayer : radio) {
-			positionSongPlayer.removePlayer(player);
-		}
+		radio.removePlayer(player);
 	}
 
 	public static boolean isListening(UUID uuid) {
-		for(PositionSongPlayer positionSongPlayer : radio) {
-			if(positionSongPlayer.getPlayerUUIDs().contains(uuid)) return true;
-		}
-		return false;
+		return radio.getPlayerUUIDs().contains(uuid);
 	}
 
 	@Override
