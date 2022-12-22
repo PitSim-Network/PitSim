@@ -249,11 +249,10 @@ public class StorageProfile {
 		saveTask = new BukkitRunnable() {
 			@Override
 			public void run() {
-				Misc.alertDiscord("@everyone Critical save error with " + uuid);
-
 				OfflinePlayer player = Bukkit.getOfflinePlayer(uuid);
 				if(!player.isOnline()) return;
 				player.getPlayer().kickPlayer(ChatColor.RED + "Your playerdata failed to save. Please report this issue");
+				Misc.alertDiscord("@everyone Save Confirmation failed for player: " + uuid + " on server: " + PitSim.serverName);
 			}
 		}.runTaskLater(PitSim.INSTANCE, 40);
 
