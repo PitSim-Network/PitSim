@@ -167,7 +167,13 @@ public class PitSim extends JavaPlugin {
 		}.runTaskLater(PitSim.INSTANCE, 10);
 
 		registerMaps();
-		if(getStatus().isDarkzone()) BossManager.onStart();
+		new BukkitRunnable() {
+			@Override
+			public void run() {
+				if(getStatus().isDarkzone()) BossManager.onStart();
+			}
+		}.runTaskLater(PitSim.INSTANCE, 20);
+
 		MapManager.onStart();
 		if(getStatus().isPitsim()) NonManager.init();
 		TempBlockHelper.init();

@@ -13,6 +13,8 @@ public class ATestCommand implements CommandExecutor {
 		Player player = (Player) sender;
 		if(!player.isOp()) return false;
 
+
+
 		return false;
 	}
 }

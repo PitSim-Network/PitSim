@@ -14,7 +14,10 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.inventory.InventoryDragEvent;
-import org.bukkit.event.player.*;
+import org.bukkit.event.player.PlayerDropItemEvent;
+import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.event.player.PlayerPickupItemEvent;
+import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
@@ -102,6 +105,7 @@ public class StorageManager implements Listener {
 		if(PitSim.getStatus() == PitSim.ServerStatus.ALL) return;
 
 		StorageProfile profile = getProfile(player);
+		PitSim.VAULT.withdrawPlayer(Bukkit.getOfflinePlayer(player.getUniqueId()), PitSim.VAULT.getBalance(Bukkit.getOfflinePlayer(player.getUniqueId())));
 
 		if(!isBeingEdited(player.getUniqueId())) profiles.remove(profile);
 //		File file = new File("world/playerdata/" + player.getUniqueId().toString() + ".dat");
