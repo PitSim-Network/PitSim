@@ -580,7 +580,7 @@ public class PitSim extends JavaPlugin {
 		getCommand("setting").setExecutor(settingsCommand);
 		getCommand("set").setExecutor(settingsCommand);
 		getCommand("potions").setExecutor(new PotionsCommand());
-		getCommand("massmigrate").setExecutor(new MassMigrateCommand());
+//		getCommand("massmigrate").setExecutor(new MassMigrateCommand());
 		//TODO: Remove this
 
 	}

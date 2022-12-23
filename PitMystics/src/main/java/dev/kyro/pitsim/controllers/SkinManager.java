@@ -2,6 +2,7 @@ package dev.kyro.pitsim.controllers;
 
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.PitSim;
+import dev.kyro.pitsim.misc.Misc;
 import net.citizensnpcs.api.CitizensAPI;
 import net.citizensnpcs.api.npc.NPC;
 import net.citizensnpcs.npc.skin.Skin;
@@ -23,12 +24,15 @@ public class SkinManager implements Listener {
 		new BukkitRunnable() {
 			@Override
 			public void run() {
-				for(Map.Entry<String, List<BukkitRunnable>> entry : new HashMap<>(callbackMap).entrySet()) {
-					if(!isSkinLoaded(entry.getKey())) continue;
+				for(Map.Entry<String, List<BukkitRunnable>> entry : new ArrayList<>(callbackMap.entrySet())) {
+					System.out.println("Loading Skin: " + entry.getKey());
+					loadSkin(entry.getKey());
+					if(!isSkinLoaded(entry.getKey())) break;
 					for(BukkitRunnable runnable : callbackMap.remove(entry.getKey())) runnable.runTask(PitSim.INSTANCE);
+					break;
 				}
 			}
-		}.runTaskTimer(PitSim.INSTANCE, 0L, 20L);
+		}.runTaskTimerAsynchronously(PitSim.INSTANCE, Misc.getRunnableOffset(1), 20 * 60);
 	}
 	public static void skinNPC(NPC npc, String skinName) {
 		if(!isSkinLoaded(skinName)) {
