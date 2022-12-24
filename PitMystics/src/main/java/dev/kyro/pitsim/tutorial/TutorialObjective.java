@@ -7,7 +7,8 @@ public enum TutorialObjective {
 	PERKS("perks", "&ePerks and Killstreaks", 2.3),
 	KITS("kits", "&eKits", 1.3),
 	PRESTIGE("prestige", "&ePrestige and Renown", 2.3),
-	KEEPER("keeper", "&2The Keeper", 2.2);
+	KEEPER("keeper", "&2The Keeper", 2.2),
+	PASS("pass", "&3Battle Pass", 2.3);
 
 	public String refName;
 	public String display;
@@ -31,6 +32,7 @@ public enum TutorialObjective {
 		else if(this == KITS) return MapManager.currentMap.getKitsNPCSpawn();
 		else if(this == PRESTIGE) return MapManager.currentMap.getPrestigeNPCSpawn();
 		else if(this == KEEPER) return MapManager.currentMap.getKeeperNPCSpawn();
+		else if(this == PASS) return MapManager.currentMap.getPassNPCSpawn();
 		return null;
 	}
 }

@@ -120,7 +120,7 @@ public class EditInventoryPanel implements InventoryHolder, Listener {
 	@EventHandler
 	public void onEditSessionClick(InventoryClickEvent event) {
 		if(session == null || session.inventory == null) return;
-		Inventory inventory = event.getInventory();
+		Inventory inventory = event.getClickedInventory();
 
 		if(inventory.getHolder() != this) return;
 

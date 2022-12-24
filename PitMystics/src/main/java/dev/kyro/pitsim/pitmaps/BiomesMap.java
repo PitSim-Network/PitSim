@@ -61,7 +61,7 @@ public class BiomesMap extends PitMap {
 
 	@Override
 	public Location getPerksNPCSpawn() {
-		return new Location(world, 10.5, 88, 4.5, 90, 0);
+		return new Location(world, 10.5, 88, 3.5, 90, 0);
 	}
 
 	@Override
@@ -97,6 +97,11 @@ public class BiomesMap extends PitMap {
 	@Override
 	public Location getKitsNPCSpawn() {
 		return new Location(world, -2.5, 90, 12.5, -145, 15);
+	}
+
+	@Override
+	public Location getPassNPCSpawn() {
+		return new Location(world, 10.5, 88, 5.5, 90, 0);
 	}
 
 	@Override

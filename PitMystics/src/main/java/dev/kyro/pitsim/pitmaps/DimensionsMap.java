@@ -87,6 +87,11 @@ public class DimensionsMap extends PitMap {
 		return new Location(null, -56, 73, 0.5, -90, 0);
 	}
 
+	@Override
+	public Location getPassNPCSpawn() {
+		return new Location(world, 10.5, 88, 2.5, 90, 0);
+	}
+
 //	TODO: Add
 	@Override
 	public Location getKitsNPCSpawn() {

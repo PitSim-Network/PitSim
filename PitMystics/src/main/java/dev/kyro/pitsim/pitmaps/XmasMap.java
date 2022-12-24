@@ -102,7 +102,12 @@ public class XmasMap extends PitMap {
 
 	@Override
 	public Location getPerksNPCSpawn() {
-		return new Location(world, 10.5, 88, 4.5, 90, 0);
+		return new Location(world, 10.5, 88, 3.5, 90, 0);
+	}
+
+	@Override
+	public Location getPassNPCSpawn() {
+		return new Location(world, 10.5, 88, 5.5, 90, 0);
 	}
 
 	@Override

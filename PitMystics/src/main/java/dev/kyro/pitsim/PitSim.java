@@ -507,6 +507,7 @@ public class PitSim extends JavaPlugin {
 
 		if(status.isPitsim()) {
 			NPCManager.registerNPC(new PerkNPC(Collections.singletonList(MapManager.currentMap.world)));
+			NPCManager.registerNPC(new PassNPC(Collections.singletonList(MapManager.currentMap.world)));
 			NPCManager.registerNPC(new PrestigeNPC(Collections.singletonList(MapManager.currentMap.world)));
 			NPCManager.registerNPC(new KeeperNPC(Collections.singletonList(MapManager.currentMap.world)));
 			NPCManager.registerNPC(new KitNPC(Collections.singletonList(MapManager.currentMap.world)));
