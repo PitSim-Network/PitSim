@@ -203,9 +203,7 @@ public class PotionManager implements Listener {
         }
     }
 
-    @EventHandler
-    public void onQuit(PlayerQuitEvent event) {
-        Player player = event.getPlayer();
+    public static void savePotions(Player player) {
         List<PotionEffect> toExpire = new ArrayList<>();
         for (PotionEffect potionEffect : potionEffectList) {
             if(potionEffect.player == player) toExpire.add(potionEffect);
@@ -218,8 +216,12 @@ public class PotionManager implements Listener {
             String time = String.valueOf(System.currentTimeMillis());
             PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
             pitPlayer.potionStrings.add(potionEffect.potionType.name + ":" + potionEffect.potency.tier + ":" + potionEffect.getTimeLeft() + ":" + time);
-
         }
+    }
+
+    @EventHandler
+    public void onQuit(PlayerQuitEvent event) {
+        savePotions(event.getPlayer());
     }
 
     @EventHandler

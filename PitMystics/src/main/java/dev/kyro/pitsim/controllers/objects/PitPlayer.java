@@ -9,6 +9,7 @@ import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.battlepass.PassData;
 import dev.kyro.pitsim.battlepass.quests.ReachKillstreakQuest;
 import dev.kyro.pitsim.brewing.BrewingManager;
+import dev.kyro.pitsim.brewing.PotionManager;
 import dev.kyro.pitsim.brewing.objects.BrewingSession;
 import dev.kyro.pitsim.controllers.*;
 import dev.kyro.pitsim.cosmetics.particles.ParticleColor;
@@ -232,6 +233,8 @@ public class PitPlayer {
 			StorageProfile profile = StorageManager.getProfile(uuid);
 			profile.saveData(finalSave);
 		}
+
+		PotionManager.savePotions(player);
 
 		megastreakRef = megastreak.getRefNames().get(0);
 

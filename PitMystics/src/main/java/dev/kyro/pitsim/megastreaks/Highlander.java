@@ -31,7 +31,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class Highlander extends Megastreak {
+public  class Highlander extends Megastreak {
 	public Highlander(PitPlayer pitPlayer) {
 		super(pitPlayer);
 	}
@@ -193,10 +193,13 @@ public class Highlander extends Megastreak {
 				pitPlayer.bounty = 0;
 			}
 		}
+
+		if(runnable != null) runnable.cancel();
 	}
 
 	@Override
 	public void stop() {
 		HandlerList.unregisterAll(this);
+		if(runnable != null) runnable.cancel();
 	}
 }

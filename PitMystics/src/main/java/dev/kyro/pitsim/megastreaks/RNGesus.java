@@ -396,6 +396,7 @@ public class RNGesus extends Megastreak {
 	@Override
 	public void stop() {
 		HandlerList.unregisterAll(this);
+		if(runnable != null) runnable.cancel();
 	}
 
 	public void shiftReality() {

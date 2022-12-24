@@ -181,6 +181,7 @@ public class Overdrive extends Megastreak {
 	@Override
 	public void stop() {
 		HandlerList.unregisterAll(this);
+		if(runnable != null) runnable.cancel();
 	}
 
 	@Override

@@ -97,7 +97,7 @@ import static dev.kyro.pitsim.misc.TempBlockHelper.restoreSessions;
 
 public class PitSim extends JavaPlugin {
 	public static final double VERSION = 3.0;
-	public static final boolean PASS_ENABLED = false;
+	public static final boolean PASS_ENABLED = true;
 
 	public static LuckPerms LUCKPERMS;
 	public static PitSim INSTANCE;

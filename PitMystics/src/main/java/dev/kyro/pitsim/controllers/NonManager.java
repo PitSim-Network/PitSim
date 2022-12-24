@@ -3,13 +3,10 @@ package dev.kyro.pitsim.controllers;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.controllers.objects.Booster;
 import dev.kyro.pitsim.controllers.objects.Non;
-import dev.kyro.pitsim.events.MessageEvent;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.Listener;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.ArrayList;
@@ -102,14 +99,20 @@ public class NonManager {
 			if(skinLoadedBotIGNS.contains(name) || botIGNs.contains(name)) continue;
 			botIGNs.add(name);
 		}
+
+		List<String> skinLoadedRemove = new ArrayList<>();
 		for(String name : skinLoadedBotIGNS) {
 			if(newBotIGNs.contains(name)) continue;
-			skinLoadedBotIGNS.remove(name);
+			skinLoadedRemove.add(name);
 		}
+		skinLoadedRemove.forEach(skin -> skinLoadedBotIGNS.remove(skin));
+
+		List<String> botIGNsRemove = new ArrayList<>();
 		for(String name : botIGNs) {
 			if(newBotIGNs.contains(name)) continue;
-			botIGNs.remove(name);
+			botIGNsRemove.add(name);
 		}
+		botIGNsRemove.forEach(skin -> botIGNs.remove(skin));
 	}
 
 	public static Non getNon(LivingEntity entity) {

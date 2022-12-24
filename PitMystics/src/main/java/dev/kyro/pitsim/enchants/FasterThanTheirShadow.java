@@ -53,9 +53,12 @@ public class FasterThanTheirShadow extends PitEnchant implements Listener {
 
 	@EventHandler(priority = EventPriority.HIGHEST)
 	private void onArrowHitBlock(ArrowHitBlockEvent event) {
+
 		Arrow arrow = event.getArrow();
 		Block block = event.getBlock(); // the block that was hit
 		if(block == null || arrow.getShooter() == null || !(arrow.getShooter() instanceof Player)) return;
+
+		if(!((Player) arrow.getShooter()).isOnline()) return;
 
 		HitCounter.resetCombo((Player) arrow.getShooter(), this);
 	}
