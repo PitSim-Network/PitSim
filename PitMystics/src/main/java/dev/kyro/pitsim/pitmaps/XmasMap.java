@@ -66,14 +66,15 @@ public class XmasMap extends PitMap {
 	}
 
 	public static void addToRadio(Player player) {
-		radio.addPlayer(player);
+		if(radio != null) radio.addPlayer(player);
 	}
 
 	public static void removeFromRadio(Player player) {
-		radio.removePlayer(player);
+		if(radio != null) radio.removePlayer(player);
 	}
 
 	public static boolean isListening(UUID uuid) {
+		if(radio == null) return false;
 		return radio.getPlayerUUIDs().contains(uuid);
 	}
 
