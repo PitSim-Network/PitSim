@@ -125,9 +125,8 @@ public abstract class SubCosmeticPanel extends AGUIPanel {
 						Sounds.NO.play(player);
 						return false;
 					}
-				} else {
-					deselectCosmetic(pitCosmetic.cosmeticType);
 				}
+				deselectCosmetic(pitCosmetic.cosmeticType);
 				ColorableCosmetic colorableCosmetic = (ColorableCosmetic) pitCosmetic;
 				colorableCosmetic.setParticleColor(player, particleColor);
 			}
