@@ -114,7 +114,7 @@ public abstract class PitCosmetic implements Listener {
 		List<ParticleColor> particleColors = new ArrayList<>();
 		if(!isUnlocked(pitPlayer)) return particleColors;
 
-		if(pitPlayer.player.isOp() || true) {
+		if(pitPlayer.player.isOp()) {
 			particleColors.addAll(Arrays.asList(ParticleColor.values()));
 			return particleColors;
 		}
