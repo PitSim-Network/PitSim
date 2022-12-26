@@ -86,6 +86,7 @@ public class SavingGraceSpell extends PitEnchant {
         new BukkitRunnable() {
             @Override
             public void run() {
+                if(killEvent.getDeadPlayer() == null) return;
                 killEvent.getDeadPitPlayer().heal(killEvent.getDeadPlayer().getMaxHealth());
             }
         }.runTaskLater(PitSim.INSTANCE, 10);

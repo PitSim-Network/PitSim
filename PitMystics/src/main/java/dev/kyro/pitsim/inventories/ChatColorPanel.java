@@ -7,6 +7,7 @@ import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.enums.AChatColor;
 import dev.kyro.pitsim.misc.Misc;
 import dev.kyro.pitsim.misc.Sounds;
+import dev.kyro.pitsim.settings.SettingsGUI;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
@@ -28,11 +29,11 @@ public class ChatColorPanel extends AGUIPanel {
 	public static Map<Player, AChatColor> playerChatColors = new HashMap<>();
 
 
-	public DonatorGUI donatorGUI;
+	public SettingsGUI settingsGUI;
 
 	public ChatColorPanel(AGUI gui) {
 		super(gui);
-		donatorGUI = (DonatorGUI) gui;
+		settingsGUI = (SettingsGUI) gui;
 
 		inventoryBuilder.createBorder(Material.STAINED_GLASS_PANE, 8);
 	}
@@ -56,7 +57,7 @@ public class ChatColorPanel extends AGUIPanel {
 			if(Misc.isAirOrNull(getInventory().getItem(slot))) return;
 
 			if(slot == 31) {
-				openPanel(donatorGUI.getHomePanel());
+				openPanel(settingsGUI.getHomePanel());
 			}
 
 			for(AChatColor chatColor : AChatColor.values()) {
@@ -70,7 +71,7 @@ public class ChatColorPanel extends AGUIPanel {
 						playerChatColors.put(player, chatColor);
 						pitPlayer.chatColor = chatColor;
 						Sounds.SUCCESS.play(player);
-						openPanel(donatorGUI.chatColorPanel);
+						openPanel(settingsGUI.chatColorPanel);
 					}
 				}
 			}

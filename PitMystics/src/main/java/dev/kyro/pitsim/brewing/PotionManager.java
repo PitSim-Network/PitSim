@@ -36,7 +36,7 @@ import org.checkerframework.checker.nullness.qual.NonNull;
 
 import java.util.*;
 
-public class PotionManager implements Listener {
+public  class PotionManager implements Listener {
 
     public static List<PotionEffect> potionEffectList = new ArrayList<>();
     public static Map<Player, Integer> playerIndex = new HashMap<>();
@@ -203,7 +203,7 @@ public class PotionManager implements Listener {
         }
     }
 
-    public static void savePotions(Player player) {
+    public static void savePotions(Player player, boolean logout) {
         List<PotionEffect> toExpire = new ArrayList<>();
         for (PotionEffect potionEffect : potionEffectList) {
             if(potionEffect.player == player) toExpire.add(potionEffect);
@@ -211,7 +211,7 @@ public class PotionManager implements Listener {
 
         for (PotionEffect potionEffect : toExpire) {
 
-            potionEffect.onExpire(true);
+            if(logout) potionEffect.onExpire(true);
 
             String time = String.valueOf(System.currentTimeMillis());
             PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
@@ -221,7 +221,7 @@ public class PotionManager implements Listener {
 
     @EventHandler
     public void onQuit(PlayerQuitEvent event) {
-        savePotions(event.getPlayer());
+        savePotions(event.getPlayer(), true);
     }
 
     @EventHandler

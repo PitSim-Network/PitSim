@@ -234,7 +234,7 @@ public class PitPlayer {
 			profile.saveData(finalSave);
 		}
 
-		PotionManager.savePotions(player);
+		PotionManager.savePotions(player, finalSave);
 
 		megastreakRef = megastreak.getRefNames().get(0);
 
