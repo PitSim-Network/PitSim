@@ -42,6 +42,8 @@ public abstract class PassQuest implements Listener {
 		this.displayName = displayName;
 		this.refName = refName;
 		this.questType = questType;
+
+		createWeeklyPossibleStates();
 	}
 
 	public abstract ItemStack getDisplayItem(PitPlayer pitPlayer, QuestLevel questLevel, double progress);
