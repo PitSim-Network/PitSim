@@ -54,7 +54,7 @@ public class GainAbsorptionQuest extends PassQuest {
 	}
 
 	@Override
-	public void createWeeklyPossibleStates() {
+	public void createPossibleStates() {
 		questLevels.add(new QuestLevel(20_000, 100));
 		questLevels.add(new QuestLevel(30_000, 150));
 		questLevels.add(new QuestLevel(40_000, 200));

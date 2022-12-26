@@ -59,7 +59,7 @@ public class SneakingBotKillQuest extends PassQuest {
 	}
 
 	@Override
-	public void createWeeklyPossibleStates() {
+	public void createPossibleStates() {
 		questLevels.add(new QuestLevel(10_000.0, 100));
 		questLevels.add(new QuestLevel(15_000.0, 150));
 		questLevels.add(new QuestLevel(20_000.0, 200));

@@ -14,8 +14,6 @@ import org.bukkit.Material;
 import org.bukkit.event.EventHandler;
 import org.bukkit.inventory.ItemStack;
 
-import java.util.List;
-
 public class DailyPlayerKillQuest extends PassQuest {
 	public PlayerToPlayerCooldown cooldown = new PlayerToPlayerCooldown(20 * 60 * 2);
 
@@ -50,12 +48,9 @@ public class DailyPlayerKillQuest extends PassQuest {
 	}
 
 	@Override
-	public QuestLevel getDailyState() {
-		return new QuestLevel(10.0, 40);
+	public void createPossibleStates() {
+		questLevels.add(new QuestLevel(10.0, 40));
 	}
-
-	@Override
-	public void createWeeklyPossibleStates() {}
 
 	@Override
 	public double getMultiplier(PitPlayer pitPlayer) {

@@ -47,7 +47,7 @@ public class GrindGoldQuest extends PassQuest {
 	}
 
 	@Override
-	public void createWeeklyPossibleStates() {
+	public void createPossibleStates() {
 		questLevels.add(new QuestLevel(0.75, 100));
 		questLevels.add(new QuestLevel(1, 150));
 		questLevels.add(new QuestLevel(1.25, 200));

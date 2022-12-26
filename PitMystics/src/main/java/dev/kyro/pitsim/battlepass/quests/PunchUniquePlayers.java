@@ -69,7 +69,7 @@ public class PunchUniquePlayers extends PassQuest {
 	}
 
 	@Override
-	public void createWeeklyPossibleStates() {
+	public void createPossibleStates() {
 		questLevels.add(new QuestLevel(20, 100));
 		questLevels.add(new QuestLevel(30, 150));
 		questLevels.add(new QuestLevel(40, 200));

@@ -55,7 +55,7 @@ public class KillEndermenQuest extends PassQuest {
 	}
 
 	@Override
-	public void createWeeklyPossibleStates() {
+	public void createPossibleStates() {
 		questLevels.add(new QuestLevel(100, 100));
 		questLevels.add(new QuestLevel(150, 150));
 		questLevels.add(new QuestLevel(200, 200));

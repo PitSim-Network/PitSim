@@ -55,7 +55,7 @@ public class KillZombiesQuest extends PassQuest {
 	}
 
 	@Override
-	public void createWeeklyPossibleStates() {
+	public void createPossibleStates() {
 		questLevels.add(new QuestLevel(1000, 100));
 		questLevels.add(new QuestLevel(1500, 150));
 		questLevels.add(new QuestLevel(2000, 200));

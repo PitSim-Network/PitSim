@@ -43,20 +43,22 @@ public abstract class PassQuest implements Listener {
 		this.refName = refName;
 		this.questType = questType;
 
-		createWeeklyPossibleStates();
+		createPossibleStates();
 	}
 
 	public abstract ItemStack getDisplayItem(PitPlayer pitPlayer, QuestLevel questLevel, double progress);
 
-//	Only applies to daily quests
-	public abstract QuestLevel getDailyState();
 
 //	Only applies to weekly quests
-	public abstract void createWeeklyPossibleStates();
+	public abstract void createPossibleStates();
 
 //	Multiplier to specific players requirement (would not advise making this number ever go down over time
 //	as the player could then have the quest jump from incomplete to complete)
 	public abstract double getMultiplier(PitPlayer pitPlayer);
+
+	public QuestLevel getDailyState() {
+		return questLevels.get(0);
+	}
 
 	public QuestLevel getQuestLevel() {
 		if(questType == QuestType.DAILY) return getDailyState();
@@ -111,7 +113,6 @@ public abstract class PassQuest implements Listener {
 		public QuestLevel(double requirement, int rewardPoints) {
 			this.requirement = requirement;
 			this.rewardPoints = rewardPoints;
-			System.out.println("index: " + rewardIndex);
 		}
 
 		public double getRequirement(PitPlayer pitPlayer) {

@@ -67,7 +67,7 @@ public class WalkDistanceQuest extends PassQuest {
 	}
 
 	@Override
-	public void createWeeklyPossibleStates() {
+	public void createPossibleStates() {
 		questLevels.add(new QuestLevel(50_000 * 100, 100));
 		questLevels.add(new QuestLevel(100_000 * 100, 150));
 		questLevels.add(new QuestLevel(150_000 * 100, 200));

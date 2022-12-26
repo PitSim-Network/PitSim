@@ -45,12 +45,9 @@ public class DailyBotKillQuest extends PassQuest {
 	}
 
 	@Override
-	public QuestLevel getDailyState() {
-		return new QuestLevel(2_000.0, 40);
+	public void createPossibleStates() {
+		questLevels.add(new QuestLevel(2_000.0, 40));
 	}
-
-	@Override
-	public void createWeeklyPossibleStates() {}
 
 	@Override
 	public double getMultiplier(PitPlayer pitPlayer) {

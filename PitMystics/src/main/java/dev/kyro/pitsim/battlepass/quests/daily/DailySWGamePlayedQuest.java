@@ -10,8 +10,6 @@ import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 
-import java.util.List;
-
 public class DailySWGamePlayedQuest extends PassQuest {
 
 	public DailySWGamePlayedQuest() {
@@ -36,12 +34,9 @@ public class DailySWGamePlayedQuest extends PassQuest {
 	}
 
 	@Override
-	public QuestLevel getDailyState() {
-		return new QuestLevel(2, 40);
+	public void createPossibleStates() {
+		questLevels.add(new QuestLevel(2, 40));
 	}
-
-	@Override
-	public void createWeeklyPossibleStates() {}
 
 	@Override
 	public double getMultiplier(PitPlayer pitPlayer) {

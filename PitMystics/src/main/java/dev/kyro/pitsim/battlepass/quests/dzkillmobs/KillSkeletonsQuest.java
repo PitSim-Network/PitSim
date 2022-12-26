@@ -55,7 +55,7 @@ public class KillSkeletonsQuest extends PassQuest {
 	}
 
 	@Override
-	public void createWeeklyPossibleStates() {
+	public void createPossibleStates() {
 		questLevels.add(new QuestLevel(900, 100));
 		questLevels.add(new QuestLevel(1350, 150));
 		questLevels.add(new QuestLevel(1800, 200));

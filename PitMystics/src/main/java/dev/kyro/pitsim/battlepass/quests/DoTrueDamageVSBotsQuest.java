@@ -53,7 +53,7 @@ public class DoTrueDamageVSBotsQuest extends PassQuest {
 	}
 
 	@Override
-	public void createWeeklyPossibleStates() {
+	public void createPossibleStates() {
 		questLevels.add(new QuestLevel(30_000.0, 100));
 		questLevels.add(new QuestLevel(45_000.0, 150));
 		questLevels.add(new QuestLevel(60_000.0, 200));

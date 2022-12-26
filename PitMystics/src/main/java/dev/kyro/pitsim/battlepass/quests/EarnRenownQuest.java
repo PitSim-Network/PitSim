@@ -48,7 +48,7 @@ public class EarnRenownQuest extends PassQuest {
 	}
 
 	@Override
-	public void createWeeklyPossibleStates() {
+	public void createPossibleStates() {
 		questLevels.add(new QuestLevel(5, 100));
 		questLevels.add(new QuestLevel(7, 150));
 		questLevels.add(new QuestLevel(10, 200));

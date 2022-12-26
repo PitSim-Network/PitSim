@@ -55,7 +55,7 @@ public class KillCaveSpidersQuest extends PassQuest {
 	}
 
 	@Override
-	public void createWeeklyPossibleStates() {
+	public void createPossibleStates() {
 		questLevels.add(new QuestLevel(600, 100));
 		questLevels.add(new QuestLevel(900, 150));
 		questLevels.add(new QuestLevel(1200, 200));

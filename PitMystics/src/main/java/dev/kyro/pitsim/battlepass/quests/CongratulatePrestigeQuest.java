@@ -77,7 +77,7 @@ public class CongratulatePrestigeQuest extends PassQuest {
 	}
 
 	@Override
-	public void createWeeklyPossibleStates() {
+	public void createPossibleStates() {
 		questLevels.add(new QuestLevel(8, 100));
 		questLevels.add(new QuestLevel(12, 150));
 		questLevels.add(new QuestLevel(16, 200));
