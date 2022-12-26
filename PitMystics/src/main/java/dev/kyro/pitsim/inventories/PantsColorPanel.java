@@ -9,6 +9,7 @@ import dev.kyro.pitsim.enums.NBTTag;
 import dev.kyro.pitsim.enums.PantColor;
 import dev.kyro.pitsim.misc.Misc;
 import dev.kyro.pitsim.misc.Sounds;
+import dev.kyro.pitsim.settings.SettingsGUI;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.event.inventory.InventoryClickEvent;
@@ -24,11 +25,11 @@ import java.util.Objects;
 public class PantsColorPanel extends AGUIPanel {
 	PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
 
-	public DonatorGUI donatorGUI;
+	public SettingsGUI settingsGUI;
 
 	public PantsColorPanel(AGUI gui) {
 		super(gui);
-		donatorGUI = (DonatorGUI) gui;
+		settingsGUI = (SettingsGUI) gui;
 	}
 
 	@Override
@@ -47,7 +48,7 @@ public class PantsColorPanel extends AGUIPanel {
 		if(event.getClickedInventory().getHolder() == this) {
 
 			if(slot == 40) {
-				openPanel(donatorGUI.getHomePanel());
+				openPanel(settingsGUI.getHomePanel());
 			}
 
 			if(Misc.isAirOrNull(getInventory().getItem(slot)) || !getInventory().getItem(slot).getType().equals(Material.LEATHER_LEGGINGS))

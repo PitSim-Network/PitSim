@@ -1,7 +1,6 @@
 package dev.kyro.pitsim.commands;
 
-import dev.kyro.pitsim.inventories.DonatorGUI;
-import dev.kyro.pitsim.inventories.PerkGUI;
+import dev.kyro.pitsim.settings.SettingsGUI;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -14,8 +13,8 @@ public class DonatorCommand implements CommandExecutor {
 		if(!(sender instanceof Player)) return false;
 		Player player = (Player) sender;
 
-		DonatorGUI donatorGUI = new DonatorGUI(player);
-		donatorGUI.open();
+		SettingsGUI settingsGUI = new SettingsGUI(player);
+		settingsGUI.open();
 
 		return false;
 	}

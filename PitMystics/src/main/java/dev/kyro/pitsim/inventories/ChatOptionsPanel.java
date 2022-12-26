@@ -5,6 +5,7 @@ import dev.kyro.arcticapi.gui.AGUIPanel;
 import dev.kyro.pitsim.controllers.NonManager;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.misc.Sounds;
+import dev.kyro.pitsim.settings.SettingsGUI;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.event.inventory.InventoryClickEvent;
@@ -21,11 +22,11 @@ public class ChatOptionsPanel extends AGUIPanel {
 	PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
 
 
-	public DonatorGUI donatorGUI;
+	public SettingsGUI settingsGUI;
 
 	public ChatOptionsPanel(AGUI gui) {
 		super(gui);
-		donatorGUI = (DonatorGUI) gui;
+		settingsGUI = (SettingsGUI) gui;
 
 		inventoryBuilder.createBorder(Material.STAINED_GLASS_PANE, 8);
 	}
@@ -46,7 +47,7 @@ public class ChatOptionsPanel extends AGUIPanel {
 		int slot = event.getSlot();
 		if(event.getClickedInventory().getHolder() == this) {
 
-			if(slot == 22) openPanel(donatorGUI.getHomePanel());
+			if(slot == 22) openPanel(settingsGUI.getHomePanel());
 
 			if(!player.hasPermission("pitsim.chat")) return;
 
@@ -57,7 +58,7 @@ public class ChatOptionsPanel extends AGUIPanel {
 					pitPlayer.bountiesDisabled = true;
 				}
 				Sounds.SUCCESS.play(player);
-				openPanel(donatorGUI.chatOptionsPanel);
+				openPanel(settingsGUI.chatOptionsPanel);
 			} else if(slot == 12) {
 				if(pitPlayer.streaksDisabled) {
 					pitPlayer.streaksDisabled = false;
@@ -65,7 +66,7 @@ public class ChatOptionsPanel extends AGUIPanel {
 					pitPlayer.streaksDisabled = true;
 				}
 				Sounds.SUCCESS.play(player);
-				openPanel(donatorGUI.chatOptionsPanel);
+				openPanel(settingsGUI.chatOptionsPanel);
 			} else if(slot == 14) {
 				if(pitPlayer.killFeedDisabled) {
 					pitPlayer.killFeedDisabled = false;
@@ -73,7 +74,7 @@ public class ChatOptionsPanel extends AGUIPanel {
 					pitPlayer.killFeedDisabled = true;
 				}
 				Sounds.SUCCESS.play(player);
-				openPanel(donatorGUI.chatOptionsPanel);
+				openPanel(settingsGUI.chatOptionsPanel);
 			} else if(slot == 16) {
 				if(pitPlayer.playerChatDisabled) {
 					pitPlayer.playerChatDisabled = false;
@@ -81,7 +82,7 @@ public class ChatOptionsPanel extends AGUIPanel {
 					pitPlayer.playerChatDisabled = true;
 				}
 				Sounds.SUCCESS.play(player);
-				openPanel(donatorGUI.chatOptionsPanel);
+				openPanel(settingsGUI.chatOptionsPanel);
 			}
 
 
