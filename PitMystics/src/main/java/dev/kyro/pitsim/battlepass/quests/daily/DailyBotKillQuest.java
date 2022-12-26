@@ -14,8 +14,6 @@ import org.bukkit.Material;
 import org.bukkit.event.EventHandler;
 import org.bukkit.inventory.ItemStack;
 
-import java.util.List;
-
 public class DailyBotKillQuest extends PassQuest {
 
 	public DailyBotKillQuest() {
@@ -52,9 +50,7 @@ public class DailyBotKillQuest extends PassQuest {
 	}
 
 	@Override
-	public List<QuestLevel> getWeeklyPossibleStates() {
-		return null;
-	}
+	public void createWeeklyPossibleStates() {}
 
 	@Override
 	public double getMultiplier(PitPlayer pitPlayer) {

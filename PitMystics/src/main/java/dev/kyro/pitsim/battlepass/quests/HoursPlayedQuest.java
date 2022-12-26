@@ -48,12 +48,10 @@ public class HoursPlayedQuest extends PassQuest {
 	}
 
 	@Override
-	public List<QuestLevel> getWeeklyPossibleStates() {
-		List<QuestLevel> questLevels = new ArrayList<>();
+	public void createWeeklyPossibleStates() {
 		questLevels.add(new QuestLevel(8 * 60, 150));
 		questLevels.add(new QuestLevel(12 * 60, 200));
 		questLevels.add(new QuestLevel(16 * 60, 250));
-		return questLevels;
 	}
 
 	@Override

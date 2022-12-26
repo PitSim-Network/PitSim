@@ -8,6 +8,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.event.Listener;
 import org.bukkit.inventory.ItemStack;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public abstract class PassQuest implements Listener {
@@ -17,6 +18,7 @@ public abstract class PassQuest implements Listener {
 	public int weight = PassManager.DEFAULT_QUEST_WEIGHT;
 
 	private int nextRewardIndex = 0;
+	public List<QuestLevel> questLevels = new ArrayList<>();
 
 	static {
 //		Quest ideas
@@ -48,7 +50,7 @@ public abstract class PassQuest implements Listener {
 	public abstract QuestLevel getDailyState();
 
 //	Only applies to weekly quests
-	public abstract List<QuestLevel> getWeeklyPossibleStates();
+	public abstract void createWeeklyPossibleStates();
 
 //	Multiplier to specific players requirement (would not advise making this number ever go down over time
 //	as the player could then have the quest jump from incomplete to complete)
@@ -107,6 +109,7 @@ public abstract class PassQuest implements Listener {
 		public QuestLevel(double requirement, int rewardPoints) {
 			this.requirement = requirement;
 			this.rewardPoints = rewardPoints;
+			System.out.println("index: " + rewardIndex);
 		}
 
 		public double getRequirement(PitPlayer pitPlayer) {

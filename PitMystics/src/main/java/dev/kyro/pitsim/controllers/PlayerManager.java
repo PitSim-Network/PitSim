@@ -214,6 +214,7 @@ public class PlayerManager implements Listener {
 		if(!(event.getRightClicked() instanceof Player)) return;
 		Player target = (Player) event.getRightClicked();
 		if(!player.isSneaking() || !SpawnManager.isInSpawn(player.getLocation()) || !SpawnManager.isInSpawn(target.getLocation())) return;
+		if(!PlayerManager.isRealPlayer(target)) return;
 		if(viewShiftCooldown.getOrDefault(player.getUniqueId(), 0L) + 500 > System.currentTimeMillis()) return;
 		viewShiftCooldown.put(player.getUniqueId(), System.currentTimeMillis());
 		new ViewGUI(player, target).open();

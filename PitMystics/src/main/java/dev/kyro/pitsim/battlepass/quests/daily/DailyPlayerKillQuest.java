@@ -55,9 +55,7 @@ public class DailyPlayerKillQuest extends PassQuest {
 	}
 
 	@Override
-	public List<QuestLevel> getWeeklyPossibleStates() {
-		return null;
-	}
+	public void createWeeklyPossibleStates() {}
 
 	@Override
 	public double getMultiplier(PitPlayer pitPlayer) {

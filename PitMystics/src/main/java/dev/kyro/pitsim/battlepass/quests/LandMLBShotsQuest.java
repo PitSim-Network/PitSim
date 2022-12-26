@@ -56,12 +56,10 @@ public class LandMLBShotsQuest extends PassQuest {
 	}
 
 	@Override
-	public List<QuestLevel> getWeeklyPossibleStates() {
-		List<QuestLevel> questLevels = new ArrayList<>();
+	public void createWeeklyPossibleStates() {
 		questLevels.add(new QuestLevel(2_000, 100));
 		questLevels.add(new QuestLevel(3_000, 150));
 		questLevels.add(new QuestLevel(4_000, 200));
-		return questLevels;
 	}
 
 	@Override

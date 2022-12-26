@@ -286,7 +286,7 @@ public class PassManager implements Listener {
 				if(weightedWeeklyQuests.isEmpty()) break;
 				PassQuest passQuest = weightedWeeklyQuests.get(new Random().nextInt(weightedWeeklyQuests.size()));
 				weightedWeeklyQuests.removeAll(Collections.singleton(passQuest));
-				currentPass.weeklyQuests.put(passQuest, passQuest.getWeeklyPossibleStates().get(new Random().nextInt(passQuest.getWeeklyPossibleStates().size())));
+				currentPass.weeklyQuests.put(passQuest, passQuest.questLevels.get(new Random().nextInt(passQuest.questLevels.size())));
 				addedQuests = true;
 			}
 			if(addedQuests) {
@@ -317,7 +317,7 @@ public class PassManager implements Listener {
 			for(Map.Entry<String, Integer> entry : FirestoreManager.CONFIG.currentPassData.activeWeeklyQuests.entrySet()) {
 				PassQuest passQuest = getQuest(entry.getKey());
 				if(passQuest == null) continue;
-				currentPass.weeklyQuests.put(passQuest, passQuest.getWeeklyPossibleStates().get(entry.getValue()));
+				currentPass.weeklyQuests.put(passQuest, passQuest.questLevels.get(entry.getValue()));
 			}
 		}
 	}
