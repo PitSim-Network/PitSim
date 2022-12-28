@@ -70,11 +70,14 @@ public abstract class PitEnchant implements Listener {
 	}
 
 	public String getDisplayName() {
+		if(overrideName != null) return overrideName;
 		if(tainted) {
-			if(applyType == ApplyType.SCYTHES) return overrideName != null ? overrideName : ChatColor.translateAlternateColorCodes('&', isRare ? "&dSPELL! &5" + name : "&5" + name);
-			else return overrideName != null ? overrideName : ChatColor.translateAlternateColorCodes('&', isRare ? "&dEFFECT! &5" + name : "&5" + name);
+			if(applyType == ApplyType.SCYTHES) return ChatColor.translateAlternateColorCodes('&', isRare ? "&dSPELL! &5" + name : "&5" + name);
+			else return ChatColor.translateAlternateColorCodes('&', isRare ? "&dEFFECT! &5" + name : "&5" + name);
 		}
-		return overrideName != null ? overrideName : ChatColor.translateAlternateColorCodes('&', isRare ? "&dRARE! &9" + name : "&9" + name);
+		if(isRare) return "&dRARE! &9" + name;
+		if(isUncommonEnchant) return "&aUNC. &9" + name;
+		return "&9" + name;
 	}
 
 	public void setOverrideName(String overrideName) {
