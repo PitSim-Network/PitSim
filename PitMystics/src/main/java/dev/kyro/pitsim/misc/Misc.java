@@ -50,8 +50,6 @@ import java.text.DateFormat;
 import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.Instant;
-import java.time.ZoneId;
 import java.util.*;
 
 public class Misc {
@@ -69,6 +67,11 @@ public class Misc {
 				}
 			}
 		}.runTaskAsynchronously(PitSim.INSTANCE);
+	}
+
+	public static String getDisplayName(Player player) {
+		String playerName = "%luckperms_prefix%%essentials_nickname%";
+		return PlaceholderAPI.setPlaceholders(player, playerName);
 	}
 
 	public static String stringifyItem(ItemStack itemStack) {

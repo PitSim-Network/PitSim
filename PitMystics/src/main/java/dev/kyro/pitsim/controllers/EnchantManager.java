@@ -11,6 +11,7 @@ import dev.kyro.pitsim.alogging.LogManager;
 import dev.kyro.pitsim.controllers.objects.Non;
 import dev.kyro.pitsim.controllers.objects.PitEnchant;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
+import dev.kyro.pitsim.controllers.objects.PluginMessage;
 import dev.kyro.pitsim.enchants.SelfCheckout;
 import dev.kyro.pitsim.enums.ApplyType;
 import dev.kyro.pitsim.enums.MysticType;
@@ -20,6 +21,7 @@ import dev.kyro.pitsim.events.AttackEvent;
 import dev.kyro.pitsim.exceptions.*;
 import dev.kyro.pitsim.inventories.EnchantingGUI;
 import dev.kyro.pitsim.misc.Constant;
+import dev.kyro.pitsim.misc.CustomSerializer;
 import dev.kyro.pitsim.misc.Misc;
 import dev.kyro.pitsim.misc.Sounds;
 import net.md_5.bungee.api.chat.TextComponent;
@@ -453,17 +455,28 @@ public class EnchantManager implements Listener {
 			ItemStack displayStack = new AItemStackBuilder(jewelStack.clone())
 					.setName(jewelEnchant.getDisplayName())
 					.getItemStack();
-			TextComponent message = new TextComponent(ChatColor.translateAlternateColorCodes('&', "&3&lJEWEL!&7 " + player.getDisplayName() + " &7found "));
-			message.addExtra(Misc.createItemHover(displayStack));
-			message.addExtra(new TextComponent(ChatColor.translateAlternateColorCodes('&', "&7!")));
-			Bukkit.broadcast(message);
+			sendJewelFindMessage(Misc.getDisplayName(player), displayStack);
 			LogManager.onJewelComplete(player, jewelEnchant, maxLives);
 			Sounds.JEWEL_FIND.play(player);
+
+			new PluginMessage()
+					.writeString("FINDJEWEL")
+					.writeString(PitSim.serverName)
+					.writeString(Misc.getDisplayName(player))
+					.writeString(CustomSerializer.serialize(player.getItemInHand()))
+					.send();
 
 			return jewelStack;
 		} catch(Exception ignored) {}
 
 		return null;
+	}
+
+	public static void sendJewelFindMessage(String displayName, ItemStack displayStack) {
+		TextComponent message = new TextComponent(ChatColor.translateAlternateColorCodes('&', "&3&lJEWEL!&7 " + displayName + " &7found "));
+		message.addExtra(Misc.createItemHover(displayStack));
+		message.addExtra(new TextComponent(ChatColor.translateAlternateColorCodes('&', "&7!")));
+		Bukkit.broadcast(message);
 	}
 
 	public static int getRandomMaxLives() {

@@ -643,6 +643,7 @@ public class PitSim extends JavaPlugin {
 		getServer().getPluginManager().registerEvents(new CosmeticManager(), this);
 		getServer().getPluginManager().registerEvents(new LogManager(), this);
 		getServer().getPluginManager().registerEvents(new StorageManager(), this);
+		getServer().getPluginManager().registerEvents(new CrossServerMessageManager(), this);
 	}
 
 	public void registerBoosters() {

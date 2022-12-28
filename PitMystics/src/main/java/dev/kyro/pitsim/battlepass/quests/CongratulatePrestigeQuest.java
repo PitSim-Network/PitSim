@@ -21,7 +21,6 @@ import java.util.UUID;
 public class CongratulatePrestigeQuest extends PassQuest {
 	public static CongratulatePrestigeQuest INSTANCE;
 
-	public static Player recentlyPrestiged;
 	public static long prestigedTick;
 	public static List<UUID> alreadyCompleted = new ArrayList<>();
 
@@ -30,8 +29,7 @@ public class CongratulatePrestigeQuest extends PassQuest {
 		INSTANCE = this;
 	}
 
-	public static void updateRecentlyPrestiged(Player player) {
-		recentlyPrestiged = player;
+	public static void updateRecentlyPrestiged() {
 		prestigedTick = PitSim.currentTick;
 		alreadyCompleted.clear();
 	}

@@ -4,9 +4,10 @@ import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.controllers.EnchantManager;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
+import dev.kyro.pitsim.controllers.objects.PluginMessage;
+import dev.kyro.pitsim.misc.CustomSerializer;
 import dev.kyro.pitsim.misc.Misc;
 import litebans.api.Database;
-import me.clip.placeholderapi.PlaceholderAPI;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -52,13 +53,14 @@ public class ShowCommand implements CommandExecutor {
 						player.setItemInHand(itemStack);
 						player.updateInventory();
 
-						sendShowMessage(player, itemStack);
+						sendShowMessage(Misc.getDisplayName(player), itemStack);
 
-//						PluginMessage pluginMessage = new PluginMessage()
-//								.writeString("ITEMSHOW")
-//								.writeString(PitSim.serverName)
-//								.writeString(CustomSerializer.serialize(itemStack));
-//						pluginMessage.send();
+						new PluginMessage()
+								.writeString("ITEMSHOW")
+								.writeString(PitSim.serverName)
+								.writeString(Misc.getDisplayName(player))
+								.writeString(CustomSerializer.serialize(player.getItemInHand()))
+								.send();
 					}
 				}.runTask(PitSim.INSTANCE);
 			}
@@ -66,11 +68,8 @@ public class ShowCommand implements CommandExecutor {
 		return false;
 	}
 
-	public static void sendShowMessage(Player player, ItemStack itemStack) {
-		String playerName = "%luckperms_prefix%%essentials_nickname%";
-		String prefix = PlaceholderAPI.setPlaceholders(player, playerName);
-
-		TextComponent message = new TextComponent(ChatColor.translateAlternateColorCodes('&', "&6SHOWOFF! " + prefix + " &7shows off their "));
+	public static void sendShowMessage(String displayName, ItemStack itemStack) {
+		TextComponent message = new TextComponent(ChatColor.translateAlternateColorCodes('&', "&6SHOWOFF! " + displayName + " &7shows off their "));
 		message.addExtra(Misc.createItemHover(itemStack));
 
 		for(Player onlinePlayer : Bukkit.getOnlinePlayers()) {

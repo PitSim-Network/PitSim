@@ -8,13 +8,12 @@ import dev.kyro.pitsim.battlepass.quests.EarnRenownQuest;
 import dev.kyro.pitsim.battlepass.quests.GrindGoldQuest;
 import dev.kyro.pitsim.battlepass.quests.GrindXPQuest;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
+import dev.kyro.pitsim.controllers.objects.PluginMessage;
 import dev.kyro.pitsim.killstreaks.NoKillstreak;
 import dev.kyro.pitsim.megastreaks.Overdrive;
 import dev.kyro.pitsim.misc.Misc;
 import dev.kyro.pitsim.misc.Sounds;
 import me.clip.placeholderapi.PlaceholderAPI;
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
 public class LevelManager {
@@ -123,9 +122,19 @@ public class LevelManager {
 		Sounds.PRESTIGE.play(player);
 		Misc.sendTitle(player, "&e&lPRESTIGE!", 40);
 		Misc.sendSubTitle(player, "&7You unlocked prestige &e" + AUtil.toRoman(pitPlayer.prestige), 40);
-		String message2 = ChatColor.translateAlternateColorCodes('&', "&e&lPRESTIGE! %luckperms_prefix%%player_name% &7unlocked prestige &e" + AUtil.toRoman(pitPlayer.prestige) + "&7, gg!");
-		Bukkit.broadcastMessage(PlaceholderAPI.setPlaceholders(player, message2));
 
-		CongratulatePrestigeQuest.updateRecentlyPrestiged(player);
+		onPrestige(Misc.getDisplayName(player), pitPlayer.prestige);
+
+		new PluginMessage()
+				.writeString("PRESTIGE")
+				.writeString(PitSim.serverName)
+				.writeString(Misc.getDisplayName(player))
+				.writeInt(pitPlayer.prestige)
+				.send();
+	}
+
+	public static void onPrestige(String displayName, int prestige) {
+		AOutput.broadcast("&e&lPRESTIGE! " + displayName + " &7unlocked prestige &e" + AUtil.toRoman(prestige) + "&7, gg!");
+		CongratulatePrestigeQuest.updateRecentlyPrestiged();
 	}
 }
