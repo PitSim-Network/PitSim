@@ -21,14 +21,16 @@ public class Config {
 
 	public HashMap<String, Integer> boosters = new HashMap<>();
 
-//	PitSim pass stuff
+	//	PitSim pass stuff
 	public Date currentPassStart;
 	public CurrentPassData currentPassData = new CurrentPassData();
+
 	public static class CurrentPassData {
 		public Map<String, Integer> activeWeeklyQuests = new HashMap<>();
 	}
 
 	public Security security = new Security();
+
 	public static class Security {
 		public boolean requireVerification = false;
 		public boolean requireCaptcha = false;

@@ -19,61 +19,61 @@ import java.util.Map;
 
 public
 class Sonic extends PitEnchant {
-    public static Map<Player, Integer> speedMap = new HashMap<>();
-    public static Sonic INSTANCE;
+	public static Map<Player, Integer> speedMap = new HashMap<>();
+	public static Sonic INSTANCE;
 
-    public Sonic() {
-        super("Sonic", true, ApplyType.CHESTPLATES, "sonic", "sanic", "fast");
-        tainted = true;
-        INSTANCE = this;
-    }
+	public Sonic() {
+		super("Sonic", true, ApplyType.CHESTPLATES, "sonic", "sanic", "fast");
+		tainted = true;
+		INSTANCE = this;
+	}
 
-    static {
-        new BukkitRunnable() {
-            @Override
-            public void run() {
-                for(Player player : Bukkit.getOnlinePlayers()) {
-                    Map<PitEnchant, Integer> enchantMap = EnchantManager.getEnchantsOnPlayer(player);
-                    int enchantLvl = enchantMap.getOrDefault(INSTANCE, 0);
-                    int oldEnchantLvl = speedMap.getOrDefault(player, 0);
-                    int gtgfTier = EnchantManager.getEnchantLevel(player, GottaGoFast.INSTANCE);
+	static {
+		new BukkitRunnable() {
+			@Override
+			public void run() {
+				for(Player player : Bukkit.getOnlinePlayers()) {
+					Map<PitEnchant, Integer> enchantMap = EnchantManager.getEnchantsOnPlayer(player);
+					int enchantLvl = enchantMap.getOrDefault(INSTANCE, 0);
+					int oldEnchantLvl = speedMap.getOrDefault(player, 0);
+					int gtgfTier = EnchantManager.getEnchantLevel(player, GottaGoFast.INSTANCE);
 
-                    if(!MapManager.inDarkzone(player)) enchantLvl = 0;
+					if(!MapManager.inDarkzone(player)) enchantLvl = 0;
 
-                    if(enchantLvl == oldEnchantLvl && gtgfTier > 0) continue;
+					if(enchantLvl == oldEnchantLvl && gtgfTier > 0) continue;
 
-                    if(enchantLvl != oldEnchantLvl) {
-                        speedMap.put(player, enchantLvl);
+					if(enchantLvl != oldEnchantLvl) {
+						speedMap.put(player, enchantLvl);
 
-                        int finalEnchantLvl = enchantLvl;
-                        new BukkitRunnable() {
-                            @Override
-                            public void run() {
-                                player.setWalkSpeed(getWalkSpeed(finalEnchantLvl));
-                            }
-                        }.runTask(PitSim.INSTANCE);
-                    }
-                }
-            }
-        }.runTaskTimerAsynchronously(PitSim.INSTANCE, 0, 20);
-    }
+						int finalEnchantLvl = enchantLvl;
+						new BukkitRunnable() {
+							@Override
+							public void run() {
+								player.setWalkSpeed(getWalkSpeed(finalEnchantLvl));
+							}
+						}.runTask(PitSim.INSTANCE);
+					}
+				}
+			}
+		}.runTaskTimerAsynchronously(PitSim.INSTANCE, 0, 20);
+	}
 
-    @EventHandler
-    public void onQuit(PlayerQuitEvent event) {
-        event.getPlayer().setWalkSpeed(0.2F);
-    }
+	@EventHandler
+	public void onQuit(PlayerQuitEvent event) {
+		event.getPlayer().setWalkSpeed(0.2F);
+	}
 
-    @Override
-    public List<String> getDescription(int enchantLvl) {
-        return new ALoreBuilder("&7Move &e100% &7faster at all times", "&d&o-" + reduction(enchantLvl) + "% Mana Regen").getLore();
-    }
+	@Override
+	public List<String> getDescription(int enchantLvl) {
+		return new ALoreBuilder("&7Move &e100% &7faster at all times", "&d&o-" + reduction(enchantLvl) + "% Mana Regen").getLore();
+	}
 
-    public static float getWalkSpeed(int enchantLvl) {
-        if(enchantLvl == 0) return 0.2F;
-        else return 0.4F;
-    }
+	public static float getWalkSpeed(int enchantLvl) {
+		if(enchantLvl == 0) return 0.2F;
+		else return 0.4F;
+	}
 
-    public static int reduction(int enchantLvl) {
-        return 80 - (20 * enchantLvl);
-    }
+	public static int reduction(int enchantLvl) {
+		return 80 - (20 * enchantLvl);
+	}
 }

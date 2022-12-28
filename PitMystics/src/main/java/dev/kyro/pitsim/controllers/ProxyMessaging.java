@@ -54,7 +54,7 @@ public class ProxyMessaging implements Listener {
 
 			if(PitSim.getStatus() == PitSim.ServerStatus.DARKZONE) {
 				darkzoneSwitchPlayer(player, 0);
-			} else if (PitSim.getStatus() == PitSim.ServerStatus.PITSIM) {
+			} else if(PitSim.getStatus() == PitSim.ServerStatus.PITSIM) {
 				switchPlayer(player, 0);
 			}
 		}

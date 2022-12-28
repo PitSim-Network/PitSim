@@ -48,10 +48,10 @@ public abstract class PassQuest implements Listener {
 
 	public abstract ItemStack getDisplayItem(PitPlayer pitPlayer, QuestLevel questLevel, double progress);
 
-//	Only applies to weekly quests
+	//	Only applies to weekly quests
 	public abstract void createPossibleStates();
 
-//	Multiplier to specific players requirement (would not advise making this number ever go down over time
+	//	Multiplier to specific players requirement (would not advise making this number ever go down over time
 //	as the player could then have the quest jump from incomplete to complete)
 	public abstract double getMultiplier(PitPlayer pitPlayer);
 

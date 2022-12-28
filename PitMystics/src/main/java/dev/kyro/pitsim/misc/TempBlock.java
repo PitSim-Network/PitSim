@@ -13,137 +13,136 @@ import java.io.File;
 
 public class TempBlock {
 
-    public Location location;
-    public Block block;
-    public Material material;
-    public String filePath = "null";
-    public int time;
-    public BukkitTask task;
+	public Location location;
+	public Block block;
+	public Material material;
+	public String filePath = "null";
+	public int time;
+	public BukkitTask task;
 
-    public TempBlock(Location location, Material material, int time){
+	public TempBlock(Location location, Material material, int time) {
 
-        this.location = location;
-        this.material = material;
-        this.time = time;
-        this.block = location.getBlock();
+		this.location = location;
+		this.material = material;
+		this.time = time;
+		this.block = location.getBlock();
 
 
+		TempBlockHelper.addBlockSession(block, block.getType());
 
-        TempBlockHelper.addBlockSession(block, block.getType());
+		block.setType(this.material);
 
-        block.setType(this.material);
+		createTask();
 
-        createTask();
+		new BukkitRunnable() {
+			@Override
+			public void run() {
 
-        new BukkitRunnable() {
-            @Override
-            public void run() {
+				task.cancel();
 
-                task.cancel();
+				TempBlockHelper.removeBlockSession(block);
 
-                TempBlockHelper.removeBlockSession(block);
+				deleteAction();
 
-                deleteAction();
+			}
+		}.runTaskLater(PitSim.INSTANCE, time * 20L);
+	}
 
-            }
-        }.runTaskLater(PitSim.INSTANCE, time* 20L);
-    }
+	public TempBlock(String filePath, Location location, int time) {
 
-    public TempBlock(String filePath, Location location, int time){
+		this.filePath = filePath;
+		this.location = location;
+		this.time = time;
 
-        this.filePath = filePath;
-        this.location = location;
-        this.time = time;
+		EditSession session = SchematicPaste.loadSchematicAir(new File(filePath), location);
+		TempBlockHelper.sessions.add(session);
 
-        EditSession session = SchematicPaste.loadSchematicAir(new File(filePath), location);
-        TempBlockHelper.sessions.add(session);
+		createTask();
 
-        createTask();
+		new BukkitRunnable() {
+			@Override
+			public void run() {
 
-        new BukkitRunnable() {
-            @Override
-            public void run() {
+				task.cancel();
 
-                task.cancel();
+				session.undo(session);
+				TempBlockHelper.sessions.remove(session);
 
-                session.undo(session);
-                TempBlockHelper.sessions.remove(session);
+				deleteAction();
 
-                deleteAction();
+			}
+		}.runTaskLater(PitSim.INSTANCE, time * 20L);
+	}
 
-            }
-        }.runTaskLater(PitSim.INSTANCE, time * 20L);
-    }
+	public void deleteAction() {
 
-    public void deleteAction(){
+	}
 
-    }
+	public void aliveAction() {
 
-    public void aliveAction(){
+	}
 
-    }
+	private void createTask() {
+		this.task = new BukkitRunnable() {
+			@Override
+			public void run() {
+				aliveAction();
+			}
+		}.runTaskTimer(PitSim.INSTANCE, 0, 20);
+	}
 
-    private void createTask(){
-        this.task = new BukkitRunnable() {
-            @Override
-            public void run() {
-                aliveAction();
-            }
-        }.runTaskTimer(PitSim.INSTANCE, 0, 20);
-    }
+	private void createTask(int time) {
+		this.task = new BukkitRunnable() {
+			@Override
+			public void run() {
+				aliveAction();
+			}
+		}.runTaskTimer(PitSim.INSTANCE, 0, time * 20L);
+	}
 
-    private void createTask(int time){
-        this.task = new BukkitRunnable() {
-            @Override
-            public void run() {
-                aliveAction();
-            }
-        }.runTaskTimer(PitSim.INSTANCE, 0, time*20L);
-    }
+	public TempBlock(String filePath, Location location, int time, int aliveActionDelay) {
+		EditSession session = SchematicPaste.loadSchematicAir(new File(filePath), location);
+		TempBlockHelper.sessions.add(session);
 
-    public TempBlock(String filePath, Location location, int time, int aliveActionDelay){
-        EditSession session = SchematicPaste.loadSchematicAir(new File(filePath), location);
-        TempBlockHelper.sessions.add(session);
+		createTask(aliveActionDelay);
 
-        createTask(aliveActionDelay);
+		new BukkitRunnable() {
+			@Override
+			public void run() {
 
-        new BukkitRunnable() {
-            @Override
-            public void run() {
+				task.cancel();
 
-                task.cancel();
+				session.undo(session);
+				TempBlockHelper.sessions.remove(session);
 
-                session.undo(session);
-                TempBlockHelper.sessions.remove(session);
+				deleteAction();
 
-                deleteAction();
+			}
+		}.runTaskLater(PitSim.INSTANCE, time * 20L);
+	}
 
-            }
-        }.runTaskLater(PitSim.INSTANCE, time* 20L);
-    }
+	public TempBlock(Location location, Material material, int time, int aliveActionDelay) {
 
-    public TempBlock(Location location, Material material, int time, int aliveActionDelay){
+		this.location = location;
+		this.material = material;
+		this.time = time;
+		this.block = location.getBlock();
 
-        this.location = location;
-        this.material = material;
-        this.time = time;
-        this.block = location.getBlock();
+		TempBlockHelper.addBlockSession(block, block.getType());
 
-        TempBlockHelper.addBlockSession(block, block.getType());
+		createTask(aliveActionDelay);
 
-        createTask(aliveActionDelay);
+		new BukkitRunnable() {
+			@Override
+			public void run() {
 
-        new BukkitRunnable() {
-            @Override
-            public void run() {
+				task.cancel();
 
-                task.cancel();
+				TempBlockHelper.removeBlockSession(block);
 
-                TempBlockHelper.removeBlockSession(block);
+				deleteAction();
 
-                deleteAction();
-
-            }
-        }.runTaskLater(PitSim.INSTANCE, time* 20L);
-    }
+			}
+		}.runTaskLater(PitSim.INSTANCE, time * 20L);
+	}
 }

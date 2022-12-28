@@ -18,50 +18,50 @@ import org.bukkit.event.entity.EntityDamageEvent;
 import java.util.List;
 
 public class SweepingEdgeSpell extends PitEnchant {
-    public SweepingEdgeSpell() {
-        super("Sweeping Edge", true, ApplyType.SCYTHES, "sweepingedge", "sweep", "sweeping_edge", "sweeping");
-        tainted = true;
-    }
+	public SweepingEdgeSpell() {
+		super("Sweeping Edge", true, ApplyType.SCYTHES, "sweepingedge", "sweep", "sweeping_edge", "sweeping");
+		tainted = true;
+	}
 
-    @EventHandler
-    public void onUse(PitPlayerAttemptAbilityEvent event) {
-        int enchantLvl = event.getEnchantLevel(this);
-        if(enchantLvl == 0) return;
+	@EventHandler
+	public void onUse(PitPlayerAttemptAbilityEvent event) {
+		int enchantLvl = event.getEnchantLevel(this);
+		if(enchantLvl == 0) return;
 
-        Cooldown cooldown = getCooldown(event.getPlayer(), 10);
-        if(cooldown.isOnCooldown()) return;
+		Cooldown cooldown = getCooldown(event.getPlayer(), 10);
+		if(cooldown.isOnCooldown()) return;
 
-        PitPlayer pitPlayer = PitPlayer.getPitPlayer(event.getPlayer());
-        if(!pitPlayer.useMana(getManaCost(enchantLvl))) {
-            Sounds.NO.play(event.getPlayer());
-            return;
-        }
+		PitPlayer pitPlayer = PitPlayer.getPitPlayer(event.getPlayer());
+		if(!pitPlayer.useMana(getManaCost(enchantLvl))) {
+			Sounds.NO.play(event.getPlayer());
+			return;
+		}
 
-        Sounds.SWEEP.play(event.getPlayer().getLocation());
-        cooldown.restart();
+		Sounds.SWEEP.play(event.getPlayer().getLocation());
+		cooldown.restart();
 
-        Player player = event.getPlayer();
+		Player player = event.getPlayer();
 
-        int entities = 0;
+		int entities = 0;
 
-        for (Entity entity : player.getNearbyEntities(7, 7, 7)) {
-            if(entities == 5) break;
-            if(!(entity instanceof LivingEntity)) continue;
-            if(entity instanceof Player && Bukkit.getOnlinePlayers().contains(entity)) continue;
-            EntityDamageByEntityEvent damageEvent = new EntityDamageByEntityEvent(player, entity, EntityDamageEvent.DamageCause.ENTITY_ATTACK, 2);
-            Bukkit.getServer().getPluginManager().callEvent(damageEvent);
-            if(!damageEvent.isCancelled()) ((LivingEntity) entity).damage(2);
-            entities++;
-        }
+		for(Entity entity : player.getNearbyEntities(7, 7, 7)) {
+			if(entities == 5) break;
+			if(!(entity instanceof LivingEntity)) continue;
+			if(entity instanceof Player && Bukkit.getOnlinePlayers().contains(entity)) continue;
+			EntityDamageByEntityEvent damageEvent = new EntityDamageByEntityEvent(player, entity, EntityDamageEvent.DamageCause.ENTITY_ATTACK, 2);
+			Bukkit.getServer().getPluginManager().callEvent(damageEvent);
+			if(!damageEvent.isCancelled()) ((LivingEntity) entity).damage(2);
+			entities++;
+		}
 
-    }
+	}
 
-    @Override
-    public List<String> getDescription(int enchantLvl) {
-        return new ALoreBuilder("&7This weapon hits all nearby enemies", "&d&o-" + getManaCost(enchantLvl) + " Mana").getLore();
-    }
+	@Override
+	public List<String> getDescription(int enchantLvl) {
+		return new ALoreBuilder("&7This weapon hits all nearby enemies", "&d&o-" + getManaCost(enchantLvl) + " Mana").getLore();
+	}
 
-    public static int getManaCost(int enchantLvl) {
-        return 30 * (4 - enchantLvl);
-    }
+	public static int getManaCost(int enchantLvl) {
+		return 30 * (4 - enchantLvl);
+	}
 }

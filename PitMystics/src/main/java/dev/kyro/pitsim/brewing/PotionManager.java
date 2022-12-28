@@ -36,272 +36,276 @@ import org.checkerframework.checker.nullness.qual.NonNull;
 
 import java.util.*;
 
-public  class PotionManager implements Listener {
+public class PotionManager implements Listener {
 
-    public static List<PotionEffect> potionEffectList = new ArrayList<>();
-    public static Map<Player, Integer> playerIndex = new HashMap<>();
-    public static Map<Player, BossBar> bossBars = new HashMap<>();
-    public static List<Entity> potions = new ArrayList<>();
-    public static int i = 0;
+	public static List<PotionEffect> potionEffectList = new ArrayList<>();
+	public static Map<Player, Integer> playerIndex = new HashMap<>();
+	public static Map<Player, BossBar> bossBars = new HashMap<>();
+	public static List<Entity> potions = new ArrayList<>();
+	public static int i = 0;
 
-    static {
-        new BukkitRunnable() {
-            @Override
-            public void run() {
-                for (PotionEffect potionEffect : potionEffectList) {
-                    potionEffect.tick();
-                }
-            }
-        }.runTaskTimer(PitSim.INSTANCE, 1, 1);
-
-
-        new BukkitRunnable() {
-            @Override
-            public void run() {
-                for (Player player : Bukkit.getOnlinePlayers()) {
-                    List<PotionEffect> effects = getPotionEffects(player);
-                    if(effects.size() == 0) continue;
-                    if(BossManager.activePlayers.contains(player)) {
-                        hideActiveBossBar(PitSim.adventure.player(player), player);
-                        continue;
-                    }
-
-                    playerIndex.putIfAbsent(player, 0);
-                    int index = playerIndex.get(player);
-
-                    while(index >= effects.size()) {
-                        index--;
-                    }
-
-                    StringBuilder builder = new StringBuilder();
-                    for (PotionEffect effect : effects) {
-                        if(effect == effects.get(index)) builder.append(effect.potionType.color + "" + ChatColor.BOLD + effect.potionType.name.toUpperCase(Locale.ROOT)).append(" ").append(AUtil.toRoman(effect.potency.tier));
-                        else builder.append(effect.potionType.color + effect.potionType.name).append(" ").append(AUtil.toRoman(effect.potency.tier));
-                        if(effect != effects.get(effects.size() - 1)) builder.append(ChatColor.GRAY + ", ");
-                    }
-                    float progress = (float) effects.get(index).getTimeLeft() / (float) effects.get(index).getOriginalTime();
-
-                    int maxI = effects.size() - 1;
-                    if(i == 60) {
-                        if(playerIndex.get(player) + 1 > maxI) {
-                            playerIndex.put(player, 0);
-                        } else playerIndex.put(player, playerIndex.get(player) + 1);
-                    }
-
-                    if(!bossBars.containsKey(player)) showMyBossBar(PitSim.adventure.player(player), player, builder.toString(), progress);
-                    else {
-                        bossBars.get(player).name(Component.text(builder.toString()));
-                        bossBars.get(player).progress(progress);
-                    }
-                    i++;
-                    if(i > 20 *3) i = 0;
-                }
-            }
-        }.runTaskTimer(PitSim.INSTANCE, 2, 2);
-    }
-
-    public static ItemStack createPotion(BrewingIngredient identifier, BrewingIngredient potency, BrewingIngredient duration) {
-        Potion rawPotion = new Potion(identifier.potionType);
-        ItemStack potionStack = rawPotion.toItemStack(1);
-        PotionMeta meta = (PotionMeta) potionStack.getItemMeta();
-        meta.addCustomEffect(new org.bukkit.potion.PotionEffect(PotionEffectType.FIRE_RESISTANCE, 1, 0, false, false), true);
-        meta.setDisplayName(identifier.color + "Tier " + AUtil.toRoman(potency.tier) + " " + identifier.name + " Potion");
-        meta.addItemFlags(ItemFlag.HIDE_POTION_EFFECTS);
-        meta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
-        List<String> lore = new ArrayList<>(identifier.getPotencyLore(potency));
-        lore.add("");
-        if(identifier instanceof SpiderEye)  lore.add(ChatColor.GRAY + "Duration: " + ChatColor.WHITE + "INSTANT!");
-        else lore.add(ChatColor.GRAY + "Duration: " + ChatColor.WHITE + Misc.ticksToTimeUnformatted(identifier.getDuration(duration)));
-        lore.add("");
-        lore.add(identifier.color + "Tainted Potion");
-        meta.setLore(lore);
-        potionStack.setItemMeta(meta);
-        NBTItem nbtItem = new NBTItem(potionStack);
-        nbtItem.setInteger(NBTTag.POTION_IDENTIFIER.getRef(), identifier.tier);
-        nbtItem.setInteger(NBTTag.POTION_POTENCY.getRef(), potency.tier);
-        nbtItem.setInteger(NBTTag.POTION_DURATION.getRef(), duration.tier);
-        nbtItem.setBoolean(NBTTag.DROP_CONFIRM.getRef(), true);
-        return nbtItem.getItem();
-    }
-
-    public static ItemStack createSplashPotion(BrewingIngredient identifier, BrewingIngredient potency, BrewingIngredient duration) {
-        return createSplashPotion(createPotion(identifier, potency, duration));
-    }
-
-    public static ItemStack createSplashPotion(ItemStack potionStack) {
-        NBTItem nbtItem = new NBTItem(potionStack);
-        nbtItem.getItem().setDurability((short) (nbtItem.getItem().getDurability() + 16384));
-        nbtItem.setBoolean(NBTTag.IS_SPLASH_POTION.getRef(), true);
-        return nbtItem.getItem();
-    }
-    
-    @EventHandler
-    public void onPotionDrink(PlayerItemConsumeEvent event) {
-       if(event.getItem().getType() != Material.POTION) return;
-       Player player = event.getPlayer();
-
-       event.setCancelled(true);
-
-       ItemStack potion = event.getItem();
-        NBTItem nbtItem = new NBTItem(potion);
-        if(!nbtItem.hasKey(NBTTag.POTION_IDENTIFIER.getRef())) return;
-
-        BrewingIngredient identifier = BrewingIngredient.getIngredientFromTier(nbtItem.getInteger(NBTTag.POTION_IDENTIFIER.getRef()));
-        BrewingIngredient potency = BrewingIngredient.getIngredientFromTier(nbtItem.getInteger(NBTTag.POTION_POTENCY.getRef()));
-        BrewingIngredient duration = BrewingIngredient.getIngredientFromTier(nbtItem.getInteger(NBTTag.POTION_DURATION.getRef()));
-
-        if(hasLesserEffect(player, identifier, potency)) {
-            AOutput.send(player, "&5&lPOTION! &7You already have a stonger tier of this effect!");
-            return;
-        }
-        replaceLesserEffects(player, identifier, potency);
-        player.setItemInHand(new ItemStack(Material.AIR));
-
-        assert identifier != null;
-        assert potency != null;
-
-        if(identifier instanceof SpiderEye) {
-            identifier.administerEffect(player, potency, 0);
-        } else {
-            potionEffectList.add(new PotionEffect(player, identifier, potency, duration));
-        }
-    }
+	static {
+		new BukkitRunnable() {
+			@Override
+			public void run() {
+				for(PotionEffect potionEffect : potionEffectList) {
+					potionEffect.tick();
+				}
+			}
+		}.runTaskTimer(PitSim.INSTANCE, 1, 1);
 
 
-    @EventHandler
-    public void onSplash(PotionSplashEvent event) {
+		new BukkitRunnable() {
+			@Override
+			public void run() {
+				for(Player player : Bukkit.getOnlinePlayers()) {
+					List<PotionEffect> effects = getPotionEffects(player);
+					if(effects.size() == 0) continue;
+					if(BossManager.activePlayers.contains(player)) {
+						hideActiveBossBar(PitSim.adventure.player(player), player);
+						continue;
+					}
 
-        ItemStack potion = event.getPotion().getItem();
-        NBTItem nbtItem = new NBTItem(potion);
-        if(!nbtItem.hasKey(NBTTag.POTION_IDENTIFIER.getRef())) return;
+					playerIndex.putIfAbsent(player, 0);
+					int index = playerIndex.get(player);
 
-        BrewingIngredient identifier = BrewingIngredient.getIngredientFromTier(nbtItem.getInteger(NBTTag.POTION_IDENTIFIER.getRef()));
-        BrewingIngredient potency = BrewingIngredient.getIngredientFromTier(nbtItem.getInteger(NBTTag.POTION_POTENCY.getRef()));
-        BrewingIngredient duration = BrewingIngredient.getIngredientFromTier(nbtItem.getInteger(NBTTag.POTION_DURATION.getRef()));
+					while(index >= effects.size()) {
+						index--;
+					}
 
-        int durationTime = identifier.getDuration(duration);
+					StringBuilder builder = new StringBuilder();
+					for(PotionEffect effect : effects) {
+						if(effect == effects.get(index))
+							builder.append(effect.potionType.color + "" + ChatColor.BOLD + effect.potionType.name.toUpperCase(Locale.ROOT)).append(" ").append(AUtil.toRoman(effect.potency.tier));
+						else
+							builder.append(effect.potionType.color + effect.potionType.name).append(" ").append(AUtil.toRoman(effect.potency.tier));
+						if(effect != effects.get(effects.size() - 1)) builder.append(ChatColor.GRAY + ", ");
+					}
+					float progress = (float) effects.get(index).getTimeLeft() / (float) effects.get(index).getOriginalTime();
 
-        for (LivingEntity affectedEntity : event.getAffectedEntities()) {
-            if(!(affectedEntity instanceof Player)) continue;
+					int maxI = effects.size() - 1;
+					if(i == 60) {
+						if(playerIndex.get(player) + 1 > maxI) {
+							playerIndex.put(player, 0);
+						} else playerIndex.put(player, playerIndex.get(player) + 1);
+					}
 
-            Player player = (Player) affectedEntity;
+					if(!bossBars.containsKey(player))
+						showMyBossBar(PitSim.adventure.player(player), player, builder.toString(), progress);
+					else {
+						bossBars.get(player).name(Component.text(builder.toString()));
+						bossBars.get(player).progress(progress);
+					}
+					i++;
+					if(i > 20 * 3) i = 0;
+				}
+			}
+		}.runTaskTimer(PitSim.INSTANCE, 2, 2);
+	}
 
-            if(hasLesserEffect(player, identifier, potency)) {
-                AOutput.send(player, "&5&lPOTION! &7You already have a stonger tier of this effect!");
-                continue;
-            }
-            replaceLesserEffects(player, identifier, potency);
+	public static ItemStack createPotion(BrewingIngredient identifier, BrewingIngredient potency, BrewingIngredient duration) {
+		Potion rawPotion = new Potion(identifier.potionType);
+		ItemStack potionStack = rawPotion.toItemStack(1);
+		PotionMeta meta = (PotionMeta) potionStack.getItemMeta();
+		meta.addCustomEffect(new org.bukkit.potion.PotionEffect(PotionEffectType.FIRE_RESISTANCE, 1, 0, false, false), true);
+		meta.setDisplayName(identifier.color + "Tier " + AUtil.toRoman(potency.tier) + " " + identifier.name + " Potion");
+		meta.addItemFlags(ItemFlag.HIDE_POTION_EFFECTS);
+		meta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
+		List<String> lore = new ArrayList<>(identifier.getPotencyLore(potency));
+		lore.add("");
+		if(identifier instanceof SpiderEye) lore.add(ChatColor.GRAY + "Duration: " + ChatColor.WHITE + "INSTANT!");
+		else
+			lore.add(ChatColor.GRAY + "Duration: " + ChatColor.WHITE + Misc.ticksToTimeUnformatted(identifier.getDuration(duration)));
+		lore.add("");
+		lore.add(identifier.color + "Tainted Potion");
+		meta.setLore(lore);
+		potionStack.setItemMeta(meta);
+		NBTItem nbtItem = new NBTItem(potionStack);
+		nbtItem.setInteger(NBTTag.POTION_IDENTIFIER.getRef(), identifier.tier);
+		nbtItem.setInteger(NBTTag.POTION_POTENCY.getRef(), potency.tier);
+		nbtItem.setInteger(NBTTag.POTION_DURATION.getRef(), duration.tier);
+		nbtItem.setBoolean(NBTTag.DROP_CONFIRM.getRef(), true);
+		return nbtItem.getItem();
+	}
 
-            assert identifier != null;
-            assert potency != null;
+	public static ItemStack createSplashPotion(BrewingIngredient identifier, BrewingIngredient potency, BrewingIngredient duration) {
+		return createSplashPotion(createPotion(identifier, potency, duration));
+	}
 
-            if(identifier instanceof SpiderEye) {
-                identifier.administerEffect(player, potency, 0);
-            } else {
-                potionEffectList.add(new PotionEffect(player, identifier, potency, Math.max(1, durationTime / event.getAffectedEntities().size())));
-            }
-        }
-    }
+	public static ItemStack createSplashPotion(ItemStack potionStack) {
+		NBTItem nbtItem = new NBTItem(potionStack);
+		nbtItem.getItem().setDurability((short) (nbtItem.getItem().getDurability() + 16384));
+		nbtItem.setBoolean(NBTTag.IS_SPLASH_POTION.getRef(), true);
+		return nbtItem.getItem();
+	}
 
-    public static void savePotions(Player player, boolean logout) {
-        List<PotionEffect> toExpire = new ArrayList<>();
-        for (PotionEffect potionEffect : potionEffectList) {
-            if(potionEffect.player == player) toExpire.add(potionEffect);
-        }
+	@EventHandler
+	public void onPotionDrink(PlayerItemConsumeEvent event) {
+		if(event.getItem().getType() != Material.POTION) return;
+		Player player = event.getPlayer();
 
-        for (PotionEffect potionEffect : toExpire) {
+		event.setCancelled(true);
 
-            if(logout) potionEffect.onExpire(true);
+		ItemStack potion = event.getItem();
+		NBTItem nbtItem = new NBTItem(potion);
+		if(!nbtItem.hasKey(NBTTag.POTION_IDENTIFIER.getRef())) return;
 
-            String time = String.valueOf(System.currentTimeMillis());
-            PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
-            pitPlayer.potionStrings.add(potionEffect.potionType.name + ":" + potionEffect.potency.tier + ":" + potionEffect.getTimeLeft() + ":" + time);
-        }
-    }
+		BrewingIngredient identifier = BrewingIngredient.getIngredientFromTier(nbtItem.getInteger(NBTTag.POTION_IDENTIFIER.getRef()));
+		BrewingIngredient potency = BrewingIngredient.getIngredientFromTier(nbtItem.getInteger(NBTTag.POTION_POTENCY.getRef()));
+		BrewingIngredient duration = BrewingIngredient.getIngredientFromTier(nbtItem.getInteger(NBTTag.POTION_DURATION.getRef()));
 
-    @EventHandler
-    public void onQuit(PlayerQuitEvent event) {
-        savePotions(event.getPlayer(), true);
-    }
+		if(hasLesserEffect(player, identifier, potency)) {
+			AOutput.send(player, "&5&lPOTION! &7You already have a stonger tier of this effect!");
+			return;
+		}
+		replaceLesserEffects(player, identifier, potency);
+		player.setItemInHand(new ItemStack(Material.AIR));
 
-    @EventHandler
-    public void onJoin(PlayerJoinEvent event) {
-        Player player = event.getPlayer();
+		assert identifier != null;
+		assert potency != null;
 
-        PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
-        List<String> potionStrings = pitPlayer.potionStrings;
-        if(potionStrings == null || potionStrings.isEmpty()) return;
-
-        for(String potionString : potionStrings) {
-            String[] split = potionString.split(":");
-            if(split.length != 4) continue;
-
-            int tier = Integer.parseInt(split[1]);
-            int timeLeft = Integer.parseInt(split[2]);
-            long time = Long.parseLong(split[3]);
-
-            long passedTicks = ((System.currentTimeMillis() - time) / 1000) * 20;
-            if(passedTicks > timeLeft) continue;
-
-            PotionEffect potionEffect = new PotionEffect(player, BrewingIngredient.getIngredientFromName(split[0]), BrewingIngredient.getIngredientFromTier(tier), (int) (timeLeft - passedTicks));
-            potionEffectList.add(potionEffect);
-        }
-
-        pitPlayer.potionStrings.clear();
-    }
-
-    public boolean hasLesserEffect(Player player, BrewingIngredient identifier, BrewingIngredient potency) {
-        for (PotionEffect potionEffect : potionEffectList) {
-            if(potionEffect.player != player) continue;
-            if(potionEffect.potionType != identifier) continue;
-
-            if(potionEffect.potency.tier > potency.tier) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    public void replaceLesserEffects(Player player, BrewingIngredient identifier, BrewingIngredient potency) {
-        for (PotionEffect potionEffect : potionEffectList) {
-            if(potionEffect.player != player) continue;
-            if(potionEffect.potionType != identifier) continue;
-
-            if(potionEffect.potency.tier <= potency.tier) {
-                potionEffect.onExpire(false);
-                return;
-            }
-        }
-    }
-
-
-    public static List<PotionEffect> getPotionEffects(Player player) {
-        List<PotionEffect> effects = new ArrayList<>();
-        for (PotionEffect potionEffect : potionEffectList) {
-            if(potionEffect.player == player) effects.add(potionEffect);
-        }
-        return effects;
-    }
-
-    public static PotionEffect getEffect(LivingEntity player, BrewingIngredient type) {
-        if(!(player instanceof Player)) return null;
-        for (PotionEffect potionEffect : potionEffectList) {
-            if(potionEffect.player == player && potionEffect.potionType == type) return potionEffect;
-        }
-        return null;
-    }
+		if(identifier instanceof SpiderEye) {
+			identifier.administerEffect(player, potency, 0);
+		} else {
+			potionEffectList.add(new PotionEffect(player, identifier, potency, duration));
+		}
+	}
 
 
-    public static void showMyBossBar(final @NonNull Audience player, Player realPlayer, String text, float progress) {
-        final Component name = Component.text(text);
-        final BossBar fullBar = BossBar.bossBar(name, progress, BossBar.Color.PINK, BossBar.Overlay.PROGRESS);
+	@EventHandler
+	public void onSplash(PotionSplashEvent event) {
 
-        player.showBossBar(fullBar);
-        bossBars.put(realPlayer, fullBar);
-    }
+		ItemStack potion = event.getPotion().getItem();
+		NBTItem nbtItem = new NBTItem(potion);
+		if(!nbtItem.hasKey(NBTTag.POTION_IDENTIFIER.getRef())) return;
 
-    public static void hideActiveBossBar(final @NonNull Audience player, Player realPlayer) {
-        player.hideBossBar(bossBars.get(realPlayer));
-        bossBars.remove(realPlayer);
-    }
+		BrewingIngredient identifier = BrewingIngredient.getIngredientFromTier(nbtItem.getInteger(NBTTag.POTION_IDENTIFIER.getRef()));
+		BrewingIngredient potency = BrewingIngredient.getIngredientFromTier(nbtItem.getInteger(NBTTag.POTION_POTENCY.getRef()));
+		BrewingIngredient duration = BrewingIngredient.getIngredientFromTier(nbtItem.getInteger(NBTTag.POTION_DURATION.getRef()));
+
+		int durationTime = identifier.getDuration(duration);
+
+		for(LivingEntity affectedEntity : event.getAffectedEntities()) {
+			if(!(affectedEntity instanceof Player)) continue;
+
+			Player player = (Player) affectedEntity;
+
+			if(hasLesserEffect(player, identifier, potency)) {
+				AOutput.send(player, "&5&lPOTION! &7You already have a stonger tier of this effect!");
+				continue;
+			}
+			replaceLesserEffects(player, identifier, potency);
+
+			assert identifier != null;
+			assert potency != null;
+
+			if(identifier instanceof SpiderEye) {
+				identifier.administerEffect(player, potency, 0);
+			} else {
+				potionEffectList.add(new PotionEffect(player, identifier, potency, Math.max(1, durationTime / event.getAffectedEntities().size())));
+			}
+		}
+	}
+
+	public static void savePotions(Player player, boolean logout) {
+		List<PotionEffect> toExpire = new ArrayList<>();
+		for(PotionEffect potionEffect : potionEffectList) {
+			if(potionEffect.player == player) toExpire.add(potionEffect);
+		}
+
+		for(PotionEffect potionEffect : toExpire) {
+
+			if(logout) potionEffect.onExpire(true);
+
+			String time = String.valueOf(System.currentTimeMillis());
+			PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
+			pitPlayer.potionStrings.add(potionEffect.potionType.name + ":" + potionEffect.potency.tier + ":" + potionEffect.getTimeLeft() + ":" + time);
+		}
+	}
+
+	@EventHandler
+	public void onQuit(PlayerQuitEvent event) {
+		savePotions(event.getPlayer(), true);
+	}
+
+	@EventHandler
+	public void onJoin(PlayerJoinEvent event) {
+		Player player = event.getPlayer();
+
+		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
+		List<String> potionStrings = pitPlayer.potionStrings;
+		if(potionStrings == null || potionStrings.isEmpty()) return;
+
+		for(String potionString : potionStrings) {
+			String[] split = potionString.split(":");
+			if(split.length != 4) continue;
+
+			int tier = Integer.parseInt(split[1]);
+			int timeLeft = Integer.parseInt(split[2]);
+			long time = Long.parseLong(split[3]);
+
+			long passedTicks = ((System.currentTimeMillis() - time) / 1000) * 20;
+			if(passedTicks > timeLeft) continue;
+
+			PotionEffect potionEffect = new PotionEffect(player, BrewingIngredient.getIngredientFromName(split[0]), BrewingIngredient.getIngredientFromTier(tier), (int) (timeLeft - passedTicks));
+			potionEffectList.add(potionEffect);
+		}
+
+		pitPlayer.potionStrings.clear();
+	}
+
+	public boolean hasLesserEffect(Player player, BrewingIngredient identifier, BrewingIngredient potency) {
+		for(PotionEffect potionEffect : potionEffectList) {
+			if(potionEffect.player != player) continue;
+			if(potionEffect.potionType != identifier) continue;
+
+			if(potionEffect.potency.tier > potency.tier) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	public void replaceLesserEffects(Player player, BrewingIngredient identifier, BrewingIngredient potency) {
+		for(PotionEffect potionEffect : potionEffectList) {
+			if(potionEffect.player != player) continue;
+			if(potionEffect.potionType != identifier) continue;
+
+			if(potionEffect.potency.tier <= potency.tier) {
+				potionEffect.onExpire(false);
+				return;
+			}
+		}
+	}
+
+
+	public static List<PotionEffect> getPotionEffects(Player player) {
+		List<PotionEffect> effects = new ArrayList<>();
+		for(PotionEffect potionEffect : potionEffectList) {
+			if(potionEffect.player == player) effects.add(potionEffect);
+		}
+		return effects;
+	}
+
+	public static PotionEffect getEffect(LivingEntity player, BrewingIngredient type) {
+		if(!(player instanceof Player)) return null;
+		for(PotionEffect potionEffect : potionEffectList) {
+			if(potionEffect.player == player && potionEffect.potionType == type) return potionEffect;
+		}
+		return null;
+	}
+
+
+	public static void showMyBossBar(final @NonNull Audience player, Player realPlayer, String text, float progress) {
+		final Component name = Component.text(text);
+		final BossBar fullBar = BossBar.bossBar(name, progress, BossBar.Color.PINK, BossBar.Overlay.PROGRESS);
+
+		player.showBossBar(fullBar);
+		bossBars.put(realPlayer, fullBar);
+	}
+
+	public static void hideActiveBossBar(final @NonNull Audience player, Player realPlayer) {
+		player.hideBossBar(bossBars.get(realPlayer));
+		bossBars.remove(realPlayer);
+	}
 }

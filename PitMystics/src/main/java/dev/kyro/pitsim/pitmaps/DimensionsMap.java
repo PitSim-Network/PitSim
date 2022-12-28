@@ -13,7 +13,7 @@ public class DimensionsMap extends PitMap {
 		return new Location(world, 0.5, 88, -5.5, 0, 0);
 	}
 
-//	TODO: chaos
+	//	TODO: chaos
 	@Override
 	public Location getNonSpawn() {
 		Location spawn = new Location(world, 0.5, 86, 0.5);
@@ -28,19 +28,19 @@ public class DimensionsMap extends PitMap {
 	}
 
 	@Override
-	public int getTeleportAdd() { return -3; }
+	public int getTeleportAdd() {return -3;}
 
 	@Override
-	public int getTeleportY() { return 44;}
+	public int getTeleportY() {return 44;}
 
 	@Override
-	public String getOpenSchematic() { return "plugins/WorldEdit/schematics/map2DoorOpen.schematic"; }
+	public String getOpenSchematic() {return "plugins/WorldEdit/schematics/map2DoorOpen.schematic";}
 
 	@Override
-	public String getClosedSchematic() { return "plugins/WorldEdit/schematics/map2DoorClosed.schematic"; }
+	public String getClosedSchematic() {return "plugins/WorldEdit/schematics/map2DoorClosed.schematic";}
 
 	@Override
-	public Location getSchematicPaste() { return new Location(world, 64, 44, 4); }
+	public Location getSchematicPaste() {return new Location(world, 64, 44, 4);}
 
 	@Override
 	public Location getMid() {
@@ -78,7 +78,7 @@ public class DimensionsMap extends PitMap {
 	}
 
 	@Override
-	public Location getKeeperNPCSpawn()  {
+	public Location getKeeperNPCSpawn() {
 		return new Location(world, 4.5, 88, 7.5, 150, 0);
 	}
 
@@ -92,7 +92,7 @@ public class DimensionsMap extends PitMap {
 		return new Location(world, 10.5, 88, 2.5, 90, 0);
 	}
 
-//	TODO: Add
+	//	TODO: Add
 	@Override
 	public Location getKitsNPCSpawn() {
 		return null;

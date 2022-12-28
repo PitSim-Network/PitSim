@@ -65,24 +65,25 @@ public class PlayerManager implements Listener {
 		realPlayers.add(uuid);
 	}
 
-	public static boolean  isRealPlayer(Player player) {
+	public static boolean isRealPlayer(Player player) {
 		if(player == null) return false;
 		return realPlayers.contains(player.getUniqueId());
 	}
 
 	static {
-			new BukkitRunnable() {
+		new BukkitRunnable() {
 			@Override
 			public void run() {
-				for (Player onlinePlayer : Bukkit.getOnlinePlayers()) {
+				for(Player onlinePlayer : Bukkit.getOnlinePlayers()) {
 					PitPlayer pitPlayer = PitPlayer.getPitPlayer(onlinePlayer);
 					if(!MapManager.inDarkzone(pitPlayer.player)) continue;
 
-					if(onlinePlayer.getLocation().getY() >= 85) onlinePlayer.spigot().playEffect(onlinePlayer.getLocation(), Effect.PORTAL, 0, 0, 10, 10, 10, 1, 128, 100);
+					if(onlinePlayer.getLocation().getY() >= 85)
+						onlinePlayer.spigot().playEffect(onlinePlayer.getLocation(), Effect.PORTAL, 0, 0, 10, 10, 10, 1, 128, 100);
 
 					double reduction = 0.0;
 
-					for (Map.Entry<PitEnchant, Integer> entry : EnchantManager.getEnchantsOnPlayer(pitPlayer.player).entrySet()) {
+					for(Map.Entry<PitEnchant, Integer> entry : EnchantManager.getEnchantsOnPlayer(pitPlayer.player).entrySet()) {
 						if(!entry.getKey().tainted || entry.getKey().applyType != ApplyType.CHESTPLATES) continue;
 						reduction += (0.8 - (0.2 * entry.getValue()));
 					}
@@ -208,12 +209,14 @@ public class PlayerManager implements Listener {
 	}
 
 	public Map<UUID, Long> viewShiftCooldown = new HashMap<>();
+
 	@EventHandler
 	public void onInteract(PlayerInteractAtEntityEvent event) {
 		Player player = event.getPlayer();
 		if(!(event.getRightClicked() instanceof Player)) return;
 		Player target = (Player) event.getRightClicked();
-		if(!player.isSneaking() || !SpawnManager.isInSpawn(player.getLocation()) || !SpawnManager.isInSpawn(target.getLocation())) return;
+		if(!player.isSneaking() || !SpawnManager.isInSpawn(player.getLocation()) || !SpawnManager.isInSpawn(target.getLocation()))
+			return;
 		if(!PlayerManager.isRealPlayer(target)) return;
 		if(viewShiftCooldown.getOrDefault(player.getUniqueId(), 0L) + 500 > System.currentTimeMillis()) return;
 		viewShiftCooldown.put(player.getUniqueId(), System.currentTimeMillis());
@@ -588,7 +591,8 @@ public class PlayerManager implements Listener {
 		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
 		Location spawnLoc = MapManager.currentMap.getSpawn();
 		if(PitSim.getStatus() == PitSim.ServerStatus.DARKZONE) spawnLoc = MapManager.getInitialDarkzoneSpawn();
-		if(LobbySwitchManager.joinedFromDarkzone.contains(player.getUniqueId())) spawnLoc = MapManager.currentMap.getDarkzoneJoinSpawn();
+		if(LobbySwitchManager.joinedFromDarkzone.contains(player.getUniqueId()))
+			spawnLoc = MapManager.currentMap.getDarkzoneJoinSpawn();
 
 		new BukkitRunnable() {
 			@Override

@@ -37,395 +37,394 @@ import java.util.Random;
 
 public abstract class SimpleBoss {
 
-    NPC npc;
-    Player target;
-    SubLevel subLevel;
-    BossBar activeBar;
-    SimpleSkin skin;
-    PitBoss pitBoss;
-
-    BukkitTask abs;
-    BukkitTask timerTask;
-
-    int time = 1;
-
-    // There is no cap to difficulty level
-    int difficulty;
+	NPC npc;
+	Player target;
+	SubLevel subLevel;
+	BossBar activeBar;
+	SimpleSkin skin;
+	PitBoss pitBoss;
+
+	BukkitTask abs;
+	BukkitTask timerTask;
+
+	int time = 1;
+
+	// There is no cap to difficulty level
+	int difficulty;
 
-    // These following variables are handled by difficulty algorithm (But also will have setters and getters)
-    int health;
+	// These following variables are handled by difficulty algorithm (But also will have setters and getters)
+	int health;
 
-    // Attacks per second (Maximum = 20)
-    int aps;
+	// Attacks per second (Maximum = 20)
+	int aps;
 
-    int speed;
+	int speed;
 
-    int reach;
+	int reach;
 
-    int damageIncrease;
+	int damageIncrease;
 
-    ItemStack helmet;
-    ItemStack chestplate;
-    ItemStack leggings;
-    ItemStack boots;
-    ItemStack sword;
+	ItemStack helmet;
+	ItemStack chestplate;
+	ItemStack leggings;
+	ItemStack boots;
+	ItemStack sword;
 
-    public SimpleBoss(NPC npc, Player target, SubLevel sublevel, int difficulty, SimpleSkin skin, PitBoss pitBoss){
+	public SimpleBoss(NPC npc, Player target, SubLevel sublevel, int difficulty, SimpleSkin skin, PitBoss pitBoss) {
 
-        this.npc = npc;
-        this.subLevel = sublevel;
-        this.target = target;
-        this.difficulty = difficulty;
-        this.skin = skin;
-        this.pitBoss = pitBoss;
+		this.npc = npc;
+		this.subLevel = sublevel;
+		this.target = target;
+		this.difficulty = difficulty;
+		this.skin = skin;
+		this.pitBoss = pitBoss;
 
-        modifiers();
+		modifiers();
 
-    }
+	}
 
-    private void runAttackAbility(){
-        abs = new BukkitRunnable() {
-            @Override
-            public void run() {
-                if(npc.isSpawned()){
-                    double bound = new Random().nextDouble();
-                    if(bound < .25){
-                        attackLow();
-                    }else if(bound < .35){
-                        attackMedium();
-                    }else if (bound < .45){
-                        attackHigh();
-                    }
-                }
-            }
-        }.runTaskTimer(PitSim.INSTANCE, 50, 50);
-    }
+	private void runAttackAbility() {
+		abs = new BukkitRunnable() {
+			@Override
+			public void run() {
+				if(npc.isSpawned()) {
+					double bound = new Random().nextDouble();
+					if(bound < .25) {
+						attackLow();
+					} else if(bound < .35) {
+						attackMedium();
+					} else if(bound < .45) {
+						attackHigh();
+					}
+				}
+			}
+		}.runTaskTimer(PitSim.INSTANCE, 50, 50);
+	}
 
-    private void timer(){
-        timerTask = new BukkitRunnable() {
-            @Override
-            public void run() {
-                time++;
-            }
-        }.runTaskTimer(PitSim.INSTANCE, 20, 20);
-    }
+	private void timer() {
+		timerTask = new BukkitRunnable() {
+			@Override
+			public void run() {
+				time++;
+			}
+		}.runTaskTimer(PitSim.INSTANCE, 20, 20);
+	}
 
-    public void attackAbility(AttackEvent.Apply event){try{attackDefault(event);}catch (Exception ignored){}}
+	public void attackAbility(AttackEvent.Apply event) {try {attackDefault(event);} catch(Exception ignored) {}}
 
-    public void defendAbility(){
+	public void defendAbility() {
 
-        double health = ((LivingEntity) npc.getEntity()).getHealth();
-        double maxHealth = ((LivingEntity) npc.getEntity()).getMaxHealth();
-        float progress = (float) health / (float) maxHealth;
+		double health = ((LivingEntity) npc.getEntity()).getHealth();
+		double maxHealth = ((LivingEntity) npc.getEntity()).getMaxHealth();
+		float progress = (float) health / (float) maxHealth;
 
-        this.getActiveBar().progress(progress);
+		this.getActiveBar().progress(progress);
 
-        npc.getNavigator().setTarget(target, true);
+		npc.getNavigator().setTarget(target, true);
 
-        double bound = new Random().nextDouble();
+		double bound = new Random().nextDouble();
 
-        if(bound < .05){try{defend();}catch (Exception ignored){}}
-    }
+		if(bound < .05) {try {defend();} catch(Exception ignored) {}}
+	}
 
-    public void run(){
+	public void run() {
 
-        CitizensNavigator navigator = (CitizensNavigator) npc.getNavigator();
-        navigator.getDefaultParameters()
-                .attackDelayTicks(this.aps)
-                .attackRange(this.reach)
-                .updatePathRate(5)
-                .speedModifier(this.speed);
+		CitizensNavigator navigator = (CitizensNavigator) npc.getNavigator();
+		navigator.getDefaultParameters()
+				.attackDelayTicks(this.aps)
+				.attackRange(this.reach)
+				.updatePathRate(5)
+				.speedModifier(this.speed);
 
-        spawn();
-        BossManager.activePlayers.add(target);
+		spawn();
+		BossManager.activePlayers.add(target);
 
-        if(npc.isSpawned()){
-            new BukkitRunnable() {
-                @Override
-                public void run() {
-                    if(npc.getEntity() != null) {
-                        Player entity = (Player) npc.getEntity();
+		if(npc.isSpawned()) {
+			new BukkitRunnable() {
+				@Override
+				public void run() {
+					if(npc.getEntity() != null) {
+						Player entity = (Player) npc.getEntity();
 
-                        entity.setMaxHealth(health);
-                        entity.setHealth(health);
+						entity.setMaxHealth(health);
+						entity.setHealth(health);
 
-                        npc.setProtected(false);
+						npc.setProtected(false);
 
-                        bossBar(PitSim.adventure.player(target), entity.getDisplayName());
+						bossBar(PitSim.adventure.player(target), entity.getDisplayName());
 
-                        pitBoss.setNPC(npc);
+						pitBoss.setNPC(npc);
 
-                        BossManager.bosses.put(npc, pitBoss);
-                    }
+						BossManager.bosses.put(npc, pitBoss);
+					}
 
-                    try {
-                        npc.getNavigator().setTarget(target, true);
-                    } catch (Exception ignored) { }
+					try {
+						npc.getNavigator().setTarget(target, true);
+					} catch(Exception ignored) {}
 
-                    runAttackAbility();
-                }
-            }.runTaskLater(PitSim.INSTANCE, 20);
-        }
+					runAttackAbility();
+				}
+			}.runTaskLater(PitSim.INSTANCE, 20);
+		}
 
 
-        timer();
+		timer();
 
-    }
+	}
 
-    public void spawn(){
-        PitBoss.spawn(this.npc, this.target, this.subLevel,
-                new BossSkin(this.npc, skin.skin),
-                this.sword,
-                this.helmet,
-                this.chestplate,
-                this.leggings,
-                this.boots);
-    }
+	public void spawn() {
+		PitBoss.spawn(this.npc, this.target, this.subLevel,
+				new BossSkin(this.npc, skin.skin),
+				this.sword,
+				this.helmet,
+				this.chestplate,
+				this.leggings,
+				this.boots);
+	}
 
 
-    private void modifiers(){
-        // Manual Testing
+	private void modifiers() {
+		// Manual Testing
 
-        this.speed = Math.min(Math.max((this.difficulty)/2, 1) * 2, 5);
+		this.speed = Math.min(Math.max((this.difficulty) / 2, 1) * 2, 5);
 
-        // IntelliJ trippin
-        this.aps = Math.min(Math.max(Math.min(this.difficulty*2, 8), 4), 20);
+		// IntelliJ trippin
+		this.aps = Math.min(Math.max(Math.min(this.difficulty * 2, 8), 4), 20);
 
-        this.reach = 10;
+		this.reach = 10;
 
-        this.health = Math.min((this.difficulty*20)*5, 1000);
+		this.health = Math.min((this.difficulty * 20) * 5, 1000);
 
-        this.damageIncrease = Math.min(25, this.difficulty*2);
+		this.damageIncrease = Math.min(25, this.difficulty * 2);
 
-        GearType type;
+		GearType type;
 
-        if(this.difficulty <= 3) type = GearType.MEDIUM;
-        else if(this.difficulty == 5 || this.difficulty == 4) type = GearType.DAMAGE;
-        else if(this.difficulty <= 8) type = GearType.GLASS_CANNON;
-        else type = GearType.SHREDDER;
+		if(this.difficulty <= 3) type = GearType.MEDIUM;
+		else if(this.difficulty == 5 || this.difficulty == 4) type = GearType.DAMAGE;
+		else if(this.difficulty <= 8) type = GearType.GLASS_CANNON;
+		else type = GearType.SHREDDER;
 
 
-        this.helmet = type.helmet;
-        this.chestplate = type.chestplate;
-        this.leggings = type.leggings;
-        this.boots = type.boots;
-        this.sword = type.sword;
+		this.helmet = type.helmet;
+		this.chestplate = type.chestplate;
+		this.leggings = type.leggings;
+		this.boots = type.boots;
+		this.sword = type.sword;
 
-    }
+	}
 
-    public void bossBar(final @NonNull Audience player, String text) {
-        final Component name = Component.text(text);
-        final BossBar fullBar = BossBar.bossBar(name, 1F, BossBar.Color.PINK, BossBar.Overlay.PROGRESS);
+	public void bossBar(final @NonNull Audience player, String text) {
+		final Component name = Component.text(text);
+		final BossBar fullBar = BossBar.bossBar(name, 1F, BossBar.Color.PINK, BossBar.Overlay.PROGRESS);
 
-        player.showBossBar(fullBar);
-        this.activeBar = fullBar;
-    }
+		player.showBossBar(fullBar);
+		this.activeBar = fullBar;
+	}
 
-    private void onDeath(){
-        if(abs != null) abs.cancel();
-        if(timerTask != null) timerTask.cancel();
+	private void onDeath() {
+		if(abs != null) abs.cancel();
+		if(timerTask != null) timerTask.cancel();
 
-        int finalTime = 0;
-        String stringTime;
+		int finalTime = 0;
+		String stringTime;
 
-        if(this.time >= 60) {
-            finalTime = this.time / 60;
-            stringTime = finalTime + " minutes";
-        }else{
-            finalTime = time;
-            stringTime = finalTime + " seconds";
-        }
+		if(this.time >= 60) {
+			finalTime = this.time / 60;
+			stringTime = finalTime + " minutes";
+		} else {
+			finalTime = time;
+			stringTime = finalTime + " seconds";
+		}
 
 
-        AOutput.send(target.getPlayer(), "&7You killed your boss in &a" + stringTime);
-    }
+		AOutput.send(target.getPlayer(), "&7You killed your boss in &a" + stringTime);
+	}
 
-    public void hideActiveBossBar() {
-        // Very scuffed method of calling on death
-        onDeath();
-        Audience player = PitSim.adventure.player(target);
-        player.hideBossBar(this.activeBar);
-        this.activeBar = null;
-    }
+	public void hideActiveBossBar() {
+		// Very scuffed method of calling on death
+		onDeath();
+		Audience player = PitSim.adventure.player(target);
+		player.hideBossBar(this.activeBar);
+		this.activeBar = null;
+	}
 
-    // Getters and setters for most variables should stay below this comment nothing other than getters and setters should be here
+	// Getters and setters for most variables should stay below this comment nothing other than getters and setters should be here
 
-    public ItemStack getHelmet() {
-        return helmet;
-    }
+	public ItemStack getHelmet() {
+		return helmet;
+	}
 
-    public void setHelmet(ItemStack helmet) {
-        this.helmet = helmet;
-    }
+	public void setHelmet(ItemStack helmet) {
+		this.helmet = helmet;
+	}
 
-    public ItemStack getChestplate() {
-        return chestplate;
-    }
+	public ItemStack getChestplate() {
+		return chestplate;
+	}
 
-    public void setChestplate(ItemStack chestplate) {
-        this.chestplate = chestplate;
-    }
+	public void setChestplate(ItemStack chestplate) {
+		this.chestplate = chestplate;
+	}
 
-    public ItemStack getLeggings() {
-        return leggings;
-    }
+	public ItemStack getLeggings() {
+		return leggings;
+	}
 
-    public void setLeggings(ItemStack leggings) {
-        this.leggings = leggings;
-    }
+	public void setLeggings(ItemStack leggings) {
+		this.leggings = leggings;
+	}
 
-    public ItemStack getBoots() {
-        return boots;
-    }
+	public ItemStack getBoots() {
+		return boots;
+	}
 
-    public void setBoots(ItemStack boots) {
-        this.boots = boots;
-    }
+	public void setBoots(ItemStack boots) {
+		this.boots = boots;
+	}
 
 
-    public ItemStack getSword() {
-        return sword;
-    }
+	public ItemStack getSword() {
+		return sword;
+	}
 
-    public void setSword(ItemStack sword) {
-        this.sword = sword;
-    }
+	public void setSword(ItemStack sword) {
+		this.sword = sword;
+	}
 
-    public int getReach() {
-        return reach;
-    }
+	public int getReach() {
+		return reach;
+	}
 
-    public void setReach(int reach) {
-        this.reach = reach;
-    }
+	public void setReach(int reach) {
+		this.reach = reach;
+	}
 
-    public int getSpeed() {
-        return speed;
-    }
+	public int getSpeed() {
+		return speed;
+	}
 
-    public void setSpeed(int speed) {
-        this.speed = speed;
-    }
+	public void setSpeed(int speed) {
+		this.speed = speed;
+	}
 
-    public int getAps() {
-        return aps;
-    }
+	public int getAps() {
+		return aps;
+	}
 
-    public void setAps(int aps) {
-        this.aps = aps;
-    }
+	public void setAps(int aps) {
+		this.aps = aps;
+	}
 
-    public int getHealth() {
-        return health;
-    }
+	public int getHealth() {
+		return health;
+	}
 
-    public void setHealth(int health) {
-        this.health = health;
-    }
+	public void setHealth(int health) {
+		this.health = health;
+	}
 
-    public void setDifficulty(int difficulty){
-        this.difficulty = difficulty;
-    }
+	public void setDifficulty(int difficulty) {
+		this.difficulty = difficulty;
+	}
 
-    public int getDifficulty(){
-        return this.difficulty;
-    }
+	public int getDifficulty() {
+		return this.difficulty;
+	}
 
-    public BossBar getActiveBar() {
-        return activeBar;
-    }
+	public BossBar getActiveBar() {
+		return activeBar;
+	}
 
-    public void setActiveBar(BossBar activeBar) {
-        this.activeBar = activeBar;
-    }
+	public void setActiveBar(BossBar activeBar) {
+		this.activeBar = activeBar;
+	}
 
 
-    protected abstract void attackHigh();
+	protected abstract void attackHigh();
 
-    protected abstract void attackMedium();
-    protected abstract void attackLow();
+	protected abstract void attackMedium();
 
-    protected abstract void  defend();
+	protected abstract void attackLow();
 
+	protected abstract void defend();
 
-    public void attackDefault(AttackEvent.Apply event) throws Exception {
-        event.increase += damageIncrease;
 
-        Equipment equipment = npc.getTrait(Equipment.class);
-        double health = ((LivingEntity) npc.getEntity()).getHealth();
-        double maxHealth = ((LivingEntity) npc.getEntity()).getMaxHealth();
-        Map<PitEnchant, Integer> enchants = EnchantManager.getEnchantsOnItem(equipment.get(Equipment.EquipmentSlot.HAND));
-        if(equipment.get(Equipment.EquipmentSlot.HAND).getType() == Material.BOW) {
-            equipment.set(Equipment.EquipmentSlot.HAND, getLifesteal());
-        }
-        else if(health < (maxHealth / 2) && !enchants.containsValue(EnchantManager.getEnchant("ls"))) {
-            equipment.set(Equipment.EquipmentSlot.HAND, getExplosive());
-            LivingEntity shooter = ((LivingEntity) npc.getEntity());
-            shooter.launchProjectile(Arrow.class);
-            new BukkitRunnable() {
-                @Override
-                public void run() {
-                    try {
-                        equipment.set(Equipment.EquipmentSlot.HAND, getLifesteal());
-                    } catch (Exception ignored) { }
-                }
-            }.runTaskLater(PitSim.INSTANCE, 10);
-        }
-        else equipment.set(Equipment.EquipmentSlot.HAND, this.sword);
+	public void attackDefault(AttackEvent.Apply event) throws Exception {
+		event.increase += damageIncrease;
 
-        new BukkitRunnable() {
-            @Override
-            public void run() {
-                if(npc.getEntity() == null) {return;}
+		Equipment equipment = npc.getTrait(Equipment.class);
+		double health = ((LivingEntity) npc.getEntity()).getHealth();
+		double maxHealth = ((LivingEntity) npc.getEntity()).getMaxHealth();
+		Map<PitEnchant, Integer> enchants = EnchantManager.getEnchantsOnItem(equipment.get(Equipment.EquipmentSlot.HAND));
+		if(equipment.get(Equipment.EquipmentSlot.HAND).getType() == Material.BOW) {
+			equipment.set(Equipment.EquipmentSlot.HAND, getLifesteal());
+		} else if(health < (maxHealth / 2) && !enchants.containsValue(EnchantManager.getEnchant("ls"))) {
+			equipment.set(Equipment.EquipmentSlot.HAND, getExplosive());
+			LivingEntity shooter = ((LivingEntity) npc.getEntity());
+			shooter.launchProjectile(Arrow.class);
+			new BukkitRunnable() {
+				@Override
+				public void run() {
+					try {
+						equipment.set(Equipment.EquipmentSlot.HAND, getLifesteal());
+					} catch(Exception ignored) {}
+				}
+			}.runTaskLater(PitSim.INSTANCE, 10);
+		} else equipment.set(Equipment.EquipmentSlot.HAND, this.sword);
 
-                List<Entity> entities = npc.getEntity().getNearbyEntities(4, 4, 4);
-                if(!entities.contains(target)) {
-                    try {
-                        equipment.set(Equipment.EquipmentSlot.HAND, getPullbow());
+		new BukkitRunnable() {
+			@Override
+			public void run() {
+				if(npc.getEntity() == null) {return;}
 
-                    } catch (Exception ignored) { }
-                    new BukkitRunnable() {
-                        @Override
-                        public void run() {
-                            try {
-                                LivingEntity shooter = ((LivingEntity) npc.getEntity());
-                                shooter.launchProjectile(Arrow.class);
-                                equipment.set(Equipment.EquipmentSlot.HAND, sword);
+				List<Entity> entities = npc.getEntity().getNearbyEntities(4, 4, 4);
+				if(!entities.contains(target)) {
+					try {
+						equipment.set(Equipment.EquipmentSlot.HAND, getPullbow());
 
+					} catch(Exception ignored) {}
+					new BukkitRunnable() {
+						@Override
+						public void run() {
+							try {
+								LivingEntity shooter = ((LivingEntity) npc.getEntity());
+								shooter.launchProjectile(Arrow.class);
+								equipment.set(Equipment.EquipmentSlot.HAND, sword);
 
-                                Vector dirVector = npc.getEntity().getLocation().toVector().subtract(target.getLocation().toVector()).setY(0);
-                                Vector pullVector = dirVector.clone().normalize().setY(0.2).multiply(0.5).add(dirVector.clone().multiply(0.03));
-                                target.setVelocity(pullVector.multiply((0.5 * 0.2) + 1.15));
 
-                            } catch (Exception ignored) { }
-                        }
-                    }.runTaskLater(PitSim.INSTANCE, 20);
-                }
-            }
-        }.runTaskLater(PitSim.INSTANCE, 10);
-    }
+								Vector dirVector = npc.getEntity().getLocation().toVector().subtract(target.getLocation().toVector()).setY(0);
+								Vector pullVector = dirVector.clone().normalize().setY(0.2).multiply(0.5).add(dirVector.clone().multiply(0.03));
+								target.setVelocity(pullVector.multiply((0.5 * 0.2) + 1.15));
 
-    public ItemStack getLifesteal() throws Exception {
-        ItemStack itemStack;
-        itemStack = FreshCommand.getFreshItem(MysticType.SWORD, PantColor.GREEN);
-        itemStack = EnchantManager.addEnchant(itemStack, EnchantManager.getEnchant("ls"), 3, false);
-        itemStack = EnchantManager.addEnchant(itemStack, EnchantManager.getEnchant("pf"), 1, false);
-        itemStack = EnchantManager.addEnchant(itemStack, EnchantManager.getEnchant("cheal"), 2, false);
-        return itemStack;
-    }
+							} catch(Exception ignored) {}
+						}
+					}.runTaskLater(PitSim.INSTANCE, 20);
+				}
+			}
+		}.runTaskLater(PitSim.INSTANCE, 10);
+	}
 
-    public ItemStack getExplosive() throws Exception {
-        ItemStack itemStack;
-        itemStack = FreshCommand.getFreshItem(MysticType.BOW, PantColor.GREEN);
-        itemStack = EnchantManager.addEnchant(itemStack, EnchantManager.getEnchant("explo"), 3, false);
-        return itemStack;
-    }
+	public ItemStack getLifesteal() throws Exception {
+		ItemStack itemStack;
+		itemStack = FreshCommand.getFreshItem(MysticType.SWORD, PantColor.GREEN);
+		itemStack = EnchantManager.addEnchant(itemStack, EnchantManager.getEnchant("ls"), 3, false);
+		itemStack = EnchantManager.addEnchant(itemStack, EnchantManager.getEnchant("pf"), 1, false);
+		itemStack = EnchantManager.addEnchant(itemStack, EnchantManager.getEnchant("cheal"), 2, false);
+		return itemStack;
+	}
 
-    public ItemStack getPullbow() throws Exception {
-        ItemStack itemStack;
-        itemStack = FreshCommand.getFreshItem(MysticType.BOW, PantColor.GREEN);
+	public ItemStack getExplosive() throws Exception {
+		ItemStack itemStack;
+		itemStack = FreshCommand.getFreshItem(MysticType.BOW, PantColor.GREEN);
+		itemStack = EnchantManager.addEnchant(itemStack, EnchantManager.getEnchant("explo"), 3, false);
+		return itemStack;
+	}
+
+	public ItemStack getPullbow() throws Exception {
+		ItemStack itemStack;
+		itemStack = FreshCommand.getFreshItem(MysticType.BOW, PantColor.GREEN);
 //        itemStack = EnchantManager.addEnchant(itemStack, EnchantManager.getEnchant("pull"), 3, false);
-        itemStack = EnchantManager.addEnchant(itemStack, EnchantManager.getEnchant("robin"), 3, false);
-        return itemStack;
-    }
+		itemStack = EnchantManager.addEnchant(itemStack, EnchantManager.getEnchant("robin"), 3, false);
+		return itemStack;
+	}
 }

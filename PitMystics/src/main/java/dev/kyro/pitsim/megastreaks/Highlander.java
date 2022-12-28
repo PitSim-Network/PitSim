@@ -31,7 +31,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public  class Highlander extends Megastreak {
+public class Highlander extends Megastreak {
 	public Highlander(PitPlayer pitPlayer) {
 		super(pitPlayer);
 	}

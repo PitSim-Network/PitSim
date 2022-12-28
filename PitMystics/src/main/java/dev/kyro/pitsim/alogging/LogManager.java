@@ -56,7 +56,8 @@ public class LogManager implements Listener {
 
 	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
 	public void onKill(KillEvent killEvent) {
-		if(!PlayerManager.isRealPlayer(killEvent.getKillerPlayer()) || !PlayerManager.isRealPlayer(killEvent.getDeadPlayer())) return;
+		if(!PlayerManager.isRealPlayer(killEvent.getKillerPlayer()) || !PlayerManager.isRealPlayer(killEvent.getDeadPlayer()))
+			return;
 		sendLogMessage(LogType.PLAYER_KILL, killEvent.getKillerPlayer().getName() + " killed " + killEvent.getDeadPlayer().getName());
 	}
 

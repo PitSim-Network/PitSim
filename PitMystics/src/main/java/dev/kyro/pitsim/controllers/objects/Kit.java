@@ -25,6 +25,7 @@ public abstract class Kit {
 	}
 
 	public abstract void addItems();
+
 	public abstract ItemStack getDisplayItem();
 
 	public void giveKit(Player player) throws PitException {

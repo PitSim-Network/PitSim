@@ -28,6 +28,7 @@ public class CosmeticManager implements Listener {
 
 		new BukkitRunnable() {
 			int count = 0;
+
 			@Override
 			public void run() {
 				if(count++ % 60 * 4 == 0) {
@@ -131,7 +132,8 @@ public class CosmeticManager implements Listener {
 	}
 
 	public static PitCosmetic getEquippedCosmetic(PitPlayer pitPlayer, CosmeticType cosmeticType) {
-		for(PitCosmetic pitCosmetic : cosmeticMap.get(cosmeticType)) if(pitCosmetic.isEnabled(pitPlayer)) return pitCosmetic;
+		for(PitCosmetic pitCosmetic : cosmeticMap.get(cosmeticType))
+			if(pitCosmetic.isEnabled(pitPlayer)) return pitCosmetic;
 		return null;
 	}
 

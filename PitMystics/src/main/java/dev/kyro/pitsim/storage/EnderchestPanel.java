@@ -19,6 +19,7 @@ import java.util.UUID;
 public class EnderchestPanel extends AGUIPanel {
 
 	public StorageProfile profile;
+
 	public EnderchestPanel(AGUI gui, UUID storagePlayer) {
 		super(gui);
 

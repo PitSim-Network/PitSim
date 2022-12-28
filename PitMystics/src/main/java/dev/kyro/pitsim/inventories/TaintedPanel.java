@@ -112,11 +112,12 @@ public class TaintedPanel extends AGUIPanel {
 	}
 
 	public static boolean hasShredables(Player player) {
-		for (ItemStack itemStack : player.getInventory()) {
+		for(ItemStack itemStack : player.getInventory()) {
 			if(Misc.isAirOrNull(itemStack)) continue;
 
 			NBTItem nbtItem = new NBTItem(itemStack);
-			if(nbtItem.hasKey(NBTTag.ITEM_JEWEL_ENCHANT.getRef()) || nbtItem.hasKey(NBTTag.TAINTED_TIER.getRef())) return true;
+			if(nbtItem.hasKey(NBTTag.ITEM_JEWEL_ENCHANT.getRef()) || nbtItem.hasKey(NBTTag.TAINTED_TIER.getRef()))
+				return true;
 		}
 		return false;
 	}

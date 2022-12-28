@@ -30,7 +30,8 @@ public class FirstStrike extends PitPerk {
 
 		if(!playerHasUpgrade(attackEvent.getAttacker())) return;
 
-		if(!hitPlayers.containsKey(attackEvent.getAttacker())) hitPlayers.put(attackEvent.getAttacker(), new ArrayList<>());
+		if(!hitPlayers.containsKey(attackEvent.getAttacker()))
+			hitPlayers.put(attackEvent.getAttacker(), new ArrayList<>());
 		List<LivingEntity> hitList = hitPlayers.get(attackEvent.getAttacker());
 
 		if(!hitList.contains(attackEvent.getDefender())) {

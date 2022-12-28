@@ -27,7 +27,7 @@ import java.lang.reflect.Field;
 import java.util.*;
 import java.util.concurrent.ExecutionException;
 
-public class KeeperPanel extends AGUIPanel{
+public class KeeperPanel extends AGUIPanel {
 	public KeeperPanel(AGUI gui) {
 		super(gui);
 
@@ -175,7 +175,7 @@ public class KeeperPanel extends AGUIPanel{
 
 		assert skullMeta != null;
 
-		if (url.length() < 16) {
+		if(url.length() < 16) {
 
 			skullMeta.setOwner(url);
 
@@ -201,7 +201,7 @@ public class KeeperPanel extends AGUIPanel{
 			field.setAccessible(true); // We set as accessible to modify.
 			field.set(skullMeta, gameProfile); // We set in the skullMeta the modified GameProfile that we created.
 
-		} catch (Exception e) {
+		} catch(Exception e) {
 			e.printStackTrace();
 		}
 

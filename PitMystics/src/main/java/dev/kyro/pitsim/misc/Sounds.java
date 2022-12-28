@@ -153,7 +153,7 @@ public class Sounds {
 	public static final SoundEffect KYRO_LIFESTEAL_LOSE = new SoundEffect(Sound.FIZZ, 1, 1);
 	public static final SoundEffect KYRO_LIFESTEAL_GAIN = new SoundEffect(Sound.BURP, 1, 1);
 
-//	Quests
+	//	Quests
 	public static final SoundEffect COMPLETE_QUEST = new SoundEffect(Sound.LEVEL_UP, 1, 1);
 	public static final SoundEffect GIVE_REWARD = new SoundEffect(Sound.LEVEL_UP, 1, 1);
 	public static final SoundEffect PUNCH_UNIQUE_PLAYER = new SoundEffect(Sound.VILLAGER_YES, 1, 1);

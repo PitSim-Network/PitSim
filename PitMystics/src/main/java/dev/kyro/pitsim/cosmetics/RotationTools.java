@@ -9,15 +9,15 @@ public class RotationTools {
 		pitch = Math.toRadians(pitch);
 		roll = Math.toRadians(roll);
 		double[][] rotationMatrix = {
-				new double[] {cos(yaw) * cos(roll), cos(yaw) * sin(roll) * sin(pitch) - sin(yaw) * cos(pitch), cos(yaw) * sin(roll) * cos(pitch) + sin(yaw) * sin(pitch)},
-				new double[] {sin(yaw) * cos(roll), sin(yaw) * sin(roll) * sin(pitch) + cos(yaw) * cos(pitch), sin(yaw) * sin(roll) * cos(pitch) - cos(yaw) * sin(pitch)},
-				new double[] {-sin(roll), cos(roll) * sin(pitch), cos(roll) * cos(pitch)}
+				new double[]{cos(yaw) * cos(roll), cos(yaw) * sin(roll) * sin(pitch) - sin(yaw) * cos(pitch), cos(yaw) * sin(roll) * cos(pitch) + sin(yaw) * sin(pitch)},
+				new double[]{sin(yaw) * cos(roll), sin(yaw) * sin(roll) * sin(pitch) + cos(yaw) * cos(pitch), sin(yaw) * sin(roll) * cos(pitch) - cos(yaw) * sin(pitch)},
+				new double[]{-sin(roll), cos(roll) * sin(pitch), cos(roll) * cos(pitch)}
 		};
 
 		double[][] vectorMatrix = {
-				new double[] {vector.getX()},
-				new double[] {vector.getZ()},
-				new double[] {vector.getY()}
+				new double[]{vector.getX()},
+				new double[]{vector.getZ()},
+				new double[]{vector.getY()}
 		};
 
 		double[][] finalVector = multiplyMatrices(rotationMatrix, vectorMatrix);
@@ -29,8 +29,8 @@ public class RotationTools {
 	public static double[][] multiplyMatrices(double[][] firstMatrix, double[][] secondMatrix) {
 		double[][] result = new double[firstMatrix.length][secondMatrix[0].length];
 
-		for (int row = 0; row < result.length; row++) {
-			for (int col = 0; col < result[row].length; col++) {
+		for(int row = 0; row < result.length; row++) {
+			for(int col = 0; col < result[row].length; col++) {
 				result[row][col] = multiplyMatricesCell(firstMatrix, secondMatrix, row, col);
 			}
 		}
@@ -40,7 +40,7 @@ public class RotationTools {
 
 	public static double multiplyMatricesCell(double[][] firstMatrix, double[][] secondMatrix, int row, int col) {
 		double cell = 0;
-		for (int i = 0; i < secondMatrix.length; i++) {
+		for(int i = 0; i < secondMatrix.length; i++) {
 			cell += firstMatrix[row][i] * secondMatrix[i][col];
 		}
 		return cell;

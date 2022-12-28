@@ -35,6 +35,7 @@ public class DeathFirework extends PitCosmetic {
 		Location deathLocation = killEvent.getDeadPlayer().getLocation();
 		new BukkitRunnable() {
 			private int i = 0;
+
 			@Override
 			public void run() {
 				if(i++ == 3) {

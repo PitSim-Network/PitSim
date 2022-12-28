@@ -36,6 +36,7 @@ public class LapisTrail extends PitCosmetic {
 	public void onEnable(PitPlayer pitPlayer) {
 		runnableMap.put(pitPlayer.player.getUniqueId(), new BukkitRunnable() {
 			private int count = 0;
+
 			@Override
 			public void run() {
 				if(CosmeticManager.isStandingStill(pitPlayer.player)) return;
@@ -46,7 +47,7 @@ public class LapisTrail extends PitCosmetic {
 
 					EntityPlayer entityPlayer = ((CraftPlayer) onlinePlayer).getHandle();
 					for(int i = 0; i < 2; i++)
-							collection.displayAll(entityPlayer, displayLocation);
+						collection.displayAll(entityPlayer, displayLocation);
 					if(count++ % 2 == 0 && Math.random() < 0.1) dropItem(dropStack, displayLocation, 0.5, 0.5, 0.5);
 				}
 			}
@@ -55,7 +56,8 @@ public class LapisTrail extends PitCosmetic {
 
 	@Override
 	public void onDisable(PitPlayer pitPlayer) {
-		if(runnableMap.containsKey(pitPlayer.player.getUniqueId())) runnableMap.get(pitPlayer.player.getUniqueId()).cancel();
+		if(runnableMap.containsKey(pitPlayer.player.getUniqueId()))
+			runnableMap.get(pitPlayer.player.getUniqueId()).cancel();
 	}
 
 	@Override

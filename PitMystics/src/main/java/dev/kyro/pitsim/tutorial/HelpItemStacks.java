@@ -92,8 +92,6 @@ public class HelpItemStacks {
 	}
 
 
-
-
 	public static ItemStack getCustomHead(String url) {
 
 		ItemStack skull = new ItemStack(Material.SKULL_ITEM, 1, (byte) 3);
@@ -102,7 +100,7 @@ public class HelpItemStacks {
 
 		assert skullMeta != null;
 
-		if (url.length() < 16) {
+		if(url.length() < 16) {
 
 			skullMeta.setOwner(url);
 
@@ -128,7 +126,7 @@ public class HelpItemStacks {
 			field.setAccessible(true); // We set as accessible to modify.
 			field.set(skullMeta, gameProfile); // We set in the skullMeta the modified GameProfile that we created.
 
-		} catch (Exception e) {
+		} catch(Exception e) {
 			e.printStackTrace();
 		}
 

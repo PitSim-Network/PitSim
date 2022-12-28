@@ -50,6 +50,7 @@ public class RainbowTrail extends PitCosmetic {
 	public void onEnable(PitPlayer pitPlayer) {
 		runnableMap.put(pitPlayer.player.getUniqueId(), new BukkitRunnable() {
 			private int count = 0;
+
 			@Override
 			public void run() {
 				if(CosmeticManager.isStandingStill(pitPlayer.player)) return;
@@ -68,7 +69,8 @@ public class RainbowTrail extends PitCosmetic {
 
 	@Override
 	public void onDisable(PitPlayer pitPlayer) {
-		if(runnableMap.containsKey(pitPlayer.player.getUniqueId())) runnableMap.get(pitPlayer.player.getUniqueId()).cancel();
+		if(runnableMap.containsKey(pitPlayer.player.getUniqueId()))
+			runnableMap.get(pitPlayer.player.getUniqueId()).cancel();
 	}
 
 	@Override

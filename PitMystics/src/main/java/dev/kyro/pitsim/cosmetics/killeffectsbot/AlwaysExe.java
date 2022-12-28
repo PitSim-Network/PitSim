@@ -20,7 +20,8 @@ public class AlwaysExe extends PitCosmetic {
 
 	@EventHandler
 	public void onKill(KillEvent killEvent) {
-		if(NonManager.getNon(killEvent.getDead()) == null || !isEnabled(killEvent.getKillerPitPlayer()) || killEvent.isExeDeath()) return;
+		if(NonManager.getNon(killEvent.getDead()) == null || !isEnabled(killEvent.getKillerPitPlayer()) || killEvent.isExeDeath())
+			return;
 		Sounds.EXE.play(killEvent.getKillerPlayer());
 		killEvent.getKillerPlayer().playEffect(killEvent.getDeadPlayer().getLocation().add(0, 1, 0), Effect.STEP_SOUND, 152);
 	}

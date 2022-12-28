@@ -20,7 +20,7 @@ import java.util.Map;
 public class PitSpiderBrute extends PitMob {
 
 	public PitSpiderBrute(Location spawnLoc) {
-		super(MobType.SPIDER, spawnLoc, 5, 14,  "&c&lSpider Brute", 5);
+		super(MobType.SPIDER, spawnLoc, 5, 14, "&c&lSpider Brute", 5);
 	}
 
 	@Override

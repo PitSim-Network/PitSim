@@ -56,7 +56,8 @@ public abstract class AIParticle {
 		for(Player onlinePlayer : Bukkit.getOnlinePlayers()) {
 			if(onlinePlayer == owner || onlinePlayer.getWorld() != owner.getWorld() || VanishAPI.isInvisible(onlinePlayer) ||
 					onlinePlayer.getGameMode() == GameMode.CREATIVE || onlinePlayer.getGameMode() == GameMode.SPECTATOR ||
-					SpawnManager.isInSpawn(onlinePlayer.getLocation()) || SpawnManager.isInSpawn(owner.getLocation())) continue;
+					SpawnManager.isInSpawn(onlinePlayer.getLocation()) || SpawnManager.isInSpawn(owner.getLocation()))
+				continue;
 			double testDistance = onlinePlayer.getLocation().distance(owner.getLocation());
 			if(testDistance > 15 || testDistance > distance) continue;
 			closestPlayer = onlinePlayer;
@@ -67,6 +68,7 @@ public abstract class AIParticle {
 	}
 
 	public void display(Effect effect) {
-		for(Player player : CosmeticManager.getDisplayPlayers(owner, particleLocation, 50)) player.playEffect(particleLocation, effect, 1);
+		for(Player player : CosmeticManager.getDisplayPlayers(owner, particleLocation, 50))
+			player.playEffect(particleLocation, effect, 1);
 	}
 }

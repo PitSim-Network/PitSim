@@ -26,78 +26,78 @@ public class ChargedCreeperBoss extends PitBoss {
      */
 
 
-    public NPC npc;
-    public Player entity;
-    public Player target;
-    public String name = "&c&lCreeper Boss";
-    public SubLevel subLevel = SubLevel.CREEPER_CAVE;
-    public SimpleBoss boss;
+	public NPC npc;
+	public Player entity;
+	public Player target;
+	public String name = "&c&lCreeper Boss";
+	public SubLevel subLevel = SubLevel.CREEPER_CAVE;
+	public SimpleBoss boss;
 
-    public ChargedCreeperBoss(Player target) throws Exception {
-        super(target, SubLevel.CREEPER_CAVE, 35);
-        npc = CitizensAPI.getNPCRegistry().createNPC(EntityType.PLAYER, name);
+	public ChargedCreeperBoss(Player target) throws Exception {
+		super(target, SubLevel.CREEPER_CAVE, 35);
+		npc = CitizensAPI.getNPCRegistry().createNPC(EntityType.PLAYER, name);
 
-        this.boss = new SimpleBoss(npc, target, subLevel, 4, SimpleSkin.CREEPER, this) {
-            @Override
-            protected void attackHigh(){
-                target.sendMessage(ChatColor.translateAlternateColorCodes('&', "&c&lNUCLEAR REACTOR! &7Ouch, you're on full blast!"));
+		this.boss = new SimpleBoss(npc, target, subLevel, 4, SimpleSkin.CREEPER, this) {
+			@Override
+			protected void attackHigh() {
+				target.sendMessage(ChatColor.translateAlternateColorCodes('&', "&c&lNUCLEAR REACTOR! &7Ouch, you're on full blast!"));
 
-                target.getWorld().playEffect(target.getLocation(), Effect.EXPLOSION_LARGE, 1);
-                if(npc.getEntity() != null){
-                    for (Entity player : npc.getEntity().getNearbyEntities(10, 10, 10)) {
-                        if(player != target) continue;
-                        PitPlayer.getPitPlayer((Player) player).damage(3.0, (LivingEntity) npc.getEntity());
-                    }
-                }
-            }
+				target.getWorld().playEffect(target.getLocation(), Effect.EXPLOSION_LARGE, 1);
+				if(npc.getEntity() != null) {
+					for(Entity player : npc.getEntity().getNearbyEntities(10, 10, 10)) {
+						if(player != target) continue;
+						PitPlayer.getPitPlayer((Player) player).damage(3.0, (LivingEntity) npc.getEntity());
+					}
+				}
+			}
 
-            @Override
-            protected void attackMedium(){
-                Vector dirVector = ChargedCreeperBoss.this.target.getLocation().toVector().subtract(npc.getEntity().getLocation().toVector()).setY(0);
-                Vector pullVector = dirVector.clone().normalize().setY(0.2).multiply(0.5).add(dirVector.clone().multiply(0.03));
+			@Override
+			protected void attackMedium() {
+				Vector dirVector = ChargedCreeperBoss.this.target.getLocation().toVector().subtract(npc.getEntity().getLocation().toVector()).setY(0);
+				Vector pullVector = dirVector.clone().normalize().setY(0.2).multiply(0.5).add(dirVector.clone().multiply(0.03));
 
-                if(npc.getEntity() != null)
-                    ThrowBlockEvent.addThrowableBlock(new ThrowableBlock(npc.getEntity(), Material.TNT, pullVector.multiply((0.5 * 0.2) + 1.15)));
-            }
+				if(npc.getEntity() != null)
+					ThrowBlockEvent.addThrowableBlock(new ThrowableBlock(npc.getEntity(), Material.TNT, pullVector.multiply((0.5 * 0.2) + 1.15)));
+			}
 
-            @Override
-            protected void attackLow(){
-                target.getWorld().createExplosion(target.getLocation().getX(), target.getLocation().getY(), target.getLocation().getZ(), 2, false, false);
-            }
+			@Override
+			protected void attackLow() {
+				target.getWorld().createExplosion(target.getLocation().getX(), target.getLocation().getY(), target.getLocation().getZ(), 2, false, false);
+			}
 
-            @Override
-            protected void defend() {
+			@Override
+			protected void defend() {
 
-            }
-        };
-        this.entity = (Player) npc.getEntity();
-        this.target = target;
+			}
+		};
+		this.entity = (Player) npc.getEntity();
+		this.target = target;
 
-        boss.run();
-    }
+		boss.run();
+	}
 
-    public void onAttack(AttackEvent.Apply event) throws Exception {
-        boss.attackAbility(event);
-    }
+	public void onAttack(AttackEvent.Apply event) throws Exception {
+		boss.attackAbility(event);
+	}
 
-    @Override
-    public void onDefend() {
-        boss.defendAbility();
-    }
+	@Override
+	public void onDefend() {
+		boss.defendAbility();
+	}
 
-    @Override
-    public void onDeath() {
-        boss.hideActiveBossBar();
-    }
+	@Override
+	public void onDeath() {
+		boss.hideActiveBossBar();
+	}
 
-    @Override
-    public void setNPC(NPC npc) {
-        this.npc = npc;
-    }
+	@Override
+	public void setNPC(NPC npc) {
+		this.npc = npc;
+	}
 
-    @Override
-    public Player getEntity() {
-        return (Player) npc.getEntity();
-    }
+	@Override
+	public Player getEntity() {
+		return (Player) npc.getEntity();
+	}
 
 }

@@ -49,6 +49,7 @@ public abstract class PitCosmetic implements Listener {
 	public abstract ItemStack getRawDisplayItem();
 
 	public void onEnable(PitPlayer pitPlayer) {}
+
 	public void onDisable(PitPlayer pitPlayer) {}
 
 	public void enable(PitPlayer pitPlayer) {
@@ -133,7 +134,7 @@ public abstract class PitCosmetic implements Listener {
 		return particleColors;
 	}
 
-//	Returns true if color cosmetic if any color is equipped
+	//	Returns true if color cosmetic if any color is equipped
 	public boolean isEnabled(PitPlayer pitPlayer) {
 		if(pitPlayer == null || !isUnlocked(pitPlayer)) return false;
 		if(!pitPlayer.equippedCosmeticMap.containsKey(cosmeticType.name())) return false;

@@ -18,61 +18,61 @@ import java.util.List;
 
 public class ThrowBlockEvent implements Listener {
 
-    public static List<ThrowableBlock> throwableBlockClassHandler = new ArrayList();
+	public static List<ThrowableBlock> throwableBlockClassHandler = new ArrayList();
 
-    public static void addThrowableBlock(ThrowableBlock block){
-        throwableBlockClassHandler.add(block);
-    }
+	public static void addThrowableBlock(ThrowableBlock block) {
+		throwableBlockClassHandler.add(block);
+	}
 
-    @EventHandler
-    public void onFall(EntityChangeBlockEvent event){
-        if(event.getEntity() instanceof FallingBlock){
-            for(ThrowableBlock block : new ArrayList<>(throwableBlockClassHandler)){
-                if(block.getBlock().equals(event.getEntity())){
-                    event.setCancelled(true);
+	@EventHandler
+	public void onFall(EntityChangeBlockEvent event) {
+		if(event.getEntity() instanceof FallingBlock) {
+			for(ThrowableBlock block : new ArrayList<>(throwableBlockClassHandler)) {
+				if(block.getBlock().equals(event.getEntity())) {
+					event.setCancelled(true);
 
-                    block.run(event);
-                    event.getEntity().remove();
-                    throwableBlockClassHandler.remove(block);
-                }
-            }
+					block.run(event);
+					event.getEntity().remove();
+					throwableBlockClassHandler.remove(block);
+				}
+			}
 
-        }
-    }
+		}
+	}
 
-    @EventHandler
-    public void onInteract(PlayerInteractEvent event) {
-        int items = 0;
+	@EventHandler
+	public void onInteract(PlayerInteractEvent event) {
+		int items = 0;
 
-        if (Misc.isAirOrNull(event.getPlayer().getItemInHand()) || event.getAction() == Action.LEFT_CLICK_AIR || event.getAction() == Action.LEFT_CLICK_BLOCK)
-            return;
+		if(Misc.isAirOrNull(event.getPlayer().getItemInHand()) || event.getAction() == Action.LEFT_CLICK_AIR || event.getAction() == Action.LEFT_CLICK_BLOCK)
+			return;
 
-        Material block = event.getPlayer().getItemInHand().getType();
+		Material block = event.getPlayer().getItemInHand().getType();
 
-        if(block.equals(Material.ANVIL)){
-            event.getPlayer().setVelocity(event.getPlayer().getLocation().getDirection());
+		if(block.equals(Material.ANVIL)) {
+			event.getPlayer().setVelocity(event.getPlayer().getLocation().getDirection());
 
-            AOutput.send(event.getPlayer(), "&c&lWOO! &7I'm a block now!!!");
-            Sounds.WITHER_SHOOT.play(event.getPlayer());
-            event.getPlayer().getInventory().removeItem(new ItemStack(Material.ANVIL));
-        }else if(block.equals(Material.SOUL_SAND)){
-            //Vector dirVector = event.getPlayer().getEyeLocation().getDirection().subtract(event.getPlayer().getLocation().toVector()).setY(0);
-            //Vector pullVector = dirVector.clone().normalize().setY(0.2).multiply(0.5).add(dirVector.clone().multiply(0.03));
+			AOutput.send(event.getPlayer(), "&c&lWOO! &7I'm a block now!!!");
+			Sounds.WITHER_SHOOT.play(event.getPlayer());
+			event.getPlayer().getInventory().removeItem(new ItemStack(Material.ANVIL));
+		} else if(block.equals(Material.SOUL_SAND)) {
+			//Vector dirVector = event.getPlayer().getEyeLocation().getDirection().subtract(event.getPlayer().getLocation().toVector()).setY(0);
+			//Vector pullVector = dirVector.clone().normalize().setY(0.2).multiply(0.5).add(dirVector.clone().multiply(0.03));
 
-            event.getPlayer().setVelocity(event.getPlayer().getLocation().getDirection());
+			event.getPlayer().setVelocity(event.getPlayer().getLocation().getDirection());
 
-            AOutput.send(event.getPlayer(), "&c&lWOO! &7I'm a block now!!!");
-            Sounds.WITHER_SHOOT.play(event.getPlayer());
-            event.getPlayer().getInventory().removeItem(new ItemStack(Material.SOUL_SAND));
-        }else if (block.equals(Material.TNT)){
-            event.getPlayer().setVelocity(event.getPlayer().getLocation().getDirection());
+			AOutput.send(event.getPlayer(), "&c&lWOO! &7I'm a block now!!!");
+			Sounds.WITHER_SHOOT.play(event.getPlayer());
+			event.getPlayer().getInventory().removeItem(new ItemStack(Material.SOUL_SAND));
+		} else if(block.equals(Material.TNT)) {
+			event.getPlayer().setVelocity(event.getPlayer().getLocation().getDirection());
 
-            AOutput.send(event.getPlayer(), "&c&lWOO! &7I'm a block now!!!");
-            Sounds.WITHER_SHOOT.play(event.getPlayer());
-            event.getPlayer().getInventory().removeItem(new ItemStack(Material.TNT));
-            //ThrowBlock.addThrowableBlock(new ThrowableBlock(event.getPlayer(), Material.TNT, pullVector.multiply((0.5 * 0.2) + 1.15)));
-        }
+			AOutput.send(event.getPlayer(), "&c&lWOO! &7I'm a block now!!!");
+			Sounds.WITHER_SHOOT.play(event.getPlayer());
+			event.getPlayer().getInventory().removeItem(new ItemStack(Material.TNT));
+			//ThrowBlock.addThrowableBlock(new ThrowableBlock(event.getPlayer(), Material.TNT, pullVector.multiply((0.5 * 0.2) + 1.15)));
+		}
 
-    }
+	}
 
 }

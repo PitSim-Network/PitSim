@@ -32,7 +32,8 @@ public class TaintedSoul extends PitEnchant {
 		if(attackEvent.isDefenderPlayer() && PitBoss.isPitBoss(attackEvent.getDefenderPlayer())) return;
 
 		Cooldown cooldown = getCooldown(attackEvent.getAttackerPlayer(), getCooldown() * 20);
-		if(cooldown.isOnCooldown()) return; else cooldown.restart();
+		if(cooldown.isOnCooldown()) return;
+		else cooldown.restart();
 
 		if(attackEvent.getDefender().getHealth() > 1) {
 			attackEvent.getDefender().setHealth(attackEvent.getDefender().getHealth() * 0.80);

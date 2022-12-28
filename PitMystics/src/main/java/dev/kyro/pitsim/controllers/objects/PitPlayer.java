@@ -154,10 +154,13 @@ public class PitPlayer {
 	private PassData passData = new PassData();
 
 	public Map<String, UnlockedCosmeticData> unlockedCosmeticsMap = new HashMap<>();
+
 	public static class UnlockedCosmeticData {
 		public List<ParticleColor> unlockedColors;
 	}
+
 	public Map<String, EquippedCosmeticData> equippedCosmeticMap = new HashMap<>();
+
 	public static class EquippedCosmeticData {
 		public String refName;
 		public ParticleColor particleColor;
@@ -172,8 +175,9 @@ public class PitPlayer {
 	}
 
 	public PlayerSettings playerSettings = new PlayerSettings();
+
 	public static class PlayerSettings {
-//		Particle Settings
+		//		Particle Settings
 		public boolean auraParticles = true;
 		public boolean trailParticles = true;
 	}
@@ -193,7 +197,8 @@ public class PitPlayer {
 		long daysPassed = TimeUnit.DAYS.convert(Misc.convertToEST(new Date()).getTime() - passDate.getTime(), TimeUnit.MILLISECONDS);
 		if(daysPassed != passData.daysPassed) {
 			passData.daysPassed = daysPassed;
-			for(PassQuest dailyQuest : PassManager.getDailyQuests()) passData.questCompletion.remove(dailyQuest.refName);
+			for(PassQuest dailyQuest : PassManager.getDailyQuests())
+				passData.questCompletion.remove(dailyQuest.refName);
 		}
 		return passData;
 	}
@@ -204,12 +209,14 @@ public class PitPlayer {
 
 	@Exclude
 	public long lastSave;
+
 	@Exclude
 	public void save(boolean itemData, boolean finalSave) {
 		try {
 			save(finalSave, null, itemData);
 		} catch(ExecutionException | InterruptedException ignored) {}
 	}
+
 	@Exclude
 	public void save(boolean finalSave, BukkitRunnable callback, boolean itemData) throws ExecutionException, InterruptedException {
 		if(PitSim.getStatus() == PitSim.ServerStatus.ALL) return;
@@ -248,7 +255,8 @@ public class PitPlayer {
 		megastreakRef = megastreak.getRefNames().get(0);
 
 		OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(uuid);
-		if(offlinePlayer.getName() != null && PitSim.VAULT.hasAccount(offlinePlayer)) gold = PitSim.VAULT.getBalance(offlinePlayer);
+		if(offlinePlayer.getName() != null && PitSim.VAULT.hasAccount(offlinePlayer))
+			gold = PitSim.VAULT.getBalance(offlinePlayer);
 
 		for(int i = 0; i < pitPerks.size(); i++) {
 			PitPerk pitPerk = pitPerks.get(i);
@@ -272,7 +280,7 @@ public class PitPlayer {
 		}
 	}
 
-//	NPC Init
+	//	NPC Init
 	public PitPlayer(Player player) {
 		this.isNPC = true;
 
@@ -294,41 +302,42 @@ public class PitPlayer {
 		APlayer aPlayer = APlayerData.getPlayerData(uuid);
 		FileConfiguration playerData = aPlayer.playerData;
 
-			prestige = playerData.getInt("prestige");
-			level = playerData.contains("level") ? playerData.getInt("level") : 1;
-			remainingXP = playerData.getInt("xp");
-			soulsGathered = playerData.getInt("soulsgathered");
+		prestige = playerData.getInt("prestige");
+		level = playerData.contains("level") ? playerData.getInt("level") : 1;
+		remainingXP = playerData.getInt("xp");
+		soulsGathered = playerData.getInt("soulsgathered");
 		OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(uuid);
-		if(offlinePlayer.getName() != null && PitSim.VAULT.hasAccount(offlinePlayer)) gold = PitSim.VAULT.getBalance(offlinePlayer);
-			renown = playerData.getInt("renown");
-			for(int i = 0; i < pitPerks.size(); i++) {
-				PitPerk defaultPerk = NoPerk.INSTANCE;
-				if(i == 0) defaultPerk = Vampire.INSTANCE;
-				else if(i == 1) defaultPerk = StrengthChaining.INSTANCE;
-				else if(i == 2) defaultPerk = Dirty.INSTANCE;
-				else if(i == 3) defaultPerk = Dispersion.INSTANCE;
+		if(offlinePlayer.getName() != null && PitSim.VAULT.hasAccount(offlinePlayer))
+			gold = PitSim.VAULT.getBalance(offlinePlayer);
+		renown = playerData.getInt("renown");
+		for(int i = 0; i < pitPerks.size(); i++) {
+			PitPerk defaultPerk = NoPerk.INSTANCE;
+			if(i == 0) defaultPerk = Vampire.INSTANCE;
+			else if(i == 1) defaultPerk = StrengthChaining.INSTANCE;
+			else if(i == 2) defaultPerk = Dirty.INSTANCE;
+			else if(i == 3) defaultPerk = Dispersion.INSTANCE;
 
-				String perkString = playerData.getString("perk-" + i);
-				PitPerk savedPerk = perkString != null ? PitPerk.getPitPerk(perkString) : defaultPerk;
-				pitPerks.set(i, savedPerk != null ? savedPerk : defaultPerk);
-			}
-			for(int i = 0; i < killstreaks.size(); i++) {
-				Killstreak defaultKillstreak = NoKillstreak.INSTANCE;
-				if(i == 0) defaultKillstreak = Limiter.INSTANCE;
+			String perkString = playerData.getString("perk-" + i);
+			PitPerk savedPerk = perkString != null ? PitPerk.getPitPerk(perkString) : defaultPerk;
+			pitPerks.set(i, savedPerk != null ? savedPerk : defaultPerk);
+		}
+		for(int i = 0; i < killstreaks.size(); i++) {
+			Killstreak defaultKillstreak = NoKillstreak.INSTANCE;
+			if(i == 0) defaultKillstreak = Limiter.INSTANCE;
 
-				String killstreakString = playerData.getString("killstreak-" + i);
-				Killstreak savedKillstreak = killstreakString != null ? Killstreak.getKillstreak(killstreakString) : NoKillstreak.INSTANCE;
-				if(savedKillstreak == null) killstreaks.set(i, defaultKillstreak);
-				else killstreaks.set(i, savedKillstreak);
-			}
-			String streak = playerData.getString("megastreak");
-			if(Objects.equals(streak, "Beastmode")) this.megastreak = new Beastmode(this);
-			if(Objects.equals(streak, "No Megastreak")) this.megastreak = new NoMegastreak(this);
-			if(Objects.equals(streak, "Highlander")) this.megastreak = new Highlander(this);
-			if(Objects.equals(streak, "Overdrive")) this.megastreak = new Overdrive(this);
-			if(Objects.equals(streak, "Uberstreak")) this.megastreak = new Uberstreak(this);
-			if(Objects.equals(streak, "To the Moon")) this.megastreak = new ToTheMoon(this);
-			if(Objects.equals(streak, "RNGesus")) this.megastreak = new RNGesus(this);
+			String killstreakString = playerData.getString("killstreak-" + i);
+			Killstreak savedKillstreak = killstreakString != null ? Killstreak.getKillstreak(killstreakString) : NoKillstreak.INSTANCE;
+			if(savedKillstreak == null) killstreaks.set(i, defaultKillstreak);
+			else killstreaks.set(i, savedKillstreak);
+		}
+		String streak = playerData.getString("megastreak");
+		if(Objects.equals(streak, "Beastmode")) this.megastreak = new Beastmode(this);
+		if(Objects.equals(streak, "No Megastreak")) this.megastreak = new NoMegastreak(this);
+		if(Objects.equals(streak, "Highlander")) this.megastreak = new Highlander(this);
+		if(Objects.equals(streak, "Overdrive")) this.megastreak = new Overdrive(this);
+		if(Objects.equals(streak, "Uberstreak")) this.megastreak = new Uberstreak(this);
+		if(Objects.equals(streak, "To the Moon")) this.megastreak = new ToTheMoon(this);
+		if(Objects.equals(streak, "RNGesus")) this.megastreak = new RNGesus(this);
 
 		playerChatDisabled = playerData.getBoolean("disabledplayerchat");
 		killFeedDisabled = playerData.getBoolean("disabledkillfeed");
@@ -354,10 +363,11 @@ public class PitPlayer {
 		dailyUbersLeft = playerData.contains("ubersleft") ? playerData.getInt("ubersleft") : 5;
 		uberReset = playerData.getLong("ubercooldown");
 		goldGrinded = playerData.getInt("goldgrinded");
-		for(Booster booster : BoosterManager.boosterList) boosters.put(booster.refName, playerData.getInt("boosters." + booster.refName));
+		for(Booster booster : BoosterManager.boosterList)
+			boosters.put(booster.refName, playerData.getInt("boosters." + booster.refName));
 
-			stats = new PlayerStats(this, playerData);
-			tutorial = new Tutorial(this, playerData);
+		stats = new PlayerStats(this, playerData);
+		tutorial = new Tutorial(this, playerData);
 //			updateXPBar();
 
 		for(int i = 0; i < brewingSessions.size(); i++) {
@@ -380,7 +390,8 @@ public class PitPlayer {
 			renownUpgrades.put(upgrade.refName, tier);
 		}
 
-		if(playerData.contains("auctionreturn")) auctionReturn = Arrays.asList(playerData.getString("auctionreturn").split(","));
+		if(playerData.contains("auctionreturn"))
+			auctionReturn = Arrays.asList(playerData.getString("auctionreturn").split(","));
 		if(playerData.contains("soulreturn")) soulReturn = playerData.getInt("soulreturn");
 		if(playerData.contains("darkzonepreview")) darkzoneCutscene = playerData.getBoolean("darkzonepreview");
 	}
@@ -691,7 +702,8 @@ public class PitPlayer {
 
 	@Exclude
 	public void updateXPBar() {
-		if(megastreak.getClass() == RNGesus.class && getKills() < RNGesus.INSTABILITY_THRESHOLD && getKills() >= 100) return;
+		if(megastreak.getClass() == RNGesus.class && getKills() < RNGesus.INSTABILITY_THRESHOLD && getKills() >= 100)
+			return;
 
 		if(MapManager.inDarkzone(player)) {
 			player.setLevel((int) Math.ceil(mana));

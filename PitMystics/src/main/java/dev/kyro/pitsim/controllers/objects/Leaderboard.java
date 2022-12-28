@@ -19,7 +19,7 @@ public abstract class Leaderboard {
 
 	public int slot;
 	public static List<Integer> slots = new ArrayList<>(Arrays.asList(10, 11, 13, 14, 15, 16, 20, 21, 22, 23, 24));
-//	public static List<Integer> slots = new ArrayList<>(Arrays.asList(10, 11, 12, 13, 14, 15, 16, 20, 21, 22, 23, 24));
+	//	public static List<Integer> slots = new ArrayList<>(Arrays.asList(10, 11, 12, 13, 14, 15, 16, 20, 21, 22, 23, 24));
 	public String refName;
 
 	public Leaderboard(String refName) {
@@ -28,9 +28,13 @@ public abstract class Leaderboard {
 	}
 
 	public abstract ItemStack getDisplayStack(UUID uuid);
+
 	public abstract String getDisplayValue(LeaderboardPosition position);
+
 	public abstract String getDisplayValue(PitPlayer pitPlayer);
+
 	public abstract void setPosition(LeaderboardPosition position);
+
 	public abstract boolean isMoreThanOrEqual(LeaderboardPosition position, LeaderboardPosition otherPosition);
 
 	public static String getRankColor(UUID uuid) {
@@ -41,7 +45,7 @@ public abstract class Leaderboard {
 		ALoreBuilder aLoreBuilder = new ALoreBuilder();
 		boolean isOnLeaderboard = false;
 		for(int i = 0; i < 10; i++) {
-			if(orderedLeaderboard.size() < i + 1)  {
+			if(orderedLeaderboard.size() < i + 1) {
 				aLoreBuilder.addLore("&e" + (i + 1) + ". &cERROR");
 				continue;
 			}

@@ -196,7 +196,8 @@ public class EnchantManager implements Listener {
 				itemStack.getType() == Material.DIAMOND_LEGGINGS || itemStack.getType() == Material.DIAMOND_BOOTS ||
 				itemStack.getType() == Material.DIAMOND_SWORD) {
 
-			if(itemStack.getEnchantmentLevel(Enchantment.DAMAGE_ALL) > 1 || itemStack.getEnchantmentLevel(Enchantment.PROTECTION_ENVIRONMENTAL) > 1) return true;
+			if(itemStack.getEnchantmentLevel(Enchantment.DAMAGE_ALL) > 1 || itemStack.getEnchantmentLevel(Enchantment.PROTECTION_ENVIRONMENTAL) > 1)
+				return true;
 		}
 
 		NBTItem nbtItem = new NBTItem(itemStack);
@@ -206,7 +207,7 @@ public class EnchantManager implements Listener {
 			if(nbtItem.hasKey(NBTTag.IS_GEMMED.getRef())) return true;
 			Map<PitEnchant, Integer> enchants = EnchantManager.getEnchantsOnItem(itemStack);
 			int tainted = 0;
-			for (PitEnchant pitEnchant : enchants.keySet()) {
+			for(PitEnchant pitEnchant : enchants.keySet()) {
 				if(pitEnchant.tainted) tainted++;
 			}
 			return tainted > 1;
@@ -222,11 +223,11 @@ public class EnchantManager implements Listener {
 
 			int maxTokens = isGemmed && isJewel ? 9 : 8;
 			if(enchantNum > 3 || tokenNum > maxTokens || rTokenNum > 4) return true;
-			for (PitEnchant pitEnchant : EnchantManager.pitEnchants) {
+			for(PitEnchant pitEnchant : EnchantManager.pitEnchants) {
 				if(itemEnchants.getInteger(pitEnchant.refNames.get(0)) > 3) return true;
 			}
 			boolean hasCommonEnchant = false;
-			for (String enchantString : enchantOrder) {
+			for(String enchantString : enchantOrder) {
 				PitEnchant pitEnchant = EnchantManager.getEnchant(enchantString);
 //				if(pitEnchant == EnchantManager.getEnchant("theking")) return true;
 				if(pitEnchant == SelfCheckout.INSTANCE && !isJewel) return true;
@@ -264,7 +265,7 @@ public class EnchantManager implements Listener {
 						.replaceAll("\u00A7k", "")
 						.replaceAll("\u00A7l", "")
 						.replaceAll("\u00A7m", "")
-						.replaceAll("\u00A7n",  "")
+						.replaceAll("\u00A7n", "")
 						.replaceAll("\u00A7o", "");
 				if(!displayName.equals(newDisplayName)) {
 					itemMeta.setDisplayName(newDisplayName);
@@ -685,18 +686,20 @@ public class EnchantManager implements Listener {
 					break;
 				case WEAPONS:
 					if(enchantApplyType == ApplyType.WEAPONS || enchantApplyType == ApplyType.BOWS
-							|| enchantApplyType == ApplyType.SWORDS || enchantApplyType == ApplyType.MELEE) applicableEnchants.add(pitEnchant);
+							|| enchantApplyType == ApplyType.SWORDS || enchantApplyType == ApplyType.MELEE)
+						applicableEnchants.add(pitEnchant);
 					break;
 				case SCYTHES:
-					if (enchantApplyType == ApplyType.SCYTHES || enchantApplyType == ApplyType.MELEE) applicableEnchants.add(pitEnchant);
+					if(enchantApplyType == ApplyType.SCYTHES || enchantApplyType == ApplyType.MELEE)
+						applicableEnchants.add(pitEnchant);
 					break;
 				case CHESTPLATES:
-					if (enchantApplyType == CHESTPLATES) applicableEnchants.add(pitEnchant);
+					if(enchantApplyType == CHESTPLATES) applicableEnchants.add(pitEnchant);
 					break;
 				case MELEE:
 					if(enchantApplyType == ApplyType.MELEE) applicableEnchants.add(pitEnchant);
 					break;
-				}
+			}
 
 		}
 		return applicableEnchants;
@@ -723,7 +726,8 @@ public class EnchantManager implements Listener {
 						applicableEnchants.add(pitEnchant);
 					break;
 				case TAINTED_CHESTPLATE:
-					if(enchantApplyType == CHESTPLATES || enchantApplyType == ApplyType.TAINTED) applicableEnchants.add(pitEnchant);
+					if(enchantApplyType == CHESTPLATES || enchantApplyType == ApplyType.TAINTED)
+						applicableEnchants.add(pitEnchant);
 					break;
 				case TAINTED_SCYTHE:
 					if(enchantApplyType == ApplyType.SCYTHES) applicableEnchants.add(pitEnchant);

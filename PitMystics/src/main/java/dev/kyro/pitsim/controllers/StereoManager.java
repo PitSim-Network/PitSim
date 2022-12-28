@@ -25,7 +25,8 @@ public class StereoManager implements Listener {
 
 	public static boolean hasStereo(Player player) {
 		if(!Misc.isAirOrNull(player.getInventory().getLeggings())) {
-			if(EnchantManager.getEnchantsOnItem(player.getInventory().getLeggings()).containsKey(Stereo.INSTANCE)) return true;
+			if(EnchantManager.getEnchantsOnItem(player.getInventory().getLeggings()).containsKey(Stereo.INSTANCE))
+				return true;
 		}
 		if(!Misc.isAirOrNull(player.getInventory().getChestplate())) {
 			return EnchantManager.getEnchantsOnItem(player.getInventory().getChestplate()).containsKey(Stereo.INSTANCE);
@@ -40,7 +41,8 @@ public class StereoManager implements Listener {
 			public void run() {
 				boolean stereoOnChest = false;
 				if(!Misc.isAirOrNull(event.getPlayer().getInventory().getChestplate())) {
-					if(!EnchantManager.getEnchantsOnItem(event.getPlayer().getInventory().getChestplate()).containsKey(Stereo.INSTANCE)) stereoOnChest = true;
+					if(!EnchantManager.getEnchantsOnItem(event.getPlayer().getInventory().getChestplate()).containsKey(Stereo.INSTANCE))
+						stereoOnChest = true;
 				}
 
 				if(stereoOnChest && !MapManager.inDarkzone(event.getPlayer())) {

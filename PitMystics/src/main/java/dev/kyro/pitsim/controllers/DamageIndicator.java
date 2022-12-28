@@ -76,7 +76,8 @@ public class DamageIndicator implements Listener {
 		StringBuilder output = new StringBuilder();
 
 		String playername = "&7%luckperms_prefix%" + (defendingNon == null ? "%player_name%" : defendingNon.displayName) + " ";
-		if(defender instanceof Player)output.append(PlaceholderAPI.setPlaceholders(attackEvent.getDefenderPlayer(), playername));
+		if(defender instanceof Player)
+			output.append(PlaceholderAPI.setPlaceholders(attackEvent.getDefenderPlayer(), playername));
 		else if(PitMob.isPitMob(defender)) output.append(PitMob.getPitMob(defender).displayName).append(" ");
 		else output.append(player.getCustomName() + " ");
 

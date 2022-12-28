@@ -13,5 +13,4 @@ public enum MobType {
 	ZOMBIE_PIGMAN;
 
 
-
 }

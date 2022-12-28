@@ -72,7 +72,8 @@ public class ItemManager implements Listener {
 
 		Location darkAuction = AuctionDisplays.pedestalLocations[0];
 		double distance = 50;
-		if(player.getWorld() == MapManager.getDarkzone()) distance = darkAuction.distance(event.getPlayer().getLocation());
+		if(player.getWorld() == MapManager.getDarkzone())
+			distance = darkAuction.distance(event.getPlayer().getLocation());
 
 		boolean cancelDrop;
 		cancelDrop = event.getPlayer().getWorld() == MapManager.getDarkzone() && distance < 50;

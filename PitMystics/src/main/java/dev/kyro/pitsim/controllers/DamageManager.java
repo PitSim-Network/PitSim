@@ -70,7 +70,8 @@ public class DamageManager implements Listener {
 	@EventHandler
 	public void onDamage(EntityDamageEvent event) {
 		if(!(event.getEntity() instanceof Player)) return;
-		if(event.getCause() != EntityDamageEvent.DamageCause.WITHER && event.getCause() != EntityDamageEvent.DamageCause.CUSTOM) return;
+		if(event.getCause() != EntityDamageEvent.DamageCause.WITHER && event.getCause() != EntityDamageEvent.DamageCause.CUSTOM)
+			return;
 		Player player = (Player) event.getEntity();
 		if(event.getFinalDamage() >= player.getHealth()) {
 			event.setCancelled(true);
@@ -318,8 +319,7 @@ public class DamageManager implements Listener {
 		if(killType == KillType.DEATH) {
 			oofEvent = new OofEvent(deadPlayer);
 			Bukkit.getPluginManager().callEvent(oofEvent);
-		}
-		else {
+		} else {
 			killEvent = new KillEvent(attackEvent, killer, dead, hasModifier(KillModifier.EXE_DEATH, killModifiers));
 			Bukkit.getServer().getPluginManager().callEvent(killEvent);
 		}
@@ -336,7 +336,7 @@ public class DamageManager implements Listener {
 			nmsPlayer.setAbsorptionHearts(0);
 
 			if(!LifeInsurance.isApplicable(deadPlayer) && !hasModifier(KillModifier.SELF_CHECKOUT, killModifiers))
-					loseLives(dead, killer);
+				loseLives(dead, killer);
 
 			if(NonManager.getNon(dead) == null) pitDead.endKillstreak();
 			Telebow.teleShots.removeIf(teleShot -> teleShot.getShooter().equals(dead));
@@ -396,90 +396,94 @@ public class DamageManager implements Listener {
 
 		DecimalFormat df = new DecimalFormat("##0.00");
 		String kill = null;
-		if(!deadIsPlayer && PitMob.isPitMob(dead)) kill = ChatColor.translateAlternateColorCodes('&', "&a&lKILL!&7 on " + PitMob.getPitMob(dead).displayName);
-		else if(killType != KillType.DEATH) kill = PlaceholderAPI.setPlaceholders(killEvent.getDeadPlayer(), "&a&lKILL!&7 on %luckperms_prefix%" + (deadNon == null ? "%player_name%" : deadNon.displayName)
-				+ " &b+" + killEvent.getFinalXp() + "XP" + " &6+" + df.format(killEvent.getFinalGold()) + "g");
+		if(!deadIsPlayer && PitMob.isPitMob(dead))
+			kill = ChatColor.translateAlternateColorCodes('&', "&a&lKILL!&7 on " + PitMob.getPitMob(dead).displayName);
+		else if(killType != KillType.DEATH)
+			kill = PlaceholderAPI.setPlaceholders(killEvent.getDeadPlayer(), "&a&lKILL!&7 on %luckperms_prefix%" + (deadNon == null ? "%player_name%" : deadNon.displayName)
+					+ " &b+" + killEvent.getFinalXp() + "XP" + " &6+" + df.format(killEvent.getFinalGold()) + "g");
 		String death;
 		if(!killerIsPlayer) death = ChatColor.translateAlternateColorCodes('&', "&c&lDEATH!");
-		else if(killType == KillType.DEFAULT) death = PlaceholderAPI.setPlaceholders(killEvent.getKillerPlayer(), "&c&lDEATH! &7by %luckperms_prefix%" + (killingNon == null ? "%player_name%" : killingNon.displayName));
+		else if(killType == KillType.DEFAULT)
+			death = PlaceholderAPI.setPlaceholders(killEvent.getKillerPlayer(), "&c&lDEATH! &7by %luckperms_prefix%" + (killingNon == null ? "%player_name%" : killingNon.displayName));
 		else death = "&c&lDEATH!";
 		String killActionBar = null;
-		if(killerIsPlayer) killActionBar = "&7%luckperms_prefix%" + (deadNon == null ? "%player_name%" : deadNon.displayName) + " &a&lKILL!";
+		if(killerIsPlayer)
+			killActionBar = "&7%luckperms_prefix%" + (deadNon == null ? "%player_name%" : deadNon.displayName) + " &a&lKILL!";
 		else if(PitMob.isPitMob(dead)) killActionBar = PitMob.getPitMob(dead).displayName + " &a&lKILL!";
 
-			if(killerIsPlayer && !CitizensAPI.getNPCRegistry().isNPC(killer) && !pitKiller.killFeedDisabled && killType != KillType.DEATH) {
-				AOutput.send(killEvent.getKiller(), PlaceholderAPI.setPlaceholders(killEvent.getDeadPlayer(), kill));
-				pitKiller.stats.mobsKilled++;
-			}
-			if(deadIsPlayer && !pitDead.killFeedDisabled && killType != KillType.FAKE && killEvent != null)
-				AOutput.send(killEvent.getDead(), death);
-			String actionBarPlaceholder;
-			if(killType != KillType.DEATH && killerIsPlayer) {
-				actionBarPlaceholder = PlaceholderAPI.setPlaceholders(killEvent.getDeadPlayer(), killActionBar);
-				KillEvent finalKillEvent = killEvent;
-				new BukkitRunnable() {
-					@Override
-					public void run() {
-						Misc.sendActionBar(finalKillEvent.getKillerPlayer(), actionBarPlaceholder);
-					}
-				}.runTaskLater(PitSim.INSTANCE, 1L);
-			}
+		if(killerIsPlayer && !CitizensAPI.getNPCRegistry().isNPC(killer) && !pitKiller.killFeedDisabled && killType != KillType.DEATH) {
+			AOutput.send(killEvent.getKiller(), PlaceholderAPI.setPlaceholders(killEvent.getDeadPlayer(), kill));
+			pitKiller.stats.mobsKilled++;
+		}
+		if(deadIsPlayer && !pitDead.killFeedDisabled && killType != KillType.FAKE && killEvent != null)
+			AOutput.send(killEvent.getDead(), death);
+		String actionBarPlaceholder;
+		if(killType != KillType.DEATH && killerIsPlayer) {
+			actionBarPlaceholder = PlaceholderAPI.setPlaceholders(killEvent.getDeadPlayer(), killActionBar);
+			KillEvent finalKillEvent = killEvent;
+			new BukkitRunnable() {
+				@Override
+				public void run() {
+					Misc.sendActionBar(finalKillEvent.getKillerPlayer(), actionBarPlaceholder);
+				}
+			}.runTaskLater(PitSim.INSTANCE, 1L);
+		}
 
 
 		if(killType != KillType.FAKE) {
 			if(killType != KillType.DEATH && deadIsPlayer) {
 
 
-			double finalDamage = 0;
-			for(Map.Entry<UUID, Double> entry : pitDead.recentDamageMap.entrySet()) {
+				double finalDamage = 0;
+				for(Map.Entry<UUID, Double> entry : pitDead.recentDamageMap.entrySet()) {
 
-				finalDamage += entry.getValue();
-			}
-
-			for(Map.Entry<UUID, Double> entry : pitDead.recentDamageMap.entrySet()) {
-
-				if(entry.getKey().equals(killEvent.getKiller().getUniqueId())) continue;
-
-				Player assistPlayer = Bukkit.getPlayer(entry.getKey());
-				if(assistPlayer == null) continue;
-//	            Fix assist erroring (its rare so not super important)
-				double assistPercent = Math.max(Math.min(entry.getValue() / finalDamage, 1), 0);
-
-				if(UpgradeManager.hasUpgrade(assistPlayer, "KILL_STEAL")) {
-					int tier = UpgradeManager.getTier(assistPlayer, "KILL_STEAL");
-					assistPercent += (tier * 10) / 100D;
-					if(assistPercent >= 1) {
-						Map<PitEnchant, Integer> attackerEnchant = EnchantManager.getEnchantsOnPlayer(assistPlayer);
-						Map<PitEnchant, Integer> defenderEnchant = new HashMap<>();
-						EntityDamageByEntityEvent ev = new EntityDamageByEntityEvent(assistPlayer, dead, EntityDamageEvent.DamageCause.CUSTOM, 0);
-						AttackEvent aEvent = new AttackEvent(ev, attackerEnchant, defenderEnchant, false);
-
-						DamageManager.fakeKill(aEvent, assistPlayer, dead);
-						continue;
-					}
+					finalDamage += entry.getValue();
 				}
 
-				int xp = (int) Math.ceil(20 * assistPercent);
-				double gold = 20 * assistPercent;
+				for(Map.Entry<UUID, Double> entry : pitDead.recentDamageMap.entrySet()) {
 
-				PitPlayer assistPitPlayer = PitPlayer.getPitPlayer(assistPlayer);
-				LevelManager.addXP(assistPitPlayer.player, xp);
+					if(entry.getKey().equals(killEvent.getKiller().getUniqueId())) continue;
+
+					Player assistPlayer = Bukkit.getPlayer(entry.getKey());
+					if(assistPlayer == null) continue;
+//	            Fix assist erroring (its rare so not super important)
+					double assistPercent = Math.max(Math.min(entry.getValue() / finalDamage, 1), 0);
+
+					if(UpgradeManager.hasUpgrade(assistPlayer, "KILL_STEAL")) {
+						int tier = UpgradeManager.getTier(assistPlayer, "KILL_STEAL");
+						assistPercent += (tier * 10) / 100D;
+						if(assistPercent >= 1) {
+							Map<PitEnchant, Integer> attackerEnchant = EnchantManager.getEnchantsOnPlayer(assistPlayer);
+							Map<PitEnchant, Integer> defenderEnchant = new HashMap<>();
+							EntityDamageByEntityEvent ev = new EntityDamageByEntityEvent(assistPlayer, dead, EntityDamageEvent.DamageCause.CUSTOM, 0);
+							AttackEvent aEvent = new AttackEvent(ev, attackerEnchant, defenderEnchant, false);
+
+							DamageManager.fakeKill(aEvent, assistPlayer, dead);
+							continue;
+						}
+					}
+
+					int xp = (int) Math.ceil(20 * assistPercent);
+					double gold = 20 * assistPercent;
+
+					PitPlayer assistPitPlayer = PitPlayer.getPitPlayer(assistPlayer);
+					LevelManager.addXP(assistPitPlayer.player, xp);
 //			OldLevelManager.incrementLevel(assistPlayer);
 
-				if(killEvent.getFinalGold() > 10) {
-					LevelManager.addGold(assistPlayer, 10);
-				} else {
-					LevelManager.addGold(assistPlayer, (int) gold);
+					if(killEvent.getFinalGold() > 10) {
+						LevelManager.addGold(assistPlayer, 10);
+					} else {
+						LevelManager.addGold(assistPlayer, (int) gold);
+					}
+
+					Sounds.ASSIST.play(assistPlayer);
+					String assist = "&a&lASSIST!&7 " + Math.round(assistPercent * 100) + "% on %luckperms_prefix%" +
+							(deadNon == null ? "%player_name%" : deadNon.displayName) + " &b+" + xp + "XP" + " &6+" + df.format(gold) + "g";
+
+					if(!assistPitPlayer.killFeedDisabled)
+						AOutput.send(assistPlayer, PlaceholderAPI.setPlaceholders(killEvent.getDeadPlayer(), assist));
 				}
-
-				Sounds.ASSIST.play(assistPlayer);
-				String assist = "&a&lASSIST!&7 " + Math.round(assistPercent * 100) + "% on %luckperms_prefix%" +
-						(deadNon == null ? "%player_name%" : deadNon.displayName) + " &b+" + xp + "XP" + " &6+" + df.format(gold) + "g";
-
-				if(!assistPitPlayer.killFeedDisabled)
-					AOutput.send(assistPlayer, PlaceholderAPI.setPlaceholders(killEvent.getDeadPlayer(), assist));
 			}
-		}
 
 			if(deadIsPlayer) {
 				pitDead.assistRemove.forEach(BukkitTask::cancel);

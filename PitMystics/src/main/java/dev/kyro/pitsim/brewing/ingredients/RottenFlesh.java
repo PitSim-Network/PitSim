@@ -19,66 +19,66 @@ import java.util.Arrays;
 import java.util.List;
 
 public class RottenFlesh extends BrewingIngredient {
-    public static RottenFlesh INSTANCE;
+	public static RottenFlesh INSTANCE;
 
-    public RottenFlesh() {
-        super(1, NBTTag.ZOMBIE_FLESH, "Gold Boost", ChatColor.GOLD, PotionType.FIRE_RESISTANCE);
-        INSTANCE = this;
-    }
+	public RottenFlesh() {
+		super(1, NBTTag.ZOMBIE_FLESH, "Gold Boost", ChatColor.GOLD, PotionType.FIRE_RESISTANCE);
+		INSTANCE = this;
+	}
 
-    @Override
-    public void administerEffect(Player player, BrewingIngredient potency, int duration) {
+	@Override
+	public void administerEffect(Player player, BrewingIngredient potency, int duration) {
 
-    }
+	}
 
-    @EventHandler
-    public void onKill(KillEvent event) {
-        PotionEffect effect = PotionManager.getEffect(event.getKiller(), this);
-        if(effect == null) return;
+	@EventHandler
+	public void onKill(KillEvent event) {
+		PotionEffect effect = PotionManager.getEffect(event.getKiller(), this);
+		if(effect == null) return;
 
-        event.goldMultipliers.add((Double) getPotency(effect.potency) + 1);
-    }
+		event.goldMultipliers.add((Double) getPotency(effect.potency) + 1);
+	}
 
-    @Override
-    public Object getPotency(BrewingIngredient potencyIngredient) {
-        int tier = potencyIngredient.tier;
+	@Override
+	public Object getPotency(BrewingIngredient potencyIngredient) {
+		int tier = potencyIngredient.tier;
 
-        return 0.050 * tier;
-    }
+		return 0.050 * tier;
+	}
 
-    @Override
-    public List<String> getPotencyLore(BrewingIngredient potency) {
-        List<String> lore = new ArrayList<>();
+	@Override
+	public List<String> getPotencyLore(BrewingIngredient potency) {
+		List<String> lore = new ArrayList<>();
 
-        lore.add("");
-        lore.add(ChatColor.GRAY + "Earn " + ChatColor.GOLD + "+" + (int) ((double) getPotency(potency) * 100) + "% gold " + ChatColor.GRAY + "from");
-        lore.add(ChatColor.GRAY + "kills and assists.");
-        return lore;
-    }
+		lore.add("");
+		lore.add(ChatColor.GRAY + "Earn " + ChatColor.GOLD + "+" + (int) ((double) getPotency(potency) * 100) + "% gold " + ChatColor.GRAY + "from");
+		lore.add(ChatColor.GRAY + "kills and assists.");
+		return lore;
+	}
 
-    @Override
-    public int getDuration(BrewingIngredient durationIngredient) {
-        int tier = durationIngredient.tier;
-        return (20 * 60 * 3) * tier;
-    }
+	@Override
+	public int getDuration(BrewingIngredient durationIngredient) {
+		int tier = durationIngredient.tier;
+		return (20 * 60 * 3) * tier;
+	}
 
-    @Override
-    public int getBrewingReductionMinutes() {
-        return 10;
-    }
+	@Override
+	public int getBrewingReductionMinutes() {
+		return 10;
+	}
 
-    @Override
-    public ItemStack getItem() {
-        ItemStack flesh = new ItemStack(Material.ROTTEN_FLESH);
-        ItemMeta meta = flesh.getItemMeta();
-        List<String> lore = Arrays.asList(ChatColor.GRAY + "Flesh gathered from the Zombies", ChatColor.GRAY
-                + "of the Zombie Caves", "", ChatColor.DARK_PURPLE + "Tainted Item");
-        meta.setLore(lore);
-        meta.setDisplayName(ChatColor.GREEN + "Rotten Flesh");
-        flesh.setItemMeta(meta);
+	@Override
+	public ItemStack getItem() {
+		ItemStack flesh = new ItemStack(Material.ROTTEN_FLESH);
+		ItemMeta meta = flesh.getItemMeta();
+		List<String> lore = Arrays.asList(ChatColor.GRAY + "Flesh gathered from the Zombies", ChatColor.GRAY
+				+ "of the Zombie Caves", "", ChatColor.DARK_PURPLE + "Tainted Item");
+		meta.setLore(lore);
+		meta.setDisplayName(ChatColor.GREEN + "Rotten Flesh");
+		flesh.setItemMeta(meta);
 
-        NBTItem nbtItem = new NBTItem(flesh);
-        nbtItem.setBoolean(nbtTag.getRef(), true);
-        return nbtItem.getItem();
-    }
+		NBTItem nbtItem = new NBTItem(flesh);
+		nbtItem.setBoolean(nbtTag.getRef(), true);
+		return nbtItem.getItem();
+	}
 }

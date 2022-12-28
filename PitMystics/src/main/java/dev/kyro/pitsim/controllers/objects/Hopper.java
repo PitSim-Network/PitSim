@@ -80,7 +80,8 @@ public class Hopper {
 		if(type == Type.GSET) {
 			int maxHealth = 28;
 			int heartsLvl = EnchantManager.getEnchantLevel(hopper.getEquipment().getLeggings(), EnchantManager.getEnchant("hearts"));
-			if(!Misc.isAirOrNull(hopper.getEquipment().getLeggings()) && heartsLvl != 0) maxHealth += Hearts.INSTANCE.getExtraHealth(heartsLvl);
+			if(!Misc.isAirOrNull(hopper.getEquipment().getLeggings()) && heartsLvl != 0)
+				maxHealth += Hearts.INSTANCE.getExtraHealth(heartsLvl);
 
 			hopper.setMaxHealth(maxHealth);
 			hopper.setHealth(hopper.getMaxHealth());

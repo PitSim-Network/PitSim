@@ -17,7 +17,7 @@ public class AuctionsWonLeaderboard extends Leaderboard {
 
 	@Override
 	public ItemStack getDisplayStack(UUID uuid) {
-		ItemStack itemStack = new AItemStackBuilder(Material.BANNER, 1 , (byte) 5)
+		ItemStack itemStack = new AItemStackBuilder(Material.BANNER, 1, (byte) 5)
 				.setName("&dAuctions Won")
 				.setLore(new ALoreBuilder(
 						"&7Players who have &dwon &7the", "&7most &dDark Auctions", ""

@@ -13,6 +13,7 @@ public class AuctionData {
 	public boolean saveQueued = false;
 
 	public List<Auction> auctions = Arrays.asList(null, null, null);
+
 	public static class Auction {
 		public int item;
 		public int itemData;

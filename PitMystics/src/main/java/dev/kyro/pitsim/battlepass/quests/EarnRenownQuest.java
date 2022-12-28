@@ -35,7 +35,7 @@ public class EarnRenownQuest extends PassQuest {
 						"",
 						"&7Progress: &3" + decimalFormat.format(progress) + "&7/&3" + decimalFormat.format(questLevel.getRequirement(pitPlayer)) + " &8[" +
 								AUtil.createProgressBar("|", ChatColor.AQUA, ChatColor.GRAY, 20,
-								progress / questLevel.getRequirement(pitPlayer)) + "&8]",
+										progress / questLevel.getRequirement(pitPlayer)) + "&8]",
 						"&7Reward: &3" + questLevel.rewardPoints + " &7Quest Points"
 				))
 				.getItemStack();
@@ -57,6 +57,6 @@ public class EarnRenownQuest extends PassQuest {
 	@Override
 	public double getMultiplier(PitPlayer pitPlayer) {
 		if(pitPlayer.prestige == 0) return 1;
-		return Math.pow(pitPlayer.prestige, 2.0/3.0);
+		return Math.pow(pitPlayer.prestige, 2.0 / 3.0);
 	}
 }

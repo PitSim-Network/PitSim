@@ -45,7 +45,8 @@ public abstract class PitMob implements Listener {
 		MobManager.mobs.add(this);
 
 		this.entity = spawnMob(spawnLoc);
-		if(speedLevel != 0) this.entity.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 9999, speedLevel - 1, true, false));
+		if(speedLevel != 0)
+			this.entity.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 9999, speedLevel - 1, true, false));
 	}
 
 	public void remove() {

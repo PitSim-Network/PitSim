@@ -34,6 +34,7 @@ public class SkinManager implements Listener {
 			}
 		}.runTaskTimerAsynchronously(PitSim.INSTANCE, Misc.getRunnableOffset(1), 20 * 60);
 	}
+
 	public static void skinNPC(NPC npc, String skinName) {
 		if(!isSkinLoaded(skinName)) {
 			AOutput.log("Skin isn't loaded for npc " + skinName);

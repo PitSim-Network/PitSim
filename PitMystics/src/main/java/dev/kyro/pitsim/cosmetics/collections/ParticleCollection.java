@@ -35,7 +35,8 @@ public class ParticleCollection {
 	}
 
 	public ParticleCollection addParticles(String ref, List<ParticleData> particleDataList) {
-		for(ParticleData particleData : particleDataList) addParticle(ref, particleData.pitParticle, particleData.particleOffset);
+		for(ParticleData particleData : particleDataList)
+			addParticle(ref, particleData.pitParticle, particleData.particleOffset);
 		return this;
 	}
 

@@ -37,8 +37,6 @@ public class RenownShopGUI extends AGUI {
 	}
 
 
-
-
 	public AGUIPanel getSubPanel(RenownUpgrade upgrade) {
 		if(upgrade instanceof ShardHunter) return subPanels.get(0);
 		if(upgrade instanceof Withercraft) return subPanels.get(1);

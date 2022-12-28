@@ -119,6 +119,7 @@ enum EditType {
 	CANCELED("CANCEL");
 
 	public final String message;
+
 	EditType(String message) {
 		this.message = message;
 	}

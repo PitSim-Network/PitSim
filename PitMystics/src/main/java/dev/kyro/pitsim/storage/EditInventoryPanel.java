@@ -87,7 +87,7 @@ public class EditInventoryPanel implements InventoryHolder, Listener {
 		getInventory().setItem(0, HelpItemStacks.getEditItemStack());
 
 		for(int i = 5; i < 8; i++) {
-			ItemStack pane = new ItemStack(Material.STAINED_GLASS_PANE, 1 , (short) 15);
+			ItemStack pane = new ItemStack(Material.STAINED_GLASS_PANE, 1, (short) 15);
 			ItemMeta paneMeta = pane.getItemMeta();
 			paneMeta.setDisplayName("");
 			pane.setItemMeta(paneMeta);
@@ -114,7 +114,6 @@ public class EditInventoryPanel implements InventoryHolder, Listener {
 
 		session.end();
 	}
-
 
 
 	@EventHandler

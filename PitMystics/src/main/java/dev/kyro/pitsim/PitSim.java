@@ -133,7 +133,7 @@ public class PitSim extends JavaPlugin {
 		}
 
 		if(AConfig.getBoolean("standalone-server")) status = ServerStatus.ALL;
-		else status = serverName.contains("darkzone") ? ServerStatus.DARKZONE : ServerStatus.PITSIM	;
+		else status = serverName.contains("darkzone") ? ServerStatus.DARKZONE : ServerStatus.PITSIM;
 
 		getServer().getMessenger().registerOutgoingPluginChannel(this, "BungeeCord");
 		adventure = BukkitAudiences.create(this);
@@ -156,7 +156,7 @@ public class PitSim extends JavaPlugin {
 			@Override
 			public void run() {
 				List<NPC> toRemove = new ArrayList<>();
-				for (NPC npc : CitizensAPI.getNPCRegistry()) {
+				for(NPC npc : CitizensAPI.getNPCRegistry()) {
 					toRemove.add(npc);
 				}
 				while(!toRemove.isEmpty()) {
@@ -321,8 +321,8 @@ public class PitSim extends JavaPlugin {
 			}
 		}
 
-		if(MapManager.getDarkzone() != null){
-			for (Entity entity : MapManager.getDarkzone().getEntities()) {
+		if(MapManager.getDarkzone() != null) {
+			for(Entity entity : MapManager.getDarkzone().getEntities()) {
 				if(entity instanceof Item) {
 					entity.remove();
 				}
@@ -334,11 +334,11 @@ public class PitSim extends JavaPlugin {
 //		TODO: Fix
 		for(Player player : Bukkit.getOnlinePlayers()) {
 			List<PotionEffect> toExpire = new ArrayList<>();
-			for (PotionEffect potionEffect : PotionManager.potionEffectList) {
+			for(PotionEffect potionEffect : PotionManager.potionEffectList) {
 				if(potionEffect.player == player) toExpire.add(potionEffect);
 			}
 
-			for (PotionEffect potionEffect : toExpire) {
+			for(PotionEffect potionEffect : toExpire) {
 
 				potionEffect.onExpire(true);
 
@@ -364,13 +364,13 @@ public class PitSim extends JavaPlugin {
 			}
 		}
 
-		for (EditSession session : FreezeSpell.sessions.keySet()) {
+		for(EditSession session : FreezeSpell.sessions.keySet()) {
 			session.undo(session);
 		}
 
 		restoreSessions();
 
-		for (Map.Entry<Location, Material> entry : FreezeSpell.blocks.entrySet()) {
+		for(Map.Entry<Location, Material> entry : FreezeSpell.blocks.entrySet()) {
 			entry.getKey().getBlock().setType(entry.getValue());
 		}
 

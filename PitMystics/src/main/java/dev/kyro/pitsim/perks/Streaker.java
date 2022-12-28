@@ -41,7 +41,8 @@ public class Streaker extends PitPerk {
 		if(!killEvent.isDeadPlayer() || NonManager.getNon(killEvent.getDead()) == null) return;
 		killEvent.xpCap += 80;
 
-		if(xpReward.containsKey(killEvent.getKiller())) killEvent.xpMultipliers.add(xpReward.get(killEvent.getKiller()));
+		if(xpReward.containsKey(killEvent.getKiller()))
+			killEvent.xpMultipliers.add(xpReward.get(killEvent.getKiller()));
 
 		if(!killEvent.isKillerPlayer()) return;
 		PitPlayer pitPlayer = killEvent.getKillerPitPlayer();

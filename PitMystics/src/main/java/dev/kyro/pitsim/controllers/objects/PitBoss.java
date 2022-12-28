@@ -14,67 +14,71 @@ import org.bukkit.event.player.PlayerTeleportEvent;
 import org.bukkit.inventory.ItemStack;
 
 public abstract class PitBoss {
-    public Player target;
-    public SubLevel subLevel;
-    public int soulReward;
+	public Player target;
+	public SubLevel subLevel;
+	public int soulReward;
 
-    public PitBoss(Player target, SubLevel subLevel, int soulReward) {
-        this.target = target;
-        this.subLevel = subLevel;
-        this.soulReward = soulReward;
-    }
+	public PitBoss(Player target, SubLevel subLevel, int soulReward) {
+		this.target = target;
+		this.subLevel = subLevel;
+		this.soulReward = soulReward;
+	}
 
-    public abstract void onAttack(AttackEvent.Apply event) throws Exception;
-    public abstract void onDefend();
-    public abstract void onDeath();
-    public abstract Player getEntity();
-    public abstract void setNPC(NPC npc);
+	public abstract void onAttack(AttackEvent.Apply event) throws Exception;
 
-    public static void spawn(NPC npc, Player target, SubLevel subLevel, BossSkin skin, ItemStack hand, ItemStack helmet, ItemStack chestplate, ItemStack leggings, ItemStack boots){
-        Equipment equipment = npc.getTrait(Equipment.class);
+	public abstract void onDefend();
 
-        equipment.set(Equipment.EquipmentSlot.HAND, hand);
-        equipment.set(Equipment.EquipmentSlot.HELMET, helmet);
-        equipment.set(Equipment.EquipmentSlot.CHESTPLATE, chestplate);
-        equipment.set(Equipment.EquipmentSlot.LEGGINGS, leggings);
-        equipment.set(Equipment.EquipmentSlot.BOOTS, boots);
+	public abstract void onDeath();
 
-        npc.spawn(subLevel.middle);
-        skin.skin();
-        npc.teleport(subLevel.middle.clone().add(0, 3, 0), PlayerTeleportEvent.TeleportCause.PLUGIN);
+	public abstract Player getEntity();
 
-        Entity player = npc.getEntity();
+	public abstract void setNPC(NPC npc);
 
-        int radius = 2;
-        double thetaRand = 360 * Math.random();
-        double phiRand = 360 * Math.random();
+	public static void spawn(NPC npc, Player target, SubLevel subLevel, BossSkin skin, ItemStack hand, ItemStack helmet, ItemStack chestplate, ItemStack leggings, ItemStack boots) {
+		Equipment equipment = npc.getTrait(Equipment.class);
 
-        for (int i = 0; i < (48) * 30; i++) {
-            double x2 = radius * Math.cos(phiRand) * Math.sin(thetaRand);
-            double z2 = radius * Math.sin(phiRand) * Math.sin(thetaRand);
-            double y2 = radius * Math.cos(thetaRand);
+		equipment.set(Equipment.EquipmentSlot.HAND, hand);
+		equipment.set(Equipment.EquipmentSlot.HELMET, helmet);
+		equipment.set(Equipment.EquipmentSlot.CHESTPLATE, chestplate);
+		equipment.set(Equipment.EquipmentSlot.LEGGINGS, leggings);
+		equipment.set(Equipment.EquipmentSlot.BOOTS, boots);
 
-            int size = player.getWorld().getNearbyEntities(player.getLocation().add(x2, y2 + 1, z2), 0.7, 0.7, 0.7).size();
+		npc.spawn(subLevel.middle);
+		skin.skin();
+		npc.teleport(subLevel.middle.clone().add(0, 3, 0), PlayerTeleportEvent.TeleportCause.PLUGIN);
 
-            player.getWorld().spigot().playEffect(player.getLocation().add(x2, y2 + 1, z2), Effect.COLOURED_DUST, 0, 0, (float) 0, (float) 0, (float) 0, 1, 0, 64);
+		Entity player = npc.getEntity();
 
-            thetaRand = 360 * Math.random();
-            phiRand = 360 * Math.random();
-        }
+		int radius = 2;
+		double thetaRand = 360 * Math.random();
+		double phiRand = 360 * Math.random();
 
-        CitizensNavigator navigator = (CitizensNavigator) npc.getNavigator();
-        navigator.getDefaultParameters()
-                        .attackDelayTicks(10)
-                        .attackRange(4);
-        npc.getNavigator().setTarget(target, true);
-        npc.setProtected(false);
-        BossManager.playMusic(target, subLevel.level);
-    }
+		for(int i = 0; i < (48) * 30; i++) {
+			double x2 = radius * Math.cos(phiRand) * Math.sin(thetaRand);
+			double z2 = radius * Math.sin(phiRand) * Math.sin(thetaRand);
+			double y2 = radius * Math.cos(thetaRand);
 
-    public static boolean isPitBoss(Player player) {
-        for (PitBoss value : BossManager.bosses.values()) {
-            if(value.getEntity() == player) return true;
-        }
-        return false;
-    }
+			int size = player.getWorld().getNearbyEntities(player.getLocation().add(x2, y2 + 1, z2), 0.7, 0.7, 0.7).size();
+
+			player.getWorld().spigot().playEffect(player.getLocation().add(x2, y2 + 1, z2), Effect.COLOURED_DUST, 0, 0, (float) 0, (float) 0, (float) 0, 1, 0, 64);
+
+			thetaRand = 360 * Math.random();
+			phiRand = 360 * Math.random();
+		}
+
+		CitizensNavigator navigator = (CitizensNavigator) npc.getNavigator();
+		navigator.getDefaultParameters()
+				.attackDelayTicks(10)
+				.attackRange(4);
+		npc.getNavigator().setTarget(target, true);
+		npc.setProtected(false);
+		BossManager.playMusic(target, subLevel.level);
+	}
+
+	public static boolean isPitBoss(Player player) {
+		for(PitBoss value : BossManager.bosses.values()) {
+			if(value.getEntity() == player) return true;
+		}
+		return false;
+	}
 }

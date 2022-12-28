@@ -211,7 +211,8 @@ public class EnchantingPanel extends AGUIPanel {
 			if(clickedItem.getType() == Material.AIR) return;
 			NBTItem nbtItem = new NBTItem(clickedItem);
 			if(!nbtItem.hasKey(NBTTag.ITEM_UUID.getRef())) return;
-			if(MysticType.getMysticType(clickedItem) == MysticType.TAINTED_SCYTHE || MysticType.getMysticType(clickedItem) == MysticType.TAINTED_CHESTPLATE) return;
+			if(MysticType.getMysticType(clickedItem) == MysticType.TAINTED_SCYTHE || MysticType.getMysticType(clickedItem) == MysticType.TAINTED_CHESTPLATE)
+				return;
 
 			if(!Misc.isAirOrNull(mystic)) {
 				AOutput.error(player, "Already an item in the mystic well");

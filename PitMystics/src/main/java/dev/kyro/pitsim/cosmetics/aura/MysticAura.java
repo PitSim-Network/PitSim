@@ -47,7 +47,8 @@ public class MysticAura extends PitCosmetic {
 
 	@Override
 	public void onDisable(PitPlayer pitPlayer) {
-		if(runnableMap.containsKey(pitPlayer.player.getUniqueId())) runnableMap.get(pitPlayer.player.getUniqueId()).cancel();
+		if(runnableMap.containsKey(pitPlayer.player.getUniqueId()))
+			runnableMap.get(pitPlayer.player.getUniqueId()).cancel();
 	}
 
 	@Override

@@ -24,15 +24,11 @@ public class CrossServerMessageManager implements Listener {
 			String displayName = strings.get(1);
 			ItemStack itemStack = CustomSerializer.deserialize(strings.get(2));
 			ShowCommand.sendShowMessage(displayName, itemStack);
-		}
-
-		else if(strings.get(0).equals("FINDJEWEL")) {
+		} else if(strings.get(0).equals("FINDJEWEL")) {
 			String displayName = strings.get(1);
 			ItemStack itemStack = CustomSerializer.deserialize(strings.get(2));
 			EnchantManager.sendJewelFindMessage(displayName, itemStack);
-		}
-
-		else if(strings.get(0).equals("PRESTIGE")) {
+		} else if(strings.get(0).equals("PRESTIGE")) {
 			String displayName = strings.get(1);
 			int prestige = integers.get(0);
 			LevelManager.onPrestige(displayName, prestige);

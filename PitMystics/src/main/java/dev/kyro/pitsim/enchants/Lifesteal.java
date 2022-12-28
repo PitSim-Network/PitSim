@@ -36,6 +36,7 @@ public class Lifesteal extends PitEnchant {
 
 		if(pitAttacker.stats != null) pitAttacker.stats.lifesteal += healEvent.getEffectiveHeal();
 	}
+
 	@Override
 	public List<String> getDescription(int enchantLvl) {
 		return new ALoreBuilder("&7Heal for &c+" + Misc.roundString(getHealing(enchantLvl)) + "% &7of damage dealt").getLore();

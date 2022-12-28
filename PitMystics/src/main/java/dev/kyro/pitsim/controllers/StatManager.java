@@ -57,7 +57,8 @@ public class StatManager implements Listener {
 		pitPlayer.stats.deaths++;
 		if(pitPlayer.megastreak.getClass() != NoMegastreak.class) {
 			pitPlayer.stats.deaths++;
-			if(pitPlayer.getKills() > pitPlayer.stats.highestStreak) pitPlayer.stats.highestStreak = pitPlayer.getKills();
+			if(pitPlayer.getKills() > pitPlayer.stats.highestStreak)
+				pitPlayer.stats.highestStreak = pitPlayer.getKills();
 		}
 	}
 

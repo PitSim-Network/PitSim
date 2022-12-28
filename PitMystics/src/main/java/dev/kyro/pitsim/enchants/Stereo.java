@@ -46,10 +46,12 @@ public class Stereo extends PitEnchant {
 				boolean stereoOnChest = false;
 				boolean stereoOnPants = false;
 				if(!Misc.isAirOrNull(event.getPlayer().getInventory().getChestplate())) {
-					if(!EnchantManager.getEnchantsOnItem(event.getPlayer().getInventory().getChestplate()).containsKey(this)) stereoOnChest = true;
+					if(!EnchantManager.getEnchantsOnItem(event.getPlayer().getInventory().getChestplate()).containsKey(this))
+						stereoOnChest = true;
 				}
 				if(!Misc.isAirOrNull(event.getPlayer().getInventory().getLeggings())) {
-					if(!EnchantManager.getEnchantsOnItem(event.getPlayer().getInventory().getLeggings()).containsKey(this)) stereoOnPants = true;
+					if(!EnchantManager.getEnchantsOnItem(event.getPlayer().getInventory().getLeggings()).containsKey(this))
+						stereoOnPants = true;
 				}
 
 				if(StereoManager.hasStereo(player)) {

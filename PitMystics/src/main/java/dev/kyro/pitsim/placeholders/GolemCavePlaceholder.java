@@ -19,6 +19,7 @@ public class GolemCavePlaceholder implements APAPIPlaceholder {
 	public String getValue(Player player) {
 		Map<Player, Integer> players = BossManager.bossItems.get(SubLevel.GOLEM_CAVE);
 		if(BossManager.activePlayers.contains(player)) return "&c&lBOSS SPAWNED!";
-		else return ChatColor.translateAlternateColorCodes('&', "&a" + players.getOrDefault(player, 0) + "&7/" + SubLevel.GOLEM_CAVE.spawnBossItemCount);
+		else
+			return ChatColor.translateAlternateColorCodes('&', "&a" + players.getOrDefault(player, 0) + "&7/" + SubLevel.GOLEM_CAVE.spawnBossItemCount);
 	}
 }

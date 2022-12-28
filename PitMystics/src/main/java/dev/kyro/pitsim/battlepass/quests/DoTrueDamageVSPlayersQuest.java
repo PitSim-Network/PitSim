@@ -26,7 +26,8 @@ public class DoTrueDamageVSPlayersQuest extends PassQuest {
 	@EventHandler(priority = EventPriority.MONITOR)
 	public void onAttack(AttackEvent.Apply attackEvent) {
 		if(!PlayerManager.isRealPlayer(attackEvent.getAttackerPlayer()) || !canProgressQuest(attackEvent.getAttackerPitPlayer())
-				|| !PlayerManager.isRealPlayer(attackEvent.getDefenderPlayer()) || attackEvent.getDefenderPlayer().isOnGround()) return;
+				|| !PlayerManager.isRealPlayer(attackEvent.getDefenderPlayer()) || attackEvent.getDefenderPlayer().isOnGround())
+			return;
 		progressQuest(attackEvent.getAttackerPitPlayer(), attackEvent.trueDamage);
 	}
 

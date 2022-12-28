@@ -94,8 +94,8 @@ public class BidPanel extends AGUIPanel {
 				bidsBuilder.setName(ChatColor.YELLOW + "Current Bids");
 				List<String> bidsLore = new ArrayList<>();
 				if(auctionItem.bidMap.size() == 0) bidsLore.add(ChatColor.GRAY + "No Bids Yet!");
-				 else bidsLore.add("");
-				for (Map.Entry<UUID, Integer> entry : auctionItem.bidMap.entrySet()) {
+				else bidsLore.add("");
+				for(Map.Entry<UUID, Integer> entry : auctionItem.bidMap.entrySet()) {
 					bidsLore.add(ChatColor.GOLD + Bukkit.getOfflinePlayer(entry.getKey()).getName() + ChatColor.WHITE + " " + entry.getValue() + " Souls");
 				}
 				bidsBuilder.setLore(bidsLore);
@@ -107,16 +107,17 @@ public class BidPanel extends AGUIPanel {
 				placeBidBuilder.setName(ChatColor.YELLOW + "Place a Bid");
 				List<String> bidLore = new ArrayList<>();
 				bidLore.add("");
-				if(auctionItem.getHighestBidder() != null) bidLore.add(ChatColor.GRAY + "Highest Bid: " + ChatColor.WHITE + auctionItem.getHighestBid() + " Souls");
-				else bidLore.add(ChatColor.GRAY + "Starting Bid: " + ChatColor.WHITE + auctionItem.getHighestBid() + " Souls");
+				if(auctionItem.getHighestBidder() != null)
+					bidLore.add(ChatColor.GRAY + "Highest Bid: " + ChatColor.WHITE + auctionItem.getHighestBid() + " Souls");
+				else
+					bidLore.add(ChatColor.GRAY + "Starting Bid: " + ChatColor.WHITE + auctionItem.getHighestBid() + " Souls");
 				bidLore.add(ChatColor.GRAY + "Your Bid: " + ChatColor.WHITE + auctionItem.getBid(player.getUniqueId()) + " Souls");
 				bidLore.add("");
 				bidLore.add(ChatColor.GRAY + "Your Souls: " + ChatColor.WHITE + pitPlayer.taintedSouls);
 				bidLore.add("");
 				if((AuctionManager.minutes * 60000L - (System.currentTimeMillis() - AuctionManager.auctionItems[0].initTime)) / 1000 < 0) {
 					bidLore.add(ChatColor.YELLOW + "Ending Soon");
-				}
-				else bidLore.add(ChatColor.YELLOW + AuctionDisplays.getRemainingTime() + " Remaining");;
+				} else bidLore.add(ChatColor.YELLOW + AuctionDisplays.getRemainingTime() + " Remaining"); ;
 				bidLore.add("");
 
 				if(auctionItem.getHighestBidder() != null && auctionItem.getHighestBidder().equals(player.getUniqueId())) {
@@ -147,7 +148,6 @@ public class BidPanel extends AGUIPanel {
 	public void onClose(InventoryCloseEvent event) {
 		runnable.cancel();
 	}
-
 
 
 }

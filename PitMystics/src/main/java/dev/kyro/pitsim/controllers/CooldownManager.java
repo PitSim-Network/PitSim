@@ -61,7 +61,8 @@ public class CooldownManager {
 	}
 
 	public static void addModifierForPlayer(Player player, CooldownData cooldownData) {
-		if(!cooldownDataMap.containsKey(player.getUniqueId())) cooldownDataMap.put(player.getUniqueId(), new ArrayList<>());
+		if(!cooldownDataMap.containsKey(player.getUniqueId()))
+			cooldownDataMap.put(player.getUniqueId(), new ArrayList<>());
 		cooldownDataMap.get(player.getUniqueId()).add(cooldownData);
 	}
 

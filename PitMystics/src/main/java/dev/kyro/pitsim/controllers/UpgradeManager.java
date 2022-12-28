@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class UpgradeManager implements Listener {
-//	public static Map<UUID, Map<RenownUpgrade, Integer>> upgradeMap = new HashMap<>();
+	//	public static Map<UUID, Map<RenownUpgrade, Integer>> upgradeMap = new HashMap<>();
 	public static List<RenownUpgrade> upgrades = new ArrayList<>();
 
 //	public static void updatePlayer(Player player) {

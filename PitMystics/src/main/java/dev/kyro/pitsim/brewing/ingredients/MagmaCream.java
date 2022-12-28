@@ -16,54 +16,55 @@ import java.util.Arrays;
 import java.util.List;
 
 public class MagmaCream extends BrewingIngredient {
-    public static MagmaCream INSTANCE;
-    public MagmaCream() {
-        super(6, NBTTag.MAGMACUBE_CREAM, "Mana Boost", ChatColor.LIGHT_PURPLE, PotionType.REGEN);
-        INSTANCE = this;
-    }
+	public static MagmaCream INSTANCE;
 
-    @Override
-    public void administerEffect(Player player, BrewingIngredient potency, int duration) {
+	public MagmaCream() {
+		super(6, NBTTag.MAGMACUBE_CREAM, "Mana Boost", ChatColor.LIGHT_PURPLE, PotionType.REGEN);
+		INSTANCE = this;
+	}
 
-    }
+	@Override
+	public void administerEffect(Player player, BrewingIngredient potency, int duration) {
 
-    @Override
-    public Object getPotency(BrewingIngredient potencyIngredient) {
-        return 0.05 * potencyIngredient.tier;
-    }
+	}
 
-    @Override
-    public List<String> getPotencyLore(BrewingIngredient potency) {
-        List<String> lore = new ArrayList<>();
+	@Override
+	public Object getPotency(BrewingIngredient potencyIngredient) {
+		return 0.05 * potencyIngredient.tier;
+	}
 
-        lore.add("");
-        lore.add(ChatColor.GRAY + "Regain your " + color + "Mana " + (int) ((double) getPotency(potency) * 100) + "% " + ChatColor.GRAY + "faster");
-        lore.add(ChatColor.GRAY + "While in the " + ChatColor.DARK_PURPLE + "Darkzone" + ChatColor.GRAY + ".");
-        return lore;
-    }
+	@Override
+	public List<String> getPotencyLore(BrewingIngredient potency) {
+		List<String> lore = new ArrayList<>();
 
-    @Override
-    public int getDuration(BrewingIngredient durationIngredient) {
-        return 20 * 60 * durationIngredient.tier;
-    }
+		lore.add("");
+		lore.add(ChatColor.GRAY + "Regain your " + color + "Mana " + (int) ((double) getPotency(potency) * 100) + "% " + ChatColor.GRAY + "faster");
+		lore.add(ChatColor.GRAY + "While in the " + ChatColor.DARK_PURPLE + "Darkzone" + ChatColor.GRAY + ".");
+		return lore;
+	}
 
-    @Override
-    public int getBrewingReductionMinutes() {
-        return 60;
-    }
+	@Override
+	public int getDuration(BrewingIngredient durationIngredient) {
+		return 20 * 60 * durationIngredient.tier;
+	}
 
-    @Override
-    public ItemStack getItem() {
-        ItemStack cream = new ItemStack(Material.MAGMA_CREAM);
-        ItemMeta meta = cream.getItemMeta();
-        List<String> lore = Arrays.asList(ChatColor.GRAY + "Cream gathered from the Cubes", ChatColor.GRAY
-                + "of the Magma Caves", "", ChatColor.DARK_PURPLE + "Tainted Item");
-        meta.setLore(lore);
-        meta.setDisplayName(ChatColor.GREEN + "Magma Cream");
-        cream.setItemMeta(meta);
+	@Override
+	public int getBrewingReductionMinutes() {
+		return 60;
+	}
 
-        NBTItem nbtItem = new NBTItem(cream);
-        nbtItem.setBoolean(nbtTag.getRef(), true);
-        return nbtItem.getItem();
-    }
+	@Override
+	public ItemStack getItem() {
+		ItemStack cream = new ItemStack(Material.MAGMA_CREAM);
+		ItemMeta meta = cream.getItemMeta();
+		List<String> lore = Arrays.asList(ChatColor.GRAY + "Cream gathered from the Cubes", ChatColor.GRAY
+				+ "of the Magma Caves", "", ChatColor.DARK_PURPLE + "Tainted Item");
+		meta.setLore(lore);
+		meta.setDisplayName(ChatColor.GREEN + "Magma Cream");
+		cream.setItemMeta(meta);
+
+		NBTItem nbtItem = new NBTItem(cream);
+		nbtItem.setBoolean(nbtTag.getRef(), true);
+		return nbtItem.getItem();
+	}
 }

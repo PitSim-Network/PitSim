@@ -28,7 +28,7 @@ public enum SubLevel {
 	MAGMA_CAVE(6, 20, new Location(Bukkit.getWorld("darkzone"), 235, 20, -23),
 			NBTTag.MAGMACUBE_CREAM, "&aMagma Cream", "%pitsim_magmacave%", 17,
 			Arrays.asList(PitMagmaCube.class), SkeletonBoss.class, 7),
-	PIGMEN_CAVE(7, 20, new Location(Bukkit.getWorld("darkzone"), 210, 20 ,-115),
+	PIGMEN_CAVE(7, 20, new Location(Bukkit.getWorld("darkzone"), 210, 20, -115),
 			NBTTag.PIGMAN_PORK, "&aRaw Pork", "%pitsim_pigmencave%", 17,
 			Arrays.asList(PitZombiePigman.class), SkeletonBoss.class, 6),
 	WITHER_CAVE(8, 20, new Location(Bukkit.getWorld("darkzone"), 247, 21, -174),
@@ -75,7 +75,7 @@ public enum SubLevel {
 	}
 
 	public static SubLevel getLevel(int subLevel) {
-		for (SubLevel value : values()) {
+		for(SubLevel value : values()) {
 			if(value.level == subLevel) return value;
 		}
 		return null;

@@ -39,7 +39,7 @@ public class SettingsGUI extends AGUI {
 		chatColorPanel = new ChatColorPanel(this);
 		chatOptionsPanel = new ChatOptionsPanel(this);
 
-		Class<? extends SubCosmeticPanel>[] constructorParameters = new Class[] {AGUI.class};
+		Class<? extends SubCosmeticPanel>[] constructorParameters = new Class[]{AGUI.class};
 		for(CosmeticType cosmeticType : CosmeticType.values()) {
 			Class<? extends SubCosmeticPanel> clazz = cosmeticType.panelClazz;
 			if(clazz == null) continue;
@@ -57,17 +57,17 @@ public class SettingsGUI extends AGUI {
 		setHomePanel(settingsPanel);
 	}
 
-//	For cosmetic panel
+	//	For cosmetic panel
 	public int getPages(SubCosmeticPanel panel) {
 		return (getItemsToDisplay(panel) - 1) / SubCosmeticPanel.cosmeticSlots.size() + 1;
 	}
 
-//	For cosmetic panel
+	//	For cosmetic panel
 	public int getRows(SubCosmeticPanel panel) {
 		return (getItemsToDisplay(panel) - 1) / 7 + 3;
 	}
 
-//	For cosmetic panel
+	//	For cosmetic panel
 	public int getItemsToDisplay(SubCosmeticPanel panel) {
 		List<PitCosmetic> unlockedCosmetics = CosmeticManager.getUnlockedCosmetics(pitPlayer, panel.cosmeticType);
 		return Math.min(unlockedCosmetics.size() - SubCosmeticPanel.cosmeticSlots.size() * (panel.page - 1), SubCosmeticPanel.cosmeticSlots.size());

@@ -64,7 +64,6 @@ public class PassManager implements Listener {
 						null), PitSimPass.RewardType.FREE, 36)
 
 
-
 				.registerReward(new PassXpReward(5_000), PitSimPass.RewardType.PREMIUM, tier++)
 				.registerReward(new PassVileReward(12), PitSimPass.RewardType.PREMIUM, tier++)
 				.registerReward(new PassSwordReward(4), PitSimPass.RewardType.PREMIUM, tier++)
@@ -175,13 +174,15 @@ public class PassManager implements Listener {
 
 	public static List<PassQuest> getDailyQuests() {
 		List<PassQuest> dailyQuests = new ArrayList<>();
-		for(PassQuest passQuest : questList) if(passQuest.questType == PassQuest.QuestType.DAILY) dailyQuests.add(passQuest);
+		for(PassQuest passQuest : questList)
+			if(passQuest.questType == PassQuest.QuestType.DAILY) dailyQuests.add(passQuest);
 		return dailyQuests;
 	}
 
 	public static List<PassQuest> getWeeklyQuests() {
 		List<PassQuest> weeklyQuests = new ArrayList<>();
-		for(PassQuest passQuest : questList) if(passQuest.questType == PassQuest.QuestType.WEEKLY) weeklyQuests.add(passQuest);
+		for(PassQuest passQuest : questList)
+			if(passQuest.questType == PassQuest.QuestType.WEEKLY) weeklyQuests.add(passQuest);
 		return weeklyQuests;
 	}
 
@@ -191,7 +192,7 @@ public class PassManager implements Listener {
 		return weightedRandomQuests;
 	}
 
-//	fetch passquest by refname
+	//	fetch passquest by refname
 	public static PassQuest getQuest(String refName) {
 		for(PassQuest passQuest : questList) if(passQuest.refName.equals(refName)) return passQuest;
 		return null;
@@ -202,12 +203,12 @@ public class PassManager implements Listener {
 		return passData.questCompletion.getOrDefault(passQuest.refName, 0.0);
 	}
 
-//	Check to see if a pitplayer has completed their pass
+	//	Check to see if a pitplayer has completed their pass
 	public static boolean hasCompletedPass(PitPlayer pitPlayer) {
 		return pitPlayer.getPassData(PassManager.currentPass.startDate).getCompletedTiers() >= currentPass.tiers;
 	}
 
-//	For a given reward type, check to see if it exists in the current pass for a given tier
+	//	For a given reward type, check to see if it exists in the current pass for a given tier
 	public static boolean hasReward(PitSimPass.RewardType rewardType, int tier) {
 		if(rewardType == PitSimPass.RewardType.FREE) {
 			return currentPass.freePassRewards.containsKey(tier);
@@ -217,7 +218,7 @@ public class PassManager implements Listener {
 		return false;
 	}
 
-//	Check to see if a pitplayer has claimed a reward
+	//	Check to see if a pitplayer has claimed a reward
 	public static boolean hasClaimedReward(PitPlayer pitPlayer, PitSimPass.RewardType rewardType, int tier) {
 		PassData passData = pitPlayer.getPassData(currentPass.startDate);
 		if(rewardType == PitSimPass.RewardType.FREE) {
@@ -228,7 +229,7 @@ public class PassManager implements Listener {
 		return false;
 	}
 
-//	Check to see if a player can claim a given reward
+	//	Check to see if a player can claim a given reward
 	public static boolean canClaimReward(PitPlayer pitPlayer, PitSimPass.RewardType rewardType, int tier) {
 		PassData passData = pitPlayer.getPassData(currentPass.startDate);
 		if(passData.getCompletedTiers() < tier || hasClaimedReward(pitPlayer, rewardType, tier)) return false;
@@ -236,7 +237,7 @@ public class PassManager implements Listener {
 		return true;
 	}
 
-//	Claim a reward for a pitplayer
+	//	Claim a reward for a pitplayer
 	public static boolean claimReward(PitPlayer pitPlayer, PitSimPass.RewardType rewardType, int tier) {
 		PassData passData = pitPlayer.getPassData(currentPass.startDate);
 		boolean success = false;

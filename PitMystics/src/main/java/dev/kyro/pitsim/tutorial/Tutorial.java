@@ -158,7 +158,7 @@ public class Tutorial {
 		audience.hideBossBar(bossBar);
 
 		Component name = Component.text(ChatColor.translateAlternateColorCodes('&', "&a&lOBJECTIVE: &7Interact with NPCs &7("
-				+ completedObjectives.size() + "/" +  TutorialObjective.values().length + ")"));
+				+ completedObjectives.size() + "/" + TutorialObjective.values().length + ")"));
 		float progress = ((float) completedObjectives.size()) / (float) TutorialObjective.values().length;
 
 		bossBar = BossBar.bossBar(name, progress, BossBar.Color.PINK, BossBar.Overlay.PROGRESS);

@@ -38,7 +38,7 @@ public class PitCreeper extends PitMob {
 	@EventHandler
 	public void onExplode(ExplosionPrimeEvent event) {
 		Entity entity = event.getEntity();
-		if (!(entity instanceof Creeper)) return;
+		if(!(entity instanceof Creeper)) return;
 
 		PitMob mob = PitMob.getPitMob((LivingEntity) entity);
 		if(mob == null) return;
@@ -47,7 +47,7 @@ public class PitCreeper extends PitMob {
 		MobManager.nameTags.remove(mob.entity.getUniqueId());
 		event.setRadius(0);
 
-		for (Entity testEntity : entity.getNearbyEntities(7, 7, 7)) {
+		for(Entity testEntity : entity.getNearbyEntities(7, 7, 7)) {
 			if(!(testEntity instanceof Player)) continue;
 			Player player = (Player) testEntity;
 			if(NonManager.getNon(player) != null) continue;

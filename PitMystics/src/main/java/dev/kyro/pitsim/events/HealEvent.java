@@ -22,7 +22,7 @@ public class HealEvent extends Event {
 	public int max;
 	public List<Double> multipliers = new ArrayList<>();
 
-//	Optional/Nullable
+	//	Optional/Nullable
 	public PitEnchant pitEnchant;
 
 	public HealEvent(LivingEntity entity, double initialHeal, HealType healType, int max) {

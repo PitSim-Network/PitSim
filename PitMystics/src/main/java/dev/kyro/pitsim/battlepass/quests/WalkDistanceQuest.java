@@ -54,7 +54,7 @@ public class WalkDistanceQuest extends PassQuest {
 						"",
 						"&7Progress: &3" + Misc.formatLarge(progress / 100) + "&7/&3" + Misc.formatLarge(questLevel.getRequirement(pitPlayer) / 100) + " &8[" +
 								AUtil.createProgressBar("|", ChatColor.AQUA, ChatColor.GRAY, 20,
-								progress / questLevel.getRequirement(pitPlayer)) + "&8]",
+										progress / questLevel.getRequirement(pitPlayer)) + "&8]",
 						"&7Reward: &3" + questLevel.rewardPoints + " &7Quest Points"
 				))
 				.getItemStack();

@@ -42,7 +42,7 @@ public class IceTrail extends PitCosmetic {
 
 					EntityPlayer entityPlayer = ((CraftPlayer) onlinePlayer).getHandle();
 					for(int i = 0; i < 2; i++)
-							collection.displayAll(entityPlayer, displayLocation);
+						collection.displayAll(entityPlayer, displayLocation);
 				}
 			}
 		}.runTaskTimer(PitSim.INSTANCE, 0L, 1L));
@@ -50,7 +50,8 @@ public class IceTrail extends PitCosmetic {
 
 	@Override
 	public void onDisable(PitPlayer pitPlayer) {
-		if(runnableMap.containsKey(pitPlayer.player.getUniqueId())) runnableMap.get(pitPlayer.player.getUniqueId()).cancel();
+		if(runnableMap.containsKey(pitPlayer.player.getUniqueId()))
+			runnableMap.get(pitPlayer.player.getUniqueId()).cancel();
 	}
 
 	@Override

@@ -38,19 +38,19 @@ public class BiomesMap extends PitMap {
 	}
 
 	@Override
-	public int getTeleportAdd() { return 3; }
+	public int getTeleportAdd() {return 3;}
 
 	@Override
-	public int getTeleportY() { return 72;}
+	public int getTeleportY() {return 72;}
 
 	@Override
-	public String getOpenSchematic() { return "plugins/WorldEdit/schematics/doorOpen.schematic"; }
+	public String getOpenSchematic() {return "plugins/WorldEdit/schematics/doorOpen.schematic";}
 
 	@Override
-	public String getClosedSchematic() { return "plugins/WorldEdit/schematics/doorClosed.schematic"; }
+	public String getClosedSchematic() {return "plugins/WorldEdit/schematics/doorClosed.schematic";}
 
 	@Override
-	public Location getSchematicPaste() { return new Location(world, -67, 72, 3); }
+	public Location getSchematicPaste() {return new Location(world, -67, 72, 3);}
 
 	@Override
 	public Location getMid() {

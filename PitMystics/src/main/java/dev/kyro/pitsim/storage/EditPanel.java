@@ -46,7 +46,8 @@ public class EditPanel extends AGUIPanel {
 				} else session.respond(EditType.ONLINE);
 			} else if(session.isPlayerOnline()) {
 				String[] server = session.getPlayerServer().split("-");
-				if(!session.getPlayerServer().contains("pitsim") && !session.getPlayerServer().contains("darkzone")) return;
+				if(!session.getPlayerServer().contains("pitsim") && !session.getPlayerServer().contains("darkzone"))
+					return;
 				if(server.length != 2) return;
 				int serverNum = Integer.parseInt(server[1]);
 

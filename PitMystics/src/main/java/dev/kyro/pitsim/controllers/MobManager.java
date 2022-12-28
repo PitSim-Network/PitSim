@@ -59,7 +59,7 @@ public class MobManager implements Listener {
 			public void run() {
 				if(!PitSim.getStatus().isDarkzone()) return;
 
-				for (Entity entity :new ArrayList<>(MapManager.getDarkzone().getEntities())) {
+				for(Entity entity : new ArrayList<>(MapManager.getDarkzone().getEntities())) {
 
 					if(!(entity instanceof LivingEntity)) continue;
 					if(entity instanceof ArmorStand) continue;
@@ -113,7 +113,8 @@ public class MobManager implements Listener {
 						randClass.getDeclaredConstructor(cArg).newInstance(loc);
 
 //						randMob = (PitMob) randClass.newInstance();
-					} catch(InstantiationException | IllegalAccessException | NoSuchMethodException | InvocationTargetException ignored) {
+					} catch(InstantiationException | IllegalAccessException | NoSuchMethodException |
+							InvocationTargetException ignored) {
 					}
 				}
 			}
@@ -124,7 +125,7 @@ public class MobManager implements Listener {
 			public void run() {
 				if(!PitSim.getStatus().isDarkzone()) return;
 				List<PitMob> toRemove = new ArrayList<>();
-				for (PitMob mob : mobs) {
+				for(PitMob mob : mobs) {
 
 					assert SubLevel.getLevel(mob.subLevel) != null;
 					if(mob.entity.getLocation().distance(SubLevel.getLevel(mob.subLevel).middle) <= SubLevel.getLevel(mob.subLevel).radius + 10) {
@@ -137,7 +138,7 @@ public class MobManager implements Listener {
 					toRemove.add(mob);
 				}
 
-				for (PitMob pitMob : toRemove) {
+				for(PitMob pitMob : toRemove) {
 					mobs.remove(pitMob);
 				}
 			}
@@ -182,13 +183,13 @@ public class MobManager implements Listener {
 
 					SubLevel subLevel = null;
 					double distanceToClosest = 0;
-                    for(SubLevel testSubLevel : SubLevel.values()) {
+					for(SubLevel testSubLevel : SubLevel.values()) {
 						double distance = player.getLocation().distance(testSubLevel.middle);
-                        if(distance > testSubLevel.radius + 10) continue;
+						if(distance > testSubLevel.radius + 10) continue;
 						if(subLevel != null && distance >= distanceToClosest) continue;
 						subLevel = testSubLevel;
 						distanceToClosest = distance;
-                    }
+					}
 					if(subLevel == null) continue;
 
 					HashMap<PitMob, Double> noTarget = new HashMap<>();
@@ -197,7 +198,8 @@ public class MobManager implements Listener {
 					List<PitMob> mobsCopy = new ArrayList<>(mobs);
 					Collections.shuffle(mobsCopy);
 					for(PitMob mob : mobsCopy) {
-						if(mob instanceof PitStrongPigman || mob instanceof PitSpiderBrute || !(mob.entity instanceof Creature)) continue;
+						if(mob instanceof PitStrongPigman || mob instanceof PitSpiderBrute || !(mob.entity instanceof Creature))
+							continue;
 						if(mob.subLevel != subLevel.level) {
 							if(mob.target == player) {
 								mob.target = null;
@@ -252,11 +254,11 @@ public class MobManager implements Listener {
 
 	// function to sort hashmap by values
 	public static HashMap<PitMob, Double> sortByValue(HashMap<PitMob, Double> hm) {
-		List<Map.Entry<PitMob, Double> > list =
+		List<Map.Entry<PitMob, Double>> list =
 				new LinkedList<>(hm.entrySet());
 		list.sort(Map.Entry.comparingByValue());
 		HashMap<PitMob, Double> temp = new LinkedHashMap<>();
-		for (Map.Entry<PitMob, Double> aa : list) {
+		for(Map.Entry<PitMob, Double> aa : list) {
 			temp.put(aa.getKey(), aa.getValue());
 		}
 		return temp;
@@ -286,7 +288,7 @@ public class MobManager implements Listener {
 		List<PitMob> toRemove = new ArrayList<>();
 		for(PitMob mob : mobs) {
 			if(mob.entity.getUniqueId().equals(event.getDead().getUniqueId())) {
-				for (Entity entity : Bukkit.getWorld("darkzone").getEntities()) {
+				for(Entity entity : Bukkit.getWorld("darkzone").getEntities()) {
 					if(entity.getUniqueId().equals(nameTags.get(mob.entity.getUniqueId()).getUniqueId())) {
 						entity.remove();
 					}
@@ -299,7 +301,8 @@ public class MobManager implements Listener {
 				int level = 0;
 				double chance = 0;
 				if(helmet != null) level = HelmetSystem.getLevel(GoldenHelmet.getUsedHelmetGold(event.getDeadPlayer()));
-				if(helmet != null) chance = HelmetSystem.Passive.DROP_CHANCE.baseUnit * HelmetSystem.getTotalStacks(HelmetSystem.Passive.DROP_CHANCE, level - 1);
+				if(helmet != null)
+					chance = HelmetSystem.Passive.DROP_CHANCE.baseUnit * HelmetSystem.getTotalStacks(HelmetSystem.Passive.DROP_CHANCE, level - 1);
 
 				double multiplier = chance / 100.0 + 1;
 
@@ -357,9 +360,10 @@ public class MobManager implements Listener {
 	@EventHandler(priority = EventPriority.HIGHEST)
 	public void onHit(AttackEvent.Pre event) {
 
-		if(event.getAttacker() instanceof MagmaCube && (!(event.getDefender() instanceof Player))) event.setCancelled(true);
+		if(event.getAttacker() instanceof MagmaCube && (!(event.getDefender() instanceof Player)))
+			event.setCancelled(true);
 
-		for (NPC value : BossManager.clickables.values()) {
+		for(NPC value : BossManager.clickables.values()) {
 			if(event.getDefender().getUniqueId().equals(value.getUniqueId())) event.setCancelled(true);
 		}
 
@@ -396,7 +400,8 @@ public class MobManager implements Listener {
 
 	@EventHandler
 	public void onTarget(EntityTargetLivingEntityEvent event) {
-		if(event.getReason() != EntityTargetEvent.TargetReason.CUSTOM && (!(event.getEntity() instanceof Slime))) event.setCancelled(true);
+		if(event.getReason() != EntityTargetEvent.TargetReason.CUSTOM && (!(event.getEntity() instanceof Slime)))
+			event.setCancelled(true);
 	}
 
 	@EventHandler(priority = EventPriority.HIGHEST)
@@ -405,7 +410,7 @@ public class MobManager implements Listener {
 		if(event.getDamager() instanceof Fireball) return;
 		if(NonManager.getNon((LivingEntity) event.getDamager()) != null) return;
 
-		for (NPC value : BossManager.clickables.values()) {
+		for(NPC value : BossManager.clickables.values()) {
 			if(event.getEntity().getUniqueId().equals(value.getUniqueId())) event.setCancelled(true);
 		}
 
@@ -434,7 +439,7 @@ public class MobManager implements Listener {
 
 	public static void clearMobs() {
 		main:
-		for (Entity entity : Bukkit.getWorld("darkzone").getEntities()) {
+		for(Entity entity : Bukkit.getWorld("darkzone").getEntities()) {
 
 			if(entity instanceof Player) continue;
 			if(CitizensAPI.getNPCRegistry().isNPC(entity)) continue;
@@ -494,8 +499,6 @@ public class MobManager implements Listener {
 			entity.remove();
 		}
 	}
-
-
 
 
 }

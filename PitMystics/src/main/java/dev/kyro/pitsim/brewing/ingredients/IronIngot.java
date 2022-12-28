@@ -19,62 +19,63 @@ import java.util.Arrays;
 import java.util.List;
 
 public class IronIngot extends BrewingIngredient {
-    public static IronIngot INSTANCE;
-    public IronIngot() {
-        super(9, NBTTag.GOLEM_INGOT, "Defense", ChatColor.BLUE, PotionType.NIGHT_VISION);
-        INSTANCE = this;
-    }
+	public static IronIngot INSTANCE;
 
-    @Override
-    public void administerEffect(Player player, BrewingIngredient potency, int duration) {
+	public IronIngot() {
+		super(9, NBTTag.GOLEM_INGOT, "Defense", ChatColor.BLUE, PotionType.NIGHT_VISION);
+		INSTANCE = this;
+	}
 
-    }
+	@Override
+	public void administerEffect(Player player, BrewingIngredient potency, int duration) {
 
-    @EventHandler
-    public void onHit(AttackEvent.Apply event) {
-        PotionEffect effect = PotionManager.getEffect(event.getDefenderPlayer(), this);
-        if(effect == null) return;
+	}
 
-        double defense = (double) getPotency(effect.potency);
-        event.multipliers.add(defense);
-    }
+	@EventHandler
+	public void onHit(AttackEvent.Apply event) {
+		PotionEffect effect = PotionManager.getEffect(event.getDefenderPlayer(), this);
+		if(effect == null) return;
 
-    @Override
-    public Object getPotency(BrewingIngredient potencyIngredient) {
-        return (1 - 0.5 * potencyIngredient.tier);
-    }
+		double defense = (double) getPotency(effect.potency);
+		event.multipliers.add(defense);
+	}
 
-    @Override
-    public List<String> getPotencyLore(BrewingIngredient potency) {
-        List<String> lore = new ArrayList<>();
+	@Override
+	public Object getPotency(BrewingIngredient potencyIngredient) {
+		return (1 - 0.5 * potencyIngredient.tier);
+	}
 
-        lore.add("");
-        lore.add(ChatColor.GRAY + "Receive " + color + "-" + (potency.tier * 10) + "% Damage" +  ChatColor.GRAY + ".");
-        return lore;
-    }
+	@Override
+	public List<String> getPotencyLore(BrewingIngredient potency) {
+		List<String> lore = new ArrayList<>();
 
-    @Override
-    public int getDuration(BrewingIngredient durationIngredient) {
-        return 20 * 30 * durationIngredient.tier;
-    }
+		lore.add("");
+		lore.add(ChatColor.GRAY + "Receive " + color + "-" + (potency.tier * 10) + "% Damage" + ChatColor.GRAY + ".");
+		return lore;
+	}
 
-    @Override
-    public int getBrewingReductionMinutes() {
-        return 90;
-    }
+	@Override
+	public int getDuration(BrewingIngredient durationIngredient) {
+		return 20 * 30 * durationIngredient.tier;
+	}
 
-    @Override
-    public ItemStack getItem() {
-        ItemStack ingot = new ItemStack(Material.IRON_INGOT);
-        ItemMeta meta = ingot.getItemMeta();
-        List<String> lore = Arrays.asList(ChatColor.GRAY + "Ingot gathered from the Golems", ChatColor.GRAY
-                + "of the Golem Caves", "", ChatColor.DARK_PURPLE + "Tainted Item");
-        meta.setLore(lore);
-        meta.setDisplayName(ChatColor.GREEN + "Iron Ingot");
-        ingot.setItemMeta(meta);
+	@Override
+	public int getBrewingReductionMinutes() {
+		return 90;
+	}
 
-        NBTItem nbtItem = new NBTItem(ingot);
-        nbtItem.setBoolean(nbtTag.getRef(), true);
-        return nbtItem.getItem();
-    }
+	@Override
+	public ItemStack getItem() {
+		ItemStack ingot = new ItemStack(Material.IRON_INGOT);
+		ItemMeta meta = ingot.getItemMeta();
+		List<String> lore = Arrays.asList(ChatColor.GRAY + "Ingot gathered from the Golems", ChatColor.GRAY
+				+ "of the Golem Caves", "", ChatColor.DARK_PURPLE + "Tainted Item");
+		meta.setLore(lore);
+		meta.setDisplayName(ChatColor.GREEN + "Iron Ingot");
+		ingot.setItemMeta(meta);
+
+		NBTItem nbtItem = new NBTItem(ingot);
+		nbtItem.setBoolean(nbtTag.getRef(), true);
+		return nbtItem.getItem();
+	}
 }

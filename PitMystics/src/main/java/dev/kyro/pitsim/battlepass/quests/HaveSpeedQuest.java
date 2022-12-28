@@ -35,7 +35,8 @@ public class HaveSpeedQuest extends PassQuest {
 				if(!HaveSpeedQuest.INSTANCE.isQuestActive()) return;
 				for(Player onlinePlayer : Bukkit.getOnlinePlayers()) {
 					if(!onlinePlayer.hasPotionEffect(PotionEffectType.SPEED) ||
-							SpawnManager.isInSpawn(onlinePlayer.getLocation()) || MapManager.inDarkzone(onlinePlayer)) continue;
+							SpawnManager.isInSpawn(onlinePlayer.getLocation()) || MapManager.inDarkzone(onlinePlayer))
+						continue;
 					PitPlayer pitPlayer = PitPlayer.getPitPlayer(onlinePlayer);
 					HaveSpeedQuest.INSTANCE.progressQuest(pitPlayer, 1);
 				}
@@ -54,7 +55,7 @@ public class HaveSpeedQuest extends PassQuest {
 						"",
 						"&7Progress: &3" + Misc.formatLarge(progress / 60) + "&7/&3" + Misc.formatLarge(questLevel.getRequirement(pitPlayer) / 60) + " &8[" +
 								AUtil.createProgressBar("|", ChatColor.AQUA, ChatColor.GRAY, 20,
-								progress / questLevel.getRequirement(pitPlayer)) + "&8]",
+										progress / questLevel.getRequirement(pitPlayer)) + "&8]",
 						"&7Reward: &3" + questLevel.rewardPoints + " &7Quest Points"
 				))
 				.getItemStack();

@@ -54,6 +54,7 @@ import java.util.*;
 
 public class Misc {
 	public static final String ALERTS_WEBHOOK = "***REMOVED***";
+
 	public static void alertDiscord(String message) {
 		DiscordWebhook discordWebhook = new DiscordWebhook(ALERTS_WEBHOOK);
 		discordWebhook.setContent(message);
@@ -180,7 +181,7 @@ public class Misc {
 			BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
 			String inputLine;
 			StringBuffer response = new StringBuffer();
-			while ((inputLine = in.readLine()) != null) {
+			while((inputLine = in.readLine()) != null) {
 				response.append(inputLine);
 			}
 			in.close();
@@ -188,7 +189,7 @@ public class Misc {
 			// Parse the JSON response to get the updated username=
 			JSONObject jsonObject = (JSONObject) new JSONParser().parse(response.toString());
 			return (String) jsonObject.get("name");
-		} catch (Exception exception) {
+		} catch(Exception exception) {
 			exception.printStackTrace();
 			return "KyroKrypt";
 		}
@@ -231,7 +232,8 @@ public class Misc {
 				Uberstreak uberstreak = (Uberstreak) pitPlayer.megastreak;
 				if(uberstreak.uberEffects.contains(Uberstreak.UberEffect.NO_SPEED) && type == PotionEffectType.SPEED)
 					return;
-			} else if(pitPlayer.megastreak.getClass() != Overdrive.class && pitPlayer.megastreak.isOnMega() && type == PotionEffectType.SLOW) return;
+			} else if(pitPlayer.megastreak.getClass() != Overdrive.class && pitPlayer.megastreak.isOnMega() && type == PotionEffectType.SLOW)
+				return;
 		}
 
 		for(PotionEffect potionEffect : entity.getActivePotionEffects()) {
@@ -260,6 +262,7 @@ public class Misc {
 		if(pitCosmetic != null && pitCosmetic.preventKillSound) return;
 		new BukkitRunnable() {
 			int count = 0;
+
 			@Override
 			public void run() {
 
@@ -515,6 +518,7 @@ public class Misc {
 	}
 
 	public static Map<UUID, String> rankColorMap = new HashMap<>();
+
 	public static String getRankColor(UUID uuid) {
 		if(rankColorMap.containsKey(uuid)) return rankColorMap.get(uuid);
 		try {

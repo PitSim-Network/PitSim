@@ -6,16 +6,16 @@ import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
 public class LootRunnable {
-    String profiler;
+	String profiler;
 
-    public LootRunnable(String profiler) {
-        this.profiler = profiler;
-    }
+	public LootRunnable(String profiler) {
+		this.profiler = profiler;
+	}
 
-    public void run(Player player, String itemName, String rare_type) {
-        AOutput.send(player, rare_type + " &7you dropped a &c&l" + ChatColor.stripColor(itemName));
+	public void run(Player player, String itemName, String rare_type) {
+		AOutput.send(player, rare_type + " &7you dropped a &c&l" + ChatColor.stripColor(itemName));
 
-        Sounds.EVENT_START.play(player);
+		Sounds.EVENT_START.play(player);
 
-    }
+	}
 }

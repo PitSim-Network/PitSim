@@ -25,6 +25,7 @@ public class SoulReqPlaceholder implements APAPIPlaceholder {
 
 
 		if(soulReq - pitPlayer.soulsGathered <= 0) return "&aDONE!";
-		else return ChatColor.WHITE + (NumberFormat.getNumberInstance(Locale.US).format(soulReq - pitPlayer.soulsGathered));
+		else
+			return ChatColor.WHITE + (NumberFormat.getNumberInstance(Locale.US).format(soulReq - pitPlayer.soulsGathered));
 	}
 }

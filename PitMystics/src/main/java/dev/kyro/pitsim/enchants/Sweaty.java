@@ -38,7 +38,7 @@ public class Sweaty extends PitEnchant {
 				"&7gain &b+" + decimalFormat.format(getXpIncrease(enchantLvl)) + " XP &7on kill per 10", "&7killstreak").getLore();
 	}
 
-//	Has to be proportional
+	//	Has to be proportional
 	public double getXpIncrease(int enchantLvl) {
 		return enchantLvl * 1.0;
 	}

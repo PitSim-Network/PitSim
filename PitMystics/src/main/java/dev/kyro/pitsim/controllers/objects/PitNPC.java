@@ -30,9 +30,11 @@ public abstract class PitNPC implements Listener {
 		for(World world : worlds) createNPC(getFinalLocation(world));
 	}
 
-//	The raw location is only needed if the final location is not being overwritten
+	//	The raw location is only needed if the final location is not being overwritten
 	public abstract Location getRawLocation();
+
 	public abstract void createNPC(Location location);
+
 	public abstract void onClick(Player player);
 
 	@EventHandler

@@ -85,8 +85,7 @@ public class PortalManager implements Listener {
 				teleportLoc.setX(173);
 				teleportLoc.setY(92);
 				teleportLoc.setZ(-94);
-			}
-			else {
+			} else {
 				World destination = MapManager.currentMap.world;
 				teleportLoc = MapManager.currentMap.getStandAlonePortalRespawn();
 				teleportLoc.setWorld(destination);
@@ -113,8 +112,7 @@ public class PortalManager implements Listener {
 				Misc.sendTitle(player, "&d&k||&5&lDarkzone&d&k||", 40);
 				Misc.sendSubTitle(player, "", 40);
 				AOutput.send(player, "&7You have been sent to the &d&k||&5&lDarkzone&d&k||&7.");
-			}
-			else {
+			} else {
 				Misc.sendTitle(player, "&a&lOverworld", 40);
 				Misc.sendSubTitle(player, "", 40);
 				AOutput.send(player, "&7You have been sent to the &a&lOverworld&7.");

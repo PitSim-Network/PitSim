@@ -27,7 +27,8 @@ public class aEntanglement extends PitEnchant {
 		int heldLvl = EnchantManager.getEnchantLevel(attackEvent.getAttackerPlayer().getItemInHand(), this);
 		int wornLvl = EnchantManager.getEnchantLevel(attackEvent.getDefender().getEquipment().getLeggings(), this);
 
-		if(heldLvl != 0) attackEvent.getAttackerPlayer().setItemInHand(scramble(attackEvent.getAttackerPlayer().getItemInHand(), heldLvl));
+		if(heldLvl != 0)
+			attackEvent.getAttackerPlayer().setItemInHand(scramble(attackEvent.getAttackerPlayer().getItemInHand(), heldLvl));
 		if(wornLvl != 0)
 			attackEvent.getDefender().getEquipment().setLeggings(scramble(attackEvent.getDefender().getEquipment().getLeggings(), wornLvl));
 	}

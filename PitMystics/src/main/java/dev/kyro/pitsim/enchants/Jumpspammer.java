@@ -34,7 +34,7 @@ public class Jumpspammer extends PitEnchant {
 	@Override
 	public List<String> getDescription(int enchantLvl) {
 		if(enchantLvl == 1) return new ALoreBuilder("&7While midair, your arrows deal",
-					"&c+" + getDamage(enchantLvl) + "% &7damage").getLore();
+				"&c+" + getDamage(enchantLvl) + "% &7damage").getLore();
 		return new ALoreBuilder("&7While midair, your arrows deal",
 				"&c+" + getDamage(enchantLvl) + "% &7damage. While midair,",
 				"&7receive &9-" + getReduction(enchantLvl) + "% &7damage from melee", "&7and ranged attacks").getLore();

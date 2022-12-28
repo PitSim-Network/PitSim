@@ -46,7 +46,7 @@ public class BackwardsCompatibility implements Listener {
 //			UpgradeManager.updatePlayer(player);
 //		}
 
-		for (int i = 0; i < player.getInventory().getSize(); i++) {
+		for(int i = 0; i < player.getInventory().getSize(); i++) {
 			ItemStack itemStack = player.getInventory().getItem(i);
 
 			if(Misc.isAirOrNull(itemStack)) continue;
@@ -77,7 +77,7 @@ public class BackwardsCompatibility implements Listener {
 	public void onClose(InventoryCloseEvent event) {
 		Player player = (Player) event.getPlayer();
 
-		for (int i = 0; i < player.getInventory().getSize(); i++) {
+		for(int i = 0; i < player.getInventory().getSize(); i++) {
 			ItemStack itemStack = player.getInventory().getItem(i);
 
 			if(Misc.isAirOrNull(itemStack)) continue;

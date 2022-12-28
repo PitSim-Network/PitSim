@@ -41,7 +41,7 @@ public class CongratulatePrestigeQuest extends PassQuest {
 
 		String[] words = ChatColor.stripColor(event.getMessage()).toLowerCase().replaceAll("[^A-Za-z0-9]", "").split(" ");
 		if(words.length == 0 || words[0].length() < 2) return;
-		for(char character : words[0].toCharArray()){
+		for(char character : words[0].toCharArray()) {
 			if(character != 'g') return;
 		}
 
@@ -62,7 +62,7 @@ public class CongratulatePrestigeQuest extends PassQuest {
 						"",
 						"&7Progress: &3" + Misc.formatLarge(progress) + "&7/&3" + Misc.formatLarge(questLevel.getRequirement(pitPlayer)) + " &8[" +
 								AUtil.createProgressBar("|", ChatColor.AQUA, ChatColor.GRAY, 20,
-								progress / questLevel.getRequirement(pitPlayer)) + "&8]",
+										progress / questLevel.getRequirement(pitPlayer)) + "&8]",
 						"&7Reward: &3" + questLevel.rewardPoints + " &7Quest Points"
 				))
 				.getItemStack();

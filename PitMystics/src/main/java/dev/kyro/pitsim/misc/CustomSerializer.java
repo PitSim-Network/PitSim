@@ -31,7 +31,7 @@ public class CustomSerializer {
 	public static String getEnchants(ItemStack i) {
 		List<String> e = new ArrayList<String>();
 		Map<Enchantment, Integer> en = i.getEnchantments();
-		for (Enchantment t : en.keySet()) {
+		for(Enchantment t : en.keySet()) {
 			e.add(t.getName() + ":" + en.get(t));
 		}
 		return StringUtils.join(e, ",");
@@ -59,7 +59,7 @@ public class CustomSerializer {
 			NBTTagCompound compound = MojangsonParser.parse(NBT);
 
 			nmsStack.setTag(compound);
-		} catch (MojangsonParseException e1) {
+		} catch(MojangsonParseException e1) {
 			e1.printStackTrace();
 		}
 
@@ -77,21 +77,21 @@ public class CustomSerializer {
 		MaterialData data = i.getData();
 		data.setData((byte) Integer.parseInt(a[4]));
 		i.setData(data);
-		if (!a[6].isEmpty()) {
+		if(!a[6].isEmpty()) {
 			i = setNBT(i, a[6]);
 		}
-		if (!a[5].isEmpty()) {
+		if(!a[5].isEmpty()) {
 			String[] parts = a[5].split(",");
-			for (String s : parts) {
+			for(String s : parts) {
 				String label = s.split(":")[0];
 				String amplifier = s.split(":")[1];
 				Enchantment type = Enchantment.getByName(label);
-				if (type == null)
+				if(type == null)
 					continue;
 				int f;
 				try {
 					f = Integer.parseInt(amplifier);
-				} catch (Exception ex) {
+				} catch(Exception ex) {
 					continue;
 				}
 				i.addUnsafeEnchantment(type, f);

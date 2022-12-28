@@ -25,6 +25,7 @@ public class ManaRegeneration extends PitEnchant {
 	}
 
 	public static int counter = 0;
+
 	static {
 		new BukkitRunnable() {
 			@Override

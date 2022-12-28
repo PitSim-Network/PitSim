@@ -36,7 +36,7 @@ public class PitSimPass {
 		return this;
 	}
 
-//	Only call this if you are sure that the current pass is supposed to be current
+	//	Only call this if you are sure that the current pass is supposed to be current
 	public void writeToConfig() {
 		FirestoreManager.CONFIG.currentPassData.activeWeeklyQuests.clear();
 		for(Map.Entry<PassQuest, PassQuest.QuestLevel> entry : weeklyQuests.entrySet())

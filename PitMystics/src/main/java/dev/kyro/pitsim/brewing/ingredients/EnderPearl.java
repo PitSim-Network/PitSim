@@ -24,93 +24,94 @@ import java.util.List;
 import java.util.Map;
 
 public class EnderPearl extends BrewingIngredient {
-    public static EnderPearl INSTANCE;
-    public EnderPearl() {
-        super(10, NBTTag.ENDERMAN_PEARL, "Venom", ChatColor.GREEN, PotionType.POISON);
-        INSTANCE = this;
-    }
+	public static EnderPearl INSTANCE;
 
-    @Override
-    public void administerEffect(Player player, BrewingIngredient potency, int duration) {
-        Misc.applyPotionEffect(player, PotionEffectType.POISON, duration, 0, false, false);
-    }
+	public EnderPearl() {
+		super(10, NBTTag.ENDERMAN_PEARL, "Venom", ChatColor.GREEN, PotionType.POISON);
+		INSTANCE = this;
+	}
 
-    @EventHandler
-    public void onHit(AttackEvent.Pre attackEvent) {
-        PotionEffect attackerEffect = PotionManager.getEffect(attackEvent.getAttackerPlayer(), this);
-        if(attackerEffect == null) return;
+	@Override
+	public void administerEffect(Player player, BrewingIngredient potency, int duration) {
+		Misc.applyPotionEffect(player, PotionEffectType.POISON, duration, 0, false, false);
+	}
 
-        int tokensToRemove = (int) getPotency(attackerEffect.potency);
+	@EventHandler
+	public void onHit(AttackEvent.Pre attackEvent) {
+		PotionEffect attackerEffect = PotionManager.getEffect(attackEvent.getAttackerPlayer(), this);
+		if(attackerEffect == null) return;
 
-        for (Map.Entry<PitEnchant, Integer> entry : attackEvent.getAttackerEnchantMap().entrySet()) {
-            if(entry.getKey().applyType != ApplyType.SWORDS && entry.getKey().applyType != ApplyType.BOWS && entry.getKey().applyType != ApplyType.MELEE) continue;
-            for (int i = 0; i < entry.getValue(); i++) {
-                attackEvent.getAttackerEnchantMap().put(entry.getKey(), entry.getValue() - 1);
+		int tokensToRemove = (int) getPotency(attackerEffect.potency);
 
-                tokensToRemove--;
-                if(tokensToRemove == 0) return;
-            }
-        }
-    }
+		for(Map.Entry<PitEnchant, Integer> entry : attackEvent.getAttackerEnchantMap().entrySet()) {
+			if(entry.getKey().applyType != ApplyType.SWORDS && entry.getKey().applyType != ApplyType.BOWS && entry.getKey().applyType != ApplyType.MELEE)
+				continue;
+			for(int i = 0; i < entry.getValue(); i++) {
+				attackEvent.getAttackerEnchantMap().put(entry.getKey(), entry.getValue() - 1);
 
-    @EventHandler
-    public void onDefend(AttackEvent.Apply defendEvent) {
-        PotionEffect defenderEffect = PotionManager.getEffect(defendEvent.getDefenderPlayer(), this);
-        if(defenderEffect == null) return;
+				tokensToRemove--;
+				if(tokensToRemove == 0) return;
+			}
+		}
+	}
 
-        int tokensToRemove = (int) getPotency(defenderEffect.potency) / 2;
+	@EventHandler
+	public void onDefend(AttackEvent.Apply defendEvent) {
+		PotionEffect defenderEffect = PotionManager.getEffect(defendEvent.getDefenderPlayer(), this);
+		if(defenderEffect == null) return;
 
-        for (Map.Entry<PitEnchant, Integer> entry : defendEvent.getDefenderEnchantMap().entrySet()) {
-            if(entry.getKey().applyType != ApplyType.PANTS) continue;
-            for (int i = 0; i < entry.getValue(); i++) {
-                defendEvent.getDefenderEnchantMap().put(entry.getKey(), entry.getValue() - 1);
+		int tokensToRemove = (int) getPotency(defenderEffect.potency) / 2;
 
-                tokensToRemove--;
-                if(tokensToRemove == 0) return;
-            }
+		for(Map.Entry<PitEnchant, Integer> entry : defendEvent.getDefenderEnchantMap().entrySet()) {
+			if(entry.getKey().applyType != ApplyType.PANTS) continue;
+			for(int i = 0; i < entry.getValue(); i++) {
+				defendEvent.getDefenderEnchantMap().put(entry.getKey(), entry.getValue() - 1);
 
-        }
-    }
+				tokensToRemove--;
+				if(tokensToRemove == 0) return;
+			}
+
+		}
+	}
 
 
+	@Override
+	public Object getPotency(BrewingIngredient potencyIngredient) {
+		return potencyIngredient.tier;
+	}
 
-    @Override
-    public Object getPotency(BrewingIngredient potencyIngredient) {
-        return potencyIngredient.tier;
-    }
+	@Override
+	public List<String> getPotencyLore(BrewingIngredient potency) {
+		List<String> lore = new ArrayList<>();
 
-    @Override
-    public List<String> getPotencyLore(BrewingIngredient potency) {
-        List<String> lore = new ArrayList<>();
+		lore.add("");
+		lore.add(ChatColor.GRAY + "Disables " + color + getPotency(potency) + " Mystic Tokens " + ChatColor.GRAY + "from being");
+		lore.add(ChatColor.GRAY + "used in any way.");
+		return lore;
+	}
 
-        lore.add("");
-        lore.add(ChatColor.GRAY + "Disables " + color + getPotency(potency) + " Mystic Tokens " +  ChatColor.GRAY + "from being");
-        lore.add(ChatColor.GRAY + "used in any way.");
-        return lore;
-    }
+	@Override
+	public int getDuration(BrewingIngredient durationIngredient) {
+		return 20 * 15 * durationIngredient.tier;
+	}
 
-    @Override
-    public int getDuration(BrewingIngredient durationIngredient) {
-        return 20 * 15 * durationIngredient.tier;
-    }
+	@Override
+	public int getBrewingReductionMinutes() {
+		return 100;
+	}
 
-    @Override
-    public int getBrewingReductionMinutes() {
-        return 100;
-    }
+	@Override
+	public ItemStack getItem() {
+		ItemStack pearl = new ItemStack(Material.ENDER_PEARL);
+		ItemMeta meta = pearl.getItemMeta();
+		List<String> lore = Arrays.asList(ChatColor.GRAY + "Pearl gathered from the Endermen", ChatColor.GRAY
+				+ "of the End Caves", "", ChatColor.DARK_PURPLE + "Tainted Item");
+		meta.setLore(lore);
+		meta.setDisplayName(ChatColor.GREEN + "Ender Pearl");
+		pearl.setItemMeta(meta);
 
-    @Override
-    public ItemStack getItem() {
-        ItemStack pearl = new ItemStack(Material.ENDER_PEARL);
-        ItemMeta meta = pearl.getItemMeta();
-        List<String> lore = Arrays.asList(ChatColor.GRAY + "Pearl gathered from the Endermen", ChatColor.GRAY
-                + "of the End Caves", "", ChatColor.DARK_PURPLE + "Tainted Item");
-        meta.setLore(lore);
-        meta.setDisplayName(ChatColor.GREEN + "Ender Pearl");
-        pearl.setItemMeta(meta);
-
-        NBTItem nbtItem = new NBTItem(pearl);
-        nbtItem.setBoolean(nbtTag.getRef(), true);
-        return nbtItem.getItem();
-    }
+		NBTItem nbtItem = new NBTItem(pearl);
+		nbtItem.setBoolean(nbtTag.getRef(), true);
+		return nbtItem.getItem();
+	}
 }

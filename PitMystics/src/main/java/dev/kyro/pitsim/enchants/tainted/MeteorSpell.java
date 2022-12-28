@@ -34,7 +34,6 @@ public class MeteorSpell extends PitEnchant {
 	}
 
 
-
 	@EventHandler
 	public void onUse(PitPlayerAttemptAbilityEvent event) {
 		int enchantLvl = event.getEnchantLevel(this);
@@ -59,7 +58,7 @@ public class MeteorSpell extends PitEnchant {
 			block = block.getLocation().subtract(0, 1, 0).getBlock();
 		}
 
-		for (Entity entity : player.getNearbyEntities(15, 15, 15)) {
+		for(Entity entity : player.getNearbyEntities(15, 15, 15)) {
 			Vector direction = player.getLocation().getDirection();
 			Vector towardsEntity = entity.getLocation().subtract(player.getLocation()).toVector().normalize();
 
@@ -75,35 +74,35 @@ public class MeteorSpell extends PitEnchant {
 
 		int time = 1;
 
-		for (int i = 0; i < add; i++) {
+		for(int i = 0; i < add; i++) {
 			int finalI = i;
 			new BukkitRunnable() {
-				 @Override
-				 public void run() {
-					 base.add(diff);
-					 base.getWorld().playEffect(base, Effect.EXPLOSION_LARGE, 1);
-					 base.getWorld().playEffect(base, Effect.LARGE_SMOKE, 1);
-					 base.getWorld().playEffect(base, Effect.PARTICLE_SMOKE, 1);
-					 Sounds.METEOR.play(base);
-					 if(finalI >= (add - 1)) {
-						 Sounds.EXPLOSIVE_3.play(base);
+				@Override
+				public void run() {
+					base.add(diff);
+					base.getWorld().playEffect(base, Effect.EXPLOSION_LARGE, 1);
+					base.getWorld().playEffect(base, Effect.LARGE_SMOKE, 1);
+					base.getWorld().playEffect(base, Effect.PARTICLE_SMOKE, 1);
+					Sounds.METEOR.play(base);
+					if(finalI >= (add - 1)) {
+						Sounds.EXPLOSIVE_3.play(base);
 
-						 for (Entity near : base.getWorld().getNearbyEntities(base, 5, 5, 5)) {
-							 if(near instanceof ArmorStand || near instanceof Villager) continue;
-							 if(!(near instanceof LivingEntity)) continue;
-							 if(near == player) continue;
-							 if(near instanceof Player) {
-							 	((Player) near).damage(25, player);
-							 	return;
-							 }
-							 EntityDamageByEntityEvent damageEvent = new EntityDamageByEntityEvent(player, near, EntityDamageEvent.DamageCause.ENTITY_ATTACK, 50);
-							 damageEvent.setDamage(50);
-							 Bukkit.getServer().getPluginManager().callEvent(damageEvent);
-							 return;
-						 }
-					 }
-				 }
-			 }.runTaskLater(PitSim.INSTANCE, time);
+						for(Entity near : base.getWorld().getNearbyEntities(base, 5, 5, 5)) {
+							if(near instanceof ArmorStand || near instanceof Villager) continue;
+							if(!(near instanceof LivingEntity)) continue;
+							if(near == player) continue;
+							if(near instanceof Player) {
+								((Player) near).damage(25, player);
+								return;
+							}
+							EntityDamageByEntityEvent damageEvent = new EntityDamageByEntityEvent(player, near, EntityDamageEvent.DamageCause.ENTITY_ATTACK, 50);
+							damageEvent.setDamage(50);
+							Bukkit.getServer().getPluginManager().callEvent(damageEvent);
+							return;
+						}
+					}
+				}
+			}.runTaskLater(PitSim.INSTANCE, time);
 			time++;
 		}
 	}

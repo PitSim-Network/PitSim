@@ -49,6 +49,7 @@ public class KyroAura extends PitCosmetic {
 			private final Vector rollVector = new Vector(0, 0, SIZE);
 			private double rollX = 1;
 			private double rollY = 0;
+
 			@Override
 			public void run() {
 				yawX = (0 + (yawX - 0) * Math.cos(Math.toRadians(0.4)) - ((yawY - 0) * Math.sin(Math.toRadians(0.4))));
@@ -78,7 +79,8 @@ public class KyroAura extends PitCosmetic {
 
 	@Override
 	public void onDisable(PitPlayer pitPlayer) {
-		if(runnableMap.containsKey(pitPlayer.player.getUniqueId())) runnableMap.get(pitPlayer.player.getUniqueId()).cancel();
+		if(runnableMap.containsKey(pitPlayer.player.getUniqueId()))
+			runnableMap.get(pitPlayer.player.getUniqueId()).cancel();
 	}
 
 	@Override

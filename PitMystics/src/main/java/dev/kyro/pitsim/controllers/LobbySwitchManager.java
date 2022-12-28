@@ -54,7 +54,8 @@ public class LobbySwitchManager implements Listener {
 
 	@EventHandler
 	public void onHit(AttackEvent.Pre event) {
-		if(switchingPlayers.contains(event.getDefenderPlayer()) || switchingPlayers.contains(event.getAttackerPlayer())) event.setCancelled(true);
+		if(switchingPlayers.contains(event.getDefenderPlayer()) || switchingPlayers.contains(event.getAttackerPlayer()))
+			event.setCancelled(true);
 	}
 
 	@EventHandler

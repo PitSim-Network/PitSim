@@ -123,7 +123,8 @@ public class StorageProfile {
 			}
 
 		} catch(IOException exception) {
-			if(!(exception instanceof FileNotFoundException) && !(exception instanceof NoSuchFileException)) exception.printStackTrace();
+			if(!(exception instanceof FileNotFoundException) && !(exception instanceof NoSuchFileException))
+				exception.printStackTrace();
 		}
 
 		saveData(false);

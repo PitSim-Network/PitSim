@@ -397,7 +397,8 @@ public class GoldenHelmet implements Listener {
 
 	@EventHandler
 	public void onAttack(AttackEvent.Apply attackEvent) {
-		if(NonManager.getNon(attackEvent.getAttacker()) != null || NonManager.getNon(attackEvent.getDefender()) != null) return;
+		if(NonManager.getNon(attackEvent.getAttacker()) != null || NonManager.getNon(attackEvent.getDefender()) != null)
+			return;
 		ItemStack attackerHelmet = getHelmet(attackEvent.getAttacker());
 		ItemStack defenderHelmet = getHelmet(attackEvent.getDefender());
 

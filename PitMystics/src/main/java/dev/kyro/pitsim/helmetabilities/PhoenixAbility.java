@@ -47,7 +47,8 @@ public class PhoenixAbility extends HelmetAbility {
 		if(killEvent.isDeadPlayer()) alreadyActivatedList.remove(killEvent.getDeadPlayer().getUniqueId());
 
 		if(!killEvent.isKillerPlayer() || !killEvent.isDeadPlayer() ||
-				!Bukkit.getOnlinePlayers().contains(killEvent.getKillerPlayer()) || !Bukkit.getOnlinePlayers().contains(killEvent.getDeadPlayer())) return;
+				!Bukkit.getOnlinePlayers().contains(killEvent.getKillerPlayer()) || !Bukkit.getOnlinePlayers().contains(killEvent.getDeadPlayer()))
+			return;
 		alreadyActivatedList.remove(killEvent.getKillerPlayer().getUniqueId());
 	}
 
@@ -121,6 +122,7 @@ public class PhoenixAbility extends HelmetAbility {
 		World world = player.getWorld();
 		new BukkitRunnable() {
 			int count = 0;
+
 			@Override
 			public void run() {
 				if(count++ == 5) {

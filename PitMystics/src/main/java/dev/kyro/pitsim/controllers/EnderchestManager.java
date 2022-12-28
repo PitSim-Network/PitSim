@@ -36,13 +36,13 @@ public class EnderchestManager implements Listener {
 			if(event.getPlayer() instanceof Player) Sounds.ENDERCHEST_OPEN.play(event.getPlayer());
 
 			new BukkitRunnable() {
-					@Override
-					public void run() {
-						EnderchestGUI gui = new EnderchestGUI((Player) event.getPlayer(), event.getPlayer().getUniqueId());
-						gui.open();
-						Sounds.ENDERCHEST_OPEN.play(event.getPlayer());
-					}
-				}.runTaskLater(PitSim.INSTANCE, 1L);
+				@Override
+				public void run() {
+					EnderchestGUI gui = new EnderchestGUI((Player) event.getPlayer(), event.getPlayer().getUniqueId());
+					gui.open();
+					Sounds.ENDERCHEST_OPEN.play(event.getPlayer());
+				}
+			}.runTaskLater(PitSim.INSTANCE, 1L);
 
 		}
 	}
@@ -68,7 +68,7 @@ public class EnderchestManager implements Listener {
 				}.runTaskLater(PitSim.INSTANCE, 1L);
 
 			}
-		} catch (Exception ignored) { };
+		} catch(Exception ignored) {} ;
 	}
 
 	@EventHandler

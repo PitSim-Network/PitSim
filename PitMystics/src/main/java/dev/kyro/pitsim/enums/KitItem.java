@@ -1,23 +1,23 @@
 package dev.kyro.pitsim.enums;
 
 public enum KitItem {
-//	Essential
+	//	Essential
 	DIAMOND_HELMET,
 	DIAMOND_CHESTPLATE,
 	DIAMOND_BOOTS,
 
-//	XP
+	//	XP
 	EXE_SWEATY,
 	SWEATY_GHEART,
 	SWEATY_ELEC,
 
-//	Gold
+	//	Gold
 	EXE_MOCT_BOOST,
 	EXE_MOCT_SHARK,
 	MOCT_BOOST_BUMP,
 	MOCT_BOOST_ELEC,
 
-//	PvP
+	//	PvP
 	BILL_STOMP_LS,
 	BILL_LS_PF,
 	CH_LS,
@@ -34,7 +34,7 @@ public enum KitItem {
 	MLB_WASP,
 	MLB_TELE,
 
-//	Multiple
+	//	Multiple
 	STREAKING_BILL_LS,
 	STREAKING_CH_LS,
 	VOLLEY_FTTS,
