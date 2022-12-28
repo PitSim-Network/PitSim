@@ -76,9 +76,9 @@ public abstract class PitEnchant implements Listener {
 				return ChatColor.translateAlternateColorCodes('&', isRare ? "&dSPELL! &5" + name : "&5" + name);
 			else return ChatColor.translateAlternateColorCodes('&', isRare ? "&dEFFECT! &5" + name : "&5" + name);
 		}
-		if(isRare) return "&dRARE! &9" + name;
-		if(isUncommonEnchant) return "&aUNC. &9" + name;
-		return "&9" + name;
+		if(isRare) return ChatColor.translateAlternateColorCodes('&', "&dRARE! &9" + name);
+		if(isUncommonEnchant) return ChatColor.translateAlternateColorCodes('&', "&aUNC. &9" + name);
+		return ChatColor.translateAlternateColorCodes('&', "&9" + name);
 	}
 
 	public void setOverrideName(String overrideName) {
