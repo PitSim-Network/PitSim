@@ -7,6 +7,8 @@ import dev.kyro.arcticapi.data.APlayerData;
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.battlepass.PassData;
+import dev.kyro.pitsim.battlepass.PassManager;
+import dev.kyro.pitsim.battlepass.PassQuest;
 import dev.kyro.pitsim.battlepass.quests.ReachKillstreakQuest;
 import dev.kyro.pitsim.brewing.BrewingManager;
 import dev.kyro.pitsim.brewing.PotionManager;
@@ -49,6 +51,7 @@ import org.bukkit.scheduler.BukkitTask;
 
 import java.util.*;
 import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeUnit;
 
 public class PitPlayer {
 	@Exclude
@@ -185,6 +188,12 @@ public class PitPlayer {
 //			TODO: give unclaimed rewards
 			passData = new PassData(passDate);
 			save(true, false);
+		}
+
+		long daysPassed = TimeUnit.DAYS.convert(Misc.convertToEST(new Date()).getTime() - passDate.getTime(), TimeUnit.MILLISECONDS);
+		if(daysPassed != passData.daysPassed) {
+			passData.daysPassed = daysPassed;
+			for(PassQuest dailyQuest : PassManager.getDailyQuests()) passData.questCompletion.remove(dailyQuest.refName);
 		}
 		return passData;
 	}

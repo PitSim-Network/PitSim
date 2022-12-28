@@ -6,13 +6,14 @@ import java.util.*;
 
 public class PassData {
 	public Date currentPassDate = new Date(0);
+	public long daysPassed = 0;
 	public int totalPoints;
 	public boolean hasPremium = false;
 
 //	Unique weekly quest data
 	public List<String> uniquePlayersPunched = new ArrayList<>();
 
-//	Daily quest data
+//	Quest data
 	public Map<String, Double> questCompletion = new HashMap<>();
 
 	@Exclude
