@@ -9,23 +9,21 @@ import java.util.Arrays;
 import java.util.List;
 
 public enum CosmeticType {
-	PLAYER_KILL_EFFECT("&4&lPlayer Kill Effects", "", PlayerKillEffectsPanel.class),
-	BOT_KILL_EFFECT("&c&lBot Kill Effects", "", BotKillEffectsPanel.class),
-	BOUNTY_CLAIM_MESSAGE("&6&lBounty Messages", "", BountyMessagesPanel.class),
-	CAPE("&f&lCapes", "capes", CapesPanel.class),
-	PARTICLE_TRAIL("&e&lParticle Trails", "", ParticleTrailsPanel.class),
-	AURA("&a&lAuras", "", AurasPanel.class),
-	MISC("&e&lMisc", "", MiscPanel.class);
+	PLAYER_KILL_EFFECT("&4&lPlayer Kill Effects", PlayerKillEffectsPanel.class),
+	BOT_KILL_EFFECT("&c&lBot Kill Effects", BotKillEffectsPanel.class),
+	BOUNTY_CLAIM_MESSAGE("&6&lBounty Messages", BountyMessagesPanel.class),
+	CAPE("&f&lCapes", CapesPanel.class),
+	PARTICLE_TRAIL("&e&lParticle Trails", ParticleTrailsPanel.class),
+	AURA("&a&lAuras", AurasPanel.class),
+	MISC("&e&lMisc", MiscPanel.class);
 
 	private static List<Integer> settingsGUISlots = new ArrayList<>(Arrays.asList(10, 11, 12, 13, 14, 15, 16));
 
 	private String panelName;
-	public String refName;
 	public Class<? extends SubCosmeticPanel> panelClazz;
 
-	CosmeticType(String panelName, String refName, Class<? extends SubCosmeticPanel> panelClazz) {
+	CosmeticType(String panelName, Class<? extends SubCosmeticPanel> panelClazz) {
 		this.panelName = panelName;
-		this.refName = refName;
 		this.panelClazz = panelClazz;
 	}
 

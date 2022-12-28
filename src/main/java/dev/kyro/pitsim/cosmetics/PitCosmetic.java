@@ -83,7 +83,7 @@ public abstract class PitCosmetic implements Listener {
 	}
 
 	private boolean hasPermission(PitPlayer pitPlayer, ParticleColor particleColor) {
-		String permission = "pitsim.cosmetic." + cosmeticType.refName + "." + refName;
+		String permission = "pitsim.cosmetic." + refName;
 		if(particleColor == null) {
 			for(ParticleColor testColor : ParticleColor.values()) {
 				if(pitPlayer.player.hasPermission(permission + "." +
