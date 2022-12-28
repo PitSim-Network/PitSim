@@ -1,7 +1,0 @@
-name: PitDiscord
-authors:
-  - Kyro
-version: 1.0.0
-depend: [ LuckPerms ]
-main: dev.kyro.pitdiscord.DiscordPlugin
-description: Discord connection for PitSim
