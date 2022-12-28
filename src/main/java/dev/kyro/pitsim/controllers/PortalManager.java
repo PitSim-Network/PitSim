@@ -105,7 +105,7 @@ public class PortalManager implements Listener {
 				APlayer aPlayer = APlayerData.getPlayerData(player);
 				FileConfiguration playerData = aPlayer.playerData;
 				if(!playerData.contains("darkzonepreview")) {
-					CutsceneManager.play(player);
+//					CutsceneManager.play(player);
 					return;
 				}
 
