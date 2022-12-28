@@ -226,7 +226,6 @@ public class StorageProfile {
 			}
 		}
 
-
 		if(player.getPlayer() != null) {
 			for(ItemStack itemStack : player.getPlayer().getInventory()) {
 				message.writeString(serialize(player, itemStack));

@@ -30,7 +30,8 @@ public class ReloadManager {
 					if(file.lastModified() == lastModified && startedUpload) {
 						cancel();
 						System.out.println("Jar upload finished. Restarting plugin");
-						for(Player onlinePlayer : Bukkit.getOnlinePlayers()) onlinePlayer.kickPlayer("reloading plugin");
+						if(PitSim.getStatus() != PitSim.ServerStatus.ALL)
+							for(Player onlinePlayer : Bukkit.getOnlinePlayers()) onlinePlayer.kickPlayer("reloading plugin");
 						Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), "plugman reload pitremake");
 
 						return;

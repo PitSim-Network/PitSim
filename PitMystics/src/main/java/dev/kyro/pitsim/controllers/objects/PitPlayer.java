@@ -203,6 +203,7 @@ public class PitPlayer {
 	}
 	@Exclude
 	public void save(boolean finalSave, BukkitRunnable callback, boolean itemData) throws ExecutionException, InterruptedException {
+		if(PitSim.getStatus() == PitSim.ServerStatus.ALL) return;
 		if(finalSave && lastSave + SAVE_COOLDOWN > System.currentTimeMillis()) {
 			long timeUntilSave = lastSave + SAVE_COOLDOWN - System.currentTimeMillis();
 			new Thread(() -> {
@@ -222,7 +223,6 @@ public class PitPlayer {
 
 		if(lastSave + SAVE_COOLDOWN > System.currentTimeMillis()) return;
 		lastSave = System.currentTimeMillis();
-
 
 		if(isNPC) {
 			System.out.println("complete development failure. " + player.getName() + " is attempting to save data and is not a real player");
