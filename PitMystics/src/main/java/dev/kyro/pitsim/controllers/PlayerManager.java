@@ -641,7 +641,7 @@ public class PlayerManager implements Listener {
 
 
 					if(!pitPlayer.darkzoneCutscene) {
-						CutsceneManager.play(player);
+//						CutsceneManager.play(player);
 						return;
 					}
 

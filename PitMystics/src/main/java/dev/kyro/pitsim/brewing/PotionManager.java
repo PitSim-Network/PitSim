@@ -25,7 +25,6 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.PotionSplashEvent;
 import org.bukkit.event.player.PlayerItemConsumeEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
-import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.PotionMeta;
@@ -217,11 +216,6 @@ public  class PotionManager implements Listener {
             PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
             pitPlayer.potionStrings.add(potionEffect.potionType.name + ":" + potionEffect.potency.tier + ":" + potionEffect.getTimeLeft() + ":" + time);
         }
-    }
-
-    @EventHandler
-    public void onQuit(PlayerQuitEvent event) {
-        savePotions(event.getPlayer(), true);
     }
 
     @EventHandler
