@@ -464,7 +464,7 @@ public class EnchantManager implements Listener {
 					.writeString("FINDJEWEL")
 					.writeString(PitSim.serverName)
 					.writeString(Misc.getDisplayName(player))
-					.writeString(CustomSerializer.serialize(player.getItemInHand()))
+					.writeString(CustomSerializer.serialize(displayStack))
 					.send();
 
 			return jewelStack;
