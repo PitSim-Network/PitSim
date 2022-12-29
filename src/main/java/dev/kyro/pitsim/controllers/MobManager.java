@@ -1,7 +1,6 @@
 package dev.kyro.pitsim.controllers;
 
 import de.myzelyam.api.vanish.VanishAPI;
-import dev.kyro.arcticapi.misc.AUtil;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.brewing.BrewingManager;
 import dev.kyro.pitsim.controllers.objects.GoldenHelmet;
@@ -14,7 +13,6 @@ import dev.kyro.pitsim.events.KillEvent;
 import dev.kyro.pitsim.mobs.PitMagmaCube;
 import dev.kyro.pitsim.mobs.PitSpiderBrute;
 import dev.kyro.pitsim.mobs.PitStrongPigman;
-import dev.kyro.pitsim.perks.Telekinesis;
 import net.citizensnpcs.api.CitizensAPI;
 import net.citizensnpcs.api.npc.NPC;
 import org.bukkit.*;
@@ -310,9 +308,7 @@ public class MobManager implements Listener {
 
 				for(ItemStack drop : drops) {
 					PitPlayer pitPlayer = PitPlayer.getPitPlayer(event.getKillerPlayer());
-					if(pitPlayer.hasPerk(Telekinesis.INSTANCE)) {
-						AUtil.giveItemSafely(event.getKillerPlayer(), drop);
-					} else event.getDead().getWorld().dropItemNaturally(event.getDead().getLocation(), drop);
+					event.getDead().getWorld().dropItemNaturally(event.getDead().getLocation(), drop);
 				}
 
 //				for (Map.Entry<ItemStack, Integer> entry : drops.entrySet()) {
