@@ -1,6 +1,7 @@
 package dev.kyro.pitsim.perks;
 
 import dev.kyro.arcticapi.builders.ALoreBuilder;
+import dev.kyro.pitsim.controllers.MapManager;
 import dev.kyro.pitsim.controllers.NonManager;
 import dev.kyro.pitsim.controllers.objects.PitPerk;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
@@ -27,6 +28,7 @@ public class CounterJanitor extends PitPerk {
 	@EventHandler
 	public void onKill(KillEvent killEvent) {
 		if(!playerHasUpgrade(killEvent.getKiller())) return;
+		if(MapManager.inDarkzone(killEvent.getKiller())) return;
 		if(killEvent.isKillerPlayer() && NonManager.getNon(killEvent.getDead()) == null) {
 			PitPlayer pitPlayer = killEvent.getKillerPitPlayer();
 			double missingHealth = killEvent.getKiller().getMaxHealth() - killEvent.getKiller().getHealth();

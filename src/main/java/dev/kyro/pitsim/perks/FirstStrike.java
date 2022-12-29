@@ -2,6 +2,7 @@ package dev.kyro.pitsim.perks;
 
 import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.pitsim.PitSim;
+import dev.kyro.pitsim.controllers.MapManager;
 import dev.kyro.pitsim.controllers.objects.PitPerk;
 import dev.kyro.pitsim.events.AttackEvent;
 import org.bukkit.Material;
@@ -27,8 +28,8 @@ public class FirstStrike extends PitPerk {
 
 	@EventHandler
 	public void onHit(AttackEvent.Apply attackEvent) {
-
 		if(!playerHasUpgrade(attackEvent.getAttacker())) return;
+		if(MapManager.inDarkzone(attackEvent.getAttacker())) return;
 
 		if(!hitPlayers.containsKey(attackEvent.getAttacker()))
 			hitPlayers.put(attackEvent.getAttacker(), new ArrayList<>());

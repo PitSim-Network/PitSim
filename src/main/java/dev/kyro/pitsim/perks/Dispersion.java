@@ -27,6 +27,7 @@ public class Dispersion extends PitPerk {
 		if(!attackEvent.isAttackerPlayer() || !attackEvent.isDefenderPlayer()) return;
 		if(NonManager.getNon(attackEvent.getDefender()) != null) return;
 		if(!playerHasUpgrade(attackEvent.getDefenderPlayer())) return;
+		if(MapManager.inDarkzone(attackEvent.getDefenderPlayer())) return;
 
 		if(MapManager.currentMap.world != attackEvent.getDefenderPlayer().getWorld()) return;
 		if(MapManager.currentMap.getMid().distance(attackEvent.getDefenderPlayer().getLocation()) > getRange()) return;

@@ -2,6 +2,7 @@ package dev.kyro.pitsim.perks;
 
 import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.pitsim.PitSim;
+import dev.kyro.pitsim.controllers.MapManager;
 import dev.kyro.pitsim.controllers.objects.PitPerk;
 import dev.kyro.pitsim.events.AttackEvent;
 import dev.kyro.pitsim.misc.Misc;
@@ -51,6 +52,7 @@ public class Gladiator extends PitPerk {
 	@EventHandler
 	public void onAttack(AttackEvent.Apply attackEvent) {
 		if(!playerHasUpgrade(attackEvent.getDefender())) return;
+		if(MapManager.inDarkzone(attackEvent.getAttacker())) return;
 
 		attackEvent.multipliers.add(Misc.getReductionMultiplier(3 * amplifierMap.getOrDefault(attackEvent.getDefender().getUniqueId(), 0)));
 	}

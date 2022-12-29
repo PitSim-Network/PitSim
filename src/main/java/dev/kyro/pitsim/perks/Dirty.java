@@ -1,6 +1,7 @@
 package dev.kyro.pitsim.perks;
 
 import dev.kyro.arcticapi.builders.ALoreBuilder;
+import dev.kyro.pitsim.controllers.MapManager;
 import dev.kyro.pitsim.controllers.objects.PitPerk;
 import dev.kyro.pitsim.events.KillEvent;
 import dev.kyro.pitsim.misc.Misc;
@@ -23,9 +24,9 @@ public class Dirty extends PitPerk {
 
 	@EventHandler
 	public void onKill(KillEvent killEvent) {
-
 		if(!playerHasUpgrade(killEvent.getKiller())) return;
 		if(!(killEvent.getDead() instanceof Player)) return;
+		if(MapManager.inDarkzone(killEvent.getKiller())) return;
 
 		Misc.applyPotionEffect(killEvent.getKiller(), PotionEffectType.DAMAGE_RESISTANCE, 4 * 20, 1, true, false);
 	}

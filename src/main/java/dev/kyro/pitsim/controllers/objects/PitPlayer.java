@@ -619,7 +619,7 @@ public class PitPlayer {
 	public void updateMaxHealth() {
 
 		int maxHealth = 24;
-		if(hasPerk(Thick.INSTANCE)) maxHealth += 4;
+		if(hasPerk(Thick.INSTANCE) && !MapManager.inDarkzone(player)) maxHealth += 4;
 
 		if(MapManager.inDarkzone(player)) maxHealth += 20;
 

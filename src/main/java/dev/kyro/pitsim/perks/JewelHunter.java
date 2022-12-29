@@ -25,6 +25,7 @@ public class JewelHunter extends PitPerk {
 	public void onAttack(AttackEvent.Apply attackEvent) {
 		if(!attackEvent.isAttackerPlayer() || !attackEvent.isDefenderPlayer()) return;
 		if(!playerHasUpgrade(attackEvent.getAttacker())) return;
+		if(MapManager.inDarkzone(attackEvent.getAttacker())) return;
 
 		if(MapManager.currentMap.world == attackEvent.getDefenderPlayer().getWorld() &&
 				MapManager.currentMap.getMid().distance(attackEvent.getDefenderPlayer().getLocation()) < getRange()) {

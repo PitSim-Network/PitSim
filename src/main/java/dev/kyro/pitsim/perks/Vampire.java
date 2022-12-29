@@ -1,6 +1,7 @@
 package dev.kyro.pitsim.perks;
 
 import dev.kyro.arcticapi.builders.ALoreBuilder;
+import dev.kyro.pitsim.controllers.MapManager;
 import dev.kyro.pitsim.controllers.objects.PitPerk;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.events.AttackEvent;
@@ -25,6 +26,7 @@ public class Vampire extends PitPerk {
 	public void onAttack(AttackEvent.Apply attackEvent) {
 		if(!attackEvent.isAttackerPlayer()) return;
 		if(!playerHasUpgrade(attackEvent.getAttacker())) return;
+		if(MapManager.inDarkzone(attackEvent.getAttacker())) return;
 		PitPlayer pitAttacker = attackEvent.getAttackerPitPlayer();
 
 		double healing = initialHealing;
