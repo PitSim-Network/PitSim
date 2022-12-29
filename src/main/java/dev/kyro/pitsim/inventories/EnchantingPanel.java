@@ -303,8 +303,8 @@ public class EnchantingPanel extends AGUIPanel {
 				assert pitEnchant != null;
 				try {
 					displayMystic = EnchantManager.addEnchant(displayMystic, pitEnchant, EnchantManager.getEnchantLevel(mystic, pitEnchant), false);
-				} catch(Exception ignored) {
-				}
+				} catch(Exception ignored) {}
+				EnchantManager.setItemLore(displayMystic, null);
 
 				getInventory().setItem(10 + (3 * i), displayMystic);
 			}
