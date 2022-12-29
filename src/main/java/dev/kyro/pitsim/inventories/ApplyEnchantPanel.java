@@ -58,12 +58,12 @@ public class ApplyEnchantPanel extends AGUIPanel {
 
 			if(i < 9 || i % 9 == 0 || i % 9 == 8) continue;
 
-			ItemStack displayItem = FreshCommand.getFreshItem(MysticType.getMysticType(mystic), PantColor.getPantColor(mystic));
+			ItemStack displayStack = FreshCommand.getFreshItem(MysticType.getMysticType(mystic), PantColor.getPantColor(mystic));
 			try {
-				displayItem = EnchantManager.addEnchant(displayItem, applicableEnchants.get(count++), 3, false);
-			} catch(Exception ignored) {
-			}
-			getInventory().setItem(i, displayItem);
+				displayStack = EnchantManager.addEnchant(displayStack, applicableEnchants.get(count++), 3, false);
+			} catch(Exception ignored) {}
+			EnchantManager.setItemLore(displayStack, null, true);
+			getInventory().setItem(i, displayStack);
 		}
 	}
 

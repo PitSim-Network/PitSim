@@ -70,6 +70,10 @@ public abstract class PitEnchant implements Listener {
 	}
 
 	public String getDisplayName() {
+		return getDisplayName(false);
+	}
+
+	public String getDisplayName(boolean displayUncommon) {
 		if(overrideName != null) return overrideName;
 		if(tainted) {
 			if(applyType == ApplyType.SCYTHES)
@@ -77,7 +81,7 @@ public abstract class PitEnchant implements Listener {
 			else return ChatColor.translateAlternateColorCodes('&', isRare ? "&dEFFECT! &5" + name : "&5" + name);
 		}
 		if(isRare) return ChatColor.translateAlternateColorCodes('&', "&dRARE! &9" + name);
-		if(isUncommonEnchant) return ChatColor.translateAlternateColorCodes('&', "&aUNC. &9" + name);
+		if(isUncommonEnchant && displayUncommon) return ChatColor.translateAlternateColorCodes('&', "&aUNC. &9" + name);
 		return ChatColor.translateAlternateColorCodes('&', "&9" + name);
 	}
 

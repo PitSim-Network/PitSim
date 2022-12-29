@@ -298,15 +298,14 @@ public class EnchantingPanel extends AGUIPanel {
 					continue;
 				}
 
-				ItemStack displayMystic = FreshCommand.getFreshItem(MysticType.getMysticType(mystic), PantColor.getPantColor(mystic));
+				ItemStack displayStack = FreshCommand.getFreshItem(MysticType.getMysticType(mystic), PantColor.getPantColor(mystic));
 				PitEnchant pitEnchant = EnchantManager.getEnchant(enchantOrder.get(i));
 				assert pitEnchant != null;
 				try {
-					displayMystic = EnchantManager.addEnchant(displayMystic, pitEnchant, EnchantManager.getEnchantLevel(mystic, pitEnchant), false);
-				} catch(Exception ignored) {
-				}
+					displayStack = EnchantManager.addEnchant(displayStack, pitEnchant, EnchantManager.getEnchantLevel(mystic, pitEnchant), false);
+				} catch(Exception ignored) {}
 
-				getInventory().setItem(10 + (3 * i), displayMystic);
+				getInventory().setItem(10 + (3 * i), displayStack);
 			}
 		}
 

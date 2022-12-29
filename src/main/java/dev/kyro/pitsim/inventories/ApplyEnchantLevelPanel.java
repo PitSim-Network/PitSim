@@ -58,12 +58,12 @@ public class ApplyEnchantLevelPanel extends AGUIPanel {
 			if(nbtItem.getInteger(NBTTag.ITEM_TOKENS.getRef()) + i + 1 > 8) continue;
 			if(enchant.isRare && nbtItem.getInteger(NBTTag.ITEM_RTOKENS.getRef()) + i + 1 > 4) continue;
 
-			ItemStack displayItem = FreshCommand.getFreshItem(MysticType.getMysticType(mystic), PantColor.getPantColor(mystic));
+			ItemStack displayStack = FreshCommand.getFreshItem(MysticType.getMysticType(mystic), PantColor.getPantColor(mystic));
 			try {
-				displayItem = EnchantManager.addEnchant(displayItem, enchant, i + 1, false);
-			} catch(Exception ignored) {
-			}
-			getInventory().setItem(10 + i * 3, displayItem);
+				displayStack = EnchantManager.addEnchant(displayStack, enchant, i + 1, false);
+			} catch(Exception ignored) {}
+			EnchantManager.setItemLore(displayStack, null, true);
+			getInventory().setItem(10 + i * 3, displayStack);
 		}
 
 		updateInventory();

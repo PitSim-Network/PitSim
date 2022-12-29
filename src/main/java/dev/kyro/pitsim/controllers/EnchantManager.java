@@ -241,6 +241,10 @@ public class EnchantManager implements Listener {
 	}
 
 	public static void setItemLore(ItemStack itemStack, Player player) {
+		setItemLore(itemStack, player, false);
+	}
+
+	public static void setItemLore(ItemStack itemStack, Player player, boolean displayUncommon) {
 		if(!PlayerManager.isRealPlayer(player)) player = null;
 
 		if(Misc.isAirOrNull(itemStack)) return;
@@ -341,7 +345,7 @@ public class EnchantManager implements Listener {
 				if(enchant == null) continue;
 				loreBuilder.addLore("&f");
 
-				loreBuilder.addLore(enchant.getDisplayName() + enchantLevelToRoman(enchantLvl));
+				loreBuilder.addLore(enchant.getDisplayName(displayUncommon) + enchantLevelToRoman(enchantLvl));
 				loreBuilder.addLore(enchant.getDescription(enchantLvl));
 			}
 			if(isJewel) {
