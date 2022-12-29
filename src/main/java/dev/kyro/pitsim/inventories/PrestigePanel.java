@@ -57,6 +57,10 @@ public class PrestigePanel extends AGUIPanel {
 					player.closeInventory();
 					openPanel(prestigeGUI.prestigeConfirmPanel);
 				} else {
+					if(pitPlayer.soulsGathered < prestigeInfo.soulReq) {
+						AOutput.send(player, "&5&lDARKZONE &7Collect &fTainted Souls &7by going throw the &dLarge Portal &7outside of spawn behind this NPC.");
+					}
+
 					AOutput.error(player, "&cYou do not meet the requirments to prestige!");
 					Sounds.NO.play(player);
 				}

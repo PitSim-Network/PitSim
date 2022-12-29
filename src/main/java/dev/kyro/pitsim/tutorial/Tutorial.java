@@ -11,11 +11,14 @@ import net.kyori.adventure.audience.Audience;
 import net.kyori.adventure.bossbar.BossBar;
 import net.kyori.adventure.text.Component;
 import org.bukkit.ChatColor;
+import org.bukkit.Effect;
+import org.bukkit.Location;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 
@@ -198,25 +201,27 @@ public class Tutorial {
 
 	@Exclude
 	private void startRunnable() {
-//		particleRunnable = new BukkitRunnable() {
-//			@Override
-//			public void run() {
-//				if(!pitPlayer.player.isOnline()) {
-//					cancel();
-//					return;
-//				}
-//				List<TutorialObjective> tutorialObjectives = new ArrayList<>(Arrays.asList(TutorialObjective.values()));
-//				tutorialObjectives.removeAll(completedObjectives);
-//				for(TutorialObjective objective : tutorialObjectives) {
-//					if(objective.particleDisplayHeight < 2 && Math.random() < 0.4) continue;
-//					Location location = objective.getParticleLocation();
-//					double random = 1.4;
-//					location.add(Math.random() * random - random / 2.0, Math.random() * objective.particleDisplayHeight,
-//							Math.random() * random - random / 2.0);
-//					pitPlayer.player.playEffect(location, Effect.HAPPY_VILLAGER, 1);
-//				}
-//			}
-//		}.runTaskTimer(PitSim.INSTANCE, 0L, 2L);
+		if(PitSim.status == PitSim.ServerStatus.DARKZONE) return;
+
+		particleRunnable = new BukkitRunnable() {
+			@Override
+			public void run() {
+				if(!pitPlayer.player.isOnline()) {
+					cancel();
+					return;
+				}
+				List<TutorialObjective> tutorialObjectives = new ArrayList<>(Arrays.asList(TutorialObjective.values()));
+				tutorialObjectives.removeAll(completedObjectives);
+				for(TutorialObjective objective : tutorialObjectives) {
+					if(objective.particleDisplayHeight < 2 && Math.random() < 0.4) continue;
+					Location location = objective.getParticleLocation();
+					double random = 1.4;
+					location.add(Math.random() * random - random / 2.0, Math.random() * objective.particleDisplayHeight,
+							Math.random() * random - random / 2.0);
+					pitPlayer.player.playEffect(location, Effect.HAPPY_VILLAGER, 1);
+				}
+			}
+		}.runTaskTimer(PitSim.INSTANCE, 0L, 2L);
 	}
 
 }
