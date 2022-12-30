@@ -56,8 +56,6 @@ import org.spigotmc.event.player.PlayerSpawnLocationEvent;
 import java.text.DecimalFormat;
 import java.util.*;
 
-//import net.kyori.adventure.audience.Audience;
-
 public class PlayerManager implements Listener {
 	private static final List<UUID> realPlayers = new ArrayList<>();
 
