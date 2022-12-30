@@ -400,13 +400,12 @@ public class ProxyMessaging implements Listener {
 
 	@EventHandler(priority = EventPriority.MONITOR)
 	public void onWithdrawal(GuildWithdrawalEvent event) {
-
 		boolean success = !event.isCancelled() && !LobbySwitchManager.switchingPlayers.contains(event.getPlayer());
 
-		dev.kyro.arcticguilds.misc.PluginMessage response = new dev.kyro.arcticguilds.misc.PluginMessage().writeString("WITHDRAW").writeString(event.getPlayer().getUniqueId().toString()).writeBoolean(success);
+		PluginMessage response = new PluginMessage().writeString("WITHDRAW").writeString(event.getPlayer().getUniqueId().toString()).writeBoolean(success);
 		response.send();
 
-		if(!event.isCancelled()) {
+		if(success) {
 			new BukkitRunnable() {
 				@Override
 				public void run() {
