@@ -86,7 +86,7 @@ public class EcoCommand implements CommandExecutor {
 
 			PitPlayer pitTarget = PitPlayer.getPitPlayer(target);
 			pitTarget.gold = amount;
-			AOutput.send(player, "&6&lECO!&7 Set the balance of " + Misc.getDisplayName(player) + "&7 to &6" + Misc.formatGoldFull(amount) + "g");
+			AOutput.send(player, "&6&lECO!&7 Set the balance of " + Misc.getDisplayName(target) + "&7 to &6" + Misc.formatGoldFull(amount) + "g");
 			AOutput.send(target, "&6&lGOLD!&7 Your balance was set to &6" + Misc.formatGoldFull(amount) + "g");
 		} else {
 			AOutput.error(player, "&7Usage: /eco <give|take|set> <player> <amount>");
