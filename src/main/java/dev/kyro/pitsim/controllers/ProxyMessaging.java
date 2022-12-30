@@ -11,7 +11,6 @@ import dev.kyro.pitsim.enums.ItemType;
 import dev.kyro.pitsim.events.MessageEvent;
 import dev.kyro.pitsim.storage.EditSession;
 import dev.kyro.pitsim.storage.StorageManager;
-import dev.kyro.pitsim.storage.StorageProfile;
 import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -395,7 +394,7 @@ public class ProxyMessaging implements Listener {
 		PitPlayer pitPlayer = new PitPlayer(Bukkit.getOfflinePlayer(uuid).getUniqueId());
 		pitPlayer.save(false, false);
 
-		StorageProfile profile = StorageManager.getInitialProfile(uuid);
+		StorageManager.getInitialProfile(uuid);
 	}
 
 	@EventHandler(priority = EventPriority.MONITOR)
