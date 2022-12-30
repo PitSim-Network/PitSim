@@ -95,6 +95,9 @@ public class PitPlayer {
 	public int graceTiers = 0;
 
 	@Exclude
+	public long lastCommand = 0;
+
+	@Exclude
 	public UUID uuid;
 	//	Savable
 	public Date lastLogin = new Date(0);

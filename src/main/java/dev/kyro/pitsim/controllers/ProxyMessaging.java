@@ -29,6 +29,8 @@ import java.util.concurrent.ExecutionException;
 
 public class ProxyMessaging implements Listener {
 
+	public static final int COMMAND_QUEUE_COOLDOWN_MS = 500;
+
 	public static int playersOnline = 0;
 
 	static {
@@ -293,6 +295,12 @@ public class ProxyMessaging implements Listener {
 
 	public static void switchPlayer(Player player, int requestedServer) {
 
+		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
+		if(pitPlayer.lastCommand + COMMAND_QUEUE_COOLDOWN_MS > System.currentTimeMillis()) {
+			AOutput.error(player, "&cYou cannot queue since you ran a command too recently.");
+			return;
+		}
+
 		if(StorageManager.isBeingEdited(player.getUniqueId())) {
 			EditSession session = StorageManager.getSession(player.getUniqueId());
 			assert session != null;
@@ -333,7 +341,6 @@ public class ProxyMessaging implements Listener {
 		};
 
 		try {
-			PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
 			pitPlayer.save(true, runnable, false);
 		} catch(ExecutionException | InterruptedException e) {
 			throw new RuntimeException(e);
@@ -342,6 +349,11 @@ public class ProxyMessaging implements Listener {
 	}
 
 	public static void darkzoneSwitchPlayer(Player player, int requestedServer) {
+		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
+		if(pitPlayer.lastCommand + COMMAND_QUEUE_COOLDOWN_MS > System.currentTimeMillis()) {
+			AOutput.error(player, "&cYou cannot queue since you ran a command too recently.");
+			return;
+		}
 
 		if(StorageManager.isBeingEdited(player.getUniqueId())) {
 			EditSession session = StorageManager.getSession(player.getUniqueId());
@@ -382,7 +394,6 @@ public class ProxyMessaging implements Listener {
 		};
 
 		try {
-			PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
 			pitPlayer.save(true, runnable, false);
 		} catch(ExecutionException | InterruptedException e) {
 			throw new RuntimeException(e);
