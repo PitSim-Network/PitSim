@@ -44,6 +44,7 @@ public class ChatManager implements Listener {
 		}
 
 		if(ItemRename.renamePlayers.containsKey(player)) {
+			String name = ChatColor.translateAlternateColorCodes('&', message);
 			ItemStack heldItem = ItemRename.renamePlayers.get(player);
 			event.setCancelled(true);
 
@@ -56,8 +57,12 @@ public class ChatManager implements Listener {
 				AOutput.error(player, "&cYou can only name mystic items!");
 				return;
 			}
+			if(!ChatColor.stripColor(name).matches("^\\w+$")) {
+				AOutput.error(player, "&c&lERROR!&7 You can only use regular characters");
+				return;
+			}
 			ItemMeta meta = heldItem.getItemMeta();
-			meta.setDisplayName(ChatColor.translateAlternateColorCodes('&', message));
+			meta.setDisplayName(name);
 			heldItem.setItemMeta(meta);
 			AOutput.send(player, "&aSuccessfully renamed item!");
 			ItemRename.renamePlayers.remove(player);
