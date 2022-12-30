@@ -562,6 +562,7 @@ public class PlayerManager implements Listener {
 	public void onPlayerJoin(PlayerJoinEvent event) {
 		Player player = event.getPlayer();
 		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
+		event.setJoinMessage(null);
 
 		FeatherBoardAPI.resetDefaultScoreboard(event.getPlayer());
 		FeatherBoardAPI.showScoreboard(event.getPlayer(), "default");
