@@ -5,6 +5,7 @@ import org.bukkit.entity.Player;
 
 public class Lang {
 	public static Message COULD_NOT_FIND_PLAYER_WITH_NAME = new Message("&c&lERROR!&7 Could not find a player with that name");
+	public static Message NO_PERMISSION = new Message("&c&lERROR!&7 You do not have permission for that");
 
 	public static class Message {
 		public String message;

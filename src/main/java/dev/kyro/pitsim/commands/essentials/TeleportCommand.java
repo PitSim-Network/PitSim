@@ -1,6 +1,7 @@
 package dev.kyro.pitsim.commands.essentials;
 
 import dev.kyro.arcticapi.misc.AOutput;
+import dev.kyro.pitsim.misc.Lang;
 import dev.kyro.pitsim.misc.Misc;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -20,7 +21,10 @@ public class TeleportCommand implements CommandExecutor {
 	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
 		if(!(sender instanceof Player)) return false;
 		Player player = (Player) sender;
-		if(!player.hasPermission("pitsim.teleport")) return false;
+		if(!player.hasPermission("pitsim.teleport")) {
+			Lang.NO_PERMISSION.send(player);
+			return false;
+		}
 
 		Player target;
 		TPLocation tpLocation;
