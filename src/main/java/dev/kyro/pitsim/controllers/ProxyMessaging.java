@@ -208,7 +208,7 @@ public class ProxyMessaging implements Listener {
 			Player player = Bukkit.getPlayer(uuid);
 			if(player == null) return;
 
-			if(CombatManager.isInCombat(player)) {
+			if(!player.isOp() && CombatManager.isInCombat(player)) {
 				AOutput.error(player, "You may not queue while in combat!");
 				return;
 			}
@@ -228,7 +228,7 @@ public class ProxyMessaging implements Listener {
 			Player player = Bukkit.getPlayer(uuid);
 			if(player == null) return;
 
-			if(CombatManager.isInCombat(player)) {
+			if(!player.isOp() && CombatManager.isInCombat(player)) {
 				AOutput.error(player, "You may not queue while in combat!");
 				return;
 			}
