@@ -252,7 +252,7 @@ public class ProxyMessaging implements Listener {
 			PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
 
 			double currentBalance = pitPlayer.gold;
-			if(currentBalance >= toRemove) {
+			if(currentBalance >= toRemove && !LobbySwitchManager.switchingPlayers.contains(player)) {
 				success = true;
 
 				new BukkitRunnable() {
@@ -260,10 +260,13 @@ public class ProxyMessaging implements Listener {
 					public void run() {
 						pitPlayer.gold = currentBalance - toRemove;
 					}
-				}.runTask(ArcticGuilds.INSTANCE);
+				}.runTask(PitSim.INSTANCE);
 
 			}
 
+			if(LobbySwitchManager.switchingPlayers.contains(player)) success = false;
+
+			System.out.println("Sending result of deposit: " + success);
 			dev.kyro.arcticguilds.misc.PluginMessage response = new dev.kyro.arcticguilds.misc.PluginMessage().writeString("DEPOSIT").writeString(player.getUniqueId().toString()).writeBoolean(success);
 			response.send();
 		}
@@ -398,7 +401,7 @@ public class ProxyMessaging implements Listener {
 	@EventHandler(priority = EventPriority.MONITOR)
 	public void onWithdrawal(GuildWithdrawalEvent event) {
 
-		boolean success = !event.isCancelled();
+		boolean success = !event.isCancelled() && !LobbySwitchManager.switchingPlayers.contains(event.getPlayer());
 
 		dev.kyro.arcticguilds.misc.PluginMessage response = new dev.kyro.arcticguilds.misc.PluginMessage().writeString("WITHDRAW").writeString(event.getPlayer().getUniqueId().toString()).writeBoolean(success);
 		response.send();
