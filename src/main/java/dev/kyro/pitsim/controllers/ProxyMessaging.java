@@ -295,110 +295,99 @@ public class ProxyMessaging implements Listener {
 
 	public static void switchPlayer(Player player, int requestedServer) {
 
-		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
-		if(pitPlayer.lastCommand + COMMAND_QUEUE_COOLDOWN_MS > System.currentTimeMillis()) {
-			AOutput.error(player, "&cYou cannot queue since you ran a command too recently.");
-			return;
-		}
-
-		if(StorageManager.isBeingEdited(player.getUniqueId())) {
-			EditSession session = StorageManager.getSession(player.getUniqueId());
-			assert session != null;
-			session.end();
-
-			AOutput.error(session.getStaffMember(), "&cYour session ended because the player switched instances!");
-			session.getStaffMember().closeInventory();
-		}
-
-		if(StorageManager.isEditing(player)) {
-			EditSession session = StorageManager.getSession(player);
-			assert session != null;
-			session.end();
-		}
-
+		LobbySwitchManager.setSwitchingPlayer(player);
 
 		new BukkitRunnable() {
 			@Override
 			public void run() {
-				LobbySwitchManager.setSwitchingPlayer(player);
-			}
-		}.runTask(PitSim.INSTANCE);
+				PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
 
-		BukkitRunnable runnable = new BukkitRunnable() {
-			@Override
-			public void run() {
+				if(StorageManager.isBeingEdited(player.getUniqueId())) {
+					EditSession session = StorageManager.getSession(player.getUniqueId());
+					assert session != null;
+					session.end();
 
-				BukkitRunnable itemRunnable = new BukkitRunnable() {
+					AOutput.error(session.getStaffMember(), "&cYour session ended because the player switched instances!");
+					session.getStaffMember().closeInventory();
+				}
+
+				if(StorageManager.isEditing(player)) {
+					EditSession session = StorageManager.getSession(player);
+					assert session != null;
+					session.end();
+				}
+
+				BukkitRunnable runnable = new BukkitRunnable() {
 					@Override
 					public void run() {
-						new PluginMessage().writeString("QUEUE").writeString(player.getName()).writeInt(requestedServer).writeBoolean(PitSim.getStatus() == PitSim.ServerStatus.DARKZONE).send();
+
+						BukkitRunnable itemRunnable = new BukkitRunnable() {
+							@Override
+							public void run() {
+								new PluginMessage().writeString("QUEUE").writeString(player.getName()).writeInt(requestedServer).writeBoolean(PitSim.getStatus() == PitSim.ServerStatus.DARKZONE).send();
+							}
+						};
+
+						StorageManager.getProfile(player).saveData(itemRunnable, true);
+
 					}
 				};
 
-				StorageManager.getProfile(player).saveData(itemRunnable, true);
-
+				try {
+					pitPlayer.save(true, runnable, false);
+				} catch(ExecutionException | InterruptedException e) {
+					throw new RuntimeException(e);
+				}
 			}
-		};
-
-		try {
-			pitPlayer.save(true, runnable, false);
-		} catch(ExecutionException | InterruptedException e) {
-			throw new RuntimeException(e);
-		}
+		}.runTaskLater(PitSim.INSTANCE, 10);
 
 	}
 
 	public static void darkzoneSwitchPlayer(Player player, int requestedServer) {
-		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
-		if(pitPlayer.lastCommand + COMMAND_QUEUE_COOLDOWN_MS > System.currentTimeMillis()) {
-			AOutput.error(player, "&cYou cannot queue since you ran a command too recently.");
-			return;
-		}
-
-		if(StorageManager.isBeingEdited(player.getUniqueId())) {
-			EditSession session = StorageManager.getSession(player.getUniqueId());
-			assert session != null;
-			session.end();
-
-			AOutput.error(session.getStaffMember(), "&cYour session ended because the player switched instances!");
-			session.getStaffMember().closeInventory();
-		}
-
-		if(StorageManager.isEditing(player)) {
-			EditSession session = StorageManager.getSession(player);
-			assert session != null;
-			session.end();
-		}
+		LobbySwitchManager.setSwitchingPlayer(player);
 
 		new BukkitRunnable() {
 			@Override
 			public void run() {
-				LobbySwitchManager.setSwitchingPlayer(player);
-			}
-		}.runTask(PitSim.INSTANCE);
+				PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
 
-		BukkitRunnable runnable = new BukkitRunnable() {
-			@Override
-			public void run() {
+				if(StorageManager.isBeingEdited(player.getUniqueId())) {
+					EditSession session = StorageManager.getSession(player.getUniqueId());
+					assert session != null;
+					session.end();
 
-				BukkitRunnable itemRunnable = new BukkitRunnable() {
+					AOutput.error(session.getStaffMember(), "&cYour session ended because the player switched instances!");
+					session.getStaffMember().closeInventory();
+				}
+
+				if(StorageManager.isEditing(player)) {
+					EditSession session = StorageManager.getSession(player);
+					session.end();
+				}
+
+				BukkitRunnable runnable = new BukkitRunnable() {
 					@Override
 					public void run() {
-						new PluginMessage().writeString("QUEUE DARKZONE").writeString(player.getName()).writeInt(requestedServer).send();
+
+						BukkitRunnable itemRunnable = new BukkitRunnable() {
+							@Override
+							public void run() {
+								new PluginMessage().writeString("QUEUE DARKZONE").writeString(player.getName()).writeInt(requestedServer).send();
+							}
+						};
+
+						StorageManager.getProfile(player).saveData(itemRunnable, true);
+
 					}
 				};
 
-				StorageManager.getProfile(player).saveData(itemRunnable, true);
-
+				try {
+					pitPlayer.save(true, runnable, false);
+				} catch(ExecutionException | InterruptedException e) {
+					throw new RuntimeException(e);
+				}
 			}
-		};
-
-		try {
-			pitPlayer.save(true, runnable, false);
-		} catch(ExecutionException | InterruptedException e) {
-			throw new RuntimeException(e);
-		}
-
+		}.runTaskLater(PitSim.INSTANCE, 10);
 	}
 
 	public static void migrate(UUID uuid) {
