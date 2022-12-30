@@ -33,6 +33,7 @@ public class PotionAura extends ColorableCosmetic {
 		runnableMap.put(pitPlayer.player.getUniqueId(), new BukkitRunnable() {
 			@Override
 			public void run() {
+				if(Math.random() < 0.2) return;
 				Location displayLocation = pitPlayer.player.getLocation();
 
 				for(Player onlinePlayer : CosmeticManager.getDisplayPlayers(pitPlayer.player, displayLocation)) {
