@@ -76,7 +76,7 @@ public class Misc {
 	}
 
 	public static String getDisplayName(Player player) {
-		String playerName = "%luckperms_prefix%%essentials_nickname%";
+		String playerName = "%luckperms_prefix%%pitsim_nickname%";
 		return PlaceholderAPI.setPlaceholders(player, playerName);
 	}
 

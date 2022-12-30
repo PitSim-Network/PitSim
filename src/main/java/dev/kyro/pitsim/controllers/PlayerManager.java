@@ -56,8 +56,6 @@ import org.spigotmc.event.player.PlayerSpawnLocationEvent;
 import java.text.DecimalFormat;
 import java.util.*;
 
-//import net.kyori.adventure.audience.Audience;
-
 public class PlayerManager implements Listener {
 	private static final List<UUID> realPlayers = new ArrayList<>();
 
@@ -566,6 +564,7 @@ public class PlayerManager implements Listener {
 	public void onPlayerJoin(PlayerJoinEvent event) {
 		Player player = event.getPlayer();
 		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
+		event.setJoinMessage(null);
 
 		FeatherBoardAPI.resetDefaultScoreboard(event.getPlayer());
 		FeatherBoardAPI.showScoreboard(event.getPlayer(), "default");
@@ -778,10 +777,12 @@ public class PlayerManager implements Listener {
 
 	@EventHandler
 	public void onQuit(PlayerQuitEvent event) {
-		XmasMap.removeFromRadio(event.getPlayer());
-		PitPlayer pitPlayer = PitPlayer.getPitPlayer(event.getPlayer());
+		Player player = event.getPlayer();
+		event.setQuitMessage(null);
+		XmasMap.removeFromRadio(player);
+		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
 		pitPlayer.megastreak.stop();
-		if(pitPlayer.megastreak.getClass() == RNGesus.class && RNGesus.isOnCooldown(event.getPlayer())) {
+		if(pitPlayer.megastreak.getClass() == RNGesus.class && RNGesus.isOnCooldown(player)) {
 			pitPlayer.megastreak = new NoMegastreak(pitPlayer);
 		}
 	}

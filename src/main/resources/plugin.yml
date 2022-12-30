@@ -11,7 +11,6 @@ depend:
   - PlaceholderAPI
   - NoteBlockAPI
   - ProtocolLib
-  - Essentials
   - PitRemakeDependencies
   - LiteBans
 commands:
@@ -75,3 +74,25 @@ commands:
   balance:
     aliases:
       - bal
+  gamemode:
+    aliases:
+      - gm
+      - gmc
+      - gms
+      - gma
+      - gmsp
+  nickname:
+    aliases:
+      - nick
+  fly:
+    aliases:
+      - flight
+  teleport:
+    aliases:
+      - tp
+  broadcast:
+    aliases:
+      - bc
+  trash:
+    aliases:
+      - disposal
