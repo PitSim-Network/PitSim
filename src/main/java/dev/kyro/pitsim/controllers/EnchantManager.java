@@ -201,6 +201,11 @@ public class EnchantManager implements Listener {
 		}
 
 		NBTItem nbtItem = new NBTItem(itemStack);
+		if(nbtItem.hasKey(NBTTag.GHELMET_UUID.getRef())) {
+			int gold = nbtItem.getInteger(NBTTag.GHELMET_GOLD.getRef());
+			System.out.println(gold);
+			if(gold < 0) return true;
+		}
 		if(!nbtItem.hasKey(NBTTag.ITEM_UUID.getRef())) return false;
 
 		if(nbtItem.hasKey(NBTTag.TAINTED_TIER.getRef())) {
