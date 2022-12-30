@@ -75,7 +75,7 @@ public class CombatManager implements Listener {
 
 		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
 		UUID attackerUUID = pitPlayer.lastHitUUID;
-		if(taggedPlayers.containsKey(player.getUniqueId())) {
+		if(isInCombat(player) || pitPlayer.megastreak.isOnMega()) {
 			for(Player onlinePlayer : Bukkit.getOnlinePlayers()) {
 				if(onlinePlayer.getUniqueId().equals(attackerUUID)) {
 
