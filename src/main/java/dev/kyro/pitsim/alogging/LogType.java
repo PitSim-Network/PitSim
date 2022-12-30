@@ -19,7 +19,8 @@ public enum LogType {
 
 	//	Misc
 	PLAYER_KILL(LogFile.COMBAT, LogFile.MAJOR),
-	PLAYER_CHAT(LogFile.CHAT),
+	PLAYER_CHAT(LogFile.CHAT, LogFile.CHAT_AND_COMMANDS),
+	PLAYER_COMMAND(LogFile.CHAT_AND_COMMANDS),
 	ITEM_BROKEN(LogFile.COMBAT, LogFile.MAJOR),
 	LIFE_LOST(LogFile.COMBAT),
 	ILLEGAL_ITEM_REMOVED(LogFile.EXPLOIT_PREVENTION, LogFile.MAJOR),
@@ -47,6 +48,7 @@ public enum LogType {
 		MAJOR("/major.log"),
 		EXPLOIT_PREVENTION("/exploit-prevention.log"),
 		CHAT("/chat.log"),
+		CHAT_AND_COMMANDS("/command.log"),
 		COMBAT("/combat.log"),
 		GUILDS("/guilds.log");
 
