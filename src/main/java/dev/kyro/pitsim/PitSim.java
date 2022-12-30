@@ -581,6 +581,7 @@ public class PitSim extends JavaPlugin {
 		getCommand("teleport").setExecutor(new TeleportCommand());
 		getCommand("broadcast").setExecutor(new BroadcastCommand());
 		getCommand("trash").setExecutor(new TrashCommand());
+		getCommand("rename").setExecutor(new RenameCommand());
 	}
 
 	private void registerListeners() {

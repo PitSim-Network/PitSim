@@ -96,3 +96,6 @@ commands:
   trash:
     aliases:
       - disposal
+  rename:
+    aliases:
+      - itemname
