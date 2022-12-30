@@ -778,8 +778,8 @@ public class PlayerManager implements Listener {
 	public void onQuit(PlayerQuitEvent event) {
 		XmasMap.removeFromRadio(event.getPlayer());
 		PitPlayer pitPlayer = PitPlayer.getPitPlayer(event.getPlayer());
+		pitPlayer.megastreak.stop();
 		if(pitPlayer.megastreak.getClass() == RNGesus.class && RNGesus.isOnCooldown(event.getPlayer())) {
-			pitPlayer.megastreak.stop();
 			pitPlayer.megastreak = new NoMegastreak(pitPlayer);
 		}
 	}
