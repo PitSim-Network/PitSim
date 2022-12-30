@@ -33,6 +33,7 @@ import dev.kyro.pitsim.brewing.objects.BrewingIngredient;
 import dev.kyro.pitsim.brewing.objects.PotionEffect;
 import dev.kyro.pitsim.commands.*;
 import dev.kyro.pitsim.commands.admin.*;
+import dev.kyro.pitsim.commands.essentials.*;
 import dev.kyro.pitsim.controllers.*;
 import dev.kyro.pitsim.controllers.objects.*;
 import dev.kyro.pitsim.cosmetics.CosmeticManager;
@@ -244,6 +245,7 @@ public class PitSim extends JavaPlugin {
 		AHook.registerPlaceholder(new SoulReqPlaceholder());
 		AHook.registerPlaceholder(new PlayerCountPlaceholder());
 		AHook.registerPlaceholder(new GoldPlaceholder());
+		AHook.registerPlaceholder(new NicknamePlaceholder());
 		new LeaderboardPlaceholders().register();
 
 		CooldownManager.init();
@@ -572,6 +574,12 @@ public class PitSim extends JavaPlugin {
 		getCommand("eco").setExecutor(new EcoCommand());
 		//TODO: Remove this
 //		getCommand("massmigrate").setExecutor(new MassMigrateCommand());
+
+		getCommand("gamemode").setExecutor(new GamemodeCommand());
+		getCommand("nickname").setExecutor(new NicknameCommand());
+		getCommand("fly").setExecutor(new FlyCommand());
+		getCommand("teleport").setExecutor(new TeleportCommand());
+		getCommand("bc").setExecutor(new BroadcastCommand());
 	}
 
 	private void registerListeners() {

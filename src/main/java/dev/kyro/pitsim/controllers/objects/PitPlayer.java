@@ -97,6 +97,7 @@ public class PitPlayer {
 	@Exclude
 	public UUID uuid;
 	//	Savable
+	public String nickname;
 	public Date lastLogin = new Date(0);
 	public int prestige = 0;
 	public int level = 1;
