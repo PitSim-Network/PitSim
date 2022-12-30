@@ -10,6 +10,7 @@ import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
 import com.sk89q.worldguard.protection.ApplicableRegionSet;
 import com.sk89q.worldguard.protection.managers.RegionManager;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
+import de.myzelyam.api.vanish.VanishAPI;
 import de.tr7zw.nbtapi.NBTItem;
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.PitSim;
@@ -83,7 +84,7 @@ public class SpawnManager implements Listener {
 		boolean isInSpawn = isInSpawn(location);
 
 		if(isInSpawn) {
-			if(player.isOp()) return;
+			if(player.isOp() || VanishAPI.isInvisible(player)) return;
 			if(!lastLocationMap.containsKey(player)) return;
 
 			PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
