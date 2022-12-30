@@ -93,3 +93,6 @@ commands:
   broadcast:
     aliases:
       - bc
+  trash:
+    aliases:
+      - disposal
