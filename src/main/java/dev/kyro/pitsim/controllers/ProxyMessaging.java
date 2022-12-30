@@ -3,6 +3,8 @@ package dev.kyro.pitsim.controllers;
 import de.myzelyam.api.vanish.VanishAPI;
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.arcticapi.misc.AUtil;
+import dev.kyro.arcticguilds.ArcticGuilds;
+import dev.kyro.arcticguilds.events.GuildWithdrawalEvent;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.controllers.objects.*;
 import dev.kyro.pitsim.enums.ItemType;
@@ -15,6 +17,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
@@ -237,6 +240,33 @@ public class ProxyMessaging implements Listener {
 
 			darkzoneSwitchPlayer(player, requestedServer);
 		}
+
+		if(strings.size() >= 2 && strings.get(0).equals("DEPOSIT")) {
+			UUID uuid = UUID.fromString(strings.get(1));
+			Player player = Bukkit.getPlayer(uuid);
+			if(player == null) return;
+
+			int toRemove = integers.get(0);
+			boolean success = false;
+
+			PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
+
+			double currentBalance = pitPlayer.gold;
+			if(currentBalance >= toRemove) {
+				success = true;
+
+				new BukkitRunnable() {
+					@Override
+					public void run() {
+						pitPlayer.gold = currentBalance - toRemove;
+					}
+				}.runTask(ArcticGuilds.INSTANCE);
+
+			}
+
+			dev.kyro.arcticguilds.misc.PluginMessage response = new dev.kyro.arcticguilds.misc.PluginMessage().writeString("DEPOSIT").writeString(player.getUniqueId().toString()).writeBoolean(success);
+			response.send();
+		}
 	}
 
 	@EventHandler
@@ -363,6 +393,26 @@ public class ProxyMessaging implements Listener {
 		pitPlayer.save(false, false);
 
 		StorageProfile profile = StorageManager.getInitialProfile(uuid);
+	}
+
+	@EventHandler(priority = EventPriority.MONITOR)
+	public void onWithdrawal(GuildWithdrawalEvent event) {
+
+		boolean success = !event.isCancelled();
+
+		dev.kyro.arcticguilds.misc.PluginMessage response = new dev.kyro.arcticguilds.misc.PluginMessage().writeString("WITHDRAW").writeString(event.getPlayer().getUniqueId().toString()).writeBoolean(success);
+		response.send();
+
+		if(!event.isCancelled()) {
+			new BukkitRunnable() {
+				@Override
+				public void run() {
+					int amount = event.getAmount();
+					PitPlayer pitPlayer = PitPlayer.getPitPlayer(event.getPlayer());
+					pitPlayer.gold += amount;
+				}
+			}.runTask(ArcticGuilds.INSTANCE);
+		}
 	}
 
 }
