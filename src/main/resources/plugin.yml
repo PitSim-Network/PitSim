@@ -71,3 +71,7 @@ commands:
     aliases:
       - pot
       - potion
+  eco:
+  balance:
+    aliases:
+      - bal
