@@ -71,8 +71,7 @@ public class NicknameCommand implements CommandExecutor {
 			return false;
 		}
 
-		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
-		pitPlayer.nickname = nickname;
+		pitTarget.nickname = nickname;
 		AOutput.send(player, "&4&lNICK!&7 Your nickname was set to " + Misc.getDisplayName(player));
 		if(target != player) AOutput.send(player, "&4&lNICK!&7 Set " + Misc.getDisplayName(target) + "'s &7nickname");
 		return false;
