@@ -56,7 +56,7 @@ public class ProtArmor {
 		} else if(type.equalsIgnoreCase("boots")) {
 			return boots;
 		}
-		return null;
+		throw new RuntimeException();
 	}
 
 	public static void deleteArmor(Player player) {

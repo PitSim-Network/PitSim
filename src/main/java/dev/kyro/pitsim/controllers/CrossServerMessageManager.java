@@ -3,6 +3,7 @@ package dev.kyro.pitsim.controllers;
 import dev.kyro.pitsim.commands.ShowCommand;
 import dev.kyro.pitsim.controllers.objects.PluginMessage;
 import dev.kyro.pitsim.events.MessageEvent;
+import dev.kyro.pitsim.megastreaks.Uberstreak;
 import dev.kyro.pitsim.misc.CustomSerializer;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -32,6 +33,10 @@ public class CrossServerMessageManager implements Listener {
 			String displayName = strings.get(1);
 			int prestige = integers.get(0);
 			LevelManager.onPrestige(displayName, prestige);
+		} else if(strings.get(0).equals("UBERDROP")) {
+			String displayName = strings.get(1);
+			ItemStack itemStack = CustomSerializer.deserialize(strings.get(2));
+			Uberstreak.sendUberMessage(displayName, itemStack);
 		}
 	}
 }
