@@ -39,7 +39,6 @@ import dev.kyro.pitsim.tutorial.Tutorial;
 import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
-import org.bukkit.OfflinePlayer;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
@@ -254,10 +253,6 @@ public class PitPlayer {
 
 		megastreakRef = megastreak.getRefNames().get(0);
 
-		OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(uuid);
-		if(offlinePlayer.getName() != null && PitSim.VAULT.hasAccount(offlinePlayer))
-			gold = PitSim.VAULT.getBalance(offlinePlayer);
-
 		for(int i = 0; i < pitPerks.size(); i++) {
 			PitPerk pitPerk = pitPerks.get(i);
 			pitPerksRef.set(i, pitPerk.refName);
@@ -306,9 +301,6 @@ public class PitPlayer {
 		level = playerData.contains("level") ? playerData.getInt("level") : 1;
 		remainingXP = playerData.getInt("xp");
 		soulsGathered = playerData.getInt("soulsgathered");
-		OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(uuid);
-		if(offlinePlayer.getName() != null && PitSim.VAULT.hasAccount(offlinePlayer))
-			gold = PitSim.VAULT.getBalance(offlinePlayer);
 		renown = playerData.getInt("renown");
 		for(int i = 0; i < pitPerks.size(); i++) {
 			PitPerk defaultPerk = NoPerk.INSTANCE;
@@ -398,9 +390,6 @@ public class PitPlayer {
 
 	public void init(Player player) {
 		this.player = player;
-
-		PitSim.VAULT.withdrawPlayer(player, PitSim.VAULT.getBalance(player));
-		PitSim.VAULT.depositPlayer(player, gold);
 
 		ChatColorPanel.playerChatColors.put(player, chatColor);
 

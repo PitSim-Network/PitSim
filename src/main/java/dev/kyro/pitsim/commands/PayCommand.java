@@ -2,7 +2,6 @@ package dev.kyro.pitsim.commands;
 
 import de.myzelyam.api.vanish.VanishAPI;
 import dev.kyro.arcticapi.misc.AOutput;
-import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.upgrades.TheWay;
 import org.bukkit.Bukkit;
@@ -63,13 +62,13 @@ public class PayCommand implements CommandExecutor {
 			return false;
 		}
 
-		if(amount > PitSim.VAULT.getBalance(player)) {
+		if(amount > pitPlayer.gold) {
 			AOutput.error(player, "You do not have enough money");
 			return false;
 		}
 
-		PitSim.VAULT.withdrawPlayer(player, amount);
-		PitSim.VAULT.depositPlayer(target, amount);
+		pitPlayer.gold -= amount;
+		pitTarget.gold += amount;
 		DecimalFormat decimalFormat = new DecimalFormat("#,###,###,##0");
 		AOutput.send(player, "&6&lTRADE! &7You have sent &6" + target.getName() + " &7$" + decimalFormat.format(amount));
 		AOutput.send(target, "&6&lTRADE! &7You have received $" + decimalFormat.format(amount) + " from &7" + player.getName());

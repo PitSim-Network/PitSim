@@ -1,7 +1,6 @@
 package dev.kyro.pitsim.enchants;
 
 import dev.kyro.arcticapi.builders.ALoreBuilder;
-import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.controllers.objects.PitEnchant;
 import dev.kyro.pitsim.enums.ApplyType;
 import dev.kyro.pitsim.events.AttackEvent;
@@ -27,7 +26,7 @@ public class FractionalReserve extends PitEnchant {
 		int enchantLvl = attackEvent.getDefenderEnchantLevel(this);
 		if(enchantLvl == 0) return;
 
-		double reduction = Math.max((int) Math.log10(PitSim.VAULT.getBalance(attackEvent.getDefenderPlayer())) + 1, 0);
+		double reduction = Math.max((int) Math.log10(attackEvent.getDefenderPitPlayer().gold) + 1, 0);
 		attackEvent.multipliers.add(Misc.getReductionMultiplier(reduction * getReduction(enchantLvl)));
 	}
 

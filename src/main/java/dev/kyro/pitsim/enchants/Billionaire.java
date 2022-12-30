@@ -1,7 +1,6 @@
 package dev.kyro.pitsim.enchants;
 
 import dev.kyro.arcticapi.builders.ALoreBuilder;
-import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.controllers.BossManager;
 import dev.kyro.pitsim.controllers.HopperManager;
 import dev.kyro.pitsim.controllers.NonManager;
@@ -47,9 +46,9 @@ public class Billionaire extends PitEnchant {
 		}
 
 		if(!BossManager.bosses.containsKey(CitizensAPI.getNPCRegistry().getNPC(attackEvent.getAttacker())) && !HopperManager.isHopper(attackEvent.getAttacker())) {
-			double finalBalance = PitSim.VAULT.getBalance(attackEvent.getAttackerPlayer()) - goldCost;
+			double finalBalance = attackEvent.getAttackerPitPlayer().gold - goldCost;
 			if(finalBalance < 0) return;
-			PitSim.VAULT.withdrawPlayer(attackEvent.getAttackerPlayer(), goldCost);
+			attackEvent.getAttackerPitPlayer().gold -= goldCost;
 		}
 
 		PitPlayer pitPlayer = attackEvent.getAttackerPitPlayer();

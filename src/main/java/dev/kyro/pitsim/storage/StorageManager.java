@@ -105,7 +105,6 @@ public class StorageManager implements Listener {
 		if(PitSim.getStatus() == PitSim.ServerStatus.ALL) return;
 
 		StorageProfile profile = getProfile(player);
-		PitSim.VAULT.withdrawPlayer(Bukkit.getOfflinePlayer(player.getUniqueId()), PitSim.VAULT.getBalance(Bukkit.getOfflinePlayer(player.getUniqueId())));
 
 		if(!isBeingEdited(player.getUniqueId())) profiles.remove(profile);
 //		File file = new File("world/playerdata/" + player.getUniqueId().toString() + ".dat");

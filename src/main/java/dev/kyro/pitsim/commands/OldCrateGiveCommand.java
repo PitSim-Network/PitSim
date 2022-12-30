@@ -7,6 +7,7 @@ import dev.kyro.pitsim.brewing.ingredients.*;
 import dev.kyro.pitsim.controllers.BossManager;
 import dev.kyro.pitsim.controllers.EnchantManager;
 import dev.kyro.pitsim.controllers.ItemManager;
+import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.enums.MysticType;
 import dev.kyro.pitsim.enums.NBTTag;
 import dev.kyro.pitsim.enums.PantColor;
@@ -39,26 +40,26 @@ public class OldCrateGiveCommand implements CommandExecutor {
 
 	@Override
 	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
-
 		if(sender instanceof Player) return false;
-		Player player = null;
+		Player target = null;
 
 		for(Player onlinePlayer : Bukkit.getOnlinePlayers()) {
-			if(args[1].equalsIgnoreCase(onlinePlayer.getName())) player = onlinePlayer;
+			if(args[1].equalsIgnoreCase(onlinePlayer.getName())) target = onlinePlayer;
 		}
-		assert player != null;
+		assert target != null;
 
+		PitPlayer pitTarget = PitPlayer.getPitPlayer(target);
 		if(args[0].equals("HJP")) {
 			for(int i = 0; i < 2; i++) {
 				ItemStack jewel = FreshCommand.getFreshItem(MysticType.PANTS, PantColor.JEWEL);
 				jewel = ItemManager.enableDropConfirm(jewel);
 				NBTItem nbtItem = new NBTItem(jewel);
 				nbtItem.setBoolean(NBTTag.IS_JEWEL.getRef(), true);
-				EnchantManager.setItemLore(nbtItem.getItem(), player);
-				AUtil.giveItemSafely(player, nbtItem.getItem());
+				EnchantManager.setItemLore(nbtItem.getItem(), target);
+				AUtil.giveItemSafely(target, nbtItem.getItem());
 			}
 
-			broadcast("&32x Hidden Jewel Pants", player);
+			broadcast("&32x Hidden Jewel Pants", target);
 		}
 		if(args[0].equals("HJS")) {
 			for(int i = 0; i < 2; i++) {
@@ -66,10 +67,10 @@ public class OldCrateGiveCommand implements CommandExecutor {
 				jewelSword = ItemManager.enableDropConfirm(jewelSword);
 				NBTItem nbtItemSword = new NBTItem(jewelSword);
 				nbtItemSword.setBoolean(NBTTag.IS_JEWEL.getRef(), true);
-				EnchantManager.setItemLore(nbtItemSword.getItem(), player);
-				AUtil.giveItemSafely(player, nbtItemSword.getItem());
+				EnchantManager.setItemLore(nbtItemSword.getItem(), target);
+				AUtil.giveItemSafely(target, nbtItemSword.getItem());
 			}
-			broadcast("&e2x Hidden Jewel Sword", player);
+			broadcast("&e2x Hidden Jewel Sword", target);
 		}
 		if(args[0].equals("HJB")) {
 			for(int i = 0; i < 2; i++) {
@@ -77,67 +78,66 @@ public class OldCrateGiveCommand implements CommandExecutor {
 				jewelBow = ItemManager.enableDropConfirm(jewelBow);
 				NBTItem nbtItemBow = new NBTItem(jewelBow);
 				nbtItemBow.setBoolean(NBTTag.IS_JEWEL.getRef(), true);
-				EnchantManager.setItemLore(nbtItemBow.getItem(), player);
-				AUtil.giveItemSafely(player, nbtItemBow.getItem());
+				EnchantManager.setItemLore(nbtItemBow.getItem(), target);
+				AUtil.giveItemSafely(target, nbtItemBow.getItem());
 			}
-			broadcast("&b2x Hidden Jewel Bow", player);
+			broadcast("&b2x Hidden Jewel Bow", target);
 		}
 		if(args[0].equals("P1")) {
-			ProtArmor.getArmor(player, "helmet");
-			ProtArmor.getArmor(player, "chestplate");
-			ProtArmor.getArmor(player, "leggings");
-			ProtArmor.getArmor(player, "boots");
-			broadcast("&bProtection I Diamond Set", player);
+			ProtArmor.getArmor(target, "helmet");
+			ProtArmor.getArmor(target, "chestplate");
+			ProtArmor.getArmor(target, "leggings");
+			ProtArmor.getArmor(target, "boots");
+			broadcast("&bProtection I Diamond Set", target);
 		}
 		if(args[0].equals("1F")) {
-			FunkyFeather.giveFeather(player, 1);
-			broadcast("&31x Funky Feather", player);
+			FunkyFeather.giveFeather(target, 1);
+			broadcast("&31x Funky Feather", target);
 		}
 		if(args[0].equals("2F")) {
-			FunkyFeather.giveFeather(player, 2);
-			broadcast("&32x Funky Feather", player);
+			FunkyFeather.giveFeather(target, 2);
+			broadcast("&32x Funky Feather", target);
 		}
 		if(args[0].equals("3F")) {
-			FunkyFeather.giveFeather(player, 3);
-			broadcast("&33x Funky Feather", player);
+			FunkyFeather.giveFeather(target, 3);
+			broadcast("&33x Funky Feather", target);
 		}
 		if(args[0].equals("5F")) {
-			FunkyFeather.giveFeather(player, 5);
-			broadcast("&35x Funky Feather", player);
+			FunkyFeather.giveFeather(target, 5);
+			broadcast("&35x Funky Feather", target);
 		}
 		if(args[0].equals("1V")) {
-			ChunkOfVile.giveVile(player, 1);
-			broadcast("&51x Chunk of Vile", player);
+			ChunkOfVile.giveVile(target, 1);
+			broadcast("&51x Chunk of Vile", target);
 		}
 		if(args[0].equals("2V")) {
-			ChunkOfVile.giveVile(player, 2);
-			broadcast("&52x Chunk of Vile", player);
+			ChunkOfVile.giveVile(target, 2);
+			broadcast("&52x Chunk of Vile", target);
 		}
 		if(args[0].equals("3V")) {
-			ChunkOfVile.giveVile(player, 3);
-			broadcast("&53x Chunk of Vile", player);
+			ChunkOfVile.giveVile(target, 3);
+			broadcast("&53x Chunk of Vile", target);
 		}
 		if(args[0].equals("6V")) {
-			ChunkOfVile.giveVile(player, 6);
-			broadcast("&56x Chunk of Vile", player);
+			ChunkOfVile.giveVile(target, 6);
+			broadcast("&56x Chunk of Vile", target);
 		}
 		if(args[0].equals("50K")) {
-			PitSim.VAULT.depositPlayer(player, 150_000);
-			broadcast("&6150,000 Gold", player);
+			pitTarget.gold += 150_000;
+			broadcast("&6150,000 Gold", target);
 		}
 		if(args[0].equals("150K")) {
-			PitSim.VAULT.depositPlayer(player, 300_000);
-			broadcast("&6300,000 Gold", player);
+			pitTarget.gold += 300_000;
+			broadcast("&6300,000 Gold", target);
 		}
 		if(args[0].equals("300K")) {
-			PitSim.VAULT.depositPlayer(player, 500_000);
-			broadcast("&6500,000 Gold", player);
+			pitTarget.gold += 500_000;
+			broadcast("&6500,000 Gold", target);
 		}
 		if(args[0].equals("DC")) {
-			double gold = PitSim.VAULT.getBalance(player);
-			if(gold * 2 > 10_000_000) PitSim.VAULT.depositPlayer(player, 2_000_000);
-			else PitSim.VAULT.depositPlayer(player, gold);
-			broadcast("&6Double Current Gold", player);
+			if(pitTarget.gold > 5_000_000) pitTarget.gold += 5_000_000;
+			else pitTarget.gold *= 2;
+			broadcast("&6Double Current Gold", target);
 		}
 		if(args[0].equals("JB")) {
 			for(int i = 0; i < 2; i++) {
@@ -145,8 +145,8 @@ public class OldCrateGiveCommand implements CommandExecutor {
 				jbsword = ItemManager.enableDropConfirm(jbsword);
 				NBTItem nbtjbsword = new NBTItem(jbsword);
 				nbtjbsword.setBoolean(NBTTag.IS_JEWEL.getRef(), true);
-				EnchantManager.setItemLore(nbtjbsword.getItem(), player);
-				AUtil.giveItemSafely(player, nbtjbsword.getItem());
+				EnchantManager.setItemLore(nbtjbsword.getItem(), target);
+				AUtil.giveItemSafely(target, nbtjbsword.getItem());
 			}
 
 			for(int i = 0; i < 2; i++) {
@@ -154,8 +154,8 @@ public class OldCrateGiveCommand implements CommandExecutor {
 				jbbow = ItemManager.enableDropConfirm(jbbow);
 				NBTItem nbtjbbow = new NBTItem(jbbow);
 				nbtjbbow.setBoolean(NBTTag.IS_JEWEL.getRef(), true);
-				EnchantManager.setItemLore(nbtjbbow.getItem(), player);
-				AUtil.giveItemSafely(player, nbtjbbow.getItem());
+				EnchantManager.setItemLore(nbtjbbow.getItem(), target);
+				AUtil.giveItemSafely(target, nbtjbbow.getItem());
 			}
 
 			for(int i = 0; i < 2; i++) {
@@ -163,118 +163,118 @@ public class OldCrateGiveCommand implements CommandExecutor {
 				jb = ItemManager.enableDropConfirm(jb);
 				NBTItem nbtjb = new NBTItem(jb);
 				nbtjb.setBoolean(NBTTag.IS_JEWEL.getRef(), true);
-				EnchantManager.setItemLore(nbtjb.getItem(), player);
-				AUtil.giveItemSafely(player, nbtjb.getItem());
+				EnchantManager.setItemLore(nbtjb.getItem(), target);
+				AUtil.giveItemSafely(target, nbtjb.getItem());
 			}
-			broadcast("&bHidden Jewel Bundle", player);
+			broadcast("&bHidden Jewel Bundle", target);
 		}
 		if(args[0].equals("P1H")) {
-			ProtArmor.getArmor(player, "Helmet");
-			broadcast("&bProtection I Diamond Helmet", player);
+			ProtArmor.getArmor(target, "Helmet");
+			broadcast("&bProtection I Diamond Helmet", target);
 		}
 		if(args[0].equals("P1C")) {
-			ProtArmor.getArmor(player, "Chestplate");
-			broadcast("&bProtection I Diamond Chestplate", player);
+			ProtArmor.getArmor(target, "Chestplate");
+			broadcast("&bProtection I Diamond Chestplate", target);
 		}
 		if(args[0].equals("P1L")) {
-			ProtArmor.getArmor(player, "Leggings");
-			broadcast("&bProtection I Diamond Leggings", player);
+			ProtArmor.getArmor(target, "Leggings");
+			broadcast("&bProtection I Diamond Leggings", target);
 		}
 		if(args[0].equals("P1B")) {
-			ProtArmor.getArmor(player, "Boots");
-			broadcast("&bProtection I Diamond Boots", player);
+			ProtArmor.getArmor(target, "Boots");
+			broadcast("&bProtection I Diamond Boots", target);
 		}
 		if(args[0].equals("TS")) {
-			AUtil.giveItemSafely(player, FreshCommand.getFreshItem(MysticType.TAINTED_SCYTHE, PantColor.TAINTED));
-			taintedBroadcast("&5Fresh Tainted Scythe", player);
+			AUtil.giveItemSafely(target, FreshCommand.getFreshItem(MysticType.TAINTED_SCYTHE, PantColor.TAINTED));
+			taintedBroadcast("&5Fresh Tainted Scythe", target);
 		}
 		if(args[0].equals("TC")) {
-			AUtil.giveItemSafely(player, FreshCommand.getFreshItem(MysticType.TAINTED_CHESTPLATE, PantColor.TAINTED));
-			taintedBroadcast("&5Fresh Tainted Chestplate", player);
+			AUtil.giveItemSafely(target, FreshCommand.getFreshItem(MysticType.TAINTED_CHESTPLATE, PantColor.TAINTED));
+			taintedBroadcast("&5Fresh Tainted Chestplate", target);
 		}
 		if(args[0].equals("15S")) {
-			BossManager.giveSouls(player, 15);
-			taintedBroadcast("&f15 Tainted Souls", player);
+			BossManager.giveSouls(target, 15);
+			taintedBroadcast("&f15 Tainted Souls", target);
 		}
 		if(args[0].equals("30S")) {
-			BossManager.giveSouls(player, 30);
-			taintedBroadcast("&f30 Tainted Souls", player);
+			BossManager.giveSouls(target, 30);
+			taintedBroadcast("&f30 Tainted Souls", target);
 		}
 		if(args[0].equals("45S")) {
-			BossManager.giveSouls(player, 45);
-			taintedBroadcast("&f45 Tainted Souls", player);
+			BossManager.giveSouls(target, 45);
+			taintedBroadcast("&f45 Tainted Souls", target);
 		}
 		if(args[0].equals("60S")) {
-			BossManager.giveSouls(player, 60);
-			taintedBroadcast("&f60 Tainted Souls", player);
+			BossManager.giveSouls(target, 60);
+			taintedBroadcast("&f60 Tainted Souls", target);
 		}
 		if(args[0].equals("75S")) {
-			BossManager.giveSouls(player, 75);
-			taintedBroadcast("&f75 Tainted Souls", player);
+			BossManager.giveSouls(target, 75);
+			taintedBroadcast("&f75 Tainted Souls", target);
 		}
 		if(args[0].equals("90S")) {
-			BossManager.giveSouls(player, 90);
-			taintedBroadcast("&f90 Tainted Souls", player);
+			BossManager.giveSouls(target, 90);
+			taintedBroadcast("&f90 Tainted Souls", target);
 		}
 		if(args[0].equals("FLESH")) {
 			ItemStack item = RottenFlesh.INSTANCE.getItem();
 			item.setAmount(10);
-			AUtil.giveItemSafely(player, item, true);
-			taintedBroadcast("&a10x Rotten Flesh", player);
+			AUtil.giveItemSafely(target, item, true);
+			taintedBroadcast("&a10x Rotten Flesh", target);
 		}
 		if(args[0].equals("BONE")) {
 			ItemStack item = Bone.INSTANCE.getItem();
 			item.setAmount(10);
-			AUtil.giveItemSafely(player, item, true);
-			taintedBroadcast("&a10x Bone", player);
+			AUtil.giveItemSafely(target, item, true);
+			taintedBroadcast("&a10x Bone", target);
 		}
 		if(args[0].equals("EYE")) {
 			ItemStack item = SpiderEye.INSTANCE.getItem();
 			item.setAmount(10);
-			AUtil.giveItemSafely(player, item, true);
-			taintedBroadcast("&a10x Spider Eye", player);
+			AUtil.giveItemSafely(target, item, true);
+			taintedBroadcast("&a10x Spider Eye", target);
 		}
 		if(args[0].equals("GUNPOWDER")) {
 			ItemStack item = Gunpowder.INSTANCE.getItem();
 			item.setAmount(10);
-			AUtil.giveItemSafely(player, item, true);
-			taintedBroadcast("&a10x Gunpowder", player);
+			AUtil.giveItemSafely(target, item, true);
+			taintedBroadcast("&a10x Gunpowder", target);
 		}
 		if(args[0].equals("FERMENTED_EYE")) {
 			ItemStack item = FermentedSpiderEye.INSTANCE.getItem();
 			item.setAmount(10);
-			AUtil.giveItemSafely(player, item, true);
-			taintedBroadcast("&a10x Fermented Spider Eye", player);
+			AUtil.giveItemSafely(target, item, true);
+			taintedBroadcast("&a10x Fermented Spider Eye", target);
 		}
 		if(args[0].equals("CREAM")) {
 			ItemStack item = MagmaCream.INSTANCE.getItem();
 			item.setAmount(10);
-			AUtil.giveItemSafely(player, item, true);
-			taintedBroadcast("&a10x Magma Cream", player);
+			AUtil.giveItemSafely(target, item, true);
+			taintedBroadcast("&a10x Magma Cream", target);
 		}
 		if(args[0].equals("PORK")) {
 			ItemStack item = RawPork.INSTANCE.getItem();
 			item.setAmount(10);
-			AUtil.giveItemSafely(player, item, true);
-			taintedBroadcast("&a10x Raw Pork", player);
+			AUtil.giveItemSafely(target, item, true);
+			taintedBroadcast("&a10x Raw Pork", target);
 		}
 		if(args[0].equals("COAL")) {
 			ItemStack item = WitherSkull.INSTANCE.getItem();
 			item.setAmount(10);
-			AUtil.giveItemSafely(player, item, true);
-			taintedBroadcast("&a10x Wither Skull", player);
+			AUtil.giveItemSafely(target, item, true);
+			taintedBroadcast("&a10x Wither Skull", target);
 		}
 		if(args[0].equals("IRON")) {
 			ItemStack item = IronIngot.INSTANCE.getItem();
 			item.setAmount(10);
-			AUtil.giveItemSafely(player, item, true);
-			taintedBroadcast("&a10x Iron Ingot", player);
+			AUtil.giveItemSafely(target, item, true);
+			taintedBroadcast("&a10x Iron Ingot", target);
 		}
 		if(args[0].equals("PEARL")) {
 			ItemStack item = EnderPearl.INSTANCE.getItem();
 			item.setAmount(10);
-			AUtil.giveItemSafely(player, item, true);
-			taintedBroadcast("&a10x Ender Pearl", player);
+			AUtil.giveItemSafely(target, item, true);
+			taintedBroadcast("&a10x Ender Pearl", target);
 		}
 
 
