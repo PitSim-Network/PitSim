@@ -34,7 +34,12 @@ public class ReloadManager {
 						if(PitSim.getStatus() != PitSim.ServerStatus.ALL)
 							for(Player onlinePlayer : Bukkit.getOnlinePlayers())
 								onlinePlayer.kickPlayer("reloading plugin");
-						Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), "plugman reload pitremake");
+						new BukkitRunnable() {
+							@Override
+							public void run() {
+								Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), "plugman reload pitremake");
+							}
+						}.runTaskLater(PitSim.INSTANCE, 1L);
 
 						return;
 					}
