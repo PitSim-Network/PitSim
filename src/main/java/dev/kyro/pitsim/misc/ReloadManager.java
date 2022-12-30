@@ -31,22 +31,16 @@ public class ReloadManager {
 					if(file.lastModified() == lastModified && startedUpload) {
 						cancel();
 						System.out.println("Jar upload finished. Restarting plugin");
-						if(PitSim.getStatus() != PitSim.ServerStatus.ALL)
-							for(Player onlinePlayer : Bukkit.getOnlinePlayers())
-								onlinePlayer.kickPlayer("reloading plugin");
-						new BukkitRunnable() {
-							@Override
-							public void run() {
-								Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), "plugman reload pitremake");
-							}
-						}.runTaskLater(PitSim.INSTANCE, 1L);
-
+						Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), "plugman reload pitremake");
 						return;
 					}
 
 					if(file.lastModified() != lastModified && !startedUpload) {
 						startedUpload = true;
 						System.out.println("Detected server jar upload. Waiting for completion");
+						if(PitSim.getStatus() != PitSim.ServerStatus.ALL)
+							for(Player onlinePlayer : Bukkit.getOnlinePlayers())
+								onlinePlayer.kickPlayer("reloading plugin");
 					}
 					lastModified = file.lastModified();
 				} catch(Exception exception) {
