@@ -270,9 +270,11 @@ public class PlayerManager implements Listener {
 	@EventHandler
 	public void onCommand(PlayerCommandPreprocessEvent event) {
 		Player player = event.getPlayer();
+		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
+		pitPlayer.lastCommand = System.currentTimeMillis();
+
 		if(player.isOp()) return;
 		if(ChatColor.stripColor(event.getMessage()).toLowerCase().startsWith("/trade")) {
-			PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
 			int levelRequired = 100 - TheWay.INSTANCE.getLevelReduction(pitPlayer.player);
 			if(pitPlayer.level < levelRequired) {
 				event.setCancelled(true);
