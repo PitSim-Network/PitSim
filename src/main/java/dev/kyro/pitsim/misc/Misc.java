@@ -70,6 +70,11 @@ public class Misc {
 		}.runTaskAsynchronously(PitSim.INSTANCE);
 	}
 
+	public static DecimalFormat goldFormat = new DecimalFormat("#,###.##");
+	public static String formatGoldFull(double amount) {
+		return goldFormat.format(amount);
+	}
+
 	public static String getDisplayName(Player player) {
 		String playerName = "%luckperms_prefix%%essentials_nickname%";
 		return PlaceholderAPI.setPlaceholders(player, playerName);
