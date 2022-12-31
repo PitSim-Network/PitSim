@@ -29,6 +29,7 @@ public class DailySWGamePlayedQuest extends PassQuest {
 		PluginMessage message = event.getMessage();
 		List<String> strings = message.getStrings();
 		List<Integer> ints = message.getIntegers();
+		if(strings.isEmpty()) return;
 		if(strings.get(0).equals("SKYWARS PASS QUEST")) {
 			UUID playerUUID = UUID.fromString(strings.get(1));
 
