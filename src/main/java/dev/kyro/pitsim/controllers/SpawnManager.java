@@ -55,7 +55,6 @@ public class SpawnManager implements Listener {
 					public void onPacketSending(PacketEvent event) {
 						Player player = event.getPlayer();
 						String soundName = event.getPacket().getStrings().read(0);
-						System.out.println(player.getName() + " " + soundName);
 						if(soundName.equals("mob.villager.idle") || soundName.equals("mob.rabbit.idle")) {
 							event.setCancelled(true);
 						}
