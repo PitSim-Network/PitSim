@@ -25,7 +25,7 @@ public class DailySWGamePlayedQuest extends PassQuest {
 	}
 
 	@EventHandler
-	public void onKill(MessageEvent event) {
+	public void onMessage(MessageEvent event) {
 		PluginMessage message = event.getMessage();
 		List<String> strings = message.getStrings();
 		List<Integer> ints = message.getIntegers();
