@@ -5,7 +5,6 @@ import dev.kyro.arcticapi.gui.AGUI;
 import dev.kyro.arcticapi.gui.AGUIPanel;
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.PitSim;
-import dev.kyro.pitsim.controllers.AuctionDisplays;
 import dev.kyro.pitsim.controllers.AuctionManager;
 import dev.kyro.pitsim.controllers.objects.AuctionItem;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
@@ -115,9 +114,9 @@ public class BidPanel extends AGUIPanel {
 				bidLore.add("");
 				bidLore.add(ChatColor.GRAY + "Your Souls: " + ChatColor.WHITE + pitPlayer.taintedSouls);
 				bidLore.add("");
-				if((AuctionManager.minutes * 60000L - (System.currentTimeMillis() - AuctionManager.auctionItems[0].initTime)) / 1000 < 0) {
+				if(AuctionManager.haveAuctionsEnded()) {
 					bidLore.add(ChatColor.YELLOW + "Ending Soon");
-				} else bidLore.add(ChatColor.YELLOW + AuctionDisplays.getRemainingTime() + " Remaining"); ;
+				} else bidLore.add(ChatColor.YELLOW + AuctionManager.getRemainingTime() + " Remaining"); ;
 				bidLore.add("");
 
 				if(auctionItem.getHighestBidder() != null && auctionItem.getHighestBidder().equals(player.getUniqueId())) {

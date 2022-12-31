@@ -32,7 +32,7 @@ public class AuctionManager implements Listener {
 	public static Location spawnLoc = new Location(MapManager.getDarkzone(), 178.5, 52, -1004.5, 180, 0);
 	public static Location returnLoc = new Location(MapManager.getDarkzone(), 255.5, 91, -134.5, -45, 0);
 
-	public static int minutes = 1440;
+	public List<Player> animationPlayers = new ArrayList<>();
 
 	static {
 		new BukkitRunnable() {
@@ -40,21 +40,11 @@ public class AuctionManager implements Listener {
 			public void run() {
 				if(!PitSim.getStatus().isDarkzone()) return;
 
-				boolean showItems = false;
-
-				for(int i = 0; i < auctionItems.length; i++) {
-					AuctionItem item = auctionItems[i];
-
-					if(System.currentTimeMillis() - item.initTime > minutes * 60000L) {
-						item.endAuction();
-//                        System.out.println(i + " Auction ended");
-						auctionItems[i] = new AuctionItem(generateItem(), 0, i, 0, null);
-						showItems = true;
-					}
+				if(haveAuctionsEnded()) {
+					for(AuctionItem item : auctionItems) item.endAuction();
+					generateNewAuctions();
+					AuctionDisplays.showItems();
 				}
-
-				if(showItems) AuctionDisplays.showItems();
-
 			}
 		}.runTaskTimer(PitSim.INSTANCE, 10, 10);
 	}
@@ -62,27 +52,22 @@ public class AuctionManager implements Listener {
 	public static void onStart() {
 
 		for(int i = 0; i < 3; i++) {
-			if(FirestoreManager.AUCTION.auctions.get(i) == null) continue;
+			if(FirestoreManager.AUCTION.auctions[i] == null) continue;
 
-			int item = FirestoreManager.AUCTION.auctions.get(i).item;
-			int itemData = FirestoreManager.AUCTION.auctions.get(i).itemData;
-			long startTime = FirestoreManager.AUCTION.auctions.get(i).start;
+			int item = FirestoreManager.AUCTION.auctions[i].item;
+			int itemData = FirestoreManager.AUCTION.auctions[i].itemData;
 
-			List<String> bids = FirestoreManager.AUCTION.auctions.get(i).bids;
+			List<String> bids = FirestoreManager.AUCTION.auctions[i].bids;
 			Map<UUID, Integer> bidMap = new LinkedHashMap<>();
 			for(String bid : bids) {
 				String[] split = bid.split(":");
 				bidMap.put(UUID.fromString(split[0]), Integer.parseInt(split[1]));
 			}
 
-			auctionItems[i] = new AuctionItem(ItemType.getItemType(item), itemData, i, startTime, bidMap);
+			auctionItems[i] = new AuctionItem(ItemType.getItemType(item), itemData, i, bidMap);
 		}
 
-		for(int i = 0; i < auctionItems.length; i++) {
-			if(auctionItems[i] != null) continue;
-
-			auctionItems[i] = new AuctionItem(generateItem(), 0, i, 0, null);
-		}
+		if(auctionItems[0] == null) generateNewAuctions();
 
 		AuctionDisplays.showItems();
 	}
@@ -100,13 +85,11 @@ public class AuctionManager implements Listener {
 		return itemTypes.get(0);
 	}
 
-	List<Player> anim = new ArrayList<>();
-
 	@EventHandler
 	public void onMove(PlayerMoveEvent event) {
 
 		Player player = event.getPlayer();
-		if(anim.contains(player)) return;
+		if(animationPlayers.contains(player)) return;
 		RegionContainer container = WorldGuardPlugin.inst().getRegionContainer();
 		RegionManager regions = container.get(event.getTo().getWorld());
 		assert regions != null;
@@ -115,7 +98,7 @@ public class AuctionManager implements Listener {
 		for(ProtectedRegion region : set) {
 			if(region.getId().equals("darkauctionenterance")) {
 
-				anim.add(player);
+				animationPlayers.add(player);
 				Misc.applyPotionEffect(player, PotionEffectType.BLINDNESS, 60, 99, false, false);
 				Misc.applyPotionEffect(player, PotionEffectType.CONFUSION, 60, 5, false, false);
 				Sounds.MANA.play(player);
@@ -124,14 +107,14 @@ public class AuctionManager implements Listener {
 					@Override
 					public void run() {
 						player.teleport(spawnLoc);
-						anim.remove(player);
+						animationPlayers.remove(player);
 					}
 				}.runTaskLater(PitSim.INSTANCE, 20);
 			}
 
 			if(region.getId().equals("darkauctionexit")) {
 
-				anim.add(player);
+				animationPlayers.add(player);
 				Misc.applyPotionEffect(player, PotionEffectType.BLINDNESS, 60, 99, false, false);
 				Misc.applyPotionEffect(player, PotionEffectType.CONFUSION, 60, 5, false, false);
 				Sounds.MANA.play(player);
@@ -140,7 +123,7 @@ public class AuctionManager implements Listener {
 					@Override
 					public void run() {
 						player.teleport(returnLoc);
-						anim.remove(player);
+						animationPlayers.remove(player);
 					}
 				}.runTaskLater(PitSim.INSTANCE, 20);
 			}
@@ -177,8 +160,32 @@ public class AuctionManager implements Listener {
 				AuctionItem.waitingMessages.remove(finalInitialMessage);
 			}
 		}.runTaskLater(PitSim.INSTANCE, 1);
-
 	}
 
+	public static void generateNewAuctions() {
+		FirestoreManager.AUCTION.endTime = System.currentTimeMillis() + (new Random().nextInt(60 * 12) + 60 * 6) * 60 * 1000;
 
+		for(int i = 0; i < auctionItems.length; i++)
+			auctionItems[i] = new AuctionItem(generateItem(), 0, i, null);
+	}
+
+	public static boolean haveAuctionsEnded() {
+		return System.currentTimeMillis() > getAuctionEndTime();
+	}
+
+	public static String getRemainingTime() {
+		return formatTime(getAuctionEndTime() - System.currentTimeMillis());
+	}
+
+	public static long getAuctionEndTime() {
+		return FirestoreManager.AUCTION.endTime;
+	}
+
+	public static String formatTime(long millis) {
+		millis /= 1000;
+		long s = millis % 60;
+		long m = (millis / 60) % 60;
+		long h = (millis / (60 * 60)) % 24;
+		return String.format("%dh %02dm %02ds", h, m, s);
+	}
 }

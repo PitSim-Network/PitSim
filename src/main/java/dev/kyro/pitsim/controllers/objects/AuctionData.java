@@ -1,10 +1,10 @@
 package dev.kyro.pitsim.controllers.objects;
 
 import com.google.cloud.firestore.annotation.Exclude;
-import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.controllers.FirestoreManager;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class AuctionData {
 	@Exclude
@@ -12,12 +12,12 @@ public class AuctionData {
 	@Exclude
 	public boolean saveQueued = false;
 
-	public List<Auction> auctions = Arrays.asList(null, null, null);
+	public Auction[] auctions = new Auction[] {null, null, null};
+	public long endTime;
 
 	public static class Auction {
 		public int item;
 		public int itemData;
-		public long start;
 		public List<String> bids = new ArrayList<>();
 	}
 

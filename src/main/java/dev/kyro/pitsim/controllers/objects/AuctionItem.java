@@ -20,16 +20,14 @@ public class AuctionItem {
 	public ItemType item;
 	public int itemData;
 	public int slot;
-	public long initTime;
 	public Map<UUID, Integer> bidMap;
 
 	public static List<PluginMessage> waitingMessages = new ArrayList<>();
 
-	public AuctionItem(ItemType item, int itemData, int slot, long initTime, Map<UUID, Integer> bidMap) {
+	public AuctionItem(ItemType item, int itemData, int slot, Map<UUID, Integer> bidMap) {
 		this.item = item;
 		this.itemData = itemData;
 		this.slot = slot;
-		this.initTime = initTime == 0 ? System.currentTimeMillis() : initTime;
 
 		this.bidMap = bidMap == null ? new LinkedHashMap<>() : bidMap;
 
@@ -43,13 +41,12 @@ public class AuctionItem {
 	}
 
 	public void saveData() {
-		FirestoreManager.AUCTION.auctions.set(slot, new AuctionData.Auction());
-		FirestoreManager.AUCTION.auctions.get(slot).item = this.item.id;
-		FirestoreManager.AUCTION.auctions.get(slot).itemData = this.itemData;
-		FirestoreManager.AUCTION.auctions.get(slot).start = this.initTime;
+		FirestoreManager.AUCTION.auctions[slot] = new AuctionData.Auction();
+		FirestoreManager.AUCTION.auctions[slot].item = this.item.id;
+		FirestoreManager.AUCTION.auctions[slot].itemData = this.itemData;
 
 		for(Map.Entry<UUID, Integer> entry : this.bidMap.entrySet()) {
-			List<String> bids = FirestoreManager.AUCTION.auctions.get(slot).bids;
+			List<String> bids = FirestoreManager.AUCTION.auctions[slot].bids;
 
 			for(String bid : bids) {
 				String[] split = bid.split(":");
@@ -60,7 +57,7 @@ public class AuctionItem {
 			}
 
 			bids.add(entry.getKey() + ":" + entry.getValue());
-			FirestoreManager.AUCTION.auctions.get(slot).bids = bids;
+			FirestoreManager.AUCTION.auctions[slot].bids = bids;
 		}
 //        FirestoreManager.AUCTION.save();
 	}
@@ -111,7 +108,7 @@ public class AuctionItem {
 	}
 
 	public void endAuction() {
-		FirestoreManager.AUCTION.auctions.set(slot, null);
+		FirestoreManager.AUCTION.auctions[slot] = null;
 		FirestoreManager.AUCTION.save();
 
 		if(getHighestBidder() == null) return;

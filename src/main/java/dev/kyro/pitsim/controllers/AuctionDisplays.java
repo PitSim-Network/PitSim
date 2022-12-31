@@ -84,10 +84,10 @@ public class AuctionDisplays implements Listener {
 						((LivingEntity) clickable.getEntity()).addPotionEffect(new PotionEffect(PotionEffectType.INVISIBILITY, Integer.MAX_VALUE, 0, false, false));
 				}
 
-				if((AuctionManager.minutes * 60000L - (System.currentTimeMillis() - AuctionManager.auctionItems[0].initTime)) / 1000 < 0) {
+				if(AuctionManager.haveAuctionsEnded()) {
 					getStand(timerStandUUID).setCustomName(ChatColor.YELLOW + "Ending Soon");
 				} else
-					getStand(timerStandUUID).setCustomName(ChatColor.YELLOW + "Time Left: " + ChatColor.WHITE + getRemainingTime());
+					getStand(timerStandUUID).setCustomName(ChatColor.YELLOW + "Time Left: " + ChatColor.WHITE + AuctionManager.getRemainingTime());
 			}
 		}.runTaskTimer(PitSim.INSTANCE, 20, 20);
 	}
@@ -248,17 +248,6 @@ public class AuctionDisplays implements Listener {
 			if(entity.getUniqueId().equals(uuid)) return (Item) entity;
 		}
 		return null;
-	}
-
-	public static String getRemainingTime() {
-		return convertSecondsToHMmSs((AuctionManager.minutes * 60000L - (System.currentTimeMillis() - AuctionManager.auctionItems[0].initTime)) / 1000);
-	}
-
-	public static String convertSecondsToHMmSs(long seconds) {
-		long s = seconds % 60;
-		long m = (seconds / 60) % 60;
-		long h = (seconds / (60 * 60)) % 24;
-		return String.format("%dh %02dm %02ds", h, m, s);
 	}
 
 	public static boolean hasPlayers(World world) {
