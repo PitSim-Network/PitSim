@@ -276,6 +276,10 @@ public class EnchantManager implements Listener {
 						.replaceAll("\u00A7m", "")
 						.replaceAll("\u00A7n", "")
 						.replaceAll("\u00A7o", "");
+				if(!player.isOp()) {
+					String strippedName = ChatColor.stripColor(displayName);
+					if(strippedName.length() > 32) displayName = "copium";
+				}
 				if(!displayName.equals(newDisplayName)) {
 					itemMeta.setDisplayName(newDisplayName);
 					itemStack.setItemMeta(itemMeta);

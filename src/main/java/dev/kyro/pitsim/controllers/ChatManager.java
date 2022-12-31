@@ -23,6 +23,12 @@ import java.util.Arrays;
 import java.util.List;
 
 public class ChatManager implements Listener {
+	public static List<String> illegalPhrases = new ArrayList<>();
+
+	static {
+		illegalPhrases.add("kyro");
+		illegalPhrases.add("wiji");
+	}
 
 	@EventHandler
 	public void autoCorrect(AsyncPlayerChatEvent event) {
@@ -45,6 +51,7 @@ public class ChatManager implements Listener {
 
 		if(ItemRename.renamePlayers.containsKey(player)) {
 			String name = ChatColor.translateAlternateColorCodes('&', message);
+			String strippedName = ChatColor.stripColor(name);
 			ItemStack heldItem = ItemRename.renamePlayers.get(player);
 			event.setCancelled(true);
 
@@ -57,8 +64,19 @@ public class ChatManager implements Listener {
 				AOutput.error(player, "&cYou can only name mystic items!");
 				return;
 			}
-			if(!ChatColor.stripColor(name).matches("^\\w+$")) {
+			if(!strippedName.matches("\\w+\\s*")) {
 				AOutput.error(player, "&c&lERROR!&7 You can only use regular characters");
+				return;
+			}
+			if(!player.isOp()) {
+				for(String illegalPhrase : illegalPhrases) {
+					if(!strippedName.toLowerCase().contains(illegalPhrase)) continue;
+					AOutput.error(player, "&c&lERROR!&7 Name contains illegal phrase \"" + illegalPhrase + "\"");
+					return;
+				}
+			}
+			if(!player.isOp() && strippedName.length() > 32) {
+				AOutput.error(player, "&c&lERROR!&7 Item names cannot be longer than 32 characters");
 				return;
 			}
 			ItemMeta meta = heldItem.getItemMeta();
