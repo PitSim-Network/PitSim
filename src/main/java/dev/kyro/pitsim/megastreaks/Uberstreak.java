@@ -457,10 +457,7 @@ public class Uberstreak extends Megastreak {
 		}
 	}
 
-	public static ItemStack getDisplayStack(String displayName, ItemStack itemStack) {
-		ItemMeta itemMeta = itemStack.hasItemMeta() ? itemStack.getItemMeta() : Bukkit.getItemFactory().getItemMeta(itemStack.getType());
-		itemMeta.setDisplayName(displayName);
-		itemStack.setItemMeta(itemMeta);
-		return itemStack;
+	public static ItemStack getDisplayStack(String displayName, ItemStack displayStack) {
+		return new AItemStackBuilder(displayStack).setName(displayName).getItemStack();
 	}
 }
