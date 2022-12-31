@@ -64,7 +64,7 @@ public class ChatManager implements Listener {
 				AOutput.error(player, "&cYou can only name mystic items!");
 				return;
 			}
-			if(!strippedName.matches("\\w+\\s*")) {
+			if(!strippedName.matches("[\\w\\s]+")) {
 				AOutput.error(player, "&c&lERROR!&7 You can only use regular characters");
 				return;
 			}
