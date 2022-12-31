@@ -10,9 +10,6 @@ import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class WinAuctionsQuest extends PassQuest {
 	public static WinAuctionsQuest INSTANCE;
 
@@ -30,7 +27,7 @@ public class WinAuctionsQuest extends PassQuest {
 		ItemStack itemStack = new AItemStackBuilder(Material.DIAMOND)
 				.setName(getDisplayName())
 				.setLore(new ALoreBuilder(
-						"&7Win &f" + Misc.formatLarge(questLevel.getRequirement(pitPlayer)) + " &7action" +
+						"&7Win &f" + Misc.formatLarge(questLevel.getRequirement(pitPlayer)) + " &7auction" +
 								(questLevel.getRequirement(pitPlayer) == 1 ? "" : "s") + " (found in",
 						"&7the &5darkzone&7)",
 						"",
