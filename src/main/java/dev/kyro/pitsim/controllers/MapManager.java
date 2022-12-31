@@ -42,7 +42,7 @@ public class MapManager implements Listener {
 		Player player = event.getPlayer();
 		if(player.getWorld() != MapManager.getDarkzone()) return;
 		event.setCancelled(true);
-		AOutput.error(event.getPlayer(), "&c&c&lNOPE! &7You cannot use that while in combat!");
+		AOutput.error(event.getPlayer(), "&c&c&lNOPE! &7You cannot use that in the darkzone!");
 	}
 
 	public static void enablePortal(World lobby) {
