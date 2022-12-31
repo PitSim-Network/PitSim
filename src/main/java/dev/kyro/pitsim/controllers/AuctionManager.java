@@ -52,12 +52,12 @@ public class AuctionManager implements Listener {
 	public static void onStart() {
 
 		for(int i = 0; i < 3; i++) {
-			if(FirestoreManager.AUCTION.auctions[i] == null) continue;
+			if(FirestoreManager.AUCTION.auctions.get(i) == null) continue;
 
-			int item = FirestoreManager.AUCTION.auctions[i].item;
-			int itemData = FirestoreManager.AUCTION.auctions[i].itemData;
+			int item = FirestoreManager.AUCTION.auctions.get(i).item;
+			int itemData = FirestoreManager.AUCTION.auctions.get(i).itemData;
 
-			List<String> bids = FirestoreManager.AUCTION.auctions[i].bids;
+			List<String> bids = FirestoreManager.AUCTION.auctions.get(i).bids;
 			Map<UUID, Integer> bidMap = new LinkedHashMap<>();
 			for(String bid : bids) {
 				String[] split = bid.split(":");

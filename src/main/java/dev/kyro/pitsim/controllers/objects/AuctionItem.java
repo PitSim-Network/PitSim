@@ -41,12 +41,12 @@ public class AuctionItem {
 	}
 
 	public void saveData() {
-		FirestoreManager.AUCTION.auctions[slot] = new AuctionData.Auction();
-		FirestoreManager.AUCTION.auctions[slot].item = this.item.id;
-		FirestoreManager.AUCTION.auctions[slot].itemData = this.itemData;
+		FirestoreManager.AUCTION.auctions.set(slot, new AuctionData.Auction());
+		FirestoreManager.AUCTION.auctions.get(slot).item = this.item.id;
+		FirestoreManager.AUCTION.auctions.get(slot).itemData = this.itemData;
 
 		for(Map.Entry<UUID, Integer> entry : this.bidMap.entrySet()) {
-			List<String> bids = FirestoreManager.AUCTION.auctions[slot].bids;
+			List<String> bids = FirestoreManager.AUCTION.auctions.get(slot).bids;
 
 			for(String bid : bids) {
 				String[] split = bid.split(":");
@@ -57,7 +57,7 @@ public class AuctionItem {
 			}
 
 			bids.add(entry.getKey() + ":" + entry.getValue());
-			FirestoreManager.AUCTION.auctions[slot].bids = bids;
+			FirestoreManager.AUCTION.auctions.get(slot).bids = bids;
 		}
 //        FirestoreManager.AUCTION.save();
 	}
@@ -108,7 +108,7 @@ public class AuctionItem {
 	}
 
 	public void endAuction() {
-		FirestoreManager.AUCTION.auctions[slot] = null;
+		FirestoreManager.AUCTION.auctions.set(slot, null);
 		FirestoreManager.AUCTION.save();
 
 		if(getHighestBidder() == null) return;

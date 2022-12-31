@@ -4,6 +4,7 @@ import com.google.cloud.firestore.annotation.Exclude;
 import dev.kyro.pitsim.controllers.FirestoreManager;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class AuctionData {
@@ -12,7 +13,7 @@ public class AuctionData {
 	@Exclude
 	public boolean saveQueued = false;
 
-	public Auction[] auctions = new Auction[] {null, null, null};
+	public List<Auction> auctions = Arrays.asList(null, null, null);
 	public long endTime;
 
 	public static class Auction {
