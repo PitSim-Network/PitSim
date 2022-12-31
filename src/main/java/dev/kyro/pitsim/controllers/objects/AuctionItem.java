@@ -16,7 +16,6 @@ import org.bukkit.inventory.ItemStack;
 import java.util.*;
 
 public class AuctionItem {
-
 	public ItemType item;
 	public int itemData;
 	public int slot;
@@ -59,7 +58,6 @@ public class AuctionItem {
 			bids.add(entry.getKey() + ":" + entry.getValue());
 			FirestoreManager.AUCTION.auctions.get(slot).bids = bids;
 		}
-//        FirestoreManager.AUCTION.save();
 	}
 
 	public void addBid(UUID player, int bid) {
