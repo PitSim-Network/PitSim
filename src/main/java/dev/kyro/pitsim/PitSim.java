@@ -64,6 +64,7 @@ import dev.kyro.pitsim.kits.XPKit;
 import dev.kyro.pitsim.leaderboards.*;
 import dev.kyro.pitsim.megastreaks.*;
 import dev.kyro.pitsim.misc.*;
+import dev.kyro.pitsim.misc.packets.SignPrompt;
 import dev.kyro.pitsim.npcs.*;
 import dev.kyro.pitsim.perks.*;
 import dev.kyro.pitsim.pitmaps.BiomesMap;
@@ -170,6 +171,7 @@ public class PitSim extends JavaPlugin {
 
 		MapManager.onStart();
 		if(getStatus().isPitsim()) NonManager.init();
+		SignPrompt.registerSignUpdateListener();
 		TempBlockHelper.init();
 		ReloadManager.init();
 

@@ -63,7 +63,6 @@ public class AuctionItem {
 	}
 
 	public void addBid(UUID player, int bid) {
-
 		bidMap.put(player, bid);
 		saveData();
 
