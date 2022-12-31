@@ -167,6 +167,8 @@ public class AuctionManager implements Listener {
 
 		for(int i = 0; i < auctionItems.length; i++)
 			auctionItems[i] = new AuctionItem(generateItem(), 0, i, null);
+
+		FirestoreManager.AUCTION.save();
 	}
 
 	public static boolean haveAuctionsEnded() {
