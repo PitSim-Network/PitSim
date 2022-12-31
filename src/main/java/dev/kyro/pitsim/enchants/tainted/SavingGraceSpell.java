@@ -81,6 +81,7 @@ public class SavingGraceSpell extends PitEnchant {
 	@EventHandler
 	public void onKill(KillEvent killEvent) {
 		if(!killEvent.isDeadPlayer()) return;
+		if(killEvent.getDeadPitPlayer().graceTiers == 0) return;
 		killEvent.getDeadPitPlayer().graceTiers = 0;
 
 		new BukkitRunnable() {
