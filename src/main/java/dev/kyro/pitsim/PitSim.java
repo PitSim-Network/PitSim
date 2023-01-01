@@ -644,6 +644,7 @@ public class PitSim extends JavaPlugin {
 		getServer().getPluginManager().registerEvents(new LogManager(), this);
 		getServer().getPluginManager().registerEvents(new StorageManager(), this);
 		getServer().getPluginManager().registerEvents(new CrossServerMessageManager(), this);
+		getServer().getPluginManager().registerEvents(new PacketManager(), this);
 	}
 
 	public void registerBoosters() {
@@ -829,8 +830,6 @@ public class PitSim extends JavaPlugin {
 		EnchantManager.registerEnchant(new ComboVenom());
 //		EnchantManager.registerEnchant(new aCPLEnchant());
 		EnchantManager.registerEnchant(new SelfCheckout());
-		EnchantManager.registerEnchant(new aEntanglement());
-		EnchantManager.registerEnchant(new aRetroGravityMinikloon());
 
 		EnchantManager.registerEnchant(new Billionaire());
 		EnchantManager.registerEnchant(new ComboPerun());

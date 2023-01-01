@@ -1,9 +1,5 @@
 package dev.kyro.pitsim.controllers;
 
-import com.comphenix.protocol.PacketType;
-import com.comphenix.protocol.ProtocolLibrary;
-import com.comphenix.protocol.events.PacketAdapter;
-import com.comphenix.protocol.events.PacketEvent;
 import com.sk89q.worldguard.bukkit.BukkitUtil;
 import com.sk89q.worldguard.bukkit.RegionContainer;
 import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
@@ -49,23 +45,6 @@ public class SpawnManager implements Listener {
 	public static Map<Player, Location> lastLocationMap = new HashMap<>();
 
 	static {
-		ProtocolLibrary.getProtocolManager().addPacketListener(
-				new PacketAdapter(PitSim.INSTANCE, PacketType.Play.Server.NAMED_SOUND_EFFECT) {
-					@Override
-					public void onPacketSending(PacketEvent event) {
-						Player player = event.getPlayer();
-						String soundName = event.getPacket().getStrings().read(0);
-						if(soundName.equals("mob.villager.idle") || soundName.equals("mob.rabbit.idle")) {
-							event.setCancelled(true);
-						}
-						Location auctions = AuctionDisplays.pedestalLocations[0];
-						if(soundName.equals("mob.magmacube.big") &&
-								auctions.getWorld() == player.getWorld() && auctions.distance(player.getLocation()) < 50) {
-							event.setCancelled(true);
-						}
-					}
-				});
-
 		new BukkitRunnable() {
 			@Override
 			public void run() {
