@@ -4,6 +4,7 @@ import de.myzelyam.api.vanish.VanishAPI;
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
+import dev.kyro.pitsim.misc.Lang;
 import dev.kyro.pitsim.upgrades.TheWay;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
@@ -44,7 +45,7 @@ public class PayCommand implements CommandExecutor {
 					break;
 				}
 				if(target == null) {
-					AOutput.error(player, "&c&lERROR! &7Could not find that player");
+					Lang.COULD_NOT_FIND_PLAYER_WITH_NAME.send(player);
 					return;
 				} else if(target == player) {
 					AOutput.error(player, "&c&lERROR! &7You cannot pay yourself");
