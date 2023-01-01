@@ -67,7 +67,7 @@ public class HelpItemStacks {
 
 	public static ItemStack getKeeperItemStack() {
 		return new AItemStackBuilder(BASE_ITEMSTACK.clone())
-				.setName("&ePrestige and Renown")
+				.setName("&eThe Keeper")
 				.setLore(new ALoreBuilder(
 						"&8&m----------------------------",
 						"&7Do you feel like there are too many",
