@@ -324,9 +324,7 @@ public class DamageManager implements Listener {
 			Bukkit.getServer().getPluginManager().callEvent(killEvent);
 		}
 
-//		if(killerIsPlayer && deadIsPlayer) {
-//			EnchantManager.incrementKills(killerPlayer, deadPlayer);
-//		}
+		if(killerIsPlayer && deadIsPlayer) EnchantManager.incrementKillsOnJewels(killerPlayer);
 
 		PitPlayer pitKiller = PitPlayer.getPitPlayer(killerPlayer);
 		PitPlayer pitDead = PitPlayer.getPitPlayer(deadPlayer);

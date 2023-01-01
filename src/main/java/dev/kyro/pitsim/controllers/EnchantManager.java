@@ -8,7 +8,6 @@ import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.arcticapi.misc.AUtil;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.alogging.LogManager;
-import dev.kyro.pitsim.controllers.objects.Non;
 import dev.kyro.pitsim.controllers.objects.PitEnchant;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.controllers.objects.PluginMessage;
@@ -203,7 +202,6 @@ public class EnchantManager implements Listener {
 		NBTItem nbtItem = new NBTItem(itemStack);
 		if(nbtItem.hasKey(NBTTag.GHELMET_UUID.getRef())) {
 			int gold = nbtItem.getInteger(NBTTag.GHELMET_GOLD.getRef());
-			System.out.println(gold);
 			if(gold < 0) return true;
 		}
 		if(!nbtItem.hasKey(NBTTag.ITEM_UUID.getRef())) return false;
@@ -258,8 +256,8 @@ public class EnchantManager implements Listener {
 
 		NBTList<String> enchantOrder = nbtItem.getStringList(NBTTag.PIT_ENCHANT_ORDER.getRef());
 		NBTCompound itemEnchants = nbtItem.getCompound(NBTTag.PIT_ENCHANTS.getRef());
-		int playerKills = nbtItem.getInteger(NBTTag.PLAYER_KILLS.getRef());
-		int botKills = nbtItem.getInteger(NBTTag.BOT_KILLS.getRef());
+//		int playerKills = nbtItem.getInteger(NBTTag.PLAYER_KILLS.getRef());
+//		int botKills = nbtItem.getInteger(NBTTag.BOT_KILLS.getRef());
 		int currentLives = nbtItem.getInteger(NBTTag.CURRENT_LIVES.getRef());
 		int maxLives = nbtItem.getInteger(NBTTag.MAX_LIVES.getRef());
 		int jewelKills = nbtItem.getInteger(NBTTag.JEWEL_KILLS.getRef());
@@ -418,7 +416,7 @@ public class EnchantManager implements Listener {
 	}
 
 	public static ItemStack completeJewel(Player player, ItemStack itemStack) {
-		if(Misc.isAirOrNull(itemStack) || !isJewel(itemStack)) return null;
+		if(Misc.isAirOrNull(itemStack) || !isJewel(itemStack) || !isJewelComplete(itemStack)) return null;
 		NBTItem nbtItem = new NBTItem(itemStack);
 		String jewelString = nbtItem.getString(NBTTag.ITEM_JEWEL_ENCHANT.getRef());
 		int jewelKills = nbtItem.getInteger(NBTTag.JEWEL_KILLS.getRef());
@@ -505,56 +503,49 @@ public class EnchantManager implements Listener {
 		return maxLives;
 	}
 
-	public static void incrementKills(Player attacker, Player killed) {
-		Non non = NonManager.getNon(killed);
-		String ref = non == null ? NBTTag.PLAYER_KILLS.getRef() : NBTTag.BOT_KILLS.getRef();
+	public static ItemStack incrementJewel(Player player, ItemStack itemStack) {
+		if(Misc.isAirOrNull(itemStack) || !isJewel(itemStack) || isJewelComplete(itemStack)) return null;
 
-		ItemStack heldStack = attacker.getItemInHand();
-		NBTItem heldNBTItem = null;
-		if(!Misc.isAirOrNull(heldStack)) heldNBTItem = new NBTItem(heldStack);
-		ItemStack pantsStack = attacker.getInventory().getLeggings();
-		NBTItem pantsNBTItem = null;
-		if(!Misc.isAirOrNull(pantsStack)) pantsNBTItem = new NBTItem(pantsStack);
-		if(!Misc.isAirOrNull(heldStack) && heldNBTItem.hasKey(NBTTag.ITEM_UUID.getRef())) {
-			heldNBTItem.setInteger(ref, heldNBTItem.getInteger(ref) + 1);
+		NBTItem nbtItem = new NBTItem(itemStack);
+		nbtItem.setInteger(NBTTag.JEWEL_KILLS.getRef(), nbtItem.getInteger(NBTTag.JEWEL_KILLS.getRef()) + 1);
 
-			if(isJewel(heldStack) && !isJewelComplete(heldStack))
-				heldNBTItem.setInteger(NBTTag.JEWEL_KILLS.getRef(), heldNBTItem.getInteger(NBTTag.JEWEL_KILLS.getRef()) + 1);
-
-			ItemStack jewelStack = completeJewel(attacker, heldNBTItem.getItem());
-			if(jewelStack != null) heldNBTItem = new NBTItem(jewelStack);
-
-			if(heldNBTItem.hasKey(NBTTag.ITEM_UUID.getRef())) setItemLore(heldNBTItem.getItem(), attacker);
-			attacker.setItemInHand(heldNBTItem.getItem());
+		ItemStack jewelStack = completeJewel(player, nbtItem.getItem());
+		if(jewelStack == null) {
+			EnchantManager.setItemLore(nbtItem.getItem(), null);
+			return nbtItem.getItem();
 		}
-		if(!Misc.isAirOrNull(pantsStack) && pantsNBTItem.hasKey(NBTTag.ITEM_UUID.getRef())) {
-			pantsNBTItem.setInteger(ref, pantsNBTItem.getInteger(ref) + 1);
 
-			if(isJewel(pantsStack) && !isJewelComplete(pantsStack))
-				pantsNBTItem.setInteger(NBTTag.JEWEL_KILLS.getRef(), pantsNBTItem.getInteger(NBTTag.JEWEL_KILLS.getRef()) + 1);
+		return jewelStack;
+	}
 
-			ItemStack jewelStack = completeJewel(attacker, pantsNBTItem.getItem());
-			if(jewelStack != null) pantsNBTItem = new NBTItem(jewelStack);
+	public static void incrementKillsOnJewels(Player player) {
+		boolean updateInventory = false;
 
-			setItemLore(pantsNBTItem.getItem(), attacker);
-			attacker.getInventory().setLeggings(pantsNBTItem.getItem());
+		ItemStack heldStack = incrementJewel(player, player.getItemInHand());
+		if(heldStack != null) {
+			player.setItemInHand(heldStack);
+			updateInventory = true;
 		}
+
+		ItemStack pantsStack = incrementJewel(player, player.getInventory().getLeggings());
+		if(pantsStack != null) {
+			player.getInventory().setLeggings(heldStack);
+			updateInventory = true;
+		}
+
 		for(int i = 0; i < 9; i++) {
-			if(i == attacker.getInventory().getHeldItemSlot()) continue;
+			if(i == player.getInventory().getHeldItemSlot()) continue;
+			ItemStack hotbarStack = player.getInventory().getItem(i);
+			if(Misc.isAirOrNull(hotbarStack) || !hotbarStack.getType().equals(Material.BOW)) continue;
 
-			ItemStack hotbarStack = attacker.getInventory().getItem(i);
-			if(Misc.isAirOrNull(hotbarStack) || hotbarStack.getType() != Material.BOW) continue;
-			NBTItem hotbarNbtItem = new NBTItem(hotbarStack);
-
-			if(isJewel(hotbarStack) && !isJewelComplete(hotbarStack))
-				hotbarNbtItem.setInteger(NBTTag.JEWEL_KILLS.getRef(), hotbarNbtItem.getInteger(NBTTag.JEWEL_KILLS.getRef()) + 1);
-
-			ItemStack hotbarJewelStack = completeJewel(attacker, hotbarNbtItem.getItem());
-			if(hotbarJewelStack != null) hotbarNbtItem = new NBTItem(hotbarJewelStack);
-
-			setItemLore(hotbarNbtItem.getItem(), attacker);
-			attacker.getInventory().setItem(i, hotbarNbtItem.getItem());
+			hotbarStack = incrementJewel(player, hotbarStack);
+			if(hotbarStack != null) {
+				player.getInventory().setItem(i, hotbarStack);
+				updateInventory = true;
+			}
 		}
+
+		if(updateInventory) player.updateInventory();
 	}
 
 	public static PitEnchant getEnchant(String refName) {
