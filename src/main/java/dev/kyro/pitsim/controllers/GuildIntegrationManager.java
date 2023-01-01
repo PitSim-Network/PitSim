@@ -163,7 +163,7 @@ public class GuildIntegrationManager implements Listener {
 		int levelRequired = 100 - TheWay.INSTANCE.getLevelReduction(pitPlayer.player);
 		if(pitPlayer.level < levelRequired) {
 			event.setCancelled(true);
-			AOutput.error(event.getPlayer(), "&c&lNOPE! &7You cannot withdraw until you are level " + levelRequired);
+			AOutput.error(event.getPlayer(), "&c&lERROR! &7You cannot withdraw until you are level " + levelRequired);
 		}
 	}
 }

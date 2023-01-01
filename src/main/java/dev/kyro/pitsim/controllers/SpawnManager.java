@@ -77,12 +77,12 @@ public class SpawnManager implements Listener {
 				Location lastLocation = lastLocationMap.get(player);
 				player.teleport(lastLocation);
 				player.setVelocity(new Vector());
-				AOutput.error(event.getPlayer(), "&c&c&lNOPE! &7You cannot enter spawn while on a Megastreak!");
+				AOutput.error(event.getPlayer(), "&c&c&lERROR! &7You cannot enter spawn while on a Megastreak!");
 			} else if(CombatManager.isInCombat(player)) {
 				Location lastLocation = lastLocationMap.get(player);
 				player.teleport(lastLocation);
 				player.setVelocity(new Vector());
-				AOutput.error(event.getPlayer(), "&c&c&lNOPE! &7You cannot enter spawn while in combat!");
+				AOutput.error(event.getPlayer(), "&c&c&lERROR! &7You cannot enter spawn while in combat!");
 			} else {
 				lastLocationMap.remove(player);
 			}
@@ -128,7 +128,7 @@ public class SpawnManager implements Listener {
 		if(event.getAction() == Action.RIGHT_CLICK_BLOCK || event.getAction() == Action.RIGHT_CLICK_AIR) {
 			if(item.getType() != Material.GOLD_HOE) return;
 			event.setCancelled(true);
-			AOutput.send(player, "&c&c&lNOPE! &7You cannot use this in the spawn area!");
+			AOutput.send(player, "&c&c&lERROR! &7You cannot use this in the spawn area!");
 		}
 	}
 
