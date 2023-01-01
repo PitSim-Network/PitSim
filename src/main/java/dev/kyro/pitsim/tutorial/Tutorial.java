@@ -61,8 +61,6 @@ public class Tutorial {
 		this.uuid = pitPlayer.player.getUniqueId();
 		this.pitPlayer = pitPlayer;
 
-
-		System.out.println(completedObjectives);
 		if(!isActive()) return;
 
 		if(!hasStartedTutorial) {
