@@ -440,19 +440,6 @@ public class EnchantManager implements Listener {
 		Collections.shuffle(weightedEnchantList);
 		PitEnchant jewelEnchant = weightedEnchantList.get(0);
 
-//		Collections.shuffle(enchantList);
-//		double rand = Math.random();
-//		EnchantRarity enchantRarity = EnchantRarity.COMMON;
-//		if(rand < 0.1) enchantRarity = EnchantRarity.RARE; else if(rand < 0.35) enchantRarity = EnchantRarity.UNCOMMON;
-//
-//		PitEnchant jewelEnchant;
-//		for(int i = 0;; i++) {
-//
-//			if(enchantRarity != enchantList.get(i).getRarity()) continue;
-//			jewelEnchant = enchantList.get(i);
-//			break;
-//		}
-
 		nbtItem = new NBTItem(PantColor.setPantColor(nbtItem.getItem(), PantColor.getNormalRandom()));
 		int maxLives = getRandomMaxLives();
 		nbtItem.setInteger(NBTTag.MAX_LIVES.getRef(), maxLives);
