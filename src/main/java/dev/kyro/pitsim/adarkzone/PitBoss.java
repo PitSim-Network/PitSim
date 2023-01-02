@@ -4,6 +4,7 @@ import dev.kyro.pitsim.adarkzone.notdarkzone.PitEquipment;
 import dev.kyro.pitsim.misc.Misc;
 import net.citizensnpcs.api.CitizensAPI;
 import net.citizensnpcs.api.npc.NPC;
+import net.citizensnpcs.npc.ai.CitizensNavigator;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 
@@ -68,8 +69,15 @@ public abstract class PitBoss {
 
 	public void spawn() {
 		npcBoss = CitizensAPI.getNPCRegistry().createNPC(EntityType.PLAYER, getName());
+		npcBoss.setProtected(false);
 		npcBoss.spawn(subLevel.getBossSpawnLocation());
 		boss = (Player) npcBoss.getEntity();
+
+		CitizensNavigator navigator = (CitizensNavigator) npcBoss.getNavigator();
+		navigator.getDefaultParameters()
+				.attackDelayTicks(10)
+				.attackRange(4);
+		targetingSystem.pickTarget();
 	}
 
 	public PitBossAbility getRoutineAbility() {

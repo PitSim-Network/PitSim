@@ -29,12 +29,16 @@ public class TargetingSystem {
 		this.target = target;
 	}
 
+	public void pickTarget() {
+		setTarget(findTarget());
+	}
+
 	public void setTarget(Player target) {
 		this.target = target;
 		pitBoss.npcBoss.getNavigator().setTarget(target, true);
 	}
 
-	public Player findTarget(State targetingState) {
+	public Player findTarget() {
 		double radius = pitBoss.getReach();
 
 		if(targetingState == State.ATTACKING_MELEE) {
