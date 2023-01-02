@@ -15,7 +15,7 @@ import dev.kyro.arcticapi.data.AConfig;
 import dev.kyro.arcticapi.data.AData;
 import dev.kyro.arcticapi.hooks.AHook;
 import dev.kyro.arcticapi.misc.AOutput;
-import dev.kyro.pitsim.alogging.LogManager;
+import dev.kyro.pitsim.logging.LogManager;
 import dev.kyro.pitsim.battlepass.PassManager;
 import dev.kyro.pitsim.battlepass.quests.*;
 import dev.kyro.pitsim.battlepass.quests.daily.DailyBotKillQuest;

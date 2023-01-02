@@ -3,7 +3,7 @@ package dev.kyro.pitsim.enchants;
 import de.tr7zw.nbtapi.NBTItem;
 import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.arcticapi.misc.AOutput;
-import dev.kyro.pitsim.alogging.LogManager;
+import dev.kyro.pitsim.logging.LogManager;
 import dev.kyro.pitsim.battlepass.quests.EarnRenownQuest;
 import dev.kyro.pitsim.controllers.DamageManager;
 import dev.kyro.pitsim.controllers.EnchantManager;

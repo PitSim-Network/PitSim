@@ -1,4 +1,4 @@
-package dev.kyro.pitsim.alogging;
+package dev.kyro.pitsim.logging;
 
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.controllers.PlayerManager;

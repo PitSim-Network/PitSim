@@ -1,7 +1,7 @@
 package dev.kyro.pitsim.storage;
 
 import dev.kyro.pitsim.PitSim;
-import dev.kyro.pitsim.alogging.LogManager;
+import dev.kyro.pitsim.logging.LogManager;
 import dev.kyro.pitsim.controllers.EnchantManager;
 import dev.kyro.pitsim.controllers.objects.PluginMessage;
 import dev.kyro.pitsim.exceptions.DataNotLoadedException;
