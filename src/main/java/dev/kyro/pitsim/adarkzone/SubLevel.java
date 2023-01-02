@@ -5,6 +5,8 @@ import org.bukkit.Location;
 public abstract class SubLevel {
 	private Location middle;
 
+	public boolean isBossSpawned = false;
+
 	public SubLevel() {
 		this.middle = createMiddle();
 	}

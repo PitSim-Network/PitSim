@@ -1,7 +1,11 @@
 package dev.kyro.pitsim.adarkzone;
 
+import dev.kyro.pitsim.PitSim;
+import dev.kyro.pitsim.adarkzone.notdarkzone.PitEquipment;
+import dev.kyro.pitsim.misc.Misc;
 import net.citizensnpcs.api.npc.NPC;
 import org.bukkit.entity.Player;
+import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.*;
 
@@ -15,11 +19,58 @@ public abstract class PitBoss {
 //	Boss related
 	public NPC npcBoss;
 	public Player boss;
-	public List<PitBossAbility> abilities = new ArrayList<>();
 	public TargetingSystem targetingSystem;
+	public PitEquipment equipment;
+
+//	Ability Related
+	public List<PitBossAbility> abilities = new ArrayList<>();
+	public Map<PitBossAbility, Double> routineAbilityMap = new HashMap<>();
+	public double skipRoutineChance = 0;
+	public long lastRoutineExecuteTick;
+	public int routineAbilityCooldownTicks = 20 * 5;
+
+	public PitBoss() {}
 
 	public abstract int getMaxHealth();
 	public abstract int getReach();
 
-	public abstract void onSpawn();
+//	Internal events (override to add functionality)
+	public void onSpawn() {}
+	public void onDeath() {}
+
+	public PitBoss abilities(PitBossAbility... pitBossAbilities) {
+		abilities = Arrays.asList(pitBossAbilities);
+		for(PitBossAbility ability : abilities) {
+			if(!ability.runsOnRoutine) continue;
+			routineAbilityMap.put(ability, ability.routineWeight);
+		}
+		return this;
+	}
+
+//	Where chance is a percent chance 0-100
+	public PitBoss routineAbilitySkip(double chance) {
+		skipRoutineChance = chance;
+		return this;
+	}
+
+	public PitBossAbility getRoutineAbility() {
+		Map<PitBossAbility, Double> routineAbilityMap = new HashMap<>(this.routineAbilityMap);
+		for(Map.Entry<PitBossAbility, Double> entry : new ArrayList<>(routineAbilityMap.entrySet()))
+			if(!entry.getKey().shouldExecuteRoutine()) routineAbilityMap.remove(entry.getKey());
+		return Misc.weightedRandom(routineAbilityMap);
+	}
+
+	public void startAbilities() {
+		new BukkitRunnable() {
+			@Override
+			public void run() {
+				if(lastRoutineExecuteTick + routineAbilityCooldownTicks > PitSim.currentTick) return;
+				if(skipRoutineChance != 0 && Math.random() * 100 < skipRoutineChance) return;
+				lastRoutineExecuteTick = PitSim.currentTick;
+
+				PitBossAbility routineAbility = getRoutineAbility();
+				routineAbility.onRoutineExecute();
+			}
+		}.runTaskTimer(PitSim.INSTANCE, 0L, 20);
+	}
 }

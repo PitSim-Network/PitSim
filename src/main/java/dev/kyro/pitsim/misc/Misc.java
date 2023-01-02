@@ -70,6 +70,26 @@ public class Misc {
 		}.runTaskAsynchronously(PitSim.INSTANCE);
 	}
 
+	public static <T> T weightedRandom(Map<T, Double> weightedMap) {
+		// Normalize the weights
+		double sum = 0.0;
+		for(double weight : weightedMap.values()) sum += weight;
+		Map<T, Double> normalizedWeights = new HashMap<>();
+		for(Map.Entry<T, Double> entry : weightedMap.entrySet()) normalizedWeights.put(entry.getKey(), entry.getValue() / sum);
+
+		// Select a random number between 0 and 1
+		double rand = Math.random();
+
+		// Find the element corresponding to the random number
+		double total = 0.0;
+		for(Map.Entry<T, Double> entry : normalizedWeights.entrySet()) {
+			total += entry.getValue();
+			if(total >= rand) return entry.getKey();
+		}
+
+		return normalizedWeights.entrySet().iterator().next().getKey();
+	}
+
 	public static String getDisplayName(Player player) {
 		String playerName = "%luckperms_prefix%%essentials_nickname%";
 		return PlaceholderAPI.setPlaceholders(player, playerName);
