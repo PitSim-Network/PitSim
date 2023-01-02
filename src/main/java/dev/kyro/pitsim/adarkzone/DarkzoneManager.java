@@ -1,5 +1,6 @@
 package dev.kyro.pitsim.adarkzone;
 
+import dev.kyro.pitsim.adarkzone.sublevels.ZombieSubLevel;
 import org.bukkit.event.Listener;
 
 import java.util.ArrayList;
@@ -9,6 +10,7 @@ public class DarkzoneManager implements Listener {
 	public static List<SubLevel> subLevels = new ArrayList<>();
 
 	static {
+		registerSubLevel(new ZombieSubLevel());
 	}
 
 	public static void registerSubLevel(SubLevel subLevel) {

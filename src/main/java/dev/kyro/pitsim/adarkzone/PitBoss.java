@@ -34,7 +34,6 @@ public abstract class PitBoss {
 		this.summoner = summoner;
 	}
 
-
 	public abstract Class<? extends SubLevel> assignSubLevel();
 	public abstract String getName();
 	public abstract String getSkinName();

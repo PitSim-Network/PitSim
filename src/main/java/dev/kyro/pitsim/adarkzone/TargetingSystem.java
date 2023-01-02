@@ -29,6 +29,11 @@ public class TargetingSystem {
 		this.target = target;
 	}
 
+	public void setTarget(Player target) {
+		this.target = target;
+		pitBoss.npcBoss.getNavigator().setTarget(target, true);
+	}
+
 	public Player findTarget(State targetingState) {
 		double radius = pitBoss.getReach();
 
