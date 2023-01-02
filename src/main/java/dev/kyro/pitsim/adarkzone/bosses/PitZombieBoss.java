@@ -19,7 +19,6 @@ public class PitZombieBoss extends PitBoss {
 	}
 
 
-
 	@Override
 	public Class<? extends SubLevel> assignSubLevel() {
 		return ZombieSubLevel.class;
@@ -38,6 +37,11 @@ public class PitZombieBoss extends PitBoss {
 	@Override
 	public int getMaxHealth() {
 		return 100;
+	}
+
+	@Override
+	public double getMeleeDamage() {
+		return 0;
 	}
 
 	@Override
