@@ -22,15 +22,36 @@ import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
 
 import java.text.DecimalFormat;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 public class JudgementAbility extends HelmetAbility {
-	public static List<UUID> cooldownList = new ArrayList<>();
-	public static final int GOLD_COST = 7_000;
+	public static Map<UUID, Integer> cooldownMap = new HashMap<>();
+	public static Map<Player, Integer> maxActivationMap = new HashMap<>();
+	public static final int GOLD_COST = 2_000;
 	public BukkitTask runnable;
+
+	static {
+		new BukkitRunnable() {
+			@Override
+			public void run() {
+				for(Map.Entry<UUID, Integer> entry : new ArrayList<>(cooldownMap.entrySet())) {
+					int time = entry.getValue();
+					if(time > 0) cooldownMap.put(entry.getKey(), --time);
+					else cooldownMap.remove(entry.getKey());
+				}
+
+				for(Map.Entry<Player, Integer> entry : new ArrayList<>(maxActivationMap.entrySet())) {
+					int time = entry.getValue();
+					if(time > 0) maxActivationMap.put(entry.getKey(), --time);
+					else {
+						AOutput.send(entry.getKey(), "&6&lGOLDEN HELMET! &cAuto Deactivated &9Judgement &7(can only be on for " +
+								getMaxActivationSeconds() + " seconds");
+						GoldenHelmet.deactivate(entry.getKey());
+					}
+				}
+			}
+		}.runTaskTimer(PitSim.INSTANCE, 0L, 1L);
+	}
 
 	public JudgementAbility(Player player) {
 		super(player, "Judgement", "judgement", true, 15);
@@ -50,28 +71,22 @@ public class JudgementAbility extends HelmetAbility {
 
 		PitPlayer pitAttacker = PitPlayer.getPitPlayer(attackEvent.getAttackerPlayer());
 
-		if(Math.random() < 0.25) {
+		if(Math.random() < 0.2) {
 
-			pitAttacker.heal(1);
+			pitAttacker.heal(2);
 			Sounds.JUDGEMENT_HEAL.play(attackEvent.getAttacker());
 		}
 
-		if(Math.random() < 0.20) {
+		if(Math.random() < 0.12) {
 
 			Misc.applyPotionEffect(attackEvent.getDefender(), PotionEffectType.WITHER, 60, 2, true, false);
 			Sounds.JUDGEMENT_WITHER.play(attackEvent.getAttacker());
 		}
 
-		if(Math.random() < 0.15) {
+		if(Math.random() < 0.10) {
 
 			Misc.applyPotionEffect(attackEvent.getAttacker(), PotionEffectType.DAMAGE_RESISTANCE, 60, 0, true, false);
 			Sounds.JUDGEMENT_RESISTANCE.play(attackEvent.getAttacker());
-		}
-
-		if(Math.random() < 0.10) {
-
-			Misc.applyPotionEffect(attackEvent.getAttacker(), PotionEffectType.INCREASE_DAMAGE, 40, 0, true, false);
-			Sounds.JUDGEMENT_STRENGTH.play(attackEvent.getAttacker());
 		}
 
 		if(Math.random() < 0.07) {
@@ -80,14 +95,20 @@ public class JudgementAbility extends HelmetAbility {
 			Sounds.JUDGEMENT_SLOW.play(attackEvent.getAttacker());
 		}
 
-		if(Math.random() < 0.05) {
+		if(Math.random() < 0.04) {
+
+			Misc.applyPotionEffect(attackEvent.getAttacker(), PotionEffectType.INCREASE_DAMAGE, 40, 0, true, false);
+			Sounds.JUDGEMENT_STRENGTH.play(attackEvent.getAttacker());
+		}
+
+		if(Math.random() < 0.02) {
 
 			attackEvent.getDefender().setHealth(attackEvent.getDefender().getHealth() * 3.0 / 4.0);
 			Sounds.JUDGEMENT_HALF_ATTACKER.play(attackEvent.getAttacker());
 			Sounds.JUDGEMENT_HALF_DEFENDER.play(attackEvent.getDefender());
 		}
 
-		if(Math.random() < 0.02) {
+		if(Math.random() < 0.01) {
 
 			Sounds.JUDGEMENT_ZEUS_ATTACKER.play(attackEvent.getAttacker());
 			Sounds.JUDGEMENT_ZEUS_DEFENDER.play(attackEvent.getDefender());
@@ -96,14 +117,14 @@ public class JudgementAbility extends HelmetAbility {
 
 				@Override
 				public void run() {
-					if(++count == 5) cancel();
+					if(++count == 4) cancel();
 					Misc.strikeLightningForPlayers(attackEvent.getDefender().getLocation(), 10);
 					attackEvent.getDefender().setHealth(Math.max(attackEvent.getDefender().getHealth() - 2, 1));
 				}
 			}.runTaskTimer(PitSim.INSTANCE, 0L, 2L);
 		}
 
-		if(Math.random() < 0.004 && !HopperManager.isHopper(attackEvent.getDefender())) {
+		if(Math.random() < 0.002 && !HopperManager.isHopper(attackEvent.getDefender())) {
 
 			Hopper hopper = HopperManager.callHopper("PayForTruce", Hopper.Type.GSET, attackEvent.getDefender());
 			hopper.judgementPlayer = attackEvent.getAttackerPlayer();
@@ -117,6 +138,8 @@ public class JudgementAbility extends HelmetAbility {
 	public void onActivate() {
 		ItemStack goldenHelmet = GoldenHelmet.getHelmet(player);
 		assert goldenHelmet != null;
+
+		maxActivationMap.put(player, 20 * getMaxActivationSeconds());
 
 		Sounds.HELMET_ACTIVATE.play(player);
 		DecimalFormat decimalFormat = new DecimalFormat("#,###");
@@ -132,9 +155,10 @@ public class JudgementAbility extends HelmetAbility {
 
 	@Override
 	public boolean shouldActivate() {
-		if(cooldownList.contains(player.getUniqueId())) {
+		if(cooldownMap.containsKey(player.getUniqueId())) {
+			int cooldownSeconds = getCooldownSeconds(player.getUniqueId());
 			Sounds.NO.play(player);
-			AOutput.error(player, "&c&lCOOLDOWN! &7Please wait before activating &9Judgement &7again");
+			AOutput.error(player, "&c&lCOOLDOWN! &7On cooldown for " + cooldownSeconds + " second" + (cooldownSeconds == 1 ? "" : "s"));
 			return false;
 		}
 
@@ -148,27 +172,22 @@ public class JudgementAbility extends HelmetAbility {
 
 	@Override
 	public void onDeactivate() {
-		if(!cooldownList.contains(player.getUniqueId())) {
-			cooldownList.add(player.getUniqueId());
-			new BukkitRunnable() {
-				@Override
-				public void run() {
-					cooldownList.remove(player.getUniqueId());
-				}
-			}.runTaskLater(PitSim.INSTANCE, 20 * 60);
-			AOutput.send(player, "&6&lGOLDEN HELMET! &cDeactivated &9Judgement&c. &7(60s reactivation cooldown)");
-		}
+		cooldownMap.put(player.getUniqueId(), 20 * getCooldownSeconds());
+		maxActivationMap.remove(player);
+		AOutput.send(player, "&6&lGOLDEN HELMET! &cDeactivated &9Judgement&c. &7(" + getCooldownSeconds() + "s reactivation cooldown)");
 		if(runnable != null) runnable.cancel();
 	}
 
 	@Override
-	public void onProc() {
-	}
+	public void onProc() {}
 
 	@Override
 	public List<String> getDescription() {
 		DecimalFormat formatter = new DecimalFormat("#,###.#");
-		return Arrays.asList("&7Double-Sneak to toggle", "&7Judgement. Annihilate your", "&7opponents with RNGesus", "",
+		return Arrays.asList("&7Double-Sneak to toggle", "&7Judgement. Annihilate your", "&7opponents with &eRNGesus&7.",
+				"&7Auto-disables after " + getMaxActivationSeconds() + "s",
+				"&7(" + getCooldownSeconds() + "s &7cooldown)",
+				"",
 				"&7Cost: &6" + formatter.format(GOLD_COST) + "g &7per hit");
 	}
 
@@ -181,5 +200,17 @@ public class JudgementAbility extends HelmetAbility {
 		builder.setLore(loreBuilder);
 
 		return builder.getItemStack();
+	}
+
+	public static int getCooldownSeconds(UUID uuid) {
+		return (cooldownMap.get(uuid) - 1) / 20 + 1;
+	}
+
+	public static int getCooldownSeconds() {
+		return 60 * 5;
+	}
+
+	public static int getMaxActivationSeconds() {
+		return 30;
 	}
 }
