@@ -44,6 +44,7 @@ public abstract class PitBoss {
 	public abstract String getName();
 	public abstract String getSkinName();
 	public abstract int getMaxHealth();
+	public abstract double getMeleeDamage();
 	public abstract double getReach();
 	public abstract double getReachRanged();
 

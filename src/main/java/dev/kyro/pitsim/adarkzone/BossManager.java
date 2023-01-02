@@ -13,9 +13,16 @@ public class BossManager implements Listener {
 	public static List<PitBoss> pitBosses = new ArrayList<>();
 
 	@EventHandler
-	public static void onAttack(AttackEvent.Apply attackEvent) {
-		PitBoss pitBoss = getPitBoss(attackEvent.getAttacker());
-		if(pitBoss)
+	public static void onAttack(AttackEvent.Pre attackEvent) {
+		PitBoss attackerBoss = getPitBoss(attackEvent.getAttacker());
+		if(attackerBoss != null) {
+			attackEvent.getEvent().setDamage(attackerBoss.getMeleeDamage());
+		}
+
+		PitBoss defenderBoss = getPitBoss(attackEvent.getDefender());
+		if(defenderBoss != null) {
+
+		}
 	}
 
 	public static boolean isBoss(LivingEntity entity) {
