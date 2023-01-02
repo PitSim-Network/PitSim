@@ -76,7 +76,7 @@ public abstract class PitBoss {
 		CitizensNavigator navigator = (CitizensNavigator) npcBoss.getNavigator();
 		navigator.getDefaultParameters()
 				.attackDelayTicks(10)
-				.attackRange(4);
+				.attackRange(getReach());
 		targetingSystem.pickTarget();
 	}
 
