@@ -16,7 +16,7 @@ public class TargetingSystem {
 	public double distanceWeight = 0.4;
 	public double angleWeight = 1.0;
 
-	public State targetingState;
+	public State targetingState = State.ATTACKING_MELEE;
 	public PitBoss pitBoss;
 	public Player target;
 
@@ -109,3 +109,6 @@ public class TargetingSystem {
 		runnable.cancel();
 	}
 }
+
+
+

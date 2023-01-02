@@ -18,6 +18,8 @@ public class PitZombieBoss extends PitBoss {
 		);
 	}
 
+
+
 	@Override
 	public Class<? extends SubLevel> assignSubLevel() {
 		return ZombieSubLevel.class;
