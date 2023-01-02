@@ -7,7 +7,7 @@ import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.brewing.ingredients.SpiderEye;
 import dev.kyro.pitsim.brewing.objects.BrewingIngredient;
 import dev.kyro.pitsim.brewing.objects.PotionEffect;
-import dev.kyro.pitsim.controllers.BossManager;
+import dev.kyro.pitsim.adarkzone.BossManager;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.enums.NBTTag;
 import dev.kyro.pitsim.misc.Misc;

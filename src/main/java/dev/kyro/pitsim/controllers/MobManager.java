@@ -2,6 +2,7 @@ package dev.kyro.pitsim.controllers;
 
 import de.myzelyam.api.vanish.VanishAPI;
 import dev.kyro.pitsim.PitSim;
+import dev.kyro.pitsim.adarkzone.BossManager;
 import dev.kyro.pitsim.brewing.BrewingManager;
 import dev.kyro.pitsim.controllers.objects.GoldenHelmet;
 import dev.kyro.pitsim.controllers.objects.PitMob;

@@ -1,7 +1,7 @@
 package dev.kyro.pitsim.adarkzone.old.placeholders;
 
 import dev.kyro.arcticapi.hooks.papi.APAPIPlaceholder;
-import dev.kyro.pitsim.controllers.BossManager;
+import dev.kyro.pitsim.adarkzone.BossManager;
 import dev.kyro.pitsim.enums.SubLevel;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;

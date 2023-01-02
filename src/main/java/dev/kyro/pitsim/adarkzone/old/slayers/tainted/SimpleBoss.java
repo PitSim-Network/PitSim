@@ -3,7 +3,7 @@ package dev.kyro.pitsim.adarkzone.old.slayers.tainted;
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.commands.FreshCommand;
-import dev.kyro.pitsim.controllers.BossManager;
+import dev.kyro.pitsim.adarkzone.BossManager;
 import dev.kyro.pitsim.controllers.EnchantManager;
 import dev.kyro.pitsim.adarkzone.PitBoss;
 import dev.kyro.pitsim.controllers.objects.PitEnchant;

@@ -1,6 +1,5 @@
 package dev.kyro.pitsim.adarkzone;
 
-import dev.kyro.pitsim.controllers.BossManager;
 import dev.kyro.pitsim.enums.SubLevel;
 import dev.kyro.pitsim.events.AttackEvent;
 import dev.kyro.pitsim.misc.BossSkin;

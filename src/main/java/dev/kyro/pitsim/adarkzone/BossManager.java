@@ -1,4 +1,4 @@
-package dev.kyro.pitsim.controllers;
+package dev.kyro.pitsim.adarkzone;
 
 import com.gmail.filoghost.holographicdisplays.api.Hologram;
 import com.gmail.filoghost.holographicdisplays.api.HologramsAPI;
@@ -11,8 +11,9 @@ import de.tr7zw.nbtapi.NBTItem;
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.adarkzone.old.slayers.*;
-import dev.kyro.pitsim.adarkzone.slayers.*;
-import dev.kyro.pitsim.adarkzone.PitBoss;
+import dev.kyro.pitsim.controllers.MapManager;
+import dev.kyro.pitsim.controllers.MusicManager;
+import dev.kyro.pitsim.controllers.TimeManager;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.enums.NBTTag;
 import dev.kyro.pitsim.enums.SubLevel;
@@ -21,7 +22,6 @@ import dev.kyro.pitsim.events.KillEvent;
 import dev.kyro.pitsim.events.OofEvent;
 import dev.kyro.pitsim.misc.Misc;
 import dev.kyro.pitsim.misc.Sounds;
-import dev.kyro.pitsim.slayers.*;
 import net.citizensnpcs.api.CitizensAPI;
 import net.citizensnpcs.api.event.NPCRightClickEvent;
 import net.citizensnpcs.api.npc.NPC;
@@ -136,7 +136,7 @@ public class BossManager implements Listener {
 				new SkeletonBoss(player);
 				break;
 			case SPIDER_EYE:
-				new SpiderBoss(player);
+//				new SpiderBoss(player);
 				break;
 			case CREEPER_POWDER:
 				new ChargedCreeperBoss(player);
