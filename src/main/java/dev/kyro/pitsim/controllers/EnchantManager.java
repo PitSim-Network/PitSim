@@ -516,7 +516,7 @@ public class EnchantManager implements Listener {
 
 		ItemStack pantsStack = incrementJewel(player, player.getInventory().getLeggings());
 		if(pantsStack != null) {
-			player.getInventory().setLeggings(heldStack);
+			player.getInventory().setLeggings(pantsStack);
 			updateInventory = true;
 		}
 
