@@ -8,7 +8,7 @@ import dev.kyro.pitsim.adarkzone.aaold.slayers.tainted.SimpleSkin;
 import dev.kyro.pitsim.controllers.MapManager;
 import dev.kyro.pitsim.adarkzone.aaold.OldPitBoss;
 import dev.kyro.pitsim.adarkzone.aaold.OldPitMob;
-import dev.kyro.pitsim.adarkzone.aaold.SubLevel;
+import dev.kyro.pitsim.adarkzone.aaold.OldSubLevel;
 import dev.kyro.pitsim.events.AttackEvent;
 import dev.kyro.pitsim.misc.Misc;
 import dev.kyro.pitsim.misc.Sounds;
@@ -30,16 +30,16 @@ public class CaveSpiderBossOld extends OldPitBoss {
 	public Player entity;
 	public Player target;
 	public String name = "&c&lCave Spider";
-	public SubLevel subLevel = SubLevel.DEEP_SPIDER_CAVE;
+	public OldSubLevel oldSubLevel = OldSubLevel.DEEP_SPIDER_CAVE;
 	public SimpleBoss boss;
 
 	public List<OldPitMob> spiderBrutes = new ArrayList<>();
 
 	public CaveSpiderBossOld(Player target) {
-		super(target, SubLevel.DEEP_SPIDER_CAVE, 30);
+		super(target, OldSubLevel.DEEP_SPIDER_CAVE, 30);
 		npc = CitizensAPI.getNPCRegistry().createNPC(EntityType.PLAYER, name);
 
-		this.boss = new SimpleBoss(npc, target, subLevel, 5, SimpleSkin.CAVE_SPIDER, this) {
+		this.boss = new SimpleBoss(npc, target, oldSubLevel, 5, SimpleSkin.CAVE_SPIDER, this) {
 
 			@Override
 			protected void attackHigh() {

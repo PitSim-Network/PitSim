@@ -8,12 +8,7 @@ import org.bukkit.event.Listener;
 public abstract class PitBossAbility implements Listener {
 	public PitBoss pitBoss;
 
-	public boolean runsOnRoutine = false;
-	public double routineWeight;
-
-	public PitBossAbility(PitBoss pitBoss) {
-		this.pitBoss = pitBoss;
-
+	public PitBossAbility() {
 		Bukkit.getPluginManager().registerEvents(this, PitSim.INSTANCE);
 	}
 
@@ -24,9 +19,8 @@ public abstract class PitBossAbility implements Listener {
 		return true;
 	}
 
-	public PitBossAbility runOnRoutine(double weight) {
-		this.runsOnRoutine = true;
-		this.routineWeight = weight;
+	public PitBossAbility pitBoss(PitBoss pitBoss) {
+		this.pitBoss = pitBoss;
 		return this;
 	}
 

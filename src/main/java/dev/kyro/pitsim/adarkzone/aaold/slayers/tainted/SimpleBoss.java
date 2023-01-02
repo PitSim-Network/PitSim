@@ -9,7 +9,7 @@ import dev.kyro.pitsim.adarkzone.aaold.OldPitBoss;
 import dev.kyro.pitsim.controllers.objects.PitEnchant;
 import dev.kyro.pitsim.enums.MysticType;
 import dev.kyro.pitsim.enums.PantColor;
-import dev.kyro.pitsim.adarkzone.aaold.SubLevel;
+import dev.kyro.pitsim.adarkzone.aaold.OldSubLevel;
 import dev.kyro.pitsim.events.AttackEvent;
 import dev.kyro.pitsim.misc.BossSkin;
 import net.citizensnpcs.api.npc.NPC;
@@ -37,7 +37,7 @@ public abstract class SimpleBoss {
 
 	NPC npc;
 	Player target;
-	SubLevel subLevel;
+	OldSubLevel oldSubLevel;
 	BossBar activeBar;
 	SimpleSkin skin;
 	OldPitBoss pitBoss;
@@ -68,10 +68,10 @@ public abstract class SimpleBoss {
 	ItemStack boots;
 	ItemStack sword;
 
-	public SimpleBoss(NPC npc, Player target, SubLevel sublevel, int difficulty, SimpleSkin skin, OldPitBoss pitBoss) {
+	public SimpleBoss(NPC npc, Player target, OldSubLevel sublevel, int difficulty, SimpleSkin skin, OldPitBoss pitBoss) {
 
 		this.npc = npc;
-		this.subLevel = sublevel;
+		this.oldSubLevel = sublevel;
 		this.target = target;
 		this.difficulty = difficulty;
 		this.skin = skin;
@@ -171,7 +171,7 @@ public abstract class SimpleBoss {
 	}
 
 	public void spawn() {
-		OldPitBoss.spawn(this.npc, this.target, this.subLevel,
+		OldPitBoss.spawn(this.npc, this.target, this.oldSubLevel,
 				new BossSkin(this.npc, skin.skin),
 				this.sword,
 				this.helmet,

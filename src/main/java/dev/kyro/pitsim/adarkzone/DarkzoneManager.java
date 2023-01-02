@@ -14,4 +14,9 @@ public class DarkzoneManager implements Listener {
 	public static void registerSubLevel(SubLevel subLevel) {
 
 	}
+
+	public static SubLevel getSubLevel(Class<? extends SubLevel> clazz) {
+		for(SubLevel subLevel : subLevels) if(subLevel.getClass() == clazz) return subLevel;
+		return null;
+	}
 }

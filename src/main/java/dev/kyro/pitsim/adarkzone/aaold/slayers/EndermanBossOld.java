@@ -7,7 +7,7 @@ import dev.kyro.pitsim.adarkzone.aaold.slayers.tainted.SimpleBoss;
 import dev.kyro.pitsim.adarkzone.aaold.slayers.tainted.SimpleSkin;
 import dev.kyro.pitsim.adarkzone.aaold.OldPitBoss;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
-import dev.kyro.pitsim.adarkzone.aaold.SubLevel;
+import dev.kyro.pitsim.adarkzone.aaold.OldSubLevel;
 import dev.kyro.pitsim.events.AttackEvent;
 import dev.kyro.pitsim.misc.Misc;
 import dev.kyro.pitsim.misc.Sounds;
@@ -35,14 +35,14 @@ public class EndermanBossOld extends OldPitBoss {
 	public Player entity;
 	public Player target;
 	public String name = "&c&lEnderman";
-	public SubLevel subLevel = SubLevel.ENDERMAN_CAVE;
+	public OldSubLevel oldSubLevel = OldSubLevel.ENDERMAN_CAVE;
 	public SimpleBoss boss;
 
 	public EndermanBossOld(Player target) {
-		super(target, SubLevel.ENDERMAN_CAVE, 150);
+		super(target, OldSubLevel.ENDERMAN_CAVE, 150);
 		npc = CitizensAPI.getNPCRegistry().createNPC(EntityType.PLAYER, name);
 
-		this.boss = new SimpleBoss(npc, target, subLevel, 7, SimpleSkin.ENDERMAN, this) {
+		this.boss = new SimpleBoss(npc, target, oldSubLevel, 7, SimpleSkin.ENDERMAN, this) {
 
 			@Override
 			protected void attackHigh() {

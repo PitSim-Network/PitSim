@@ -10,7 +10,7 @@ import org.bukkit.Location;
 import java.util.Arrays;
 import java.util.List;
 
-public enum SubLevel {
+public enum OldSubLevel {
 	ZOMBIE_CAVE(1, 20, new Location(Bukkit.getWorld("darkzone"), 327, 68, -143),
 			NBTTag.ZOMBIE_FLESH, "&aRotten Flesh", "%pitsim_zombiecave%", 17,
 			Arrays.asList(OldPitZombie.class), ZombieBossOld.class, 12),
@@ -61,8 +61,8 @@ public enum SubLevel {
 	public Class boss;
 	public int spawnBossItemCount;
 
-	SubLevel(int level, int maxMobs, Location middle, NBTTag bossItem, String itemName, String placeholder,
-			 int radius, List<Class> mobs, Class Boss, int spawnBossItemCount) {
+	OldSubLevel(int level, int maxMobs, Location middle, NBTTag bossItem, String itemName, String placeholder,
+				int radius, List<Class> mobs, Class Boss, int spawnBossItemCount) {
 		this.level = level;
 		this.maxMobs = maxMobs;
 		this.middle = middle;
@@ -75,8 +75,8 @@ public enum SubLevel {
 		this.spawnBossItemCount = spawnBossItemCount;
 	}
 
-	public static SubLevel getLevel(int subLevel) {
-		for(SubLevel value : values()) {
+	public static OldSubLevel getLevel(int subLevel) {
+		for(OldSubLevel value : values()) {
 			if(value.level == subLevel) return value;
 		}
 		return null;

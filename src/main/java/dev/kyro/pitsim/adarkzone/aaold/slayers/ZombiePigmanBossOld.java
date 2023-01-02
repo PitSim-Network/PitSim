@@ -6,7 +6,7 @@ import dev.kyro.pitsim.adarkzone.aaold.slayers.tainted.SimpleBoss;
 import dev.kyro.pitsim.adarkzone.aaold.slayers.tainted.SimpleSkin;
 import dev.kyro.pitsim.adarkzone.aaold.OldPitBoss;
 import dev.kyro.pitsim.adarkzone.aaold.OldPitMob;
-import dev.kyro.pitsim.adarkzone.aaold.SubLevel;
+import dev.kyro.pitsim.adarkzone.aaold.OldSubLevel;
 import dev.kyro.pitsim.events.AttackEvent;
 import dev.kyro.pitsim.misc.Sounds;
 import dev.kyro.pitsim.mobs.OldPitStrongPigman;
@@ -27,16 +27,16 @@ public class ZombiePigmanBossOld extends OldPitBoss {
 	public Player entity;
 	public Player target;
 	public String name = "&c&lPigman";
-	public SubLevel subLevel = SubLevel.PIGMEN_CAVE;
+	public OldSubLevel oldSubLevel = OldSubLevel.PIGMEN_CAVE;
 	public SimpleBoss boss;
 
 	public List<OldPitMob> pigmen = new ArrayList<>();
 
 	public ZombiePigmanBossOld(Player target) {
-		super(target, SubLevel.PIGMEN_CAVE, 60);
+		super(target, OldSubLevel.PIGMEN_CAVE, 60);
 		npc = CitizensAPI.getNPCRegistry().createNPC(EntityType.PLAYER, name);
 
-		this.boss = new SimpleBoss(npc, target, subLevel, 5, SimpleSkin.PIGMAN, this) {
+		this.boss = new SimpleBoss(npc, target, oldSubLevel, 5, SimpleSkin.PIGMAN, this) {
 
 			@Override
 			protected void attackHigh() {

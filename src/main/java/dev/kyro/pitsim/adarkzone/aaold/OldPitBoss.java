@@ -13,12 +13,12 @@ import org.bukkit.inventory.ItemStack;
 
 public abstract class OldPitBoss {
 	public Player target;
-	public SubLevel subLevel;
+	public OldSubLevel oldSubLevel;
 	public int soulReward;
 
-	public OldPitBoss(Player target, SubLevel subLevel, int soulReward) {
+	public OldPitBoss(Player target, OldSubLevel oldSubLevel, int soulReward) {
 		this.target = target;
-		this.subLevel = subLevel;
+		this.oldSubLevel = oldSubLevel;
 		this.soulReward = soulReward;
 	}
 
@@ -32,7 +32,7 @@ public abstract class OldPitBoss {
 
 	public abstract void setNPC(NPC npc);
 
-	public static void spawn(NPC npc, Player target, SubLevel subLevel, BossSkin skin, ItemStack hand, ItemStack helmet, ItemStack chestplate, ItemStack leggings, ItemStack boots) {
+	public static void spawn(NPC npc, Player target, OldSubLevel oldSubLevel, BossSkin skin, ItemStack hand, ItemStack helmet, ItemStack chestplate, ItemStack leggings, ItemStack boots) {
 		Equipment equipment = npc.getTrait(Equipment.class);
 
 		equipment.set(Equipment.EquipmentSlot.HAND, hand);
@@ -41,9 +41,9 @@ public abstract class OldPitBoss {
 		equipment.set(Equipment.EquipmentSlot.LEGGINGS, leggings);
 		equipment.set(Equipment.EquipmentSlot.BOOTS, boots);
 
-		npc.spawn(subLevel.middle);
+		npc.spawn(oldSubLevel.middle);
 		skin.skin();
-		npc.teleport(subLevel.middle.clone().add(0, 3, 0), PlayerTeleportEvent.TeleportCause.PLUGIN);
+		npc.teleport(oldSubLevel.middle.clone().add(0, 3, 0), PlayerTeleportEvent.TeleportCause.PLUGIN);
 
 		Entity player = npc.getEntity();
 
@@ -70,7 +70,7 @@ public abstract class OldPitBoss {
 				.attackRange(4);
 		npc.getNavigator().setTarget(target, true);
 		npc.setProtected(false);
-		OldBossManager.playMusic(target, subLevel.level);
+		OldBossManager.playMusic(target, oldSubLevel.level);
 	}
 
 	public static boolean isPitBoss(Player player) {

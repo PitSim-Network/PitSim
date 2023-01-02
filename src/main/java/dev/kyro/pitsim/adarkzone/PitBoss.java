@@ -2,7 +2,9 @@ package dev.kyro.pitsim.adarkzone;
 
 import dev.kyro.pitsim.adarkzone.notdarkzone.PitEquipment;
 import dev.kyro.pitsim.misc.Misc;
+import net.citizensnpcs.api.CitizensAPI;
 import net.citizensnpcs.api.npc.NPC;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 
 import java.util.*;
@@ -17,6 +19,7 @@ public abstract class PitBoss {
 //	Boss related
 	public NPC npcBoss;
 	public Player boss;
+	public SubLevel subLevel;
 	public TargetingSystem targetingSystem;
 	public PitEquipment equipment;
 
@@ -31,6 +34,10 @@ public abstract class PitBoss {
 		this.summoner = summoner;
 	}
 
+
+	public abstract Class<? extends SubLevel> assignSubLevel();
+	public abstract String getName();
+	public abstract String getSkinName();
 	public abstract int getMaxHealth();
 	public abstract double getReach();
 	public abstract double getReachRanged();
@@ -42,8 +49,10 @@ public abstract class PitBoss {
 	public PitBoss abilities(PitBossAbility... pitBossAbilities) {
 		abilities = Arrays.asList(pitBossAbilities);
 		for(PitBossAbility ability : abilities) {
-			if(!ability.runsOnRoutine) continue;
-			routineAbilityMap.put(ability, ability.routineWeight);
+			ability.pitBoss(this);
+			if(!(ability instanceof RoutinePitBossAbility)) continue;
+			RoutinePitBossAbility routineAbility = (RoutinePitBossAbility) ability;
+			routineAbilityMap.put(ability, routineAbility.getRoutineWeight());
 		}
 		return this;
 	}
@@ -56,6 +65,12 @@ public abstract class PitBoss {
 
 	public void delayNextRoutine(int ticks) {
 		lastRoutineExecuteTick += ticks;
+	}
+
+	public void spawn() {
+		npcBoss = CitizensAPI.getNPCRegistry().createNPC(EntityType.PLAYER, getName());
+		npcBoss.spawn(subLevel.getBossSpawnLocation());
+		boss = (Player) npcBoss.getEntity();
 	}
 
 	public PitBossAbility getRoutineAbility() {

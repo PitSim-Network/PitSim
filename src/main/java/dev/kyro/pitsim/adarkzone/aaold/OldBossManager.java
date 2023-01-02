@@ -54,14 +54,14 @@ public class OldBossManager implements Listener {
 	public static List<Player> activePlayers = new ArrayList<>();
 	public static Map<NPC, OldPitBoss> bosses = new HashMap<>();
 	public static List<Hologram> holograms = new ArrayList<>();
-	public static Map<SubLevel, NPC> clickables = new HashMap<>();
-	public static Map<SubLevel, Map<Player, Integer>> bossItems = new HashMap<>();
+	public static Map<OldSubLevel, NPC> clickables = new HashMap<>();
+	public static Map<OldSubLevel, Map<Player, Integer>> bossItems = new HashMap<>();
 
 	static {
 		new BukkitRunnable() {
 			@Override
 			public void run() {
-				for(Map.Entry<SubLevel, NPC> entry : clickables.entrySet()) {
+				for(Map.Entry<OldSubLevel, NPC> entry : clickables.entrySet()) {
 					entry.getValue().teleport(entry.getKey().middle, PlayerTeleportEvent.TeleportCause.UNKNOWN);
 					if(entry.getValue().isSpawned())
 						((LivingEntity) entry.getValue().getEntity()).addPotionEffect(new PotionEffect(PotionEffectType.INVISIBILITY, Integer.MAX_VALUE, 0, false, false));
@@ -82,7 +82,7 @@ public class OldBossManager implements Listener {
 			hologram.delete();
 		}
 
-		for(SubLevel level : SubLevel.values()) {
+		for(OldSubLevel level : OldSubLevel.values()) {
 
 			bossItems.put(level, new HashMap<>());
 
@@ -101,8 +101,8 @@ public class OldBossManager implements Listener {
 
 	@EventHandler
 	public void onClick(NPCRightClickEvent event) {
-		SubLevel level = null;
-		for(Map.Entry<SubLevel, NPC> entry : clickables.entrySet()) {
+		OldSubLevel level = null;
+		for(Map.Entry<OldSubLevel, NPC> entry : clickables.entrySet()) {
 			if(entry.getValue().getId() == event.getNPC().getId()) level = entry.getKey();
 		}
 		if(activePlayers.contains(event.getClicker())) return;
@@ -126,7 +126,7 @@ public class OldBossManager implements Listener {
 		}
 	}
 
-	private void spawnBoss(SubLevel level, Player player) throws Exception {
+	private void spawnBoss(OldSubLevel level, Player player) throws Exception {
 		switch(level.bossItem) {
 			case ZOMBIE_FLESH:
 				new ZombieBossOld(player);
@@ -167,7 +167,7 @@ public class OldBossManager implements Listener {
 			@Override
 			public void run() {
 				for(Map.Entry<NPC, OldPitBoss> entry : bosses.entrySet()) {
-					if(entry.getValue().getEntity().getWorld() == MapManager.getDarkzone() && entry.getValue().subLevel.middle.distance(entry.getValue().target.getLocation()) < 40)
+					if(entry.getValue().getEntity().getWorld() == MapManager.getDarkzone() && entry.getValue().oldSubLevel.middle.distance(entry.getValue().target.getLocation()) < 40)
 						continue;
 					entry.getValue().onDeath();
 					NPC npc;

@@ -1,20 +1,20 @@
 package dev.kyro.pitsim.adarkzone.abilities;
 
 import dev.kyro.pitsim.adarkzone.PitBoss;
-import dev.kyro.pitsim.adarkzone.PitBossAbility;
+import dev.kyro.pitsim.adarkzone.RoutinePitBossAbility;
 import dev.kyro.pitsim.misc.Misc;
 import dev.kyro.pitsim.misc.Sounds;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.potion.PotionEffectType;
 
-public class StunAbility extends PitBossAbility {
+public class StunAbility extends RoutinePitBossAbility {
 
 	public int duration;
 
 	public StunAbility(PitBoss pitBoss, int duration) {
 
-		super(pitBoss);
+		super(pitBoss, routineWeight);
 		this.duration = duration;
 		runsOnRoutine = true;
 	}

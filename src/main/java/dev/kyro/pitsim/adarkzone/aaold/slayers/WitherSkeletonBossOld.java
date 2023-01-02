@@ -8,7 +8,7 @@ import dev.kyro.pitsim.adarkzone.aaold.slayers.tainted.SimpleSkin;
 import dev.kyro.pitsim.controllers.MapManager;
 import dev.kyro.pitsim.adarkzone.aaold.OldPitBoss;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
-import dev.kyro.pitsim.adarkzone.aaold.SubLevel;
+import dev.kyro.pitsim.adarkzone.aaold.OldSubLevel;
 import dev.kyro.pitsim.events.AttackEvent;
 import dev.kyro.pitsim.events.ThrowBlockEvent;
 import dev.kyro.pitsim.misc.Misc;
@@ -36,14 +36,14 @@ public class WitherSkeletonBossOld extends OldPitBoss {
 	public Player entity;
 	public Player target;
 	public String name = "&c&lWither Skelly";
-	public SubLevel subLevel = SubLevel.WITHER_CAVE;
+	public OldSubLevel oldSubLevel = OldSubLevel.WITHER_CAVE;
 	public SimpleBoss boss;
 
 	public WitherSkeletonBossOld(Player target) {
-		super(target, SubLevel.WITHER_CAVE, 50);
+		super(target, OldSubLevel.WITHER_CAVE, 50);
 		npc = CitizensAPI.getNPCRegistry().createNPC(EntityType.PLAYER, name);
 
-		this.boss = new SimpleBoss(npc, target, subLevel, 5, SimpleSkin.WITHER_SKELETON, this) {
+		this.boss = new SimpleBoss(npc, target, oldSubLevel, 5, SimpleSkin.WITHER_SKELETON, this) {
 
 			@Override
 			protected void attackHigh() {

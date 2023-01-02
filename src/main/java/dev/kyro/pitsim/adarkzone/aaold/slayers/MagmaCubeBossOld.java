@@ -5,7 +5,7 @@ import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.adarkzone.aaold.slayers.tainted.SimpleBoss;
 import dev.kyro.pitsim.adarkzone.aaold.slayers.tainted.SimpleSkin;
 import dev.kyro.pitsim.adarkzone.aaold.OldPitBoss;
-import dev.kyro.pitsim.adarkzone.aaold.SubLevel;
+import dev.kyro.pitsim.adarkzone.aaold.OldSubLevel;
 import dev.kyro.pitsim.events.AttackEvent;
 import dev.kyro.pitsim.misc.Sounds;
 import net.citizensnpcs.api.CitizensAPI;
@@ -21,14 +21,14 @@ public class MagmaCubeBossOld extends OldPitBoss {
 	public Player entity;
 	public Player target;
 	public String name = "&c&lMagma Cube";
-	public SubLevel subLevel = SubLevel.MAGMA_CAVE;
+	public OldSubLevel oldSubLevel = OldSubLevel.MAGMA_CAVE;
 	public SimpleBoss boss;
 
 	public MagmaCubeBossOld(Player target) {
-		super(target, SubLevel.MAGMA_CAVE, 35);
+		super(target, OldSubLevel.MAGMA_CAVE, 35);
 		npc = CitizensAPI.getNPCRegistry().createNPC(EntityType.PLAYER, name);
 
-		this.boss = new SimpleBoss(npc, target, subLevel, 5, SimpleSkin.MAGMA, this) {
+		this.boss = new SimpleBoss(npc, target, oldSubLevel, 5, SimpleSkin.MAGMA, this) {
 
 			@Override
 			protected void attackHigh() {

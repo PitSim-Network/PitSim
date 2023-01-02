@@ -4,7 +4,7 @@ import dev.kyro.pitsim.adarkzone.aaold.slayers.tainted.SimpleBoss;
 import dev.kyro.pitsim.adarkzone.aaold.slayers.tainted.SimpleSkin;
 import dev.kyro.pitsim.adarkzone.aaold.OldPitBoss;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
-import dev.kyro.pitsim.adarkzone.aaold.SubLevel;
+import dev.kyro.pitsim.adarkzone.aaold.OldSubLevel;
 import dev.kyro.pitsim.events.AttackEvent;
 import dev.kyro.pitsim.events.ThrowBlockEvent;
 import dev.kyro.pitsim.misc.ThrowableBlock;
@@ -30,14 +30,14 @@ public class ChargedCreeperBossOld extends OldPitBoss {
 	public Player entity;
 	public Player target;
 	public String name = "&c&lCreeper Boss";
-	public SubLevel subLevel = SubLevel.CREEPER_CAVE;
+	public OldSubLevel oldSubLevel = OldSubLevel.CREEPER_CAVE;
 	public SimpleBoss boss;
 
 	public ChargedCreeperBossOld(Player target) throws Exception {
-		super(target, SubLevel.CREEPER_CAVE, 35);
+		super(target, OldSubLevel.CREEPER_CAVE, 35);
 		npc = CitizensAPI.getNPCRegistry().createNPC(EntityType.PLAYER, name);
 
-		this.boss = new SimpleBoss(npc, target, subLevel, 4, SimpleSkin.CREEPER, this) {
+		this.boss = new SimpleBoss(npc, target, oldSubLevel, 4, SimpleSkin.CREEPER, this) {
 			@Override
 			protected void attackHigh() {
 				target.sendMessage(ChatColor.translateAlternateColorCodes('&', "&c&lNUCLEAR REACTOR! &7Ouch, you're on full blast!"));

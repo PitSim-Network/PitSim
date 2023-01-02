@@ -5,7 +5,7 @@ import dev.kyro.pitsim.adarkzone.aaold.slayers.tainted.SimpleBoss;
 import dev.kyro.pitsim.adarkzone.aaold.slayers.tainted.SimpleSkin;
 import dev.kyro.pitsim.adarkzone.aaold.OldPitBoss;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
-import dev.kyro.pitsim.adarkzone.aaold.SubLevel;
+import dev.kyro.pitsim.adarkzone.aaold.OldSubLevel;
 import dev.kyro.pitsim.events.AttackEvent;
 import dev.kyro.pitsim.events.ThrowBlockEvent;
 import dev.kyro.pitsim.misc.Sounds;
@@ -30,14 +30,14 @@ public class IronGolemBossOld extends OldPitBoss {
 	public Player entity;
 	public Player target;
 	public String name = "&c&lIron Golem";
-	public SubLevel subLevel = SubLevel.GOLEM_CAVE;
+	public OldSubLevel oldSubLevel = OldSubLevel.GOLEM_CAVE;
 	public SimpleBoss boss;
 
 	public IronGolemBossOld(Player target) {
-		super(target, SubLevel.GOLEM_CAVE, 100);
+		super(target, OldSubLevel.GOLEM_CAVE, 100);
 		npc = CitizensAPI.getNPCRegistry().createNPC(EntityType.PLAYER, name);
 
-		this.boss = new SimpleBoss(npc, target, subLevel, 5, SimpleSkin.IRON_GOLEM, this) {
+		this.boss = new SimpleBoss(npc, target, oldSubLevel, 5, SimpleSkin.IRON_GOLEM, this) {
 
 			@Override
 			protected void attackHigh() {
