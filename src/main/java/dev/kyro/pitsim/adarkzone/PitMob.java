@@ -10,7 +10,8 @@ public abstract class PitMob {
 	public Creature mob;
 	public Player target;
 
-	public PitMob() {
+	public PitMob(Location spawnLocation) {
+		spawn(spawnLocation);
 	}
 
 	public abstract EntityType getEntityType();
@@ -20,7 +21,7 @@ public abstract class PitMob {
 	public void onSpawn() {}
 
 	public void spawn(Location spawnLocation) {
-		spawnLocation.getWorld().spawnEntity(spawnLocation);
+		spawnLocation.getWorld().spawnEntity(spawnLocation, getEntityType());
 	}
 
 	public void despawn() {
