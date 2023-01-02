@@ -1,14 +1,12 @@
-package dev.kyro.pitsim.controllers;
+package dev.kyro.pitsim.adarkzone.aaold;
 
 import de.myzelyam.api.vanish.VanishAPI;
 import dev.kyro.pitsim.PitSim;
-import dev.kyro.pitsim.adarkzone.aaold.OldBossManager;
 import dev.kyro.pitsim.brewing.BrewingManager;
+import dev.kyro.pitsim.controllers.*;
 import dev.kyro.pitsim.controllers.objects.GoldenHelmet;
-import dev.kyro.pitsim.adarkzone.aaold.OldPitMob;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.enchants.tainted.CleaveSpell;
-import dev.kyro.pitsim.adarkzone.aaold.SubLevel;
 import dev.kyro.pitsim.events.AttackEvent;
 import dev.kyro.pitsim.events.KillEvent;
 import dev.kyro.pitsim.mobs.OldPitMagmaCube;
@@ -29,7 +27,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 import java.lang.reflect.InvocationTargetException;
 import java.util.*;
 
-public class MobManager implements Listener {
+public class OldMobManager implements Listener {
 	public static List<OldPitMob> mobs = new ArrayList<>();
 	public static Map<UUID, ArmorStand> nameTags = new HashMap<>();
 	public static Map<ArmorStand, Location> locs = new HashMap<>();
@@ -173,7 +171,7 @@ public class MobManager implements Listener {
 			@Override
 			public void run() {
 				if(!PitSim.getStatus().isDarkzone()) return;
-				for(OldPitMob mob : MobManager.mobs) {
+				for(OldPitMob mob : OldMobManager.mobs) {
 					if(!(mob.entity instanceof Creature)) continue;
 					if(mob.target != null) ((Creature) mob.entity).setTarget(mob.target);
 				}

@@ -1,7 +1,7 @@
 package dev.kyro.pitsim.mobs;
 
 import dev.kyro.pitsim.brewing.ingredients.Gunpowder;
-import dev.kyro.pitsim.controllers.MobManager;
+import dev.kyro.pitsim.adarkzone.aaold.OldMobManager;
 import dev.kyro.pitsim.controllers.NonManager;
 import dev.kyro.pitsim.adarkzone.aaold.OldPitMob;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
@@ -31,7 +31,7 @@ public class OldPitCreeper extends OldPitMob {
 		creeper.setRemoveWhenFarAway(false);
 
 		creeper.setCustomNameVisible(false);
-		MobManager.makeTag(creeper, displayName);
+		OldMobManager.makeTag(creeper, displayName);
 		return creeper;
 	}
 
@@ -42,9 +42,9 @@ public class OldPitCreeper extends OldPitMob {
 
 		OldPitMob mob = OldPitMob.getPitMob((LivingEntity) entity);
 		if(mob == null) return;
-		MobManager.mobs.remove(mob);
-		MobManager.nameTags.get(mob.entity.getUniqueId()).remove();
-		MobManager.nameTags.remove(mob.entity.getUniqueId());
+		OldMobManager.mobs.remove(mob);
+		OldMobManager.nameTags.get(mob.entity.getUniqueId()).remove();
+		OldMobManager.nameTags.remove(mob.entity.getUniqueId());
 		event.setRadius(0);
 
 		for(Entity testEntity : entity.getNearbyEntities(7, 7, 7)) {

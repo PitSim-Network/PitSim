@@ -2,7 +2,7 @@ package dev.kyro.pitsim.mobs;
 
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.brewing.ingredients.RottenFlesh;
-import dev.kyro.pitsim.controllers.MobManager;
+import dev.kyro.pitsim.adarkzone.aaold.OldMobManager;
 import dev.kyro.pitsim.adarkzone.aaold.OldPitMob;
 import dev.kyro.pitsim.enums.MobType;
 import org.bukkit.Location;
@@ -35,7 +35,7 @@ public class OldPitZombie extends OldPitMob {
 		zombie.setBaby(false);
 		zombie.setVillager(false);
 		zombie.setCanPickupItems(false);
-		MobManager.makeTag(zombie, displayName);
+		OldMobManager.makeTag(zombie, displayName);
 		new BukkitRunnable() {
 			@Override
 			public void run() {

@@ -2,7 +2,7 @@ package dev.kyro.pitsim.mobs;
 
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.brewing.ingredients.RawPork;
-import dev.kyro.pitsim.controllers.MobManager;
+import dev.kyro.pitsim.adarkzone.aaold.OldMobManager;
 import dev.kyro.pitsim.adarkzone.aaold.OldPitMob;
 import dev.kyro.pitsim.enums.MobType;
 import org.bukkit.Location;
@@ -50,7 +50,7 @@ public class OldPitStrongPigman extends OldPitMob {
 		}.runTaskLater(PitSim.INSTANCE, 2);
 
 
-		MobManager.makeTag(zombiePigman, displayName);
+		OldMobManager.makeTag(zombiePigman, displayName);
 		return zombiePigman;
 	}
 

@@ -2,7 +2,7 @@ package dev.kyro.pitsim.mobs;
 
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.brewing.ingredients.Bone;
-import dev.kyro.pitsim.controllers.MobManager;
+import dev.kyro.pitsim.adarkzone.aaold.OldMobManager;
 import dev.kyro.pitsim.adarkzone.aaold.OldPitMob;
 import dev.kyro.pitsim.enums.MobType;
 import org.bukkit.Location;
@@ -33,7 +33,7 @@ public class OldPitSkeleton extends OldPitMob {
 		skeleton.setRemoveWhenFarAway(false);
 		skeleton.setCustomNameVisible(false);
 		skeleton.setCanPickupItems(false);
-		MobManager.makeTag(skeleton, displayName);
+		OldMobManager.makeTag(skeleton, displayName);
 		new BukkitRunnable() {
 			@Override
 			public void run() {

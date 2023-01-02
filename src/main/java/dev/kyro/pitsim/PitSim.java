@@ -17,6 +17,8 @@ import dev.kyro.arcticapi.hooks.AHook;
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.adarkzone.BossManager;
 import dev.kyro.pitsim.adarkzone.DarkzoneManager;
+import dev.kyro.pitsim.adarkzone.MobManager;
+import dev.kyro.pitsim.adarkzone.aaold.OldMobManager;
 import dev.kyro.pitsim.adarkzone.aaold.OldPitMob;
 import dev.kyro.pitsim.adarkzone.aaold.OldBossManager;
 import dev.kyro.pitsim.adarkzone.aaold.placeholders.*;
@@ -146,7 +148,7 @@ public class PitSim extends JavaPlugin {
 		if(getStatus().isDarkzone()) BrewingManager.onStart();
 		ScoreboardManager.init();
 
-		if(getStatus().isDarkzone()) MobManager.clearMobs();
+		if(getStatus().isDarkzone()) OldMobManager.clearMobs();
 
 		playerList = new AData("player-list", "", false);
 
@@ -334,7 +336,7 @@ public class PitSim extends JavaPlugin {
 			}
 		}
 
-		if(status.isDarkzone()) MobManager.clearMobs();
+		if(status.isDarkzone()) OldMobManager.clearMobs();
 
 //		TODO: Fix
 		for(Player player : Bukkit.getOnlinePlayers()) {
@@ -380,8 +382,8 @@ public class PitSim extends JavaPlugin {
 		}
 
 		if(status.isDarkzone()) {
-			for(OldPitMob mob : MobManager.mobs) {
-				MobManager.nameTags.get(mob.entity.getUniqueId()).remove();
+			for(OldPitMob mob : OldMobManager.mobs) {
+				OldMobManager.nameTags.get(mob.entity.getUniqueId()).remove();
 				mob.entity.remove();
 			}
 		}
@@ -623,7 +625,7 @@ public class PitSim extends JavaPlugin {
 		getServer().getPluginManager().registerEvents(new GuildIntegrationManager(), this);
 		getServer().getPluginManager().registerEvents(new UpgradeManager(), this);
 		getServer().getPluginManager().registerEvents(new KitManager(), this);
-		if(getStatus().isDarkzone()) getServer().getPluginManager().registerEvents(new MobManager(), this);
+		if(getStatus().isDarkzone()) getServer().getPluginManager().registerEvents(new OldMobManager(), this);
 		getServer().getPluginManager().registerEvents(new PortalManager(), this);
 		if(getStatus().isDarkzone()) getServer().getPluginManager().registerEvents(new OldBossManager(), this);
 		if(getStatus().isDarkzone()) getServer().getPluginManager().registerEvents(new TaintedWell(), this);
@@ -652,6 +654,7 @@ public class PitSim extends JavaPlugin {
 		if(getStatus().isDarkzone()) {
 			getServer().getPluginManager().registerEvents(new DarkzoneManager(), this);
 			getServer().getPluginManager().registerEvents(new BossManager(), this);
+			getServer().getPluginManager().registerEvents(new MobManager(), this);
 		}
 	}
 

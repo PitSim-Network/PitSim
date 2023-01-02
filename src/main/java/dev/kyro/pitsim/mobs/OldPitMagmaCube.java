@@ -2,7 +2,7 @@ package dev.kyro.pitsim.mobs;
 
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.brewing.ingredients.MagmaCream;
-import dev.kyro.pitsim.controllers.MobManager;
+import dev.kyro.pitsim.adarkzone.aaold.OldMobManager;
 import dev.kyro.pitsim.adarkzone.aaold.OldPitMob;
 import dev.kyro.pitsim.enums.MobType;
 import dev.kyro.pitsim.events.AttackEvent;
@@ -41,7 +41,7 @@ public class OldPitMagmaCube extends OldPitMob {
 		}.runTaskLater(PitSim.INSTANCE, 5);
 
 
-		MobManager.makeTag(magmaCube, displayName);
+		OldMobManager.makeTag(magmaCube, displayName);
 		return magmaCube;
 	}
 
