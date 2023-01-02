@@ -25,7 +25,7 @@ public abstract class PitBoss {
 	public Player boss;
 	public SubLevel subLevel;
 	public TargetingSystem targetingSystem;
-	public PitEquipment equipment;
+	public PitEquipment equipment = DarkzoneManager.getDefaultEquipment();
 
 //	Ability Related
 	public List<PitBossAbility> abilities = new ArrayList<>();
@@ -91,17 +91,15 @@ public abstract class PitBoss {
 				.attackRange(getReach());
 		targetingSystem.pickTarget();
 
-		new BukkitRunnable() {
+		routineRunnable = new BukkitRunnable() {
 			@Override
 			public void run() {
-				for(PitBoss pitBoss : pitBosses) {
-					if(pitBoss.lastRoutineExecuteTick + pitBoss.routineAbilityCooldownTicks > PitSim.currentTick) return;
-					if(pitBoss.skipRoutineChance != 0 && Math.random() * 100 < pitBoss.skipRoutineChance) return;
-					pitBoss.lastRoutineExecuteTick = PitSim.currentTick;
+				if(lastRoutineExecuteTick + routineAbilityCooldownTicks > PitSim.currentTick) return;
+				if(skipRoutineChance != 0 && Math.random() * 100 < skipRoutineChance) return;
+				lastRoutineExecuteTick = PitSim.currentTick;
 
-					PitBossAbility routineAbility = pitBoss.getRoutineAbility();
-					routineAbility.onRoutineExecute();
-				}
+				PitBossAbility routineAbility = getRoutineAbility();
+				routineAbility.onRoutineExecute();
 			}
 		}.runTaskTimer(PitSim.INSTANCE, 0L, 20);
 	}

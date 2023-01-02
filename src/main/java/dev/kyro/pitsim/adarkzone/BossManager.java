@@ -1,7 +1,9 @@
 package dev.kyro.pitsim.adarkzone;
 
+import dev.kyro.pitsim.events.AttackEvent;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 
 import java.util.ArrayList;
@@ -9,6 +11,12 @@ import java.util.List;
 
 public class BossManager implements Listener {
 	public static List<PitBoss> pitBosses = new ArrayList<>();
+
+	@EventHandler
+	public static void onAttack(AttackEvent.Apply attackEvent) {
+		PitBoss pitBoss = getPitBoss(attackEvent.getAttacker());
+		if(pitBoss)
+	}
 
 	public static boolean isBoss(LivingEntity entity) {
 		return getPitBoss(entity) != null;

@@ -4,13 +4,19 @@ import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
 import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
+import java.util.List;
 
 public abstract class SubLevel {
 	private Location middle;
 	private Location bossSpawnLocation;
 
+//	Mob related fields
+	public List<PitMob> mobs = new ArrayList<>();
+
+//	Boss related fields
 	public boolean isBossSpawned = false;
+	public PitBoss pitBoss;
 
 	public SubLevel() {
 		this.middle = createMiddle();
@@ -30,10 +36,17 @@ public abstract class SubLevel {
 	public void spawnBoss(Player summoner) {
 		try {
 			Constructor<? extends PitBoss> constructor = getBoss().getConstructor(Player.class);
-			constructor.newInstance()
+			pitBoss = constructor.newInstance(summoner);
 		} catch(Exception exception) {
 			throw new RuntimeException(exception);
 		}
+		isBossSpawned = true;
+		disableMobs();
+	}
+
+	public void disableMobs() {
+		for(PitMob mob : mobs) mob.despawn();
+		mobs.clear();
 	}
 
 	public Location getMiddle() {
