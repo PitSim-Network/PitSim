@@ -79,10 +79,15 @@ public class TargetingSystem {
 
 		double health = player.getHealth();
 
-		double angleFactor = 10.0; // adjust this value as needed
-		double healthFactor = 0.1; // adjust this value as needed
+		double normalizedHealth = 20 / health;
+		double normalizedDistance = pitBoss.getReach() / distance;
+		double normalizedAngle = 1 / angleBetween;
 
-		return angleFactor * angleBetween - healthFactor / health - distance;
+		double healthWeight = 0.7;
+		double distanceWeight = 0.4;
+		double angleWeight = 1.0;
+
+		return healthWeight * normalizedHealth + distanceWeight * normalizedDistance + angleWeight * normalizedAngle;
 	}
 
 
