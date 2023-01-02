@@ -15,6 +15,7 @@ import dev.kyro.arcticapi.data.AConfig;
 import dev.kyro.arcticapi.data.AData;
 import dev.kyro.arcticapi.hooks.AHook;
 import dev.kyro.arcticapi.misc.AOutput;
+import dev.kyro.pitsim.adarkzone.old.placeholders.*;
 import dev.kyro.pitsim.adarkzone.placeholders.*;
 import dev.kyro.pitsim.logging.LogManager;
 import dev.kyro.pitsim.battlepass.PassManager;

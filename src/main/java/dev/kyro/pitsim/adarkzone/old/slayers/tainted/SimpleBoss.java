@@ -1,4 +1,4 @@
-package dev.kyro.pitsim.adarkzone.slayers.tainted;
+package dev.kyro.pitsim.adarkzone.old.slayers.tainted;
 
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.PitSim;

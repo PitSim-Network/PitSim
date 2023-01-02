@@ -1,4 +1,4 @@
-package dev.kyro.pitsim.adarkzone.slayers.tainted.Loot;
+package dev.kyro.pitsim.adarkzone.old.slayers.tainted.Loot;
 
 import dev.kyro.arcticapi.misc.AUtil;
 import org.bukkit.ChatColor;
