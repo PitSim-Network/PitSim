@@ -27,7 +27,9 @@ public abstract class PitBoss {
 	public long lastRoutineExecuteTick;
 	public int routineAbilityCooldownTicks = 20 * 5;
 
-	public PitBoss() {}
+	public PitBoss(Player summoner) {
+		this.summoner = summoner;
+	}
 
 	public abstract int getMaxHealth();
 	public abstract double getReach();

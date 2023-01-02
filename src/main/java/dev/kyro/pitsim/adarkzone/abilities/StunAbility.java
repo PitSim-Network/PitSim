@@ -11,21 +11,17 @@ import org.bukkit.potion.PotionEffectType;
 public class StunAbility extends PitBossAbility {
 
 	public int duration;
-	public int amplifier;
 
-	public StunAbility(PitBoss pitBoss, int duration, int amplifier) {
+	public StunAbility(PitBoss pitBoss, int duration) {
 
 		super(pitBoss);
 		this.duration = duration;
-		this.amplifier = amplifier;
+		runsOnRoutine = true;
 	}
 
 	@Override
 	public void onRoutineExecute() {
 
-		//give all players in pitboss rangle slowness effect for duration and amplifier
-		//find all players in range of pitboss
-		//for each player, give them slowness effect
 
 		double range = pitBoss.getReach();
 		for(Entity nearbyEntity : pitBoss.boss.getNearbyEntities(range, range, range)) {
