@@ -9,7 +9,12 @@ public class PitZombieBoss extends PitBoss {
 	}
 
 	@Override
-	public int getReach() {
+	public double getReach() {
+		return 0;
+	}
+
+	@Override
+	public double getReachRanged() {
 		return 0;
 	}
 }

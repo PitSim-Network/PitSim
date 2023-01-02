@@ -608,7 +608,6 @@ public class PitSim extends JavaPlugin {
 		getServer().getPluginManager().registerEvents(new EnchantManager(), this);
 		getServer().getPluginManager().registerEvents(new TotallyLegitGem(), this);
 		getServer().getPluginManager().registerEvents(new ChunkOfVile(), this);
-		getServer().getPluginManager().registerEvents(new ReachAutoBan(), this);
 //		getServer().getPluginManager().registerEvents(new NonAnticheat(), this);
 //		getServer().getPluginManager().registerEvents(new HelmetListeners(), this);
 		getServer().getPluginManager().registerEvents(new PitBlob(), this);
