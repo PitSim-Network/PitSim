@@ -15,8 +15,11 @@ import dev.kyro.arcticapi.data.AConfig;
 import dev.kyro.arcticapi.data.AData;
 import dev.kyro.arcticapi.hooks.AHook;
 import dev.kyro.arcticapi.misc.AOutput;
-import dev.kyro.pitsim.adarkzone.old.OldBossManager;
-import dev.kyro.pitsim.adarkzone.old.placeholders.*;
+import dev.kyro.pitsim.adarkzone.BossManager;
+import dev.kyro.pitsim.adarkzone.DarkzoneManager;
+import dev.kyro.pitsim.adarkzone.aaold.OldPitMob;
+import dev.kyro.pitsim.adarkzone.aaold.OldBossManager;
+import dev.kyro.pitsim.adarkzone.aaold.placeholders.*;
 import dev.kyro.pitsim.battlepass.PassManager;
 import dev.kyro.pitsim.battlepass.quests.*;
 import dev.kyro.pitsim.battlepass.quests.daily.DailyBotKillQuest;
@@ -377,7 +380,7 @@ public class PitSim extends JavaPlugin {
 		}
 
 		if(status.isDarkzone()) {
-			for(PitMob mob : MobManager.mobs) {
+			for(OldPitMob mob : MobManager.mobs) {
 				MobManager.nameTags.get(mob.entity.getUniqueId()).remove();
 				mob.entity.remove();
 			}
@@ -645,6 +648,12 @@ public class PitSim extends JavaPlugin {
 		getServer().getPluginManager().registerEvents(new LogManager(), this);
 		getServer().getPluginManager().registerEvents(new StorageManager(), this);
 		getServer().getPluginManager().registerEvents(new CrossServerMessageManager(), this);
+
+//		New darkzone code
+		if(getStatus().isDarkzone()) {
+			getServer().getPluginManager().registerEvents(new DarkzoneManager(), this);
+			getServer().getPluginManager().registerEvents(new BossManager(), this);
+		}
 	}
 
 	public void registerBoosters() {

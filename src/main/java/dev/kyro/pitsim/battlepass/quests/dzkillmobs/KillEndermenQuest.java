@@ -10,14 +10,11 @@ import dev.kyro.pitsim.controllers.PlayerManager;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.events.KillEvent;
 import dev.kyro.pitsim.misc.Misc;
-import dev.kyro.pitsim.mobs.PitEnderman;
+import dev.kyro.pitsim.mobs.OldPitEnderman;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.event.EventHandler;
 import org.bukkit.inventory.ItemStack;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class KillEndermenQuest extends PassQuest {
 
@@ -29,7 +26,7 @@ public class KillEndermenQuest extends PassQuest {
 	@EventHandler
 	public void onKill(KillEvent killEvent) {
 		if(!PlayerManager.isRealPlayer(killEvent.getKillerPlayer())) return;
-		if(!MobManager.mobIsType(killEvent.getDead(), PitEnderman.class)) return;
+		if(!MobManager.mobIsType(killEvent.getDead(), OldPitEnderman.class)) return;
 
 		progressQuest(killEvent.getKillerPitPlayer(), 1);
 	}

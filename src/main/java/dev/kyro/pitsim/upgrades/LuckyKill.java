@@ -8,7 +8,7 @@ import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.arcticapi.misc.AUtil;
 import dev.kyro.pitsim.controllers.NonManager;
 import dev.kyro.pitsim.controllers.UpgradeManager;
-import dev.kyro.pitsim.adarkzone.old.OldPitBoss;
+import dev.kyro.pitsim.adarkzone.aaold.OldPitBoss;
 import dev.kyro.pitsim.controllers.objects.RenownUpgrade;
 import dev.kyro.pitsim.events.KillEvent;
 import org.bukkit.ChatColor;

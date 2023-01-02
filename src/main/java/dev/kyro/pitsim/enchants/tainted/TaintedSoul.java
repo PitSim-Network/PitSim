@@ -3,7 +3,7 @@ package dev.kyro.pitsim.enchants.tainted;
 import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.pitsim.controllers.Cooldown;
 import dev.kyro.pitsim.controllers.MapManager;
-import dev.kyro.pitsim.adarkzone.old.OldPitBoss;
+import dev.kyro.pitsim.adarkzone.aaold.OldPitBoss;
 import dev.kyro.pitsim.controllers.objects.PitEnchant;
 import dev.kyro.pitsim.enums.ApplyType;
 import dev.kyro.pitsim.events.AttackEvent;

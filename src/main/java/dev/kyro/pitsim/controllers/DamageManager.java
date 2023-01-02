@@ -3,7 +3,8 @@ package dev.kyro.pitsim.controllers;
 import de.tr7zw.nbtapi.NBTItem;
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.PitSim;
-import dev.kyro.pitsim.adarkzone.old.OldPitBoss;
+import dev.kyro.pitsim.adarkzone.aaold.OldPitMob;
+import dev.kyro.pitsim.adarkzone.aaold.OldPitBoss;
 import dev.kyro.pitsim.logging.LogManager;
 import dev.kyro.pitsim.brewing.objects.BrewingIngredient;
 import dev.kyro.pitsim.controllers.objects.*;
@@ -397,8 +398,8 @@ public class DamageManager implements Listener {
 
 		DecimalFormat df = new DecimalFormat("##0.00");
 		String kill = null;
-		if(!deadIsPlayer && PitMob.isPitMob(dead))
-			kill = ChatColor.translateAlternateColorCodes('&', "&a&lKILL!&7 on " + PitMob.getPitMob(dead).displayName);
+		if(!deadIsPlayer && OldPitMob.isPitMob(dead))
+			kill = ChatColor.translateAlternateColorCodes('&', "&a&lKILL!&7 on " + OldPitMob.getPitMob(dead).displayName);
 		else if(killType != KillType.DEATH)
 			kill = PlaceholderAPI.setPlaceholders(killEvent.getDeadPlayer(), "&a&lKILL!&7 on %luckperms_prefix%" + (deadNon == null ? "%player_name%" : deadNon.displayName)
 					+ " &b+" + killEvent.getFinalXp() + "XP" + " &6+" + df.format(killEvent.getFinalGold()) + "g");
@@ -410,7 +411,7 @@ public class DamageManager implements Listener {
 		String killActionBar = null;
 		if(killerIsPlayer)
 			killActionBar = "&7%luckperms_prefix%" + (deadNon == null ? "%player_name%" : deadNon.displayName) + " &a&lKILL!";
-		else if(PitMob.isPitMob(dead)) killActionBar = PitMob.getPitMob(dead).displayName + " &a&lKILL!";
+		else if(OldPitMob.isPitMob(dead)) killActionBar = OldPitMob.getPitMob(dead).displayName + " &a&lKILL!";
 
 		if(killerIsPlayer && !CitizensAPI.getNPCRegistry().isNPC(killer) && !pitKiller.killFeedDisabled && killType != KillType.DEATH) {
 			AOutput.send(killEvent.getKiller(), PlaceholderAPI.setPlaceholders(killEvent.getDeadPlayer(), kill));

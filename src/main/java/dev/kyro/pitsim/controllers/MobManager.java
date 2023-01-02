@@ -2,18 +2,18 @@ package dev.kyro.pitsim.controllers;
 
 import de.myzelyam.api.vanish.VanishAPI;
 import dev.kyro.pitsim.PitSim;
-import dev.kyro.pitsim.adarkzone.old.OldBossManager;
+import dev.kyro.pitsim.adarkzone.aaold.OldBossManager;
 import dev.kyro.pitsim.brewing.BrewingManager;
 import dev.kyro.pitsim.controllers.objects.GoldenHelmet;
-import dev.kyro.pitsim.controllers.objects.PitMob;
+import dev.kyro.pitsim.adarkzone.aaold.OldPitMob;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.enchants.tainted.CleaveSpell;
-import dev.kyro.pitsim.enums.SubLevel;
+import dev.kyro.pitsim.adarkzone.aaold.SubLevel;
 import dev.kyro.pitsim.events.AttackEvent;
 import dev.kyro.pitsim.events.KillEvent;
-import dev.kyro.pitsim.mobs.PitMagmaCube;
-import dev.kyro.pitsim.mobs.PitSpiderBrute;
-import dev.kyro.pitsim.mobs.PitStrongPigman;
+import dev.kyro.pitsim.mobs.OldPitMagmaCube;
+import dev.kyro.pitsim.mobs.OldPitSpiderBrute;
+import dev.kyro.pitsim.mobs.OldPitStrongPigman;
 import net.citizensnpcs.api.CitizensAPI;
 import net.citizensnpcs.api.npc.NPC;
 import org.bukkit.*;
@@ -30,7 +30,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.*;
 
 public class MobManager implements Listener {
-	public static List<PitMob> mobs = new ArrayList<>();
+	public static List<OldPitMob> mobs = new ArrayList<>();
 	public static Map<UUID, ArmorStand> nameTags = new HashMap<>();
 	public static Map<ArmorStand, Location> locs = new HashMap<>();
 	public static Map<ArmorStand, Location> oldLocs = new HashMap<>();
@@ -42,13 +42,13 @@ public class MobManager implements Listener {
 		if(!attackEvent.isAttackerPlayer() || attackEvent.isDefenderPlayer()) return;
 		if(!MapManager.inDarkzone(attackEvent.getAttackerPlayer().getLocation())) return;
 		if(!(attackEvent.getDefender() instanceof Creature)) return;
-		PitMob pitMob = PitMob.getPitMob(attackEvent.getDefender());
-		if(pitMob == null) return;
+		OldPitMob oldPitMob = OldPitMob.getPitMob(attackEvent.getDefender());
+		if(oldPitMob == null) return;
 		if(VanishAPI.isInvisible(attackEvent.getAttackerPlayer())) return;
 		if(attackEvent.getAttackerPlayer().getGameMode() == GameMode.SURVIVAL) {
 			((Creature) attackEvent.getDefender()).setTarget(attackEvent.getAttackerPlayer());
-			pitMob.lastHit = System.currentTimeMillis();
-			pitMob.target = attackEvent.getAttackerPlayer();
+			oldPitMob.lastHit = System.currentTimeMillis();
+			oldPitMob.target = attackEvent.getAttackerPlayer();
 		}
 	}
 
@@ -64,7 +64,7 @@ public class MobManager implements Listener {
 					if(entity instanceof ArmorStand) continue;
 					if(entity instanceof Player) continue;
 
-					for(PitMob mob : new ArrayList<>(mobs)) {
+					for(OldPitMob mob : new ArrayList<>(mobs)) {
 						if(mob.entity.getUniqueId().equals(entity.getUniqueId())) {
 							mob.entity = (LivingEntity) entity;
 							break;
@@ -84,7 +84,7 @@ public class MobManager implements Listener {
 				for(SubLevel level : SubLevel.values()) {
 
 					int currentMobs = 0;
-					for(PitMob mob : mobs) {
+					for(OldPitMob mob : mobs) {
 						if(mob.subLevel == level.level) currentMobs++;
 					}
 
@@ -123,8 +123,8 @@ public class MobManager implements Listener {
 			@Override
 			public void run() {
 				if(!PitSim.getStatus().isDarkzone()) return;
-				List<PitMob> toRemove = new ArrayList<>();
-				for(PitMob mob : mobs) {
+				List<OldPitMob> toRemove = new ArrayList<>();
+				for(OldPitMob mob : mobs) {
 
 					assert SubLevel.getLevel(mob.subLevel) != null;
 					if(mob.entity.getLocation().distance(SubLevel.getLevel(mob.subLevel).middle) <= SubLevel.getLevel(mob.subLevel).radius + 10) {
@@ -137,8 +137,8 @@ public class MobManager implements Listener {
 					toRemove.add(mob);
 				}
 
-				for(PitMob pitMob : toRemove) {
-					mobs.remove(pitMob);
+				for(OldPitMob oldPitMob : toRemove) {
+					mobs.remove(oldPitMob);
 				}
 			}
 		}.runTaskTimer(PitSim.INSTANCE, 20 * 20, 20 * 20);
@@ -147,15 +147,15 @@ public class MobManager implements Listener {
 			@Override
 			public void run() {
 				if(!PitSim.getStatus().isDarkzone()) return;
-				List<PitMob> toRemove = new ArrayList<>();
-				for(PitMob mob : mobs) {
+				List<OldPitMob> toRemove = new ArrayList<>();
+				for(OldPitMob mob : mobs) {
 					if(mob.entity.isDead()) {
 						nameTags.get(mob.entity.getUniqueId()).remove();
 						toRemove.add(mob);
 					}
 				}
-				for(PitMob pitMob : toRemove) {
-					mobs.remove(pitMob);
+				for(OldPitMob oldPitMob : toRemove) {
+					mobs.remove(oldPitMob);
 				}
 			}
 
@@ -173,7 +173,7 @@ public class MobManager implements Listener {
 			@Override
 			public void run() {
 				if(!PitSim.getStatus().isDarkzone()) return;
-				for(PitMob mob : MobManager.mobs) {
+				for(OldPitMob mob : MobManager.mobs) {
 					if(!(mob.entity instanceof Creature)) continue;
 					if(mob.target != null) ((Creature) mob.entity).setTarget(mob.target);
 				}
@@ -191,13 +191,13 @@ public class MobManager implements Listener {
 					}
 					if(subLevel == null) continue;
 
-					HashMap<PitMob, Double> noTarget = new HashMap<>();
+					HashMap<OldPitMob, Double> noTarget = new HashMap<>();
 					int targets = 0;
 
-					List<PitMob> mobsCopy = new ArrayList<>(mobs);
+					List<OldPitMob> mobsCopy = new ArrayList<>(mobs);
 					Collections.shuffle(mobsCopy);
-					for(PitMob mob : mobsCopy) {
-						if(mob instanceof PitStrongPigman || mob instanceof PitSpiderBrute || !(mob.entity instanceof Creature))
+					for(OldPitMob mob : mobsCopy) {
+						if(mob instanceof OldPitStrongPigman || mob instanceof OldPitSpiderBrute || !(mob.entity instanceof Creature))
 							continue;
 						if(mob.subLevel != subLevel.level) {
 							if(mob.target == player) {
@@ -226,12 +226,12 @@ public class MobManager implements Listener {
 
 					if(targets >= MAX_TARGETS) continue;
 					noTarget = sortByValue(noTarget);
-					for(Map.Entry<PitMob, Double> entry : noTarget.entrySet()) {
-						PitMob pitMob = entry.getKey();
+					for(Map.Entry<OldPitMob, Double> entry : noTarget.entrySet()) {
+						OldPitMob oldPitMob = entry.getKey();
 						if(player.getGameMode() == GameMode.SURVIVAL && !VanishAPI.isInvisible(player)) {
-							((Creature) pitMob.entity).setTarget(player);
-							pitMob.lastHit = System.currentTimeMillis();
-							pitMob.target = player;
+							((Creature) oldPitMob.entity).setTarget(player);
+							oldPitMob.lastHit = System.currentTimeMillis();
+							oldPitMob.target = player;
 							targets++;
 						}
 						if(targets >= MAX_TARGETS) break;
@@ -243,21 +243,21 @@ public class MobManager implements Listener {
 
 	public static boolean mobIsType(LivingEntity mob, Class... classes) {
 		if(mob == null) return false;
-		PitMob pitMob = PitMob.getPitMob(mob);
-		if(pitMob == null) return false;
+		OldPitMob oldPitMob = OldPitMob.getPitMob(mob);
+		if(oldPitMob == null) return false;
 		for(Class clazz : classes) {
-			if(pitMob.getClass() == clazz) return true;
+			if(oldPitMob.getClass() == clazz) return true;
 		}
 		return false;
 	}
 
 	// function to sort hashmap by values
-	public static HashMap<PitMob, Double> sortByValue(HashMap<PitMob, Double> hm) {
-		List<Map.Entry<PitMob, Double>> list =
+	public static HashMap<OldPitMob, Double> sortByValue(HashMap<OldPitMob, Double> hm) {
+		List<Map.Entry<OldPitMob, Double>> list =
 				new LinkedList<>(hm.entrySet());
 		list.sort(Map.Entry.comparingByValue());
-		HashMap<PitMob, Double> temp = new LinkedHashMap<>();
-		for(Map.Entry<PitMob, Double> aa : list) {
+		HashMap<OldPitMob, Double> temp = new LinkedHashMap<>();
+		for(Map.Entry<OldPitMob, Double> aa : list) {
 			temp.put(aa.getKey(), aa.getValue());
 		}
 		return temp;
@@ -284,8 +284,8 @@ public class MobManager implements Listener {
 	public void onKill(KillEvent event) {
 		if(event.isDeadPlayer()) return;
 		clearMobs();
-		List<PitMob> toRemove = new ArrayList<>();
-		for(PitMob mob : mobs) {
+		List<OldPitMob> toRemove = new ArrayList<>();
+		for(OldPitMob mob : mobs) {
 			if(mob.entity.getUniqueId().equals(event.getDead().getUniqueId())) {
 				for(Entity entity : Bukkit.getWorld("darkzone").getEntities()) {
 					if(entity.getUniqueId().equals(nameTags.get(mob.entity.getUniqueId()).getUniqueId())) {
@@ -332,17 +332,17 @@ public class MobManager implements Listener {
 		new BukkitRunnable() {
 			@Override
 			public void run() {
-				for(PitMob pitMob : toRemove) {
-					mobs.remove(pitMob);
+				for(OldPitMob oldPitMob : toRemove) {
+					mobs.remove(oldPitMob);
 				}
 			}
 		}.runTaskLater(PitSim.INSTANCE, 1);
 	}
 
-	public static List<ItemStack> shouldGiveDrop(PitMob pitMob, double multiplier) {
+	public static List<ItemStack> shouldGiveDrop(OldPitMob oldPitMob, double multiplier) {
 		List<ItemStack> drops = new ArrayList<>();
 
-		for(Map.Entry<ItemStack, Integer> entry : pitMob.getDrops().entrySet()) {
+		for(Map.Entry<ItemStack, Integer> entry : oldPitMob.getDrops().entrySet()) {
 			ItemStack drop = entry.getKey();
 			double chance = entry.getValue();
 			chance *= multiplier;
@@ -375,12 +375,12 @@ public class MobManager implements Listener {
 	public void onMobAttack(EntityDamageByEntityEvent event) {
 		if(event.getDamager() instanceof Player) return;
 		if(!(event.getDamager() instanceof LivingEntity)) return;
-		PitMob mob = PitMob.getPitMob((LivingEntity) event.getDamager());
+		OldPitMob mob = OldPitMob.getPitMob((LivingEntity) event.getDamager());
 		if(mob == null) return;
 
 		mob.lastHit = System.currentTimeMillis();
 
-		if(mob instanceof PitMagmaCube) return;
+		if(mob instanceof OldPitMagmaCube) return;
 
 		if(event.getDamage() > 0) event.setDamage(mob.damage);
 	}
@@ -462,7 +462,7 @@ public class MobManager implements Listener {
 
 				if(entity.getUniqueId().equals(TaintedWell.wellStand.getUniqueId())) continue;
 
-				for(PitMob mob : mobs) {
+				for(OldPitMob mob : mobs) {
 					if(mob.entity.getUniqueId().equals(entity.getUniqueId())) continue main;
 					if(nameTags.get(mob.entity.getUniqueId()).getUniqueId().equals(entity.getUniqueId())) continue main;
 				}

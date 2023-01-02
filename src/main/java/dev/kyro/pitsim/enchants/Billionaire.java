@@ -2,7 +2,7 @@ package dev.kyro.pitsim.enchants;
 
 import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.pitsim.PitSim;
-import dev.kyro.pitsim.adarkzone.old.OldBossManager;
+import dev.kyro.pitsim.adarkzone.aaold.OldBossManager;
 import dev.kyro.pitsim.controllers.HopperManager;
 import dev.kyro.pitsim.controllers.NonManager;
 import dev.kyro.pitsim.controllers.UpgradeManager;
