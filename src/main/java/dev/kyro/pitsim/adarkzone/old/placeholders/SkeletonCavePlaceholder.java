@@ -1,7 +1,7 @@
 package dev.kyro.pitsim.adarkzone.old.placeholders;
 
 import dev.kyro.arcticapi.hooks.papi.APAPIPlaceholder;
-import dev.kyro.pitsim.adarkzone.BossManager;
+import dev.kyro.pitsim.adarkzone.old.OldBossManager;
 import dev.kyro.pitsim.enums.SubLevel;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
@@ -17,8 +17,8 @@ public class SkeletonCavePlaceholder implements APAPIPlaceholder {
 
 	@Override
 	public String getValue(Player player) {
-		Map<Player, Integer> players = BossManager.bossItems.get(SubLevel.SKELETON_CAVE);
-		if(BossManager.activePlayers.contains(player)) return "&c&lBOSS SPAWNED!";
+		Map<Player, Integer> players = OldBossManager.bossItems.get(SubLevel.SKELETON_CAVE);
+		if(OldBossManager.activePlayers.contains(player)) return "&c&lBOSS SPAWNED!";
 		else
 			return ChatColor.translateAlternateColorCodes('&', "&a" + players.getOrDefault(player, 0) + "&7/" + SubLevel.SKELETON_CAVE.spawnBossItemCount);
 	}

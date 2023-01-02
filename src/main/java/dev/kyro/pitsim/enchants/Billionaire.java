@@ -2,7 +2,7 @@ package dev.kyro.pitsim.enchants;
 
 import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.pitsim.PitSim;
-import dev.kyro.pitsim.adarkzone.BossManager;
+import dev.kyro.pitsim.adarkzone.old.OldBossManager;
 import dev.kyro.pitsim.controllers.HopperManager;
 import dev.kyro.pitsim.controllers.NonManager;
 import dev.kyro.pitsim.controllers.UpgradeManager;
@@ -46,7 +46,7 @@ public class Billionaire extends PitEnchant {
 			goldCost = goldCost - (int) ((UpgradeManager.getTier(attackEvent.getAttackerPlayer(), "TAX_EVASION") * 0.05) * goldCost);
 		}
 
-		if(!BossManager.bosses.containsKey(CitizensAPI.getNPCRegistry().getNPC(attackEvent.getAttacker())) && !HopperManager.isHopper(attackEvent.getAttacker())) {
+		if(!OldBossManager.bosses.containsKey(CitizensAPI.getNPCRegistry().getNPC(attackEvent.getAttacker())) && !HopperManager.isHopper(attackEvent.getAttacker())) {
 			double finalBalance = PitSim.VAULT.getBalance(attackEvent.getAttackerPlayer()) - goldCost;
 			if(finalBalance < 0) return;
 			PitSim.VAULT.withdrawPlayer(attackEvent.getAttackerPlayer(), goldCost);

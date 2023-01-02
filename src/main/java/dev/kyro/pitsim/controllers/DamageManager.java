@@ -3,7 +3,7 @@ package dev.kyro.pitsim.controllers;
 import de.tr7zw.nbtapi.NBTItem;
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.PitSim;
-import dev.kyro.pitsim.adarkzone.PitBoss;
+import dev.kyro.pitsim.adarkzone.old.OldPitBoss;
 import dev.kyro.pitsim.logging.LogManager;
 import dev.kyro.pitsim.brewing.objects.BrewingIngredient;
 import dev.kyro.pitsim.controllers.objects.*;
@@ -147,7 +147,7 @@ public class DamageManager implements Listener {
 			nonHitCooldownList.add(defender);
 
 			if(defender instanceof Player) {
-				boolean isBoss = (PitBoss.isPitBoss((Player) defender));
+				boolean isBoss = (OldPitBoss.isPitBoss((Player) defender));
 				if(isBoss) bossHitCooldown.add(defender);
 			}
 

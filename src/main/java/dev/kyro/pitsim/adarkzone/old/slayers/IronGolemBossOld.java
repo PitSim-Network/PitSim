@@ -3,7 +3,7 @@ package dev.kyro.pitsim.adarkzone.old.slayers;
 import com.xxmicloxx.NoteBlockAPI.NoteBlockAPI;
 import dev.kyro.pitsim.adarkzone.old.slayers.tainted.SimpleBoss;
 import dev.kyro.pitsim.adarkzone.old.slayers.tainted.SimpleSkin;
-import dev.kyro.pitsim.adarkzone.PitBoss;
+import dev.kyro.pitsim.adarkzone.old.OldPitBoss;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.enums.SubLevel;
 import dev.kyro.pitsim.events.AttackEvent;
@@ -25,7 +25,7 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.util.Vector;
 
-public class IronGolemBoss extends PitBoss {
+public class IronGolemBossOld extends OldPitBoss {
 	public NPC npc;
 	public Player entity;
 	public Player target;
@@ -33,7 +33,7 @@ public class IronGolemBoss extends PitBoss {
 	public SubLevel subLevel = SubLevel.GOLEM_CAVE;
 	public SimpleBoss boss;
 
-	public IronGolemBoss(Player target) {
+	public IronGolemBossOld(Player target) {
 		super(target, SubLevel.GOLEM_CAVE, 100);
 		npc = CitizensAPI.getNPCRegistry().createNPC(EntityType.PLAYER, name);
 
@@ -41,8 +41,8 @@ public class IronGolemBoss extends PitBoss {
 
 			@Override
 			protected void attackHigh() {
-				Sounds.CLEAVE1.play(IronGolemBoss.this.target);
-				IronGolemBoss.this.target.setVelocity(new Vector(0, 10, 0));
+				Sounds.CLEAVE1.play(IronGolemBossOld.this.target);
+				IronGolemBossOld.this.target.setVelocity(new Vector(0, 10, 0));
 			}
 
 			@Override
@@ -68,7 +68,7 @@ public class IronGolemBoss extends PitBoss {
 
 			@Override
 			protected void attackLow() {
-				Vector dirVector = IronGolemBoss.this.target.getLocation().toVector().subtract(npc.getEntity().getLocation().toVector()).setY(0);
+				Vector dirVector = IronGolemBossOld.this.target.getLocation().toVector().subtract(npc.getEntity().getLocation().toVector()).setY(0);
 				Vector pullVector = dirVector.clone().normalize().setY(0.2).multiply(0.5).add(dirVector.clone().multiply(0.03));
 
 				if(npc.getEntity() != null)

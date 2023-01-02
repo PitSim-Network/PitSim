@@ -1,7 +1,7 @@
 package dev.kyro.pitsim.controllers;
 
 import dev.kyro.pitsim.PitSim;
-import dev.kyro.pitsim.adarkzone.PitBoss;
+import dev.kyro.pitsim.adarkzone.old.OldPitBoss;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.controllers.objects.RenownUpgrade;
 import org.bukkit.ChatColor;
@@ -52,7 +52,7 @@ public class UpgradeManager implements Listener {
 	}
 
 	public static int getTier(Player player, String refName) {
-		if(NonManager.getNon(player) != null || PitBoss.isPitBoss(player)) return 0;
+		if(NonManager.getNon(player) != null || OldPitBoss.isPitBoss(player)) return 0;
 		RenownUpgrade upgrade = getUpgrade(refName);
 		return getTier(player, upgrade);
 	}

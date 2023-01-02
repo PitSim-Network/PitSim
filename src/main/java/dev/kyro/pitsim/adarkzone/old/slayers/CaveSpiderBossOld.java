@@ -6,7 +6,7 @@ import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.adarkzone.old.slayers.tainted.SimpleBoss;
 import dev.kyro.pitsim.adarkzone.old.slayers.tainted.SimpleSkin;
 import dev.kyro.pitsim.controllers.MapManager;
-import dev.kyro.pitsim.adarkzone.PitBoss;
+import dev.kyro.pitsim.adarkzone.old.OldPitBoss;
 import dev.kyro.pitsim.controllers.objects.PitMob;
 import dev.kyro.pitsim.enums.SubLevel;
 import dev.kyro.pitsim.events.AttackEvent;
@@ -25,7 +25,7 @@ import org.bukkit.util.Vector;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CaveSpiderBoss extends PitBoss {
+public class CaveSpiderBossOld extends OldPitBoss {
 	public NPC npc;
 	public Player entity;
 	public Player target;
@@ -35,7 +35,7 @@ public class CaveSpiderBoss extends PitBoss {
 
 	public List<PitMob> spiderBrutes = new ArrayList<>();
 
-	public CaveSpiderBoss(Player target) {
+	public CaveSpiderBossOld(Player target) {
 		super(target, SubLevel.DEEP_SPIDER_CAVE, 30);
 		npc = CitizensAPI.getNPCRegistry().createNPC(EntityType.PLAYER, name);
 

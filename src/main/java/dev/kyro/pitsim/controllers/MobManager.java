@@ -2,7 +2,7 @@ package dev.kyro.pitsim.controllers;
 
 import de.myzelyam.api.vanish.VanishAPI;
 import dev.kyro.pitsim.PitSim;
-import dev.kyro.pitsim.adarkzone.BossManager;
+import dev.kyro.pitsim.adarkzone.old.OldBossManager;
 import dev.kyro.pitsim.brewing.BrewingManager;
 import dev.kyro.pitsim.controllers.objects.GoldenHelmet;
 import dev.kyro.pitsim.controllers.objects.PitMob;
@@ -360,7 +360,7 @@ public class MobManager implements Listener {
 		if(event.getAttacker() instanceof MagmaCube && (!(event.getDefender() instanceof Player)))
 			event.setCancelled(true);
 
-		for(NPC value : BossManager.clickables.values()) {
+		for(NPC value : OldBossManager.clickables.values()) {
 			if(event.getDefender().getUniqueId().equals(value.getUniqueId())) event.setCancelled(true);
 		}
 
@@ -407,7 +407,7 @@ public class MobManager implements Listener {
 		if(event.getDamager() instanceof Fireball) return;
 		if(NonManager.getNon((LivingEntity) event.getDamager()) != null) return;
 
-		for(NPC value : BossManager.clickables.values()) {
+		for(NPC value : OldBossManager.clickables.values()) {
 			if(event.getEntity().getUniqueId().equals(value.getUniqueId())) event.setCancelled(true);
 		}
 

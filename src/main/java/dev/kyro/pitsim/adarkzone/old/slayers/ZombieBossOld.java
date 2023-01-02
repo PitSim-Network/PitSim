@@ -3,7 +3,7 @@ package dev.kyro.pitsim.adarkzone.old.slayers;
 import com.xxmicloxx.NoteBlockAPI.NoteBlockAPI;
 import dev.kyro.pitsim.adarkzone.old.slayers.tainted.SimpleBoss;
 import dev.kyro.pitsim.adarkzone.old.slayers.tainted.SimpleSkin;
-import dev.kyro.pitsim.adarkzone.PitBoss;
+import dev.kyro.pitsim.adarkzone.old.OldPitBoss;
 import dev.kyro.pitsim.enums.SubLevel;
 import dev.kyro.pitsim.events.AttackEvent;
 import net.citizensnpcs.api.CitizensAPI;
@@ -12,7 +12,7 @@ import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 
-public class ZombieBoss extends PitBoss {
+public class ZombieBossOld extends OldPitBoss {
 	public NPC npc;
 	public Player entity;
 	public Player target;
@@ -20,7 +20,7 @@ public class ZombieBoss extends PitBoss {
 	public SubLevel subLevel = SubLevel.ZOMBIE_CAVE;
 	public SimpleBoss boss;
 
-	public ZombieBoss(Player target) throws Exception {
+	public ZombieBossOld(Player target) throws Exception {
 		super(target, SubLevel.ZOMBIE_CAVE, 6);
 		this.target = target;
 

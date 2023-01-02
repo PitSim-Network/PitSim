@@ -6,7 +6,7 @@ import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.adarkzone.old.slayers.tainted.SimpleBoss;
 import dev.kyro.pitsim.adarkzone.old.slayers.tainted.SimpleSkin;
 import dev.kyro.pitsim.controllers.MapManager;
-import dev.kyro.pitsim.adarkzone.PitBoss;
+import dev.kyro.pitsim.adarkzone.old.OldPitBoss;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.enums.SubLevel;
 import dev.kyro.pitsim.events.AttackEvent;
@@ -31,7 +31,7 @@ import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
 
-public class WitherSkeletonBoss extends PitBoss {
+public class WitherSkeletonBossOld extends OldPitBoss {
 	public NPC npc;
 	public Player entity;
 	public Player target;
@@ -39,7 +39,7 @@ public class WitherSkeletonBoss extends PitBoss {
 	public SubLevel subLevel = SubLevel.WITHER_CAVE;
 	public SimpleBoss boss;
 
-	public WitherSkeletonBoss(Player target) {
+	public WitherSkeletonBossOld(Player target) {
 		super(target, SubLevel.WITHER_CAVE, 50);
 		npc = CitizensAPI.getNPCRegistry().createNPC(EntityType.PLAYER, name);
 
@@ -66,7 +66,7 @@ public class WitherSkeletonBoss extends PitBoss {
 
 						AOutput.send(target, "&7&oYou have been trapped in the cage!");
 						target.teleport(location);
-						npc.teleport(WitherSkeletonBoss.this.target.getLocation(), PlayerTeleportEvent.TeleportCause.PLUGIN);
+						npc.teleport(WitherSkeletonBossOld.this.target.getLocation(), PlayerTeleportEvent.TeleportCause.PLUGIN);
 					}
 				}.runTaskLater(PitSim.INSTANCE, 40);
 			}
@@ -78,7 +78,7 @@ public class WitherSkeletonBoss extends PitBoss {
 
 			@Override
 			protected void attackLow() {
-				Vector dirVector = WitherSkeletonBoss.this.target.getLocation().toVector().subtract(npc.getEntity().getLocation().toVector()).setY(0);
+				Vector dirVector = WitherSkeletonBossOld.this.target.getLocation().toVector().subtract(npc.getEntity().getLocation().toVector()).setY(0);
 				Vector pullVector = dirVector.clone().normalize().setY(0.2).multiply(0.5).add(dirVector.clone().multiply(0.03));
 
 				if(npc.getEntity() != null)

@@ -15,7 +15,7 @@ import dev.kyro.arcticapi.data.AConfig;
 import dev.kyro.arcticapi.data.AData;
 import dev.kyro.arcticapi.hooks.AHook;
 import dev.kyro.arcticapi.misc.AOutput;
-import dev.kyro.pitsim.adarkzone.BossManager;
+import dev.kyro.pitsim.adarkzone.old.OldBossManager;
 import dev.kyro.pitsim.adarkzone.old.placeholders.*;
 import dev.kyro.pitsim.battlepass.PassManager;
 import dev.kyro.pitsim.battlepass.quests.*;
@@ -172,7 +172,7 @@ public class PitSim extends JavaPlugin {
 		new BukkitRunnable() {
 			@Override
 			public void run() {
-				if(getStatus().isDarkzone()) BossManager.onStart();
+				if(getStatus().isDarkzone()) OldBossManager.onStart();
 			}
 		}.runTaskLater(PitSim.INSTANCE, 20);
 
@@ -353,7 +353,7 @@ public class PitSim extends JavaPlugin {
 		}
 
 		if(getStatus().isDarkzone()) {
-			for(NPC value : BossManager.clickables.values()) {
+			for(NPC value : OldBossManager.clickables.values()) {
 				value.destroy();
 				NPCRegistry registry = CitizensAPI.getNPCRegistry();
 				registry.deregister(value);
@@ -389,7 +389,7 @@ public class PitSim extends JavaPlugin {
 		}
 
 		if(status.isDarkzone()) {
-			for(Hologram hologram : BossManager.holograms) {
+			for(Hologram hologram : OldBossManager.holograms) {
 				hologram.delete();
 			}
 		}
@@ -623,7 +623,7 @@ public class PitSim extends JavaPlugin {
 		getServer().getPluginManager().registerEvents(new KitManager(), this);
 		if(getStatus().isDarkzone()) getServer().getPluginManager().registerEvents(new MobManager(), this);
 		getServer().getPluginManager().registerEvents(new PortalManager(), this);
-		if(getStatus().isDarkzone()) getServer().getPluginManager().registerEvents(new BossManager(), this);
+		if(getStatus().isDarkzone()) getServer().getPluginManager().registerEvents(new OldBossManager(), this);
 		if(getStatus().isDarkzone()) getServer().getPluginManager().registerEvents(new TaintedWell(), this);
 		if(getStatus().isDarkzone()) getServer().getPluginManager().registerEvents(new BrewingManager(), this);
 		getServer().getPluginManager().registerEvents(new PotionManager(), this);

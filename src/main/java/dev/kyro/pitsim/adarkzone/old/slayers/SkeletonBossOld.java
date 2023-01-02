@@ -5,7 +5,7 @@ import dev.kyro.pitsim.adarkzone.old.slayers.tainted.SimpleBoss;
 import dev.kyro.pitsim.adarkzone.old.slayers.tainted.SimpleSkin;
 import dev.kyro.pitsim.commands.FreshCommand;
 import dev.kyro.pitsim.controllers.EnchantManager;
-import dev.kyro.pitsim.adarkzone.PitBoss;
+import dev.kyro.pitsim.adarkzone.old.OldPitBoss;
 import dev.kyro.pitsim.enums.*;
 import dev.kyro.pitsim.events.AttackEvent;
 import net.citizensnpcs.api.CitizensAPI;
@@ -17,7 +17,7 @@ import org.bukkit.entity.*;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.Vector;
 
-public class SkeletonBoss extends PitBoss {
+public class SkeletonBossOld extends OldPitBoss {
 	public NPC npc;
 	public Player entity;
 	public Player target;
@@ -25,7 +25,7 @@ public class SkeletonBoss extends PitBoss {
 	public SubLevel subLevel = SubLevel.SKELETON_CAVE;
 	public SimpleBoss boss;
 
-	public SkeletonBoss(Player target) throws Exception {
+	public SkeletonBossOld(Player target) throws Exception {
 		super(target, SubLevel.SKELETON_CAVE, 12);
 
 		npc = CitizensAPI.getNPCRegistry().createNPC(EntityType.PLAYER, name);

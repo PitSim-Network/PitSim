@@ -4,7 +4,7 @@ import com.xxmicloxx.NoteBlockAPI.NoteBlockAPI;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.adarkzone.old.slayers.tainted.SimpleBoss;
 import dev.kyro.pitsim.adarkzone.old.slayers.tainted.SimpleSkin;
-import dev.kyro.pitsim.adarkzone.PitBoss;
+import dev.kyro.pitsim.adarkzone.old.OldPitBoss;
 import dev.kyro.pitsim.enums.SubLevel;
 import dev.kyro.pitsim.events.AttackEvent;
 import dev.kyro.pitsim.misc.Sounds;
@@ -16,7 +16,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
 
-public class MagmaCubeBoss extends PitBoss {
+public class MagmaCubeBossOld extends OldPitBoss {
 	public NPC npc;
 	public Player entity;
 	public Player target;
@@ -24,7 +24,7 @@ public class MagmaCubeBoss extends PitBoss {
 	public SubLevel subLevel = SubLevel.MAGMA_CAVE;
 	public SimpleBoss boss;
 
-	public MagmaCubeBoss(Player target) {
+	public MagmaCubeBossOld(Player target) {
 		super(target, SubLevel.MAGMA_CAVE, 35);
 		npc = CitizensAPI.getNPCRegistry().createNPC(EntityType.PLAYER, name);
 

@@ -7,7 +7,7 @@ import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.brewing.ingredients.SpiderEye;
 import dev.kyro.pitsim.brewing.objects.BrewingIngredient;
 import dev.kyro.pitsim.brewing.objects.PotionEffect;
-import dev.kyro.pitsim.adarkzone.BossManager;
+import dev.kyro.pitsim.adarkzone.old.OldBossManager;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.enums.NBTTag;
 import dev.kyro.pitsim.misc.Misc;
@@ -60,7 +60,7 @@ public class PotionManager implements Listener {
 				for(Player player : Bukkit.getOnlinePlayers()) {
 					List<PotionEffect> effects = getPotionEffects(player);
 					if(effects.size() == 0) continue;
-					if(BossManager.activePlayers.contains(player)) {
+					if(OldBossManager.activePlayers.contains(player)) {
 						hideActiveBossBar(PitSim.adventure.player(player), player);
 						continue;
 					}

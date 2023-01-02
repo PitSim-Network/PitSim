@@ -2,7 +2,7 @@ package dev.kyro.pitsim.adarkzone.old.slayers;
 
 import dev.kyro.pitsim.adarkzone.old.slayers.tainted.SimpleBoss;
 import dev.kyro.pitsim.adarkzone.old.slayers.tainted.SimpleSkin;
-import dev.kyro.pitsim.adarkzone.PitBoss;
+import dev.kyro.pitsim.adarkzone.old.OldPitBoss;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.enums.SubLevel;
 import dev.kyro.pitsim.events.AttackEvent;
@@ -17,7 +17,7 @@ import org.bukkit.entity.*;
 import org.bukkit.util.Vector;
 
 
-public class ChargedCreeperBoss extends PitBoss {
+public class ChargedCreeperBossOld extends OldPitBoss {
 
     /*
 
@@ -33,7 +33,7 @@ public class ChargedCreeperBoss extends PitBoss {
 	public SubLevel subLevel = SubLevel.CREEPER_CAVE;
 	public SimpleBoss boss;
 
-	public ChargedCreeperBoss(Player target) throws Exception {
+	public ChargedCreeperBossOld(Player target) throws Exception {
 		super(target, SubLevel.CREEPER_CAVE, 35);
 		npc = CitizensAPI.getNPCRegistry().createNPC(EntityType.PLAYER, name);
 
@@ -53,7 +53,7 @@ public class ChargedCreeperBoss extends PitBoss {
 
 			@Override
 			protected void attackMedium() {
-				Vector dirVector = ChargedCreeperBoss.this.target.getLocation().toVector().subtract(npc.getEntity().getLocation().toVector()).setY(0);
+				Vector dirVector = ChargedCreeperBossOld.this.target.getLocation().toVector().subtract(npc.getEntity().getLocation().toVector()).setY(0);
 				Vector pullVector = dirVector.clone().normalize().setY(0.2).multiply(0.5).add(dirVector.clone().multiply(0.03));
 
 				if(npc.getEntity() != null)

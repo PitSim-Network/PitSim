@@ -4,7 +4,7 @@ import com.xxmicloxx.NoteBlockAPI.NoteBlockAPI;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.adarkzone.old.slayers.tainted.SimpleBoss;
 import dev.kyro.pitsim.adarkzone.old.slayers.tainted.SimpleSkin;
-import dev.kyro.pitsim.adarkzone.PitBoss;
+import dev.kyro.pitsim.adarkzone.old.OldPitBoss;
 import dev.kyro.pitsim.controllers.objects.PitMob;
 import dev.kyro.pitsim.enums.SubLevel;
 import dev.kyro.pitsim.events.AttackEvent;
@@ -22,7 +22,7 @@ import org.bukkit.util.Vector;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ZombiePigmanBoss extends PitBoss {
+public class ZombiePigmanBossOld extends OldPitBoss {
 	public NPC npc;
 	public Player entity;
 	public Player target;
@@ -32,7 +32,7 @@ public class ZombiePigmanBoss extends PitBoss {
 
 	public List<PitMob> pigmen = new ArrayList<>();
 
-	public ZombiePigmanBoss(Player target) {
+	public ZombiePigmanBossOld(Player target) {
 		super(target, SubLevel.PIGMEN_CAVE, 60);
 		npc = CitizensAPI.getNPCRegistry().createNPC(EntityType.PLAYER, name);
 

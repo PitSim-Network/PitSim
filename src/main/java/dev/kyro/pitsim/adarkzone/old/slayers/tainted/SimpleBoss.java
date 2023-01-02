@@ -3,9 +3,9 @@ package dev.kyro.pitsim.adarkzone.old.slayers.tainted;
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.commands.FreshCommand;
-import dev.kyro.pitsim.adarkzone.BossManager;
+import dev.kyro.pitsim.adarkzone.old.OldBossManager;
 import dev.kyro.pitsim.controllers.EnchantManager;
-import dev.kyro.pitsim.adarkzone.PitBoss;
+import dev.kyro.pitsim.adarkzone.old.OldPitBoss;
 import dev.kyro.pitsim.controllers.objects.PitEnchant;
 import dev.kyro.pitsim.enums.MysticType;
 import dev.kyro.pitsim.enums.PantColor;
@@ -40,7 +40,7 @@ public abstract class SimpleBoss {
 	SubLevel subLevel;
 	BossBar activeBar;
 	SimpleSkin skin;
-	PitBoss pitBoss;
+	OldPitBoss pitBoss;
 
 	BukkitTask abs;
 	BukkitTask timerTask;
@@ -68,7 +68,7 @@ public abstract class SimpleBoss {
 	ItemStack boots;
 	ItemStack sword;
 
-	public SimpleBoss(NPC npc, Player target, SubLevel sublevel, int difficulty, SimpleSkin skin, PitBoss pitBoss) {
+	public SimpleBoss(NPC npc, Player target, SubLevel sublevel, int difficulty, SimpleSkin skin, OldPitBoss pitBoss) {
 
 		this.npc = npc;
 		this.subLevel = sublevel;
@@ -135,7 +135,7 @@ public abstract class SimpleBoss {
 				.speedModifier(this.speed);
 
 		spawn();
-		BossManager.activePlayers.add(target);
+		OldBossManager.activePlayers.add(target);
 
 		if(npc.isSpawned()) {
 			new BukkitRunnable() {
@@ -153,7 +153,7 @@ public abstract class SimpleBoss {
 
 						pitBoss.setNPC(npc);
 
-						BossManager.bosses.put(npc, pitBoss);
+						OldBossManager.bosses.put(npc, pitBoss);
 					}
 
 					try {
@@ -171,7 +171,7 @@ public abstract class SimpleBoss {
 	}
 
 	public void spawn() {
-		PitBoss.spawn(this.npc, this.target, this.subLevel,
+		OldPitBoss.spawn(this.npc, this.target, this.subLevel,
 				new BossSkin(this.npc, skin.skin),
 				this.sword,
 				this.helmet,

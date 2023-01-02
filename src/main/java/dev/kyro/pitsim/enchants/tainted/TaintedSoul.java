@@ -3,7 +3,7 @@ package dev.kyro.pitsim.enchants.tainted;
 import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.pitsim.controllers.Cooldown;
 import dev.kyro.pitsim.controllers.MapManager;
-import dev.kyro.pitsim.adarkzone.PitBoss;
+import dev.kyro.pitsim.adarkzone.old.OldPitBoss;
 import dev.kyro.pitsim.controllers.objects.PitEnchant;
 import dev.kyro.pitsim.enums.ApplyType;
 import dev.kyro.pitsim.events.AttackEvent;
@@ -29,7 +29,7 @@ public class TaintedSoul extends PitEnchant {
 		int enchantLvl = attackEvent.getAttackerEnchantLevel(this);
 		if(enchantLvl == 0) return;
 
-		if(attackEvent.isDefenderPlayer() && PitBoss.isPitBoss(attackEvent.getDefenderPlayer())) return;
+		if(attackEvent.isDefenderPlayer() && OldPitBoss.isPitBoss(attackEvent.getDefenderPlayer())) return;
 
 		Cooldown cooldown = getCooldown(attackEvent.getAttackerPlayer(), getCooldown() * 20);
 		if(cooldown.isOnCooldown()) return;
