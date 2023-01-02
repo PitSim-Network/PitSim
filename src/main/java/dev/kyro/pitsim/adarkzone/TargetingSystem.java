@@ -29,9 +29,8 @@ public class TargetingSystem {
 		ATTACKING_RANGED
 	}
 
-	public TargetingSystem(PitBoss pitBoss, Player target) {
+	public TargetingSystem(PitBoss pitBoss) {
 		this.pitBoss = pitBoss;
-		this.target = target;
 
 		start();
 	}

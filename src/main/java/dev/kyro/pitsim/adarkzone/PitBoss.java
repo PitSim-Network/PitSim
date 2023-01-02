@@ -1,5 +1,6 @@
 package dev.kyro.pitsim.adarkzone;
 
+import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.adarkzone.notdarkzone.PitEquipment;
 import dev.kyro.pitsim.misc.Misc;
 import net.citizensnpcs.api.CitizensAPI;
@@ -7,6 +8,8 @@ import net.citizensnpcs.api.npc.NPC;
 import net.citizensnpcs.npc.ai.CitizensNavigator;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
+import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.scheduler.BukkitTask;
 
 import java.util.*;
 
@@ -30,9 +33,11 @@ public abstract class PitBoss {
 	public double skipRoutineChance = 0;
 	public long lastRoutineExecuteTick;
 	public int routineAbilityCooldownTicks = 20 * 5;
+	public BukkitTask routineRunnable;
 
 	public PitBoss(Player summoner) {
 		this.summoner = summoner;
+		this.targetingSystem = new TargetingSystem(this);
 	}
 
 	public abstract Class<? extends SubLevel> assignSubLevel();
@@ -67,6 +72,13 @@ public abstract class PitBoss {
 		lastRoutineExecuteTick += ticks;
 	}
 
+	public PitBossAbility getRoutineAbility() {
+		Map<PitBossAbility, Double> routineAbilityMap = new HashMap<>(this.routineAbilityMap);
+		for(Map.Entry<PitBossAbility, Double> entry : new ArrayList<>(routineAbilityMap.entrySet()))
+			if(!entry.getKey().shouldExecuteRoutine()) routineAbilityMap.remove(entry.getKey());
+		return Misc.weightedRandom(routineAbilityMap);
+	}
+
 	public void spawn() {
 		npcBoss = CitizensAPI.getNPCRegistry().createNPC(EntityType.PLAYER, getName());
 		npcBoss.setProtected(false);
@@ -78,12 +90,19 @@ public abstract class PitBoss {
 				.attackDelayTicks(10)
 				.attackRange(getReach());
 		targetingSystem.pickTarget();
-	}
 
-	public PitBossAbility getRoutineAbility() {
-		Map<PitBossAbility, Double> routineAbilityMap = new HashMap<>(this.routineAbilityMap);
-		for(Map.Entry<PitBossAbility, Double> entry : new ArrayList<>(routineAbilityMap.entrySet()))
-			if(!entry.getKey().shouldExecuteRoutine()) routineAbilityMap.remove(entry.getKey());
-		return Misc.weightedRandom(routineAbilityMap);
+		new BukkitRunnable() {
+			@Override
+			public void run() {
+				for(PitBoss pitBoss : pitBosses) {
+					if(pitBoss.lastRoutineExecuteTick + pitBoss.routineAbilityCooldownTicks > PitSim.currentTick) return;
+					if(pitBoss.skipRoutineChance != 0 && Math.random() * 100 < pitBoss.skipRoutineChance) return;
+					pitBoss.lastRoutineExecuteTick = PitSim.currentTick;
+
+					PitBossAbility routineAbility = pitBoss.getRoutineAbility();
+					routineAbility.onRoutineExecute();
+				}
+			}
+		}.runTaskTimer(PitSim.INSTANCE, 0L, 20);
 	}
 }
