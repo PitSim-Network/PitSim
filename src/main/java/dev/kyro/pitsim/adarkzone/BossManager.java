@@ -42,6 +42,7 @@ public class BossManager implements Listener {
 			return;
 		}
 		killedBoss.kill();
+		killedBoss.subLevel.bossDeath();
 	}
 
 	public static boolean isBoss(LivingEntity entity) {

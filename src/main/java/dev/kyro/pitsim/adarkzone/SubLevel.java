@@ -34,16 +34,15 @@ public abstract class SubLevel {
 	public abstract int getRequiredDropsToSpawn();
 
 	public void tick() {
+		if(Math.random() < 0.75) return;
 		int newMobsNeeded = getMaxMobs() - mobs.size();
-		for(int i = 0; i < newMobsNeeded; i++) {
-
-		}
+		for(int i = 0; i < Math.min(newMobsNeeded, 3); i++) spawnMob();
 	}
 
 	public void spawnMob() {
 		try {
 			Constructor<? extends PitMob> constructor = getMob().getConstructor(Player.class);
-			pitBoss = constructor.newInstance(summoner);
+			PitMob pitMob = constructor.newInstance();
 		} catch(Exception exception) {
 			throw new RuntimeException(exception);
 		}
@@ -61,7 +60,7 @@ public abstract class SubLevel {
 		disableMobs();
 	}
 
-	public void onBossDeath() {
+	public void bossDeath() {
 		isBossSpawned = false;
 	}
 

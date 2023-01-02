@@ -2,6 +2,7 @@ package dev.kyro.pitsim.adarkzone;
 
 import org.bukkit.Location;
 import org.bukkit.entity.Creature;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 
 public abstract class PitMob {
@@ -9,9 +10,18 @@ public abstract class PitMob {
 	public Creature mob;
 	public Player target;
 
+	public PitMob() {
+	}
+
+	public abstract EntityType getEntityType();
 	public abstract int getMaxHealth();
 	public abstract int getSpeedAmplifier();
-	public abstract void spawn(Location spawnLocation);
+
+	public void onSpawn() {}
+
+	public void spawn(Location spawnLocation) {
+		spawnLocation.getWorld().spawnEntity(spawnLocation);
+	}
 
 	public void despawn() {
 		mob.remove();
