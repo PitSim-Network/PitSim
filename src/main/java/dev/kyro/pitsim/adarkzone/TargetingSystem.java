@@ -79,7 +79,10 @@ public class TargetingSystem {
 
 		double health = player.getHealth();
 
-		return 1 / (distance * angleBetween * health);
+		double angleFactor = 10.0; // adjust this value as needed
+		double healthFactor = 0.1; // adjust this value as needed
+
+		return angleFactor * angleBetween - healthFactor / health - distance;
 	}
 
 
