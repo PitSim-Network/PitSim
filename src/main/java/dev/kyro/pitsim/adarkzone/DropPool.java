@@ -49,6 +49,7 @@ public class DropPool {
 
 		}
 	}
+
 	public DropPool addItem(ItemStack item, double chance) {
 		dropPool.put(item, chance);
 		return this;
