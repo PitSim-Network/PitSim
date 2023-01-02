@@ -40,6 +40,7 @@ public abstract class PitBoss {
 	public PitBoss abilities(PitBossAbility... pitBossAbilities) {
 		abilities = Arrays.asList(pitBossAbilities);
 		for(PitBossAbility ability : abilities) {
+			ability.pitBoss(this);
 			if(!(ability instanceof RoutinePitBossAbility)) continue;
 			RoutinePitBossAbility routineAbility = (RoutinePitBossAbility) ability;
 			routineAbilityMap.put(ability, routineAbility.getRoutineWeight());

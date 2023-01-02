@@ -3,8 +3,7 @@ package dev.kyro.pitsim.adarkzone;
 public abstract class RoutinePitBossAbility extends PitBossAbility {
 	private double routineWeight;
 
-	public RoutinePitBossAbility(PitBoss pitBoss, double routineWeight) {
-		super(pitBoss);
+	public RoutinePitBossAbility(double routineWeight) {
 		this.routineWeight = routineWeight;
 	}
 

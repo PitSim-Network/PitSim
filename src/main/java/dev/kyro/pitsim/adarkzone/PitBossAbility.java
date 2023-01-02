@@ -8,9 +8,7 @@ import org.bukkit.event.Listener;
 public abstract class PitBossAbility implements Listener {
 	public PitBoss pitBoss;
 
-	public PitBossAbility(PitBoss pitBoss) {
-		this.pitBoss = pitBoss;
-
+	public PitBossAbility() {
 		Bukkit.getPluginManager().registerEvents(this, PitSim.INSTANCE);
 	}
 
@@ -19,6 +17,11 @@ public abstract class PitBossAbility implements Listener {
 
 	public boolean shouldExecuteRoutine() {
 		return true;
+	}
+
+	public PitBossAbility pitBoss(PitBoss pitBoss) {
+		this.pitBoss = pitBoss;
+		return this;
 	}
 
 	public boolean isAssignedBoss(LivingEntity entity) {
