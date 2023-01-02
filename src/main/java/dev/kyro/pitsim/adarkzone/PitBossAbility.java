@@ -8,9 +8,6 @@ import org.bukkit.event.Listener;
 public abstract class PitBossAbility implements Listener {
 	public PitBoss pitBoss;
 
-	public boolean runsOnRoutine = false;
-	public double routineWeight;
-
 	public PitBossAbility(PitBoss pitBoss) {
 		this.pitBoss = pitBoss;
 
@@ -22,12 +19,6 @@ public abstract class PitBossAbility implements Listener {
 
 	public boolean shouldExecuteRoutine() {
 		return true;
-	}
-
-	public PitBossAbility runOnRoutine(double weight) {
-		this.runsOnRoutine = true;
-		this.routineWeight = weight;
-		return this;
 	}
 
 	public boolean isAssignedBoss(LivingEntity entity) {
