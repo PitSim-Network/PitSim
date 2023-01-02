@@ -12,11 +12,10 @@ public class StunAbility extends RoutinePitBossAbility {
 
 	public int duration;
 
-	public StunAbility(PitBoss pitBoss, int duration) {
+	public StunAbility(double routineWeight, int duration) {
 
-		super(pitBoss, routineWeight);
+		super(routineWeight);
 		this.duration = duration;
-		runsOnRoutine = true;
 	}
 
 	@Override

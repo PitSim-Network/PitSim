@@ -8,9 +8,10 @@ import org.bukkit.event.EventHandler;
 public class TrueDamageAbility extends PitBossAbility {
 	public int damage;
 
-	public TrueDamageAbility(PitBoss pitBoss, int damage) {
+	public TrueDamageAbility(int damage) {
 
-		super(pitBoss);
+		super();
+
 	}
 
 	@EventHandler

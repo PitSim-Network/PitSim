@@ -10,8 +10,8 @@ public class PitZombieBoss extends PitBoss {
 	public PitZombieBoss(Player summoner) {
 		super(summoner);
 
-		abilities.add(new TrueDamageAbility(this, 10));
-		routineAbilityMap.put(new StunAbility(this, 3), 0.1);
+		abilities.add(new TrueDamageAbility(10));
+		routineAbilityMap.put(new StunAbility(0.1,5), 0.1);
 
 
 	}
