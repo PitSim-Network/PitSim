@@ -1,6 +1,7 @@
 package dev.kyro.pitsim.adarkzone;
 
 import dev.kyro.pitsim.events.AttackEvent;
+import dev.kyro.pitsim.events.KillEvent;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -9,6 +10,7 @@ import org.bukkit.event.Listener;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 public class BossManager implements Listener {
 	public static List<PitBoss> pitBosses = new ArrayList<>();
@@ -22,14 +24,33 @@ public class BossManager implements Listener {
 	}
 
 	@EventHandler(priority = EventPriority.MONITOR)
-	public static void onAttack(AttackEvent.Apply attackEvent) {
-//		attackEvent.getFinalDamage()
+	public static void onBossAttacked(AttackEvent.Apply attackEvent) {
 
 		PitBoss defenderBoss = getPitBoss(attackEvent.getDefender());
-		if(defenderBoss != null) {
-
+		if(defenderBoss == null) {
+			return;
 		}
+		Player player = attackEvent.getAttackerPlayer();
+		if (!attackEvent.isAttackerPlayer())  {
+			return;
+		}
+
+		UUID uuid = player.getUniqueId();
+
+		defenderBoss.damageMap.put(uuid, defenderBoss.damageMap.getOrDefault(uuid, 0.0) + attackEvent.getEvent().getDamage());
+
 	}
+
+	@EventHandler
+	public static void onBossDeath(KillEvent killEvent) {
+		PitBoss killedBoss = getPitBoss(killEvent.getDead());
+		if(killedBoss == null) {
+			return;
+		}
+		killedBoss.onDeath();
+	}
+
+
 
 	public static boolean isBoss(LivingEntity entity) {
 		return getPitBoss(entity) != null;
