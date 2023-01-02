@@ -1,6 +1,10 @@
 package dev.kyro.pitsim.adarkzone;
 
 import org.bukkit.Location;
+import org.bukkit.entity.Player;
+
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 
 public abstract class SubLevel {
 	private Location middle;
@@ -22,6 +26,15 @@ public abstract class SubLevel {
 //	Bosses
 	public abstract Class<? extends PitBoss> getBoss();
 	public abstract int getRequiredDropsToSpawn();
+
+	public void spawnBoss(Player summoner) {
+		try {
+			Constructor<? extends PitBoss> constructor = getBoss().getConstructor(Player.class);
+			constructor.newInstance()
+		} catch(Exception exception) {
+			throw new RuntimeException(exception);
+		}
+	}
 
 	public Location getMiddle() {
 		return middle;

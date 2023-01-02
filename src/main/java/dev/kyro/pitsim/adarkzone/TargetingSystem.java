@@ -1,7 +1,10 @@
 package dev.kyro.pitsim.adarkzone;
 
+import dev.kyro.pitsim.PitSim;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
+import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.scheduler.BukkitTask;
 import org.bukkit.util.Vector;
 
 import java.util.ArrayList;
@@ -17,6 +20,8 @@ public class TargetingSystem {
 	public PitBoss pitBoss;
 	public Player target;
 
+	public BukkitTask runnable;
+
 //	TODO: Figure out if ranged attacks are all going to be shooting bows or if we are going to abstract and allow other stuff
 //	TODO: (maybe like snowballs, fireballs, particle beams, homing particles, thrown entities)
 	public enum State {
@@ -27,6 +32,8 @@ public class TargetingSystem {
 	public TargetingSystem(PitBoss pitBoss, Player target) {
 		this.pitBoss = pitBoss;
 		this.target = target;
+
+		start();
 	}
 
 	public void pickTarget() {
@@ -88,5 +95,18 @@ public class TargetingSystem {
 		double normalizedAngle = 1 / angleBetween;
 
 		return healthWeight * normalizedHealth + distanceWeight * normalizedDistance + angleWeight * normalizedAngle;
+	}
+
+	public void start() {
+		runnable = new BukkitRunnable() {
+			@Override
+			public void run() {
+
+			}
+		}.runTaskTimer(PitSim.INSTANCE, 0L, 5L);
+	}
+
+	public void stop() {
+		runnable.cancel();
 	}
 }
