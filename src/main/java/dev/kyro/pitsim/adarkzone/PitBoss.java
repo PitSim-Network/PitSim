@@ -1,4 +1,4 @@
-package dev.kyro.pitsim.controllers.objects;
+package dev.kyro.pitsim.adarkzone;
 
 import dev.kyro.pitsim.controllers.BossManager;
 import dev.kyro.pitsim.enums.SubLevel;

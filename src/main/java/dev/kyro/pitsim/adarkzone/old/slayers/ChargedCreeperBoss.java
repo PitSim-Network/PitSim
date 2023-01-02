@@ -2,7 +2,7 @@ package dev.kyro.pitsim.adarkzone.old.slayers;
 
 import dev.kyro.pitsim.adarkzone.old.slayers.tainted.SimpleBoss;
 import dev.kyro.pitsim.adarkzone.old.slayers.tainted.SimpleSkin;
-import dev.kyro.pitsim.controllers.objects.PitBoss;
+import dev.kyro.pitsim.adarkzone.PitBoss;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.enums.SubLevel;
 import dev.kyro.pitsim.events.AttackEvent;
