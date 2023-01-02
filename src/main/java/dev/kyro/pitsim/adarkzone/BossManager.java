@@ -4,6 +4,7 @@ import dev.kyro.pitsim.events.AttackEvent;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 
 import java.util.ArrayList;
@@ -18,6 +19,11 @@ public class BossManager implements Listener {
 		if(attackerBoss != null) {
 			attackEvent.getEvent().setDamage(attackerBoss.getMeleeDamage());
 		}
+	}
+
+	@EventHandler(priority = EventPriority.MONITOR)
+	public static void onAttack(AttackEvent.Apply attackEvent) {
+//		attackEvent.getFinalDamage()
 
 		PitBoss defenderBoss = getPitBoss(attackEvent.getDefender());
 		if(defenderBoss != null) {
