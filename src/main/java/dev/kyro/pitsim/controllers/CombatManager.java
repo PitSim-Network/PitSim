@@ -30,11 +30,9 @@ public class CombatManager implements Listener {
 	}
 
 	static {
-
 		new BukkitRunnable() {
 			@Override
 			public void run() {
-
 				List<UUID> toRemove = new ArrayList<>();
 				for(Map.Entry<UUID, Integer> entry : taggedPlayers.entrySet()) {
 					int time = entry.getValue();
