@@ -1,4 +1,4 @@
-package dev.kyro.pitsim.slayers.tainted;
+package dev.kyro.pitsim.adarkzone.slayers.tainted;
 
 public enum SimpleSkin {
 	ZOMBIE("Zombie"),

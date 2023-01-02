@@ -1,4 +1,4 @@
-package dev.kyro.pitsim.slayers.tainted;
+package dev.kyro.pitsim.adarkzone.slayers.tainted;
 
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.PitSim;
@@ -12,8 +12,6 @@ import dev.kyro.pitsim.enums.PantColor;
 import dev.kyro.pitsim.enums.SubLevel;
 import dev.kyro.pitsim.events.AttackEvent;
 import dev.kyro.pitsim.misc.BossSkin;
-import dev.kyro.pitsim.slayers.tainted.Loot.BossDrop;
-import dev.kyro.pitsim.slayers.tainted.Loot.LootTable;
 import net.citizensnpcs.api.npc.NPC;
 import net.citizensnpcs.api.trait.trait.Equipment;
 import net.citizensnpcs.npc.ai.CitizensNavigator;

@@ -1,4 +1,4 @@
-package dev.kyro.pitsim.slayers.tainted.Loot;
+package dev.kyro.pitsim.adarkzone.slayers.tainted.Loot;
 
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.misc.Sounds;

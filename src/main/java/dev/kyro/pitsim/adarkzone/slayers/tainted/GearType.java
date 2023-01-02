@@ -1,6 +1,5 @@
-package dev.kyro.pitsim.slayers.tainted;
+package dev.kyro.pitsim.adarkzone.slayers.tainted;
 
-import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 

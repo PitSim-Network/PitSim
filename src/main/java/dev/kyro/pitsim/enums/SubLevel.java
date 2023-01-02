@@ -1,8 +1,8 @@
 package dev.kyro.pitsim.enums;
 
 import dev.kyro.pitsim.mobs.*;
-import dev.kyro.pitsim.slayers.SkeletonBoss;
-import dev.kyro.pitsim.slayers.ZombieBoss;
+import dev.kyro.pitsim.adarkzone.slayers.SkeletonBoss;
+import dev.kyro.pitsim.adarkzone.slayers.ZombieBoss;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 

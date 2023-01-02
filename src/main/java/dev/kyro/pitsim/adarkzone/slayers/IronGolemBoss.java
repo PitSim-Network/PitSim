@@ -1,6 +1,8 @@
-package dev.kyro.pitsim.slayers;
+package dev.kyro.pitsim.adarkzone.slayers;
 
 import com.xxmicloxx.NoteBlockAPI.NoteBlockAPI;
+import dev.kyro.pitsim.adarkzone.slayers.tainted.SimpleBoss;
+import dev.kyro.pitsim.adarkzone.slayers.tainted.SimpleSkin;
 import dev.kyro.pitsim.controllers.objects.PitBoss;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.enums.SubLevel;
@@ -8,8 +10,6 @@ import dev.kyro.pitsim.events.AttackEvent;
 import dev.kyro.pitsim.events.ThrowBlockEvent;
 import dev.kyro.pitsim.misc.Sounds;
 import dev.kyro.pitsim.misc.ThrowableBlock;
-import dev.kyro.pitsim.slayers.tainted.SimpleBoss;
-import dev.kyro.pitsim.slayers.tainted.SimpleSkin;
 import net.citizensnpcs.api.CitizensAPI;
 import net.citizensnpcs.api.npc.NPC;
 import org.bukkit.Bukkit;
