@@ -1,4 +1,4 @@
-package dev.kyro.pitsim.alogging;
+package dev.kyro.pitsim.logging;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
