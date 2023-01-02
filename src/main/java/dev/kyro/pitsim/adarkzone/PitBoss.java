@@ -1,11 +1,9 @@
 package dev.kyro.pitsim.adarkzone;
 
-import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.adarkzone.notdarkzone.PitEquipment;
 import dev.kyro.pitsim.misc.Misc;
 import net.citizensnpcs.api.npc.NPC;
 import org.bukkit.entity.Player;
-import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.*;
 
@@ -54,24 +52,14 @@ public abstract class PitBoss {
 		return this;
 	}
 
+	public void delayNextRoutine(int ticks) {
+		lastRoutineExecuteTick += ticks;
+	}
+
 	public PitBossAbility getRoutineAbility() {
 		Map<PitBossAbility, Double> routineAbilityMap = new HashMap<>(this.routineAbilityMap);
 		for(Map.Entry<PitBossAbility, Double> entry : new ArrayList<>(routineAbilityMap.entrySet()))
 			if(!entry.getKey().shouldExecuteRoutine()) routineAbilityMap.remove(entry.getKey());
 		return Misc.weightedRandom(routineAbilityMap);
-	}
-
-	public void startAbilities() {
-		new BukkitRunnable() {
-			@Override
-			public void run() {
-				if(lastRoutineExecuteTick + routineAbilityCooldownTicks > PitSim.currentTick) return;
-				if(skipRoutineChance != 0 && Math.random() * 100 < skipRoutineChance) return;
-				lastRoutineExecuteTick = PitSim.currentTick;
-
-				PitBossAbility routineAbility = getRoutineAbility();
-				routineAbility.onRoutineExecute();
-			}
-		}.runTaskTimer(PitSim.INSTANCE, 0L, 20);
 	}
 }
