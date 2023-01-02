@@ -4,11 +4,13 @@ import org.bukkit.Location;
 
 public abstract class SubLevel {
 	private Location middle;
+	private Location bossSpawnLocation;
 
 	public boolean isBossSpawned = false;
 
 	public SubLevel() {
 		this.middle = createMiddle();
+		this.bossSpawnLocation = middle.clone().add(0, 2, 0);
 	}
 
 	//	Mobs
@@ -23,5 +25,9 @@ public abstract class SubLevel {
 
 	public Location getMiddle() {
 		return middle;
+	}
+
+	public Location getBossSpawnLocation() {
+		return bossSpawnLocation;
 	}
 }
