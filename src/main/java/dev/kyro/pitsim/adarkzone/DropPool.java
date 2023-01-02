@@ -14,6 +14,10 @@ public class DropPool {
 	public DropPool() {
 	}
 
+	/*
+	 * Returns: ItemStack
+	 * Description: Returns a random item from the drop pool
+	 */
 	public ItemStack getRandomDrop() {
 		return Misc.weightedRandom(dropPool);
 	}
@@ -50,6 +54,12 @@ public class DropPool {
 		}
 	}
 
+	/*
+	* Parameters: ItemStack itemStack - Item to add to the drop pool
+	* double weight - Weight of the item
+	* Returns: void
+	* Description: Adds an item to the drop pool with a weight
+	*/
 	public DropPool addItem(ItemStack item, double chance) {
 		dropPool.put(item, chance);
 		return this;
