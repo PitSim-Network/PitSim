@@ -28,7 +28,8 @@ public abstract class PitBoss {
 	public PitEquipment equipment = DarkzoneManager.getDefaultEquipment();
 
 //	Ability Related
-	public List<PitBossAbility> abilities = new ArrayList<>();
+	public List<PitBossAbility> abilities
+		= new ArrayList<>();
 	public Map<PitBossAbility, Double> routineAbilityMap = new HashMap<>();
 	public double skipRoutineChance = 0;
 	public long lastRoutineExecuteTick;
@@ -105,5 +106,7 @@ public abstract class PitBoss {
 		}.runTaskTimer(PitSim.INSTANCE, 0L, 20);
 	}
 
-
+	public void kill() {
+		onDeath();
+	}
 }

@@ -33,7 +33,24 @@ public abstract class SubLevel {
 	public abstract Class<? extends PitBoss> getBoss();
 	public abstract int getRequiredDropsToSpawn();
 
+	public void tick() {
+		int newMobsNeeded = getMaxMobs() - mobs.size();
+		for(int i = 0; i < newMobsNeeded; i++) {
+
+		}
+	}
+
+	public void spawnMob() {
+		try {
+			Constructor<? extends PitMob> constructor = getMob().getConstructor(Player.class);
+			pitBoss = constructor.newInstance(summoner);
+		} catch(Exception exception) {
+			throw new RuntimeException(exception);
+		}
+	}
+
 	public void spawnBoss(Player summoner) {
+		if(isBossSpawned) throw new RuntimeException();
 		try {
 			Constructor<? extends PitBoss> constructor = getBoss().getConstructor(Player.class);
 			pitBoss = constructor.newInstance(summoner);
@@ -42,6 +59,10 @@ public abstract class SubLevel {
 		}
 		isBossSpawned = true;
 		disableMobs();
+	}
+
+	public void onBossDeath() {
+		isBossSpawned = false;
 	}
 
 	public void disableMobs() {

@@ -1,10 +1,12 @@
 package dev.kyro.pitsim.adarkzone;
 
+import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.adarkzone.notdarkzone.PitEquipment;
 import dev.kyro.pitsim.adarkzone.sublevels.ZombieSubLevel;
 import org.bukkit.Material;
 import org.bukkit.event.Listener;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,6 +16,13 @@ public class DarkzoneManager implements Listener {
 
 	static {
 		registerSubLevel(new ZombieSubLevel());
+
+		new BukkitRunnable() {
+			@Override
+			public void run() {
+				for(SubLevel subLevel : subLevels) subLevel.tick();
+			}
+		}.runTaskTimer(PitSim.INSTANCE, 0L, 5);
 	}
 
 	public static PitEquipment getDefaultEquipment() {
@@ -32,6 +41,6 @@ public class DarkzoneManager implements Listener {
 
 	public static SubLevel getSubLevel(Class<? extends SubLevel> clazz) {
 		for(SubLevel subLevel : subLevels) if(subLevel.getClass() == clazz) return subLevel;
-		return null;
+		throw new RuntimeException();
 	}
 }

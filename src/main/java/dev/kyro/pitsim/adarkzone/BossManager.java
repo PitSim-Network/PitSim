@@ -27,18 +27,12 @@ public class BossManager implements Listener {
 	public static void onBossAttacked(AttackEvent.Apply attackEvent) {
 
 		PitBoss defenderBoss = getPitBoss(attackEvent.getDefender());
-		if(defenderBoss == null) {
-			return;
-		}
+		if(defenderBoss == null) return;
 		Player player = attackEvent.getAttackerPlayer();
-		if (!attackEvent.isAttackerPlayer())  {
-			return;
-		}
+		if(!attackEvent.isAttackerPlayer()) return;
 
 		UUID uuid = player.getUniqueId();
-
 		defenderBoss.damageMap.put(uuid, defenderBoss.damageMap.getOrDefault(uuid, 0.0) + attackEvent.getEvent().getDamage());
-
 	}
 
 	@EventHandler
@@ -47,10 +41,8 @@ public class BossManager implements Listener {
 		if(killedBoss == null) {
 			return;
 		}
-		killedBoss.onDeath();
+		killedBoss.kill();
 	}
-
-
 
 	public static boolean isBoss(LivingEntity entity) {
 		return getPitBoss(entity) != null;
