@@ -79,7 +79,7 @@ public class OldMobManager implements Listener {
 				if(!PitSim.getStatus().isDarkzone()) return;
 
 				clearMobs();
-				for(SubLevel level : SubLevel.values()) {
+				for(OldSubLevel level : OldSubLevel.values()) {
 
 					int currentMobs = 0;
 					for(OldPitMob mob : mobs) {
@@ -124,8 +124,8 @@ public class OldMobManager implements Listener {
 				List<OldPitMob> toRemove = new ArrayList<>();
 				for(OldPitMob mob : mobs) {
 
-					assert SubLevel.getLevel(mob.subLevel) != null;
-					if(mob.entity.getLocation().distance(SubLevel.getLevel(mob.subLevel).middle) <= SubLevel.getLevel(mob.subLevel).radius + 10) {
+					assert OldSubLevel.getLevel(mob.subLevel) != null;
+					if(mob.entity.getLocation().distance(OldSubLevel.getLevel(mob.subLevel).middle) <= OldSubLevel.getLevel(mob.subLevel).radius + 10) {
 						if(!(mob.entity instanceof Monster)) continue;
 						if(((Monster) mob.entity).getTarget() != null) continue;
 						if(mob.entity.getNearbyEntities(1, 1, 1).size() <= 1) continue;
@@ -178,16 +178,16 @@ public class OldMobManager implements Listener {
 				for(Player player : Bukkit.getOnlinePlayers()) {
 					if(!MapManager.inDarkzone(player.getLocation())) continue;
 
-					SubLevel subLevel = null;
+					OldSubLevel oldSubLevel = null;
 					double distanceToClosest = 0;
-					for(SubLevel testSubLevel : SubLevel.values()) {
-						double distance = player.getLocation().distance(testSubLevel.middle);
-						if(distance > testSubLevel.radius + 10) continue;
-						if(subLevel != null && distance >= distanceToClosest) continue;
-						subLevel = testSubLevel;
+					for(OldSubLevel testOldSubLevel : OldSubLevel.values()) {
+						double distance = player.getLocation().distance(testOldSubLevel.middle);
+						if(distance > testOldSubLevel.radius + 10) continue;
+						if(oldSubLevel != null && distance >= distanceToClosest) continue;
+						oldSubLevel = testOldSubLevel;
 						distanceToClosest = distance;
 					}
-					if(subLevel == null) continue;
+					if(oldSubLevel == null) continue;
 
 					HashMap<OldPitMob, Double> noTarget = new HashMap<>();
 					int targets = 0;
@@ -197,7 +197,7 @@ public class OldMobManager implements Listener {
 					for(OldPitMob mob : mobsCopy) {
 						if(mob instanceof OldPitStrongPigman || mob instanceof OldPitSpiderBrute || !(mob.entity instanceof Creature))
 							continue;
-						if(mob.subLevel != subLevel.level) {
+						if(mob.subLevel != oldSubLevel.level) {
 							if(mob.target == player) {
 								mob.target = null;
 								((Creature) mob.entity).setTarget(null);

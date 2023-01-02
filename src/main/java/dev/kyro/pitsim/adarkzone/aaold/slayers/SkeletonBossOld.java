@@ -1,7 +1,7 @@
 package dev.kyro.pitsim.adarkzone.aaold.slayers;
 
 import com.xxmicloxx.NoteBlockAPI.NoteBlockAPI;
-import dev.kyro.pitsim.adarkzone.aaold.SubLevel;
+import dev.kyro.pitsim.adarkzone.aaold.OldSubLevel;
 import dev.kyro.pitsim.adarkzone.aaold.slayers.tainted.SimpleBoss;
 import dev.kyro.pitsim.adarkzone.aaold.slayers.tainted.SimpleSkin;
 import dev.kyro.pitsim.commands.FreshCommand;
@@ -23,15 +23,15 @@ public class SkeletonBossOld extends OldPitBoss {
 	public Player entity;
 	public Player target;
 	public String name = "&c&lSkeleton Boss";
-	public SubLevel subLevel = SubLevel.SKELETON_CAVE;
+	public OldSubLevel oldSubLevel = OldSubLevel.SKELETON_CAVE;
 	public SimpleBoss boss;
 
 	public SkeletonBossOld(Player target) throws Exception {
-		super(target, SubLevel.SKELETON_CAVE, 12);
+		super(target, OldSubLevel.SKELETON_CAVE, 12);
 
 		npc = CitizensAPI.getNPCRegistry().createNPC(EntityType.PLAYER, name);
 
-		this.boss = new SimpleBoss(npc, target, subLevel, 2, SimpleSkin.SKELETON, this) {
+		this.boss = new SimpleBoss(npc, target, oldSubLevel, 2, SimpleSkin.SKELETON, this) {
 			@Override
 			protected void attackHigh() {
 

@@ -4,7 +4,7 @@ import com.xxmicloxx.NoteBlockAPI.NoteBlockAPI;
 import dev.kyro.pitsim.adarkzone.aaold.slayers.tainted.SimpleBoss;
 import dev.kyro.pitsim.adarkzone.aaold.slayers.tainted.SimpleSkin;
 import dev.kyro.pitsim.adarkzone.aaold.OldPitBoss;
-import dev.kyro.pitsim.adarkzone.aaold.SubLevel;
+import dev.kyro.pitsim.adarkzone.aaold.OldSubLevel;
 import dev.kyro.pitsim.events.AttackEvent;
 import net.citizensnpcs.api.CitizensAPI;
 import net.citizensnpcs.api.npc.NPC;
@@ -17,16 +17,16 @@ public class ZombieBossOld extends OldPitBoss {
 	public Player entity;
 	public Player target;
 	public String name = "&c&lZombie Boss";
-	public SubLevel subLevel = SubLevel.ZOMBIE_CAVE;
+	public OldSubLevel oldSubLevel = OldSubLevel.ZOMBIE_CAVE;
 	public SimpleBoss boss;
 
 	public ZombieBossOld(Player target) throws Exception {
-		super(target, SubLevel.ZOMBIE_CAVE, 6);
+		super(target, OldSubLevel.ZOMBIE_CAVE, 6);
 		this.target = target;
 
 		npc = CitizensAPI.getNPCRegistry().createNPC(EntityType.PLAYER, name);
 
-		this.boss = new SimpleBoss(npc, target, subLevel, 1, SimpleSkin.ZOMBIE, this) {
+		this.boss = new SimpleBoss(npc, target, oldSubLevel, 1, SimpleSkin.ZOMBIE, this) {
 			@Override
 			protected void attackHigh() {
 
