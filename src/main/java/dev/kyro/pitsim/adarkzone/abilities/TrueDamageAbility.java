@@ -9,6 +9,7 @@ public class TrueDamageAbility extends PitBossAbility {
 	public int damage;
 
 	public TrueDamageAbility(PitBoss pitBoss, int damage) {
+
 		super(pitBoss);
 	}
 
