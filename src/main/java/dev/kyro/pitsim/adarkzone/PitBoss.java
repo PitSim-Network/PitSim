@@ -32,7 +32,8 @@ public abstract class PitBoss {
 	public PitBoss() {}
 
 	public abstract int getMaxHealth();
-	public abstract int getReach();
+	public abstract double getReach();
+	public abstract double getReachRanged();
 
 //	Internal events (override to add functionality)
 	public void onSpawn() {}

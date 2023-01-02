@@ -1,16 +1,18 @@
 package dev.kyro.pitsim.adarkzone;
 
-import org.bukkit.Location;
-import org.bukkit.Server;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 // This code strictly handles literal attacks, not abilities and other "attacks"
 public class TargetingSystem {
+	public double healthWeight = 0.7;
+	public double distanceWeight = 0.4;
+	public double angleWeight = 1.0;
+
 	public State targetingState;
 	public PitBoss pitBoss;
 	public Player target;
@@ -22,31 +24,25 @@ public class TargetingSystem {
 		ATTACKING_RANGED
 	}
 
-
 	public TargetingSystem(PitBoss pitBoss, Player target) {
 		this.pitBoss = pitBoss;
 		this.target = target;
 	}
 
 	public Player findTarget(State targetingState) {
+		double radius = pitBoss.getReach();
 
-		Location location = pitBoss.boss.getLocation();
-		int radius = pitBoss.getReach();
-
-		if (targetingState == State.ATTACKING_RANGED) {
-			radius *= 2;
+		if(targetingState == State.ATTACKING_MELEE) {
+			radius = pitBoss.getReach();
+		} else if(targetingState == State.ATTACKING_RANGED) {
+			radius = pitBoss.getReachRanged();
 		}
 
-		Server server = pitBoss.boss.getServer();
-
-		Collection<? extends Player> players = server.getOnlinePlayers();
-
 		List<Player> playersInRadius = new ArrayList<>();
-
-		for(Player player : players) {
-			if(player.getLocation().distance(location) <= radius) {
-				playersInRadius.add(player);
-			}
+		for(Entity entity : pitBoss.boss.getNearbyEntities(radius, radius, radius)) {
+			if(!(entity instanceof Player)) continue;
+			Player player = (Player) entity;
+			playersInRadius.add(player);
 		}
 
 		Vector pitBossDirection = pitBoss.boss.getLocation().getDirection();
@@ -64,7 +60,6 @@ public class TargetingSystem {
 		}
 
 		return bestTarget;
-
 	}
 
 	//reward function to find the best target
@@ -83,14 +78,6 @@ public class TargetingSystem {
 		double normalizedDistance = pitBoss.getReach() / distance;
 		double normalizedAngle = 1 / angleBetween;
 
-		double healthWeight = 0.7;
-		double distanceWeight = 0.4;
-		double angleWeight = 1.0;
-
 		return healthWeight * normalizedHealth + distanceWeight * normalizedDistance + angleWeight * normalizedAngle;
 	}
-
-
-	
-
 }
