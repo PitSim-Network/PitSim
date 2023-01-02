@@ -1,7 +1,7 @@
 package dev.kyro.pitsim.mobs;
 
 import dev.kyro.pitsim.brewing.ingredients.SpiderEye;
-import dev.kyro.pitsim.controllers.MobManager;
+import dev.kyro.pitsim.adarkzone.aaold.OldMobManager;
 import dev.kyro.pitsim.adarkzone.aaold.OldPitMob;
 import dev.kyro.pitsim.enums.MobType;
 import org.bukkit.Location;
@@ -28,7 +28,7 @@ public class OldPitSpider extends OldPitMob {
 		spider.setRemoveWhenFarAway(false);
 
 		spider.setCustomNameVisible(false);
-		MobManager.makeTag(spider, displayName);
+		OldMobManager.makeTag(spider, displayName);
 		return spider;
 	}
 

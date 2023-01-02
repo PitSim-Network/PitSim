@@ -2,7 +2,7 @@ package dev.kyro.pitsim.mobs;
 
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.brewing.ingredients.WitherSkull;
-import dev.kyro.pitsim.controllers.MobManager;
+import dev.kyro.pitsim.adarkzone.aaold.OldMobManager;
 import dev.kyro.pitsim.adarkzone.aaold.OldPitMob;
 import dev.kyro.pitsim.enums.MobType;
 import org.bukkit.Location;
@@ -32,7 +32,7 @@ public class OldPitWitherSkeleton extends OldPitMob {
 		witherSkeleton.setSkeletonType(Skeleton.SkeletonType.WITHER);
 
 		witherSkeleton.setCustomNameVisible(false);
-		MobManager.makeTag(witherSkeleton, displayName);
+		OldMobManager.makeTag(witherSkeleton, displayName);
 
 		new BukkitRunnable() {
 			@Override

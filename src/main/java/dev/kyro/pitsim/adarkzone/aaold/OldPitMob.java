@@ -2,7 +2,6 @@ package dev.kyro.pitsim.adarkzone.aaold;
 
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.enums.MobType;
-import dev.kyro.pitsim.controllers.MobManager;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.LivingEntity;
@@ -35,7 +34,7 @@ public abstract class OldPitMob implements Listener {
 		this.speedLevel = speedLevel;
 
 		Bukkit.getPluginManager().registerEvents(this, PitSim.INSTANCE);
-		MobManager.mobs.add(this);
+		OldMobManager.mobs.add(this);
 
 		this.entity = spawnMob(spawnLoc);
 		if(speedLevel != 0)
@@ -43,9 +42,9 @@ public abstract class OldPitMob implements Listener {
 	}
 
 	public void remove() {
-		MobManager.nameTags.get(this.entity.getUniqueId()).remove();
+		OldMobManager.nameTags.get(this.entity.getUniqueId()).remove();
 		this.entity.remove();
-		MobManager.mobs.remove(this);
+		OldMobManager.mobs.remove(this);
 	}
 
 	public abstract LivingEntity spawnMob(Location spawnLoc);
@@ -53,14 +52,14 @@ public abstract class OldPitMob implements Listener {
 	public abstract Map<ItemStack, Integer> getDrops();
 
 	public static boolean isPitMob(LivingEntity entity) {
-		for(OldPitMob mob : MobManager.mobs) {
+		for(OldPitMob mob : OldMobManager.mobs) {
 			if(mob.entity.getUniqueId().equals(entity.getUniqueId())) return true;
 		}
 		return false;
 	}
 
 	public static OldPitMob getPitMob(LivingEntity entity) {
-		for(OldPitMob mob : MobManager.mobs) {
+		for(OldPitMob mob : OldMobManager.mobs) {
 			if(mob.entity == null) return null;
 			if(mob.entity.getUniqueId().equals(entity.getUniqueId())) return mob;
 		}

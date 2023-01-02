@@ -1,7 +1,7 @@
 package dev.kyro.pitsim.mobs;
 
 import dev.kyro.pitsim.brewing.ingredients.IronIngot;
-import dev.kyro.pitsim.controllers.MobManager;
+import dev.kyro.pitsim.adarkzone.aaold.OldMobManager;
 import dev.kyro.pitsim.adarkzone.aaold.OldPitMob;
 import dev.kyro.pitsim.enums.MobType;
 import org.bukkit.Location;
@@ -28,7 +28,7 @@ public class OldPitIronGolem extends OldPitMob {
 		ironGolem.setRemoveWhenFarAway(false);
 
 		ironGolem.setCustomNameVisible(false);
-		MobManager.makeTag(ironGolem, displayName);
+		OldMobManager.makeTag(ironGolem, displayName);
 		return ironGolem;
 	}
 
