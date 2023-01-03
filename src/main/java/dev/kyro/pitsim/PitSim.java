@@ -116,6 +116,8 @@ public class PitSim extends JavaPlugin {
 	public void onEnable() {
 		INSTANCE = this;
 
+		PlayerDataManager.exemptedPlayers.addAll(Bukkit.getOnlinePlayers());
+
 		loadConfig();
 		ArcticAPI.configInit(this, "prefix", "error-prefix");
 		serverName = AConfig.getString("server");

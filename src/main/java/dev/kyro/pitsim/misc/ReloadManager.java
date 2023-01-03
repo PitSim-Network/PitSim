@@ -38,7 +38,7 @@ public class ReloadManager {
 					if(file.lastModified() != lastModified && !startedUpload) {
 						startedUpload = true;
 						System.out.println("Detected server jar upload. Waiting for completion");
-						if(PitSim.getStatus() != PitSim.ServerStatus.ALL)
+						if(PitSim.getStatus() != PitSim.ServerStatus.ALL && !PitSim.serverName.contains("dev"))
 							for(Player onlinePlayer : Bukkit.getOnlinePlayers())
 								onlinePlayer.kickPlayer("reloading plugin");
 					}

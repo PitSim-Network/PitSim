@@ -64,7 +64,7 @@ public class ProxyMessaging implements Listener {
 		}
 	}
 
-	public static void sendBoosterUse(Booster booster, Player player, int time, boolean message) {
+	public static void  sendBoosterUse(Booster booster, Player player, int time, boolean message) {
 
 		String playerName = "%luckperms_prefix%" + player.getName();
 		String playerNameColored = PlaceholderAPI.setPlaceholders(player, playerName);

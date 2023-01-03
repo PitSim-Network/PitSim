@@ -222,7 +222,7 @@ public class PitPlayer {
 
 	@Exclude
 	public void save(boolean finalSave, BukkitRunnable callback, boolean itemData) throws ExecutionException, InterruptedException {
-		if(PitSim.getStatus() == PitSim.ServerStatus.ALL) return;
+		if(PitSim.getStatus() == PitSim.ServerStatus.ALL || PlayerDataManager.exemptedPlayers.contains(player)) return;
 		if(finalSave && lastSave + SAVE_COOLDOWN > System.currentTimeMillis()) {
 			long timeUntilSave = lastSave + SAVE_COOLDOWN - System.currentTimeMillis();
 			new Thread(() -> {

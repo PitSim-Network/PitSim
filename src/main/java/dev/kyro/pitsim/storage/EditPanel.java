@@ -18,6 +18,8 @@ public class EditPanel extends AGUIPanel {
 	public EditSession session;
 	public boolean playerClosed = true;
 
+	public boolean hasClicked = false;
+
 	public EditPanel(AGUI gui, EditSession session) {
 		super(gui);
 		this.session = session;
@@ -35,10 +37,11 @@ public class EditPanel extends AGUIPanel {
 
 	@Override
 	public void onClick(InventoryClickEvent event) {
-		if(event.getClickedInventory().getHolder() != this) return;
+		if(event.getClickedInventory().getHolder() != this || hasClicked) return;
 
 		int slot = event.getSlot();
 		if(slot == 11) {
+			hasClicked = true;
 			if(session.isPlayerOnline() && session.getPlayerServer().equals(PitSim.serverName)) {
 				if(Bukkit.getPlayer(session.getPlayerUUID()) == null) {
 					AOutput.error(session.getStaffMember(), "&cThe player is no longer online!");
@@ -65,6 +68,7 @@ public class EditPanel extends AGUIPanel {
 				player.closeInventory();
 			}
 		} else if(slot == 15) {
+			hasClicked = true;
 			if(!session.isPlayerOnline()) {
 				session.respond(EditType.OFFLINE);
 			} else session.respond(EditType.OFFLINE_KICK);
