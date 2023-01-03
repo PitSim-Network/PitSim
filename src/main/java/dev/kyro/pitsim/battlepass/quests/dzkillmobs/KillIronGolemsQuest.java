@@ -5,12 +5,10 @@ import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.arcticapi.misc.AUtil;
 import dev.kyro.pitsim.battlepass.PassManager;
 import dev.kyro.pitsim.battlepass.PassQuest;
-import dev.kyro.pitsim.adarkzone.aaold.OldMobManager;
 import dev.kyro.pitsim.controllers.PlayerManager;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.events.KillEvent;
 import dev.kyro.pitsim.misc.Misc;
-import dev.kyro.pitsim.mobs.OldPitIronGolem;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.event.EventHandler;
@@ -26,7 +24,7 @@ public class KillIronGolemsQuest extends PassQuest {
 	@EventHandler
 	public void onKill(KillEvent killEvent) {
 		if(!PlayerManager.isRealPlayer(killEvent.getKillerPlayer())) return;
-		if(!OldMobManager.mobIsType(killEvent.getDead(), OldPitIronGolem.class)) return;
+//		if(!OldMobManager.mobIsType(killEvent.getDead(), OldPitIronGolem.class)) return;
 
 		progressQuest(killEvent.getKillerPitPlayer(), 1);
 	}

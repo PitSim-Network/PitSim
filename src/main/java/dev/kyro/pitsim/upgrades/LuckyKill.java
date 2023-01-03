@@ -6,9 +6,9 @@ import com.xxmicloxx.NoteBlockAPI.songplayer.RadioSongPlayer;
 import com.xxmicloxx.NoteBlockAPI.utils.NBSDecoder;
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.arcticapi.misc.AUtil;
+import dev.kyro.pitsim.adarkzone.BossManager;
 import dev.kyro.pitsim.controllers.NonManager;
 import dev.kyro.pitsim.controllers.UpgradeManager;
-import dev.kyro.pitsim.adarkzone.aaold.OldPitBoss;
 import dev.kyro.pitsim.controllers.objects.RenownUpgrade;
 import dev.kyro.pitsim.events.KillEvent;
 import org.bukkit.ChatColor;
@@ -64,7 +64,7 @@ public class LuckyKill extends RenownUpgrade {
 		if(!UpgradeManager.hasUpgrade(killEvent.getKillerPlayer(), this)) return;
 		if(!(NonManager.getNon(killEvent.getDead()) == null)) return;
 		if(!(killEvent.getDead() instanceof Player)) return;
-		if(OldPitBoss.isPitBoss((Player) killEvent.getDead())) return;
+		if(BossManager.isBoss(killEvent.getDead())) return;
 		if(!killEvent.isDeadPlayer()) return;
 
 		int tier = UpgradeManager.getTier(killEvent.getKillerPlayer(), this);

@@ -20,7 +20,8 @@ public class MapManager implements Listener {
 
 	public static Location darkzoneSpawn = new Location(getDarkzone(), 178.5, 91, -93.5, -90, 0);
 
-	public static Location initialDarkzoneSpawn = new Location(getDarkzone(), 177.5, 92, -93.5, -90, 0);
+//	public static Location initialDarkzoneSpawn = new Location(getDarkzone(), 177.5, 92, -93.5, -90, 0);
+	public static Location initialDarkzoneSpawn = new Location(getDarkzone(), 310, 69, -136, -90, 0);
 
 	public static void onStart() {
 		for(Player onlinePlayer : Bukkit.getOnlinePlayers()) {

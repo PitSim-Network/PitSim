@@ -1,7 +1,6 @@
 package dev.kyro.pitsim.controllers;
 
 import dev.kyro.pitsim.controllers.objects.Non;
-import dev.kyro.pitsim.adarkzone.aaold.OldPitMob;
 import dev.kyro.pitsim.events.AttackEvent;
 import dev.kyro.pitsim.misc.Misc;
 import me.clip.placeholderapi.PlaceholderAPI;
@@ -78,7 +77,8 @@ public class DamageIndicator implements Listener {
 		String playername = "&7%luckperms_prefix%" + (defendingNon == null ? "%player_name%" : defendingNon.displayName) + " ";
 		if(defender instanceof Player)
 			output.append(PlaceholderAPI.setPlaceholders(attackEvent.getDefenderPlayer(), playername));
-		else if(OldPitMob.isPitMob(defender)) output.append(OldPitMob.getPitMob(defender).displayName).append(" ");
+//		TODO: Readd
+//		else if(OldPitMob.isPitMob(defender)) output.append(OldPitMob.getPitMob(defender).displayName).append(" ");
 		else output.append(player.getCustomName() + " ");
 
 		for(int i = 0; i < Math.max(originalHealth - roundedDamageTaken, 0); i++) {

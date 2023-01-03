@@ -61,7 +61,7 @@ public class SubLevel {
 	public void identifySpawnableLocations() {
 		for(int x = -spawnRadius; x < spawnRadius + 1; x++) {
 			for(int z = -spawnRadius; z < spawnRadius + 1; z++) {
-				Location location = new Location(MapManager.getDarkzone(), x, middle.getBlockY(), z);
+				Location location = new Location(MapManager.getDarkzone(), middle.getBlockX() + x, middle.getBlockY(), middle.getBlockZ() + z);
 				if(location.distance(middle) > spawnRadius) continue;
 				location.add(0, -3, 0);
 				if(!isSpawnableLocation(location)) continue;
@@ -71,12 +71,11 @@ public class SubLevel {
 	}
 
 	public boolean isSpawnableLocation(Location location) {
-		boolean foundGround = false;
-		boolean foundSpawnableSpace = false;
-		for(int i = 0; i < 7; i++) {
+		boolean canSpawn = false;
+		for(int i = 0; i < 6; i++) {
 			Block block = location.getBlock();
-			if(block.getType() != Material.AIR) {
-				foundGround = true;
+			if(block.getType() == Material.AIR) {
+				location.add(0, 1, 0);
 				continue;
 			}
 			Block blockAbove = location.clone().add(0, 1, 0).getBlock();
@@ -84,10 +83,10 @@ public class SubLevel {
 				location.add(0, 1, 0);
 				continue;
 			}
-			foundSpawnableSpace = true;
+			canSpawn = true;
 			break;
 		}
-		if(!foundGround || !foundSpawnableSpace) return false;
+		if(!canSpawn) return false;
 		boolean foundCeiling = false;
 		for(int i = 0; i < 15; i++) {
 			Block block = location.clone().add(0, i + 2, 0).getBlock();

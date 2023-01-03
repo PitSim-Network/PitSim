@@ -25,7 +25,7 @@ public class DarkzoneManager implements Listener {
 	static {
 		registerSubLevel(new SubLevel(
 				SubLevelType.ZOMBIE, PitZombieBoss.class, PitZombie.class,
-				new Location(MapManager.getDarkzone(), 327, 68, -143),
+				new Location(MapManager.getDarkzone(), 327, 66, -143),
 				20, 17, 12
 		));
 
@@ -44,9 +44,7 @@ public class DarkzoneManager implements Listener {
 	 */
 	@EventHandler
 	public void onClick(PlayerInteractEvent event) {
-
 		if(event.getPlayer() == null) return;
-
 		if(event.getItem() == null) return;
 		ItemStack item = event.getItem();
 		Location location = event.getClickedBlock().getLocation();
@@ -79,7 +77,6 @@ public class DarkzoneManager implements Listener {
 			event.setCancelled(true);
 	}
 
-
 	public static PitEquipment getDefaultEquipment() {
 		return new PitEquipment()
 				.held(new ItemStack(Material.DIAMOND_SWORD))
@@ -89,7 +86,6 @@ public class DarkzoneManager implements Listener {
 				.leggings(new ItemStack(Material.DIAMOND_SWORD))
 				.boots(new ItemStack(Material.DIAMOND_SWORD));
 	}
-
 
 	/*
 	 * Parameters: SubLevel subLevel
