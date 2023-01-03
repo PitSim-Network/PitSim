@@ -163,7 +163,6 @@ public class PitSim extends JavaPlugin {
 
 		registerMaps();
 
-		MapManager.onStart();
 		if(getStatus().isPitsim()) NonManager.init();
 		SignPrompt.registerSignUpdateListener();
 		TempBlockHelper.init();

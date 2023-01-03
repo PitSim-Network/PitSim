@@ -23,15 +23,13 @@ public class MapManager implements Listener {
 //	public static Location initialDarkzoneSpawn = new Location(getDarkzone(), 177.5, 92, -93.5, -90, 0);
 	public static Location initialDarkzoneSpawn = new Location(getDarkzone(), 310, 69, -136, -90, 0);
 
-	public static void onStart() {
-		for(Player onlinePlayer : Bukkit.getOnlinePlayers()) {
-			onlinePlayer.teleport(currentMap.getSpawn());
-		}
-	}
-
 	public static void registerMap(PitMap pitMap) {
 		mapList.add(pitMap);
 		currentMap = pitMap;
+
+		for(Player onlinePlayer : Bukkit.getOnlinePlayers()) {
+			onlinePlayer.teleport(currentMap.getSpawn());
+		}
 	}
 
 	public static Location playerSnow = new org.bukkit.Location(Bukkit.getWorld("pit"), -99, 46, 707, 0, 0);
