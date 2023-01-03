@@ -9,6 +9,12 @@ import dev.kyro.pitsim.controllers.MapManager;
 import org.bukkit.Location;
 
 public class ZombieSubLevel extends SubLevel {
+
+
+	public ZombieSubLevel() {
+
+	}
+
 	@Override
 	public Class<? extends PitMob> getMob() {
 		return PitZombie.class;
@@ -36,6 +42,6 @@ public class ZombieSubLevel extends SubLevel {
 
 	@Override
 	public int getRequiredDropsToSpawn() {
-		return 0;
+		return 12;
 	}
 }

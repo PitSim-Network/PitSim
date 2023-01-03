@@ -4,11 +4,13 @@ import org.bukkit.Location;
 import org.bukkit.entity.Creature;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 
 public abstract class PitMob {
 
 	public Creature mob;
 	public Player target;
+	public ItemStack drop;
 
 	public PitMob(Location spawnLocation) {
 		spawn(spawnLocation);
@@ -29,6 +31,7 @@ public abstract class PitMob {
 	}
 
 	public void rewardKill(Player killer) {
+		killer.getInventory().addItem(drop);
 
 	}
 

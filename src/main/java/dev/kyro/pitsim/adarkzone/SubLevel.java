@@ -5,6 +5,7 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 
 import java.lang.reflect.Constructor;
 import java.util.ArrayList;
@@ -22,6 +23,8 @@ public abstract class SubLevel {
 //	Boss related fields
 	public boolean isBossSpawned = false;
 	public PitBoss pitBoss;
+	public ItemStack spawnItem;
+	public int currentDrops = 0;
 
 	public SubLevel() {
 		this.middle = createMiddle();
@@ -128,5 +131,9 @@ public abstract class SubLevel {
 
 	public Location getBossSpawnLocation() {
 		return bossSpawnLocation;
+	}
+
+	public ItemStack getSpawnItem() {
+		return spawnItem;
 	}
 }

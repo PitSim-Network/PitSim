@@ -3,8 +3,11 @@ package dev.kyro.pitsim.adarkzone;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.adarkzone.notdarkzone.PitEquipment;
 import dev.kyro.pitsim.adarkzone.sublevels.ZombieSubLevel;
+import net.citizensnpcs.api.event.NPCRightClickEvent;
 import org.bukkit.Material;
+import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 
@@ -23,6 +26,31 @@ public class DarkzoneManager implements Listener {
 				for(SubLevel subLevel : subLevels) subLevel.tick();
 			}
 		}.runTaskTimer(PitSim.INSTANCE, 0L, 5);
+	}
+
+
+	@EventHandler
+	public void onClick(PlayerInteractEvent event) {
+
+		if(event.getPlayer() == null) return;
+
+		if(event.getItem() == null) return;
+		ItemStack item = event.getItem();
+
+		for(SubLevel subLevel : subLevels) {
+			if (subLevel.getSpawnItem().equals(item)) {
+				subLevel.currentDrops++;
+
+				if (subLevel.currentDrops >= subLevel.getRequiredDropsToSpawn()) {
+					subLevel.spawnBoss(event.getPlayer());
+					subLevel.currentDrops = 0;
+				}
+				break;
+
+			} else {
+				return;
+			}
+		}
 	}
 
 	public static PitEquipment getDefaultEquipment() {
