@@ -2,11 +2,19 @@ package dev.kyro.pitsim.adarkzone.mobs;
 
 import dev.kyro.pitsim.adarkzone.PitMob;
 import org.bukkit.Location;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 
 public class PitZombie extends PitMob {
 
-	public PitZombie() {
+
+	public PitZombie(Location spawnLocation) {
+		super(spawnLocation);
+	}
+
+	@Override
+	public EntityType getEntityType() {
+		return null;
 	}
 
 	@Override
