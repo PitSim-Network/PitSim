@@ -32,7 +32,8 @@ public class DropPool {
 	*/
 	public void distributeRewards(Map<UUID, Double> damageMap) {
 
-		for (int j = 0; j < 3; j++) {
+		for (int j = 0; j < 3; j++)
+		{
 			UUID topDamageDealer = null;
 			double topDamage = 0;
 			for(UUID uuid : damageMap.keySet()) {
@@ -44,12 +45,13 @@ public class DropPool {
 			}
 
 			if (topDamageDealer == null) return;
+			Player player = Bukkit.getPlayer(topDamageDealer);
 
-			for(int i = j; i < 3; i++) {
-				ItemStack drop = getRandomDrop();
-				Player player = Bukkit.getPlayer(topDamageDealer);
-				AUtil.giveItemSafely(player, drop);
-
+			if (player != null) {
+				for(int i = j; i < 3; i++) {
+					ItemStack drop = getRandomDrop();
+					AUtil.giveItemSafely(player, drop);
+				}
 			}
 
 			damageMap.remove(topDamageDealer);
