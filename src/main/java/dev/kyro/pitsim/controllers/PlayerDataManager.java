@@ -12,7 +12,14 @@ import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.server.PluginDisableEvent;
 import org.bukkit.scheduler.BukkitRunnable;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class PlayerDataManager implements Listener {
+
+	public static List<Player> exemptedPlayers = new ArrayList<>();
+
+
 	static {
 		new BukkitRunnable() {
 			int count = 0;
