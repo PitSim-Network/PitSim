@@ -4,6 +4,7 @@ import de.myzelyam.api.vanish.VanishAPI;
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
+import dev.kyro.pitsim.misc.Lang;
 import dev.kyro.pitsim.upgrades.TheWay;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
@@ -25,14 +26,14 @@ public class PayCommand implements CommandExecutor {
 			@Override
 			public void run() {
 				if(args.length < 2) {
-					AOutput.error(player, "Usage: /pay <player> <amount>");
+					AOutput.error(player, "&c&lERROR!&7 Usage: /pay <player> <amount>");
 					return;
 				}
 
 				PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
 				int levelRequired = 100 - TheWay.INSTANCE.getLevelReduction(pitPlayer.player);
 				if(pitPlayer.level < levelRequired && !player.isOp()) {
-					AOutput.error(player, "&c&lNOPE! &7You cannot trade until level " + levelRequired);
+					AOutput.error(player, "&c&lERROR! &7You cannot trade until level " + levelRequired);
 					return;
 				}
 
@@ -44,17 +45,17 @@ public class PayCommand implements CommandExecutor {
 					break;
 				}
 				if(target == null) {
-					AOutput.error(player, "&c&lNOPE! &7Could not find that player");
+					Lang.COULD_NOT_FIND_PLAYER_WITH_NAME.send(player);
 					return;
 				} else if(target == player) {
-					AOutput.error(player, "&c&lNOPE! &7You cannot pay yourself");
+					AOutput.error(player, "&c&lERROR! &7You cannot pay yourself");
 					return;
 				}
 
 				PitPlayer pitTarget = PitPlayer.getPitPlayer(target);
 				int levelRequiredTarget = 100 - TheWay.INSTANCE.getLevelReduction(pitTarget.player);
 				if(pitTarget.level < levelRequiredTarget && !player.isOp()) {
-					AOutput.error(player, "&c&lNOPE! &7That player is not level " + levelRequiredTarget);
+					AOutput.error(player, "&c&lERROR! &7That player is not level " + levelRequiredTarget);
 					return;
 				}
 

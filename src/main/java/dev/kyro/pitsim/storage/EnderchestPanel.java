@@ -49,8 +49,6 @@ public class EnderchestPanel extends AGUIPanel {
 		if(!profile.getUUID().equals(player.getUniqueId())) accessiblePages = StorageProfile.ENDERCHEST_MAX_PAGES;
 
 		if(slot == 8 && !player.getUniqueId().equals(profile.getUUID())) {
-			System.out.println(StorageManager.editSessions);
-
 			EditSession session = StorageManager.getSession(player);
 			session.playerClosed = false;
 			player.openInventory(session.inventory.getInventory());

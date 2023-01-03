@@ -14,7 +14,8 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public abstract class PitNPC implements Listener {
 	public static NPCRegistry registry = CitizensAPI.getNPCRegistry();
@@ -82,6 +83,11 @@ public abstract class PitNPC implements Listener {
 	}
 
 	public void spawnPlayerNPC(String name, String skinName, Location location, boolean lookClose) {
+		NPC tempVillager = registry.createNPC(EntityType.VILLAGER, name);
+		tempVillager.spawn(location);
+		tempVillager.getEntity().setCustomNameVisible(!name.isEmpty());
+		npcs.add(tempVillager);
+
 		SkinManager.loadAndSkinNPC(skinName, new BukkitRunnable() {
 			@Override
 			public void run() {
@@ -93,6 +99,8 @@ public abstract class PitNPC implements Listener {
 					npc.getTrait(LookClose.class).setRange(10);
 					npc.getTrait(LookClose.class).toggle();
 				}
+				npcs.remove(tempVillager);
+				tempVillager.destroy();
 				npcs.add(npc);
 			}
 		});

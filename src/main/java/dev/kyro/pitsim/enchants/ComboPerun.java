@@ -75,8 +75,7 @@ public class ComboPerun extends PitEnchant {
 	public List<String> getDescription(int enchantLvl) {
 
 		if(enchantLvl == 3) {
-
-			return new ALoreBuilder("&7Every &efourth &7hit strikes", "&elightning &7for &c1\u2764 &7+ &c0.5\u2764",
+			return new ALoreBuilder("&7Every &efourth &7hit strikes", "&elightning &7for &c" + Misc.getHearts(2) + " &7+ &c" + Misc.getHearts(1),
 					"&7per &bdiamond piece &7on your", "&7victim.", "&7(Lightning deals true damage)").getLore();
 		}
 

@@ -50,7 +50,6 @@ public class AuctionManager implements Listener {
 	}
 
 	public static void onStart() {
-
 		for(int i = 0; i < 3; i++) {
 			if(FirestoreManager.AUCTION.auctions.get(i) == null) continue;
 
@@ -78,9 +77,7 @@ public class AuctionManager implements Listener {
 		List<ItemType> itemTypes = Arrays.asList(ItemType.values());
 		Collections.shuffle(itemTypes);
 
-		for(ItemType itemType : itemTypes) {
-			if(itemType.chance > random) return itemType;
-		}
+		for(ItemType itemType : itemTypes) if(itemType.chance > random) return itemType;
 
 		return itemTypes.get(0);
 	}
@@ -167,6 +164,8 @@ public class AuctionManager implements Listener {
 
 		for(int i = 0; i < auctionItems.length; i++)
 			auctionItems[i] = new AuctionItem(generateItem(), 0, i, null);
+
+		FirestoreManager.AUCTION.save();
 	}
 
 	public static boolean haveAuctionsEnded() {

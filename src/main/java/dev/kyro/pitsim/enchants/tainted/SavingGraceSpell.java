@@ -43,7 +43,7 @@ public class SavingGraceSpell extends PitEnchant {
 
 		pitPlayer.updateMaxHealth();
 		if(event.getPlayer().getMaxHealth() <= 8) {
-			AOutput.send(event.getPlayer(), "&c&lNOPE! &7Not enough health!");
+			AOutput.send(event.getPlayer(), "&c&lERROR! &7Not enough health!");
 			Sounds.NO.play(event.getPlayer());
 			return;
 		}

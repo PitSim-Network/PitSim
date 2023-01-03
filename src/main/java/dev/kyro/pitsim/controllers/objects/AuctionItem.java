@@ -16,7 +16,6 @@ import org.bukkit.inventory.ItemStack;
 import java.util.*;
 
 public class AuctionItem {
-
 	public ItemType item;
 	public int itemData;
 	public int slot;
@@ -59,7 +58,6 @@ public class AuctionItem {
 			bids.add(entry.getKey() + ":" + entry.getValue());
 			FirestoreManager.AUCTION.auctions.get(slot).bids = bids;
 		}
-//        FirestoreManager.AUCTION.save();
 	}
 
 	public void addBid(UUID player, int bid) {
@@ -108,10 +106,8 @@ public class AuctionItem {
 
 	public void endAuction() {
 		FirestoreManager.AUCTION.auctions.set(slot, null);
-		FirestoreManager.AUCTION.save();
 
 		if(getHighestBidder() == null) return;
-
 		OfflinePlayer winner = Bukkit.getOfflinePlayer(getHighestBidder());
 
 		if(winner.isOnline()) {
@@ -128,9 +124,7 @@ public class AuctionItem {
 			}
 
 		} else {
-
 			try {
-
 				PluginMessage message = new PluginMessage().writeString("AUCTION ITEM REQUEST");
 				message.writeString(winner.getName());
 				message.writeString(PitSim.serverName);
@@ -151,7 +145,6 @@ public class AuctionItem {
 		if(getHighestBidder() != null) bidMap.remove(getHighestBidder());
 
 		for(Map.Entry<UUID, Integer> entry : bidMap.entrySet()) {
-
 			OfflinePlayer player = Bukkit.getOfflinePlayer(entry.getKey());
 
 			if(player.isOnline()) {

@@ -5,7 +5,7 @@ import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.arcticapi.gui.AGUI;
 import dev.kyro.arcticapi.gui.AGUIPanel;
 import dev.kyro.arcticapi.misc.AOutput;
-import dev.kyro.pitsim.alogging.LogManager;
+import dev.kyro.pitsim.logging.LogManager;
 import dev.kyro.pitsim.controllers.BoosterManager;
 import dev.kyro.pitsim.controllers.ProxyMessaging;
 import dev.kyro.pitsim.controllers.objects.Booster;

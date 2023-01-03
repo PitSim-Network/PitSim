@@ -1,4 +1,4 @@
-package dev.kyro.pitsim.alogging;
+package dev.kyro.pitsim.logging;
 
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.controllers.PlayerManager;
@@ -60,7 +60,7 @@ public class LogManager implements Listener {
 		Player player = event.getPlayer();
 		String message = player.getName() + " executed ";
 		if(event.isCancelled()) message += "(cancelled) ";
-		sendLogMessage(LogType.PLAYER_COMMAND, message + event.getMessage());
+		sendLogMessage(LogType.PLAYER_COMMAND, message + event.getMessage().toLowerCase());
 	}
 
 	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)

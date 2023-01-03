@@ -15,7 +15,7 @@ import dev.kyro.arcticapi.data.AConfig;
 import dev.kyro.arcticapi.data.AData;
 import dev.kyro.arcticapi.hooks.AHook;
 import dev.kyro.arcticapi.misc.AOutput;
-import dev.kyro.pitsim.alogging.LogManager;
+import dev.kyro.pitsim.logging.LogManager;
 import dev.kyro.pitsim.battlepass.PassManager;
 import dev.kyro.pitsim.battlepass.quests.*;
 import dev.kyro.pitsim.battlepass.quests.daily.DailyBotKillQuest;
@@ -646,6 +646,7 @@ public class PitSim extends JavaPlugin {
 		getServer().getPluginManager().registerEvents(new LogManager(), this);
 		getServer().getPluginManager().registerEvents(new StorageManager(), this);
 		getServer().getPluginManager().registerEvents(new CrossServerMessageManager(), this);
+		getServer().getPluginManager().registerEvents(new PacketManager(), this);
 	}
 
 	public void registerBoosters() {
@@ -831,8 +832,6 @@ public class PitSim extends JavaPlugin {
 		EnchantManager.registerEnchant(new ComboVenom());
 //		EnchantManager.registerEnchant(new aCPLEnchant());
 		EnchantManager.registerEnchant(new SelfCheckout());
-		EnchantManager.registerEnchant(new aEntanglement());
-		EnchantManager.registerEnchant(new aRetroGravityMinikloon());
 
 		EnchantManager.registerEnchant(new Billionaire());
 		EnchantManager.registerEnchant(new ComboPerun());
