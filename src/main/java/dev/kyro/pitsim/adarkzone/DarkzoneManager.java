@@ -3,7 +3,9 @@ package dev.kyro.pitsim.adarkzone;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.adarkzone.notdarkzone.PitEquipment;
 import dev.kyro.pitsim.adarkzone.sublevels.ZombieSubLevel;
+import dev.kyro.pitsim.misc.Sounds;
 import net.citizensnpcs.api.event.NPCRightClickEvent;
+import org.bukkit.Effect;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.event.EventHandler;
@@ -45,6 +47,8 @@ public class DarkzoneManager implements Listener {
 					subLevel.currentDrops++;
 
 					if(subLevel.currentDrops >= subLevel.getRequiredDropsToSpawn()) {
+						subLevel.getMiddle().getWorld().playEffect(subLevel.getMiddle(), Effect.EXPLOSION_HUGE, 100);
+						Sounds.PRESTIGE.play(subLevel.getMiddle());
 						subLevel.spawnBoss(event.getPlayer());
 						subLevel.currentDrops = 0;
 					}
@@ -53,6 +57,7 @@ public class DarkzoneManager implements Listener {
 			}
 		}
 	}
+
 
 	public static PitEquipment getDefaultEquipment() {
 		return new PitEquipment()
