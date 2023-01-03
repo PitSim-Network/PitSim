@@ -141,16 +141,16 @@ public class PrestigeValues {
 		prestigeMap.put(2, new PrestigeInfo(2, 1.5, 60_000, 0, 10, "&9"));
 		prestigeMap.put(3, new PrestigeInfo(3, 2, 80_000, 0, 11, "&9"));
 		prestigeMap.put(4, new PrestigeInfo(4, 2.5, 100_000, 0, 12, "&9"));
-		prestigeMap.put(5, new PrestigeInfo(5, 3, 120_000, 2, 12, "&e")); //lucky kill
-		prestigeMap.put(6, new PrestigeInfo(6, 3.5, 140_000, 5, 12, "&e")); //impatient
-		prestigeMap.put(7, new PrestigeInfo(7, 4, 160_000, 8, 13, "&e")); //streaker
-		prestigeMap.put(8, new PrestigeInfo(8, 4.5, 180_000, 12, 13, "&e"));
-		prestigeMap.put(9, new PrestigeInfo(9, 5, 200_000, 16, 14, "&e")); //doubledeath
-		prestigeMap.put(10, new PrestigeInfo(10, 6, 300_000, 30, 14, "&6")); //firststrike
-		prestigeMap.put(11, new PrestigeInfo(11, 7, 400_000, 34, 14, "&6")); //report access
-		prestigeMap.put(12, new PrestigeInfo(12, 8, 500_000, 38, 15, "&6")); //lifeinsurance
-		prestigeMap.put(13, new PrestigeInfo(13, 10, 650_000, 42, 15, "&6")); //beast
-		prestigeMap.put(14, new PrestigeInfo(14, 12, 800_000, 46, 16, "&6")); //counter-janitor
+		prestigeMap.put(5, new PrestigeInfo(5, 3, 120_000, 0, 12, "&e")); //lucky kill
+		prestigeMap.put(6, new PrestigeInfo(6, 3.5, 140_000, 0, 12, "&e")); //impatient
+		prestigeMap.put(7, new PrestigeInfo(7, 4, 160_000, 0, 13, "&e")); //streaker
+		prestigeMap.put(8, new PrestigeInfo(8, 4.5, 180_000, 0, 13, "&e"));
+		prestigeMap.put(9, new PrestigeInfo(9, 5, 200_000, 0, 14, "&e")); //doubledeath
+		prestigeMap.put(10, new PrestigeInfo(10, 6, 300_000, 10, 14, "&6")); //firststrike
+		prestigeMap.put(11, new PrestigeInfo(11, 7, 400_000, 15, 14, "&6")); //report access
+		prestigeMap.put(12, new PrestigeInfo(12, 8, 500_000, 20, 15, "&6")); //lifeinsurance
+		prestigeMap.put(13, new PrestigeInfo(13, 10, 650_000, 30, 15, "&6")); //beast
+		prestigeMap.put(14, new PrestigeInfo(14, 12, 800_000, 40, 16, "&6")); //counter-janitor
 		prestigeMap.put(15, new PrestigeInfo(15, 14, 1_000_000, 50, 16, "&c")); //helmetry
 		prestigeMap.put(16, new PrestigeInfo(16, 16, 1_300_000, 52, 16, "&c")); //divine
 		prestigeMap.put(17, new PrestigeInfo(17, 18, 1_600_000, 54, 16, "&c")); //highlander
