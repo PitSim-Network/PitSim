@@ -9,7 +9,6 @@ import java.util.*;
 
 public class NPCManager implements Listener {
 	public static List<PitNPC> pitNPCs = new ArrayList<>();
-	public static Map<UUID, Long> cooldownPlayers = new HashMap<>();
 
 	public static void onDisable() {
 		for(PitNPC pitNPC : pitNPCs) pitNPC.remove();
@@ -19,5 +18,4 @@ public class NPCManager implements Listener {
 		pitNPCs.add(pitNPC);
 		Bukkit.getPluginManager().registerEvents(pitNPC, PitSim.INSTANCE);
 	}
-
 }

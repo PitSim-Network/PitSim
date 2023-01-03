@@ -32,12 +32,12 @@ public class OofCommand implements CommandExecutor {
 		Player player = (Player) sender;
 
 		if(player.getWorld() == MapManager.getDarkzone() && !player.isOp()) {
-			AOutput.send(player, "&c&lNOPE! &7Cant /oof in the darkzone!");
+			AOutput.send(player, "&c&lERROR! &7Cant /oof in the darkzone!");
 			return false;
 		}
 
 		if(SpawnManager.isInSpawn(player.getLocation())) {
-			AOutput.send(player, "&c&lNOPE! &7Cant /oof in spawn!");
+			AOutput.send(player, "&c&lERROR! &7Cant /oof in spawn!");
 			Sounds.ERROR.play(player);
 			return false;
 		}

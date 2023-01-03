@@ -22,7 +22,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 import java.util.*;
 
 public class CombatManager implements Listener {
-	int combatTime = 20 * 20;
+	public static int combatTime = 20 * 20;
 	public static HashMap<UUID, Integer> taggedPlayers = new HashMap<>();
 
 	public static boolean isInCombat(Player player) {
@@ -30,11 +30,9 @@ public class CombatManager implements Listener {
 	}
 
 	static {
-
 		new BukkitRunnable() {
 			@Override
 			public void run() {
-
 				List<UUID> toRemove = new ArrayList<>();
 				for(Map.Entry<UUID, Integer> entry : taggedPlayers.entrySet()) {
 					int time = entry.getValue();
@@ -75,7 +73,7 @@ public class CombatManager implements Listener {
 
 		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
 		UUID attackerUUID = pitPlayer.lastHitUUID;
-		if(taggedPlayers.containsKey(player.getUniqueId())) {
+		if(isInCombat(player) || pitPlayer.megastreak.isOnMega()) {
 			for(Player onlinePlayer : Bukkit.getOnlinePlayers()) {
 				if(onlinePlayer.getUniqueId().equals(attackerUUID)) {
 
@@ -112,7 +110,7 @@ public class CombatManager implements Listener {
 		Player player = event.getPlayer();
 		if(taggedPlayers.containsKey(player.getUniqueId())) {
 			event.setCancelled(true);
-			AOutput.error(event.getPlayer(), "&c&c&lNOPE! &7You cannot use that while in combat!");
+			AOutput.error(event.getPlayer(), "&c&c&lERROR! &7You cannot use that while in combat!");
 			return;
 		}
 

@@ -51,6 +51,6 @@ public class BulletTime extends PitEnchant {
 	}
 
 	public double getHealing(int enchantLvl) {
-		return enchantLvl * 0.8;
+		return enchantLvl * 0.4 + 0.4;
 	}
 }

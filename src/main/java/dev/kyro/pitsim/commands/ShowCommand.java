@@ -74,7 +74,7 @@ public class ShowCommand implements CommandExecutor {
 
 		for(Player onlinePlayer : Bukkit.getOnlinePlayers()) {
 			PitPlayer pitPlayer = PitPlayer.getPitPlayer(onlinePlayer);
-			if(!pitPlayer.playerChatDisabled) onlinePlayer.spigot().sendMessage(message);
+			if(!pitPlayer.playerChatDisabled) onlinePlayer.sendMessage(message);
 		}
 	}
 }

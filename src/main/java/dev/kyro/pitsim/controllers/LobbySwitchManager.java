@@ -77,10 +77,16 @@ public class LobbySwitchManager implements Listener {
 	}
 
 	public static void setSwitchingPlayer(Player player) {
-		player.closeInventory();
 
 		switchingPlayers.add(player);
-		Misc.applyPotionEffect(player, PotionEffectType.BLINDNESS, 40, 100, false, false);
+
+		new BukkitRunnable() {
+			@Override
+			public void run() {
+				Misc.applyPotionEffect(player, PotionEffectType.BLINDNESS, 40, 100, false, false);
+				player.closeInventory();
+			}
+		}.runTask(PitSim.INSTANCE);
 
 //		new BukkitRunnable() {
 //			@Override
@@ -88,6 +94,10 @@ public class LobbySwitchManager implements Listener {
 //				switchingPlayers.remove(player);
 //			}
 //		}.runTaskLater(PitSim.INSTANCE, 40 + 5);
+	}
+
+	public static void removeSwitchingPlayer(Player player) {
+		switchingPlayers.remove(player);
 	}
 
 	@EventHandler

@@ -323,51 +323,52 @@ public class GoldenHelmet implements Listener {
 
 	@EventHandler
 	public void onChat(AsyncPlayerChatEvent event) {
-		if(HelmetGUI.depositPlayers.containsKey(event.getPlayer())) {
+		Player player = event.getPlayer();
+		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
+		if(HelmetGUI.depositPlayers.containsKey(player)) {
 			event.setCancelled(true);
-			ItemStack helmet = HelmetGUI.depositPlayers.get(event.getPlayer());
+			ItemStack helmet = HelmetGUI.depositPlayers.get(player);
 
 			if(Misc.isAirOrNull(helmet)) {
-				HelmetGUI.depositPlayers.remove(event.getPlayer());
+				HelmetGUI.depositPlayers.remove(player);
 				return;
 			}
 
-			int gold = 0;
-
+			int gold;
 			try {
 				gold = Integer.parseInt(ChatColor.stripColor(event.getMessage()));
 				if(gold <= 0) throw new Exception();
 			} catch(Exception e) {
-				AOutput.send(event.getPlayer(), "&cThat is not a valid number!");
-				HelmetGUI.depositPlayers.remove(event.getPlayer());
-				Sounds.NO.play(event.getPlayer());
+				AOutput.send(player, "&cThat is not a valid number!");
+				HelmetGUI.depositPlayers.remove(player);
+				Sounds.NO.play(player);
 				return;
 			}
 
-			double finalBalance = PitSim.VAULT.getBalance((Player) event.getPlayer()) - gold;
+			double finalBalance = pitPlayer.gold - gold;
 			if(finalBalance < 0) {
-				AOutput.send(event.getPlayer(), "&cYou do not have enough gold!");
-				HelmetGUI.depositPlayers.remove(event.getPlayer());
-				Sounds.NO.play(event.getPlayer());
+				AOutput.send(player, "&cYou do not have enough gold!");
+				HelmetGUI.depositPlayers.remove(player);
+				Sounds.NO.play(player);
 				return;
 			}
-			PitSim.VAULT.withdrawPlayer((Player) event.getPlayer(), gold);
+			pitPlayer.gold -= gold;
 
-			if(Misc.isAirOrNull(event.getPlayer().getItemInHand())) return;
-			NBTItem nbtItem = new NBTItem(event.getPlayer().getItemInHand());
+			if(Misc.isAirOrNull(player.getItemInHand())) return;
+			NBTItem nbtItem = new NBTItem(player.getItemInHand());
 
 			if(!nbtItem.hasKey(NBTTag.GHELMET_UUID.getRef())) {
-				AOutput.send(event.getPlayer(), "&cUnable to find helmet!");
-				HelmetGUI.depositPlayers.remove(event.getPlayer());
-				Sounds.NO.play(event.getPlayer());
+				AOutput.send(player, "&cUnable to find helmet!");
+				HelmetGUI.depositPlayers.remove(player);
+				Sounds.NO.play(player);
 				return;
 			}
 
-			depositGold(event.getPlayer(), helmet, gold);
+			depositGold(player, helmet, gold);
 
-			AOutput.send(event.getPlayer(), "&aSuccessfully deposited gold!");
-			HelmetGUI.depositPlayers.remove(event.getPlayer());
-			Sounds.HELMET_DEPOSIT_GOLD.play(event.getPlayer());
+			AOutput.send(player, "&aSuccessfully deposited gold!");
+			HelmetGUI.depositPlayers.remove(player);
+			Sounds.HELMET_DEPOSIT_GOLD.play(player);
 		}
 	}
 

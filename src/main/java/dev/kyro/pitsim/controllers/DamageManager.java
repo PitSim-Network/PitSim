@@ -6,6 +6,7 @@ import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.adarkzone.aaold.OldPitMob;
 import dev.kyro.pitsim.adarkzone.aaold.OldPitBoss;
 import dev.kyro.pitsim.logging.LogManager;
+import dev.kyro.pitsim.logging.LogManager;
 import dev.kyro.pitsim.brewing.objects.BrewingIngredient;
 import dev.kyro.pitsim.controllers.objects.*;
 import dev.kyro.pitsim.enchants.PitBlob;
@@ -326,9 +327,7 @@ public class DamageManager implements Listener {
 			Bukkit.getServer().getPluginManager().callEvent(killEvent);
 		}
 
-		if(killerIsPlayer && deadIsPlayer) {
-			EnchantManager.incrementKills(killerPlayer, deadPlayer);
-		}
+		if(killerIsPlayer && deadIsPlayer) EnchantManager.incrementKillsOnJewels(killerPlayer);
 
 		PitPlayer pitKiller = PitPlayer.getPitPlayer(killerPlayer);
 		PitPlayer pitDead = PitPlayer.getPitPlayer(deadPlayer);

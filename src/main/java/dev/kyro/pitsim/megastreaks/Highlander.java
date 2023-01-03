@@ -147,8 +147,6 @@ public class Highlander extends Megastreak {
 		runnable = new BukkitRunnable() {
 			@Override
 			public void run() {
-				if(pitPlayer == null) cancel();
-
 				if(pitPlayer.megastreak.getClass() == Highlander.class && pitPlayer.megastreak.isOnMega()) {
 					Misc.applyPotionEffect(pitPlayer.player, PotionEffectType.SPEED, 200, 0, true, false);
 				}

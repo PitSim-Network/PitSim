@@ -28,7 +28,7 @@ public class UUIDCommand extends ACommand {
 
 		NBTItem nbtItem = new NBTItem(itemStack);
 		if(!nbtItem.hasKey(NBTTag.ITEM_UUID.getRef())) return;
-		AOutput.broadcast(nbtItem.getString(NBTTag.ITEM_UUID.getRef()) + "");
+		AOutput.send(player, "&6&lUUID!&7 Item has the UUID " + nbtItem.getString(NBTTag.ITEM_UUID.getRef()));
 	}
 
 	@Override

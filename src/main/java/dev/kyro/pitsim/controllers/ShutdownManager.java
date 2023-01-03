@@ -27,6 +27,7 @@ public class ShutdownManager {
 
 		isShuttingDown = true;
 		ShutdownManager.minutes = minutes;
+		if(minutes == 0) seconds = 5;
 
 		runnable = new BukkitRunnable() {
 			@Override
@@ -62,7 +63,7 @@ public class ShutdownManager {
 					}
 					for(Player onlinePlayer : Bukkit.getOnlinePlayers()) {
 						Sounds.CTF_FLAG_STOLEN.play(onlinePlayer);
-						onlinePlayer.closeInventory();
+						if(minutes == 0) onlinePlayer.closeInventory();
 					}
 				}
 			}

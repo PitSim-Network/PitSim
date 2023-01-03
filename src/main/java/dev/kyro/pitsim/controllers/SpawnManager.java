@@ -1,15 +1,12 @@
 package dev.kyro.pitsim.controllers;
 
-import com.comphenix.protocol.PacketType;
-import com.comphenix.protocol.ProtocolLibrary;
-import com.comphenix.protocol.events.PacketAdapter;
-import com.comphenix.protocol.events.PacketEvent;
 import com.sk89q.worldguard.bukkit.BukkitUtil;
 import com.sk89q.worldguard.bukkit.RegionContainer;
 import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
 import com.sk89q.worldguard.protection.ApplicableRegionSet;
 import com.sk89q.worldguard.protection.managers.RegionManager;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
+import de.myzelyam.api.vanish.VanishAPI;
 import de.tr7zw.nbtapi.NBTItem;
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.PitSim;
@@ -48,17 +45,6 @@ public class SpawnManager implements Listener {
 	public static Map<Player, Location> lastLocationMap = new HashMap<>();
 
 	static {
-		ProtocolLibrary.getProtocolManager().addPacketListener(
-				new PacketAdapter(PitSim.INSTANCE, PacketType.Play.Server.NAMED_SOUND_EFFECT) {
-					@Override
-					public void onPacketSending(PacketEvent event) {
-						String soundName = event.getPacket().getStrings().read(0);
-						if(soundName.equals("mob.villager.idle") || soundName.equals("mob.rabbit.idle")) {
-							event.setCancelled(true);
-						}
-					}
-				});
-
 		new BukkitRunnable() {
 			@Override
 			public void run() {
@@ -83,7 +69,7 @@ public class SpawnManager implements Listener {
 		boolean isInSpawn = isInSpawn(location);
 
 		if(isInSpawn) {
-			if(player.isOp()) return;
+			if(player.isOp() || VanishAPI.isInvisible(player)) return;
 			if(!lastLocationMap.containsKey(player)) return;
 
 			PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
@@ -91,12 +77,12 @@ public class SpawnManager implements Listener {
 				Location lastLocation = lastLocationMap.get(player);
 				player.teleport(lastLocation);
 				player.setVelocity(new Vector());
-				AOutput.error(event.getPlayer(), "&c&c&lNOPE! &7You cannot enter spawn while on a Megastreak!");
+				AOutput.error(event.getPlayer(), "&c&c&lERROR! &7You cannot enter spawn while on a Megastreak!");
 			} else if(CombatManager.isInCombat(player)) {
 				Location lastLocation = lastLocationMap.get(player);
 				player.teleport(lastLocation);
 				player.setVelocity(new Vector());
-				AOutput.error(event.getPlayer(), "&c&c&lNOPE! &7You cannot enter spawn while in combat!");
+				AOutput.error(event.getPlayer(), "&c&c&lERROR! &7You cannot enter spawn while in combat!");
 			} else {
 				lastLocationMap.remove(player);
 			}
@@ -142,7 +128,7 @@ public class SpawnManager implements Listener {
 		if(event.getAction() == Action.RIGHT_CLICK_BLOCK || event.getAction() == Action.RIGHT_CLICK_AIR) {
 			if(item.getType() != Material.GOLD_HOE) return;
 			event.setCancelled(true);
-			AOutput.send(player, "&c&c&lNOPE! &7You cannot use this in the spawn area!");
+			AOutput.send(player, "&c&c&lERROR! &7You cannot use this in the spawn area!");
 		}
 	}
 

@@ -3,18 +3,20 @@ package dev.kyro.pitsim.controllers;
 import de.myzelyam.api.vanish.VanishAPI;
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.arcticapi.misc.AUtil;
+import dev.kyro.arcticguilds.ArcticGuilds;
+import dev.kyro.arcticguilds.events.GuildWithdrawalEvent;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.controllers.objects.*;
 import dev.kyro.pitsim.enums.ItemType;
 import dev.kyro.pitsim.events.MessageEvent;
 import dev.kyro.pitsim.storage.EditSession;
 import dev.kyro.pitsim.storage.StorageManager;
-import dev.kyro.pitsim.storage.StorageProfile;
 import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
@@ -26,6 +28,8 @@ import java.util.UUID;
 import java.util.concurrent.ExecutionException;
 
 public class ProxyMessaging implements Listener {
+
+	public static final int COMMAND_QUEUE_COOLDOWN_MS = 500;
 
 	public static int playersOnline = 0;
 
@@ -108,7 +112,7 @@ public class ProxyMessaging implements Listener {
 		if(strings.size() >= 1 && booleans.size() >= 1 && strings.get(0).equals("SHUTDOWN")) {
 
 			int minutes = 5;
-			if(integers.size() >= 1 && integers.get(0) > 0) {
+			if(integers.size() >= 1 && integers.get(0) >= 0) {
 				minutes = integers.get(0);
 			}
 
@@ -204,7 +208,7 @@ public class ProxyMessaging implements Listener {
 			Player player = Bukkit.getPlayer(uuid);
 			if(player == null) return;
 
-			if(CombatManager.isInCombat(player)) {
+			if(!player.isOp() && CombatManager.isInCombat(player)) {
 				AOutput.error(player, "You may not queue while in combat!");
 				return;
 			}
@@ -224,7 +228,7 @@ public class ProxyMessaging implements Listener {
 			Player player = Bukkit.getPlayer(uuid);
 			if(player == null) return;
 
-			if(CombatManager.isInCombat(player)) {
+			if(!player.isOp() && CombatManager.isInCombat(player)) {
 				AOutput.error(player, "You may not queue while in combat!");
 				return;
 			}
@@ -236,6 +240,36 @@ public class ProxyMessaging implements Listener {
 			}
 
 			darkzoneSwitchPlayer(player, requestedServer);
+		}
+
+		if(strings.size() >= 2 && strings.get(0).equals("DEPOSIT")) {
+			UUID uuid = UUID.fromString(strings.get(1));
+			Player player = Bukkit.getPlayer(uuid);
+			if(player == null) return;
+
+			int toRemove = integers.get(0);
+			boolean success = false;
+
+			PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
+
+			double currentBalance = pitPlayer.gold;
+			if(currentBalance >= toRemove && !LobbySwitchManager.switchingPlayers.contains(player)) {
+				success = true;
+
+				new BukkitRunnable() {
+					@Override
+					public void run() {
+						pitPlayer.gold = currentBalance - toRemove;
+					}
+				}.runTask(PitSim.INSTANCE);
+
+			}
+
+			if(LobbySwitchManager.switchingPlayers.contains(player)) success = false;
+
+			System.out.println("Sending result of deposit: " + success);
+			dev.kyro.arcticguilds.misc.PluginMessage response = new dev.kyro.arcticguilds.misc.PluginMessage().writeString("DEPOSIT").writeString(player.getUniqueId().toString()).writeBoolean(success);
+			response.send();
 		}
 	}
 
@@ -261,108 +295,125 @@ public class ProxyMessaging implements Listener {
 
 	public static void switchPlayer(Player player, int requestedServer) {
 
-		if(StorageManager.isBeingEdited(player.getUniqueId())) {
-			EditSession session = StorageManager.getSession(player.getUniqueId());
-			assert session != null;
-			session.end();
-
-			AOutput.error(session.getStaffMember(), "&cYour session ended because the player switched instances!");
-			session.getStaffMember().closeInventory();
-		}
-
-		if(StorageManager.isEditing(player)) {
-			EditSession session = StorageManager.getSession(player);
-			assert session != null;
-			session.end();
-		}
-
+		LobbySwitchManager.setSwitchingPlayer(player);
 
 		new BukkitRunnable() {
 			@Override
 			public void run() {
-				LobbySwitchManager.setSwitchingPlayer(player);
-			}
-		}.runTask(PitSim.INSTANCE);
+				PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
 
-		BukkitRunnable runnable = new BukkitRunnable() {
-			@Override
-			public void run() {
+				if(StorageManager.isBeingEdited(player.getUniqueId())) {
+					EditSession session = StorageManager.getSession(player.getUniqueId());
+					assert session != null;
+					session.end();
 
-				BukkitRunnable itemRunnable = new BukkitRunnable() {
+					AOutput.error(session.getStaffMember(), "&cYour session ended because the player switched instances!");
+					session.getStaffMember().closeInventory();
+				}
+
+				if(StorageManager.isEditing(player)) {
+					EditSession session = StorageManager.getSession(player);
+					assert session != null;
+					session.end();
+				}
+
+				BukkitRunnable runnable = new BukkitRunnable() {
 					@Override
 					public void run() {
-						new PluginMessage().writeString("QUEUE").writeString(player.getName()).writeInt(requestedServer).writeBoolean(PitSim.getStatus() == PitSim.ServerStatus.DARKZONE).send();
+
+						BukkitRunnable itemRunnable = new BukkitRunnable() {
+							@Override
+							public void run() {
+								new PluginMessage().writeString("QUEUE").writeString(player.getName()).writeInt(requestedServer).writeBoolean(PitSim.getStatus() == PitSim.ServerStatus.DARKZONE).send();
+							}
+						};
+
+						StorageManager.getProfile(player).saveData(itemRunnable, true);
+
 					}
 				};
 
-				StorageManager.getProfile(player).saveData(itemRunnable, true);
-
+				try {
+					pitPlayer.save(true, runnable, false);
+				} catch(ExecutionException | InterruptedException e) {
+					throw new RuntimeException(e);
+				}
 			}
-		};
-
-		try {
-			PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
-			pitPlayer.save(true, runnable, false);
-		} catch(ExecutionException | InterruptedException e) {
-			throw new RuntimeException(e);
-		}
+		}.runTaskLater(PitSim.INSTANCE, 10);
 
 	}
 
 	public static void darkzoneSwitchPlayer(Player player, int requestedServer) {
-
-		if(StorageManager.isBeingEdited(player.getUniqueId())) {
-			EditSession session = StorageManager.getSession(player.getUniqueId());
-			assert session != null;
-			session.end();
-
-			AOutput.error(session.getStaffMember(), "&cYour session ended because the player switched instances!");
-			session.getStaffMember().closeInventory();
-		}
-
-		if(StorageManager.isEditing(player)) {
-			EditSession session = StorageManager.getSession(player);
-			assert session != null;
-			session.end();
-		}
+		LobbySwitchManager.setSwitchingPlayer(player);
 
 		new BukkitRunnable() {
 			@Override
 			public void run() {
-				LobbySwitchManager.setSwitchingPlayer(player);
-			}
-		}.runTask(PitSim.INSTANCE);
+				PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
 
-		BukkitRunnable runnable = new BukkitRunnable() {
-			@Override
-			public void run() {
+				if(StorageManager.isBeingEdited(player.getUniqueId())) {
+					EditSession session = StorageManager.getSession(player.getUniqueId());
+					assert session != null;
+					session.end();
 
-				BukkitRunnable itemRunnable = new BukkitRunnable() {
+					AOutput.error(session.getStaffMember(), "&cYour session ended because the player switched instances!");
+					session.getStaffMember().closeInventory();
+				}
+
+				if(StorageManager.isEditing(player)) {
+					EditSession session = StorageManager.getSession(player);
+					session.end();
+				}
+
+				BukkitRunnable runnable = new BukkitRunnable() {
 					@Override
 					public void run() {
-						new PluginMessage().writeString("QUEUE DARKZONE").writeString(player.getName()).writeInt(requestedServer).send();
+
+						BukkitRunnable itemRunnable = new BukkitRunnable() {
+							@Override
+							public void run() {
+								new PluginMessage().writeString("QUEUE DARKZONE").writeString(player.getName()).writeInt(requestedServer).send();
+							}
+						};
+
+						StorageManager.getProfile(player).saveData(itemRunnable, true);
+
 					}
 				};
 
-				StorageManager.getProfile(player).saveData(itemRunnable, true);
-
+				try {
+					pitPlayer.save(true, runnable, false);
+				} catch(ExecutionException | InterruptedException e) {
+					throw new RuntimeException(e);
+				}
 			}
-		};
-
-		try {
-			PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
-			pitPlayer.save(true, runnable, false);
-		} catch(ExecutionException | InterruptedException e) {
-			throw new RuntimeException(e);
-		}
-
+		}.runTaskLater(PitSim.INSTANCE, 10);
 	}
 
 	public static void migrate(UUID uuid) {
 		PitPlayer pitPlayer = new PitPlayer(Bukkit.getOfflinePlayer(uuid).getUniqueId());
 		pitPlayer.save(false, false);
 
-		StorageProfile profile = StorageManager.getInitialProfile(uuid);
+		StorageManager.getInitialProfile(uuid);
+	}
+
+	@EventHandler(priority = EventPriority.MONITOR)
+	public void onWithdrawal(GuildWithdrawalEvent event) {
+		boolean success = !event.isCancelled() && !LobbySwitchManager.switchingPlayers.contains(event.getPlayer());
+
+		PluginMessage response = new PluginMessage().writeString("WITHDRAW").writeString(event.getPlayer().getUniqueId().toString()).writeBoolean(success);
+		response.send();
+
+		if(success) {
+			new BukkitRunnable() {
+				@Override
+				public void run() {
+					int amount = event.getAmount();
+					PitPlayer pitPlayer = PitPlayer.getPitPlayer(event.getPlayer());
+					pitPlayer.gold += amount;
+				}
+			}.runTask(ArcticGuilds.INSTANCE);
+		}
 	}
 
 }

@@ -105,7 +105,6 @@ public class StorageManager implements Listener {
 		if(PitSim.getStatus() == PitSim.ServerStatus.ALL) return;
 
 		StorageProfile profile = getProfile(player);
-		PitSim.VAULT.withdrawPlayer(Bukkit.getOfflinePlayer(player.getUniqueId()), PitSim.VAULT.getBalance(Bukkit.getOfflinePlayer(player.getUniqueId())));
 
 		if(!isBeingEdited(player.getUniqueId())) profiles.remove(profile);
 //		File file = new File("world/playerdata/" + player.getUniqueId().toString() + ".dat");
@@ -249,12 +248,14 @@ public class StorageManager implements Listener {
 
 				EnderchestGUI.EnderchestPages rank = EnderchestGUI.EnderchestPages.getRank(player);
 
-				if(event.getSlot() == 44 && (i + 1) < StorageProfile.ENDERCHEST_MAX_PAGES && i + 2 <= rank.pages) {
-					if(isEditing(player)) getSession(player).playerClosed = false;
-					player.openInventory(profile.enderChest[i + 1]);
-					if(isEditing(player)) getSession(player).playerClosed = true;
-					event.setCancelled(true);
-					return;
+				if(event.getSlot() == 44 && (i + 1) < StorageProfile.ENDERCHEST_MAX_PAGES) {
+					if(i + 2 <= rank.pages || isEditing(player)) {
+						if(isEditing(player)) getSession(player).playerClosed = false;
+						player.openInventory(profile.enderChest[i + 1]);
+						if(isEditing(player)) getSession(player).playerClosed = true;
+						event.setCancelled(true);
+						return;
+					}
 				}
 
 				if(event.getSlot() == 40) {

@@ -48,11 +48,14 @@ public class CrateGiveCommand implements CommandExecutor {
 		switch(item) {
 			case "pass":
 				passData.hasPremium = true;
+				return false;
 			case "passboost":
 				if(!passData.hasPremium) passData.totalPoints += PassManager.POINTS_PER_TIER * 9;
 				passData.hasPremium = true;
+				return false;
 			case "passtiers":
 				passData.totalPoints += amount * PassManager.POINTS_PER_TIER;
+				return false;
 			case "hjsword":
 				for(int i = 0; i < amount; i++) {
 					ItemStack jewelSword = FreshCommand.getFreshItem(MysticType.SWORD, PantColor.JEWEL);

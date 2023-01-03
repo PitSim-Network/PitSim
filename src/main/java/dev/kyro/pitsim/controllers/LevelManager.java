@@ -73,8 +73,8 @@ public class LevelManager {
 		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
 
 		GrindGoldQuest.INSTANCE.gainGold(pitPlayer, amount);
+		pitPlayer.gold += amount;
 		pitPlayer.goldGrinded += amount;
-		PitSim.VAULT.depositPlayer(player, amount);
 	}
 
 	public static void addGoldReq(Player player, int amount) {
@@ -103,7 +103,7 @@ public class LevelManager {
 		if(pitPlayer.megastreak != null) pitPlayer.megastreak.stop();
 		pitPlayer.megastreak = new Overdrive(pitPlayer);
 		pitPlayer.endKillstreak();
-		PitSim.VAULT.withdrawPlayer(player, PitSim.VAULT.getBalance(player));
+		pitPlayer.gold = 0;
 		pitPlayer.soulsGathered = 0;
 		pitPlayer.renown += prestigeInfo.renownReward;
 		EarnRenownQuest.INSTANCE.gainRenown(pitPlayer, prestigeInfo.renownReward);

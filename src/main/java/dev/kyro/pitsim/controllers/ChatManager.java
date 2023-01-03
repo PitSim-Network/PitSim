@@ -2,6 +2,8 @@ package dev.kyro.pitsim.controllers;
 
 import de.tr7zw.nbtapi.NBTItem;
 import dev.kyro.arcticapi.misc.AOutput;
+import dev.kyro.pitsim.commands.essentials.GamemodeCommand;
+import dev.kyro.pitsim.commands.essentials.TeleportCommand;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.enums.NBTTag;
 import dev.kyro.pitsim.inventories.ChatColorPanel;
@@ -12,10 +14,21 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
+import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 public class ChatManager implements Listener {
+	public static List<String> illegalPhrases = new ArrayList<>();
+
+	static {
+		illegalPhrases.add("kyro");
+		illegalPhrases.add("wiji");
+	}
 
 	@EventHandler
 	public void autoCorrect(AsyncPlayerChatEvent event) {
@@ -37,6 +50,8 @@ public class ChatManager implements Listener {
 		}
 
 		if(ItemRename.renamePlayers.containsKey(player)) {
+			String name = ChatColor.translateAlternateColorCodes('&', message);
+			String strippedName = ChatColor.stripColor(name);
 			ItemStack heldItem = ItemRename.renamePlayers.get(player);
 			event.setCancelled(true);
 
@@ -49,8 +64,23 @@ public class ChatManager implements Listener {
 				AOutput.error(player, "&cYou can only name mystic items!");
 				return;
 			}
+			if(!strippedName.matches("[\\w\\s]+")) {
+				AOutput.error(player, "&c&lERROR!&7 You can only use regular characters");
+				return;
+			}
+			if(!player.isOp()) {
+				for(String illegalPhrase : illegalPhrases) {
+					if(!strippedName.toLowerCase().contains(illegalPhrase)) continue;
+					AOutput.error(player, "&c&lERROR!&7 Name contains illegal phrase \"" + illegalPhrase + "\"");
+					return;
+				}
+			}
+			if(!player.isOp() && strippedName.length() > 32) {
+				AOutput.error(player, "&c&lERROR!&7 Item names cannot be longer than 32 characters");
+				return;
+			}
 			ItemMeta meta = heldItem.getItemMeta();
-			meta.setDisplayName(ChatColor.translateAlternateColorCodes('&', message));
+			meta.setDisplayName(name);
 			heldItem.setItemMeta(meta);
 			AOutput.send(player, "&aSuccessfully renamed item!");
 			ItemRename.renamePlayers.remove(player);
@@ -74,5 +104,22 @@ public class ChatManager implements Listener {
 				.replaceAll("(?i)harry", "hairy");
 
 		event.setMessage(message);
+	}
+
+	@EventHandler
+	public void onCommand(PlayerCommandPreprocessEvent event) {
+		Player player = event.getPlayer();
+		String message = event.getMessage().toLowerCase();
+		List<String> stringArgs = new ArrayList<>(Arrays.asList(message.split(" ")));
+		String command = stringArgs.remove(0);
+		String[] args = stringArgs.toArray(new String[0]);
+
+		if(command.equalsIgnoreCase("/gamemode")) {
+			event.setCancelled(true);
+			GamemodeCommand.INSTANCE.onCommand(player, null, "gamemode", args);
+		} else if(command.equalsIgnoreCase("/tp")) {
+			event.setCancelled(true);
+			TeleportCommand.INSTANCE.onCommand(player, null, "tp", args);
+		}
 	}
 }

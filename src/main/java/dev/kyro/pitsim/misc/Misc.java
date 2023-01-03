@@ -90,8 +90,13 @@ public class Misc {
 		return normalizedWeights.entrySet().iterator().next().getKey();
 	}
 
+	public static DecimalFormat goldFormat = new DecimalFormat("#,###.##");
+	public static String formatGoldFull(double amount) {
+		return goldFormat.format(amount);
+	}
+
 	public static String getDisplayName(Player player) {
-		String playerName = "%luckperms_prefix%%essentials_nickname%";
+		String playerName = "%luckperms_prefix%%pitsim_nickname%";
 		return PlaceholderAPI.setPlaceholders(player, playerName);
 	}
 

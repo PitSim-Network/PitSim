@@ -16,20 +16,17 @@ import org.bukkit.inventory.ItemStack;
 import java.util.*;
 
 public class AuctionItem {
-
 	public ItemType item;
 	public int itemData;
 	public int slot;
-	public long initTime;
 	public Map<UUID, Integer> bidMap;
 
 	public static List<PluginMessage> waitingMessages = new ArrayList<>();
 
-	public AuctionItem(ItemType item, int itemData, int slot, long initTime, Map<UUID, Integer> bidMap) {
+	public AuctionItem(ItemType item, int itemData, int slot, Map<UUID, Integer> bidMap) {
 		this.item = item;
 		this.itemData = itemData;
 		this.slot = slot;
-		this.initTime = initTime == 0 ? System.currentTimeMillis() : initTime;
 
 		this.bidMap = bidMap == null ? new LinkedHashMap<>() : bidMap;
 
@@ -46,7 +43,6 @@ public class AuctionItem {
 		FirestoreManager.AUCTION.auctions.set(slot, new AuctionData.Auction());
 		FirestoreManager.AUCTION.auctions.get(slot).item = this.item.id;
 		FirestoreManager.AUCTION.auctions.get(slot).itemData = this.itemData;
-		FirestoreManager.AUCTION.auctions.get(slot).start = this.initTime;
 
 		for(Map.Entry<UUID, Integer> entry : this.bidMap.entrySet()) {
 			List<String> bids = FirestoreManager.AUCTION.auctions.get(slot).bids;
@@ -62,11 +58,9 @@ public class AuctionItem {
 			bids.add(entry.getKey() + ":" + entry.getValue());
 			FirestoreManager.AUCTION.auctions.get(slot).bids = bids;
 		}
-//        FirestoreManager.AUCTION.save();
 	}
 
 	public void addBid(UUID player, int bid) {
-
 		bidMap.put(player, bid);
 		saveData();
 
@@ -112,10 +106,8 @@ public class AuctionItem {
 
 	public void endAuction() {
 		FirestoreManager.AUCTION.auctions.set(slot, null);
-		FirestoreManager.AUCTION.save();
 
 		if(getHighestBidder() == null) return;
-
 		OfflinePlayer winner = Bukkit.getOfflinePlayer(getHighestBidder());
 
 		if(winner.isOnline()) {
@@ -132,9 +124,7 @@ public class AuctionItem {
 			}
 
 		} else {
-
 			try {
-
 				PluginMessage message = new PluginMessage().writeString("AUCTION ITEM REQUEST");
 				message.writeString(winner.getName());
 				message.writeString(PitSim.serverName);
@@ -155,7 +145,6 @@ public class AuctionItem {
 		if(getHighestBidder() != null) bidMap.remove(getHighestBidder());
 
 		for(Map.Entry<UUID, Integer> entry : bidMap.entrySet()) {
-
 			OfflinePlayer player = Bukkit.getOfflinePlayer(entry.getKey());
 
 			if(player.isOnline()) {

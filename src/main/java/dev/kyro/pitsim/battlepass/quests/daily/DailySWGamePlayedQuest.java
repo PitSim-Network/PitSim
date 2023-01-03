@@ -5,15 +5,40 @@ import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.arcticapi.misc.AUtil;
 import dev.kyro.pitsim.battlepass.PassQuest;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
+import dev.kyro.pitsim.controllers.objects.PluginMessage;
+import dev.kyro.pitsim.events.MessageEvent;
 import dev.kyro.pitsim.misc.Misc;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
+import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
 import org.bukkit.inventory.ItemStack;
+
+import java.util.List;
+import java.util.UUID;
 
 public class DailySWGamePlayedQuest extends PassQuest {
 
 	public DailySWGamePlayedQuest() {
 		super("&f&lPlay Skywars", "dailyskywars", QuestType.DAILY);
+	}
+
+	@EventHandler
+	public void onMessage(MessageEvent event) {
+		PluginMessage message = event.getMessage();
+		List<String> strings = message.getStrings();
+		List<Integer> ints = message.getIntegers();
+		if(strings.isEmpty()) return;
+		if(strings.get(0).equals("SKYWARS PASS QUEST")) {
+			UUID playerUUID = UUID.fromString(strings.get(1));
+
+			Player player = Bukkit.getPlayer(playerUUID);
+			if(!player.isOnline()) return;
+
+			PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
+			progressQuest(pitPlayer, ints.get(0));
+		}
 	}
 
 	@Override

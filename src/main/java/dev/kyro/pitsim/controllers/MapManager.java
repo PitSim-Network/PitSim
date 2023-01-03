@@ -23,8 +23,6 @@ public class MapManager implements Listener {
 	public static Location initialDarkzoneSpawn = new Location(getDarkzone(), 177.5, 92, -93.5, -90, 0);
 
 	public static void onStart() {
-		enablePortal(currentMap.world);
-
 		for(Player onlinePlayer : Bukkit.getOnlinePlayers()) {
 			onlinePlayer.teleport(currentMap.getSpawn());
 		}
@@ -42,11 +40,7 @@ public class MapManager implements Listener {
 		Player player = event.getPlayer();
 		if(player.getWorld() != MapManager.getDarkzone()) return;
 		event.setCancelled(true);
-		AOutput.error(event.getPlayer(), "&c&c&lNOPE! &7You cannot use that while in combat!");
-	}
-
-	public static void enablePortal(World lobby) {
-//		SchematicPaste.loadSchematic(new File("plugins/WorldEdit/schematics/doorOpen.schematic"), new Location(lobby, -67, 72, 3));
+		AOutput.error(event.getPlayer(), "&c&c&lERROR! &7You cannot use that in the darkzone!");
 	}
 
 	public static World getTutorial() {

@@ -122,7 +122,7 @@ public class TaintedWell implements Listener
 		enchantStand.teleport(enchantStand.getLocation().clone().add(2.0, 0.0, 0.0));
 		final PacketPlayOutEntityTeleport tpRemovePacket = new PacketPlayOutEntityTeleport(((CraftEntity)enchantStand).getHandle());
 		((CraftPlayer)player).getHandle().playerConnection.sendPacket(tpRemovePacket);
-		setText(player, "", "", "", "");
+		setText(player, "\u00A77", "\u00A77", "\u00A77", "\u00A77");
 		setItemText(player);
 	}
 
@@ -166,10 +166,10 @@ public class TaintedWell implements Listener
 			final NBTItem nbtFreshItem = new NBTItem(TaintedWell.playerItems.get(player));
 			final int freshTier = nbtFreshItem.getInteger(NBTTag.TAINTED_TIER.getRef());
 			if (freshTier == 3) {
-				setText(player, "", ChatColor.RED + "Item is Max Tier!", ChatColor.RED + "Please remove", "");
+				setText(player, "\u00A77", ChatColor.RED + "Item is Max Tier!", ChatColor.RED + "Please remove", "\u00A77");
 				new BukkitRunnable() {
 					public void run() {
-						TaintedWell.setText(player, "", "", "", "");
+						TaintedWell.setText(player, "\u00A77", "\u00A77", "\u00A77", "\u00A77");
 						TaintedWell.showButtons(player);
 					}
 				}.runTaskLater(PitSim.INSTANCE, 40L);
@@ -198,7 +198,7 @@ public class TaintedWell implements Listener
 				e.printStackTrace();
 			}
 			TaintedWell.enchantingPlayers.add(player);
-			setText(player, "", "", "", ChatColor.YELLOW + "Its rolling...");
+			setText(player, "\u00A77", "\u00A77", "\u00A77", ChatColor.YELLOW + "Its rolling...");
 			new BukkitRunnable() {
 				public void run() {
 					TaintedWell.enchantingPlayers.remove(player);
@@ -232,7 +232,7 @@ public class TaintedWell implements Listener
 		}
 		final NBTItem nbtItem = new NBTItem(player.getItemInHand());
 		if (!nbtItem.hasKey(NBTTag.ITEM_UUID.getRef()) || MysticType.getMysticType(player.getItemInHand()) == MysticType.SWORD || MysticType.getMysticType(player.getItemInHand()) == MysticType.BOW || MysticType.getMysticType(player.getItemInHand()) == MysticType.PANTS) {
-			setText(player, "", ChatColor.RED + "Invalid Item!", ChatColor.RED + "Please try again!", "");
+			setText(player, "\u00A77", ChatColor.RED + "Invalid Item!", ChatColor.RED + "Please try again!", "\u00A77");
 			new BukkitRunnable() {
 				public void run() {
 					if (!TaintedWell.playerItems.containsKey(player)) {
@@ -369,12 +369,12 @@ public class TaintedWell implements Listener
 		final Map<PitEnchant, Integer> enchantMap = EnchantManager.getEnchantsOnItem(item);
 		final List<PitEnchant> enchants = new ArrayList<PitEnchant>(enchantMap.keySet());
 		if (enchants.size() == 0) {
-			setText(player, item.getItemMeta().getDisplayName(), "", "", "");
+			setText(player, item.getItemMeta().getDisplayName(), "\u00A77", "\u00A77", "\u00A77");
 			return;
 		}
-		String enchant1 = "";
-		String enchant2 = "";
-		String enchant3 = "";
+		String enchant1 = "\u00A77";
+		String enchant2 = "\u00A77";
+		String enchant3 = "\u00A77";
 		enchant1 = enchants.get(0).getDisplayName() + " " + AUtil.toRoman(enchantMap.get(enchants.get(0)));
 		if (enchants.size() > 1) {
 			enchant2 = enchants.get(1).getDisplayName() + " " + AUtil.toRoman(enchantMap.get(enchants.get(1)));

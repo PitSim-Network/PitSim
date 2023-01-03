@@ -12,6 +12,7 @@ depend:
   - ProtocolLib
   - PitRemakeDependencies
   - LiteBans
+  - PremiumVanish
 commands:
   pitsim:
   ps:
@@ -69,3 +70,32 @@ commands:
     aliases:
       - pot
       - potion
+  eco:
+  balance:
+    aliases:
+      - bal
+  gamemode:
+    aliases:
+      - gm
+      - gmc
+      - gms
+      - gma
+      - gmsp
+  nickname:
+    aliases:
+      - nick
+  fly:
+    aliases:
+      - flight
+  teleport:
+    aliases:
+      - tp
+  broadcast:
+    aliases:
+      - bc
+  trash:
+    aliases:
+      - disposal
+  rename:
+    aliases:
+      - itemname

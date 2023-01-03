@@ -15,9 +15,6 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.inventory.ItemStack;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class DoTrueDamageVSBotsQuest extends PassQuest {
 
 	public DoTrueDamageVSBotsQuest() {
@@ -26,6 +23,7 @@ public class DoTrueDamageVSBotsQuest extends PassQuest {
 
 	@EventHandler(priority = EventPriority.MONITOR)
 	public void onAttack(AttackEvent.Apply attackEvent) {
+		if(attackEvent.trueDamage == 0) return;
 		if(!PlayerManager.isRealPlayer(attackEvent.getAttackerPlayer()) || !canProgressQuest(attackEvent.getAttackerPitPlayer())
 				|| NonManager.getNon(attackEvent.getDefender()) == null) return;
 		progressQuest(attackEvent.getAttackerPitPlayer(), attackEvent.trueDamage);

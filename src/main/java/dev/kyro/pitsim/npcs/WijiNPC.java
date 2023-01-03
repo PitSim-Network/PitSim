@@ -6,6 +6,7 @@ import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
 
+import java.time.LocalDate;
 import java.util.List;
 
 public class WijiNPC extends PitNPC {
@@ -26,7 +27,9 @@ public class WijiNPC extends PitNPC {
 
 	@Override
 	public void createNPC(Location location) {
-		spawnPlayerNPC("&9wiji1", "wiji1", location, true);
+		String skinName = "wiji1";
+		if(LocalDate.now().isBefore(LocalDate.parse("2023-01-15"))) skinName = "Revernal";
+		spawnPlayerNPC("&9wiji1", skinName, location, true);
 	}
 
 	@Override

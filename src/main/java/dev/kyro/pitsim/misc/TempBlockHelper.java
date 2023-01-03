@@ -9,20 +9,15 @@ import java.util.List;
 
 public class TempBlockHelper {
 	public static List<EditSession> sessions = new ArrayList<>();
-
 	public static List<Block> blocks = new ArrayList<>();
-
 	public static List<Material> preState = new ArrayList<>();
 
-	public static void init() {
-
-	}
+	public static void init() {}
 
 	public static void addBlockSession(Block block, Material originalMaterial) {
 
 		blocks.add(block);
 		preState.add(originalMaterial);
-
 	}
 
 	public static void removeBlockSession(Block block) {
@@ -37,6 +32,4 @@ public class TempBlockHelper {
 		for(EditSession session : TempBlockHelper.sessions) session.undo(session);
 		for(Block block : blocks) for(Material material : preState) block.setType(material);
 	}
-
-
 }

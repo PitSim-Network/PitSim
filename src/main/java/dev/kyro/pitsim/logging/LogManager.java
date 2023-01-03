@@ -14,6 +14,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
+import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.inventory.ItemStack;
 
 import java.text.SimpleDateFormat;
@@ -52,6 +53,14 @@ public class LogManager implements Listener {
 	public void onChat(AsyncPlayerChatEvent event) {
 		Player player = event.getPlayer();
 		sendLogMessage(LogType.PLAYER_CHAT, player.getName() + " >> " + ChatColor.stripColor(event.getMessage()));
+	}
+
+	@EventHandler(priority = EventPriority.MONITOR)
+	public void onCommand(PlayerCommandPreprocessEvent event) {
+		Player player = event.getPlayer();
+		String message = player.getName() + " executed ";
+		if(event.isCancelled()) message += "(cancelled) ";
+		sendLogMessage(LogType.PLAYER_COMMAND, message + event.getMessage().toLowerCase());
 	}
 
 	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)

@@ -16,6 +16,7 @@ import dev.kyro.arcticapi.hooks.AHook;
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.adarkzone.*;
 import dev.kyro.pitsim.adarkzone.aaold.placeholders.*;
+import dev.kyro.pitsim.logging.LogManager;
 import dev.kyro.pitsim.battlepass.PassManager;
 import dev.kyro.pitsim.battlepass.quests.*;
 import dev.kyro.pitsim.battlepass.quests.daily.DailyBotKillQuest;
@@ -33,6 +34,7 @@ import dev.kyro.pitsim.brewing.objects.BrewingIngredient;
 import dev.kyro.pitsim.brewing.objects.PotionEffect;
 import dev.kyro.pitsim.commands.*;
 import dev.kyro.pitsim.commands.admin.*;
+import dev.kyro.pitsim.commands.essentials.*;
 import dev.kyro.pitsim.controllers.*;
 import dev.kyro.pitsim.controllers.objects.*;
 import dev.kyro.pitsim.cosmetics.CosmeticManager;
@@ -64,6 +66,7 @@ import dev.kyro.pitsim.leaderboards.*;
 import dev.kyro.pitsim.logging.LogManager;
 import dev.kyro.pitsim.megastreaks.*;
 import dev.kyro.pitsim.misc.*;
+import dev.kyro.pitsim.misc.packets.SignPrompt;
 import dev.kyro.pitsim.npcs.*;
 import dev.kyro.pitsim.perks.*;
 import dev.kyro.pitsim.pitmaps.BiomesMap;
@@ -76,13 +79,11 @@ import net.citizensnpcs.api.npc.NPC;
 import net.citizensnpcs.api.npc.NPCRegistry;
 import net.kyori.adventure.platform.bukkit.BukkitAudiences;
 import net.luckperms.api.LuckPerms;
-import net.milkbowl.vault.economy.Economy;
 import org.bukkit.*;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.event.block.BlockIgniteEvent;
-import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.RegisteredServiceProvider;
@@ -94,15 +95,12 @@ import septogeddon.pluginquery.api.QueryMessenger;
 import java.io.File;
 import java.util.*;
 
-import static dev.kyro.pitsim.misc.TempBlockHelper.restoreSessions;
-
 public class PitSim extends JavaPlugin {
 	public static final double VERSION = 3.0;
 	public static final boolean PASS_ENABLED = true;
 
 	public static LuckPerms LUCKPERMS;
 	public static PitSim INSTANCE;
-	public static Economy VAULT = null;
 	public static ProtocolManager PROTOCOL_MANAGER = null;
 	public static BukkitAudiences adventure;
 
@@ -115,8 +113,6 @@ public class PitSim extends JavaPlugin {
 	public static long currentTick = 0;
 
 	public static ServerStatus status;
-
-	public static boolean isDev;
 
 	@Override
 	public void onEnable() {
@@ -169,14 +165,9 @@ public class PitSim extends JavaPlugin {
 
 		MapManager.onStart();
 		if(getStatus().isPitsim()) NonManager.init();
+		SignPrompt.registerSignUpdateListener();
 		TempBlockHelper.init();
 		ReloadManager.init();
-
-		if(!setupEconomy()) {
-			AOutput.log(String.format("[%s] - Disabled due to no Vault dependency found!", getDescription().getName()));
-			getServer().getPluginManager().disablePlugin(this);
-			return;
-		}
 
 		if(!Bukkit.getServer().getPluginManager().getPlugin("NoteBlockAPI").getDescription().getVersion().toLowerCase().contains("kyro")) {
 			AOutput.log("Wrong version of NoteBlockAPI found");
@@ -184,8 +175,8 @@ public class PitSim extends JavaPlugin {
 			return;
 		}
 
-		Plugin essentials = Bukkit.getPluginManager().getPlugin("Essentials");
-		EntityDamageEvent.getHandlerList().unregister(essentials);
+//		Plugin essentials = Bukkit.getPluginManager().getPlugin("Essentials");
+//		EntityDamageEvent.getHandlerList().unregister(essentials);
 
 		Plugin worldGuard = Bukkit.getPluginManager().getPlugin("WorldGuard");
 		BlockIgniteEvent.getHandlerList().unregister(worldGuard);
@@ -249,6 +240,8 @@ public class PitSim extends JavaPlugin {
 		AHook.registerPlaceholder(new SoulPlaceholder());
 		AHook.registerPlaceholder(new SoulReqPlaceholder());
 		AHook.registerPlaceholder(new PlayerCountPlaceholder());
+		AHook.registerPlaceholder(new GoldPlaceholder());
+		AHook.registerPlaceholder(new NicknamePlaceholder());
 		new LeaderboardPlaceholders().register();
 
 		CooldownManager.init();
@@ -352,7 +345,7 @@ public class PitSim extends JavaPlugin {
 			session.undo(session);
 		}
 
-		restoreSessions();
+		TempBlockHelper.restoreSessions();
 
 		for(Map.Entry<Location, Material> entry : FreezeSpell.blocks.entrySet()) {
 			entry.getKey().getBlock().setType(entry.getValue());
@@ -498,7 +491,6 @@ public class PitSim extends JavaPlugin {
 	}
 
 	private void registerCommands() {
-
 		AMultiCommand adminCommand = new BaseAdminCommand("pitsim");
 		getCommand("ps").setExecutor(adminCommand);
 		AMultiCommand giveCommand = new BaseSetCommand(adminCommand, "give");
@@ -556,9 +548,18 @@ public class PitSim extends JavaPlugin {
 		getCommand("setting").setExecutor(settingsCommand);
 		getCommand("set").setExecutor(settingsCommand);
 		getCommand("potions").setExecutor(new PotionsCommand());
-//		getCommand("massmigrate").setExecutor(new MassMigrateCommand());
+		getCommand("balance").setExecutor(new BalanceCommand());
+		getCommand("eco").setExecutor(new EcoCommand());
 		//TODO: Remove this
+//		getCommand("massmigrate").setExecutor(new MassMigrateCommand());
 
+		getCommand("gamemode").setExecutor(new GamemodeCommand());
+		getCommand("nickname").setExecutor(new NicknameCommand());
+		getCommand("fly").setExecutor(new FlyCommand());
+		getCommand("teleport").setExecutor(new TeleportCommand());
+		getCommand("broadcast").setExecutor(new BroadcastCommand());
+		getCommand("trash").setExecutor(new TrashCommand());
+		getCommand("rename").setExecutor(new RenameCommand());
 	}
 
 	private void registerListeners() {
@@ -616,6 +617,7 @@ public class PitSim extends JavaPlugin {
 		getServer().getPluginManager().registerEvents(new LogManager(), this);
 		getServer().getPluginManager().registerEvents(new StorageManager(), this);
 		getServer().getPluginManager().registerEvents(new CrossServerMessageManager(), this);
+		getServer().getPluginManager().registerEvents(new PacketManager(), this);
 
 //		New darkzone code
 		if(getStatus().isDarkzone()) {
@@ -798,18 +800,6 @@ public class PitSim extends JavaPlugin {
 		saveConfig();
 	}
 
-	private boolean setupEconomy() {
-		if(getServer().getPluginManager().getPlugin("Vault") == null) {
-			return false;
-		}
-		RegisteredServiceProvider<Economy> rsp = getServer().getServicesManager().getRegistration(Economy.class);
-		if(rsp == null) {
-			return false;
-		}
-		VAULT = rsp.getProvider();
-		return VAULT != null;
-	}
-
 	@Override
 	public void onLoad() {
 		File file = new File("plugins/Citizens/save.yml");
@@ -820,8 +810,6 @@ public class PitSim extends JavaPlugin {
 		EnchantManager.registerEnchant(new ComboVenom());
 //		EnchantManager.registerEnchant(new aCPLEnchant());
 		EnchantManager.registerEnchant(new SelfCheckout());
-		EnchantManager.registerEnchant(new aEntanglement());
-		EnchantManager.registerEnchant(new aRetroGravityMinikloon());
 
 		EnchantManager.registerEnchant(new Billionaire());
 		EnchantManager.registerEnchant(new ComboPerun());

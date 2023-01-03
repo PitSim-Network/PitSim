@@ -120,7 +120,7 @@ public class Hopper {
 
 				try {
 					PitSim.PROTOCOL_MANAGER.sendServerPacket(onlinePlayer, packet);
-				} catch(InvocationTargetException e) {
+				} catch(Exception e) {
 					e.printStackTrace();
 				}
 			}
@@ -135,7 +135,7 @@ public class Hopper {
 
 				try {
 					PitSim.PROTOCOL_MANAGER.sendServerPacket(onlinePlayer, packet);
-				} catch(InvocationTargetException e) {
+				} catch(Exception e) {
 					e.printStackTrace();
 				}
 			}

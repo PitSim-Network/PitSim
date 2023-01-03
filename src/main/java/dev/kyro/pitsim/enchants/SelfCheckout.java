@@ -15,6 +15,7 @@ import dev.kyro.pitsim.enums.KillModifier;
 import dev.kyro.pitsim.enums.NBTTag;
 import dev.kyro.pitsim.events.KillEvent;
 import dev.kyro.pitsim.megastreaks.NoMegastreak;
+import dev.kyro.pitsim.megastreaks.RNGesus;
 import dev.kyro.pitsim.megastreaks.Uberstreak;
 import org.bukkit.Material;
 import org.bukkit.event.EventHandler;
@@ -42,7 +43,7 @@ public class SelfCheckout extends PitEnchant {
 
 		PitPlayer pitKiller = PitPlayer.getPitPlayer(killEvent.getKillerPlayer());
 		if(pitKiller.getKills() + 1 < 200 || pitKiller.megastreak.getClass() == Uberstreak.class ||
-				pitKiller.megastreak.getClass() == NoMegastreak.class) return;
+				pitKiller.megastreak.getClass() == NoMegastreak.class || pitKiller.megastreak.getClass() == RNGesus.class) return;
 
 		NBTItem nbtItem = new NBTItem(leggings);
 		if(!EnchantManager.isJewelComplete(leggings) || !nbtItem.getString(NBTTag.ITEM_JEWEL_ENCHANT.getRef()).equalsIgnoreCase(refNames.get(0))) {
