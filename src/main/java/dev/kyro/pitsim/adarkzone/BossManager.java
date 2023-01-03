@@ -41,6 +41,7 @@ public class BossManager implements Listener {
 		if(killedBoss == null) {
 			return;
 		}
+		killedBoss.dropPool.distributeRewards(killedBoss.damageMap);
 		killedBoss.kill();
 		killedBoss.subLevel.bossDeath();
 	}

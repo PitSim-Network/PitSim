@@ -6,8 +6,10 @@ import dev.kyro.pitsim.misc.Misc;
 import net.citizensnpcs.api.CitizensAPI;
 import net.citizensnpcs.api.npc.NPC;
 import net.citizensnpcs.npc.ai.CitizensNavigator;
+import org.bukkit.Material;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
 
@@ -39,6 +41,8 @@ public abstract class PitBoss {
 	public PitBoss(Player summoner) {
 		this.summoner = summoner;
 		this.targetingSystem = new TargetingSystem(this);
+		this.dropPool = new DropPool();
+		dropPool.addItem(new ItemStack(Material.DIAMOND, 1), 1);
 	}
 
 	public abstract Class<? extends SubLevel> assignSubLevel();
