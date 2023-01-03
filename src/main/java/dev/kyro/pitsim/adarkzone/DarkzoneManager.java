@@ -32,6 +32,12 @@ public class DarkzoneManager implements Listener {
 	}
 
 
+	/*
+	 * Events:PlayerInteractEvent
+	 * Description: Checks for PlayerInteractEvent and checks if all spawning conditions for the boss are met and spawns
+	 * the boss in the corresponding sublevel. Also disables mobs in the sublevel.
+	 */
+
 	@EventHandler
 	public void onClick(PlayerInteractEvent event) {
 
@@ -49,6 +55,7 @@ public class DarkzoneManager implements Listener {
 					if(subLevel.currentDrops >= subLevel.getRequiredDropsToSpawn()) {
 						subLevel.getMiddle().getWorld().playEffect(subLevel.getMiddle(), Effect.EXPLOSION_HUGE, 100);
 						Sounds.PRESTIGE.play(subLevel.getMiddle());
+						subLevel.disableMobs();
 						subLevel.spawnBoss(event.getPlayer());
 						subLevel.currentDrops = 0;
 					}
@@ -69,6 +76,11 @@ public class DarkzoneManager implements Listener {
 				.boots(new ItemStack(Material.DIAMOND_SWORD));
 	}
 
+
+	/*
+	 * Parameters: SubLevel subLevel
+	 * Description: Registers a sublevel to the DarkzoneManager
+	 */
 	public static void registerSubLevel(SubLevel subLevel) {
 		subLevels.add(subLevel);
 	}
@@ -77,4 +89,6 @@ public class DarkzoneManager implements Listener {
 		for(SubLevel subLevel : subLevels) if(subLevel.getClass() == clazz) return subLevel;
 		throw new RuntimeException();
 	}
+
+	//method to remove all pitmobs from the subleve
 }

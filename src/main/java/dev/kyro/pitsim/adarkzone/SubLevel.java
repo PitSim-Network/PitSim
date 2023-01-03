@@ -46,7 +46,11 @@ public abstract class SubLevel {
 	public void tick() {
 		if(Math.random() < 0.75) return;
 		int newMobsNeeded = getMaxMobs() - mobs.size();
-		for(int i = 0; i < Math.min(newMobsNeeded, 3); i++) spawnMob();
+		for(int i = 0; i < Math.min(newMobsNeeded, 3); i++) {
+			if (!isBossSpawned) {
+				spawnMob();
+			}
+		}
 	}
 
 	public Location getMobSpawnLocation() {
@@ -118,6 +122,7 @@ public abstract class SubLevel {
 
 	public void bossDeath() {
 		isBossSpawned = false;
+
 	}
 
 	public void disableMobs() {
