@@ -2,7 +2,6 @@ package dev.kyro.pitsim;
 
 import com.comphenix.protocol.ProtocolLibrary;
 import com.comphenix.protocol.ProtocolManager;
-import com.gmail.filoghost.holographicdisplays.api.Hologram;
 import com.mattmalec.pterodactyl4j.PteroBuilder;
 import com.mattmalec.pterodactyl4j.client.entities.PteroClient;
 import com.sk89q.worldedit.EditSession;
@@ -15,12 +14,7 @@ import dev.kyro.arcticapi.data.AConfig;
 import dev.kyro.arcticapi.data.AData;
 import dev.kyro.arcticapi.hooks.AHook;
 import dev.kyro.arcticapi.misc.AOutput;
-import dev.kyro.pitsim.adarkzone.BossManager;
-import dev.kyro.pitsim.adarkzone.DarkzoneManager;
-import dev.kyro.pitsim.adarkzone.MobManager;
-import dev.kyro.pitsim.adarkzone.aaold.OldMobManager;
-import dev.kyro.pitsim.adarkzone.aaold.OldPitMob;
-import dev.kyro.pitsim.adarkzone.aaold.OldBossManager;
+import dev.kyro.pitsim.adarkzone.*;
 import dev.kyro.pitsim.adarkzone.aaold.placeholders.*;
 import dev.kyro.pitsim.battlepass.PassManager;
 import dev.kyro.pitsim.battlepass.quests.*;
@@ -148,8 +142,6 @@ public class PitSim extends JavaPlugin {
 		if(getStatus().isDarkzone()) BrewingManager.onStart();
 		ScoreboardManager.init();
 
-		if(getStatus().isDarkzone()) OldMobManager.clearMobs();
-
 		playerList = new AData("player-list", "", false);
 
 		RegisteredServiceProvider<LuckPerms> provider = Bukkit.getServicesManager().getRegistration(LuckPerms.class);
@@ -174,12 +166,6 @@ public class PitSim extends JavaPlugin {
 		}.runTaskLater(PitSim.INSTANCE, 10);
 
 		registerMaps();
-		new BukkitRunnable() {
-			@Override
-			public void run() {
-				if(getStatus().isDarkzone()) OldBossManager.onStart();
-			}
-		}.runTaskLater(PitSim.INSTANCE, 20);
 
 		MapManager.onStart();
 		if(getStatus().isPitsim()) NonManager.init();
@@ -336,8 +322,6 @@ public class PitSim extends JavaPlugin {
 			}
 		}
 
-		if(status.isDarkzone()) OldMobManager.clearMobs();
-
 //		TODO: Fix
 		for(Player player : Bukkit.getOnlinePlayers()) {
 			List<PotionEffect> toExpire = new ArrayList<>();
@@ -353,17 +337,10 @@ public class PitSim extends JavaPlugin {
 
 				PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
 				pitPlayer.potionStrings.add(potionEffect.potionType.name + ":" + potionEffect.potency.tier + ":" + potionEffect.getTimeLeft() + ":" + time);
-
 			}
 		}
 
 		if(getStatus().isDarkzone()) {
-			for(NPC value : OldBossManager.clickables.values()) {
-				value.destroy();
-				NPCRegistry registry = CitizensAPI.getNPCRegistry();
-				registry.deregister(value);
-			}
-
 			for(NPC clickable : AuctionDisplays.clickables) {
 				clickable.destroy();
 				NPCRegistry registry = CitizensAPI.getNPCRegistry();
@@ -382,21 +359,13 @@ public class PitSim extends JavaPlugin {
 		}
 
 		if(status.isDarkzone()) {
-			for(OldPitMob mob : OldMobManager.mobs) {
-				OldMobManager.nameTags.get(mob.entity.getUniqueId()).remove();
-				mob.entity.remove();
-			}
+			for(SubLevel subLevel : DarkzoneManager.subLevels) subLevel.disableMobs();
+			for(PitBoss pitBoss : BossManager.pitBosses) pitBoss.kill();
 		}
 
 		if(this.adventure != null) {
 			this.adventure.close();
 			this.adventure = null;
-		}
-
-		if(status.isDarkzone()) {
-			for(Hologram hologram : OldBossManager.holograms) {
-				hologram.delete();
-			}
 		}
 
 		NPCManager.onDisable();
@@ -625,9 +594,7 @@ public class PitSim extends JavaPlugin {
 		getServer().getPluginManager().registerEvents(new GuildIntegrationManager(), this);
 		getServer().getPluginManager().registerEvents(new UpgradeManager(), this);
 		getServer().getPluginManager().registerEvents(new KitManager(), this);
-		if(getStatus().isDarkzone()) getServer().getPluginManager().registerEvents(new OldMobManager(), this);
 		getServer().getPluginManager().registerEvents(new PortalManager(), this);
-		if(getStatus().isDarkzone()) getServer().getPluginManager().registerEvents(new OldBossManager(), this);
 		if(getStatus().isDarkzone()) getServer().getPluginManager().registerEvents(new TaintedWell(), this);
 		if(getStatus().isDarkzone()) getServer().getPluginManager().registerEvents(new BrewingManager(), this);
 		getServer().getPluginManager().registerEvents(new PotionManager(), this);

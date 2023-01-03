@@ -7,11 +7,9 @@ main: dev.kyro.pitsim.PitSim
 description: Remake of the Hypixel Pit
 depend:
   - Citizens
-  - Vault
   - PlaceholderAPI
   - NoteBlockAPI
   - ProtocolLib
-  - Essentials
   - PitRemakeDependencies
   - LiteBans
 commands:

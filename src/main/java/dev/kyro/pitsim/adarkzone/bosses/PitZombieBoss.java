@@ -1,10 +1,9 @@
 package dev.kyro.pitsim.adarkzone.bosses;
 
 import dev.kyro.pitsim.adarkzone.PitBoss;
-import dev.kyro.pitsim.adarkzone.SubLevel;
+import dev.kyro.pitsim.adarkzone.SubLevelType;
 import dev.kyro.pitsim.adarkzone.abilities.StunAbility;
 import dev.kyro.pitsim.adarkzone.abilities.TrueDamageAbility;
-import dev.kyro.pitsim.adarkzone.sublevels.ZombieSubLevel;
 import org.bukkit.entity.Player;
 
 public class PitZombieBoss extends PitBoss {
@@ -18,10 +17,9 @@ public class PitZombieBoss extends PitBoss {
 		);
 	}
 
-
 	@Override
-	public Class<? extends SubLevel> assignSubLevel() {
-		return ZombieSubLevel.class;
+	public SubLevelType getSubLevelType() {
+		return SubLevelType.ZOMBIE;
 	}
 
 	@Override

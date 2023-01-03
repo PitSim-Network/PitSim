@@ -1,8 +1,6 @@
 package dev.kyro.pitsim.commands;
 
-import dev.kyro.pitsim.adarkzone.DarkzoneManager;
-import dev.kyro.pitsim.adarkzone.SubLevel;
-import dev.kyro.pitsim.adarkzone.sublevels.ZombieSubLevel;
+import dev.kyro.pitsim.adarkzone.SubLevelType;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -16,8 +14,7 @@ public class ATestCommand implements CommandExecutor {
 		Player player = (Player) sender;
 		if(!player.isOp()) return false;
 
-		SubLevel subLevel = DarkzoneManager.getSubLevel(ZombieSubLevel.class);
-		subLevel.spawnBoss(player);
+		SubLevelType.ZOMBIE.getSubLevel().spawnBoss(player);
 
 		return false;
 	}

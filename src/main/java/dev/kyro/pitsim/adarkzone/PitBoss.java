@@ -25,7 +25,6 @@ public abstract class PitBoss {
 //	Boss related
 	public NPC npcBoss;
 	public Player boss;
-	public SubLevel subLevel;
 	public TargetingSystem targetingSystem;
 	public PitEquipment equipment = DarkzoneManager.getDefaultEquipment();
 
@@ -45,7 +44,7 @@ public abstract class PitBoss {
 		dropPool.addItem(new ItemStack(Material.DIAMOND, 1), 1);
 	}
 
-	public abstract Class<? extends SubLevel> assignSubLevel();
+	public abstract SubLevelType getSubLevelType();
 	public abstract String getName();
 	public abstract String getSkinName();
 	public abstract int getMaxHealth();
@@ -88,7 +87,7 @@ public abstract class PitBoss {
 	public void spawn() {
 		npcBoss = CitizensAPI.getNPCRegistry().createNPC(EntityType.PLAYER, getName());
 		npcBoss.setProtected(false);
-		npcBoss.spawn(subLevel.getBossSpawnLocation());
+		npcBoss.spawn(getSubLevel().getBossSpawnLocation());
 		boss = (Player) npcBoss.getEntity();
 
 		CitizensNavigator navigator = (CitizensNavigator) npcBoss.getNavigator();
@@ -112,5 +111,9 @@ public abstract class PitBoss {
 
 	public void kill() {
 		onDeath();
+	}
+
+	public SubLevel getSubLevel() {
+		return getSubLevelType().getSubLevel();
 	}
 }

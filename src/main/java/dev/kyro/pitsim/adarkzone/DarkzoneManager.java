@@ -1,10 +1,11 @@
 package dev.kyro.pitsim.adarkzone;
 
 import dev.kyro.pitsim.PitSim;
+import dev.kyro.pitsim.adarkzone.bosses.PitZombieBoss;
+import dev.kyro.pitsim.adarkzone.mobs.PitZombie;
 import dev.kyro.pitsim.adarkzone.notdarkzone.PitEquipment;
-import dev.kyro.pitsim.adarkzone.sublevels.ZombieSubLevel;
+import dev.kyro.pitsim.controllers.MapManager;
 import dev.kyro.pitsim.misc.Sounds;
-import net.citizensnpcs.api.event.NPCRightClickEvent;
 import org.bukkit.Effect;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -22,7 +23,11 @@ public class DarkzoneManager implements Listener {
 	public static List<SubLevel> subLevels = new ArrayList<>();
 
 	static {
-		registerSubLevel(new ZombieSubLevel());
+		registerSubLevel(new SubLevel(
+				SubLevelType.ZOMBIE, PitZombieBoss.class, PitZombie.class,
+				new Location(MapManager.getDarkzone(), 327, 68, -143),
+				20, 17, 12
+		));
 
 		new BukkitRunnable() {
 			@Override
@@ -32,13 +37,11 @@ public class DarkzoneManager implements Listener {
 		}.runTaskTimer(PitSim.INSTANCE, 0L, 5);
 	}
 
-
 	/*
 	 * Events:PlayerInteractEvent
 	 * Description: Checks for PlayerInteractEvent and checks if all spawning conditions for the boss are met and spawns
 	 * the boss in the corresponding sublevel. Also disables mobs in the sublevel.
 	 */
-
 	@EventHandler
 	public void onClick(PlayerInteractEvent event) {
 
@@ -50,12 +53,12 @@ public class DarkzoneManager implements Listener {
 
 		for(SubLevel subLevel : subLevels) {
 			if (subLevel.getSpawnItem().equals(item)) {
-				if(subLevel.getMiddle().equals(location)) {
+				if(subLevel.middle.equals(location)) {
 					subLevel.currentDrops++;
 
-					if(subLevel.currentDrops >= subLevel.getRequiredDropsToSpawn()) {
-						subLevel.getMiddle().getWorld().playEffect(subLevel.getMiddle(), Effect.EXPLOSION_HUGE, 100);
-						Sounds.PRESTIGE.play(subLevel.getMiddle());
+					if(subLevel.currentDrops >= subLevel.requiredDropsToSpawn) {
+						subLevel.middle.getWorld().playEffect(subLevel.middle, Effect.EXPLOSION_HUGE, 100);
+						Sounds.PRESTIGE.play(subLevel.middle);
 						subLevel.disableMobs();
 						subLevel.spawnBoss(event.getPlayer());
 						subLevel.currentDrops = 0;
@@ -65,7 +68,6 @@ public class DarkzoneManager implements Listener {
 			}
 		}
 	}
-
 
 	/*
 	 * Events:EntityDamageEvent
@@ -96,11 +98,4 @@ public class DarkzoneManager implements Listener {
 	public static void registerSubLevel(SubLevel subLevel) {
 		subLevels.add(subLevel);
 	}
-
-	public static SubLevel getSubLevel(Class<? extends SubLevel> clazz) {
-		for(SubLevel subLevel : subLevels) if(subLevel.getClass() == clazz) return subLevel;
-		throw new RuntimeException();
-	}
-
-	//method to remove all pitmobs from the subleve
 }

@@ -12,40 +12,41 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-public abstract class SubLevel {
-	private Location middle;
-	private Location bossSpawnLocation;
+public class SubLevel {
+	public SubLevelType subLevelType;
+
+	public Location middle;
 	private List<Location> spawnableLocations = new ArrayList<>();
 
-//	Mob related fields
-	public List<PitMob> mobs = new ArrayList<>();
-
 //	Boss related fields
-	public boolean isBossSpawned = false;
+	public Class<? extends PitBoss> bossClass;
 	public PitBoss pitBoss;
+	public boolean isBossSpawned = false;
 	public ItemStack spawnItem;
 	public int currentDrops = 0;
+	public int requiredDropsToSpawn;
 
-	public SubLevel() {
-		this.middle = createMiddle();
-		this.bossSpawnLocation = middle.clone().add(0, 2, 0);
+	//	Mob related fields
+	public Class<? extends PitMob> mobClass;
+	public List<PitMob> mobs = new ArrayList<>();
+	public int maxMobs;
+	public int spawnRadius;
 
+	public SubLevel(SubLevelType subLevelType, Class<? extends PitBoss> bossClass, Class<? extends PitMob> mobClass,
+					Location middle, int maxMobs, int spawnRadius, int requiredDropsToSpawn) {
+		this.subLevelType = subLevelType;
+		this.bossClass = bossClass;
+		this.mobClass = mobClass;
+		this.middle = middle;
+		this.maxMobs = maxMobs;
+		this.spawnRadius = spawnRadius;
+		this.requiredDropsToSpawn = requiredDropsToSpawn;
 		identifySpawnableLocations();
 	}
 
-	//	Mobs
-	public abstract Class<? extends PitMob> getMob();
-	public abstract int getMaxMobs();
-	public abstract Location createMiddle();
-	public abstract int getSpawnRadius();
-
-//	Bosses
-	public abstract Class<? extends PitBoss> getBoss();
-	public abstract int getRequiredDropsToSpawn();
-
 	public void tick() {
 		if(Math.random() < 0.75) return;
-		int newMobsNeeded = getMaxMobs() - mobs.size();
+		int newMobsNeeded = maxMobs - mobs.size();
 		for(int i = 0; i < Math.min(newMobsNeeded, 3); i++) {
 			if (!isBossSpawned) {
 				spawnMob();
@@ -58,10 +59,10 @@ public abstract class SubLevel {
 	}
 
 	public void identifySpawnableLocations() {
-		for(int x = -getSpawnRadius(); x < getSpawnRadius() + 1; x++) {
-			for(int z = -getSpawnRadius(); z < getSpawnRadius() + 1; z++) {
-				Location location = new Location(MapManager.getDarkzone(), x, getMiddle().getBlockY(), z);
-				if(location.distance(getMiddle()) > getSpawnRadius()) continue;
+		for(int x = -spawnRadius; x < spawnRadius + 1; x++) {
+			for(int z = -spawnRadius; z < spawnRadius + 1; z++) {
+				Location location = new Location(MapManager.getDarkzone(), x, middle.getBlockY(), z);
+				if(location.distance(middle) > spawnRadius) continue;
 				location.add(0, -3, 0);
 				if(!isSpawnableLocation(location)) continue;
 				spawnableLocations.add(location);
@@ -100,7 +101,7 @@ public abstract class SubLevel {
 	public void spawnMob() {
 		PitMob pitMob;
 		try {
-			Constructor<? extends PitMob> constructor = getMob().getConstructor(Location.class);
+			Constructor<? extends PitMob> constructor = mobClass.getConstructor(Location.class);
 			pitMob = constructor.newInstance(getMobSpawnLocation());
 		} catch(Exception exception) {
 			throw new RuntimeException(exception);
@@ -111,7 +112,7 @@ public abstract class SubLevel {
 	public void spawnBoss(Player summoner) {
 		if(isBossSpawned) throw new RuntimeException();
 		try {
-			Constructor<? extends PitBoss> constructor = getBoss().getConstructor(Player.class);
+			Constructor<? extends PitBoss> constructor = bossClass.getConstructor(Player.class);
 			pitBoss = constructor.newInstance(summoner);
 		} catch(Exception exception) {
 			throw new RuntimeException(exception);
@@ -130,12 +131,8 @@ public abstract class SubLevel {
 		mobs.clear();
 	}
 
-	public Location getMiddle() {
-		return middle;
-	}
-
 	public Location getBossSpawnLocation() {
-		return bossSpawnLocation;
+		return middle.clone().add(0, 2, 0);
 	}
 
 	public ItemStack getSpawnItem() {
