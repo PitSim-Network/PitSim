@@ -4,7 +4,6 @@ import de.tr7zw.nbtapi.NBTItem;
 import dev.kyro.arcticapi.misc.AUtil;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.brewing.ingredients.*;
-import dev.kyro.pitsim.adarkzone.aaold.OldBossManager;
 import dev.kyro.pitsim.controllers.EnchantManager;
 import dev.kyro.pitsim.controllers.ItemManager;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
@@ -194,27 +193,27 @@ public class OldCrateGiveCommand implements CommandExecutor {
 			taintedBroadcast("&5Fresh Tainted Chestplate", target);
 		}
 		if(args[0].equals("15S")) {
-			BossManager.giveSouls(target, 15);
+//			BossManager.giveSouls(target, 15);
 			taintedBroadcast("&f15 Tainted Souls", target);
 		}
 		if(args[0].equals("30S")) {
-			BossManager.giveSouls(target, 30);
+//			BossManager.giveSouls(target, 30);
 			taintedBroadcast("&f30 Tainted Souls", target);
 		}
 		if(args[0].equals("45S")) {
-			BossManager.giveSouls(target, 45);
+//			BossManager.giveSouls(target, 45);
 			taintedBroadcast("&f45 Tainted Souls", target);
 		}
 		if(args[0].equals("60S")) {
-			BossManager.giveSouls(target, 60);
+//			BossManager.giveSouls(target, 60);
 			taintedBroadcast("&f60 Tainted Souls", target);
 		}
 		if(args[0].equals("75S")) {
-			BossManager.giveSouls(target, 75);
+//			BossManager.giveSouls(target, 75);
 			taintedBroadcast("&f75 Tainted Souls", target);
 		}
 		if(args[0].equals("90S")) {
-			BossManager.giveSouls(target, 90);
+//			BossManager.giveSouls(target, 90);
 			taintedBroadcast("&f90 Tainted Souls", target);
 		}
 		if(args[0].equals("FLESH")) {
