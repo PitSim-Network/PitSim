@@ -48,9 +48,7 @@ public class SubLevel {
 		if(Math.random() < 0.75) return;
 		int newMobsNeeded = maxMobs - mobs.size();
 		for(int i = 0; i < Math.min(newMobsNeeded, 3); i++) {
-			if (!isBossSpawned) {
-				spawnMob();
-			}
+			if (!isBossSpawned) spawnMob();
 		}
 	}
 
@@ -101,9 +99,11 @@ public class SubLevel {
 		PitMob pitMob;
 		try {
 			Constructor<? extends PitMob> constructor = mobClass.getConstructor(Location.class);
-			pitMob = constructor.newInstance(getMobSpawnLocation());
+			Location location = getMobSpawnLocation();
+			pitMob = constructor.newInstance(location);
 		} catch(Exception exception) {
-			throw new RuntimeException(exception);
+			exception.printStackTrace();
+			return;
 		}
 		mobs.add(pitMob);
 	}

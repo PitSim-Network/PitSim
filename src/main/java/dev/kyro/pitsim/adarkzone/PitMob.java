@@ -23,11 +23,11 @@ public abstract class PitMob {
 	public void onSpawn() {}
 
 	public void spawn(Location spawnLocation) {
-		spawnLocation.getWorld().spawnEntity(spawnLocation, getEntityType());
+		mob = (Creature) spawnLocation.getWorld().spawnEntity(spawnLocation, getEntityType());
 	}
 
 	public void despawn() {
-		mob.remove();
+		if(mob != null) mob.remove();
 	}
 
 	public void rewardKill(Player killer) {

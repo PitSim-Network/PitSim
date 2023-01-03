@@ -611,7 +611,6 @@ public class PitSim extends JavaPlugin {
 		if(getStatus().isDarkzone()) {
 			getServer().getPluginManager().registerEvents(new DarkzoneManager(), this);
 			getServer().getPluginManager().registerEvents(new BossManager(), this);
-			getServer().getPluginManager().registerEvents(new MobManager(), this);
 		}
 	}
 
