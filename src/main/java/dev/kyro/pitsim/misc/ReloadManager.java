@@ -2,7 +2,6 @@ package dev.kyro.pitsim.misc;
 
 import dev.kyro.pitsim.PitSim;
 import org.bukkit.Bukkit;
-import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
 
@@ -38,9 +37,6 @@ public class ReloadManager {
 					if(file.lastModified() != lastModified && !startedUpload) {
 						startedUpload = true;
 						System.out.println("Detected server jar upload. Waiting for completion");
-						if(PitSim.getStatus() != PitSim.ServerStatus.ALL && !PitSim.serverName.contains("dev"))
-							for(Player onlinePlayer : Bukkit.getOnlinePlayers())
-								onlinePlayer.kickPlayer("reloading plugin");
 					}
 					lastModified = file.lastModified();
 				} catch(Exception exception) {
