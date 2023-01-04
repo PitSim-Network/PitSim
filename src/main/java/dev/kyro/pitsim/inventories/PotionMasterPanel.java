@@ -71,7 +71,7 @@ public class PotionMasterPanel extends AGUIPanel {
 
 					return;
 				} else {
-					AOutput.error(player, "&c&lERROR! &7Not enough souls!");
+					AOutput.error(player, "&c&lERROR!&7 Not enough souls!");
 					Sounds.NO.play(player);
 				}
 			}

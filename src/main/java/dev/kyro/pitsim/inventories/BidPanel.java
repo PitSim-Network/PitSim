@@ -58,10 +58,10 @@ public class BidPanel extends AGUIPanel {
 
 			if(auctionItem.getHighestBidder() != null && auctionItem.getHighestBidder().equals(player.getUniqueId())) {
 				Sounds.NO.play(player);
-				AOutput.error(player, "&c&lERROR! &7You are already the highest bidder!");
+				AOutput.error(player, "&c&lERROR!&7 You are already the highest bidder!");
 			} else if(pitPlayer.taintedSouls < minBid(auctionItem) - auctionItem.getBid(player.getUniqueId())) {
 				Sounds.NO.play(player);
-				AOutput.error(player, "&c&lERROR! &7Not enough Souls!");
+				AOutput.error(player, "&c&lERROR!&7 Not enough Souls!");
 			} else {
 				if(event.getClick() == ClickType.RIGHT || event.getClick() == ClickType.SHIFT_RIGHT) {
 					SignPrompt.promptPlayer(player, "", "^^^^^^", "Enter Bid", "Min: " + minBid(auctionItem), input -> {
@@ -76,7 +76,7 @@ public class BidPanel extends AGUIPanel {
 
 						if(pitPlayer.taintedSouls < bid - auctionItem.getBid(player.getUniqueId())) {
 							Sounds.NO.play(player);
-							AOutput.error(player, "&c&lERROR! &7Not enough Souls!");
+							AOutput.error(player, "&c&lERROR!&7 Not enough Souls!");
 							return;
 						}
 

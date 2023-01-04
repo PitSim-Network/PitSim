@@ -65,7 +65,7 @@ public class CraftTaintedPanel extends AGUIPanel {
 					openPreviousGUI();
 				} else {
 					Sounds.NO.play(player);
-					AOutput.send(player, "&c&lERROR! &7Not enough souls!");
+					AOutput.send(player, "&c&lERROR!&7 Not enough souls!");
 				}
 			}
 			if(slot == 15) {
@@ -77,7 +77,7 @@ public class CraftTaintedPanel extends AGUIPanel {
 					openPreviousGUI();
 				} else {
 					Sounds.NO.play(player);
-					AOutput.send(player, "&c&lERROR! &7Not enough souls!");
+					AOutput.send(player, "&c&lERROR!&7 Not enough souls!");
 				}
 
 			}

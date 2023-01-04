@@ -57,7 +57,7 @@ public class KitPanel extends AGUIPanel {
 			} catch(PitException exception) {
 				player.closeInventory();
 				Sounds.NO.play(player);
-				AOutput.error(player, "&c&lERROR! &7Kit requires " + kit.items.size() + " open inventory slots!");
+				AOutput.error(player, "&c&lERROR!&7 Kit requires " + kit.items.size() + " open inventory slots!");
 				return;
 			}
 			player.closeInventory();

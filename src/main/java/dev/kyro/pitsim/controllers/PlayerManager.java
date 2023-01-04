@@ -278,7 +278,7 @@ public class PlayerManager implements Listener {
 			int levelRequired = 100 - TheWay.INSTANCE.getLevelReduction(pitPlayer.player);
 			if(pitPlayer.level < levelRequired) {
 				event.setCancelled(true);
-				AOutput.error(player, "&c&lERROR! &7You cannot trade until you are level " + levelRequired);
+				AOutput.error(player, "&c&lERROR!&7 You cannot trade until you are level " + levelRequired);
 			}
 		}
 		if(ChatColor.stripColor(event.getMessage()).toLowerCase().startsWith("/invsee")) {

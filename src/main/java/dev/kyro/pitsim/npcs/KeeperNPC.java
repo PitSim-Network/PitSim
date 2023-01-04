@@ -53,7 +53,7 @@ public class KeeperNPC extends PitNPC {
 		}
 
 		if(LobbySwitchManager.recentlyJoined.contains(player)) {
-			AOutput.error(player, "&c&lERROR! &7You cannot use this command for 5 seconds after joining!");
+			AOutput.error(player, "&c&lERROR!&7 You cannot use this command for 5 seconds after joining!");
 			return;
 		}
 

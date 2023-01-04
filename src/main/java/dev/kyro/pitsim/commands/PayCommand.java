@@ -33,7 +33,7 @@ public class PayCommand implements CommandExecutor {
 				PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
 				int levelRequired = 100 - TheWay.INSTANCE.getLevelReduction(pitPlayer.player);
 				if(pitPlayer.level < levelRequired && !player.isOp()) {
-					AOutput.error(player, "&c&lERROR! &7You cannot trade until level " + levelRequired);
+					AOutput.error(player, "&c&lERROR!&7 You cannot trade until level " + levelRequired);
 					return;
 				}
 
@@ -48,14 +48,14 @@ public class PayCommand implements CommandExecutor {
 					Lang.COULD_NOT_FIND_PLAYER_WITH_NAME.send(player);
 					return;
 				} else if(target == player) {
-					AOutput.error(player, "&c&lERROR! &7You cannot pay yourself");
+					AOutput.error(player, "&c&lERROR!&7 You cannot pay yourself");
 					return;
 				}
 
 				PitPlayer pitTarget = PitPlayer.getPitPlayer(target);
 				int levelRequiredTarget = 100 - TheWay.INSTANCE.getLevelReduction(pitTarget.player);
 				if(pitTarget.level < levelRequiredTarget && !player.isOp()) {
-					AOutput.error(player, "&c&lERROR! &7That player is not level " + levelRequiredTarget);
+					AOutput.error(player, "&c&lERROR!&7 That player is not level " + levelRequiredTarget);
 					return;
 				}
 
