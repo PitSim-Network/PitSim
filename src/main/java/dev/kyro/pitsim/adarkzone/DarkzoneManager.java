@@ -37,10 +37,10 @@ public class DarkzoneManager implements Listener {
 		}.runTaskTimer(PitSim.INSTANCE, 0L, 5);
 	}
 
-	/*
-	 * Events:PlayerInteractEvent
-	 * Description: Checks for PlayerInteractEvent and checks if all spawning conditions for the boss are met and spawns
-	 * the boss in the corresponding sublevel. Also disables mobs in the sublevel.
+	/**
+	 * Called when a player interacts with a block, checks if all the spawn conditions are met for a boss to
+	 * spawn, and if so, spawns it.
+	 * @param event
 	 */
 	@EventHandler
 	public void onClick(PlayerInteractEvent event) {
@@ -67,10 +67,12 @@ public class DarkzoneManager implements Listener {
 		}
 	}
 
-	/*
-	 * Events:EntityDamageEvent
-	 * Description: Cancels suffocation and fall damage.
-	 */
+
+	/**
+	 * Cancels all suffocation and fall damage in the darkzone
+	 *
+	 * @param event
+	 **/
 	@EventHandler
 	public void onDamage(EntityDamageEvent event) {
 		if(event.getCause() == EntityDamageEvent.DamageCause.SUFFOCATION || event.getCause() == EntityDamageEvent.DamageCause.FALL)
@@ -87,9 +89,10 @@ public class DarkzoneManager implements Listener {
 				.boots(new ItemStack(Material.DIAMOND_SWORD));
 	}
 
-	/*
-	 * Parameters: SubLevel subLevel
-	 * Description: Registers a sublevel to the DarkzoneManager
+
+	/**
+	 * Adds a sublevel to the list of sublevels
+	 * @param subLevel
 	 */
 	public static void registerSubLevel(SubLevel subLevel) {
 		subLevels.add(subLevel);
