@@ -60,6 +60,8 @@ public abstract class PitBoss {
 
 	}
 
+
+
 	public PitBoss abilities(PitBossAbility... pitBossAbilities) {
 		abilities = Arrays.asList(pitBossAbilities);
 		for(PitBossAbility ability : abilities) {
