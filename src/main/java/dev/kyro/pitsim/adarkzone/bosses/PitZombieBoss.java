@@ -9,6 +9,7 @@ import org.bukkit.entity.Player;
 public class PitZombieBoss extends PitBoss {
 
 	public PitZombieBoss(Player summoner) {
+
 		super(summoner);
 
 		abilities(
