@@ -35,7 +35,7 @@ public class PitZombieBoss extends PitBoss {
 
 	@Override
 	public int getMaxHealth() {
-		return 100;
+		return 150;
 	}
 
 	@Override
@@ -45,7 +45,7 @@ public class PitZombieBoss extends PitBoss {
 
 	@Override
 	public double getReach() {
-		return 7;
+		return 3;
 	}
 
 	@Override

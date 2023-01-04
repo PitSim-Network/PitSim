@@ -396,7 +396,7 @@ public class DamageManager implements Listener {
 		}
 
 		DecimalFormat df = new DecimalFormat("##0.00");
-		String kill = null;
+		String kill = "null";
 //		TODO: Readd
 //		if(!deadIsPlayer && OldPitMob.isPitMob(dead))
 //			kill = ChatColor.translateAlternateColorCodes('&', "&a&lKILL!&7 on " + OldPitMob.getPitMob(dead).displayName);

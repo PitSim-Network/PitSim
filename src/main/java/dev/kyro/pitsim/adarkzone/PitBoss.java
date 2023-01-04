@@ -95,6 +95,7 @@ public abstract class PitBoss {
 		npcBoss.setProtected(false);
 		npcBoss.spawn(getSubLevel().getBossSpawnLocation());
 		boss = (Player) npcBoss.getEntity();
+		boss.setMaxHealth(getMaxHealth());
 
 		CitizensNavigator navigator = (CitizensNavigator) npcBoss.getNavigator();
 		navigator.getDefaultParameters()

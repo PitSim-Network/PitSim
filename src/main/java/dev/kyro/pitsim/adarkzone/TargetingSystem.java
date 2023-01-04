@@ -46,7 +46,7 @@ public class TargetingSystem {
 	}
 
 	public Player findTarget() {
-		double radius = pitBoss.getReach();
+		double radius = pitBoss.getReach() * 3;
 
 		if(targetingState == State.ATTACKING_MELEE) {
 			radius = pitBoss.getReach();
