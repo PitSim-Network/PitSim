@@ -3,11 +3,13 @@ package dev.kyro.pitsim.killstreaks;
 import dev.kyro.arcticapi.builders.AItemStackBuilder;
 import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.arcticapi.misc.AOutput;
+import dev.kyro.pitsim.aitems.VeryYummyBread;
+import dev.kyro.pitsim.aitems.YummyBread;
+import dev.kyro.pitsim.controllers.ItemFactory;
 import dev.kyro.pitsim.controllers.objects.Killstreak;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.megastreaks.RNGesus;
 import dev.kyro.pitsim.misc.Sounds;
-import dev.kyro.pitsim.misc.YummyBread;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -31,8 +33,8 @@ public class Baker extends Killstreak {
 		}
 
 		double random = Math.random();
-		if(random > 0.9) YummyBread.giveVeryYummyBread(player, 1);
-		else YummyBread.giveYummyBread(player, 1);
+		if(random > 0.9) ItemFactory.getItem(VeryYummyBread.class).giveItem(player, 1);
+		else ItemFactory.getItem(YummyBread.class).giveItem(player, 1);
 		Sounds.BREAD_GIVE.play(player);
 	}
 

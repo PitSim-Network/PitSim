@@ -14,48 +14,48 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class FunkyFeather extends PitItem {
+public class CorruptedFeather extends PitItem {
 
-	public FunkyFeather() {
+	public CorruptedFeather() {
 		hasDropConfirm = true;
 	}
 
 	@Override
 	public String getNBTID() {
-		return "funky-feather";
+		return "corrupted-feather";
 	}
 
 	@Override
 	public List<String> getRefNames() {
-		return new ArrayList<>(Arrays.asList("feather"));
+		return new ArrayList<>(Arrays.asList("corruptfeather"));
 	}
 
 	@Override
 	public Material getMaterial(Player player) {
-		return Material.FEATHER;
+		return Material.INK_SACK;
 	}
 
 	@Override
 	public String getName(Player player) {
-		return "&3Funky Feather";
+		return "&5Corrupted Feather";
 	}
 
 	@Override
 	public List<String> getLore(Player player) {
 		return new ALoreBuilder(
 				"&eSpecial item",
-				"&7protects your inventory but",
+				"&7protects your ingredients but",
 				"&7gets consumed on death if",
 				"&7in your hotbar."
 		).getLore();
 	}
 
-	public boolean useFeather(LivingEntity killer, Player dead) {
+	public boolean useCorruptedFeather(LivingEntity killer, Player dead) {
 		for(int i = 0; i < 9; i++) {
 			ItemStack itemStack = dead.getInventory().getItem(i);
 			if(!isThisItem(itemStack)) continue;
 
-			AOutput.send(dead, "&3&lFUNKY FEATHER! &7Inventory protected.");
+			AOutput.send(dead, "&5&lCORRUPTED FEATHER! &7Ingredients protected.");
 			if(itemStack.getAmount() > 1) itemStack.setAmount(itemStack.getAmount() - 1);
 			else dead.getInventory().setItem(i, null);
 			dead.updateInventory();
@@ -63,6 +63,7 @@ public class FunkyFeather extends PitItem {
 
 			GuildIntegrationManager.handleFeather(killer, dead);
 
+			// Remove this if you don't want them counting for lb
 			PitPlayer pitPlayer = PitPlayer.getPitPlayer(dead);
 			if(pitPlayer.stats != null) pitPlayer.stats.feathersLost++;
 			return true;

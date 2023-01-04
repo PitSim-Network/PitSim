@@ -3,6 +3,7 @@ package dev.kyro.pitsim.controllers;
 import de.tr7zw.nbtapi.NBTItem;
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.PitSim;
+import dev.kyro.pitsim.aitems.CorruptedFeather;
 import dev.kyro.pitsim.aitems.FunkyFeather;
 import dev.kyro.pitsim.brewing.objects.BrewingIngredient;
 import dev.kyro.pitsim.controllers.objects.Non;
@@ -21,8 +22,11 @@ import dev.kyro.pitsim.events.OofEvent;
 import dev.kyro.pitsim.logging.LogManager;
 import dev.kyro.pitsim.megastreaks.NoMegastreak;
 import dev.kyro.pitsim.megastreaks.RNGesus;
-import dev.kyro.pitsim.misc.*;
-import dev.kyro.pitsim.misc.tainted.CorruptedFeather;
+import dev.kyro.pitsim.misc.ArmorReduction;
+import dev.kyro.pitsim.misc.Misc;
+import dev.kyro.pitsim.misc.ProtArmor;
+import dev.kyro.pitsim.misc.Sounds;
+import dev.kyro.pitsim.upgrades.BreadDealer;
 import dev.kyro.pitsim.upgrades.DivineIntervention;
 import dev.kyro.pitsim.upgrades.LifeInsurance;
 import me.clip.placeholderapi.PlaceholderAPI;
@@ -505,7 +509,7 @@ public class DamageManager implements Listener {
 		if(!(dead instanceof Player)) return;
 		if(MapManager.inDarkzone(dead.getLocation())) {
 			Player deadPlayer = (Player) dead;
-			boolean corrupted_feather = CorruptedFeather.useCorruptedFeather(killer, deadPlayer);
+			boolean corrupted_feather = ItemFactory.getItem(CorruptedFeather.class).useCorruptedFeather(killer, deadPlayer);
 			for(int i = 0; i < deadPlayer.getInventory().getSize(); i++) {
 				if(!corrupted_feather && BrewingIngredient.isIngredient(deadPlayer.getInventory().getItem(i))) {
 					ItemStack item = deadPlayer.getInventory().getItem(i);
@@ -524,7 +528,7 @@ public class DamageManager implements Listener {
 
 			boolean divine = DivineIntervention.INSTANCE.isDivine(deadPlayer);
 			boolean feather = false;
-			if(!divine) feather = ItemFactory.getItem(FunkyFeather.class).useFeather(killer, deadPlayer, divine);
+			if(!divine) feather = ItemFactory.getItem(FunkyFeather.class).useFeather(killer, deadPlayer);
 
 			int livesLost = 0;
 
@@ -555,7 +559,7 @@ public class DamageManager implements Listener {
 
 			if(!feather && !divine) {
 				ProtArmor.deleteArmor(deadPlayer);
-				YummyBread.deleteBread(deadPlayer);
+				BreadDealer.handleBreadOnDeath(deadPlayer);
 			}
 			if(!Misc.isAirOrNull(deadPlayer.getInventory().getLeggings())) {
 				ItemStack pants = deadPlayer.getInventory().getLeggings();

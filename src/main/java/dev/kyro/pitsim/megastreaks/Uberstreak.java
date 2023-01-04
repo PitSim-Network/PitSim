@@ -6,6 +6,7 @@ import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.arcticapi.misc.AUtil;
 import dev.kyro.pitsim.PitSim;
+import dev.kyro.pitsim.aitems.ChunkOfVile;
 import dev.kyro.pitsim.aitems.FunkyFeather;
 import dev.kyro.pitsim.battlepass.quests.CompleteUbersQuest;
 import dev.kyro.pitsim.commands.FreshCommand;
@@ -422,14 +423,14 @@ public class Uberstreak extends Megastreak {
 				ItemFactory.getItem(FunkyFeather.class).giveItem(player, 3);
 				displayStack = getDisplayStack("&33x Funky Feather", ItemFactory.getItem(FunkyFeather.class).getItem(3));
 			} else if(this == VILE_2) {
-				ChunkOfVile.giveVile(player, 2);
-				displayStack = getDisplayStack("&52x Chunk of Vile", ChunkOfVile.getVile(2));
+				ItemFactory.getItem(ChunkOfVile.class).giveItem(player, 2);
+				displayStack = getDisplayStack("&52x Chunk of Vile", ItemFactory.getItem(ChunkOfVile.class).getItem(2));
 			} else if(this == VILE_3) {
-				ChunkOfVile.giveVile(player, 3);
-				displayStack = getDisplayStack("&53x Chunk of Vile", ChunkOfVile.getVile(3));
+				ItemFactory.getItem(ChunkOfVile.class).giveItem(player, 3);
+				displayStack = getDisplayStack("&53x Chunk of Vile", ItemFactory.getItem(ChunkOfVile.class).getItem(3));
 			} else if(this == VILE_5) {
-				ChunkOfVile.giveVile(player, 5);
-				displayStack = getDisplayStack("&55x Chunk of Vile", ChunkOfVile.getVile(5));
+				ItemFactory.getItem(ChunkOfVile.class).giveItem(player, 5);
+				displayStack = getDisplayStack("&55x Chunk of Vile", ItemFactory.getItem(ChunkOfVile.class).getItem(5));
 			} else if(this == P1_HELMET) {
 				ProtArmor.getArmor(player, "helmet");
 				displayStack = getDisplayStack("&bProtection I Diamond Helmet", ProtArmor.getArmor("helmet"));

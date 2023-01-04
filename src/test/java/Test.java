@@ -1,6 +1,7 @@
 public class Test {
 	public static void main(String[] args) {
-		String text = "hell o ";
-		System.out.println(text.matches("[\\w\\s]+"));
+		for(int i = 1; i < 10; i++) {
+			System.out.println((int) (i * 30 / 100.0));
+		}
 	}
 }

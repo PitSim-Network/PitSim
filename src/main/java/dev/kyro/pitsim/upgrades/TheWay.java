@@ -32,7 +32,7 @@ public class TheWay extends RenownUpgrade {
 		if(UpgradeManager.hasUpgrade(player, this))
 			lore.add(ChatColor.GRAY + "Tier: " + ChatColor.GREEN + AUtil.toRoman(UpgradeManager.getTier(player, this)));
 		if(UpgradeManager.hasUpgrade(player, this)) lore.add("");
-		lore.add(ChatColor.GRAY + "Each tier:");
+		lore.add(ChatColor.GRAY + "Each Tier:");
 		lore.add(ChatColor.GRAY + "Lower level requirements by");
 		lore.add(ChatColor.YELLOW + "5 levels" + ChatColor.GRAY + ".");
 		meta.setLore(UpgradeManager.loreBuilder(this, player, lore, isCustomPanel));

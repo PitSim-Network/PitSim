@@ -3,7 +3,10 @@ package dev.kyro.pitsim.inventories;
 import de.tr7zw.nbtapi.NBTItem;
 import dev.kyro.arcticapi.gui.AGUI;
 import dev.kyro.arcticapi.gui.AGUIPanel;
+import dev.kyro.pitsim.aitems.ChunkOfVile;
 import dev.kyro.pitsim.aitems.FunkyFeather;
+import dev.kyro.pitsim.aitems.VeryYummyBread;
+import dev.kyro.pitsim.aitems.YummyBread;
 import dev.kyro.pitsim.brewing.PotionManager;
 import dev.kyro.pitsim.brewing.ingredients.*;
 import dev.kyro.pitsim.brewing.objects.BrewingIngredient;
@@ -80,11 +83,11 @@ public class GodPanel extends AGUIPanel {
 		addItem(ProtArmor.getArmor("boots"));
 
 		addItem(ItemFactory.getItem(FunkyFeather.class).getItem(64));
-		addItem(ChunkOfVile.getVile(64));
+		addItem(ItemFactory.getItem(ChunkOfVile.class).getItem(64));
 		addItem(ShardHunter.getGemItem(64));
 		addItem(ShardHunter.getShardItem(64));
-		addItem(YummyBread.getBread(64, false));
-		addItem(YummyBread.getBread(64, true));
+		addItem(ItemFactory.getItem(YummyBread.class).getItem(64));
+		addItem(ItemFactory.getItem(VeryYummyBread.class).getItem(64));
 
 		itemStack = RottenFlesh.INSTANCE.getItem();
 		itemStack.setAmount(64);

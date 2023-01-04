@@ -4,6 +4,7 @@ import de.tr7zw.nbtapi.NBTItem;
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.arcticapi.misc.AUtil;
 import dev.kyro.pitsim.PitSim;
+import dev.kyro.pitsim.aitems.ChunkOfVile;
 import dev.kyro.pitsim.aitems.FunkyFeather;
 import dev.kyro.pitsim.battlepass.PassData;
 import dev.kyro.pitsim.battlepass.PassManager;
@@ -14,7 +15,6 @@ import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.enums.MysticType;
 import dev.kyro.pitsim.enums.NBTTag;
 import dev.kyro.pitsim.enums.PantColor;
-import dev.kyro.pitsim.misc.ChunkOfVile;
 import dev.kyro.pitsim.misc.ProtArmor;
 import dev.kyro.pitsim.upgrades.ShardHunter;
 import org.bukkit.Bukkit;
@@ -136,7 +136,7 @@ public class RewardCommand implements CommandExecutor {
 				ItemFactory.getItem(FunkyFeather.class).giveItem(player, amount);
 				return false;
 			case "vile":
-				ChunkOfVile.giveVile(player, amount);
+				ItemFactory.getItem(ChunkOfVile.class).giveItem(player, amount);
 				return false;
 			case "xp":
 				LevelManager.addXP(player, amount);

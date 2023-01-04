@@ -569,17 +569,12 @@ public class PitSim extends JavaPlugin {
 		getServer().getPluginManager().registerEvents(new AFKManager(), this);
 		getServer().getPluginManager().registerEvents(new EnchantManager(), this);
 		getServer().getPluginManager().registerEvents(new TotallyLegitGem(), this);
-		getServer().getPluginManager().registerEvents(new ChunkOfVile(), this);
-//		getServer().getPluginManager().registerEvents(new NonAnticheat(), this);
-//		getServer().getPluginManager().registerEvents(new HelmetListeners(), this);
 		getServer().getPluginManager().registerEvents(new PitBlob(), this);
 		getServer().getPluginManager().registerEvents(new BackwardsCompatibility(), this);
-		getServer().getPluginManager().registerEvents(new YummyBread(), this);
 		getServer().getPluginManager().registerEvents(new BoosterManager(), this);
 		getServer().getPluginManager().registerEvents(new HopperManager(), this);
 		getServer().getPluginManager().registerEvents(new ResourcePackManager(), this);
 		getServer().getPluginManager().registerEvents(new StatManager(), this);
-//		getServer().getPluginManager().registerEvents(new LockdownManager(), this);
 		getServer().getPluginManager().registerEvents(new GoldenHelmet(), this);
 		getServer().getPluginManager().registerEvents(new MapManager(), this);
 		getServer().getPluginManager().registerEvents(new GuildIntegrationManager(), this);
@@ -647,6 +642,7 @@ public class PitSim extends JavaPlugin {
 		UpgradeManager.registerUpgrade(new TheWay());
 		UpgradeManager.registerUpgrade(new FastPass());
 		UpgradeManager.registerUpgrade(new Celebrity());
+		UpgradeManager.registerUpgrade(new BreadDealer());
 	}
 
 	private void registerHelmetAbilities() {

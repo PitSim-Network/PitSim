@@ -34,7 +34,7 @@ public class UberIncrease extends RenownUpgrade {
 		if(UpgradeManager.hasUpgrade(player, this))
 			lore.add(ChatColor.GRAY + "Tier: " + ChatColor.GREEN + AUtil.toRoman(UpgradeManager.getTier(player, this)));
 		if(UpgradeManager.hasUpgrade(player, this)) lore.add("");
-		lore.add(ChatColor.GRAY + "Each tier:");
+		lore.add(ChatColor.GRAY + "Each Tier:");
 		lore.add(ChatColor.GRAY + "Daily " + ChatColor.LIGHT_PURPLE + "Uberstreak " + ChatColor.GRAY + "limit is");
 		lore.add(ChatColor.GRAY + "increased by " + ChatColor.WHITE + 1 + ChatColor.GRAY + ".");
 		meta.setLore(UpgradeManager.loreBuilder(this, player, lore, isCustomPanel));

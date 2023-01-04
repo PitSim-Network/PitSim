@@ -3,9 +3,10 @@ package dev.kyro.pitsim.battlepass.rewards;
 import dev.kyro.arcticapi.builders.AItemStackBuilder;
 import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.arcticapi.misc.AOutput;
+import dev.kyro.pitsim.aitems.ChunkOfVile;
 import dev.kyro.pitsim.battlepass.PassReward;
+import dev.kyro.pitsim.controllers.ItemFactory;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
-import dev.kyro.pitsim.misc.ChunkOfVile;
 import dev.kyro.pitsim.misc.Misc;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
@@ -24,7 +25,7 @@ public class PassVileReward extends PassReward {
 			return false;
 		}
 
-		ChunkOfVile.giveVile(pitPlayer.player, count);
+		ItemFactory.getItem(ChunkOfVile.class).giveItem(pitPlayer.player, count);
 		return true;
 	}
 
