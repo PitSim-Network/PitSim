@@ -7,6 +7,7 @@ import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.misc.Misc;
 import dev.kyro.pitsim.misc.Sounds;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -62,7 +63,9 @@ public class ItemManager implements Listener {
 		}
 
 		PitItem pitItem = ItemFactory.getItem(itemStack);
-		if(pitItem == null || !pitItem.hasDropConfirm) return;
+		if(pitItem == null || !pitItem.hasDropConfirm) {
+			if(itemStack.getType() != Material.ENDER_CHEST && itemStack.getType() != Material.TRIPWIRE_HOOK) return;
+		}
 
 		if(pitPlayer.confirmedDrop == null || !pitPlayer.confirmedDrop.equals(itemStack)) {
 			event.setCancelled(true);
