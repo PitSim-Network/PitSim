@@ -17,10 +17,6 @@ import java.util.*;
 public class YummyBread extends PitItem {
 	public static Map<Player, Integer> breadStacks = new HashMap<>();
 
-	public YummyBread() {
-		hasDropConfirm = true;
-	}
-
 	@Override
 	public String getNBTID() {
 		return "yummy-bread";

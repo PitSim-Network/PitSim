@@ -40,10 +40,6 @@ public class VeryYummyBread extends PitItem {
 		}.runTaskTimer(PitSim.INSTANCE, 0L, 1L);
 	}
 
-	public VeryYummyBread() {
-		hasDropConfirm = true;
-	}
-
 	@Override
 	public String getNBTID() {
 		return "very-yummy-bread";
