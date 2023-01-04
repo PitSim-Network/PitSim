@@ -132,10 +132,6 @@ public class SubLevel {
 		mobs.clear();
 	}
 
-	public Location getBossSpawnLocation() {
-		return middle.clone().add(0, 2, 0);
-	}
-
 	/**
 	 * @return ItemStack required to spawn boss
 	 */
@@ -174,4 +170,11 @@ public class SubLevel {
 		return middle;
 	}
 
+	public Location getBossSpawnLocation() {
+		return getMiddle().clone().add(0, 2, 0);
+	}
+
+	public Location getSpawnerLocation() {
+		return getMiddle().clone().add(0, 1, 0);
+	}
 }
