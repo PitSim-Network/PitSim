@@ -15,6 +15,7 @@ import dev.kyro.arcticapi.data.AData;
 import dev.kyro.arcticapi.hooks.AHook;
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.adarkzone.*;
+import dev.kyro.pitsim.adarkzone.placeholders.ZombieCavePlaceholder;
 import dev.kyro.pitsim.battlepass.PassManager;
 import dev.kyro.pitsim.battlepass.quests.*;
 import dev.kyro.pitsim.battlepass.quests.daily.DailyBotKillQuest;
@@ -231,6 +232,10 @@ public class PitSim extends JavaPlugin {
 		AHook.registerPlaceholder(new PlayerCountPlaceholder());
 		AHook.registerPlaceholder(new GoldPlaceholder());
 		AHook.registerPlaceholder(new NicknamePlaceholder());
+		if (getStatus().isDarkzone()) {
+			AHook.registerPlaceholder(new ZombieCavePlaceholder());
+		}
+
 		new LeaderboardPlaceholders().register();
 
 		CooldownManager.init();

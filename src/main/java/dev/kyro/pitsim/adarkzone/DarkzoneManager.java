@@ -9,6 +9,7 @@ import dev.kyro.pitsim.adarkzone.notdarkzone.PitEquipment;
 import dev.kyro.pitsim.brewing.ingredients.RottenFlesh;
 import dev.kyro.pitsim.controllers.MapManager;
 import dev.kyro.pitsim.misc.Sounds;
+import org.apache.commons.lang.WordUtils;
 import org.bukkit.ChatColor;
 import org.bukkit.Effect;
 import org.bukkit.Location;
@@ -46,8 +47,9 @@ public class DarkzoneManager implements Listener {
 
 		Hologram zombieHologram = HologramsAPI.createHologram(PitSim.INSTANCE, zombieSublevel.getMiddle().add(0.5, 1.6, 0.5));
 		zombieHologram.setAllowPlaceholders(true);
-		zombieHologram.appendTextLine(ChatColor.RED + "Place " + ChatColor.translateAlternateColorCodes('&', "&aRotten Flesh"));
-		zombieHologram.appendTextLine("{fast}" + "%pitsim_zombiecave%" + " ");
+		zombieHologram.appendTextLine(ChatColor.RED + "Place " + ChatColor.translateAlternateColorCodes('&',
+				"&a" + zombieSublevel.getSpawnItem().getItemMeta().getDisplayName()));
+		zombieHologram.appendTextLine("{fast}" + "%zombie_cave%" + " ");
 		holograms.add(zombieHologram);
 
 		new BukkitRunnable() {
