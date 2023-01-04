@@ -35,26 +35,12 @@ public class DarkzoneManager implements Listener {
 		SubLevel zombieSublevel = new SubLevel(
 				SubLevelType.ZOMBIE, PitZombieBoss.class, PitZombie.class,
 				new Location(MapManager.getDarkzone(), 327, 67, -143),
-				20, 17, 12);
+				20, 17, 12, "%pitsim_zombie_cave%");
 		ItemStack zombieSpawnItem = RottenFlesh.INSTANCE.getItem();
 		zombieSublevel.setSpawnItem(zombieSpawnItem);
 
 		registerSubLevel(zombieSublevel);
-
-		for(Hologram hologram : HologramsAPI.getHolograms(PitSim.INSTANCE)) {
-			hologram.delete();
-		}
-
-		Hologram zombieHologram = HologramsAPI.createHologram(PitSim.INSTANCE, new Location(
-				zombieSublevel.getMiddle().getWorld(),
-				zombieSublevel.getMiddle().getX() + 0.5,
-				zombieSublevel.getMiddle().getY() + 1.6,
-				zombieSublevel.getMiddle().getZ() + 0.5));
-		zombieHologram.setAllowPlaceholders(true);
-		zombieHologram.appendTextLine(ChatColor.RED + "Place " + ChatColor.translateAlternateColorCodes('&',
-				"&a" + zombieSublevel.getSpawnItem().getItemMeta().getDisplayName()));
-		zombieHologram.appendTextLine("{fast}" + "%pitsim_zombie_cave%" + " ");
-		holograms.add(zombieHologram);
+		registerHolograms();
 
 		new BukkitRunnable() {
 			@Override
@@ -127,6 +113,8 @@ public class DarkzoneManager implements Listener {
 			event.setCancelled(true);
 	}
 
+
+
 	public static PitEquipment getDefaultEquipment() {
 		return new PitEquipment()
 				.held(new ItemStack(Material.DIAMOND_SWORD))
@@ -159,5 +147,29 @@ public class DarkzoneManager implements Listener {
 			}
 		}
 		return null;
+	}
+
+
+	/**
+	 * Registers all the holograms for the darkzone
+	 */
+	public static void registerHolograms() {
+		for(Hologram hologram : HologramsAPI.getHolograms(PitSim.INSTANCE)) {
+			hologram.delete();
+		}
+
+		for(SubLevel subLevel : subLevels) {
+
+			Hologram hologram = HologramsAPI.createHologram(PitSim.INSTANCE, new Location(
+					subLevel.getMiddle().getWorld(),
+					subLevel.getMiddle().getX() + 0.5,
+					subLevel.getMiddle().getY() + 1.6,
+					subLevel.getMiddle().getZ() + 0.5));
+			hologram.setAllowPlaceholders(true);
+			hologram.appendTextLine(ChatColor.RED + "Place " + ChatColor.translateAlternateColorCodes('&',
+					"&a" + subLevel.getSpawnItem().getItemMeta().getDisplayName()));
+			hologram.appendTextLine("{fast}" + subLevel.getPlaceholder() + " ");
+			holograms.add(hologram);
+		}
 	}
 }

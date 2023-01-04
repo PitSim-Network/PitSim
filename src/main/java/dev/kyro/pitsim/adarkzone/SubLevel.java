@@ -17,6 +17,7 @@ public class SubLevel {
 
 	private Location middle;
 	private List<Location> spawnableLocations = new ArrayList<>();
+	private String placeholder;
 
 //	Boss related fields
 	public Class<? extends PitBoss> bossClass;
@@ -33,7 +34,7 @@ public class SubLevel {
 	public int spawnRadius;
 
 	public SubLevel(SubLevelType subLevelType, Class<? extends PitBoss> bossClass, Class<? extends PitMob> mobClass,
-					Location middle, int maxMobs, int spawnRadius, int requiredDropsToSpawn) {
+					Location middle, int maxMobs, int spawnRadius, int requiredDropsToSpawn, String placeholder) {
 		this.subLevelType = subLevelType;
 		this.bossClass = bossClass;
 		this.mobClass = mobClass;
@@ -41,6 +42,7 @@ public class SubLevel {
 		this.maxMobs = maxMobs;
 		this.spawnRadius = spawnRadius;
 		this.requiredDropsToSpawn = requiredDropsToSpawn;
+		this.placeholder = placeholder;
 		identifySpawnableLocations();
 
 	}
@@ -124,6 +126,7 @@ public class SubLevel {
 
 	public void bossDeath() {
 		isBossSpawned = false;
+		System.out.println("test");
 
 	}
 
@@ -169,7 +172,9 @@ public class SubLevel {
 	public Location getMiddle() {
 		return middle;
 	}
-
+	public String getPlaceholder() {
+		return placeholder;
+	}
 	public Location getBossSpawnLocation() {
 		return getMiddle().clone().add(0, 2, 0);
 	}

@@ -56,7 +56,9 @@ public abstract class PitBoss {
 
 //	Internal events (override to add functionality)
 	public void onSpawn() {}
-	public void onDeath() {}
+	public void onDeath() {
+
+	}
 
 	public PitBoss abilities(PitBossAbility... pitBossAbilities) {
 		abilities = Arrays.asList(pitBossAbilities);
