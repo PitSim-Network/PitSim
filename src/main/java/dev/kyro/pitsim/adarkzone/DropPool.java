@@ -16,20 +16,19 @@ public class DropPool {
 	public DropPool() {
 	}
 
-	/*
-	 * Returns: ItemStack
-	 * Description: Returns a random item from the drop pool
+	/**
+	 * Returns a random item from the dropPool
+	 * @return ItemStack from dropPool
 	 */
 	public ItemStack getRandomDrop() {
 		return Misc.weightedRandom(dropPool);
 	}
 
-	/*
-	* Parameters: Map<UUID, Double> damageMap - Map of UUIDs and their damage dealt to the boss
-	* Returns: void
-	* Description: Gives the top damage dealer 3 random drops from the drop pool, and the second place damage dealer 2
-	* random drops from the drop pool, and the third place damage dealer 1 random drop from the drop pool.
-	*/
+	/**
+	 * Gives the top damage dealer 3 random drops from the drop pool, and the second place damage dealer 2
+	 * random drops from the drop pool, and the third place damage dealer 1 random drop from the drop pool.
+	 * @param damageMap map of player UUIDs and the damage they did to a boss
+	 */
 	public void distributeRewards(Map<UUID, Double> damageMap) {
 
 		for (int j = 0; j < 3; j++)
@@ -60,12 +59,12 @@ public class DropPool {
 	}
 
 
-	/*
-	* Parameters: ItemStack itemStack - Item to add to the drop pool
-	* double weight - Weight of the item
-	* Returns: void
-	* Description: Adds an item to the drop pool with a weight
-	*/
+	/**
+	 * Adds item to the dropPool
+	 * @param item item to be added to dropPool
+	 * @param chance weight of item being selected from dropPool
+	 * @return DropPool istance
+	 */
 	public DropPool addItem(ItemStack item, double chance) {
 		dropPool.put(item, chance);
 		return this;

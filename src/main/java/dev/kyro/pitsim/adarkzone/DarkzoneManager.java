@@ -70,7 +70,6 @@ public class DarkzoneManager implements Listener {
 
 	/**
 	 * Cancels all suffocation and fall damage in the darkzone
-	 *
 	 * @param event
 	 **/
 	@EventHandler
