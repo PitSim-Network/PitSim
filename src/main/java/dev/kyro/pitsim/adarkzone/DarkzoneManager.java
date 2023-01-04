@@ -45,11 +45,15 @@ public class DarkzoneManager implements Listener {
 			hologram.delete();
 		}
 
-		Hologram zombieHologram = HologramsAPI.createHologram(PitSim.INSTANCE, zombieSublevel.getMiddle().add(0.5, 1.6, 0.5));
+		Hologram zombieHologram = HologramsAPI.createHologram(PitSim.INSTANCE, new Location(
+				zombieSublevel.getMiddle().getWorld(),
+				zombieSublevel.getMiddle().getX() + 0.5,
+				zombieSublevel.getMiddle().getY() + 1.6,
+				zombieSublevel.getMiddle().getZ() + 0.5));
 		zombieHologram.setAllowPlaceholders(true);
 		zombieHologram.appendTextLine(ChatColor.RED + "Place " + ChatColor.translateAlternateColorCodes('&',
 				"&a" + zombieSublevel.getSpawnItem().getItemMeta().getDisplayName()));
-		zombieHologram.appendTextLine("{fast}" + "%zombie_cave%" + " ");
+		zombieHologram.appendTextLine("{fast}" + "%pitsim_zombie_cave%" + " ");
 		holograms.add(zombieHologram);
 
 		new BukkitRunnable() {
@@ -68,6 +72,7 @@ public class DarkzoneManager implements Listener {
 	@EventHandler
 	public void onClick(PlayerInteractEvent event) {
 
+
 		if(event.getPlayer() == null) return;
 		if(event.getPlayer().getItemInHand() == null) return;
 		if(event.getAction() != Action.LEFT_CLICK_BLOCK && event.getAction() != Action.RIGHT_CLICK_BLOCK) return;
@@ -82,8 +87,12 @@ public class DarkzoneManager implements Listener {
 			if (subLevel.getSpawnItem() == null) {
 				continue;
 			}
+			System.out.println("3");
 			if (subLevel.getSpawnItem().isSimilar(item)) {
+				System.out.println("4");
 				if(subLevel.getMiddle().equals(location)) {
+					System.out.println("5");
+
 					subLevel.setCurrentDrops(subLevel.getCurrentDrops() + 1);
 					item.setAmount(item.getAmount() - 1);
 					if(item.getAmount() == 1) {
