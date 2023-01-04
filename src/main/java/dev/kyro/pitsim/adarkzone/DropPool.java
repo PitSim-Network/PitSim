@@ -25,13 +25,12 @@ public class DropPool {
 	}
 
 	/**
-	 * Gives the top damage dealer 3 random drops from the drop pool, and the second place damage dealer 2
-	 * random drops from the drop pool, and the third place damage dealer 1 random drop from the drop pool.
+	 * Gives the top n damage dealers drops from the dropPool
 	 * @param damageMap map of player UUIDs and the damage they did to a boss
 	 */
-	public void distributeRewards(Map<UUID, Double> damageMap) {
+	public void distributeRewards(Map<UUID, Double> damageMap, int n) {
 
-		for (int j = 0; j < 3; j++)
+		for (int j = 0; j < n; j++)
 		{
 			UUID topDamageDealer = null;
 			double topDamage = 0;
@@ -47,7 +46,7 @@ public class DropPool {
 			Player player = Bukkit.getPlayer(topDamageDealer);
 
 			if (player != null) {
-				for(int i = j; i < 3; i++) {
+				for(int i = j; i < n; i++) {
 					ItemStack drop = getRandomDrop();
 					AUtil.giveItemSafely(player, drop);
 				}

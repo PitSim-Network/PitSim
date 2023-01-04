@@ -55,7 +55,7 @@ public class BossManager implements Listener {
 		if(killedBoss == null) {
 			return;
 		}
-		killedBoss.dropPool.distributeRewards(killedBoss.damageMap);
+		killedBoss.dropPool.distributeRewards(killedBoss.damageMap, 3);
 		killedBoss.kill();
 		killedBoss.getSubLevel().bossDeath();
 	}
