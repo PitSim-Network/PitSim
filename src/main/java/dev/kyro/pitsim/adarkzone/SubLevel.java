@@ -15,16 +15,16 @@ import java.util.Random;
 public class SubLevel {
 	public SubLevelType subLevelType;
 
-	public Location middle;
+	private Location middle;
 	private List<Location> spawnableLocations = new ArrayList<>();
 
 //	Boss related fields
 	public Class<? extends PitBoss> bossClass;
 	public PitBoss pitBoss;
-	public boolean isBossSpawned = false;
-	public ItemStack spawnItem;
-	public int currentDrops = 0;
-	public int requiredDropsToSpawn;
+	private boolean isBossSpawned = false;
+	private ItemStack spawnItem;
+	private int currentDrops = 0;
+	private int requiredDropsToSpawn;
 
 	//	Mob related fields
 	public Class<? extends PitMob> mobClass;
@@ -42,6 +42,7 @@ public class SubLevel {
 		this.spawnRadius = spawnRadius;
 		this.requiredDropsToSpawn = requiredDropsToSpawn;
 		identifySpawnableLocations();
+
 	}
 
 	public void tick() {
@@ -148,4 +149,29 @@ public class SubLevel {
 	public void setSpawnItem(ItemStack spawnItem) {
 		this.spawnItem = spawnItem;
 	}
+
+	public SubLevelType getSubLevelType() {
+		return subLevelType;
+	}
+
+	public boolean isBossSpawned() {
+		return isBossSpawned;
+	}
+
+	public int getCurrentDrops() {
+		return currentDrops;
+	}
+
+	public void setCurrentDrops(int currentDrops) {
+		this.currentDrops = currentDrops;
+	}
+
+	public int getRequiredDropsToSpawn() {
+		return requiredDropsToSpawn;
+	}
+
+	public Location getMiddle() {
+		return middle;
+	}
+
 }
