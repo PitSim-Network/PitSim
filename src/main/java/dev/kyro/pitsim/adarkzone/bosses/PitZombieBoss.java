@@ -45,7 +45,7 @@ public class PitZombieBoss extends PitBoss {
 
 	@Override
 	public double getReach() {
-		return 0;
+		return 7;
 	}
 
 	@Override

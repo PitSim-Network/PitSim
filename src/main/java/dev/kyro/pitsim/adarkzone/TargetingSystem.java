@@ -8,6 +8,7 @@ import org.bukkit.scheduler.BukkitTask;
 import org.bukkit.util.Vector;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 // This code strictly handles literal attacks, not abilities and other "attacks"
@@ -54,7 +55,8 @@ public class TargetingSystem {
 		}
 
 		List<Player> playersInRadius = new ArrayList<>();
-		for(Entity entity : pitBoss.boss.getNearbyEntities(radius, radius, radius)) {
+		for(Entity entity : pitBoss.boss.getNearbyEntities(radius, radius, radius))  {
+			System.out.println("FOUND ENTITY");
 			if(!(entity instanceof Player)) continue;
 			Player player = (Player) entity;
 			playersInRadius.add(player);
