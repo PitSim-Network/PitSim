@@ -3,12 +3,13 @@ package dev.kyro.pitsim.inventories;
 import de.tr7zw.nbtapi.NBTItem;
 import dev.kyro.arcticapi.gui.AGUI;
 import dev.kyro.arcticapi.gui.AGUIPanel;
+import dev.kyro.pitsim.aitems.FunkyFeather;
 import dev.kyro.pitsim.brewing.PotionManager;
 import dev.kyro.pitsim.brewing.ingredients.*;
 import dev.kyro.pitsim.brewing.objects.BrewingIngredient;
 import dev.kyro.pitsim.commands.FreshCommand;
 import dev.kyro.pitsim.controllers.EnchantManager;
-import dev.kyro.pitsim.controllers.ItemManager;
+import dev.kyro.pitsim.controllers.ItemFactory;
 import dev.kyro.pitsim.enums.MysticType;
 import dev.kyro.pitsim.enums.NBTTag;
 import dev.kyro.pitsim.enums.PantColor;
@@ -53,21 +54,21 @@ public class GodPanel extends AGUIPanel {
 		addItem(FreshCommand.getFreshItem(MysticType.TAINTED_CHESTPLATE, null));
 
 		itemStack = FreshCommand.getFreshItem(MysticType.SWORD, PantColor.JEWEL);
-		itemStack = ItemManager.enableDropConfirm(itemStack);
+//		itemStack = ItemManager.enableDropConfirm(itemStack);
 		nbtItem = new NBTItem(itemStack);
 		nbtItem.setBoolean(NBTTag.IS_JEWEL.getRef(), true);
 		EnchantManager.setItemLore(nbtItem.getItem(), player);
 		addItem(nbtItem.getItem());
 
 		itemStack = FreshCommand.getFreshItem(MysticType.BOW, PantColor.JEWEL);
-		itemStack = ItemManager.enableDropConfirm(itemStack);
+//		itemStack = ItemManager.enableDropConfirm(itemStack);
 		nbtItem = new NBTItem(itemStack);
 		nbtItem.setBoolean(NBTTag.IS_JEWEL.getRef(), true);
 		EnchantManager.setItemLore(nbtItem.getItem(), player);
 		addItem(nbtItem.getItem());
 
 		itemStack = FreshCommand.getFreshItem(MysticType.PANTS, PantColor.JEWEL);
-		itemStack = ItemManager.enableDropConfirm(itemStack);
+//		itemStack = ItemManager.enableDropConfirm(itemStack);
 		nbtItem = new NBTItem(itemStack);
 		nbtItem.setBoolean(NBTTag.IS_JEWEL.getRef(), true);
 		EnchantManager.setItemLore(nbtItem.getItem(), player);
@@ -78,7 +79,7 @@ public class GodPanel extends AGUIPanel {
 		addItem(ProtArmor.getArmor("leggings"));
 		addItem(ProtArmor.getArmor("boots"));
 
-		addItem(FunkyFeather.getFeather(64));
+		addItem(ItemFactory.getItem(FunkyFeather.class).getItem(64));
 		addItem(ChunkOfVile.getVile(64));
 		addItem(ShardHunter.getGemItem(64));
 		addItem(ShardHunter.getShardItem(64));

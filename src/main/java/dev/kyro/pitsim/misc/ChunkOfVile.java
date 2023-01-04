@@ -3,7 +3,6 @@ package dev.kyro.pitsim.misc;
 import de.tr7zw.nbtapi.NBTItem;
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.arcticapi.misc.AUtil;
-import dev.kyro.pitsim.controllers.ItemManager;
 import dev.kyro.pitsim.controllers.MapManager;
 import dev.kyro.pitsim.controllers.UpgradeManager;
 import dev.kyro.pitsim.enums.NBTTag;
@@ -34,7 +33,7 @@ public class ChunkOfVile implements Listener {
 		vile.setItemMeta(meta);
 		vile.setAmount(amount);
 
-		vile = ItemManager.enableDropConfirm(vile);
+//		vile = ItemManager.enableDropConfirm(vile);
 
 		NBTItem nbtItem = new NBTItem(vile);
 		nbtItem.setBoolean(NBTTag.IS_VILE.getRef(), true);
@@ -54,7 +53,7 @@ public class ChunkOfVile implements Listener {
 		vile.setItemMeta(meta);
 		vile.setAmount(amount);
 
-		vile = ItemManager.enableDropConfirm(vile);
+//		vile = ItemManager.enableDropConfirm(vile);
 
 		NBTItem nbtItem = new NBTItem(vile);
 		nbtItem.setBoolean(NBTTag.IS_VILE.getRef(), true);

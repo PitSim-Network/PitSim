@@ -1,10 +1,11 @@
 package dev.kyro.pitsim.enums;
 
+import dev.kyro.pitsim.aitems.FunkyFeather;
 import dev.kyro.pitsim.commands.FreshCommand;
 import dev.kyro.pitsim.commands.JewelCommand;
 import dev.kyro.pitsim.controllers.EnchantManager;
+import dev.kyro.pitsim.controllers.ItemFactory;
 import dev.kyro.pitsim.misc.ChunkOfVile;
-import dev.kyro.pitsim.misc.FunkyFeather;
 import dev.kyro.pitsim.upgrades.ShardHunter;
 import org.bukkit.ChatColor;
 import org.bukkit.inventory.ItemStack;
@@ -14,8 +15,8 @@ import java.util.Random;
 import static dev.kyro.pitsim.misc.tainted.CorruptedFeather.getCorruptedFeather;
 
 public enum ItemType {
-	FEATHERS_3(1, getFeathers(3), ChatColor.DARK_AQUA + "3x Funky Feather", 50, 10),
-	FEATHERS_5(2, getFeathers(5), ChatColor.DARK_AQUA + "5x Funky Feather", 25, 25),
+	FEATHERS_3(1, ItemFactory.getItem(FunkyFeather.class).getItem(3), ChatColor.DARK_AQUA + "3x Funky Feather", 50, 10),
+	FEATHERS_5(2, ItemFactory.getItem(FunkyFeather.class).getItem(5), ChatColor.DARK_AQUA + "5x Funky Feather", 25, 25),
 	VILE_3(3, getVile(3), ChatColor.DARK_PURPLE + "3x Chunk of Vile", 50, 10),
 	VILE_5(4, getVile(5), ChatColor.DARK_PURPLE + "5x Chunk of Vile", 25, 25),
 	COMP_JEWEL_SWORD(5, FreshCommand.getFreshItem(MysticType.SWORD, PantColor.BLUE), ChatColor.YELLOW + "Completed Hidden Jewel Sword", 25, 25),
@@ -28,7 +29,6 @@ public enum ItemType {
 	GEM_SHARD_25(12, ShardHunter.getShardItem(10), ChatColor.GREEN + "10x Ancient Gem Shard", 5, 100),
 	CORRUPTED_FEATHERS_3(13, getCorruptedFeather(3), ChatColor.DARK_PURPLE + "3x Corrupted Feather", 50, 10),
 	CORRUPTED_FEATHERS_5(14, getCorruptedFeather(5), ChatColor.DARK_PURPLE + "5x Corrupted Feather", 25, 25);
-
 
 	public final int id;
 	public final ItemStack item;
@@ -82,14 +82,7 @@ public enum ItemType {
 		return JewelCommand.getJewel(mysticType, jewelDataToEnchant(mysticType, data), 0);
 	}
 
-
-	public static ItemStack getFeathers(int amount) {
-		return FunkyFeather.getFeather(amount);
-	}
-
 	public static ItemStack getVile(int amount) {
 		return ChunkOfVile.getVile(amount);
 	}
-
-
 }

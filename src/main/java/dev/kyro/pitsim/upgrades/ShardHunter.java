@@ -5,16 +5,13 @@ import com.xxmicloxx.NoteBlockAPI.model.Song;
 import com.xxmicloxx.NoteBlockAPI.songplayer.RadioSongPlayer;
 import com.xxmicloxx.NoteBlockAPI.utils.NBSDecoder;
 import de.tr7zw.nbtapi.NBTItem;
-import dev.kyro.arcticapi.gui.AGUIPanel;
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.arcticapi.misc.AUtil;
-import dev.kyro.pitsim.controllers.ItemManager;
 import dev.kyro.pitsim.controllers.UpgradeManager;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.controllers.objects.RenownUpgrade;
 import dev.kyro.pitsim.enums.NBTTag;
 import dev.kyro.pitsim.events.KillEvent;
-import dev.kyro.pitsim.inventories.RenownShopGUI;
 import dev.kyro.pitsim.megastreaks.Uberstreak;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -113,7 +110,7 @@ public class ShardHunter extends RenownUpgrade {
 		gem.setItemMeta(meta);
 		gem.setAmount(amount);
 
-		gem = ItemManager.enableDropConfirm(gem);
+//		gem = ItemManager.enableDropConfirm(gem);
 
 		NBTItem nbtItem = new NBTItem(gem);
 
@@ -136,7 +133,7 @@ public class ShardHunter extends RenownUpgrade {
 		shardMeta.setLore(lore);
 		shardItem.setItemMeta(shardMeta);
 		shardItem.setAmount(amount);
-		shardItem = ItemManager.enableDropConfirm(shardItem);
+//		shardItem = ItemManager.enableDropConfirm(shardItem);
 		NBTItem nbtItem = new NBTItem(shardItem);
 		nbtItem.setBoolean(NBTTag.IS_SHARD.getRef(), true);
 		return nbtItem.getItem();

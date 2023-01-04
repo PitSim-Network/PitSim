@@ -5,7 +5,6 @@ import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.arcticapi.misc.AUtil;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.controllers.GuildIntegrationManager;
-import dev.kyro.pitsim.controllers.ItemManager;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.enums.NBTTag;
 import dev.kyro.pitsim.misc.Misc;
@@ -36,7 +35,7 @@ public class CorruptedFeather {
 		feather.setItemMeta(meta);
 		feather.setAmount(amount);
 
-		feather = ItemManager.enableDropConfirm(feather);
+//		feather = ItemManager.enableDropConfirm(feather);
 
 		NBTItem nbtItem = new NBTItem(feather);
 		nbtItem.setBoolean(NBTTag.IS_CORRUPTED_FEATHER.getRef(), true);
@@ -65,7 +64,7 @@ public class CorruptedFeather {
 		feather.setItemMeta(meta);
 		feather.setAmount(amount);
 
-		feather = ItemManager.enableDropConfirm(feather);
+//		feather = ItemManager.enableDropConfirm(feather);
 
 		NBTItem nbtItem = new NBTItem(feather);
 		nbtItem.setBoolean(NBTTag.IS_CORRUPTED_FEATHER.getRef(), true);

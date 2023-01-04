@@ -3,6 +3,7 @@ package dev.kyro.pitsim.controllers;
 import de.tr7zw.nbtapi.NBTItem;
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.PitSim;
+import dev.kyro.pitsim.aitems.FunkyFeather;
 import dev.kyro.pitsim.brewing.objects.BrewingIngredient;
 import dev.kyro.pitsim.controllers.objects.Non;
 import dev.kyro.pitsim.controllers.objects.PitEnchant;
@@ -522,7 +523,8 @@ public class DamageManager implements Listener {
 			PitPlayer pitDead = PitPlayer.getPitPlayer(deadPlayer);
 
 			boolean divine = DivineIntervention.INSTANCE.isDivine(deadPlayer);
-			boolean feather = FunkyFeather.useFeather(killer, deadPlayer, divine);
+			boolean feather = false;
+			if(!divine) feather = ItemFactory.getItem(FunkyFeather.class).useFeather(killer, deadPlayer, divine);
 
 			int livesLost = 0;
 

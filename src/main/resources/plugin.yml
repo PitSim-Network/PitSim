@@ -33,8 +33,7 @@ commands:
   bounty:
   spawn:
   changemap:
-  crategive:
-  cg:
+  reward:
   afk:
   pitreload:
   setvalue:

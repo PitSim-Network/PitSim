@@ -109,7 +109,7 @@ public class FreshCommand implements CommandExecutor {
 			mystic.setItemMeta(itemMeta);
 
 			NBTItem nbtItem = new NBTItem(mystic);
-			nbtItem.setBoolean(NBTTag.DROP_CONFIRM.getRef(), true);
+//			nbtItem.setBoolean(NBTTag.DROP_CONFIRM.getRef(), true);
 			mystic = nbtItem.getItem();
 
 		} else if(type == MysticType.TAINTED_CHESTPLATE) {
@@ -126,7 +126,7 @@ public class FreshCommand implements CommandExecutor {
 			mystic.setItemMeta(meta);
 
 			NBTItem nbtItem = new NBTItem(mystic);
-			nbtItem.setBoolean(NBTTag.DROP_CONFIRM.getRef(), true);
+//			nbtItem.setBoolean(NBTTag.DROP_CONFIRM.getRef(), true);
 			mystic = nbtItem.getItem();
 		} else {
 

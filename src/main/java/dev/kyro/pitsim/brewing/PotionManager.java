@@ -123,7 +123,7 @@ public class PotionManager implements Listener {
 		nbtItem.setInteger(NBTTag.POTION_IDENTIFIER.getRef(), identifier.tier);
 		nbtItem.setInteger(NBTTag.POTION_POTENCY.getRef(), potency.tier);
 		nbtItem.setInteger(NBTTag.POTION_DURATION.getRef(), duration.tier);
-		nbtItem.setBoolean(NBTTag.DROP_CONFIRM.getRef(), true);
+//		nbtItem.setBoolean(NBTTag.DROP_CONFIRM.getRef(), true);
 		return nbtItem.getItem();
 	}
 

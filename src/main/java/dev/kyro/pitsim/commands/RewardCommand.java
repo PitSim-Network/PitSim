@@ -4,17 +4,17 @@ import de.tr7zw.nbtapi.NBTItem;
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.arcticapi.misc.AUtil;
 import dev.kyro.pitsim.PitSim;
+import dev.kyro.pitsim.aitems.FunkyFeather;
 import dev.kyro.pitsim.battlepass.PassData;
 import dev.kyro.pitsim.battlepass.PassManager;
 import dev.kyro.pitsim.controllers.EnchantManager;
-import dev.kyro.pitsim.controllers.ItemManager;
+import dev.kyro.pitsim.controllers.ItemFactory;
 import dev.kyro.pitsim.controllers.LevelManager;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.enums.MysticType;
 import dev.kyro.pitsim.enums.NBTTag;
 import dev.kyro.pitsim.enums.PantColor;
 import dev.kyro.pitsim.misc.ChunkOfVile;
-import dev.kyro.pitsim.misc.FunkyFeather;
 import dev.kyro.pitsim.misc.ProtArmor;
 import dev.kyro.pitsim.upgrades.ShardHunter;
 import org.bukkit.Bukkit;
@@ -25,7 +25,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 
-public class CrateGiveCommand implements CommandExecutor {
+public class RewardCommand implements CommandExecutor {
 	@Override
 	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
 		if(sender instanceof Player) return false;
@@ -59,7 +59,7 @@ public class CrateGiveCommand implements CommandExecutor {
 			case "hjsword":
 				for(int i = 0; i < amount; i++) {
 					ItemStack jewelSword = FreshCommand.getFreshItem(MysticType.SWORD, PantColor.JEWEL);
-					jewelSword = ItemManager.enableDropConfirm(jewelSword);
+//					jewelSword = ItemManager.enableDropConfirm(jewelSword);
 					NBTItem nbtItemSword = new NBTItem(jewelSword);
 					nbtItemSword.setBoolean(NBTTag.IS_JEWEL.getRef(), true);
 					EnchantManager.setItemLore(nbtItemSword.getItem(), player);
@@ -69,7 +69,7 @@ public class CrateGiveCommand implements CommandExecutor {
 			case "hjbow":
 				for(int i = 0; i < amount; i++) {
 					ItemStack jewelBow = FreshCommand.getFreshItem(MysticType.BOW, PantColor.JEWEL);
-					jewelBow = ItemManager.enableDropConfirm(jewelBow);
+//					jewelBow = ItemManager.enableDropConfirm(jewelBow);
 					NBTItem nbtItemBow = new NBTItem(jewelBow);
 					nbtItemBow.setBoolean(NBTTag.IS_JEWEL.getRef(), true);
 					EnchantManager.setItemLore(nbtItemBow.getItem(), player);
@@ -79,7 +79,7 @@ public class CrateGiveCommand implements CommandExecutor {
 			case "hjpants":
 				for(int i = 0; i < amount; i++) {
 					ItemStack jewel = FreshCommand.getFreshItem(MysticType.PANTS, PantColor.JEWEL);
-					jewel = ItemManager.enableDropConfirm(jewel);
+//					jewel = ItemManager.enableDropConfirm(jewel);
 					NBTItem nbtItem = new NBTItem(jewel);
 					nbtItem.setBoolean(NBTTag.IS_JEWEL.getRef(), true);
 					EnchantManager.setItemLore(nbtItem.getItem(), player);
@@ -89,7 +89,7 @@ public class CrateGiveCommand implements CommandExecutor {
 			case "hjbundle":
 				for(int i = 0; i < amount; i++) {
 					ItemStack jbsword = FreshCommand.getFreshItem(MysticType.SWORD, PantColor.JEWEL);
-					jbsword = ItemManager.enableDropConfirm(jbsword);
+//					jbsword = ItemManager.enableDropConfirm(jbsword);
 					NBTItem nbtjbsword = new NBTItem(jbsword);
 					nbtjbsword.setBoolean(NBTTag.IS_JEWEL.getRef(), true);
 					EnchantManager.setItemLore(nbtjbsword.getItem(), player);
@@ -98,7 +98,7 @@ public class CrateGiveCommand implements CommandExecutor {
 
 				for(int i = 0; i < amount; i++) {
 					ItemStack jbbow = FreshCommand.getFreshItem(MysticType.BOW, PantColor.JEWEL);
-					jbbow = ItemManager.enableDropConfirm(jbbow);
+//					jbbow = ItemManager.enableDropConfirm(jbbow);
 					NBTItem nbtjbbow = new NBTItem(jbbow);
 					nbtjbbow.setBoolean(NBTTag.IS_JEWEL.getRef(), true);
 					EnchantManager.setItemLore(nbtjbbow.getItem(), player);
@@ -107,7 +107,7 @@ public class CrateGiveCommand implements CommandExecutor {
 
 				for(int i = 0; i < amount; i++) {
 					ItemStack jb = FreshCommand.getFreshItem(MysticType.PANTS, PantColor.JEWEL);
-					jb = ItemManager.enableDropConfirm(jb);
+//					jb = ItemManager.enableDropConfirm(jb);
 					NBTItem nbtjb = new NBTItem(jb);
 					nbtjb.setBoolean(NBTTag.IS_JEWEL.getRef(), true);
 					EnchantManager.setItemLore(nbtjb.getItem(), player);
@@ -133,7 +133,7 @@ public class CrateGiveCommand implements CommandExecutor {
 				ProtArmor.getArmor(player, "boots");
 				return false;
 			case "feather":
-				FunkyFeather.giveFeather(player, amount);
+				ItemFactory.getItem(FunkyFeather.class).giveItem(player, amount);
 				return false;
 			case "vile":
 				ChunkOfVile.giveVile(player, amount);

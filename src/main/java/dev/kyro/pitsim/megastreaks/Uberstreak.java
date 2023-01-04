@@ -6,12 +6,10 @@ import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.arcticapi.misc.AUtil;
 import dev.kyro.pitsim.PitSim;
+import dev.kyro.pitsim.aitems.FunkyFeather;
 import dev.kyro.pitsim.battlepass.quests.CompleteUbersQuest;
 import dev.kyro.pitsim.commands.FreshCommand;
-import dev.kyro.pitsim.controllers.EnchantManager;
-import dev.kyro.pitsim.controllers.ItemManager;
-import dev.kyro.pitsim.controllers.NonManager;
-import dev.kyro.pitsim.controllers.PrestigeValues;
+import dev.kyro.pitsim.controllers.*;
 import dev.kyro.pitsim.controllers.objects.Megastreak;
 import dev.kyro.pitsim.controllers.objects.PitEnchant;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
@@ -361,7 +359,7 @@ public class Uberstreak extends Megastreak {
 			ItemStack displayStack = null;
 			if(this == JEWEL_SWORD) {
 				ItemStack jewelSword = FreshCommand.getFreshItem(MysticType.SWORD, PantColor.JEWEL);
-				jewelSword = ItemManager.enableDropConfirm(jewelSword);
+//				jewelSword = ItemManager.enableDropConfirm(jewelSword);
 				NBTItem nbtItem = new NBTItem(jewelSword);
 				nbtItem.setBoolean(NBTTag.IS_JEWEL.getRef(), true);
 				EnchantManager.setItemLore(nbtItem.getItem(), player);
@@ -369,7 +367,7 @@ public class Uberstreak extends Megastreak {
 				displayStack = getDisplayStack("&3Hidden Jewel Sword", nbtItem.getItem());
 			} else if(this == JEWEL_BOW) {
 				ItemStack jewelBow = FreshCommand.getFreshItem(MysticType.BOW, PantColor.JEWEL);
-				jewelBow = ItemManager.enableDropConfirm(jewelBow);
+//				jewelBow = ItemManager.enableDropConfirm(jewelBow);
 				NBTItem nbtItem = new NBTItem(jewelBow);
 				nbtItem.setBoolean(NBTTag.IS_JEWEL.getRef(), true);
 				EnchantManager.setItemLore(nbtItem.getItem(), player);
@@ -377,7 +375,7 @@ public class Uberstreak extends Megastreak {
 				displayStack = getDisplayStack("&3Hidden Jewel Bow", nbtItem.getItem());
 			} else if(this == JEWEL_PANTS) {
 				ItemStack jewel = FreshCommand.getFreshItem(MysticType.PANTS, PantColor.JEWEL);
-				jewel = ItemManager.enableDropConfirm(jewel);
+//				jewel = ItemManager.enableDropConfirm(jewel);
 				NBTItem nbtItem = new NBTItem(jewel);
 				nbtItem.setBoolean(NBTTag.IS_JEWEL.getRef(), true);
 				EnchantManager.setItemLore(nbtItem.getItem(), player);
@@ -385,21 +383,21 @@ public class Uberstreak extends Megastreak {
 				displayStack = getDisplayStack("&3Hidden Jewel Pants", nbtItem.getItem());
 			} else if(this == JEWEL_BUNDLE) {
 				ItemStack jbsword = FreshCommand.getFreshItem(MysticType.SWORD, PantColor.JEWEL);
-				jbsword = ItemManager.enableDropConfirm(jbsword);
+//				jbsword = ItemManager.enableDropConfirm(jbsword);
 				NBTItem nbtjbsword = new NBTItem(jbsword);
 				nbtjbsword.setBoolean(NBTTag.IS_JEWEL.getRef(), true);
 				EnchantManager.setItemLore(nbtjbsword.getItem(), player);
 				AUtil.giveItemSafely(player, nbtjbsword.getItem());
 
 				ItemStack jbbow = FreshCommand.getFreshItem(MysticType.BOW, PantColor.JEWEL);
-				jbbow = ItemManager.enableDropConfirm(jbbow);
+//				jbbow = ItemManager.enableDropConfirm(jbbow);
 				NBTItem nbtjbbow = new NBTItem(jbbow);
 				nbtjbbow.setBoolean(NBTTag.IS_JEWEL.getRef(), true);
 				EnchantManager.setItemLore(nbtjbbow.getItem(), player);
 				AUtil.giveItemSafely(player, nbtjbbow.getItem());
 
 				ItemStack jb = FreshCommand.getFreshItem(MysticType.PANTS, PantColor.JEWEL);
-				jb = ItemManager.enableDropConfirm(jb);
+//				jb = ItemManager.enableDropConfirm(jb);
 				NBTItem nbtjb = new NBTItem(jb);
 				nbtjb.setBoolean(NBTTag.IS_JEWEL.getRef(), true);
 				EnchantManager.setItemLore(nbtjb.getItem(), player);
@@ -415,14 +413,14 @@ public class Uberstreak extends Megastreak {
 								"&b1x Hidden Jewel Bow"
 						)).getItemStack();
 			} else if(this == FEATHER_1) {
-				FunkyFeather.giveFeather(player, 1);
-				displayStack = getDisplayStack("&31x Funky Feather", FunkyFeather.getFeather(1));
+				ItemFactory.getItem(FunkyFeather.class).giveItem(player, 1);
+				displayStack = getDisplayStack("&31x Funky Feather", ItemFactory.getItem(FunkyFeather.class).getItem(1));
 			} else if(this == FEATHER_2) {
-				FunkyFeather.giveFeather(player, 2);
-				displayStack = getDisplayStack("&32x Funky Feather", FunkyFeather.getFeather(2));
+				ItemFactory.getItem(FunkyFeather.class).giveItem(player, 2);
+				displayStack = getDisplayStack("&32x Funky Feather", ItemFactory.getItem(FunkyFeather.class).getItem(2));
 			} else if(this == FEATHER_3) {
-				FunkyFeather.giveFeather(player, 3);
-				displayStack = getDisplayStack("&33x Funky Feather", FunkyFeather.getFeather(3));
+				ItemFactory.getItem(FunkyFeather.class).giveItem(player, 3);
+				displayStack = getDisplayStack("&33x Funky Feather", ItemFactory.getItem(FunkyFeather.class).getItem(3));
 			} else if(this == VILE_2) {
 				ChunkOfVile.giveVile(player, 2);
 				displayStack = getDisplayStack("&52x Chunk of Vile", ChunkOfVile.getVile(2));

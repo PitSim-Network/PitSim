@@ -101,7 +101,7 @@ public class HelmetryPanel extends AGUIPanel {
 				nbtItem.setInteger(NBTTag.GHELMET_GOLD.getRef(), 0);
 				nbtItem.setString(NBTTag.GHELMET_ABILITY.getRef(), null);
 				nbtItem.setString(NBTTag.GHELMET_UUID.getRef(), UUID.randomUUID().toString());
-				nbtItem.setBoolean(NBTTag.DROP_CONFIRM.getRef(), true);
+//				nbtItem.setBoolean(NBTTag.DROP_CONFIRM.getRef(), true);
 
 				ItemStack goldenHelmet = nbtItem.getItem();
 				GoldenHelmet.setLore(nbtItem.getItem());

@@ -15,6 +15,7 @@ import dev.kyro.arcticapi.data.AData;
 import dev.kyro.arcticapi.hooks.AHook;
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.adarkzone.*;
+import dev.kyro.pitsim.aitems.FunkyFeather;
 import dev.kyro.pitsim.battlepass.PassManager;
 import dev.kyro.pitsim.battlepass.quests.*;
 import dev.kyro.pitsim.battlepass.quests.daily.DailyBotKillQuest;
@@ -243,6 +244,7 @@ public class PitSim extends JavaPlugin {
 		if(getStatus().isDarkzone()) registerMobs();
 		registerBrewingIngredients();
 		registerCosmetics();
+		registerItems();
 
 		PassManager.registerPasses();
 		if(getStatus().isDarkzone()) AuctionManager.onStart();
@@ -513,8 +515,7 @@ public class PitSim extends JavaPlugin {
 		getCommand("donator").setExecutor(new DonatorCommand());
 		getCommand("renown").setExecutor(new RenownCommand());
 		getCommand("spawn").setExecutor(new SpawnCommand());
-		getCommand("crategive").setExecutor(new OldCrateGiveCommand());
-		getCommand("cg").setExecutor(new CrateGiveCommand());
+		getCommand("reward").setExecutor(new RewardCommand());
 		getCommand("store").setExecutor(new StoreCommand());
 		getCommand("shop").setExecutor(new StoreCommand());
 		getCommand("discord").setExecutor(new DiscordCommand());
@@ -780,6 +781,10 @@ public class PitSim extends JavaPlugin {
 		CosmeticManager.registerCosmetic(new Halo());
 
 		CosmeticManager.loadForOnlinePlayers();
+	}
+
+	private void registerItems() {
+		ItemFactory.registerItem(new FunkyFeather());
 	}
 
 	private void loadConfig() {
