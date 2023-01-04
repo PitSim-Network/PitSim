@@ -42,6 +42,8 @@ public abstract class PitBoss {
 		this.targetingSystem = new TargetingSystem(this);
 		this.dropPool = new DropPool();
 		dropPool.addItem(new ItemStack(Material.DIAMOND, 1), 1);
+
+		spawn();
 	}
 
 	public abstract SubLevelType getSubLevelType();
