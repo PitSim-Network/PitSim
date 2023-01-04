@@ -3,6 +3,8 @@ package dev.kyro.pitsim.controllers;
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.aitems.PitItem;
+import dev.kyro.pitsim.aitems.VeryYummyBread;
+import dev.kyro.pitsim.aitems.YummyBread;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.misc.Misc;
 import dev.kyro.pitsim.misc.Sounds;
@@ -63,6 +65,13 @@ public class ItemManager implements Listener {
 		}
 
 		PitItem pitItem = ItemFactory.getItem(itemStack);
+		if(pitItem != null && pitPlayer.megastreak.isOnMega()) {
+			if(pitItem.getClass() == YummyBread.class || pitItem.getClass() == VeryYummyBread.class) {
+				AOutput.error(player, "&c&lERROR!&7 You cannot drop bread while on a megastreak");
+				return;
+			}
+		}
+
 		if(pitItem == null || !pitItem.hasDropConfirm) {
 			if(itemStack.getType() != Material.ENDER_CHEST && itemStack.getType() != Material.TRIPWIRE_HOOK) return;
 		}
