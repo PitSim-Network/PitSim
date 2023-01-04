@@ -4,13 +4,16 @@ import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.adarkzone.bosses.PitZombieBoss;
 import dev.kyro.pitsim.adarkzone.mobs.PitZombie;
 import dev.kyro.pitsim.adarkzone.notdarkzone.PitEquipment;
+import dev.kyro.pitsim.brewing.ingredients.RottenFlesh;
 import dev.kyro.pitsim.controllers.MapManager;
 import dev.kyro.pitsim.misc.Sounds;
 import org.bukkit.Effect;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.entity.Item;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.block.Action;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
@@ -23,11 +26,15 @@ public class DarkzoneManager implements Listener {
 	public static List<SubLevel> subLevels = new ArrayList<>();
 
 	static {
-		registerSubLevel(new SubLevel(
+
+		SubLevel zombieSublevel = new SubLevel(
 				SubLevelType.ZOMBIE, PitZombieBoss.class, PitZombie.class,
-				new Location(MapManager.getDarkzone(), 327, 66, -143),
-				20, 17, 12
-		));
+				new Location(MapManager.getDarkzone(), 327, 67, -143),
+				20, 17, 12);
+		ItemStack zombieSpawnItem = RottenFlesh.INSTANCE.getItem();
+		zombieSublevel.setSpawnItem(zombieSpawnItem);
+
+		registerSubLevel(zombieSublevel);
 
 		new BukkitRunnable() {
 			@Override
@@ -44,25 +51,42 @@ public class DarkzoneManager implements Listener {
 	 */
 	@EventHandler
 	public void onClick(PlayerInteractEvent event) {
+
 		if(event.getPlayer() == null) return;
-		if(event.getItem() == null) return;
+		if(event.getPlayer().getItemInHand() == null) return;
+		if(event.getAction() != Action.LEFT_CLICK_BLOCK && event.getAction() != Action.RIGHT_CLICK_BLOCK) return;
+
+
+
 		ItemStack item = event.getItem();
 		Location location = event.getClickedBlock().getLocation();
 
 		for(SubLevel subLevel : subLevels) {
-			if (subLevel.getSpawnItem().equals(item)) {
+			if(subLevel.isBossSpawned) continue;
+			if (subLevel.getSpawnItem() == null) {
+				continue;
+			}
+			if (subLevel.getSpawnItem().isSimilar(item)) {
 				if(subLevel.middle.equals(location)) {
 					subLevel.currentDrops++;
+					item.setAmount(item.getAmount() - 1);
+					if(item.getAmount() == 1) {
+						event.getPlayer().setItemInHand(null);
+					}
+
+					System.out.println("Current drops: " + subLevel.currentDrops);
 
 					if(subLevel.currentDrops >= subLevel.requiredDropsToSpawn) {
 						subLevel.middle.getWorld().playEffect(subLevel.middle, Effect.EXPLOSION_HUGE, 100);
 						Sounds.PRESTIGE.play(subLevel.middle);
 						subLevel.disableMobs();
 						subLevel.spawnBoss(event.getPlayer());
+
 						subLevel.currentDrops = 0;
+						//decrese the item stack in the players hand by 1
+
 					}
 				}
-				break;
 			}
 		}
 	}

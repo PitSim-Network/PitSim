@@ -237,11 +237,12 @@ public class PitSim extends JavaPlugin {
 
 		registerEnchants();
 		registerCommands();
+		registerBrewingIngredients();
 		registerListeners();
 		registerHelmetAbilities();
 		registerKits();
 		if(getStatus().isDarkzone()) registerMobs();
-		registerBrewingIngredients();
+
 		registerCosmetics();
 
 		PassManager.registerPasses();

@@ -116,6 +116,7 @@ public class SubLevel {
 		} catch(Exception exception) {
 			throw new RuntimeException(exception);
 		}
+		System.out.println("Spawned boss");
 		isBossSpawned = true;
 		disableMobs();
 	}
@@ -134,7 +135,17 @@ public class SubLevel {
 		return middle.clone().add(0, 2, 0);
 	}
 
+	/**
+	 * @return ItemStack required to spawn boss
+	 */
 	public ItemStack getSpawnItem() {
 		return spawnItem;
+	}
+
+	/**
+	 * @param spawnItem ItemStack required to spawn boss
+	 */
+	public void setSpawnItem(ItemStack spawnItem) {
+		this.spawnItem = spawnItem;
 	}
 }
