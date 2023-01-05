@@ -50,8 +50,11 @@ public class TargetingSystem {
 				}
 
 			}
+			pitBoss.despawn();
+		} else {
+			setTarget(target);
 		}
-		setTarget(target);
+
 	}
 
 	public void setTarget(Player target) {

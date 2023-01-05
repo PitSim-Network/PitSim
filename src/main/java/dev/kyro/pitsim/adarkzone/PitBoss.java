@@ -133,6 +133,15 @@ public abstract class PitBoss {
 		onDeath();
 	}
 
+	public void despawn() {
+		for(PitBossAbility ability : abilities) ability.disable();
+		npcBoss.destroy();
+		getSubLevel().bossDeath();
+		routineRunnable.cancel();
+		targetingRunnbale.cancel();
+		onDeath();
+	}
+
 	public SubLevel getSubLevel() {
 		return getSubLevelType().getSubLevel();
 	}
