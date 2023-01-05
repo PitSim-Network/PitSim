@@ -43,9 +43,12 @@ public class TargetingSystem {
 	public void pickTarget() {
 		Player target = findTarget();
 		if(target == null) {
-			//loop through every player in pitBoss.damageMap and send a message
 			for(UUID uuid : pitBoss.damageMap.keySet()) {
-				AOutput.send(Bukkit.getPlayer(uuid), "Boss depawned becaUse nobody was in range");
+				Player player = Bukkit.getPlayer(uuid);
+				if (player != null) {
+					AOutput.send(player, "Boss depawned becaUse nobody was in range");
+				}
+
 			}
 		}
 		setTarget(target);
