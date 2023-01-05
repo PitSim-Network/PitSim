@@ -50,9 +50,9 @@ public class BossManager implements Listener {
 	 */
 	@EventHandler
 	public static void onBossDeath(KillEvent killEvent) {
-		PitBoss killedBoss = getPitBoss(killEvent.getDead());
-		if(killedBoss == null) return;
-		killedBoss.kill();
+		PitBoss deadBoss = getPitBoss(killEvent.getDead());
+		if(deadBoss == null) return;
+		deadBoss.kill();
 	}
 
 	/**
