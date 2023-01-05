@@ -1,9 +1,11 @@
 package dev.kyro.pitsim.adarkzone;
 
 import dev.kyro.pitsim.controllers.MapManager;
+import net.minecraft.server.v1_8_R3.TileEntityMobSpawner;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
+import org.bukkit.block.CreatureSpawner;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -46,6 +48,11 @@ public class SubLevel {
 		this.requiredDropsToSpawn = requiredDropsToSpawn;
 		this.placeholder = placeholder;
 		identifySpawnableLocations();
+
+		Block spawnerBlock = middle.getBlock();
+		spawnerBlock.setType(Material.MOB_SPAWNER);
+		CreatureSpawner spawner = (CreatureSpawner) spawnerBlock.getState();
+//		spawner.setSpawnedType(this.mobClass.);
 
 //		Visualize spawnable spaces
 //		new BukkitRunnable() {
