@@ -34,7 +34,7 @@ public class JewelHunter extends PitPerk {
 
 		if(EnchantManager.isJewel(attackEvent.getAttackerPlayer().getEquipment().getItemInHand()) ||
 				EnchantManager.isJewel(attackEvent.getAttackerPlayer().getEquipment().getLeggings())) {
-			AOutput.error(attackEvent.getAttackerPlayer(), "&3&lJEWEL HUNTER! &7Does not work when you are using jewels");
+			AOutput.error(attackEvent.getAttackerPlayer(), "&3&lJEWEL HUNTER!&7 Does not work when you are using jewels");
 			return;
 		}
 

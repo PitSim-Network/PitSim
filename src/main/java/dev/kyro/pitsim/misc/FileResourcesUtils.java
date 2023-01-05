@@ -7,7 +7,6 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.util.List;
 
-
 public class FileResourcesUtils {
 
 	public static void main(String[] args) throws IOException {

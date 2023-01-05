@@ -40,5 +40,4 @@ public class ReportAccess extends RenownUpgrade {
 		return null;
 	}
 
-
 }

@@ -149,7 +149,7 @@ public class AuctionItem {
 
 			if(player.isOnline()) {
 				PitPlayer.getPitPlayer(player.getPlayer()).taintedSouls += entry.getValue();
-				AOutput.send(player.getPlayer(), "&5&lDARK AUCTION! &7Received &f" + entry.getValue() + " Tainted Souls&7.");
+				AOutput.send(player.getPlayer(), "&5&lDARK AUCTION!&7 Received &f" + entry.getValue() + " Tainted Souls&7.");
 			} else {
 
 				try {

@@ -36,7 +36,7 @@ public abstract class Booster implements Listener {
 	}
 
 	public void onDisable() {
-		Bukkit.broadcastMessage(ChatColor.translateAlternateColorCodes('&', "&6&lBOOSTER! &7" + color + name + "&7 no longer active"));
+		Bukkit.broadcastMessage(ChatColor.translateAlternateColorCodes('&', "&6&lBOOSTER!&7 " + color + name + "&7 no longer active"));
 	}
 
 	public boolean isActive() {
@@ -46,7 +46,6 @@ public abstract class Booster implements Listener {
 	public void updateTime() {
 		FirestoreManager.CONFIG.boosters.put(refName, minutes);
 	}
-
 
 	public static int getBoosterAmount(Player player, Booster booster) {
 		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);

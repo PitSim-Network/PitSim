@@ -73,13 +73,13 @@ public class ChunkOfVile implements Listener {
 		if(nbtItem.hasKey(NBTTag.IS_VILE.getRef())) {
 
 			if(!UpgradeManager.hasUpgrade(event.getPlayer(), "WITHERCRAFT")) {
-				AOutput.error(event.getPlayer(), "&c&lWITHERFAIL! &7You must first unlock Withercraft from the renown shop before using this item!");
+				AOutput.error(event.getPlayer(), "&c&lWITHERFAIL!&7 You must first unlock Withercraft from the renown shop before using this item!");
 				Sounds.ERROR.play(event.getPlayer());
 				return;
 			}
 
 			if(MapManager.inDarkzone(event.getPlayer())) {
-				AOutput.error(event.getPlayer(), "&c&lWITHERFAIL! &7You cannot repair items while in the darkzone!");
+				AOutput.error(event.getPlayer(), "&c&lWITHERFAIL!&7 You cannot repair items while in the darkzone!");
 				Sounds.ERROR.play(event.getPlayer());
 				return;
 			}
@@ -99,7 +99,7 @@ public class ChunkOfVile implements Listener {
 			}
 
 			if(items == 0) {
-				AOutput.error(event.getPlayer(), "&c&lWITHERFAIL! &7You have no items to repair!");
+				AOutput.error(event.getPlayer(), "&c&lWITHERFAIL!&7 You have no items to repair!");
 				Sounds.ERROR.play(event.getPlayer());
 				return;
 			}

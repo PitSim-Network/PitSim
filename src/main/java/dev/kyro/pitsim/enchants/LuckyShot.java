@@ -43,7 +43,7 @@ public class LuckyShot extends PitEnchant {
 			if(luckyShot.equals(attackEvent.getArrow())) {
 
 				attackEvent.multipliers.add(3.0);
-				String attack = "&e&lLUCKY SHOT! &7against %luckperms_prefix%%player_name%&7!";
+				String attack = "&e&lLUCKY SHOT!&7 against %luckperms_prefix%%player_name%&7!";
 				String defend = "&c&lOUCH! %luckperms_prefix%%player_name% &7got a lucky shot against you!";
 				if(attackEvent.isDefenderPlayer()) {
 					Misc.sendTitle(attackEvent.getDefenderPlayer(), " ", 20);

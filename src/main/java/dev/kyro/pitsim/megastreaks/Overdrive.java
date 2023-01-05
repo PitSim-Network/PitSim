@@ -171,7 +171,7 @@ public class Overdrive extends Megastreak {
 		if(pitPlayer.megastreak.isOnMega()) {
 			int randomNum = ThreadLocalRandom.current().nextInt(1000, 5000 + 1);
 			if(DoubleDeath.INSTANCE.isDoubleDeath(pitPlayer.player)) randomNum = randomNum * 2;
-			AOutput.send(pitPlayer.player, "&c&lOVERDRIVE! &7Earned &6+" + randomNum + "&6g &7from megastreak!");
+			AOutput.send(pitPlayer.player, "&c&lOVERDRIVE!&7 Earned &6+" + randomNum + "&6g &7from megastreak!");
 			LevelManager.addGold(pitPlayer.player, randomNum);
 		}
 

@@ -43,11 +43,10 @@ public class FreezeSpell extends PitEnchant {
 
 		Block block = event.getPlayer().getLocation().subtract(0, 1, 0).getBlock();
 		if(block.getType().equals(Material.AIR) && event.getPlayer().getLocation().subtract(0, 2, 0).getBlock().getType() == Material.AIR) {
-			AOutput.send(event.getPlayer(), "&c&lERROR! &7Must be standing on a block!");
+			AOutput.send(event.getPlayer(), "&c&lERROR!&7 Must be standing on a block!");
 			Sounds.NO.play(event.getPlayer());
 			return;
 		}
-
 
 		Cooldown cooldown = getCooldown(event.getPlayer(), 41);
 		if(cooldown.isOnCooldown()) return;
@@ -62,7 +61,7 @@ public class FreezeSpell extends PitEnchant {
 
 		for(Location value : sessions.values()) {
 			if(value.distance(event.getPlayer().getLocation()) < 12) {
-				AOutput.error(event.getPlayer(), "&c&lERROR! &7Too close to another spell!");
+				AOutput.error(event.getPlayer(), "&c&lERROR!&7 Too close to another spell!");
 				Sounds.NO.play(event.getPlayer());
 				return;
 			}
@@ -118,7 +117,6 @@ public class FreezeSpell extends PitEnchant {
 				}
 			}
 		}.runTaskLater(PitSim.INSTANCE, 40);
-
 
 	}
 

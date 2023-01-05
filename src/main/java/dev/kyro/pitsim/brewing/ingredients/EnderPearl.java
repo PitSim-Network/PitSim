@@ -74,7 +74,6 @@ public class EnderPearl extends BrewingIngredient {
 		}
 	}
 
-
 	@Override
 	public Object getPotency(BrewingIngredient potencyIngredient) {
 		return potencyIngredient.tier;

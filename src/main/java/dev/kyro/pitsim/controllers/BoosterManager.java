@@ -72,7 +72,6 @@ public class BoosterManager implements Listener {
 			}
 		}.runTaskTimer(PitSim.INSTANCE, Misc.getRunnableOffset(1), 20 * 60);
 
-
 		new BukkitRunnable() {
 			@Override
 			public void run() {

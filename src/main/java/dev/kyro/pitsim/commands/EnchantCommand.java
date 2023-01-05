@@ -24,7 +24,7 @@ public class EnchantCommand implements CommandExecutor {
 		Player player = (Player) sender;
 
 		if(!player.hasPermission("group.nitro")) {
-			AOutput.send(player, "&cYou must boost our discord server to gain access to this feature! &7Join with: &f&ndiscord.pitsim.net");
+			AOutput.send(player, "&cYou must boost our discord server to gain access to this feature!&7 Join with: &f&ndiscord.pitsim.net");
 			return false;
 		}
 

@@ -25,7 +25,6 @@ import java.util.UUID;
 
 public class ExtractSpell extends PitEnchant {
 
-
 	public ExtractSpell() {
 		super("Extract", true, ApplyType.SCYTHES, "extract", "ext");
 		tainted = true;
@@ -68,7 +67,7 @@ public class ExtractSpell extends PitEnchant {
 		}
 
 		if(finalEntity == null) {
-			AOutput.send(player, "&c&lERROR! &7No target found!");
+			AOutput.send(player, "&c&lERROR!&7 No target found!");
 			Sounds.NO.play(player);
 			return;
 		}

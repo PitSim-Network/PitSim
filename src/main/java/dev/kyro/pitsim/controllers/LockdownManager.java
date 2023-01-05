@@ -27,7 +27,7 @@ public class LockdownManager implements Listener {
 	public static Map<Player, UUID> captchaAnswers = new HashMap<>();
 	private static boolean requireVerification;
 	private static boolean requireCaptcha;
-	public static String verificationMessage = "&c&lVERIFICATION! &7Verify your account in discord.pitsim.net (.verify)";
+	public static String verificationMessage = "&c&lVERIFICATION!&7 Verify your account in discord.pitsim.net (.verify)";
 
 	static {
 		requireVerification = FirestoreManager.CONFIG.security.requireVerification;
@@ -55,7 +55,7 @@ public class LockdownManager implements Listener {
 
 	public static void sendCaptchaMessage(Player player) {
 		if(!captchaAnswers.containsKey(player)) captchaAnswers.put(player, UUID.randomUUID());
-		TextComponent message = new TextComponent(ChatColor.translateAlternateColorCodes('&', "&c&lCAPTCHA! &7Click this to complete"));
+		TextComponent message = new TextComponent(ChatColor.translateAlternateColorCodes('&', "&c&lCAPTCHA!&7 Click this to complete"));
 		message.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/captcha " + captchaAnswers.get(player)));
 		player.sendMessage(message);
 	}
@@ -195,6 +195,6 @@ public class LockdownManager implements Listener {
 
 	public static void passCaptcha(Player player) {
 		captchaPlayers.add(player);
-		AOutput.send(player, "&a&lSUCCESS! &7Captcha Passed!");
+		AOutput.send(player, "&a&lSUCCESS!&7 Captcha Passed!");
 	}
 }

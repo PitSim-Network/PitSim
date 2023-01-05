@@ -22,7 +22,6 @@ public class LeapAbility extends HelmetAbility {
 		super(player, "Leap", "leap", false, 10);
 	}
 
-
 	@Override
 	public void onActivate() {
 
@@ -56,13 +55,12 @@ public class LeapAbility extends HelmetAbility {
 			return;
 		} else cooldown.restart();
 
-		AOutput.send(player, "&6&lGOLDEN HELMET! &7Used &9Leap&7! (&6-10,000g&7)");
+		AOutput.send(player, "&6&lGOLDEN HELMET!&7 Used &9Leap&7! (&6-10,000g&7)");
 		Sounds.LEAP.play(player);
 		Vector vector = player.getLocation().getDirection().setY(0).normalize().multiply(3).setY(1);
 //		if(vector.getY() < 0) vector.setY(-vector.getY());
 		player.setVelocity(vector);
 	}
-
 
 	@Override
 	public List<String> getDescription() {

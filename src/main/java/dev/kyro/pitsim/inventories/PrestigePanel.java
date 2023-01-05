@@ -132,7 +132,6 @@ public class PrestigePanel extends AGUIPanel {
 		renown.setItemMeta(renownMeta);
 		getInventory().setItem(15, renown);
 
-
 	}
 
 	@Override

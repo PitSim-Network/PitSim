@@ -19,7 +19,6 @@ public class PlayerDataManager implements Listener {
 
 	public static List<Player> exemptedPlayers = new ArrayList<>();
 
-
 	static {
 		new BukkitRunnable() {
 			int count = 0;

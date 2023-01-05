@@ -90,7 +90,7 @@ public class WithercraftPanel extends AGUIPanel {
 				openPanel(renownShopGUI.itemClearPanel);
 //                player.closeInventory();
 //                ASound.play(player, Sound.ORB_PICKUP, 2, 1.5F);
-//                AOutput.send(player, "&d&lITEM CRAFTED! &7Received &aTotally Legit Gem&7!");
+//                AOutput.send(player, "&d&lITEM CRAFTED!&7 Received &aTotally Legit Gem&7!");
 
 			}
 			if(slot == 22) {
@@ -107,7 +107,6 @@ public class WithercraftPanel extends AGUIPanel {
 		for(RenownUpgrade renownUpgrade : UpgradeManager.upgrades) {
 			if(renownUpgrade.refName.equals("WITHERCRAFT")) upgrade = renownUpgrade;
 		}
-
 
 		ItemStack gem = new ItemStack(Material.EMPTY_MAP);
 		ItemMeta meta = gem.getItemMeta();
@@ -140,7 +139,6 @@ public class WithercraftPanel extends AGUIPanel {
 		getInventory().setItem(22, back);
 
 	}
-
 
 	@Override
 	public void onClose(InventoryCloseEvent event) {

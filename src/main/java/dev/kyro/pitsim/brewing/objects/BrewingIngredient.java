@@ -43,7 +43,6 @@ public abstract class BrewingIngredient implements Listener {
 
 	public abstract ItemStack getItem();
 
-
 	public static BrewingIngredient getIngredientFromTier(int tier) {
 		for(BrewingIngredient ingredient : ingredients) {
 			if(ingredient.tier == tier) return ingredient;

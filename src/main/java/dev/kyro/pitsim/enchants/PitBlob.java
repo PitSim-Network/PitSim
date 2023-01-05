@@ -120,7 +120,6 @@ public class PitBlob extends PitEnchant {
 			return;
 		}
 
-
 		Slime slime = (Slime) event.getEntity();
 
 		if(getOwner(slime) == event.getEntity()) {
@@ -207,7 +206,6 @@ public class PitBlob extends PitEnchant {
 			entry.getValue().remove();
 		}
 	}
-
 
 	@Override
 	public List<String> getDescription(int enchantLvl) {

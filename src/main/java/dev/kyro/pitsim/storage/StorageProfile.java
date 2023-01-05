@@ -323,7 +323,6 @@ public class StorageProfile {
 		return saving;
 	}
 
-
 	protected void receiveSaveConfirmation(PluginMessage message) {
 
 		saving = false;

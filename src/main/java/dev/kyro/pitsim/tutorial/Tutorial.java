@@ -56,7 +56,6 @@ public class Tutorial {
 		}
 	}
 
-
 	public void init(PitPlayer pitPlayer) {
 		this.uuid = pitPlayer.player.getUniqueId();
 		this.pitPlayer = pitPlayer;
@@ -179,7 +178,6 @@ public class Tutorial {
 	public UUID getUUID() {
 		return uuid;
 	}
-
 
 	@Exclude
 	public boolean isActive() {

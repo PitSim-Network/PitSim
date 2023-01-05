@@ -74,7 +74,6 @@ public class KeeperPanel extends AGUIPanel {
 
 				LobbySwitchManager.setSwitchingPlayer(player);
 
-
 				PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
 
 				BukkitRunnable runnable = new BukkitRunnable() {

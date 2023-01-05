@@ -27,7 +27,6 @@ public class LeaderboardData {
 				String[] prestigeAndLevel = playerData[1].split(" ");
 				PlayerData dataObject = new PlayerData(value, Integer.parseInt(prestigeAndLevel[0]), Integer.parseInt(prestigeAndLevel[1]));
 
-
 				leaderboardDataMap.put(uuid, dataObject);
 			}
 		}

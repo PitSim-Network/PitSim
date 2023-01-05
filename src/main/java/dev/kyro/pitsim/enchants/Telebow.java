@@ -62,7 +62,7 @@ public class Telebow extends PitEnchant {
 		if(attackEvent.getArrow() == null) return;
 
 		if(attackEvent.getAttackerPlayer().isSneaking() && attackEvent.getAttackerPlayer().getWorld() == MapManager.getDarkzone()) {
-			AOutput.error(attackEvent.getAttackerPlayer(), "&c&lERROR! &7That enchant is disabled here!");
+			AOutput.error(attackEvent.getAttackerPlayer(), "&c&lERROR!&7 That enchant is disabled here!");
 			Sounds.NO.play(attackEvent.getAttackerPlayer());
 			return;
 		}

@@ -9,6 +9,7 @@ import org.bukkit.entity.Player;
 public class PitZombieBoss extends PitBoss {
 
 	public PitZombieBoss(Player summoner) {
+
 		super(summoner);
 
 		abilities(
@@ -34,7 +35,7 @@ public class PitZombieBoss extends PitBoss {
 
 	@Override
 	public int getMaxHealth() {
-		return 100;
+		return 150;
 	}
 
 	@Override
@@ -44,7 +45,7 @@ public class PitZombieBoss extends PitBoss {
 
 	@Override
 	public double getReach() {
-		return 0;
+		return 3;
 	}
 
 	@Override

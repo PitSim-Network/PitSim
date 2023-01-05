@@ -36,6 +36,7 @@ public abstract class PitBoss {
 	public long lastRoutineExecuteTick;
 	public int routineAbilityCooldownTicks = 20 * 5;
 	public BukkitTask routineRunnable;
+	private BukkitTask targetingRunnbale;
 
 	public PitBoss(Player summoner) {
 		this.summoner = summoner;
@@ -43,6 +44,7 @@ public abstract class PitBoss {
 		this.dropPool = new DropPool();
 		dropPool.addItem(new ItemStack(Material.DIAMOND, 1), 1);
 
+		BossManager.pitBosses.add(this);
 		spawn();
 	}
 
@@ -91,6 +93,8 @@ public abstract class PitBoss {
 		npcBoss.setProtected(false);
 		npcBoss.spawn(getSubLevel().getBossSpawnLocation());
 		boss = (Player) npcBoss.getEntity();
+		boss.setMaxHealth(getMaxHealth());
+		equipment.setEquipment(npcBoss);
 
 		CitizensNavigator navigator = (CitizensNavigator) npcBoss.getNavigator();
 		navigator.getDefaultParameters()
@@ -109,9 +113,31 @@ public abstract class PitBoss {
 				routineAbility.onRoutineExecute();
 			}
 		}.runTaskTimer(PitSim.INSTANCE, 0L, 20);
+
+		targetingRunnbale = new BukkitRunnable() {
+			@Override
+			public void run() {
+				targetingSystem.pickTarget();
+			}
+		}.runTaskTimer(PitSim.INSTANCE, 0L, 10);
 	}
 
 	public void kill() {
+		for(PitBossAbility ability : abilities) ability.disable();
+		npcBoss.destroy();
+		dropPool.distributeRewards(damageMap, 3);
+		getSubLevel().bossDeath();
+		routineRunnable.cancel();
+		targetingRunnbale.cancel();
+		onDeath();
+	}
+
+	public void despawn() {
+		for(PitBossAbility ability : abilities) ability.disable();
+		npcBoss.destroy();
+		getSubLevel().bossDeath();
+		routineRunnable.cancel();
+		targetingRunnbale.cancel();
 		onDeath();
 	}
 

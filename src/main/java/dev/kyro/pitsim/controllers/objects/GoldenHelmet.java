@@ -72,7 +72,7 @@ public class GoldenHelmet implements Listener {
 				toggledPlayers.remove(player);
 			} else {
 				if(SpawnManager.isInSpawn(player.getLocation())) {
-					AOutput.error(player, "&c&lOOPS! &7You cannot do this in spawn");
+					AOutput.error(player, "&c&lOOPS!&7 You cannot do this in spawn");
 					return;
 				}
 				ability.onActivate();
@@ -82,7 +82,7 @@ public class GoldenHelmet implements Listener {
 
 		} else {
 			if(SpawnManager.isInSpawn(player.getLocation())) {
-				AOutput.error(player, "&c&lOOPS! &7You cannot do this in spawn");
+				AOutput.error(player, "&c&lOOPS!&7 You cannot do this in spawn");
 				return;
 			}
 			ability.onProc();
@@ -159,7 +159,7 @@ public class GoldenHelmet implements Listener {
 		if(helmetGold < gold) return false;
 		else {
 			if(HelmetSystem.getLevel(helmetGold - gold) < HelmetSystem.getLevel(helmetGold)) {
-				AOutput.send(player, "&6&lGOLDEN HELMET! &7Helmet level reduced to &f" +
+				AOutput.send(player, "&6&lGOLDEN HELMET!&7 Helmet level reduced to &f" +
 						HelmetSystem.getLevel(helmetGold - gold) + "&7. (&6" + formatter.format(helmetGold - gold) + "g&7)");
 				Sounds.HELMET_DOWNGRADE.play(player);
 			}

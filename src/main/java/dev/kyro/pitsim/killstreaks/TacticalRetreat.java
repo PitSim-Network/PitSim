@@ -18,7 +18,6 @@ public class TacticalRetreat extends Killstreak {
 		INSTANCE = this;
 	}
 
-
 	@Override
 	public void proc(Player player) {
 		Misc.applyPotionEffect(player, PotionEffectType.SLOW, 20 * 5, 3, true, false);

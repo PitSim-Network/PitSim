@@ -113,7 +113,6 @@ public class RenownShopConfirmPanel extends AGUIPanel {
 
 		getInventory().setItem(11, confirm);
 
-
 		ItemStack cancel = new ItemStack(Material.STAINED_CLAY, 1, (short) 14);
 		ItemMeta cancelMeta = cancel.getItemMeta();
 		cancelMeta.setDisplayName(ChatColor.RED + "Cancel");

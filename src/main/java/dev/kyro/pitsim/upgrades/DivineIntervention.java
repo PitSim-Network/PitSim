@@ -55,7 +55,7 @@ public class DivineIntervention extends RenownUpgrade {
 		boolean isDouble = Math.random() < chance;
 
 		if(isDouble) {
-			AOutput.send(player, "&b&lDIVINE INTERVENTION! &7Inventory saved!");
+			AOutput.send(player, "&b&lDIVINE INTERVENTION!&7 Inventory saved!");
 
 			Sounds.SoundMoment soundMoment = new Sounds.SoundMoment(3);
 			soundMoment.add(Sound.ZOMBIE_UNFECT, 2, 1.5);

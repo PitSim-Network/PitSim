@@ -24,7 +24,6 @@ public class ManaAbility extends HelmetAbility {
 		super(player, "Mana Charge", "mana", false, 16);
 	}
 
-
 	@Override
 	public void onActivate() {
 
@@ -58,12 +57,11 @@ public class ManaAbility extends HelmetAbility {
 			return;
 		} else cooldown.restart();
 
-		AOutput.send(player, "&6&lGOLDEN HELMET! &7Used &9Mana Charge&7! (&6-10,000g&7)");
+		AOutput.send(player, "&6&lGOLDEN HELMET!&7 Used &9Mana Charge&7! (&6-10,000g&7)");
 		Sounds.MANA.play(player);
 		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
 		pitPlayer.mana = pitPlayer.getMaxMana();
 	}
-
 
 	@Override
 	public List<String> getDescription() {

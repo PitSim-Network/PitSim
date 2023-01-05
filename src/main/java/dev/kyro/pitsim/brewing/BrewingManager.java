@@ -93,7 +93,6 @@ public class BrewingManager implements Listener {
 			}
 		}.runTaskTimer(PitSim.INSTANCE, 20, 20);
 
-
 		new BukkitRunnable() {
 			@Override
 			public void run() {
@@ -139,7 +138,6 @@ public class BrewingManager implements Listener {
 		spinStand.setGravity(false);
 		brewingStands.add(spinStand);
 	}
-
 
 	@EventHandler
 	public void onInteract(PlayerInteractEvent event) {

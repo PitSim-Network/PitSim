@@ -72,7 +72,6 @@ public class CorruptedFeather {
 		return nbtItem.getItem();
 	}
 
-
 	public static boolean useCorruptedFeather(LivingEntity killer, Player dead) {
 
 		for(int i = 0; i < 9; i++) {
@@ -80,7 +79,7 @@ public class CorruptedFeather {
 			if(Misc.isAirOrNull(itemStack)) continue;
 			NBTItem nbtItem = new NBTItem(itemStack);
 			if(nbtItem.hasKey(NBTTag.IS_CORRUPTED_FEATHER.getRef())) {
-				AOutput.send(dead, "&5&lCORRUPTED FEATHER! &7Ingredients protected.");
+				AOutput.send(dead, "&5&lCORRUPTED FEATHER!&7 Ingredients protected.");
 				if(itemStack.getAmount() > 1) itemStack.setAmount(itemStack.getAmount() - 1);
 				else dead.getInventory().setItem(i, null);
 				Sounds.FUNKY_FEATHER.play(dead);

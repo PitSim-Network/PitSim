@@ -52,7 +52,7 @@ public class ThrowBlockEvent implements Listener {
 		if(block.equals(Material.ANVIL)) {
 			event.getPlayer().setVelocity(event.getPlayer().getLocation().getDirection());
 
-			AOutput.send(event.getPlayer(), "&c&lWOO! &7I'm a block now!!!");
+			AOutput.send(event.getPlayer(), "&c&lWOO!&7 I'm a block now!!!");
 			Sounds.WITHER_SHOOT.play(event.getPlayer());
 			event.getPlayer().getInventory().removeItem(new ItemStack(Material.ANVIL));
 		} else if(block.equals(Material.SOUL_SAND)) {
@@ -61,13 +61,13 @@ public class ThrowBlockEvent implements Listener {
 
 			event.getPlayer().setVelocity(event.getPlayer().getLocation().getDirection());
 
-			AOutput.send(event.getPlayer(), "&c&lWOO! &7I'm a block now!!!");
+			AOutput.send(event.getPlayer(), "&c&lWOO!&7 I'm a block now!!!");
 			Sounds.WITHER_SHOOT.play(event.getPlayer());
 			event.getPlayer().getInventory().removeItem(new ItemStack(Material.SOUL_SAND));
 		} else if(block.equals(Material.TNT)) {
 			event.getPlayer().setVelocity(event.getPlayer().getLocation().getDirection());
 
-			AOutput.send(event.getPlayer(), "&c&lWOO! &7I'm a block now!!!");
+			AOutput.send(event.getPlayer(), "&c&lWOO!&7 I'm a block now!!!");
 			Sounds.WITHER_SHOOT.play(event.getPlayer());
 			event.getPlayer().getInventory().removeItem(new ItemStack(Material.TNT));
 			//ThrowBlock.addThrowableBlock(new ThrowableBlock(event.getPlayer(), Material.TNT, pullVector.multiply((0.5 * 0.2) + 1.15)));

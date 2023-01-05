@@ -1,9 +1,12 @@
 package dev.kyro.pitsim.adarkzone;
 
 import dev.kyro.pitsim.controllers.MapManager;
+import net.minecraft.server.v1_8_R3.TileEntityMobSpawner;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
+import org.bukkit.block.CreatureSpawner;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
@@ -17,6 +20,7 @@ public class SubLevel {
 
 	private Location middle;
 	private List<Location> spawnableLocations = new ArrayList<>();
+	private String placeholder;
 
 //	Boss related fields
 	public Class<? extends PitBoss> bossClass;
@@ -27,13 +31,14 @@ public class SubLevel {
 	private int requiredDropsToSpawn;
 
 	//	Mob related fields
-	public Class<? extends PitMob> mobClass;
+	private Class<? extends PitMob> mobClass;
 	public List<PitMob> mobs = new ArrayList<>();
 	public int maxMobs;
 	public int spawnRadius;
+	private DropPool mobDropPool;
 
 	public SubLevel(SubLevelType subLevelType, Class<? extends PitBoss> bossClass, Class<? extends PitMob> mobClass,
-					Location middle, int maxMobs, int spawnRadius, int requiredDropsToSpawn) {
+					Location middle, int maxMobs, int spawnRadius, int requiredDropsToSpawn, String placeholder) {
 		this.subLevelType = subLevelType;
 		this.bossClass = bossClass;
 		this.mobClass = mobClass;
@@ -41,8 +46,23 @@ public class SubLevel {
 		this.maxMobs = maxMobs;
 		this.spawnRadius = spawnRadius;
 		this.requiredDropsToSpawn = requiredDropsToSpawn;
+		this.placeholder = placeholder;
 		identifySpawnableLocations();
 
+		Block spawnerBlock = middle.getBlock();
+		spawnerBlock.setType(Material.MOB_SPAWNER);
+		CreatureSpawner spawner = (CreatureSpawner) spawnerBlock.getState();
+//		spawner.setSpawnedType(this.mobClass.);
+
+//		Visualize spawnable spaces
+//		new BukkitRunnable() {
+//			@Override
+//			public void run() {
+//				for(Location spawnableLocation : spawnableLocations) {
+//					spawnableLocation.getWorld().playEffect(spawnableLocation, Effect.HAPPY_VILLAGER, 1);
+//				}
+//			}
+//		}.runTaskTimer(PitSim.INSTANCE, 0L, 20L);
 	}
 
 	public void tick() {
@@ -60,7 +80,7 @@ public class SubLevel {
 	public void identifySpawnableLocations() {
 		for(int x = -spawnRadius; x < spawnRadius + 1; x++) {
 			for(int z = -spawnRadius; z < spawnRadius + 1; z++) {
-				Location location = new Location(MapManager.getDarkzone(), middle.getBlockX() + x, middle.getBlockY(), middle.getBlockZ() + z);
+				Location location = new Location(MapManager.getDarkzone(), middle.getBlockX() + x + 0.5, middle.getBlockY(), middle.getBlockZ() + z + 0.5);
 				if(location.distance(middle) > spawnRadius) continue;
 				location.add(0, -3, 0);
 				if(!isSpawnableLocation(location)) continue;
@@ -71,25 +91,24 @@ public class SubLevel {
 
 	public boolean isSpawnableLocation(Location location) {
 		boolean canSpawn = false;
+
 		for(int i = 0; i < 6; i++) {
+			Block blockBelow = location.clone().add(0, -1, 0).getBlock();
 			Block block = location.getBlock();
-			if(block.getType() == Material.AIR) {
-				location.add(0, 1, 0);
-				continue;
-			}
 			Block blockAbove = location.clone().add(0, 1, 0).getBlock();
-			if(blockAbove.getType() != Material.AIR) {
+			if(blockBelow.getType() == Material.AIR || block.getType() != Material.AIR || blockAbove.getType() != Material.AIR) {
 				location.add(0, 1, 0);
 				continue;
 			}
 			canSpawn = true;
 			break;
 		}
+
 		if(!canSpawn) return false;
 		boolean foundCeiling = false;
 		for(int i = 0; i < 15; i++) {
-			Block block = location.clone().add(0, i + 2, 0).getBlock();
-			if(block.getType() == Material.AIR) continue;
+			Block myBlock = location.clone().add(0, i + 2, 0).getBlock();
+			if(myBlock.getType() == Material.AIR) continue;
 			foundCeiling = true;
 			break;
 		}
@@ -122,9 +141,16 @@ public class SubLevel {
 		disableMobs();
 	}
 
+	public boolean isPitMob(LivingEntity entity) {
+
+		for(PitMob pitMob : mobs) {
+			if(pitMob.getMob().getType().equals(entity.getType())) return true;
+		}
+		return false;
+	}
+
 	public void bossDeath() {
 		isBossSpawned = false;
-
 	}
 
 	public void disableMobs() {
@@ -132,16 +158,11 @@ public class SubLevel {
 		mobs.clear();
 	}
 
-	/**
-	 * @return ItemStack required to spawn boss
-	 */
+
 	public ItemStack getSpawnItem() {
 		return spawnItem;
 	}
 
-	/**
-	 * @param spawnItem ItemStack required to spawn boss
-	 */
 	public void setSpawnItem(ItemStack spawnItem) {
 		this.spawnItem = spawnItem;
 	}
@@ -169,12 +190,31 @@ public class SubLevel {
 	public Location getMiddle() {
 		return middle;
 	}
-
+	public String getPlaceholder() {
+		return placeholder;
+	}
 	public Location getBossSpawnLocation() {
 		return getMiddle().clone().add(0, 2, 0);
 	}
 
 	public Location getSpawnerLocation() {
 		return getMiddle().clone().add(0, 1, 0);
+	}
+
+	public DropPool getMobDropPool() {
+		return mobDropPool;
+	}
+
+	public void setMobDropPool(DropPool mobDropPool) {
+		this.mobDropPool = mobDropPool;
+	}
+
+	public void addMobDrop(ItemStack itemStack, double weight) {
+		if (mobDropPool == null) mobDropPool = new DropPool();
+		mobDropPool.addItem(itemStack, weight);
+	}
+
+	public Class<? extends PitMob> getMobClass() {
+		return mobClass;
 	}
 }

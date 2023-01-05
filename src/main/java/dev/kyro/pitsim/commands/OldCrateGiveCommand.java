@@ -277,7 +277,6 @@ public class OldCrateGiveCommand implements CommandExecutor {
 			taintedBroadcast("&a10x Ender Pearl", target);
 		}
 
-
 		return false;
 	}
 

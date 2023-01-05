@@ -34,5 +34,4 @@ public class MessageEvent extends Event {
 		return subChannel;
 	}
 
-
 }

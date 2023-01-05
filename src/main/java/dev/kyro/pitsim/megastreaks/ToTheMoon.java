@@ -74,7 +74,6 @@ public class ToTheMoon extends Megastreak {
 		return 60;
 	}
 
-
 	@Override
 	public ItemStack guiItem() {
 		ItemStack item = new ItemStack(Material.ENDER_STONE);
@@ -201,7 +200,7 @@ public class ToTheMoon extends Megastreak {
 			if(pitPlayer.moonBonus + cap > 50) cap = 50 - pitPlayer.moonBonus;
 			if(cap > 0) {
 				pitPlayer.moonBonus += cap;
-				AOutput.send(pitPlayer.player, "&b&lTO THE MOON! &7Gained &b+" + cap + " max XP &7until you prestige! (" + pitPlayer.moonBonus + "/50)");
+				AOutput.send(pitPlayer.player, "&b&lTO THE MOON!&7 Gained &b+" + cap + " max XP &7until you prestige! (" + pitPlayer.moonBonus + "/50)");
 			}
 		}
 

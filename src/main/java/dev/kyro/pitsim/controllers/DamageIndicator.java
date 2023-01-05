@@ -11,7 +11,6 @@ import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 
-
 public class DamageIndicator implements Listener {
 
 	//    @EventHandler(priority = EventPriority.MONITOR)
@@ -94,7 +93,6 @@ public class DamageIndicator implements Listener {
 				output.append(ChatColor.RED).append("\u2764");
 			}
 		}
-
 
 		for(int i = originalHealth; i < maxHealth; i++) {
 			output.append(ChatColor.BLACK).append("\u2764");

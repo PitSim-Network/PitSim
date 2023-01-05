@@ -4,7 +4,6 @@ public class HeadLib {
 
 	public static String getServerHead(int index) {
 
-
 		switch(index) {
 			case 0:
 				return "90fbdf260e2cf2025bfbc304fa7b81593016d0729b00db16f09ed01f9bd3e699";

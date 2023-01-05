@@ -396,7 +396,7 @@ public class DamageManager implements Listener {
 		}
 
 		DecimalFormat df = new DecimalFormat("##0.00");
-		String kill = null;
+		String kill = "null";
 //		TODO: Readd
 //		if(!deadIsPlayer && OldPitMob.isPitMob(dead))
 //			kill = ChatColor.translateAlternateColorCodes('&', "&a&lKILL!&7 on " + OldPitMob.getPitMob(dead).displayName);
@@ -406,7 +406,7 @@ public class DamageManager implements Listener {
 		String death;
 		if(!killerIsPlayer) death = ChatColor.translateAlternateColorCodes('&', "&c&lDEATH!");
 		else if(killType == KillType.DEFAULT)
-			death = PlaceholderAPI.setPlaceholders(killEvent.getKillerPlayer(), "&c&lDEATH! &7by %luckperms_prefix%" + (killingNon == null ? "%player_name%" : killingNon.displayName));
+			death = PlaceholderAPI.setPlaceholders(killEvent.getKillerPlayer(), "&c&lDEATH!&7 by %luckperms_prefix%" + (killingNon == null ? "%player_name%" : killingNon.displayName));
 		else death = "&c&lDEATH!";
 		String killActionBar = null;
 		if(killerIsPlayer)
@@ -432,10 +432,8 @@ public class DamageManager implements Listener {
 			}.runTaskLater(PitSim.INSTANCE, 1L);
 		}
 
-
 		if(killType != KillType.FAKE) {
 			if(killType != KillType.DEATH && deadIsPlayer) {
-
 
 				double finalDamage = 0;
 				for(Map.Entry<UUID, Double> entry : pitDead.recentDamageMap.entrySet()) {

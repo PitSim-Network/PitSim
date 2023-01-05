@@ -26,7 +26,7 @@ public class PotionEffect implements Listener {
 		this.creationTime = System.currentTimeMillis();
 
 		ticksLeft = potionType.getDuration(duration);
-		AOutput.send(player, "&5&lPOTION! &7Effected with " + potionType.color + potionType.name + " " +
+		AOutput.send(player, "&5&lPOTION!&7 Effected with " + potionType.color + potionType.name + " " +
 				AUtil.toRoman(potency.tier) + " &7for &f" + Misc.ticksToTime(ticksLeft));
 		potionType.administerEffect(player, potency, getTimeLeft());
 	}
@@ -38,7 +38,7 @@ public class PotionEffect implements Listener {
 		this.durationOverride = durationOverride;
 
 		ticksLeft = durationOverride;
-		AOutput.send(player, "&5&lPOTION! &7Effected with " + potionType.color + potionType.name + " " +
+		AOutput.send(player, "&5&lPOTION!&7 Effected with " + potionType.color + potionType.name + " " +
 				AUtil.toRoman(potency.tier) + " &7for &f" + Misc.ticksToTime(ticksLeft));
 		potionType.administerEffect(player, potency, getTimeLeft());
 	}

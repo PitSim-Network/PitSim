@@ -37,7 +37,7 @@ public class KitManager implements Listener {
 		if(!nbtItem.hasKey(NBTTag.IS_PREMADE.getRef())) return;
 		event.getItemDrop().remove();
 		Sounds.NO.play(event.getPlayer());
-		AOutput.send(event.getPlayer(), "&c&lITEM DELETED! &7Dropped a pre-made item (use /kit to re-obtain)");
+		AOutput.send(event.getPlayer(), "&c&lITEM DELETED!&7 Dropped a pre-made item (use /kit to re-obtain)");
 	}
 
 	static {
@@ -55,7 +55,6 @@ public class KitManager implements Listener {
 			itemStack = new AItemStackBuilder(Material.DIAMOND_BOOTS)
 					.getItemStack();
 			kitItemMap.put(KitItem.DIAMOND_BOOTS, itemStack);
-
 
 			itemStack = FreshCommand.getFreshItem(MysticType.SWORD, null);
 			itemStack = EnchantManager.addEnchant(itemStack, EnchantManager.getEnchant("exe"), 3, false);
@@ -77,7 +76,6 @@ public class KitManager implements Listener {
 			itemStack = EnchantManager.addEnchant(itemStack, EnchantManager.getEnchant("ng"), 2, false);
 			new AItemStackBuilder(itemStack).setName("&bXP Pants &7(Mobility)");
 			kitItemMap.put(KitItem.SWEATY_ELEC, itemStack);
-
 
 			itemStack = FreshCommand.getFreshItem(MysticType.SWORD, null);
 			itemStack = EnchantManager.addEnchant(itemStack, EnchantManager.getEnchant("exe"), 3, false);
@@ -106,7 +104,6 @@ public class KitManager implements Listener {
 			itemStack = EnchantManager.addEnchant(itemStack, EnchantManager.getEnchant("elec"), 2, false);
 			new AItemStackBuilder(itemStack).setName("&6Gold Pants &7(Mobility)");
 			kitItemMap.put(KitItem.MOCT_BOOST_ELEC, itemStack);
-
 
 			itemStack = FreshCommand.getFreshItem(MysticType.SWORD, null);
 			itemStack = EnchantManager.addEnchant(itemStack, EnchantManager.getEnchant("bill"), 3, false);
@@ -197,7 +194,6 @@ public class KitManager implements Listener {
 			itemStack = EnchantManager.addEnchant(itemStack, EnchantManager.getEnchant("tele"), 3, false);
 			new AItemStackBuilder(itemStack).setName("&eMLB Telebow &7(Mobility)");
 			kitItemMap.put(KitItem.MLB_TELE, itemStack);
-
 
 			itemStack = FreshCommand.getFreshItem(MysticType.SWORD, null);
 			itemStack = EnchantManager.addEnchant(itemStack, EnchantManager.getEnchant("bill"), 2, false);

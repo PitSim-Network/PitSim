@@ -76,7 +76,6 @@ public class KillstreakPanel extends AGUIPanel {
 							return;
 						}
 
-
 					}
 
 					Killstreak previousKillstreak = getKillstreakFromInterval(player, killstreak.killInterval);
@@ -85,15 +84,13 @@ public class KillstreakPanel extends AGUIPanel {
 							if(i == killstreakSlot - 1) continue;
 							if(previousKillstreak.refName.equals("NoKillstreak")) continue;
 							pitPlayer.killstreaks.set(i, NoKillstreak.INSTANCE);
-							AOutput.error(player, "&c&lDISABLED! &7Disabled &a" + previousKillstreak.name + " &7because you cannot have two killstreaks with the same kill interval!");
+							AOutput.error(player, "&c&lDISABLED!&7 Disabled &a" + previousKillstreak.name + " &7because you cannot have two killstreaks with the same kill interval!");
 						}
 					}
-
 
 					pitPlayer.killstreaks.set(killstreakSlot - 1, killstreak);
 					Sounds.SUCCESS.play(player);
 					openPreviousGUI();
-
 
 				}
 			}

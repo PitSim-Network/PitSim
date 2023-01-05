@@ -176,7 +176,6 @@ public class TaintedWell implements Listener
 				return;
 			}
 
-
 			ItemStack freshItem = TaintedWell.playerItems.get(player);
 
 			try {

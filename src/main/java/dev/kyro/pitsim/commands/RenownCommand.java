@@ -15,7 +15,6 @@ public class RenownCommand implements CommandExecutor {
 		Player player = (Player) sender;
 		if(!player.isOp()) return false;
 
-
 		RenownShopGUI renownShopGUI = new RenownShopGUI(player);
 		renownShopGUI.open();
 

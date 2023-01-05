@@ -35,7 +35,6 @@ public class ResourceCommand implements CommandExecutor {
 			player.setResourcePack("https://cdn.discordapp.com/attachments/801905085130211388/1038659555791474718/Nebula_PitEdit.zip");
 		}
 
-
 		return false;
 	}
 }

@@ -16,7 +16,6 @@ public class NoPerk extends PitPerk {
 		INSTANCE = this;
 	}
 
-
 	@Override
 	public List<String> getDescription() {
 		return new ALoreBuilder("no perk").getLore();

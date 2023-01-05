@@ -114,7 +114,7 @@ public class ShardHunterPanel extends AGUIPanel {
 				AUtil.giveItemSafely(player, ShardHunter.getGemItem(), true);
 				player.closeInventory();
 				Sounds.GEM_CRAFT.play(player);
-				AOutput.send(player, "&d&lITEM CRAFTED! &7Received &aTotally Legit Gem&7!");
+				AOutput.send(player, "&d&lITEM CRAFTED!&7 Received &aTotally Legit Gem&7!");
 
 			}
 			if(slot == 22) {
@@ -193,7 +193,6 @@ public class ShardHunterPanel extends AGUIPanel {
 		}
 		return shards;
 	}
-
 
 	@Override
 	public void onClose(InventoryCloseEvent event) {

@@ -278,12 +278,12 @@ public class PlayerManager implements Listener {
 			int levelRequired = 100 - TheWay.INSTANCE.getLevelReduction(pitPlayer.player);
 			if(pitPlayer.level < levelRequired) {
 				event.setCancelled(true);
-				AOutput.error(player, "&c&lERROR! &7You cannot trade until you are level " + levelRequired);
+				AOutput.error(player, "&c&lERROR!&7 You cannot trade until you are level " + levelRequired);
 			}
 		}
 		if(ChatColor.stripColor(event.getMessage()).toLowerCase().startsWith("/invsee")) {
 			event.setCancelled(true);
-			AOutput.send(player, "&c&lOUTDATED! &7Please use /view <player> instead");
+			AOutput.send(player, "&c&lOUTDATED!&7 Please use /view <player> instead");
 		}
 	}
 
@@ -644,7 +644,6 @@ public class PlayerManager implements Listener {
 					Misc.sendSubTitle(player, "", 40);
 					AOutput.send(player, "&7You have been sent to the &d&k||&5&lDarkzone&d&k||&7.");
 
-
 					if(!pitPlayer.darkzoneCutscene) {
 //						CutsceneManager.play(player);
 						return;
@@ -674,9 +673,9 @@ public class PlayerManager implements Listener {
 						if(!auctionItem.bidMap.containsKey(player.getUniqueId())) continue;
 
 						if(auctionItem.getHighestBidder().equals(player.getUniqueId()))
-							AOutput.send(player, "&5&lDARK AUCTION! &7You are currently holding the highest bid on " + auctionItem.item.itemName);
+							AOutput.send(player, "&5&lDARK AUCTION!&7 You are currently holding the highest bid on " + auctionItem.item.itemName);
 						else
-							AOutput.send(player, "&5&lDARK AUCTION! &7Current bid on " + auctionItem.item.itemName + " &7is &f" + auctionItem.getHighestBid() + " Souls &7by &e" + Bukkit.getOfflinePlayer(auctionItem.getHighestBidder()).getName() + "&7.");
+							AOutput.send(player, "&5&lDARK AUCTION!&7 Current bid on " + auctionItem.item.itemName + " &7is &f" + auctionItem.getHighestBid() + " Souls &7by &e" + Bukkit.getOfflinePlayer(auctionItem.getHighestBidder()).getName() + "&7.");
 						Sounds.BOOSTER_REMIND.play(player);
 					}
 				}
@@ -694,7 +693,7 @@ public class PlayerManager implements Listener {
 					new BukkitRunnable() {
 						@Override
 						public void run() {
-							AOutput.send(player, "&5&lDARK AUCTION! &7Received " + itemStack.getItemMeta().getDisplayName() + "&7.");
+							AOutput.send(player, "&5&lDARK AUCTION!&7 Received " + itemStack.getItemMeta().getDisplayName() + "&7.");
 							Sounds.BOOSTER_REMIND.play(player);
 						}
 					}.runTaskLater(PitSim.INSTANCE, 10);
@@ -705,7 +704,7 @@ public class PlayerManager implements Listener {
 					new BukkitRunnable() {
 						@Override
 						public void run() {
-							AOutput.send(player, "&5&lDARK AUCTION! &7Received " + itemStack.getItemMeta().getDisplayName() + "&7.");
+							AOutput.send(player, "&5&lDARK AUCTION!&7 Received " + itemStack.getItemMeta().getDisplayName() + "&7.");
 							Sounds.BOOSTER_REMIND.play(player);
 						}
 					}.runTaskLater(PitSim.INSTANCE, 10);
@@ -722,7 +721,7 @@ public class PlayerManager implements Listener {
 			new BukkitRunnable() {
 				@Override
 				public void run() {
-					AOutput.send(player, "&5&lDARK AUCTION! &7Received &f" + pitPlayer.soulReturn + " Tainted Souls&7.");
+					AOutput.send(player, "&5&lDARK AUCTION!&7 Received &f" + pitPlayer.soulReturn + " Tainted Souls&7.");
 					Sounds.BOOSTER_REMIND.play(player);
 				}
 			}.runTaskLater(PitSim.INSTANCE, 10);

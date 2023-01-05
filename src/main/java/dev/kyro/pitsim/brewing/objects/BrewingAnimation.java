@@ -218,7 +218,6 @@ public class BrewingAnimation {
 		PacketPlayOutEntity.PacketPlayOutRelEntityMoveLook brewingTimeTpPacket = new PacketPlayOutEntity.PacketPlayOutRelEntityMoveLook(getStandID(brewingTimeStand), (byte) -127, (byte) 0, (byte) 16, (byte) 64, (byte) 0, false);
 		((CraftPlayer) player).getHandle().playerConnection.sendPacket(brewingTimeTpPacket);
 
-
 		new BukkitRunnable() {
 			@Override
 			public void run() {
@@ -260,7 +259,6 @@ public class BrewingAnimation {
 		((CraftPlayer) player).getHandle().playerConnection.sendPacket(durationTpPacket);
 		PacketPlayOutEntity.PacketPlayOutRelEntityMoveLook brewingTimeTpPacket = new PacketPlayOutEntity.PacketPlayOutRelEntityMoveLook(getStandID(brewingTimeStand), (byte) 127, (byte) 0, (byte) -16, (byte) 64, (byte) 0, false);
 		((CraftPlayer) player).getHandle().playerConnection.sendPacket(brewingTimeTpPacket);
-
 
 		new BukkitRunnable() {
 			@Override
@@ -337,7 +335,6 @@ public class BrewingAnimation {
 			((CraftPlayer) event.getPlayer()).getHandle().playerConnection.sendPacket(moveDown);
 			Sounds.BUTTON.play(event.getPlayer());
 
-
 			new BukkitRunnable() {
 				@Override
 				public void run() {
@@ -381,7 +378,6 @@ public class BrewingAnimation {
 
 		}
 
-
 		if(event.getRightClicked().getUniqueId().equals(identityStands.get(event.getPlayer()).getUniqueId())) {
 			ArmorStand identityStand = identityStands.get(event.getPlayer());
 
@@ -402,7 +398,6 @@ public class BrewingAnimation {
 			}
 			setItemText(event.getPlayer());
 		}
-
 
 		if(event.getRightClicked().getUniqueId().equals(potencyStands.get(event.getPlayer()).getUniqueId())) {
 			ArmorStand potencyStand = potencyStands.get(event.getPlayer());

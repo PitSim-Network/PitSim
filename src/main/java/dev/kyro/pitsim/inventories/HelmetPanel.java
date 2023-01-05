@@ -234,7 +234,6 @@ public class HelmetPanel extends AGUIPanel {
 			getInventory().setItem(column + 27, removeName(columnList.get(2)));
 		}
 
-
 		List<HelmetSystem.Passive> passives;
 		if(HelmetSystem.getLevel(GoldenHelmet.getHelmetGold(goldenHelmet)) == 1)
 			passives = HelmetSystem.getLevelData(level);

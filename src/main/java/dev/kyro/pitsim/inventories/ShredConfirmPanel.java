@@ -29,7 +29,6 @@ public class ShredConfirmPanel extends AGUIPanel {
 		taintedGUI = (TaintedGUI) gui;
 	}
 
-
 	@Override
 	public String getName() {
 		return "Are you sure?";
@@ -53,7 +52,7 @@ public class ShredConfirmPanel extends AGUIPanel {
 				PitPlayer.getPitPlayer(player).taintedSouls += souls;
 				PitPlayer.getPitPlayer(player).stats.lifetimeSouls += souls;
 
-				AOutput.send(player, "&5&lSHRED! &7You Shredded " +
+				AOutput.send(player, "&5&lSHRED!&7 You Shredded " +
 						ShredJewelPanel.shredMap.get(player).getItemMeta().getDisplayName() + " &7for &f" + souls + " Tainted Souls&7.");
 				ShredJewelPanel.shredMap.remove(player);
 				Sounds.JEWEL_SHRED1.play(player);
@@ -95,7 +94,6 @@ public class ShredConfirmPanel extends AGUIPanel {
 
 		getInventory().setItem(11, confirm);
 
-
 		ItemStack cancel = new ItemStack(Material.STAINED_CLAY, 1, (short) 14);
 		ItemMeta cancelMeta = confirm.getItemMeta();
 		List<String> cancelLore = new ArrayList<>();
@@ -105,7 +103,6 @@ public class ShredConfirmPanel extends AGUIPanel {
 		cancel.setItemMeta(cancelMeta);
 
 		getInventory().setItem(15, cancel);
-
 
 	}
 

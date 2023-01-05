@@ -187,7 +187,7 @@ public class Highlander extends Megastreak {
 			LevelManager.addGold(pitPlayer.player, pitPlayer.bounty);
 			if(pitPlayer.bounty != 0 && pitPlayer.megastreak.isOnMega()) {
 				DecimalFormat formatter = new DecimalFormat("#,###.#");
-				AOutput.send(pitPlayer.player, "&6&lHIGHLANDER! &7Earned &6+" + formatter.format(pitPlayer.bounty) + "&6g &7from megastreak!");
+				AOutput.send(pitPlayer.player, "&6&lHIGHLANDER!&7 Earned &6+" + formatter.format(pitPlayer.bounty) + "&6g &7from megastreak!");
 				pitPlayer.bounty = 0;
 			}
 		}

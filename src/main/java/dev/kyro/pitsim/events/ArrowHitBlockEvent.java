@@ -35,5 +35,4 @@ public class ArrowHitBlockEvent extends BlockEvent {
 		return handlers;
 	}
 
-
 }

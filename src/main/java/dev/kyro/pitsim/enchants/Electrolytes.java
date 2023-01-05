@@ -39,7 +39,6 @@ public class Electrolytes extends PitEnchant {
 
 				if(activePotionEffect.getType().equals(PotionEffectType.SPEED)) {
 
-
 					if(activePotionEffect.getAmplifier() > 0) {
 
 						if(activePotionEffect.getDuration() + (getSeconds(enchantLvl) * 20) / 2 > getMaxSeconds(enchantLvl) * 20) {

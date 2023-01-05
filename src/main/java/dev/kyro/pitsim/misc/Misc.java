@@ -362,7 +362,6 @@ public class Misc {
 		PacketPlayOutTitle title = new PacketPlayOutTitle(PacketPlayOutTitle.EnumTitleAction.TITLE, chatTitle);
 		PacketPlayOutTitle titleLength = new PacketPlayOutTitle(5, length, 5);
 
-
 		((CraftPlayer) player).getHandle().playerConnection.sendPacket(title);
 		((CraftPlayer) player).getHandle().playerConnection.sendPacket(title);
 	}

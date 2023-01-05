@@ -36,7 +36,6 @@ public class AssuredStrike extends Killstreak {
 		}
 	}
 
-
 	@Override
 	public void proc(Player player) {
 		rewardPlayers.add(player);
