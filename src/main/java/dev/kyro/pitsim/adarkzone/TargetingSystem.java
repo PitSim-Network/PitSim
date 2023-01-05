@@ -72,14 +72,12 @@ public class TargetingSystem {
 
 		List<Player> playersInRadius = new ArrayList<>();
 		for(Entity entity : pitBoss.boss.getNearbyEntities(radius, radius, radius))  {
-			System.out.println("FOUND ENTITY");
 			if(!(entity instanceof Player)) continue;
 			Player player = (Player) entity;
 			playersInRadius.add(player);
 		}
 		if (playersInRadius.size() == 0) {
 			for(Entity entity : pitBoss.boss.getNearbyEntities(radius*3, radius*3, radius*3))  {
-				System.out.println("FOUND ENTITY");
 				if(!(entity instanceof Player)) continue;
 				Player player = (Player) entity;
 				playersInRadius.add(player);
@@ -89,7 +87,6 @@ public class TargetingSystem {
 			SubLevel subLevel = pitBoss.getSubLevel();
 			Location location = subLevel.getMiddle();
 			for(Entity entity : location.getWorld().getNearbyEntities(location, 35, 20, 35))  {
-				System.out.println("FOUND ENTITY");
 				if(!(entity instanceof Player)) continue;
 				Player player = (Player) entity;
 				playersInRadius.add(player);

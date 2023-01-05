@@ -1,30 +1,45 @@
 package dev.kyro.pitsim.adarkzone.abilities;
 
-import dev.kyro.pitsim.adarkzone.RoutinePitBossAbility;
-import dev.kyro.pitsim.misc.Misc;
-import dev.kyro.pitsim.misc.Sounds;
+import dev.kyro.pitsim.adarkzone.PitBossAbility;
+import dev.kyro.pitsim.events.AttackEvent;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
-import org.bukkit.potion.PotionEffectType;
+import org.bukkit.event.EventHandler;
 
-public class KnockbackAbility extends RoutinePitBossAbility {
+import java.util.ArrayList;
+import java.util.List;
+
+public class KnockbackAbility extends PitBossAbility {
 
 	public int intensity;
 
-	public KnockbackAbility(double routineWeight, int intensity) {
-
-		super(routineWeight);
+	public KnockbackAbility(int intensity) {
+		super();
 		this.intensity = intensity;
 	}
 
-	@Override
-	public void onRoutineExecute() {
+	@EventHandler
+	public void onAttack(AttackEvent.Apply attackEvent) {
+		if(!isAssignedBoss(attackEvent.getAttacker())) return;
 
-		double range = pitBoss.getReach();
-		for(Entity nearbyEntity : pitBoss.boss.getNearbyEntities(range, range, range)) {
-			if(!(nearbyEntity instanceof Player)) continue;
-			Player player = (Player) nearbyEntity;
-			player.setVelocity(player.getLocation().toVector().subtract(pitBoss.boss.getLocation().toVector()).normalize().multiply(intensity));
+		List<Player> playersInRadius = new ArrayList<>();
+		for(Entity entity : attackEvent.getAttacker().getNearbyEntities(3, 3, 3))  {
+			if(!(entity instanceof Player)) continue;
+			Player player = (Player) entity;
+			playersInRadius.add(player);
 		}
+
+		for(Player player : playersInRadius) {
+			player.setVelocity(player.getLocation().toVector().
+					subtract(attackEvent.getAttacker().getLocation().toVector()).
+					normalize().multiply(intensity)
+			);
+		}
+
+
+
+
 	}
+
 }
+
