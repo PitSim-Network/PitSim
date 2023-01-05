@@ -64,34 +64,55 @@ public class SubLevel {
 			for(int z = -spawnRadius; z < spawnRadius + 1; z++) {
 				Location location = new Location(MapManager.getDarkzone(), middle.getBlockX() + x, middle.getBlockY(), middle.getBlockZ() + z);
 				if(location.distance(middle) > spawnRadius) continue;
-				location.add(0, -3, 0);
-				if(!isSpawnableLocation(location)) continue;
-				spawnableLocations.add(location);
+
+				Block block = location.getBlock();
+				if(block.getType() == Material.AIR) {
+					if (isSpawnableLocation(location)) {
+						spawnableLocations.add(location);
+					}
+					if(block.getRelative(0, -1, 0).getType() == Material.AIR) {
+						int c = 0;
+						while(block.getRelative(0, -1, 0).getType() == Material.AIR) {
+							block = block.getRelative(0, -1, 0);
+							c++;
+							if(c > 4) break;
+						}
+						if(c > 4) continue;
+					}
+					if(!isSpawnableLocation(location)) continue;
+					spawnableLocations.add(location);
+				} else {
+					int c = 0;
+					while(block.getRelative(0, 1, 0).getType() != Material.AIR) {
+						block = block.getRelative(0, 1, 0);
+						c++;
+						if(c > 4) break;
+					}
+					if(c > 4) continue;
+					if(!isSpawnableLocation(location)) continue;
+					spawnableLocations.add(location);
+				}
+//				spawnableLocations.add(location);
 			}
 		}
 	}
 
 	public boolean isSpawnableLocation(Location location) {
 		boolean canSpawn = false;
-		for(int i = 0; i < 6; i++) {
-			Block block = location.getBlock();
-			if(block.getType() == Material.AIR) {
-				location.add(0, 1, 0);
-				continue;
-			}
-			Block blockAbove = location.clone().add(0, 1, 0).getBlock();
-			if(blockAbove.getType() != Material.AIR) {
-				location.add(0, 1, 0);
-				continue;
-			}
+
+		Block block = location.getBlock();
+		Block blockAbove = location.clone().add(0, 1, 0).getBlock();
+		Block blockBelow = location.clone().add(0, -1, 0).getBlock();
+
+		if (block.getType() == Material.AIR && blockAbove.getType() == Material.AIR && blockBelow.getType() != Material.AIR) {
 			canSpawn = true;
-			break;
 		}
+
 		if(!canSpawn) return false;
 		boolean foundCeiling = false;
 		for(int i = 0; i < 15; i++) {
-			Block block = location.clone().add(0, i + 2, 0).getBlock();
-			if(block.getType() == Material.AIR) continue;
+			Block myBlock = location.clone().add(0, i + 2, 0).getBlock();
+			if(myBlock.getType() == Material.AIR) continue;
 			foundCeiling = true;
 			break;
 		}
