@@ -44,7 +44,6 @@ public class SubLevel {
 		this.requiredDropsToSpawn = requiredDropsToSpawn;
 		this.placeholder = placeholder;
 		identifySpawnableLocations();
-
 	}
 
 	public void tick() {
@@ -63,7 +62,7 @@ public class SubLevel {
 		for(int x = -spawnRadius; x < spawnRadius + 1; x++) {
 			loop:
 			for(int z = -spawnRadius; z < spawnRadius + 1; z++) {
-				Location location = new Location(MapManager.getDarkzone(), middle.getBlockX() + x, middle.getBlockY(), middle.getBlockZ() + z);
+				Location location = new Location(MapManager.getDarkzone(), middle.getBlockX() + x + 0.5, middle.getBlockY(), middle.getBlockZ() + z + 0.5);
 				if(location.distance(middle) > spawnRadius) continue;
 
 				Block block = location.getBlock();
