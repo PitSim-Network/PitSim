@@ -9,12 +9,10 @@ import dev.kyro.pitsim.adarkzone.notdarkzone.PitEquipment;
 import dev.kyro.pitsim.brewing.ingredients.RottenFlesh;
 import dev.kyro.pitsim.controllers.MapManager;
 import dev.kyro.pitsim.misc.Sounds;
-import org.apache.commons.lang.WordUtils;
 import org.bukkit.ChatColor;
 import org.bukkit.Effect;
 import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.entity.Item;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
@@ -102,7 +100,6 @@ public class DarkzoneManager implements Listener {
 		}
 	}
 
-
 	/**
 	 * Cancels all suffocation and fall damage in the darkzone
 	 * @param event
@@ -112,8 +109,6 @@ public class DarkzoneManager implements Listener {
 		if(event.getCause() == EntityDamageEvent.DamageCause.SUFFOCATION || event.getCause() == EntityDamageEvent.DamageCause.FALL)
 			event.setCancelled(true);
 	}
-
-
 
 	public static PitEquipment getDefaultEquipment() {
 		return new PitEquipment()
@@ -134,7 +129,6 @@ public class DarkzoneManager implements Listener {
 		subLevels.add(subLevel);
 	}
 
-
 	/**
 	 * Gets a sublevel by its type
 	 * @param type
@@ -148,7 +142,6 @@ public class DarkzoneManager implements Listener {
 		}
 		return null;
 	}
-
 
 	/**
 	 * Registers all the holograms for the darkzone
