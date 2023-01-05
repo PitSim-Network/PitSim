@@ -3,10 +3,12 @@ package dev.kyro.pitsim.adarkzone;
 import dev.kyro.pitsim.PitSim;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.LivingEntity;
+import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
 
 public abstract class PitBossAbility implements Listener {
 	public PitBoss pitBoss;
+	public boolean enabled = true;
 
 	public PitBossAbility() {
 		Bukkit.getPluginManager().registerEvents(this, PitSim.INSTANCE);
@@ -26,5 +28,10 @@ public abstract class PitBossAbility implements Listener {
 
 	public boolean isAssignedBoss(LivingEntity entity) {
 		return pitBoss.boss == entity;
+	}
+
+	public void disable() {
+		enabled = false;
+		HandlerList.unregisterAll(this);
 	}
 }
