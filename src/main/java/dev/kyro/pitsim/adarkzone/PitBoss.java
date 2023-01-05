@@ -60,8 +60,6 @@ public abstract class PitBoss {
 
 	}
 
-
-
 	public PitBoss abilities(PitBossAbility... pitBossAbilities) {
 		abilities = Arrays.asList(pitBossAbilities);
 		for(PitBossAbility ability : abilities) {
@@ -117,6 +115,9 @@ public abstract class PitBoss {
 	}
 
 	public void kill() {
+		npcBoss.destroy();
+		dropPool.distributeRewards(damageMap, 3);
+		getSubLevel().bossDeath();
 		onDeath();
 	}
 
