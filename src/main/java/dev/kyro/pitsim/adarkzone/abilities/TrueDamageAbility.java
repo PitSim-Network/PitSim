@@ -1,6 +1,5 @@
 package dev.kyro.pitsim.adarkzone.abilities;
 
-import dev.kyro.pitsim.adarkzone.PitBoss;
 import dev.kyro.pitsim.adarkzone.PitBossAbility;
 import dev.kyro.pitsim.events.AttackEvent;
 import org.bukkit.event.EventHandler;
@@ -10,6 +9,7 @@ public class TrueDamageAbility extends PitBossAbility {
 
 	public TrueDamageAbility(int damage) {
 		super();
+		this.damage = damage;
 
 	}
 
