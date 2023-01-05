@@ -32,9 +32,8 @@ public class ServerViewPanel extends AGUIPanel {
 
 		int slot = 9;
 		for(Map.Entry<String, String> entry : data.getPlayers().entrySet()) {
-			if(slot % 9 == 0 || slot % 9 == 8) {
+			while(slot % 9 == 0 || slot % 9 == 8) {
 				slot++;
-				continue;
 			}
 
 			String name = entry.getKey();
@@ -55,12 +54,20 @@ public class ServerViewPanel extends AGUIPanel {
 
 			getInventory().setItem(slot, head);
 			slot++;
+
+			ItemStack backItem = new AItemStackBuilder(Material.ARROW)
+					.setName("&eBack")
+					.setLore(new ALoreBuilder(
+							"&7To Admin Menu"
+					))
+					.getItemStack();
+			getInventory().setItem((getRows() * 9) - 5, backItem);
 		}
 	}
 
 	@Override
 	public String getName() {
-		return data.isDarkzone() ? "Darkzone-" :  "PitSim-" + data.index + 1;
+		return (data.isDarkzone() ? "Darkzone-" :  "PitSim-") + data.index + 1;
 	}
 
 	@Override
@@ -73,6 +80,9 @@ public class ServerViewPanel extends AGUIPanel {
 		int slot = event.getSlot();
 		if(event.getClickedInventory().getHolder() == this) {
 
+			if(slot == (getRows() * 9) - 5) {
+				openPreviousGUI();
+			}
 		}
 	}
 
