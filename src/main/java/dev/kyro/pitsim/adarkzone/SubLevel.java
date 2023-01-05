@@ -61,23 +61,24 @@ public class SubLevel {
 
 	public void identifySpawnableLocations() {
 		for(int x = -spawnRadius; x < spawnRadius + 1; x++) {
+			loop:
 			for(int z = -spawnRadius; z < spawnRadius + 1; z++) {
 				Location location = new Location(MapManager.getDarkzone(), middle.getBlockX() + x, middle.getBlockY(), middle.getBlockZ() + z);
 				if(location.distance(middle) > spawnRadius) continue;
 
 				Block block = location.getBlock();
 				if(block.getType() == Material.AIR) {
-					if (isSpawnableLocation(location)) {
+					if(isSpawnableLocation(location)) {
 						spawnableLocations.add(location);
+						continue;
 					}
 					if(block.getRelative(0, -1, 0).getType() == Material.AIR) {
 						int c = 0;
 						while(block.getRelative(0, -1, 0).getType() == Material.AIR) {
 							block = block.getRelative(0, -1, 0);
 							c++;
-							if(c > 4) break;
+							if(c > 4) continue loop;
 						}
-						if(c > 4) continue;
 					}
 					if(!isSpawnableLocation(location)) continue;
 					spawnableLocations.add(location);
@@ -86,13 +87,11 @@ public class SubLevel {
 					while(block.getRelative(0, 1, 0).getType() != Material.AIR) {
 						block = block.getRelative(0, 1, 0);
 						c++;
-						if(c > 4) break;
+						if(c > 4) continue loop;
 					}
-					if(c > 4) continue;
 					if(!isSpawnableLocation(location)) continue;
 					spawnableLocations.add(location);
 				}
-//				spawnableLocations.add(location);
 			}
 		}
 	}
