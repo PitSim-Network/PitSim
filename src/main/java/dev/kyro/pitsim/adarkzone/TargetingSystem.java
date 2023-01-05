@@ -11,7 +11,6 @@ import org.bukkit.scheduler.BukkitTask;
 import org.bukkit.util.Vector;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
 
@@ -46,7 +45,7 @@ public class TargetingSystem {
 			for(UUID uuid : pitBoss.damageMap.keySet()) {
 				Player player = Bukkit.getPlayer(uuid);
 				if (player != null) {
-					AOutput.send(player, "Boss depawned becaUse nobody was in range");
+					AOutput.send(player, "&c&lERROR!&7 Boss was abandoned by all players!");
 				}
 
 			}

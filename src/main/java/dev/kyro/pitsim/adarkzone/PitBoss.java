@@ -120,7 +120,7 @@ public abstract class PitBoss {
 			public void run() {
 				targetingSystem.pickTarget();
 			}
-		}.runTaskTimer(PitSim.INSTANCE, 0L, 10);
+		}.runTaskTimer(PitSim.INSTANCE, 0L, 5);
 	}
 
 	public void kill() {
