@@ -43,6 +43,7 @@ public abstract class PitBoss {
 		this.dropPool = new DropPool();
 		dropPool.addItem(new ItemStack(Material.DIAMOND, 1), 1);
 
+		BossManager.pitBosses.add(this);
 		spawn();
 	}
 
@@ -115,6 +116,7 @@ public abstract class PitBoss {
 	}
 
 	public void kill() {
+		for(PitBossAbility ability : abilities) ability.disable();
 		npcBoss.destroy();
 		dropPool.distributeRewards(damageMap, 3);
 		getSubLevel().bossDeath();

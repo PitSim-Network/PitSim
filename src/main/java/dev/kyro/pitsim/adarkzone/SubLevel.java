@@ -145,8 +145,6 @@ public class SubLevel {
 
 	public void bossDeath() {
 		isBossSpawned = false;
-		System.out.println("test");
-
 	}
 
 	public void disableMobs() {

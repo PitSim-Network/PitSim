@@ -15,7 +15,6 @@ import java.util.UUID;
 public class BossManager implements Listener {
 	public static List<PitBoss> pitBosses = new ArrayList<>();
 
-
 	/**
 	 * Sets the damage the boss does
 	 * @param attackEvent
@@ -52,9 +51,7 @@ public class BossManager implements Listener {
 	@EventHandler
 	public static void onBossDeath(KillEvent killEvent) {
 		PitBoss killedBoss = getPitBoss(killEvent.getDead());
-		if(killedBoss == null) {
-			return;
-		}
+		if(killedBoss == null) return;
 		killedBoss.kill();
 	}
 
@@ -74,7 +71,10 @@ public class BossManager implements Listener {
 	 */
 	public static PitBoss getPitBoss(LivingEntity entity) {
 		if(!(entity instanceof Player)) return null;
-		for(PitBoss pitBoss : pitBosses) if(pitBoss.boss == entity) return pitBoss;
+		for(PitBoss pitBoss : pitBosses) if(pitBoss.boss == entity) {
+			System.out.println(pitBoss.boss.toString() + " " + entity.toString());
+			return pitBoss;
+		}
 		return null;
 	}
 }
