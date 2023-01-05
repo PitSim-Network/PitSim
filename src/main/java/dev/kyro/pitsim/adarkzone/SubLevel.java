@@ -44,6 +44,16 @@ public class SubLevel {
 		this.requiredDropsToSpawn = requiredDropsToSpawn;
 		this.placeholder = placeholder;
 		identifySpawnableLocations();
+
+//		Visualize spawnable spaces
+//		new BukkitRunnable() {
+//			@Override
+//			public void run() {
+//				for(Location spawnableLocation : spawnableLocations) {
+//					spawnableLocation.getWorld().playEffect(spawnableLocation, Effect.HAPPY_VILLAGER, 1);
+//				}
+//			}
+//		}.runTaskTimer(PitSim.INSTANCE, 0L, 20L);
 	}
 
 	public void tick() {
