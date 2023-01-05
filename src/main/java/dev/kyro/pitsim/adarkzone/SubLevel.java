@@ -74,17 +74,15 @@ public class SubLevel {
 		boolean canSpawn = false;
 
 		for(int i = 0; i < 6; i++) {
-				Block block = location.getBlock();
-				if(block.getType() == Material.AIR) {
-					location.add(0, 1, 0);
-					continue;
-				}
-				Block blockAbove = location.clone().add(0, 1, 0).getBlock();
-				if(blockAbove.getType() != Material.AIR) {
-					location.add(0, 1, 0);
-					continue;
-				}
+			Block blockBelow = location.clone().add(0, -1, 0).getBlock();
+			Block block = location.getBlock();
+			Block blockAbove = location.clone().add(0, 1, 0).getBlock();
+			if(blockBelow.getType() == Material.AIR || block.getType() != Material.AIR || blockAbove.getType() != Material.AIR) {
+				location.add(0, 1, 0);
+				continue;
+			}
 			canSpawn = true;
+			break;
 		}
 
 		if(!canSpawn) return false;
