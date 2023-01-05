@@ -32,6 +32,7 @@ public class SubLevel {
 	public List<PitMob> mobs = new ArrayList<>();
 	public int maxMobs;
 	public int spawnRadius;
+	private DropPool mobDropPool;
 
 	public SubLevel(SubLevelType subLevelType, Class<? extends PitBoss> bossClass, Class<? extends PitMob> mobClass,
 					Location middle, int maxMobs, int spawnRadius, int requiredDropsToSpawn, String placeholder) {
@@ -187,5 +188,17 @@ public class SubLevel {
 
 	public Location getSpawnerLocation() {
 		return getMiddle().clone().add(0, 1, 0);
+	}
+
+	public DropPool getMobDropPool() {
+		return mobDropPool;
+	}
+
+	public void setMobDropPool(DropPool mobDropPool) {
+		this.mobDropPool = mobDropPool;
+	}
+
+	public void addMobDrop(ItemStack itemStack, double weight) {
+		mobDropPool.addItem(itemStack, weight);
 	}
 }

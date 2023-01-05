@@ -8,6 +8,7 @@ import dev.kyro.pitsim.adarkzone.mobs.PitZombie;
 import dev.kyro.pitsim.adarkzone.notdarkzone.PitEquipment;
 import dev.kyro.pitsim.brewing.ingredients.RottenFlesh;
 import dev.kyro.pitsim.controllers.MapManager;
+import dev.kyro.pitsim.events.KillEvent;
 import dev.kyro.pitsim.misc.Sounds;
 import org.apache.commons.lang.WordUtils;
 import org.bukkit.ChatColor;
@@ -24,6 +25,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 public class DarkzoneManager implements Listener {
@@ -38,6 +40,7 @@ public class DarkzoneManager implements Listener {
 				20, 17, 12, "%pitsim_zombie_cave%");
 		ItemStack zombieSpawnItem = RottenFlesh.INSTANCE.getItem();
 		zombieSublevel.setSpawnItem(zombieSpawnItem);
+		zombieSublevel.addMobDrop(RottenFlesh.INSTANCE.getItem(), 1);
 
 		registerSubLevel(zombieSublevel);
 		registerHolograms();
@@ -49,6 +52,7 @@ public class DarkzoneManager implements Listener {
 			}
 		}.runTaskTimer(PitSim.INSTANCE, 0L, 5);
 	}
+
 
 	/**
 	 * Called when a player interacts with a block, checks if all the spawn conditions are met for a boss to
@@ -111,6 +115,19 @@ public class DarkzoneManager implements Listener {
 	public void onDamage(EntityDamageEvent event) {
 		if(event.getCause() == EntityDamageEvent.DamageCause.SUFFOCATION || event.getCause() == EntityDamageEvent.DamageCause.FALL)
 			event.setCancelled(true);
+	}
+
+	/**
+	 * Called when an entity is killed, checks if boss was killed, if so resets the sublevel to normal state and
+	 * distrubutes rewards
+	 * @param killEvent
+	 */
+	@EventHandler
+	public static void onBossDeath(KillEvent killEvent) {
+
+		PitBoss killedBoss = BossManager.getPitBoss(killEvent.getDead());
+		if(killedBoss == null) return;
+		killedBoss.kill();
 	}
 
 

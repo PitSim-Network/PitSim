@@ -43,17 +43,7 @@ public class BossManager implements Listener {
 		defenderBoss.damageMap.put(uuid, defenderBoss.damageMap.getOrDefault(uuid, 0.0) + attackEvent.getEvent().getDamage());
 	}
 
-	/**
-	 * Called when an entity is killed, checks if boss was killed, if so resets the sublevel to normal state and
-	 * distrubutes rewards
-	 * @param killEvent
-	 */
-	@EventHandler
-	public static void onBossDeath(KillEvent killEvent) {
-		PitBoss killedBoss = getPitBoss(killEvent.getDead());
-		if(killedBoss == null) return;
-		killedBoss.kill();
-	}
+
 
 	/**
 	 * Checks to see if entity is a boss
