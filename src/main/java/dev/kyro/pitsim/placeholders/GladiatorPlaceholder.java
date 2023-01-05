@@ -20,5 +20,4 @@ public class GladiatorPlaceholder implements APAPIPlaceholder {
 		return "&9-" + reduction * 3 + "&9%";
 	}
 
-
 }

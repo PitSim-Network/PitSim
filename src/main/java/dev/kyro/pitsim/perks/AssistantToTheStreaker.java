@@ -16,7 +16,6 @@ public class AssistantToTheStreaker extends PitPerk {
 		INSTANCE = this;
 	}
 
-
 	@Override
 	public List<String> getDescription() {
 		return new ALoreBuilder("&7Assists count their", "&aparticipation &7towards", "&7killstreaks.").getLore();

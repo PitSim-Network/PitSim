@@ -90,7 +90,6 @@ public class DonatorPanel extends AGUIPanel {
 		pants.setItemMeta(pantsmeta);
 		pants = PantColor.setPantColor(pants, PantColor.HARVEST_RED);
 
-
 		ItemStack rename = new ItemStack(Material.NAME_TAG);
 		ItemMeta renamemeta = rename.getItemMeta();
 		List<String> renamelore = new ArrayList<>();

@@ -34,7 +34,6 @@ public class TaintedEnchanting {
 				mystic = EnchantManager.addEnchant(mystic, randEnchant, enchantTier, false);
 			} catch(Exception ignored) {}
 
-
 		} else {
 			int tokensToAdd;
 			double tokenRand = Math.random();
@@ -109,7 +108,6 @@ public class TaintedEnchanting {
 			try {
 				mystic = EnchantManager.addEnchant(mystic, randEnchant, enchantTier, false);
 			} catch(Exception ignored) {}
-
 
 		} else {
 			int tokensToAdd;

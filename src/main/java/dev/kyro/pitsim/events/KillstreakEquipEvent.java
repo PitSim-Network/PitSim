@@ -40,7 +40,6 @@ public class KillstreakEquipEvent extends Event implements Cancellable {
 		return HANDLERS_LIST;
 	}
 
-
 	public Killstreak getKillstreak() {
 		return killstreak;
 	}
@@ -52,6 +51,5 @@ public class KillstreakEquipEvent extends Event implements Cancellable {
 	public Killstreak getReplacedKillstreak() {
 		return replacedKillstreak;
 	}
-
 
 }

@@ -432,10 +432,8 @@ public class DamageManager implements Listener {
 			}.runTaskLater(PitSim.INSTANCE, 1L);
 		}
 
-
 		if(killType != KillType.FAKE) {
 			if(killType != KillType.DEATH && deadIsPlayer) {
-
 
 				double finalDamage = 0;
 				for(Map.Entry<UUID, Double> entry : pitDead.recentDamageMap.entrySet()) {

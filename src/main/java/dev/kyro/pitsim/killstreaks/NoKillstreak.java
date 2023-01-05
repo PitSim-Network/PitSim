@@ -16,7 +16,6 @@ public class NoKillstreak extends Killstreak {
 		INSTANCE = this;
 	}
 
-
 	@Override
 	public void proc(Player player) {
 

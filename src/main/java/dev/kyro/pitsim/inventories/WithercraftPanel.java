@@ -108,7 +108,6 @@ public class WithercraftPanel extends AGUIPanel {
 			if(renownUpgrade.refName.equals("WITHERCRAFT")) upgrade = renownUpgrade;
 		}
 
-
 		ItemStack gem = new ItemStack(Material.EMPTY_MAP);
 		ItemMeta meta = gem.getItemMeta();
 		if(pitPlayer.renown >= 5) meta.setDisplayName(ChatColor.YELLOW + "Clear Hidden Jewel Item");
@@ -140,7 +139,6 @@ public class WithercraftPanel extends AGUIPanel {
 		getInventory().setItem(22, back);
 
 	}
-
 
 	@Override
 	public void onClose(InventoryCloseEvent event) {

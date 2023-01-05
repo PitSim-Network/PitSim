@@ -25,7 +25,6 @@ public class ExtendCommand extends ACommand {
 		if(!(sender instanceof Player)) return;
 		Player player = (Player) sender;
 
-
 		if(args.size() != 1) {
 			AOutput.send(player, "&cInvalid arguments! /extend <minutes>");
 		}

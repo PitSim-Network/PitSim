@@ -72,7 +72,6 @@ public class CorruptedFeather {
 		return nbtItem.getItem();
 	}
 
-
 	public static boolean useCorruptedFeather(LivingEntity killer, Player dead) {
 
 		for(int i = 0; i < 9; i++) {

@@ -24,7 +24,6 @@ public class ManaAbility extends HelmetAbility {
 		super(player, "Mana Charge", "mana", false, 16);
 	}
 
-
 	@Override
 	public void onActivate() {
 
@@ -63,7 +62,6 @@ public class ManaAbility extends HelmetAbility {
 		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
 		pitPlayer.mana = pitPlayer.getMaxMana();
 	}
-
 
 	@Override
 	public List<String> getDescription() {

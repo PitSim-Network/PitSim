@@ -48,7 +48,6 @@ public class FreezeSpell extends PitEnchant {
 			return;
 		}
 
-
 		Cooldown cooldown = getCooldown(event.getPlayer(), 41);
 		if(cooldown.isOnCooldown()) return;
 
@@ -118,7 +117,6 @@ public class FreezeSpell extends PitEnchant {
 				}
 			}
 		}.runTaskLater(PitSim.INSTANCE, 40);
-
 
 	}
 

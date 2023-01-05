@@ -39,5 +39,4 @@ public class OofEvent extends Event implements Cancellable {
 		return player;
 	}
 
-
 }

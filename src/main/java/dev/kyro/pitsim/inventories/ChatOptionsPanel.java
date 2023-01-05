@@ -21,7 +21,6 @@ import java.util.List;
 public class ChatOptionsPanel extends AGUIPanel {
 	PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
 
-
 	public SettingsGUI settingsGUI;
 
 	public ChatOptionsPanel(AGUI gui) {
@@ -84,7 +83,6 @@ public class ChatOptionsPanel extends AGUIPanel {
 				Sounds.SUCCESS.play(player);
 				openPanel(settingsGUI.chatOptionsPanel);
 			}
-
 
 		}
 	}

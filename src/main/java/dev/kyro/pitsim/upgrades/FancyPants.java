@@ -38,5 +38,4 @@ public class FancyPants extends RenownUpgrade {
 		return null;
 	}
 
-
 }

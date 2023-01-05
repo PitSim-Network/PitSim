@@ -155,7 +155,6 @@ public class HelmetAbilityPanel extends AGUIPanel {
 		return GoldenHelmet.getAbility(helmet);
 	}
 
-
 	@Override
 	public void onClose(InventoryCloseEvent event) {
 		GoldenHelmet.setLore(goldenHelmet);
@@ -172,5 +171,4 @@ public class HelmetAbilityPanel extends AGUIPanel {
 	}
 
 }
-
 

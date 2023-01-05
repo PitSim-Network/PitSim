@@ -11,7 +11,6 @@ import dev.kyro.pitsim.brewing.ingredients.RottenFlesh;
 import dev.kyro.pitsim.controllers.MapManager;
 import dev.kyro.pitsim.events.KillEvent;
 import dev.kyro.pitsim.misc.Sounds;
-import org.apache.commons.lang.WordUtils;
 import org.bukkit.ChatColor;
 import org.bukkit.Effect;
 import org.bukkit.Location;
@@ -65,12 +64,9 @@ public class DarkzoneManager implements Listener {
 	@EventHandler
 	public void onClick(PlayerInteractEvent event) {
 
-
 		if(event.getPlayer() == null) return;
 		if(event.getPlayer().getItemInHand() == null) return;
 		if(event.getAction() != Action.LEFT_CLICK_BLOCK && event.getAction() != Action.RIGHT_CLICK_BLOCK) return;
-
-
 
 		ItemStack item = event.getItem();
 		Location location = event.getClickedBlock().getLocation();
@@ -111,7 +107,6 @@ public class DarkzoneManager implements Listener {
 			}
 		}
 	}
-
 
 	/**
 	 * Cancels all suffocation and fall damage in the darkzone
@@ -165,7 +160,6 @@ public class DarkzoneManager implements Listener {
 				.boots(new ItemStack(Material.DIAMOND_SWORD));
 	}
 
-
 	/**
 	 * Adds a sublevel to the list of sublevels
 	 * @param subLevel
@@ -173,7 +167,6 @@ public class DarkzoneManager implements Listener {
 	public static void registerSubLevel(SubLevel subLevel) {
 		subLevels.add(subLevel);
 	}
-
 
 	/**
 	 * Gets a sublevel by its type
@@ -188,7 +181,6 @@ public class DarkzoneManager implements Listener {
 		}
 		return null;
 	}
-
 
 	/**
 	 * Registers all the holograms for the darkzone

@@ -130,7 +130,6 @@ public class PerkPanel extends AGUIPanel {
 			meta.setLore(lore);
 			perkItem.setItemMeta(meta);
 
-
 			getInventory().setItem(10 + i * 2, perkItem);
 		}
 

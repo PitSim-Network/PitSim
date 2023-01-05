@@ -28,7 +28,6 @@ public class GoldStack extends Killstreak {
 		killEvent.goldReward += pitPlayer.goldStack;
 	}
 
-
 	@Override
 	public void proc(Player player) {
 		if(getCurrent(player) >= getMax(player)) return;

@@ -10,7 +10,6 @@ import org.bukkit.scheduler.BukkitTask;
 
 import java.io.File;
 
-
 public class TempBlock {
 
 	public Location location;
@@ -26,7 +25,6 @@ public class TempBlock {
 		this.material = material;
 		this.time = time;
 		this.block = location.getBlock();
-
 
 		TempBlockHelper.addBlockSession(block, block.getType());
 

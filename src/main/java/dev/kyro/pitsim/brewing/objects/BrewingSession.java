@@ -53,11 +53,9 @@ public class BrewingSession {
 		pitPlayer.brewingSessions.set(brewingSlot - 1, null);
 	}
 
-
 	public String getSaveString() {
 		return brewingSlot + "," + identifier.tier + "," + potency.tier + "," +
 				duration.tier + "," + reduction.tier + "," + startTime;
 	}
-
 
 }

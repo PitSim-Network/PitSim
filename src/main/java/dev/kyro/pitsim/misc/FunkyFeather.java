@@ -70,7 +70,6 @@ public class FunkyFeather {
 		return nbtItem.getItem();
 	}
 
-
 	public static boolean useFeather(LivingEntity killer, Player dead, boolean isDivine) {
 		if(isDivine) return false;
 

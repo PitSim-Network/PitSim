@@ -18,7 +18,6 @@ public class RAndR extends Killstreak {
 		INSTANCE = this;
 	}
 
-
 	@Override
 	public void proc(Player player) {
 		Misc.applyPotionEffect(player, PotionEffectType.REGENERATION, 20 * 5, 2, true, false);

@@ -212,7 +212,6 @@ public class Non {
 			System.out.println("non teleportation respawn errored");
 		}
 
-
 		if(npc.isSpawned()) {
 			if(!fakeKill) non.setHealth(non.getMaxHealth());
 
@@ -255,7 +254,6 @@ public class Non {
 	}
 
 	public void pickTraits() {
-
 
 		if(Math.random() < 0.8) {
 

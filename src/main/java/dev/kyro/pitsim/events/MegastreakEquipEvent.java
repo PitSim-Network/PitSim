@@ -39,5 +39,4 @@ public class MegastreakEquipEvent extends Event implements Cancellable {
 		return player;
 	}
 
-
 }

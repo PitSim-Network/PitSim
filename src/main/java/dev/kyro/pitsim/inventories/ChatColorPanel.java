@@ -28,7 +28,6 @@ public class ChatColorPanel extends AGUIPanel {
 	PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
 	public static Map<Player, AChatColor> playerChatColors = new HashMap<>();
 
-
 	public SettingsGUI settingsGUI;
 
 	public ChatColorPanel(AGUI gui) {

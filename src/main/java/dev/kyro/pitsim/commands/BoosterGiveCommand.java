@@ -28,7 +28,6 @@ public class BoosterGiveCommand implements CommandExecutor {
 		assert booster != null;
 		AOutput.send(player, "&6&lBOOSTER! &7Received &f1 " + booster.color + booster.name + "&7.");
 
-
 		return false;
 	}
 }

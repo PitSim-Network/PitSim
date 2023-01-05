@@ -63,7 +63,6 @@ public class PassManager implements Listener {
 				.registerReward(new PassCosmeticReward(Material.IRON_HOE, CosmeticManager.getCosmetic("reaper"),
 						null), PitSimPass.RewardType.FREE, 36)
 
-
 				.registerReward(new PassXpReward(5_000), PitSimPass.RewardType.PREMIUM, tier++)
 				.registerReward(new PassVileReward(12), PitSimPass.RewardType.PREMIUM, tier++)
 				.registerReward(new PassSwordReward(4), PitSimPass.RewardType.PREMIUM, tier++)

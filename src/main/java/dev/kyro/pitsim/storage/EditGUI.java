@@ -14,5 +14,4 @@ public class EditGUI extends AGUI {
 		setHomePanel(panel);
 	}
 
-
 }

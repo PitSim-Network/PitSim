@@ -25,7 +25,6 @@ import java.util.UUID;
 
 public class ExtractSpell extends PitEnchant {
 
-
 	public ExtractSpell() {
 		super("Extract", true, ApplyType.SCYTHES, "extract", "ext");
 		tainted = true;

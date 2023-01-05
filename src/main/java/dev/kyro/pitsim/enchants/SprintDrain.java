@@ -41,7 +41,6 @@ public class SprintDrain extends PitEnchant {
 	@Override
 	public List<String> getDescription(int enchantLvl) {
 
-
 		if(enchantLvl == 1) {
 			return new ALoreBuilder("&7Arrow shots grant you &eSpeed " + AUtil.toRoman(getSpeedAmplifier(enchantLvl)), "&7(" +
 					getSpeedDuration(enchantLvl) + "s)").getLore();

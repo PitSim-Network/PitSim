@@ -129,7 +129,6 @@ public class HelmetryPanel extends AGUIPanel {
 			if(renownUpgrade.refName.equals("HELMETRY")) upgrade = renownUpgrade;
 		}
 
-
 		ItemStack gem = new ItemStack(Material.GOLD_HELMET);
 		ItemMeta meta = gem.getItemMeta();
 		if(pitPlayer.renown >= 5) meta.setDisplayName(ChatColor.YELLOW + "Craft Golden Helmet");
@@ -160,7 +159,6 @@ public class HelmetryPanel extends AGUIPanel {
 		getInventory().setItem(22, back);
 
 	}
-
 
 	@Override
 	public void onClose(InventoryCloseEvent event) {

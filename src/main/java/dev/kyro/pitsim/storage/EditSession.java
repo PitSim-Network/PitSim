@@ -64,7 +64,6 @@ public class EditSession {
 			}
 		}.runTaskLater(PitSim.INSTANCE, 10);
 
-
 	}
 
 	public void end() {
