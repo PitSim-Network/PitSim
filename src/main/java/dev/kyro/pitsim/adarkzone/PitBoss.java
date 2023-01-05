@@ -58,9 +58,7 @@ public abstract class PitBoss {
 
 //	Internal events (override to add functionality)
 	public void onSpawn() {}
-	public void onDeath() {
-
-	}
+	public void onDeath() {}
 
 	public PitBoss abilities(PitBossAbility... pitBossAbilities) {
 		abilities = Arrays.asList(pitBossAbilities);
@@ -96,6 +94,7 @@ public abstract class PitBoss {
 		npcBoss.spawn(getSubLevel().getBossSpawnLocation());
 		boss = (Player) npcBoss.getEntity();
 		boss.setMaxHealth(getMaxHealth());
+		equipment.setEquipment(npcBoss);
 
 		CitizensNavigator navigator = (CitizensNavigator) npcBoss.getNavigator();
 		navigator.getDefaultParameters()
