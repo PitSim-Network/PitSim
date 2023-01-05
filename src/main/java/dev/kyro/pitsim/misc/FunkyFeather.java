@@ -78,7 +78,7 @@ public class FunkyFeather {
 			if(Misc.isAirOrNull(itemStack)) continue;
 			NBTItem nbtItem = new NBTItem(itemStack);
 			if(nbtItem.hasKey(NBTTag.IS_FEATHER.getRef())) {
-				AOutput.send(dead, "&3&lFUNKY FEATHER! &7Inventory protected.");
+				AOutput.send(dead, "&3&lFUNKY FEATHER!&7 Inventory protected.");
 				if(itemStack.getAmount() > 1) itemStack.setAmount(itemStack.getAmount() - 1);
 				else dead.getInventory().setItem(i, null);
 				Sounds.FUNKY_FEATHER.play(dead);

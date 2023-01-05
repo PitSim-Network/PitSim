@@ -29,7 +29,7 @@ public class SpiderEye extends BrewingIngredient {
 
 	@Override
 	public void administerEffect(Player player, BrewingIngredient potency, int duration) {
-		AOutput.send(player, "&5&lPOTION! &7Effected with " + color + name + " " +
+		AOutput.send(player, "&5&lPOTION!&7 Effected with " + color + name + " " +
 				AUtil.toRoman(potency.tier));
 		for(PotionEffect potionEffect : PotionManager.getPotionEffects(player)) {
 			int tier = potionEffect.potency.tier;

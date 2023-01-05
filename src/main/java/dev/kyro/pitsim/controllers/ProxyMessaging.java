@@ -190,7 +190,7 @@ public class ProxyMessaging implements Listener {
 
 				AUtil.giveItemSafely(winner.getPlayer(), jewel, true);
 
-				AOutput.send(winner.getPlayer(), "&5&lDARK AUCTION! &7Received " + item.itemName + "&7.");
+				AOutput.send(winner.getPlayer(), "&5&lDARK AUCTION!&7 Received " + item.itemName + "&7.");
 			}
 
 		}

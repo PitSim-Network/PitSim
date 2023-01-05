@@ -68,7 +68,7 @@ public class PortalManager implements Listener {
 		}
 		if(hasHopper && !player.isOp()) {
 			player.setVelocity(new Vector(3, 1, 0));
-			AOutput.error(event.getPlayer(), "&c&lYOU WISH! &7Kill that hopper first :P");
+			AOutput.error(event.getPlayer(), "&c&lYOU WISH!&7 Kill that hopper first :P");
 			Sounds.NO.play(event.getPlayer());
 			return;
 		}

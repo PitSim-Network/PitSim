@@ -77,7 +77,7 @@ public class LuckyKill extends RenownUpgrade {
 		if(isLuckyKill) killEvent.isLuckyKill = true;
 
 		if(isLuckyKill) {
-			AOutput.send(killEvent.getKiller(), "&d&lLUCKY KILL! &7Rewards tripled!");
+			AOutput.send(killEvent.getKiller(), "&d&lLUCKY KILL!&7 Rewards tripled!");
 
 			File file = new File("plugins/NoteBlockAPI/Effects/LuckyKill.nbs");
 			Song song = NBSDecoder.parse(file);

@@ -116,7 +116,7 @@ public class PhoenixAbility extends HelmetAbility {
 		}
 
 		DecimalFormat decimalFormat = new DecimalFormat("#,###");
-		AOutput.send(player, "&6&lGOLDEN HELMET! &7Used &9Phoenix&7! (&6-" + decimalFormat.format(cost) + "g&7)");
+		AOutput.send(player, "&6&lGOLDEN HELMET!&7 Used &9Phoenix&7! (&6-" + decimalFormat.format(cost) + "g&7)");
 		Sounds.PHOENIX.play(player.getLocation(), 15);
 
 		World world = player.getWorld();

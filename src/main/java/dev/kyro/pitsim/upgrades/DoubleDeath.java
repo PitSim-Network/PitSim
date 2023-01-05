@@ -64,7 +64,7 @@ public class DoubleDeath extends RenownUpgrade {
 		boolean isDouble = Math.random() < chance;
 
 		if(isDouble) {
-			AOutput.send(player, "&d&lDOUBLE DEATH! &7Megastreak death rewards doubled!");
+			AOutput.send(player, "&d&lDOUBLE DEATH!&7 Megastreak death rewards doubled!");
 
 			File file = new File("plugins/NoteBlockAPI/Effects/DoubleDeath.nbs");
 			Song song = NBSDecoder.parse(file);

@@ -111,7 +111,7 @@ public class HelmetryPanel extends AGUIPanel {
 
 				Sounds.HELMET_CRAFT.play(player);
 				player.closeInventory();
-				AOutput.send(player, "&6&lITEM CRAFTED! &7Received &6Golden Helmet&7!");
+				AOutput.send(player, "&6&lITEM CRAFTED!&7 Received &6Golden Helmet&7!");
 				pitPlayer.renown -= 10;
 			}
 			if(slot == 22) {

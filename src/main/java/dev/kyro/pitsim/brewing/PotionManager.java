@@ -153,7 +153,7 @@ public class PotionManager implements Listener {
 		BrewingIngredient duration = BrewingIngredient.getIngredientFromTier(nbtItem.getInteger(NBTTag.POTION_DURATION.getRef()));
 
 		if(hasLesserEffect(player, identifier, potency)) {
-			AOutput.send(player, "&5&lPOTION! &7You already have a stonger tier of this effect!");
+			AOutput.send(player, "&5&lPOTION!&7 You already have a stonger tier of this effect!");
 			return;
 		}
 		replaceLesserEffects(player, identifier, potency);
@@ -188,7 +188,7 @@ public class PotionManager implements Listener {
 			Player player = (Player) affectedEntity;
 
 			if(hasLesserEffect(player, identifier, potency)) {
-				AOutput.send(player, "&5&lPOTION! &7You already have a stonger tier of this effect!");
+				AOutput.send(player, "&5&lPOTION!&7 You already have a stonger tier of this effect!");
 				continue;
 			}
 			replaceLesserEffects(player, identifier, potency);

@@ -404,7 +404,7 @@ public class RNGesus extends Megastreak {
 	public void shiftReality() {
 		reality = generatedRealityOrder.remove(0);
 		if(reality == null) return;
-		AOutput.send(pitPlayer.player, "&e&lRNGESUS! &7Reality Shift: " + reality.displayName + "&7!");
+		AOutput.send(pitPlayer.player, "&e&lRNGESUS!&7 Reality Shift: " + reality.displayName + "&7!");
 		ASound.play(pitPlayer.player, Sound.FIZZ, 1000, 0.5F);
 		Misc.applyPotionEffect(pitPlayer.player, PotionEffectType.BLINDNESS, 40, 0, true, false);
 
