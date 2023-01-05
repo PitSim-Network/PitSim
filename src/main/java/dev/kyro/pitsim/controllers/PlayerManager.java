@@ -592,6 +592,15 @@ public class PlayerManager implements Listener {
 		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
 		Location spawnLoc = MapManager.currentMap.getSpawn();
 		if(PitSim.getStatus() == PitSim.ServerStatus.DARKZONE) spawnLoc = MapManager.getInitialDarkzoneSpawn();
+		if(ProxyMessaging.joinTeleportMap.containsKey(player.getUniqueId())) {
+			Player tpPlayer = Bukkit.getPlayer(ProxyMessaging.joinTeleportMap.get(player.getUniqueId()));
+			if(!player.isOnline()) {
+				AOutput.error(player, "&cThe player you were trying to teleport to is no longer online.");
+			} else {
+				spawnLoc = tpPlayer.getLocation();
+				AOutput.send(player, "&aTeleporting to " + tpPlayer.getName() + "...");
+			}
+		}
 		if(LobbySwitchManager.joinedFromDarkzone.contains(player.getUniqueId()))
 			spawnLoc = MapManager.currentMap.getDarkzoneJoinSpawn();
 
