@@ -143,6 +143,7 @@ public class DarkzoneManager implements Listener {
 			if(subLevel.isBossSpawned()) continue;
 			if(subLevel.isPitMob(entity)) {
 				AUtil.giveItemSafely(killer, subLevel.getMobDropPool().getRandomDrop());
+				subLevel.mobs.remove(entity);
 			}
 		}
 

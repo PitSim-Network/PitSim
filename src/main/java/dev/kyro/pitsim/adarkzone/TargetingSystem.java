@@ -1,6 +1,9 @@
 package dev.kyro.pitsim.adarkzone;
 
+import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.PitSim;
+import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -10,6 +13,7 @@ import org.bukkit.util.Vector;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.UUID;
 
 // This code strictly handles literal attacks, not abilities and other "attacks"
 public class TargetingSystem {
@@ -37,7 +41,14 @@ public class TargetingSystem {
 	}
 
 	public void pickTarget() {
-		setTarget(findTarget());
+		Player target = findTarget();
+		if(target == null) {
+			//loop through every player in pitBoss.damageMap and send a message
+			for(UUID uuid : pitBoss.damageMap.keySet()) {
+				AOutput.send(Bukkit.getPlayer(uuid), "Boss depawned becaUse nobody was in range");
+			}
+		}
+		setTarget(target);
 	}
 
 	public void setTarget(Player target) {
@@ -46,7 +57,7 @@ public class TargetingSystem {
 	}
 
 	public Player findTarget() {
-		double radius = pitBoss.getReach() * 3;
+		double radius = pitBoss.getReach();
 
 		if(targetingState == State.ATTACKING_MELEE) {
 			radius = pitBoss.getReach();
@@ -60,6 +71,28 @@ public class TargetingSystem {
 			if(!(entity instanceof Player)) continue;
 			Player player = (Player) entity;
 			playersInRadius.add(player);
+		}
+		if (playersInRadius.size() == 0) {
+			for(Entity entity : pitBoss.boss.getNearbyEntities(radius*3, radius*3, radius*3))  {
+				System.out.println("FOUND ENTITY");
+				if(!(entity instanceof Player)) continue;
+				Player player = (Player) entity;
+				playersInRadius.add(player);
+			}
+		}
+		if (playersInRadius.size() == 0) {
+			SubLevel subLevel = pitBoss.getSubLevel();
+			Location location = subLevel.getMiddle();
+			for(Entity entity : location.getWorld().getNearbyEntities(location, 35, 20, 35))  {
+				System.out.println("FOUND ENTITY");
+				if(!(entity instanceof Player)) continue;
+				Player player = (Player) entity;
+				playersInRadius.add(player);
+			}
+		}
+
+		if (playersInRadius.size() == 0) {
+			return null;
 		}
 
 		Vector pitBossDirection = pitBoss.boss.getLocation().getDirection();

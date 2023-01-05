@@ -36,6 +36,7 @@ public abstract class PitBoss {
 	public long lastRoutineExecuteTick;
 	public int routineAbilityCooldownTicks = 20 * 5;
 	public BukkitTask routineRunnable;
+	private BukkitTask targetingRunnbale;
 
 	public PitBoss(Player summoner) {
 		this.summoner = summoner;
@@ -113,6 +114,13 @@ public abstract class PitBoss {
 				routineAbility.onRoutineExecute();
 			}
 		}.runTaskTimer(PitSim.INSTANCE, 0L, 20);
+
+		targetingRunnbale = new BukkitRunnable() {
+			@Override
+			public void run() {
+				targetingSystem.pickTarget();
+			}
+		}.runTaskTimer(PitSim.INSTANCE, 0L, 10);
 	}
 
 	public void kill() {
@@ -120,6 +128,8 @@ public abstract class PitBoss {
 		npcBoss.destroy();
 		dropPool.distributeRewards(damageMap, 3);
 		getSubLevel().bossDeath();
+		routineRunnable.cancel();
+		targetingRunnbale.cancel();
 		onDeath();
 	}
 
