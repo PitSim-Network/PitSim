@@ -87,10 +87,13 @@ public class DarkzoneManager implements Listener {
 					System.out.println("5");
 
 					subLevel.setCurrentDrops(subLevel.getCurrentDrops() + 1);
-					item.setAmount(item.getAmount() - 1);
 					if(item.getAmount() == 1) {
 						event.getPlayer().setItemInHand(null);
+					} else {
+						item.setAmount(item.getAmount() - 1);
 					}
+
+
 
 					System.out.println("Current drops: " + subLevel.getCurrentDrops());
 
