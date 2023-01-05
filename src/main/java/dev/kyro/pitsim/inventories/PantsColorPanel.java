@@ -57,7 +57,6 @@ public class PantsColorPanel extends AGUIPanel {
 				return;
 			if(!player.hasPermission("pitsim.pantscolor")) return;
 
-
 			PantColor pantColor = PantColor.getPantColor(getInventory().getItem(slot));
 
 			PantColor originalPantColor = PantColor.getPantColor(player.getInventory().getLeggings());
@@ -88,7 +87,6 @@ public class PantsColorPanel extends AGUIPanel {
 				}
 			}
 
-
 			updateInventory();
 		}
 	}
@@ -97,7 +95,6 @@ public class PantsColorPanel extends AGUIPanel {
 	public void onOpen(InventoryOpenEvent event) {
 
 		int i = 9;
-
 
 		for(PantColor pantColor : PantColor.values()) {
 			if(pantColor.refName.equals("Blue") || pantColor.refName.equals("Red") || pantColor.refName.equals("Orange")
@@ -131,7 +128,6 @@ public class PantsColorPanel extends AGUIPanel {
 		PantColor originalColor = getOrginalColor(playerPants);
 
 		if(originalColor != null) {
-
 
 			ItemStack original = new ItemStack(Material.LEATHER_LEGGINGS);
 			ItemMeta originalMeta = original.getItemMeta();
@@ -168,7 +164,6 @@ public class PantsColorPanel extends AGUIPanel {
 		if(Misc.isAirOrNull(item)) return null;
 		ItemMeta itemMeta = item.getItemMeta();
 		if(itemMeta == null || !itemMeta.hasLore()) return null;
-
 
 		NBTItem nbtItem = new NBTItem(item);
 

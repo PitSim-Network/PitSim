@@ -74,7 +74,6 @@ public class ToTheMoon extends Megastreak {
 		return 60;
 	}
 
-
 	@Override
 	public ItemStack guiItem() {
 		ItemStack item = new ItemStack(Material.ENDER_STONE);

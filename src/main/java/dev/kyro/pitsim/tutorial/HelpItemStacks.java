@@ -91,7 +91,6 @@ public class HelpItemStacks {
 				.getItemStack();
 	}
 
-
 	public static ItemStack getCustomHead(String url) {
 
 		ItemStack skull = new ItemStack(Material.SKULL_ITEM, 1, (byte) 3);

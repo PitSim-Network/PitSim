@@ -39,7 +39,6 @@ public class TokenOfAppreciation {
 		NBTItem nbtItem = new NBTItem(vile);
 		nbtItem.setBoolean(NBTTag.IS_TOKEN.getRef(), true);
 
-
 		AUtil.giveItemSafely(player, nbtItem.getItem());
 
 	}

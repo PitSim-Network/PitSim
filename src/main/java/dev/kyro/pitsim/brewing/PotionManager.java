@@ -52,7 +52,6 @@ public class PotionManager implements Listener {
 			}
 		}.runTaskTimer(PitSim.INSTANCE, 1, 1);
 
-
 		new BukkitRunnable() {
 			@Override
 			public void run() {
@@ -170,7 +169,6 @@ public class PotionManager implements Listener {
 		}
 	}
 
-
 	@EventHandler
 	public void onSplash(PotionSplashEvent event) {
 
@@ -272,7 +270,6 @@ public class PotionManager implements Listener {
 		}
 	}
 
-
 	public static List<PotionEffect> getPotionEffects(Player player) {
 		List<PotionEffect> effects = new ArrayList<>();
 		for(PotionEffect potionEffect : potionEffectList) {
@@ -288,7 +285,6 @@ public class PotionManager implements Listener {
 		}
 		return null;
 	}
-
 
 	public static void showMyBossBar(final @NonNull Audience player, Player realPlayer, String text, float progress) {
 		final Component name = Component.text(text);

@@ -42,7 +42,6 @@ public class ProxyMessaging implements Listener {
 		}.runTaskTimer(PitSim.INSTANCE, 20 * 5, 20 * 5);
 	}
 
-
 	public static void sendStartup() {
 		System.out.println(PitSim.serverName);
 		new PluginMessage().writeString("INITIATE STARTUP").writeString(PitSim.serverName).send();
@@ -50,7 +49,6 @@ public class ProxyMessaging implements Listener {
 
 	public static void sendShutdown() {
 		new PluginMessage().writeString("INITIATE FINAL SHUTDOWN").writeString(PitSim.serverName).send();
-
 
 		for(Player player : Bukkit.getOnlinePlayers()) {
 			PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
@@ -221,7 +219,6 @@ public class ProxyMessaging implements Listener {
 
 			switchPlayer(player, requestedServer);
 		}
-
 
 		if(strings.size() >= 2 && strings.get(0).equals("REQUEST DARKZONE SWITCH")) {
 			UUID uuid = UUID.fromString(strings.get(1));

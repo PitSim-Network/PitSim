@@ -194,7 +194,6 @@ public class ShardHunterPanel extends AGUIPanel {
 		return shards;
 	}
 
-
 	@Override
 	public void onClose(InventoryCloseEvent event) {
 

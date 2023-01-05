@@ -54,7 +54,6 @@ public class TaintedManager implements Listener {
 				return;
 		} catch(ClassCastException ignored) {}
 
-
 		if(event.getDamager() instanceof Player) {
 			ItemStack held = ((Player) event.getDamager()).getItemInHand();
 			if(!Misc.isAirOrNull(held) && held.getType() == Material.GOLD_HOE) {
@@ -108,7 +107,6 @@ public class TaintedManager implements Listener {
 						event.getPlayer().getInventory().setLeggings(pants.getItem());
 					}
 				}
-
 
 				for(int i = 0; i < event.getPlayer().getInventory().getSize(); i++) {
 					ItemStack item = event.getPlayer().getInventory().getItem(i);
@@ -177,7 +175,6 @@ public class TaintedManager implements Listener {
 			}
 		}.runTaskLater(PitSim.INSTANCE, 5);
 
-
 		new BukkitRunnable() {
 			@Override
 			public void run() {
@@ -239,7 +236,6 @@ public class TaintedManager implements Listener {
 
 					nbtItem.getItem().setItemMeta(meta);
 
-
 					event.getPlayer().getInventory().setItem(i, nbtItem.getItem());
 				}
 			}
@@ -299,7 +295,6 @@ public class TaintedManager implements Listener {
 		}
 	}
 
-
 	@EventHandler
 	public void onDefend(AttackEvent.Pre event) {
 		Player player = event.getDefenderPlayer();
@@ -353,7 +348,6 @@ public class TaintedManager implements Listener {
 		if(players.contains((Player) event.getPlayer())) event.setCancelled(true);
 	}
 
-
 	public static String scramble(String msg) {
 		StringBuilder builder = new StringBuilder();
 
@@ -395,7 +389,6 @@ public class TaintedManager implements Listener {
 
 		return finishedStrings;
 	}
-
 
 	public static String descramble(String msg) {
 		StringBuilder builder = new StringBuilder();

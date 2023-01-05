@@ -644,7 +644,6 @@ public class PlayerManager implements Listener {
 					Misc.sendSubTitle(player, "", 40);
 					AOutput.send(player, "&7You have been sent to the &d&k||&5&lDarkzone&d&k||&7.");
 
-
 					if(!pitPlayer.darkzoneCutscene) {
 //						CutsceneManager.play(player);
 						return;

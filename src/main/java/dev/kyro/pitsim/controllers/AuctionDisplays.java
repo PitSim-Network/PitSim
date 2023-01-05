@@ -185,7 +185,6 @@ public class AuctionDisplays implements Listener {
 	public void onPickUp(PlayerPickupItemEvent event) {
 		if(event.getPlayer().getWorld() != MapManager.getDarkzone()) return;
 
-
 		if(pedestalLocations[0] == null) return;
 
 		if(pedestalLocations[0].distance(event.getPlayer().getLocation()) < 50) {
@@ -215,7 +214,6 @@ public class AuctionDisplays implements Listener {
 		stands.addAll(Arrays.asList(highestBidStands));
 		stands.addAll(Arrays.asList(rightClickStands));
 		stands.add(timerStandUUID);
-
 
 		for(UUID armorStand : stands) {
 			if(armorStand.equals(event.getDefender().getUniqueId())) {
@@ -256,7 +254,6 @@ public class AuctionDisplays implements Listener {
 		}
 		return false;
 	}
-
 
 	public static boolean hasPlayers(Location location) {
 		for(Entity entity : location.getWorld().getNearbyEntities(location, 50, 50, 50)) {

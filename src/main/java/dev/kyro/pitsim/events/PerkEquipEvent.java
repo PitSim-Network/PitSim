@@ -39,7 +39,6 @@ public class PerkEquipEvent extends Event implements Cancellable {
 		return HANDLERS_LIST;
 	}
 
-
 	public PitPerk getPerk() {
 		return perk;
 	}
@@ -52,10 +51,8 @@ public class PerkEquipEvent extends Event implements Cancellable {
 		return replacedPerk;
 	}
 
-
 //    public void setPerk(PitPerk perk) {
 //        this.perk = perk;
 //    }
-
 
 }

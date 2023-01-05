@@ -21,7 +21,6 @@ public class StunAbility extends RoutinePitBossAbility {
 	@Override
 	public void onRoutineExecute() {
 
-
 		double range = pitBoss.getReach();
 		for(Entity nearbyEntity : pitBoss.boss.getNearbyEntities(range, range, range)) {
 			if(!(nearbyEntity instanceof Player)) continue;

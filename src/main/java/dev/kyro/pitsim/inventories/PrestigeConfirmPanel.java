@@ -25,7 +25,6 @@ public class PrestigeConfirmPanel extends AGUIPanel {
 		prestigeGUI = (PrestigeGUI) gui;
 	}
 
-
 	@Override
 	public String getName() {
 		return "Prestige & Renown";
@@ -69,7 +68,6 @@ public class PrestigeConfirmPanel extends AGUIPanel {
 
 		getInventory().setItem(11, confirm);
 
-
 		ItemStack cancel = new ItemStack(Material.STAINED_CLAY, 1, (short) 14);
 		ItemMeta cancelMeta = confirm.getItemMeta();
 		List<String> cancelLore = new ArrayList<>();
@@ -79,7 +77,6 @@ public class PrestigeConfirmPanel extends AGUIPanel {
 		cancel.setItemMeta(cancelMeta);
 
 		getInventory().setItem(15, cancel);
-
 
 	}
 

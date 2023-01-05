@@ -47,7 +47,6 @@ public abstract class Booster implements Listener {
 		FirestoreManager.CONFIG.boosters.put(refName, minutes);
 	}
 
-
 	public static int getBoosterAmount(Player player, Booster booster) {
 		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
 		return pitPlayer.boosters.getOrDefault(booster.refName, 0);

@@ -24,7 +24,6 @@ import java.util.Set;
 
 public class WarpSpell extends PitEnchant {
 
-
 	public WarpSpell() {
 		super("Warp", true, ApplyType.SCYTHES, "warp", "teleport", "tp");
 		tainted = true;

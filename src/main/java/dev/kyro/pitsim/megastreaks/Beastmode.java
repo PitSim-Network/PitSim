@@ -76,7 +76,6 @@ public class Beastmode extends Megastreak {
 	@Override
 	public ItemStack guiItem() {
 
-
 		ItemStack item = new ItemStack(Material.DIAMOND_HELMET);
 		ItemMeta meta = item.getItemMeta();
 		List<String> lore = new ArrayList<>();

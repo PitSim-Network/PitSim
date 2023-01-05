@@ -33,7 +33,6 @@ public class MeteorSpell extends PitEnchant {
 		tainted = true;
 	}
 
-
 	@EventHandler
 	public void onUse(PitPlayerAttemptAbilityEvent event) {
 		int enchantLvl = event.getEnchantLevel(this);

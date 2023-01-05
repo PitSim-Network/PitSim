@@ -18,7 +18,6 @@ public class HerosHaste extends Killstreak {
 		INSTANCE = this;
 	}
 
-
 	@Override
 	public void proc(Player player) {
 		Misc.applyPotionEffect(player, PotionEffectType.SPEED, 20 * 8, 3, true, false);

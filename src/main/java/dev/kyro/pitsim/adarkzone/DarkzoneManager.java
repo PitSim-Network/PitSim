@@ -56,12 +56,9 @@ public class DarkzoneManager implements Listener {
 	@EventHandler
 	public void onClick(PlayerInteractEvent event) {
 
-
 		if(event.getPlayer() == null) return;
 		if(event.getPlayer().getItemInHand() == null) return;
 		if(event.getAction() != Action.LEFT_CLICK_BLOCK && event.getAction() != Action.RIGHT_CLICK_BLOCK) return;
-
-
 
 		ItemStack item = event.getItem();
 		Location location = event.getClickedBlock().getLocation();
@@ -119,7 +116,6 @@ public class DarkzoneManager implements Listener {
 				.leggings(new ItemStack(Material.DIAMOND_SWORD))
 				.boots(new ItemStack(Material.DIAMOND_SWORD));
 	}
-
 
 	/**
 	 * Adds a sublevel to the list of sublevels

@@ -33,7 +33,6 @@ public class ServerData {
 				continue;
 			}
 
-
 			List<String> data = stringData.subList(0, intDatum);
 			indexData.add(new ArrayList<>(data));
 			stringData.subList(0, intDatum).clear();
@@ -42,7 +41,6 @@ public class ServerData {
 
 		servers.put(index, this);
 	}
-
 
 	public ServerData(int index, int playerCount, boolean isRunning, List<String> playerStrings) {
 		this.index = index;

@@ -21,7 +21,6 @@ public class Baker extends Killstreak {
 		INSTANCE = this;
 	}
 
-
 	@Override
 	public void proc(Player player) {
 		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);

@@ -40,7 +40,6 @@ public class Forcefield extends PitEnchant {
 					double thetaRand = 360 * Math.random();
 					double phiRand = 360 * Math.random();
 
-
 					for(int i = 0; i < 48; i++) {
 						double x2 = radius * Math.cos(phiRand) * Math.sin(thetaRand);
 						double z2 = radius * Math.sin(phiRand) * Math.sin(thetaRand);

@@ -29,7 +29,6 @@ public class ShredConfirmPanel extends AGUIPanel {
 		taintedGUI = (TaintedGUI) gui;
 	}
 
-
 	@Override
 	public String getName() {
 		return "Are you sure?";
@@ -95,7 +94,6 @@ public class ShredConfirmPanel extends AGUIPanel {
 
 		getInventory().setItem(11, confirm);
 
-
 		ItemStack cancel = new ItemStack(Material.STAINED_CLAY, 1, (short) 14);
 		ItemMeta cancelMeta = confirm.getItemMeta();
 		List<String> cancelLore = new ArrayList<>();
@@ -105,7 +103,6 @@ public class ShredConfirmPanel extends AGUIPanel {
 		cancel.setItemMeta(cancelMeta);
 
 		getInventory().setItem(15, cancel);
-
 
 	}
 

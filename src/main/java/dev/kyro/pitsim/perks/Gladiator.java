@@ -29,7 +29,6 @@ public class Gladiator extends PitPerk {
 		INSTANCE = this;
 	}
 
-
 	static {
 		new BukkitRunnable() {
 			@Override

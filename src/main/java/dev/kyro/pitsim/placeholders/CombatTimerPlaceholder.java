@@ -31,5 +31,4 @@ public class CombatTimerPlaceholder implements APAPIPlaceholder {
 		}
 	}
 
-
 }

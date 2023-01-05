@@ -45,7 +45,6 @@ public class SetPrestigeCommand extends ACommand {
 			AOutput.error(player, "&cCorrect usage: /ps set prestige <player> <prestige>");
 		}
 
-
 		File directory = new File("plugins/PitRemake/playerdata");
 		File[] files = directory.listFiles();
 		assert files != null;

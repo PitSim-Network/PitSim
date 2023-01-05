@@ -65,7 +65,6 @@ public class Stereo extends PitEnchant {
 
 					if(StereoManager.playerMusic.containsKey(player)) return;
 
-
 					if(!player.hasPermission("pitsim.stereo") && !stereoOnChest) {
 						AOutput.error(player, "&c&lERROR! &7You must have the &bMiraculous Rank &7or higher to use &9Stereo");
 						Sounds.NO.play(player);

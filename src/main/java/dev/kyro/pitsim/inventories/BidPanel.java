@@ -127,7 +127,6 @@ public class BidPanel extends AGUIPanel {
 						.setLore(loreBuilder);
 				getInventory().setItem(10, bidsBuilder.getItemStack());
 
-
 				loreBuilder = new ALoreBuilder("");
 				if(auctionItem.getHighestBidder() != null)
 					loreBuilder.addLore("&7Highest Bid: &f" + auctionItem.getHighestBid() + " Souls");
@@ -174,6 +173,5 @@ public class BidPanel extends AGUIPanel {
 	public void onClose(InventoryCloseEvent event) {
 		runnable.cancel();
 	}
-
 
 }

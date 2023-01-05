@@ -23,7 +23,6 @@ public class SoulReqPlaceholder implements APAPIPlaceholder {
 		PrestigeValues.PrestigeInfo prestigeInfo = PrestigeValues.getPrestigeInfo(pitPlayer.prestige);
 		double soulReq = prestigeInfo.soulReq;
 
-
 		if(soulReq - pitPlayer.soulsGathered <= 0) return "&aDONE!";
 		else
 			return ChatColor.WHITE + (NumberFormat.getNumberInstance(Locale.US).format(soulReq - pitPlayer.soulsGathered));

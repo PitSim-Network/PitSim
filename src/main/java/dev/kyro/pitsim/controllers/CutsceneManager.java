@@ -79,7 +79,6 @@ public class CutsceneManager implements Listener {
 			}
 		}.runTaskLater(PitSim.INSTANCE, 145);
 
-
 		List<Location> secondSequence = new ArrayList<>();
 		secondSequence.add(new Location(MapManager.getDarkzone(), 182, 132, -142, -25, 31));
 		secondSequence.add(new Location(MapManager.getDarkzone(), 233, 133, -136, 33, 26));
@@ -102,7 +101,6 @@ public class CutsceneManager implements Listener {
 				Misc.applyPotionEffect(player, PotionEffectType.BLINDNESS, 45, 100, false, false);
 			}
 		}.runTaskLater(PitSim.INSTANCE, 445);
-
 
 		List<Location> thirdSequence = new ArrayList<>();
 		thirdSequence.add(new Location(MapManager.getDarkzone(), 237, 103, 11, -123, -11));
@@ -128,7 +126,6 @@ public class CutsceneManager implements Listener {
 			}
 		}.runTaskLater(PitSim.INSTANCE, 745);
 
-
 		List<Location> fourthSequence = new ArrayList<>();
 		fourthSequence.add(new Location(MapManager.getDarkzone(), 253, 95, -121, -90, 0));
 		fourthSequence.add(new Location(MapManager.getDarkzone(), 285, 90, -120, -120, 45));
@@ -149,7 +146,6 @@ public class CutsceneManager implements Listener {
 				}
 			}
 		}.runTaskLater(PitSim.INSTANCE, 760);
-
 
 		BukkitTask task8 = new BukkitRunnable() {
 			@Override
@@ -235,7 +231,6 @@ public class CutsceneManager implements Listener {
 		runnables.add(task13);
 
 		cutscenePlayers.put(player, runnables);
-
 
 		sendTitle(player, "&d&k||&5&lDarkzone&d&k||", "&7A corrupted world", 20);
 		sendTitle(player, "&eEnhanced Combat", "&7Your normal mystics won't work here", 200);

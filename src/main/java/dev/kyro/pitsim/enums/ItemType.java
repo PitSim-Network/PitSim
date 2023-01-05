@@ -29,7 +29,6 @@ public enum ItemType {
 	CORRUPTED_FEATHERS_3(13, getCorruptedFeather(3), ChatColor.DARK_PURPLE + "3x Corrupted Feather", 50, 10),
 	CORRUPTED_FEATHERS_5(14, getCorruptedFeather(5), ChatColor.DARK_PURPLE + "5x Corrupted Feather", 25, 25);
 
-
 	public final int id;
 	public final ItemStack item;
 	public final String itemName;
@@ -82,7 +81,6 @@ public enum ItemType {
 		return JewelCommand.getJewel(mysticType, jewelDataToEnchant(mysticType, data), 0);
 	}
 
-
 	public static ItemStack getFeathers(int amount) {
 		return FunkyFeather.getFeather(amount);
 	}
@@ -90,6 +88,5 @@ public enum ItemType {
 	public static ItemStack getVile(int amount) {
 		return ChunkOfVile.getVile(amount);
 	}
-
 
 }

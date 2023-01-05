@@ -22,7 +22,6 @@ public class LeapAbility extends HelmetAbility {
 		super(player, "Leap", "leap", false, 10);
 	}
 
-
 	@Override
 	public void onActivate() {
 
@@ -62,7 +61,6 @@ public class LeapAbility extends HelmetAbility {
 //		if(vector.getY() < 0) vector.setY(-vector.getY());
 		player.setVelocity(vector);
 	}
-
 
 	@Override
 	public List<String> getDescription() {

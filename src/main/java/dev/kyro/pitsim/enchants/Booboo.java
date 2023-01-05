@@ -62,7 +62,6 @@ public class Booboo extends PitEnchant {
 		}.runTaskTimer(PitSim.INSTANCE, 0L, 20L);
 	}
 
-
 	@Override
 	public List<String> getDescription(int enchantLvl) {
 

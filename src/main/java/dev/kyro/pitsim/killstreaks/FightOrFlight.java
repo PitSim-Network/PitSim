@@ -33,7 +33,6 @@ public class FightOrFlight extends Killstreak {
 		if(rewardPlayers.contains(event.getAttacker())) event.increasePercent += 20 / 100D;
 	}
 
-
 	@Override
 	public void proc(Player player) {
 		if(player.getHealth() < player.getMaxHealth() / 2) {

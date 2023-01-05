@@ -38,5 +38,4 @@ public class DoubleSneakEvent extends Event implements Cancellable {
 		return player;
 	}
 
-
 }

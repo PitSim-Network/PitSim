@@ -12,5 +12,4 @@ public enum MobType {
 	ENDERMAN,
 	ZOMBIE_PIGMAN;
 
-
 }

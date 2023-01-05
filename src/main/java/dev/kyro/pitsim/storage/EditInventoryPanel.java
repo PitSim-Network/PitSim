@@ -103,7 +103,6 @@ public class EditInventoryPanel implements InventoryHolder, Listener {
 		if(inventory.getHolder() != this) return;
 		session.inventory = this;
 
-
 		if(!session.playerClosed) {
 			session.playerClosed = true;
 			return;
@@ -114,7 +113,6 @@ public class EditInventoryPanel implements InventoryHolder, Listener {
 
 		session.end();
 	}
-
 
 	@EventHandler
 	public void onEditSessionClick(InventoryClickEvent event) {
@@ -173,6 +171,5 @@ public class EditInventoryPanel implements InventoryHolder, Listener {
 			}
 		}.runTaskLater(PitSim.INSTANCE, 2);
 	}
-
 
 }

@@ -33,7 +33,6 @@ public class ScoreboardManager implements Listener {
 				for(Player player : Bukkit.getOnlinePlayers()) {
 					ItemStack leggings = player.getInventory().getLeggings();
 
-
 					int count = 0;
 
 					for(String goldEnchant : goldEnchants) {

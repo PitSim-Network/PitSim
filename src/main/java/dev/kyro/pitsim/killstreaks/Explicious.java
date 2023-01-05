@@ -24,7 +24,6 @@ public class Explicious extends Killstreak {
 
 	List<LivingEntity> rewardPlayers = new ArrayList<>();
 
-
 	@EventHandler
 	public void onKill(KillEvent killEvent) {
 		if(rewardPlayers.contains(killEvent.getKiller())) {
@@ -33,7 +32,6 @@ public class Explicious extends Killstreak {
 			rewardPlayers.remove(killEvent.getKiller());
 		}
 	}
-
 
 	@Override
 	public void proc(Player player) {

@@ -130,7 +130,6 @@ public class BackwardsCompatibility implements Listener {
 		int newPrestige = Math.min(((pitPlayer.level - 1) / 2), 50);
 		if(newPrestige < 0) newPrestige = 0;
 
-
 		for(int i = 0; i < newPrestige - 1; i++) {
 			PrestigeValues.PrestigeInfo info = PrestigeValues.getPrestigeInfo(i);
 			renown += info.renownReward;
@@ -142,7 +141,6 @@ public class BackwardsCompatibility implements Listener {
 //				playerData.set(upgrade.refName, null);
 			}
 		}
-
 
 		for(int i = 0; i < pitPlayer.pitPerks.size(); i++) {
 			if(pitPlayer.pitPerks.get(i).refName.equals("streaker")) {
@@ -165,7 +163,6 @@ public class BackwardsCompatibility implements Listener {
 		pitPlayer.soulsGathered = 0;
 		pitPlayer.megastreak = new Overdrive(pitPlayer);
 		pitPlayer.goldGrinded = 0;
-
 
 		if(newPrestige > 0) {
 			Sounds.COMPENSATION.play(player);

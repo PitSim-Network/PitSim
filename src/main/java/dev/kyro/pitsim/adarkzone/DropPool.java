@@ -57,7 +57,6 @@ public class DropPool {
 		}
 	}
 
-
 	/**
 	 * Adds item to the dropPool
 	 * @param item item to be added to dropPool
