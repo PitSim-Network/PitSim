@@ -60,33 +60,10 @@ public class SubLevel {
 
 	public void identifySpawnableLocations() {
 		for(int x = -spawnRadius; x < spawnRadius + 1; x++) {
-			loop:
 			for(int z = -spawnRadius; z < spawnRadius + 1; z++) {
 				Location location = new Location(MapManager.getDarkzone(), middle.getBlockX() + x + 0.5, middle.getBlockY(), middle.getBlockZ() + z + 0.5);
 				if(location.distance(middle) > spawnRadius) continue;
-
-				Block block = location.getBlock();
-				if(block.getType() == Material.AIR) {
-					if(isSpawnableLocation(location)) {
-						spawnableLocations.add(location);
-						continue;
-					}
-
-					int c = 0;
-					while(block.getRelative(0, -1, 0).getType() == Material.AIR) {
-						block = block.getRelative(0, -1, 0);
-						c++;
-						if(c > 4) continue loop;
-					}
-
-				} else {
-					int c = 0;
-					while(block.getType() != Material.AIR) {
-						block = block.getRelative(0, 1, 0);
-						c++;
-						if(c > 4) continue loop;
-					}
-				}
+				location.add(0, -3, 0);
 				if(!isSpawnableLocation(location)) continue;
 				spawnableLocations.add(location);
 			}
@@ -96,11 +73,17 @@ public class SubLevel {
 	public boolean isSpawnableLocation(Location location) {
 		boolean canSpawn = false;
 
-		Block block = location.getBlock();
-		Block blockAbove = location.clone().add(0, 1, 0).getBlock();
-		Block blockBelow = location.clone().add(0, -1, 0).getBlock();
-
-		if (block.getType() == Material.AIR && blockAbove.getType() == Material.AIR && blockBelow.getType() != Material.AIR) {
+		for(int i = 0; i < 6; i++) {
+				Block block = location.getBlock();
+				if(block.getType() == Material.AIR) {
+					location.add(0, 1, 0);
+					continue;
+				}
+				Block blockAbove = location.clone().add(0, 1, 0).getBlock();
+				if(blockAbove.getType() != Material.AIR) {
+					location.add(0, 1, 0);
+					continue;
+				}
 			canSpawn = true;
 		}
 
