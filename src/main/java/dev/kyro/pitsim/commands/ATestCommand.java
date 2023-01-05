@@ -1,6 +1,6 @@
 package dev.kyro.pitsim.commands;
 
-import dev.kyro.pitsim.adarkzone.SubLevelType;
+import dev.kyro.pitsim.inventories.AdminGUI;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -14,7 +14,8 @@ public class ATestCommand implements CommandExecutor {
 		Player player = (Player) sender;
 		if(!player.isOp()) return false;
 
-		SubLevelType.ZOMBIE.getSubLevel().spawnBoss(player);
+		AdminGUI gui = new AdminGUI(player);
+		gui.open();
 
 		return false;
 	}

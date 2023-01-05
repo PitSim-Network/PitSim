@@ -63,7 +63,7 @@ public class KeeperPanel extends AGUIPanel {
 					return;
 				}
 
-				if(!ServerData.getServerData((slots.get(slot))).isRunning()) {
+				if(!ServerData.getOverworldServerData((slots.get(slot))).isRunning()) {
 					AOutput.send(player, "&cThis server is currently unavailable!");
 					Sounds.NO.play(player);
 					return;
@@ -99,10 +99,10 @@ public class KeeperPanel extends AGUIPanel {
 
 	@Override
 	public void onOpen(InventoryOpenEvent event) {
-		List<Integer> slots = getSlots(ServerData.getServerCount());
+		List<Integer> slots = getSlots(ServerData.getOverworldServerCount());
 		int slotsIndex = 0;
 
-		for(Map.Entry<Integer, ServerData> entry : ServerData.servers.entrySet()) {
+		for(Map.Entry<Integer, ServerData> entry : ServerData.overworldServers.entrySet()) {
 			int serverIndex = entry.getKey();
 			ServerData serverData = entry.getValue();
 

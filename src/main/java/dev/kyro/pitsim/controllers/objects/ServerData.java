@@ -1,25 +1,25 @@
 package dev.kyro.pitsim.controllers.objects;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class ServerData {
 
-	public static Map<Integer, ServerData> servers = new HashMap<>();
+	public static Map<Integer, ServerData> overworldServers = new HashMap<>();
+	public static Map<Integer, ServerData> darkzoneServers = new HashMap<>();
 
 	public int index;
 
-	private final List<String> playerStrings;
+	private final Map<String, String> playerStrings = new HashMap<>();
+	private boolean darkzone;
 
 	private boolean isRunning;
 	private int playerCount;
 	private List<String> stringData;
 
-	public ServerData(int index, List<String> initialStringData, List<Integer> intData, List<Boolean> booleanData) {
+	public ServerData(int index, boolean darkzone, List<String> initialStringData, List<Integer> intData, List<Boolean> booleanData) {
 
 		this.index = index;
+		this.darkzone = darkzone;
 
 		playerCount = intData.get(index);
 		isRunning = booleanData.get(index);
@@ -33,28 +33,26 @@ public class ServerData {
 				continue;
 			}
 
-
 			List<String> data = stringData.subList(0, intDatum);
 			indexData.add(new ArrayList<>(data));
 			stringData.subList(0, intDatum).clear();
 		}
-		playerStrings = indexData.get(index);
+		List<String> data = indexData.get(index);
+		for(String datum : data) {
+			String[] split = datum.split(":");
+			playerStrings.put(split[0], split[1]);
+		}
 
-		servers.put(index, this);
+		if(!darkzone) overworldServers.put(index, this);
+		else darkzoneServers.put(index, this);
 	}
 
-
-	public ServerData(int index, int playerCount, boolean isRunning, List<String> playerStrings) {
-		this.index = index;
-		this.playerCount = playerCount;
-		this.isRunning = isRunning;
-		this.playerStrings = playerStrings;
-
-		servers.put(index, this);
+	public Map<String, String> getPlayers() {
+		return playerStrings;
 	}
 
 	public List<String> getPlayerStrings() {
-		return playerStrings;
+		return new ArrayList<>(playerStrings.values());
 	}
 
 	public int getPlayerCount() {
@@ -65,12 +63,34 @@ public class ServerData {
 		return isRunning;
 	}
 
-	public static ServerData getServerData(int index) {
-		return servers.get(index);
+	public static List<ServerData> getAllServerData() {
+		List<ServerData> completeList = new ArrayList<>(overworldServers.values());
+		completeList.addAll(darkzoneServers.values());
+		return completeList;
 	}
 
-	public static int getServerCount() {
-		return servers.size();
+	public static ServerData getOverworldServerData(int index) {
+		return overworldServers.get(index);
+	}
+
+	public static ServerData getDarkzoneServerData(int index) {
+		return darkzoneServers.get(index);
+	}
+
+	public static int getAllServerCount() {
+		return overworldServers.size() + darkzoneServers.size();
+	}
+
+	public static int getOverworldServerCount() {
+		return overworldServers.size();
+	}
+
+	public static int getDarkzoneServerCount() {
+		return darkzoneServers.size();
+	}
+
+	public boolean isDarkzone() {
+		return darkzone;
 	}
 
 }
