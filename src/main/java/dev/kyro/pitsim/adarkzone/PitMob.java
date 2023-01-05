@@ -8,9 +8,9 @@ import org.bukkit.inventory.ItemStack;
 
 public abstract class PitMob {
 
-	public Creature mob;
-	public Player target;
-	public ItemStack drop;
+	private Creature mob;
+	private Player target;
+	private DropPool dropPool;
 
 	public PitMob(Location spawnLocation) {
 		spawn(spawnLocation);
@@ -30,13 +30,32 @@ public abstract class PitMob {
 		if(mob != null) mob.remove();
 	}
 
-	public void rewardKill(Player killer) {
-		killer.getInventory().addItem(drop);
-
-	}
-
 	public void setTarget(Player target) {
 		this.target = target;
 		mob.setTarget(target);
+	}
+
+	public Player getTarget() {
+		return target;
+	}
+
+	public void setDropPool(DropPool dropPool) {
+		this.dropPool = dropPool;
+	}
+
+	public void addDrop(ItemStack item, double weight) {
+		dropPool.dropPool.put(item, weight);
+	}
+
+	public void rewardKill(Player killer) {
+		killer.getInventory().addItem(dropPool.getRandomDrop());
+	}
+
+	public Creature getMob() {
+		return mob;
+	}
+
+	public void setMob(Creature mob) {
+		this.mob = mob;
 	}
 }

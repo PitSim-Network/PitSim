@@ -71,26 +71,24 @@ public class SubLevel {
 						spawnableLocations.add(location);
 						continue;
 					}
-					if(block.getRelative(0, -1, 0).getType() == Material.AIR) {
-						int c = 0;
-						while(block.getRelative(0, -1, 0).getType() == Material.AIR) {
-							block = block.getRelative(0, -1, 0);
-							c++;
-							if(c > 4) continue loop;
-						}
+
+					int c = 0;
+					while(block.getRelative(0, -1, 0).getType() == Material.AIR) {
+						block = block.getRelative(0, -1, 0);
+						c++;
+						if(c > 4) continue loop;
 					}
-					if(!isSpawnableLocation(location)) continue;
-					spawnableLocations.add(location);
+
 				} else {
 					int c = 0;
-					while(block.getRelative(0, 1, 0).getType() != Material.AIR) {
+					while(block.getType() != Material.AIR) {
 						block = block.getRelative(0, 1, 0);
 						c++;
 						if(c > 4) continue loop;
 					}
-					if(!isSpawnableLocation(location)) continue;
-					spawnableLocations.add(location);
 				}
+				if(!isSpawnableLocation(location)) continue;
+				spawnableLocations.add(location);
 			}
 		}
 	}
