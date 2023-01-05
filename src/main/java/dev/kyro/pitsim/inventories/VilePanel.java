@@ -75,7 +75,7 @@ public class VilePanel extends AGUIPanel {
 					player.getInventory().setItem(i, nbtItem.getItem());
 					player.closeInventory();
 
-					TextComponent message = new TextComponent(ChatColor.translateAlternateColorCodes('&', "&5WITHERCRAFT! &7Repaired "));
+					TextComponent message = new TextComponent(ChatColor.translateAlternateColorCodes('&', "&5WITHERCRAFT!&7 Repaired "));
 					message.addExtra(Misc.createItemHover(nbtItem.getItem()));
 					message.addExtra(new TextComponent(ChatColor.translateAlternateColorCodes('&', "&7!")));
 					player.sendMessage(message);

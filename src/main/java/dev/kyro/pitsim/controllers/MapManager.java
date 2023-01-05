@@ -43,7 +43,7 @@ public class MapManager implements Listener {
 		Player player = event.getPlayer();
 		if(player.getWorld() != MapManager.getDarkzone()) return;
 		event.setCancelled(true);
-		AOutput.error(event.getPlayer(), "&c&c&lERROR! &7You cannot use that in the darkzone!");
+		AOutput.error(event.getPlayer(), "&c&c&lERROR!&7 You cannot use that in the darkzone!");
 	}
 
 	public static World getTutorial() {

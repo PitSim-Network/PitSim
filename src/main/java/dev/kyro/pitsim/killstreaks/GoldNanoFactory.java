@@ -48,9 +48,9 @@ public class GoldNanoFactory extends Killstreak {
 				if(rewardPlayers.containsKey(event.getPlayer())) {
 					rewardPlayers.put(event.getPlayer(), rewardPlayers.get(event.getPlayer()) + 1);
 				} else rewardPlayers.put(event.getPlayer(), 1);
-				AOutput.send(event.getPlayer(), "&6&lGOLD PICKUP! &7Gain &6+123g&7. &6+25% gold &7on your next kill.");
+				AOutput.send(event.getPlayer(), "&6&lGOLD PICKUP!&7 Gain &6+123g&7. &6+25% gold &7on your next kill.");
 			} else {
-				AOutput.send(event.getPlayer(), "&6&lGOLD PICKUP! &7Gain &6+123g&7");
+				AOutput.send(event.getPlayer(), "&6&lGOLD PICKUP!&7 Gain &6+123g&7");
 			}
 		}
 	}

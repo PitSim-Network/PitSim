@@ -158,7 +158,7 @@ public class JudgementAbility extends HelmetAbility {
 		if(cooldownMap.containsKey(player.getUniqueId())) {
 			int cooldownSeconds = getCooldownSeconds(player.getUniqueId());
 			Sounds.NO.play(player);
-			AOutput.error(player, "&c&lCOOLDOWN! &7On cooldown for " + cooldownSeconds + " second" + (cooldownSeconds == 1 ? "" : "s"));
+			AOutput.error(player, "&c&lCOOLDOWN!&7 On cooldown for " + cooldownSeconds + " second" + (cooldownSeconds == 1 ? "" : "s"));
 			return false;
 		}
 

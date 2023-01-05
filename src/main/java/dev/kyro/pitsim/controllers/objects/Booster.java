@@ -36,7 +36,7 @@ public abstract class Booster implements Listener {
 	}
 
 	public void onDisable() {
-		Bukkit.broadcastMessage(ChatColor.translateAlternateColorCodes('&', "&6&lBOOSTER! &7" + color + name + "&7 no longer active"));
+		Bukkit.broadcastMessage(ChatColor.translateAlternateColorCodes('&', "&6&lBOOSTER!&7 " + color + name + "&7 no longer active"));
 	}
 
 	public boolean isActive() {

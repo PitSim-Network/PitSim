@@ -29,7 +29,7 @@ public class ViewCommand implements CommandExecutor {
 			break;
 		}
 		if(target == null) {
-			AOutput.error(player, "&c&lERROR! &7Could not find that player");
+			AOutput.error(player, "&c&lERROR!&7 Could not find that player");
 			return false;
 		}
 

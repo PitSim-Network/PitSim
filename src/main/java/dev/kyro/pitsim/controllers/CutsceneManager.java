@@ -234,7 +234,7 @@ public class CutsceneManager implements Listener {
 
 		sendTitle(player, "&d&k||&5&lDarkzone&d&k||", "&7A corrupted world", 20);
 		sendTitle(player, "&eEnhanced Combat", "&7Your normal mystics won't work here", 200);
-		sendTitle(player, "&eMana Bar", "&7Use Mana to cast &dSPELL! &7Enchants", 320);
+		sendTitle(player, "&eMana Bar", "&7Use Mana to cast &dSPELL!&7 Enchants", 320);
 		sendTitle(player, "&eA New Realm", "&7There is plenty to explore", 500);
 		sendTitle(player, "&eBe Wary", "&7Strange forces lurk here", 650);
 

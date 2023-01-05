@@ -67,7 +67,7 @@ public class ExtractSpell extends PitEnchant {
 		}
 
 		if(finalEntity == null) {
-			AOutput.send(player, "&c&lERROR! &7No target found!");
+			AOutput.send(player, "&c&lERROR!&7 No target found!");
 			Sounds.NO.play(player);
 			return;
 		}

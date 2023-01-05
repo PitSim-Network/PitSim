@@ -57,7 +57,7 @@ public class ItemClearPanel extends AGUIPanel {
 				if(i == invSlot) {
 					NBTItem nbtItem = new NBTItem(player.getInventory().getItem(i));
 
-					AOutput.send(player, "&5&lWITHERCRAFT! &7Cleared enchants from " + nbtItem.getItem().getItemMeta().getDisplayName() + "&7!");
+					AOutput.send(player, "&5&lWITHERCRAFT!&7 Cleared enchants from " + nbtItem.getItem().getItemMeta().getDisplayName() + "&7!");
 
 					if(nbtItem.hasKey(NBTTag.IS_GEMMED.getRef())) {
 						nbtItem.removeKey(NBTTag.IS_GEMMED.getRef());

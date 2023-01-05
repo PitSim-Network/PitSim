@@ -52,7 +52,7 @@ public class ShredConfirmPanel extends AGUIPanel {
 				PitPlayer.getPitPlayer(player).taintedSouls += souls;
 				PitPlayer.getPitPlayer(player).stats.lifetimeSouls += souls;
 
-				AOutput.send(player, "&5&lSHRED! &7You Shredded " +
+				AOutput.send(player, "&5&lSHRED!&7 You Shredded " +
 						ShredJewelPanel.shredMap.get(player).getItemMeta().getDisplayName() + " &7for &f" + souls + " Tainted Souls&7.");
 				ShredJewelPanel.shredMap.remove(player);
 				Sounds.JEWEL_SHRED1.play(player);

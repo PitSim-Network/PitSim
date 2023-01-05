@@ -104,7 +104,7 @@ public class ItemManager implements Listener {
 					}
 				}.runTaskLater(PitSim.INSTANCE, 60L);
 				pitPlayer.confirmedDrop = itemStack;
-				AOutput.error(player, "&e&lWARNING! &7You are about to drop an item. Click the drop button again to drop the item.");
+				AOutput.error(player, "&e&lWARNING!&7 You are about to drop an item. Click the drop button again to drop the item.");
 				Sounds.WARNING_LOUD.play(player);
 			} else {
 				pitPlayer.confirmedDrop = null;

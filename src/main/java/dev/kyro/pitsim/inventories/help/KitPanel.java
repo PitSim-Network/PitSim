@@ -57,12 +57,12 @@ public class KitPanel extends AGUIPanel {
 			} catch(PitException exception) {
 				player.closeInventory();
 				Sounds.NO.play(player);
-				AOutput.error(player, "&c&lERROR! &7Kit requires " + kit.items.size() + " open inventory slots!");
+				AOutput.error(player, "&c&lERROR!&7 Kit requires " + kit.items.size() + " open inventory slots!");
 				return;
 			}
 			player.closeInventory();
 			Sounds.SUCCESS.play(player);
-			AOutput.send(player, "&a&lKIT RECEIVED! &7Successfully received " + kit.items.size() + " items!");
+			AOutput.send(player, "&a&lKIT RECEIVED!&7 Successfully received " + kit.items.size() + " items!");
 			return;
 		}
 	}

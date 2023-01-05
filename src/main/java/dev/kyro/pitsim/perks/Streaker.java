@@ -69,7 +69,7 @@ public class Streaker extends PitPerk {
 				xpReward.put(player, xp);
 
 				DecimalFormat format = new DecimalFormat("0.#");
-				AOutput.send(player, "&b&lSTREAKER! &7You hit your megastreak in &e" +
+				AOutput.send(player, "&b&lSTREAKER!&7 You hit your megastreak in &e" +
 						playerTimes.get(player) + " seconds&7. Gain &b+" + format.format(Math.ceil((xp - 1) * 100)) + "% XP &7for the rest of the streak.");
 				Sounds.STREAKER.play(player);
 				playerTimes.remove(player);
@@ -80,7 +80,7 @@ public class Streaker extends PitPerk {
 		if(!playerTimes.containsKey(killEvent.getKiller()) && !pitPlayer.megastreak.isOnMega() && !SpawnManager.isInSpawn(pitPlayer.player.getLocation())) {
 			playerTimes.put(killEvent.getKiller(), 0);
 			Sounds.STREAKER.play(killEvent.getKiller());
-			AOutput.send(killEvent.getKiller(), "&b&lSTREAKER! &7Streak timer started!");
+			AOutput.send(killEvent.getKiller(), "&b&lSTREAKER!&7 Streak timer started!");
 		}
 	}
 

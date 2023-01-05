@@ -83,7 +83,7 @@ public class ShardHunter extends RenownUpgrade {
 
 		if(!givesShard) return;
 		AUtil.giveItemSafely(killEvent.getKillerPlayer(), getShardItem(1), true);
-		AOutput.send(killEvent.getKiller(), "&d&lGEM SHARD! &7obtained from killing " + killEvent.getDeadPlayer().getDisplayName() + "!");
+		AOutput.send(killEvent.getKiller(), "&d&lGEM SHARD!&7 obtained from killing " + killEvent.getDeadPlayer().getDisplayName() + "!");
 
 		File file = new File("plugins/NoteBlockAPI/Effects/ShardHunter.nbs");
 		Song song = NBSDecoder.parse(file);

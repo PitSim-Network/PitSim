@@ -110,7 +110,7 @@ public class CombatManager implements Listener {
 		Player player = event.getPlayer();
 		if(taggedPlayers.containsKey(player.getUniqueId())) {
 			event.setCancelled(true);
-			AOutput.error(event.getPlayer(), "&c&c&lERROR! &7You cannot use that while in combat!");
+			AOutput.error(event.getPlayer(), "&c&c&lERROR!&7 You cannot use that while in combat!");
 			return;
 		}
 

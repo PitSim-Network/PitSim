@@ -90,7 +90,7 @@ public class WithercraftPanel extends AGUIPanel {
 				openPanel(renownShopGUI.itemClearPanel);
 //                player.closeInventory();
 //                ASound.play(player, Sound.ORB_PICKUP, 2, 1.5F);
-//                AOutput.send(player, "&d&lITEM CRAFTED! &7Received &aTotally Legit Gem&7!");
+//                AOutput.send(player, "&d&lITEM CRAFTED!&7 Received &aTotally Legit Gem&7!");
 
 			}
 			if(slot == 22) {

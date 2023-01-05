@@ -37,7 +37,7 @@ public class KitManager implements Listener {
 		if(!nbtItem.hasKey(NBTTag.IS_PREMADE.getRef())) return;
 		event.getItemDrop().remove();
 		Sounds.NO.play(event.getPlayer());
-		AOutput.send(event.getPlayer(), "&c&lITEM DELETED! &7Dropped a pre-made item (use /kit to re-obtain)");
+		AOutput.send(event.getPlayer(), "&c&lITEM DELETED!&7 Dropped a pre-made item (use /kit to re-obtain)");
 	}
 
 	static {

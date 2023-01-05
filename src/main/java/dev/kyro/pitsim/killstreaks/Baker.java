@@ -25,7 +25,7 @@ public class Baker extends Killstreak {
 	public void proc(Player player) {
 		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
 		if(pitPlayer.megastreak.getClass() == RNGesus.class && pitPlayer.getKills() >= RNGesus.INSTABILITY_THRESHOLD) {
-			AOutput.error(player, "&c&lUNSTABLE! &7Baker cannot be used in this reality");
+			AOutput.error(player, "&c&lUNSTABLE!&7 Baker cannot be used in this reality");
 			return;
 		}
 

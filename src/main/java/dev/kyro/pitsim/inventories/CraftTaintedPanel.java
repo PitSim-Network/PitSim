@@ -60,24 +60,24 @@ public class CraftTaintedPanel extends AGUIPanel {
 				if(canBuy(player, 100)) {
 					AUtil.giveItemSafely(player, FreshCommand.getFreshItem(MysticType.TAINTED_SCYTHE, PantColor.RED));
 					PitPlayer.getPitPlayer(player).taintedSouls -= 100;
-					AOutput.send(player, "&a&lCRAFT! &7Crafted &5Fresh Tainted Scythe&7.");
+					AOutput.send(player, "&a&lCRAFT!&7 Crafted &5Fresh Tainted Scythe&7.");
 					Sounds.TAINTED_CRAFT.play(player);
 					openPreviousGUI();
 				} else {
 					Sounds.NO.play(player);
-					AOutput.send(player, "&c&lERROR! &7Not enough souls!");
+					AOutput.send(player, "&c&lERROR!&7 Not enough souls!");
 				}
 			}
 			if(slot == 15) {
 				if(canBuy(player, 100)) {
 					AUtil.giveItemSafely(player, FreshCommand.getFreshItem(MysticType.TAINTED_CHESTPLATE, PantColor.RED));
 					PitPlayer.getPitPlayer(player).taintedSouls -= 100;
-					AOutput.send(player, "&a&lCRAFT! &7Crafted &5Fresh Tainted Chestplate&7.");
+					AOutput.send(player, "&a&lCRAFT!&7 Crafted &5Fresh Tainted Chestplate&7.");
 					Sounds.TAINTED_CRAFT.play(player);
 					openPreviousGUI();
 				} else {
 					Sounds.NO.play(player);
-					AOutput.send(player, "&c&lERROR! &7Not enough souls!");
+					AOutput.send(player, "&c&lERROR!&7 Not enough souls!");
 				}
 
 			}
