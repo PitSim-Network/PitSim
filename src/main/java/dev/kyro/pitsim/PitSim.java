@@ -14,7 +14,10 @@ import dev.kyro.arcticapi.data.AConfig;
 import dev.kyro.arcticapi.data.AData;
 import dev.kyro.arcticapi.hooks.AHook;
 import dev.kyro.arcticapi.misc.AOutput;
-import dev.kyro.pitsim.adarkzone.*;
+import dev.kyro.pitsim.adarkzone.BossManager;
+import dev.kyro.pitsim.adarkzone.DarkzoneManager;
+import dev.kyro.pitsim.adarkzone.PitBoss;
+import dev.kyro.pitsim.adarkzone.SubLevel;
 import dev.kyro.pitsim.aitems.FunkyFeather;
 import dev.kyro.pitsim.battlepass.PassManager;
 import dev.kyro.pitsim.battlepass.quests.*;
@@ -28,8 +31,6 @@ import dev.kyro.pitsim.boosters.PvPBooster;
 import dev.kyro.pitsim.boosters.XPBooster;
 import dev.kyro.pitsim.brewing.BrewingManager;
 import dev.kyro.pitsim.brewing.PotionManager;
-import dev.kyro.pitsim.brewing.ingredients.*;
-import dev.kyro.pitsim.brewing.objects.BrewingIngredient;
 import dev.kyro.pitsim.brewing.objects.PotionEffect;
 import dev.kyro.pitsim.commands.*;
 import dev.kyro.pitsim.commands.admin.*;
@@ -242,7 +243,6 @@ public class PitSim extends JavaPlugin {
 		registerHelmetAbilities();
 		registerKits();
 		if(getStatus().isDarkzone()) registerMobs();
-		registerBrewingIngredients();
 		registerCosmetics();
 		registerItems();
 
@@ -660,19 +660,6 @@ public class PitSim extends JavaPlugin {
 		KitManager.registerKit(new XPKit());
 		KitManager.registerKit(new GoldKit());
 		KitManager.registerKit(new PvPKit());
-	}
-
-	private void registerBrewingIngredients() {
-		BrewingIngredient.registerIngredient(new RottenFlesh());
-		BrewingIngredient.registerIngredient(new Bone());
-		BrewingIngredient.registerIngredient(new SpiderEye());
-		BrewingIngredient.registerIngredient(new Gunpowder());
-		BrewingIngredient.registerIngredient(new FermentedSpiderEye());
-		BrewingIngredient.registerIngredient(new MagmaCream());
-		BrewingIngredient.registerIngredient(new RawPork());
-		BrewingIngredient.registerIngredient(new WitherSkull());
-		BrewingIngredient.registerIngredient(new IronIngot());
-		BrewingIngredient.registerIngredient(new EnderPearl());
 	}
 
 	private void registerPassQuests() {

@@ -13,9 +13,6 @@ import dev.kyro.arcticguilds.GuildData;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.battlepass.quests.EarnRenownQuest;
 import dev.kyro.pitsim.battlepass.quests.WinAuctionsQuest;
-import dev.kyro.pitsim.brewing.PotionManager;
-import dev.kyro.pitsim.brewing.ingredients.MagmaCream;
-import dev.kyro.pitsim.brewing.objects.PotionEffect;
 import dev.kyro.pitsim.commands.FPSCommand;
 import dev.kyro.pitsim.controllers.objects.*;
 import dev.kyro.pitsim.enums.*;
@@ -87,8 +84,8 @@ public class PlayerManager implements Listener {
 					}
 
 					double amount = 0.5;
-					PotionEffect effect = PotionManager.getEffect(pitPlayer.player, MagmaCream.INSTANCE);
-					if(effect != null) amount += (Double) effect.potionType.getPotency(effect.potency);
+//					PotionEffect effect = PotionManager.getEffect(pitPlayer.player, MagmaCream.INSTANCE);
+//					if(effect != null) amount += (Double) effect.potionType.getPotency(effect.potency);
 					amount *= (1 - reduction);
 
 					if(pitPlayer.mana + amount > pitPlayer.getMaxMana()) {
