@@ -4,6 +4,7 @@ import dev.kyro.pitsim.controllers.MapManager;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
@@ -28,7 +29,7 @@ public class SubLevel {
 	private int requiredDropsToSpawn;
 
 	//	Mob related fields
-	public Class<? extends PitMob> mobClass;
+	private Class<? extends PitMob> mobClass;
 	public List<PitMob> mobs = new ArrayList<>();
 	public int maxMobs;
 	public int spawnRadius;
@@ -133,6 +134,14 @@ public class SubLevel {
 		disableMobs();
 	}
 
+	public boolean isPitMob(LivingEntity entity) {
+
+		for(PitMob pitMob : mobs) {
+			if(pitMob.getMob().getType().equals(entity.getType())) return true;
+		}
+		return false;
+	}
+
 	public void bossDeath() {
 		isBossSpawned = false;
 	}
@@ -142,16 +151,11 @@ public class SubLevel {
 		mobs.clear();
 	}
 
-	/**
-	 * @return ItemStack required to spawn boss
-	 */
+
 	public ItemStack getSpawnItem() {
 		return spawnItem;
 	}
 
-	/**
-	 * @param spawnItem ItemStack required to spawn boss
-	 */
 	public void setSpawnItem(ItemStack spawnItem) {
 		this.spawnItem = spawnItem;
 	}
@@ -199,6 +203,11 @@ public class SubLevel {
 	}
 
 	public void addMobDrop(ItemStack itemStack, double weight) {
+		if (mobDropPool == null) mobDropPool = new DropPool();
 		mobDropPool.addItem(itemStack, weight);
+	}
+
+	public Class<? extends PitMob> getMobClass() {
+		return mobClass;
 	}
 }

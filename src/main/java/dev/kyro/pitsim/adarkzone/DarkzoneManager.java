@@ -2,6 +2,7 @@ package dev.kyro.pitsim.adarkzone;
 
 import com.gmail.filoghost.holographicdisplays.api.Hologram;
 import com.gmail.filoghost.holographicdisplays.api.HologramsAPI;
+import dev.kyro.arcticapi.misc.AUtil;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.adarkzone.bosses.PitZombieBoss;
 import dev.kyro.pitsim.adarkzone.mobs.PitZombie;
@@ -16,6 +17,8 @@ import org.bukkit.Effect;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Item;
+import org.bukkit.entity.LivingEntity;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
@@ -123,11 +126,28 @@ public class DarkzoneManager implements Listener {
 	 * @param killEvent
 	 */
 	@EventHandler
-	public static void onBossDeath(KillEvent killEvent) {
+	public static void onEntityDeath(KillEvent killEvent) {
 
-		PitBoss killedBoss = BossManager.getPitBoss(killEvent.getDead());
-		if(killedBoss == null) return;
-		killedBoss.kill();
+		LivingEntity entity = killEvent.getDead();
+
+		PitBoss killedBoss = BossManager.getPitBoss(entity);
+		if(killedBoss != null) {
+			killedBoss.kill();
+			return;
+		}
+
+		Player killer = killEvent.getKillerPlayer();
+		if (killer == null) {
+			return;
+		}
+
+		for(SubLevel subLevel : subLevels) {
+			if(subLevel.isBossSpawned()) continue;
+			if(subLevel.isPitMob(entity)) {
+				AUtil.giveItemSafely(killer, subLevel.getMobDropPool().getRandomDrop());
+			}
+		}
+
 	}
 
 
