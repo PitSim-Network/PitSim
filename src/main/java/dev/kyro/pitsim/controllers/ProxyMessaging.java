@@ -83,7 +83,7 @@ public class ProxyMessaging implements Listener {
 
 			String builder = PrestigeValues.getPlayerPrefix(onlinePlayer) +
 					PlaceholderAPI.setPlaceholders(onlinePlayer, " %luckperms_prefix%%player_name%");
-			message.writeString(builder);
+			message.writeString(onlinePlayer.getName() + ":" + builder);
 		}
 		message.send();
 	}
@@ -105,7 +105,16 @@ public class ProxyMessaging implements Listener {
 
 			for(int i = 0; i < integers.size(); i++) {
 
-				new ServerData(i, strings, integers, booleans);
+				new ServerData(i, false, strings, integers, booleans);
+			}
+		}
+
+		if(strings.size() >= 1 && strings.get(0).equals("DARKZONE SERVER DATA")) {
+			strings.remove(0);
+
+			for(int i = 0; i < integers.size(); i++) {
+
+				new ServerData(i, true, strings, integers, booleans);
 			}
 		}
 
