@@ -450,6 +450,7 @@ public class PitSim extends JavaPlugin {
 
 	private void registerLeaderboards() {
 		LeaderboardManager.registerLeaderboard(new XPLeaderboard());
+		LeaderboardManager.registerLeaderboard(new GoldLeaderboard());
 		LeaderboardManager.registerLeaderboard(new GoldGrindedLeaderboard());
 //		LeaderboardManager.registerLeaderboard(new PlayerKillsLeaderboard());
 		LeaderboardManager.registerLeaderboard(new BotKillsLeaderboard());
