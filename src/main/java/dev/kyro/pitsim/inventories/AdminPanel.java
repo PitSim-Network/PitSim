@@ -55,7 +55,7 @@ public class AdminPanel extends AGUIPanel {
 
 			meta.setLore(lore);
 			head.setItemMeta(meta);
-			head.setAmount(serverData.getPlayerCount() > 0 ? serverData.getPlayerCount() : 1);
+			head.setAmount(serverData.getPlayerCount());
 
 			getInventory().setItem((10 + slotsIndex), head);
 			if(serverData.isDarkzone()) darkzoneSlots.put((10 + slotsIndex), serverIndex);
@@ -69,7 +69,7 @@ public class AdminPanel extends AGUIPanel {
 
 	@Override
 	public String getName() {
-		return "Admin Menu";
+		return "PitSim Servers";
 	}
 
 	@Override
@@ -96,6 +96,15 @@ public class AdminPanel extends AGUIPanel {
 				}
 
 				if(event.isRightClick()) {
+
+					for(String s : new ArrayList<>(data.getPlayers().keySet())) {
+						if(s.equalsIgnoreCase(player.getName())) {
+							AOutput.error(player, "&cYou are already in this server!");
+							Sounds.NO.play(player);
+							return;
+						}
+					}
+
 					ProxyMessaging.switchPlayer((Player) event.getWhoClicked(), index + 1);
 					return;
 				}

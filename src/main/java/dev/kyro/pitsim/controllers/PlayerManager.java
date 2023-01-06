@@ -592,18 +592,20 @@ public class PlayerManager implements Listener {
 		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
 		Location spawnLoc = MapManager.currentMap.getSpawn();
 		if(PitSim.getStatus() == PitSim.ServerStatus.DARKZONE) spawnLoc = MapManager.getInitialDarkzoneSpawn();
-		if(ProxyMessaging.joinTeleportMap.containsKey(player.getUniqueId())) {
-			Player tpPlayer = Bukkit.getPlayer(ProxyMessaging.joinTeleportMap.get(player.getUniqueId()));
-			if(!player.isOnline()) {
-				AOutput.error(player, "&cThe player you were trying to teleport to is no longer online.");
-			} else {
-				spawnLoc = tpPlayer.getLocation();
-				AOutput.send(player, "&aTeleporting to " + tpPlayer.getName() + "...");
-			}
-		}
 		if(LobbySwitchManager.joinedFromDarkzone.contains(player.getUniqueId()))
 			spawnLoc = MapManager.currentMap.getDarkzoneJoinSpawn();
+		if(ProxyMessaging.joinTeleportMap.containsKey(player.getUniqueId())) {
+			Player tpPlayer = Bukkit.getPlayer(ProxyMessaging.joinTeleportMap.get(player.getUniqueId()));
+			if(tpPlayer.isOnline()) spawnLoc = tpPlayer.getLocation();
 
+			new BukkitRunnable() {
+				@Override
+				public void run() {
+					if(!tpPlayer.isOnline()) AOutput.error(player, "&cThe player you were trying to teleport to is no longer online.");
+					else AOutput.send(player, "&aTeleporting to " + tpPlayer.getName() + "...");
+				}
+			}.runTaskLater(PitSim.INSTANCE, 10);
+		}
 		new BukkitRunnable() {
 			@Override
 			public void run() {
@@ -659,12 +661,15 @@ public class PlayerManager implements Listener {
 						return;
 					}
 
-				} else if(PitSim.getStatus() == PitSim.ServerStatus.PITSIM && LobbySwitchManager.joinedFromDarkzone.contains(player.getUniqueId())) {
+				} else if(PitSim.getStatus() == PitSim.ServerStatus.PITSIM && LobbySwitchManager.joinedFromDarkzone.contains(player.getUniqueId()) &&
+						!ProxyMessaging.joinTeleportMap.containsKey(player.getUniqueId())) {
 					player.setVelocity(new Vector(1.5, 1, 0));
 					Misc.sendTitle(player, "&a&lOverworld", 40);
 					Misc.sendSubTitle(player, "", 40);
 					AOutput.send(player, "&7You have been sent to the &a&lOverworld&7.");
 				}
+
+				ProxyMessaging.joinTeleportMap.remove(player.getUniqueId());
 
 				String message = "%luckperms_prefix%";
 				if(pitPlayer.megastreak.isOnMega()) {
