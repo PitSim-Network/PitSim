@@ -15,7 +15,7 @@ import java.util.UUID;
 
 public class PlayerKillsLeaderboard extends Leaderboard {
 	public PlayerKillsLeaderboard() {
-		super("player-kills");
+		super("player-kills", "&cPlayer Kills");
 	}
 
 	@Override

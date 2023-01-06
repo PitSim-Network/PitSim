@@ -12,7 +12,7 @@ import java.util.UUID;
 
 public class AuctionsWonLeaderboard extends Leaderboard {
 	public AuctionsWonLeaderboard() {
-		super("auctions-won");
+		super("auctions-won", "&dAuctions Won");
 	}
 
 	@Override

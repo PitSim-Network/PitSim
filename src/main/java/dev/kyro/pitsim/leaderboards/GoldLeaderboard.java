@@ -14,7 +14,7 @@ import java.util.UUID;
 
 public class GoldLeaderboard extends Leaderboard {
 	public GoldLeaderboard() {
-		super("gold");
+		super("gold", "&6Gold");
 	}
 
 	@Override

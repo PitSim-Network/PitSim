@@ -15,7 +15,7 @@ import java.util.UUID;
 
 public class PlaytimeLeaderboard extends Leaderboard {
 	public PlaytimeLeaderboard() {
-		super("minutes-played");
+		super("minutes-played", "&eTotal Playtime");
 	}
 
 	@Override
