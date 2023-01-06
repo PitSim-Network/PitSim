@@ -1,5 +1,6 @@
 package dev.kyro.pitsim.enchants;
 
+import ac.grim.grimac.AbstractCheck;
 import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.arcticapi.misc.AUtil;
 import dev.kyro.pitsim.PitSim;
@@ -69,6 +70,7 @@ public class MegaLongBow extends PitEnchant {
 
 		critArrow(player, arrow);
 		Misc.applyPotionEffect(player, PotionEffectType.JUMP, 40, getJumpMultiplier(enchantLvl), true, false);
+		for(AbstractCheck check : PitSim.GRIM.getGrimUser().
 	}
 
 	public static void critArrow(Player player, Arrow arrow) {

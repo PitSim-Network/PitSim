@@ -58,6 +58,7 @@ dependencies {
     compileOnly "net.kyori:adventure-platform-bukkit:4.1.0"
     compileOnly 'net.luckperms:api:5.4'
     compileOnly 'com.google.firebase:firebase-admin:8.0.0'
+    compileOnly 'com.github.MWHunter:GrimAPI:add576ba8b'
 }
 
 shadowJar {
