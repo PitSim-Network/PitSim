@@ -696,29 +696,18 @@ public class PlayerManager implements Listener {
 			for(String item : pitPlayer.auctionReturn) {
 				String[] data = item.split(":");
 
-				if(Integer.parseInt(data[1]) == 0) {
-					ItemStack itemStack = Objects.requireNonNull(ItemType.getItemType(Integer.parseInt(data[0]))).item;
-					AUtil.giveItemSafely(player, itemStack, true);
+				ItemStack itemStack;
+				if(Integer.parseInt(data[1]) == 0) itemStack = Objects.requireNonNull(ItemType.getItemType(Integer.parseInt(data[0]))).item;
+				else itemStack = ItemType.getJewelItem(Integer.parseInt(data[0]), Integer.parseInt(data[1]));
 
-					new BukkitRunnable() {
-						@Override
-						public void run() {
-							AOutput.send(player, "&5&lDARK AUCTION! &7Received " + itemStack.getItemMeta().getDisplayName() + "&7.");
-							Sounds.BOOSTER_REMIND.play(player);
-						}
-					}.runTaskLater(PitSim.INSTANCE, 10);
-				} else {
-					ItemStack itemStack = ItemType.getJewelItem(Integer.parseInt(data[0]), Integer.parseInt(data[1]));
-
-					AUtil.giveItemSafely(player, itemStack, true);
-					new BukkitRunnable() {
-						@Override
-						public void run() {
-							AOutput.send(player, "&5&lDARK AUCTION! &7Received " + itemStack.getItemMeta().getDisplayName() + "&7.");
-							Sounds.BOOSTER_REMIND.play(player);
-						}
-					}.runTaskLater(PitSim.INSTANCE, 10);
-				}
+				new BukkitRunnable() {
+					@Override
+					public void run() {
+						AOutput.send(player, "&5&lDARK AUCTION! &7Received " + itemStack.getItemMeta().getDisplayName() + "&7.");
+						Sounds.BOOSTER_REMIND.play(player);
+						AUtil.giveItemSafely(player, itemStack, true);
+					}
+				}.runTaskLater(PitSim.INSTANCE, 10);
 			}
 
 			pitPlayer.auctionReturn.clear();
