@@ -14,7 +14,7 @@ depend:
   - PitRemakeDependencies
   - LiteBans
   - PremiumVanish
-  - Grim
+  - GrimAC
 commands:
   pitsim:
   ps:
