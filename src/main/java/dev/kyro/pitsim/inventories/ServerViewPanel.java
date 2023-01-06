@@ -1,7 +1,5 @@
 package dev.kyro.pitsim.inventories;
 
-import com.mojang.authlib.GameProfile;
-import com.mojang.authlib.properties.Property;
 import dev.kyro.arcticapi.builders.AItemStackBuilder;
 import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.arcticapi.gui.AGUI;
@@ -18,8 +16,9 @@ import org.bukkit.event.inventory.InventoryOpenEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.SkullMeta;
 
-import java.lang.reflect.Field;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public class ServerViewPanel extends AGUIPanel {
 
@@ -106,7 +105,7 @@ public class ServerViewPanel extends AGUIPanel {
 				}
 
 				PluginMessage teleport = new PluginMessage().writeString("TELEPORT JOIN");
-				teleport.writeString(player.getUniqueId().toString()).send();
+				teleport.writeString(player.getUniqueId().toString());
 				teleport.writeString(name);
 				teleport.writeBoolean(data.isDarkzone()).writeInt(data.index).send();
 
@@ -116,7 +115,7 @@ public class ServerViewPanel extends AGUIPanel {
 
 			if(event.isRightClick()) {
 				PluginMessage edit = new PluginMessage().writeString("EDIT PLAYER");
-				edit.writeString(player.getUniqueId().toString()).send();
+				edit.writeString(player.getUniqueId().toString());
 				edit.writeString(name).send();
 				player.closeInventory();
 			}
