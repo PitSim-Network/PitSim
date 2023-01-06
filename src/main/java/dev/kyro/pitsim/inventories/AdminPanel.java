@@ -4,6 +4,7 @@ import com.mojang.authlib.GameProfile;
 import com.mojang.authlib.properties.Property;
 import dev.kyro.arcticapi.gui.AGUI;
 import dev.kyro.arcticapi.gui.AGUIPanel;
+import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.controllers.ProxyMessaging;
 import dev.kyro.pitsim.controllers.objects.ServerData;
 import dev.kyro.pitsim.misc.HeadLib;
@@ -95,7 +96,7 @@ public class AdminPanel extends AGUIPanel {
 				}
 
 				if(event.isRightClick()) {
-					ProxyMessaging.switchPlayer((Player) event.getWhoClicked(), index);
+					ProxyMessaging.switchPlayer((Player) event.getWhoClicked(), index + 1);
 					return;
 				}
 
@@ -116,7 +117,15 @@ public class AdminPanel extends AGUIPanel {
 				}
 
 				if(event.isRightClick()) {
-					ProxyMessaging.darkzoneSwitchPlayer((Player) event.getWhoClicked(), index);
+					for(String s : new ArrayList<>(data.getPlayers().keySet())) {
+						if(s.equalsIgnoreCase(player.getName())) {
+							AOutput.error(player, "&cYou are already in this server!");
+							Sounds.NO.play(player);
+							return;
+						}
+					}
+
+					ProxyMessaging.darkzoneSwitchPlayer((Player) event.getWhoClicked(), index + 1);
 					return;
 				}
 

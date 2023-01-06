@@ -1,5 +1,6 @@
 package dev.kyro.pitsim;
 
+import ac.grim.grimac.GrimAbstractAPI;
 import com.comphenix.protocol.ProtocolLibrary;
 import com.comphenix.protocol.ProtocolManager;
 import com.gmail.filoghost.holographicdisplays.api.Hologram;
@@ -15,7 +16,6 @@ import dev.kyro.arcticapi.data.AConfig;
 import dev.kyro.arcticapi.data.AData;
 import dev.kyro.arcticapi.hooks.AHook;
 import dev.kyro.arcticapi.misc.AOutput;
-import dev.kyro.pitsim.logging.LogManager;
 import dev.kyro.pitsim.battlepass.PassManager;
 import dev.kyro.pitsim.battlepass.quests.*;
 import dev.kyro.pitsim.battlepass.quests.daily.DailyBotKillQuest;
@@ -62,6 +62,7 @@ import dev.kyro.pitsim.kits.GoldKit;
 import dev.kyro.pitsim.kits.PvPKit;
 import dev.kyro.pitsim.kits.XPKit;
 import dev.kyro.pitsim.leaderboards.*;
+import dev.kyro.pitsim.logging.LogManager;
 import dev.kyro.pitsim.megastreaks.*;
 import dev.kyro.pitsim.misc.*;
 import dev.kyro.pitsim.misc.packets.SignPrompt;
@@ -98,6 +99,7 @@ public class PitSim extends JavaPlugin {
 	public static final boolean PASS_ENABLED = true;
 
 	public static LuckPerms LUCKPERMS;
+	public static GrimAbstractAPI GRIM;
 	public static PitSim INSTANCE;
 	public static ProtocolManager PROTOCOL_MANAGER = null;
 	public static BukkitAudiences adventure;
@@ -142,10 +144,11 @@ public class PitSim extends JavaPlugin {
 
 		playerList = new AData("player-list", "", false);
 
-		RegisteredServiceProvider<LuckPerms> provider = Bukkit.getServicesManager().getRegistration(LuckPerms.class);
-		if(provider != null) {
-			LUCKPERMS = provider.getProvider();
-		}
+		RegisteredServiceProvider<LuckPerms> luckpermsProvider = Bukkit.getServicesManager().getRegistration(LuckPerms.class);
+		if(luckpermsProvider != null) LUCKPERMS = luckpermsProvider.getProvider();
+
+		RegisteredServiceProvider<GrimAbstractAPI> grimProvider = Bukkit.getServicesManager().getRegistration(GrimAbstractAPI.class);
+		if (grimProvider != null) GRIM = grimProvider.getProvider();
 
 		PROTOCOL_MANAGER = ProtocolLibrary.getProtocolManager();
 
@@ -647,6 +650,7 @@ public class PitSim extends JavaPlugin {
 		getServer().getPluginManager().registerEvents(new StorageManager(), this);
 		getServer().getPluginManager().registerEvents(new CrossServerMessageManager(), this);
 		getServer().getPluginManager().registerEvents(new PacketManager(), this);
+		getServer().getPluginManager().registerEvents(new GrimManager(), this);
 	}
 
 	public void registerBoosters() {

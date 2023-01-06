@@ -23,7 +23,9 @@ import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ExecutionException;
 
@@ -31,6 +33,7 @@ public class ProxyMessaging implements Listener {
 
 	public static final int COMMAND_QUEUE_COOLDOWN_MS = 500;
 
+	public static Map<UUID, String> joinTeleportMap = new HashMap<>();
 	public static int playersOnline = 0;
 
 	static {
@@ -249,6 +252,14 @@ public class ProxyMessaging implements Listener {
 			}
 
 			darkzoneSwitchPlayer(player, requestedServer);
+		}
+
+		if(strings.size() >= 3 && strings.get(0).equals("TELEPORT JOIN")) {
+			UUID uuid = UUID.fromString(strings.get(1));
+			String player = strings.get(2);
+			if(player == null) return;
+
+			joinTeleportMap.put(uuid, player);
 		}
 
 		if(strings.size() >= 2 && strings.get(0).equals("DEPOSIT")) {

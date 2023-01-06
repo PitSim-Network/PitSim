@@ -5,6 +5,7 @@ import dev.kyro.arcticapi.misc.AUtil;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.controllers.Cooldown;
 import dev.kyro.pitsim.controllers.EnchantManager;
+import dev.kyro.pitsim.controllers.GrimManager;
 import dev.kyro.pitsim.controllers.objects.PitEnchant;
 import dev.kyro.pitsim.enums.ApplyType;
 import dev.kyro.pitsim.events.AttackEvent;
@@ -69,6 +70,8 @@ public class MegaLongBow extends PitEnchant {
 
 		critArrow(player, arrow);
 		Misc.applyPotionEffect(player, PotionEffectType.JUMP, 40, getJumpMultiplier(enchantLvl), true, false);
+		GrimManager.exemptPlayer(player, 20 + getJumpMultiplier(enchantLvl) * 5L,
+				GrimManager.FlagType.SIMULATION, GrimManager.FlagType.GROUND_SPOOF);
 	}
 
 	public static void critArrow(Player player, Arrow arrow) {

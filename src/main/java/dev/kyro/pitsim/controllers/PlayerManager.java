@@ -592,6 +592,15 @@ public class PlayerManager implements Listener {
 		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
 		Location spawnLoc = MapManager.currentMap.getSpawn();
 		if(PitSim.getStatus() == PitSim.ServerStatus.DARKZONE) spawnLoc = MapManager.getInitialDarkzoneSpawn();
+		if(ProxyMessaging.joinTeleportMap.containsKey(player.getUniqueId())) {
+			Player tpPlayer = Bukkit.getPlayer(ProxyMessaging.joinTeleportMap.get(player.getUniqueId()));
+			if(!player.isOnline()) {
+				AOutput.error(player, "&cThe player you were trying to teleport to is no longer online.");
+			} else {
+				spawnLoc = tpPlayer.getLocation();
+				AOutput.send(player, "&aTeleporting to " + tpPlayer.getName() + "...");
+			}
+		}
 		if(LobbySwitchManager.joinedFromDarkzone.contains(player.getUniqueId()))
 			spawnLoc = MapManager.currentMap.getDarkzoneJoinSpawn();
 
@@ -707,17 +716,17 @@ public class PlayerManager implements Listener {
 		}
 
 		if(pitPlayer.soulReturn > 0) {
-			PitPlayer.getPitPlayer(player).taintedSouls += pitPlayer.soulReturn;
+			int souls = pitPlayer.soulReturn;
+			PitPlayer.getPitPlayer(player).taintedSouls += souls;
 			new BukkitRunnable() {
 				@Override
 				public void run() {
-					AOutput.send(player, "&5&lDARK AUCTION! &7Received &f" + pitPlayer.soulReturn + " Tainted Souls&7.");
+					AOutput.send(player, "&5&lDARK AUCTION! &7Received &f" + souls + " Tainted Souls&7.");
 					Sounds.BOOSTER_REMIND.play(player);
 				}
 			}.runTaskLater(PitSim.INSTANCE, 10);
 			pitPlayer.soulReturn = 0;
 		}
-
 	}
 
 	@EventHandler
