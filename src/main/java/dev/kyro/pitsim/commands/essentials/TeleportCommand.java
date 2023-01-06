@@ -82,12 +82,21 @@ public class TeleportCommand implements CommandExecutor {
 			return false;
 		}
 
+		if(target == tpLocation.locationPlayer) {
+			if(target == player) {
+				AOutput.error(player, "&c&lERROR!&7 You cannot teleport to yourself");
+				return false;
+			}
+			AOutput.error(player, "&c&lERROR!&7 You cannot that player to themself");
+			return false;
+		}
+
 		tpLocation.teleport(target);
 		if(target != player) tpLocation.sendThirdPartyTeleportMessage(target, player);
 		return false;
 	}
 
-	private static class TPLocation {
+	public static class TPLocation {
 		private Player locationPlayer;
 		private double x;
 		private double y;

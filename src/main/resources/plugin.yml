@@ -92,6 +92,10 @@ commands:
   teleport:
     aliases:
       - tp
+  teleporthere:
+    aliases:
+      - tphere
+      - s
   broadcast:
     aliases:
       - bc
