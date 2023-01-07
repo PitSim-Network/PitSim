@@ -105,3 +105,4 @@ commands:
   rename:
     aliases:
       - itemname
+  ignore:

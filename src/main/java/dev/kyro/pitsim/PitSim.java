@@ -13,7 +13,6 @@ import de.tr7zw.nbtapi.NBTItem;
 import dev.kyro.arcticapi.ArcticAPI;
 import dev.kyro.arcticapi.commands.AMultiCommand;
 import dev.kyro.arcticapi.data.AConfig;
-import dev.kyro.arcticapi.data.AData;
 import dev.kyro.arcticapi.hooks.AHook;
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.battlepass.PassManager;
@@ -576,6 +575,8 @@ public class PitSim extends JavaPlugin {
 		getCommand("potions").setExecutor(new PotionsCommand());
 		getCommand("balance").setExecutor(new BalanceCommand());
 		getCommand("eco").setExecutor(new EcoCommand());
+		getCommand("ignore").setExecutor(new IgnoreCommand());
+		getCommand("ignore").setTabCompleter(new IgnoreCommand());
 		//TODO: Remove this
 //		getCommand("massmigrate").setExecutor(new MassMigrateCommand());
 
