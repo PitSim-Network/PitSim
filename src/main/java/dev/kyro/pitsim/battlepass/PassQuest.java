@@ -71,22 +71,16 @@ public abstract class PassQuest implements Listener {
 	}
 
 	public boolean canProgressQuest(PitPlayer pitPlayer) {
-		return canProgressQuest(pitPlayer, true);
-	}
-
-	public boolean canProgressQuest(PitPlayer pitPlayer, boolean checkCompletion) {
 		if(!PitSim.PASS_ENABLED) return false;
 		PassData passData = pitPlayer.getPassData(PassManager.currentPass.startDate);
 		if(questType == QuestType.WEEKLY && !PassManager.currentPass.weeklyQuests.containsKey(this)) return false;
-
-		if(!checkCompletion) return true;
 
 		double progression = passData.questCompletion.getOrDefault(refName, 0.0);
 		return progression < getQuestLevel().getRequirement(pitPlayer) * getMultiplier(pitPlayer);
 	}
 
 	public void progressQuest(PitPlayer pitPlayer, double amount) {
-		if(!canProgressQuest(pitPlayer, false)) return;
+		if(!canProgressQuest(pitPlayer)) return;
 		PassData passData = pitPlayer.getPassData(PassManager.currentPass.startDate);
 		double newValue = passData.questCompletion.getOrDefault(refName, 0.0) + amount;
 		if(newValue >= getQuestLevel().getRequirement(pitPlayer) * getMultiplier(pitPlayer)) {
