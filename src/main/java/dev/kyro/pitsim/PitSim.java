@@ -104,8 +104,6 @@ public class PitSim extends JavaPlugin {
 	public static ProtocolManager PROTOCOL_MANAGER = null;
 	public static BukkitAudiences adventure;
 
-	public static AData playerList;
-
 	public static String serverName;
 
 	public static PteroClient client = PteroBuilder.createClient("***REMOVED***", PrivateInfo.PTERO_KEY);
@@ -141,8 +139,6 @@ public class PitSim extends JavaPlugin {
 		ScoreboardManager.init();
 
 		if(getStatus().isDarkzone()) MobManager.clearMobs();
-
-		playerList = new AData("player-list", "", false);
 
 		RegisteredServiceProvider<LuckPerms> luckpermsProvider = Bukkit.getServicesManager().getRegistration(LuckPerms.class);
 		if(luckpermsProvider != null) LUCKPERMS = luckpermsProvider.getProvider();
