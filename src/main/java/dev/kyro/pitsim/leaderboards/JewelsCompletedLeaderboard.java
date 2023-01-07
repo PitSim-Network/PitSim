@@ -17,7 +17,7 @@ import java.util.UUID;
 
 public class JewelsCompletedLeaderboard extends Leaderboard {
 	public JewelsCompletedLeaderboard() {
-		super("jewels-completed");
+		super("jewels-completed", "&3Jewels Completed");
 	}
 
 	@Override

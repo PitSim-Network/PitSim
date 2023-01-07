@@ -15,14 +15,13 @@ import java.util.UUID;
 
 public class XPLeaderboard extends Leaderboard {
 	public XPLeaderboard() {
-		super("xp");
+		super("xp", "&bTotal XP");
 	}
 
 	@Override
 	public ItemStack getDisplayStack(UUID uuid) {
 		ItemStack itemStack = new AItemStackBuilder(Material.WHEAT)
-				.setName("&b" +
-						"Total XP")
+				.setName("&b" + "Total XP")
 				.setLore(new ALoreBuilder(
 						"&7Players who have &bearned &7the", "&7most &bXP", ""
 				).addLore(getTopPlayers(uuid)).addLore(

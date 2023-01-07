@@ -15,7 +15,7 @@ import java.util.UUID;
 
 public class BotKillsLeaderboard extends Leaderboard {
 	public BotKillsLeaderboard() {
-		super("bot-kills");
+		super("bot-kills", "&cBot Kills");
 	}
 
 	@Override

@@ -106,6 +106,7 @@ public class PitPlayer {
 	public int level = 1;
 	public long remainingXP = PrestigeValues.getXPForLevel(1);
 	public int soulsGathered = 0;
+	public String savedLeaderboardRef = "xp";
 
 	public int renown = 0;
 	@Exclude

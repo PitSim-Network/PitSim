@@ -15,12 +15,12 @@ import java.util.UUID;
 
 public class GoldGrindedLeaderboard extends Leaderboard {
 	public GoldGrindedLeaderboard() {
-		super("total-gold");
+		super("total-gold", "&6Gold Grinded");
 	}
 
 	@Override
 	public ItemStack getDisplayStack(UUID uuid) {
-		ItemStack itemStack = new AItemStackBuilder(Material.GOLD_INGOT)
+		ItemStack itemStack = new AItemStackBuilder(Material.GOLD_BLOCK)
 				.setName("&6Gold Grinded")
 				.setLore(new ALoreBuilder(
 						"&7Players who have &6grinded", "&7the most &6gold", ""

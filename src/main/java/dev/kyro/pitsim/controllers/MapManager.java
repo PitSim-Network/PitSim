@@ -1,6 +1,7 @@
 package dev.kyro.pitsim.controllers;
 
 import dev.kyro.arcticapi.misc.AOutput;
+import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.controllers.objects.PitMap;
 import dev.kyro.pitsim.events.PlayerSpawnCommandEvent;
 import org.bukkit.Bukkit;
@@ -23,6 +24,7 @@ public class MapManager implements Listener {
 	public static Location initialDarkzoneSpawn = new Location(getDarkzone(), 177.5, 92, -93.5, -90, 0);
 
 	public static void onStart() {
+		if(PitSim.status == PitSim.ServerStatus.DARKZONE) return;
 		for(Player onlinePlayer : Bukkit.getOnlinePlayers()) {
 			onlinePlayer.teleport(currentMap.getSpawn());
 		}

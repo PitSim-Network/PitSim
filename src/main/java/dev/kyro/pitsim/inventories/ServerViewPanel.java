@@ -9,7 +9,9 @@ import dev.kyro.pitsim.controllers.ProxyMessaging;
 import dev.kyro.pitsim.controllers.objects.PluginMessage;
 import dev.kyro.pitsim.controllers.objects.ServerData;
 import dev.kyro.pitsim.misc.Sounds;
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.inventory.InventoryOpenEvent;
@@ -96,6 +98,21 @@ public class ServerViewPanel extends AGUIPanel {
 			String name = slots.get(slot);
 
 			if(event.isLeftClick()) {
+				player.closeInventory();
+
+				if(name.equalsIgnoreCase(player.getName())) {
+					AOutput.error(player, "&cYou cannot teleport to yourself!");
+					Sounds.NO.play(player);
+					return;
+				}
+
+				Player tpPlayer = Bukkit.getPlayer(name);
+				if(tpPlayer != null && tpPlayer.isOnline()) {
+					player.teleport(tpPlayer);
+					AOutput.send(player, "&aTeleporting you to " + name);
+					return;
+				}
+
 				for(String s : new ArrayList<>(data.getPlayers().keySet())) {
 					if(s.equalsIgnoreCase(player.getName())) {
 						AOutput.error(player, "&cYou are already in this server!");

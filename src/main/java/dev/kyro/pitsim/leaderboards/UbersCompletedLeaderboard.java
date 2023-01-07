@@ -15,7 +15,7 @@ import java.util.UUID;
 
 public class UbersCompletedLeaderboard extends Leaderboard {
 	public UbersCompletedLeaderboard() {
-		super("ubers-completed");
+		super("ubers-completed", "&dUbers Completed");
 	}
 
 	@Override
