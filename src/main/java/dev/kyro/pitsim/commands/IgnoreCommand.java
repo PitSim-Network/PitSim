@@ -126,11 +126,11 @@ public class IgnoreCommand implements CommandExecutor, TabCompleter {
 
 	@Override
 	public List<String> onTabComplete(CommandSender sender, Command cmd, String label, String[] args) {
-		if(!(sender instanceof Player)) return null;
+		if(!(sender instanceof Player)) return new ArrayList<>();
 		Player player = (Player) sender;
 		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
 
-		if(PlayerManager.isStaff(player.getUniqueId())) return null;
+		if(PlayerManager.isStaff(player.getUniqueId())) return new ArrayList<>();
 
 		if(args.length < 2) return Misc.getTabComplete(args[0], "add", "remove", "list");
 		String command = args[0].toLowerCase();
@@ -150,6 +150,6 @@ public class IgnoreCommand implements CommandExecutor, TabCompleter {
 			}
 			return Misc.getTabComplete(args[1], ignoredPlayers);
 		}
-		return null;
+		return new ArrayList<>();
 	}
 }
