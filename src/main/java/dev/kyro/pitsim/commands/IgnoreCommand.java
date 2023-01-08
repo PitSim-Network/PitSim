@@ -30,6 +30,11 @@ public class IgnoreCommand implements CommandExecutor, TabCompleter {
 			return false;
 		}
 
+		if(player.hasPermission("group.legendary")) {
+			AOutput.error(player, "&c&lERROR!&7 You need to have &eLegendary &7rank to do that");
+			return false;
+		}
+
 		if(args.length < 1) {
 			AOutput.send(player, "&8&m--------------------&8<&c&lIGNORE&8>&m--------------------");
 			AOutput.send(player, "&c * &7/" + label + " add <ign> &7(add a player to ignore list)");
