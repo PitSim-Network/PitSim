@@ -13,7 +13,6 @@ import de.tr7zw.nbtapi.NBTItem;
 import dev.kyro.arcticapi.ArcticAPI;
 import dev.kyro.arcticapi.commands.AMultiCommand;
 import dev.kyro.arcticapi.data.AConfig;
-import dev.kyro.arcticapi.data.AData;
 import dev.kyro.arcticapi.hooks.AHook;
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.battlepass.PassManager;
@@ -104,8 +103,6 @@ public class PitSim extends JavaPlugin {
 	public static ProtocolManager PROTOCOL_MANAGER = null;
 	public static BukkitAudiences adventure;
 
-	public static AData playerList;
-
 	public static String serverName;
 
 	public static PteroClient client = PteroBuilder.createClient("***REMOVED***", PrivateInfo.PTERO_KEY);
@@ -141,8 +138,6 @@ public class PitSim extends JavaPlugin {
 		ScoreboardManager.init();
 
 		if(getStatus().isDarkzone()) MobManager.clearMobs();
-
-		playerList = new AData("player-list", "", false);
 
 		RegisteredServiceProvider<LuckPerms> luckpermsProvider = Bukkit.getServicesManager().getRegistration(LuckPerms.class);
 		if(luckpermsProvider != null) LUCKPERMS = luckpermsProvider.getProvider();
@@ -481,6 +476,7 @@ public class PitSim extends JavaPlugin {
 
 	private void registerLeaderboards() {
 		LeaderboardManager.registerLeaderboard(new XPLeaderboard());
+		LeaderboardManager.registerLeaderboard(new GoldLeaderboard());
 		LeaderboardManager.registerLeaderboard(new GoldGrindedLeaderboard());
 //		LeaderboardManager.registerLeaderboard(new PlayerKillsLeaderboard());
 		LeaderboardManager.registerLeaderboard(new BotKillsLeaderboard());
@@ -579,12 +575,15 @@ public class PitSim extends JavaPlugin {
 		getCommand("potions").setExecutor(new PotionsCommand());
 		getCommand("balance").setExecutor(new BalanceCommand());
 		getCommand("eco").setExecutor(new EcoCommand());
+		getCommand("ignore").setExecutor(new IgnoreCommand());
+		getCommand("ignore").setTabCompleter(new IgnoreCommand());
 		//TODO: Remove this
 //		getCommand("massmigrate").setExecutor(new MassMigrateCommand());
 
 		getCommand("gamemode").setExecutor(new GamemodeCommand());
 		getCommand("nickname").setExecutor(new NicknameCommand());
 		getCommand("fly").setExecutor(new FlyCommand());
+		getCommand("fly").setTabCompleter(new FlyCommand());
 		getCommand("teleport").setExecutor(new TeleportCommand());
 		getCommand("teleporthere").setExecutor(new TeleportHereCommand());
 		getCommand("broadcast").setExecutor(new BroadcastCommand());

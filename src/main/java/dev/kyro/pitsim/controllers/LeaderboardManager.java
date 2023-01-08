@@ -7,6 +7,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
 
 public class LeaderboardManager {
@@ -26,6 +27,13 @@ public class LeaderboardManager {
 				}
 			}
 		}.runTaskTimer(PitSim.INSTANCE, 20, 20 * 60 + 10);
+	}
+
+	public static Leaderboard getLeaderboard(String refName) {
+		for(Leaderboard leaderboard : leaderboards) {
+			if(Objects.equals(leaderboard.refName, refName)) return leaderboard;
+		}
+		return null;
 	}
 
 	public static void registerLeaderboard(Leaderboard leaderboard) {

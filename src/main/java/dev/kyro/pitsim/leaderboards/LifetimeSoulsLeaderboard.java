@@ -15,7 +15,7 @@ import java.util.UUID;
 
 public class LifetimeSoulsLeaderboard extends Leaderboard {
 	public LifetimeSoulsLeaderboard() {
-		super("lifetime-souls");
+		super("lifetime-souls", "&fLifetime Souls");
 	}
 
 	@Override

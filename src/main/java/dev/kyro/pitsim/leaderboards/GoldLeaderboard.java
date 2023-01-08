@@ -8,22 +8,21 @@ import dev.kyro.pitsim.controllers.objects.LeaderboardPosition;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.misc.Misc;
 import org.bukkit.Material;
-import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.UUID;
 
-public class PlayerKillsLeaderboard extends Leaderboard {
-	public PlayerKillsLeaderboard() {
-		super("player-kills", "&cPlayer Kills");
+public class GoldLeaderboard extends Leaderboard {
+	public GoldLeaderboard() {
+		super("gold", "&6Gold");
 	}
 
 	@Override
 	public ItemStack getDisplayStack(UUID uuid) {
-		ItemStack itemStack = new AItemStackBuilder(Material.DIAMOND_SWORD)
-				.setName("&cPlayer Kills")
+		ItemStack itemStack = new AItemStackBuilder(Material.GOLD_INGOT, 1)
+				.setName("&6Gold")
 				.setLore(new ALoreBuilder(
-						"&7Players who have &ckilled &7the", "&7most &cplayers", ""
+						"&7Players who have the most &6Gold", ""
 				).addLore(getTopPlayers(uuid)).addLore(
 						"", "&eClick to pick!"
 				))
@@ -33,12 +32,12 @@ public class PlayerKillsLeaderboard extends Leaderboard {
 
 	@Override
 	public String getDisplayValue(LeaderboardPosition position) {
-		return "&c" + Misc.formatLarge(position.intValue) + " kills";
+		return "&6" + Misc.formatLarge(position.intValue) + "g";
 	}
 
 	@Override
 	public String getDisplayValue(PitPlayer pitPlayer) {
-		return "&c" + Misc.formatLarge(pitPlayer.stats.playerKills) + " kills";
+		return "&6" + Misc.formatLarge(pitPlayer.stats.auctionsWon) + "g";
 	}
 
 	@Override

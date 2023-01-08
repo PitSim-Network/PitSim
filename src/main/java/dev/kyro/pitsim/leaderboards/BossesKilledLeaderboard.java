@@ -15,7 +15,7 @@ import java.util.UUID;
 
 public class BossesKilledLeaderboard extends Leaderboard {
 	public BossesKilledLeaderboard() {
-		super("bosses-killed");
+		super("bosses-killed", "&5Bosses Killed");
 	}
 
 	@Override
