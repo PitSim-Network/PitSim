@@ -40,7 +40,7 @@ public class Config {
 
 	@Exclude
 	public void save() {
-		if(!Objects.equals(PitSim.serverName, "pitsim-1")) return;
+		if(!PitSim.serverName.equals("pitsim-1") && !PitSim.serverName.equals("pitsimdev-1")) return;
 		if(onSaveCooldown && !saveQueued) {
 			saveQueued = true;
 			new Thread(() -> {
