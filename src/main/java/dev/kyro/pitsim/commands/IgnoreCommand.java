@@ -30,7 +30,7 @@ public class IgnoreCommand implements CommandExecutor, TabCompleter {
 			return false;
 		}
 
-		if(player.hasPermission("group.legendary")) {
+		if(!player.hasPermission("group.legendary")) {
 			AOutput.error(player, "&c&lERROR!&7 You need to have &eLegendary &7rank to do that");
 			return false;
 		}
