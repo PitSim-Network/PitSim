@@ -399,7 +399,7 @@ public class PlayerManager implements Listener {
 	public static List<UUID> helmetSwapCooldown = new ArrayList<>();
 	public static List<UUID> chestplateSwapCooldown = new ArrayList<>();
 
-	@EventHandler
+	@EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
 	public static void onClick(PlayerInteractEvent event) {
 		Player player = event.getPlayer();
 
