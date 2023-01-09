@@ -64,6 +64,9 @@ commands:
   cutscene:
   migrate:
   pass:
+  quests:
+    aliases:
+      - quest
   settings:
   setting:
   set:
@@ -105,3 +108,4 @@ commands:
   rename:
     aliases:
       - itemname
+  ignore:

@@ -1,11 +1,14 @@
 package dev.kyro.pitsim.controllers.objects;
 
+import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.controllers.SkinManager;
+import dev.kyro.pitsim.enums.MinecraftSkin;
 import net.citizensnpcs.api.CitizensAPI;
 import net.citizensnpcs.api.event.NPCRightClickEvent;
 import net.citizensnpcs.api.npc.NPC;
 import net.citizensnpcs.api.npc.NPCRegistry;
 import net.citizensnpcs.trait.LookClose;
+import net.citizensnpcs.trait.SkinTrait;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.entity.EntityType;
@@ -88,21 +91,39 @@ public abstract class PitNPC implements Listener {
 		tempVillager.getEntity().setCustomNameVisible(!name.isEmpty());
 		npcs.add(tempVillager);
 
+		MinecraftSkin minecraftSkin = MinecraftSkin.getSkin(skinName);
+		if(minecraftSkin != null) {
+			NPC npc = registry.createNPC(EntityType.PLAYER, name);
+			npc.spawn(location);
+
+			SkinTrait skinTrait = CitizensAPI.getTraitFactory().getTrait(SkinTrait.class);
+			npc.addTrait(skinTrait);
+			skinTrait.setSkinPersistent(skinName, minecraftSkin.signature, minecraftSkin.skin);
+
+			setupNPC(npc, tempVillager, lookClose);
+			AOutput.log("Loading the skin " + skinName + " for " + (name.isEmpty() ? "(No Name)" : name) + "&f from local data");
+			return;
+		}
+
 		SkinManager.loadAndSkinNPC(skinName, new BukkitRunnable() {
 			@Override
 			public void run() {
 				NPC npc = registry.createNPC(EntityType.PLAYER, name);
 				npc.spawn(location);
 				SkinManager.skinNPC(npc, skinName);
-				if(lookClose) {
-					npc.addTrait(LookClose.class);
-					npc.getTrait(LookClose.class).setRange(10);
-					npc.getTrait(LookClose.class).toggle();
-				}
-				npcs.remove(tempVillager);
-				tempVillager.destroy();
-				npcs.add(npc);
+				setupNPC(npc, tempVillager, lookClose);
 			}
 		});
+	}
+
+	public void setupNPC(NPC npc, NPC tempVillager, boolean lookClose) {
+		if(lookClose) {
+			npc.addTrait(LookClose.class);
+			npc.getTrait(LookClose.class).setRange(10);
+			npc.getTrait(LookClose.class).toggle();
+		}
+		npcs.remove(tempVillager);
+		tempVillager.destroy();
+		npcs.add(npc);
 	}
 }

@@ -30,6 +30,10 @@ import dev.kyro.pitsim.pitmaps.XmasMap;
 import dev.kyro.pitsim.upgrades.TheWay;
 import dev.kyro.pitsim.upgrades.UberIncrease;
 import me.clip.placeholderapi.PlaceholderAPI;
+import net.luckperms.api.model.group.Group;
+import net.luckperms.api.model.user.User;
+import net.luckperms.api.node.NodeEqualityPredicate;
+import net.luckperms.api.node.types.PermissionNode;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.*;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
@@ -55,6 +59,7 @@ import org.spigotmc.event.player.PlayerSpawnLocationEvent;
 
 import java.text.DecimalFormat;
 import java.util.*;
+import java.util.concurrent.ExecutionException;
 
 public class PlayerManager implements Listener {
 	private static final List<UUID> realPlayers = new ArrayList<>();
@@ -171,6 +176,18 @@ public class PlayerManager implements Listener {
 				}
 			}
 		}.runTaskTimer(PitSim.INSTANCE, 0L, 18L);
+	}
+
+	public static boolean isStaff(UUID uuid) {
+		User user;
+		try {
+			user = PitSim.LUCKPERMS.getUserManager().loadUser(uuid).get();
+		} catch(InterruptedException | ExecutionException exception) {
+			exception.printStackTrace();
+			return false;
+		}
+		Group group = PitSim.LUCKPERMS.getGroupManager().getGroup(user.getPrimaryGroup());
+		return group.data().contains(PermissionNode.builder("pitsim.staff").build(), NodeEqualityPredicate.EXACT).asBoolean();
 	}
 
 	@EventHandler

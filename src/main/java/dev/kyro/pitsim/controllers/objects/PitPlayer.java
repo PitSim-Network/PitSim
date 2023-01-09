@@ -99,6 +99,7 @@ public class PitPlayer {
 
 	@Exclude
 	public UUID uuid;
+
 	//	Savable
 	public String nickname;
 	public Date lastLogin = new Date(0);
@@ -127,6 +128,7 @@ public class PitPlayer {
 	public boolean lightingDisabled = false;
 	public boolean musicDisabled = false;
 	public boolean promptPack = false;
+	public List<String> uuidIgnoreList = new ArrayList<>();
 
 	public double gold = 50_000;
 

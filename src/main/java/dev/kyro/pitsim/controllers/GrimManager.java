@@ -37,7 +37,7 @@ public class GrimManager implements Listener {
 		AbstractCheck check = event.getCheck();
 		if(!isExempt(player, FlagType.getFlag(check.getCheckName()))) return;
 
-		System.out.println(player.getName() + " was exempted from flag " + check.getCheckName());
+//		System.out.println(player.getName() + " was exempted from flag " + check.getCheckName());
 		event.setCancelled(true);
 	}
 
