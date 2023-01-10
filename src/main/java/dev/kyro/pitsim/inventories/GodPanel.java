@@ -8,8 +8,6 @@ import dev.kyro.pitsim.aitems.FunkyFeather;
 import dev.kyro.pitsim.aitems.VeryYummyBread;
 import dev.kyro.pitsim.aitems.YummyBread;
 import dev.kyro.pitsim.aitems.mobdrops.*;
-import dev.kyro.pitsim.brewing.PotionManager;
-import dev.kyro.pitsim.brewing.objects.BrewingIngredient;
 import dev.kyro.pitsim.commands.FreshCommand;
 import dev.kyro.pitsim.controllers.EnchantManager;
 import dev.kyro.pitsim.controllers.ItemFactory;
@@ -101,12 +99,12 @@ public class GodPanel extends AGUIPanel {
 		addItem(ItemFactory.getItem(IronIngot.class).getItem(64));
 		addItem(ItemFactory.getItem(EnderPearl.class).getItem(64));
 
-		BrewingIngredient enderPearl = BrewingIngredient.getIngredientFromTier(10);
-		assert enderPearl != null;
-		for(int i = 0; i < 10; i++) {
-			addItem(PotionManager.createPotion(BrewingIngredient.getIngredientFromTier(i + 1), enderPearl, enderPearl));
-			addItem(PotionManager.createSplashPotion(BrewingIngredient.getIngredientFromTier(i + 1), enderPearl, enderPearl));
-		}
+//		BrewingIngredient enderPearl = BrewingIngredient.getIngredientFromTier(10);
+//		assert enderPearl != null;
+//		for(int i = 0; i < 10; i++) {
+//			addItem(PotionManager.createPotion(BrewingIngredient.getIngredientFromTier(i + 1), enderPearl, enderPearl));
+//			addItem(PotionManager.createSplashPotion(BrewingIngredient.getIngredientFromTier(i + 1), enderPearl, enderPearl));
+//		}
 	}
 
 	public void addItem(ItemStack itemStack) {
