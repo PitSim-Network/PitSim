@@ -18,6 +18,6 @@ public class GoldPlaceholder implements APAPIPlaceholder {
 	@Override
 	public String getValue(Player player) {
 		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
-		return formatter.format(pitPlayer.gold);
+		return formatter.format(pitPlayer.gold) + "g";
 	}
 }
