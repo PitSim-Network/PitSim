@@ -4,6 +4,7 @@ import de.tr7zw.nbtapi.NBTItem;
 import dev.kyro.arcticapi.gui.AGUI;
 import dev.kyro.arcticapi.gui.AGUIPanel;
 import dev.kyro.pitsim.aitems.*;
+import dev.kyro.pitsim.aitems.misc.*;
 import dev.kyro.pitsim.aitems.mobdrops.*;
 import dev.kyro.pitsim.controllers.EnchantManager;
 import dev.kyro.pitsim.controllers.ItemFactory;

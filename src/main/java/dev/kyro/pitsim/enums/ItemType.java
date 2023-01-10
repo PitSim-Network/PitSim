@@ -1,6 +1,10 @@
 package dev.kyro.pitsim.enums;
 
 import dev.kyro.pitsim.aitems.*;
+import dev.kyro.pitsim.aitems.misc.AncientGemShard;
+import dev.kyro.pitsim.aitems.misc.ChunkOfVile;
+import dev.kyro.pitsim.aitems.misc.CorruptedFeather;
+import dev.kyro.pitsim.aitems.misc.FunkyFeather;
 import dev.kyro.pitsim.commands.JewelCommand;
 import dev.kyro.pitsim.controllers.EnchantManager;
 import dev.kyro.pitsim.controllers.ItemFactory;

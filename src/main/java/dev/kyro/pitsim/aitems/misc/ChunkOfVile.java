@@ -1,8 +1,9 @@
-package dev.kyro.pitsim.aitems;
+package dev.kyro.pitsim.aitems.misc;
 
 import de.tr7zw.nbtapi.NBTItem;
 import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.arcticapi.misc.AOutput;
+import dev.kyro.pitsim.aitems.PitItem;
 import dev.kyro.pitsim.controllers.MapManager;
 import dev.kyro.pitsim.controllers.UpgradeManager;
 import dev.kyro.pitsim.enums.NBTTag;

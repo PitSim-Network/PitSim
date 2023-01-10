@@ -1,7 +1,8 @@
-package dev.kyro.pitsim.aitems;
+package dev.kyro.pitsim.aitems.misc;
 
 import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.arcticapi.misc.AOutput;
+import dev.kyro.pitsim.aitems.PitItem;
 import dev.kyro.pitsim.controllers.GuildIntegrationManager;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.misc.Sounds;

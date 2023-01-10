@@ -5,7 +5,7 @@ import dev.kyro.arcticapi.gui.AGUI;
 import dev.kyro.arcticapi.gui.AGUIPanel;
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.arcticapi.misc.AUtil;
-import dev.kyro.pitsim.aitems.TotallyLegitGem;
+import dev.kyro.pitsim.aitems.misc.TotallyLegitGem;
 import dev.kyro.pitsim.controllers.ItemFactory;
 import dev.kyro.pitsim.controllers.UpgradeManager;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;

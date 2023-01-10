@@ -6,7 +6,7 @@ import com.xxmicloxx.NoteBlockAPI.songplayer.RadioSongPlayer;
 import com.xxmicloxx.NoteBlockAPI.utils.NBSDecoder;
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.arcticapi.misc.AUtil;
-import dev.kyro.pitsim.aitems.AncientGemShard;
+import dev.kyro.pitsim.aitems.misc.AncientGemShard;
 import dev.kyro.pitsim.controllers.ItemFactory;
 import dev.kyro.pitsim.controllers.UpgradeManager;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;

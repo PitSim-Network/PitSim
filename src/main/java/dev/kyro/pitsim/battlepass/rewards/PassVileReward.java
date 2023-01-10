@@ -3,7 +3,7 @@ package dev.kyro.pitsim.battlepass.rewards;
 import dev.kyro.arcticapi.builders.AItemStackBuilder;
 import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.arcticapi.misc.AOutput;
-import dev.kyro.pitsim.aitems.ChunkOfVile;
+import dev.kyro.pitsim.aitems.misc.ChunkOfVile;
 import dev.kyro.pitsim.battlepass.PassReward;
 import dev.kyro.pitsim.controllers.ItemFactory;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;

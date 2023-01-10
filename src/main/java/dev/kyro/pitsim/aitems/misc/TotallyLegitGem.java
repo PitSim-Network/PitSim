@@ -1,6 +1,7 @@
-package dev.kyro.pitsim.aitems;
+package dev.kyro.pitsim.aitems.misc;
 
 import dev.kyro.arcticapi.builders.ALoreBuilder;
+import dev.kyro.pitsim.aitems.PitItem;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 
