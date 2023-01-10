@@ -18,7 +18,6 @@ import dev.kyro.pitsim.adarkzone.BossManager;
 import dev.kyro.pitsim.adarkzone.DarkzoneManager;
 import dev.kyro.pitsim.adarkzone.PitBoss;
 import dev.kyro.pitsim.adarkzone.SubLevel;
-import dev.kyro.pitsim.adarkzone.placeholders.ZombieCavePlaceholder;
 import dev.kyro.pitsim.battlepass.PassManager;
 import dev.kyro.pitsim.battlepass.quests.*;
 import dev.kyro.pitsim.battlepass.quests.daily.DailyBotKillQuest;
@@ -140,8 +139,6 @@ public class PitSim extends JavaPlugin {
 		if(getStatus().isDarkzone()) TaintedWell.onStart();
 		if(getStatus().isDarkzone()) BrewingManager.onStart();
 		ScoreboardManager.init();
-
-		if(getStatus().isDarkzone()) MobManager.clearMobs();
 
 		RegisteredServiceProvider<LuckPerms> luckpermsProvider = Bukkit.getServicesManager().getRegistration(LuckPerms.class);
 		if(luckpermsProvider != null) LUCKPERMS = luckpermsProvider.getProvider();

@@ -10,6 +10,8 @@ import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.controllers.ProxyMessaging;
 import dev.kyro.pitsim.controllers.objects.PluginMessage;
 import dev.kyro.pitsim.controllers.objects.ServerData;
+import dev.kyro.pitsim.misc.Sounds;
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
@@ -18,9 +20,8 @@ import org.bukkit.event.inventory.InventoryOpenEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.SkullMeta;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
+import java.lang.reflect.Field;
+import java.util.*;
 
 public class ServerViewPanel extends AGUIPanel {
 
@@ -86,7 +87,6 @@ public class ServerViewPanel extends AGUIPanel {
 	public void onClick(InventoryClickEvent event) {
 		int slot = event.getSlot();
 		if(event.getClickedInventory().getHolder() == this) {
-
 			if(slot == (getRows() * 9) - 5) {
 				openPreviousGUI();
 			}
@@ -136,8 +136,6 @@ public class ServerViewPanel extends AGUIPanel {
 				edit.writeString(name).send();
 				player.closeInventory();
 			}
-
-
 		}
 	}
 
