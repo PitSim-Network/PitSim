@@ -16,87 +16,86 @@ import java.util.List;
 import java.util.Map;
 
 public class CustomSerializer {
-	public static String serialize(ItemStack i) {
+	public static String serialize(ItemStack itemStack) {
 		String[] parts = new String[7];
-		parts[0] = i.getType().name();
-		parts[1] = Integer.toString(i.getAmount());
-		parts[2] = String.valueOf(i.getDurability());
-		parts[3] = i.getItemMeta().getDisplayName();
-		parts[4] = String.valueOf(i.getData().getData());
-		parts[5] = getEnchants(i);
-		parts[6] = getNBT(i);
+		parts[0] = itemStack.getType().name();
+		parts[1] = Integer.toString(itemStack.getAmount());
+		parts[2] = String.valueOf(itemStack.getDurability());
+		parts[3] = itemStack.getItemMeta().getDisplayName();
+		parts[4] = String.valueOf(itemStack.getData().getData());
+		parts[5] = getEnchants(itemStack);
+		parts[6] = getNBT(itemStack);
 		return StringUtils.join(parts, "\t");
 	}
 
-	public static String getEnchants(ItemStack i) {
-		List<String> e = new ArrayList<String>();
-		Map<Enchantment, Integer> en = i.getEnchantments();
-		for(Enchantment t : en.keySet()) {
-			e.add(t.getName() + ":" + en.get(t));
+	public static String getEnchants(ItemStack itemStack) {
+		List<String> enchants = new ArrayList<>();
+		Map<Enchantment, Integer> enchantMap = itemStack.getEnchantments();
+		for(Enchantment enchant : enchantMap.keySet()) {
+			enchants.add(enchant.getName() + ":" + enchantMap.get(enchant));
 		}
-		return StringUtils.join(e, ",");
+		return StringUtils.join(enchants, ",");
 	}
 
-	public static String getLore(ItemStack i) {
-		List<String> e = i.getItemMeta().getLore();
-		return StringUtils.join(e, ",");
+	public static String getLore(ItemStack itemStack) {
+		List<String> lore = itemStack.getItemMeta().getLore();
+		return StringUtils.join(lore, ",");
 	}
 
-	public static String getNBT(ItemStack i) {
-		net.minecraft.server.v1_8_R3.ItemStack nmsStack = CraftItemStack.asNMSCopy(i);
+	public static String getNBT(ItemStack itemStack) {
+		net.minecraft.server.v1_8_R3.ItemStack nmsStack = CraftItemStack.asNMSCopy(itemStack);
 		NBTTagCompound compound = nmsStack.hasTag() ? nmsStack.getTag() : new NBTTagCompound();
 		return compound.toString();
-
 	}
 
-	public static ItemStack setNBT(ItemStack i, String NBT) {
+	public static ItemStack setNBT(ItemStack itemStack, String NBT) {
 //		net.minecraft.server.v1_8_R3.ItemStack nmsStack = CraftItemStack.asNMSCopy(i);
 //		NBTTagCompound compound = (NBTTagCompound) new NBTContainer(nbt).getCompound();
 //		nmsStack.setTag(compound);
 
-		net.minecraft.server.v1_8_R3.ItemStack nmsStack = CraftItemStack.asNMSCopy(i);
+		net.minecraft.server.v1_8_R3.ItemStack nmsStack = CraftItemStack.asNMSCopy(itemStack);
 		try {
 			NBTTagCompound compound = MojangsonParser.parse(NBT);
 
 			nmsStack.setTag(compound);
-		} catch(MojangsonParseException e1) {
-			e1.printStackTrace();
+		} catch(MojangsonParseException exception) {
+			exception.printStackTrace();
 		}
 
 		return CraftItemStack.asBukkitCopy(nmsStack);
 	}
 
 	@SuppressWarnings("deprecation")
-	public static ItemStack deserialize(String p) {
-		String[] a = p.split("\t");
-		ItemStack i = new ItemStack(Material.getMaterial(a[0]), Integer.parseInt(a[1]));
-		i.setDurability((short) Integer.parseInt(a[2]));
-		ItemMeta meta = i.getItemMeta();
-		meta.setDisplayName(a[3]);
-		i.setItemMeta(meta);
-		MaterialData data = i.getData();
-		data.setData((byte) Integer.parseInt(a[4]));
-		i.setData(data);
-		if(!a[6].isEmpty()) {
-			i = setNBT(i, a[6]);
+	public static ItemStack deserialize(String itemString) {
+		String[] stringArr = itemString.split("\t");
+		ItemStack itemStack = new ItemStack(Material.getMaterial(stringArr[0]), Integer.parseInt(stringArr[1]));
+		itemStack.setDurability((short) Integer.parseInt(stringArr[2]));
+		ItemMeta meta = itemStack.getItemMeta();
+		meta.setDisplayName(stringArr[3]);
+		itemStack.setItemMeta(meta);
+		MaterialData data = itemStack.getData();
+		data.setData((byte) Integer.parseInt(stringArr[4]));
+		itemStack.setData(data);
+		if(!stringArr[6].isEmpty()) {
+			itemStack = setNBT(itemStack, stringArr[6]);
 		}
-		if(!a[5].isEmpty()) {
-			String[] parts = a[5].split(",");
-			for(String s : parts) {
-				String label = s.split(":")[0];
-				String amplifier = s.split(":")[1];
+		if(!stringArr[5].isEmpty()) {
+			String[] parts = stringArr[5].split(",");
+			for(String enchantAndLevel : parts) {
+				String label = enchantAndLevel.split(":")[0];
+				String levelString = enchantAndLevel.split(":")[1];
 				Enchantment type = Enchantment.getByName(label);
 				if(type == null)
 					continue;
-				int f;
+				int level;
 				try {
-					f = Integer.parseInt(amplifier);
+					level = Integer.parseInt(levelString);
 				} catch(Exception ex) {
 					continue;
 				}
-				i.addUnsafeEnchantment(type, f);
+				itemStack.addUnsafeEnchantment(type, level);
 			}
 		}
-		return i;
+		return itemStack;
 	}
 }
