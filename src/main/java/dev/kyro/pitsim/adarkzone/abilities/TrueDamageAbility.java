@@ -10,7 +10,6 @@ public class TrueDamageAbility extends PitBossAbility {
 	public TrueDamageAbility(int damage) {
 		super();
 		this.damage = damage;
-
 	}
 
 	@EventHandler

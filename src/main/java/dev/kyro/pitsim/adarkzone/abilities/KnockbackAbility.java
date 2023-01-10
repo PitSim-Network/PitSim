@@ -10,7 +10,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class KnockbackAbility extends PitBossAbility {
-
 	public int intensity;
 
 	public KnockbackAbility(int intensity) {
@@ -35,11 +34,6 @@ public class KnockbackAbility extends PitBossAbility {
 					normalize().multiply(intensity)
 			);
 		}
-
-
-
-
 	}
-
 }
 
