@@ -587,8 +587,12 @@ public class PlayerManager implements Listener {
 		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
 		event.setJoinMessage(null);
 
-		FeatherBoardAPI.resetDefaultScoreboard(event.getPlayer());
-		FeatherBoardAPI.showScoreboard(event.getPlayer(), "default");
+		FeatherBoardAPI.resetDefaultScoreboard(player);
+		if(MapManager.inDarkzone(player)) {
+			FeatherBoardAPI.showScoreboard(player, "darkzone");
+		} else {
+			FeatherBoardAPI.showScoreboard(player, "default");
+		}
 
 		if((System.currentTimeMillis() / 1000L) - 60 * 60 * 20 > pitPlayer.uberReset) {
 			pitPlayer.uberReset = 0;

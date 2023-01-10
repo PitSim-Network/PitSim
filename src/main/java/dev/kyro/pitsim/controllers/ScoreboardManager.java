@@ -5,9 +5,7 @@ import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.misc.Misc;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
-import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.player.PlayerTeleportEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 
@@ -51,29 +49,5 @@ public class ScoreboardManager implements Listener {
 				}
 			}
 		}.runTaskTimerAsynchronously(PitSim.INSTANCE, 20 * 5, 20);
-	}
-
-	@EventHandler
-	public void onTeleport(PlayerTeleportEvent event) {
-		Player player = event.getPlayer();
-		if(!Bukkit.getOnlinePlayers().contains(player)) return;
-
-		new BukkitRunnable() {
-			@Override
-			public void run() {
-				if(!soulScoreboardPlayers.contains(player)) {
-					if(player.getWorld() == MapManager.getDarkzone()) {
-						goldScoreboardPlayers.remove(player);
-						soulScoreboardPlayers.add(player);
-						FeatherBoardAPI.showScoreboard(player, "darkzone");
-					}
-				} else {
-					if(player.getWorld() != MapManager.getDarkzone()) {
-						soulScoreboardPlayers.remove(player);
-						FeatherBoardAPI.showScoreboard(player, "default");
-					}
-				}
-			}
-		}.runTaskLater(PitSim.INSTANCE, 5);
 	}
 }
