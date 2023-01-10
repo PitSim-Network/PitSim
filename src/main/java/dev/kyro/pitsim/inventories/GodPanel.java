@@ -38,19 +38,19 @@ public class GodPanel extends AGUIPanel {
 		NBTItem nbtItem;
 
 		try {
-			itemStack = Base64.itemFrom64(Constant.PITSIM_CRATE);
+			itemStack = Base64.deserialize(Constant.PITSIM_CRATE);
 			itemStack.setAmount(64);
 			addItem(itemStack);
-			itemStack = Base64.itemFrom64(Constant.TAINTED_CRATE);
+			itemStack = Base64.deserialize(Constant.TAINTED_CRATE);
 			itemStack.setAmount(64);
 			addItem(itemStack);
-			itemStack = Base64.itemFrom64(Constant.PITSIM_BUNDLE);
+			itemStack = Base64.deserialize(Constant.PITSIM_BUNDLE);
 			itemStack.setAmount(64);
 			addItem(itemStack);
-			itemStack = Base64.itemFrom64(Constant.SMALL_POUCH);
+			itemStack = Base64.deserialize(Constant.SMALL_POUCH);
 			itemStack.setAmount(64);
 			addItem(itemStack);
-			itemStack = Base64.itemFrom64(Constant.LARGE_POUCH);
+			itemStack = Base64.deserialize(Constant.LARGE_POUCH);
 			itemStack.setAmount(64);
 			addItem(itemStack);
 		} catch(Exception ignored) {}

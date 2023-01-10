@@ -74,7 +74,7 @@ public class StorageProfile {
 				for(int j = 9; j < 36; j++) {
 					String base64String = (String) vault.get(j + "");
 					if(base64String == null) continue;
-					ItemStack itemStack = Base64.itemFrom64(base64String);
+					ItemStack itemStack = Base64.deserialize(base64String);
 //					ItemStack itemStack = CustomSerializer.deserialize(base64String);
 
 					inventory.setItem(j, itemStack);

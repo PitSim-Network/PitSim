@@ -7,7 +7,8 @@ import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.adarkzone.bosses.PitZombieBoss;
 import dev.kyro.pitsim.adarkzone.mobs.PitZombie;
 import dev.kyro.pitsim.adarkzone.notdarkzone.PitEquipment;
-import dev.kyro.pitsim.brewing.ingredients.RottenFlesh;
+import dev.kyro.pitsim.aitems.mobdrops.RottenFlesh;
+import dev.kyro.pitsim.controllers.ItemFactory;
 import dev.kyro.pitsim.controllers.MapManager;
 import dev.kyro.pitsim.events.KillEvent;
 import dev.kyro.pitsim.misc.Sounds;
@@ -15,7 +16,6 @@ import org.bukkit.ChatColor;
 import org.bukkit.Effect;
 import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.entity.Item;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -27,7 +27,6 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 
 public class DarkzoneManager implements Listener {
@@ -40,9 +39,9 @@ public class DarkzoneManager implements Listener {
 				SubLevelType.ZOMBIE, PitZombieBoss.class, PitZombie.class,
 				new Location(MapManager.getDarkzone(), 327, 67, -143),
 				20, 17, 12, "%pitsim_zombie_cave%");
-		ItemStack zombieSpawnItem = RottenFlesh.INSTANCE.getItem();
+		ItemStack zombieSpawnItem = ItemFactory.getItem(RottenFlesh.class).getItem(1);
 		zombieSublevel.setSpawnItem(zombieSpawnItem);
-		zombieSublevel.addMobDrop(RottenFlesh.INSTANCE.getItem(), 1);
+		zombieSublevel.addMobDrop(ItemFactory.getItem(RottenFlesh.class).getItem(1), 1);
 
 		registerSubLevel(zombieSublevel);
 		registerHolograms();
