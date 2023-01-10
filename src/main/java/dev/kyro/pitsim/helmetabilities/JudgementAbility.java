@@ -5,11 +5,9 @@ import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.controllers.HopperManager;
-import dev.kyro.pitsim.controllers.objects.GoldenHelmet;
-import dev.kyro.pitsim.controllers.objects.HelmetAbility;
-import dev.kyro.pitsim.controllers.objects.Hopper;
-import dev.kyro.pitsim.controllers.objects.PitPlayer;
+import dev.kyro.pitsim.controllers.objects.*;
 import dev.kyro.pitsim.events.AttackEvent;
+import dev.kyro.pitsim.events.MessageEvent;
 import dev.kyro.pitsim.misc.Misc;
 import dev.kyro.pitsim.misc.Sounds;
 import org.bukkit.Effect;
@@ -134,6 +132,15 @@ public class JudgementAbility extends HelmetAbility {
 		}
 	}
 
+	@EventHandler
+	public void onMessage(MessageEvent event) {
+		PluginMessage message = event.getMessage();
+		List<String> strings = message.getStrings();
+		if(strings.isEmpty() || !strings.get(0).equals("JUDGEMENT")) return;
+		String uuidString = strings.get(1);
+		putOnCooldown(UUID.fromString(uuidString));
+	}
+
 	@Override
 	public void onActivate() {
 		ItemStack goldenHelmet = GoldenHelmet.getHelmet(player);
@@ -172,10 +179,16 @@ public class JudgementAbility extends HelmetAbility {
 
 	@Override
 	public void onDeactivate() {
-		cooldownMap.put(player.getUniqueId(), 20 * getCooldownSeconds());
+		putOnCooldown(player.getUniqueId());
 		maxActivationMap.remove(player);
 		AOutput.send(player, "&6&lGOLDEN HELMET! &cDeactivated &9Judgement&c. &7(" + getCooldownSeconds() + "s reactivation cooldown)");
 		if(runnable != null) runnable.cancel();
+
+		new PluginMessage()
+				.writeString("JUDGEMENT")
+				.writeString(PitSim.serverName)
+				.writeString(player.getUniqueId().toString())
+				.send();
 	}
 
 	@Override
@@ -200,6 +213,10 @@ public class JudgementAbility extends HelmetAbility {
 		builder.setLore(loreBuilder);
 
 		return builder.getItemStack();
+	}
+
+	public static void putOnCooldown(UUID uuid) {
+		cooldownMap.put(uuid, 20 * getCooldownSeconds());
 	}
 
 	public static int getCooldownSeconds(UUID uuid) {

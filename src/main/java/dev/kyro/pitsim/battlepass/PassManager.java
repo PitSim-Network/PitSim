@@ -273,7 +273,7 @@ public class PassManager implements Listener {
 		}
 		loadPassData();
 
-		if(PitSim.serverName.equals("pitsim-1")) {
+		if(PitSim.serverName.equals("pitsim-1") || PitSim.serverName.equals("pitsimdev-1")) {
 			long daysPassed = TimeUnit.DAYS.convert(Misc.convertToEST(new Date()).getTime() - currentPass.startDate.getTime(), TimeUnit.MILLISECONDS);
 			int weeksPassed = (int) (daysPassed / 7) + 1;
 			int newQuests = weeksPassed * QUESTS_PER_WEEK - currentPass.weeklyQuests.size();
@@ -299,7 +299,7 @@ public class PassManager implements Listener {
 	public static void loadPassData() {
 		currentPass.weeklyQuests.clear();
 		if(!currentPass.startDate.equals(FirestoreManager.CONFIG.currentPassStart)) {
-			if(PitSim.serverName.equals("pitsim-1")) {
+			if(PitSim.serverName.equals("pitsim-1") || PitSim.serverName.equals("pitsimdev-1")) {
 				AOutput.log("Creating new pass");
 				FirestoreManager.CONFIG.currentPassStart = currentPass.startDate;
 				FirestoreManager.CONFIG.currentPassData = new Config.CurrentPassData();

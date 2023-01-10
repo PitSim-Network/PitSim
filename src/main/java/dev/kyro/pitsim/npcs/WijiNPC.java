@@ -28,7 +28,7 @@ public class WijiNPC extends PitNPC {
 	@Override
 	public void createNPC(Location location) {
 		String skinName = "wiji1";
-		if(LocalDate.now().isBefore(LocalDate.parse("2023-01-15"))) skinName = "Revernal";
+		if(LocalDate.now().isBefore(LocalDate.parse("2023-02-01"))) skinName = "Revernal";
 		spawnPlayerNPC("&9wiji1", skinName, location, true);
 	}
 

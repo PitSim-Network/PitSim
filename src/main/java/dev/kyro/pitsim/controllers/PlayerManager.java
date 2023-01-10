@@ -30,8 +30,13 @@ import dev.kyro.pitsim.pitmaps.XmasMap;
 import dev.kyro.pitsim.upgrades.TheWay;
 import dev.kyro.pitsim.upgrades.UberIncrease;
 import me.clip.placeholderapi.PlaceholderAPI;
+import net.luckperms.api.model.group.Group;
+import net.luckperms.api.model.user.User;
+import net.luckperms.api.node.NodeEqualityPredicate;
+import net.luckperms.api.node.types.PermissionNode;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.*;
+import org.bukkit.block.Block;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Entity;
@@ -55,6 +60,7 @@ import org.spigotmc.event.player.PlayerSpawnLocationEvent;
 
 import java.text.DecimalFormat;
 import java.util.*;
+import java.util.concurrent.ExecutionException;
 
 public class PlayerManager implements Listener {
 	private static final List<UUID> realPlayers = new ArrayList<>();
@@ -171,6 +177,18 @@ public class PlayerManager implements Listener {
 				}
 			}
 		}.runTaskTimer(PitSim.INSTANCE, 0L, 18L);
+	}
+
+	public static boolean isStaff(UUID uuid) {
+		User user;
+		try {
+			user = PitSim.LUCKPERMS.getUserManager().loadUser(uuid).get();
+		} catch(InterruptedException | ExecutionException exception) {
+			exception.printStackTrace();
+			return false;
+		}
+		Group group = PitSim.LUCKPERMS.getGroupManager().getGroup(user.getPrimaryGroup());
+		return group.data().contains(PermissionNode.builder("pitsim.staff").build(), NodeEqualityPredicate.EXACT).asBoolean();
 	}
 
 	@EventHandler
@@ -382,7 +400,7 @@ public class PlayerManager implements Listener {
 	public static List<UUID> helmetSwapCooldown = new ArrayList<>();
 	public static List<UUID> chestplateSwapCooldown = new ArrayList<>();
 
-	@EventHandler
+	@EventHandler(priority = EventPriority.HIGH)
 	public static void onClick(PlayerInteractEvent event) {
 		Player player = event.getPlayer();
 
@@ -492,6 +510,9 @@ public class PlayerManager implements Listener {
 		if(player.getItemInHand().getType().toString().contains("CHESTPLATE")) {
 			if(Misc.isAirOrNull(player.getInventory().getChestplate())) return;
 
+			Block block = event.getClickedBlock();
+			if(block != null && block.getType() == Material.ENCHANTMENT_TABLE) return;
+
 			if(chestplateSwapCooldown.contains(player.getUniqueId())) {
 
 				Sounds.NO.play(player);
@@ -566,8 +587,12 @@ public class PlayerManager implements Listener {
 		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
 		event.setJoinMessage(null);
 
-		FeatherBoardAPI.resetDefaultScoreboard(event.getPlayer());
-		FeatherBoardAPI.showScoreboard(event.getPlayer(), "default");
+		FeatherBoardAPI.resetDefaultScoreboard(player);
+		if(MapManager.inDarkzone(player)) {
+			FeatherBoardAPI.showScoreboard(player, "darkzone");
+		} else {
+			FeatherBoardAPI.showScoreboard(player, "default");
+		}
 
 		if((System.currentTimeMillis() / 1000L) - 60 * 60 * 20 > pitPlayer.uberReset) {
 			pitPlayer.uberReset = 0;
@@ -594,7 +619,18 @@ public class PlayerManager implements Listener {
 		if(PitSim.getStatus() == PitSim.ServerStatus.DARKZONE) spawnLoc = MapManager.getInitialDarkzoneSpawn();
 		if(LobbySwitchManager.joinedFromDarkzone.contains(player.getUniqueId()))
 			spawnLoc = MapManager.currentMap.getDarkzoneJoinSpawn();
+		if(ProxyMessaging.joinTeleportMap.containsKey(player.getUniqueId())) {
+			Player tpPlayer = Bukkit.getPlayer(ProxyMessaging.joinTeleportMap.get(player.getUniqueId()));
+			if(tpPlayer.isOnline()) spawnLoc = tpPlayer.getLocation();
 
+			new BukkitRunnable() {
+				@Override
+				public void run() {
+					if(!tpPlayer.isOnline()) AOutput.error(player, "&cThe player you were trying to teleport to is no longer online.");
+					else AOutput.send(player, "&aTeleporting to " + tpPlayer.getName() + "...");
+				}
+			}.runTaskLater(PitSim.INSTANCE, 10);
+		}
 		new BukkitRunnable() {
 			@Override
 			public void run() {
@@ -649,12 +685,15 @@ public class PlayerManager implements Listener {
 						return;
 					}
 
-				} else if(PitSim.getStatus() == PitSim.ServerStatus.PITSIM && LobbySwitchManager.joinedFromDarkzone.contains(player.getUniqueId())) {
+				} else if(PitSim.getStatus() == PitSim.ServerStatus.PITSIM && LobbySwitchManager.joinedFromDarkzone.contains(player.getUniqueId()) &&
+						!ProxyMessaging.joinTeleportMap.containsKey(player.getUniqueId())) {
 					player.setVelocity(new Vector(1.5, 1, 0));
 					Misc.sendTitle(player, "&a&lOverworld", 40);
 					Misc.sendSubTitle(player, "", 40);
 					AOutput.send(player, "&7You have been sent to the &a&lOverworld&7.");
 				}
+
+				ProxyMessaging.joinTeleportMap.remove(player.getUniqueId());
 
 				String message = "%luckperms_prefix%";
 				if(pitPlayer.megastreak.isOnMega()) {
@@ -686,29 +725,18 @@ public class PlayerManager implements Listener {
 			for(String item : pitPlayer.auctionReturn) {
 				String[] data = item.split(":");
 
-				if(Integer.parseInt(data[1]) == 0) {
-					ItemStack itemStack = Objects.requireNonNull(ItemType.getItemType(Integer.parseInt(data[0]))).item;
-					AUtil.giveItemSafely(player, itemStack, true);
+				ItemStack itemStack;
+				if(Integer.parseInt(data[1]) == 0) itemStack = Objects.requireNonNull(ItemType.getItemType(Integer.parseInt(data[0]))).item;
+				else itemStack = ItemType.getJewelItem(Integer.parseInt(data[0]), Integer.parseInt(data[1]));
 
-					new BukkitRunnable() {
-						@Override
-						public void run() {
-							AOutput.send(player, "&5&lDARK AUCTION!&7 Received " + itemStack.getItemMeta().getDisplayName() + "&7.");
-							Sounds.BOOSTER_REMIND.play(player);
-						}
-					}.runTaskLater(PitSim.INSTANCE, 10);
-				} else {
-					ItemStack itemStack = ItemType.getJewelItem(Integer.parseInt(data[0]), Integer.parseInt(data[1]));
-
-					AUtil.giveItemSafely(player, itemStack, true);
-					new BukkitRunnable() {
-						@Override
-						public void run() {
-							AOutput.send(player, "&5&lDARK AUCTION!&7 Received " + itemStack.getItemMeta().getDisplayName() + "&7.");
-							Sounds.BOOSTER_REMIND.play(player);
-						}
-					}.runTaskLater(PitSim.INSTANCE, 10);
-				}
+				new BukkitRunnable() {
+					@Override
+					public void run() {
+						AOutput.send(player, "&5&lDARK AUCTION!&7 Received " + itemStack.getItemMeta().getDisplayName() + "&7.");
+						Sounds.BOOSTER_REMIND.play(player);
+						AUtil.giveItemSafely(player, itemStack, true);
+					}
+				}.runTaskLater(PitSim.INSTANCE, 10);
 			}
 
 			pitPlayer.auctionReturn.clear();
@@ -717,17 +745,17 @@ public class PlayerManager implements Listener {
 		}
 
 		if(pitPlayer.soulReturn > 0) {
-			PitPlayer.getPitPlayer(player).taintedSouls += pitPlayer.soulReturn;
+			int souls = pitPlayer.soulReturn;
+			PitPlayer.getPitPlayer(player).taintedSouls += souls;
 			new BukkitRunnable() {
 				@Override
 				public void run() {
-					AOutput.send(player, "&5&lDARK AUCTION!&7 Received &f" + pitPlayer.soulReturn + " Tainted Souls&7.");
+					AOutput.send(player, "&5&lDARK AUCTION!&7 Received &f" + souls + " Tainted Souls");
 					Sounds.BOOSTER_REMIND.play(player);
 				}
 			}.runTaskLater(PitSim.INSTANCE, 10);
 			pitPlayer.soulReturn = 0;
 		}
-
 	}
 
 	@EventHandler

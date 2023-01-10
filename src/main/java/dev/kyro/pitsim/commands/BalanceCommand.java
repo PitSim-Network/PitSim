@@ -29,7 +29,7 @@ public class BalanceCommand implements CommandExecutor {
 		}
 
 		PitPlayer pitTarget = PitPlayer.getPitPlayer(target);
-		AOutput.send(player, "&6&lGOLD!&7 " + Misc.getDisplayName(target) + " has &6" + Misc.formatGoldFull(pitTarget.gold) + "g");
+		AOutput.send(player, "&6&lGOLD!&7 " + Misc.getDisplayName(target) + " &7has &6" + Misc.formatGoldFull(pitTarget.gold) + "g");
 		return false;
 	}
 }

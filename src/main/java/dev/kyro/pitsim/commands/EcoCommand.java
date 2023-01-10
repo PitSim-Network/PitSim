@@ -9,6 +9,9 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class EcoCommand implements CommandExecutor {
 
 	@Override
@@ -22,10 +25,13 @@ public class EcoCommand implements CommandExecutor {
 			return false;
 		}
 
+		boolean affectEveryone = false;
 		String subCommand = args[0];
 		if(subCommand.equalsIgnoreCase("give")) {
+			if(args[1].equals("*")) affectEveryone = true;
+
 			Player target = Bukkit.getPlayer(args[1]);
-			if(target == null) {
+			if(!affectEveryone && target == null) {
 				AOutput.error(player, "&c&lERROR!&7 Could not find that player");
 				return false;
 			}
@@ -39,13 +45,20 @@ public class EcoCommand implements CommandExecutor {
 				return false;
 			}
 
-			PitPlayer pitTarget = PitPlayer.getPitPlayer(target);
-			pitTarget.gold += amount;
-			AOutput.send(player, "&6&lECO!&7 Gave &6" + Misc.formatGoldFull(amount) + "g &7to " + Misc.getDisplayName(target));
-			AOutput.send(target, "&6&lGOLD!&7 You received &6" + Misc.formatGoldFull(amount) + "g");
+			if(affectEveryone) {
+				List<Player> players = new ArrayList<>(Bukkit.getOnlinePlayers());
+				players.remove(player);
+				players.add(player);
+				for(Player onlinePlayer : players) giveGold(player, onlinePlayer, amount);
+				return false;
+			}
+
+			giveGold(player, target, amount);
 		} else if(subCommand.equalsIgnoreCase("take")) {
+			if(args[1].equals("*")) affectEveryone = true;
+
 			Player target = Bukkit.getPlayer(args[1]);
-			if(target == null) {
+			if(!affectEveryone && target == null) {
 				AOutput.error(player, "&c&lERROR!&7 Could not find that player");
 				return false;
 			}
@@ -59,15 +72,15 @@ public class EcoCommand implements CommandExecutor {
 				return false;
 			}
 
-			PitPlayer pitTarget = PitPlayer.getPitPlayer(target);
-			if(amount > pitTarget.gold) {
-				AOutput.error(player, "&c&lERROR!&7 That player only has &6" + Misc.formatGoldFull(pitTarget.gold) + "g");
+			if(affectEveryone) {
+				List<Player> players = new ArrayList<>(Bukkit.getOnlinePlayers());
+				players.remove(player);
+				players.add(player);
+				for(Player onlinePlayer : players) takeGold(player, onlinePlayer, amount);
 				return false;
 			}
 
-			pitTarget.gold -= amount;
-			AOutput.send(player, "&6&lECO!&7 Took &6" + Misc.formatGoldFull(amount) + "g &7from " + Misc.getDisplayName(target));
-			AOutput.send(target, "&6&lGOLD!&6 " + Misc.formatGoldFull(amount) + "g &7was taken from you");
+			takeGold(player, target, amount);
 		} else if(subCommand.equalsIgnoreCase("set")) {
 			Player target = Bukkit.getPlayer(args[1]);
 			if(target == null) {
@@ -93,5 +106,25 @@ public class EcoCommand implements CommandExecutor {
 		}
 
 		return false;
+	}
+
+	public static void giveGold(Player giver, Player target, double amount) {
+		PitPlayer pitTarget = PitPlayer.getPitPlayer(target);
+		pitTarget.gold += amount;
+		if(giver != target) AOutput.send(giver, "&6&lECO!&7 Gave &6" + Misc.formatGoldFull(amount) + "g &7to " + Misc.getDisplayName(target));
+		AOutput.send(pitTarget.player, "&6&lGOLD!&7 You received &6" + Misc.formatGoldFull(amount) + "g");
+	}
+
+	public static void takeGold(Player giver, Player target, double amount) {
+		PitPlayer pitTarget = PitPlayer.getPitPlayer(target);
+
+		if(amount > pitTarget.gold) {
+			AOutput.error(giver, "&c&lERROR!&7 That player only has &6" + Misc.formatGoldFull(pitTarget.gold) + "g");
+			return;
+		}
+
+		pitTarget.gold -= amount;
+		if(giver != target) AOutput.send(giver, "&6&lECO!&7 Took &6" + Misc.formatGoldFull(amount) + "g &7from " + Misc.getDisplayName(target));
+		AOutput.send(target, "&6&lGOLD!&6 " + Misc.formatGoldFull(amount) + "g &7was taken from you");
 	}
 }

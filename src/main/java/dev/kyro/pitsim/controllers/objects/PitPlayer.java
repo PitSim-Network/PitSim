@@ -99,6 +99,7 @@ public class PitPlayer {
 
 	@Exclude
 	public UUID uuid;
+
 	//	Savable
 	public String nickname;
 	public Date lastLogin = new Date(0);
@@ -106,6 +107,7 @@ public class PitPlayer {
 	public int level = 1;
 	public long remainingXP = PrestigeValues.getXPForLevel(1);
 	public int soulsGathered = 0;
+	public String savedLeaderboardRef = "xp";
 
 	public int renown = 0;
 	@Exclude
@@ -115,9 +117,8 @@ public class PitPlayer {
 	public List<Killstreak> killstreaks = Arrays.asList(Limiter.INSTANCE, NoKillstreak.INSTANCE, NoKillstreak.INSTANCE);
 	public List<String> killstreaksRef = Arrays.asList("Limiter", "NoKillstreak", "NoKillstreak");
 	@Exclude
-
 	public Megastreak megastreak;
-	public String megastreakRef = "nomegastreak";
+	public String megastreakRef = "overdrive";
 
 	public Map<String, Integer> renownUpgrades = new HashMap<>();
 	public boolean playerChatDisabled = false;
@@ -127,8 +128,9 @@ public class PitPlayer {
 	public boolean lightingDisabled = false;
 	public boolean musicDisabled = false;
 	public boolean promptPack = false;
+	public List<String> uuidIgnoreList = new ArrayList<>();
 
-	public double gold = 0;
+	public double gold = 50_000;
 
 	public double goldStack = 0;
 	public int moonBonus = 0;

@@ -9,6 +9,7 @@ import dev.kyro.pitsim.enums.NBTTag;
 import dev.kyro.pitsim.inventories.ChatColorPanel;
 import dev.kyro.pitsim.misc.ItemRename;
 import dev.kyro.pitsim.misc.Misc;
+import me.clip.deluxechat.events.PrivateMessageEvent;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -31,6 +32,24 @@ public class ChatManager implements Listener {
 	}
 
 	@EventHandler
+	public void onPrivateMessage(PrivateMessageEvent event) {
+		System.out.println("hi");
+		Player sender = event.getSender();
+		Player recipient = event.getRecipient();
+		PitPlayer pitSender = PitPlayer.getPitPlayer(sender);
+		PitPlayer pitRecipient = PitPlayer.getPitPlayer(recipient);
+
+		System.out.println(pitRecipient.uuidIgnoreList.toString() + " " + sender.getUniqueId().toString());
+		if(pitRecipient.uuidIgnoreList.contains(sender.getUniqueId().toString())) {
+			event.setCancelled(true);
+			AOutput.error(sender, "&c&lERROR!&7 That player has you ignored");
+		} else if(pitSender.uuidIgnoreList.contains(recipient.getUniqueId().toString())) {
+			event.setCancelled(true);
+			AOutput.error(sender, "&c&lERROR!&7 You have that player ignored");
+		}
+	}
+
+	@EventHandler
 	public void autoCorrect(AsyncPlayerChatEvent event) {
 		Player player = event.getPlayer();
 		String message = event.getMessage();
@@ -42,11 +61,16 @@ public class ChatManager implements Listener {
 		}
 
 		for(Player recipient : event.getRecipients()) {
-			PitPlayer recipientPlayer = PitPlayer.getPitPlayer(recipient);
-			if(recipientPlayer.playerChatDisabled) event.getRecipients().remove(recipient);
-			if(player.equals(recipient) && recipientPlayer.playerChatDisabled)
+			PitPlayer recipientPitPlayer = PitPlayer.getPitPlayer(recipient);
+
+			if(player == recipient && recipientPitPlayer.playerChatDisabled) {
 				AOutput.error(player, "&cYou currently have the chat muted. To disable this," +
 						"navigate to the Chat Options menu located in the &f/donator &cmenu.");
+				event.setCancelled(true);
+				return;
+			}
+			if(recipientPitPlayer.playerChatDisabled || recipientPitPlayer.uuidIgnoreList.contains(player.getUniqueId().toString()))
+				event.getRecipients().remove(recipient);
 		}
 
 		if(ItemRename.renamePlayers.containsKey(player)) {

@@ -46,9 +46,7 @@ public class PotionManager implements Listener {
 		new BukkitRunnable() {
 			@Override
 			public void run() {
-				for(PotionEffect potionEffect : potionEffectList) {
-					potionEffect.tick();
-				}
+				for(PotionEffect potionEffect : new ArrayList<>(potionEffectList)) potionEffect.tick();
 			}
 		}.runTaskTimer(PitSim.INSTANCE, 1, 1);
 

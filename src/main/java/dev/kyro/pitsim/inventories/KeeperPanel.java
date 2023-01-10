@@ -129,7 +129,7 @@ public class KeeperPanel extends AGUIPanel {
 
 			meta.setLore(lore);
 			head.setItemMeta(meta);
-			head.setAmount(serverData.getPlayerCount() > 0 ? serverData.getPlayerCount() : 1);
+			head.setAmount(serverData.getPlayerCount());
 
 			getInventory().setItem((9 + slots.get(slotsIndex)), head);
 			this.slots.put((9 + slots.get(slotsIndex)), serverIndex);

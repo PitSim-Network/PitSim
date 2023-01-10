@@ -14,9 +14,6 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.inventory.ItemStack;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class DoTrueDamageVSPlayersQuest extends PassQuest {
 
 	public DoTrueDamageVSPlayersQuest() {
@@ -55,9 +52,9 @@ public class DoTrueDamageVSPlayersQuest extends PassQuest {
 
 	@Override
 	public void createPossibleStates() {
-		questLevels.add(new QuestLevel(2_500.0, 100));
-		questLevels.add(new QuestLevel(3_500.0, 150));
-		questLevels.add(new QuestLevel(5_000.0, 200));
+		questLevels.add(new QuestLevel(3_000.0, 100));
+		questLevels.add(new QuestLevel(4_500.0, 150));
+		questLevels.add(new QuestLevel(6_000.0, 200));
 	}
 
 	@Override

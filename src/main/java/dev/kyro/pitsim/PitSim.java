@@ -1,5 +1,6 @@
 package dev.kyro.pitsim;
 
+import ac.grim.grimac.GrimAbstractAPI;
 import com.comphenix.protocol.ProtocolLibrary;
 import com.comphenix.protocol.ProtocolManager;
 import com.mattmalec.pterodactyl4j.PteroBuilder;
@@ -11,7 +12,6 @@ import de.tr7zw.nbtapi.NBTItem;
 import dev.kyro.arcticapi.ArcticAPI;
 import dev.kyro.arcticapi.commands.AMultiCommand;
 import dev.kyro.arcticapi.data.AConfig;
-import dev.kyro.arcticapi.data.AData;
 import dev.kyro.arcticapi.hooks.AHook;
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.adarkzone.BossManager;
@@ -102,11 +102,10 @@ public class PitSim extends JavaPlugin {
 	public static final boolean PASS_ENABLED = true;
 
 	public static LuckPerms LUCKPERMS;
+	public static GrimAbstractAPI GRIM;
 	public static PitSim INSTANCE;
 	public static ProtocolManager PROTOCOL_MANAGER = null;
 	public static BukkitAudiences adventure;
-
-	public static AData playerList;
 
 	public static String serverName;
 
@@ -142,12 +141,13 @@ public class PitSim extends JavaPlugin {
 		if(getStatus().isDarkzone()) BrewingManager.onStart();
 		ScoreboardManager.init();
 
-		playerList = new AData("player-list", "", false);
+		if(getStatus().isDarkzone()) MobManager.clearMobs();
 
-		RegisteredServiceProvider<LuckPerms> provider = Bukkit.getServicesManager().getRegistration(LuckPerms.class);
-		if(provider != null) {
-			LUCKPERMS = provider.getProvider();
-		}
+		RegisteredServiceProvider<LuckPerms> luckpermsProvider = Bukkit.getServicesManager().getRegistration(LuckPerms.class);
+		if(luckpermsProvider != null) LUCKPERMS = luckpermsProvider.getProvider();
+
+		RegisteredServiceProvider<GrimAbstractAPI> grimProvider = Bukkit.getServicesManager().getRegistration(GrimAbstractAPI.class);
+		if (grimProvider != null) GRIM = grimProvider.getProvider();
 
 		PROTOCOL_MANAGER = ProtocolLibrary.getProtocolManager();
 
@@ -235,9 +235,7 @@ public class PitSim extends JavaPlugin {
 		AHook.registerPlaceholder(new PlayerCountPlaceholder());
 		AHook.registerPlaceholder(new GoldPlaceholder());
 		AHook.registerPlaceholder(new NicknamePlaceholder());
-		if (getStatus().isDarkzone()) {
-			AHook.registerPlaceholder(new ZombieCavePlaceholder());
-		}
+		AHook.registerPlaceholder(new ServerIPPlaceholder());
 
 		new LeaderboardPlaceholders().register();
 
@@ -542,6 +540,7 @@ public class PitSim extends JavaPlugin {
 		getCommand("music").setExecutor(new MusicCommand());
 		getCommand("migrate").setExecutor(new MigrateCommand());
 		if(PASS_ENABLED) getCommand("pass").setExecutor(new PassCommand());
+		if(PASS_ENABLED) getCommand("quests").setExecutor(new QuestsCommand());
 		SettingsCommand settingsCommand = new SettingsCommand();
 		getCommand("settings").setExecutor(settingsCommand);
 		getCommand("setting").setExecutor(settingsCommand);
@@ -549,13 +548,17 @@ public class PitSim extends JavaPlugin {
 		getCommand("potions").setExecutor(new PotionsCommand());
 		getCommand("balance").setExecutor(new BalanceCommand());
 		getCommand("eco").setExecutor(new EcoCommand());
+		getCommand("ignore").setExecutor(new IgnoreCommand());
+		getCommand("ignore").setTabCompleter(new IgnoreCommand());
 		//TODO: Remove this
 //		getCommand("massmigrate").setExecutor(new MassMigrateCommand());
 
 		getCommand("gamemode").setExecutor(new GamemodeCommand());
 		getCommand("nickname").setExecutor(new NicknameCommand());
 		getCommand("fly").setExecutor(new FlyCommand());
+		getCommand("fly").setTabCompleter(new FlyCommand());
 		getCommand("teleport").setExecutor(new TeleportCommand());
+		getCommand("teleporthere").setExecutor(new TeleportHereCommand());
 		getCommand("broadcast").setExecutor(new BroadcastCommand());
 		getCommand("trash").setExecutor(new TrashCommand());
 		getCommand("rename").setExecutor(new RenameCommand());
@@ -617,6 +620,8 @@ public class PitSim extends JavaPlugin {
 		getServer().getPluginManager().registerEvents(new StorageManager(), this);
 		getServer().getPluginManager().registerEvents(new CrossServerMessageManager(), this);
 		getServer().getPluginManager().registerEvents(new PacketManager(), this);
+		getServer().getPluginManager().registerEvents(new GrimManager(), this);
+		getServer().getPluginManager().registerEvents(new MiscManager(), this);
 
 //		New darkzone code
 		if(getStatus().isDarkzone()) {

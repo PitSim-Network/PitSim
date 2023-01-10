@@ -21,10 +21,12 @@ public abstract class Leaderboard {
 //	public static List<Integer> slots = new ArrayList<>(Arrays.asList(10, 11, 13, 14, 15, 16, 20, 21, 22, 23, 24));
 		public static List<Integer> slots = new ArrayList<>(Arrays.asList(10, 11, 12, 13, 14, 15, 16, 20, 21, 22, 23, 24));
 	public String refName;
+	public String displayName;
 
-	public Leaderboard(String refName) {
+	public Leaderboard(String refName, String displayName) {
 		this.slot = slots.remove(0);
 		this.refName = refName;
+		this.displayName = displayName;
 	}
 
 	public abstract ItemStack getDisplayStack(UUID uuid);

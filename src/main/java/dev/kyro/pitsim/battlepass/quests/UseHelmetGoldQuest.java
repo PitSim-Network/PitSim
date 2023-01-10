@@ -6,12 +6,10 @@ import dev.kyro.arcticapi.misc.AUtil;
 import dev.kyro.pitsim.battlepass.PassQuest;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.misc.Misc;
+import dev.kyro.pitsim.upgrades.Helmetry;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class UseHelmetGoldQuest extends PassQuest {
 	public static UseHelmetGoldQuest INSTANCE;
@@ -49,14 +47,14 @@ public class UseHelmetGoldQuest extends PassQuest {
 
 	@Override
 	public void createPossibleStates() {
-		questLevels.add(new QuestLevel(20_000, 100));
-		questLevels.add(new QuestLevel(30_000, 150));
-		questLevels.add(new QuestLevel(40_000, 200));
+		questLevels.add(new QuestLevel(50_000, 100));
+		questLevels.add(new QuestLevel(75_000, 150));
+		questLevels.add(new QuestLevel(100_000, 200));
 	}
 
 	@Override
 	public double getMultiplier(PitPlayer pitPlayer) {
-		if(pitPlayer.prestige == 0) return 1;
-		return pitPlayer.prestige;
+		int effectivePrestige = Math.max(pitPlayer.prestige, Helmetry.INSTANCE.prestigeReq);
+		return effectivePrestige;
 	}
 }

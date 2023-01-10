@@ -70,6 +70,17 @@ public class Misc {
 		}.runTaskAsynchronously(PitSim.INSTANCE);
 	}
 
+	public static List<String> getTabComplete(String current, List<String> options) {
+		return getTabComplete(current, options.toArray(new String[0]));
+	}
+
+	public static List<String> getTabComplete(String current, String... options) {
+		if(current == null || current.isEmpty()) return Arrays.asList(options);
+		List<String> tabComplete = new ArrayList<>();
+		for(String option : options) if(option.toLowerCase().startsWith(current.toLowerCase())) tabComplete.add(option);
+		return tabComplete;
+	}
+
 	public static <T> T weightedRandom(Map<T, Double> weightedMap) {
 		// Normalize the weights
 		double sum = 0.0;

@@ -6,7 +6,10 @@ import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.battlepass.quests.UseHelmetGoldQuest;
-import dev.kyro.pitsim.controllers.*;
+import dev.kyro.pitsim.controllers.HelmetSystem;
+import dev.kyro.pitsim.controllers.NonManager;
+import dev.kyro.pitsim.controllers.SpawnManager;
+import dev.kyro.pitsim.controllers.UpgradeManager;
 import dev.kyro.pitsim.enchants.ComboVenom;
 import dev.kyro.pitsim.enums.NBTTag;
 import dev.kyro.pitsim.events.AttackEvent;
@@ -19,7 +22,6 @@ import dev.kyro.pitsim.misc.Misc;
 import dev.kyro.pitsim.misc.Sounds;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
-import org.bukkit.GameMode;
 import org.bukkit.Material;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
@@ -279,11 +281,7 @@ public class GoldenHelmet implements Listener {
 	public void onRemove(InventoryClickEvent event) {
 
 		Player player = (Player) event.getWhoClicked();
-		if(player.getGameMode() != GameMode.SURVIVAL && player.getGameMode() != GameMode.ADVENTURE && !Misc.isAirOrNull(event.getCurrentItem()) && event.getCurrentItem().getType() == Material.GOLD_HELMET) {
-			event.setCancelled(true);
-			player.getInventory();
-			return;
-		}
+
 		if(event.getClickedInventory() == null || event.getClickedInventory().getType() != InventoryType.PLAYER) return;
 		if(Misc.isAirOrNull(player.getInventory().getHelmet())) return;
 		if(event.getSlot() == 39 && player.getInventory().getHelmet().getType() == Material.GOLD_HELMET) {

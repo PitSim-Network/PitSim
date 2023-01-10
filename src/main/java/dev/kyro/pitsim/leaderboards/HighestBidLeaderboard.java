@@ -15,7 +15,7 @@ import java.util.UUID;
 
 public class HighestBidLeaderboard extends Leaderboard {
 	public HighestBidLeaderboard() {
-		super("highest-bid");
+		super("highest-bid", "&eHighest Bid");
 	}
 
 	@Override

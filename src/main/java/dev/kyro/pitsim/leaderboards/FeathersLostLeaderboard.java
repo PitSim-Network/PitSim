@@ -15,7 +15,7 @@ import java.util.UUID;
 
 public class FeathersLostLeaderboard extends Leaderboard {
 	public FeathersLostLeaderboard() {
-		super("feathers-lost");
+		super("feathers-lost", "&fLost Feathers");
 	}
 
 	@Override

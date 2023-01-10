@@ -110,13 +110,14 @@ public class CombatManager implements Listener {
 		Player player = event.getPlayer();
 		if(taggedPlayers.containsKey(player.getUniqueId())) {
 			event.setCancelled(true);
-			AOutput.error(event.getPlayer(), "&c&c&lERROR!&7 You cannot use that while in combat!");
+			AOutput.error(player, "&c&lERROR!&7 You cannot use that while in combat!");
 			return;
 		}
 
 		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
 		if(pitPlayer.megastreak.isOnMega()) {
 			event.setCancelled(true);
+			AOutput.send(player, "&c&lERROR!&7 You cannot spawn while on a megastreak");
 			return;
 		}
 	}

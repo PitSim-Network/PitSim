@@ -76,14 +76,16 @@ public abstract class PassQuest implements Listener {
 		if(questType == QuestType.WEEKLY && !PassManager.currentPass.weeklyQuests.containsKey(this)) return false;
 
 		double progression = passData.questCompletion.getOrDefault(refName, 0.0);
-		return progression < getQuestLevel().getRequirement(pitPlayer) * getMultiplier(pitPlayer);
+//		The upper code should work fine but had to use the lower code because of it being broken at the start of the pass
+//		return progression < getQuestLevel().getRequirement(pitPlayer);
+		return progression != Double.MAX_VALUE;
 	}
 
 	public void progressQuest(PitPlayer pitPlayer, double amount) {
 		if(!canProgressQuest(pitPlayer)) return;
 		PassData passData = pitPlayer.getPassData(PassManager.currentPass.startDate);
 		double newValue = passData.questCompletion.getOrDefault(refName, 0.0) + amount;
-		if(newValue >= getQuestLevel().getRequirement(pitPlayer) * getMultiplier(pitPlayer)) {
+		if(newValue >= getQuestLevel().getRequirement(pitPlayer)) {
 			complete(pitPlayer);
 			passData.questCompletion.put(refName, Double.MAX_VALUE);
 			return;
@@ -95,8 +97,8 @@ public abstract class PassQuest implements Listener {
 		PassData passData = pitPlayer.getPassData(PassManager.currentPass.startDate);
 		passData.totalPoints += getQuestLevel().rewardPoints;
 		Sounds.COMPLETE_QUEST.play(pitPlayer.player);
-		AOutput.send(pitPlayer.player, "&e&lQUEST!&7 You completed the quest " + getDisplayName() +
-				"&7 for &3" + getQuestLevel().rewardPoints + " &7quest points");
+		AOutput.send(pitPlayer.player, "&e&lQUEST!&7 Completed " + getDisplayName() +
+				"&7 earning &3" + getQuestLevel().rewardPoints + " &7quest points");
 	}
 
 	public String getDisplayName() {

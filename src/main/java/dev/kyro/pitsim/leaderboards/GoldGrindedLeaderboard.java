@@ -15,7 +15,7 @@ import java.util.UUID;
 
 public class GoldGrindedLeaderboard extends Leaderboard {
 	public GoldGrindedLeaderboard() {
-		super("total-gold");
+		super("total-gold", "&6Gold Grinded");
 	}
 
 	@Override

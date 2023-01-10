@@ -25,6 +25,7 @@ public class MapManager implements Listener {
 	public static Location initialDarkzoneSpawn = new Location(getDarkzone(), 310, 69, -136, -90, 0);
 
 	public static void onStart() {
+		if(PitSim.status == PitSim.ServerStatus.DARKZONE) return;
 		for(Player onlinePlayer : Bukkit.getOnlinePlayers()) {
 			if(PitSim.status == PitSim.ServerStatus.PITSIM) onlinePlayer.teleport(currentMap.getSpawn());
 			else onlinePlayer.teleport(darkzoneSpawn);
