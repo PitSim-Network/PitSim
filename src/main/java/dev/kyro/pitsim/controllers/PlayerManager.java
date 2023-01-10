@@ -511,7 +511,7 @@ public class PlayerManager implements Listener {
 			if(Misc.isAirOrNull(player.getInventory().getChestplate())) return;
 
 			Block block = event.getClickedBlock();
-			if(block.getType() == Material.ENCHANTMENT_TABLE) return;
+			if(block != null && block.getType() == Material.ENCHANTMENT_TABLE) return;
 
 			if(chestplateSwapCooldown.contains(player.getUniqueId())) {
 
