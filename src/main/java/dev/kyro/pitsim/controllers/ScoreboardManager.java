@@ -33,9 +33,7 @@ public class ScoreboardManager implements Listener {
 				for(Player player : Bukkit.getOnlinePlayers()) {
 					ItemStack leggings = player.getInventory().getLeggings();
 
-
 					int count = 0;
-
 					for(String goldEnchant : goldEnchants) {
 						if(Misc.isAirOrNull(leggings)) continue;
 						if(EnchantManager.getEnchantsOnItem(leggings).containsKey(EnchantManager.getEnchant(goldEnchant)))
@@ -50,10 +48,9 @@ public class ScoreboardManager implements Listener {
 						if(player.getWorld() != MapManager.getDarkzone())
 							FeatherBoardAPI.showScoreboard(player, "default");
 					}
-
 				}
 			}
-		}.runTaskTimerAsynchronously(PitSim.INSTANCE, 20 * 5, 20 * 5);
+		}.runTaskTimerAsynchronously(PitSim.INSTANCE, 20 * 5, 20);
 	}
 
 	@EventHandler
