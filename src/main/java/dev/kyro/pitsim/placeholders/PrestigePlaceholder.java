@@ -15,6 +15,6 @@ public class PrestigePlaceholder implements APAPIPlaceholder {
 	@Override
 	public String getValue(Player player) {
 		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
-		return AUtil.toRoman(pitPlayer.prestige);
+		return pitPlayer.prestige == 0 ? "0" : AUtil.toRoman(pitPlayer.prestige);
 	}
 }
