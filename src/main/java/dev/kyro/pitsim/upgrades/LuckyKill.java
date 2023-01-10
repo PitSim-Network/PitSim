@@ -43,7 +43,7 @@ public class LuckyKill extends RenownUpgrade {
 		if(UpgradeManager.hasUpgrade(player, this))
 			lore.add(ChatColor.GRAY + "Tier: " + ChatColor.GREEN + AUtil.toRoman(UpgradeManager.getTier(player, this)));
 		if(UpgradeManager.hasUpgrade(player, this)) lore.add("");
-		lore.add(ChatColor.GRAY + "Each tier:");
+		lore.add(ChatColor.GRAY + "Each Tier:");
 		lore.add(ChatColor.translateAlternateColorCodes('&', "&7Gain &f+1% &7chance when getting a"));
 		lore.add(ChatColor.translateAlternateColorCodes('&', "&7player kill to make it a &dLucky Kill&7."));
 		lore.add(ChatColor.translateAlternateColorCodes('&', "&7(Triples all kill rewards including"));

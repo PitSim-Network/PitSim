@@ -4,12 +4,10 @@ import de.tr7zw.nbtapi.NBTItem;
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.arcticapi.misc.AUtil;
 import dev.kyro.pitsim.PitSim;
-import dev.kyro.pitsim.brewing.ingredients.SpiderEye;
 import dev.kyro.pitsim.brewing.objects.BrewingIngredient;
 import dev.kyro.pitsim.brewing.objects.PotionEffect;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.enums.NBTTag;
-import dev.kyro.pitsim.misc.Misc;
 import net.kyori.adventure.audience.Audience;
 import net.kyori.adventure.bossbar.BossBar;
 import net.kyori.adventure.text.Component;
@@ -24,11 +22,8 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.PotionSplashEvent;
 import org.bukkit.event.player.PlayerItemConsumeEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
-import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.PotionMeta;
 import org.bukkit.potion.Potion;
-import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.checkerframework.checker.nullness.qual.NonNull;
 
@@ -102,26 +97,27 @@ public class PotionManager implements Listener {
 	public static ItemStack createPotion(BrewingIngredient identifier, BrewingIngredient potency, BrewingIngredient duration) {
 		Potion rawPotion = new Potion(identifier.potionType);
 		ItemStack potionStack = rawPotion.toItemStack(1);
-		PotionMeta meta = (PotionMeta) potionStack.getItemMeta();
-		meta.addCustomEffect(new org.bukkit.potion.PotionEffect(PotionEffectType.FIRE_RESISTANCE, 1, 0, false, false), true);
-		meta.setDisplayName(identifier.color + "Tier " + AUtil.toRoman(potency.tier) + " " + identifier.name + " Potion");
-		meta.addItemFlags(ItemFlag.HIDE_POTION_EFFECTS);
-		meta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
-		List<String> lore = new ArrayList<>(identifier.getPotencyLore(potency));
-		lore.add("");
-		if(identifier instanceof SpiderEye) lore.add(ChatColor.GRAY + "Duration: " + ChatColor.WHITE + "INSTANT!");
-		else
-			lore.add(ChatColor.GRAY + "Duration: " + ChatColor.WHITE + Misc.ticksToTimeUnformatted(identifier.getDuration(duration)));
-		lore.add("");
-		lore.add(identifier.color + "Tainted Potion");
-		meta.setLore(lore);
-		potionStack.setItemMeta(meta);
-		NBTItem nbtItem = new NBTItem(potionStack);
-		nbtItem.setInteger(NBTTag.POTION_IDENTIFIER.getRef(), identifier.tier);
-		nbtItem.setInteger(NBTTag.POTION_POTENCY.getRef(), potency.tier);
-		nbtItem.setInteger(NBTTag.POTION_DURATION.getRef(), duration.tier);
-		nbtItem.setBoolean(NBTTag.DROP_CONFIRM.getRef(), true);
-		return nbtItem.getItem();
+//		PotionMeta meta = (PotionMeta) potionStack.getItemMeta();
+//		meta.addCustomEffect(new org.bukkit.potion.PotionEffect(PotionEffectType.FIRE_RESISTANCE, 1, 0, false, false), true);
+//		meta.setDisplayName(identifier.color + "Tier " + AUtil.toRoman(potency.tier) + " " + identifier.name + " Potion");
+//		meta.addItemFlags(ItemFlag.HIDE_POTION_EFFECTS);
+//		meta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
+//		List<String> lore = new ArrayList<>(identifier.getPotencyLore(potency));
+//		lore.add("");
+//		if(identifier instanceof SpiderEye) lore.add(ChatColor.GRAY + "Duration: " + ChatColor.WHITE + "INSTANT!");
+//		else
+//			lore.add(ChatColor.GRAY + "Duration: " + ChatColor.WHITE + Misc.ticksToTimeUnformatted(identifier.getDuration(duration)));
+//		lore.add("");
+//		lore.add(identifier.color + "Tainted Potion");
+//		meta.setLore(lore);
+//		potionStack.setItemMeta(meta);
+//		NBTItem nbtItem = new NBTItem(potionStack);
+//		nbtItem.setInteger(NBTTag.POTION_IDENTIFIER.getRef(), identifier.tier);
+//		nbtItem.setInteger(NBTTag.POTION_POTENCY.getRef(), potency.tier);
+//		nbtItem.setInteger(NBTTag.POTION_DURATION.getRef(), duration.tier);
+////		nbtItem.setBoolean(NBTTag.DROP_CONFIRM.getRef(), true);
+//		return nbtItem.getItem();
+		return potionStack; //temp
 	}
 
 	public static ItemStack createSplashPotion(BrewingIngredient identifier, BrewingIngredient potency, BrewingIngredient duration) {
@@ -160,11 +156,11 @@ public class PotionManager implements Listener {
 		assert identifier != null;
 		assert potency != null;
 
-		if(identifier instanceof SpiderEye) {
-			identifier.administerEffect(player, potency, 0);
-		} else {
-			potionEffectList.add(new PotionEffect(player, identifier, potency, duration));
-		}
+//		if(identifier instanceof SpiderEye) {
+//			identifier.administerEffect(player, potency, 0);
+//		} else {
+//			potionEffectList.add(new PotionEffect(player, identifier, potency, duration));
+//		}
 	}
 
 	@EventHandler
@@ -194,11 +190,11 @@ public class PotionManager implements Listener {
 			assert identifier != null;
 			assert potency != null;
 
-			if(identifier instanceof SpiderEye) {
-				identifier.administerEffect(player, potency, 0);
-			} else {
-				potionEffectList.add(new PotionEffect(player, identifier, potency, Math.max(1, durationTime / event.getAffectedEntities().size())));
-			}
+//			if(identifier instanceof SpiderEye) {
+//				identifier.administerEffect(player, potency, 0);
+//			} else {
+//				potionEffectList.add(new PotionEffect(player, identifier, potency, Math.max(1, durationTime / event.getAffectedEntities().size())));
+//			}
 		}
 	}
 

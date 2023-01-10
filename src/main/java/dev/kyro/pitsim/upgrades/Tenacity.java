@@ -33,7 +33,7 @@ public class Tenacity extends RenownUpgrade {
 		if(UpgradeManager.hasUpgrade(player, this))
 			lore.add(ChatColor.GRAY + "Tier: " + ChatColor.GREEN + AUtil.toRoman(UpgradeManager.getTier(player, this)));
 		if(UpgradeManager.hasUpgrade(player, this)) lore.add("");
-		lore.add(ChatColor.GRAY + "Each tier:");
+		lore.add(ChatColor.GRAY + "Each Tier:");
 		lore.add(ChatColor.GRAY + "Heal " + ChatColor.RED + "0.5\u2764 " + ChatColor.GRAY + "on kill.");
 		meta.setLore(UpgradeManager.loreBuilder(this, player, lore, isCustomPanel));
 		item.setItemMeta(meta);

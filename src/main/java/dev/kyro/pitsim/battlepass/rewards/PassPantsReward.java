@@ -8,7 +8,6 @@ import dev.kyro.arcticapi.misc.AUtil;
 import dev.kyro.pitsim.battlepass.PassReward;
 import dev.kyro.pitsim.commands.FreshCommand;
 import dev.kyro.pitsim.controllers.EnchantManager;
-import dev.kyro.pitsim.controllers.ItemManager;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.enums.MysticType;
 import dev.kyro.pitsim.enums.NBTTag;
@@ -32,7 +31,7 @@ public class PassPantsReward extends PassReward {
 
 		for(int i = 0; i < count; i++) {
 			ItemStack jewel = FreshCommand.getFreshItem(MysticType.PANTS, PantColor.JEWEL);
-			jewel = ItemManager.enableDropConfirm(jewel);
+//			jewel = ItemManager.enableDropConfirm(jewel);
 			NBTItem nbtItem = new NBTItem(jewel);
 			nbtItem.setBoolean(NBTTag.IS_JEWEL.getRef(), true);
 			EnchantManager.setItemLore(nbtItem.getItem(), pitPlayer.player);

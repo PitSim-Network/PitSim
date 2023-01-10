@@ -36,7 +36,7 @@ public class DivineIntervention extends RenownUpgrade {
 		if(UpgradeManager.hasUpgrade(player, this))
 			lore.add(ChatColor.GRAY + "Tier: " + ChatColor.GREEN + AUtil.toRoman(UpgradeManager.getTier(player, this)));
 		if(UpgradeManager.hasUpgrade(player, this)) lore.add("");
-		lore.add(ChatColor.GRAY + "Each tier:");
+		lore.add(ChatColor.GRAY + "Each Tier:");
 		lore.add(ChatColor.YELLOW + "+5% chance " + ChatColor.GRAY + "to keep your");
 		lore.add(ChatColor.GRAY + "inventory on death.");
 		meta.setLore(UpgradeManager.loreBuilder(this, player, lore, isCustomPanel));

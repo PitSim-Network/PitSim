@@ -32,7 +32,7 @@ public class Chemist extends RenownUpgrade {
 		if(UpgradeManager.hasUpgrade(player, this))
 			lore.add(ChatColor.GRAY + "Tier: " + ChatColor.GREEN + AUtil.toRoman(UpgradeManager.getTier(player, this)));
 		if(UpgradeManager.hasUpgrade(player, this)) lore.add("");
-		lore.add(ChatColor.GRAY + "Each tier:");
+		lore.add(ChatColor.GRAY + "Each Tier:");
 		lore.add(ChatColor.GRAY + "Gain " + ChatColor.YELLOW + "+1 Potion Brewing Slot");
 		lore.add(ChatColor.GRAY + "in the " + ChatColor.DARK_PURPLE + "Darkzone" + ChatColor.GRAY + ".");
 		meta.setLore(UpgradeManager.loreBuilder(this, player, lore, isCustomPanel));

@@ -18,6 +18,10 @@ import dev.kyro.pitsim.adarkzone.BossManager;
 import dev.kyro.pitsim.adarkzone.DarkzoneManager;
 import dev.kyro.pitsim.adarkzone.PitBoss;
 import dev.kyro.pitsim.adarkzone.SubLevel;
+import dev.kyro.pitsim.adarkzone.BossManager;
+import dev.kyro.pitsim.adarkzone.DarkzoneManager;
+import dev.kyro.pitsim.adarkzone.PitBoss;
+import dev.kyro.pitsim.adarkzone.SubLevel;
 import dev.kyro.pitsim.battlepass.PassManager;
 import dev.kyro.pitsim.battlepass.quests.*;
 import dev.kyro.pitsim.battlepass.quests.daily.DailyBotKillQuest;
@@ -30,8 +34,6 @@ import dev.kyro.pitsim.boosters.PvPBooster;
 import dev.kyro.pitsim.boosters.XPBooster;
 import dev.kyro.pitsim.brewing.BrewingManager;
 import dev.kyro.pitsim.brewing.PotionManager;
-import dev.kyro.pitsim.brewing.ingredients.*;
-import dev.kyro.pitsim.brewing.objects.BrewingIngredient;
 import dev.kyro.pitsim.brewing.objects.PotionEffect;
 import dev.kyro.pitsim.commands.*;
 import dev.kyro.pitsim.commands.admin.*;
@@ -240,13 +242,12 @@ public class PitSim extends JavaPlugin {
 
 		registerEnchants();
 		registerCommands();
-		registerBrewingIngredients();
 		registerListeners();
 		registerHelmetAbilities();
 		registerKits();
 		if(getStatus().isDarkzone()) registerMobs();
-
 		registerCosmetics();
+		registerItems();
 
 		PassManager.registerPasses();
 		if(getStatus().isDarkzone()) AuctionManager.onStart();
@@ -518,8 +519,7 @@ public class PitSim extends JavaPlugin {
 		getCommand("donator").setExecutor(new DonatorCommand());
 		getCommand("renown").setExecutor(new RenownCommand());
 		getCommand("spawn").setExecutor(new SpawnCommand());
-		getCommand("crategive").setExecutor(new OldCrateGiveCommand());
-		getCommand("cg").setExecutor(new CrateGiveCommand());
+		getCommand("reward").setExecutor(new RewardCommand());
 		getCommand("store").setExecutor(new StoreCommand());
 		getCommand("shop").setExecutor(new StoreCommand());
 		getCommand("discord").setExecutor(new DiscordCommand());
@@ -578,17 +578,12 @@ public class PitSim extends JavaPlugin {
 		getServer().getPluginManager().registerEvents(new AFKManager(), this);
 		getServer().getPluginManager().registerEvents(new EnchantManager(), this);
 		getServer().getPluginManager().registerEvents(new TotallyLegitGem(), this);
-		getServer().getPluginManager().registerEvents(new ChunkOfVile(), this);
-//		getServer().getPluginManager().registerEvents(new NonAnticheat(), this);
-//		getServer().getPluginManager().registerEvents(new HelmetListeners(), this);
 		getServer().getPluginManager().registerEvents(new PitBlob(), this);
 		getServer().getPluginManager().registerEvents(new BackwardsCompatibility(), this);
-		getServer().getPluginManager().registerEvents(new YummyBread(), this);
 		getServer().getPluginManager().registerEvents(new BoosterManager(), this);
 		getServer().getPluginManager().registerEvents(new HopperManager(), this);
 		getServer().getPluginManager().registerEvents(new ResourcePackManager(), this);
 		getServer().getPluginManager().registerEvents(new StatManager(), this);
-//		getServer().getPluginManager().registerEvents(new LockdownManager(), this);
 		getServer().getPluginManager().registerEvents(new GoldenHelmet(), this);
 		getServer().getPluginManager().registerEvents(new MapManager(), this);
 		getServer().getPluginManager().registerEvents(new GuildIntegrationManager(), this);
@@ -658,6 +653,7 @@ public class PitSim extends JavaPlugin {
 		UpgradeManager.registerUpgrade(new TheWay());
 		UpgradeManager.registerUpgrade(new FastPass());
 		UpgradeManager.registerUpgrade(new Celebrity());
+		UpgradeManager.registerUpgrade(new BreadDealer());
 	}
 
 	private void registerHelmetAbilities() {
@@ -675,19 +671,6 @@ public class PitSim extends JavaPlugin {
 		KitManager.registerKit(new XPKit());
 		KitManager.registerKit(new GoldKit());
 		KitManager.registerKit(new PvPKit());
-	}
-
-	private void registerBrewingIngredients() {
-		BrewingIngredient.registerIngredient(new RottenFlesh());
-		BrewingIngredient.registerIngredient(new Bone());
-		BrewingIngredient.registerIngredient(new SpiderEye());
-		BrewingIngredient.registerIngredient(new Gunpowder());
-		BrewingIngredient.registerIngredient(new FermentedSpiderEye());
-		BrewingIngredient.registerIngredient(new MagmaCream());
-		BrewingIngredient.registerIngredient(new RawPork());
-		BrewingIngredient.registerIngredient(new WitherSkull());
-		BrewingIngredient.registerIngredient(new IronIngot());
-		BrewingIngredient.registerIngredient(new EnderPearl());
 	}
 
 	private void registerPassQuests() {
@@ -792,6 +775,10 @@ public class PitSim extends JavaPlugin {
 		CosmeticManager.registerCosmetic(new Halo());
 
 		CosmeticManager.loadForOnlinePlayers();
+	}
+
+	private void registerItems() {
+		ItemFactory.registerItem(new FunkyFeather());
 	}
 
 	private void loadConfig() {

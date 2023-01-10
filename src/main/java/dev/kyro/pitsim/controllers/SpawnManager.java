@@ -7,11 +7,10 @@ import com.sk89q.worldguard.protection.ApplicableRegionSet;
 import com.sk89q.worldguard.protection.managers.RegionManager;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import de.myzelyam.api.vanish.VanishAPI;
-import de.tr7zw.nbtapi.NBTItem;
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.PitSim;
+import dev.kyro.pitsim.aitems.PitItem;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
-import dev.kyro.pitsim.enums.NBTTag;
 import dev.kyro.pitsim.events.AttackEvent;
 import dev.kyro.pitsim.events.KillEvent;
 import dev.kyro.pitsim.events.OofEvent;
@@ -144,10 +143,12 @@ public class SpawnManager implements Listener {
 	@EventHandler
 	public void onDrop(PlayerDropItemEvent event) {
 		if(!isInSpawn(event.getItemDrop().getLocation())) return;
-		ItemStack dropped = event.getItemDrop().getItemStack();
-		NBTItem nbtItem = new NBTItem(dropped);
-		if(nbtItem.hasKey(NBTTag.DROP_CONFIRM.getRef())) return;
-		if(dropped.getType() == Material.ENDER_CHEST || dropped.getType() == Material.TRIPWIRE_HOOK) return;
+		ItemStack itemStack = event.getItemDrop().getItemStack();
+		if(itemStack.getType() == Material.ENDER_CHEST || itemStack.getType() == Material.TRIPWIRE_HOOK) return;
+
+		PitItem pitItem = ItemFactory.getItem(itemStack);
+		if(pitItem == null || !pitItem.hasDropConfirm || !pitItem.destroyIfDroppedInSpawn) return;
+
 		event.getItemDrop().remove();
 		Sounds.NO.play(event.getPlayer());
 		AOutput.send(event.getPlayer(), "&c&lITEM DELETED!&7 Dropped in spawn area.");

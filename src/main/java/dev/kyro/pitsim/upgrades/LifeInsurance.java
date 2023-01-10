@@ -35,7 +35,7 @@ public class LifeInsurance extends RenownUpgrade {
 		if(UpgradeManager.hasUpgrade(player, this) && UpgradeManager.getTier(player, this) > 0)
 			lore.add(ChatColor.GRAY + "Tier: " + ChatColor.GREEN + AUtil.toRoman(UpgradeManager.getTier(player, this)));
 		if(UpgradeManager.hasUpgrade(player, this)) lore.add("");
-		lore.add(ChatColor.GRAY + "Each tier:");
+		lore.add(ChatColor.GRAY + "Each Tier:");
 		lore.add(ChatColor.translateAlternateColorCodes('&', "&7Retain mystic lives on death when on"));
 		lore.add(ChatColor.translateAlternateColorCodes('&', "&eTier I: &f500 &dUber"));
 		lore.add(ChatColor.translateAlternateColorCodes('&', "&eTier II: &f450 &dUber"));

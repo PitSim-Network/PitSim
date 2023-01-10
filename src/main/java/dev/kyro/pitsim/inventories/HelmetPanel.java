@@ -196,9 +196,9 @@ public class HelmetPanel extends AGUIPanel {
 			}
 			loreBuilder.addLore("");
 			if(passive == HelmetSystem.Passive.DAMAGE_REDUCTION) {
-				loreBuilder.addLore("&7Each tier:", passive.color + "-" + passive.baseUnit + "% " + passive.refName, "", "&eLevel up helmet to upgrade!");
+				loreBuilder.addLore("&7Each Tier:", passive.color + "-" + passive.baseUnit + "% " + passive.refName, "", "&eLevel up helmet to upgrade!");
 			} else
-				loreBuilder.addLore("&7Each tier:", passive.color + "+" + passive.baseUnit + "% " + passive.refName, "", "&eLevel up helmet to upgrade!");
+				loreBuilder.addLore("&7Each Tier:", passive.color + "+" + passive.baseUnit + "% " + passive.refName, "", "&eLevel up helmet to upgrade!");
 			builder.setLore(loreBuilder);
 			getInventory().setItem(k, builder.getItemStack());
 			k += 2;

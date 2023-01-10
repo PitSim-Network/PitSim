@@ -3,9 +3,10 @@ package dev.kyro.pitsim.battlepass.rewards;
 import dev.kyro.arcticapi.builders.AItemStackBuilder;
 import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.arcticapi.misc.AOutput;
+import dev.kyro.pitsim.aitems.FunkyFeather;
 import dev.kyro.pitsim.battlepass.PassReward;
+import dev.kyro.pitsim.controllers.ItemFactory;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
-import dev.kyro.pitsim.misc.FunkyFeather;
 import dev.kyro.pitsim.misc.Misc;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
@@ -24,7 +25,7 @@ public class PassFeatherReward extends PassReward {
 			return false;
 		}
 
-		FunkyFeather.giveFeather(pitPlayer.player, count);
+		ItemFactory.getItem(FunkyFeather.class).giveItem(pitPlayer.player, count);
 		return true;
 	}
 
