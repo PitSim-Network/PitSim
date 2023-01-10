@@ -15,6 +15,7 @@ depend:
   - LiteBans
   - PremiumVanish
   - GrimAC
+  - DeluxeChat
 commands:
   pitsim:
   ps:
