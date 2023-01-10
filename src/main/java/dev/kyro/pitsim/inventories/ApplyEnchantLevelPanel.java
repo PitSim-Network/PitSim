@@ -5,7 +5,7 @@ import dev.kyro.arcticapi.builders.AItemStackBuilder;
 import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.arcticapi.gui.AGUI;
 import dev.kyro.arcticapi.gui.AGUIPanel;
-import dev.kyro.pitsim.commands.FreshCommand;
+import dev.kyro.pitsim.aitems.MysticFactory;
 import dev.kyro.pitsim.controllers.EnchantManager;
 import dev.kyro.pitsim.controllers.objects.PitEnchant;
 import dev.kyro.pitsim.enums.MysticType;
@@ -58,7 +58,7 @@ public class ApplyEnchantLevelPanel extends AGUIPanel {
 			if(nbtItem.getInteger(NBTTag.ITEM_TOKENS.getRef()) + i + 1 > 8) continue;
 			if(enchant.isRare && nbtItem.getInteger(NBTTag.ITEM_RTOKENS.getRef()) + i + 1 > 4) continue;
 
-			ItemStack displayStack = FreshCommand.getFreshItem(MysticType.getMysticType(mystic), PantColor.getPantColor(mystic));
+			ItemStack displayStack = MysticFactory.getFreshItem(MysticType.getMysticType(mystic), PantColor.getPantColor(mystic));
 			try {
 				displayStack = EnchantManager.addEnchant(displayStack, enchant, i + 1, false);
 			} catch(Exception ignored) {}

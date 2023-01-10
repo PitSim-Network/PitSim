@@ -1,10 +1,6 @@
 package dev.kyro.pitsim.enums;
 
-import dev.kyro.pitsim.aitems.AncientGemShard;
-import dev.kyro.pitsim.aitems.ChunkOfVile;
-import dev.kyro.pitsim.aitems.CorruptedFeather;
-import dev.kyro.pitsim.aitems.FunkyFeather;
-import dev.kyro.pitsim.commands.FreshCommand;
+import dev.kyro.pitsim.aitems.*;
 import dev.kyro.pitsim.commands.JewelCommand;
 import dev.kyro.pitsim.controllers.EnchantManager;
 import dev.kyro.pitsim.controllers.ItemFactory;
@@ -18,9 +14,9 @@ public enum ItemType {
 	FEATHERS_5(2, ItemFactory.getItem(FunkyFeather.class).getItem(5), ChatColor.DARK_AQUA + "5x Funky Feather", 25, 25),
 	VILE_3(3, ItemFactory.getItem(ChunkOfVile.class).getItem(3), ChatColor.DARK_PURPLE + "3x Chunk of Vile", 50, 10),
 	VILE_5(4, ItemFactory.getItem(ChunkOfVile.class).getItem(5), ChatColor.DARK_PURPLE + "5x Chunk of Vile", 25, 25),
-	COMP_JEWEL_SWORD(5, FreshCommand.getFreshItem(MysticType.SWORD, PantColor.BLUE), ChatColor.YELLOW + "Completed Hidden Jewel Sword", 25, 25),
-	COMP_JEWEL_BOW(6, FreshCommand.getFreshItem(MysticType.BOW, PantColor.BLUE), ChatColor.AQUA + "Completed Hidden Jewel Bow", 25, 25),
-	COMP_JEWEL_PANTS(7, FreshCommand.getFreshItem(MysticType.PANTS, PantColor.JEWEL), ChatColor.DARK_AQUA + "Completed Hidden Jewel Pants", 25, 25),
+	COMP_JEWEL_SWORD(5, MysticFactory.getFreshItem(MysticType.SWORD, PantColor.BLUE), ChatColor.YELLOW + "Completed Hidden Jewel Sword", 25, 25),
+	COMP_JEWEL_BOW(6, MysticFactory.getFreshItem(MysticType.BOW, PantColor.BLUE), ChatColor.AQUA + "Completed Hidden Jewel Bow", 25, 25),
+	COMP_JEWEL_PANTS(7, MysticFactory.getFreshItem(MysticType.PANTS, PantColor.JEWEL), ChatColor.DARK_AQUA + "Completed Hidden Jewel Pants", 25, 25),
 	JEWEL_SWORD(8, JewelCommand.getJewel(MysticType.SWORD, null, 0), ChatColor.YELLOW + "Hidden Jewel Sword", 25, 25),
 	JEWEL_BOW(9, JewelCommand.getJewel(MysticType.BOW, null, 0), ChatColor.AQUA + "Hidden Jewel Bow", 25, 25),
 	JEWEL_PANTS(10, JewelCommand.getJewel(MysticType.PANTS, null, 0), ChatColor.DARK_AQUA + "Hidden Jewel Pants", 25, 25),

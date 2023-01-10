@@ -5,6 +5,7 @@ import dev.kyro.arcticapi.commands.ACommand;
 import dev.kyro.arcticapi.commands.AMultiCommand;
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.arcticapi.misc.AUtil;
+import dev.kyro.pitsim.aitems.MysticFactory;
 import dev.kyro.pitsim.controllers.EnchantManager;
 import dev.kyro.pitsim.controllers.objects.PitEnchant;
 import dev.kyro.pitsim.enums.MysticType;
@@ -56,7 +57,7 @@ public class JewelCommand extends ACommand {
 	}
 
 	public static ItemStack getJewel(MysticType mysticType, String pitEnchant, int maxLives) {
-		ItemStack jewel = FreshCommand.getFreshItem(mysticType, PantColor.JEWEL);
+		ItemStack jewel = MysticFactory.getFreshItem(mysticType, PantColor.JEWEL);
 //		jewel = ItemManager.enableDropConfirm(jewel);
 		assert jewel != null;
 		NBTItem nbtItem = new NBTItem(jewel);

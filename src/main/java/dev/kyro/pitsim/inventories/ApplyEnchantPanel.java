@@ -2,7 +2,7 @@ package dev.kyro.pitsim.inventories;
 
 import dev.kyro.arcticapi.gui.AGUI;
 import dev.kyro.arcticapi.gui.AGUIPanel;
-import dev.kyro.pitsim.commands.FreshCommand;
+import dev.kyro.pitsim.aitems.MysticFactory;
 import dev.kyro.pitsim.controllers.EnchantManager;
 import dev.kyro.pitsim.controllers.objects.PitEnchant;
 import dev.kyro.pitsim.enchants.SelfCheckout;
@@ -58,7 +58,7 @@ public class ApplyEnchantPanel extends AGUIPanel {
 
 			if(i < 9 || i % 9 == 0 || i % 9 == 8) continue;
 
-			ItemStack displayStack = FreshCommand.getFreshItem(MysticType.getMysticType(mystic), PantColor.getPantColor(mystic));
+			ItemStack displayStack = MysticFactory.getFreshItem(MysticType.getMysticType(mystic), PantColor.getPantColor(mystic));
 			try {
 				displayStack = EnchantManager.addEnchant(displayStack, applicableEnchants.get(count++), 3, false);
 			} catch(Exception ignored) {}

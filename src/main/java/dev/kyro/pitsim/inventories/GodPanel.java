@@ -5,7 +5,6 @@ import dev.kyro.arcticapi.gui.AGUI;
 import dev.kyro.arcticapi.gui.AGUIPanel;
 import dev.kyro.pitsim.aitems.*;
 import dev.kyro.pitsim.aitems.mobdrops.*;
-import dev.kyro.pitsim.commands.FreshCommand;
 import dev.kyro.pitsim.controllers.EnchantManager;
 import dev.kyro.pitsim.controllers.ItemFactory;
 import dev.kyro.pitsim.enums.MysticType;
@@ -49,24 +48,24 @@ public class GodPanel extends AGUIPanel {
 			addItem(itemStack);
 		} catch(Exception ignored) {}
 
-		addItem(FreshCommand.getFreshItem(MysticType.TAINTED_SCYTHE, null));
-		addItem(FreshCommand.getFreshItem(MysticType.TAINTED_CHESTPLATE, null));
+		addItem(MysticFactory.getFreshItem(MysticType.TAINTED_SCYTHE, null));
+		addItem(MysticFactory.getFreshItem(MysticType.TAINTED_CHESTPLATE, null));
 
-		itemStack = FreshCommand.getFreshItem(MysticType.SWORD, PantColor.JEWEL);
+		itemStack = MysticFactory.getFreshItem(MysticType.SWORD, PantColor.JEWEL);
 //		itemStack = ItemManager.enableDropConfirm(itemStack);
 		nbtItem = new NBTItem(itemStack);
 		nbtItem.setBoolean(NBTTag.IS_JEWEL.getRef(), true);
 		EnchantManager.setItemLore(nbtItem.getItem(), player);
 		addItem(nbtItem.getItem());
 
-		itemStack = FreshCommand.getFreshItem(MysticType.BOW, PantColor.JEWEL);
+		itemStack = MysticFactory.getFreshItem(MysticType.BOW, PantColor.JEWEL);
 //		itemStack = ItemManager.enableDropConfirm(itemStack);
 		nbtItem = new NBTItem(itemStack);
 		nbtItem.setBoolean(NBTTag.IS_JEWEL.getRef(), true);
 		EnchantManager.setItemLore(nbtItem.getItem(), player);
 		addItem(nbtItem.getItem());
 
-		itemStack = FreshCommand.getFreshItem(MysticType.PANTS, PantColor.JEWEL);
+		itemStack = MysticFactory.getFreshItem(MysticType.PANTS, PantColor.JEWEL);
 //		itemStack = ItemManager.enableDropConfirm(itemStack);
 		nbtItem = new NBTItem(itemStack);
 		nbtItem.setBoolean(NBTTag.IS_JEWEL.getRef(), true);

@@ -5,8 +5,8 @@ import dev.kyro.arcticapi.builders.AItemStackBuilder;
 import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.arcticapi.misc.AUtil;
+import dev.kyro.pitsim.aitems.MysticFactory;
 import dev.kyro.pitsim.battlepass.PassReward;
-import dev.kyro.pitsim.commands.FreshCommand;
 import dev.kyro.pitsim.controllers.EnchantManager;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.enums.MysticType;
@@ -31,7 +31,7 @@ public class PassSwordReward extends PassReward {
 		}
 
 		for(int i = 0; i < count; i++) {
-			ItemStack jewelSword = FreshCommand.getFreshItem(MysticType.SWORD, PantColor.JEWEL);
+			ItemStack jewelSword = MysticFactory.getFreshItem(MysticType.SWORD, PantColor.JEWEL);
 //			jewelSword = ItemManager.enableDropConfirm(jewelSword);
 			NBTItem nbtItemSword = new NBTItem(jewelSword);
 			nbtItemSword.setBoolean(NBTTag.IS_JEWEL.getRef(), true);

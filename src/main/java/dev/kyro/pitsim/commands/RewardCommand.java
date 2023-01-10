@@ -7,6 +7,7 @@ import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.aitems.AncientGemShard;
 import dev.kyro.pitsim.aitems.ChunkOfVile;
 import dev.kyro.pitsim.aitems.FunkyFeather;
+import dev.kyro.pitsim.aitems.MysticFactory;
 import dev.kyro.pitsim.battlepass.PassData;
 import dev.kyro.pitsim.battlepass.PassManager;
 import dev.kyro.pitsim.controllers.EnchantManager;
@@ -58,7 +59,7 @@ public class RewardCommand implements CommandExecutor {
 				return false;
 			case "hjsword":
 				for(int i = 0; i < amount; i++) {
-					ItemStack jewelSword = FreshCommand.getFreshItem(MysticType.SWORD, PantColor.JEWEL);
+					ItemStack jewelSword = MysticFactory.getFreshItem(MysticType.SWORD, PantColor.JEWEL);
 //					jewelSword = ItemManager.enableDropConfirm(jewelSword);
 					NBTItem nbtItemSword = new NBTItem(jewelSword);
 					nbtItemSword.setBoolean(NBTTag.IS_JEWEL.getRef(), true);
@@ -68,7 +69,7 @@ public class RewardCommand implements CommandExecutor {
 				return false;
 			case "hjbow":
 				for(int i = 0; i < amount; i++) {
-					ItemStack jewelBow = FreshCommand.getFreshItem(MysticType.BOW, PantColor.JEWEL);
+					ItemStack jewelBow = MysticFactory.getFreshItem(MysticType.BOW, PantColor.JEWEL);
 //					jewelBow = ItemManager.enableDropConfirm(jewelBow);
 					NBTItem nbtItemBow = new NBTItem(jewelBow);
 					nbtItemBow.setBoolean(NBTTag.IS_JEWEL.getRef(), true);
@@ -78,7 +79,7 @@ public class RewardCommand implements CommandExecutor {
 				return false;
 			case "hjpants":
 				for(int i = 0; i < amount; i++) {
-					ItemStack jewel = FreshCommand.getFreshItem(MysticType.PANTS, PantColor.JEWEL);
+					ItemStack jewel = MysticFactory.getFreshItem(MysticType.PANTS, PantColor.JEWEL);
 //					jewel = ItemManager.enableDropConfirm(jewel);
 					NBTItem nbtItem = new NBTItem(jewel);
 					nbtItem.setBoolean(NBTTag.IS_JEWEL.getRef(), true);
@@ -88,7 +89,7 @@ public class RewardCommand implements CommandExecutor {
 				return false;
 			case "hjbundle":
 				for(int i = 0; i < amount; i++) {
-					ItemStack jbsword = FreshCommand.getFreshItem(MysticType.SWORD, PantColor.JEWEL);
+					ItemStack jbsword = MysticFactory.getFreshItem(MysticType.SWORD, PantColor.JEWEL);
 //					jbsword = ItemManager.enableDropConfirm(jbsword);
 					NBTItem nbtjbsword = new NBTItem(jbsword);
 					nbtjbsword.setBoolean(NBTTag.IS_JEWEL.getRef(), true);
@@ -97,7 +98,7 @@ public class RewardCommand implements CommandExecutor {
 				}
 
 				for(int i = 0; i < amount; i++) {
-					ItemStack jbbow = FreshCommand.getFreshItem(MysticType.BOW, PantColor.JEWEL);
+					ItemStack jbbow = MysticFactory.getFreshItem(MysticType.BOW, PantColor.JEWEL);
 //					jbbow = ItemManager.enableDropConfirm(jbbow);
 					NBTItem nbtjbbow = new NBTItem(jbbow);
 					nbtjbbow.setBoolean(NBTTag.IS_JEWEL.getRef(), true);
@@ -106,7 +107,7 @@ public class RewardCommand implements CommandExecutor {
 				}
 
 				for(int i = 0; i < amount; i++) {
-					ItemStack jb = FreshCommand.getFreshItem(MysticType.PANTS, PantColor.JEWEL);
+					ItemStack jb = MysticFactory.getFreshItem(MysticType.PANTS, PantColor.JEWEL);
 //					jb = ItemManager.enableDropConfirm(jb);
 					NBTItem nbtjb = new NBTItem(jb);
 					nbtjb.setBoolean(NBTTag.IS_JEWEL.getRef(), true);

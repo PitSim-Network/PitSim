@@ -8,8 +8,8 @@ import dev.kyro.arcticapi.misc.AUtil;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.aitems.ChunkOfVile;
 import dev.kyro.pitsim.aitems.FunkyFeather;
+import dev.kyro.pitsim.aitems.MysticFactory;
 import dev.kyro.pitsim.battlepass.quests.CompleteUbersQuest;
-import dev.kyro.pitsim.commands.FreshCommand;
 import dev.kyro.pitsim.controllers.*;
 import dev.kyro.pitsim.controllers.objects.Megastreak;
 import dev.kyro.pitsim.controllers.objects.PitEnchant;
@@ -359,7 +359,7 @@ public class Uberstreak extends Megastreak {
 			String displayName = Misc.getDisplayName(player);
 			ItemStack displayStack = null;
 			if(this == JEWEL_SWORD) {
-				ItemStack jewelSword = FreshCommand.getFreshItem(MysticType.SWORD, PantColor.JEWEL);
+				ItemStack jewelSword = MysticFactory.getFreshItem(MysticType.SWORD, PantColor.JEWEL);
 //				jewelSword = ItemManager.enableDropConfirm(jewelSword);
 				NBTItem nbtItem = new NBTItem(jewelSword);
 				nbtItem.setBoolean(NBTTag.IS_JEWEL.getRef(), true);
@@ -367,7 +367,7 @@ public class Uberstreak extends Megastreak {
 				AUtil.giveItemSafely(player, nbtItem.getItem());
 				displayStack = getDisplayStack("&3Hidden Jewel Sword", nbtItem.getItem());
 			} else if(this == JEWEL_BOW) {
-				ItemStack jewelBow = FreshCommand.getFreshItem(MysticType.BOW, PantColor.JEWEL);
+				ItemStack jewelBow = MysticFactory.getFreshItem(MysticType.BOW, PantColor.JEWEL);
 //				jewelBow = ItemManager.enableDropConfirm(jewelBow);
 				NBTItem nbtItem = new NBTItem(jewelBow);
 				nbtItem.setBoolean(NBTTag.IS_JEWEL.getRef(), true);
@@ -375,7 +375,7 @@ public class Uberstreak extends Megastreak {
 				AUtil.giveItemSafely(player, nbtItem.getItem());
 				displayStack = getDisplayStack("&3Hidden Jewel Bow", nbtItem.getItem());
 			} else if(this == JEWEL_PANTS) {
-				ItemStack jewel = FreshCommand.getFreshItem(MysticType.PANTS, PantColor.JEWEL);
+				ItemStack jewel = MysticFactory.getFreshItem(MysticType.PANTS, PantColor.JEWEL);
 //				jewel = ItemManager.enableDropConfirm(jewel);
 				NBTItem nbtItem = new NBTItem(jewel);
 				nbtItem.setBoolean(NBTTag.IS_JEWEL.getRef(), true);
@@ -383,21 +383,21 @@ public class Uberstreak extends Megastreak {
 				AUtil.giveItemSafely(player, nbtItem.getItem());
 				displayStack = getDisplayStack("&3Hidden Jewel Pants", nbtItem.getItem());
 			} else if(this == JEWEL_BUNDLE) {
-				ItemStack jbsword = FreshCommand.getFreshItem(MysticType.SWORD, PantColor.JEWEL);
+				ItemStack jbsword = MysticFactory.getFreshItem(MysticType.SWORD, PantColor.JEWEL);
 //				jbsword = ItemManager.enableDropConfirm(jbsword);
 				NBTItem nbtjbsword = new NBTItem(jbsword);
 				nbtjbsword.setBoolean(NBTTag.IS_JEWEL.getRef(), true);
 				EnchantManager.setItemLore(nbtjbsword.getItem(), player);
 				AUtil.giveItemSafely(player, nbtjbsword.getItem());
 
-				ItemStack jbbow = FreshCommand.getFreshItem(MysticType.BOW, PantColor.JEWEL);
+				ItemStack jbbow = MysticFactory.getFreshItem(MysticType.BOW, PantColor.JEWEL);
 //				jbbow = ItemManager.enableDropConfirm(jbbow);
 				NBTItem nbtjbbow = new NBTItem(jbbow);
 				nbtjbbow.setBoolean(NBTTag.IS_JEWEL.getRef(), true);
 				EnchantManager.setItemLore(nbtjbbow.getItem(), player);
 				AUtil.giveItemSafely(player, nbtjbbow.getItem());
 
-				ItemStack jb = FreshCommand.getFreshItem(MysticType.PANTS, PantColor.JEWEL);
+				ItemStack jb = MysticFactory.getFreshItem(MysticType.PANTS, PantColor.JEWEL);
 //				jb = ItemManager.enableDropConfirm(jb);
 				NBTItem nbtjb = new NBTItem(jb);
 				nbtjb.setBoolean(NBTTag.IS_JEWEL.getRef(), true);

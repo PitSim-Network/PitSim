@@ -3,7 +3,7 @@ package dev.kyro.pitsim.inventories;
 import de.tr7zw.nbtapi.NBTItem;
 import dev.kyro.arcticapi.gui.AGUI;
 import dev.kyro.arcticapi.gui.AGUIPanel;
-import dev.kyro.pitsim.commands.FreshCommand;
+import dev.kyro.pitsim.aitems.MysticFactory;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.enums.NBTTag;
 import dev.kyro.pitsim.enums.PantColor;
@@ -53,7 +53,7 @@ public class PantsColorPanel extends AGUIPanel {
 
 			if(Misc.isAirOrNull(getInventory().getItem(slot)) || !getInventory().getItem(slot).getType().equals(Material.LEATHER_LEGGINGS))
 				return;
-			if(FreshCommand.isFresh(player.getInventory().getLeggings()) || Misc.isAirOrNull(player.getInventory().getLeggings()))
+			if(MysticFactory.isFresh(player.getInventory().getLeggings()) || Misc.isAirOrNull(player.getInventory().getLeggings()))
 				return;
 			if(!player.hasPermission("pitsim.pantscolor")) return;
 
@@ -110,7 +110,7 @@ public class PantsColorPanel extends AGUIPanel {
 			pantslore.add("");
 			if(player.getInventory().getLeggings() == null || player.getInventory().getLeggings().getType() != Material.LEATHER_LEGGINGS || !player.getInventory().getLeggings().hasItemMeta()) {
 				pantslore.add(ChatColor.GRAY + "Wearing: " + ChatColor.RED + "None!");
-			} else if(Objects.equals(PantColor.getPantColor(player.getInventory().getLeggings()), PantColor.JEWEL) || FreshCommand.isFresh(player.getInventory().getLeggings())) {
+			} else if(Objects.equals(PantColor.getPantColor(player.getInventory().getLeggings()), PantColor.JEWEL) || MysticFactory.isFresh(player.getInventory().getLeggings())) {
 				pantslore.add(ChatColor.GRAY + "Wearing: " + ChatColor.RED + "Undyeable pants!");
 			} else {
 				pantslore.add(ChatColor.GRAY + "Wearing: " + player.getInventory().getLeggings().getItemMeta().getDisplayName());

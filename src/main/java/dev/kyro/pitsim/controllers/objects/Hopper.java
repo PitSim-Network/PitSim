@@ -4,7 +4,7 @@ import com.comphenix.protocol.PacketType;
 import com.comphenix.protocol.events.PacketContainer;
 import com.comphenix.protocol.wrappers.WrappedDataWatcher;
 import dev.kyro.pitsim.PitSim;
-import dev.kyro.pitsim.commands.FreshCommand;
+import dev.kyro.pitsim.aitems.MysticFactory;
 import dev.kyro.pitsim.controllers.*;
 import dev.kyro.pitsim.enchants.Hearts;
 import dev.kyro.pitsim.enums.MysticType;
@@ -28,7 +28,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.Vector;
 
-import java.lang.reflect.InvocationTargetException;
 import java.util.*;
 
 public class Hopper {
@@ -272,7 +271,7 @@ public class Hopper {
 					equipmentMap.put(Equipment.EquipmentSlot.BOOTS, new ItemStack(Material.DIAMOND_BOOTS));
 					break;
 				case MYSTIC:
-					ItemStack mysticSword = FreshCommand.getFreshItem(MysticType.SWORD, null);
+					ItemStack mysticSword = MysticFactory.getFreshItem(MysticType.SWORD, null);
 					try {
 						mysticSword = EnchantManager.addEnchant(mysticSword, EnchantManager.getEnchant("sharpness"), (int) (Math.random() * 11), false);
 						mysticSword = EnchantManager.addEnchant(mysticSword, EnchantManager.getEnchant("lifesteal"), 2, false);
@@ -280,7 +279,7 @@ public class Hopper {
 							mysticSword = EnchantManager.addEnchant(mysticSword, EnchantManager.getEnchant("perun"), 3, false);
 					} catch(Exception ignored) {
 					}
-					ItemStack mysticPants = FreshCommand.getFreshItem(MysticType.PANTS, PantColor.getNormalRandom());
+					ItemStack mysticPants = MysticFactory.getFreshItem(MysticType.PANTS, PantColor.getNormalRandom());
 					try {
 						mysticPants = EnchantManager.addEnchant(mysticPants, EnchantManager.getEnchant("mirror"), 2, false);
 						mysticPants = EnchantManager.addEnchant(mysticPants, EnchantManager.getEnchant("protection"), 3, false);
@@ -299,7 +298,7 @@ public class Hopper {
 					equipmentMap.put(Equipment.EquipmentSlot.BOOTS, new ItemStack(Material.DIAMOND_BOOTS));
 					break;
 				case VENOM:
-					ItemStack venoms = FreshCommand.getFreshItem(MysticType.PANTS, PantColor.DARK);
+					ItemStack venoms = MysticFactory.getFreshItem(MysticType.PANTS, PantColor.DARK);
 					try {
 						venoms = EnchantManager.addEnchant(venoms, EnchantManager.getEnchant("venom"), 1, false);
 					} catch(Exception ignored) {
@@ -312,7 +311,7 @@ public class Hopper {
 					equipmentMap.put(Equipment.EquipmentSlot.BOOTS, new ItemStack(Material.DIAMOND_BOOTS));
 					break;
 				case GSET:
-					ItemStack gsetSword = FreshCommand.getFreshItem(MysticType.SWORD, null);
+					ItemStack gsetSword = MysticFactory.getFreshItem(MysticType.SWORD, null);
 					double random = Math.random();
 //					double random = 0.3;
 					try {
@@ -330,7 +329,7 @@ public class Hopper {
 						}
 					} catch(Exception ignored) {
 					}
-					ItemStack gsetPants = FreshCommand.getFreshItem(MysticType.PANTS, PantColor.getNormalRandom());
+					ItemStack gsetPants = MysticFactory.getFreshItem(MysticType.PANTS, PantColor.getNormalRandom());
 					try {
 
 						gsetPants = EnchantManager.addEnchant(gsetPants, EnchantManager.getEnchant("cf"), 3, false);

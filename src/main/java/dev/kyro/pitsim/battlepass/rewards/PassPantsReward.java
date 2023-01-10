@@ -5,8 +5,8 @@ import dev.kyro.arcticapi.builders.AItemStackBuilder;
 import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.arcticapi.misc.AUtil;
+import dev.kyro.pitsim.aitems.MysticFactory;
 import dev.kyro.pitsim.battlepass.PassReward;
-import dev.kyro.pitsim.commands.FreshCommand;
 import dev.kyro.pitsim.controllers.EnchantManager;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.enums.MysticType;
@@ -30,7 +30,7 @@ public class PassPantsReward extends PassReward {
 		}
 
 		for(int i = 0; i < count; i++) {
-			ItemStack jewel = FreshCommand.getFreshItem(MysticType.PANTS, PantColor.JEWEL);
+			ItemStack jewel = MysticFactory.getFreshItem(MysticType.PANTS, PantColor.JEWEL);
 //			jewel = ItemManager.enableDropConfirm(jewel);
 			NBTItem nbtItem = new NBTItem(jewel);
 			nbtItem.setBoolean(NBTTag.IS_JEWEL.getRef(), true);
@@ -42,7 +42,7 @@ public class PassPantsReward extends PassReward {
 
 	@Override
 	public ItemStack getDisplayItem(PitPlayer pitPlayer, boolean hasClaimed) {
-		ItemStack itemStack = FreshCommand.getFreshItem(MysticType.PANTS, PantColor.JEWEL);
+		ItemStack itemStack = MysticFactory.getFreshItem(MysticType.PANTS, PantColor.JEWEL);
 		new AItemStackBuilder(itemStack)
 				.setName("&3&lPants Reward")
 				.setLore(new ALoreBuilder(

@@ -1,18 +1,14 @@
 package dev.kyro.pitsim.inventories;
 
-import de.tr7zw.nbtapi.NBTItem;
 import dev.kyro.arcticapi.gui.AGUI;
 import dev.kyro.arcticapi.gui.AGUIPanel;
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.arcticapi.misc.AUtil;
-import dev.kyro.pitsim.commands.FreshCommand;
+import dev.kyro.pitsim.aitems.MysticFactory;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.enums.MysticType;
-import dev.kyro.pitsim.enums.NBTTag;
 import dev.kyro.pitsim.enums.PantColor;
-import dev.kyro.pitsim.misc.Misc;
 import dev.kyro.pitsim.misc.Sounds;
-import net.milkbowl.vault.chat.Chat;
 import org.bukkit.ChatColor;
 import org.bukkit.Color;
 import org.bukkit.Material;
@@ -58,7 +54,7 @@ public class CraftTaintedPanel extends AGUIPanel {
 			}
 			if(slot == 11) {
 				if(canBuy(player, 100)) {
-					AUtil.giveItemSafely(player, FreshCommand.getFreshItem(MysticType.TAINTED_SCYTHE, PantColor.RED));
+					AUtil.giveItemSafely(player, MysticFactory.getFreshItem(MysticType.TAINTED_SCYTHE, PantColor.RED));
 					PitPlayer.getPitPlayer(player).taintedSouls -= 100;
 					AOutput.send(player, "&a&lCRAFT!&7 Crafted &5Fresh Tainted Scythe&7.");
 					Sounds.TAINTED_CRAFT.play(player);
@@ -70,7 +66,7 @@ public class CraftTaintedPanel extends AGUIPanel {
 			}
 			if(slot == 15) {
 				if(canBuy(player, 100)) {
-					AUtil.giveItemSafely(player, FreshCommand.getFreshItem(MysticType.TAINTED_CHESTPLATE, PantColor.RED));
+					AUtil.giveItemSafely(player, MysticFactory.getFreshItem(MysticType.TAINTED_CHESTPLATE, PantColor.RED));
 					PitPlayer.getPitPlayer(player).taintedSouls -= 100;
 					AOutput.send(player, "&a&lCRAFT!&7 Crafted &5Fresh Tainted Chestplate&7.");
 					Sounds.TAINTED_CRAFT.play(player);

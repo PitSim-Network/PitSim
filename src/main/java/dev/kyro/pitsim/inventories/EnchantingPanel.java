@@ -8,7 +8,7 @@ import dev.kyro.arcticapi.gui.AGUI;
 import dev.kyro.arcticapi.gui.AGUIPanel;
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.PitSim;
-import dev.kyro.pitsim.commands.FreshCommand;
+import dev.kyro.pitsim.aitems.MysticFactory;
 import dev.kyro.pitsim.controllers.EnchantManager;
 import dev.kyro.pitsim.controllers.objects.PitEnchant;
 import dev.kyro.pitsim.enums.MysticType;
@@ -148,33 +148,33 @@ public class EnchantingPanel extends AGUIPanel {
 
 			if(slot == 37) {
 				if(colorSelect) {
-					mystic = FreshCommand.getFreshItem(MysticType.PANTS, PantColor.RED);
+					mystic = MysticFactory.getFreshItem(MysticType.PANTS, PantColor.RED);
 					colorSelect = false;
 				} else {
 					getInventory().setItem(37, new ItemStack(Material.AIR));
-					if(!FreshCommand.isFresh(mystic)) player.getInventory().addItem(mystic);
+					if(!MysticFactory.isFresh(mystic)) player.getInventory().addItem(mystic);
 					mystic = new ItemStack(Material.AIR);
 				}
 			}
 
 			if(slot == 38 && colorSelect) {
-				mystic = FreshCommand.getFreshItem(MysticType.PANTS, PantColor.ORANGE);
+				mystic = MysticFactory.getFreshItem(MysticType.PANTS, PantColor.ORANGE);
 				colorSelect = false;
 			}
 
 			if(slot == 39 && colorSelect) {
-				mystic = FreshCommand.getFreshItem(MysticType.PANTS, PantColor.YELLOW);
+				mystic = MysticFactory.getFreshItem(MysticType.PANTS, PantColor.YELLOW);
 				colorSelect = false;
 			}
 
 			if(slot == 40) {
 				if(colorSelect) {
-					mystic = FreshCommand.getFreshItem(MysticType.PANTS, PantColor.GREEN);
+					mystic = MysticFactory.getFreshItem(MysticType.PANTS, PantColor.GREEN);
 					colorSelect = false;
 				} else {
 					if(Misc.isAirOrNull(mystic)) {
 
-						mystic = FreshCommand.getFreshItem(MysticType.SWORD, null);
+						mystic = MysticFactory.getFreshItem(MysticType.SWORD, null);
 					} else {
 						AOutput.error(player, "Already an item in the mystic well");
 						return;
@@ -183,12 +183,12 @@ public class EnchantingPanel extends AGUIPanel {
 			}
 			if(slot == 41) {
 				if(colorSelect) {
-					mystic = FreshCommand.getFreshItem(MysticType.PANTS, PantColor.BLUE);
+					mystic = MysticFactory.getFreshItem(MysticType.PANTS, PantColor.BLUE);
 					colorSelect = false;
 				} else {
 					if(Misc.isAirOrNull(mystic)) {
 
-						mystic = FreshCommand.getFreshItem(MysticType.BOW, null);
+						mystic = MysticFactory.getFreshItem(MysticType.BOW, null);
 					} else {
 						AOutput.error(player, "Already an item in the mystic well");
 						return;
@@ -241,7 +241,7 @@ public class EnchantingPanel extends AGUIPanel {
 	}
 
 	public void closeGUI() {
-		if(!Misc.isAirOrNull(mystic) && !FreshCommand.isFresh(mystic)) {
+		if(!Misc.isAirOrNull(mystic) && !MysticFactory.isFresh(mystic)) {
 			if(!hasGivenItemBack) player.getInventory().addItem(mystic);
 			hasGivenItemBack = true;
 		}
@@ -254,7 +254,7 @@ public class EnchantingPanel extends AGUIPanel {
 
 			if(colorSelect) {
 				for(int i = 0; i < 5; i++) {
-					ItemStack fresh = FreshCommand.getFreshItem(MysticType.PANTS, PantColor.values()[i]);
+					ItemStack fresh = MysticFactory.getFreshItem(MysticType.PANTS, PantColor.values()[i]);
 					getInventory().setItem(i + 37, fresh);
 				}
 				inventoryBuilder.setSlots(Material.STAINED_GLASS_PANE, 7, 27, 28, 29, 36, 45, 46, 47);
@@ -265,8 +265,8 @@ public class EnchantingPanel extends AGUIPanel {
 				}
 
 				getInventory().setItem(37, mystic);
-				getInventory().setItem(40, FreshCommand.getFreshItem(MysticType.SWORD, null));
-				getInventory().setItem(41, FreshCommand.getFreshItem(MysticType.BOW, null));
+				getInventory().setItem(40, MysticFactory.getFreshItem(MysticType.SWORD, null));
+				getInventory().setItem(41, MysticFactory.getFreshItem(MysticType.BOW, null));
 			}
 //			inventoryBuilder.setSlots(Material.CACTUS, 0, 43);
 //			inventoryBuilder.setSlots(Material.BARRIER, 0, 10, 13, 16);
@@ -298,7 +298,7 @@ public class EnchantingPanel extends AGUIPanel {
 					continue;
 				}
 
-				ItemStack displayStack = FreshCommand.getFreshItem(MysticType.getMysticType(mystic), PantColor.getPantColor(mystic));
+				ItemStack displayStack = MysticFactory.getFreshItem(MysticType.getMysticType(mystic), PantColor.getPantColor(mystic));
 				PitEnchant pitEnchant = EnchantManager.getEnchant(enchantOrder.get(i));
 				assert pitEnchant != null;
 				try {
