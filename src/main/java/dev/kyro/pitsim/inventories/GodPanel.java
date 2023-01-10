@@ -3,10 +3,7 @@ package dev.kyro.pitsim.inventories;
 import de.tr7zw.nbtapi.NBTItem;
 import dev.kyro.arcticapi.gui.AGUI;
 import dev.kyro.arcticapi.gui.AGUIPanel;
-import dev.kyro.pitsim.aitems.ChunkOfVile;
-import dev.kyro.pitsim.aitems.FunkyFeather;
-import dev.kyro.pitsim.aitems.VeryYummyBread;
-import dev.kyro.pitsim.aitems.YummyBread;
+import dev.kyro.pitsim.aitems.*;
 import dev.kyro.pitsim.aitems.mobdrops.*;
 import dev.kyro.pitsim.commands.FreshCommand;
 import dev.kyro.pitsim.controllers.EnchantManager;
@@ -17,7 +14,6 @@ import dev.kyro.pitsim.enums.PantColor;
 import dev.kyro.pitsim.misc.Base64;
 import dev.kyro.pitsim.misc.Constant;
 import dev.kyro.pitsim.misc.ProtArmor;
-import dev.kyro.pitsim.upgrades.ShardHunter;
 import org.bukkit.ChatColor;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
@@ -84,8 +80,8 @@ public class GodPanel extends AGUIPanel {
 
 		addItem(ItemFactory.getItem(FunkyFeather.class).getItem(64));
 		addItem(ItemFactory.getItem(ChunkOfVile.class).getItem(64));
-		addItem(ShardHunter.getGemItem(64));
-		addItem(ShardHunter.getShardItem(64));
+		addItem(ItemFactory.getItem(TotallyLegitGem.class).getItem(64));
+		addItem(ItemFactory.getItem(AncientGemShard.class).getItem(64));
 		addItem(ItemFactory.getItem(YummyBread.class).getItem(64));
 		addItem(ItemFactory.getItem(VeryYummyBread.class).getItem(64));
 

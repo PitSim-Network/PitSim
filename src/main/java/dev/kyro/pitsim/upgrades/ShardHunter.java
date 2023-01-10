@@ -4,13 +4,13 @@ import com.xxmicloxx.NoteBlockAPI.model.RepeatMode;
 import com.xxmicloxx.NoteBlockAPI.model.Song;
 import com.xxmicloxx.NoteBlockAPI.songplayer.RadioSongPlayer;
 import com.xxmicloxx.NoteBlockAPI.utils.NBSDecoder;
-import de.tr7zw.nbtapi.NBTItem;
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.arcticapi.misc.AUtil;
+import dev.kyro.pitsim.aitems.AncientGemShard;
+import dev.kyro.pitsim.controllers.ItemFactory;
 import dev.kyro.pitsim.controllers.UpgradeManager;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.controllers.objects.RenownUpgrade;
-import dev.kyro.pitsim.enums.NBTTag;
 import dev.kyro.pitsim.events.KillEvent;
 import dev.kyro.pitsim.megastreaks.Uberstreak;
 import org.bukkit.ChatColor;
@@ -79,7 +79,7 @@ public class ShardHunter extends RenownUpgrade {
 		boolean givesShard = Math.random() < chance;
 
 		if(!givesShard) return;
-		AUtil.giveItemSafely(killEvent.getKillerPlayer(), getShardItem(1), true);
+		AUtil.giveItemSafely(killEvent.getKillerPlayer(), ItemFactory.getItem(AncientGemShard.class).getItem(1), true);
 		AOutput.send(killEvent.getKiller(), "&d&lGEM SHARD!&7 obtained from killing " + killEvent.getDeadPlayer().getDisplayName() + "!");
 
 		File file = new File("plugins/NoteBlockAPI/Effects/ShardHunter.nbs");
@@ -88,54 +88,5 @@ public class ShardHunter extends RenownUpgrade {
 		rsp.setRepeatMode(RepeatMode.NO);
 		rsp.addPlayer(killEvent.getKillerPlayer());
 		rsp.setPlaying(true);
-	}
-
-	public static ItemStack getGemItem() {
-		return getGemItem(1);
-	}
-
-	public static ItemStack getGemItem(int amount) {
-		ItemStack gem = new ItemStack(Material.EMERALD);
-		ItemMeta meta = gem.getItemMeta();
-		meta.setDisplayName(ChatColor.GREEN + "Totally Legit Gem");
-		meta.addEnchant(Enchantment.ARROW_FIRE, 1, false);
-		meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
-		List<String> lore = new ArrayList<>();
-		lore.add(ChatColor.GRAY + "Kept on death");
-		lore.add(ChatColor.GRAY + "Adds " + ChatColor.LIGHT_PURPLE + "1 tier " + ChatColor.GRAY + "to a mystic enchant.");
-		lore.add(ChatColor.DARK_GRAY + "Once per item!");
-		lore.add("");
-		lore.add(ChatColor.YELLOW + "Hold and right-click to use!");
-		meta.setLore(lore);
-		gem.setItemMeta(meta);
-		gem.setAmount(amount);
-
-//		gem = ItemManager.enableDropConfirm(gem);
-
-		NBTItem nbtItem = new NBTItem(gem);
-
-		nbtItem.setBoolean(NBTTag.IS_GEM.getRef(), true);
-
-		return nbtItem.getItem();
-	}
-
-	public static ItemStack getShardItem(int amount) {
-		ItemStack shardItem = new ItemStack(Material.PRISMARINE_SHARD);
-		ItemMeta shardMeta = shardItem.getItemMeta();
-		shardMeta.addEnchant(Enchantment.ARROW_FIRE, 1, false);
-		shardMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
-		shardMeta.setDisplayName(ChatColor.GREEN + "Ancient Gem Shard");
-		List<String> lore = new ArrayList<>();
-		lore.add(ChatColor.YELLOW + "Special item");
-		lore.add(ChatColor.GRAY + "A piece of a relic lost to time.");
-		lore.add(ChatColor.GRAY + "Find enough shards and you may be");
-		lore.add(ChatColor.GRAY + "able to craft an item of great power.");
-		shardMeta.setLore(lore);
-		shardItem.setItemMeta(shardMeta);
-		shardItem.setAmount(amount);
-//		shardItem = ItemManager.enableDropConfirm(shardItem);
-		NBTItem nbtItem = new NBTItem(shardItem);
-		nbtItem.setBoolean(NBTTag.IS_SHARD.getRef(), true);
-		return nbtItem.getItem();
 	}
 }

@@ -1,5 +1,6 @@
 package dev.kyro.pitsim.enums;
 
+import dev.kyro.pitsim.aitems.AncientGemShard;
 import dev.kyro.pitsim.aitems.ChunkOfVile;
 import dev.kyro.pitsim.aitems.CorruptedFeather;
 import dev.kyro.pitsim.aitems.FunkyFeather;
@@ -7,7 +8,6 @@ import dev.kyro.pitsim.commands.FreshCommand;
 import dev.kyro.pitsim.commands.JewelCommand;
 import dev.kyro.pitsim.controllers.EnchantManager;
 import dev.kyro.pitsim.controllers.ItemFactory;
-import dev.kyro.pitsim.upgrades.ShardHunter;
 import org.bukkit.ChatColor;
 import org.bukkit.inventory.ItemStack;
 
@@ -24,8 +24,8 @@ public enum ItemType {
 	JEWEL_SWORD(8, JewelCommand.getJewel(MysticType.SWORD, null, 0), ChatColor.YELLOW + "Hidden Jewel Sword", 25, 25),
 	JEWEL_BOW(9, JewelCommand.getJewel(MysticType.BOW, null, 0), ChatColor.AQUA + "Hidden Jewel Bow", 25, 25),
 	JEWEL_PANTS(10, JewelCommand.getJewel(MysticType.PANTS, null, 0), ChatColor.DARK_AQUA + "Hidden Jewel Pants", 25, 25),
-	GEM_SHARD_10(11, ShardHunter.getShardItem(5), ChatColor.GREEN + "5x Ancient Gem Shard", 10, 50),
-	GEM_SHARD_25(12, ShardHunter.getShardItem(10), ChatColor.GREEN + "10x Ancient Gem Shard", 5, 100),
+	GEM_SHARD_10(11, ItemFactory.getItem(AncientGemShard.class).getItem(5), ChatColor.GREEN + "5x Ancient Gem Shard", 10, 50),
+	GEM_SHARD_25(12, ItemFactory.getItem(AncientGemShard.class).getItem(10), ChatColor.GREEN + "10x Ancient Gem Shard", 5, 100),
 	CORRUPTED_FEATHERS_3(13, ItemFactory.getItem(CorruptedFeather.class).getItem(3), ChatColor.DARK_PURPLE + "3x Corrupted Feather", 50, 10),
 	CORRUPTED_FEATHERS_5(14, ItemFactory.getItem(CorruptedFeather.class).getItem(5), ChatColor.DARK_PURPLE + "5x Corrupted Feather", 25, 25);
 

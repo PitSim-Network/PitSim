@@ -5,13 +5,14 @@ import dev.kyro.arcticapi.gui.AGUI;
 import dev.kyro.arcticapi.gui.AGUIPanel;
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.arcticapi.misc.AUtil;
+import dev.kyro.pitsim.aitems.TotallyLegitGem;
+import dev.kyro.pitsim.controllers.ItemFactory;
 import dev.kyro.pitsim.controllers.UpgradeManager;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.controllers.objects.RenownUpgrade;
 import dev.kyro.pitsim.enums.NBTTag;
 import dev.kyro.pitsim.misc.Misc;
 import dev.kyro.pitsim.misc.Sounds;
-import dev.kyro.pitsim.upgrades.ShardHunter;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
@@ -111,7 +112,7 @@ public class ShardHunterPanel extends AGUIPanel {
 					}
 				}
 
-				AUtil.giveItemSafely(player, ShardHunter.getGemItem(), true);
+				AUtil.giveItemSafely(player, ItemFactory.getItem(TotallyLegitGem.class).getItem(1), true);
 				player.closeInventory();
 				Sounds.GEM_CRAFT.play(player);
 				AOutput.send(player, "&d&lITEM CRAFTED!&7 Received &aTotally Legit Gem&7!");

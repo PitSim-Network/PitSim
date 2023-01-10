@@ -4,6 +4,7 @@ import de.tr7zw.nbtapi.NBTItem;
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.arcticapi.misc.AUtil;
 import dev.kyro.pitsim.PitSim;
+import dev.kyro.pitsim.aitems.AncientGemShard;
 import dev.kyro.pitsim.aitems.ChunkOfVile;
 import dev.kyro.pitsim.aitems.FunkyFeather;
 import dev.kyro.pitsim.battlepass.PassData;
@@ -16,7 +17,6 @@ import dev.kyro.pitsim.enums.MysticType;
 import dev.kyro.pitsim.enums.NBTTag;
 import dev.kyro.pitsim.enums.PantColor;
 import dev.kyro.pitsim.misc.ProtArmor;
-import dev.kyro.pitsim.upgrades.ShardHunter;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -155,7 +155,7 @@ public class RewardCommand implements CommandExecutor {
 				}.runTaskLater(PitSim.INSTANCE, 3L);
 				return false;
 			case "shard":
-				AUtil.giveItemSafely(player, ShardHunter.getShardItem(amount), true);
+				AUtil.giveItemSafely(player, ItemFactory.getItem(AncientGemShard.class).getItem(amount), true);
 				return false;
 		}
 		return false;

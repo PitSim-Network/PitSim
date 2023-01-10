@@ -5,13 +5,14 @@ import dev.kyro.arcticapi.gui.AGUI;
 import dev.kyro.arcticapi.gui.AGUIPanel;
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.arcticapi.misc.AUtil;
+import dev.kyro.pitsim.aitems.AncientGemShard;
 import dev.kyro.pitsim.controllers.EnchantManager;
+import dev.kyro.pitsim.controllers.ItemFactory;
 import dev.kyro.pitsim.controllers.objects.PitEnchant;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.enums.NBTTag;
 import dev.kyro.pitsim.misc.Misc;
 import dev.kyro.pitsim.misc.Sounds;
-import dev.kyro.pitsim.upgrades.ShardHunter;
 import org.bukkit.ChatColor;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
@@ -67,7 +68,7 @@ public class ItemClearPanel extends AGUIPanel {
 						int high = 64;
 						int result = r.nextInt(high - low) + low;
 
-						AUtil.giveItemSafely(player, ShardHunter.getShardItem(result), true);
+						AUtil.giveItemSafely(player, ItemFactory.getItem(AncientGemShard.class).getItem(result), true);
 
 						AOutput.send(player, "&7Received &f" + result + " &aAncient Gem Shards&7.");
 						Sounds.SHARD_FIND.play(player);

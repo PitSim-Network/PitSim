@@ -19,6 +19,7 @@ import dev.kyro.pitsim.adarkzone.DarkzoneManager;
 import dev.kyro.pitsim.adarkzone.PitBoss;
 import dev.kyro.pitsim.adarkzone.SubLevel;
 import dev.kyro.pitsim.aitems.*;
+import dev.kyro.pitsim.aitems.TotallyLegitGem;
 import dev.kyro.pitsim.aitems.mobdrops.*;
 import dev.kyro.pitsim.battlepass.PassManager;
 import dev.kyro.pitsim.battlepass.quests.*;
@@ -777,8 +778,10 @@ public class PitSim extends JavaPlugin {
 
 	private void registerItems() {
 		ItemFactory.registerItem(new FunkyFeather());
-		ItemFactory.registerItem(new ChunkOfVile());
 		ItemFactory.registerItem(new CorruptedFeather());
+		ItemFactory.registerItem(new ChunkOfVile());
+		ItemFactory.registerItem(new TotallyLegitGem());
+		ItemFactory.registerItem(new AncientGemShard());
 		ItemFactory.registerItem(new YummyBread());
 		ItemFactory.registerItem(new VeryYummyBread());
 
