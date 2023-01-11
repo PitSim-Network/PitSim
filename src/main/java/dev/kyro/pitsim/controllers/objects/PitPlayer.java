@@ -7,6 +7,7 @@ import dev.kyro.arcticapi.data.APlayerData;
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.adarkzone.notdarkzone.Shield;
+import dev.kyro.pitsim.adarkzone.progression.DarkzoneData;
 import dev.kyro.pitsim.battlepass.PassData;
 import dev.kyro.pitsim.battlepass.PassManager;
 import dev.kyro.pitsim.battlepass.PassQuest;
@@ -161,6 +162,7 @@ public class PitPlayer {
 	public PlayerStats stats = new PlayerStats();
 	public Tutorial tutorial = new Tutorial();
 	private PassData passData = new PassData();
+	public DarkzoneData darkzoneData = new DarkzoneData();
 
 	public Map<String, UnlockedCosmeticData> unlockedCosmeticsMap = new HashMap<>();
 
