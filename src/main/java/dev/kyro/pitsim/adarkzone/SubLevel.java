@@ -1,7 +1,6 @@
 package dev.kyro.pitsim.adarkzone;
 
 import dev.kyro.pitsim.controllers.MapManager;
-import net.minecraft.server.v1_8_R3.TileEntityMobSpawner;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -20,7 +19,6 @@ public class SubLevel {
 
 	private Location middle;
 	private List<Location> spawnableLocations = new ArrayList<>();
-	private String placeholder;
 
 //	Boss related fields
 	public Class<? extends PitBoss> bossClass;
@@ -38,7 +36,7 @@ public class SubLevel {
 	private DropPool mobDropPool;
 
 	public SubLevel(SubLevelType subLevelType, Class<? extends PitBoss> bossClass, Class<? extends PitMob> mobClass,
-					Location middle, int maxMobs, int spawnRadius, int requiredDropsToSpawn, String placeholder) {
+					Location middle, int maxMobs, int spawnRadius, int requiredDropsToSpawn) {
 		this.subLevelType = subLevelType;
 		this.bossClass = bossClass;
 		this.mobClass = mobClass;
@@ -46,7 +44,6 @@ public class SubLevel {
 		this.maxMobs = maxMobs;
 		this.spawnRadius = spawnRadius;
 		this.requiredDropsToSpawn = requiredDropsToSpawn;
-		this.placeholder = placeholder;
 		identifySpawnableLocations();
 
 		Block spawnerBlock = middle.getBlock();
@@ -190,9 +187,11 @@ public class SubLevel {
 	public Location getMiddle() {
 		return middle;
 	}
-	public String getPlaceholder() {
-		return placeholder;
+
+	public String getIdentifier() {
+		return subLevelType.identifer;
 	}
+
 	public Location getBossSpawnLocation() {
 		return getMiddle().clone().add(0, 2, 0);
 	}

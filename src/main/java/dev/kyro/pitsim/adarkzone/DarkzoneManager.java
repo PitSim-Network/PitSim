@@ -34,11 +34,10 @@ public class DarkzoneManager implements Listener {
 	public static List<Hologram> holograms = new ArrayList<>();
 
 	static {
-
 		SubLevel zombieSublevel = new SubLevel(
 				SubLevelType.ZOMBIE, PitZombieBoss.class, PitZombie.class,
 				new Location(MapManager.getDarkzone(), 327, 67, -143),
-				20, 17, 12, "%pitsim_zombie_cave%");
+				20, 17, 12);
 		ItemStack zombieSpawnItem = ItemFactory.getItem(RottenFlesh.class).getItem(1);
 		zombieSublevel.setSpawnItem(zombieSpawnItem);
 		zombieSublevel.addMobDrop(ItemFactory.getItem(RottenFlesh.class).getItem(1), 1);
@@ -176,12 +175,17 @@ public class DarkzoneManager implements Listener {
 	 * @param type
 	 * @return SubLevel
 	 */
-	public static SubLevel getSublevel(SubLevelType type) {
+	public static SubLevel getSubLevel(SubLevelType type) {
 		for(SubLevel subLevel : subLevels) {
 			if(subLevel.getSubLevelType() == type) {
 				return subLevel;
 			}
 		}
+		return null;
+	}
+
+	public static SubLevel getSubLevel(String identifier) {
+		for(SubLevel subLevel : subLevels) if(subLevel.getIdentifier().equalsIgnoreCase(identifier)) return subLevel;
 		return null;
 	}
 
@@ -203,7 +207,7 @@ public class DarkzoneManager implements Listener {
 			hologram.setAllowPlaceholders(true);
 			hologram.appendTextLine(ChatColor.RED + "Place " + ChatColor.translateAlternateColorCodes('&',
 					"&a" + subLevel.getSpawnItem().getItemMeta().getDisplayName()));
-			hologram.appendTextLine("{fast}" + subLevel.getPlaceholder() + " ");
+			hologram.appendTextLine("{fast}" + subLevel.getIdentifier() + " ");
 			holograms.add(hologram);
 		}
 	}

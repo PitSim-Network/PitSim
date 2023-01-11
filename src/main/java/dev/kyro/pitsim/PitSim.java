@@ -14,10 +14,7 @@ import dev.kyro.arcticapi.commands.AMultiCommand;
 import dev.kyro.arcticapi.data.AConfig;
 import dev.kyro.arcticapi.hooks.AHook;
 import dev.kyro.arcticapi.misc.AOutput;
-import dev.kyro.pitsim.adarkzone.BossManager;
-import dev.kyro.pitsim.adarkzone.DarkzoneManager;
-import dev.kyro.pitsim.adarkzone.PitBoss;
-import dev.kyro.pitsim.adarkzone.SubLevel;
+import dev.kyro.pitsim.adarkzone.*;
 import dev.kyro.pitsim.aitems.misc.*;
 import dev.kyro.pitsim.aitems.misc.TotallyLegitGem;
 import dev.kyro.pitsim.aitems.mobdrops.*;
@@ -236,17 +233,18 @@ public class PitSim extends JavaPlugin {
 		AHook.registerPlaceholder(new ServerIPPlaceholder());
 
 		new LeaderboardPlaceholders().register();
+//		new SubLevelPlaceholders().register();
 
 		CooldownManager.init();
 
 		registerEnchants();
+		registerItems();
 		registerCommands();
 		registerListeners();
 		registerHelmetAbilities();
 		registerKits();
 		if(getStatus().isDarkzone()) registerMobs();
 		registerCosmetics();
-		registerItems();
 
 		PassManager.registerPasses();
 		if(getStatus().isDarkzone()) AuctionManager.onStart();
