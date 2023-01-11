@@ -20,7 +20,7 @@ public class SubLevelPlaceholders extends PlaceholderExpansion {
 
 	@Override
 	public @NotNull String getIdentifier() {
-		return "pitsim_sublevel";
+		return "sublevel";
 	}
 
 	@Override

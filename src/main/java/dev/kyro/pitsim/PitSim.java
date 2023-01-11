@@ -3,6 +3,7 @@ package dev.kyro.pitsim;
 import ac.grim.grimac.GrimAbstractAPI;
 import com.comphenix.protocol.ProtocolLibrary;
 import com.comphenix.protocol.ProtocolManager;
+import com.gmail.filoghost.holographicdisplays.api.Hologram;
 import com.mattmalec.pterodactyl4j.PteroBuilder;
 import com.mattmalec.pterodactyl4j.client.entities.PteroClient;
 import com.sk89q.worldedit.EditSession;
@@ -15,8 +16,8 @@ import dev.kyro.arcticapi.data.AConfig;
 import dev.kyro.arcticapi.hooks.AHook;
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.adarkzone.*;
-import dev.kyro.pitsim.aitems.misc.*;
 import dev.kyro.pitsim.aitems.misc.TotallyLegitGem;
+import dev.kyro.pitsim.aitems.misc.*;
 import dev.kyro.pitsim.aitems.mobdrops.*;
 import dev.kyro.pitsim.battlepass.PassManager;
 import dev.kyro.pitsim.battlepass.quests.*;
@@ -233,7 +234,7 @@ public class PitSim extends JavaPlugin {
 		AHook.registerPlaceholder(new ServerIPPlaceholder());
 
 		new LeaderboardPlaceholders().register();
-//		new SubLevelPlaceholders().register();
+		new SubLevelPlaceholders().register();
 
 		CooldownManager.init();
 
@@ -329,6 +330,11 @@ public class PitSim extends JavaPlugin {
 				clickable.destroy();
 				NPCRegistry registry = CitizensAPI.getNPCRegistry();
 				registry.deregister(clickable);
+			}
+
+			for(Hologram hologram : new ArrayList<>(DarkzoneManager.holograms)) {
+				hologram.delete();
+				DarkzoneManager.holograms.remove(hologram);
 			}
 		}
 

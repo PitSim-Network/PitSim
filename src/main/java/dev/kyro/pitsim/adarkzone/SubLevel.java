@@ -1,6 +1,10 @@
 package dev.kyro.pitsim.adarkzone;
 
+import com.gmail.filoghost.holographicdisplays.api.Hologram;
+import com.gmail.filoghost.holographicdisplays.api.HologramsAPI;
+import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.controllers.MapManager;
+import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -44,12 +48,6 @@ public class SubLevel {
 		this.maxMobs = maxMobs;
 		this.spawnRadius = spawnRadius;
 		this.requiredDropsToSpawn = requiredDropsToSpawn;
-		identifySpawnableLocations();
-
-		Block spawnerBlock = middle.getBlock();
-		spawnerBlock.setType(Material.MOB_SPAWNER);
-		CreatureSpawner spawner = (CreatureSpawner) spawnerBlock.getState();
-//		spawner.setSpawnedType(this.mobClass.);
 
 //		Visualize spawnable spaces
 //		new BukkitRunnable() {
@@ -62,16 +60,18 @@ public class SubLevel {
 //		}.runTaskTimer(PitSim.INSTANCE, 0L, 20L);
 	}
 
+	public void init() {
+		identifySpawnableLocations();
+		setSpawner();
+		createHologram();
+	}
+
 	public void tick() {
 		if(Math.random() < 0.75) return;
 		int newMobsNeeded = maxMobs - mobs.size();
 		for(int i = 0; i < Math.min(newMobsNeeded, 3); i++) {
 			if (!isBossSpawned) spawnMob();
 		}
-	}
-
-	public Location getMobSpawnLocation() {
-		return spawnableLocations.get(new Random().nextInt(spawnableLocations.size()));
 	}
 
 	public void identifySpawnableLocations() {
@@ -84,6 +84,30 @@ public class SubLevel {
 				spawnableLocations.add(location);
 			}
 		}
+	}
+
+	public void setSpawner() {
+		Block spawnerBlock = middle.getBlock();
+		spawnerBlock.setType(Material.MOB_SPAWNER);
+		CreatureSpawner spawner = (CreatureSpawner) spawnerBlock.getState();
+//		spawner.setSpawnedType();
+	}
+
+	public void createHologram() {
+		Hologram hologram = HologramsAPI.createHologram(PitSim.INSTANCE, new Location(
+				getMiddle().getWorld(),
+				getMiddle().getX() + 0.5,
+				getMiddle().getY() + 1.6,
+				getMiddle().getZ() + 0.5));
+		hologram.setAllowPlaceholders(true);
+		hologram.appendTextLine(ChatColor.translateAlternateColorCodes('&',
+				"&cPlace &a" + getSpawnItem().getItemMeta().getDisplayName()));
+		hologram.appendTextLine("{fast}%sublevel_" + getIdentifier() + "%");
+		DarkzoneManager.holograms.add(hologram);
+	}
+
+	public Location getMobSpawnLocation() {
+		return spawnableLocations.get(new Random().nextInt(spawnableLocations.size()));
 	}
 
 	public boolean isSpawnableLocation(Location location) {
@@ -154,7 +178,6 @@ public class SubLevel {
 		for(PitMob mob : mobs) mob.despawn();
 		mobs.clear();
 	}
-
 
 	public ItemStack getSpawnItem() {
 		return spawnItem;

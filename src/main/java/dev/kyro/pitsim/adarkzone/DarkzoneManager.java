@@ -1,7 +1,6 @@
 package dev.kyro.pitsim.adarkzone;
 
 import com.gmail.filoghost.holographicdisplays.api.Hologram;
-import com.gmail.filoghost.holographicdisplays.api.HologramsAPI;
 import dev.kyro.arcticapi.misc.AUtil;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.adarkzone.bosses.PitZombieBoss;
@@ -11,8 +10,8 @@ import dev.kyro.pitsim.aitems.mobdrops.RottenFlesh;
 import dev.kyro.pitsim.controllers.ItemFactory;
 import dev.kyro.pitsim.controllers.MapManager;
 import dev.kyro.pitsim.events.KillEvent;
+import dev.kyro.pitsim.misc.Misc;
 import dev.kyro.pitsim.misc.Sounds;
-import org.bukkit.ChatColor;
 import org.bukkit.Effect;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -41,10 +40,9 @@ public class DarkzoneManager implements Listener {
 		ItemStack zombieSpawnItem = ItemFactory.getItem(RottenFlesh.class).getItem(1);
 		zombieSublevel.setSpawnItem(zombieSpawnItem);
 		zombieSublevel.addMobDrop(ItemFactory.getItem(RottenFlesh.class).getItem(1), 1);
-
 		registerSubLevel(zombieSublevel);
-		registerHolograms();
 
+		for(SubLevel subLevel : subLevels) subLevel.init();
 		new BukkitRunnable() {
 			@Override
 			public void run() {
@@ -61,48 +59,31 @@ public class DarkzoneManager implements Listener {
 	 */
 	@EventHandler
 	public void onClick(PlayerInteractEvent event) {
-
-		if(event.getPlayer() == null) return;
-		if(event.getPlayer().getItemInHand() == null) return;
 		if(event.getAction() != Action.LEFT_CLICK_BLOCK && event.getAction() != Action.RIGHT_CLICK_BLOCK) return;
 
-		ItemStack item = event.getItem();
+		Player player = event.getPlayer();
+		ItemStack heldStack = player.getItemInHand();
 		Location location = event.getClickedBlock().getLocation();
+		if(Misc.isAirOrNull(heldStack)) return;
 
 		for(SubLevel subLevel : subLevels) {
-			if(subLevel.isBossSpawned()) continue;
-			if (subLevel.getSpawnItem() == null) {
-				continue;
+			if(subLevel.isBossSpawned() || !subLevel.getSpawnItem().isSimilar(heldStack) || !subLevel.getMiddle().equals(location)) continue;
+
+			subLevel.setCurrentDrops(subLevel.getCurrentDrops() + 1);
+			if(heldStack.getAmount() == 1) {
+				player.setItemInHand(null);
+			} else {
+				heldStack.setAmount(heldStack.getAmount() - 1);
 			}
-			System.out.println("3");
-			if (subLevel.getSpawnItem().isSimilar(item)) {
-				System.out.println("4");
-				if(subLevel.getMiddle().equals(location)) {
-					System.out.println("5");
+			player.updateInventory();
 
-					subLevel.setCurrentDrops(subLevel.getCurrentDrops() + 1);
-					if(item.getAmount() == 1) {
-						event.getPlayer().setItemInHand(null);
-					} else {
-						item.setAmount(item.getAmount() - 1);
-					}
+			if(subLevel.getCurrentDrops() < subLevel.getRequiredDropsToSpawn()) continue;
 
+			subLevel.getMiddle().getWorld().playEffect(subLevel.getMiddle(), Effect.EXPLOSION_HUGE, 100);
+			Sounds.PRESTIGE.play(subLevel.getMiddle());
+			subLevel.spawnBoss(player);
 
-
-					System.out.println("Current drops: " + subLevel.getCurrentDrops());
-
-					if(subLevel.getCurrentDrops() >= subLevel.getRequiredDropsToSpawn()) {
-						subLevel.getMiddle().getWorld().playEffect(subLevel.getMiddle(), Effect.EXPLOSION_HUGE, 100);
-						Sounds.PRESTIGE.play(subLevel.getMiddle());
-						subLevel.disableMobs();
-						subLevel.spawnBoss(event.getPlayer());
-
-						subLevel.setCurrentDrops(0);
-						//decrese the item stack in the players hand by 1
-
-					}
-				}
-			}
+			subLevel.setCurrentDrops(0);
 		}
 	}
 
@@ -144,13 +125,7 @@ public class DarkzoneManager implements Listener {
 				subLevel.mobs.remove(entity);
 			}
 		}
-
-
-
-
 	}
-
-
 
 	public static PitEquipment getDefaultEquipment() {
 		return new PitEquipment()
@@ -187,28 +162,5 @@ public class DarkzoneManager implements Listener {
 	public static SubLevel getSubLevel(String identifier) {
 		for(SubLevel subLevel : subLevels) if(subLevel.getIdentifier().equalsIgnoreCase(identifier)) return subLevel;
 		return null;
-	}
-
-	/**
-	 * Registers all the holograms for the darkzone
-	 */
-	public static void registerHolograms() {
-		for(Hologram hologram : HologramsAPI.getHolograms(PitSim.INSTANCE)) {
-			hologram.delete();
-		}
-
-		for(SubLevel subLevel : subLevels) {
-
-			Hologram hologram = HologramsAPI.createHologram(PitSim.INSTANCE, new Location(
-					subLevel.getMiddle().getWorld(),
-					subLevel.getMiddle().getX() + 0.5,
-					subLevel.getMiddle().getY() + 1.6,
-					subLevel.getMiddle().getZ() + 0.5));
-			hologram.setAllowPlaceholders(true);
-			hologram.appendTextLine(ChatColor.RED + "Place " + ChatColor.translateAlternateColorCodes('&',
-					"&a" + subLevel.getSpawnItem().getItemMeta().getDisplayName()));
-			hologram.appendTextLine("{fast}" + subLevel.getIdentifier() + " ");
-			holograms.add(hologram);
-		}
 	}
 }
