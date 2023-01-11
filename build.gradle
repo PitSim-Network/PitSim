@@ -46,6 +46,7 @@ dependencies {
     compileOnly files('libs/ArcticGuilds-1.0.0-all.jar')
     compileOnly files('libs/ArmorEquipEvent-1.7.2.jar')
     compileOnly files('libs/PluginQuery.jar')
+    compileOnly files('libs/DeluxeChat-1.16.2.jar')
     compileOnly 'com.mattmalec:Pterodactyl4J:2.BETA_81'
     compileOnly "net.kyori:adventure-platform-bukkit:4.1.0"
     compileOnly 'net.luckperms:api:5.4'

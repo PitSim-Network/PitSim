@@ -64,6 +64,7 @@ public class ReallyToxic extends PitEnchant {
 			new BukkitRunnable() {
 				@Override
 				public void run() {
+					if(!attackEvent.getDefenderPlayer().isOnline()) return;
 					int charge = HitCounter.getCharge(attackEvent.getDefenderPlayer(), thisEnchant);
 					HitCounter.setCharge(attackEvent.getDefenderPlayer(), thisEnchant, charge - getReductionPerHit(enchantLvl));
 				}

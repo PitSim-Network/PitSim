@@ -248,6 +248,7 @@ public class PitSim extends JavaPlugin {
 		AHook.registerPlaceholder(new PlayerCountPlaceholder());
 		AHook.registerPlaceholder(new GoldPlaceholder());
 		AHook.registerPlaceholder(new NicknamePlaceholder());
+		AHook.registerPlaceholder(new ServerIPPlaceholder());
 		new LeaderboardPlaceholders().register();
 
 		CooldownManager.init();

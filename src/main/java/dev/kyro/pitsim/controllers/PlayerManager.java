@@ -36,6 +36,7 @@ import net.luckperms.api.node.NodeEqualityPredicate;
 import net.luckperms.api.node.types.PermissionNode;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.*;
+import org.bukkit.block.Block;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Entity;
@@ -399,7 +400,7 @@ public class PlayerManager implements Listener {
 	public static List<UUID> helmetSwapCooldown = new ArrayList<>();
 	public static List<UUID> chestplateSwapCooldown = new ArrayList<>();
 
-	@EventHandler
+	@EventHandler(priority = EventPriority.HIGH)
 	public static void onClick(PlayerInteractEvent event) {
 		Player player = event.getPlayer();
 
@@ -509,6 +510,9 @@ public class PlayerManager implements Listener {
 		if(player.getItemInHand().getType().toString().contains("CHESTPLATE")) {
 			if(Misc.isAirOrNull(player.getInventory().getChestplate())) return;
 
+			Block block = event.getClickedBlock();
+			if(block != null && block.getType() == Material.ENCHANTMENT_TABLE) return;
+
 			if(chestplateSwapCooldown.contains(player.getUniqueId())) {
 
 				Sounds.NO.play(player);
@@ -583,8 +587,12 @@ public class PlayerManager implements Listener {
 		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
 		event.setJoinMessage(null);
 
-		FeatherBoardAPI.resetDefaultScoreboard(event.getPlayer());
-		FeatherBoardAPI.showScoreboard(event.getPlayer(), "default");
+		FeatherBoardAPI.resetDefaultScoreboard(player);
+		if(MapManager.inDarkzone(player)) {
+			FeatherBoardAPI.showScoreboard(player, "darkzone");
+		} else {
+			FeatherBoardAPI.showScoreboard(player, "default");
+		}
 
 		if((System.currentTimeMillis() / 1000L) - 60 * 60 * 20 > pitPlayer.uberReset) {
 			pitPlayer.uberReset = 0;

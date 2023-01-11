@@ -77,7 +77,7 @@ public class LevelManager {
 		pitPlayer.goldGrinded += amount;
 	}
 
-	public static void addGoldReq(Player player, int amount) {
+	public static void addGoldReq(Player player, double amount) {
 		if(!PlayerManager.isRealPlayer(player)) return;
 		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
 

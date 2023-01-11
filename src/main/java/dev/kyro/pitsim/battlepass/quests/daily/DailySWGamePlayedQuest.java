@@ -43,7 +43,7 @@ public class DailySWGamePlayedQuest extends PassQuest {
 
 	@Override
 	public ItemStack getDisplayItem(PitPlayer pitPlayer, QuestLevel questLevel, double progress) {
-		ItemStack itemStack = new AItemStackBuilder(Material.WOOL)
+		ItemStack itemStack = new AItemStackBuilder(Material.EYE_OF_ENDER)
 				.setName(getDisplayName())
 				.setLore(new ALoreBuilder(
 						"&7Get at least &f1 &7kill",
