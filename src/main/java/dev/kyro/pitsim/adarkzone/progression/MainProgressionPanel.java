@@ -14,7 +14,7 @@ public class MainProgressionPanel extends AGUIPanel {
 	public MainProgressionPanel(AGUI gui) {
 		super(gui);
 
-		inventoryBuilder.setSlots(Material.STAINED_GLASS_PANE, 7, 45, 46, 47, 48, 49, 50, 51, 52);
+		inventoryBuilder.setSlots(Material.STAINED_GLASS_PANE, 15, 45, 46, 47, 48, 49, 50, 51, 52);
 
 		getInventory().setItem(53, HelpItemStacks.getMainProgressionStack());
 	}
