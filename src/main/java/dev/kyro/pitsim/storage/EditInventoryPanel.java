@@ -84,7 +84,7 @@ public class EditInventoryPanel implements InventoryHolder, Listener {
 		builder.setName("&5View Enderchest");
 		inventory.setItem(8, builder.getItemStack());
 
-		getInventory().setItem(0, HelpItemStacks.getEditItemStack());
+		getInventory().setItem(0, HelpItemStacks.getAdminEditItemStack());
 
 		for(int i = 5; i < 8; i++) {
 			ItemStack pane = new ItemStack(Material.STAINED_GLASS_PANE, 1, (short) 15);
