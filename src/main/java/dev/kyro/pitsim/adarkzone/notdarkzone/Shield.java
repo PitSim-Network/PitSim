@@ -6,7 +6,7 @@ public class Shield {
 
 	private double shieldAmount = getMax();
 	private boolean isActive = true;
-	private int tickUntilReactivation;
+	private int ticksUntilReactivation;
 
 	public int getAmount() {
 		return (int) Math.ceil(shieldAmount);
@@ -39,17 +39,21 @@ public class Shield {
 		if(!isActive()) return;
 		isActive = false;
 		shieldAmount = 0;
-		tickUntilReactivation = getInitialTicksUntilReactivation();
+		ticksUntilReactivation = getInitialTicksUntilReactivation();
+	}
+
+	public int getTicksUntilReactivation() {
+		return ticksUntilReactivation;
 	}
 
 	public void regenerateTick() {
 		if(isActive()) return;
-		if(tickUntilReactivation > 1) {
-			tickUntilReactivation--;
+		if(ticksUntilReactivation > 1) {
+			ticksUntilReactivation--;
 			return;
 		}
 
-		tickUntilReactivation = 0;
+		ticksUntilReactivation = 0;
 		isActive = true;
 		shieldAmount = getMax();
 	}
@@ -59,7 +63,7 @@ public class Shield {
 		return 100;
 	}
 
-	private int getInitialTicksUntilReactivation() {
+	public int getInitialTicksUntilReactivation() {
 //		TODO: Implement
 		return 80;
 	}

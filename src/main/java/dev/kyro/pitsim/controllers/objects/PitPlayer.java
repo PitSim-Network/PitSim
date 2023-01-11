@@ -701,23 +701,27 @@ public class PitPlayer {
 
 	@Exclude
 	public void updateXPBar() {
-		if(megastreak.getClass() == RNGesus.class && getKills() < RNGesus.INSTABILITY_THRESHOLD && getKills() >= 100)
-			return;
-
 		if(MapManager.inDarkzone(player)) {
-			player.setLevel((int) Math.ceil(mana));
-			if(mana >= getMaxMana() - 1) player.setLevel(getMaxMana());
-			player.setExp((float) (mana / getMaxMana()));
-		} else {
-			player.setLevel(level);
-			float remaining = remainingXP;
-			PrestigeValues.PrestigeInfo prestigeInfo = PrestigeValues.getPrestigeInfo(prestige);
-			float total = (float) (PrestigeValues.getXPForLevel(level) * prestigeInfo.xpMultiplier);
-
-			player.setLevel(level);
-			float xp = (total - remaining) / total;
-
-			player.setExp(xp);
+//			TODO: Check if shield is unlocked
+			player.setLevel((int) Math.ceil(shield.getAmount()));
+			if(shield.isActive()) {
+				player.setExp((float) (shield.getPreciseAmount() / shield.getMax()));
+			} else {
+				player.setExp((float) (shield.getTicksUntilReactivation() / shield.getInitialTicksUntilReactivation()));
+			}
+			return;
 		}
+
+		if(megastreak.getClass() == RNGesus.class && getKills() < RNGesus.INSTABILITY_THRESHOLD && getKills() >= 100) return;
+
+		player.setLevel(level);
+		float remaining = remainingXP;
+		PrestigeValues.PrestigeInfo prestigeInfo = PrestigeValues.getPrestigeInfo(prestige);
+		float total = (float) (PrestigeValues.getXPForLevel(level) * prestigeInfo.xpMultiplier);
+
+		player.setLevel(level);
+		float xp = (total - remaining) / total;
+
+		player.setExp(xp);
 	}
 }
