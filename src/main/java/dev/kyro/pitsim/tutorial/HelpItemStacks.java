@@ -78,7 +78,7 @@ public class HelpItemStacks {
 				.getItemStack();
 	}
 
-	public static ItemStack getEditItemStack() {
+	public static ItemStack getAdminEditItemStack() {
 		return new AItemStackBuilder(BASE_ITEMSTACK.clone())
 				.setName("&eInventory Editing")
 				.setLore(new ALoreBuilder(
@@ -86,6 +86,17 @@ public class HelpItemStacks {
 						"&7The space to the right is &bArmor",
 						"&7The row below is the &eHotbar",
 						"&7Access the &5Ender Chest &7on the right",
+						"&8&m----------------------------"
+				))
+				.getItemStack();
+	}
+
+	public static ItemStack getMainProgressionStack() {
+		return new AItemStackBuilder(BASE_ITEMSTACK.clone())
+				.setName("&eInventory Editing")
+				.setLore(new ALoreBuilder(
+						"&8&m----------------------------",
+						"&7idk man just figure it out",
 						"&8&m----------------------------"
 				))
 				.getItemStack();
