@@ -16,6 +16,7 @@ import dev.kyro.arcticapi.data.AConfig;
 import dev.kyro.arcticapi.hooks.AHook;
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.adarkzone.*;
+import dev.kyro.pitsim.adarkzone.notdarkzone.ShieldManager;
 import dev.kyro.pitsim.aitems.misc.TotallyLegitGem;
 import dev.kyro.pitsim.aitems.misc.*;
 import dev.kyro.pitsim.aitems.mobdrops.*;
@@ -622,6 +623,7 @@ public class PitSim extends JavaPlugin {
 		if(getStatus().isDarkzone()) {
 			getServer().getPluginManager().registerEvents(new DarkzoneManager(), this);
 			getServer().getPluginManager().registerEvents(new BossManager(), this);
+			getServer().getPluginManager().registerEvents(new ShieldManager(), this);
 		}
 	}
 

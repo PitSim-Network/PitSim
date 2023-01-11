@@ -6,6 +6,7 @@ import dev.kyro.arcticapi.data.APlayer;
 import dev.kyro.arcticapi.data.APlayerData;
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.PitSim;
+import dev.kyro.pitsim.adarkzone.notdarkzone.Shield;
 import dev.kyro.pitsim.battlepass.PassData;
 import dev.kyro.pitsim.battlepass.PassManager;
 import dev.kyro.pitsim.battlepass.PassQuest;
@@ -96,6 +97,9 @@ public class PitPlayer {
 
 	@Exclude
 	public long lastCommand = 0;
+
+	@Exclude
+	public Shield shield = new Shield();
 
 	@Exclude
 	public UUID uuid;
