@@ -20,8 +20,8 @@ import java.util.Arrays;
 import java.util.List;
 
 public class GoldRushAbility extends HelmetAbility {
-	public static final int GOLD_RUSH_COST = 3_000;
-	public static final double GOLD_REQ_MULTIPLIER = 3.0;
+	public static final int GOLD_RUSH_COST = 1_000;
+	public static final double GOLD_REQ_MULTIPLIER = 2.0;
 	public static final DecimalFormat formatter = new DecimalFormat("#,###");
 
 	public GoldRushAbility(Player player) {
