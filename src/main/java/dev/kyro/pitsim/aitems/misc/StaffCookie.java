@@ -1,20 +1,14 @@
 package dev.kyro.pitsim.aitems.misc;
 
 import de.tr7zw.nbtapi.NBTItem;
+import dev.kyro.arcticapi.builders.AItemStackBuilder;
 import dev.kyro.arcticapi.builders.ALoreBuilder;
-import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.aitems.PitItem;
-import dev.kyro.pitsim.controllers.MapManager;
-import dev.kyro.pitsim.controllers.UpgradeManager;
 import dev.kyro.pitsim.enums.NBTTag;
-import dev.kyro.pitsim.inventories.VileGUI;
 import dev.kyro.pitsim.misc.Misc;
-import dev.kyro.pitsim.misc.Sounds;
+import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.block.Action;
-import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.ArrayList;
@@ -39,63 +33,42 @@ public class StaffCookie extends PitItem {
 
 	@Override
 	public Material getMaterial(Player player) {
-		return Material.COAL;
+		return Material.COOKIE;
 	}
 
 	@Override
 	public String getName(Player player) {
-		return "&5Chunk of Vile";
+		return "&dStaff Cookie";
 	}
 
 	@Override
 	public List<String> getLore(Player player) {
 		return new ALoreBuilder(
-				"&7Kept on death",
-				"",
-				"&cHeretic artifact"
+				"&7Given to you by a staff member",
+				"&7for some reason"
 		).getLore();
 	}
 
-	@EventHandler
-	public void onInteract(PlayerInteractEvent event) {
-		Player player = event.getPlayer();
-		ItemStack itemStack = player.getItemInHand();
+	@Override
+	public void giveItem(Player player, int amount) {
+		throw new RuntimeException();
+	}
 
-		if(event.getAction() == Action.LEFT_CLICK_AIR || event.getAction() == Action.LEFT_CLICK_BLOCK) return;
-		if(!isThisItem(itemStack)) return;
+	public static ItemStack setCookieInformation(ItemStack itemStack, Player staff, Player receiver) {
+		if(Misc.isAirOrNull(itemStack)) return null;
+		NBTItem nbtItem = new NBTItem(itemStack);
+		if(nbtItem.hasKey(NBTTag.COOKIE_GIVER.getRef())) return null;
 
-		if(!UpgradeManager.hasUpgrade(player, "WITHERCRAFT")) {
-			AOutput.error(player, "&c&lERROR!&7 You must first unlock Withercraft from the renown shop before using this item!");
-			Sounds.ERROR.play(player);
-			return;
-		}
+		String giverString = "&7From: " + PlaceholderAPI.setPlaceholders(staff,
+				"%luckperms_prefix%[%luckperms_groups%] ") + Misc.getDisplayName(staff);
+		String receiverString = "&7To: " + PlaceholderAPI.setPlaceholders(receiver,
+				"%luckperms_prefix%[%luckperms_groups%] ") + Misc.getDisplayName(receiver);
 
-		if(MapManager.inDarkzone(player)) {
-			AOutput.error(player, "&c&lERROR!&7 You cannot repair items while in the darkzone!");
-			Sounds.ERROR.play(player);
-			return;
-		}
+		ALoreBuilder loreBuilder = new ALoreBuilder(itemStack.getItemMeta().getLore());
+		loreBuilder.addLore("", giverString, receiverString);
 
-		int items = 0;
-		for(int i = 0; i < player.getInventory().getSize(); i++) {
-			ItemStack item = player.getInventory().getItem(i);
-
-			if(Misc.isAirOrNull(item)) continue;
-
-			NBTItem nbtItem = new NBTItem(item);
-			if(nbtItem.hasKey(NBTTag.ITEM_JEWEL_ENCHANT.getRef())) {
-				if(nbtItem.getInteger(NBTTag.CURRENT_LIVES.getRef()).equals(nbtItem.getInteger(NBTTag.MAX_LIVES.getRef()))) continue;
-				items++;
-			}
-		}
-
-		if(items == 0) {
-			AOutput.error(player, "&c&lERROR!&7 You have no items to repair!");
-			Sounds.ERROR.play(player);
-			return;
-		}
-
-		VileGUI vileGUI = new VileGUI(player);
-		vileGUI.open();
+		return new AItemStackBuilder(itemStack)
+				.setLore(loreBuilder)
+				.getItemStack();
 	}
 }

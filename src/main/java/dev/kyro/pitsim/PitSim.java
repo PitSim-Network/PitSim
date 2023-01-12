@@ -552,6 +552,7 @@ public class PitSim extends JavaPlugin {
 		getCommand("eco").setExecutor(new EcoCommand());
 		getCommand("ignore").setExecutor(new IgnoreCommand());
 		getCommand("ignore").setTabCompleter(new IgnoreCommand());
+		getCommand("cookie").setExecutor(new StaffCookieCommand());
 		//TODO: Remove this
 //		getCommand("massmigrate").setExecutor(new MassMigrateCommand());
 
@@ -792,6 +793,8 @@ public class PitSim extends JavaPlugin {
 		ItemFactory.registerItem(new AncientGemShard());
 		ItemFactory.registerItem(new YummyBread());
 		ItemFactory.registerItem(new VeryYummyBread());
+
+		ItemFactory.registerItem(new StaffCookie());
 
 		ItemFactory.registerItem(new RottenFlesh());
 		ItemFactory.registerItem(new Bone());

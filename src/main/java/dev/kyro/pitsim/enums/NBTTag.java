@@ -30,6 +30,8 @@ public enum NBTTag {
 	SAVED_PANTS_COLOR("pr-saved-color"),
 	IS_SPLASH_POTION("pr-is-splash-potion"),
 	CANNOT_PICKUP("pr-cannot-pickup"),
+	COOKIE_GIVER("pr-cookie-giver"),
+	COOKIE_RECEIVER("pr-cookie-receiver"),
 
 //	IS_FEATHER("pr-isfeather"),
 	IS_CORRUPTED_FEATHER("pr-iscfeather"),
