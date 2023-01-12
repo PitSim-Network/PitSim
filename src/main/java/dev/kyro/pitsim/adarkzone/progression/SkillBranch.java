@@ -34,6 +34,7 @@ public abstract class SkillBranch {
 
 	public abstract ItemStack getBaseStack(); // Just to simply process of having to have methods for both material and data
 	public abstract List<String> getDescription();
+	public abstract int getUnlockCost();
 
 	public ItemStack getDisplayStack(UnlockState unlockState) {
 		String displayName = "";
