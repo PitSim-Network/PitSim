@@ -93,7 +93,18 @@ public class HelpItemStacks {
 
 	public static ItemStack getMainProgressionStack() {
 		return new AItemStackBuilder(BASE_ITEMSTACK.clone())
-				.setName("&eInventory Editing")
+				.setName("&eMain Progression")
+				.setLore(new ALoreBuilder(
+						"&8&m----------------------------",
+						"&7idk man just figure it out",
+						"&8&m----------------------------"
+				))
+				.getItemStack();
+	}
+
+	public static ItemStack getProgressionStack() {
+		return new AItemStackBuilder(BASE_ITEMSTACK.clone())
+				.setName("&eProgression")
 				.setLore(new ALoreBuilder(
 						"&8&m----------------------------",
 						"&7idk man just figure it out",

@@ -3,6 +3,7 @@ package dev.kyro.pitsim.adarkzone.progression;
 import dev.kyro.arcticapi.builders.AItemStackBuilder;
 import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.pitsim.adarkzone.notdarkzone.UnlockState;
+import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.ArrayList;
@@ -36,7 +37,9 @@ public abstract class SkillBranch {
 	public abstract List<String> getDescription();
 	public abstract int getUnlockCost();
 
-	public ItemStack getDisplayStack(UnlockState unlockState) {
+	public ItemStack getDisplayStack(PitPlayer pitPlayer, MainProgressionUnlock unlock, UnlockState unlockState) {
+		String costString = ProgressionManager.getUnlockCostFormatted(pitPlayer, unlock);
+
 		String displayName = "";
 		ALoreBuilder loreBuilder = new ALoreBuilder();
 

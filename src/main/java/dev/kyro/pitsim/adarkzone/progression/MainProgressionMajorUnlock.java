@@ -1,6 +1,7 @@
 package dev.kyro.pitsim.adarkzone.progression;
 
 import dev.kyro.pitsim.adarkzone.notdarkzone.UnlockState;
+import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import org.bukkit.inventory.ItemStack;
 
 public class MainProgressionMajorUnlock extends MainProgressionUnlock {
@@ -11,12 +12,12 @@ public class MainProgressionMajorUnlock extends MainProgressionUnlock {
 	}
 
 	@Override
-	public ItemStack getDisplayStack(UnlockState unlockState) {
-		return skillBranch.getDisplayStack(unlockState);
+	public ItemStack getDisplayStack(PitPlayer pitPlayer, UnlockState unlockState) {
+		return skillBranch.getDisplayStack(pitPlayer, this, unlockState);
 	}
 
 	@Override
-	public int getUnlockCost() {
-		return skillBranch.getUnlockCost();
+	public String getDisplayName() {
+		return null;
 	}
 }

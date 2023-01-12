@@ -2,6 +2,7 @@ package dev.kyro.pitsim.adarkzone.progression;
 
 
 import dev.kyro.pitsim.adarkzone.notdarkzone.UnlockState;
+import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import org.bukkit.inventory.ItemStack;
 
 public abstract class MainProgressionUnlock {
@@ -15,10 +16,10 @@ public abstract class MainProgressionUnlock {
 		this.guiYPos = guiYPos;
 	}
 
-	public abstract ItemStack getDisplayStack(UnlockState unlockState);
-	public abstract int getUnlockCost();
+	public abstract String getDisplayName();
+	public abstract ItemStack getDisplayStack(PitPlayer pitPlayer, UnlockState unlockState);
 
-	public String getUnlockCostFormatted() {
-		return "&f" + getUnlockCost() + " soul" + (getUnlockCost() == 1 ? "" : "s");
+	public int getSlot() {
+		return (guiYPos - 1) * 9 + guiXPos - 1;
 	}
 }
