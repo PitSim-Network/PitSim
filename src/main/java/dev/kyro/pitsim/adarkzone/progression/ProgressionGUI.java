@@ -24,7 +24,7 @@ public class ProgressionGUI extends AGUI {
 	path 1:
 	path 2: decrease time until shield resets
 
-	enchanting/souls - increased souls from mobs, increased luck from enchanting?
+	enchanting/souls - increased souls from mobs, increased fresh drop?
 	first: unlock the tainted well
 	last:
 	path 1:
