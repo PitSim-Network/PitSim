@@ -78,7 +78,7 @@ public class PrestigeValues {
 		for(Map.Entry<Integer, Long> entry : xpLevelMap.entrySet()) {
 			if(entry.getKey() < level) continue;
 			double diff = (entry.getValue() - xpLevelMap.get(entry.getKey() - 10)) / 10D;
-			return (int) (entry.getValue() - diff * (entry.getKey() - level));
+			return (long) (entry.getValue() - diff * (entry.getKey() - level));
 		}
 		return -1;
 	}
@@ -193,10 +193,10 @@ public class PrestigeValues {
 		prestigeMap.put(54, new PrestigeInfo(54, 9_000, 400_000_000, 2900, 100, "&2"));
 		prestigeMap.put(55, new PrestigeInfo(55, 25_000, 500_000_000, 3000, 120, "&0"));
 		prestigeMap.put(56, new PrestigeInfo(56, 40_000, 600_000_000, 3500, 140, "&0"));
-		prestigeMap.put(57, new PrestigeInfo(57, 55_000, 700_000_000, 4500, 160, "&0"));
-		prestigeMap.put(58, new PrestigeInfo(58, 70_000, 850_000_000, 5500, 180, "&0"));
-		prestigeMap.put(59, new PrestigeInfo(59, 85_000, 1_000_000_000, 6500, 10_000, "&0"));
-		prestigeMap.put(60, new PrestigeInfo(60, 100_000, 0, 0, 120, "&4"));
+		prestigeMap.put(57, new PrestigeInfo(57, 60_000, 700_000_000, 4500, 160, "&0"));
+		prestigeMap.put(58, new PrestigeInfo(58, 80_000, 850_000_000, 5500, 180, "&0"));
+		prestigeMap.put(59, new PrestigeInfo(59, 100_000, 1_000_000_000, 6500, 10_000, "&0"));
+		prestigeMap.put(60, new PrestigeInfo(60, 1_000_000, 0, 0, 120, "&4"));
 
 		for(int i = 0; i < PrestigeValues.MAX_PRESTIGE + 1; i++) {
 			PrestigeInfo prestigeInfo = getPrestigeInfo(i);

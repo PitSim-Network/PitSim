@@ -52,7 +52,7 @@ public class LevelManager {
 		if(pitPlayer.remainingXP > 0) return;
 
 		pitPlayer.level += 1;
-		pitPlayer.remainingXP = (int) ((PrestigeValues.getXPForLevel(pitPlayer.level) * prestigeInfo.xpMultiplier));
+		pitPlayer.remainingXP = (long) ((PrestigeValues.getXPForLevel(pitPlayer.level) * prestigeInfo.xpMultiplier));
 		pitPlayer.updateXPBar();
 
 		Sounds.LEVEL_UP.play(player);
@@ -94,10 +94,10 @@ public class LevelManager {
 		pitPlayer.prestige += 1;
 		if(UpgradeManager.hasUpgrade(player, "FAST_PASS")) {
 			pitPlayer.level = 50;
-			pitPlayer.remainingXP = (int) (PrestigeValues.getXPForLevel(50) * prestigeInfo.xpMultiplier);
+			pitPlayer.remainingXP = (long) (PrestigeValues.getXPForLevel(50) * prestigeInfo.xpMultiplier);
 		} else {
 			pitPlayer.level = 1;
-			pitPlayer.remainingXP = (int) (PrestigeValues.getXPForLevel(1) * prestigeInfo.xpMultiplier);
+			pitPlayer.remainingXP = (long) (PrestigeValues.getXPForLevel(1) * prestigeInfo.xpMultiplier);
 		}
 		pitPlayer.goldGrinded = 0;
 		if(pitPlayer.megastreak != null) pitPlayer.megastreak.stop();
