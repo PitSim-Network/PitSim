@@ -65,6 +65,7 @@ import dev.kyro.pitsim.kits.PvPKit;
 import dev.kyro.pitsim.kits.XPKit;
 import dev.kyro.pitsim.leaderboards.*;
 import dev.kyro.pitsim.logging.LogManager;
+import dev.kyro.pitsim.market.MarketMessaging;
 import dev.kyro.pitsim.megastreaks.*;
 import dev.kyro.pitsim.misc.*;
 import dev.kyro.pitsim.misc.packets.SignPrompt;
@@ -618,6 +619,7 @@ public class PitSim extends JavaPlugin {
 		getServer().getPluginManager().registerEvents(new PacketManager(), this);
 		getServer().getPluginManager().registerEvents(new GrimManager(), this);
 		getServer().getPluginManager().registerEvents(new MiscManager(), this);
+		getServer().getPluginManager().registerEvents(new MarketMessaging(), this);
 
 //		New darkzone code
 		if(getStatus().isDarkzone()) {
