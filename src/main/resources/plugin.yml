@@ -108,3 +108,7 @@ commands:
     aliases:
       - itemname
   ignore:
+  cookie:
+    aliases:
+      - staffcookie
+      - givecookie

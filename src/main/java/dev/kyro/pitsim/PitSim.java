@@ -17,6 +17,7 @@ import dev.kyro.arcticapi.hooks.AHook;
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.adarkzone.*;
 import dev.kyro.pitsim.adarkzone.notdarkzone.ShieldManager;
+import dev.kyro.pitsim.adarkzone.progression.ProgressionManager;
 import dev.kyro.pitsim.aitems.misc.TotallyLegitGem;
 import dev.kyro.pitsim.aitems.misc.*;
 import dev.kyro.pitsim.aitems.mobdrops.*;
@@ -552,6 +553,7 @@ public class PitSim extends JavaPlugin {
 		getCommand("eco").setExecutor(new EcoCommand());
 		getCommand("ignore").setExecutor(new IgnoreCommand());
 		getCommand("ignore").setTabCompleter(new IgnoreCommand());
+		getCommand("cookie").setExecutor(new StaffCookieCommand());
 		//TODO: Remove this
 //		getCommand("massmigrate").setExecutor(new MassMigrateCommand());
 
@@ -626,6 +628,7 @@ public class PitSim extends JavaPlugin {
 			getServer().getPluginManager().registerEvents(new DarkzoneManager(), this);
 			getServer().getPluginManager().registerEvents(new BossManager(), this);
 			getServer().getPluginManager().registerEvents(new ShieldManager(), this);
+			getServer().getPluginManager().registerEvents(new ProgressionManager(), this);
 		}
 	}
 
@@ -792,6 +795,8 @@ public class PitSim extends JavaPlugin {
 		ItemFactory.registerItem(new AncientGemShard());
 		ItemFactory.registerItem(new YummyBread());
 		ItemFactory.registerItem(new VeryYummyBread());
+
+		ItemFactory.registerItem(new StaffCookie());
 
 		ItemFactory.registerItem(new RottenFlesh());
 		ItemFactory.registerItem(new Bone());

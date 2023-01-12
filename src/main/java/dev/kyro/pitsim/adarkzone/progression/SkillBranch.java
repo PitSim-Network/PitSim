@@ -1,5 +1,8 @@
 package dev.kyro.pitsim.adarkzone.progression;
 
+import dev.kyro.arcticapi.builders.AItemStackBuilder;
+import dev.kyro.arcticapi.builders.ALoreBuilder;
+import dev.kyro.pitsim.adarkzone.notdarkzone.UnlockState;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.ArrayList;
@@ -31,6 +34,16 @@ public abstract class SkillBranch {
 
 	public abstract ItemStack getBaseStack(); // Just to simply process of having to have methods for both material and data
 	public abstract List<String> getDescription();
+
+	public ItemStack getDisplayStack(UnlockState unlockState) {
+		String displayName = "";
+		ALoreBuilder loreBuilder = new ALoreBuilder();
+
+		return new AItemStackBuilder(getBaseStack())
+				.setName(displayName)
+				.setLore(loreBuilder)
+				.getItemStack();
+	}
 
 	public static class Path {
 		public List<ProgressionUnlock> unlocks = new ArrayList<>();
