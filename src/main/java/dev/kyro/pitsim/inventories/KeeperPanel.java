@@ -106,7 +106,7 @@ public class KeeperPanel extends AGUIPanel {
 			ServerData serverData = entry.getValue();
 
 			String headURL = HeadLib.getServerHead(serverIndex + 1);
-			ItemStack head = getCustomHead(headURL);
+			ItemStack head = HeadLib.getCustomHead(headURL);
 			SkullMeta meta = (SkullMeta) head.getItemMeta();
 			if(serverData.isRunning()) {
 				meta.setDisplayName(ChatColor.GREEN + "PitSim-" + (serverIndex + 1));
@@ -164,49 +164,5 @@ public class KeeperPanel extends AGUIPanel {
 				return Arrays.asList(0, 1, 2, 3, 4, 5, 6, 7, 8);
 		}
 		return null;
-	}
-
-	public ItemStack getCustomHead(String url) {
-
-		ItemStack skull = new ItemStack(Material.SKULL_ITEM, 1, (byte) 3);
-		SkullMeta skullMeta = (SkullMeta) skull.getItemMeta();
-		Field field = null;
-
-		assert skullMeta != null;
-
-		if(url.length() < 16) {
-
-			skullMeta.setOwner(url);
-
-			skull.setItemMeta(skullMeta);
-			return skull;
-		}
-
-		StringBuilder s_url = new StringBuilder();
-		s_url.append("https://textures.minecraft.net/texture/").append(url); // We get the texture link.
-
-		GameProfile gameProfile = new GameProfile(UUID.randomUUID(), null); // We create a GameProfile
-
-		// We get the bytes from the texture in Base64 encoded that comes from the Minecraft-URL.
-		byte[] data = Base64.getEncoder().encode(String.format("{textures:{SKIN:{url:\"%s\"}}}", s_url.toString()).getBytes());
-
-		// We set the texture property in the GameProfile.
-		gameProfile.getProperties().put("textures", new Property("textures", new String(data)));
-
-		try {
-
-			field = skullMeta.getClass().getDeclaredField("profile"); // We get the field profile.
-
-			field.setAccessible(true); // We set as accessible to modify.
-			field.set(skullMeta, gameProfile); // We set in the skullMeta the modified GameProfile that we created.
-
-		} catch(Exception e) {
-			e.printStackTrace();
-		}
-
-		skull.setItemMeta(skullMeta);
-
-		return skull; //Finally, you have the custom head!
-
 	}
 }

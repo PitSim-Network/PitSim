@@ -1,6 +1,72 @@
 package dev.kyro.pitsim.misc;
 
+import com.mojang.authlib.GameProfile;
+import com.mojang.authlib.properties.Property;
+import org.bukkit.Material;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.SkullMeta;
+
+import java.lang.reflect.Field;
+import java.util.Base64;
+import java.util.UUID;
+
 public class HeadLib {
+
+	public static ItemStack getCustomHead(String url) {
+
+		ItemStack skull = new ItemStack(Material.SKULL_ITEM, 1, (byte) 3);
+		SkullMeta skullMeta = (SkullMeta) skull.getItemMeta();
+		Field field = null;
+
+		assert skullMeta != null;
+
+		if(url.length() < 16) {
+
+			skullMeta.setOwner(url);
+
+			skull.setItemMeta(skullMeta);
+			return skull;
+		}
+
+		StringBuilder s_url = new StringBuilder();
+		s_url.append("https://textures.minecraft.net/texture/").append(url); // We get the texture link.
+
+		GameProfile gameProfile = new GameProfile(UUID.randomUUID(), null); // We create a GameProfile
+
+		// We get the bytes from the texture in Base64 encoded that comes from the Minecraft-URL.
+		byte[] data = Base64.getEncoder().encode(String.format("{textures:{SKIN:{url:\"%s\"}}}", s_url.toString()).getBytes());
+
+		// We set the texture property in the GameProfile.
+		gameProfile.getProperties().put("textures", new Property("textures", new String(data)));
+
+		try {
+
+			field = skullMeta.getClass().getDeclaredField("profile"); // We get the field profile.
+
+			field.setAccessible(true); // We set as accessible to modify.
+			field.set(skullMeta, gameProfile); // We set in the skullMeta the modified GameProfile that we created.
+
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
+
+		skull.setItemMeta(skullMeta);
+
+		return skull; //Finally, you have the custom head!
+
+	}
+
+	public static String getDownArrowHead() {
+		return "7437346d8bda78d525d19f540a95e4e79daeda795cbc5a13256236312cf";
+	}
+
+	public static String getUpArrowHead() {
+		return "3040fe836a6c2fbd2c7a9c8ec6be5174fddf1ac20f55e366156fa5f712e10";
+	}
+
+	public static String getPlusHead() {
+		return "3edd20be93520949e6ce789dc4f43efaeb28c717ee6bfcbbe02780142f716";
+	}
 
 	public static String getServerHead(int index) {
 
