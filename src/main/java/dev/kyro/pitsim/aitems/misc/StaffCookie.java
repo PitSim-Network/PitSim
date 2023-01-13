@@ -9,6 +9,8 @@ import dev.kyro.pitsim.misc.Misc;
 import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.player.PlayerItemConsumeEvent;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.ArrayList;
@@ -70,5 +72,12 @@ public class StaffCookie extends PitItem {
 		return new AItemStackBuilder(itemStack)
 				.setLore(loreBuilder)
 				.getItemStack();
+	}
+
+	@EventHandler
+	public void onEat(PlayerItemConsumeEvent event) {
+		ItemStack itemStack = event.getItem();
+		if(!isThisItem(itemStack)) return;
+		event.setCancelled(true);
 	}
 }
