@@ -13,6 +13,8 @@ public class ProgressionManager implements Listener {
 	public static List<MainProgressionUnlock> mainProgressionUnlocks = new ArrayList<>();
 
 	static {
+		registerMainUnlock(new MainProgressionStart("start", 1, 3));
+
 		registerMainUnlock(new MainProgressionMinorUnlock("main-1", 2, 3));
 		registerMainUnlock(new MainProgressionMinorUnlock("main-2", 3, 3));
 		registerMainUnlock(new MainProgressionMinorUnlock("main-3", 4, 3));
@@ -22,14 +24,14 @@ public class ProgressionManager implements Listener {
 		registerMainUnlock(new MainProgressionMinorUnlock("main-7", 8, 3));
 		registerMainUnlock(new MainProgressionMinorUnlock("main-8", 9, 3));
 
-		registerMainUnlock(new MainProgressionMinorUnlock("top-1", 2, 1));
-		registerMainUnlock(new MainProgressionMinorUnlock("top-2", 4, 1));
-		registerMainUnlock(new MainProgressionMinorUnlock("top-3", 6, 1));
-		registerMainUnlock(new MainProgressionMinorUnlock("top-4", 8, 1));
-		registerMainUnlock(new MainProgressionMinorUnlock("bottom-1", 3, 3));
-		registerMainUnlock(new MainProgressionMinorUnlock("bottom-2", 5, 3));
-		registerMainUnlock(new MainProgressionMinorUnlock("bottom-3", 7, 3));
-		registerMainUnlock(new MainProgressionMinorUnlock("bottom-4", 9, 3));
+		registerMainUnlock(new MainProgressionMinorUnlock("top-1", 2, 2));
+		registerMainUnlock(new MainProgressionMinorUnlock("top-2", 4, 2));
+		registerMainUnlock(new MainProgressionMinorUnlock("top-3", 6, 2));
+		registerMainUnlock(new MainProgressionMinorUnlock("top-4", 8, 2));
+		registerMainUnlock(new MainProgressionMinorUnlock("bottom-1", 3, 4));
+		registerMainUnlock(new MainProgressionMinorUnlock("bottom-2", 5, 4));
+		registerMainUnlock(new MainProgressionMinorUnlock("bottom-3", 7, 4));
+		registerMainUnlock(new MainProgressionMinorUnlock("bottom-4", 9, 4));
 	}
 
 	public static void registerBranch(SkillBranch skillBranch) {
@@ -59,7 +61,7 @@ public class ProgressionManager implements Listener {
 
 	public static int getUnlockCost(PitPlayer pitPlayer, MainProgressionUnlock unlock) {
 		int unlocks = pitPlayer.darkzoneData.mainProgressionUnlocks.size();
-		int cost = unlocks * 10;
+		int cost = (unlocks + 1) * 10;
 		if(unlock instanceof MainProgressionMajorUnlock) cost *= 2;
 		return cost;
 	}
@@ -82,6 +84,7 @@ public class ProgressionManager implements Listener {
 
 	public static boolean isUnlocked(PitPlayer pitPlayer, MainProgressionUnlock unlock) {
 		if(unlock == null) return false;
+		if(unlock instanceof MainProgressionStart) return true;
 		return pitPlayer.darkzoneData.mainProgressionUnlocks.contains(unlock.id);
 	}
 }
