@@ -23,7 +23,7 @@ public class Shield {
 
 	public void addShield(double amount) {
 		if(!isActive()) return;
-		shieldAmount += Math.min(amount, getMax());
+		shieldAmount = Math.min(shieldAmount + amount, getMax());
 	}
 
 	public void damageShield(double amount) {
