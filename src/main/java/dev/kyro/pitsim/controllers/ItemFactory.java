@@ -22,6 +22,10 @@ public class ItemFactory {
 		throw new RuntimeException();
 	}
 
+	public static boolean isItem(ItemStack itemStack) {
+		return getItem(itemStack) != null;
+	}
+
 	public static PitItem getItem(ItemStack itemStack) {
 		if(Misc.isAirOrNull(itemStack)) return null;
 		NBTItem nbtItem = new NBTItem(itemStack);
