@@ -12,17 +12,6 @@ public class MarketManager {
 	public static final int DEFAULT_MAX_LISTINGS = 3;
 	public static List<MarketListing> listings = new ArrayList<>();
 
-	static {
-		new BukkitRunnable() {
-			@Override
-			public void run() {
-				for(MarketListing listing : listings) {
-					System.out.println(listing + " : " + listing.marketUUID);
-				}
-			}
-		}.runTaskTimer(PitSim.INSTANCE, 20, 20);
-	}
-
 	public static MarketListing getListing(UUID listingUUID) {
 		for(MarketListing listing : listings) {
 			if(listing.marketUUID.equals(listingUUID)) return listing;

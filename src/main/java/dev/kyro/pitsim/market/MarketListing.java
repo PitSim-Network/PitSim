@@ -2,11 +2,13 @@ package dev.kyro.pitsim.market;
 
 import dev.kyro.arcticapi.builders.AItemStackBuilder;
 import dev.kyro.arcticapi.builders.ALoreBuilder;
+import dev.kyro.pitsim.controllers.objects.PluginMessage;
 import dev.kyro.pitsim.storage.StorageProfile;
 import org.bukkit.inventory.ItemStack;
 
 import java.io.Serializable;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
@@ -28,17 +30,35 @@ public class MarketListing implements Serializable {
 	//Weather or not multiple items are being sold; Auction mode disabled by default if true
 	public boolean stackBIN;
 
-	public MarketListing(UUID marketUUID, UUID ownerUUID, String itemData, int startingBid, int binPrice, boolean stackBIN, long listingLength, long creationTime, String bidMap) {
-		this.marketUUID = marketUUID;
-		this.ownerUUID = ownerUUID;
-		this.startingBid = startingBid;
-		this.binPrice = binPrice;
-		this.stackBIN = stackBIN;
-		this.itemData = StorageProfile.deserialize(itemData);
-		this.listingLength = listingLength;
-		this.creationTime = creationTime;
-		this.creationTime = System.currentTimeMillis();
-		this.bidMap = new HashMap<>();
+	public int claimableSouls;
+	public boolean itemClaimed;
+	public boolean hasEnded;
+
+	public MarketListing(PluginMessage message) {
+		updateListing(message);
+		bidMap = new HashMap<>();
+	}
+
+	public void updateListing(PluginMessage message) {
+		List<String> strings = message.getStrings();
+		List<Integer> ints = message.getIntegers();
+		List<Boolean> booleans = message.getBooleans();
+		List<Long> longs = message.getLongs();
+
+		marketUUID = UUID.fromString(strings.get(1));
+		ownerUUID = UUID.fromString(strings.get(2));
+		startingBid = ints.get(0);
+		binPrice = ints.get(1);
+		stackBIN = booleans.get(0);
+		itemData = StorageProfile.deserialize(strings.get(3));
+		listingLength = longs.get(0);
+		creationTime = longs.get(1);
+
+		claimableSouls = ints.get(2);
+		itemClaimed = booleans.get(1);
+		hasEnded = booleans.get(2);
+
+		String bidMap = strings.get(4);
 
 		if(bidMap.isEmpty()) return;
 		String[] entrySplit = bidMap.split(",");
@@ -74,6 +94,10 @@ public class MarketListing implements Serializable {
 		return bidder;
 	}
 
+	public long getTimeRemaining() {
+		return creationTime + listingLength - System.currentTimeMillis();
+	}
+
 	public ItemStack getItemStack() {
 		AItemStackBuilder builder = new AItemStackBuilder(itemData.getType(), itemData.getAmount(), itemData.getDurability())
 				.setLore(new ALoreBuilder(
@@ -82,14 +106,35 @@ public class MarketListing implements Serializable {
 						"&7Starting Bid: &f" + startingBid,
 						"&7Bin Price: &f" + binPrice,
 						"&7Stack BIN: &f" + stackBIN,
-						"&7Listing Length: &f" + listingLength,
-						"&7Creation Time: &f" + creationTime,
 						"&7Highest Bid: &f" + getHighestBid(),
 						"&7Highest Bidder: &f" + getHighestBidder(),
-						"&7Highest Price: &f" + getHighestPrice()
+						"&7Highest Price: &f" + getHighestPrice(),
+						"&eTime Left: &f" + getRemainingTimeString(creationTime, listingLength)
 				));
 		return builder.getItemStack();
 	}
+
+	public static String getRemainingTimeString(long creationDate, long duration) {
+		long currentTime = System.currentTimeMillis();
+		long endTime = creationDate + duration;
+		long remainingTime = endTime - currentTime;
+		if (remainingTime <= 0) {
+			return "Listing has expired";
+		}
+		long days = remainingTime / (24 * 60 * 60 * 1000);
+		remainingTime = remainingTime % (24 * 60 * 60 * 1000);
+		long hours = remainingTime / (60 * 60 * 1000);
+		remainingTime = remainingTime % (60 * 60 * 1000);
+		long minutes = remainingTime / (60 * 1000);
+		remainingTime = remainingTime % (60 * 1000);
+		long seconds = remainingTime / 1000;
+		return days + "d " + hours + "h " + minutes + "m " + seconds + "s";
+	}
+
+	public boolean hasEnded() {
+		return hasEnded || getTimeRemaining() <= 0;
+	}
+
 
 }
 

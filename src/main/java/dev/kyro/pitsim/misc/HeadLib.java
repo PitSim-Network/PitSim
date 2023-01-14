@@ -56,12 +56,12 @@ public class HeadLib {
 
 	}
 
-	public static String getDownArrowHead() {
-		return "7437346d8bda78d525d19f540a95e4e79daeda795cbc5a13256236312cf";
+	public static String getLeftArrowHead() {
+		return "bd69e06e5dadfd84e5f3d1c21063f2553b2fa945ee1d4d7152fdc5425bc12a9";
 	}
 
-	public static String getUpArrowHead() {
-		return "3040fe836a6c2fbd2c7a9c8ec6be5174fddf1ac20f55e366156fa5f712e10";
+	public static String getRightArrowHead() {
+		return "19bf3292e126a105b54eba713aa1b152d541a1d8938829c56364d178ed22bf";
 	}
 
 	public static String getPlusHead() {
