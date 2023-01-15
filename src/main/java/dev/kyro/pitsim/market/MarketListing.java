@@ -100,6 +100,7 @@ public class MarketListing implements Serializable {
 
 	public ItemStack getItemStack() {
 		AItemStackBuilder builder = new AItemStackBuilder(itemData.getType(), itemData.getAmount(), itemData.getDurability())
+				.setName(itemData.getItemMeta().getDisplayName())
 				.setLore(new ALoreBuilder(
 						"&7Owner: &f" + ownerUUID.toString(),
 						"&7Market UUID: &f" + marketUUID.toString(),
