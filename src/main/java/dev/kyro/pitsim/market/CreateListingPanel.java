@@ -125,7 +125,7 @@ public class CreateListingPanel extends AGUIPanel {
 
 				PluginMessage message = new PluginMessage().writeString("CREATE LISTING").writeString(player.getUniqueId().toString());
 				message.writeString(StorageProfile.serialize(player, selectedItem));
-				message.writeInt(startingBid == 0 ? -1 : startingBid).writeInt(binPrice == 0 ? -1 : binPrice).writeBoolean(false).writeLong(86400000L * getDuration()).send();
+				message.writeInt(startingBid == 0 ? -1 : startingBid).writeInt(binPrice == 0 ? -1 : binPrice).writeBoolean(selectedItem.getAmount() > 1).writeLong(86400000L * getDuration()).send();
 				selectedItem = null;
 				Sounds.SUCCESS.play(player);
 				AOutput.send(player, "&a&lMARKET! &7Listing created!");
@@ -222,7 +222,7 @@ public class CreateListingPanel extends AGUIPanel {
 					));
 		} else {
 			binBuilder = new AItemStackBuilder(Material.STAINED_CLAY, 1, 14)
-					.setName("&eSell Item as Auction")
+					.setName("&eSell Item as BIN")
 					.setLore(new ALoreBuilder(
 							"&7Players will be able to buy",
 							"&7your item instantly", "",

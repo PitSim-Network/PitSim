@@ -7,10 +7,7 @@ import dev.kyro.pitsim.storage.StorageProfile;
 import org.bukkit.inventory.ItemStack;
 
 import java.io.Serializable;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 public class MarketListing implements Serializable {
 
@@ -33,6 +30,9 @@ public class MarketListing implements Serializable {
 	public int claimableSouls;
 	public boolean itemClaimed;
 	public boolean hasEnded;
+
+	public String ownerDisplayName;
+	public Map<UUID, String> bidderDisplayNames;
 
 	public MarketListing(PluginMessage message) {
 		updateListing(message);
@@ -58,14 +58,25 @@ public class MarketListing implements Serializable {
 		itemClaimed = booleans.get(1);
 		hasEnded = booleans.get(2);
 
-		String bidMap = strings.get(4);
+		ownerDisplayName = strings.get(4);
+		String bidMap = strings.get(5);
 
-		if(bidMap.isEmpty()) return;
-		String[] entrySplit = bidMap.split(",");
-		for(String s : entrySplit) {
-			String[] dataSplit = s.split(":");
-			this.bidMap.put(UUID.fromString(dataSplit[0]), Integer.parseInt(dataSplit[1]));
+		if(!bidMap.isEmpty()) {
+			String[] entrySplit = bidMap.split(",");
+			for(String s : entrySplit) {
+				String[] dataSplit = s.split(":");
+				this.bidMap.put(UUID.fromString(dataSplit[0]), Integer.parseInt(dataSplit[1]));
+			}
 		}
+
+		String names = strings.get(6);
+		if(names.isEmpty()) return;
+		String[] nameSplit = names.split(",");
+		for(String s : nameSplit) {
+			String[] dataSplit = s.split(":");
+			bidderDisplayNames.put(UUID.fromString(dataSplit[0]), dataSplit[1]);
+		}
+
 	}
 
 	public int getHighestBid() {
@@ -100,18 +111,29 @@ public class MarketListing implements Serializable {
 
 	public ItemStack getItemStack() {
 		AItemStackBuilder builder = new AItemStackBuilder(itemData.getType(), itemData.getAmount(), itemData.getDurability())
-				.setName(itemData.getItemMeta().getDisplayName())
-				.setLore(new ALoreBuilder(
-						"&7Owner: &f" + ownerUUID.toString(),
-						"&7Market UUID: &f" + marketUUID.toString(),
-						"&7Starting Bid: &f" + startingBid,
-						"&7Bin Price: &f" + binPrice,
-						"&7Stack BIN: &f" + stackBIN,
-						"&7Highest Bid: &f" + getHighestBid(),
-						"&7Highest Bidder: &f" + getHighestBidder(),
-						"&7Highest Price: &f" + getHighestPrice(),
-						"&eTime Left: &f" + getRemainingTimeString(creationTime, listingLength)
-				));
+				.setName(itemData.getItemMeta().getDisplayName());
+		ALoreBuilder loreBuilder = new ALoreBuilder(itemData.getItemMeta().getLore());
+		loreBuilder.addLore("&8&m------------------------");
+		loreBuilder.addLore("&7Seller: " + ownerDisplayName, "");
+		if(startingBid != -1) {
+			if(bidMap.isEmpty()) loreBuilder.addLore("&7Starting Bid: &f" + startingBid + " Souls");
+			else {
+				loreBuilder.addLore("&7Highest Bid: &f" + getHighestBid() + " Souls");
+				loreBuilder.addLore("&7Bidder: " + bidderDisplayNames.get(getHighestBidder()));
+			}
+			loreBuilder.addLore("");
+		}
+		if(binPrice != -1) {
+			loreBuilder.addLore("&7BIN Price: &f" + binPrice + " Souls" + (stackBIN ? " &8(Per Item)" : ""));
+			if(stackBIN) loreBuilder.addLore("&7Stock: &a" + itemData.getAmount() + " Items");
+
+			loreBuilder.addLore("");
+		}
+		loreBuilder.addLore("&7Time Remaining: &e" + getRemainingTimeString(creationTime, listingLength));
+		loreBuilder.addLore("&8&m------------------------");
+		loreBuilder.addLore("", "&eClick to Inspect");
+
+		builder.setLore(loreBuilder);
 		return builder.getItemStack();
 	}
 
