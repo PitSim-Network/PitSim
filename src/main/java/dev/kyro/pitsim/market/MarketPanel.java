@@ -41,15 +41,7 @@ public class MarketPanel extends AGUIPanel {
 		}
 
 		calculateListings();
-		int currentPages = page + 1;
-
-;		AItemStackBuilder upBuilder = new AItemStackBuilder(HeadLib.getCustomHead(HeadLib.getLeftArrowHead()))
-				.setName(page > 0 ? "&aPrevious Page &7(" + currentPages + "/" + maxPages + ")" : "&cPrevious Page &7(" + currentPages + "/" + maxPages + ")");
-		getInventory().setItem(48, upBuilder.getItemStack());
-
-		AItemStackBuilder downBuilder = new AItemStackBuilder(HeadLib.getCustomHead(HeadLib.getRightArrowHead()))
-				.setName(page < maxPages - 1 ? "&aNext Page &7(" + currentPages + "/" + maxPages + ")" : "&cNext Page &7(" + currentPages + "/" + maxPages + ")");
-		getInventory().setItem(51, downBuilder.getItemStack());
+		calculateArrows();
 
 		AItemStackBuilder backBuilder = new AItemStackBuilder(Material.BARRIER)
 				.setName("&cBack to Main Menu");
@@ -58,6 +50,18 @@ public class MarketPanel extends AGUIPanel {
 		updateSortItemStack();
 		updateListingFilterItemStack();
 		updateSearchItemStack();
+	}
+
+	public void calculateArrows() {
+		int currentPages = page + 1;
+
+		AItemStackBuilder upBuilder = new AItemStackBuilder(HeadLib.getCustomHead(HeadLib.getLeftArrowHead()))
+				.setName(page > 0 ? "&aPrevious Page &7(" + currentPages + "/" + maxPages + ")" : "&cPrevious Page &7(" + currentPages + "/" + maxPages + ")");
+		getInventory().setItem(48, upBuilder.getItemStack());
+
+		AItemStackBuilder downBuilder = new AItemStackBuilder(HeadLib.getCustomHead(HeadLib.getRightArrowHead()))
+				.setName(page < maxPages - 1 ? "&aNext Page &7(" + currentPages + "/" + maxPages + ")" : "&cNext Page &7(" + currentPages + "/" + maxPages + ")");
+		getInventory().setItem(51, downBuilder.getItemStack());
 	}
 
 	public void calculateListings() {
@@ -75,6 +79,8 @@ public class MarketPanel extends AGUIPanel {
 			getInventory().setItem(i, listings[itemIndex].getItemStack());
 			itemIndex++;
 		}
+
+		calculateArrows();
 	}
 
 	public void updateSortItemStack() {
@@ -162,7 +168,6 @@ public class MarketPanel extends AGUIPanel {
 					openPanel(this);
 					searchParameter = input.replaceAll("\"", "");
 					sortQuery = new SortQuery(sortType, listingFilter, SortQuery.ItemFilter.ALL,searchParameter);
-					Sounds.HELMET_TICK.play(player);
 					updateSearchItemStack();
 					page = 0;
 					calculateListings();
@@ -190,6 +195,7 @@ public class MarketPanel extends AGUIPanel {
 			if(page > 0) {
 				page--;
 				calculateListings();
+				calculateArrows();
 				Sounds.HELMET_TICK.play(player);
 			} else Sounds.NO.play(player);
 		}
@@ -198,6 +204,7 @@ public class MarketPanel extends AGUIPanel {
 			if(page + 1 < maxPages) {
 				page++;
 				calculateListings();
+				calculateArrows();
 				Sounds.HELMET_TICK.play(player);
 			} else Sounds.NO.play(player);
 		}

@@ -23,6 +23,16 @@ public class MarketSelectionPanel extends AGUIPanel {
 						"&eClick to view listings"
 				));
 		getInventory().setItem(11, listingsBuilder.getItemStack());
+
+		AItemStackBuilder createBuilder = new AItemStackBuilder(Material.GOLD_BARDING)
+				.setName("&eCreate new Listing")
+				.setLore(new ALoreBuilder(
+						"&7Create a new listing",
+						"&7on the player market.",
+						"",
+						"&eClick to view listings"
+				));
+		getInventory().setItem(15, createBuilder.getItemStack());
 	}
 
 	@Override
@@ -42,6 +52,10 @@ public class MarketSelectionPanel extends AGUIPanel {
 
 		if(slot == 11) {
 			openPanel(((MarketGUI) gui).marketPanel);
+		}
+
+		if(slot == 15) {
+			openPanel(((MarketGUI) gui).createListingPanel);
 		}
 	}
 
