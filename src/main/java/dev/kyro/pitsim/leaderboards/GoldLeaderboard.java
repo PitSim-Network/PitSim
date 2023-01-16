@@ -32,23 +32,23 @@ public class GoldLeaderboard extends Leaderboard {
 
 	@Override
 	public String getDisplayValue(LeaderboardPosition position) {
-		return "&6" + Misc.formatLarge(position.intValue) + "g";
+		return "&6" + Misc.formatLarge(position.doubleValue) + "g";
 	}
 
 	@Override
 	public String getDisplayValue(PitPlayer pitPlayer) {
-		return "&6" + Misc.formatLarge(pitPlayer.stats.auctionsWon) + "g";
+		return "&6" + Misc.formatLarge(pitPlayer.gold) + "g";
 	}
 
 	@Override
 	public void setPosition(LeaderboardPosition position) {
 		LeaderboardData data = LeaderboardData.getLeaderboardData(this);
 
-		position.intValue = (int) data.getValue(position.uuid).primaryValue;
+		position.doubleValue = data.getValue(position.uuid).primaryValue;
 	}
 
 	@Override
 	public boolean isMoreThanOrEqual(LeaderboardPosition position, LeaderboardPosition otherPosition) {
-		return position.intValue >= otherPosition.intValue;
+		return position.doubleValue >= otherPosition.doubleValue;
 	}
 }

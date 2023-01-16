@@ -159,7 +159,7 @@ public class BackwardsCompatibility implements Listener {
 
 		pitPlayer.prestige = newPrestige;
 		pitPlayer.level = 1;
-		pitPlayer.remainingXP = (int) (PrestigeValues.getXPForLevel(1) * newPrestigeInfo.xpMultiplier);
+		pitPlayer.remainingXP = (long) (PrestigeValues.getXPForLevel(1) * newPrestigeInfo.xpMultiplier);
 		pitPlayer.soulsGathered = 0;
 		pitPlayer.megastreak = new Overdrive(pitPlayer);
 		pitPlayer.goldGrinded = 0;

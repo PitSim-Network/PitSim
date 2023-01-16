@@ -20,8 +20,11 @@ import java.util.Arrays;
 import java.util.List;
 
 public class GoldRushAbility extends HelmetAbility {
-	public GoldRushAbility(Player player) {
+	public static final int GOLD_RUSH_COST = 1_000;
+	public static final double GOLD_REQ_MULTIPLIER = 2.0;
+	public static final DecimalFormat formatter = new DecimalFormat("#,###");
 
+	public GoldRushAbility(Player player) {
 		super(player, "Gold Rush", "goldrush", true, 12);
 	}
 
@@ -45,13 +48,13 @@ public class GoldRushAbility extends HelmetAbility {
 
 		ItemStack goldenHelmet = GoldenHelmet.getHelmet(killEvent.getKiller());
 		assert goldenHelmet != null;
-		if(!GoldenHelmet.withdrawGold(player, goldenHelmet, 2000)) {
+		if(!GoldenHelmet.withdrawGold(player, goldenHelmet, GOLD_RUSH_COST)) {
 			AOutput.error(player, "&cNot enough gold!");
 			GoldenHelmet.deactivate(player);
 			Sounds.NO.play(player);
 		}
 
-		LevelManager.addGoldReq(player, (int) killEvent.getFinalGold() * 2);
+		LevelManager.addGoldReq(player, (int) killEvent.getFinalGold() * (GOLD_REQ_MULTIPLIER - 1));
 	}
 
 	@Override
@@ -60,7 +63,7 @@ public class GoldRushAbility extends HelmetAbility {
 		assert goldenHelmet != null;
 
 		Sounds.HELMET_ACTIVATE.play(player);
-		AOutput.send(player, "&6&lGOLDEN HELMET! &aActivated &9Gold Rush&7. (&6-2,000g&7 per kill)");
+		AOutput.send(player, "&6&lGOLDEN HELMET! &aActivated &9Gold Rush&7. (&6-" + GOLD_RUSH_COST + "g&7 per kill)");
 	}
 
 	@Override
@@ -68,7 +71,7 @@ public class GoldRushAbility extends HelmetAbility {
 		ItemStack goldenHelmet = GoldenHelmet.getHelmet(player);
 
 		assert goldenHelmet != null;
-		if(!GoldenHelmet.withdrawGold(player, goldenHelmet, 2000)) {
+		if(!GoldenHelmet.withdrawGold(player, goldenHelmet, GOLD_RUSH_COST)) {
 			AOutput.error(player, "&cNot enough gold!");
 			Sounds.NO.play(player);
 			return false;
@@ -87,9 +90,11 @@ public class GoldRushAbility extends HelmetAbility {
 
 	@Override
 	public List<String> getDescription() {
-		DecimalFormat formatter = new DecimalFormat("#,###.#");
-		return Arrays.asList("&7Double-Sneak to toggle Gold", "&7Rush. Triple gold requirement on kill", "",
-				"&7Cost: &6" + formatter.format(2000) + "g &7per kill");
+		DecimalFormat multiplierFormat = new DecimalFormat("#.#");
+		return Arrays.asList("&7Double-Sneak to toggle Gold",
+				"&7Rush. Gold requirement multiplied",
+				"&7on kill by &6x" + multiplierFormat.format(GOLD_REQ_MULTIPLIER),
+				"&7Cost: &6" + formatter.format(GOLD_RUSH_COST) + "g &7per kill");
 	}
 
 	@Override
