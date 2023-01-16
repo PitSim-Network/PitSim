@@ -513,8 +513,9 @@ public class PitSim extends JavaPlugin {
 		new JewelCommand(giveCommand, "jewel");
 
 		getCommand("atest").setExecutor(new ATestCommand());
-		getCommand("fps").setExecutor(new FPSCommand());
+		getCommand("ktest").setExecutor(new KTestCommand());
 
+		getCommand("fps").setExecutor(new FPSCommand());
 		getCommand("oof").setExecutor(new OofCommand());
 		getCommand("perks").setExecutor(new PerkCommand());
 		getCommand("non").setExecutor(new NonCommand());
