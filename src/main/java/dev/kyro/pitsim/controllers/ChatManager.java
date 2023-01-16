@@ -33,7 +33,6 @@ public class ChatManager implements Listener {
 
 	@EventHandler
 	public void onPrivateMessage(PrivateMessageEvent event) {
-		System.out.println("hi");
 		Player sender = event.getSender();
 		Player recipient = event.getRecipient();
 		PitPlayer pitSender = PitPlayer.getPitPlayer(sender);

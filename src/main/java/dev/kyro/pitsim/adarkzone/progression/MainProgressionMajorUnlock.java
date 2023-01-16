@@ -7,17 +7,18 @@ import org.bukkit.inventory.ItemStack;
 public class MainProgressionMajorUnlock extends MainProgressionUnlock {
 	public SkillBranch skillBranch;
 
-	public MainProgressionMajorUnlock(SkillBranch skillBranch, int guiXPos, int guiYPos) {
-		super(skillBranch.getRefName(), guiXPos, guiYPos);
+	public MainProgressionMajorUnlock(Class<? extends SkillBranch> clazz, int guiXPos, int guiYPos) {
+		super(ProgressionManager.getSkillBranch(clazz).getRefName(), guiXPos, guiYPos);
+		this.skillBranch = ProgressionManager.getSkillBranch(clazz);
 	}
 
 	@Override
 	public ItemStack getDisplayStack(PitPlayer pitPlayer, UnlockState unlockState) {
-		return skillBranch.getDisplayStack(pitPlayer, this, unlockState);
+		return skillBranch.getMainDisplayStack(pitPlayer, this, unlockState);
 	}
 
 	@Override
 	public String getDisplayName() {
-		return null;
+		return skillBranch.getDisplayName();
 	}
 }

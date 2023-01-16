@@ -1,4 +1,4 @@
-package dev.kyro.pitsim.enums;
+package dev.kyro.pitsim.misc;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -16,41 +16,8 @@ public class ProgressionGUI extends AGUI {
 
 	public PitPlayer pitPlayer;
 
-	/*
-	Branches:
-	damage - increased dmg vs mobs, increased dmg vs bosses
-	first: unlock bosses
-	last:
-	path 1:
-	path 2: -1 item required to spawn bosses
-
-	defense - decreased damage from mobs & bosses, increased shield
-	first: unlock shield
-	last:
-	path 1:
-	path 2: decrease time until shield resets
-
-	enchanting/souls - increased souls from mobs, increased fresh drop?
-	first: unlock the tainted well
-	last:
-	path 1:
-	path 2:
-
-	mana - increased max mana, increased mana regen
-	first: unlock mana
-	last:
-	path 1:
-	path 2:
-
-	potions - decreased brew time, increased brewing "luck"
-	first: unlock the brewing system
-	last: unlock receiving that item as a drop that directly just buffs up a potion
-	path 1: unlock catalyst crafting
-	path 2: unlock crafting of ingredient that increases potency or smth
-	*/
-
 	public MainProgressionPanel mainProgressionPanel;
-	public List<ProgressionPanel> progressionPanels = new ArrayList<>();
+	public List<SkillBranchPanel> skillBranchPanels = new ArrayList<>();
 
 	static {
 		backItem = new AItemStackBuilder(Material.BARRIER)
@@ -68,8 +35,8 @@ public class ProgressionGUI extends AGUI {
 		this.mainProgressionPanel = new MainProgressionPanel(this);
 
 		for(SkillBranch skillBranch : ProgressionManager.skillBranches) {
-			ProgressionPanel panel = new ProgressionPanel(this, skillBranch);
-			progressionPanels.add(panel);
+			SkillBranchPanel panel = new SkillBranchPanel(this, skillBranch);
+			skillBranchPanels.add(panel);
 		}
 
 		setHomePanel(mainProgressionPanel);

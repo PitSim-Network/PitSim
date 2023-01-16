@@ -58,7 +58,12 @@ public class MainProgressionPanel extends AGUIPanel {
 				setInventory();
 			} else if(state == UnlockState.UNLOCKED) {
 				if(unlock instanceof MainProgressionMajorUnlock) {
-//					TODO: Open sub panel
+					MainProgressionMajorUnlock majorUnlock = (MainProgressionMajorUnlock) unlock;
+					for(SkillBranchPanel skillBranchPanel : progressionGUI.skillBranchPanels) {
+						if(skillBranchPanel.skillBranch != majorUnlock.skillBranch) continue;
+						openPanel(skillBranchPanel);
+						break;
+					}
 				}
 			}
 		}

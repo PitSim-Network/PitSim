@@ -2,7 +2,7 @@ package dev.kyro.pitsim.controllers.objects;
 
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.controllers.SkinManager;
-import dev.kyro.pitsim.enums.MinecraftSkin;
+import dev.kyro.pitsim.misc.MinecraftSkin;
 import net.citizensnpcs.api.CitizensAPI;
 import net.citizensnpcs.api.event.NPCRightClickEvent;
 import net.citizensnpcs.api.npc.NPC;
