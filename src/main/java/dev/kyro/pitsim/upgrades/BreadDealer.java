@@ -70,7 +70,6 @@ public class BreadDealer extends RenownUpgrade {
 				player.getInventory().setItem(i, itemStack);
 			}
 		}
-		player.updateInventory();
 	}
 
 	@Override

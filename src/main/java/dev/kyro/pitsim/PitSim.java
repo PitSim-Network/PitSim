@@ -21,6 +21,10 @@ import dev.kyro.pitsim.adarkzone.progression.ProgressionManager;
 import dev.kyro.pitsim.aitems.misc.TotallyLegitGem;
 import dev.kyro.pitsim.aitems.misc.*;
 import dev.kyro.pitsim.aitems.mobdrops.*;
+import dev.kyro.pitsim.aitems.prot.ProtBoots;
+import dev.kyro.pitsim.aitems.prot.ProtChestplate;
+import dev.kyro.pitsim.aitems.prot.ProtHelmet;
+import dev.kyro.pitsim.aitems.prot.ProtLeggings;
 import dev.kyro.pitsim.battlepass.PassManager;
 import dev.kyro.pitsim.battlepass.quests.*;
 import dev.kyro.pitsim.battlepass.quests.daily.DailyBotKillQuest;
@@ -793,6 +797,11 @@ public class PitSim extends JavaPlugin {
 		ItemFactory.registerItem(new VeryYummyBread());
 
 		ItemFactory.registerItem(new StaffCookie());
+
+		ItemFactory.registerItem(new ProtHelmet());
+		ItemFactory.registerItem(new ProtChestplate());
+		ItemFactory.registerItem(new ProtLeggings());
+		ItemFactory.registerItem(new ProtBoots());
 
 		ItemFactory.registerItem(new RottenFlesh());
 		ItemFactory.registerItem(new Bone());

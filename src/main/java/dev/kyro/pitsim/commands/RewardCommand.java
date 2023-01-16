@@ -4,10 +4,14 @@ import de.tr7zw.nbtapi.NBTItem;
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.arcticapi.misc.AUtil;
 import dev.kyro.pitsim.PitSim;
+import dev.kyro.pitsim.aitems.MysticFactory;
 import dev.kyro.pitsim.aitems.misc.AncientGemShard;
 import dev.kyro.pitsim.aitems.misc.ChunkOfVile;
 import dev.kyro.pitsim.aitems.misc.FunkyFeather;
-import dev.kyro.pitsim.aitems.MysticFactory;
+import dev.kyro.pitsim.aitems.prot.ProtBoots;
+import dev.kyro.pitsim.aitems.prot.ProtChestplate;
+import dev.kyro.pitsim.aitems.prot.ProtHelmet;
+import dev.kyro.pitsim.aitems.prot.ProtLeggings;
 import dev.kyro.pitsim.battlepass.PassData;
 import dev.kyro.pitsim.battlepass.PassManager;
 import dev.kyro.pitsim.controllers.EnchantManager;
@@ -17,7 +21,6 @@ import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.enums.MysticType;
 import dev.kyro.pitsim.enums.NBTTag;
 import dev.kyro.pitsim.enums.PantColor;
-import dev.kyro.pitsim.misc.ProtArmor;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -116,22 +119,22 @@ public class RewardCommand implements CommandExecutor {
 				}
 				return false;
 			case "p1":
-				ProtArmor.getArmor(player, "helmet");
-				ProtArmor.getArmor(player, "chestplate");
-				ProtArmor.getArmor(player, "leggings");
-				ProtArmor.getArmor(player, "boots");
+				ItemFactory.getItem(ProtHelmet.class).giveItem(player, 1);
+				ItemFactory.getItem(ProtChestplate.class).giveItem(player, 1);
+				ItemFactory.getItem(ProtLeggings.class).giveItem(player, 1);
+				ItemFactory.getItem(ProtBoots.class).giveItem(player, 1);
 				return false;
 			case "p1helmet":
-				ProtArmor.getArmor(player, "helmet");
+				ItemFactory.getItem(ProtHelmet.class).giveItem(player, 1);
 				return false;
 			case "p1chestplate":
-				ProtArmor.getArmor(player, "chestplate");
+				ItemFactory.getItem(ProtChestplate.class).giveItem(player, 1);
 				return false;
 			case "p1leggings":
-				ProtArmor.getArmor(player, "leggings");
+				ItemFactory.getItem(ProtLeggings.class).giveItem(player, 1);
 				return false;
 			case "p1boots":
-				ProtArmor.getArmor(player, "boots");
+				ItemFactory.getItem(ProtBoots.class).giveItem(player, 1);
 				return false;
 			case "feather":
 				ItemFactory.getItem(FunkyFeather.class).giveItem(player, amount);

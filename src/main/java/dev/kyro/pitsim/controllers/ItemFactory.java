@@ -22,7 +22,7 @@ public class ItemFactory {
 		throw new RuntimeException();
 	}
 
-	public static boolean isItem(ItemStack itemStack) {
+	public static boolean isPitItem(ItemStack itemStack) {
 		return getItem(itemStack) != null;
 	}
 
@@ -33,5 +33,11 @@ public class ItemFactory {
 		String itemTag = nbtItem.getString(NBTTag.CUSTOM_ITEM.getRef());
 		for(PitItem pitItem : pitItems) if(pitItem.getNBTID().equals(itemTag)) return pitItem;
 		return null;
+	}
+
+	public static boolean isThisItem(ItemStack itemStack, Class<? extends PitItem> clazz) {
+		PitItem pitItem = getItem(itemStack);
+		if(pitItem == null) return false;
+		return pitItem.getClass() == clazz;
 	}
 }

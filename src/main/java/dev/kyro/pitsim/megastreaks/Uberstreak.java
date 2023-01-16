@@ -9,6 +9,10 @@ import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.aitems.misc.ChunkOfVile;
 import dev.kyro.pitsim.aitems.misc.FunkyFeather;
 import dev.kyro.pitsim.aitems.MysticFactory;
+import dev.kyro.pitsim.aitems.prot.ProtBoots;
+import dev.kyro.pitsim.aitems.prot.ProtChestplate;
+import dev.kyro.pitsim.aitems.prot.ProtHelmet;
+import dev.kyro.pitsim.aitems.prot.ProtLeggings;
 import dev.kyro.pitsim.battlepass.quests.CompleteUbersQuest;
 import dev.kyro.pitsim.controllers.*;
 import dev.kyro.pitsim.controllers.objects.Megastreak;
@@ -432,17 +436,17 @@ public class Uberstreak extends Megastreak {
 				ItemFactory.getItem(ChunkOfVile.class).giveItem(player, 5);
 				displayStack = getDisplayStack("&55x Chunk of Vile", ItemFactory.getItem(ChunkOfVile.class).getItem(5));
 			} else if(this == P1_HELMET) {
-				ProtArmor.getArmor(player, "helmet");
-				displayStack = getDisplayStack("&bProtection I Diamond Helmet", ProtArmor.getArmor("helmet"));
+				ItemFactory.getItem(ProtHelmet.class).giveItem(player, 1);
+				displayStack = getDisplayStack("&bProtection I Diamond Helmet", ItemFactory.getItem(ProtHelmet.class).getItem(1));
 			} else if(this == P1_CHESTPLATE) {
-				ProtArmor.getArmor(player, "chestplate");
-				displayStack = getDisplayStack("&bProtection I Diamond Chestplate", ProtArmor.getArmor("chestplate"));
+				ItemFactory.getItem(ProtChestplate.class).giveItem(player, 1);
+				displayStack = getDisplayStack("&bProtection I Diamond Chestplate", ItemFactory.getItem(ProtChestplate.class).getItem(1));
 			} else if(this == P1_LEGGINGS) {
-				ProtArmor.getArmor(player, "leggings");
-				displayStack = getDisplayStack("&bProtection I Diamond Leggings", ProtArmor.getArmor("leggings"));
+				ItemFactory.getItem(ProtLeggings.class).giveItem(player, 1);
+				displayStack = getDisplayStack("&bProtection I Diamond Leggings", ItemFactory.getItem(ProtLeggings.class).getItem(1));
 			} else if(this == P1_BOOTS) {
-				ProtArmor.getArmor(player, "boots");
-				displayStack = getDisplayStack("&bProtection I Diamond Boots", ProtArmor.getArmor("boots"));
+				ItemFactory.getItem(ProtBoots.class).giveItem(player, 1);
+				displayStack = getDisplayStack("&bProtection I Diamond Boots", ItemFactory.getItem(ProtBoots.class).getItem(1));
 			}
 
 			sendUberMessage(Misc.getDisplayName(player), displayStack);

@@ -8,14 +8,16 @@ import dev.kyro.pitsim.controllers.ItemFactory;
 import dev.kyro.pitsim.enums.NBTTag;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
-import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public abstract class PitItem implements Listener {
 	public short itemData = 0;
@@ -23,6 +25,9 @@ public abstract class PitItem implements Listener {
 	public boolean hasDropConfirm;
 //	This is forced true if the item has drop confirm
 	public boolean destroyIfDroppedInSpawn;
+	public boolean isProt;
+
+	public Map<Enchantment, Integer> itemEnchants = new HashMap<>();
 
 	public PitItem() {
 		Bukkit.getPluginManager().registerEvents(this, PitSim.INSTANCE);
@@ -43,6 +48,7 @@ public abstract class PitItem implements Listener {
 				.setName(getName(player))
 				.setLore(getLore(player))
 				.getItemStack();
+		itemStack.addUnsafeEnchantments(itemEnchants);
 		hideExtra(itemStack);
 		return setTag(itemStack);
 	}

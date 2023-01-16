@@ -97,11 +97,9 @@ public class MysticFactory {
 			mystic = PantColor.setPantColor(mystic, pantColor);
 		}
 
-		if(mystic == null) return null;
 		NBTItem nbtMystic = new NBTItem(mystic);
 		nbtMystic.setString(NBTTag.ITEM_UUID.getRef(), UUID.randomUUID().toString());
 		nbtMystic.addCompound(NBTTag.PIT_ENCHANTS.getRef());
-
 		return nbtMystic.getItem();
 	}
 

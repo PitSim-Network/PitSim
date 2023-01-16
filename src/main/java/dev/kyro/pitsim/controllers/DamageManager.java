@@ -3,8 +3,13 @@ package dev.kyro.pitsim.controllers;
 import de.tr7zw.nbtapi.NBTItem;
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.PitSim;
+import dev.kyro.pitsim.aitems.PitItem;
 import dev.kyro.pitsim.aitems.misc.CorruptedFeather;
 import dev.kyro.pitsim.aitems.misc.FunkyFeather;
+import dev.kyro.pitsim.aitems.prot.ProtBoots;
+import dev.kyro.pitsim.aitems.prot.ProtChestplate;
+import dev.kyro.pitsim.aitems.prot.ProtHelmet;
+import dev.kyro.pitsim.aitems.prot.ProtLeggings;
 import dev.kyro.pitsim.brewing.objects.BrewingIngredient;
 import dev.kyro.pitsim.controllers.objects.Non;
 import dev.kyro.pitsim.controllers.objects.PitEnchant;
@@ -24,7 +29,6 @@ import dev.kyro.pitsim.megastreaks.NoMegastreak;
 import dev.kyro.pitsim.megastreaks.RNGesus;
 import dev.kyro.pitsim.misc.ArmorReduction;
 import dev.kyro.pitsim.misc.Misc;
-import dev.kyro.pitsim.misc.ProtArmor;
 import dev.kyro.pitsim.misc.Sounds;
 import dev.kyro.pitsim.upgrades.BreadDealer;
 import dev.kyro.pitsim.upgrades.DivineIntervention;
@@ -43,6 +47,7 @@ import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityRegainHealthEvent;
 import org.bukkit.event.entity.EntityShootBowEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
@@ -556,8 +561,9 @@ public class DamageManager implements Listener {
 			}
 
 			if(!feather && !divine) {
-				ProtArmor.deleteArmor(deadPlayer);
+				deleteProt(deadPlayer);
 				BreadDealer.handleBreadOnDeath(deadPlayer);
+				deadPlayer.updateInventory();
 			}
 			if(!Misc.isAirOrNull(deadPlayer.getInventory().getLeggings())) {
 				ItemStack pants = deadPlayer.getInventory().getLeggings();
@@ -606,5 +612,20 @@ public class DamageManager implements Listener {
 		if(!Misc.isAirOrNull(entity.getEquipment().getChestplate())) return false;
 		if(!Misc.isAirOrNull(entity.getEquipment().getLeggings())) return false;
 		return Misc.isAirOrNull(entity.getEquipment().getBoots());
+	}
+
+	public static void deleteProt(Player player) {
+		PlayerInventory inventory = player.getInventory();
+
+		if(ItemFactory.isThisItem(inventory.getHelmet(), ProtHelmet.class)) inventory.setHelmet(new ItemStack(Material.AIR));
+		if(ItemFactory.isThisItem(inventory.getChestplate(), ProtChestplate.class)) inventory.setChestplate(new ItemStack(Material.AIR));
+		if(ItemFactory.isThisItem(inventory.getLeggings(), ProtLeggings.class)) inventory.setLeggings(new ItemStack(Material.AIR));
+		if(ItemFactory.isThisItem(inventory.getBoots(), ProtBoots.class)) inventory.setBoots(new ItemStack(Material.AIR));
+
+		for(ItemStack itemStack : inventory) {
+			PitItem pitItem = ItemFactory.getItem(itemStack);
+			if(pitItem == null || !pitItem.isProt) continue;
+			inventory.remove(itemStack);
+		}
 	}
 }

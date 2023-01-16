@@ -3,9 +3,13 @@ package dev.kyro.pitsim.inventories;
 import de.tr7zw.nbtapi.NBTItem;
 import dev.kyro.arcticapi.gui.AGUI;
 import dev.kyro.arcticapi.gui.AGUIPanel;
-import dev.kyro.pitsim.aitems.*;
+import dev.kyro.pitsim.aitems.MysticFactory;
 import dev.kyro.pitsim.aitems.misc.*;
 import dev.kyro.pitsim.aitems.mobdrops.*;
+import dev.kyro.pitsim.aitems.prot.ProtBoots;
+import dev.kyro.pitsim.aitems.prot.ProtChestplate;
+import dev.kyro.pitsim.aitems.prot.ProtHelmet;
+import dev.kyro.pitsim.aitems.prot.ProtLeggings;
 import dev.kyro.pitsim.controllers.EnchantManager;
 import dev.kyro.pitsim.controllers.ItemFactory;
 import dev.kyro.pitsim.enums.MysticType;
@@ -13,7 +17,6 @@ import dev.kyro.pitsim.enums.NBTTag;
 import dev.kyro.pitsim.enums.PantColor;
 import dev.kyro.pitsim.misc.Base64;
 import dev.kyro.pitsim.misc.Constant;
-import dev.kyro.pitsim.misc.ProtArmor;
 import org.bukkit.ChatColor;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
@@ -73,10 +76,10 @@ public class GodPanel extends AGUIPanel {
 		EnchantManager.setItemLore(nbtItem.getItem(), player);
 		addItem(nbtItem.getItem());
 
-		addItem(ProtArmor.getArmor("helmet"));
-		addItem(ProtArmor.getArmor("chestplate"));
-		addItem(ProtArmor.getArmor("leggings"));
-		addItem(ProtArmor.getArmor("boots"));
+		addItem(ItemFactory.getItem(ProtHelmet.class).getItem(1));
+		addItem(ItemFactory.getItem(ProtChestplate.class).getItem(1));
+		addItem(ItemFactory.getItem(ProtLeggings.class).getItem(1));
+		addItem(ItemFactory.getItem(ProtBoots.class).getItem(1));
 
 		addItem(ItemFactory.getItem(FunkyFeather.class).getItem(64));
 		addItem(ItemFactory.getItem(ChunkOfVile.class).getItem(64));
