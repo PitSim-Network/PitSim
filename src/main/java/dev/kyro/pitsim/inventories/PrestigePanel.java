@@ -47,7 +47,7 @@ public class PrestigePanel extends AGUIPanel {
 		int slot = event.getSlot();
 		if(event.getClickedInventory().getHolder() == this) {
 			if(slot == 11) {
-				if(pitPlayer.level == 120 && pitPlayer.goldGrinded >= prestigeInfo.goldReq && pitPlayer.soulsGathered >= prestigeInfo.soulReq) {
+				if(pitPlayer.level == 120 && pitPlayer.goldGrinded >= prestigeInfo.goldReq) {
 					if(pitPlayer.prestige == PrestigeValues.MAX_PRESTIGE) {
 						AOutput.error(player, "&aYou are already the maximum prestige!");
 						Sounds.NO.play(player);
@@ -57,10 +57,6 @@ public class PrestigePanel extends AGUIPanel {
 					player.closeInventory();
 					openPanel(prestigeGUI.prestigeConfirmPanel);
 				} else {
-					if(pitPlayer.soulsGathered < prestigeInfo.soulReq) {
-						AOutput.send(player, "&5&lDARKZONE &7Collect &fTainted Souls &7by going throw the &dLarge Portal &7outside of spawn behind this NPC.");
-					}
-
 					AOutput.error(player, "&cYou do not meet the requirments to prestige!");
 					Sounds.NO.play(player);
 				}
@@ -87,7 +83,6 @@ public class PrestigePanel extends AGUIPanel {
 			DecimalFormat formatter = new DecimalFormat("#,###.#");
 			prestigeLore.add(ChatColor.translateAlternateColorCodes('&', "&7Grinded: &6" +
 					formatter.format(pitPlayer.goldGrinded) + "&7/&6" + formatter.format(prestigeInfo.goldReq) + "g"));
-			prestigeLore.add(ChatColor.translateAlternateColorCodes('&', "&7Tainted Souls: &f" + pitPlayer.soulsGathered + "&7/" + (int) prestigeInfo.soulReq));
 			prestigeLore.add("");
 			prestigeLore.add(ChatColor.GRAY + "Costs:");
 			prestigeLore.add(ChatColor.translateAlternateColorCodes('&', "&c\u25a0 &c&lResets &blevel &cto 1"));
@@ -102,7 +97,7 @@ public class PrestigePanel extends AGUIPanel {
 			if(pitPlayer.prestige != 0)
 				prestigeLore.add(ChatColor.translateAlternateColorCodes('&', "&b+" + (int) (100 * nextPrestigeInfo.xpMultiplier) + "&b% &7needed xp!"));
 			prestigeLore.add("");
-			if(pitPlayer.level == 120 && pitPlayer.goldGrinded >= prestigeInfo.goldReq && pitPlayer.taintedSouls >= prestigeInfo.soulReq) {
+			if(pitPlayer.level == 120 && pitPlayer.goldGrinded >= prestigeInfo.goldReq) {
 				prestigeLore.add(ChatColor.YELLOW + "Click to purchase!");
 			} else {
 				prestigeLore.add(ChatColor.RED + "Requirements not met!");

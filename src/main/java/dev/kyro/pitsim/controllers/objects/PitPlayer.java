@@ -111,7 +111,6 @@ public class PitPlayer {
 	public int prestige = 0;
 	public int level = 1;
 	public long remainingXP = PrestigeValues.getXPForLevel(1);
-	public int soulsGathered = 0;
 	public String savedLeaderboardRef = "xp";
 
 	public int renown = 0;
@@ -312,7 +311,6 @@ public class PitPlayer {
 		prestige = playerData.getInt("prestige");
 		level = playerData.contains("level") ? playerData.getInt("level") : 1;
 		remainingXP = playerData.getInt("xp");
-		soulsGathered = playerData.getInt("soulsgathered");
 		renown = playerData.getInt("renown");
 		for(int i = 0; i < pitPerks.size(); i++) {
 			PitPerk defaultPerk = NoPerk.INSTANCE;

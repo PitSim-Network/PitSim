@@ -89,7 +89,6 @@ public class LevelManager {
 		PrestigeValues.PrestigeInfo prestigeInfo = PrestigeValues.getPrestigeInfo(pitPlayer.prestige);
 		if(pitPlayer.level < 120) return;
 		if(pitPlayer.goldGrinded < prestigeInfo.goldReq) return;
-		if(pitPlayer.soulsGathered < prestigeInfo.soulReq) return;
 
 		pitPlayer.prestige += 1;
 		if(UpgradeManager.hasUpgrade(player, "FAST_PASS")) {
@@ -104,7 +103,6 @@ public class LevelManager {
 		pitPlayer.megastreak = new Overdrive(pitPlayer);
 		pitPlayer.endKillstreak();
 		pitPlayer.gold = 0;
-		pitPlayer.soulsGathered = 0;
 		pitPlayer.renown += prestigeInfo.renownReward;
 		EarnRenownQuest.INSTANCE.gainRenown(pitPlayer, prestigeInfo.renownReward);
 		pitPlayer.moonBonus = 0;

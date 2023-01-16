@@ -215,7 +215,6 @@ public class PitSim extends JavaPlugin {
 		AHook.registerPlaceholder(new StreakPlaceholder());
 		AHook.registerPlaceholder(new ExperiencePlaceholder());
 		AHook.registerPlaceholder(new LevelPlaceholder());
-		AHook.registerPlaceholder(new PlayerKillsPlaceholder());
 		AHook.registerPlaceholder(new GuildPlaceholder());
 		AHook.registerPlaceholder(new GuildPlaceholder2());
 		AHook.registerPlaceholder(new GuildPlaceholder3());
@@ -229,8 +228,7 @@ public class PitSim extends JavaPlugin {
 		AHook.registerPlaceholder(new PrestigeLevelPlaceholder());
 		AHook.registerPlaceholder(new PrestigePlaceholder());
 		AHook.registerPlaceholder(new GoldReqPlaceholder());
-		AHook.registerPlaceholder(new SoulPlaceholder());
-		AHook.registerPlaceholder(new SoulReqPlaceholder());
+		AHook.registerPlaceholder(new SoulsPlaceholder());
 		AHook.registerPlaceholder(new PlayerCountPlaceholder());
 		AHook.registerPlaceholder(new GoldPlaceholder());
 		AHook.registerPlaceholder(new NicknamePlaceholder());

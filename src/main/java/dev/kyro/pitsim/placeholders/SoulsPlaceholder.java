@@ -8,7 +8,7 @@ import org.bukkit.entity.Player;
 import java.text.NumberFormat;
 import java.util.Locale;
 
-public class SoulPlaceholder implements APAPIPlaceholder {
+public class SoulsPlaceholder implements APAPIPlaceholder {
 
 	@Override
 	public String getIdentifier() {
