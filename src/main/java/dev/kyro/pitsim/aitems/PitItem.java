@@ -5,6 +5,7 @@ import dev.kyro.arcticapi.builders.AItemStackBuilder;
 import dev.kyro.arcticapi.misc.AUtil;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.controllers.ItemFactory;
+import dev.kyro.pitsim.enums.AuctionCategory;
 import dev.kyro.pitsim.enums.NBTTag;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -26,6 +27,7 @@ public abstract class PitItem implements Listener {
 //	This is forced true if the item has drop confirm
 	public boolean destroyIfDroppedInSpawn;
 	public boolean isProt;
+	public AuctionCategory auctionCategory;
 
 	public Map<Enchantment, Integer> itemEnchants = new HashMap<>();
 

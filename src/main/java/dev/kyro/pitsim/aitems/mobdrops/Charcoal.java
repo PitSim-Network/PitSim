@@ -2,6 +2,7 @@ package dev.kyro.pitsim.aitems.mobdrops;
 
 import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.pitsim.aitems.PitItem;
+import dev.kyro.pitsim.enums.AuctionCategory;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 
@@ -14,6 +15,7 @@ public class Charcoal extends PitItem {
 	public Charcoal() {
 		hasDropConfirm = true;
 		itemData = 1;
+		auctionCategory = AuctionCategory.DARKZONE_DROPS;
 	}
 
 	@Override

@@ -4,6 +4,7 @@ import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.aitems.PitItem;
 import dev.kyro.pitsim.controllers.NonManager;
+import dev.kyro.pitsim.enums.AuctionCategory;
 import dev.kyro.pitsim.events.AttackEvent;
 import dev.kyro.pitsim.misc.Sounds;
 import org.bukkit.Material;
@@ -17,6 +18,10 @@ import java.util.*;
 
 public class YummyBread extends PitItem {
 	public static Map<Player, Integer> breadStacks = new HashMap<>();
+
+	public YummyBread() {
+		auctionCategory = AuctionCategory.MISC;
+	}
 
 	@Override
 	public String getNBTID() {

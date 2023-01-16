@@ -4,6 +4,7 @@ import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.aitems.PitItem;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
+import dev.kyro.pitsim.enums.AuctionCategory;
 import dev.kyro.pitsim.events.HealEvent;
 import dev.kyro.pitsim.events.KillEvent;
 import dev.kyro.pitsim.events.OofEvent;
@@ -39,6 +40,10 @@ public class VeryYummyBread extends PitItem {
 				}
 			}
 		}.runTaskTimer(PitSim.INSTANCE, 0L, 1L);
+	}
+
+	public VeryYummyBread() {
+		auctionCategory = AuctionCategory.MISC;
 	}
 
 	@Override

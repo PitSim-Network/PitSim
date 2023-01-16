@@ -4,6 +4,7 @@ import de.tr7zw.nbtapi.NBTItem;
 import dev.kyro.arcticapi.builders.AItemStackBuilder;
 import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.pitsim.aitems.PitItem;
+import dev.kyro.pitsim.enums.AuctionCategory;
 import dev.kyro.pitsim.enums.NBTTag;
 import dev.kyro.pitsim.misc.Misc;
 import me.clip.placeholderapi.PlaceholderAPI;
@@ -21,6 +22,7 @@ public class StaffCookie extends PitItem {
 
 	public StaffCookie() {
 		hasDropConfirm = true;
+		auctionCategory = AuctionCategory.MISC;
 	}
 
 	@Override

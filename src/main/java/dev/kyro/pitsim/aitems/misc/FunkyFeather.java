@@ -5,6 +5,7 @@ import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.aitems.PitItem;
 import dev.kyro.pitsim.controllers.GuildIntegrationManager;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
+import dev.kyro.pitsim.enums.AuctionCategory;
 import dev.kyro.pitsim.misc.Sounds;
 import org.bukkit.Material;
 import org.bukkit.entity.LivingEntity;
@@ -19,6 +20,7 @@ public class FunkyFeather extends PitItem {
 
 	public FunkyFeather() {
 		hasDropConfirm = true;
+		auctionCategory = AuctionCategory.PURE_RELATED;
 	}
 
 	@Override

@@ -6,6 +6,7 @@ import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.aitems.PitItem;
 import dev.kyro.pitsim.controllers.MapManager;
 import dev.kyro.pitsim.controllers.UpgradeManager;
+import dev.kyro.pitsim.enums.AuctionCategory;
 import dev.kyro.pitsim.enums.NBTTag;
 import dev.kyro.pitsim.inventories.VileGUI;
 import dev.kyro.pitsim.misc.Misc;
@@ -25,6 +26,7 @@ public class ChunkOfVile extends PitItem {
 
 	public ChunkOfVile() {
 		hasDropConfirm = true;
+		auctionCategory = AuctionCategory.PURE_RELATED;
 	}
 
 	@Override

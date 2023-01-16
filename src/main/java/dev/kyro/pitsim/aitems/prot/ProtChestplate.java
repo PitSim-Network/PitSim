@@ -2,6 +2,7 @@ package dev.kyro.pitsim.aitems.prot;
 
 import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.pitsim.aitems.PitItem;
+import dev.kyro.pitsim.enums.AuctionCategory;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
@@ -16,6 +17,7 @@ public class ProtChestplate extends PitItem {
 		hasDropConfirm = true;
 		hideExtra = true;
 		isProt = true;
+		auctionCategory = AuctionCategory.MISC;
 
 		itemEnchants.put(Enchantment.PROTECTION_ENVIRONMENTAL, 1);
 	}

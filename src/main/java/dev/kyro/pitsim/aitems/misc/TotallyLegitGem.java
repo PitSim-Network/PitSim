@@ -2,6 +2,7 @@ package dev.kyro.pitsim.aitems.misc;
 
 import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.pitsim.aitems.PitItem;
+import dev.kyro.pitsim.enums.AuctionCategory;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 
@@ -13,6 +14,7 @@ public class TotallyLegitGem extends PitItem {
 
 	public TotallyLegitGem() {
 		hasDropConfirm = true;
+		auctionCategory = AuctionCategory.PURE_RELATED;
 	}
 
 	@Override
