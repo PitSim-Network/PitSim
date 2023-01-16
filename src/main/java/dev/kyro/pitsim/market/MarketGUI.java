@@ -7,6 +7,7 @@ public class MarketGUI extends AGUI {
 	MarketSelectionPanel selectionPanel;
 	MarketPanel marketPanel;
 	CreateListingPanel createListingPanel;
+	ListingInspectPanel listingInspectPanel;
 
 	public MarketGUI(Player player) {
 		super(player);

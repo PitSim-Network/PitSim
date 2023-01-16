@@ -158,6 +158,17 @@ public class MarketListing implements Serializable {
 		return hasEnded || getTimeRemaining() <= 0;
 	}
 
+	public int getMinimumBid() {
+		if(bidMap.isEmpty()) return startingBid;
+		else return (int) (getHighestBid() * 1.2);
+	}
+
+	public List<Map.Entry<UUID, Integer>> sortBidMap() {
+		List<Map.Entry<UUID, Integer>> list = new ArrayList<>(bidMap.entrySet());
+		list.sort((o1, o2) -> o2.getValue() - o1.getValue());
+		return list;
+	}
+
 
 }
 
