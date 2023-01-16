@@ -10,14 +10,11 @@ import dev.kyro.pitsim.controllers.PlayerManager;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.events.KillEvent;
 import dev.kyro.pitsim.misc.Misc;
+import dev.kyro.pitsim.mobs.PitCaveSpider;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
-import org.bukkit.entity.CaveSpider;
 import org.bukkit.event.EventHandler;
 import org.bukkit.inventory.ItemStack;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class KillCaveSpidersQuest extends PassQuest {
 
@@ -29,7 +26,7 @@ public class KillCaveSpidersQuest extends PassQuest {
 	@EventHandler
 	public void onKill(KillEvent killEvent) {
 		if(!PlayerManager.isRealPlayer(killEvent.getKillerPlayer())) return;
-		if(!MobManager.mobIsType(killEvent.getDead(), CaveSpider.class)) return;
+		if(!MobManager.mobIsType(killEvent.getDead(), PitCaveSpider.class)) return;
 
 		progressQuest(killEvent.getKillerPitPlayer(), 1);
 	}

@@ -666,6 +666,13 @@ public class PlayerManager implements Listener {
 		}
 
 		player.teleport(spawnLoc);
+		Location finalSpawnLoc = spawnLoc;
+		new BukkitRunnable() {
+			@Override
+			public void run() {
+				if(player.isOnline()) player.teleport(finalSpawnLoc);
+			}
+		}.runTaskLater(PitSim.INSTANCE, 1L);
 
 		Location finalSpawnLoc1 = spawnLoc;
 		new BukkitRunnable() {
