@@ -156,8 +156,8 @@ public class ListingInspectPanel extends AGUIPanel {
 				if(listing.ownerUUID.equals(player.getUniqueId()) || (listing.getHighestBidder() != null && listing.getHighestBidder().equals(player.getUniqueId())) || PitPlayer.getPitPlayer(player).taintedSouls < soulsToTake) {
 					Sounds.NO.play(player);
 				} else {
-					Sounds.SUCCESS.play(player);
-					player.closeInventory();
+					ConfirmPurchasePanel panel = new ConfirmPurchasePanel(gui, listing, soulsToTake, false, 1);
+					openPanel(panel);
 				}
 			}
 
@@ -172,8 +172,8 @@ public class ListingInspectPanel extends AGUIPanel {
 				if(listing.ownerUUID.equals(player.getUniqueId()) || PitPlayer.getPitPlayer(player).taintedSouls < (listing.stackBIN ? listing.binPrice * purchasing : listing.binPrice)) {
 					Sounds.NO.play(player);
 				} else {
-					Sounds.SUCCESS.play(player);
-					player.closeInventory();
+					ConfirmPurchasePanel panel = new ConfirmPurchasePanel(gui, listing, listing.stackBIN ? purchasing * listing.binPrice : listing.binPrice, true, purchasing);
+					openPanel(panel);
 				}
 			}
 

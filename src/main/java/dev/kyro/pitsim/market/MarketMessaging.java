@@ -15,6 +15,7 @@ public class MarketMessaging implements Listener {
 	public void onMessage(MessageEvent event) {
 		PluginMessage message = event.getMessage();
 		List<String> strings = message.getStrings();
+		List<Boolean> booleans = message.getBooleans();
 
 		if(strings.size() >= 3 && strings.get(0).equals("MARKET UPDATE")) {
 			UUID listingUUID = UUID.fromString(strings.get(1));
@@ -26,6 +27,13 @@ public class MarketMessaging implements Listener {
 
 			listing = new MarketListing(message);
 			MarketManager.listings.add(listing);
+		}
+
+		if(strings.size() >= 3 && strings.get(0).equals("MARKET ASYNC")) {
+			UUID playerUUID = UUID.fromString(strings.get(1));
+
+			MarketAsyncTask task = MarketAsyncTask.getTask(playerUUID);
+			task.respond(booleans.get(0));
 		}
 	}
 }
