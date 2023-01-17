@@ -23,6 +23,7 @@ public class MarketMessaging implements Listener {
 			MarketListing listing = MarketManager.getListing(listingUUID);
 			if(listing != null) {
 				listing.updateListing(message);
+				return;
 			}
 
 			listing = new MarketListing(message);

@@ -1,13 +1,16 @@
 package dev.kyro.pitsim.market;
 
 import dev.kyro.pitsim.PitSim;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
+import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-public class MarketManager {
+public class MarketManager implements Listener {
 
 	public static final int DEFAULT_MAX_LISTINGS = 3;
 	public static List<MarketListing> listings = new ArrayList<>();
@@ -25,6 +28,18 @@ public class MarketManager {
 			if(listing.ownerUUID.equals(ownerUUID)) playerListings.add(listing);
 		}
 		return playerListings;
+	}
+
+	@EventHandler
+	public void onLeave(PlayerQuitEvent event) {
+		UUID playerUUID = event.getPlayer().getUniqueId();
+		if(MarketAsyncTask.taskMap.containsKey(playerUUID)) {
+			MarketAsyncTask task = MarketAsyncTask.taskMap.get(playerUUID);
+			task.getTimeout().cancel();
+			task.getFailure().run();
+			MarketAsyncTask.taskMap.remove(playerUUID);
+		}
+		MarketAsyncTask.taskMap.remove(playerUUID);
 	}
 
 }

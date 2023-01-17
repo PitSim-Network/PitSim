@@ -66,6 +66,9 @@ public class MarketAsyncTask {
 		return failure;
 	}
 
+	public BukkitTask getTimeout() {
+		return timeout;
+	}
 	public MarketListing getListing() {
 		return listing;
 	}
