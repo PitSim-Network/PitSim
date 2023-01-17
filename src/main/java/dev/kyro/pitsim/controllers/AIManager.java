@@ -23,8 +23,8 @@ public class AIManager implements Listener {
 		OpenAiService service = new OpenAiService("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");
 		CompletionRequest.CompletionRequestBuilder builder = CompletionRequest.builder()
 				.prompt(prompt)
-//				.model("davinci:ft-personal-2023-01-17-08-11-03")
-				.model("davinci:ft-personal-2023-01-17-09-14-35")
+				.model("davinci:ft-personal-2023-01-17-08-11-03")
+//				.model("davinci:ft-personal-2023-01-17-09-14-35")
 //				.model("davinci:ft-personal-2023-01-17-09-25-12")
 				.temperature(1.0)
 				.maxTokens(maxTokens);
