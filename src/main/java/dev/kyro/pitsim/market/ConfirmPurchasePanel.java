@@ -5,6 +5,7 @@ import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.arcticapi.gui.AGUI;
 import dev.kyro.arcticapi.gui.AGUIPanel;
 import dev.kyro.arcticapi.misc.AOutput;
+import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.misc.Sounds;
 import org.bukkit.Material;
 import org.bukkit.event.inventory.InventoryClickEvent;
@@ -64,6 +65,8 @@ public class ConfirmPurchasePanel extends AGUIPanel {
 			public void run() {
 				AOutput.send(player, "&aMARKET &7Bid successfully placed!");
 				Sounds.SUCCESS.play(player);
+				PitPlayer.getPitPlayer(player).taintedSouls -= price;
+				player.closeInventory();
 			}
 		};
 
@@ -71,7 +74,9 @@ public class ConfirmPurchasePanel extends AGUIPanel {
 			@Override
 			public void run() {
 				AOutput.send(player, "&aMARKET &7Purchased " + listing.itemData.getItemMeta().getDisplayName() + (amount > 1 ? " &8x" + listing.itemData.getAmount() : ""));
+				PitPlayer.getPitPlayer(player).taintedSouls -= price;
 				Sounds.SUCCESS.play(player);
+				player.closeInventory();
 			}
 		};
 
