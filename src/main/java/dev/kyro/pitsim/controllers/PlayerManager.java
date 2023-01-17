@@ -842,5 +842,8 @@ public class PlayerManager implements Listener {
 		if(event.getCause() == EntityDamageEvent.DamageCause.FIRE || event.getCause() == EntityDamageEvent.DamageCause.FIRE_TICK ||
 				event.getCause() == EntityDamageEvent.DamageCause.LAVA || event.getCause() == EntityDamageEvent.DamageCause.DROWNING ||
 				event.getCause() == EntityDamageEvent.DamageCause.FALL) event.setCancelled(true);
+
+//		TODO: Only do this if grim is running
+		if(event.getCause() == EntityDamageEvent.DamageCause.WITHER) event.setCancelled(true);
 	}
 }
