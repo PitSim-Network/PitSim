@@ -5,7 +5,7 @@ import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.controllers.objects.HelmetAbility;
-import dev.kyro.pitsim.controllers.objects.GoldenHelmet;
+import dev.kyro.pitsim.controllers.objects.HelmetManager;
 import dev.kyro.pitsim.enchants.PitBlob;
 import dev.kyro.pitsim.misc.Sounds;
 import org.bukkit.Material;
@@ -40,11 +40,11 @@ public class BlobAbility extends HelmetAbility {
 		runnable = new BukkitRunnable() {
 			@Override
 			public void run() {
-				ItemStack goldenHelmet = GoldenHelmet.getHelmet(player);
+				ItemStack goldenHelmet = HelmetManager.getHelmet(player);
 				assert goldenHelmet != null;
-				if(!GoldenHelmet.withdrawGold(player, goldenHelmet, 4000)) {
+				if(!HelmetManager.withdrawGold(player, goldenHelmet, 4000)) {
 					AOutput.error(player, "&cNot enough gold!");
-					GoldenHelmet.deactivate(player);
+					HelmetManager.deactivate(player);
 					Sounds.NO.play(player);
 				} else {
 					Sounds.HELMET_TICK.play(player);
@@ -55,7 +55,7 @@ public class BlobAbility extends HelmetAbility {
 
 	@Override
 	public boolean shouldActivate() {
-		if(GoldenHelmet.getUsedHelmetGold(player) < 4000) {
+		if(HelmetManager.getUsedHelmetGold(player) < 4000) {
 			AOutput.error(player, "&cNot enough gold!");
 			Sounds.NO.play(player);
 			return false;

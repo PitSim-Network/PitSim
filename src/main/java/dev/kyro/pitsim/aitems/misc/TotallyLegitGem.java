@@ -3,7 +3,12 @@ package dev.kyro.pitsim.aitems.misc;
 import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.pitsim.aitems.StaticPitItem;
 import dev.kyro.pitsim.enums.AuctionCategory;
+import dev.kyro.pitsim.inventories.GemGUI;
 import org.bukkit.Material;
+import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.block.Action;
+import org.bukkit.event.player.PlayerInteractEvent;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -45,5 +50,15 @@ public class TotallyLegitGem extends StaticPitItem {
 				"",
 				"&eHold and right-click to use!"
 		).getLore();
+	}
+
+	@EventHandler
+	public void onInteract(PlayerInteractEvent event) {
+		Player player = event.getPlayer();
+		if(event.getAction() == Action.LEFT_CLICK_AIR || event.getAction() == Action.LEFT_CLICK_BLOCK) return;
+		if(!isThisItem(player.getItemInHand())) return;
+
+		GemGUI gemGUI = new GemGUI(event.getPlayer());
+		gemGUI.open();
 	}
 }

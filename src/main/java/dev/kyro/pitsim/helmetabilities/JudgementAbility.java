@@ -44,7 +44,7 @@ public class JudgementAbility extends HelmetAbility {
 					else {
 						AOutput.send(entry.getKey(), "&6&lGOLDEN HELMET! &cAuto Deactivated &9Judgement &7(can only be on for " +
 								getMaxActivationSeconds() + " seconds");
-						GoldenHelmet.deactivate(entry.getKey());
+						HelmetManager.deactivate(entry.getKey());
 					}
 				}
 			}
@@ -58,11 +58,11 @@ public class JudgementAbility extends HelmetAbility {
 	@EventHandler
 	public void onAttack(AttackEvent.Apply attackEvent) {
 		if(!isActive || player != attackEvent.getAttacker()) return;
-		ItemStack goldenHelmet = GoldenHelmet.getHelmet(attackEvent.getAttacker());
+		ItemStack goldenHelmet = HelmetManager.getHelmet(attackEvent.getAttacker());
 		assert goldenHelmet != null;
-		if(!GoldenHelmet.withdrawGold(player, goldenHelmet, GOLD_COST)) {
+		if(!HelmetManager.withdrawGold(player, goldenHelmet, GOLD_COST)) {
 			AOutput.error(player, "&cNot enough gold!");
-			GoldenHelmet.deactivate(player);
+			HelmetManager.deactivate(player);
 			Sounds.NO.play(player);
 			return;
 		}
@@ -143,7 +143,7 @@ public class JudgementAbility extends HelmetAbility {
 
 	@Override
 	public void onActivate() {
-		ItemStack goldenHelmet = GoldenHelmet.getHelmet(player);
+		ItemStack goldenHelmet = HelmetManager.getHelmet(player);
 		assert goldenHelmet != null;
 
 		maxActivationMap.put(player, 20 * getMaxActivationSeconds());
@@ -169,7 +169,7 @@ public class JudgementAbility extends HelmetAbility {
 			return false;
 		}
 
-		if(GoldenHelmet.getUsedHelmetGold(player) < GOLD_COST) {
+		if(HelmetManager.getUsedHelmetGold(player) < GOLD_COST) {
 			Sounds.NO.play(player);
 			AOutput.error(player, "&cNot enough gold!");
 			return false;

@@ -18,6 +18,7 @@ import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.adarkzone.*;
 import dev.kyro.pitsim.adarkzone.notdarkzone.ShieldManager;
 import dev.kyro.pitsim.adarkzone.progression.ProgressionManager;
+import dev.kyro.pitsim.aitems.misc.TokenOfAppreciation;
 import dev.kyro.pitsim.aitems.misc.TotallyLegitGem;
 import dev.kyro.pitsim.aitems.misc.*;
 import dev.kyro.pitsim.aitems.mobdrops.*;
@@ -593,7 +594,7 @@ public class PitSim extends JavaPlugin {
 		getServer().getPluginManager().registerEvents(new HopperManager(), this);
 		getServer().getPluginManager().registerEvents(new ResourcePackManager(), this);
 		getServer().getPluginManager().registerEvents(new StatManager(), this);
-		getServer().getPluginManager().registerEvents(new GoldenHelmet(), this);
+		getServer().getPluginManager().registerEvents(new HelmetManager(), this);
 		getServer().getPluginManager().registerEvents(new MapManager(), this);
 		getServer().getPluginManager().registerEvents(new GuildIntegrationManager(), this);
 		getServer().getPluginManager().registerEvents(new UpgradeManager(), this);
@@ -806,6 +807,7 @@ public class PitSim extends JavaPlugin {
 		ItemFactory.registerItem(new VeryYummyBread());
 
 		ItemFactory.registerItem(new StaffCookie());
+		ItemFactory.registerItem(new TokenOfAppreciation());
 
 		ItemFactory.registerItem(new ProtHelmet());
 		ItemFactory.registerItem(new ProtChestplate());

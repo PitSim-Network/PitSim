@@ -10,37 +10,35 @@ import dev.kyro.pitsim.misc.Misc;
 import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.player.PlayerItemConsumeEvent;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class StaffCookie extends PitItem {
+public class TokenOfAppreciation extends PitItem {
 
-	public StaffCookie() {
+	public TokenOfAppreciation() {
 		hasDropConfirm = true;
 		auctionCategory = AuctionCategory.MISC;
 	}
 
 	@Override
 	public String getNBTID() {
-		return "staff-cookie";
+		return "token-of-appreciation";
 	}
 
 	@Override
 	public List<String> getRefNames() {
-		return new ArrayList<>(Arrays.asList("staffcookie", "cookie"));
+		return new ArrayList<>(Arrays.asList("token", "tokenofappreciation"));
 	}
 
 	public Material getMaterial() {
-		return Material.COOKIE;
+		return Material.MAGMA_CREAM;
 	}
 
 	public String getName() {
-		return "&dStaff Cookie";
+		return "&6Token of Appreciation";
 	}
 
 	public List<String> getLore(ItemStack itemStack) {
@@ -49,8 +47,10 @@ public class StaffCookie extends PitItem {
 		String receiverString = nbtItem.getString(NBTTag.COOKIE_RECEIVER.getRef());
 
 		return new ALoreBuilder(
-				"&7Given to you by a staff member",
-				"&7for some reason",
+				"&eSpecial item",
+				"&7A token of appreciation for understanding",
+				"&7why we have to reset the PitSim economy.",
+				"&7Who knows, this might do something some day",
 				"",
 				giverString,
 				receiverString
@@ -82,12 +82,5 @@ public class StaffCookie extends PitItem {
 				.setName(getName())
 				.setLore(getLore(itemStack))
 				.getItemStack();
-	}
-
-	@EventHandler
-	public void onEat(PlayerItemConsumeEvent event) {
-		ItemStack itemStack = event.getItem();
-		if(!isThisItem(itemStack)) return;
-		event.setCancelled(true);
 	}
 }

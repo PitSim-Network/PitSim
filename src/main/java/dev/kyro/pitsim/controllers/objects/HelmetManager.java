@@ -2,14 +2,11 @@ package dev.kyro.pitsim.controllers.objects;
 
 import de.myzelyam.api.vanish.VanishAPI;
 import de.tr7zw.nbtapi.NBTItem;
-import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.PitSim;
+import dev.kyro.pitsim.aitems.misc.GoldenHelmet;
 import dev.kyro.pitsim.battlepass.quests.UseHelmetGoldQuest;
-import dev.kyro.pitsim.controllers.HelmetSystem;
-import dev.kyro.pitsim.controllers.NonManager;
-import dev.kyro.pitsim.controllers.SpawnManager;
-import dev.kyro.pitsim.controllers.UpgradeManager;
+import dev.kyro.pitsim.controllers.*;
 import dev.kyro.pitsim.enchants.ComboVenom;
 import dev.kyro.pitsim.enums.NBTTag;
 import dev.kyro.pitsim.events.AttackEvent;
@@ -34,18 +31,16 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.event.player.*;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.text.DecimalFormat;
 import java.util.*;
 
-public class GoldenHelmet implements Listener {
-
+public class HelmetManager implements Listener {
 	public static Map<LivingEntity, HelmetAbility> abilities = new HashMap<>();
 	public static List<LivingEntity> toggledPlayers = new ArrayList<>();
 	public static DecimalFormat formatter = new DecimalFormat("#,###.#");
-	private final List<Material> armorMaterials = Collections.singletonList(Material.GOLD_HELMET);
+	private static final List<Material> armorMaterials = Collections.singletonList(Material.GOLD_HELMET);
 
 	@EventHandler
 	public void onDoubleSneak(DoubleSneakEvent event) {
@@ -148,9 +143,12 @@ public class GoldenHelmet implements Listener {
 	public void depositGold(Player player, ItemStack helmet, int gold) {
 		NBTItem nbtItem = new NBTItem(helmet);
 		nbtItem.setLong(NBTTag.GHELMET_GOLD.getRef(), (getHelmetGold(helmet) + gold));
+		helmet = nbtItem.getItem();
 
-		setLore(nbtItem.getItem());
-		player.getInventory().setItemInHand(nbtItem.getItem());
+		GoldenHelmet pitItem = ItemFactory.getItem(GoldenHelmet.class);
+		pitItem.updateItem(helmet);
+
+		player.getInventory().setItemInHand(helmet);
 		player.updateInventory();
 	}
 
@@ -167,9 +165,11 @@ public class GoldenHelmet implements Listener {
 			}
 			helmetGold -= gold;
 			nbtItem.setLong(NBTTag.GHELMET_GOLD.getRef(), helmetGold);
+			helmet = nbtItem.getItem();
 
-			setLore(nbtItem.getItem());
-			player.getInventory().setHelmet(nbtItem.getItem());
+			GoldenHelmet pitItem = ItemFactory.getItem(GoldenHelmet.class);
+			pitItem.updateItem(helmet);
+			player.getInventory().setHelmet(helmet);
 			player.updateInventory();
 		}
 		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
@@ -202,44 +202,6 @@ public class GoldenHelmet implements Listener {
 		return null;
 	}
 
-	public static void setLore(ItemStack helmet) {
-
-		ALoreBuilder loreBuilder = new ALoreBuilder();
-		loreBuilder.addLore("");
-		HelmetAbility ability = getAbility(helmet);
-		long gold = getHelmetGold(helmet);
-
-		if(ability != null) {
-			loreBuilder.addLore("&7Ability: &9" + ability.name);
-			loreBuilder.addLore(ability.getDescription());
-		} else loreBuilder.addLore("&7Ability: &cNONE");
-		loreBuilder.addLore("", "&7Passives:");
-		int passives = 0;
-		for(HelmetSystem.Passive passive : HelmetSystem.Passive.values()) {
-			int level = HelmetSystem.getLevel(gold);
-			int passiveLevel = HelmetSystem.getTotalStacks(passive, level - 1);
-
-			if(passiveLevel == 0) continue;
-			passives++;
-
-			if(passive == HelmetSystem.Passive.DAMAGE_REDUCTION) {
-				loreBuilder.addLore(passive.color + "-" + passiveLevel * passive.baseUnit + "% " + passive.refName);
-				continue;
-			}
-			loreBuilder.addLore(passive.color + "+" + passiveLevel * passive.baseUnit + "% " + passive.refName);
-		}
-		if(passives == 0) loreBuilder.addLore("&cNONE");
-		loreBuilder.addLore("", "&7Gold: &6" + formatter.format(gold) + "g", "", "&eShift right-click to modify!");
-
-		ItemMeta meta = helmet.getItemMeta();
-		meta.setLore(loreBuilder.getLore());
-		helmet.setItemMeta(meta);
-
-		NBTItem nbtItem = new NBTItem(helmet);
-		nbtItem.setLong(NBTTag.GHELMET_GOLD.getRef(), gold);
-		if(ability != null) nbtItem.setString(NBTTag.GHELMET_ABILITY.getRef(), ability.refName);
-	}
-
 	public List<Player> crouchPlayers = new ArrayList<>();
 
 	@EventHandler
@@ -270,7 +232,7 @@ public class GoldenHelmet implements Listener {
 		crouchPlayers.remove(event.getPlayer());
 
 		if(abilities.get(event.getPlayer()) != null) {
-			GoldenHelmet.deactivate(event.getPlayer());
+			HelmetManager.deactivate(event.getPlayer());
 		}
 		if(abilities.get(event.getPlayer()) == null) return;
 		if(abilities.containsKey(event.getPlayer())) abilities.get(event.getPlayer()).unload();
@@ -286,7 +248,7 @@ public class GoldenHelmet implements Listener {
 		if(Misc.isAirOrNull(player.getInventory().getHelmet())) return;
 		if(event.getSlot() == 39 && player.getInventory().getHelmet().getType() == Material.GOLD_HELMET) {
 			if(abilities.get(player) != null) {
-				GoldenHelmet.deactivate(player);
+				HelmetManager.deactivate(player);
 			}
 			toggledPlayers.remove(player);
 		}
@@ -296,7 +258,7 @@ public class GoldenHelmet implements Listener {
 	public void onDrop(PlayerDropItemEvent event) {
 		if(event.getItemDrop().getItemStack().getType() != Material.GOLD_HELMET) return;
 		if(abilities.get(event.getPlayer()) != null) {
-			GoldenHelmet.deactivate(event.getPlayer());
+			HelmetManager.deactivate(event.getPlayer());
 		}
 		toggledPlayers.remove(event.getPlayer());
 	}
@@ -305,7 +267,7 @@ public class GoldenHelmet implements Listener {
 	public void onDeath(PlayerDeathEvent event) {
 		Player player = event.getEntity();
 		if(abilities.get(player) != null) {
-			GoldenHelmet.deactivate(player);
+			HelmetManager.deactivate(player);
 		}
 		toggledPlayers.remove(player);
 	}
@@ -314,7 +276,7 @@ public class GoldenHelmet implements Listener {
 	public void onOof(OofEvent event) {
 		Player player = event.getPlayer();
 		if(abilities.get(player) != null) {
-			GoldenHelmet.deactivate(player);
+			HelmetManager.deactivate(player);
 		}
 		toggledPlayers.remove(player);
 	}
@@ -417,7 +379,7 @@ public class GoldenHelmet implements Listener {
 		if(killEvent.isDeadPlayer()) {
 			LivingEntity dead = killEvent.getDead();
 			if(abilities.get(dead) != null) {
-				GoldenHelmet.deactivate(killEvent.getDead());
+				HelmetManager.deactivate(killEvent.getDead());
 			}
 			toggledPlayers.remove(dead);
 		}
