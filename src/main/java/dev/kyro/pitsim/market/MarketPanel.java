@@ -17,8 +17,7 @@ import org.bukkit.event.inventory.InventoryOpenEvent;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
 
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 public class MarketPanel extends AGUIPanel {
 
@@ -29,6 +28,7 @@ public class MarketPanel extends AGUIPanel {
 	public int page = 0;
 	public int maxPages;
 	public List<Integer> glassSlots = Arrays.asList(1, 2, 3, 4, 5, 6, 7, 8, 10, 17, 19, 26, 28, 35, 37, 44, 46, 47, 48, 49, 50	, 52, 53);
+	public Map<Integer, UUID> listingSlots = new HashMap<>();
 	public BukkitTask runnable;
 
 
@@ -74,9 +74,11 @@ public class MarketPanel extends AGUIPanel {
 			if(i % 9 <= 1 || i % 9 == 8) continue;
 			if(listings.length < itemIndex + 1) {
 				getInventory().setItem(i, null);
+				listingSlots.remove(i);
 				continue;
 			}
 			getInventory().setItem(i, listings[itemIndex].getItemStack());
+			listingSlots.put(i, listings[itemIndex].marketUUID);
 			itemIndex++;
 		}
 
@@ -143,6 +145,13 @@ public class MarketPanel extends AGUIPanel {
 	@Override
 	public void onClick(InventoryClickEvent event) {
 		if(event.getClickedInventory().getHolder() != this) return;
+
+		if(listingSlots.containsKey(event.getSlot())) {
+			UUID uuid = listingSlots.get(event.getSlot());
+			MarketListing listing = MarketManager.getListing(uuid);
+			((MarketGUI) gui).listingInspectPanel = new ListingInspectPanel(gui, listing);
+			openPanel(((MarketGUI) gui).listingInspectPanel);
+		}
 
 		if(event.getSlot() == 0) {
 			sortType = sortType.getNext();
