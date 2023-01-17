@@ -33,7 +33,7 @@ public class BottomlessQuiver extends PitEnchant {
 	}
 
 	@Override
-	public List<String> getDescription(int enchantLvl) {
+	public List<String> getNormalDescription(int enchantLvl) {
 
 		if(getArrowAmount(enchantLvl) == 1)
 			return new ALoreBuilder("&7Get &f" + getArrowAmount(enchantLvl) + " arrow &7on arrow hit").getLore();

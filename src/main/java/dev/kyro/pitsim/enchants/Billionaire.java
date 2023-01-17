@@ -59,7 +59,7 @@ public class Billionaire extends PitEnchant {
 	}
 
 	@Override
-	public List<String> getDescription(int enchantLvl) {
+	public List<String> getNormalDescription(int enchantLvl) {
 //		DecimalFormat decimalFormat = new DecimalFormat("0.##");
 //		return new ALoreBuilder("&7Hits with this sword deal &c" + getDamageMultiplier(enchantLvl) + "x",
 //				"&cdamage &7but cost &6" + getPlayerGoldCost(enchantLvl) + "g &7against", "&7players and &6" + getGoldCost(enchantLvl) + "g &7against", "&7bots").getLore();

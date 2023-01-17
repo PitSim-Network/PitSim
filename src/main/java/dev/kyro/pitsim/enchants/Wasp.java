@@ -38,7 +38,7 @@ public class Wasp extends PitEnchant {
 	}
 
 	@Override
-	public List<String> getDescription(int enchantLvl) {
+	public List<String> getNormalDescription(int enchantLvl) {
 
 		return new ALoreBuilder("&7Apply &cWeakness " + AUtil.toRoman(enchantLvl + 1) + " &7(" +
 				getDuration(enchantLvl) + "s) on hit").getLore();

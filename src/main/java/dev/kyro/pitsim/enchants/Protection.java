@@ -27,7 +27,7 @@ public class Protection extends PitEnchant {
 	}
 
 	@Override
-	public List<String> getDescription(int enchantLvl) {
+	public List<String> getNormalDescription(int enchantLvl) {
 
 		return new ALoreBuilder("&7Receive &9-" + Misc.roundString(getDamageReduction(enchantLvl)) + "% &7damage").getLore();
 	}

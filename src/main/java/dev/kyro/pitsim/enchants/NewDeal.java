@@ -43,7 +43,7 @@ public class NewDeal extends PitEnchant {
 	}
 
 	@Override
-	public List<String> getDescription(int enchantLvl) {
+	public List<String> getNormalDescription(int enchantLvl) {
 
 //		if(enchantLvl == 1) {
 		return new ALoreBuilder("&7You are immune to &6Billionaire&7,",

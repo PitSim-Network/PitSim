@@ -29,7 +29,7 @@ public class Guts extends PitEnchant {
 	}
 
 	@Override
-	public List<String> getDescription(int enchantLvl) {
+	public List<String> getNormalDescription(int enchantLvl) {
 
 		return new ALoreBuilder("&7Heal &c+" + Misc.getHearts(getHealing(enchantLvl)) + " &7on kill").getLore();
 	}

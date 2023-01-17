@@ -1,22 +1,15 @@
 package dev.kyro.pitsim.aitems;
 
 import de.tr7zw.nbtapi.NBTItem;
-import dev.kyro.arcticapi.builders.AItemStackBuilder;
-import dev.kyro.arcticapi.builders.ALoreBuilder;
+import dev.kyro.pitsim.aitems.mystics.*;
+import dev.kyro.pitsim.controllers.ItemFactory;
 import dev.kyro.pitsim.enums.MysticType;
 import dev.kyro.pitsim.enums.NBTTag;
 import dev.kyro.pitsim.enums.PantColor;
 import dev.kyro.pitsim.misc.Misc;
-import org.bukkit.Color;
-import org.bukkit.Material;
-import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.inventory.meta.LeatherArmorMeta;
-
-import java.util.UUID;
 
 public class MysticFactory {
 	public static ItemStack getFreshItem(Player player, String type) {
@@ -41,66 +34,70 @@ public class MysticFactory {
 
 		ItemStack mystic;
 		if(type == MysticType.SWORD) {
+			return ItemFactory.getItem(MysticSword.class).getItem();
 
-			mystic = new AItemStackBuilder(Material.GOLD_SWORD)
-					.setName("&eMystic Sword")
-					.setLore(new ALoreBuilder("&7Kept on death", "&f", "&f", "&7Used in the mystic well"))
-					.addUnbreakable(true).getItemStack();
-			mystic.addEnchantment(Enchantment.DAMAGE_ALL, 2);
-			ItemMeta itemMeta = mystic.getItemMeta();
-			itemMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
-			mystic.setItemMeta(itemMeta);
+//			mystic = new AItemStackBuilder(Material.GOLD_SWORD)
+//					.setName("&eMystic Sword")
+//					.setLore(new ALoreBuilder("&7Kept on death", "&f", "&f", "&7Used in the mystic well"))
+//					.addUnbreakable(true).getItemStack();
+//			mystic.addEnchantment(Enchantment.DAMAGE_ALL, 2);
+//			ItemMeta itemMeta = mystic.getItemMeta();
+//			itemMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
+//			mystic.setItemMeta(itemMeta);
 		} else if(type == MysticType.BOW) {
+			return ItemFactory.getItem(MysticBow.class).getItem();
 
-			mystic = new AItemStackBuilder(Material.BOW)
-					.setName("&bMystic Bow")
-					.setLore(new ALoreBuilder("&7Kept on death", "&f", "&f", "&7Used in the mystic well"))
-					.addUnbreakable(true).getItemStack();
+//			mystic = new AItemStackBuilder(Material.BOW)
+//					.setName("&bMystic Bow")
+//					.setLore(new ALoreBuilder("&7Kept on death", "&f", "&f", "&7Used in the mystic well"))
+//					.addUnbreakable(true).getItemStack();
 		} else if(type == MysticType.TAINTED_SCYTHE) {
+			return ItemFactory.getItem(TaintedScythe.class).getItem();
 
-			mystic = new AItemStackBuilder(Material.GOLD_HOE)
-					.setName("&5Fresh Tainted Scythe")
-					.setLore(new ALoreBuilder("&7Kept on death", "&f", "&f", "&7Used in the mystic well"))
-					.addUnbreakable(true).getItemStack();
-			mystic.addEnchantment(Enchantment.DURABILITY, 1);
-			ItemMeta itemMeta = mystic.getItemMeta();
-			itemMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
-			mystic.setItemMeta(itemMeta);
-
-			NBTItem nbtItem = new NBTItem(mystic);
-//			nbtItem.setBoolean(NBTTag.DROP_CONFIRM.getRef(), true);
-			mystic = nbtItem.getItem();
-
+//			mystic = new AItemStackBuilder(Material.GOLD_HOE)
+//					.setName("&5Fresh Tainted Scythe")
+//					.setLore(new ALoreBuilder("&7Kept on death", "&f", "&f", "&7Used in the mystic well"))
+//					.addUnbreakable(true).getItemStack();
+//			mystic.addEnchantment(Enchantment.DURABILITY, 1);
+//			ItemMeta itemMeta = mystic.getItemMeta();
+//			itemMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
+//			mystic.setItemMeta(itemMeta);
+//
+//			NBTItem nbtItem = new NBTItem(mystic);
+////			nbtItem.setBoolean(NBTTag.DROP_CONFIRM.getRef(), true);
+//			mystic = nbtItem.getItem();
 		} else if(type == MysticType.TAINTED_CHESTPLATE) {
+			return ItemFactory.getItem(TaintedChestplate.class).getItem();
 
-			pantColor = PantColor.TAINTED;
-			mystic = new AItemStackBuilder(Material.LEATHER_CHESTPLATE)
-					.setName(pantColor.chatColor + "Fresh Tainted Chestplate")
-					.setLore(new ALoreBuilder("&7Kept on death", "&f",
-							pantColor.chatColor + "Used in the mystic well", pantColor.chatColor + "Also, a fashion statement"))
-					.addUnbreakable(true)
-					.getItemStack();
-			LeatherArmorMeta meta = (LeatherArmorMeta) mystic.getItemMeta();
-			meta.setColor(Color.fromRGB(pantColor.hexColor));
-			mystic.setItemMeta(meta);
-
-			NBTItem nbtItem = new NBTItem(mystic);
-//			nbtItem.setBoolean(NBTTag.DROP_CONFIRM.getRef(), true);
-			mystic = nbtItem.getItem();
+//			pantColor = PantColor.TAINTED;
+//			mystic = new AItemStackBuilder(Material.LEATHER_CHESTPLATE)
+//					.setName(pantColor.chatColor + "Fresh Tainted Chestplate")
+//					.setLore(new ALoreBuilder("&7Kept on death", "&f",
+//							pantColor.chatColor + "Used in the mystic well", pantColor.chatColor + "Also, a fashion statement"))
+//					.addUnbreakable(true)
+//					.getItemStack();
+//			LeatherArmorMeta meta = (LeatherArmorMeta) mystic.getItemMeta();
+//			meta.setColor(Color.fromRGB(pantColor.hexColor));
+//			mystic.setItemMeta(meta);
+//
+//			NBTItem nbtItem = new NBTItem(mystic);
+////			nbtItem.setBoolean(NBTTag.DROP_CONFIRM.getRef(), true);
+//			mystic = nbtItem.getItem();
 		} else {
+			return ItemFactory.getItem(MysticPants.class).getItem(pantColor);
 
-			mystic = new AItemStackBuilder(Material.LEATHER_LEGGINGS)
-					.setName(pantColor.chatColor + "Fresh " + pantColor.refName + " Pants")
-					.setLore(new ALoreBuilder("&7Kept on death", "&f", "&f",
-							pantColor.chatColor + "Used in the mystic well", pantColor.chatColor + "Also, a fashion statement"))
-					.addUnbreakable(true).getItemStack();
-			mystic = PantColor.setPantColor(mystic, pantColor);
+//			mystic = new AItemStackBuilder(Material.LEATHER_LEGGINGS)
+//					.setName(pantColor.chatColor + "Fresh " + pantColor.refName + " Pants")
+//					.setLore(new ALoreBuilder("&7Kept on death", "&f", "&f",
+//							pantColor.chatColor + "Used in the mystic well", pantColor.chatColor + "Also, a fashion statement"))
+//					.addUnbreakable(true).getItemStack();
+//			mystic = PantColor.setPantColor(mystic, pantColor);
 		}
 
-		NBTItem nbtMystic = new NBTItem(mystic);
-		nbtMystic.setString(NBTTag.ITEM_UUID.getRef(), UUID.randomUUID().toString());
-		nbtMystic.addCompound(NBTTag.PIT_ENCHANTS.getRef());
-		return nbtMystic.getItem();
+//		NBTItem nbtMystic = new NBTItem(mystic);
+//		nbtMystic.setString(NBTTag.ITEM_UUID.getRef(), UUID.randomUUID().toString());
+//		nbtMystic.addCompound(NBTTag.PIT_ENCHANTS.getRef());
+//		return nbtMystic.getItem();
 	}
 
 	public static boolean isFresh(ItemStack itemStack) {

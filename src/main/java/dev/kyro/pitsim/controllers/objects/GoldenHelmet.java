@@ -102,7 +102,7 @@ public class GoldenHelmet implements Listener {
 		return player.getInventory().getHelmet();
 	}
 
-	public static int getUsedHelmetGold(LivingEntity checkPlayer) {
+	public static long getUsedHelmetGold(LivingEntity checkPlayer) {
 		if(!(checkPlayer instanceof Player)) return 0;
 		Player player = (Player) checkPlayer;
 
@@ -110,14 +110,14 @@ public class GoldenHelmet implements Listener {
 		if(helmet == null) return 0;
 
 		NBTItem nbtItem = new NBTItem(helmet);
-		return nbtItem.getInteger(NBTTag.GHELMET_GOLD.getRef());
+		return nbtItem.getLong(NBTTag.GHELMET_GOLD.getRef());
 	}
 
-	public static int getHelmetGold(ItemStack helmet) {
+	public static long getHelmetGold(ItemStack helmet) {
 		if(helmet == null) return 0;
 
 		NBTItem nbtItem = new NBTItem(helmet);
-		return nbtItem.getInteger(NBTTag.GHELMET_GOLD.getRef());
+		return nbtItem.getLong(NBTTag.GHELMET_GOLD.getRef());
 	}
 
 	public static void generateAbility(Player player) {
@@ -147,7 +147,7 @@ public class GoldenHelmet implements Listener {
 
 	public void depositGold(Player player, ItemStack helmet, int gold) {
 		NBTItem nbtItem = new NBTItem(helmet);
-		nbtItem.setInteger(NBTTag.GHELMET_GOLD.getRef(), (getHelmetGold(helmet) + gold));
+		nbtItem.setLong(NBTTag.GHELMET_GOLD.getRef(), (getHelmetGold(helmet) + gold));
 
 		setLore(nbtItem.getItem());
 		player.getInventory().setItemInHand(nbtItem.getItem());
@@ -156,7 +156,7 @@ public class GoldenHelmet implements Listener {
 
 	public static boolean withdrawGold(Player player, ItemStack helmet, int gold) {
 		NBTItem nbtItem = new NBTItem(helmet);
-		int helmetGold = nbtItem.getInteger(NBTTag.GHELMET_GOLD.getRef());
+		long helmetGold = nbtItem.getLong(NBTTag.GHELMET_GOLD.getRef());
 
 		if(helmetGold < gold) return false;
 		else {
@@ -166,7 +166,7 @@ public class GoldenHelmet implements Listener {
 				Sounds.HELMET_DOWNGRADE.play(player);
 			}
 			helmetGold -= gold;
-			nbtItem.setInteger(NBTTag.GHELMET_GOLD.getRef(), helmetGold);
+			nbtItem.setLong(NBTTag.GHELMET_GOLD.getRef(), helmetGold);
 
 			setLore(nbtItem.getItem());
 			player.getInventory().setHelmet(nbtItem.getItem());
@@ -207,7 +207,7 @@ public class GoldenHelmet implements Listener {
 		ALoreBuilder loreBuilder = new ALoreBuilder();
 		loreBuilder.addLore("");
 		HelmetAbility ability = getAbility(helmet);
-		int gold = getHelmetGold(helmet);
+		long gold = getHelmetGold(helmet);
 
 		if(ability != null) {
 			loreBuilder.addLore("&7Ability: &9" + ability.name);
@@ -236,7 +236,7 @@ public class GoldenHelmet implements Listener {
 		helmet.setItemMeta(meta);
 
 		NBTItem nbtItem = new NBTItem(helmet);
-		nbtItem.setInteger(NBTTag.GHELMET_GOLD.getRef(), gold);
+		nbtItem.setLong(NBTTag.GHELMET_GOLD.getRef(), gold);
 		if(ability != null) nbtItem.setString(NBTTag.GHELMET_ABILITY.getRef(), ability.refName);
 	}
 

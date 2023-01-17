@@ -37,7 +37,7 @@ public class NotGladiator extends PitEnchant {
 	}
 
 	@Override
-	public List<String> getDescription(int enchantLvl) {
+	public List<String> getNormalDescription(int enchantLvl) {
 
 		return new ALoreBuilder("&7Receive &9-" + Misc.roundString(getDamageReduction(enchantLvl)) + "% &7damage per",
 				"&7nearby player within 7 blocks", "&7(max 10 players)").getLore();

@@ -2,7 +2,7 @@ package dev.kyro.pitsim.aitems.misc;
 
 import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.arcticapi.misc.AOutput;
-import dev.kyro.pitsim.aitems.PitItem;
+import dev.kyro.pitsim.aitems.StaticPitItem;
 import dev.kyro.pitsim.controllers.GuildIntegrationManager;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.enums.AuctionCategory;
@@ -16,7 +16,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class FunkyFeather extends PitItem {
+public class FunkyFeather extends StaticPitItem {
 
 	public FunkyFeather() {
 		hasDropConfirm = true;
@@ -34,17 +34,17 @@ public class FunkyFeather extends PitItem {
 	}
 
 	@Override
-	public Material getMaterial(Player player) {
+	public Material getMaterial() {
 		return Material.FEATHER;
 	}
 
 	@Override
-	public String getName(Player player) {
+	public String getName() {
 		return "&3Funky Feather";
 	}
 
 	@Override
-	public List<String> getLore(Player player) {
+	public List<String> getLore() {
 		return new ALoreBuilder(
 				"&eSpecial item",
 				"&7protects your inventory but",

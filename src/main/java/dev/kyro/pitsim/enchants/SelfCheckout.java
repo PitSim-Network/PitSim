@@ -84,7 +84,7 @@ public class SelfCheckout extends PitEnchant {
 	}
 
 	@Override
-	public List<String> getDescription(int enchantLvl) {
+	public List<String> getNormalDescription(int enchantLvl) {
 
 		return new ALoreBuilder("&7On kill, if you have a killstreak", "&7of at least 200, &eExplode:",
 				"&e\u25a0 &7Die! Keep jewel lives on death",

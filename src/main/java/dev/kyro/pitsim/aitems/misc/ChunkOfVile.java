@@ -3,7 +3,7 @@ package dev.kyro.pitsim.aitems.misc;
 import de.tr7zw.nbtapi.NBTItem;
 import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.arcticapi.misc.AOutput;
-import dev.kyro.pitsim.aitems.PitItem;
+import dev.kyro.pitsim.aitems.StaticPitItem;
 import dev.kyro.pitsim.controllers.MapManager;
 import dev.kyro.pitsim.controllers.UpgradeManager;
 import dev.kyro.pitsim.enums.AuctionCategory;
@@ -22,7 +22,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class ChunkOfVile extends PitItem {
+public class ChunkOfVile extends StaticPitItem {
 
 	public ChunkOfVile() {
 		hasDropConfirm = true;
@@ -40,17 +40,17 @@ public class ChunkOfVile extends PitItem {
 	}
 
 	@Override
-	public Material getMaterial(Player player) {
+	public Material getMaterial() {
 		return Material.COAL;
 	}
 
 	@Override
-	public String getName(Player player) {
+	public String getName() {
 		return "&5Chunk of Vile";
 	}
 
 	@Override
-	public List<String> getLore(Player player) {
+	public List<String> getLore() {
 		return new ALoreBuilder(
 				"&7Kept on death",
 				"",

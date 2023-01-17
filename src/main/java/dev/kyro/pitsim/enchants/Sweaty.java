@@ -32,7 +32,7 @@ public class Sweaty extends PitEnchant {
 	}
 
 	@Override
-	public List<String> getDescription(int enchantLvl) {
+	public List<String> getNormalDescription(int enchantLvl) {
 		DecimalFormat decimalFormat = new DecimalFormat("0.#");
 		return new ALoreBuilder("&7Gain &b+" + getCapIncrease(enchantLvl) + " max XP &7on kill. Also",
 				"&7gain &b+" + decimalFormat.format(getXpIncrease(enchantLvl)) + " XP &7on kill per 10", "&7killstreak").getLore();

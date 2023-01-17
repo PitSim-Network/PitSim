@@ -26,7 +26,7 @@ public class Sharp extends PitEnchant {
 	}
 
 	@Override
-	public List<String> getDescription(int enchantLvl) {
+	public List<String> getNormalDescription(int enchantLvl) {
 
 		return new ALoreBuilder("&7Deal &c+" + getDamage(enchantLvl) + "% &7melee damage").getLore();
 	}

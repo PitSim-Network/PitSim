@@ -22,7 +22,7 @@ public class WitherSkullSpell extends PitEnchant {
 	public WitherSkullSpell() {
 		super("WitherSkull", true, ApplyType.SCYTHES,
 				"witherskull");
-		tainted = true;
+		isTainted = true;
 	}
 
 	@EventHandler
@@ -62,7 +62,7 @@ public class WitherSkullSpell extends PitEnchant {
 	}
 
 	@Override
-	public List<String> getDescription(int enchantLvl) {
+	public List<String> getNormalDescription(int enchantLvl) {
 
 		return new ALoreBuilder("&7Enjoy").getLore();
 	}

@@ -3,12 +3,8 @@ package dev.kyro.pitsim.inventories;
 import de.tr7zw.nbtapi.NBTItem;
 import dev.kyro.arcticapi.gui.AGUI;
 import dev.kyro.arcticapi.gui.AGUIPanel;
-import dev.kyro.arcticapi.misc.AOutput;
-import dev.kyro.pitsim.controllers.EnchantManager;
-import dev.kyro.pitsim.controllers.TaintedManager;
 import dev.kyro.pitsim.enums.NBTTag;
 import dev.kyro.pitsim.misc.Misc;
-import dev.kyro.pitsim.misc.Sounds;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -88,10 +84,6 @@ public class ShredJewelPanel extends AGUIPanel {
 			ItemStack item = player.getInventory().getItem(i);
 			if(Misc.isAirOrNull(item)) continue;
 			item = item.clone();
-
-			ItemMeta ogMeta = item.getItemMeta();
-			ogMeta.setLore(TaintedManager.descramble(ogMeta.getLore()));
-			item.setItemMeta(ogMeta);
 
 			NBTItem nbtItem = new NBTItem(item);
 			if(nbtItem.hasKey(NBTTag.ITEM_JEWEL_ENCHANT.getRef())) {

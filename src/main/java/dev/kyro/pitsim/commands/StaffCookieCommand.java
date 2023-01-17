@@ -35,7 +35,7 @@ public class StaffCookieCommand implements CommandExecutor {
 			return false;
 		}
 
-		ItemStack itemStack = StaffCookie.setCookieInformation(ItemFactory.getItem(StaffCookie.class).getItem(1), player, target);
+		ItemStack itemStack = ItemFactory.getItem(StaffCookie.class).getItem(player, target, 1);
 		AUtil.giveItemSafely(player, itemStack, true);
 		return false;
 	}

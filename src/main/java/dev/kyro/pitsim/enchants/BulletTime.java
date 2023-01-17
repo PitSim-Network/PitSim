@@ -40,7 +40,7 @@ public class BulletTime extends PitEnchant {
 	}
 
 	@Override
-	public List<String> getDescription(int enchantLvl) {
+	public List<String> getNormalDescription(int enchantLvl) {
 
 		if(enchantLvl == 1) {
 			return new ALoreBuilder("&7Blocking destroys arrows that hit", "&7you").getLore();

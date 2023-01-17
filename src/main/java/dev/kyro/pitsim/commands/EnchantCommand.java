@@ -60,7 +60,7 @@ public class EnchantCommand implements CommandExecutor {
 			AOutput.error(player, "That enchant does not exist");
 			return false;
 		}
-		if((pitEnchant.tainted || pitEnchant == SelfCheckout.INSTANCE) && !player.isOp()) {
+		if((pitEnchant.isTainted || pitEnchant == SelfCheckout.INSTANCE) && !player.isOp()) {
 			AOutput.error(player, "&cNice try.");
 			return false;
 		}

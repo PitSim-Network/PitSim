@@ -32,7 +32,7 @@ public class Sufferance extends PitEnchant {
 	}
 
 	@Override
-	public List<String> getDescription(int enchantLvl) {
+	public List<String> getNormalDescription(int enchantLvl) {
 
 		return new ALoreBuilder("&7Convert &e" + getReductionPercent(enchantLvl) + "% &7of true damage",
 				"&7taken into &6absorption").getLore();

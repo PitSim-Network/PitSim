@@ -2,6 +2,7 @@ package dev.kyro.pitsim.controllers;
 
 import de.tr7zw.nbtapi.NBTItem;
 import dev.kyro.pitsim.aitems.PitItem;
+import dev.kyro.pitsim.aitems.StaticPitItem;
 import dev.kyro.pitsim.enums.NBTTag;
 import dev.kyro.pitsim.misc.Misc;
 import org.bukkit.inventory.ItemStack;
@@ -19,6 +20,12 @@ public class ItemFactory {
 	@SuppressWarnings("unchecked")
 	public static <T extends PitItem> T getItem(Class<T> clazz) {
 		for(PitItem pitItem : pitItems) if(pitItem.getClass() == clazz) return (T) pitItem;
+		throw new RuntimeException();
+	}
+
+	@SuppressWarnings("unchecked")
+	public static <T extends StaticPitItem> T getStaticItem(Class<T> clazz) {
+		for(PitItem pitItem : pitItems) if(pitItem instanceof StaticPitItem && pitItem.getClass() == clazz) return (T) pitItem;
 		throw new RuntimeException();
 	}
 

@@ -65,7 +65,7 @@ public class Executioner extends PitEnchant {
 	}
 
 	@Override
-	public List<String> getDescription(int enchantLvl) {
+	public List<String> getNormalDescription(int enchantLvl) {
 
 		return new ALoreBuilder("&7Hitting an enemy below &c" + Misc.getHearts(getExecuteHealth(enchantLvl)),
 				"&7instantly kills them").getLore();

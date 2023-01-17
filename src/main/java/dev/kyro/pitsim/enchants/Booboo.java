@@ -63,7 +63,7 @@ public class Booboo extends PitEnchant {
 	}
 
 	@Override
-	public List<String> getDescription(int enchantLvl) {
+	public List<String> getNormalDescription(int enchantLvl) {
 
 		return new ALoreBuilder("&7Passively regain &c1\u2764 &7every " + getSeconds(enchantLvl),
 				"&7seconds").getLore();

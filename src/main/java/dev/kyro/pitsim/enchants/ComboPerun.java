@@ -72,7 +72,7 @@ public class ComboPerun extends PitEnchant {
 	}
 
 	@Override
-	public List<String> getDescription(int enchantLvl) {
+	public List<String> getNormalDescription(int enchantLvl) {
 
 		if(enchantLvl == 3) {
 			return new ALoreBuilder("&7Every &efourth &7hit strikes", "&elightning &7for &c" + Misc.getHearts(2) + " &7+ &c" + Misc.getHearts(1),

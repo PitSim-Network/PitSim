@@ -1,17 +1,16 @@
 package dev.kyro.pitsim.aitems.prot;
 
 import dev.kyro.arcticapi.builders.ALoreBuilder;
-import dev.kyro.pitsim.aitems.PitItem;
+import dev.kyro.pitsim.aitems.StaticPitItem;
 import dev.kyro.pitsim.enums.AuctionCategory;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
-import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class ProtBoots extends PitItem {
+public class ProtBoots extends StaticPitItem {
 
 	public ProtBoots() {
 		hasDropConfirm = true;
@@ -33,17 +32,17 @@ public class ProtBoots extends PitItem {
 	}
 
 	@Override
-	public Material getMaterial(Player player) {
+	public Material getMaterial() {
 		return Material.DIAMOND_BOOTS;
 	}
 
 	@Override
-	public String getName(Player player) {
+	public String getName() {
 		return "&bProtection I Boots";
 	}
 
 	@Override
-	public List<String> getLore(Player player) {
+	public List<String> getLore() {
 		return new ALoreBuilder(
 				"&7A relic back from when knights",
 				"&7had shining armor",

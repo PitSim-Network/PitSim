@@ -20,7 +20,7 @@ import java.util.List;
 public class SweepingEdgeSpell extends PitEnchant {
 	public SweepingEdgeSpell() {
 		super("Sweeping Edge", true, ApplyType.SCYTHES, "sweepingedge", "sweep", "sweeping_edge", "sweeping");
-		tainted = true;
+		isTainted = true;
 	}
 
 	@EventHandler
@@ -57,7 +57,7 @@ public class SweepingEdgeSpell extends PitEnchant {
 	}
 
 	@Override
-	public List<String> getDescription(int enchantLvl) {
+	public List<String> getNormalDescription(int enchantLvl) {
 		return new ALoreBuilder("&7This weapon hits all nearby enemies", "&d&o-" + getManaCost(enchantLvl) + " Mana").getLore();
 	}
 

@@ -122,7 +122,7 @@ public class Stereo extends PitEnchant {
 	}
 
 	@Override
-	public List<String> getDescription(int enchantLvl) {
+	public List<String> getNormalDescription(int enchantLvl) {
 		return new ALoreBuilder("&7You play a tune while cruising", "&7around").getLore();
 	}
 }

@@ -2,7 +2,7 @@ package dev.kyro.pitsim.aitems.misc;
 
 import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.pitsim.PitSim;
-import dev.kyro.pitsim.aitems.PitItem;
+import dev.kyro.pitsim.aitems.StaticPitItem;
 import dev.kyro.pitsim.controllers.NonManager;
 import dev.kyro.pitsim.enums.AuctionCategory;
 import dev.kyro.pitsim.events.AttackEvent;
@@ -16,7 +16,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.*;
 
-public class YummyBread extends PitItem {
+public class YummyBread extends StaticPitItem {
 	public static Map<Player, Integer> breadStacks = new HashMap<>();
 
 	public YummyBread() {
@@ -34,17 +34,17 @@ public class YummyBread extends PitItem {
 	}
 
 	@Override
-	public Material getMaterial(Player player) {
+	public Material getMaterial() {
 		return Material.BREAD;
 	}
 
 	@Override
-	public String getName(Player player) {
+	public String getName() {
 		return "&6Yummy Bread";
 	}
 
 	@Override
-	public List<String> getLore(Player player) {
+	public List<String> getLore() {
 		return new ALoreBuilder(
 				"&7Deal &c+" + getDamageIncrease() + "% &7damage to bots",
 				"&7for " + getSeconds() + " seconds. (Stacking)"

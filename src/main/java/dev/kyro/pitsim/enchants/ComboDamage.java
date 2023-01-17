@@ -41,7 +41,7 @@ public class ComboDamage extends PitEnchant {
 	}
 
 	@Override
-	public List<String> getDescription(int enchantLvl) {
+	public List<String> getNormalDescription(int enchantLvl) {
 
 		return new ALoreBuilder("&7Every&e" + Misc.ordinalWords(getStrikes(enchantLvl)) + " &7strike deals",
 				"&c+" + getDamage(enchantLvl) + "% &7damage").getLore();

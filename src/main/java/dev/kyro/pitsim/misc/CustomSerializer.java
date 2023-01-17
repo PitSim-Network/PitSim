@@ -1,5 +1,7 @@
 package dev.kyro.pitsim.misc;
 
+import dev.kyro.pitsim.aitems.PitItem;
+import dev.kyro.pitsim.controllers.ItemFactory;
 import net.minecraft.server.v1_8_R3.MojangsonParseException;
 import net.minecraft.server.v1_8_R3.MojangsonParser;
 import net.minecraft.server.v1_8_R3.NBTTagCompound;
@@ -49,10 +51,6 @@ public class CustomSerializer {
 	}
 
 	public static ItemStack setNBT(ItemStack itemStack, String NBT) {
-//		net.minecraft.server.v1_8_R3.ItemStack nmsStack = CraftItemStack.asNMSCopy(i);
-//		NBTTagCompound compound = (NBTTagCompound) new NBTContainer(nbt).getCompound();
-//		nmsStack.setTag(compound);
-
 		net.minecraft.server.v1_8_R3.ItemStack nmsStack = CraftItemStack.asNMSCopy(itemStack);
 		try {
 			NBTTagCompound compound = MojangsonParser.parse(NBT);
@@ -96,6 +94,9 @@ public class CustomSerializer {
 				itemStack.addUnsafeEnchantment(type, level);
 			}
 		}
+
+		PitItem pitItem = ItemFactory.getItem(itemStack);
+		if(pitItem != null) pitItem.updateItem(itemStack);
 		return itemStack;
 	}
 }

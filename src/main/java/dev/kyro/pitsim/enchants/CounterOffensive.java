@@ -32,7 +32,7 @@ public class CounterOffensive extends PitEnchant {
 	}
 
 	@Override
-	public List<String> getDescription(int enchantLvl) {
+	public List<String> getNormalDescription(int enchantLvl) {
 
 		return new ALoreBuilder("&7Gain &eSpeed II &7(" + getSeconds(enchantLvl) + "s) when hit",
 				"&e" + getCombo(enchantLvl) + " times &7by a player").getLore();

@@ -2,7 +2,7 @@ package dev.kyro.pitsim.aitems.misc;
 
 import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.pitsim.PitSim;
-import dev.kyro.pitsim.aitems.PitItem;
+import dev.kyro.pitsim.aitems.StaticPitItem;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.enums.AuctionCategory;
 import dev.kyro.pitsim.events.HealEvent;
@@ -22,7 +22,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 import java.text.DecimalFormat;
 import java.util.*;
 
-public class VeryYummyBread extends PitItem {
+public class VeryYummyBread extends StaticPitItem {
 	public static Map<UUID, Integer> breadCooldownLength = new HashMap<>();
 	public static Map<UUID, Integer> breadCooldown = new HashMap<>();
 	public static DecimalFormat breadCooldownFormat = new DecimalFormat("0.0");
@@ -57,17 +57,17 @@ public class VeryYummyBread extends PitItem {
 	}
 
 	@Override
-	public Material getMaterial(Player player) {
+	public Material getMaterial() {
 		return Material.BREAD;
 	}
 
 	@Override
-	public String getName(Player player) {
+	public String getName() {
 		return "&6Very Yummy Bread";
 	}
 
 	@Override
-	public List<String> getLore(Player player) {
+	public List<String> getLore() {
 		return new ALoreBuilder(
 				"&7Heals &c" + Misc.getHearts(getHealing()),
 				"&7Grants &6" + Misc.getHearts(getAbsorption())

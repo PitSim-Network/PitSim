@@ -22,7 +22,7 @@ public class Forcefield extends PitEnchant {
 
 	public Forcefield() {
 		super("Forcefield", true, ApplyType.CHESTPLATES, "force", "field", "forcefield");
-		tainted = true;
+		isTainted = true;
 		INSTANCE = this;
 	}
 
@@ -84,7 +84,7 @@ public class Forcefield extends PitEnchant {
 	}
 
 	@Override
-	public List<String> getDescription(int enchantLvl) {
+	public List<String> getNormalDescription(int enchantLvl) {
 		return new ALoreBuilder("&7Summon a powerful &eForcefield", "&7that reduces &fKnockback &7and", "&7repels enemies", "&d&o-" + reduction(enchantLvl) + "% Mana Regen").getLore();
 
 	}

@@ -31,7 +31,7 @@ public class FractionalReserve extends PitEnchant {
 	}
 
 	@Override
-	public List<String> getDescription(int enchantLvl) {
+	public List<String> getNormalDescription(int enchantLvl) {
 		DecimalFormat decimalFormat = new DecimalFormat("0.#");
 		return new ALoreBuilder("&7Receive &9-" + decimalFormat.format(getReduction(enchantLvl)) + "% &7damage per",
 				"&6digit &7in your gold").getLore();

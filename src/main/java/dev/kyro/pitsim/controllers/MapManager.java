@@ -27,7 +27,7 @@ public class MapManager implements Listener {
 	public static void onStart() {
 		if(PitSim.status == PitSim.ServerStatus.DARKZONE) return;
 		for(Player onlinePlayer : Bukkit.getOnlinePlayers()) {
-			if(PitSim.status == PitSim.ServerStatus.PITSIM) onlinePlayer.teleport(currentMap.getSpawn());
+			if(PitSim.status == PitSim.ServerStatus.OVERWORLD) onlinePlayer.teleport(currentMap.getSpawn());
 			else onlinePlayer.teleport(darkzoneSpawn);
 		}
 	}

@@ -21,6 +21,7 @@ import dev.kyro.pitsim.adarkzone.progression.ProgressionManager;
 import dev.kyro.pitsim.aitems.misc.TotallyLegitGem;
 import dev.kyro.pitsim.aitems.misc.*;
 import dev.kyro.pitsim.aitems.mobdrops.*;
+import dev.kyro.pitsim.aitems.mystics.*;
 import dev.kyro.pitsim.aitems.prot.ProtBoots;
 import dev.kyro.pitsim.aitems.prot.ProtChestplate;
 import dev.kyro.pitsim.aitems.prot.ProtHelmet;
@@ -138,7 +139,7 @@ public class PitSim extends JavaPlugin {
 		}
 
 		if(AConfig.getBoolean("standalone-server")) status = ServerStatus.ALL;
-		else status = serverName.contains("darkzone") ? ServerStatus.DARKZONE : ServerStatus.PITSIM;
+		else status = serverName.contains("darkzone") ? ServerStatus.DARKZONE : ServerStatus.OVERWORLD;
 
 		getServer().getMessenger().registerOutgoingPluginChannel(this, "BungeeCord");
 		adventure = BukkitAudiences.create(this);
@@ -623,6 +624,7 @@ public class PitSim extends JavaPlugin {
 		getServer().getPluginManager().registerEvents(new GrimManager(), this);
 		getServer().getPluginManager().registerEvents(new MiscManager(), this);
 		getServer().getPluginManager().registerEvents(new MarketMessaging(), this);
+		getServer().getPluginManager().registerEvents(new AIManager(), this);
 
 //		New darkzone code
 		if(getStatus().isDarkzone()) {
@@ -789,6 +791,12 @@ public class PitSim extends JavaPlugin {
 	}
 
 	private void registerItems() {
+		ItemFactory.registerItem(new MysticSword());
+		ItemFactory.registerItem(new MysticBow());
+		ItemFactory.registerItem(new MysticPants());
+		ItemFactory.registerItem(new TaintedScythe());
+		ItemFactory.registerItem(new TaintedChestplate());
+
 		ItemFactory.registerItem(new FunkyFeather());
 		ItemFactory.registerItem(new CorruptedFeather());
 		ItemFactory.registerItem(new ChunkOfVile());
@@ -939,14 +947,14 @@ public class PitSim extends JavaPlugin {
 	}
 
 	public enum ServerStatus {
-		DARKZONE, PITSIM, ALL;
+		DARKZONE, OVERWORLD, ALL;
 
 		public boolean isDarkzone() {
 			return this == DARKZONE || this == ALL;
 		}
 
 		public boolean isPitsim() {
-			return this == PITSIM || this == ALL;
+			return this == OVERWORLD || this == ALL;
 		}
 
 		public boolean isAll() {

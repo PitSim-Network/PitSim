@@ -1,5 +1,7 @@
 package dev.kyro.pitsim.controllers.objects;
 
+import dev.kyro.arcticapi.builders.ALoreBuilder;
+import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.controllers.Cooldown;
 import dev.kyro.pitsim.controllers.MapManager;
 import dev.kyro.pitsim.enchants.Regularity;
@@ -13,7 +15,6 @@ import org.bukkit.event.Listener;
 import java.util.*;
 
 public abstract class PitEnchant implements Listener {
-
 	public String name;
 	public List<String> refNames;
 	public boolean isRare;
@@ -22,10 +23,8 @@ public abstract class PitEnchant implements Listener {
 	public boolean levelStacks = false;
 	public boolean meleOnly = false;
 	public boolean fakeHits = false;
-	public boolean tainted = false;
+	public boolean isTainted = false;
 	public Map<UUID, Cooldown> cooldowns = new HashMap<>();
-
-	private String overrideName;
 
 	public PitEnchant(String name, boolean isRare, ApplyType applyType, String... refNames) {
 		this.name = name;
@@ -35,7 +34,21 @@ public abstract class PitEnchant implements Listener {
 		this.isUncommonEnchant = isRare;
 	}
 
-	public abstract List<String> getDescription(int enchantLvl);
+	public abstract List<String> getNormalDescription(int enchantLvl);
+
+	public List<String> getDisabledDescription() {
+		return new ALoreBuilder(
+				"&7Disabled in the " + (isTainted ? "&aOverworld" : "&5Darkzone")
+		).getLore();
+	}
+
+	public List<String> getDescription(int enchantLvl) {
+		if(isTainted) {
+			return PitSim.getStatus() == PitSim.ServerStatus.OVERWORLD ? getDisabledDescription() : getNormalDescription(enchantLvl);
+		} else {
+			return PitSim.getStatus() == PitSim.ServerStatus.DARKZONE ? getDisabledDescription() : getNormalDescription(enchantLvl);
+		}
+	}
 
 	public void onDisable() {
 	}
@@ -74,24 +87,23 @@ public abstract class PitEnchant implements Listener {
 	}
 
 	public String getDisplayName(boolean displayUncommon) {
-		if(overrideName != null) return overrideName;
-		if(tainted) {
-			if(applyType == ApplyType.SCYTHES)
-				return ChatColor.translateAlternateColorCodes('&', isRare ? "&dSPELL! &5" + name : "&5" + name);
-			else return ChatColor.translateAlternateColorCodes('&', isRare ? "&dEFFECT! &5" + name : "&5" + name);
+		String displayName = "";
+		if(isRare) {
+			if(applyType == ApplyType.SCYTHES) displayName += "&dSPELL!";
+			else if(applyType == ApplyType.CHESTPLATES) displayName += "&dEFFECT!";
+			else displayName += "&dRARE!";
+		} else if(isUncommonEnchant && displayUncommon) {
+			displayName += "&aUNC.";
 		}
-		if(isRare) return ChatColor.translateAlternateColorCodes('&', "&dRARE! &9" + name);
-		if(isUncommonEnchant && displayUncommon) return ChatColor.translateAlternateColorCodes('&', "&aUNC. &9" + name);
-		return ChatColor.translateAlternateColorCodes('&', "&9" + name);
-	}
-
-	public void setOverrideName(String overrideName) {
-
-		this.overrideName = overrideName;
+		if(isTainted) {
+			displayName += PitSim.getStatus() != PitSim.ServerStatus.OVERWORLD ? "&5" : "&c";
+		} else {
+			displayName += PitSim.getStatus() != PitSim.ServerStatus.DARKZONE ? "&9" : "&c";
+		}
+		return ChatColor.translateAlternateColorCodes('&', displayName + " " + name);
 	}
 
 	public EnchantRarity getRarity() {
-
 		if(isRare) return EnchantRarity.RARE;
 		if(isUncommonEnchant) return EnchantRarity.UNCOMMON;
 		return EnchantRarity.COMMON;

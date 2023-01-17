@@ -14,7 +14,7 @@ public class MaxMana extends PitEnchant {
 	public MaxMana() {
 		super("Max Mana", true, ApplyType.CHESTPLATES,
 				"maxmana");
-		tainted = true;
+		isTainted = true;
 		INSTANCE = this;
 	}
 
@@ -26,7 +26,7 @@ public class MaxMana extends PitEnchant {
 	}
 
 	@Override
-	public List<String> getDescription(int enchantLvl) {
+	public List<String> getNormalDescription(int enchantLvl) {
 
 		return new ALoreBuilder("&7Increase your max mana by &d" + Misc.getHearts(getExtraMana(enchantLvl)), "&d&o-" + reduction(enchantLvl) + "% Mana Regen").getLore();
 	}

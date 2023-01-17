@@ -28,7 +28,7 @@ public class SpammerAndProud extends PitEnchant {
 	}
 
 	@Override
-	public List<String> getDescription(int enchantLvl) {
+	public List<String> getNormalDescription(int enchantLvl) {
 
 		return new ALoreBuilder("&7Deal &c+" + getDamage(enchantLvl) + "% &7damage when shooting",
 				"&7within &f4 &7blocks").getLore();

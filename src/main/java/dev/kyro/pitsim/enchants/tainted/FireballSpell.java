@@ -23,7 +23,7 @@ public class FireballSpell extends PitEnchant {
 	public FireballSpell() {
 		super("Fireball", true, ApplyType.SCYTHES,
 				"fireball");
-		tainted = true;
+		isTainted = true;
 	}
 
 	@EventHandler
@@ -71,7 +71,7 @@ public class FireballSpell extends PitEnchant {
 	}
 
 	@Override
-	public List<String> getDescription(int enchantLvl) {
+	public List<String> getNormalDescription(int enchantLvl) {
 
 		return new ALoreBuilder("&7Launch a large projectile, dealing", "&7knock-back and splash damage", "&d&o-" + getManaCost(enchantLvl) + " Mana").getLore();
 	}

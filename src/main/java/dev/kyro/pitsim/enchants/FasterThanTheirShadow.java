@@ -130,7 +130,7 @@ public class FasterThanTheirShadow extends PitEnchant implements Listener {
 	}
 
 	@Override
-	public List<String> getDescription(int enchantLvl) {
+	public List<String> getNormalDescription(int enchantLvl) {
 		return new ALoreBuilder("&7Hitting &f" + getStrikes(enchantLvl) + " &7shots without", "&7missing grants &eSpeed "
 				+ AUtil.toRoman(getSpeedAmplifier(enchantLvl)) + " &7(4s)").getLore();
 

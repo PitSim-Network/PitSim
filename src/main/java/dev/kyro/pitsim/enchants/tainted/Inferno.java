@@ -23,7 +23,7 @@ public class Inferno extends PitEnchant {
 
 	public Inferno() {
 		super("Inferno", true, ApplyType.CHESTPLATES, "inferno", "fire", "inf");
-		tainted = true;
+		isTainted = true;
 		meleOnly = true;
 	}
 
@@ -85,7 +85,7 @@ public class Inferno extends PitEnchant {
 	}
 
 	@Override
-	public List<String> getDescription(int enchantLvl) {
+	public List<String> getNormalDescription(int enchantLvl) {
 		return new ALoreBuilder("&7Set your enemies on &6Fire &7for &f10s", "&7with &c+0.5\u2764 damage &7per second", "&d&o-" + reduction(enchantLvl) + "% Mana Regen").getLore();
 	}
 

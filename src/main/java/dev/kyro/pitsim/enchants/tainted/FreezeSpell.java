@@ -33,7 +33,7 @@ public class FreezeSpell extends PitEnchant {
 
 	public FreezeSpell() {
 		super("Freeze", true, ApplyType.SCYTHES, "freeze", "fre", "cold");
-		tainted = true;
+		isTainted = true;
 	}
 
 	@EventHandler
@@ -121,7 +121,7 @@ public class FreezeSpell extends PitEnchant {
 	}
 
 	@Override
-	public List<String> getDescription(int enchantLvl) {
+	public List<String> getNormalDescription(int enchantLvl) {
 		return new ALoreBuilder("&7Freeze all nearby enemies for 3s", "&d&o-" + getManaCost(enchantLvl) + " Mana").getLore();
 	}
 
