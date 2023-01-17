@@ -5,12 +5,14 @@ import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.arcticapi.gui.AGUI;
 import dev.kyro.arcticapi.gui.AGUIPanel;
 import dev.kyro.arcticapi.misc.AOutput;
+import dev.kyro.arcticapi.misc.AUtil;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.misc.Sounds;
 import org.bukkit.Material;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.inventory.InventoryOpenEvent;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 
 public class ConfirmPurchasePanel extends AGUIPanel {
@@ -63,7 +65,7 @@ public class ConfirmPurchasePanel extends AGUIPanel {
 		BukkitRunnable bid = new BukkitRunnable() {
 			@Override
 			public void run() {
-				AOutput.send(player, "&aMARKET &7Bid successfully placed!");
+				AOutput.send(player, "&a&lMARKET &7Bid successfully placed!");
 				Sounds.SUCCESS.play(player);
 				PitPlayer.getPitPlayer(player).taintedSouls -= price;
 				player.closeInventory();
@@ -73,8 +75,13 @@ public class ConfirmPurchasePanel extends AGUIPanel {
 		BukkitRunnable buy = new BukkitRunnable() {
 			@Override
 			public void run() {
-				AOutput.send(player, "&aMARKET &7Purchased " + listing.itemData.getItemMeta().getDisplayName() + (amount > 1 ? " &8x" + listing.itemData.getAmount() : ""));
+				AOutput.send(player, "&a&lMARKET &7Purchased " + listing.itemData.getItemMeta().getDisplayName() + (amount > 1 ? " &8x" + amount : ""));
 				PitPlayer.getPitPlayer(player).taintedSouls -= price;
+
+				ItemStack item = listing.itemData.clone();
+				item.setAmount(amount);
+
+				AUtil.giveItemSafely(player, item, true);
 				Sounds.SUCCESS.play(player);
 				player.closeInventory();
 			}

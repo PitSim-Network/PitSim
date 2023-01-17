@@ -16,7 +16,6 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.inventory.InventoryOpenEvent;
 import org.bukkit.inventory.ItemStack;
-import org.checkerframework.checker.units.qual.A;
 
 public class CreateListingPanel extends AGUIPanel {
 
@@ -125,7 +124,7 @@ public class CreateListingPanel extends AGUIPanel {
 
 				PluginMessage message = new PluginMessage().writeString("CREATE LISTING").writeString(player.getUniqueId().toString());
 				message.writeString(StorageProfile.serialize(player, selectedItem));
-				message.writeInt(startingBid == 0 ? -1 : startingBid).writeInt(binPrice == 0 ? -1 : binPrice).writeBoolean(selectedItem.getAmount() > 1).writeLong(86400000L * getDuration()).send();
+				message.writeInt(startingBid == 0 ? -1 : startingBid).writeInt(binPrice == 0 ? -1 : binPrice).writeBoolean(selectedItem.getAmount() > 1).writeLong(86400000L * getMaxDurationDays()).send();
 				selectedItem = null;
 				Sounds.SUCCESS.play(player);
 				AOutput.send(player, "&a&lMARKET! &7Listing created!");
@@ -246,8 +245,8 @@ public class CreateListingPanel extends AGUIPanel {
 				.setLore(new ALoreBuilder(
 						"&7BIN Price: " + (isBinValid() ? ("&f" + binPrice + " souls" + (selectedItem.getAmount() > 1 ? " &8(Per Item)" : "")) : "&cINVALID!"),
 						"",
-						auctionEnabled && isBidValid() ? "&7Must be at least &f" + (startingBid * 2) + " Souls" : "&7Must be at least &f10 Souls", "",
-						auctionEnabled ? "&eClick to change!" : "&cEnable BIN first!"
+						binEnabled && isBidValid() ? "&7Must be at least &f" + (startingBid * 2) + " Souls" : "&7Must be at least &f10 Souls", "",
+						binEnabled ? "&eClick to change!" : "&cEnable BIN first!"
 				));
 		getInventory().setItem(24, binSoulsBuilder.getItemStack());
 
@@ -255,7 +254,7 @@ public class CreateListingPanel extends AGUIPanel {
 				.setName("&eListing Duration")
 				.setLore(new ALoreBuilder(
 						"&7This listing will expire in:",
-						"&f" + getDuration() + " Days", "",
+						"&f" + getMaxDurationDays() + " Days", "",
 						"&eBoost this duration with a rank", "&efrom &f&nstore.pitsim.net"
 				));
 		getInventory().setItem(42, durationBuilder.getItemStack());
@@ -369,7 +368,16 @@ public class CreateListingPanel extends AGUIPanel {
 		});
 	}
 
-	public int getDuration() {
+	public int getMaxDurationDays() {
 		return 3;
+	}
+
+	public static long parseToMiliseconds(String duration) {
+		String[] parts = duration.split(" ");
+		int days = Integer.parseInt(parts[0].replace("d", ""));
+		int hours = Integer.parseInt(parts[2].replace("h", ""));
+		int minutes = Integer.parseInt(parts[4].replace("m", ""));
+
+		return (days * 86400L + hours * 3600L + minutes * 60L) * 1000;
 	}
 }
