@@ -2,6 +2,7 @@ package dev.kyro.pitsim.controllers;
 
 import de.tr7zw.nbtapi.NBTItem;
 import dev.kyro.arcticapi.misc.AOutput;
+import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.commands.essentials.GamemodeCommand;
 import dev.kyro.pitsim.commands.essentials.TeleportCommand;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
@@ -18,6 +19,7 @@ import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -128,6 +130,17 @@ public class ChatManager implements Listener {
 				.replaceAll("(?i)harry", "hairy");
 
 		event.setMessage(message);
+
+		String finalMessage = message;
+		new BukkitRunnable() {
+			@Override
+			public void run() {
+				if(finalMessage.endsWith("?")) {
+					String answer = AIManager.getAnswer(ChatColor.stripColor(finalMessage));
+					AOutput.send(player, "&9&lAI!&7 " + answer);
+				}
+			}
+		}.runTaskAsynchronously(PitSim.INSTANCE);
 	}
 
 	@EventHandler
