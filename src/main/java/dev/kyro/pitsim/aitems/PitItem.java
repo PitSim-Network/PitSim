@@ -1,16 +1,12 @@
 package dev.kyro.pitsim.aitems;
 
 import de.tr7zw.nbtapi.NBTItem;
-import dev.kyro.arcticapi.builders.AItemStackBuilder;
-import dev.kyro.arcticapi.misc.AUtil;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.controllers.ItemFactory;
 import dev.kyro.pitsim.enums.AuctionCategory;
 import dev.kyro.pitsim.enums.NBTTag;
 import org.bukkit.Bukkit;
-import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
-import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
@@ -22,14 +18,16 @@ import java.util.Map;
 
 public abstract class PitItem implements Listener {
 	public short itemData = 0;
-	public boolean hideExtra;
+	//	This is forced true if the item has drop confirm
 	public boolean hasDropConfirm;
-//	This is forced true if the item has drop confirm
 	public boolean destroyIfDroppedInSpawn;
+
+	public boolean hideExtra;
+	public boolean unbreakable;
+	public Map<Enchantment, Integer> itemEnchants = new HashMap<>();
+
 	public boolean isProt;
 	public AuctionCategory auctionCategory;
-
-	public Map<Enchantment, Integer> itemEnchants = new HashMap<>();
 
 	public PitItem() {
 		Bukkit.getPluginManager().registerEvents(this, PitSim.INSTANCE);
@@ -37,39 +35,24 @@ public abstract class PitItem implements Listener {
 
 	public abstract String getNBTID();
 	public abstract List<String> getRefNames();
-	public abstract Material getMaterial(Player player);
-	public abstract String getName(Player player);
-	public abstract List<String> getLore(Player player);
+	public abstract void updateItem(ItemStack itemStack);
 
-	public ItemStack getItem(int amount) {
-		return getItem(null, amount);
-	}
-
-	public ItemStack getItem(Player player, int amount) {
-		ItemStack itemStack = new AItemStackBuilder(getMaterial(player), amount, itemData)
-				.setName(getName(player))
-				.setLore(getLore(player))
-				.getItemStack();
-		itemStack.addUnsafeEnchantments(itemEnchants);
-		hideExtra(itemStack);
-		return setTag(itemStack);
-	}
-
-	public void giveItem(Player player, int amount) {
-		AUtil.giveItemSafely(player, getItem(player, amount), true);
-	}
-
-	public ItemStack setTag(ItemStack itemStack) {
+	public ItemStack buildItem(ItemStack itemStack) {
+		ItemMeta itemMeta = itemStack.hasItemMeta() ? itemStack.getItemMeta() : Bukkit.getItemFactory().getItemMeta(itemStack.getType());
+		if(hideExtra) {
+			itemMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS, ItemFlag.HIDE_ATTRIBUTES, ItemFlag.HIDE_POTION_EFFECTS, ItemFlag.HIDE_UNBREAKABLE);
+		}
+		if(unbreakable) {
+			itemMeta.spigot().setUnbreakable(true);
+			itemMeta.addItemFlags(ItemFlag.HIDE_UNBREAKABLE);
+		}
+		if(!itemEnchants.isEmpty()) {
+			itemStack.addUnsafeEnchantments(itemEnchants);
+		}
+		itemStack.setItemMeta(itemMeta);
 		NBTItem nbtItem = new NBTItem(itemStack);
 		nbtItem.setString(NBTTag.CUSTOM_ITEM.getRef(), getNBTID());
 		return nbtItem.getItem();
-	}
-
-	public void hideExtra(ItemStack itemStack) {
-		if(!hideExtra) return;
-		ItemMeta itemMeta = itemStack.getItemMeta();
-		itemMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS, ItemFlag.HIDE_ATTRIBUTES, ItemFlag.HIDE_POTION_EFFECTS, ItemFlag.HIDE_UNBREAKABLE);
-		itemStack.setItemMeta(itemMeta);
 	}
 
 	public boolean isThisItem(ItemStack itemStack) {

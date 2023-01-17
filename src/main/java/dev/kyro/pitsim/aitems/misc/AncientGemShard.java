@@ -1,16 +1,15 @@
 package dev.kyro.pitsim.aitems.misc;
 
 import dev.kyro.arcticapi.builders.ALoreBuilder;
-import dev.kyro.pitsim.aitems.PitItem;
+import dev.kyro.pitsim.aitems.StaticPitItem;
 import dev.kyro.pitsim.enums.AuctionCategory;
 import org.bukkit.Material;
-import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class AncientGemShard extends PitItem {
+public class AncientGemShard extends StaticPitItem {
 
 	public AncientGemShard() {
 		hasDropConfirm = true;
@@ -28,17 +27,17 @@ public class AncientGemShard extends PitItem {
 	}
 
 	@Override
-	public Material getMaterial(Player player) {
+	public Material getMaterial() {
 		return Material.PRISMARINE_SHARD;
 	}
 
 	@Override
-	public String getName(Player player) {
+	public String getName() {
 		return "&aAncient Gem Shard";
 	}
 
 	@Override
-	public List<String> getLore(Player player) {
+	public List<String> getLore() {
 		return new ALoreBuilder(
 				"&eSpecial item",
 				"&7A piece of a relic lost to time.",

@@ -38,7 +38,7 @@ public class Shark extends PitEnchant {
 	}
 
 	@Override
-	public List<String> getDescription(int enchantLvl) {
+	public List<String> getNormalDescription(int enchantLvl) {
 
 		return new ALoreBuilder("&7Deal &c+" + getDamage(enchantLvl) + "% &7damage per other",
 				"&7player below &c5\u2764 &7within 7", "&7blocks (&c+" + getCap(enchantLvl) + "% &7max)").getLore();

@@ -78,7 +78,7 @@ public class Volley extends PitEnchant {
 	}
 
 	@Override
-	public List<String> getDescription(int enchantLvl) {
+	public List<String> getNormalDescription(int enchantLvl) {
 
 		return new ALoreBuilder("&7Shoot &f" + getArrows(enchantLvl) + " arrows &7at once").getLore();
 	}

@@ -4,7 +4,6 @@ import de.tr7zw.nbtapi.NBTItem;
 import dev.kyro.arcticapi.gui.AGUI;
 import dev.kyro.arcticapi.gui.AGUIPanel;
 import dev.kyro.arcticapi.misc.AOutput;
-import dev.kyro.pitsim.controllers.TaintedManager;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.enums.NBTTag;
 import dev.kyro.pitsim.misc.Sounds;
@@ -86,7 +85,7 @@ public class ShredConfirmPanel extends AGUIPanel {
 		confirmLore.add(ChatColor.translateAlternateColorCodes('&', "&7The Following Item will be permanently lost:"));
 		confirmLore.add("");
 		confirmLore.add(item.getItemMeta().getDisplayName());
-		confirmLore.addAll(TaintedManager.descramble(item.getItemMeta().getLore()));
+		confirmLore.addAll(item.getItemMeta().getLore());
 		confirmLore.add("");
 		confirmLore.add(ChatColor.GREEN + "Click to Shred this Item!");
 		confirmMeta.setLore(confirmLore);

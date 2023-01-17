@@ -16,7 +16,7 @@ public class MaxHealth extends PitEnchant {
 	public MaxHealth() {
 		super("Max Health", true, ApplyType.CHESTPLATES,
 				"manahealth");
-		tainted = true;
+		isTainted = true;
 		INSTANCE = this;
 	}
 
@@ -28,7 +28,7 @@ public class MaxHealth extends PitEnchant {
 	}
 
 	@Override
-	public List<String> getDescription(int enchantLvl) {
+	public List<String> getNormalDescription(int enchantLvl) {
 
 		return new ALoreBuilder("&7Increase your max health by &c" + Misc.getHearts(getExtraHealth(enchantLvl)), "&d&o-" + reduction(enchantLvl) + "% Mana Regen").getLore();
 	}

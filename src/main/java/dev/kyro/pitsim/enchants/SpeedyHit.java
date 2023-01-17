@@ -35,7 +35,7 @@ public class SpeedyHit extends PitEnchant {
 	}
 
 	@Override
-	public List<String> getDescription(int enchantLvl) {
+	public List<String> getNormalDescription(int enchantLvl) {
 
 		return new ALoreBuilder("&7Gain Speed " + AUtil.toRoman(getAmplifier(enchantLvl) + 1) + " for &e" + getDuration(enchantLvl) + "s &7on hit (" +
 				getCooldown(enchantLvl) + "s", "&7cooldown)").getLore();

@@ -58,7 +58,7 @@ public class PinDown extends PitEnchant {
 	}
 
 	@Override
-	public List<String> getDescription(int enchantLvl) {
+	public List<String> getNormalDescription(int enchantLvl) {
 
 		return new ALoreBuilder("&7Fully charged shots &apin &7the victim,", "&7removing their &eSpeed &7and &aJump",
 				"&aBoost &7and prevents &dRARE! &9Telebow", "&7cooldown from reducing", "&7(" + getDuration(enchantLvl) + "s cooldown)").getLore();

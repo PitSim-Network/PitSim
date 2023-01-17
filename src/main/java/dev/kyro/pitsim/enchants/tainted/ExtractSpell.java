@@ -27,7 +27,7 @@ public class ExtractSpell extends PitEnchant {
 
 	public ExtractSpell() {
 		super("Extract", true, ApplyType.SCYTHES, "extract", "ext");
-		tainted = true;
+		isTainted = true;
 	}
 
 	@EventHandler
@@ -99,7 +99,7 @@ public class ExtractSpell extends PitEnchant {
 	}
 
 	@Override
-	public List<String> getDescription(int enchantLvl) {
+	public List<String> getNormalDescription(int enchantLvl) {
 		return new ALoreBuilder("&7Pull the most powerful", "&7mob out of a crowd", "&d&o-" + getManaCost(enchantLvl) + " Mana").getLore();
 	}
 

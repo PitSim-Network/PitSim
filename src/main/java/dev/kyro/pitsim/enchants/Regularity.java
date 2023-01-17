@@ -103,7 +103,7 @@ public class Regularity extends PitEnchant {
 	}
 
 	@Override
-	public List<String> getDescription(int enchantLvl) {
+	public List<String> getNormalDescription(int enchantLvl) {
 
 //		return new ALoreBuilder("&7If your strike does a low amount of",
 //				"&7final damage, &astrike again &7for &c" + secondHitDamage(enchantLvl) + "%",

@@ -30,7 +30,7 @@ public class MeteorSpell extends PitEnchant {
 	public MeteorSpell() {
 		super("Meteor", true, ApplyType.SCYTHES,
 				"meteor");
-		tainted = true;
+		isTainted = true;
 	}
 
 	@EventHandler
@@ -113,7 +113,7 @@ public class MeteorSpell extends PitEnchant {
 	}
 
 	@Override
-	public List<String> getDescription(int enchantLvl) {
+	public List<String> getNormalDescription(int enchantLvl) {
 		return new ALoreBuilder("&7Summon a meteor, causing large", "&7damage to a single target", "&d&o-" + getManaCost(enchantLvl) + " Mana").getLore();
 	}
 

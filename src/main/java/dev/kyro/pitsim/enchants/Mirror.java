@@ -44,7 +44,7 @@ public class Mirror extends PitEnchant {
 	}
 
 	@Override
-	public List<String> getDescription(int enchantLvl) {
+	public List<String> getNormalDescription(int enchantLvl) {
 
 		if(enchantLvl >= 3) {
 

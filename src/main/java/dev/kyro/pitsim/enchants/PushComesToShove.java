@@ -53,7 +53,7 @@ public class PushComesToShove extends PitEnchant {
 	}
 
 	@Override
-	public List<String> getDescription(int enchantLvl) {
+	public List<String> getNormalDescription(int enchantLvl) {
 
 		return new ALoreBuilder("&7Every 3rd shot on a player has",
 				"&bPunch " + AUtil.toRoman(getPunchLevel(enchantLvl)) + " &7(5s cooldown)").getLore();

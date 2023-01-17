@@ -15,7 +15,7 @@ public class TaintedSoul extends PitEnchant {
 	public TaintedSoul() {
 		super("Tainted Soul", true, ApplyType.TAINTED,
 				"taintedsoul", "soul");
-		tainted = true;
+		isTainted = true;
 		meleOnly = true;
 	}
 
@@ -41,7 +41,7 @@ public class TaintedSoul extends PitEnchant {
 	}
 
 	@Override
-	public List<String> getDescription(int enchantLvl) {
+	public List<String> getNormalDescription(int enchantLvl) {
 
 		return new ALoreBuilder("&7Subtract &f1/5 &7of your enemy's", "&7current health (" + getCooldown() + "s cooldown)",
 				"&d&o-" + reduction(enchantLvl) + "% Mana Regen").getLore();

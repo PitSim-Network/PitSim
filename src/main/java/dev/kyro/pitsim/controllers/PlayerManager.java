@@ -35,7 +35,6 @@ import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
-import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -48,9 +47,7 @@ import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.inventory.CraftItemEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.*;
-import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
 import org.spigotmc.event.player.PlayerSpawnLocationEvent;
@@ -85,7 +82,7 @@ public class PlayerManager implements Listener {
 					double reduction = 0.0;
 
 					for(Map.Entry<PitEnchant, Integer> entry : EnchantManager.getEnchantsOnPlayer(pitPlayer.player).entrySet()) {
-						if(!entry.getKey().tainted || entry.getKey().applyType != ApplyType.CHESTPLATES) continue;
+						if(!entry.getKey().isTainted || entry.getKey().applyType != ApplyType.CHESTPLATES) continue;
 						reduction += (0.8 - (0.2 * entry.getValue()));
 					}
 
@@ -409,16 +406,6 @@ public class PlayerManager implements Listener {
 		boolean hasSpace = false;
 		if(player.getItemInHand().getType() == Material.BOW) {
 
-			NBTItem nbtItem = new NBTItem(player.getItemInHand());
-			if(nbtItem.hasKey(NBTTag.ITEM_UUID.getRef()) && !player.getItemInHand().getItemMeta().hasEnchant(Enchantment.WATER_WORKER)) {
-				ItemStack modified = player.getItemInHand();
-				modified.addUnsafeEnchantment(Enchantment.WATER_WORKER, 1);
-				ItemMeta itemMeta = modified.getItemMeta();
-				itemMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
-				modified.setItemMeta(itemMeta);
-				player.setItemInHand(modified);
-			}
-
 			for(int i = 0; i < 36; i++) {
 				ItemStack itemStack = player.getInventory().getItem(i);
 				if(Misc.isAirOrNull(itemStack)) {
@@ -689,7 +676,7 @@ public class PlayerManager implements Listener {
 						return;
 					}
 
-				} else if(PitSim.getStatus() == PitSim.ServerStatus.PITSIM && LobbySwitchManager.joinedFromDarkzone.contains(player.getUniqueId()) &&
+				} else if(PitSim.getStatus() == PitSim.ServerStatus.OVERWORLD && LobbySwitchManager.joinedFromDarkzone.contains(player.getUniqueId()) &&
 						!ProxyMessaging.joinTeleportMap.containsKey(player.getUniqueId())) {
 					player.setVelocity(new Vector(1.5, 1, 0));
 					Misc.sendTitle(player, "&a&lOverworld", 40);

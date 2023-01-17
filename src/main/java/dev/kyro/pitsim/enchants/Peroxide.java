@@ -38,7 +38,7 @@ public class Peroxide extends PitEnchant {
 	}
 
 	@Override
-	public List<String> getDescription(int enchantLvl) {
+	public List<String> getNormalDescription(int enchantLvl) {
 
 		return new ALoreBuilder("&7Gain &cRegen " + AUtil.toRoman(getAmplifier(enchantLvl)) + " &7(" +
 				getDuration(enchantLvl) / 20 + "&7s) when hit").getLore();

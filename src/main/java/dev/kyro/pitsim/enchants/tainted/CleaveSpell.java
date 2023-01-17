@@ -68,7 +68,7 @@ public class CleaveSpell extends PitEnchant {
 
 	public CleaveSpell() {
 		super("Cleave", true, ApplyType.SCYTHES, "cleave", "cleaver", "saving", "grace");
-		tainted = true;
+		isTainted = true;
 	}
 
 	@EventHandler
@@ -123,7 +123,7 @@ public class CleaveSpell extends PitEnchant {
 	}
 
 	@Override
-	public List<String> getDescription(int enchantLvl) {
+	public List<String> getNormalDescription(int enchantLvl) {
 		return new ALoreBuilder("&7Throw your scythe, dealing damage", "&7to all entities it hits", "&d&o-" + getManaCost(enchantLvl) + " Mana").getLore();
 	}
 

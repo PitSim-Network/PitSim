@@ -111,7 +111,7 @@ public class Robinhood extends PitEnchant {
 	}
 
 	@Override
-	public List<String> getDescription(int enchantLvl) {
+	public List<String> getNormalDescription(int enchantLvl) {
 		DecimalFormat format = new DecimalFormat("0.#");
 		return new ALoreBuilder("&7Your shots &ehome &7from &e" + format.format(getRange(enchantLvl)) + " &7block" + (getRange(enchantLvl) == 1 ? "" : "s"),
 				"&7away (2s cooldown)").getLore();

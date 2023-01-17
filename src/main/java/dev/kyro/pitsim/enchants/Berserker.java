@@ -26,7 +26,7 @@ public class Berserker extends PitEnchant {
 	}
 
 	@Override
-	public List<String> getDescription(int enchantLvl) {
+	public List<String> getNormalDescription(int enchantLvl) {
 		return new ALoreBuilder("&7You can now critical hit on the",
 				"&7ground. &a" + getChance(enchantLvl) + "% chance &7to crit for", "&c50% extra &7damage").getLore();
 	}

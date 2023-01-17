@@ -1,16 +1,15 @@
 package dev.kyro.pitsim.aitems.mobdrops;
 
 import dev.kyro.arcticapi.builders.ALoreBuilder;
-import dev.kyro.pitsim.aitems.PitItem;
+import dev.kyro.pitsim.aitems.StaticPitItem;
 import dev.kyro.pitsim.enums.AuctionCategory;
 import org.bukkit.Material;
-import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class Gunpowder extends PitItem {
+public class Gunpowder extends StaticPitItem {
 
 	public Gunpowder() {
 		hasDropConfirm = true;
@@ -28,17 +27,17 @@ public class Gunpowder extends PitItem {
 	}
 
 	@Override
-	public Material getMaterial(Player player) {
+	public Material getMaterial() {
 		return Material.SULPHUR;
 	}
 
 	@Override
-	public String getName(Player player) {
+	public String getName() {
 		return "&aGunpowder";
 	}
 
 	@Override
-	public List<String> getLore(Player player) {
+	public List<String> getLore() {
 		return new ALoreBuilder(
 				"&7Gunpowder gathered from the Creepers",
 				"&7of the Creeper Caves",

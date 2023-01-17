@@ -35,44 +35,52 @@ public class StaffCookie extends PitItem {
 		return new ArrayList<>(Arrays.asList("staffcookie", "cookie"));
 	}
 
-	@Override
-	public Material getMaterial(Player player) {
+	public Material getMaterial() {
 		return Material.COOKIE;
 	}
 
-	@Override
-	public String getName(Player player) {
+	public String getName() {
 		return "&dStaff Cookie";
 	}
 
-	@Override
-	public List<String> getLore(Player player) {
+	public List<String> getLore(ItemStack itemStack) {
+		NBTItem nbtItem = new NBTItem(itemStack);
+		String giverString = nbtItem.getString(NBTTag.COOKIE_GIVER.getRef());
+		String receiverString = nbtItem.getString(NBTTag.COOKIE_RECEIVER.getRef());
+
 		return new ALoreBuilder(
 				"&7Given to you by a staff member",
-				"&7for some reason"
+				"&7for some reason",
+				"",
+				giverString,
+				receiverString
 		).getLore();
 	}
 
 	@Override
-	public void giveItem(Player player, int amount) {
-		throw new RuntimeException();
+	public void updateItem(ItemStack itemStack) {
+		itemStack.setType(getMaterial());
+		new AItemStackBuilder(itemStack)
+				.setName(getName())
+				.setLore(getLore(itemStack));
 	}
 
-	public static ItemStack setCookieInformation(ItemStack itemStack, Player staff, Player receiver) {
-		if(Misc.isAirOrNull(itemStack)) return null;
-		NBTItem nbtItem = new NBTItem(itemStack);
-		if(nbtItem.hasKey(NBTTag.COOKIE_GIVER.getRef())) return null;
+	public ItemStack getItem(Player staff, Player receiver, int amount) {
+		ItemStack itemStack = new ItemStack(Material.COOKIE, amount);
+		itemStack = buildItem(itemStack);
 
+		NBTItem nbtItem = new NBTItem(itemStack);
 		String giverString = "&7From: " + PlaceholderAPI.setPlaceholders(staff,
 				"%luckperms_prefix%[%luckperms_groups%] ") + Misc.getDisplayName(staff);
 		String receiverString = "&7To: " + PlaceholderAPI.setPlaceholders(receiver,
 				"%luckperms_prefix%[%luckperms_groups%] ") + Misc.getDisplayName(receiver);
-
-		ALoreBuilder loreBuilder = new ALoreBuilder(itemStack.getItemMeta().getLore());
-		loreBuilder.addLore("", giverString, receiverString);
+		nbtItem.setString(NBTTag.COOKIE_GIVER.getRef(), giverString);
+		nbtItem.setString(NBTTag.COOKIE_RECEIVER.getRef(), receiverString);
+		itemStack = nbtItem.getItem();
 
 		return new AItemStackBuilder(itemStack)
-				.setLore(loreBuilder)
+				.setName(getName())
+				.setLore(getLore(itemStack))
 				.getItemStack();
 	}
 

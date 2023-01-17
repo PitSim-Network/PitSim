@@ -17,7 +17,7 @@ import java.util.List;
 public class RepelSpell extends PitEnchant {
 	public RepelSpell() {
 		super("Repel", true, ApplyType.SCYTHES, "repell", "rep", "repel");
-		tainted = true;
+		isTainted = true;
 	}
 
 	@EventHandler
@@ -47,7 +47,7 @@ public class RepelSpell extends PitEnchant {
 	}
 
 	@Override
-	public List<String> getDescription(int enchantLvl) {
+	public List<String> getNormalDescription(int enchantLvl) {
 		return new ALoreBuilder("&7Repel all nearby enemies from you", "&d&o-" + getManaCost(enchantLvl) + " Mana").getLore();
 	}
 

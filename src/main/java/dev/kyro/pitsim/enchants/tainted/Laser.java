@@ -26,7 +26,7 @@ import java.util.Set;
 public class Laser extends PitEnchant {
 	public Laser() {
 		super("Laser", true, ApplyType.CHESTPLATES, "laser", "las", "lazer");
-		tainted = true;
+		isTainted = true;
 	}
 
 	@EventHandler
@@ -77,7 +77,7 @@ public class Laser extends PitEnchant {
 	}
 
 	@Override
-	public List<String> getDescription(int enchantLvl) {
+	public List<String> getNormalDescription(int enchantLvl) {
 		return new ALoreBuilder("&7Your melee attacks become ranged", "&7with &f+5 blocks &7of reach", "&d&o-" + reduction(enchantLvl) + "% Mana Regen").getLore();
 	}
 

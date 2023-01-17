@@ -24,7 +24,7 @@ class Sonic extends PitEnchant {
 
 	public Sonic() {
 		super("Sonic", true, ApplyType.CHESTPLATES, "sonic", "sanic", "fast");
-		tainted = true;
+		isTainted = true;
 		INSTANCE = this;
 	}
 
@@ -64,7 +64,7 @@ class Sonic extends PitEnchant {
 	}
 
 	@Override
-	public List<String> getDescription(int enchantLvl) {
+	public List<String> getNormalDescription(int enchantLvl) {
 		return new ALoreBuilder("&7Move &e100% &7faster at all times", "&d&o-" + reduction(enchantLvl) + "% Mana Regen").getLore();
 	}
 

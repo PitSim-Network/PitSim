@@ -1,16 +1,15 @@
 package dev.kyro.pitsim.aitems.mobdrops;
 
 import dev.kyro.arcticapi.builders.ALoreBuilder;
-import dev.kyro.pitsim.aitems.PitItem;
+import dev.kyro.pitsim.aitems.StaticPitItem;
 import dev.kyro.pitsim.enums.AuctionCategory;
 import org.bukkit.Material;
-import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class Bone extends PitItem {
+public class Bone extends StaticPitItem {
 
 	public Bone() {
 		hasDropConfirm = true;
@@ -28,17 +27,17 @@ public class Bone extends PitItem {
 	}
 
 	@Override
-	public Material getMaterial(Player player) {
+	public Material getMaterial() {
 		return Material.BONE;
 	}
 
 	@Override
-	public String getName(Player player) {
+	public String getName() {
 		return "&aBone";
 	}
 
 	@Override
-	public List<String> getLore(Player player) {
+	public List<String> getLore() {
 		return new ALoreBuilder(
 				"&7Flesh gathered from the skeletons",
 				"&7of the Skeleton Caves",

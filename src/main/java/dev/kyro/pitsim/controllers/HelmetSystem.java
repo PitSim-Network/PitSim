@@ -71,7 +71,7 @@ public class HelmetSystem {
 		return levelMap.get(level);
 	}
 
-	public static int getLevel(int gold) {
+	public static int getLevel(long gold) {
 		if(gold > levelMap.get(100)) return 101;
 		for(Map.Entry<Integer, Integer> entry : levelMap.entrySet()) {
 			if(entry.getValue() > gold) return entry.getKey();

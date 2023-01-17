@@ -23,7 +23,7 @@ import java.util.List;
 public class SavingGraceSpell extends PitEnchant {
 	public SavingGraceSpell() {
 		super("Saving Grace", true, ApplyType.SCYTHES, "savinggrace", "save", "saving", "grace");
-		tainted = true;
+		isTainted = true;
 	}
 
 	@EventHandler
@@ -108,7 +108,7 @@ public class SavingGraceSpell extends PitEnchant {
 	}
 
 	@Override
-	public List<String> getDescription(int enchantLvl) {
+	public List<String> getNormalDescription(int enchantLvl) {
 		return new ALoreBuilder("&7Heal your max health in &6\u2764", "&7but lose &c2\u2764 &7until you die", "&7(Shift Right-Click)", "&d&o-" + getManaCost(enchantLvl) + " Mana").getLore();
 	}
 

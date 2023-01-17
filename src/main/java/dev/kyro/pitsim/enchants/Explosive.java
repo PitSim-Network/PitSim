@@ -75,7 +75,7 @@ public class Explosive extends PitEnchant {
 	}
 
 	@Override
-	public List<String> getDescription(int enchantLvl) {
+	public List<String> getNormalDescription(int enchantLvl) {
 
 		if(enchantLvl < 3) {
 			return new ALoreBuilder("&7Arrows go POP! (" + getCooldown(enchantLvl) / 20 + "s cooldown)").getLore();

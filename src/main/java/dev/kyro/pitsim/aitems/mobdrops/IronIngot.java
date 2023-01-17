@@ -1,16 +1,15 @@
 package dev.kyro.pitsim.aitems.mobdrops;
 
 import dev.kyro.arcticapi.builders.ALoreBuilder;
-import dev.kyro.pitsim.aitems.PitItem;
+import dev.kyro.pitsim.aitems.StaticPitItem;
 import dev.kyro.pitsim.enums.AuctionCategory;
 import org.bukkit.Material;
-import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class IronIngot extends PitItem {
+public class IronIngot extends StaticPitItem {
 
 	public IronIngot() {
 		hasDropConfirm = true;
@@ -28,17 +27,17 @@ public class IronIngot extends PitItem {
 	}
 
 	@Override
-	public Material getMaterial(Player player) {
+	public Material getMaterial() {
 		return Material.IRON_INGOT;
 	}
 
 	@Override
-	public String getName(Player player) {
+	public String getName() {
 		return "&aIron Ingot";
 	}
 
 	@Override
-	public List<String> getLore(Player player) {
+	public List<String> getLore() {
 		return new ALoreBuilder(
 				"&7Ingot gathered from the Golems",
 				"&7of the Golem Caves",

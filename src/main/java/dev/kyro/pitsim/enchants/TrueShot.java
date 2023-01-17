@@ -30,7 +30,7 @@ public class TrueShot extends PitEnchant {
 	}
 
 	@Override
-	public List<String> getDescription(int enchantLvl) {
+	public List<String> getNormalDescription(int enchantLvl) {
 		if(enchantLvl == 1) {
 			return new ALoreBuilder("&7Deal &c" + getPercent(enchantLvl) + "% &7of arrow damage as",
 					"&7true damage (ignores armor)").getLore();

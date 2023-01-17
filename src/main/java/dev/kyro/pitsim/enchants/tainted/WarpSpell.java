@@ -26,7 +26,7 @@ public class WarpSpell extends PitEnchant {
 
 	public WarpSpell() {
 		super("Warp", true, ApplyType.SCYTHES, "warp", "teleport", "tp");
-		tainted = true;
+		isTainted = true;
 	}
 
 	@EventHandler
@@ -79,7 +79,7 @@ public class WarpSpell extends PitEnchant {
 	}
 
 	@Override
-	public List<String> getDescription(int enchantLvl) {
+	public List<String> getNormalDescription(int enchantLvl) {
 		return new ALoreBuilder("&7Teleports you forward", "&7Grants &eSpeed IV &7(2s)", "&d&o-" + getManaCost(enchantLvl) + " Mana").getLore();
 	}
 

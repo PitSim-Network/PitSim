@@ -26,7 +26,7 @@ public class Moctezuma extends PitEnchant {
 	}
 
 	@Override
-	public List<String> getDescription(int enchantLvl) {
+	public List<String> getNormalDescription(int enchantLvl) {
 
 		return new ALoreBuilder("&7Earn &6+" + getGoldIncrease(enchantLvl) + "g &7on kill (assists", "&7excluded)").getLore();
 	}

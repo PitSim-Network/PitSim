@@ -37,7 +37,7 @@ public class HeighHo extends PitEnchant {
 	}
 
 	@Override
-	public List<String> getDescription(int enchantLvl) {
+	public List<String> getNormalDescription(int enchantLvl) {
 
 		return new ALoreBuilder("&7Receive &9-" + getReduction(enchantLvl) + "% &7damage from mirror",
 				"&7users. Deal &c+" + getIncrease(enchantLvl) + "% &7damage per", "&7mirror level on your opponent").getLore();
