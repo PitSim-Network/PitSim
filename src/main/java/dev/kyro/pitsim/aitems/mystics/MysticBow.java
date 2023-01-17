@@ -21,7 +21,7 @@ public class MysticBow extends PitItem {
 		hideExtra = true;
 		unbreakable = true;
 
-		itemEnchants.put(Enchantment.DURABILITY, 1);
+		itemEnchants.put(Enchantment.WATER_WORKER, 1);
 	}
 
 	@Override

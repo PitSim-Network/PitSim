@@ -1,10 +1,7 @@
 package dev.kyro.pitsim.aitems;
 
 import de.tr7zw.nbtapi.NBTItem;
-import dev.kyro.pitsim.aitems.mystics.MysticPants;
-import dev.kyro.pitsim.aitems.mystics.MysticSword;
-import dev.kyro.pitsim.aitems.mystics.TaintedChestplate;
-import dev.kyro.pitsim.aitems.mystics.TaintedScythe;
+import dev.kyro.pitsim.aitems.mystics.*;
 import dev.kyro.pitsim.controllers.ItemFactory;
 import dev.kyro.pitsim.enums.MysticType;
 import dev.kyro.pitsim.enums.NBTTag;
@@ -48,7 +45,7 @@ public class MysticFactory {
 //			itemMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
 //			mystic.setItemMeta(itemMeta);
 		} else if(type == MysticType.BOW) {
-			return ItemFactory.getItem(MysticSword.class).getItem();
+			return ItemFactory.getItem(MysticBow.class).getItem();
 
 //			mystic = new AItemStackBuilder(Material.BOW)
 //					.setName("&bMystic Bow")
