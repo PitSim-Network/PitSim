@@ -32,6 +32,7 @@ public enum NBTTag {
 	CANNOT_PICKUP("pr-cannot-pickup"),
 	COOKIE_GIVER("pr-cookie-giver"),
 	COOKIE_RECEIVER("pr-cookie-receiver"),
+	IS_VENOM("pr-isvenom"),
 
 //	IS_FEATHER("pr-isfeather"),
 	IS_CORRUPTED_FEATHER("pr-iscfeather"),
@@ -42,7 +43,6 @@ public enum NBTTag {
 	IS_GHELMET("pr-isghelm"),
 	IS_YUMMY_BREAD("pr-is-yummy-bread"),
 	IS_VERY_YUMMY_BREAD("pr-is-very-yummy-bread2"),
-	IS_VENOM("pr-isvenom"),
 	ZOMBIE_FLESH("pr-zombie-flesh"),
 	SKELETON_BONE("pr-skeleton-bone"),
 	CREEPER_POWDER("pr-creeper-powder"),

@@ -6,7 +6,7 @@ import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.controllers.NonManager;
 import dev.kyro.pitsim.controllers.SpawnManager;
-import dev.kyro.pitsim.controllers.objects.GoldenHelmet;
+import dev.kyro.pitsim.controllers.objects.HelmetManager;
 import dev.kyro.pitsim.controllers.objects.HelmetAbility;
 import dev.kyro.pitsim.controllers.objects.Non;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
@@ -70,7 +70,7 @@ public class PhoenixAbility extends HelmetAbility {
 
 	@Override
 	public void onProc() {
-		ItemStack goldenHelmet = GoldenHelmet.getHelmet(player);
+		ItemStack goldenHelmet = HelmetManager.getHelmet(player);
 
 		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
 		if(pitPlayer.megastreak.getClass() == RNGesus.class) {
@@ -86,7 +86,7 @@ public class PhoenixAbility extends HelmetAbility {
 		}
 
 		assert goldenHelmet != null;
-		if(!GoldenHelmet.withdrawGold(player, goldenHelmet, cost)) {
+		if(!HelmetManager.withdrawGold(player, goldenHelmet, cost)) {
 			AOutput.error(player, "&cNot enough gold!");
 			Sounds.NO.play(player);
 			return;

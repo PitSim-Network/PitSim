@@ -6,7 +6,7 @@ import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.arcticapi.gui.AGUI;
 import dev.kyro.arcticapi.gui.AGUIPanel;
 import dev.kyro.arcticapi.misc.AOutput;
-import dev.kyro.pitsim.controllers.objects.GoldenHelmet;
+import dev.kyro.pitsim.controllers.objects.HelmetManager;
 import dev.kyro.pitsim.controllers.objects.HelmetAbility;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.enums.NBTTag;
@@ -61,12 +61,12 @@ public class HelmetAbilityPanel extends AGUIPanel {
 			if(slot == 9) {
 				NBTItem nbtItem = new NBTItem(goldenHelmet);
 				nbtItem.setString(NBTTag.GHELMET_ABILITY.getRef(), null);
-				GoldenHelmet.setLore(nbtItem.getItem());
+				HelmetManager.setLore(nbtItem.getItem());
 				player.getInventory().setItemInHand(nbtItem.getItem());
 
 				player.setItemInHand(nbtItem.getItem());
-				if(GoldenHelmet.abilities.containsKey(player)) GoldenHelmet.abilities.get(player).unload();
-				GoldenHelmet.abilities.remove(player);
+				if(HelmetManager.abilities.containsKey(player)) HelmetManager.abilities.get(player).unload();
+				HelmetManager.abilities.remove(player);
 				Sounds.SUCCESS.play(player);
 				openPreviousGUI();
 			}
@@ -91,7 +91,7 @@ public class HelmetAbilityPanel extends AGUIPanel {
 				NBTItem nbtItem = new NBTItem(getHelm());
 				nbtItem.setString(NBTTag.GHELMET_ABILITY.getRef(), helmetAbility.refName);
 
-				GoldenHelmet.setLore(nbtItem.getItem());
+				HelmetManager.setLore(nbtItem.getItem());
 				player.getInventory().setItemInHand(nbtItem.getItem());
 				openPreviousGUI();
 			}
@@ -152,12 +152,12 @@ public class HelmetAbilityPanel extends AGUIPanel {
 	}
 
 	public HelmetAbility getAbility(ItemStack helmet) {
-		return GoldenHelmet.getAbility(helmet);
+		return HelmetManager.getAbility(helmet);
 	}
 
 	@Override
 	public void onClose(InventoryCloseEvent event) {
-		GoldenHelmet.setLore(goldenHelmet);
+		HelmetManager.setLore(goldenHelmet);
 	}
 
 	public ItemStack getHelm() {

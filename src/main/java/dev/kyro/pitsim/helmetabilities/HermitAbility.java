@@ -5,7 +5,7 @@ import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.controllers.objects.HelmetAbility;
-import dev.kyro.pitsim.controllers.objects.GoldenHelmet;
+import dev.kyro.pitsim.controllers.objects.HelmetManager;
 import dev.kyro.pitsim.events.AttackEvent;
 import dev.kyro.pitsim.misc.Misc;
 import dev.kyro.pitsim.misc.Sounds;
@@ -44,11 +44,11 @@ public class HermitAbility extends HelmetAbility {
 
 			@Override
 			public void run() {
-				ItemStack goldenHelmet = GoldenHelmet.getHelmet(player);
+				ItemStack goldenHelmet = HelmetManager.getHelmet(player);
 				assert goldenHelmet != null;
-				if(!GoldenHelmet.withdrawGold(player, goldenHelmet, cost)) {
+				if(!HelmetManager.withdrawGold(player, goldenHelmet, cost)) {
 					AOutput.error(player, "&cNot enough gold!");
-					GoldenHelmet.deactivate(player);
+					HelmetManager.deactivate(player);
 					Sounds.NO.play(player);
 				} else {
 					Sounds.HELMET_TICK.play(player);
@@ -65,9 +65,9 @@ public class HermitAbility extends HelmetAbility {
 
 	@Override
 	public boolean shouldActivate() {
-		ItemStack goldenHelmet = GoldenHelmet.getHelmet(player);
+		ItemStack goldenHelmet = HelmetManager.getHelmet(player);
 		assert goldenHelmet != null;
-		if(!GoldenHelmet.withdrawGold(player, goldenHelmet, cost * 20)) {
+		if(!HelmetManager.withdrawGold(player, goldenHelmet, cost * 20)) {
 			AOutput.error(player, "&cNot enough gold!");
 			Sounds.NO.play(player);
 			return false;

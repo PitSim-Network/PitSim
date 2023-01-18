@@ -462,11 +462,11 @@ public class PlayerManager implements Listener {
 			if(player.isSneaking()) return;
 			if(Misc.isAirOrNull(player.getInventory().getHelmet())) return;
 
-			if(GoldenHelmet.abilities.get(event.getPlayer()) != null) {
-				GoldenHelmet.deactivate(event.getPlayer());
+			if(HelmetManager.abilities.get(event.getPlayer()) != null) {
+				HelmetManager.deactivate(event.getPlayer());
 			}
-			GoldenHelmet.toggledPlayers.remove(event.getPlayer());
-			GoldenHelmet.abilities.remove(event.getPlayer());
+			HelmetManager.toggledPlayers.remove(event.getPlayer());
+			HelmetManager.abilities.remove(event.getPlayer());
 
 			if(helmetSwapCooldown.contains(player.getUniqueId())) {
 

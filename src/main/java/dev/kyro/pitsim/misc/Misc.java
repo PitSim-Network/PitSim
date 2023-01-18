@@ -6,7 +6,7 @@ import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.commands.LightningCommand;
 import dev.kyro.pitsim.controllers.EnchantManager;
 import dev.kyro.pitsim.controllers.NonManager;
-import dev.kyro.pitsim.controllers.objects.GoldenHelmet;
+import dev.kyro.pitsim.controllers.objects.HelmetManager;
 import dev.kyro.pitsim.controllers.objects.PitEnchant;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.cosmetics.CosmeticManager;
@@ -280,10 +280,10 @@ public class Misc {
 		}
 		entity.addPotionEffect(new PotionEffect(type, duration, amplifier, ambient, particles));
 		if(type == PotionEffectType.POISON) {
-			if(GoldenHelmet.abilities.get(entity) != null) {
-				GoldenHelmet.abilities.get(entity).onDeactivate();
+			if(HelmetManager.abilities.get(entity) != null) {
+				HelmetManager.abilities.get(entity).onDeactivate();
 			}
-			GoldenHelmet.toggledPlayers.remove(entity);
+			HelmetManager.toggledPlayers.remove(entity);
 		}
 	}
 
