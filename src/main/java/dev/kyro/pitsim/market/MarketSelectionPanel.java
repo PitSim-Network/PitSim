@@ -33,6 +33,18 @@ public class MarketSelectionPanel extends AGUIPanel {
 						"&eClick to view listings"
 				));
 		getInventory().setItem(15, createBuilder.getItemStack());
+
+		AItemStackBuilder yourBuilder = new AItemStackBuilder(Material.INK_SACK, 1, 7)
+				.setName("&eYour Listings")
+				.setLore(new ALoreBuilder(
+						"&7View all of your",
+						"&7current listings and",
+						"&7claim any items or souls",
+						"&7from ended listings.", "",
+						"&eClick to view listings"
+				));
+		getInventory().setItem(13, yourBuilder.getItemStack());
+
 	}
 
 	@Override
@@ -56,6 +68,10 @@ public class MarketSelectionPanel extends AGUIPanel {
 
 		if(slot == 15) {
 			openPanel(((MarketGUI) gui).createListingPanel);
+		}
+
+		if(slot == 13) {
+			openPanel(((MarketGUI) gui).yourListingsPanel);
 		}
 	}
 

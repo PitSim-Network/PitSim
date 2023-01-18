@@ -33,6 +33,10 @@ public class MarketListing implements Serializable {
 	public boolean itemClaimed;
 	public boolean hasEnded;
 
+	public int originalStock;
+	public String buyerDisplayName;
+	public UUID buyer;
+
 	public String ownerDisplayName;
 	public Map<UUID, String> bidderDisplayNames = new HashMap<>();
 
@@ -61,7 +65,10 @@ public class MarketListing implements Serializable {
 		hasEnded = booleans.get(2);
 
 		ownerDisplayName = strings.get(4);
-		String bidMap = strings.get(5);
+		originalStock = ints.get(3);
+		buyer = strings.get(5).isEmpty() ? null : UUID.fromString(strings.get(5));
+		buyerDisplayName = strings.get(6);
+		String bidMap = strings.get(7);
 
 		if(!bidMap.isEmpty()) {
 			String[] entrySplit = bidMap.split(",");
@@ -71,7 +78,7 @@ public class MarketListing implements Serializable {
 			}
 		}
 
-		String names = strings.get(6);
+		String names = strings.get(8);
 		if(names.isEmpty()) return;
 		String[] nameSplit = names.split(",");
 		for(String s : nameSplit) {
@@ -112,7 +119,7 @@ public class MarketListing implements Serializable {
 	}
 
 	public ItemStack getItemStack() {
-		AItemStackBuilder builder = new AItemStackBuilder(itemData.getType(), itemData.getAmount(), itemData.getDurability())
+		AItemStackBuilder builder = new AItemStackBuilder(itemData.clone())
 				.setName(itemData.getItemMeta().getDisplayName());
 		ALoreBuilder loreBuilder = new ALoreBuilder(itemData.getItemMeta().getLore());
 		loreBuilder.addLore("&8&m------------------------");
