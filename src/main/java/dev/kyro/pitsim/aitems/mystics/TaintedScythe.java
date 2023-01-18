@@ -65,6 +65,8 @@ public class TaintedScythe extends PitItem {
 
 	@Override
 	public void updateItem(ItemStack itemStack) {
+		if(!isThisItem(itemStack)) throw new RuntimeException();
+
 		NBTItem nbtItem = new NBTItem(itemStack);
 		Integer enchantNum = nbtItem.getInteger(NBTTag.ITEM_ENCHANTS.getRef());
 		if(enchantNum == 0) {

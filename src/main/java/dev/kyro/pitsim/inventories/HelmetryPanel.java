@@ -1,15 +1,14 @@
 package dev.kyro.pitsim.inventories;
 
-import de.tr7zw.nbtapi.NBTItem;
 import dev.kyro.arcticapi.gui.AGUI;
 import dev.kyro.arcticapi.gui.AGUIPanel;
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.arcticapi.misc.AUtil;
+import dev.kyro.pitsim.aitems.misc.GoldenHelmet;
+import dev.kyro.pitsim.controllers.ItemFactory;
 import dev.kyro.pitsim.controllers.UpgradeManager;
-import dev.kyro.pitsim.controllers.objects.HelmetManager;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.controllers.objects.RenownUpgrade;
-import dev.kyro.pitsim.enums.NBTTag;
 import dev.kyro.pitsim.misc.Sounds;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -21,7 +20,6 @@ import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 public class HelmetryPanel extends AGUIPanel {
 
@@ -47,76 +45,59 @@ public class HelmetryPanel extends AGUIPanel {
 
 	@Override
 	public void onClick(InventoryClickEvent event) {
+		if(event.getClickedInventory().getHolder() != this) return;
 		int slot = event.getSlot();
 
-		if(event.getClickedInventory().getHolder() == this) {
-			assert upgrade != null;
-
-			if(slot == 15) {
-				if(upgrade.prestigeReq > pitPlayer.prestige) {
-					AOutput.error(player, "&cYou are too low prestige to acquire this!");
+		if(slot == 15) {
+			if(upgrade.prestigeReq > pitPlayer.prestige) {
+				AOutput.error(player, "&cYou are too low prestige to acquire this!");
+				Sounds.NO.play(player);
+				return;
+			}
+			if(upgrade.isTiered) {
+				if(upgrade.maxTiers != UpgradeManager.getTier(player, upgrade) && upgrade.getTierCosts().get(UpgradeManager.getTier(player, upgrade)) > pitPlayer.renown) {
+					AOutput.error(player, "&cYou do not have enough renown!");
 					Sounds.NO.play(player);
 					return;
 				}
-				if(upgrade.isTiered) {
-					if(upgrade.maxTiers != UpgradeManager.getTier(player, upgrade) && upgrade.getTierCosts().get(UpgradeManager.getTier(player, upgrade)) > pitPlayer.renown) {
-						AOutput.error(player, "&cYou do not have enough renown!");
-						Sounds.NO.play(player);
-						return;
-					}
-					if(UpgradeManager.getTier(player, upgrade) < upgrade.maxTiers) {
-						RenownShopGUI.purchaseConfirmations.put(player, upgrade);
-						openPanel(renownShopGUI.renownShopConfirmPanel);
-					} else {
-						AOutput.error(player, "&aYou already unlocked the last upgrade!");
-						Sounds.NO.play(player);
-					}
-				} else if(!UpgradeManager.hasUpgrade(player, upgrade)) {
-					if(upgrade.renownCost > pitPlayer.renown) {
-						AOutput.error(player, "&cYou do not have enough renown!");
-						Sounds.NO.play(player);
-						return;
-					}
+				if(UpgradeManager.getTier(player, upgrade) < upgrade.maxTiers) {
 					RenownShopGUI.purchaseConfirmations.put(player, upgrade);
 					openPanel(renownShopGUI.renownShopConfirmPanel);
 				} else {
-					AOutput.error(player, "&aYou already unlocked this upgrade!");
+					AOutput.error(player, "&aYou already unlocked the last upgrade!");
 					Sounds.NO.play(player);
 				}
-
-			}
-			if(slot == 11) {
-				if(pitPlayer.renown < 10) {
-					AOutput.error(player, "&cYou do not have enough renown to do this!");
+			} else if(!UpgradeManager.hasUpgrade(player, upgrade)) {
+				if(upgrade.renownCost > pitPlayer.renown) {
+					AOutput.error(player, "&cYou do not have enough renown!");
 					Sounds.NO.play(player);
 					return;
 				}
-
-				ItemStack helmet = new ItemStack(Material.GOLD_HELMET);
-				ItemMeta meta = helmet.getItemMeta();
-				meta.setDisplayName(ChatColor.GOLD + "Golden Helmet");
-				helmet.setItemMeta(meta);
-				NBTItem nbtItem = new NBTItem(helmet);
-				nbtItem.setBoolean(NBTTag.IS_GHELMET.getRef(), true);
-				nbtItem.setInteger(NBTTag.GHELMET_GOLD.getRef(), 0);
-				nbtItem.setString(NBTTag.GHELMET_ABILITY.getRef(), null);
-				nbtItem.setString(NBTTag.GHELMET_UUID.getRef(), UUID.randomUUID().toString());
-
-				ItemStack goldenHelmet = nbtItem.getItem();
-				HelmetManager.setLore(nbtItem.getItem());
-
-				AUtil.giveItemSafely(player, nbtItem.getItem(), true);
-				assert goldenHelmet != null;
-
-				Sounds.HELMET_CRAFT.play(player);
-				player.closeInventory();
-				AOutput.send(player, "&6&lITEM CRAFTED!&7 Received &6Golden Helmet&7!");
-				pitPlayer.renown -= 10;
+				RenownShopGUI.purchaseConfirmations.put(player, upgrade);
+				openPanel(renownShopGUI.renownShopConfirmPanel);
+			} else {
+				AOutput.error(player, "&aYou already unlocked this upgrade!");
+				Sounds.NO.play(player);
 			}
-			if(slot == 22) {
-				openPanel(renownShopGUI.getHomePanel());
+
+		}
+		if(slot == 11) {
+			if(pitPlayer.renown < 10) {
+				AOutput.error(player, "&cYou do not have enough renown to do this!");
+				Sounds.NO.play(player);
+				return;
 			}
-			updateInventory();
+
+			ItemStack helmetStack = ItemFactory.getItem(GoldenHelmet.class).getItem();
+			AUtil.giveItemSafely(player, helmetStack, true);
+
+			pitPlayer.renown -= 10;
+			player.closeInventory();
+			Sounds.HELMET_CRAFT.play(player);
+			AOutput.send(player, "&6&lITEM CRAFTED!&7 Received &6Golden Helmet&7!");
+		}
+		if(slot == 22) {
+			openPanel(renownShopGUI.getHomePanel());
 		}
 		updateInventory();
 	}

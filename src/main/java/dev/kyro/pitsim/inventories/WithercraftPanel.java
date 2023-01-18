@@ -42,61 +42,57 @@ public class WithercraftPanel extends AGUIPanel {
 
 	@Override
 	public void onClick(InventoryClickEvent event) {
+		if(event.getClickedInventory().getHolder() != this) return;
 		int slot = event.getSlot();
 
-		if(event.getClickedInventory().getHolder() == this) {
-			assert upgrade != null;
-
-			if(slot == 15) {
-				if(upgrade.prestigeReq > pitPlayer.prestige) {
-					AOutput.error(player, "&cYou are too low prestige to acquire this!");
+		if(slot == 15) {
+			if(upgrade.prestigeReq > pitPlayer.prestige) {
+				AOutput.error(player, "&cYou are too low prestige to acquire this!");
+				Sounds.NO.play(player);
+				return;
+			}
+			if(upgrade.isTiered) {
+				if(upgrade.maxTiers != UpgradeManager.getTier(player, upgrade) && upgrade.getTierCosts().get(UpgradeManager.getTier(player, upgrade)) > pitPlayer.renown) {
+					AOutput.error(player, "&cYou do not have enough renown!");
 					Sounds.NO.play(player);
 					return;
 				}
-				if(upgrade.isTiered) {
-					if(upgrade.maxTiers != UpgradeManager.getTier(player, upgrade) && upgrade.getTierCosts().get(UpgradeManager.getTier(player, upgrade)) > pitPlayer.renown) {
-						AOutput.error(player, "&cYou do not have enough renown!");
-						Sounds.NO.play(player);
-						return;
-					}
-					if(UpgradeManager.getTier(player, upgrade) < upgrade.maxTiers) {
-						RenownShopGUI.purchaseConfirmations.put(player, upgrade);
-						openPanel(renownShopGUI.renownShopConfirmPanel);
-					} else {
-						AOutput.error(player, "&aYou already unlocked the last upgrade!");
-						Sounds.NO.play(player);
-					}
-				} else if(!UpgradeManager.hasUpgrade(player, upgrade)) {
-					if(upgrade.renownCost > pitPlayer.renown) {
-						AOutput.error(player, "&cYou do not have enough renown!");
-						Sounds.NO.play(player);
-						return;
-					}
+				if(UpgradeManager.getTier(player, upgrade) < upgrade.maxTiers) {
 					RenownShopGUI.purchaseConfirmations.put(player, upgrade);
 					openPanel(renownShopGUI.renownShopConfirmPanel);
 				} else {
-					AOutput.error(player, "&aYou already unlocked this upgrade!");
+					AOutput.error(player, "&aYou already unlocked the last upgrade!");
 					Sounds.NO.play(player);
 				}
-
-			}
-			if(slot == 11) {
-				if(pitPlayer.renown < 5) {
-					AOutput.error(player, "&cYou do not have enough renown to do this!");
+			} else if(!UpgradeManager.hasUpgrade(player, upgrade)) {
+				if(upgrade.renownCost > pitPlayer.renown) {
+					AOutput.error(player, "&cYou do not have enough renown!");
 					Sounds.NO.play(player);
 					return;
 				}
+				RenownShopGUI.purchaseConfirmations.put(player, upgrade);
+				openPanel(renownShopGUI.renownShopConfirmPanel);
+			} else {
+				AOutput.error(player, "&aYou already unlocked this upgrade!");
+				Sounds.NO.play(player);
+			}
 
-				openPanel(renownShopGUI.itemClearPanel);
+		}
+		if(slot == 11) {
+			if(pitPlayer.renown < 5) {
+				AOutput.error(player, "&cYou do not have enough renown to do this!");
+				Sounds.NO.play(player);
+				return;
+			}
+
+			openPanel(renownShopGUI.itemClearPanel);
 //                player.closeInventory();
 //                ASound.play(player, Sound.ORB_PICKUP, 2, 1.5F);
 //                AOutput.send(player, "&d&lITEM CRAFTED!&7 Received &aTotally Legit Gem&7!");
 
-			}
-			if(slot == 22) {
-				openPanel(renownShopGUI.getHomePanel());
-			}
-			updateInventory();
+		}
+		if(slot == 22) {
+			openPanel(renownShopGUI.getHomePanel());
 		}
 		updateInventory();
 	}

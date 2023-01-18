@@ -53,23 +53,11 @@ public class GoldenHelmet extends PitItem {
 	}
 
 	public ItemStack getItem() {
-//		ItemStack itemStack = new AItemStackBuilder(getMaterial())
-//				.setName(getName())
-//				.setLore(getLore())
-//				.getItemStack();
-//		itemStack = buildItem(itemStack);
-//
-//		NBTItem nbtItem = new NBTItem(itemStack);
-//		nbtItem.setString(NBTTag.ITEM_UUID.getRef(), UUID.randomUUID().toString());
-//		nbtItem.addCompound(NBTTag.PIT_ENCHANTS.getRef());
-//		return nbtItem.getItem();
-
 		ItemStack itemStack = new AItemStackBuilder(getMaterial())
 				.setName(getName())
 				.setLore(getLore())
 				.getItemStack();
 		itemStack = buildItem(itemStack);
-
 
 		NBTItem nbtItem = new NBTItem(itemStack);
 		nbtItem.setBoolean(NBTTag.IS_GHELMET.getRef(), true);
@@ -84,6 +72,8 @@ public class GoldenHelmet extends PitItem {
 
 	@Override
 	public void updateItem(ItemStack itemStack) {
+		if(!isThisItem(itemStack)) throw new RuntimeException();
+
 		ALoreBuilder loreBuilder = new ALoreBuilder();
 		loreBuilder.addLore("");
 		HelmetAbility ability = HelmetManager.getAbility(itemStack);

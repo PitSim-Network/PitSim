@@ -157,7 +157,6 @@ public class SubLevel {
 		} catch(Exception exception) {
 			throw new RuntimeException(exception);
 		}
-		System.out.println("Spawned boss");
 		isBossSpawned = true;
 		disableMobs();
 	}
