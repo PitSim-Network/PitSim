@@ -61,7 +61,8 @@ import dev.kyro.pitsim.cosmetics.misc.MysticPresence;
 import dev.kyro.pitsim.cosmetics.trails.*;
 import dev.kyro.pitsim.enchants.overworld.*;
 import dev.kyro.pitsim.enchants.overworld.GoldBoost;
-import dev.kyro.pitsim.enchants.tainted.*;
+import dev.kyro.pitsim.enchants.tainted.abilities.*;
+import dev.kyro.pitsim.enchants.tainted.spells.*;
 import dev.kyro.pitsim.enums.NBTTag;
 import dev.kyro.pitsim.events.ThrowBlockEvent;
 import dev.kyro.pitsim.helmetabilities.*;
@@ -173,7 +174,7 @@ public class PitSim extends JavaPlugin {
 
 		registerMaps();
 
-		if(getStatus().isPitsim()) NonManager.init();
+		if(getStatus().isPitSim()) NonManager.init();
 		SignPrompt.registerSignUpdateListener();
 		TempBlockHelper.init();
 		ReloadManager.init();
@@ -210,8 +211,8 @@ public class PitSim extends JavaPlugin {
 		registerKillstreaks();
 		registerMegastreaks();
 		registerPassQuests();
-		if(getStatus().isPitsim()) registerLeaderboards();
-		if(getStatus().isPitsim()) LeaderboardManager.init();
+		if(getStatus().isPitSim()) registerLeaderboards();
+		if(getStatus().isPitSim()) LeaderboardManager.init();
 
 		ArcticAPI.setupPlaceholderAPI("pitsim");
 		AHook.registerPlaceholder(new PrefixPlaceholder());
@@ -479,7 +480,7 @@ public class PitSim extends JavaPlugin {
 			NPCManager.registerNPC(new AuctioneerNPC(Collections.singletonList(MapManager.getDarkzone())));
 		}
 
-		if(status.isPitsim()) {
+		if(status.isPitSim()) {
 			NPCManager.registerNPC(new PerkNPC(Collections.singletonList(MapManager.currentMap.world)));
 			NPCManager.registerNPC(new PassNPC(Collections.singletonList(MapManager.currentMap.world)));
 			NPCManager.registerNPC(new PrestigeNPC(Collections.singletonList(MapManager.currentMap.world)));
@@ -939,15 +940,8 @@ public class PitSim extends JavaPlugin {
 		EnchantManager.registerEnchant(new WarpSpell());
 		EnchantManager.registerEnchant(new ExtractSpell());
 
-		EnchantManager.registerEnchant(new TaintedSoul());
 		EnchantManager.registerEnchant(new MaxHealth());
-		EnchantManager.registerEnchant(new MaxMana());
-		EnchantManager.registerEnchant(new ManaRegeneration());
-		EnchantManager.registerEnchant(new EmotionalDamage());
 		EnchantManager.registerEnchant(new Sonic());
-		EnchantManager.registerEnchant(new Inferno());
-		EnchantManager.registerEnchant(new Laser());
-		EnchantManager.registerEnchant(new Forcefield());
 	}
 
 	public enum ServerStatus {
@@ -957,7 +951,7 @@ public class PitSim extends JavaPlugin {
 			return this == DARKZONE || this == ALL;
 		}
 
-		public boolean isPitsim() {
+		public boolean isPitSim() {
 			return this == OVERWORLD || this == ALL;
 		}
 
