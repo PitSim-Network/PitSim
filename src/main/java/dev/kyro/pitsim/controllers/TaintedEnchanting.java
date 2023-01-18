@@ -1,10 +1,9 @@
 package dev.kyro.pitsim.controllers;
 
 import dev.kyro.pitsim.controllers.objects.PitEnchant;
-import dev.kyro.pitsim.enchants.SelfCheckout;
+import dev.kyro.pitsim.enchants.overworld.SelfCheckout;
 import dev.kyro.pitsim.enums.ApplyType;
 import dev.kyro.pitsim.enums.MysticType;
-import org.bukkit.Bukkit;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.ArrayList;

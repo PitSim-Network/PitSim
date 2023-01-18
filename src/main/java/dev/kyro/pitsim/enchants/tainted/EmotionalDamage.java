@@ -5,7 +5,7 @@ import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.controllers.EnchantManager;
 import dev.kyro.pitsim.controllers.MapManager;
 import dev.kyro.pitsim.controllers.objects.PitEnchant;
-import dev.kyro.pitsim.enchants.ComboVenom;
+import dev.kyro.pitsim.enchants.overworld.ComboVenom;
 import dev.kyro.pitsim.enums.ApplyType;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.*;

@@ -1,4 +1,4 @@
-package dev.kyro.pitsim.enchants;
+package dev.kyro.pitsim.enchants.overworld;
 
 import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.pitsim.controllers.HitCounter;

@@ -7,7 +7,7 @@ import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.aitems.misc.GoldenHelmet;
 import dev.kyro.pitsim.battlepass.quests.UseHelmetGoldQuest;
 import dev.kyro.pitsim.controllers.*;
-import dev.kyro.pitsim.enchants.ComboVenom;
+import dev.kyro.pitsim.enchants.overworld.ComboVenom;
 import dev.kyro.pitsim.enums.NBTTag;
 import dev.kyro.pitsim.events.AttackEvent;
 import dev.kyro.pitsim.events.DoubleSneakEvent;

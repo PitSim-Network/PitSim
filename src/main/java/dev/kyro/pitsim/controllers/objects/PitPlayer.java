@@ -17,7 +17,7 @@ import dev.kyro.pitsim.brewing.PotionManager;
 import dev.kyro.pitsim.brewing.objects.BrewingSession;
 import dev.kyro.pitsim.controllers.*;
 import dev.kyro.pitsim.cosmetics.particles.ParticleColor;
-import dev.kyro.pitsim.enchants.Hearts;
+import dev.kyro.pitsim.enchants.overworld.Hearts;
 import dev.kyro.pitsim.enchants.tainted.MaxHealth;
 import dev.kyro.pitsim.enchants.tainted.MaxMana;
 import dev.kyro.pitsim.enums.AChatColor;

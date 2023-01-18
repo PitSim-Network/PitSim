@@ -4,7 +4,7 @@ import de.myzelyam.api.vanish.VanishAPI;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.battlepass.quests.HoursPlayedQuest;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
-import dev.kyro.pitsim.enchants.Regularity;
+import dev.kyro.pitsim.enchants.overworld.Regularity;
 import dev.kyro.pitsim.events.AttackEvent;
 import dev.kyro.pitsim.events.HealEvent;
 import dev.kyro.pitsim.events.KillEvent;

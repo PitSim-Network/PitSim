@@ -2,15 +2,12 @@ package dev.kyro.pitsim.controllers;
 
 import com.xxmicloxx.NoteBlockAPI.songplayer.EntitySongPlayer;
 import dev.kyro.pitsim.PitSim;
-import dev.kyro.pitsim.enchants.Stereo;
+import dev.kyro.pitsim.enchants.overworld.Stereo;
 import dev.kyro.pitsim.misc.Misc;
-import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerTeleportEvent;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.ArrayList;

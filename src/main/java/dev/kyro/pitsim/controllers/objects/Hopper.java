@@ -6,7 +6,7 @@ import com.comphenix.protocol.wrappers.WrappedDataWatcher;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.aitems.MysticFactory;
 import dev.kyro.pitsim.controllers.*;
-import dev.kyro.pitsim.enchants.Hearts;
+import dev.kyro.pitsim.enchants.overworld.Hearts;
 import dev.kyro.pitsim.enums.MysticType;
 import dev.kyro.pitsim.enums.PantColor;
 import dev.kyro.pitsim.misc.Misc;

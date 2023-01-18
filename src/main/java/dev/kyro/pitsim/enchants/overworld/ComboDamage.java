@@ -1,24 +1,22 @@
-package dev.kyro.pitsim.enchants;
+package dev.kyro.pitsim.enchants.overworld;
 
 import dev.kyro.arcticapi.builders.ALoreBuilder;
-import dev.kyro.arcticapi.misc.AUtil;
 import dev.kyro.pitsim.enums.ApplyType;
 import dev.kyro.pitsim.events.AttackEvent;
 import dev.kyro.pitsim.misc.Misc;
-import org.bukkit.event.EventHandler;
-import org.bukkit.potion.PotionEffectType;
 import dev.kyro.pitsim.controllers.HitCounter;
 import dev.kyro.pitsim.controllers.objects.PitEnchant;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
+import dev.kyro.pitsim.misc.Sounds;
+import org.bukkit.event.EventHandler;
 
 import java.util.List;
 
-public class ComboSwift extends PitEnchant {
+public class ComboDamage extends PitEnchant {
 
-	public ComboSwift() {
-		super("Combo: Swift", false, ApplyType.MELEE,
-				"comoswift", "swift", "cs", "combo-swift");
-		isUncommonEnchant = true;
+	public ComboDamage() {
+		super("Combo: Damage", false, ApplyType.MELEE,
+				"combodamage", "cd", "combo-damage", "cdamage");
 	}
 
 	@EventHandler
@@ -35,27 +33,25 @@ public class ComboSwift extends PitEnchant {
 
 		PitPlayer pitPlayer = attackEvent.getAttackerPitPlayer();
 		HitCounter.incrementCounter(pitPlayer.player, this);
-		if(!HitCounter.hasReachedThreshold(pitPlayer.player, this, getCombo(enchantLvl))) return;
+		if(!HitCounter.hasReachedThreshold(pitPlayer.player, this, getStrikes(enchantLvl))) return;
 
-		Misc.applyPotionEffect(attackEvent.getAttacker(), PotionEffectType.SPEED, (int) (enchantLvl + 2) * 20,
-				getSpeedAmplifier(enchantLvl) - 1, true, false);
+		attackEvent.increasePercent += getDamage(enchantLvl) / 100D;
+
+		Sounds.COMBO_PROC.play(attackEvent.getAttacker());
 	}
 
 	@Override
 	public List<String> getNormalDescription(int enchantLvl) {
 
-		return new ALoreBuilder("&7Every&e" + Misc.ordinalWords(getCombo(enchantLvl)) + " &7strike gain",
-				"&eSpeed " + AUtil.toRoman(getSpeedAmplifier(enchantLvl)) + " &7(" + (enchantLvl + 2) + "s)").getLore();
-
+		return new ALoreBuilder("&7Every&e" + Misc.ordinalWords(getStrikes(enchantLvl)) + " &7strike deals",
+				"&c+" + getDamage(enchantLvl) + "% &7damage").getLore();
 	}
 
-	public int getSpeedAmplifier(int enchantLvl) {
-
-		return Misc.linearEnchant(enchantLvl, 0.5, 1);
+	public int getDamage(int enchantLvl) {
+		return (int) (Math.floor(Math.pow(enchantLvl, 1.75)) * 5 + 20);
 	}
 
-	public int getCombo(int enchantLvl) {
-
-		return Math.max(Misc.linearEnchant(enchantLvl, -0.5, 4.5), 1);
+	public int getStrikes(int enchantLvl) {
+		return Math.max(4 - (int) (enchantLvl * 0.5), 1);
 	}
 }

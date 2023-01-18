@@ -1,19 +1,18 @@
-package dev.kyro.pitsim.enchants;
+package dev.kyro.pitsim.enchants.overworld;
 
 import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.pitsim.controllers.objects.PitEnchant;
 import dev.kyro.pitsim.enums.ApplyType;
 import dev.kyro.pitsim.events.AttackEvent;
-import org.bukkit.Material;
 import org.bukkit.event.EventHandler;
 
 import java.util.List;
 
-public class BeatTheSpammers extends PitEnchant {
+public class Fletching extends PitEnchant {
 
-	public BeatTheSpammers() {
-		super("Beat the Spammers", false, ApplyType.SWORDS,
-				"bts", "beat", "beat-the-spammers", "beatthespammers");
+	public Fletching() {
+		super("Fletching", false, ApplyType.BOWS,
+				"fletch", "fletching");
 	}
 
 	@EventHandler
@@ -23,18 +22,17 @@ public class BeatTheSpammers extends PitEnchant {
 		int enchantLvl = attackEvent.getAttackerEnchantLevel(this);
 		if(enchantLvl == 0) return;
 
-		if(!attackEvent.getDefender().getEquipment().getItemInHand().getType().equals(Material.BOW)) return;
 		attackEvent.increasePercent += getDamage(enchantLvl) / 100D;
 	}
 
 	@Override
 	public List<String> getNormalDescription(int enchantLvl) {
 
-		return new ALoreBuilder("&7Deal &c+" + getDamage(enchantLvl) + "% &7damage vs. players", "&7holding a bow").getLore();
+		return new ALoreBuilder("&7Deal &c+" + getDamage(enchantLvl) + "% &7bow damage").getLore();
 	}
 
 	public int getDamage(int enchantLvl) {
 
-		return enchantLvl * 25;
+		return (int) (Math.pow(enchantLvl, 1.32) * 4 + 3);
 	}
 }
