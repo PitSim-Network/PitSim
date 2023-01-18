@@ -127,7 +127,7 @@ public class ListingInspectPanel extends AGUIPanel {
 				.setName("&eTop Bids");
 		ALoreBuilder bidsLoreBuilder = new ALoreBuilder();
 		for(Map.Entry<UUID, Integer> entry : listing.sortBidMap()) {
-			bidsLoreBuilder.addLore(listing.bidderDisplayNames.get(entry.getKey()) + "&f: " + entry.getValue() + " Souls");
+			bidsLoreBuilder.addLore(listing.bidderDisplayNames.get(entry.getKey()) + "&: &f" + entry.getValue() + " Souls");
 		}
 
 		bidsBuilder.setLore(bidsLoreBuilder);

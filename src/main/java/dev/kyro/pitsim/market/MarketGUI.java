@@ -8,6 +8,7 @@ public class MarketGUI extends AGUI {
 	MarketPanel marketPanel;
 	CreateListingPanel createListingPanel;
 	ListingInspectPanel listingInspectPanel;
+	YourListingsPanel yourListingsPanel;
 
 	public MarketGUI(Player player) {
 		super(player);
@@ -15,6 +16,7 @@ public class MarketGUI extends AGUI {
 		selectionPanel = new MarketSelectionPanel(this);
 		marketPanel = new MarketPanel(this);
 		createListingPanel = new CreateListingPanel(this);
+		yourListingsPanel = new YourListingsPanel(this);
 		setHomePanel(selectionPanel);
 	}
 
