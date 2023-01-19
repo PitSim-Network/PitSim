@@ -178,7 +178,7 @@ public class ListingInspectPanel extends AGUIPanel {
 			}
 
 		} else if(slot == 31) {
-			openPanel(((MarketGUI) gui).marketPanel);
+			openPreviousGUI();
 		}
 	}
 

@@ -127,7 +127,7 @@ public class CreateListingPanel extends AGUIPanel {
 				message.writeInt(startingBid == 0 ? -1 : startingBid).writeInt(binPrice == 0 ? -1 : binPrice).writeBoolean(selectedItem.getAmount() > 1).writeLong(86400000L * getMaxDurationDays()).send();
 				selectedItem = null;
 				Sounds.SUCCESS.play(player);
-				AOutput.send(player, "&a&lMARKET! &7Listing created!");
+				AOutput.send(player, "&a&lMARKET &7Listing created!");
 				player.closeInventory();
 			}
 		}

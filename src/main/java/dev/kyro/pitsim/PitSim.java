@@ -59,6 +59,7 @@ import dev.kyro.pitsim.cosmetics.misc.Halo;
 import dev.kyro.pitsim.cosmetics.misc.KyroCosmetic;
 import dev.kyro.pitsim.cosmetics.misc.MysticPresence;
 import dev.kyro.pitsim.cosmetics.trails.*;
+import dev.kyro.pitsim.enchants.*;
 import dev.kyro.pitsim.enchants.overworld.*;
 import dev.kyro.pitsim.enchants.overworld.GoldBoost;
 import dev.kyro.pitsim.enchants.tainted.*;

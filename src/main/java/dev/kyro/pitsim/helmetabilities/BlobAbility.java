@@ -6,7 +6,7 @@ import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.controllers.objects.HelmetAbility;
 import dev.kyro.pitsim.controllers.objects.HelmetManager;
-import dev.kyro.pitsim.enchants.overworld.PitBlob;
+import dev.kyro.pitsim.enchants.PitBlob;
 import dev.kyro.pitsim.misc.Sounds;
 import org.bukkit.Material;
 import org.bukkit.entity.EntityType;

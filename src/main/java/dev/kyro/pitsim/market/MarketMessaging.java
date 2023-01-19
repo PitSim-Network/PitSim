@@ -23,11 +23,29 @@ public class MarketMessaging implements Listener {
 			MarketListing listing = MarketManager.getListing(listingUUID);
 			if(listing != null) {
 				listing.updateListing(message);
+
+				for(YourListingsPanel panel : YourListingsPanel.panels) {
+					panel.placeClaimables();
+				}
 				return;
 			}
 
 			listing = new MarketListing(message);
 			MarketManager.listings.add(listing);
+
+		}
+
+		if(strings.size() >= 2 && strings.get(0).equals("MARKET REMOVAL")) {
+			UUID listingUUID = UUID.fromString(strings.get(1));
+
+			MarketListing listing = MarketManager.getListing(listingUUID);
+			if(listing != null) {
+				MarketManager.listings.remove(listing);
+
+				for(YourListingsPanel panel : YourListingsPanel.panels) {
+					panel.placeClaimables();
+				}
+			}
 		}
 
 		if(strings.size() >= 3 && strings.get(0).equals("MARKET ASYNC")) {

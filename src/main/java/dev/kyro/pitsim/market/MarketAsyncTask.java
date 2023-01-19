@@ -36,11 +36,13 @@ public class MarketAsyncTask {
 			@Override
 			public void run() {
 				failure.run();
+				taskMap.remove(player.getUniqueId());
 			}
 		}.runTaskLater(PitSim.INSTANCE, 20);
 
 
 		if(taskMap.containsKey(executor.getUniqueId())) {
+			System.out.println("Failure 1");
 			respond(false);
 		}
 
