@@ -2,7 +2,7 @@ package dev.kyro.pitsim.controllers;
 
 import com.xxmicloxx.NoteBlockAPI.songplayer.EntitySongPlayer;
 import dev.kyro.pitsim.PitSim;
-import dev.kyro.pitsim.enchants.Stereo;
+import dev.kyro.pitsim.enchants.overworld.Stereo;
 import dev.kyro.pitsim.misc.Misc;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;

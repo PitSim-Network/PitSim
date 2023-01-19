@@ -5,7 +5,7 @@ import dev.kyro.arcticapi.gui.AGUIPanel;
 import dev.kyro.pitsim.aitems.MysticFactory;
 import dev.kyro.pitsim.controllers.EnchantManager;
 import dev.kyro.pitsim.controllers.objects.PitEnchant;
-import dev.kyro.pitsim.enchants.SelfCheckout;
+import dev.kyro.pitsim.enchants.overworld.SelfCheckout;
 import dev.kyro.pitsim.enums.MysticType;
 import dev.kyro.pitsim.enums.PantColor;
 import org.bukkit.Material;

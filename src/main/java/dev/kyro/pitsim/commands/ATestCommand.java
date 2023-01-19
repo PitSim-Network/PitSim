@@ -17,7 +17,7 @@ public class ATestCommand implements CommandExecutor {
 	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
 		if(!(sender instanceof Player)) return false;
 		Player player = (Player) sender;
-		if(!player.isOp()) return false;
+//		if(!player.isOp()) return false;
 
 		ItemStack itemStack = player.getItemInHand();
 		if(itemStack == null || !itemStack.hasItemMeta() || itemStack.getType() == Material.AIR) {
@@ -25,10 +25,6 @@ public class ATestCommand implements CommandExecutor {
 			marketGUI.open();
 			return true;
 		}
-
-		PluginMessage message = new PluginMessage().writeString("CREATE LISTING").writeString(player.getUniqueId().toString());
-		message.writeString(StorageProfile.serialize(player, itemStack));
-		message.writeInt(100).writeInt(100).writeBoolean(false).writeLong(1000 * 60).send();
 
 		return false;
 	}
