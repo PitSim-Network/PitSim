@@ -6,16 +6,22 @@ import dev.kyro.arcticapi.gui.AGUI;
 import dev.kyro.arcticapi.gui.AGUIPanel;
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.arcticapi.misc.AUtil;
+import dev.kyro.pitsim.controllers.ItemFactory;
 import dev.kyro.pitsim.controllers.objects.PluginMessage;
+import dev.kyro.pitsim.misc.Misc;
 import dev.kyro.pitsim.misc.Sounds;
 import dev.kyro.pitsim.misc.packets.SignPrompt;
 import dev.kyro.pitsim.storage.StorageProfile;
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.inventory.InventoryOpenEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
+
+import java.util.concurrent.TimeUnit;
 
 public class CreateListingPanel extends AGUIPanel {
 
@@ -27,6 +33,8 @@ public class CreateListingPanel extends AGUIPanel {
 	public int binPrice = 0;
 
 	public boolean signClose = false;
+
+	public long duration = 86400000;
 
 	public CreateListingPanel(AGUI gui) {
 		super(gui);
@@ -124,24 +132,30 @@ public class CreateListingPanel extends AGUIPanel {
 
 				PluginMessage message = new PluginMessage().writeString("CREATE LISTING").writeString(player.getUniqueId().toString());
 				message.writeString(StorageProfile.serialize(player, selectedItem));
-				message.writeInt(startingBid == 0 ? -1 : startingBid).writeInt(binPrice == 0 ? -1 : binPrice).writeBoolean(selectedItem.getAmount() > 1).writeLong(86400000L * getMaxDurationDays()).send();
+				message.writeInt(startingBid == 0 ? -1 : startingBid).writeInt(binPrice == 0 ? -1 : binPrice).writeBoolean(selectedItem.getAmount() > 1).writeLong(duration).send();
 				selectedItem = null;
 				Sounds.SUCCESS.play(player);
 				AOutput.send(player, "&a&lMARKET &7Listing created!");
 				player.closeInventory();
+			}
+
+			if(slot == 42) {
+				signPromptDuration();
 			}
 		}
 
 		if(event.getClickedInventory().equals(player.getInventory())) {
 			ItemStack item = event.getCurrentItem();
 
-			if(item == null || item.getType() == Material.AIR || !item.hasItemMeta()) {
+			if(ItemFactory.getItem(item) == null) {
 				Sounds.NO.play(player);
 			} else {
 
 				if(selectedItem != null) {
 					AUtil.giveItemSafely(player, selectedItem, true);
 				}
+
+				Misc.createMeta(item);
 
 				auctionEnabled = false;
 				binEnabled = false;
@@ -253,9 +267,12 @@ public class CreateListingPanel extends AGUIPanel {
 		AItemStackBuilder durationBuilder = new AItemStackBuilder(Material.WATCH)
 				.setName("&eListing Duration")
 				.setLore(new ALoreBuilder(
-						"&7This listing will expire in:",
-						"&f" + getMaxDurationDays() + " Days", "",
-						"&eBoost this duration with a rank", "&efrom &f&nstore.pitsim.net"
+						"&7Listing Duration: &f" + parseToDuration(duration),
+						"",
+						"&7Maximum Duration: &f" + getMaxDurationDays() + " Days",
+						"&eBoost this with a rank", "&efrom &f&nstore.pitsim.net",
+						"",
+						"&eClick to change!"
 				));
 		getInventory().setItem(42, durationBuilder.getItemStack());
 
@@ -368,16 +385,51 @@ public class CreateListingPanel extends AGUIPanel {
 		});
 	}
 
+	public void signPromptDuration() {
+
+		signClose = true;
+		SignPrompt.promptPlayer(player, "", "^^^^^", "Maximum: " + getMaxDurationDays() + " Days", "Example: 2d 6h 9m", input -> {
+			openPanel(this);
+			long amount;
+			try {
+				amount = parseToMiliseconds(input.replaceAll("\"", ""));
+			} catch(Exception ignored) {
+				Sounds.NO.play(player);
+				AOutput.error(player, "&c&lERROR!&7 Could not parse duration!");
+				return;
+			}
+
+			if(!isDurationValid(amount)) {
+				Sounds.NO.play(player);
+				AOutput.error(player, "&c&lERROR!&7 Invalid duration amount!");
+			} else {
+				duration = amount;
+				calculateItems();
+			}
+		});
+	}
+
+	public boolean isDurationValid(long duration) {
+		return duration >= 60000 && duration <= getMaxDurationDays() * 86400000L;
+	}
+
 	public int getMaxDurationDays() {
 		return 3;
 	}
 
 	public static long parseToMiliseconds(String duration) {
 		String[] parts = duration.split(" ");
-		int days = Integer.parseInt(parts[0].replace("d", ""));
-		int hours = Integer.parseInt(parts[2].replace("h", ""));
-		int minutes = Integer.parseInt(parts[4].replace("m", ""));
+		int days = duration.contains("d") ? Integer.parseInt(parts[0].replace("d", "")) : 0;
+		int hours = duration.contains("h") ? Integer.parseInt(parts[1].replace("h", "")) : 0;
+		int minutes = duration.contains("m") ? Integer.parseInt(parts[2].replace("m", "")) : 0;
 
 		return (days * 86400L + hours * 3600L + minutes * 60L) * 1000;
+	}
+
+	public static String parseToDuration(long miliseconds) {
+		long days = TimeUnit.MILLISECONDS.toDays(miliseconds);
+		long hours = TimeUnit.MILLISECONDS.toHours(miliseconds) - TimeUnit.DAYS.toHours(days);
+		long minutes = TimeUnit.MILLISECONDS.toMinutes(miliseconds) - TimeUnit.HOURS.toMinutes(TimeUnit.MILLISECONDS.toHours(miliseconds));
+		return days + "d " + hours + "h " + minutes + "m";
 	}
 }

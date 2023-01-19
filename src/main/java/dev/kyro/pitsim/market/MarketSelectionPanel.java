@@ -31,7 +31,7 @@ public class MarketSelectionPanel extends AGUIPanel {
 				.setLore(new ALoreBuilder(
 						"&7Create a new listing",
 						"&7on the player market.",
-						"&7Active Listings: " + (canCreateListing() ? "&e" : "&c") + MarketManager.getActiveListings(player.getUniqueId()) + "&f/" + MarketManager.ListingLimit.getRank(player).limit,
+						"&7Active Listings: " + (canCreateListing() ? "&e" : "&c") + MarketManager.getActiveListings(player.getUniqueId()).size() + "&f/" + MarketManager.ListingLimit.getRank(player).limit,
 						"",
 						canCreateListing() ? "&eClick to view listings" : "&cCan't create more!"
 				));
@@ -77,6 +77,7 @@ public class MarketSelectionPanel extends AGUIPanel {
 			if(!canCreateListing()) {
 				AOutput.error(player, "&cGet a greater Listing limit with a rank from &f&nstore.pitsim.net");
 				Sounds.NO.play(player);
+				return;
 			}
 			openPanel(((MarketGUI) gui).createListingPanel);
 		}

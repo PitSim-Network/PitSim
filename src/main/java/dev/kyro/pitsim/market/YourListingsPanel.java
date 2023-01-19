@@ -16,7 +16,6 @@ import org.bukkit.event.inventory.InventoryOpenEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
-import org.checkerframework.checker.units.qual.A;
 
 import java.util.*;
 
@@ -78,6 +77,8 @@ public class YourListingsPanel extends AGUIPanel {
 								"",
 								"&ePurchase at &f&nstore.pitsim.net"
 						)).getItemStack());
+
+				itemsPlaced++;
 				continue;
 			}
 
@@ -87,6 +88,8 @@ public class YourListingsPanel extends AGUIPanel {
 							"&7Create a listing to occupy",
 							"&7this slot."
 					)).getItemStack());
+
+			itemsPlaced++;
 		}
 	}
 

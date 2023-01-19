@@ -1,7 +1,11 @@
 package dev.kyro.pitsim.market;
 
+import dev.kyro.pitsim.aitems.PitItem;
+import dev.kyro.pitsim.controllers.ItemFactory;
+import dev.kyro.pitsim.enums.AuctionCategory;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
+import org.checkerframework.checker.units.qual.A;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -11,18 +15,18 @@ public class SortQuery {
 
 	private final PrimarySortType primarySortType;
 	private final ListingFilter listingFilter;
-	private final ItemFilter itemFilter;
+	private final AuctionCategory auctionCategory;
 	private final String sortParameter;
 	private final MarketListing[] listings;
 
-	public SortQuery(PrimarySortType primarySortType, ListingFilter listingFilter, ItemFilter itemFilter, String sortParameter) {
+	public SortQuery(PrimarySortType primarySortType, ListingFilter listingFilter, AuctionCategory auctionCategory, String sortParameter) {
 
 		 this.primarySortType = primarySortType;
 		 this.listingFilter = listingFilter;
-		 this.itemFilter = itemFilter;
-		 this.sortParameter = sortParameter;
+		 this.auctionCategory = auctionCategory;
+		 this.sortParameter = sortParameter.replaceAll("\"", "");
 
-		 List<MarketListing> sortedListings = getSortedList(primarySortType, listingFilter, itemFilter, sortParameter);
+		 List<MarketListing> sortedListings = getSortedList(primarySortType, listingFilter, auctionCategory, sortParameter);
 		 listings = new MarketListing[sortedListings.size()];
 		 for(int i = 0; i < sortedListings.size(); i++) {
 			 listings[i] = sortedListings.get(i);
@@ -36,7 +40,7 @@ public class SortQuery {
 		return ListingFilter.BIN;
 	}
 
-	public List<MarketListing> getSortedList(PrimarySortType primarySortType, ListingFilter listingFilter, ItemFilter itemFilter, String sortParameter) {
+	public List<MarketListing> getSortedList(PrimarySortType primarySortType, ListingFilter listingFilter, AuctionCategory auctionCategory, String sortParameter) {
 		List<MarketListing> sortedList = new ArrayList<>();
 
 		listings:
@@ -46,6 +50,29 @@ public class SortQuery {
 			if(listingFilter != ListingFilter.ALL && listingType != ListingFilter.ALL) {
 				if(listingFilter != listingType) continue;
 			}
+
+			PitItem pitItem = ItemFactory.getItem(listing.itemData);
+			if(pitItem == null) continue;
+			AuctionCategory category = pitItem.auctionCategory;
+
+			if(auctionCategory != AuctionCategory.ALL && category != AuctionCategory.ALL) {
+				if(auctionCategory != category) continue;
+			}
+
+			if(sortParameter != null && !sortParameter.isEmpty()) {
+				boolean match = false;
+				if(listing.itemData.getItemMeta().getDisplayName().toLowerCase().contains(sortParameter.toLowerCase())) {
+					match = true;
+				}
+				for(String refName : pitItem.getRefNames()) {;
+					if(refName.toLowerCase().contains(sortParameter.toLowerCase())) {
+						match = true;
+						break;
+					}
+				}
+				if(!match) continue;
+			}
+
 			if(listing.hasEnded()) continue;
 
 			switch(primarySortType) {
@@ -88,10 +115,10 @@ public class SortQuery {
 			}
 		}
 
-		if(!sortParameter.isEmpty()) {
-			sortedList.sort(Comparator.comparing(m -> m.itemData.getItemMeta().getDisplayName()));
-			sortedList.sort((m1, m2) -> m1.itemData.getItemMeta().getDisplayName().compareToIgnoreCase(sortParameter));
-		}
+//		if(!sortParameter.isEmpty()) {
+//			sortedList.sort(Comparator.comparing(m -> m.itemData.getItemMeta().getDisplayName()));
+//			sortedList.sort((m1, m2) -> m1.itemData.getItemMeta().getDisplayName().compareToIgnoreCase(sortParameter));
+//		}
 
 		return sortedList;
 	}
@@ -148,12 +175,6 @@ public class SortQuery {
 		}
 	}
 
-	enum ItemFilter {
-		AUCTION,
-		BIN,
-		ALL;
-	}
-
 	public PrimarySortType getPrimarySortType() {
 		return primarySortType;
 	}
@@ -162,8 +183,8 @@ public class SortQuery {
 		return listingFilter;
 	}
 
-	public ItemFilter getItemFilter() {
-		return itemFilter;
+	public AuctionCategory getAuctionCategory() {
+		return auctionCategory;
 	}
 
 	public MarketListing[] getListings() {
@@ -172,6 +193,10 @@ public class SortQuery {
 
 	public String getSortParameter() {
 		return sortParameter;
+	}
+
+	public AuctionCategory getCategory() {
+		return auctionCategory;
 	}
 
 }

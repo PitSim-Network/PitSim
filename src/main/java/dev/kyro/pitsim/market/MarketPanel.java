@@ -5,6 +5,7 @@ import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.arcticapi.gui.AGUI;
 import dev.kyro.arcticapi.gui.AGUIPanel;
 import dev.kyro.pitsim.PitSim;
+import dev.kyro.pitsim.enums.AuctionCategory;
 import dev.kyro.pitsim.misc.HeadLib;
 import dev.kyro.pitsim.misc.Misc;
 import dev.kyro.pitsim.misc.Sounds;
@@ -23,6 +24,7 @@ public class MarketPanel extends AGUIPanel {
 
 	public SortQuery.PrimarySortType sortType = SortQuery.PrimarySortType.PRICE_HIGH;
 	public SortQuery.ListingFilter listingFilter = SortQuery.ListingFilter.ALL;
+	public AuctionCategory auctionCategory = AuctionCategory.ALL;
 	public SortQuery sortQuery;
 	public String searchParameter = "";
 	public int page = 0;
@@ -34,7 +36,7 @@ public class MarketPanel extends AGUIPanel {
 
 	public MarketPanel(AGUI gui) {
 		super(gui);
-		this.sortQuery = new SortQuery(sortType, SortQuery.ListingFilter.ALL, SortQuery.ItemFilter.ALL,"");
+		this.sortQuery = new SortQuery(sortType, SortQuery.ListingFilter.ALL, AuctionCategory.ALL, "");
 
 		for(Integer glassSlot : glassSlots) {
 			getInventory().setItem(glassSlot, new AItemStackBuilder(Material.STAINED_GLASS_PANE,1, 15).setName(" ").getItemStack());
@@ -50,6 +52,7 @@ public class MarketPanel extends AGUIPanel {
 		updateSortItemStack();
 		updateListingFilterItemStack();
 		updateSearchItemStack();
+		updateAuctionCategoryItemStack();
 	}
 
 	public void calculateArrows() {
@@ -115,6 +118,21 @@ public class MarketPanel extends AGUIPanel {
 		getInventory().setItem(9, sortBuilder.getItemStack());
 	}
 
+	public void updateAuctionCategoryItemStack() {
+		ALoreBuilder loreBuilder = new ALoreBuilder("");
+		for(AuctionCategory value : AuctionCategory.values()) {
+			String toAdd = (value == auctionCategory ? "&7\u27a4 " : "") + value.color + (value == auctionCategory ? "&l" : "") + value.displayName;
+			loreBuilder.addLore(toAdd);
+		}
+		loreBuilder.addLore("", "&eClick to cycle");
+
+		AItemStackBuilder sortBuilder = new AItemStackBuilder(auctionCategory.displayMaterial)
+				.setName("&eChange Item Category")
+				.setLore(loreBuilder.getLore());
+
+		getInventory().setItem(18, sortBuilder.getItemStack());
+	}
+
 	public void updateSearchItemStack() {
 		AItemStackBuilder searchBuilder = new AItemStackBuilder(Material.SIGN)
 				.setName("&eSearch Listings")
@@ -149,13 +167,14 @@ public class MarketPanel extends AGUIPanel {
 		if(listingSlots.containsKey(event.getSlot())) {
 			UUID uuid = listingSlots.get(event.getSlot());
 			MarketListing listing = MarketManager.getListing(uuid);
+			if(listing == null) return;
 			((MarketGUI) gui).listingInspectPanel = new ListingInspectPanel(gui, listing);
 			openPanel(((MarketGUI) gui).listingInspectPanel);
 		}
 
 		if(event.getSlot() == 0) {
 			sortType = sortType.getNext();
-			sortQuery = new SortQuery(sortType, listingFilter, SortQuery.ItemFilter.ALL,searchParameter);
+			sortQuery = new SortQuery(sortType, listingFilter, auctionCategory, searchParameter);
 			Sounds.HELMET_TICK.play(player);
 			updateSortItemStack();
 			page = 0;
@@ -164,9 +183,18 @@ public class MarketPanel extends AGUIPanel {
 
 		if(event.getSlot() == 9) {
 			listingFilter = listingFilter.getNext();
-			sortQuery = new SortQuery(sortType, listingFilter, SortQuery.ItemFilter.ALL,searchParameter);
+			sortQuery = new SortQuery(sortType, listingFilter, auctionCategory, searchParameter);
 			Sounds.HELMET_TICK.play(player);
 			updateListingFilterItemStack();
+			page = 0;
+			calculateListings();
+		}
+
+		if(event.getSlot() == 18) {
+			auctionCategory = auctionCategory.getNext();
+			sortQuery = new SortQuery(sortType, listingFilter, auctionCategory, searchParameter);
+			Sounds.HELMET_TICK.play(player);
+			updateAuctionCategoryItemStack();
 			page = 0;
 			calculateListings();
 		}
@@ -176,7 +204,7 @@ public class MarketPanel extends AGUIPanel {
 				SignPrompt.promptPlayer(player, "", "^^^^^^", "Enter Search", "Prompt", input -> {
 					openPanel(this);
 					searchParameter = input.replaceAll("\"", "");
-					sortQuery = new SortQuery(sortType, listingFilter, SortQuery.ItemFilter.ALL,searchParameter);
+					sortQuery = new SortQuery(sortType, listingFilter, auctionCategory, searchParameter);
 					updateSearchItemStack();
 					page = 0;
 					calculateListings();
@@ -192,7 +220,7 @@ public class MarketPanel extends AGUIPanel {
 				});
 			} else if(event.isRightClick()) {
 				searchParameter = "";
-				sortQuery = new SortQuery(sortType, listingFilter, SortQuery.ItemFilter.ALL,searchParameter);
+				sortQuery = new SortQuery(sortType, listingFilter, auctionCategory, searchParameter);
 				Sounds.HELMET_TICK.play(player);
 				updateSearchItemStack();
 				page = 0;

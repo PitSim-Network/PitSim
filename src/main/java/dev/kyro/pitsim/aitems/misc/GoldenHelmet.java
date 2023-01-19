@@ -7,6 +7,7 @@ import dev.kyro.pitsim.aitems.PitItem;
 import dev.kyro.pitsim.controllers.HelmetSystem;
 import dev.kyro.pitsim.controllers.objects.HelmetAbility;
 import dev.kyro.pitsim.controllers.objects.HelmetManager;
+import dev.kyro.pitsim.enums.AuctionCategory;
 import dev.kyro.pitsim.enums.NBTTag;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
@@ -20,20 +21,20 @@ import java.util.UUID;
 public class GoldenHelmet extends PitItem {
 
 	public GoldenHelmet() {
+		hasDropConfirm = true;
 		hideExtra = true;
 		unbreakable = true;
-
-		itemEnchants.put(Enchantment.WATER_WORKER, 1);
+		auctionCategory = AuctionCategory.MISC;
 	}
 
 	@Override
 	public String getNBTID() {
-		return "mystic-bow";
+		return "golden-helmet";
 	}
 
 	@Override
 	public List<String> getRefNames() {
-		return new ArrayList<>(Arrays.asList("bow", "mysticbow"));
+		return new ArrayList<>(Arrays.asList("helmet", "goldenhelmet", "ghelm"));
 	}
 
 	public Material getMaterial() {

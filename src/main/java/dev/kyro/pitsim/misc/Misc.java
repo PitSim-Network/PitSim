@@ -566,4 +566,10 @@ public class Misc {
 			return "&7";
 		}
 	}
+
+	public static void createMeta(ItemStack itemStack) {
+		if(itemStack.hasItemMeta()) return;
+		ItemMeta itemMeta = Bukkit.getItemFactory().getItemMeta(itemStack.getType());
+		itemStack.setItemMeta(itemMeta);
+	}
 }
