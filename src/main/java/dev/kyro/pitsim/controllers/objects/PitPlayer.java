@@ -675,12 +675,7 @@ public class PitPlayer {
 
 	@Exclude
 	public int getMaxMana() {
-		int maxMana = 100;
-
-		Map<PitEnchant, Integer> enchantMap = EnchantManager.getEnchantsOnPlayer(player);
-		if(MaxMana.INSTANCE != null) maxMana += MaxMana.INSTANCE.getExtraMana(enchantMap);
-
-		return maxMana;
+		return 100;
 	}
 
 	@Exclude
