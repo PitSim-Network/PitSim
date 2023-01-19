@@ -48,7 +48,13 @@ public class Sounds {
 	public static final SoundEffect CLEAR_JEWEL = new SoundEffect(Sound.SHEEP_SHEAR, 1, 2);
 	public static final SoundEffect YUMMY_BREAD = new SoundEffect(Sound.EAT, 1, 1.2);
 	public static final SoundEffect BREAD_GIVE = new SoundEffect(Sound.GHAST_FIREBALL, 1, 0.3);
-	public static final SoundEffect SURVIVOR_HEAL = new SoundEffect(Sound.SILVERFISH_KILL, 1, 1.8);
+	public static final SoundEffect SURVIVOR_HEAL = new SoundEffect()
+			.add(new SoundMoment(0).add(Sound.SILVERFISH_KILL, 1, 1.8))
+			.add(new SoundMoment(1).add(Sound.ORB_PICKUP, 1, 2))
+			.add(new SoundMoment(3).add(Sound.ORB_PICKUP, 1, 1.9))
+			.add(new SoundMoment(5).add(Sound.ORB_PICKUP, 1, 1.85))
+			.add(new SoundMoment(10).add(Sound.ORB_PICKUP, 1, 1.9))
+			.add(new SoundMoment(13).add(Sound.ORB_PICKUP, 1, 2));
 	public static final SoundEffect SHOCKWAVE = new SoundEffect(Sound.EXPLODE, 2, 1.6);
 	public static final SoundEffect BOOSTER_REMIND = new SoundEffect(Sound.CHICKEN_EGG_POP, 2, 1.6);
 	public static final SoundEffect BUTTON = new SoundEffect(Sound.CLICK, 2, 1);

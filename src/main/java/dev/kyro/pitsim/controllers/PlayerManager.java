@@ -625,7 +625,7 @@ public class PlayerManager implements Listener {
 			}
 		}.runTaskLater(PitSim.INSTANCE, 20);
 
-		if(PitSim.getStatus().isPitsim() && player.hasPermission("pitsim.autofps")) {
+		if(PitSim.getStatus().isPitSim() && player.hasPermission("pitsim.autofps")) {
 			FPSCommand.fpsPlayers.add(player);
 			for(Non non : NonManager.nons) player.hidePlayer(non.non);
 
