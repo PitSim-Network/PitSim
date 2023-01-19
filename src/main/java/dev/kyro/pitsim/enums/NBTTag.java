@@ -2,7 +2,7 @@ package dev.kyro.pitsim.enums;
 
 public enum NBTTag {
 
-	ITEM_UUID("pr-uuid"),
+//	ITEM_UUID("pr-uuid"),
 	CUSTOM_ITEM("pr-item"),
 	RANODM_UUID("pr-random-uuid"),
 	PIT_ENCHANTS("pr-enchants"),

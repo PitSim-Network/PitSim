@@ -1,11 +1,6 @@
 package dev.kyro.pitsim.controllers;
 
-import de.tr7zw.nbtapi.NBTItem;
 import dev.kyro.pitsim.PitSim;
-import dev.kyro.pitsim.controllers.objects.PitEnchant;
-import dev.kyro.pitsim.enums.MysticType;
-import dev.kyro.pitsim.enums.NBTTag;
-import dev.kyro.pitsim.events.AttackEvent;
 import dev.kyro.pitsim.events.HealEvent;
 import dev.kyro.pitsim.misc.Misc;
 import org.bukkit.Bukkit;
@@ -244,99 +239,99 @@ public class TaintedManager implements Listener {
 		}.runTaskLater(PitSim.INSTANCE, 40);
 	}
 
-	@EventHandler
-	public void onAttack(AttackEvent.Pre event) {
-		Player player = event.getAttackerPlayer();
-		if(player == null) return;
+//	@EventHandler
+//	public void onAttack(AttackEvent.Pre event) {
+//		Player player = event.getAttackerPlayer();
+//		if(player == null) return;
+//
+//		if(player.getWorld() == MapManager.getDarkzone()) {
+//			if(!Misc.isAirOrNull(player.getItemInHand())) {
+//				NBTItem nbtItem = new NBTItem(player.getItemInHand());
+//				if(nbtItem.hasKey(NBTTag.ITEM_UUID.getRef()) && MysticType.getMysticType(player.getItemInHand()) == MysticType.SWORD) {
+//					for(PitEnchant pitEnchant : EnchantManager.getEnchantsOnItem(player.getItemInHand()).keySet()) {
+//						event.getAttackerEnchantMap().remove(pitEnchant);
+//					}
+//				}
+//			}
+//
+//			if(!Misc.isAirOrNull(player.getInventory().getLeggings())) {
+//				NBTItem nbtItem = new NBTItem(player.getInventory().getLeggings());
+//				if(nbtItem.hasKey(NBTTag.ITEM_UUID.getRef()) && MysticType.getMysticType(player.getInventory().getLeggings()) == MysticType.PANTS) {
+//					for(PitEnchant pitEnchant : EnchantManager.getEnchantsOnItem(player.getInventory().getLeggings()).keySet()) {
+//						event.getAttackerEnchantMap().remove(pitEnchant);
+//					}
+//				}
+//			}
+//
+//		} else {
+//
+//			if(!Misc.isAirOrNull(player.getItemInHand())) {
+//				NBTItem nbtItem = new NBTItem(player.getItemInHand());
+//				if(nbtItem.hasKey(NBTTag.ITEM_UUID.getRef()) && MysticType.getMysticType(player.getItemInHand()) == MysticType.TAINTED_SCYTHE) {
+//					for(PitEnchant pitEnchant : EnchantManager.getEnchantsOnItem(player.getItemInHand()).keySet()) {
+//						event.getAttackerEnchantMap().remove(pitEnchant);
+//					}
+//				}
+//			}
+//
+//			if(!Misc.isAirOrNull(player.getInventory().getChestplate())) {
+//				NBTItem nbtItem = new NBTItem(player.getInventory().getChestplate());
+//				if(nbtItem.hasKey(NBTTag.ITEM_UUID.getRef()) && MysticType.getMysticType(player.getInventory().getChestplate()) == MysticType.TAINTED_CHESTPLATE) {
+//					for(PitEnchant pitEnchant : EnchantManager.getEnchantsOnItem(player.getInventory().getChestplate()).keySet()) {
+//						event.getAttackerEnchantMap().remove(pitEnchant);
+//					}
+//				}
+//			}
+//		}
+//	}
 
-		if(player.getWorld() == MapManager.getDarkzone()) {
-			if(!Misc.isAirOrNull(player.getItemInHand())) {
-				NBTItem nbtItem = new NBTItem(player.getItemInHand());
-				if(nbtItem.hasKey(NBTTag.ITEM_UUID.getRef()) && MysticType.getMysticType(player.getItemInHand()) == MysticType.SWORD) {
-					for(PitEnchant pitEnchant : EnchantManager.getEnchantsOnItem(player.getItemInHand()).keySet()) {
-						event.getAttackerEnchantMap().remove(pitEnchant);
-					}
-				}
-			}
-
-			if(!Misc.isAirOrNull(player.getInventory().getLeggings())) {
-				NBTItem nbtItem = new NBTItem(player.getInventory().getLeggings());
-				if(nbtItem.hasKey(NBTTag.ITEM_UUID.getRef()) && MysticType.getMysticType(player.getInventory().getLeggings()) == MysticType.PANTS) {
-					for(PitEnchant pitEnchant : EnchantManager.getEnchantsOnItem(player.getInventory().getLeggings()).keySet()) {
-						event.getAttackerEnchantMap().remove(pitEnchant);
-					}
-				}
-			}
-
-		} else {
-
-			if(!Misc.isAirOrNull(player.getItemInHand())) {
-				NBTItem nbtItem = new NBTItem(player.getItemInHand());
-				if(nbtItem.hasKey(NBTTag.ITEM_UUID.getRef()) && MysticType.getMysticType(player.getItemInHand()) == MysticType.TAINTED_SCYTHE) {
-					for(PitEnchant pitEnchant : EnchantManager.getEnchantsOnItem(player.getItemInHand()).keySet()) {
-						event.getAttackerEnchantMap().remove(pitEnchant);
-					}
-				}
-			}
-
-			if(!Misc.isAirOrNull(player.getInventory().getChestplate())) {
-				NBTItem nbtItem = new NBTItem(player.getInventory().getChestplate());
-				if(nbtItem.hasKey(NBTTag.ITEM_UUID.getRef()) && MysticType.getMysticType(player.getInventory().getChestplate()) == MysticType.TAINTED_CHESTPLATE) {
-					for(PitEnchant pitEnchant : EnchantManager.getEnchantsOnItem(player.getInventory().getChestplate()).keySet()) {
-						event.getAttackerEnchantMap().remove(pitEnchant);
-					}
-				}
-			}
-		}
-	}
-
-	@EventHandler
-	public void onDefend(AttackEvent.Pre event) {
-		Player player = event.getDefenderPlayer();
-		if(player == null) return;
-
-		if(player.getWorld() == MapManager.getDarkzone()) {
-			if(!Misc.isAirOrNull(player.getItemInHand())) {
-				NBTItem nbtItem = new NBTItem(player.getItemInHand());
-				if(nbtItem.hasKey(NBTTag.ITEM_UUID.getRef()) && MysticType.getMysticType(player.getItemInHand()) == MysticType.SWORD) {
-					for(PitEnchant pitEnchant : EnchantManager.getEnchantsOnItem(player.getItemInHand()).keySet()) {
-						event.getDefenderEnchantMap().remove(pitEnchant);
-					}
-				}
-			}
-
-			if(!Misc.isAirOrNull(player.getInventory().getLeggings())) {
-				NBTItem nbtItem = new NBTItem(player.getInventory().getLeggings());
-				if(nbtItem.hasKey(NBTTag.ITEM_UUID.getRef()) && MysticType.getMysticType(player.getInventory().getLeggings()) == MysticType.PANTS) {
-					for(PitEnchant pitEnchant : EnchantManager.getEnchantsOnItem(player.getInventory().getLeggings()).keySet()) {
-						event.getDefenderEnchantMap().remove(pitEnchant);
-					}
-				}
-			}
-
-		} else {
-
-			if(player.getWorld() == MapManager.getDarkzone()) {
-				if(!Misc.isAirOrNull(player.getItemInHand())) {
-					NBTItem nbtItem = new NBTItem(player.getItemInHand());
-					if(nbtItem.hasKey(NBTTag.ITEM_UUID.getRef()) && MysticType.getMysticType(player.getItemInHand()) == MysticType.TAINTED_SCYTHE) {
-						for(PitEnchant pitEnchant : EnchantManager.getEnchantsOnItem(player.getItemInHand()).keySet()) {
-							event.getDefenderEnchantMap().remove(pitEnchant);
-						}
-					}
-				}
-
-				if(!Misc.isAirOrNull(player.getInventory().getChestplate())) {
-					NBTItem nbtItem = new NBTItem(player.getInventory().getChestplate());
-					if(nbtItem.hasKey(NBTTag.ITEM_UUID.getRef()) && MysticType.getMysticType(player.getInventory().getChestplate()) == MysticType.TAINTED_CHESTPLATE) {
-						for(PitEnchant pitEnchant : EnchantManager.getEnchantsOnItem(player.getInventory().getChestplate()).keySet()) {
-							event.getDefenderEnchantMap().remove(pitEnchant);
-						}
-					}
-				}
-			}
-		}
-	}
+//	@EventHandler
+//	public void onDefend(AttackEvent.Pre event) {
+//		Player player = event.getDefenderPlayer();
+//		if(player == null) return;
+//
+//		if(player.getWorld() == MapManager.getDarkzone()) {
+//			if(!Misc.isAirOrNull(player.getItemInHand())) {
+//				NBTItem nbtItem = new NBTItem(player.getItemInHand());
+//				if(nbtItem.hasKey(NBTTag.ITEM_UUID.getRef()) && MysticType.getMysticType(player.getItemInHand()) == MysticType.SWORD) {
+//					for(PitEnchant pitEnchant : EnchantManager.getEnchantsOnItem(player.getItemInHand()).keySet()) {
+//						event.getDefenderEnchantMap().remove(pitEnchant);
+//					}
+//				}
+//			}
+//
+//			if(!Misc.isAirOrNull(player.getInventory().getLeggings())) {
+//				NBTItem nbtItem = new NBTItem(player.getInventory().getLeggings());
+//				if(nbtItem.hasKey(NBTTag.ITEM_UUID.getRef()) && MysticType.getMysticType(player.getInventory().getLeggings()) == MysticType.PANTS) {
+//					for(PitEnchant pitEnchant : EnchantManager.getEnchantsOnItem(player.getInventory().getLeggings()).keySet()) {
+//						event.getDefenderEnchantMap().remove(pitEnchant);
+//					}
+//				}
+//			}
+//
+//		} else {
+//
+//			if(player.getWorld() == MapManager.getDarkzone()) {
+//				if(!Misc.isAirOrNull(player.getItemInHand())) {
+//					NBTItem nbtItem = new NBTItem(player.getItemInHand());
+//					if(nbtItem.hasKey(NBTTag.ITEM_UUID.getRef()) && MysticType.getMysticType(player.getItemInHand()) == MysticType.TAINTED_SCYTHE) {
+//						for(PitEnchant pitEnchant : EnchantManager.getEnchantsOnItem(player.getItemInHand()).keySet()) {
+//							event.getDefenderEnchantMap().remove(pitEnchant);
+//						}
+//					}
+//				}
+//
+//				if(!Misc.isAirOrNull(player.getInventory().getChestplate())) {
+//					NBTItem nbtItem = new NBTItem(player.getInventory().getChestplate());
+//					if(nbtItem.hasKey(NBTTag.ITEM_UUID.getRef()) && MysticType.getMysticType(player.getInventory().getChestplate()) == MysticType.TAINTED_CHESTPLATE) {
+//						for(PitEnchant pitEnchant : EnchantManager.getEnchantsOnItem(player.getInventory().getChestplate()).keySet()) {
+//							event.getDefenderEnchantMap().remove(pitEnchant);
+//						}
+//					}
+//				}
+//			}
+//		}
+//	}
 
 	@EventHandler
 	public void onOpen(InventoryOpenEvent event) {

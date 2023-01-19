@@ -6,10 +6,8 @@ import dev.kyro.pitsim.controllers.ItemFactory;
 import dev.kyro.pitsim.enums.MysticType;
 import dev.kyro.pitsim.enums.NBTTag;
 import dev.kyro.pitsim.enums.PantColor;
-import dev.kyro.pitsim.misc.Misc;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
 
 public class MysticFactory {
 	public static ItemStack getFreshItem(Player player, String type) {
@@ -101,18 +99,11 @@ public class MysticFactory {
 	}
 
 	public static boolean isFresh(ItemStack itemStack) {
-
-		if(Misc.isAirOrNull(itemStack)) return false;
+		PitItem pitItem = ItemFactory.getItem(itemStack);
+		if(pitItem == null || !pitItem.isMystic) return false;
 
 		NBTItem nbtItem = new NBTItem(itemStack);
-		if(!nbtItem.hasKey(NBTTag.ITEM_UUID.getRef())) return false;
-
-		ItemMeta itemMeta = itemStack.getItemMeta();
-		if(itemMeta == null || !itemMeta.hasLore()) return false;
-
-		for(String line : itemMeta.getLore()) {
-			if(line.contains("Used in the mystic well")) return true;
-		}
-		return false;
+		Integer enchantNum = nbtItem.getInteger(NBTTag.ITEM_ENCHANTS.getRef());
+		return enchantNum == 0;
 	}
 }

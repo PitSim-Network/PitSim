@@ -1,18 +1,17 @@
 package dev.kyro.pitsim.commands.admin;
 
-import de.tr7zw.nbtapi.NBTItem;
 import dev.kyro.arcticapi.commands.ACommand;
 import dev.kyro.arcticapi.commands.AMultiCommand;
 import dev.kyro.arcticapi.misc.AOutput;
-import dev.kyro.pitsim.controllers.EnchantManager;
-import dev.kyro.pitsim.enums.NBTTag;
+import dev.kyro.pitsim.aitems.PitItem;
+import dev.kyro.pitsim.controllers.ItemFactory;
 import dev.kyro.pitsim.misc.Misc;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 
 import java.util.List;
-import java.util.UUID;
 
 public class RandomizeCommand extends ACommand {
 	public RandomizeCommand(AMultiCommand base, String executor) {
@@ -29,17 +28,16 @@ public class RandomizeCommand extends ACommand {
 			return;
 		}
 
-		NBTItem nbtItem = new NBTItem(player.getItemInHand());
-
-		if(!nbtItem.hasKey(NBTTag.ITEM_UUID.getRef())) {
-			AOutput.error(player, "&cInvalid item!");
+		PitItem pitItem = ItemFactory.getItem(player.getItemInHand());
+		if(pitItem == null || !pitItem.hasUUID) {
+			AOutput.error(player, "&cERROR!&7 That item should not have a UUID");
 			return;
 		}
 
-		EnchantManager.setItemLore(nbtItem.getItem(), player);
-
-		nbtItem.setString(NBTTag.ITEM_UUID.getRef(), UUID.randomUUID().toString());
-		player.getInventory().setItemInHand(nbtItem.getItem());
+		ItemStack heldStack = player.getItemInHand();
+		heldStack = pitItem.randomizeUUID(heldStack);
+		player.getInventory().setItemInHand(heldStack);
+		player.updateInventory();
 	}
 
 	@Override

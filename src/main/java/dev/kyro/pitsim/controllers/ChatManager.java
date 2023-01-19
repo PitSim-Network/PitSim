@@ -1,12 +1,11 @@
 package dev.kyro.pitsim.controllers;
 
-import de.tr7zw.nbtapi.NBTItem;
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.PitSim;
+import dev.kyro.pitsim.aitems.PitItem;
 import dev.kyro.pitsim.commands.essentials.GamemodeCommand;
 import dev.kyro.pitsim.commands.essentials.TeleportCommand;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
-import dev.kyro.pitsim.enums.NBTTag;
 import dev.kyro.pitsim.inventories.ChatColorPanel;
 import dev.kyro.pitsim.misc.ItemRename;
 import dev.kyro.pitsim.misc.Misc;
@@ -84,8 +83,8 @@ public class ChatManager implements Listener {
 				ItemRename.renamePlayers.remove(player);
 				return;
 			}
-			NBTItem nbtItem = new NBTItem(heldItem);
-			if(!nbtItem.hasKey(NBTTag.ITEM_UUID.getRef())) {
+			PitItem pitItem = ItemFactory.getItem(heldItem);
+			if(pitItem == null || !pitItem.isMystic) {
 				AOutput.error(player, "&cYou can only name mystic items!");
 				return;
 			}

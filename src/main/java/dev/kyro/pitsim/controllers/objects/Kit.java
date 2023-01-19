@@ -37,7 +37,7 @@ public abstract class Kit {
 		if(space < items.size()) throw new PitException();
 
 		for(KitItem item : items) {
-			ItemStack itemStack = KitManager.kitItemMap.get(item);
+			ItemStack itemStack = KitManager.getItem(item);
 
 			NBTItem nbtItem = new NBTItem(itemStack);
 			nbtItem.setBoolean(NBTTag.IS_PREMADE.getRef(), true);

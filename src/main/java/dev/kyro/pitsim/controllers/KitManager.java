@@ -23,7 +23,7 @@ import java.util.List;
 import java.util.Map;
 
 public class KitManager implements Listener {
-	public static Map<KitItem, ItemStack> kitItemMap = new HashMap<>();
+	private static Map<KitItem, ItemStack> kitItemMap = new HashMap<>();
 	public static List<Kit> kits = new ArrayList<>();
 
 	public static void registerKit(Kit kit) {
@@ -38,6 +38,11 @@ public class KitManager implements Listener {
 		event.getItemDrop().remove();
 		Sounds.NO.play(event.getPlayer());
 		AOutput.send(event.getPlayer(), "&c&lITEM DELETED!&7 Dropped a pre-made item (use /kit to re-obtain)");
+	}
+
+	public static ItemStack getItem(KitItem kitItem) {
+//		TODO: Assign different id
+		return null;
 	}
 
 	static {

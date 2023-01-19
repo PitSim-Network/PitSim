@@ -1,12 +1,12 @@
 package dev.kyro.pitsim.commands;
 
-import de.tr7zw.nbtapi.NBTItem;
 import dev.kyro.arcticapi.misc.AOutput;
+import dev.kyro.pitsim.aitems.PitItem;
 import dev.kyro.pitsim.controllers.EnchantManager;
+import dev.kyro.pitsim.controllers.ItemFactory;
 import dev.kyro.pitsim.controllers.objects.PitEnchant;
 import dev.kyro.pitsim.enchants.overworld.SelfCheckout;
 import dev.kyro.pitsim.enums.MysticType;
-import dev.kyro.pitsim.enums.NBTTag;
 import dev.kyro.pitsim.exceptions.*;
 import dev.kyro.pitsim.misc.Misc;
 import org.bukkit.command.Command;
@@ -33,9 +33,9 @@ public class EnchantCommand implements CommandExecutor {
 			AOutput.error(player, "Not holding a mystic item");
 			return false;
 		}
-		NBTItem nbtItem = new NBTItem(player.getItemInHand());
-		if(!nbtItem.hasKey(NBTTag.ITEM_UUID.getRef())) {
 
+		PitItem pitItem = ItemFactory.getItem(player.getItemInHand());
+		if(pitItem == null || !pitItem.isMystic) {
 			AOutput.error(player, "Not holding a mystic item");
 			return false;
 		}

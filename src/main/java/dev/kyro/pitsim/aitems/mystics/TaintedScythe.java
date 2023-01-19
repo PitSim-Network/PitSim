@@ -13,11 +13,11 @@ import org.bukkit.inventory.ItemStack;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.UUID;
 
 public class TaintedScythe extends PitItem {
 
 	public TaintedScythe() {
+		hasUUID = true;
 		hideExtra = true;
 		unbreakable = true;
 
@@ -58,7 +58,6 @@ public class TaintedScythe extends PitItem {
 		itemStack = buildItem(itemStack);
 
 		NBTItem nbtItem = new NBTItem(itemStack);
-		nbtItem.setString(NBTTag.ITEM_UUID.getRef(), UUID.randomUUID().toString());
 		nbtItem.addCompound(NBTTag.PIT_ENCHANTS.getRef());
 		return nbtItem.getItem();
 	}

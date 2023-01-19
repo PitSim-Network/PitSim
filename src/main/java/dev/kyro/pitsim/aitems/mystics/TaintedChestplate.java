@@ -15,11 +15,11 @@ import org.bukkit.inventory.meta.LeatherArmorMeta;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.UUID;
 
 public class TaintedChestplate extends PitItem {
 
 	public TaintedChestplate() {
+		hasUUID = true;
 		hideExtra = true;
 		unbreakable = true;
 	}
@@ -62,7 +62,6 @@ public class TaintedChestplate extends PitItem {
 		itemStack.setItemMeta(meta);
 
 		NBTItem nbtItem = new NBTItem(itemStack);
-		nbtItem.setString(NBTTag.ITEM_UUID.getRef(), UUID.randomUUID().toString());
 		nbtItem.addCompound(NBTTag.PIT_ENCHANTS.getRef());
 		return nbtItem.getItem();
 	}

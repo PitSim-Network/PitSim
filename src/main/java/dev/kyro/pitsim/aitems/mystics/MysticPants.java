@@ -18,6 +18,7 @@ import java.util.UUID;
 public class MysticPants extends PitItem {
 
 	public MysticPants() {
+		hasUUID = true;
 		hideExtra = true;
 		unbreakable = true;
 	}
@@ -75,7 +76,6 @@ public class MysticPants extends PitItem {
 		itemStack = PantColor.setPantColor(itemStack, pantColor);
 
 		NBTItem nbtItem = new NBTItem(itemStack);
-		nbtItem.setString(NBTTag.ITEM_UUID.getRef(), UUID.randomUUID().toString());
 		nbtItem.addCompound(NBTTag.PIT_ENCHANTS.getRef());
 		return nbtItem.getItem();
 	}

@@ -7,6 +7,7 @@ import dev.kyro.arcticapi.builders.AItemStackBuilder;
 import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.arcticapi.misc.AUtil;
 import dev.kyro.pitsim.PitSim;
+import dev.kyro.pitsim.aitems.PitItem;
 import dev.kyro.pitsim.controllers.objects.PitEnchant;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.controllers.objects.PluginMessage;
@@ -199,12 +200,16 @@ public class EnchantManager implements Listener {
 				return true;
 		}
 
+		PitItem pitItem = ItemFactory.getItem(itemStack);
+		if(pitItem == null) return false;
+
 		NBTItem nbtItem = new NBTItem(itemStack);
 		if(nbtItem.hasKey(NBTTag.GHELMET_UUID.getRef())) {
 			long gold = nbtItem.getLong(NBTTag.GHELMET_GOLD.getRef());
 			if(gold < 0) return true;
 		}
-		if(!nbtItem.hasKey(NBTTag.ITEM_UUID.getRef())) return false;
+
+		if(!pitItem.isMystic) return false;
 
 		if(nbtItem.hasKey(NBTTag.TAINTED_TIER.getRef())) {
 			if(nbtItem.hasKey(NBTTag.IS_GEMMED.getRef())) return true;
@@ -250,9 +255,9 @@ public class EnchantManager implements Listener {
 	public static void setItemLore(ItemStack itemStack, Player player, boolean displayUncommon) {
 		if(!PlayerManager.isRealPlayer(player)) player = null;
 
-		if(Misc.isAirOrNull(itemStack)) return;
+		PitItem pitItem = ItemFactory.getItem(itemStack);
+		if(pitItem == null || !pitItem.isMystic) return;
 		NBTItem nbtItem = new NBTItem(itemStack);
-		if(!nbtItem.hasKey(NBTTag.ITEM_UUID.getRef())) return;
 
 		NBTList<String> enchantOrder = nbtItem.getStringList(NBTTag.PIT_ENCHANT_ORDER.getRef());
 		NBTCompound itemEnchants = nbtItem.getCompound(NBTTag.PIT_ENCHANTS.getRef());
@@ -556,10 +561,9 @@ public class EnchantManager implements Listener {
 	}
 
 	public static int getEnchantLevel(ItemStack itemStack, PitEnchant pitEnchant) {
-
-		if(itemStack == null || itemStack.getType() == Material.AIR) return 0;
+		PitItem pitItem = ItemFactory.getItem(itemStack);
+		if(pitItem == null || !pitItem.isMystic) return 0;
 		NBTItem nbtItem = new NBTItem(itemStack);
-		if(!nbtItem.hasKey(NBTTag.ITEM_UUID.getRef())) return 0;
 
 		Map<PitEnchant, Integer> itemEnchantMap = getEnchantsOnItem(itemStack);
 		return getEnchantLevel(itemEnchantMap, pitEnchant);
@@ -607,11 +611,10 @@ public class EnchantManager implements Listener {
 	}
 
 	public static Map<PitEnchant, Integer> getEnchantsOnItem(ItemStack itemStack, Map<PitEnchant, Integer> currentEnchantMap) {
-
 		Map<PitEnchant, Integer> itemEnchantMap = new HashMap<>();
-		if(itemStack == null || itemStack.getType() == Material.AIR) return itemEnchantMap;
+		PitItem pitItem = ItemFactory.getItem(itemStack);
+		if(pitItem == null || !pitItem.isMystic) return itemEnchantMap;
 		NBTItem nbtItem = new NBTItem(itemStack);
-		if(!nbtItem.hasKey(NBTTag.ITEM_UUID.getRef())) return itemEnchantMap;
 
 		NBTCompound itemEnchants = nbtItem.getCompound(NBTTag.PIT_ENCHANTS.getRef());
 		Set<String> keys = itemEnchants.getKeys();
@@ -620,9 +623,6 @@ public class EnchantManager implements Listener {
 			PitEnchant pitEnchant = getEnchant(key);
 			Integer enchantLvl = itemEnchants.getInteger(key);
 			if(pitEnchant == null || enchantLvl == 0) continue;
-
-//			if(currentEnchantMap.containsKey(pitEnchant) && currentEnchantMap.get(pitEnchant) >= enchantLvl) continue;
-//			itemEnchantMap.put(pitEnchant, enchantLvl);
 
 			if(currentEnchantMap.containsKey(pitEnchant) && currentEnchantMap.get(pitEnchant) >= enchantLvl && !pitEnchant.levelStacks)
 				continue;

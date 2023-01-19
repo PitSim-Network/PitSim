@@ -5,6 +5,9 @@ package dev.kyro.pitsim.controllers;
 import de.tr7zw.nbtapi.NBTItem;
 import dev.kyro.arcticapi.misc.AUtil;
 import dev.kyro.pitsim.PitSim;
+import dev.kyro.pitsim.aitems.PitItem;
+import dev.kyro.pitsim.aitems.mystics.TaintedChestplate;
+import dev.kyro.pitsim.aitems.mystics.TaintedScythe;
 import dev.kyro.pitsim.controllers.objects.PitEnchant;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.enums.MysticType;
@@ -229,8 +232,8 @@ public class TaintedWell implements Listener
 		if (Misc.isAirOrNull(player.getItemInHand())) {
 			return;
 		}
-		final NBTItem nbtItem = new NBTItem(player.getItemInHand());
-		if (!nbtItem.hasKey(NBTTag.ITEM_UUID.getRef()) || MysticType.getMysticType(player.getItemInHand()) == MysticType.SWORD || MysticType.getMysticType(player.getItemInHand()) == MysticType.BOW || MysticType.getMysticType(player.getItemInHand()) == MysticType.PANTS) {
+		PitItem pitItem = ItemFactory.getItem(player.getItemInHand());
+		if (pitItem == null || (pitItem.getClass() != TaintedScythe.class && pitItem.getClass() != TaintedChestplate.class)) {
 			setText(player, "\u00A77", ChatColor.RED + "Invalid Item!", ChatColor.RED + "Please try again!", "\u00A77");
 			new BukkitRunnable() {
 				public void run() {

@@ -1,15 +1,14 @@
 package dev.kyro.pitsim.settings;
 
-import de.tr7zw.nbtapi.NBTItem;
 import dev.kyro.arcticapi.builders.AItemStackBuilder;
 import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.arcticapi.gui.AGUI;
 import dev.kyro.arcticapi.gui.AGUIPanel;
-import dev.kyro.pitsim.enums.NBTTag;
+import dev.kyro.pitsim.aitems.PitItem;
+import dev.kyro.pitsim.controllers.ItemFactory;
 import dev.kyro.pitsim.enums.PantColor;
 import dev.kyro.pitsim.inventories.ChatColorPanel;
 import dev.kyro.pitsim.misc.ItemRename;
-import dev.kyro.pitsim.misc.Misc;
 import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -79,19 +78,12 @@ public class SettingsPanel extends AGUIPanel {
 		renamelore.add("");
 		ItemStack heldItem = player.getItemInHand();
 		if(player.hasPermission("pitsim.itemrename")) {
-			if(!Misc.isAirOrNull(heldItem)) {
-				NBTItem nbtItem = new NBTItem(heldItem);
-				if(nbtItem.hasKey(NBTTag.ITEM_UUID.getRef())) {
-					renamelore.add(ChatColor.GRAY + "Holding: " + heldItem.getItemMeta().getDisplayName());
-					renamelore.add("");
-					renamelore.add(ChatColor.YELLOW + "Click to select!");
-					renamemeta.setDisplayName(ChatColor.YELLOW + "Rename Item");
-				} else {
-					renamelore.add(ChatColor.GRAY + "Holding: " + ChatColor.RED + "Invalid Item!");
-					renamelore.add("");
-					renamelore.add(ChatColor.RED + "Must be holding a mystic item!");
-					renamemeta.setDisplayName(ChatColor.RED + "Rename Item");
-				}
+			PitItem pitItem = ItemFactory.getItem(heldItem);
+			if(pitItem != null && pitItem.isMystic) {
+				renamelore.add(ChatColor.GRAY + "Holding: " + heldItem.getItemMeta().getDisplayName());
+				renamelore.add("");
+				renamelore.add(ChatColor.YELLOW + "Click to select!");
+				renamemeta.setDisplayName(ChatColor.YELLOW + "Rename Item");
 			} else {
 				renamelore.add(ChatColor.GRAY + "Holding: " + ChatColor.RED + "Invalid Item!");
 				renamelore.add("");
@@ -213,12 +205,10 @@ public class SettingsPanel extends AGUIPanel {
 		} else if(slot == 15) {
 			if(!player.hasPermission("pitsim.itemrename")) return;
 			ItemStack heldItem = player.getItemInHand();
-			if(Misc.isAirOrNull(heldItem)) return;
-			NBTItem nbtItem = new NBTItem(heldItem);
-			if(nbtItem.hasKey(NBTTag.ITEM_UUID.getRef())) {
-				player.closeInventory();
-				ItemRename.renameItem(player, player.getItemInHand());
-			}
+			PitItem pitItem = ItemFactory.getItem(heldItem);
+			if(pitItem == null || !pitItem.isMystic) return;
+			player.closeInventory();
+			ItemRename.renameItem(player, player.getItemInHand());
 		} else if(slot == 16) {
 			if(!player.hasPermission("pitsim.chatcolor")) return;
 			openPanel(settingsGUI.chatColorPanel);

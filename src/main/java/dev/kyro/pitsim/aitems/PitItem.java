@@ -15,10 +15,12 @@ import org.bukkit.inventory.meta.ItemMeta;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 public abstract class PitItem implements Listener {
 	public short itemData = 0;
 	//	This is forced true if the item has drop confirm
+	public boolean hasUUID;
 	public boolean hasDropConfirm;
 	public boolean destroyIfDroppedInSpawn;
 
@@ -27,6 +29,8 @@ public abstract class PitItem implements Listener {
 	public Map<Enchantment, Integer> itemEnchants = new HashMap<>();
 
 	public boolean isProt;
+	public boolean isMystic;
+
 	public AuctionCategory auctionCategory;
 
 	public PitItem() {
@@ -52,7 +56,19 @@ public abstract class PitItem implements Listener {
 		itemStack.setItemMeta(itemMeta);
 		NBTItem nbtItem = new NBTItem(itemStack);
 		nbtItem.setString(NBTTag.CUSTOM_ITEM.getRef(), getNBTID());
+		if(hasUUID) nbtItem.setString(NBTTag.ITEM_UUID.getRef(), UUID.randomUUID().toString());
 		return nbtItem.getItem();
+	}
+
+	public ItemStack randomizeUUID(ItemStack itemStack) {
+		if(!isThisItem(itemStack) || !hasUUID) throw new RuntimeException();
+
+		NBTItem nbtItem = new NBTItem(itemStack);
+		nbtItem.setString(NBTTag.ITEM_UUID.getRef(), UUID.randomUUID().toString());
+		itemStack = nbtItem.getItem();
+
+		updateItem(itemStack);
+		return itemStack;
 	}
 
 	public boolean isThisItem(ItemStack itemStack) {
