@@ -159,7 +159,8 @@ public class YourListingsPanel extends AGUIPanel {
 
 			MarketListing listing = combined.get(listIndex);
 			if(!firstIterationComplete) {
-				AItemStackBuilder soulBuilder = new AItemStackBuilder(Material.INK_SACK, listing.claimableSouls, 7)
+				AItemStackBuilder soulBuilder = new AItemStackBuilder(Material.INK_SACK, listing.ownerUUID.equals(player.getUniqueId())
+						? listing.claimableSouls : listing.bidMap.get(player.getUniqueId()), 7)
 						.setName("&fClaimable Souls");
 
 				ALoreBuilder loreBuilder;
@@ -246,8 +247,9 @@ public class YourListingsPanel extends AGUIPanel {
 			Runnable success = new BukkitRunnable() {
 				@Override
 				public void run() {
-					AOutput.send(player, "&a&lMARKET &7Claimed &f" + listing.claimableSouls + " Souls");
-					PitPlayer.getPitPlayer(player).taintedSouls += listing.claimableSouls;
+					int amount = listing.ownerUUID.equals(player.getUniqueId()) ? listing.claimableSouls : listing.bidMap.get(player.getUniqueId());
+					AOutput.send(player, "&a&lMARKET &7Claimed &f" + amount + " Souls");
+					PitPlayer.getPitPlayer(player).taintedSouls += amount;
 					Sounds.RENOWN_SHOP_PURCHASE.play(player);
 					placeClaimables();
 				}
