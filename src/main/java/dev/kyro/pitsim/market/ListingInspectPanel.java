@@ -29,13 +29,15 @@ public class ListingInspectPanel extends AGUIPanel {
 	public int purchasing;
 	public BukkitTask runnable;
 	int soulsToTake;
+	public boolean marketPanel;
 
-	public ListingInspectPanel(AGUI gui, MarketListing listing) {
+	public ListingInspectPanel(AGUI gui, MarketListing listing, boolean marketPanel) {
 		super(gui);
 		this.listing = listing;
 		bid = listing.getMinimumBid();
 		purchasing = 1;
 		inventoryBuilder.createBorder(Material.STAINED_GLASS_PANE, 15);
+		this.marketPanel = marketPanel;
 
 		calculateItems();
 	}
@@ -156,6 +158,11 @@ public class ListingInspectPanel extends AGUIPanel {
 				if(listing.ownerUUID.equals(player.getUniqueId()) || (listing.getHighestBidder() != null && listing.getHighestBidder().equals(player.getUniqueId())) || PitPlayer.getPitPlayer(player).taintedSouls < soulsToTake) {
 					Sounds.NO.play(player);
 				} else {
+					if(event.isRightClick()) {
+						bidSign();
+						return;
+					}
+
 					ConfirmPurchasePanel panel = new ConfirmPurchasePanel(gui, listing, soulsToTake, false, 1);
 					openPanel(panel);
 				}
@@ -178,7 +185,8 @@ public class ListingInspectPanel extends AGUIPanel {
 			}
 
 		} else if(slot == 31) {
-			openPreviousGUI();
+			if(marketPanel) openPanel(((MarketGUI) gui).marketPanel);
+			else openPanel(((MarketGUI) gui).yourListingsPanel);
 		}
 	}
 
@@ -219,6 +227,40 @@ public class ListingInspectPanel extends AGUIPanel {
 			purchasing = amount;
 			openPanel(this);
 			calculateItems();
+		});
+	}
+
+	public void bidSign() {
+
+		SignPrompt.promptPlayer(player, "", "^^^^^", "Enter bid amount", "(Min " + listing.getMinimumBid() + ")", input -> {
+			openPanel(this);
+			int amount;
+			try {
+				amount = Integer.parseInt(input.replaceAll("\"", ""));
+			} catch(Exception ignored) {
+				Sounds.NO.play(player);
+				AOutput.error(player, "&c&lERROR!&7 Could not parse amount!");
+				return;
+			}
+
+			if(amount < listing.getMinimumBid()) {
+				Sounds.NO.play(player);
+				AOutput.error(player, "&c&lERROR!&7 Bid is less than minimum!");
+				return;
+			}
+
+			if(amount > PitPlayer.getPitPlayer(player).taintedSouls) {
+				Sounds.NO.play(player);
+				AOutput.error(player, "&c&lERROR!&7 You do not have enough souls!");
+				return;
+			}
+
+			bid = amount;
+
+			soulsToTake = bid - listing.bidMap.getOrDefault(player.getUniqueId(), 0);
+
+			ConfirmPurchasePanel panel = new ConfirmPurchasePanel(gui, listing, soulsToTake, false, 1);
+			openPanel(panel);
 		});
 	}
 }
