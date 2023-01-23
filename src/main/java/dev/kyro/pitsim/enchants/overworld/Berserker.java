@@ -5,6 +5,7 @@ import dev.kyro.pitsim.controllers.objects.PitEnchant;
 import dev.kyro.pitsim.enums.ApplyType;
 import dev.kyro.pitsim.events.AttackEvent;
 import dev.kyro.pitsim.misc.Misc;
+import dev.kyro.pitsim.misc.Sounds;
 import org.bukkit.event.EventHandler;
 
 import java.util.List;
@@ -23,6 +24,7 @@ public class Berserker extends PitEnchant {
 		int enchantLvl = attackEvent.getAttackerEnchantLevel(this);
 		if(!Misc.isCritical(attackEvent.getAttacker()) || Math.random() > getChance(enchantLvl) / 100.0) return;
 		attackEvent.multipliers.add(1.5);
+		Sounds.BERSERKER.play(attackEvent.getAttackerPlayer());
 	}
 
 	@Override

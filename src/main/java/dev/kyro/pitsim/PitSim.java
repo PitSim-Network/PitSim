@@ -125,6 +125,8 @@ public class PitSim extends JavaPlugin {
 
 	public static ServerStatus status;
 
+	public static AnticheatManager anticheat;
+
 	@Override
 	public void onEnable() {
 		INSTANCE = this;
@@ -141,6 +143,15 @@ public class PitSim extends JavaPlugin {
 			if(success) continue;
 			onlinePlayer.kickPlayer(ChatColor.RED + "Playerdata failed to load. Please open a support ticket: discord.pitsim.net");
 		}
+
+		if(Bukkit.getPluginManager().getPlugin("GrimAC") != null) hookIntoAnticheat(new GrimManager());
+		if(Bukkit.getPluginManager().getPlugin("PolarLoader") != null) hookIntoAnticheat(new PolarManager());
+
+		if(anticheat == null) {
+			Bukkit.getLogger().severe("No anticheat found! Shutting down...");
+			Bukkit.getPluginManager().disablePlugin(this);
+			return;
+		} else getServer().getPluginManager().registerEvents(anticheat, this);
 
 		if(AConfig.getBoolean("standalone-server")) status = ServerStatus.ALL;
 		else status = serverName.contains("darkzone") ? ServerStatus.DARKZONE : ServerStatus.OVERWORLD;
@@ -627,9 +638,9 @@ public class PitSim extends JavaPlugin {
 		getServer().getPluginManager().registerEvents(new PacketManager(), this);
 		getServer().getPluginManager().registerEvents(new GrimManager(), this);
 		getServer().getPluginManager().registerEvents(new MiscManager(), this);
-		getServer().getPluginManager().registerEvents(new MarketMessaging(), this);
+		getServer().getPluginManager().registerEvents(new FirstJoinManager(), this);
 		getServer().getPluginManager().registerEvents(new AIManager(), this);
-		getServer().getPluginManager().registerEvents(new MarketManager(), this);
+		getServer().getPluginManager().registerEvents(new MarketMessaging(), this);
 
 //		New darkzone code
 		if(getStatus().isDarkzone()) {
@@ -943,6 +954,15 @@ public class PitSim extends JavaPlugin {
 
 		EnchantManager.registerEnchant(new MaxHealth());
 		EnchantManager.registerEnchant(new Sonic());
+	}
+
+	public void hookIntoAnticheat(AnticheatManager anticheat) {
+		if(anticheat != null) {
+			Bukkit.getLogger().severe("Multiple anticheats found! Shutting down...");
+			Bukkit.getPluginManager().disablePlugin(this);
+			return;
+		}
+		PitSim.anticheat = anticheat;
 	}
 
 	public enum ServerStatus {

@@ -42,7 +42,7 @@ public class GoldNanoFactory extends Killstreak {
 			Sounds.SUCCESS.play(event.getPlayer());
 			LevelManager.addGold(event.getPlayer(), 123);
 
-			Misc.applyPotionEffect(event.getPlayer(), PotionEffectType.REGENERATION, 20 * 2, 3, true, false);
+			Misc.applyPotionEffect(event.getPlayer(), PotionEffectType.REGENERATION, 20 * getRegenSeconds(), 3, true, false);
 
 			if(Killstreak.hasKillstreak(event.getPlayer(), this)) {
 				if(rewardPlayers.containsKey(event.getPlayer())) {
@@ -91,9 +91,16 @@ public class GoldNanoFactory extends Killstreak {
 
 		AItemStackBuilder builder = new AItemStackBuilder(Material.GOLD_NUGGET);
 		builder.setName("&e" + name);
-		builder.setLore(new ALoreBuilder("&7Every: &c" + killInterval + " kills",
-				"", "&7Spawns &610 gold ingots. &7Picking them", "&7up grants &cRegen IV &7(s), &6123g&7,", "&7and &6+25% gold &7on your next kill."));
+		builder.setLore(new ALoreBuilder(
+				"&7Every: &c" + killInterval + " kills",
+				"", "&7Spawns &610 gold ingots. &7Picking them",
+				"&7up grants &cRegen IV &7(" + getRegenSeconds() + "s), &6123g&7,",
+				"&7and &6+25% gold &7on your next kill."));
 
 		return builder.getItemStack();
+	}
+
+	public int getRegenSeconds() {
+		return 2;
 	}
 }
