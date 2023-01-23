@@ -136,8 +136,6 @@ public class ServerViewPanel extends AGUIPanel {
 				edit.writeString(name).send();
 				player.closeInventory();
 			}
-
-
 		}
 	}
 
