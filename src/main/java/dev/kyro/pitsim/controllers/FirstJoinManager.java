@@ -21,9 +21,9 @@ public class FirstJoinManager implements Listener {
 		player.getInventory().setChestplate(new ItemStack(Material.DIAMOND_CHESTPLATE));
 		player.getInventory().setBoots(new ItemStack(Material.DIAMOND_BOOTS));
 
-		player.getInventory().setLeggings(KitManager.kitItemMap.get(KitItem.SWEATY_GHEART));
+		player.getInventory().setLeggings(KitManager.getItem(KitItem.SWEATY_GHEART));
 
-		player.getInventory().setItem(0, KitManager.kitItemMap.get(KitItem.EXE_SWEATY));
-		player.getInventory().setItem(1, KitManager.kitItemMap.get(KitItem.MLB_DRAIN));
+		player.getInventory().setItem(0, KitManager.getItem(KitItem.EXE_SWEATY));
+		player.getInventory().setItem(1, KitManager.getItem(KitItem.MLB_DRAIN));
 	}
 }
