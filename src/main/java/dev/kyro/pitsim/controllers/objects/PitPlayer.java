@@ -535,7 +535,7 @@ public class PitPlayer {
 			killstreak.proc(player);
 		}
 
-		int everyX = megastreak.getClass() == RNGesus.class && kills > RNGesus.INSTABILITY_THRESHOLD ? 250 : 100;
+		int everyX = megastreak instanceof RNGesus && kills > RNGesus.INSTABILITY_THRESHOLD ? 250 : 100;
 		if(kills % everyX == 0 && kills != megastreak.getRequiredKills()) {
 			for(Player onlinePlayer : Bukkit.getOnlinePlayers()) {
 				PitPlayer pitPlayer = PitPlayer.getPitPlayer(onlinePlayer);
@@ -626,7 +626,7 @@ public class PitPlayer {
 		if(MaxHealth.INSTANCE != null) maxHealth += MaxHealth.INSTANCE.
 				getExtraHealth(player, enchantMap);
 
-		if(megastreak.getClass() == Uberstreak.class) {
+		if(megastreak instanceof Uberstreak) {
 			Uberstreak uberstreak = (Uberstreak) megastreak;
 			if(uberstreak.uberEffects.contains(Uberstreak.UberEffect.LOSE_MAX_HEALTH)) maxHealth -= 4;
 		}
@@ -706,7 +706,7 @@ public class PitPlayer {
 			return;
 		}
 
-		if(megastreak.getClass() == RNGesus.class && getKills() < RNGesus.INSTABILITY_THRESHOLD && getKills() >= 100) return;
+		if(megastreak instanceof RNGesus && getKills() < RNGesus.INSTABILITY_THRESHOLD && getKills() >= 100) return;
 
 		player.setLevel(level);
 		float remaining = remainingXP;

@@ -58,8 +58,7 @@ public class BreadDealer extends RenownUpgrade {
 			ItemStack itemStack = player.getInventory().getItem(i);
 
 			PitItem pitItem = ItemFactory.getItem(itemStack);
-			if(pitItem == null) continue;
-			if(pitItem.getClass() != YummyBread.class && pitItem.getClass() != VeryYummyBread.class) continue;
+			if(!(pitItem instanceof YummyBread) && !(pitItem instanceof VeryYummyBread)) continue;
 
 			int quantity = itemStack.getAmount();
 			quantity *= retainPercent / 100.0;

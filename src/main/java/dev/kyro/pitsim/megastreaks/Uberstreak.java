@@ -125,7 +125,7 @@ public class Uberstreak extends Megastreak {
 	public void onPreAttack(AttackEvent.Pre attackEvent) {
 		if(!attackEvent.isAttackerPlayer()) return;
 		PitPlayer pitAttacker = attackEvent.getAttackerPitPlayer();
-		if(pitAttacker != this.pitPlayer || pitAttacker.megastreak.getClass() != Uberstreak.class || pitAttacker.megastreak.isOnMega())
+		if(pitAttacker != this.pitPlayer || !(pitAttacker.megastreak instanceof Uberstreak) || pitAttacker.megastreak.isOnMega())
 			return;
 
 		Map<PitEnchant, Integer> attackerEnchantMap = attackEvent.getAttackerEnchantMap();
@@ -145,14 +145,14 @@ public class Uberstreak extends Megastreak {
 	public void onAttack(AttackEvent.Apply attackEvent) {
 		if(!attackEvent.isDefenderPlayer()) return;
 		PitPlayer pitDefender = PitPlayer.getPitPlayer(attackEvent.getDefender());
-		if(pitDefender == this.pitPlayer && pitDefender.megastreak.getClass() == Uberstreak.class) {
+		if(pitDefender == this.pitPlayer && pitDefender.megastreak instanceof Uberstreak) {
 			if(uberEffects.contains(UberEffect.TAKE_MORE_DAMAGE)) attackEvent.multipliers.add(1.25);
 			if(uberEffects.contains(UberEffect.TAKE_LESS_DAMAGE)) attackEvent.multipliers.add(0.9);
 		}
 
 		if(!attackEvent.isAttackerPlayer()) return;
 		PitPlayer pitAttacker = PitPlayer.getPitPlayer(attackEvent.getAttacker());
-		if(pitAttacker != this.pitPlayer || pitAttacker.megastreak.getClass() != Uberstreak.class) return;
+		if(pitAttacker != this.pitPlayer || !(pitAttacker.megastreak instanceof Uberstreak)) return;
 		if(pitAttacker.megastreak.isOnMega()) {
 			if(NonManager.getNon(attackEvent.getDefender()) != null) attackEvent.multipliers.add(0.5);
 		}
@@ -173,7 +173,7 @@ public class Uberstreak extends Megastreak {
 	public void onKill(IncrementKillsEvent event) {
 		PitPlayer pitPlayer = PitPlayer.getPitPlayer(event.player);
 		if(pitPlayer != this.pitPlayer) return;
-		if(pitPlayer.megastreak.isOnMega() && pitPlayer.megastreak.getClass() == Uberstreak.class) {
+		if(pitPlayer.megastreak.isOnMega() && pitPlayer.megastreak instanceof Uberstreak) {
 			double current = event.kills;
 
 			if(current == 200) {

@@ -107,7 +107,7 @@ public class Overdrive extends Megastreak {
 		if(!attackEvent.isDefenderPlayer()) return;
 		PitPlayer pitPlayer = attackEvent.getDefenderPitPlayer();
 		if(pitPlayer != this.pitPlayer) return;
-		if(pitPlayer.megastreak.isOnMega() && pitPlayer.megastreak.getClass() == Overdrive.class) {
+		if(pitPlayer.megastreak.isOnMega() && pitPlayer.megastreak instanceof Overdrive) {
 			int ks = pitPlayer.getKills();
 			if(NonManager.getNon(attackEvent.getAttacker()) != null) {
 				attackEvent.veryTrueDamage += (ks - 50) / 50D;
@@ -120,7 +120,7 @@ public class Overdrive extends Megastreak {
 		if(!killEvent.isKillerPlayer()) return;
 		PitPlayer pitPlayer = killEvent.getKillerPitPlayer();
 		if(pitPlayer != this.pitPlayer) return;
-		if(pitPlayer.megastreak.isOnMega() && pitPlayer.megastreak.getClass() == Overdrive.class) {
+		if(pitPlayer.megastreak.isOnMega() && pitPlayer.megastreak instanceof Overdrive) {
 			killEvent.xpMultipliers.add(1.75);
 			killEvent.goldMultipliers.add(1.75);
 		}
@@ -133,7 +133,7 @@ public class Overdrive extends Megastreak {
 		runnable = new BukkitRunnable() {
 			@Override
 			public void run() {
-				if(pitPlayer.megastreak.getClass() == Overdrive.class && pitPlayer.megastreak.isOnMega()) {
+				if(pitPlayer.megastreak instanceof Overdrive && pitPlayer.megastreak.isOnMega()) {
 					Misc.applyPotionEffect(pitPlayer.player, PotionEffectType.SPEED, 200, 0, true, false);
 				}
 			}

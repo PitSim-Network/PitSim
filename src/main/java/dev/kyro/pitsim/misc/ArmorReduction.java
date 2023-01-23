@@ -16,7 +16,7 @@ public class ArmorReduction {
 		ItemStack leggings = entity.getEquipment().getLeggings();
 		if(!Misc.isAirOrNull(leggings) && leggings.getType() == Material.LEATHER_LEGGINGS) {
 			PitItem pitItem = ItemFactory.getItem(leggings);
-			if(pitItem != null && pitItem.getClass() == MysticPants.class) missingPoints += 3;
+			if(pitItem != null && pitItem instanceof MysticPants) missingPoints += 3;
 		}
 
 		ItemStack helmet = entity.getEquipment().getHelmet();

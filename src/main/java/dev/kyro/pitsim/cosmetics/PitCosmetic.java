@@ -174,7 +174,7 @@ public abstract class PitCosmetic implements Listener {
 
 	public void dropItem(ItemStack itemStack, Location location, double randomX, double randomY, double randomZ) {
 		NBTItem nbtItem = new NBTItem(itemStack);
-		nbtItem.setString(NBTTag.RANODM_UUID.getRef(), UUID.randomUUID().toString());
+		nbtItem.setString(NBTTag.DROPPED_ITEM_UUID.getRef(), UUID.randomUUID().toString());
 		nbtItem.setBoolean(NBTTag.CANNOT_PICKUP.getRef(), true);
 		itemStack = nbtItem.getItem();
 

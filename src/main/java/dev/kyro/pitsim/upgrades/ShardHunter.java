@@ -73,7 +73,7 @@ public class ShardHunter extends RenownUpgrade {
 		double chance = 0.00005 * tier;
 
 		PitPlayer pitKiller = killEvent.getKillerPitPlayer();
-		if(pitKiller.megastreak.isOnMega() && pitKiller.megastreak.getClass() == Uberstreak.class)
+		if(pitKiller.megastreak.isOnMega() && pitKiller.megastreak instanceof Uberstreak)
 			chance *= Uberstreak.SHARD_MULTIPLIER;
 
 		boolean givesShard = Math.random() < chance;

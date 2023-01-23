@@ -213,7 +213,7 @@ public class EnchantingPanel extends AGUIPanel {
 		} else {
 
 			PitItem pitItem = ItemFactory.getItem(clickedItem);
-			if(pitItem == null || pitItem.getClass() == TaintedScythe.class || pitItem.getClass() == TaintedChestplate.class) return;
+			if(pitItem == null || pitItem instanceof TaintedScythe || pitItem instanceof TaintedChestplate) return;
 
 			if(!Misc.isAirOrNull(mystic)) {
 				AOutput.error(player, "Already an item in the mystic well");

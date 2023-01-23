@@ -109,7 +109,7 @@ public class Highlander extends Megastreak {
 		if(!killEvent.isKillerPlayer()) return;
 		PitPlayer pitPlayer = killEvent.getKillerPitPlayer();
 		if(pitPlayer != this.pitPlayer) return;
-		if(pitPlayer.megastreak.playerIsOnMega(killEvent) && pitPlayer.megastreak.getClass() == Highlander.class) {
+		if(pitPlayer.megastreak.playerIsOnMega(killEvent) && pitPlayer.megastreak instanceof Highlander) {
 			killEvent.goldMultipliers.add(2.35);
 			killEvent.xpMultipliers.add(0.5);
 		}
@@ -119,7 +119,7 @@ public class Highlander extends Megastreak {
 	public void ohHeal(HealEvent healEvent) {
 		PitPlayer pitPlayer = PitPlayer.getPitPlayer(healEvent.player);
 		if(pitPlayer != this.pitPlayer) return;
-		if(pitPlayer.megastreak.isOnMega() && pitPlayer.megastreak.getClass() == Highlander.class) {
+		if(pitPlayer.megastreak.isOnMega() && pitPlayer.megastreak instanceof Highlander) {
 			int ks = pitPlayer.getKills();
 			if(ks > 200) healEvent.multipliers.add(1 / ((ks - 200) / 100D + 1));
 		}
@@ -130,7 +130,7 @@ public class Highlander extends Megastreak {
 		if(!attackEvent.isAttackerPlayer()) return;
 		PitPlayer pitPlayer = attackEvent.getAttackerPitPlayer();
 		if(pitPlayer != this.pitPlayer) return;
-		if(pitPlayer.megastreak.isOnMega() && pitPlayer.megastreak.getClass() == Highlander.class) {
+		if(pitPlayer.megastreak.isOnMega() && pitPlayer.megastreak instanceof Highlander) {
 //			if(pitDefender.bounty > 0) {
 //				attackEvent.increasePercent += 33 / 100D;
 //			}
@@ -147,7 +147,7 @@ public class Highlander extends Megastreak {
 		runnable = new BukkitRunnable() {
 			@Override
 			public void run() {
-				if(pitPlayer.megastreak.getClass() == Highlander.class && pitPlayer.megastreak.isOnMega()) {
+				if(pitPlayer.megastreak instanceof Highlander && pitPlayer.megastreak.isOnMega()) {
 					Misc.applyPotionEffect(pitPlayer.player, PotionEffectType.SPEED, 200, 0, true, false);
 				}
 			}

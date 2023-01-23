@@ -64,27 +64,27 @@ public class MegastreakPanel extends AGUIPanel {
 				if(megastreak.guiSlot() == slot) {
 					PitPlayer pitPlayer = PitPlayer.getPitPlayer(perkGUI.player);
 					pitPlayer.setKills(0);
-					if(megastreak.getClass() == NoMegastreak.class) {
+					if(megastreak instanceof NoMegastreak) {
 						if(pitPlayer.prestige < 0) prestige = true;
 						if(pitPlayer.level < 0) level = true;
-						if(pitPlayer.megastreak.getClass() == NoMegastreak.class) has = true;
+						if(pitPlayer.megastreak instanceof NoMegastreak) has = true;
 						if(!has && !prestige && !level) {
 							pitPlayer.megastreak.stop();
 							pitPlayer.megastreak = new NoMegastreak(pitPlayer);
 							perkGUI.megaWrapUp();
 						}
-					} else if(megastreak.getClass() == Overdrive.class) {
+					} else if(megastreak instanceof Overdrive) {
 						if(pitPlayer.prestige < 0) prestige = true;
 						if(pitPlayer.level < 0) level = true;
-						if(pitPlayer.megastreak.getClass() == Overdrive.class) has = true;
+						if(pitPlayer.megastreak instanceof Overdrive) has = true;
 						if(!has && !prestige && !level) {
 							pitPlayer.megastreak.stop();
 							pitPlayer.megastreak = new Overdrive(pitPlayer);
 							perkGUI.megaWrapUp();
 						}
-					} else if(megastreak.getClass() == Highlander.class) {
+					} else if(megastreak instanceof Highlander) {
 						if(pitPlayer.prestige < megastreak.prestigeReq()) prestige = true;
-						if(pitPlayer.megastreak.getClass() == Highlander.class) has = true;
+						if(pitPlayer.megastreak instanceof Highlander) has = true;
 						if(pitPlayer.level < 0) level = true;
 						if(pitPlayer.level < megastreak.getFinalLevelReq(player)) level = true;
 						if(!has && !prestige && !level) {
@@ -92,18 +92,18 @@ public class MegastreakPanel extends AGUIPanel {
 							pitPlayer.megastreak = new Highlander(pitPlayer);
 							perkGUI.megaWrapUp();
 						}
-					} else if(megastreak.getClass() == Beastmode.class) {
+					} else if(megastreak instanceof Beastmode) {
 						if(pitPlayer.prestige < megastreak.prestigeReq()) prestige = true;
-						if(pitPlayer.megastreak.getClass() == Beastmode.class) has = true;
+						if(pitPlayer.megastreak instanceof Beastmode) has = true;
 						if(pitPlayer.level < megastreak.getFinalLevelReq(player)) level = true;
 						if(!has && !prestige && !level) {
 							pitPlayer.megastreak.stop();
 							pitPlayer.megastreak = new Beastmode(pitPlayer);
 							perkGUI.megaWrapUp();
 						}
-					} else if(megastreak.getClass() == Uberstreak.class) {
+					} else if(megastreak instanceof Uberstreak) {
 						if(pitPlayer.prestige < megastreak.prestigeReq()) prestige = true;
-						if(pitPlayer.megastreak.getClass() == Uberstreak.class) has = true;
+						if(pitPlayer.megastreak instanceof Uberstreak) has = true;
 						if(pitPlayer.level < megastreak.getFinalLevelReq(player)) level = true;
 						if(pitPlayer.dailyUbersLeft <= 0) uberCd = true;
 						if(!has && !prestige && !uberCd && !level) {
@@ -111,23 +111,23 @@ public class MegastreakPanel extends AGUIPanel {
 							pitPlayer.megastreak = new Uberstreak(pitPlayer);
 							perkGUI.megaWrapUp();
 						}
-					} else if(megastreak.getClass() == ToTheMoon.class) {
+					} else if(megastreak instanceof ToTheMoon) {
 						if(pitPlayer.prestige < megastreak.prestigeReq()) prestige = true;
-						if(pitPlayer.megastreak.getClass() == ToTheMoon.class) has = true;
+						if(pitPlayer.megastreak instanceof ToTheMoon) has = true;
 						if(pitPlayer.level < megastreak.getFinalLevelReq(player)) level = true;
 						if(!has && !prestige && !uberCd && !level) {
 							pitPlayer.megastreak.stop();
 							pitPlayer.megastreak = new ToTheMoon(pitPlayer);
 							perkGUI.megaWrapUp();
 						}
-					} else if(megastreak.getClass() == RNGesus.class) {
+					} else if(megastreak instanceof RNGesus) {
 						if(pitPlayer.prestige < megastreak.prestigeReq()) prestige = true;
-						if(pitPlayer.megastreak.getClass() == RNGesus.class) has = true;
+						if(pitPlayer.megastreak instanceof RNGesus) has = true;
 						if(pitPlayer.level < megastreak.getFinalLevelReq(player)) level = true;
 						if(!has && !prestige && !uberCd && !level) {
 						}
 					}
-					if(megastreak.getClass() == RNGesus.class && !has && !prestige && !uberCd && !level) {
+					if(megastreak instanceof RNGesus && !has && !prestige && !uberCd && !level) {
 						if(!RNGesus.isOnCooldown(player)) {
 							Sounds.SUCCESS.play(player);
 							pitPlayer.megastreak.stop();
@@ -179,11 +179,11 @@ public class MegastreakPanel extends AGUIPanel {
 		boolean isOnCooldown = RNGesus.isOnCooldown(player);
 		for(Megastreak megastreak : PerkManager.megastreaks) {
 			ItemStack item = new ItemStack(megastreak.guiItem().getType());
-			if(megastreak.getClass() == RNGesus.class && isOnCooldown) item.setType(Material.ENDER_PEARL);
+			if(megastreak instanceof RNGesus && isOnCooldown) item.setType(Material.ENDER_PEARL);
 			ItemMeta meta = item.getItemMeta();
 			List<String> lore = new ArrayList<>(megastreak.guiItem().getItemMeta().getLore());
 			lore.add("");
-			if(megastreak.getClass() == Uberstreak.class && pitPlayer.prestige >= megastreak.prestigeReq()) {
+			if(megastreak instanceof Uberstreak && pitPlayer.prestige >= megastreak.prestigeReq()) {
 				if((System.currentTimeMillis() / 1000L) - 60 * 60 * 20 > pitPlayer.uberReset) {
 					pitPlayer.uberReset = 0;
 					pitPlayer.dailyUbersLeft = 5 + UberIncrease.getUberIncrease(player);
@@ -194,37 +194,37 @@ public class MegastreakPanel extends AGUIPanel {
 				else
 					lore.add(ChatColor.translateAlternateColorCodes('&', "&dDaily Uberstreaks remaining: &a" + ubersLeft + "&7/" + (5 + UberIncrease.getUberIncrease(player))));
 			}
-			if(megastreak.getClass() == RNGesus.class && isOnCooldown) {
+			if(megastreak instanceof RNGesus && isOnCooldown) {
 				lore.add(ChatColor.YELLOW + "Megastreak on cooldown! " + ChatColor.GRAY + "(" + RNGesus.getTime(player) + ")");
 			}
-			if(pitPlayer.megastreak.getClass() == megastreak.getClass() && megastreak.getClass() != NoMegastreak.class) {
+			if(pitPlayer.megastreak.getClass() == megastreak.getClass() && !(megastreak instanceof NoMegastreak)) {
 				lore.add(ChatColor.GREEN + "Already selected!");
 				meta.setDisplayName(ChatColor.GREEN + megastreak.getRawName());
 				meta.addEnchant(Enchantment.ARROW_FIRE, 1, false);
-			} else if(pitPlayer.prestige < megastreak.prestigeReq() && megastreak.getClass() != NoMegastreak.class) {
+			} else if(pitPlayer.prestige < megastreak.prestigeReq() && !(megastreak instanceof NoMegastreak)) {
 				lore.add(ChatColor.RED + "Unlocked at prestige " + ChatColor.YELLOW + AUtil.toRoman(megastreak.prestigeReq()));
 				meta.setDisplayName(ChatColor.RED + megastreak.getRawName());
-			} else if(megastreak.getClass() == Uberstreak.class && pitPlayer.dailyUbersLeft == 0) {
+			} else if(megastreak instanceof Uberstreak && pitPlayer.dailyUbersLeft == 0) {
 				lore.add(ChatColor.RED + "Daily limit reached!");
 				meta.setDisplayName(ChatColor.RED + megastreak.getRawName());
 			} else if(pitPlayer.level < megastreak.getFinalLevelReq(player)) {
 				PrestigeValues.PrestigeInfo info = PrestigeValues.getPrestigeInfo(pitPlayer.prestige);
 				lore.add(ChatColor.translateAlternateColorCodes('&', "&cUnlocked at level " + info.getOpenBracket() + PrestigeValues.getLevelColor(megastreak.getFinalLevelReq(player)) + megastreak.getFinalLevelReq(player) + info.getCloseBracket()));
 				meta.setDisplayName(ChatColor.RED + megastreak.getRawName());
-			} else if(megastreak.getClass() == RNGesus.class && pitPlayer.renown < 1 && isOnCooldown) {
+			} else if(megastreak instanceof RNGesus && pitPlayer.renown < 1 && isOnCooldown) {
 				lore.add(ChatColor.RED + "Click to select for " + RNGesus.RENOWN_COST + " renown!");
 				meta.setDisplayName(ChatColor.RED + megastreak.getRawName());
-			} else if(megastreak.getClass() == RNGesus.class && pitPlayer.renown >= 1 && isOnCooldown) {
+			} else if(megastreak instanceof RNGesus && pitPlayer.renown >= 1 && isOnCooldown) {
 				lore.add(ChatColor.YELLOW + "Click to select for " + RNGesus.RENOWN_COST + " renown!");
 				meta.setDisplayName(ChatColor.YELLOW + megastreak.getRawName());
-			} else if(megastreak.getClass() != NoMegastreak.class) {
+			} else if(!(megastreak instanceof NoMegastreak)) {
 				lore.add(ChatColor.YELLOW + "Click to select!");
 				meta.setDisplayName(ChatColor.YELLOW + megastreak.getRawName());
 			}
 			if(megastreak.getRawName().equalsIgnoreCase("Uberstreak")) {
 				meta.addEnchant(Enchantment.PROTECTION_ENVIRONMENTAL, 1, false);
 			}
-			if(megastreak.getClass() == NoMegastreak.class) {
+			if(megastreak instanceof NoMegastreak) {
 				meta.setDisplayName(ChatColor.RED + megastreak.getRawName());
 				lore.add(ChatColor.YELLOW + "Click to remove megastreak!");
 			}

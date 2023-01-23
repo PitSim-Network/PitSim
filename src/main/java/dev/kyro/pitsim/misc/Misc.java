@@ -53,6 +53,7 @@ import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.function.Predicate;
 
 public class Misc {
 	public static final String ALERTS_WEBHOOK = "***REMOVED***";
@@ -70,6 +71,36 @@ public class Misc {
 				}
 			}
 		}.runTaskAsynchronously(PitSim.INSTANCE);
+	}
+
+	public static int getItemCount(Player player, Predicate<PitItem> condition) {
+		int count = 0;
+		for(ItemStack itemStack : player.getInventory().getContents()) {
+			PitItem pitItem = ItemFactory.getItem(itemStack);
+			if(pitItem == null || !condition.test(pitItem)) continue;
+			count += itemStack.getAmount();
+		}
+		return count;
+	}
+
+	public static boolean removeItems(Player player, int amount, Predicate<PitItem> condition) {
+		if(getItemCount(player, condition) < amount) return false;
+		for(int i = 0; i < player.getInventory().getSize(); i++) {
+			ItemStack itemStack = player.getInventory().getItem(i);
+			PitItem pitItem = ItemFactory.getItem(itemStack);
+			if(pitItem == null || !condition.test(pitItem)) continue;
+
+			if(amount >= itemStack.getAmount()) {
+				player.getInventory().remove(itemStack);
+				amount -= itemStack.getAmount();
+				if(amount == 0) return true;
+			} else {
+				itemStack.setAmount(itemStack.getAmount() - amount);
+				player.getInventory().setItem(i, itemStack);
+				return true;
+			}
+		}
+		throw new RuntimeException();
 	}
 
 	public static List<String> getTabComplete(String current, List<String> options) {
@@ -268,11 +299,11 @@ public class Misc {
 
 		if(NonManager.getNon(entity) == null && entity instanceof Player) {
 			PitPlayer pitPlayer = PitPlayer.getPitPlayer((Player) entity);
-			if(pitPlayer.megastreak.getClass() == Uberstreak.class) {
+			if(pitPlayer.megastreak instanceof Uberstreak) {
 				Uberstreak uberstreak = (Uberstreak) pitPlayer.megastreak;
 				if(uberstreak.uberEffects.contains(Uberstreak.UberEffect.NO_SPEED) && type == PotionEffectType.SPEED)
 					return;
-			} else if(pitPlayer.megastreak.getClass() != Overdrive.class && pitPlayer.megastreak.isOnMega() && type == PotionEffectType.SLOW)
+			} else if(!(pitPlayer.megastreak instanceof Overdrive) && pitPlayer.megastreak.isOnMega() && type == PotionEffectType.SLOW)
 				return;
 		}
 
@@ -362,7 +393,7 @@ public class Misc {
 
 	public static void sendActionBar(Player player, String message) {
 		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
-		if(pitPlayer.megastreak.getClass() == RNGesus.class && pitPlayer.getKills() < RNGesus.INSTABILITY_THRESHOLD && pitPlayer.megastreak.isOnMega())
+		if(pitPlayer.megastreak instanceof RNGesus && pitPlayer.getKills() < RNGesus.INSTABILITY_THRESHOLD && pitPlayer.megastreak.isOnMega())
 			return;
 
 		PacketPlayOutChat packet = new PacketPlayOutChat(IChatBaseComponent.ChatSerializer.a("{\"text\":\"" +

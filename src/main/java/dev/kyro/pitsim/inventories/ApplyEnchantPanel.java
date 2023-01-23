@@ -50,7 +50,7 @@ public class ApplyEnchantPanel extends AGUIPanel {
 			if((!hasCommon || (previousEnchant != null && !previousEnchant.getKey().isUncommonEnchant)) && enchants >= 2 && enchant.isUncommonEnchant)
 				continue;
 			if(EnchantManager.getEnchantsOnItem(mystic).containsKey(enchant)) continue;
-			if(enchant.getClass() == SelfCheckout.class) continue;
+			if(enchant instanceof SelfCheckout) continue;
 			applicableEnchants.add(enchant);
 		}
 		int count = 0;

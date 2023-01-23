@@ -126,7 +126,7 @@ public class ApplyPerkPanel extends AGUIPanel {
 					return;
 				}
 
-				if(clickedPerk.getClass() == Streaker.class && pitPlayer.getKills() > 0) {
+				if(clickedPerk instanceof Streaker && pitPlayer.getKills() > 0) {
 					AOutput.error(player, "&cYou cannot select this perk while on a killstreak!");
 					Sounds.ERROR.play(player);
 					return;

@@ -114,7 +114,7 @@ public class ToTheMoon extends Megastreak {
 		if(!attackEvent.isDefenderPlayer()) return;
 		PitPlayer pitPlayer = attackEvent.getDefenderPitPlayer();
 		if(pitPlayer != this.pitPlayer) return;
-		if(pitPlayer.megastreak.getClass() == ToTheMoon.class) {
+		if(pitPlayer.megastreak instanceof ToTheMoon) {
 			if(pitPlayer.getKills() > 200) {
 				double increase = (3 * ((pitPlayer.getKills() - 200) / 20)) / 100D;
 				if(NonManager.getNon(attackEvent.getAttacker()) == null) {
@@ -137,7 +137,7 @@ public class ToTheMoon extends Megastreak {
 		if(!killEvent.isKillerPlayer()) return;
 		PitPlayer pitPlayer = killEvent.getKillerPitPlayer();
 		if(pitPlayer != this.pitPlayer) return;
-		if(!(pitPlayer.megastreak.getClass() == ToTheMoon.class)) return;
+		if(!(pitPlayer.megastreak instanceof ToTheMoon)) return;
 		if(!playerIsOnMega(killEvent)) return;
 
 		killEvent.xpCap += 330;
@@ -158,7 +158,7 @@ public class ToTheMoon extends Megastreak {
 		runnable = new BukkitRunnable() {
 			@Override
 			public void run() {
-				if(pitPlayer.megastreak.getClass() == ToTheMoon.class && pitPlayer.megastreak.isOnMega()) {
+				if(pitPlayer.megastreak instanceof ToTheMoon && pitPlayer.megastreak.isOnMega()) {
 					Misc.applyPotionEffect(pitPlayer.player, PotionEffectType.SPEED, 200, 0, true, false);
 				}
 			}

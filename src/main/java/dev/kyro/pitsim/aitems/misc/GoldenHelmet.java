@@ -10,7 +10,6 @@ import dev.kyro.pitsim.controllers.objects.HelmetManager;
 import dev.kyro.pitsim.enums.AuctionCategory;
 import dev.kyro.pitsim.enums.NBTTag;
 import org.bukkit.Material;
-import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.ArrayList;
@@ -61,7 +60,6 @@ public class GoldenHelmet extends PitItem {
 		itemStack = buildItem(itemStack);
 
 		NBTItem nbtItem = new NBTItem(itemStack);
-		nbtItem.setBoolean(NBTTag.IS_GHELMET.getRef(), true);
 		nbtItem.setInteger(NBTTag.GHELMET_GOLD.getRef(), 0);
 		nbtItem.setString(NBTTag.GHELMET_ABILITY.getRef(), null);
 		nbtItem.setString(NBTTag.GHELMET_UUID.getRef(), UUID.randomUUID().toString());

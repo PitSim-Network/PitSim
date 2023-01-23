@@ -42,8 +42,8 @@ public class SelfCheckout extends PitEnchant {
 		if(enchantLvl == 0) return;
 
 		PitPlayer pitKiller = PitPlayer.getPitPlayer(killEvent.getKillerPlayer());
-		if(pitKiller.getKills() + 1 < 200 || pitKiller.megastreak.getClass() == Uberstreak.class ||
-				pitKiller.megastreak.getClass() == NoMegastreak.class || pitKiller.megastreak.getClass() == RNGesus.class) return;
+		if(pitKiller.getKills() + 1 < 200 || pitKiller.megastreak instanceof Uberstreak ||
+				pitKiller.megastreak instanceof NoMegastreak || pitKiller.megastreak instanceof RNGesus) return;
 
 		NBTItem nbtItem = new NBTItem(leggings);
 		if(!EnchantManager.isJewelComplete(leggings) || !nbtItem.getString(NBTTag.ITEM_JEWEL_ENCHANT.getRef()).equalsIgnoreCase(refNames.get(0))) {

@@ -45,8 +45,8 @@ public class BoosterManager implements Listener {
 						double xp = 0;
 						double gold = 0;
 						for(BoosterReward boosterReward : entry.getValue()) {
-							if(boosterReward.booster.getClass() == XPBooster.class) xp += boosterReward.amount;
-							if(boosterReward.booster.getClass() == GoldBooster.class) gold += boosterReward.amount;
+							if(boosterReward.booster instanceof XPBooster) xp += boosterReward.amount;
+							if(boosterReward.booster instanceof GoldBooster) gold += boosterReward.amount;
 						}
 						if(xp != 0) {
 							AOutput.send(onlinePlayer, "&6&lBOOSTER &7Received &b" +

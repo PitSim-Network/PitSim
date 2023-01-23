@@ -145,7 +145,7 @@ public class RNGesus extends Megastreak {
 	public void onAttack(AttackEvent.Pre attackEvent) {
 		if(!PlayerManager.isRealPlayer(attackEvent.getAttackerPlayer()) || !PlayerManager.isRealPlayer(attackEvent.getDefenderPlayer()))
 			return;
-		if((attackEvent.getDefenderPitPlayer() == pitPlayer || attackEvent.getDefenderPitPlayer() == pitPlayer) && pitPlayer.megastreak.getClass() == RNGesus.class &&
+		if((attackEvent.getDefenderPitPlayer() == pitPlayer || attackEvent.getDefenderPitPlayer() == pitPlayer) && pitPlayer.megastreak instanceof RNGesus &&
 				attackEvent.getAttackerPlayer() != attackEvent.getDefenderPlayer() && pitPlayer.getKills() >= INSTABILITY_THRESHOLD) {
 			attackEvent.setCancelled(true);
 		}
@@ -155,7 +155,7 @@ public class RNGesus extends Megastreak {
 	public void onHit(AttackEvent.Apply attackEvent) {
 		if(!attackEvent.isAttackerPlayer()) return;
 		PitPlayer pitPlayer = attackEvent.getAttackerPitPlayer();
-		if(pitPlayer != this.pitPlayer || pitPlayer.megastreak.getClass() != RNGesus.class) return;
+		if(pitPlayer != this.pitPlayer || !(pitPlayer.megastreak instanceof RNGesus)) return;
 		if(NonManager.getNon(attackEvent.getAttacker()) != null) return;
 
 		if(pitPlayer.getKills() + 1 >= INSTABILITY_THRESHOLD) {
@@ -203,7 +203,7 @@ public class RNGesus extends Megastreak {
 		if(!killEvent.isKillerPlayer()) return;
 		PitPlayer pitPlayer = killEvent.getKillerPitPlayer();
 		if(pitPlayer != this.pitPlayer) return;
-		if(pitPlayer.getKills() >= INSTABILITY_THRESHOLD && pitPlayer.megastreak.getClass() == RNGesus.class) {
+		if(pitPlayer.getKills() >= INSTABILITY_THRESHOLD && pitPlayer.megastreak instanceof RNGesus) {
 			killEvent.xpMultipliers.clear();
 			killEvent.xpReward = 0;
 			killEvent.xpCap = 0;
@@ -221,7 +221,7 @@ public class RNGesus extends Megastreak {
 		if(!killEvent.isKillerPlayer()) return;
 		PitPlayer pitPlayer = killEvent.getKillerPitPlayer();
 		if(pitPlayer != this.pitPlayer) return;
-		if(pitPlayer.megastreak.getClass() == RNGesus.class) {
+		if(pitPlayer.megastreak instanceof RNGesus) {
 			if((pitPlayer.getKills() + 1) % 100 == 0 && pitPlayer.getKills() + 1 < INSTABILITY_THRESHOLD) {
 				shiftReality();
 			}
@@ -242,7 +242,7 @@ public class RNGesus extends Megastreak {
 		if(NonManager.getNon(attackEvent.getDefender()) == null) return;
 		PitPlayer pitPlayer = attackEvent.getAttackerPitPlayer();
 		if(pitPlayer != this.pitPlayer) return;
-		if(pitPlayer.megastreak.isOnMega() && pitPlayer.megastreak.getClass() == RNGesus.class) {
+		if(pitPlayer.megastreak.isOnMega() && pitPlayer.megastreak instanceof RNGesus) {
 
 			if(reality == Reality.DAMAGE) {
 				realityMap.get(reality).progression += attackEvent.getFinalDamage();
@@ -258,7 +258,7 @@ public class RNGesus extends Megastreak {
 		Player player = event.getPlayer();
 		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
 		if(pitPlayer != this.pitPlayer) return;
-		if(pitPlayer.getKills() + 1 < INSTABILITY_THRESHOLD || pitPlayer.megastreak.getClass() != RNGesus.class) return;
+		if(pitPlayer.getKills() + 1 < INSTABILITY_THRESHOLD || !(pitPlayer.megastreak instanceof RNGesus)) return;
 		event.multipliers.add(0.0);
 	}
 
@@ -296,7 +296,7 @@ public class RNGesus extends Megastreak {
 				}
 				if(count++ % 5 != 0) return;
 
-				if(pitPlayer.megastreak.getClass() != RNGesus.class) return;
+				if(!(pitPlayer.megastreak instanceof RNGesus)) return;
 				if(pitPlayer.getKills() < INSTABILITY_THRESHOLD && isOnMega()) {
 					DecimalFormat decimalFormat = new DecimalFormat("#,####,##0");
 					switch(reality) {

@@ -318,7 +318,7 @@ public class DamageManager implements Listener {
 
 		if(deadIsPlayer) {
 			PitPlayer pitPlayer = PitPlayer.getPitPlayer(deadPlayer);
-			if(pitPlayer.megastreak.getClass() == RNGesus.class && RNGesus.isOnCooldown(deadPlayer)) {
+			if(pitPlayer.megastreak instanceof RNGesus && RNGesus.isOnCooldown(deadPlayer)) {
 				new BukkitRunnable() {
 					@Override
 					public void run() {

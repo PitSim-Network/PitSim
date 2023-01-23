@@ -1,16 +1,15 @@
 package dev.kyro.pitsim.inventories;
 
-import de.tr7zw.nbtapi.NBTItem;
 import dev.kyro.arcticapi.gui.AGUI;
 import dev.kyro.arcticapi.gui.AGUIPanel;
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.arcticapi.misc.AUtil;
+import dev.kyro.pitsim.aitems.misc.AncientGemShard;
 import dev.kyro.pitsim.aitems.misc.TotallyLegitGem;
 import dev.kyro.pitsim.controllers.ItemFactory;
 import dev.kyro.pitsim.controllers.UpgradeManager;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.controllers.objects.RenownUpgrade;
-import dev.kyro.pitsim.enums.NBTTag;
 import dev.kyro.pitsim.misc.Misc;
 import dev.kyro.pitsim.misc.Sounds;
 import org.bukkit.ChatColor;
@@ -86,30 +85,12 @@ public class ShardHunterPanel extends AGUIPanel {
 					AOutput.error(player, "&aYou already unlocked this upgrade!");
 					Sounds.NO.play(player);
 				}
-
 			}
 			if(slot == 11) {
-				if(getShards() < 64) {
+				if(!Misc.removeItems(player, 64, pitItem -> pitItem instanceof AncientGemShard)) {
 					AOutput.error(player, "&cYou do not have enough shards to craft this!");
 					Sounds.NO.play(player);
 					return;
-				}
-
-				int itemsToRemove = 64;
-				for(int i = 0; i < player.getInventory().getContents().length; i++) {
-					if(!Misc.isAirOrNull(player.getInventory().getItem(i))) {
-						NBTItem nbtItem = new NBTItem(player.getInventory().getItem(i));
-						if(nbtItem.hasKey(NBTTag.IS_SHARD.getRef())) {
-							int preAmount = player.getInventory().getItem(i).getAmount();
-							int newAmount = Math.max(0, preAmount - itemsToRemove);
-							itemsToRemove = Math.max(0, itemsToRemove - preAmount);
-							nbtItem.getItem().setAmount(newAmount);
-							player.getInventory().setItem(i, nbtItem.getItem());
-							if(itemsToRemove == 0) {
-								break;
-							}
-						}
-					}
 				}
 
 				AUtil.giveItemSafely(player, ItemFactory.getItem(TotallyLegitGem.class).getItem(1), true);
@@ -133,19 +114,9 @@ public class ShardHunterPanel extends AGUIPanel {
 			if(renownUpgrade.refName.equals("SHARDHUNTER")) upgrade = renownUpgrade;
 		}
 
-		StringBuilder output = new StringBuilder();
-		int shards = getShards();
-		double calc = 0.3906; //Alternately 0.3906 25/64
-		int filled = (int) (calc * (shards + 1));
-		if(filled > 25) filled = 25;
-		int remaining = 25 - filled;
-
-		for(int i = 0; i < filled; i++) {
-			output.append(ChatColor.GREEN + "|");
-		}
-		for(int i = 0; i < remaining; i++) {
-			output.append(ChatColor.GRAY + "|");
-		}
+		int shards = Misc.getItemCount(player, pitItem -> pitItem instanceof AncientGemShard);
+		double percent = shards / 64.0;
+		String progressBar = AUtil.createProgressBar("|", ChatColor.GREEN, ChatColor.GRAY, 25, percent);
 
 		ItemStack gem = new ItemStack(Material.WORKBENCH);
 		ItemMeta meta = gem.getItemMeta();
@@ -159,9 +130,7 @@ public class ShardHunterPanel extends AGUIPanel {
 		lore.add(ChatColor.translateAlternateColorCodes('&', "&7on &dHidden Jewel &7items)"));
 		lore.add("");
 		lore.add(ChatColor.translateAlternateColorCodes('&', "&7Your progress:"));
-		float percent = 100 * (((float) shards) / 64);
-		if(percent > 100) percent = 100;
-		lore.add(ChatColor.translateAlternateColorCodes('&', "&a" + shards + "&7/64 ") + output.toString() + ChatColor.DARK_GRAY + " (" + (int) percent + "%)");
+		lore.add(ChatColor.translateAlternateColorCodes('&', "&a" + shards + "&7/64 ") + progressBar + "&8 (" + (int) percent + "%)");
 		lore.add("");
 		if(shards >= 64) lore.add(ChatColor.YELLOW + "Click to craft!");
 		else lore.add(ChatColor.RED + "Not enough shards!");
@@ -180,24 +149,8 @@ public class ShardHunterPanel extends AGUIPanel {
 		back.setItemMeta(backMeta);
 
 		getInventory().setItem(22, back);
-
-	}
-
-	public int getShards() {
-		int shards = 0;
-		for(ItemStack itemStack : player.getInventory()) {
-			if(Misc.isAirOrNull(itemStack)) continue;
-			NBTItem nbtItem = new NBTItem(itemStack);
-			if(nbtItem.hasKey(NBTTag.IS_SHARD.getRef())) {
-				shards += itemStack.getAmount();
-			}
-		}
-		return shards;
 	}
 
 	@Override
-	public void onClose(InventoryCloseEvent event) {
-
-	}
-
+	public void onClose(InventoryCloseEvent event) {}
 }

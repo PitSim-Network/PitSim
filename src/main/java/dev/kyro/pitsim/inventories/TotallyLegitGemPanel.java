@@ -3,14 +3,18 @@ package dev.kyro.pitsim.inventories;
 import de.tr7zw.nbtapi.NBTItem;
 import dev.kyro.arcticapi.gui.AGUI;
 import dev.kyro.arcticapi.gui.AGUIPanel;
-import dev.kyro.pitsim.logging.LogManager;
+import dev.kyro.pitsim.aitems.PitItem;
+import dev.kyro.pitsim.aitems.misc.TotallyLegitGem;
 import dev.kyro.pitsim.controllers.EnchantManager;
+import dev.kyro.pitsim.controllers.ItemFactory;
 import dev.kyro.pitsim.controllers.objects.PitEnchant;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.enums.NBTTag;
+import dev.kyro.pitsim.logging.LogManager;
 import dev.kyro.pitsim.misc.Misc;
 import dev.kyro.pitsim.misc.Sounds;
 import org.bukkit.ChatColor;
+import org.bukkit.Material;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.inventory.InventoryOpenEvent;
@@ -45,18 +49,11 @@ public class TotallyLegitGemPanel extends AGUIPanel {
 	public void onClick(InventoryClickEvent event) {
 		int slot = event.getSlot();
 
-		if(Misc.isAirOrNull(event.getCurrentItem())) {
-			return;
-		}
+		if(Misc.isAirOrNull(event.getCurrentItem())) return;
 
-		ItemStack itemStack = player.getItemInHand();
-		if(Misc.isAirOrNull(itemStack)) {
-			player.closeInventory();
-			return;
-		}
-
-		NBTItem held = new NBTItem(player.getItemInHand());
-		if(!held.hasKey(NBTTag.IS_GEM.getRef())) {
+		ItemStack gemStack = player.getItemInHand();
+		PitItem pitItem = ItemFactory.getItem(gemStack);
+		if(!(pitItem instanceof TotallyLegitGem)) {
 			player.closeInventory();
 			return;
 		}
@@ -92,21 +89,11 @@ public class TotallyLegitGemPanel extends AGUIPanel {
 					PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
 					if(pitPlayer.stats != null) pitPlayer.stats.itemsGemmed++;
 
-					int itemsToRemove = 1;
-					for(int j = 0; j < player.getInventory().getContents().length; j++) {
-						if(!Misc.isAirOrNull(player.getInventory().getItem(j))) {
-							NBTItem nbtItem2 = new NBTItem(player.getInventory().getItem(j));
-							if(nbtItem2.hasKey(NBTTag.IS_GEM.getRef())) {
-								int preAmount = player.getInventory().getItem(j).getAmount();
-								int newAmount = Math.max(0, preAmount - itemsToRemove);
-								itemsToRemove = Math.max(0, itemsToRemove - preAmount);
-								nbtItem2.getItem().setAmount(newAmount);
-								player.getInventory().setItem(j, nbtItem2.getItem());
-								if(itemsToRemove == 0) {
-									break;
-								}
-							}
-						}
+					if(gemStack.getAmount() == 1) {
+						player.setItemInHand(new ItemStack(Material.AIR));
+					} else {
+						gemStack.setAmount(gemStack.getAmount() - 1);
+						player.setItemInHand(gemStack);
 					}
 				}
 			}

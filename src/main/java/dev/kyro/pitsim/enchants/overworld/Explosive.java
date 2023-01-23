@@ -56,7 +56,7 @@ public class Explosive extends PitEnchant {
 
 					PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
 					if(NonManager.getNon(player) == null) {
-						if(pitPlayer.megastreak.getClass() == Uberstreak.class && pitPlayer.megastreak.isOnMega())
+						if(pitPlayer.megastreak instanceof Uberstreak && pitPlayer.megastreak.isOnMega())
 							continue;
 						Vector force = player.getLocation().toVector().subtract(arrow.getLocation().toVector())
 								.setY(1).normalize().multiply(non == null ? 1.15 : 5);

@@ -358,7 +358,7 @@ public class PlayerManager implements Listener {
 				AOutput.send(player, bountyMessage);
 			}
 			LevelManager.addGold(killEvent.getKillerPlayer(), pitDead.bounty);
-			if(pitDead.megastreak.getClass() != Highlander.class) pitDead.bounty = 0;
+			if(!(pitDead.megastreak instanceof Highlander)) pitDead.bounty = 0;
 
 			if(pitKiller.stats != null) pitKiller.stats.bountiesClaimed++;
 		}
@@ -386,7 +386,7 @@ public class PlayerManager implements Listener {
 		PitPlayer pitPlayer = PitPlayer.getPitPlayer(event.player);
 		int kills = event.kills;
 		Megastreak megastreak = pitPlayer.megastreak;
-		if(kills == megastreak.getRequiredKills() && megastreak.getClass() != NoMegastreak.class) megastreak.proc();
+		if(kills == megastreak.getRequiredKills() && !(megastreak instanceof NoMegastreak)) megastreak.proc();
 		pitPlayer.megastreak.kill();
 	}
 
@@ -800,7 +800,7 @@ public class PlayerManager implements Listener {
 		XmasMap.removeFromRadio(player);
 		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
 		pitPlayer.megastreak.stop();
-		if(pitPlayer.megastreak.getClass() == RNGesus.class && RNGesus.isOnCooldown(player)) {
+		if(pitPlayer.megastreak instanceof RNGesus && RNGesus.isOnCooldown(player)) {
 			pitPlayer.megastreak = new NoMegastreak(pitPlayer);
 		}
 	}
@@ -808,7 +808,7 @@ public class PlayerManager implements Listener {
 	@EventHandler
 	public void onOof(OofEvent event) {
 		PitPlayer pitPlayer = PitPlayer.getPitPlayer(event.getPlayer());
-		if(pitPlayer.megastreak.getClass() == RNGesus.class && RNGesus.isOnCooldown(event.getPlayer())) {
+		if(pitPlayer.megastreak instanceof RNGesus && RNGesus.isOnCooldown(event.getPlayer())) {
 			new BukkitRunnable() {
 				@Override
 				public void run() {

@@ -167,7 +167,7 @@ public class PerkPanel extends AGUIPanel {
 		ItemMeta msMeta = megaStreak.getItemMeta();
 		msMeta.setDisplayName(ChatColor.YELLOW + "Megastreak");
 		List<String> msLore = new ArrayList<>();
-		if(pitPlayer.megastreak.getClass() != NoMegastreak.class) {
+		if(!(pitPlayer.megastreak instanceof NoMegastreak)) {
 			msLore.add(ChatColor.GRAY + "Selected: " + ChatColor.GREEN + pitPlayer.megastreak.getRawName());
 			msLore.add("");
 			msLore.addAll(pitPlayer.megastreak.guiItem().getItemMeta().getLore());
@@ -175,7 +175,7 @@ public class PerkPanel extends AGUIPanel {
 			msLore.add(ChatColor.GRAY + "Select a megastreak to fill this slot.");
 		}
 		msLore.add("");
-		if(pitPlayer.megastreak.getClass() == NoMegastreak.class) {
+		if(pitPlayer.megastreak instanceof NoMegastreak) {
 			msLore.add(ChatColor.YELLOW + "Click to choose megastreak!");
 		} else {
 			msLore.add(ChatColor.YELLOW + "Click to switch megastreak!");

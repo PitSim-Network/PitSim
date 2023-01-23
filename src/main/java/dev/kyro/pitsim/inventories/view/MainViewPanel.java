@@ -53,7 +53,7 @@ public class MainViewPanel extends AGUIPanel {
 			ItemStack itemStack = pitPerk.getDisplayItem();
 			new AItemStackBuilder(itemStack)
 					.setName("&a" + itemStack.getItemMeta().getDisplayName());
-			if(pitPerk.getClass() == NoPerk.class) {
+			if(pitPerk instanceof NoPerk) {
 				new AItemStackBuilder(itemStack)
 						.setLore(new ALoreBuilder("&7No perk selected!"));
 			}
@@ -62,9 +62,8 @@ public class MainViewPanel extends AGUIPanel {
 
 		ALoreBuilder killstreakLore = new ALoreBuilder();
 		for(Killstreak killstreak : pitTarget.killstreaks) {
-			if(killstreak.getClass() != NoKillstreak.class) {
-				killstreakLore.addLore("&7Every &c" + killstreak.killInterval + " &7kills: &a" + killstreak.name);
-			}
+			if(killstreak instanceof NoKillstreak) continue;
+			killstreakLore.addLore("&7Every &c" + killstreak.killInterval + " &7kills: &a" + killstreak.name);
 		}
 		killstreakLore.addLore("&7Megastreak: &a" + pitTarget.megastreak.getRawName());
 		ItemStack killstreaks = new AItemStackBuilder(pitTarget.megastreak.guiItem())
