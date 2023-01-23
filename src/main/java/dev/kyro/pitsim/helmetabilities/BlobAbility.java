@@ -6,7 +6,7 @@ import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.controllers.objects.HelmetAbility;
 import dev.kyro.pitsim.controllers.objects.HelmetManager;
-import dev.kyro.pitsim.enchants.overworld.PitBlob;
+import dev.kyro.pitsim.enchants.overworld.BlobManager;
 import dev.kyro.pitsim.misc.Sounds;
 import org.bukkit.Material;
 import org.bukkit.entity.EntityType;
@@ -33,7 +33,7 @@ public class BlobAbility extends HelmetAbility {
 		Slime slime;
 		slime = (Slime) player.getWorld().spawnEntity(player.getLocation(), EntityType.SLIME);
 		slime.setSize(1);
-		PitBlob.blobMap.put(player.getUniqueId(), slime);
+		BlobManager.blobMap.put(player.getUniqueId(), slime);
 		Sounds.HELMET_ACTIVATE.play(player);
 		AOutput.send(player, "&6&lGOLDEN HELMET! &aActivated &9Pit Blob&7 (&6-4,000g&7 per second)");
 
@@ -65,14 +65,14 @@ public class BlobAbility extends HelmetAbility {
 
 	@Override
 	public void onDeactivate() {
-		Slime slime = PitBlob.blobMap.get(player.getUniqueId());
+		Slime slime = BlobManager.blobMap.get(player.getUniqueId());
 		try {
 			slime.remove();
 
 		} catch(Exception e) {
 		}
 
-		PitBlob.blobMap.remove(player.getUniqueId());
+		BlobManager.blobMap.remove(player.getUniqueId());
 		if(runnable != null) runnable.cancel();
 		AOutput.send(player, "&6&lGOLDEN HELMET! &cDeactivated &9Pit Blob&c.");
 	}

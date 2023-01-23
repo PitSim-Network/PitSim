@@ -18,8 +18,6 @@ import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.adarkzone.*;
 import dev.kyro.pitsim.adarkzone.notdarkzone.ShieldManager;
 import dev.kyro.pitsim.adarkzone.progression.ProgressionManager;
-import dev.kyro.pitsim.aitems.misc.TokenOfAppreciation;
-import dev.kyro.pitsim.aitems.misc.TotallyLegitGem;
 import dev.kyro.pitsim.aitems.misc.*;
 import dev.kyro.pitsim.aitems.mobdrops.*;
 import dev.kyro.pitsim.aitems.mystics.*;
@@ -59,13 +57,12 @@ import dev.kyro.pitsim.cosmetics.misc.Halo;
 import dev.kyro.pitsim.cosmetics.misc.KyroCosmetic;
 import dev.kyro.pitsim.cosmetics.misc.MysticPresence;
 import dev.kyro.pitsim.cosmetics.trails.*;
-import dev.kyro.pitsim.enchants.*;
-import dev.kyro.pitsim.enchants.overworld.*;
 import dev.kyro.pitsim.enchants.overworld.GoldBoost;
-import dev.kyro.pitsim.enchants.tainted.abilities.*;
+import dev.kyro.pitsim.enchants.overworld.*;
+import dev.kyro.pitsim.enchants.tainted.abilities.MaxHealth;
+import dev.kyro.pitsim.enchants.tainted.abilities.Sonic;
 import dev.kyro.pitsim.enchants.tainted.spells.*;
 import dev.kyro.pitsim.enums.NBTTag;
-import dev.kyro.pitsim.events.ThrowBlockEvent;
 import dev.kyro.pitsim.helmetabilities.*;
 import dev.kyro.pitsim.killstreaks.*;
 import dev.kyro.pitsim.kits.EssentialKit;
@@ -74,10 +71,12 @@ import dev.kyro.pitsim.kits.PvPKit;
 import dev.kyro.pitsim.kits.XPKit;
 import dev.kyro.pitsim.leaderboards.*;
 import dev.kyro.pitsim.logging.LogManager;
-import dev.kyro.pitsim.market.MarketManager;
 import dev.kyro.pitsim.market.MarketMessaging;
 import dev.kyro.pitsim.megastreaks.*;
-import dev.kyro.pitsim.misc.*;
+import dev.kyro.pitsim.misc.ItemRename;
+import dev.kyro.pitsim.misc.PrivateInfo;
+import dev.kyro.pitsim.misc.ReloadManager;
+import dev.kyro.pitsim.misc.TempBlockHelper;
 import dev.kyro.pitsim.misc.packets.SignPrompt;
 import dev.kyro.pitsim.npcs.*;
 import dev.kyro.pitsim.perks.*;
@@ -109,7 +108,6 @@ import java.util.*;
 
 public class PitSim extends JavaPlugin {
 	public static final double VERSION = 3.0;
-	public static final boolean PASS_ENABLED = true;
 
 	public static LuckPerms LUCKPERMS;
 	public static GrimAbstractAPI GRIM;
@@ -559,8 +557,8 @@ public class PitSim extends JavaPlugin {
 		getCommand("view").setExecutor(new ViewCommand());
 		getCommand("music").setExecutor(new MusicCommand());
 		getCommand("migrate").setExecutor(new MigrateCommand());
-		if(PASS_ENABLED) getCommand("pass").setExecutor(new PassCommand());
-		if(PASS_ENABLED) getCommand("quests").setExecutor(new QuestsCommand());
+		getCommand("pass").setExecutor(new PassCommand());
+		getCommand("quests").setExecutor(new QuestsCommand());
 		SettingsCommand settingsCommand = new SettingsCommand();
 		getCommand("settings").setExecutor(settingsCommand);
 		getCommand("setting").setExecutor(settingsCommand);
@@ -588,8 +586,6 @@ public class PitSim extends JavaPlugin {
 	private void registerListeners() {
 
 		getServer().getPluginManager().registerEvents(new DamageManager(), this);
-		getServer().getPluginManager().registerEvents(new ThrowBlockEvent(), this);
-//		getServer().getPluginManager().registerEvents(new NonManager(), this);
 		getServer().getPluginManager().registerEvents(new PlayerManager(), this);
 		getServer().getPluginManager().registerEvents(new PlayerDataManager(), this);
 		getServer().getPluginManager().registerEvents(new ChatManager(), this);
@@ -602,8 +598,7 @@ public class PitSim extends JavaPlugin {
 		getServer().getPluginManager().registerEvents(new AFKManager(), this);
 		getServer().getPluginManager().registerEvents(new EnchantManager(), this);
 		getServer().getPluginManager().registerEvents(new TotallyLegitGem(), this);
-		getServer().getPluginManager().registerEvents(new PitBlob(), this);
-		getServer().getPluginManager().registerEvents(new BackwardsCompatibility(), this);
+		getServer().getPluginManager().registerEvents(new BlobManager(), this);
 		getServer().getPluginManager().registerEvents(new BoosterManager(), this);
 		getServer().getPluginManager().registerEvents(new HopperManager(), this);
 		getServer().getPluginManager().registerEvents(new ResourcePackManager(), this);
@@ -614,20 +609,14 @@ public class PitSim extends JavaPlugin {
 		getServer().getPluginManager().registerEvents(new UpgradeManager(), this);
 		getServer().getPluginManager().registerEvents(new KitManager(), this);
 		getServer().getPluginManager().registerEvents(new PortalManager(), this);
-		if(getStatus().isDarkzone()) getServer().getPluginManager().registerEvents(new TaintedWell(), this);
-		if(getStatus().isDarkzone()) getServer().getPluginManager().registerEvents(new BrewingManager(), this);
 		getServer().getPluginManager().registerEvents(new PotionManager(), this);
 		getServer().getPluginManager().registerEvents(new TaintedManager(), this);
 		getServer().getPluginManager().registerEvents(new StereoManager(), this);
-		if(getStatus().isDarkzone()) getServer().getPluginManager().registerEvents(new MusicManager(), this);
-		if(getStatus().isDarkzone()) getServer().getPluginManager().registerEvents(new CutsceneManager(), this);
-		if(getStatus().isDarkzone()) getServer().getPluginManager().registerEvents(new AuctionDisplays(), this);
-		if(getStatus().isDarkzone()) getServer().getPluginManager().registerEvents(new AuctionManager(), this);
 		getServer().getPluginManager().registerEvents(new ScoreboardManager(), this);
 		getServer().getPluginManager().registerEvents(new ProxyMessaging(), this);
 		getServer().getPluginManager().registerEvents(new LobbySwitchManager(), this);
 		getServer().getPluginManager().registerEvents(new AuctionManager(), this);
-		if(PASS_ENABLED) getServer().getPluginManager().registerEvents(new PassManager(), this);
+		getServer().getPluginManager().registerEvents(new PassManager(), this);
 		getServer().getPluginManager().registerEvents(new SkinManager(), this);
 		getServer().getPluginManager().registerEvents(new TimeManager(), this);
 		getServer().getPluginManager().registerEvents(new NPCManager(), this);
@@ -642,8 +631,14 @@ public class PitSim extends JavaPlugin {
 		getServer().getPluginManager().registerEvents(new AIManager(), this);
 		getServer().getPluginManager().registerEvents(new MarketMessaging(), this);
 
-//		New darkzone code
 		if(getStatus().isDarkzone()) {
+			getServer().getPluginManager().registerEvents(new TaintedWell(), this);
+			getServer().getPluginManager().registerEvents(new BrewingManager(), this);
+			getServer().getPluginManager().registerEvents(new MusicManager(), this);
+			getServer().getPluginManager().registerEvents(new CutsceneManager(), this);
+			getServer().getPluginManager().registerEvents(new AuctionDisplays(), this);
+			getServer().getPluginManager().registerEvents(new AuctionManager(), this);
+
 			getServer().getPluginManager().registerEvents(new DarkzoneManager(), this);
 			getServer().getPluginManager().registerEvents(new BossManager(), this);
 			getServer().getPluginManager().registerEvents(new ShieldManager(), this);

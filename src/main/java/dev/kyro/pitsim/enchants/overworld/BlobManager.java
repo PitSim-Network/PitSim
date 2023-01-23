@@ -1,28 +1,25 @@
 package dev.kyro.pitsim.enchants.overworld;
 
-import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.controllers.DamageManager;
 import dev.kyro.pitsim.controllers.NonManager;
 import dev.kyro.pitsim.controllers.SpawnManager;
 import dev.kyro.pitsim.controllers.objects.HelmetManager;
 import dev.kyro.pitsim.controllers.objects.Non;
-import dev.kyro.pitsim.controllers.objects.PitEnchant;
-import dev.kyro.pitsim.enums.ApplyType;
 import dev.kyro.pitsim.events.KillEvent;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
+import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.*;
 
-public class PitBlob extends PitEnchant {
-
+public class BlobManager implements Listener {
 	public static Map<UUID, Slime> blobMap = new HashMap<>();
 
 	@EventHandler(priority = EventPriority.LOW)
@@ -88,14 +85,9 @@ public class PitBlob extends PitEnchant {
 		}.runTaskTimer(PitSim.INSTANCE, 0L, 20L);
 	}
 
-	public PitBlob() {
-		super("Slime Boss Mid", true, ApplyType.PANTS,
-				"pitblob", "slimeboss", "pit-blob", "slime-boss", "blob", "slime", "boss");
-	}
-
 	public static Player getOwner(Slime slime) {
 
-		for(Map.Entry<UUID, Slime> entry : PitBlob.blobMap.entrySet()) {
+		for(Map.Entry<UUID, Slime> entry : BlobManager.blobMap.entrySet()) {
 			if(!entry.getValue().equals(slime)) continue;
 			return Bukkit.getPlayer(entry.getKey());
 		}
@@ -142,7 +134,7 @@ public class PitBlob extends PitEnchant {
 		Slime slime = blobMap.get(killEvent.getKiller().getUniqueId());
 		if(slime != null) {
 
-			boolean isMaxSize = slime.getSize() >= getMaxSlimeSize(3);
+			boolean isMaxSize = slime.getSize() >= getMaxSlimeSize();
 			if(Math.random() < 0.25 && !isMaxSize) slime.setSize(slime.getSize() + 1);
 			if(!isMaxSize) slime.setHealth(slime.getMaxHealth());
 			return;
@@ -171,51 +163,7 @@ public class PitBlob extends PitEnchant {
 		if(event.getEntity() == player) event.setCancelled(true);
 	}
 
-//	@EventHandler
-//	public void onArmorEquip(AChangeEquipmentEvent event) {
-//
-//		Player player = event.getPlayer();
-//
-//		Map<PitEnchant, Integer> enchantMap = EnchantManager.getEnchantsOnPlayer(player);
-//		int enchantLvl = enchantMap.getOrDefault(this, 0);
-//
-//		Map<PitEnchant, Integer> oldEnchantMap = EnchantManager.getEnchantsOnPlayer(event.getPreviousArmor());
-//		int oldEnchantLvl = oldEnchantMap.getOrDefault(this, 0);
-//
-//		if(oldEnchantLvl == 0 && enchantLvl != 0) {
-//
-////			if(blobMap.containsKey(player.getUniqueId())) return;
-//
-//		} else if(enchantLvl == 0 && oldEnchantLvl != 0) {
-//			Slime slime = blobMap.get(player.getUniqueId());
-//			if(slime == null) return;
-//			slime.remove();
-//			blobMap.remove(player.getUniqueId());
-//		} else if(blobMap.containsKey(player.getUniqueId())) {
-//
-//			if(blobMap.get(player.getUniqueId()) == null) return;
-//			blobMap.get(player.getUniqueId()).setSize(Math.min(enchantLvl * 2, blobMap.get(player.getUniqueId()).getSize()));
-//		}
-//	}
-
-	@Override
-	public void onDisable() {
-
-		for(Map.Entry<UUID, Slime> entry : blobMap.entrySet()) {
-
-			entry.getValue().remove();
-		}
-	}
-
-	@Override
-	public List<String> getNormalDescription(int enchantLvl) {
-
-		return new ALoreBuilder("&7Kills respawn &aThe Blob&7. This", "&7slimy pet will follow you around",
-				"&7and kill your enemies. &aThe Blob", "&7grows and gains health for every", "&7enemy you kill.").getLore();
-	}
-
-	public static int getMaxSlimeSize(int enchantLvl) {
-
-		return enchantLvl * 2;
+	public static int getMaxSlimeSize() {
+		return 6;
 	}
 }

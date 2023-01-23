@@ -29,7 +29,7 @@ public enum NBTTag {
 	POTION_IDENTIFIER("pr-potion-identifier"),
 	POTION_POTENCY("pr-potion-potency"),
 	POTION_DURATION("pr-potion-duration"),
-	SAVED_PANTS_COLOR("pr-saved-color"),
+//	SAVED_PANTS_COLOR("pr-saved-color"),
 	IS_SPLASH_POTION("pr-is-splash-potion"),
 	CANNOT_PICKUP("pr-cannot-pickup"),
 	COOKIE_GIVER("pr-cookie-giver"),

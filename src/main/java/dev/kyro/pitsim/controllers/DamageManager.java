@@ -14,7 +14,7 @@ import dev.kyro.pitsim.brewing.objects.BrewingIngredient;
 import dev.kyro.pitsim.controllers.objects.Non;
 import dev.kyro.pitsim.controllers.objects.PitEnchant;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
-import dev.kyro.pitsim.enchants.overworld.PitBlob;
+import dev.kyro.pitsim.enchants.overworld.BlobManager;
 import dev.kyro.pitsim.enchants.overworld.Regularity;
 import dev.kyro.pitsim.enchants.overworld.Telebow;
 import dev.kyro.pitsim.enums.KillModifier;
@@ -301,7 +301,7 @@ public class DamageManager implements Listener {
 
 		if(damager instanceof Arrow) return (LivingEntity) ((Arrow) damager).getShooter();
 		if(damager instanceof Fireball) return (LivingEntity) ((Fireball) damager).getShooter();
-		if(damager instanceof Slime && !(damager instanceof MagmaCube)) return PitBlob.getOwner((Slime) damager);
+		if(damager instanceof Slime && !(damager instanceof MagmaCube)) return BlobManager.getOwner((Slime) damager);
 		if(damager instanceof LivingEntity) return (LivingEntity) damager;
 
 		return null;

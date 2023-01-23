@@ -87,7 +87,6 @@ public enum PantColor {
 		itemStack.setItemMeta(leatherArmorMeta);
 
 		NBTItem nbtItem = new NBTItem(itemStack);
-		nbtItem.setString(NBTTag.SAVED_PANTS_COLOR.getRef(), pantColor.refName);
 		return nbtItem.getItem();
 	}
 }
