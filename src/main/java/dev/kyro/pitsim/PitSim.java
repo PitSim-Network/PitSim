@@ -5,6 +5,7 @@ import com.comphenix.protocol.ProtocolLibrary;
 import com.comphenix.protocol.ProtocolManager;
 import com.gmail.filoghost.holographicdisplays.api.Hologram;
 import com.mattmalec.pterodactyl4j.PteroBuilder;
+import com.mattmalec.pterodactyl4j.ServerStatus;
 import com.mattmalec.pterodactyl4j.client.entities.PteroClient;
 import com.sk89q.worldedit.EditSession;
 import com.xxmicloxx.NoteBlockAPI.songplayer.EntitySongPlayer;
@@ -130,20 +131,18 @@ public class PitSim extends JavaPlugin {
 			onlinePlayer.kickPlayer(ChatColor.RED + "Playerdata failed to load. Please open a support ticket: discord.pitsim.net");
 		}
 
-		Plugin grim = Bukkit.getPluginManager().getPlugin("GrimAC");
-		if(grim != null) {
-			anticheat = new GrimManager();
-			getServer().getPluginManager().registerEvents((GrimManager) anticheat, this);
-		} else {
-			Plugin polar = Bukkit.getPluginManager().getPlugin("PolarLoader");
-			if(polar != null) {
-				anticheat = new PolarManager();
-				getServer().getPluginManager().registerEvents((PolarManager) anticheat, this);
-			} else {
-				System.out.println("No anticheat found. Disabling plugin");
-				onDisable();
-			}
+		Plugin anticheatPlugin = Bukkit.getPluginManager().getPlugin("GrimAC");
+		if(anticheatPlugin != null) anticheat = new GrimManager();
+		else {
+			anticheatPlugin = Bukkit.getPluginManager().getPlugin("PolarLoader");
+			if(anticheatPlugin != null) anticheat = new PolarManager();
 		}
+
+		if(anticheat == null) {
+			Bukkit.getLogger().severe("No anticheat found! Shutting down...");
+			Bukkit.getPluginManager().disablePlugin(this);
+			return;
+		} else getServer().getPluginManager().registerEvents(anticheat, this);
 
 		if(AConfig.getBoolean("standalone-server")) status = ServerStatus.ALL;
 		else status = serverName.contains("darkzone") ? ServerStatus.DARKZONE : ServerStatus.PITSIM;
