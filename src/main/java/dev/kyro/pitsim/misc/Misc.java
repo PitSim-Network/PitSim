@@ -3,8 +3,10 @@ package dev.kyro.pitsim.misc;
 import de.tr7zw.nbtapi.NBTItem;
 import dev.kyro.arcticapi.libs.discord.DiscordWebhook;
 import dev.kyro.pitsim.PitSim;
+import dev.kyro.pitsim.aitems.PitItem;
 import dev.kyro.pitsim.commands.LightningCommand;
 import dev.kyro.pitsim.controllers.EnchantManager;
+import dev.kyro.pitsim.controllers.ItemFactory;
 import dev.kyro.pitsim.controllers.NonManager;
 import dev.kyro.pitsim.controllers.objects.HelmetManager;
 import dev.kyro.pitsim.controllers.objects.PitEnchant;
@@ -121,7 +123,9 @@ public class Misc {
 		ItemMeta itemMeta = itemStack.getItemMeta();
 		serializedItem += " " + itemStack.getType();
 
-		if(nbtItem.hasKey(NBTTag.ITEM_UUID.getRef())) {
+		PitItem pitItem = ItemFactory.getItem(itemStack);
+
+		if(pitItem != null && pitItem.isMystic) {
 			serializedItem += " " + nbtItem.getString(NBTTag.ITEM_UUID.getRef()) + " " +
 					nbtItem.getInteger(NBTTag.CURRENT_LIVES.getRef()) + "/" + nbtItem.getInteger(NBTTag.MAX_LIVES.getRef());
 			if(nbtItem.hasKey(NBTTag.IS_GEMMED.getRef())) serializedItem += " Gemmed";

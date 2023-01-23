@@ -9,7 +9,11 @@ import dev.kyro.arcticapi.gui.AGUIPanel;
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.aitems.MysticFactory;
+import dev.kyro.pitsim.aitems.PitItem;
+import dev.kyro.pitsim.aitems.mystics.TaintedChestplate;
+import dev.kyro.pitsim.aitems.mystics.TaintedScythe;
 import dev.kyro.pitsim.controllers.EnchantManager;
+import dev.kyro.pitsim.controllers.ItemFactory;
 import dev.kyro.pitsim.controllers.objects.PitEnchant;
 import dev.kyro.pitsim.enums.MysticType;
 import dev.kyro.pitsim.enums.NBTTag;
@@ -208,11 +212,8 @@ public class EnchantingPanel extends AGUIPanel {
 			}
 		} else {
 
-			if(clickedItem.getType() == Material.AIR) return;
-			NBTItem nbtItem = new NBTItem(clickedItem);
-			if(!nbtItem.hasKey(NBTTag.ITEM_UUID.getRef())) return;
-			if(MysticType.getMysticType(clickedItem) == MysticType.TAINTED_SCYTHE || MysticType.getMysticType(clickedItem) == MysticType.TAINTED_CHESTPLATE)
-				return;
+			PitItem pitItem = ItemFactory.getItem(clickedItem);
+			if(pitItem == null || pitItem.getClass() == TaintedScythe.class || pitItem.getClass() == TaintedChestplate.class) return;
 
 			if(!Misc.isAirOrNull(mystic)) {
 				AOutput.error(player, "Already an item in the mystic well");

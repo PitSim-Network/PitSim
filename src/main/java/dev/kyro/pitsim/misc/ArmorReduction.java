@@ -1,7 +1,8 @@
 package dev.kyro.pitsim.misc;
 
-import de.tr7zw.nbtapi.NBTItem;
-import dev.kyro.pitsim.enums.NBTTag;
+import dev.kyro.pitsim.aitems.PitItem;
+import dev.kyro.pitsim.aitems.mystics.MysticPants;
+import dev.kyro.pitsim.controllers.ItemFactory;
 import org.bukkit.Material;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.inventory.ItemStack;
@@ -14,8 +15,8 @@ public class ArmorReduction {
 
 		ItemStack leggings = entity.getEquipment().getLeggings();
 		if(!Misc.isAirOrNull(leggings) && leggings.getType() == Material.LEATHER_LEGGINGS) {
-			NBTItem pants = new NBTItem(leggings);
-			if(pants.hasKey(NBTTag.ITEM_UUID.getRef())) missingPoints += 3;
+			PitItem pitItem = ItemFactory.getItem(leggings);
+			if(pitItem != null && pitItem.getClass() == MysticPants.class) missingPoints += 3;
 		}
 
 		ItemStack helmet = entity.getEquipment().getHelmet();

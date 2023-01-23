@@ -233,7 +233,7 @@ public class TaintedWell implements Listener
 			return;
 		}
 		PitItem pitItem = ItemFactory.getItem(player.getItemInHand());
-		if (pitItem == null || (pitItem.getClass() != TaintedScythe.class && pitItem.getClass() != TaintedChestplate.class)) {
+		if(pitItem == null || (pitItem.getClass() != TaintedScythe.class && pitItem.getClass() != TaintedChestplate.class)) {
 			setText(player, "\u00A77", ChatColor.RED + "Invalid Item!", ChatColor.RED + "Please try again!", "\u00A77");
 			new BukkitRunnable() {
 				public void run() {
