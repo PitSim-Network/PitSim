@@ -127,12 +127,6 @@ public class MarketListing implements Serializable {
 			if(bidMap.isEmpty()) loreBuilder.addLore("&7Starting Bid: &f" + startingBid + " Souls");
 			else {
 				loreBuilder.addLore("&7Highest Bid: &f" + getHighestBid() + " Souls");
-				Bukkit.broadcastMessage(getHighestBidder().toString());
-				System.out.println(getHighestBidder() == null);
-				System.out.println(bidderDisplayNames.isEmpty());
-				for(Map.Entry<UUID, String> uuidStringEntry : bidderDisplayNames.entrySet()) {
-					Bukkit.broadcastMessage(uuidStringEntry.getKey() + " : " + uuidStringEntry.getValue());
-				}
 				loreBuilder.addLore("&7Bidder: " + bidderDisplayNames.get(getHighestBidder()));
 			}
 			loreBuilder.addLore("");
