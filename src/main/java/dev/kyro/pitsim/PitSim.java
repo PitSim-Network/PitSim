@@ -111,6 +111,8 @@ public class PitSim extends JavaPlugin {
 
 	public static ServerStatus status;
 
+	public static AnticheatManager anticheat;
+
 	@Override
 	public void onEnable() {
 		INSTANCE = this;
@@ -126,6 +128,21 @@ public class PitSim extends JavaPlugin {
 			boolean success = PitPlayer.loadPitPlayer(onlinePlayer.getUniqueId());
 			if(success) continue;
 			onlinePlayer.kickPlayer(ChatColor.RED + "Playerdata failed to load. Please open a support ticket: discord.pitsim.net");
+		}
+
+		Plugin grim = Bukkit.getPluginManager().getPlugin("GrimAC");
+		if(grim != null) {
+			anticheat = new GrimManager();
+			getServer().getPluginManager().registerEvents((GrimManager) anticheat, this);
+		} else {
+			Plugin polar = Bukkit.getPluginManager().getPlugin("PolarLoader");
+			if(polar != null) {
+				anticheat = new PolarManager();
+				getServer().getPluginManager().registerEvents((PolarManager) anticheat, this);
+			} else {
+				System.out.println("No anticheat found. Disabling plugin");
+				onDisable();
+			}
 		}
 
 		if(AConfig.getBoolean("standalone-server")) status = ServerStatus.ALL;

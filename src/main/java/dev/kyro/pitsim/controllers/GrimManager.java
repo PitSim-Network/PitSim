@@ -3,6 +3,7 @@ package dev.kyro.pitsim.controllers;
 import ac.grim.grimac.AbstractCheck;
 import ac.grim.grimac.events.FlagEvent;
 import dev.kyro.pitsim.PitSim;
+import dev.kyro.pitsim.controllers.objects.AnticheatManager;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -13,12 +14,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class GrimManager implements Listener {
+public class GrimManager extends AnticheatManager implements Listener {
 	private static final List<Exemption> exemptPlayers = new ArrayList<>();
-
-	public static void exemptPlayer(Player player, long ticks, FlagType... flags) {
-		exemptPlayers.add(new Exemption(player, ticks, flags));
-	}
 
 	public static boolean isExempt(Player player, FlagType... flagsArr) {
 		List<FlagType> flags = Arrays.asList(flagsArr);
@@ -41,13 +38,23 @@ public class GrimManager implements Listener {
 		event.setCancelled(true);
 	}
 
+	@Override
+	public void exemptPlayer(Player player, long ticks, String... args) {
+		List<FlagType> flags = new ArrayList<>();
+		for(String arg : args) {
+			FlagType flag = FlagType.getFlag(arg);
+			if(flag != null) flags.add(flag);
+		}
+
+		exemptPlayers.add(new Exemption(player, ticks, flags));
+	}
+
 	private static class Exemption {
 		public Player player;
 		public List<FlagType> flags;
 
-		public Exemption(Player player, long ticks, FlagType... flags) {
+		public Exemption(Player player, long ticks, List<FlagType> flags) {
 			this.player = player;
-			this.flags = Arrays.asList(flags);
 
 			new BukkitRunnable() {
 				@Override
