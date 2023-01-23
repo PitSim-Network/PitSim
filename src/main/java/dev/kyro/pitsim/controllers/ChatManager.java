@@ -50,7 +50,7 @@ public class ChatManager implements Listener {
 	}
 
 	@EventHandler
-	public void autoCorrect(AsyncPlayerChatEvent event) {
+	public void onChat(AsyncPlayerChatEvent event) {
 		Player player = event.getPlayer();
 		String message = event.getMessage();
 
@@ -60,7 +60,7 @@ public class ChatManager implements Listener {
 			return;
 		}
 
-		for(Player recipient : event.getRecipients()) {
+		for(Player recipient : new ArrayList<>(event.getRecipients())) {
 			PitPlayer recipientPitPlayer = PitPlayer.getPitPlayer(recipient);
 
 			if(player == recipient && recipientPitPlayer.playerChatDisabled) {

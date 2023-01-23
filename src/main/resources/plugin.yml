@@ -13,8 +13,8 @@ depend:
   - PitRemakeDependencies
   - LiteBans
   - PremiumVanish
-  - GrimAC
   - DeluxeChat
+softdepend: [GrimAC, PolarLoader]
 commands:
   pitsim:
   ps:

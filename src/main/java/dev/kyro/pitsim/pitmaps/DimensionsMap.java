@@ -10,21 +10,21 @@ public class DimensionsMap extends PitMap {
 
 	@Override
 	public Location getSpawn() {
-		return new Location(world, 0.5, 88, -5.5, 0, 0);
+		return new Location(world, 9.5, 55, 0.5, 90, 0);
 	}
 
 	//	TODO: chaos
 	@Override
 	public Location getNonSpawn() {
-		Location spawn = new Location(world, 0.5, 86, 0.5);
-		spawn.setX(spawn.getX() + (Math.random() * 6 - 3));
-		spawn.setZ(spawn.getZ() + (Math.random() * 6 - 3));
+		Location spawn = new Location(world, 0.5, 53, 0.5);
+		spawn.setX(spawn.getX() + (Math.random() * 8 - 3));
+		spawn.setZ(spawn.getZ() + (Math.random() * 8 - 3));
 		return spawn;
 	}
 
 	@Override
 	public Location getDarkzoneJoinSpawn() {
-		return new Location(world, -67, 72, 3, -90, 0);
+		return new Location(world, -0.5, 26, 77, -180, 0);
 	}
 
 	@Override
@@ -44,57 +44,57 @@ public class DimensionsMap extends PitMap {
 
 	@Override
 	public Location getMid() {
-		return new Location(world, 0.5, 38, 0.5);
+		return new Location(world, 0.5, 22, 0.5);
 	}
 
 	@Override
 	public Location getPerksNPCSpawn() {
-		return new Location(world, -7.5, 88, -1.5, -90, 0);
+		return new Location(world, -1.5, 55, -11.5, 0, 0);
 	}
 
 	@Override
 	public Location getPrestigeNPCSpawn() {
-		return new Location(world, 9.5, 88, 0.5, 90, 0);
+		return new Location(world, 0.5, 55, 12.5, -180, 0);
 	}
 
 	@Override
 	public Location getKyroNPCSpawn() {
-		return new Location(world, -6.5, 89, 9.5, 180, 11);
+		return new Location(world, -4.5, 58, 14.5, 180, 0);
 	}
 
 	@Override
 	public Location getWijiNPCSpawn() {
-		return new Location(world, 3.5, 89, 9.5, 180, 10);
+		return new Location(world, 5.5, 58, 14.5, 180, 0);
 	}
 
 	@Override
 	public Location getSplkNPCSpawn() {
-		return new Location(world, -7.5, 89, 9.5, 45, 0);
+		return new Location(world, -5.5, 58, -13.5, -25, 0);
 	}
 
 	@Override
 	public Location getStatsNPCSpawn() {
-		return new Location(world, -1.5, 88, 10.5, 180, 0);
+		return new Location(world, -11.5, 55, 0.5, -90, 0);
 	}
 
 	@Override
 	public Location getKeeperNPCSpawn() {
-		return new Location(world, 4.5, 88, 7.5, 150, 0);
+		return new Location(world, -10.5, 55, 7.5, -120, 0);
 	}
 
 	@Override
 	public Location getStandAlonePortalRespawn() {
-		return new Location(null, -56, 73, 0.5, -90, 0);
+		return new Location(world, -0.5, 26, 77, -180, 0);
 	}
 
 	@Override
 	public Location getPassNPCSpawn() {
-		return new Location(world, 10.5, 88, 2.5, 90, 0);
+		return new Location(world, 2.5, 55, -11.5, 0, 0);
 	}
 
 	//	TODO: Add
 	@Override
 	public Location getKitsNPCSpawn() {
-		return null;
+		return new Location(world, 15.5, 57, 2.5, 125, 0);
 	}
 }
