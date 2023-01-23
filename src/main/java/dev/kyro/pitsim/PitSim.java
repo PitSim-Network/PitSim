@@ -5,7 +5,6 @@ import com.comphenix.protocol.ProtocolLibrary;
 import com.comphenix.protocol.ProtocolManager;
 import com.gmail.filoghost.holographicdisplays.api.Hologram;
 import com.mattmalec.pterodactyl4j.PteroBuilder;
-import com.mattmalec.pterodactyl4j.ServerStatus;
 import com.mattmalec.pterodactyl4j.client.entities.PteroClient;
 import com.sk89q.worldedit.EditSession;
 import com.xxmicloxx.NoteBlockAPI.songplayer.EntitySongPlayer;
@@ -131,12 +130,8 @@ public class PitSim extends JavaPlugin {
 			onlinePlayer.kickPlayer(ChatColor.RED + "Playerdata failed to load. Please open a support ticket: discord.pitsim.net");
 		}
 
-		Plugin anticheatPlugin = Bukkit.getPluginManager().getPlugin("GrimAC");
-		if(anticheatPlugin != null) anticheat = new GrimManager();
-		else {
-			anticheatPlugin = Bukkit.getPluginManager().getPlugin("PolarLoader");
-			if(anticheatPlugin != null) anticheat = new PolarManager();
-		}
+		if(Bukkit.getPluginManager().getPlugin("GrimAC") != null) hookIntoAnticheat(new GrimManager());
+		if(Bukkit.getPluginManager().getPlugin("PolarLoader") != null) hookIntoAnticheat(new PolarManager());
 
 		if(anticheat == null) {
 			Bukkit.getLogger().severe("No anticheat found! Shutting down...");
@@ -959,6 +954,15 @@ public class PitSim extends JavaPlugin {
 		EnchantManager.registerEnchant(new Inferno());
 		EnchantManager.registerEnchant(new Laser());
 		EnchantManager.registerEnchant(new Forcefield());
+	}
+
+	public void hookIntoAnticheat(AnticheatManager anticheat) {
+		if(anticheat != null) {
+			Bukkit.getLogger().severe("Multiple anticheats found! Shutting down...");
+			Bukkit.getPluginManager().disablePlugin(this);
+			return;
+		}
+		PitSim.anticheat = anticheat;
 	}
 
 	public enum ServerStatus {
