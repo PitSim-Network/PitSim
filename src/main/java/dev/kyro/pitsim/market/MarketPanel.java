@@ -168,7 +168,7 @@ public class MarketPanel extends AGUIPanel {
 			UUID uuid = listingSlots.get(event.getSlot());
 			MarketListing listing = MarketManager.getListing(uuid);
 			if(listing == null) return;
-			((MarketGUI) gui).listingInspectPanel = new ListingInspectPanel(gui, listing);
+			((MarketGUI) gui).listingInspectPanel = new ListingInspectPanel(gui, listing, true);
 			openPanel(((MarketGUI) gui).listingInspectPanel);
 		}
 

@@ -9,11 +9,14 @@ import dev.kyro.arcticapi.misc.AUtil;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.misc.Sounds;
+import net.minecraft.server.v1_8_R3.ItemMapEmpty;
+import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.inventory.InventoryOpenEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
 
@@ -60,7 +63,15 @@ public class YourListingsPanel extends AGUIPanel {
 
 			if(listings.size() > listingsPlaced) {
 				MarketListing listing = listings.get(listingsPlaced);
-				getInventory().setItem(i, listing.getItemStack());
+
+				ItemStack item = listing.getItemStack();
+				ItemMeta meta = item.getItemMeta();
+				List<String> lore = meta.getLore();
+				if(isCancelable(listing)) lore.add(ChatColor.translateAlternateColorCodes('&', "&eRight-Click to Cancel"));
+				meta.setLore(lore);
+				item.setItemMeta(meta);
+
+				getInventory().setItem(i, item);
 				this.listings.put(i, listing);
 
 				listingsPlaced++;
@@ -148,7 +159,8 @@ public class YourListingsPanel extends AGUIPanel {
 
 			MarketListing listing = combined.get(listIndex);
 			if(!firstIterationComplete) {
-				AItemStackBuilder soulBuilder = new AItemStackBuilder(Material.INK_SACK, listing.claimableSouls, 7)
+				AItemStackBuilder soulBuilder = new AItemStackBuilder(Material.INK_SACK, listing.ownerUUID.equals(player.getUniqueId())
+						? listing.claimableSouls : listing.bidMap.get(player.getUniqueId()), 7)
 						.setName("&fClaimable Souls");
 
 				ALoreBuilder loreBuilder;
@@ -209,7 +221,9 @@ public class YourListingsPanel extends AGUIPanel {
 		if(event.getClickedInventory().getHolder() != this) return;
 		int slot = event.getSlot();
 
-		if(slot == 49) openPreviousGUI();
+		if(slot == 49) {
+			openPanel(((MarketGUI) gui).selectionPanel);
+		}
 
 		if(listings.containsKey(slot)) {
 			MarketListing listing = listings.get(slot);
@@ -218,7 +232,12 @@ public class YourListingsPanel extends AGUIPanel {
 				return;
 			}
 
-			((MarketGUI) gui).listingInspectPanel = new ListingInspectPanel(gui, listing);
+			if(event.isRightClick() && isCancelable(listing)) {
+				openPanel(new ConfirmDeletionPanel(gui, listing));
+				return;
+			}
+
+			((MarketGUI) gui).listingInspectPanel = new ListingInspectPanel(gui, listing, false);
 			openPanel(((MarketGUI) gui).listingInspectPanel);
 		}
 
@@ -228,8 +247,9 @@ public class YourListingsPanel extends AGUIPanel {
 			Runnable success = new BukkitRunnable() {
 				@Override
 				public void run() {
-					AOutput.send(player, "&a&lMARKET &7Claimed &f" + listing.claimableSouls + " Souls");
-					PitPlayer.getPitPlayer(player).taintedSouls += listing.claimableSouls;
+					int amount = listing.ownerUUID.equals(player.getUniqueId()) ? listing.claimableSouls : listing.bidMap.get(player.getUniqueId());
+					AOutput.send(player, "&a&lMARKET &7Claimed &f" + amount + " Souls");
+					PitPlayer.getPitPlayer(player).taintedSouls += amount;
 					Sounds.RENOWN_SHOP_PURCHASE.play(player);
 					placeClaimables();
 				}
@@ -253,6 +273,12 @@ public class YourListingsPanel extends AGUIPanel {
 
 			new MarketAsyncTask(MarketAsyncTask.MarketTask.CLAIM_ITEM, listing, player, 0, success, MarketAsyncTask.getDefaultFail(player));
 		}
+	}
+
+	public boolean isCancelable(MarketListing listing) {
+		if(listing.hasEnded()) return false;
+		if(listing.startingBid != -1) return listing.bidMap.isEmpty();
+		else return true;
 	}
 
 	@Override
