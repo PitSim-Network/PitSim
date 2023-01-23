@@ -66,7 +66,7 @@ public class PantsColorPanel extends AGUIPanel {
 					originalPantColor == PantColor.GREEN || originalPantColor == PantColor.YELLOW || originalPantColor == PantColor.ORANGE) {
 
 				NBTItem nbtMystic = new NBTItem(player.getInventory().getLeggings());
-				nbtMystic.setString(NBTTag.ORIGINAL_COLOR.getRef(), originalPantColor.refName);
+				nbtMystic.setString(NBTTag.ORIGINAL_COLOR.getRef(), originalPantColor.displayName);
 
 				player.getInventory().setLeggings(nbtMystic.getItem());
 
@@ -97,15 +97,15 @@ public class PantsColorPanel extends AGUIPanel {
 		int i = 9;
 
 		for(PantColor pantColor : PantColor.values()) {
-			if(pantColor.refName.equals("Blue") || pantColor.refName.equals("Red") || pantColor.refName.equals("Orange")
-					|| pantColor.refName.equals("Yellow") || pantColor.refName.equals("Green") || pantColor.refName.equals("Jewel") || pantColor.refName.equals("Dark"))
+			if(pantColor.displayName.equals("Blue") || pantColor.displayName.equals("Red") || pantColor.displayName.equals("Orange")
+					|| pantColor.displayName.equals("Yellow") || pantColor.displayName.equals("Green") || pantColor.displayName.equals("Jewel") || pantColor.displayName.equals("Dark"))
 				continue;
 
 			ItemStack pants = new ItemStack(Material.LEATHER_LEGGINGS);
 			ItemMeta meta = pants.getItemMeta();
 			meta.setDisplayName(ChatColor.GOLD + "Premium Color");
 			List<String> pantslore = new ArrayList<>();
-			pantslore.add(ChatColor.translateAlternateColorCodes('&', "&7Color: " + pantColor.chatColor + pantColor.refName));
+			pantslore.add(ChatColor.translateAlternateColorCodes('&', "&7Color: " + pantColor.chatColor + pantColor.displayName));
 			pantslore.add(ChatColor.translateAlternateColorCodes('&', "&7Hex: " + pantColor.hexColor));
 			pantslore.add("");
 			if(player.getInventory().getLeggings() == null || player.getInventory().getLeggings().getType() != Material.LEATHER_LEGGINGS || !player.getInventory().getLeggings().hasItemMeta()) {
@@ -134,7 +134,7 @@ public class PantsColorPanel extends AGUIPanel {
 			originalMeta.setDisplayName(ChatColor.GOLD + "Original Color");
 			List<String> originalLore = new ArrayList<>();
 			originalLore.add(ChatColor.translateAlternateColorCodes('&', "&7Color: "
-					+ originalColor.chatColor + getOrginalColor(playerPants).refName));
+					+ originalColor.chatColor + getOrginalColor(playerPants).displayName));
 			originalLore.add(ChatColor.GRAY + "Hex: " + getOrginalColor(playerPants).hexColor);
 			originalLore.add("");
 			originalLore.add(ChatColor.GRAY + "Wearing: " + playerPants.getItemMeta().getDisplayName());

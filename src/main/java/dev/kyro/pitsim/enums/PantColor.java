@@ -15,6 +15,7 @@ public enum PantColor {
 	YELLOW("Yellow", ChatColor.YELLOW, 0xFFFF55),
 	GREEN("Green", ChatColor.GREEN, 0x55FF55),
 	BLUE("Blue", ChatColor.BLUE, 0x5555FF),
+
 	//Premium Colors
 	PEACE_WHITE("Peace White", ChatColor.WHITE, 0xFFFFFF),
 	BUSINESS_GRAY("Business Gray", ChatColor.GRAY, 0xA9A9A9),
@@ -41,40 +42,29 @@ public enum PantColor {
 	JEWEL("Jewel", ChatColor.DARK_AQUA, 0x7DC383);
 //	AQUA("", ChatColor.DARK_AQUA, 0x55FFFF);
 
-	public String refName;
-	public ChatColor chatColor;
-	public int hexColor;
+	public final String displayName;
+	public final ChatColor chatColor;
+	public final int hexColor;
 
-	PantColor(String refName, ChatColor chatColor, int hexColor) {
-		this.refName = refName;
+	PantColor(String displayName, ChatColor chatColor, int hexColor) {
+		this.displayName = displayName;
 		this.chatColor = chatColor;
 		this.hexColor = hexColor;
 	}
 
 	public static PantColor getNormalRandom() {
-
 		return values()[(int) (Math.random() * 5)];
 	}
 
 	public static PantColor getPantColor(String refName) {
-
-		for(PantColor pantColor : values()) {
-
-			if(pantColor.refName.equalsIgnoreCase(refName)) return pantColor;
-		}
+		for(PantColor pantColor : values()) if(pantColor.displayName.equalsIgnoreCase(refName)) return pantColor;
 		return null;
 	}
 
 	public static PantColor getPantColor(ItemStack itemStack) {
-
 		if(Misc.isAirOrNull(itemStack) || itemStack.getType() != Material.LEATHER_LEGGINGS) return null;
 		LeatherArmorMeta leatherArmorMeta = (LeatherArmorMeta) itemStack.getItemMeta();
-
-		for(PantColor pantColor : values()) {
-
-			if(Color.fromRGB(pantColor.hexColor).equals(leatherArmorMeta.getColor())) return pantColor;
-		}
-
+		for(PantColor pantColor : values()) if(Color.fromRGB(pantColor.hexColor).equals(leatherArmorMeta.getColor())) return pantColor;
 		return null;
 	}
 

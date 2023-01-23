@@ -13,7 +13,6 @@ import org.bukkit.inventory.ItemStack;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.UUID;
 
 public class MysticPants extends PitItem {
 
@@ -38,7 +37,7 @@ public class MysticPants extends PitItem {
 	}
 
 	public String getName(PantColor pantColor) {
-		return pantColor.chatColor + "Fresh " + pantColor.refName + " Pants";
+		return pantColor.chatColor + "Fresh " + pantColor.displayName + " Pants";
 	}
 
 	public List<String> getLore(PantColor pantColor) {
