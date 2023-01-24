@@ -228,7 +228,7 @@ public class PitPlayer {
 
 	@Exclude
 	public void save(boolean finalSave, BukkitRunnable callback, boolean itemData) throws ExecutionException, InterruptedException {
-		if(PitSim.getStatus() == PitSim.ServerStatus.ALL || PlayerDataManager.exemptedPlayers.contains(player)) return;
+		if(PitSim.getStatus() == PitSim.ServerStatus.ALL || PlayerDataManager.exemptedPlayers.contains(uuid)) return;
 		if(finalSave && lastSave + SAVE_COOLDOWN > System.currentTimeMillis()) {
 			long timeUntilSave = lastSave + SAVE_COOLDOWN - System.currentTimeMillis();
 			new Thread(() -> {
@@ -237,7 +237,7 @@ public class PitPlayer {
 					save(true, callback, itemData);
 				} catch(Exception exception) {
 					System.out.println("--------------------------------------------------");
-					System.out.println("CRITICAL ERROR: data for " + player.getName() + " failed to final save");
+					System.out.println("CRITICAL ERROR: data for " + uuid + " failed to final save");
 					System.out.println();
 					exception.printStackTrace();
 					System.out.println("--------------------------------------------------");
@@ -250,7 +250,7 @@ public class PitPlayer {
 		lastSave = System.currentTimeMillis();
 
 		if(isNPC) {
-			System.out.println("complete development failure. " + player.getName() + " is attempting to save data and is not a real player");
+			System.out.println("complete development failure. " + uuid + " is attempting to save data and is not a real player");
 			return;
 		}
 
@@ -259,7 +259,7 @@ public class PitPlayer {
 			profile.saveData(finalSave);
 		}
 
-		PotionManager.savePotions(player, finalSave);
+		PotionManager.savePotions(this, finalSave);
 
 		megastreakRef = megastreak.getRefNames().get(0);
 

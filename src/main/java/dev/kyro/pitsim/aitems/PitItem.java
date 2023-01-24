@@ -3,6 +3,7 @@ package dev.kyro.pitsim.aitems;
 import de.tr7zw.nbtapi.NBTItem;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.controllers.ItemFactory;
+import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.enums.AuctionCategory;
 import dev.kyro.pitsim.enums.NBTTag;
 import org.bukkit.Bukkit;
@@ -36,6 +37,13 @@ public abstract class PitItem implements Listener {
 	public abstract String getNBTID();
 	public abstract List<String> getRefNames();
 	public abstract void updateItem(ItemStack itemStack);
+
+	public ItemStack getReplacementItem(PitPlayer pitPlayer, ItemStack itemStack) {
+		return null;
+	};
+	public boolean isLegacyItem(ItemStack itemStack) {
+		return false;
+	};
 
 	public ItemStack buildItem(ItemStack itemStack) {
 		ItemMeta itemMeta = itemStack.hasItemMeta() ? itemStack.getItemMeta() : Bukkit.getItemFactory().getItemMeta(itemStack.getType());
