@@ -957,7 +957,7 @@ public class PitSim extends JavaPlugin {
 	}
 
 	public void hookIntoAnticheat(AnticheatManager anticheat) {
-		if(anticheat != null) {
+		if(PitSim.anticheat != null) {
 			Bukkit.getLogger().severe("Multiple anticheats found! Shutting down...");
 			Bukkit.getPluginManager().disablePlugin(this);
 			return;
