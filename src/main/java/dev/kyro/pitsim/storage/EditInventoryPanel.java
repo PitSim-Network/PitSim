@@ -119,6 +119,11 @@ public class EditInventoryPanel implements InventoryHolder, Listener {
 		if(session == null || session.inventory == null) return;
 		Inventory inventory = event.getClickedInventory();
 
+		if(inventory.equals(session.getStaffMember().getInventory()) && event.isShiftClick()) {
+			event.setCancelled(true);
+			return;
+		}
+
 		if(inventory.getHolder() != this) return;
 		if(event.isShiftClick()) {
 			event.setCancelled(true);

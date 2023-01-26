@@ -4,8 +4,8 @@ import dev.kyro.pitsim.controllers.objects.PitMap;
 import org.bukkit.Location;
 
 public class DimensionsMap extends PitMap {
-	public DimensionsMap(String worldName) {
-		super(worldName);
+	public DimensionsMap(String worldName, int rotationDays) {
+		super(worldName, rotationDays);
 	}
 
 	@Override

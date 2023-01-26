@@ -7,6 +7,7 @@ import dev.kyro.pitsim.controllers.Cooldown;
 import dev.kyro.pitsim.controllers.EnchantManager;
 import dev.kyro.pitsim.controllers.GrimManager;
 import dev.kyro.pitsim.controllers.PolarManager;
+import dev.kyro.pitsim.controllers.objects.AnticheatManager;
 import dev.kyro.pitsim.controllers.objects.PitEnchant;
 import dev.kyro.pitsim.enums.ApplyType;
 import dev.kyro.pitsim.events.AttackEvent;
@@ -72,12 +73,12 @@ public class MegaLongBow extends PitEnchant {
 		critArrow(player, arrow);
 		Misc.applyPotionEffect(player, PotionEffectType.JUMP, 40, getJumpMultiplier(enchantLvl), true, false);
 
-		PitSim.anticheat.exemptPlayer(player, 350, "simulation", "groundspoof");
+		PitSim.anticheat.exemptPlayer(player, 350, AnticheatManager.FlagType.SIMULATION, AnticheatManager.FlagType.GROUND_SPOOF);
 		Misc.applyPotionEffect(player, PotionEffectType.JUMP, 40, getJumpMultiplier(enchantLvl), true, false);
 		new BukkitRunnable() {
 			@Override
 			public void run() {
-				PitSim.anticheat.exemptPlayer(player, 350, "simulation", "groundspoof");
+				PitSim.anticheat.exemptPlayer(player, 350, AnticheatManager.FlagType.SIMULATION, AnticheatManager.FlagType.GROUND_SPOOF);
 			}
 		}.runTaskLater(PitSim.INSTANCE, 35);
 	}
