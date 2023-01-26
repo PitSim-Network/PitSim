@@ -129,7 +129,10 @@ public class PitSim extends JavaPlugin {
 	public void onEnable() {
 		INSTANCE = this;
 
-		PlayerDataManager.exemptedPlayers.addAll(Bukkit.getOnlinePlayers());
+		for(Player onlinePlayer : Bukkit.getOnlinePlayers()) {
+			PlayerDataManager.exemptedPlayers.add(onlinePlayer.getUniqueId());
+		}
+
 
 		loadConfig();
 		ArcticAPI.configInit(this, "prefix", "error-prefix");
@@ -630,6 +633,7 @@ public class PitSim extends JavaPlugin {
 		getServer().getPluginManager().registerEvents(new FirstJoinManager(), this);
 		getServer().getPluginManager().registerEvents(new AIManager(), this);
 		getServer().getPluginManager().registerEvents(new MarketMessaging(), this);
+		getServer().getPluginManager().registerEvents(new MigrationManager(), this);
 
 		if(getStatus().isDarkzone()) {
 			getServer().getPluginManager().registerEvents(new TaintedWell(), this);

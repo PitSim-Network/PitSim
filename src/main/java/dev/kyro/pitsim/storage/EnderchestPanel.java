@@ -74,7 +74,7 @@ public class EnderchestPanel extends AGUIPanel {
 
 		if(!profile.hasData() || profile.isSaving()) return;
 
-		Inventory inventory = profile.getEnderchest(slot - 8);
+		Inventory inventory = profile.getEnderchestPage(slot - 8);
 
 		if(StorageManager.isEditing(player)) {
 			EditSession session = StorageManager.getSession(player);

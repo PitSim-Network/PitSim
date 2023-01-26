@@ -263,10 +263,14 @@ public class StorageProfile {
 		return uuid;
 	}
 
-	public Inventory getEnderchest(int page) {
+	public Inventory getEnderchestPage(int page) {
 		if(enderChest == null) throw new DataNotLoadedException();
 
 		return enderChest[page - 1];
+	}
+
+	public Inventory[] getEnderChest() {
+		return enderChest;
 	}
 
 	public int getEnderchestItemCount(int page) {

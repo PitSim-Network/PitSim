@@ -13,10 +13,11 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 public class PlayerDataManager implements Listener {
 
-	public static List<Player> exemptedPlayers = new ArrayList<>();
+	public static List<UUID> exemptedPlayers = new ArrayList<>();
 
 	static {
 		new BukkitRunnable() {

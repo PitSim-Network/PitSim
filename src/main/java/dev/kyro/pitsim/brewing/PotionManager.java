@@ -198,10 +198,10 @@ public class PotionManager implements Listener {
 		}
 	}
 
-	public static void savePotions(Player player, boolean logout) {
+	public static void savePotions(PitPlayer pitPlayer, boolean logout) {
 		List<PotionEffect> toExpire = new ArrayList<>();
 		for(PotionEffect potionEffect : potionEffectList) {
-			if(potionEffect.player == player) toExpire.add(potionEffect);
+			if(potionEffect.player.getUniqueId().equals(pitPlayer.uuid)) toExpire.add(potionEffect);
 		}
 
 		for(PotionEffect potionEffect : toExpire) {
@@ -209,7 +209,7 @@ public class PotionManager implements Listener {
 			if(logout) potionEffect.onExpire(true);
 
 			String time = String.valueOf(System.currentTimeMillis());
-			PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
+
 			pitPlayer.potionStrings.add(potionEffect.potionType.name + ":" + potionEffect.potency.tier + ":" + potionEffect.getTimeLeft() + ":" + time);
 		}
 	}
