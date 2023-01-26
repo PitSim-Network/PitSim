@@ -420,7 +420,7 @@ public class PitSim extends JavaPlugin {
 			PitMap currentMap = MapManager.getMap(mapName);
 
 			assert currentMap != null;
-			if(Math.ceil((System.currentTimeMillis() - time) / 1000.0 / 60.0 / 60.0 / 24.0) >= currentMap.rotationDays) {
+			if((System.currentTimeMillis() - time / 1000.0 / 60.0 / 60.0 / 24.0) >= currentMap.rotationDays) {
 				pitMap = MapManager.getNextMap(currentMap);
 				time = System.currentTimeMillis();
 			}
