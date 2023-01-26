@@ -427,7 +427,6 @@ public class PitSim extends JavaPlugin {
 		}
 
 		if(TimeManager.isChristmasSeason() && status != ServerStatus.DARKZONE) {
-			System.out.println();
 			pitMap = xmas;
 			time = System.currentTimeMillis();
 			MapManager.currentMap.world.setStorm(true);
