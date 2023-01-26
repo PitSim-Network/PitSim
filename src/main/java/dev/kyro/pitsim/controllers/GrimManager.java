@@ -39,14 +39,10 @@ public class GrimManager extends AnticheatManager implements Listener {
 	}
 
 	@Override
-	public void exemptPlayer(Player player, long ticks, String... args) {
-		List<FlagType> flags = new ArrayList<>();
-		for(String arg : args) {
-			FlagType flag = FlagType.getFlag(arg);
-			if(flag != null) flags.add(flag);
-		}
+	public void exemptPlayer(Player player, long ms, AnticheatManager.FlagType... args) {
+		List<AnticheatManager.FlagType> flags = Arrays.asList(args);
 
-		exemptPlayers.add(new Exemption(player, ticks, flags));
+		exemptPlayers.add(new Exemption(player, ms, flags));
 	}
 
 	private static class Exemption {
@@ -63,27 +59,6 @@ public class GrimManager extends AnticheatManager implements Listener {
 					exemptPlayers.remove(Exemption.this);
 				}
 			}.runTaskLater(PitSim.INSTANCE, ticks);
-		}
-	}
-
-	public enum FlagType {
-		ALL(null),
-		SIMULATION("simulation"),
-		REACH("reach"),
-		KNOCKBACK("antikb"),
-		GROUND_SPOOF("groundspoof"),
-		NO_FALL("nofall"),
-		;
-
-		public String refName;
-
-		FlagType(String refName) {
-			this.refName = refName;
-		}
-
-		public static FlagType getFlag(String refName) {
-			for(FlagType flag : values()) if(flag != ALL && flag.refName.equalsIgnoreCase(refName)) return flag;
-			return null;
 		}
 	}
 }
