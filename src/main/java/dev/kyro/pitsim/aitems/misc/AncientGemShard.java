@@ -1,9 +1,12 @@
 package dev.kyro.pitsim.aitems.misc;
 
+import de.tr7zw.nbtapi.NBTItem;
 import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.pitsim.aitems.StaticPitItem;
 import dev.kyro.pitsim.enums.AuctionCategory;
+import dev.kyro.pitsim.enums.NBTTag;
 import org.bukkit.Material;
+import org.bukkit.inventory.ItemStack;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -44,5 +47,10 @@ public class AncientGemShard extends StaticPitItem {
 				"&7Find enough shards and you may be",
 				"&7able to craft an item of great power"
 		).getLore();
+	}
+
+	@Override
+	public boolean isLegacyItem(ItemStack itemStack, NBTItem nbtItem) {
+		return nbtItem.hasKey(NBTTag.IS_SHARD.getRef());
 	}
 }
