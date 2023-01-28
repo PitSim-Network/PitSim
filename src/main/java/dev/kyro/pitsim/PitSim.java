@@ -421,7 +421,7 @@ public class PitSim extends JavaPlugin {
 			pitMap = currentMap;
 
 			assert currentMap != null;
-			if((System.currentTimeMillis() - time / 1000.0 / 60.0 / 60.0 / 24.0) >= currentMap.rotationDays) {
+			if(((System.currentTimeMillis() - time) / 1000.0 / 60.0 / 60.0 / 24.0) >= currentMap.rotationDays) {
 				pitMap = MapManager.getNextMap(currentMap);
 				time = System.currentTimeMillis();
 			}
