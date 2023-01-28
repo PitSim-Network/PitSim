@@ -5,7 +5,6 @@ import com.comphenix.protocol.ProtocolLibrary;
 import com.comphenix.protocol.ProtocolManager;
 import com.gmail.filoghost.holographicdisplays.api.Hologram;
 import com.mattmalec.pterodactyl4j.PteroBuilder;
-import com.mattmalec.pterodactyl4j.ServerStatus;
 import com.mattmalec.pterodactyl4j.client.entities.PteroClient;
 import com.sk89q.worldedit.EditSession;
 import com.xxmicloxx.NoteBlockAPI.songplayer.EntitySongPlayer;
@@ -69,7 +68,7 @@ import dev.kyro.pitsim.misc.packets.SignPrompt;
 import dev.kyro.pitsim.npcs.*;
 import dev.kyro.pitsim.perks.*;
 import dev.kyro.pitsim.pitmaps.BiomesMap;
-import dev.kyro.pitsim.pitmaps.DimensionsMap;
+import dev.kyro.pitsim.pitmaps.SandMap;
 import dev.kyro.pitsim.pitmaps.XmasMap;
 import dev.kyro.pitsim.placeholders.*;
 import dev.kyro.pitsim.storage.StorageManager;
@@ -421,11 +420,12 @@ public class PitSim extends JavaPlugin {
 		long time;
 
 		PitMap biomes = MapManager.registerMap(new BiomesMap("biomes", 7));
+		PitMap sand = MapManager.registerMap(new SandMap("sand", 7));
 //		PitMap dimensions = MapManager.registerMap(new DimensionsMap("dimensions", 7));
 		PitMap xmas = MapManager.registerMap(new XmasMap("xmas", -1));
 
 		String configString = AConfig.getString("current-map");
-		if(configString == null) {
+		if(configString == null || configString.isEmpty()) {
 			pitMap = biomes;
 			time = System.currentTimeMillis();
 		} else {
@@ -433,6 +433,7 @@ public class PitSim extends JavaPlugin {
 			String mapName = split[0];
 			time = Long.parseLong(split[1]);
 			PitMap currentMap = MapManager.getMap(mapName);
+			pitMap = currentMap;
 
 			assert currentMap != null;
 			if(Math.ceil((System.currentTimeMillis() - time) / 1000.0 / 60.0 / 60.0 / 24.0) >= currentMap.rotationDays) {
@@ -442,7 +443,6 @@ public class PitSim extends JavaPlugin {
 		}
 
 		if(TimeManager.isChristmasSeason() && status != ServerStatus.DARKZONE) {
-			System.out.println();
 			pitMap = xmas;
 			time = System.currentTimeMillis();
 			MapManager.currentMap.world.setStorm(true);
@@ -450,6 +450,7 @@ public class PitSim extends JavaPlugin {
 		}
 
 		assert pitMap != null;
+
 		AConfig.set("current-map", pitMap.world.getName() + ":" + time);
 		AConfig.saveConfig();
 		MapManager.setMap(pitMap);
