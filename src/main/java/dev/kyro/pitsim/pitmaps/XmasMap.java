@@ -17,8 +17,8 @@ public class XmasMap extends PitMap {
 
 	public static PositionSongPlayer radio;
 
-	public XmasMap(String worldName) {
-		super(worldName);
+	public XmasMap(String worldName, int rotationDays) {
+		super(worldName, rotationDays);
 
 		File exampleSong = new File("plugins/NoteBlockAPI/Xmas/Frosty the Snowman.nbs");
 		File dir = new File(exampleSong.getAbsoluteFile().getParent());

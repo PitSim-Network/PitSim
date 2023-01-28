@@ -30,8 +30,12 @@ public class MapManager implements Listener {
 		}
 	}
 
-	public static void registerMap(PitMap pitMap) {
+	public static PitMap registerMap(PitMap pitMap) {
 		mapList.add(pitMap);
+		return pitMap;
+	}
+
+	public static void setMap(PitMap pitMap) {
 		currentMap = pitMap;
 	}
 
@@ -43,6 +47,19 @@ public class MapManager implements Listener {
 		if(player.getWorld() != MapManager.getDarkzone()) return;
 		event.setCancelled(true);
 		AOutput.error(event.getPlayer(), "&c&c&lERROR! &7You cannot use that in the darkzone!");
+	}
+
+	public static PitMap getMap(String refName) {
+		for(PitMap pitMap : mapList) {
+			if(pitMap.world.getName().equalsIgnoreCase(refName)) return pitMap;
+		}
+		return null;
+	}
+
+	public static PitMap getNextMap(PitMap pitMap) {
+		int index = mapList.indexOf(pitMap);
+		if(index == mapList.size() - 1) return mapList.get(0);
+		return mapList.get(index + 1);
 	}
 
 	public static World getTutorial() {

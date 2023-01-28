@@ -6,8 +6,8 @@ import dev.kyro.pitsim.controllers.objects.PitMap;
 import org.bukkit.Location;
 
 public class BiomesMap extends PitMap {
-	public BiomesMap(String worldName) {
-		super(worldName);
+	public BiomesMap(String worldName, int rotationDays) {
+		super(worldName, rotationDays);
 	}
 
 	public static Location mid = new Location(null, 0.5, 70, 0.5);
