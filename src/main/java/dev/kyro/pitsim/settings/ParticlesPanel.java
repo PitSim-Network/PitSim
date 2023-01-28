@@ -23,7 +23,7 @@ public class ParticlesPanel extends AGUIPanel {
 
 	static {
 		backItem = new AItemStackBuilder(Material.BARRIER)
-				.setName("&c&lBack")
+				.setName("&cBack")
 				.setLore(new ALoreBuilder(
 						"&7Click to go to the previous screen"
 				))
@@ -42,7 +42,7 @@ public class ParticlesPanel extends AGUIPanel {
 
 	public void setItems() {
 		auraItem = new AItemStackBuilder(Material.BEACON)
-				.setName("&a&lAuras")
+				.setName("&aAuras")
 				.setLore(new ALoreBuilder(
 						"&7Click to toggle aura particles",
 						"",
@@ -52,7 +52,7 @@ public class ParticlesPanel extends AGUIPanel {
 		getInventory().setItem(10, auraItem);
 
 		trailsItem = new AItemStackBuilder(Material.FIREWORK)
-				.setName("&e&lParticle Trails")
+				.setName("&eParticle Trails")
 				.setLore(new ALoreBuilder(
 						"&7Click to toggle particle trails",
 						"",
