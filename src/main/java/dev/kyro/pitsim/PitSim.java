@@ -5,7 +5,6 @@ import com.comphenix.protocol.ProtocolLibrary;
 import com.comphenix.protocol.ProtocolManager;
 import com.gmail.filoghost.holographicdisplays.api.Hologram;
 import com.mattmalec.pterodactyl4j.PteroBuilder;
-import com.mattmalec.pterodactyl4j.ServerStatus;
 import com.mattmalec.pterodactyl4j.client.entities.PteroClient;
 import com.sk89q.worldedit.EditSession;
 import com.xxmicloxx.NoteBlockAPI.songplayer.EntitySongPlayer;
@@ -58,7 +57,6 @@ import dev.kyro.pitsim.cosmetics.misc.Halo;
 import dev.kyro.pitsim.cosmetics.misc.KyroCosmetic;
 import dev.kyro.pitsim.cosmetics.misc.MysticPresence;
 import dev.kyro.pitsim.cosmetics.trails.*;
-import dev.kyro.pitsim.enchants.overworld.*;
 import dev.kyro.pitsim.enchants.overworld.GoldBoost;
 import dev.kyro.pitsim.enchants.overworld.*;
 import dev.kyro.pitsim.enchants.tainted.abilities.MaxHealth;
@@ -83,7 +81,6 @@ import dev.kyro.pitsim.misc.packets.SignPrompt;
 import dev.kyro.pitsim.npcs.*;
 import dev.kyro.pitsim.perks.*;
 import dev.kyro.pitsim.pitmaps.BiomesMap;
-import dev.kyro.pitsim.pitmaps.DimensionsMap;
 import dev.kyro.pitsim.pitmaps.XmasMap;
 import dev.kyro.pitsim.placeholders.*;
 import dev.kyro.pitsim.storage.StorageManager;
@@ -983,7 +980,7 @@ public class PitSim extends JavaPlugin {
 	}
 
 	public void hookIntoAnticheat(AnticheatManager anticheat) {
-		if(anticheat != null) {
+		if(PitSim.anticheat != null) {
 			Bukkit.getLogger().severe("Multiple anticheats found! Shutting down...");
 			Bukkit.getPluginManager().disablePlugin(this);
 			return;
