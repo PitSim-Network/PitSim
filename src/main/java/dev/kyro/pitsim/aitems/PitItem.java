@@ -42,8 +42,8 @@ public abstract class PitItem implements Listener {
 	public abstract List<String> getRefNames();
 	public abstract void updateItem(ItemStack itemStack);
 
-	public abstract ItemStack getReplacementItem(PitPlayer pitPlayer, ItemStack itemStack, NBTItem nbtItem);
-	public abstract boolean isLegacyItem(ItemStack itemStack, NBTItem nbtItem);
+	public ItemStack getReplacementItem(PitPlayer pitPlayer, ItemStack itemStack, NBTItem nbtItem) {return null;};
+	public boolean isLegacyItem(ItemStack itemStack, NBTItem nbtItem) {return false;};
 
 	public ItemStack buildItem(ItemStack itemStack) {
 		ItemMeta itemMeta = itemStack.hasItemMeta() ? itemStack.getItemMeta() : Bukkit.getItemFactory().getItemMeta(itemStack.getType());
