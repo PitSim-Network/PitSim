@@ -36,7 +36,7 @@ public class PolarManager extends AnticheatManager implements Listener {
 	}
 
 	@Override
-	public void exemptPlayer(Player player, long ticks, String... args) {
+	public void exemptPlayer(Player player, long ticks, FlagType... args) {
 		bypassMap.put(player.getUniqueId(), System.currentTimeMillis() + ticks);
 	}
 }
