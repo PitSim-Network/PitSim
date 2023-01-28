@@ -4,6 +4,7 @@ import de.tr7zw.nbtapi.NBTItem;
 import dev.kyro.arcticapi.builders.AItemStackBuilder;
 import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.pitsim.aitems.PitItem;
+import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.enums.AuctionCategory;
 import dev.kyro.pitsim.enums.NBTTag;
 import dev.kyro.pitsim.misc.Misc;
@@ -19,8 +20,10 @@ import java.util.List;
 public class TokenOfAppreciation extends PitItem {
 
 	public TokenOfAppreciation() {
+		hasUUID = true;
 		hasDropConfirm = true;
 		auctionCategory = AuctionCategory.MISC;
+		hasEnchantGlint = true;
 	}
 
 	@Override
@@ -84,5 +87,39 @@ public class TokenOfAppreciation extends PitItem {
 				.setName(getName())
 				.setLore(getLore(itemStack))
 				.getItemStack();
+	}
+
+	@Override
+	public boolean isThisItem(ItemStack itemStack) {
+		return super.isThisItem(itemStack);
+	}
+
+	@Override
+	public ItemStack getReplacementItem(PitPlayer pitPlayer, ItemStack itemStack, NBTItem nbtItem) {
+		ItemStack newItemStack = new ItemStack(getMaterial(), 1);
+		newItemStack = buildItem(newItemStack);
+
+		String receiverString = null;
+		for(String line : itemStack.getItemMeta().getLore()) {
+			if(!line.contains("To:")) continue;
+			receiverString = line;
+			break;
+		}
+
+		NBTItem newNBTItem = new NBTItem(newItemStack);
+		String giverString = "&7From: &8[&9Dev&8] &9wiji1";
+		newNBTItem.setString(NBTTag.COOKIE_GIVER.getRef(), giverString);
+		newNBTItem.setString(NBTTag.COOKIE_RECEIVER.getRef(), receiverString);
+		newItemStack = newNBTItem.getItem();
+
+		return new AItemStackBuilder(newItemStack)
+				.setName(getName())
+				.setLore(getLore(newItemStack))
+				.getItemStack();
+	}
+
+	@Override
+	public boolean isLegacyItem(ItemStack itemStack, NBTItem nbtItem) {
+		return nbtItem.hasKey(NBTTag.IS_TOKEN.getRef());
 	}
 }

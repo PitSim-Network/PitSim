@@ -8,7 +8,6 @@ import dev.kyro.pitsim.controllers.EnchantManager;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.enums.NBTTag;
 import org.bukkit.Material;
-import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.ArrayList;
@@ -21,8 +20,7 @@ public class TaintedScythe extends PitItem {
 		hasUUID = true;
 		hideExtra = true;
 		unbreakable = true;
-
-		itemEnchants.put(Enchantment.DURABILITY, 1);
+		hasEnchantGlint = true;
 	}
 
 	@Override
@@ -80,7 +78,7 @@ public class TaintedScythe extends PitItem {
 
 	@Override
 	public ItemStack getReplacementItem(PitPlayer pitPlayer, ItemStack itemStack, NBTItem nbtItem) {
-//		TODO: Refund
+//		TODO: Refund (also make sure to remove durability and add glint properly)
 		return null;
 	}
 

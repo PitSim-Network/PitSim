@@ -7,7 +7,6 @@ import dev.kyro.pitsim.aitems.PitItem;
 import dev.kyro.pitsim.controllers.EnchantManager;
 import dev.kyro.pitsim.enums.NBTTag;
 import org.bukkit.Material;
-import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.ArrayList;
@@ -20,8 +19,7 @@ public class MysticBow extends PitItem {
 		hasUUID = true;
 		hideExtra = true;
 		unbreakable = true;
-
-		itemEnchants.put(Enchantment.WATER_WORKER, 1);
+		hasEnchantGlint = true;
 	}
 
 	@Override

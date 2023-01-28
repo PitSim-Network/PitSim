@@ -2,6 +2,9 @@ package dev.kyro.pitsim.commands;
 
 import de.tr7zw.nbtapi.NBTItem;
 import dev.kyro.arcticapi.misc.AUtil;
+import dev.kyro.pitsim.aitems.misc.TokenOfAppreciation;
+import dev.kyro.pitsim.controllers.ItemFactory;
+import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.enums.NBTTag;
 import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.ChatColor;
@@ -31,7 +34,11 @@ public class KTestCommand implements CommandExecutor {
 //		ProgressionGUI progressionGUI = new ProgressionGUI(player);
 //		progressionGUI.open();
 
-		giveToken(player, 1);
+//		giveToken(player, 1);
+		player.sendMessage("recreating item");
+		ItemStack newStack = ItemFactory.getItem(TokenOfAppreciation.class).getReplacementItem(PitPlayer.getPitPlayer(player),
+				player.getItemInHand(), new NBTItem(player.getItemInHand()));
+		player.getInventory().addItem(newStack);
 
 		return false;
 	}

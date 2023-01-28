@@ -10,10 +10,13 @@ import dev.kyro.pitsim.enums.NBTTag;
 import dev.kyro.pitsim.misc.Misc;
 import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.Material;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.player.PlayerItemConsumeEvent;
+import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -22,6 +25,7 @@ import java.util.List;
 public class StaffCookie extends PitItem {
 
 	public StaffCookie() {
+		hasUUID = true;
 		hasDropConfirm = true;
 		auctionCategory = AuctionCategory.MISC;
 	}
@@ -50,6 +54,7 @@ public class StaffCookie extends PitItem {
 		String receiverString = nbtItem.getString(NBTTag.COOKIE_RECEIVER.getRef());
 
 		return new ALoreBuilder(
+				"&eSpecial item",
 				"&7Given to you by a staff member",
 				"&7for some reason",
 				"",
@@ -71,6 +76,13 @@ public class StaffCookie extends PitItem {
 	public ItemStack getItem(Player staff, Player receiver, int amount) {
 		ItemStack itemStack = new ItemStack(getMaterial(), amount);
 		itemStack = buildItem(itemStack);
+
+		if(Misc.isKyro(staff.getUniqueId())) {
+			ItemMeta itemMeta = itemStack.getItemMeta();
+			itemMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
+			itemStack.setItemMeta(itemMeta);
+			itemStack.addUnsafeEnchantment(Enchantment.WATER_WORKER, 1);
+		}
 
 		NBTItem nbtItem = new NBTItem(itemStack);
 		String giverString = "&7From: " + PlaceholderAPI.setPlaceholders(staff,
