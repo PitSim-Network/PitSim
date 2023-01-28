@@ -5,6 +5,7 @@ import com.comphenix.protocol.ProtocolLibrary;
 import com.comphenix.protocol.ProtocolManager;
 import com.gmail.filoghost.holographicdisplays.api.Hologram;
 import com.mattmalec.pterodactyl4j.PteroBuilder;
+import com.mattmalec.pterodactyl4j.ServerStatus;
 import com.mattmalec.pterodactyl4j.client.entities.PteroClient;
 import com.sk89q.worldedit.EditSession;
 import com.xxmicloxx.NoteBlockAPI.songplayer.EntitySongPlayer;
@@ -57,6 +58,7 @@ import dev.kyro.pitsim.cosmetics.misc.Halo;
 import dev.kyro.pitsim.cosmetics.misc.KyroCosmetic;
 import dev.kyro.pitsim.cosmetics.misc.MysticPresence;
 import dev.kyro.pitsim.cosmetics.trails.*;
+import dev.kyro.pitsim.enchants.overworld.*;
 import dev.kyro.pitsim.enchants.overworld.GoldBoost;
 import dev.kyro.pitsim.enchants.overworld.*;
 import dev.kyro.pitsim.enchants.tainted.abilities.MaxHealth;
@@ -81,6 +83,7 @@ import dev.kyro.pitsim.misc.packets.SignPrompt;
 import dev.kyro.pitsim.npcs.*;
 import dev.kyro.pitsim.perks.*;
 import dev.kyro.pitsim.pitmaps.BiomesMap;
+import dev.kyro.pitsim.pitmaps.DimensionsMap;
 import dev.kyro.pitsim.pitmaps.XmasMap;
 import dev.kyro.pitsim.placeholders.*;
 import dev.kyro.pitsim.storage.StorageManager;
@@ -400,17 +403,41 @@ public class PitSim extends JavaPlugin {
 	}
 
 	private void registerMaps() {
-//		MapManager.registerMap(new DimensionsMap("dimensions");
+		PitMap pitMap = null;
+		long time;
 
-		if(TimeManager.isChristmasSeason() && status != ServerStatus.DARKZONE) {
-			System.out.println();
-			MapManager.registerMap(new XmasMap("xmas"));
-			MapManager.currentMap.world.setStorm(true);
-			MapManager.currentMap.world.setWeatherDuration(Integer.MAX_VALUE);
-			return;
+		PitMap biomes = MapManager.registerMap(new BiomesMap("biomes", 7));
+//		PitMap dimensions = MapManager.registerMap(new DimensionsMap("dimensions", 7));
+		PitMap xmas = MapManager.registerMap(new XmasMap("xmas", -1));
+
+		String configString = AConfig.getString("current-map");
+		if(configString == null) {
+			pitMap = biomes;
+			time = System.currentTimeMillis();
+		} else {
+			String[] split = configString.split(":");
+			String mapName = split[0];
+			time = Long.parseLong(split[1]);
+			PitMap currentMap = MapManager.getMap(mapName);
+
+			assert currentMap != null;
+			if((System.currentTimeMillis() - time / 1000.0 / 60.0 / 60.0 / 24.0) >= currentMap.rotationDays) {
+				pitMap = MapManager.getNextMap(currentMap);
+				time = System.currentTimeMillis();
+			}
 		}
 
-		MapManager.registerMap(new BiomesMap("biomes"));
+		if(TimeManager.isChristmasSeason() && status != ServerStatus.DARKZONE) {
+			pitMap = xmas;
+			time = System.currentTimeMillis();
+			MapManager.currentMap.world.setStorm(true);
+			MapManager.currentMap.world.setWeatherDuration(Integer.MAX_VALUE);
+		}
+
+		assert pitMap != null;
+		AConfig.set("current-map", pitMap.world.getName() + ":" + time);
+		AConfig.saveConfig();
+		MapManager.setMap(pitMap);
 	}
 
 	private void registerPerks() {

@@ -6,9 +6,11 @@ import org.bukkit.World;
 
 public abstract class PitMap {
 	public World world;
+	public int rotationDays;
 
-	public PitMap(String worldName) {
+	public PitMap(String worldName, int rotationDays) {
 		world = Bukkit.getWorld(worldName);
+		this.rotationDays = rotationDays;
 	}
 
 	public abstract int getTeleportAdd();
