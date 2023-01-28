@@ -20,8 +20,8 @@ public class SandMap extends PitMap {
 	@Override
 	public Location getNonSpawn() {
 		Location spawn = new Location(world, 0, 72  , 0);
-		spawn.setX(spawn.getX() + (Math.random() * 4 - 3));
-		spawn.setZ(spawn.getZ() + (Math.random() * 4 - 3));
+		spawn.setX(spawn.getX() + (Math.random() * 4 - 2));
+		spawn.setZ(spawn.getZ() + (Math.random() * 4 - 2));
 
 		Booster booster = BoosterManager.getBooster("chaos");
 		if(booster.isActive()) {

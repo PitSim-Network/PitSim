@@ -415,46 +415,51 @@ public class PitSim extends JavaPlugin {
 		if(file.exists()) file.deleteOnExit();
 	}
 
-	private void registerMaps() {
-		PitMap pitMap = null;
-		long time;
+		private void registerMaps() {
+			PitMap pitMap = null;
+			long time;
 
-		PitMap biomes = MapManager.registerMap(new BiomesMap("biomes", 7));
-		PitMap sand = MapManager.registerMap(new SandMap("sand", 7));
-//		PitMap dimensions = MapManager.registerMap(new DimensionsMap("dimensions", 7));
-		PitMap xmas = MapManager.registerMap(new XmasMap("xmas", -1));
+			PitMap biomes = MapManager.registerMap(new BiomesMap("biomes", 7));
+			PitMap sand = MapManager.registerMap(new SandMap("sand", 7));
+	//		PitMap dimensions = MapManager.registerMap(new DimensionsMap("dimensions", 7));
+			PitMap xmas = MapManager.registerMap(new XmasMap("xmas", -1));
 
-		String configString = AConfig.getString("current-map");
-		if(configString == null || configString.isEmpty()) {
-			pitMap = biomes;
-			time = System.currentTimeMillis();
-		} else {
-			String[] split = configString.split(":");
-			String mapName = split[0];
-			time = Long.parseLong(split[1]);
-			PitMap currentMap = MapManager.getMap(mapName);
-			pitMap = currentMap;
+			String configString = AConfig.getString("current-map");
+			if(configString == null || configString.isEmpty()) {
+				pitMap = biomes;
+				time = System.currentTimeMillis();
+			} else {
+				String[] split = configString.split(":");
+				String mapName = split[0];
+				time = Long.parseLong(split[1]);
+				PitMap currentMap = MapManager.getMap(mapName);
+				pitMap = currentMap;
 
-			assert currentMap != null;
-			if(Math.ceil((System.currentTimeMillis() - time) / 1000.0 / 60.0 / 60.0 / 24.0) >= currentMap.rotationDays) {
-				pitMap = MapManager.getNextMap(currentMap);
+				assert currentMap != null;
+				if(Math.ceil((System.currentTimeMillis() - time) / 1000.0 / 60.0 / 60.0 / 24.0) >= currentMap.rotationDays) {
+					pitMap = MapManager.getNextMap(currentMap);
+					time = System.currentTimeMillis();
+				}
+			}
+
+			if(TimeManager.isChristmasSeason() && status != ServerStatus.DARKZONE) {
+				pitMap = xmas;
+				time = System.currentTimeMillis();
+				MapManager.currentMap.world.setStorm(true);
+				MapManager.currentMap.world.setWeatherDuration(Integer.MAX_VALUE);
+			}
+
+
+			if(status == ServerStatus.DARKZONE) {
+				pitMap = biomes;
 				time = System.currentTimeMillis();
 			}
+			assert pitMap != null;
+
+			AConfig.set("current-map", pitMap.world.getName() + ":" + time);
+			AConfig.saveConfig();
+			MapManager.setMap(pitMap);
 		}
-
-		if(TimeManager.isChristmasSeason() && status != ServerStatus.DARKZONE) {
-			pitMap = xmas;
-			time = System.currentTimeMillis();
-			MapManager.currentMap.world.setStorm(true);
-			MapManager.currentMap.world.setWeatherDuration(Integer.MAX_VALUE);
-		}
-
-		assert pitMap != null;
-
-		AConfig.set("current-map", pitMap.world.getName() + ":" + time);
-		AConfig.saveConfig();
-		MapManager.setMap(pitMap);
-	}
 
 	private void registerPerks() {
 
