@@ -4,6 +4,7 @@ import de.tr7zw.nbtapi.NBTItem;
 import dev.kyro.arcticapi.builders.AItemStackBuilder;
 import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.pitsim.aitems.PitItem;
+import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.enums.AuctionCategory;
 import dev.kyro.pitsim.enums.NBTTag;
 import dev.kyro.pitsim.misc.Misc;
@@ -91,5 +92,15 @@ public class StaffCookie extends PitItem {
 		ItemStack itemStack = event.getItem();
 		if(!isThisItem(itemStack)) return;
 		event.setCancelled(true);
+	}
+
+	@Override
+	public ItemStack getReplacementItem(PitPlayer pitPlayer, ItemStack itemStack, NBTItem nbtItem) {
+		return null;
+	}
+
+	@Override
+	public boolean isLegacyItem(ItemStack itemStack, NBTItem nbtItem) {
+		return false;
 	}
 }

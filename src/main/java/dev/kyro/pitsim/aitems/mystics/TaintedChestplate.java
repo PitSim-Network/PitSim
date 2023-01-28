@@ -5,6 +5,7 @@ import dev.kyro.arcticapi.builders.AItemStackBuilder;
 import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.pitsim.aitems.PitItem;
 import dev.kyro.pitsim.controllers.EnchantManager;
+import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.enums.NBTTag;
 import dev.kyro.pitsim.enums.PantColor;
 import org.bukkit.Color;
@@ -79,5 +80,16 @@ public class TaintedChestplate extends PitItem {
 			return;
 		}
 		EnchantManager.setItemLore(itemStack, null);
+	}
+
+	@Override
+	public ItemStack getReplacementItem(PitPlayer pitPlayer, ItemStack itemStack, NBTItem nbtItem) {
+//		TODO: Refund
+		return null;
+	}
+
+	@Override
+	public boolean isLegacyItem(ItemStack itemStack, NBTItem nbtItem) {
+		return nbtItem.hasKey(NBTTag.TAINTED_TIER.getRef()) && itemStack.getType() == Material.LEATHER_CHESTPLATE;
 	}
 }

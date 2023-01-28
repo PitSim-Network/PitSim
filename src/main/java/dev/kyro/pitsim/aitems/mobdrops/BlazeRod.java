@@ -1,9 +1,11 @@
 package dev.kyro.pitsim.aitems.mobdrops;
 
+import de.tr7zw.nbtapi.NBTItem;
 import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.pitsim.aitems.StaticPitItem;
 import dev.kyro.pitsim.enums.AuctionCategory;
 import org.bukkit.Material;
+import org.bukkit.inventory.ItemStack;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -44,5 +46,10 @@ public class BlazeRod extends StaticPitItem {
 				"",
 				"&5Tainted Item"
 		).getLore();
+	}
+
+	@Override
+	public boolean isLegacyItem(ItemStack itemStack, NBTItem nbtItem) {
+		return false;
 	}
 }

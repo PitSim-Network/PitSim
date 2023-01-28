@@ -7,6 +7,7 @@ import dev.kyro.pitsim.aitems.PitItem;
 import dev.kyro.pitsim.controllers.HelmetSystem;
 import dev.kyro.pitsim.controllers.objects.HelmetAbility;
 import dev.kyro.pitsim.controllers.objects.HelmetManager;
+import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.enums.AuctionCategory;
 import dev.kyro.pitsim.enums.NBTTag;
 import org.bukkit.Material;
@@ -15,7 +16,6 @@ import org.bukkit.inventory.ItemStack;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.UUID;
 
 public class GoldenHelmet extends PitItem {
 
@@ -60,9 +60,8 @@ public class GoldenHelmet extends PitItem {
 		itemStack = buildItem(itemStack);
 
 		NBTItem nbtItem = new NBTItem(itemStack);
-		nbtItem.setInteger(NBTTag.GHELMET_GOLD.getRef(), 0);
+		nbtItem.setLong(NBTTag.GHELMET_GOLD.getRef(), 0L);
 		nbtItem.setString(NBTTag.GHELMET_ABILITY.getRef(), null);
-		nbtItem.setString(NBTTag.GHELMET_UUID.getRef(), UUID.randomUUID().toString());
 		itemStack = nbtItem.getItem();
 
 		updateItem(itemStack);
@@ -101,11 +100,21 @@ public class GoldenHelmet extends PitItem {
 		loreBuilder.addLore("", "&7Gold: &6" + HelmetManager.formatter.format(gold) + "g", "", "&eShift right-click to modify!");
 
 		new AItemStackBuilder(itemStack)
-				.setLore(loreBuilder)
-				.getItemStack();
+				.setLore(loreBuilder);
+	}
 
-		NBTItem nbtItem = new NBTItem(itemStack);
-		nbtItem.setLong(NBTTag.GHELMET_GOLD.getRef(), gold);
-		if(ability != null) nbtItem.setString(NBTTag.GHELMET_ABILITY.getRef(), ability.refName);
+	@Override
+	public ItemStack getReplacementItem(PitPlayer pitPlayer, ItemStack itemStack, NBTItem nbtItem) {
+		NBTItem newNBTItem = new NBTItem(getItem());
+		newNBTItem.setLong(NBTTag.GHELMET_GOLD.getRef(), nbtItem.getLong(NBTTag.GHELMET_GOLD.getRef()));
+		newNBTItem.setString(NBTTag.GHELMET_ABILITY.getRef(), nbtItem.getString(NBTTag.GHELMET_ABILITY.getRef()));
+
+		updateItem(newNBTItem.getItem());
+		return newNBTItem.getItem();
+	}
+
+	@Override
+	public boolean isLegacyItem(ItemStack itemStack, NBTItem nbtItem) {
+		return nbtItem.hasKey(NBTTag.GHELMET_UUID.getRef());
 	}
 }

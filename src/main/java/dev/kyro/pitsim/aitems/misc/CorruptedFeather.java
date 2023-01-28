@@ -1,11 +1,13 @@
 package dev.kyro.pitsim.aitems.misc;
 
+import de.tr7zw.nbtapi.NBTItem;
 import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.aitems.StaticPitItem;
 import dev.kyro.pitsim.controllers.GuildIntegrationManager;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.enums.AuctionCategory;
+import dev.kyro.pitsim.enums.NBTTag;
 import dev.kyro.pitsim.misc.Sounds;
 import org.bukkit.Material;
 import org.bukkit.entity.LivingEntity;
@@ -72,5 +74,10 @@ public class CorruptedFeather extends StaticPitItem {
 			return true;
 		}
 		return false;
+	}
+
+	@Override
+	public boolean isLegacyItem(ItemStack itemStack, NBTItem nbtItem) {
+		return nbtItem.hasKey(NBTTag.IS_CORRUPTED_FEATHER.getRef());
 	}
 }

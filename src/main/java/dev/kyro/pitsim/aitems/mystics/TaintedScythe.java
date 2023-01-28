@@ -5,6 +5,7 @@ import dev.kyro.arcticapi.builders.AItemStackBuilder;
 import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.pitsim.aitems.PitItem;
 import dev.kyro.pitsim.controllers.EnchantManager;
+import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.enums.NBTTag;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
@@ -75,5 +76,16 @@ public class TaintedScythe extends PitItem {
 			return;
 		}
 		EnchantManager.setItemLore(itemStack, null);
+	}
+
+	@Override
+	public ItemStack getReplacementItem(PitPlayer pitPlayer, ItemStack itemStack, NBTItem nbtItem) {
+//		TODO: Refund
+		return null;
+	}
+
+	@Override
+	public boolean isLegacyItem(ItemStack itemStack, NBTItem nbtItem) {
+		return nbtItem.hasKey(NBTTag.TAINTED_TIER.getRef()) && itemStack.getType() == Material.GOLD_HOE;
 	}
 }

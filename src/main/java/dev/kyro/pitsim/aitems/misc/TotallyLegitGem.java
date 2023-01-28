@@ -1,14 +1,17 @@
 package dev.kyro.pitsim.aitems.misc;
 
+import de.tr7zw.nbtapi.NBTItem;
 import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.pitsim.aitems.StaticPitItem;
 import dev.kyro.pitsim.enums.AuctionCategory;
+import dev.kyro.pitsim.enums.NBTTag;
 import dev.kyro.pitsim.inventories.GemGUI;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.inventory.ItemStack;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -60,5 +63,10 @@ public class TotallyLegitGem extends StaticPitItem {
 
 		GemGUI gemGUI = new GemGUI(event.getPlayer());
 		gemGUI.open();
+	}
+
+	@Override
+	public boolean isLegacyItem(ItemStack itemStack, NBTItem nbtItem) {
+		return nbtItem.hasKey(NBTTag.IS_GEM.getRef());
 	}
 }

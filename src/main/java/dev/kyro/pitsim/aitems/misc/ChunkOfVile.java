@@ -100,4 +100,9 @@ public class ChunkOfVile extends StaticPitItem {
 		VileGUI vileGUI = new VileGUI(player);
 		vileGUI.open();
 	}
+
+	@Override
+	public boolean isLegacyItem(ItemStack itemStack, NBTItem nbtItem) {
+		return nbtItem.hasKey(NBTTag.IS_VILE.getRef());
+	}
 }

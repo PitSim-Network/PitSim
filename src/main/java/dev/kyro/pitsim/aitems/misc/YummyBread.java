@@ -1,10 +1,12 @@
 package dev.kyro.pitsim.aitems.misc;
 
+import de.tr7zw.nbtapi.NBTItem;
 import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.aitems.StaticPitItem;
 import dev.kyro.pitsim.controllers.NonManager;
 import dev.kyro.pitsim.enums.AuctionCategory;
+import dev.kyro.pitsim.enums.NBTTag;
 import dev.kyro.pitsim.events.AttackEvent;
 import dev.kyro.pitsim.misc.Sounds;
 import org.bukkit.Material;
@@ -94,5 +96,10 @@ public class YummyBread extends StaticPitItem {
 
 	public int getSeconds() {
 		return 20;
+	}
+
+	@Override
+	public boolean isLegacyItem(ItemStack itemStack, NBTItem nbtItem) {
+		return nbtItem.hasKey(NBTTag.IS_YUMMY_BREAD.getRef());
 	}
 }
