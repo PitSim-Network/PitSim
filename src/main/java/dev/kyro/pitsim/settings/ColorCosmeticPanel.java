@@ -31,7 +31,7 @@ public class ColorCosmeticPanel extends AGUIPanel {
 
 	static {
 		backItem = new AItemStackBuilder(Material.BARRIER)
-				.setName("&c&lBack")
+				.setName("&cBack")
 				.setLore(new ALoreBuilder(
 						"&7Click to go to the previous screen"
 				))
