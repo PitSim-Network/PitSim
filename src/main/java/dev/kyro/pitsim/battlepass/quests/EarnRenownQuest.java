@@ -10,8 +10,6 @@ import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 
 import java.text.DecimalFormat;
-import java.util.ArrayList;
-import java.util.List;
 
 public class EarnRenownQuest extends PassQuest {
 	public static EarnRenownQuest INSTANCE;
@@ -27,7 +25,7 @@ public class EarnRenownQuest extends PassQuest {
 
 	@Override
 	public ItemStack getDisplayItem(PitPlayer pitPlayer, QuestLevel questLevel, double progress) {
-		DecimalFormat decimalFormat = new DecimalFormat("#,000");
+		DecimalFormat decimalFormat = new DecimalFormat("#,##0");
 		ItemStack itemStack = new AItemStackBuilder(Material.BEACON)
 				.setName(getDisplayName())
 				.setLore(new ALoreBuilder(
