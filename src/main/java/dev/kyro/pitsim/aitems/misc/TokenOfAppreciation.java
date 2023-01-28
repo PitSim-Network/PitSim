@@ -7,7 +7,6 @@ import dev.kyro.pitsim.aitems.PitItem;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.enums.AuctionCategory;
 import dev.kyro.pitsim.enums.NBTTag;
-import dev.kyro.pitsim.misc.Misc;
 import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -55,8 +54,8 @@ public class TokenOfAppreciation extends PitItem {
 				"&7why we have to reset the PitSim economy.",
 				"&7Who knows, this might do something some day",
 				"",
-				giverString,
-				receiverString
+				"&7From: " + giverString,
+				"&7To: " + receiverString
 		).getLore();
 	}
 
@@ -75,10 +74,10 @@ public class TokenOfAppreciation extends PitItem {
 		itemStack = buildItem(itemStack);
 
 		NBTItem nbtItem = new NBTItem(itemStack);
-		String giverString = "&7From: " + PlaceholderAPI.setPlaceholders(staff,
-				"%luckperms_prefix%[%luckperms_groups%] ") + Misc.getDisplayName(staff);
-		String receiverString = "&7To: " + PlaceholderAPI.setPlaceholders(receiver,
-				"%luckperms_prefix%[%luckperms_groups%] ") + Misc.getDisplayName(receiver);
+		String giverString = PlaceholderAPI.setPlaceholders(staff,
+				"&8[%luckperms_primary_group_name%&8] %luckperms_prefix%") + staff.getName();
+		String receiverString = PlaceholderAPI.setPlaceholders(receiver,
+				"&8[%luckperms_primary_group_name%&8] %luckperms_prefix%") + receiver.getName();
 		nbtItem.setString(NBTTag.COOKIE_GIVER.getRef(), giverString);
 		nbtItem.setString(NBTTag.COOKIE_RECEIVER.getRef(), receiverString);
 		itemStack = nbtItem.getItem();
@@ -102,12 +101,12 @@ public class TokenOfAppreciation extends PitItem {
 		String receiverString = null;
 		for(String line : itemStack.getItemMeta().getLore()) {
 			if(!line.contains("To:")) continue;
-			receiverString = line;
+			receiverString = line.replaceAll(".+To: ", "");
 			break;
 		}
 
 		NBTItem newNBTItem = new NBTItem(newItemStack);
-		String giverString = "&7From: &8[&9Dev&8] &9wiji1";
+		String giverString = "&8[&9Dev&8] &9wiji1";
 		newNBTItem.setString(NBTTag.COOKIE_GIVER.getRef(), giverString);
 		newNBTItem.setString(NBTTag.COOKIE_RECEIVER.getRef(), receiverString);
 		newItemStack = newNBTItem.getItem();

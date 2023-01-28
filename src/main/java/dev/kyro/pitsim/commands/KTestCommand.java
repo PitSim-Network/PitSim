@@ -35,7 +35,7 @@ public class KTestCommand implements CommandExecutor {
 //		progressionGUI.open();
 
 //		giveToken(player, 1);
-		player.sendMessage("recreating item");
+		player.sendMessage("recreating item 2");
 		ItemStack newStack = ItemFactory.getItem(TokenOfAppreciation.class).getReplacementItem(PitPlayer.getPitPlayer(player),
 				player.getItemInHand(), new NBTItem(player.getItemInHand()));
 		player.getInventory().addItem(newStack);

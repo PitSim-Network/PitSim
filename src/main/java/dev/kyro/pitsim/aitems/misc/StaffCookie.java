@@ -58,8 +58,8 @@ public class StaffCookie extends PitItem {
 				"&7Given to you by a staff member",
 				"&7for some reason",
 				"",
-				giverString,
-				receiverString
+				"&7From: " + giverString,
+				"&7To: " + receiverString
 		).getLore();
 	}
 
@@ -85,10 +85,10 @@ public class StaffCookie extends PitItem {
 		}
 
 		NBTItem nbtItem = new NBTItem(itemStack);
-		String giverString = "&7From: " + PlaceholderAPI.setPlaceholders(staff,
-				"%luckperms_prefix%[%luckperms_groups%] ") + Misc.getDisplayName(staff);
-		String receiverString = "&7To: " + PlaceholderAPI.setPlaceholders(receiver,
-				"%luckperms_prefix%[%luckperms_groups%] ") + Misc.getDisplayName(receiver);
+		String giverString = PlaceholderAPI.setPlaceholders(staff,
+				"&8[%luckperms_primary_group_name%&8] %luckperms_prefix%") + staff.getName();
+		String receiverString = PlaceholderAPI.setPlaceholders(receiver,
+				"&8[%luckperms_primary_group_name%&8] %luckperms_prefix%") + receiver.getName();
 		nbtItem.setString(NBTTag.COOKIE_GIVER.getRef(), giverString);
 		nbtItem.setString(NBTTag.COOKIE_RECEIVER.getRef(), receiverString);
 		itemStack = nbtItem.getItem();
