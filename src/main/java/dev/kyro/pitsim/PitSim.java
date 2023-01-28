@@ -1,6 +1,5 @@
 package dev.kyro.pitsim;
 
-import ac.grim.grimac.GrimAbstractAPI;
 import com.comphenix.protocol.ProtocolLibrary;
 import com.comphenix.protocol.ProtocolManager;
 import com.gmail.filoghost.holographicdisplays.api.Hologram;
@@ -110,7 +109,6 @@ public class PitSim extends JavaPlugin {
 	public static final double VERSION = 3.0;
 
 	public static LuckPerms LUCKPERMS;
-	public static GrimAbstractAPI GRIM;
 	public static PitSim INSTANCE;
 	public static ProtocolManager PROTOCOL_MANAGER = null;
 	public static BukkitAudiences adventure;
@@ -133,7 +131,6 @@ public class PitSim extends JavaPlugin {
 			PlayerDataManager.exemptedPlayers.add(onlinePlayer.getUniqueId());
 		}
 
-
 		loadConfig();
 		ArcticAPI.configInit(this, "prefix", "error-prefix");
 		serverName = AConfig.getString("server");
@@ -148,11 +145,13 @@ public class PitSim extends JavaPlugin {
 		if(Bukkit.getPluginManager().getPlugin("GrimAC") != null) hookIntoAnticheat(new GrimManager());
 		if(Bukkit.getPluginManager().getPlugin("PolarLoader") != null) hookIntoAnticheat(new PolarManager());
 
-		if(anticheat == null) {
-			Bukkit.getLogger().severe("No anticheat found! Shutting down...");
-			Bukkit.getPluginManager().disablePlugin(this);
-			return;
-		} else getServer().getPluginManager().registerEvents(anticheat, this);
+		if(!serverName.contains("dev")) {
+			if(anticheat == null) {
+				Bukkit.getLogger().severe("No anticheat found! Shutting down...");
+				Bukkit.getPluginManager().disablePlugin(this);
+				return;
+			} else getServer().getPluginManager().registerEvents(anticheat, this);
+		}
 
 		if(AConfig.getBoolean("standalone-server")) status = ServerStatus.ALL;
 		else status = serverName.contains("darkzone") ? ServerStatus.DARKZONE : ServerStatus.OVERWORLD;
@@ -165,9 +164,6 @@ public class PitSim extends JavaPlugin {
 
 		RegisteredServiceProvider<LuckPerms> luckpermsProvider = Bukkit.getServicesManager().getRegistration(LuckPerms.class);
 		if(luckpermsProvider != null) LUCKPERMS = luckpermsProvider.getProvider();
-
-		RegisteredServiceProvider<GrimAbstractAPI> grimProvider = Bukkit.getServicesManager().getRegistration(GrimAbstractAPI.class);
-		if (grimProvider != null) GRIM = grimProvider.getProvider();
 
 		PROTOCOL_MANAGER = ProtocolLibrary.getProtocolManager();
 
