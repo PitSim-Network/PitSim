@@ -73,14 +73,17 @@ public class MegaLongBow extends PitEnchant {
 		critArrow(player, arrow);
 		Misc.applyPotionEffect(player, PotionEffectType.JUMP, 40, getJumpMultiplier(enchantLvl), true, false);
 
-		PitSim.anticheat.exemptPlayer(player, 350, AnticheatManager.FlagType.SIMULATION, AnticheatManager.FlagType.GROUND_SPOOF);
-		Misc.applyPotionEffect(player, PotionEffectType.JUMP, 40, getJumpMultiplier(enchantLvl), true, false);
-		new BukkitRunnable() {
-			@Override
-			public void run() {
-				PitSim.anticheat.exemptPlayer(player, 350, AnticheatManager.FlagType.SIMULATION, AnticheatManager.FlagType.GROUND_SPOOF);
-			}
-		}.runTaskLater(PitSim.INSTANCE, 35);
+		if(PitSim.anticheat instanceof PolarManager) {
+			PitSim.anticheat.exemptPlayer(player, 7);
+			new BukkitRunnable() {
+				@Override
+				public void run() {
+					PitSim.anticheat.exemptPlayer(player, 7);
+				}
+			}.runTaskLater(PitSim.INSTANCE, 35);
+		} else if(PitSim.anticheat instanceof GrimManager) {
+			PitSim.anticheat.exemptPlayer(player, 20 + getJumpMultiplier(enchantLvl) * 5L, AnticheatManager.FlagType.SIMULATION, AnticheatManager.FlagType.GROUND_SPOOF);
+		}
 	}
 
 	public static void critArrow(Player player, Arrow arrow) {
