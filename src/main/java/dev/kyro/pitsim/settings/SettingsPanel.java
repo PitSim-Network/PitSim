@@ -30,14 +30,14 @@ public class SettingsPanel extends AGUIPanel {
 
 	static {
 		cosmeticItem = new AItemStackBuilder(Material.RED_ROSE)
-				.setName("&c&lCosmetics")
+				.setName("&cCosmetics")
 				.setLore(new ALoreBuilder(
 						"&7Click to open the cosmetics menu"
 				))
 				.getItemStack();
 
 		particleItem = new AItemStackBuilder(Material.SEEDS)
-				.setName("&a&lParticle Settings")
+				.setName("&aParticle Settings")
 				.setLore(new ALoreBuilder(
 						"&7Click to open the particles menu"
 				))

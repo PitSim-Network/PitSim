@@ -9,13 +9,13 @@ import java.util.Arrays;
 import java.util.List;
 
 public enum CosmeticType {
-	PLAYER_KILL_EFFECT("&4&lPlayer Kill Effects", PlayerKillEffectsPanel.class),
-	BOT_KILL_EFFECT("&c&lBot Kill Effects", BotKillEffectsPanel.class),
-	BOUNTY_CLAIM_MESSAGE("&6&lBounty Messages", BountyMessagesPanel.class),
-	CAPE("&f&lCapes", CapesPanel.class),
-	PARTICLE_TRAIL("&e&lParticle Trails", ParticleTrailsPanel.class),
-	AURA("&a&lAuras", AurasPanel.class),
-	MISC("&e&lMisc", MiscPanel.class);
+	PLAYER_KILL_EFFECT("&4Player Kill Effects", PlayerKillEffectsPanel.class),
+	BOT_KILL_EFFECT("&cBot Kill Effects", BotKillEffectsPanel.class),
+	BOUNTY_CLAIM_MESSAGE("&6Bounty Messages", BountyMessagesPanel.class),
+	CAPE("&fCapes", CapesPanel.class),
+	PARTICLE_TRAIL("&eParticle Trails", ParticleTrailsPanel.class),
+	AURA("&aAuras", AurasPanel.class),
+	MISC("&eMisc", MiscPanel.class);
 
 	private static List<Integer> settingsGUISlots = new ArrayList<>(Arrays.asList(10, 11, 12, 13, 14, 15, 16));
 
