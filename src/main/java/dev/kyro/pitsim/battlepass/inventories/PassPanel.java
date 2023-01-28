@@ -74,7 +74,7 @@ public class PassPanel extends AGUIPanel {
 				.setName("&b&lPass Info")
 				.setLore(new ALoreBuilder(
 						"&7Pass Level: " + (passData.hasPremium ? "&e&lPREMIUM" : "&7&lFREE"),
-						"&7Pass Tier: &3" + passData.getCompletedTiers() + "&7/&3" + PassManager.currentPass.tiers,
+						"&7Pass Tier: &3" + Math.min(passData.getCompletedTiers(), PassManager.currentPass.tiers) + "&7/&3" + PassManager.currentPass.tiers,
 						"&7Remaining Time: " + PassManager.getFormattedTimeUntilNextPass()
 				))
 				.getItemStack();
@@ -183,7 +183,7 @@ public class PassPanel extends AGUIPanel {
 			player.closeInventory();
 			AOutput.send(player, "&e&lPREMIUM PASS!&7 Purchase the &6&lPit&e&lSim &3&lPass&7 at store.pitsim.net");
 		} else if(slot == 16) {
-			if(page < (PassManager.currentPass.tiers - 1) / 9 + 1) {
+			if(page < getMaxPages()) {
 				setPage(pitPlayer, ++page);
 			} else {
 				Sounds.NO.play(player);
@@ -255,5 +255,9 @@ public class PassPanel extends AGUIPanel {
 			loreBuilder.addLore("&eClick to claim!");
 		}
 		new AItemStackBuilder(itemStack).setLore(loreBuilder);
+	}
+
+	public int getMaxPages() {
+		return (PassManager.currentPass.tiers - 1) / 9 + 1;
 	}
 }
