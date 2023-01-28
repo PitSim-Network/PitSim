@@ -58,28 +58,8 @@ public class GrimManager extends AnticheatManager implements Listener {
 				public void run() {
 					exemptPlayers.remove(Exemption.this);
 				}
-			}.runTaskLater(PitSim.INSTANCE, ticks * 50);
-		}
-	}
-
-	public enum FlagType {
-		ALL(null),
-		SIMULATION("simulation"),
-		REACH("reach"),
-		KNOCKBACK("antikb"),
-		GROUND_SPOOF("groundspoof"),
-		NO_FALL("nofall"),
-		;
-
-		public String refName;
-
-		FlagType(String refName) {
-			this.refName = refName;
-		}
-
-		public static FlagType getFlag(String refName) {
-			for(FlagType flag : values()) if(flag != ALL && flag.refName.equalsIgnoreCase(refName)) return flag;
-			return null;
+			}.runTaskLater(PitSim.INSTANCE, ticks);
 		}
 	}
 }
+

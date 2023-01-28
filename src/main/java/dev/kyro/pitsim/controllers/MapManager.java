@@ -68,19 +68,6 @@ public class MapManager implements Listener {
 		return applicableMaps.get(index % applicableMaps.size());
 	}
 
-	public static PitMap getMap(String refName) {
-		for(PitMap pitMap : mapList) {
-			if(pitMap.world.getName().equalsIgnoreCase(refName)) return pitMap;
-		}
-		return null;
-	}
-
-	public static PitMap getNextMap(PitMap pitMap) {
-		int index = mapList.indexOf(pitMap);
-		if(index == mapList.size() - 1) return mapList.get(0);
-		return mapList.get(index + 1);
-	}
-
 	public static World getTutorial() {
 		return Bukkit.getWorld("tutorial");
 	}
