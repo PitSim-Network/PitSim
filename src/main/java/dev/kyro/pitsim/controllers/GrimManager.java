@@ -39,8 +39,8 @@ public class GrimManager extends AnticheatManager implements Listener {
 	}
 
 	@Override
-	public void exemptPlayer(Player player, long ms, FlagType... args) {
-		List<FlagType> flags = Arrays.asList(args);
+	public void exemptPlayer(Player player, long ms, AnticheatManager.FlagType... args) {
+		List<AnticheatManager.FlagType> flags = Arrays.asList(args);
 
 		exemptPlayers.add(new Exemption(player, ms, flags));
 	}
@@ -51,13 +51,15 @@ public class GrimManager extends AnticheatManager implements Listener {
 
 		public Exemption(Player player, long ticks, List<FlagType> flags) {
 			this.player = player;
+			this.flags = flags;
 
 			new BukkitRunnable() {
 				@Override
 				public void run() {
 					exemptPlayers.remove(Exemption.this);
 				}
-			}.runTaskLater(PitSim.INSTANCE, ticks * 50);
+			}.runTaskLater(PitSim.INSTANCE, ticks);
 		}
 	}
 }
+
