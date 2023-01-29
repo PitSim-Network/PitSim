@@ -113,6 +113,6 @@ public class StaffCookie extends PitItem {
 
 	@Override
 	public boolean isLegacyItem(ItemStack itemStack, NBTItem nbtItem) {
-		return false;
+		return itemStack.getType() == Material.COOKIE;
 	}
 }
