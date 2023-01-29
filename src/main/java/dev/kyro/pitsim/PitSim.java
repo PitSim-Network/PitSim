@@ -424,23 +424,23 @@ public class PitSim extends JavaPlugin {
 	//		PitMap dimensions = MapManager.registerMap(new DimensionsMap("dimensions", 7));
 			PitMap xmas = MapManager.registerMap(new XmasMap("xmas", -1));
 
-			String configString = AConfig.getString("current-map");
-			if(configString == null || configString.isEmpty()) {
-				pitMap = biomes;
-				time = System.currentTimeMillis();
-			} else {
-				String[] split = configString.split(":");
-				String mapName = split[0];
-				time = Long.parseLong(split[1]);
-				PitMap currentMap = MapManager.getMap(mapName);
-				pitMap = currentMap;
+		String configString = AConfig.getString("current-map");
+		if(configString == null || configString.isEmpty()) {
+			pitMap = biomes;
+			time = System.currentTimeMillis();
+		} else {
+			String[] split = configString.split(":");
+			String mapName = split[0];
+			time = Long.parseLong(split[1]);
+			PitMap currentMap = MapManager.getMap(mapName);
+			if(currentMap == null) currentMap = biomes;
+			pitMap = currentMap;
 
-				assert currentMap != null;
-				if(Math.ceil((System.currentTimeMillis() - time) / 1000.0 / 60.0 / 60.0 / 24.0) >= currentMap.rotationDays) {
-					pitMap = MapManager.getNextMap(currentMap);
-					time = System.currentTimeMillis();
-				}
+			if(((System.currentTimeMillis() - time) / 1000.0 / 60.0 / 60.0 / 24.0) >= currentMap.rotationDays) {
+				pitMap = MapManager.getNextMap(currentMap);
+				time = System.currentTimeMillis();
 			}
+		}
 
 			if(TimeManager.isChristmasSeason() && status != ServerStatus.DARKZONE) {
 				pitMap = xmas;
