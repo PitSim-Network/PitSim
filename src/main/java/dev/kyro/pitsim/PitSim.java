@@ -414,9 +414,9 @@ public class PitSim extends JavaPlugin {
 			String mapName = split[0];
 			time = Long.parseLong(split[1]);
 			PitMap currentMap = MapManager.getMap(mapName);
+			if(currentMap == null) currentMap = biomes;
 			pitMap = currentMap;
 
-			assert currentMap != null;
 			if(((System.currentTimeMillis() - time) / 1000.0 / 60.0 / 60.0 / 24.0) >= currentMap.rotationDays) {
 				pitMap = MapManager.getNextMap(currentMap);
 				time = System.currentTimeMillis();
