@@ -10,11 +10,8 @@ import dev.kyro.pitsim.aitems.prot.ProtBoots;
 import dev.kyro.pitsim.aitems.prot.ProtChestplate;
 import dev.kyro.pitsim.aitems.prot.ProtHelmet;
 import dev.kyro.pitsim.aitems.prot.ProtLeggings;
-import dev.kyro.pitsim.controllers.EnchantManager;
 import dev.kyro.pitsim.controllers.ItemFactory;
 import dev.kyro.pitsim.enums.MysticType;
-import dev.kyro.pitsim.enums.NBTTag;
-import dev.kyro.pitsim.enums.PantColor;
 import dev.kyro.pitsim.misc.Base64;
 import dev.kyro.pitsim.misc.Constant;
 import org.bukkit.ChatColor;
@@ -52,29 +49,11 @@ public class GodPanel extends AGUIPanel {
 			addItem(itemStack);
 		} catch(Exception ignored) {}
 
+		addItem(MysticFactory.getJewelItem(MysticType.SWORD));
+		addItem(MysticFactory.getJewelItem(MysticType.BOW));
+		addItem(MysticFactory.getJewelItem(MysticType.PANTS));
 		addItem(MysticFactory.getFreshItem(MysticType.TAINTED_SCYTHE, null));
 		addItem(MysticFactory.getFreshItem(MysticType.TAINTED_CHESTPLATE, null));
-
-		itemStack = MysticFactory.getFreshItem(MysticType.SWORD, PantColor.JEWEL);
-//		itemStack = ItemManager.enableDropConfirm(itemStack);
-		nbtItem = new NBTItem(itemStack);
-		nbtItem.setBoolean(NBTTag.IS_JEWEL.getRef(), true);
-		EnchantManager.setItemLore(nbtItem.getItem(), player);
-		addItem(nbtItem.getItem());
-
-		itemStack = MysticFactory.getFreshItem(MysticType.BOW, PantColor.JEWEL);
-//		itemStack = ItemManager.enableDropConfirm(itemStack);
-		nbtItem = new NBTItem(itemStack);
-		nbtItem.setBoolean(NBTTag.IS_JEWEL.getRef(), true);
-		EnchantManager.setItemLore(nbtItem.getItem(), player);
-		addItem(nbtItem.getItem());
-
-		itemStack = MysticFactory.getFreshItem(MysticType.PANTS, PantColor.JEWEL);
-//		itemStack = ItemManager.enableDropConfirm(itemStack);
-		nbtItem = new NBTItem(itemStack);
-		nbtItem.setBoolean(NBTTag.IS_JEWEL.getRef(), true);
-		EnchantManager.setItemLore(nbtItem.getItem(), player);
-		addItem(nbtItem.getItem());
 
 		addItem(ItemFactory.getItem(ProtHelmet.class).getItem(1));
 		addItem(ItemFactory.getItem(ProtChestplate.class).getItem(1));

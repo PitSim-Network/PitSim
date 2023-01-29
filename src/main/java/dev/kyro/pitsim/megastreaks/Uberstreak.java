@@ -1,31 +1,33 @@
 package dev.kyro.pitsim.megastreaks;
 
-import de.tr7zw.nbtapi.NBTItem;
 import dev.kyro.arcticapi.builders.AItemStackBuilder;
 import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.arcticapi.misc.AUtil;
 import dev.kyro.pitsim.PitSim;
+import dev.kyro.pitsim.aitems.MysticFactory;
 import dev.kyro.pitsim.aitems.misc.ChunkOfVile;
 import dev.kyro.pitsim.aitems.misc.FunkyFeather;
-import dev.kyro.pitsim.aitems.MysticFactory;
 import dev.kyro.pitsim.aitems.prot.ProtBoots;
 import dev.kyro.pitsim.aitems.prot.ProtChestplate;
 import dev.kyro.pitsim.aitems.prot.ProtHelmet;
 import dev.kyro.pitsim.aitems.prot.ProtLeggings;
 import dev.kyro.pitsim.battlepass.quests.CompleteUbersQuest;
-import dev.kyro.pitsim.controllers.*;
+import dev.kyro.pitsim.controllers.EnchantManager;
+import dev.kyro.pitsim.controllers.ItemFactory;
+import dev.kyro.pitsim.controllers.NonManager;
+import dev.kyro.pitsim.controllers.PrestigeValues;
 import dev.kyro.pitsim.controllers.objects.Megastreak;
 import dev.kyro.pitsim.controllers.objects.PitEnchant;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.controllers.objects.PluginMessage;
 import dev.kyro.pitsim.enums.MysticType;
-import dev.kyro.pitsim.enums.NBTTag;
-import dev.kyro.pitsim.enums.PantColor;
 import dev.kyro.pitsim.events.AttackEvent;
 import dev.kyro.pitsim.events.HealEvent;
 import dev.kyro.pitsim.events.IncrementKillsEvent;
-import dev.kyro.pitsim.misc.*;
+import dev.kyro.pitsim.misc.CustomSerializer;
+import dev.kyro.pitsim.misc.Misc;
+import dev.kyro.pitsim.misc.Sounds;
 import me.clip.placeholderapi.PlaceholderAPI;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Bukkit;
@@ -363,50 +365,26 @@ public class Uberstreak extends Megastreak {
 			String displayName = Misc.getDisplayName(player);
 			ItemStack displayStack = null;
 			if(this == JEWEL_SWORD) {
-				ItemStack jewelSword = MysticFactory.getFreshItem(MysticType.SWORD, PantColor.JEWEL);
-//				jewelSword = ItemManager.enableDropConfirm(jewelSword);
-				NBTItem nbtItem = new NBTItem(jewelSword);
-				nbtItem.setBoolean(NBTTag.IS_JEWEL.getRef(), true);
-				EnchantManager.setItemLore(nbtItem.getItem(), player);
-				AUtil.giveItemSafely(player, nbtItem.getItem());
-				displayStack = getDisplayStack("&3Hidden Jewel Sword", nbtItem.getItem());
+				ItemStack jewelSword = MysticFactory.getJewelItem(MysticType.SWORD);
+				AUtil.giveItemSafely(player, jewelSword);
+				displayStack = getDisplayStack("&3Hidden Jewel Sword", jewelSword);
 			} else if(this == JEWEL_BOW) {
-				ItemStack jewelBow = MysticFactory.getFreshItem(MysticType.BOW, PantColor.JEWEL);
-//				jewelBow = ItemManager.enableDropConfirm(jewelBow);
-				NBTItem nbtItem = new NBTItem(jewelBow);
-				nbtItem.setBoolean(NBTTag.IS_JEWEL.getRef(), true);
-				EnchantManager.setItemLore(nbtItem.getItem(), player);
-				AUtil.giveItemSafely(player, nbtItem.getItem());
-				displayStack = getDisplayStack("&3Hidden Jewel Bow", nbtItem.getItem());
+				ItemStack jewelBow = MysticFactory.getJewelItem(MysticType.BOW);
+				AUtil.giveItemSafely(player, jewelBow);
+				displayStack = getDisplayStack("&3Hidden Jewel Bow", jewelBow);
 			} else if(this == JEWEL_PANTS) {
-				ItemStack jewel = MysticFactory.getFreshItem(MysticType.PANTS, PantColor.JEWEL);
-//				jewel = ItemManager.enableDropConfirm(jewel);
-				NBTItem nbtItem = new NBTItem(jewel);
-				nbtItem.setBoolean(NBTTag.IS_JEWEL.getRef(), true);
-				EnchantManager.setItemLore(nbtItem.getItem(), player);
-				AUtil.giveItemSafely(player, nbtItem.getItem());
-				displayStack = getDisplayStack("&3Hidden Jewel Pants", nbtItem.getItem());
+				ItemStack jewelPants = MysticFactory.getJewelItem(MysticType.PANTS);
+				AUtil.giveItemSafely(player, jewelPants);
+				displayStack = getDisplayStack("&3Hidden Jewel Pants", jewelPants);
 			} else if(this == JEWEL_BUNDLE) {
-				ItemStack jbsword = MysticFactory.getFreshItem(MysticType.SWORD, PantColor.JEWEL);
-//				jbsword = ItemManager.enableDropConfirm(jbsword);
-				NBTItem nbtjbsword = new NBTItem(jbsword);
-				nbtjbsword.setBoolean(NBTTag.IS_JEWEL.getRef(), true);
-				EnchantManager.setItemLore(nbtjbsword.getItem(), player);
-				AUtil.giveItemSafely(player, nbtjbsword.getItem());
+				ItemStack jbsword = MysticFactory.getJewelItem(MysticType.SWORD);
+				AUtil.giveItemSafely(player, jbsword);
 
-				ItemStack jbbow = MysticFactory.getFreshItem(MysticType.BOW, PantColor.JEWEL);
-//				jbbow = ItemManager.enableDropConfirm(jbbow);
-				NBTItem nbtjbbow = new NBTItem(jbbow);
-				nbtjbbow.setBoolean(NBTTag.IS_JEWEL.getRef(), true);
-				EnchantManager.setItemLore(nbtjbbow.getItem(), player);
-				AUtil.giveItemSafely(player, nbtjbbow.getItem());
+				ItemStack jbbow = MysticFactory.getJewelItem(MysticType.BOW);
+				AUtil.giveItemSafely(player, jbbow);
 
-				ItemStack jb = MysticFactory.getFreshItem(MysticType.PANTS, PantColor.JEWEL);
-//				jb = ItemManager.enableDropConfirm(jb);
-				NBTItem nbtjb = new NBTItem(jb);
-				nbtjb.setBoolean(NBTTag.IS_JEWEL.getRef(), true);
-				EnchantManager.setItemLore(nbtjb.getItem(), player);
-				AUtil.giveItemSafely(player, nbtjb.getItem());
+				ItemStack jbpants = MysticFactory.getJewelItem(MysticType.PANTS);
+				AUtil.giveItemSafely(player, jbpants);
 
 				displayStack = new AItemStackBuilder(Material.STORAGE_MINECART)
 						.setName("&3Hidden Jewel Bundle")

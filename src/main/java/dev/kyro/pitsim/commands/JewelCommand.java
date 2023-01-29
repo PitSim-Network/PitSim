@@ -57,21 +57,14 @@ public class JewelCommand extends ACommand {
 	}
 
 	public static ItemStack getJewel(MysticType mysticType, String pitEnchant, int maxLives) {
-		ItemStack jewel = MysticFactory.getFreshItem(mysticType, PantColor.JEWEL);
-//		jewel = ItemManager.enableDropConfirm(jewel);
-		assert jewel != null;
+		ItemStack jewel = MysticFactory.getJewelItem(mysticType);
 		NBTItem nbtItem = new NBTItem(jewel);
-		nbtItem.setBoolean(NBTTag.IS_JEWEL.getRef(), true);
-		jewel = nbtItem.getItem();
 
 		if(pitEnchant != null) {
 			nbtItem.setInteger(NBTTag.JEWEL_KILLS.getRef(), Constant.JEWEL_KILLS);
 
 			PitEnchant jewelEnchant = EnchantManager.getEnchant(pitEnchant);
-
-			if(maxLives <= 0) {
-				maxLives = EnchantManager.getRandomMaxLives();
-			}
+			if(maxLives <= 0) maxLives = EnchantManager.getRandomMaxLives();
 
 			nbtItem = new NBTItem(PantColor.setPantColor(nbtItem.getItem(), PantColor.getNormalRandom()));
 			nbtItem.setInteger(NBTTag.MAX_LIVES.getRef(), maxLives);

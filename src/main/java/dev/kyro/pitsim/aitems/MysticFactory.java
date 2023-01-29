@@ -6,6 +6,7 @@ import dev.kyro.pitsim.controllers.ItemFactory;
 import dev.kyro.pitsim.enums.MysticType;
 import dev.kyro.pitsim.enums.NBTTag;
 import dev.kyro.pitsim.enums.PantColor;
+import dev.kyro.pitsim.misc.Constant;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
@@ -29,25 +30,64 @@ public class MysticFactory {
 	}
 
 	public static ItemStack getFreshItem(MysticType type, PantColor pantColor) {
+		return createMystic(type, pantColor, false);
+	}
+
+	public static ItemStack getJewelItem(MysticType type) {
+		return createMystic(type, PantColor.JEWEL, true);
+	}
+
+	private static ItemStack createMystic(MysticType type, PantColor pantColor, boolean isJewel) {
+		ItemStack mysticStack;
 		if(type == MysticType.SWORD) {
-			return ItemFactory.getItem(MysticSword.class).getItem();
+			mysticStack = ItemFactory.getItem(MysticSword.class).getItem();
 		} else if(type == MysticType.BOW) {
-			return ItemFactory.getItem(MysticBow.class).getItem();
+			mysticStack = ItemFactory.getItem(MysticBow.class).getItem();
 		} else if(type == MysticType.TAINTED_SCYTHE) {
-			return ItemFactory.getItem(TaintedScythe.class).getItem();
+			mysticStack = ItemFactory.getItem(TaintedScythe.class).getItem();
 		} else if(type == MysticType.TAINTED_CHESTPLATE) {
-			return ItemFactory.getItem(TaintedChestplate.class).getItem();
+			mysticStack = ItemFactory.getItem(TaintedChestplate.class).getItem();
 		} else {
-			return ItemFactory.getItem(MysticPants.class).getItem(pantColor);
+			mysticStack = ItemFactory.getItem(MysticPants.class).getItem(pantColor);
 		}
+
+		if(isJewel) {
+			NBTItem nbtItem = new NBTItem(mysticStack);
+			nbtItem.setBoolean(NBTTag.IS_JEWEL.getRef(), true);
+			mysticStack = nbtItem.getItem();
+
+			PitItem pitItem = ItemFactory.getItem(mysticStack);
+			assert pitItem != null;
+			pitItem.updateItem(mysticStack);
+		}
+		return mysticStack;
+	}
+
+	public static boolean isMystic(ItemStack itemStack) {
+		PitItem pitItem = ItemFactory.getItem(itemStack);
+		return pitItem != null && pitItem.isMystic;
 	}
 
 	public static boolean isFresh(ItemStack itemStack) {
-		PitItem pitItem = ItemFactory.getItem(itemStack);
-		if(pitItem == null || !pitItem.isMystic) return false;
+		if(!isMystic(itemStack)) return false;
 
 		NBTItem nbtItem = new NBTItem(itemStack);
 		Integer enchantNum = nbtItem.getInteger(NBTTag.ITEM_ENCHANTS.getRef());
 		return enchantNum == 0;
+	}
+
+	public static boolean isJewel(ItemStack itemStack, boolean isComplete) {
+		if(!isMystic(itemStack)) return false;
+
+		NBTItem nbtItem = new NBTItem(itemStack);
+		if(isComplete && nbtItem.getInteger(NBTTag.JEWEL_KILLS.getRef()) < Constant.JEWEL_KILLS) return false;
+		return nbtItem.hasKey(NBTTag.IS_JEWEL.getRef());
+	}
+
+	public static boolean isGemmed(ItemStack itemStack) {
+		if(!isMystic(itemStack)) return false;
+
+		NBTItem nbtItem = new NBTItem(itemStack);
+		return nbtItem.hasKey(NBTTag.IS_GEMMED.getRef());
 	}
 }

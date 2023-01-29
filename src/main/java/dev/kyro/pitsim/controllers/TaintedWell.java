@@ -1,5 +1,3 @@
-
-
 package dev.kyro.pitsim.controllers;
 
 import de.tr7zw.nbtapi.NBTItem;

@@ -7,6 +7,7 @@ import dev.kyro.arcticapi.builders.AItemStackBuilder;
 import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.arcticapi.misc.AUtil;
 import dev.kyro.pitsim.PitSim;
+import dev.kyro.pitsim.aitems.MysticFactory;
 import dev.kyro.pitsim.aitems.PitItem;
 import dev.kyro.pitsim.controllers.objects.PitEnchant;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
@@ -381,24 +382,15 @@ public class EnchantManager implements Listener {
 	}
 
 	public static boolean isJewel(ItemStack itemStack) {
-
-		if(Misc.isAirOrNull(itemStack)) return false;
-		NBTItem nbtItem = new NBTItem(itemStack);
-		return nbtItem.getBoolean(NBTTag.IS_JEWEL.getRef());
-	}
-
-	public static boolean isGemmed(ItemStack itemStack) {
-
-		if(Misc.isAirOrNull(itemStack)) return false;
-		NBTItem nbtItem = new NBTItem(itemStack);
-		return nbtItem.getBoolean(NBTTag.IS_GEMMED.getRef());
+		return MysticFactory.isJewel(itemStack, false);
 	}
 
 	public static boolean isJewelComplete(ItemStack itemStack) {
+		return MysticFactory.isJewel(itemStack, true);
+	}
 
-		if(!isJewel(itemStack)) return false;
-		NBTItem nbtItem = new NBTItem(itemStack);
-		return nbtItem.getInteger(NBTTag.JEWEL_KILLS.getRef()) >= Constant.JEWEL_KILLS;
+	public static boolean isGemmed(ItemStack itemStack) {
+		return MysticFactory.isGemmed(itemStack);
 	}
 
 	public static ItemStack completeJewel(Player player, ItemStack itemStack) {

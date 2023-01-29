@@ -1,6 +1,5 @@
 package dev.kyro.pitsim.commands;
 
-import de.tr7zw.nbtapi.NBTItem;
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.arcticapi.misc.AUtil;
 import dev.kyro.pitsim.PitSim;
@@ -14,13 +13,10 @@ import dev.kyro.pitsim.aitems.prot.ProtHelmet;
 import dev.kyro.pitsim.aitems.prot.ProtLeggings;
 import dev.kyro.pitsim.battlepass.PassData;
 import dev.kyro.pitsim.battlepass.PassManager;
-import dev.kyro.pitsim.controllers.EnchantManager;
 import dev.kyro.pitsim.controllers.ItemFactory;
 import dev.kyro.pitsim.controllers.LevelManager;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.enums.MysticType;
-import dev.kyro.pitsim.enums.NBTTag;
-import dev.kyro.pitsim.enums.PantColor;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -62,60 +58,36 @@ public class RewardCommand implements CommandExecutor {
 				return false;
 			case "hjsword":
 				for(int i = 0; i < amount; i++) {
-					ItemStack jewelSword = MysticFactory.getFreshItem(MysticType.SWORD, PantColor.JEWEL);
-//					jewelSword = ItemManager.enableDropConfirm(jewelSword);
-					NBTItem nbtItemSword = new NBTItem(jewelSword);
-					nbtItemSword.setBoolean(NBTTag.IS_JEWEL.getRef(), true);
-					EnchantManager.setItemLore(nbtItemSword.getItem(), player);
-					AUtil.giveItemSafely(player, nbtItemSword.getItem());
+					ItemStack jewelSword = MysticFactory.getJewelItem(MysticType.SWORD);
+					AUtil.giveItemSafely(player, jewelSword);
 				}
 				return false;
 			case "hjbow":
 				for(int i = 0; i < amount; i++) {
-					ItemStack jewelBow = MysticFactory.getFreshItem(MysticType.BOW, PantColor.JEWEL);
-//					jewelBow = ItemManager.enableDropConfirm(jewelBow);
-					NBTItem nbtItemBow = new NBTItem(jewelBow);
-					nbtItemBow.setBoolean(NBTTag.IS_JEWEL.getRef(), true);
-					EnchantManager.setItemLore(nbtItemBow.getItem(), player);
-					AUtil.giveItemSafely(player, nbtItemBow.getItem());
+					ItemStack jewelBow = MysticFactory.getJewelItem(MysticType.BOW);
+					AUtil.giveItemSafely(player, jewelBow);
 				}
 				return false;
 			case "hjpants":
 				for(int i = 0; i < amount; i++) {
-					ItemStack jewel = MysticFactory.getFreshItem(MysticType.PANTS, PantColor.JEWEL);
-//					jewel = ItemManager.enableDropConfirm(jewel);
-					NBTItem nbtItem = new NBTItem(jewel);
-					nbtItem.setBoolean(NBTTag.IS_JEWEL.getRef(), true);
-					EnchantManager.setItemLore(nbtItem.getItem(), player);
-					AUtil.giveItemSafely(player, nbtItem.getItem());
+					ItemStack jewel = MysticFactory.getJewelItem(MysticType.PANTS);
+					AUtil.giveItemSafely(player, jewel);
 				}
 				return false;
 			case "hjbundle":
 				for(int i = 0; i < amount; i++) {
-					ItemStack jbsword = MysticFactory.getFreshItem(MysticType.SWORD, PantColor.JEWEL);
-//					jbsword = ItemManager.enableDropConfirm(jbsword);
-					NBTItem nbtjbsword = new NBTItem(jbsword);
-					nbtjbsword.setBoolean(NBTTag.IS_JEWEL.getRef(), true);
-					EnchantManager.setItemLore(nbtjbsword.getItem(), player);
-					AUtil.giveItemSafely(player, nbtjbsword.getItem());
+					ItemStack jbsword = MysticFactory.getJewelItem(MysticType.SWORD);
+					AUtil.giveItemSafely(player, jbsword);
 				}
 
 				for(int i = 0; i < amount; i++) {
-					ItemStack jbbow = MysticFactory.getFreshItem(MysticType.BOW, PantColor.JEWEL);
-//					jbbow = ItemManager.enableDropConfirm(jbbow);
-					NBTItem nbtjbbow = new NBTItem(jbbow);
-					nbtjbbow.setBoolean(NBTTag.IS_JEWEL.getRef(), true);
-					EnchantManager.setItemLore(nbtjbbow.getItem(), player);
-					AUtil.giveItemSafely(player, nbtjbbow.getItem());
+					ItemStack jbbow = MysticFactory.getJewelItem(MysticType.BOW);
+					AUtil.giveItemSafely(player, jbbow);
 				}
 
 				for(int i = 0; i < amount; i++) {
-					ItemStack jb = MysticFactory.getFreshItem(MysticType.PANTS, PantColor.JEWEL);
-//					jb = ItemManager.enableDropConfirm(jb);
-					NBTItem nbtjb = new NBTItem(jb);
-					nbtjb.setBoolean(NBTTag.IS_JEWEL.getRef(), true);
-					EnchantManager.setItemLore(nbtjb.getItem(), player);
-					AUtil.giveItemSafely(player, nbtjb.getItem());
+					ItemStack jbpants = MysticFactory.getJewelItem(MysticType.PANTS);
+					AUtil.giveItemSafely(player, jbpants);
 				}
 				return false;
 			case "p1":
