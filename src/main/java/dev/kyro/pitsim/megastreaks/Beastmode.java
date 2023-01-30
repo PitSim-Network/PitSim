@@ -1,6 +1,7 @@
 package dev.kyro.pitsim.megastreaks;
 
 import dev.kyro.arcticapi.misc.AOutput;
+import dev.kyro.pitsim.battlepass.quests.daily.DailyMegastreakQuest;
 import dev.kyro.pitsim.controllers.LevelManager;
 import dev.kyro.pitsim.controllers.NonManager;
 import dev.kyro.pitsim.controllers.PrestigeValues;
@@ -161,6 +162,7 @@ public class Beastmode extends Megastreak {
 		}
 
 		if(pitPlayer.stats != null) pitPlayer.stats.timesOnBeastmode++;
+		DailyMegastreakQuest.INSTANCE.onMegastreakComplete(pitPlayer);
 	}
 
 	@Override

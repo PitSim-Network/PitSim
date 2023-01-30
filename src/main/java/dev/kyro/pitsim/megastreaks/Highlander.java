@@ -2,6 +2,7 @@ package dev.kyro.pitsim.megastreaks;
 
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.PitSim;
+import dev.kyro.pitsim.battlepass.quests.daily.DailyMegastreakQuest;
 import dev.kyro.pitsim.controllers.LevelManager;
 import dev.kyro.pitsim.controllers.NonManager;
 import dev.kyro.pitsim.controllers.PrestigeValues;
@@ -170,6 +171,7 @@ public class Highlander extends Megastreak {
 		}
 
 		if(pitPlayer.stats != null) pitPlayer.stats.timesOnHighlander++;
+		DailyMegastreakQuest.INSTANCE.onMegastreakComplete(pitPlayer);
 	}
 
 	@Override
