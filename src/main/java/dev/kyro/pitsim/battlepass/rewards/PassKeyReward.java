@@ -1,0 +1,67 @@
+package dev.kyro.pitsim.battlepass.rewards;
+
+import de.tr7zw.nbtapi.NBTItem;
+import dev.kyro.arcticapi.builders.AItemStackBuilder;
+import dev.kyro.arcticapi.builders.ALoreBuilder;
+import dev.kyro.arcticapi.misc.AOutput;
+import dev.kyro.arcticapi.misc.AUtil;
+import dev.kyro.pitsim.PitSim;
+import dev.kyro.pitsim.battlepass.PassReward;
+import dev.kyro.pitsim.commands.FreshCommand;
+import dev.kyro.pitsim.controllers.EnchantManager;
+import dev.kyro.pitsim.controllers.ItemManager;
+import dev.kyro.pitsim.controllers.objects.PitPlayer;
+import dev.kyro.pitsim.enums.MysticType;
+import dev.kyro.pitsim.enums.NBTTag;
+import dev.kyro.pitsim.enums.PantColor;
+import dev.kyro.pitsim.misc.Misc;
+import org.bukkit.Bukkit;
+import org.bukkit.Material;
+import org.bukkit.command.ConsoleCommandSender;
+import org.bukkit.inventory.ItemStack;
+
+public class PassKeyReward extends PassReward {
+	public int count;
+	public KeyType keyType;
+
+	public PassKeyReward(int count, KeyType keyType) {
+		this.count = count;
+		this.keyType = keyType;
+	}
+
+	@Override
+	public boolean giveReward(PitPlayer pitPlayer) {
+		if(Misc.getEmptyInventorySlots(pitPlayer.player) < count / 64) {
+			AOutput.error(pitPlayer.player, "&7Please make space in your inventory");
+			return false;
+		}
+
+		ConsoleCommandSender console = PitSim.INSTANCE.getServer().getConsoleSender();
+		Bukkit.dispatchCommand(console, "cc give P " + keyType.refName + " " + count + " " + pitPlayer.player.getName());
+
+		return true;
+	}
+
+	@Override
+	public ItemStack getDisplayItem(PitPlayer pitPlayer, boolean hasClaimed) {
+		ItemStack itemStack = new AItemStackBuilder(Material.TRIPWIRE_HOOK, count)
+				.setName("&dKey Reward")
+				.setLore(new ALoreBuilder(
+						"&7Reward: &7" + count + "x " + keyType.displayName
+				)).getItemStack();
+		return itemStack;
+	}
+
+	public enum KeyType {
+		PITSIM("basic", "&6&lPit&e&lSim &7Key"),
+		TAINTED("tainted", "&5&lTainted &7Key");
+
+		public final String refName;
+		public final String displayName;
+
+		KeyType(String refName, String displayName) {
+			this.refName = refName;
+			this.displayName = displayName;
+		}
+	}
+}
