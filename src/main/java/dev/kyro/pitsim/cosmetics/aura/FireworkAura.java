@@ -32,6 +32,7 @@ public class FireworkAura extends PitCosmetic {
 		runnableMap.put(pitPlayer.player.getUniqueId(), new BukkitRunnable() {
 			@Override
 			public void run() {
+				if(Math.random() < 0.3) return;
 				Location displayLocation = pitPlayer.player.getLocation();
 
 				for(Player onlinePlayer : CosmeticManager.getDisplayPlayers(pitPlayer.player, displayLocation)) {

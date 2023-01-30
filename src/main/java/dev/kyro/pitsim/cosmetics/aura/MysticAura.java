@@ -39,7 +39,7 @@ public class MysticAura extends PitCosmetic {
 					if(onlinePlayer != pitPlayer.player && !onlinePitPlayer.playerSettings.auraParticles) continue;
 
 					EntityPlayer entityPlayer = ((CraftPlayer) onlinePlayer).getHandle();
-					for(int i = 0; i < 3; i++) collection.display("main", entityPlayer, displayLocation);
+					for(int i = 0; i < 2; i++) collection.display("main", entityPlayer, displayLocation);
 				}
 			}
 		}.runTaskTimer(PitSim.INSTANCE, 0L, 1L));
