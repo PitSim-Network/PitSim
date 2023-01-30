@@ -5,6 +5,7 @@ import dev.kyro.pitsim.events.AttackEvent;
 import dev.kyro.pitsim.misc.Misc;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.inventory.InventoryOpenEvent;
@@ -22,43 +23,43 @@ public class LobbySwitchManager implements Listener {
 	public static List<Player> switchingPlayers = new ArrayList<>();
 	public static List<UUID> joinedFromDarkzone = new ArrayList<>();
 
-	@EventHandler
+	@EventHandler(priority = EventPriority.LOWEST)
 	public void onInteract(PlayerInteractEvent event) {
 		if(switchingPlayers.contains(event.getPlayer())) event.setCancelled(true);
 	}
 
-	@EventHandler
+	@EventHandler(priority = EventPriority.LOWEST)
 	public void onInventoryOpen(InventoryOpenEvent event) {
 		if(switchingPlayers.contains((Player) event.getPlayer())) event.setCancelled(true);
 	}
 
-	@EventHandler
+	@EventHandler(priority = EventPriority.LOWEST)
 	public void onDrop(PlayerDropItemEvent event) {
 		if(switchingPlayers.contains(event.getPlayer())) event.setCancelled(true);
 	}
 
-	@EventHandler
+	@EventHandler(priority = EventPriority.LOWEST)
 	public void onPickup(PlayerPickupItemEvent event) {
 		if(switchingPlayers.contains(event.getPlayer())) event.setCancelled(true);
 	}
 
-	@EventHandler
+	@EventHandler(priority = EventPriority.LOWEST)
 	public void onCommandSend(PlayerCommandPreprocessEvent event) {
 		if(switchingPlayers.contains(event.getPlayer())) event.setCancelled(true);
 	}
 
-	@EventHandler
+	@EventHandler(priority = EventPriority.LOWEST)
 	public void onSneak(PlayerToggleSneakEvent event) {
 		if(switchingPlayers.contains(event.getPlayer())) event.setCancelled(true);
 	}
 
-	@EventHandler
+	@EventHandler(priority = EventPriority.LOWEST)
 	public void onHit(AttackEvent.Pre event) {
 		if(switchingPlayers.contains(event.getDefenderPlayer()) || switchingPlayers.contains(event.getAttackerPlayer()))
 			event.setCancelled(true);
 	}
 
-	@EventHandler
+	@EventHandler(priority = EventPriority.LOWEST)
 	public void onVanillaHit(EntityDamageByEntityEvent event) {
 		if(!(event.getEntity() instanceof Player)) return;
 		if(switchingPlayers.contains((Player) event.getEntity())) event.setCancelled(true);

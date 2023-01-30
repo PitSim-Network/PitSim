@@ -68,6 +68,7 @@ import dev.kyro.pitsim.misc.packets.SignPrompt;
 import dev.kyro.pitsim.npcs.*;
 import dev.kyro.pitsim.perks.*;
 import dev.kyro.pitsim.pitmaps.BiomesMap;
+import dev.kyro.pitsim.pitmaps.DimensionsMap;
 import dev.kyro.pitsim.pitmaps.SandMap;
 import dev.kyro.pitsim.pitmaps.XmasMap;
 import dev.kyro.pitsim.placeholders.*;
@@ -421,7 +422,7 @@ public class PitSim extends JavaPlugin {
 
 			PitMap biomes = MapManager.registerMap(new BiomesMap("biomes", 7));
 			PitMap sand = MapManager.registerMap(new SandMap("sand", 7));
-	//		PitMap dimensions = MapManager.registerMap(new DimensionsMap("dimensions", 7));
+			PitMap dimensions = MapManager.registerMap(new DimensionsMap("dimensions", 7));
 			PitMap xmas = MapManager.registerMap(new XmasMap("xmas", -1));
 
 			String configString = AConfig.getString("current-map");
@@ -695,7 +696,7 @@ public class PitSim extends JavaPlugin {
 		getServer().getPluginManager().registerEvents(new GrimManager(), this);
 		getServer().getPluginManager().registerEvents(new MiscManager(), this);
 		getServer().getPluginManager().registerEvents(new FirstJoinManager(), this);
-		getServer().getPluginManager().registerEvents(new AIManager(), this);
+//		getServer().getPluginManager().registerEvents(new AIManager(), this);
 	}
 
 	public void registerBoosters() {
