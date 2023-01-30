@@ -18,6 +18,7 @@ public class Config {
 	public String errorPrefix = "&c";
 	public List<String> whitelistedIPs = PrivateInfo.WHITELISTED_IPS;
 	public boolean nons = true;
+	public String mapData;
 
 	public HashMap<String, Integer> boosters = new HashMap<>();
 
