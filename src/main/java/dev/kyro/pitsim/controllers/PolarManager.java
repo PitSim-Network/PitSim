@@ -1,5 +1,6 @@
 package dev.kyro.pitsim.controllers;
 
+import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.controllers.objects.AnticheatManager;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -28,7 +29,7 @@ public class PolarManager extends AnticheatManager implements Listener {
 		if(!event.getMitigationType().equals(MitigationType.MOVEMENT)) return;
 
 		long time = bypassMap.get(event.getPlayer().getUniqueId());
-		if(System.currentTimeMillis() > time) {
+		if(PitSim.currentTick > time) {
 			bypassMap.remove(event.getPlayer().getUniqueId());
 		} else {
 			event.setCancelled(true);
@@ -36,7 +37,7 @@ public class PolarManager extends AnticheatManager implements Listener {
 	}
 
 	@Override
-	public void exemptPlayer(Player player, long ticks, String... args) {
-		bypassMap.put(player.getUniqueId(), System.currentTimeMillis() + ticks);
+	public void exemptPlayer(Player player, long ticks, AnticheatManager.FlagType... flags) {
+		bypassMap.put(player.getUniqueId(), PitSim.currentTick + ticks);
 	}
 }

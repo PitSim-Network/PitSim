@@ -5,23 +5,23 @@ import dev.kyro.pitsim.controllers.objects.Booster;
 import dev.kyro.pitsim.controllers.objects.PitMap;
 import org.bukkit.Location;
 
-public class BiomesMap extends PitMap {
-	public BiomesMap(String worldName, int rotationDays) {
+public class SandMap extends PitMap {
+	public SandMap(String worldName, int rotationDays) {
 		super(worldName, rotationDays);
 	}
 
-	public static Location mid = new Location(null, 0.5, 70, 0.5);
+	public static Location mid = new Location(null, 0, 30, 0);
 
 	@Override
 	public Location getSpawn() {
-		return new Location(world, 0.5, 88, 8.5, -180, 0);
+		return new Location(world, -11, 73, 11, -135, 0);
 	}
 
 	@Override
 	public Location getNonSpawn() {
-		Location spawn = new Location(world, 0.5, 86, 0.5);
-		spawn.setX(spawn.getX() + (Math.random() * 6 - 3));
-		spawn.setZ(spawn.getZ() + (Math.random() * 6 - 3));
+		Location spawn = new Location(world, 0, 72  , 0);
+		spawn.setX(spawn.getX() + (Math.random() * 4 - 2));
+		spawn.setZ(spawn.getZ() + (Math.random() * 4 - 2));
 
 		Booster booster = BoosterManager.getBooster("chaos");
 		if(booster.isActive()) {
@@ -34,7 +34,7 @@ public class BiomesMap extends PitMap {
 
 	@Override
 	public Location getDarkzoneJoinSpawn() {
-		return new Location(world, -67, 72, 3, -90, 0);
+		return new Location(world, -36, 31, 1, -90, 0);
 	}
 
 	@Override
@@ -61,47 +61,47 @@ public class BiomesMap extends PitMap {
 
 	@Override
 	public Location getPerksNPCSpawn() {
-		return new Location(world, 10.5, 88, 3.5, 90, 0);
+		return new Location(world, 9.5, 73, -2.5, 90, 0);
 	}
 
 	@Override
 	public Location getPrestigeNPCSpawn() {
-		return new Location(world, -12.5, 88, -1.5, -90, 0);
+		return new Location(world, -9.5, 73, 0, -90, 0);
 	}
 
 	@Override
 	public Location getKyroNPCSpawn() {
-		return new Location(world, 7.5, 92, -8.5, 22.5F, 11);
+		return new Location(world, -8.5, 73, -7.5, -45.5F, 11);
 	}
 
 	@Override
 	public Location getWijiNPCSpawn() {
-		return new Location(world, 0.5, 92, -11.5, 31, 10);
+		return new Location(world, -10.5, 73, -7.5, -55, 10);
 	}
 
 	@Override
 	public Location getSplkNPCSpawn() {
-		return new Location(world, 8.5, 90, -7.5, 45, 0);
+		return new Location(world, -10.5, 73, -5.5, -62, 0);
 	}
 
 	@Override
 	public Location getStatsNPCSpawn() {
-		return new Location(world, 2.5, 88, -8.5, 10, 0);
+		return new Location(world, 0, 73, -9.5, 0, 0);
 	}
 
 	@Override
 	public Location getKeeperNPCSpawn() {
-		return new Location(world, -2.5, 88, -10, 10, 0);
+		return new Location(world, 5.5, 73, 8.5, 145, 0);
 	}
 
 	@Override
 	public Location getKitsNPCSpawn() {
-		return new Location(world, -2.5, 90, 12.5, -145, 15);
+		return new Location(world, 9.5, 73, 7.5, 125, 0);
 	}
 
 	@Override
 	public Location getPassNPCSpawn() {
-		return new Location(world, 10.5, 88, 5.5, 90, 0);
+		return new Location(world, 9.5, 73, 1.5, 90, 0);
 	}
 
 	@Override

@@ -69,6 +69,8 @@ import dev.kyro.pitsim.misc.packets.SignPrompt;
 import dev.kyro.pitsim.npcs.*;
 import dev.kyro.pitsim.perks.*;
 import dev.kyro.pitsim.pitmaps.BiomesMap;
+import dev.kyro.pitsim.pitmaps.DimensionsMap;
+import dev.kyro.pitsim.pitmaps.SandMap;
 import dev.kyro.pitsim.pitmaps.XmasMap;
 import dev.kyro.pitsim.placeholders.*;
 import dev.kyro.pitsim.storage.StorageManager;
@@ -351,7 +353,6 @@ public class PitSim extends JavaPlugin {
 
 				PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
 				pitPlayer.potionStrings.add(potionEffect.potionType.name + ":" + potionEffect.potency.tier + ":" + potionEffect.getTimeLeft() + ":" + time);
-
 			}
 		}
 
@@ -416,19 +417,51 @@ public class PitSim extends JavaPlugin {
 		if(file.exists()) file.deleteOnExit();
 	}
 
-	private void registerMaps() {
-//		MapManager.registerMap(new DimensionsMap("dimensions");
+		private void registerMaps() {
+			PitMap pitMap = null;
+			long time;
 
-		if(TimeManager.isChristmasSeason() && status != ServerStatus.DARKZONE) {
-			System.out.println();
-			MapManager.registerMap(new XmasMap("xmas"));
-			MapManager.currentMap.world.setStorm(true);
-			MapManager.currentMap.world.setWeatherDuration(Integer.MAX_VALUE);
-			return;
+			PitMap biomes = MapManager.registerMap(new BiomesMap("biomes", 7));
+			PitMap sand = MapManager.registerMap(new SandMap("sand", 7));
+			PitMap dimensions = MapManager.registerMap(new DimensionsMap("dimensions", 7));
+			PitMap xmas = MapManager.registerMap(new XmasMap("xmas", -1));
+
+		String configString = AConfig.getString("current-map");
+		if(configString == null || configString.isEmpty()) {
+			pitMap = biomes;
+			time = System.currentTimeMillis();
+		} else {
+			String[] split = configString.split(":");
+			String mapName = split[0];
+			time = Long.parseLong(split[1]);
+			PitMap currentMap = MapManager.getMap(mapName);
+			if(currentMap == null) currentMap = biomes;
+			pitMap = currentMap;
+
+			if(((System.currentTimeMillis() - time) / 1000.0 / 60.0 / 60.0 / 24.0) >= currentMap.rotationDays) {
+				pitMap = MapManager.getNextMap(currentMap);
+				time = System.currentTimeMillis();
+			}
 		}
 
-		MapManager.registerMap(new BiomesMap("biomes"));
-	}
+			if(TimeManager.isChristmasSeason() && status != ServerStatus.DARKZONE) {
+				pitMap = xmas;
+				time = System.currentTimeMillis();
+				MapManager.currentMap.world.setStorm(true);
+				MapManager.currentMap.world.setWeatherDuration(Integer.MAX_VALUE);
+			}
+
+
+			if(status == ServerStatus.DARKZONE) {
+				pitMap = biomes;
+				time = System.currentTimeMillis();
+			}
+			assert pitMap != null;
+
+			AConfig.set("current-map", pitMap.world.getName() + ":" + time);
+			AConfig.saveConfig();
+			MapManager.setMap(pitMap);
+		}
 
 	private void registerPerks() {
 
@@ -549,7 +582,6 @@ public class PitSim extends JavaPlugin {
 
 		getCommand("atest").setExecutor(new ATestCommand());
 		getCommand("fps").setExecutor(new FPSCommand());
-
 		getCommand("oof").setExecutor(new OofCommand());
 		getCommand("perks").setExecutor(new PerkCommand());
 		getCommand("non").setExecutor(new NonCommand());
@@ -665,7 +697,7 @@ public class PitSim extends JavaPlugin {
 		getServer().getPluginManager().registerEvents(new GrimManager(), this);
 		getServer().getPluginManager().registerEvents(new MiscManager(), this);
 		getServer().getPluginManager().registerEvents(new FirstJoinManager(), this);
-		getServer().getPluginManager().registerEvents(new AIManager(), this);
+//		getServer().getPluginManager().registerEvents(new AIManager(), this);
 	}
 
 	public void registerBoosters() {
@@ -959,7 +991,7 @@ public class PitSim extends JavaPlugin {
 	}
 
 	public void hookIntoAnticheat(AnticheatManager anticheat) {
-		if(anticheat != null) {
+		if(PitSim.anticheat != null) {
 			Bukkit.getLogger().severe("Multiple anticheats found! Shutting down...");
 			Bukkit.getPluginManager().disablePlugin(this);
 			return;
