@@ -11,9 +11,6 @@ import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class GrindGoldQuest extends PassQuest {
 	public static GrindGoldQuest INSTANCE;
 
@@ -48,9 +45,9 @@ public class GrindGoldQuest extends PassQuest {
 
 	@Override
 	public void createPossibleStates() {
-		questLevels.add(new QuestLevel(0.75, 100));
-		questLevels.add(new QuestLevel(1, 150));
-		questLevels.add(new QuestLevel(1.25, 200));
+		questLevels.add(new QuestLevel(0.5, 100));
+		questLevels.add(new QuestLevel(0.75, 150));
+		questLevels.add(new QuestLevel(1.0, 200));
 	}
 
 	@Override

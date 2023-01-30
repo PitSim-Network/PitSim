@@ -11,9 +11,6 @@ import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class GrindXPQuest extends PassQuest {
 	public static GrindXPQuest INSTANCE;
 
@@ -55,6 +52,6 @@ public class GrindXPQuest extends PassQuest {
 
 	@Override
 	public double getMultiplier(PitPlayer pitPlayer) {
-		return PrestigeValues.getPrestigeInfo(pitPlayer.prestige).xpMultiplier;
+		return Math.pow(PrestigeValues.getPrestigeInfo(pitPlayer.prestige).xpMultiplier, 2.0 / 3.0);
 	}
 }
