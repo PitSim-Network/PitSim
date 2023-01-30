@@ -2,6 +2,7 @@ package dev.kyro.pitsim.megastreaks;
 
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.PitSim;
+import dev.kyro.pitsim.battlepass.quests.daily.DailyMegastreakQuest;
 import dev.kyro.pitsim.controllers.LevelManager;
 import dev.kyro.pitsim.controllers.NonManager;
 import dev.kyro.pitsim.controllers.PrestigeValues;
@@ -156,6 +157,7 @@ public class Overdrive extends Megastreak {
 		}
 
 		if(pitPlayer.stats != null) pitPlayer.stats.timesOnOverdrive++;
+		DailyMegastreakQuest.INSTANCE.onMegastreakComplete(pitPlayer);
 	}
 
 	@Override

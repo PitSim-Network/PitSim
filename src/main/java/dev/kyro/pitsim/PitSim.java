@@ -18,6 +18,7 @@ import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.battlepass.PassManager;
 import dev.kyro.pitsim.battlepass.quests.*;
 import dev.kyro.pitsim.battlepass.quests.daily.DailyBotKillQuest;
+import dev.kyro.pitsim.battlepass.quests.daily.DailyMegastreakQuest;
 import dev.kyro.pitsim.battlepass.quests.daily.DailyPlayerKillQuest;
 import dev.kyro.pitsim.battlepass.quests.daily.DailySWGamePlayedQuest;
 import dev.kyro.pitsim.battlepass.quests.dzkillmobs.*;
@@ -735,6 +736,7 @@ public class PitSim extends JavaPlugin {
 		PassManager.registerQuest(new DailyBotKillQuest());
 		PassManager.registerQuest(new DailyPlayerKillQuest());
 		PassManager.registerQuest(new DailySWGamePlayedQuest());
+		PassManager.registerQuest(new DailyMegastreakQuest());
 
 //		Weekly quests
 		PassManager.registerQuest(new KillPlayersQuest());
