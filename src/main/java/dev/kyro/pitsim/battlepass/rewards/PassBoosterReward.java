@@ -29,7 +29,7 @@ public class PassBoosterReward extends PassReward {
 	@Override
 	public ItemStack getDisplayItem(PitPlayer pitPlayer, boolean hasClaimed) {
 		ItemStack itemStack = new AItemStackBuilder(Material.NETHER_STAR)
-				.setName("&aBooster Reward")
+				.setName("&a&lBooster Reward")
 				.setLore(new ALoreBuilder(
 						"&7Reward: " + boosterType.color + boosterType.name
 				)).getItemStack();

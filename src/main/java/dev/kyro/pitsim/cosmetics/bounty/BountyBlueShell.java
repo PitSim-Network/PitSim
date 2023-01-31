@@ -20,7 +20,7 @@ public class BountyBlueShell extends PitCosmetic {
 
 	@Override
 	public ItemStack getRawDisplayItem() {
-		ItemStack itemStack = new AItemStackBuilder(Material.LAPIS_BLOCK)
+		ItemStack itemStack = new AItemStackBuilder(Material.INK_SACK, 1, 4)
 				.setName(getDisplayName())
 				.setLore(new ALoreBuilder(
 						"&7You'll always overtake first",

@@ -41,7 +41,7 @@ public class SuperMario extends PitCosmetic {
 
 	@Override
 	public ItemStack getRawDisplayItem() {
-		ItemStack itemStack = new AItemStackBuilder(Material.RED_MUSHROOM)
+		ItemStack itemStack = new AItemStackBuilder(Material.HUGE_MUSHROOM_2)
 				.setName(getDisplayName())
 				.setLore(new ALoreBuilder(
 						"&7A &8&lSUPER&7 tune for a &8&lSUPER",

@@ -1,19 +1,11 @@
 package dev.kyro.pitsim.battlepass.rewards;
 
-import de.tr7zw.nbtapi.NBTItem;
 import dev.kyro.arcticapi.builders.AItemStackBuilder;
 import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.arcticapi.misc.AOutput;
-import dev.kyro.arcticapi.misc.AUtil;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.battlepass.PassReward;
-import dev.kyro.pitsim.commands.FreshCommand;
-import dev.kyro.pitsim.controllers.EnchantManager;
-import dev.kyro.pitsim.controllers.ItemManager;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
-import dev.kyro.pitsim.enums.MysticType;
-import dev.kyro.pitsim.enums.NBTTag;
-import dev.kyro.pitsim.enums.PantColor;
 import dev.kyro.pitsim.misc.Misc;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -45,7 +37,7 @@ public class PassKeyReward extends PassReward {
 	@Override
 	public ItemStack getDisplayItem(PitPlayer pitPlayer, boolean hasClaimed) {
 		ItemStack itemStack = new AItemStackBuilder(Material.TRIPWIRE_HOOK, count)
-				.setName("&dKey Reward")
+				.setName("&d&lKey Reward")
 				.setLore(new ALoreBuilder(
 						"&7Reward: &7" + count + "x " + keyType.displayName
 				)).getItemStack();
