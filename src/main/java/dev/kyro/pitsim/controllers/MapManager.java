@@ -51,6 +51,7 @@ public class MapManager implements Listener {
 
 	public static PitMap getMap(String refName) {
 		for(PitMap pitMap : mapList) {
+			if(pitMap.world == null) return mapList.get(0);
 			if(pitMap.world.getName().equalsIgnoreCase(refName)) return pitMap;
 		}
 		return null;
