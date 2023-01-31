@@ -94,6 +94,7 @@ import septogeddon.pluginquery.PluginQuery;
 import septogeddon.pluginquery.api.QueryMessenger;
 
 import java.io.File;
+import java.time.ZoneId;
 import java.util.*;
 
 public class PitSim extends JavaPlugin {
@@ -111,6 +112,7 @@ public class PitSim extends JavaPlugin {
 	public static PteroClient client = PteroBuilder.createClient("***REMOVED***", PrivateInfo.PTERO_KEY);
 
 	public static long currentTick = 0;
+	public static final ZoneId TIME_ZONE = ZoneId.of("America/New_York");
 
 	public static ServerStatus status;
 

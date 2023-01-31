@@ -199,7 +199,7 @@ public class PitPlayer {
 			save(true, false);
 		}
 
-		long daysPassed = TimeUnit.DAYS.convert(Misc.convertToEST(new Date()).getTime() - passDate.getTime(), TimeUnit.MILLISECONDS);
+		long daysPassed = TimeUnit.DAYS.convert(new Date().getTime() - passDate.getTime(), TimeUnit.MILLISECONDS);
 		if(daysPassed != passData.daysPassed) {
 			passData.daysPassed = daysPassed;
 			for(PassQuest dailyQuest : PassManager.getDailyQuests())
