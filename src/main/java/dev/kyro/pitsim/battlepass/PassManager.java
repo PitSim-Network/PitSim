@@ -177,6 +177,8 @@ public class PassManager implements Listener {
 				.registerReward(new PassCosmeticReward(Material.WOOL, 1, CosmeticManager.getCosmetic("tetris"),
 						null), PitSimPass.RewardType.PREMIUM, premiumTier++));
 
+		registerPass(new PitSimPass(getDate("3/1/2023")));
+
 		updateCurrentPass();
 	}
 

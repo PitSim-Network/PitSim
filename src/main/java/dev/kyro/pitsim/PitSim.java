@@ -454,7 +454,6 @@ public class PitSim extends JavaPlugin {
 				MapManager.currentMap.world.setWeatherDuration(Integer.MAX_VALUE);
 			}
 
-
 			if(status == ServerStatus.DARKZONE) {
 				pitMap = biomes;
 				time = System.currentTimeMillis();
