@@ -16,7 +16,7 @@ public class DailyMegastreakQuest extends PassQuest {
 	public static DailyMegastreakQuest INSTANCE;
 
 	public DailyMegastreakQuest() {
-		super("&c&lKill Bots", "dailybotkills", QuestType.DAILY);
+		super("&e&lComplete a Megastreak", "dailymegastreak", QuestType.DAILY);
 		INSTANCE = this;
 	}
 
@@ -33,6 +33,7 @@ public class DailyMegastreakQuest extends PassQuest {
 				.setLore(new ALoreBuilder(
 						"&7Complete &e" + Misc.formatLarge(questLevel.getRequirement(pitPlayer)) + " &7megastreak" +
 								(questLevel.getRequirement(pitPlayer) == 1 ? "" : "s"),
+						"&7(Requires premium pass)",
 						"",
 						"&7Progress: &3" + Misc.formatLarge(progress) + "&7/&3" + Misc.formatLarge(questLevel.getRequirement(pitPlayer)) + " &8[" +
 								AUtil.createProgressBar("|", ChatColor.AQUA, ChatColor.GRAY, 20,
@@ -45,7 +46,7 @@ public class DailyMegastreakQuest extends PassQuest {
 
 	@Override
 	public void createPossibleStates() {
-		questLevels.add(new QuestLevel(1, 40));
+		questLevels.add(new QuestLevel(1, 20));
 	}
 
 	@Override
