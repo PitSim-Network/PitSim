@@ -17,8 +17,8 @@ import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.inventory.ItemStack;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 
 public class LogManager implements Listener {
 	public static void onJewelComplete(Player player, PitEnchant enchant, int maxLives) {
@@ -71,14 +71,14 @@ public class LogManager implements Listener {
 	}
 
 	public static void sendLogMessage(LogType logType, String message) {
-		Date date = Misc.convertToEST(new Date());
-		assert date != null;
-		SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
+		OffsetDateTime date = OffsetDateTime.now(PitSim.TIME_ZONE);
+		DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("HH:mm:ss");
+
 		PluginMessage pluginMessage = new PluginMessage();
 		pluginMessage.writeString("LOG").writeString(logType.toString()).writeString(PitSim.serverName);
 		pluginMessage.writeString("[" + dateFormat.format(date) + "][" + PitSim.serverName + "][" + logType + "]: " + message);
 		pluginMessage.writeString(message);
-		pluginMessage.writeLong(date.getTime());
+		pluginMessage.writeLong(date.toInstant().toEpochMilli());
 		pluginMessage.send();
 	}
 }

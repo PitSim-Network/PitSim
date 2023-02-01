@@ -20,9 +20,6 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
-import java.time.OffsetDateTime;
-import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeFormatterBuilder;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 
@@ -393,14 +390,20 @@ public class PassManager implements Listener {
 	}
 
 	public static Date getDate(String dateString) {
-		DateTimeFormatter offsetDateFormat = DateTimeFormatter.ofPattern("MM-dd-yyyy HH:mm:ss");
-		DateTimeFormatterBuilder builder;
-		OffsetDateTime offsetDate = OffsetDateTime.parse(dateString, offsetDateFormat);
-
 		SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
+		TimeZone est = TimeZone.getTimeZone("EST");
+		TimeZone edt = TimeZone.getTimeZone("EDT");
+
 		try {
-			return Misc.convertToEST(dateFormat.parse(dateString));
-		} catch(ParseException ignored) {}
-		return null;
+			dateFormat.setTimeZone(est);
+			Date date = dateFormat.parse(dateString);
+
+			if(est.inDaylightTime(date)) {
+				dateFormat.setTimeZone(edt);
+				return dateFormat.parse(dateString);
+			} else return date;
+		} catch(Exception ignored) {
+			return null;
+		}
 	}
 }
