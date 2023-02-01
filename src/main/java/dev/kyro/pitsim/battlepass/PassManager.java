@@ -1,13 +1,13 @@
 package dev.kyro.pitsim.battlepass;
 
 import dev.kyro.arcticapi.misc.AOutput;
-import dev.kyro.pitsim.cosmetics.particles.ParticleColor;
 import dev.kyro.pitsim.PitSim;
-import dev.kyro.pitsim.cosmetics.CosmeticManager;
 import dev.kyro.pitsim.battlepass.rewards.*;
 import dev.kyro.pitsim.controllers.FirestoreManager;
 import dev.kyro.pitsim.controllers.objects.Config;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
+import dev.kyro.pitsim.cosmetics.CosmeticManager;
+import dev.kyro.pitsim.cosmetics.particles.ParticleColor;
 import dev.kyro.pitsim.misc.Misc;
 import dev.kyro.pitsim.misc.Sounds;
 import org.bukkit.Bukkit;
@@ -19,7 +19,6 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.text.DecimalFormat;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
@@ -209,7 +208,7 @@ public class PassManager implements Listener {
 			if(testPass != currentPass) continue;
 			if(i + 1 == pitSimPassList.size()) return -1;
 			PitSimPass nextPass = pitSimPassList.get(i + 1);
-			return nextPass.startDate.getTime() - Misc.convertToEST(new Date()).getTime();
+			return nextPass.startDate.getTime() - new Date().getTime();
 		}
 		return -1;
 	}
@@ -230,13 +229,13 @@ public class PassManager implements Listener {
 		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
 
 		long previousDays = TimeUnit.DAYS.convert(pitPlayer.lastLogin.getTime(), TimeUnit.MILLISECONDS);
-		long currentDays = TimeUnit.DAYS.convert(Misc.convertToEST(new Date()).getTime(), TimeUnit.MILLISECONDS);
+		long currentDays = TimeUnit.DAYS.convert(new Date().getTime(), TimeUnit.MILLISECONDS);
 		if(previousDays != currentDays) {
 			PassData passData = pitPlayer.getPassData(currentPass.startDate);
 //			passData.questCompletion
 		}
 
-		pitPlayer.lastLogin = Misc.convertToEST(new Date());
+		pitPlayer.lastLogin = new Date();
 	}
 
 	public static List<PassQuest> getDailyQuests() {
@@ -324,7 +323,7 @@ public class PassManager implements Listener {
 	}
 
 	public static void updateCurrentPass() {
-		Date now = Misc.convertToEST(new Date());
+		Date now = new Date();
 		PitSimPass newPass = null;
 		boolean foundCurrentPass = false;
 		for(int i = 0; i < pitSimPassList.size(); i++) {
@@ -342,7 +341,7 @@ public class PassManager implements Listener {
 		loadPassData();
 
 		if(PitSim.serverName.equals("pitsim-1") || PitSim.serverName.equals("pitsimdev-1")) {
-			long daysPassed = TimeUnit.DAYS.convert(Misc.convertToEST(new Date()).getTime() - currentPass.startDate.getTime(), TimeUnit.MILLISECONDS);
+			long daysPassed = TimeUnit.DAYS.convert(new Date().getTime() - currentPass.startDate.getTime(), TimeUnit.MILLISECONDS);
 			int weeksPassed = (int) (daysPassed / 7) + 1;
 			int newQuests = weeksPassed * QUESTS_PER_WEEK - currentPass.weeklyQuests.size();
 
@@ -392,9 +391,19 @@ public class PassManager implements Listener {
 
 	public static Date getDate(String dateString) {
 		SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
+		TimeZone est = TimeZone.getTimeZone("EST");
+		TimeZone edt = TimeZone.getTimeZone("EDT");
+
 		try {
-			return Misc.convertToEST(dateFormat.parse(dateString));
-		} catch(ParseException ignored) {}
-		return null;
+			dateFormat.setTimeZone(est);
+			Date date = dateFormat.parse(dateString);
+
+			if(est.inDaylightTime(date)) {
+				dateFormat.setTimeZone(edt);
+				return dateFormat.parse(dateString);
+			} else return date;
+		} catch(Exception ignored) {
+			return null;
+		}
 	}
 }
