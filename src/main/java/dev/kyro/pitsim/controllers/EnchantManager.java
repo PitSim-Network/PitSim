@@ -432,10 +432,7 @@ public class EnchantManager implements Listener {
 			weightedEnchantList.add(pitEnchant);
 			weightedEnchantList.add(pitEnchant);
 			if(pitEnchant.isUncommonEnchant) continue;
-			weightedEnchantList.add(pitEnchant);
-			weightedEnchantList.add(pitEnchant);
-			weightedEnchantList.add(pitEnchant);
-			weightedEnchantList.add(pitEnchant);
+			for(int i = 0; i < 7; i++) weightedEnchantList.add(pitEnchant);
 		}
 		Collections.shuffle(weightedEnchantList);
 		PitEnchant jewelEnchant = weightedEnchantList.get(0);
