@@ -110,7 +110,7 @@ public class PassManager implements Listener {
 		registerPass(pitSimPass);
 
 		premiumTier = 1;
-		registerPass(new PitSimPass(getDate("2/2/2023"))
+		registerPass(new PitSimPass(getDate("2/1/2023"))
 				.registerReward(new PassRenownReward(5), PitSimPass.RewardType.FREE, 1)
 				.registerReward(new PassGoldReward(10_000), PitSimPass.RewardType.FREE, 3)
 				.registerReward(new PassVileReward(5), PitSimPass.RewardType.FREE, 5)
