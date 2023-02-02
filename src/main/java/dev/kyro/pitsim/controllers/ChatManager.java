@@ -35,13 +35,11 @@ public class ChatManager implements Listener {
 
 	@EventHandler
 	public void onPrivateMessage(PrivateMessageEvent event) {
-		System.out.println("hi");
 		Player sender = event.getSender();
 		Player recipient = event.getRecipient();
 		PitPlayer pitSender = PitPlayer.getPitPlayer(sender);
 		PitPlayer pitRecipient = PitPlayer.getPitPlayer(recipient);
 
-		System.out.println(pitRecipient.uuidIgnoreList.toString() + " " + sender.getUniqueId().toString());
 		if(pitRecipient.uuidIgnoreList.contains(sender.getUniqueId().toString())) {
 			event.setCancelled(true);
 			AOutput.error(sender, "&c&lERROR!&7 That player has you ignored");
