@@ -112,7 +112,7 @@ public class TotallyLegitGemPanel extends AGUIPanel {
 			NBTItem nbtItem = new NBTItem(item);
 			if(nbtItem.hasKey(NBTTag.ITEM_JEWEL_ENCHANT.getRef()) && !nbtItem.hasKey(NBTTag.IS_GEMMED.getRef())) {
 				PitEnchant enchant = null;
-				if(nbtItem.getInteger(NBTTag.ITEM_ENCHANTS.getRef()) < 3 || nbtItem.getInteger(NBTTag.ITEM_TOKENS.getRef()) < 8)
+				if(nbtItem.getInteger(NBTTag.ITEM_ENCHANT_NUM.getRef()) < 3 || nbtItem.getInteger(NBTTag.ITEM_TOKENS.getRef()) < 8)
 					continue;
 				Map<PitEnchant, Integer> enchants = EnchantManager.getEnchantsOnItem(nbtItem.getItem());
 				for(Map.Entry<PitEnchant, Integer> entry : enchants.entrySet()) {

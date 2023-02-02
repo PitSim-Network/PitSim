@@ -57,7 +57,7 @@ public class TaintedScythe extends PitItem {
 		itemStack = buildItem(itemStack);
 
 		NBTItem nbtItem = new NBTItem(itemStack);
-		nbtItem.addCompound(NBTTag.PIT_ENCHANTS.getRef());
+		nbtItem.addCompound(NBTTag.MYSTIC_ENCHANTS.getRef());
 		return nbtItem.getItem();
 	}
 
@@ -66,7 +66,7 @@ public class TaintedScythe extends PitItem {
 		if(!isThisItem(itemStack)) throw new RuntimeException();
 
 		NBTItem nbtItem = new NBTItem(itemStack);
-		Integer enchantNum = nbtItem.getInteger(NBTTag.ITEM_ENCHANTS.getRef());
+		Integer enchantNum = nbtItem.getInteger(NBTTag.ITEM_ENCHANT_NUM.getRef());
 		if(enchantNum == 0) {
 			new AItemStackBuilder(itemStack)
 					.setName(getName())

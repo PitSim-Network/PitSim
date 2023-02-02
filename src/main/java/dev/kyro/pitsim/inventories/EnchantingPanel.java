@@ -290,7 +290,7 @@ public class EnchantingPanel extends AGUIPanel {
 			getInventory().setItem(43, mysticInWell);
 
 			NBTItem nbtItem = new NBTItem(mystic);
-			NBTList<String> enchantOrder = nbtItem.getStringList(NBTTag.PIT_ENCHANT_ORDER.getRef());
+			NBTList<String> enchantOrder = nbtItem.getStringList(NBTTag.MYSTIC_ENCHANT_ORDER.getRef());
 
 			for(int i = 0; i < 3; i++) {
 				if(i + 1 > enchantOrder.size()) {

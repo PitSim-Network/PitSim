@@ -107,10 +107,10 @@ public class EnchantManager implements Listener {
 	public static ItemStack addEnchant(ItemStack itemStack, PitEnchant applyEnchant, int applyLvl, boolean safe, boolean jewel, int insert) throws Exception {
 		NBTItem nbtItem = new NBTItem(itemStack);
 
-		NBTList<String> enchantOrder = nbtItem.getStringList(NBTTag.PIT_ENCHANT_ORDER.getRef());
-		NBTCompound itemEnchants = nbtItem.getCompound(NBTTag.PIT_ENCHANTS.getRef());
+		NBTList<String> enchantOrder = nbtItem.getStringList(NBTTag.MYSTIC_ENCHANT_ORDER.getRef());
+		NBTCompound itemEnchants = nbtItem.getCompound(NBTTag.MYSTIC_ENCHANTS.getRef());
 		Integer currentLvl = itemEnchants.getInteger(applyEnchant.refNames.get(0));
-		Integer enchantNum = nbtItem.getInteger(NBTTag.ITEM_ENCHANTS.getRef());
+		Integer enchantNum = nbtItem.getInteger(NBTTag.ITEM_ENCHANT_NUM.getRef());
 		Integer tokenNum = nbtItem.getInteger(NBTTag.ITEM_TOKENS.getRef());
 		Integer rTokenNum = nbtItem.getInteger(NBTTag.ITEM_RTOKENS.getRef());
 
@@ -171,7 +171,7 @@ public class EnchantManager implements Listener {
 		tokenNum += applyLvl - currentLvl;
 		if(applyEnchant.isRare && !jewel) rTokenNum += applyLvl - currentLvl;
 		if(jewel) nbtItem.setString(NBTTag.ITEM_JEWEL_ENCHANT.getRef(), applyEnchant.refNames.get(0));
-		nbtItem.setInteger(NBTTag.ITEM_ENCHANTS.getRef(), enchantNum);
+		nbtItem.setInteger(NBTTag.ITEM_ENCHANT_NUM.getRef(), enchantNum);
 		nbtItem.setInteger(NBTTag.ITEM_TOKENS.getRef(), tokenNum);
 		nbtItem.setInteger(NBTTag.ITEM_RTOKENS.getRef(), rTokenNum);
 		if(applyEnchant.refNames.get(0).equals("venom")) nbtItem.setBoolean(NBTTag.IS_VENOM.getRef(), true);
@@ -222,9 +222,9 @@ public class EnchantManager implements Listener {
 			return tainted > 1;
 		} else {
 
-			NBTList<String> enchantOrder = nbtItem.getStringList(NBTTag.PIT_ENCHANT_ORDER.getRef());
-			NBTCompound itemEnchants = nbtItem.getCompound(NBTTag.PIT_ENCHANTS.getRef());
-			Integer enchantNum = nbtItem.getInteger(NBTTag.ITEM_ENCHANTS.getRef());
+			NBTList<String> enchantOrder = nbtItem.getStringList(NBTTag.MYSTIC_ENCHANT_ORDER.getRef());
+			NBTCompound itemEnchants = nbtItem.getCompound(NBTTag.MYSTIC_ENCHANTS.getRef());
+			Integer enchantNum = nbtItem.getInteger(NBTTag.ITEM_ENCHANT_NUM.getRef());
 			Integer tokenNum = nbtItem.getInteger(NBTTag.ITEM_TOKENS.getRef());
 			Integer rTokenNum = nbtItem.getInteger(NBTTag.ITEM_RTOKENS.getRef());
 			boolean isGemmed = nbtItem.getBoolean(NBTTag.IS_GEMMED.getRef());
@@ -260,8 +260,8 @@ public class EnchantManager implements Listener {
 		if(pitItem == null || !pitItem.isMystic) return;
 		NBTItem nbtItem = new NBTItem(itemStack);
 
-		NBTList<String> enchantOrder = nbtItem.getStringList(NBTTag.PIT_ENCHANT_ORDER.getRef());
-		NBTCompound itemEnchants = nbtItem.getCompound(NBTTag.PIT_ENCHANTS.getRef());
+		NBTList<String> enchantOrder = nbtItem.getStringList(NBTTag.MYSTIC_ENCHANT_ORDER.getRef());
+		NBTCompound itemEnchants = nbtItem.getCompound(NBTTag.MYSTIC_ENCHANTS.getRef());
 		int currentLives = nbtItem.getInteger(NBTTag.CURRENT_LIVES.getRef());
 		int maxLives = nbtItem.getInteger(NBTTag.MAX_LIVES.getRef());
 		int jewelKills = nbtItem.getInteger(NBTTag.JEWEL_KILLS.getRef());
@@ -353,30 +353,6 @@ public class EnchantManager implements Listener {
 			}
 		}
 
-		itemMeta.setLore(loreBuilder.getLore());
-		itemStack.setItemMeta(itemMeta);
-	}
-
-	public static void setDisplayItemLore(ItemStack itemStack) {
-
-		NBTItem nbtItem = new NBTItem(itemStack);
-		NBTList<String> enchantOrder = nbtItem.getStringList(NBTTag.PIT_ENCHANT_ORDER.getRef());
-		NBTCompound itemEnchants = nbtItem.getCompound(NBTTag.PIT_ENCHANTS.getRef());
-		boolean isGemmed = isGemmed(itemStack);
-
-		ALoreBuilder loreBuilder = new ALoreBuilder();
-		loreBuilder.addLore("&7&m------------------");
-		for(String key : enchantOrder) {
-
-			PitEnchant enchant = EnchantManager.getEnchant(key);
-			Integer enchantLvl = itemEnchants.getInteger(key);
-			assert enchant != null;
-			loreBuilder.addLore(enchant.getDisplayName() + enchantLevelToRoman(enchantLvl));
-		}
-		loreBuilder.addLore("&7&m------------------");
-		if(isGemmed) loreBuilder.addLore("&aGEMMED!");
-
-		ItemMeta itemMeta = itemStack.getItemMeta();
 		itemMeta.setLore(loreBuilder.getLore());
 		itemStack.setItemMeta(itemMeta);
 	}
@@ -608,7 +584,7 @@ public class EnchantManager implements Listener {
 		if(pitItem == null || !pitItem.isMystic) return itemEnchantMap;
 		NBTItem nbtItem = new NBTItem(itemStack);
 
-		NBTCompound itemEnchants = nbtItem.getCompound(NBTTag.PIT_ENCHANTS.getRef());
+		NBTCompound itemEnchants = nbtItem.getCompound(NBTTag.MYSTIC_ENCHANTS.getRef());
 		Set<String> keys = itemEnchants.getKeys();
 		for(String key : keys) {
 

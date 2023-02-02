@@ -118,7 +118,7 @@ public class ItemClearPanel extends AGUIPanel {
 			NBTItem nbtItem = new NBTItem(item);
 			if(nbtItem.hasKey(NBTTag.ITEM_JEWEL_ENCHANT.getRef())) {
 				PitEnchant enchant = null;
-				if(nbtItem.getInteger(NBTTag.ITEM_ENCHANTS.getRef()) < 2) continue;
+				if(nbtItem.getInteger(NBTTag.ITEM_ENCHANT_NUM.getRef()) < 2) continue;
 
 				ItemMeta meta = nbtItem.getItem().getItemMeta();
 				List<String> lore = meta.getLore();

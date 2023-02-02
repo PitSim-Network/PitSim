@@ -6,11 +6,11 @@ public enum NBTTag {
 	ITEM_UUID("pr-uuid"),
 	DROPPED_ITEM_UUID("pr-random-uuid"),
 
-	PIT_ENCHANTS("pr-enchants"),
-	PIT_ENCHANT_ORDER("pr-enchant-order"),
+	MYSTIC_ENCHANTS("pr-enchants"),
+	MYSTIC_ENCHANT_ORDER("pr-enchant-order"),
 	ITEM_TOKENS("pr-token-num"),
 	ITEM_RTOKENS("pr-rare-token-num"),
-	ITEM_ENCHANTS("pr-enchant-num"),
+	ITEM_ENCHANT_NUM("pr-enchant-num"),
 	JEWEL_KILLS("pr-jewel-kills"),
 	ITEM_JEWEL_ENCHANT("pr-jewel-enchant"),
 
@@ -21,11 +21,12 @@ public enum NBTTag {
 	MAX_LIVES("pr-max-lives"),
 	TAINTED_TIER("pr-tainted-tier"),
 
+	IS_VENOM("pr-isvenom"),
 	IS_PREMADE("pr-ispremade"),
+
 	CANNOT_PICKUP("pr-cannot-pickup"),
 	COOKIE_GIVER("pr-cookie-giver"),
 	COOKIE_RECEIVER("pr-cookie-receiver"),
-	IS_VENOM("pr-isvenom"),
 
 	GHELMET_UUID("pr-ghelm-uuid"),
 	GHELMET_GOLD("pr-ghelm-gold"),

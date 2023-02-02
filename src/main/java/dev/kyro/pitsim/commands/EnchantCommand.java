@@ -8,7 +8,6 @@ import dev.kyro.pitsim.controllers.objects.PitEnchant;
 import dev.kyro.pitsim.enchants.overworld.SelfCheckout;
 import dev.kyro.pitsim.enums.MysticType;
 import dev.kyro.pitsim.exceptions.*;
-import dev.kyro.pitsim.misc.Misc;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -25,12 +24,6 @@ public class EnchantCommand implements CommandExecutor {
 
 		if(!player.hasPermission("group.nitro")) {
 			AOutput.send(player, "&cYou must boost our discord server to gain access to this feature!&7 Join with: &f&ndiscord.pitsim.net");
-			return false;
-		}
-
-		if(Misc.isAirOrNull(player.getItemInHand())) {
-
-			AOutput.error(player, "Not holding a mystic item");
 			return false;
 		}
 

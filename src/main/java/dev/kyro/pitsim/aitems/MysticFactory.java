@@ -72,7 +72,7 @@ public class MysticFactory {
 		if(!isMystic(itemStack)) return false;
 
 		NBTItem nbtItem = new NBTItem(itemStack);
-		Integer enchantNum = nbtItem.getInteger(NBTTag.ITEM_ENCHANTS.getRef());
+		Integer enchantNum = nbtItem.getInteger(NBTTag.ITEM_ENCHANT_NUM.getRef());
 		return enchantNum == 0;
 	}
 

@@ -52,7 +52,10 @@ public class MigrationManager implements Listener {
 			NBTItem nbtItem = new NBTItem(itemStack);
 			PitItem pitItem = ItemFactory.getItem(itemStack);
 			if(pitItem == null || !pitItem.isLegacyItem(itemStack, nbtItem)) continue;
-			profile.getCachedInventory()[i] = pitItem.getReplacementItem(pitPlayer, itemStack, nbtItem);
+
+			ItemStack replacementItem = pitItem.getReplacementItem(pitPlayer, itemStack, nbtItem);
+			pitItem.updateItem(replacementItem);
+			profile.getCachedInventory()[i] = replacementItem;
 		}
 
 		for(int i = 0; i < profile.getArmor().length; i++) {
@@ -61,7 +64,10 @@ public class MigrationManager implements Listener {
 			NBTItem nbtItem = new NBTItem(itemStack);
 			PitItem pitItem = ItemFactory.getItem(itemStack);
 			if(pitItem == null || !pitItem.isLegacyItem(itemStack, nbtItem)) continue;
-			profile.getArmor()[i] = pitItem.getReplacementItem(pitPlayer, itemStack, nbtItem);
+
+			ItemStack replacementItem = pitItem.getReplacementItem(pitPlayer, itemStack, nbtItem);
+			pitItem.updateItem(replacementItem);
+			profile.getArmor()[i] = replacementItem;
 		}
 
 		for(Inventory page : profile.getEnderChest()) {
@@ -71,7 +77,10 @@ public class MigrationManager implements Listener {
 				NBTItem nbtItem = new NBTItem(itemStack);
 				PitItem pitItem = ItemFactory.getItem(itemStack);
 				if(pitItem == null || !pitItem.isLegacyItem(itemStack, nbtItem)) continue;
-				page.getContents()[i] = pitItem.getReplacementItem(pitPlayer, itemStack, nbtItem);
+
+				ItemStack replacementItem = pitItem.getReplacementItem(pitPlayer, itemStack, nbtItem);
+				pitItem.updateItem(replacementItem);
+				page.getContents()[i] = replacementItem;
 			}
 		}
 
