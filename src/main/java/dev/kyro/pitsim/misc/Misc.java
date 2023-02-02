@@ -231,15 +231,15 @@ public class Misc {
 		}
 	}
 
-	public static Date convertToEST(Date date) {
-		DateFormat formatter = new SimpleDateFormat("dd MMM yyyy HH:mm:ss z");
-		formatter.setTimeZone(TimeZone.getTimeZone("EST"));
-		try {
-			return formatter.parse((formatter.format(date)));
-		} catch(ParseException exception) {
-			throw new RuntimeException();
-		}
-	}
+//	public static Date convertToEST(Date date) {
+//		DateFormat formatter = new SimpleDateFormat("dd MMM yyyy HH:mm:ss z");
+//		formatter.setTimeZone(TimeZone.getTimeZone("EST"));
+//		try {
+//			return formatter.parse((formatter.format(date)));
+//		} catch(ParseException exception) {
+//			throw new RuntimeException();
+//		}
+//	}
 
 	public static String ordinalWords(int num) {
 

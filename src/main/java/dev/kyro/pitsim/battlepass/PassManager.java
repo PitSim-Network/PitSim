@@ -1,13 +1,13 @@
 package dev.kyro.pitsim.battlepass;
 
 import dev.kyro.arcticapi.misc.AOutput;
-import dev.kyro.pitsim.cosmetics.particles.ParticleColor;
 import dev.kyro.pitsim.PitSim;
-import dev.kyro.pitsim.cosmetics.CosmeticManager;
 import dev.kyro.pitsim.battlepass.rewards.*;
 import dev.kyro.pitsim.controllers.FirestoreManager;
 import dev.kyro.pitsim.controllers.objects.Config;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
+import dev.kyro.pitsim.cosmetics.CosmeticManager;
+import dev.kyro.pitsim.cosmetics.particles.ParticleColor;
 import dev.kyro.pitsim.misc.Misc;
 import dev.kyro.pitsim.misc.Sounds;
 import org.bukkit.Bukkit;
@@ -19,7 +19,6 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.text.DecimalFormat;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
@@ -37,8 +36,8 @@ public class PassManager implements Listener {
 
 	//	Create the passes
 	public static void registerPasses() {
-		registerPass(new PitSimPass(getDate("1/1/2022")));
-		int tier = 1;
+		registerPass(new PitSimPass(getDate("3/1/2022")));
+		int premiumTier = 1;
 
 		PitSimPass pitSimPass = new PitSimPass(getDate("12/24/2022"))
 				.registerReward(new PassRenownReward(5), PitSimPass.RewardType.FREE, 1)
@@ -63,52 +62,121 @@ public class PassManager implements Listener {
 				.registerReward(new PassCosmeticReward(Material.IRON_HOE, CosmeticManager.getCosmetic("reaper"),
 						null), PitSimPass.RewardType.FREE, 36)
 
-				.registerReward(new PassXpReward(5_000), PitSimPass.RewardType.PREMIUM, tier++)
-				.registerReward(new PassVileReward(12), PitSimPass.RewardType.PREMIUM, tier++)
-				.registerReward(new PassSwordReward(4), PitSimPass.RewardType.PREMIUM, tier++)
-				.registerReward(new PassDarkzoneDropReward(7, 7), PitSimPass.RewardType.PREMIUM, tier++)
-				.registerReward(new PassGoldReward(15_000), PitSimPass.RewardType.PREMIUM, tier++)
-				.registerReward(new PassRenownReward(7), PitSimPass.RewardType.PREMIUM, tier++)
-				.registerReward(new PassBowReward(3), PitSimPass.RewardType.PREMIUM, tier++)
-				.registerReward(new PassDarkzoneDropReward(10, 4), PitSimPass.RewardType.PREMIUM, tier++)
+				.registerReward(new PassXpReward(5_000), PitSimPass.RewardType.PREMIUM, premiumTier++)
+				.registerReward(new PassVileReward(12), PitSimPass.RewardType.PREMIUM, premiumTier++)
+				.registerReward(new PassSwordReward(4), PitSimPass.RewardType.PREMIUM, premiumTier++)
+				.registerReward(new PassDarkzoneDropReward(7, 7), PitSimPass.RewardType.PREMIUM, premiumTier++)
+				.registerReward(new PassGoldReward(15_000), PitSimPass.RewardType.PREMIUM, premiumTier++)
+				.registerReward(new PassRenownReward(7), PitSimPass.RewardType.PREMIUM, premiumTier++)
+				.registerReward(new PassBowReward(3), PitSimPass.RewardType.PREMIUM, premiumTier++)
+				.registerReward(new PassDarkzoneDropReward(10, 4), PitSimPass.RewardType.PREMIUM, premiumTier++)
 				.registerReward(new PassCosmeticReward(Material.BREWING_STAND_ITEM, CosmeticManager.getCosmetic("potionaura"),
-						ParticleColor.AQUA), PitSimPass.RewardType.PREMIUM, tier++)
+						ParticleColor.AQUA), PitSimPass.RewardType.PREMIUM, premiumTier++)
 
-				.registerReward(new PassXpReward(7_500), PitSimPass.RewardType.PREMIUM, tier++)
-				.registerReward(new PassVileReward(15), PitSimPass.RewardType.PREMIUM, tier++)
-				.registerReward(new PassPantsReward(2), PitSimPass.RewardType.PREMIUM, tier++)
-				.registerReward(new PassDarkzoneDropReward(9, 6), PitSimPass.RewardType.PREMIUM, tier++)
-				.registerReward(new PassGoldReward(20_000), PitSimPass.RewardType.PREMIUM, tier++)
-				.registerReward(new PassFeatherReward(4), PitSimPass.RewardType.PREMIUM, tier++)
-				.registerReward(new PassSwordReward(3), PitSimPass.RewardType.PREMIUM, tier++)
-				.registerReward(new PassDarkzoneDropReward(8, 5), PitSimPass.RewardType.PREMIUM, tier++)
+				.registerReward(new PassXpReward(7_500), PitSimPass.RewardType.PREMIUM, premiumTier++)
+				.registerReward(new PassVileReward(15), PitSimPass.RewardType.PREMIUM, premiumTier++)
+				.registerReward(new PassPantsReward(2), PitSimPass.RewardType.PREMIUM, premiumTier++)
+				.registerReward(new PassDarkzoneDropReward(9, 6), PitSimPass.RewardType.PREMIUM, premiumTier++)
+				.registerReward(new PassGoldReward(20_000), PitSimPass.RewardType.PREMIUM, premiumTier++)
+				.registerReward(new PassFeatherReward(4), PitSimPass.RewardType.PREMIUM, premiumTier++)
+				.registerReward(new PassSwordReward(3), PitSimPass.RewardType.PREMIUM, premiumTier++)
+				.registerReward(new PassDarkzoneDropReward(8, 5), PitSimPass.RewardType.PREMIUM, premiumTier++)
 				.registerReward(new PassCosmeticReward(Material.GOLD_SWORD, CosmeticManager.getCosmetic("alwaysexe"),
-						null), PitSimPass.RewardType.PREMIUM, tier++)
+						null), PitSimPass.RewardType.PREMIUM, premiumTier++)
 
-				.registerReward(new PassXpReward(10_000), PitSimPass.RewardType.PREMIUM, tier++)
-				.registerReward(new PassVileReward(14), PitSimPass.RewardType.PREMIUM, tier++)
-				.registerReward(new PassBowReward(2), PitSimPass.RewardType.PREMIUM, tier++)
-				.registerReward(new PassDarkzoneDropReward(7, 5), PitSimPass.RewardType.PREMIUM, tier++)
-				.registerReward(new PassGoldReward(25_000), PitSimPass.RewardType.PREMIUM, tier++)
-				.registerReward(new PassRenownReward(7), PitSimPass.RewardType.PREMIUM, tier++)
-				.registerReward(new PassPantsReward(4), PitSimPass.RewardType.PREMIUM, tier++)
-				.registerReward(new PassDarkzoneDropReward(10, 4), PitSimPass.RewardType.PREMIUM, tier++)
+				.registerReward(new PassXpReward(10_000), PitSimPass.RewardType.PREMIUM, premiumTier++)
+				.registerReward(new PassVileReward(14), PitSimPass.RewardType.PREMIUM, premiumTier++)
+				.registerReward(new PassBowReward(2), PitSimPass.RewardType.PREMIUM, premiumTier++)
+				.registerReward(new PassDarkzoneDropReward(7, 5), PitSimPass.RewardType.PREMIUM, premiumTier++)
+				.registerReward(new PassGoldReward(25_000), PitSimPass.RewardType.PREMIUM, premiumTier++)
+				.registerReward(new PassRenownReward(7), PitSimPass.RewardType.PREMIUM, premiumTier++)
+				.registerReward(new PassPantsReward(4), PitSimPass.RewardType.PREMIUM, premiumTier++)
+				.registerReward(new PassDarkzoneDropReward(10, 4), PitSimPass.RewardType.PREMIUM, premiumTier++)
 				.registerReward(new PassCosmeticReward(Material.BANNER, 13, CosmeticManager.getCosmetic("solidcape"),
-						ParticleColor.LIGHT_PURPLE), PitSimPass.RewardType.PREMIUM, tier++)
+						ParticleColor.LIGHT_PURPLE), PitSimPass.RewardType.PREMIUM, premiumTier++)
 
-				.registerReward(new PassXpReward(12_500), PitSimPass.RewardType.PREMIUM, tier++)
-				.registerReward(new PassVileReward(16), PitSimPass.RewardType.PREMIUM, tier++)
-				.registerReward(new PassSwordReward(3), PitSimPass.RewardType.PREMIUM, tier++)
-				.registerReward(new PassDarkzoneDropReward(7, 5), PitSimPass.RewardType.PREMIUM, tier++)
-				.registerReward(new PassGoldReward(30_000), PitSimPass.RewardType.PREMIUM, tier++)
-				.registerReward(new PassRenownReward(7), PitSimPass.RewardType.PREMIUM, tier++)
-				.registerReward(new PassPantsReward(4), PitSimPass.RewardType.PREMIUM, tier++)
-				.registerReward(new PassDarkzoneDropReward(10, 4), PitSimPass.RewardType.PREMIUM, tier++)
+				.registerReward(new PassXpReward(12_500), PitSimPass.RewardType.PREMIUM, premiumTier++)
+				.registerReward(new PassVileReward(16), PitSimPass.RewardType.PREMIUM, premiumTier++)
+				.registerReward(new PassSwordReward(3), PitSimPass.RewardType.PREMIUM, premiumTier++)
+				.registerReward(new PassDarkzoneDropReward(7, 5), PitSimPass.RewardType.PREMIUM, premiumTier++)
+				.registerReward(new PassGoldReward(30_000), PitSimPass.RewardType.PREMIUM, premiumTier++)
+				.registerReward(new PassRenownReward(7), PitSimPass.RewardType.PREMIUM, premiumTier++)
+				.registerReward(new PassPantsReward(4), PitSimPass.RewardType.PREMIUM, premiumTier++)
+				.registerReward(new PassDarkzoneDropReward(10, 4), PitSimPass.RewardType.PREMIUM, premiumTier++)
 				.registerReward(new PassCosmeticReward(Material.WOOL, 6, CosmeticManager.getCosmetic("rainbowtrail"),
-						null), PitSimPass.RewardType.PREMIUM, tier++);
+						null), PitSimPass.RewardType.PREMIUM, premiumTier++);
 		registerPass(pitSimPass);
 
-		registerPass(new PitSimPass(getDate("2/1/2023")));
+		premiumTier = 1;
+		registerPass(new PitSimPass(getDate("2/1/2023"))
+				.registerReward(new PassRenownReward(5), PitSimPass.RewardType.FREE, 1)
+				.registerReward(new PassGoldReward(10_000), PitSimPass.RewardType.FREE, 3)
+				.registerReward(new PassVileReward(5), PitSimPass.RewardType.FREE, 5)
+				.registerReward(new PassXpReward(2_500), PitSimPass.RewardType.FREE, 7)
+				.registerReward(new PassBowReward(1), PitSimPass.RewardType.FREE, 9)
+				.registerReward(new PassVileReward(5), PitSimPass.RewardType.FREE, 10)
+				.registerReward(new PassGoldReward(5_000), PitSimPass.RewardType.FREE, 12)
+				.registerReward(new PassSwordReward(1), PitSimPass.RewardType.FREE, 14)
+				.registerReward(new PassXpReward(2_500), PitSimPass.RewardType.FREE, 16)
+				.registerReward(new PassDarkzoneDropReward(10, 3), PitSimPass.RewardType.FREE, 18)
+				.registerReward(new PassVileReward(5), PitSimPass.RewardType.FREE, 19)
+				.registerReward(new PassGoldReward(2_500), PitSimPass.RewardType.FREE, 21)
+				.registerReward(new PassBowReward(1), PitSimPass.RewardType.FREE, 23)
+				.registerReward(new PassXpReward(2_500), PitSimPass.RewardType.FREE, 25)
+				.registerReward(new PassFeatherReward(2), PitSimPass.RewardType.FREE, 27)
+				.registerReward(new PassVileReward(5), PitSimPass.RewardType.FREE, 28)
+				.registerReward(new PassGoldReward(2_500), PitSimPass.RewardType.FREE, 30)
+				.registerReward(new PassPantsReward(1), PitSimPass.RewardType.FREE, 32)
+				.registerReward(new PassXpReward(2_500), PitSimPass.RewardType.FREE, 34)
+				.registerReward(new PassCosmeticReward(Material.BANNER, CosmeticManager.getCosmetic("solidcape"),
+						ParticleColor.BLACK), PitSimPass.RewardType.FREE, 36)
+
+
+				.registerReward(new PassXpReward(5_000), PitSimPass.RewardType.PREMIUM, premiumTier++)
+				.registerReward(new PassVileReward(12), PitSimPass.RewardType.PREMIUM, premiumTier++)
+				.registerReward(new PassSwordReward(3), PitSimPass.RewardType.PREMIUM, premiumTier++)
+				.registerReward(new PassKeyReward(1, PassKeyReward.KeyType.PITSIM), PitSimPass.RewardType.PREMIUM, premiumTier++)
+				.registerReward(new PassGoldReward(15_000), PitSimPass.RewardType.PREMIUM, premiumTier++)
+				.registerReward(new PassRenownReward(7), PitSimPass.RewardType.PREMIUM, premiumTier++)
+				.registerReward(new PassBowReward(2), PitSimPass.RewardType.PREMIUM, premiumTier++)
+				.registerReward(new PassDarkzoneDropReward(10, 4), PitSimPass.RewardType.PREMIUM, premiumTier++)
+				.registerReward(new PassCosmeticReward(Material.INK_SACK, 4,  CosmeticManager.getCosmetic("blueshell"),
+						null), PitSimPass.RewardType.PREMIUM, premiumTier++)
+
+				.registerReward(new PassXpReward(7_500), PitSimPass.RewardType.PREMIUM, premiumTier++)
+				.registerReward(new PassVileReward(15), PitSimPass.RewardType.PREMIUM, premiumTier++)
+				.registerReward(new PassPantsReward(1), PitSimPass.RewardType.PREMIUM, premiumTier++)
+				.registerReward(new PassKeyReward(1, PassKeyReward.KeyType.TAINTED), PitSimPass.RewardType.PREMIUM, premiumTier++)
+				.registerReward(new PassGoldReward(20_000), PitSimPass.RewardType.PREMIUM, premiumTier++)
+				.registerReward(new PassFeatherReward(4), PitSimPass.RewardType.PREMIUM, premiumTier++)
+				.registerReward(new PassSwordReward(2), PitSimPass.RewardType.PREMIUM, premiumTier++)
+				.registerReward(new PassDarkzoneDropReward(8, 5), PitSimPass.RewardType.PREMIUM, premiumTier++)
+				.registerReward(new PassCosmeticReward(Material.HUGE_MUSHROOM_2, CosmeticManager.getCosmetic("supermario"),
+						null), PitSimPass.RewardType.PREMIUM, premiumTier++)
+
+				.registerReward(new PassXpReward(10_000), PitSimPass.RewardType.PREMIUM, premiumTier++)
+				.registerReward(new PassVileReward(14), PitSimPass.RewardType.PREMIUM, premiumTier++)
+				.registerReward(new PassBowReward(1), PitSimPass.RewardType.PREMIUM, premiumTier++)
+				.registerReward(new PassKeyReward(1, PassKeyReward.KeyType.PITSIM), PitSimPass.RewardType.PREMIUM, premiumTier++)
+				.registerReward(new PassGoldReward(25_000), PitSimPass.RewardType.PREMIUM, premiumTier++)
+				.registerReward(new PassRenownReward(7), PitSimPass.RewardType.PREMIUM, premiumTier++)
+				.registerReward(new PassPantsReward(3), PitSimPass.RewardType.PREMIUM, premiumTier++)
+				.registerReward(new PassScytheReward(1), PitSimPass.RewardType.PREMIUM, premiumTier++)
+				.registerReward(new PassCosmeticReward(Material.ENCHANTMENT_TABLE, 13, CosmeticManager.getCosmetic("mysticaura"),
+						null), PitSimPass.RewardType.PREMIUM, premiumTier++)
+
+				.registerReward(new PassXpReward(12_500), PitSimPass.RewardType.PREMIUM, premiumTier++)
+				.registerReward(new PassVileReward(16), PitSimPass.RewardType.PREMIUM, premiumTier++)
+				.registerReward(new PassSwordReward(2), PitSimPass.RewardType.PREMIUM, premiumTier++)
+				.registerReward(new PassBoosterReward("xp"), PitSimPass.RewardType.PREMIUM, premiumTier++)
+				.registerReward(new PassGoldReward(30_000), PitSimPass.RewardType.PREMIUM, premiumTier++)
+				.registerReward(new PassRenownReward(7), PitSimPass.RewardType.PREMIUM, premiumTier++)
+				.registerReward(new PassPantsReward(3), PitSimPass.RewardType.PREMIUM, premiumTier++)
+				.registerReward(new PassDarkzoneDropReward(10, 4), PitSimPass.RewardType.PREMIUM, premiumTier++)
+				.registerReward(new PassCosmeticReward(Material.WOOL, 1, CosmeticManager.getCosmetic("tetris"),
+						null), PitSimPass.RewardType.PREMIUM, premiumTier++));
+
+		registerPass(new PitSimPass(getDate("3/1/2023")));
 
 		updateCurrentPass();
 	}
@@ -141,7 +209,7 @@ public class PassManager implements Listener {
 			if(testPass != currentPass) continue;
 			if(i + 1 == pitSimPassList.size()) return -1;
 			PitSimPass nextPass = pitSimPassList.get(i + 1);
-			return nextPass.startDate.getTime() - Misc.convertToEST(new Date()).getTime();
+			return nextPass.startDate.getTime() - new Date().getTime();
 		}
 		return -1;
 	}
@@ -162,13 +230,13 @@ public class PassManager implements Listener {
 		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
 
 		long previousDays = TimeUnit.DAYS.convert(pitPlayer.lastLogin.getTime(), TimeUnit.MILLISECONDS);
-		long currentDays = TimeUnit.DAYS.convert(Misc.convertToEST(new Date()).getTime(), TimeUnit.MILLISECONDS);
+		long currentDays = TimeUnit.DAYS.convert(new Date().getTime(), TimeUnit.MILLISECONDS);
 		if(previousDays != currentDays) {
 			PassData passData = pitPlayer.getPassData(currentPass.startDate);
 //			passData.questCompletion
 		}
 
-		pitPlayer.lastLogin = Misc.convertToEST(new Date());
+		pitPlayer.lastLogin = new Date();
 	}
 
 	public static List<PassQuest> getDailyQuests() {
@@ -256,7 +324,7 @@ public class PassManager implements Listener {
 	}
 
 	public static void updateCurrentPass() {
-		Date now = Misc.convertToEST(new Date());
+		Date now = new Date();
 		PitSimPass newPass = null;
 		boolean foundCurrentPass = false;
 		for(int i = 0; i < pitSimPassList.size(); i++) {
@@ -274,7 +342,7 @@ public class PassManager implements Listener {
 		loadPassData();
 
 		if(PitSim.serverName.equals("pitsim-1") || PitSim.serverName.equals("pitsimdev-1")) {
-			long daysPassed = TimeUnit.DAYS.convert(Misc.convertToEST(new Date()).getTime() - currentPass.startDate.getTime(), TimeUnit.MILLISECONDS);
+			long daysPassed = TimeUnit.DAYS.convert(new Date().getTime() - currentPass.startDate.getTime(), TimeUnit.MILLISECONDS);
 			int weeksPassed = (int) (daysPassed / 7) + 1;
 			int newQuests = weeksPassed * QUESTS_PER_WEEK - currentPass.weeklyQuests.size();
 
@@ -324,9 +392,19 @@ public class PassManager implements Listener {
 
 	public static Date getDate(String dateString) {
 		SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
+		TimeZone est = TimeZone.getTimeZone("EST");
+		TimeZone edt = TimeZone.getTimeZone("EDT");
+
 		try {
-			return Misc.convertToEST(dateFormat.parse(dateString));
-		} catch(ParseException ignored) {}
-		return null;
+			dateFormat.setTimeZone(est);
+			Date date = dateFormat.parse(dateString);
+
+			if(est.inDaylightTime(date)) {
+				dateFormat.setTimeZone(edt);
+				return dateFormat.parse(dateString);
+			} else return date;
+		} catch(Exception ignored) {
+			return null;
+		}
 	}
 }

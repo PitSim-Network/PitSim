@@ -40,7 +40,6 @@ public class ChatManager implements Listener {
 		PitPlayer pitSender = PitPlayer.getPitPlayer(sender);
 		PitPlayer pitRecipient = PitPlayer.getPitPlayer(recipient);
 
-		System.out.println(pitRecipient.uuidIgnoreList.toString() + " " + sender.getUniqueId().toString());
 		if(pitRecipient.uuidIgnoreList.contains(sender.getUniqueId().toString())) {
 			event.setCancelled(true);
 			AOutput.error(sender, "&c&lERROR!&7 That player has you ignored");

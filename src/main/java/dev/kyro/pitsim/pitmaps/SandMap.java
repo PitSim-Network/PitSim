@@ -20,8 +20,8 @@ public class SandMap extends PitMap {
 	@Override
 	public Location getNonSpawn() {
 		Location spawn = new Location(world, 0, 72  , 0);
-		spawn.setX(spawn.getX() + (Math.random() * 4 - 3));
-		spawn.setZ(spawn.getZ() + (Math.random() * 4 - 3));
+		spawn.setX(spawn.getX() + (Math.random() * 4 - 2));
+		spawn.setZ(spawn.getZ() + (Math.random() * 4 - 2));
 
 		Booster booster = BoosterManager.getBooster("chaos");
 		if(booster.isActive()) {
@@ -61,47 +61,47 @@ public class SandMap extends PitMap {
 
 	@Override
 	public Location getPerksNPCSpawn() {
-		return new Location(world, 7.5, 73, 0.5, 90, 0);
+		return new Location(world, 9.5, 73, -2.5, 90, 0);
 	}
 
 	@Override
 	public Location getPrestigeNPCSpawn() {
-		return new Location(world, -11.5, 73, 2, -90, 0);
+		return new Location(world, -9.5, 73, 0, -90, 0);
 	}
 
 	@Override
 	public Location getKyroNPCSpawn() {
-		return new Location(world, -10.5, 73, -5.5, -45.5F, 11);
+		return new Location(world, -8.5, 73, -7.5, -45.5F, 11);
 	}
 
 	@Override
 	public Location getWijiNPCSpawn() {
-		return new Location(world, -12.5, 73, -5.5, -55, 10);
+		return new Location(world, -10.5, 73, -7.5, -55, 10);
 	}
 
 	@Override
 	public Location getSplkNPCSpawn() {
-		return new Location(world, -12.5, 73, -3.5, -62, 0);
+		return new Location(world, -10.5, 73, -5.5, -62, 0);
 	}
 
 	@Override
 	public Location getStatsNPCSpawn() {
-		return new Location(world, -2, 73, -7.5, 0, 0);
+		return new Location(world, 0, 73, -9.5, 0, 0);
 	}
 
 	@Override
 	public Location getKeeperNPCSpawn() {
-		return new Location(world, 3.5, 73, 10.5, 145, 0);
+		return new Location(world, 5.5, 73, 8.5, 145, 0);
 	}
 
 	@Override
 	public Location getKitsNPCSpawn() {
-		return new Location(world, 7.5, 73, 9.5, 125, 0);
+		return new Location(world, 9.5, 73, 7.5, 125, 0);
 	}
 
 	@Override
 	public Location getPassNPCSpawn() {
-		return new Location(world, 7.5, 73, 3.5, 90, 0);
+		return new Location(world, 9.5, 73, 1.5, 90, 0);
 	}
 
 	@Override
