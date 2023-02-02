@@ -134,8 +134,8 @@ public class ChatManager implements Listener {
 			@Override
 			public void run() {
 				if(finalMessage.endsWith("?")) {
-					String answer = AIManager.getAnswer(ChatColor.stripColor(finalMessage));
-					AOutput.send(player, "&9&lAI!&7 " + answer);
+//					String answer = AIManager.getAnswer(ChatColor.stripColor(finalMessage));
+//					AOutput.send(player, "&9&lAI!&7 " + answer);
 				}
 			}
 		}.runTaskAsynchronously(PitSim.INSTANCE);
