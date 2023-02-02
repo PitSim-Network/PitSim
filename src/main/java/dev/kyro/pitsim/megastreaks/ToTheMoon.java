@@ -2,6 +2,7 @@ package dev.kyro.pitsim.megastreaks;
 
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.PitSim;
+import dev.kyro.pitsim.battlepass.quests.daily.DailyMegastreakQuest;
 import dev.kyro.pitsim.controllers.HopperManager;
 import dev.kyro.pitsim.controllers.NonManager;
 import dev.kyro.pitsim.controllers.PrestigeValues;
@@ -181,6 +182,7 @@ public class ToTheMoon extends Megastreak {
 		}
 
 		if(pitPlayer.stats != null) pitPlayer.stats.timesOnMoon++;
+		DailyMegastreakQuest.INSTANCE.onMegastreakComplete(pitPlayer);
 	}
 
 	@Override

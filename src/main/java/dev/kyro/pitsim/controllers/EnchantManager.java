@@ -344,9 +344,9 @@ public class EnchantManager implements Listener {
 			}
 			if(isJewel) {
 				PitEnchant jewelEnchant = getEnchant(nbtItem.getString(NBTTag.ITEM_JEWEL_ENCHANT.getRef()));
-				assert jewelEnchant != null;
+				String jewelEnchantName = jewelEnchant == null ? "INVALID" : jewelEnchant.getDisplayName();
 				loreBuilder.addLore("&f");
-				loreBuilder.addLore("&3JEWEL!&9 " + jewelEnchant.getDisplayName());
+				loreBuilder.addLore("&3JEWEL!&9 " + jewelEnchantName);
 			}
 			if(nbtItem.getBoolean(NBTTag.IS_VENOM.getRef())) {
 				loreBuilder.addLore("&7", "&5Enchants require heresy", "&5As strong as leather");
@@ -386,10 +386,7 @@ public class EnchantManager implements Listener {
 			weightedEnchantList.add(pitEnchant);
 			weightedEnchantList.add(pitEnchant);
 			if(pitEnchant.isUncommonEnchant) continue;
-			weightedEnchantList.add(pitEnchant);
-			weightedEnchantList.add(pitEnchant);
-			weightedEnchantList.add(pitEnchant);
-			weightedEnchantList.add(pitEnchant);
+			for(int i = 0; i < 7; i++) weightedEnchantList.add(pitEnchant);
 		}
 		Collections.shuffle(weightedEnchantList);
 		PitEnchant jewelEnchant = weightedEnchantList.get(0);

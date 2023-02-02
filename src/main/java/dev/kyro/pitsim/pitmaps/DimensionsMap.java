@@ -10,7 +10,7 @@ public class DimensionsMap extends PitMap {
 
 	@Override
 	public Location getSpawn() {
-		return new Location(world, 9.5, 55, 0.5, 90, 0);
+		return new Location(world, 0.5, 55, 10.5, 180, 0);
 	}
 
 	//	TODO: chaos
@@ -24,7 +24,7 @@ public class DimensionsMap extends PitMap {
 
 	@Override
 	public Location getDarkzoneJoinSpawn() {
-		return new Location(world, -0.5, 26, 77, -180, 0);
+		return new Location(world, -75.5, 26, 0, -90, 0);
 	}
 
 	@Override
@@ -49,12 +49,12 @@ public class DimensionsMap extends PitMap {
 
 	@Override
 	public Location getPerksNPCSpawn() {
-		return new Location(world, -1.5, 55, -11.5, 0, 0);
+		return new Location(world, 12.5, 55, -1.5, 90, 0);
 	}
 
 	@Override
 	public Location getPrestigeNPCSpawn() {
-		return new Location(world, 0.5, 55, 12.5, -180, 0);
+		return new Location(world, -11.5, 55, 0.5, -90, 0);
 	}
 
 	@Override
@@ -64,22 +64,22 @@ public class DimensionsMap extends PitMap {
 
 	@Override
 	public Location getWijiNPCSpawn() {
-		return new Location(world, 5.5, 58, 14.5, 180, 0);
+		return new Location(world, 5.5, 58, 15.5, 160, 0);
 	}
 
 	@Override
 	public Location getSplkNPCSpawn() {
-		return new Location(world, -5.5, 58, -13.5, -25, 0);
+		return new Location(world, 6.5, 58, -13.5, 35, 0);
 	}
 
 	@Override
 	public Location getStatsNPCSpawn() {
-		return new Location(world, -11.5, 55, 0.5, -90, 0);
+		return new Location(world, 2.5, 55, -11.5, 0, 0);
 	}
 
 	@Override
 	public Location getKeeperNPCSpawn() {
-		return new Location(world, -10.5, 55, 7.5, -120, 0);
+		return new Location(world, -7.5, 55, -10.5, -25, 0);
 	}
 
 	@Override
@@ -89,12 +89,12 @@ public class DimensionsMap extends PitMap {
 
 	@Override
 	public Location getPassNPCSpawn() {
-		return new Location(world, 2.5, 55, -11.5, 0, 0);
+		return new Location(world, 12.5, 55, 2.5, 90, 0);
 	}
 
 	//	TODO: Add
 	@Override
 	public Location getKitsNPCSpawn() {
-		return new Location(world, 15.5, 57, 2.5, 125, 0);
+		return new Location(world, -1, 56, 14, -165, 0);
 	}
 }

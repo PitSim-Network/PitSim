@@ -27,6 +27,7 @@ import dev.kyro.pitsim.aitems.prot.ProtLeggings;
 import dev.kyro.pitsim.battlepass.PassManager;
 import dev.kyro.pitsim.battlepass.quests.*;
 import dev.kyro.pitsim.battlepass.quests.daily.DailyBotKillQuest;
+import dev.kyro.pitsim.battlepass.quests.daily.DailyMegastreakQuest;
 import dev.kyro.pitsim.battlepass.quests.daily.DailyPlayerKillQuest;
 import dev.kyro.pitsim.battlepass.quests.daily.DailySWGamePlayedQuest;
 import dev.kyro.pitsim.battlepass.quests.dzkillmobs.*;
@@ -80,6 +81,7 @@ import dev.kyro.pitsim.misc.packets.SignPrompt;
 import dev.kyro.pitsim.npcs.*;
 import dev.kyro.pitsim.perks.*;
 import dev.kyro.pitsim.pitmaps.BiomesMap;
+import dev.kyro.pitsim.pitmaps.DimensionsMap;
 import dev.kyro.pitsim.pitmaps.SandMap;
 import dev.kyro.pitsim.pitmaps.XmasMap;
 import dev.kyro.pitsim.placeholders.*;
@@ -104,6 +106,7 @@ import septogeddon.pluginquery.PluginQuery;
 import septogeddon.pluginquery.api.QueryMessenger;
 
 import java.io.File;
+import java.time.ZoneId;
 import java.util.*;
 
 public class PitSim extends JavaPlugin {
@@ -119,6 +122,7 @@ public class PitSim extends JavaPlugin {
 	public static PteroClient client = PteroBuilder.createClient("***REMOVED***", PrivateInfo.PTERO_KEY);
 
 	public static long currentTick = 0;
+	public static final ZoneId TIME_ZONE = ZoneId.of("America/New_York");
 
 	public static ServerStatus status;
 
@@ -396,26 +400,27 @@ public class PitSim extends JavaPlugin {
 		if(file.exists()) file.deleteOnExit();
 	}
 
-	private void registerMaps() {
-		PitMap pitMap = null;
-		long time;
+		private void registerMaps() {
+			PitMap pitMap = null;
+			long time;
 
-		PitMap biomes = MapManager.registerMap(new BiomesMap("biomes", 7));
-		PitMap sand = MapManager.registerMap(new SandMap("sand", 7));
-//		PitMap dimensions = MapManager.registerMap(new DimensionsMap("dimensions", 7));
-		PitMap xmas = MapManager.registerMap(new XmasMap("xmas", -1));
+			PitMap biomes = MapManager.registerMap(new BiomesMap("biomes", 7));
+			PitMap sand = MapManager.registerMap(new SandMap("sand", 2));
+			PitMap dimensions = MapManager.registerMap(new DimensionsMap("dimensions", 7));
+			PitMap xmas = MapManager.registerMap(new XmasMap("xmas", -1));
 
-		String configString = AConfig.getString("current-map");
-		if(configString == null || configString.isEmpty()) {
-			pitMap = biomes;
-			time = System.currentTimeMillis();
-		} else {
-			String[] split = configString.split(":");
-			String mapName = split[0];
-			time = Long.parseLong(split[1]);
-			PitMap currentMap = MapManager.getMap(mapName);
-			if(currentMap == null) currentMap = biomes;
-			pitMap = currentMap;
+			String configString = FirestoreManager.CONFIG.mapData;
+			String mapName = null;
+			if(configString == null || configString.isEmpty()) {
+				pitMap = biomes;
+				time = System.currentTimeMillis();
+			} else {
+				String[] split = configString.split(":");
+				mapName = split[0];
+				time = Long.parseLong(split[1]);
+				PitMap currentMap = MapManager.getMap(mapName);
+				if(currentMap == null) currentMap = biomes;
+				pitMap = currentMap;
 
 			if(((System.currentTimeMillis() - time) / 1000.0 / 60.0 / 60.0 / 24.0) >= currentMap.rotationDays) {
 				pitMap = MapManager.getNextMap(currentMap);
@@ -423,19 +428,25 @@ public class PitSim extends JavaPlugin {
 			}
 		}
 
-		if(TimeManager.isChristmasSeason() && status != ServerStatus.DARKZONE) {
-			pitMap = xmas;
-			time = System.currentTimeMillis();
-			MapManager.currentMap.world.setStorm(true);
-			MapManager.currentMap.world.setWeatherDuration(Integer.MAX_VALUE);
+			if(TimeManager.isChristmasSeason() && status != ServerStatus.DARKZONE) {
+				pitMap = xmas;
+				time = System.currentTimeMillis();
+				MapManager.currentMap.world.setStorm(true);
+				MapManager.currentMap.world.setWeatherDuration(Integer.MAX_VALUE);
+			}
+
+			if(status == ServerStatus.DARKZONE) {
+				pitMap = biomes;
+				time = System.currentTimeMillis();
+			}
+			assert pitMap != null;
+
+			if(mapName == null || !Objects.equals(pitMap.world.getName(), mapName)) {
+				FirestoreManager.CONFIG.mapData = pitMap.world.getName() + ":" + time;
+				FirestoreManager.CONFIG.save();
+			}
+			MapManager.setMap(pitMap);
 		}
-
-		assert pitMap != null;
-
-		AConfig.set("current-map", pitMap.world.getName() + ":" + time);
-		AConfig.saveConfig();
-		MapManager.setMap(pitMap);
-	}
 
 	private void registerPerks() {
 
@@ -655,7 +666,7 @@ public class PitSim extends JavaPlugin {
 		getServer().getPluginManager().registerEvents(new GrimManager(), this);
 		getServer().getPluginManager().registerEvents(new MiscManager(), this);
 		getServer().getPluginManager().registerEvents(new FirstJoinManager(), this);
-		getServer().getPluginManager().registerEvents(new AIManager(), this);
+//		getServer().getPluginManager().registerEvents(new AIManager(), this);
 		getServer().getPluginManager().registerEvents(new MarketMessaging(), this);
 		getServer().getPluginManager().registerEvents(new MigrationManager(), this);
 
@@ -730,6 +741,7 @@ public class PitSim extends JavaPlugin {
 		PassManager.registerQuest(new DailyBotKillQuest());
 		PassManager.registerQuest(new DailyPlayerKillQuest());
 		PassManager.registerQuest(new DailySWGamePlayedQuest());
+		PassManager.registerQuest(new DailyMegastreakQuest());
 
 //		Weekly quests
 		PassManager.registerQuest(new KillPlayersQuest());

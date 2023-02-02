@@ -65,6 +65,6 @@ public class GottaGoFast extends PitEnchant {
 
 	public static float getWalkSpeedLore(int enchantLvl) {
 
-		return enchantLvl * 5 + 10;
+		return enchantLvl * 5 + 5;
 	}
 }

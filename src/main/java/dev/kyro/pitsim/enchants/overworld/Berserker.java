@@ -14,7 +14,7 @@ public class Berserker extends PitEnchant {
 
 	public Berserker() {
 		super("Berserker", false, ApplyType.MELEE,
-				"berserker");
+				"berserker", "bez", "bes");
 		isUncommonEnchant = true;
 	}
 

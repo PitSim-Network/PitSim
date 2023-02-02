@@ -3,6 +3,7 @@ package dev.kyro.pitsim.megastreaks;
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.arcticapi.misc.ASound;
 import dev.kyro.pitsim.PitSim;
+import dev.kyro.pitsim.battlepass.quests.daily.DailyMegastreakQuest;
 import dev.kyro.pitsim.controllers.*;
 import dev.kyro.pitsim.controllers.objects.Megastreak;
 import dev.kyro.pitsim.controllers.objects.PitEnchant;
@@ -353,14 +354,13 @@ public class RNGesus extends Megastreak {
 				}
 			}
 		}.runTaskTimer(PitSim.INSTANCE, 0L, 4L);
-
-		if(pitPlayer.stats != null) pitPlayer.stats.timesOnOverdrive++;
 	}
 
 	@Override
 	public void reset() {
 		if(pitPlayer.getKills() >= INSTABILITY_THRESHOLD) {
 			if(pitPlayer.stats != null) pitPlayer.stats.rngesusCompleted++;
+			DailyMegastreakQuest.INSTANCE.onMegastreakComplete(pitPlayer);
 		}
 
 		if(isOnMega()) {

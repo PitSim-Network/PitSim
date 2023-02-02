@@ -17,6 +17,13 @@ import dev.kyro.pitsim.controllers.EnchantManager;
 import dev.kyro.pitsim.controllers.ItemFactory;
 import dev.kyro.pitsim.controllers.NonManager;
 import dev.kyro.pitsim.controllers.PrestigeValues;
+import dev.kyro.pitsim.controllers.*;
+import dev.kyro.pitsim.battlepass.quests.daily.DailyMegastreakQuest;
+import dev.kyro.pitsim.commands.FreshCommand;
+import dev.kyro.pitsim.controllers.EnchantManager;
+import dev.kyro.pitsim.controllers.ItemManager;
+import dev.kyro.pitsim.controllers.NonManager;
+import dev.kyro.pitsim.controllers.PrestigeValues;
 import dev.kyro.pitsim.controllers.objects.Megastreak;
 import dev.kyro.pitsim.controllers.objects.PitEnchant;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
@@ -278,7 +285,8 @@ public class Uberstreak extends Megastreak {
 		uberdrop.give(pitPlayer);
 
 		if(pitPlayer.stats != null) pitPlayer.stats.ubersCompleted++;
-		CompleteUbersQuest.INSTANCE.completeUber(pitPlayer);
+		CompleteUbersQuest.INSTANCE.onUberComplete(pitPlayer);
+		DailyMegastreakQuest.INSTANCE.onMegastreakComplete(pitPlayer);
 	}
 
 	public static void sendUberMessage(String displayName, ItemStack itemStack) {
