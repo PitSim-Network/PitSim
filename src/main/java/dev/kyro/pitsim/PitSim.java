@@ -73,10 +73,7 @@ import dev.kyro.pitsim.leaderboards.*;
 import dev.kyro.pitsim.logging.LogManager;
 import dev.kyro.pitsim.market.MarketMessaging;
 import dev.kyro.pitsim.megastreaks.*;
-import dev.kyro.pitsim.misc.ItemRename;
-import dev.kyro.pitsim.misc.PrivateInfo;
-import dev.kyro.pitsim.misc.ReloadManager;
-import dev.kyro.pitsim.misc.TempBlockHelper;
+import dev.kyro.pitsim.misc.*;
 import dev.kyro.pitsim.misc.packets.SignPrompt;
 import dev.kyro.pitsim.npcs.*;
 import dev.kyro.pitsim.perks.*;
@@ -134,6 +131,10 @@ public class PitSim extends JavaPlugin {
 
 		for(Player onlinePlayer : Bukkit.getOnlinePlayers()) {
 			PlayerDataManager.exemptedPlayers.add(onlinePlayer.getUniqueId());
+
+			if(Misc.isKyro(onlinePlayer.getUniqueId())) {
+				onlinePlayer.teleport(MapManager.kyroDarkzoneSpawn);
+			}
 		}
 
 		loadConfig();
@@ -373,12 +374,12 @@ public class PitSim extends JavaPlugin {
 
 		if(status.isDarkzone()) {
 			for(SubLevel subLevel : DarkzoneManager.subLevels) subLevel.disableMobs();
-			for(PitBoss pitBoss : BossManager.pitBosses) pitBoss.kill();
+			for(PitBoss pitBoss : BossManager.pitBosses) pitBoss.remove();
 		}
 
-		if(this.adventure != null) {
-			this.adventure.close();
-			this.adventure = null;
+		if(adventure != null) {
+			adventure.close();
+			adventure = null;
 		}
 
 		NPCManager.onDisable();

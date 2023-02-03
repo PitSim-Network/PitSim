@@ -4,7 +4,7 @@ import de.tr7zw.nbtapi.NBTCompound;
 import de.tr7zw.nbtapi.NBTItem;
 import dev.kyro.arcticapi.builders.AItemStackBuilder;
 import dev.kyro.arcticapi.builders.ALoreBuilder;
-import dev.kyro.pitsim.aitems.PitItem;
+import dev.kyro.pitsim.aitems.StaticPitItem;
 import dev.kyro.pitsim.controllers.EnchantManager;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.enums.AuctionCategory;
@@ -17,7 +17,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class MysticPants extends PitItem {
+public class MysticPants extends StaticPitItem {
 
 	public MysticPants() {
 		hasUUID = true;
@@ -37,12 +37,18 @@ public class MysticPants extends PitItem {
 		return new ArrayList<>(Arrays.asList("pants", "mysticpants"));
 	}
 
+	@Override
 	public Material getMaterial() {
 		return Material.LEATHER_LEGGINGS;
 	}
 
 	public String getName(PantColor pantColor) {
 		return pantColor.chatColor + "Fresh " + pantColor.displayName + " Pants";
+	}
+
+	@Override
+	public String getName() {
+		throw new RuntimeException();
 	}
 
 	public List<String> getLore(PantColor pantColor) {
@@ -52,6 +58,11 @@ public class MysticPants extends PitItem {
 				"",
 				"&7Kept on death"
 		).getLore();
+	}
+
+	@Override
+	public List<String> getLore() {
+		throw new RuntimeException();
 	}
 
 	@Override
@@ -85,6 +96,17 @@ public class MysticPants extends PitItem {
 	}
 
 	@Override
+	public ItemStack getItem() {
+		return getItem(PantColor.getNormalRandom());
+	}
+
+	@Override
+	public ItemStack getItem(int amount) {
+		if(amount == 1) return getItem();
+		throw new RuntimeException();
+	}
+
+	@Override
 	public ItemStack getReplacementItem(PitPlayer pitPlayer, ItemStack itemStack, NBTItem nbtItem) {
 		ItemStack newItemStack = new ItemStack(getMaterial(), 1);
 		newItemStack = buildItem(newItemStack);
@@ -92,14 +114,8 @@ public class MysticPants extends PitItem {
 
 		newNBTItem.addCompound(NBTTag.MYSTIC_ENCHANTS.getRef());
 		NBTCompound newItemEnchants = newNBTItem.getCompound(NBTTag.MYSTIC_ENCHANTS.getRef());
-		System.out.println(newItemEnchants);
 		NBTCompound itemEnchants = nbtItem.getCompound(NBTTag.MYSTIC_ENCHANTS.getRef());
-		System.out.println(itemEnchants);
-		for(String enchantKey : itemEnchants.getKeys()) {
-			System.out.println(enchantKey);
-			System.out.println(itemEnchants.getInteger(enchantKey));
-			newItemEnchants.setInteger(enchantKey, itemEnchants.getInteger(enchantKey));
-		}
+		for(String enchantKey : itemEnchants.getKeys()) newItemEnchants.setInteger(enchantKey, itemEnchants.getInteger(enchantKey));
 
 		if(nbtItem.hasKey(NBTTag.ITEM_ENCHANT_NUM.getRef()))
 			newNBTItem.setInteger(NBTTag.ITEM_ENCHANT_NUM.getRef(), nbtItem.getInteger(NBTTag.ITEM_ENCHANT_NUM.getRef()));

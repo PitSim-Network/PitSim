@@ -41,8 +41,6 @@ public abstract class Kit {
 
 			NBTItem nbtItem = new NBTItem(itemStack);
 			nbtItem.setBoolean(NBTTag.IS_PREMADE.getRef(), true);
-//			nbtItem.setBoolean(NBTTag.DROP_CONFIRM.getRef(), true);
-
 			player.getInventory().addItem(nbtItem.getItem());
 		}
 	}

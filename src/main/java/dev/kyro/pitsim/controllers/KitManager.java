@@ -4,6 +4,7 @@ import de.tr7zw.nbtapi.NBTItem;
 import dev.kyro.arcticapi.builders.AItemStackBuilder;
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.aitems.MysticFactory;
+import dev.kyro.pitsim.aitems.PitItem;
 import dev.kyro.pitsim.controllers.objects.Kit;
 import dev.kyro.pitsim.enums.KitItem;
 import dev.kyro.pitsim.enums.MysticType;
@@ -41,8 +42,10 @@ public class KitManager implements Listener {
 	}
 
 	public static ItemStack getItem(KitItem kitItem) {
-//		TODO: Assign different id
-		return null;
+		ItemStack itemStack = kitItemMap.get(kitItem);
+		PitItem pitItem = ItemFactory.getItem(itemStack);
+		if(pitItem != null) itemStack = pitItem.randomizeUUID(itemStack);
+		return itemStack;
 	}
 
 	static {

@@ -1,5 +1,6 @@
 package dev.kyro.pitsim.controllers;
 
+import dev.kyro.pitsim.adarkzone.DarkzoneManager;
 import dev.kyro.pitsim.controllers.objects.Non;
 import dev.kyro.pitsim.events.AttackEvent;
 import dev.kyro.pitsim.misc.Misc;
@@ -21,41 +22,13 @@ public class DamageIndicator implements Listener {
 		Player attacker = attackEvent.getAttackerPlayer();
 		LivingEntity defender = attackEvent.getDefender();
 
-//        double maxHealth = defender.getMaxHealth() / 2;
-//        double currentHealth = defender.getHealth() / 2;
-//        double damageTaken = attackEvent.event.getFinalDamage() / 2;
-//
-//
-//        Bukkit.broadcastMessage(String.valueOf("Max Health: " + maxHealth));
-//        Bukkit.broadcastMessage(String.valueOf("Current Health: " + currentHealth));
-//        Bukkit.broadcastMessage(String.valueOf("Damage Taken: " + damageTaken));
-//
-//        StringBuilder output = new StringBuilder();
-//
-//
-//
-//        for (int i = 0; i < Math.floor(currentHealth - damageTaken); i++) {
-//            output.append(ChatColor.DARK_RED).append("\u2764");
-//        }
-//
-//        for (int i = 0; i < Math.ceil(damageTaken); i++) {
-//            output.append(ChatColor.RED).append("\u2764");
-//        }
-//
-//        for (int i = 0; i < maxHealth - (Math.floor(currentHealth - damageTaken) + Math.ceil(damageTaken)); i++) {
-//            output.append(ChatColor.BLACK).append("\u2764");
-//        }
-//
-//        Misc.sendActionBar(attacker, output.toString());
-
 		EntityPlayer entityPlayer = null;
 		if(defender instanceof Player) entityPlayer = ((CraftPlayer) defender).getHandle();
-		LivingEntity player = defender;
 
-		int roundedDamageTaken = ((int) attackEvent.getEvent().getFinalDamage()) / getNum(player);
+		int roundedDamageTaken = ((int) attackEvent.getEvent().getFinalDamage()) / getNum(defender);
 
-		int originalHealth = ((int) defender.getHealth()) / getNum(player);
-		int maxHealth = ((int) defender.getMaxHealth()) / getNum(player);
+		int originalHealth = ((int) defender.getHealth()) / getNum(defender);
+		int maxHealth = ((int) defender.getMaxHealth()) / getNum(defender);
 
 		int result = Math.max(originalHealth - roundedDamageTaken, 0);
 
@@ -76,16 +49,15 @@ public class DamageIndicator implements Listener {
 		String playername = "&7%luckperms_prefix%" + (defendingNon == null ? "%player_name%" : defendingNon.displayName) + " ";
 		if(defender instanceof Player)
 			output.append(PlaceholderAPI.setPlaceholders(attackEvent.getDefenderPlayer(), playername));
-//		TODO: Readd
-//		else if(OldPitMob.isPitMob(defender)) output.append(OldPitMob.getPitMob(defender).displayName).append(" ");
-		else output.append(player.getCustomName() + " ");
+		else if(DarkzoneManager.isPitMob(defender)) output.append(DarkzoneManager.getPitMob(defender).getDisplayName()).append(" ");
+		else output.append(defender.getCustomName() + " ");
 
 		for(int i = 0; i < Math.max(originalHealth - roundedDamageTaken, 0); i++) {
 			output.append(ChatColor.DARK_RED).append("\u2764");
 		}
 
 		if(defender instanceof Player) {
-			for(int i = 0; i < roundedDamageTaken - (int) entityPlayer.getAbsorptionHearts() / getNum(player); i++) {
+			for(int i = 0; i < roundedDamageTaken - (int) entityPlayer.getAbsorptionHearts() / getNum(defender); i++) {
 				output.append(ChatColor.RED).append("\u2764");
 			}
 		} else {
@@ -99,7 +71,7 @@ public class DamageIndicator implements Listener {
 		}
 
 		if(defender instanceof Player) {
-			for(int i = 0; i < (int) entityPlayer.getAbsorptionHearts() / getNum(player); i++) {
+			for(int i = 0; i < (int) entityPlayer.getAbsorptionHearts() / getNum(defender); i++) {
 				output.append(ChatColor.YELLOW).append("\u2764");
 			}
 		}

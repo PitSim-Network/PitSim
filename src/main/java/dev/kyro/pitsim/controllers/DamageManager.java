@@ -3,6 +3,8 @@ package dev.kyro.pitsim.controllers;
 import de.tr7zw.nbtapi.NBTItem;
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.PitSim;
+import dev.kyro.pitsim.adarkzone.BossManager;
+import dev.kyro.pitsim.adarkzone.DarkzoneManager;
 import dev.kyro.pitsim.aitems.PitItem;
 import dev.kyro.pitsim.aitems.misc.CorruptedFeather;
 import dev.kyro.pitsim.aitems.misc.FunkyFeather;
@@ -156,12 +158,7 @@ public class DamageManager implements Listener {
 			hitCooldownList.add(defender);
 			hopperCooldownList.add(defender);
 			nonHitCooldownList.add(defender);
-
-//			TODO: Readd
-//			if(defender instanceof Player) {
-//				boolean isBoss = (OldPitBoss.isPitBoss((Player) defender));
-//				if(isBoss) bossHitCooldown.add(defender);
-//			}
+			if(BossManager.isPitBoss(defender)) bossHitCooldown.add(defender);
 
 			new BukkitRunnable() {
 				int count = 0;
@@ -196,22 +193,29 @@ public class DamageManager implements Listener {
 			event.setDamage(damage);
 		}
 
-		AttackEvent.Pre preEvent = null;
+		AttackEvent.Pre preEvent;
 		if(event.getEntity() instanceof Fireball) return;
-		if(event.getDamager() instanceof Slime && !(event.getDamager() instanceof MagmaCube)) {
-			preEvent = new AttackEvent.Pre(event, new HashMap<>(), defenderEnchantMap, fakeHit);
-		} else if(event.getDamager() instanceof Arrow) {
 
+		Map<PitEnchant, Integer> attackerEnchantMap = new HashMap<>();
+		if(event.getDamager() instanceof Slime && !(event.getDamager() instanceof MagmaCube)) {
+		} else if(event.getDamager() instanceof Arrow) {
 			for(Map.Entry<EntityShootBowEvent, Map<PitEnchant, Integer>> entry : arrowMap.entrySet()) {
 				if(!entry.getKey().getProjectile().equals(event.getDamager())) continue;
-				preEvent = new AttackEvent.Pre(event, arrowMap.get(entry.getKey()), defenderEnchantMap, fakeHit);
+				attackerEnchantMap = arrowMap.get(entry.getKey());
+				break;
 			}
 		} else if(event.getDamager() instanceof Fireball) {
-			preEvent = new AttackEvent.Pre(event, new HashMap<>(), defenderEnchantMap, fakeHit);
 		} else if(event.getDamager() instanceof LivingEntity) {
-			preEvent = new AttackEvent.Pre(event, EnchantManager.getEnchantsOnPlayer(attacker), defenderEnchantMap, fakeHit);
+			attackerEnchantMap = EnchantManager.getEnchantsOnPlayer(attacker);
 		}
-		if(preEvent == null) return;
+
+//		Remove disabled enchants
+		for(Map.Entry<PitEnchant, Integer> entry : new ArrayList<>(attackerEnchantMap.entrySet()))
+			if(!entry.getKey().isEnabled()) attackerEnchantMap.remove(entry.getKey());
+		for(Map.Entry<PitEnchant, Integer> entry : new ArrayList<>(defenderEnchantMap.entrySet()))
+			if(!entry.getKey().isEnabled()) defenderEnchantMap.remove(entry.getKey());
+
+		preEvent = new AttackEvent.Pre(event, attackerEnchantMap, defenderEnchantMap, fakeHit);
 
 		Bukkit.getServer().getPluginManager().callEvent(preEvent);
 		if(preEvent.isCancelled()) {
@@ -406,12 +410,12 @@ public class DamageManager implements Listener {
 
 		DecimalFormat df = new DecimalFormat("##0.00");
 		String kill = "null";
-//		TODO: Readd
-//		if(!deadIsPlayer && OldPitMob.isPitMob(dead))
-//			kill = ChatColor.translateAlternateColorCodes('&', "&a&lKILL!&7 on " + OldPitMob.getPitMob(dead).displayName);
-//		else if(killType != KillType.DEATH)
-//			kill = PlaceholderAPI.setPlaceholders(killEvent.getDeadPlayer(), "&a&lKILL!&7 on %luckperms_prefix%" + (deadNon == null ? "%player_name%" : deadNon.displayName)
-//					+ " &b+" + killEvent.getFinalXp() + "XP" + " &6+" + df.format(killEvent.getFinalGold()) + "g");
+		if(!deadIsPlayer && DarkzoneManager.isPitMob(dead))
+			kill = ChatColor.translateAlternateColorCodes('&', "&a&lKILL!&7 on " + DarkzoneManager.getPitMob(dead).getDisplayName());
+		else if(killType != KillType.DEATH)
+			kill = PlaceholderAPI.setPlaceholders(killEvent.getDeadPlayer(), "&a&lKILL!&7 on %luckperms_prefix%" +
+					(deadNon == null ? "%player_name%" : deadNon.displayName) + " &b+" + killEvent.getFinalXp() + "XP" +
+					" &6+" + df.format(killEvent.getFinalGold()) + "g");
 		String death;
 		if(!killerIsPlayer) death = ChatColor.translateAlternateColorCodes('&', "&c&lDEATH!");
 		else if(killType == KillType.DEFAULT)
@@ -420,8 +424,7 @@ public class DamageManager implements Listener {
 		String killActionBar = null;
 		if(killerIsPlayer)
 			killActionBar = "&7%luckperms_prefix%" + (deadNon == null ? "%player_name%" : deadNon.displayName) + " &a&lKILL!";
-//		TODO: Readd
-//		else if(OldPitMob.isPitMob(dead)) killActionBar = OldPitMob.getPitMob(dead).displayName + " &a&lKILL!";
+		else if(DarkzoneManager.isPitMob(dead)) killActionBar = DarkzoneManager.getPitMob(dead).getDisplayName() + " &a&lKILL!";
 
 		if(killerIsPlayer && !CitizensAPI.getNPCRegistry().isNPC(killer) && !pitKiller.killFeedDisabled && killType != KillType.DEATH) {
 			AOutput.send(killEvent.getKiller(), PlaceholderAPI.setPlaceholders(killEvent.getDeadPlayer(), kill));

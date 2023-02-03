@@ -3,7 +3,6 @@ package dev.kyro.pitsim.aitems;
 import de.tr7zw.nbtapi.NBTItem;
 import dev.kyro.arcticapi.builders.AItemStackBuilder;
 import dev.kyro.arcticapi.misc.AUtil;
-import dev.kyro.pitsim.controllers.ItemFactory;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -40,10 +39,6 @@ public abstract class StaticPitItem extends PitItem {
 
 	public void giveItem(Player player, int amount) {
 		AUtil.giveItemSafely(player, getItem(amount), true);
-	}
-
-	public boolean isThisItem(ItemStack itemStack) {
-		return ItemFactory.getItem(itemStack) == this;
 	}
 
 	@Override

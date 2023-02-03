@@ -18,48 +18,47 @@ public class DropPool {
 
 	/**
 	 * Returns a random item from the dropPool
+	 *
 	 * @return ItemStack from dropPool
 	 */
 	public ItemStack getRandomDrop() {
 		return Misc.weightedRandom(dropPool);
 	}
 
+	public void singleDistribution(Player killer) {
+		ItemStack drop = getRandomDrop();
+		AUtil.giveItemSafely(killer, drop);
+	}
+
 	/**
 	 * Gives the top n damage dealers drops from the dropPool
+	 *
 	 * @param damageMap map of player UUIDs and the damage they did to a boss
 	 */
-	public void distributeRewards(Map<UUID, Double> damageMap, int n) {
-
-		for (int j = 0; j < n; j++)
-		{
-			UUID topDamageDealer = null;
-			double topDamage = 0;
-			for(UUID uuid : damageMap.keySet()) {
-				double damage = damageMap.get(uuid);
-				if(damage > topDamage) {
-					topDamage = damage;
-					topDamageDealer = uuid;
-				}
+	public void groupDistribution(Player killer, Map<UUID, Double> damageMap) {
+//		TODO: This whole method should have weighted chances to give drops configurable by the constructor of the drop pool prob
+		UUID topDamageDealer = null;
+		double topDamage = 0;
+		for(UUID uuid : damageMap.keySet()) {
+			double damage = damageMap.get(uuid);
+			if(damage > topDamage) {
+				topDamage = damage;
+				topDamageDealer = uuid;
 			}
-
-			if (topDamageDealer == null) return;
-			Player player = Bukkit.getPlayer(topDamageDealer);
-
-			if (player != null) {
-				for(int i = j; i < n; i++) {
-					ItemStack drop = getRandomDrop();
-					AUtil.giveItemSafely(player, drop);
-				}
-			}
-
-			damageMap.remove(topDamageDealer);
-
 		}
+
+		if(topDamageDealer == null) return;
+		Player player = Bukkit.getPlayer(topDamageDealer);
+		if(player == null) return;
+
+		ItemStack drop = getRandomDrop();
+		AUtil.giveItemSafely(player, drop);
 	}
 
 	/**
 	 * Adds item to the dropPool
-	 * @param item item to be added to dropPool
+	 *
+	 * @param item   item to be added to dropPool
 	 * @param chance weight of item being selected from dropPool
 	 * @return DropPool istance
 	 */

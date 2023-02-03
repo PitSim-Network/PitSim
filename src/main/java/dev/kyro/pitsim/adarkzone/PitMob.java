@@ -1,5 +1,6 @@
 package dev.kyro.pitsim.adarkzone;
 
+import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.entity.Creature;
 import org.bukkit.entity.EntityType;
@@ -16,9 +17,14 @@ public abstract class PitMob {
 		spawn(spawnLocation);
 	}
 
+	public abstract String getDisplayName();
 	public abstract EntityType getEntityType();
 	public abstract int getMaxHealth();
 	public abstract int getSpeedAmplifier();
+
+	public String getRawDisplayName() {
+		return ChatColor.stripColor(ChatColor.translateAlternateColorCodes('&', getDisplayName()));
+	}
 
 	public void onSpawn() {}
 
@@ -26,8 +32,14 @@ public abstract class PitMob {
 		mob = (Creature) spawnLocation.getWorld().spawnEntity(spawnLocation, getEntityType());
 	}
 
-	public void despawn() {
+	public void kill(Player killer) {
+		dropPool.singleDistribution(killer);
+		remove();
+	}
+
+	public void remove() {
 		if(mob != null) mob.remove();
+		getSubLevel().mobs.remove(this);
 	}
 
 	public void setTarget(Player target) {
@@ -57,5 +69,12 @@ public abstract class PitMob {
 
 	public void setMob(Creature mob) {
 		this.mob = mob;
+	}
+
+	public SubLevel getSubLevel() {
+		for(SubLevel subLevel : DarkzoneManager.subLevels) {
+			for(PitMob pitMob : subLevel.mobs) if(pitMob == this) return subLevel;
+		}
+		throw new RuntimeException();
 	}
 }

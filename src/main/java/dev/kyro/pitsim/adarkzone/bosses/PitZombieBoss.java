@@ -14,7 +14,7 @@ public class PitZombieBoss extends PitBoss {
 
 		abilities(
 				new TrueDamageAbility(4),
-				new StunAbility(0.1, 80),
+				new StunAbility(0.1, 0),
 //				new LaunchAbility(20)
 				new KnockbackAbility(5)
 		);

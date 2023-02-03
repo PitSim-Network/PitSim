@@ -64,7 +64,7 @@ public class LuckyKill extends RenownUpgrade {
 		if(!UpgradeManager.hasUpgrade(killEvent.getKillerPlayer(), this)) return;
 		if(!(NonManager.getNon(killEvent.getDead()) == null)) return;
 		if(!(killEvent.getDead() instanceof Player)) return;
-		if(BossManager.isBoss(killEvent.getDead())) return;
+		if(BossManager.isPitBoss(killEvent.getDead())) return;
 		if(!killEvent.isDeadPlayer()) return;
 
 		int tier = UpgradeManager.getTier(killEvent.getKillerPlayer(), this);

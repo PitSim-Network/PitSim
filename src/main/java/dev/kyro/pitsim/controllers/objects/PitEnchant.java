@@ -36,6 +36,14 @@ public abstract class PitEnchant implements Listener {
 
 	public abstract List<String> getNormalDescription(int enchantLvl);
 
+	public boolean isEnabled() {
+		if(isTainted) {
+			return PitSim.getStatus() == PitSim.ServerStatus.DARKZONE;
+		} else {
+			return PitSim.getStatus() == PitSim.ServerStatus.OVERWORLD || applyType == ApplyType.BOWS;
+		}
+	}
+
 	public List<String> getDisabledDescription() {
 		return new ALoreBuilder(
 				"&7Disabled in the " + (isTainted ? "&aOverworld" : "&5Darkzone")
@@ -43,11 +51,24 @@ public abstract class PitEnchant implements Listener {
 	}
 
 	public List<String> getDescription(int enchantLvl) {
-		if(isTainted) {
-			return PitSim.getStatus() == PitSim.ServerStatus.OVERWORLD ? getDisabledDescription() : getNormalDescription(enchantLvl);
-		} else {
-			return PitSim.getStatus() == PitSim.ServerStatus.DARKZONE ? getDisabledDescription() : getNormalDescription(enchantLvl);
+		return !isEnabled() ? getDisabledDescription() : getNormalDescription(enchantLvl);
+	}
+
+	public String getDisplayName() {
+		return getDisplayName(false);
+	}
+
+	public String getDisplayName(boolean displayUncommon) {
+		String prefix = "";
+		if(isRare) {
+			if(applyType == ApplyType.SCYTHES) prefix += "&dSPELL! ";
+			else if(applyType == ApplyType.CHESTPLATES) prefix += "&dEFFECT! ";
+			else prefix += "&dRARE! ";
+		} else if(isUncommonEnchant && displayUncommon) {
+			prefix += "&aUNC. ";
 		}
+		prefix += (isEnabled() ? "&9" : "&c");
+		return ChatColor.translateAlternateColorCodes('&', prefix + name);
 	}
 
 	public void onDisable() {
@@ -80,27 +101,6 @@ public abstract class PitEnchant implements Listener {
 		cooldown.ticksLeft = 0;
 		cooldowns.put(player.getUniqueId(), cooldown);
 		return cooldown;
-	}
-
-	public String getDisplayName() {
-		return getDisplayName(false);
-	}
-
-	public String getDisplayName(boolean displayUncommon) {
-		String displayName = "";
-		if(isRare) {
-			if(applyType == ApplyType.SCYTHES) displayName += "&dSPELL!";
-			else if(applyType == ApplyType.CHESTPLATES) displayName += "&dEFFECT!";
-			else displayName += "&dRARE!";
-		} else if(isUncommonEnchant && displayUncommon) {
-			displayName += "&aUNC.";
-		}
-		if(isTainted) {
-			displayName += PitSim.getStatus() != PitSim.ServerStatus.OVERWORLD ? "&5" : "&c";
-		} else {
-			displayName += PitSim.getStatus() != PitSim.ServerStatus.DARKZONE ? "&9" : "&c";
-		}
-		return ChatColor.translateAlternateColorCodes('&', displayName + " " + name);
 	}
 
 	public EnchantRarity getRarity() {

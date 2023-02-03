@@ -62,7 +62,7 @@ public class KitPanel extends AGUIPanel {
 			}
 			player.closeInventory();
 			Sounds.SUCCESS.play(player);
-			AOutput.send(player, "&a&lKIT RECEIVED!&7 Successfully received " + kit.items.size() + " items!");
+			AOutput.send(player, "&a&lKIT!&7 Successfully received " + kit.items.size() + " items!");
 			return;
 		}
 	}

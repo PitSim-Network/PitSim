@@ -47,7 +47,7 @@ public class BossManager implements Listener {
 	 * @param entity
 	 * @return true if entity is a boss, false if entity is not a boss
 	 */
-	public static boolean isBoss(LivingEntity entity) {
+	public static boolean isPitBoss(LivingEntity entity) {
 		return getPitBoss(entity) != null;
 	}
 
@@ -58,10 +58,7 @@ public class BossManager implements Listener {
 	 */
 	public static PitBoss getPitBoss(LivingEntity entity) {
 		if(!(entity instanceof Player)) return null;
-		for(PitBoss pitBoss : pitBosses) if(pitBoss.boss == entity) {
-			System.out.println(pitBoss.boss.toString() + " " + entity.toString());
-			return pitBoss;
-		}
+		for(PitBoss pitBoss : pitBosses) if(pitBoss.boss == entity) return pitBoss;
 		return null;
 	}
 }

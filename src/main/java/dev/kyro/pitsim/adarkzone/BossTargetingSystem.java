@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.UUID;
 
 // This code strictly handles literal attacks, not abilities and other "attacks"
-public class TargetingSystem {
+public class BossTargetingSystem {
 	public double healthWeight = 0.7;
 	public double distanceWeight = 0.4;
 	public double angleWeight = 1.0;
@@ -26,14 +26,14 @@ public class TargetingSystem {
 
 	public BukkitTask runnable;
 
-//	TODO: Figure out if ranged attacks are all going to be shooting bows or if we are going to abstract and allow other stuff
+	//	TODO: Figure out if ranged attacks are all going to be shooting bows or if we are going to abstract and allow other stuff
 //	TODO: (maybe like snowballs, fireballs, particle beams, homing particles, thrown entities)
 	public enum State {
 		ATTACKING_MELEE,
 		ATTACKING_RANGED
 	}
 
-	public TargetingSystem(PitBoss pitBoss) {
+	public BossTargetingSystem(PitBoss pitBoss) {
 		this.pitBoss = pitBoss;
 
 		start();
@@ -44,16 +44,15 @@ public class TargetingSystem {
 		if(target == null) {
 			for(UUID uuid : pitBoss.damageMap.keySet()) {
 				Player player = Bukkit.getPlayer(uuid);
-				if (player != null) {
+				if(player != null) {
 					AOutput.send(player, "&c&lERROR!&7 Boss was abandoned by all players!");
 				}
 
 			}
-			pitBoss.despawn();
+			pitBoss.remove();
 		} else {
 			setTarget(target);
 		}
-
 	}
 
 	public void setTarget(Player target) {
@@ -71,31 +70,29 @@ public class TargetingSystem {
 		}
 
 		List<Player> playersInRadius = new ArrayList<>();
-		for(Entity entity : pitBoss.boss.getNearbyEntities(radius, radius, radius))  {
+		for(Entity entity : pitBoss.boss.getNearbyEntities(radius, radius, radius)) {
 			if(!(entity instanceof Player)) continue;
 			Player player = (Player) entity;
 			playersInRadius.add(player);
 		}
-		if (playersInRadius.size() == 0) {
-			for(Entity entity : pitBoss.boss.getNearbyEntities(radius*3, radius*3, radius*3))  {
+		if(playersInRadius.isEmpty()) {
+			for(Entity entity : pitBoss.boss.getNearbyEntities(radius * 3, radius * 3, radius * 3)) {
 				if(!(entity instanceof Player)) continue;
 				Player player = (Player) entity;
 				playersInRadius.add(player);
 			}
 		}
-		if (playersInRadius.size() == 0) {
+		if(playersInRadius.isEmpty()) {
 			SubLevel subLevel = pitBoss.getSubLevel();
 			Location location = subLevel.getMiddle();
-			for(Entity entity : location.getWorld().getNearbyEntities(location, 35, 20, 35))  {
+			for(Entity entity : location.getWorld().getNearbyEntities(location, 35, 20, 35)) {
 				if(!(entity instanceof Player)) continue;
 				Player player = (Player) entity;
 				playersInRadius.add(player);
 			}
 		}
 
-		if (playersInRadius.size() == 0) {
-			return null;
-		}
+		if(playersInRadius.isEmpty()) return null;
 
 		Vector pitBossDirection = pitBoss.boss.getLocation().getDirection();
 		double pitBossAngle = Math.atan2(pitBossDirection.getX(), pitBossDirection.getZ());

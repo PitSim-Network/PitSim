@@ -3,13 +3,14 @@ package dev.kyro.pitsim.adarkzone;
 import com.gmail.filoghost.holographicdisplays.api.Hologram;
 import com.gmail.filoghost.holographicdisplays.api.HologramsAPI;
 import dev.kyro.pitsim.PitSim;
+import dev.kyro.pitsim.aitems.StaticPitItem;
+import dev.kyro.pitsim.controllers.ItemFactory;
 import dev.kyro.pitsim.controllers.MapManager;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.CreatureSpawner;
-import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
@@ -28,7 +29,7 @@ public class SubLevel {
 	public Class<? extends PitBoss> bossClass;
 	public PitBoss pitBoss;
 	private boolean isBossSpawned = false;
-	private ItemStack spawnItem;
+	private Class<? extends StaticPitItem> spawnItemClass;
 	private int currentDrops = 0;
 	private int requiredDropsToSpawn;
 
@@ -101,7 +102,7 @@ public class SubLevel {
 				getMiddle().getZ() + 0.5));
 		hologram.setAllowPlaceholders(true);
 		hologram.appendTextLine(ChatColor.translateAlternateColorCodes('&',
-				"&cPlace &a" + getSpawnItem().getItemMeta().getDisplayName()));
+				"&cPlace &a" + ItemFactory.getItem(getSpawnItemClass()).getName()));
 		hologram.appendTextLine("{fast}%sublevel_" + getIdentifier() + "%");
 		DarkzoneManager.holograms.add(hologram);
 	}
@@ -161,29 +162,20 @@ public class SubLevel {
 		disableMobs();
 	}
 
-	public boolean isPitMob(LivingEntity entity) {
-
-		for(PitMob pitMob : mobs) {
-			if(pitMob.getMob().getType().equals(entity.getType())) return true;
-		}
-		return false;
-	}
-
 	public void bossDeath() {
 		isBossSpawned = false;
 	}
 
 	public void disableMobs() {
-		for(PitMob mob : mobs) mob.despawn();
-		mobs.clear();
+		for(PitMob mob : new ArrayList<>(mobs)) mob.remove();
 	}
 
-	public ItemStack getSpawnItem() {
-		return spawnItem;
+	public Class<? extends StaticPitItem> getSpawnItemClass() {
+		return spawnItemClass;
 	}
 
-	public void setSpawnItem(ItemStack spawnItem) {
-		this.spawnItem = spawnItem;
+	public void setSpawnItemClass(Class<? extends StaticPitItem> spawnItemClass) {
+		this.spawnItemClass = spawnItemClass;
 	}
 
 	public SubLevelType getSubLevelType() {

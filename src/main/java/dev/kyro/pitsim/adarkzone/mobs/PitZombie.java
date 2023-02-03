@@ -11,6 +11,11 @@ public class PitZombie extends PitMob {
 	}
 
 	@Override
+	public String getDisplayName() {
+		return "&2Zombie";
+	}
+
+	@Override
 	public EntityType getEntityType() {
 		return EntityType.ZOMBIE;
 	}

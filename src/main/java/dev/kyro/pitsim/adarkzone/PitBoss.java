@@ -25,7 +25,7 @@ public abstract class PitBoss {
 //	Boss related
 	public NPC npcBoss;
 	public Player boss;
-	public TargetingSystem targetingSystem;
+	public BossTargetingSystem bossTargetingSystem;
 	public PitEquipment equipment = DarkzoneManager.getDefaultEquipment();
 
 //	Ability Related
@@ -40,7 +40,7 @@ public abstract class PitBoss {
 
 	public PitBoss(Player summoner) {
 		this.summoner = summoner;
-		this.targetingSystem = new TargetingSystem(this);
+		this.bossTargetingSystem = new BossTargetingSystem(this);
 		this.dropPool = new DropPool();
 		dropPool.addItem(new ItemStack(Material.DIAMOND, 1), 1);
 
@@ -100,7 +100,7 @@ public abstract class PitBoss {
 		navigator.getDefaultParameters()
 				.attackDelayTicks(10)
 				.attackRange(getReach());
-		targetingSystem.pickTarget();
+		bossTargetingSystem.pickTarget();
 
 		routineRunnable = new BukkitRunnable() {
 			@Override
@@ -117,28 +117,24 @@ public abstract class PitBoss {
 		targetingRunnbale = new BukkitRunnable() {
 			@Override
 			public void run() {
-				targetingSystem.pickTarget();
+				bossTargetingSystem.pickTarget();
 			}
 		}.runTaskTimer(PitSim.INSTANCE, 0L, 5);
 	}
 
-	public void kill() {
-		for(PitBossAbility ability : abilities) ability.disable();
-		npcBoss.destroy();
-		dropPool.distributeRewards(damageMap, 3);
-		getSubLevel().bossDeath();
-		routineRunnable.cancel();
-		targetingRunnbale.cancel();
-		onDeath();
+	public void kill(Player killer) {
+		dropPool.groupDistribution(killer, damageMap);
+		remove();
 	}
 
-	public void despawn() {
+	public void remove() {
 		for(PitBossAbility ability : abilities) ability.disable();
 		npcBoss.destroy();
-		getSubLevel().bossDeath();
 		routineRunnable.cancel();
 		targetingRunnbale.cancel();
 		onDeath();
+		getSubLevel().bossDeath();
+		BossManager.pitBosses.remove(this);
 	}
 
 	public SubLevel getSubLevel() {

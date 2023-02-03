@@ -1,16 +1,17 @@
 package dev.kyro.pitsim.adarkzone;
 
 import com.gmail.filoghost.holographicdisplays.api.Hologram;
-import dev.kyro.arcticapi.misc.AUtil;
+import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.adarkzone.bosses.PitZombieBoss;
 import dev.kyro.pitsim.adarkzone.mobs.PitZombie;
 import dev.kyro.pitsim.adarkzone.notdarkzone.PitEquipment;
+import dev.kyro.pitsim.aitems.PitItem;
 import dev.kyro.pitsim.aitems.mobdrops.RottenFlesh;
 import dev.kyro.pitsim.controllers.ItemFactory;
 import dev.kyro.pitsim.controllers.MapManager;
+import dev.kyro.pitsim.controllers.PlayerManager;
 import dev.kyro.pitsim.events.KillEvent;
-import dev.kyro.pitsim.misc.Misc;
 import dev.kyro.pitsim.misc.Sounds;
 import org.bukkit.Effect;
 import org.bukkit.Location;
@@ -32,15 +33,14 @@ public class DarkzoneManager implements Listener {
 	public static List<SubLevel> subLevels = new ArrayList<>();
 	public static List<Hologram> holograms = new ArrayList<>();
 
-	static {
-		SubLevel zombieSublevel = new SubLevel(
+	public DarkzoneManager() {
+		SubLevel zombieSubLevel = new SubLevel(
 				SubLevelType.ZOMBIE, PitZombieBoss.class, PitZombie.class,
 				new Location(MapManager.getDarkzone(), 327, 67, -143),
 				20, 17, 12);
-		ItemStack zombieSpawnItem = ItemFactory.getItem(RottenFlesh.class).getItem(1);
-		zombieSublevel.setSpawnItem(zombieSpawnItem);
-		zombieSublevel.addMobDrop(ItemFactory.getItem(RottenFlesh.class).getItem(1), 1);
-		registerSubLevel(zombieSublevel);
+		zombieSubLevel.setSpawnItemClass(RottenFlesh.class);
+		zombieSubLevel.addMobDrop(ItemFactory.getItem(RottenFlesh.class).getItem(), 1);
+		registerSubLevel(zombieSubLevel);
 
 		for(SubLevel subLevel : subLevels) subLevel.init();
 		new BukkitRunnable() {
@@ -50,7 +50,6 @@ public class DarkzoneManager implements Listener {
 			}
 		}.runTaskTimer(PitSim.INSTANCE, 0L, 5);
 	}
-
 
 	/**
 	 * Called when a player interacts with a block, checks if all the spawn conditions are met for a boss to
@@ -62,12 +61,19 @@ public class DarkzoneManager implements Listener {
 		if(event.getAction() != Action.LEFT_CLICK_BLOCK && event.getAction() != Action.RIGHT_CLICK_BLOCK) return;
 
 		Player player = event.getPlayer();
-		ItemStack heldStack = player.getItemInHand();
 		Location location = event.getClickedBlock().getLocation();
-		if(Misc.isAirOrNull(heldStack)) return;
+
+		ItemStack heldStack = player.getItemInHand();
+		PitItem pitItem = ItemFactory.getItem(heldStack);
+		if(pitItem == null) return;
 
 		for(SubLevel subLevel : subLevels) {
-			if(subLevel.isBossSpawned() || !subLevel.getSpawnItem().isSimilar(heldStack) || !subLevel.getMiddle().equals(location)) continue;
+			if(subLevel.getSpawnItemClass() != pitItem.getClass() || !subLevel.getMiddle().equals(location)) continue;
+
+			if(subLevel.isBossSpawned()) {
+				AOutput.error(player, "&c&lERROR!&7 You cannot do that while a boss is spawned");
+				return;
+			}
 
 			subLevel.setCurrentDrops(subLevel.getCurrentDrops() + 1);
 			if(heldStack.getAmount() == 1) {
@@ -98,32 +104,25 @@ public class DarkzoneManager implements Listener {
 	}
 
 	/**
-	 * Called when an entity is killed, checks if boss was killed, if so resets the sublevel to normal state and
+	 * Called when an entity is killed, checks if boss was killed, if so resets the subLevel to normal state and
 	 * distrubutes rewards
 	 * @param killEvent
 	 */
 	@EventHandler
 	public static void onEntityDeath(KillEvent killEvent) {
 
-		LivingEntity entity = killEvent.getDead();
-
-		PitBoss killedBoss = BossManager.getPitBoss(entity);
-		if(killedBoss != null) {
-			killedBoss.kill();
+		PitBoss deadBoss = BossManager.getPitBoss(killEvent.getDead());
+		if(deadBoss != null) {
+			if(!PlayerManager.isRealPlayer(killEvent.getKillerPlayer())) throw new RuntimeException();
+			deadBoss.kill(killEvent.getKillerPlayer());
 			return;
 		}
 
-		Player killer = killEvent.getKillerPlayer();
-		if (killer == null) {
+		PitMob deadMob = getPitMob(killEvent.getDead());
+		if(deadMob != null) {
+			if(!PlayerManager.isRealPlayer(killEvent.getKillerPlayer())) throw new RuntimeException();
+			deadMob.kill(killEvent.getKillerPlayer());
 			return;
-		}
-
-		for(SubLevel subLevel : subLevels) {
-			if(subLevel.isBossSpawned()) continue;
-			if(subLevel.isPitMob(entity)) {
-				AUtil.giveItemSafely(killer, subLevel.getMobDropPool().getRandomDrop());
-				subLevel.mobs.remove(entity);
-			}
 		}
 	}
 
@@ -138,7 +137,7 @@ public class DarkzoneManager implements Listener {
 	}
 
 	/**
-	 * Adds a sublevel to the list of sublevels
+	 * Adds a subLevel to the list of subLevel
 	 * @param subLevel
 	 */
 	public static void registerSubLevel(SubLevel subLevel) {
@@ -146,7 +145,7 @@ public class DarkzoneManager implements Listener {
 	}
 
 	/**
-	 * Gets a sublevel by its type
+	 * Gets a subLevel by its type
 	 * @param type
 	 * @return SubLevel
 	 */
@@ -161,6 +160,27 @@ public class DarkzoneManager implements Listener {
 
 	public static SubLevel getSubLevel(String identifier) {
 		for(SubLevel subLevel : subLevels) if(subLevel.getIdentifier().equalsIgnoreCase(identifier)) return subLevel;
+		return null;
+	}
+
+	public static boolean isPitMob(LivingEntity entity) {
+		return getPitMob(entity) != null;
+	}
+
+	public static boolean isPitMob(LivingEntity entity, SubLevel subLevel) {
+		return getPitMob(entity, subLevel) != null;
+	}
+
+	public static PitMob getPitMob(LivingEntity entity) {
+		return getPitMob(entity, null);
+	}
+
+	public static PitMob getPitMob(LivingEntity entity, SubLevel subLevel) {
+		if(entity == null) return null;
+		for(SubLevel testLevel : subLevels) {
+			if(subLevel != null && testLevel != subLevel) continue;
+			for(PitMob pitMob : testLevel.mobs) if(pitMob.getMob() == entity) return pitMob;
+		}
 		return null;
 	}
 }

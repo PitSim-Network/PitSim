@@ -4,7 +4,7 @@ import de.tr7zw.nbtapi.NBTCompound;
 import de.tr7zw.nbtapi.NBTItem;
 import dev.kyro.arcticapi.builders.AItemStackBuilder;
 import dev.kyro.arcticapi.builders.ALoreBuilder;
-import dev.kyro.pitsim.aitems.PitItem;
+import dev.kyro.pitsim.aitems.StaticPitItem;
 import dev.kyro.pitsim.controllers.EnchantManager;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.enums.AuctionCategory;
@@ -17,7 +17,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class MysticSword extends PitItem {
+public class MysticSword extends StaticPitItem {
 
 	public MysticSword() {
 		hasUUID = true;
@@ -39,14 +39,17 @@ public class MysticSword extends PitItem {
 		return new ArrayList<>(Arrays.asList("sword", "mysticsword"));
 	}
 
+	@Override
 	public Material getMaterial() {
 		return Material.GOLD_SWORD;
 	}
 
+	@Override
 	public String getName() {
 		return "&eMystic Sword";
 	}
 
+	@Override
 	public List<String> getLore() {
 		return new ALoreBuilder(
 				"&7Used in the mystic well",
@@ -55,6 +58,7 @@ public class MysticSword extends PitItem {
 		).getLore();
 	}
 
+	@Override
 	public ItemStack getItem() {
 		ItemStack itemStack = new AItemStackBuilder(getMaterial())
 				.setName(getName())
@@ -90,14 +94,8 @@ public class MysticSword extends PitItem {
 
 		newNBTItem.addCompound(NBTTag.MYSTIC_ENCHANTS.getRef());
 		NBTCompound newItemEnchants = newNBTItem.getCompound(NBTTag.MYSTIC_ENCHANTS.getRef());
-		System.out.println(newItemEnchants);
 		NBTCompound itemEnchants = nbtItem.getCompound(NBTTag.MYSTIC_ENCHANTS.getRef());
-		System.out.println(itemEnchants);
-		for(String enchantKey : itemEnchants.getKeys()) {
-			System.out.println(enchantKey);
-			System.out.println(itemEnchants.getInteger(enchantKey));
-			newItemEnchants.setInteger(enchantKey, itemEnchants.getInteger(enchantKey));
-		}
+		for(String enchantKey : itemEnchants.getKeys()) newItemEnchants.setInteger(enchantKey, itemEnchants.getInteger(enchantKey));
 
 		if(nbtItem.hasKey(NBTTag.ITEM_ENCHANT_NUM.getRef()))
 			newNBTItem.setInteger(NBTTag.ITEM_ENCHANT_NUM.getRef(), nbtItem.getInteger(NBTTag.ITEM_ENCHANT_NUM.getRef()));

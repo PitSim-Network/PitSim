@@ -13,7 +13,6 @@ import dev.kyro.arcticguilds.GuildData;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.battlepass.quests.EarnRenownQuest;
 import dev.kyro.pitsim.battlepass.quests.WinAuctionsQuest;
-import dev.kyro.pitsim.commands.FPSCommand;
 import dev.kyro.pitsim.controllers.objects.*;
 import dev.kyro.pitsim.enums.*;
 import dev.kyro.pitsim.events.*;
@@ -600,8 +599,7 @@ public class PlayerManager implements Listener {
 		Player player = event.getPlayer();
 		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
 		Location spawnLoc = PitSim.getStatus() == PitSim.ServerStatus.DARKZONE ? MapManager.getDarkzoneSpawn() : MapManager.currentMap.getSpawn();
-		if(LobbySwitchManager.joinedFromDarkzone.contains(player.getUniqueId()))
-			spawnLoc = MapManager.currentMap.getDarkzoneJoinSpawn();
+		if(LobbySwitchManager.joinedFromDarkzone.contains(player.getUniqueId())) spawnLoc = MapManager.currentMap.getDarkzoneJoinSpawn();
 		if(ProxyMessaging.joinTeleportMap.containsKey(player.getUniqueId())) {
 			Player tpPlayer = Bukkit.getPlayer(ProxyMessaging.joinTeleportMap.get(player.getUniqueId()));
 			if(tpPlayer.isOnline()) spawnLoc = tpPlayer.getLocation();
@@ -623,30 +621,6 @@ public class PlayerManager implements Listener {
 				}
 			}
 		}.runTaskLater(PitSim.INSTANCE, 20);
-
-		if(PitSim.getStatus().isPitSim() && player.hasPermission("pitsim.autofps")) {
-			FPSCommand.fpsPlayers.add(player);
-			for(Non non : NonManager.nons) player.hidePlayer(non.non);
-
-			new BukkitRunnable() {
-				@Override
-				public void run() {
-					if(!player.isOnline()) return;
-					for(Non non : NonManager.nons) player.hidePlayer(non.non);
-					player.teleport(MapManager.playerSnow);
-				}
-			}.runTaskLater(PitSim.INSTANCE, 1L);
-
-			Location finalSpawnLoc = spawnLoc;
-			new BukkitRunnable() {
-				@Override
-				public void run() {
-					if(!player.isOnline()) return;
-					player.teleport(finalSpawnLoc);
-				}
-			}.runTaskLater(PitSim.INSTANCE, 60L);
-			return;
-		}
 
 		player.teleport(spawnLoc);
 		Location finalSpawnLoc = spawnLoc;

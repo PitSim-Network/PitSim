@@ -3,7 +3,7 @@ package dev.kyro.pitsim.aitems.mystics;
 import de.tr7zw.nbtapi.NBTItem;
 import dev.kyro.arcticapi.builders.AItemStackBuilder;
 import dev.kyro.arcticapi.builders.ALoreBuilder;
-import dev.kyro.pitsim.aitems.PitItem;
+import dev.kyro.pitsim.aitems.StaticPitItem;
 import dev.kyro.pitsim.controllers.EnchantManager;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.enums.NBTTag;
@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class TaintedScythe extends PitItem {
+public class TaintedScythe extends StaticPitItem {
 
 	public TaintedScythe() {
 		hasUUID = true;
@@ -33,14 +33,17 @@ public class TaintedScythe extends PitItem {
 		return new ArrayList<>(Arrays.asList("scythe", "taintedscythe"));
 	}
 
+	@Override
 	public Material getMaterial() {
 		return Material.GOLD_HOE;
 	}
 
+	@Override
 	public String getName() {
 		return "&5Fresh Tainted Scythe";
 	}
 
+	@Override
 	public List<String> getLore() {
 		return new ALoreBuilder(
 				"&7Used in the tainted well",
@@ -49,6 +52,7 @@ public class TaintedScythe extends PitItem {
 		).getLore();
 	}
 
+	@Override
 	public ItemStack getItem() {
 		ItemStack itemStack = new AItemStackBuilder(getMaterial())
 				.setName(getName())
@@ -59,6 +63,12 @@ public class TaintedScythe extends PitItem {
 		NBTItem nbtItem = new NBTItem(itemStack);
 		nbtItem.addCompound(NBTTag.MYSTIC_ENCHANTS.getRef());
 		return nbtItem.getItem();
+	}
+
+	@Override
+	public ItemStack getItem(int amount) {
+		if(amount == 1) return getItem();
+		throw new RuntimeException();
 	}
 
 	@Override
