@@ -811,6 +811,17 @@ public class PlayerManager implements Listener {
 	}
 
 	@EventHandler
+	public void onInteract(PlayerInteractEvent event) {
+		if(!(event.getAction() == Action.RIGHT_CLICK_BLOCK)) return;
+		if(event.getClickedBlock().getType() != Material.TRAP_DOOR) return;
+
+		if(!event.getPlayer().isOp()) return;
+		if(toggledPlayers.contains(event.getPlayer())) return;
+		event.setCancelled(true);
+		AOutput.error(event.getPlayer(), "&CBlock interactions disabled, run /pitsim bypass to toggle");
+	}
+
+	@EventHandler
 	public void onQuit(PlayerQuitEvent event) {
 		Player player = event.getPlayer();
 		event.setQuitMessage(null);
