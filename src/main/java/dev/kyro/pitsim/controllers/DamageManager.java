@@ -376,8 +376,7 @@ public class DamageManager implements Listener {
 		Non deadNon = NonManager.getNon(dead);
 		if(deadIsPlayer) {
 			if(deadNon == null && dead.getWorld() != MapManager.getTutorial()) {
-				Location spawnLoc = MapManager.currentMap.getSpawn();
-				if(PitSim.getStatus() == PitSim.ServerStatus.DARKZONE) spawnLoc = MapManager.getDarkzoneSpawn();
+				Location spawnLoc = PitSim.getStatus() == PitSim.ServerStatus.DARKZONE ? MapManager.getDarkzoneSpawn() : MapManager.currentMap.getSpawn();
 
 				if(killType != KillType.FAKE) dead.teleport(spawnLoc);
 			} else if(deadNon != null) {
