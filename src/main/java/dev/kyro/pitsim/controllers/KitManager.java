@@ -24,7 +24,7 @@ import java.util.List;
 import java.util.Map;
 
 public class KitManager implements Listener {
-	private static Map<KitItem, ItemStack> kitItemMap = new HashMap<>();
+	private static final Map<KitItem, ItemStack> kitItemMap = new HashMap<>();
 	public static List<Kit> kits = new ArrayList<>();
 
 	public static void registerKit(Kit kit) {

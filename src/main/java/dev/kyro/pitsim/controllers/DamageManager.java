@@ -5,6 +5,8 @@ import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.adarkzone.BossManager;
 import dev.kyro.pitsim.adarkzone.DarkzoneManager;
+import dev.kyro.pitsim.adarkzone.PitMob;
+import dev.kyro.pitsim.adarkzone.SubLevel;
 import dev.kyro.pitsim.aitems.PitItem;
 import dev.kyro.pitsim.aitems.misc.CorruptedFeather;
 import dev.kyro.pitsim.aitems.misc.FunkyFeather;
@@ -58,12 +60,13 @@ import java.text.DecimalFormat;
 import java.util.*;
 
 public class DamageManager implements Listener {
-
 	public static List<LivingEntity> hitCooldownList = new ArrayList<>();
 	public static List<LivingEntity> hopperCooldownList = new ArrayList<>();
 	public static List<LivingEntity> nonHitCooldownList = new ArrayList<>();
 	public static List<LivingEntity> bossHitCooldown = new ArrayList<>();
+
 	public static Map<EntityShootBowEvent, Map<PitEnchant, Integer>> arrowMap = new HashMap<>();
+	public static Map<Entity, LivingEntity> hitTransferMap = new HashMap<>();
 
 	static {
 		new BukkitRunnable() {
@@ -112,14 +115,43 @@ public class DamageManager implements Listener {
 		arrowMap.put(event, EnchantManager.getEnchantsOnPlayer(shooter));
 	}
 
+	public void transferHit(LivingEntity attacker, Entity damager, LivingEntity defender, double damage) {
+		if(attacker != damager) hitTransferMap.put(damager, attacker);
+		defender.damage(damage, attacker);
+	}
+
 	@EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
 	public void onAttack(EntityDamageByEntityEvent event) {
-
 		if(!(event.getEntity() instanceof LivingEntity)) return;
 		LivingEntity attacker = getAttacker(event.getDamager());
 		LivingEntity defender = (LivingEntity) event.getEntity();
-		if(defender instanceof ArmorStand) return;
 
+		Entity realDamager = event.getDamager();
+		for(Map.Entry<Entity, LivingEntity> entry : DamageManager.hitTransferMap.entrySet()) {
+			if(entry.getValue() != realDamager) continue;
+			realDamager = entry.getKey();
+			DamageManager.hitTransferMap.remove(entry.getKey());
+			break;
+		}
+
+		if(PitSim.status == PitSim.ServerStatus.DARKZONE && defender instanceof MagmaCube) {
+			for(SubLevel subLevel : DarkzoneManager.subLevels) {
+				for(PitMob pitMob : subLevel.mobs) {
+					for(LivingEntity entity : pitMob.getNameTag().getEntities()) {
+						if(defender != entity) continue;
+						event.setCancelled(true);
+
+//						Event newEvent = new EntityDamageByEntityEvent(attacker, mob.getMob(), EntityDamageEvent.DamageCause.ENTITY_ATTACK, event.getDamage());
+//						Bukkit.getPluginManager().callEvent(newEvent);
+						transferHit(attacker, event.getDamager(), pitMob.getMob(), event.getDamage());
+//						if(event.getDamager() instanceof Projectile) event.getDamager().remove();
+						return;
+					}
+				}
+			}
+		}
+
+		if(defender instanceof ArmorStand) return;
 		if(defender instanceof Slime && !(defender instanceof MagmaCube)) return;
 
 		Map<PitEnchant, Integer> defenderEnchantMap = EnchantManager.getEnchantsOnPlayer(defender);
@@ -130,8 +162,9 @@ public class DamageManager implements Listener {
 //		Hit on non or by non
 		if((attackingNon != null && nonHitCooldownList.contains(defender)) ||
 				(attackingNon == null && defendingNon != null && hitCooldownList.contains(defender)) && !Regularity.toReg.contains(defender.getUniqueId()) &&
-						!(event.getDamager() instanceof Arrow)) {
+						!(realDamager instanceof Arrow)) {
 			event.setCancelled(true);
+			DamageManager.hitTransferMap.remove(event.getDamager());
 			return;
 		}
 //		Regular player to player hit
@@ -197,15 +230,15 @@ public class DamageManager implements Listener {
 		if(event.getEntity() instanceof Fireball) return;
 
 		Map<PitEnchant, Integer> attackerEnchantMap = new HashMap<>();
-		if(event.getDamager() instanceof Slime && !(event.getDamager() instanceof MagmaCube)) {
-		} else if(event.getDamager() instanceof Arrow) {
+		if(realDamager instanceof Slime && !(realDamager instanceof MagmaCube)) {
+		} else if(realDamager instanceof Arrow) {
 			for(Map.Entry<EntityShootBowEvent, Map<PitEnchant, Integer>> entry : arrowMap.entrySet()) {
-				if(!entry.getKey().getProjectile().equals(event.getDamager())) continue;
+				if(!entry.getKey().getProjectile().equals(realDamager)) continue;
 				attackerEnchantMap = arrowMap.get(entry.getKey());
 				break;
 			}
-		} else if(event.getDamager() instanceof Fireball) {
-		} else if(event.getDamager() instanceof LivingEntity) {
+		} else if(realDamager instanceof Fireball) {
+		} else if(realDamager instanceof LivingEntity) {
 			attackerEnchantMap = EnchantManager.getEnchantsOnPlayer(attacker);
 		}
 
@@ -215,7 +248,7 @@ public class DamageManager implements Listener {
 		for(Map.Entry<PitEnchant, Integer> entry : new ArrayList<>(defenderEnchantMap.entrySet()))
 			if(!entry.getKey().isEnabled()) defenderEnchantMap.remove(entry.getKey());
 
-		preEvent = new AttackEvent.Pre(event, attackerEnchantMap, defenderEnchantMap, fakeHit);
+		preEvent = new AttackEvent.Pre(event, realDamager, attackerEnchantMap, defenderEnchantMap, fakeHit);
 
 		Bukkit.getServer().getPluginManager().callEvent(preEvent);
 		if(preEvent.isCancelled()) {

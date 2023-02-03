@@ -1,35 +1,43 @@
 package dev.kyro.pitsim.adarkzone;
 
+import dev.kyro.pitsim.NameTaggable;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.entity.Creature;
 import org.bukkit.entity.EntityType;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
 
-public abstract class PitMob {
+public abstract class PitMob implements NameTaggable {
 
 	private Creature mob;
 	private Player target;
 	private DropPool dropPool;
+	private PitNameTag nameTag;
 
 	public PitMob(Location spawnLocation) {
 		spawn(spawnLocation);
 	}
 
-	public abstract String getDisplayName();
+	public abstract String getRawDisplayName();
+	public abstract ChatColor getChatColor();
 	public abstract EntityType getEntityType();
 	public abstract int getMaxHealth();
 	public abstract int getSpeedAmplifier();
+	public abstract DropPool createDropPool();
+	public abstract PitNameTag createNameTag();
 
-	public String getRawDisplayName() {
-		return ChatColor.stripColor(ChatColor.translateAlternateColorCodes('&', getDisplayName()));
+	public String getDisplayName() {
+		return getChatColor() + getRawDisplayName();
 	}
 
 	public void onSpawn() {}
 
 	public void spawn(Location spawnLocation) {
 		mob = (Creature) spawnLocation.getWorld().spawnEntity(spawnLocation, getEntityType());
+		dropPool = createDropPool();
+		nameTag = createNameTag();
+		nameTag.attach();
 	}
 
 	public void kill(Player killer) {
@@ -39,6 +47,7 @@ public abstract class PitMob {
 
 	public void remove() {
 		if(mob != null) mob.remove();
+		nameTag.remove();
 		getSubLevel().mobs.remove(this);
 	}
 
@@ -49,14 +58,6 @@ public abstract class PitMob {
 
 	public Player getTarget() {
 		return target;
-	}
-
-	public void setDropPool(DropPool dropPool) {
-		this.dropPool = dropPool;
-	}
-
-	public void addDrop(ItemStack item, double weight) {
-		dropPool.dropPool.put(item, weight);
 	}
 
 	public void rewardKill(Player killer) {
@@ -71,10 +72,23 @@ public abstract class PitMob {
 		this.mob = mob;
 	}
 
+	@Override
+	public LivingEntity getTaggableEntity() {
+		return mob;
+	}
+
 	public SubLevel getSubLevel() {
 		for(SubLevel subLevel : DarkzoneManager.subLevels) {
 			for(PitMob pitMob : subLevel.mobs) if(pitMob == this) return subLevel;
 		}
 		throw new RuntimeException();
+	}
+
+	public DropPool getDropPool() {
+		return dropPool;
+	}
+
+	public PitNameTag getNameTag() {
+		return nameTag;
 	}
 }

@@ -11,8 +11,9 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.CreatureSpawner;
-import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
+import org.bukkit.entity.*;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 
 import java.lang.reflect.Constructor;
 import java.util.ArrayList;
@@ -38,7 +39,6 @@ public class SubLevel {
 	public List<PitMob> mobs = new ArrayList<>();
 	public int maxMobs;
 	public int spawnRadius;
-	private DropPool mobDropPool;
 
 	public SubLevel(SubLevelType subLevelType, Class<? extends PitBoss> bossClass, Class<? extends PitMob> mobClass,
 					Location middle, int maxMobs, int spawnRadius, int requiredDropsToSpawn) {
@@ -162,6 +162,51 @@ public class SubLevel {
 		disableMobs();
 	}
 
+	public static void makeTag(LivingEntity mob, String name) {
+		Location op = mob.getLocation();
+
+		MagmaCube small1 = (MagmaCube) op.getWorld().spawnEntity(op, EntityType.MAGMA_CUBE);
+		small1.setSize(1);
+//		small1.setBaby();
+		small1.addPotionEffect(new PotionEffect(PotionEffectType.INVISIBILITY, Integer.MAX_VALUE, 0, true, false));
+		small1.setCustomNameVisible(false);
+		small1.setRemoveWhenFarAway(false);
+		mob.setPassenger(small1);
+
+		ArmorStand stand1 = (ArmorStand) op.getWorld().spawnEntity(op, EntityType.ARMOR_STAND);
+		stand1.setGravity(false);
+		stand1.setVisible(true);
+		stand1.setCustomNameVisible(true);
+		stand1.setRemoveWhenFarAway(false);
+		stand1.setVisible(false);
+		stand1.setSmall(true);
+		stand1.setMarker(true);
+		small1.setPassenger(stand1);
+		stand1.setCustomName(ChatColor.translateAlternateColorCodes('&', "fejoijwgeojwewdsdf"));
+
+		Rabbit small2 = (Rabbit) op.getWorld().spawnEntity(op, EntityType.RABBIT);
+//		small.setSize(1);
+		small2.setBaby();
+		small2.addPotionEffect(new PotionEffect(PotionEffectType.INVISIBILITY, Integer.MAX_VALUE, 0, true, false));
+		small2.setCustomNameVisible(false);
+		small2.setRemoveWhenFarAway(false);
+		stand1.setPassenger(small2);
+
+		ArmorStand stand2 = (ArmorStand) op.getWorld().spawnEntity(op, EntityType.ARMOR_STAND);
+		stand2.setGravity(false);
+		stand2.setVisible(true);
+		stand2.setCustomNameVisible(true);
+		stand2.setRemoveWhenFarAway(false);
+		stand2.setVisible(false);
+		stand2.setSmall(true);
+		stand2.setMarker(true);
+		small2.setPassenger(stand2);
+		stand2.setCustomName(ChatColor.translateAlternateColorCodes('&', "nameawefawefawawe"));
+
+//		nameTags.put(mob.getUniqueId(), stand2);
+//		nameTags.put(mob, stand);
+	}
+
 	public void bossDeath() {
 		isBossSpawned = false;
 	}
@@ -212,19 +257,6 @@ public class SubLevel {
 
 	public Location getSpawnerLocation() {
 		return getMiddle().clone().add(0, 1, 0);
-	}
-
-	public DropPool getMobDropPool() {
-		return mobDropPool;
-	}
-
-	public void setMobDropPool(DropPool mobDropPool) {
-		this.mobDropPool = mobDropPool;
-	}
-
-	public void addMobDrop(ItemStack itemStack, double weight) {
-		if (mobDropPool == null) mobDropPool = new DropPool();
-		mobDropPool.addItem(itemStack, weight);
 	}
 
 	public Class<? extends PitMob> getMobClass() {

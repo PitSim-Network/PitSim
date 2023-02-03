@@ -129,6 +129,12 @@ public class PitSim extends JavaPlugin {
 	public void onEnable() {
 		INSTANCE = this;
 
+		loadConfig();
+		ArcticAPI.configInit(this, "prefix", "error-prefix");
+		serverName = AConfig.getString("server");
+		if(AConfig.getBoolean("standalone-server")) status = ServerStatus.ALL;
+		else status = serverName.contains("darkzone") ? ServerStatus.DARKZONE : ServerStatus.OVERWORLD;
+
 		for(Player onlinePlayer : Bukkit.getOnlinePlayers()) {
 			PlayerDataManager.exemptedPlayers.add(onlinePlayer.getUniqueId());
 
@@ -137,9 +143,6 @@ public class PitSim extends JavaPlugin {
 			}
 		}
 
-		loadConfig();
-		ArcticAPI.configInit(this, "prefix", "error-prefix");
-		serverName = AConfig.getString("server");
 		FirestoreManager.init();
 		for(Player onlinePlayer : Bukkit.getOnlinePlayers()) {
 			PlayerManager.addRealPlayer(onlinePlayer.getUniqueId());
@@ -158,9 +161,6 @@ public class PitSim extends JavaPlugin {
 				return;
 			} else getServer().getPluginManager().registerEvents(anticheat, this);
 		}
-
-		if(AConfig.getBoolean("standalone-server")) status = ServerStatus.ALL;
-		else status = serverName.contains("darkzone") ? ServerStatus.DARKZONE : ServerStatus.OVERWORLD;
 
 		getServer().getMessenger().registerOutgoingPluginChannel(this, "BungeeCord");
 		adventure = BukkitAudiences.create(this);

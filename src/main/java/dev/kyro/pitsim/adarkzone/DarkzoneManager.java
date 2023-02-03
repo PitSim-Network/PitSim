@@ -39,7 +39,6 @@ public class DarkzoneManager implements Listener {
 				new Location(MapManager.getDarkzone(), 327, 67, -143),
 				20, 17, 12);
 		zombieSubLevel.setSpawnItemClass(RottenFlesh.class);
-		zombieSubLevel.addMobDrop(ItemFactory.getItem(RottenFlesh.class).getItem(), 1);
 		registerSubLevel(zombieSubLevel);
 
 		for(SubLevel subLevel : subLevels) subLevel.init();

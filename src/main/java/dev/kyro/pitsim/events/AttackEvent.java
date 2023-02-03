@@ -17,6 +17,7 @@ public class AttackEvent extends Event {
 	private static final HandlerList handlers = new HandlerList();
 
 	private final EntityDamageByEntityEvent event;
+	private final Entity realDamager;
 	private final LivingEntity attacker;
 	private final LivingEntity defender;
 	private final boolean attackerIsPlayer;
@@ -34,7 +35,13 @@ public class AttackEvent extends Event {
 	private final boolean fakeHit;
 
 	public AttackEvent(EntityDamageByEntityEvent event, Map<PitEnchant, Integer> attackerEnchantMap, Map<PitEnchant, Integer> defenderEnchantMap, boolean fakeHit) {
+		this(event, event.getDamager(), attackerEnchantMap, defenderEnchantMap, fakeHit);
+	}
+
+	public AttackEvent(EntityDamageByEntityEvent event, Entity realDamager,
+					   Map<PitEnchant, Integer> attackerEnchantMap, Map<PitEnchant, Integer> defenderEnchantMap, boolean fakeHit) {
 		this.event = event;
+		this.realDamager = realDamager;
 		this.attacker = DamageManager.getAttacker(event.getDamager());
 		this.defender = (LivingEntity) event.getEntity();
 		this.attackerIsPlayer = getAttacker() instanceof Player;
@@ -50,12 +57,12 @@ public class AttackEvent extends Event {
 			if(!(pitPlayer.player == getAttacker())) pitPlayer.lastHitUUID = getAttacker().getUniqueId();
 		}
 
-		if(event.getDamager() instanceof Arrow) {
-			this.arrow = (Arrow) event.getDamager();
-		} else if(event.getDamager() instanceof Fireball) {
-			this.fireball = (Fireball) event.getDamager();
-		} else if(event.getDamager() instanceof Slime) {
-			this.pet = (LivingEntity) event.getDamager();
+		if(realDamager instanceof Arrow) {
+			this.arrow = (Arrow) realDamager;
+		} else if(realDamager instanceof Fireball) {
+			this.fireball = (Fireball) realDamager;
+		} else if(realDamager instanceof Slime) {
+			this.pet = (LivingEntity) realDamager;
 		}
 	}
 
@@ -125,8 +132,9 @@ public class AttackEvent extends Event {
 	public static class Pre extends AttackEvent implements Cancellable {
 		private boolean cancel = false;
 
-		public Pre(EntityDamageByEntityEvent event, Map<PitEnchant, Integer> attackerEnchantMap, Map<PitEnchant, Integer> defenderEnchantMap, boolean fakeHit) {
-			super(event, attackerEnchantMap, defenderEnchantMap, fakeHit);
+		public Pre(EntityDamageByEntityEvent event, Entity realDamager,
+				   Map<PitEnchant, Integer> attackerEnchantMap, Map<PitEnchant, Integer> defenderEnchantMap, boolean fakeHit) {
+			super(event, realDamager, attackerEnchantMap, defenderEnchantMap, fakeHit);
 		}
 
 		@Override
@@ -154,7 +162,7 @@ public class AttackEvent extends Event {
 		public double executeUnder = 0;
 
 		public Apply(AttackEvent event) {
-			super(event.getEvent(), event.attackerEnchantMap, event.defenderEnchantMap, event.isFakeHit());
+			super(event.getEvent(), event.realDamager, event.attackerEnchantMap, event.defenderEnchantMap, event.isFakeHit());
 		}
 
 		public double getFinalDamage() {
@@ -186,7 +194,7 @@ public class AttackEvent extends Event {
 	public static class Post extends AttackEvent {
 
 		public Post(AttackEvent event) {
-			super(event.getEvent(), event.attackerEnchantMap, event.defenderEnchantMap, event.isFakeHit());
+			super(event.getEvent(), event.realDamager, event.attackerEnchantMap, event.defenderEnchantMap, event.isFakeHit());
 
 		}
 	}

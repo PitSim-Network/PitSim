@@ -59,11 +59,11 @@ public class DropPool {
 	 * Adds item to the dropPool
 	 *
 	 * @param item   item to be added to dropPool
-	 * @param chance weight of item being selected from dropPool
+	 * @param weight weight of item being selected from dropPool
 	 * @return DropPool istance
 	 */
-	public DropPool addItem(ItemStack item, double chance) {
-		dropPool.put(item, chance);
+	public DropPool addItem(ItemStack item, double weight) {
+		dropPool.put(item, weight);
 		return this;
 	}
 }
