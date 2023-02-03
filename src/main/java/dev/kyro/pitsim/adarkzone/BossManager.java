@@ -1,7 +1,6 @@
 package dev.kyro.pitsim.adarkzone;
 
 import dev.kyro.pitsim.events.AttackEvent;
-import dev.kyro.pitsim.events.KillEvent;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -42,8 +41,6 @@ public class BossManager implements Listener {
 		UUID uuid = player.getUniqueId();
 		defenderBoss.damageMap.put(uuid, defenderBoss.damageMap.getOrDefault(uuid, 0.0) + attackEvent.getEvent().getDamage());
 	}
-
-
 
 	/**
 	 * Checks to see if entity is a boss

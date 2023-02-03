@@ -186,7 +186,7 @@ public class PitSim extends JavaPlugin {
 			}
 		}.runTaskLater(PitSim.INSTANCE, 10);
 
-		registerMaps();
+		if(status != ServerStatus.DARKZONE) registerMaps();
 
 		if(getStatus().isPitSim()) NonManager.init();
 		SignPrompt.registerSignUpdateListener();
@@ -422,11 +422,11 @@ public class PitSim extends JavaPlugin {
 				if(currentMap == null) currentMap = biomes;
 				pitMap = currentMap;
 
-			if(((System.currentTimeMillis() - time) / 1000.0 / 60.0 / 60.0 / 24.0) >= currentMap.rotationDays) {
-				pitMap = MapManager.getNextMap(currentMap);
-				time = System.currentTimeMillis();
+				if(((System.currentTimeMillis() - time) / 1000.0 / 60.0 / 60.0 / 24.0) >= currentMap.rotationDays) {
+					pitMap = MapManager.getNextMap(currentMap);
+					time = System.currentTimeMillis();
+				}
 			}
-		}
 
 			if(TimeManager.isChristmasSeason() && status != ServerStatus.DARKZONE) {
 				pitMap = xmas;
@@ -434,12 +434,6 @@ public class PitSim extends JavaPlugin {
 				MapManager.currentMap.world.setStorm(true);
 				MapManager.currentMap.world.setWeatherDuration(Integer.MAX_VALUE);
 			}
-
-			if(status == ServerStatus.DARKZONE) {
-				pitMap = biomes;
-				time = System.currentTimeMillis();
-			}
-			assert pitMap != null;
 
 			if(mapName == null || !Objects.equals(pitMap.world.getName(), mapName)) {
 				FirestoreManager.CONFIG.mapData = pitMap.world.getName() + ":" + time;

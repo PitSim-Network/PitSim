@@ -25,40 +25,41 @@ public class FPSCommand implements CommandExecutor {
 	public static double playerHideRadius = 8;
 
 	static {
-		new BukkitRunnable() {
-			@Override
-			public void run() {
-				for(Player onlinePlayer : Bukkit.getOnlinePlayers()) {
-					World world = onlinePlayer.getWorld();
-					Location mid = MapManager.currentMap.getMid();
-					double y = MapManager.currentMap.getY();
+		if(PitSim.status != PitSim.ServerStatus.DARKZONE) {
+			new BukkitRunnable() {
+				@Override
+				public void run() {
+					for(Player onlinePlayer : Bukkit.getOnlinePlayers()) {
+						World world = onlinePlayer.getWorld();
+						Location mid = MapManager.currentMap.getMid();
+						double y = MapManager.currentMap.getY();
 
-					if(!fpsPlayers.contains(onlinePlayer)) continue;
-					if(MapManager.currentMap.world != world) continue;
-					Location playerLoc = onlinePlayer.getLocation();
-					playerLoc.setY(y);
-					if(world != mid.getWorld()) continue;
-					boolean closeEnough = playerLoc.distance(mid) < nonHideRadius;
-					if(closeEnough && !SpawnManager.isInSpawn(onlinePlayer.getLocation())) {
-						showMid(onlinePlayer);
-					} else {
-						hideMid(onlinePlayer);
-					}
-					for(Player onlinePlayer2 : Bukkit.getOnlinePlayers()) {
-						Location loc2 = onlinePlayer2.getLocation();
-						loc2.setY(y);
-						if(onlinePlayer.getWorld() != world) continue;
-						if((closeEnough && !SpawnManager.isInSpawn(onlinePlayer.getLocation())) || loc2.getWorld() != mid.getWorld() || loc2.distance(mid) > playerHideRadius) {
-							onlinePlayer.showPlayer(onlinePlayer2);
+						if(!fpsPlayers.contains(onlinePlayer)) continue;
+						if(MapManager.currentMap.world != world) continue;
+						Location playerLoc = onlinePlayer.getLocation();
+						playerLoc.setY(y);
+						if(world != mid.getWorld()) continue;
+						boolean closeEnough = playerLoc.distance(mid) < nonHideRadius;
+						if(closeEnough && !SpawnManager.isInSpawn(onlinePlayer.getLocation())) {
+							showMid(onlinePlayer);
+						} else {
+							hideMid(onlinePlayer);
+						}
+						for(Player onlinePlayer2 : Bukkit.getOnlinePlayers()) {
+							Location loc2 = onlinePlayer2.getLocation();
+							loc2.setY(y);
+							if(onlinePlayer.getWorld() != world) continue;
+							if((closeEnough && !SpawnManager.isInSpawn(onlinePlayer.getLocation())) || loc2.getWorld() != mid.getWorld() || loc2.distance(mid) > playerHideRadius) {
+								onlinePlayer.showPlayer(onlinePlayer2);
+							}
 						}
 					}
 				}
-			}
-		}.runTaskTimer(PitSim.INSTANCE, 0L, 1L);
+			}.runTaskTimer(PitSim.INSTANCE, 0L, 1L);
+		}
 	}
 
 	public static void hideMid(Player player) {
-		World world = player.getWorld();
 		boolean alreadyHidden = affectedPlayers.contains(player);
 		if(!alreadyHidden) for(Non non : NonManager.nons) player.hidePlayer(non.non);
 		for(Player onlinePlayer : Bukkit.getOnlinePlayers()) {
