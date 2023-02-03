@@ -753,14 +753,17 @@ public class PlayerManager implements Listener {
 		}
 
 		if(pitPlayer.soulReturn > 0) {
-			int souls = pitPlayer.soulReturn;
-			PitPlayer.getPitPlayer(player).taintedSouls += souls;
 			new BukkitRunnable() {
 				@Override
 				public void run() {
-					AOutput.send(player, "&5&lDARK AUCTION! &7Received &f" + souls + " Tainted Souls&7.");
-					Sounds.BOOSTER_REMIND.play(player);
+					if(!player.isOnline()) return;
+
+					int soulReturn = pitPlayer.soulReturn;
+					pitPlayer.taintedSouls += soulReturn;
 					pitPlayer.soulReturn = 0;
+
+					AOutput.send(player, "&5&lDARK AUCTION! &7Received &f" + soulReturn + " Tainted Souls&7.");
+					Sounds.BOOSTER_REMIND.play(player);
 				}
 			}.runTaskLater(PitSim.INSTANCE, 10);
 		}
