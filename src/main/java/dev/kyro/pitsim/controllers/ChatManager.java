@@ -35,13 +35,11 @@ public class ChatManager implements Listener {
 
 	@EventHandler
 	public void onPrivateMessage(PrivateMessageEvent event) {
-		System.out.println("hi");
 		Player sender = event.getSender();
 		Player recipient = event.getRecipient();
 		PitPlayer pitSender = PitPlayer.getPitPlayer(sender);
 		PitPlayer pitRecipient = PitPlayer.getPitPlayer(recipient);
 
-		System.out.println(pitRecipient.uuidIgnoreList.toString() + " " + sender.getUniqueId().toString());
 		if(pitRecipient.uuidIgnoreList.contains(sender.getUniqueId().toString())) {
 			event.setCancelled(true);
 			AOutput.error(sender, "&c&lERROR!&7 That player has you ignored");
@@ -136,8 +134,8 @@ public class ChatManager implements Listener {
 			@Override
 			public void run() {
 				if(finalMessage.endsWith("?")) {
-					String answer = AIManager.getAnswer(ChatColor.stripColor(finalMessage));
-					AOutput.send(player, "&9&lAI!&7 " + answer);
+//					String answer = AIManager.getAnswer(ChatColor.stripColor(finalMessage));
+//					AOutput.send(player, "&9&lAI!&7 " + answer);
 				}
 			}
 		}.runTaskAsynchronously(PitSim.INSTANCE);
