@@ -6,6 +6,7 @@ import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.pitsim.aitems.StaticPitItem;
 import dev.kyro.pitsim.controllers.EnchantManager;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
+import dev.kyro.pitsim.enums.AuctionCategory;
 import dev.kyro.pitsim.enums.NBTTag;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
@@ -21,6 +22,8 @@ public class TaintedScythe extends StaticPitItem {
 		hideExtra = true;
 		unbreakable = true;
 		hasEnchantGlint = true;
+		isMystic = true;
+		auctionCategory = AuctionCategory.DARKZONE_GEAR;
 	}
 
 	@Override
@@ -88,7 +91,7 @@ public class TaintedScythe extends StaticPitItem {
 
 	@Override
 	public ItemStack getReplacementItem(PitPlayer pitPlayer, ItemStack itemStack, NBTItem nbtItem) {
-//		TODO: Refund (also make sure to remove durability and add glint properly)
+//		TODO: Refund
 		return null;
 	}
 

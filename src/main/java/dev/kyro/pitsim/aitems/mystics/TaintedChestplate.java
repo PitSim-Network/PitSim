@@ -6,6 +6,7 @@ import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.pitsim.aitems.StaticPitItem;
 import dev.kyro.pitsim.controllers.EnchantManager;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
+import dev.kyro.pitsim.enums.AuctionCategory;
 import dev.kyro.pitsim.enums.NBTTag;
 import dev.kyro.pitsim.enums.PantColor;
 import org.bukkit.Color;
@@ -23,6 +24,9 @@ public class TaintedChestplate extends StaticPitItem {
 		hasUUID = true;
 		hideExtra = true;
 		unbreakable = true;
+		hasEnchantGlint = true;
+		isMystic = true;
+		auctionCategory = AuctionCategory.DARKZONE_GEAR;
 	}
 
 	@Override

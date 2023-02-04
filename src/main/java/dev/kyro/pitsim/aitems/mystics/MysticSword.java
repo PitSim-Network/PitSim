@@ -23,6 +23,7 @@ public class MysticSword extends StaticPitItem {
 		hasUUID = true;
 		hideExtra = true;
 		unbreakable = true;
+		hasEnchantGlint = true;
 		isMystic = true;
 		auctionCategory = AuctionCategory.OVERWORLD_GEAR;
 

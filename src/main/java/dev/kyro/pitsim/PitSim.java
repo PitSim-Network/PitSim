@@ -61,6 +61,7 @@ import dev.kyro.pitsim.enchants.overworld.GoldBoost;
 import dev.kyro.pitsim.enchants.overworld.*;
 import dev.kyro.pitsim.enchants.tainted.abilities.MaxHealth;
 import dev.kyro.pitsim.enchants.tainted.abilities.Sonic;
+import dev.kyro.pitsim.enchants.tainted.common.*;
 import dev.kyro.pitsim.enchants.tainted.spells.*;
 import dev.kyro.pitsim.enums.NBTTag;
 import dev.kyro.pitsim.helmetabilities.*;
@@ -985,6 +986,33 @@ public class PitSim extends JavaPlugin {
 
 		EnchantManager.registerEnchant(new MaxHealth());
 		EnchantManager.registerEnchant(new Sonic());
+
+//		Darkzone enchants
+
+//		Common
+		EnchantManager.registerEnchant(new Aloft());
+		EnchantManager.registerEnchant(new AnkleBiter());
+		EnchantManager.registerEnchant(new AnomalyDetected());
+		EnchantManager.registerEnchant(new Antagonist());
+		EnchantManager.registerEnchant(new Attentive());
+		EnchantManager.registerEnchant(new Belittle());
+		EnchantManager.registerEnchant(new BOOM());
+		EnchantManager.registerEnchant(new BugSpray());
+		EnchantManager.registerEnchant(new Embalm());
+		EnchantManager.registerEnchant(new Evasive());
+		EnchantManager.registerEnchant(new Extinguish());
+		EnchantManager.registerEnchant(new GeneticReconstruction());
+		EnchantManager.registerEnchant(new Intimidating());
+		EnchantManager.registerEnchant(new Nimble());
+		EnchantManager.registerEnchant(new NocturnalPredator());
+		EnchantManager.registerEnchant(new Piercing());
+		EnchantManager.registerEnchant(new PinCushion());
+		EnchantManager.registerEnchant(new Pyrotechnic());
+		EnchantManager.registerEnchant(new Sentinel());
+		EnchantManager.registerEnchant(new ShadowCloak());
+		EnchantManager.registerEnchant(new Territorial());
+		EnchantManager.registerEnchant(new Undertaker());
+		EnchantManager.registerEnchant(new WhoNeedsBows());
 	}
 
 	public void hookIntoAnticheat(AnticheatManager anticheat) {
