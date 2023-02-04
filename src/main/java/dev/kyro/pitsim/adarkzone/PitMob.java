@@ -6,6 +6,7 @@ import org.bukkit.Location;
 import org.bukkit.entity.Creature;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 
 public abstract class PitMob implements NameTaggable {
 
@@ -83,6 +84,10 @@ public abstract class PitMob implements NameTaggable {
 
 	public PitNameTag getNameTag() {
 		return nameTag;
+	}
+
+	public void clearEquipment(Creature creature) {
+		creature.getEquipment().setArmorContents(new ItemStack[5]);
 	}
 
 	@Override

@@ -4,13 +4,27 @@ import dev.kyro.arcticapi.builders.AItemStackBuilder;
 import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.pitsim.adarkzone.progression.SkillBranch;
 import dev.kyro.pitsim.enums.UIColor;
+import dev.kyro.pitsim.events.AttackEvent;
 import org.bukkit.Material;
+import org.bukkit.event.EventHandler;
 import org.bukkit.inventory.ItemStack;
 
 public class DamageBranch extends SkillBranch {
 
 	public DamageBranch() {
 		super(UIColor.RED);
+	}
+
+	@EventHandler
+	public void onAttack(AttackEvent.Apply attackEvent) {
+//		boolean hasMajor = isUnlocked(attackEvent.getAttackerPitPlayer(), firstUnlock);
+//		if(hasMajor) AOutput.send(attackEvent.getAttackerPlayer(), "You have the first upgrade");
+//
+//		double mobDamageIncrease = getUnlockedEffect(attackEvent.getAttackerPitPlayer(), firstPath, "damage");
+//		if(mobDamageIncrease != 0) {
+//			AOutput.send(attackEvent.getAttackerPlayer(), "this is cool: " + mobDamageIncrease);
+//			attackEvent.increasePercent += mobDamageIncrease;
+//		}
 	}
 
 	@Override
@@ -160,7 +174,8 @@ public class DamageBranch extends SkillBranch {
 
 			@Override
 			public void addEffects() {
-				addEffect(new EffectData("&c+%value%% &7damage vs mobs", 2, 2, 2, 3, 3, 3));
+				addEffect(new EffectData("damage", "&c+%value%% &7damage vs mobs",
+						2, 2, 2, 3, 3, 3));
 			}
 		};
 	}
@@ -185,7 +200,8 @@ public class DamageBranch extends SkillBranch {
 
 			@Override
 			public void addEffects() {
-				addEffect(new EffectData("&c+%value%% &7damage vs bosses", 1, 2, 3, 4, 5, 6));
+				addEffect(new EffectData("damage", "&c+%value%% &7damage vs bosses",
+						1, 2, 3, 4, 5, 6));
 			}
 		};
 	}

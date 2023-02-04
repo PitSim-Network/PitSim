@@ -2,6 +2,7 @@ package dev.kyro.pitsim.adarkzone.notdarkzone;
 
 import net.citizensnpcs.api.npc.NPC;
 import net.citizensnpcs.api.trait.trait.Equipment;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
@@ -40,18 +41,18 @@ public class PitEquipment {
 		return this;
 	}
 
-	public void setHeld(Player player) {
-		player.getInventory().setItemInHand(held);
-		player.updateInventory();
+	public void setHeld(LivingEntity entity) {
+		entity.getEquipment().setItemInHand(held);
+		if(entity instanceof Player) ((Player) entity).updateInventory();
 	}
 
-	public void setEquipment(Player player) {
-		setHeld(player);
-		player.getInventory().setHelmet(helmet);
-		player.getInventory().setChestplate(chestplate);
-		player.getInventory().setLeggings(leggings);
-		player.getInventory().setBoots(boots);
-		player.updateInventory();
+	public void setEquipment(LivingEntity entity) {
+		setHeld(entity);
+		entity.getEquipment().setHelmet(helmet);
+		entity.getEquipment().setChestplate(chestplate);
+		entity.getEquipment().setLeggings(leggings);
+		entity.getEquipment().setBoots(boots);
+		if(entity instanceof Player) ((Player) entity).updateInventory();
 	}
 
 	public void setHeld(NPC npc) {

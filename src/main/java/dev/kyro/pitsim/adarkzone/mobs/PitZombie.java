@@ -3,6 +3,7 @@ package dev.kyro.pitsim.adarkzone.mobs;
 import dev.kyro.pitsim.adarkzone.DropPool;
 import dev.kyro.pitsim.adarkzone.PitMob;
 import dev.kyro.pitsim.adarkzone.PitNameTag;
+import dev.kyro.pitsim.adarkzone.notdarkzone.PitEquipment;
 import dev.kyro.pitsim.aitems.mobdrops.RottenFlesh;
 import dev.kyro.pitsim.controllers.ItemFactory;
 import org.bukkit.ChatColor;
@@ -20,6 +21,7 @@ public class PitZombie extends PitMob {
 	@Override
 	public Creature createMob(Location spawnLocation) {
 		Zombie zombie = (Zombie) spawnLocation.getWorld().spawnEntity(spawnLocation, EntityType.ZOMBIE);
+		new PitEquipment().setEquipment(zombie);
 		zombie.setCustomNameVisible(false);
 		zombie.setRemoveWhenFarAway(false);
 

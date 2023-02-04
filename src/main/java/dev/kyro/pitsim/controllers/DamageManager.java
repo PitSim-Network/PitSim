@@ -249,12 +249,12 @@ public class DamageManager implements Listener {
 			if(!entry.getKey().isEnabled()) defenderEnchantMap.remove(entry.getKey());
 
 		preEvent = new AttackEvent.Pre(event, realDamager, attackerEnchantMap, defenderEnchantMap, fakeHit);
-
 		Bukkit.getServer().getPluginManager().callEvent(preEvent);
 		if(preEvent.isCancelled()) {
 			event.setCancelled(true);
 			return;
 		}
+
 		AttackEvent.Apply applyEvent = new AttackEvent.Apply(preEvent);
 		Bukkit.getServer().getPluginManager().callEvent(applyEvent);
 

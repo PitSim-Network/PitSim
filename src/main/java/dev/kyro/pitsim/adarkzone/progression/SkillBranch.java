@@ -13,12 +13,9 @@ import org.bukkit.event.Listener;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public abstract class SkillBranch implements Listener {
-	public static List<Integer> pathRows = Arrays.asList(1, 3);
-
 	public UIColor uiColor;
 
 	public MajorProgressionUnlock firstUnlock;
@@ -55,6 +52,14 @@ public abstract class SkillBranch implements Listener {
 	public abstract MajorProgressionUnlock createSecondPathUnlock();
 	public abstract Path createFirstPath();
 	public abstract Path createSecondPath();
+
+	public boolean isUnlocked(PitPlayer pitPlayer, MajorProgressionUnlock majorProgressionUnlock) {
+		return ProgressionManager.isUnlocked(pitPlayer, majorProgressionUnlock);
+	}
+
+	public double getUnlockedEffect(PitPlayer pitPlayer, SkillBranch.Path path, String refName) {
+		return ProgressionManager.getUnlockedEffect(pitPlayer, path, refName);
+	}
 
 //	This is for the main gui
 	public ItemStack getMainDisplayStack(PitPlayer pitPlayer, MainProgressionUnlock unlock, UnlockState unlockState) {
@@ -159,17 +164,19 @@ public abstract class SkillBranch implements Listener {
 		}
 
 		public class EffectData {
+			public String refName;
 			public String formatting;
 			public Double[] values = new Double[6];
 
-			public EffectData(String formatting, double level1, double level2, double level3, double level4, double level5, double level6) {
+			public EffectData(String refName, String formatting, double level1, double level2, double level3, double level4, double level5, double level6) {
+				this.refName = refName;
 				this.formatting = formatting;
-				values[0] = level1;
-				values[1] = level2;
-				values[2] = level3;
-				values[3] = level4;
-				values[4] = level5;
-				values[5] = level6;
+				this.values[0] = level1;
+				this.values[1] = level2;
+				this.values[2] = level3;
+				this.values[3] = level4;
+				this.values[4] = level5;
+				this.values[5] = level6;
 			}
 		}
 	}

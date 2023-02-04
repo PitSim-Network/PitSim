@@ -2,9 +2,7 @@ package dev.kyro.pitsim.commands;
 
 import de.tr7zw.nbtapi.NBTItem;
 import dev.kyro.arcticapi.misc.AUtil;
-import dev.kyro.pitsim.aitems.mystics.MysticSword;
-import dev.kyro.pitsim.controllers.ItemFactory;
-import dev.kyro.pitsim.controllers.objects.PitPlayer;
+import dev.kyro.pitsim.adarkzone.progression.ProgressionGUI;
 import dev.kyro.pitsim.enums.NBTTag;
 import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.ChatColor;
@@ -12,7 +10,6 @@ import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
-import org.bukkit.craftbukkit.v1_8_R3.inventory.CraftItemStack;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemFlag;
@@ -30,18 +27,21 @@ public class KTestCommand implements CommandExecutor {
 		Player player = (Player) sender;
 		if(!player.isOp()) return false;
 
-		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
-		ItemStack itemStack = player.getItemInHand();
-		NBTItem nbtItem = new NBTItem(itemStack);
+		ProgressionGUI progressionGUI = new ProgressionGUI(player);
+		progressionGUI.open();
 
-		String string = CraftItemStack.asNMSCopy(itemStack).getTag().toString();
-		System.out.println(string);
-		player.sendMessage(ChatColor.stripColor(string));
-
-		MysticSword pitItem = ItemFactory.getItem(MysticSword.class);
-		ItemStack newStack = pitItem.getReplacementItem(pitPlayer, itemStack, nbtItem);
-		pitItem.updateItem(newStack);
-		player.getInventory().addItem(newStack);
+//		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
+//		ItemStack itemStack = player.getItemInHand();
+//		NBTItem nbtItem = new NBTItem(itemStack);
+//
+//		String string = CraftItemStack.asNMSCopy(itemStack).getTag().toString();
+//		System.out.println(string);
+//		player.sendMessage(ChatColor.stripColor(string));
+//
+//		MysticSword pitItem = ItemFactory.getItem(MysticSword.class);
+//		ItemStack newStack = pitItem.getReplacementItem(pitPlayer, itemStack, nbtItem);
+//		pitItem.updateItem(newStack);
+//		player.getInventory().addItem(newStack);
 		return false;
 	}
 

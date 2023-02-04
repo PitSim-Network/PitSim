@@ -203,7 +203,7 @@ public class ProgressionManager implements Listener {
 	}
 
 	public static boolean isUnlocked(PitPlayer pitPlayer, MainProgressionUnlock unlock) {
-		if(unlock == null) return false;
+		if(pitPlayer == null || unlock == null) return false;
 		if(unlock instanceof MainProgressionStart) return true;
 		return pitPlayer.darkzoneData.mainProgressionUnlocks.contains(unlock.id);
 	}
@@ -213,21 +213,33 @@ public class ProgressionManager implements Listener {
 	}
 
 	public static boolean isUnlocked(PitPlayer pitPlayer, SkillBranch.Path path, int level) {
-		if(path == null) return false;
+		if(pitPlayer == null || path == null) return false;
 		DarkzoneData.SkillBranchData skillBranchData = pitPlayer.darkzoneData.skillBranchUnlocks.get(path.skillBranch.getRefName());
 		if(skillBranchData == null || !skillBranchData.pathUnlocks.containsKey(path.getRefName())) return false;
 		return skillBranchData.pathUnlocks.get(path.getRefName()) >= level;
 	}
 
 	public static int getUnlockedLevel(PitPlayer pitPlayer, SkillBranch.Path path) {
-		if(path == null) return 0;
+		if(pitPlayer == null || path == null) return 0;
 		DarkzoneData.SkillBranchData skillBranchData = pitPlayer.darkzoneData.skillBranchUnlocks.get(path.skillBranch.getRefName());
 		if(skillBranchData == null) return 0;
 		return skillBranchData.pathUnlocks.getOrDefault(path.getRefName(), 0);
 	}
 
+	public static double getUnlockedEffect(PitPlayer pitPlayer, SkillBranch.Path path, String refName) {
+		int currentLvl = getUnlockedLevel(pitPlayer, path);
+		if(currentLvl == 0) return 0;
+		for(SkillBranch.Path.EffectData effectData : path.effectData) {
+			if(!effectData.refName.equalsIgnoreCase(refName)) continue;
+			int total = 0;
+			for(int i = 0; i < currentLvl; i++) total += effectData.values[i];
+			return total;
+		}
+		return 0;
+	}
+
 	public static boolean isUnlocked(PitPlayer pitPlayer, SkillBranch.MajorProgressionUnlock unlock) {
-		if(unlock == null) return false;
+		if(pitPlayer == null || unlock == null) return false;
 		DarkzoneData.SkillBranchData skillBranchData = pitPlayer.darkzoneData.skillBranchUnlocks.get(unlock.skillBranch.getRefName());
 		if(skillBranchData == null) return false;
 		return skillBranchData.majorUnlocks.contains(unlock.getRefName());
