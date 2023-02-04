@@ -28,6 +28,7 @@ public class FPSCommand implements CommandExecutor {
 		new BukkitRunnable() {
 			@Override
 			public void run() {
+				if(!PitSim.status.isPitsim()) return;
 				for(Player onlinePlayer : Bukkit.getOnlinePlayers()) {
 					World world = onlinePlayer.getWorld();
 					Location mid = MapManager.currentMap.getMid();
