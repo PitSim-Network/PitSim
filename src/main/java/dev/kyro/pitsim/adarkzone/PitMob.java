@@ -36,6 +36,7 @@ public abstract class PitMob implements NameTaggable {
 		mob = createMob(spawnLocation);
 		mob.setMaxHealth(getMaxHealth());
 		mob.setHealth(getMaxHealth());
+		if(mob.isInsideVehicle()) mob.getVehicle().remove();
 
 		nameTag = createNameTag();
 		nameTag.attach();
@@ -59,10 +60,6 @@ public abstract class PitMob implements NameTaggable {
 
 	public Player getTarget() {
 		return target;
-	}
-
-	public void rewardKill(Player killer) {
-		killer.getInventory().addItem(dropPool.getRandomDrop());
 	}
 
 	public Creature getMob() {

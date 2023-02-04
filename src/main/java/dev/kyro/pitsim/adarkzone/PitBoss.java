@@ -120,12 +120,16 @@ public abstract class PitBoss {
 		CitizensNavigator navigator = (CitizensNavigator) npcBoss.getNavigator();
 		navigator.getDefaultParameters()
 				.attackDelayTicks(10)
+				.stuckAction(null)
+				.range(50)
 				.attackRange(getReach());
+
 		bossTargetingSystem.pickTarget();
 
 		routineRunnable = new BukkitRunnable() {
 			@Override
 			public void run() {
+				if(routineAbilityMap.isEmpty()) return;
 				if(lastRoutineExecuteTick + routineAbilityCooldownTicks > PitSim.currentTick) return;
 				if(skipRoutineChance != 0 && Math.random() * 100 < skipRoutineChance) return;
 				lastRoutineExecuteTick = PitSim.currentTick;
@@ -141,6 +145,8 @@ public abstract class PitBoss {
 			public void run() {
 				Player boss = (Player) npcBoss.getEntity();
 				if(boss != null) PitBoss.this.boss = boss;
+//				EntityTarget target = npcBoss.getNavigator().getEntityTarget();
+//				if(target != null) Util.faceLocation(boss, target.getTarget().getLocation());
 
 				if(count % 5 == 0) bossTargetingSystem.pickTarget();
 				count++;

@@ -19,7 +19,7 @@ public class BossManager implements Listener {
 	 * @param attackEvent
 	 */
 	@EventHandler
-	public static void onAttack(AttackEvent.Pre attackEvent) {
+	public void onAttack(AttackEvent.Pre attackEvent) {
 		PitBoss attackerBoss = getPitBoss(attackEvent.getAttacker());
 		if(attackerBoss != null) {
 			attackEvent.getEvent().setDamage(attackerBoss.getMeleeDamage());
@@ -31,7 +31,7 @@ public class BossManager implements Listener {
 	 * @param attackEvent
 	 */
 	@EventHandler(priority = EventPriority.MONITOR)
-	public static void onBossAttacked(AttackEvent.Apply attackEvent) {
+	public void onBossAttacked(AttackEvent.Apply attackEvent) {
 
 		PitBoss defenderBoss = getPitBoss(attackEvent.getDefender());
 		if(defenderBoss == null) return;
