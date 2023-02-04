@@ -108,7 +108,7 @@ public class RenownShopPanel extends AGUIPanel {
 
 	public void refresh() {
 		for(RenownUpgrade upgrade : UpgradeManager.upgrades) {
-			ItemStack itemStack = upgrade.getDisplayItem(player, false);
+			ItemStack itemStack = upgrade.getDisplayItem(player);
 			if(upgrade.prestigeReq > pitPlayer.prestige) {
 				ALoreBuilder loreBuilder = new ALoreBuilder(itemStack);
 				List<String> lore = loreBuilder.getLore();

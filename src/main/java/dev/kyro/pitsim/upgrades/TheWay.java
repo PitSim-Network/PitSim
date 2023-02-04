@@ -22,7 +22,7 @@ public class TheWay extends RenownUpgrade {
 	}
 
 	@Override
-	public ItemStack getDisplayItem(Player player, boolean isCustomPanel) {
+	public ItemStack getDisplayItem(Player player) {
 		ItemStack item = new ItemStack(Material.ACACIA_DOOR_ITEM);
 		ItemMeta meta = item.getItemMeta();
 		meta.setDisplayName(UpgradeManager.itemNameString(this, player));
@@ -35,7 +35,7 @@ public class TheWay extends RenownUpgrade {
 		lore.add(ChatColor.GRAY + "Each tier:");
 		lore.add(ChatColor.GRAY + "Lower level requirements by");
 		lore.add(ChatColor.YELLOW + "5 levels" + ChatColor.GRAY + ".");
-		meta.setLore(UpgradeManager.loreBuilder(this, player, lore, isCustomPanel));
+		meta.setLore(UpgradeManager.loreBuilder(this, player, lore, false));
 		item.setItemMeta(meta);
 		return item;
 	}

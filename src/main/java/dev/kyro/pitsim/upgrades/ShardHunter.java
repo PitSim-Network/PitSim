@@ -5,7 +5,6 @@ import com.xxmicloxx.NoteBlockAPI.model.Song;
 import com.xxmicloxx.NoteBlockAPI.songplayer.RadioSongPlayer;
 import com.xxmicloxx.NoteBlockAPI.utils.NBSDecoder;
 import de.tr7zw.nbtapi.NBTItem;
-import dev.kyro.arcticapi.gui.AGUIPanel;
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.arcticapi.misc.AUtil;
 import dev.kyro.pitsim.controllers.ItemManager;
@@ -14,7 +13,6 @@ import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.controllers.objects.RenownUpgrade;
 import dev.kyro.pitsim.enums.NBTTag;
 import dev.kyro.pitsim.events.KillEvent;
-import dev.kyro.pitsim.inventories.RenownShopGUI;
 import dev.kyro.pitsim.megastreaks.Uberstreak;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -36,7 +34,7 @@ public class ShardHunter extends RenownUpgrade {
 	}
 
 	@Override
-	public ItemStack getDisplayItem(Player player, boolean isCustomPanel) {
+	public ItemStack getDisplayItem(Player player) {
 		ItemStack item = new ItemStack(Material.EMERALD);
 		ItemMeta meta = item.getItemMeta();
 		meta.setDisplayName(UpgradeManager.itemNameString(this, player));
@@ -52,7 +50,7 @@ public class ShardHunter extends RenownUpgrade {
 		lore.add(ChatColor.translateAlternateColorCodes('&', "&7Gain &f+0.005% &7chance to obtain a &aGem"));
 		lore.add(ChatColor.translateAlternateColorCodes('&', "&aShard &7on kill. &7Use &aGem Shards"));
 		lore.add(ChatColor.translateAlternateColorCodes('&', "&7to create &aTotally Legit Gems&7."));
-		meta.setLore(UpgradeManager.loreBuilder(this, player, lore, isCustomPanel));
+		meta.setLore(UpgradeManager.loreBuilder(this, player, lore, true));
 		item.setItemMeta(meta);
 		return item;
 	}

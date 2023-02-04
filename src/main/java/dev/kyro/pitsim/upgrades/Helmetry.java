@@ -20,7 +20,7 @@ public class Helmetry extends RenownUpgrade {
 	}
 
 	@Override
-	public ItemStack getDisplayItem(Player player, boolean isCustomPanel) {
+	public ItemStack getDisplayItem(Player player) {
 		ItemStack item = new ItemStack(Material.GOLD_HELMET);
 		ItemMeta meta = item.getItemMeta();
 		meta.setDisplayName(UpgradeManager.itemNameString(this, player));
@@ -30,7 +30,7 @@ public class Helmetry extends RenownUpgrade {
 		lore.add(ChatColor.translateAlternateColorCodes('&', "&eRenown &7each. &6Golden Helmets"));
 		lore.add(ChatColor.translateAlternateColorCodes('&', "&7can be upgraded by putting"));
 		lore.add(ChatColor.translateAlternateColorCodes('&', "&6gold &7into them."));
-		meta.setLore(UpgradeManager.loreBuilder(this, player, lore, isCustomPanel));
+		meta.setLore(UpgradeManager.loreBuilder(this, player, lore, true));
 		item.setItemMeta(meta);
 		return item;
 	}

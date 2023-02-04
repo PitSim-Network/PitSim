@@ -1,6 +1,5 @@
 package dev.kyro.pitsim.upgrades;
 
-import dev.kyro.arcticapi.gui.AGUIPanel;
 import dev.kyro.arcticapi.misc.AUtil;
 import dev.kyro.pitsim.controllers.UpgradeManager;
 import dev.kyro.pitsim.controllers.objects.RenownUpgrade;
@@ -20,7 +19,7 @@ public class KillSteal extends RenownUpgrade {
 	}
 
 	@Override
-	public ItemStack getDisplayItem(Player player, boolean isCustomPanel) {
+	public ItemStack getDisplayItem(Player player) {
 		ItemStack item = new ItemStack(Material.SHEARS);
 		ItemMeta meta = item.getItemMeta();
 		meta.setDisplayName(UpgradeManager.itemNameString(this, player));
@@ -33,7 +32,7 @@ public class KillSteal extends RenownUpgrade {
 		lore.add(ChatColor.GRAY + "Each tier:");
 		lore.add(ChatColor.translateAlternateColorCodes('&', "&7Gain &e+10% &7on your &aassists&7."));
 		lore.add(ChatColor.translateAlternateColorCodes('&', "&7(100% = kill.)"));
-		meta.setLore(UpgradeManager.loreBuilder(this, player, lore, isCustomPanel));
+		meta.setLore(UpgradeManager.loreBuilder(this, player, lore, false));
 		item.setItemMeta(meta);
 		return item;
 	}

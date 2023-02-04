@@ -1,6 +1,5 @@
 package dev.kyro.pitsim.upgrades;
 
-import dev.kyro.arcticapi.gui.AGUIPanel;
 import dev.kyro.arcticapi.misc.AUtil;
 import dev.kyro.pitsim.controllers.UpgradeManager;
 import dev.kyro.pitsim.controllers.objects.RenownUpgrade;
@@ -25,7 +24,7 @@ public class GoldBoost extends RenownUpgrade {
 	List<Integer> goldBoostCosts = Arrays.asList(10, 12, 14, 16, 18, 20, 22, 24, 26, 28);
 
 	@Override
-	public ItemStack getDisplayItem(Player player, boolean isCustomPanel) {
+	public ItemStack getDisplayItem(Player player) {
 		ItemStack item = new ItemStack(Material.GOLD_NUGGET);
 		ItemMeta meta = item.getItemMeta();
 		meta.setDisplayName(UpgradeManager.itemNameString(this, player));
@@ -38,7 +37,7 @@ public class GoldBoost extends RenownUpgrade {
 		lore.add(ChatColor.GRAY + "Each tier:");
 		lore.add(ChatColor.GRAY + "Earn " + ChatColor.GOLD + "+2.5% gold (g) " + ChatColor.GRAY + "from");
 		lore.add(ChatColor.GRAY + "kills.");
-		meta.setLore(UpgradeManager.loreBuilder(this, player, lore, isCustomPanel));
+		meta.setLore(UpgradeManager.loreBuilder(this, player, lore, false));
 		item.setItemMeta(meta);
 		return item;
 	}
