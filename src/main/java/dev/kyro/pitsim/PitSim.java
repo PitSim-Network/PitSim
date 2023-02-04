@@ -177,7 +177,7 @@ public class PitSim extends JavaPlugin {
 			}
 		}.runTaskLater(PitSim.INSTANCE, 10);
 
-		registerMaps();
+		if(status.isPitsim()) registerMaps();
 		new BukkitRunnable() {
 			@Override
 			public void run() {

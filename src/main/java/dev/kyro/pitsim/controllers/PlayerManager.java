@@ -619,7 +619,7 @@ public class PlayerManager implements Listener {
 	public void onJoin(PlayerSpawnLocationEvent event) {
 		Player player = event.getPlayer();
 		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
-		Location spawnLoc = MapManager.currentMap.getSpawn();
+		Location spawnLoc = PitSim.getStatus() == PitSim.ServerStatus.DARKZONE ? MapManager.getDarkzoneSpawn() : MapManager.currentMap.getSpawn();
 		if(PitSim.getStatus() == PitSim.ServerStatus.DARKZONE) spawnLoc = MapManager.getInitialDarkzoneSpawn();
 		if(LobbySwitchManager.joinedFromDarkzone.contains(player.getUniqueId()))
 			spawnLoc = MapManager.currentMap.getDarkzoneJoinSpawn();
