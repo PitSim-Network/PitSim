@@ -51,7 +51,8 @@ public class MobTargetingSystem {
 	public void assignTarget(PitMob pitMob, Map<Player, Integer> currentTargetMap) {
 		Player bestTarget = pitMob.getTarget();
 		if(bestTarget != null) {
-			double targetDistanceFromMid = pitMob.getMob().getLocation().distance(bestTarget.getLocation());
+			double targetDistanceFromMid = Double.MAX_VALUE;
+			if(pitMob.getMob().getWorld() == bestTarget.getWorld()) targetDistanceFromMid = pitMob.getMob().getLocation().distance(bestTarget.getLocation());
 			if(targetDistanceFromMid > subLevel.spawnRadius) bestTarget = null;
 		}
 
