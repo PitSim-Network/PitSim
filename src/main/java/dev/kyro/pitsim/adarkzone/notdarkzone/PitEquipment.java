@@ -2,17 +2,18 @@ package dev.kyro.pitsim.adarkzone.notdarkzone;
 
 import net.citizensnpcs.api.npc.NPC;
 import net.citizensnpcs.api.trait.trait.Equipment;
+import org.bukkit.Material;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 public class PitEquipment {
-	private ItemStack held;
+	private ItemStack held = new ItemStack(Material.AIR);
 
-	private ItemStack helmet;
-	private ItemStack chestplate;
-	private ItemStack leggings;
-	private ItemStack boots;
+	private ItemStack helmet = new ItemStack(Material.AIR);
+	private ItemStack chestplate = new ItemStack(Material.AIR);
+	private ItemStack leggings = new ItemStack(Material.AIR);
+	private ItemStack boots = new ItemStack(Material.AIR);
 
 	public PitEquipment() {}
 

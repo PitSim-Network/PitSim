@@ -25,7 +25,7 @@ public class FPSCommand implements CommandExecutor {
 	public static double playerHideRadius = 8;
 
 	static {
-		if(PitSim.status != PitSim.ServerStatus.DARKZONE) {
+		if(PitSim.status.isPitSim()) {
 			new BukkitRunnable() {
 				@Override
 				public void run() {

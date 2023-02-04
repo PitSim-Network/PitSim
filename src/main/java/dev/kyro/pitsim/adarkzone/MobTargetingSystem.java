@@ -6,7 +6,6 @@ import org.bukkit.Location;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitTask;
-import org.bukkit.util.Vector;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -15,9 +14,12 @@ import java.util.Map;
 
 // This code strictly handles literal attacks, not abilities and other "attacks"
 public class MobTargetingSystem {
-	public double healthWeight = 0.7;
-	public double distanceWeight = 0.4;
-	public double angleWeight = 1.0;
+	public static final int MAX_MOBS_PER_PLAYER = 3;
+	public Map<PitMob, Long> changeTargetCooldown = new HashMap<>();
+
+	public double distanceWeight = 1.0;
+	public double persistenceWeight = 0.1;
+	public double otherMobsTargetingWeight = -0.5;
 
 	public SubLevel subLevel;
 	public BukkitTask runnable;
@@ -27,14 +29,19 @@ public class MobTargetingSystem {
 	}
 
 	public void assignTargets() {
-		Map<Player, Integer> currentTargetMap = getCurrentTargets();
-		for(PitMob pitMob : subLevel.mobs) assignTarget(pitMob, new HashMap<>(currentTargetMap));
+		List<PitMob> pitMobs = new ArrayList<>(subLevel.mobs);
+//		Collections.shuffle(pitMobs);
+
+		for(PitMob pitMob : pitMobs) {
+			Map<Player, Integer> currentTargetMap = getCurrentTargets();
+			assignTarget(pitMob, currentTargetMap);
+		}
 	}
 
 	public Map<Player, Integer> getCurrentTargets() {
 		Map<Player, Integer> currentTargetMap = new HashMap<>();
-		for(PitMob mob : subLevel.mobs) {
-			Player target = mob.getTarget();
+		for(PitMob pitMob : subLevel.mobs) {
+			Player target = pitMob.getTarget();
 			currentTargetMap.putIfAbsent(target, 0);
 			currentTargetMap.put(target, currentTargetMap.get(target) + 1);
 		}
@@ -42,79 +49,66 @@ public class MobTargetingSystem {
 	}
 
 	public void assignTarget(PitMob pitMob, Map<Player, Integer> currentTargetMap) {
-		double radius = pitBoss.getReach();
-
-		if(targetingState == State.ATTACKING_MELEE) {
-			radius = pitBoss.getReach();
-		} else if(targetingState == State.ATTACKING_RANGED) {
-			radius = pitBoss.getReachRanged();
+		Player bestTarget = pitMob.getTarget();
+		if(bestTarget != null) {
+			double targetDistanceFromMid = pitMob.getMob().getLocation().distance(bestTarget.getLocation());
+			if(targetDistanceFromMid > subLevel.spawnRadius) bestTarget = null;
 		}
 
 		List<Player> playersInRadius = new ArrayList<>();
-		SubLevel subLevel = pitBoss.getSubLevel();
+		playersInRadius.add(null);
 		Location subLevelMiddle = subLevel.getMiddle();
-		double bossToMidDistance = pitBoss.boss.getLocation().distance(subLevelMiddle);
-		if(bossToMidDistance < subLevel.spawnRadius) {
-			for(Entity entity : pitBoss.boss.getNearbyEntities(radius, radius, radius)) {
-				if(!(entity instanceof Player)) continue;
-				Player player = (Player) entity;
-				if(VanishAPI.isInvisible(player)) continue;
-				playersInRadius.add(player);
-			}
-			if(playersInRadius.isEmpty()) {
-				for(Entity entity : pitBoss.boss.getNearbyEntities(radius * 3, radius * 3, radius * 3)) {
-					if(!(entity instanceof Player)) continue;
-					Player player = (Player) entity;
-					if(VanishAPI.isInvisible(player)) continue;
-					playersInRadius.add(player);
-				}
-			}
-		}
-		if(playersInRadius.isEmpty()) {
-			for(Entity entity : subLevelMiddle.getWorld().getNearbyEntities(subLevelMiddle, subLevel.spawnRadius, 20, subLevel.spawnRadius)) {
-				if(!(entity instanceof Player) || entity == pitBoss.boss) continue;
-				Player player = (Player) entity;
-				if(VanishAPI.isInvisible(player)) continue;
-				playersInRadius.add(player);
-			}
+		for(Entity entity : subLevelMiddle.getWorld().getNearbyEntities(subLevelMiddle, subLevel.spawnRadius, 20, subLevel.spawnRadius)) {
+			if(!(entity instanceof Player) || entity == pitMob.getMob()) continue;
+			Player player = (Player) entity;
+			if(VanishAPI.isInvisible(player)) continue;
+			playersInRadius.add(player);
 		}
 
-		if(playersInRadius.isEmpty()) return null;
-
-		Vector pitBossDirection = pitBoss.boss.getLocation().getDirection();
-		double pitBossAngle = Math.atan2(pitBossDirection.getX(), pitBossDirection.getZ());
-
-		double bestReward = 0;
-		Player bestTarget = null;
-		for(Player player : playersInRadius) {
-
-			double reward = rewardFunction(player, pitBossAngle);
+		double bestReward = Double.NEGATIVE_INFINITY;
+		for(Player candidate : playersInRadius) {
+			int currentTargets = currentTargetMap.getOrDefault(candidate, 0);
+			double reward = rewardFunction(pitMob, currentTargets, pitMob.getTarget(), candidate);
 			if(reward > bestReward) {
 				bestReward = reward;
-				bestTarget = player;
+				bestTarget = candidate;
 			}
 		}
 
-		return bestTarget;
+		if(bestTarget != pitMob.getTarget()) {
+			if(bestTarget == null) {
+				if(changeTargetCooldown.getOrDefault(pitMob, 0L) + 60 > PitSim.currentTick) return;
+				changeTargetCooldown.put(pitMob, PitSim.currentTick);
+			}
+			pitMob.setTarget(bestTarget);
+		}
 	}
 
 	//reward function to find the best target
-	private double rewardFunction(Player player, double pitBossAngle) {
+	private double rewardFunction(PitMob pitMob, int mobsTargeting, Player currentTarget, Player candidate) {
+		double scaledDistance = 0;
+		double scaledPersistence = currentTarget == candidate && candidate != null ? 1 : 0;
+		double scaledTargets = 0;
+		if(candidate != null) {
+			scaledDistance = ((subLevel.spawnRadius * 2) - candidate.getLocation().distance(pitMob.getMob().getLocation())) / (subLevel.spawnRadius * 2);
+			scaledTargets = Math.pow(mobsTargeting, 1.3) / MAX_MOBS_PER_PLAYER;
+		}
 
-		Vector playerDirection = player.getLocation().getDirection();
-		double playerAngle = Math.atan2(playerDirection.getX(), playerDirection.getZ());
+//		double total = scaledDistance * distanceWeight +
+//				scaledPersistence * persistenceWeight +
+//				scaledTargets * otherMobsTargetingWeight;
+//		DecimalFormat decimalFormat = new DecimalFormat("0.#");
+//		System.out.println(
+//				(candidate == null ? "null" : candidate.getName()) + " " +
+//				decimalFormat.format(scaledDistance * distanceWeight) + " " +
+//				decimalFormat.format(scaledPersistence * persistenceWeight) + " " +
+//				decimalFormat.format(scaledTargets * otherMobsTargetingWeight) + " " +
+//				decimalFormat.format(total)
+//		);
 
-		double angleBetween = Math.abs(pitBossAngle - playerAngle);
-
-		double distance = player.getLocation().distance(pitBoss.boss.getLocation());
-
-		double health = player.getHealth();
-
-		double normalizedHealth = 20 / health;
-		double normalizedDistance = pitBoss.getReach() / distance;
-		double normalizedAngle = 1 / angleBetween;
-
-		return healthWeight * normalizedHealth + distanceWeight * normalizedDistance + angleWeight * normalizedAngle;
+		return scaledDistance * distanceWeight +
+				scaledPersistence * persistenceWeight +
+				scaledTargets * otherMobsTargetingWeight;
 	}
 }
 

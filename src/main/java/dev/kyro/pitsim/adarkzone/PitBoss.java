@@ -123,7 +123,7 @@ public abstract class PitBoss {
 				.range(50)
 				.attackRange(getReach());
 
-		bossTargetingSystem.pickTarget();
+		bossTargetingSystem.assignTarget();
 
 		routineRunnable = new BukkitRunnable() {
 			@Override
@@ -147,7 +147,7 @@ public abstract class PitBoss {
 //				EntityTarget target = npcBoss.getNavigator().getEntityTarget();
 //				if(target != null) Util.faceLocation(boss, target.getTarget().getLocation());
 
-				if(count % 5 == 0) bossTargetingSystem.pickTarget();
+				if(count % 5 == 0) bossTargetingSystem.assignTarget();
 				count++;
 			}
 		}.runTaskTimer(PitSim.INSTANCE, 0L, 1);

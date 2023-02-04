@@ -22,6 +22,8 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.event.entity.EntityTargetEvent;
+import org.bukkit.event.entity.EntityTargetLivingEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -37,7 +39,7 @@ public class DarkzoneManager implements Listener {
 		SubLevel zombieSubLevel = new SubLevel(
 				SubLevelType.ZOMBIE, PitZombieBoss.class, PitZombie.class,
 				new Location(MapManager.getDarkzone(), 327, 67, -143),
-				20, 17, 12);
+				15, 17, 12);
 		zombieSubLevel.setSpawnItemClass(RottenFlesh.class);
 		registerSubLevel(zombieSubLevel);
 
@@ -48,6 +50,14 @@ public class DarkzoneManager implements Listener {
 				for(SubLevel subLevel : subLevels) subLevel.tick();
 			}
 		}.runTaskTimer(PitSim.INSTANCE, 0L, 5);
+	}
+
+	@EventHandler
+	public void onTarget(EntityTargetLivingEntityEvent event) {
+		if(!(event.getEntity() instanceof LivingEntity) || event.getReason() == EntityTargetEvent.TargetReason.TARGET_ATTACKED_ENTITY) return;
+		LivingEntity entity = (LivingEntity) event.getEntity();
+		if(!isPitMob(entity)) return;
+		event.setCancelled(true);
 	}
 
 	/**

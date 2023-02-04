@@ -33,7 +33,7 @@ public class BossTargetingSystem {
 		this.pitBoss = pitBoss;
 	}
 
-	public void pickTarget() {
+	public void assignTarget() {
 		Player target = findTarget();
 		if(target == null) {
 			if(PitSim.currentTick - lastTickWithTarget > 200) {

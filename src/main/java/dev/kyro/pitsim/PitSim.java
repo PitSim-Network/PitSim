@@ -188,7 +188,7 @@ public class PitSim extends JavaPlugin {
 			}
 		}.runTaskLater(PitSim.INSTANCE, 10);
 
-		if(status != ServerStatus.DARKZONE) registerMaps();
+		if(status.isPitSim()) registerMaps();
 
 		if(getStatus().isPitSim()) NonManager.init();
 		SignPrompt.registerSignUpdateListener();
@@ -430,7 +430,7 @@ public class PitSim extends JavaPlugin {
 				}
 			}
 
-			if(TimeManager.isChristmasSeason() && status != ServerStatus.DARKZONE) {
+			if(TimeManager.isChristmasSeason() && status.isPitSim()) {
 				pitMap = xmas;
 				time = System.currentTimeMillis();
 				MapManager.currentMap.world.setStorm(true);

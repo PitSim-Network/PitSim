@@ -135,7 +135,7 @@ public class DamageManager implements Listener {
 			break;
 		}
 
-		if(PitSim.status == PitSim.ServerStatus.DARKZONE && defender instanceof MagmaCube) {
+		if(PitSim.status.isDarkzone() && defender != null) {
 			for(SubLevel subLevel : DarkzoneManager.subLevels) {
 				for(PitMob pitMob : subLevel.mobs) {
 					for(LivingEntity entity : pitMob.getNameTag().getEntities()) {

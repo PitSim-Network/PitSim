@@ -1,5 +1,6 @@
 package dev.kyro.pitsim.adarkzone.mobs;
 
+import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.adarkzone.DropPool;
 import dev.kyro.pitsim.adarkzone.PitMob;
 import dev.kyro.pitsim.adarkzone.PitNameTag;
@@ -11,6 +12,7 @@ import org.bukkit.Location;
 import org.bukkit.entity.Creature;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Zombie;
+import org.bukkit.scheduler.BukkitRunnable;
 
 public class PitZombie extends PitMob {
 
@@ -21,13 +23,19 @@ public class PitZombie extends PitMob {
 	@Override
 	public Creature createMob(Location spawnLocation) {
 		Zombie zombie = (Zombie) spawnLocation.getWorld().spawnEntity(spawnLocation, EntityType.ZOMBIE);
-		new PitEquipment().setEquipment(zombie);
 		zombie.setCustomNameVisible(false);
 		zombie.setRemoveWhenFarAway(false);
 
 		zombie.setBaby(false);
 		zombie.setVillager(false);
 		zombie.setCanPickupItems(false);
+
+		new BukkitRunnable() {
+			@Override
+			public void run() {
+				new PitEquipment().setEquipment(zombie);
+			}
+		}.runTaskLater(PitSim.INSTANCE, 1L);
 
 		return zombie;
 	}
@@ -49,7 +57,7 @@ public class PitZombie extends PitMob {
 
 	@Override
 	public int getSpeedAmplifier() {
-		return 0;
+		return 1;
 	}
 
 	@Override

@@ -134,7 +134,7 @@ public class PlayerManager implements Listener {
 			}
 		}.runTaskTimer(PitSim.INSTANCE, Misc.getRunnableOffset(5), 20 * 60 * 5);
 
-		if(PitSim.status != PitSim.ServerStatus.DARKZONE) {
+		if(PitSim.status.isPitSim()) {
 			new BukkitRunnable() {
 				@Override
 				public void run() {

@@ -67,11 +67,14 @@ public class SubLevel {
 	}
 
 	public void tick() {
-		if(Math.random() < 0.75) return;
-		int newMobsNeeded = maxMobs - mobs.size();
-		for(int i = 0; i < Math.min(newMobsNeeded, 3); i++) {
-			if (!isBossSpawned) spawnMob();
+		if(Math.random() < 0.25) {
+			int newMobsNeeded = maxMobs - mobs.size();
+			for(int i = 0; i < Math.min(newMobsNeeded, 3); i++) {
+				if (!isBossSpawned) spawnMob();
+			}
 		}
+
+		mobTargetingSystem.assignTargets();
 	}
 
 	public void identifySpawnableLocations() {
