@@ -587,6 +587,10 @@ public class PlayerManager implements Listener {
 		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
 		event.setJoinMessage(null);
 
+		if(Misc.isKyro(player.getUniqueId()) && PitSim.anticheat instanceof GrimManager) {
+			Bukkit.getServer().dispatchCommand(player, "grim alerts");
+		}
+
 		FeatherBoardAPI.resetDefaultScoreboard(player);
 		if(MapManager.inDarkzone(player)) {
 			FeatherBoardAPI.showScoreboard(player, "darkzone");
