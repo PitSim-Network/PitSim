@@ -27,7 +27,7 @@ public abstract class PitBoss {
 //	Boss related
 	public NPC npcBoss;
 	public Player boss;
-	public BossTargetingSystem bossTargetingSystem;
+	public BossTargetingSystem bossTargetingSystem = new BossTargetingSystem(this);
 	public PitEquipment equipment = DarkzoneManager.getDefaultEquipment();
 
 //	Ability Related
@@ -42,7 +42,6 @@ public abstract class PitBoss {
 
 	public PitBoss(Player summoner) {
 		this.summoner = summoner;
-		this.bossTargetingSystem = new BossTargetingSystem(this);
 
 		this.dropPool = createDropPool();
 		BossManager.pitBosses.add(this);

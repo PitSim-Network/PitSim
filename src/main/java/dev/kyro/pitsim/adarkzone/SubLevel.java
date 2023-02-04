@@ -37,6 +37,7 @@ public class SubLevel {
 	public List<PitMob> mobs = new ArrayList<>();
 	public int maxMobs;
 	public int spawnRadius;
+	public MobTargetingSystem mobTargetingSystem = new MobTargetingSystem(this);
 
 	public SubLevel(SubLevelType subLevelType, Class<? extends PitBoss> bossClass, Class<? extends PitMob> mobClass,
 					Location middle, int maxMobs, int spawnRadius, int requiredDropsToSpawn) {

@@ -9,9 +9,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 public abstract class PitMob implements NameTaggable {
-
 	private Creature mob;
-	private Player target;
 	private DropPool dropPool;
 	private PitNameTag nameTag;
 
@@ -55,12 +53,11 @@ public abstract class PitMob implements NameTaggable {
 	}
 
 	public void setTarget(Player target) {
-		this.target = target;
 		mob.setTarget(target);
 	}
 
 	public Player getTarget() {
-		return target;
+		return (Player) mob.getTarget();
 	}
 
 	public Creature getMob() {

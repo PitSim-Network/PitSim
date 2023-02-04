@@ -5,54 +5,43 @@ import dev.kyro.pitsim.PitSim;
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
+import org.bukkit.scheduler.BukkitTask;
 import org.bukkit.util.Vector;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 // This code strictly handles literal attacks, not abilities and other "attacks"
-public class BossTargetingSystem {
+public class MobTargetingSystem {
 	public double healthWeight = 0.7;
 	public double distanceWeight = 0.4;
 	public double angleWeight = 1.0;
 
-	public State targetingState = State.ATTACKING_MELEE;
-	public PitBoss pitBoss;
-	public Player target;
+	public SubLevel subLevel;
+	public BukkitTask runnable;
 
-	public long lastTickWithTarget = PitSim.currentTick;
-
-	//	TODO: Figure out if ranged attacks are all going to be shooting bows or if we are going to abstract and allow other stuff
-//	TODO: (maybe like snowballs, fireballs, particle beams, homing particles, thrown entities)
-	public enum State {
-		ATTACKING_MELEE,
-		ATTACKING_RANGED
+	public MobTargetingSystem(SubLevel subLevel) {
+		this.subLevel = subLevel;
 	}
 
-	public BossTargetingSystem(PitBoss pitBoss) {
-		this.pitBoss = pitBoss;
+	public void assignTargets() {
+		Map<Player, Integer> currentTargetMap = getCurrentTargets();
+		for(PitMob pitMob : subLevel.mobs) assignTarget(pitMob, new HashMap<>(currentTargetMap));
 	}
 
-	public void pickTarget() {
-		Player target = findTarget();
-		if(target == null) {
-			if(PitSim.currentTick - lastTickWithTarget > 200) {
-				pitBoss.remove();
-				pitBoss.alertDespawn();
-				return;
-			}
-		} else {
-			lastTickWithTarget = PitSim.currentTick;
+	public Map<Player, Integer> getCurrentTargets() {
+		Map<Player, Integer> currentTargetMap = new HashMap<>();
+		for(PitMob mob : subLevel.mobs) {
+			Player target = mob.getTarget();
+			currentTargetMap.putIfAbsent(target, 0);
+			currentTargetMap.put(target, currentTargetMap.get(target) + 1);
 		}
-		setTarget(target);
+		return currentTargetMap;
 	}
 
-	public void setTarget(Player target) {
-		this.target = target;
-		pitBoss.npcBoss.getNavigator().setTarget(target, true);
-	}
-
-	public Player findTarget() {
+	public void assignTarget(PitMob pitMob, Map<Player, Integer> currentTargetMap) {
 		double radius = pitBoss.getReach();
 
 		if(targetingState == State.ATTACKING_MELEE) {
