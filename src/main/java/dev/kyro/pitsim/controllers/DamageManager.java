@@ -7,6 +7,7 @@ import dev.kyro.pitsim.adarkzone.BossManager;
 import dev.kyro.pitsim.adarkzone.DarkzoneManager;
 import dev.kyro.pitsim.adarkzone.PitMob;
 import dev.kyro.pitsim.adarkzone.SubLevel;
+import dev.kyro.pitsim.adarkzone.notdarkzone.Shield;
 import dev.kyro.pitsim.aitems.PitItem;
 import dev.kyro.pitsim.aitems.misc.CorruptedFeather;
 import dev.kyro.pitsim.aitems.misc.FunkyFeather;
@@ -278,9 +279,8 @@ public class DamageManager implements Listener {
 //		New player defence
 		if(PitSim.status.isPitSim() && PlayerManager.isRealPlayer(attackEvent.getDefenderPlayer()) && PlayerManager.isRealPlayer(attackEvent.getAttackerPlayer()) &&
 				attackEvent.getDefenderPlayer().getLocation().distance(MapManager.currentMap.getMid()) < 12) {
-			PitPlayer pitDefender = PitPlayer.getPitPlayer(attackEvent.getDefenderPlayer());
-			if(pitDefender.prestige < 10) {
-				int minutesPlayed = pitDefender.stats.minutesPlayed;
+			if(attackEvent.getDefenderPitPlayer().prestige < 10) {
+				int minutesPlayed = attackEvent.getDefenderPitPlayer().stats.minutesPlayed;
 				double reduction = Math.max(50 - (minutesPlayed / 8.0), 0);
 				attackEvent.multipliers.add(Misc.getReductionMultiplier(reduction));
 				attackEvent.trueDamage *= Misc.getReductionMultiplier(reduction);
@@ -289,6 +289,15 @@ public class DamageManager implements Listener {
 
 		double damage = attackEvent.getFinalDamage();
 		attackEvent.getEvent().setDamage(damage);
+
+		if(PlayerManager.isRealPlayer(attackEvent.getDefenderPlayer())) {
+			Shield defenderShield = attackEvent.getDefenderPitPlayer().shield;
+			if(defenderShield.isActive()) {
+				double expectedFinalDamage = defenderShield.damageShield(attackEvent.getEvent().getFinalDamage());
+				double reductionRatio = expectedFinalDamage / attackEvent.getEvent().getFinalDamage();
+				attackEvent.getEvent().setDamage(reductionRatio * damage);
+			}
+		}
 
 		if(attackEvent.trueDamage != 0 || attackEvent.veryTrueDamage != 0) {
 			double finalHealth = attackEvent.getDefender().getHealth() - attackEvent.trueDamage - attackEvent.veryTrueDamage;

@@ -2,13 +2,13 @@ package dev.kyro.pitsim.adarkzone.notdarkzone;
 
 public class Shield {
 	public static final int ACTIVE_REGEN_TICKS = 40;
-	public static final double ACTIVE_REGEN_AMOUNT = 5;
+	public static final double ACTIVE_REGEN_AMOUNT = 1;
 
 	private double shieldAmount = getMax();
 	private boolean isActive = true;
 	private int ticksUntilReactivation;
 
-	public int getAmount() {
+	public int getDisplayAmount() {
 		return (int) Math.ceil(shieldAmount);
 	}
 
@@ -26,13 +26,16 @@ public class Shield {
 		shieldAmount = Math.min(shieldAmount + amount, getMax());
 	}
 
-	public void damageShield(double amount) {
-		if(!isActive()) return;
+//	Returns the remaining damage if the shield breaks;
+	public double damageShield(double amount) {
+		if(!isActive()) return amount;
 		if(amount >= shieldAmount) {
 			deactivate();
+			return amount - shieldAmount;
 		} else {
 			shieldAmount -= amount;
 		}
+		return 0;
 	}
 
 	public void deactivate() {

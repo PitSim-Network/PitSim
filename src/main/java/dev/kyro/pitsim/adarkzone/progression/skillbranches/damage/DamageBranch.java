@@ -10,9 +10,11 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.inventory.ItemStack;
 
 public class DamageBranch extends SkillBranch {
+	public static DamageBranch INSTANCE;
 
 	public DamageBranch() {
 		super(UIColor.RED);
+		INSTANCE = this;
 	}
 
 	@EventHandler

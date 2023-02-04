@@ -697,7 +697,7 @@ public class PitPlayer {
 	public void updateXPBar() {
 		if(MapManager.inDarkzone(player)) {
 //			TODO: Check if shield is unlocked
-			player.setLevel((int) Math.ceil(shield.getAmount()));
+			player.setLevel((int) Math.ceil(shield.getDisplayAmount()));
 			if(shield.isActive()) {
 				player.setExp((float) (shield.getPreciseAmount() / shield.getMax()));
 			} else {
