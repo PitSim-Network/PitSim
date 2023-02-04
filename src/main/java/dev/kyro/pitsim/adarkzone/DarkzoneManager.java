@@ -128,11 +128,10 @@ public class DarkzoneManager implements Listener {
 	public static PitEquipment getDefaultEquipment() {
 		return new PitEquipment()
 				.held(new ItemStack(Material.DIAMOND_SWORD))
-				.helmet(new ItemStack(Material.DIAMOND_SWORD))
-				.chestplate(new ItemStack(Material.DIAMOND_SWORD))
-				.leggings(new ItemStack(Material.DIAMOND_SWORD))
-				.leggings(new ItemStack(Material.DIAMOND_SWORD))
-				.boots(new ItemStack(Material.DIAMOND_SWORD));
+				.helmet(new ItemStack(Material.DIAMOND_HELMET))
+				.chestplate(new ItemStack(Material.DIAMOND_CHESTPLATE))
+				.leggings(new ItemStack(Material.DIAMOND_LEGGINGS))
+				.boots(new ItemStack(Material.DIAMOND_BOOTS));
 	}
 
 	/**

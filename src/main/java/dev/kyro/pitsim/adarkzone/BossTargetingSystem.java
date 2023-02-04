@@ -1,8 +1,7 @@
 package dev.kyro.pitsim.adarkzone;
 
-import dev.kyro.arcticapi.misc.AOutput;
+import de.myzelyam.api.vanish.VanishAPI;
 import dev.kyro.pitsim.PitSim;
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
@@ -12,7 +11,6 @@ import org.bukkit.util.Vector;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 // This code strictly handles literal attacks, not abilities and other "attacks"
 public class BossTargetingSystem {
@@ -25,6 +23,7 @@ public class BossTargetingSystem {
 	public Player target;
 
 	public BukkitTask runnable;
+	public long lastTickWithTarget = PitSim.currentTick;
 
 	//	TODO: Figure out if ranged attacks are all going to be shooting bows or if we are going to abstract and allow other stuff
 //	TODO: (maybe like snowballs, fireballs, particle beams, homing particles, thrown entities)
@@ -42,17 +41,15 @@ public class BossTargetingSystem {
 	public void pickTarget() {
 		Player target = findTarget();
 		if(target == null) {
-			for(UUID uuid : pitBoss.damageMap.keySet()) {
-				Player player = Bukkit.getPlayer(uuid);
-				if(player != null) {
-					AOutput.send(player, "&c&lERROR!&7 Boss was abandoned by all players!");
-				}
-
+			if(PitSim.currentTick - lastTickWithTarget > 200) {
+				pitBoss.remove();
+				pitBoss.alertDespawn();
+				return;
 			}
-			pitBoss.remove();
 		} else {
-			setTarget(target);
+			lastTickWithTarget = PitSim.currentTick;
 		}
+		setTarget(target);
 	}
 
 	public void setTarget(Player target) {
@@ -73,12 +70,14 @@ public class BossTargetingSystem {
 		for(Entity entity : pitBoss.boss.getNearbyEntities(radius, radius, radius)) {
 			if(!(entity instanceof Player)) continue;
 			Player player = (Player) entity;
+			if(VanishAPI.isInvisible(player)) continue;
 			playersInRadius.add(player);
 		}
 		if(playersInRadius.isEmpty()) {
 			for(Entity entity : pitBoss.boss.getNearbyEntities(radius * 3, radius * 3, radius * 3)) {
 				if(!(entity instanceof Player)) continue;
 				Player player = (Player) entity;
+				if(VanishAPI.isInvisible(player)) continue;
 				playersInRadius.add(player);
 			}
 		}
@@ -86,8 +85,9 @@ public class BossTargetingSystem {
 			SubLevel subLevel = pitBoss.getSubLevel();
 			Location location = subLevel.getMiddle();
 			for(Entity entity : location.getWorld().getNearbyEntities(location, 35, 20, 35)) {
-				if(!(entity instanceof Player)) continue;
+				if(!(entity instanceof Player) || entity == pitBoss.boss) continue;
 				Player player = (Player) entity;
+				if(VanishAPI.isInvisible(player)) continue;
 				playersInRadius.add(player);
 			}
 		}

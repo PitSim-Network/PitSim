@@ -113,3 +113,6 @@ commands:
     aliases:
       - staffcookie
       - givecookie
+  loadskin:
+    aliases:
+      - skin

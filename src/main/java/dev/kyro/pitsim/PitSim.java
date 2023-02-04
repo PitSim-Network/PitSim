@@ -374,7 +374,7 @@ public class PitSim extends JavaPlugin {
 
 		if(status.isDarkzone()) {
 			for(SubLevel subLevel : DarkzoneManager.subLevels) subLevel.disableMobs();
-			for(PitBoss pitBoss : BossManager.pitBosses) pitBoss.remove();
+			for(PitBoss pitBoss : new ArrayList<>(BossManager.pitBosses)) pitBoss.remove();
 		}
 
 		if(adventure != null) {
@@ -602,6 +602,7 @@ public class PitSim extends JavaPlugin {
 		getCommand("ignore").setExecutor(new IgnoreCommand());
 		getCommand("ignore").setTabCompleter(new IgnoreCommand());
 		getCommand("cookie").setExecutor(new StaffCookieCommand());
+		getCommand("loadskin").setExecutor(new LoadSkinCommand());
 		//TODO: Remove this
 //		getCommand("massmigrate").setExecutor(new MassMigrateCommand());
 

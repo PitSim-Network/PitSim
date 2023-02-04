@@ -48,10 +48,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.text.DateFormat;
 import java.text.DecimalFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.function.Predicate;
 
@@ -115,6 +112,7 @@ public class Misc {
 	}
 
 	public static <T> T weightedRandom(Map<T, Double> weightedMap) {
+		if(weightedMap.isEmpty()) return null;
 		// Normalize the weights
 		double sum = 0.0;
 		for(double weight : weightedMap.values()) sum += weight;

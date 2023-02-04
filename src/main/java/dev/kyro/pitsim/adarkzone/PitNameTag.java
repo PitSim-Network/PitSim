@@ -58,16 +58,7 @@ public class PitNameTag {
 	}
 
 	public void update() {
-		LivingEntity baseEntity = taggable.getTaggableEntity();
-		if(nameTagType == NameTagType.NAME) {
-			setName(taggable.getDisplayName());
-		} else if(nameTagType == NameTagType.NAME_AND_HEALTH) {
-			int maxHealth = (int) baseEntity.getMaxHealth();
-			int length = (int) Math.ceil(Math.min(Math.max(maxHealth - 20, 0) + Math.sqrt(maxHealth), 20));
-			double percentFull = baseEntity.getHealth() / baseEntity.getMaxHealth();
-			String healthBar = AUtil.createProgressBar("|", taggable.getChatColor(), ChatColor.GRAY, length, percentFull);
-			setName(taggable.getDisplayName() + "&8 [" + healthBar + "&8]");
-		}
+		setName(getText(taggable.getTaggableEntity(), taggable.getDisplayName(), nameTagType, taggable.getChatColor()));
 	}
 
 	public void remove() {
@@ -121,6 +112,19 @@ public class PitNameTag {
 			livingEntity.setRemoveWhenFarAway(false);
 			return livingEntity;
 		}
+	}
+
+	public static String getText(LivingEntity entity, String displayName, NameTagType nameTagType, ChatColor chatColor) {
+		if(nameTagType == NameTagType.NAME) {
+			return displayName;
+		} else if(nameTagType == NameTagType.NAME_AND_HEALTH) {
+			int maxHealth = (int) entity.getMaxHealth();
+			int length = (int) Math.ceil(Math.min(Math.max(maxHealth - 20, 0) + Math.sqrt(maxHealth), 20));
+			double percentFull = entity.getHealth() / entity.getMaxHealth();
+			String healthBar = AUtil.createProgressBar("|", chatColor, ChatColor.GRAY, length, percentFull);
+			return displayName + "&8 [" + healthBar + "&8]";
+		}
+		throw new RuntimeException();
 	}
 
 	public enum NameTagType {

@@ -15,6 +15,7 @@ public abstract class PitMob implements NameTaggable {
 	private PitNameTag nameTag;
 
 	public PitMob(Location spawnLocation) {
+		this.dropPool = createDropPool();
 		spawn(spawnLocation);
 	}
 
@@ -36,7 +37,6 @@ public abstract class PitMob implements NameTaggable {
 		mob.setMaxHealth(getMaxHealth());
 		mob.setHealth(getMaxHealth());
 
-		dropPool = createDropPool();
 		nameTag = createNameTag();
 		nameTag.attach();
 	}
@@ -73,11 +73,6 @@ public abstract class PitMob implements NameTaggable {
 		this.mob = mob;
 	}
 
-	@Override
-	public LivingEntity getTaggableEntity() {
-		return mob;
-	}
-
 	public SubLevel getSubLevel() {
 		for(SubLevel subLevel : DarkzoneManager.subLevels) {
 			for(PitMob pitMob : subLevel.mobs) if(pitMob == this) return subLevel;
@@ -91,5 +86,10 @@ public abstract class PitMob implements NameTaggable {
 
 	public PitNameTag getNameTag() {
 		return nameTag;
+	}
+
+	@Override
+	public LivingEntity getTaggableEntity() {
+		return mob;
 	}
 }

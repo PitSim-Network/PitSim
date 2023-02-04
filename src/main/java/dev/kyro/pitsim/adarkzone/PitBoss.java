@@ -2,14 +2,16 @@ package dev.kyro.pitsim.adarkzone;
 
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.adarkzone.notdarkzone.PitEquipment;
+import dev.kyro.pitsim.misc.MinecraftSkin;
 import dev.kyro.pitsim.misc.Misc;
 import net.citizensnpcs.api.CitizensAPI;
 import net.citizensnpcs.api.npc.NPC;
 import net.citizensnpcs.npc.ai.CitizensNavigator;
-import org.bukkit.Material;
+import net.citizensnpcs.trait.SkinTrait;
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
 
@@ -41,24 +43,29 @@ public abstract class PitBoss {
 	public PitBoss(Player summoner) {
 		this.summoner = summoner;
 		this.bossTargetingSystem = new BossTargetingSystem(this);
-		this.dropPool = new DropPool();
-		dropPool.addItem(new ItemStack(Material.DIAMOND, 1), 1);
 
+		this.dropPool = createDropPool();
 		BossManager.pitBosses.add(this);
 		spawn();
 	}
 
 	public abstract SubLevelType getSubLevelType();
-	public abstract String getName();
+	public abstract String getRawDisplayName();
+	public abstract ChatColor getChatColor();
 	public abstract String getSkinName();
 	public abstract int getMaxHealth();
 	public abstract double getMeleeDamage();
 	public abstract double getReach();
 	public abstract double getReachRanged();
+	public abstract DropPool createDropPool();
 
 //	Internal events (override to add functionality)
 	public void onSpawn() {}
 	public void onDeath() {}
+
+	public String getDisplayName() {
+		return getChatColor() + getRawDisplayName();
+	}
 
 	public PitBoss abilities(PitBossAbility... pitBossAbilities) {
 		abilities = Arrays.asList(pitBossAbilities);
@@ -89,12 +96,26 @@ public abstract class PitBoss {
 	}
 
 	public void spawn() {
-		npcBoss = CitizensAPI.getNPCRegistry().createNPC(EntityType.PLAYER, getName());
+		npcBoss = CitizensAPI.getNPCRegistry().createNPC(EntityType.PLAYER, this.getDisplayName());
 		npcBoss.setProtected(false);
 		npcBoss.spawn(getSubLevel().getBossSpawnLocation());
 		boss = (Player) npcBoss.getEntity();
 		boss.setMaxHealth(getMaxHealth());
+		boss.setHealth(getMaxHealth());
 		equipment.setEquipment(npcBoss);
+
+		new BukkitRunnable() {
+			@Override
+			public void run() {
+				if(!npcBoss.isSpawned()) return;
+				MinecraftSkin minecraftSkin = MinecraftSkin.getSkin(getSkinName());
+				if(minecraftSkin != null) {
+					SkinTrait skinTrait = CitizensAPI.getTraitFactory().getTrait(SkinTrait.class);
+					npcBoss.addTrait(skinTrait);
+					skinTrait.setSkinPersistent(getSkinName(), minecraftSkin.signature, minecraftSkin.skin);
+				}
+			}
+		}.runTaskLater(PitSim.INSTANCE, 1L);
 
 		CitizensNavigator navigator = (CitizensNavigator) npcBoss.getNavigator();
 		navigator.getDefaultParameters()
@@ -115,11 +136,16 @@ public abstract class PitBoss {
 		}.runTaskTimer(PitSim.INSTANCE, 0L, 20);
 
 		targetingRunnbale = new BukkitRunnable() {
+			int count = 0;
 			@Override
 			public void run() {
-				bossTargetingSystem.pickTarget();
+				Player boss = (Player) npcBoss.getEntity();
+				if(boss != null) PitBoss.this.boss = boss;
+
+				if(count % 5 == 0) bossTargetingSystem.pickTarget();
+				count++;
 			}
-		}.runTaskTimer(PitSim.INSTANCE, 0L, 5);
+		}.runTaskTimer(PitSim.INSTANCE, 0L, 1);
 	}
 
 	public void kill(Player killer) {
@@ -130,11 +156,20 @@ public abstract class PitBoss {
 	public void remove() {
 		for(PitBossAbility ability : abilities) ability.disable();
 		npcBoss.destroy();
-		routineRunnable.cancel();
-		targetingRunnbale.cancel();
+		if(routineRunnable!= null) routineRunnable.cancel();
+		if(targetingRunnbale!= null) targetingRunnbale.cancel();
 		onDeath();
 		getSubLevel().bossDeath();
 		BossManager.pitBosses.remove(this);
+	}
+
+	public void alertDespawn() {
+		for(Map.Entry<UUID, Double> entry : damageMap.entrySet()) {
+			Player player = Bukkit.getPlayer(entry.getKey());
+			if(player == null) continue;
+			Misc.sendTitle(player, "&c&lBOSS DESPAWNED!", 60);
+			Misc.sendSubTitle(player, "&7No players nearby", 60);
+		}
 	}
 
 	public SubLevel getSubLevel() {

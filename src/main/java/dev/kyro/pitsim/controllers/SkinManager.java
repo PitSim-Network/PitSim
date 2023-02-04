@@ -44,11 +44,6 @@ public class SkinManager implements Listener {
 			SkinTrait skinTrait = CitizensAPI.getTraitFactory().getTrait(SkinTrait.class);
 			npc.addTrait(skinTrait);
 			skinTrait.setSkinName(skinName);
-
-//			Prints out the loaded skins information
-//			System.out.println();
-//			System.out.println(skinName.toUpperCase() + "(\"" + skinName + "\",\n\t\t\"" + skinTrait.getTexture() +
-//					"\",\n\t\t\"" + skinTrait.getSignature() + "\"\n),");
 		} else {
 			System.out.println("could not skin " + skinName + " npc as it is not spawned");
 		}

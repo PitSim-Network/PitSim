@@ -26,6 +26,7 @@ public class DropPool {
 	}
 
 	public void singleDistribution(Player killer) {
+		if(dropPool.isEmpty()) return;
 		ItemStack drop = getRandomDrop();
 		AUtil.giveItemSafely(killer, drop);
 	}
@@ -37,6 +38,7 @@ public class DropPool {
 	 */
 	public void groupDistribution(Player killer, Map<UUID, Double> damageMap) {
 //		TODO: This whole method should have weighted chances to give drops configurable by the constructor of the drop pool prob
+		if(dropPool.isEmpty()) return;
 		UUID topDamageDealer = null;
 		double topDamage = 0;
 		for(UUID uuid : damageMap.keySet()) {

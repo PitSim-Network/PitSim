@@ -1,10 +1,12 @@
 package dev.kyro.pitsim.adarkzone.bosses;
 
+import dev.kyro.pitsim.adarkzone.DropPool;
 import dev.kyro.pitsim.adarkzone.PitBoss;
 import dev.kyro.pitsim.adarkzone.SubLevelType;
 import dev.kyro.pitsim.adarkzone.abilities.KnockbackAbility;
 import dev.kyro.pitsim.adarkzone.abilities.StunAbility;
 import dev.kyro.pitsim.adarkzone.abilities.TrueDamageAbility;
+import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
 public class PitZombieBoss extends PitBoss {
@@ -26,18 +28,23 @@ public class PitZombieBoss extends PitBoss {
 	}
 
 	@Override
-	public String getName() {
-		return "&cZombie Boss";
+	public String getRawDisplayName() {
+		return "Zombie Boss";
+	}
+
+	@Override
+	public ChatColor getChatColor() {
+		return ChatColor.RED;
 	}
 
 	@Override
 	public String getSkinName() {
-		return "Zombie";
+		return "wiji1";
 	}
 
 	@Override
 	public int getMaxHealth() {
-		return 150;
+		return 20;
 	}
 
 	@Override
@@ -53,5 +60,10 @@ public class PitZombieBoss extends PitBoss {
 	@Override
 	public double getReachRanged() {
 		return 0;
+	}
+
+	@Override
+	public DropPool createDropPool() {
+		return new DropPool();
 	}
 }
