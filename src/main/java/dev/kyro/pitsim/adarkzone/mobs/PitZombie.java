@@ -7,12 +7,27 @@ import dev.kyro.pitsim.aitems.mobdrops.RottenFlesh;
 import dev.kyro.pitsim.controllers.ItemFactory;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
+import org.bukkit.entity.Creature;
 import org.bukkit.entity.EntityType;
+import org.bukkit.entity.Zombie;
 
 public class PitZombie extends PitMob {
 
 	public PitZombie(Location spawnLocation) {
 		super(spawnLocation);
+	}
+
+	@Override
+	public Creature createMob(Location spawnLocation) {
+		Zombie zombie = (Zombie) spawnLocation.getWorld().spawnEntity(spawnLocation, EntityType.ZOMBIE);
+		zombie.setCustomNameVisible(false);
+		zombie.setRemoveWhenFarAway(false);
+
+		zombie.setBaby(false);
+		zombie.setVillager(false);
+		zombie.setCanPickupItems(false);
+
+		return zombie;
 	}
 
 	@Override
@@ -23,11 +38,6 @@ public class PitZombie extends PitMob {
 	@Override
 	public ChatColor getChatColor() {
 		return ChatColor.DARK_GREEN;
-	}
-
-	@Override
-	public EntityType getEntityType() {
-		return EntityType.ZOMBIE;
 	}
 
 	@Override
@@ -48,7 +58,7 @@ public class PitZombie extends PitMob {
 
 	@Override
 	public PitNameTag createNameTag() {
-		return new PitNameTag(this, PitNameTag.NameTagType.NAME)
+		return new PitNameTag(this, PitNameTag.NameTagType.NAME_AND_HEALTH)
 				.addMob(PitNameTag.RidingType.SMALL_MAGMA_CUBE);
 	}
 }

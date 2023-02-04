@@ -4,7 +4,6 @@ import dev.kyro.pitsim.NameTaggable;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.entity.Creature;
-import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 
@@ -19,22 +18,24 @@ public abstract class PitMob implements NameTaggable {
 		spawn(spawnLocation);
 	}
 
+	public abstract Creature createMob(Location spawnLocation);
 	public abstract String getRawDisplayName();
 	public abstract ChatColor getChatColor();
-	public abstract EntityType getEntityType();
 	public abstract int getMaxHealth();
 	public abstract int getSpeedAmplifier();
 	public abstract DropPool createDropPool();
+
 	public abstract PitNameTag createNameTag();
 
 	public String getDisplayName() {
 		return getChatColor() + getRawDisplayName();
 	}
 
-	public void onSpawn() {}
-
 	public void spawn(Location spawnLocation) {
-		mob = (Creature) spawnLocation.getWorld().spawnEntity(spawnLocation, getEntityType());
+		mob = createMob(spawnLocation);
+		mob.setMaxHealth(getMaxHealth());
+		mob.setHealth(getMaxHealth());
+
 		dropPool = createDropPool();
 		nameTag = createNameTag();
 		nameTag.attach();
