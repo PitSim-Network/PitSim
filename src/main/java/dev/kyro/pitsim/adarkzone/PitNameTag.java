@@ -121,7 +121,7 @@ public class PitNameTag {
 			int maxHealth = (int) entity.getMaxHealth();
 			int length = (int) Math.ceil(Math.min(Math.max(maxHealth - 20, 0) + Math.sqrt(maxHealth), 20));
 			double percentFull = entity.getHealth() / entity.getMaxHealth();
-			String healthBar = AUtil.createProgressBar("|", chatColor, ChatColor.GRAY, length, percentFull);
+			String healthBar = AUtil.createProgressBar("|", ChatColor.RED, ChatColor.GRAY, length, percentFull);
 			return displayName + "&8 [" + healthBar + "&8]";
 		}
 		throw new RuntimeException();

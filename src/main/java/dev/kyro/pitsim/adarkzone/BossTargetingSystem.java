@@ -67,24 +67,27 @@ public class BossTargetingSystem {
 		}
 
 		List<Player> playersInRadius = new ArrayList<>();
-		for(Entity entity : pitBoss.boss.getNearbyEntities(radius, radius, radius)) {
-			if(!(entity instanceof Player)) continue;
-			Player player = (Player) entity;
-			if(VanishAPI.isInvisible(player)) continue;
-			playersInRadius.add(player);
-		}
-		if(playersInRadius.isEmpty()) {
-			for(Entity entity : pitBoss.boss.getNearbyEntities(radius * 3, radius * 3, radius * 3)) {
+		SubLevel subLevel = pitBoss.getSubLevel();
+		Location subLevelMiddle = subLevel.getMiddle();
+		double bossToMidDistance = pitBoss.boss.getLocation().distance(subLevelMiddle);
+		if(bossToMidDistance < subLevel.spawnRadius) {
+			for(Entity entity : pitBoss.boss.getNearbyEntities(radius, radius, radius)) {
 				if(!(entity instanceof Player)) continue;
 				Player player = (Player) entity;
 				if(VanishAPI.isInvisible(player)) continue;
 				playersInRadius.add(player);
 			}
+			if(playersInRadius.isEmpty()) {
+				for(Entity entity : pitBoss.boss.getNearbyEntities(radius * 3, radius * 3, radius * 3)) {
+					if(!(entity instanceof Player)) continue;
+					Player player = (Player) entity;
+					if(VanishAPI.isInvisible(player)) continue;
+					playersInRadius.add(player);
+				}
+			}
 		}
 		if(playersInRadius.isEmpty()) {
-			SubLevel subLevel = pitBoss.getSubLevel();
-			Location location = subLevel.getMiddle();
-			for(Entity entity : location.getWorld().getNearbyEntities(location, 35, 20, 35)) {
+			for(Entity entity : subLevelMiddle.getWorld().getNearbyEntities(subLevelMiddle, subLevel.spawnRadius, 20, subLevel.spawnRadius)) {
 				if(!(entity instanceof Player) || entity == pitBoss.boss) continue;
 				Player player = (Player) entity;
 				if(VanishAPI.isInvisible(player)) continue;
