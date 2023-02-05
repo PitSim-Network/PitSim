@@ -141,42 +141,45 @@ public class PlayerManager implements Listener {
 			}
 		}.runTaskTimer(PitSim.INSTANCE, Misc.getRunnableOffset(5), 20 * 60 * 5);
 
-		new BukkitRunnable() {
-			@Override
-			public void run() {
-				for(Player player : Bukkit.getOnlinePlayers()) {
-					if(!player.hasPermission("group.eternal") || MapManager.currentMap.world != player.getWorld() || VanishAPI.isInvisible(player))
-						continue;
-					if(SpawnManager.isInSpawn(player.getLocation())) continue;
-					List<Player> nearbyNons = new ArrayList<>();
-					for(Entity nearbyEntity : player.getNearbyEntities(4, 4, 4)) {
+		if(PitSim.getStatus().isPitsim()) {
+			new BukkitRunnable() {
+				@Override
+				public void run() {
+					for(Player player : Bukkit.getOnlinePlayers()) {
+						if(!player.hasPermission("group.eternal") || MapManager.currentMap.world != player.getWorld() || VanishAPI.isInvisible(player))
+							continue;
+						if(SpawnManager.isInSpawn(player.getLocation())) continue;
+						List<Player> nearbyNons = new ArrayList<>();
+						for(Entity nearbyEntity : player.getNearbyEntities(4, 4, 4)) {
 //						if(nearbyEntity.getWorld() == Bukkit.getWorld("tutorial")) continue;
-						if(!(nearbyEntity instanceof Player)) continue;
-						Player nearby = (Player) nearbyEntity;
-						if(NonManager.getNon(nearby) == null || SpawnManager.isInSpawn(nearby.getLocation())) continue;
-						if(nearby.getLocation().distance(player.getLocation()) > 4) continue;
-						nearbyNons.add(nearby);
-					}
-					if(!nearbyNons.isEmpty()) {
-						Collections.shuffle(nearbyNons);
-						Player target = nearbyNons.remove(0);
-
-						double damage;
-						if(Misc.isAirOrNull(player.getItemInHand())) {
-							damage = 1;
-						} else if(player.getItemInHand().getType() == Material.GOLD_SWORD) {
-							damage = 7.5;
-						} else {
-							damage = 1;
+							if(!(nearbyEntity instanceof Player)) continue;
+							Player nearby = (Player) nearbyEntity;
+							if(NonManager.getNon(nearby) == null || SpawnManager.isInSpawn(nearby.getLocation()))
+								continue;
+							if(nearby.getLocation().distance(player.getLocation()) > 4) continue;
+							nearbyNons.add(nearby);
 						}
-						if(Misc.isCritical(player)) damage *= 1.5;
+						if(!nearbyNons.isEmpty()) {
+							Collections.shuffle(nearbyNons);
+							Player target = nearbyNons.remove(0);
 
-						target.setNoDamageTicks(0);
-						target.damage(damage, player);
+							double damage;
+							if(Misc.isAirOrNull(player.getItemInHand())) {
+								damage = 1;
+							} else if(player.getItemInHand().getType() == Material.GOLD_SWORD) {
+								damage = 7.5;
+							} else {
+								damage = 1;
+							}
+							if(Misc.isCritical(player)) damage *= 1.5;
+
+							target.setNoDamageTicks(0);
+							target.damage(damage, player);
+						}
 					}
 				}
-			}
-		}.runTaskTimer(PitSim.INSTANCE, 0L, 18L);
+			}.runTaskTimer(PitSim.INSTANCE, 0L, 18L);
+		}
 	}
 
 	public static boolean isStaff(UUID uuid) {
