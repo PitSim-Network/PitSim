@@ -1,9 +1,6 @@
 package dev.kyro.pitsim.adarkzone.notdarkzone;
 
 public class Shield {
-	public static final int ACTIVE_REGEN_TICKS = 40;
-	public static final double ACTIVE_REGEN_AMOUNT = 1;
-
 	private double shieldAmount = getMax();
 	private boolean isActive = true;
 	private int ticksUntilReactivation;
@@ -68,6 +65,6 @@ public class Shield {
 
 	public int getInitialTicksUntilReactivation() {
 //		TODO: Implement
-		return 80;
+		return 200;
 	}
 }

@@ -90,12 +90,8 @@ public class PlayerManager implements Listener {
 //					if(effect != null) amount += (Double) effect.potionType.getPotency(effect.potency);
 					amount *= (1 - reduction);
 
-					if(pitPlayer.mana + amount > pitPlayer.getMaxMana()) {
-						pitPlayer.updateXPBar();
-						continue;
-					}
+					if(pitPlayer.mana + amount > pitPlayer.getMaxMana()) continue;
 					pitPlayer.mana += amount;
-					pitPlayer.updateXPBar();
 				}
 			}
 		}.runTaskTimerAsynchronously(PitSim.INSTANCE, 0L, 1L);

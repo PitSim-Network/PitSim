@@ -8,6 +8,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.scheduler.BukkitRunnable;
 
 public class ShieldManager implements Listener {
+	public static final double ACTIVE_REGEN_AMOUNT = 0.02;
 
 	static {
 		new BukkitRunnable() {
@@ -17,11 +18,11 @@ public class ShieldManager implements Listener {
 				for(Player onlinePlayer : Bukkit.getOnlinePlayers()) {
 					PitPlayer pitPlayer = PitPlayer.getPitPlayer(onlinePlayer);
 					if(pitPlayer.shield.isActive()) {
-						if(count % Shield.ACTIVE_REGEN_TICKS != 0) continue;
-						pitPlayer.shield.addShield(Shield.ACTIVE_REGEN_AMOUNT);
+						pitPlayer.shield.addShield(ACTIVE_REGEN_AMOUNT);
 					} else {
 						pitPlayer.shield.regenerateTick();
 					}
+					pitPlayer.updateXPBar();
 				}
 				count++;
 			}
