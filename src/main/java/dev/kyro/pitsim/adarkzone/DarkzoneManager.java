@@ -16,6 +16,7 @@ import dev.kyro.pitsim.misc.Sounds;
 import org.bukkit.Effect;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -24,6 +25,7 @@ import org.bukkit.event.block.Action;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityTargetEvent;
 import org.bukkit.event.entity.EntityTargetLivingEntityEvent;
+import org.bukkit.event.entity.SpawnerSpawnEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -37,7 +39,7 @@ public class DarkzoneManager implements Listener {
 
 	public DarkzoneManager() {
 		SubLevel zombieSubLevel = new SubLevel(
-				SubLevelType.ZOMBIE, PitZombieBoss.class, PitZombie.class,
+				SubLevelType.ZOMBIE, PitZombieBoss.class, PitZombie.class, EntityType.ZOMBIE,
 				new Location(MapManager.getDarkzone(), 327, 67, -143),
 				15, 17, 12);
 		zombieSubLevel.setSpawnItemClass(RottenFlesh.class);
@@ -50,6 +52,11 @@ public class DarkzoneManager implements Listener {
 				for(SubLevel subLevel : subLevels) subLevel.tick();
 			}
 		}.runTaskTimer(PitSim.INSTANCE, 0L, 5);
+	}
+
+	@EventHandler
+	public void onSpawn(SpawnerSpawnEvent event) {
+		event.setCancelled(true);
 	}
 
 	@EventHandler

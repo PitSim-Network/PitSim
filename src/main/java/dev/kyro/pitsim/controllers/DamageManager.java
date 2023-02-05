@@ -139,14 +139,15 @@ public class DamageManager implements Listener {
 			for(SubLevel subLevel : DarkzoneManager.subLevels) {
 				for(PitMob pitMob : subLevel.mobs) {
 					for(LivingEntity entity : pitMob.getNameTag().getEntities()) {
-						if(defender != entity) continue;
-						event.setCancelled(true);
-
-//						Event newEvent = new EntityDamageByEntityEvent(attacker, mob.getMob(), EntityDamageEvent.DamageCause.ENTITY_ATTACK, event.getDamage());
-//						Bukkit.getPluginManager().callEvent(newEvent);
-						transferHit(attacker, event.getDamager(), pitMob.getMob(), event.getDamage());
-//						if(event.getDamager() instanceof Projectile) event.getDamager().remove();
-						return;
+						if(entity == defender) {
+							event.setCancelled(true);
+							transferHit(attacker, event.getDamager(), pitMob.getMob(), event.getDamage());
+							return;
+						}
+						if(entity == attacker) {
+							event.setCancelled(true);
+							return;
+						}
 					}
 				}
 			}

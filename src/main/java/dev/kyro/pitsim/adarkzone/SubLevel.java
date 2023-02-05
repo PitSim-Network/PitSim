@@ -11,6 +11,7 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.CreatureSpawner;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 
 import java.lang.reflect.Constructor;
@@ -27,6 +28,7 @@ public class SubLevel {
 //	Boss related fields
 	public Class<? extends PitBoss> bossClass;
 	public PitBoss pitBoss;
+	private EntityType spawnerMob;
 	private boolean isBossSpawned = false;
 	private Class<? extends StaticPitItem> spawnItemClass;
 	private int currentDrops = 0;
@@ -39,10 +41,11 @@ public class SubLevel {
 	public int spawnRadius;
 	public MobTargetingSystem mobTargetingSystem = new MobTargetingSystem(this);
 
-	public SubLevel(SubLevelType subLevelType, Class<? extends PitBoss> bossClass, Class<? extends PitMob> mobClass,
+	public SubLevel(SubLevelType subLevelType, Class<? extends PitBoss> bossClass, Class<? extends PitMob> mobClass, EntityType spawnerMob,
 					Location middle, int maxMobs, int spawnRadius, int requiredDropsToSpawn) {
 		this.subLevelType = subLevelType;
 		this.bossClass = bossClass;
+		this.spawnerMob = spawnerMob;
 		this.mobClass = mobClass;
 		this.middle = middle;
 		this.maxMobs = maxMobs;
@@ -93,7 +96,8 @@ public class SubLevel {
 		Block spawnerBlock = middle.getBlock();
 		spawnerBlock.setType(Material.MOB_SPAWNER);
 		CreatureSpawner spawner = (CreatureSpawner) spawnerBlock.getState();
-//		spawner.setSpawnedType();
+		spawner.setSpawnedType(spawnerMob);
+		spawner.update();
 	}
 
 	public void createHologram() {
