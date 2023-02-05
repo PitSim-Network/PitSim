@@ -87,7 +87,7 @@ public class FirestoreManager {
 
 		public static Collection getCollection(String serverName) {
 			for(Collection value : values()) {
-				if(value.refName.contains(serverName)) return value;
+				if(serverName.contains(value.refName)) return value;
 			}
 			return null;
 		}
