@@ -1,18 +1,30 @@
 package dev.kyro.pitsim.controllers;
 
+import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.adarkzone.DarkzoneManager;
+import dev.kyro.pitsim.adarkzone.PitMob;
 import dev.kyro.pitsim.controllers.objects.Non;
 import dev.kyro.pitsim.events.AttackEvent;
+import dev.kyro.pitsim.events.KillEvent;
 import dev.kyro.pitsim.misc.Misc;
 import me.clip.placeholderapi.PlaceholderAPI;
-import net.minecraft.server.v1_8_R3.EntityPlayer;
+import net.minecraft.server.v1_8_R3.*;
 import org.bukkit.ChatColor;
+import org.bukkit.Location;
+import org.bukkit.craftbukkit.v1_8_R3.CraftWorld;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.util.Vector;
+
+import java.text.DecimalFormat;
+import java.util.Random;
 
 public class DamageIndicator implements Listener {
+	public static DecimalFormat decimalFormat = new DecimalFormat("0");
 
 	//    @EventHandler(priority = EventPriority.MONITOR)
 	public static void onAttack(AttackEvent.Apply attackEvent) {
@@ -21,6 +33,12 @@ public class DamageIndicator implements Listener {
 
 		Player attacker = attackEvent.getAttackerPlayer();
 		LivingEntity defender = attackEvent.getDefender();
+
+		PitMob pitDefender = DarkzoneManager.getPitMob(defender);
+		if(pitDefender != null) {
+			createDamageStand(attacker, pitDefender, attackEvent.getEvent().getFinalDamage());
+			return;
+		}
 
 		EntityPlayer entityPlayer = null;
 		if(defender instanceof Player) entityPlayer = ((CraftPlayer) defender).getHandle();
@@ -79,7 +97,56 @@ public class DamageIndicator implements Listener {
 		Misc.sendActionBar(attacker, output.toString());
 	}
 
+	@EventHandler
+	public void onKill(KillEvent killEvent) {
+		if(!PlayerManager.isRealPlayer(killEvent.getKillerPlayer())) return;
+		PitMob pitDead = DarkzoneManager.getPitMob(killEvent.getDead());
+		if(pitDead == null) return;
+		createDamageStand(killEvent.getKillerPlayer(), pitDead, killEvent.getEvent().getFinalDamage());
+	}
+
+	public static void createDamageStand(Player attacker, PitMob defenderMob, double damage) {
+		LivingEntity defender = defenderMob.getMob();
+
+		Vector vector = defender.getLocation().toVector().subtract(attacker.getLocation().toVector()).normalize().setY(0).multiply(0.3);
+		Location displayLocation = defender.getLocation().add(0, defenderMob.getOffsetHeight(), 0).subtract(vector)
+				.add(Misc.randomOffset(0.7), Misc.randomOffset(0.7), Misc.randomOffset(0.7));
+
+		WorldServer server = ((CraftWorld) defender.getWorld()).getHandle();
+		EntityArmorStand stand = new EntityArmorStand(server);
+
+		stand.setLocation(displayLocation.getX(), 1000, displayLocation.getZ(), 0, 0);
+		stand.setCustomName(ChatColor.translateAlternateColorCodes('&', "&c" + Misc.getHearts(damage)));
+		stand.setCustomNameVisible(true);
+		stand.setGravity(false);
+		stand.setSmall(true);
+		stand.setInvisible(true);
+
+		NBTTagCompound compoundTag = new NBTTagCompound();
+		stand.c(compoundTag);
+		compoundTag.setBoolean("Marker", true);
+		stand.f(compoundTag);
+
+		PacketPlayOutSpawnEntityLiving spawnPacket = new PacketPlayOutSpawnEntityLiving(stand);
+		((CraftPlayer) attacker).getHandle().playerConnection.sendPacket(spawnPacket);
+		PacketPlayOutEntityTeleport teleportPacket = new PacketPlayOutEntityTeleport(stand.getId(), fromFixedPoint(displayLocation.getX()),
+				fromFixedPoint(displayLocation.getY()), fromFixedPoint(displayLocation.getZ()), (byte) 0, (byte) 0, false);
+		((CraftPlayer) attacker).getHandle().playerConnection.sendPacket(teleportPacket);
+
+		new BukkitRunnable() {
+			@Override
+			public void run() {
+				PacketPlayOutEntityDestroy destroyPacket = new PacketPlayOutEntityDestroy(stand.getId());
+				((CraftPlayer) attacker).getHandle().playerConnection.sendPacket(destroyPacket);
+			}
+		}.runTaskLater(PitSim.INSTANCE, 20 + new Random().nextInt(11));
+	}
+
 	public static int getNum(LivingEntity entity) {
 		return Math.max(1, (int) (2 * (entity.getMaxHealth() / 20)));
+	}
+
+	public static int fromFixedPoint(double fixedPoint) {
+		return (int) (fixedPoint * 32.0);
 	}
 }

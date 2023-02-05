@@ -28,6 +28,7 @@ public abstract class PitMob implements NameTaggable {
 	public abstract int getMaxHealth();
 	public abstract int getSpeedAmplifier();
 	public abstract DropPool createDropPool();
+	public abstract double getOffsetHeight(); // offset height for spawning armor stand damage indicators
 
 	public abstract PitNameTag createNameTag();
 

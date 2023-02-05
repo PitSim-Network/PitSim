@@ -8,6 +8,7 @@ import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,6 +16,9 @@ import java.util.Map;
 
 public class KillEvent extends Event {
 	private static final HandlerList handlers = new HandlerList();
+
+	private EntityDamageByEntityEvent event;
+	private AttackEvent attackEvent;
 
 	private LivingEntity killer;
 	private LivingEntity dead;
@@ -39,6 +43,8 @@ public class KillEvent extends Event {
 	public boolean isLuckyKill = false;
 
 	public KillEvent(AttackEvent attackEvent, LivingEntity killer, LivingEntity dead, boolean exeDeath) {
+		this.attackEvent = attackEvent;
+		this.event = attackEvent.getEvent();
 		this.killerEnchantMap = killer == attackEvent.getAttacker() ? attackEvent.getAttackerEnchantMap() : attackEvent.getDefenderEnchantMap();
 		this.deadEnchantMap = killer == attackEvent.getAttacker() ? attackEvent.getDefenderEnchantMap() : attackEvent.getAttackerEnchantMap();
 		this.killer = killer;
@@ -142,5 +148,13 @@ public class KillEvent extends Event {
 
 	public boolean isExeDeath() {
 		return exeDeath;
+	}
+
+	public EntityDamageByEntityEvent getEvent() {
+		return event;
+	}
+
+	public AttackEvent getAttackEvent() {
+		return attackEvent;
 	}
 }

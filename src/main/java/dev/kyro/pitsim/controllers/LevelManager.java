@@ -18,10 +18,6 @@ import org.bukkit.entity.Player;
 
 public class LevelManager {
 
-	static {
-
-	}
-
 	public static void addXP(Player player, long xp) {
 		if(!(NonManager.getNon(player) == null)) return;
 		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);

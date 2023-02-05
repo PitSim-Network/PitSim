@@ -67,6 +67,11 @@ public class PitZombie extends PitMob {
 	}
 
 	@Override
+	public double getOffsetHeight() {
+		return 1.5;
+	}
+
+	@Override
 	public PitNameTag createNameTag() {
 		return new PitNameTag(this, PitNameTag.NameTagType.NAME_AND_HEALTH)
 				.addMob(PitNameTag.RidingType.SMALL_MAGMA_CUBE);
