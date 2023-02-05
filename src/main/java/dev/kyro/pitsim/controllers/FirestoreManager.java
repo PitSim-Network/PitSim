@@ -16,21 +16,16 @@ import java.io.InputStream;
 public class FirestoreManager {
 	public static Firestore FIRESTORE;
 
-	public static String SERVER_COLLECTION = PitSim.serverName.contains("dev") ? "dev" : "pitsim";
+	public static final String SERVER_COLLECTION = Collection.valueOf(PitSim.serverName).refName;
 	public static final String CONFIG_DOCUMENT = "config";
 	public static final String AUCTION_DOCUMENT = "auction";
 
-	public static String PLAYERDATA_COLLECTION = PitSim.serverName.contains("dev") ? "dev-playerdata" : "pitsim-playerdata";
+	public static final String PLAYERDATA_COLLECTION = Collection.valueOf(PitSim.serverName).refName + "-playerdata";
 
 	public static Config CONFIG;
 	public static AuctionData AUCTION;
 
 	public static void init() {
-		if(PitSim.serverName.equalsIgnoreCase("dev2")) {
-			SERVER_COLLECTION = "kyro-pitsim";
-			PLAYERDATA_COLLECTION = "kyro-pitsim-playerdata";
-		}
-
 		try {
 			System.out.println("Loading PitSim database");
 			InputStream serviceAccount = new FileResourcesUtils().getFileFromResourceAsStream("google-key.json");
@@ -77,5 +72,23 @@ public class FirestoreManager {
 			PitSim.INSTANCE.getServer().getPluginManager().disablePlugin(PitSim.INSTANCE);
 		}
 		System.out.println("PitSim data loaded");
+	}
+
+	public enum Collection {
+		DEV("dev"),
+		KYRO("kyro"),
+		PITSIM("pitsim");
+
+		public String refName;
+		Collection(String refName) {
+			this.refName = refName;
+		}
+
+		public Collection getCollection(String serverName) {
+			for(Collection value : values()) {
+				if(value.refName.contains(serverName)) return value;
+			}
+			return null;
+		}
 	}
 }
