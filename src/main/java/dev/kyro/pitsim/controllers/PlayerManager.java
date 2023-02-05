@@ -134,7 +134,7 @@ public class PlayerManager implements Listener {
 			}
 		}.runTaskTimer(PitSim.INSTANCE, Misc.getRunnableOffset(5), 20 * 60 * 5);
 
-		if(PitSim.getStatus().isPitsim()) {
+		if(PitSim.getStatus().isOverworld()) {
 			new BukkitRunnable() {
 				@Override
 				public void run() {

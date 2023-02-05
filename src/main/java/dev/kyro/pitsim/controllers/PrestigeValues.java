@@ -147,7 +147,7 @@ public class PrestigeValues {
 		prestigeMap.put(8, new PrestigeInfo(8, 4.5, 180_000, 0, 13, "&e"));
 		prestigeMap.put(9, new PrestigeInfo(9, 5, 200_000, 0, 14, "&e")); //doubledeath
 		prestigeMap.put(10, new PrestigeInfo(10, 6, 300_000, 1, 14, "&6")); //firststrike
-		prestigeMap.put(11, new PrestigeInfo(11, 7, 400_000, 5, 14, "&6")); //report access
+		prestigeMap.put(11, new PrestigeInfo(11, 7, 400_000, 5, 14, "&6"));
 		prestigeMap.put(12, new PrestigeInfo(12, 8, 500_000, 10, 15, "&6")); //lifeinsurance
 		prestigeMap.put(13, new PrestigeInfo(13, 10, 650_000, 15, 15, "&6")); //beast
 		prestigeMap.put(14, new PrestigeInfo(14, 12, 800_000, 20, 16, "&6")); //counter-janitor

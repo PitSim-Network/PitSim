@@ -141,8 +141,6 @@ public class SettingsPanel extends AGUIPanel {
 		String rank = "&7Current rank: %luckperms_groups%";
 		headlore.add(ChatColor.translateAlternateColorCodes('&', PlaceholderAPI.setPlaceholders(player, rank)));
 		headlore.add("");
-		if(player.hasPermission("reportex.use")) headlore.add(ChatColor.GREEN + "Access to /report");
-		else headlore.add(ChatColor.RED + "Access to /report");
 		if(player.hasPermission("pitsim.show")) headlore.add(ChatColor.GREEN + "Access to /show");
 		else headlore.add(ChatColor.RED + "Access to /show");
 		if(player.hasPermission("pitsim.chat")) headlore.add(ChatColor.GREEN + "Access to /chat");

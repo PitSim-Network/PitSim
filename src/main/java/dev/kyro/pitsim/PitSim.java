@@ -188,9 +188,9 @@ public class PitSim extends JavaPlugin {
 			}
 		}.runTaskLater(PitSim.INSTANCE, 10);
 
-		if(status.isPitsim()) registerMaps();
+		if(status.isOverworld()) registerMaps();
 
-		if(getStatus().isPitSim()) NonManager.init();
+		if(getStatus().isOverworld()) NonManager.init();
 		SignPrompt.registerSignUpdateListener();
 		TempBlockHelper.init();
 		ReloadManager.init();
@@ -227,8 +227,8 @@ public class PitSim extends JavaPlugin {
 		registerKillstreaks();
 		registerMegastreaks();
 		registerPassQuests();
-		if(getStatus().isPitSim()) registerLeaderboards();
-		if(getStatus().isPitSim()) LeaderboardManager.init();
+		if(getStatus().isOverworld()) registerLeaderboards();
+		if(getStatus().isOverworld()) LeaderboardManager.init();
 
 		ArcticAPI.setupPlaceholderAPI("pitsim");
 		AHook.registerPlaceholder(new PrefixPlaceholder());
@@ -524,7 +524,7 @@ public class PitSim extends JavaPlugin {
 			NPCManager.registerNPC(new AuctioneerNPC(Collections.singletonList(MapManager.getDarkzone())));
 		}
 
-		if(status.isPitSim()) {
+		if(status.isOverworld()) {
 			NPCManager.registerNPC(new PerkNPC(Collections.singletonList(MapManager.currentMap.world)));
 			NPCManager.registerNPC(new PassNPC(Collections.singletonList(MapManager.currentMap.world)));
 			NPCManager.registerNPC(new PrestigeNPC(Collections.singletonList(MapManager.currentMap.world)));
@@ -1031,7 +1031,7 @@ public class PitSim extends JavaPlugin {
 			return this == DARKZONE || this == ALL;
 		}
 
-		public boolean isPitSim() {
+		public boolean isOverworld() {
 			return this == OVERWORLD || this == ALL;
 		}
 
