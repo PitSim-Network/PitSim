@@ -26,7 +26,7 @@ public class BreadDealer extends RenownUpgrade {
 	}
 
 	@Override
-	public ItemStack getDisplayItem(Player player, boolean isCustomPanel) {
+	public ItemStack getDisplayItem(Player player) {
 		int tier = UpgradeManager.getTier(player, this);
 		int retainPercent = tier * getPercentPerTier();
 		

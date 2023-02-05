@@ -1,9 +1,7 @@
 package dev.kyro.pitsim.upgrades;
 
-import dev.kyro.arcticapi.gui.AGUIPanel;
 import dev.kyro.pitsim.controllers.UpgradeManager;
 import dev.kyro.pitsim.controllers.objects.RenownUpgrade;
-import dev.kyro.pitsim.inventories.RenownShopGUI;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -19,7 +17,7 @@ public class Withercraft extends RenownUpgrade {
 	}
 
 	@Override
-	public ItemStack getDisplayItem(Player player, boolean isCustomPanel) {
+	public ItemStack getDisplayItem(Player player) {
 		ItemStack item = new ItemStack(Material.COAL);
 		ItemMeta meta = item.getItemMeta();
 		meta.setDisplayName(UpgradeManager.itemNameString(this, player));
@@ -28,7 +26,7 @@ public class Withercraft extends RenownUpgrade {
 		lore.add(ChatColor.DARK_PURPLE + "Chunk of Vile " + ChatColor.GRAY + "and sacrifice");
 		lore.add(ChatColor.GRAY + "it to repair a life on a ");
 		lore.add(ChatColor.DARK_AQUA + "Jewel " + ChatColor.GRAY + "item.");
-		meta.setLore(UpgradeManager.loreBuilder(this, player, lore, isCustomPanel));
+		meta.setLore(UpgradeManager.loreBuilder(this, player, lore, true));
 		item.setItemMeta(meta);
 		return item;
 	}

@@ -1,6 +1,5 @@
 package dev.kyro.pitsim.upgrades;
 
-import dev.kyro.arcticapi.gui.AGUIPanel;
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.arcticapi.misc.AUtil;
 import dev.kyro.pitsim.controllers.UpgradeManager;
@@ -26,7 +25,7 @@ public class DivineIntervention extends RenownUpgrade {
 	}
 
 	@Override
-	public ItemStack getDisplayItem(Player player, boolean isCustomPanel) {
+	public ItemStack getDisplayItem(Player player) {
 		ItemStack item = new ItemStack(Material.QUARTZ_STAIRS);
 		ItemMeta meta = item.getItemMeta();
 		meta.setDisplayName(UpgradeManager.itemNameString(this, player));
@@ -39,7 +38,7 @@ public class DivineIntervention extends RenownUpgrade {
 		lore.add(ChatColor.GRAY + "Each Tier:");
 		lore.add(ChatColor.YELLOW + "+5% chance " + ChatColor.GRAY + "to keep your");
 		lore.add(ChatColor.GRAY + "inventory on death.");
-		meta.setLore(UpgradeManager.loreBuilder(this, player, lore, isCustomPanel));
+		meta.setLore(UpgradeManager.loreBuilder(this, player, lore, false));
 		item.setItemMeta(meta);
 		return item;
 	}

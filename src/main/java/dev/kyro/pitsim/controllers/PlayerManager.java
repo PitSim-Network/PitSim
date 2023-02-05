@@ -130,17 +130,17 @@ public class PlayerManager implements Listener {
 			}
 		}.runTaskTimer(PitSim.INSTANCE, Misc.getRunnableOffset(5), 20 * 60 * 5);
 
-		if(PitSim.status.isPitSim()) {
+		if(PitSim.getStatus().isOverworld()) {
 			new BukkitRunnable() {
 				@Override
 				public void run() {
-					for(Player player : Bukkit.getOnlinePlayers()) {
-						if(!player.hasPermission("group.eternal") || MapManager.currentMap.world != player.getWorld() || VanishAPI.isInvisible(player))
-							continue;
-						if(SpawnManager.isInSpawn(player.getLocation())) continue;
-						List<Player> nearbyNons = new ArrayList<>();
-						for(Entity nearbyEntity : player.getNearbyEntities(4, 4, 4)) {
-//						if(nearbyEntity.getWorld() == Bukkit.getWorld("tutorial")) continue;
+						for(Player player : Bukkit.getOnlinePlayers()) {
+							if(!player.hasPermission("group.eternal") || MapManager.currentMap.world != player.getWorld() || VanishAPI.isInvisible(player))
+								continue;
+							if(SpawnManager.isInSpawn(player.getLocation())) continue;
+							List<Player> nearbyNons = new ArrayList<>();
+							for(Entity nearbyEntity : player.getNearbyEntities(4, 4, 4)) {
+	//						if(nearbyEntity.getWorld() == Bukkit.getWorld("tutorial")) continue;
 							if(!(nearbyEntity instanceof Player)) continue;
 							Player nearby = (Player) nearbyEntity;
 							if(NonManager.getNon(nearby) == null || SpawnManager.isInSpawn(nearby.getLocation())) continue;
@@ -568,6 +568,10 @@ public class PlayerManager implements Listener {
 		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
 		event.setJoinMessage(null);
 
+		if(Misc.isKyro(player.getUniqueId()) && PitSim.anticheat instanceof GrimManager) {
+			Bukkit.getServer().dispatchCommand(player, "grim alerts");
+		}
+
 		FeatherBoardAPI.resetDefaultScoreboard(player);
 		if(MapManager.inDarkzone(player)) {
 			FeatherBoardAPI.showScoreboard(player, "darkzone");
@@ -707,14 +711,17 @@ public class PlayerManager implements Listener {
 		}
 
 		if(pitPlayer.soulReturn > 0) {
-			int souls = pitPlayer.soulReturn;
-			PitPlayer.getPitPlayer(player).taintedSouls += souls;
 			new BukkitRunnable() {
 				@Override
 				public void run() {
-					AOutput.send(player, "&5&lDARK AUCTION!&7 Received &f" + souls + " Tainted Souls");
-					Sounds.BOOSTER_REMIND.play(player);
+					if(!player.isOnline()) return;
+
+					int soulReturn = pitPlayer.soulReturn;
+					pitPlayer.taintedSouls += soulReturn;
 					pitPlayer.soulReturn = 0;
+
+					AOutput.send(player, "&5&lDARK AUCTION! &7Received &f" + soulReturn + " Tainted Souls&7.");
+					Sounds.BOOSTER_REMIND.play(player);
 				}
 			}.runTaskLater(PitSim.INSTANCE, 10);
 		}
@@ -762,6 +769,17 @@ public class PlayerManager implements Listener {
 		if(toggledPlayers.contains(event.getPlayer())) return;
 		event.setCancelled(true);
 		AOutput.error(event.getPlayer(), "&CBlock placing disabled, run /pitsim bypass to toggle");
+	}
+
+	@EventHandler
+	public void onInteract(PlayerInteractEvent event) {
+		if(!(event.getAction() == Action.RIGHT_CLICK_BLOCK)) return;
+		if(event.getClickedBlock().getType() != Material.TRAP_DOOR) return;
+
+		if(!event.getPlayer().isOp()) return;
+		if(toggledPlayers.contains(event.getPlayer())) return;
+		event.setCancelled(true);
+		AOutput.error(event.getPlayer(), "&CBlock interactions disabled, run /pitsim bypass to toggle");
 	}
 
 	@EventHandler

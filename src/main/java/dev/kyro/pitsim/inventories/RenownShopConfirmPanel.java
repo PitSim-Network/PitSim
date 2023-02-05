@@ -4,13 +4,10 @@ import dev.kyro.arcticapi.gui.AGUI;
 import dev.kyro.arcticapi.gui.AGUIPanel;
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.arcticapi.misc.AUtil;
-import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.controllers.UpgradeManager;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.controllers.objects.RenownUpgrade;
 import dev.kyro.pitsim.misc.Sounds;
-import net.luckperms.api.model.user.UserManager;
-import net.luckperms.api.node.Node;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.event.inventory.InventoryClickEvent;
@@ -72,16 +69,6 @@ public class RenownShopConfirmPanel extends AGUIPanel {
 				Sounds.RENOWN_SHOP_PURCHASE.play(player);
 
 				if(upgrade.refName.equals("UBER_INCREASE")) pitPlayer.dailyUbersLeft++;
-
-				if(upgrade.refName.equals("REPORT_ACCESS")) {
-					UserManager userManager = PitSim.LUCKPERMS.getUserManager();
-
-					Node node = Node.builder("group.reports")
-							.value(true)
-							.build();
-
-					userManager.modifyUser(player.getUniqueId(), modifyUser -> modifyUser.data().add(node));
-				}
 			}
 
 			if(slot == 15) {

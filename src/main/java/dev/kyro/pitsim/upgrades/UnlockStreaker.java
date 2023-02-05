@@ -1,7 +1,6 @@
 package dev.kyro.pitsim.upgrades;
 
 import dev.kyro.arcticapi.builders.ALoreBuilder;
-import dev.kyro.arcticapi.gui.AGUIPanel;
 import dev.kyro.arcticapi.misc.AUtil;
 import dev.kyro.pitsim.controllers.UpgradeManager;
 import dev.kyro.pitsim.controllers.objects.RenownUpgrade;
@@ -20,7 +19,7 @@ public class UnlockStreaker extends RenownUpgrade {
 	}
 
 	@Override
-	public ItemStack getDisplayItem(Player player, boolean isCustomPanel) {
+	public ItemStack getDisplayItem(Player player) {
 		ItemStack item = new ItemStack(Material.WHEAT);
 		ItemMeta meta = item.getItemMeta();
 		meta.setDisplayName(UpgradeManager.itemNameString(this, player));
@@ -41,7 +40,7 @@ public class UnlockStreaker extends RenownUpgrade {
 		List<String> newLore = new ALoreBuilder("&7Required prestige: &e" + AUtil.toRoman(this.prestigeReq), "", "&eStreaker",
 				"&7Upon reaching your &emegastreak&7,", "&7gain &bmore XP &7the faster you hit mega", "&7Passively gain &b+80 max XP").getLore();
 
-		meta.setLore(UpgradeManager.loreBuilder(this, player, newLore, isCustomPanel));
+		meta.setLore(UpgradeManager.loreBuilder(this, player, newLore, false));
 		item.setItemMeta(meta);
 		return item;
 	}

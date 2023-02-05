@@ -1,6 +1,5 @@
 package dev.kyro.pitsim.upgrades;
 
-import dev.kyro.arcticapi.gui.AGUIPanel;
 import dev.kyro.arcticapi.misc.AUtil;
 import dev.kyro.pitsim.controllers.UpgradeManager;
 import dev.kyro.pitsim.controllers.objects.RenownUpgrade;
@@ -22,7 +21,7 @@ public class XPBoost extends RenownUpgrade {
 	}
 
 	@Override
-	public ItemStack getDisplayItem(Player player, boolean isCustomPanel) {
+	public ItemStack getDisplayItem(Player player) {
 		ItemStack item = new ItemStack(Material.EXP_BOTTLE);
 		ItemMeta meta = item.getItemMeta();
 		meta.setDisplayName(UpgradeManager.itemNameString(this, player));
@@ -34,7 +33,7 @@ public class XPBoost extends RenownUpgrade {
 		if(UpgradeManager.hasUpgrade(player, this)) lore.add("");
 		lore.add(ChatColor.GRAY + "Each Tier:");
 		lore.add(ChatColor.GRAY + "Earn " + ChatColor.AQUA + "+5 XP " + ChatColor.GRAY + "from kills.");
-		meta.setLore(UpgradeManager.loreBuilder(this, player, lore, isCustomPanel));
+		meta.setLore(UpgradeManager.loreBuilder(this, player, lore, false));
 		item.setItemMeta(meta);
 		return item;
 	}
