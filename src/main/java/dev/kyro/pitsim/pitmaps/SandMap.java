@@ -33,7 +33,7 @@ public class SandMap extends PitMap {
 	}
 
 	@Override
-	public Location getDarkzoneJoinSpawn() {
+	public Location getFromDarkzoneSpawn() {
 		return new Location(world, -36, 31, 1, -90, 0);
 	}
 

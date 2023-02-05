@@ -33,7 +33,7 @@ public class BiomesMap extends PitMap {
 	}
 
 	@Override
-	public Location getDarkzoneJoinSpawn() {
+	public Location getFromDarkzoneSpawn() {
 		return new Location(world, -67, 72, 3, -90, 0);
 	}
 

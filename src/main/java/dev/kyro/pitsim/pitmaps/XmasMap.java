@@ -46,7 +46,7 @@ public class XmasMap extends PitMap {
 	}
 
 	@Override
-	public Location getDarkzoneJoinSpawn() {
+	public Location getFromDarkzoneSpawn() {
 		return new Location(world, -56, 73, 0.5, -90, 0);
 	}
 
