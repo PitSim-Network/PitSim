@@ -138,7 +138,7 @@ public class ShardHunterPanel extends AGUIPanel {
 		gem.setItemMeta(meta);
 
 		getInventory().setItem(11, gem);
-		getInventory().setItem(15, upgrade.getDisplayItem(player, true));
+		getInventory().setItem(15, upgrade.getDisplayItem(player));
 
 		ItemStack back = new ItemStack(Material.ARROW);
 		ItemMeta backMeta = back.getItemMeta();

@@ -24,7 +24,7 @@ public class LifeInsurance extends RenownUpgrade {
 	}
 
 	@Override
-	public ItemStack getDisplayItem(Player player, boolean isCustomPanel) {
+	public ItemStack getDisplayItem(Player player) {
 		ItemStack item = new ItemStack(Material.BOOK_AND_QUILL);
 		ItemMeta meta = item.getItemMeta();
 		meta.setDisplayName(UpgradeManager.itemNameString(this, player));
@@ -41,7 +41,7 @@ public class LifeInsurance extends RenownUpgrade {
 		lore.add(ChatColor.translateAlternateColorCodes('&', "&eTier II: &f450 &dUber"));
 		lore.add(ChatColor.translateAlternateColorCodes('&', "&eTier III: &f400 &dUber"));
 
-		meta.setLore(UpgradeManager.loreBuilder(this, player, lore, isCustomPanel));
+		meta.setLore(UpgradeManager.loreBuilder(this, player, lore, false));
 		item.setItemMeta(meta);
 		return item;
 	}

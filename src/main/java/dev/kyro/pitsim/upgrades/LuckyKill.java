@@ -31,7 +31,7 @@ public class LuckyKill extends RenownUpgrade {
 	}
 
 	@Override
-	public ItemStack getDisplayItem(Player player, boolean isCustomPanel) {
+	public ItemStack getDisplayItem(Player player) {
 		ItemStack item = new ItemStack(Material.NAME_TAG);
 		ItemMeta meta = item.getItemMeta();
 		meta.setDisplayName(UpgradeManager.itemNameString(this, player));
@@ -48,7 +48,7 @@ public class LuckyKill extends RenownUpgrade {
 		lore.add(ChatColor.translateAlternateColorCodes('&', "&7player kill to make it a &dLucky Kill&7."));
 		lore.add(ChatColor.translateAlternateColorCodes('&', "&7(Triples all kill rewards including"));
 		lore.add(ChatColor.translateAlternateColorCodes('&', "&7bounties and kill requirement)"));
-		meta.setLore(UpgradeManager.loreBuilder(this, player, lore, isCustomPanel));
+		meta.setLore(UpgradeManager.loreBuilder(this, player, lore, false));
 		item.setItemMeta(meta);
 		return item;
 	}

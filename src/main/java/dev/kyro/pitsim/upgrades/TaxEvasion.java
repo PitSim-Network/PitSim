@@ -19,7 +19,7 @@ public class TaxEvasion extends RenownUpgrade {
 	}
 
 	@Override
-	public ItemStack getDisplayItem(Player player, boolean isCustomPanel) {
+	public ItemStack getDisplayItem(Player player) {
 		ItemStack item = new ItemStack(Material.IRON_FENCE);
 		ItemMeta meta = item.getItemMeta();
 		meta.setDisplayName(UpgradeManager.itemNameString(this, player));
@@ -32,7 +32,7 @@ public class TaxEvasion extends RenownUpgrade {
 		lore.add(ChatColor.GRAY + "Each Tier:");
 		lore.add(ChatColor.translateAlternateColorCodes('&', "&dRARE! &9Billionaire &7costs"));
 		lore.add(ChatColor.GOLD + "-5% Gold" + ChatColor.GRAY + ".");
-		meta.setLore(UpgradeManager.loreBuilder(this, player, lore, isCustomPanel));
+		meta.setLore(UpgradeManager.loreBuilder(this, player, lore, false));
 		item.setItemMeta(meta);
 		return item;
 	}

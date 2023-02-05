@@ -188,7 +188,7 @@ public class PitSim extends JavaPlugin {
 			}
 		}.runTaskLater(PitSim.INSTANCE, 10);
 
-		if(status != ServerStatus.DARKZONE) registerMaps();
+		if(status.isPitsim()) registerMaps();
 
 		if(getStatus().isPitSim()) NonManager.init();
 		SignPrompt.registerSignUpdateListener();

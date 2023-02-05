@@ -16,16 +16,20 @@ import java.io.InputStream;
 public class FirestoreManager {
 	public static Firestore FIRESTORE;
 
-	public static final String SERVER_COLLECTION = PitSim.serverName.contains("dev") ? "dev" : "pitsim";
+	public static String SERVER_COLLECTION = PitSim.serverName.contains("dev") ? "dev" : "pitsim";
 	public static final String CONFIG_DOCUMENT = "config";
 	public static final String AUCTION_DOCUMENT = "auction";
 
-	public static final String PLAYERDATA_COLLECTION = PitSim.serverName.contains("dev") ? "dev-playerdata" : "pitsim-playerdata";
+	public static String PLAYERDATA_COLLECTION = PitSim.serverName.contains("dev") ? "dev-playerdata" : "pitsim-playerdata";
 
 	public static Config CONFIG;
 	public static AuctionData AUCTION;
 
 	public static void init() {
+		if(PitSim.serverName.equalsIgnoreCase("dev2")) {
+			SERVER_COLLECTION = "kyro-pitsim";
+			PLAYERDATA_COLLECTION = "kyro-pitsim-playerdata";
+		}
 
 		try {
 			System.out.println("Loading PitSim database");

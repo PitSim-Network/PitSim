@@ -1,6 +1,5 @@
 package dev.kyro.pitsim.upgrades;
 
-import dev.kyro.arcticapi.gui.AGUIPanel;
 import dev.kyro.arcticapi.misc.AUtil;
 import dev.kyro.pitsim.controllers.UpgradeManager;
 import dev.kyro.pitsim.controllers.objects.RenownUpgrade;
@@ -19,7 +18,7 @@ public class UnlockCounterJanitor extends RenownUpgrade {
 	}
 
 	@Override
-	public ItemStack getDisplayItem(Player player, boolean isCustomPanel) {
+	public ItemStack getDisplayItem(Player player) {
 		ItemStack item = new ItemStack(Material.SPONGE);
 		ItemMeta meta = item.getItemMeta();
 		meta.setDisplayName(UpgradeManager.itemNameString(this, player));
@@ -29,7 +28,7 @@ public class UnlockCounterJanitor extends RenownUpgrade {
 		lore.add(ChatColor.YELLOW + "Counter-Janitor");
 		lore.add(ChatColor.translateAlternateColorCodes('&', "&7Instantly heal half your"));
 		lore.add(ChatColor.translateAlternateColorCodes('&', "&chealth &7on player kill."));
-		meta.setLore(UpgradeManager.loreBuilder(this, player, lore, isCustomPanel));
+		meta.setLore(UpgradeManager.loreBuilder(this, player, lore, false));
 		item.setItemMeta(meta);
 		return item;
 	}

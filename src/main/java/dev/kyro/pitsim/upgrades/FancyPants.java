@@ -1,6 +1,5 @@
 package dev.kyro.pitsim.upgrades;
 
-import dev.kyro.arcticapi.gui.AGUIPanel;
 import dev.kyro.pitsim.controllers.UpgradeManager;
 import dev.kyro.pitsim.controllers.objects.RenownUpgrade;
 import org.bukkit.ChatColor;
@@ -20,7 +19,7 @@ public class FancyPants extends RenownUpgrade {
 	}
 
 	@Override
-	public ItemStack getDisplayItem(Player player, boolean isCustomPanel) {
+	public ItemStack getDisplayItem(Player player) {
 		ItemStack item = new ItemStack(Material.LEATHER_LEGGINGS);
 		ItemMeta meta = item.getItemMeta();
 		meta.addEnchant(Enchantment.ARROW_FIRE, 1, false);
@@ -28,7 +27,7 @@ public class FancyPants extends RenownUpgrade {
 		meta.setDisplayName(UpgradeManager.itemNameString(this, player));
 		List<String> lore = new ArrayList<>();
 		lore.add(ChatColor.translateAlternateColorCodes('&', "&7Your pants now &eglow&7."));
-		meta.setLore(UpgradeManager.loreBuilder(this, player, lore, isCustomPanel));
+		meta.setLore(UpgradeManager.loreBuilder(this, player, lore, false));
 		item.setItemMeta(meta);
 		return item;
 	}
