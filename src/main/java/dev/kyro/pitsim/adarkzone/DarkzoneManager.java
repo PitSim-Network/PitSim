@@ -50,6 +50,7 @@ public class DarkzoneManager implements Listener {
 			@Override
 			public void run() {
 				for(SubLevel subLevel : subLevels) subLevel.tick();
+				SubLevel.tick++;
 			}
 		}.runTaskTimer(PitSim.INSTANCE, 0L, 5);
 	}

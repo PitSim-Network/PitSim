@@ -20,6 +20,8 @@ import java.util.List;
 import java.util.Random;
 
 public class SubLevel {
+	public static long tick = 0;
+
 	public SubLevelType subLevelType;
 
 	private Location middle;
@@ -70,6 +72,13 @@ public class SubLevel {
 	}
 
 	public void tick() {
+		if(tick % 4 == 0) {
+			for(PitMob pitMob : new ArrayList<>(mobs)) {
+				if(pitMob.getMob().getLocation().distance(getMiddle()) < spawnRadius + 5) continue;
+				pitMob.remove();
+			}
+		}
+
 		if(Math.random() < 0.25) {
 			int newMobsNeeded = maxMobs - mobs.size();
 			for(int i = 0; i < Math.min(newMobsNeeded, 3); i++) {
