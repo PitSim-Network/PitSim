@@ -106,7 +106,7 @@ public class RetroGravityMicrocosm extends PitEnchant {
 	}
 
 	public double getDamagePerStack(int enchantLvl) {
-		return enchantLvl * 0.4;
+		return enchantLvl * 0.4 - 0.2;
 	}
 
 	public int getMaxStacks(int enchantLvl) {

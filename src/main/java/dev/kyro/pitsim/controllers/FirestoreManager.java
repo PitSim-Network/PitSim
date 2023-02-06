@@ -12,12 +12,11 @@ import dev.kyro.pitsim.misc.FileResourcesUtils;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.Objects;
 
 public class FirestoreManager {
 	public static Firestore FIRESTORE;
 
-	public static final String SERVER_COLLECTION = Objects.requireNonNull(Collection.getCollection(PitSim.serverName)).refName;
+	public static final String SERVER_COLLECTION = Collection.getCollection(PitSim.serverName).refName;
 	public static final String CONFIG_DOCUMENT = "config";
 	public static final String AUCTION_DOCUMENT = "auction";
 
@@ -89,7 +88,7 @@ public class FirestoreManager {
 			for(Collection value : values()) {
 				if(serverName.contains(value.refName)) return value;
 			}
-			return null;
+			throw new RuntimeException();
 		}
 	}
 }
