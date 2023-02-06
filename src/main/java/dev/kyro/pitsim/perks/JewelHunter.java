@@ -56,7 +56,7 @@ public class JewelHunter extends PitPerk {
 	}
 
 	public int getDamageIncrease() {
-		return 15;
+		return 5;
 	}
 
 	public static int getRange() {
