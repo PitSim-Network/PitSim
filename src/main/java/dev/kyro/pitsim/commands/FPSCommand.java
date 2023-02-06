@@ -25,7 +25,7 @@ public class FPSCommand implements CommandExecutor {
 	public static double playerHideRadius = 8;
 
 	static {
-		if(PitSim.status.isPitSim()) {
+		if(PitSim.status.isOverworld()) {
 			new BukkitRunnable() {
 				@Override
 				public void run() {
