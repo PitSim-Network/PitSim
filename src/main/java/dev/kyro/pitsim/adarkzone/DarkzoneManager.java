@@ -16,17 +16,16 @@ import dev.kyro.pitsim.misc.Sounds;
 import org.bukkit.Effect;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
-import org.bukkit.event.entity.EntityDamageEvent;
-import org.bukkit.event.entity.EntityTargetEvent;
-import org.bukkit.event.entity.EntityTargetLivingEntityEvent;
-import org.bukkit.event.entity.SpawnerSpawnEvent;
+import org.bukkit.event.entity.*;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.event.world.ChunkUnloadEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 
@@ -53,6 +52,22 @@ public class DarkzoneManager implements Listener {
 				SubLevel.tick++;
 			}
 		}.runTaskTimer(PitSim.INSTANCE, 0L, 5);
+	}
+
+	@EventHandler
+	public void onSpawn(CreatureSpawnEvent event) {
+		if(event.getSpawnReason() == CreatureSpawnEvent.SpawnReason.NATURAL) event.setCancelled(true);
+	}
+
+	@EventHandler
+	public void onChunkUnload(ChunkUnloadEvent event) {
+		for(Entity entity : event.getChunk().getEntities()) {
+			if(!(entity instanceof LivingEntity)) continue;
+			LivingEntity livingEntity = (LivingEntity) entity;
+			PitMob pitMob = DarkzoneManager.getPitMob(livingEntity);
+			if(pitMob == null) continue;
+			pitMob.remove();
+		}
 	}
 
 	@EventHandler

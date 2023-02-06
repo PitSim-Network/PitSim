@@ -157,6 +157,7 @@ public class SubLevel {
 		try {
 			Constructor<? extends PitMob> constructor = mobClass.getConstructor(Location.class);
 			Location location = getMobSpawnLocation();
+			if(!location.getChunk().isLoaded()) return;
 			pitMob = constructor.newInstance(location);
 		} catch(Exception exception) {
 			exception.printStackTrace();
