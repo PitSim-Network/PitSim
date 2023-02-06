@@ -10,7 +10,6 @@ import dev.kyro.pitsim.controllers.ItemFactory;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.entity.Creature;
-import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Zombie;
 import org.bukkit.scheduler.BukkitRunnable;
 
@@ -22,7 +21,7 @@ public class PitZombie extends PitMob {
 
 	@Override
 	public Creature createMob(Location spawnLocation) {
-		Zombie zombie = (Zombie) spawnLocation.getWorld().spawnEntity(spawnLocation, EntityType.ZOMBIE);
+		Zombie zombie = spawnLocation.getWorld().spawn(spawnLocation, Zombie.class);
 		zombie.setCustomNameVisible(false);
 		zombie.setRemoveWhenFarAway(false);
 

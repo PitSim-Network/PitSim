@@ -1,7 +1,6 @@
 package dev.kyro.pitsim.adarkzone;
 
 import dev.kyro.pitsim.NameTaggable;
-import dev.kyro.pitsim.PitSim;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.entity.Creature;
@@ -10,7 +9,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
-import org.bukkit.scheduler.BukkitRunnable;
 
 public abstract class PitMob implements NameTaggable {
 	private Creature mob;
@@ -40,16 +38,8 @@ public abstract class PitMob implements NameTaggable {
 		mob = createMob(spawnLocation);
 		if(mob.isInsideVehicle()) mob.getVehicle().remove();
 		mob.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 9999, getSpeedAmplifier(), true, false));
-
 		mob.setMaxHealth(getMaxHealth());
 		mob.setHealth(getMaxHealth());
-		new BukkitRunnable() {
-			@Override
-			public void run() {
-				mob.setMaxHealth(getMaxHealth());
-				mob.setHealth(getMaxHealth());
-			}
-		}.runTaskLater(PitSim.INSTANCE, 1L);
 
 		nameTag = createNameTag();
 		nameTag.attach();

@@ -56,7 +56,8 @@ public class DarkzoneManager implements Listener {
 
 	@EventHandler
 	public void onSpawn(CreatureSpawnEvent event) {
-		if(event.getSpawnReason() == CreatureSpawnEvent.SpawnReason.NATURAL) event.setCancelled(true);
+		if(event.getSpawnReason() == CreatureSpawnEvent.SpawnReason.NATURAL || event.getSpawnReason() == CreatureSpawnEvent.SpawnReason.REINFORCEMENTS)
+			event.setCancelled(true);
 	}
 
 	@EventHandler
