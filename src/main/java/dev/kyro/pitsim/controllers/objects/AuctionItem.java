@@ -7,6 +7,7 @@ import dev.kyro.arcticapi.misc.AUtil;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.battlepass.quests.WinAuctionsQuest;
 import dev.kyro.pitsim.controllers.AuctionDisplays;
+import dev.kyro.pitsim.controllers.AuctionManager;
 import dev.kyro.pitsim.controllers.FirestoreManager;
 import dev.kyro.pitsim.enums.ItemType;
 import org.bukkit.Bukkit;
@@ -61,6 +62,7 @@ public class AuctionItem {
 	}
 
 	public void addBid(UUID player, int bid) {
+		AuctionManager.sendAlert(player + " has bid " + bid + " souls on slot " + slot + " (" + item.itemName + ")");
 		bidMap.put(player, bid);
 		saveData();
 
@@ -105,6 +107,7 @@ public class AuctionItem {
 	}
 
 	public void endAuction() {
+		AuctionManager.sendAlert("Auction " + slot + " has ended" + " (" + item.itemName + ")");
 		FirestoreManager.AUCTION.auctions.set(slot, null);
 
 		if(getHighestBidder() == null) return;

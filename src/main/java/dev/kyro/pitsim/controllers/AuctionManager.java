@@ -64,6 +64,7 @@ public class AuctionManager implements Listener {
 			}
 
 			auctionItems[i] = new AuctionItem(ItemType.getItemType(item), itemData, i, bidMap);
+//			sendAlert("Loaded auction int slot " + i + " with " + auctionItems[i].item.itemName);
 		}
 
 		if(auctionItems[0] == null) generateNewAuctions();
@@ -165,6 +166,7 @@ public class AuctionManager implements Listener {
 
 		for(int i = 0; i < auctionItems.length; i++) {
 			auctionItems[i] = new AuctionItem(generateItem(), 0, i, null);
+			sendAlert("Created new auction int slot " + i + " with " + auctionItems[i].item.itemName);
 		}
 
 		FirestoreManager.AUCTION.save();
@@ -188,5 +190,13 @@ public class AuctionManager implements Listener {
 		long m = (millis / 60) % 60;
 		long h = (millis / (60 * 60)) % 24;
 		return String.format("%dh %02dm %02ds", h, m, s);
+	}
+
+	public static void sendAlert(String message) {
+		if(FirestoreManager.Collection.getCollection(PitSim.serverName) != FirestoreManager.Collection.PITSIM) return;
+
+		PluginMessage pluginMessage = new PluginMessage().writeString("AUCTION ALERT").writeString(message + " " + System.currentTimeMillis());
+		pluginMessage.send();
+		System.out.println("Send Auction Alert");
 	}
 }
