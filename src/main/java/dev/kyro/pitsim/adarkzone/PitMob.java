@@ -1,16 +1,18 @@
 package dev.kyro.pitsim.adarkzone;
 
-import dev.kyro.pitsim.NameTaggable;
+import dev.kyro.pitsim.PitSim;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.entity.Creature;
-import org.bukkit.entity.LivingEntity;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
+import org.bukkit.event.HandlerList;
+import org.bukkit.event.Listener;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
-public abstract class PitMob implements NameTaggable {
+public abstract class PitMob implements Listener {
 	private Creature mob;
 	private DropPool dropPool;
 	private PitNameTag nameTag;
@@ -18,6 +20,7 @@ public abstract class PitMob implements NameTaggable {
 	public PitMob(Location spawnLocation) {
 		this.dropPool = createDropPool();
 		spawn(spawnLocation);
+		Bukkit.getPluginManager().registerEvents(this, PitSim.INSTANCE);
 	}
 
 	public abstract Creature createMob(Location spawnLocation);
@@ -25,10 +28,13 @@ public abstract class PitMob implements NameTaggable {
 	public abstract ChatColor getChatColor();
 	public abstract int getMaxHealth();
 	public abstract int getSpeedAmplifier();
-	public abstract DropPool createDropPool();
 	public abstract double getOffsetHeight(); // offset height for spawning armor stand damage indicators
-
+	public abstract DropPool createDropPool();
 	public abstract PitNameTag createNameTag();
+
+	//	Internal events (override to add functionality)
+	public void onSpawn() {}
+	public void onDeath() {}
 
 	public String getDisplayName() {
 		return getChatColor() + getRawDisplayName();
@@ -43,6 +49,8 @@ public abstract class PitMob implements NameTaggable {
 
 		nameTag = createNameTag();
 		nameTag.attach();
+
+		onSpawn();
 	}
 
 	public void kill(Player killer) {
@@ -54,10 +62,13 @@ public abstract class PitMob implements NameTaggable {
 		if(mob != null) mob.remove();
 		nameTag.remove();
 		getSubLevel().mobTargetingSystem.changeTargetCooldown.remove(this);
+		HandlerList.unregisterAll(this);
+		onDeath();
 		getSubLevel().mobs.remove(this);
 	}
 
 	public void setTarget(Player target) {
+		if(target == getTarget()) return;
 		mob.setTarget(target);
 	}
 
@@ -88,12 +99,7 @@ public abstract class PitMob implements NameTaggable {
 		return nameTag;
 	}
 
-	public void clearEquipment(Creature creature) {
-		creature.getEquipment().setArmorContents(new ItemStack[5]);
-	}
-
-	@Override
-	public LivingEntity getTaggableEntity() {
-		return mob;
+	public boolean isThisMob(Entity entity) {
+		return entity == getMob();
 	}
 }

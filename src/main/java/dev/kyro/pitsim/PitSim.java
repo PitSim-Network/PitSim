@@ -269,7 +269,6 @@ public class PitSim extends JavaPlugin {
 		registerListeners();
 		registerHelmetAbilities();
 		registerKits();
-		if(getStatus().isDarkzone()) registerMobs();
 		registerCosmetics();
 
 		PassManager.registerPasses();
@@ -538,9 +537,6 @@ public class PitSim extends JavaPlugin {
 		}
 	}
 
-	private void registerMobs() {
-	}
-
 	private void registerCommands() {
 		AMultiCommand adminCommand = new BaseAdminCommand("pitsim");
 		getCommand("ps").setExecutor(adminCommand);
@@ -672,7 +668,8 @@ public class PitSim extends JavaPlugin {
 			getServer().getPluginManager().registerEvents(new BrewingManager(), this);
 			getServer().getPluginManager().registerEvents(new MusicManager(), this);
 			getServer().getPluginManager().registerEvents(new CutsceneManager(), this);
-			getServer().getPluginManager().registerEvents(new AuctionDisplays(), this);
+//			TODO: FIX CODE IN OTHER TOOD
+			if(false) getServer().getPluginManager().registerEvents(new AuctionDisplays(), this);
 			getServer().getPluginManager().registerEvents(new AuctionManager(), this);
 
 			getServer().getPluginManager().registerEvents(new DarkzoneManager(), this);
@@ -866,7 +863,7 @@ public class PitSim extends JavaPlugin {
 		ItemFactory.registerItem(new SpiderEye());
 		ItemFactory.registerItem(new Gunpowder());
 		ItemFactory.registerItem(new BlazeRod());
-		ItemFactory.registerItem(new MagmaCream());
+		ItemFactory.registerItem(new Leather());
 		ItemFactory.registerItem(new RawPork());
 		ItemFactory.registerItem(new Charcoal());
 		ItemFactory.registerItem(new IronIngot());

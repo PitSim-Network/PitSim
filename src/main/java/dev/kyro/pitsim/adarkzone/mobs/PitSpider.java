@@ -1,57 +1,44 @@
 package dev.kyro.pitsim.adarkzone.mobs;
 
-import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.adarkzone.DropPool;
 import dev.kyro.pitsim.adarkzone.PitMob;
 import dev.kyro.pitsim.adarkzone.PitNameTag;
-import dev.kyro.pitsim.adarkzone.notdarkzone.PitEquipment;
-import dev.kyro.pitsim.aitems.mobdrops.RottenFlesh;
+import dev.kyro.pitsim.aitems.mobdrops.SpiderEye;
 import dev.kyro.pitsim.controllers.ItemFactory;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.entity.Creature;
-import org.bukkit.entity.Zombie;
-import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.entity.Spider;
 
-public class PitZombie extends PitMob {
+public class PitSpider extends PitMob {
 
-	public PitZombie(Location spawnLocation) {
+	public PitSpider(Location spawnLocation) {
 		super(spawnLocation);
 	}
 
 	@Override
 	public Creature createMob(Location spawnLocation) {
-		Zombie zombie = spawnLocation.getWorld().spawn(spawnLocation, Zombie.class);
-		zombie.setCustomNameVisible(false);
-		zombie.setRemoveWhenFarAway(false);
-		zombie.setCanPickupItems(false);
+		Spider spider = spawnLocation.getWorld().spawn(spawnLocation, Spider.class);
+		spider.setCustomNameVisible(false);
+		spider.setRemoveWhenFarAway(false);
+		spider.setCanPickupItems(false);
 
-		zombie.setBaby(false);
-		zombie.setVillager(false);
-
-		new BukkitRunnable() {
-			@Override
-			public void run() {
-				new PitEquipment().setEquipment(zombie);
-			}
-		}.runTaskLater(PitSim.INSTANCE, 1L);
-
-		return zombie;
+		return spider;
 	}
 
 	@Override
 	public String getRawDisplayName() {
-		return "Zombie";
+		return "Spider";
 	}
 
 	@Override
 	public ChatColor getChatColor() {
-		return ChatColor.DARK_GREEN;
+		return ChatColor.BLACK;
 	}
 
 	@Override
 	public int getMaxHealth() {
-		return 20;
+		return 60;
 	}
 
 	@Override
@@ -61,13 +48,13 @@ public class PitZombie extends PitMob {
 
 	@Override
 	public double getOffsetHeight() {
-		return 1.5;
+		return 5.5;
 	}
 
 	@Override
 	public DropPool createDropPool() {
 		return new DropPool()
-				.addItem(ItemFactory.getItem(RottenFlesh.class).getItem(), 1);
+				.addItem(ItemFactory.getItem(SpiderEye.class).getItem(), 1);
 	}
 
 	@Override

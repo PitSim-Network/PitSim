@@ -110,7 +110,6 @@ public class DamageManager implements Listener {
 
 	@EventHandler(ignoreCancelled = true, priority = EventPriority.HIGH)
 	public void onBowShoot(EntityShootBowEvent event) {
-
 		if(!(event.getEntity() instanceof Player) || !(event.getProjectile() instanceof Arrow)) return;
 		Player shooter = (Player) event.getEntity();
 		arrowMap.put(event, EnchantManager.getEnchantsOnPlayer(shooter));
@@ -136,6 +135,13 @@ public class DamageManager implements Listener {
 		}
 
 		if(PitSim.status.isDarkzone() && defender != null) {
+			PitMob attackerMob = DarkzoneManager.getPitMob(attacker);
+			PitMob defenderMob = DarkzoneManager.getPitMob(defender);
+			if(attackerMob != null && defenderMob != null) {
+				event.setCancelled(true);
+				return;
+			}
+
 			for(SubLevel subLevel : DarkzoneManager.subLevels) {
 				for(PitMob pitMob : subLevel.mobs) {
 					for(LivingEntity entity : pitMob.getNameTag().getEntities()) {

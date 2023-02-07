@@ -5,53 +5,52 @@ import dev.kyro.pitsim.adarkzone.DropPool;
 import dev.kyro.pitsim.adarkzone.PitMob;
 import dev.kyro.pitsim.adarkzone.PitNameTag;
 import dev.kyro.pitsim.adarkzone.notdarkzone.PitEquipment;
-import dev.kyro.pitsim.aitems.mobdrops.RottenFlesh;
+import dev.kyro.pitsim.aitems.mobdrops.Charcoal;
 import dev.kyro.pitsim.controllers.ItemFactory;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.entity.Creature;
-import org.bukkit.entity.Zombie;
+import org.bukkit.entity.Skeleton;
 import org.bukkit.scheduler.BukkitRunnable;
 
-public class PitZombie extends PitMob {
+public class PitWitherSkeleton extends PitMob {
 
-	public PitZombie(Location spawnLocation) {
+	public PitWitherSkeleton(Location spawnLocation) {
 		super(spawnLocation);
 	}
 
 	@Override
 	public Creature createMob(Location spawnLocation) {
-		Zombie zombie = spawnLocation.getWorld().spawn(spawnLocation, Zombie.class);
-		zombie.setCustomNameVisible(false);
-		zombie.setRemoveWhenFarAway(false);
-		zombie.setCanPickupItems(false);
+		Skeleton witherSkeleton = spawnLocation.getWorld().spawn(spawnLocation, Skeleton.class);
+		witherSkeleton.setCustomNameVisible(false);
+		witherSkeleton.setRemoveWhenFarAway(false);
+		witherSkeleton.setCanPickupItems(false);
 
-		zombie.setBaby(false);
-		zombie.setVillager(false);
+		witherSkeleton.setSkeletonType(Skeleton.SkeletonType.WITHER);
 
 		new BukkitRunnable() {
 			@Override
 			public void run() {
-				new PitEquipment().setEquipment(zombie);
+				new PitEquipment().setEquipment(witherSkeleton);
 			}
 		}.runTaskLater(PitSim.INSTANCE, 1L);
 
-		return zombie;
+		return witherSkeleton;
 	}
 
 	@Override
 	public String getRawDisplayName() {
-		return "Zombie";
+		return "Wither Skeleton";
 	}
 
 	@Override
 	public ChatColor getChatColor() {
-		return ChatColor.DARK_GREEN;
+		return ChatColor.DARK_GRAY;
 	}
 
 	@Override
 	public int getMaxHealth() {
-		return 20;
+		return 140;
 	}
 
 	@Override
@@ -61,13 +60,13 @@ public class PitZombie extends PitMob {
 
 	@Override
 	public double getOffsetHeight() {
-		return 1.5;
+		return 1.75;
 	}
 
 	@Override
 	public DropPool createDropPool() {
 		return new DropPool()
-				.addItem(ItemFactory.getItem(RottenFlesh.class).getItem(), 1);
+				.addItem(ItemFactory.getItem(Charcoal.class).getItem(), 1);
 	}
 
 	@Override

@@ -21,6 +21,7 @@ public class MapManager implements Listener {
 	public static Location darkzoneSpawn = new Location(getDarkzone(), 178.5, 91, -93.5, -90, 0);
 	public static Location initialDarkzoneSpawn = new Location(getDarkzone(), 177.5, 92, -93.5, -90, 0);
 	public static Location kyroDarkzoneSpawn = new Location(getDarkzone(), 310, 69, -136, -90, 0);
+//	public static Location kyroDarkzoneSpawn = new Location(getDarkzone(), 353, 18, 10, 78, 6);
 
 	public static PitMap registerMap(PitMap pitMap) {
 		mapList.add(pitMap);
@@ -30,8 +31,6 @@ public class MapManager implements Listener {
 	public static void setMap(PitMap pitMap) {
 		currentMap = pitMap;
 	}
-
-	public static Location playerSnow = new org.bukkit.Location(Bukkit.getWorld("pit"), -99, 46, 707, 0, 0);
 
 	@EventHandler
 	public void onSpawn(PlayerSpawnCommandEvent event) {

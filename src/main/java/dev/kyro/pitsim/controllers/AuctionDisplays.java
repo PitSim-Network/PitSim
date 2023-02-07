@@ -148,6 +148,9 @@ public class AuctionDisplays implements Listener {
 			pedestalLocation.getChunk().load();
 		}
 
+//		TODO: FIX CODE BELOW
+		if(true) return;
+
 		for(int i = 0; i < pedestalLocations.length; i++) {
 			Location pedestalLocation = pedestalLocations[i];
 			ItemStack dropItem = AuctionManager.auctionItems[i].item.item.clone();

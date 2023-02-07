@@ -1,7 +1,6 @@
 package dev.kyro.pitsim.adarkzone;
 
 import dev.kyro.arcticapi.misc.AUtil;
-import dev.kyro.pitsim.NameTaggable;
 import dev.kyro.pitsim.PitSim;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -25,7 +24,7 @@ public class PitNameTag {
 		}.runTaskTimer(PitSim.INSTANCE, 0L, 1L);
 	}
 
-	public NameTaggable taggable;
+	public PitMob pitMob;
 	public NameTagType nameTagType;
 
 	private final List<LivingEntity> entities = new ArrayList<>();
@@ -33,10 +32,10 @@ public class PitNameTag {
 
 	private Location spawnLocation;
 
-	public PitNameTag(NameTaggable taggable, NameTagType nameTagType) {
-		this.taggable = taggable;
+	public PitNameTag(PitMob pitMob, NameTagType nameTagType) {
+		this.pitMob = pitMob;
 		this.nameTagType = nameTagType;
-		this.spawnLocation = taggable.getTaggableEntity().getLocation();
+		this.spawnLocation = pitMob.getMob().getLocation();
 		this.spawnLocation.setY(255);
 		activeNameTags.add(this);
 	}
@@ -47,7 +46,7 @@ public class PitNameTag {
 	}
 
 	public void attach() {
-		LivingEntity lowerEntity = taggable.getTaggableEntity();
+		LivingEntity lowerEntity = pitMob.getMob();
 		for(LivingEntity nextEntity : entities) {
 			lowerEntity.setPassenger(nextEntity);
 			lowerEntity = nextEntity;
@@ -58,7 +57,7 @@ public class PitNameTag {
 	}
 
 	public void update() {
-		setName(getText(taggable.getTaggableEntity(), taggable.getDisplayName(), nameTagType, taggable.getChatColor()));
+		setName(getText(pitMob.getMob(), pitMob.getDisplayName(), nameTagType, pitMob.getChatColor()));
 	}
 
 	public void remove() {

@@ -38,6 +38,9 @@ public class AuctionManager implements Listener {
 		new BukkitRunnable() {
 			@Override
 			public void run() {
+//				TODO: FIX CODE IN OTHER TOOD
+				if(true) return;
+
 				if(!PitSim.getStatus().isDarkzone()) return;
 
 				if(haveAuctionsEnded()) {

@@ -11,38 +11,38 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class MagmaCream extends StaticPitItem {
+public class Leather extends StaticPitItem {
 
-	public MagmaCream() {
+	public Leather() {
 		hasDropConfirm = true;
 		auctionCategory = AuctionCategory.DARKZONE_DROPS;
 	}
 
 	@Override
 	public String getNBTID() {
-		return "magma-cream";
+		return "wolf-hide";
 	}
 
 	@Override
 	public List<String> getRefNames() {
-		return new ArrayList<>(Arrays.asList("magma", "magmacream"));
+		return new ArrayList<>(Arrays.asList("hide", "wolfhide"));
 	}
 
 	@Override
 	public Material getMaterial() {
-		return Material.MAGMA_CREAM;
+		return Material.LEATHER;
 	}
 
 	@Override
 	public String getName() {
-		return "&aMagma Cream";
+		return "&aWolf Hide";
 	}
 
 	@Override
 	public List<String> getLore() {
 		return new ALoreBuilder(
-				"&7Cream gathered from the Cubes",
-				"&7of the Magma Caves",
+				"&7Hide gathered from the Wolves",
+				"&7of the Wolf Caves",
 				"",
 				"&5Tainted Item"
 		).getLore();

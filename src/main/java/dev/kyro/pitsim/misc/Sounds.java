@@ -165,6 +165,9 @@ public class Sounds {
 	public static final SoundEffect GIVE_REWARD = new SoundEffect(Sound.LEVEL_UP, 1, 1);
 	public static final SoundEffect PUNCH_UNIQUE_PLAYER = new SoundEffect(Sound.VILLAGER_YES, 1, 1);
 
+	//  Mobs
+	public static final SoundEffect CREEPER_EXPLODE = new SoundEffect(Sound.EXPLODE, 1, 1);
+
 	/*
 	public static final SoundEffect SIMPLE_SOUND = new SoundEffect(Sound.ZOMBIE_WOODBREAK, 1, 1);
 	public static final SoundEffect COMPLEX_SOUND = new SoundEffect();

@@ -2,6 +2,7 @@ package dev.kyro.pitsim.adarkzone;
 
 import de.myzelyam.api.vanish.VanishAPI;
 import dev.kyro.pitsim.PitSim;
+import org.bukkit.Effect;
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
@@ -76,13 +77,13 @@ public class MobTargetingSystem {
 			}
 		}
 
-		if(bestTarget != pitMob.getTarget()) {
-			if(bestTarget == null) {
-				if(changeTargetCooldown.getOrDefault(pitMob, 0L) + 60 > PitSim.currentTick) return;
-				changeTargetCooldown.put(pitMob, PitSim.currentTick);
-			}
-			pitMob.setTarget(bestTarget);
+		if(bestTarget != null)
+			pitMob.getMob().getWorld().playEffect(pitMob.getMob().getLocation().add(0, 2, 0), Effect.VILLAGER_THUNDERCLOUD, 1);
+		if(bestTarget == null) {
+			if(changeTargetCooldown.getOrDefault(pitMob, 0L) + 60 > PitSim.currentTick) return;
+			changeTargetCooldown.put(pitMob, PitSim.currentTick);
 		}
+		pitMob.setTarget(bestTarget);
 	}
 
 	//reward function to find the best target

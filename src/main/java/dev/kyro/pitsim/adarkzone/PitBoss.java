@@ -151,6 +151,8 @@ public abstract class PitBoss {
 				count++;
 			}
 		}.runTaskTimer(PitSim.INSTANCE, 0L, 1);
+
+		onSpawn();
 	}
 
 	public void kill(Player killer) {

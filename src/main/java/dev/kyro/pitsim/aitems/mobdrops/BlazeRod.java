@@ -35,7 +35,7 @@ public class BlazeRod extends StaticPitItem {
 
 	@Override
 	public String getName() {
-		return "&aRaw Pork";
+		return "&aBlaze Rod";
 	}
 
 	@Override

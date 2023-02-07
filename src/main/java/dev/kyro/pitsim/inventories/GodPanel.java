@@ -72,7 +72,7 @@ public class GodPanel extends AGUIPanel {
 		addItem(ItemFactory.getItem(SpiderEye.class).getItem(64));
 		addItem(ItemFactory.getItem(Gunpowder.class).getItem(64));
 		addItem(ItemFactory.getItem(RottenFlesh.class).getItem(64));
-		addItem(ItemFactory.getItem(MagmaCream.class).getItem(64));
+		addItem(ItemFactory.getItem(Leather.class).getItem(64));
 		addItem(ItemFactory.getItem(Charcoal.class).getItem(64));
 		addItem(ItemFactory.getItem(IronIngot.class).getItem(64));
 		addItem(ItemFactory.getItem(EnderPearl.class).getItem(64));

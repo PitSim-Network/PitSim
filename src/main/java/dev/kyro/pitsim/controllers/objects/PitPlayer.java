@@ -701,7 +701,6 @@ public class PitPlayer {
 			if(shield.isActive()) {
 				player.setExp((float) (shield.getPreciseAmount() / shield.getMax()));
 			} else {
-				System.out.println((float) shield.getTicksUntilReactivation() / shield.getInitialTicksUntilReactivation());
 				player.setExp(1 - ((float) shield.getTicksUntilReactivation() / shield.getInitialTicksUntilReactivation()));
 			}
 			return;

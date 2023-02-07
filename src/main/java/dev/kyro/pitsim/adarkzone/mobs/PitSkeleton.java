@@ -5,53 +5,50 @@ import dev.kyro.pitsim.adarkzone.DropPool;
 import dev.kyro.pitsim.adarkzone.PitMob;
 import dev.kyro.pitsim.adarkzone.PitNameTag;
 import dev.kyro.pitsim.adarkzone.notdarkzone.PitEquipment;
-import dev.kyro.pitsim.aitems.mobdrops.RottenFlesh;
+import dev.kyro.pitsim.aitems.mobdrops.Bone;
 import dev.kyro.pitsim.controllers.ItemFactory;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.entity.Creature;
-import org.bukkit.entity.Zombie;
+import org.bukkit.entity.Skeleton;
 import org.bukkit.scheduler.BukkitRunnable;
 
-public class PitZombie extends PitMob {
+public class PitSkeleton extends PitMob {
 
-	public PitZombie(Location spawnLocation) {
+	public PitSkeleton(Location spawnLocation) {
 		super(spawnLocation);
 	}
 
 	@Override
 	public Creature createMob(Location spawnLocation) {
-		Zombie zombie = spawnLocation.getWorld().spawn(spawnLocation, Zombie.class);
-		zombie.setCustomNameVisible(false);
-		zombie.setRemoveWhenFarAway(false);
-		zombie.setCanPickupItems(false);
-
-		zombie.setBaby(false);
-		zombie.setVillager(false);
+		Skeleton skeleton = spawnLocation.getWorld().spawn(spawnLocation, Skeleton.class);
+		skeleton.setCustomNameVisible(false);
+		skeleton.setRemoveWhenFarAway(false);
+		skeleton.setCanPickupItems(false);
 
 		new BukkitRunnable() {
 			@Override
 			public void run() {
-				new PitEquipment().setEquipment(zombie);
+				new PitEquipment().setEquipment(skeleton);
 			}
 		}.runTaskLater(PitSim.INSTANCE, 1L);
 
-		return zombie;
+		return skeleton;
 	}
 
 	@Override
 	public String getRawDisplayName() {
-		return "Zombie";
+		return "Skeleton";
 	}
 
 	@Override
 	public ChatColor getChatColor() {
-		return ChatColor.DARK_GREEN;
+		return ChatColor.GRAY;
 	}
 
 	@Override
 	public int getMaxHealth() {
-		return 20;
+		return 40;
 	}
 
 	@Override
@@ -67,7 +64,7 @@ public class PitZombie extends PitMob {
 	@Override
 	public DropPool createDropPool() {
 		return new DropPool()
-				.addItem(ItemFactory.getItem(RottenFlesh.class).getItem(), 1);
+				.addItem(ItemFactory.getItem(Bone.class).getItem(), 1);
 	}
 
 	@Override

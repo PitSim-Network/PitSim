@@ -5,53 +5,52 @@ import dev.kyro.pitsim.adarkzone.DropPool;
 import dev.kyro.pitsim.adarkzone.PitMob;
 import dev.kyro.pitsim.adarkzone.PitNameTag;
 import dev.kyro.pitsim.adarkzone.notdarkzone.PitEquipment;
-import dev.kyro.pitsim.aitems.mobdrops.RottenFlesh;
+import dev.kyro.pitsim.aitems.mobdrops.RawPork;
 import dev.kyro.pitsim.controllers.ItemFactory;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.entity.Creature;
-import org.bukkit.entity.Zombie;
+import org.bukkit.entity.PigZombie;
 import org.bukkit.scheduler.BukkitRunnable;
 
-public class PitZombie extends PitMob {
+public class PitZombiePigman extends PitMob {
 
-	public PitZombie(Location spawnLocation) {
+	public PitZombiePigman(Location spawnLocation) {
 		super(spawnLocation);
 	}
 
 	@Override
 	public Creature createMob(Location spawnLocation) {
-		Zombie zombie = spawnLocation.getWorld().spawn(spawnLocation, Zombie.class);
-		zombie.setCustomNameVisible(false);
-		zombie.setRemoveWhenFarAway(false);
-		zombie.setCanPickupItems(false);
+		PigZombie zombiePigman = spawnLocation.getWorld().spawn(spawnLocation, PigZombie.class);
+		zombiePigman.setCustomNameVisible(false);
+		zombiePigman.setRemoveWhenFarAway(false);
+		zombiePigman.setCanPickupItems(false);
 
-		zombie.setBaby(false);
-		zombie.setVillager(false);
+		zombiePigman.setBaby(false);
 
 		new BukkitRunnable() {
 			@Override
 			public void run() {
-				new PitEquipment().setEquipment(zombie);
+				new PitEquipment().setEquipment(zombiePigman);
 			}
 		}.runTaskLater(PitSim.INSTANCE, 1L);
 
-		return zombie;
+		return zombiePigman;
 	}
 
 	@Override
 	public String getRawDisplayName() {
-		return "Zombie";
+		return "Zombie Pigman";
 	}
 
 	@Override
 	public ChatColor getChatColor() {
-		return ChatColor.DARK_GREEN;
+		return ChatColor.RED;
 	}
 
 	@Override
 	public int getMaxHealth() {
-		return 20;
+		return 120;
 	}
 
 	@Override
@@ -67,7 +66,7 @@ public class PitZombie extends PitMob {
 	@Override
 	public DropPool createDropPool() {
 		return new DropPool()
-				.addItem(ItemFactory.getItem(RottenFlesh.class).getItem(), 1);
+				.addItem(ItemFactory.getItem(RawPork.class).getItem(), 1);
 	}
 
 	@Override

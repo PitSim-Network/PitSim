@@ -13,9 +13,9 @@ import org.bukkit.entity.Creature;
 import org.bukkit.entity.Zombie;
 import org.bukkit.scheduler.BukkitRunnable;
 
-public class PitZombie extends PitMob {
+public class aPitMob extends PitMob {
 
-	public PitZombie(Location spawnLocation) {
+	public aPitMob(Location spawnLocation) {
 		super(spawnLocation);
 	}
 
@@ -25,9 +25,6 @@ public class PitZombie extends PitMob {
 		zombie.setCustomNameVisible(false);
 		zombie.setRemoveWhenFarAway(false);
 		zombie.setCanPickupItems(false);
-
-		zombie.setBaby(false);
-		zombie.setVillager(false);
 
 		new BukkitRunnable() {
 			@Override
@@ -41,7 +38,7 @@ public class PitZombie extends PitMob {
 
 	@Override
 	public String getRawDisplayName() {
-		return "Zombie";
+		return "MOBNAME";
 	}
 
 	@Override
@@ -60,14 +57,14 @@ public class PitZombie extends PitMob {
 	}
 
 	@Override
-	public double getOffsetHeight() {
-		return 1.5;
-	}
-
-	@Override
 	public DropPool createDropPool() {
 		return new DropPool()
 				.addItem(ItemFactory.getItem(RottenFlesh.class).getItem(), 1);
+	}
+
+	@Override
+	public double getOffsetHeight() {
+		return 1.5;
 	}
 
 	@Override

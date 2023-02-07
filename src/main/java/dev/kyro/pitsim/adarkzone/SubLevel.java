@@ -6,11 +6,12 @@ import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.aitems.StaticPitItem;
 import dev.kyro.pitsim.controllers.ItemFactory;
 import dev.kyro.pitsim.controllers.MapManager;
+import net.minecraft.server.v1_8_R3.NBTTagCompound;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
-import org.bukkit.block.CreatureSpawner;
+import org.bukkit.craftbukkit.v1_8_R3.block.CraftCreatureSpawner;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 
@@ -43,12 +44,14 @@ public class SubLevel {
 	public int spawnRadius;
 	public MobTargetingSystem mobTargetingSystem = new MobTargetingSystem(this);
 
-	public SubLevel(SubLevelType subLevelType, Class<? extends PitBoss> bossClass, Class<? extends PitMob> mobClass, EntityType spawnerMob,
+	public SubLevel(SubLevelType subLevelType, Class<? extends PitBoss> bossClass, Class<? extends PitMob> mobClass,
+					EntityType spawnerMob, Class<? extends StaticPitItem> spawnItemClass,
 					Location middle, int maxMobs, int spawnRadius, int requiredDropsToSpawn) {
 		this.subLevelType = subLevelType;
 		this.bossClass = bossClass;
 		this.spawnerMob = spawnerMob;
 		this.mobClass = mobClass;
+		this.spawnItemClass = spawnItemClass;
 		this.middle = middle;
 		this.maxMobs = maxMobs;
 		this.spawnRadius = spawnRadius;
@@ -104,8 +107,17 @@ public class SubLevel {
 	public void setSpawner() {
 		Block spawnerBlock = middle.getBlock();
 		spawnerBlock.setType(Material.MOB_SPAWNER);
-		CreatureSpawner spawner = (CreatureSpawner) spawnerBlock.getState();
+		CraftCreatureSpawner spawner = (CraftCreatureSpawner) spawnerBlock.getState();
 		spawner.setSpawnedType(spawnerMob);
+		if(getSubLevelType() == SubLevelType.WITHER_SKELETON) {
+			NBTTagCompound nbtTagCompound = new NBTTagCompound();
+			nbtTagCompound.set("SpawnData", new NBTTagCompound());
+			nbtTagCompound.setString("EntityId", "Skeleton");
+			NBTTagCompound spawnData = (NBTTagCompound) nbtTagCompound.get("SpawnData");
+			spawnData.setInt("SkeletonType", 1);
+			spawner.getTileEntity().getSpawner().a(nbtTagCompound);
+		}
+		spawner.setDelay(Integer.MAX_VALUE);
 		spawner.update();
 	}
 
@@ -117,7 +129,7 @@ public class SubLevel {
 				getMiddle().getZ() + 0.5));
 		hologram.setAllowPlaceholders(true);
 		hologram.appendTextLine(ChatColor.translateAlternateColorCodes('&',
-				"&cPlace &a" + ItemFactory.getItem(getSpawnItemClass()).getName()));
+				"&7Place " + ItemFactory.getItem(getSpawnItemClass()).getName()));
 		hologram.appendTextLine("{fast}%sublevel_" + getIdentifier() + "%");
 		DarkzoneManager.holograms.add(hologram);
 	}
@@ -133,6 +145,7 @@ public class SubLevel {
 			Block blockBelow = location.clone().add(0, -1, 0).getBlock();
 			Block block = location.getBlock();
 			Block blockAbove = location.clone().add(0, 1, 0).getBlock();
+			if(blockBelow.getType() == Material.MOB_SPAWNER) return false;
 			if(blockBelow.getType() == Material.AIR || block.getType() != Material.AIR || blockAbove.getType() != Material.AIR) {
 				location.add(0, 1, 0);
 				continue;
@@ -190,10 +203,6 @@ public class SubLevel {
 		return spawnItemClass;
 	}
 
-	public void setSpawnItemClass(Class<? extends StaticPitItem> spawnItemClass) {
-		this.spawnItemClass = spawnItemClass;
-	}
-
 	public SubLevelType getSubLevelType() {
 		return subLevelType;
 	}
@@ -223,11 +232,7 @@ public class SubLevel {
 	}
 
 	public Location getBossSpawnLocation() {
-		return getMiddle().clone().add(0, 2, 0);
-	}
-
-	public Location getSpawnerLocation() {
-		return getMiddle().clone().add(0, 1, 0);
+		return getMiddle().clone().add(0, 1.5, 0);
 	}
 
 	public Class<? extends PitMob> getMobClass() {

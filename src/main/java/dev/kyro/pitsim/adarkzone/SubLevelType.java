@@ -4,10 +4,11 @@ public enum SubLevelType {
 	ZOMBIE("zombie"),
 	SKELETON("skeleton"),
 	SPIDER("spider"),
-	CREEPER("creeper"),
+	WOLF("wolf"),
 	BLAZE("blaze"),
-	MAGMA_CUBE("magmacube"),
 	ZOMBIE_PIGMAN("zombiepigman"),
+	WITHER_SKELETON("witherskeleton"),
+	CREEPER("creeper"),
 	IRON_GOLEM("irongolem"),
 	ENDERMAN("enderman"),
 	;

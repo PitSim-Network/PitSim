@@ -6,6 +6,7 @@ import dev.kyro.pitsim.misc.Misc;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.block.BlockIgniteEvent;
 
 import java.util.UUID;
 
@@ -20,5 +21,12 @@ public class MiscManager implements Listener {
 
 		attackEvent.selfVeryTrueDamage += 100;
 		AOutput.send(attacker, "&9&lCOPE!");
+	}
+
+	@EventHandler
+	public void onIgnite(BlockIgniteEvent event) {
+		BlockIgniteEvent.IgniteCause cause = event.getCause();
+		if(cause == BlockIgniteEvent.IgniteCause.FIREBALL || cause == BlockIgniteEvent.IgniteCause.EXPLOSION)
+			event.setCancelled(true);
 	}
 }

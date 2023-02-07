@@ -43,6 +43,7 @@ import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.event.entity.FoodLevelChangeEvent;
 import org.bukkit.event.inventory.CraftItemEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.*;
@@ -180,6 +181,11 @@ public class PlayerManager implements Listener {
 		}
 		Group group = PitSim.LUCKPERMS.getGroupManager().getGroup(user.getPrimaryGroup());
 		return group.data().contains(PermissionNode.builder("pitsim.staff").build(), NodeEqualityPredicate.EXACT).asBoolean();
+	}
+
+	@EventHandler
+	public void onFoodLevelChange(FoodLevelChangeEvent event) {
+		event.setCancelled(true);
 	}
 
 	@EventHandler
