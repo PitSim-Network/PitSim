@@ -17,7 +17,7 @@ public class FirstJoinManager implements Listener {
 	public void onJoin(PlayerJoinEvent event) {
 		Player player = event.getPlayer();
 		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
-		if(pitPlayer.prestige > 0 || player.getInventory().getContents().length > 0) return;
+		if(pitPlayer.prestige > 0 || hasItems(player)) return;
 
 		new BukkitRunnable() {
 			@Override
@@ -30,7 +30,19 @@ public class FirstJoinManager implements Listener {
 
 				player.getInventory().setItem(0, KitManager.kitItemMap.get(KitItem.EXE_SWEATY));
 				player.getInventory().setItem(1, KitManager.kitItemMap.get(KitItem.MLB_DRAIN));
+				player.updateInventory();
 			}
 		}.runTaskLater(PitSim.INSTANCE, 5);
+	}
+
+	public boolean hasItems(Player player) {
+		boolean hasItems = false;
+		for(ItemStack item : player.getInventory().getContents()) {
+			if(item != null) {
+				hasItems = true;
+				break;
+			}
+		}
+		return hasItems;
 	}
 }
