@@ -423,10 +423,10 @@ public class PitSim extends JavaPlugin {
 			PitMap pitMap = null;
 			long time;
 
-			PitMap biomes = MapManager.registerRotation(new BiomesMap("biomes", 7));
-			PitMap sand = MapManager.registerRotation(new SandMap("sand", 3));
-			PitMap dimensions = MapManager.registerRotation(new DimensionsMap("dimensions", 7));
-			PitMap xmas = new XmasMap("xmas", -1);
+			PitMap biomes = MapManager.registerMap(new BiomesMap("biomes", 7));
+			PitMap sand = MapManager.registerMap(new SandMap("sand", 2));
+			PitMap dimensions = MapManager.registerMap(new DimensionsMap("dimensions", 7));
+			PitMap xmas = MapManager.registerMap(new XmasMap("xmas", -1));
 
 			String configString = FirestoreManager.CONFIG.mapData;
 			String mapName = null;
