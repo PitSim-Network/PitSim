@@ -30,7 +30,7 @@ public class MapManager implements Listener {
 		}
 	}
 
-	public static PitMap registerMap(PitMap pitMap) {
+	public static PitMap registerRotation(PitMap pitMap) {
 		mapList.add(pitMap);
 		return pitMap;
 	}
