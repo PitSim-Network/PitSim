@@ -971,7 +971,6 @@ public class PitSim extends JavaPlugin {
 		EnchantManager.registerEnchant(new Sweaty());
 //		EnchantManager.registerEnchant(new XpBump());
 
-		EnchantManager.registerEnchant(new RepelSpell());
 		EnchantManager.registerEnchant(new FreezeSpell());
 		EnchantManager.registerEnchant(new SweepingEdgeSpell());
 		EnchantManager.registerEnchant(new MeteorSpell());
