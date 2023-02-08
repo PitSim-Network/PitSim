@@ -424,7 +424,7 @@ public class PitSim extends JavaPlugin {
 			long time;
 
 			PitMap biomes = MapManager.registerRotation(new BiomesMap("biomes", 7));
-			PitMap sand = MapManager.registerRotation(new SandMap("sand", 2));
+			PitMap sand = MapManager.registerRotation(new SandMap("sand", 3));
 			PitMap dimensions = MapManager.registerRotation(new DimensionsMap("dimensions", 7));
 			PitMap xmas = new XmasMap("xmas", -1);
 
