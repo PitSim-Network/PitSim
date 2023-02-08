@@ -971,7 +971,6 @@ public class PitSim extends JavaPlugin {
 		EnchantManager.registerEnchant(new Sweaty());
 //		EnchantManager.registerEnchant(new XpBump());
 
-		EnchantManager.registerEnchant(new FireballSpell());
 		EnchantManager.registerEnchant(new RepelSpell());
 		EnchantManager.registerEnchant(new FreezeSpell());
 		EnchantManager.registerEnchant(new SweepingEdgeSpell());
@@ -979,7 +978,6 @@ public class PitSim extends JavaPlugin {
 		EnchantManager.registerEnchant(new SavingGraceSpell());
 		EnchantManager.registerEnchant(new CleaveSpell());
 		EnchantManager.registerEnchant(new WarpSpell());
-		EnchantManager.registerEnchant(new ExtractSpell());
 
 		EnchantManager.registerEnchant(new MaxHealth());
 		EnchantManager.registerEnchant(new Sonic());

@@ -19,7 +19,7 @@ import java.util.List;
 
 public class SweepingEdgeSpell extends PitEnchant {
 	public SweepingEdgeSpell() {
-		super("Sweeping Edge", true, ApplyType.SCYTHES, "sweepingedge", "sweep", "sweeping_edge", "sweeping");
+		super("Sweeping Edge", true, ApplyType.SCYTHES, "sweepingedge", "sweep", "sweeping");
 		isTainted = true;
 	}
 

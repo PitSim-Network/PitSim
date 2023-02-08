@@ -32,7 +32,7 @@ public class FreezeSpell extends PitEnchant {
 	public static Map<Location, Material> blocks = new HashMap<>();
 
 	public FreezeSpell() {
-		super("Freeze", true, ApplyType.SCYTHES, "freeze", "fre", "cold");
+		super("Freeze", true, ApplyType.SCYTHES, "freeze", "cold");
 		isTainted = true;
 	}
 
@@ -99,7 +99,6 @@ public class FreezeSpell extends PitEnchant {
 			Location tp = nearbyEntity.getLocation().getBlock().getLocation().add(0.5, 0, 0.5);
 			((CraftEntity) nearbyEntity).getHandle().setLocation(tp.getX(), tp.getY(), tp.getZ(), tp.getPitch(), tp.getYaw());
 			nearbyEntity.teleport(tp);
-
 		}
 
 		EditSession session = SchematicPaste.loadSchematicAir(new File("plugins/WorldEdit/schematics/frozen.schematic"), location);
@@ -117,7 +116,6 @@ public class FreezeSpell extends PitEnchant {
 				}
 			}
 		}.runTaskLater(PitSim.INSTANCE, 40);
-
 	}
 
 	@Override

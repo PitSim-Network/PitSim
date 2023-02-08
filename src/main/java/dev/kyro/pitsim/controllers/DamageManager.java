@@ -295,16 +295,11 @@ public class DamageManager implements Listener {
 		}
 
 		double damage = attackEvent.getFinalDamage();
-		attackEvent.getEvent().setDamage(damage);
-
 		if(PlayerManager.isRealPlayer(attackEvent.getDefenderPlayer())) {
 			Shield defenderShield = attackEvent.getDefenderPitPlayer().shield;
-			if(defenderShield.isActive()) {
-				double expectedFinalDamage = defenderShield.damageShield(attackEvent.getEvent().getFinalDamage());
-				double reductionRatio = expectedFinalDamage / attackEvent.getEvent().getFinalDamage();
-				attackEvent.getEvent().setDamage(reductionRatio * damage);
-			}
+			if(defenderShield.isActive()) damage = defenderShield.damageShield(damage);
 		}
+		attackEvent.getEvent().setDamage(damage);
 
 		if(attackEvent.trueDamage != 0 || attackEvent.veryTrueDamage != 0) {
 			double finalHealth = attackEvent.getDefender().getHealth() - attackEvent.trueDamage - attackEvent.veryTrueDamage;

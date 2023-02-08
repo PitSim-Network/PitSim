@@ -47,7 +47,7 @@ public class ProgressionManager implements Listener {
 	damage &c - increased dmg vs mobs, increased dmg vs bosses
 	first: unlock bosses
 	last:
-	path 1:
+	path 1: heal on mob kill
 	path 2: -1 item required to spawn bosses
 
 	defense &9 - decreased damage from mobs & bosses, increased shield

@@ -16,7 +16,7 @@ import java.util.List;
 
 public class RepelSpell extends PitEnchant {
 	public RepelSpell() {
-		super("Repel", true, ApplyType.SCYTHES, "repell", "rep", "repel");
+		super("Repel", true, ApplyType.SCYTHES, "repel");
 		isTainted = true;
 	}
 
@@ -43,7 +43,6 @@ public class RepelSpell extends PitEnchant {
 			Vector pullVector = dirVector.clone().normalize().setY(0.5).multiply(2.5).add(dirVector.clone().multiply(0.03));
 			entity.setVelocity(pullVector);
 		}
-
 	}
 
 	@Override
