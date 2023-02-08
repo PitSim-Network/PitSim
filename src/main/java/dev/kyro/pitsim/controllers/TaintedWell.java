@@ -181,8 +181,8 @@ public class TaintedWell implements Listener
 
 			try {
 				final ItemStack newItem;
-				if(MysticType.getMysticType(freshItem) == MysticType.TAINTED_SCYTHE) newItem = TaintedEnchanting.enchantScythe(freshItem, freshTier);
-				else newItem = TaintedEnchanting.enchantChestplate(freshItem, freshTier);
+				if(MysticType.getMysticType(freshItem) == MysticType.TAINTED_SCYTHE) newItem = OldTaintedEnchanting.enchantScythe(freshItem, freshTier);
+				else newItem = OldTaintedEnchanting.enchantChestplate(freshItem, freshTier);
 				final NBTItem nbtItem = new NBTItem(newItem);
 				if (nbtItem.hasKey(NBTTag.TAINTED_TIER.getRef())) {
 					final int tier = nbtItem.getInteger(NBTTag.TAINTED_TIER.getRef());

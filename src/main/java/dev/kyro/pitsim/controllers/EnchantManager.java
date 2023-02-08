@@ -673,4 +673,22 @@ public class EnchantManager implements Listener {
 		}
 		return applicableEnchants;
 	}
+
+	public static List<PitEnchant> getEnchants(MysticType mysticType, int enchantTier) {
+		List<PitEnchant> mysticEnchants = getEnchants(mysticType);
+
+		List<PitEnchant> finalEnchants = new ArrayList<>();
+
+		for(PitEnchant mysticEnchant : mysticEnchants) {
+			switch(enchantTier) {
+				case 0:
+					if(!mysticEnchant.isUncommonEnchant && !mysticEnchant.isRare) finalEnchants.add(mysticEnchant);
+				case 1:
+					if(mysticEnchant.isUncommonEnchant) finalEnchants.add(mysticEnchant);
+				case 2:
+					if(mysticEnchant.isRare) finalEnchants.add(mysticEnchant);
+			}
+		}
+		return finalEnchants;
+	}
 }
