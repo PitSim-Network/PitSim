@@ -42,7 +42,6 @@ public class MarketAsyncTask {
 
 
 		if(taskMap.containsKey(executor.getUniqueId())) {
-			System.out.println("Failure 1");
 			respond(false);
 		}
 
