@@ -6,12 +6,12 @@ import dev.kyro.pitsim.enums.ApplyType;
 
 import java.util.List;
 
-public class BugSpray extends PitEnchant {
-	public static BugSpray INSTANCE;
+public class Huggable extends PitEnchant {
+	public static Huggable INSTANCE;
 
-	public BugSpray() {
-		super("Bug Spray", false, ApplyType.CHESTPLATES,
-				"bugspray", "bug", "spray");
+	public Huggable() {
+		super("Huggable", false, ApplyType.CHESTPLATES,
+				"huggable", "hug");
 		isTainted = true;
 		INSTANCE = this;
 	}

@@ -994,11 +994,11 @@ public class PitSim extends JavaPlugin {
 		EnchantManager.registerEnchant(new Attentive());
 		EnchantManager.registerEnchant(new Belittle());
 		EnchantManager.registerEnchant(new BOOM());
-		EnchantManager.registerEnchant(new BugSpray());
 		EnchantManager.registerEnchant(new Embalm());
 		EnchantManager.registerEnchant(new Evasive());
 		EnchantManager.registerEnchant(new Extinguish());
 		EnchantManager.registerEnchant(new GeneticReconstruction());
+		EnchantManager.registerEnchant(new Huggable());
 		EnchantManager.registerEnchant(new Intimidating());
 		EnchantManager.registerEnchant(new Nimble());
 		EnchantManager.registerEnchant(new NocturnalPredator());
