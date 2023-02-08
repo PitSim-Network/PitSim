@@ -22,6 +22,7 @@ public class DropPool {
 	 * @return ItemStack from dropPool
 	 */
 	public ItemStack getRandomDrop() {
+		if(dropPool.isEmpty()) return null;
 		return Misc.weightedRandom(dropPool);
 	}
 

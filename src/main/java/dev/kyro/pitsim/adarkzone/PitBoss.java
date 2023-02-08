@@ -91,6 +91,7 @@ public abstract class PitBoss {
 		Map<PitBossAbility, Double> routineAbilityMap = new HashMap<>(this.routineAbilityMap);
 		for(Map.Entry<PitBossAbility, Double> entry : new ArrayList<>(routineAbilityMap.entrySet()))
 			if(!entry.getKey().shouldExecuteRoutine()) routineAbilityMap.remove(entry.getKey());
+		if(routineAbilityMap.isEmpty()) return null;
 		return Misc.weightedRandom(routineAbilityMap);
 	}
 
@@ -131,9 +132,9 @@ public abstract class PitBoss {
 				if(routineAbilityMap.isEmpty()) return;
 				if(lastRoutineExecuteTick + routineAbilityCooldownTicks > PitSim.currentTick) return;
 				if(skipRoutineChance != 0 && Math.random() * 100 < skipRoutineChance) return;
-				lastRoutineExecuteTick = PitSim.currentTick;
-
 				PitBossAbility routineAbility = getRoutineAbility();
+				if(routineAbility == null) return;
+				lastRoutineExecuteTick = PitSim.currentTick;
 				routineAbility.onRoutineExecute();
 			}
 		}.runTaskTimer(PitSim.INSTANCE, 0L, 20);
