@@ -42,6 +42,19 @@ public class TaintedEnchanting {
 			}
 		}
 
+		if(tier == 1) {
+			int newTokens;
+			Map<Integer, Double> enchantRandom = new HashMap<>();
+			enchantRandom.put(1, 0.3);
+			enchantRandom.put(2, 0.6);
+			enchantRandom.put(3, 0.1);
+			newTokens = Misc.weightedRandom(enchantRandom);
+
+			for(int i = 0; i < newTokens; i++) {
+				
+			}
+		}
+
 		return null;
 	}
 
