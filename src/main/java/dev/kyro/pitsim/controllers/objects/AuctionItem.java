@@ -125,6 +125,7 @@ public class AuctionItem {
 
 				AUtil.giveItemSafely(winner.getPlayer(), jewel, true);
 			}
+			AuctionManager.sendAlert("Auction " + slot + " was claimed by " + winner.getName() + " since they were online (" + item.itemName + ")");
 
 		} else {
 			try {
@@ -142,6 +143,7 @@ public class AuctionItem {
 
 			} catch(Exception e) {
 				e.printStackTrace();
+				AuctionManager.sendAlert("Auction " + slot + " failed to send message (" + item.itemName + ")");
 			}
 		}
 
