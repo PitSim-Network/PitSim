@@ -68,11 +68,10 @@ public class EnchantSound {
 		tick += 2;
 		addSound(tick, "random.pop", 1.52, 0.82539684);
 		addSound(tick, "note.harp", 0.85, 1.0476191);
-//		tick += 2;
-		tick += 4;
+		tick += 2;
 		addSound(tick, "random.pop", 1.56, 1.0);
 		addSound(tick, "note.harp", 0.85, 1.2539682);
-//		tick += 2;
+		tick += 2;
 		addSound(tick, "random.pop", 1.6, 1.3333334);
 		addSound(tick, "note.harp", 0.85, 1.6666666);
 		tick += 2;
@@ -88,14 +87,14 @@ public class EnchantSound {
 		addSound(tick, "random.pop", 1.72, 1.0476191);
 		addSound(tick, "note.harp", 0.85, 1.3333334);
 		tick += 1;
-		addSound(tick, "random.pop", 1.74, 1.0476191, true);
-		addSound(tick, "note.harp", 0.85, 1.3333334, true);
+		addSound(tick, "random.pop", 1.74, 1.0476191);
+		addSound(tick, "note.harp", 0.85, 1.3333334);
 		tick += 1;
 		addSound(tick, "random.pop", 1.72, 1.4126984);
 		addSound(tick, "note.harp", 0.85, 1.7777778);
 		tick += 1;
-		addSound(tick, "random.pop", 1.74, 1.4126984, true);
-		addSound(tick, "note.harp", 0.85, 1.7777778, true);
+		addSound(tick, "random.pop", 1.74, 1.4126984);
+		addSound(tick, "note.harp", 0.85, 1.7777778);
 		tick += 1;
 
 
@@ -103,26 +102,26 @@ public class EnchantSound {
 		addSound(tick, "random.pop", 1.8, 0.74603176);
 		addSound(tick, "note.harp", 0.85, 0.93650794);
 		tick += 1;
-		addSound(tick, "random.pop", 1.82, 0.74603176, true);
-		addSound(tick, "note.harp", 0.85, 0.93650794, true);
+		addSound(tick, "random.pop", 1.82, 0.74603176);
+		addSound(tick, "note.harp", 0.85, 0.93650794);
 		tick += 1;
 		addSound(tick, "random.pop", 1.84, 0.93650794);
 		addSound(tick, "note.harp", 0.85, 1.1746032);
 		tick += 1;
-		addSound(tick, "random.pop", 1.86, 0.93650794, true);
-		addSound(tick, "note.harp", 0.85, 1.1746032, true);
+		addSound(tick, "random.pop", 1.86, 0.93650794);
+		addSound(tick, "note.harp", 0.85, 1.1746032);
 		tick += 1;
 		addSound(tick, "random.pop", 1.88, 1.1111112);
 		addSound(tick, "note.harp", 0.85, 1.4126984);
 		tick += 1;
-		addSound(tick, "random.pop", 1.9, 1.1111112, true);
-		addSound(tick, "note.harp", 0.85, 1.4126984, true);
+		addSound(tick, "random.pop", 1.9, 1.1111112);
+		addSound(tick, "note.harp", 0.85, 1.4126984);
 		tick += 1;
 		addSound(tick, "random.pop", 1.92, 1.4920635);
 		addSound(tick, "note.harp", 0.85, 1.8730159);
 		tick += 1;
-		addSound(tick, "random.pop", 1.94, 1.4920635, true);
-		addSound(tick, "note.harp", 0.85, 1.8730159, true);
+		addSound(tick, "random.pop", 1.94, 1.4920635);
+		addSound(tick, "note.harp", 0.85, 1.8730159);
 		tick += 1;
 
 		addSound(tick, "random.pop", 1.96, 0.7936508);
@@ -244,16 +243,15 @@ public class EnchantSound {
 		addSound(tick, "note.harp", 0.76, 1.9047619);
 		addSound(tick, "random.successful_hit", 0.42, 1.6666666);
 		addSound(tick, "random.successful_hit", 0.42, 2.0);
-		addSound(tick, "mob.enderdragon.growl", 1, 1);
 		tick += 1;
 		addSound(tick, "random.pop", 2.48, 1.1746032);
 		addSound(tick, "note.harp", 0.76, 2.0);
 		addSound(tick, "random.successful_hit", 0.42, 1.6666666);
 		addSound(tick, "random.successful_hit", 0.42, 2.0);
+		addSound(tick, "mob.enderdragon.growl", 1, 1);
 		tick += 1;
 		addSound(tick, "fireworks.twinkle", 0.9, 1.7936507);
 		addSound(tick, "fireworks.largeBlast", 0.9, 1.1904762);
-		tick += 1;
 
 		new BukkitRunnable() {
 			int tick = 0;
@@ -273,43 +271,25 @@ public class EnchantSound {
 	}
 
 	public void addSound(int tick, String sound, double volume, double pitch) {
-		addSound(tick, sound, volume, pitch, false);
-	}
-
-	public void addSound(int tick, String sound, double volume, double pitch, boolean halfTick) {
 		soundMap.putIfAbsent(tick, new ArrayList<>());
-		soundMap.get(tick).add(new SoundPart(sound, volume, pitch, halfTick));
+		soundMap.get(tick).add(new SoundPart(sound, volume, pitch));
 	}
 
 	private class SoundPart {
 		private final String sound;
 		private final float volume;
 		private final float pitch;
-		private final boolean halfTick;
 
-		public SoundPart(String sound, double volume, double pitch, boolean halfTick) {
+		public SoundPart(String sound, double volume, double pitch) {
 			this.sound = sound;
 			this.volume = (float) volume;
 			this.pitch = (float) pitch;
-			this.halfTick = halfTick;
 		}
 
 		public void play() {
-//			player.playSound(location, sound, volume, pitch);
-
-//			new BukkitRunnable() {
-//				@Override
-//				public void run() {
-//					if(halfTick) {
-//						try {
-//							Thread.sleep(15);
-//						} catch(InterruptedException ignored) {}
-//					}
-					CraftPlayer craftPlayer = (CraftPlayer) player;
-					PacketPlayOutNamedSoundEffect packet = new PacketPlayOutNamedSoundEffect(sound, location.getX(), location.getY(), location.getZ(), volume, pitch);
-					craftPlayer.getHandle().playerConnection.sendPacket(packet);
-//				}
-//			}.runTaskAsynchronously(PitSim.INSTANCE);
+			CraftPlayer craftPlayer = (CraftPlayer) player;
+			PacketPlayOutNamedSoundEffect packet = new PacketPlayOutNamedSoundEffect(sound, location.getX(), location.getY(), location.getZ(), volume, pitch);
+			craftPlayer.getHandle().playerConnection.sendPacket(packet);
 		}
 	}
 
