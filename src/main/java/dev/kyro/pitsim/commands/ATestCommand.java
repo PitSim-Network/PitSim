@@ -1,10 +1,9 @@
 package dev.kyro.pitsim.commands;
 
-import dev.kyro.pitsim.adarkzone.progression.ProgressionGUI;
-import dev.kyro.pitsim.controllers.objects.PluginMessage;
-import dev.kyro.pitsim.market.MarketGUI;
-import dev.kyro.pitsim.storage.StorageProfile;
-import org.bukkit.Material;
+import dev.kyro.pitsim.aitems.PitItem;
+import dev.kyro.pitsim.controllers.ItemFactory;
+import dev.kyro.pitsim.controllers.TaintedEnchanting;
+import dev.kyro.pitsim.misc.Misc;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -19,12 +18,30 @@ public class ATestCommand implements CommandExecutor {
 		Player player = (Player) sender;
 //		if(!player.isOp()) return false;
 
-		ItemStack itemStack = player.getItemInHand();
-		if(itemStack == null || !itemStack.hasItemMeta() || itemStack.getType() == Material.AIR) {
-			MarketGUI marketGUI = new MarketGUI(player);
-			marketGUI.open();
-			return true;
+		for(int i = 0; i < player.getInventory().getContents().length; i++) {
+			ItemStack content = player.getInventory().getItem(i);
+
+			if(Misc.isAirOrNull(content)) continue;
+			PitItem pitItem = ItemFactory.getItem(content);
+			if(pitItem == null || !pitItem.isMystic) continue;
+
+			ItemStack itemStack = content;
+
+			for(int j = 0; j < 3; j++) {
+				itemStack = TaintedEnchanting.enchantItem(itemStack);
+			}
+
+			player.getInventory().setItem(i, itemStack);
 		}
+
+//		ItemStack itemStack = player.getItemInHand();
+//		player.setItemInHand(TaintedEnchanting.enchantItem(itemStack));
+
+//		if(itemStack == null || !itemStack.hasItemMeta() || itemStack.getType() == Material.AIR) {
+//			MarketGUI marketGUI = new MarketGUI(player);
+//			marketGUI.open();
+//			return true;
+//		}
 
 		return false;
 	}
