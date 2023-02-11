@@ -363,6 +363,13 @@ public class DamageManager implements Listener {
 		boolean killerIsRealPlayer = PlayerManager.isRealPlayer(killerPlayer);
 		boolean deadIsRealPlayer = PlayerManager.isRealPlayer(deadPlayer);
 
+		PitPlayer pitKiller = PitPlayer.getPitPlayer(killerPlayer);
+		PitPlayer pitDead = PitPlayer.getPitPlayer(deadPlayer);
+		Non killerNon = NonManager.getNon(killer);
+		Non deadNon = NonManager.getNon(dead);
+		PitMob killerMob = DarkzoneManager.getPitMob(killer);
+		PitMob deadMob = DarkzoneManager.getPitMob(dead);
+
 		KillEvent killEvent = null;
 		OofEvent oofEvent;
 
@@ -388,11 +395,6 @@ public class DamageManager implements Listener {
 		}
 
 		if(killerIsPlayer && deadIsPlayer) EnchantManager.incrementKillsOnJewels(killerPlayer);
-
-		PitPlayer pitKiller = PitPlayer.getPitPlayer(killerPlayer);
-		PitPlayer pitDead = PitPlayer.getPitPlayer(deadPlayer);
-		Non killerNon = NonManager.getNon(killer);
-		Non deadNon = NonManager.getNon(dead);
 
 		if(deadIsPlayer && killType != KillType.FAKE) {
 			EntityPlayer nmsPlayer = ((CraftPlayer) dead).getHandle();
@@ -449,26 +451,35 @@ public class DamageManager implements Listener {
 		}
 
 		DecimalFormat df = new DecimalFormat("##0.00");
-		String kill = "null";
-		if(!deadIsPlayer && DarkzoneManager.isPitMob(dead))
-			kill = ChatColor.translateAlternateColorCodes('&', "&a&lKILL!&7 on " + DarkzoneManager.getPitMob(dead).getDisplayName());
-		else if(killType != KillType.DEATH)
+		String kill = null;
+		System.out.println("hi " + deadMob);
+		if(deadMob != null) {
+			kill = "&a&lKILL!&7 on " + deadMob.getDisplayName();
+		} else if(killType != KillType.DEATH) {
 			kill = PlaceholderAPI.setPlaceholders(killEvent.getDeadPlayer(), "&a&lKILL!&7 on %luckperms_prefix%" +
 					(deadNon == null ? "%player_name%" : deadNon.displayName) + " &b+" + killEvent.getFinalXp() + "XP" +
 					" &6+" + df.format(killEvent.getFinalGold()) + "g");
+		}
+
 		String death;
-		if(!killerIsPlayer) death = ChatColor.translateAlternateColorCodes('&', "&c&lDEATH!");
-		else if(killType == KillType.DEFAULT)
+		if(!killerIsPlayer) {
+			death = "&c&lDEATH!";
+		} else if(killType == KillType.DEFAULT) {
 			death = PlaceholderAPI.setPlaceholders(killEvent.getKillerPlayer(), "&c&lDEATH!&7 by %luckperms_prefix%" + (killerNon == null ? "%player_name%" : killerNon.displayName));
-		else death = "&c&lDEATH!";
+		} else {
+			death = "&c&lDEATH!";
+		}
+
 		String killActionBar = null;
-		if(killerIsPlayer)
+		if(kill != null && killerIsPlayer) {
 			killActionBar = "&7%luckperms_prefix%" + (deadNon == null ? "%player_name%" : deadNon.displayName) + " &a&lKILL!";
-		else if(DarkzoneManager.isPitMob(dead)) killActionBar = DarkzoneManager.getPitMob(dead).getDisplayName() + " &a&lKILL!";
+		} else if(DarkzoneManager.isPitMob(dead)) {
+			killActionBar = DarkzoneManager.getPitMob(dead).getDisplayName() + " &a&lKILL!";
+		}
 
 		if(killerIsPlayer && !CitizensAPI.getNPCRegistry().isNPC(killer) && !pitKiller.killFeedDisabled && killType != KillType.DEATH) {
 			AOutput.send(killEvent.getKiller(), PlaceholderAPI.setPlaceholders(killEvent.getDeadPlayer(), kill));
-			pitKiller.stats.mobsKilled++;
+			pitKiller.stats.mobsKilled++; // TODO: this is definitely the wrong spot
 		}
 		if(deadIsPlayer && !pitDead.killFeedDisabled && killType != KillType.FAKE && killEvent != null)
 			AOutput.send(killEvent.getDead(), death);
