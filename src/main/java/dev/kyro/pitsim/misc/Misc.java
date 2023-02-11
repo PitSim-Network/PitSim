@@ -53,10 +53,8 @@ import java.util.*;
 import java.util.function.Predicate;
 
 public class Misc {
-	public static final String ALERTS_WEBHOOK = "***REMOVED***";
-
 	public static void alertDiscord(String message) {
-		DiscordWebhook discordWebhook = new DiscordWebhook(ALERTS_WEBHOOK);
+		DiscordWebhook discordWebhook = new DiscordWebhook(PrivateInfo.ALERTS_WEBHOOK);
 		discordWebhook.setContent(message);
 		new BukkitRunnable() {
 			@Override

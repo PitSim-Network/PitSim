@@ -58,7 +58,7 @@ public class ProgressionManager implements Listener {
 
 	souls &d/&f - increased soul chance from mobs, increased fresh drop chance?
 	first: ability to t3 items
-	last:
+	last: ability to t4 items
 	path 1:
 	path 2:
 

@@ -7,19 +7,19 @@ import dev.kyro.pitsim.adarkzone.bosses.PitZombieBoss;
 import dev.kyro.pitsim.adarkzone.mobs.*;
 import dev.kyro.pitsim.adarkzone.notdarkzone.PitEquipment;
 import dev.kyro.pitsim.aitems.PitItem;
+import dev.kyro.pitsim.aitems.misc.SoulPickup;
 import dev.kyro.pitsim.aitems.mobdrops.*;
+import dev.kyro.pitsim.aitems.mobdrops.EnderPearl;
 import dev.kyro.pitsim.controllers.ItemFactory;
 import dev.kyro.pitsim.controllers.MapManager;
 import dev.kyro.pitsim.controllers.PlayerManager;
 import dev.kyro.pitsim.events.KillEvent;
+import dev.kyro.pitsim.misc.Misc;
 import dev.kyro.pitsim.misc.Sounds;
 import org.bukkit.Effect;
 import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.EntityType;
-import org.bukkit.entity.LivingEntity;
-import org.bukkit.entity.Player;
+import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
@@ -28,9 +28,9 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.world.ChunkUnloadEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.util.Vector;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 public class DarkzoneManager implements Listener {
 	public static List<SubLevel> subLevels = new ArrayList<>();
@@ -214,6 +214,35 @@ public class DarkzoneManager implements Listener {
 			deadMob.kill(killEvent.getKillerPlayer());
 			return;
 		}
+	}
+
+	public static void createSoulExplosion(Location location, int souls) {
+		int items = (int) Math.sqrt(souls);
+		Map<Integer, Integer> soulDistributionMap = new HashMap<>();
+		int soulsToDistribute = souls - items;
+		for(int i = 0; i < items; i++) soulDistributionMap.put(i, 1);
+		for(int i = 0; i < soulsToDistribute; i++) {
+			int randomStack = new Random().nextInt(items);
+			soulDistributionMap.put(randomStack, soulDistributionMap.get(randomStack) + 1);
+		}
+		for(Map.Entry<Integer, Integer> entry : soulDistributionMap.entrySet()) {
+			Location spawnLocation = location.clone().add(Misc.randomOffset(2), Misc.randomOffsetPositive(2), Misc.randomOffset(2));
+			ItemStack soulStack = ItemFactory.getItem(SoulPickup.class).getItem(entry.getValue());
+
+			Item droppedItem = location.getWorld().dropItem(spawnLocation, soulStack);
+			new BukkitRunnable() {
+				@Override
+				public void run() {
+					if(droppedItem.isValid()) droppedItem.remove();
+				}
+			}.runTaskLater(PitSim.INSTANCE, 100 + new Random().nextInt(101));
+
+			Vector velocityVector = spawnLocation.toVector().subtract(location.toVector()).normalize().multiply(0.4);
+			double multiplier = Math.random() * 0.5 + 0.75;
+			droppedItem.setVelocity(velocityVector.multiply(multiplier));
+		}
+		location.getWorld().playEffect(location, Effect.EXPLOSION_LARGE, 1);
+		Sounds.SOUL_EXPLOSION.play(location);
 	}
 
 	public static PitEquipment getDefaultEquipment() {

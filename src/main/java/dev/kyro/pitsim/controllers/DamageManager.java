@@ -360,6 +360,8 @@ public class DamageManager implements Listener {
 		boolean deadIsPlayer = dead instanceof Player;
 		Player killerPlayer = killerIsPlayer ? (Player) killer : null;
 		Player deadPlayer = deadIsPlayer ? (Player) dead : null;
+		boolean killerIsRealPlayer = PlayerManager.isRealPlayer(killerPlayer);
+		boolean deadIsRealPlayer = PlayerManager.isRealPlayer(deadPlayer);
 
 		KillEvent killEvent = null;
 		OofEvent oofEvent;
@@ -389,6 +391,8 @@ public class DamageManager implements Listener {
 
 		PitPlayer pitKiller = PitPlayer.getPitPlayer(killerPlayer);
 		PitPlayer pitDead = PitPlayer.getPitPlayer(deadPlayer);
+		Non killerNon = NonManager.getNon(killer);
+		Non deadNon = NonManager.getNon(dead);
 
 		if(deadIsPlayer && killType != KillType.FAKE) {
 			EntityPlayer nmsPlayer = ((CraftPlayer) dead).getHandle();
@@ -409,19 +413,11 @@ public class DamageManager implements Listener {
 			Regularity.toReg.remove(dead.getUniqueId());
 		}
 
-		Non killingNon = NonManager.getNon(killer);
-		if(killerIsPlayer) {
-			if(killingNon == null) {
-				Non deadNon = NonManager.getNon(dead);
-				if(deadNon != null || Bukkit.getOnlinePlayers().contains(deadPlayer)) {
-					pitKiller.incrementKills();
-				}
-			}
-
-			Misc.playKillSound(pitKiller);
+		if(killerIsRealPlayer) {
+			if(deadNon != null || deadIsRealPlayer) pitKiller.incrementKills();
+			if(deadIsPlayer) Misc.playKillSound(pitKiller);
 		}
 
-		Non deadNon = NonManager.getNon(dead);
 		if(deadIsPlayer) {
 			if(deadNon == null && dead.getWorld() != MapManager.getTutorial()) {
 				Location spawnLoc = PitSim.getStatus() == PitSim.ServerStatus.DARKZONE ? MapManager.getDarkzoneSpawn() : MapManager.currentMap.getSpawn();
@@ -443,8 +439,8 @@ public class DamageManager implements Listener {
 			}
 		}
 
-		if(killingNon != null) {
-			killingNon.rewardKill();
+		if(killerNon != null) {
+			killerNon.rewardKill();
 		}
 
 		if(killerIsPlayer && killEvent != null) {
@@ -463,7 +459,7 @@ public class DamageManager implements Listener {
 		String death;
 		if(!killerIsPlayer) death = ChatColor.translateAlternateColorCodes('&', "&c&lDEATH!");
 		else if(killType == KillType.DEFAULT)
-			death = PlaceholderAPI.setPlaceholders(killEvent.getKillerPlayer(), "&c&lDEATH!&7 by %luckperms_prefix%" + (killingNon == null ? "%player_name%" : killingNon.displayName));
+			death = PlaceholderAPI.setPlaceholders(killEvent.getKillerPlayer(), "&c&lDEATH!&7 by %luckperms_prefix%" + (killerNon == null ? "%player_name%" : killerNon.displayName));
 		else death = "&c&lDEATH!";
 		String killActionBar = null;
 		if(killerIsPlayer)

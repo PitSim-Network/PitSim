@@ -14,12 +14,14 @@ import java.util.List;
 public class Sounds {
 
 	//	General
+	public static final SoundEffect PICKUP = new SoundEffect(Sound.ORB_PICKUP, 1, 1.7936507);
 	public static final SoundEffect SUCCESS = new SoundEffect(Sound.NOTE_PLING, 1, 2);
 	public static final SoundEffect ERROR = new SoundEffect(Sound.ENDERMAN_TELEPORT, 1, 0.5);
 	public static final SoundEffect NO = new SoundEffect(Sound.VILLAGER_NO, 1, 1);
 	public static final SoundEffect WARNING_LOUD = new SoundEffect(Sound.NOTE_PLING, 1000, 1);
 
 	//	Game / Misc
+	public static final SoundEffect SOUL_EXPLOSION = new SoundEffect(Sound.FIREWORK_BLAST, 1, 1);
 	public static final SoundEffect LEVEL_UP = new SoundEffect(Sound.LEVEL_UP, 1, 1);
 	public static final SoundEffect PRESTIGE = new SoundEffect(Sound.ENDERDRAGON_GROWL, 1, 1);
 	public static final SoundEffect ASSIST = new SoundEffect(Sound.ORB_PICKUP, 1, 1.7301587);

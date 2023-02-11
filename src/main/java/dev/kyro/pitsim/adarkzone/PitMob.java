@@ -55,6 +55,8 @@ public abstract class PitMob implements Listener {
 
 	public void kill(Player killer) {
 		dropPool.singleDistribution(killer);
+//		TODO: re-enable and add chance & pull soul value from somewhere
+//		DarkzoneManager.createSoulExplosion(getMob().getLocation().add(0, 0.5, 0), 100);
 		remove();
 	}
 
