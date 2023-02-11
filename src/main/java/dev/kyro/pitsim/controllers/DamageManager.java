@@ -417,7 +417,7 @@ public class DamageManager implements Listener {
 
 		if(killerIsRealPlayer) {
 			if(deadNon != null || deadIsRealPlayer) pitKiller.incrementKills();
-			if(deadIsPlayer) Misc.playKillSound(pitKiller);
+			Misc.playKillSound(pitKiller);
 		}
 
 		if(deadIsPlayer) {
