@@ -25,6 +25,7 @@ public enum NBTTag {
 	IS_PREMADE("pr-ispremade"),
 
 	CANNOT_PICKUP("pr-cannot-pickup"),
+	SOUL_AMOUNT("pr-soul-amount"),
 	COOKIE_GIVER("pr-cookie-giver"),
 	COOKIE_RECEIVER("pr-cookie-receiver"),
 

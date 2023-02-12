@@ -2,7 +2,6 @@ package dev.kyro.pitsim.commands;
 
 import de.tr7zw.nbtapi.NBTItem;
 import dev.kyro.arcticapi.misc.AUtil;
-import dev.kyro.pitsim.adarkzone.progression.ProgressionGUI;
 import dev.kyro.pitsim.enums.NBTTag;
 import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.ChatColor;
@@ -27,8 +26,10 @@ public class KTestCommand implements CommandExecutor {
 		Player player = (Player) sender;
 		if(!player.isOp()) return false;
 
-		ProgressionGUI progressionGUI = new ProgressionGUI(player);
-		progressionGUI.open();
+//		new EnchantSound(player, player.getLocation()).play(EnchantSound.Tier.TIER_3);
+
+//		ProgressionGUI progressionGUI = new ProgressionGUI(player);
+//		progressionGUI.open();
 
 //		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
 //		ItemStack itemStack = player.getItemInHand();

@@ -17,7 +17,6 @@ import dev.kyro.pitsim.cosmetics.PitCosmetic;
 import dev.kyro.pitsim.enums.NBTTag;
 import dev.kyro.pitsim.events.HealEvent;
 import dev.kyro.pitsim.megastreaks.Overdrive;
-import dev.kyro.pitsim.megastreaks.RNGesus;
 import dev.kyro.pitsim.megastreaks.Uberstreak;
 import me.clip.placeholderapi.PlaceholderAPI;
 import net.md_5.bungee.api.chat.BaseComponent;
@@ -53,10 +52,8 @@ import java.util.*;
 import java.util.function.Predicate;
 
 public class Misc {
-	public static final String ALERTS_WEBHOOK = "***REMOVED***";
-
 	public static void alertDiscord(String message) {
-		DiscordWebhook discordWebhook = new DiscordWebhook(ALERTS_WEBHOOK);
+		DiscordWebhook discordWebhook = new DiscordWebhook(PrivateInfo.ALERTS_WEBHOOK);
 		discordWebhook.setContent(message);
 		new BukkitRunnable() {
 			@Override
@@ -387,16 +384,6 @@ public class Misc {
 	public static int linearEnchant(int level, double step, double base) {
 
 		return (int) (level * step + base);
-	}
-
-	public static void sendActionBar(Player player, String message) {
-		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
-		if(pitPlayer.megastreak instanceof RNGesus && pitPlayer.getKills() < RNGesus.INSTABILITY_THRESHOLD && pitPlayer.megastreak.isOnMega())
-			return;
-
-		PacketPlayOutChat packet = new PacketPlayOutChat(IChatBaseComponent.ChatSerializer.a("{\"text\":\"" +
-				ChatColor.translateAlternateColorCodes('&', message) + "\"}"), (byte) 2);
-		((CraftPlayer) player).getHandle().playerConnection.sendPacket(packet);
 	}
 
 	public static void sendTitle(Player player, String message, int length) {

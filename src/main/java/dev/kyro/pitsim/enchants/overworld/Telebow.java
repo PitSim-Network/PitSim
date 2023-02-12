@@ -8,7 +8,6 @@ import dev.kyro.pitsim.controllers.objects.PitEnchant;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.enums.ApplyType;
 import dev.kyro.pitsim.events.AttackEvent;
-import dev.kyro.pitsim.misc.Misc;
 import dev.kyro.pitsim.misc.Sounds;
 import org.bukkit.Effect;
 import org.bukkit.Location;
@@ -81,14 +80,14 @@ public class Telebow extends PitEnchant {
 			new BukkitRunnable() {
 				@Override
 				public void run() {
-					Misc.sendActionBar(attackEvent.getAttackerPlayer(), "&eTelebow: &c" + cooldown.getTicksLeft() / 20 + "s cooldown!");
+					ActionBarManager.sendActionBar(attackEvent.getAttackerPlayer(), "&eTelebow: &c" + cooldown.getTicksLeft() / 20 + "s cooldown!");
 				}
 			}.runTaskLater(PitSim.INSTANCE, 1L);
 		} else {
 			new BukkitRunnable() {
 				@Override
 				public void run() {
-					Misc.sendActionBar(attackEvent.getAttackerPlayer(), "&eTelebow: &aReady!");
+					ActionBarManager.sendActionBar(attackEvent.getAttackerPlayer(), "&eTelebow: &aReady!");
 				}
 			}.runTaskLater(PitSim.INSTANCE, 1L);
 		}
@@ -110,7 +109,7 @@ public class Telebow extends PitEnchant {
 		if(cooldown.isOnCooldown()) {
 
 			if(player.isSneaking())
-				Misc.sendActionBar(player, "&eTelebow: &c" + cooldown.getTicksLeft() / 20 + "&cs cooldown!");
+				ActionBarManager.sendActionBar(player, "&eTelebow: &c" + cooldown.getTicksLeft() / 20 + "&cs cooldown!");
 
 			return;
 		}

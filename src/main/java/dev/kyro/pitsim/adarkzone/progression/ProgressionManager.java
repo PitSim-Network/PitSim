@@ -46,8 +46,8 @@ public class ProgressionManager implements Listener {
 	Branches:
 	damage &c - increased dmg vs mobs, increased dmg vs bosses
 	first: unlock bosses
-	last:
-	path 1:
+	last: increased damage vs mobs and bosses
+	path 1: heal on mob kill
 	path 2: -1 item required to spawn bosses
 
 	defense &9 - decreased damage from mobs & bosses, increased shield
@@ -56,9 +56,9 @@ public class ProgressionManager implements Listener {
 	path 1:
 	path 2: decrease time until shield resets
 
-	enchanting/souls &d/&f - increased souls from mobs, increased fresh drop?
-	first: unlock the tainted well
-	last:
+	souls &d/&f - increased soul chance from mobs, increased fresh drop chance?
+	first: ability to t3 items
+	last: ability to t4 items
 	path 1:
 	path 2:
 

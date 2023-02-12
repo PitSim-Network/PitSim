@@ -78,21 +78,6 @@ public class PlayerManager implements Listener {
 
 					if(onlinePlayer.getLocation().getY() >= 85)
 						onlinePlayer.spigot().playEffect(onlinePlayer.getLocation(), Effect.PORTAL, 0, 0, 10, 10, 10, 1, 128, 100);
-
-					double reduction = 0.0;
-
-					for(Map.Entry<PitEnchant, Integer> entry : EnchantManager.getEnchantsOnPlayer(pitPlayer.player).entrySet()) {
-						if(!entry.getKey().isTainted || entry.getKey().applyType != ApplyType.CHESTPLATES) continue;
-						reduction += (0.8 - (0.2 * entry.getValue()));
-					}
-
-					double amount = 0.5;
-//					PotionEffect effect = PotionManager.getEffect(pitPlayer.player, MagmaCream.INSTANCE);
-//					if(effect != null) amount += (Double) effect.potionType.getPotency(effect.potency);
-					amount *= (1 - reduction);
-
-					if(pitPlayer.mana + amount > pitPlayer.getMaxMana()) continue;
-					pitPlayer.mana += amount;
 				}
 			}
 		}.runTaskTimerAsynchronously(PitSim.INSTANCE, 0L, 1L);

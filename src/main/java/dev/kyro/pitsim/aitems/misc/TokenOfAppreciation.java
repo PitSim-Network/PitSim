@@ -89,11 +89,6 @@ public class TokenOfAppreciation extends PitItem {
 	}
 
 	@Override
-	public boolean isThisItem(ItemStack itemStack) {
-		return super.isThisItem(itemStack);
-	}
-
-	@Override
 	public ItemStack getReplacementItem(PitPlayer pitPlayer, ItemStack itemStack, NBTItem nbtItem) {
 		ItemStack newItemStack = new ItemStack(getMaterial(), 1);
 		newItemStack = buildItem(newItemStack);

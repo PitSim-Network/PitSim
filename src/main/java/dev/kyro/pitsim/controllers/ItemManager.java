@@ -3,6 +3,7 @@ package dev.kyro.pitsim.controllers;
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.aitems.PitItem;
+import dev.kyro.pitsim.aitems.misc.SoulPickup;
 import dev.kyro.pitsim.aitems.misc.VeryYummyBread;
 import dev.kyro.pitsim.aitems.misc.YummyBread;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
@@ -10,12 +11,14 @@ import dev.kyro.pitsim.misc.Misc;
 import dev.kyro.pitsim.misc.Sounds;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryAction;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
+import org.bukkit.event.player.PlayerPickupItemEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 
@@ -37,6 +40,26 @@ public class ItemManager implements Listener {
 		player.updateInventory();
 		AOutput.error(player, "This item can only be dropped when your inventory is closed");
 		Sounds.WARNING_LOUD.play(player);
+	}
+
+	@EventHandler
+	public static void onPickup(PlayerPickupItemEvent event) {
+		Item droppedItem = event.getItem();
+		ItemStack itemStack = droppedItem.getItemStack();
+		Player player = event.getPlayer();
+		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
+
+		SoulPickup pitItem = ItemFactory.getItem(SoulPickup.class);
+		if(pitItem.isThisItem(itemStack)) {
+			int souls = pitItem.getSouls(itemStack);
+
+			event.setCancelled(true);
+			droppedItem.remove();
+			pitPlayer.taintedSouls += souls;
+
+			Sounds.PICKUP.play(player);
+			AOutput.send(player, "&5&lHARVEST!&7 You harvested &f" + souls + " soul" + (souls == 1 ? "" : "s"));
+		}
 	}
 
 	@EventHandler(ignoreCancelled = true)

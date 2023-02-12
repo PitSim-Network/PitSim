@@ -63,9 +63,11 @@ import dev.kyro.pitsim.enchants.tainted.abilities.MaxHealth;
 import dev.kyro.pitsim.enchants.tainted.abilities.Sonic;
 import dev.kyro.pitsim.enchants.tainted.common.*;
 import dev.kyro.pitsim.enchants.tainted.spells.*;
+import dev.kyro.pitsim.enchants.tainted.znotcodeduncommon.*;
 import dev.kyro.pitsim.enums.NBTTag;
 import dev.kyro.pitsim.helmetabilities.*;
 import dev.kyro.pitsim.killstreaks.*;
+import dev.kyro.pitsim.killstreaks.Survivor;
 import dev.kyro.pitsim.kits.EssentialKit;
 import dev.kyro.pitsim.kits.GoldKit;
 import dev.kyro.pitsim.kits.PvPKit;
@@ -662,6 +664,7 @@ public class PitSim extends JavaPlugin {
 //		getServer().getPluginManager().registerEvents(new AIManager(), this);
 		getServer().getPluginManager().registerEvents(new MarketMessaging(), this);
 		getServer().getPluginManager().registerEvents(new MigrationManager(), this);
+		getServer().getPluginManager().registerEvents(new ActionBarManager(), this);
 
 		if(getStatus().isDarkzone()) {
 			getServer().getPluginManager().registerEvents(new TaintedWell(), this);
@@ -850,6 +853,7 @@ public class PitSim extends JavaPlugin {
 		ItemFactory.registerItem(new YummyBread());
 		ItemFactory.registerItem(new VeryYummyBread());
 
+		ItemFactory.registerItem(new SoulPickup());
 		ItemFactory.registerItem(new StaffCookie());
 		ItemFactory.registerItem(new TokenOfAppreciation());
 
@@ -971,20 +975,42 @@ public class PitSim extends JavaPlugin {
 		EnchantManager.registerEnchant(new Sweaty());
 //		EnchantManager.registerEnchant(new XpBump());
 
-		EnchantManager.registerEnchant(new FireballSpell());
-		EnchantManager.registerEnchant(new RepelSpell());
+//		Darkzone enchants
+
+//		Spells
 		EnchantManager.registerEnchant(new FreezeSpell());
 		EnchantManager.registerEnchant(new SweepingEdgeSpell());
 		EnchantManager.registerEnchant(new MeteorSpell());
 		EnchantManager.registerEnchant(new SavingGraceSpell());
 		EnchantManager.registerEnchant(new CleaveSpell());
 		EnchantManager.registerEnchant(new WarpSpell());
-		EnchantManager.registerEnchant(new ExtractSpell());
 
+//		Effects
 		EnchantManager.registerEnchant(new MaxHealth());
 		EnchantManager.registerEnchant(new Sonic());
 
-//		Darkzone enchants
+//		Uncommon Curses
+		EnchantManager.registerEnchant(new Weak());
+		EnchantManager.registerEnchant(new Frail());
+
+//		Uncommon
+		EnchantManager.registerEnchant(new ComboDefence());
+		EnchantManager.registerEnchant(new ComboMana());
+		EnchantManager.registerEnchant(new ComboSlow());
+		EnchantManager.registerEnchant(new Emboldened());
+		EnchantManager.registerEnchant(new Ethereal());
+		EnchantManager.registerEnchant(new Fearmonger());
+		EnchantManager.registerEnchant(new Fortify());
+		EnchantManager.registerEnchant(new Greed());
+		EnchantManager.registerEnchant(new LeaveMeAlone());
+		EnchantManager.registerEnchant(new Mechanic());
+		EnchantManager.registerEnchant(new Mending());
+		EnchantManager.registerEnchant(new Permed());
+		EnchantManager.registerEnchant(new PitPocket());
+		EnchantManager.registerEnchant(new Reaper());
+		EnchantManager.registerEnchant(new ShieldBuster());
+		EnchantManager.registerEnchant(new StartingHand());
+		EnchantManager.registerEnchant(new Tanky());
 
 //		Common
 		EnchantManager.registerEnchant(new Aloft());
