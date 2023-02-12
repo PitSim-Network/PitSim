@@ -86,7 +86,6 @@ public class Robinhood extends PitEnchant {
 					Player target = (Player) nearbyEntity;
 					if(NonManager.getNon(target) != null) continue;
 					if(VanishAPI.isInvisible(target)) continue;
-					if(NonManager.getNon(target) != null) continue;
 
 					double distance = arrow.getLocation().distance(target.getLocation());
 					if(targetInfo == null || distance < targetInfo.getValue()) {

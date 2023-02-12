@@ -1,8 +1,10 @@
 package dev.kyro.pitsim.commands;
 
 import de.tr7zw.nbtapi.NBTItem;
+import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.arcticapi.misc.AUtil;
 import dev.kyro.pitsim.enums.NBTTag;
+import dev.kyro.pitsim.misc.EnchantSound;
 import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -26,7 +28,25 @@ public class KTestCommand implements CommandExecutor {
 		Player player = (Player) sender;
 		if(!player.isOp()) return false;
 
-//		new EnchantSound(player, player.getLocation()).play(EnchantSound.Tier.TIER_3);
+		EnchantSound.Tier tier = null;
+		try {
+			int tierInt = Integer.parseInt(args[0]);
+			switch(tierInt) {
+				case 1:
+					tier = EnchantSound.Tier.TIER_1;
+					break;
+				case 2:
+					tier = EnchantSound.Tier.TIER_2;
+					break;
+				case 3:
+					tier = EnchantSound.Tier.TIER_3;
+			}
+		} catch(Exception ignored) {}
+		if(tier == null) {
+			AOutput.error(player, "&c&lERROR!&7 Specify a tier");
+			return false;
+		}
+		new EnchantSound(player, player.getLocation()).play(tier, tier != EnchantSound.Tier.TIER_1);
 
 //		ProgressionGUI progressionGUI = new ProgressionGUI(player);
 //		progressionGUI.open();
