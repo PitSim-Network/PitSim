@@ -322,4 +322,11 @@ public class DarkzoneManager implements Listener {
 		}
 		return null;
 	}
+
+	public static void clearEntities() {
+		for(Entity entity : MapManager.getDarkzone().getEntities()) {
+			if(entity instanceof Player) continue;
+			entity.remove();
+		}
+	}
 }

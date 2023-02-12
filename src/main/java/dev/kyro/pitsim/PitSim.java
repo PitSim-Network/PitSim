@@ -132,11 +132,14 @@ public class PitSim extends JavaPlugin {
 	public void onEnable() {
 		INSTANCE = this;
 
+
 		loadConfig();
 		ArcticAPI.configInit(this, "prefix", "error-prefix");
 		serverName = AConfig.getString("server");
 		if(AConfig.getBoolean("standalone-server")) status = ServerStatus.ALL;
 		else status = serverName.contains("darkzone") ? ServerStatus.DARKZONE : ServerStatus.OVERWORLD;
+
+		if(status.isDarkzone()) DarkzoneManager.clearEntities();
 
 		for(Player onlinePlayer : Bukkit.getOnlinePlayers()) {
 			PlayerDataManager.exemptedPlayers.add(onlinePlayer.getUniqueId());

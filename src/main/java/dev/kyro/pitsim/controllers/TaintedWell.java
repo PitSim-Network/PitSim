@@ -24,10 +24,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
-import org.bukkit.event.player.PlayerInteractAtEntityEvent;
-import org.bukkit.event.player.PlayerInteractEvent;
-import org.bukkit.event.player.PlayerMoveEvent;
-import org.bukkit.event.player.PlayerQuitEvent;
+import org.bukkit.event.player.*;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 
@@ -39,10 +36,7 @@ import java.util.Map;
 public class TaintedWell implements Listener {
 	public static Location wellLocation;
 	public static ArmorStand wellStand;
-	public static ArmorStand textLine1;
-	public static ArmorStand textLine2;
-	public static ArmorStand textLine3;
-	public static ArmorStand textLine4;
+	public static ArmorStand[] textStands = new ArmorStand[4];
 	public static Map<Player, ArmorStand> removeStands;
 	public static Map<Player, ArmorStand> enchantStands;
 	public static List<Player> enchantingPlayers;
@@ -59,6 +53,15 @@ public class TaintedWell implements Listener {
 		new BukkitRunnable() {
 			public void run() {
 				if(!PitSim.getStatus().isDarkzone()) return;
+
+				for(Player onlinePlayer : Bukkit.getOnlinePlayers()) {
+					if(onlinePlayer.getWorld() != wellLocation.getWorld()) continue;
+					if(playerItems.containsKey(onlinePlayer)) continue;
+
+					setText(onlinePlayer, "&6&lTainted Well", ChatColor.GRAY + "Enchant Mystic Items found", ChatColor.GRAY + "in the Darkzone here", ChatColor.YELLOW + "Right-Click with an Item!");
+				}
+
+
 				if(wellStand != null){
 					for(Entity entity : wellStand.getNearbyEntities(25.0, 25.0, 25.0)) {
 						if(!(entity instanceof Player)) {
@@ -126,44 +129,25 @@ public class TaintedWell implements Listener {
 		wellStand.setArms(true);
 		wellStand.setVisible(false);
 		wellStand.setGravity(false);
-		
-		textLine1 = wellLocation.getWorld().spawn(wellLocation.clone().add(0.5, 1.0, 0.5), ArmorStand.class);
-		textLine1.setArms(true);
-		textLine1.setVisible(false);
-		textLine1.setCustomName(ChatColor.DARK_PURPLE + "" + ChatColor.BOLD + "Tainted Well");
-		textLine1.setCustomNameVisible(true);
-		textLine1.setGravity(false);
-		
-		textLine2 = wellLocation.getWorld().spawn(wellLocation.clone().add(0.5, 0.7, 0.5), ArmorStand.class);
-		textLine2.setArms(true);
-		textLine2.setVisible(false);
-		textLine2.setCustomName(ChatColor.GRAY + "Enchant Mystic Items found");
-		textLine2.setCustomNameVisible(true);
-		textLine2.setGravity(false);
-		
-		textLine3 = wellLocation.getWorld().spawn(wellLocation.clone().add(0.5, 0.4, 0.5), ArmorStand.class);
-		textLine3.setArms(true);
-		textLine3.setVisible(false);
-		textLine3.setCustomName(ChatColor.GRAY + "in the Darkzone here");
-		textLine3.setCustomNameVisible(true);
-		textLine3.setGravity(false);
-		
-		textLine4 = wellLocation.getWorld().spawn(wellLocation.clone().add(0.5, 0.1, 0.5), ArmorStand.class);
-		textLine4.setArms(true);
-		textLine4.setVisible(false);
-		textLine4.setCustomName(ChatColor.YELLOW + "Right-Click with an Item!");
-		textLine4.setCustomNameVisible(true);
-		textLine4.setGravity(false);
-		
+
+		for(int i = 0; i < 4; i++) {
+			textStands[i] = wellLocation.getWorld().spawn(wellLocation.clone().add(0.5, 3.0, 0.5), ArmorStand.class);
+			textStands[i].setArms(true);
+			textStands[i].setVisible(false);
+			textStands[i].setCustomName(ChatColor.DARK_PURPLE + "" + ChatColor.BOLD + "Tainted Well");
+			textStands[i].setCustomNameVisible(true);
+			textStands[i].setGravity(false);
+			textStands[i].setMarker(true);
+		}
+
 		wellLocation.getBlock().setType(Material.ENCHANTMENT_TABLE);
 	}
 
 	public static void onStop() {
 		wellStand.remove();
-		textLine1.remove();
-		textLine2.remove();
-		textLine3.remove();
-		textLine4.remove();
+		for(ArmorStand textStand : textStands) {
+			textStand.remove();
+		}
 
 		for(ArmorStand value : removeStands.values()) {
 			value.remove();
@@ -260,6 +244,7 @@ public class TaintedWell implements Listener {
 		}.runTaskLater(PitSim.INSTANCE, 2L);
 		
 		if(!enchant) {
+			Bukkit.broadcastMessage("Sent packet!");
 			setText(player, ChatColor.DARK_PURPLE + "" + ChatColor.BOLD + "Tainted Well", ChatColor.GRAY + "Enchant Mystic Items found", ChatColor.GRAY + "in the Darkzone here", ChatColor.YELLOW + "Right-Click with an Item!");
 			ItemStack item = playerItems.get(player);
 			
@@ -270,12 +255,6 @@ public class TaintedWell implements Listener {
 			
 			PacketPlayOutEntityEquipment packet = new PacketPlayOutEntityEquipment(getStandID(wellStand), 0, CraftItemStack.asNMSCopy(new ItemStack(Material.AIR)));
 			((CraftPlayer)player).getHandle().playerConnection.sendPacket(packet);
-			
-			new BukkitRunnable() {
-				public void run() {
-					setText(player, ChatColor.DARK_PURPLE + "" + ChatColor.BOLD + "Tainted Well", ChatColor.GRAY + "Enchant Mystic Items found", ChatColor.GRAY + "in the Darkzone here", ChatColor.YELLOW + "Right-Click with an Item!");
-				}
-			}.runTaskLater(PitSim.INSTANCE, 3L);
 
 		} else {
 			NBTItem nbtFreshItem = new NBTItem(playerItems.get(player));
@@ -319,6 +298,15 @@ public class TaintedWell implements Listener {
 			setText(player, "\u00A77", "\u00A77", "\u00A77", ChatColor.YELLOW + "Its rolling...");
 
 			new EnchantSound(player, player.getLocation()).play(EnchantSound.Tier.TIER_3);
+
+			new BukkitRunnable() {
+				public void run() {
+					TaintedWell.enchantingPlayers.remove(player);
+					player.playEffect(TaintedWell.wellLocation.clone().add(0.0, 1.0, 0.0), Effect.EXPLOSION_HUGE, 0);
+					Sounds.EXPLOSIVE_3.play(player);
+					TaintedWell.showButtons(player);
+				}
+			}.runTaskLater(PitSim.INSTANCE, 80L);
 		}
 	}
 
@@ -393,6 +381,9 @@ public class TaintedWell implements Listener {
 	@EventHandler
 	public void onHit(AttackEvent.Pre event) {
 		if(event.getDefender().getUniqueId().equals(wellStand.getUniqueId())) event.setCancelled(true);
+		for(ArmorStand textStand : textStands) {
+			text
+		}
 		if(event.getDefender().getUniqueId().equals(textLine1.getUniqueId())) event.setCancelled(true);
 		if(event.getDefender().getUniqueId().equals(textLine2.getUniqueId())) event.setCancelled(true);
 		if(event.getDefender().getUniqueId().equals(textLine3.getUniqueId())) event.setCancelled(true);
@@ -419,24 +410,23 @@ public class TaintedWell implements Listener {
 		return 0;
 	}
 
-	public static void setText(Player player, String line1, String line2, String line3, String line4) {
-		if(line1 != null) {
-			PacketPlayOutSpawnEntityLiving spawn = new PacketPlayOutSpawnEntityLiving((EntityLiving)((CraftEntity)textLine1).getHandle());
-			((CraftPlayer)player).getHandle().playerConnection.sendPacket(spawn);
+	public static void setText(Player player, String... lines) {
+		assert lines.length == 4;
+
+		for(int i = 0; i < 4; i++) {
+			if(lines[i] == null) continue;
+
 			DataWatcher dw = ((CraftEntity)textLine1).getHandle().getDataWatcher();
-			dw.watch(2, (Object)line1);
+			dw.watch(2, (Object)ChatColor.translateAlternateColorCodes('&', lines[i]));
 			PacketPlayOutEntityMetadata metaPacket = new PacketPlayOutEntityMetadata(getStandID(textLine1), dw, false);
 			((CraftPlayer)player).getHandle().playerConnection.sendPacket(metaPacket);
 		}
-		else {
-			PacketPlayOutEntityDestroy destroyPacket = new PacketPlayOutEntityDestroy(getStandID(textLine1));
-			((CraftPlayer)player).getHandle().playerConnection.sendPacket(destroyPacket);
-		}
+
 		if(line2 != null) {
-			PacketPlayOutSpawnEntityLiving spawn = new PacketPlayOutSpawnEntityLiving((EntityLiving)((CraftEntity)textLine2).getHandle());
-			((CraftPlayer)player).getHandle().playerConnection.sendPacket(spawn);
+//			PacketPlayOutSpawnEntityLiving spawn = new PacketPlayOutSpawnEntityLiving((EntityLiving)((CraftEntity)textLine2).getHandle());
+//			((CraftPlayer)player).getHandle().playerConnection.sendPacket(spawn);
 			DataWatcher dw = ((CraftEntity)textLine2).getHandle().getDataWatcher();
-			dw.watch(2, (Object)line2);
+			dw.watch(2, (Object)ChatColor.translateAlternateColorCodes('&', line2));
 			PacketPlayOutEntityMetadata metaPacket = new PacketPlayOutEntityMetadata(getStandID(textLine2), dw, false);
 			((CraftPlayer)player).getHandle().playerConnection.sendPacket(metaPacket);
 		}
@@ -445,10 +435,10 @@ public class TaintedWell implements Listener {
 			((CraftPlayer)player).getHandle().playerConnection.sendPacket(destroyPacket);
 		}
 		if(line3 != null) {
-			PacketPlayOutSpawnEntityLiving spawn = new PacketPlayOutSpawnEntityLiving((EntityLiving)((CraftEntity)textLine3).getHandle());
-			((CraftPlayer)player).getHandle().playerConnection.sendPacket(spawn);
+//			PacketPlayOutSpawnEntityLiving spawn = new PacketPlayOutSpawnEntityLiving((EntityLiving)((CraftEntity)textLine3).getHandle());
+//			((CraftPlayer)player).getHandle().playerConnection.sendPacket(spawn);
 			DataWatcher dw = ((CraftEntity)textLine3).getHandle().getDataWatcher();
-			dw.watch(2, (Object)line3);
+			dw.watch(2, (Object)ChatColor.translateAlternateColorCodes('&', line3));
 			PacketPlayOutEntityMetadata metaPacket = new PacketPlayOutEntityMetadata(getStandID(textLine3), dw, false);
 			((CraftPlayer)player).getHandle().playerConnection.sendPacket(metaPacket);
 		}
@@ -457,10 +447,10 @@ public class TaintedWell implements Listener {
 			((CraftPlayer)player).getHandle().playerConnection.sendPacket(destroyPacket);
 		}
 		if(line4 != null) {
-			PacketPlayOutSpawnEntityLiving spawn = new PacketPlayOutSpawnEntityLiving((EntityLiving)((CraftEntity)textLine4).getHandle());
-			((CraftPlayer)player).getHandle().playerConnection.sendPacket(spawn);
+//			PacketPlayOutSpawnEntityLiving spawn = new PacketPlayOutSpawnEntityLiving((EntityLiving)((CraftEntity)textLine4).getHandle());
+//			((CraftPlayer)player).getHandle().playerConnection.sendPacket(spawn);
 			DataWatcher dw = ((CraftEntity)textLine4).getHandle().getDataWatcher();
-			dw.watch(2, (Object)line4);
+			dw.watch(2, (Object)ChatColor.translateAlternateColorCodes('&', line4));
 			PacketPlayOutEntityMetadata metaPacket = new PacketPlayOutEntityMetadata(getStandID(textLine4), dw, false);
 			((CraftPlayer)player).getHandle().playerConnection.sendPacket(metaPacket);
 		}
@@ -489,5 +479,10 @@ public class TaintedWell implements Listener {
 			enchant3 = enchants.get(2).getDisplayName() + " " + AUtil.toRoman(enchantMap.get(enchants.get(2)));
 		}
 		setText(player, item.getItemMeta().getDisplayName(), enchant1, enchant2, enchant3);
+	}
+
+	@EventHandler
+	public void onArmorStandEquip(PlayerArmorStandManipulateEvent event) {
+		event.setCancelled(true);
 	}
 }
