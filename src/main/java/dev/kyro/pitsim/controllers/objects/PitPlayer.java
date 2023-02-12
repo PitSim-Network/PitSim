@@ -718,4 +718,16 @@ public class PitPlayer {
 
 		player.setExp(xp);
 	}
+
+	@Exclude
+	public void updateManaBar() {
+		List<String> messageSegments = new ArrayList<>();
+
+		int mana = (int) Math.round(this.mana);
+		int maxMana = getMaxMana();
+		messageSegments.add("&bMana: " + mana + "/" + maxMana);
+
+		String actionBarMessage = String.join(" ", messageSegments);
+		ActionBarManager.sendActionBar(player, null, actionBarMessage);
+	}
 }

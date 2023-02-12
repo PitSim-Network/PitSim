@@ -8,14 +8,17 @@ import dev.kyro.pitsim.adarkzone.mobs.*;
 import dev.kyro.pitsim.adarkzone.notdarkzone.PitEquipment;
 import dev.kyro.pitsim.aitems.PitItem;
 import dev.kyro.pitsim.aitems.misc.SoulPickup;
-import dev.kyro.pitsim.aitems.mobdrops.*;
 import dev.kyro.pitsim.aitems.mobdrops.EnderPearl;
+import dev.kyro.pitsim.aitems.mobdrops.*;
 import dev.kyro.pitsim.controllers.ItemFactory;
 import dev.kyro.pitsim.controllers.MapManager;
 import dev.kyro.pitsim.controllers.PlayerManager;
+import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.events.KillEvent;
+import dev.kyro.pitsim.events.ManaRegenEvent;
 import dev.kyro.pitsim.misc.Misc;
 import dev.kyro.pitsim.misc.Sounds;
+import org.bukkit.Bukkit;
 import org.bukkit.Effect;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -109,6 +112,24 @@ public class DarkzoneManager implements Listener {
 				SubLevel.tick++;
 			}
 		}.runTaskTimer(PitSim.INSTANCE, 0L, 5);
+
+		new BukkitRunnable() {
+			@Override
+			public void run() {
+				for(Player player : MapManager.getDarkzone().getPlayers()) {
+					PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
+
+					ManaRegenEvent event = new ManaRegenEvent(player, 5);
+					Bukkit.getPluginManager().callEvent(event);
+					if(!event.isCancelled()) {
+						double mana = event.getFinalMana();
+						if(pitPlayer.mana + mana <= pitPlayer.getMaxMana()) pitPlayer.mana += mana;
+					}
+
+					pitPlayer.updateManaBar();
+				}
+			}
+		}.runTaskTimer(PitSim.INSTANCE, 0L, 30L);
 	}
 
 	@EventHandler

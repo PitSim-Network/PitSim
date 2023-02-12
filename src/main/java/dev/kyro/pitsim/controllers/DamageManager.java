@@ -490,7 +490,7 @@ public class DamageManager implements Listener {
 			new BukkitRunnable() {
 				@Override
 				public void run() {
-					Misc.sendActionBar(finalKillEvent.getKillerPlayer(), actionBarPlaceholder);
+					ActionBarManager.sendActionBar(finalKillEvent.getKillerPlayer(), actionBarPlaceholder);
 				}
 			}.runTaskLater(PitSim.INSTANCE, 1L);
 		}

@@ -94,7 +94,7 @@ public class DamageIndicator implements Listener {
 			}
 		}
 
-		Misc.sendActionBar(attacker, output.toString());
+		ActionBarManager.sendActionBar(attacker, output.toString());
 	}
 
 	@EventHandler

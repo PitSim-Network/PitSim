@@ -4,6 +4,7 @@ import de.tr7zw.nbtapi.NBTItem;
 import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.aitems.StaticPitItem;
+import dev.kyro.pitsim.controllers.ActionBarManager;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.enums.AuctionCategory;
 import dev.kyro.pitsim.enums.NBTTag;
@@ -91,7 +92,7 @@ public class VeryYummyBread extends StaticPitItem {
 
 		event.setCancelled(true);
 		int cooldownTicks = breadCooldown.get(player.getUniqueId());
-		Misc.sendActionBar(player, "&6Bread: &c" + breadCooldownFormat.format(cooldownTicks / 20.0) + "s cooldown!");
+		ActionBarManager.sendActionBar(player, "&6Bread: &c" + breadCooldownFormat.format(cooldownTicks / 20.0) + "s cooldown!");
 	}
 
 	@EventHandler
