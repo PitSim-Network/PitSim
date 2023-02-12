@@ -41,7 +41,7 @@ public class TaintedWell implements Listener {
 	public static Map<Player, ArmorStand> enchantStands;
 	public static List<Player> enchantingPlayers;
 	private static Map<Player, ItemStack> playerItems;
-	public static int i;
+	public static int yaw;
 
 	static {
 		wellLocation = new Location(Bukkit.getWorld("darkzone"), 199.0, 92.0, -115.0);
@@ -49,7 +49,7 @@ public class TaintedWell implements Listener {
 		enchantStands = new HashMap<>();
 		enchantingPlayers = new ArrayList<>();
 		playerItems = new HashMap<>();
-		i = 0;
+		yaw = 0;
 		new BukkitRunnable() {
 			public void run() {
 				if(!PitSim.getStatus().isDarkzone()) return;
@@ -69,7 +69,7 @@ public class TaintedWell implements Listener {
 						}
 						Player player = (Player)entity;
 
-						PacketPlayOutEntity.PacketPlayOutRelEntityMoveLook packet = new PacketPlayOutEntity.PacketPlayOutRelEntityMoveLook(getStandID(wellStand), (byte)0, (byte)0, (byte)0, (byte)i, (byte)0, false);
+						PacketPlayOutEntity.PacketPlayOutRelEntityMoveLook packet = new PacketPlayOutEntity.PacketPlayOutRelEntityMoveLook(getStandID(wellStand), (byte)0, (byte)0, (byte)0, (byte) yaw, (byte)0, false);
 						EntityPlayer nmsPlayer = ((CraftPlayer)entity).getHandle();
 						nmsPlayer.playerConnection.sendPacket(packet);
 						for(Map.Entry<Player, ArmorStand> entry : enchantStands.entrySet()) {
@@ -88,16 +88,16 @@ public class TaintedWell implements Listener {
 						}
 						if(!playerItems.containsKey(player)) {}
 						if(enchantingPlayers.contains(player)) {
-							i += 24;
+							yaw += 24;
 							player.playEffect(wellLocation.clone().add(0.0, 1.0, 0.0), Effect.ENDER_SIGNAL, 0);
 						}
 						else {
-							i += 8;
+							yaw += 8;
 						}
-						if(i < 256) {
+						if(yaw < 256) {
 							continue;
 						}
-						i = 0;
+						yaw = 0;
 					}
 				}
 
