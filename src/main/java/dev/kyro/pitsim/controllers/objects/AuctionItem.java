@@ -110,7 +110,11 @@ public class AuctionItem {
 		AuctionManager.sendAlert("Auction " + slot + " has ended" + " (" + item.itemName + ")");
 		FirestoreManager.AUCTION.auctions.set(slot, null);
 
-		if(getHighestBidder() == null) return;
+		if(getHighestBidder() == null) {
+			AuctionManager.sendAlert("Auction has no bidders");
+			AuctionManager.sendAlert(bidMap.toString());
+			return;
+		}
 		OfflinePlayer winner = Bukkit.getOfflinePlayer(getHighestBidder());
 
 		if(winner.isOnline()) {
@@ -120,6 +124,7 @@ public class AuctionItem {
 
 			if(itemData == 0) {
 				AUtil.giveItemSafely(winner.getPlayer(), item.item.clone(), true);
+				AuctionManager.sendAlert("Given item to player");
 			} else {
 				ItemStack jewel = ItemType.getJewelItem(item.id, itemData);
 
@@ -140,6 +145,8 @@ public class AuctionItem {
 				message.send();
 
 				waitingMessages.add(message);
+
+				AuctionManager.sendAlert("Sent message to proxy");
 
 			} catch(Exception e) {
 				e.printStackTrace();
