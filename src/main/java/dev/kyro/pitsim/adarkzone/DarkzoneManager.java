@@ -238,7 +238,7 @@ public class DarkzoneManager implements Listener {
 	}
 
 	public static void createSoulExplosion(Location location, int souls) {
-		int items = (int) Math.sqrt(souls) + 1;
+		int items = (int) Math.sqrt(souls);
 		Map<Integer, Integer> soulDistributionMap = new HashMap<>();
 		int soulsToDistribute = souls - items;
 		for(int i = 0; i < items; i++) soulDistributionMap.put(i, 1);
