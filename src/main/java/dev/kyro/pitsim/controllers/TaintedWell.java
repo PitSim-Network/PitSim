@@ -8,7 +8,6 @@ import dev.kyro.pitsim.aitems.mystics.TaintedChestplate;
 import dev.kyro.pitsim.aitems.mystics.TaintedScythe;
 import dev.kyro.pitsim.controllers.objects.PitEnchant;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
-import dev.kyro.pitsim.enums.MysticType;
 import dev.kyro.pitsim.enums.NBTTag;
 import dev.kyro.pitsim.events.AttackEvent;
 import dev.kyro.pitsim.misc.Misc;
@@ -38,8 +37,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class TaintedWell implements Listener
-{
+public class TaintedWell implements Listener {
 	public static Location wellLocation;
 	public static ArmorStand wellStand;
 	public static ArmorStand textLine1;
@@ -51,6 +49,74 @@ public class TaintedWell implements Listener
 	public static List<Player> enchantingPlayers;
 	private static Map<Player, ItemStack> playerItems;
 	public static int i;
+
+	static {
+		wellLocation = new Location(Bukkit.getWorld("darkzone"), 199.0, 92.0, -115.0);
+		removeStands = new HashMap<>();
+		enchantStands = new HashMap<>();
+		enchantingPlayers = new ArrayList<>();
+		playerItems = new HashMap<>();
+		i = 0;
+		new BukkitRunnable() {
+			public void run() {
+				if(!PitSim.getStatus().isDarkzone()) return;
+				if(wellStand != null){
+					for(Entity entity : wellStand.getNearbyEntities(25.0, 25.0, 25.0)) {
+						if(!(entity instanceof Player)) {
+							continue;
+						}
+						Player player = (Player)entity;
+
+						PacketPlayOutEntity.PacketPlayOutRelEntityMoveLook packet = new PacketPlayOutEntity.PacketPlayOutRelEntityMoveLook(getStandID(wellStand), (byte)0, (byte)0, (byte)0, (byte)i, (byte)0, false);
+						EntityPlayer nmsPlayer = ((CraftPlayer)entity).getHandle();
+						nmsPlayer.playerConnection.sendPacket(packet);
+						for(Map.Entry<Player, ArmorStand> entry : enchantStands.entrySet()) {
+							if(player == entry.getKey()) {
+								continue;
+							}
+							PacketPlayOutEntityDestroy destroyPacket = new PacketPlayOutEntityDestroy(getStandID(entry.getValue()));
+							nmsPlayer.playerConnection.sendPacket(destroyPacket);
+						}
+						for(Map.Entry<Player, ArmorStand> entry : removeStands.entrySet()) {
+							if(player == entry.getKey()) {
+								continue;
+							}
+							PacketPlayOutEntityDestroy destroyPacket = new PacketPlayOutEntityDestroy(getStandID(entry.getValue()));
+							nmsPlayer.playerConnection.sendPacket(destroyPacket);
+						}
+						if(!playerItems.containsKey(player)) {}
+						if(enchantingPlayers.contains(player)) {
+							i += 24;
+							player.playEffect(wellLocation.clone().add(0.0, 1.0, 0.0), Effect.ENDER_SIGNAL, 0);
+						}
+						else {
+							i += 8;
+						}
+						if(i < 256) {
+							continue;
+						}
+						i = 0;
+					}
+				}
+
+			}
+		}.runTaskTimer(PitSim.INSTANCE, 2L, 2L);
+
+		new BukkitRunnable() {
+			@Override
+			public void run() {
+				if(!PitSim.getStatus().isDarkzone()) return;
+				for(Entity entity : wellStand.getNearbyEntities(25.0, 25.0, 25.0)) {
+					if(!(entity instanceof Player)) {
+						continue;
+					}
+					Player player = (Player) entity;
+					if(!enchantingPlayers.contains(player) && !removeStands.containsKey(player))
+						setText(player, ChatColor.DARK_PURPLE + "" + ChatColor.BOLD + "Tainted Well", ChatColor.GRAY + "Enchant Mystic Items found", ChatColor.GRAY + "in the Darkzone here", ChatColor.YELLOW + "Right-Click with an Item!");
+				}
+			}
+		}.runTaskTimer(PitSim.INSTANCE, 100, 100);
+	}
 
 	public static void onStart() {
 		if(wellLocation == null) return;
@@ -93,16 +159,36 @@ public class TaintedWell implements Listener
 		wellLocation.getBlock().setType(Material.ENCHANTMENT_TABLE);
 	}
 
-	public static void onEnchant(final Player player, final ItemStack itemStack) {
+	public void onStop() {
+		wellStand.remove();
+		textLine1.remove();
+		textLine2.remove();
+		textLine3.remove();
+		textLine4.remove();
+
+		for(ArmorStand value : removeStands.values()) {
+			value.remove();
+		}
+
+		for(ArmorStand value : enchantStands.values()) {
+			value.remove();
+		}
+
+		for(Map.Entry<Player, ItemStack> entry : playerItems.entrySet()) {
+			AUtil.giveItemSafely(entry.getKey(), entry.getValue());
+		}
+	}
+
+	public static void onEnchant(Player player, ItemStack itemStack) {
 		playerItems.put(player, itemStack);
 		player.getInventory().remove(itemStack);
 		
-		final PacketPlayOutEntityEquipment packet = new PacketPlayOutEntityEquipment(getStandID(wellStand), 0, CraftItemStack.asNMSCopy(itemStack));
+		PacketPlayOutEntityEquipment packet = new PacketPlayOutEntityEquipment(getStandID(wellStand), 0, CraftItemStack.asNMSCopy(itemStack));
 		((CraftPlayer)player).getHandle().playerConnection.sendPacket(packet);
 		showButtons(player);
 	}
 
-	public static void showButtons(final Player player) {
+	public static void showButtons(Player player) {
 		ArmorStand removeStand = wellLocation.getWorld().spawn(wellLocation.clone().add(0.5, 0.0, 0.5), ArmorStand.class);
 		removeStand.setGravity(false);
 		removeStand.setArms(true);
@@ -148,7 +234,7 @@ public class TaintedWell implements Listener
 		setItemText(player);
 	}
 
-	public static void onButtonPush(final Player player, final boolean enchant) {
+	public static void onButtonPush(Player player, boolean enchant) {
 		ArmorStand removeStand = removeStands.get(player);
 		ArmorStand enchantStand = enchantStands.get(player);
 
@@ -211,8 +297,8 @@ public class TaintedWell implements Listener
 
 			try {
 				ItemStack newItem;
-				if(MysticType.getMysticType(freshItem) == MysticType.TAINTED_SCYTHE) newItem = OldTaintedEnchanting.enchantScythe(freshItem, freshTier);
-				else newItem = OldTaintedEnchanting.enchantChestplate(freshItem, freshTier);
+				newItem = TaintedEnchanting.enchantItem(freshItem);
+				if(newItem == null) return;
 				
 				NBTItem nbtItem = new NBTItem(newItem);
 				
@@ -245,7 +331,7 @@ public class TaintedWell implements Listener
 	}
 
 	@EventHandler
-	public static void onEnchantingTableClick(final PlayerInteractEvent event) {
+	public static void onEnchantingTableClick(PlayerInteractEvent event) {
 		if(event.getAction() != Action.LEFT_CLICK_BLOCK && event.getAction() != Action.RIGHT_CLICK_BLOCK) return;
 		
 		Player player = event.getPlayer();
@@ -330,7 +416,7 @@ public class TaintedWell implements Listener
 	}
 
 	public static int getStandID(ArmorStand stand) {
-		for(final Entity entity : Bukkit.getWorld("darkzone").getNearbyEntities(wellLocation, 5.0, 5.0, 5.0)) {
+		for(Entity entity : Bukkit.getWorld("darkzone").getNearbyEntities(wellLocation, 5.0, 5.0, 5.0)) {
 			if(!(entity instanceof ArmorStand)) {
 				continue;
 			}
@@ -341,61 +427,61 @@ public class TaintedWell implements Listener
 		return 0;
 	}
 
-	public static void setText(final Player player, final String line1, final String line2, final String line3, final String line4) {
+	public static void setText(Player player, String line1, String line2, String line3, String line4) {
 		if(line1 != null) {
-			final PacketPlayOutSpawnEntityLiving spawn = new PacketPlayOutSpawnEntityLiving((EntityLiving)((CraftEntity)TaintedWell.textLine1).getHandle());
+			PacketPlayOutSpawnEntityLiving spawn = new PacketPlayOutSpawnEntityLiving((EntityLiving)((CraftEntity)textLine1).getHandle());
 			((CraftPlayer)player).getHandle().playerConnection.sendPacket(spawn);
-			final DataWatcher dw = ((CraftEntity)TaintedWell.textLine1).getHandle().getDataWatcher();
+			DataWatcher dw = ((CraftEntity)textLine1).getHandle().getDataWatcher();
 			dw.watch(2, (Object)line1);
-			final PacketPlayOutEntityMetadata metaPacket = new PacketPlayOutEntityMetadata(getStandID(TaintedWell.textLine1), dw, false);
+			PacketPlayOutEntityMetadata metaPacket = new PacketPlayOutEntityMetadata(getStandID(textLine1), dw, false);
 			((CraftPlayer)player).getHandle().playerConnection.sendPacket(metaPacket);
 		}
 		else {
-			final PacketPlayOutEntityDestroy destroyPacket = new PacketPlayOutEntityDestroy(getStandID(TaintedWell.textLine1));
+			PacketPlayOutEntityDestroy destroyPacket = new PacketPlayOutEntityDestroy(getStandID(textLine1));
 			((CraftPlayer)player).getHandle().playerConnection.sendPacket(destroyPacket);
 		}
 		if(line2 != null) {
-			final PacketPlayOutSpawnEntityLiving spawn = new PacketPlayOutSpawnEntityLiving((EntityLiving)((CraftEntity)TaintedWell.textLine2).getHandle());
+			PacketPlayOutSpawnEntityLiving spawn = new PacketPlayOutSpawnEntityLiving((EntityLiving)((CraftEntity)textLine2).getHandle());
 			((CraftPlayer)player).getHandle().playerConnection.sendPacket(spawn);
-			final DataWatcher dw = ((CraftEntity)TaintedWell.textLine2).getHandle().getDataWatcher();
+			DataWatcher dw = ((CraftEntity)textLine2).getHandle().getDataWatcher();
 			dw.watch(2, (Object)line2);
-			final PacketPlayOutEntityMetadata metaPacket = new PacketPlayOutEntityMetadata(getStandID(TaintedWell.textLine2), dw, false);
+			PacketPlayOutEntityMetadata metaPacket = new PacketPlayOutEntityMetadata(getStandID(textLine2), dw, false);
 			((CraftPlayer)player).getHandle().playerConnection.sendPacket(metaPacket);
 		}
 		else {
-			final PacketPlayOutEntityDestroy destroyPacket = new PacketPlayOutEntityDestroy(getStandID(TaintedWell.textLine2));
+			PacketPlayOutEntityDestroy destroyPacket = new PacketPlayOutEntityDestroy(getStandID(textLine2));
 			((CraftPlayer)player).getHandle().playerConnection.sendPacket(destroyPacket);
 		}
 		if(line3 != null) {
-			final PacketPlayOutSpawnEntityLiving spawn = new PacketPlayOutSpawnEntityLiving((EntityLiving)((CraftEntity)TaintedWell.textLine3).getHandle());
+			PacketPlayOutSpawnEntityLiving spawn = new PacketPlayOutSpawnEntityLiving((EntityLiving)((CraftEntity)textLine3).getHandle());
 			((CraftPlayer)player).getHandle().playerConnection.sendPacket(spawn);
-			final DataWatcher dw = ((CraftEntity)TaintedWell.textLine3).getHandle().getDataWatcher();
+			DataWatcher dw = ((CraftEntity)textLine3).getHandle().getDataWatcher();
 			dw.watch(2, (Object)line3);
-			final PacketPlayOutEntityMetadata metaPacket = new PacketPlayOutEntityMetadata(getStandID(TaintedWell.textLine3), dw, false);
+			PacketPlayOutEntityMetadata metaPacket = new PacketPlayOutEntityMetadata(getStandID(textLine3), dw, false);
 			((CraftPlayer)player).getHandle().playerConnection.sendPacket(metaPacket);
 		}
 		else {
-			final PacketPlayOutEntityDestroy destroyPacket = new PacketPlayOutEntityDestroy(getStandID(TaintedWell.textLine3));
+			PacketPlayOutEntityDestroy destroyPacket = new PacketPlayOutEntityDestroy(getStandID(textLine3));
 			((CraftPlayer)player).getHandle().playerConnection.sendPacket(destroyPacket);
 		}
 		if(line4 != null) {
-			final PacketPlayOutSpawnEntityLiving spawn = new PacketPlayOutSpawnEntityLiving((EntityLiving)((CraftEntity)TaintedWell.textLine4).getHandle());
+			PacketPlayOutSpawnEntityLiving spawn = new PacketPlayOutSpawnEntityLiving((EntityLiving)((CraftEntity)textLine4).getHandle());
 			((CraftPlayer)player).getHandle().playerConnection.sendPacket(spawn);
-			final DataWatcher dw = ((CraftEntity)TaintedWell.textLine4).getHandle().getDataWatcher();
+			DataWatcher dw = ((CraftEntity)textLine4).getHandle().getDataWatcher();
 			dw.watch(2, (Object)line4);
-			final PacketPlayOutEntityMetadata metaPacket = new PacketPlayOutEntityMetadata(getStandID(TaintedWell.textLine4), dw, false);
+			PacketPlayOutEntityMetadata metaPacket = new PacketPlayOutEntityMetadata(getStandID(textLine4), dw, false);
 			((CraftPlayer)player).getHandle().playerConnection.sendPacket(metaPacket);
 		}
 		else {
-			final PacketPlayOutEntityDestroy destroyPacket = new PacketPlayOutEntityDestroy(getStandID(TaintedWell.textLine4));
+			PacketPlayOutEntityDestroy destroyPacket = new PacketPlayOutEntityDestroy(getStandID(textLine4));
 			((CraftPlayer)player).getHandle().playerConnection.sendPacket(destroyPacket);
 		}
 	}
 
-	public static void setItemText(final Player player) {
-		final ItemStack item = TaintedWell.playerItems.get(player);
-		final Map<PitEnchant, Integer> enchantMap = EnchantManager.getEnchantsOnItem(item);
-		final List<PitEnchant> enchants = new ArrayList<PitEnchant>(enchantMap.keySet());
+	public static void setItemText(Player player) {
+		ItemStack item = playerItems.get(player);
+		Map<PitEnchant, Integer> enchantMap = EnchantManager.getEnchantsOnItem(item);
+		List<PitEnchant> enchants = new ArrayList<PitEnchant>(enchantMap.keySet());
 		if(enchants.size() == 0) {
 			setText(player, item.getItemMeta().getDisplayName(), "\u00A77", "\u00A77", "\u00A77");
 			return;
@@ -411,73 +497,5 @@ public class TaintedWell implements Listener
 			enchant3 = enchants.get(2).getDisplayName() + " " + AUtil.toRoman(enchantMap.get(enchants.get(2)));
 		}
 		setText(player, item.getItemMeta().getDisplayName(), enchant1, enchant2, enchant3);
-	}
-
-	static {
-		TaintedWell.wellLocation = new Location(Bukkit.getWorld("darkzone"), 199.0, 92.0, -115.0);
-		TaintedWell.removeStands = new HashMap<>();
-		TaintedWell.enchantStands = new HashMap<>();
-		TaintedWell.enchantingPlayers = new ArrayList<>();
-		TaintedWell.playerItems = new HashMap<>();
-		TaintedWell.i = 0;
-		new BukkitRunnable() {
-			public void run() {
-				if(!PitSim.getStatus().isDarkzone()) return;
-				if(TaintedWell.wellStand != null){
-					for(Entity entity : TaintedWell.wellStand.getNearbyEntities(25.0, 25.0, 25.0)) {
-						if(!(entity instanceof Player)) {
-							continue;
-						}
-						Player player = (Player)entity;
-
-						PacketPlayOutEntity.PacketPlayOutRelEntityMoveLook packet = new PacketPlayOutEntity.PacketPlayOutRelEntityMoveLook(TaintedWell.getStandID(TaintedWell.wellStand), (byte)0, (byte)0, (byte)0, (byte)TaintedWell.i, (byte)0, false);
-						EntityPlayer nmsPlayer = ((CraftPlayer)entity).getHandle();
-						nmsPlayer.playerConnection.sendPacket(packet);
-						for(Map.Entry<Player, ArmorStand> entry : TaintedWell.enchantStands.entrySet()) {
-							if(player == entry.getKey()) {
-								continue;
-							}
-							PacketPlayOutEntityDestroy destroyPacket = new PacketPlayOutEntityDestroy(TaintedWell.getStandID(entry.getValue()));
-							nmsPlayer.playerConnection.sendPacket(destroyPacket);
-						}
-						for(Map.Entry<Player, ArmorStand> entry : TaintedWell.removeStands.entrySet()) {
-							if(player == entry.getKey()) {
-								continue;
-							}
-							PacketPlayOutEntityDestroy destroyPacket = new PacketPlayOutEntityDestroy(TaintedWell.getStandID(entry.getValue()));
-							nmsPlayer.playerConnection.sendPacket(destroyPacket);
-						}
-						if(!TaintedWell.playerItems.containsKey(player)) {}
-						if(TaintedWell.enchantingPlayers.contains(player)) {
-							TaintedWell.i += 24;
-							player.playEffect(TaintedWell.wellLocation.clone().add(0.0, 1.0, 0.0), Effect.ENDER_SIGNAL, 0);
-						}
-						else {
-							TaintedWell.i += 8;
-						}
-						if(TaintedWell.i < 256) {
-							continue;
-						}
-						TaintedWell.i = 0;
-					}
-				}
-
-			}
-		}.runTaskTimer(PitSim.INSTANCE, 2L, 2L);
-
-		new BukkitRunnable() {
-			@Override
-			public void run() {
-				if(!PitSim.getStatus().isDarkzone()) return;
-				for(Entity entity : TaintedWell.wellStand.getNearbyEntities(25.0, 25.0, 25.0)) {
-					if(!(entity instanceof Player)) {
-						continue;
-					}
-					Player player = (Player) entity;
-					if(!enchantingPlayers.contains(player) && !removeStands.containsKey(player))
-						TaintedWell.setText(player, ChatColor.DARK_PURPLE + "" + ChatColor.BOLD + "Tainted Well", ChatColor.GRAY + "Enchant Mystic Items found", ChatColor.GRAY + "in the Darkzone here", ChatColor.YELLOW + "Right-Click with an Item!");
-				}
-			}
-		}.runTaskTimer(PitSim.INSTANCE, 100, 100);
 	}
 }
