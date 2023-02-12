@@ -1,10 +1,10 @@
 package dev.kyro.pitsim.enchants.overworld;
 
-import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.pitsim.controllers.objects.PitEnchant;
 import dev.kyro.pitsim.enums.ApplyType;
 import dev.kyro.pitsim.events.KillEvent;
 import dev.kyro.pitsim.misc.Misc;
+import dev.kyro.pitsim.misc.PitLoreBuilder;
 import org.bukkit.event.EventHandler;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
@@ -41,18 +41,18 @@ public class Electrolytes extends PitEnchant {
 
 					if(activePotionEffect.getAmplifier() > 0) {
 
-						if(activePotionEffect.getDuration() + (getSeconds(enchantLvl) * 20) / 2 > getMaxSeconds(enchantLvl) * 20) {
+						if(activePotionEffect.getDuration() + (getSeconds(enchantLvl) * 20) / 2 > getMaxSeconds() * 20) {
 
-							Misc.applyPotionEffect(killEvent.getKiller(), PotionEffectType.SPEED, getMaxSeconds(enchantLvl) * 20,
+							Misc.applyPotionEffect(killEvent.getKiller(), PotionEffectType.SPEED, getMaxSeconds() * 20,
 									activePotionEffect.getAmplifier(), false, false);
 						} else {
 							Misc.applyPotionEffect(killEvent.getKiller(), PotionEffectType.SPEED, (activePotionEffect.getDuration()
 									+ (getSeconds(enchantLvl) * 20) / 2), activePotionEffect.getAmplifier(), false, false);
 						}
 					} else {
-						if(activePotionEffect.getDuration() + (getSeconds(enchantLvl) * 20) > getMaxSeconds(enchantLvl) * 20) {
+						if(activePotionEffect.getDuration() + (getSeconds(enchantLvl) * 20) > getMaxSeconds() * 20) {
 
-							Misc.applyPotionEffect(killEvent.getKiller(), PotionEffectType.SPEED, getMaxSeconds(enchantLvl) * 20,
+							Misc.applyPotionEffect(killEvent.getKiller(), PotionEffectType.SPEED, getMaxSeconds() * 20,
 									activePotionEffect.getAmplifier(), false, false);
 						} else {
 							Misc.applyPotionEffect(killEvent.getKiller(), PotionEffectType.SPEED, (int)
@@ -67,16 +67,17 @@ public class Electrolytes extends PitEnchant {
 
 	@Override
 	public List<String> getNormalDescription(int enchantLvl) {
-
-		return new ALoreBuilder("&7If you have &eSpeed &7on kill, add", "&e" + getSeconds(enchantLvl) +
-				" &7seconds to its duration.", "&7(Halved for Speed II+, Max " + getMaxSeconds(enchantLvl) + "s)").getLore();
+		return new PitLoreBuilder(
+				"&7If you have &eSpeed &7on kill, add &e" + getSeconds(enchantLvl) +
+				" &7seconds to its duration. (Halved for Speed II+, Max " + getMaxSeconds() + "s)"
+		).getLore();
 	}
 
 	public int getSeconds(int enchantLvl) {
 		return enchantLvl * 2 - 1;
 	}
 
-	public int getMaxSeconds(int enchantLvl) {
+	public int getMaxSeconds() {
 		return 8;
 	}
 }

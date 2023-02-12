@@ -1,6 +1,5 @@
 package dev.kyro.pitsim.enchants.overworld;
 
-import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.controllers.HitCounter;
@@ -9,6 +8,7 @@ import dev.kyro.pitsim.enums.ApplyType;
 import dev.kyro.pitsim.events.AttackEvent;
 import dev.kyro.pitsim.events.HealEvent;
 import dev.kyro.pitsim.misc.Misc;
+import dev.kyro.pitsim.misc.PitLoreBuilder;
 import org.bukkit.event.EventHandler;
 import org.bukkit.scheduler.BukkitRunnable;
 
@@ -68,14 +68,17 @@ public class ReallyToxic extends PitEnchant {
 					int charge = HitCounter.getCharge(attackEvent.getDefenderPlayer(), thisEnchant);
 					HitCounter.setCharge(attackEvent.getDefenderPlayer(), thisEnchant, charge - getReductionPerHit(enchantLvl));
 				}
-			}.runTaskLater(PitSim.INSTANCE, getStackTime(enchantLvl) * 20);
+			}.runTaskLater(PitSim.INSTANCE, getStackTime() * 20);
 		}
 	}
 
 	@Override
 	public List<String> getNormalDescription(int enchantLvl) {
-		return new ALoreBuilder("&7Strikes apply 1 stack of", "&aToxicity&7. Stacks last &4" + getStackTime(enchantLvl) + "s", "&7and reduce all healing by",
-				"&a" + getReductionPerHit(enchantLvl) + "%&7, up to &a" + getMaxReduction() + "%").getLore();
+		return new PitLoreBuilder(
+				"&7Strikes apply 1 stack of &aToxicity&7. Stacks last &4" + getStackTime() +
+				"s &7and reduce all healing by &a" + getReductionPerHit(enchantLvl) + "%&7, up to &a" +
+				getMaxReduction() + "%"
+		).getLore();
 	}
 
 	public int getReductionPerHit(int enchantLvl) {
@@ -86,7 +89,7 @@ public class ReallyToxic extends PitEnchant {
 		return 25;
 	}
 
-	public long getStackTime(int enchantLvl) {
+	public long getStackTime() {
 		return 5;
 	}
 }

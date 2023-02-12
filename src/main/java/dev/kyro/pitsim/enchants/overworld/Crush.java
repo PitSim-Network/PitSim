@@ -1,12 +1,12 @@
 package dev.kyro.pitsim.enchants.overworld;
 
-import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.arcticapi.misc.AUtil;
 import dev.kyro.pitsim.controllers.Cooldown;
 import dev.kyro.pitsim.controllers.objects.PitEnchant;
 import dev.kyro.pitsim.enums.ApplyType;
 import dev.kyro.pitsim.events.AttackEvent;
 import dev.kyro.pitsim.misc.Misc;
+import dev.kyro.pitsim.misc.PitLoreBuilder;
 import dev.kyro.pitsim.misc.Sounds;
 import org.bukkit.event.EventHandler;
 import org.bukkit.potion.PotionEffectType;
@@ -40,9 +40,10 @@ public class Crush extends PitEnchant {
 
 	@Override
 	public List<String> getNormalDescription(int enchantLvl) {
-
-		return new ALoreBuilder("&7Strikes apply &cWeakness " + AUtil.toRoman(enchantLvl + 4), "&7(lasts " + (getDuration(enchantLvl) / 20D) +
-				"s, 2s cooldown)").getLore();
+		return new PitLoreBuilder(
+				"&7Strikes apply &cWeakness " + AUtil.toRoman(enchantLvl + 4) + " &7(lasts " +
+				(getDuration(enchantLvl) / 20D) + "s, 2s cooldown)"
+		).getLore();
 	}
 
 	public int getDuration(int enchantLvl) {

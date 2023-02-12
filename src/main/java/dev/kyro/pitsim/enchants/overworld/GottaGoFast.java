@@ -1,12 +1,12 @@
 package dev.kyro.pitsim.enchants.overworld;
 
-import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.controllers.EnchantManager;
 import dev.kyro.pitsim.controllers.objects.PitEnchant;
 import dev.kyro.pitsim.enchants.tainted.abilities.Sonic;
 import dev.kyro.pitsim.enums.ApplyType;
 import dev.kyro.pitsim.misc.Misc;
+import dev.kyro.pitsim.misc.PitLoreBuilder;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -55,16 +55,16 @@ public class GottaGoFast extends PitEnchant {
 
 	@Override
 	public List<String> getNormalDescription(int enchantLvl) {
-		return new ALoreBuilder("&7Move &e" + Misc.roundString(getWalkSpeedLore(enchantLvl)) + "&e% faster &7at all times").getLore();
+		return new PitLoreBuilder(
+				"&7Move &e" + Misc.roundString(getWalkSpeedLore(enchantLvl)) + "&e% faster &7at all times"
+		).getLore();
 	}
 
 	public static float getWalkSpeed(int enchantLvl) {
-
 		return 0.2F + (0.2F * (getWalkSpeedLore(enchantLvl) / 100));
 	}
 
 	public static float getWalkSpeedLore(int enchantLvl) {
-
 		return enchantLvl * 5 + 5;
 	}
 }

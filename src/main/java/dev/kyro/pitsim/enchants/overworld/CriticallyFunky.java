@@ -1,11 +1,11 @@
 package dev.kyro.pitsim.enchants.overworld;
 
-import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.pitsim.controllers.HitCounter;
 import dev.kyro.pitsim.controllers.objects.PitEnchant;
 import dev.kyro.pitsim.enums.ApplyType;
 import dev.kyro.pitsim.events.AttackEvent;
 import dev.kyro.pitsim.misc.Misc;
+import dev.kyro.pitsim.misc.PitLoreBuilder;
 import org.bukkit.event.EventHandler;
 
 import java.util.List;
@@ -40,15 +40,17 @@ public class CriticallyFunky extends PitEnchant {
 	public List<String> getNormalDescription(int enchantLvl) {
 
 		if(enchantLvl == 1) {
-			return new ALoreBuilder("&7Critical hits against you deal ", "&9" +
-					Misc.roundString(100 - getReduction(enchantLvl)) + "% &7of the damage they",
-					"&7normally would").getLore();
+			return new PitLoreBuilder(
+					"&7Critical hits against you deal &9" +
+					Misc.roundString(100 - getReduction(enchantLvl)) + "% &7of the damage they normally would"
+			).getLore();
 
 		} else {
-			return new ALoreBuilder("&7Critical hits against you deal ", "&9" +
-					Misc.roundString(100 - getReduction(enchantLvl)) + "% &7of the damage they",
-					"&7normally would and empower your", "&7next strike for &c+" +
-					Misc.roundString(getDamage(enchantLvl)) + "&c% &7damage").getLore();
+			return new PitLoreBuilder(
+					"&7Critical hits against you deal &9" +
+					Misc.roundString(100 - getReduction(enchantLvl)) + "% &7of the damage they normally would " +
+					"and empower your next strike for &c+" + Misc.roundString(getDamage(enchantLvl)) + "&c% &7damage"
+			).getLore();
 		}
 	}
 

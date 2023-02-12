@@ -1,10 +1,10 @@
 package dev.kyro.pitsim.enchants.overworld;
 
-import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.pitsim.controllers.HitCounter;
 import dev.kyro.pitsim.controllers.objects.PitEnchant;
 import dev.kyro.pitsim.enums.ApplyType;
 import dev.kyro.pitsim.events.AttackEvent;
+import dev.kyro.pitsim.misc.PitLoreBuilder;
 import org.bukkit.event.EventHandler;
 
 import java.util.List;
@@ -37,23 +37,21 @@ public class RingArmor extends PitEnchant {
 
 	@Override
 	public List<String> getNormalDescription(int enchantLvl) {
-
-		return new ALoreBuilder("&7Receive &9-" + getDamageReduction(enchantLvl) + "% &7damage when",
-				"&7shot. Deal &c+" + getDamageIncrease(enchantLvl) + "% &7damage on", "&7your next melee hit").getLore();
+		return new PitLoreBuilder(
+				"&7Receive &9-" + getDamageReduction(enchantLvl) + "% &7damage when shot. Deal &c+" +
+				getDamageIncrease(enchantLvl) + "% &7damage on your next melee hit"
+		).getLore();
 	}
 
 	public double getDamageMultiplier(int enchantLvl) {
-
 		return (100D - getDamageReduction(enchantLvl)) / 100;
 	}
 
 	public int getDamageReduction(int enchantLvl) {
-
 		return enchantLvl * 15 + 15;
 	}
 
 	public int getDamageIncrease(int enchantLvl) {
-
 		return enchantLvl * 15 + 5;
 	}
 }

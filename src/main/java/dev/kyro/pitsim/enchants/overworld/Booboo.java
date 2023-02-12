@@ -1,12 +1,13 @@
 package dev.kyro.pitsim.enchants.overworld;
 
-import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.controllers.EnchantManager;
 import dev.kyro.pitsim.controllers.objects.PitEnchant;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.enums.ApplyType;
 import dev.kyro.pitsim.events.AttackEvent;
+import dev.kyro.pitsim.misc.Misc;
+import dev.kyro.pitsim.misc.PitLoreBuilder;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -64,9 +65,10 @@ public class Booboo extends PitEnchant {
 
 	@Override
 	public List<String> getNormalDescription(int enchantLvl) {
-
-		return new ALoreBuilder("&7Passively regain &c1\u2764 &7every " + getSeconds(enchantLvl),
-				"&7seconds").getLore();
+		return new PitLoreBuilder(
+				"&7Passively regain &c" + Misc.getHearts(2) + " &7every " +
+						getSeconds(enchantLvl) + " &7seconds"
+		).getLore();
 	}
 
 	public int getSeconds(int enchantLvl) {

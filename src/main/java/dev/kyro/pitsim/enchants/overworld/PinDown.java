@@ -1,6 +1,5 @@
 package dev.kyro.pitsim.enchants.overworld;
 
-import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.controllers.Cooldown;
 import dev.kyro.pitsim.controllers.CooldownManager;
@@ -8,6 +7,7 @@ import dev.kyro.pitsim.controllers.objects.PitEnchant;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.enums.ApplyType;
 import dev.kyro.pitsim.events.AttackEvent;
+import dev.kyro.pitsim.misc.PitLoreBuilder;
 import dev.kyro.pitsim.misc.Sounds;
 import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.event.EventHandler;
@@ -59,9 +59,10 @@ public class PinDown extends PitEnchant {
 
 	@Override
 	public List<String> getNormalDescription(int enchantLvl) {
-
-		return new ALoreBuilder("&7Fully charged shots &apin &7the victim,", "&7removing their &eSpeed &7and &aJump",
-				"&aBoost &7and prevents &dRARE! &9Telebow", "&7cooldown from reducing", "&7(" + getDuration(enchantLvl) + "s cooldown)").getLore();
+		return new PitLoreBuilder(
+				"&7Fully charged shots &apin &7the victim removing their &eSpeed &7and &aJump Boost &7and prevents " +
+				"&dRARE! &9Telebow &7cooldown from reducing (" + getDuration(enchantLvl) + "s cooldown)"
+		).getLore();
 	}
 
 	public int getDuration(int enchantLvl) {

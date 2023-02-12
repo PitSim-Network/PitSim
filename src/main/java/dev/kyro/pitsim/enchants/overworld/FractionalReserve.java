@@ -1,10 +1,10 @@
 package dev.kyro.pitsim.enchants.overworld;
 
-import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.pitsim.controllers.objects.PitEnchant;
 import dev.kyro.pitsim.enums.ApplyType;
 import dev.kyro.pitsim.events.AttackEvent;
 import dev.kyro.pitsim.misc.Misc;
+import dev.kyro.pitsim.misc.PitLoreBuilder;
 import org.bukkit.event.EventHandler;
 
 import java.text.DecimalFormat;
@@ -33,8 +33,10 @@ public class FractionalReserve extends PitEnchant {
 	@Override
 	public List<String> getNormalDescription(int enchantLvl) {
 		DecimalFormat decimalFormat = new DecimalFormat("0.#");
-		return new ALoreBuilder("&7Receive &9-" + decimalFormat.format(getReduction(enchantLvl)) + "% &7damage per",
-				"&6digit &7in your gold").getLore();
+		return new PitLoreBuilder(
+				"&7Receive &9-" + decimalFormat.format(getReduction(enchantLvl)) +
+				"% &7damage per &6digit &7in your gold"
+		).getLore();
 	}
 
 	public static double getReduction(int enchantLvl) {

@@ -1,12 +1,12 @@
 package dev.kyro.pitsim.enchants.overworld;
 
 import com.codingforcookies.armorequip.ArmorEquipEvent;
-import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.controllers.objects.PitEnchant;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.enums.ApplyType;
 import dev.kyro.pitsim.misc.Misc;
+import dev.kyro.pitsim.misc.PitLoreBuilder;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -54,8 +54,9 @@ public class Hearts extends PitEnchant {
 
 	@Override
 	public List<String> getNormalDescription(int enchantLvl) {
-
-		return new ALoreBuilder("&7Increase your max health by &c" + Misc.getHearts(getExtraHealth(enchantLvl))).getLore();
+		return new PitLoreBuilder(
+				"&7Increase your max health by &c" + Misc.getHearts(getExtraHealth(enchantLvl))
+		).getLore();
 	}
 
 	public int getExtraHealth(int enchantLvl) {

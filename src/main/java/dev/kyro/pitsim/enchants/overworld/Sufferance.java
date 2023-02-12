@@ -1,11 +1,11 @@
 package dev.kyro.pitsim.enchants.overworld;
 
-import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.pitsim.controllers.objects.PitEnchant;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.enums.ApplyType;
 import dev.kyro.pitsim.events.AttackEvent;
 import dev.kyro.pitsim.events.HealEvent;
+import dev.kyro.pitsim.misc.PitLoreBuilder;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 
@@ -33,9 +33,9 @@ public class Sufferance extends PitEnchant {
 
 	@Override
 	public List<String> getNormalDescription(int enchantLvl) {
-
-		return new ALoreBuilder("&7Convert &e" + getReductionPercent(enchantLvl) + "% &7of true damage",
-				"&7taken into &6absorption").getLore();
+		return new PitLoreBuilder(
+				"&7Convert &e" + getReductionPercent(enchantLvl) + "% &7of true damage taken into &6absorption"
+		).getLore();
 	}
 
 	public static int getReductionPercent(int enchantLvl) {

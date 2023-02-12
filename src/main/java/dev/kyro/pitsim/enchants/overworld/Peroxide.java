@@ -1,12 +1,12 @@
 package dev.kyro.pitsim.enchants.overworld;
 
-import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.arcticapi.misc.AUtil;
 import dev.kyro.pitsim.controllers.Cooldown;
 import dev.kyro.pitsim.controllers.objects.PitEnchant;
 import dev.kyro.pitsim.enums.ApplyType;
 import dev.kyro.pitsim.events.AttackEvent;
 import dev.kyro.pitsim.misc.Misc;
+import dev.kyro.pitsim.misc.PitLoreBuilder;
 import org.bukkit.event.EventHandler;
 import org.bukkit.potion.PotionEffectType;
 
@@ -39,18 +39,17 @@ public class Peroxide extends PitEnchant {
 
 	@Override
 	public List<String> getNormalDescription(int enchantLvl) {
-
-		return new ALoreBuilder("&7Gain &cRegen " + AUtil.toRoman(getAmplifier(enchantLvl)) + " &7(" +
-				getDuration(enchantLvl) / 20 + "&7s) when hit").getLore();
+		return new PitLoreBuilder(
+				"&7Gain &cRegen " + AUtil.toRoman(getAmplifier(enchantLvl)) + " &7(" +
+				getDuration(enchantLvl) / 20 + "&7s) when hit"
+		).getLore();
 	}
 
 	public int getAmplifier(int enchantLvl) {
-
 		return Misc.linearEnchant(enchantLvl, 0.5, 1);
 	}
 
 	public int getDuration(int enchantLvl) {
-
 		return Misc.linearEnchant(enchantLvl, 0.5, 1.5) * 50 + 49;
 	}
 }

@@ -1,10 +1,10 @@
 package dev.kyro.pitsim.enchants.overworld;
 
-import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.pitsim.controllers.objects.PitEnchant;
 import dev.kyro.pitsim.enums.ApplyType;
 import dev.kyro.pitsim.events.AttackEvent;
 import dev.kyro.pitsim.misc.Misc;
+import dev.kyro.pitsim.misc.PitLoreBuilder;
 import org.bukkit.event.EventHandler;
 
 import java.util.List;
@@ -33,11 +33,14 @@ public class Jumpspammer extends PitEnchant {
 
 	@Override
 	public List<String> getNormalDescription(int enchantLvl) {
-		if(enchantLvl == 1) return new ALoreBuilder("&7While midair, your arrows deal",
-				"&c+" + getDamage(enchantLvl) + "% &7damage").getLore();
-		return new ALoreBuilder("&7While midair, your arrows deal",
-				"&c+" + getDamage(enchantLvl) + "% &7damage. While midair,",
-				"&7receive &9-" + getReduction(enchantLvl) + "% &7damage from melee", "&7and ranged attacks").getLore();
+		if(enchantLvl == 1) return new PitLoreBuilder(
+				"&7While midair, your arrows deal &c+" + getDamage(enchantLvl) + "% &7damage"
+		).getLore();
+		return new PitLoreBuilder(
+				"&7While midair, your arrows deal &c+" + getDamage(enchantLvl) +
+				"% &7damage. While midair, receive &9-" + getReduction(enchantLvl) +
+				"% &7damage from melee and ranged attacks"
+		).getLore();
 	}
 
 	public int getDamage(int enchantLvl) {

@@ -1,6 +1,5 @@
 package dev.kyro.pitsim.enchants.overworld;
 
-import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.arcticapi.misc.AUtil;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.controllers.Cooldown;
@@ -12,6 +11,7 @@ import dev.kyro.pitsim.controllers.objects.PitEnchant;
 import dev.kyro.pitsim.enums.ApplyType;
 import dev.kyro.pitsim.events.AttackEvent;
 import dev.kyro.pitsim.misc.Misc;
+import dev.kyro.pitsim.misc.PitLoreBuilder;
 import org.bukkit.entity.Arrow;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -95,9 +95,11 @@ public class MegaLongBow extends PitEnchant {
 	@Override
 	public List<String> getNormalDescription(int enchantLvl) {
 
-		return new ALoreBuilder("&7One shot per second, this bow is",
-				"&7automatically fully drawn and", "&7grants &aJump Boost " + AUtil.toRoman(getJumpMultiplier(enchantLvl) + 1) + " &7(2s).",
-				"&7Arrows deal &c-" + getReduction() + "% &7damage").getLore();
+		return new PitLoreBuilder(
+				"&7One shot per second, this bow is automatically fully drawn and grants &aJump Boost " +
+				AUtil.toRoman(getJumpMultiplier(enchantLvl) + 1) + " &7(2s). Arrows deal &c-" +
+				getReduction() + "% &7damage"
+		).getLore();
 	}
 
 	public static int getReduction() {

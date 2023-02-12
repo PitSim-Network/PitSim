@@ -1,11 +1,11 @@
 package dev.kyro.pitsim.enchants.overworld;
 
-import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.pitsim.controllers.EnchantManager;
 import dev.kyro.pitsim.controllers.objects.PitEnchant;
 import dev.kyro.pitsim.enums.ApplyType;
 import dev.kyro.pitsim.events.AttackEvent;
 import dev.kyro.pitsim.misc.Misc;
+import dev.kyro.pitsim.misc.PitLoreBuilder;
 import org.bukkit.event.EventHandler;
 
 import java.util.List;
@@ -44,14 +44,10 @@ public class NewDeal extends PitEnchant {
 
 	@Override
 	public List<String> getNormalDescription(int enchantLvl) {
-
-//		if(enchantLvl == 1) {
-		return new ALoreBuilder("&7You are immune to &6Billionaire&7,",
-				"&7but take &c" + Misc.getHearts(getTrueDamage(enchantLvl)) + " &7very true", "&7damage when hit").getLore();
-//		} else {
-//			return new ALoreBuilder("&7Receive &9-" + Misc.roundString(getDamageReduction(enchantLvl)) + "% &7damage and you are",
-//					"&7immune to &6Billionaire").getLore();
-//		}
+		return new PitLoreBuilder(
+				"&7You are immune to &6Billionaire&7, but take &c" +
+				Misc.getHearts(getTrueDamage(enchantLvl)) + " &7very true damage when hit"
+		).getLore();
 	}
 
 	public double getDamageReduction(int enchantLvl) {

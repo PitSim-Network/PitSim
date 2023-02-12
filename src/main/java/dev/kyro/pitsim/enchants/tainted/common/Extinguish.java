@@ -1,8 +1,8 @@
 package dev.kyro.pitsim.enchants.tainted.common;
 
-import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.pitsim.controllers.objects.PitEnchant;
 import dev.kyro.pitsim.enums.ApplyType;
+import dev.kyro.pitsim.misc.PitLoreBuilder;
 
 import java.util.List;
 
@@ -19,7 +19,7 @@ public class Extinguish extends PitEnchant {
 	@Override
 	public List<String> getNormalDescription(int enchantLvl) {
 
-		return new ALoreBuilder(
+		return new PitLoreBuilder(
 				"&7A basic tainted enchant"
 		).getLore();
 	}

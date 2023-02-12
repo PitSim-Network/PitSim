@@ -1,11 +1,11 @@
 package dev.kyro.pitsim.enchants.overworld;
 
 import de.myzelyam.api.vanish.VanishAPI;
-import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.pitsim.controllers.objects.PitEnchant;
 import dev.kyro.pitsim.enums.ApplyType;
 import dev.kyro.pitsim.events.AttackEvent;
 import dev.kyro.pitsim.misc.Misc;
+import dev.kyro.pitsim.misc.PitLoreBuilder;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -34,18 +34,19 @@ public class Solitude extends PitEnchant {
 			nearbyPlayers++;
 		}
 
-		double reduction = Math.max(getDamageReduction(enchantLvl) - nearbyPlayers * getReductionPerPlayer(enchantLvl), 0);
+		double reduction = Math.max(getDamageReduction(enchantLvl) - nearbyPlayers * getReductionPerPlayer(), 0);
 		attackEvent.multipliers.add(Misc.getReductionMultiplier(reduction));
 	}
 
 	@Override
 	public List<String> getNormalDescription(int enchantLvl) {
-
-		return new ALoreBuilder("&7Receive &9-" + Misc.roundString(getDamageReduction(enchantLvl)) + "% &7damage, but",
-				"&7lose &9" + getReductionPerPlayer(enchantLvl) + "% &7reduction for every", "&7nearby player besides yourself").getLore();
+		return new PitLoreBuilder(
+				"&7Receive &9-" + Misc.roundString(getDamageReduction(enchantLvl)) + "% &7damage, but lose &9" +
+				getReductionPerPlayer() + "% &7reduction for every nearby player besides yourself"
+		).getLore();
 	}
 
-	public int getReductionPerPlayer(int enchantLvl) {
+	public int getReductionPerPlayer() {
 		return 6;
 	}
 

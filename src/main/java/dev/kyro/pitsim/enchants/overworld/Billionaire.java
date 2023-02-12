@@ -1,6 +1,5 @@
 package dev.kyro.pitsim.enchants.overworld;
 
-import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.pitsim.controllers.HopperManager;
 import dev.kyro.pitsim.controllers.NonManager;
 import dev.kyro.pitsim.controllers.UpgradeManager;
@@ -8,6 +7,7 @@ import dev.kyro.pitsim.controllers.objects.PitEnchant;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.enums.ApplyType;
 import dev.kyro.pitsim.events.AttackEvent;
+import dev.kyro.pitsim.misc.PitLoreBuilder;
 import dev.kyro.pitsim.misc.Sounds;
 import org.bukkit.event.EventHandler;
 
@@ -61,12 +61,15 @@ public class Billionaire extends PitEnchant {
 	@Override
 	public List<String> getNormalDescription(int enchantLvl) {
 //		DecimalFormat decimalFormat = new DecimalFormat("0.##");
-//		return new ALoreBuilder("&7Hits with this sword deal &c" + getDamageMultiplier(enchantLvl) + "x",
+//		return new PitLoreBuilder("&7Hits with this sword deal &c" + getDamageMultiplier(enchantLvl) + "x",
 //				"&cdamage &7but cost &6" + getPlayerGoldCost(enchantLvl) + "g &7against", "&7players and &6" + getGoldCost(enchantLvl) + "g &7against", "&7bots").getLore();
 
 		DecimalFormat decimalFormat = new DecimalFormat("0.##");
-		return new ALoreBuilder("&7Hits with this sword deal &c+" + decimalFormat.format(getDamageIncrease(enchantLvl)) + "%",
-				"&cdamage &7but cost &6" + getGoldCost(enchantLvl) / 5 + "g &7against", "&7players and &6" + getGoldCost(enchantLvl) + "g &7against", "&7bots").getLore();
+		return new PitLoreBuilder(
+				"&7Hits with this sword deal &c+" + decimalFormat.format(getDamageIncrease(enchantLvl)) + "% " +
+				"&cdamage &7but cost &6" + getGoldCost(enchantLvl) / 5 + "g &7against players and &6" +
+				getGoldCost(enchantLvl) + "g &7against bots"
+		).getLore();
 	}
 
 	public double getDamageIncrease(int enchantLvl) {

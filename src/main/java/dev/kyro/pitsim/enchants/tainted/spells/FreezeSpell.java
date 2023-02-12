@@ -1,7 +1,6 @@
 package dev.kyro.pitsim.enchants.tainted.spells;
 
 import com.sk89q.worldedit.EditSession;
-import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.controllers.Cooldown;
@@ -10,6 +9,7 @@ import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.enums.ApplyType;
 import dev.kyro.pitsim.events.PitPlayerAttemptAbilityEvent;
 import dev.kyro.pitsim.misc.Misc;
+import dev.kyro.pitsim.misc.PitLoreBuilder;
 import dev.kyro.pitsim.misc.SchematicPaste;
 import dev.kyro.pitsim.misc.Sounds;
 import org.bukkit.Effect;
@@ -120,7 +120,9 @@ public class FreezeSpell extends PitEnchant {
 
 	@Override
 	public List<String> getNormalDescription(int enchantLvl) {
-		return new ALoreBuilder("&7Freeze all nearby enemies for 3s", "&d&o-" + getManaCost(enchantLvl) + " Mana").getLore();
+		return new PitLoreBuilder(
+				"&7Freeze all nearby enemies for 3s &d&o-" + getManaCost(enchantLvl) + " Mana"
+		).getLore();
 	}
 
 	public static int getManaCost(int enchantLvl) {

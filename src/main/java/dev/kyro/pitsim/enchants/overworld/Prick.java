@@ -1,10 +1,10 @@
 package dev.kyro.pitsim.enchants.overworld;
 
-import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.pitsim.controllers.objects.PitEnchant;
 import dev.kyro.pitsim.enums.ApplyType;
 import dev.kyro.pitsim.events.AttackEvent;
 import dev.kyro.pitsim.misc.Misc;
+import dev.kyro.pitsim.misc.PitLoreBuilder;
 import org.bukkit.event.EventHandler;
 
 import java.util.List;
@@ -30,12 +30,12 @@ public class Prick extends PitEnchant {
 
 	@Override
 	public List<String> getNormalDescription(int enchantLvl) {
-
-		return new ALoreBuilder("&7Enemies hitting you receive", "&c" + Misc.getHearts(getDamage(enchantLvl)) + " &7true damage").getLore();
+		return new PitLoreBuilder(
+				"&7Enemies hitting you receive &c" + Misc.getHearts(getDamage(enchantLvl)) + " &7true damage"
+		).getLore();
 	}
 
 	public double getDamage(int enchantLvl) {
-
 		return enchantLvl * 0.2 + 0.4;
 	}
 }

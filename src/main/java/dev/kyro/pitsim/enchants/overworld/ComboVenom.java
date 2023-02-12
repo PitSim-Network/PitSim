@@ -1,15 +1,8 @@
 package dev.kyro.pitsim.enchants.overworld;
 
-import dev.kyro.arcticapi.builders.ALoreBuilder;
-import dev.kyro.pitsim.controllers.HitCounter;
-import dev.kyro.pitsim.controllers.NonManager;
-import dev.kyro.pitsim.controllers.objects.Non;
 import dev.kyro.pitsim.controllers.objects.PitEnchant;
-import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.enums.ApplyType;
-import dev.kyro.pitsim.events.AttackEvent;
-import dev.kyro.pitsim.misc.Misc;
-import dev.kyro.pitsim.misc.Sounds;
+import dev.kyro.pitsim.misc.PitLoreBuilder;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.entity.EntityDamageEvent;
@@ -68,9 +61,10 @@ public class ComboVenom extends PitEnchant {
 
 	@Override
 	public List<String> getNormalDescription(int enchantLvl) {
-
-		return new ALoreBuilder("&7Every &ethird &7strike &apoisons", "&7enemies, temporarily applying", "&7Somber for &512 seconds.",
-				"&7Also &apoisons &7yourself!").getLore();
+		return new PitLoreBuilder(
+				"&7Every &ethird &7strike &apoisons &7enemies, temporarily applying " +
+						"Somber for &512 seconds&7. Also &apoisons &7yourself!"
+		).getLore();
 
 	}
 }
