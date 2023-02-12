@@ -304,6 +304,7 @@ public class PitSim extends JavaPlugin {
 //		}
 //		System.out.println("Database disconnected");
 
+		TaintedWell.onStop();
 		FirestoreManager.AUCTION.save();
 
 		for(Player onlinePlayer : Bukkit.getOnlinePlayers()) {
