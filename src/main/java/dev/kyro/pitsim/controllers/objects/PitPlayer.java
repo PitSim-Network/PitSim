@@ -5,6 +5,7 @@ import com.google.cloud.firestore.annotation.Exclude;
 import dev.kyro.arcticapi.data.APlayer;
 import dev.kyro.arcticapi.data.APlayerData;
 import dev.kyro.arcticapi.misc.AOutput;
+import dev.kyro.arcticapi.misc.AUtil;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.adarkzone.notdarkzone.Shield;
 import dev.kyro.pitsim.adarkzone.progression.DarkzoneData;
@@ -18,7 +19,6 @@ import dev.kyro.pitsim.brewing.objects.BrewingSession;
 import dev.kyro.pitsim.controllers.*;
 import dev.kyro.pitsim.cosmetics.particles.ParticleColor;
 import dev.kyro.pitsim.enchants.overworld.Hearts;
-import dev.kyro.pitsim.enchants.tainted.abilities.MaxHealth;
 import dev.kyro.pitsim.enums.AChatColor;
 import dev.kyro.pitsim.enums.DeathCry;
 import dev.kyro.pitsim.enums.KillEffect;
@@ -616,15 +616,11 @@ public class PitPlayer {
 	@Exclude
 	public void updateMaxHealth() {
 
-		int maxHealth = 24;
+		int maxHealth = MapManager.inDarkzone(player) ? 20 : 24;
 		if(hasPerk(Thick.INSTANCE) && !MapManager.inDarkzone(player)) maxHealth += 4;
-
-		if(MapManager.inDarkzone(player)) maxHealth += 20;
 
 		Map<PitEnchant, Integer> enchantMap = EnchantManager.getEnchantsOnPlayer(player);
 		if(Hearts.INSTANCE != null) maxHealth += Hearts.INSTANCE.getExtraHealth(enchantMap);
-		if(MaxHealth.INSTANCE != null) maxHealth += MaxHealth.INSTANCE.
-				getExtraHealth(player, enchantMap);
 
 		if(megastreak instanceof Uberstreak) {
 			Uberstreak uberstreak = (Uberstreak) megastreak;
@@ -725,7 +721,12 @@ public class PitPlayer {
 
 		int mana = (int) Math.round(this.mana);
 		int maxMana = getMaxMana();
-		messageSegments.add("&bMana: " + mana + "/" + maxMana);
+
+		String manaBar1 = AUtil.createProgressBar(
+				"|", ChatColor.AQUA, ChatColor.DARK_GRAY, 20, (mana * 2.0) / maxMana);
+		String manaBar2 = AUtil.createProgressBar(
+				"|", ChatColor.AQUA, ChatColor.DARK_GRAY, 20, Math.max((mana * 2.0 - maxMana) / maxMana, 0));
+		messageSegments.add("&3&l[ " + manaBar1 + " &3&l" + mana + " " + manaBar2 + " &3&l]");
 
 		String actionBarMessage = String.join(" ", messageSegments);
 		ActionBarManager.sendActionBar(player, null, actionBarMessage);

@@ -59,7 +59,6 @@ import dev.kyro.pitsim.cosmetics.misc.MysticPresence;
 import dev.kyro.pitsim.cosmetics.trails.*;
 import dev.kyro.pitsim.enchants.overworld.GoldBoost;
 import dev.kyro.pitsim.enchants.overworld.*;
-import dev.kyro.pitsim.enchants.tainted.abilities.MaxHealth;
 import dev.kyro.pitsim.enchants.tainted.abilities.Sonic;
 import dev.kyro.pitsim.enchants.tainted.common.*;
 import dev.kyro.pitsim.enchants.tainted.spells.*;
@@ -67,7 +66,6 @@ import dev.kyro.pitsim.enchants.tainted.znotcodeduncommon.*;
 import dev.kyro.pitsim.enums.NBTTag;
 import dev.kyro.pitsim.helmetabilities.*;
 import dev.kyro.pitsim.killstreaks.*;
-import dev.kyro.pitsim.killstreaks.Survivor;
 import dev.kyro.pitsim.kits.EssentialKit;
 import dev.kyro.pitsim.kits.GoldKit;
 import dev.kyro.pitsim.kits.PvPKit;
@@ -981,12 +979,10 @@ public class PitSim extends JavaPlugin {
 		EnchantManager.registerEnchant(new FreezeSpell());
 		EnchantManager.registerEnchant(new SweepingEdgeSpell());
 		EnchantManager.registerEnchant(new MeteorSpell());
-		EnchantManager.registerEnchant(new SavingGraceSpell());
 		EnchantManager.registerEnchant(new CleaveSpell());
 		EnchantManager.registerEnchant(new WarpSpell());
 
 //		Effects
-		EnchantManager.registerEnchant(new MaxHealth());
 		EnchantManager.registerEnchant(new Sonic());
 
 //		Uncommon Curses
