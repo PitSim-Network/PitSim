@@ -7,6 +7,7 @@ import dev.kyro.arcticapi.misc.AUtil;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.battlepass.quests.WinAuctionsQuest;
 import dev.kyro.pitsim.controllers.AuctionDisplays;
+import dev.kyro.pitsim.controllers.AuctionManager;
 import dev.kyro.pitsim.controllers.FirestoreManager;
 import dev.kyro.pitsim.enums.ItemType;
 import org.bukkit.Bukkit;
@@ -61,6 +62,7 @@ public class AuctionItem {
 	}
 
 	public void addBid(UUID player, int bid) {
+		AuctionManager.sendAlert(player + " has bid " + bid + " souls on slot " + slot + " (" + item.itemName + ")");
 		bidMap.put(player, bid);
 		saveData();
 
@@ -105,9 +107,14 @@ public class AuctionItem {
 	}
 
 	public void endAuction() {
+		AuctionManager.sendAlert("Auction " + slot + " has ended" + " (" + item.itemName + ")");
 		FirestoreManager.AUCTION.auctions.set(slot, null);
 
-		if(getHighestBidder() == null) return;
+		if(getHighestBidder() == null) {
+			AuctionManager.sendAlert("Auction has no bidders");
+			AuctionManager.sendAlert(bidMap.toString());
+			return;
+		}
 		OfflinePlayer winner = Bukkit.getOfflinePlayer(getHighestBidder());
 
 		if(winner.isOnline()) {
@@ -117,11 +124,13 @@ public class AuctionItem {
 
 			if(itemData == 0) {
 				AUtil.giveItemSafely(winner.getPlayer(), item.item.clone(), true);
+				AuctionManager.sendAlert("Given item to player");
 			} else {
 				ItemStack jewel = ItemType.getJewelItem(item.id, itemData);
 
 				AUtil.giveItemSafely(winner.getPlayer(), jewel, true);
 			}
+			AuctionManager.sendAlert("Auction " + slot + " was claimed by " + winner.getName() + " since they were online (" + item.itemName + ")");
 
 		} else {
 			try {
@@ -137,8 +146,11 @@ public class AuctionItem {
 
 				waitingMessages.add(message);
 
+				AuctionManager.sendAlert("Sent message to proxy");
+
 			} catch(Exception e) {
 				e.printStackTrace();
+				AuctionManager.sendAlert("Auction " + slot + " failed to send message (" + item.itemName + ")");
 			}
 		}
 

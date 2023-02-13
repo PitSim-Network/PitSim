@@ -28,7 +28,7 @@ public class PassScytheReward extends PassReward {
 		}
 
 		for(int i = 0; i < count; i++) {
-			ItemStack scythe = MysticFactory.getFreshItem(MysticType.TAINTED_SCYTHE, PantColor.valueOf(""));
+			ItemStack scythe = MysticFactory.getFreshItem(MysticType.TAINTED_SCYTHE, PantColor.TAINTED);
 			AUtil.giveItemSafely(pitPlayer.player, scythe);
 		}
 		return true;
@@ -36,7 +36,7 @@ public class PassScytheReward extends PassReward {
 
 	@Override
 	public ItemStack getDisplayItem(PitPlayer pitPlayer, boolean hasClaimed) {
-		ItemStack itemStack = new AItemStackBuilder(Material.BOW, count)
+		ItemStack itemStack = new AItemStackBuilder(Material.GOLD_HOE, count)
 				.setName("&5Scythe Reward")
 				.setLore(new ALoreBuilder(
 						"&7Reward: &5" + count + "x Fresh Tainted Scythe"

@@ -694,6 +694,8 @@ public class PlayerManager implements Listener {
 		}
 
 		if(pitPlayer.auctionReturn.size() > 0) {
+			AuctionManager.sendAlert(player.getName() + " is attempting to claim " + "an item");
+
 			for(String item : pitPlayer.auctionReturn) {
 				String[] data = item.split(":");
 
@@ -707,6 +709,7 @@ public class PlayerManager implements Listener {
 						AOutput.send(player, "&5&lDARK AUCTION!&7 Received " + itemStack.getItemMeta().getDisplayName() + "&7.");
 						Sounds.BOOSTER_REMIND.play(player);
 						AUtil.giveItemSafely(player, itemStack, true);
+						AuctionManager.sendAlert(player.getName() + " has claimed " + itemStack.getItemMeta().getDisplayName());
 					}
 				}.runTaskLater(PitSim.INSTANCE, 10);
 			}
@@ -717,6 +720,7 @@ public class PlayerManager implements Listener {
 		}
 
 		if(pitPlayer.soulReturn > 0) {
+			AuctionManager.sendAlert(player.getName() + " is attempting to claim " + pitPlayer.soulReturn + " souls");
 			new BukkitRunnable() {
 				@Override
 				public void run() {
@@ -724,6 +728,9 @@ public class PlayerManager implements Listener {
 
 					int soulReturn = pitPlayer.soulReturn;
 					pitPlayer.taintedSouls += soulReturn;
+
+					AuctionManager.sendAlert(player.getName() + " has claimed " + pitPlayer.soulReturn + " souls");
+
 					pitPlayer.soulReturn = 0;
 
 					AOutput.send(player, "&5&lDARK AUCTION! &7Received &f" + soulReturn + " Tainted Souls&7.");

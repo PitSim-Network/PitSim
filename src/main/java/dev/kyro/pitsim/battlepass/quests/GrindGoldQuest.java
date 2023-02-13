@@ -45,13 +45,13 @@ public class GrindGoldQuest extends PassQuest {
 
 	@Override
 	public void createPossibleStates() {
-		questLevels.add(new QuestLevel(0.5, 100));
-		questLevels.add(new QuestLevel(0.75, 150));
-		questLevels.add(new QuestLevel(1.0, 200));
+		questLevels.add(new QuestLevel(1.0, 100));
+		questLevels.add(new QuestLevel(1.5, 150));
+		questLevels.add(new QuestLevel(2.0, 200));
 	}
 
 	@Override
 	public double getMultiplier(PitPlayer pitPlayer) {
-		return PrestigeValues.getPrestigeInfo(pitPlayer.prestige).goldReq;
+		return Math.pow(PrestigeValues.getPrestigeInfo(pitPlayer.prestige).goldReq / 1000.0, 9.0 / 10.0) * 1000;
 	}
 }

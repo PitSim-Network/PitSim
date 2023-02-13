@@ -16,7 +16,7 @@ public class EcoCommand implements CommandExecutor {
 
 	@Override
 	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
-		if(sender instanceof Player && sender.isOp()) return false;
+		if(!sender.isOp()) return false;
 
 		if(args.length < 3) {
 			AOutput.error(sender, "&7Usage: /eco <give|take|set> <player> <amount>");

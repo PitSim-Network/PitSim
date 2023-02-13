@@ -1,11 +1,8 @@
 package dev.kyro.pitsim.placeholders;
 
 import dev.kyro.arcticapi.hooks.papi.APAPIPlaceholder;
-import dev.kyro.pitsim.controllers.objects.PitPlayer;
-import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.entity.Player;
 
-import javax.xml.bind.annotation.XmlType;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -17,6 +14,8 @@ public class ServerIPPlaceholder implements APAPIPlaceholder {
 		customIPMap.put(UUID.fromString("3ede0ff9-f0b0-43de-8d8e-4f1e3027a3b5"), ServerIP.BOMP);
 		customIPMap.put(UUID.fromString("6fcf9f87-05f4-4895-a803-6e1289da5557"), ServerIP.TOMCAT);
 		customIPMap.put(UUID.fromString("ee660496-3cf1-458a-94fb-e11764c18663"), ServerIP.NOTFUTURE);
+		customIPMap.put(UUID.fromString("245a7079-d97b-4438-9002-288f06d3e887"), ServerIP.MALEFFECT);
+		customIPMap.put(UUID.fromString("b1ac41f3-c446-42be-ba56-e5208a3efa6d"), ServerIP.SAMMH);
 	}
 
 	@Override
@@ -35,6 +34,8 @@ public class ServerIPPlaceholder implements APAPIPlaceholder {
 		BOMP("bomp"),
 		TOMCAT("tomcat"),
 		NOTFUTURE("future"),
+		MALEFFECT("maleffect"),
+		SAMMH("sammh"),
 		;
 
 		private String subDomain;
