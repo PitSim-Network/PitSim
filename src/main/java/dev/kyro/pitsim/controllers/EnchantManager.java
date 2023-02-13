@@ -301,7 +301,7 @@ public class EnchantManager implements Listener {
 
 		ALoreBuilder loreBuilder = new ALoreBuilder();
 
-		if(nbtItem.hasKey(NBTTag.ITEM_JEWEL_ENCHANT.getRef()) && nbtItem.hasKey(NBTTag.MAX_LIVES.getRef())) {
+		if(nbtItem.hasKey(NBTTag.MAX_LIVES.getRef())) {
 			if(currentLives <= 3) c = 'c';
 			else c = 'a';
 			String lives = "&7Lives: &" + c + currentLives + "&7/" + maxLives;
@@ -449,6 +449,16 @@ public class EnchantManager implements Listener {
 			maxLives += (int) (Math.random() * 31 + 10);
 		}
 		return maxLives;
+	}
+
+	public static int getTaintedMaxLifeIncrease(int tier, int currentMaxLives) {
+		if(tier == 3) {
+			if(Math.random() < 0.001) return 1111 - currentMaxLives;
+			if(Math.random() < 0.01) return 500 - currentMaxLives;
+		}
+
+		int randomMultiplier = tier * 25;
+		return (int) (Math.random() * randomMultiplier);
 	}
 
 	public static ItemStack incrementJewel(Player player, ItemStack itemStack) {
