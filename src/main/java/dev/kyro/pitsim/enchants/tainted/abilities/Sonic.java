@@ -26,6 +26,7 @@ class Sonic extends PitEnchant {
 		super("Sonic", true, ApplyType.CHESTPLATES, "sonic", "sanic", "fast");
 		isTainted = true;
 		INSTANCE = this;
+		isRare = true;
 	}
 
 	static {

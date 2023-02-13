@@ -12,14 +12,12 @@ import dev.kyro.pitsim.misc.Misc;
 import dev.kyro.pitsim.misc.Sounds;
 import dev.kyro.pitsim.misc.packets.SignPrompt;
 import dev.kyro.pitsim.storage.StorageProfile;
-import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.inventory.InventoryOpenEvent;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.concurrent.TimeUnit;
 
@@ -244,7 +242,7 @@ public class CreateListingPanel extends AGUIPanel {
 		}
 		getInventory().setItem(15, binBuilder.getItemStack());
 
-		AItemStackBuilder auctionSoulsBuilder = new AItemStackBuilder(Material.INK_SACK, 1, 7)
+		AItemStackBuilder auctionSoulsBuilder = new AItemStackBuilder(Material.GHAST_TEAR)
 				.setName("&eSet Starting Bid")
 				.setLore(new ALoreBuilder(
 						"&7Starting Bid: " + (isBidValid() ? "&f" + startingBid + " souls" : "&cINVALID!"),
@@ -254,7 +252,7 @@ public class CreateListingPanel extends AGUIPanel {
 				));
 		getInventory().setItem(20, auctionSoulsBuilder.getItemStack());
 
-		AItemStackBuilder binSoulsBuilder = new AItemStackBuilder(Material.INK_SACK, 1, 7)
+		AItemStackBuilder binSoulsBuilder = new AItemStackBuilder(Material.GHAST_TEAR)
 				.setName("&eSet BIN Price")
 				.setLore(new ALoreBuilder(
 						"&7BIN Price: " + (isBinValid() ? ("&f" + binPrice + " souls" + (selectedItem.getAmount() > 1 ? " &8(Per Item)" : "")) : "&cINVALID!"),

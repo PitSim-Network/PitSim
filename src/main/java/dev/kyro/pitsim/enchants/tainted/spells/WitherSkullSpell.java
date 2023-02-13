@@ -23,6 +23,7 @@ public class WitherSkullSpell extends PitEnchant {
 		super("WitherSkull", true, ApplyType.SCYTHES,
 				"witherskull");
 		isTainted = true;
+		isRare = true;
 	}
 
 	@EventHandler

@@ -47,9 +47,23 @@ public class EnchantSound {
 	}
 
 	public enum Tier {
-		TIER_1,
-		TIER_2,
-		TIER_3
+		TIER_1(1, 60),
+		TIER_2(2, 70),
+		TIER_3(3, 82);
+
+		public int tier;
+		public int length;
+		Tier(int tier, int length) {
+			this.tier = tier;
+			this.length = length;
+		}
+
+		public static Tier getTier(int tier) {
+			for(Tier value : values()) {
+				if(value.tier == tier) return value;
+			}
+			return null;
+		}
 	}
 
 	//	The rare boolean is the same as artifact and other things worthy of displaying in chat message

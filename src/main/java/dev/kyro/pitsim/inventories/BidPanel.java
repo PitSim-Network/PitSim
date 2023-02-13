@@ -150,7 +150,7 @@ public class BidPanel extends AGUIPanel {
 					loreBuilder.addLore("&eLeft-Click to bid &f" + (minBid(auctionItem)) + " Souls" + "&e!");
 					loreBuilder.addLore("&eRight-Click for a custom bid!");
 				}
-				AItemStackBuilder placeBidBuilder = new AItemStackBuilder(Material.INK_SACK, 1, 7)
+				AItemStackBuilder placeBidBuilder = new AItemStackBuilder(Material.GHAST_TEAR)
 						.setName("&ePlace a Bid")
 						.setLore(loreBuilder);
 

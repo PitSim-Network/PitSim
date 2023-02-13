@@ -37,7 +37,7 @@ public class MarketSelectionPanel extends AGUIPanel {
 				));
 		getInventory().setItem(15, createBuilder.getItemStack());
 
-		AItemStackBuilder yourBuilder = new AItemStackBuilder(Material.INK_SACK, 1, 7)
+		AItemStackBuilder yourBuilder = new AItemStackBuilder(Material.GHAST_TEAR)
 				.setName("&eYour Listings")
 				.setLore(new ALoreBuilder(
 						"&7View all of your",

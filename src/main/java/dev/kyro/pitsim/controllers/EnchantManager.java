@@ -177,16 +177,26 @@ public class EnchantManager implements Listener {
 		if(applyEnchant.refNames.get(0).equals("venom")) nbtItem.setBoolean(NBTTag.IS_VENOM.getRef(), true);
 
 		AItemStackBuilder itemStackBuilder = new AItemStackBuilder(nbtItem.getItem());
+
+		itemStackBuilder.setName(getMysticName(itemStack));
+
+		setItemLore(itemStackBuilder.getItemStack(), null);
+		return itemStackBuilder.getItemStack();
+	}
+
+	public static String getMysticName(ItemStack itemStack) {
+		NBTItem nbtItem = new NBTItem(itemStack);
+		int enchantNum = nbtItem.getInteger(NBTTag.ITEM_ENCHANT_NUM.getRef());
 		MysticType mysticType = MysticType.getMysticType(itemStack);
-		if(mysticType.isTainted()) enchantNum = new NBTItem(itemStack).getInteger(NBTTag.TAINTED_TIER.getRef()) + 1;
+		if(mysticType == null) return "";
+
 		ChatColor chatColor = ChatColor.RED;
 		if(mysticType.isTainted()) chatColor = PantColor.TAINTED.chatColor;
 		if(mysticType == MysticType.PANTS) chatColor = PantColor.getPantColor(itemStack).chatColor;
 
-		itemStackBuilder.setName(chatColor + "Tier " + (enchantNum != 0 ? AUtil.toRoman(enchantNum) : 0) + " " + mysticType.displayName);
-
-		setItemLore(itemStackBuilder.getItemStack(), null);
-		return itemStackBuilder.getItemStack();
+		int taintedTier = nbtItem.getInteger(NBTTag.TAINTED_TIER.getRef());
+		int tier = taintedTier != 0 ? taintedTier : enchantNum;
+		return chatColor + "Tier " + (tier != 0 ? AUtil.toRoman(tier) : 0) + " " + mysticType.displayName;
 	}
 
 	public static boolean isIllegalItem(ItemStack itemStack) {

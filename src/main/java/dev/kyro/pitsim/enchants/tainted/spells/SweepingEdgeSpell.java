@@ -21,6 +21,7 @@ public class SweepingEdgeSpell extends PitEnchant {
 	public SweepingEdgeSpell() {
 		super("Sweeping Edge", true, ApplyType.SCYTHES, "sweepingedge", "sweep", "sweeping");
 		isTainted = true;
+		isRare = true;
 	}
 
 	@EventHandler

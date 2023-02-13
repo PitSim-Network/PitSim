@@ -18,6 +18,7 @@ public class MaxHealth extends PitEnchant {
 				"manahealth");
 		isTainted = true;
 		INSTANCE = this;
+		isRare = true;
 	}
 
 	public int getExtraHealth(Player player, Map<PitEnchant, Integer> enchantMap) {

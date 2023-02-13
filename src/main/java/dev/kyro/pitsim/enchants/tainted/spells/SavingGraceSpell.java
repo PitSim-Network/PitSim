@@ -23,6 +23,7 @@ public class SavingGraceSpell extends PitEnchant {
 	public SavingGraceSpell() {
 		super("Saving Grace", true, ApplyType.SCYTHES, "savinggrace", "save", "saving", "grace");
 		isTainted = true;
+		isRare = true;
 	}
 
 	@EventHandler

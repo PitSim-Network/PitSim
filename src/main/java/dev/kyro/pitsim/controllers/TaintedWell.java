@@ -26,6 +26,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.*;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.ArrayList;
@@ -58,11 +59,11 @@ public class TaintedWell implements Listener {
 					if(onlinePlayer.getWorld() != wellLocation.getWorld()) continue;
 					if(playerItems.containsKey(onlinePlayer)) continue;
 
-					setText(onlinePlayer, "&6&lTainted Well", ChatColor.GRAY + "Enchant Mystic Items found", ChatColor.GRAY + "in the Darkzone here", ChatColor.YELLOW + "Right-Click with an Item!");
+					setText(onlinePlayer, "&5&lTainted Well&1", "&7Enchant Mystic Items found&1", "&7in the Darkzone here&1", "&eRight-Click with an Item!&1");
 				}
 
 
-				if(wellStand != null){
+				if(wellStand != null) {
 					for(Entity entity : wellStand.getNearbyEntities(25.0, 25.0, 25.0)) {
 						if(!(entity instanceof Player)) {
 							continue;
@@ -131,7 +132,7 @@ public class TaintedWell implements Listener {
 		wellStand.setGravity(false);
 
 		for(int i = 0; i < 4; i++) {
-			textStands[i] = wellLocation.getWorld().spawn(wellLocation.clone().add(0.5, 3.0, 0.5), ArmorStand.class);
+			textStands[i] = wellLocation.getWorld().spawn(wellLocation.clone().add(0.5, 3.0 - (i * 0.3), 0.5), ArmorStand.class);
 			textStands[i].setArms(true);
 			textStands[i].setVisible(false);
 			textStands[i].setCustomName(ChatColor.DARK_PURPLE + "" + ChatColor.BOLD + "Tainted Well");
@@ -244,7 +245,6 @@ public class TaintedWell implements Listener {
 		}.runTaskLater(PitSim.INSTANCE, 2L);
 		
 		if(!enchant) {
-			Bukkit.broadcastMessage("Sent packet!");
 			setText(player, ChatColor.DARK_PURPLE + "" + ChatColor.BOLD + "Tainted Well", ChatColor.GRAY + "Enchant Mystic Items found", ChatColor.GRAY + "in the Darkzone here", ChatColor.YELLOW + "Right-Click with an Item!");
 			ItemStack item = playerItems.get(player);
 			
@@ -276,19 +276,20 @@ public class TaintedWell implements Listener {
 			try {
 				ItemStack newItem;
 				newItem = TaintedEnchanting.enchantItem(freshItem);
+
 				if(newItem == null) return;
-				
+
+				ItemMeta meta = newItem.getItemMeta();
+				meta.setDisplayName(EnchantManager.getMysticName(newItem));
+				newItem.setItemMeta(meta);
+
 				NBTItem nbtItem = new NBTItem(newItem);
-				
-				if(nbtItem.hasKey(NBTTag.TAINTED_TIER.getRef())) {
-					int tier = nbtItem.getInteger(NBTTag.TAINTED_TIER.getRef());
-					nbtItem.setInteger(NBTTag.TAINTED_TIER.getRef(), tier + 1);
-				} else {
-					nbtItem.setInteger(NBTTag.TAINTED_TIER.getRef(), 1);
+
+				if(!nbtItem.hasKey(NBTTag.TAINTED_TIER.getRef())) {
 					PitPlayer.getPitPlayer(player).stats.itemsEnchanted++;
 				}
-				
-				playerItems.put(player, nbtItem.getItem());
+
+				playerItems.put(player, newItem);
 			}
 			catch (Exception e) {
 				e.printStackTrace();
@@ -297,7 +298,9 @@ public class TaintedWell implements Listener {
 			enchantingPlayers.add(player);
 			setText(player, "\u00A77", "\u00A77", "\u00A77", ChatColor.YELLOW + "Its rolling...");
 
-			new EnchantSound(player, player.getLocation()).play(EnchantSound.Tier.TIER_3);
+			EnchantSound.Tier tier = EnchantSound.Tier.getTier(freshTier + 1);
+			assert tier != null;
+			new EnchantSound(player, player.getLocation()).play(tier, true);
 
 			new BukkitRunnable() {
 				public void run() {
@@ -306,13 +309,14 @@ public class TaintedWell implements Listener {
 					Sounds.EXPLOSIVE_3.play(player);
 					TaintedWell.showButtons(player);
 				}
-			}.runTaskLater(PitSim.INSTANCE, 80L);
+			}.runTaskLater(PitSim.INSTANCE, tier.length);
 		}
 	}
 
 	@EventHandler
 	public static void onEnchantingTableClick(PlayerInteractEvent event) {
 		if(event.getAction() != Action.LEFT_CLICK_BLOCK && event.getAction() != Action.RIGHT_CLICK_BLOCK) return;
+		if(!event.getClickedBlock().getLocation().equals(wellLocation)) return;
 		
 		Player player = event.getPlayer();
 		Block block = event.getClickedBlock();
@@ -381,13 +385,10 @@ public class TaintedWell implements Listener {
 	@EventHandler
 	public void onHit(AttackEvent.Pre event) {
 		if(event.getDefender().getUniqueId().equals(wellStand.getUniqueId())) event.setCancelled(true);
+
 		for(ArmorStand textStand : textStands) {
-			text
+			if(event.getDefender().getUniqueId().equals(textStand.getUniqueId())) event.setCancelled(true);
 		}
-		if(event.getDefender().getUniqueId().equals(textLine1.getUniqueId())) event.setCancelled(true);
-		if(event.getDefender().getUniqueId().equals(textLine2.getUniqueId())) event.setCancelled(true);
-		if(event.getDefender().getUniqueId().equals(textLine3.getUniqueId())) event.setCancelled(true);
-		if(event.getDefender().getUniqueId().equals(textLine4.getUniqueId())) event.setCancelled(true);
 
 		for(ArmorStand value : enchantStands.values()) {
 			if(value.getUniqueId().equals(event.getDefender().getUniqueId())) event.setCancelled(true);
@@ -416,47 +417,10 @@ public class TaintedWell implements Listener {
 		for(int i = 0; i < 4; i++) {
 			if(lines[i] == null) continue;
 
-			DataWatcher dw = ((CraftEntity)textLine1).getHandle().getDataWatcher();
+			DataWatcher dw = ((CraftEntity)textStands[i]).getHandle().getDataWatcher();
 			dw.watch(2, (Object)ChatColor.translateAlternateColorCodes('&', lines[i]));
-			PacketPlayOutEntityMetadata metaPacket = new PacketPlayOutEntityMetadata(getStandID(textLine1), dw, false);
+			PacketPlayOutEntityMetadata metaPacket = new PacketPlayOutEntityMetadata(getStandID(textStands[i]), dw, false);
 			((CraftPlayer)player).getHandle().playerConnection.sendPacket(metaPacket);
-		}
-
-		if(line2 != null) {
-//			PacketPlayOutSpawnEntityLiving spawn = new PacketPlayOutSpawnEntityLiving((EntityLiving)((CraftEntity)textLine2).getHandle());
-//			((CraftPlayer)player).getHandle().playerConnection.sendPacket(spawn);
-			DataWatcher dw = ((CraftEntity)textLine2).getHandle().getDataWatcher();
-			dw.watch(2, (Object)ChatColor.translateAlternateColorCodes('&', line2));
-			PacketPlayOutEntityMetadata metaPacket = new PacketPlayOutEntityMetadata(getStandID(textLine2), dw, false);
-			((CraftPlayer)player).getHandle().playerConnection.sendPacket(metaPacket);
-		}
-		else {
-			PacketPlayOutEntityDestroy destroyPacket = new PacketPlayOutEntityDestroy(getStandID(textLine2));
-			((CraftPlayer)player).getHandle().playerConnection.sendPacket(destroyPacket);
-		}
-		if(line3 != null) {
-//			PacketPlayOutSpawnEntityLiving spawn = new PacketPlayOutSpawnEntityLiving((EntityLiving)((CraftEntity)textLine3).getHandle());
-//			((CraftPlayer)player).getHandle().playerConnection.sendPacket(spawn);
-			DataWatcher dw = ((CraftEntity)textLine3).getHandle().getDataWatcher();
-			dw.watch(2, (Object)ChatColor.translateAlternateColorCodes('&', line3));
-			PacketPlayOutEntityMetadata metaPacket = new PacketPlayOutEntityMetadata(getStandID(textLine3), dw, false);
-			((CraftPlayer)player).getHandle().playerConnection.sendPacket(metaPacket);
-		}
-		else {
-			PacketPlayOutEntityDestroy destroyPacket = new PacketPlayOutEntityDestroy(getStandID(textLine3));
-			((CraftPlayer)player).getHandle().playerConnection.sendPacket(destroyPacket);
-		}
-		if(line4 != null) {
-//			PacketPlayOutSpawnEntityLiving spawn = new PacketPlayOutSpawnEntityLiving((EntityLiving)((CraftEntity)textLine4).getHandle());
-//			((CraftPlayer)player).getHandle().playerConnection.sendPacket(spawn);
-			DataWatcher dw = ((CraftEntity)textLine4).getHandle().getDataWatcher();
-			dw.watch(2, (Object)ChatColor.translateAlternateColorCodes('&', line4));
-			PacketPlayOutEntityMetadata metaPacket = new PacketPlayOutEntityMetadata(getStandID(textLine4), dw, false);
-			((CraftPlayer)player).getHandle().playerConnection.sendPacket(metaPacket);
-		}
-		else {
-			PacketPlayOutEntityDestroy destroyPacket = new PacketPlayOutEntityDestroy(getStandID(textLine4));
-			((CraftPlayer)player).getHandle().playerConnection.sendPacket(destroyPacket);
 		}
 	}
 
