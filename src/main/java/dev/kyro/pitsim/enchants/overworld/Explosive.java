@@ -100,8 +100,10 @@ public class Explosive extends PitEnchant {
 		switch(enchantLvl) {
 			case 1:
 				Sounds.EXPLOSIVE_1.play(location);
+				break;
 			case 2:
 				Sounds.EXPLOSIVE_2.play(location);
+				break;
 			case 3:
 				Sounds.EXPLOSIVE_3.play(location);
 		}

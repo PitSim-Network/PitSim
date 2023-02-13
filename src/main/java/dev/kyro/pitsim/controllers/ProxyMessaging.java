@@ -184,7 +184,7 @@ public class ProxyMessaging implements Listener {
 			if(!announcement.isEmpty()) Bukkit.broadcastMessage(strings.get(2));
 		}
 
-		if(strings.size() >= 2 && strings.get(0).equals("       AUCTION ITEM REQUEST")) {
+		if(strings.size() >= 2 && strings.get(0).equals("AUCTION ITEM REQUEST")) {
 			UUID uuid = UUID.fromString(strings.get(4));
 			Player winner = Bukkit.getPlayer(uuid);
 			int id = integers.get(0);

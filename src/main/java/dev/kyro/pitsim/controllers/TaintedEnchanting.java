@@ -1,170 +1,62 @@
 package dev.kyro.pitsim.controllers;
 
+import de.tr7zw.nbtapi.NBTItem;
 import dev.kyro.pitsim.controllers.objects.PitEnchant;
-import dev.kyro.pitsim.enchants.overworld.SelfCheckout;
-import dev.kyro.pitsim.enums.ApplyType;
 import dev.kyro.pitsim.enums.MysticType;
+import dev.kyro.pitsim.enums.NBTTag;
+import dev.kyro.pitsim.misc.Misc;
 import org.bukkit.inventory.ItemStack;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Random;
+import java.util.*;
 
 public class TaintedEnchanting {
+	public static ItemStack enchantItem(ItemStack itemStack) {
+		MysticType type = MysticType.getMysticType(itemStack);
+		if(type != MysticType.TAINTED_CHESTPLATE && type != MysticType.TAINTED_SCYTHE) return null;
+		NBTItem nbtItem = new NBTItem(itemStack);
+		int tier = nbtItem.getInteger(NBTTag.TAINTED_TIER.getRef());
+		if(tier == 3) return null;
 
-	public static ItemStack enchantScythe(ItemStack itemStack, int tier) {
-		List<PitEnchant> applicableEnchants = EnchantManager.getEnchants(MysticType.TAINTED_SCYTHE);
-		List<PitEnchant> scytheEnchants = EnchantManager.getEnchants(ApplyType.MELEE);
-		ItemStack mystic = itemStack;
+		ItemStack returnStack = itemStack;
 
 		if(tier == 0) {
+			int enchants;
 
-			Random random = new Random();
+			Map<Integer, Double> enchantChance = new HashMap<>();
+			enchantChance.put(1, 0.9);
+			enchantChance.put(2, 0.1);
+			enchants = Misc.weightedRandom(enchantChance);
 
-			PitEnchant randEnchant = applicableEnchants.get(random.nextInt(applicableEnchants.size()));
+			for(int i = 0; i < enchants; i++) {
+				try {
 
-			int enchantTier;
-			double tierRand = Math.random();
-			if(tierRand <= 0.8) enchantTier = 1;
-			else enchantTier = 2;
+					Map<Integer, Double> newEnchantsRandom = new HashMap<>();
+					newEnchantsRandom.put(1, 0.7);
+					newEnchantsRandom.put(2, 0.3);
+					int newEnchants = enchants == 1 ? 1 : Misc.weightedRandom(newEnchantsRandom);
 
-			try {
-				mystic = EnchantManager.addEnchant(mystic, randEnchant, enchantTier, false);
-			} catch(Exception ignored) {}
-
-		} else {
-			int tokensToAdd;
-			double tokenRand = Math.random();
-			if(tokenRand >= 0.85) tokensToAdd = 4;
-			else if(tokenRand >= 0.5) tokensToAdd = 3;
-			else if(tokenRand >= 0.15) tokensToAdd = 2;
-			else tokensToAdd = 1;
-
-			if(tokensToAdd > (8 - getTokens(mystic))) tokensToAdd = (8 - getTokens(mystic));
-
-			for(int i = 0; i < tokensToAdd; i++) {
-				double newEnchantRand = Math.random();
-
-				boolean forceNew = true;
-				for(Integer value : EnchantManager.getEnchantsOnItem(mystic).values()) {
-					if(value != 3) {
-						forceNew = false;
-						break;
-					}
+					returnStack = EnchantManager.addEnchant(returnStack, getRandomEnchant(type, 0), newEnchants, false);
+				} catch(Exception e) {
+					e.printStackTrace();
 				}
-
-				if(forceNew || EnchantManager.getEnchantsOnItem(mystic).size() < 3 && newEnchantRand < 0.3) {
-					Random random = new Random();
-
-					scytheEnchants.removeAll(EnchantManager.getEnchantsOnItem(mystic).keySet());
-
-					PitEnchant randEnchant = scytheEnchants.get(random.nextInt(scytheEnchants.size()));
-
-					try {
-						mystic = EnchantManager.addEnchant(mystic, randEnchant, 1, false);
-					} catch(Exception ignored) {}
-				} else {
-					Map<PitEnchant, Integer> enchantMap = EnchantManager.getEnchantsOnItem(mystic);
-					List<PitEnchant> enchantList = new ArrayList<>(enchantMap.keySet());
-
-					Random random = new Random();
-					PitEnchant randEnchant = enchantList.get(random.nextInt(enchantList.size()));
-
-					while(enchantMap.get(randEnchant) > 2) {
-						randEnchant = enchantList.get(random.nextInt(enchantList.size()));
-					}
-
-					try {
-						mystic = EnchantManager.addEnchant(mystic, randEnchant, enchantMap.get(randEnchant) + 1, false);
-					} catch(Exception ignored) {}
-
-				}
-
 			}
 		}
 
-		return mystic;
+		return null;
 	}
 
-	public static ItemStack enchantChestplate(ItemStack itemStack, int tier) {
-		List<PitEnchant> applicableEnchants = EnchantManager.getEnchants(MysticType.TAINTED_CHESTPLATE);
-		List<PitEnchant> chestEnchants = EnchantManager.getEnchants(ApplyType.PANTS);
-		chestEnchants.remove(SelfCheckout.INSTANCE);
-		ItemStack mystic = itemStack;
+	public static PitEnchant getRandomEnchant(MysticType type, int enchantRarity) {
+		List<PitEnchant> enchantPool = new ArrayList<>(EnchantManager.getEnchants(type));
+		List<PitEnchant> rarityPool = new ArrayList<>();
+		for(PitEnchant enchant : enchantPool) {
+			int rarity = 0;
+			if(enchant.isUncommonEnchant) rarity = 1;
+			if(enchant.isRare) rarity = 2;
 
-		if(tier == 0) {
-
-			Random random = new Random();
-
-			PitEnchant randEnchant = applicableEnchants.get(random.nextInt(applicableEnchants.size()));
-
-			int enchantTier;
-			double tierRand = Math.random();
-			if(tierRand <= 0.8) enchantTier = 1;
-			else enchantTier = 2;
-
-			try {
-				mystic = EnchantManager.addEnchant(mystic, randEnchant, enchantTier, false);
-			} catch(Exception ignored) {}
-
-		} else {
-			int tokensToAdd;
-			double tokenRand = Math.random();
-			if(tokenRand >= 0.85) tokensToAdd = 4;
-			else if(tokenRand >= 0.5) tokensToAdd = 3;
-			else if(tokenRand >= 0.15) tokensToAdd = 2;
-			else tokensToAdd = 1;
-
-			if(tokensToAdd > (8 - getTokens(mystic))) tokensToAdd = (8 - getTokens(mystic));
-
-			for(int i = 0; i < tokensToAdd; i++) {
-				double newEnchantRand = Math.random();
-
-				boolean forceNew = true;
-				for(Integer value : EnchantManager.getEnchantsOnItem(mystic).values()) {
-					if(value != 3) {
-						forceNew = false;
-						break;
-					}
-				}
-
-				if(forceNew || EnchantManager.getEnchantsOnItem(mystic).size() < 3 && newEnchantRand < 0.3) {
-					Random random = new Random();
-					PitEnchant randEnchant = chestEnchants.get(random.nextInt(chestEnchants.size()));
-
-					try {
-						mystic = EnchantManager.addEnchant(mystic, randEnchant, 1, false);
-					} catch(Exception ignored) {}
-				} else {
-					Map<PitEnchant, Integer> enchantMap = EnchantManager.getEnchantsOnItem(mystic);
-					List<PitEnchant> enchantList = new ArrayList<>(enchantMap.keySet());
-
-					Random random = new Random();
-					PitEnchant randEnchant = enchantList.get(random.nextInt(enchantList.size()));
-
-					while(enchantMap.get(randEnchant) > 2) {
-						randEnchant = enchantList.get(random.nextInt(enchantList.size()));
-					}
-
-					try {
-						mystic = EnchantManager.addEnchant(mystic, randEnchant, enchantMap.get(randEnchant) + 1, false);
-					} catch(Exception ignored) {}
-
-				}
-
-			}
+			if(rarity == enchantRarity) rarityPool.add(enchant);
 		}
 
-		return mystic;
+		Random random = new Random();
+		return rarityPool.get(random.nextInt(rarityPool.size()));
 	}
-
-	public static int getTokens(ItemStack itemStack) {
-		int tokens = 0;
-		for(Integer value : EnchantManager.getEnchantsOnItem(itemStack).values()) {
-			tokens += value;
-		}
-		return tokens;
-	}
-
 }

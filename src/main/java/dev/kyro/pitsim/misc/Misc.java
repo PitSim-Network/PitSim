@@ -109,7 +109,7 @@ public class Misc {
 	}
 
 	public static <T> T weightedRandom(Map<T, Double> weightedMap) {
-		if(weightedMap.isEmpty()) return null;
+		if(weightedMap.isEmpty()) throw new RuntimeException();
 		// Normalize the weights
 		double sum = 0.0;
 		for(double weight : weightedMap.values()) sum += weight;

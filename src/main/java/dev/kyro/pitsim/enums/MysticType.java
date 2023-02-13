@@ -1,5 +1,7 @@
 package dev.kyro.pitsim.enums;
 
+import dev.kyro.pitsim.aitems.PitItem;
+import dev.kyro.pitsim.controllers.ItemFactory;
 import org.bukkit.inventory.ItemStack;
 
 public enum MysticType {
@@ -18,8 +20,8 @@ public enum MysticType {
 	}
 
 	public static MysticType getMysticType(ItemStack itemStack) {
-
-		if(itemStack == null) return null;
+		PitItem pitItem = ItemFactory.getItem(itemStack);
+		if(pitItem == null || !pitItem.isMystic) return null;
 
 		switch(itemStack.getType()) {
 

@@ -50,10 +50,7 @@ public class MapManager implements Listener {
 
 	public static PitMap getNextMap(PitMap pitMap) {
 		List<PitMap> applicableMaps = new ArrayList<>();
-		for(PitMap map : mapList) {
-			if(map.rotationDays != -1) applicableMaps.add(map);
-		}
-
+		for(PitMap map : mapList) if(map.rotationDays != -1) applicableMaps.add(map);
 		int index = applicableMaps.indexOf(pitMap);
 		return applicableMaps.get(index % applicableMaps.size());
 	}

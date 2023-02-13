@@ -16,7 +16,7 @@ import java.io.InputStream;
 public class FirestoreManager {
 	public static Firestore FIRESTORE;
 
-	public static final String SERVER_COLLECTION = Collection.getCollection(PitSim.serverName).refName;
+	public static final String SERVER_COLLECTION = Collection.getCollection(PitSim.serverName).refName[0];
 	public static final String CONFIG_DOCUMENT = "config";
 	public static final String AUCTION_DOCUMENT = "auction";
 
@@ -77,16 +77,18 @@ public class FirestoreManager {
 	public enum Collection {
 		DEV("dev"),
 		KYRO("kyro"),
-		PITSIM("pitsim");
+		PITSIM("pitsim", "darkzone");
 
-		public String refName;
-		Collection(String refName) {
+		public String[] refName;
+		Collection(String... refName) {
 			this.refName = refName;
 		}
 
 		public static Collection getCollection(String serverName) {
 			for(Collection value : values()) {
-				if(serverName.contains(value.refName)) return value;
+				for(String s : value.refName) {
+					if(serverName.contains(s)) return value;
+				}
 			}
 			throw new RuntimeException();
 		}

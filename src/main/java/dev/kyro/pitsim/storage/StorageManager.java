@@ -27,7 +27,7 @@ import java.util.Objects;
 import java.util.UUID;
 
 public class StorageManager implements Listener {
-	private static final List<StorageProfile> profiles = new ArrayList<>();
+	protected static final List<StorageProfile> profiles = new ArrayList<>();
 	protected static final List<EditSession> editSessions = new ArrayList<>();
 
 	public static StorageProfile getProfile(Player player) {
