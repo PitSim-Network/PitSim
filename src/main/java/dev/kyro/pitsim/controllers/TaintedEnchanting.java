@@ -84,6 +84,14 @@ public class TaintedEnchanting {
 
 		nbtItem = new NBTItem(returnStack);
 		nbtItem.setInteger(NBTTag.TAINTED_TIER.getRef(), tier + 1);
+		int currentLives = nbtItem.getInteger(NBTTag.CURRENT_LIVES.getRef());
+		int currentMaxLives = nbtItem.getInteger(NBTTag.MAX_LIVES.getRef());
+
+		int addedLives = EnchantManager.getTaintedMaxLifeIncrease(tier + 1, currentMaxLives);
+
+		nbtItem.setInteger(NBTTag.MAX_LIVES.getRef(), currentMaxLives + addedLives);
+		nbtItem.setInteger(NBTTag.CURRENT_LIVES.getRef(), currentLives + addedLives);
+
 		return nbtItem.getItem();
 	}
 
