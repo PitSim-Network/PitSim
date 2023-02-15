@@ -20,6 +20,7 @@ import org.bukkit.event.player.PlayerPickupItemEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -187,7 +188,12 @@ public class StorageManager implements Listener {
 			boolean isOnline = message.getBooleans().get(0);
 			String serverName = strings.get(3);
 
-			editSessions.add(new EditSession(player, playerUUID, serverName, isOnline));
+			new BukkitRunnable() {
+				@Override
+				public void run() {
+					editSessions.add(new EditSession(player, playerUUID, serverName, isOnline));
+				}
+			}.runTask(PitSim.INSTANCE);
 		}
 	}
 
