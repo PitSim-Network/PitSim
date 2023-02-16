@@ -859,7 +859,6 @@ public class PlayerManager implements Listener {
 				public void run() {
 					pitPlayer.megastreak.stop();
 					pitPlayer.megastreak = new NoMegastreak(pitPlayer);
-					pitPlayer.save(true, false);
 				}
 			}.runTaskLater(PitSim.INSTANCE, 1L);
 		}

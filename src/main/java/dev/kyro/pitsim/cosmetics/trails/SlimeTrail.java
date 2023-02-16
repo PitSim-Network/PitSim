@@ -47,8 +47,8 @@ public class SlimeTrail extends PitCosmetic {
 					EntityPlayer entityPlayer = ((CraftPlayer) onlinePlayer).getHandle();
 					for(int i = 0; i < 2; i++)
 						collection.displayAll(entityPlayer, displayLocation);
-					if(count++ % 2 == 0 && Math.random() < 0.1) dropItem(dropStack, displayLocation, 0.5, 0.5, 0.5);
 				}
+				if(count++ % 2 == 0 && Math.random() < 0.1) dropItem(dropStack, displayLocation, 0.5, 0.5, 0.5);
 			}
 		}.runTaskTimer(PitSim.INSTANCE, 0L, 1L));
 	}

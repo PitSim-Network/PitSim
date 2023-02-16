@@ -237,8 +237,9 @@ public class PitPlayer {
 					System.out.println();
 					exception.printStackTrace();
 					System.out.println("--------------------------------------------------");
+					Misc.alertDiscord("CRITICAL ERROR: data for " + player.getName() + " failed to final save");
 				}
-			});
+			}).start();
 			return;
 		}
 
