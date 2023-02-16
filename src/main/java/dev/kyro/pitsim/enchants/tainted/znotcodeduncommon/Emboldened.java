@@ -12,6 +12,7 @@ public class Emboldened extends PitEnchant {
 	public Emboldened() {
 		super("Emboldened", false, ApplyType.SCYTHES,
 				"emboldened");
+		isUncommonEnchant = true;
 		isTainted = true;
 		INSTANCE = this;
 	}

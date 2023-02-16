@@ -12,6 +12,7 @@ public class LeaveMeAlone extends PitEnchant {
 	public LeaveMeAlone() {
 		super("Leave Me Alone", false, ApplyType.CHESTPLATES,
 				"leavemealone", "leaveme", "leave", "alone");
+		isUncommonEnchant = true;
 		isTainted = true;
 		INSTANCE = this;
 	}

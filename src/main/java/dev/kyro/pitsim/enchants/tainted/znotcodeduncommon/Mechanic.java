@@ -12,6 +12,7 @@ public class Mechanic extends PitEnchant {
 	public Mechanic() {
 		super("Mechanic", false, ApplyType.CHESTPLATES,
 				"mechanic");
+		isUncommonEnchant = true;
 		isTainted = true;
 		INSTANCE = this;
 	}

@@ -12,6 +12,7 @@ public class Mending extends PitEnchant {
 	public Mending() {
 		super("Mending", false, ApplyType.CHESTPLATES,
 				"mending", "mend");
+		isUncommonEnchant = true;
 		isTainted = true;
 		INSTANCE = this;
 	}

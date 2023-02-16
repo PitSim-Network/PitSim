@@ -12,6 +12,7 @@ public class StartingHand extends PitEnchant {
 	public StartingHand() {
 		super("Starting Hand", false, ApplyType.SCYTHES,
 				"startinghand", "starting", "start");
+		isUncommonEnchant = true;
 		isTainted = true;
 		INSTANCE = this;
 	}

@@ -12,6 +12,7 @@ public class Weak extends PitEnchant {
 	public Weak() {
 		super("Weak", false, ApplyType.SCYTHES,
 				"weak");
+		isUncommonEnchant = true;
 		isTainted = true;
 		INSTANCE = this;
 	}

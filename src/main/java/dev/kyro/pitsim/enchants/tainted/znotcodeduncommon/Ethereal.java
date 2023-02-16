@@ -12,6 +12,7 @@ public class Ethereal extends PitEnchant {
 	public Ethereal() {
 		super("Ethereal", false, ApplyType.CHESTPLATES,
 				"ethereal");
+		isUncommonEnchant = true;
 		isTainted = true;
 		INSTANCE = this;
 	}

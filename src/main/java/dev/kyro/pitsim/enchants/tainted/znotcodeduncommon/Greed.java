@@ -12,6 +12,7 @@ public class Greed extends PitEnchant {
 	public Greed() {
 		super("Greed", false, ApplyType.CHESTPLATES,
 				"greed");
+		isUncommonEnchant = true;
 		isTainted = true;
 		INSTANCE = this;
 	}

@@ -12,6 +12,7 @@ public class PitPocket extends PitEnchant {
 	public PitPocket() {
 		super("PitPocket", false, ApplyType.SCYTHES,
 				"pitpocket");
+		isUncommonEnchant = true;
 		isTainted = true;
 		INSTANCE = this;
 	}

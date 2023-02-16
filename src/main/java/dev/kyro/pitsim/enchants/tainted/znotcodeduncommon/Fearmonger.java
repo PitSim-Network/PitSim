@@ -12,6 +12,7 @@ public class Fearmonger extends PitEnchant {
 	public Fearmonger() {
 		super("Fearmonger", false, ApplyType.SCYTHES,
 				"fearmonger", "fear");
+		isUncommonEnchant = true;
 		isTainted = true;
 		INSTANCE = this;
 	}

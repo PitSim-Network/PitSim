@@ -12,6 +12,7 @@ public class Fortify extends PitEnchant {
 	public Fortify() {
 		super("Fortify", false, ApplyType.CHESTPLATES,
 				"fortify");
+		isUncommonEnchant = true;
 		isTainted = true;
 		INSTANCE = this;
 	}

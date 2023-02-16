@@ -12,6 +12,7 @@ public class Reaper extends PitEnchant {
 	public Reaper() {
 		super("Reaper", false, ApplyType.SCYTHES,
 				"reaper");
+		isUncommonEnchant = true;
 		isTainted = true;
 		INSTANCE = this;
 	}

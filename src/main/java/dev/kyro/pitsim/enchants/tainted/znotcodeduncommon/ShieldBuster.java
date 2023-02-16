@@ -12,6 +12,7 @@ public class ShieldBuster extends PitEnchant {
 	public ShieldBuster() {
 		super("Shield Buster", false, ApplyType.SCYTHES,
 				"shieldbuster", "buster");
+		isUncommonEnchant = true;
 		isTainted = true;
 		INSTANCE = this;
 	}

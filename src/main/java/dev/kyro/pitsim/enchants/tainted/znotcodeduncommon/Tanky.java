@@ -12,6 +12,7 @@ public class Tanky extends PitEnchant {
 	public Tanky() {
 		super("Tanky", false, ApplyType.CHESTPLATES,
 				"tanky", "tank");
+		isUncommonEnchant = true;
 		isTainted = true;
 		INSTANCE = this;
 	}

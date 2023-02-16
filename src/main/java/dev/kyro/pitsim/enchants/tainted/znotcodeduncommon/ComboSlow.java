@@ -20,6 +20,7 @@ public class ComboSlow extends PitEnchant {
 	public ComboSlow() {
 		super("Combo: Slow", false, ApplyType.SCYTHES,
 				"comboeslow", "slow", "cslow");
+		isUncommonEnchant = true;
 		isTainted = true;
 		INSTANCE = this;
 	}

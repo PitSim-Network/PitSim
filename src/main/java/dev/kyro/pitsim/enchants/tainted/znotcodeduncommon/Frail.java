@@ -12,6 +12,7 @@ public class Frail extends PitEnchant {
 	public Frail() {
 		super("Frail", false, ApplyType.CHESTPLATES,
 				"frail");
+		isUncommonEnchant = true;
 		isTainted = true;
 		INSTANCE = this;
 	}

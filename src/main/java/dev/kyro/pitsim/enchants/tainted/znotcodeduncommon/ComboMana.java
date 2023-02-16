@@ -12,6 +12,7 @@ public class ComboMana extends PitEnchant {
 	public ComboMana() {
 		super("Combo: Mana", false, ApplyType.SCYTHES,
 				"combomana");
+		isUncommonEnchant = true;
 		isTainted = true;
 		INSTANCE = this;
 	}

@@ -12,6 +12,7 @@ public class Permed extends PitEnchant {
 	public Permed() {
 		super("Permed", false, ApplyType.SCYTHES,
 				"permed", "perm");
+		isUncommonEnchant = true;
 		isTainted = true;
 		INSTANCE = this;
 	}
