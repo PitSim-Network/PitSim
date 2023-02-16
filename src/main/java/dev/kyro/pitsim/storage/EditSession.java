@@ -3,6 +3,7 @@ package dev.kyro.pitsim.storage;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.controllers.objects.PluginMessage;
 import dev.kyro.pitsim.misc.Sounds;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
@@ -69,6 +70,7 @@ public class EditSession {
 	public void end() {
 		StorageManager.editSessions.remove(this);
 		if(editType != EditType.CANCELED) storageProfile.saveData(true);
+		if(hasLeft() && editType != EditType.CANCELED) StorageManager.profiles.remove(storageProfile);
 
 		PluginMessage message = new PluginMessage().writeString("EDIT SESSION END");
 		message.writeString(playerUUID.toString()).send();
@@ -108,6 +110,13 @@ public class EditSession {
 
 	public boolean isPlayerOnline() {
 		return isPlayerOnline;
+	}
+
+	public boolean hasLeft() {
+		for(Player onlinePlayer : Bukkit.getOnlinePlayers()) {
+			if(onlinePlayer.getUniqueId().equals(playerUUID)) return false;
+		}
+		return true;
 	}
 }
 

@@ -412,7 +412,7 @@ public class PitSim extends JavaPlugin {
 			long time;
 
 			PitMap biomes = MapManager.registerMap(new BiomesMap("biomes", 7));
-			PitMap sand = MapManager.registerMap(new SandMap("sand", 2));
+			PitMap sand = MapManager.registerMap(new SandMap("sand", 3));
 			PitMap dimensions = MapManager.registerMap(new DimensionsMap("dimensions", 7));
 			PitMap xmas = MapManager.registerMap(new XmasMap("xmas", -1));
 
