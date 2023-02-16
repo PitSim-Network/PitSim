@@ -12,14 +12,12 @@ import dev.kyro.pitsim.misc.Misc;
 import dev.kyro.pitsim.misc.Sounds;
 import dev.kyro.pitsim.misc.packets.SignPrompt;
 import dev.kyro.pitsim.storage.StorageProfile;
-import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.inventory.InventoryOpenEvent;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.concurrent.TimeUnit;
 
@@ -392,7 +390,7 @@ public class CreateListingPanel extends AGUIPanel {
 			openPanel(this);
 			long amount;
 			try {
-				amount = parseToMiliseconds(input.replaceAll("\"", ""));
+				amount = parseToMilliseconds(input.replaceAll("\"", ""));
 			} catch(Exception ignored) {
 				Sounds.NO.play(player);
 				AOutput.error(player, "&c&lERROR!&7 Could not parse duration!");
@@ -417,7 +415,7 @@ public class CreateListingPanel extends AGUIPanel {
 		return 3;
 	}
 
-	public static long parseToMiliseconds(String duration) {
+	public static long parseToMilliseconds(String duration) {
 		String[] parts = duration.split(" ");
 		int days = duration.contains("d") ? Integer.parseInt(parts[0].replace("d", "")) : 0;
 		int hours = duration.contains("h") ? Integer.parseInt(parts[1].replace("h", "")) : 0;
@@ -426,10 +424,10 @@ public class CreateListingPanel extends AGUIPanel {
 		return (days * 86400L + hours * 3600L + minutes * 60L) * 1000;
 	}
 
-	public static String parseToDuration(long miliseconds) {
-		long days = TimeUnit.MILLISECONDS.toDays(miliseconds);
-		long hours = TimeUnit.MILLISECONDS.toHours(miliseconds) - TimeUnit.DAYS.toHours(days);
-		long minutes = TimeUnit.MILLISECONDS.toMinutes(miliseconds) - TimeUnit.HOURS.toMinutes(TimeUnit.MILLISECONDS.toHours(miliseconds));
+	public static String parseToDuration(long millis) {
+		long days = TimeUnit.MILLISECONDS.toDays(millis);
+		long hours = TimeUnit.MILLISECONDS.toHours(millis) - TimeUnit.DAYS.toHours(days);
+		long minutes = TimeUnit.MILLISECONDS.toMinutes(millis) - TimeUnit.HOURS.toMinutes(TimeUnit.MILLISECONDS.toHours(millis));
 		return days + "d " + hours + "h " + minutes + "m";
 	}
 }
