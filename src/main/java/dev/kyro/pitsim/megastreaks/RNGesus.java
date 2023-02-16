@@ -529,13 +529,10 @@ public class RNGesus extends Megastreak {
 		return true;
 	}
 
-	public static String getTime(Player player) {
-		StringBuilder builder = new StringBuilder();
-		long difference = ((System.currentTimeMillis() / 1000) - rngesusCooldownPlayers.get(player.getUniqueId()) / 1000);
-		int reverseDiff = (COOLDOWN_MINUTES * 60) - (int) difference;
-		builder.append(reverseDiff / 60).append("m ");
-		builder.append(reverseDiff % 60).append("s");
-		return builder.toString();
+	public static String getTimeLeft(Player player) {
+		long timePassed = System.currentTimeMillis() - rngesusCooldownPlayers.get(player.getUniqueId());
+		long timeRemaining = (COOLDOWN_MINUTES * 60L * 1000) - timePassed;
+		return Misc.formatDurationFull(timeRemaining, true);
 	}
 
 	public static void rngsusCooldown(Player player) {

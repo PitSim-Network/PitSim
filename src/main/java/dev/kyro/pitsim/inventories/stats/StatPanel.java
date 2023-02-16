@@ -88,7 +88,7 @@ public class StatPanel extends AGUIPanel {
 						"&7Perun Strikes: &e" + Misc.formatLarge(stats.perun),
 						"&7Executions: &e" + Misc.formatLarge(stats.executioner),
 						"&c\u2764&7s Risked: &e" + Misc.formatLarge(stats.gamble),
-						"&7immobilized: &e" + Misc.formatDuration(stats.stun),
+						"&7immobilized: &e" + Misc.formatDurationMostSignificant(stats.stun),
 						"&7Stolen &c\u2764&7s: &e" + Misc.formatLarge(stats.lifesteal),
 						"",
 						"&7Homing Arrows: &e" + Misc.formatLarge(stats.robinhood),

@@ -48,8 +48,11 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.text.DecimalFormat;
+import java.time.Duration;
 import java.util.*;
 import java.util.function.Predicate;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class Misc {
 	public static void alertDiscord(String message) {
@@ -461,7 +464,55 @@ public class Misc {
 		return (long) (Math.random() * 20 * 60 * minutes);
 	}
 
-	public static String formatDuration(double seconds) {
+	public static Duration parseDuration(String durationString) throws Exception {
+		durationString = durationString.toLowerCase().replaceAll(" ", "");
+		Matcher matcher = Pattern.compile("(\\d+)([mhdw])").matcher(durationString);
+		Duration duration = Duration.ZERO;
+		while(matcher.find()) {
+			int number = Integer.parseInt(matcher.group(1));
+			String timeUnit = matcher.group(2);
+			switch(timeUnit) {
+				case "m":
+					duration = duration.plus(Duration.ofMinutes(number));
+					break;
+				case "h":
+					duration = duration.plus(Duration.ofHours(number));
+					break;
+				case "d":
+					duration = duration.plus(Duration.ofDays(number));
+					break;
+				case "w":
+					duration = duration.plus(Duration.ofDays(number).multipliedBy(7));
+			}
+		}
+		if(duration.equals(Duration.ZERO)) throw new Exception();
+		return duration;
+	}
+
+	public static String formatDurationFull(long millis, boolean displaySeconds) {
+		return formatDurationFull(Duration.ofMillis(millis), displaySeconds);
+	}
+
+	public static String formatDurationFull(Duration duration, boolean displaySeconds) {
+		long millis = duration.toMillis();
+		long days = millis / (24 * 60 * 60 * 1000);
+		millis %= (24 * 60 * 60 * 1000);
+		long hours = millis / (60 * 60 * 1000);
+		millis %= (60 * 60 * 1000);
+		long minutes = millis / (60 * 1000);
+		millis %= (60 * 1000);
+		long seconds = millis / 1000;
+		if(!displaySeconds && seconds != 0) minutes++;
+
+		String durationString = "";
+		if(days != 0) durationString += days + "d ";
+		if(hours != 0) durationString += hours + "h ";
+		if(minutes != 0) durationString += minutes + "m ";
+		if(displaySeconds && seconds != 0) durationString += seconds + "s";
+		return durationString.trim();
+	}
+
+	public static String formatDurationMostSignificant(double seconds) {
 		DecimalFormat decimalFormat = new DecimalFormat("0.#");
 		if(seconds < 60) return decimalFormat.format(seconds) + " seconds";
 		if(seconds < 60 * 60) return decimalFormat.format(seconds / 60.0) + " minutes";
@@ -510,17 +561,6 @@ public class Misc {
 		if(minutes != 0 && seconds != 0) return minutes + "m " + (seconds - (minutes * 60)) + "s";
 		else if(seconds != 0) return seconds + "s";
 		else return minutes + "s";
-	}
-
-	public static String ticksToTimeUnformatted(int ticks) {
-		int seconds = (int) Math.floor(ticks / 20);
-		int minutes = (int) Math.floor(seconds / 60);
-
-		int secondsLeft = (seconds - (minutes * 60));
-		String secondsString = (secondsLeft == 0 ? secondsLeft + "0" : String.valueOf(secondsLeft));
-
-		if(secondsLeft < 10 && secondsLeft != 0) return minutes + ":0" + secondsString;
-		return minutes + ":" + secondsString;
 	}
 
 	public static boolean isKyro(UUID uuid) {
