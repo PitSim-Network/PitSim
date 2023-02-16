@@ -57,14 +57,18 @@ public class FirestoreManager {
 			if(!FIRESTORE.collection(SERVER_COLLECTION).document(CONFIG_DOCUMENT).get().get().exists()) {
 				CONFIG = new Config();
 				CONFIG.save();
-			} else
+			} else {
 				CONFIG = FIRESTORE.collection(SERVER_COLLECTION).document(CONFIG_DOCUMENT).get().get().toObject(Config.class);
+			}
 
-			if(!FIRESTORE.collection(SERVER_COLLECTION).document(AUCTION_DOCUMENT).get().get().exists()) {
-				AUCTION = new AuctionData();
-				AUCTION.save();
-			} else
-				AUCTION = FIRESTORE.collection(SERVER_COLLECTION).document(AUCTION_DOCUMENT).get().get().toObject(AuctionData.class);
+			if(PitSim.status.isDarkzone()) {
+				if(!FIRESTORE.collection(SERVER_COLLECTION).document(AUCTION_DOCUMENT).get().get().exists()) {
+					AUCTION = new AuctionData();
+					AUCTION.save();
+				} else {
+					AUCTION = FIRESTORE.collection(SERVER_COLLECTION).document(AUCTION_DOCUMENT).get().get().toObject(AuctionData.class);
+				}
+			}
 
 		} catch(Exception exception) {
 			exception.printStackTrace();
