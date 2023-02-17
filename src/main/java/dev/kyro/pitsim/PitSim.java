@@ -127,6 +127,9 @@ public class PitSim extends JavaPlugin {
 		loadConfig();
 		ArcticAPI.configInit(this, "prefix", "error-prefix");
 		serverName = AConfig.getString("server");
+		if(AConfig.getBoolean("standalone-server")) status = ServerStatus.ALL;
+		else status = serverName.contains("darkzone") ? ServerStatus.DARKZONE : ServerStatus.PITSIM;
+
 		FirestoreManager.init();
 		for(Player onlinePlayer : Bukkit.getOnlinePlayers()) {
 			PlayerManager.addRealPlayer(onlinePlayer.getUniqueId());
@@ -143,9 +146,6 @@ public class PitSim extends JavaPlugin {
 			Bukkit.getPluginManager().disablePlugin(this);
 			return;
 		} else getServer().getPluginManager().registerEvents(anticheat, this);
-
-		if(AConfig.getBoolean("standalone-server")) status = ServerStatus.ALL;
-		else status = serverName.contains("darkzone") ? ServerStatus.DARKZONE : ServerStatus.PITSIM;
 
 		getServer().getMessenger().registerOutgoingPluginChannel(this, "BungeeCord");
 		adventure = BukkitAudiences.create(this);
@@ -309,7 +309,7 @@ public class PitSim extends JavaPlugin {
 //		}
 //		System.out.println("Database disconnected");
 
-		FirestoreManager.AUCTION.save();
+		if(status.isDarkzone()) FirestoreManager.AUCTION.save();
 
 		for(Player onlinePlayer : Bukkit.getOnlinePlayers()) {
 			PitPlayer pitPlayer = PitPlayer.getPitPlayer(onlinePlayer);

@@ -1,6 +1,5 @@
 package dev.kyro.pitsim.battlepass.rewards;
 
-import de.tr7zw.nbtapi.NBTItem;
 import dev.kyro.arcticapi.builders.AItemStackBuilder;
 import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.arcticapi.misc.AOutput;
@@ -11,7 +10,6 @@ import dev.kyro.pitsim.controllers.EnchantManager;
 import dev.kyro.pitsim.controllers.ItemManager;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.enums.MysticType;
-import dev.kyro.pitsim.enums.NBTTag;
 import dev.kyro.pitsim.enums.PantColor;
 import dev.kyro.pitsim.misc.Misc;
 import org.bukkit.Material;
@@ -32,7 +30,7 @@ public class PassScytheReward extends PassReward {
 		}
 
 		for(int i = 0; i < count; i++) {
-			ItemStack scythe = FreshCommand.getFreshItem(MysticType.TAINTED_SCYTHE, PantColor.valueOf(""));
+			ItemStack scythe = FreshCommand.getFreshItem(MysticType.TAINTED_SCYTHE, PantColor.TAINTED);
 			scythe = ItemManager.enableDropConfirm(scythe);
 
 			EnchantManager.setItemLore(scythe, pitPlayer.player);
@@ -43,7 +41,7 @@ public class PassScytheReward extends PassReward {
 
 	@Override
 	public ItemStack getDisplayItem(PitPlayer pitPlayer, boolean hasClaimed) {
-		ItemStack itemStack = new AItemStackBuilder(Material.BOW, count)
+		ItemStack itemStack = new AItemStackBuilder(Material.GOLD_HOE, count)
 				.setName("&5Scythe Reward")
 				.setLore(new ALoreBuilder(
 						"&7Reward: &5" + count + "x Fresh Tainted Scythe"
