@@ -1,38 +1,106 @@
 package dev.kyro.pitsim.commands;
 
-import dev.kyro.pitsim.aitems.PitItem;
-import dev.kyro.pitsim.controllers.ItemFactory;
-import dev.kyro.pitsim.controllers.TaintedEnchanting;
-import dev.kyro.pitsim.misc.Misc;
+import dev.kyro.pitsim.PitSim;
+import net.minecraft.server.v1_8_R3.*;
+import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.craftbukkit.v1_8_R3.CraftWorld;
+import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
+import org.bukkit.craftbukkit.v1_8_R3.inventory.CraftItemStack;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.scheduler.BukkitRunnable;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.UUID;
 
 public class ATestCommand implements CommandExecutor {
+
+	public static List<EntityItem> items = new ArrayList<>();
+	public static int degrees = 0;
+	public static final double RADIUS = 0.5;
+	public static final double TOTAL_ITEMS = 48;
+	public static Location location;
 
 	@Override
 	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
 		if(!(sender instanceof Player)) return false;
 		Player player = (Player) sender;
-//		if(!player.isOp()) return false;
 
-		for(int i = 0; i < player.getInventory().getContents().length; i++) {
-			ItemStack content = player.getInventory().getItem(i);
+		location = player.getLocation();
 
-			if(Misc.isAirOrNull(content)) continue;
-			PitItem pitItem = ItemFactory.getItem(content);
-			if(pitItem == null || !pitItem.isMystic) continue;
+		new BukkitRunnable() {
+			@Override
+			public void run() {
+				double x = Math.cos(Math.toRadians(degrees)) * RADIUS;
+				double z = Math.sin(Math.toRadians(degrees)) * RADIUS;
 
-			ItemStack itemStack = content;
+				World world = ((CraftWorld) (player.getWorld())).getHandle();
+				EntityItem entityItem = new EntityItem(world);
+				entityItem.setPosition(location.getX() + x, location.getY(), location.getZ() + z);
+				entityItem.setItemStack(CraftItemStack.asNMSCopy(getItemStack()));
 
-			for(int j = 0; j < 3; j++) {
-				itemStack = TaintedEnchanting.enchantItem(itemStack);
+
+				PacketPlayOutSpawnEntity spawn = new PacketPlayOutSpawnEntity(entityItem, 1, 1);
+				((CraftPlayer) player).getHandle().playerConnection.sendPacket(spawn);
+
+				PacketPlayOutEntityMetadata meta = new PacketPlayOutEntityMetadata(entityItem.getId(), entityItem.getDataWatcher(), true);
+				((CraftPlayer) player).getHandle().playerConnection.sendPacket(meta);
+
+				degrees += 15;
+				items.add(entityItem);
+
+				if(items.size() > TOTAL_ITEMS) {
+					EntityItem removeItem = items.remove(0);
+					PacketPlayOutEntityDestroy destroy = new PacketPlayOutEntityDestroy(removeItem.getId());
+					((CraftPlayer) player).getHandle().playerConnection.sendPacket(destroy);
+				}
 			}
+		}.runTaskTimer(PitSim.INSTANCE, 0, 1);
 
-			player.getInventory().setItem(i, itemStack);
-		}
+//
+//		double radius = 5;
+//
+//		for(int i = 0; i < 360; i += 15) {
+//
+//
+//			new BukkitRunnable() {
+//				@Override
+//				public void run() {
+//
+//				}
+//			}.runTaskLater(PitSim.INSTANCE, 20);
+//		}
+
+
+
+		return false;
+	}
+
+	public ItemStack getItemStack() {
+		ItemStack item = new ItemStack(Material.GHAST_TEAR);
+		ItemMeta meta = item.getItemMeta();
+		meta.setLore(Collections.singletonList(UUID.randomUUID().toString()));
+		item.setItemMeta(meta);
+		return item;
+	}
+}
+
+
+
+
+
+
+
+
+
+
 
 //		ItemStack itemStack = player.getItemInHand();
 //		player.setItemInHand(TaintedEnchanting.enchantItem(itemStack));
@@ -42,7 +110,3 @@ public class ATestCommand implements CommandExecutor {
 //			marketGUI.open();
 //			return true;
 //		}
-
-		return false;
-	}
-}
