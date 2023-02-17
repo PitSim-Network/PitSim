@@ -1,11 +1,11 @@
 package dev.kyro.pitsim.enchants.overworld;
 
-import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.pitsim.controllers.objects.PitEnchant;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.enums.ApplyType;
 import dev.kyro.pitsim.events.AttackEvent;
 import dev.kyro.pitsim.misc.Misc;
+import dev.kyro.pitsim.misc.PitLoreBuilder;
 import dev.kyro.pitsim.misc.Sounds;
 import org.bukkit.event.EventHandler;
 
@@ -44,9 +44,10 @@ public class Gamble extends PitEnchant {
 
 	@Override
 	public List<String> getNormalDescription(int enchantLvl) {
-
-		return new ALoreBuilder("&d50% chance &7to deal &c" + Misc.getHearts(getTrueDamage(enchantLvl)) + " &7true",
-				"&7damage to whoever you hit, or to", "&7yourself").getLore();
+		return new PitLoreBuilder(
+				"&d50% chance &7to deal &c" + Misc.getHearts(getTrueDamage(enchantLvl)) +
+				" &7true damage to whoever you hit, or to yourself"
+		).getLore();
 	}
 
 	public int getTrueDamage(int enchantLvl) {

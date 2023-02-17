@@ -1,9 +1,9 @@
 package dev.kyro.pitsim.enchants.overworld;
 
-import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.pitsim.controllers.objects.PitEnchant;
 import dev.kyro.pitsim.enums.ApplyType;
 import dev.kyro.pitsim.events.AttackEvent;
+import dev.kyro.pitsim.misc.PitLoreBuilder;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 
@@ -30,8 +30,9 @@ public class PainFocus extends PitEnchant {
 
 	@Override
 	public List<String> getNormalDescription(int enchantLvl) {
-
-		return new ALoreBuilder("&7Deal &c+" + getDamage(enchantLvl) + "% &7damage per &c\u2764", "&7you're missing").getLore();
+		return new PitLoreBuilder(
+				"&7Deal &c+" + getDamage(enchantLvl) + "% &7damage per &c\u2764 &7you're missing"
+		).getLore();
 	}
 
 	public int getDamage(int enchantLvl) {

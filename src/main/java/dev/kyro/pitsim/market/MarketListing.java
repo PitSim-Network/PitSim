@@ -3,8 +3,8 @@ package dev.kyro.pitsim.market;
 import dev.kyro.arcticapi.builders.AItemStackBuilder;
 import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.pitsim.controllers.objects.PluginMessage;
+import dev.kyro.pitsim.misc.Misc;
 import dev.kyro.pitsim.storage.StorageProfile;
-import org.bukkit.Bukkit;
 import org.bukkit.inventory.ItemStack;
 
 import java.io.Serializable;
@@ -84,7 +84,6 @@ public class MarketListing implements Serializable {
 			String[] dataSplit = s.split(":");
 			bidderDisplayNames.put(UUID.fromString(dataSplit[0]), dataSplit[1]);
 		}
-
 	}
 
 	public int getHighestBid() {
@@ -152,14 +151,7 @@ public class MarketListing implements Serializable {
 		if (remainingTime <= 0) {
 			return "Listing has expired";
 		}
-		long days = remainingTime / (24 * 60 * 60 * 1000);
-		remainingTime = remainingTime % (24 * 60 * 60 * 1000);
-		long hours = remainingTime / (60 * 60 * 1000);
-		remainingTime = remainingTime % (60 * 60 * 1000);
-		long minutes = remainingTime / (60 * 1000);
-		remainingTime = remainingTime % (60 * 1000);
-		long seconds = remainingTime / 1000;
-		return days + "d " + hours + "h " + minutes + "m " + seconds + "s";
+		return Misc.formatDurationFull(remainingTime, true);
 	}
 
 	public boolean hasEnded() {
@@ -176,8 +168,6 @@ public class MarketListing implements Serializable {
 		list.sort((o1, o2) -> o2.getValue() - o1.getValue());
 		return list;
 	}
-
-
 }
 
 

@@ -1,12 +1,12 @@
 package dev.kyro.pitsim.enchants.tainted.spells;
 
-import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.pitsim.controllers.Cooldown;
 import dev.kyro.pitsim.controllers.objects.PitEnchant;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.enums.ApplyType;
 import dev.kyro.pitsim.events.AttackEvent;
 import dev.kyro.pitsim.events.PitPlayerAttemptAbilityEvent;
+import dev.kyro.pitsim.misc.PitLoreBuilder;
 import dev.kyro.pitsim.misc.Sounds;
 import org.bukkit.entity.Fireball;
 import org.bukkit.entity.Player;
@@ -21,7 +21,7 @@ public class WitherSkullSpell extends PitEnchant {
 
 	public WitherSkullSpell() {
 		super("WitherSkull", true, ApplyType.SCYTHES,
-				"witherskull");
+				"witherskull", "wither");
 		isTainted = true;
 		isRare = true;
 	}
@@ -63,7 +63,8 @@ public class WitherSkullSpell extends PitEnchant {
 
 	@Override
 	public List<String> getNormalDescription(int enchantLvl) {
-
-		return new ALoreBuilder("&7Enjoy").getLore();
+		return new PitLoreBuilder(
+				"&7Enjoy"
+		).getLore();
 	}
 }

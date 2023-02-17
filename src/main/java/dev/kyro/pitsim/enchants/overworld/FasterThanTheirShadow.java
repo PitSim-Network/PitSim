@@ -1,6 +1,5 @@
 package dev.kyro.pitsim.enchants.overworld;
 
-import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.arcticapi.misc.AUtil;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.controllers.HitCounter;
@@ -10,6 +9,7 @@ import dev.kyro.pitsim.enums.ApplyType;
 import dev.kyro.pitsim.events.ArrowHitBlockEvent;
 import dev.kyro.pitsim.events.AttackEvent;
 import dev.kyro.pitsim.misc.Misc;
+import dev.kyro.pitsim.misc.PitLoreBuilder;
 import org.bukkit.Bukkit;
 import org.bukkit.block.Block;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftArrow;
@@ -116,10 +116,7 @@ public class FasterThanTheirShadow extends PitEnchant implements Listener {
 									new ArrowHitBlockEvent((Arrow) event.getEntity(), null));
 				}
 
-			} catch(NoSuchFieldException e1) {
-			} catch(SecurityException e1) {
-			} catch(IllegalArgumentException e1) {
-			} catch(IllegalAccessException e1) {
+			} catch(NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException e1) {
 			}
 		});
 
@@ -131,8 +128,10 @@ public class FasterThanTheirShadow extends PitEnchant implements Listener {
 
 	@Override
 	public List<String> getNormalDescription(int enchantLvl) {
-		return new ALoreBuilder("&7Hitting &f" + getStrikes(enchantLvl) + " &7shots without", "&7missing grants &eSpeed "
-				+ AUtil.toRoman(getSpeedAmplifier(enchantLvl)) + " &7(4s)").getLore();
+		return new PitLoreBuilder(
+				"&7Hitting &f" + getStrikes(enchantLvl) + " &7shots without missing grants &eSpeed "
+				+ AUtil.toRoman(getSpeedAmplifier(enchantLvl)) + " &7(4s)"
+		).getLore();
 
 	}
 

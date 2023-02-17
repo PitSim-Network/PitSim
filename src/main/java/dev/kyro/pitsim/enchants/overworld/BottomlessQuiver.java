@@ -1,9 +1,9 @@
 package dev.kyro.pitsim.enchants.overworld;
 
-import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.pitsim.controllers.objects.PitEnchant;
 import dev.kyro.pitsim.enums.ApplyType;
 import dev.kyro.pitsim.events.AttackEvent;
+import dev.kyro.pitsim.misc.PitLoreBuilder;
 import org.bukkit.Material;
 import org.bukkit.event.EventHandler;
 import org.bukkit.inventory.ItemStack;
@@ -36,9 +36,13 @@ public class BottomlessQuiver extends PitEnchant {
 	public List<String> getNormalDescription(int enchantLvl) {
 
 		if(getArrowAmount(enchantLvl) == 1)
-			return new ALoreBuilder("&7Get &f" + getArrowAmount(enchantLvl) + " arrow &7on arrow hit").getLore();
+			return new PitLoreBuilder(
+					"&7Get &f" + getArrowAmount(enchantLvl) + " arrow &7on arrow hit"
+			).getLore();
 
-		else return new ALoreBuilder("&7Get &f" + getArrowAmount(enchantLvl) + " arrows &7on arrow hit").getLore();
+		else return new PitLoreBuilder(
+				"&7Get &f" + getArrowAmount(enchantLvl) + " arrows &7on arrow hit"
+		).getLore();
 	}
 
 	public int getArrowAmount(int enchantLvl) {

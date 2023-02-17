@@ -18,6 +18,7 @@ public class ManaRegenEvent extends Event implements Cancellable {
 	public ManaRegenEvent(Player player, double baseMana) {
 		this.isCancelled = false;
 		this.player = player;
+		this.baseMana = baseMana;
 	}
 
 	public double getFinalMana() {

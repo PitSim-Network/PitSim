@@ -1,12 +1,12 @@
 package dev.kyro.pitsim.enchants.tainted.abilities;
 
-import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.controllers.EnchantManager;
 import dev.kyro.pitsim.controllers.MapManager;
 import dev.kyro.pitsim.controllers.objects.PitEnchant;
 import dev.kyro.pitsim.enchants.overworld.GottaGoFast;
 import dev.kyro.pitsim.enums.ApplyType;
+import dev.kyro.pitsim.misc.PitLoreBuilder;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -66,7 +66,9 @@ class Sonic extends PitEnchant {
 
 	@Override
 	public List<String> getNormalDescription(int enchantLvl) {
-		return new ALoreBuilder("&7Move &e100% &7faster at all times", "&d&o-" + reduction(enchantLvl) + "% Mana Regen").getLore();
+		return new PitLoreBuilder(
+				"&7Move &e100% &7faster at all times &d&o-" + reduction(enchantLvl) + "% Mana Regen"
+		).getLore();
 	}
 
 	public static float getWalkSpeed(int enchantLvl) {

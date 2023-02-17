@@ -1,7 +1,6 @@
 package dev.kyro.pitsim.enchants.overworld;
 
 import de.myzelyam.api.vanish.VanishAPI;
-import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.controllers.Cooldown;
 import dev.kyro.pitsim.controllers.EnchantManager;
@@ -10,6 +9,7 @@ import dev.kyro.pitsim.controllers.objects.PitEnchant;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.enums.ApplyType;
 import dev.kyro.pitsim.events.VolleyShootEvent;
+import dev.kyro.pitsim.misc.PitLoreBuilder;
 import org.bukkit.entity.Arrow;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
@@ -112,7 +112,9 @@ public class Robinhood extends PitEnchant {
 	@Override
 	public List<String> getNormalDescription(int enchantLvl) {
 		DecimalFormat format = new DecimalFormat("0.#");
-		return new ALoreBuilder("&7Your shots &ehome &7from &e" + format.format(getRange(enchantLvl)) + " &7block" + (getRange(enchantLvl) == 1 ? "" : "s"),
-				"&7away (2s cooldown)").getLore();
+		return new PitLoreBuilder(
+				"&7Your shots &ehome &7from &e" + format.format(getRange(enchantLvl)) + " &7block" +
+				(getRange(enchantLvl) == 1 ? "" : "s") + "away (2s cooldown)"
+		).getLore();
 	}
 }

@@ -119,7 +119,7 @@ public class DarkzoneManager implements Listener {
 				for(Player player : MapManager.getDarkzone().getPlayers()) {
 					PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
 
-					ManaRegenEvent event = new ManaRegenEvent(player, 5);
+					ManaRegenEvent event = new ManaRegenEvent(player, 0.1);
 					Bukkit.getPluginManager().callEvent(event);
 					if(!event.isCancelled()) {
 						double mana = event.getFinalMana();
@@ -129,7 +129,7 @@ public class DarkzoneManager implements Listener {
 					pitPlayer.updateManaBar();
 				}
 			}
-		}.runTaskTimer(PitSim.INSTANCE, 0L, 30L);
+		}.runTaskTimer(PitSim.INSTANCE, 0L, 1L);
 	}
 
 	@EventHandler

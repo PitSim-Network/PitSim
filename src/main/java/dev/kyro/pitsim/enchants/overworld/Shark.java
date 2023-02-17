@@ -1,9 +1,9 @@
 package dev.kyro.pitsim.enchants.overworld;
 
-import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.pitsim.controllers.objects.PitEnchant;
 import dev.kyro.pitsim.enums.ApplyType;
 import dev.kyro.pitsim.events.AttackEvent;
+import dev.kyro.pitsim.misc.PitLoreBuilder;
 import org.bukkit.entity.Entity;
 import org.bukkit.event.EventHandler;
 
@@ -39,9 +39,10 @@ public class Shark extends PitEnchant {
 
 	@Override
 	public List<String> getNormalDescription(int enchantLvl) {
-
-		return new ALoreBuilder("&7Deal &c+" + getDamage(enchantLvl) + "% &7damage per other",
-				"&7player below &c5\u2764 &7within 7", "&7blocks (&c+" + getCap(enchantLvl) + "% &7max)").getLore();
+		return new PitLoreBuilder(
+				"&7Deal &c+" + getDamage(enchantLvl) + "% &7damage per other player below &c5\u2764 &7within 7 " +
+				"blocks (&c+" + getCap(enchantLvl) + "% &7max)"
+		).getLore();
 	}
 
 	public int getDamage(int enchantLvl) {

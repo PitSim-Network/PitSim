@@ -95,7 +95,6 @@ public class RetroGravityMicrocosm extends PitEnchant {
 
 	@Override
 	public List<String> getNormalDescription(int enchantLvl) {
-
 		return new ALoreBuilder(
 				"&7When a player hits you from",
 				"&7above ground &e3 times&7:",

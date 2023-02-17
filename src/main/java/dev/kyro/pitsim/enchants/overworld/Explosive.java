@@ -1,6 +1,5 @@
 package dev.kyro.pitsim.enchants.overworld;
 
-import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.pitsim.controllers.Cooldown;
 import dev.kyro.pitsim.controllers.EnchantManager;
 import dev.kyro.pitsim.controllers.NonManager;
@@ -10,6 +9,7 @@ import dev.kyro.pitsim.controllers.objects.PitEnchant;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.enums.ApplyType;
 import dev.kyro.pitsim.megastreaks.Uberstreak;
+import dev.kyro.pitsim.misc.PitLoreBuilder;
 import dev.kyro.pitsim.misc.Sounds;
 import org.bukkit.Effect;
 import org.bukkit.Location;
@@ -76,13 +76,10 @@ public class Explosive extends PitEnchant {
 
 	@Override
 	public List<String> getNormalDescription(int enchantLvl) {
-
-		if(enchantLvl < 3) {
-			return new ALoreBuilder("&7Arrows go POP! (" + getCooldown(enchantLvl) / 20 + "s cooldown)").getLore();
-		} else {
-			return new ALoreBuilder("&7Arrows go BOOM! (" + getCooldown(enchantLvl) / 20 + "s cooldown)").getLore();
-		}
-
+		String explosionPhrase = enchantLvl < 3 ? "POP" : "BOOM";
+		return new PitLoreBuilder(
+				"&7Arrows go " + explosionPhrase + "! (" + getCooldown(enchantLvl) / 20 + "s cooldown)"
+		).getLore();
 	}
 
 	public double getRange(int enchantLvl) {

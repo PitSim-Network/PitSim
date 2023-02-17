@@ -19,8 +19,6 @@ import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.inventory.InventoryOpenEvent;
 import org.bukkit.inventory.ItemStack;
 
-import java.util.concurrent.TimeUnit;
-
 public class CreateListingPanel extends AGUIPanel {
 
 	public ItemStack selectedItem = null;
@@ -265,7 +263,7 @@ public class CreateListingPanel extends AGUIPanel {
 		AItemStackBuilder durationBuilder = new AItemStackBuilder(Material.WATCH)
 				.setName("&eListing Duration")
 				.setLore(new ALoreBuilder(
-						"&7Listing Duration: &f" + parseToDuration(duration),
+						"&7Listing Duration: &f" + Misc.formatDurationFull(duration, false),
 						"",
 						"&7Maximum Duration: &f" + getMaxDurationDays() + " Days",
 						"&eBoost this with a rank", "&efrom &f&nstore.pitsim.net",
@@ -390,7 +388,7 @@ public class CreateListingPanel extends AGUIPanel {
 			openPanel(this);
 			long amount;
 			try {
-				amount = parseToMiliseconds(input.replaceAll("\"", ""));
+				amount = Misc.parseDuration(input.replaceAll("\"", "")).toMillis();
 			} catch(Exception ignored) {
 				Sounds.NO.play(player);
 				AOutput.error(player, "&c&lERROR!&7 Could not parse duration!");
@@ -413,21 +411,5 @@ public class CreateListingPanel extends AGUIPanel {
 
 	public int getMaxDurationDays() {
 		return 3;
-	}
-
-	public static long parseToMiliseconds(String duration) {
-		String[] parts = duration.split(" ");
-		int days = duration.contains("d") ? Integer.parseInt(parts[0].replace("d", "")) : 0;
-		int hours = duration.contains("h") ? Integer.parseInt(parts[1].replace("h", "")) : 0;
-		int minutes = duration.contains("m") ? Integer.parseInt(parts[2].replace("m", "")) : 0;
-
-		return (days * 86400L + hours * 3600L + minutes * 60L) * 1000;
-	}
-
-	public static String parseToDuration(long miliseconds) {
-		long days = TimeUnit.MILLISECONDS.toDays(miliseconds);
-		long hours = TimeUnit.MILLISECONDS.toHours(miliseconds) - TimeUnit.DAYS.toHours(days);
-		long minutes = TimeUnit.MILLISECONDS.toMinutes(miliseconds) - TimeUnit.HOURS.toMinutes(TimeUnit.MILLISECONDS.toHours(miliseconds));
-		return days + "d " + hours + "h " + minutes + "m";
 	}
 }

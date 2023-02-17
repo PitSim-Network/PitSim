@@ -1,12 +1,12 @@
 package dev.kyro.pitsim.enchants.overworld;
 
-import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.pitsim.controllers.objects.PitEnchant;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.enums.ApplyType;
 import dev.kyro.pitsim.events.HealEvent;
 import dev.kyro.pitsim.events.KillEvent;
 import dev.kyro.pitsim.misc.Misc;
+import dev.kyro.pitsim.misc.PitLoreBuilder;
 import org.bukkit.event.EventHandler;
 
 import java.util.List;
@@ -32,9 +32,10 @@ public class GoldenHeart extends PitEnchant {
 
 	@Override
 	public List<String> getNormalDescription(int enchantLvl) {
-
-		return new ALoreBuilder("&7Gain &6+" + Misc.getHearts(getHealing(enchantLvl)) + " &7absorption on kill",
-				"&7(max &6" + Misc.getHearts(12) + "&7)").getLore();
+		return new PitLoreBuilder(
+				"&7Gain &6+" + Misc.getHearts(getHealing(enchantLvl)) + " &7absorption on kill (max &6" +
+				Misc.getHearts(12) + "&7)"
+		).getLore();
 	}
 
 	public double getHealing(int enchantLvl) {

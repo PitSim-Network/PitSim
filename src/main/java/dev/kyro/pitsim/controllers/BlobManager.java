@@ -1,9 +1,6 @@
-package dev.kyro.pitsim.enchants.overworld;
+package dev.kyro.pitsim.controllers;
 
 import dev.kyro.pitsim.PitSim;
-import dev.kyro.pitsim.controllers.DamageManager;
-import dev.kyro.pitsim.controllers.NonManager;
-import dev.kyro.pitsim.controllers.SpawnManager;
 import dev.kyro.pitsim.controllers.objects.HelmetManager;
 import dev.kyro.pitsim.controllers.objects.Non;
 import dev.kyro.pitsim.events.KillEvent;

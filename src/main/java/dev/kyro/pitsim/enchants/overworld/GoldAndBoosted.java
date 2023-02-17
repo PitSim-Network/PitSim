@@ -1,9 +1,9 @@
 package dev.kyro.pitsim.enchants.overworld;
 
-import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.pitsim.controllers.objects.PitEnchant;
 import dev.kyro.pitsim.enums.ApplyType;
 import dev.kyro.pitsim.events.AttackEvent;
+import dev.kyro.pitsim.misc.PitLoreBuilder;
 import net.minecraft.server.v1_8_R3.EntityLiving;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftLivingEntity;
 import org.bukkit.event.EventHandler;
@@ -32,12 +32,12 @@ public class GoldAndBoosted extends PitEnchant {
 
 	@Override
 	public List<String> getNormalDescription(int enchantLvl) {
-
-		return new ALoreBuilder("&7Deal &c+" + getDamage(enchantLvl) + "% &7damage when you have", "&7absorption hearts").getLore();
+		return new PitLoreBuilder(
+				"&7Deal &c+" + getDamage(enchantLvl) + "% &7damage when you have absorption hearts"
+		).getLore();
 	}
 
 	public int getDamage(int enchantLvl) {
-
 		return enchantLvl * 9 + 7;
 	}
 }

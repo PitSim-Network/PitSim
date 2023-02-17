@@ -1,11 +1,11 @@
 package dev.kyro.pitsim.enchants.overworld;
 
-import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.pitsim.controllers.objects.PitEnchant;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.enums.ApplyType;
 import dev.kyro.pitsim.events.KillEvent;
 import dev.kyro.pitsim.misc.Misc;
+import dev.kyro.pitsim.misc.PitLoreBuilder;
 import org.bukkit.event.EventHandler;
 
 import java.util.List;
@@ -30,8 +30,9 @@ public class Guts extends PitEnchant {
 
 	@Override
 	public List<String> getNormalDescription(int enchantLvl) {
-
-		return new ALoreBuilder("&7Heal &c+" + Misc.getHearts(getHealing(enchantLvl)) + " &7on kill").getLore();
+		return new PitLoreBuilder(
+				"&7Heal &c+" + Misc.getHearts(getHealing(enchantLvl)) + " &7on kill"
+		).getLore();
 	}
 
 	public double getHealing(int enchantLvl) {

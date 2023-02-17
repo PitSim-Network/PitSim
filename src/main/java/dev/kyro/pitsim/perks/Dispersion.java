@@ -25,7 +25,7 @@ public class Dispersion extends PitPerk {
 
 	@EventHandler
 	public void onAttack(AttackEvent.Apply attackEvent) {
-		if(!PitSim.status.isPitsim()) return;
+		if(!PitSim.status.isOverworld()) return;
 		if(!attackEvent.isAttackerPlayer() || !attackEvent.isDefenderPlayer()) return;
 		if(NonManager.getNon(attackEvent.getDefender()) != null) return;
 		if(!playerHasUpgrade(attackEvent.getDefenderPlayer())) return;

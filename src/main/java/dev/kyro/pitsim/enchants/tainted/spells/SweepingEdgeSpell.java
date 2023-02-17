@@ -1,11 +1,11 @@
 package dev.kyro.pitsim.enchants.tainted.spells;
 
-import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.pitsim.controllers.Cooldown;
 import dev.kyro.pitsim.controllers.objects.PitEnchant;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.enums.ApplyType;
 import dev.kyro.pitsim.events.PitPlayerAttemptAbilityEvent;
+import dev.kyro.pitsim.misc.PitLoreBuilder;
 import dev.kyro.pitsim.misc.Sounds;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Entity;
@@ -59,7 +59,9 @@ public class SweepingEdgeSpell extends PitEnchant {
 
 	@Override
 	public List<String> getNormalDescription(int enchantLvl) {
-		return new ALoreBuilder("&7This weapon hits all nearby enemies", "&d&o-" + getManaCost(enchantLvl) + " Mana").getLore();
+		return new PitLoreBuilder(
+				"&7This weapon hits all nearby enemies &d&o-" + getManaCost(enchantLvl) + " Mana"
+		).getLore();
 	}
 
 	public static int getManaCost(int enchantLvl) {

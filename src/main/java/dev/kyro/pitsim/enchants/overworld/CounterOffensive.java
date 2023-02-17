@@ -1,11 +1,11 @@
 package dev.kyro.pitsim.enchants.overworld;
 
-import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.pitsim.controllers.HitCounter;
 import dev.kyro.pitsim.controllers.objects.PitEnchant;
 import dev.kyro.pitsim.enums.ApplyType;
 import dev.kyro.pitsim.events.AttackEvent;
 import dev.kyro.pitsim.misc.Misc;
+import dev.kyro.pitsim.misc.PitLoreBuilder;
 import org.bukkit.event.EventHandler;
 import org.bukkit.potion.PotionEffectType;
 
@@ -33,9 +33,10 @@ public class CounterOffensive extends PitEnchant {
 
 	@Override
 	public List<String> getNormalDescription(int enchantLvl) {
-
-		return new ALoreBuilder("&7Gain &eSpeed II &7(" + getSeconds(enchantLvl) + "s) when hit",
-				"&e" + getCombo(enchantLvl) + " times &7by a player").getLore();
+		return new PitLoreBuilder(
+				"&7Gain &eSpeed II &7(" + getSeconds(enchantLvl) + "s) when hit &e" + getCombo(enchantLvl) +
+				" times &7by a player"
+		).getLore();
 	}
 
 	public int getCombo(int enchantLvl) {

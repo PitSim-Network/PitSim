@@ -49,30 +49,48 @@ public class ProgressionManager implements Listener {
 	last: increased damage vs mobs and bosses
 	path 1: heal on mob kill
 	path 2: -1 item required to spawn bosses
+	prestige 1:
+	prestige 2:
 
 	defense &9 - decreased damage from mobs & bosses, increased shield
 	first: unlock shield
 	last:
-	path 1:
+	path 1: TODO decrease damage from playrs?
 	path 2: decrease time until shield resets
+	prestige 1:
+	prestige 2:
 
 	souls &d/&f - increased soul chance from mobs, increased fresh drop chance?
 	first: ability to t3 items
 	last: ability to t4 items
-	path 1:
+	path 1: ability to fast travel at a cost
 	path 2:
+	prestige 1: free fast travel
+	prestige 2:
 
 	mana &b - increased max mana, increased mana regen
 	first: unlock mana
 	last:
 	path 1:
 	path 2:
+	prestige 1:
+	prestige 2:
 
 	potions &5 - decreased brew time, increased brewing "luck"
 	first: unlock the brewing system
 	last: unlock receiving that item as a drop that directly just buffs up a potion
 	path 1: unlock catalyst crafting
 	path 2: unlock crafting of ingredient that increases potency or smth
+	prestige 1:
+	prestige 2:
+
+	sacrifice &4 -
+	first:
+	last:
+	path 1:
+	path 2:
+	prestige 1:
+	prestige 2:
 	*/
 
 	public static void registerBranch(SkillBranch skillBranch) {

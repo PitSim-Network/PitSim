@@ -1,10 +1,10 @@
 package dev.kyro.pitsim.enchants.overworld;
 
-import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.pitsim.controllers.objects.PitEnchant;
 import dev.kyro.pitsim.enums.ApplyType;
 import dev.kyro.pitsim.events.AttackEvent;
 import dev.kyro.pitsim.misc.Misc;
+import dev.kyro.pitsim.misc.PitLoreBuilder;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 
@@ -31,27 +31,18 @@ public class Mirror extends PitEnchant {
 		if(defenderEnchantLvl != 0) {
 			attackEvent.trueDamage *= Misc.getReductionMultiplier(getReductionPercent(defenderEnchantLvl));
 		}
-
-//		If just opponent has mirror
-//		if(defenderEnchantLvl != 0) {
-//
-//			double trueDamage = attackEvent.trueDamage;
-//			trueDamage *= getReflectionPercent(defenderEnchantLvl) / 100;
-//			if(attackerEnchantLvl == 0) attackEvent.selfTrueDamage += trueDamage;
-//		}
-//
-//		attackEvent.selfTrueDamage = 0;
 	}
 
 	@Override
 	public List<String> getNormalDescription(int enchantLvl) {
-
 		if(enchantLvl >= 3) {
-
-			return new ALoreBuilder("&7You are immune to true damage").getLore();
+			return new PitLoreBuilder(
+					"&7You are immune to true damage"
+			).getLore();
 		} else {
-
-			return new ALoreBuilder("&7You take &9" + getReductionPercent(enchantLvl) + "% &7less true damage").getLore();
+			return new PitLoreBuilder(
+					"&7You take &9" + getReductionPercent(enchantLvl) + "% &7less true damage"
+			).getLore();
 		}
 	}
 

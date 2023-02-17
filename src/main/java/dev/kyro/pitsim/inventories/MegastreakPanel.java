@@ -51,7 +51,6 @@ public class MegastreakPanel extends AGUIPanel {
 		boolean has = false;
 		boolean level = false;
 		boolean uberCd = false;
-		boolean rngsusCd = false;
 
 		int slot = event.getSlot();
 		if(event.getClickedInventory().getHolder() == this) {
@@ -195,7 +194,7 @@ public class MegastreakPanel extends AGUIPanel {
 					lore.add(ChatColor.translateAlternateColorCodes('&', "&dDaily Uberstreaks remaining: &a" + ubersLeft + "&7/" + (5 + UberIncrease.getUberIncrease(player))));
 			}
 			if(megastreak instanceof RNGesus && isOnCooldown) {
-				lore.add(ChatColor.YELLOW + "Megastreak on cooldown! " + ChatColor.GRAY + "(" + RNGesus.getTime(player) + ")");
+				lore.add(ChatColor.YELLOW + "Megastreak on cooldown! " + ChatColor.GRAY + "(" + RNGesus.getTimeLeft(player) + ")");
 			}
 			if(pitPlayer.megastreak.getClass() == megastreak.getClass() && !(megastreak instanceof NoMegastreak)) {
 				lore.add(ChatColor.GREEN + "Already selected!");

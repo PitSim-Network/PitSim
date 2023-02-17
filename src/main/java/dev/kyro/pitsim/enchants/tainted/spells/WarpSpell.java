@@ -1,18 +1,17 @@
 package dev.kyro.pitsim.enchants.tainted.spells;
 
-import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.pitsim.controllers.Cooldown;
 import dev.kyro.pitsim.controllers.objects.PitEnchant;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.enums.ApplyType;
 import dev.kyro.pitsim.events.PitPlayerAttemptAbilityEvent;
 import dev.kyro.pitsim.misc.Misc;
+import dev.kyro.pitsim.misc.PitLoreBuilder;
 import dev.kyro.pitsim.misc.Sounds;
 import org.bukkit.Effect;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
-import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -81,15 +80,9 @@ public class WarpSpell extends PitEnchant {
 
 	@Override
 	public List<String> getNormalDescription(int enchantLvl) {
-		return new ALoreBuilder("&7Teleports you forward", "&7Grants &eSpeed IV &7(2s)", "&d&o-" + getManaCost(enchantLvl) + " Mana").getLore();
-	}
-
-	public static int getStandID(final ArmorStand stand) {
-		for(Entity entity : stand.getWorld().getNearbyEntities(stand.getLocation(), 5.0, 5.0, 5.0)) {
-			if(!(entity instanceof ArmorStand)) continue;
-			if(entity.getUniqueId().equals(stand.getUniqueId())) return entity.getEntityId();
-		}
-		return 0;
+		return new PitLoreBuilder(
+				"&7Teleports you forward Grants &eSpeed IV &7(2s) &d&o-" + getManaCost(enchantLvl) + " Mana"
+		).getLore();
 	}
 
 	public static int getManaCost(int enchantLvl) {

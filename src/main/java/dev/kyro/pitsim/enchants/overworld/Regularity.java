@@ -1,11 +1,11 @@
 package dev.kyro.pitsim.enchants.overworld;
 
-import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.controllers.objects.PitEnchant;
 import dev.kyro.pitsim.enums.ApplyType;
 import dev.kyro.pitsim.events.AttackEvent;
 import dev.kyro.pitsim.misc.Misc;
+import dev.kyro.pitsim.misc.PitLoreBuilder;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.entity.EntityDamageEvent;
@@ -105,19 +105,20 @@ public class Regularity extends PitEnchant {
 	@Override
 	public List<String> getNormalDescription(int enchantLvl) {
 
-//		return new ALoreBuilder("&7If your strike does a low amount of",
+//		return new PitLoreBuilder("&7If your strike does a low amount of",
 //				"&7final damage, &astrike again &7for &c" + secondHitDamage(enchantLvl) + "%",
 //				"&7damage. &7(Combo enchants have a", "&e" + secondComboChance(enchantLvl) + "% &7of incrementing the combo",
 //				"&7on the second hit)").getLore();
 
-//		return new ALoreBuilder("&7If your strike does a low amount of",
+//		return new PitLoreBuilder("&7If your strike does a low amount of",
 //				"&7final damage, &astrike again &7for &c" + secondHitDamage(enchantLvl) + "%",
 //				"&7damage.").getLore();
 
-		return new ALoreBuilder("&7Your hits have a chance to &astrike",
-				"&aagain &7for &c" + secondHitDamage(enchantLvl) + "% &7damage if the final",
-				"&7damage of your strike is low enough",
-				"&7(&e100% &7below &c" + Misc.getHearts(lowerBoundFinalDamage(enchantLvl)) + "&7, &e0% &7above &c" +
-						Misc.getHearts(upperBoundFinalDamage(enchantLvl)) + "&7)").getLore();
+		return new PitLoreBuilder(
+				"&7Your hits have a chance to &astrike again &7for &c" + secondHitDamage(enchantLvl) +
+				"% &7damage if the final damage of your strike is low enough (&e100% &7below &c" +
+				Misc.getHearts(lowerBoundFinalDamage(enchantLvl)) + "&7, &e0% &7above &c" +
+				Misc.getHearts(upperBoundFinalDamage(enchantLvl)) + "&7)"
+		).getLore();
 	}
 }

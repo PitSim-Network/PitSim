@@ -3,7 +3,6 @@ package dev.kyro.pitsim.enchants.overworld;
 import de.tr7zw.nbtapi.NBTItem;
 import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.arcticapi.misc.AOutput;
-import dev.kyro.pitsim.logging.LogManager;
 import dev.kyro.pitsim.battlepass.quests.EarnRenownQuest;
 import dev.kyro.pitsim.controllers.DamageManager;
 import dev.kyro.pitsim.controllers.EnchantManager;
@@ -14,6 +13,7 @@ import dev.kyro.pitsim.enums.ApplyType;
 import dev.kyro.pitsim.enums.KillModifier;
 import dev.kyro.pitsim.enums.NBTTag;
 import dev.kyro.pitsim.events.KillEvent;
+import dev.kyro.pitsim.logging.LogManager;
 import dev.kyro.pitsim.megastreaks.NoMegastreak;
 import dev.kyro.pitsim.megastreaks.RNGesus;
 import dev.kyro.pitsim.megastreaks.Uberstreak;
@@ -85,10 +85,11 @@ public class SelfCheckout extends PitEnchant {
 
 	@Override
 	public List<String> getNormalDescription(int enchantLvl) {
-
-		return new ALoreBuilder("&7On kill, if you have a killstreak", "&7of at least 200, &eExplode:",
+		return new ALoreBuilder(
+				"&7On kill, if you have a killstreak", "&7of at least 200, &eExplode:",
 				"&e\u25a0 &7Die! Keep jewel lives on death",
 				"&a\u25a0 &7Gain &e+1 renown &7for every 300 killstreak (max 4)",
-				"&c\u25a0 &7Lose &c" + LIVES_ON_USE + " lives &7on this item").getLore();
+				"&c\u25a0 &7Lose &c" + LIVES_ON_USE + " lives &7on this item"
+		).getLore();
 	}
 }

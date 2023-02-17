@@ -108,7 +108,7 @@ public class ListingInspectPanel extends AGUIPanel {
 				binLoreBuilder.addLore("&cNot enough souls!");
 				if(purchasing != 1) binLoreBuilder.addLore("&eRight-Click to change purchase amount");
 			} else {
-				if(!listing.stackBIN)binLoreBuilder.addLore("&eClick to buy for &f" + cost + " Souls");
+				if(!listing.stackBIN) binLoreBuilder.addLore("&eClick to buy for &f" + cost + " Souls");
 				else {
 					binLoreBuilder.addLore("&eLeft-Click to buy &f" + purchasing + " Item(s) &efor &f" + cost + " Souls");
 					binLoreBuilder.addLore("&eRight-Click to change purchase amount");

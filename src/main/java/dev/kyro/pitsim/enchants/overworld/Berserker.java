@@ -1,10 +1,10 @@
 package dev.kyro.pitsim.enchants.overworld;
 
-import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.pitsim.controllers.objects.PitEnchant;
 import dev.kyro.pitsim.enums.ApplyType;
 import dev.kyro.pitsim.events.AttackEvent;
 import dev.kyro.pitsim.misc.Misc;
+import dev.kyro.pitsim.misc.PitLoreBuilder;
 import dev.kyro.pitsim.misc.Sounds;
 import org.bukkit.event.EventHandler;
 
@@ -29,8 +29,10 @@ public class Berserker extends PitEnchant {
 
 	@Override
 	public List<String> getNormalDescription(int enchantLvl) {
-		return new ALoreBuilder("&7You can now critical hit on the",
-				"&7ground. &a" + getChance(enchantLvl) + "% chance &7to crit for", "&c50% extra &7damage").getLore();
+		return new PitLoreBuilder(
+				"&7You can now critical hit on the ground. &a" + getChance(enchantLvl) +
+						"% chance &7to crit for &c50% extra &7damage"
+		).getLore();
 	}
 
 	public int getChance(int enchantLvl) {
