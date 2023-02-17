@@ -47,7 +47,7 @@ public class ATestCommand implements CommandExecutor {
 				entityItem.setItemStack(CraftItemStack.asNMSCopy(getItemStack()));
 
 
-				PacketPlayOutSpawnEntity spawn = new PacketPlayOutSpawnEntity(entityItem, 1, 1);
+				PacketPlayOutSpawnEntity spawn = new PacketPlayOutSpawnEntity(entityItem, 2, 1);
 				((CraftPlayer) player).getHandle().playerConnection.sendPacket(spawn);
 
 				PacketPlayOutEntityMetadata meta = new PacketPlayOutEntityMetadata(entityItem.getId(), entityItem.getDataWatcher(), true);
