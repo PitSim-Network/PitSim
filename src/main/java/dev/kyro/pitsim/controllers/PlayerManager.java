@@ -595,11 +595,7 @@ public class PlayerManager implements Listener {
 		}
 
 		FeatherBoardAPI.resetDefaultScoreboard(player);
-		if(MapManager.inDarkzone(player)) {
-			FeatherBoardAPI.showScoreboard(player, "darkzone");
-		} else {
-			FeatherBoardAPI.showScoreboard(player, "default");
-		}
+		ScoreboardManager.updateScoreboard(player);
 
 		if((System.currentTimeMillis() / 1000L) - 60 * 60 * 20 > pitPlayer.uberReset) {
 			pitPlayer.uberReset = 0;

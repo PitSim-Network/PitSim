@@ -73,6 +73,8 @@ import dev.kyro.pitsim.pitmaps.DimensionsMap;
 import dev.kyro.pitsim.pitmaps.SandMap;
 import dev.kyro.pitsim.pitmaps.XmasMap;
 import dev.kyro.pitsim.placeholders.*;
+import dev.kyro.pitsim.settings.scoreboard.TestScoreboardOption;
+import dev.kyro.pitsim.settings.scoreboard.TestScoreboardOption2;
 import dev.kyro.pitsim.storage.StorageManager;
 import dev.kyro.pitsim.upgrades.*;
 import net.citizensnpcs.api.CitizensAPI;
@@ -265,6 +267,7 @@ public class PitSim extends JavaPlugin {
 		AHook.registerPlaceholder(new GoldPlaceholder());
 		AHook.registerPlaceholder(new NicknamePlaceholder());
 		AHook.registerPlaceholder(new ServerIPPlaceholder());
+		AHook.registerPlaceholder(new CustomScoreboardPlaceholder());
 		new LeaderboardPlaceholders().register();
 
 		CooldownManager.init();
@@ -277,6 +280,7 @@ public class PitSim extends JavaPlugin {
 		if(getStatus().isDarkzone()) registerMobs();
 		registerBrewingIngredients();
 		registerCosmetics();
+		registerScoreboardOptions();
 
 		PassManager.registerPasses();
 		if(getStatus().isDarkzone()) AuctionManager.onStart();
@@ -295,7 +299,6 @@ public class PitSim extends JavaPlugin {
 				registerNPCs();
 			}
 		}.runTaskLater(PitSim.INSTANCE, 20);
-
 	}
 
 	@Override
@@ -538,6 +541,11 @@ public class PitSim extends JavaPlugin {
 		LeaderboardManager.registerLeaderboard(new LifetimeSoulsLeaderboard());
 		LeaderboardManager.registerLeaderboard(new AuctionsWonLeaderboard());
 		LeaderboardManager.registerLeaderboard(new HighestBidLeaderboard());
+	}
+
+	private void registerScoreboardOptions() {
+		ScoreboardManager.registerScoreboard(new TestScoreboardOption());
+		ScoreboardManager.registerScoreboard(new TestScoreboardOption2());
 	}
 
 	private void registerNPCs() {

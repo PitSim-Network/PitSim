@@ -28,6 +28,7 @@ public class SettingsPanel extends AGUIPanel {
 
 	public static ItemStack cosmeticItem;
 	public static ItemStack particleItem;
+	public static ItemStack scoreboardItem;
 
 	static {
 		cosmeticItem = new AItemStackBuilder(Material.RED_ROSE)
@@ -43,6 +44,13 @@ public class SettingsPanel extends AGUIPanel {
 						"&7Click to open the particles menu"
 				))
 				.getItemStack();
+
+		scoreboardItem = new AItemStackBuilder(Material.SIGN)
+				.setName("&2Scoreboard Settings")
+				.setLore(new ALoreBuilder(
+						"&7Click to customize your scoreboard"
+				))
+				.getItemStack();
 	}
 
 	public SettingsPanel(AGUI gui) {
@@ -53,6 +61,7 @@ public class SettingsPanel extends AGUIPanel {
 
 		getInventory().setItem(13, cosmeticItem);
 		getInventory().setItem(14, particleItem);
+		getInventory().setItem(19, scoreboardItem);
 
 		ItemStack pants = new ItemStack(Material.LEATHER_LEGGINGS);
 		ItemMeta pantsmeta = pants.getItemMeta();
@@ -197,7 +206,7 @@ public class SettingsPanel extends AGUIPanel {
 
 	@Override
 	public int getRows() {
-		return 3;
+		return 4;
 	}
 
 	@Override
@@ -227,6 +236,9 @@ public class SettingsPanel extends AGUIPanel {
 			openPanel(settingsGUI.cosmeticPanel);
 		} else if(slot == 14) {
 			openPanel(settingsGUI.particlesPanel);
+		} else if(slot == 19) {
+			if(!player.hasPermission("pitsim.scoreboard")) return;
+			openPanel(settingsGUI.scoreboardOptionsPanel);
 		}
 	}
 
