@@ -61,6 +61,7 @@ public class GodPanel extends AGUIPanel {
 		addItem(ItemFactory.getItem(ProtBoots.class).getItem(1));
 
 		addItem(ItemFactory.getItem(FunkyFeather.class).getItem(64));
+		addItem(ItemFactory.getItem(CorruptedFeather.class).getItem(64));
 		addItem(ItemFactory.getItem(ChunkOfVile.class).getItem(64));
 		addItem(ItemFactory.getItem(TotallyLegitGem.class).getItem(64));
 		addItem(ItemFactory.getItem(AncientGemShard.class).getItem(64));

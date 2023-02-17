@@ -15,16 +15,12 @@ import dev.kyro.pitsim.aitems.prot.ProtBoots;
 import dev.kyro.pitsim.aitems.prot.ProtChestplate;
 import dev.kyro.pitsim.aitems.prot.ProtHelmet;
 import dev.kyro.pitsim.aitems.prot.ProtLeggings;
-import dev.kyro.pitsim.brewing.objects.BrewingIngredient;
 import dev.kyro.pitsim.controllers.objects.Non;
 import dev.kyro.pitsim.controllers.objects.PitEnchant;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.enchants.overworld.Regularity;
 import dev.kyro.pitsim.enchants.overworld.Telebow;
-import dev.kyro.pitsim.enums.KillModifier;
-import dev.kyro.pitsim.enums.KillType;
-import dev.kyro.pitsim.enums.NBTTag;
-import dev.kyro.pitsim.enums.NonTrait;
+import dev.kyro.pitsim.enums.*;
 import dev.kyro.pitsim.events.AttackEvent;
 import dev.kyro.pitsim.events.KillEvent;
 import dev.kyro.pitsim.events.OofEvent;
@@ -40,7 +36,10 @@ import dev.kyro.pitsim.upgrades.LifeInsurance;
 import me.clip.placeholderapi.PlaceholderAPI;
 import net.citizensnpcs.api.CitizensAPI;
 import net.minecraft.server.v1_8_R3.EntityPlayer;
-import org.bukkit.*;
+import org.bukkit.Bukkit;
+import org.bukkit.EntityEffect;
+import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
 import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
@@ -561,20 +560,20 @@ public class DamageManager implements Listener {
 
 	public static void loseLives(LivingEntity dead, LivingEntity killer) {
 		if(!(dead instanceof Player)) return;
-		if(MapManager.inDarkzone(dead.getLocation())) {
-			Player deadPlayer = (Player) dead;
-			boolean corrupted_feather = ItemFactory.getItem(CorruptedFeather.class).useCorruptedFeather(killer, deadPlayer);
-			for(int i = 0; i < deadPlayer.getInventory().getSize(); i++) {
-				if(!corrupted_feather && BrewingIngredient.isIngredient(deadPlayer.getInventory().getItem(i))) {
-					ItemStack item = deadPlayer.getInventory().getItem(i);
-					BrewingIngredient ingredient = BrewingIngredient.getIngredientFromItemStack(item);
-					AOutput.send(deadPlayer, "&c- &8" + item.getAmount() + "x " + ingredient.color + item.getItemMeta().getDisplayName());
-					deadPlayer.getInventory().setItem(i, new ItemStack(Material.AIR));
-				}
-			}
-
-			return;
-		}
+//		if(MapManager.inDarkzone(dead.getLocation())) {
+//			Player deadPlayer = (Player) dead;
+//
+//			for(int i = 0; i < deadPlayer.getInventory().getSize(); i++) {
+//				if(!corruptedFeather && BrewingIngredient.isIngredient(deadPlayer.getInventory().getItem(i))) {
+//					ItemStack item = deadPlayer.getInventory().getItem(i);
+//					BrewingIngredient ingredient = BrewingIngredient.getIngredientFromItemStack(item);
+//					AOutput.send(deadPlayer, "&c- &8" + item.getAmount() + "x " + ingredient.color + item.getItemMeta().getDisplayName());
+//					deadPlayer.getInventory().setItem(i, new ItemStack(Material.AIR));
+//				}
+//			}
+//
+//			return;
+//		}
 
 		if(BoosterManager.getBooster("pvp").minutes <= 0) {
 			Player deadPlayer = (Player) dead;
@@ -582,6 +581,7 @@ public class DamageManager implements Listener {
 
 			boolean divine = DivineIntervention.INSTANCE.isDivine(deadPlayer);
 			boolean feather = false;
+			boolean corruptedFeather = deadPlayer.getWorld().equals(MapManager.getDarkzone()) && ItemFactory.getItem(CorruptedFeather.class).useCorruptedFeather(killer, deadPlayer);
 			if(!divine) feather = ItemFactory.getItem(FunkyFeather.class).useFeather(killer, deadPlayer);
 
 			int livesLost = 0;
@@ -592,7 +592,13 @@ public class DamageManager implements Listener {
 				NBTItem nbtItem = new NBTItem(itemStack);
 				if(nbtItem.hasKey(NBTTag.MAX_LIVES.getRef())) {
 					int lives = nbtItem.getInteger(NBTTag.CURRENT_LIVES.getRef());
-					if(feather || divine) return;
+					if(feather || divine || corruptedFeather) return;
+					MysticType mysticType = MysticType.getMysticType(itemStack);
+					if(mysticType == null) return;
+
+					if(mysticType.isTainted() && !PitSim.status.isDarkzone()) return;
+					if(!mysticType.isTainted() && PitSim.status.isDarkzone()) return;
+
 					if(lives - 1 == 0) {
 						deadPlayer.getInventory().remove(itemStack);
 						deadPlayer.updateInventory();
@@ -611,7 +617,7 @@ public class DamageManager implements Listener {
 				}
 			}
 
-			if(!feather && !divine) {
+			if(!feather && !divine && !corruptedFeather) {
 				deleteProt(deadPlayer);
 				BreadDealer.handleBreadOnDeath(deadPlayer);
 				deadPlayer.updateInventory();
@@ -621,7 +627,14 @@ public class DamageManager implements Listener {
 				NBTItem nbtItem = new NBTItem(pants);
 				if(nbtItem.hasKey(NBTTag.MAX_LIVES.getRef())) {
 					int lives = nbtItem.getInteger(NBTTag.CURRENT_LIVES.getRef());
-					if(!feather && !divine) {
+
+					MysticType mysticType = MysticType.getMysticType(pants);
+					if(mysticType == null) return;
+
+					if(mysticType.isTainted() && !PitSim.status.isDarkzone()) return;
+					if(!mysticType.isTainted() && PitSim.status.isDarkzone()) return;
+
+					if(!feather && !divine && !corruptedFeather) {
 						if(lives - 1 == 0) {
 							deadPlayer.getInventory().setLeggings(new ItemStack(Material.AIR));
 							deadPlayer.updateInventory();

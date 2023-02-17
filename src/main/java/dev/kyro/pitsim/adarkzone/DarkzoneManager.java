@@ -13,15 +13,13 @@ import dev.kyro.pitsim.aitems.mobdrops.*;
 import dev.kyro.pitsim.controllers.ItemFactory;
 import dev.kyro.pitsim.controllers.MapManager;
 import dev.kyro.pitsim.controllers.PlayerManager;
+import dev.kyro.pitsim.controllers.TaintedWell;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.events.KillEvent;
 import dev.kyro.pitsim.events.ManaRegenEvent;
 import dev.kyro.pitsim.misc.Misc;
 import dev.kyro.pitsim.misc.Sounds;
-import org.bukkit.Bukkit;
-import org.bukkit.Effect;
-import org.bukkit.Location;
-import org.bukkit.Material;
+import org.bukkit.*;
 import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -324,6 +322,15 @@ public class DarkzoneManager implements Listener {
 	}
 
 	public static void clearEntities() {
+		World world = MapManager.getDarkzone();
+
+		List<Chunk> chunksToLoad = new ArrayList<>();
+		chunksToLoad.add(world.getChunkAt(TaintedWell.wellLocation));
+
+		for(Chunk chunk : chunksToLoad) {
+			chunk.load();
+		}
+
 		for(Entity entity : MapManager.getDarkzone().getEntities()) {
 			if(entity instanceof Player) continue;
 			entity.remove();
