@@ -52,7 +52,7 @@ public class Billionaire extends PitEnchant {
 		DecimalFormat decimalFormat = new DecimalFormat("0.##");
 		return new PitLoreBuilder(
 				"&7Hits with this sword deal &c+" + decimalFormat.format(getDamageIncrease(enchantLvl)) + "% " +
-				"&cdamage &7but cost &6" + getGoldCost(enchantLvl) / 5 + "g &7against players and &6" +
+				"&cdamage &7but cost &6" + getPlayerGoldCost(enchantLvl) + "g &7against players and &6" +
 				getGoldCost(enchantLvl) + "g &7against bots"
 		).getLore();
 	}

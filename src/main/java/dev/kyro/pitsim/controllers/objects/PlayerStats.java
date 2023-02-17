@@ -12,7 +12,7 @@ public class PlayerStats {
 	@Exclude
 	public UUID uuid;
 
-	//	Offense
+//	Offense
 	public int playerKills = 0;
 	public int botKills = 0;
 	public int hopperKills = 0;
@@ -28,12 +28,12 @@ public class PlayerStats {
 		return (double) arrowHits / arrowShots;
 	}
 
-	//	Defence
+//	Defence
 	public int deaths = 0;
 	public double damageTaken = 0;
 	public double trueDamageTaken = 0;
 
-	//	Megastreaks
+//	Megastreaks
 	public int timesOnOverdrive = 0;
 	public int timesOnBeastmode = 0;
 	public int timesOnHighlander = 0;
@@ -41,7 +41,7 @@ public class PlayerStats {
 	public int rngesusCompleted = 0;
 	public int ubersCompleted = 0;
 
-	//	Mystics
+//	Mystics
 	public int billionaire = 0;
 	public int perun = 0;
 	public int executioner = 0;
@@ -64,7 +64,10 @@ public class PlayerStats {
 	public int rgm = 0;
 	public int regularity = 0;
 
-	//	Progression
+//	Darkzone Mystics
+	public int devour = 0;
+
+//	Progression
 	public int minutesPlayed = 0;
 
 	@Exclude
