@@ -41,7 +41,7 @@ public class Devour extends PitEnchant {
 			if(pitPlayer.stats != null) pitPlayer.stats.billionaire += soulCost;
 		}
 
-		attackEvent.increasePercent += getDamageIncrease(enchantLvl) / 100.0;
+		attackEvent.increasePercent += getDamageIncrease(enchantLvl);
 		Sounds.DEVOUR.play(attackEvent.getAttacker());
 	}
 

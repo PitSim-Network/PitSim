@@ -35,7 +35,7 @@ public class Explicious extends Killstreak {
 
 	@Override
 	public void proc(Player player) {
-		rewardPlayers.add(player);
+		if(!rewardPlayers.contains(player)) rewardPlayers.add(player);
 	}
 
 	@Override
@@ -45,10 +45,14 @@ public class Explicious extends Killstreak {
 
 	@Override
 	public ItemStack getDisplayItem(Player player) {
-
-		AItemStackBuilder builder = new AItemStackBuilder(Material.INK_SACK, 1, 12);
-		builder.setName("&e" + name);
-		builder.setLore(new ALoreBuilder("&7Every: &c" + killInterval + " kills", "", "&7Gain &b+50 XP&7 and &b+50 max XP", "&7on your next kill."));
+		AItemStackBuilder builder = new AItemStackBuilder(Material.INK_SACK, 1, 12)
+				.setName("&e" + name)
+				.setLore(new ALoreBuilder(
+						"&7Every: &c" + killInterval + " kills",
+						"",
+						"&7Gain &b+50 XP&7 and &b+50 max XP",
+						"&7on your next kill."
+				));
 
 		return builder.getItemStack();
 	}

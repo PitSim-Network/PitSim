@@ -44,6 +44,11 @@ public class PitZombiePigman extends PitMob {
 	}
 
 	@Override
+	public String getRawDisplayNamePlural() {
+		return "Zombie Pigmen";
+	}
+
+	@Override
 	public ChatColor getChatColor() {
 		return ChatColor.RED;
 	}

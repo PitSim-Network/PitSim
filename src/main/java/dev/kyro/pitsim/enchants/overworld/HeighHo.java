@@ -33,7 +33,7 @@ public class HeighHo extends PitEnchant {
 		int defenderMirrorLvl = attackEvent.getDefenderEnchantLevel(EnchantManager.getEnchant("mirror"));
 		if(defenderMirrorLvl == 0) return;
 
-		attackEvent.increasePercent += getIncrease(attackerEnchantLvl) * defenderMirrorLvl / 100D;
+		attackEvent.increasePercent += getIncrease(attackerEnchantLvl) * defenderMirrorLvl;
 	}
 
 	@Override

@@ -23,7 +23,7 @@ public class Punisher extends PitEnchant {
 		if(enchantLvl == 0) return;
 
 		if(attackEvent.getDefender().getHealth() / attackEvent.getDefender().getMaxHealth() > 0.5) return;
-		attackEvent.increasePercent += getDamage(enchantLvl) / 100D;
+		attackEvent.increasePercent += getDamage(enchantLvl);
 	}
 
 	@Override

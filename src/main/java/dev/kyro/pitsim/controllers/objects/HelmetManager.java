@@ -359,7 +359,7 @@ public class HelmetManager implements Listener {
 		int attackLevel = 0;
 		if(attackerHelmet != null) attackLevel = HelmetSystem.getLevel(getUsedHelmetGold(attackEvent.getAttacker()));
 		if(attackerHelmet != null)
-			attackEvent.increasePercent += HelmetSystem.getTotalStacks(HelmetSystem.Passive.DAMAGE, attackLevel - 1) / 100D;
+			attackEvent.increasePercent += HelmetSystem.getTotalStacks(HelmetSystem.Passive.DAMAGE, attackLevel - 1);
 
 		int defenderLevel = 0;
 		if(defenderHelmet != null) defenderLevel = HelmetSystem.getLevel(getUsedHelmetGold(attackEvent.getDefender()));

@@ -94,9 +94,8 @@ public class EnchantManager implements Listener {
 	}
 
 	public static void registerEnchant(PitEnchant pitEnchant) {
-
 		pitEnchants.add(pitEnchant);
-		PitSim.INSTANCE.getServer().getPluginManager().registerEvents(pitEnchant, PitSim.INSTANCE);
+		if(pitEnchant.isEnabled()) PitSim.INSTANCE.getServer().getPluginManager().registerEvents(pitEnchant, PitSim.INSTANCE);
 	}
 
 	public static boolean canTypeApply(ItemStack itemStack, PitEnchant pitEnchant) {
@@ -664,7 +663,6 @@ public class EnchantManager implements Listener {
 	}
 
 	public static List<PitEnchant> getEnchants(MysticType mystictype) {
-
 		List<PitEnchant> applicableEnchants = new ArrayList<>();
 
 		for(PitEnchant pitEnchant : pitEnchants) {

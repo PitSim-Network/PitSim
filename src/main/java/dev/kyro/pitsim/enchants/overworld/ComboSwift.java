@@ -35,17 +35,17 @@ public class ComboSwift extends PitEnchant {
 
 		PitPlayer pitPlayer = attackEvent.getAttackerPitPlayer();
 		HitCounter.incrementCounter(pitPlayer.player, this);
-		if(!HitCounter.hasReachedThreshold(pitPlayer.player, this, getCombo(enchantLvl))) return;
+		if(!HitCounter.hasReachedThreshold(pitPlayer.player, this, getStrikes(enchantLvl))) return;
 
 		Misc.applyPotionEffect(attackEvent.getAttacker(), PotionEffectType.SPEED, getSeconds(enchantLvl) * 20,
-				getAmplifier(enchantLvl) - 1, true, false);
+				getAmplifier(enchantLvl), true, false);
 	}
 
 	@Override
 	public List<String> getNormalDescription(int enchantLvl) {
 		return new PitLoreBuilder(
-				"&7Every &e" + Misc.ordinalWords(getCombo(enchantLvl)) + " &7strike gain &eSpeed[]" +
-						AUtil.toRoman(getAmplifier(enchantLvl)) + " &7(" + getSeconds(enchantLvl) + "s)"
+				"&7Every &e" + Misc.ordinalWords(getStrikes(enchantLvl)) + " &7strike gain &eSpeed[]" +
+						AUtil.toRoman(getAmplifier(enchantLvl) + 1) + " &7(" + getSeconds(enchantLvl) + "s)"
 		).getLore();
 	}
 
@@ -54,10 +54,10 @@ public class ComboSwift extends PitEnchant {
 	}
 
 	public int getAmplifier(int enchantLvl) {
-		return Misc.linearEnchant(enchantLvl, 0.5, 1);
+		return Misc.linearEnchant(enchantLvl, 0.5, 0);
 	}
 
-	public int getCombo(int enchantLvl) {
+	public int getStrikes(int enchantLvl) {
 		return Math.max(Misc.linearEnchant(enchantLvl, -0.5, 4.5), 1);
 	}
 }

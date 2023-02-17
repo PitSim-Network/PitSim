@@ -43,7 +43,7 @@ public class Billionaire extends PitEnchant {
 			if(pitPlayer.stats != null) pitPlayer.stats.billionaire += goldCost;
 		}
 
-		attackEvent.increasePercent += getDamageIncrease(enchantLvl) / 100.0;
+		attackEvent.increasePercent += getDamageIncrease(enchantLvl);
 		Sounds.BILLIONAIRE.play(attackEvent.getAttacker());
 	}
 

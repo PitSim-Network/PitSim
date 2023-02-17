@@ -16,15 +16,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Survivor extends Killstreak {
-
 	public static Survivor INSTANCE;
+	public static List<Player> rewardPlayers = new ArrayList<>();
 
 	public Survivor() {
 		super("Survivor", "Survivor", 15, 0);
 		INSTANCE = this;
 	}
-
-	List<Player> rewardPlayers = new ArrayList<>();
 
 	@EventHandler
 	public void onHeal(HealEvent healEvent) {
@@ -34,7 +32,7 @@ public class Survivor extends Killstreak {
 
 	@Override
 	public void proc(Player player) {
-		rewardPlayers.add(player);
+		if(!rewardPlayers.contains(player)) rewardPlayers.add(player);
 		Sounds.SURVIVOR_HEAL.play(player);
 
 		new BukkitRunnable() {
@@ -52,10 +50,14 @@ public class Survivor extends Killstreak {
 
 	@Override
 	public ItemStack getDisplayItem(Player player) {
-
-		AItemStackBuilder builder = new AItemStackBuilder(Material.GOLDEN_APPLE);
-		builder.setName("&e" + name);
-		builder.setLore(new ALoreBuilder("&7Every: &c" + killInterval + " kills", "", "&7Heal &e25% &7more &c\u2764", "&7for 15 seconds."));
+		AItemStackBuilder builder = new AItemStackBuilder(Material.GOLDEN_APPLE)
+				.setName("&e" + name)
+				.setLore(new ALoreBuilder(
+						"&7Every: &c" + killInterval + " kills",
+						"",
+						"&7Heal &e25% &7more &c\u2764",
+						"&7for 15 seconds."
+				));
 
 		return builder.getItemStack();
 	}

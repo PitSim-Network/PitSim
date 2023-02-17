@@ -32,10 +32,13 @@ public class Spongesteve extends Killstreak {
 
 	@Override
 	public ItemStack getDisplayItem(Player player) {
-
-		AItemStackBuilder builder = new AItemStackBuilder(Material.SPONGE);
-		builder.setName("&e" + name);
-		builder.setLore(new ALoreBuilder("&7Every: &c" + killInterval + " kills", "", "&7Gain &6" + Misc.getHearts(AMOUNT) + " Absorption&7."));
+		AItemStackBuilder builder = new AItemStackBuilder(Material.SPONGE)
+				.setName("&e" + name)
+				.setLore(new ALoreBuilder(
+						"&7Every: &c" + killInterval + " kills",
+						"",
+						"&7Gain &6" + Misc.getHearts(AMOUNT) + " Absorption&7."
+				));
 
 		return builder.getItemStack();
 	}

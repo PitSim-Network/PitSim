@@ -42,14 +42,20 @@ public class GoldStack extends Killstreak {
 
 	@Override
 	public ItemStack getDisplayItem(Player player) {
-
-		DecimalFormat df = new DecimalFormat("#.##");
-
-		AItemStackBuilder builder = new AItemStackBuilder(Material.GOLD_ORE);
-		builder.setName("&e" + name);
-		builder.setLore(new ALoreBuilder("&7Every: &c" + killInterval + " kills", "", "&7Permanently gain &6+0.1g" +
-				" &7per kill.", "&7Maximum: &6+" + df.format(getMax(player)) + "g", "", "&7You have: &6+" + df.format(getCurrent(player)) + "g",
-				"", "&8Bonus applies when not selected.", "&8Resets on prestige."));
+		DecimalFormat formatter = new DecimalFormat("#.##");
+		AItemStackBuilder builder = new AItemStackBuilder(Material.GOLD_ORE)
+				.setName("&e" + name)
+				.setLore(new ALoreBuilder(
+						"&7Every: &c" + killInterval + " kills",
+						"",
+						"&7Permanently gain &6+0.1g" + " &7per kill.",
+						"&7Maximum: &6+" + formatter.format(getMax(player)) + "g",
+						"",
+						"&7You have: &6+" + formatter.format(getCurrent(player)) + "g",
+						"",
+						"&8Bonus applies when not selected.",
+						"&8Resets on prestige."
+				));
 
 		return builder.getItemStack();
 	}

@@ -18,6 +18,7 @@ public abstract class PitMob implements Listener {
 	private PitNameTag nameTag;
 
 	public PitMob(Location spawnLocation) {
+		if(spawnLocation == null) return;
 		this.dropPool = createDropPool();
 		spawn(spawnLocation);
 		Bukkit.getPluginManager().registerEvents(this, PitSim.INSTANCE);
@@ -36,8 +37,16 @@ public abstract class PitMob implements Listener {
 	public void onSpawn() {}
 	public void onDeath() {}
 
+	public String getRawDisplayNamePlural() {
+		return getRawDisplayName() + "s";
+	}
+
 	public String getDisplayName() {
 		return getChatColor() + getRawDisplayName();
+	}
+
+	public String getDisplayNamePlural() {
+		return getChatColor() + getRawDisplayNamePlural();
 	}
 
 	public void spawn(Location spawnLocation) {

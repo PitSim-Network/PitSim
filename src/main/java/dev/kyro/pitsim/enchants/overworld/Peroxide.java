@@ -33,20 +33,20 @@ public class Peroxide extends PitEnchant {
 		else cooldown.restart();
 
 		Misc.applyPotionEffect(attackEvent.getDefender(), PotionEffectType.REGENERATION, getDuration(enchantLvl),
-				getAmplifier(enchantLvl) - 1, false, false);
+				getAmplifier(enchantLvl), false, false);
 
 	}
 
 	@Override
 	public List<String> getNormalDescription(int enchantLvl) {
 		return new PitLoreBuilder(
-				"&7Gain &cRegen " + AUtil.toRoman(getAmplifier(enchantLvl)) + " &7(" +
+				"&7Gain &cRegen " + AUtil.toRoman(getAmplifier(enchantLvl) + 1) + " &7(" +
 				getDuration(enchantLvl) / 20 + "&7s) when hit"
 		).getLore();
 	}
 
 	public int getAmplifier(int enchantLvl) {
-		return Misc.linearEnchant(enchantLvl, 0.5, 1);
+		return Misc.linearEnchant(enchantLvl, 0.5, 0);
 	}
 
 	public int getDuration(int enchantLvl) {

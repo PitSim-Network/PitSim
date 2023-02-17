@@ -3,7 +3,6 @@ package dev.kyro.pitsim.killstreaks;
 import dev.kyro.arcticapi.builders.AItemStackBuilder;
 import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.pitsim.controllers.objects.Killstreak;
-import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.events.AttackEvent;
 import dev.kyro.pitsim.misc.Misc;
 import org.bukkit.Material;
@@ -17,29 +16,26 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class AssuredStrike extends Killstreak {
-
 	public static AssuredStrike INSTANCE;
+	public static List<LivingEntity> rewardPlayers = new ArrayList<>();
 
 	public AssuredStrike() {
 		super("Assured Strike", "AssuredStrike", 3, 10);
 		INSTANCE = this;
 	}
 
-	List<LivingEntity> rewardPlayers = new ArrayList<>();
-
 	@EventHandler
 	public void onHit(AttackEvent.Apply attackEvent) {
-		if(rewardPlayers.contains(attackEvent.getAttacker())) {
-			PitPlayer pitPlayer = attackEvent.getAttackerPitPlayer();
-			pitPlayer.heal(1.5 + (attackEvent.getFinalDamageIncrease() * (50 / 100D)));
-			rewardPlayers.remove(attackEvent.getAttacker());
-		}
+		if(!rewardPlayers.contains(attackEvent.getAttacker())) return;
+		rewardPlayers.remove(attackEvent.getAttacker());
+
+		attackEvent.increasePercent += 35;
+		Misc.applyPotionEffect(attackEvent.getAttackerPlayer(), PotionEffectType.SPEED, 20 * 8, 0, true, false);
 	}
 
 	@Override
 	public void proc(Player player) {
-		rewardPlayers.add(player);
-		Misc.applyPotionEffect(player, PotionEffectType.SPEED, 20 * 8, 0, true, false);
+		if(!rewardPlayers.contains(player)) rewardPlayers.add(player);
 	}
 
 	@Override
@@ -49,11 +45,14 @@ public class AssuredStrike extends Killstreak {
 
 	@Override
 	public ItemStack getDisplayItem(Player player) {
-
-		AItemStackBuilder builder = new AItemStackBuilder(Material.DIAMOND_SWORD);
-		builder.setName("&e" + name);
-		builder.setLore(new ALoreBuilder("&7Every: &c" + killInterval + " kills", "", "&7Next melee hit deals &c+35%",
-				"&cdamage &7and grants &eSpeed I", "&7for 8 seconds."));
+		AItemStackBuilder builder = new AItemStackBuilder(Material.DIAMOND_SWORD)
+				.setName("&e" + name)
+				.setLore(new ALoreBuilder(
+						"&7Every: &c" + killInterval + " kills",
+						"",
+						"&7Next melee hit deals &c+35%",
+						"&cdamage &7and grants &eSpeed I", "&7for 8 seconds."
+				));
 
 		return builder.getItemStack();
 	}

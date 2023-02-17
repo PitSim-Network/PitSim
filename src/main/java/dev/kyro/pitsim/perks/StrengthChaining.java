@@ -64,7 +64,7 @@ public class StrengthChaining extends PitPerk {
 		if(!playerHasUpgrade(attackEvent.getAttacker())) return;
 
 		amplifierMap.putIfAbsent(attackEvent.getAttacker().getUniqueId(), 0);
-		attackEvent.increasePercent += (amplifierMap.get(attackEvent.getAttacker().getUniqueId()) * 8) / 100D;
+		attackEvent.increasePercent += amplifierMap.get(attackEvent.getAttacker().getUniqueId()) * 8;
 	}
 
 	@Override

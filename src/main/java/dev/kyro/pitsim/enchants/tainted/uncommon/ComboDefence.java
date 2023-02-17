@@ -1,22 +1,28 @@
-package dev.kyro.pitsim.enchants.overworld;
+package dev.kyro.pitsim.enchants.tainted.uncommon;
 
+import dev.kyro.arcticapi.misc.AUtil;
 import dev.kyro.pitsim.controllers.HitCounter;
 import dev.kyro.pitsim.controllers.objects.PitEnchant;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
+import dev.kyro.pitsim.enchants.overworld.Regularity;
 import dev.kyro.pitsim.enums.ApplyType;
 import dev.kyro.pitsim.events.AttackEvent;
 import dev.kyro.pitsim.misc.Misc;
 import dev.kyro.pitsim.misc.PitLoreBuilder;
-import dev.kyro.pitsim.misc.Sounds;
 import org.bukkit.event.EventHandler;
+import org.bukkit.potion.PotionEffectType;
 
 import java.util.List;
 
-public class ComboDamage extends PitEnchant {
+public class ComboDefence extends PitEnchant {
+	public static ComboDefence INSTANCE;
 
-	public ComboDamage() {
-		super("Combo: Damage", false, ApplyType.MELEE,
-				"combodamage", "cd", "combo-damage", "cdamage");
+	public ComboDefence() {
+		super("Combo: Defence", false, ApplyType.SCYTHES,
+				"combodefence", "defence");
+		isUncommonEnchant = true;
+		isTainted = true;
+		INSTANCE = this;
 	}
 
 	@EventHandler
@@ -35,25 +41,27 @@ public class ComboDamage extends PitEnchant {
 		HitCounter.incrementCounter(pitPlayer.player, this);
 		if(!HitCounter.hasReachedThreshold(pitPlayer.player, this, getStrikes(enchantLvl))) return;
 
-		attackEvent.increasePercent += getDamage(enchantLvl);
-
-		Sounds.COMBO_PROC.play(attackEvent.getAttacker());
+		Misc.applyPotionEffect(attackEvent.getAttacker(), PotionEffectType.DAMAGE_RESISTANCE, getSeconds(enchantLvl) * 20,
+				getAmplifier(enchantLvl), true, false);
 	}
 
 	@Override
 	public List<String> getNormalDescription(int enchantLvl) {
-
 		return new PitLoreBuilder(
-				"&7Every &e" + Misc.ordinalWords(getStrikes(enchantLvl)) + " &7strike deals &c+" +
-						getDamage(enchantLvl) + "% &7damage"
+				"&7Every &e" + Misc.ordinalWords(getStrikes(enchantLvl)) + " &7strike gain &9Resistance[]" +
+				AUtil.toRoman(getAmplifier(enchantLvl) + 1) + " &7(" + getSeconds(enchantLvl) + "s)"
 		).getLore();
 	}
 
-	public int getDamage(int enchantLvl) {
-		return (int) (Math.floor(Math.pow(enchantLvl, 1.75)) * 5 + 20);
+	public int getSeconds(int enchantLvl) {
+		return enchantLvl + 2;
+	}
+
+	public int getAmplifier(int enchantLvl) {
+		return Misc.linearEnchant(enchantLvl, 0.5, 0);
 	}
 
 	public int getStrikes(int enchantLvl) {
-		return Math.max(4 - (int) (enchantLvl * 0.5), 1);
+		return Math.max(Misc.linearEnchant(enchantLvl, -0.5, 4.5), 1);
 	}
 }

@@ -28,10 +28,12 @@ public class NoKillstreak extends Killstreak {
 
 	@Override
 	public ItemStack getDisplayItem(Player player) {
-
-		AItemStackBuilder builder = new AItemStackBuilder(Material.GOLD_BLOCK);
-		builder.setName("&c" + name);
-		builder.setLore(new ALoreBuilder("&7Wanna free up this slot for", "&7some reason?"));
+		AItemStackBuilder builder = new AItemStackBuilder(Material.GOLD_BLOCK)
+				.setName("&c" + name)
+				.setLore(new ALoreBuilder(
+					"&7Wanna free up this slot for",
+					"&7some reason?"
+		));
 
 		return builder.getItemStack();
 	}

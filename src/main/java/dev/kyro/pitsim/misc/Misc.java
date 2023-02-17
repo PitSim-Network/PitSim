@@ -372,7 +372,6 @@ public class Misc {
 	 * Should only be used for displaying, not calculation.
 	 */
 	public static String roundString(double number) {
-
 		return new DecimalFormat("#,##0.##").format(number);
 	}
 
@@ -380,12 +379,10 @@ public class Misc {
 	 * Converts to multiplier
 	 */
 	public static double getReductionMultiplier(double reduction) {
-
-		return Math.min(Math.max(1 - (reduction / 100D), 0), 1);
+		return Math.min(Math.max(1 - (reduction / 100.0), 0), 1);
 	}
 
 	public static int linearEnchant(int level, double step, double base) {
-
 		return (int) (level * step + base);
 	}
 

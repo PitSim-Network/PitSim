@@ -16,28 +16,26 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Leech extends Killstreak {
-
 	public static Leech INSTANCE;
+	public static List<LivingEntity> rewardPlayers = new ArrayList<>();
 
 	public Leech() {
 		super("Leech", "Leech", 3, 18);
 		INSTANCE = this;
 	}
 
-	List<LivingEntity> rewardPlayers = new ArrayList<>();
-
 	@EventHandler(priority = EventPriority.HIGH)
 	public void onHit(AttackEvent.Apply attackEvent) {
-		if(rewardPlayers.contains(attackEvent.getAttacker())) {
-			PitPlayer pitPlayer = attackEvent.getAttackerPitPlayer();
-			pitPlayer.heal(attackEvent.getFinalDamageIncrease() * (getPercent() / 100D));
-			rewardPlayers.remove(attackEvent.getAttacker());
-		}
+		if(!rewardPlayers.contains(attackEvent.getAttacker())) return;
+		rewardPlayers.remove(attackEvent.getAttacker());
+
+		PitPlayer pitPlayer = attackEvent.getAttackerPitPlayer();
+		pitPlayer.heal(attackEvent.getFinalDamageIncrease() * (getPercent() / 100D));
 	}
 
 	@Override
 	public void proc(Player player) {
-		rewardPlayers.add(player);
+		if(!rewardPlayers.contains(player)) rewardPlayers.add(player);
 	}
 
 	@Override
@@ -47,10 +45,14 @@ public class Leech extends Killstreak {
 
 	@Override
 	public ItemStack getDisplayItem(Player player) {
-
-		AItemStackBuilder builder = new AItemStackBuilder(Material.FERMENTED_SPIDER_EYE);
-		builder.setName("&e" + name);
-		builder.setLore(new ALoreBuilder("&7Every: &c" + killInterval + " kills", "", "&7Next melee hit heals for", "&c" + getPercent() + "% &7of its damage."));
+		AItemStackBuilder builder = new AItemStackBuilder(Material.FERMENTED_SPIDER_EYE)
+				.setName("&e" + name)
+				.setLore(new ALoreBuilder(
+						"&7Every: &c" + killInterval + " kills",
+						"",
+						"&7Next melee hit heals for",
+						"&c" + getPercent() + "% &7of its damage."
+				));
 
 		return builder.getItemStack();
 	}
