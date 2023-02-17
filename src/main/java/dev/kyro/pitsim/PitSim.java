@@ -62,10 +62,13 @@ import dev.kyro.pitsim.enchants.overworld.*;
 import dev.kyro.pitsim.enchants.tainted.abilities.Sonic;
 import dev.kyro.pitsim.enchants.tainted.common.*;
 import dev.kyro.pitsim.enchants.tainted.spells.*;
+import dev.kyro.pitsim.enchants.tainted.znotcodedrare.*;
 import dev.kyro.pitsim.enchants.tainted.znotcodeduncommon.*;
 import dev.kyro.pitsim.enums.NBTTag;
 import dev.kyro.pitsim.helmetabilities.*;
 import dev.kyro.pitsim.killstreaks.*;
+import dev.kyro.pitsim.killstreaks.Leech;
+import dev.kyro.pitsim.killstreaks.Shockwave;
 import dev.kyro.pitsim.kits.EssentialKit;
 import dev.kyro.pitsim.kits.GoldKit;
 import dev.kyro.pitsim.kits.PvPKit;
@@ -721,7 +724,6 @@ public class PitSim extends JavaPlugin {
 		HelmetAbility.registerHelmetAbility(new HermitAbility(null));
 		HelmetAbility.registerHelmetAbility(new JudgementAbility(null));
 		HelmetAbility.registerHelmetAbility(new PhoenixAbility(null));
-		HelmetAbility.registerHelmetAbility(new ManaAbility(null));
 	}
 
 	private void registerKits() {
@@ -851,6 +853,7 @@ public class PitSim extends JavaPlugin {
 		ItemFactory.registerItem(new YummyBread());
 		ItemFactory.registerItem(new VeryYummyBread());
 
+		ItemFactory.registerItem(new GoldenHelmet());
 		ItemFactory.registerItem(new SoulPickup());
 		ItemFactory.registerItem(new StaffCookie());
 		ItemFactory.registerItem(new TokenOfAppreciation());
@@ -989,6 +992,22 @@ public class PitSim extends JavaPlugin {
 //		Uncommon Curses
 		EnchantManager.registerEnchant(new Weak());
 		EnchantManager.registerEnchant(new Frail());
+
+//		Rare
+		EnchantManager.registerEnchant(new Defraction());
+		EnchantManager.registerEnchant(new Devour());
+		EnchantManager.registerEnchant(new DimensionalRift());
+		EnchantManager.registerEnchant(new ElectricShock());
+		EnchantManager.registerEnchant(new Hemorrhage());
+		EnchantManager.registerEnchant(new Inferno());
+		EnchantManager.registerEnchant(new dev.kyro.pitsim.enchants.tainted.znotcodedrare.Leech());
+		EnchantManager.registerEnchant(new Medic());
+		EnchantManager.registerEnchant(new Passifist());
+		EnchantManager.registerEnchant(new PurpleThumb());
+		EnchantManager.registerEnchant(new SnowmanArmy());
+		EnchantManager.registerEnchant(new Stomp());
+		EnchantManager.registerEnchant(new Swarm());
+		EnchantManager.registerEnchant(new Terror());
 
 //		Uncommon
 		EnchantManager.registerEnchant(new ComboDefence());

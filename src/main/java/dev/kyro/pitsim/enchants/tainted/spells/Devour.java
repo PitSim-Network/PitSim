@@ -1,4 +1,4 @@
-package dev.kyro.pitsim.enchants.tainted.znotcodedrare;
+package dev.kyro.pitsim.enchants.tainted.spells;
 
 import dev.kyro.pitsim.controllers.PlayerManager;
 import dev.kyro.pitsim.controllers.objects.PitEnchant;
@@ -15,7 +15,7 @@ public class Devour extends PitEnchant {
 	public static Devour INSTANCE;
 
 	public Devour() {
-		super("Devour", true, ApplyType.CHESTPLATES,
+		super("Devour", true, ApplyType.SCYTHES,
 				"devour");
 		isTainted = true;
 		INSTANCE = this;
@@ -41,14 +41,14 @@ public class Devour extends PitEnchant {
 		}
 
 		attackEvent.increasePercent += getDamageIncrease(enchantLvl) / 100.0;
-		Sounds.BILLIONAIRE.play(attackEvent.getAttacker());
+		Sounds.DEVOUR.play(attackEvent.getAttacker());
 	}
 
 	@Override
 	public List<String> getNormalDescription(int enchantLvl) {
 		return new PitLoreBuilder(
 				"&7Hits with this sword deal &c+" + getDamageIncrease(enchantLvl) + "% " +
-				"&cdamage &7but cost &6" + getSoulCost(enchantLvl)
+				"&cdamage &7but cost &f" + getSoulCost(enchantLvl) + " soul" + (getSoulCost(enchantLvl) == 1 ? "" : "s")
 		).getLore();
 	}
 

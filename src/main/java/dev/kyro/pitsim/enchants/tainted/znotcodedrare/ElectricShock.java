@@ -6,12 +6,12 @@ import dev.kyro.pitsim.misc.PitLoreBuilder;
 
 import java.util.List;
 
-public class Shockwave extends PitEnchant {
-	public static Shockwave INSTANCE;
+public class ElectricShock extends PitEnchant {
+	public static ElectricShock INSTANCE;
 
-	public Shockwave() {
-		super("Shockwave", true, ApplyType.SCYTHES,
-				"shockwave");
+	public ElectricShock() {
+		super("Electric Shock", true, ApplyType.SCYTHES,
+				"electricshock", "shock", "electric");
 		isTainted = true;
 		INSTANCE = this;
 	}

@@ -9,6 +9,8 @@ import dev.kyro.arcticapi.misc.AUtil;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.aitems.MysticFactory;
 import dev.kyro.pitsim.aitems.PitItem;
+import dev.kyro.pitsim.aitems.misc.GoldenHelmet;
+import dev.kyro.pitsim.controllers.objects.HelmetManager;
 import dev.kyro.pitsim.controllers.objects.PitEnchant;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.controllers.objects.PluginMessage;
@@ -204,14 +206,14 @@ public class EnchantManager implements Listener {
 		PitItem pitItem = ItemFactory.getItem(itemStack);
 		if(pitItem == null) return false;
 
-		NBTItem nbtItem = new NBTItem(itemStack);
-		if(nbtItem.hasKey(NBTTag.GHELMET_UUID.getRef())) {
-			long gold = nbtItem.getLong(NBTTag.GHELMET_GOLD.getRef());
+		if(pitItem instanceof GoldenHelmet) {
+			long gold = HelmetManager.getHelmetGold(itemStack);
 			if(gold < 0) return true;
 		}
 
 		if(!pitItem.isMystic) return false;
 
+		NBTItem nbtItem = new NBTItem(itemStack);
 		if(nbtItem.hasKey(NBTTag.TAINTED_TIER.getRef())) {
 			if(nbtItem.hasKey(NBTTag.IS_GEMMED.getRef())) return true;
 			Map<PitEnchant, Integer> enchants = EnchantManager.getEnchantsOnItem(itemStack);

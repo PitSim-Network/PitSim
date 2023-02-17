@@ -1,17 +1,16 @@
 package dev.kyro.pitsim.inventories;
 
-import de.tr7zw.nbtapi.NBTItem;
 import dev.kyro.arcticapi.builders.AItemStackBuilder;
 import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.arcticapi.gui.AGUI;
 import dev.kyro.arcticapi.gui.AGUIPanel;
 import dev.kyro.arcticapi.misc.AUtil;
+import dev.kyro.pitsim.aitems.misc.GoldenHelmet;
 import dev.kyro.pitsim.controllers.HelmetSystem;
-import dev.kyro.pitsim.controllers.objects.HelmetManager;
+import dev.kyro.pitsim.controllers.ItemFactory;
 import dev.kyro.pitsim.controllers.objects.HelmetAbility;
+import dev.kyro.pitsim.controllers.objects.HelmetManager;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
-import dev.kyro.pitsim.enums.NBTTag;
-import dev.kyro.pitsim.misc.Misc;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.event.inventory.InventoryClickEvent;
@@ -307,13 +306,9 @@ public class HelmetPanel extends AGUIPanel {
 	}
 
 	public ItemStack getHelm() {
-
-		if(Misc.isAirOrNull(player.getItemInHand())) return null;
-
-		NBTItem nbtItem = new NBTItem(player.getItemInHand());
-		if(!nbtItem.hasKey(NBTTag.GHELMET_UUID.getRef())) return null;
-
-		return nbtItem.getItem();
+		GoldenHelmet pitItem = ItemFactory.getItem(GoldenHelmet.class);
+		if(!pitItem.isThisItem(player.getItemInHand())) return null;
+		return player.getItemInHand();
 	}
 
 	public HelmetAbility getAbility(ItemStack helmet) {
