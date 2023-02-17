@@ -594,7 +594,7 @@ public class DamageManager implements Listener {
 					int lives = nbtItem.getInteger(NBTTag.CURRENT_LIVES.getRef());
 					if(feather || divine) return;
 					if(lives - 1 == 0) {
-						deadPlayer.getInventory().remove(itemStack);
+						deadPlayer.getInventory().setItem(i, new ItemStack(Material.AIR));
 						deadPlayer.updateInventory();
 						PlayerManager.sendItemBreakMessage(deadPlayer, itemStack);
 						if(pitDead.stats != null) {

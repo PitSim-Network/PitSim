@@ -172,7 +172,7 @@ public class TaintedWell implements Listener {
 		}
 	}
 
-	public static void onEnchant(Player player, ItemStack itemStack) {
+	public static void placeItemInWell(Player player, ItemStack itemStack) {
 		playerItems.put(player, itemStack);
 		player.getInventory().remove(itemStack);
 		
@@ -350,7 +350,7 @@ public class TaintedWell implements Listener {
 //			return;
 //		}
 
-		onEnchant(player, player.getItemInHand());
+		placeItemInWell(player, player.getItemInHand());
 		Sounds.MYSTIC_WELL_OPEN_1.play(player);
 		Sounds.MYSTIC_WELL_OPEN_2.play(player);
 	}
