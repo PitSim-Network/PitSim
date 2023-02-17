@@ -61,7 +61,7 @@ public class MapManager implements Listener {
 		List<PitMap> applicableMaps = new ArrayList<>();
 		for(PitMap map : mapList) if(map.rotationDays != -1) applicableMaps.add(map);
 		int index = applicableMaps.indexOf(pitMap);
-		return applicableMaps.get(index % applicableMaps.size());
+		return applicableMaps.get((index + 1) % applicableMaps.size());
 	}
 
 	public static World getTutorial() {
