@@ -673,10 +673,11 @@ public class DamageManager implements Listener {
 		if(ItemFactory.isThisItem(inventory.getLeggings(), ProtLeggings.class)) inventory.setLeggings(new ItemStack(Material.AIR));
 		if(ItemFactory.isThisItem(inventory.getBoots(), ProtBoots.class)) inventory.setBoots(new ItemStack(Material.AIR));
 
-		for(ItemStack itemStack : inventory) {
+		for(int i = 0; i < 36; i++) {
+			ItemStack itemStack = inventory.getItem(i);
 			PitItem pitItem = ItemFactory.getItem(itemStack);
 			if(pitItem == null || !pitItem.isProt) continue;
-			inventory.remove(itemStack);
+			inventory.setItem(i, new ItemStack(Material.AIR));
 		}
 	}
 }
