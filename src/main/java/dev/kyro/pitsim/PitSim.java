@@ -60,6 +60,7 @@ import dev.kyro.pitsim.cosmetics.trails.*;
 import dev.kyro.pitsim.enchants.overworld.GoldBoost;
 import dev.kyro.pitsim.enchants.overworld.*;
 import dev.kyro.pitsim.enchants.tainted.abilities.Sonic;
+import dev.kyro.pitsim.enchants.tainted.abilities.Swarm;
 import dev.kyro.pitsim.enchants.tainted.common.*;
 import dev.kyro.pitsim.enchants.tainted.spells.*;
 import dev.kyro.pitsim.enchants.tainted.znotcodedrare.*;

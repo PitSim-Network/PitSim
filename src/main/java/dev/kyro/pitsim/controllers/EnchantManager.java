@@ -43,6 +43,7 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.LeatherArmorMeta;
+import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.*;
 
@@ -50,6 +51,17 @@ import static dev.kyro.pitsim.enums.ApplyType.CHESTPLATES;
 
 public class EnchantManager implements Listener {
 	public static List<PitEnchant> pitEnchants = new ArrayList<>();
+	public static Map<Player, Map<PitEnchant, Integer>> enchantMap = new HashMap<>();
+
+	static {
+		new BukkitRunnable() {
+			@Override
+			public void run() {
+				enchantMap.clear();
+				for(Player onlinePlayer : Bukkit.getOnlinePlayers()) enchantMap.put(onlinePlayer, readEnchantsOnPlayer(onlinePlayer));
+			}
+		}.runTaskTimer(PitSim.INSTANCE, 0L, 1L);
+	}
 
 	@EventHandler
 	public static void onJewelAttack(AttackEvent.Pre attackEvent) {
@@ -550,14 +562,21 @@ public class EnchantManager implements Listener {
 	public static Map<PitEnchant, Integer> getEnchantsOnPlayer(LivingEntity checkPlayer) {
 		if(!(checkPlayer instanceof Player)) return new HashMap<>();
 		Player player = (Player) checkPlayer;
+		if(!enchantMap.containsKey(player)) return new HashMap<>();
+		return enchantMap.get(player);
+	}
+
+	private static Map<PitEnchant, Integer> readEnchantsOnPlayer(LivingEntity checkPlayer) {
+		if(!(checkPlayer instanceof Player)) return new HashMap<>();
+		Player player = (Player) checkPlayer;
 
 		List<ItemStack> inUse = new ArrayList<>(Arrays.asList(player.getInventory().getArmorContents()));
 		inUse.add(player.getItemInHand());
 
-		return getEnchantsOnPlayer(inUse.toArray(new ItemStack[5]));
+		return readEnchantsOnPlayer(inUse.toArray(new ItemStack[5]));
 	}
 
-	public static Map<PitEnchant, Integer> getEnchantsOnPlayer(ItemStack[] inUseArr) {
+	private static Map<PitEnchant, Integer> readEnchantsOnPlayer(ItemStack[] inUseArr) {
 
 		Map<PitEnchant, Integer> playerEnchantMap = new HashMap<>();
 		for(int i = 0; i < inUseArr.length; i++) {

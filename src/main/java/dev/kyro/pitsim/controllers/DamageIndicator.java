@@ -34,6 +34,8 @@ public class DamageIndicator implements Listener {
 		Player attacker = attackEvent.getAttackerPlayer();
 		LivingEntity defender = attackEvent.getDefender();
 
+		if(defender.isDead()) return;
+
 		PitMob pitDefender = DarkzoneManager.getPitMob(defender);
 		if(pitDefender != null) {
 			createDamageStand(attacker, pitDefender, attackEvent.getEvent().getFinalDamage());

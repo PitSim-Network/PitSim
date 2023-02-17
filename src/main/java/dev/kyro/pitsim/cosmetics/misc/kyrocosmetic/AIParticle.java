@@ -1,13 +1,15 @@
 package dev.kyro.pitsim.cosmetics.misc.kyrocosmetic;
 
-import de.myzelyam.api.vanish.VanishAPI;
 import dev.kyro.pitsim.PitSim;
-import dev.kyro.pitsim.cosmetics.CosmeticManager;
+import dev.kyro.pitsim.adarkzone.DarkzoneManager;
+import dev.kyro.pitsim.adarkzone.PitMob;
 import dev.kyro.pitsim.controllers.SpawnManager;
-import org.bukkit.Bukkit;
+import dev.kyro.pitsim.cosmetics.CosmeticManager;
 import org.bukkit.Effect;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
@@ -18,7 +20,7 @@ public abstract class AIParticle {
 	public static List<AIParticle> particleList = new ArrayList<>();
 
 	public Player owner;
-	public Player target;
+	public LivingEntity target;
 	public Location particleLocation;
 
 	static {
@@ -50,20 +52,27 @@ public abstract class AIParticle {
 		particleList.remove(this);
 	}
 
-	public Player pickTarget() {
-		Player closestPlayer = null;
-		double distance = Double.MAX_VALUE;
-		for(Player onlinePlayer : Bukkit.getOnlinePlayers()) {
-			if(onlinePlayer == owner || onlinePlayer.getWorld() != owner.getWorld() || VanishAPI.isInvisible(onlinePlayer) ||
-					onlinePlayer.getGameMode() == GameMode.CREATIVE || onlinePlayer.getGameMode() == GameMode.SPECTATOR ||
-					SpawnManager.isInSpawn(onlinePlayer.getLocation()) || SpawnManager.isInSpawn(owner.getLocation()))
-				continue;
-			double testDistance = onlinePlayer.getLocation().distance(owner.getLocation());
-			if(testDistance > 15 || testDistance > distance) continue;
-			closestPlayer = onlinePlayer;
-			distance = testDistance;
+	public LivingEntity pickTarget() {
+		LivingEntity closestEntity = null;
+		double closestDistance = Double.MAX_VALUE;
+		if(SpawnManager.isInSpawn(owner.getLocation())) return null;
+		for(Entity entity : owner.getNearbyEntities(15, 15, 15)) {
+			if(!(entity instanceof LivingEntity) || SpawnManager.isInSpawn(entity.getLocation())) continue;
+			LivingEntity livingEntity = (LivingEntity) entity;
+			PitMob pitMob = DarkzoneManager.getPitMob(livingEntity);
+			if(pitMob == null && !(entity instanceof Player)) continue;
+
+			if(entity instanceof Player) {
+				Player player = (Player) entity;
+				if(player.getGameMode() == GameMode.CREATIVE || player.getGameMode() == GameMode.SPECTATOR) continue;
+			}
+
+			double testDistance = livingEntity.getLocation().distance(particleLocation);
+			if(testDistance > closestDistance) continue;
+			closestEntity = livingEntity;
+			closestDistance = testDistance;
 		}
-		target = closestPlayer;
+		target = closestEntity;
 		return target;
 	}
 
