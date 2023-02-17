@@ -69,7 +69,6 @@ public class CleaveSpell extends PitEnchant {
 	public CleaveSpell() {
 		super("Cleave", true, ApplyType.SCYTHES, "cleave", "cleaver");
 		isTainted = true;
-		isRare = true;
 	}
 
 	@EventHandler

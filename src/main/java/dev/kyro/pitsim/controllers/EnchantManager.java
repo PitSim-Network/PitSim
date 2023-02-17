@@ -458,7 +458,7 @@ public class EnchantManager implements Listener {
 		}
 
 		int randomMultiplier = tier * 25;
-		return (int) (Math.random() * randomMultiplier);
+		return Math.max((int) (Math.random() * randomMultiplier), 10);
 	}
 
 	public static ItemStack incrementJewel(Player player, ItemStack itemStack) {

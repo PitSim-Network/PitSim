@@ -34,7 +34,6 @@ public class FreezeSpell extends PitEnchant {
 	public FreezeSpell() {
 		super("Freeze", true, ApplyType.SCYTHES, "freeze", "cold");
 		isTainted = true;
-		isRare = true;
 	}
 
 	@EventHandler

@@ -29,10 +29,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class TaintedWell implements Listener {
 	public static Location wellLocation;
@@ -42,7 +39,13 @@ public class TaintedWell implements Listener {
 	public static Map<Player, ArmorStand> enchantStands;
 	public static List<Player> enchantingPlayers;
 	private static Map<Player, ItemStack> playerItems;
-	public static int yaw;
+	public static Map<UUID, Integer> yawMap = new HashMap<>();
+	public static Map<UUID, Double> velocityMap = new HashMap<>();
+
+	public static final double MINIMUM_VELOCITY = 10;
+	public static final double MAXIMUM_VELOCITY = 60;
+	public static final double ACCELERATION = 4;
+	public static final double DECELERATION = 2;
 
 	static {
 		wellLocation = new Location(Bukkit.getWorld("darkzone"), 199.0, 92.0, -115.0);
@@ -50,7 +53,8 @@ public class TaintedWell implements Listener {
 		enchantStands = new HashMap<>();
 		enchantingPlayers = new ArrayList<>();
 		playerItems = new HashMap<>();
-		yaw = 0;
+
+
 		new BukkitRunnable() {
 			public void run() {
 				if(!PitSim.getStatus().isDarkzone()) return;
@@ -70,6 +74,8 @@ public class TaintedWell implements Listener {
 						}
 						Player player = (Player)entity;
 
+						int yaw = yawMap.getOrDefault(player.getUniqueId(), 0);
+
 						PacketPlayOutEntity.PacketPlayOutRelEntityMoveLook packet = new PacketPlayOutEntity.PacketPlayOutRelEntityMoveLook(getStandID(wellStand), (byte)0, (byte)0, (byte)0, (byte) yaw, (byte)0, false);
 						EntityPlayer nmsPlayer = ((CraftPlayer)entity).getHandle();
 						nmsPlayer.playerConnection.sendPacket(packet);
@@ -87,23 +93,26 @@ public class TaintedWell implements Listener {
 							PacketPlayOutEntityDestroy destroyPacket = new PacketPlayOutEntityDestroy(getStandID(entry.getValue()));
 							nmsPlayer.playerConnection.sendPacket(destroyPacket);
 						}
-						if(!playerItems.containsKey(player)) {}
+
+						double velocity = velocityMap.getOrDefault(player.getUniqueId(), MINIMUM_VELOCITY);
+
 						if(enchantingPlayers.contains(player)) {
-							yaw += 24;
+							velocity = Math.min(velocity + ACCELERATION, MAXIMUM_VELOCITY);
 							player.playEffect(wellLocation.clone().add(0.0, 1.0, 0.0), Effect.ENDER_SIGNAL, 0);
+						} else {
+							velocity = Math.max(velocity - DECELERATION, MINIMUM_VELOCITY);
 						}
-						else {
-							yaw += 8;
-						}
-						if(yaw < 256) {
-							continue;
-						}
-						yaw = 0;
+
+						yaw += velocity;
+						velocityMap.put(player.getUniqueId(), velocity);
+
+						if(yaw >= 256) yaw = 0;
+						yawMap.put(player.getUniqueId(), yaw);
 					}
 				}
 
 			}
-		}.runTaskTimer(PitSim.INSTANCE, 2L, 2L);
+		}.runTaskTimer(PitSim.INSTANCE, 0, 2L);
 
 		new BukkitRunnable() {
 			@Override
@@ -282,6 +291,7 @@ public class TaintedWell implements Listener {
 				ItemMeta meta = newItem.getItemMeta();
 				meta.setDisplayName(EnchantManager.getMysticName(newItem));
 				newItem.setItemMeta(meta);
+				EnchantManager.setItemLore(newItem, player);
 
 				NBTItem nbtItem = new NBTItem(newItem);
 

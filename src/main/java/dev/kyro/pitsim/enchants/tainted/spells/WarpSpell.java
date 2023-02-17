@@ -26,7 +26,6 @@ public class WarpSpell extends PitEnchant {
 	public WarpSpell() {
 		super("Warp", true, ApplyType.SCYTHES, "warp", "teleport", "tp");
 		isTainted = true;
-		isRare = true;
 	}
 
 	@EventHandler

@@ -31,7 +31,6 @@ public class MeteorSpell extends PitEnchant {
 		super("Meteor", true, ApplyType.SCYTHES,
 				"meteor");
 		isTainted = true;
-		isRare = true;
 	}
 
 	@EventHandler
