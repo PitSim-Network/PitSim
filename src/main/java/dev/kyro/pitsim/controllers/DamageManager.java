@@ -125,6 +125,8 @@ public class DamageManager implements Listener {
 		LivingEntity attacker = getAttacker(event.getDamager());
 		LivingEntity defender = (LivingEntity) event.getEntity();
 
+		if(defender.isDead()) return;
+
 		Entity realDamager = event.getDamager();
 		for(Map.Entry<Entity, LivingEntity> entry : DamageManager.hitTransferMap.entrySet()) {
 			if(entry.getValue() != realDamager) continue;
@@ -469,10 +471,8 @@ public class DamageManager implements Listener {
 		}
 
 		String killActionBar = null;
-		if(kill != null && killerIsPlayer) {
+		if(killType != KillType.DEATH && killerIsPlayer && deadMob == null) {
 			killActionBar = "&7%luckperms_prefix%" + (deadNon == null ? "%player_name%" : deadNon.displayName) + " &a&lKILL!";
-		} else if(DarkzoneManager.isPitMob(dead)) {
-			killActionBar = DarkzoneManager.getPitMob(dead).getDisplayName() + " &a&lKILL!";
 		}
 
 		if(killerIsPlayer && !CitizensAPI.getNPCRegistry().isNPC(killer) && !pitKiller.killFeedDisabled && killType != KillType.DEATH) {
@@ -482,7 +482,8 @@ public class DamageManager implements Listener {
 		if(deadIsPlayer && !pitDead.killFeedDisabled && killType != KillType.FAKE && killEvent != null)
 			AOutput.send(killEvent.getDead(), death);
 		String actionBarPlaceholder;
-		if(killType != KillType.DEATH && killerIsPlayer) {
+		if(killActionBar != null) {
+			assert killEvent != null;
 			actionBarPlaceholder = PlaceholderAPI.setPlaceholders(killEvent.getDeadPlayer(), killActionBar);
 			KillEvent finalKillEvent = killEvent;
 			new BukkitRunnable() {

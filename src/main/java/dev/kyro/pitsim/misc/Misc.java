@@ -381,7 +381,7 @@ public class Misc {
 	 */
 	public static double getReductionMultiplier(double reduction) {
 
-		return Math.max(1 - (reduction / 100D), 0);
+		return Math.min(Math.max(1 - (reduction / 100D), 0), 1);
 	}
 
 	public static int linearEnchant(int level, double step, double base) {

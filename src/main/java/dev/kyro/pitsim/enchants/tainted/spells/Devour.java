@@ -9,6 +9,7 @@ import dev.kyro.pitsim.misc.PitLoreBuilder;
 import dev.kyro.pitsim.misc.Sounds;
 import org.bukkit.event.EventHandler;
 
+import java.text.DecimalFormat;
 import java.util.List;
 
 public class Devour extends PitEnchant {
@@ -46,8 +47,9 @@ public class Devour extends PitEnchant {
 
 	@Override
 	public List<String> getNormalDescription(int enchantLvl) {
+		DecimalFormat decimalFormat = new DecimalFormat("0");
 		return new PitLoreBuilder(
-				"&7Hits with this sword deal &c+" + getDamageIncrease(enchantLvl) + "% " +
+				"&7Hits with this sword deal &c+" + decimalFormat.format(getDamageIncrease(enchantLvl)) + "% " +
 				"&cdamage &7but cost &f" + getSoulCost(enchantLvl) + " soul" + (getSoulCost(enchantLvl) == 1 ? "" : "s")
 		).getLore();
 	}
