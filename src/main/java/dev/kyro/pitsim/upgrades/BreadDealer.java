@@ -63,7 +63,7 @@ public class BreadDealer extends RenownUpgrade {
 			int quantity = itemStack.getAmount();
 			quantity *= retainPercent / 100.0;
 			if(quantity == 0) {
-				player.getInventory().remove(itemStack);
+				player.getInventory().setItem(i, new ItemStack(Material.AIR));
 			} else {
 				itemStack.setAmount(quantity);
 				player.getInventory().setItem(i, itemStack);

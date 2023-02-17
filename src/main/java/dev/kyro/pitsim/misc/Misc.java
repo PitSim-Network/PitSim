@@ -88,7 +88,7 @@ public class Misc {
 			if(pitItem == null || !condition.test(pitItem)) continue;
 
 			if(amount >= itemStack.getAmount()) {
-				player.getInventory().remove(itemStack);
+				player.getInventory().setItem(i, new ItemStack(Material.AIR));
 				amount -= itemStack.getAmount();
 				if(amount == 0) return true;
 			} else {
