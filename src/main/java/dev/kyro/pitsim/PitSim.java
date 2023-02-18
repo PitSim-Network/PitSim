@@ -772,8 +772,8 @@ public class PitSim extends JavaPlugin {
 		PassManager.registerQuest(new KillSkeletonsQuest());
 		PassManager.registerQuest(new KillSpidersQuest());
 		PassManager.registerQuest(new KillCreepersQuest());
-		PassManager.registerQuest(new KillCaveSpidersQuest());
-		PassManager.registerQuest(new KillMagmaCubesQuest());
+		PassManager.registerQuest(new KillWolvesQuest());
+		PassManager.registerQuest(new KillBlazesQuest());
 		PassManager.registerQuest(new KillZombiePigmenQuest());
 		PassManager.registerQuest(new KillWitherSkeletonsQuest());
 		PassManager.registerQuest(new KillIronGolemsQuest());
