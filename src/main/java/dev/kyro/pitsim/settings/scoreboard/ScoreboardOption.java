@@ -28,11 +28,11 @@ public abstract class ScoreboardOption {
 		ItemStack itemStack = getBaseDisplayItem();
 		ItemMeta itemMeta = itemStack.getItemMeta();
 		ALoreBuilder loreBuilder = new ALoreBuilder(itemMeta.getLore()).addLore(
-				"", "&7Status: " + (isEnabled ? "&aEnabled": "&cDisabled"),""
+				"", "&7Status: " + (isEnabled ? "&aEnabled": "&cDisabled"), ""
 		);
 		if(position != 0) loreBuilder.addLore("&eLeft-Click to increase priority");
 		if(position != ScoreboardManager.scoreboardOptions.size() - 1) loreBuilder.addLore("&eRight-Click to decrease priority");
-		loreBuilder.addLore("&eMiddle-Click to " + (isEnabled ? "disable" : "enable"));
+		loreBuilder.addLore("&eMiddle/Shift-Click to " + (isEnabled ? "disable" : "enable"));
 
 		if(isEnabled) Misc.addEnchantGlint(itemStack);
 

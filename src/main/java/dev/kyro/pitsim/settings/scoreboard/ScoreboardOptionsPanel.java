@@ -75,7 +75,7 @@ public class ScoreboardOptionsPanel extends AGUIPanel {
 			int position = scoreboardOption.getCurrentPosition(pitPlayer);
 
 			List<String> priorityList = pitPlayer.scoreboardData.getPriorityList();
-			if(event.getClick() == ClickType.LEFT || event.getClick() == ClickType.SHIFT_LEFT) {
+			if(event.getClick() == ClickType.LEFT) {
 				if(position == 0) {
 					Sounds.NO.play(player);
 					return;
@@ -84,7 +84,7 @@ public class ScoreboardOptionsPanel extends AGUIPanel {
 				priorityList.remove(scoreboardOption.getRefName());
 				priorityList.add(position - 1, scoreboardOption.getRefName());
 				Sounds.SUCCESS.play(player);
-			} else if(event.getClick() == ClickType.RIGHT || event.getClick() == ClickType.SHIFT_RIGHT) {
+			} else if(event.getClick() == ClickType.RIGHT) {
 				if(position == ScoreboardManager.scoreboardOptions.size() - 1) {
 					Sounds.NO.play(player);
 					return;
@@ -93,7 +93,7 @@ public class ScoreboardOptionsPanel extends AGUIPanel {
 				priorityList.remove(scoreboardOption.getRefName());
 				priorityList.add(position + 1, scoreboardOption.getRefName());
 				Sounds.SUCCESS.play(player);
-			} else if(event.getClick() == ClickType.MIDDLE) {
+			} else if(event.getClick() == ClickType.MIDDLE || event.getClick() == ClickType.SHIFT_LEFT) {
 				pitPlayer.scoreboardData.getStatusMap().put(scoreboardOption.getRefName(),
 						!pitPlayer.scoreboardData.getStatusMap().get(scoreboardOption.getRefName()));
 				Sounds.SUCCESS.play(player);
