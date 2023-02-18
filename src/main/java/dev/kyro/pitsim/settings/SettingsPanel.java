@@ -167,16 +167,14 @@ public class SettingsPanel extends AGUIPanel {
 		else headlore.add(ChatColor.RED + "Access to /chat");
 		if(player.hasPermission("pitsim.pantscolor")) headlore.add(ChatColor.GREEN + "Pants Colorizer");
 		else headlore.add(ChatColor.RED + "Pants Colorizer");
-		if(player.hasPermission("pitsim.deathcry")) headlore.add(ChatColor.GREEN + "Death Cries");
-		else headlore.add(ChatColor.RED + "Death Cries");
-		if(player.hasPermission("pitsim.killeffect")) headlore.add(ChatColor.GREEN + "Kill Effects");
-		else headlore.add(ChatColor.RED + "Kill Effects");
 		if(player.hasPermission("pitsim.itemrename")) headlore.add(ChatColor.GREEN + "Item Rename");
 		else headlore.add(ChatColor.RED + "Item Rename");
 		if(player.hasPermission("pitsim.stereo")) headlore.add(ChatColor.GREEN + "Stereo Pants");
 		else headlore.add(ChatColor.RED + "Stereo Pants");
 		if(player.hasPermission("pitsim.chatcolor")) headlore.add(ChatColor.GREEN + "Chat Colors");
 		else headlore.add(ChatColor.RED + "Chat Colors");
+		if(player.hasPermission("pitsim.scoreboard")) headlore.add(ChatColor.GREEN + "Scoreboard Settings");
+		else headlore.add(ChatColor.RED + "Scoreboard Settings");
 		if(player.hasPermission("galacticvaults.limit.14"))
 			headlore.add(ChatColor.GRAY + "14x " + ChatColor.DARK_PURPLE + "Ender Chest Pages");
 		else if(player.hasPermission("galacticvaults.limit.10"))
