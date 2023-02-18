@@ -587,7 +587,6 @@ public class PitSim extends JavaPlugin {
 		new ReloadCommand(adminCommand, "reload");
 		new BypassCommand(adminCommand, "bypass");
 		new ExtendCommand(adminCommand, "extend");
-		new LockdownCommand(adminCommand, "lockdown");
 		new UnlockCosmeticCommand(adminCommand, "unlockcosmetic");
 		new GodCommand(adminCommand, "god");
 		new BountyCommand(setCommand, "bounty");
