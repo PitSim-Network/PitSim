@@ -33,6 +33,7 @@ import dev.kyro.pitsim.killstreaks.NoKillstreak;
 import dev.kyro.pitsim.megastreaks.*;
 import dev.kyro.pitsim.misc.Misc;
 import dev.kyro.pitsim.perks.*;
+import dev.kyro.pitsim.settings.scoreboard.ScoreboardData;
 import dev.kyro.pitsim.storage.StorageManager;
 import dev.kyro.pitsim.storage.StorageProfile;
 import dev.kyro.pitsim.tutorial.Tutorial;
@@ -156,6 +157,7 @@ public class PitPlayer {
 
 	public PlayerStats stats = new PlayerStats();
 	public Tutorial tutorial = new Tutorial();
+	public ScoreboardData scoreboardData = new ScoreboardData();
 	private PassData passData = new PassData();
 
 	public Map<String, UnlockedCosmeticData> unlockedCosmeticsMap = new HashMap<>();
@@ -437,6 +439,7 @@ public class PitPlayer {
 
 		stats.init(this);
 		tutorial.init(this);
+		scoreboardData.init(this);
 		updateXPBar();
 	}
 

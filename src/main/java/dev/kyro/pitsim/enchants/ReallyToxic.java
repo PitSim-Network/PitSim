@@ -17,12 +17,14 @@ import java.util.List;
 import java.util.UUID;
 
 public class ReallyToxic extends PitEnchant {
+	public static ReallyToxic INSTANCE;
 	public static List<UUID> toxicNotifCooldown = new ArrayList<>();
 
 	public ReallyToxic() {
 		super("Really Toxic", false, ApplyType.PANTS,
 				"reallytoxic", "really-toxic", "toxic", "rt");
 		isUncommonEnchant = true;
+		INSTANCE = this;
 	}
 
 	@EventHandler
@@ -78,15 +80,15 @@ public class ReallyToxic extends PitEnchant {
 				"&a" + getReductionPerHit(enchantLvl) + "%&7, up to &a" + getMaxReduction() + "%").getLore();
 	}
 
-	public int getReductionPerHit(int enchantLvl) {
+	public static int getReductionPerHit(int enchantLvl) {
 		return enchantLvl;
 	}
 
-	public int getMaxReduction() {
+	public static int getMaxReduction() {
 		return 25;
 	}
 
-	public long getStackTime(int enchantLvl) {
+	public static long getStackTime(int enchantLvl) {
 		return 5;
 	}
 }

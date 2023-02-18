@@ -207,10 +207,8 @@ public class PlayerStats {
 		chatMessages = playerData.getInt("stats.misc.chat-messages");
 	}
 
-	public PlayerStats init(PitPlayer pitPlayer) {
+	public void init(PitPlayer pitPlayer) {
 		this.pitPlayer = pitPlayer;
 		this.uuid = pitPlayer.player.getUniqueId();
-
-		return this;
 	}
 }
