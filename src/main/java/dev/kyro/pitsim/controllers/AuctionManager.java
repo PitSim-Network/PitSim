@@ -180,19 +180,11 @@ public class AuctionManager implements Listener {
 	}
 
 	public static String getRemainingTime() {
-		return formatTime(getAuctionEndTime() - System.currentTimeMillis());
+		return Misc.formatDurationFull(getAuctionEndTime() - System.currentTimeMillis(), true);
 	}
 
 	public static long getAuctionEndTime() {
 		return FirestoreManager.AUCTION.endTime;
-	}
-
-	public static String formatTime(long millis) {
-		millis /= 1000;
-		long s = millis % 60;
-		long m = (millis / 60) % 60;
-		long h = (millis / (60 * 60)) % 24;
-		return String.format("%dh %02dm %02ds", h, m, s);
 	}
 
 	public static void sendAlert(String message) {
