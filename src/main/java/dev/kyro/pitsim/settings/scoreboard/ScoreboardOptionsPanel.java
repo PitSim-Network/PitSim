@@ -81,8 +81,8 @@ public class ScoreboardOptionsPanel extends AGUIPanel {
 					return;
 				}
 
-				priorityList.remove(scoreboardOption.refName);
-				priorityList.add(position - 1, scoreboardOption.refName);
+				priorityList.remove(scoreboardOption.getRefName());
+				priorityList.add(position - 1, scoreboardOption.getRefName());
 				Sounds.SUCCESS.play(player);
 			} else if(event.getClick() == ClickType.RIGHT || event.getClick() == ClickType.SHIFT_RIGHT) {
 				if(position == ScoreboardManager.scoreboardOptions.size() - 1) {
@@ -90,11 +90,12 @@ public class ScoreboardOptionsPanel extends AGUIPanel {
 					return;
 				}
 
-				priorityList.remove(scoreboardOption.refName);
-				priorityList.add(position + 1, scoreboardOption.refName);
+				priorityList.remove(scoreboardOption.getRefName());
+				priorityList.add(position + 1, scoreboardOption.getRefName());
 				Sounds.SUCCESS.play(player);
 			} else if(event.getClick() == ClickType.MIDDLE) {
-				pitPlayer.scoreboardData.getStatusMap().put(scoreboardOption.refName, !pitPlayer.scoreboardData.getStatusMap().get(scoreboardOption.refName));
+				pitPlayer.scoreboardData.getStatusMap().put(scoreboardOption.getRefName(),
+						!pitPlayer.scoreboardData.getStatusMap().get(scoreboardOption.getRefName()));
 				Sounds.SUCCESS.play(player);
 			}
 
@@ -119,7 +120,7 @@ public class ScoreboardOptionsPanel extends AGUIPanel {
 		int count = 0;
 		for(String refName : pitPlayer.scoreboardData.getPriorityList()) {
 			for(ScoreboardOption scoreboardOption : ScoreboardManager.scoreboardOptions) {
-				if(!scoreboardOption.refName.equals(refName)) continue;
+				if(!scoreboardOption.getRefName().equals(refName)) continue;
 				ItemStack displayStack = scoreboardOption.getDisplayStack(count, pitPlayer.scoreboardData.getStatusMap().get(refName));
 				getInventory().setItem(scoreboardItemSlots.get(count), displayStack);
 				scoreboardMap.put(scoreboardItemSlots.get(count), scoreboardOption);

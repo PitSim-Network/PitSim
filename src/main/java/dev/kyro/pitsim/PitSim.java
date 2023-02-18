@@ -73,8 +73,10 @@ import dev.kyro.pitsim.pitmaps.DimensionsMap;
 import dev.kyro.pitsim.pitmaps.SandMap;
 import dev.kyro.pitsim.pitmaps.XmasMap;
 import dev.kyro.pitsim.placeholders.*;
-import dev.kyro.pitsim.settings.scoreboard.TestScoreboardOption;
-import dev.kyro.pitsim.settings.scoreboard.TestScoreboardOption2;
+import dev.kyro.pitsim.settings.scoreboard.GladiatorScoreboard;
+import dev.kyro.pitsim.settings.scoreboard.JudgementScoreboard;
+import dev.kyro.pitsim.settings.scoreboard.ReallyToxicScoreboard;
+import dev.kyro.pitsim.settings.scoreboard.StrengthScoreboard;
 import dev.kyro.pitsim.storage.StorageManager;
 import dev.kyro.pitsim.upgrades.*;
 import net.citizensnpcs.api.CitizensAPI;
@@ -544,8 +546,10 @@ public class PitSim extends JavaPlugin {
 	}
 
 	private void registerScoreboardOptions() {
-		ScoreboardManager.registerScoreboard(new TestScoreboardOption());
-		ScoreboardManager.registerScoreboard(new TestScoreboardOption2());
+		ScoreboardManager.registerScoreboard(new ReallyToxicScoreboard());
+		ScoreboardManager.registerScoreboard(new StrengthScoreboard());
+		ScoreboardManager.registerScoreboard(new GladiatorScoreboard());
+		ScoreboardManager.registerScoreboard(new JudgementScoreboard());
 	}
 
 	private void registerNPCs() {

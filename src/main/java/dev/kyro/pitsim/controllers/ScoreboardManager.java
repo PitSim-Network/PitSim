@@ -15,7 +15,7 @@ import java.util.*;
 
 public class ScoreboardManager implements Listener {
 	public static List<ScoreboardOption> scoreboardOptions = new ArrayList<>();
-	public static List<String> goldEnchants = Arrays.asList("moct", "gboost", "gbump");
+	public static List<String> goldEnchants = Arrays.asList("moctezuma", "goldboost", "goldbump");
 	public static Map<Player, PitScoreboard> currentScoreboardMap = new HashMap<>();
 
 	public static void init() {}
@@ -34,7 +34,7 @@ public class ScoreboardManager implements Listener {
 	}
 
 	public static ScoreboardOption getScoreboardOption(String refName) {
-		for(ScoreboardOption scoreboardOption : scoreboardOptions) if(scoreboardOption.refName.equals(refName)) return scoreboardOption;
+		for(ScoreboardOption scoreboardOption : scoreboardOptions) if(scoreboardOption.getRefName().equals(refName)) return scoreboardOption;
 		return null;
 	}
 
@@ -91,6 +91,7 @@ public class ScoreboardManager implements Listener {
 		}
 
 		public void display(Player player) {
+			FeatherBoardAPI.resetDefaultScoreboard(player);
 			FeatherBoardAPI.showScoreboard(player, scoreboardName);
 		}
 	}

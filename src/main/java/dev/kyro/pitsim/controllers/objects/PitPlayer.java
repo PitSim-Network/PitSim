@@ -439,6 +439,7 @@ public class PitPlayer {
 
 		stats.init(this);
 		tutorial.init(this);
+		scoreboardData.init(this);
 		updateXPBar();
 	}
 

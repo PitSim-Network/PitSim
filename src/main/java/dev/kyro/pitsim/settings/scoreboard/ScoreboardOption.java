@@ -9,21 +9,16 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
 public abstract class ScoreboardOption {
-	private String displayName;
-	public String refName;
 
-	public ScoreboardOption(String displayName, String refName) {
-		this.displayName = displayName;
-		this.refName = refName;
-	}
-
+	public abstract String getDisplayName();
+	public abstract String getRefName();
 	public abstract String getValue(PitPlayer pitPlayer);
 	public abstract ItemStack getBaseDisplayItem();
 
 	public int getCurrentPosition(PitPlayer pitPlayer) {
 		int count = 0;
 		for(String testRefName : pitPlayer.scoreboardData.getPriorityList()) {
-			if(refName.equals(testRefName)) return count;
+			if(getRefName().equals(testRefName)) return count;
 			count++;
 		}
 		throw new RuntimeException();
