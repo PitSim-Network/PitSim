@@ -102,6 +102,7 @@ public class Sounds {
 
 	//	Darkzone Enchants
 	public static final SoundEffect DEVOUR = new SoundEffect(Sound.ORB_PICKUP, 1, 0.4);
+	public static final SoundEffect ELECTRIC_SHOCK = new SoundEffect(Sound.FIZZ, 1, 2);
 
 	//	Megastreaks
 	public static final SoundEffect MEGA_GENERAL = new SoundEffect(Sound.WITHER_SPAWN, 1000, 1);

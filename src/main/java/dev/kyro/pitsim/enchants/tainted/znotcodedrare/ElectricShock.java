@@ -21,6 +21,7 @@ import org.bukkit.util.Vector;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 public class ElectricShock extends PitEnchant {
 	public static ElectricShock INSTANCE;
@@ -69,6 +70,7 @@ public class ElectricShock extends PitEnchant {
 		excluded.add(player);
 		excluded.add(target);
 		chain(player, player, target, 0, getMaxBounces(enchantLvl), excluded);
+		Sounds.ELECTRIC_SHOCK.play(player);
 	}
 
 	private static List<LivingEntity> getPossibleTargets(Location location, List<Entity> excluded) {
@@ -91,7 +93,10 @@ public class ElectricShock extends PitEnchant {
 
 		Location drawLocation = startLocation.clone();
 		for(int i = 0; i < steps; i++) {
-			if(i >= 2 || bounceNumber != 0) drawEffect(drawLocation);
+			if(i >= 2 || bounceNumber != 0) {
+				if(bounceNumber != 0 && Math.random() < 0.07) littleSpark(drawLocation.clone());
+				drawEffect(drawLocation);
+			}
 			drawLocation.add(stepVector);
 		}
 
@@ -102,6 +107,15 @@ public class ElectricShock extends PitEnchant {
 		bounceNumber++;
 		for(LivingEntity possibleTarget : getPossibleTargets(endLocation, excluded))
 			chain(player, endingEntity, possibleTarget, bounceNumber, maxBounces, excluded);
+	}
+
+	private static void littleSpark(Location location) {
+		Vector vector = new Vector(Math.random() - 0.5, Math.random() - 0.5, Math.random() - 0.5).normalize();
+		int length = new Random().nextInt(5) + 3;
+		for(int i = 0; i < length; i++) {
+			location.add(vector.clone().multiply(0.25));
+			drawEffect(location);
+		}
 	}
 
 	private static void drawEffect(Location location) {
