@@ -15,6 +15,7 @@ public class CustomScoreboardPlaceholder implements APAPIPlaceholder {
 
 	@Override
 	public String getValue(Player player) {
+		if(!player.hasPermission("pitsim.scoreboard")) return null;
 		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
 		for(String refName :pitPlayer.scoreboardData.getPriorityList()) {
 			if(!pitPlayer.scoreboardData.getStatusMap().get(refName)) continue;
