@@ -1,14 +1,11 @@
 package dev.kyro.pitsim.cosmetics.misc.kyrocosmetic;
 
 import dev.kyro.pitsim.PitSim;
-import dev.kyro.pitsim.adarkzone.DarkzoneManager;
-import dev.kyro.pitsim.adarkzone.PitMob;
 import dev.kyro.pitsim.controllers.SpawnManager;
 import dev.kyro.pitsim.cosmetics.CosmeticManager;
+import dev.kyro.pitsim.misc.Misc;
 import org.bukkit.Effect;
-import org.bukkit.GameMode;
 import org.bukkit.Location;
-import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -52,28 +49,12 @@ public abstract class AIParticle {
 		particleList.remove(this);
 	}
 
-	public LivingEntity pickTarget() {
-		LivingEntity closestEntity = null;
-		double closestDistance = Double.MAX_VALUE;
-		if(SpawnManager.isInSpawn(owner.getLocation())) return null;
-		for(Entity entity : owner.getNearbyEntities(15, 15, 15)) {
-			if(!(entity instanceof LivingEntity) || SpawnManager.isInSpawn(entity.getLocation())) continue;
-			LivingEntity livingEntity = (LivingEntity) entity;
-			PitMob pitMob = DarkzoneManager.getPitMob(livingEntity);
-			if(pitMob == null && !(entity instanceof Player)) continue;
-
-			if(entity instanceof Player) {
-				Player player = (Player) entity;
-				if(player.getGameMode() == GameMode.CREATIVE || player.getGameMode() == GameMode.SPECTATOR) continue;
-			}
-
-			double testDistance = livingEntity.getLocation().distance(particleLocation);
-			if(testDistance > closestDistance) continue;
-			closestEntity = livingEntity;
-			closestDistance = testDistance;
+	public void pickTarget() {
+		if(SpawnManager.isInSpawn(owner.getLocation())) {
+			target = null;
+			return;
 		}
-		target = closestEntity;
-		return target;
+		target = Misc.getMobPlayerClosest(owner.getLocation(), 15, owner);
 	}
 
 	public void display(Effect effect) {

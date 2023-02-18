@@ -4,7 +4,6 @@ import dev.kyro.pitsim.misc.Misc;
 import dev.kyro.pitsim.misc.Sounds;
 import org.bukkit.Effect;
 import org.bukkit.Location;
-import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.util.Vector;
@@ -46,7 +45,7 @@ public class LeechParticle extends AIParticle {
 			}
 		}
 		if(state == State.IDLE && ticksUntilGoal == 0) {
-			LivingEntity target = pickTarget();
+			pickTarget();
 			if(target == null) {
 				Location newIdleLocation = getIdleLocation();
 				updateIdleStepVector(newIdleLocation);

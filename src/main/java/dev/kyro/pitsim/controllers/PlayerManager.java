@@ -35,6 +35,7 @@ import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -63,9 +64,9 @@ public class PlayerManager implements Listener {
 		realPlayers.add(uuid);
 	}
 
-	public static boolean isRealPlayer(Player player) {
-		if(player == null) return false;
-		return realPlayers.contains(player.getUniqueId());
+	public static boolean isRealPlayer(LivingEntity testPlayer) {
+		if(!(testPlayer instanceof Player)) return false;
+		return realPlayers.contains(testPlayer.getUniqueId());
 	}
 
 	static {

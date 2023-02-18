@@ -4,7 +4,6 @@ import dev.kyro.pitsim.misc.Misc;
 import org.bukkit.Bukkit;
 import org.bukkit.Effect;
 import org.bukkit.Location;
-import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
@@ -45,7 +44,7 @@ public class SwarmParticle extends AIParticle {
 			}
 		}
 		if(state == State.IDLE && ticksUntilGoal == 0) {
-			LivingEntity target = pickTarget();
+			pickTarget();
 			if(target == null || cooldownTicks != 0) {
 				Location newIdleLocation = getIdleLocation();
 				updateIdleStepVector(newIdleLocation);
