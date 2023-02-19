@@ -32,7 +32,7 @@ public class RAndR extends Killstreak {
 	public ItemStack getDisplayItem(Player player) {
 
 		AItemStackBuilder builder = new AItemStackBuilder(Material.GOLDEN_CARROT)
-				.setName("&e" + name)
+				.setName("&e" + displayName)
 				.setLore(new ALoreBuilder(
 						"&7Every: &c" + killInterval + " kills",
 						"",

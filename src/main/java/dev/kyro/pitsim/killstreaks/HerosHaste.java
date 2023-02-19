@@ -30,7 +30,7 @@ public class HerosHaste extends Killstreak {
 	@Override
 	public ItemStack getDisplayItem(Player player) {
 		AItemStackBuilder builder = new AItemStackBuilder(Material.BOOK)
-				.setName("&e" + name)
+				.setName("&e" + displayName)
 				.setLore(new ALoreBuilder(
 						"&7Every: &c" + killInterval + " kills",
 						"",

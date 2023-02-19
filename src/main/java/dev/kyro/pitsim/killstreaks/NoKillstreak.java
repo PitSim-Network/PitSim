@@ -29,7 +29,7 @@ public class NoKillstreak extends Killstreak {
 	@Override
 	public ItemStack getDisplayItem(Player player) {
 		AItemStackBuilder builder = new AItemStackBuilder(Material.GOLD_BLOCK)
-				.setName("&c" + name)
+				.setName("&c" + displayName)
 				.setLore(new ALoreBuilder(
 					"&7Wanna free up this slot for",
 					"&7some reason?"

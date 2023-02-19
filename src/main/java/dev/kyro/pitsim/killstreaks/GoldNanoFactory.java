@@ -85,14 +85,14 @@ public class GoldNanoFactory extends Killstreak {
 
 	@Override
 	public ItemStack getDisplayItem(Player player) {
-		AItemStackBuilder builder = new AItemStackBuilder(Material.GOLD_NUGGET)
-				.setName("&e" + name)
-				.setLore(new ALoreBuilder(
-					"&7Every: &c" + killInterval + " kills",
-					"", "&7Spawns &610 gold ingots. &7Picking them",
-					"&7up grants &cRegen IV &7(" + getRegenSeconds() + "s), &6123g&7,",
-					"&7and &6+25% gold &7on your next kill."
-				));
+
+		AItemStackBuilder builder = new AItemStackBuilder(Material.GOLD_NUGGET);
+		builder.setName("&e" + displayName);
+		builder.setLore(new ALoreBuilder(
+				"&7Every: &c" + killInterval + " kills",
+				"", "&7Spawns &610 gold ingots. &7Picking them",
+				"&7up grants &cRegen IV &7(" + getRegenSeconds() + "s), &6123g&7,",
+				"&7and &6+25% gold &7on your next kill."));
 
 		return builder.getItemStack();
 	}

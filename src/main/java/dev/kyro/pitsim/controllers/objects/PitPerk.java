@@ -13,7 +13,7 @@ public abstract class PitPerk implements Listener {
 
 	public static List<PitPerk> pitPerks = new ArrayList<>();
 
-	public String name;
+	public String displayName;
 	public String refName;
 	public ItemStack displayItem;
 	public int guiSlot;
@@ -22,9 +22,9 @@ public abstract class PitPerk implements Listener {
 	public PitPerk INSTANCE;
 	public boolean healing;
 
-	public PitPerk(String name, String refName, ItemStack displayItem, int guiSlot, boolean renownUnlockable, String upgradeRef, PitPerk instance, boolean healing) {
+	public PitPerk(String displayName, String refName, ItemStack displayItem, int guiSlot, boolean renownUnlockable, String upgradeRef, PitPerk instance, boolean healing) {
 //        INSTANCE = this;
-		this.name = name;
+		this.displayName = displayName;
 		this.refName = refName;
 		this.displayItem = displayItem;
 		this.guiSlot = guiSlot;
@@ -53,7 +53,7 @@ public abstract class PitPerk implements Listener {
 	public ItemStack getDisplayItem() {
 		return new AItemStackBuilder(displayItem.clone())
 				.setLore(getDescription())
-				.setName(name)
+				.setName(displayName)
 				.getItemStack();
 	}
 

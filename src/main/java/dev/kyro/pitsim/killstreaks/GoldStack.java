@@ -44,7 +44,7 @@ public class GoldStack extends Killstreak {
 	public ItemStack getDisplayItem(Player player) {
 		DecimalFormat formatter = new DecimalFormat("#.##");
 		AItemStackBuilder builder = new AItemStackBuilder(Material.GOLD_ORE)
-				.setName("&e" + name)
+				.setName("&e" + displayName)
 				.setLore(new ALoreBuilder(
 						"&7Every: &c" + killInterval + " kills",
 						"",

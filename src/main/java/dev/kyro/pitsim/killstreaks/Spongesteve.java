@@ -33,7 +33,7 @@ public class Spongesteve extends Killstreak {
 	@Override
 	public ItemStack getDisplayItem(Player player) {
 		AItemStackBuilder builder = new AItemStackBuilder(Material.SPONGE)
-				.setName("&e" + name)
+				.setName("&e" + displayName)
 				.setLore(new ALoreBuilder(
 						"&7Every: &c" + killInterval + " kills",
 						"",

@@ -26,30 +26,35 @@ import java.util.*;
 import java.util.concurrent.ExecutionException;
 
 public class AuctionManager implements Listener {
-
-	public static AuctionItem[] auctionItems = new AuctionItem[3];
+	public static final int AUCTION_NUM = 3;
+	public static AuctionItem[] auctionItems = new AuctionItem[AUCTION_NUM];
 
 	public static Location spawnLoc = new Location(MapManager.getDarkzone(), 178.5, 52, -1004.5, 180, 0);
 	public static Location returnLoc = new Location(MapManager.getDarkzone(), 255.5, 91, -134.5, -45, 0);
 
 	public List<Player> animationPlayers = new ArrayList<>();
 
-	static {
+	public AuctionManager() {
 		new BukkitRunnable() {
 			@Override
 			public void run() {
 //				TODO: FIX CODE IN OTHER TOOD
 				if(true) return;
 
-				if(!PitSim.getStatus().isDarkzone()) return;
-
 				if(haveAuctionsEnded()) {
 					for(AuctionItem item : auctionItems) item.endAuction();
 					generateNewAuctions();
 					AuctionDisplays.showItems();
+					CrossServerMessageManager.sendAuctionData("");
 				}
 			}
 		}.runTaskTimer(PitSim.INSTANCE, 10, 10);
+		new BukkitRunnable() {
+			@Override
+			public void run() {
+				CrossServerMessageManager.sendAuctionData("");
+			}
+		}.runTaskLater(PitSim.INSTANCE, 20 * 20);
 	}
 
 	public static void onStart() {
@@ -179,8 +184,16 @@ public class AuctionManager implements Listener {
 		return System.currentTimeMillis() > getAuctionEndTime();
 	}
 
+	public static boolean haveAuctionsEnded(long endTime) {
+		return System.currentTimeMillis() > endTime;
+	}
+
 	public static String getRemainingTime() {
 		return Misc.formatDurationFull(getAuctionEndTime() - System.currentTimeMillis(), true);
+	}
+
+	public static String getRemainingTime(long endTime) {
+		return formatTime(endTime - System.currentTimeMillis());
 	}
 
 	public static long getAuctionEndTime() {
