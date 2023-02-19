@@ -1,14 +1,20 @@
 package dev.kyro.pitsim.adarkzone.abilities;
 
 import dev.kyro.pitsim.adarkzone.RoutinePitBossAbility;
+import dev.kyro.pitsim.cosmetics.ParticleOffset;
+import dev.kyro.pitsim.cosmetics.PitParticle;
+import dev.kyro.pitsim.cosmetics.particles.BlockCrackParticle;
 import dev.kyro.pitsim.misc.Sounds;
 import dev.kyro.pitsim.misc.effects.FallingBlock;
+import net.minecraft.server.v1_8_R3.EntityPlayer;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
+import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
+import org.bukkit.material.MaterialData;
 import org.bukkit.util.Vector;
 
 import java.util.ArrayList;
@@ -71,7 +77,16 @@ public class PoundAbility extends RoutinePitBossAbility {
 			fallingBlock.setVelocity(vector);
 		}
 
+		PitParticle particle = new BlockCrackParticle(false, false, new MaterialData(Material.DIRT));
+
 		for(Player viewer : viewers) {
+			EntityPlayer nmsPlayer = ((CraftPlayer) viewer).getHandle();
+
+			for(int i = 0; i < 100; i++) {
+				particle.display(nmsPlayer, centerLocation, new ParticleOffset(5, 5, 5), null);
+			}
+
+
 			if(viewer.getLocation().distance(pitBoss.boss.getLocation()) > radius + 2) continue;
 
 			Vector vector = new Vector(0, 0.6, 0);
@@ -83,10 +98,6 @@ public class PoundAbility extends RoutinePitBossAbility {
 		//TODO: Use proximity instead of damage map
 
 		Sounds.EXTRACT.play(pitBoss.boss.getLocation());
-//		ParticleCollection collection = new ParticleCollection();
-////		PitParticle particle = new BlockCrackParticle(this, new MaterialData(Material.LAPIS_BLOCK));
-//		Vector vector = new Vector(0, 0.2, 0);
-//		collection.addParticle("main", particle, new ParticleOffset(vector, 0.5, 0, 0.5));
 	}
 }
 

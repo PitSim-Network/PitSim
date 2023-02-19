@@ -1,5 +1,6 @@
 package dev.kyro.pitsim.cosmetics.particles;
 
+import dev.kyro.pitsim.cosmetics.ParticleOffset;
 import dev.kyro.pitsim.cosmetics.PitParticle;
 import net.minecraft.server.v1_8_R3.EntityPlayer;
 import net.minecraft.server.v1_8_R3.EnumParticle;
@@ -9,6 +10,11 @@ import org.bukkit.material.MaterialData;
 
 public class BlockCrackParticle extends PitParticle {
 	public MaterialData materialData;
+
+	public BlockCrackParticle(MaterialData materialData, ParticleOffset offset) {
+		this(false, false, materialData);
+		this.materialData = materialData;
+	}
 
 	public BlockCrackParticle(boolean accountForPitch, boolean accountForYaw, MaterialData materialData) {
 		super(accountForPitch, accountForYaw);

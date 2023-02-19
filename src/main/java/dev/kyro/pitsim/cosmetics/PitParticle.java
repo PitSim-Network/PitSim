@@ -8,6 +8,10 @@ public abstract class PitParticle {
 	public boolean accountForYaw;
 	public boolean accountForPitch;
 
+	public PitParticle() {
+
+	}
+
 	public PitParticle(boolean accountForYaw, boolean accountForPitch) {
 		this.accountForYaw = accountForYaw;
 		this.accountForPitch = accountForPitch;
