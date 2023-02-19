@@ -46,7 +46,12 @@ public class AuctionManager implements Listener {
 				}
 			}
 		}.runTaskTimer(PitSim.INSTANCE, 10, 10);
-		CrossServerMessageManager.sendAuctionData(null);
+		new BukkitRunnable() {
+			@Override
+			public void run() {
+				CrossServerMessageManager.sendAuctionData(null);
+			}
+		}.runTaskLater(PitSim.INSTANCE, 20);
 	}
 
 	public static void onStart() {
