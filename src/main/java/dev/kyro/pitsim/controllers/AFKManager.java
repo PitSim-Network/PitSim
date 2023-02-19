@@ -1,6 +1,5 @@
 package dev.kyro.pitsim.controllers;
 
-import de.myzelyam.api.vanish.VanishAPI;
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.misc.Misc;
@@ -44,7 +43,7 @@ public class AFKManager implements Listener {
 					}
 					lastLocation.put(player, playerLoc);
 
-					if(AFKRotations.containsKey(player) && AFKRotations.get(player) >= 6 && !VanishAPI.isInvisible(player)) {
+					if(AFKRotations.containsKey(player) && AFKRotations.get(player) >= 6) {
 						AFKPlayers.add(player);
 						AOutput.send(player, "&cYou are now AFK!");
 						AFKRotations.remove(player);
