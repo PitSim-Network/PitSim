@@ -7,6 +7,9 @@ import net.minecraft.server.v1_8_R3.PacketPlayOutWorldParticles;
 import org.bukkit.Location;
 
 public class ExplosionHugeParticle extends PitParticle {
+	public ExplosionHugeParticle() {
+	}
+
 	public ExplosionHugeParticle(boolean accountForPitch, boolean accountForYaw) {
 		super(accountForPitch, accountForYaw);
 	}

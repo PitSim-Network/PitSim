@@ -30,7 +30,6 @@ public class PoundAbility extends RoutinePitBossAbility {
 
 	@Override
 	public void onRoutineExecute() {
-		System.out.println("Pound");
 		Location centerLocation = pitBoss.boss.getLocation().clone().subtract(0, 1, 0);
 
 		List<Block> applicableBlocks = new ArrayList<>();
@@ -87,7 +86,6 @@ public class PoundAbility extends RoutinePitBossAbility {
 
 				particle.display(nmsPlayer, centerLocation, new ParticleOffset(0, 4, 0, 10, 10, 10));
 			}
-
 
 			if(viewer.getLocation().distance(pitBoss.boss.getLocation()) > radius + 2) continue;
 

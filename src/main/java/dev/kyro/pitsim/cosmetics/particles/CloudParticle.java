@@ -7,6 +7,8 @@ import net.minecraft.server.v1_8_R3.PacketPlayOutWorldParticles;
 import org.bukkit.Location;
 
 public class CloudParticle extends PitParticle {
+	public CloudParticle() {}
+
 	public CloudParticle(boolean accountForPitch, boolean accountForYaw) {
 		super(accountForPitch, accountForYaw);
 	}

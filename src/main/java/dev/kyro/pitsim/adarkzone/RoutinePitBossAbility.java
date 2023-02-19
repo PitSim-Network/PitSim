@@ -11,5 +11,3 @@ public abstract class RoutinePitBossAbility extends PitBossAbility {
 		return routineWeight;
 	}
 }
-
-// Path: src\main\java\dev\kyro\pitsim\adarkzone\RoutinePitBossAbility.java

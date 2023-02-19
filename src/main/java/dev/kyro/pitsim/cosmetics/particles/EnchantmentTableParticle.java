@@ -7,6 +7,9 @@ import net.minecraft.server.v1_8_R3.PacketPlayOutWorldParticles;
 import org.bukkit.Location;
 
 public class EnchantmentTableParticle extends PitParticle {
+	public EnchantmentTableParticle() {
+	}
+
 	public EnchantmentTableParticle(boolean accountForPitch, boolean accountForYaw) {
 		super(accountForPitch, accountForYaw);
 	}
