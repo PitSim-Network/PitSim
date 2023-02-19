@@ -83,9 +83,8 @@ public class PoundAbility extends RoutinePitBossAbility {
 			EntityPlayer nmsPlayer = ((CraftPlayer) viewer).getHandle();
 
 			for(int i = 0; i < 100; i++) {
-				particle.display(nmsPlayer, centerLocation, new ParticleOffset(5, 5, 5), null);
+				particle.display(nmsPlayer, centerLocation, new ParticleOffset(5, 5, 5));
 			}
-
 
 			if(viewer.getLocation().distance(pitBoss.boss.getLocation()) > radius + 2) continue;
 

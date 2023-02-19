@@ -7,6 +7,9 @@ import net.minecraft.server.v1_8_R3.PacketPlayOutWorldParticles;
 import org.bukkit.Location;
 
 public class VillagerHappyParticle extends PitParticle {
+	public VillagerHappyParticle() {
+	}
+
 	public VillagerHappyParticle(boolean accountForPitch, boolean accountForYaw) {
 		super(accountForPitch, accountForYaw);
 	}
