@@ -89,7 +89,7 @@ public class KillstreakPanel extends AGUIPanel {
 
 					pitPlayer.killstreaks.set(killstreakSlot - 1, killstreak);
 					Sounds.SUCCESS.play(player);
-					ChatTriggerManager.sendPerksInfo(pitPlayer);
+					if(ChatTriggerManager.isSubscribed(player)) ChatTriggerManager.sendPerksInfo(pitPlayer);
 					openPreviousGUI();
 				}
 			}
