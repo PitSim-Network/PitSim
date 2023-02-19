@@ -63,7 +63,7 @@ public class AuraOfProtection extends Killstreak {
 	public ItemStack getDisplayItem(Player player) {
 
 		AItemStackBuilder builder = new AItemStackBuilder(Material.SLIME_BALL);
-		builder.setName("&e" + name);
+		builder.setName("&e" + displayName);
 		builder.setLore(new ALoreBuilder("&7Every: &c" + killInterval + " kills", "", "&7Take &950% &7less true damage for", "&715 seconds."));
 
 		return builder.getItemStack();

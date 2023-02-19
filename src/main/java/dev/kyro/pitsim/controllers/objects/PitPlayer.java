@@ -34,6 +34,7 @@ import dev.kyro.pitsim.killstreaks.NoKillstreak;
 import dev.kyro.pitsim.megastreaks.*;
 import dev.kyro.pitsim.misc.Misc;
 import dev.kyro.pitsim.perks.*;
+import dev.kyro.pitsim.settings.scoreboard.ScoreboardData;
 import dev.kyro.pitsim.storage.StorageManager;
 import dev.kyro.pitsim.storage.StorageProfile;
 import dev.kyro.pitsim.tutorial.Tutorial;
@@ -159,6 +160,7 @@ public class PitPlayer {
 
 	public PlayerStats stats = new PlayerStats();
 	public Tutorial tutorial = new Tutorial();
+	public ScoreboardData scoreboardData = new ScoreboardData();
 	private PassData passData = new PassData();
 	public DarkzoneData darkzoneData = new DarkzoneData();
 
@@ -241,8 +243,9 @@ public class PitPlayer {
 					System.out.println();
 					exception.printStackTrace();
 					System.out.println("--------------------------------------------------");
+					Misc.alertDiscord("CRITICAL ERROR: data for " + player.getName() + " failed to final save");
 				}
-			});
+			}).start();
 			return;
 		}
 
@@ -439,6 +442,7 @@ public class PitPlayer {
 
 		stats.init(this);
 		tutorial.init(this);
+		scoreboardData.init(this);
 		updateXPBar();
 	}
 

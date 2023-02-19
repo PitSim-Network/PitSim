@@ -24,7 +24,8 @@ public class RingArmor extends PitEnchant {
 		int attackerEnchantLvl = attackEvent.getAttackerEnchantLevel(this);
 		int defenderEnchantLvl = attackEvent.getDefenderEnchantLevel(this);
 
-		if(attackEvent.isAttackerPlayer() && attackerEnchantLvl != 0 && attackEvent.getArrow() == null && HitCounter.getCharge(attackEvent.getAttackerPlayer(), this) == 1) {
+		if(attackEvent.isAttackerPlayer() && attackerEnchantLvl != 0 && attackEvent.getArrow() == null &&
+				HitCounter.getCharge(attackEvent.getAttackerPlayer(), this) == 1) {
 			attackEvent.increasePercent += getDamageIncrease(attackerEnchantLvl) / 100D;
 			HitCounter.setCharge(attackEvent.getAttackerPlayer(), this, 0);
 		}
@@ -36,7 +37,11 @@ public class RingArmor extends PitEnchant {
 	}
 
 	@Override
-	public List<String> getNormalDescription(int enchantLvl) {
+	public List<String> getDescription(int enchantLvl) {
+		if(enchantLvl == 1) return new PitLoreBuilder(
+				"&7Receive &9-" + getDamageReduction(enchantLvl) + "% &7damage when shot"
+		).getLore();
+
 		return new PitLoreBuilder(
 				"&7Receive &9-" + getDamageReduction(enchantLvl) + "% &7damage when shot. Deal &c+" +
 				getDamageIncrease(enchantLvl) + "% &7damage on your next melee hit"
@@ -48,10 +53,10 @@ public class RingArmor extends PitEnchant {
 	}
 
 	public int getDamageReduction(int enchantLvl) {
-		return enchantLvl * 15 + 15;
+		return 60;
 	}
 
 	public int getDamageIncrease(int enchantLvl) {
-		return enchantLvl * 15 + 5;
+		return enchantLvl * 15 + 25;
 	}
 }

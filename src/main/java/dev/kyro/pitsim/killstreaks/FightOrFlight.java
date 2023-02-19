@@ -58,7 +58,7 @@ public class FightOrFlight extends Killstreak {
 	public ItemStack getDisplayItem(Player player) {
 
 		AItemStackBuilder builder = new AItemStackBuilder(Material.FIREBALL);
-		builder.setName("&e" + name);
+		builder.setName("&e" + displayName);
 		builder.setLore(new ALoreBuilder("&7Every: &c" + killInterval + " kills", "", "&7If below half &c\u2764&7:",
 				"&7Gain &eSpeed III &7for 7 seconds.", "", "&7Otherwise:", "&7Deal &c+20% &7damage for 7 seconds."));
 

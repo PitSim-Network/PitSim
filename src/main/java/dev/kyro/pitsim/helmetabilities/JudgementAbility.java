@@ -23,6 +23,7 @@ import java.text.DecimalFormat;
 import java.util.*;
 
 public class JudgementAbility extends HelmetAbility {
+	public static JudgementAbility INSTANCE;
 	public static Map<UUID, Integer> cooldownMap = new HashMap<>();
 	public static Map<Player, Integer> maxActivationMap = new HashMap<>();
 	public static final int GOLD_COST = 2_000;
@@ -53,6 +54,7 @@ public class JudgementAbility extends HelmetAbility {
 
 	public JudgementAbility(Player player) {
 		super(player, "Judgement", "judgement", true, 15);
+		INSTANCE = this;
 	}
 
 	@EventHandler

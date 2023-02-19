@@ -34,7 +34,7 @@ public class Spongesteve extends Killstreak {
 	public ItemStack getDisplayItem(Player player) {
 
 		AItemStackBuilder builder = new AItemStackBuilder(Material.SPONGE);
-		builder.setName("&e" + name);
+		builder.setName("&e" + displayName);
 		builder.setLore(new ALoreBuilder("&7Every: &c" + killInterval + " kills", "", "&7Gain &6" + Misc.getHearts(AMOUNT) + " Absorption&7."));
 
 		return builder.getItemStack();

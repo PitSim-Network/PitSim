@@ -83,6 +83,7 @@ import dev.kyro.pitsim.pitmaps.DimensionsMap;
 import dev.kyro.pitsim.pitmaps.SandMap;
 import dev.kyro.pitsim.pitmaps.XmasMap;
 import dev.kyro.pitsim.placeholders.*;
+import dev.kyro.pitsim.settings.scoreboard.*;
 import dev.kyro.pitsim.storage.StorageManager;
 import dev.kyro.pitsim.upgrades.*;
 import net.citizensnpcs.api.CitizensAPI;
@@ -257,6 +258,7 @@ public class PitSim extends JavaPlugin {
 		AHook.registerPlaceholder(new GoldPlaceholder());
 		AHook.registerPlaceholder(new NicknamePlaceholder());
 		AHook.registerPlaceholder(new ServerIPPlaceholder());
+		AHook.registerPlaceholder(new CustomScoreboardPlaceholder());
 
 		new LeaderboardPlaceholders().register();
 		new SubLevelPlaceholders().register();
@@ -270,6 +272,7 @@ public class PitSim extends JavaPlugin {
 		registerHelmetAbilities();
 		registerKits();
 		registerCosmetics();
+		registerScoreboardOptions();
 
 		PassManager.registerPasses();
 		if(getStatus().isDarkzone()) AuctionManager.onStart();
@@ -288,7 +291,6 @@ public class PitSim extends JavaPlugin {
 				registerNPCs();
 			}
 		}.runTaskLater(PitSim.INSTANCE, 20);
-
 	}
 
 	@Override
@@ -302,7 +304,7 @@ public class PitSim extends JavaPlugin {
 //		}
 //		System.out.println("Database disconnected");
 
-		FirestoreManager.AUCTION.save();
+		if(status.isDarkzone()) FirestoreManager.AUCTION.save();
 
 		for(Player onlinePlayer : Bukkit.getOnlinePlayers()) {
 			PitPlayer pitPlayer = PitPlayer.getPitPlayer(onlinePlayer);
@@ -515,6 +517,16 @@ public class PitSim extends JavaPlugin {
 		LeaderboardManager.registerLeaderboard(new HighestBidLeaderboard());
 	}
 
+	private void registerScoreboardOptions() {
+		ScoreboardManager.registerScoreboard(new StrengthScoreboard());
+		ScoreboardManager.registerScoreboard(new GladiatorScoreboard());
+		ScoreboardManager.registerScoreboard(new TelebowScoreboard());
+		ScoreboardManager.registerScoreboard(new BulletTimeScoreboard());
+		ScoreboardManager.registerScoreboard(new ReallyToxicScoreboard());
+		ScoreboardManager.registerScoreboard(new JudgementScoreboard());
+		ScoreboardManager.registerScoreboard(new AuctionScoreboard());
+	}
+
 	private void registerNPCs() {
 		if(status.isDarkzone()) {
 			NPCManager.registerNPC(new TaintedShopNPC(Collections.singletonList(MapManager.getDarkzone())));
@@ -549,7 +561,6 @@ public class PitSim extends JavaPlugin {
 		new ReloadCommand(adminCommand, "reload");
 		new BypassCommand(adminCommand, "bypass");
 		new ExtendCommand(adminCommand, "extend");
-		new LockdownCommand(adminCommand, "lockdown");
 		new UnlockCosmeticCommand(adminCommand, "unlockcosmetic");
 		new GodCommand(adminCommand, "god");
 		new BountyCommand(setCommand, "bounty");
@@ -600,6 +611,8 @@ public class PitSim extends JavaPlugin {
 		getCommand("ignore").setTabCompleter(new IgnoreCommand());
 		getCommand("cookie").setExecutor(new StaffCookieCommand());
 		getCommand("loadskin").setExecutor(new LoadSkinCommand());
+		getCommand("ineeddata").setExecutor(new ChatTriggerSubscribeCommand());
+		getCommand("givemedata").setExecutor(new ChatTriggerRequestCommand());
 		//TODO: Remove this
 //		getCommand("massmigrate").setExecutor(new MassMigrateCommand());
 
@@ -646,7 +659,6 @@ public class PitSim extends JavaPlugin {
 		getServer().getPluginManager().registerEvents(new ScoreboardManager(), this);
 		getServer().getPluginManager().registerEvents(new ProxyMessaging(), this);
 		getServer().getPluginManager().registerEvents(new LobbySwitchManager(), this);
-		getServer().getPluginManager().registerEvents(new AuctionManager(), this);
 		getServer().getPluginManager().registerEvents(new PassManager(), this);
 		getServer().getPluginManager().registerEvents(new SkinManager(), this);
 		getServer().getPluginManager().registerEvents(new TimeManager(), this);
@@ -659,6 +671,7 @@ public class PitSim extends JavaPlugin {
 		getServer().getPluginManager().registerEvents(new GrimManager(), this);
 		getServer().getPluginManager().registerEvents(new MiscManager(), this);
 		getServer().getPluginManager().registerEvents(new FirstJoinManager(), this);
+		getServer().getPluginManager().registerEvents(new ChatTriggerManager(), this);
 //		getServer().getPluginManager().registerEvents(new AIManager(), this);
 		getServer().getPluginManager().registerEvents(new MarketMessaging(), this);
 		getServer().getPluginManager().registerEvents(new MigrationManager(), this);

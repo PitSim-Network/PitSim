@@ -27,6 +27,7 @@ public class SettingsPanel extends AGUIPanel {
 
 	public static ItemStack cosmeticItem;
 	public static ItemStack particleItem;
+	public static ItemStack scoreboardItem;
 
 	static {
 		cosmeticItem = new AItemStackBuilder(Material.RED_ROSE)
@@ -42,6 +43,13 @@ public class SettingsPanel extends AGUIPanel {
 						"&7Click to open the particles menu"
 				))
 				.getItemStack();
+
+		scoreboardItem = new AItemStackBuilder(Material.SIGN)
+				.setName("&2Scoreboard Settings")
+				.setLore(new ALoreBuilder(
+						"&7Click to customize your scoreboard"
+				))
+				.getItemStack();
 	}
 
 	public SettingsPanel(AGUI gui) {
@@ -52,6 +60,7 @@ public class SettingsPanel extends AGUIPanel {
 
 		getInventory().setItem(13, cosmeticItem);
 		getInventory().setItem(14, particleItem);
+		getInventory().setItem(19, scoreboardItem);
 
 		ItemStack pants = new ItemStack(Material.LEATHER_LEGGINGS);
 		ItemMeta pantsmeta = pants.getItemMeta();
@@ -147,16 +156,14 @@ public class SettingsPanel extends AGUIPanel {
 		else headlore.add(ChatColor.RED + "Access to /chat");
 		if(player.hasPermission("pitsim.pantscolor")) headlore.add(ChatColor.GREEN + "Pants Colorizer");
 		else headlore.add(ChatColor.RED + "Pants Colorizer");
-		if(player.hasPermission("pitsim.deathcry")) headlore.add(ChatColor.GREEN + "Death Cries");
-		else headlore.add(ChatColor.RED + "Death Cries");
-		if(player.hasPermission("pitsim.killeffect")) headlore.add(ChatColor.GREEN + "Kill Effects");
-		else headlore.add(ChatColor.RED + "Kill Effects");
 		if(player.hasPermission("pitsim.itemrename")) headlore.add(ChatColor.GREEN + "Item Rename");
 		else headlore.add(ChatColor.RED + "Item Rename");
 		if(player.hasPermission("pitsim.stereo")) headlore.add(ChatColor.GREEN + "Stereo Pants");
 		else headlore.add(ChatColor.RED + "Stereo Pants");
 		if(player.hasPermission("pitsim.chatcolor")) headlore.add(ChatColor.GREEN + "Chat Colors");
 		else headlore.add(ChatColor.RED + "Chat Colors");
+		if(player.hasPermission("pitsim.scoreboard")) headlore.add(ChatColor.GREEN + "Scoreboard Settings");
+		else headlore.add(ChatColor.RED + "Scoreboard Settings");
 		if(player.hasPermission("galacticvaults.limit.14"))
 			headlore.add(ChatColor.GRAY + "14x " + ChatColor.DARK_PURPLE + "Ender Chest Pages");
 		else if(player.hasPermission("galacticvaults.limit.10"))
@@ -186,7 +193,7 @@ public class SettingsPanel extends AGUIPanel {
 
 	@Override
 	public int getRows() {
-		return 3;
+		return 4;
 	}
 
 	@Override
@@ -214,6 +221,9 @@ public class SettingsPanel extends AGUIPanel {
 			openPanel(settingsGUI.cosmeticPanel);
 		} else if(slot == 14) {
 			openPanel(settingsGUI.particlesPanel);
+		} else if(slot == 19) {
+			if(!player.hasPermission("pitsim.scoreboard")) return;
+			openPanel(settingsGUI.scoreboardOptionsPanel);
 		}
 	}
 

@@ -47,7 +47,7 @@ public class Explicious extends Killstreak {
 	public ItemStack getDisplayItem(Player player) {
 
 		AItemStackBuilder builder = new AItemStackBuilder(Material.INK_SACK, 1, 12);
-		builder.setName("&e" + name);
+		builder.setName("&e" + displayName);
 		builder.setLore(new ALoreBuilder("&7Every: &c" + killInterval + " kills", "", "&7Gain &b+50 XP&7 and &b+50 max XP", "&7on your next kill."));
 
 		return builder.getItemStack();

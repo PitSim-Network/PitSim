@@ -32,7 +32,7 @@ public class TacticalRetreat extends Killstreak {
 	public ItemStack getDisplayItem(Player player) {
 
 		AItemStackBuilder builder = new AItemStackBuilder(Material.DOUBLE_PLANT, 1, 2);
-		builder.setName("&e" + name);
+		builder.setName("&e" + displayName);
 		builder.setLore(new ALoreBuilder("&7Every: &c" + killInterval + " kills", "", "&7Gain &cRegeneration IV &7and", "&cSlowness IV &7for 5 seconds."));
 
 		return builder.getItemStack();

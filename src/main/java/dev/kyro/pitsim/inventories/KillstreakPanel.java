@@ -6,6 +6,7 @@ import dev.kyro.arcticapi.gui.AGUI;
 import dev.kyro.arcticapi.gui.AGUIPanel;
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.arcticapi.misc.AUtil;
+import dev.kyro.pitsim.controllers.ChatTriggerManager;
 import dev.kyro.pitsim.controllers.PerkManager;
 import dev.kyro.pitsim.controllers.objects.Killstreak;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
@@ -24,7 +25,6 @@ import org.bukkit.inventory.meta.ItemMeta;
 import java.util.*;
 
 public class KillstreakPanel extends AGUIPanel {
-
 	public static Map<Killstreak, Integer> killstreakSlots = new HashMap<>();
 
 	public PerkGUI perkGUI;
@@ -75,7 +75,6 @@ public class KillstreakPanel extends AGUIPanel {
 							Sounds.ERROR.play(player);
 							return;
 						}
-
 					}
 
 					Killstreak previousKillstreak = getKillstreakFromInterval(player, killstreak.killInterval);
@@ -84,17 +83,16 @@ public class KillstreakPanel extends AGUIPanel {
 							if(i == killstreakSlot - 1) continue;
 							if(previousKillstreak.refName.equals("NoKillstreak")) continue;
 							pitPlayer.killstreaks.set(i, NoKillstreak.INSTANCE);
-							AOutput.error(player, "&c&lDISABLED!&7 Disabled &a" + previousKillstreak.name + " &7because you cannot have two killstreaks with the same kill interval!");
+							AOutput.error(player, "&c&lDISABLED!&7 Disabled &a" + previousKillstreak.displayName + " &7because you cannot have two killstreaks with the same kill interval!");
 						}
 					}
 
 					pitPlayer.killstreaks.set(killstreakSlot - 1, killstreak);
 					Sounds.SUCCESS.play(player);
+					if(ChatTriggerManager.isSubscribed(player)) ChatTriggerManager.sendPerksInfo(pitPlayer);
 					openPreviousGUI();
-
 				}
 			}
-
 		}
 	}
 
@@ -106,7 +104,7 @@ public class KillstreakPanel extends AGUIPanel {
 		AItemStackBuilder builder3Kills = new AItemStackBuilder(Material.ITEM_FRAME);
 		builder3Kills.setName("&c3 Kills");
 		if(getKillstreakFromInterval(player, 3) != null) {
-			builder3Kills.setLore(new ALoreBuilder("&7Selected: &e" + Objects.requireNonNull(getKillstreakFromInterval(player, 3)).name));
+			builder3Kills.setLore(new ALoreBuilder("&7Selected: &e" + Objects.requireNonNull(getKillstreakFromInterval(player, 3)).displayName));
 			Misc.addEnchantGlint(builder3Kills.getItemStack());
 		}
 		getInventory().setItem(10, builder3Kills.getItemStack());
@@ -114,7 +112,7 @@ public class KillstreakPanel extends AGUIPanel {
 		AItemStackBuilder builder7Kills = new AItemStackBuilder(Material.ITEM_FRAME);
 		builder7Kills.setName("&c7 Kills");
 		if(getKillstreakFromInterval(player, 7) != null) {
-			builder7Kills.setLore(new ALoreBuilder("&7Selected: &e" + Objects.requireNonNull(getKillstreakFromInterval(player, 7)).name));
+			builder7Kills.setLore(new ALoreBuilder("&7Selected: &e" + Objects.requireNonNull(getKillstreakFromInterval(player, 7)).displayName));
 			Misc.addEnchantGlint(builder7Kills.getItemStack());
 		}
 		getInventory().setItem(19, builder7Kills.getItemStack());
@@ -122,7 +120,7 @@ public class KillstreakPanel extends AGUIPanel {
 		AItemStackBuilder builder15Kills = new AItemStackBuilder(Material.ITEM_FRAME);
 		builder15Kills.setName("&c15 Kills");
 		if(getKillstreakFromInterval(player, 15) != null) {
-			builder15Kills.setLore(new ALoreBuilder("&7Selected: &e" + Objects.requireNonNull(getKillstreakFromInterval(player, 15)).name));
+			builder15Kills.setLore(new ALoreBuilder("&7Selected: &e" + Objects.requireNonNull(getKillstreakFromInterval(player, 15)).displayName));
 			Misc.addEnchantGlint(builder15Kills.getItemStack());
 		}
 		getInventory().setItem(28, builder15Kills.getItemStack());
@@ -130,7 +128,7 @@ public class KillstreakPanel extends AGUIPanel {
 		AItemStackBuilder builder40Kills = new AItemStackBuilder(Material.ITEM_FRAME);
 		builder40Kills.setName("&c40 Kills");
 		if(getKillstreakFromInterval(player, 40) != null) {
-			builder40Kills.setLore(new ALoreBuilder("&7Selected: &e" + Objects.requireNonNull(getKillstreakFromInterval(player, 40)).name));
+			builder40Kills.setLore(new ALoreBuilder("&7Selected: &e" + Objects.requireNonNull(getKillstreakFromInterval(player, 40)).displayName));
 			Misc.addEnchantGlint(builder40Kills.getItemStack());
 		}
 		getInventory().setItem(37, builder40Kills.getItemStack());
@@ -165,15 +163,15 @@ public class KillstreakPanel extends AGUIPanel {
 			AItemStackBuilder builder = new AItemStackBuilder(killstreak.getDisplayItem(player));
 			ALoreBuilder loreBuilder = new ALoreBuilder(builder.getItemStack().getItemMeta().getLore()).addLore("");
 			if(hasKillstreakEquipped(player, killstreak)) {
-				builder.setName("&a" + killstreak.name);
+				builder.setName("&a" + killstreak.displayName);
 				loreBuilder.addLore("&aAlready selected!");
 				Misc.addEnchantGlint(builder.getItemStack());
 			} else if(pitPlayer.prestige < killstreak.prestige) {
-				builder.setName("&c" + killstreak.name);
+				builder.setName("&c" + killstreak.displayName);
 				loreBuilder.addLore("&cUnlocked at prestige &e" + AUtil.toRoman(killstreak.prestige));
 				builder.getItemStack().setType(Material.BEDROCK);
 			} else {
-				builder.setName("&e" + killstreak.name);
+				builder.setName("&e" + killstreak.displayName);
 				loreBuilder.addLore("&eClick to select!");
 			}
 
@@ -189,7 +187,6 @@ public class KillstreakPanel extends AGUIPanel {
 		for(int i = 0; i < getInventory().getSize(); i++) {
 			getInventory().setItem(i, new ItemStack(Material.AIR));
 		}
-
 	}
 
 	public static Killstreak getKillstreakFromInterval(Player player, int interval) {

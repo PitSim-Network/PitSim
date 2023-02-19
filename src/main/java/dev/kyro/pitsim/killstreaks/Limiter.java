@@ -52,7 +52,7 @@ public class Limiter extends Killstreak {
 	public ItemStack getDisplayItem(Player player) {
 
 		AItemStackBuilder builder = new AItemStackBuilder(Material.ANVIL);
-		builder.setName("&e" + name);
+		builder.setName("&e" + displayName);
 		builder.setLore(new ALoreBuilder("&7Every: &c" + killInterval + " kills", "", "&7Limit the true damage you",
 				"&7can take per hit to &9" + Misc.getHearts(2), "&7for 3 seconds"));
 

@@ -94,7 +94,6 @@ public class PerkPanel extends AGUIPanel {
 				openPanel(perkGUI.killstreakPanel);
 			}
 		}
-
 	}
 
 	@Override
@@ -108,7 +107,7 @@ public class PerkPanel extends AGUIPanel {
 			ItemStack perkItem = new ItemStack(pitPerk.displayItem);
 			ItemMeta meta = perkItem.getItemMeta();
 
-			if(pitPerk.name.equals("No Perk")) {
+			if(pitPerk.displayName.equals("No Perk")) {
 				meta.setDisplayName(ChatColor.translateAlternateColorCodes('&',
 						"&aPerk Slot #" + (i + 1)));
 			} else {
@@ -117,10 +116,10 @@ public class PerkPanel extends AGUIPanel {
 			}
 			List<String> lore = new ArrayList<>();
 
-			if(pitPerk.name.equals("No Perk")) {
+			if(pitPerk.displayName.equals("No Perk")) {
 				lore.add(ChatColor.translateAlternateColorCodes('&', "&7Select a perk to fill this slot."));
 			} else {
-				lore.add(ChatColor.translateAlternateColorCodes('&', "&7Selected: &a" + pitPerk.name));
+				lore.add(ChatColor.translateAlternateColorCodes('&', "&7Selected: &a" + pitPerk.displayName));
 				lore.add("");
 				lore.addAll(pitPerk.getDescription());
 			}
@@ -148,7 +147,7 @@ public class PerkPanel extends AGUIPanel {
 			ALoreBuilder loreBuilder = new ALoreBuilder();
 			if(!killstreak.refName.equals("NoKillstreak")) {
 				builder.setName("&eKillstreak slot #" + (i + 1));
-				loreBuilder.addLore("&7Selected: &e" + killstreak.name, "");
+				loreBuilder.addLore("&7Selected: &e" + killstreak.displayName, "");
 				loreBuilder.addLore(builder.getItemStack().getItemMeta().getLore());
 				loreBuilder.addLore("", "&eClick to switch killstreak!");
 

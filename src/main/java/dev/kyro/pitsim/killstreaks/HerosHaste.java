@@ -31,7 +31,7 @@ public class HerosHaste extends Killstreak {
 	public ItemStack getDisplayItem(Player player) {
 
 		AItemStackBuilder builder = new AItemStackBuilder(Material.BOOK);
-		builder.setName("&e" + name);
+		builder.setName("&e" + displayName);
 		builder.setLore(new ALoreBuilder("&7Every: &c" + killInterval + " kills", "", "&7Gain &eSpeed IV &7for 8 seconds."));
 
 		return builder.getItemStack();
