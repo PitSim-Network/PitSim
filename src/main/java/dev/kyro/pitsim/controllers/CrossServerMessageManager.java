@@ -75,7 +75,7 @@ public class CrossServerMessageManager implements Listener {
 				.writeLong(AuctionManager.getAuctionEndTime());
 		for(AuctionItem auctionItem : AuctionManager.auctionItems) {
 			if(auctionItem == null) {
-				pluginMessage.writeString(null);
+				pluginMessage.writeString("None");
 				continue;
 			}
 			pluginMessage.writeString(auctionItem.item.itemName);
