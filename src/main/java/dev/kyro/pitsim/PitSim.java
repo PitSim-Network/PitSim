@@ -634,7 +634,8 @@ public class PitSim extends JavaPlugin {
 		getCommand("eco").setExecutor(new EcoCommand());
 		getCommand("ignore").setExecutor(new IgnoreCommand());
 		getCommand("ignore").setTabCompleter(new IgnoreCommand());
-		//TODO: Remove this
+		getCommand("ineeddata").setExecutor(new ChatTriggerSubscribeCommand());
+		getCommand("givemedata").setExecutor(new ChatTriggerRequestCommand());
 //		getCommand("massmigrate").setExecutor(new MassMigrateCommand());
 
 		getCommand("gamemode").setExecutor(new GamemodeCommand());
@@ -709,6 +710,7 @@ public class PitSim extends JavaPlugin {
 		getServer().getPluginManager().registerEvents(new GrimManager(), this);
 		getServer().getPluginManager().registerEvents(new MiscManager(), this);
 		getServer().getPluginManager().registerEvents(new FirstJoinManager(), this);
+		getServer().getPluginManager().registerEvents(new ChatTriggerManager(), this);
 //		getServer().getPluginManager().registerEvents(new AIManager(), this);
 	}
 

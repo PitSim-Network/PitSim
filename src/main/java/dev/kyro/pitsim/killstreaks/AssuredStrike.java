@@ -52,7 +52,7 @@ public class AssuredStrike extends Killstreak {
 	public ItemStack getDisplayItem(Player player) {
 
 		AItemStackBuilder builder = new AItemStackBuilder(Material.DIAMOND_SWORD);
-		builder.setName("&e" + name);
+		builder.setName("&e" + displayName);
 		builder.setLore(new ALoreBuilder("&7Every: &c" + killInterval + " kills", "", "&7Next melee hit deals &c+35%",
 				"&cdamage &7and grants &eSpeed I", "&7for 8 seconds."));
 

@@ -33,7 +33,7 @@ public class GladiatorScoreboard extends ScoreboardOption {
 				.setName(getDisplayName())
 				.setLore(new ALoreBuilder(
 						"&7Shows the current damage",
-						"&7reduction from " + "&a" + Gladiator.INSTANCE.name + " &7when",
+						"&7reduction from " + "&a" + Gladiator.INSTANCE.displayName + " &7when",
 						"&7applicable"
 				)).getItemStack();
 		return itemStack;

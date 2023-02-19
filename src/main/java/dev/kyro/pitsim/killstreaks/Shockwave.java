@@ -88,7 +88,7 @@ public class Shockwave extends Killstreak {
 	public ItemStack getDisplayItem(Player player) {
 
 		AItemStackBuilder builder = new AItemStackBuilder(Material.MONSTER_EGG, 1, 60);
-		builder.setName("&e" + name);
+		builder.setName("&e" + displayName);
 		builder.setLore(new ALoreBuilder("&7Every: &c" + killInterval + " kills", "", "&7Send out a shockwave, doing", "&7massive damage to nearby bots."));
 
 		return builder.getItemStack();

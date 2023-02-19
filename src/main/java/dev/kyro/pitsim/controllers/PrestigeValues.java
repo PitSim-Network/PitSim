@@ -15,11 +15,19 @@ public class PrestigeValues {
 
 	public static Map<Integer, Long> totalXPMap = new LinkedHashMap<>();
 
-	public static long getTotalXP(int prestige, int level, long remainingXP) {
+	public static long getTotalXPForPrestige(int prestige, int level, long remainingXP) {
 		PrestigeInfo prestigeInfo = getPrestigeInfo(prestige);
-		long totalXP = getXpUpToPrestige(prestige);
+		long totalXP = 0;
 		for(int i = 1; i < level + 1; i++) totalXP += getXPForLevel(i) * prestigeInfo.xpMultiplier;
 		return totalXP - remainingXP;
+	}
+
+	public static long getTotalXPForPrestige(int prestige) {
+		return totalXPMap.get(prestige);
+	}
+
+	public static long getTotalXP(int prestige, int level, long remainingXP) {
+		return getXpUpToPrestige(prestige) + getTotalXPForPrestige(prestige, level, remainingXP);
 	}
 
 	public static long getXpUpToPrestige(int prestige) {
@@ -198,7 +206,7 @@ public class PrestigeValues {
 		prestigeMap.put(59, new PrestigeInfo(59, 100_000, 1_000_000_000, 5000, 10_000, "&0"));
 		prestigeMap.put(60, new PrestigeInfo(60, 1_000_000, 0, 0, 120, "&4"));
 
-		for(int i = 0; i < PrestigeValues.MAX_PRESTIGE + 1; i++) {
+		for(int i = 0; i <= PrestigeValues.MAX_PRESTIGE; i++) {
 			PrestigeInfo prestigeInfo = getPrestigeInfo(i);
 			long totalXp = 0;
 			for(int j = 1; j < 120; j++) totalXp += getXPForLevel(j) * prestigeInfo.xpMultiplier;

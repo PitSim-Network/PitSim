@@ -63,7 +63,7 @@ public class MainViewPanel extends AGUIPanel {
 		ALoreBuilder killstreakLore = new ALoreBuilder();
 		for(Killstreak killstreak : pitTarget.killstreaks) {
 			if(killstreak.getClass() != NoKillstreak.class) {
-				killstreakLore.addLore("&7Every &c" + killstreak.killInterval + " &7kills: &a" + killstreak.name);
+				killstreakLore.addLore("&7Every &c" + killstreak.killInterval + " &7kills: &a" + killstreak.displayName);
 			}
 		}
 		killstreakLore.addLore("&7Megastreak: &a" + pitTarget.megastreak.getRawName());

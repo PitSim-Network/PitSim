@@ -42,7 +42,7 @@ public class Monster extends Killstreak {
 	public ItemStack getDisplayItem(Player player) {
 
 		AItemStackBuilder builder = new AItemStackBuilder(Material.APPLE);
-		builder.setName("&e" + name);
+		builder.setName("&e" + displayName);
 		builder.setLore(new ALoreBuilder("&7Every: &c" + killInterval + " kills", "", "&7Gain &c0.5\u2764 &7max health (&c2\u2764 &7max)"));
 
 		return builder.getItemStack();

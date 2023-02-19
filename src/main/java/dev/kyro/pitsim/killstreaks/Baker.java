@@ -44,7 +44,7 @@ public class Baker extends Killstreak {
 	public ItemStack getDisplayItem(Player player) {
 
 		AItemStackBuilder builder = new AItemStackBuilder(Material.BREAD);
-		builder.setName("&e" + name);
+		builder.setName("&e" + displayName);
 		builder.setLore(new ALoreBuilder("&7Every: &c" + killInterval + " kills",
 				"", "&7Obtain either a &6Yummy bread &7or", "&6Very yummy bread&7. (Lost on death)"));
 

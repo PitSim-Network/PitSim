@@ -54,7 +54,7 @@ public class Survivor extends Killstreak {
 	public ItemStack getDisplayItem(Player player) {
 
 		AItemStackBuilder builder = new AItemStackBuilder(Material.GOLDEN_APPLE);
-		builder.setName("&e" + name);
+		builder.setName("&e" + displayName);
 		builder.setLore(new ALoreBuilder("&7Every: &c" + killInterval + " kills", "", "&7Heal &e25% &7more &c\u2764", "&7for 15 seconds."));
 
 		return builder.getItemStack();

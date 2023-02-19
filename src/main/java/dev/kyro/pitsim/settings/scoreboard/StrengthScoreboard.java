@@ -37,7 +37,7 @@ public class StrengthScoreboard extends ScoreboardOption {
 				.setLore(new ALoreBuilder(
 						"&7Shows the current level and",
 						"&7duration of strength from",
-						"&a" + StrengthChaining.INSTANCE.name + " &7when applicable"
+						"&a" + StrengthChaining.INSTANCE.displayName + " &7when applicable"
 				)).getItemStack();
 		return itemStack;
 	}

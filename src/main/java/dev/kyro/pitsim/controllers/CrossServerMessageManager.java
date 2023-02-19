@@ -4,10 +4,12 @@ import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.commands.ShowCommand;
 import dev.kyro.pitsim.controllers.objects.AuctionItem;
+import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.controllers.objects.PluginMessage;
 import dev.kyro.pitsim.events.MessageEvent;
 import dev.kyro.pitsim.megastreaks.Uberstreak;
 import dev.kyro.pitsim.misc.CustomSerializer;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.inventory.ItemStack;
@@ -102,5 +104,6 @@ public class CrossServerMessageManager implements Listener {
 					.send();
 			AOutput.log("Requesting auction data from darkzone");
 		}
+		for(Player player : ChatTriggerManager.getSubscribedPlayers()) ChatTriggerManager.sendAuctionInfo(PitPlayer.getPitPlayer(player));
 	}
 }

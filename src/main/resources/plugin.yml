@@ -110,3 +110,5 @@ commands:
     aliases:
       - itemname
   ignore:
+  ineeddata:
+  givemedata:
