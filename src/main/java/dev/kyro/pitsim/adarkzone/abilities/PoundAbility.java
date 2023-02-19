@@ -30,6 +30,7 @@ public class PoundAbility extends RoutinePitBossAbility {
 
 	@Override
 	public void onRoutineExecute() {
+		System.out.println("Pound");
 		Location centerLocation = pitBoss.boss.getLocation().clone().subtract(0, 1, 0);
 
 		List<Block> applicableBlocks = new ArrayList<>();
@@ -57,7 +58,7 @@ public class PoundAbility extends RoutinePitBossAbility {
 
 		List<Player> viewers = new ArrayList<>();
 		for(Entity entity : pitBoss.boss.getNearbyEntities(50, 50, 50)) {
-			if(!(entity instanceof Player)) return;
+			if(!(entity instanceof Player)) continue;
 			Player player = Bukkit.getPlayer(entity.getUniqueId());
 			if(player != null) viewers.add(player);
 		}
@@ -77,13 +78,14 @@ public class PoundAbility extends RoutinePitBossAbility {
 			fallingBlock.setVelocity(vector);
 		}
 
-		PitParticle particle = new BlockCrackParticle(false, false, new MaterialData(Material.DIRT));
+		PitParticle particle = new BlockCrackParticle(new MaterialData(Material.DIRT));
 
 		for(Player viewer : viewers) {
 			EntityPlayer nmsPlayer = ((CraftPlayer) viewer).getHandle();
 
-			for(int i = 0; i < 100; i++) {
-				particle.display(nmsPlayer, centerLocation, new ParticleOffset(5, 5, 5), null);
+			for(int i = 0; i < 200; i++) {
+
+				particle.display(nmsPlayer, centerLocation, new ParticleOffset(0, 4, 0, 10, 10, 10));
 			}
 
 
