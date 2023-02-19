@@ -1,24 +1,18 @@
 package dev.kyro.pitsim.commands;
 
-import dev.kyro.pitsim.PitSim;
-import net.minecraft.server.v1_8_R3.*;
+import dev.kyro.pitsim.misc.effects.FallingBlock;
+import net.minecraft.server.v1_8_R3.EntityItem;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
-import org.bukkit.craftbukkit.v1_8_R3.CraftWorld;
-import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
-import org.bukkit.craftbukkit.v1_8_R3.inventory.CraftItemStack;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.util.Vector;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 public class ATestCommand implements CommandExecutor {
 
@@ -33,36 +27,49 @@ public class ATestCommand implements CommandExecutor {
 		if(!(sender instanceof Player)) return false;
 		Player player = (Player) sender;
 
-		location = player.getLocation();
-
-		new BukkitRunnable() {
-			@Override
-			public void run() {
-				double x = Math.cos(Math.toRadians(degrees)) * RADIUS;
-				double z = Math.sin(Math.toRadians(degrees)) * RADIUS;
-
-				World world = ((CraftWorld) (player.getWorld())).getHandle();
-				EntityItem entityItem = new EntityItem(world);
-				entityItem.setPosition(location.getX() + x, location.getY(), location.getZ() + z);
-				entityItem.setItemStack(CraftItemStack.asNMSCopy(getItemStack()));
 
 
-				PacketPlayOutSpawnEntity spawn = new PacketPlayOutSpawnEntity(entityItem, 1, 1);
-				((CraftPlayer) player).getHandle().playerConnection.sendPacket(spawn);
+		FallingBlock fallingBlock = new FallingBlock(Material.STONE, (byte) 3, player.getLocation());
+		fallingBlock.setViewers(Collections.singletonList(player));
+		fallingBlock.spawnBlock();
+		fallingBlock.setVelocity(new Vector(0, 5, 0));
+		fallingBlock.removeAfter(20);
 
-				PacketPlayOutEntityMetadata meta = new PacketPlayOutEntityMetadata(entityItem.getId(), entityItem.getDataWatcher(), true);
-				((CraftPlayer) player).getHandle().playerConnection.sendPacket(meta);
 
-				degrees += 15;
-				items.add(entityItem);
 
-				if(items.size() > TOTAL_ITEMS) {
-					EntityItem removeItem = items.remove(0);
-					PacketPlayOutEntityDestroy destroy = new PacketPlayOutEntityDestroy(removeItem.getId());
-					((CraftPlayer) player).getHandle().playerConnection.sendPacket(destroy);
-				}
-			}
-		}.runTaskTimer(PitSim.INSTANCE, 0, 1);
+
+
+
+//		location = player.getLocation();
+//
+//		new BukkitRunnable() {
+//			@Override
+//			public void run() {
+//				double x = Math.cos(Math.toRadians(degrees)) * RADIUS;
+//				double z = Math.sin(Math.toRadians(degrees)) * RADIUS;
+//
+//				World world = ((CraftWorld) (player.getWorld())).getHandle();
+//				EntityItem entityItem = new EntityItem(world);
+//				entityItem.setPosition(location.getX() + x, location.getY(), location.getZ() + z);
+//				entityItem.setItemStack(CraftItemStack.asNMSCopy(getItemStack()));
+//
+//
+//				PacketPlayOutSpawnEntity spawn = new PacketPlayOutSpawnEntity(entityItem, 1, 1);
+//				((CraftPlayer) player).getHandle().playerConnection.sendPacket(spawn);
+//
+//				PacketPlayOutEntityMetadata meta = new PacketPlayOutEntityMetadata(entityItem.getId(), entityItem.getDataWatcher(), true);
+//				((CraftPlayer) player).getHandle().playerConnection.sendPacket(meta);
+//
+//				degrees += 15;
+//				items.add(entityItem);
+//
+//				if(items.size() > TOTAL_ITEMS) {
+//					EntityItem removeItem = items.remove(0);
+//					PacketPlayOutEntityDestroy destroy = new PacketPlayOutEntityDestroy(removeItem.getId());
+//					((CraftPlayer) player).getHandle().playerConnection.sendPacket(destroy);
+//				}
+//			}
+//		}.runTaskTimer(PitSim.INSTANCE, 0, 1);
 
 //
 //		double radius = 5;
