@@ -23,7 +23,7 @@ public class PotionAura extends ColorableCosmetic {
 		accountForYaw = false;
 		accountForPitch = false;
 
-		PitParticle particle = new SpellMobParticle(this);
+		PitParticle particle = new SpellMobParticle(accountForPitch, accountForYaw);
 		double distance = 6;
 		collection.addParticle("main", particle, new ParticleOffset(0, distance / 4, 0, distance, distance / 2 + 2, distance));
 	}

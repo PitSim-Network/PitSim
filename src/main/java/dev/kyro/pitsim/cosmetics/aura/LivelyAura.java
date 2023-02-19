@@ -22,7 +22,7 @@ public class LivelyAura extends PitCosmetic {
 		super("&aLively Aura", "livelyaura", CosmeticType.AURA);
 		accountForPitch = false;
 
-		PitParticle particle = new VillagerHappyParticle(this);
+		PitParticle particle = new VillagerHappyParticle(accountForPitch, accountForYaw);
 		double distance = 6;
 		collection.addParticle("main", particle, new ParticleOffset(0, distance / 4, 0, distance, distance / 2 + 2, distance));
 	}

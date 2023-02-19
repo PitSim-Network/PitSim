@@ -25,7 +25,7 @@ public class RedstoneTrail extends PitCosmetic {
 		super("&4Redstone &cTrail", "redstonetrail", CosmeticType.PARTICLE_TRAIL);
 		accountForPitch = false;
 
-		PitParticle particle = new BlockCrackParticle(this, new MaterialData(Material.REDSTONE_BLOCK));
+		PitParticle particle = new BlockCrackParticle(accountForPitch, accountForYaw, new MaterialData(Material.REDSTONE_BLOCK));
 		Vector vector = new Vector(0, 0.2, 0);
 		collection.addParticle("main", particle, new ParticleOffset(vector, 0.5, 0, 0.5));
 

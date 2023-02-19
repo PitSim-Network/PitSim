@@ -67,7 +67,7 @@ public class PoundAbility extends RoutinePitBossAbility {
 			FallingBlock fallingBlock = new FallingBlock(block.getType(), block.getData(), block.getLocation().add(0, 1, 0));
 			fallingBlock.setViewers(viewers);
 			fallingBlock.spawnBlock();
-			fallingBlock.removeAfter(30);
+			fallingBlock.removeAfter(25);
 			fallingBlock.setVelocity(vector);
 		}
 
@@ -83,6 +83,10 @@ public class PoundAbility extends RoutinePitBossAbility {
 		//TODO: Use proximity instead of damage map
 
 		Sounds.EXTRACT.play(pitBoss.boss.getLocation());
+//		ParticleCollection collection = new ParticleCollection();
+////		PitParticle particle = new BlockCrackParticle(this, new MaterialData(Material.LAPIS_BLOCK));
+//		Vector vector = new Vector(0, 0.2, 0);
+//		collection.addParticle("main", particle, new ParticleOffset(vector, 0.5, 0, 0.5));
 	}
 }
 

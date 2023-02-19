@@ -20,7 +20,7 @@ public class SolidCape extends ColorableCosmetic {
 		super("&7&lSolid", "solidcape", CosmeticType.CAPE);
 		accountForPitch = false;
 
-		cape = new CapeCollection(new RedstoneParticle(this));
+		cape = new CapeCollection(new RedstoneParticle(accountForPitch, accountForYaw));
 	}
 
 	@Override

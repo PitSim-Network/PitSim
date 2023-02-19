@@ -23,7 +23,7 @@ public class SmokeTrail extends PitCosmetic {
 		super("&8Smoke Trail", "smoketrail", CosmeticType.PARTICLE_TRAIL);
 		accountForPitch = false;
 
-		PitParticle particle = new SmokeLargeParticle(this);
+		PitParticle particle = new SmokeLargeParticle(accountForPitch, accountForYaw);
 
 		for(int i = 0; i < 2; i++) {
 			Vector vector = new Vector(0, 0, 0);

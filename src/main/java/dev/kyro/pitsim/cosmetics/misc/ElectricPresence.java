@@ -23,7 +23,7 @@ public class ElectricPresence extends PitCosmetic {
 		super("&eElectric &fPresence", "electricpresence", CosmeticType.MISC);
 		accountForPitch = false;
 
-		PitParticle particle = new FireworkSparkParticle(this);
+		PitParticle particle = new FireworkSparkParticle(accountForPitch, accountForYaw);
 
 		for(int i = 0; i < 40; i++) {
 			Vector vector = new Vector(1, 0, 0);

@@ -23,7 +23,7 @@ public class LavaTrail extends PitCosmetic {
 		super("&6Lava &4Trail", "lavatrail", CosmeticType.PARTICLE_TRAIL);
 		accountForPitch = false;
 
-		PitParticle particle = new LavaParticle(this);
+		PitParticle particle = new LavaParticle(accountForPitch, accountForYaw);
 
 		Vector vector = new Vector(0, 0, 0);
 		collection.addParticle("main", particle, new ParticleOffset(vector, 1, 0, 1));

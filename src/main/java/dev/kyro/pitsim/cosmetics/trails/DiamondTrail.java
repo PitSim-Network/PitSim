@@ -25,7 +25,7 @@ public class DiamondTrail extends PitCosmetic {
 		super("&bDiamond &3Trail", "diamondtrail", CosmeticType.PARTICLE_TRAIL);
 		accountForPitch = false;
 
-		PitParticle particle = new BlockCrackParticle(this, new MaterialData(Material.DIAMOND_BLOCK));
+		PitParticle particle = new BlockCrackParticle(accountForPitch, accountForYaw, new MaterialData(Material.DIAMOND_BLOCK));
 		Vector vector = new Vector(0, 0.2, 0);
 		collection.addParticle("main", particle, new ParticleOffset(vector, 0.5, 0, 0.5));
 

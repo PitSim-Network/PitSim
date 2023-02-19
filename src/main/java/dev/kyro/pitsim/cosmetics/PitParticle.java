@@ -8,9 +8,9 @@ public abstract class PitParticle {
 	public boolean accountForYaw;
 	public boolean accountForPitch;
 
-	public PitParticle(PitCosmetic pitCosmetic) {
-		this.accountForYaw = pitCosmetic.accountForYaw;
-		this.accountForPitch = pitCosmetic.accountForPitch;
+	public PitParticle(boolean accountForYaw, boolean accountForPitch) {
+		this.accountForYaw = accountForYaw;
+		this.accountForPitch = accountForPitch;
 	}
 
 	public abstract void display(EntityPlayer entityPlayer, Location location, ParticleColor particleColor);

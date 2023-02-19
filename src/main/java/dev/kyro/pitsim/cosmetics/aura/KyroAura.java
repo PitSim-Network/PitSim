@@ -29,11 +29,11 @@ public class KyroAura extends PitCosmetic {
 		accountForPitch = false;
 		accountForYaw = false;
 
-		collection.addParticle("1", new VillagerHappyParticle(this),
+		collection.addParticle("1", new VillagerHappyParticle(accountForPitch, accountForYaw),
 				new ParticleOffset(0, 0, 0, RANDOM, RANDOM, RANDOM));
-		collection.addParticle("2", new VillagerHappyParticle(this),
+		collection.addParticle("2", new VillagerHappyParticle(accountForPitch, accountForYaw),
 				new ParticleOffset(0, 0, 0, RANDOM, RANDOM, RANDOM));
-		collection.addParticle("3", new VillagerHappyParticle(this),
+		collection.addParticle("3", new VillagerHappyParticle(accountForPitch, accountForYaw),
 				new ParticleOffset(0, 0, 0, RANDOM, RANDOM, RANDOM));
 	}
 

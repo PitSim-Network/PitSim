@@ -26,23 +26,23 @@ public class RainbowTrail extends PitCosmetic {
 
 		Vector vector = new Vector(0, 0.2, 0);
 		int ref = 0;
-		collection.addParticle(ref++, new BlockCrackParticle(this, new MaterialData(Material.WOOL, (byte) 14)),
+		collection.addParticle(ref++, new BlockCrackParticle(accountForPitch, accountForYaw, new MaterialData(Material.WOOL, (byte) 14)),
 				new ParticleOffset(vector, 0.5, 0, 0.5));
-		collection.addParticle(ref++, new BlockCrackParticle(this, new MaterialData(Material.WOOL, (byte) 1)),
+		collection.addParticle(ref++, new BlockCrackParticle(accountForPitch, accountForYaw, new MaterialData(Material.WOOL, (byte) 1)),
 				new ParticleOffset(vector, 0.5, 0, 0.5));
-		collection.addParticle(ref++, new BlockCrackParticle(this, new MaterialData(Material.WOOL, (byte) 4)),
+		collection.addParticle(ref++, new BlockCrackParticle(accountForPitch, accountForYaw, new MaterialData(Material.WOOL, (byte) 4)),
 				new ParticleOffset(vector, 0.5, 0, 0.5));
-		collection.addParticle(ref++, new BlockCrackParticle(this, new MaterialData(Material.WOOL, (byte) 5)),
+		collection.addParticle(ref++, new BlockCrackParticle(accountForPitch, accountForYaw, new MaterialData(Material.WOOL, (byte) 5)),
 				new ParticleOffset(vector, 0.5, 0, 0.5));
-		collection.addParticle(ref++, new BlockCrackParticle(this, new MaterialData(Material.WOOL, (byte) 13)),
+		collection.addParticle(ref++, new BlockCrackParticle(accountForPitch, accountForYaw, new MaterialData(Material.WOOL, (byte) 13)),
 				new ParticleOffset(vector, 0.5, 0, 0.5));
-		collection.addParticle(ref++, new BlockCrackParticle(this, new MaterialData(Material.WOOL, (byte) 9)),
+		collection.addParticle(ref++, new BlockCrackParticle(accountForPitch, accountForYaw, new MaterialData(Material.WOOL, (byte) 9)),
 				new ParticleOffset(vector, 0.5, 0, 0.5));
-		collection.addParticle(ref++, new BlockCrackParticle(this, new MaterialData(Material.WOOL, (byte) 11)),
+		collection.addParticle(ref++, new BlockCrackParticle(accountForPitch, accountForYaw, new MaterialData(Material.WOOL, (byte) 11)),
 				new ParticleOffset(vector, 0.5, 0, 0.5));
-		collection.addParticle(ref++, new BlockCrackParticle(this, new MaterialData(Material.WOOL, (byte) 10)),
+		collection.addParticle(ref++, new BlockCrackParticle(accountForPitch, accountForYaw, new MaterialData(Material.WOOL, (byte) 10)),
 				new ParticleOffset(vector, 0.5, 0, 0.5));
-		collection.addParticle(ref++, new BlockCrackParticle(this, new MaterialData(Material.WOOL, (byte) 2)),
+		collection.addParticle(ref++, new BlockCrackParticle(accountForPitch, accountForYaw, new MaterialData(Material.WOOL, (byte) 2)),
 				new ParticleOffset(vector, 0.5, 0, 0.5));
 	}
 

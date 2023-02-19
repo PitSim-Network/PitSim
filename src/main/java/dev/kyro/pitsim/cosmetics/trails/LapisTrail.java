@@ -25,7 +25,7 @@ public class LapisTrail extends PitCosmetic {
 		super("&9Lapis &1Trail", "lapistrail", CosmeticType.PARTICLE_TRAIL);
 		accountForPitch = false;
 
-		PitParticle particle = new BlockCrackParticle(this, new MaterialData(Material.LAPIS_BLOCK));
+		PitParticle particle = new BlockCrackParticle(accountForPitch, accountForYaw, new MaterialData(Material.LAPIS_BLOCK));
 		Vector vector = new Vector(0, 0.2, 0);
 		collection.addParticle("main", particle, new ParticleOffset(vector, 0.5, 0, 0.5));
 
