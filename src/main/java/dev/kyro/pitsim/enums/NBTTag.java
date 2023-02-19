@@ -29,7 +29,6 @@ public enum NBTTag {
 	COOKIE_GIVER("pr-cookie-giver"),
 	COOKIE_RECEIVER("pr-cookie-receiver"),
 
-	GHELMET_UUID("pr-ghelm-uuid"),
 	GHELMET_GOLD("pr-ghelm-gold"),
 	GHELMET_ABILITY("pr-ghelm-ability"),
 
@@ -38,6 +37,7 @@ public enum NBTTag {
 	POTION_DURATION("pr-potion-duration"),
 	IS_SPLASH_POTION("pr-is-splash-potion"),
 
+	GHELMET_UUID("pr-ghelm-uuid"),
 	IS_FEATHER("pr-isfeather"),
 	IS_CORRUPTED_FEATHER("pr-iscfeather"),
 	IS_TOKEN("pr-istoken"),

@@ -11,6 +11,7 @@ import dev.kyro.pitsim.aitems.prot.ProtChestplate;
 import dev.kyro.pitsim.aitems.prot.ProtHelmet;
 import dev.kyro.pitsim.aitems.prot.ProtLeggings;
 import dev.kyro.pitsim.controllers.ItemFactory;
+import dev.kyro.pitsim.controllers.objects.HelmetManager;
 import dev.kyro.pitsim.enums.MysticType;
 import dev.kyro.pitsim.misc.Base64;
 import dev.kyro.pitsim.misc.Constant;
@@ -20,7 +21,8 @@ import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.inventory.InventoryOpenEvent;
 import org.bukkit.inventory.ItemStack;
 
-public class GodPanel extends AGUIPanel {
+public
+class GodPanel extends AGUIPanel {
 	public GodGUI godGUI;
 
 	public GodPanel(AGUI gui) {
@@ -54,6 +56,16 @@ public class GodPanel extends AGUIPanel {
 		addItem(MysticFactory.getJewelItem(MysticType.PANTS));
 		addItem(MysticFactory.getFreshItem(MysticType.TAINTED_SCYTHE, null));
 		addItem(MysticFactory.getFreshItem(MysticType.TAINTED_CHESTPLATE, null));
+
+		itemStack = ItemFactory.getItem(GoldenHelmet.class).getItem();
+		itemStack = HelmetManager.depositGold(itemStack, 0);
+		addItem(itemStack);
+		itemStack = ItemFactory.getItem(GoldenHelmet.class).getItem();
+		itemStack = HelmetManager.depositGold(itemStack, 20_000_000);
+		addItem(itemStack);
+		itemStack = ItemFactory.getItem(GoldenHelmet.class).getItem();
+		itemStack = HelmetManager.depositGold(itemStack, 2_000_000_000);
+		addItem(itemStack);
 
 		addItem(ItemFactory.getItem(ProtHelmet.class).getItem(1));
 		addItem(ItemFactory.getItem(ProtChestplate.class).getItem(1));

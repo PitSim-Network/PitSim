@@ -20,7 +20,7 @@ public class EnchantListCommand implements CommandExecutor {
 
 		if(args.length < 2) {
 
-			AOutput.error(player, "Usage: /enchants <sword|bow|pants> <common|uncommon|rare|all>");
+			AOutput.error(player, "Usage: /enchants <sword|bow|pants|scythe|chestplate> <common|uncommon|rare|all>");
 			return false;
 		}
 
@@ -37,6 +37,14 @@ public class EnchantListCommand implements CommandExecutor {
 			case "pant":
 			case "pants":
 				listEnchants(player, MysticType.PANTS, args[1]);
+				break;
+			case "scythe":
+			case "scythes":
+				listEnchants(player, MysticType.TAINTED_SCYTHE, args[1]);
+				break;
+			case "chestplate":
+			case "chestplates":
+				listEnchants(player, MysticType.TAINTED_CHESTPLATE, args[1]);
 				break;
 			default:
 				AOutput.error(player, "Usage: /enchants <sword|bow|pants> <common|uncommon|rare|all>");

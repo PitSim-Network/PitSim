@@ -1,4 +1,4 @@
-package dev.kyro.pitsim.enchants.tainted.znotcodeduncommon;
+package dev.kyro.pitsim.enchants.tainted.uncommon;
 
 import dev.kyro.arcticapi.misc.AUtil;
 import dev.kyro.pitsim.controllers.HitCounter;
@@ -39,17 +39,17 @@ public class ComboSlow extends PitEnchant {
 
 		PitPlayer pitPlayer = attackEvent.getAttackerPitPlayer();
 		HitCounter.incrementCounter(pitPlayer.player, this);
-		if(!HitCounter.hasReachedThreshold(pitPlayer.player, this, getCombo(enchantLvl))) return;
+		if(!HitCounter.hasReachedThreshold(pitPlayer.player, this, getStrikes(enchantLvl))) return;
 
 		Misc.applyPotionEffect(attackEvent.getAttacker(), PotionEffectType.SLOW, getSeconds(enchantLvl) * 20,
-				getAmplifier(enchantLvl) - 1, true, false);
+				getAmplifier(enchantLvl), true, false);
 	}
 
 	@Override
 	public List<String> getNormalDescription(int enchantLvl) {
 		return new PitLoreBuilder(
-				"&7When you hit your opponent &e" + getCombo(enchantLvl) + " times&7, apply &9Slowness " +
-						AUtil.toRoman(getAmplifier(enchantLvl)) + " &7(" + getSeconds(enchantLvl) + ")"
+				"&7When you hit your opponent &e" + getStrikes(enchantLvl) + " times&7, apply &9Slowness " +
+						AUtil.toRoman(getAmplifier(enchantLvl) + 1) + " &7(" + getSeconds(enchantLvl) + ")"
 		).getLore();
 	}
 
@@ -58,10 +58,10 @@ public class ComboSlow extends PitEnchant {
 	}
 
 	public int getAmplifier(int enchantLvl) {
-		return Misc.linearEnchant(enchantLvl, 0.5, 1);
+		return Misc.linearEnchant(enchantLvl, 0.5, 0);
 	}
 
-	public int getCombo(int enchantLvl) {
+	public int getStrikes(int enchantLvl) {
 		return Math.max(Misc.linearEnchant(enchantLvl, -0.5, 4.5), 1);
 	}
 }

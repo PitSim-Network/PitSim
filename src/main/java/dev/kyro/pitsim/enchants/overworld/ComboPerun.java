@@ -89,12 +89,10 @@ public class ComboPerun extends PitEnchant {
 	}
 
 	public double getTrueDamage(int enchantLvl) {
-
 		return enchantLvl + 2;
 	}
 
 	public int getStrikes(int enchantLvl) {
-
 		return Math.max(Misc.linearEnchant(enchantLvl, -0.5, 5), 1);
 	}
 }

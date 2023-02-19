@@ -117,10 +117,10 @@ public class ToTheMoon extends Megastreak {
 		if(pitPlayer != this.pitPlayer) return;
 		if(pitPlayer.megastreak instanceof ToTheMoon) {
 			if(pitPlayer.getKills() > 200) {
-				double increase = (3 * ((pitPlayer.getKills() - 200) / 20)) / 100D;
+				double increase = 3 * ((pitPlayer.getKills() - 200) / 20);
 				if(NonManager.getNon(attackEvent.getAttacker()) == null) {
 					attackEvent.increasePercent += increase;
-				} else attackEvent.increasePercent += (increase * 5);
+				} else attackEvent.increasePercent += increase * 5;
 			}
 			if(pitPlayer.getKills() > 400) {
 				if(NonManager.getNon(attackEvent.getAttacker()) == null) {

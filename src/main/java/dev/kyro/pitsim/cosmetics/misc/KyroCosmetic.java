@@ -4,16 +4,16 @@ import dev.kyro.arcticapi.builders.AItemStackBuilder;
 import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.pitsim.cosmetics.CosmeticType;
 import dev.kyro.pitsim.cosmetics.PitCosmetic;
-import dev.kyro.pitsim.cosmetics.misc.kyrocosmetic.DaggerParticle;
-import dev.kyro.pitsim.cosmetics.misc.kyrocosmetic.LifestealParticle;
+import dev.kyro.pitsim.cosmetics.misc.kyrocosmetic.SwarmParticle;
+import dev.kyro.pitsim.cosmetics.misc.kyrocosmetic.LeechParticle;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.SkullMeta;
 
 public class KyroCosmetic extends PitCosmetic {
-	public LifestealParticle lifestealParticle;
-	public DaggerParticle daggerParticle;
+	public LeechParticle leechParticle;
+	public SwarmParticle swarmParticle;
 
 	public KyroCosmetic() {
 		super("&b&k|&9Kyro's \"Cosmetic\"&b&k|", "kyrocosmetic", CosmeticType.MISC);
@@ -23,14 +23,14 @@ public class KyroCosmetic extends PitCosmetic {
 
 	@Override
 	public void onEnable(PitPlayer pitPlayer) {
-		lifestealParticle = new LifestealParticle(pitPlayer.player);
-		daggerParticle = new DaggerParticle(pitPlayer.player);
+		leechParticle = new LeechParticle(pitPlayer.player);
+		swarmParticle = new SwarmParticle(pitPlayer.player);
 	}
 
 	@Override
 	public void onDisable(PitPlayer pitPlayer) {
-		if(lifestealParticle != null) lifestealParticle.remove();
-		if(daggerParticle != null) daggerParticle.remove();
+		if(leechParticle != null) leechParticle.remove();
+		if(swarmParticle != null) swarmParticle.remove();
 	}
 
 	@Override

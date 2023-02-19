@@ -18,19 +18,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class FightOrFlight extends Killstreak {
-
 	public static FightOrFlight INSTANCE;
+	public static List<LivingEntity> rewardPlayers = new ArrayList<>();
 
 	public FightOrFlight() {
 		super("Fight or Flight", "FightOrFlight", 7, 4);
 		INSTANCE = this;
 	}
 
-	List<LivingEntity> rewardPlayers = new ArrayList<>();
-
 	@EventHandler
 	public void onHit(AttackEvent.Apply event) {
-		if(rewardPlayers.contains(event.getAttacker())) event.increasePercent += 20 / 100D;
+		if(rewardPlayers.contains(event.getAttacker())) event.increasePercent += 20;
 	}
 
 	@Override
@@ -38,7 +36,7 @@ public class FightOrFlight extends Killstreak {
 		if(player.getHealth() < player.getMaxHealth() / 2) {
 			Misc.applyPotionEffect(player, PotionEffectType.SPEED, 20 * 7, 2, true, false);
 		} else {
-			rewardPlayers.add(player);
+			if(!rewardPlayers.contains(player)) rewardPlayers.add(player);
 
 			new BukkitRunnable() {
 				@Override
@@ -56,11 +54,17 @@ public class FightOrFlight extends Killstreak {
 
 	@Override
 	public ItemStack getDisplayItem(Player player) {
-
-		AItemStackBuilder builder = new AItemStackBuilder(Material.FIREBALL);
-		builder.setName("&e" + name);
-		builder.setLore(new ALoreBuilder("&7Every: &c" + killInterval + " kills", "", "&7If below half &c\u2764&7:",
-				"&7Gain &eSpeed III &7for 7 seconds.", "", "&7Otherwise:", "&7Deal &c+20% &7damage for 7 seconds."));
+		AItemStackBuilder builder = new AItemStackBuilder(Material.FIREBALL)
+				.setName("&e" + displayName)
+				.setLore(new ALoreBuilder(
+						"&7Every: &c" + killInterval + " kills",
+						"",
+						"&7If below half &c\u2764&7:",
+						"&7Gain &eSpeed III &7for 7 seconds.",
+						"",
+						"&7Otherwise:",
+						"&7Deal &c+20% &7damage for 7 seconds."
+				));
 
 		return builder.getItemStack();
 	}

@@ -8,6 +8,7 @@ import dev.kyro.pitsim.cosmetics.PitCosmetic;
 import dev.kyro.pitsim.inventories.ChatColorPanel;
 import dev.kyro.pitsim.inventories.ChatOptionsPanel;
 import dev.kyro.pitsim.inventories.PantsColorPanel;
+import dev.kyro.pitsim.settings.scoreboard.ScoreboardOptionsPanel;
 import org.bukkit.entity.Player;
 
 import java.lang.reflect.Constructor;
@@ -20,12 +21,12 @@ public class SettingsGUI extends AGUI {
 
 	public SettingsPanel settingsPanel;
 	public CosmeticPanel cosmeticPanel;
-	public ParticlesPanel particlesPanel;
 	public Map<CosmeticType, SubCosmeticPanel> cosmeticPanelMap = new HashMap<>();
-
+	public ParticlesPanel particlesPanel;
 	public PantsColorPanel pantsColorPanel;
 	public ChatColorPanel chatColorPanel;
 	public ChatOptionsPanel chatOptionsPanel;
+	public ScoreboardOptionsPanel scoreboardOptionsPanel;
 
 	public SettingsGUI(Player player) {
 		super(player);
@@ -34,10 +35,10 @@ public class SettingsGUI extends AGUI {
 		settingsPanel = new SettingsPanel(this);
 		cosmeticPanel = new CosmeticPanel(this);
 		particlesPanel = new ParticlesPanel(this);
-
 		pantsColorPanel = new PantsColorPanel(this);
 		chatColorPanel = new ChatColorPanel(this);
 		chatOptionsPanel = new ChatOptionsPanel(this);
+		scoreboardOptionsPanel = new ScoreboardOptionsPanel(this);
 
 		Class<? extends SubCosmeticPanel>[] constructorParameters = new Class[]{AGUI.class};
 		for(CosmeticType cosmeticType : CosmeticType.values()) {

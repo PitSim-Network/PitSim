@@ -1,13 +1,17 @@
 package dev.kyro.pitsim.misc;
 
+import de.myzelyam.api.vanish.VanishAPI;
 import de.tr7zw.nbtapi.NBTItem;
 import dev.kyro.arcticapi.libs.discord.DiscordWebhook;
 import dev.kyro.pitsim.PitSim;
+import dev.kyro.pitsim.adarkzone.DarkzoneManager;
+import dev.kyro.pitsim.adarkzone.PitMob;
 import dev.kyro.pitsim.aitems.PitItem;
 import dev.kyro.pitsim.commands.LightningCommand;
 import dev.kyro.pitsim.controllers.EnchantManager;
 import dev.kyro.pitsim.controllers.ItemFactory;
 import dev.kyro.pitsim.controllers.NonManager;
+import dev.kyro.pitsim.controllers.SpawnManager;
 import dev.kyro.pitsim.controllers.objects.HelmetManager;
 import dev.kyro.pitsim.controllers.objects.PitEnchant;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
@@ -55,6 +59,38 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class Misc {
+	public static boolean isValidMobPlayerTarget(Entity entity, Entity... excluded) {
+		List<Entity> excludedList = Arrays.asList(excluded);
+
+		if(!(entity instanceof LivingEntity) || SpawnManager.isInSpawn(entity.getLocation()) || excludedList.contains(entity)) return false;
+		LivingEntity livingEntity = (LivingEntity) entity;
+		PitMob pitMob = DarkzoneManager.getPitMob(livingEntity);
+		if(pitMob == null && !(entity instanceof Player)) return false;
+
+		if(entity instanceof Player) {
+			Player player = (Player) entity;
+			if(player.getGameMode() == GameMode.CREATIVE || player.getGameMode() == GameMode.SPECTATOR || VanishAPI.isInvisible(player)) return false;
+		}
+		return true;
+	}
+
+	public static LivingEntity getMobPlayerClosest(Location location, double radius, Entity... excluded) {
+		List<Entity> excludedList = Arrays.asList(excluded);
+
+		LivingEntity closestEntity = null;
+		double closestDistance = Double.MAX_VALUE;
+		for(Entity entity : location.getWorld().getNearbyEntities(location, radius, radius, radius)) {
+			if(!isValidMobPlayerTarget(entity, excluded)) continue;
+			LivingEntity livingEntity = (LivingEntity) entity;
+
+			double testDistance = livingEntity.getLocation().distance(location);
+			if(testDistance > closestDistance) continue;
+			closestEntity = livingEntity;
+			closestDistance = testDistance;
+		}
+		return closestEntity;
+	}
+
 	public static void alertDiscord(String message) {
 		DiscordWebhook discordWebhook = new DiscordWebhook(PrivateInfo.ALERTS_WEBHOOK);
 		discordWebhook.setContent(message);
@@ -372,7 +408,6 @@ public class Misc {
 	 * Should only be used for displaying, not calculation.
 	 */
 	public static String roundString(double number) {
-
 		return new DecimalFormat("#,##0.##").format(number);
 	}
 
@@ -380,12 +415,10 @@ public class Misc {
 	 * Converts to multiplier
 	 */
 	public static double getReductionMultiplier(double reduction) {
-
-		return Math.max(1 - (reduction / 100D), 0);
+		return Math.min(Math.max(1 - (reduction / 100.0), 0), 1);
 	}
 
 	public static int linearEnchant(int level, double step, double base) {
-
 		return (int) (level * step + base);
 	}
 

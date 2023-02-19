@@ -1,5 +1,6 @@
 package dev.kyro.pitsim.enchants.overworld;
 
+import dev.kyro.arcticapi.misc.AUtil;
 import dev.kyro.pitsim.controllers.HitCounter;
 import dev.kyro.pitsim.controllers.objects.PitEnchant;
 import dev.kyro.pitsim.enums.ApplyType;
@@ -27,19 +28,20 @@ public class CounterOffensive extends PitEnchant {
 		if(enchantLvl == 0) return;
 
 		HitCounter.incrementCounter(attackEvent.getDefenderPlayer(), this);
-		if(!HitCounter.hasReachedThreshold(attackEvent.getDefenderPlayer(), this, getCombo(enchantLvl))) return;
-		Misc.applyPotionEffect(attackEvent.getDefender(), PotionEffectType.SPEED, getSeconds(enchantLvl) * 20, getAmplifier(enchantLvl), false, false);
+		if(!HitCounter.hasReachedThreshold(attackEvent.getDefenderPlayer(), this, getStrikes(enchantLvl))) return;
+		Misc.applyPotionEffect(attackEvent.getDefender(), PotionEffectType.SPEED, getSeconds(enchantLvl) * 20,
+				getAmplifier(enchantLvl), false, false);
 	}
 
 	@Override
 	public List<String> getNormalDescription(int enchantLvl) {
 		return new PitLoreBuilder(
-				"&7Gain &eSpeed II &7(" + getSeconds(enchantLvl) + "s) when hit &e" + getCombo(enchantLvl) +
-				" times &7by a player"
+				"&7Gain &eSpeed " + AUtil.toRoman(getAmplifier(enchantLvl) + 1) + " &7(" +
+				getSeconds(enchantLvl) + "s) when hit &e" + getStrikes(enchantLvl) + " times &7by a player"
 		).getLore();
 	}
 
-	public int getCombo(int enchantLvl) {
+	public int getStrikes(int enchantLvl) {
 		return Math.max(6 - enchantLvl, 1);
 	}
 

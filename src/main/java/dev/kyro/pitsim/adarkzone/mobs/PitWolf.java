@@ -42,6 +42,11 @@ public class PitWolf extends PitMob {
 	}
 
 	@Override
+	public String getRawDisplayNamePlural() {
+		return "Wolves";
+	}
+
+	@Override
 	public ChatColor getChatColor() {
 		return ChatColor.BLUE;
 	}

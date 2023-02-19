@@ -7,13 +7,13 @@ import org.bukkit.inventory.ItemStack;
 
 public abstract class Killstreak implements Listener {
 
-	public String name;
+	public String displayName;
 	public String refName;
 	public int killInterval;
 	public int prestige;
 
-	public Killstreak(String name, String refName, int killInterval, int prestige) {
-		this.name = name;
+	public Killstreak(String displayName, String refName, int killInterval, int prestige) {
+		this.displayName = displayName;
 		this.killInterval = killInterval;
 		this.refName = refName;
 		this.prestige = prestige;

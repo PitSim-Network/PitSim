@@ -1,12 +1,15 @@
 package dev.kyro.pitsim.enchants.tainted.common;
 
-import dev.kyro.pitsim.controllers.objects.PitEnchant;
+import dev.kyro.pitsim.adarkzone.PitMob;
+import dev.kyro.pitsim.adarkzone.mobs.PitIronGolem;
+import dev.kyro.pitsim.adarkzone.mobs.PitZombie;
+import dev.kyro.pitsim.controllers.objects.CommonDarkzoneEnchant;
 import dev.kyro.pitsim.enums.ApplyType;
-import dev.kyro.pitsim.misc.PitLoreBuilder;
 
+import java.util.Arrays;
 import java.util.List;
 
-public class Nimble extends PitEnchant {
+public class Nimble extends CommonDarkzoneEnchant {
 	public static Nimble INSTANCE;
 
 	public Nimble() {
@@ -17,10 +20,17 @@ public class Nimble extends PitEnchant {
 	}
 
 	@Override
-	public List<String> getNormalDescription(int enchantLvl) {
+	public int getStatPercent(int enchantLvl) {
+		return enchantLvl * 10;
+	}
 
-		return new PitLoreBuilder(
-				"&7A basic tainted enchant"
-		).getLore();
+	@Override
+	public boolean isOffensive() {
+		return true;
+	}
+
+	@Override
+	public List<Class<? extends PitMob>> getApplicableMobs() {
+		return Arrays.asList(PitZombie.class, PitIronGolem.class);
 	}
 }

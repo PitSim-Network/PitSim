@@ -91,8 +91,8 @@ public class HelmetManager implements Listener {
 		Player player = (Player) checkPlayer;
 
 		if(Misc.isAirOrNull(player.getInventory().getHelmet())) return null;
-		NBTItem nbtItem = new NBTItem(player.getInventory().getHelmet());
-		if(!nbtItem.hasKey(NBTTag.GHELMET_UUID.getRef())) return null;
+		GoldenHelmet pitItem = ItemFactory.getItem(GoldenHelmet.class);
+		if(!pitItem.isThisItem(player.getInventory().getHelmet())) return null;
 
 		return player.getInventory().getHelmet();
 	}
@@ -132,15 +132,12 @@ public class HelmetManager implements Listener {
 		return generateInstance(null, nbtItem.getString(NBTTag.GHELMET_ABILITY.getRef()));
 	}
 
-	public static UUID getUUID(Player player) {
-		ItemStack helmet = getHelmet(player);
-		if(helmet == null) return null;
-
-		NBTItem nbtItem = new NBTItem(helmet);
-		return UUID.fromString(nbtItem.getString(NBTTag.GHELMET_UUID.getRef()));
+	public static void setAndDepositGold(Player player, ItemStack helmet, int gold) {
+		player.getInventory().setItemInHand(depositGold(helmet, gold));
+		player.updateInventory();
 	}
 
-	public void depositGold(Player player, ItemStack helmet, int gold) {
+	public static ItemStack depositGold(ItemStack helmet, int gold) {
 		NBTItem nbtItem = new NBTItem(helmet);
 		nbtItem.setLong(NBTTag.GHELMET_GOLD.getRef(), (getHelmetGold(helmet) + gold));
 		helmet = nbtItem.getItem();
@@ -148,8 +145,7 @@ public class HelmetManager implements Listener {
 		GoldenHelmet pitItem = ItemFactory.getItem(GoldenHelmet.class);
 		pitItem.updateItem(helmet);
 
-		player.getInventory().setItemInHand(helmet);
-		player.updateInventory();
+		return helmet;
 	}
 
 	public static boolean withdrawGold(Player player, ItemStack helmet, int gold) {
@@ -198,7 +194,6 @@ public class HelmetManager implements Listener {
 		if(refName.equals("hermit")) return new HermitAbility(player);
 		if(refName.equals("judgement")) return new JudgementAbility(player);
 		if(refName.equals("phoenix")) return new PhoenixAbility(player);
-		if(refName.equals("mana")) return new ManaAbility(player);
 		return null;
 	}
 
@@ -206,6 +201,7 @@ public class HelmetManager implements Listener {
 
 	@EventHandler
 	public void onCrouch(PlayerToggleSneakEvent event) {
+		if(!PitSim.status.isOverworld()) return;
 		Player player = event.getPlayer();
 		if(!event.isSneaking()) return;
 		if(ComboVenom.isVenomed(player)) return;
@@ -215,7 +211,6 @@ public class HelmetManager implements Listener {
 			new BukkitRunnable() {
 				@Override
 				public void run() {
-
 					crouchPlayers.remove(player);
 				}
 			}.runTaskLater(PitSim.INSTANCE, 7L);
@@ -224,7 +219,6 @@ public class HelmetManager implements Listener {
 		crouchPlayers.remove(player);
 		DoubleSneakEvent newEvent = new DoubleSneakEvent(player);
 		Bukkit.getPluginManager().callEvent(newEvent);
-
 	}
 
 	@EventHandler
@@ -241,7 +235,6 @@ public class HelmetManager implements Listener {
 
 	@EventHandler
 	public void onRemove(InventoryClickEvent event) {
-
 		Player player = (Player) event.getWhoClicked();
 
 		if(event.getClickedInventory() == null || event.getClickedInventory().getType() != InventoryType.PLAYER) return;
@@ -315,16 +308,16 @@ public class HelmetManager implements Listener {
 			pitPlayer.gold -= gold;
 
 			if(Misc.isAirOrNull(player.getItemInHand())) return;
-			NBTItem nbtItem = new NBTItem(player.getItemInHand());
 
-			if(!nbtItem.hasKey(NBTTag.GHELMET_UUID.getRef())) {
+			GoldenHelmet pitItem = ItemFactory.getItem(GoldenHelmet.class);
+			if(!pitItem.isThisItem(player.getItemInHand())) {
 				AOutput.send(player, "&cUnable to find helmet!");
 				HelmetGUI.depositPlayers.remove(player);
 				Sounds.NO.play(player);
 				return;
 			}
 
-			depositGold(player, helmet, gold);
+			setAndDepositGold(player, helmet, gold);
 
 			AOutput.send(player, "&aSuccessfully deposited gold!");
 			HelmetGUI.depositPlayers.remove(player);
@@ -337,13 +330,13 @@ public class HelmetManager implements Listener {
 		if(!event.getPlayer().isSneaking()) return;
 		Player player = event.getPlayer();
 		Action action = event.getAction();
-		if((action.equals(Action.RIGHT_CLICK_BLOCK) || action.equals(Action.RIGHT_CLICK_AIR)) && this.armorMaterials.contains(player.getItemInHand().getType())) {
+		if((action.equals(Action.RIGHT_CLICK_BLOCK) || action.equals(Action.RIGHT_CLICK_AIR)) && armorMaterials.contains(player.getItemInHand().getType())) {
 			event.setCancelled(true);
 			player.updateInventory();
 		}
-		if(Misc.isAirOrNull(event.getPlayer().getItemInHand())) return;
-		NBTItem nbtItem = new NBTItem(event.getPlayer().getItemInHand());
-		if(!nbtItem.hasKey(NBTTag.GHELMET_UUID.getRef())) return;
+
+		GoldenHelmet pitItem = ItemFactory.getItem(GoldenHelmet.class);
+		if(!pitItem.isThisItem(player.getItemInHand())) return;
 
 		if(!UpgradeManager.hasUpgrade(event.getPlayer(), "HELMETRY")) {
 			AOutput.error(event.getPlayer(), "&cYou must first unlock &6Helmetry &cfrom the renown shop before using this item!");
@@ -366,7 +359,7 @@ public class HelmetManager implements Listener {
 		int attackLevel = 0;
 		if(attackerHelmet != null) attackLevel = HelmetSystem.getLevel(getUsedHelmetGold(attackEvent.getAttacker()));
 		if(attackerHelmet != null)
-			attackEvent.increasePercent += HelmetSystem.getTotalStacks(HelmetSystem.Passive.DAMAGE, attackLevel - 1) / 100D;
+			attackEvent.increasePercent += HelmetSystem.getTotalStacks(HelmetSystem.Passive.DAMAGE, attackLevel - 1);
 
 		int defenderLevel = 0;
 		if(defenderHelmet != null) defenderLevel = HelmetSystem.getLevel(getUsedHelmetGold(attackEvent.getDefender()));
