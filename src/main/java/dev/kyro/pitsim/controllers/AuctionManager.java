@@ -181,7 +181,7 @@ public class AuctionManager implements Listener {
 	}
 
 	public static boolean haveAuctionsEnded() {
-		return System.currentTimeMillis() > getAuctionEndTime();
+		return haveAuctionsEnded(getAuctionEndTime());
 	}
 
 	public static boolean haveAuctionsEnded(long endTime) {
@@ -189,11 +189,11 @@ public class AuctionManager implements Listener {
 	}
 
 	public static String getRemainingTime() {
-		return Misc.formatDurationFull(getAuctionEndTime() - System.currentTimeMillis(), true);
+		return getRemainingTime(getAuctionEndTime());
 	}
 
 	public static String getRemainingTime(long endTime) {
-		return formatTime(endTime - System.currentTimeMillis());
+		return Misc.formatDurationFull(endTime - System.currentTimeMillis(), true);
 	}
 
 	public static long getAuctionEndTime() {
