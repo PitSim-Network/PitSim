@@ -56,7 +56,7 @@ public class ChatTriggerManager implements Listener {
 		Map<String, Object> dataMap = new LinkedHashMap<>();
 		dataMap.put("xp", PrestigeValues.getTotalXPForPrestige(pitPlayer.prestige, pitPlayer.level, pitPlayer.remainingXP));
 		dataMap.put("totalXPForPres", PrestigeValues.getTotalXPForPrestige(pitPlayer.prestige));
-		dataMap.put("currentGReq", PrestigeValues.getTotalXPForPrestige(pitPlayer.prestige));
+		dataMap.put("currentGReq", pitPlayer.goldGrinded);
 		sendData(pitPlayer.player, encodeMap(dataMap));
 	}
 
