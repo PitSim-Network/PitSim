@@ -132,7 +132,7 @@ public class ElectricShock extends PitEnchant {
 	@Override
 	public List<String> getNormalDescription(int enchantLvl) {
 		return new PitLoreBuilder(
-				"&7Chains between mobs up to &e" + getMaxBounces(enchantLvl) + "time" +
+				"&7Chains between mobs up to &e" + getMaxBounces(enchantLvl) + " time" +
 				(getMaxBounces(enchantLvl) == 1 ? "" : "s")
 		).getLore();
 	}

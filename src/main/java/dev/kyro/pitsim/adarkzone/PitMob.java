@@ -6,6 +6,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.entity.Creature;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
@@ -84,6 +85,8 @@ public abstract class PitMob implements Listener {
 	}
 
 	public Player getTarget() {
+		LivingEntity target = mob.getTarget();
+		if(!(target instanceof Player)) mob.setTarget(null);
 		return (Player) mob.getTarget();
 	}
 
