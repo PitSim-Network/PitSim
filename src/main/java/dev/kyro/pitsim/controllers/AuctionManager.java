@@ -51,7 +51,7 @@ public class AuctionManager implements Listener {
 			public void run() {
 				CrossServerMessageManager.sendAuctionData("");
 			}
-		}.runTaskLater(PitSim.INSTANCE, 20);
+		}.runTaskLater(PitSim.INSTANCE, 20 * 20);
 	}
 
 	public static void onStart() {

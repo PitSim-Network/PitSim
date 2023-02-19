@@ -27,7 +27,7 @@ public class CrossServerMessageManager implements Listener {
 			public void run() {
 				loadAuctionData();
 			}
-		}.runTaskLater(PitSim.INSTANCE, 20);
+		}.runTaskLater(PitSim.INSTANCE, 20 * 20);
 	}
 
 	@EventHandler
