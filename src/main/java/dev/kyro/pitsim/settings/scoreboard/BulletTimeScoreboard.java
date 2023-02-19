@@ -4,7 +4,7 @@ import dev.kyro.arcticapi.builders.AItemStackBuilder;
 import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.pitsim.controllers.Cooldown;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
-import dev.kyro.pitsim.enchants.BulletTime;
+import dev.kyro.pitsim.enchants.overworld.BulletTime;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 

@@ -37,7 +37,7 @@ public class RingArmor extends PitEnchant {
 	}
 
 	@Override
-	public List<String> getDescription(int enchantLvl) {
+	public List<String> getNormalDescription(int enchantLvl) {
 		if(enchantLvl == 1) return new PitLoreBuilder(
 				"&7Receive &9-" + getDamageReduction(enchantLvl) + "% &7damage when shot"
 		).getLore();

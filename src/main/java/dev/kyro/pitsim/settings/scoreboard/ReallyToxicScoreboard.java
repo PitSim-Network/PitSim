@@ -4,7 +4,7 @@ import dev.kyro.arcticapi.builders.AItemStackBuilder;
 import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.pitsim.controllers.HitCounter;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
-import dev.kyro.pitsim.enchants.ReallyToxic;
+import dev.kyro.pitsim.enchants.overworld.ReallyToxic;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 

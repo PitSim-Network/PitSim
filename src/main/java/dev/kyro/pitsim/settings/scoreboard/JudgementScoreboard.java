@@ -2,8 +2,8 @@ package dev.kyro.pitsim.settings.scoreboard;
 
 import dev.kyro.arcticapi.builders.AItemStackBuilder;
 import dev.kyro.arcticapi.builders.ALoreBuilder;
-import dev.kyro.pitsim.controllers.objects.GoldenHelmet;
 import dev.kyro.pitsim.controllers.objects.HelmetAbility;
+import dev.kyro.pitsim.controllers.objects.HelmetManager;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.helmetabilities.JudgementAbility;
 import org.bukkit.Material;
@@ -23,9 +23,9 @@ public class JudgementScoreboard extends ScoreboardOption {
 
 	@Override
 	public String getValue(PitPlayer pitPlayer) {
-		ItemStack helmet = GoldenHelmet.getHelmet(pitPlayer.player);
-		HelmetAbility deadAbility = GoldenHelmet.getAbility(helmet);
-		HelmetAbility liveAbility = GoldenHelmet.abilities.get(pitPlayer.player);
+		ItemStack helmet = HelmetManager.getHelmet(pitPlayer.player);
+		HelmetAbility deadAbility = HelmetManager.getAbility(helmet);
+		HelmetAbility liveAbility = HelmetManager.abilities.get(pitPlayer.player);
 		if(!(deadAbility instanceof JudgementAbility)) return null;
 
 		if(liveAbility != null && liveAbility.isActive) {

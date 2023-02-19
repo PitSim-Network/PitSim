@@ -1,6 +1,5 @@
 package dev.kyro.pitsim.enchants.overworld;
 
-import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.pitsim.controllers.Cooldown;
 import dev.kyro.pitsim.controllers.objects.PitEnchant;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
@@ -49,7 +48,7 @@ public class BulletTime extends PitEnchant {
 	}
 
 	@Override
-	public List<String> getDescription(int enchantLvl) {
+	public List<String> getNormalDescription(int enchantLvl) {
 		return new PitLoreBuilder(
 				"&7Blocking destroys arrows that hit you. Destroying arrows this way heals &c" +
 				Misc.getHearts(getHealing(enchantLvl)) + " &7(" + getCooldownSeconds(enchantLvl) + "s cooldown)"
