@@ -1,11 +1,13 @@
 package dev.kyro.pitsim.controllers;
 
+import com.google.cloud.firestore.annotation.Exclude;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
+import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -26,6 +28,12 @@ public class ChatTriggerManager implements Listener {
 				}
 			}
 		}.runTaskTimer(PitSim.INSTANCE, 0L, 20L);
+	}
+
+	@Exclude
+	public void onQuit(PlayerQuitEvent event) {
+		Player player = event.getPlayer();
+		subscribedPlayers.remove(player.getUniqueId());
 	}
 
 	public static void sendPerksInfo(PitPlayer pitPlayer) {
