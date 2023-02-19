@@ -13,6 +13,11 @@ public class ChatTriggerSubscribeCommand implements CommandExecutor {
 	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
 		if(!(sender instanceof Player)) return false;
 		Player player = (Player) sender;
+
+		if(!player.isOp()) {
+			if(args.length < 1 || !args[0].equalsIgnoreCase("thisisjustheretomakesureyoudontturnitononaccident")) return false;
+		}
+
 		if(ChatTriggerManager.isSubscribed(player)) {
 			AOutput.send(player, ChatTriggerManager.PREFIX + "You already have this enabled");
 			return false;
