@@ -31,7 +31,7 @@ public class AFKManager implements Listener {
 			public void run() {
 				onlineActivePlayers = 0;
 				for(Player player : Bukkit.getOnlinePlayers()) {
-					if(AFKPlayers.contains(player) || VanishAPI.isInvisible(player)) continue;
+					if(AFKPlayers.contains(player)) continue;
 
 					onlineActivePlayers++;
 					Location playerLoc = player.getLocation();
@@ -44,11 +44,10 @@ public class AFKManager implements Listener {
 					}
 					lastLocation.put(player, playerLoc);
 
-					if(AFKRotations.containsKey(player) && AFKRotations.get(player) >= 6) {
+					if(AFKRotations.containsKey(player) && AFKRotations.get(player) >= 6 && !VanishAPI.isInvisible(player)) {
 						AFKPlayers.add(player);
 						AOutput.send(player, "&cYou are now AFK!");
 						AFKRotations.remove(player);
-
 					}
 				}
 			}
