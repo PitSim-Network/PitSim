@@ -3,7 +3,7 @@ package dev.kyro.pitsim.adarkzone.bosses;
 import dev.kyro.pitsim.adarkzone.DropPool;
 import dev.kyro.pitsim.adarkzone.PitBoss;
 import dev.kyro.pitsim.adarkzone.SubLevelType;
-import dev.kyro.pitsim.adarkzone.abilities.KnockbackAbility;
+import dev.kyro.pitsim.adarkzone.abilities.PoundAbility;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
@@ -15,8 +15,8 @@ public class PitZombieBoss extends PitBoss {
 		abilities(
 //				new TrueDamageAbility(4),
 //				new StunAbility(0.1, 0),
-//				new LaunchAbility(20)
-				new KnockbackAbility(5)
+				new PoundAbility(0.1, 4)
+//				new KnockbackAbility(5)
 		);
 	}
 

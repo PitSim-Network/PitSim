@@ -39,7 +39,6 @@ public class FallingBlock {
 		IBlockData data = CraftMagicNumbers.getBlock(material).fromLegacyData(blockData & 255);
 		entityFallingBlock = new EntityFallingBlock(nmsWorld, 0, 0, 0, data);
 		entityFallingBlock.setPosition(spawnLocation.getX(), spawnLocation.getY(), spawnLocation.getZ());
-		entityFallingBlock.onGround = true;
 
 		PacketPlayOutSpawnEntity spawn = new PacketPlayOutSpawnEntity(entityFallingBlock, 70, Block.getCombinedId(entityFallingBlock.getBlock()));
 
