@@ -40,14 +40,6 @@ public class ScoreboardManager implements Listener {
 
 	public static void updateScoreboard(Player player) {
 		currentScoreboardMap.putIfAbsent(player, null);
-		if(PitSim.status.isDarkzone()) {
-			if(currentScoreboardMap.get(player) != PitScoreboard.DARKZONE) {
-				PitScoreboard.DARKZONE.display(player);
-				currentScoreboardMap.put(player, PitScoreboard.DARKZONE);
-			}
-			return;
-		}
-
 		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
 
 		ItemStack leggings = player.getInventory().getLeggings();
@@ -57,15 +49,21 @@ public class ScoreboardManager implements Listener {
 		}
 
 		PitScoreboard expectedScoreboard;
-		if(goldEnchantCount >= 2) {
+		if(PitSim.status.isDarkzone()) {
 			if(pitPlayer.scoreboardData.hasCustomScoreboardEnabled()) {
-				expectedScoreboard = PitScoreboard.GOLD_WITH_EXTRA;
+				expectedScoreboard = PitScoreboard.DARKZONE_CUSTOM;
+			} else {
+				expectedScoreboard = PitScoreboard.DARKZONE;
+			}
+		} else if(goldEnchantCount >= 2) {
+			if(pitPlayer.scoreboardData.hasCustomScoreboardEnabled()) {
+				expectedScoreboard = PitScoreboard.GOLD_CUSTOM;
 			} else {
 				expectedScoreboard = PitScoreboard.GOLD;
 			}
 		} else {
 			if(pitPlayer.scoreboardData.hasCustomScoreboardEnabled()) {
-				expectedScoreboard = PitScoreboard.DEFAULT_WITH_EXTRA;
+				expectedScoreboard = PitScoreboard.DEFAULT_CUSTOM;
 			} else {
 				expectedScoreboard = PitScoreboard.DEFAULT;
 			}
@@ -80,9 +78,10 @@ public class ScoreboardManager implements Listener {
 	public enum PitScoreboard {
 		DEFAULT("default"),
 		GOLD("gold"),
-		DEFAULT_WITH_EXTRA("default-custom"),
-		GOLD_WITH_EXTRA("gold-custom"),
-		DARKZONE("darkzone");
+		DARKZONE("darkzone"),
+		DEFAULT_CUSTOM("default-custom"),
+		GOLD_CUSTOM("gold-custom"),
+		DARKZONE_CUSTOM("darkzone-custom");
 
 		public final String scoreboardName;
 

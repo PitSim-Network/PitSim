@@ -73,10 +73,7 @@ import dev.kyro.pitsim.pitmaps.DimensionsMap;
 import dev.kyro.pitsim.pitmaps.SandMap;
 import dev.kyro.pitsim.pitmaps.XmasMap;
 import dev.kyro.pitsim.placeholders.*;
-import dev.kyro.pitsim.settings.scoreboard.GladiatorScoreboard;
-import dev.kyro.pitsim.settings.scoreboard.JudgementScoreboard;
-import dev.kyro.pitsim.settings.scoreboard.ReallyToxicScoreboard;
-import dev.kyro.pitsim.settings.scoreboard.StrengthScoreboard;
+import dev.kyro.pitsim.settings.scoreboard.*;
 import dev.kyro.pitsim.storage.StorageManager;
 import dev.kyro.pitsim.upgrades.*;
 import net.citizensnpcs.api.CitizensAPI;
@@ -550,6 +547,7 @@ public class PitSim extends JavaPlugin {
 		ScoreboardManager.registerScoreboard(new StrengthScoreboard());
 		ScoreboardManager.registerScoreboard(new GladiatorScoreboard());
 		ScoreboardManager.registerScoreboard(new JudgementScoreboard());
+		ScoreboardManager.registerScoreboard(new AuctionScoreboard());
 	}
 
 	private void registerNPCs() {
@@ -589,7 +587,6 @@ public class PitSim extends JavaPlugin {
 		new ReloadCommand(adminCommand, "reload");
 		new BypassCommand(adminCommand, "bypass");
 		new ExtendCommand(adminCommand, "extend");
-		new LockdownCommand(adminCommand, "lockdown");
 		new UnlockCosmeticCommand(adminCommand, "unlockcosmetic");
 		new GodCommand(adminCommand, "god");
 		new BountyCommand(setCommand, "bounty");
@@ -700,7 +697,6 @@ public class PitSim extends JavaPlugin {
 		getServer().getPluginManager().registerEvents(new ScoreboardManager(), this);
 		getServer().getPluginManager().registerEvents(new ProxyMessaging(), this);
 		getServer().getPluginManager().registerEvents(new LobbySwitchManager(), this);
-		getServer().getPluginManager().registerEvents(new AuctionManager(), this);
 		if(PASS_ENABLED) getServer().getPluginManager().registerEvents(new PassManager(), this);
 		getServer().getPluginManager().registerEvents(new SkinManager(), this);
 		getServer().getPluginManager().registerEvents(new TimeManager(), this);

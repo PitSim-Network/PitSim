@@ -15,6 +15,7 @@ depend:
   - LiteBans
   - PremiumVanish
   - DeluxeChat
+  - PluginQuery
 softdepend: [GrimAC, PolarLoader]
 commands:
   pitsim:
@@ -52,7 +53,6 @@ commands:
   resource:
   lightning:
   stat:
-  captcha:
   play:
   pay:
   tutorial:
