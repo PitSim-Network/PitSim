@@ -6,6 +6,7 @@ import dev.kyro.pitsim.controllers.Cooldown;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.enchants.overworld.BulletTime;
 import dev.kyro.pitsim.enchants.overworld.Telebow;
+import dev.kyro.pitsim.enchants.Telebow;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 
@@ -36,7 +37,7 @@ public class TelebowScoreboard extends ScoreboardOption {
 				.setName(getDisplayName())
 				.setLore(new ALoreBuilder(
 						"&7Shows the current cooldown",
-						"&7left on " + BulletTime.INSTANCE.getDisplayName(),
+						"&7left on " + Telebow.INSTANCE.getDisplayName(),
 						"&7when applicable"
 				)).getItemStack();
 		return itemStack;
