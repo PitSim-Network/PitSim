@@ -3,6 +3,7 @@ package dev.kyro.pitsim.aitems.misc;
 import de.tr7zw.nbtapi.NBTItem;
 import dev.kyro.arcticapi.builders.AItemStackBuilder;
 import dev.kyro.arcticapi.builders.ALoreBuilder;
+import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.aitems.PitItem;
 import dev.kyro.pitsim.controllers.HelmetSystem;
 import dev.kyro.pitsim.controllers.objects.HelmetAbility;
@@ -79,7 +80,11 @@ public class GoldenHelmet extends PitItem {
 
 		if(ability != null) {
 			loreBuilder.addLore("&7Ability: &9" + ability.name);
-			loreBuilder.addLore(ability.getDescription());
+			if(PitSim.status.isOverworld()) {
+				loreBuilder.addLore(ability.getDescription());
+			} else {
+				loreBuilder.addLore("&cDISABLED IN DARKZONE");
+			}
 		} else loreBuilder.addLore("&7Ability: &cNONE");
 		loreBuilder.addLore("", "&7Passives:");
 		int passives = 0;

@@ -22,12 +22,6 @@ public class ItemFactory {
 		throw new RuntimeException();
 	}
 
-//	@SuppressWarnings("unchecked")
-//	public static <T extends StaticPitItem> T getStaticItem(Class<T> clazz) {
-//		for(PitItem pitItem : pitItems) if(pitItem instanceof StaticPitItem && pitItem.getClass() == clazz) return (T) pitItem;
-//		throw new RuntimeException();
-//	}
-
 	public static boolean isPitItem(ItemStack itemStack) {
 		return getItem(itemStack) != null;
 	}

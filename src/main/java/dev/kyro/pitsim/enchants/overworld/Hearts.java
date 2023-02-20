@@ -39,7 +39,7 @@ public class Hearts extends PitEnchant {
 
 	@EventHandler
 	public void onArmorEquip(ArmorEquipEvent event) {
-		Player player = (Player) event.getPlayer();
+		Player player = event.getPlayer();
 
 		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
 		pitPlayer.updateMaxHealth();

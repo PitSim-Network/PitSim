@@ -24,7 +24,7 @@ public class BeatTheSpammers extends PitEnchant {
 		if(enchantLvl == 0) return;
 
 		if(!attackEvent.getDefender().getEquipment().getItemInHand().getType().equals(Material.BOW)) return;
-		attackEvent.increasePercent += getDamage(enchantLvl) / 100D;
+		attackEvent.increasePercent += getDamage(enchantLvl);
 	}
 
 	@Override

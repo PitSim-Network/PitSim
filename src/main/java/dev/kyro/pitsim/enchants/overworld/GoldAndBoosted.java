@@ -27,7 +27,7 @@ public class GoldAndBoosted extends PitEnchant {
 
 		EntityLiving nmsPlayer = ((CraftLivingEntity) attackEvent.getAttacker()).getHandle();
 		if(nmsPlayer.getAbsorptionHearts() == 0) return;
-		attackEvent.increasePercent += getDamage(enchantLvl) / 100D;
+		attackEvent.increasePercent += getDamage(enchantLvl);
 	}
 
 	@Override

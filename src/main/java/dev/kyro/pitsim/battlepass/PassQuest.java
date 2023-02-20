@@ -64,11 +64,13 @@ public abstract class PassQuest implements Listener {
 	}
 
 	public boolean isQuestActive() {
+		if(PassManager.currentPass == null) return false;
 		if(questType == QuestType.WEEKLY && !PassManager.currentPass.weeklyQuests.containsKey(this)) return false;
 		return true;
 	}
 
 	public boolean canProgressQuest(PitPlayer pitPlayer) {
+		if(PassManager.currentPass == null) return false;
 		PassData passData = pitPlayer.getPassData(PassManager.currentPass.startDate);
 		if(questType == QuestType.WEEKLY && !PassManager.currentPass.weeklyQuests.containsKey(this)) return false;
 

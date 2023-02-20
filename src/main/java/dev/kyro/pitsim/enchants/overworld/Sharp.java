@@ -22,7 +22,7 @@ public class Sharp extends PitEnchant {
 		int enchantLvl = attackEvent.getAttackerEnchantLevel(this);
 		if(enchantLvl == 0) return;
 
-		attackEvent.increasePercent += getDamage(enchantLvl) / 100D;
+		attackEvent.increasePercent += getDamage(enchantLvl);
 	}
 
 	@Override

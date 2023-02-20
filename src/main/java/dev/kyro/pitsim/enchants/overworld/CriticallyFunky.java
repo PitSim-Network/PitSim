@@ -31,7 +31,7 @@ public class CriticallyFunky extends PitEnchant {
 		}
 
 		if(attackEvent.isAttackerPlayer() && attackerEnchantLvl != 0 && HitCounter.getCharge(attackEvent.getAttackerPlayer(), this) == 1) {
-			attackEvent.increasePercent += getDamage(attackerEnchantLvl) / 100D;
+			attackEvent.increasePercent += getDamage(attackerEnchantLvl);
 			HitCounter.setCharge(attackEvent.getAttackerPlayer(), this, 0);
 		}
 	}

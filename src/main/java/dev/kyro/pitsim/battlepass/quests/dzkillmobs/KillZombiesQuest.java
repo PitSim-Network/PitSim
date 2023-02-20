@@ -3,6 +3,8 @@ package dev.kyro.pitsim.battlepass.quests.dzkillmobs;
 import dev.kyro.arcticapi.builders.AItemStackBuilder;
 import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.arcticapi.misc.AUtil;
+import dev.kyro.pitsim.adarkzone.DarkzoneManager;
+import dev.kyro.pitsim.adarkzone.mobs.PitZombie;
 import dev.kyro.pitsim.battlepass.PassManager;
 import dev.kyro.pitsim.battlepass.PassQuest;
 import dev.kyro.pitsim.controllers.PlayerManager;
@@ -24,7 +26,7 @@ public class KillZombiesQuest extends PassQuest {
 	@EventHandler
 	public void onKill(KillEvent killEvent) {
 		if(!PlayerManager.isRealPlayer(killEvent.getKillerPlayer())) return;
-//		if(!OldMobManager.mobIsType(killEvent.getDead(), OldPitZombie.class)) return;
+		if(!(DarkzoneManager.getPitMob(killEvent.getDead()) instanceof PitZombie)) return;
 
 		progressQuest(killEvent.getKillerPitPlayer(), 1);
 	}

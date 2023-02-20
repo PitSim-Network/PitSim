@@ -44,10 +44,17 @@ public class PlayerDataManager implements Listener {
 			public void run() {
 				StorageManager.quitInitiate(player);
 				pitPlayer.save(true, true);
+			}
+		}.runTaskLater(PitSim.INSTANCE, 1L);
+
+
+		new BukkitRunnable() {
+			@Override
+			public void run() {
 				StorageManager.quitCleanup(player);
 				PitPlayer.pitPlayers.remove(pitPlayer);
 			}
-		}.runTaskLater(PitSim.INSTANCE, 1L);
+		}.runTaskLater(PitSim.INSTANCE, 30L);
 	}
 
 	@EventHandler

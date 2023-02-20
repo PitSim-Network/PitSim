@@ -41,10 +41,10 @@ public class JewelHunter extends PitPerk {
 		double damageIncrease = 0;
 
 		ItemStack heldItem = attackEvent.getDefender().getEquipment().getItemInHand();
-		if(EnchantManager.isJewel(heldItem)) damageIncrease += getDamageIncrease() / 100.0;
+		if(EnchantManager.isJewel(heldItem)) damageIncrease += getDamageIncrease();
 
 		ItemStack pantsItem = attackEvent.getDefender().getEquipment().getLeggings();
-		if(EnchantManager.isJewel(pantsItem)) damageIncrease += getDamageIncrease() / 100.0;
+		if(EnchantManager.isJewel(pantsItem)) damageIncrease += getDamageIncrease();
 
 		attackEvent.increasePercent += damageIncrease;
 	}

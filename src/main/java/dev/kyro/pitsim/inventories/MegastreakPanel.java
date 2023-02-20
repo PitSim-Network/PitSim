@@ -4,6 +4,7 @@ import dev.kyro.arcticapi.gui.AGUI;
 import dev.kyro.arcticapi.gui.AGUIPanel;
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.arcticapi.misc.AUtil;
+import dev.kyro.pitsim.controllers.ChatTriggerManager;
 import dev.kyro.pitsim.controllers.PerkManager;
 import dev.kyro.pitsim.controllers.PrestigeValues;
 import dev.kyro.pitsim.controllers.objects.Megastreak;
@@ -25,7 +26,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MegastreakPanel extends AGUIPanel {
-	PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
+	public PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
 	public PerkGUI perkGUI;
 
 	public MegastreakPanel(AGUI gui) {
@@ -149,6 +150,7 @@ public class MegastreakPanel extends AGUIPanel {
 					} else if(!prestige && !has && !uberCd && !level) {
 						openPanel(perkGUI.getHomePanel());
 						Sounds.SUCCESS.play(player);
+						if(ChatTriggerManager.isSubscribed(player)) ChatTriggerManager.sendPerksInfo(pitPlayer);
 					}
 					if(prestige) {
 						AOutput.error(player, "&cYou aren't high enough prestige to use this!");

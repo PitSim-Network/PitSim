@@ -25,8 +25,6 @@ public class Thick extends PitPerk {
 	@EventHandler
 	public void onPerkEquip(PerkEquipEvent event) {
 		Player player = event.getPlayer();
-//		PitPerk perk = event.getPerk();
-//		PitPerk replacedPerk = event.getReplacedPerk();
 
 		new BukkitRunnable() {
 			@Override

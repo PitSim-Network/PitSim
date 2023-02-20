@@ -136,7 +136,7 @@ public class Highlander extends Megastreak {
 //				attackEvent.increasePercent += 33 / 100D;
 //			}
 			if(NonManager.getNon(attackEvent.getDefender()) != null) {
-				attackEvent.increasePercent += 25 / 100D;
+				attackEvent.increasePercent += 25;
 			}
 		}
 	}

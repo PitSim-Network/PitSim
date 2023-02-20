@@ -15,7 +15,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 public class Baker extends Killstreak {
-
 	public static Baker INSTANCE;
 
 	public Baker() {
@@ -43,11 +42,14 @@ public class Baker extends Killstreak {
 
 	@Override
 	public ItemStack getDisplayItem(Player player) {
-
-		AItemStackBuilder builder = new AItemStackBuilder(Material.BREAD);
-		builder.setName("&e" + name);
-		builder.setLore(new ALoreBuilder("&7Every: &c" + killInterval + " kills",
-				"", "&7Obtain either a &6Yummy bread &7or", "&6Very yummy bread&7. (Lost on death)"));
+		AItemStackBuilder builder = new AItemStackBuilder(Material.BREAD)
+				.setName("&e" + displayName)
+				.setLore(new ALoreBuilder(
+						"&7Every: &c" + killInterval + " kills",
+						"",
+						"&7Obtain either a &6Yummy bread &7or",
+						"&6Very yummy bread&7. (Lost on death)"
+				));
 
 		return builder.getItemStack();
 	}

@@ -1,13 +1,12 @@
 package dev.kyro.pitsim.cosmetics.misc.kyrocosmetic;
 
-import de.myzelyam.api.vanish.VanishAPI;
 import dev.kyro.pitsim.PitSim;
-import dev.kyro.pitsim.cosmetics.CosmeticManager;
 import dev.kyro.pitsim.controllers.SpawnManager;
-import org.bukkit.Bukkit;
+import dev.kyro.pitsim.cosmetics.CosmeticManager;
+import dev.kyro.pitsim.misc.Misc;
 import org.bukkit.Effect;
-import org.bukkit.GameMode;
 import org.bukkit.Location;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
@@ -18,7 +17,7 @@ public abstract class AIParticle {
 	public static List<AIParticle> particleList = new ArrayList<>();
 
 	public Player owner;
-	public Player target;
+	public LivingEntity target;
 	public Location particleLocation;
 
 	static {
@@ -50,21 +49,12 @@ public abstract class AIParticle {
 		particleList.remove(this);
 	}
 
-	public Player pickTarget() {
-		Player closestPlayer = null;
-		double distance = Double.MAX_VALUE;
-		for(Player onlinePlayer : Bukkit.getOnlinePlayers()) {
-			if(onlinePlayer == owner || onlinePlayer.getWorld() != owner.getWorld() || VanishAPI.isInvisible(onlinePlayer) ||
-					onlinePlayer.getGameMode() == GameMode.CREATIVE || onlinePlayer.getGameMode() == GameMode.SPECTATOR ||
-					SpawnManager.isInSpawn(onlinePlayer.getLocation()) || SpawnManager.isInSpawn(owner.getLocation()))
-				continue;
-			double testDistance = onlinePlayer.getLocation().distance(owner.getLocation());
-			if(testDistance > 15 || testDistance > distance) continue;
-			closestPlayer = onlinePlayer;
-			distance = testDistance;
+	public void pickTarget() {
+		if(SpawnManager.isInSpawn(owner.getLocation())) {
+			target = null;
+			return;
 		}
-		target = closestPlayer;
-		return target;
+		target = Misc.getMobPlayerClosest(owner.getLocation(), 15, owner);
 	}
 
 	public void display(Effect effect) {

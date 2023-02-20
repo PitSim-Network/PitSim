@@ -106,6 +106,8 @@ public class LevelManager {
 		pitPlayer.killstreaks.set(1, NoKillstreak.INSTANCE);
 		pitPlayer.killstreaks.set(2, NoKillstreak.INSTANCE);
 
+		if(ChatTriggerManager.isSubscribed(player)) ChatTriggerManager.sendPrestigeInfo(pitPlayer);
+
 		String message = "%luckperms_prefix%";
 		if(pitPlayer.megastreak.isOnMega()) {
 			pitPlayer.prefix = pitPlayer.megastreak.getName() + " &7" + PlaceholderAPI.setPlaceholders(pitPlayer.player, message);

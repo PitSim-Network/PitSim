@@ -166,22 +166,19 @@ public class AttackEvent extends Event {
 		}
 
 		public double getFinalDamage() {
-
 			double damage = getEvent().getDamage();
 			damage += increase;
-			damage *= 1 + increasePercent;
+			damage *= 1 + (increasePercent / 100.0);
 			for(double multiplier : multipliers) damage *= multiplier;
 			for(double multiplier : increaseCalcDecrease) damage *= multiplier;
 			damage *= 1 - decreasePercent;
-//			damage -= decrease;
 			return Math.max(damage, 0);
 		}
 
 		public double getFinalDamageIncrease() {
-
 			double damage = getEvent().getDamage();
 			damage += increase;
-			damage *= 1 + increasePercent;
+			damage *= 1 + (increasePercent / 100.0);
 			for(double multiplier : multipliers) {
 				if(multiplier < 1) continue;
 				damage *= multiplier;

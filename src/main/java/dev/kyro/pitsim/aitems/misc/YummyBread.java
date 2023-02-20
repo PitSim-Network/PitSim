@@ -58,7 +58,7 @@ public class YummyBread extends StaticPitItem {
 		if(!attackEvent.isAttackerPlayer()) return;
 		if(breadStacks.containsKey(attackEvent.getAttackerPlayer())) {
 			if(NonManager.getNon(attackEvent.getDefender()) == null) return;
-			attackEvent.increasePercent += ((getDamageIncrease() * breadStacks.get(attackEvent.getAttackerPlayer())) / 100D);
+			attackEvent.increasePercent += getDamageIncrease() * breadStacks.get(attackEvent.getAttackerPlayer());
 		}
 	}
 

@@ -2,7 +2,8 @@ package dev.kyro.pitsim.commands;
 
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.PitSim;
-import dev.kyro.pitsim.controllers.EnchantManager;
+import dev.kyro.pitsim.aitems.PitItem;
+import dev.kyro.pitsim.controllers.ItemFactory;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.controllers.objects.PluginMessage;
 import dev.kyro.pitsim.misc.CustomSerializer;
@@ -49,7 +50,9 @@ public class ShowCommand implements CommandExecutor {
 							AOutput.error(player, "&c&lERROR!&7 You are not holding an item");
 							return;
 						}
-						EnchantManager.setItemLore(itemStack, player);
+
+						PitItem pitItem = ItemFactory.getItem(itemStack);
+						if(pitItem != null) pitItem.updateItem(itemStack);
 						player.setItemInHand(itemStack);
 						player.updateInventory();
 

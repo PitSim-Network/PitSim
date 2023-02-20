@@ -31,7 +31,7 @@ public class DiamondStomp extends PitEnchant {
 				return;
 		}
 
-		attackEvent.increasePercent += getDamage(enchantLvl) / 100D;
+		attackEvent.increasePercent += getDamage(enchantLvl);
 	}
 
 	@Override

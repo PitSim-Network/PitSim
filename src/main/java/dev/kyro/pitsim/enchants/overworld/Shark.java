@@ -32,7 +32,7 @@ public class Shark extends PitEnchant {
 //			if(entity instanceof Player && ((Player) entity).getHealth() < 10) nearby++;
 //		}
 
-		double increasePercent = (getDamage(enchantLvl) / 100D) * nearby;
+		double increasePercent = getDamage(enchantLvl) * nearby;
 		increasePercent = Math.min(increasePercent, (getCap(enchantLvl) / 100D));
 		attackEvent.increasePercent += increasePercent;
 	}

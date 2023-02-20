@@ -3,6 +3,7 @@ package dev.kyro.pitsim.inventories;
 import dev.kyro.arcticapi.gui.AGUI;
 import dev.kyro.arcticapi.gui.AGUIPanel;
 import dev.kyro.arcticapi.misc.AOutput;
+import dev.kyro.pitsim.controllers.ChatTriggerManager;
 import dev.kyro.pitsim.controllers.PerkManager;
 import dev.kyro.pitsim.controllers.UpgradeManager;
 import dev.kyro.pitsim.controllers.objects.PitPerk;
@@ -43,7 +44,7 @@ public class ApplyPerkPanel extends AGUIPanel {
 				ItemStack perkItem = new ItemStack(Material.BEDROCK);
 				ItemMeta meta = perkItem.getItemMeta();
 
-				meta.setDisplayName(ChatColor.translateAlternateColorCodes('&', "&c" + pitPerk.name));
+				meta.setDisplayName(ChatColor.translateAlternateColorCodes('&', "&c" + pitPerk.displayName));
 
 				List<String> lore = new ArrayList<>();
 				if(pitPerk.healing) lore.add(ChatColor.RED + "Healing Perk");
@@ -58,7 +59,7 @@ public class ApplyPerkPanel extends AGUIPanel {
 				ItemStack perkItem = new ItemStack(pitPerk.displayItem);
 				ItemMeta meta = perkItem.getItemMeta();
 
-				meta.setDisplayName(ChatColor.translateAlternateColorCodes('&', "&a" + pitPerk.name));
+				meta.setDisplayName(ChatColor.translateAlternateColorCodes('&', "&a" + pitPerk.displayName));
 
 				List<String> lore = new ArrayList<>();
 				if(pitPerk.healing) lore.add(ChatColor.RED + "Healing Perk");
@@ -69,8 +70,8 @@ public class ApplyPerkPanel extends AGUIPanel {
 					lore.add(ChatColor.translateAlternateColorCodes('&', "&aAlready selected!"));
 				else lore.add(ChatColor.translateAlternateColorCodes('&', "&eClick to select!"));
 
-				if(pitPerk.name.equals("No Perk")) {
-					meta.setDisplayName(ChatColor.translateAlternateColorCodes('&', "&c" + pitPerk.name));
+				if(pitPerk.displayName.equals("No Perk")) {
+					meta.setDisplayName(ChatColor.translateAlternateColorCodes('&', "&c" + pitPerk.displayName));
 					lore.clear();
 					lore.add(ChatColor.GRAY + "Are you hardcore enough that you");
 					lore.add(ChatColor.GRAY + "don't need any perk for this");
@@ -138,7 +139,7 @@ public class ApplyPerkPanel extends AGUIPanel {
 						Sounds.ERROR.play(player);
 						return;
 					}
-					if(activePerk != clickedPerk || activePerk.name.equals("No Perk")) continue;
+					if(activePerk != clickedPerk || activePerk.displayName.equals("No Perk")) continue;
 					Sounds.ERROR.play(player);
 					AOutput.error(perkGUI.player, "&cThat perk is already equipped");
 					return;
@@ -150,6 +151,7 @@ public class ApplyPerkPanel extends AGUIPanel {
 				perkGUI.setPerk(clickedPerk, perkNum);
 				PerkEquipEvent equipEvent = new PerkEquipEvent(clickedPerk, player, replacedPerk);
 				Bukkit.getPluginManager().callEvent(equipEvent);
+				if(ChatTriggerManager.isSubscribed(player)) ChatTriggerManager.sendPerksInfo(pitPlayer);
 
 				openPreviousGUI();
 				return;

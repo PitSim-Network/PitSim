@@ -19,11 +19,10 @@ import java.util.Map;
 import java.util.UUID;
 
 public class StrengthChaining extends PitPerk {
-
 	public static StrengthChaining INSTANCE;
 
 	public static Map<UUID, Integer> amplifierMap = new HashMap<>();
-	public static Map<UUID, Integer> timerMap = new HashMap<>();
+	public static Map<UUID, Integer> durationMap = new HashMap<>();
 
 	public StrengthChaining() {
 		super("Strength-Chaining", "strength", new ItemStack(Material.REDSTONE), 12, false, "", INSTANCE, false);
@@ -36,9 +35,9 @@ public class StrengthChaining extends PitPerk {
 			public void run() {
 				for(Player player : Bukkit.getOnlinePlayers()) {
 
-					timerMap.putIfAbsent(player.getUniqueId(), 0);
-					int ticksLeft = timerMap.get(player.getUniqueId());
-					timerMap.put(player.getUniqueId(), Math.max(ticksLeft - 1, 0));
+					durationMap.putIfAbsent(player.getUniqueId(), 0);
+					int ticksLeft = durationMap.get(player.getUniqueId());
+					durationMap.put(player.getUniqueId(), Math.max(ticksLeft - 1, 0));
 
 					if(ticksLeft == 0) amplifierMap.remove(player.getUniqueId());
 				}
@@ -55,7 +54,7 @@ public class StrengthChaining extends PitPerk {
 		amplifierMap.putIfAbsent(killEvent.getKiller().getUniqueId(), 0);
 		int level = amplifierMap.get(killEvent.getKiller().getUniqueId());
 		amplifierMap.put(killEvent.getKiller().getUniqueId(), Math.min(level + 1, 5));
-		timerMap.put(killEvent.getKiller().getUniqueId(), 160);
+		durationMap.put(killEvent.getKiller().getUniqueId(), 140);
 	}
 
 	@EventHandler
@@ -64,7 +63,7 @@ public class StrengthChaining extends PitPerk {
 		if(!playerHasUpgrade(attackEvent.getAttacker())) return;
 
 		amplifierMap.putIfAbsent(attackEvent.getAttacker().getUniqueId(), 0);
-		attackEvent.increasePercent += (amplifierMap.get(attackEvent.getAttacker().getUniqueId()) * 8) / 100D;
+		attackEvent.increasePercent += amplifierMap.get(attackEvent.getAttacker().getUniqueId()) * 8;
 	}
 
 	@Override
