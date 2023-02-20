@@ -69,6 +69,7 @@ public class Sounds {
 	public static final SoundEffect TUTORIAL_MESSAGE = new SoundEffect(Sound.CHICKEN_EGG_POP, 2, 1.6);
 	public static final SoundEffect LOAD_INITIAL = new SoundEffect(Sound.NOTE_PLING, 1000, 1.2);
 	public static final SoundEffect LOAD_FINAL = new SoundEffect(Sound.NOTE_PLING, 1000, 1.8);
+	public static final SoundEffect SNAKE_ICE = new SoundEffect(Sound.GLASS, 1.3, 1.5);
 
 	//	Enchants
 	public static final SoundEffect BILLIONAIRE = new SoundEffect(Sound.ORB_PICKUP, 1, 0.73);

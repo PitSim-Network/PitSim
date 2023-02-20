@@ -12,7 +12,7 @@ public abstract class PitParticle {
 
 	}
 
-	public PitParticle(boolean accountForYaw, boolean accountForPitch) {
+	public PitParticle(boolean accountForPitch, boolean accountForYaw) {
 		this.accountForYaw = accountForYaw;
 		this.accountForPitch = accountForPitch;
 	}

@@ -1,9 +1,13 @@
 package dev.kyro.pitsim.adarkzone.abilities;
 
+import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.adarkzone.RoutinePitBossAbility;
 import dev.kyro.pitsim.cosmetics.ParticleOffset;
 import dev.kyro.pitsim.cosmetics.PitParticle;
 import dev.kyro.pitsim.cosmetics.particles.BlockCrackParticle;
+import dev.kyro.pitsim.cosmetics.particles.ExplosionLargeParticle;
+import dev.kyro.pitsim.cosmetics.particles.SmokeLargeParticle;
+import dev.kyro.pitsim.events.AttackEvent;
 import dev.kyro.pitsim.misc.Sounds;
 import dev.kyro.pitsim.misc.effects.FallingBlock;
 import net.minecraft.server.v1_8_R3.EntityPlayer;
@@ -14,7 +18,9 @@ import org.bukkit.block.Block;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
 import org.bukkit.material.MaterialData;
+import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
 
 import java.util.ArrayList;
@@ -22,6 +28,8 @@ import java.util.List;
 
 public class PoundAbility extends RoutinePitBossAbility {
 	public int radius;
+	public boolean isActive = false;
+	List<Player> effectedPlayers = new ArrayList<>();
 
 	public PoundAbility(double routineWeight, int radius) {
 		super(routineWeight);
@@ -30,6 +38,7 @@ public class PoundAbility extends RoutinePitBossAbility {
 
 	@Override
 	public void onRoutineExecute() {
+		isActive = true;
 		Location centerLocation = pitBoss.boss.getLocation().clone().subtract(0, 1, 0);
 
 		List<Block> applicableBlocks = new ArrayList<>();
@@ -44,7 +53,6 @@ public class PoundAbility extends RoutinePitBossAbility {
 					applicableBlocks.add(blockLocation.getBlock());
 					continue;
 				}
-
 
 				for(int i = -2; i < 3; i++) {
 					Location checkPosition = blockLocation.clone().add(0, i, 0);
@@ -64,10 +72,6 @@ public class PoundAbility extends RoutinePitBossAbility {
 
 
 		for(Block block : applicableBlocks) {
-//			Vector vector = block.getLocation().toVector().subtract(centerLocation.toVector());
-//			vector.setY(vector.getY() + 1.5);
-//			vector.normalize();
-
 			Vector vector = new Vector(0, 0.6, 0);
 
 			FallingBlock fallingBlock = new FallingBlock(block.getType(), block.getData(), block.getLocation().add(0, 1, 0));
@@ -77,17 +81,21 @@ public class PoundAbility extends RoutinePitBossAbility {
 			fallingBlock.setVelocity(vector);
 		}
 
-		PitParticle particle = new BlockCrackParticle(new MaterialData(Material.DIRT));
+		PitParticle dirt = new BlockCrackParticle(new MaterialData(Material.DIRT));
+		PitParticle smoke = new SmokeLargeParticle();
+		PitParticle explosion = new ExplosionLargeParticle();
 
 		for(Player viewer : viewers) {
 			EntityPlayer nmsPlayer = ((CraftPlayer) viewer).getHandle();
 
 			for(int i = 0; i < 200; i++) {
-
-				particle.display(nmsPlayer, centerLocation, new ParticleOffset(0, 4, 0, 10, 10, 10));
+				if(i < 5) explosion.display(nmsPlayer, centerLocation, new ParticleOffset(0, 4, 0, 10, 4, 10));
+				if(i < 15) smoke.display(nmsPlayer, centerLocation, new ParticleOffset(0, 4, 0, 10, 10, 10));
+				dirt.display(nmsPlayer, centerLocation, new ParticleOffset(0, 4, 0, 10, 10, 10));
 			}
 
 			if(viewer.getLocation().distance(pitBoss.boss.getLocation()) > radius + 2) continue;
+			effectedPlayers.add(viewer);
 
 			Vector vector = new Vector(0, 0.6, 0);
 			vector.setY(vector.getY() + 1.5);
@@ -95,9 +103,21 @@ public class PoundAbility extends RoutinePitBossAbility {
 
 			viewer.setVelocity(vector);
 		}
-		//TODO: Use proximity instead of damage map
 
 		Sounds.EXTRACT.play(pitBoss.boss.getLocation());
+
+		new BukkitRunnable() {
+			@Override
+			public void run() {
+				isActive = false;
+				effectedPlayers.clear();
+			}
+		}.runTaskLater(PitSim.INSTANCE, 25);
+	}
+
+	@EventHandler
+	public void onAttack(AttackEvent.Pre event) {
+		if(effectedPlayers.contains(event.getDefenderPlayer())) event.setCancelled(true);
 	}
 }
 
