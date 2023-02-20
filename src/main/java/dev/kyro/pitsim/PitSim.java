@@ -59,6 +59,7 @@ import dev.kyro.pitsim.cosmetics.misc.MysticPresence;
 import dev.kyro.pitsim.cosmetics.trails.*;
 import dev.kyro.pitsim.enchants.overworld.GoldBoost;
 import dev.kyro.pitsim.enchants.overworld.*;
+import dev.kyro.pitsim.enchants.tainted.abilities.Bipolar;
 import dev.kyro.pitsim.enchants.tainted.abilities.Sonic;
 import dev.kyro.pitsim.enchants.tainted.abilities.Swarm;
 import dev.kyro.pitsim.enchants.tainted.common.*;

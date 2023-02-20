@@ -1,4 +1,4 @@
-package dev.kyro.pitsim.enchants.tainted.znotcodedrare;
+package dev.kyro.pitsim.enchants.tainted.abilities;
 
 import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.arcticapi.misc.AUtil;
@@ -102,13 +102,18 @@ public class Bipolar extends PitEnchant {
 	@Override
 	public List<String> getNormalDescription(int enchantLvl) {
 		return new ALoreBuilder(
-				"&7Sneaking toggles between &cVengeful",
-				"&7and &aPeaceful &7modes:",
-				"&c\u25a0 Vengeful&7: Deal &c+" + getDamageDecrease(enchantLvl) + "% &7damage, gain &eSpeed " +
-						AUtil.toRoman(getSpeedAmplifier(enchantLvl)),
-				"&a\u25a0 Peaceful&7: Deal &9-" + getDamageDecrease(enchantLvl) + "% &7damage, gain &cRegeneration " +
-						AUtil.toRoman(getRegenerationAmplifier(enchantLvl))
+				"&7Receive &b-" + getManaReduction(enchantLvl) + "% mana&7. Sneaking",
+				"&7toggles between &cVengeful &7and",
+				"&aPeaceful &7modes:",
+				"&c\u25a0 Vengeful&7: Deal &c+" + getDamageDecrease(enchantLvl) + "% &7damage,",
+				"&7gain &eSpeed " + AUtil.toRoman(getSpeedAmplifier(enchantLvl)),
+				"&a\u25a0 Peaceful&7: Deal &9-" + getDamageDecrease(enchantLvl) + "% &7damage,",
+				"&7gain &cRegeneration " + AUtil.toRoman(getRegenerationAmplifier(enchantLvl))
 		).getLore();
+	}
+
+	public static int getManaReduction(int enchantLvl) {
+		return 50;
 	}
 
 	public static int getDamageIncrease(int enchantLvl) {
