@@ -1013,7 +1013,7 @@ public class PitSim extends JavaPlugin {
 //		Rare
 		EnchantManager.registerEnchant(new Defraction());
 		EnchantManager.registerEnchant(new Devour());
-		EnchantManager.registerEnchant(new DimensionalRift());
+		EnchantManager.registerEnchant(new Bipolar());
 		EnchantManager.registerEnchant(new ElectricShock());
 		EnchantManager.registerEnchant(new Hemorrhage());
 		EnchantManager.registerEnchant(new Inferno());
