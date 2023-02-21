@@ -67,6 +67,11 @@ public class PitWolf extends PitMob {
 	}
 
 	@Override
+	public int getDroppedSouls() {
+		return 4;
+	}
+
+	@Override
 	public DropPool createDropPool() {
 		return new DropPool()
 				.addItem(ItemFactory.getItem(Leather.class).getItem(), 1);

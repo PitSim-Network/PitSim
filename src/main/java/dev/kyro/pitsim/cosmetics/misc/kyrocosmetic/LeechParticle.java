@@ -8,6 +8,8 @@ import org.bukkit.entity.Player;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.util.Vector;
 
+import java.util.Random;
+
 public class LeechParticle extends AIParticle {
 	public State state = State.IDLE;
 	public int ticksUntilGoal = 0;
@@ -60,8 +62,9 @@ public class LeechParticle extends AIParticle {
 	}
 
 	public void updateIdleStepVector(Location newIdleLocation) {
-		stepVector = newIdleLocation.toVector().subtract(particleLocation.toVector()).multiply(1.0 / 40);
-		ticksUntilGoal = 40;
+		int steps = new Random().nextInt(40) + 20;
+		stepVector = newIdleLocation.toVector().subtract(particleLocation.toVector()).multiply(1.0 / steps);
+		ticksUntilGoal = steps;
 	}
 
 	public void updateAttackStepVector() {
@@ -69,7 +72,7 @@ public class LeechParticle extends AIParticle {
 	}
 
 	public void updateReturnStepVector() {
-		stepVector = owner.getLocation().add(0, 1, 0).toVector().subtract(particleLocation.toVector()).normalize().multiply(0.15);
+		stepVector = owner.getLocation().add(0, 1, 0).toVector().subtract(particleLocation.toVector()).normalize().multiply(0.2);
 	}
 
 	public Location getIdleLocation() {

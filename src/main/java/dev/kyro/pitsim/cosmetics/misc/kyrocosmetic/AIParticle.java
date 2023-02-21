@@ -54,7 +54,7 @@ public abstract class AIParticle {
 			target = null;
 			return;
 		}
-		target = Misc.getMobPlayerClosest(owner.getLocation(), 15, owner);
+		target = Misc.getMobPlayerClosest(particleLocation, 15, owner);
 	}
 
 	public void display(Effect effect) {

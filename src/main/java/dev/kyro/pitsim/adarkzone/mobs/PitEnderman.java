@@ -57,6 +57,11 @@ public class PitEnderman extends PitMob {
 	}
 
 	@Override
+	public int getDroppedSouls() {
+		return 10;
+	}
+
+	@Override
 	public DropPool createDropPool() {
 		return new DropPool()
 				.addItem(ItemFactory.getItem(EnderPearl.class).getItem(), 1);

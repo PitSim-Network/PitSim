@@ -65,6 +65,11 @@ public class PitZombie extends PitMob {
 	}
 
 	@Override
+	public int getDroppedSouls() {
+		return 1;
+	}
+
+	@Override
 	public DropPool createDropPool() {
 		return new DropPool()
 				.addItem(ItemFactory.getItem(RottenFlesh.class).getItem(), 1);

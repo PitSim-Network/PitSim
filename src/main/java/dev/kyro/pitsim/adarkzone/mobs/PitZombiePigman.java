@@ -69,6 +69,11 @@ public class PitZombiePigman extends PitMob {
 	}
 
 	@Override
+	public int getDroppedSouls() {
+		return 6;
+	}
+
+	@Override
 	public DropPool createDropPool() {
 		return new DropPool()
 				.addItem(ItemFactory.getItem(RawPork.class).getItem(), 1);

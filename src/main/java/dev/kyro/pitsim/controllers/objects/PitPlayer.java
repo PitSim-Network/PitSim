@@ -438,9 +438,14 @@ public class PitPlayer {
 			}
 		}
 
-		stats.init(this);
-		tutorial.init(this);
-		scoreboardData.init(this);
+		try {
+			stats.init(this);
+			tutorial.init(this);
+			scoreboardData.init(this);
+			shield.init(this);
+		} catch(Exception exception) {
+			exception.printStackTrace();
+		}
 		updateXPBar();
 	}
 

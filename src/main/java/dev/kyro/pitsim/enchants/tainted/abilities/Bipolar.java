@@ -32,10 +32,10 @@ public class Bipolar extends PitEnchant {
 				for(Player player : Bukkit.getOnlinePlayers()) {
 					int enchantLvl = EnchantManager.getEnchantLevel(player, INSTANCE);
 					if(vengefulPlayers.contains(player)) {
-						Misc.applyPotionEffect(player, PotionEffectType.SPEED, 100,
+						Misc.applyPotionEffect(player, PotionEffectType.SPEED, 60,
 								getSpeedAmplifier(enchantLvl), true, false);
 					} else {
-						Misc.applyPotionEffect(player, PotionEffectType.REGENERATION, 100,
+						Misc.applyPotionEffect(player, PotionEffectType.REGENERATION, 60,
 								getRegenerationAmplifier(enchantLvl), true, false);
 					}
 				}
@@ -70,7 +70,7 @@ public class Bipolar extends PitEnchant {
 		Player player = event.getPlayer();
 		if(player.isSneaking()) return;
 
-		Cooldown cooldown = getCooldown(player, 20 * 10);
+		Cooldown cooldown = getCooldown(player, 20 * 5);
 		if(cooldown.isOnCooldown()) {
 			Sounds.NO.play(player);
 			return;
@@ -104,7 +104,7 @@ public class Bipolar extends PitEnchant {
 		return new ALoreBuilder(
 				"&7Receive &b-" + getManaReduction(enchantLvl) + "% mana&7. Sneaking",
 				"&7toggles between &cVengeful &7and",
-				"&aPeaceful &7modes:",
+				"&aPeaceful &7modes (5s cooldown):",
 				"&c\u25a0 Vengeful&7: Deal &c+" + getDamageDecrease(enchantLvl) + "% &7damage,",
 				"&7gain &eSpeed " + AUtil.toRoman(getSpeedAmplifier(enchantLvl)),
 				"&a\u25a0 Peaceful&7: Deal &9-" + getDamageDecrease(enchantLvl) + "% &7damage,",

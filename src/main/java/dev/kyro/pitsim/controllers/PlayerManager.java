@@ -548,7 +548,7 @@ public class PlayerManager implements Listener {
 	public void onAttack(AttackEvent.Apply attackEvent) {
 
 		Non defendingNon = NonManager.getNon(attackEvent.getDefender());
-		if(PlayerManager.isRealPlayer(attackEvent.getDefenderPlayer())) {
+		if(PlayerManager.isRealPlayer(attackEvent.getDefenderPlayer()) && PitSim.status.isOverworld()) {
 //			Arch chest archangel chestplate
 			attackEvent.multipliers.add(0.8);
 		} else if(defendingNon != null) {

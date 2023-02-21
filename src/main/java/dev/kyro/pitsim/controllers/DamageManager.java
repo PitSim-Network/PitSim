@@ -21,6 +21,7 @@ import dev.kyro.pitsim.controllers.objects.PitEnchant;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.enchants.overworld.Regularity;
 import dev.kyro.pitsim.enchants.overworld.Telebow;
+import dev.kyro.pitsim.enchants.tainted.znotcodeduncommon.ShieldBuster;
 import dev.kyro.pitsim.enums.KillModifier;
 import dev.kyro.pitsim.enums.KillType;
 import dev.kyro.pitsim.enums.NBTTag;
@@ -40,7 +41,10 @@ import dev.kyro.pitsim.upgrades.LifeInsurance;
 import me.clip.placeholderapi.PlaceholderAPI;
 import net.citizensnpcs.api.CitizensAPI;
 import net.minecraft.server.v1_8_R3.EntityPlayer;
-import org.bukkit.*;
+import org.bukkit.Bukkit;
+import org.bukkit.EntityEffect;
+import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
 import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
@@ -135,12 +139,17 @@ public class DamageManager implements Listener {
 			break;
 		}
 
-		if(PitSim.status.isDarkzone() && defender != null) {
+		if(PitSim.status.isDarkzone()) {
 			PitMob attackerMob = DarkzoneManager.getPitMob(attacker);
 			PitMob defenderMob = DarkzoneManager.getPitMob(defender);
+
 			if(attackerMob != null && defenderMob != null) {
 				event.setCancelled(true);
 				return;
+			}
+
+			if(defenderMob != null) {
+				event.setDamage(EntityDamageEvent.DamageModifier.ARMOR, 0);
 			}
 
 			for(SubLevel subLevel : DarkzoneManager.subLevels) {
@@ -277,13 +286,6 @@ public class DamageManager implements Listener {
 //		As strong as iron
 		attackEvent.multipliers.add(ArmorReduction.getReductionMultiplier(attackEvent.getDefender()));
 
-//		Darkzone player vs player defence
-		if(PlayerManager.isRealPlayer(attackEvent.getAttackerPlayer()) && PlayerManager.isRealPlayer(attackEvent.getDefenderPlayer()) &&
-				MapManager.inDarkzone(attackEvent.getAttackerPlayer())) {
-			attackEvent.multipliers.add(0.5);
-			attackEvent.trueDamage *= 0.5;
-		}
-
 //		New player defence
 		if(PitSim.status.isOverworld() && PlayerManager.isRealPlayer(attackEvent.getDefenderPlayer()) && PlayerManager.isRealPlayer(attackEvent.getAttackerPlayer()) &&
 				attackEvent.getDefenderPlayer().getLocation().distance(MapManager.currentMap.getMid()) < 12) {
@@ -298,7 +300,10 @@ public class DamageManager implements Listener {
 		double damage = attackEvent.getFinalDamage();
 		if(PlayerManager.isRealPlayer(attackEvent.getDefenderPlayer())) {
 			Shield defenderShield = attackEvent.getDefenderPitPlayer().shield;
-			if(defenderShield.isActive()) damage = defenderShield.damageShield(damage);
+			double multiplier = 1;
+			multiplier *= ShieldBuster.getMultiplier(attackEvent.getAttackerPlayer());
+			if(PlayerManager.isRealPlayer(attackEvent.getAttackerPlayer())) multiplier *= 2;
+			if(defenderShield.isActive()) damage = defenderShield.damageShield(damage, multiplier);
 		}
 		attackEvent.getEvent().setDamage(damage);
 

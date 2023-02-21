@@ -52,6 +52,11 @@ public class PitIronGolem extends PitMob {
 	}
 
 	@Override
+	public int getDroppedSouls() {
+		return 9;
+	}
+
+	@Override
 	public DropPool createDropPool() {
 		return new DropPool()
 				.addItem(ItemFactory.getItem(IronIngot.class).getItem(), 1);

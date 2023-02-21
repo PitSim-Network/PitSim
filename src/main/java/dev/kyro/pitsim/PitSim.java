@@ -147,7 +147,7 @@ public class PitSim extends JavaPlugin {
 			PlayerDataManager.exemptedPlayers.add(onlinePlayer.getUniqueId());
 
 			if(Misc.isKyro(onlinePlayer.getUniqueId())) {
-				onlinePlayer.teleport(MapManager.kyroDarkzoneSpawn);
+//				onlinePlayer.teleport(MapManager.kyroDarkzoneSpawn);
 			}
 		}
 
@@ -1021,7 +1021,7 @@ public class PitSim extends JavaPlugin {
 		EnchantManager.registerEnchant(new Passifist());
 		EnchantManager.registerEnchant(new PurpleThumb());
 		EnchantManager.registerEnchant(new SnowmanArmy());
-		EnchantManager.registerEnchant(new Stomp());
+		EnchantManager.registerEnchant(new RollingThunder());
 		EnchantManager.registerEnchant(new Swarm());
 		EnchantManager.registerEnchant(new Terror());
 

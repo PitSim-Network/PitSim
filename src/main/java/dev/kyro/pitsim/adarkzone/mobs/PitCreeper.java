@@ -93,6 +93,11 @@ public class PitCreeper extends PitMob {
 	}
 
 	@Override
+	public int getDroppedSouls() {
+		return 8;
+	}
+
+	@Override
 	public DropPool createDropPool() {
 		return new DropPool()
 				.addItem(ItemFactory.getItem(Gunpowder.class).getItem(), 1);

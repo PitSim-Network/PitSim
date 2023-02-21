@@ -62,6 +62,11 @@ public class PitSkeleton extends PitMob {
 	}
 
 	@Override
+	public int getDroppedSouls() {
+		return 2;
+	}
+
+	@Override
 	public DropPool createDropPool() {
 		return new DropPool()
 				.addItem(ItemFactory.getItem(Bone.class).getItem(), 1);

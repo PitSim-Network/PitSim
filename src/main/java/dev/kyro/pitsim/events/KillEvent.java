@@ -20,17 +20,17 @@ public class KillEvent extends Event {
 	private EntityDamageByEntityEvent event;
 	private AttackEvent attackEvent;
 
-	private LivingEntity killer;
-	private LivingEntity dead;
-	private boolean killerIsPlayer;
-	private boolean deadIsPlayer;
-	private Player killerPlayer;
-	private Player deadPlayer;
+	private final LivingEntity killer;
+	private final LivingEntity dead;
+	private final boolean killerIsPlayer;
+	private final boolean deadIsPlayer;
+	private final Player killerPlayer;
+	private final Player deadPlayer;
 	private PitPlayer killerPitPlayer;
 	private PitPlayer deadPitPlayer;
 	private final Map<PitEnchant, Integer> killerEnchantMap;
 	private final Map<PitEnchant, Integer> deadEnchantMap;
-	private boolean exeDeath;
+	private final boolean exeDeath;
 
 	public int xpReward;
 	public int bonusXpReward;

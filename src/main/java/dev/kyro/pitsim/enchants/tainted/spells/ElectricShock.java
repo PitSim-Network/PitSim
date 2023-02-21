@@ -1,4 +1,4 @@
-package dev.kyro.pitsim.enchants.tainted.znotcodedrare;
+package dev.kyro.pitsim.enchants.tainted.spells;
 
 import dev.kyro.pitsim.controllers.Cooldown;
 import dev.kyro.pitsim.controllers.objects.PitEnchant;
