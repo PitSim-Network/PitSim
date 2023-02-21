@@ -15,6 +15,7 @@ import dev.kyro.pitsim.aitems.prot.ProtBoots;
 import dev.kyro.pitsim.aitems.prot.ProtChestplate;
 import dev.kyro.pitsim.aitems.prot.ProtHelmet;
 import dev.kyro.pitsim.aitems.prot.ProtLeggings;
+import dev.kyro.pitsim.brewing.objects.BrewingIngredient;
 import dev.kyro.pitsim.controllers.objects.Non;
 import dev.kyro.pitsim.controllers.objects.PitEnchant;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
@@ -567,7 +568,8 @@ public class DamageManager implements Listener {
 
 	public static void loseLives(LivingEntity dead, LivingEntity killer) {
 		if(!(dead instanceof Player)) return;
-//		if(MapManager.inDarkzone(dead.getLocation())) {
+		if(MapManager.inDarkzone(dead.getLocation())) {
+			//TODO: Handle ingredient loss in darkzone
 //			Player deadPlayer = (Player) dead;
 //
 //			for(int i = 0; i < deadPlayer.getInventory().getSize(); i++) {
@@ -580,7 +582,7 @@ public class DamageManager implements Listener {
 //			}
 //
 //			return;
-//		}
+		}
 
 		if(BoosterManager.getBooster("pvp").minutes <= 0) {
 			Player deadPlayer = (Player) dead;
