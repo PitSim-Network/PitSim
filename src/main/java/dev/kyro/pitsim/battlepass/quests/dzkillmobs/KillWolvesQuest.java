@@ -3,6 +3,8 @@ package dev.kyro.pitsim.battlepass.quests.dzkillmobs;
 import dev.kyro.arcticapi.builders.AItemStackBuilder;
 import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.arcticapi.misc.AUtil;
+import dev.kyro.pitsim.adarkzone.DarkzoneManager;
+import dev.kyro.pitsim.adarkzone.mobs.PitWolf;
 import dev.kyro.pitsim.battlepass.PassManager;
 import dev.kyro.pitsim.battlepass.PassQuest;
 import dev.kyro.pitsim.controllers.PlayerManager;
@@ -14,9 +16,9 @@ import org.bukkit.Material;
 import org.bukkit.event.EventHandler;
 import org.bukkit.inventory.ItemStack;
 
-public class KillCaveSpidersQuest extends PassQuest {
+public class KillWolvesQuest extends PassQuest {
 
-	public KillCaveSpidersQuest() {
+	public KillWolvesQuest() {
 		super("&c&lCave Spider Slayer", "killcavespiders", QuestType.WEEKLY);
 		weight = PassManager.DARKZONE_KILL_QUEST_WEIGHT;
 	}
@@ -24,17 +26,17 @@ public class KillCaveSpidersQuest extends PassQuest {
 	@EventHandler
 	public void onKill(KillEvent killEvent) {
 		if(!PlayerManager.isRealPlayer(killEvent.getKillerPlayer())) return;
-//		if(!OldMobManager.mobIsType(killEvent.getDead(), PitCaveSpider.class)) return;
+		if(!(DarkzoneManager.getPitMob(killEvent.getDead()) instanceof PitWolf)) return;
 
 		progressQuest(killEvent.getKillerPitPlayer(), 1);
 	}
 
 	@Override
 	public ItemStack getDisplayItem(PitPlayer pitPlayer, QuestLevel questLevel, double progress) {
-		ItemStack itemStack = new AItemStackBuilder(Material.FERMENTED_SPIDER_EYE)
+		ItemStack itemStack = new AItemStackBuilder(Material.LEASH)
 				.setName(getDisplayName())
 				.setLore(new ALoreBuilder(
-						"&7Kill &c" + Misc.formatLarge(questLevel.getRequirement(pitPlayer)) + " &7cave spiders",
+						"&7Kill &c" + Misc.formatLarge(questLevel.getRequirement(pitPlayer)) + " &7wolves",
 						"",
 						"&7Progress: &3" + Misc.formatLarge(progress) + "&7/&3" + Misc.formatLarge(questLevel.getRequirement(pitPlayer)) + " &8[" +
 								AUtil.createProgressBar("|", ChatColor.AQUA, ChatColor.GRAY, 20, progress / questLevel.getRequirement(pitPlayer)) + "&8]",
@@ -51,9 +53,9 @@ public class KillCaveSpidersQuest extends PassQuest {
 
 	@Override
 	public void createPossibleStates() {
-		questLevels.add(new QuestLevel(600, 100));
-		questLevels.add(new QuestLevel(900, 150));
-		questLevels.add(new QuestLevel(1200, 200));
+		questLevels.add(new QuestLevel(700, 100));
+		questLevels.add(new QuestLevel(1050, 150));
+		questLevels.add(new QuestLevel(1400, 200));
 	}
 
 	@Override

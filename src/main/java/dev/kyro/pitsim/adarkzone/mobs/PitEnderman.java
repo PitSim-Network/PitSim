@@ -32,6 +32,11 @@ public class PitEnderman extends PitMob {
 	}
 
 	@Override
+	public String getRawDisplayNamePlural() {
+		return "Endermen";
+	}
+
+	@Override
 	public ChatColor getChatColor() {
 		return ChatColor.DARK_PURPLE;
 	}

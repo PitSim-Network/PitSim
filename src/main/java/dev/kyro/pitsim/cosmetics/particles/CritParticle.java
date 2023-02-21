@@ -1,6 +1,5 @@
 package dev.kyro.pitsim.cosmetics.particles;
 
-import dev.kyro.pitsim.cosmetics.PitCosmetic;
 import dev.kyro.pitsim.cosmetics.PitParticle;
 import net.minecraft.server.v1_8_R3.EntityPlayer;
 import net.minecraft.server.v1_8_R3.EnumParticle;
@@ -8,8 +7,11 @@ import net.minecraft.server.v1_8_R3.PacketPlayOutWorldParticles;
 import org.bukkit.Location;
 
 public class CritParticle extends PitParticle {
-	public CritParticle(PitCosmetic pitCosmetic) {
-		super(pitCosmetic);
+	public CritParticle() {
+	}
+
+	public CritParticle(boolean accountForPitch, boolean accountForYaw) {
+		super(accountForPitch, accountForYaw);
 	}
 
 	@Override

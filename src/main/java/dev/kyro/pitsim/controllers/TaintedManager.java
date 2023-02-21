@@ -1,6 +1,7 @@
 package dev.kyro.pitsim.controllers;
 
 import dev.kyro.pitsim.PitSim;
+import dev.kyro.pitsim.aitems.mystics.TaintedScythe;
 import dev.kyro.pitsim.events.HealEvent;
 import dev.kyro.pitsim.misc.Misc;
 import org.bukkit.Bukkit;
@@ -47,7 +48,7 @@ public class TaintedManager implements Listener {
 			ItemStack held = ((Player) event.getDamager()).getItemInHand();
 			if(!Misc.isAirOrNull(held) && held.getType() == Material.GOLD_HOE) {
 				double multiplier = Misc.isCritical((Player) event.getDamager()) ? 1.5 : 1;
-				event.setDamage(8 * multiplier);
+				event.setDamage(TaintedScythe.BASE_DAMAGE * multiplier);
 			}
 		}
 	}

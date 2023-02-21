@@ -36,7 +36,7 @@ public class FirstStrike extends PitPerk {
 		List<LivingEntity> hitList = hitPlayers.get(attackEvent.getAttacker());
 
 		if(!hitList.contains(attackEvent.getDefender())) {
-			attackEvent.increasePercent += 30 / 100D;
+			attackEvent.increasePercent += 30;
 		}
 
 		List<LivingEntity> newList = new ArrayList<>(hitList);

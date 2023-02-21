@@ -24,7 +24,7 @@ public class SlimeTrail extends PitCosmetic {
 		super("&2Slime &7Trail", "slimetrail", CosmeticType.PARTICLE_TRAIL);
 		accountForPitch = false;
 
-		PitParticle particle = new SlimeParticle(this);
+		PitParticle particle = new SlimeParticle(accountForPitch, accountForYaw);
 		Vector vector = new Vector(0, 0.2, 0);
 		collection.addParticle("main", particle, new ParticleOffset(vector, 0.5, 0, 0.5));
 
@@ -47,8 +47,8 @@ public class SlimeTrail extends PitCosmetic {
 					EntityPlayer entityPlayer = ((CraftPlayer) onlinePlayer).getHandle();
 					for(int i = 0; i < 2; i++)
 						collection.displayAll(entityPlayer, displayLocation);
-					if(count++ % 2 == 0 && Math.random() < 0.1) dropItem(dropStack, displayLocation, 0.5, 0.5, 0.5);
 				}
+				if(count++ % 2 == 0 && Math.random() < 0.1) dropItem(dropStack, displayLocation, 0.5, 0.5, 0.5);
 			}
 		}.runTaskTimer(PitSim.INSTANCE, 0L, 1L));
 	}

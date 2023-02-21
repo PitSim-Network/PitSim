@@ -23,8 +23,8 @@ public class FireAura extends PitCosmetic {
 		super("&cFire Aura", "fireaura", CosmeticType.AURA);
 		accountForPitch = false;
 
-		PitParticle fireParticle = new FlameParticle(this);
-		PitParticle lavalParticle = new LavaParticle(this);
+		PitParticle fireParticle = new FlameParticle(accountForPitch, accountForYaw);
+		PitParticle lavalParticle = new LavaParticle(accountForPitch, accountForYaw);
 		double distance = 6;
 		collection.addParticle("fire", fireParticle, new ParticleOffset(0, distance / 4, 0, distance, distance / 2 + 2, distance));
 		collection.addParticle("lava", lavalParticle, new ParticleOffset(0, distance / 4, 0, distance, distance / 2 + 2, distance));

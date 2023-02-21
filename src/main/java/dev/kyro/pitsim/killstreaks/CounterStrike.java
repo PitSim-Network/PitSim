@@ -17,25 +17,23 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CounterStrike extends Killstreak {
-
 	public static CounterStrike INSTANCE;
+	public static List<LivingEntity> rewardPlayers = new ArrayList<>();
 
 	public CounterStrike() {
 		super("Counter-Strike", "CounterStrike", 7, 20);
 		INSTANCE = this;
 	}
 
-	List<LivingEntity> rewardPlayers = new ArrayList<>();
-
 	@EventHandler
 	public void onHit(AttackEvent.Apply event) {
-		if(rewardPlayers.contains(event.getAttacker())) event.increasePercent += (10 / 100D);
+		if(rewardPlayers.contains(event.getAttacker())) event.increasePercent += 10;
 		if(rewardPlayers.contains(event.getDefender())) event.multipliers.add(Misc.getReductionMultiplier(20));
 	}
 
 	@Override
 	public void proc(Player player) {
-		rewardPlayers.add(player);
+		if(!rewardPlayers.contains(player)) rewardPlayers.add(player);
 
 		new BukkitRunnable() {
 			@Override
@@ -52,10 +50,14 @@ public class CounterStrike extends Killstreak {
 
 	@Override
 	public ItemStack getDisplayItem(Player player) {
-
-		AItemStackBuilder builder = new AItemStackBuilder(Material.IRON_BARDING);
-		builder.setName("&e" + name);
-		builder.setLore(new ALoreBuilder("&7Every: &c" + killInterval + " kills", "", "&7Deal &c+10% &7damage and receive", "&9-20% &7damage per hit for 8s."));
+		AItemStackBuilder builder = new AItemStackBuilder(Material.IRON_BARDING)
+				.setName("&e" + displayName)
+				.setLore(new ALoreBuilder(
+						"&7Every: &c" + killInterval + " kills",
+						"",
+						"&7Deal &c+10% &7damage and receive",
+						"&9-20% &7damage per hit for 8s."
+				));
 
 		return builder.getItemStack();
 	}

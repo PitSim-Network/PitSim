@@ -9,6 +9,8 @@ import dev.kyro.arcticapi.misc.AUtil;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.aitems.MysticFactory;
 import dev.kyro.pitsim.aitems.PitItem;
+import dev.kyro.pitsim.aitems.misc.GoldenHelmet;
+import dev.kyro.pitsim.controllers.objects.HelmetManager;
 import dev.kyro.pitsim.controllers.objects.PitEnchant;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.controllers.objects.PluginMessage;
@@ -41,6 +43,7 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.LeatherArmorMeta;
+import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.*;
 
@@ -48,6 +51,17 @@ import static dev.kyro.pitsim.enums.ApplyType.CHESTPLATES;
 
 public class EnchantManager implements Listener {
 	public static List<PitEnchant> pitEnchants = new ArrayList<>();
+	public static Map<Player, Map<PitEnchant, Integer>> enchantMap = new HashMap<>();
+
+	static {
+		new BukkitRunnable() {
+			@Override
+			public void run() {
+				enchantMap.clear();
+				for(Player onlinePlayer : Bukkit.getOnlinePlayers()) enchantMap.put(onlinePlayer, readEnchantsOnPlayer(onlinePlayer));
+			}
+		}.runTaskTimer(PitSim.INSTANCE, 0L, 1L);
+	}
 
 	@EventHandler
 	public static void onJewelAttack(AttackEvent.Pre attackEvent) {
@@ -80,9 +94,8 @@ public class EnchantManager implements Listener {
 	}
 
 	public static void registerEnchant(PitEnchant pitEnchant) {
-
 		pitEnchants.add(pitEnchant);
-		PitSim.INSTANCE.getServer().getPluginManager().registerEvents(pitEnchant, PitSim.INSTANCE);
+		if(pitEnchant.isEnabled()) PitSim.INSTANCE.getServer().getPluginManager().registerEvents(pitEnchant, PitSim.INSTANCE);
 	}
 
 	public static boolean canTypeApply(ItemStack itemStack, PitEnchant pitEnchant) {
@@ -214,14 +227,14 @@ public class EnchantManager implements Listener {
 		PitItem pitItem = ItemFactory.getItem(itemStack);
 		if(pitItem == null) return false;
 
-		NBTItem nbtItem = new NBTItem(itemStack);
-		if(nbtItem.hasKey(NBTTag.GHELMET_UUID.getRef())) {
-			long gold = nbtItem.getLong(NBTTag.GHELMET_GOLD.getRef());
+		if(pitItem instanceof GoldenHelmet) {
+			long gold = HelmetManager.getHelmetGold(itemStack);
 			if(gold < 0) return true;
 		}
 
 		if(!pitItem.isMystic) return false;
 
+		NBTItem nbtItem = new NBTItem(itemStack);
 		if(nbtItem.hasKey(NBTTag.TAINTED_TIER.getRef())) {
 			if(nbtItem.hasKey(NBTTag.IS_GEMMED.getRef())) return true;
 			Map<PitEnchant, Integer> enchants = EnchantManager.getEnchantsOnItem(itemStack);
@@ -394,9 +407,8 @@ public class EnchantManager implements Listener {
 			weightedEnchantList.add(pitEnchant);
 			if(pitEnchant.isRare) continue;
 			weightedEnchantList.add(pitEnchant);
-			weightedEnchantList.add(pitEnchant);
 			if(pitEnchant.isUncommonEnchant) continue;
-			for(int i = 0; i < 7; i++) weightedEnchantList.add(pitEnchant);
+			for(int i = 0; i < 8; i++) weightedEnchantList.add(pitEnchant);
 		}
 		Collections.shuffle(weightedEnchantList);
 		PitEnchant jewelEnchant = weightedEnchantList.get(0);
@@ -568,14 +580,21 @@ public class EnchantManager implements Listener {
 	public static Map<PitEnchant, Integer> getEnchantsOnPlayer(LivingEntity checkPlayer) {
 		if(!(checkPlayer instanceof Player)) return new HashMap<>();
 		Player player = (Player) checkPlayer;
+		if(!enchantMap.containsKey(player)) return new HashMap<>();
+		return enchantMap.get(player);
+	}
+
+	private static Map<PitEnchant, Integer> readEnchantsOnPlayer(LivingEntity checkPlayer) {
+		if(!(checkPlayer instanceof Player)) return new HashMap<>();
+		Player player = (Player) checkPlayer;
 
 		List<ItemStack> inUse = new ArrayList<>(Arrays.asList(player.getInventory().getArmorContents()));
 		inUse.add(player.getItemInHand());
 
-		return getEnchantsOnPlayer(inUse.toArray(new ItemStack[5]));
+		return readEnchantsOnPlayer(inUse.toArray(new ItemStack[5]));
 	}
 
-	public static Map<PitEnchant, Integer> getEnchantsOnPlayer(ItemStack[] inUseArr) {
+	private static Map<PitEnchant, Integer> readEnchantsOnPlayer(ItemStack[] inUseArr) {
 
 		Map<PitEnchant, Integer> playerEnchantMap = new HashMap<>();
 		for(int i = 0; i < inUseArr.length; i++) {
@@ -663,7 +682,6 @@ public class EnchantManager implements Listener {
 	}
 
 	public static List<PitEnchant> getEnchants(MysticType mystictype) {
-
 		List<PitEnchant> applicableEnchants = new ArrayList<>();
 
 		for(PitEnchant pitEnchant : pitEnchants) {

@@ -3,6 +3,8 @@ package dev.kyro.pitsim.battlepass.quests.dzkillmobs;
 import dev.kyro.arcticapi.builders.AItemStackBuilder;
 import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.arcticapi.misc.AUtil;
+import dev.kyro.pitsim.adarkzone.DarkzoneManager;
+import dev.kyro.pitsim.adarkzone.mobs.PitCreeper;
 import dev.kyro.pitsim.battlepass.PassManager;
 import dev.kyro.pitsim.battlepass.PassQuest;
 import dev.kyro.pitsim.controllers.PlayerManager;
@@ -24,7 +26,7 @@ public class KillCreepersQuest extends PassQuest {
 	@EventHandler
 	public void onKill(KillEvent killEvent) {
 		if(!PlayerManager.isRealPlayer(killEvent.getKillerPlayer())) return;
-//		if(!OldMobManager.mobIsType(killEvent.getDead(), OldPitCreeper.class)) return;
+		if(!(DarkzoneManager.getPitMob(killEvent.getDead()) instanceof PitCreeper)) return;
 
 		progressQuest(killEvent.getKillerPitPlayer(), 1);
 	}
@@ -51,9 +53,9 @@ public class KillCreepersQuest extends PassQuest {
 
 	@Override
 	public void createPossibleStates() {
-		questLevels.add(new QuestLevel(700, 100));
-		questLevels.add(new QuestLevel(1050, 150));
-		questLevels.add(new QuestLevel(1400, 200));
+		questLevels.add(new QuestLevel(300, 100));
+		questLevels.add(new QuestLevel(450, 150));
+		questLevels.add(new QuestLevel(600, 200));
 	}
 
 	@Override

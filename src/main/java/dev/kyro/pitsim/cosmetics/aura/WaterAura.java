@@ -22,7 +22,7 @@ public class WaterAura extends PitCosmetic {
 		super("&9Water &bAura", "wateraura", CosmeticType.AURA);
 		accountForPitch = false;
 
-		PitParticle particle = new WaterDropParticle(this);
+		PitParticle particle = new WaterDropParticle(accountForPitch, accountForYaw);
 		double distance = 6;
 		collection.addParticle("main", particle, new ParticleOffset(0, distance / 4, 0, distance, distance / 2 + 2, distance));
 	}

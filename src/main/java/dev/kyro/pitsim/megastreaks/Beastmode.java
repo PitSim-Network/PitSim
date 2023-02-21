@@ -108,9 +108,9 @@ public class Beastmode extends Megastreak {
 		if(pitPlayer.megastreak.isOnMega() && pitPlayer.megastreak instanceof Beastmode) {
 			int ks = pitPlayer.getKills();
 			if(NonManager.getNon(attackEvent.getAttacker()) == null) {
-				attackEvent.increasePercent += (ks - 50) * 0.15 / 100D;
+				attackEvent.increasePercent += (ks - 50) * 0.15;
 			} else {
-				attackEvent.increasePercent += ((ks - 50) * 5) * 0.15 / 100D;
+				attackEvent.increasePercent += (ks - 50) * 5 * 0.15;
 			}
 		}
 	}

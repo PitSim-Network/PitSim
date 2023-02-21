@@ -23,7 +23,7 @@ public class FootstepTrail extends PitCosmetic {
 		super("&7Footstep Trail", "footsteptrail", CosmeticType.PARTICLE_TRAIL);
 		accountForPitch = false;
 
-		PitParticle particle = new FootstepParticle(this);
+		PitParticle particle = new FootstepParticle(accountForPitch, accountForYaw);
 		Vector vector = new Vector(0, 0.01, 0);
 		collection.addParticle("main", particle, new ParticleOffset(vector, 0.5, 0, 0.5));
 	}

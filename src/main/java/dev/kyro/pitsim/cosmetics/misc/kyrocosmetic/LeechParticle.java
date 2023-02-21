@@ -8,12 +8,12 @@ import org.bukkit.entity.Player;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.util.Vector;
 
-public class LifestealParticle extends AIParticle {
+public class LeechParticle extends AIParticle {
 	public State state = State.IDLE;
 	public int ticksUntilGoal = 0;
 	public Vector stepVector;
 
-	public LifestealParticle(Player owner) {
+	public LeechParticle(Player owner) {
 		super(owner, null, getIdleLocation(owner));
 	}
 
@@ -45,7 +45,7 @@ public class LifestealParticle extends AIParticle {
 			}
 		}
 		if(state == State.IDLE && ticksUntilGoal == 0) {
-			Player target = pickTarget();
+			pickTarget();
 			if(target == null) {
 				Location newIdleLocation = getIdleLocation();
 				updateIdleStepVector(newIdleLocation);

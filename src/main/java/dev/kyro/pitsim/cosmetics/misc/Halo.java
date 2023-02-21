@@ -23,7 +23,7 @@ public class Halo extends ColorableCosmetic {
 		super("&7&lHalo", "halo", CosmeticType.MISC);
 		isPermissionRequired = true;
 
-		PitParticle particle = new RedstoneParticle(this);
+		PitParticle particle = new RedstoneParticle(accountForPitch, accountForYaw);
 
 		for(int i = 0; i < 20; i++) {
 			Vector vector = new Vector(0.6, 0.7, 0);

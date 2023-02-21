@@ -25,7 +25,7 @@ public class IronTrail extends PitCosmetic {
 		super("&7Iron Trail", "irontrail", CosmeticType.PARTICLE_TRAIL);
 		accountForPitch = false;
 
-		PitParticle particle = new BlockCrackParticle(this, new MaterialData(Material.IRON_BLOCK));
+		PitParticle particle = new BlockCrackParticle(accountForPitch, accountForYaw, new MaterialData(Material.IRON_BLOCK));
 		Vector vector = new Vector(0, 0.2, 0);
 		collection.addParticle("main", particle, new ParticleOffset(vector, 0.5, 0, 0.5));
 
@@ -48,8 +48,8 @@ public class IronTrail extends PitCosmetic {
 					EntityPlayer entityPlayer = ((CraftPlayer) onlinePlayer).getHandle();
 					for(int i = 0; i < 2; i++)
 						collection.displayAll(entityPlayer, displayLocation);
-					if(count++ % 2 == 0 && Math.random() < 0.1) dropItem(dropStack, displayLocation, 0.5, 0.5, 0.5);
 				}
+				if(count++ % 2 == 0 && Math.random() < 0.1) dropItem(dropStack, displayLocation, 0.5, 0.5, 0.5);
 			}
 		}.runTaskTimer(PitSim.INSTANCE, 0L, 1L));
 	}

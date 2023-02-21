@@ -22,7 +22,7 @@ public class FireworkAura extends PitCosmetic {
 		super("&eSpark Aura", "fireworkaura", CosmeticType.AURA);
 		accountForPitch = false;
 
-		PitParticle particle = new FireworkSparkParticle(this);
+		PitParticle particle = new FireworkSparkParticle(accountForPitch, accountForYaw);
 		double distance = 6;
 		collection.addParticle("main", particle, new ParticleOffset(0, distance / 4, 0, distance, distance / 2 + 2, distance));
 	}

@@ -19,7 +19,7 @@ public class CritMagicCape extends PitCosmetic {
 		super("&3Crit Magic Cape", "critmagiccape", CosmeticType.CAPE);
 		accountForPitch = false;
 
-		cape = new CapeCollection(new CritMagicParticle(this));
+		cape = new CapeCollection(new CritMagicParticle(accountForPitch, accountForYaw));
 	}
 
 	@Override

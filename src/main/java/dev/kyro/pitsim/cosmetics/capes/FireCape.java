@@ -19,7 +19,7 @@ public class FireCape extends PitCosmetic {
 		super("&6F&ci&6r&ce", "firecape", CosmeticType.CAPE);
 		accountForPitch = false;
 
-		cape = new CapeCollection(new FlameParticle(this));
+		cape = new CapeCollection(new FlameParticle(accountForPitch, accountForYaw));
 	}
 
 	@Override

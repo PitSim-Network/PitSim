@@ -4,6 +4,7 @@ import dev.kyro.arcticapi.builders.AItemStackBuilder;
 import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.pitsim.controllers.objects.Killstreak;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
+import dev.kyro.pitsim.misc.Misc;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -40,10 +41,13 @@ public class Monster extends Killstreak {
 
 	@Override
 	public ItemStack getDisplayItem(Player player) {
-
-		AItemStackBuilder builder = new AItemStackBuilder(Material.APPLE);
-		builder.setName("&e" + name);
-		builder.setLore(new ALoreBuilder("&7Every: &c" + killInterval + " kills", "", "&7Gain &c0.5\u2764 &7max health (&c2\u2764 &7max)"));
+		AItemStackBuilder builder = new AItemStackBuilder(Material.APPLE)
+				.setName("&e" + displayName)
+				.setLore(new ALoreBuilder(
+						"&7Every: &c" + killInterval + " kills",
+						"",
+						"&7Gain &c" + Misc.getHearts(1) + " &7max health (&c" + Misc.getHearts(4) + " &7max)"
+				));
 
 		return builder.getItemStack();
 	}

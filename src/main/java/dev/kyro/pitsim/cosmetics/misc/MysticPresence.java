@@ -23,7 +23,7 @@ public class MysticPresence extends PitCosmetic {
 		super("&5Mystic &dPresence", "mysticpresence", CosmeticType.MISC);
 		accountForPitch = false;
 
-		PitParticle particle = new EnchantmentTableParticle(this);
+		PitParticle particle = new EnchantmentTableParticle(accountForPitch, accountForYaw);
 
 		for(int i = 0; i < 40; i++) {
 			Vector vector = new Vector(1, 0, 0);

@@ -19,7 +19,7 @@ public class MagicCape extends PitCosmetic {
 		super("&5Enchanted Cloak", "magiccape", CosmeticType.CAPE);
 		accountForPitch = false;
 
-		cape = new CapeCollection(new EnchantmentTableParticle(this));
+		cape = new CapeCollection(new EnchantmentTableParticle(accountForPitch, accountForYaw));
 	}
 
 	@Override

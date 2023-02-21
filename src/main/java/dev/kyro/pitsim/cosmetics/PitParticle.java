@@ -8,18 +8,26 @@ public abstract class PitParticle {
 	public boolean accountForYaw;
 	public boolean accountForPitch;
 
-	public PitParticle(PitCosmetic pitCosmetic) {
-		this.accountForYaw = pitCosmetic.accountForYaw;
-		this.accountForPitch = pitCosmetic.accountForPitch;
+	public PitParticle() {
+
+	}
+
+	public PitParticle(boolean accountForPitch, boolean accountForYaw) {
+		this.accountForYaw = accountForYaw;
+		this.accountForPitch = accountForPitch;
 	}
 
 	public abstract void display(EntityPlayer entityPlayer, Location location, ParticleColor particleColor);
 
-//	public void display(List<EntityPlayer> entityPlayers, Location location) {
-//		for(EntityPlayer entityPlayer : entityPlayers) display(entityPlayer, location);
-//	}
+	public void display(EntityPlayer entityPlayer, Location location) {
+		display(entityPlayer, location, (ParticleColor) null);
+	}
 
 	public void display(EntityPlayer entityPlayer, Location location, ParticleOffset particleOffset, ParticleColor particleColor) {
 		display(entityPlayer, particleOffset.applyOffset(location, accountForYaw, accountForPitch), particleColor);
+	}
+
+	public void display(EntityPlayer entityPlayer, Location location, ParticleOffset particleOffset) {
+		display(entityPlayer, location, particleOffset, null);
 	}
 }

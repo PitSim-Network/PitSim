@@ -83,7 +83,7 @@ public class GuildIntegrationManager implements Listener {
 		if(damageBuffLevel != 0) {
 			Map<GuildBuff.SubBuff, Double> buffs = damageBuff.getBuffs(damageBuffLevel);
 			for(Map.Entry<GuildBuff.SubBuff, Double> entry : buffs.entrySet()) {
-				if(entry.getKey().refName.equals("damage")) attackEvent.increasePercent += entry.getValue() / 100.0;
+				if(entry.getKey().refName.equals("damage")) attackEvent.increasePercent += entry.getValue();
 				else if(entry.getKey().refName.equals("truedamage")) {
 					if(attackEvent.trueDamage != 0) attackEvent.trueDamage += entry.getValue();
 				}

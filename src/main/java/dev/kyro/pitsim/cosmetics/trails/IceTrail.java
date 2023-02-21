@@ -24,7 +24,7 @@ public class IceTrail extends PitCosmetic {
 		super("&bI&9c&be &9T&br&9a&bi&9l", "icetrail", CosmeticType.PARTICLE_TRAIL);
 		accountForPitch = false;
 
-		PitParticle particle = new BlockCrackParticle(this, new MaterialData(Material.PACKED_ICE));
+		PitParticle particle = new BlockCrackParticle(accountForPitch, accountForYaw, new MaterialData(Material.PACKED_ICE));
 		Vector vector = new Vector(0, 0.2, 0);
 		collection.addParticle("main", particle, new ParticleOffset(vector, 0.5, 0, 0.5));
 	}

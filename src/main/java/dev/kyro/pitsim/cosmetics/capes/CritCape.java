@@ -19,7 +19,7 @@ public class CritCape extends PitCosmetic {
 		super("&4&lCritical &c&lHit!", "critcape", CosmeticType.CAPE);
 		accountForPitch = false;
 
-		cape = new CapeCollection(new CritParticle(this));
+		cape = new CapeCollection(new CritParticle(accountForPitch, accountForYaw));
 	}
 
 	@Override
