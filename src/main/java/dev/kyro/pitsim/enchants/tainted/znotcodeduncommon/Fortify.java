@@ -19,7 +19,6 @@ public class Fortify extends PitEnchant {
 
 	@Override
 	public List<String> getNormalDescription(int enchantLvl) {
-
 		return new PitLoreBuilder(
 				"&7I can't be asked to code this"
 		).getLore();
