@@ -438,14 +438,10 @@ public class PitPlayer {
 			}
 		}
 
-		try {
-			stats.init(this);
-			tutorial.init(this);
-			scoreboardData.init(this);
-			shield.init(this);
-		} catch(Exception exception) {
-			exception.printStackTrace();
-		}
+		stats.init(this);
+		tutorial.init(this);
+		scoreboardData.init(this);
+		shield.init(this);
 		updateXPBar();
 	}
 

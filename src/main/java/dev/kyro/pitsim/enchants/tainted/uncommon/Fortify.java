@@ -1,4 +1,4 @@
-package dev.kyro.pitsim.enchants.tainted.znotcodeduncommon;
+package dev.kyro.pitsim.enchants.tainted.uncommon;
 
 import dev.kyro.pitsim.controllers.EnchantManager;
 import dev.kyro.pitsim.controllers.objects.PitEnchant;
@@ -29,7 +29,7 @@ public class Fortify extends PitEnchant {
 	@Override
 	public List<String> getNormalDescription(int enchantLvl) {
 		return new PitLoreBuilder(
-				"&7I can't be asked to code this"
+				"&7Increases your max shield by &9+" + getShieldIncrease(enchantLvl) + " &7hitpoints"
 		).getLore();
 	}
 

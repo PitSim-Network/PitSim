@@ -2,7 +2,7 @@ package dev.kyro.pitsim.adarkzone.notdarkzone;
 
 import com.google.cloud.firestore.annotation.Exclude;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
-import dev.kyro.pitsim.enchants.tainted.znotcodeduncommon.Fortify;
+import dev.kyro.pitsim.enchants.tainted.uncommon.Fortify;
 
 import java.util.UUID;
 

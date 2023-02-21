@@ -510,46 +510,25 @@ public class EnchantManager implements Listener {
 	}
 
 	public static String enchantLevelToRoman(int enchantLvl) {
-
 		return enchantLvl <= 1 ? "" : " " + AUtil.toRoman(enchantLvl);
 	}
 
 	public static int getEnchantLevel(Player player, PitEnchant pitEnchant) {
 		if(player == null) return 0;
-
-//		List<ItemStack> inUse = player.getInventory().getArmorContents() != null ?
-//				new ArrayList<>(Arrays.asList(player.getInventory().getArmorContents())) : new ArrayList<>();
-		List<ItemStack> inUse = new ArrayList<>();
-		for(ItemStack armor : player.getInventory().getArmorContents()) if(armor != null) inUse.add(armor);
-		inUse.add(player.getItemInHand());
-
-		int finalLevel = 0;
-		for(ItemStack itemStack : inUse) {
-			int enchantLvl = getEnchantLevel(itemStack, pitEnchant);
-			if(pitEnchant.levelStacks) {
-
-				finalLevel += enchantLvl;
-			} else {
-				if(enchantLvl > finalLevel) finalLevel = enchantLvl;
-			}
-		}
-
-		return finalLevel;
+		if(!enchantMap.containsKey(player)) return 0;
+		return enchantMap.get(player).getOrDefault(pitEnchant, 0);
 	}
 
 	public static int getEnchantLevel(ItemStack itemStack, PitEnchant pitEnchant) {
 		PitItem pitItem = ItemFactory.getItem(itemStack);
 		if(pitItem == null || !pitItem.isMystic) return 0;
-		NBTItem nbtItem = new NBTItem(itemStack);
 
 		Map<PitEnchant, Integer> itemEnchantMap = getEnchantsOnItem(itemStack);
 		return getEnchantLevel(itemEnchantMap, pitEnchant);
 	}
 
 	public static int getEnchantLevel(Map<PitEnchant, Integer> enchantMap, PitEnchant pitEnchant) {
-
 		for(Map.Entry<PitEnchant, Integer> entry : enchantMap.entrySet()) {
-
 			if(entry.getKey() != pitEnchant) continue;
 			return entry.getValue();
 		}
