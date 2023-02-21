@@ -3,6 +3,7 @@ package dev.kyro.pitsim.adarkzone.notdarkzone;
 import com.google.cloud.firestore.annotation.Exclude;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.enchants.tainted.uncommon.Fortify;
+import dev.kyro.pitsim.enchants.tainted.uncommon.Mechanic;
 
 import java.util.UUID;
 
@@ -94,7 +95,9 @@ public class Shield {
 
 	@Exclude
 	public int getInitialTicksUntilReactivation() {
-//		TODO: Implement
-		return 200;
+		int reactivationTicks = 200;
+		if(pitPlayer != null) reactivationTicks -= Mechanic.getDecreaseTicks(pitPlayer.player);
+		reactivationTicks = Math.max(reactivationTicks, 0);
+		return reactivationTicks;
 	}
 }
