@@ -155,6 +155,16 @@ public class PlayerManager implements Listener {
 				}
 			}.runTaskTimer(PitSim.INSTANCE, 0L, 18L);
 		}
+
+		new BukkitRunnable() {
+			@Override
+			public void run() {
+				for(Player player : Bukkit.getOnlinePlayers()) {
+					PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
+					pitPlayer.updateMaxHealth();
+				}
+			}
+		}.runTaskTimer(PitSim.INSTANCE, 0L, 20L);
 	}
 
 	public static boolean isStaff(UUID uuid) {
@@ -538,7 +548,7 @@ public class PlayerManager implements Listener {
 	public void onAttack(AttackEvent.Apply attackEvent) {
 
 		Non defendingNon = NonManager.getNon(attackEvent.getDefender());
-		if(PlayerManager.isRealPlayer(attackEvent.getDefenderPlayer())) {
+		if(PlayerManager.isRealPlayer(attackEvent.getDefenderPlayer()) && PitSim.status.isOverworld()) {
 //			Arch chest archangel chestplate
 			attackEvent.multipliers.add(0.8);
 		} else if(defendingNon != null) {

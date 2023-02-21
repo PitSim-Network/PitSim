@@ -1,9 +1,11 @@
 package dev.kyro.pitsim.controllers;
 
+import dev.kyro.arcticapi.misc.AUtil;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.adarkzone.DarkzoneManager;
 import dev.kyro.pitsim.adarkzone.PitMob;
 import dev.kyro.pitsim.controllers.objects.Non;
+import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.events.AttackEvent;
 import dev.kyro.pitsim.events.KillEvent;
 import dev.kyro.pitsim.misc.Misc;
@@ -28,56 +30,47 @@ public class DamageIndicator implements Listener {
 
 	//    @EventHandler(priority = EventPriority.MONITOR)
 	public static void onAttack(AttackEvent.Apply attackEvent) {
-		if(!attackEvent.isAttackerPlayer()) return;
-		if(attackEvent.isFakeHit()) return;
+		if(!attackEvent.isAttackerPlayer() || attackEvent.isFakeHit() || attackEvent.getDefender().isDead()) return;
 
-		Player attacker = attackEvent.getAttackerPlayer();
-		LivingEntity defender = attackEvent.getDefender();
-
-		if(defender.isDead()) return;
-
-		PitMob pitDefender = DarkzoneManager.getPitMob(defender);
-		if(pitDefender != null) {
-			createDamageStand(attacker, pitDefender, attackEvent.getEvent().getFinalDamage());
+		PitMob defenderMob = DarkzoneManager.getPitMob(attackEvent.getDefender());
+		if(defenderMob != null) {
+			createDamageStand(attackEvent.getAttackerPlayer(), defenderMob, attackEvent.getEvent().getFinalDamage());
 			return;
 		}
 
 		EntityPlayer entityPlayer = null;
-		if(defender instanceof Player) entityPlayer = ((CraftPlayer) defender).getHandle();
+		if(attackEvent.isDefenderPlayer()) entityPlayer = ((CraftPlayer) attackEvent.getDefender()).getHandle();
 
-		int roundedDamageTaken = ((int) attackEvent.getEvent().getFinalDamage()) / getNum(defender);
+		int roundedDamageTaken = ((int) attackEvent.getEvent().getFinalDamage()) / getNum(attackEvent.getDefender());
 
-		int originalHealth = ((int) defender.getHealth()) / getNum(defender);
-		int maxHealth = ((int) defender.getMaxHealth()) / getNum(defender);
+		int originalHealth = ((int) attackEvent.getDefender().getHealth()) / getNum(attackEvent.getDefender());
+		int maxHealth = ((int) attackEvent.getDefender().getMaxHealth()) / getNum(attackEvent.getDefender());
 
 		int result = Math.max(originalHealth - roundedDamageTaken, 0);
 
-		if((defender.getHealth() - attackEvent.getEvent().getFinalDamage()) % 2 < 1 && attackEvent.getEvent().getFinalDamage() > 1)
+		if((attackEvent.getDefender().getHealth() - attackEvent.getEvent().getFinalDamage()) % 2 < 1 && attackEvent.getEvent().getFinalDamage() > 1)
 			roundedDamageTaken++;
 
 		if(result == 0) {
 			roundedDamageTaken = 0;
-
-			for(int i = 0; i < originalHealth; i++) {
-				roundedDamageTaken++;
-			}
+			for(int i = 0; i < originalHealth; i++) roundedDamageTaken++;
 		}
 
-		Non defendingNon = NonManager.getNon(defender);
+		Non defendingNon = NonManager.getNon(attackEvent.getDefender());
 		StringBuilder output = new StringBuilder();
 
 		String playername = "&7%luckperms_prefix%" + (defendingNon == null ? "%player_name%" : defendingNon.displayName) + " ";
-		if(defender instanceof Player)
+		if(attackEvent.isDefenderPlayer())
 			output.append(PlaceholderAPI.setPlaceholders(attackEvent.getDefenderPlayer(), playername));
-		else if(DarkzoneManager.isPitMob(defender)) output.append(DarkzoneManager.getPitMob(defender).getDisplayName()).append(" ");
-		else output.append(defender.getCustomName() + " ");
+		else if(DarkzoneManager.isPitMob(attackEvent.getDefender())) output.append(defenderMob.getDisplayName()).append(" ");
+		else output.append(attackEvent.getDefender().getCustomName() + " ");
 
 		for(int i = 0; i < Math.max(originalHealth - roundedDamageTaken, 0); i++) {
 			output.append(ChatColor.DARK_RED).append("\u2764");
 		}
 
-		if(defender instanceof Player) {
-			for(int i = 0; i < roundedDamageTaken - (int) entityPlayer.getAbsorptionHearts() / getNum(defender); i++) {
+		if(attackEvent.isDefenderPlayer()) {
+			for(int i = 0; i < roundedDamageTaken - (int) entityPlayer.getAbsorptionHearts() / getNum(attackEvent.getDefender()); i++) {
 				output.append(ChatColor.RED).append("\u2764");
 			}
 		} else {
@@ -90,13 +83,19 @@ public class DamageIndicator implements Listener {
 			output.append(ChatColor.BLACK).append("\u2764");
 		}
 
-		if(defender instanceof Player) {
-			for(int i = 0; i < (int) entityPlayer.getAbsorptionHearts() / getNum(defender); i++) {
+		if(attackEvent.isDefenderPlayer()) {
+			PitPlayer pitPlayer = PitPlayer.getPitPlayer(attackEvent.getDefender());
+			for(int i = 0; i < (int) entityPlayer.getAbsorptionHearts() / getNum(attackEvent.getDefender()); i++) {
 				output.append(ChatColor.YELLOW).append("\u2764");
+			}
+			if(pitPlayer.shield.isActive()) {
+				output.append(" &8[").append(AUtil.createProgressBar("|", ChatColor.BLUE, ChatColor.GRAY,
+						(int) Math.ceil(Math.sqrt(pitPlayer.shield.getMax())),
+						pitPlayer.shield.getPreciseAmount() / pitPlayer.shield.getMax())).append("&8]");
 			}
 		}
 
-		ActionBarManager.sendActionBar(attacker, output.toString());
+		ActionBarManager.sendActionBar(attackEvent.getAttackerPlayer(), output.toString());
 	}
 
 	@EventHandler

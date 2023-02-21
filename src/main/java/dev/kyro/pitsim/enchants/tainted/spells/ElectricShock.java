@@ -1,4 +1,4 @@
-package dev.kyro.pitsim.enchants.tainted.znotcodedrare;
+package dev.kyro.pitsim.enchants.tainted.spells;
 
 import dev.kyro.pitsim.controllers.Cooldown;
 import dev.kyro.pitsim.controllers.objects.PitEnchant;
@@ -39,9 +39,9 @@ public class ElectricShock extends PitEnchant {
 		int enchantLvl = event.getEnchantLevel(this);
 		if(enchantLvl == 0) return;
 
-		Cooldown cooldown = getCooldown(event.getPlayer(), 10);
+		Cooldown cooldown = getCooldown(player, 10);
 		if(cooldown.isOnCooldown()) return;
-		PitPlayer pitPlayer = PitPlayer.getPitPlayer(event.getPlayer());
+		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
 		if(!pitPlayer.useMana(getManaCost(enchantLvl))) {
 			Sounds.NO.play(event.getPlayer());
 			return;

@@ -2,6 +2,7 @@ package dev.kyro.pitsim.adarkzone;
 
 import de.myzelyam.api.vanish.VanishAPI;
 import dev.kyro.pitsim.PitSim;
+import dev.kyro.pitsim.enchants.tainted.uncommon.Fearmonger;
 import org.bukkit.Effect;
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
@@ -54,21 +55,21 @@ public class MobTargetingSystem {
 		if(bestTarget != null) {
 			double targetDistanceFromMid = Double.MAX_VALUE;
 			if(pitMob.getMob().getWorld() == bestTarget.getWorld()) targetDistanceFromMid = pitMob.getMob().getLocation().distance(bestTarget.getLocation());
-			if(targetDistanceFromMid > subLevel.spawnRadius) bestTarget = null;
+			if(targetDistanceFromMid > subLevel.spawnRadius || Fearmonger.isImmune(bestTarget)) bestTarget = null;
 		}
 
-		List<Player> playersInRadius = new ArrayList<>();
-		playersInRadius.add(null);
+		List<Player> potentialTargets = new ArrayList<>();
+		potentialTargets.add(null);
 		Location subLevelMiddle = subLevel.getMiddle();
 		for(Entity entity : subLevelMiddle.getWorld().getNearbyEntities(subLevelMiddle, subLevel.spawnRadius, 20, subLevel.spawnRadius)) {
 			if(!(entity instanceof Player) || entity == pitMob.getMob()) continue;
 			Player player = (Player) entity;
-			if(VanishAPI.isInvisible(player)) continue;
-			playersInRadius.add(player);
+			if(VanishAPI.isInvisible(player) || Fearmonger.isImmune(player)) continue;
+			potentialTargets.add(player);
 		}
 
 		double bestReward = Double.NEGATIVE_INFINITY;
-		for(Player candidate : playersInRadius) {
+		for(Player candidate : potentialTargets) {
 			int currentTargets = currentTargetMap.getOrDefault(candidate, 0);
 			double reward = rewardFunction(pitMob, currentTargets, pitMob.getTarget(), candidate);
 			if(reward > bestReward) {

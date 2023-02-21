@@ -59,13 +59,12 @@ import dev.kyro.pitsim.cosmetics.misc.MysticPresence;
 import dev.kyro.pitsim.cosmetics.trails.*;
 import dev.kyro.pitsim.enchants.overworld.GoldBoost;
 import dev.kyro.pitsim.enchants.overworld.*;
+import dev.kyro.pitsim.enchants.tainted.abilities.Bipolar;
 import dev.kyro.pitsim.enchants.tainted.abilities.Sonic;
 import dev.kyro.pitsim.enchants.tainted.abilities.Swarm;
 import dev.kyro.pitsim.enchants.tainted.common.*;
 import dev.kyro.pitsim.enchants.tainted.spells.*;
-import dev.kyro.pitsim.enchants.tainted.uncommon.ComboDefence;
-import dev.kyro.pitsim.enchants.tainted.uncommon.ComboMana;
-import dev.kyro.pitsim.enchants.tainted.uncommon.ComboSlow;
+import dev.kyro.pitsim.enchants.tainted.uncommon.*;
 import dev.kyro.pitsim.enchants.tainted.znotcodedrare.*;
 import dev.kyro.pitsim.enchants.tainted.znotcodeduncommon.*;
 import dev.kyro.pitsim.enums.NBTTag;
@@ -151,7 +150,7 @@ public class PitSim extends JavaPlugin {
 			PlayerDataManager.exemptedPlayers.add(onlinePlayer.getUniqueId());
 
 			if(Misc.isKyro(onlinePlayer.getUniqueId())) {
-				onlinePlayer.teleport(MapManager.kyroDarkzoneSpawn);
+//				onlinePlayer.teleport(MapManager.kyroDarkzoneSpawn);
 			}
 		}
 
@@ -1017,16 +1016,16 @@ public class PitSim extends JavaPlugin {
 //		Rare
 		EnchantManager.registerEnchant(new Defraction());
 		EnchantManager.registerEnchant(new Devour());
-		EnchantManager.registerEnchant(new DimensionalRift());
+		EnchantManager.registerEnchant(new Bipolar());
 		EnchantManager.registerEnchant(new ElectricShock());
 		EnchantManager.registerEnchant(new Hemorrhage());
 		EnchantManager.registerEnchant(new Inferno());
-		EnchantManager.registerEnchant(new dev.kyro.pitsim.enchants.tainted.znotcodedrare.Leech());
+		EnchantManager.registerEnchant(new dev.kyro.pitsim.enchants.tainted.spells.Leech());
 		EnchantManager.registerEnchant(new Medic());
 		EnchantManager.registerEnchant(new Passifist());
 		EnchantManager.registerEnchant(new PurpleThumb());
 		EnchantManager.registerEnchant(new SnowmanArmy());
-		EnchantManager.registerEnchant(new Stomp());
+		EnchantManager.registerEnchant(new RollingThunder());
 		EnchantManager.registerEnchant(new Swarm());
 		EnchantManager.registerEnchant(new Terror());
 

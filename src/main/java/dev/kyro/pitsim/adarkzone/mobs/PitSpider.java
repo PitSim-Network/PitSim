@@ -52,6 +52,11 @@ public class PitSpider extends PitMob {
 	}
 
 	@Override
+	public int getDroppedSouls() {
+		return 3;
+	}
+
+	@Override
 	public DropPool createDropPool() {
 		return new DropPool()
 				.addItem(ItemFactory.getItem(SpiderEye.class).getItem(), 1);

@@ -1,4 +1,4 @@
-package dev.kyro.pitsim.enchants.tainted.znotcodeduncommon;
+package dev.kyro.pitsim.enchants.tainted.znotcodedrare;
 
 import dev.kyro.pitsim.controllers.objects.PitEnchant;
 import dev.kyro.pitsim.enums.ApplyType;
@@ -6,20 +6,18 @@ import dev.kyro.pitsim.misc.PitLoreBuilder;
 
 import java.util.List;
 
-public class Tanky extends PitEnchant {
-	public static Tanky INSTANCE;
+public class RollingThunder extends PitEnchant {
+	public static RollingThunder INSTANCE;
 
-	public Tanky() {
-		super("Tanky", false, ApplyType.CHESTPLATES,
-				"tanky", "tank");
-		isUncommonEnchant = true;
+	public RollingThunder() {
+		super("Rolling Thunder", true, ApplyType.SCYTHES,
+				"rollingthunder", "roll", "rolling", "thunder");
 		isTainted = true;
 		INSTANCE = this;
 	}
 
 	@Override
 	public List<String> getNormalDescription(int enchantLvl) {
-
 		return new PitLoreBuilder(
 				"&7I can't be asked to code this"
 		).getLore();

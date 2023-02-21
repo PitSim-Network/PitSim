@@ -16,7 +16,7 @@ import java.util.Arrays;
 import java.util.List;
 
 public class TaintedScythe extends StaticPitItem {
-	public static double BASE_DAMAGE = 8;
+	public static double BASE_DAMAGE = 7.5;
 
 	public TaintedScythe() {
 		hasUUID = true;

@@ -17,7 +17,7 @@ public class ComboMana extends PitEnchant {
 
 	public ComboMana() {
 		super("Combo: Mana", false, ApplyType.SCYTHES,
-				"combomana");
+				"combomana", "cmana");
 		isUncommonEnchant = true;
 		isTainted = true;
 		INSTANCE = this;
@@ -45,7 +45,7 @@ public class ComboMana extends PitEnchant {
 	@Override
 	public List<String> getNormalDescription(int enchantLvl) {
 		return new PitLoreBuilder(
-				"&7Every &e" + Misc.ordinalWords(getStrikes(enchantLvl)) + " &7hit gain &b+" + getMana(enchantLvl) +
+				"&7Every &e" + Misc.ordinalWords(getStrikes(enchantLvl)) + " &7strike gain &b+" + getMana(enchantLvl) +
 				" mana"
 		).getLore();
 	}

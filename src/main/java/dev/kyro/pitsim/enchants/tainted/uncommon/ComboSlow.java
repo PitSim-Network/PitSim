@@ -41,7 +41,7 @@ public class ComboSlow extends PitEnchant {
 		HitCounter.incrementCounter(pitPlayer.player, this);
 		if(!HitCounter.hasReachedThreshold(pitPlayer.player, this, getStrikes(enchantLvl))) return;
 
-		Misc.applyPotionEffect(attackEvent.getAttacker(), PotionEffectType.SLOW, getSeconds(enchantLvl) * 20,
+		Misc.applyPotionEffect(attackEvent.getDefender(), PotionEffectType.SLOW, getSeconds(enchantLvl) * 20,
 				getAmplifier(enchantLvl), true, false);
 	}
 

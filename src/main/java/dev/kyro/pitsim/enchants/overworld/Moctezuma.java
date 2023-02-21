@@ -18,7 +18,6 @@ public class Moctezuma extends PitEnchant {
 
 	@EventHandler
 	public void onKill(KillEvent killEvent) {
-
 		int enchantLvl = killEvent.getKillerEnchantLevel(this);
 		if(enchantLvl == 0) return;
 

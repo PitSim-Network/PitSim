@@ -114,6 +114,11 @@ public class PitBlaze extends PitMob {
 	}
 
 	@Override
+	public int getDroppedSouls() {
+		return 5;
+	}
+
+	@Override
 	public DropPool createDropPool() {
 		return new DropPool()
 				.addItem(ItemFactory.getItem(BlazeRod.class).getItem(), 1);

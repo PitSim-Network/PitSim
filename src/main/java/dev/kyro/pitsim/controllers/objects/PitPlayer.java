@@ -19,6 +19,7 @@ import dev.kyro.pitsim.brewing.objects.BrewingSession;
 import dev.kyro.pitsim.controllers.*;
 import dev.kyro.pitsim.cosmetics.particles.ParticleColor;
 import dev.kyro.pitsim.enchants.overworld.Hearts;
+import dev.kyro.pitsim.enchants.tainted.uncommon.Tanky;
 import dev.kyro.pitsim.enums.AChatColor;
 import dev.kyro.pitsim.enums.DeathCry;
 import dev.kyro.pitsim.enums.KillEffect;
@@ -440,6 +441,7 @@ public class PitPlayer {
 		stats.init(this);
 		tutorial.init(this);
 		scoreboardData.init(this);
+		shield.init(this);
 		updateXPBar();
 	}
 
@@ -621,7 +623,8 @@ public class PitPlayer {
 		if(hasPerk(Thick.INSTANCE) && !MapManager.inDarkzone(player)) maxHealth += 4;
 
 		Map<PitEnchant, Integer> enchantMap = EnchantManager.getEnchantsOnPlayer(player);
-		if(Hearts.INSTANCE != null) maxHealth += Hearts.INSTANCE.getExtraHealth(enchantMap);
+		maxHealth += Hearts.INSTANCE.getExtraHealth(enchantMap);
+		maxHealth += Tanky.INSTANCE.getExtraHealth(enchantMap);
 
 		if(megastreak instanceof Uberstreak) {
 			Uberstreak uberstreak = (Uberstreak) megastreak;

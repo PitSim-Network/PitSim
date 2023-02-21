@@ -55,7 +55,7 @@ class Sonic extends PitEnchant {
 					}
 				}
 			}
-		}.runTaskTimerAsynchronously(PitSim.INSTANCE, 0, 20);
+		}.runTaskTimer(PitSim.INSTANCE, 0, 20);
 	}
 
 	@EventHandler

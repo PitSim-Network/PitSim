@@ -37,7 +37,7 @@ public class ScoreboardData {
 	}
 
 	public void updateFields() {
-		for(String refName : priorityList) {
+		for(String refName : new ArrayList<>(priorityList)) {
 			ScoreboardOption scoreboardOption = ScoreboardManager.getScoreboardOption(refName);
 			if(scoreboardOption != null) continue;
 			priorityList.remove(refName);

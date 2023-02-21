@@ -15,6 +15,7 @@ import dev.kyro.pitsim.controllers.MapManager;
 import dev.kyro.pitsim.controllers.PlayerManager;
 import dev.kyro.pitsim.controllers.TaintedWell;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
+import dev.kyro.pitsim.enchants.tainted.uncommon.Fearmonger;
 import dev.kyro.pitsim.events.KillEvent;
 import dev.kyro.pitsim.events.ManaRegenEvent;
 import dev.kyro.pitsim.misc.Misc;
@@ -154,9 +155,15 @@ public class DarkzoneManager implements Listener {
 
 	@EventHandler
 	public void onTarget(EntityTargetLivingEntityEvent event) {
-		if(!(event.getEntity() instanceof LivingEntity) || event.getReason() == EntityTargetEvent.TargetReason.TARGET_ATTACKED_ENTITY) return;
+		if(!(event.getEntity() instanceof LivingEntity)) return;
 		LivingEntity entity = (LivingEntity) event.getEntity();
 		if(!isPitMob(entity)) return;
+
+		if(event.getTarget() instanceof Player) {
+			Player target = (Player) event.getTarget();
+			if(event.getReason() == EntityTargetEvent.TargetReason.TARGET_ATTACKED_ENTITY && !Fearmonger.isImmune(target)) return;
+		}
+
 		event.setCancelled(true);
 	}
 

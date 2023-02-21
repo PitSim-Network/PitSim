@@ -1,6 +1,7 @@
 package dev.kyro.pitsim.adarkzone;
 
 import dev.kyro.pitsim.PitSim;
+import dev.kyro.pitsim.enchants.tainted.uncommon.Reaper;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -31,6 +32,7 @@ public abstract class PitMob implements Listener {
 	public abstract int getMaxHealth();
 	public abstract int getSpeedAmplifier();
 	public abstract double getOffsetHeight(); // offset height for spawning armor stand damage indicators
+	public abstract int getDroppedSouls();
 	public abstract DropPool createDropPool();
 	public abstract PitNameTag createNameTag();
 
@@ -65,8 +67,11 @@ public abstract class PitMob implements Listener {
 
 	public void kill(Player killer) {
 		dropPool.singleDistribution(killer);
-//		TODO: re-enable and add chance & pull soul value from somewhere
-//		DarkzoneManager.createSoulExplosion(getMob().getLocation().add(0, 0.5, 0), 100);
+
+		double soulChance = 0.05;
+		soulChance *= 1 + (Reaper.INSTANCE.getSoulChanceIncrease(killer) / 100.0);
+		if(Math.random() < soulChance)DarkzoneManager.createSoulExplosion(getMob().getLocation().add(0, 0.5, 0), getDroppedSouls());
+
 		remove();
 	}
 

@@ -104,6 +104,16 @@ public class Sounds {
 	//	Darkzone Enchants
 	public static final SoundEffect DEVOUR = new SoundEffect(Sound.ORB_PICKUP, 1, 0.4);
 	public static final SoundEffect ELECTRIC_SHOCK = new SoundEffect(Sound.FIZZ, 1, 2);
+	public static final SoundEffect MEDIC = new SoundEffect()
+			.add(new SoundMoment(0).add("random.pop", 1, 0.7))
+			.add(new SoundMoment(2).add("random.pop", 1, 0.8))
+			.add(new SoundMoment(4).add("random.pop", 1, 0.9))
+			.add(new SoundMoment(6).add("random.pop", 1, 1.0))
+			.add(new SoundMoment(8).add("random.pop", 1, 1.1))
+			.add(new SoundMoment(10).add("random.pop", 1, 1.2));
+	public static final SoundEffect BIPOLAR_VENGEANCE = new SoundEffect(Sound.ENDERDRAGON_GROWL, 1, 1);
+	public static final SoundEffect BIPOLAR_PEACE = new SoundEffect(Sound.CAT_MEOW, 1, 1);
+	public static final SoundEffect LEECH = new SoundEffect(Sound.SILVERFISH_IDLE, 1, 1);
 
 	//	Megastreaks
 	public static final SoundEffect MEGA_GENERAL = new SoundEffect(Sound.WITHER_SPAWN, 1000, 1);
@@ -228,19 +238,16 @@ public class Sounds {
 			}
 			List<SoundMoment> soundTimeList = new ArrayList<>(this.soundTimeList);
 			new BukkitRunnable() {
+				int count = 0;
 				@Override
 				public void run() {
-					int count = 0;
-					List<SoundMoment> toRemove = new ArrayList<>();
-					for(SoundMoment soundMoment : soundTimeList) {
-						if(soundMoment.tick == count) {
-							toRemove.add(soundMoment);
-							soundMoment.play(player);
-						}
-						count++;
+					for(SoundMoment soundMoment : new ArrayList<>(soundTimeList)) {
+						if(soundMoment.tick != count) continue;
+						soundTimeList.remove(soundMoment);
+						soundMoment.play(player);
 					}
-					soundTimeList.removeAll(toRemove);
 					if(soundTimeList.isEmpty()) cancel();
+					count++;
 				}
 			}.runTaskTimer(PitSim.INSTANCE, 0L, 1L);
 		}

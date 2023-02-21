@@ -19,7 +19,7 @@ public class ComboDefence extends PitEnchant {
 
 	public ComboDefence() {
 		super("Combo: Defence", false, ApplyType.SCYTHES,
-				"combodefence", "defence");
+				"combodefence", "defence", "cdefence");
 		isUncommonEnchant = true;
 		isTainted = true;
 		INSTANCE = this;
