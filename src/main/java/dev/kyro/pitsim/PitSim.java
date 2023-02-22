@@ -140,7 +140,7 @@ public class PitSim extends JavaPlugin {
 		loadConfig();
 		ArcticAPI.configInit(this, "prefix", "error-prefix");
 		serverName = AConfig.getString("server");
-		if(AConfig.getBoolean("standalone-server")) status = ServerStatus.ALL;
+		if(AConfig.getBoolean("standalone-server")) status = ServerStatus.STANDALONE;
 		else status = serverName.contains("darkzone") ? ServerStatus.DARKZONE : ServerStatus.OVERWORLD;
 
 		for(Player onlinePlayer : Bukkit.getOnlinePlayers()) {
@@ -1079,15 +1079,19 @@ public class PitSim extends JavaPlugin {
 		PitSim.anticheat = anticheat;
 	}
 
+	public static boolean isDev() {
+		return serverName.contains("dev");
+	}
+
 	public enum ServerStatus {
-		DARKZONE, OVERWORLD, ALL;
+		DARKZONE, OVERWORLD, STANDALONE;
 
 		public boolean isDarkzone() {
-			return this == DARKZONE || this == ALL;
+			return this == DARKZONE || this == STANDALONE;
 		}
 
 		public boolean isOverworld() {
-			return this == OVERWORLD || this == ALL;
+			return this == OVERWORLD || this == STANDALONE;
 		}
 
 		public boolean isAll() {

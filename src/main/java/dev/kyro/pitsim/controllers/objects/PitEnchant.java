@@ -37,6 +37,7 @@ public abstract class PitEnchant implements Listener {
 	public abstract List<String> getNormalDescription(int enchantLvl);
 
 	public boolean isEnabled() {
+		if(PitSim.status == PitSim.ServerStatus.STANDALONE) return true;
 		if(isTainted) {
 			return PitSim.getStatus() == PitSim.ServerStatus.DARKZONE;
 		} else {

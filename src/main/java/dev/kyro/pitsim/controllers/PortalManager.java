@@ -73,7 +73,7 @@ public class PortalManager implements Listener {
 			return;
 		}
 
-		if(PitSim.getStatus() == PitSim.ServerStatus.ALL) {
+		if(PitSim.getStatus() == PitSim.ServerStatus.STANDALONE) {
 			Location playerLoc = player.getLocation();
 
 			PotionManager.bossBars.remove(player);

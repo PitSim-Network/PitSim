@@ -62,7 +62,7 @@ public class StorageManager implements Listener {
 
 	@EventHandler(priority = EventPriority.LOWEST)
 	public void onJoin(PlayerJoinEvent event) {
-		if(PitSim.getStatus() == PitSim.ServerStatus.ALL) return;
+		if(PitSim.getStatus() == PitSim.ServerStatus.STANDALONE) return;
 
 		Player player = event.getPlayer();
 		StorageProfile profile = getProfile(player);
@@ -103,7 +103,7 @@ public class StorageManager implements Listener {
 	}
 
 	public static void quitCleanup(Player player) {
-		if(PitSim.getStatus() == PitSim.ServerStatus.ALL) return;
+		if(PitSim.getStatus() == PitSim.ServerStatus.STANDALONE) return;
 
 		StorageProfile profile = getProfile(player);
 
