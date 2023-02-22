@@ -30,6 +30,7 @@ import net.minecraft.server.v1_8_R3.World;
 import net.minecraft.server.v1_8_R3.*;
 import org.bukkit.Material;
 import org.bukkit.*;
+import org.bukkit.block.Block;
 import org.bukkit.craftbukkit.v1_8_R3.CraftWorld;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
 import org.bukkit.craftbukkit.v1_8_R3.inventory.CraftItemStack;
@@ -59,6 +60,43 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class Misc {
+	public static void stunEntity(LivingEntity livingEntity, int ticks) {
+		Misc.applyPotionEffect(livingEntity, PotionEffectType.SLOW, ticks, 7, true, false);
+		Misc.applyPotionEffect(livingEntity, PotionEffectType.JUMP, ticks, 128, true, false);
+		Misc.applyPotionEffect(livingEntity, PotionEffectType.SLOW_DIGGING, ticks, 99, true, false);
+
+		if(livingEntity instanceof Player) {
+			Player player = (Player) livingEntity;
+			Misc.sendTitle(player, "&cSTUNNED", ticks);
+			Misc.sendSubTitle(player, "&eYou cannot move!", ticks);
+			Sounds.COMBO_STUN.play(player);
+		}
+	}
+
+//	Doesn't work on all blocks
+	public static Sound getBlockBreakSound(Block block) {
+		World nmsWorld = ((CraftWorld) block.getWorld()).getHandle();
+		net.minecraft.server.v1_8_R3.Block nmsBlock = nmsWorld.getType(
+				new BlockPosition(block.getX(), block.getY(), block.getZ())).getBlock();
+		try {
+			return Sound.valueOf(nmsBlock.stepSound.getBreakSound().replaceAll("\\.", "_").toUpperCase());
+		} catch(Exception ignored) {
+			return null;
+		}
+	}
+
+	public static List<Player> getNearbyRealPlayers(Location location, double range) {
+		List<Player> realPlayers = new ArrayList<>();
+		for(Player onlinePlayer : Bukkit.getOnlinePlayers()) {
+			if(onlinePlayer.getWorld() != location.getWorld()) continue;
+			Location testLocation = onlinePlayer.getLocation();
+			if(Math.abs(testLocation.getX() - location.getX()) > range || Math.abs(testLocation.getY() - location.getY()) > range ||
+					Math.abs(testLocation.getZ() - location.getZ()) > range) continue;
+			realPlayers.add(onlinePlayer);
+		}
+		return realPlayers;
+	}
+
 	public static boolean isValidMobPlayerTarget(Entity entity, Entity... excluded) {
 		List<Entity> excludedList = Arrays.asList(excluded);
 
@@ -80,6 +118,7 @@ public class Misc {
 		LivingEntity closestEntity = null;
 		double closestDistance = Double.MAX_VALUE;
 		for(Entity entity : location.getWorld().getNearbyEntities(location, radius, radius, radius)) {
+			if(excludedList.contains(entity)) continue;
 			if(!isValidMobPlayerTarget(entity, excluded)) continue;
 			LivingEntity livingEntity = (LivingEntity) entity;
 

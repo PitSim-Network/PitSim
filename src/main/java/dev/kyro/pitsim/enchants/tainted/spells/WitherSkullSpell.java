@@ -8,11 +8,9 @@ import dev.kyro.pitsim.events.AttackEvent;
 import dev.kyro.pitsim.events.PitPlayerAttemptAbilityEvent;
 import dev.kyro.pitsim.misc.PitLoreBuilder;
 import dev.kyro.pitsim.misc.Sounds;
-import org.bukkit.entity.Fireball;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.WitherSkull;
 import org.bukkit.event.EventHandler;
-import org.bukkit.event.entity.EntityExplodeEvent;
 
 import java.util.List;
 
@@ -52,12 +50,6 @@ public class WitherSkullSpell extends PitEnchant {
 
 		WitherSkull witherSkull = player.getWorld().spawn(player.getLocation().add(0, 2, 0), WitherSkull.class);
 		witherSkull.setShooter(player);
-	}
-
-	@EventHandler
-	public void onEntityExplode(EntityExplodeEvent event) {
-		if(!(event.getEntity() instanceof Fireball)) return;
-		event.blockList().clear();
 	}
 
 	@Override

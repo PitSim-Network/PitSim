@@ -261,7 +261,7 @@ public class DarkzoneManager implements Listener {
 				public void run() {
 					if(droppedItem.isValid()) droppedItem.remove();
 				}
-			}.runTaskLater(PitSim.INSTANCE, 100 + new Random().nextInt(101));
+			}.runTaskLater(PitSim.INSTANCE, 200 + new Random().nextInt(101));
 
 			Vector velocityVector = spawnLocation.toVector().subtract(location.toVector()).normalize().multiply(0.4);
 			double multiplier = Math.random() * 0.5 + 0.75;

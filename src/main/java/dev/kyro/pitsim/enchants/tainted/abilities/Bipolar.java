@@ -31,6 +31,7 @@ public class Bipolar extends PitEnchant {
 			public void run() {
 				for(Player player : Bukkit.getOnlinePlayers()) {
 					int enchantLvl = EnchantManager.getEnchantLevel(player, INSTANCE);
+					if(enchantLvl == 0) continue;
 					if(vengefulPlayers.contains(player)) {
 						Misc.applyPotionEffect(player, PotionEffectType.SPEED, 60,
 								getSpeedAmplifier(enchantLvl), true, false);

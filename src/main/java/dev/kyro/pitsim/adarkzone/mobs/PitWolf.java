@@ -62,11 +62,6 @@ public class PitWolf extends PitMob {
 	}
 
 	@Override
-	public double getOffsetHeight() {
-		return 0.5;
-	}
-
-	@Override
 	public int getDroppedSouls() {
 		return 4;
 	}

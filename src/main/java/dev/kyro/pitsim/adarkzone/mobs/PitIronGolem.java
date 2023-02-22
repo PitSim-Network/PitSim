@@ -47,11 +47,6 @@ public class PitIronGolem extends PitMob {
 	}
 
 	@Override
-	public double getOffsetHeight() {
-		return 2.0;
-	}
-
-	@Override
 	public int getDroppedSouls() {
 		return 9;
 	}

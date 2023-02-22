@@ -109,11 +109,6 @@ public class PitBlaze extends PitMob {
 	}
 
 	@Override
-	public double getOffsetHeight() {
-		return 1.5;
-	}
-
-	@Override
 	public int getDroppedSouls() {
 		return 5;
 	}

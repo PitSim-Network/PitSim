@@ -15,10 +15,8 @@ import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
-import org.bukkit.event.EventPriority;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
-import org.bukkit.event.entity.EntityExplodeEvent;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
 
@@ -104,12 +102,6 @@ public class MeteorSpell extends PitEnchant {
 			}.runTaskLater(PitSim.INSTANCE, time);
 			time++;
 		}
-	}
-
-	@EventHandler(priority = EventPriority.HIGHEST)
-	public void onEntityExplode(EntityExplodeEvent event) {
-		if(!(event.getEntity() instanceof Fireball)) return;
-		event.blockList().clear();
 	}
 
 	@Override

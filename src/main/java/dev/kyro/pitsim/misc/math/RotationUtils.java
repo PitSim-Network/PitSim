@@ -1,10 +1,10 @@
-package dev.kyro.pitsim.cosmetics;
+package dev.kyro.pitsim.misc.math;
 
 import org.bukkit.util.Vector;
 
-public class RotationTools {
+public class RotationUtils {
 
-	public static void rotate(Vector vector, double yaw, double pitch, double roll) {
+	public static Vector rotate(Vector vector, double yaw, double pitch, double roll) {
 		yaw = Math.toRadians(yaw);
 		pitch = Math.toRadians(pitch);
 		roll = Math.toRadians(roll);
@@ -24,6 +24,7 @@ public class RotationTools {
 		vector.setX(finalVector[0][0]);
 		vector.setY(finalVector[2][0]);
 		vector.setZ(finalVector[1][0]);
+		return vector;
 	}
 
 	public static double[][] multiplyMatrices(double[][] firstMatrix, double[][] secondMatrix) {

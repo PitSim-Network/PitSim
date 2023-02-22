@@ -6,6 +6,7 @@ import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.cosmetics.particles.ParticleColor;
+import dev.kyro.pitsim.misc.Misc;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
@@ -61,14 +62,7 @@ public class CosmeticManager implements Listener {
 	}
 
 	public static List<Player> getDisplayPlayers(Player mainPlayer, Location location, double range) {
-		List<Player> displayPlayers = new ArrayList<>();
-		for(Player onlinePlayer : Bukkit.getOnlinePlayers()) {
-			if(onlinePlayer.getWorld() != location.getWorld()) continue;
-			Location testLocation = onlinePlayer.getLocation();
-			if(Math.abs(testLocation.getX() - location.getX()) > range || Math.abs(testLocation.getY() - location.getY()) > range ||
-					Math.abs(testLocation.getZ() - location.getZ()) > range) continue;
-			displayPlayers.add(onlinePlayer);
-		}
+		List<Player> displayPlayers = Misc.getNearbyRealPlayers(location, range);
 		if(!displayPlayers.contains(mainPlayer)) displayPlayers.add(mainPlayer);
 		return displayPlayers;
 	}

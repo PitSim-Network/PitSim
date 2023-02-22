@@ -31,7 +31,6 @@ public abstract class PitMob implements Listener {
 	public abstract ChatColor getChatColor();
 	public abstract int getMaxHealth();
 	public abstract int getSpeedAmplifier();
-	public abstract double getOffsetHeight(); // offset height for spawning armor stand damage indicators
 	public abstract int getDroppedSouls();
 	public abstract DropPool createDropPool();
 	public abstract PitNameTag createNameTag();
@@ -70,7 +69,7 @@ public abstract class PitMob implements Listener {
 
 		double soulChance = 0.05;
 		soulChance *= 1 + (Reaper.INSTANCE.getSoulChanceIncrease(killer) / 100.0);
-		if(Math.random() < soulChance)DarkzoneManager.createSoulExplosion(getMob().getLocation().add(0, 0.5, 0), getDroppedSouls());
+		if(Math.random() < soulChance) DarkzoneManager.createSoulExplosion(getMob().getLocation().add(0, 0.5, 0), getDroppedSouls());
 
 		remove();
 	}

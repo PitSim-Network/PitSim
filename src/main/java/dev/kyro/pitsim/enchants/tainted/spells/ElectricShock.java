@@ -36,6 +36,7 @@ public class ElectricShock extends PitEnchant {
 	@EventHandler
 	public void onUse(PitPlayerAttemptAbilityEvent event) {
 		Player player = event.getPlayer();
+
 		int enchantLvl = event.getEnchantLevel(this);
 		if(enchantLvl == 0) return;
 
