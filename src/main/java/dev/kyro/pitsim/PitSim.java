@@ -62,6 +62,7 @@ import dev.kyro.pitsim.enchants.overworld.*;
 import dev.kyro.pitsim.enchants.tainted.abilities.Bipolar;
 import dev.kyro.pitsim.enchants.tainted.abilities.Sonic;
 import dev.kyro.pitsim.enchants.tainted.abilities.Swarm;
+import dev.kyro.pitsim.enchants.tainted.abilities.Terror;
 import dev.kyro.pitsim.enchants.tainted.common.*;
 import dev.kyro.pitsim.enchants.tainted.spells.*;
 import dev.kyro.pitsim.enchants.tainted.uncommon.*;

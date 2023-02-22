@@ -8,6 +8,7 @@ import dev.kyro.pitsim.controllers.EnchantManager;
 import dev.kyro.pitsim.controllers.objects.PitEnchant;
 import dev.kyro.pitsim.enums.ApplyType;
 import dev.kyro.pitsim.events.AttackEvent;
+import dev.kyro.pitsim.events.ManaRegenEvent;
 import dev.kyro.pitsim.misc.Misc;
 import dev.kyro.pitsim.misc.Sounds;
 import org.bukkit.Bukkit;
@@ -64,6 +65,14 @@ public class Bipolar extends PitEnchant {
 		} else {
 			attackEvent.multipliers.add(Misc.getReductionMultiplier(getDamageDecrease(enchantLvl)));
 		}
+	}
+
+	@EventHandler
+	public void onManaRegen(ManaRegenEvent event) {
+		Player player = event.getPlayer();
+		int enchantLvl = EnchantManager.getEnchantLevel(player, this);
+		if(enchantLvl == 0) return;
+		event.multipliers.add(Misc.getReductionMultiplier(getManaReduction(enchantLvl)));
 	}
 
 	@EventHandler

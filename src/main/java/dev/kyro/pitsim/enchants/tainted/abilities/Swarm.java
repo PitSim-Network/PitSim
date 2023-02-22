@@ -60,10 +60,8 @@ public class Swarm extends PitEnchant {
 	@EventHandler
 	public void onManaRegen(ManaRegenEvent event) {
 		Player player = event.getPlayer();
-
 		int enchantLvl = EnchantManager.getEnchantsOnPlayer(player).getOrDefault(INSTANCE, 0);
 		if(enchantLvl == 0) return;
-
 		event.multipliers.add(Misc.getReductionMultiplier(getReduction(enchantLvl)));
 	}
 

@@ -242,8 +242,8 @@ public class DarkzoneManager implements Listener {
 		}
 	}
 
-	public static void createSoulExplosion(Location location, int souls) {
-		int items = (int) Math.sqrt(souls);
+	public static void createSoulExplosion(Player killer, Location location, int souls, boolean largeExplosion) {
+		int items = (int) Math.pow(souls, 3.0 / 5.0);
 		Map<Integer, Integer> soulDistributionMap = new HashMap<>();
 		int soulsToDistribute = souls - items;
 		for(int i = 0; i < items; i++) soulDistributionMap.put(i, 1);
@@ -261,14 +261,16 @@ public class DarkzoneManager implements Listener {
 				public void run() {
 					if(droppedItem.isValid()) droppedItem.remove();
 				}
-			}.runTaskLater(PitSim.INSTANCE, 200 + new Random().nextInt(101));
+			}.runTaskLater(PitSim.INSTANCE, 20 * 20 + new Random().nextInt(20 * 10 + 1));
 
 			Vector velocityVector = spawnLocation.toVector().subtract(location.toVector()).normalize().multiply(0.4);
 			double multiplier = Math.random() * 0.5 + 0.75;
+			if(largeExplosion) multiplier *= 1.8;
 			droppedItem.setVelocity(velocityVector.multiply(multiplier));
 		}
 		location.getWorld().playEffect(location, Effect.EXPLOSION_LARGE, 1);
 		Sounds.SOUL_EXPLOSION.play(location);
+		if(killer != null) Sounds.SOUL_EXPLOSION.play(killer);
 	}
 
 	public static PitEquipment getDefaultEquipment() {

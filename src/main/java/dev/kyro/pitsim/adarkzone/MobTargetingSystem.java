@@ -3,6 +3,7 @@ package dev.kyro.pitsim.adarkzone;
 import de.myzelyam.api.vanish.VanishAPI;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.enchants.tainted.uncommon.Fearmonger;
+import dev.kyro.pitsim.enchants.tainted.abilities.Terror;
 import org.bukkit.Effect;
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
@@ -95,6 +96,7 @@ public class MobTargetingSystem {
 		if(candidate != null) {
 			scaledDistance = ((subLevel.spawnRadius * 2) - candidate.getLocation().distance(pitMob.getMob().getLocation())) / (subLevel.spawnRadius * 2);
 			scaledTargets = Math.pow(mobsTargeting, 1.3) / MAX_MOBS_PER_PLAYER;
+			scaledTargets *= Terror.getAvoidanceMultiplier(candidate);
 		}
 
 //		double total = scaledDistance * distanceWeight +
