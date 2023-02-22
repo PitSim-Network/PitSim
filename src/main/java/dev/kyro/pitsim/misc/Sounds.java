@@ -114,6 +114,7 @@ public class Sounds {
 	public static final SoundEffect BIPOLAR_VENGEANCE = new SoundEffect(Sound.ENDERDRAGON_GROWL, 1, 1);
 	public static final SoundEffect BIPOLAR_PEACE = new SoundEffect(Sound.CAT_MEOW, 1, 1);
 	public static final SoundEffect LEECH = new SoundEffect(Sound.SILVERFISH_IDLE, 1, 1);
+	public static final SoundEffect ROLLING_THUNDER_START = new SoundEffect(Sound.ENDERDRAGON_GROWL, 1, 1);
 
 	//	Megastreaks
 	public static final SoundEffect MEGA_GENERAL = new SoundEffect(Sound.WITHER_SPAWN, 1000, 1);

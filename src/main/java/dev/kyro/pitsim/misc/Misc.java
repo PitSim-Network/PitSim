@@ -73,6 +73,11 @@ public class Misc {
 		}
 	}
 
+	private static int nextEntityID = Integer.MIN_VALUE;
+	public static int getNextEntityID() {
+		return nextEntityID++;
+	}
+
 //	Doesn't work on all blocks
 	public static Sound getBlockBreakSound(Block block) {
 		World nmsWorld = ((CraftWorld) block.getWorld()).getHandle();

@@ -50,7 +50,7 @@ public class GottaGoFast extends PitEnchant {
 					}
 				}
 			}
-		}.runTaskTimerAsynchronously(PitSim.INSTANCE, 0L, 20);
+		}.runTaskTimer(PitSim.INSTANCE, 0L, 20);
 	}
 
 	@Override
