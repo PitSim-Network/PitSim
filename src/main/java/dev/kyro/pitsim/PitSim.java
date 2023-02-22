@@ -165,7 +165,7 @@ public class PitSim extends JavaPlugin {
 		if(Bukkit.getPluginManager().getPlugin("GrimAC") != null) hookIntoAnticheat(new GrimManager());
 		if(Bukkit.getPluginManager().getPlugin("PolarLoader") != null) hookIntoAnticheat(new PolarManager());
 
-		if(!serverName.contains("dev")) {
+		if(!isDev()) {
 			if(anticheat == null) {
 				Bukkit.getLogger().severe("No anticheat found! Shutting down...");
 				Bukkit.getPluginManager().disablePlugin(this);

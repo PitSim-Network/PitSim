@@ -1,6 +1,7 @@
 package dev.kyro.pitsim.commands;
 
 import dev.kyro.arcticapi.misc.AOutput;
+import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.aitems.PitItem;
 import dev.kyro.pitsim.controllers.EnchantManager;
 import dev.kyro.pitsim.controllers.ItemFactory;
@@ -22,22 +23,24 @@ public class EnchantCommand implements CommandExecutor {
 		if(!(sender instanceof Player)) return false;
 		Player player = (Player) sender;
 
-		if(!player.hasPermission("group.nitro")) {
-			AOutput.send(player, "&cYou must boost our discord server to gain access to this feature!&7 Join with: &f&ndiscord.pitsim.net");
-			return false;
+		if(!PitSim.isDev()) {
+			if(!player.hasPermission("group.nitro")) {
+				AOutput.send(player, "&cYou must boost our discord server to gain access to this feature!&7 Join with: &f&ndiscord.pitsim.net");
+				return false;
+			}
+
+			if(MysticType.getMysticType(player.getItemInHand()) == MysticType.TAINTED_CHESTPLATE || MysticType.getMysticType(player.getItemInHand()) == MysticType.TAINTED_SCYTHE) {
+				if(!player.isOp()) {
+					AOutput.error(player, "&cNice try.");
+					return false;
+				}
+			}
 		}
 
 		PitItem pitItem = ItemFactory.getItem(player.getItemInHand());
 		if(pitItem == null || !pitItem.isMystic) {
 			AOutput.error(player, "Not holding a mystic item");
 			return false;
-		}
-
-		if(MysticType.getMysticType(player.getItemInHand()) == MysticType.TAINTED_CHESTPLATE || MysticType.getMysticType(player.getItemInHand()) == MysticType.TAINTED_SCYTHE) {
-			if(!player.isOp()) {
-				AOutput.error(player, "&cNice try.");
-				return false;
-			}
 		}
 
 		if(args.length < 2) {
@@ -68,7 +71,7 @@ public class EnchantCommand implements CommandExecutor {
 
 		ItemStack updatedItem;
 		try {
-			if(player.isOp()) {
+			if(player.isOp() || PitSim.isDev()) {
 				updatedItem = EnchantManager.addEnchant(player.getItemInHand(), pitEnchant, level, false);
 			} else {
 				updatedItem = EnchantManager.addEnchant(player.getItemInHand(), pitEnchant, level, true);
