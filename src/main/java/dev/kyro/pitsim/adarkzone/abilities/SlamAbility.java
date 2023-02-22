@@ -88,7 +88,7 @@ public class SlamAbility extends RoutinePitBossAbility {
 				@Override
 				public void run() {
 					GravitizedBlock gravitizedBlock = new GravitizedBlock(block);
-					gravitizedBlock.slamAfter(20 - delay);
+					gravitizedBlock.slamAfter(40 - delay);
 				}
 			}.runTaskLater(PitSim.INSTANCE, delay);
 		}
@@ -112,10 +112,21 @@ public class SlamAbility extends RoutinePitBossAbility {
 			fallingBlock.setViewers(getViewers());
 			fallingBlock.spawnBlock();
 
+			PitParticle dirt = new BlockCrackParticle(new MaterialData(Material.DIRT));
+
 			new BukkitRunnable() {
 				@Override
 				public void run() {
 					fallingBlock.setVelocity(new Vector(0, 0.7, 0));
+
+					for(Player viewer : getViewers()) {
+
+						EntityPlayer entityPlayer = ((CraftPlayer) viewer).getHandle();
+
+						for(int j = 0; j < 25; j++) {
+							dirt.display(entityPlayer, initialLocation, new ParticleOffset(0, 1, 0, 1, 1, 1));
+						}
+					}
 				}
 			}.runTaskLater(PitSim.INSTANCE, 1);
 
@@ -123,7 +134,7 @@ public class SlamAbility extends RoutinePitBossAbility {
 			runnable = new BukkitRunnable() {
 				@Override
 				public void run() {
-					fallingBlock.setVelocity(new Vector(0, 0.1, 0));
+					fallingBlock.setVelocity(new Vector(0, 0.075, 0));
 				}
 			}.runTaskTimer(PitSim.INSTANCE, 10, 1);
 		}
@@ -139,9 +150,20 @@ public class SlamAbility extends RoutinePitBossAbility {
 
 		public void slam() {
 			runnable.cancel();
-			Vector vector = new Vector(0, -0.5, 0);
+			Vector vector = new Vector(0, -2, 0);
 			fallingBlock.setVelocity(vector);
-			fallingBlock.removeAfter(10);
+			fallingBlock.removeAfter(3);
+
+			for(int i = 0; i < 10; i++) {
+				Location location = initialLocation.clone().add(0, -i, 0);
+				if(location.getBlock().getType() == Material.AIR) continue;
+
+
+				for(Player viewer : getViewers()) {
+					EntityPlayer entityPlayer = ((CraftPlayer) viewer).getHandle();
+					new ExplosionLargeParticle().display(entityPlayer, location.add(0, 0.5, 0));
+				}
+			}
 		}
 	}
 
