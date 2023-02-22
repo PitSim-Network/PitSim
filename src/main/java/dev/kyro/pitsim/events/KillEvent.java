@@ -1,6 +1,7 @@
 package dev.kyro.pitsim.events;
 
 import dev.kyro.pitsim.controllers.NonManager;
+import dev.kyro.pitsim.controllers.PlayerManager;
 import dev.kyro.pitsim.controllers.objects.Non;
 import dev.kyro.pitsim.controllers.objects.PitEnchant;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
@@ -40,6 +41,9 @@ public class KillEvent extends Event {
 	public List<Double> maxXPMultipliers = new ArrayList<>();
 	public List<Double> goldMultipliers = new ArrayList<>();
 
+	public double soulsLost;
+	public List<Double> soulMultipliers = new ArrayList<>();
+
 	public boolean isLuckyKill = false;
 
 	public KillEvent(AttackEvent attackEvent, LivingEntity killer, LivingEntity dead, boolean exeDeath) {
@@ -55,20 +59,18 @@ public class KillEvent extends Event {
 		this.deadPlayer = isDeadPlayer() ? (Player) dead : null;
 		this.exeDeath = exeDeath;
 
-		Non defendingNon = NonManager.getNon(this.getDead());
-		xpReward = defendingNon == null ? 5 : 20;
+		Non defendingNon = NonManager.getNon(getDead());
+		this.xpReward = defendingNon == null ? 5 : 20;
+
+		if(PlayerManager.isRealPlayer(deadPlayer)) this.soulsLost = getBaseSouls();
 	}
 
 	public int getFinalXp() {
 
 		double xpReward = this.xpReward;
 		int xpCap = this.xpCap;
-		for(Double xpMultiplier : xpMultipliers) {
-			xpReward *= xpMultiplier;
-		}
-		for(Double maxXPMultiplier : maxXPMultipliers) {
-			xpCap *= maxXPMultiplier;
-		}
+		for(Double xpMultiplier : xpMultipliers) xpReward *= xpMultiplier;
+		for(Double maxXPMultiplier : maxXPMultipliers) xpCap *= maxXPMultiplier;
 		xpReward += bonusXpReward;
 
 		if(!(getDead() instanceof Player)) return 0;
@@ -78,11 +80,20 @@ public class KillEvent extends Event {
 
 	public double getFinalGold() {
 		double goldReward = this.goldReward;
-		for(Double goldMultiplier : goldMultipliers) {
-			goldReward *= goldMultiplier;
-		}
+		for(Double goldMultiplier : goldMultipliers) goldReward *= goldMultiplier;
 		if(!(getDead() instanceof Player)) return 0;
 		else return Math.min(goldReward, 2000);
+	}
+
+	private double getBaseSouls() {
+		double baseSoulsLost = getDeadPitPlayer().taintedSouls;
+		baseSoulsLost *= (1 / (Math.pow(Math.E, -0.004 * (baseSoulsLost - 600)) + 1)) * 100 - 9;
+		return baseSoulsLost;
+	}
+
+	public int getFinalSouls() {
+		for(Double soulMultiplier : soulMultipliers) soulsLost *= soulMultiplier;
+		return (int) Math.min(Math.ceil(soulsLost), deadPitPlayer.taintedSouls);
 	}
 
 	@Override

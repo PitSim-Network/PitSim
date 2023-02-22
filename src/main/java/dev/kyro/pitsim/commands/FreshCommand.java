@@ -2,6 +2,7 @@ package dev.kyro.pitsim.commands;
 
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.arcticapi.misc.AUtil;
+import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.aitems.MysticFactory;
 import dev.kyro.pitsim.enums.MysticType;
 import org.bukkit.command.Command;
@@ -14,13 +15,14 @@ public class FreshCommand implements CommandExecutor {
 
 	@Override
 	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
-
 		if(!(sender instanceof Player)) return false;
 		Player player = (Player) sender;
 
-		if(!player.hasPermission("group.nitro")) {
-			AOutput.send(player, "&cYou must boost our discord server to gain access to this feature!&7 Join with: &f&ndiscord.pitsim.net");
-			return false;
+		if(!PitSim.isDev()) {
+			if(!player.hasPermission("group.nitro")) {
+				AOutput.send(player, "&cYou must boost our discord server to gain access to this feature!&7 Join with: &f&ndiscord.pitsim.net");
+				return false;
+			}
 		}
 
 		if(args.length < 1) {
