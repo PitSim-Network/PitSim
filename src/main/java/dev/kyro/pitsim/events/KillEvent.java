@@ -62,7 +62,7 @@ public class KillEvent extends Event {
 		Non defendingNon = NonManager.getNon(getDead());
 		this.xpReward = defendingNon == null ? 5 : 20;
 
-		if(PlayerManager.isRealPlayer(deadPlayer)) this.soulsLost = getBaseSouls();
+		if(PlayerManager.isRealPlayer(deadPlayer)) this.soulsLost = getBaseSouls(getDeadPitPlayer());
 	}
 
 	public int getFinalXp() {
@@ -85,15 +85,15 @@ public class KillEvent extends Event {
 		else return Math.min(goldReward, 2000);
 	}
 
-	private double getBaseSouls() {
-		double baseSoulsLost = getDeadPitPlayer().taintedSouls;
+	public static double getBaseSouls(PitPlayer deadPitPlayer) {
+		double baseSoulsLost = deadPitPlayer.taintedSouls;
 		baseSoulsLost *= (1 / (Math.pow(Math.E, -0.004 * (baseSoulsLost - 600)) + 1)) * 100 - 9;
 		return baseSoulsLost;
 	}
 
 	public int getFinalSouls() {
 		for(Double soulMultiplier : soulMultipliers) soulsLost *= soulMultiplier;
-		return (int) Math.min(Math.ceil(soulsLost), deadPitPlayer.taintedSouls);
+		return (int) Math.min(Math.ceil(soulsLost), getDeadPitPlayer().taintedSouls);
 	}
 
 	@Override
