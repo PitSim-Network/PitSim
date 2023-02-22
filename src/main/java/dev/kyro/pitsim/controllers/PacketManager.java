@@ -109,8 +109,6 @@ public class PacketManager implements Listener {
 
 						if(!viewers.contains(event.getPlayer())) return;
 
-
-						System.out.println("Sending");
 						suppressedLocations.remove(packetBlock);
 						PacketBlock finalPacketBlock = packetBlock;
 						new BukkitRunnable() {

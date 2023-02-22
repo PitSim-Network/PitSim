@@ -26,10 +26,10 @@ public class ATestCommand implements CommandExecutor {
 		if(!(sender instanceof Player)) return false;
 		Player player = (Player) sender;
 
-		PacketBlock packetBlock = new PacketBlock(Material.STONE, (byte) 1, player.getLocation());
+		PacketBlock packetBlock = new PacketBlock(Material.RED_ROSE, (byte) 1, player.getLocation());
 		packetBlock.setViewers(Collections.singletonList(player));
 		packetBlock.spawnBlock();
-		packetBlock.removeAfter(40);
+		packetBlock.removeAfter(100);
 
 //		location = player.getLocation();
 //
