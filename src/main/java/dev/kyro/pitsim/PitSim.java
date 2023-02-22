@@ -1033,6 +1033,7 @@ public class PitSim extends JavaPlugin {
 		EnchantManager.registerEnchant(new ComboDefence());
 		EnchantManager.registerEnchant(new ComboMana());
 		EnchantManager.registerEnchant(new ComboSlow());
+		EnchantManager.registerEnchant(new Desperate());
 		EnchantManager.registerEnchant(new Emboldened());
 		EnchantManager.registerEnchant(new Ethereal());
 		EnchantManager.registerEnchant(new Fearmonger());
