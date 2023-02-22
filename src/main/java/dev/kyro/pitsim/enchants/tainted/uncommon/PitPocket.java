@@ -1,4 +1,4 @@
-package dev.kyro.pitsim.enchants.tainted.znotcodeduncommon;
+package dev.kyro.pitsim.enchants.tainted.uncommon;
 
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.controllers.Cooldown;
@@ -28,7 +28,7 @@ public class PitPocket extends PitEnchant {
 	public void onAttack(AttackEvent.Apply attackEvent) {
 		if(!PlayerManager.isRealPlayer(attackEvent.getAttackerPlayer()) || !PlayerManager.isRealPlayer(attackEvent.getDefenderPlayer())) return;
 		if(!canApply(attackEvent)) return;
-		if(attackEvent.getEvent().getDamager() != attackEvent.getAttacker()) return;
+		if(attackEvent.getAttacker() != attackEvent.getEvent().getDamager()) return;
 
 		int enchantLvl = attackEvent.getAttackerEnchantLevel(this);
 		if(enchantLvl == 0) return;

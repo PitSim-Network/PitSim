@@ -1,4 +1,4 @@
-package dev.kyro.pitsim.enchants.overworld;
+package dev.kyro.pitsim.enchants.tainted.uncommon;
 
 import dev.kyro.pitsim.controllers.objects.PitEnchant;
 import dev.kyro.pitsim.enums.ApplyType;
@@ -8,17 +8,20 @@ import org.bukkit.event.EventHandler;
 
 import java.util.List;
 
-public class Sharp extends PitEnchant {
+public class Permed extends PitEnchant {
+	public static Permed INSTANCE;
 
-	public Sharp() {
-		super("Sharp", false, ApplyType.MELEE,
-				"sharp", "s");
+	public Permed() {
+		super("Permed", false, ApplyType.SCYTHES,
+				"permed", "perm");
+		isUncommonEnchant = true;
+		isTainted = true;
+		INSTANCE = this;
 	}
 
 	@EventHandler
 	public void onAttack(AttackEvent.Apply attackEvent) {
 		if(!canApply(attackEvent)) return;
-		if(attackEvent.getAttacker() != attackEvent.getEvent().getDamager()) return;
 
 		int enchantLvl = attackEvent.getAttackerEnchantLevel(this);
 		if(enchantLvl == 0) return;
@@ -29,11 +32,11 @@ public class Sharp extends PitEnchant {
 	@Override
 	public List<String> getNormalDescription(int enchantLvl) {
 		return new PitLoreBuilder(
-				"&7Deal &c+" + getDamageIncrease(enchantLvl) + "% &7melee damage"
+				"&7Deal &c+" + getDamageIncrease(enchantLvl) + "% &7damage against other players"
 		).getLore();
 	}
 
 	public int getDamageIncrease(int enchantLvl) {
-		return (int) (Math.pow(enchantLvl, 1.2) * 3 + 1);
+		return enchantLvl * 5 + 2;
 	}
 }
