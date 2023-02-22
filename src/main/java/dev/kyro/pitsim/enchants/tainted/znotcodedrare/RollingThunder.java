@@ -18,7 +18,6 @@ import org.bukkit.util.Vector;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 public class RollingThunder extends PitEnchant {
 	public static RollingThunder INSTANCE;
@@ -39,12 +38,14 @@ public class RollingThunder extends PitEnchant {
 		Location[][] locations = new Location[4][];
 		Location startingLoc = player.getLocation().add(0, -1, 0);
 
-		for(int i = 0; i < 3; i++) {
+		for(int i = 0; i < 4; i++) {
 			locations[i] = new Location[3 + (2 * i)];
 		}
 
 		float pitch = Math.abs(player.getLocation().getPitch());
-		boolean xAxis = pitch - 90 >= 0 && pitch - 90 <= 45;
+//		boolean xAxis = pitch - 90 >= 0 && pitch - 90 <= 45;
+		boolean xAxis = true;
+		int coefficient = 1;
 
 		for(int i = 0; i < 3; i++) {
 			Location tempLocation = startingLoc.clone().subtract(0, i, 0);
@@ -52,17 +53,20 @@ public class RollingThunder extends PitEnchant {
 			startingLoc = tempLocation;
 		}
 
-		int x;
 		int z;
+		int x;
+
+		startingLoc.add(xAxis ? 0 : -1, 0, xAxis ? -1 : 0);
 
 		for(int i = 0; i < locations.length; i++) {
-			x = xAxis ? (-1 * i) : i + 1;
-			z = xAxis ? i + 1 : (-1 * i);
+			z = xAxis ? ((-1 * coefficient) * i) : i + (1 * coefficient);
+			x = xAxis ? i + (1 * coefficient) : ((-1 * coefficient) * i);
 
 			for(int j = 0; j < 3 + (2 * i); j++) {
+				System.out.println(x + " " + z);
 				locations[i][j] = startingLoc.clone().add(x, 0, z);
-				x = xAxis ? x + 1 : x;
-				z = xAxis ? z : z + 1;
+				z = xAxis ? z + 1 : z;
+				x = xAxis ? x : x + 1;
 			}
 		}
 
@@ -70,7 +74,7 @@ public class RollingThunder extends PitEnchant {
 
 		for(int i = 0; i < locations.length; i++) {
 			Location[] blockLocations = locations[i];
-			long delay = i * 5;
+			long delay = i * 2;
 			Vector vector = new Vector(0, (i + 1) * 0.15, 0);
 
 			for(Location blockLocation : blockLocations) {
@@ -85,6 +89,7 @@ public class RollingThunder extends PitEnchant {
 						fallingBlock.setViewers(viewers);
 						fallingBlock.spawnBlock();
 						fallingBlock.setVelocity(vector);
+						fallingBlock.removeAfter((int) (delay + 5));
 					}
 				}.runTaskLater(PitSim.INSTANCE, delay);
 			}
