@@ -82,6 +82,8 @@ public class Sounds {
 	public static final SoundEffect TELEBOW = new SoundEffect(Sound.ENDERMAN_TELEPORT, 1, 2);
 	public static final SoundEffect VENOM = new SoundEffect(Sound.SPIDER_IDLE, 1, 1);
 	public static final SoundEffect VOLLEY = new SoundEffect(Sound.SHOOT_ARROW, 1, 1);
+	public static final SoundEffect PULLBOW = new SoundEffect(Sound.BAT_TAKEOFF, 1, 1);
+
 	public static final SoundEffect REPEL = new SoundEffect(Sound.ANVIL_LAND, 1, 0.5);
 	public static final SoundEffect FREEZE1 = new SoundEffect(Sound.DIG_SNOW, 2, 0.5);
 	public static final SoundEffect FREEZE2 = new SoundEffect(Sound.GLASS, 1, 1.2);

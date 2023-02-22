@@ -7,6 +7,7 @@ import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.enums.ApplyType;
 import dev.kyro.pitsim.events.AttackEvent;
 import dev.kyro.pitsim.megastreaks.Uberstreak;
+import dev.kyro.pitsim.misc.Sounds;
 import org.bukkit.event.EventHandler;
 import org.bukkit.util.Vector;
 
@@ -41,6 +42,7 @@ public class Pullbow extends PitEnchant {
 		Vector pullVector = dirVector.clone().normalize().setY(0.5).multiply(2.5).add(dirVector.clone().multiply(0.03));
 		attackEvent.getDefender().setVelocity(pullVector.multiply(getMultiplier(enchantLvl)));
 
+		Sounds.PULLBOW.play(attackEvent.getAttackerPlayer());
 		PitPlayer pitAttacker = PitPlayer.getPitPlayer(attackEvent.getAttackerPlayer());
 		if(pitAttacker.stats != null) pitAttacker.stats.pullbow++;
 	}
