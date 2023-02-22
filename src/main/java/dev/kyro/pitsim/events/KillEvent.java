@@ -86,7 +86,7 @@ public class KillEvent extends Event {
 	}
 
 	public static double getBaseSouls(PitPlayer deadPitPlayer) {
-		return (1 / (Math.pow(Math.E, -0.004 * (deadPitPlayer.taintedSouls - 600)) + 1)) * 100 - 9;
+		return (1 / (Math.pow(Math.E, -0.002 * (deadPitPlayer.taintedSouls - 1200)) + 1)) * 110 - 10;
 	}
 
 	public int getFinalSouls() {
