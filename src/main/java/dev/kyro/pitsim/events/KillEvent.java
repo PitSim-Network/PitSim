@@ -1,6 +1,7 @@
 package dev.kyro.pitsim.events;
 
 import dev.kyro.pitsim.controllers.NonManager;
+import dev.kyro.pitsim.controllers.PlayerManager;
 import dev.kyro.pitsim.controllers.objects.Non;
 import dev.kyro.pitsim.controllers.objects.PitEnchant;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
@@ -61,7 +62,7 @@ public class KillEvent extends Event {
 		Non defendingNon = NonManager.getNon(getDead());
 		this.xpReward = defendingNon == null ? 5 : 20;
 
-		this.soulsLost = getBaseSouls();
+		if(PlayerManager.isRealPlayer(deadPlayer)) this.soulsLost = getBaseSouls();
 	}
 
 	public int getFinalXp() {
