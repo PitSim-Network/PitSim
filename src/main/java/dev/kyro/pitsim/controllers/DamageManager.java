@@ -23,6 +23,7 @@ import dev.kyro.pitsim.enchants.overworld.Regularity;
 import dev.kyro.pitsim.enchants.overworld.Telebow;
 import dev.kyro.pitsim.enums.*;
 import dev.kyro.pitsim.enchants.tainted.znotcodeduncommon.ShieldBuster;
+import dev.kyro.pitsim.enchants.tainted.uncommon.ShieldBuster;
 import dev.kyro.pitsim.enums.KillModifier;
 import dev.kyro.pitsim.enums.KillType;
 import dev.kyro.pitsim.enums.NBTTag;
@@ -452,28 +453,41 @@ public class DamageManager implements Listener {
 			killerNon.rewardKill();
 		}
 
-		if(killerIsPlayer && killEvent != null) {
-			LevelManager.addXP(pitKiller.player, killEvent.getFinalXp());
-			LevelManager.addGold(killEvent.getKillerPlayer(), (int) killEvent.getFinalGold());
+		if(PlayerManager.isRealPlayer(killerPlayer) && killEvent != null) {
+			if(PitSim.status.isOverworld()) {
+				LevelManager.addXP(pitKiller.player, killEvent.getFinalXp());
+				LevelManager.addGold(killEvent.getKillerPlayer(), (int) killEvent.getFinalGold());
+			} else {
+				if(PlayerManager.isRealPlayer(deadPlayer)) {
+					int finalSouls = killEvent.getFinalSouls();
+					pitDead.taintedSouls -= finalSouls;
+					pitKiller.taintedSouls += finalSouls;
+				}
+			}
 		}
 
-		DecimalFormat df = new DecimalFormat("##0.00");
+		DecimalFormat df = new DecimalFormat("##0.##");
 		String kill = null;
+		String soulsGainedString = "";
+		if(PitSim.status.isDarkzone() && killEvent != null) soulsGainedString = " &f+" + killEvent.getFinalSouls() +
+				" soul" + (killEvent.soulsLost == 1 ? "" : "s");
 		if(deadMob != null) {
 			kill = "&a&lKILL!&7 on " + deadMob.getDisplayName();
 		} else if(killType != KillType.DEATH) {
 			kill = PlaceholderAPI.setPlaceholders(killEvent.getDeadPlayer(), "&a&lKILL!&7 on %luckperms_prefix%" +
 					(deadNon == null ? "%player_name%" : deadNon.displayName) + " &b+" + killEvent.getFinalXp() + "XP" +
-					" &6+" + df.format(killEvent.getFinalGold()) + "g");
+					" &6+" + df.format(killEvent.getFinalGold()) + "g") + soulsGainedString;
 		}
 
 		String death;
-		if(!killerIsPlayer) {
-			death = "&c&lDEATH!";
-		} else if(killType == KillType.DEFAULT) {
-			death = PlaceholderAPI.setPlaceholders(killEvent.getKillerPlayer(), "&c&lDEATH!&7 by %luckperms_prefix%" + (killerNon == null ? "%player_name%" : killerNon.displayName));
+		String soulsLostString = "";
+		if(PitSim.status.isDarkzone() && killEvent != null) soulsLostString = " &f-" + killEvent.soulsLost +
+				" soul" + (killEvent.soulsLost == 1 ? "" : "s");
+		if(killType == KillType.DEFAULT && killerIsPlayer) {
+			death = PlaceholderAPI.setPlaceholders(killEvent.getKillerPlayer(), "&c&lDEATH!&7 by %luckperms_prefix%" +
+					(killerNon == null ? "%player_name%" : killerNon.displayName)) + soulsLostString;
 		} else {
-			death = "&c&lDEATH!";
+			death = "&c&lDEATH!" + soulsLostString;
 		}
 
 		String killActionBar = null;

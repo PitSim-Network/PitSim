@@ -340,6 +340,7 @@ public class PlayerManager implements Listener {
 
 	@EventHandler(priority = EventPriority.HIGHEST)
 	public static void onKill(KillEvent killEvent) {
+		if(PitSim.status.isDarkzone()) return;
 		if(!killEvent.isDeadPlayer() || !killEvent.isKillerPlayer()) return;
 
 		PitPlayer pitKiller = killEvent.getKillerPitPlayer();

@@ -141,7 +141,7 @@ public class PitSim extends JavaPlugin {
 		loadConfig();
 		ArcticAPI.configInit(this, "prefix", "error-prefix");
 		serverName = AConfig.getString("server");
-		if(AConfig.getBoolean("standalone-server")) status = ServerStatus.ALL;
+		if(AConfig.getBoolean("standalone-server")) status = ServerStatus.STANDALONE;
 		else status = serverName.contains("darkzone") ? ServerStatus.DARKZONE : ServerStatus.OVERWORLD;
 
 		if(status.isDarkzone()) DarkzoneManager.clearEntities();
@@ -1037,7 +1037,7 @@ public class PitSim extends JavaPlugin {
 		EnchantManager.registerEnchant(new Ethereal());
 		EnchantManager.registerEnchant(new Fearmonger());
 		EnchantManager.registerEnchant(new Fortify());
-		EnchantManager.registerEnchant(new Greed());
+		EnchantManager.registerEnchant(new Hoarder());
 		EnchantManager.registerEnchant(new LeaveMeAlone());
 		EnchantManager.registerEnchant(new Mechanic());
 		EnchantManager.registerEnchant(new Mending());
@@ -1083,15 +1083,19 @@ public class PitSim extends JavaPlugin {
 		PitSim.anticheat = anticheat;
 	}
 
+	public static boolean isDev() {
+		return serverName.contains("dev");
+	}
+
 	public enum ServerStatus {
-		DARKZONE, OVERWORLD, ALL;
+		DARKZONE, OVERWORLD, STANDALONE;
 
 		public boolean isDarkzone() {
-			return this == DARKZONE || this == ALL;
+			return this == DARKZONE || this == STANDALONE;
 		}
 
 		public boolean isOverworld() {
-			return this == OVERWORLD || this == ALL;
+			return this == OVERWORLD || this == STANDALONE;
 		}
 
 		public boolean isAll() {
