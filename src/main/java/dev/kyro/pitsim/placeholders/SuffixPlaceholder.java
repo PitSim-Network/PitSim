@@ -5,6 +5,7 @@ import dev.kyro.arcticguilds.GuildData;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.controllers.AFKManager;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
+import dev.kyro.pitsim.events.KillEvent;
 import org.bukkit.entity.Player;
 
 public class SuffixPlaceholder implements APAPIPlaceholder {
@@ -22,7 +23,7 @@ public class SuffixPlaceholder implements APAPIPlaceholder {
 		if(PitSim.status.isOverworld()) {
 			if(pitPlayer.bounty != 0) return "&7 &6&l" + pitPlayer.bounty + "g";
 		} else {
-			if(pitPlayer.taintedSouls != 0) return "&7 &f&l" + pitPlayer.taintedSouls + "s";
+			if(pitPlayer.taintedSouls != 0) return "&7 &f&l" + KillEvent.getBaseSouls(pitPlayer) + " \u1F47B";
 		}
 
 		GuildData guild = GuildData.getGuildData(player);
