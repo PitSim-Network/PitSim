@@ -9,10 +9,7 @@ import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.battlepass.quests.CompleteUbersQuest;
 import dev.kyro.pitsim.battlepass.quests.daily.DailyMegastreakQuest;
 import dev.kyro.pitsim.commands.FreshCommand;
-import dev.kyro.pitsim.controllers.EnchantManager;
-import dev.kyro.pitsim.controllers.ItemManager;
-import dev.kyro.pitsim.controllers.NonManager;
-import dev.kyro.pitsim.controllers.PrestigeValues;
+import dev.kyro.pitsim.controllers.*;
 import dev.kyro.pitsim.controllers.objects.Megastreak;
 import dev.kyro.pitsim.controllers.objects.PitEnchant;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
@@ -24,6 +21,7 @@ import dev.kyro.pitsim.events.AttackEvent;
 import dev.kyro.pitsim.events.HealEvent;
 import dev.kyro.pitsim.events.IncrementKillsEvent;
 import dev.kyro.pitsim.misc.*;
+import dev.kyro.pitsim.upgrades.UberIncrease;
 import me.clip.placeholderapi.PlaceholderAPI;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Bukkit;
@@ -253,9 +251,10 @@ public class Uberstreak extends Megastreak {
 		if(!isOnMega()) return;
 
 		if(pitPlayer.uberReset == 0) {
-			pitPlayer.uberReset = System.currentTimeMillis() / 1000L;
+			pitPlayer.uberReset = System.currentTimeMillis() + 1000 * 60 * 60 * 20;
 		}
 		pitPlayer.dailyUbersLeft = pitPlayer.dailyUbersLeft - 1;
+		ChatTriggerManager.sendUberInfo(pitPlayer);
 
 		if(pitPlayer.dailyUbersLeft <= 0) {
 			pitPlayer.megastreak = new NoMegastreak(pitPlayer);
@@ -460,5 +459,17 @@ public class Uberstreak extends Megastreak {
 
 	public static ItemStack getDisplayStack(String displayName, ItemStack displayStack) {
 		return new AItemStackBuilder(displayStack).setName(displayName).getItemStack();
+	}
+
+	public static int getMaxUbers(Player player) {
+		return 5 + UberIncrease.getUberIncrease(player);
+	}
+
+	public static void checkUberReset(PitPlayer pitPlayer) {
+		if(System.currentTimeMillis() > pitPlayer.uberReset) {
+			pitPlayer.uberReset = 0;
+			pitPlayer.dailyUbersLeft = Uberstreak.getMaxUbers(pitPlayer.player);
+			ChatTriggerManager.sendUberInfo(pitPlayer);
+		}
 	}
 }

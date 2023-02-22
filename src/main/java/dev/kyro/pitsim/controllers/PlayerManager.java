@@ -24,6 +24,7 @@ import dev.kyro.pitsim.inventories.view.ViewGUI;
 import dev.kyro.pitsim.megastreaks.Highlander;
 import dev.kyro.pitsim.megastreaks.NoMegastreak;
 import dev.kyro.pitsim.megastreaks.RNGesus;
+import dev.kyro.pitsim.megastreaks.Uberstreak;
 import dev.kyro.pitsim.misc.Misc;
 import dev.kyro.pitsim.misc.Sounds;
 import dev.kyro.pitsim.pitmaps.XmasMap;
@@ -597,10 +598,7 @@ public class PlayerManager implements Listener {
 		FeatherBoardAPI.resetDefaultScoreboard(player);
 		ScoreboardManager.updateScoreboard(player);
 
-		if((System.currentTimeMillis() / 1000L) - 60 * 60 * 20 > pitPlayer.uberReset) {
-			pitPlayer.uberReset = 0;
-			pitPlayer.dailyUbersLeft = 5 + UberIncrease.getUberIncrease(player);
-		}
+		Uberstreak.checkUberReset(pitPlayer);
 
 		new BukkitRunnable() {
 			@Override
