@@ -5,8 +5,10 @@ import dev.kyro.pitsim.adarkzone.BossManager;
 import dev.kyro.pitsim.adarkzone.DarkzoneManager;
 import dev.kyro.pitsim.adarkzone.PitBoss;
 import dev.kyro.pitsim.adarkzone.PitMob;
+import dev.kyro.pitsim.controllers.Cooldown;
 import dev.kyro.pitsim.controllers.PlayerManager;
 import dev.kyro.pitsim.controllers.objects.PitEnchant;
+import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.cosmetics.particles.BlockCrackParticle;
 import dev.kyro.pitsim.enums.ApplyType;
 import dev.kyro.pitsim.events.PitPlayerAttemptAbilityEvent;
@@ -56,17 +58,17 @@ public class RollingThunder extends PitEnchant {
 		int enchantLvl = event.getEnchantLevel(this);
 		if(enchantLvl == 0) return;
 
-//		Cooldown cooldown = getCooldown(player, getCooldownSeconds(enchantLvl) * 20);
-//		if(cooldown.isOnCooldown()) {
-//			Sounds.NO.play(player);
-//			return;
-//		}
-//		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
-//		if(!pitPlayer.useMana(getManaCost(enchantLvl))) {
-//			Sounds.NO.play(player);
-//			return;
-//		}
-//		cooldown.restart();
+		Cooldown cooldown = getCooldown(player, getCooldownSeconds(enchantLvl) * 20);
+		if(cooldown.isOnCooldown()) {
+			Sounds.NO.play(player);
+			return;
+		}
+		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
+		if(!pitPlayer.useMana(getManaCost(enchantLvl))) {
+			Sounds.NO.play(player);
+			return;
+		}
+		cooldown.restart();
 
 
 		World world = player.getWorld();
