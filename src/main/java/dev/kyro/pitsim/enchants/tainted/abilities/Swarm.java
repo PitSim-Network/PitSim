@@ -68,9 +68,9 @@ public class Swarm extends PitEnchant {
 	@Override
 	public List<String> getNormalDescription(int enchantLvl) {
 		return new PitLoreBuilder(
-				"&7When worn, spawn &2" + getParticleCount(enchantLvl) + " swarm particle" +
-				(getParticleCount(enchantLvl) == 1 ? "" : "s") + "&7, but receive &b-" +
-				getReduction(enchantLvl) + "% mana"
+				"&7When equipped, spawn &2" + getParticleCount(enchantLvl) + " swarm particle" +
+				(getParticleCount(enchantLvl) == 1 ? "" : "s") + "&7, but regain mana &b" +
+				getReduction(enchantLvl) + "% &7slower"
 		).getLore();
 	}
 

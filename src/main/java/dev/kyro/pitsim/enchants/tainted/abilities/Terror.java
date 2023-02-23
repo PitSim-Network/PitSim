@@ -40,15 +40,15 @@ public class Terror extends PitEnchant {
 		if(enchantLvl == 1) {
 			return new PitLoreBuilder(
 					"&7Mobs look at you funny. They probably don't like you. " +
-							"When worn, receive &b-" + getManaReduction(enchantLvl) + "% mana"
+							"When worn, regain mana &b" + getManaReduction(enchantLvl) + "% &7slower"
 			).getLore();
 		} else if(enchantLvl == 2) {
 			return new PitLoreBuilder(
-					"&7Mobs prefer to fight other players. When worn, receive &b-" + getManaReduction(enchantLvl) + "% mana"
+					"&7Mobs prefer to fight other players. When worn, regain mana &b" + getManaReduction(enchantLvl) + "% &7slower"
 			).getLore();
 		} else {
 			return new PitLoreBuilder(
-					"&7Mobs actively try to avoid you. When worn, receive &b-" + getManaReduction(enchantLvl) + "% mana"
+					"&7Mobs actively try to avoid you. When worn, regain mana &b" + getManaReduction(enchantLvl) + "% &7slower"
 			).getLore();
 		}
 	}

@@ -23,6 +23,7 @@ import dev.kyro.pitsim.misc.Sounds;
 import org.bukkit.*;
 import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.entity.*;
@@ -240,6 +241,17 @@ public class DarkzoneManager implements Listener {
 			deadMob.kill(killEvent.getKillerPlayer());
 			return;
 		}
+	}
+
+	@EventHandler(priority = EventPriority.HIGHEST)
+	public static void onEntityDamage(EntityDamageEvent event) {
+		if(!(event.getEntity() instanceof LivingEntity)) return;
+		LivingEntity entity = (LivingEntity) event.getEntity();
+		PitMob pitMob = DarkzoneManager.getPitMob(entity);
+		if(pitMob == null) return;
+		if(event.getFinalDamage() < entity.getHealth()) return;
+		event.setCancelled(true);
+		pitMob.kill(null);
 	}
 
 	public static void createSoulExplosion(Player killer, Location location, int souls, boolean largeExplosion) {

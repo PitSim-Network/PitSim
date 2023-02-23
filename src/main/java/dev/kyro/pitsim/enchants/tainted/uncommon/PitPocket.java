@@ -18,7 +18,7 @@ public class PitPocket extends PitEnchant {
 
 	public PitPocket() {
 		super("PitPocket", false, ApplyType.SCYTHES,
-				"pitpocket");
+				"pitpocket", "pickpocket");
 		isUncommonEnchant = true;
 		isTainted = true;
 		INSTANCE = this;
@@ -33,7 +33,7 @@ public class PitPocket extends PitEnchant {
 		int enchantLvl = attackEvent.getAttackerEnchantLevel(this);
 		if(enchantLvl == 0) return;
 
-		int soulsToSteal = Math.max(attackEvent.getDefenderPitPlayer().taintedSouls - getMaxSteal(enchantLvl), 0);
+		int soulsToSteal = Math.min(getMaxSteal(enchantLvl), attackEvent.getDefenderPitPlayer().taintedSouls);
 		if(soulsToSteal == 0) return;
 
 		Cooldown cooldown = getCooldown(attackEvent.getAttackerPlayer(), getCooldownSeconds(enchantLvl) * 20);
@@ -47,7 +47,7 @@ public class PitPocket extends PitEnchant {
 		Sounds.PITPOCKET.play(attackEvent.getDefenderPlayer());
 		AOutput.send(attackEvent.getAttackerPlayer(), "&6&lHEIST!&7 You stole &f" + soulsToSteal + " soul" +
 				(soulsToSteal == 1 ? "" : "s") + " &7from " + Misc.getDisplayName(attackEvent.getDefenderPlayer()));
-		AOutput.send(attackEvent.getAttackerPlayer(), "&6&lTHIEF!&7 " + Misc.getDisplayName(attackEvent.getAttackerPlayer()) +
+		AOutput.send(attackEvent.getDefenderPlayer(), "&6&lTHIEF!&7 " + Misc.getDisplayName(attackEvent.getAttackerPlayer()) +
 				" &7stole &f" + soulsToSteal + " soul" + (soulsToSteal == 1 ? "" : "s") + " from you");
 	}
 
