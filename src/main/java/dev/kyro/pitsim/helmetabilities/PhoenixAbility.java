@@ -6,13 +6,12 @@ import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.controllers.NonManager;
 import dev.kyro.pitsim.controllers.SpawnManager;
-import dev.kyro.pitsim.controllers.objects.HelmetManager;
 import dev.kyro.pitsim.controllers.objects.HelmetAbility;
+import dev.kyro.pitsim.controllers.objects.HelmetManager;
 import dev.kyro.pitsim.controllers.objects.Non;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.events.HealEvent;
 import dev.kyro.pitsim.events.KillEvent;
-import dev.kyro.pitsim.events.OofEvent;
 import dev.kyro.pitsim.megastreaks.RNGesus;
 import dev.kyro.pitsim.megastreaks.Uberstreak;
 import dev.kyro.pitsim.misc.Misc;
@@ -54,11 +53,6 @@ public class PhoenixAbility extends HelmetAbility {
 
 	@EventHandler
 	public static void onLogout(PlayerQuitEvent event) {
-		alreadyActivatedList.remove(event.getPlayer().getUniqueId());
-	}
-
-	@EventHandler
-	public static void onOof(OofEvent event) {
 		alreadyActivatedList.remove(event.getPlayer().getUniqueId());
 	}
 

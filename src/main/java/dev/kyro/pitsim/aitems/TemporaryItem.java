@@ -22,14 +22,6 @@ public interface TemporaryItem {
 		throw new RuntimeException();
 	}
 
-	default ItemStack takeLives(ItemStack itemStack, int lives) {
-		return null;
-	}
-
-	default ItemStack breakItem(ItemStack itemStack) {
-		return null;
-	}
-
 	enum TemporaryType {
 		LOST_ON_DEATH,
 		LOSES_LIVES_ON_DEATH

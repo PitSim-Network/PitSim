@@ -305,7 +305,6 @@ public class PlayerManager implements Listener {
 
 	@EventHandler
 	public void onKillForRank(KillEvent killEvent) {
-
 		if(killEvent.isDeadPlayer()) {
 			XmasMap.removeFromRadio(killEvent.getDeadPlayer());
 			new BukkitRunnable() {
@@ -316,26 +315,28 @@ public class PlayerManager implements Listener {
 			}.runTaskLater(PitSim.INSTANCE, 20);
 		}
 
-		double multiplier = 1;
-		if(killEvent.getKiller().hasPermission("group.nitro")) {
-			multiplier += 0.1;
-		}
+		if(killEvent.isKillerPlayer()) {
+			double multiplier = 1;
+			if(killEvent.getKiller().hasPermission("group.nitro")) {
+				multiplier += 0.1;
+			}
 
-		if(killEvent.getKiller().hasPermission("group.eternal")) {
-			multiplier += 0.30;
-		} else if(killEvent.getKiller().hasPermission("group.unthinkable")) {
-			multiplier += 0.25;
-		} else if(killEvent.getKiller().hasPermission("group.miraculous")) {
-			multiplier += 0.20;
-		} else if(killEvent.getKiller().hasPermission("group.extraordinary")) {
-			multiplier += 0.15;
-		} else if(killEvent.getKiller().hasPermission("group.overpowered")) {
-			multiplier += 0.1;
-		} else if(killEvent.getKiller().hasPermission("group.legendary")) {
-			multiplier += 0.05;
+			if(killEvent.getKiller().hasPermission("group.eternal")) {
+				multiplier += 0.30;
+			} else if(killEvent.getKiller().hasPermission("group.unthinkable")) {
+				multiplier += 0.25;
+			} else if(killEvent.getKiller().hasPermission("group.miraculous")) {
+				multiplier += 0.20;
+			} else if(killEvent.getKiller().hasPermission("group.extraordinary")) {
+				multiplier += 0.15;
+			} else if(killEvent.getKiller().hasPermission("group.overpowered")) {
+				multiplier += 0.1;
+			} else if(killEvent.getKiller().hasPermission("group.legendary")) {
+				multiplier += 0.05;
+			}
+			killEvent.xpMultipliers.add(multiplier);
+			killEvent.goldMultipliers.add(multiplier);
 		}
-		killEvent.xpMultipliers.add(multiplier);
-		killEvent.goldMultipliers.add(multiplier);
 	}
 
 	@EventHandler(priority = EventPriority.HIGHEST)
@@ -797,20 +798,6 @@ public class PlayerManager implements Listener {
 		pitPlayer.megastreak.stop();
 		if(pitPlayer.megastreak instanceof RNGesus && RNGesus.isOnCooldown(player)) {
 			pitPlayer.megastreak = new NoMegastreak(pitPlayer);
-		}
-	}
-
-	@EventHandler
-	public void onOof(OofEvent event) {
-		PitPlayer pitPlayer = PitPlayer.getPitPlayer(event.getPlayer());
-		if(pitPlayer.megastreak instanceof RNGesus && RNGesus.isOnCooldown(event.getPlayer())) {
-			new BukkitRunnable() {
-				@Override
-				public void run() {
-					pitPlayer.megastreak.stop();
-					pitPlayer.megastreak = new NoMegastreak(pitPlayer);
-				}
-			}.runTaskLater(PitSim.INSTANCE, 1L);
 		}
 	}
 

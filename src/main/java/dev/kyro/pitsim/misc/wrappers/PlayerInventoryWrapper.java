@@ -12,24 +12,24 @@ import java.util.Map;
 public class PlayerInventoryWrapper {
 	public Player player;
 	public PlayerInventory inventory;
-	private final Map<PlayerInventoryLocation, ItemStack> itemMap = new LinkedHashMap<>();
+	private final Map<PlayerItemLocation, ItemStack> itemMap = new LinkedHashMap<>();
 
 	public PlayerInventoryWrapper(Player player) {
 		this.player = player;
 		this.inventory = player.getInventory();
 
-		for(int i = 0; i < inventory.getSize(); i++) itemMap.put(PlayerInventoryLocation.slot(i), inventory.getItem(i));
-		itemMap.put(PlayerInventoryLocation.helmet(), inventory.getHelmet());
-		itemMap.put(PlayerInventoryLocation.chestplate(), inventory.getChestplate());
-		itemMap.put(PlayerInventoryLocation.leggings(), inventory.getLeggings());
-		itemMap.put(PlayerInventoryLocation.boots(), inventory.getBoots());
+		for(int i = 0; i < inventory.getSize(); i++) itemMap.put(PlayerItemLocation.slot(i), inventory.getItem(i));
+		itemMap.put(PlayerItemLocation.helmet(), inventory.getHelmet());
+		itemMap.put(PlayerItemLocation.chestplate(), inventory.getChestplate());
+		itemMap.put(PlayerItemLocation.leggings(), inventory.getLeggings());
+		itemMap.put(PlayerItemLocation.boots(), inventory.getBoots());
 	}
 
-	public Map<PlayerInventoryLocation, ItemStack> getItemMap() {
+	public Map<PlayerItemLocation, ItemStack> getItemMap() {
 		return itemMap;
 	}
 
-	public ItemStack getItem(PlayerInventoryLocation location) {
+	public ItemStack getItem(PlayerItemLocation location) {
 		return itemMap.get(location);
 	}
 
@@ -37,23 +37,23 @@ public class PlayerInventoryWrapper {
 		return new ArrayList<>(itemMap.values());
 	}
 
-	public void putItem(PlayerInventoryLocation inventoryLocation, ItemStack itemStack) {
+	public void putItem(PlayerItemLocation inventoryLocation, ItemStack itemStack) {
 		itemMap.put(inventoryLocation, itemStack);
 	}
 
-	public void removeItem(PlayerInventoryLocation inventoryLocation) {
+	public void removeItem(PlayerItemLocation inventoryLocation) {
 		itemMap.remove(inventoryLocation);
 	}
 
 	public void setInventory() {
 		for(int i = 0; i < 36; i++) {
-			ItemStack itemStack = getItem(PlayerInventoryLocation.slot(i));
+			ItemStack itemStack = getItem(PlayerItemLocation.slot(i));
 			inventory.setItem(i, itemStack);
 		}
-		inventory.setHelmet(getItem(PlayerInventoryLocation.helmet()));
-		inventory.setChestplate(getItem(PlayerInventoryLocation.chestplate()));
-		inventory.setLeggings(getItem(PlayerInventoryLocation.leggings()));
-		inventory.setBoots(getItem(PlayerInventoryLocation.boots()));
+		inventory.setHelmet(getItem(PlayerItemLocation.helmet()));
+		inventory.setChestplate(getItem(PlayerItemLocation.chestplate()));
+		inventory.setLeggings(getItem(PlayerItemLocation.leggings()));
+		inventory.setBoots(getItem(PlayerItemLocation.boots()));
 		player.updateInventory();
 	}
 }

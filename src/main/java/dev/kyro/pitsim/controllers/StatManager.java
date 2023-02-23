@@ -8,7 +8,6 @@ import dev.kyro.pitsim.enchants.overworld.Regularity;
 import dev.kyro.pitsim.events.AttackEvent;
 import dev.kyro.pitsim.events.HealEvent;
 import dev.kyro.pitsim.events.KillEvent;
-import dev.kyro.pitsim.events.OofEvent;
 import dev.kyro.pitsim.megastreaks.NoMegastreak;
 import dev.kyro.pitsim.misc.Misc;
 import org.bukkit.Bukkit;
@@ -47,19 +46,6 @@ public class StatManager implements Listener {
 		if(!(event.getEntity() instanceof Player)) return;
 		PitPlayer pitPlayer = PitPlayer.getPitPlayer((Player) event.getEntity());
 		if(pitPlayer.stats != null) pitPlayer.stats.arrowShots++;
-	}
-
-	@EventHandler(priority = EventPriority.MONITOR)
-	public void onOof(OofEvent event) {
-		PitPlayer pitPlayer = PitPlayer.getPitPlayer(event.getPlayer());
-		if(pitPlayer.stats == null) return;
-
-		pitPlayer.stats.deaths++;
-		if(!(pitPlayer.megastreak instanceof NoMegastreak)) {
-			pitPlayer.stats.deaths++;
-			if(pitPlayer.getKills() > pitPlayer.stats.highestStreak)
-				pitPlayer.stats.highestStreak = pitPlayer.getKills();
-		}
 	}
 
 	@EventHandler(priority = EventPriority.MONITOR)
@@ -116,9 +102,10 @@ public class StatManager implements Listener {
 			}
 		}
 
-		if(pitDead != null && pitDead.stats != null && !(pitDead.megastreak instanceof NoMegastreak)) {
+		if(pitDead != null && pitDead.stats != null) {
 			pitDead.stats.deaths++;
-			if(pitDead.getKills() > pitDead.stats.highestStreak) pitDead.stats.highestStreak = pitDead.getKills();
+			if(!(pitDead.megastreak instanceof NoMegastreak) && pitDead.getKills() > pitDead.stats.highestStreak)
+				pitDead.stats.highestStreak = pitDead.getKills();
 		}
 	}
 }

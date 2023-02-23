@@ -7,7 +7,6 @@ import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.enums.KillType;
 import dev.kyro.pitsim.events.AttackEvent;
 import dev.kyro.pitsim.events.KillEvent;
-import dev.kyro.pitsim.events.OofEvent;
 import dev.kyro.pitsim.events.PlayerSpawnCommandEvent;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.LivingEntity;
@@ -82,7 +81,7 @@ public class CombatManager implements Listener {
 					EntityDamageByEntityEvent newEvent = new EntityDamageByEntityEvent(onlinePlayer, player, EntityDamageEvent.DamageCause.CUSTOM, 0);
 					AttackEvent attackEvent = new AttackEvent(newEvent, attackerEnchant, defenderEnchant, false);
 
-					DamageManager.kill(attackEvent, onlinePlayer, player, KillType.DEFAULT);
+					DamageManager.kill(attackEvent, onlinePlayer, player, KillType.KILL);
 					return;
 				}
 			}
@@ -94,15 +93,9 @@ public class CombatManager implements Listener {
 	}
 
 	@EventHandler
-	public static void onDeath(KillEvent event) {
+	public static void onKill(KillEvent event) {
 		taggedPlayers.remove(event.getDead().getUniqueId());
 		if(event.isDeadPlayer()) event.getDeadPitPlayer().lastHitUUID = null;
-	}
-
-	@EventHandler
-	public static void onOof(OofEvent event) {
-		taggedPlayers.remove(event.getPlayer().getUniqueId());
-		PitPlayer.getPitPlayer(event.getPlayer()).lastHitUUID = null;
 	}
 
 	@EventHandler

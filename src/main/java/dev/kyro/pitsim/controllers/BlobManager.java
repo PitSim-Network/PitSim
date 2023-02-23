@@ -127,10 +127,9 @@ public class BlobManager implements Listener {
 
 	@EventHandler
 	public void onKill(KillEvent killEvent) {
-		if(!blobMap.containsKey(killEvent.getKiller().getUniqueId())) return;
+		if(!killEvent.isKillerPlayer() || !blobMap.containsKey(killEvent.getKiller().getUniqueId())) return;
 		Slime slime = blobMap.get(killEvent.getKiller().getUniqueId());
 		if(slime != null) {
-
 			boolean isMaxSize = slime.getSize() >= getMaxSlimeSize();
 			if(Math.random() < 0.25 && !isMaxSize) slime.setSize(slime.getSize() + 1);
 			if(!isMaxSize) slime.setHealth(slime.getMaxHealth());

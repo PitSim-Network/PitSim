@@ -105,7 +105,7 @@ public class DamageIndicator implements Listener {
 	public void onKill(KillEvent killEvent) {
 		if(!PlayerManager.isRealPlayer(killEvent.getKillerPlayer())) return;
 		PitMob pitDead = DarkzoneManager.getPitMob(killEvent.getDead());
-		if(pitDead == null) return;
+		if(pitDead == null || !killEvent.getKillType().hasAttackerAndDefender()) return;
 		createDamageStand(killEvent.getKillerPlayer(), killEvent.getDead(), killEvent.getEvent().getFinalDamage());
 	}
 

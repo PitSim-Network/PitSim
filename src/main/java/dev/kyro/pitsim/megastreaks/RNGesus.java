@@ -345,7 +345,7 @@ public class RNGesus extends Megastreak {
 								EntityDamageByEntityEvent newEvent = new EntityDamageByEntityEvent(onlinePlayer, pitPlayer.player, EntityDamageEvent.DamageCause.CUSTOM, 0);
 								AttackEvent attackEvent = new AttackEvent(newEvent, attackerEnchant, defenderEnchant, false);
 
-								DamageManager.kill(attackEvent, onlinePlayer, pitPlayer.player, KillType.DEFAULT);
+								DamageManager.kill(attackEvent, onlinePlayer, pitPlayer.player, KillType.KILL);
 								return;
 							}
 						}

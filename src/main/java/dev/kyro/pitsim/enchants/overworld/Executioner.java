@@ -4,6 +4,7 @@ import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.controllers.objects.PitEnchant;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.enums.ApplyType;
+import dev.kyro.pitsim.enums.KillModifier;
 import dev.kyro.pitsim.events.AttackEvent;
 import dev.kyro.pitsim.events.KillEvent;
 import dev.kyro.pitsim.misc.Misc;
@@ -27,8 +28,7 @@ public class Executioner extends PitEnchant {
 
 	@EventHandler
 	public void onKill(KillEvent killEvent) {
-		if(!killEvent.isKillerPlayer()) return;
-		if(!killEvent.isExeDeath()) return;
+		if(!killEvent.isKillerPlayer() || !killEvent.hasKillModifier(KillModifier.EXECUTION)) return;
 
 		Sounds.EXE.play(killEvent.getKiller());
 		killEvent.getDead().getWorld().playEffect(killEvent.getDead().getLocation().add(0, 1, 0), Effect.STEP_SOUND, 152);
