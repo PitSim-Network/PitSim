@@ -150,7 +150,7 @@ public class MegastreakPanel extends AGUIPanel {
 					} else if(!prestige && !has && !uberCd && !level) {
 						openPanel(perkGUI.getHomePanel());
 						Sounds.SUCCESS.play(player);
-						if(ChatTriggerManager.isSubscribed(player)) ChatTriggerManager.sendPerksInfo(pitPlayer);
+						ChatTriggerManager.sendPerksInfo(pitPlayer);
 					}
 					if(prestige) {
 						AOutput.error(player, "&cYou aren't high enough prestige to use this!");

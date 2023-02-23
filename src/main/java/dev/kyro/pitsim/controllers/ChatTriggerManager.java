@@ -131,6 +131,7 @@ public class ChatTriggerManager implements Listener {
 	}
 
 	public static void sendData(Player player, JSONObject data) {
+		if(!isSubscribed(player)) return;
 		player.sendMessage(PREFIX + data.toString());
 	}
 }
