@@ -38,8 +38,8 @@ public class RuptureAbility extends RoutinePitBossAbility {
 		Location centerLocation = pitBoss.boss.getLocation().clone().subtract(0, 1, 0);
 		List<Block> applicableBlocks = new ArrayList<>();
 
-		for(int x = -2 * radius; x < radius + 3; x++) {
-			for(int z = -2 * radius; z < radius + 3; z++) {
+		for(int x = -1 * radius; x < radius + 1; x++) {
+			for(int z = -1 * radius; z < radius + 1; z++) {
 				Location blockLocation = centerLocation.clone().add(x, 0, z);
 
 				if(blockLocation.distance(centerLocation) > radius) continue;
@@ -70,10 +70,13 @@ public class RuptureAbility extends RoutinePitBossAbility {
 
 			usedBlocks.add(randomBlock);
 
+			Player viewer = getClosestViewer(randomBlock.getLocation());
+			if(viewer == null) continue;
+
 			new BukkitRunnable() {
 				@Override
 				public void run() {
-					new GravitizedBlock(getClosestViewer(randomBlock.getLocation()), randomBlock);
+					new GravitizedBlock(viewer, randomBlock);
 				}
 			}.runTaskLater(PitSim.INSTANCE, i * 2L);
 		}
@@ -89,7 +92,7 @@ public class RuptureAbility extends RoutinePitBossAbility {
 		public GravitizedBlock(Player viewer, Block block) {
 			this.viewer = viewer;
 			this.block = block;
-			this.initialLocation = block.getLocation();
+			this.initialLocation = block.getLocation().clone();
 
 			spawnBlock();
 		}
@@ -124,7 +127,6 @@ public class RuptureAbility extends RoutinePitBossAbility {
 				@Override
 				public void run() {
 					initialLocation.add(0, 5.5, 0);
-					//TODO: FIX BELOW
 					Vector vector = viewer.getLocation().toVector().subtract(initialLocation.toVector());
 					vectorLength = vector.length();
 					vector.multiply(0.25);
@@ -165,7 +167,7 @@ public class RuptureAbility extends RoutinePitBossAbility {
 	public Player getClosestViewer(Location location) {
 		Player nearest = null;
 		double distance = 0;
-		for(Entity nearbyEntity : location.getWorld().getNearbyEntities(location, 20, 20, 20)) {
+		for(Entity nearbyEntity : location.getWorld().getNearbyEntities(location, 50, 50, 50)) {
 			if(!(nearbyEntity instanceof Player)) continue;
 			if(pitBoss.boss == nearbyEntity) continue;
 

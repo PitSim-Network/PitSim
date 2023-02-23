@@ -44,8 +44,8 @@ public class PoundAbility extends RoutinePitBossAbility {
 
 		List<Block> applicableBlocks = new ArrayList<>();
 
-		for(int x = -2 * radius; x < radius + 3; x++) {
-			for(int z = -2 * radius; z < radius + 3; z++) {
+		for(int x = -1 * radius; x < radius + 1; x++) {
+			for(int z = -1 * radius; z < radius + 1; z++) {
 				Location blockLocation = centerLocation.clone().add(x, 0, z);
 
 				if(blockLocation.distance(centerLocation) > radius) continue;

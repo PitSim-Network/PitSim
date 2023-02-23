@@ -5,9 +5,7 @@ import dev.kyro.pitsim.adarkzone.RoutinePitBossAbility;
 import dev.kyro.pitsim.cosmetics.ParticleOffset;
 import dev.kyro.pitsim.cosmetics.PitParticle;
 import dev.kyro.pitsim.cosmetics.particles.BlockCrackParticle;
-import dev.kyro.pitsim.cosmetics.particles.ExplosionLargeParticle;
-import dev.kyro.pitsim.cosmetics.particles.SmokeLargeParticle;
-import dev.kyro.pitsim.events.AttackEvent;
+import dev.kyro.pitsim.cosmetics.particles.ExplosionHugeParticle;
 import dev.kyro.pitsim.misc.Sounds;
 import dev.kyro.pitsim.misc.effects.FallingBlock;
 import dev.kyro.pitsim.misc.effects.PacketBlock;
@@ -19,7 +17,6 @@ import org.bukkit.block.Block;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
-import org.bukkit.event.EventHandler;
 import org.bukkit.material.MaterialData;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
@@ -32,13 +29,15 @@ import java.util.Random;
 public class SlamAbility extends RoutinePitBossAbility {
 	public int radius;
 	public int blockCount;
+	public double damage;
 
 	PitParticle dirt = new BlockCrackParticle(new MaterialData(Material.DIRT));
 
-	public SlamAbility(double routineWeight, int radius, int blockCount) {
+	public SlamAbility(double routineWeight, int radius, int blockCount, double damage) {
 		super(routineWeight);
 		this.radius = radius;
 		this.blockCount = blockCount;
+		this.damage = damage;
 	}
 
 	@Override
@@ -47,8 +46,8 @@ public class SlamAbility extends RoutinePitBossAbility {
 
 		List<Block> applicableBlocks = new ArrayList<>();
 
-		for(int x = -2 * radius; x < radius + 3; x++) {
-			for(int z = -2 * radius; z < radius + 3; z++) {
+		for(int x = -1 * radius; x < radius + 1; x++) {
+			for(int z = -1 * radius; z < radius + 1; z++) {
 				Location blockLocation = centerLocation.clone().add(x, 0, z);
 
 				if(blockLocation.distance(centerLocation) > radius) continue;
@@ -83,14 +82,18 @@ public class SlamAbility extends RoutinePitBossAbility {
 		for(int i = 0; i < usedLocations.size(); i++) {
 			Block block = usedLocations.get(i).getBlock();
 			int delay = i * 2;
+			int baseTime = blockCount > 20 ? 40 + blockCount : 40;
 
 			new BukkitRunnable() {
 				@Override
 				public void run() {
 					GravitizedBlock gravitizedBlock = new GravitizedBlock(block);
-					gravitizedBlock.slamAfter(40 - delay);
+					gravitizedBlock.slamAfter(baseTime - delay);
+
 				}
 			}.runTaskLater(PitSim.INSTANCE, delay);
+
+
 		}
 	}
 
@@ -110,7 +113,7 @@ public class SlamAbility extends RoutinePitBossAbility {
 			packetBlock.setViewers(getViewers());
 			packetBlock.spawnBlock();
 
-			initialLocation.add(0, 1, 0);
+			initialLocation.add(0.5, 1, 0.5);
 			spawnBlock();
 		}
 
@@ -123,6 +126,7 @@ public class SlamAbility extends RoutinePitBossAbility {
 				@Override
 				public void run() {
 					fallingBlock.setVelocity(new Vector(0, 0.7, 0));
+					Sounds.SLAM.play(initialLocation, 20);
 
 					for(Player viewer : getViewers()) {
 
@@ -166,10 +170,27 @@ public class SlamAbility extends RoutinePitBossAbility {
 
 				for(Player viewer : getViewers()) {
 					EntityPlayer entityPlayer = ((CraftPlayer) viewer).getHandle();
-					new ExplosionLargeParticle().display(entityPlayer, location.add(0, 0.5, 0));
+					new ExplosionHugeParticle().display(entityPlayer, location.add(0, 0.5, 0));
 					for(int j = 0; j < 25; j++) {
 						dirt.display(entityPlayer, initialLocation, new ParticleOffset(0, 0, 0, 1, 1, 1));
 					}
+
+					Sounds.EXPLOSIVE_2.play(initialLocation, 20);
+
+					Location viewerLocation = viewer.getLocation();
+					double distance = viewerLocation.distance(initialLocation);
+
+					if(distance > 5) continue;
+
+					double multiplier = Math.pow(5 - distance, 1.5);
+					Vector playerVector = viewerLocation.toVector().subtract(initialLocation.toVector());
+					playerVector.add(new Vector(0, 0.1, 0));
+					playerVector.normalize();
+					playerVector.multiply(0.3);
+					playerVector.multiply(multiplier);
+
+					viewer.setVelocity(playerVector);
+					viewer.damage(damage, pitBoss.boss);
 				}
 				break;
 			}
