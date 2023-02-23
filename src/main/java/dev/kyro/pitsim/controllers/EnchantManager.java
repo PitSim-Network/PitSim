@@ -10,6 +10,7 @@ import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.controllers.objects.PitEnchant;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.controllers.objects.PluginMessage;
+import dev.kyro.pitsim.enchants.ComboVenom;
 import dev.kyro.pitsim.enchants.SelfCheckout;
 import dev.kyro.pitsim.enums.ApplyType;
 import dev.kyro.pitsim.enums.MysticType;
@@ -103,11 +104,12 @@ public class EnchantManager implements Listener {
 	}
 
 	public static ItemStack addEnchant(ItemStack itemStack, PitEnchant applyEnchant, int applyLvl, boolean safe, boolean jewel, int insert) throws Exception {
+		String enchantRefName = applyEnchant.refNames.get(0);
 		NBTItem nbtItem = new NBTItem(itemStack);
 
 		NBTList<String> enchantOrder = nbtItem.getStringList(NBTTag.PIT_ENCHANT_ORDER.getRef());
 		NBTCompound itemEnchants = nbtItem.getCompound(NBTTag.PIT_ENCHANTS.getRef());
-		Integer currentLvl = itemEnchants.getInteger(applyEnchant.refNames.get(0));
+		Integer currentLvl = itemEnchants.getInteger(enchantRefName);
 		Integer enchantNum = nbtItem.getInteger(NBTTag.ITEM_ENCHANTS.getRef());
 		Integer tokenNum = nbtItem.getInteger(NBTTag.ITEM_TOKENS.getRef());
 		Integer rTokenNum = nbtItem.getInteger(NBTTag.ITEM_RTOKENS.getRef());
@@ -131,7 +133,7 @@ public class EnchantManager implements Listener {
 				throw new MaxEnchantsExceededException();
 			}
 		}
-		if(nbtItem.getString(NBTTag.ITEM_JEWEL_ENCHANT.getRef()).equals(applyEnchant.refNames.get(0))) jewel = true;
+		if(nbtItem.getString(NBTTag.ITEM_JEWEL_ENCHANT.getRef()).equals(enchantRefName)) jewel = true;
 		if(jewel && (safe || applyLvl == 0)) {
 			throw new IsJewelException();
 		}
@@ -150,29 +152,31 @@ public class EnchantManager implements Listener {
 		if(currentLvl == 0) {
 			enchantNum++;
 			if(insert == -1) {
-				enchantOrder.add(applyEnchant.refNames.get(0));
+				enchantOrder.add(enchantRefName);
 			} else {
 				List<String> tempList = new ArrayList<>(enchantOrder);
 				enchantOrder.clear();
 				for(int i = 0; i <= tempList.size(); i++) {
-					if(i == insert) enchantOrder.add(applyEnchant.refNames.get(0));
+					if(i == insert) enchantOrder.add(enchantRefName);
 					if(i < tempList.size()) enchantOrder.add(tempList.get(i));
 				}
 			}
 		}
 		if(applyLvl == 0) {
 			enchantNum--;
-			enchantOrder.remove(applyEnchant.refNames.get(0));
+			enchantOrder.remove(enchantRefName);
+			itemEnchants.removeKey(enchantRefName);
+		} else {
+			itemEnchants.setInteger(enchantRefName, applyLvl);
 		}
-		itemEnchants.setInteger(applyEnchant.refNames.get(0), applyLvl);
 
 		tokenNum += applyLvl - currentLvl;
 		if(applyEnchant.isRare && !jewel) rTokenNum += applyLvl - currentLvl;
-		if(jewel) nbtItem.setString(NBTTag.ITEM_JEWEL_ENCHANT.getRef(), applyEnchant.refNames.get(0));
+		if(jewel) nbtItem.setString(NBTTag.ITEM_JEWEL_ENCHANT.getRef(), enchantRefName);
 		nbtItem.setInteger(NBTTag.ITEM_ENCHANTS.getRef(), enchantNum);
 		nbtItem.setInteger(NBTTag.ITEM_TOKENS.getRef(), tokenNum);
 		nbtItem.setInteger(NBTTag.ITEM_RTOKENS.getRef(), rTokenNum);
-		if(applyEnchant.refNames.get(0).equals("venom")) nbtItem.setBoolean(NBTTag.IS_VENOM.getRef(), true);
+		if(applyEnchant == ComboVenom.INSTANCE) nbtItem.setBoolean(NBTTag.IS_VENOM.getRef(), true);
 
 		AItemStackBuilder itemStackBuilder = new AItemStackBuilder(nbtItem.getItem());
 		MysticType mysticType = MysticType.getMysticType(itemStack);
