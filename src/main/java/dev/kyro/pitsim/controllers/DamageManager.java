@@ -535,8 +535,8 @@ public class DamageManager implements Listener {
 						if(assistPercent >= 1) {
 							Map<PitEnchant, Integer> attackerEnchant = EnchantManager.getEnchantsOnPlayer(assistPlayer);
 							Map<PitEnchant, Integer> defenderEnchant = new HashMap<>();
-							EntityDamageByEntityEvent ev = new EntityDamageByEntityEvent(assistPlayer, dead, EntityDamageEvent.DamageCause.CUSTOM, 0);
-							AttackEvent aEvent = new AttackEvent(ev, attackerEnchant, defenderEnchant, false);
+							EntityDamageByEntityEvent newEvent = new EntityDamageByEntityEvent(assistPlayer, dead, EntityDamageEvent.DamageCause.CUSTOM, 0);
+							AttackEvent aEvent = new AttackEvent(newEvent, attackerEnchant, defenderEnchant, false);
 
 							DamageManager.fakeKill(aEvent, assistPlayer, dead);
 							continue;

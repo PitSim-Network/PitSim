@@ -184,8 +184,8 @@ public class RNGesus extends Megastreak {
 					public void run() {
 						Map<PitEnchant, Integer> attackerEnchant = EnchantManager.getEnchantsOnPlayer(attackEvent.getAttacker());
 						Map<PitEnchant, Integer> defenderEnchant = new HashMap<>();
-						EntityDamageByEntityEvent ev = new EntityDamageByEntityEvent(attackEvent.getAttacker(), target, EntityDamageEvent.DamageCause.CUSTOM, 0);
-						AttackEvent attackEvent = new AttackEvent(ev, attackerEnchant, defenderEnchant, false);
+						EntityDamageByEntityEvent newEvent = new EntityDamageByEntityEvent(attackEvent.getAttacker(), target, EntityDamageEvent.DamageCause.CUSTOM, 0);
+						AttackEvent attackEvent = new AttackEvent(newEvent, attackerEnchant, defenderEnchant, false);
 
 						double chance = damage / target.getMaxHealth();
 						if(Math.random() < chance)
@@ -342,8 +342,8 @@ public class RNGesus extends Megastreak {
 							if(onlinePlayer.getUniqueId().equals(attackerUUID)) {
 								Map<PitEnchant, Integer> attackerEnchant = new HashMap<>();
 								Map<PitEnchant, Integer> defenderEnchant = new HashMap<>();
-								EntityDamageByEntityEvent ev = new EntityDamageByEntityEvent(onlinePlayer, pitPlayer.player, EntityDamageEvent.DamageCause.CUSTOM, 0);
-								AttackEvent attackEvent = new AttackEvent(ev, attackerEnchant, defenderEnchant, false);
+								EntityDamageByEntityEvent newEvent = new EntityDamageByEntityEvent(onlinePlayer, pitPlayer.player, EntityDamageEvent.DamageCause.CUSTOM, 0);
+								AttackEvent attackEvent = new AttackEvent(newEvent, attackerEnchant, defenderEnchant, false);
 
 								DamageManager.kill(attackEvent, onlinePlayer, pitPlayer.player, KillType.DEFAULT);
 								return;

@@ -658,8 +658,8 @@ public class PitPlayer {
 				DamageManager.death(player);
 				AOutput.send(player, "&c&lDEATH!");
 			} else {
-				EntityDamageByEntityEvent ev = new EntityDamageByEntityEvent(damager, player, EntityDamageEvent.DamageCause.CUSTOM, damage);
-				AttackEvent attackEvent = new AttackEvent(ev, EnchantManager.getEnchantsOnPlayer(damager), EnchantManager.getEnchantsOnPlayer(player), false);
+				EntityDamageByEntityEvent newEvent = new EntityDamageByEntityEvent(damager, player, EntityDamageEvent.DamageCause.CUSTOM, damage);
+				AttackEvent attackEvent = new AttackEvent(newEvent, EnchantManager.getEnchantsOnPlayer(damager), EnchantManager.getEnchantsOnPlayer(player), false);
 
 				DamageManager.kill(attackEvent, damager, player, KillType.DEFAULT);
 			}

@@ -79,8 +79,8 @@ public class CombatManager implements Listener {
 
 					Map<PitEnchant, Integer> attackerEnchant = new HashMap<>();
 					Map<PitEnchant, Integer> defenderEnchant = new HashMap<>();
-					EntityDamageByEntityEvent ev = new EntityDamageByEntityEvent(onlinePlayer, player, EntityDamageEvent.DamageCause.CUSTOM, 0);
-					AttackEvent attackEvent = new AttackEvent(ev, attackerEnchant, defenderEnchant, false);
+					EntityDamageByEntityEvent newEvent = new EntityDamageByEntityEvent(onlinePlayer, player, EntityDamageEvent.DamageCause.CUSTOM, 0);
+					AttackEvent attackEvent = new AttackEvent(newEvent, attackerEnchant, defenderEnchant, false);
 
 					DamageManager.kill(attackEvent, onlinePlayer, player, KillType.DEFAULT);
 					return;
