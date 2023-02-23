@@ -4,46 +4,41 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class PlayerInventoryLocation {
-	private static final List<PlayerInventoryLocation> allInventoryLocation = new ArrayList<>();
+	private static final List<PlayerInventoryLocation> slotLocations = new ArrayList<>();
+	private static final PlayerInventoryLocation helmet = new PlayerInventoryLocation();
+	private static final PlayerInventoryLocation chestplate = new PlayerInventoryLocation();
+	private static final PlayerInventoryLocation leggings = new PlayerInventoryLocation();
+	private static final PlayerInventoryLocation boots = new PlayerInventoryLocation();
 
 	public int slot;
-	public boolean isHelmet;
-	public boolean isChestplate;
-	public boolean isLeggings;
-	public boolean isBoots;
 
 	static {
-		for(int i = 0; i < 36; i++) allInventoryLocation.add(new PlayerInventoryLocation(i));
-
+		for(int i = 0; i < 36; i++) slotLocations.add(new PlayerInventoryLocation(i));
 	}
 
 	private PlayerInventoryLocation() {}
 
-	public PlayerInventoryLocation(int slot) {
+	private PlayerInventoryLocation(int slot) {
 		this.slot = slot;
 	}
 
-	public static PlayerInventoryLocation asHelmet() {
-		PlayerInventoryLocation location = new PlayerInventoryLocation();
-		location.isHelmet = true;
-		return location;
+	public static PlayerInventoryLocation slot(int slot) {
+		return slotLocations.get(slot);
 	}
 
-	public static PlayerInventoryLocation asChestplate() {
-		PlayerInventoryLocation location = new PlayerInventoryLocation();
-		location.isChestplate = true;
-		return location;
+	public static PlayerInventoryLocation helmet() {
+		return helmet;
 	}
 
-	public static PlayerInventoryLocation asLeggings() {
-		PlayerInventoryLocation location = new PlayerInventoryLocation();
-		location.isLeggings = true;
-		return location;
+	public static PlayerInventoryLocation chestplate() {
+		return chestplate;
 	}
 
-	public static PlayerInventoryLocation asBoots() {
-		PlayerInventoryLocation location = new PlayerInventoryLocation();
-		location.isBoots = true;
-		return location;
+	public static PlayerInventoryLocation leggings() {
+		return leggings;
+	}
+
+	public static PlayerInventoryLocation boots() {
+		return boots;
 	}
 }

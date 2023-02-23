@@ -32,6 +32,8 @@ import dev.kyro.pitsim.megastreaks.RNGesus;
 import dev.kyro.pitsim.misc.ArmorReduction;
 import dev.kyro.pitsim.misc.Misc;
 import dev.kyro.pitsim.misc.Sounds;
+import dev.kyro.pitsim.misc.wrappers.PlayerInventoryLocation;
+import dev.kyro.pitsim.misc.wrappers.PlayerInventoryWrapper;
 import dev.kyro.pitsim.upgrades.BreadDealer;
 import dev.kyro.pitsim.upgrades.DivineIntervention;
 import dev.kyro.pitsim.upgrades.LifeInsurance;
@@ -613,13 +615,12 @@ public class DamageManager implements Listener {
 
 			int livesLost = 0;
 
-			List<Integer> slots =
-			for(int i = 0; i < ; i++) {
-				ItemStack itemStack = deadPlayer.getInventory().getItem(i);
+			PlayerInventoryWrapper inventoryWrapper = new PlayerInventoryWrapper(deadPlayer);
+			for(Map.Entry<PlayerInventoryLocation, ItemStack> entry : inventoryWrapper.getItemMap().entrySet()) {
+				ItemStack itemStack = entry.getValue();
 				PitItem pitItem = ItemFactory.getItem(itemStack);
 				if(!(pitItem instanceof TemporaryItem)) continue;
 				TemporaryItem temporaryItem = (TemporaryItem) pitItem;
-				PlayerInventory inventory;
 			}
 
 			for(int i = 0; i < deadPlayer.getInventory().getSize(); i++) {
