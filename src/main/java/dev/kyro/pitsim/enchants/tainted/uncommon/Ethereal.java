@@ -1,4 +1,4 @@
-package dev.kyro.pitsim.enchants.tainted.znotcodeduncommon;
+package dev.kyro.pitsim.enchants.tainted.uncommon;
 
 import dev.kyro.pitsim.controllers.EnchantManager;
 import dev.kyro.pitsim.controllers.objects.PitEnchant;

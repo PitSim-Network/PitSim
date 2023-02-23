@@ -1,4 +1,4 @@
-package dev.kyro.pitsim.enchants.tainted.abilities;
+package dev.kyro.pitsim.enchants.tainted.effects;
 
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.controllers.EnchantManager;

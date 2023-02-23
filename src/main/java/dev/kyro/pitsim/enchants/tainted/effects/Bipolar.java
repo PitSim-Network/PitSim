@@ -1,4 +1,4 @@
-package dev.kyro.pitsim.enchants.tainted.abilities;
+package dev.kyro.pitsim.enchants.tainted.effects;
 
 import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.arcticapi.misc.AUtil;

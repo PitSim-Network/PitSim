@@ -1,4 +1,4 @@
-package dev.kyro.pitsim.enchants.tainted.znotcodedrare;
+package dev.kyro.pitsim.enchants.tainted.effects;
 
 import dev.kyro.pitsim.adarkzone.DarkzoneManager;
 import dev.kyro.pitsim.adarkzone.PitMob;

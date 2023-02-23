@@ -2,13 +2,14 @@ package dev.kyro.pitsim.adarkzone.notdarkzone;
 
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
+import dev.kyro.pitsim.enchants.tainted.uncommon.Mending;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 import org.bukkit.scheduler.BukkitRunnable;
 
 public class ShieldManager implements Listener {
-	public static final double ACTIVE_REGEN_AMOUNT = 0.02;
+	public static final double ACTIVE_REGEN_AMOUNT = 0.05;
 
 	static {
 		new BukkitRunnable() {
@@ -18,7 +19,9 @@ public class ShieldManager implements Listener {
 				for(Player onlinePlayer : Bukkit.getOnlinePlayers()) {
 					PitPlayer pitPlayer = PitPlayer.getPitPlayer(onlinePlayer);
 					if(pitPlayer.shield.isActive()) {
-						pitPlayer.shield.addShield(ACTIVE_REGEN_AMOUNT);
+						double activeRegenAmount = ACTIVE_REGEN_AMOUNT;
+						activeRegenAmount *= Mending.getIncreaseMultiplier(pitPlayer.player);
+						pitPlayer.shield.addShield(activeRegenAmount);
 					} else {
 						pitPlayer.shield.regenerateTick();
 					}
