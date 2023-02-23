@@ -10,6 +10,7 @@ import dev.kyro.pitsim.cosmetics.particles.SmokeLargeParticle;
 import dev.kyro.pitsim.events.AttackEvent;
 import dev.kyro.pitsim.misc.Sounds;
 import dev.kyro.pitsim.misc.effects.FallingBlock;
+import dev.kyro.pitsim.misc.effects.PacketBlock;
 import net.minecraft.server.v1_8_R3.EntityPlayer;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -31,8 +32,8 @@ import java.util.Random;
 public class SlamAbility extends RoutinePitBossAbility {
 	public int radius;
 	public int blockCount;
-	public boolean isActive = false;
-	List<Player> effectedPlayers = new ArrayList<>();
+
+	PitParticle dirt = new BlockCrackParticle(new MaterialData(Material.DIRT));
 
 	public SlamAbility(double routineWeight, int radius, int blockCount) {
 		super(routineWeight);
@@ -42,13 +43,12 @@ public class SlamAbility extends RoutinePitBossAbility {
 
 	@Override
 	public void onRoutineExecute() {
-		isActive = true;
 		Location centerLocation = pitBoss.boss.getLocation().clone().subtract(0, 1, 0);
 
 		List<Block> applicableBlocks = new ArrayList<>();
 
-		for(int x = -5; x < 6; x++) {
-			for(int z = -5; z < 6; z++) {
+		for(int x = -2 * radius; x < radius + 3; x++) {
+			for(int z = -2 * radius; z < radius + 3; z++) {
 				Location blockLocation = centerLocation.clone().add(x, 0, z);
 
 				if(blockLocation.distance(centerLocation) > radius) continue;
@@ -98,12 +98,19 @@ public class SlamAbility extends RoutinePitBossAbility {
 		public Block block;
 		public Location initialLocation;
 		public FallingBlock fallingBlock;
+		public PacketBlock packetBlock;
 		
 		public BukkitTask runnable;
 
 		public GravitizedBlock(Block block) {
 			this.block = block;
-			this.initialLocation = block.getLocation().add(0, 1, 0);
+			this.initialLocation = block.getLocation();
+
+			packetBlock = new PacketBlock(Material.BARRIER, (byte) 0, initialLocation);
+			packetBlock.setViewers(getViewers());
+			packetBlock.spawnBlock();
+
+			initialLocation.add(0, 1, 0);
 			spawnBlock();
 		}
 
@@ -111,8 +118,6 @@ public class SlamAbility extends RoutinePitBossAbility {
 			fallingBlock = new FallingBlock(block.getType(), block.getData(), initialLocation);
 			fallingBlock.setViewers(getViewers());
 			fallingBlock.spawnBlock();
-
-			PitParticle dirt = new BlockCrackParticle(new MaterialData(Material.DIRT));
 
 			new BukkitRunnable() {
 				@Override
@@ -150,19 +155,23 @@ public class SlamAbility extends RoutinePitBossAbility {
 
 		public void slam() {
 			runnable.cancel();
-			Vector vector = new Vector(0, -2, 0);
+			Vector vector = new Vector(0, -1.5, 0);
 			fallingBlock.setVelocity(vector);
 			fallingBlock.removeAfter(3);
+			packetBlock.removeAfter(3);
 
 			for(int i = 0; i < 10; i++) {
 				Location location = initialLocation.clone().add(0, -i, 0);
 				if(location.getBlock().getType() == Material.AIR) continue;
 
-
 				for(Player viewer : getViewers()) {
 					EntityPlayer entityPlayer = ((CraftPlayer) viewer).getHandle();
 					new ExplosionLargeParticle().display(entityPlayer, location.add(0, 0.5, 0));
+					for(int j = 0; j < 25; j++) {
+						dirt.display(entityPlayer, initialLocation, new ParticleOffset(0, 0, 0, 1, 1, 1));
+					}
 				}
+				break;
 			}
 		}
 	}

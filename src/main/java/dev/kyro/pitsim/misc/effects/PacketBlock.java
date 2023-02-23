@@ -33,7 +33,7 @@ public class PacketBlock {
 
 	public PacketBlock(Material material, byte data, Location spawnLocation) {
 		this.material = material;
-		this.spawnLocation = spawnLocation;
+		this.spawnLocation = spawnLocation.clone();
 		this.nmsWorld = ((CraftWorld) spawnLocation.getWorld()).getHandle();
 		this.blockData = data;
 

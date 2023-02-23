@@ -19,10 +19,10 @@ public class PitZombieBoss extends PitBoss {
 
 		abilities(
 //				new TrueDamageAbility(4),
-//				new RuptureAbility(0.3, 8),
-//				new PoundAbility(0.3, 4),
+				new RuptureAbility(0.3, 25, 8, 50),
+				new PoundAbility(0.3, 5),
 //				new SnakeAbility(0.3, 15, 8,  Material.ICE, (byte) 0, Sounds.SNAKE_ICE)
-				new SlamAbility(0.3, 5, 8)
+				new SlamAbility(0.3, 25, 25)
 		);
 	}
 
