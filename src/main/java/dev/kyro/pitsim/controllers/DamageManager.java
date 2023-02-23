@@ -9,6 +9,7 @@ import dev.kyro.pitsim.adarkzone.PitMob;
 import dev.kyro.pitsim.adarkzone.SubLevel;
 import dev.kyro.pitsim.adarkzone.notdarkzone.Shield;
 import dev.kyro.pitsim.aitems.PitItem;
+import dev.kyro.pitsim.aitems.TemporaryItem;
 import dev.kyro.pitsim.aitems.misc.CorruptedFeather;
 import dev.kyro.pitsim.aitems.misc.FunkyFeather;
 import dev.kyro.pitsim.aitems.prot.ProtBoots;
@@ -50,6 +51,7 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityRegainHealthEvent;
 import org.bukkit.event.entity.EntityShootBowEvent;
+import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.potion.PotionEffect;
@@ -577,6 +579,11 @@ public class DamageManager implements Listener {
 		}
 	}
 
+	public static ItemStack reduceLives(ItemStack itemStack, int lives) {
+		if(Misc.isAirOrNull(itemStack)) return new ItemStack(Material.AIR);
+		NBTItem nbtItem = new NBTItem(itemStack);
+	}
+
 	public static void loseLives(LivingEntity dead, LivingEntity killer) {
 		if(!(dead instanceof Player)) return;
 		if(MapManager.inDarkzone(dead.getLocation())) {
@@ -606,18 +613,27 @@ public class DamageManager implements Listener {
 
 			int livesLost = 0;
 
+			List<Integer> slots =
+			for(int i = 0; i < ; i++) {
+				ItemStack itemStack = deadPlayer.getInventory().getItem(i);
+				PitItem pitItem = ItemFactory.getItem(itemStack);
+				if(!(pitItem instanceof TemporaryItem)) continue;
+				TemporaryItem temporaryItem = (TemporaryItem) pitItem;
+				PlayerInventory inventory;
+			}
+
 			for(int i = 0; i < deadPlayer.getInventory().getSize(); i++) {
 				ItemStack itemStack = deadPlayer.getInventory().getItem(i);
 				if(Misc.isAirOrNull(itemStack)) continue;
 				NBTItem nbtItem = new NBTItem(itemStack);
 				if(nbtItem.hasKey(NBTTag.MAX_LIVES.getRef())) {
 					int lives = nbtItem.getInteger(NBTTag.CURRENT_LIVES.getRef());
-					if(feather || divine || corruptedFeather) return;
+					if(feather || divine || corruptedFeather) continue;
 					MysticType mysticType = MysticType.getMysticType(itemStack);
-					if(mysticType == null) return;
+					if(mysticType == null) continue;
 
-					if(mysticType.isTainted() && !PitSim.status.isDarkzone()) return;
-					if(!mysticType.isTainted() && PitSim.status.isDarkzone()) return;
+					if(mysticType.isTainted() && !PitSim.status.isDarkzone()) continue;
+					if(!mysticType.isTainted() && PitSim.status.isDarkzone()) continue;
 
 					if(lives - 1 == 0) {
 						deadPlayer.getInventory().setItem(i, new ItemStack(Material.AIR));
