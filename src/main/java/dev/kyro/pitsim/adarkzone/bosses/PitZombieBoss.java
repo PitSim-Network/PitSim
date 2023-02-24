@@ -3,12 +3,8 @@ package dev.kyro.pitsim.adarkzone.bosses;
 import dev.kyro.pitsim.adarkzone.DropPool;
 import dev.kyro.pitsim.adarkzone.PitBoss;
 import dev.kyro.pitsim.adarkzone.SubLevelType;
-import dev.kyro.pitsim.adarkzone.abilities.PoundAbility;
-import dev.kyro.pitsim.adarkzone.abilities.RuptureAbility;
-import dev.kyro.pitsim.adarkzone.abilities.SnakeAbility;
-import dev.kyro.pitsim.misc.Sounds;
+import dev.kyro.pitsim.adarkzone.abilities.SlamAbility;
 import org.bukkit.ChatColor;
-import org.bukkit.Material;
 import org.bukkit.entity.Player;
 
 public class PitZombieBoss extends PitBoss {
@@ -18,9 +14,10 @@ public class PitZombieBoss extends PitBoss {
 
 		abilities(
 //				new TrueDamageAbility(4),
-				new RuptureAbility(0.3, 8),
-				new PoundAbility(0.3, 4),
-				new SnakeAbility(0.3, 15, 8,  Material.ICE, (byte) 0, Sounds.SNAKE_ICE)
+//				new RuptureAbility(0.3, 25, 8, 50),
+//				new PoundAbility(0.3, 5),
+//				new SnakeAbility(0.3, 15, 8,  Material.ICE, (byte) 0, Sounds.SNAKE_ICE)
+				new SlamAbility(0.3, 25, 25,  25)
 		);
 	}
 

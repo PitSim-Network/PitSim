@@ -9,6 +9,7 @@ import net.minecraft.server.v1_8_R3.EntityPlayer;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.block.Block;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
@@ -17,55 +18,87 @@ import org.bukkit.util.Vector;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 public class RuptureAbility extends RoutinePitBossAbility {
 	public double damage;
+	public int projectileCount;
+	public int radius;
 
-	public RuptureAbility(double routineWeight, double damage) {
+	public RuptureAbility(double routineWeight, int projectileCount, double damage, int radius) {
 		super(routineWeight);
 		this.damage = damage;
+		this.projectileCount = projectileCount;
+		this.radius = radius;
 	}
 
 	@Override
 	public void onRoutineExecute() {
 
-		Location firstLocation = pitBoss.boss.getLocation().add(5, 0, 0);
-		new GravitizedBlock(getClosestViewer(firstLocation), firstLocation);
+		Location centerLocation = pitBoss.boss.getLocation().clone().subtract(0, 1, 0);
+		List<Block> applicableBlocks = new ArrayList<>();
 
-		Location secondLocation = pitBoss.boss.getLocation().add(-5, 0, -1);
+		for(int x = -1 * radius; x < radius + 1; x++) {
+			for(int z = -1 * radius; z < radius + 1; z++) {
+				Location blockLocation = centerLocation.clone().add(x, 0, z);
 
-		Location thirdLocation = pitBoss.boss.getLocation().add(0, 0, -2);
+				if(blockLocation.distance(centerLocation) > radius) continue;
 
-		new BukkitRunnable() {
-			@Override
-			public void run() {
-				new GravitizedBlock(getClosestViewer(secondLocation), secondLocation);
+				if(blockLocation.getBlock().getType() != Material.AIR && blockLocation.clone().add(0, 1, 0).getBlock().getType() == Material.AIR) {
+					applicableBlocks.add(blockLocation.getBlock());
+					continue;
+				}
+
+				for(int i = -2; i < 3; i++) {
+					Location checkPosition = blockLocation.clone().add(0, i, 0);
+					if(checkPosition.getBlock().getType() == Material.AIR || checkPosition.clone().add(0, 1, 0).getBlock().getType() != Material.AIR)
+						continue;
+					applicableBlocks.add(checkPosition.getBlock());
+				}
 			}
-		}.runTaskLater(PitSim.INSTANCE, 5);
+		}
 
-		new BukkitRunnable() {
-			@Override
-			public void run() {
-				new GravitizedBlock(getClosestViewer(thirdLocation), thirdLocation);
+		List<Block> usedBlocks = new ArrayList<>();
+		Random random = new Random();
+
+		for(int i = 0; i < projectileCount; i++) {
+			Block randomBlock = applicableBlocks.get(random.nextInt(applicableBlocks.size()));
+			if(usedBlocks.contains(randomBlock)) {
+				i--;
+				continue;
 			}
-		}.runTaskLater(PitSim.INSTANCE, 10);
+
+			usedBlocks.add(randomBlock);
+
+			Player viewer = getClosestViewer(randomBlock.getLocation());
+			if(viewer == null) continue;
+
+			new BukkitRunnable() {
+				@Override
+				public void run() {
+					new GravitizedBlock(viewer, randomBlock);
+				}
+			}.runTaskLater(PitSim.INSTANCE, i * 2L);
+		}
 	}
 
 	public class GravitizedBlock {
 		public Player viewer;
+		public Block block;
 		public Location initialLocation;
 		public double vectorLength;
 		public int ticks = 0;
 
-		public GravitizedBlock(Player viewer, Location initialLocation) {
+		public GravitizedBlock(Player viewer, Block block) {
 			this.viewer = viewer;
-			this.initialLocation = initialLocation;
+			this.block = block;
+			this.initialLocation = block.getLocation().clone();
 
 			spawnBlock();
 		}
 
 		public void spawnBlock() {
-			FallingBlock fallingBlock = new FallingBlock(Material.CACTUS, (byte) 0, initialLocation);
+			FallingBlock fallingBlock = new FallingBlock(block.getType(), block.getData(), initialLocation.add(0, 1, 0));
 			fallingBlock.setViewers(getViewers());
 			fallingBlock.spawnBlock();
 
@@ -134,7 +167,7 @@ public class RuptureAbility extends RoutinePitBossAbility {
 	public Player getClosestViewer(Location location) {
 		Player nearest = null;
 		double distance = 0;
-		for(Entity nearbyEntity : location.getWorld().getNearbyEntities(location, 20, 20, 20)) {
+		for(Entity nearbyEntity : location.getWorld().getNearbyEntities(location, 50, 50, 50)) {
 			if(!(nearbyEntity instanceof Player)) continue;
 			if(pitBoss.boss == nearbyEntity) continue;
 

@@ -11,19 +11,22 @@ import com.comphenix.protocol.injector.SortedPacketListenerList;
 import com.comphenix.protocol.injector.packet.PacketInjector;
 import com.comphenix.protocol.injector.player.PlayerInjectionHandler;
 import dev.kyro.pitsim.PitSim;
+import dev.kyro.pitsim.misc.effects.PacketBlock;
+import dev.kyro.pitsim.misc.packets.WrapperPlayClientBlockDig;
+import dev.kyro.pitsim.misc.packets.WrapperPlayServerBlockChange;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
+import org.bukkit.scheduler.BukkitRunnable;
 
 import java.lang.reflect.Field;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 public class PacketManager implements Listener {
 	public static ProtocolManager protocolManager;
+
+	public static Map<PacketBlock, List<Player>> suppressedLocations = new HashMap<>();
 
 	static {
 		protocolManager = ProtocolLibrary.getProtocolManager();
@@ -53,6 +56,68 @@ public class PacketManager implements Listener {
 								auctions.getWorld() == player.getWorld() && auctions.distance(player.getLocation()) < 50) {
 							event.setCancelled(true);
 						}
+					}
+				});
+
+
+		if(PitSim.status.isDarkzone()) {
+			protocolManager.addPacketListener(
+					new PacketAdapter(PitSim.INSTANCE, PacketType.Play.Server.BLOCK_CHANGE) {
+						@Override
+						public void onPacketSending(PacketEvent event) {
+
+							WrapperPlayServerBlockChange wrapper = new WrapperPlayServerBlockChange(event.getPacket());
+							Location location = wrapper.getLocation().toLocation(MapManager.getDarkzone());
+							List<Player> viewers = null;
+
+							for(Map.Entry<PacketBlock, List<Player>> entry : suppressedLocations.entrySet()) {
+								Location stored = entry.getKey().getLocation();
+								if(stored.getBlockX() == location.getBlockX() && stored.getBlockY() == location.getBlockY()
+										&& stored.getBlockZ() == location.getBlockZ()) {
+									viewers = entry.getValue();
+								}
+							}
+
+							if(viewers == null) return;
+
+							if(!viewers.contains(event.getPlayer())) return;
+
+							event.setCancelled(true);
+						}
+					});
+		}
+
+		protocolManager.addPacketListener(
+				new PacketAdapter(PitSim.INSTANCE, PacketType.Play.Client.BLOCK_DIG) {
+					@Override
+					public void onPacketReceiving(PacketEvent event) {
+						WrapperPlayClientBlockDig wrapper = new WrapperPlayClientBlockDig(event.getPacket());
+						Location location = wrapper.getLocation().toLocation(MapManager.getDarkzone());
+						List<Player> viewers = null;
+						PacketBlock packetBlock = null;
+
+						for(Map.Entry<PacketBlock, List<Player>> entry : suppressedLocations.entrySet()) {
+							Location stored = entry.getKey().getLocation();
+							if(stored.getBlockX() == location.getBlockX() && stored.getBlockY() == location.getBlockY()
+									&& stored.getBlockZ() == location.getBlockZ()) {
+								viewers = entry.getValue();
+								packetBlock = entry.getKey();
+							}
+						}
+
+						if(viewers == null || packetBlock == null) return;
+
+						if(!viewers.contains(event.getPlayer())) return;
+
+						suppressedLocations.remove(packetBlock);
+						PacketBlock finalPacketBlock = packetBlock;
+						new BukkitRunnable() {
+							@Override
+							public void run() {
+								finalPacketBlock.spawnBlock();
+							}
+						}.runTask(PitSim.INSTANCE);
+
 					}
 				});
 	}

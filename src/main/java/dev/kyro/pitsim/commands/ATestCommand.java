@@ -1,6 +1,6 @@
 package dev.kyro.pitsim.commands;
 
-import dev.kyro.pitsim.misc.effects.FallingBlock;
+import dev.kyro.pitsim.misc.effects.PacketBlock;
 import net.minecraft.server.v1_8_R3.EntityItem;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -10,7 +10,6 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.util.Vector;
 
 import java.util.*;
 
@@ -27,18 +26,10 @@ public class ATestCommand implements CommandExecutor {
 		if(!(sender instanceof Player)) return false;
 		Player player = (Player) sender;
 
-
-
-		FallingBlock fallingBlock = new FallingBlock(Material.STONE, (byte) 3, player.getLocation());
-		fallingBlock.setViewers(Collections.singletonList(player));
-		fallingBlock.spawnBlock();
-		fallingBlock.setVelocity(new Vector(0, 5, 0));
-		fallingBlock.removeAfter(20);
-
-
-
-
-
+		PacketBlock packetBlock = new PacketBlock(Material.RED_ROSE, (byte) 1, player.getLocation());
+		packetBlock.setViewers(Collections.singletonList(player));
+		packetBlock.spawnBlock();
+		packetBlock.removeAfter(100);
 
 //		location = player.getLocation();
 //

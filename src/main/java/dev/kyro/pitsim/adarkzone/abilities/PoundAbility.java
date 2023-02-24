@@ -10,6 +10,7 @@ import dev.kyro.pitsim.cosmetics.particles.SmokeLargeParticle;
 import dev.kyro.pitsim.events.AttackEvent;
 import dev.kyro.pitsim.misc.Sounds;
 import dev.kyro.pitsim.misc.effects.FallingBlock;
+import dev.kyro.pitsim.misc.effects.PacketBlock;
 import net.minecraft.server.v1_8_R3.EntityPlayer;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -43,8 +44,8 @@ public class PoundAbility extends RoutinePitBossAbility {
 
 		List<Block> applicableBlocks = new ArrayList<>();
 
-		for(int x = -5; x < 6; x++) {
-			for(int z = -5; z < 6; z++) {
+		for(int x = -1 * radius; x < radius + 1; x++) {
+			for(int z = -1 * radius; z < radius + 1; z++) {
 				Location blockLocation = centerLocation.clone().add(x, 0, z);
 
 				if(blockLocation.distance(centerLocation) > radius) continue;
@@ -79,6 +80,11 @@ public class PoundAbility extends RoutinePitBossAbility {
 			fallingBlock.spawnBlock();
 			fallingBlock.removeAfter(25);
 			fallingBlock.setVelocity(vector);
+
+			PacketBlock packetBlock = new PacketBlock(Material.BARRIER, (byte) 0, block.getLocation());
+			packetBlock.setViewers(viewers);
+			packetBlock.spawnBlock();
+			packetBlock.removeAfter(25);
 		}
 
 		PitParticle dirt = new BlockCrackParticle(new MaterialData(Material.DIRT));
