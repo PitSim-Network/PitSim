@@ -64,6 +64,8 @@ import dev.kyro.pitsim.enchants.tainted.common.*;
 import dev.kyro.pitsim.enchants.tainted.spells.*;
 import dev.kyro.pitsim.enchants.tainted.uncommon.*;
 import dev.kyro.pitsim.enchants.tainted.znotcodedrare.*;
+import dev.kyro.pitsim.enchants.tainted.uncommon.Adrenaline;
+import dev.kyro.pitsim.enchants.tainted.znotcodeduncommon.Barbaric;
 import dev.kyro.pitsim.enums.NBTTag;
 import dev.kyro.pitsim.helmetabilities.*;
 import dev.kyro.pitsim.killstreaks.*;
@@ -1026,6 +1028,8 @@ public class PitSim extends JavaPlugin {
 		EnchantManager.registerEnchant(new Terror());
 
 //		Uncommon
+		EnchantManager.registerEnchant(new Adrenaline());
+		EnchantManager.registerEnchant(new Barbaric());
 		EnchantManager.registerEnchant(new ComboDefence());
 		EnchantManager.registerEnchant(new ComboMana());
 		EnchantManager.registerEnchant(new ComboSlow());
