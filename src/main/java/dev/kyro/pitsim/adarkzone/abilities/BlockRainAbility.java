@@ -39,20 +39,21 @@ public class BlockRainAbility extends RoutinePitBossAbility {
 
 		for(int x = -1 * radius; x < radius + 1; x++) {
 			for(int z = -1 * radius; z < radius + 1; z++) {
-				Location blockLocation = centerLocation.clone().add(x, 0, z);
+				Location blockLocation = centerLocation.clone().add(x, 7, z);
 
 				if(blockLocation.distance(centerLocation) > radius) continue;
 
-				if(blockLocation.getBlock().getType() != Material.AIR && blockLocation.clone().add(0, 1, 0).getBlock().getType() == Material.AIR) {
+				if(blockLocation.getBlock().getType() != Material.AIR && blockLocation.clone().subtract(0, 1, 0).getBlock().getType() == Material.AIR) {
 					applicableLocations.add(blockLocation);
 					continue;
 				}
 
 				for(int i = -2; i < 3; i++) {
-					Location checkPosition = blockLocation.clone().add(0, i, 0);
+					Location checkPosition = blockLocation.clone().add(0, i + 6, 0);
 					if(checkPosition.getBlock().getType() == Material.AIR || checkPosition.clone().add(0, 1, 0).getBlock().getType() != Material.AIR)
 						continue;
 					applicableLocations.add(checkPosition);
+					break;
 				}
 			}
 		}
@@ -63,12 +64,14 @@ public class BlockRainAbility extends RoutinePitBossAbility {
 		for(int i = 0; i < blockCount; i++) {
 			Location randomLocation = applicableLocations.get(random.nextInt(applicableLocations.size()));
 			if(usedLocations.contains(randomLocation)) {
-				i--;
+//				i--;
 				continue;
 			}
 
 			usedLocations.add(randomLocation);
 			int maxHeight = getMaxHeight(randomLocation);
+			System.out.println(maxHeight);
+			if(maxHeight < 1) continue;
 			int addedHeight = random.nextInt(maxHeight);
 			randomLocation.add(0, addedHeight, 0);
 
@@ -80,8 +83,20 @@ public class BlockRainAbility extends RoutinePitBossAbility {
 					fallingBlock.spawnBlock();
 
 					//1000 - 5.102d + 989.960 W-1(-0.36786e0.0051538d)
+					int totalHeight = 0;
+					for(int j = 0; j < 15; j++) {
+						Location floorLocation = randomLocation.clone().subtract(0, j, 0);
+						if(floorLocation.getBlock().getType() != Material.AIR) {
+							totalHeight = j;
+							break;
+						}
+					}
 
-					double time = 1000 - (5.102 * addedHeight) + 989.960 * lambertW(Math.pow(-0.36786, Math.log(0.0051538 * addedHeight)));
+					if(totalHeight < 1) return;
+
+//					double time = 1000 - (5.102 * totalHeight) + 989.960 * W((-0.36786 * Math.exp(0.0051538 * totalHeight)));
+
+					fallingBlock.removeAfter((int) (20));
 
 				}
 			}.runTaskLater(PitSim.INSTANCE, i % 10);
@@ -114,23 +129,5 @@ public class BlockRainAbility extends RoutinePitBossAbility {
 			if(player != null) viewers.add(player);
 		}
 		return viewers;
-	}
-
-	public static double lambertW(double x) {
-		double eps = 1e-8; // tolerance for convergence
-		double w = Math.log(Math.max(x, 1e-16)); // initial guess
-
-		while (true) {
-			double ew = Math.exp(w);
-			double f = w * ew - x;
-			double df = (w + 1) * ew;
-			double delta = f / df;
-			w -= delta;
-			if (Math.abs(delta) < eps) {
-				break;
-			}
-		}
-
-		return w;
 	}
 }
