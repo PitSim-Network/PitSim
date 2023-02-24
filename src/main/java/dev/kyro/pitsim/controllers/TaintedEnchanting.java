@@ -58,15 +58,14 @@ public class TaintedEnchanting {
 					}
 				}
 
-				int totalEnchants = enchantsOnItem.size();
-
-				while(totalEnchants < 3) {
+				if(randomEnchantMap.size() < 3) {
 					Map<Integer, Double> randomRarityMap = new HashMap<>();
 					randomRarityMap.put(2, previousTier == 1 ? 0.02 : 0.1);
 					randomRarityMap.put(1, previousTier == 1 ? 0.49 : 0.45);
 					randomRarityMap.put(0, previousTier == 1 ? 0.49 : 0.45);
-					randomEnchantMap.put(getRandomEnchant(type, new ArrayList<>(randomEnchantMap.keySet()), Misc.weightedRandom(randomRarityMap)), 1.0);
-					totalEnchants++;
+
+					PitEnchant randomEnchant = getRandomEnchant(type, new ArrayList<>(randomEnchantMap.keySet()), Misc.weightedRandom(randomRarityMap));
+					randomEnchantMap.put(randomEnchant, (double) (3 - enchantsOnItem.size()));
 				}
 
 				PitEnchant selectedEnchant = Misc.weightedRandom(randomEnchantMap);
