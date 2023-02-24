@@ -80,15 +80,15 @@ public class Bipolar extends PitEnchant {
 		Player player = event.getPlayer();
 		if(player.isSneaking()) return;
 
+		int enchantLvl = EnchantManager.getEnchantLevel(player, this);
+		if(enchantLvl == 0) return;
+
 		Cooldown cooldown = getCooldown(player, 20 * 5);
 		if(cooldown.isOnCooldown()) {
 			Sounds.NO.play(player);
 			return;
 		}
 		cooldown.restart();
-
-		int enchantLvl = EnchantManager.getEnchantLevel(player, this);
-		if(enchantLvl == 0) return;
 
 		if(vengefulPlayers.contains(player)) {
 			Misc.sendTitle(player, "&a&lPEACE", 20);

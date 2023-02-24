@@ -37,12 +37,12 @@ import java.util.*;
 
 public class RollingThunder extends PitEnchant {
 	public static RollingThunder INSTANCE;
+	public static Map<Player, List<BlockBreakData>> blockBreakDataMap = new HashMap<>();
+
 	public static final double INITIAL_WIDTH = 0;
 	public static final double EFFECT_ANGLE = 65;
 	public static final int EFFECT_SEGMENTS = 5;
 	public static final double EFFECT_INITIAL_SEGMENT_SIZE = 2;
-
-	public static Map<Player, List<BlockBreakData>> blockBreakDataMap = new HashMap<>();
 
 	public RollingThunder() {
 		super("Rolling Thunder", true, ApplyType.SCYTHES,
@@ -85,8 +85,8 @@ public class RollingThunder extends PitEnchant {
 
 		List<Block> validBlocks = new ArrayList<>();
 		double effectSize = getTotalSegmentSize() + 1;
-		for(double x = -effectSize; x < effectSize - 1; x++) {
-			for(double z = -effectSize; z < effectSize - 1; z++) {
+		for(double x = -effectSize; x <= effectSize; x++) {
+			for(double z = -effectSize; z <= effectSize; z++) {
 				for(int y = -5; y <= 5; y++) {
 					Location testLocation = mainLocation.clone().add(x, y, z);
 					Block block = testLocation.getBlock();

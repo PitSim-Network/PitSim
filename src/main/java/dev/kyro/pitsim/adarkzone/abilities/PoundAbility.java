@@ -81,10 +81,10 @@ public class PoundAbility extends RoutinePitBossAbility {
 			fallingBlock.removeAfter(25);
 			fallingBlock.setVelocity(vector);
 
-			PacketBlock packetBlock = new PacketBlock(Material.BARRIER, (byte) 0, block.getLocation());
-			packetBlock.setViewers(viewers);
-			packetBlock.spawnBlock();
-			packetBlock.removeAfter(25);
+			new PacketBlock(Material.BARRIER, (byte) 0, block.getLocation())
+					.setViewers(viewers)
+					.spawnBlock()
+					.removeAfter(25);
 		}
 
 		PitParticle dirt = new BlockCrackParticle(new MaterialData(Material.DIRT));
