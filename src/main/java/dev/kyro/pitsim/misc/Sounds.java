@@ -72,6 +72,7 @@ public class Sounds {
 
 	public static final SoundEffect SNAKE_ICE = new SoundEffect(Sound.GLASS, 1.3, 1.5);
 	public static final SoundEffect SLAM = new SoundEffect(Sound.DIG_GRASS, 1.3, 0.65);
+	public static final SoundEffect ANVIL_RAIN = new SoundEffect(Sound.ANVIL_LAND, 1.3, 0.45);
 
 	//	Enchants
 	public static final SoundEffect BILLIONAIRE = new SoundEffect(Sound.ORB_PICKUP, 1, 0.73);
