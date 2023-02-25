@@ -21,7 +21,7 @@ import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.enchants.overworld.Regularity;
 import dev.kyro.pitsim.enchants.overworld.Telebow;
 import dev.kyro.pitsim.enchants.tainted.uncommon.ShieldBuster;
-import dev.kyro.pitsim.enchants.tainted.znotcodedrare.PurpleThumb;
+import dev.kyro.pitsim.enchants.tainted.effects.PurpleThumb;
 import dev.kyro.pitsim.enums.*;
 import dev.kyro.pitsim.events.AttackEvent;
 import dev.kyro.pitsim.events.KillEvent;

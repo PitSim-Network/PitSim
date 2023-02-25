@@ -3,7 +3,7 @@ package dev.kyro.pitsim.adarkzone.notdarkzone;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.enchants.tainted.uncommon.Mending;
-import dev.kyro.pitsim.enchants.tainted.znotcodedrare.PurpleThumb;
+import dev.kyro.pitsim.enchants.tainted.effects.PurpleThumb;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
