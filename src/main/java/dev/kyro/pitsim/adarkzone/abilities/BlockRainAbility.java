@@ -130,4 +130,15 @@ public class BlockRainAbility extends RoutinePitBossAbility {
 		}
 		return viewers;
 	}
+
+	public static double W(double x) {
+		double eps = 1e-10; // tolerance
+		double w = Math.log(1 + x);
+		double w1 = 0;
+		while (Math.abs(w - w1) > eps) {
+			w1 = w;
+			w = w - (w * Math.exp(w) - x) / (Math.exp(w) * (w + 1));
+		}
+		return w;
+	}
 }
