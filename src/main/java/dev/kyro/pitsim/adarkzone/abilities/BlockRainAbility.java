@@ -94,7 +94,7 @@ public class BlockRainAbility extends RoutinePitBossAbility {
 
 					if(totalHeight < 1) return;
 
-//					double time = 1000 - (5.102 * totalHeight) + 989.960 * W((-0.36786 * Math.exp(0.0051538 * totalHeight)));
+					double time = 1000 - (5.102 * totalHeight) + 989.960 * W((-0.36786 * Math.exp(0.0051538 * totalHeight)));
 
 					fallingBlock.removeAfter((int) (20));
 
