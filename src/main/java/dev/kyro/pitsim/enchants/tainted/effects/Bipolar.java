@@ -78,7 +78,7 @@ public class Bipolar extends PitEnchant {
 	@EventHandler
 	public void onSneak(PlayerToggleSneakEvent event) {
 		Player player = event.getPlayer();
-		if(player.isSneaking()) return;
+		if(player.isSneaking() || player.isFlying()) return;
 
 		int enchantLvl = EnchantManager.getEnchantLevel(player, this);
 		if(enchantLvl == 0) return;

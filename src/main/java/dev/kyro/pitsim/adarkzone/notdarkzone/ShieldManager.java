@@ -3,6 +3,7 @@ package dev.kyro.pitsim.adarkzone.notdarkzone;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.enchants.tainted.uncommon.Mending;
+import dev.kyro.pitsim.enchants.tainted.znotcodedrare.PurpleThumb;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
@@ -21,6 +22,7 @@ public class ShieldManager implements Listener {
 					if(pitPlayer.shield.isActive()) {
 						double activeRegenAmount = ACTIVE_REGEN_AMOUNT;
 						activeRegenAmount *= Mending.getIncreaseMultiplier(pitPlayer.player);
+						activeRegenAmount *= PurpleThumb.getShieldRegenMultiplier(pitPlayer.player);
 						pitPlayer.shield.addShield(activeRegenAmount);
 					} else {
 						pitPlayer.shield.regenerateTick();

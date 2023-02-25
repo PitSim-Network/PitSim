@@ -1,13 +1,21 @@
 package dev.kyro.pitsim.enchants.tainted.znotcodedrare;
 
+import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.PitSim;
+import dev.kyro.pitsim.adarkzone.DarkzoneManager;
+import dev.kyro.pitsim.adarkzone.PitMob;
 import dev.kyro.pitsim.controllers.Cooldown;
 import dev.kyro.pitsim.controllers.EnchantManager;
+import dev.kyro.pitsim.controllers.PlayerManager;
+import dev.kyro.pitsim.controllers.SpawnManager;
 import dev.kyro.pitsim.controllers.objects.PitEnchant;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
+import dev.kyro.pitsim.cosmetics.particles.FireworkSparkParticle;
 import dev.kyro.pitsim.cosmetics.particles.ParticleColor;
 import dev.kyro.pitsim.cosmetics.particles.RedstoneParticle;
 import dev.kyro.pitsim.enums.ApplyType;
+import dev.kyro.pitsim.events.AttackEvent;
+import dev.kyro.pitsim.events.ManaRegenEvent;
 import dev.kyro.pitsim.misc.Misc;
 import dev.kyro.pitsim.misc.PitLoreBuilder;
 import dev.kyro.pitsim.misc.Sounds;
@@ -16,20 +24,25 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.player.PlayerToggleSneakEvent;
-import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 
+import java.text.DecimalFormat;
 import java.util.*;
 
 public class PurpleThumb extends PitEnchant {
 	public static PurpleThumb INSTANCE;
 	public static Map<Player, List<FlowerBunch>> flowerMap = new HashMap<>();
 
-	public static final int FLOWER_SPAWN_RADIUS = 3;
-	public static final int EFFECT_RADIUS = 5;
+	public static final int MIN_FLOWER_COUNT = 8;
+	public static final int MAX_FLOWER_COUNT = 10;
+	public static final double FLOWER_SPAWN_RADIUS = 5;
+	public static final double EFFECT_RADIUS = 7;
 
 	static {
 		new BukkitRunnable() {
@@ -42,7 +55,6 @@ public class PurpleThumb extends PitEnchant {
 							List<FlowerBunch> flowerBunches = flowerMap.remove(player);
 							for(FlowerBunch flowerBunch : flowerBunches) flowerBunch.remove();
 						}
-						continue;
 					}
 				}
 			}
@@ -55,15 +67,45 @@ public class PurpleThumb extends PitEnchant {
 					int enchantLvl = EnchantManager.getEnchantLevel(player, INSTANCE);
 					if(enchantLvl == 0) continue;
 
+					PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
+
 					List<FlowerType> flowerTypes = getFlowersInProximity(player);
-					for(FlowerType flowerType : flowerTypes) {
-						if(flowerType == FlowerType.POPPY) {
-							Misc.applyPotionEffect(player, PotionEffectType.INCREASE_DAMAGE, 20 * 3, 0, true, false);
-						}
-					}
+					if(flowerTypes.contains(FlowerType.POPPY)) pitPlayer.heal(getHealing());
 				}
 			}
 		}.runTaskTimer(PitSim.INSTANCE, 0L, 20L);
+
+		new BukkitRunnable() {
+			int count = 0;
+			@Override
+			public void run() {
+				for(Map.Entry<Player, List<FlowerBunch>> entry : flowerMap.entrySet()) {
+					for(FlowerBunch flowerBunch : entry.getValue()) {
+						if(flowerBunch.flowerType != FlowerType.AZURE_BLUET || Math.random() > getLightningPercent() / 100.0) continue;
+						List<LivingEntity> potentialTargets = new ArrayList<>();
+						for(Entity entity : flowerBunch.centerLocation.getWorld()
+								.getNearbyEntities(flowerBunch.centerLocation, EFFECT_RADIUS, EFFECT_RADIUS, EFFECT_RADIUS)) {
+							if(!(entity instanceof LivingEntity) || entity == flowerBunch.player) continue;
+							LivingEntity livingEntity = (LivingEntity) entity;
+							PitMob pitMob = DarkzoneManager.getPitMob(livingEntity);
+							if(pitMob == null && !PlayerManager.isRealPlayer(livingEntity)) continue;
+							potentialTargets.add(livingEntity);
+						}
+
+						if(potentialTargets.isEmpty()) continue;
+						if(count % 2 == 0 && potentialTargets.size() < 3) continue;
+						LivingEntity randomTarget = potentialTargets.get(new Random().nextInt(potentialTargets.size()));
+						randomTarget.getWorld().strikeLightningEffect(randomTarget.getLocation());
+
+						double damage = PlayerManager.isRealPlayer(randomTarget) ? getLightningPlayerDamage() : getLightningMobDamage();
+						EntityDamageEvent event = new EntityDamageEvent(randomTarget, EntityDamageEvent.DamageCause.CUSTOM, damage);
+						Bukkit.getPluginManager().callEvent(event);
+						if(!event.isCancelled()) randomTarget.damage(event.getDamage());
+					}
+				}
+				count++;
+			}
+		}.runTaskTimer(PitSim.INSTANCE, 0L, 10L);
 	}
 
 	public PurpleThumb() {
@@ -74,12 +116,43 @@ public class PurpleThumb extends PitEnchant {
 	}
 
 	@EventHandler
-	public void onSneak(PlayerToggleSneakEvent event) {
+	public void onManaRegen(ManaRegenEvent event) {
 		Player player = event.getPlayer();
-		if(player.isSneaking()) return;
 
 		int enchantLvl = EnchantManager.getEnchantLevel(player, this);
 		if(enchantLvl == 0) return;
+
+		List<FlowerType> flowerTypes = getFlowersInProximity(player);
+		if(!flowerTypes.contains(FlowerType.ALLIUM)) return;
+
+		event.multipliers.add(1 + (getManaIncreasePercent() / 100.0));
+	}
+
+	@EventHandler
+	public void onAttack(AttackEvent.Apply attackEvent) {
+		if(!canApply(attackEvent)) return;
+
+		int enchantLvl = attackEvent.getAttackerEnchantLevel(this);
+		if(enchantLvl == 0) return;
+
+		List<FlowerType> flowerTypes = getFlowersInProximity(attackEvent.getAttackerPlayer());
+		if(!flowerTypes.contains(FlowerType.ORANGE_TULIP)) return;
+
+		attackEvent.increasePercent += getDamageIncreasePercent();
+	}
+
+	@EventHandler
+	public void onSneak(PlayerToggleSneakEvent event) {
+		Player player = event.getPlayer();
+		if(player.isSneaking() || player.isFlying()) return;
+
+		int enchantLvl = EnchantManager.getEnchantLevel(player, this);
+		if(enchantLvl == 0) return;
+
+		if(SpawnManager.isInSpawn(player.getLocation())) {
+			AOutput.error(player, "&c&lOOPS!&7 You cannot do this in spawn");
+			return;
+		}
 
 		Cooldown cooldown = getCooldown(player, 10);
 		if(cooldown.isOnCooldown()) return;
@@ -92,7 +165,8 @@ public class PurpleThumb extends PitEnchant {
 
 		flowerMap.putIfAbsent(player, new ArrayList<>());
 		List<FlowerBunch> flowerBunches = flowerMap.get(player);
-		flowerBunches.add(new FlowerBunch(player, FlowerType.random()));
+		FlowerType flowerType = FlowerType.random();
+		flowerBunches.add(new FlowerBunch(player, flowerType));
 	}
 
 	public static List<FlowerType> getFlowersInProximity(Player player) {
@@ -103,13 +177,32 @@ public class PurpleThumb extends PitEnchant {
 		for(FlowerBunch flowerBunch : flowerBunches) {
 			if(player.getWorld() != flowerBunch.centerLocation.getWorld() ||
 					player.getLocation().distance(flowerBunch.centerLocation) > EFFECT_RADIUS) continue;
-			if(flowerTypes.contains(flowerBunch.flowertype)) continue;
-			flowerTypes.add(flowerBunch.flowertype);
+			if(flowerTypes.contains(flowerBunch.flowerType)) continue;
+			flowerTypes.add(flowerBunch.flowerType);
 		}
 
 		return flowerTypes;
 	}
 
+	public static double getShieldRegenMultiplier(Player player) {
+		int enchantLvl = EnchantManager.getEnchantLevel(player, INSTANCE);
+		if(enchantLvl == 0) return 1;
+
+		List<FlowerType> flowerTypes = getFlowersInProximity(player);
+		if(!flowerTypes.contains(FlowerType.BLUE_ORCHID)) return 1;
+
+		return getShieldRegenMultiplier();
+	}
+
+	public static boolean shouldPreventDeath(Player player) {
+		if(!PlayerManager.isRealPlayer(player)) return false;
+
+		int enchantLvl = EnchantManager.getEnchantLevel(player, INSTANCE);
+		if(enchantLvl == 0) return false;
+
+		List<FlowerType> flowerTypes = getFlowersInProximity(player);
+		return flowerTypes.contains(FlowerType.DANDELION);
+	}
 
 	@Override
 	public List<String> getNormalDescription(int enchantLvl) {
@@ -122,17 +215,45 @@ public class PurpleThumb extends PitEnchant {
 		return 1;
 	}
 
+	public static double getHealing() {
+		return 2;
+	}
+
+	public static double getShieldRegenMultiplier() {
+		return 10;
+	}
+
+	public static int getManaIncreasePercent() {
+		return 100;
+	}
+
+	public static double getLightningPercent() {
+		return 50;
+	}
+
+	public static double getLightningPlayerDamage() {
+		return 2;
+	}
+
+	public static double getLightningMobDamage() {
+		return 10;
+	}
+
+	public static int getDamageIncreasePercent() {
+		return 50;
+	}
+
 	private static class FlowerBunch {
 		public Player player;
-		public FlowerType flowertype;
+		public FlowerType flowerType;
 		public Location centerLocation;
 		public int length = 100;
 
 		public List<PacketBlock> flowerBlocks = new ArrayList<>();
 
-		public FlowerBunch(Player player, FlowerType flowertype) {
+		public FlowerBunch(Player player, FlowerType flowerType) {
 			this.player = player;
-			this.flowertype = flowertype;
+			this.flowerType = flowerType;
 			this.centerLocation = player.getLocation();
 
 			spawn();
@@ -163,10 +284,10 @@ public class PurpleThumb extends PitEnchant {
 				}
 			}
 			Collections.shuffle(validBlocks);
-			int flowers = Math.min(new Random().nextInt(3) + 5, validBlocks.size());
+			int flowers = Math.min(new Random().nextInt(MAX_FLOWER_COUNT - MIN_FLOWER_COUNT + 1) + MIN_FLOWER_COUNT, validBlocks.size());
 			for(int i = 0; i < flowers; i++) {
 				Block block = validBlocks.get(i);
-				PacketBlock flowerBlock = new PacketBlock(flowertype.material, flowertype.data, block.getLocation())
+				PacketBlock flowerBlock = new PacketBlock(flowerType.material, flowerType.data, block.getLocation())
 						.setViewers(Misc.getNearbyRealPlayers(block.getLocation(), 50))
 						.spawnBlock()
 						.removeAfter(length + new Random().nextInt(21));
@@ -183,6 +304,8 @@ public class PurpleThumb extends PitEnchant {
 					}
 				}.runTaskTimer(PitSim.INSTANCE, new Random().nextInt(3), 3);
 			}
+
+			flowerType.sendPlantMessage(player);
 		}
 
 		public void remove() {
@@ -191,20 +314,31 @@ public class PurpleThumb extends PitEnchant {
 
 		public void drawParticles(Player player, PacketBlock flowerBlock) {
 			RedstoneParticle redstoneParticle = new RedstoneParticle();
-			for(int i = 0; i < 3; i++) {
-				Location location = flowerBlock.getLocation().clone()
-						.add(Misc.randomOffset(5), Misc.randomOffsetPositive(3) + 0.5, Misc.randomOffset(5));
-				redstoneParticle.display(player, location, flowertype.particleColor);
+			FireworkSparkParticle sparkParticle = new FireworkSparkParticle();
+			if(flowerType == FlowerType.AZURE_BLUET) {
+				Location location = createRandomParticleLocation(flowerBlock);
+				sparkParticle.display(player, location);
+			} else {
+				for(int i = 0; i < 3; i++) {
+					Location location = createRandomParticleLocation(flowerBlock);
+					redstoneParticle.display(player, location, flowerType.particleColor);
+				}
 			}
 		}
+
+		public Location createRandomParticleLocation(PacketBlock flowerBlock) {
+			return flowerBlock.getLocation().clone()
+					.add(Misc.randomOffset(5), Misc.randomOffsetPositive(3) + 0.5, Misc.randomOffset(5));
+		}
 	}
+
 	private enum FlowerType {
-		POPPY(Material.RED_ROSE, 0, ParticleColor.RED),
-		BLUE_ORCHID(Material.RED_ROSE, 1, ParticleColor.AQUA),
-		ALLIUM(Material.RED_ROSE, 2, ParticleColor.DARK_PURPLE),
-		AZURE_BLUET(Material.RED_ROSE, 3, ParticleColor.WHITE),
-		ORANGE_TULIP(Material.RED_ROSE, 5, ParticleColor.GOLD),
-		DANDELION(Material.YELLOW_FLOWER, 0, ParticleColor.YELLOW);
+		POPPY(Material.RED_ROSE, 0, ParticleColor.RED), // healing
+		BLUE_ORCHID(Material.RED_ROSE, 1, ParticleColor.AQUA), // shield regeneration
+		ALLIUM(Material.RED_ROSE, 2, ParticleColor.DARK_PURPLE), // mana regeneration
+		AZURE_BLUET(Material.RED_ROSE, 3, ParticleColor.WHITE), // strikes entities with lightning
+		ORANGE_TULIP(Material.RED_ROSE, 5, ParticleColor.GOLD), // damage increase
+		DANDELION(Material.YELLOW_FLOWER, 0, ParticleColor.YELLOW); // cannot die
 
 //		RED_TULIP(Material.RED_ROSE, 4, ParticleColor.RED),
 //		WHITE_TULIP(Material.RED_ROSE, 6, ParticleColor.WHITE),
@@ -219,6 +353,36 @@ public class PurpleThumb extends PitEnchant {
 			this.material = material;
 			this.data = (byte) data;
 			this.particleColor = particleColor;
+		}
+
+		public void sendPlantMessage(Player player) {
+			DecimalFormat decimalFormat = new DecimalFormat("0.#");
+			switch(this) {
+				case POPPY:
+					AOutput.send(player, "&5&lPURPLE THUMB!&7 You planted &cpoppies&7, granting &c" +
+							Misc.getHearts(getHealing()) + " &7every second when near them");
+					break;
+				case BLUE_ORCHID:
+					AOutput.send(player, "&5&lPURPLE THUMB!&7 You planted &bblue orchids&7, granting &9" +
+							decimalFormat.format(getShieldRegenMultiplier()) + "x &7faster shield regeneration when near them");
+					break;
+				case ALLIUM:
+					AOutput.send(player, "&5&lPURPLE THUMB!&7 You planted &5allium&7, granting &b+" +
+							decimalFormat.format(getManaIncreasePercent()) + "% &7faster mana regeneration when near them");
+					break;
+				case AZURE_BLUET:
+					AOutput.send(player, "&5&lPURPLE THUMB!&7 You planted &fazure bluets&7, creating a " +
+							"mini thunderstorm that will vanquish your enemies");
+					break;
+				case ORANGE_TULIP:
+					AOutput.send(player, "&5&lPURPLE THUMB!&7 You planted &6orange tulips&7, granting &c+" +
+							getDamageIncreasePercent() + "% &7damage when near them");
+					break;
+				case DANDELION:
+					AOutput.send(player, "&5&lPURPLE THUMB!&7 You planted &edandelions&7, making it so you " +
+							"&ecannot die &7when near them");
+					break;
+			}
 		}
 
 		public static FlowerType random() {

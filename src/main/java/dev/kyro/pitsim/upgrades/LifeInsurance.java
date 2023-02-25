@@ -29,7 +29,7 @@ public class LifeInsurance extends RenownUpgrade {
 
 	@EventHandler
 	public void onKill(KillEvent killEvent) {
-		if(!isApplicable(killEvent.getDeadPlayer())) return;
+		if(!killEvent.isDeadPlayer() || !isApplicable(killEvent.getDeadPlayer())) return;
 		for(Map.Entry<PlayerItemLocation, KillEvent.ItemInfo> entry : killEvent.getVulnerableItems().entrySet()) {
 			KillEvent.ItemInfo itemInfo = entry.getValue();
 			if(!itemInfo.pitItem.isMystic) continue;

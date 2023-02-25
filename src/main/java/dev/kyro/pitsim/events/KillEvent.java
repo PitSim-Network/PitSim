@@ -76,10 +76,10 @@ public class KillEvent extends Event {
 		this.dead = dead;
 		this.isKillerPlayer = killer instanceof Player;
 		this.isDeadPlayer = dead instanceof Player;
-		this.isKillerRealPlayer = PlayerManager.isRealPlayer(getKillerPlayer());
-		this.isDeadRealPlayer = PlayerManager.isRealPlayer(getDeadPlayer());
 		this.killerPlayer = isKillerPlayer() ? (Player) killer : null;
 		this.deadPlayer = isDeadPlayer() ? (Player) dead : null;
+		this.isKillerRealPlayer = PlayerManager.isRealPlayer(getKillerPlayer());
+		this.isDeadRealPlayer = PlayerManager.isRealPlayer(getDeadPlayer());
 		this.killModifiers = new ArrayList<>(Arrays.asList(killModifiers));
 
 		Non defendingNon = NonManager.getNon(getDead());
@@ -140,6 +140,7 @@ public class KillEvent extends Event {
 	}
 
 	public int getFinalSouls() {
+		double soulsLost = this.soulsLost;
 		for(Double soulMultiplier : soulMultipliers) soulsLost *= soulMultiplier;
 		return (int) Math.min(Math.ceil(soulsLost), getDeadPitPlayer().taintedSouls);
 	}

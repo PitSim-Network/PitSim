@@ -21,6 +21,7 @@ import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.enchants.overworld.Regularity;
 import dev.kyro.pitsim.enchants.overworld.Telebow;
 import dev.kyro.pitsim.enchants.tainted.uncommon.ShieldBuster;
+import dev.kyro.pitsim.enchants.tainted.znotcodedrare.PurpleThumb;
 import dev.kyro.pitsim.enums.*;
 import dev.kyro.pitsim.events.AttackEvent;
 import dev.kyro.pitsim.events.KillEvent;
@@ -306,6 +307,7 @@ public class DamageManager implements Listener {
 
 		if(attackEvent.trueDamage != 0 || attackEvent.veryTrueDamage != 0) {
 			double finalHealth = attackEvent.getDefender().getHealth() - attackEvent.trueDamage - attackEvent.veryTrueDamage;
+			if(PurpleThumb.shouldPreventDeath(attackEvent.getDefenderPlayer())) finalHealth = Math.max(finalHealth, 1);
 			if(finalHealth <= 0) {
 				attackEvent.getEvent().setCancelled(true);
 				kill(attackEvent, attackEvent.getAttacker(), attackEvent.getDefender(), KillType.KILL);
@@ -317,6 +319,7 @@ public class DamageManager implements Listener {
 
 		if(attackEvent.selfTrueDamage != 0 || attackEvent.selfVeryTrueDamage != 0) {
 			double finalHealth = attackEvent.getAttacker().getHealth() - attackEvent.selfTrueDamage - attackEvent.selfVeryTrueDamage;
+			if(PurpleThumb.shouldPreventDeath(attackEvent.getAttackerPlayer())) finalHealth = Math.max(finalHealth, 1);
 			if(finalHealth <= 0) {
 				attackEvent.getEvent().setCancelled(true);
 				kill(attackEvent, attackEvent.getDefender(), attackEvent.getAttacker(), KillType.KILL);
@@ -335,14 +338,19 @@ public class DamageManager implements Listener {
 //		AOutput.send(attackEvent.attacker, "Final Damage: " + attackEvent.event.getDamage());
 //		AOutput.send(attackEvent.attacker, "Final Damage: " + attackEvent.event.getFinalDamage());
 
-		if(attackEvent.getEvent().getFinalDamage() >= attackEvent.getDefender().getHealth()) {
-
-			attackEvent.getEvent().setCancelled(true);
-			kill(attackEvent, attackEvent.getAttacker(), attackEvent.getDefender(), KillType.KILL);
-		} else if(attackEvent.getEvent().getFinalDamage() + attackEvent.executeUnder >= attackEvent.getDefender().getHealth()) {
-
-			attackEvent.getEvent().setCancelled(true);
-			kill(attackEvent, attackEvent.getAttacker(), attackEvent.getDefender(), KillType.KILL, KillModifier.EXECUTION);
+		if(attackEvent.getEvent().getFinalDamage() + attackEvent.executeUnder >= attackEvent.getDefender().getHealth()) {
+			if(PurpleThumb.shouldPreventDeath(attackEvent.getDefenderPlayer())) {
+				attackEvent.getEvent().setDamage(0);
+				attackEvent.getDefender().setHealth(1);
+			} else {
+				attackEvent.getEvent().setCancelled(true);
+				boolean exeDeath = attackEvent.getEvent().getFinalDamage() < attackEvent.getDefender().getHealth();
+				if(exeDeath) {
+					kill(attackEvent, attackEvent.getAttacker(), attackEvent.getDefender(), KillType.KILL, KillModifier.EXECUTION);
+				} else {
+					kill(attackEvent, attackEvent.getAttacker(), attackEvent.getDefender(), KillType.KILL);
+				}
+			}
 		}
 
 		DamageIndicator.onAttack(attackEvent);
@@ -420,8 +428,10 @@ public class DamageManager implements Listener {
 		} else {
 			if(deadIsRealPlayer) {
 				int finalSouls = killEvent.getFinalSouls();
-				pitDead.taintedSouls -= finalSouls;
-				DarkzoneManager.createSoulExplosion(killerPlayer, dead.getLocation(), finalSouls, true);
+				if(finalSouls != 0) {
+					pitDead.taintedSouls -= finalSouls;
+					DarkzoneManager.createSoulExplosion(killerPlayer, dead.getLocation(), finalSouls, finalSouls >= 50);
+				}
 			}
 		}
 
@@ -462,9 +472,9 @@ public class DamageManager implements Listener {
 
 		String death;
 		String soulsLostString = "";
-		if(PitSim.status.isDarkzone() && killEvent != null && PlayerManager.isRealPlayer(deadPlayer)){
+		if(PitSim.status.isDarkzone() && deadIsRealPlayer){
 			int finalSouls = killEvent.getFinalSouls();
-			soulsLostString = " &f-" + finalSouls + " soul" + (finalSouls == 1 ? "" : "s");
+			if(finalSouls != 0) soulsLostString = " &f-" + finalSouls + " soul" + (finalSouls == 1 ? "" : "s");
 		}
 		if(killType == KillType.KILL && killerIsPlayer) {
 			death = PlaceholderAPI.setPlaceholders(killEvent.getKillerPlayer(), "&c&lDEATH!&7 by %luckperms_prefix%" +
