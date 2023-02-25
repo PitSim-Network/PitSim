@@ -43,6 +43,7 @@ public class PurpleThumb extends PitEnchant {
 	public static final int MAX_FLOWER_COUNT = 10;
 	public static final double FLOWER_SPAWN_RADIUS = 5;
 	public static final double EFFECT_RADIUS = 7;
+	public static final int DEFAULT_EFFECT_DURATION = 20 * 10;
 
 	static {
 		new BukkitRunnable() {
@@ -154,7 +155,7 @@ public class PurpleThumb extends PitEnchant {
 			return;
 		}
 
-		Cooldown cooldown = getCooldown(player, 10);
+		Cooldown cooldown = getCooldown(player, getCooldownSeconds(enchantLvl) * 20);
 		if(cooldown.isOnCooldown()) return;
 		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
 		if(!pitPlayer.useMana(getManaCost(enchantLvl))) {
@@ -207,8 +208,14 @@ public class PurpleThumb extends PitEnchant {
 	@Override
 	public List<String> getNormalDescription(int enchantLvl) {
 		return new PitLoreBuilder(
-				"&7I can't be asked to code this"
+				"&7Sneaking plants a handful of flower for &b" + getManaCost(enchantLvl) + " mana&7 (" +
+						getCooldownSeconds(enchantLvl) + "s cooldown). Each of the 6 different types of flowers " +
+						"gives an effect while standing near to them"
 		).getLore();
+	}
+
+	public static int getCooldownSeconds(int enchantLvl) {
+		return 2;
 	}
 
 	public static int getManaCost(int enchantLvl) {
@@ -247,7 +254,7 @@ public class PurpleThumb extends PitEnchant {
 		public Player player;
 		public FlowerType flowerType;
 		public Location centerLocation;
-		public int length = 100;
+		public int length = DEFAULT_EFFECT_DURATION;
 
 		public List<PacketBlock> flowerBlocks = new ArrayList<>();
 

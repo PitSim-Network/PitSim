@@ -7,6 +7,9 @@ import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class PitEquipment {
 	private ItemStack held = new ItemStack(Material.AIR);
 
@@ -16,6 +19,14 @@ public class PitEquipment {
 	private ItemStack boots = new ItemStack(Material.AIR);
 
 	public PitEquipment() {}
+
+	public PitEquipment(Player player) {
+		if(player.getItemInHand() != null) this.held = player.getItemInHand();
+		if(player.getEquipment().getHelmet() != null) this.helmet = player.getEquipment().getHelmet();
+		if(player.getEquipment().getChestplate() != null) this.chestplate = player.getEquipment().getChestplate();
+		if(player.getEquipment().getLeggings() != null) this.leggings = player.getEquipment().getLeggings();
+		if(player.getEquipment().getBoots() != null) this.boots = player.getEquipment().getBoots();
+	}
 
 	public PitEquipment held(ItemStack held) {
 		this.held = held;
@@ -84,5 +95,42 @@ public class PitEquipment {
 
 	public void setBoots(ItemStack boots) {
 		this.boots = boots;
+	}
+
+	public List<ItemStack> getAsList() {
+		List<ItemStack> equipmentList = new ArrayList<>();
+		equipmentList.add(held);
+		equipmentList.add(helmet);
+		equipmentList.add(chestplate);
+		equipmentList.add(leggings);
+		equipmentList.add(boots);
+		return equipmentList;
+	}
+
+	public ItemStack getItemStack(EquipmentType equipmentType) {
+		switch(equipmentType) {
+			case HELD:
+				return held;
+			case HELMET:
+				return helmet;
+			case CHESTPLATE:
+				return chestplate;
+			case LEGGINGS:
+				return leggings;
+			case BOOTS:
+				return boots;
+		}
+		throw new RuntimeException();
+	}
+
+	@Override
+	public boolean equals(Object otherObject) {
+		if(!(otherObject instanceof PitEquipment)) return false;
+		PitEquipment otherEquipment = (PitEquipment) otherObject;
+		return held.equals(otherEquipment.held) &&
+				helmet.equals(otherEquipment.helmet) &&
+				chestplate.equals(otherEquipment.chestplate) &&
+				leggings.equals(otherEquipment.leggings) &&
+				boots.equals(otherEquipment.boots);
 	}
 }

@@ -6,6 +6,13 @@ import org.bukkit.event.block.BlockIgniteEvent;
 
 public class MiscManager implements Listener {
 
+	@EventHandler
+	public void onIgnite(BlockIgniteEvent event) {
+		BlockIgniteEvent.IgniteCause cause = event.getCause();
+		if(cause == BlockIgniteEvent.IgniteCause.FIREBALL || cause == BlockIgniteEvent.IgniteCause.EXPLOSION)
+			event.setCancelled(true);
+	}
+
 //	@EventHandler
 //	public void onAttack(AttackEvent.Apply attackEvent) {
 //		if(!PlayerManager.isRealPlayer(attackEvent.getAttackerPlayer()) || !PlayerManager.isRealPlayer(attackEvent.getDefenderPlayer())) return;
@@ -16,11 +23,4 @@ public class MiscManager implements Listener {
 //		attackEvent.selfVeryTrueDamage += 100;
 //		AOutput.send(attacker, "&9&lCOPE!");
 //	}
-
-	@EventHandler
-	public void onIgnite(BlockIgniteEvent event) {
-		BlockIgniteEvent.IgniteCause cause = event.getCause();
-		if(cause == BlockIgniteEvent.IgniteCause.FIREBALL || cause == BlockIgniteEvent.IgniteCause.EXPLOSION)
-			event.setCancelled(true);
-	}
 }

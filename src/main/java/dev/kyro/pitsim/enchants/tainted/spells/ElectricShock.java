@@ -129,8 +129,9 @@ public class ElectricShock extends PitEnchant {
 	@Override
 	public List<String> getNormalDescription(int enchantLvl) {
 		return new PitLoreBuilder(
-				"&7Chains between mobs up to &e" + getMaxBounces(enchantLvl) + " time" +
-				(getMaxBounces(enchantLvl) == 1 ? "" : "s")
+				"&7Right-Clicking while looking at a mob casts this spell for &b" + getManaCost(enchantLvl) +
+						" mana&7, shooting an electric beam that chains between mobs up to &e" +
+						getMaxBounces(enchantLvl) + " time" + (getMaxBounces(enchantLvl) == 1 ? "" : "s")
 		).getLore();
 	}
 

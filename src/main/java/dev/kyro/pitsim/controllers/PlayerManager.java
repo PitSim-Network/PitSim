@@ -11,10 +11,15 @@ import dev.kyro.arcticguilds.BuffManager;
 import dev.kyro.arcticguilds.GuildBuff;
 import dev.kyro.arcticguilds.GuildData;
 import dev.kyro.pitsim.PitSim;
+import dev.kyro.pitsim.adarkzone.notdarkzone.EquipmentType;
+import dev.kyro.pitsim.adarkzone.notdarkzone.PitEquipment;
 import dev.kyro.pitsim.battlepass.quests.EarnRenownQuest;
 import dev.kyro.pitsim.battlepass.quests.WinAuctionsQuest;
 import dev.kyro.pitsim.controllers.objects.*;
-import dev.kyro.pitsim.enums.*;
+import dev.kyro.pitsim.enums.ItemType;
+import dev.kyro.pitsim.enums.MysticType;
+import dev.kyro.pitsim.enums.NBTTag;
+import dev.kyro.pitsim.enums.NonTrait;
 import dev.kyro.pitsim.events.*;
 import dev.kyro.pitsim.inventories.view.ViewGUI;
 import dev.kyro.pitsim.megastreaks.Highlander;
@@ -58,6 +63,7 @@ import java.util.*;
 import java.util.concurrent.ExecutionException;
 
 public class PlayerManager implements Listener {
+	public static final Map<Player, PitEquipment> previousEquipmentMap = new HashMap<>();
 	private static final List<UUID> realPlayers = new ArrayList<>();
 
 	public static void addRealPlayer(UUID uuid) {
@@ -165,6 +171,38 @@ public class PlayerManager implements Listener {
 				}
 			}
 		}.runTaskTimer(PitSim.INSTANCE, 0L, 20L);
+
+		new BukkitRunnable() {
+			@Override
+			public void run() {
+				EnchantManager.readPlayerEnchants();
+				for(Player player : Bukkit.getOnlinePlayers()) {
+					PitEquipment currentEquipment = new PitEquipment(player);
+					if(!previousEquipmentMap.containsKey(player)) {
+						previousEquipmentMap.put(player, currentEquipment);
+						continue;
+					}
+
+					PitEquipment previousEquipment = previousEquipmentMap.get(player);
+
+					for(EquipmentType equipmentType : EquipmentType.values()) {
+						ItemStack previousItem = previousEquipment.getItemStack(equipmentType);
+						ItemStack currentItem = currentEquipment.getItemStack(equipmentType);
+						if(previousItem.equals(currentItem)) continue;
+
+						EquipmentChangeEvent event = new EquipmentChangeEvent(player, equipmentType, previousEquipment, currentEquipment, false);
+						Bukkit.getPluginManager().callEvent(event);
+					}
+
+					previousEquipmentMap.put(player, currentEquipment);
+				}
+			}
+		}.runTaskTimer(PitSim.INSTANCE, 0L, 1L);
+	}
+
+	@EventHandler
+	public void onEquipmentChange(EquipmentChangeEvent event) {
+		event.getPitPlayer().updateWalkingSpeed();
 	}
 
 	public static boolean isStaff(UUID uuid) {
@@ -570,7 +608,15 @@ public class PlayerManager implements Listener {
 	public void onPlayerJoin(PlayerJoinEvent event) {
 		Player player = event.getPlayer();
 		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
+
 		event.setJoinMessage(null);
+
+		PitEquipment currentEquipment = new PitEquipment(player);
+		for(EquipmentType equipmentType : EquipmentType.values()) {
+			EquipmentChangeEvent equipmentChangeEvent = new EquipmentChangeEvent(player, equipmentType,
+					new PitEquipment(), currentEquipment, true);
+			Bukkit.getPluginManager().callEvent(equipmentChangeEvent);
+		}
 
 		if(Misc.isKyro(player.getUniqueId()) && PitSim.anticheat instanceof GrimManager) {
 			Bukkit.getServer().dispatchCommand(player, "grim alerts");
@@ -792,6 +838,7 @@ public class PlayerManager implements Listener {
 	@EventHandler
 	public void onQuit(PlayerQuitEvent event) {
 		Player player = event.getPlayer();
+		previousEquipmentMap.remove(player);
 		event.setQuitMessage(null);
 		XmasMap.removeFromRadio(player);
 		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);

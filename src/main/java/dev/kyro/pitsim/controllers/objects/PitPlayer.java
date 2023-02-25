@@ -18,7 +18,9 @@ import dev.kyro.pitsim.brewing.PotionManager;
 import dev.kyro.pitsim.brewing.objects.BrewingSession;
 import dev.kyro.pitsim.controllers.*;
 import dev.kyro.pitsim.cosmetics.particles.ParticleColor;
+import dev.kyro.pitsim.enchants.overworld.GottaGoFast;
 import dev.kyro.pitsim.enchants.overworld.Hearts;
+import dev.kyro.pitsim.enchants.tainted.effects.Sonic;
 import dev.kyro.pitsim.enchants.tainted.uncommon.Tanky;
 import dev.kyro.pitsim.enums.AChatColor;
 import dev.kyro.pitsim.enums.DeathCry;
@@ -617,29 +619,6 @@ public class PitPlayer {
 	}
 
 	@Exclude
-	public void updateMaxHealth() {
-
-		int maxHealth = MapManager.inDarkzone(player) ? 20 : 24;
-		if(hasPerk(Thick.INSTANCE) && !MapManager.inDarkzone(player)) maxHealth += 4;
-
-		Map<PitEnchant, Integer> enchantMap = EnchantManager.getEnchantsOnPlayer(player);
-		maxHealth += Hearts.INSTANCE.getExtraHealth(enchantMap);
-		maxHealth += Tanky.INSTANCE.getExtraHealth(enchantMap);
-
-		if(megastreak instanceof Uberstreak) {
-			Uberstreak uberstreak = (Uberstreak) megastreak;
-			if(uberstreak.uberEffects.contains(Uberstreak.UberEffect.LOSE_MAX_HEALTH)) maxHealth -= 4;
-		}
-
-		if(Killstreak.hasKillstreak(player, "Monster") && Monster.healthMap.containsKey(player)) {
-			maxHealth += Monster.healthMap.get(player);
-		}
-
-		if(player.getMaxHealth() == maxHealth) return;
-		player.setMaxHealth(maxHealth);
-	}
-
-	@Exclude
 	public boolean useMana(int amount) {
 		if(amount > mana) return false;
 		mana -= amount;
@@ -664,6 +643,29 @@ public class PitPlayer {
 				DamageManager.kill(attackEvent, damager, player, KillType.KILL);
 			}
 		} else player.damage(damage);
+	}
+
+	@Exclude
+	public void updateMaxHealth() {
+
+		int maxHealth = MapManager.inDarkzone(player) ? 20 : 24;
+		if(hasPerk(Thick.INSTANCE) && !MapManager.inDarkzone(player)) maxHealth += 4;
+
+		Map<PitEnchant, Integer> enchantMap = EnchantManager.getEnchantsOnPlayer(player);
+		maxHealth += Hearts.INSTANCE.getExtraHealth(enchantMap);
+		maxHealth += Tanky.INSTANCE.getExtraHealth(enchantMap);
+
+		if(megastreak instanceof Uberstreak) {
+			Uberstreak uberstreak = (Uberstreak) megastreak;
+			if(uberstreak.uberEffects.contains(Uberstreak.UberEffect.LOSE_MAX_HEALTH)) maxHealth -= 4;
+		}
+
+		if(Killstreak.hasKillstreak(player, "Monster") && Monster.healthMap.containsKey(player)) {
+			maxHealth += Monster.healthMap.get(player);
+		}
+
+		if(player.getMaxHealth() == maxHealth) return;
+		player.setMaxHealth(maxHealth);
 	}
 
 	@Exclude
@@ -707,5 +709,16 @@ public class PitPlayer {
 
 		String actionBarMessage = String.join(" ", messageSegments);
 		ActionBarManager.sendActionBar(player, null, actionBarMessage);
+	}
+
+	@Exclude
+	public void updateWalkingSpeed() {
+		float previousWalkSpeed = player.getWalkSpeed();
+
+		float newWalkSpeed = 0.2F;
+		newWalkSpeed *= 1 + (Sonic.getWalkSpeedIncrease(player) / 100.0);
+		newWalkSpeed *= 1 + (GottaGoFast.getWalkSpeedIncrease(player) / 100.0);
+
+		if(previousWalkSpeed != newWalkSpeed) player.setWalkSpeed(newWalkSpeed);
 	}
 }

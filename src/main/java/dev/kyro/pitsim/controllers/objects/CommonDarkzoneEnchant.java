@@ -47,7 +47,7 @@ public abstract class CommonDarkzoneEnchant extends PitEnchant {
 			try {
 				Constructor<? extends PitMob> constructor = mobClass.getConstructor(Location.class);
 				PitMob pitMob = constructor.newInstance((Object) null);
-				mobNames.add(pitMob.getDisplayNamePlural());
+				mobNames.add(pitMob.getDisplayNamePlural().replaceAll("\u00A70", "\u00A78"));
 			} catch(Exception exception) {
 				exception.printStackTrace();
 				throw new RuntimeException();
