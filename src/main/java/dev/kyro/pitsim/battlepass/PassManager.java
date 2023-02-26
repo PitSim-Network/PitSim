@@ -258,6 +258,9 @@ public class PassManager implements Listener {
 				.registerReward(new PassCosmeticReward(Material.BANNER, 1, CosmeticManager.getCosmetic("solidcape"),
 						ParticleColor.DARK_RED), PitSimPass.RewardType.PREMIUM, premiumTier++));
 
+		premiumTier = 1;
+		registerPass(new PitSimPass(getDate("4/1/2023")));
+
 		updateCurrentPass();
 	}
 
