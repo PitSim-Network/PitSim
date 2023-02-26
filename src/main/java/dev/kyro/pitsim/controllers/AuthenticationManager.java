@@ -9,6 +9,7 @@ import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.List;
 import java.util.UUID;
@@ -26,9 +27,14 @@ public class AuthenticationManager implements Listener {
 			Player player = Bukkit.getPlayer(playerUUID);
 			if(player == null) return;
 
-			ConsoleCommandSender console = PitSim.INSTANCE.getServer().getConsoleSender();
-			Bukkit.dispatchCommand(console, "cc give p basic 1 " + player.getName());
-			AOutput.send(player, "&9&lLINK!&7 Great job verifying!");
+			new BukkitRunnable() {
+				@Override
+				public void run() {
+					ConsoleCommandSender console = PitSim.INSTANCE.getServer().getConsoleSender();
+					Bukkit.dispatchCommand(console, "cc give p basic 1 " + player.getName());
+					AOutput.send(player, "&9&lLINK!&7 Great job verifying!");
+				}
+			}.runTask(PitSim.INSTANCE);
 		}
 	}
 }

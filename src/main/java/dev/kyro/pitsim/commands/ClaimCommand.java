@@ -10,6 +10,9 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.scheduler.BukkitRunnable;
+
+import java.text.DecimalFormat;
 
 public class ClaimCommand implements CommandExecutor {
 	@Override
@@ -43,18 +46,24 @@ public class ClaimCommand implements CommandExecutor {
 			return;
 		}
 
-		long nextClaimTime = lastClaim + 1000 * 60 * 60 * 30;
+		long nextClaimTime = lastClaim + 1000L * 60 * 60 * 24 * 30;
 		long currentTime = System.currentTimeMillis();
 		if(nextClaimTime > currentTime) {
-			String timeLeft = (currentTime - nextClaimTime) / 1000.0 / 60 / 60 / 24 + "d";
+			DecimalFormat decimalFormat = new DecimalFormat("0.##");
+			String timeLeft = decimalFormat.format((nextClaimTime - currentTime) / 1000.0 / 60 / 60 / 24) + "d";
 			AOutput.send(player, "&c&lERROR!&7 You cannot do this for another " + timeLeft);
 			return;
 		}
 
 		DiscordManager.setLastBoostRewardClaim(player.getUniqueId(), currentTime);
 
-		ConsoleCommandSender console = PitSim.INSTANCE.getServer().getConsoleSender();
-		Bukkit.dispatchCommand(console, "cc give p basic 1 " + player.getName());
-		AOutput.send(player, "&dNITRO!&7 Thank you for boosting the server!");
+		new BukkitRunnable() {
+			@Override
+			public void run() {
+				ConsoleCommandSender console = PitSim.INSTANCE.getServer().getConsoleSender();
+				Bukkit.dispatchCommand(console, "cc give p basic 1 " + player.getName());
+				AOutput.send(player, "&dNITRO!&7 Thank you for boosting the server!");
+			}
+		}.runTask(PitSim.INSTANCE);
 	}
 }
