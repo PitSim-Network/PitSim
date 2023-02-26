@@ -1,7 +1,6 @@
 package dev.kyro.pitsim.commands;
 
 import dev.kyro.arcticapi.misc.AOutput;
-import dev.kyro.pitsim.controllers.AuthenticationManager;
 import dev.kyro.pitsim.controllers.DiscordManager;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -23,7 +22,6 @@ public class ClaimCommand implements CommandExecutor {
 			return false;
 		}
 
-		AuthenticationManager.attemptAuthentication(player);
 		return false;
 	}
 }

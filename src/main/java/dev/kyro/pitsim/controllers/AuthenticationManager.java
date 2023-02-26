@@ -1,7 +1,6 @@
 package dev.kyro.pitsim.controllers;
 
 import dev.kyro.arcticapi.misc.AOutput;
-import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.controllers.objects.PluginMessage;
 import dev.kyro.pitsim.events.MessageEvent;
 import net.md_5.bungee.api.chat.ClickEvent;
@@ -17,33 +16,18 @@ import java.util.UUID;
 
 public class AuthenticationManager implements Listener {
 
-	public static void attemptAuthentication(Player player) {
-		new PluginMessage()
-				.writeString("AUTH_REQUEST")
-				.writeString(PitSim.serverName)
-				.writeString(player.getUniqueId().toString())
-				.send();
-	}
-
 	@EventHandler
 	public void onMessage(MessageEvent event) {
 		PluginMessage message = event.getMessage();
 		List<String> strings = message.getStrings();
 		if(strings.isEmpty()) return;
 
-		if(strings.get(0).equals("AUTH_RESPONSE")) {
+		if(strings.get(0).equals("AUTH_SUCCESS")) {
 			UUID playerUUID = UUID.fromString(strings.get(1));
 			Player player = Bukkit.getPlayer(playerUUID);
 			if(player == null) return;
 
-			AuthStatus authStatus = AuthStatus.valueOf(strings.get(2));
-			if(authStatus == AuthStatus.MINECRAFT_ALREADY_AUTHENTICATED) {
-				AOutput.error(player, "&c&lERROR!&7 You are already authenticated");
-				return;
-			}
-
-			UUID clientState = UUID.fromString(strings.get(3));
-			sendAuthenticationLink(player, clientState);
+			AOutput.send(player, "&9&lLINK!&7 Great job verifying!");
 		}
 	}
 
