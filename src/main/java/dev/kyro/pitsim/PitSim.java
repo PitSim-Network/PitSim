@@ -638,7 +638,6 @@ public class PitSim extends JavaPlugin {
 		getCommand("ignore").setTabCompleter(new IgnoreCommand());
 		getCommand("ineeddata").setExecutor(new ChatTriggerSubscribeCommand());
 		getCommand("givemedata").setExecutor(new ChatTriggerRequestCommand());
-		getCommand("link").setExecutor(new LinkCommand());
 		getCommand("claim").setExecutor(new ClaimCommand());
 //		getCommand("massmigrate").setExecutor(new MassMigrateCommand());
 
