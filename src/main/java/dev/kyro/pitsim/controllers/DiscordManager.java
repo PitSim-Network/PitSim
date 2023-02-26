@@ -1,8 +1,15 @@
 package dev.kyro.pitsim.controllers;
 
+import dev.kyro.pitsim.commands.ClaimCommand;
+import dev.kyro.pitsim.controllers.objects.PluginMessage;
+import dev.kyro.pitsim.events.MessageEvent;
+import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 
 import java.sql.*;
+import java.util.List;
 import java.util.UUID;
 
 public class DiscordManager implements Listener {
@@ -15,7 +22,7 @@ public class DiscordManager implements Listener {
 			String username = "***REMOVED***";
 			String password = "***REMOVED***";
 			return DriverManager.getConnection(dbUrl, username, password);
-		} catch(Exception ignored) {} ;
+		} catch(Exception ignored) {}
 		return null;
 	}
 
@@ -42,7 +49,7 @@ public class DiscordManager implements Listener {
 			e.printStackTrace();
 		}
 
-		return -1;
+		return Long.MAX_VALUE;
 	}
 
 	public static void setLastBoostRewardClaim(UUID uuid, long millis) {
@@ -69,8 +76,18 @@ public class DiscordManager implements Listener {
 		}
 	}
 
-	public static boolean isBoosting(UUID uuid) {
+	@EventHandler
+	public void onMessage(MessageEvent event) {
+		PluginMessage message = event.getMessage();
+		List<String> strings = message.getStrings();
+		List<Boolean> booleans = message.getBooleans();
+		if(strings.isEmpty()) return;
 
-		return false;
+		if(strings.get(0).equals("BOOSTER_CLAIM")) {
+			UUID playerUUID = UUID.fromString(strings.get(1));
+			Player player = Bukkit.getPlayer(playerUUID);
+			boolean isBooster = booleans.get(0);
+			if(player != null) ClaimCommand.callback(player, isBooster);
+		}
 	}
 }

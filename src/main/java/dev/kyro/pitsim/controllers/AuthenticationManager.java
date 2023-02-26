@@ -1,12 +1,11 @@
 package dev.kyro.pitsim.controllers;
 
 import dev.kyro.arcticapi.misc.AOutput;
+import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.controllers.objects.PluginMessage;
 import dev.kyro.pitsim.events.MessageEvent;
-import net.md_5.bungee.api.chat.ClickEvent;
-import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
+import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -27,21 +26,9 @@ public class AuthenticationManager implements Listener {
 			Player player = Bukkit.getPlayer(playerUUID);
 			if(player == null) return;
 
+			ConsoleCommandSender console = PitSim.INSTANCE.getServer().getConsoleSender();
+			Bukkit.dispatchCommand(console, "cc give p basic 1 " + player.getName());
 			AOutput.send(player, "&9&lLINK!&7 Great job verifying!");
 		}
-	}
-
-	public static void sendAuthenticationLink(Player player, UUID clientState) {
-		TextComponent text = new TextComponent(ChatColor.translateAlternateColorCodes('&', "&9&lLINK!&7 Click me to link your discord account"));
-		text.setClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, "https://discord.com/api/oauth2/authorize?" +
-				"client_id=841567626466951171&redirect_uri=http%3A%2F%2F51.81.48.25%3A3000&response_type=code&" +
-				"scope=identify%20guilds.join&state=" + clientState.toString()));
-		player.spigot().sendMessage(text);
-	}
-
-	public enum AuthStatus {
-		DISCORD_ALREADY_AUTHENTICATED,
-		MINECRAFT_ALREADY_AUTHENTICATED,
-		READY_FOR_AUTHENTICATION
 	}
 }

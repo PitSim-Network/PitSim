@@ -29,7 +29,7 @@ public class PassKeyReward extends PassReward {
 		}
 
 		ConsoleCommandSender console = PitSim.INSTANCE.getServer().getConsoleSender();
-		Bukkit.dispatchCommand(console, "cc give P " + keyType.refName + " " + count + " " + pitPlayer.player.getName());
+		Bukkit.dispatchCommand(console, "cc give p " + keyType.refName + " " + count + " " + pitPlayer.player.getName());
 
 		return true;
 	}
