@@ -639,6 +639,7 @@ public class PitSim extends JavaPlugin {
 		getCommand("ineeddata").setExecutor(new ChatTriggerSubscribeCommand());
 		getCommand("givemedata").setExecutor(new ChatTriggerRequestCommand());
 		getCommand("link").setExecutor(new LinkCommand());
+		getCommand("claim").setExecutor(new ClaimCommand());
 //		getCommand("massmigrate").setExecutor(new MassMigrateCommand());
 
 		getCommand("gamemode").setExecutor(new GamemodeCommand());
@@ -715,6 +716,7 @@ public class PitSim extends JavaPlugin {
 		getServer().getPluginManager().registerEvents(new FirstJoinManager(), this);
 		getServer().getPluginManager().registerEvents(new ChatTriggerManager(), this);
 		getServer().getPluginManager().registerEvents(new AuthenticationManager(), this);
+		getServer().getPluginManager().registerEvents(new DiscordManager(), this);
 //		getServer().getPluginManager().registerEvents(new AIManager(), this);
 	}
 

@@ -37,7 +37,7 @@ public class AuthenticationManager implements Listener {
 			if(player == null) return;
 
 			AuthStatus authStatus = AuthStatus.valueOf(strings.get(2));
-			if(authStatus == AuthStatus.ALREADY_AUTHENTICATED) {
+			if(authStatus == AuthStatus.MINECRAFT_ALREADY_AUTHENTICATED) {
 				AOutput.error(player, "&c&lERROR!&7 You are already authenticated");
 				return;
 			}
@@ -56,7 +56,8 @@ public class AuthenticationManager implements Listener {
 	}
 
 	public enum AuthStatus {
-		ALREADY_AUTHENTICATED,
+		DISCORD_ALREADY_AUTHENTICATED,
+		MINECRAFT_ALREADY_AUTHENTICATED,
 		READY_FOR_AUTHENTICATION
 	}
 }

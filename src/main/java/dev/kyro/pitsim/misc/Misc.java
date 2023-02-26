@@ -9,6 +9,7 @@ import dev.kyro.pitsim.controllers.NonManager;
 import dev.kyro.pitsim.controllers.objects.GoldenHelmet;
 import dev.kyro.pitsim.controllers.objects.PitEnchant;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
+import dev.kyro.pitsim.controllers.objects.PluginMessage;
 import dev.kyro.pitsim.cosmetics.CosmeticManager;
 import dev.kyro.pitsim.cosmetics.CosmeticType;
 import dev.kyro.pitsim.cosmetics.PitCosmetic;
@@ -46,10 +47,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.text.DateFormat;
 import java.text.DecimalFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.*;
 
 public class Misc {
@@ -68,6 +66,13 @@ public class Misc {
 				}
 			}
 		}.runTaskAsynchronously(PitSim.INSTANCE);
+	}
+
+	public static void broadcast(String message) {
+		new PluginMessage()
+				.writeString("BROADCAST")
+				.writeString(message)
+				.send();
 	}
 
 	public static List<String> getTabComplete(String current, List<String> options) {
