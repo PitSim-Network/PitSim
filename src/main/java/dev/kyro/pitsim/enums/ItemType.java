@@ -1,7 +1,7 @@
 package dev.kyro.pitsim.enums;
 
 import dev.kyro.pitsim.commands.FreshCommand;
-import dev.kyro.pitsim.commands.JewelCommand;
+import dev.kyro.pitsim.commands.admin.JewelCommand;
 import dev.kyro.pitsim.controllers.EnchantManager;
 import dev.kyro.pitsim.misc.ChunkOfVile;
 import dev.kyro.pitsim.misc.FunkyFeather;
