@@ -62,7 +62,7 @@ public class ClaimCommand implements CommandExecutor {
 			public void run() {
 				ConsoleCommandSender console = PitSim.INSTANCE.getServer().getConsoleSender();
 				Bukkit.dispatchCommand(console, "cc give p basic 1 " + player.getName());
-				AOutput.send(player, "&dNITRO!&7 Thank you for boosting the server!");
+				AOutput.send(player, "&d&lNITRO!&7 Thank you for boosting the server!");
 			}
 		}.runTask(PitSim.INSTANCE);
 	}
