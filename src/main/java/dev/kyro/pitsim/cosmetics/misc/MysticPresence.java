@@ -48,8 +48,9 @@ public class MysticPresence extends PitCosmetic {
 
 				for(Player onlinePlayer : CosmeticManager.getDisplayPlayers(pitPlayer.player, displayLocation)) {
 					EntityPlayer entityPlayer = ((CraftPlayer) onlinePlayer).getHandle();
-					collection.display(count++ % collection.particleCollectionMap.size(), entityPlayer, displayLocation);
+					collection.display(count % collection.particleCollectionMap.size(), entityPlayer, displayLocation);
 				}
+				count++;
 			}
 		}.runTaskTimer(PitSim.INSTANCE, 0L, 1L));
 	}
