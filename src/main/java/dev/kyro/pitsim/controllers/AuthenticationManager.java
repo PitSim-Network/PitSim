@@ -32,7 +32,7 @@ public class AuthenticationManager implements Listener {
 				public void run() {
 					ConsoleCommandSender console = PitSim.INSTANCE.getServer().getConsoleSender();
 					Bukkit.dispatchCommand(console, "cc give p basic 1 " + player.getName());
-					AOutput.send(player, "&9&lLINK!&7 Great job verifying!");
+					AOutput.send(player, "&9&lLINK!&7 Thank you for verifying!");
 				}
 			}.runTask(PitSim.INSTANCE);
 		}
