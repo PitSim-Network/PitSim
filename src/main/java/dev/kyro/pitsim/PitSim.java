@@ -1,6 +1,5 @@
 package dev.kyro.pitsim;
 
-import ac.grim.grimac.GrimAbstractAPI;
 import com.comphenix.protocol.ProtocolLibrary;
 import com.comphenix.protocol.ProtocolManager;
 import com.gmail.filoghost.holographicdisplays.api.Hologram;
@@ -103,7 +102,6 @@ public class PitSim extends JavaPlugin {
 	public static final boolean PASS_ENABLED = true;
 
 	public static LuckPerms LUCKPERMS;
-	public static GrimAbstractAPI GRIM;
 	public static PitSim INSTANCE;
 	public static ProtocolManager PROTOCOL_MANAGER = null;
 	public static BukkitAudiences adventure;
@@ -158,9 +156,6 @@ public class PitSim extends JavaPlugin {
 
 		RegisteredServiceProvider<LuckPerms> luckpermsProvider = Bukkit.getServicesManager().getRegistration(LuckPerms.class);
 		if(luckpermsProvider != null) LUCKPERMS = luckpermsProvider.getProvider();
-
-		RegisteredServiceProvider<GrimAbstractAPI> grimProvider = Bukkit.getServicesManager().getRegistration(GrimAbstractAPI.class);
-		if (grimProvider != null) GRIM = grimProvider.getProvider();
 
 		PROTOCOL_MANAGER = ProtocolLibrary.getProtocolManager();
 
