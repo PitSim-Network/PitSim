@@ -29,7 +29,6 @@ import dev.kyro.pitsim.misc.Misc;
 import dev.kyro.pitsim.misc.Sounds;
 import dev.kyro.pitsim.pitmaps.XmasMap;
 import dev.kyro.pitsim.upgrades.TheWay;
-import dev.kyro.pitsim.upgrades.UberIncrease;
 import me.clip.placeholderapi.PlaceholderAPI;
 import net.luckperms.api.model.group.Group;
 import net.luckperms.api.model.user.User;
@@ -839,22 +838,26 @@ public class PlayerManager implements Listener {
 		XmasMap.removeFromRadio(player);
 		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
 		pitPlayer.megastreak.stop();
-		if(pitPlayer.megastreak.getClass() == RNGesus.class && RNGesus.isOnCooldown(player)) {
-			pitPlayer.megastreak = new NoMegastreak(pitPlayer);
+		if(pitPlayer.megastreak.getClass() == RNGesus.class) {
+			RNGesus rngesus = (RNGesus) pitPlayer.megastreak;
+			if(rngesus.isOnCooldown()) pitPlayer.megastreak = new NoMegastreak(pitPlayer);
 		}
 	}
 
 	@EventHandler
 	public void onOof(OofEvent event) {
 		PitPlayer pitPlayer = PitPlayer.getPitPlayer(event.getPlayer());
-		if(pitPlayer.megastreak.getClass() == RNGesus.class && RNGesus.isOnCooldown(event.getPlayer())) {
-			new BukkitRunnable() {
-				@Override
-				public void run() {
-					pitPlayer.megastreak.stop();
-					pitPlayer.megastreak = new NoMegastreak(pitPlayer);
-				}
-			}.runTaskLater(PitSim.INSTANCE, 1L);
+		if(pitPlayer.megastreak.getClass() == RNGesus.class) {
+			RNGesus rngesus = (RNGesus) pitPlayer.megastreak;
+			if(rngesus.isOnCooldown()) {
+				new BukkitRunnable() {
+					@Override
+					public void run() {
+						pitPlayer.megastreak.stop();
+						pitPlayer.megastreak = new NoMegastreak(pitPlayer);
+					}
+				}.runTaskLater(PitSim.INSTANCE, 1L);
+			}
 		}
 	}
 

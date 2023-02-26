@@ -137,6 +137,7 @@ public class PitPlayer {
 	public int moonBonus = 0;
 	public int dailyUbersLeft = 5;
 	public long uberReset = 0;
+	public long rngCooldown = 0;
 	public int goldGrinded = 0;
 	public Map<String, Integer> boosters = new HashMap<>();
 

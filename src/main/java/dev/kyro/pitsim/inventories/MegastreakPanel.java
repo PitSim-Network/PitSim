@@ -128,7 +128,7 @@ public class MegastreakPanel extends AGUIPanel {
 						}
 					}
 					if(megastreak.getClass() == RNGesus.class && !has && !prestige && !uberCd && !level) {
-						if(!RNGesus.isOnCooldown(player)) {
+						if(!RNGesus.isOnCooldown(pitPlayer)) {
 							Sounds.SUCCESS.play(player);
 							pitPlayer.megastreak.stop();
 							pitPlayer.megastreak = new RNGesus(pitPlayer);
@@ -138,7 +138,7 @@ public class MegastreakPanel extends AGUIPanel {
 							pitPlayer.renown = pitPlayer.renown - RNGesus.RENOWN_COST;
 							AOutput.send(player, "&aEquipped &6RNGsus &afor &e" + RNGesus.RENOWN_COST + " Renown!");
 							Sounds.SUCCESS.play(player);
-							RNGesus.rngesusCooldownPlayers.remove(player.getUniqueId());
+							pitPlayer.rngCooldown = 0;
 							pitPlayer.megastreak.stop();
 							pitPlayer.megastreak = new RNGesus(pitPlayer);
 							perkGUI.megaWrapUp();
@@ -177,7 +177,7 @@ public class MegastreakPanel extends AGUIPanel {
 	@Override
 	public void onOpen(InventoryOpenEvent event) {
 
-		boolean onRNGCooldown = RNGesus.isOnCooldown(player);
+		boolean onRNGCooldown = RNGesus.isOnCooldown(pitPlayer);
 		for(Megastreak megastreak : PerkManager.megastreaks) {
 			ItemStack item = new ItemStack(megastreak.guiItem().getType());
 			if(megastreak.getClass() == RNGesus.class && onRNGCooldown) item.setType(Material.ENDER_PEARL);
@@ -193,7 +193,7 @@ public class MegastreakPanel extends AGUIPanel {
 					lore.add(ChatColor.translateAlternateColorCodes('&', "&dDaily Uberstreaks remaining: &a" + ubersLeft + "&7/" + Uberstreak.getMaxUbers(player)));
 			}
 			if(megastreak.getClass() == RNGesus.class && onRNGCooldown) {
-				lore.add(ChatColor.YELLOW + "Megastreak on cooldown! " + ChatColor.GRAY + "(" + RNGesus.getTime(player) + ")");
+				lore.add(ChatColor.YELLOW + "Megastreak on cooldown! " + ChatColor.GRAY + "(" + RNGesus.getTime(pitPlayer) + ")");
 			}
 			if(pitPlayer.megastreak.getClass() == megastreak.getClass() && megastreak.getClass() != NoMegastreak.class) {
 				lore.add(ChatColor.GREEN + "Already selected!");
