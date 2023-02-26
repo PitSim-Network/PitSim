@@ -20,26 +20,33 @@ public class TaintedEnchanting {
 		ItemStack returnStack = itemStack;
 
 		if(previousTier == 0) {
-			int enchants;
+			int tokens;
 
-			Map<Integer, Double> enchantChance = new HashMap<>();
-			enchantChance.put(1, 0.9);
-			enchantChance.put(2, 0.1);
-			enchants = Misc.weightedRandom(enchantChance);
+			Map<Integer, Double> tokenChance = new HashMap<>();
+			tokenChance.put(1, 1.0);
+			tokenChance.put(2, 1.0);
+			tokens = Misc.weightedRandom(tokenChance);
 
-			for(int i = 0; i < enchants; i++) {
+			for(int i = 0; i < tokens; i++) {
+				Map<PitEnchant, Integer> enchantsOnItem = EnchantManager.getEnchantsOnItem(returnStack);
+
+				Map<PitEnchant, Double> randomEnchantMap = new HashMap<>();
+				for(Map.Entry<PitEnchant, Integer> entry : enchantsOnItem.entrySet()) {
+					randomEnchantMap.put(entry.getKey(), 1.0);
+				}
+
+				PitEnchant randomEnchant = getRandomEnchant(type, new ArrayList<>(randomEnchantMap.keySet()), 0);
+				randomEnchantMap.put(randomEnchant, (double) 1);
+
+				PitEnchant selectedEnchant = Misc.weightedRandom(randomEnchantMap);
+				int newTier = enchantsOnItem.getOrDefault(selectedEnchant, 0);
 				try {
-					Map<Integer, Double> newEnchantsRandom = new HashMap<>();
-					newEnchantsRandom.put(1, 0.7);
-					newEnchantsRandom.put(2, 0.3);
-					int newEnchants = enchants == 1 ? 1 : Misc.weightedRandom(newEnchantsRandom);
-
-					List<PitEnchant> enchantsOnItem = new ArrayList<>(EnchantManager.getEnchantsOnItem(returnStack).keySet());
-					returnStack = EnchantManager.addEnchant(returnStack, getRandomEnchant(type, enchantsOnItem, 0), newEnchants, false);
-				} catch(Exception e) {
-					e.printStackTrace();
+					returnStack = EnchantManager.addEnchant(returnStack, selectedEnchant, newTier + 1, false);
+				} catch(Exception exception) {
+					exception.printStackTrace();
 				}
 			}
+
 		} else {
 			int newTokens;
 			Map<Integer, Double> enchantRandom = new HashMap<>();
@@ -64,7 +71,12 @@ public class TaintedEnchanting {
 					randomRarityMap.put(1, previousTier == 1 ? 0.49 : 0.45);
 					randomRarityMap.put(0, previousTier == 1 ? 0.49 : 0.45);
 
-					PitEnchant randomEnchant = getRandomEnchant(type, new ArrayList<>(randomEnchantMap.keySet()), Misc.weightedRandom(randomRarityMap));
+					List<PitEnchant> usedEnchants = new ArrayList<>(enchantsOnItem.keySet());
+					for(PitEnchant enchant : randomEnchantMap.keySet()) {
+						if(!usedEnchants.contains(enchant)) usedEnchants.add(enchant);
+					}
+
+					PitEnchant randomEnchant = getRandomEnchant(type, new ArrayList<>(usedEnchants), Misc.weightedRandom(randomRarityMap));
 					randomEnchantMap.put(randomEnchant, (double) (3 - enchantsOnItem.size()));
 				}
 
