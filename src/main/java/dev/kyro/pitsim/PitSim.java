@@ -577,7 +577,7 @@ public class PitSim extends JavaPlugin {
 		getCommand("ps").setExecutor(adminCommand);
 		AMultiCommand giveCommand = new BaseSetCommand(adminCommand, "give");
 		AMultiCommand setCommand = new BaseSetCommand(adminCommand, "set");
-//		adminCommand.registerCommand(new AnticheatCommand("check"));
+
 		new HopperCommand(adminCommand, "hopper");
 		new UUIDCommand(adminCommand, "uuid");
 		new RandomizeCommand(adminCommand, "randomize");
@@ -589,6 +589,7 @@ public class PitSim extends JavaPlugin {
 		new BountyCommand(setCommand, "bounty");
 
 		new JewelCommand(giveCommand, "jewel");
+		new StreakCommand(giveCommand, "streak");
 
 		getCommand("atest").setExecutor(new ATestCommand());
 		getCommand("fps").setExecutor(new FPSCommand());
