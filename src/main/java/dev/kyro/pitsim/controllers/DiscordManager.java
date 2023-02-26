@@ -68,4 +68,9 @@ public class DiscordManager implements Listener {
 			throw new RuntimeException(e);
 		}
 	}
+
+	public static boolean isBoosting(UUID uuid) {
+
+		return false;
+	}
 }
