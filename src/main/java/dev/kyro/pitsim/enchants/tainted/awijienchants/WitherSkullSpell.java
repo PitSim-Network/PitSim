@@ -18,7 +18,7 @@ public class WitherSkullSpell extends PitEnchant {
 	public static int MANA_COST = 30;
 
 	public WitherSkullSpell() {
-		super("WitherSkull", true, ApplyType.SCYTHES,
+		super("Wither Skull", true, ApplyType.SCYTHES,
 				"witherskull", "wither");
 		isTainted = true;
 	}

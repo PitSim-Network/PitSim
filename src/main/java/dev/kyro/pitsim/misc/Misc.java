@@ -4,14 +4,12 @@ import de.myzelyam.api.vanish.VanishAPI;
 import de.tr7zw.nbtapi.NBTItem;
 import dev.kyro.arcticapi.libs.discord.DiscordWebhook;
 import dev.kyro.pitsim.PitSim;
+import dev.kyro.pitsim.adarkzone.BossManager;
 import dev.kyro.pitsim.adarkzone.DarkzoneManager;
 import dev.kyro.pitsim.adarkzone.PitMob;
 import dev.kyro.pitsim.aitems.PitItem;
 import dev.kyro.pitsim.commands.LightningCommand;
-import dev.kyro.pitsim.controllers.EnchantManager;
-import dev.kyro.pitsim.controllers.ItemFactory;
-import dev.kyro.pitsim.controllers.NonManager;
-import dev.kyro.pitsim.controllers.SpawnManager;
+import dev.kyro.pitsim.controllers.*;
 import dev.kyro.pitsim.controllers.objects.HelmetManager;
 import dev.kyro.pitsim.controllers.objects.PitEnchant;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
@@ -19,6 +17,7 @@ import dev.kyro.pitsim.cosmetics.CosmeticManager;
 import dev.kyro.pitsim.cosmetics.CosmeticType;
 import dev.kyro.pitsim.cosmetics.PitCosmetic;
 import dev.kyro.pitsim.enums.NBTTag;
+import dev.kyro.pitsim.enums.PitEntityType;
 import dev.kyro.pitsim.events.HealEvent;
 import dev.kyro.pitsim.megastreaks.Overdrive;
 import dev.kyro.pitsim.megastreaks.Uberstreak;
@@ -60,6 +59,29 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class Misc {
+	public static boolean isEntity(LivingEntity entity, PitEntityType... entityTypes) {
+		for(PitEntityType entityType : entityTypes) {
+			switch(entityType) {
+				case REAL_PLAYER:
+					if(PlayerManager.isRealPlayer(entity)) return true;
+					break;
+				case NON:
+					if(NonManager.getNon(entity) != null) return true;
+					break;
+				case HOPPER:
+					if(HopperManager.isHopper(entity)) return true;
+					break;
+				case PIT_MOB:
+					if(DarkzoneManager.isPitMob(entity)) return true;
+					break;
+				case PIT_BOSS:
+					if(BossManager.isPitBoss(entity)) return true;
+					break;
+			}
+		}
+		throw new RuntimeException();
+	}
+
 	public static void stunEntity(LivingEntity livingEntity, int ticks) {
 		Misc.applyPotionEffect(livingEntity, PotionEffectType.SLOW, ticks, 7, true, false);
 		Misc.applyPotionEffect(livingEntity, PotionEffectType.JUMP, ticks, 128, true, false);
