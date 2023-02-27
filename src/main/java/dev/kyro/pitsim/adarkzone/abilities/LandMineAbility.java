@@ -2,12 +2,14 @@ package dev.kyro.pitsim.adarkzone.abilities;
 
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.adarkzone.RoutinePitBossAbility;
-import dev.kyro.pitsim.cosmetics.RotationTools;
 import dev.kyro.pitsim.cosmetics.particles.ExplosionHugeParticle;
 import dev.kyro.pitsim.cosmetics.particles.ParticleColor;
 import dev.kyro.pitsim.cosmetics.particles.RedstoneParticle;
+import dev.kyro.pitsim.enums.PitEntityType;
+import dev.kyro.pitsim.misc.Misc;
 import dev.kyro.pitsim.misc.Sounds;
 import dev.kyro.pitsim.misc.effects.FallingBlock;
+import dev.kyro.pitsim.misc.math.RotationUtils;
 import net.minecraft.server.v1_8_R3.EntityPlayer;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -26,13 +28,20 @@ import java.util.List;
 import java.util.Random;
 
 public class LandMineAbility extends RoutinePitBossAbility {
-	public double shakeThreshold = 0.02;
-	public long disableTicks = 20;
-	public double radius = 2;
+	public static final double SHAKE_THRESHOLD = 0.02;
+	public long disableTicks;
+	public double radius;
+	public long removeTicks;
+	public double damage;
 	public List<LandMine> landMines = new ArrayList<>();
 
-	public LandMineAbility(double routineWeight) {
+	public LandMineAbility(double routineWeight, double radius, long primeTicks, long removeTicks, double damage) {
 		super(routineWeight);
+
+		this.radius = radius;
+		this.disableTicks = primeTicks;
+		this.removeTicks = removeTicks;
+		this.damage = damage;
 	}
 
 	@Override
@@ -61,25 +70,25 @@ public class LandMineAbility extends RoutinePitBossAbility {
 				Vector vector;
 				switch(dir) {
 					case 0:
-						vector = new Vector(0, shakeThreshold * 4, shakeThreshold);
+						vector = new Vector(0, SHAKE_THRESHOLD * 4, SHAKE_THRESHOLD);
 						break;
 					case 1:
-						vector = new Vector(shakeThreshold, shakeThreshold * 4, 0);
+						vector = new Vector(SHAKE_THRESHOLD, SHAKE_THRESHOLD * 4, 0);
 						break;
 					case 2:
-						vector = new Vector(0, 0, -1 * shakeThreshold);
+						vector = new Vector(0, 0, -1 * SHAKE_THRESHOLD);
 						break;
 					case 3:
-						vector = new Vector(-1 * shakeThreshold, 0, 0);
+						vector = new Vector(-1 * SHAKE_THRESHOLD, 0, 0);
 						break;
 					default:
 						vector = new Vector(0, 0, 0);
 						break;
 				}
 
-				RotationTools.rotate(vector, landMine.rotation, 0 , 0);
+				RotationUtils.rotate(vector, landMine.rotation, 0 , 0);
 				landMine.fallingBlock.setVelocity(vector);
-				if(i == 200) {
+				if(i >= removeTicks) {
 					this.cancel();
 					landMine.fallingBlock.removeBlock();
 					landMines.remove(landMine);
@@ -146,7 +155,7 @@ public class LandMineAbility extends RoutinePitBossAbility {
 	public void disable() {
 		super.disable();
 
-		for(LandMine landMine : landMines) {
+		for(LandMine landMine : new ArrayList<>(landMines)) {
 			detonate(landMine);
 		}
 	}
@@ -162,21 +171,21 @@ public class LandMineAbility extends RoutinePitBossAbility {
 		FallingBlock block = landMine.fallingBlock;
 		Location center = block.getSpawnLocation();
 		for(Entity entity : center.getWorld().getNearbyEntities(center, radius, radius, radius)) {
-			if(!(entity instanceof Player) || entity == pitBoss.boss) continue;
+			if(!Misc.isEntity(entity, PitEntityType.REAL_PLAYER)) continue;
 			Player player = (Player) entity;
 
 			double distance = player.getLocation().distance(center);
 			if(distance > radius) continue;
 
-			player.damage(500, pitBoss.boss);
+			player.damage(damage, pitBoss.boss);
 
 			double multiplier = Math.pow(5 - distance, 1.5);
-			Vector playerVector = player.getLocation().toVector().subtract(landMine.fallingBlock.getSpawnLocation().toVector());
-			playerVector.add(new Vector(0, 0.1, 0));
-			playerVector.normalize();
-			playerVector.multiply(1.5);
-			playerVector.multiply(multiplier);
-			player.setVelocity(playerVector);
+			Vector velocity = player.getLocation().toVector().subtract(landMine.fallingBlock.getSpawnLocation().toVector());
+			velocity.add(new Vector(0, 0.1, 0));
+			velocity.normalize();
+			velocity.multiply(1.5);
+			velocity.multiply(multiplier);
+			player.setVelocity(velocity);
 		}
 
 		for(Player viewer : getViewers()) {
