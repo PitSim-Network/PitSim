@@ -68,7 +68,7 @@ public class EnderchestManager implements Listener {
 				}.runTaskLater(PitSim.INSTANCE, 1L);
 
 			}
-		} catch(Exception ignored) {} ;
+		} catch(Exception ignored) {}
 	}
 
 	@EventHandler

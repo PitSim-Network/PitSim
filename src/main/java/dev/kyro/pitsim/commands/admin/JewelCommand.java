@@ -1,4 +1,4 @@
-package dev.kyro.pitsim.commands;
+package dev.kyro.pitsim.commands.admin;
 
 import de.tr7zw.nbtapi.NBTItem;
 import dev.kyro.arcticapi.commands.ACommand;

@@ -11,11 +11,13 @@ import org.bukkit.potion.PotionEffectType;
 import java.util.List;
 
 public class ComboVenom extends PitEnchant {
+	public static ComboVenom INSTANCE;
 
 	public ComboVenom() {
 		super("Combo: Venom", true, ApplyType.NONE,
 				"venom", "combo-venom");
 		isUncommonEnchant = true;
+		INSTANCE = this;
 	}
 
 	public static boolean isVenomed(LivingEntity entity) {

@@ -13,6 +13,7 @@ import dev.kyro.pitsim.controllers.*;
 import dev.kyro.pitsim.controllers.objects.HelmetManager;
 import dev.kyro.pitsim.controllers.objects.PitEnchant;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
+import dev.kyro.pitsim.controllers.objects.PluginMessage;
 import dev.kyro.pitsim.cosmetics.CosmeticManager;
 import dev.kyro.pitsim.cosmetics.CosmeticType;
 import dev.kyro.pitsim.cosmetics.PitCosmetic;
@@ -200,6 +201,13 @@ public class Misc {
 			}
 		}
 		throw new RuntimeException();
+	}
+
+	public static void broadcast(String message) {
+		new PluginMessage()
+				.writeString("BROADCAST")
+				.writeString(message)
+				.send();
 	}
 
 	public static List<String> getTabComplete(String current, List<String> options) {

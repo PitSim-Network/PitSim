@@ -25,7 +25,7 @@ public class EnderchestGUI extends AGUI {
 		EXTRAORDINARY("&3Extraordinary", 7, "group.extraordinary"),
 		MIRACULOUS("&bMiraculous", 10, "group.miraculous"),
 		UNTHINKABLE("&6Unthinkable", 14, "group.unthinkable"),
-		ETERNAL("&4Eternal", 18, "group.eternal"),
+		ETERNAL("&4Eternal", 18, "pitsim.has-had-eternal"),
 		DEVELOPER("&9Developer", 18, "group.developer");
 
 		public final String rankName;
