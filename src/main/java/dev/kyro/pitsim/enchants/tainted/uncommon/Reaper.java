@@ -19,8 +19,10 @@ public class Reaper extends PitEnchant {
 		INSTANCE = this;
 	}
 
-	public int getSoulChanceIncrease(Player killer) {
-		int enchantLvl = EnchantManager.getEnchantLevel(killer, this);
+	public static int getSoulChanceIncrease(Player killer) {
+		if(!INSTANCE.isEnabled()) return 0;
+
+		int enchantLvl = EnchantManager.getEnchantLevel(killer, INSTANCE);
 		if(enchantLvl == 0) return 0;
 
 		return getSoulChanceIncrease(enchantLvl);
@@ -33,7 +35,7 @@ public class Reaper extends PitEnchant {
 		).getLore();
 	}
 
-	public int getSoulChanceIncrease(int enchantLvl) {
+	public static int getSoulChanceIncrease(int enchantLvl) {
 		return enchantLvl * 16 + 16;
 	}
 }

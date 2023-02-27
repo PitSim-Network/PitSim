@@ -21,6 +21,8 @@ public class Mechanic extends PitEnchant {
 	}
 
 	public static int getDecreaseTicks(Player player) {
+		if(!INSTANCE.isEnabled()) return 0;
+
 		int enchantLvl = EnchantManager.getEnchantLevel(player, INSTANCE);
 		if(enchantLvl == 0) return 0;
 

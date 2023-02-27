@@ -26,7 +26,14 @@ public class Bipolar extends PitEnchant {
 	public static Bipolar INSTANCE;
 	public static List<Player> vengefulPlayers = new ArrayList<>();
 
-	static {
+	public Bipolar() {
+		super("Bipolar", true, ApplyType.CHESTPLATES,
+				"bipolar", "polar");
+		isTainted = true;
+		INSTANCE = this;
+
+		if(!isEnabled()) return;
+
 		new BukkitRunnable() {
 			@Override
 			public void run() {
@@ -43,13 +50,6 @@ public class Bipolar extends PitEnchant {
 				}
 			}
 		}.runTaskTimer(PitSim.INSTANCE, 0L, 20L);
-	}
-
-	public Bipolar() {
-		super("Bipolar", true, ApplyType.CHESTPLATES,
-				"bipolar", "polar");
-		isTainted = true;
-		INSTANCE = this;
 	}
 
 	@EventHandler

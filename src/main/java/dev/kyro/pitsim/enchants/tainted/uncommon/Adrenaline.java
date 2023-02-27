@@ -20,7 +20,15 @@ import java.util.List;
 public class Adrenaline extends PitEnchant {
 	public static Adrenaline INSTANCE;
 
-	static {
+	public Adrenaline() {
+		super("Adrenaline", false, ApplyType.CHESTPLATES,
+				"adrenaline");
+		isUncommonEnchant = true;
+		isTainted = true;
+		INSTANCE = this;
+
+		if(!isEnabled()) return;
+
 		new BukkitRunnable() {
 			@Override
 			public void run() {
@@ -36,14 +44,6 @@ public class Adrenaline extends PitEnchant {
 				}
 			}
 		}.runTaskTimer(PitSim.INSTANCE, 0L, 10L);
-	}
-
-	public Adrenaline() {
-		super("Adrenaline", false, ApplyType.CHESTPLATES,
-				"adrenaline");
-		isUncommonEnchant = true;
-		isTainted = true;
-		INSTANCE = this;
 	}
 
 	@EventHandler

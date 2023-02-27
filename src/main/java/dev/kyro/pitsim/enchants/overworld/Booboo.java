@@ -5,38 +5,26 @@ import dev.kyro.pitsim.controllers.EnchantManager;
 import dev.kyro.pitsim.controllers.objects.PitEnchant;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.enums.ApplyType;
-import dev.kyro.pitsim.events.AttackEvent;
 import dev.kyro.pitsim.misc.Misc;
 import dev.kyro.pitsim.misc.PitLoreBuilder;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
-import org.bukkit.event.EventHandler;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.List;
 
 public class Booboo extends PitEnchant {
 	public static Booboo INSTANCE;
+	public static int counter = 0;
 
 	public Booboo() {
 		super("Boo-boo", false, ApplyType.PANTS,
 				"boo-boo", "boo", "bb", "booboo");
 		isUncommonEnchant = true;
 		INSTANCE = this;
-	}
 
-	@EventHandler
-	public void onAttack(AttackEvent.Apply attackEvent) {
-		if(!canApply(attackEvent)) return;
+		if(!isEnabled()) return;
 
-		int enchantLvl = attackEvent.getDefenderEnchantLevel(this);
-		if(enchantLvl == 0) return;
-
-	}
-
-	public static int counter = 0;
-
-	static {
 		new BukkitRunnable() {
 			@Override
 			public void run() {

@@ -28,26 +28,24 @@ public class Swarm extends PitEnchant {
 				"swarm");
 		isTainted = true;
 		INSTANCE = this;
-	}
 
-	static {
-		if(PitSim.status.isDarkzone()) {
-			new BukkitRunnable() {
-				@Override
-				public void run() {
-					for(Player onlinePlayer : Bukkit.getOnlinePlayers()) {
-						particleMap.putIfAbsent(onlinePlayer, new ArrayList<>());
-						List<SwarmParticle> particleList = particleMap.get(onlinePlayer);
+		if(!isEnabled()) return;
 
-						int enchantLvl = EnchantManager.getEnchantsOnPlayer(onlinePlayer).getOrDefault(INSTANCE, 0);
-						int targetParticles = getParticleCount(enchantLvl);
+		new BukkitRunnable() {
+			@Override
+			public void run() {
+				for(Player onlinePlayer : Bukkit.getOnlinePlayers()) {
+					particleMap.putIfAbsent(onlinePlayer, new ArrayList<>());
+					List<SwarmParticle> particleList = particleMap.get(onlinePlayer);
 
-						for(int i = particleList.size(); i < targetParticles; i++) particleList.add(new SwarmParticle(onlinePlayer));
-						while(particleList.size() > targetParticles) particleList.remove(0).remove();
-					}
+					int enchantLvl = EnchantManager.getEnchantsOnPlayer(onlinePlayer).getOrDefault(INSTANCE, 0);
+					int targetParticles = getParticleCount(enchantLvl);
+
+					for(int i = particleList.size(); i < targetParticles; i++) particleList.add(new SwarmParticle(onlinePlayer));
+					while(particleList.size() > targetParticles) particleList.remove(0).remove();
 				}
-			}.runTaskTimer(PitSim.INSTANCE, 0L, 1L);
-		}
+			}
+		}.runTaskTimer(PitSim.INSTANCE, 0L, 1L);
 	}
 
 	@EventHandler

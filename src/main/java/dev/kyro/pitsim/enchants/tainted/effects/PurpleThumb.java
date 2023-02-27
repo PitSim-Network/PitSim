@@ -45,7 +45,14 @@ public class PurpleThumb extends PitEnchant {
 	public static final double EFFECT_RADIUS = 7;
 	public static final int DEFAULT_EFFECT_DURATION = 20 * 10;
 
-	static {
+	public PurpleThumb() {
+		super("Purple Thumb", true, ApplyType.CHESTPLATES,
+				"purplethumb", "thumb");
+		isTainted = true;
+		INSTANCE = this;
+
+		if(!isEnabled()) return;
+
 		new BukkitRunnable() {
 			@Override
 			public void run() {
@@ -107,13 +114,6 @@ public class PurpleThumb extends PitEnchant {
 				count++;
 			}
 		}.runTaskTimer(PitSim.INSTANCE, 0L, 10L);
-	}
-
-	public PurpleThumb() {
-		super("Purple Thumb", true, ApplyType.CHESTPLATES,
-				"purplethumb", "thumb");
-		isTainted = true;
-		INSTANCE = this;
 	}
 
 	@EventHandler

@@ -202,7 +202,9 @@ public class PlayerManager implements Listener {
 
 	@EventHandler
 	public void onEquipmentChange(EquipmentChangeEvent event) {
-		event.getPitPlayer().updateWalkingSpeed();
+		PitPlayer pitPlayer = event.getPitPlayer();
+		pitPlayer.updateMaxHealth();
+		pitPlayer.updateWalkingSpeed();
 	}
 
 	public static boolean isStaff(UUID uuid) {

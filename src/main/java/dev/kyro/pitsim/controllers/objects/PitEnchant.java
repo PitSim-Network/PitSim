@@ -3,7 +3,6 @@ package dev.kyro.pitsim.controllers.objects;
 import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.controllers.Cooldown;
-import dev.kyro.pitsim.controllers.MapManager;
 import dev.kyro.pitsim.enchants.overworld.Regularity;
 import dev.kyro.pitsim.enums.ApplyType;
 import dev.kyro.pitsim.enums.EnchantRarity;
@@ -82,9 +81,6 @@ public abstract class PitEnchant implements Listener {
 //		if(!fakeHits && attackEvent.fakeHit) return false;
 //		Skip enchant application if the enchant is a bow enchant and is used in mele
 		if(applyType == ApplyType.BOWS && attackEvent.getArrow() == null) return false;
-		if(applyType == ApplyType.SCYTHES || applyType == ApplyType.CHESTPLATES) {
-			if(attackEvent.getAttacker().getWorld() != MapManager.getDarkzone()) return false;
-		}
 //		Skips enchant application if the enchant only works on mele hit and the event is from an arrow
 		if(meleOnly && attackEvent.getArrow() != null) return false;
 		return true;

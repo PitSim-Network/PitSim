@@ -653,8 +653,8 @@ public class PitPlayer {
 		if(hasPerk(Thick.INSTANCE) && !MapManager.inDarkzone(player)) maxHealth += 4;
 
 		Map<PitEnchant, Integer> enchantMap = EnchantManager.getEnchantsOnPlayer(player);
-		maxHealth += Hearts.INSTANCE.getExtraHealth(enchantMap);
-		maxHealth += Tanky.INSTANCE.getExtraHealth(enchantMap);
+		maxHealth += Hearts.getExtraHealth(enchantMap);
+		maxHealth += Tanky.getExtraHealth(enchantMap);
 
 		if(megastreak instanceof Uberstreak) {
 			Uberstreak uberstreak = (Uberstreak) megastreak;
