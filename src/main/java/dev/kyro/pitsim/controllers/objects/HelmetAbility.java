@@ -27,7 +27,7 @@ public abstract class HelmetAbility implements Listener {
 		this.refName = refName;
 		this.isTogglable = isTogglable;
 		this.slot = slot;
-		PitSim.INSTANCE.getServer().getPluginManager().registerEvents(this, PitSim.INSTANCE);
+		if(player != null) PitSim.INSTANCE.getServer().getPluginManager().registerEvents(this, PitSim.INSTANCE);
 	}
 
 	public void onActivate() {

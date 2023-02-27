@@ -2,7 +2,6 @@ package dev.kyro.pitsim.enchants.overworld;
 
 import dev.kyro.pitsim.controllers.objects.PitEnchant;
 import dev.kyro.pitsim.enums.ApplyType;
-import dev.kyro.pitsim.misc.PitLoreBuilder;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.entity.EntityDamageEvent;
@@ -11,11 +10,13 @@ import org.bukkit.potion.PotionEffectType;
 import java.util.List;
 
 public class ComboVenom extends PitEnchant {
+	public static ComboVenom INSTANCE;
 
 	public ComboVenom() {
 		super("Combo: Venom", true, ApplyType.NONE,
 				"venom", "combo-venom");
 		isUncommonEnchant = true;
+		INSTANCE = this;
 	}
 
 	public static boolean isVenomed(LivingEntity entity) {

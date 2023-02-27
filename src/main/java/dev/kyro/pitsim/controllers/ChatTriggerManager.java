@@ -2,6 +2,7 @@ package dev.kyro.pitsim.controllers;
 
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
+import dev.kyro.pitsim.megastreaks.Uberstreak;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
@@ -73,6 +74,14 @@ public class ChatTriggerManager implements Listener {
 		sendData(pitPlayer.player, encodeMap(dataMap));
 	}
 
+	public static void sendUberInfo(PitPlayer pitPlayer) {
+		Map<String, Object> dataMap = new LinkedHashMap<>();
+		dataMap.put("maxUbers", Uberstreak.getMaxUbers(pitPlayer.player));
+		dataMap.put("ubersLeft", pitPlayer.dailyUbersLeft);
+		dataMap.put("uberResetTime", pitPlayer.uberReset);
+		sendData(pitPlayer.player, encodeMap(dataMap));
+	}
+
 	public static Object encodeObject(Object object) {
 		if(object instanceof Map) {
 			return encodeMap((Map<String, Object>) object);
@@ -100,7 +109,7 @@ public class ChatTriggerManager implements Listener {
 		return jsonObject;
 	}
 
-	public static void subScribePlayer(Player player) {
+	public static void subscribePlayer(Player player) {
 		if(subscribedPlayers.contains(player.getUniqueId())) return;
 		subscribedPlayers.add(player.getUniqueId());
 
@@ -108,6 +117,7 @@ public class ChatTriggerManager implements Listener {
 		sendPrestigeInfo(pitPlayer);
 		sendAuctionInfo(pitPlayer);
 		sendPerksInfo(pitPlayer);
+		sendUberInfo(pitPlayer);
 	}
 
 	public static boolean isSubscribed(Player player) {
@@ -121,6 +131,7 @@ public class ChatTriggerManager implements Listener {
 	}
 
 	public static void sendData(Player player, JSONObject data) {
+		if(!isSubscribed(player)) return;
 		player.sendMessage(PREFIX + data.toString());
 	}
 }

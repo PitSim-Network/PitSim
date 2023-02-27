@@ -624,6 +624,7 @@ public class PitSim extends JavaPlugin {
 		getCommand("loadskin").setExecutor(new LoadSkinCommand());
 		getCommand("ineeddata").setExecutor(new ChatTriggerSubscribeCommand());
 		getCommand("givemedata").setExecutor(new ChatTriggerRequestCommand());
+		getCommand("claim").setExecutor(new ClaimCommand());
 		//TODO: Remove this
 //		getCommand("massmigrate").setExecutor(new MassMigrateCommand());
 
@@ -683,6 +684,8 @@ public class PitSim extends JavaPlugin {
 		getServer().getPluginManager().registerEvents(new MiscManager(), this);
 		getServer().getPluginManager().registerEvents(new FirstJoinManager(), this);
 		getServer().getPluginManager().registerEvents(new ChatTriggerManager(), this);
+		getServer().getPluginManager().registerEvents(new AuthenticationManager(), this);
+		getServer().getPluginManager().registerEvents(new DiscordManager(), this);
 //		getServer().getPluginManager().registerEvents(new AIManager(), this);
 		getServer().getPluginManager().registerEvents(new MarketMessaging(), this);
 		getServer().getPluginManager().registerEvents(new MigrationManager(), this);

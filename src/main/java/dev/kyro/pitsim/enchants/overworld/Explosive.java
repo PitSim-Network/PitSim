@@ -8,6 +8,7 @@ import dev.kyro.pitsim.controllers.objects.Non;
 import dev.kyro.pitsim.controllers.objects.PitEnchant;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.enums.ApplyType;
+import dev.kyro.pitsim.megastreaks.RNGesus;
 import dev.kyro.pitsim.megastreaks.Uberstreak;
 import dev.kyro.pitsim.misc.PitLoreBuilder;
 import dev.kyro.pitsim.misc.Sounds;
@@ -56,8 +57,9 @@ public class Explosive extends PitEnchant {
 
 					PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
 					if(NonManager.getNon(player) == null) {
-						if(pitPlayer.megastreak instanceof Uberstreak && pitPlayer.megastreak.isOnMega())
-							continue;
+						if(pitPlayer.megastreak.isOnMega()) {
+							if(pitPlayer.megastreak instanceof Uberstreak || pitPlayer.megastreak instanceof RNGesus) continue;
+						}
 						Vector force = player.getLocation().toVector().subtract(arrow.getLocation().toVector())
 								.setY(1).normalize().multiply(non == null ? 1.15 : 5);
 						player.setVelocity(force);
