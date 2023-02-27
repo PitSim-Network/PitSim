@@ -226,7 +226,8 @@ public class KillEvent extends Event {
 		deadVulnerableItems.remove(itemLocation);
 	}
 
-	public void updatePlayerItems() {
+	public void damageItems() {
+		if(!shouldLoseItems) return;
 		for(Map.Entry<PlayerItemLocation, ItemInfo> entry : deadVulnerableItems.entrySet()) {
 			ItemStack itemStack = entry.getValue().itemStack;
 			PitItem pitItem = ItemFactory.getItem(itemStack);
