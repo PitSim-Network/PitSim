@@ -192,7 +192,7 @@ public class MegastreakPanel extends AGUIPanel {
 					lore.add(ChatColor.translateAlternateColorCodes('&', "&dDaily Uberstreaks remaining: &a" + ubersLeft + "&7/" + Uberstreak.getMaxUbers(player)));
 			}
 			if(megastreak instanceof RNGesus && onRNGCooldown) {
-				lore.add(ChatColor.YELLOW + "Megastreak on cooldown! " + ChatColor.GRAY + "(" + RNGesus.getTime(pitPlayer) + ")");
+				lore.add(ChatColor.YELLOW + "Megastreak on cooldown! " + ChatColor.GRAY + "(" + RNGesus.getTimeLeft(pitPlayer) + ")");
 			}
 			if(pitPlayer.megastreak.getClass() == megastreak.getClass() && !(megastreak instanceof NoMegastreak)) {
 				lore.add(ChatColor.GREEN + "Already selected!");

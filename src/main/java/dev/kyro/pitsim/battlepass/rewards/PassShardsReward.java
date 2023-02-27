@@ -3,11 +3,11 @@ package dev.kyro.pitsim.battlepass.rewards;
 import dev.kyro.arcticapi.builders.AItemStackBuilder;
 import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.arcticapi.misc.AOutput;
-import dev.kyro.arcticapi.misc.AUtil;
+import dev.kyro.pitsim.aitems.misc.AncientGemShard;
 import dev.kyro.pitsim.battlepass.PassReward;
+import dev.kyro.pitsim.controllers.ItemFactory;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.misc.Misc;
-import dev.kyro.pitsim.upgrades.ShardHunter;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 
@@ -25,7 +25,7 @@ public class PassShardsReward extends PassReward {
 			return false;
 		}
 
-		AUtil.giveItemSafely(pitPlayer.player, ShardHunter.getShardItem(count), true);
+		ItemFactory.getItem(AncientGemShard.class).giveItem(pitPlayer.player, count);
 		return true;
 	}
 
