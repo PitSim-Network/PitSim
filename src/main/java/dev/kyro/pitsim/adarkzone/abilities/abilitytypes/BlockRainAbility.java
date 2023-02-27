@@ -1,8 +1,9 @@
-package dev.kyro.pitsim.adarkzone.abilities;
+package dev.kyro.pitsim.adarkzone.abilities.abilitytypes;
 
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.adarkzone.RoutinePitBossAbility;
-import dev.kyro.pitsim.misc.Sounds;
+import dev.kyro.pitsim.misc.BlockData;
+import dev.kyro.pitsim.misc.Misc;
 import dev.kyro.pitsim.misc.effects.FallingBlock;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -12,28 +13,34 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
-public class BlockRainAbility extends RoutinePitBossAbility {
+public abstract class BlockRainAbility extends RoutinePitBossAbility {
 
 	public int radius;
 	public int blockCount;
-	public Material material;
-	public Sounds.SoundEffect soundEffect;
-	public byte data;
+	public Map<BlockData, Double> blocks;
 	public double damage;
 
-	public BlockRainAbility(double routineWeight, int radius, int blockCount, Material material, byte data, Sounds.SoundEffect soundEffect, double damage) {
+	public BlockRainAbility(double routineWeight, int radius, int blockCount, Map<BlockData, Double> blocks, double damage) {
 		super(routineWeight);
 		this.radius = radius;
 		this.blockCount = blockCount;
-		this.material = material;
-		this.data = data;
+		this.blocks = blocks;
 		this.damage = damage;
-		this.soundEffect = soundEffect;
 	}
+
+	public BlockRainAbility(double routineWeight, int radius, int blockCount, BlockData block, double damage) {
+		super(routineWeight);
+		this.radius = radius;
+		this.blockCount = blockCount;
+		this.blocks = new HashMap<>();
+		this.damage = damage;
+
+		blocks.put(block, 1.0);
+	}
+
+	public abstract void onBlockLand(FallingBlock block, Location location);
 
 	@Override
 	public void onRoutineExecute() {
@@ -78,7 +85,8 @@ public class BlockRainAbility extends RoutinePitBossAbility {
 			new BukkitRunnable() {
 				@Override
 				public void run() {
-					FallingBlock fallingBlock = new FallingBlock(material, data, randomLocation);
+					BlockData blockData = getBlock(blocks);
+					FallingBlock fallingBlock = new FallingBlock(blockData.material, blockData.data, randomLocation);
 					fallingBlock.setViewers(getViewers());
 					fallingBlock.spawnBlock();
 
@@ -97,10 +105,6 @@ public class BlockRainAbility extends RoutinePitBossAbility {
 						return;
 					}
 
-//					int fallTime = getFallTime(totalHeight);
-//					System.out.println("Total Height: " + totalHeight);
-//					System.out.println(fallTime);
-
 					int fallTime = getFallTime(totalHeight - 2);
 
 					randomLocation.subtract(0, totalHeight - 1, 0);
@@ -108,14 +112,7 @@ public class BlockRainAbility extends RoutinePitBossAbility {
 					new BukkitRunnable() {
 						@Override
 						public void run() {
-							soundEffect.play(randomLocation, 40);
-							for(Entity nearbyEntity : randomLocation.getWorld().getNearbyEntities(randomLocation, 1, 1, 1)) {
-								if(!(nearbyEntity instanceof Player)) continue;
-								Player player = Bukkit.getPlayer(nearbyEntity.getUniqueId());
-								if(player == null) continue;
-
-								player.damage(damage, pitBoss.boss);
-							}
+							onBlockLand(fallingBlock, randomLocation);
 						}
 					}.runTaskLater(PitSim.INSTANCE, fallTime);
 
@@ -167,11 +164,12 @@ public class BlockRainAbility extends RoutinePitBossAbility {
 			motY -= gravity;
 
 			ticks++;
-
-//			System.out.println("LocY: " + locY + " : " + (totalHeight));
-
 		}
 
 		return ticks;
+	}
+
+	public BlockData getBlock(Map<BlockData, Double> blockMap) {
+		return Misc.weightedRandom(blockMap);
 	}
 }
