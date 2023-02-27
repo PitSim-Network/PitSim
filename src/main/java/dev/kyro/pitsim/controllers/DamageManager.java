@@ -381,7 +381,7 @@ public class DamageManager implements Listener {
 
 		KillEvent killEvent;
 
-		if(deadIsRealPlayer && pitDead.megastreak instanceof RNGesus && RNGesus.isOnCooldown(deadPlayer)) {
+		if(deadIsRealPlayer && pitDead.megastreak instanceof RNGesus && RNGesus.isOnCooldown(pitDead)) {
 			new BukkitRunnable() {
 				@Override
 				public void run() {
