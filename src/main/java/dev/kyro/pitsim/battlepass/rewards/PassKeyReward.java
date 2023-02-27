@@ -13,12 +13,12 @@ import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.inventory.ItemStack;
 
 public class PassKeyReward extends PassReward {
-	public int count;
 	public KeyType keyType;
+	public int count;
 
-	public PassKeyReward(int count, KeyType keyType) {
-		this.count = count;
+	public PassKeyReward(KeyType keyType, int count) {
 		this.keyType = keyType;
+		this.count = count;
 	}
 
 	@Override
@@ -29,7 +29,7 @@ public class PassKeyReward extends PassReward {
 		}
 
 		ConsoleCommandSender console = PitSim.INSTANCE.getServer().getConsoleSender();
-		Bukkit.dispatchCommand(console, "cc give P " + keyType.refName + " " + count + " " + pitPlayer.player.getName());
+		Bukkit.dispatchCommand(console, "cc give p " + keyType.refName + " " + count + " " + pitPlayer.player.getName());
 
 		return true;
 	}

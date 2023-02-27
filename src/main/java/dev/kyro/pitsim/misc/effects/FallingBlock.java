@@ -35,7 +35,7 @@ public class FallingBlock {
 		this.blockData = data;
 	}
 
-	public void spawnBlock() {
+	public FallingBlock spawnBlock() {
 		IBlockData data = CraftMagicNumbers.getBlock(material).fromLegacyData(blockData & 255);
 		entityFallingBlock = new EntityFallingBlock(nmsWorld, 0, 0, 0, data);
 		entityFallingBlock.setPosition(spawnLocation.getX(), spawnLocation.getY(), spawnLocation.getZ());
@@ -45,9 +45,10 @@ public class FallingBlock {
 		for(Player viewer : viewers) {
 			((CraftPlayer) viewer).getHandle().playerConnection.sendPacket(spawn);
 		}
+		return this;
 	}
 
-	public void setVelocity(Vector velocity) {
+	public FallingBlock setVelocity(Vector velocity) {
 		double xMot = velocity.getX();
 		double yMot = velocity.getY();
 		double zMot = velocity.getZ();
@@ -56,23 +57,26 @@ public class FallingBlock {
 		for(Player viewer : viewers) {
 			((CraftPlayer) viewer).getHandle().playerConnection.sendPacket(packet);
 		}
+		return this;
 	}
 
-	public void removeAfter(int ticks) {
+	public FallingBlock removeAfter(int ticks) {
 		new BukkitRunnable() {
 			@Override
 			public void run() {
 				removeBlock();
 			}
 		}.runTaskLater(PitSim.INSTANCE, ticks);
+		return this;
 	}
 
-	public void removeBlock() {
+	public FallingBlock removeBlock() {
 		PacketPlayOutEntityDestroy destroy = new PacketPlayOutEntityDestroy(entityFallingBlock.getId());
 
 		for(Player viewer : viewers) {
 			((CraftPlayer) viewer).getHandle().playerConnection.sendPacket(destroy);
 		}
+		return this;
 	}
 
 	public Location getSpawnLocation() {
@@ -87,7 +91,8 @@ public class FallingBlock {
 		return viewers;
 	}
 
-	public void setViewers(List<Player> viewers) {
+	public FallingBlock setViewers(List<Player> viewers) {
 		this.viewers = viewers;
+		return this;
 	}
 }

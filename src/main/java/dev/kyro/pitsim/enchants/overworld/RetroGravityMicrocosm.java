@@ -9,7 +9,6 @@ import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.enums.ApplyType;
 import dev.kyro.pitsim.events.AttackEvent;
 import dev.kyro.pitsim.events.KillEvent;
-import dev.kyro.pitsim.events.OofEvent;
 import dev.kyro.pitsim.misc.Misc;
 import dev.kyro.pitsim.misc.Sounds;
 import org.bukkit.Material;
@@ -32,13 +31,6 @@ public class RetroGravityMicrocosm extends PitEnchant {
 	public RetroGravityMicrocosm() {
 		super("Retro-Gravity Microcosm", true, ApplyType.PANTS,
 				"rgm", "retro", "retrogravitymicrocosm", "retro-gravitymicrocosm", "retro-gravity-microcosm");
-	}
-
-	@EventHandler
-	public void onOof(OofEvent event) {
-		Player player = event.getPlayer();
-		clearAttacker(player);
-		clearDefender(player);
 	}
 
 	@EventHandler

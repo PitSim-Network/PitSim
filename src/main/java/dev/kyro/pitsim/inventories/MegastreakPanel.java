@@ -11,7 +11,6 @@ import dev.kyro.pitsim.controllers.objects.Megastreak;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.megastreaks.*;
 import dev.kyro.pitsim.misc.Sounds;
-import dev.kyro.pitsim.upgrades.UberIncrease;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
@@ -128,7 +127,7 @@ public class MegastreakPanel extends AGUIPanel {
 						}
 					}
 					if(megastreak instanceof RNGesus && !has && !prestige && !uberCd && !level) {
-						if(!RNGesus.isOnCooldown(player)) {
+						if(!RNGesus.isOnCooldown(pitPlayer)) {
 							Sounds.SUCCESS.play(player);
 							pitPlayer.megastreak.stop();
 							pitPlayer.megastreak = new RNGesus(pitPlayer);
@@ -138,7 +137,7 @@ public class MegastreakPanel extends AGUIPanel {
 							pitPlayer.renown = pitPlayer.renown - RNGesus.RENOWN_COST;
 							AOutput.send(player, "&aEquipped &6RNGsus &afor &e" + RNGesus.RENOWN_COST + " Renown!");
 							Sounds.SUCCESS.play(player);
-							RNGesus.rngesusCooldownPlayers.remove(player.getUniqueId());
+							pitPlayer.rngCooldown = 0;
 							pitPlayer.megastreak.stop();
 							pitPlayer.megastreak = new RNGesus(pitPlayer);
 							perkGUI.megaWrapUp();
@@ -150,7 +149,7 @@ public class MegastreakPanel extends AGUIPanel {
 					} else if(!prestige && !has && !uberCd && !level) {
 						openPanel(perkGUI.getHomePanel());
 						Sounds.SUCCESS.play(player);
-						if(ChatTriggerManager.isSubscribed(player)) ChatTriggerManager.sendPerksInfo(pitPlayer);
+						ChatTriggerManager.sendPerksInfo(pitPlayer);
 					}
 					if(prestige) {
 						AOutput.error(player, "&cYou aren't high enough prestige to use this!");
@@ -177,26 +176,23 @@ public class MegastreakPanel extends AGUIPanel {
 	@Override
 	public void onOpen(InventoryOpenEvent event) {
 
-		boolean isOnCooldown = RNGesus.isOnCooldown(player);
+		boolean onRNGCooldown = RNGesus.isOnCooldown(pitPlayer);
 		for(Megastreak megastreak : PerkManager.megastreaks) {
 			ItemStack item = new ItemStack(megastreak.guiItem().getType());
-			if(megastreak instanceof RNGesus && isOnCooldown) item.setType(Material.ENDER_PEARL);
+			if(megastreak instanceof RNGesus && onRNGCooldown) item.setType(Material.ENDER_PEARL);
 			ItemMeta meta = item.getItemMeta();
 			List<String> lore = new ArrayList<>(megastreak.guiItem().getItemMeta().getLore());
 			lore.add("");
 			if(megastreak instanceof Uberstreak && pitPlayer.prestige >= megastreak.prestigeReq()) {
-				if((System.currentTimeMillis() / 1000L) - 60 * 60 * 20 > pitPlayer.uberReset) {
-					pitPlayer.uberReset = 0;
-					pitPlayer.dailyUbersLeft = 5 + UberIncrease.getUberIncrease(player);
-				}
+				Uberstreak.checkUberReset(pitPlayer);
 				int ubersLeft = pitPlayer.dailyUbersLeft;
 				if(ubersLeft == 0)
-					lore.add(ChatColor.translateAlternateColorCodes('&', "&dDaily Uberstreaks remaining: &c0&7/" + (5 + UberIncrease.getUberIncrease(player))));
+					lore.add(ChatColor.translateAlternateColorCodes('&', "&dDaily Uberstreaks remaining: &c0&7/" + Uberstreak.getMaxUbers(player)));
 				else
-					lore.add(ChatColor.translateAlternateColorCodes('&', "&dDaily Uberstreaks remaining: &a" + ubersLeft + "&7/" + (5 + UberIncrease.getUberIncrease(player))));
+					lore.add(ChatColor.translateAlternateColorCodes('&', "&dDaily Uberstreaks remaining: &a" + ubersLeft + "&7/" + Uberstreak.getMaxUbers(player)));
 			}
-			if(megastreak instanceof RNGesus && isOnCooldown) {
-				lore.add(ChatColor.YELLOW + "Megastreak on cooldown! " + ChatColor.GRAY + "(" + RNGesus.getTimeLeft(player) + ")");
+			if(megastreak instanceof RNGesus && onRNGCooldown) {
+				lore.add(ChatColor.YELLOW + "Megastreak on cooldown! " + ChatColor.GRAY + "(" + RNGesus.getTimeLeft(pitPlayer) + ")");
 			}
 			if(pitPlayer.megastreak.getClass() == megastreak.getClass() && !(megastreak instanceof NoMegastreak)) {
 				lore.add(ChatColor.GREEN + "Already selected!");
@@ -212,10 +208,10 @@ public class MegastreakPanel extends AGUIPanel {
 				PrestigeValues.PrestigeInfo info = PrestigeValues.getPrestigeInfo(pitPlayer.prestige);
 				lore.add(ChatColor.translateAlternateColorCodes('&', "&cUnlocked at level " + info.getOpenBracket() + PrestigeValues.getLevelColor(megastreak.getFinalLevelReq(player)) + megastreak.getFinalLevelReq(player) + info.getCloseBracket()));
 				meta.setDisplayName(ChatColor.RED + megastreak.getRawName());
-			} else if(megastreak instanceof RNGesus && pitPlayer.renown < 1 && isOnCooldown) {
+			} else if(megastreak instanceof RNGesus && pitPlayer.renown < 1 && onRNGCooldown) {
 				lore.add(ChatColor.RED + "Click to select for " + RNGesus.RENOWN_COST + " renown!");
 				meta.setDisplayName(ChatColor.RED + megastreak.getRawName());
-			} else if(megastreak instanceof RNGesus && pitPlayer.renown >= 1 && isOnCooldown) {
+			} else if(megastreak instanceof RNGesus && pitPlayer.renown >= 1 && onRNGCooldown) {
 				lore.add(ChatColor.YELLOW + "Click to select for " + RNGesus.RENOWN_COST + " renown!");
 				meta.setDisplayName(ChatColor.YELLOW + megastreak.getRawName());
 			} else if(!(megastreak instanceof NoMegastreak)) {

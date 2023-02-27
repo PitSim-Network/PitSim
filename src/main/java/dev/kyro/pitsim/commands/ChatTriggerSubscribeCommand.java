@@ -23,8 +23,8 @@ public class ChatTriggerSubscribeCommand implements CommandExecutor {
 			return false;
 		}
 
+		ChatTriggerManager.subscribePlayer(player);
 		AOutput.send(player, ChatTriggerManager.PREFIX + "Subscribed to receive a shit ton of data");
-		ChatTriggerManager.subScribePlayer(player);
 		return false;
 	}
 }

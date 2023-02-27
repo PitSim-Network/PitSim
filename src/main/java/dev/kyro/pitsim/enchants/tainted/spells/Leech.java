@@ -32,7 +32,10 @@ public class Leech extends PitEnchant {
 		if(enchantLvl == 0) return;
 
 		Cooldown cooldown = getCooldown(player, 10);
-		if(cooldown.isOnCooldown()) return;
+		if(cooldown.isOnCooldown()) {
+			Sounds.NO.play(player);
+			return;
+		}
 		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
 		if(!pitPlayer.useMana(getManaCost(enchantLvl))) {
 			Sounds.NO.play(player);

@@ -96,7 +96,7 @@ public class Non {
 			if(count % 5 == 0) {
 				pickTarget();
 //				npc.getNavigator().setTarget(target, true);
-				if(target != null) {
+				if(target != null && Math.abs(non.getLocation().getY() - MapManager.currentMap.getY()) < 5) {
 					target.damage(7, non);
 					if(Math.random() < 0.5) PlayerAnimation.ARM_SWING.play(non);
 				}

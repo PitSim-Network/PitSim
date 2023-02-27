@@ -96,7 +96,11 @@ public class MysticSword extends StaticPitItem {
 		newNBTItem.addCompound(NBTTag.MYSTIC_ENCHANTS.getRef());
 		NBTCompound newItemEnchants = newNBTItem.getCompound(NBTTag.MYSTIC_ENCHANTS.getRef());
 		NBTCompound itemEnchants = nbtItem.getCompound(NBTTag.MYSTIC_ENCHANTS.getRef());
-		for(String enchantKey : itemEnchants.getKeys()) newItemEnchants.setInteger(enchantKey, itemEnchants.getInteger(enchantKey));
+		for(String enchantKey : itemEnchants.getKeys()) {
+			int enchantLvl = itemEnchants.getInteger(enchantKey);
+			if(enchantLvl == 0) continue;
+			newItemEnchants.setInteger(enchantKey, enchantLvl);
+		}
 
 		if(nbtItem.hasKey(NBTTag.ITEM_ENCHANT_NUM.getRef()))
 			newNBTItem.setInteger(NBTTag.ITEM_ENCHANT_NUM.getRef(), nbtItem.getInteger(NBTTag.ITEM_ENCHANT_NUM.getRef()));

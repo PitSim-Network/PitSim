@@ -43,8 +43,6 @@ public class RNGesus extends Megastreak {
 	public static int COOLDOWN_MINUTES = 60;
 	public static int INSTABILITY_THRESHOLD = 1000;
 
-	public static Map<UUID, Long> rngesusCooldownPlayers = new HashMap<>();
-
 	public List<Reality> generatedRealityOrder = new ArrayList<>();
 	public Map<Reality, RealityInfo> realityMap = new HashMap<>();
 	public Reality reality = Reality.NONE;
@@ -114,6 +112,7 @@ public class RNGesus extends Megastreak {
 		lore.add(ChatColor.translateAlternateColorCodes('&', "&7Triggers on: &c100 kills"));
 		lore.add("");
 		lore.add(ChatColor.GRAY + "On trigger:");
+		lore.add(ChatColor.translateAlternateColorCodes('&', "&a\u25a0 &7Immune to enchants that &emove &7you"));
 		lore.add(ChatColor.translateAlternateColorCodes('&', "&e\u25a0 &eShift &7into a random reality (&6Gold&7, &bXP&7,"));
 		lore.add(ChatColor.translateAlternateColorCodes('&', "&cDamage&7, &eAbsorption&7)"));
 		lore.add(ChatColor.translateAlternateColorCodes('&', "&c\u25a0 &7Start a &b1 hour &7cooldown for this streak"));
@@ -146,7 +145,7 @@ public class RNGesus extends Megastreak {
 	public void onAttack(AttackEvent.Pre attackEvent) {
 		if(!PlayerManager.isRealPlayer(attackEvent.getAttackerPlayer()) || !PlayerManager.isRealPlayer(attackEvent.getDefenderPlayer()))
 			return;
-		if((attackEvent.getDefenderPitPlayer() == pitPlayer || attackEvent.getDefenderPitPlayer() == pitPlayer) && pitPlayer.megastreak instanceof RNGesus &&
+		if((attackEvent.getDefenderPitPlayer() == pitPlayer || attackEvent.getAttackerPitPlayer() == pitPlayer) && pitPlayer.megastreak instanceof RNGesus &&
 				attackEvent.getAttackerPlayer() != attackEvent.getDefenderPlayer() && pitPlayer.getKills() >= INSTABILITY_THRESHOLD) {
 			attackEvent.setCancelled(true);
 		}
@@ -184,8 +183,8 @@ public class RNGesus extends Megastreak {
 					public void run() {
 						Map<PitEnchant, Integer> attackerEnchant = EnchantManager.getEnchantsOnPlayer(attackEvent.getAttacker());
 						Map<PitEnchant, Integer> defenderEnchant = new HashMap<>();
-						EntityDamageByEntityEvent ev = new EntityDamageByEntityEvent(attackEvent.getAttacker(), target, EntityDamageEvent.DamageCause.CUSTOM, 0);
-						AttackEvent attackEvent = new AttackEvent(ev, attackerEnchant, defenderEnchant, false);
+						EntityDamageByEntityEvent newEvent = new EntityDamageByEntityEvent(attackEvent.getAttacker(), target, EntityDamageEvent.DamageCause.CUSTOM, 0);
+						AttackEvent attackEvent = new AttackEvent(newEvent, attackerEnchant, defenderEnchant, false);
 
 						double chance = damage / target.getMaxHealth();
 						if(Math.random() < chance)
@@ -265,7 +264,7 @@ public class RNGesus extends Megastreak {
 
 	@Override
 	public void proc() {
-		rngsusCooldown(pitPlayer.player);
+		putOnCooldown();
 		Sounds.MEGA_RNGESUS.play(pitPlayer.player.getLocation());
 
 		String message = "%luckperms_prefix%";
@@ -342,10 +341,10 @@ public class RNGesus extends Megastreak {
 							if(onlinePlayer.getUniqueId().equals(attackerUUID)) {
 								Map<PitEnchant, Integer> attackerEnchant = new HashMap<>();
 								Map<PitEnchant, Integer> defenderEnchant = new HashMap<>();
-								EntityDamageByEntityEvent ev = new EntityDamageByEntityEvent(onlinePlayer, pitPlayer.player, EntityDamageEvent.DamageCause.CUSTOM, 0);
-								AttackEvent attackEvent = new AttackEvent(ev, attackerEnchant, defenderEnchant, false);
+								EntityDamageByEntityEvent newEvent = new EntityDamageByEntityEvent(onlinePlayer, pitPlayer.player, EntityDamageEvent.DamageCause.CUSTOM, 0);
+								AttackEvent attackEvent = new AttackEvent(newEvent, attackerEnchant, defenderEnchant, false);
 
-								DamageManager.kill(attackEvent, onlinePlayer, pitPlayer.player, KillType.DEFAULT);
+								DamageManager.kill(attackEvent, onlinePlayer, pitPlayer.player, KillType.KILL);
 								return;
 							}
 						}
@@ -519,23 +518,24 @@ public class RNGesus extends Megastreak {
 		((CraftPlayer) player).getHandle().playerConnection.sendPacket(packet);
 	}
 
-	public static boolean isOnCooldown(Player player) {
-		if(!rngesusCooldownPlayers.containsKey(player.getUniqueId())) return false;
-		double timeElapsed = new Date().getTime() - rngesusCooldownPlayers.get(player.getUniqueId());
-		if(timeElapsed / 1000 / 60 > COOLDOWN_MINUTES) {
-			rngesusCooldownPlayers.remove(player.getUniqueId());
-			return false;
-		}
-		return true;
+	public boolean isOnCooldown() {
+		return isOnCooldown(pitPlayer);
 	}
 
-	public static String getTimeLeft(Player player) {
-		long timePassed = System.currentTimeMillis() - rngesusCooldownPlayers.get(player.getUniqueId());
-		long timeRemaining = (COOLDOWN_MINUTES * 60L * 1000) - timePassed;
+	public static boolean isOnCooldown(PitPlayer pitPlayer) {
+		return System.currentTimeMillis() < pitPlayer.rngCooldown;
+	}
+
+	public String getTimeLeft() {
+		return getTimeLeft(pitPlayer);
+	}
+
+	public static String getTimeLeft(PitPlayer pitPlayer) {
+		long timeRemaining = pitPlayer.rngCooldown - System.currentTimeMillis();
 		return Misc.formatDurationFull(timeRemaining, true);
 	}
 
-	public static void rngsusCooldown(Player player) {
-		rngesusCooldownPlayers.put(player.getUniqueId(), System.currentTimeMillis());
+	public void putOnCooldown() {
+		pitPlayer.rngCooldown = System.currentTimeMillis() + COOLDOWN_MINUTES * 60L * 1000;
 	}
 }

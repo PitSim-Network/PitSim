@@ -14,6 +14,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class PacketBlock {
@@ -25,6 +26,7 @@ public class PacketBlock {
 
 	private final IBlockData originalBlockData;
 
+	private boolean isRemoved;
 
 	public PacketBlock(Material material, byte data, Location location, List<Player> viewers) {
 		this(material, data, location);
@@ -41,7 +43,7 @@ public class PacketBlock {
 		originalBlockData = CraftMagicNumbers.getBlock(originalBlock.getType()).fromLegacyData(originalBlock.getData() & 255);
 	}
 
-	public void spawnBlock() {
+	public PacketBlock spawnBlock() {
 		IBlockData data = CraftMagicNumbers.getBlock(material).fromLegacyData(blockData & 255);
 		BlockPosition blockPosition = new BlockPosition(spawnLocation.getBlockX(), spawnLocation.getBlockY(), spawnLocation.getBlockZ());
 		PacketPlayOutBlockChange packet = new PacketPlayOutBlockChange(nmsWorld, blockPosition);
@@ -61,18 +63,23 @@ public class PacketBlock {
 		}
 
 		PacketManager.suppressedLocations.put(this, viewers);
+		return this;
 	}
 
-	public void removeAfter(int ticks) {
+	public PacketBlock removeAfter(int ticks) {
 		new BukkitRunnable() {
 			@Override
 			public void run() {
 				removeBlock();
 			}
 		}.runTaskLater(PitSim.INSTANCE, ticks);
+		return this;
 	}
 
 	public void removeBlock() {
+		if(isRemoved) return;
+		isRemoved = true;
+
 		BlockPosition blockPosition = new BlockPosition(spawnLocation.getBlockX(), spawnLocation.getBlockY(), spawnLocation.getBlockZ());
 		PacketPlayOutBlockChange packet = new PacketPlayOutBlockChange(nmsWorld, blockPosition);
 
@@ -117,7 +124,17 @@ public class PacketBlock {
 		return originalBlockData;
 	}
 
-	public void setViewers(List<Player> viewers) {
+	public boolean isRemoved() {
+		return isRemoved;
+	}
+
+	public PacketBlock setViewers(Player viewer) {
+		this.viewers = Collections.singletonList(viewer);
+		return this;
+	}
+
+	public PacketBlock setViewers(List<Player> viewers) {
 		this.viewers = viewers;
+		return this;
 	}
 }

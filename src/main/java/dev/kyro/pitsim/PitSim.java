@@ -15,6 +15,8 @@ import dev.kyro.arcticapi.data.AConfig;
 import dev.kyro.arcticapi.hooks.AHook;
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.adarkzone.*;
+import dev.kyro.pitsim.adarkzone.notdarkzone.EquipmentType;
+import dev.kyro.pitsim.adarkzone.notdarkzone.PitEquipment;
 import dev.kyro.pitsim.adarkzone.notdarkzone.ShieldManager;
 import dev.kyro.pitsim.adarkzone.progression.ProgressionManager;
 import dev.kyro.pitsim.aitems.misc.*;
@@ -59,15 +61,16 @@ import dev.kyro.pitsim.cosmetics.misc.MysticPresence;
 import dev.kyro.pitsim.cosmetics.trails.*;
 import dev.kyro.pitsim.enchants.overworld.GoldBoost;
 import dev.kyro.pitsim.enchants.overworld.*;
-import dev.kyro.pitsim.enchants.tainted.abilities.Bipolar;
-import dev.kyro.pitsim.enchants.tainted.abilities.Sonic;
-import dev.kyro.pitsim.enchants.tainted.abilities.Swarm;
+import dev.kyro.pitsim.enchants.tainted.awijienchants.*;
+import dev.kyro.pitsim.enchants.tainted.effects.*;
 import dev.kyro.pitsim.enchants.tainted.common.*;
 import dev.kyro.pitsim.enchants.tainted.spells.*;
 import dev.kyro.pitsim.enchants.tainted.uncommon.*;
 import dev.kyro.pitsim.enchants.tainted.znotcodedrare.*;
-import dev.kyro.pitsim.enchants.tainted.znotcodeduncommon.*;
+import dev.kyro.pitsim.enchants.tainted.uncommon.Adrenaline;
+import dev.kyro.pitsim.enchants.tainted.uncommon.Barbaric;
 import dev.kyro.pitsim.enums.NBTTag;
+import dev.kyro.pitsim.events.EquipmentChangeEvent;
 import dev.kyro.pitsim.helmetabilities.*;
 import dev.kyro.pitsim.killstreaks.*;
 import dev.kyro.pitsim.killstreaks.Leech;
@@ -137,7 +140,6 @@ public class PitSim extends JavaPlugin {
 	public void onEnable() {
 		INSTANCE = this;
 
-
 		loadConfig();
 		ArcticAPI.configInit(this, "prefix", "error-prefix");
 		serverName = AConfig.getString("server");
@@ -147,7 +149,21 @@ public class PitSim extends JavaPlugin {
 		if(status.isDarkzone()) DarkzoneManager.clearEntities();
 
 		for(Player onlinePlayer : Bukkit.getOnlinePlayers()) {
+			PlayerManager.addRealPlayer(onlinePlayer.getUniqueId());
 			PlayerDataManager.exemptedPlayers.add(onlinePlayer.getUniqueId());
+
+			PitEquipment currentEquipment = new PitEquipment(onlinePlayer);
+			for(EquipmentType equipmentType : EquipmentType.values()) {
+				new BukkitRunnable() {
+					@Override
+					public void run() {
+						if(!onlinePlayer.isOnline()) return;
+						EquipmentChangeEvent event = new EquipmentChangeEvent(onlinePlayer, equipmentType,
+								new PitEquipment(), currentEquipment, true);
+						Bukkit.getPluginManager().callEvent(event);
+					}
+				}.runTaskLater(PitSim.INSTANCE, 1L);
+			}
 
 			if(Misc.isKyro(onlinePlayer.getUniqueId())) {
 //				onlinePlayer.teleport(MapManager.kyroDarkzoneSpawn);
@@ -156,7 +172,6 @@ public class PitSim extends JavaPlugin {
 
 		FirestoreManager.init();
 		for(Player onlinePlayer : Bukkit.getOnlinePlayers()) {
-			PlayerManager.addRealPlayer(onlinePlayer.getUniqueId());
 			boolean success = PitPlayer.loadPitPlayer(onlinePlayer.getUniqueId());
 			if(success) continue;
 			onlinePlayer.kickPlayer(ChatColor.RED + "Playerdata failed to load. Please open a support ticket: discord.pitsim.net");
@@ -374,13 +389,13 @@ public class PitSim extends JavaPlugin {
 			}
 		}
 
-		for(EditSession session : FreezeSpell.sessions.keySet()) {
+		for(EditSession session : FreezeSpell.sessionMap.keySet()) {
 			session.undo(session);
 		}
 
 		TempBlockHelper.restoreSessions();
 
-		for(Map.Entry<Location, Material> entry : FreezeSpell.blocks.entrySet()) {
+		for(Map.Entry<Location, Material> entry : FreezeSpell.blockMap.entrySet()) {
 			entry.getKey().getBlock().setType(entry.getValue());
 		}
 
@@ -564,7 +579,7 @@ public class PitSim extends JavaPlugin {
 		getCommand("ps").setExecutor(adminCommand);
 		AMultiCommand giveCommand = new BaseSetCommand(adminCommand, "give");
 		AMultiCommand setCommand = new BaseSetCommand(adminCommand, "set");
-//		adminCommand.registerCommand(new AnticheatCommand("check"));
+
 		new HopperCommand(adminCommand, "hopper");
 		new UUIDCommand(adminCommand, "uuid");
 		new RandomizeCommand(adminCommand, "randomize");
@@ -576,6 +591,7 @@ public class PitSim extends JavaPlugin {
 		new BountyCommand(setCommand, "bounty");
 
 		new JewelCommand(giveCommand, "jewel");
+		new StreakCommand(giveCommand, "streak");
 
 		getCommand("atest").setExecutor(new ATestCommand());
 		getCommand("ktest").setExecutor(new KTestCommand());
@@ -623,6 +639,7 @@ public class PitSim extends JavaPlugin {
 		getCommand("loadskin").setExecutor(new LoadSkinCommand());
 		getCommand("ineeddata").setExecutor(new ChatTriggerSubscribeCommand());
 		getCommand("givemedata").setExecutor(new ChatTriggerRequestCommand());
+		getCommand("claim").setExecutor(new ClaimCommand());
 		//TODO: Remove this
 //		getCommand("massmigrate").setExecutor(new MassMigrateCommand());
 
@@ -643,6 +660,7 @@ public class PitSim extends JavaPlugin {
 
 		getServer().getPluginManager().registerEvents(new DamageManager(), this);
 		getServer().getPluginManager().registerEvents(new PlayerManager(), this);
+		getServer().getPluginManager().registerEvents(new EnchantManager(), this);
 		getServer().getPluginManager().registerEvents(new PlayerDataManager(), this);
 		getServer().getPluginManager().registerEvents(new ChatManager(), this);
 		getServer().getPluginManager().registerEvents(new DamageIndicator(), this);
@@ -652,7 +670,6 @@ public class PitSim extends JavaPlugin {
 		getServer().getPluginManager().registerEvents(new ItemRename(), this);
 		getServer().getPluginManager().registerEvents(new EnderchestManager(), this);
 		getServer().getPluginManager().registerEvents(new AFKManager(), this);
-		getServer().getPluginManager().registerEvents(new EnchantManager(), this);
 		getServer().getPluginManager().registerEvents(new TotallyLegitGem(), this);
 		getServer().getPluginManager().registerEvents(new BlobManager(), this);
 		getServer().getPluginManager().registerEvents(new BoosterManager(), this);
@@ -684,6 +701,8 @@ public class PitSim extends JavaPlugin {
 		getServer().getPluginManager().registerEvents(new MiscManager(), this);
 		getServer().getPluginManager().registerEvents(new FirstJoinManager(), this);
 		getServer().getPluginManager().registerEvents(new ChatTriggerManager(), this);
+		getServer().getPluginManager().registerEvents(new AuthenticationManager(), this);
+		getServer().getPluginManager().registerEvents(new DiscordManager(), this);
 //		getServer().getPluginManager().registerEvents(new AIManager(), this);
 		getServer().getPluginManager().registerEvents(new MarketMessaging(), this);
 		getServer().getPluginManager().registerEvents(new MigrationManager(), this);
@@ -1002,7 +1021,6 @@ public class PitSim extends JavaPlugin {
 
 //		Spells
 		EnchantManager.registerEnchant(new FreezeSpell());
-		EnchantManager.registerEnchant(new SweepingEdgeSpell());
 		EnchantManager.registerEnchant(new MeteorSpell());
 		EnchantManager.registerEnchant(new CleaveSpell());
 		EnchantManager.registerEnchant(new WarpSpell());
@@ -1026,15 +1044,17 @@ public class PitSim extends JavaPlugin {
 		EnchantManager.registerEnchant(new Medic());
 		EnchantManager.registerEnchant(new Passifist());
 		EnchantManager.registerEnchant(new PurpleThumb());
-		EnchantManager.registerEnchant(new SnowmanArmy());
 		EnchantManager.registerEnchant(new RollingThunder());
 		EnchantManager.registerEnchant(new Swarm());
 		EnchantManager.registerEnchant(new Terror());
 
 //		Uncommon
+		EnchantManager.registerEnchant(new Adrenaline());
+		EnchantManager.registerEnchant(new Barbaric());
 		EnchantManager.registerEnchant(new ComboDefence());
 		EnchantManager.registerEnchant(new ComboMana());
 		EnchantManager.registerEnchant(new ComboSlow());
+		EnchantManager.registerEnchant(new Desperate());
 		EnchantManager.registerEnchant(new Emboldened());
 		EnchantManager.registerEnchant(new Ethereal());
 		EnchantManager.registerEnchant(new Fearmonger());

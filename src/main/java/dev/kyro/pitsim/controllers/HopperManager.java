@@ -5,7 +5,6 @@ import dev.kyro.pitsim.controllers.objects.Hopper;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.events.AttackEvent;
 import dev.kyro.pitsim.events.KillEvent;
-import dev.kyro.pitsim.events.OofEvent;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -92,14 +91,6 @@ public class HopperManager implements Listener {
 		for(Hopper hopper : hopperList) {
 			if(player != hopper.target) continue;
 			hopper.hopper.teleport(hopper.target);
-		}
-	}
-
-	@EventHandler
-	public void onOof(OofEvent event) {
-		for(Hopper hopper : hopperList) {
-			if(event.getPlayer() != hopper.target) continue;
-			hopper.remove();
 		}
 	}
 
