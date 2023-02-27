@@ -1,4 +1,4 @@
-package dev.kyro.pitsim.enchants.tainted.abilities;
+package dev.kyro.pitsim.enchants.tainted.effects;
 
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.controllers.EnchantManager;
@@ -60,19 +60,17 @@ public class Swarm extends PitEnchant {
 	@EventHandler
 	public void onManaRegen(ManaRegenEvent event) {
 		Player player = event.getPlayer();
-
 		int enchantLvl = EnchantManager.getEnchantsOnPlayer(player).getOrDefault(INSTANCE, 0);
 		if(enchantLvl == 0) return;
-
 		event.multipliers.add(Misc.getReductionMultiplier(getReduction(enchantLvl)));
 	}
 
 	@Override
 	public List<String> getNormalDescription(int enchantLvl) {
 		return new PitLoreBuilder(
-				"&7When worn, spawn &2" + getParticleCount(enchantLvl) + " swarm particle" +
-				(getParticleCount(enchantLvl) == 1 ? "" : "s") + "&7, but receive &b-" +
-				getReduction(enchantLvl) + "% mana"
+				"&7When equipped, spawn &2" + getParticleCount(enchantLvl) + " swarm particle" +
+				(getParticleCount(enchantLvl) == 1 ? "" : "s") + "&7, but regain mana &b" +
+				getReduction(enchantLvl) + "% &7slower"
 		).getLore();
 	}
 

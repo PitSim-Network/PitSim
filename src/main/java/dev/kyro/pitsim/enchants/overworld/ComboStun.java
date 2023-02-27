@@ -10,7 +10,6 @@ import dev.kyro.pitsim.misc.Misc;
 import dev.kyro.pitsim.misc.PitLoreBuilder;
 import dev.kyro.pitsim.misc.Sounds;
 import org.bukkit.event.EventHandler;
-import org.bukkit.potion.PotionEffectType;
 
 import java.text.DecimalFormat;
 import java.util.List;
@@ -42,17 +41,8 @@ public class ComboStun extends PitEnchant {
 		if(cooldown.isOnCooldown()) return;
 		else cooldown.restart();
 
-		Misc.applyPotionEffect(attackEvent.getDefender(), PotionEffectType.SLOW, (int) getDuration(enchantLvl) * 20, 7, true, false);
-		Misc.applyPotionEffect(attackEvent.getDefender(), PotionEffectType.JUMP, (int) getDuration(enchantLvl) * 20, 128, true, false);
-		Misc.applyPotionEffect(attackEvent.getDefender(), PotionEffectType.SLOW_DIGGING, (int) getDuration(enchantLvl) * 20, 99, true, false);
-
-		if(attackEvent.isDefenderPlayer()) {
-			Misc.sendTitle(attackEvent.getDefenderPlayer(), "&cSTUNNED", (int) getDuration(enchantLvl) * 20);
-			Misc.sendSubTitle(attackEvent.getDefenderPlayer(), "&eYou cannot move!", (int) getDuration(enchantLvl) * 20);
-		}
-
+		Misc.stunEntity(attackEvent.getDefender(), (int) getDuration(enchantLvl) * 20);
 		Sounds.COMBO_STUN.play(attackEvent.getAttacker());
-		Sounds.COMBO_STUN.play(attackEvent.getDefender());
 
 		if(pitPlayer.stats != null) pitPlayer.stats.stun += getDuration(enchantLvl);
 	}

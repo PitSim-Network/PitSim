@@ -47,11 +47,6 @@ public class PitSpider extends PitMob {
 	}
 
 	@Override
-	public double getOffsetHeight() {
-		return 5.5;
-	}
-
-	@Override
 	public int getDroppedSouls() {
 		return 3;
 	}

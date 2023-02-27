@@ -7,6 +7,7 @@ import dev.kyro.pitsim.cosmetics.*;
 import dev.kyro.pitsim.cosmetics.collections.ParticleCollection;
 import dev.kyro.pitsim.cosmetics.particles.RedstoneParticle;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
+import dev.kyro.pitsim.misc.math.RotationUtils;
 import net.minecraft.server.v1_8_R3.EntityPlayer;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -27,7 +28,7 @@ public class Halo extends ColorableCosmetic {
 
 		for(int i = 0; i < 20; i++) {
 			Vector vector = new Vector(0.6, 0.7, 0);
-			RotationTools.rotate(vector, 18 * i, 0, 0);
+			RotationUtils.rotate(vector, 18 * i, 0, 0);
 			vector.add(new Vector(0, 0, 0));
 			collection.addParticle("main", particle, new ParticleOffset(vector));
 		}

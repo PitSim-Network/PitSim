@@ -13,7 +13,6 @@ import dev.kyro.pitsim.aitems.PitItem;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.events.AttackEvent;
 import dev.kyro.pitsim.events.KillEvent;
-import dev.kyro.pitsim.events.OofEvent;
 import dev.kyro.pitsim.misc.Sounds;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -93,11 +92,6 @@ public class SpawnManager implements Listener {
 	@EventHandler
 	public void onKill(KillEvent killEvent) {
 		if(killEvent.isDeadPlayer()) lastLocationMap.remove(killEvent.getDeadPlayer());
-	}
-
-	@EventHandler
-	public void onOof(OofEvent event) {
-		lastLocationMap.remove(event.getPlayer());
 	}
 
 	@EventHandler

@@ -12,7 +12,6 @@ import dev.kyro.pitsim.enums.NBTTag;
 import dev.kyro.pitsim.events.AttackEvent;
 import dev.kyro.pitsim.events.DoubleSneakEvent;
 import dev.kyro.pitsim.events.KillEvent;
-import dev.kyro.pitsim.events.OofEvent;
 import dev.kyro.pitsim.helmetabilities.*;
 import dev.kyro.pitsim.inventories.HelmetGUI;
 import dev.kyro.pitsim.misc.Misc;
@@ -26,7 +25,6 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
-import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.event.player.*;
@@ -254,24 +252,6 @@ public class HelmetManager implements Listener {
 			HelmetManager.deactivate(event.getPlayer());
 		}
 		toggledPlayers.remove(event.getPlayer());
-	}
-
-	@EventHandler
-	public void onDeath(PlayerDeathEvent event) {
-		Player player = event.getEntity();
-		if(abilities.get(player) != null) {
-			HelmetManager.deactivate(player);
-		}
-		toggledPlayers.remove(player);
-	}
-
-	@EventHandler
-	public void onOof(OofEvent event) {
-		Player player = event.getPlayer();
-		if(abilities.get(player) != null) {
-			HelmetManager.deactivate(player);
-		}
-		toggledPlayers.remove(player);
 	}
 
 	@EventHandler

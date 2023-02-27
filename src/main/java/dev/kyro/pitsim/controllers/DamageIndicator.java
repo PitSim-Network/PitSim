@@ -2,7 +2,9 @@ package dev.kyro.pitsim.controllers;
 
 import dev.kyro.arcticapi.misc.AUtil;
 import dev.kyro.pitsim.PitSim;
+import dev.kyro.pitsim.adarkzone.BossManager;
 import dev.kyro.pitsim.adarkzone.DarkzoneManager;
+import dev.kyro.pitsim.adarkzone.PitBoss;
 import dev.kyro.pitsim.adarkzone.PitMob;
 import dev.kyro.pitsim.controllers.objects.Non;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
@@ -33,10 +35,14 @@ public class DamageIndicator implements Listener {
 		if(!attackEvent.isAttackerPlayer() || attackEvent.isFakeHit() || attackEvent.getDefender().isDead()) return;
 
 		PitMob defenderMob = DarkzoneManager.getPitMob(attackEvent.getDefender());
-		if(defenderMob != null) {
-			createDamageStand(attackEvent.getAttackerPlayer(), defenderMob, attackEvent.getEvent().getFinalDamage());
-			return;
+		PitBoss defenderBoss = BossManager.getPitBoss(attackEvent.getDefender());
+		if(defenderMob != null || defenderBoss != null) {
+			createDamageStand(attackEvent.getAttackerPlayer(), attackEvent.getDefender(), attackEvent.getEvent().getFinalDamage());
+//			TODO: Enable this to remove boss bar damage indicator
+//			return;
 		}
+//		TODO: Remove this to remove boss bar damage indicator
+		if(defenderMob != null) return;
 
 		EntityPlayer entityPlayer = null;
 		if(attackEvent.isDefenderPlayer()) entityPlayer = ((CraftPlayer) attackEvent.getDefender()).getHandle();
@@ -102,15 +108,13 @@ public class DamageIndicator implements Listener {
 	public void onKill(KillEvent killEvent) {
 		if(!PlayerManager.isRealPlayer(killEvent.getKillerPlayer())) return;
 		PitMob pitDead = DarkzoneManager.getPitMob(killEvent.getDead());
-		if(pitDead == null) return;
-		createDamageStand(killEvent.getKillerPlayer(), pitDead, killEvent.getEvent().getFinalDamage());
+		if(pitDead == null || !killEvent.getKillType().hasAttackerAndDefender()) return;
+		createDamageStand(killEvent.getKillerPlayer(), killEvent.getDead(), killEvent.getEvent().getFinalDamage());
 	}
 
-	public static void createDamageStand(Player attacker, PitMob defenderMob, double damage) {
-		LivingEntity defender = defenderMob.getMob();
-
+	public static void createDamageStand(Player attacker, LivingEntity defender, double damage) {
 		Vector vector = defender.getLocation().toVector().subtract(attacker.getLocation().toVector()).normalize().setY(0).multiply(0.3);
-		Location displayLocation = defender.getLocation().add(0, defenderMob.getOffsetHeight(), 0).subtract(vector)
+		Location displayLocation = defender.getLocation().add(0, defender.getEyeHeight(), 0).subtract(vector)
 				.add(Misc.randomOffset(0.7), Misc.randomOffset(0.7), Misc.randomOffset(0.7));
 
 		WorldServer server = ((CraftWorld) defender.getWorld()).getHandle();

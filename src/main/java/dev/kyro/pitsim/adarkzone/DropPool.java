@@ -27,6 +27,7 @@ public class DropPool {
 	}
 
 	public void singleDistribution(Player killer) {
+		if(killer == null) return;
 		if(dropPool.isEmpty()) return;
 		ItemStack drop = getRandomDrop();
 		AUtil.giveItemSafely(killer, drop);

@@ -4,16 +4,20 @@ import dev.kyro.arcticapi.misc.AUtil;
 import dev.kyro.pitsim.controllers.UpgradeManager;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.controllers.objects.RenownUpgrade;
+import dev.kyro.pitsim.events.KillEvent;
 import dev.kyro.pitsim.megastreaks.Uberstreak;
+import dev.kyro.pitsim.misc.wrappers.PlayerItemLocation;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 public class LifeInsurance extends RenownUpgrade {
 	public static LifeInsurance INSTANCE;
@@ -21,6 +25,16 @@ public class LifeInsurance extends RenownUpgrade {
 	public LifeInsurance() {
 		super("Uber Insurance", "LIFE_INSURANCE", 75, 22, 12, true, 3);
 		INSTANCE = this;
+	}
+
+	@EventHandler
+	public void onKill(KillEvent killEvent) {
+		if(!killEvent.isDeadPlayer() || !isApplicable(killEvent.getDeadPlayer())) return;
+		for(Map.Entry<PlayerItemLocation, KillEvent.ItemInfo> entry : killEvent.getVulnerableItems().entrySet()) {
+			KillEvent.ItemInfo itemInfo = entry.getValue();
+			if(!itemInfo.pitItem.isMystic) continue;
+			killEvent.removeVulnerableItem(entry.getKey());
+		}
 	}
 
 	@Override
@@ -50,14 +64,10 @@ public class LifeInsurance extends RenownUpgrade {
 		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
 		int tier = UpgradeManager.getTier(player, INSTANCE.refName);
 
-//		if(pitPlayer.megastreak instanceof Overdrive && pitPlayer.getKills() >= 500 && tier >= 1) return true;
-		if(pitPlayer.megastreak instanceof Uberstreak && pitPlayer.getKills() >= 400 && tier >= 3) return true;
-		if(pitPlayer.megastreak instanceof Uberstreak && pitPlayer.getKills() >= 450 && tier >= 2) return true;
-		if(pitPlayer.megastreak instanceof Uberstreak && pitPlayer.getKills() >= 500 && tier >= 1) return true;
-//		if(pitPlayer.megastreak instanceof Beastmode && pitPlayer.getKills() >= 1000 && tier >= 2) return true;
-//		if(pitPlayer.megastreak instanceof Highlander && pitPlayer.getKills() >= 1000 && tier >= 2) return true;
-//		if(pitPlayer.megastreak instanceof ToTheMoon && pitPlayer.getKills() >= 1000 && tier >= 2) return true;
-//		return pitPlayer.megastreak instanceof RNGesus/ayer.getKills() >= 3000 && tier >= 3;
+		if(!(pitPlayer.megastreak instanceof Uberstreak)) return false;
+		if(pitPlayer.getKills() >= 400 && tier >= 3) return true;
+		if(pitPlayer.getKills() >= 450 && tier >= 2) return true;
+		if(pitPlayer.getKills() >= 500 && tier >= 1) return true;
 		return false;
 	}
 

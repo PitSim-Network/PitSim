@@ -7,6 +7,7 @@ import dev.kyro.pitsim.cosmetics.*;
 import dev.kyro.pitsim.cosmetics.collections.ParticleCollection;
 import dev.kyro.pitsim.cosmetics.particles.VillagerHappyParticle;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
+import dev.kyro.pitsim.misc.math.RotationUtils;
 import net.minecraft.server.v1_8_R3.EntityPlayer;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -54,17 +55,17 @@ public class KyroAura extends PitCosmetic {
 			public void run() {
 				yawX = (0 + (yawX - 0) * Math.cos(Math.toRadians(0.4)) - ((yawY - 0) * Math.sin(Math.toRadians(0.4))));
 				yawY = (0 + (yawX - 0) * Math.sin(Math.toRadians(0.4)) + (yawY - 0) * Math.cos(Math.toRadians(0.4)));
-				RotationTools.rotate(yawVector, 0, yawX * SPEED, yawY * SPEED);
+				RotationUtils.rotate(yawVector, 0, yawX * SPEED, yawY * SPEED);
 				Location displayLocation1 = pitPlayer.player.getLocation().add(0, 1, 0).add(yawVector);
 
 				pitchX = (0 + (pitchX - 0) * Math.cos(Math.toRadians(0.4)) - ((pitchY - 0) * Math.sin(Math.toRadians(0.4))));
 				pitchY = (0 + (pitchX - 0) * Math.sin(Math.toRadians(0.4)) + (pitchY - 0) * Math.cos(Math.toRadians(0.4)));
-				RotationTools.rotate(pitchVector, pitchX * SPEED, 0, pitchY * SPEED);
+				RotationUtils.rotate(pitchVector, pitchX * SPEED, 0, pitchY * SPEED);
 				Location displayLocation2 = pitPlayer.player.getLocation().add(0, 1, 0).add(pitchVector);
 
 				rollX = (0 + (rollX - 0) * Math.cos(Math.toRadians(0.4)) - ((rollY - 0) * Math.sin(Math.toRadians(0.4))));
 				rollY = (0 + (rollX - 0) * Math.sin(Math.toRadians(0.4)) + (rollY - 0) * Math.cos(Math.toRadians(0.4)));
-				RotationTools.rotate(rollVector, rollX * SPEED, rollY * SPEED, 0);
+				RotationUtils.rotate(rollVector, rollX * SPEED, rollY * SPEED, 0);
 				Location displayLocation3 = pitPlayer.player.getLocation().add(0, 1, 0).add(rollVector);
 
 				for(Player onlinePlayer : CosmeticManager.getDisplayPlayers(pitPlayer.player, pitPlayer.player.getLocation(), 50)) {

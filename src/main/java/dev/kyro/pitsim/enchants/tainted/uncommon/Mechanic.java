@@ -30,10 +30,10 @@ public class Mechanic extends PitEnchant {
 	@Override
 	public List<String> getNormalDescription(int enchantLvl) {
 		DecimalFormat decimalFormat = new DecimalFormat("0.#");
+		double seconds = getDecreaseTicks(enchantLvl) / 20.0;
 		return new PitLoreBuilder(
 				"&7Decreases the time until your shield recharges after breaking by &9" +
-						decimalFormat.format(getDecreaseTicks(enchantLvl)) +
-						" &7second" + (getDecreaseTicks(enchantLvl) == 1 ? "" : "s")
+						decimalFormat.format(seconds) + " &7second" + (seconds == 1 ? "" : "s")
 		).getLore();
 	}
 

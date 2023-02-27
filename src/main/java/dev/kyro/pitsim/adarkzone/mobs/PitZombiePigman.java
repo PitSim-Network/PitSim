@@ -64,11 +64,6 @@ public class PitZombiePigman extends PitMob {
 	}
 
 	@Override
-	public double getOffsetHeight() {
-		return 1.5;
-	}
-
-	@Override
 	public int getDroppedSouls() {
 		return 6;
 	}

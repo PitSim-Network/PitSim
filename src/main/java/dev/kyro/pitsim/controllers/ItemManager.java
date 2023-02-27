@@ -11,6 +11,7 @@ import dev.kyro.pitsim.misc.Misc;
 import dev.kyro.pitsim.misc.Sounds;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -19,6 +20,7 @@ import org.bukkit.event.inventory.InventoryAction;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerPickupItemEvent;
+import org.bukkit.event.world.ChunkUnloadEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 
@@ -40,6 +42,18 @@ public class ItemManager implements Listener {
 		player.updateInventory();
 		AOutput.error(player, "This item can only be dropped when your inventory is closed");
 		Sounds.WARNING_LOUD.play(player);
+	}
+
+	@EventHandler
+	public static void onUnload(ChunkUnloadEvent event) {
+		PitItem pitItem = ItemFactory.getItem(SoulPickup.class);
+		for(Entity entity : event.getChunk().getEntities()) {
+			if(!(entity instanceof Item)) continue;
+			Item item = (Item) entity;
+			ItemStack itemStack = item.getItemStack();
+			if(!pitItem.isThisItem(itemStack)) continue;
+			item.remove();
+		}
 	}
 
 	@EventHandler

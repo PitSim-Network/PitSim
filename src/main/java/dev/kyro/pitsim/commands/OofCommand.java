@@ -9,7 +9,6 @@ import dev.kyro.pitsim.controllers.objects.PitEnchant;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.enums.KillType;
 import dev.kyro.pitsim.events.AttackEvent;
-import dev.kyro.pitsim.events.OofEvent;
 import dev.kyro.pitsim.misc.Sounds;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
@@ -54,16 +53,14 @@ public class OofCommand implements CommandExecutor {
 
 				Map<PitEnchant, Integer> attackerEnchant = new HashMap<>();
 				Map<PitEnchant, Integer> defenderEnchant = new HashMap<>();
-				EntityDamageByEntityEvent ev = new EntityDamageByEntityEvent(onlinePlayer, player, EntityDamageEvent.DamageCause.CUSTOM, 0);
-				AttackEvent attackEvent = new AttackEvent(ev, attackerEnchant, defenderEnchant, false);
+				EntityDamageByEntityEvent newEvent = new EntityDamageByEntityEvent(onlinePlayer, player, EntityDamageEvent.DamageCause.CUSTOM, 0);
+				AttackEvent attackEvent = new AttackEvent(newEvent, attackerEnchant, defenderEnchant, false);
 
-				DamageManager.kill(attackEvent, onlinePlayer, player, KillType.DEFAULT);
+				DamageManager.kill(attackEvent, onlinePlayer, player, KillType.KILL);
 				return false;
 			}
 		}
 		DamageManager.death(player);
-		OofEvent oofEvent = new OofEvent(player);
-		Bukkit.getPluginManager().callEvent(oofEvent);
 		return false;
 	}
 }

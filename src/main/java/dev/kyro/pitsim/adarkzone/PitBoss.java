@@ -144,7 +144,11 @@ public abstract class PitBoss {
 			@Override
 			public void run() {
 				Player boss = (Player) npcBoss.getEntity();
-				if(boss != null) PitBoss.this.boss = boss;
+				if(boss != null && boss != PitBoss.this.boss) {
+					PitBoss.this.boss = boss;
+					boss.setMaxHealth(getMaxHealth());
+					boss.setHealth(getMaxHealth());
+				}
 //				EntityTarget target = npcBoss.getNavigator().getEntityTarget();
 //				if(target != null) Util.faceLocation(boss, target.getTarget().getLocation());
 

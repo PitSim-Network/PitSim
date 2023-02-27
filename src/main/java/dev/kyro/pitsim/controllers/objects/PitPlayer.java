@@ -18,7 +18,9 @@ import dev.kyro.pitsim.brewing.PotionManager;
 import dev.kyro.pitsim.brewing.objects.BrewingSession;
 import dev.kyro.pitsim.controllers.*;
 import dev.kyro.pitsim.cosmetics.particles.ParticleColor;
+import dev.kyro.pitsim.enchants.overworld.GottaGoFast;
 import dev.kyro.pitsim.enchants.overworld.Hearts;
+import dev.kyro.pitsim.enchants.tainted.effects.Sonic;
 import dev.kyro.pitsim.enchants.tainted.uncommon.Tanky;
 import dev.kyro.pitsim.enums.AChatColor;
 import dev.kyro.pitsim.enums.DeathCry;
@@ -618,6 +620,33 @@ public class PitPlayer {
 	}
 
 	@Exclude
+	public boolean useMana(int amount) {
+		if(amount > mana) return false;
+		mana -= amount;
+		return true;
+	}
+
+	@Exclude
+	public int getMaxMana() {
+		return 100;
+	}
+
+	@Exclude
+	public void damage(double damage, LivingEntity damager) {
+		if(player.getHealth() - damage <= 0) {
+			if(damager == null) {
+				DamageManager.death(player);
+				AOutput.send(player, "&c&lDEATH!");
+			} else {
+				EntityDamageByEntityEvent newEvent = new EntityDamageByEntityEvent(damager, player, EntityDamageEvent.DamageCause.CUSTOM, damage);
+				AttackEvent attackEvent = new AttackEvent(newEvent, EnchantManager.getEnchantsOnPlayer(damager), EnchantManager.getEnchantsOnPlayer(player), false);
+
+				DamageManager.kill(attackEvent, damager, player, KillType.KILL);
+			}
+		} else player.damage(damage);
+	}
+
+	@Exclude
 	public void updateMaxHealth() {
 
 		int maxHealth = MapManager.inDarkzone(player) ? 20 : 24;
@@ -638,33 +667,6 @@ public class PitPlayer {
 
 		if(player.getMaxHealth() == maxHealth) return;
 		player.setMaxHealth(maxHealth);
-	}
-
-	@Exclude
-	public boolean useMana(int amount) {
-		if(amount > mana) return false;
-		mana -= amount;
-		return true;
-	}
-
-	@Exclude
-	public int getMaxMana() {
-		return 100;
-	}
-
-	@Exclude
-	public void damage(double damage, LivingEntity damager) {
-		if(player.getHealth() - damage <= 0) {
-			if(damager == null) {
-				DamageManager.death(player);
-				AOutput.send(player, "&c&lDEATH!");
-			} else {
-				EntityDamageByEntityEvent ev = new EntityDamageByEntityEvent(damager, player, EntityDamageEvent.DamageCause.CUSTOM, damage);
-				AttackEvent attackEvent = new AttackEvent(ev, EnchantManager.getEnchantsOnPlayer(damager), EnchantManager.getEnchantsOnPlayer(player), false);
-
-				DamageManager.kill(attackEvent, damager, player, KillType.DEFAULT);
-			}
-		} else player.damage(damage);
 	}
 
 	@Exclude
@@ -708,5 +710,16 @@ public class PitPlayer {
 
 		String actionBarMessage = String.join(" ", messageSegments);
 		ActionBarManager.sendActionBar(player, null, actionBarMessage);
+	}
+
+	@Exclude
+	public void updateWalkingSpeed() {
+		float previousWalkSpeed = player.getWalkSpeed();
+
+		float newWalkSpeed = 0.2F;
+		newWalkSpeed *= 1 + (Sonic.getWalkSpeedIncrease(player) / 100.0);
+		newWalkSpeed *= 1 + (GottaGoFast.getWalkSpeedIncrease(player) / 100.0);
+
+		if(previousWalkSpeed != newWalkSpeed) player.setWalkSpeed(newWalkSpeed);
 	}
 }

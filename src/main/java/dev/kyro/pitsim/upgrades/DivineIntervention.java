@@ -43,10 +43,10 @@ public class DivineIntervention extends RenownUpgrade {
 		return item;
 	}
 
-	public boolean isDivine(Player player) {
-		if(!UpgradeManager.hasUpgrade(player, this)) return false;
+	public static boolean attemptDivine(Player player) {
+		if(!UpgradeManager.hasUpgrade(player, INSTANCE)) return false;
 
-		int tier = UpgradeManager.getTier(player, this);
+		int tier = UpgradeManager.getTier(player, INSTANCE);
 		if(tier == 0) return false;
 
 		double chance = 0.01 * (tier * 5);

@@ -1,4 +1,4 @@
-package dev.kyro.pitsim.enchants.tainted.spells;
+package dev.kyro.pitsim.enchants.tainted.awijienchants;
 
 import com.sk89q.worldedit.EditSession;
 import dev.kyro.arcticapi.misc.AOutput;
@@ -23,13 +23,14 @@ import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.io.File;
+import java.text.DecimalFormat;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 public class FreezeSpell extends PitEnchant {
-	public static Map<EditSession, Location> sessions = new HashMap<>();
-	public static Map<Location, Material> blocks = new HashMap<>();
+	public static Map<EditSession, Location> sessionMap = new HashMap<>();
+	public static Map<Location, Material> blockMap = new HashMap<>();
 
 	public FreezeSpell() {
 		super("Freeze", true, ApplyType.SCYTHES, "freeze", "cold");
@@ -48,7 +49,7 @@ public class FreezeSpell extends PitEnchant {
 			return;
 		}
 
-		Cooldown cooldown = getCooldown(event.getPlayer(), 41);
+		Cooldown cooldown = getCooldown(event.getPlayer(), 40);
 		if(cooldown.isOnCooldown()) return;
 
 		PitPlayer pitPlayer = PitPlayer.getPitPlayer(event.getPlayer());
@@ -59,7 +60,7 @@ public class FreezeSpell extends PitEnchant {
 
 		cooldown.restart();
 
-		for(Location value : sessions.values()) {
+		for(Location value : sessionMap.values()) {
 			if(value.distance(event.getPlayer().getLocation()) < 12) {
 				AOutput.error(event.getPlayer(), "&c&lERROR!&7 Too close to another spell!");
 				Sounds.NO.play(event.getPlayer());
@@ -87,12 +88,12 @@ public class FreezeSpell extends PitEnchant {
 			nearbyEntity.getWorld().playEffect(nearbyEntity.getLocation(), Effect.SNOW_SHOVEL, 5);
 			nearbyEntity.getWorld().playEffect(nearbyEntity.getLocation().add(0, 1, 0), Effect.SNOWBALL_BREAK, 5);
 
-			if(!blocks.containsKey(nearbyEntity.getLocation().getBlock().getLocation()) && nearbyEntity.getLocation().getBlock().getType() == Material.AIR) {
-				blocks.put(nearbyEntity.getLocation().getBlock().getLocation(), nearbyEntity.getLocation().getBlock().getType());
+			if(!blockMap.containsKey(nearbyEntity.getLocation().getBlock().getLocation()) && nearbyEntity.getLocation().getBlock().getType() == Material.AIR) {
+				blockMap.put(nearbyEntity.getLocation().getBlock().getLocation(), nearbyEntity.getLocation().getBlock().getType());
 				nearbyEntity.getLocation().getBlock().setType(Material.ICE);
 			}
-			if(!blocks.containsKey(nearbyEntity.getLocation().add(0, 1, 0).getBlock().getLocation()) && nearbyEntity.getLocation().add(0, 1, 0).getBlock().getType() == Material.AIR) {
-				blocks.put(nearbyEntity.getLocation().add(0, 1, 0).getBlock().getLocation(), nearbyEntity.getLocation().add(0, 1, 0).getBlock().getType());
+			if(!blockMap.containsKey(nearbyEntity.getLocation().add(0, 1, 0).getBlock().getLocation()) && nearbyEntity.getLocation().add(0, 1, 0).getBlock().getType() == Material.AIR) {
+				blockMap.put(nearbyEntity.getLocation().add(0, 1, 0).getBlock().getLocation(), nearbyEntity.getLocation().add(0, 1, 0).getBlock().getType());
 				nearbyEntity.getLocation().add(0, 1, 0).getBlock().setType(Material.ICE);
 			}
 
@@ -102,16 +103,16 @@ public class FreezeSpell extends PitEnchant {
 		}
 
 		EditSession session = SchematicPaste.loadSchematicAir(new File("plugins/WorldEdit/schematics/frozen.schematic"), location);
-		sessions.put(session, player.getLocation());
+		sessionMap.put(session, player.getLocation());
 
 		new BukkitRunnable() {
 			@Override
 			public void run() {
 				session.undo(session);
-				sessions.remove(session);
+				sessionMap.remove(session);
 				Sounds.FREEZE2.play(player);
 
-				for(Map.Entry<Location, Material> entry : blocks.entrySet()) {
+				for(Map.Entry<Location, Material> entry : blockMap.entrySet()) {
 					entry.getKey().getBlock().setType(entry.getValue());
 				}
 			}
@@ -120,12 +121,20 @@ public class FreezeSpell extends PitEnchant {
 
 	@Override
 	public List<String> getNormalDescription(int enchantLvl) {
+		DecimalFormat decimalFormat = new DecimalFormat("0.#");
+		int seconds = getDuration(enchantLvl) / 20;
 		return new PitLoreBuilder(
-				"&7Freeze all nearby enemies for 3s &d&o-" + getManaCost(enchantLvl) + " Mana"
+				"&7Right-Clicking casts this spell for &b" + getManaCost(enchantLvl) + " mana, " +
+						"freezing all nearby enemies for " + decimalFormat.format(seconds) + " second" +
+						(seconds == 1 ? "" : "s")
 		).getLore();
 	}
 
 	public static int getManaCost(int enchantLvl) {
 		return 30 * (4 - enchantLvl);
+	}
+
+	public static int getDuration(int enchantLvl) {
+		return 20 * 3;
 	}
 }

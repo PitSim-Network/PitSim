@@ -8,6 +8,8 @@ import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.events.KillEvent;
 import org.bukkit.entity.Player;
 
+import java.text.DecimalFormat;
+
 public class SuffixPlaceholder implements APAPIPlaceholder {
 
 	@Override
@@ -23,7 +25,9 @@ public class SuffixPlaceholder implements APAPIPlaceholder {
 		if(PitSim.status.isOverworld()) {
 			if(pitPlayer.bounty != 0) return "&7 &6&l" + pitPlayer.bounty + "g";
 		} else {
-			if(pitPlayer.taintedSouls != 0) return "&7 &f&l" + KillEvent.getBaseSouls(pitPlayer) + " \u1F47B";
+			DecimalFormat decimalFormat = new DecimalFormat("0");
+			if(pitPlayer.taintedSouls != 0) return "&7 &f&l" +
+					decimalFormat.format(Math.ceil(KillEvent.getBaseSouls(pitPlayer))) + " Souls";
 		}
 
 		GuildData guild = GuildData.getGuildData(player);

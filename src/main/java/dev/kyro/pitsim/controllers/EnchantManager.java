@@ -7,6 +7,7 @@ import dev.kyro.arcticapi.builders.AItemStackBuilder;
 import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.arcticapi.misc.AUtil;
 import dev.kyro.pitsim.PitSim;
+import dev.kyro.pitsim.adarkzone.notdarkzone.PitEquipment;
 import dev.kyro.pitsim.aitems.MysticFactory;
 import dev.kyro.pitsim.aitems.PitItem;
 import dev.kyro.pitsim.aitems.misc.GoldenHelmet;
@@ -44,7 +45,6 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.LeatherArmorMeta;
-import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.*;
 
@@ -54,14 +54,9 @@ public class EnchantManager implements Listener {
 	public static List<PitEnchant> pitEnchants = new ArrayList<>();
 	public static Map<Player, Map<PitEnchant, Integer>> enchantMap = new HashMap<>();
 
-	static {
-		new BukkitRunnable() {
-			@Override
-			public void run() {
-				enchantMap.clear();
-				for(Player onlinePlayer : Bukkit.getOnlinePlayers()) enchantMap.put(onlinePlayer, readEnchantsOnPlayer(onlinePlayer));
-			}
-		}.runTaskTimer(PitSim.INSTANCE, 0L, 1L);
+	public static void readPlayerEnchants() {
+		enchantMap.clear();
+		for(Player onlinePlayer : Bukkit.getOnlinePlayers()) enchantMap.put(onlinePlayer, readEnchantsOnPlayer(onlinePlayer));
 	}
 
 	@EventHandler
@@ -567,29 +562,28 @@ public class EnchantManager implements Listener {
 		return enchantMap.get(player);
 	}
 
-	private static Map<PitEnchant, Integer> readEnchantsOnPlayer(LivingEntity checkPlayer) {
+	public static Map<PitEnchant, Integer> readEnchantsOnPlayer(LivingEntity checkPlayer) {
 		if(!(checkPlayer instanceof Player)) return new HashMap<>();
 		Player player = (Player) checkPlayer;
-
-		List<ItemStack> inUse = new ArrayList<>(Arrays.asList(player.getInventory().getArmorContents()));
-		inUse.add(player.getItemInHand());
-
-		return readEnchantsOnPlayer(inUse.toArray(new ItemStack[5]));
+		return readEnchantsOnEquipment(new PitEquipment(player));
 	}
 
-	private static Map<PitEnchant, Integer> readEnchantsOnPlayer(ItemStack[] inUseArr) {
-
+	public static Map<PitEnchant, Integer> readEnchantsOnEquipment(PitEquipment pitEquipment) {
+		List<ItemStack> equipmentList = pitEquipment.getAsList();
 		Map<PitEnchant, Integer> playerEnchantMap = new HashMap<>();
-		for(int i = 0; i < inUseArr.length; i++) {
-			if(Misc.isAirOrNull(inUseArr[i])) continue;
-			Map<PitEnchant, Integer> itemEnchantMap = getEnchantsOnItem(inUseArr[i], playerEnchantMap);
-			if(i == 4) {
-				for(Map.Entry<PitEnchant, Integer> entry : itemEnchantMap.entrySet())
+		for(int i = 0; i < equipmentList.size(); i++) {
+			ItemStack equipmentPiece = equipmentList.get(i);
+			if(Misc.isAirOrNull(equipmentPiece)) continue;
+			Map<PitEnchant, Integer> itemEnchantMap = getEnchantsOnItem(equipmentPiece, playerEnchantMap);
+			if(i == 0) {
+				for(Map.Entry<PitEnchant, Integer> entry : itemEnchantMap.entrySet()) {
 					if(entry.getKey().applyType != ApplyType.PANTS && entry.getKey().applyType != CHESTPLATES)
 						playerEnchantMap.put(entry.getKey(), entry.getValue());
-			} else playerEnchantMap.putAll(itemEnchantMap);
+				}
+			} else {
+				playerEnchantMap.putAll(itemEnchantMap);
+			}
 		}
-
 		return playerEnchantMap;
 	}
 

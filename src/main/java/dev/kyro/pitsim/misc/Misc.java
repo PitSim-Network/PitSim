@@ -4,14 +4,12 @@ import de.myzelyam.api.vanish.VanishAPI;
 import de.tr7zw.nbtapi.NBTItem;
 import dev.kyro.arcticapi.libs.discord.DiscordWebhook;
 import dev.kyro.pitsim.PitSim;
+import dev.kyro.pitsim.adarkzone.BossManager;
 import dev.kyro.pitsim.adarkzone.DarkzoneManager;
 import dev.kyro.pitsim.adarkzone.PitMob;
 import dev.kyro.pitsim.aitems.PitItem;
 import dev.kyro.pitsim.commands.LightningCommand;
-import dev.kyro.pitsim.controllers.EnchantManager;
-import dev.kyro.pitsim.controllers.ItemFactory;
-import dev.kyro.pitsim.controllers.NonManager;
-import dev.kyro.pitsim.controllers.SpawnManager;
+import dev.kyro.pitsim.controllers.*;
 import dev.kyro.pitsim.controllers.objects.HelmetManager;
 import dev.kyro.pitsim.controllers.objects.PitEnchant;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
@@ -20,6 +18,7 @@ import dev.kyro.pitsim.cosmetics.CosmeticManager;
 import dev.kyro.pitsim.cosmetics.CosmeticType;
 import dev.kyro.pitsim.cosmetics.PitCosmetic;
 import dev.kyro.pitsim.enums.NBTTag;
+import dev.kyro.pitsim.enums.PitEntityType;
 import dev.kyro.pitsim.events.HealEvent;
 import dev.kyro.pitsim.megastreaks.Overdrive;
 import dev.kyro.pitsim.megastreaks.Uberstreak;
@@ -31,6 +30,7 @@ import net.minecraft.server.v1_8_R3.World;
 import net.minecraft.server.v1_8_R3.*;
 import org.bukkit.Material;
 import org.bukkit.*;
+import org.bukkit.block.Block;
 import org.bukkit.craftbukkit.v1_8_R3.CraftWorld;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
 import org.bukkit.craftbukkit.v1_8_R3.inventory.CraftItemStack;
@@ -60,6 +60,71 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class Misc {
+	public static boolean isEntity(LivingEntity entity, PitEntityType... entityTypes) {
+		for(PitEntityType entityType : entityTypes) {
+			switch(entityType) {
+				case REAL_PLAYER:
+					if(PlayerManager.isRealPlayer(entity)) return true;
+					break;
+				case NON:
+					if(NonManager.getNon(entity) != null) return true;
+					break;
+				case HOPPER:
+					if(HopperManager.isHopper(entity)) return true;
+					break;
+				case PIT_MOB:
+					if(DarkzoneManager.isPitMob(entity)) return true;
+					break;
+				case PIT_BOSS:
+					if(BossManager.isPitBoss(entity)) return true;
+					break;
+			}
+		}
+		throw new RuntimeException();
+	}
+
+	public static void stunEntity(LivingEntity livingEntity, int ticks) {
+		Misc.applyPotionEffect(livingEntity, PotionEffectType.SLOW, ticks, 7, true, false);
+		Misc.applyPotionEffect(livingEntity, PotionEffectType.JUMP, ticks, 128, true, false);
+		Misc.applyPotionEffect(livingEntity, PotionEffectType.SLOW_DIGGING, ticks, 99, true, false);
+
+		if(livingEntity instanceof Player) {
+			Player player = (Player) livingEntity;
+			Misc.sendTitle(player, "&cSTUNNED", ticks);
+			Misc.sendSubTitle(player, "&eYou cannot move!", ticks);
+			Sounds.COMBO_STUN.play(player);
+		}
+	}
+
+	private static int nextEntityID = Integer.MIN_VALUE;
+	public static int getNextEntityID() {
+		return nextEntityID++;
+	}
+
+//	Doesn't work on all blocks
+	public static Sound getBlockBreakSound(Block block) {
+		World nmsWorld = ((CraftWorld) block.getWorld()).getHandle();
+		net.minecraft.server.v1_8_R3.Block nmsBlock = nmsWorld.getType(
+				new BlockPosition(block.getX(), block.getY(), block.getZ())).getBlock();
+		try {
+			return Sound.valueOf(nmsBlock.stepSound.getBreakSound().replaceAll("\\.", "_").toUpperCase());
+		} catch(Exception ignored) {
+			return null;
+		}
+	}
+
+	public static List<Player> getNearbyRealPlayers(Location location, double range) {
+		List<Player> realPlayers = new ArrayList<>();
+		for(Player onlinePlayer : Bukkit.getOnlinePlayers()) {
+			if(onlinePlayer.getWorld() != location.getWorld()) continue;
+			Location testLocation = onlinePlayer.getLocation();
+			if(Math.abs(testLocation.getX() - location.getX()) > range || Math.abs(testLocation.getY() - location.getY()) > range ||
+					Math.abs(testLocation.getZ() - location.getZ()) > range) continue;
+			realPlayers.add(onlinePlayer);
+		}
+		return realPlayers;
+	}
+
 	public static boolean isValidMobPlayerTarget(Entity entity, Entity... excluded) {
 		List<Entity> excludedList = Arrays.asList(excluded);
 
@@ -81,6 +146,7 @@ public class Misc {
 		LivingEntity closestEntity = null;
 		double closestDistance = Double.MAX_VALUE;
 		for(Entity entity : location.getWorld().getNearbyEntities(location, radius, radius, radius)) {
+			if(excludedList.contains(entity)) continue;
 			if(!isValidMobPlayerTarget(entity, excluded)) continue;
 			LivingEntity livingEntity = (LivingEntity) entity;
 
@@ -543,7 +609,17 @@ public class Misc {
 		long minutes = millis / (60 * 1000);
 		millis %= (60 * 1000);
 		long seconds = millis / 1000;
-		if(!displaySeconds && seconds != 0) minutes++;
+		if(!displaySeconds) {
+			if(seconds != 0) minutes++;
+			if(minutes == 60) {
+				minutes = 0;
+				hours++;
+			}
+			if(hours == 24) {
+				hours = 0;
+				days++;
+			}
+		}
 
 		String durationString = "";
 		if(days != 0) durationString += days + "d ";

@@ -2,13 +2,12 @@ package dev.kyro.pitsim.cosmetics.killeffectsbot;
 
 import dev.kyro.arcticapi.builders.AItemStackBuilder;
 import dev.kyro.arcticapi.builders.ALoreBuilder;
-import dev.kyro.pitsim.cosmetics.CosmeticType;
-import dev.kyro.pitsim.cosmetics.PitCosmetic;
 import dev.kyro.pitsim.controllers.NonManager;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
+import dev.kyro.pitsim.cosmetics.CosmeticType;
+import dev.kyro.pitsim.cosmetics.PitCosmetic;
 import dev.kyro.pitsim.enums.NotePitch;
 import dev.kyro.pitsim.events.KillEvent;
-import dev.kyro.pitsim.events.OofEvent;
 import dev.kyro.pitsim.events.PlayerSpawnCommandEvent;
 import dev.kyro.pitsim.misc.Misc;
 import org.bukkit.Material;
@@ -118,12 +117,6 @@ public class Tetris extends PitCosmetic {
 	public void onDeath(KillEvent killEvent) {
 		if(!killEvent.isDeadPlayer()) return;
 		playerSongPositionMap.remove(killEvent.getDeadPlayer().getUniqueId());
-	}
-
-	@EventHandler
-	public void onOof(OofEvent event) {
-		Player player = event.getPlayer();
-		playerSongPositionMap.remove(player.getUniqueId());
 	}
 
 	@EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)

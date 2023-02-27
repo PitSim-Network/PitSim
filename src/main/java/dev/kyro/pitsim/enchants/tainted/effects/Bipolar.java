@@ -1,4 +1,4 @@
-package dev.kyro.pitsim.enchants.tainted.abilities;
+package dev.kyro.pitsim.enchants.tainted.effects;
 
 import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.arcticapi.misc.AUtil;
@@ -8,6 +8,7 @@ import dev.kyro.pitsim.controllers.EnchantManager;
 import dev.kyro.pitsim.controllers.objects.PitEnchant;
 import dev.kyro.pitsim.enums.ApplyType;
 import dev.kyro.pitsim.events.AttackEvent;
+import dev.kyro.pitsim.events.ManaRegenEvent;
 import dev.kyro.pitsim.misc.Misc;
 import dev.kyro.pitsim.misc.Sounds;
 import org.bukkit.Bukkit;
@@ -31,6 +32,7 @@ public class Bipolar extends PitEnchant {
 			public void run() {
 				for(Player player : Bukkit.getOnlinePlayers()) {
 					int enchantLvl = EnchantManager.getEnchantLevel(player, INSTANCE);
+					if(enchantLvl == 0) continue;
 					if(vengefulPlayers.contains(player)) {
 						Misc.applyPotionEffect(player, PotionEffectType.SPEED, 60,
 								getSpeedAmplifier(enchantLvl), true, false);
@@ -66,9 +68,20 @@ public class Bipolar extends PitEnchant {
 	}
 
 	@EventHandler
+	public void onManaRegen(ManaRegenEvent event) {
+		Player player = event.getPlayer();
+		int enchantLvl = EnchantManager.getEnchantLevel(player, this);
+		if(enchantLvl == 0) return;
+		event.multipliers.add(Misc.getReductionMultiplier(getManaReduction(enchantLvl)));
+	}
+
+	@EventHandler
 	public void onSneak(PlayerToggleSneakEvent event) {
 		Player player = event.getPlayer();
-		if(player.isSneaking()) return;
+		if(player.isSneaking() || player.isFlying()) return;
+
+		int enchantLvl = EnchantManager.getEnchantLevel(player, this);
+		if(enchantLvl == 0) return;
 
 		Cooldown cooldown = getCooldown(player, 20 * 5);
 		if(cooldown.isOnCooldown()) {
@@ -76,9 +89,6 @@ public class Bipolar extends PitEnchant {
 			return;
 		}
 		cooldown.restart();
-
-		int enchantLvl = EnchantManager.getEnchantLevel(player, this);
-		if(enchantLvl == 0) return;
 
 		if(vengefulPlayers.contains(player)) {
 			Misc.sendTitle(player, "&a&lPEACE", 20);
@@ -102,13 +112,13 @@ public class Bipolar extends PitEnchant {
 	@Override
 	public List<String> getNormalDescription(int enchantLvl) {
 		return new ALoreBuilder(
-				"&7Receive &b-" + getManaReduction(enchantLvl) + "% mana&7. Sneaking",
-				"&7toggles between &cVengeful &7and",
-				"&aPeaceful &7modes (5s cooldown):",
+				"&7Sneaking toggles between &cVengeful",
+				"&7and &aPeaceful &7modes (5s cooldown):",
 				"&c\u25a0 Vengeful&7: Deal &c+" + getDamageDecrease(enchantLvl) + "% &7damage,",
 				"&7gain &eSpeed " + AUtil.toRoman(getSpeedAmplifier(enchantLvl)),
 				"&a\u25a0 Peaceful&7: Deal &9-" + getDamageDecrease(enchantLvl) + "% &7damage,",
-				"&7gain &cRegeneration " + AUtil.toRoman(getRegenerationAmplifier(enchantLvl))
+				"&7gain &cRegeneration " + AUtil.toRoman(getRegenerationAmplifier(enchantLvl)),
+				"&7While worn, regain mana &b" + getManaReduction(enchantLvl) + "% &7slower"
 		).getLore();
 	}
 

@@ -17,10 +17,8 @@ public class MysticFactory {
 		} else if(type.equals("bow")) {
 			return getFreshItem(MysticType.BOW, null);
 		} else if(type.equals("chestplate")) {
-			if(!player.isOp()) return null;
 			return getFreshItem(MysticType.TAINTED_CHESTPLATE, null);
 		} else if(type.equals("scythe")) {
-			if(!player.isOp()) return null;
 			return getFreshItem(MysticType.TAINTED_SCYTHE, null);
 		} else if(PantColor.getPantColor(type) != null) {
 			return getFreshItem(MysticType.PANTS, PantColor.getPantColor(type));
