@@ -523,7 +523,7 @@ public class RNGesus extends Megastreak {
 	}
 
 	public static boolean isOnCooldown(PitPlayer pitPlayer) {
-		return new Date().getTime() < pitPlayer.rngCooldown;
+		return System.currentTimeMillis() < pitPlayer.rngCooldown;
 	}
 
 	public String getTime() {
@@ -532,10 +532,9 @@ public class RNGesus extends Megastreak {
 
 	public static String getTime(PitPlayer pitPlayer) {
 		StringBuilder builder = new StringBuilder();
-		long difference = ((System.currentTimeMillis() / 1000) - pitPlayer.rngCooldown / 1000);
-		int reverseDiff = (COOLDOWN_MINUTES * 60) - (int) difference;
-		builder.append(reverseDiff / 60).append("m ");
-		builder.append(reverseDiff % 60).append("s");
+		long secondsLeft = (pitPlayer.rngCooldown - System.currentTimeMillis()) / 1000;
+		builder.append(secondsLeft / 60).append("m ");
+		builder.append(secondsLeft % 60).append("s");
 		return builder.toString();
 	}
 
