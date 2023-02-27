@@ -18,7 +18,7 @@ public class AnvilRainAbility extends BlockRainAbility {
 	@Override
 	public void onBlockLand(FallingBlock fallingBlock, Location location) {
 		Sounds.ANVIL_RAIN.play(location, 20);
-		for(Entity nearbyEntity : location.getWorld().getNearbyEntities(location, 1, 1, 1)) {
+		for(Entity nearbyEntity : location.getWorld().getNearbyEntities(location, 1.5, 1.5, 1.5)) {
 			if(!(nearbyEntity instanceof Player)) continue;
 			Player player = Bukkit.getPlayer(nearbyEntity.getUniqueId());
 			if(player == null) continue;

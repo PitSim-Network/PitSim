@@ -20,7 +20,7 @@ public class PitZombieBoss extends PitBoss {
 //				new SlamAbility(0.3, 25, 25,  25),
 //				new AnvilRainAbility(0.3, 40, 100, 100),
 //				new HailAbility(0.3, 40, 100, 100),
-				new FirestormAbility(0.3, 40, 100, 100)
+				new FirestormAbility(0.3, 40, 250, 100)
 		);
 	}
 

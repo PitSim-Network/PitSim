@@ -27,7 +27,7 @@ public class HailAbility extends BlockRainAbility {
 		Sounds.SNAKE_ICE.play(location, 20);
 		Material material = fallingBlock.getMaterial();
 
-		for(Entity nearbyEntity : location.getWorld().getNearbyEntities(location, 1, 1, 1)) {
+		for(Entity nearbyEntity : location.getWorld().getNearbyEntities(location, 1.5, 1.5, 1.5)) {
 			if(!(nearbyEntity instanceof Player)) continue;
 			Player player = Bukkit.getPlayer(nearbyEntity.getUniqueId());
 			if(player == null) continue;
