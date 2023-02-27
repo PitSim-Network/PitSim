@@ -609,14 +609,16 @@ public class Misc {
 		long minutes = millis / (60 * 1000);
 		millis %= (60 * 1000);
 		long seconds = millis / 1000;
-		if(!displaySeconds && seconds != 0) minutes++;
-		if(!displaySeconds && minutes == 60) {
-			minutes = 0;
-			hours++;
-		}
-		if(!displaySeconds && hours == 24) {
-			hours = 0;
-			days++;
+		if(!displaySeconds) {
+			if(seconds != 0) minutes++;
+			if(minutes == 60) {
+				minutes = 0;
+				hours++;
+			}
+			if(hours == 24) {
+				hours = 0;
+				days++;
+			}
 		}
 
 		String durationString = "";
