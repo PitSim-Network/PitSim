@@ -60,23 +60,25 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class Misc {
-	public static boolean isEntity(LivingEntity entity, PitEntityType... entityTypes) {
+	public static boolean isEntity(Entity entity, PitEntityType... entityTypes) {
+		if(!(entity instanceof LivingEntity)) return false;
+		LivingEntity livingEntity = (LivingEntity) entity;
 		for(PitEntityType entityType : entityTypes) {
 			switch(entityType) {
 				case REAL_PLAYER:
-					if(PlayerManager.isRealPlayer(entity)) return true;
+					if(PlayerManager.isRealPlayer(livingEntity)) return true;
 					break;
 				case NON:
-					if(NonManager.getNon(entity) != null) return true;
+					if(NonManager.getNon(livingEntity) != null) return true;
 					break;
 				case HOPPER:
-					if(HopperManager.isHopper(entity)) return true;
+					if(HopperManager.isHopper(livingEntity)) return true;
 					break;
 				case PIT_MOB:
-					if(DarkzoneManager.isPitMob(entity)) return true;
+					if(DarkzoneManager.isPitMob(livingEntity)) return true;
 					break;
 				case PIT_BOSS:
-					if(BossManager.isPitBoss(entity)) return true;
+					if(BossManager.isPitBoss(livingEntity)) return true;
 					break;
 			}
 		}
