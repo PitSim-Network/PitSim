@@ -1,7 +1,7 @@
 package dev.kyro.pitsim.commands.essentials;
 
 import dev.kyro.arcticapi.misc.AOutput;
-import dev.kyro.pitsim.controllers.objects.PluginMessage;
+import dev.kyro.pitsim.misc.Misc;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -17,11 +17,7 @@ public class BroadcastCommand implements CommandExecutor {
 			return false;
 		}
 
-		new PluginMessage()
-				.writeString("BROADCAST")
-				.writeString(String.join(" ", args))
-				.send();
-
+		Misc.broadcast(String.join(" ", args));
 		return false;
 	}
 }

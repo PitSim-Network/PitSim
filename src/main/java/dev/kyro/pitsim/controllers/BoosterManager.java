@@ -103,7 +103,7 @@ public class BoosterManager implements Listener {
 
 	public static Booster getBooster(String refName) {
 		for(Booster booster : boosterList) if(booster.refName.equalsIgnoreCase(refName)) return booster;
-		return null;
+		throw new RuntimeException();
 	}
 
 	public static int getActiveBoosters() {

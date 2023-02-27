@@ -17,11 +17,13 @@ import dev.kyro.pitsim.logging.LogManager;
 import dev.kyro.pitsim.megastreaks.NoMegastreak;
 import dev.kyro.pitsim.megastreaks.RNGesus;
 import dev.kyro.pitsim.megastreaks.Uberstreak;
+import dev.kyro.pitsim.misc.wrappers.PlayerItemLocation;
 import org.bukkit.Material;
 import org.bukkit.event.EventHandler;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.List;
+import java.util.Map;
 
 public class SelfCheckout extends PitEnchant {
 	public static SelfCheckout INSTANCE;
@@ -31,6 +33,16 @@ public class SelfCheckout extends PitEnchant {
 		super("Self-Checkout", true, ApplyType.PANTS,
 				"selfcheckout", "self-checkout", "sco", "selfcheck", "checkout", "soco");
 		INSTANCE = this;
+	}
+	
+	@EventHandler
+	public void onScoDeath(KillEvent killEvent) {
+		if(!killEvent.hasKillModifier(KillModifier.SELF_CHECKOUT)) return;
+		for(Map.Entry<PlayerItemLocation, KillEvent.ItemInfo> entry : killEvent.getVulnerableItems().entrySet()) {
+			KillEvent.ItemInfo itemInfo = entry.getValue();
+			if(!itemInfo.pitItem.isMystic) continue;
+			killEvent.removeVulnerableItem(entry.getKey());
+		}
 	}
 
 	@EventHandler

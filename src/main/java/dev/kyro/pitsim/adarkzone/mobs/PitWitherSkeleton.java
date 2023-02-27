@@ -59,11 +59,6 @@ public class PitWitherSkeleton extends PitMob {
 	}
 
 	@Override
-	public double getOffsetHeight() {
-		return 1.75;
-	}
-
-	@Override
 	public int getDroppedSouls() {
 		return 7;
 	}

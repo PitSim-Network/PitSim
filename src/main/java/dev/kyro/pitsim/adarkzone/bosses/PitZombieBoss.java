@@ -47,7 +47,7 @@ public class PitZombieBoss extends PitBoss {
 
 	@Override
 	public int getMaxHealth() {
-		return 20;
+		return 100;
 	}
 
 	@Override

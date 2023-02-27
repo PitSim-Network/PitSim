@@ -109,9 +109,9 @@ public class SlamAbility extends RoutinePitBossAbility {
 			this.block = block;
 			this.initialLocation = block.getLocation();
 
-			packetBlock = new PacketBlock(Material.BARRIER, (byte) 0, initialLocation);
-			packetBlock.setViewers(getViewers());
-			packetBlock.spawnBlock();
+			packetBlock = new PacketBlock(Material.BARRIER, (byte) 0, initialLocation)
+					.setViewers(getViewers())
+					.spawnBlock();
 
 			initialLocation.add(0.5, 1, 0.5);
 			spawnBlock();

@@ -20,7 +20,6 @@ public class Shield {
 	public void init(PitPlayer pitPlayer) {
 		this.uuid = pitPlayer.player.getUniqueId();
 		this.pitPlayer = pitPlayer;
-		System.out.println("init: " + pitPlayer);
 	}
 
 	@Exclude

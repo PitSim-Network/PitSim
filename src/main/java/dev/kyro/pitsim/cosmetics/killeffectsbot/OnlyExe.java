@@ -5,6 +5,7 @@ import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.pitsim.cosmetics.CosmeticType;
 import dev.kyro.pitsim.cosmetics.PitCosmetic;
 import dev.kyro.pitsim.controllers.NonManager;
+import dev.kyro.pitsim.enums.KillModifier;
 import dev.kyro.pitsim.events.KillEvent;
 import dev.kyro.pitsim.misc.Sounds;
 import org.bukkit.Effect;
@@ -21,8 +22,8 @@ public class OnlyExe extends PitCosmetic {
 
 	@EventHandler
 	public void onKill(KillEvent killEvent) {
-		if(NonManager.getNon(killEvent.getDead()) == null || !isEnabled(killEvent.getKillerPitPlayer()) || killEvent.isExeDeath())
-			return;
+		if(NonManager.getNon(killEvent.getDead()) == null || !isEnabled(killEvent.getKillerPitPlayer()) ||
+				killEvent.hasKillModifier(KillModifier.EXECUTION)) return;
 		Sounds.EXE.play(killEvent.getKillerPlayer());
 		killEvent.getKillerPlayer().playEffect(killEvent.getDeadPlayer().getLocation().add(0, 1, 0), Effect.STEP_SOUND, 152);
 	}

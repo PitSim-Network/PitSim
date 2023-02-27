@@ -26,20 +26,19 @@ public class FreshCommand implements CommandExecutor {
 		}
 
 		if(args.length < 1) {
-
-			AOutput.error(player, "Usage: /enchant <sword|bow|color>");
+			AOutput.error(player, "Usage: /fresh <sword|bow|fresh>");
 			return false;
 		}
 
 		String type = args[0].toLowerCase();
 		ItemStack mystic = MysticFactory.getFreshItem(player, type);
 		if(mystic == null) {
-			AOutput.error(player, "Usage: /enchant <sword|bow|fresh>");
+			AOutput.error(player, "Usage: /fresh <sword|bow|fresh>");
 			return false;
 		}
 
-		if(MysticType.getMysticType(mystic) == MysticType.TAINTED_CHESTPLATE || MysticType.getMysticType(mystic) == MysticType.TAINTED_SCYTHE) {
-			if(!player.isOp()) {
+		if(!PitSim.isDev() && !player.isOp()) {
+			if(MysticType.getMysticType(mystic) == MysticType.TAINTED_CHESTPLATE || MysticType.getMysticType(mystic) == MysticType.TAINTED_SCYTHE) {
 				AOutput.error(player, "&cNice try.");
 				return false;
 			}

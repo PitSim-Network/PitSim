@@ -1,8 +1,16 @@
 package dev.kyro.pitsim.enums;
 
 public enum KillType {
-
-	DEFAULT,
+	KILL,
 	DEATH,
-	FAKE;
+	FAKE_KILL;
+
+	public boolean hasAttackerAndDefender() {
+		switch(this) {
+			case KILL:
+			case FAKE_KILL:
+				return true;
+		}
+		return false;
+	}
 }

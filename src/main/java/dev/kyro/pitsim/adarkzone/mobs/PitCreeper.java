@@ -88,11 +88,6 @@ public class PitCreeper extends PitMob {
 	}
 
 	@Override
-	public double getOffsetHeight() {
-		return 1.4;
-	}
-
-	@Override
 	public int getDroppedSouls() {
 		return 8;
 	}

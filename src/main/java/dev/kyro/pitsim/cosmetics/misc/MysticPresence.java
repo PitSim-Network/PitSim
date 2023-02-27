@@ -7,6 +7,7 @@ import dev.kyro.pitsim.cosmetics.*;
 import dev.kyro.pitsim.cosmetics.collections.ParticleCollection;
 import dev.kyro.pitsim.cosmetics.particles.EnchantmentTableParticle;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
+import dev.kyro.pitsim.misc.math.RotationUtils;
 import net.minecraft.server.v1_8_R3.EntityPlayer;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -27,7 +28,7 @@ public class MysticPresence extends PitCosmetic {
 
 		for(int i = 0; i < 40; i++) {
 			Vector vector = new Vector(1, 0, 0);
-			RotationTools.rotate(vector, 9 * i, 0, 0);
+			RotationUtils.rotate(vector, 9 * i, 0, 0);
 			vector.add(new Vector(random(0.2), 0, random(0.2)));
 			collection.addParticle(i, particle, new ParticleOffset(vector));
 		}
@@ -48,8 +49,9 @@ public class MysticPresence extends PitCosmetic {
 
 				for(Player onlinePlayer : CosmeticManager.getDisplayPlayers(pitPlayer.player, displayLocation)) {
 					EntityPlayer entityPlayer = ((CraftPlayer) onlinePlayer).getHandle();
-					collection.display(count++ % collection.particleCollectionMap.size(), entityPlayer, displayLocation);
+					collection.display(count % collection.particleCollectionMap.size(), entityPlayer, displayLocation);
 				}
+				count++;
 			}
 		}.runTaskTimer(PitSim.INSTANCE, 0L, 1L));
 	}

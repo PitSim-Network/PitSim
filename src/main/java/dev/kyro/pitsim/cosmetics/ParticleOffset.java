@@ -1,5 +1,6 @@
 package dev.kyro.pitsim.cosmetics;
 
+import dev.kyro.pitsim.misc.math.RotationUtils;
 import org.bukkit.Location;
 import org.bukkit.util.Vector;
 
@@ -46,7 +47,7 @@ public class ParticleOffset {
 		}
 		double pitch = 0;
 		if(accountForPitch) pitch = -location.getPitch();
-		if(accountForYaw | accountForPitch) RotationTools.rotate(newOffset, yaw, pitch, 0);
+		if(accountForYaw | accountForPitch) RotationUtils.rotate(newOffset, yaw, pitch, 0);
 
 		location.add(random(randomX), random(randomY), random(randomZ));
 		return location.add(newOffset);

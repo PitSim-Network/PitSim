@@ -22,17 +22,17 @@ public class Sharp extends PitEnchant {
 		int enchantLvl = attackEvent.getAttackerEnchantLevel(this);
 		if(enchantLvl == 0) return;
 
-		attackEvent.increasePercent += getDamage(enchantLvl);
+		attackEvent.increasePercent += getDamageIncrease(enchantLvl);
 	}
 
 	@Override
 	public List<String> getNormalDescription(int enchantLvl) {
 		return new PitLoreBuilder(
-				"&7Deal &c+" + getDamage(enchantLvl) + "% &7melee damage"
+				"&7Deal &c+" + getDamageIncrease(enchantLvl) + "% &7melee damage"
 		).getLore();
 	}
 
-	public int getDamage(int enchantLvl) {
+	public int getDamageIncrease(int enchantLvl) {
 		return (int) (Math.pow(enchantLvl, 1.2) * 3 + 1);
 	}
 }

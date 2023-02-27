@@ -85,7 +85,7 @@ public class PassPanel extends AGUIPanel {
 		getInventory().setItem(14, passInfo);
 		getInventory().setItem(16, nextPageItem);
 
-		page = passData.getCompletedTiers() / 9 + 1;
+		page = Math.min(passData.getCompletedTiers() / 9 + 1, getMaxPages());
 		setPage(pitPlayer, page);
 	}
 

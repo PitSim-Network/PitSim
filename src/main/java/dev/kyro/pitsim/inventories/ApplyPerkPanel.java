@@ -151,7 +151,7 @@ public class ApplyPerkPanel extends AGUIPanel {
 				perkGUI.setPerk(clickedPerk, perkNum);
 				PerkEquipEvent equipEvent = new PerkEquipEvent(clickedPerk, player, replacedPerk);
 				Bukkit.getPluginManager().callEvent(equipEvent);
-				if(ChatTriggerManager.isSubscribed(player)) ChatTriggerManager.sendPerksInfo(pitPlayer);
+				ChatTriggerManager.sendPerksInfo(pitPlayer);
 
 				openPreviousGUI();
 				return;

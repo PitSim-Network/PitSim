@@ -9,7 +9,6 @@ import dev.kyro.pitsim.controllers.SpawnManager;
 import dev.kyro.pitsim.controllers.objects.PitPerk;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.events.KillEvent;
-import dev.kyro.pitsim.events.OofEvent;
 import dev.kyro.pitsim.misc.Sounds;
 import org.bukkit.Material;
 import org.bukkit.entity.LivingEntity;
@@ -20,7 +19,9 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.text.DecimalFormat;
-import java.util.*;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class Streaker extends PitPerk {
 	public static Map<LivingEntity, Integer> playerTimes = new HashMap<>();
@@ -91,7 +92,6 @@ public class Streaker extends PitPerk {
 				for(Map.Entry<LivingEntity, Integer> entry : playerTimes.entrySet()) {
 					int time = entry.getValue();
 					time = time + 1;
-
 					playerTimes.put(entry.getKey(), time);
 				}
 			}
@@ -100,13 +100,6 @@ public class Streaker extends PitPerk {
 
 	@EventHandler
 	public void onQuit(PlayerQuitEvent event) {
-
-		xpReward.remove(event.getPlayer());
-		playerTimes.remove(event.getPlayer());
-	}
-
-	@EventHandler
-	public void onOof(OofEvent event) {
 		xpReward.remove(event.getPlayer());
 		playerTimes.remove(event.getPlayer());
 	}

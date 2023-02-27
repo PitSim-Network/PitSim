@@ -3,14 +3,13 @@ package dev.kyro.pitsim.enchants.tainted.spells;
 import dev.kyro.pitsim.controllers.Cooldown;
 import dev.kyro.pitsim.controllers.objects.PitEnchant;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
+import dev.kyro.pitsim.cosmetics.particles.FireworkSparkParticle;
 import dev.kyro.pitsim.enums.ApplyType;
 import dev.kyro.pitsim.events.PitPlayerAttemptAbilityEvent;
 import dev.kyro.pitsim.misc.Misc;
 import dev.kyro.pitsim.misc.PitLoreBuilder;
 import dev.kyro.pitsim.misc.Sounds;
 import net.minecraft.server.v1_8_R3.EntityPlayer;
-import net.minecraft.server.v1_8_R3.EnumParticle;
-import net.minecraft.server.v1_8_R3.PacketPlayOutWorldParticles;
 import org.bukkit.Location;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
 import org.bukkit.entity.Entity;
@@ -36,6 +35,7 @@ public class ElectricShock extends PitEnchant {
 	@EventHandler
 	public void onUse(PitPlayerAttemptAbilityEvent event) {
 		Player player = event.getPlayer();
+
 		int enchantLvl = event.getEnchantLevel(this);
 		if(enchantLvl == 0) return;
 
@@ -92,7 +92,7 @@ public class ElectricShock extends PitEnchant {
 		Vector stepVector = endLocation.toVector().subtract(startLocation.toVector()).normalize().multiply(stepSize);
 
 		Location drawLocation = startLocation.clone();
-		for(int i = 0; i < steps; i++) {
+		for(int i = 0; i <= steps; i++) {
 			if(i >= 2 || bounceNumber != 0) {
 				if(bounceNumber != 0 && Math.random() < 0.07) littleSpark(drawLocation.clone());
 				drawEffect(drawLocation);
@@ -122,18 +122,16 @@ public class ElectricShock extends PitEnchant {
 		for(Entity nearbyEntity : location.getWorld().getNearbyEntities(location, 25, 25, 25)) {
 			if(!(nearbyEntity instanceof Player)) continue;
 			EntityPlayer entityPlayer = ((CraftPlayer) nearbyEntity).getHandle();
-			entityPlayer.playerConnection.sendPacket(new PacketPlayOutWorldParticles(
-					EnumParticle.FIREWORKS_SPARK, true, (float) location.getX(), (float) location.getY(), (float) location.getZ(),
-					0, 0, 0, 0, 0
-			));
+			new FireworkSparkParticle().display(entityPlayer, location);
 		}
 	}
 
 	@Override
 	public List<String> getNormalDescription(int enchantLvl) {
 		return new PitLoreBuilder(
-				"&7Chains between mobs up to &e" + getMaxBounces(enchantLvl) + " time" +
-				(getMaxBounces(enchantLvl) == 1 ? "" : "s")
+				"&7Right-Clicking while looking at a mob casts this spell for &b" + getManaCost(enchantLvl) +
+						" mana&7, shooting an electric beam that chains between mobs up to &e" +
+						getMaxBounces(enchantLvl) + " time" + (getMaxBounces(enchantLvl) == 1 ? "" : "s")
 		).getLore();
 	}
 

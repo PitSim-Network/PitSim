@@ -14,7 +14,6 @@ public class PrefixPlaceholder implements APAPIPlaceholder {
 
 	@Override
 	public String getValue(Player player) {
-
 		String message = "%luckperms_prefix%";
 
 		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
