@@ -2,7 +2,6 @@ package dev.kyro.pitsim.enchants.tainted.spells;
 
 import dev.kyro.pitsim.controllers.PlayerManager;
 import dev.kyro.pitsim.controllers.objects.PitEnchant;
-import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.enums.ApplyType;
 import dev.kyro.pitsim.events.AttackEvent;
 import dev.kyro.pitsim.misc.PitLoreBuilder;
@@ -36,9 +35,6 @@ public class Devour extends PitEnchant {
 			double finalBalance = attackEvent.getAttackerPitPlayer().taintedSouls - soulCost;
 			if(finalBalance < 0) return;
 			attackEvent.getAttackerPitPlayer().taintedSouls -= soulCost;
-
-			PitPlayer pitPlayer = attackEvent.getAttackerPitPlayer();
-			if(pitPlayer.stats != null) pitPlayer.stats.billionaire += soulCost;
 		}
 
 		attackEvent.increasePercent += getDamageIncrease(enchantLvl);
