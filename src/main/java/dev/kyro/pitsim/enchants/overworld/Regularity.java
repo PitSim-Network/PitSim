@@ -1,6 +1,5 @@
 package dev.kyro.pitsim.enchants.overworld;
 
-import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.arcticapi.misc.ASound;
 import dev.kyro.pitsim.PitSim;
@@ -9,7 +8,6 @@ import dev.kyro.pitsim.controllers.PlayerManager;
 import dev.kyro.pitsim.controllers.objects.PitEnchant;
 import dev.kyro.pitsim.enums.ApplyType;
 import dev.kyro.pitsim.events.AttackEvent;
-import dev.kyro.pitsim.misc.Misc;
 import dev.kyro.pitsim.misc.PitLoreBuilder;
 import dev.kyro.pitsim.misc.Sounds;
 import org.bukkit.Sound;
@@ -138,10 +136,9 @@ public class Regularity extends PitEnchant {
 //				"&7damage. &7(Combo enchants have a", "&e" + secondComboChance(enchantLvl) + "% &7of incrementing the combo",
 //				"&7on the second hit)").getLore();
 
-		return new PitLoreBuilder("&7Your hits against players have a chance to &astrike again &7for &c" + secondHitDamage(enchantLvl) + "%",
-				"&7damage if the final damage of your",
-				"&7strike is low enough. Does not work",
-				"&7with " + Billionaire.INSTANCE.getDisplayName()
+		return new PitLoreBuilder(
+				"&7When you strike a player, &astrike again &7for &c" + secondHitDamage(enchantLvl) +
+				"% &7damage. Does not work &7with " + Billionaire.INSTANCE.getDisplayName()
 		).getLore();
 	}
 }
