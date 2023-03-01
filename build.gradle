@@ -4,7 +4,7 @@ plugins {
 }
 
 group 'dev.kyro'
-version '1.0.0'
+version ''
 project.sourceCompatibility = '1.8'
 project.targetCompatibility = '1.8'
 

@@ -523,7 +523,7 @@ public class RNGesus extends Megastreak {
 	}
 
 	public static boolean isOnCooldown(PitPlayer pitPlayer) {
-		return new Date().getTime() < pitPlayer.rngCooldown;
+		return System.currentTimeMillis() < pitPlayer.rngCooldown;
 	}
 
 	public String getTimeLeft() {
