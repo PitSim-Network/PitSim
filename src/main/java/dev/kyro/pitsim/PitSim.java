@@ -915,7 +915,6 @@ public class PitSim extends JavaPlugin {
 	}
 
 	private void loadConfig() {
-
 		getConfig().options().copyDefaults(true);
 		saveConfig();
 	}

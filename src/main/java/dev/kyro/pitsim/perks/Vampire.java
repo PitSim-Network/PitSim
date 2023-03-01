@@ -30,19 +30,12 @@ public class Vampire extends PitPerk {
 		PitPlayer pitAttacker = attackEvent.getAttackerPitPlayer();
 
 		double healing = initialHealing;
-		if(attackEvent.getArrow() != null && attackEvent.getArrow().isCritical()) healing *= 3;
+		if(attackEvent.getArrow() != null && attackEvent.getArrow().isCritical()) healing *= 2;
 		pitAttacker.heal(healing);
 	}
 
-//	@EventHandler
-//	public void onKill(KillEvent killEvent) {
-//		if(!playerHasUpgrade(killEvent.killer)) return;
-//
-//		Misc.applyPotionEffect(killEvent.killer, PotionEffectType.REGENERATION, 160, 0, true, false);
-//	}
-
 	@Override
 	public List<String> getDescription() {
-		return new ALoreBuilder("&7Heal &c" + Misc.getHearts(initialHealing) + " &7on hit.", "&7Tripled on arrow crit.").getLore();
+		return new ALoreBuilder("&7Heal &c" + Misc.getHearts(initialHealing) + " &7on hit.", "&7Doubled on arrow crit.").getLore();
 	}
 }
