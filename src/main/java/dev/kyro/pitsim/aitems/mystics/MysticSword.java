@@ -5,6 +5,7 @@ import de.tr7zw.nbtapi.NBTItem;
 import dev.kyro.arcticapi.builders.AItemStackBuilder;
 import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.pitsim.aitems.StaticPitItem;
+import dev.kyro.pitsim.aitems.TemporaryItem;
 import dev.kyro.pitsim.controllers.EnchantManager;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.enums.AuctionCategory;
@@ -17,7 +18,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class MysticSword extends StaticPitItem {
+public class MysticSword extends StaticPitItem implements TemporaryItem {
 
 	public MysticSword() {
 		hasUUID = true;
@@ -137,5 +138,10 @@ public class MysticSword extends StaticPitItem {
 	@Override
 	public boolean isLegacyItem(ItemStack itemStack, NBTItem nbtItem) {
 		return nbtItem.hasKey(NBTTag.ITEM_UUID.getRef()) && itemStack.getType() == Material.GOLD_SWORD;
+	}
+
+	@Override
+	public TemporaryType getTemporaryType() {
+		return TemporaryType.LOSES_LIVES_ON_DEATH;
 	}
 }

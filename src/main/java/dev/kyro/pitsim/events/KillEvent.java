@@ -228,12 +228,18 @@ public class KillEvent extends Event {
 
 	public void damageItems() {
 		if(!shouldLoseItems) return;
+
+		int livesLost = 0;
+		List<ItemStack> itemsBroken = new ArrayList<>();
 		for(Map.Entry<PlayerItemLocation, ItemInfo> entry : deadVulnerableItems.entrySet()) {
 			ItemStack itemStack = entry.getValue().itemStack;
 			PitItem pitItem = ItemFactory.getItem(itemStack);
 			assert pitItem != null;
 			TemporaryItem temporaryItem = (TemporaryItem) pitItem;
-			itemStack = temporaryItem.damage(itemStack, entry.getValue().livesToLose);
+
+			TemporaryItem.ItemDamageResult damageResult = temporaryItem.damage(pitItem, itemStack, entry.getValue().livesToLose);
+			int livesLost =
+
 			deadInventoryWrapper.putItem(entry.getKey(), itemStack);
 		}
 		deadInventoryWrapper.setInventory();

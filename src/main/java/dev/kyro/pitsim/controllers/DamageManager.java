@@ -33,7 +33,6 @@ import dev.kyro.pitsim.misc.Misc;
 import dev.kyro.pitsim.misc.Sounds;
 import dev.kyro.pitsim.upgrades.BreadDealer;
 import dev.kyro.pitsim.upgrades.DivineIntervention;
-import dev.kyro.pitsim.upgrades.LifeInsurance;
 import me.clip.placeholderapi.PlaceholderAPI;
 import net.citizensnpcs.api.CitizensAPI;
 import net.minecraft.server.v1_8_R3.EntityPlayer;
@@ -401,8 +400,8 @@ public class DamageManager implements Listener {
 			EntityPlayer nmsPlayer = ((CraftPlayer) dead).getHandle();
 			nmsPlayer.setAbsorptionHearts(0);
 
-			if(!LifeInsurance.isApplicable(deadPlayer) && !hasKillModifier(KillModifier.SELF_CHECKOUT, killModifiers))
-				loseLives(dead, killer);
+//			if(!LifeInsurance.isApplicable(deadPlayer) && !hasKillModifier(KillModifier.SELF_CHECKOUT, killModifiers))
+//				loseLives(dead, killer);
 
 			if(deadIsRealPlayer) pitDead.endKillstreak();
 			Telebow.teleShots.removeIf(teleShot -> teleShot.getShooter().equals(dead));
