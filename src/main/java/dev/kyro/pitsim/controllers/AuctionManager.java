@@ -205,6 +205,5 @@ public class AuctionManager implements Listener {
 
 		PluginMessage pluginMessage = new PluginMessage().writeString("AUCTION ALERT").writeString(message + " " + System.currentTimeMillis());
 		pluginMessage.send();
-		System.out.println("Send Auction Alert");
 	}
 }

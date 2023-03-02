@@ -9,28 +9,6 @@ import java.util.List;
 
 public class FileResourcesUtils {
 
-	public static void main(String[] args) throws IOException {
-
-		FileResourcesUtils app = new FileResourcesUtils();
-
-		//String fileName = "database.properties";
-		String fileName = "json/file1.json";
-
-		System.out.println("getResourceAsStream : " + fileName);
-		InputStream is = app.getFileFromResourceAsStream(fileName);
-		printInputStream(is);
-
-		System.out.println("\ngetResource : " + fileName);
-		File file = null;
-		try {
-			file = app.getFileFromResource(fileName);
-		} catch(URISyntaxException e) {
-			e.printStackTrace();
-		}
-		printFile(file);
-
-	}
-
 	// get a file from the resources folder
 	// works everywhere, IDEA, unit test and JAR file.
 	public InputStream getFileFromResourceAsStream(String fileName) {
@@ -45,7 +23,6 @@ public class FileResourcesUtils {
 		} else {
 			return inputStream;
 		}
-
 	}
 
 	/*
@@ -68,30 +45,10 @@ public class FileResourcesUtils {
 
 			return new File(resource.toURI());
 		}
-
-	}
-
-	// print input stream
-	public static void printInputStream(InputStream is) {
-
-		try(InputStreamReader streamReader =
-					new InputStreamReader(is, StandardCharsets.UTF_8);
-			BufferedReader reader = new BufferedReader(streamReader)) {
-
-			String line;
-			while((line = reader.readLine()) != null) {
-				System.out.println(line);
-			}
-
-		} catch(IOException e) {
-			e.printStackTrace();
-		}
-
 	}
 
 	// print a file
 	public static void printFile(File file) {
-
 		List<String> lines;
 		try {
 			lines = Files.readAllLines(file.toPath(), StandardCharsets.UTF_8);
@@ -99,6 +56,5 @@ public class FileResourcesUtils {
 		} catch(IOException e) {
 			e.printStackTrace();
 		}
-
 	}
 }

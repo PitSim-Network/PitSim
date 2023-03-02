@@ -74,7 +74,7 @@ public abstract class PitNPC implements Listener {
 		try {
 			for(NPC npc : npcs) npc.destroy();
 		} catch(Exception ignored) {
-			System.out.println("error despawning npc");
+			AOutput.log("Error despawning npc");
 		}
 	}
 

@@ -239,11 +239,11 @@ public class PitPlayer {
 					Thread.sleep(timeUntilSave);
 					save(true, callback, itemData);
 				} catch(Exception exception) {
-					System.out.println("--------------------------------------------------");
-					System.out.println("CRITICAL ERROR: data for " + uuid + " failed to final save");
-					System.out.println();
+					AOutput.log("----------------------------------------");
+					AOutput.log("CRITICAL ERROR: data for " + uuid + " failed to final save");
+					AOutput.log("");
 					exception.printStackTrace();
-					System.out.println("--------------------------------------------------");
+					AOutput.log("----------------------------------------");
 					Misc.alertDiscord("CRITICAL ERROR: data for " + player.getName() + " failed to final save");
 				}
 			}).start();
@@ -254,7 +254,7 @@ public class PitPlayer {
 		lastSave = System.currentTimeMillis();
 
 		if(isNPC) {
-			System.out.println("complete development failure. " + uuid + " is attempting to save data and is not a real player");
+			AOutput.log("Complete development failure. " + uuid + " is attempting to save data and is not a real player");
 			return;
 		}
 
@@ -279,13 +279,11 @@ public class PitPlayer {
 
 		if(finalSave && callback != null) {
 			FirestoreManager.FIRESTORE.collection(FirestoreManager.PLAYERDATA_COLLECTION).document(uuid.toString())
-					.set(this).addListener(callback, command -> {
-						callback.runTask(PitSim.INSTANCE);
-					});
-			System.out.println("Saving Data (Blocking Thread): " + uuid.toString());
+					.set(this).addListener(callback, command -> callback.runTask(PitSim.INSTANCE));
+			AOutput.log("Saving Player (Blocking Thread): " + uuid.toString());
 		} else {
 			FirestoreManager.FIRESTORE.collection(FirestoreManager.PLAYERDATA_COLLECTION).document(uuid.toString()).set(this);
-			System.out.println("Saving Data: " + Bukkit.getOfflinePlayer(uuid).getName());
+			AOutput.log("Saving Player: " + Bukkit.getOfflinePlayer(uuid).getName());
 		}
 	}
 
@@ -452,7 +450,7 @@ public class PitPlayer {
 		for(PitPlayer testPitPlayer : pitPlayers) {
 			if(testPitPlayer.player == null) continue;
 			if(!testPitPlayer.player.getUniqueId().equals(playerUUID)) continue;
-			System.out.println("found duplicate pitplayer for " + testPitPlayer.player.getName());
+			AOutput.log("Found duplicate pitplayer for " + testPitPlayer.player.getName());
 			return false;
 		}
 
@@ -467,18 +465,18 @@ public class PitPlayer {
 				pitPlayer = new PitPlayer();
 			}
 
-			System.out.println("Loaded Data: " + Bukkit.getOfflinePlayer(playerUUID).getName());
+			AOutput.log("Loaded Player: " + Bukkit.getOfflinePlayer(playerUUID).getName());
 			assert pitPlayer != null;
 
 			pitPlayer.uuid = playerUUID;
 
 		} catch(Exception exception) {
-			System.out.println("--------------------------------------------------");
-			System.out.println("Playerdata for " + Bukkit.getOfflinePlayer(playerUUID).getName() + " failed to load");
-			System.out.println("Disconnecting player");
-			System.out.println();
+			AOutput.log("----------------------------------------");
+			AOutput.log("Playerdata for " + Bukkit.getOfflinePlayer(playerUUID).getName() + " failed to load");
+			AOutput.log("Disconnecting player");
+			AOutput.log("");
 			exception.printStackTrace();
-			System.out.println("--------------------------------------------------");
+			AOutput.log("----------------------------------------");
 			return false;
 		}
 
@@ -503,7 +501,7 @@ public class PitPlayer {
 			if(isNPC) {
 				pitPlayer = new PitPlayer(player);
 			} else {
-				System.out.println("pitplayer is null and shouldn't be");
+				AOutput.log("PitPlayer is null and shouldn't be");
 				return null;
 			}
 

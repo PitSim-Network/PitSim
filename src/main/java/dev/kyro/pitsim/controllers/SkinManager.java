@@ -25,7 +25,7 @@ public class SkinManager implements Listener {
 			@Override
 			public void run() {
 				for(Map.Entry<String, List<BukkitRunnable>> entry : new ArrayList<>(callbackMap.entrySet())) {
-					System.out.println("Loading Skin: " + entry.getKey());
+					AOutput.log("Loading Skin: " + entry.getKey());
 					loadSkin(entry.getKey());
 					if(!isSkinLoaded(entry.getKey())) break;
 					for(BukkitRunnable runnable : callbackMap.remove(entry.getKey())) runnable.runTask(PitSim.INSTANCE);
@@ -45,7 +45,7 @@ public class SkinManager implements Listener {
 			npc.addTrait(skinTrait);
 			skinTrait.setSkinName(skinName);
 		} else {
-			System.out.println("could not skin " + skinName + " npc as it is not spawned");
+			AOutput.log("Could not skin " + skinName + " npc as it is not spawned");
 		}
 	}
 

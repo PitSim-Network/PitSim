@@ -1,6 +1,7 @@
 package dev.kyro.pitsim.controllers.objects;
 
 import com.google.cloud.firestore.annotation.Exclude;
+import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.controllers.FirestoreManager;
 
 import java.util.ArrayList;
@@ -40,7 +41,7 @@ public class AuctionData {
 		}
 		if(!saveQueued && !onSaveCooldown) {
 			FirestoreManager.FIRESTORE.collection(FirestoreManager.SERVER_COLLECTION).document(FirestoreManager.AUCTION_DOCUMENT).set(this);
-			System.out.println("Saving PitSim Auction data");
+			AOutput.log("Saving PitSim Auction data");
 			onSaveCooldown = true;
 			new Thread(() -> {
 				try {

@@ -73,7 +73,6 @@ public class IgnoreCommand implements CommandExecutor, TabCompleter {
 				return false;
 			}
 
-			System.out.println("target: " + target.getName());
 			if(PlayerManager.isStaff(target.getUniqueId())) {
 				AOutput.error(player, "&c&lERROR!&7 You cannot ignore staff");
 				return false;

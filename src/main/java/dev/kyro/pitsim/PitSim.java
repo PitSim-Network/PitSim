@@ -70,6 +70,7 @@ import dev.kyro.pitsim.enchants.tainted.znotcodedrare.*;
 import dev.kyro.pitsim.enchants.tainted.uncommon.Adrenaline;
 import dev.kyro.pitsim.enchants.tainted.uncommon.Barbaric;
 import dev.kyro.pitsim.enums.NBTTag;
+import dev.kyro.pitsim.enums.PitCalendarEvent;
 import dev.kyro.pitsim.events.EquipmentChangeEvent;
 import dev.kyro.pitsim.helmetabilities.*;
 import dev.kyro.pitsim.killstreaks.*;
@@ -319,15 +320,6 @@ public class PitSim extends JavaPlugin {
 
 	@Override
 	public void onDisable() {
-//		System.out.println("Disconnecting database");
-//		try {
-//			for(FirebaseApp app : new ArrayList<>(FirebaseApp.getApps())) app.delete();
-//		} catch(Exception exception) {
-//			exception.printStackTrace();
-//			System.out.println("Database failed to disconnect");
-//		}
-//		System.out.println("Database disconnected");
-
 		TaintedWell.onStop();
 		if(status.isDarkzone()) FirestoreManager.AUCTION.save();
 
@@ -456,7 +448,7 @@ public class PitSim extends JavaPlugin {
 				}
 			}
 
-			if(TimeManager.isChristmasSeason() && status.isOverworld()) {
+			if(TimeManager.isEventActive(PitCalendarEvent.CHRISTMAS_SEASON) && status.isOverworld()) {
 				pitMap = xmas;
 				time = System.currentTimeMillis();
 				MapManager.currentMap.world.setStorm(true);
