@@ -166,12 +166,12 @@ public class AuctionItem {
 
 				try {
 					ApiFuture<DocumentSnapshot> data = FirestoreManager.FIRESTORE.collection(FirestoreManager.PLAYERDATA_COLLECTION)
-							.document(winner.getUniqueId().toString()).get();
+							.document(player.getUniqueId().toString()).get();
 
 					int soulReturn = data.get().get("soulReturn", Integer.class);
 					soulReturn += entry.getValue();
 
-					FirestoreManager.FIRESTORE.collection(FirestoreManager.PLAYERDATA_COLLECTION).document(winner.getUniqueId().toString()).update("soulReturn", soulReturn);
+					FirestoreManager.FIRESTORE.collection(FirestoreManager.PLAYERDATA_COLLECTION).document(player.getUniqueId().toString()).update("soulReturn", soulReturn);
 
 				} catch(Exception e) {
 					e.printStackTrace();
