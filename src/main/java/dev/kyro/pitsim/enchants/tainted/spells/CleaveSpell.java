@@ -1,24 +1,23 @@
-package dev.kyro.pitsim.enchants.tainted.awijienchants;
+package dev.kyro.pitsim.enchants.tainted.spells;
 
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.controllers.Cooldown;
+import dev.kyro.pitsim.controllers.DamageManager;
 import dev.kyro.pitsim.controllers.objects.PitEnchant;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.enums.ApplyType;
 import dev.kyro.pitsim.enums.PitEntityType;
 import dev.kyro.pitsim.events.PitPlayerAttemptAbilityEvent;
+import dev.kyro.pitsim.events.WrapperEntityDamageByEntityEvent;
 import dev.kyro.pitsim.misc.Misc;
 import dev.kyro.pitsim.misc.PitLoreBuilder;
 import dev.kyro.pitsim.misc.Sounds;
 import net.minecraft.server.v1_8_R3.PacketPlayOutEntity;
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
 import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
-import org.bukkit.event.entity.EntityDamageByEntityEvent;
-import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.EulerAngle;
 import org.bukkit.util.Vector;
@@ -47,16 +46,14 @@ public class CleaveSpell extends PitEnchant {
 							((CraftPlayer) player).getHandle().playerConnection.sendPacket(identityTpPacket);
 						}
 
-						for(Entity entity : cleaveEntity.armorStand.getNearbyEntities(0.5, 0.5, 0.5)) {
+						Location checkLocation = cleaveEntity.armorStand.getLocation();
+						for(Entity entity : cleaveEntity.armorStand.getWorld().getNearbyEntities(checkLocation, 1, 1, 1)) {
 							if(!(entity instanceof LivingEntity) || entity == entry.getKey() || entity == cleaveEntity.armorStand) continue;
 							LivingEntity livingEntity = (LivingEntity) entity;
 							if(!Misc.isEntity(livingEntity, PitEntityType.REAL_PLAYER, PitEntityType.PIT_BOSS, PitEntityType.PIT_MOB)) continue;
 
-							EntityDamageByEntityEvent damageEvent = new EntityDamageByEntityEvent(livingEntity, entity, EntityDamageEvent.DamageCause.CUSTOM, 5);
-							damageEvent.setDamage(5);
-							Bukkit.getServer().getPluginManager().callEvent(damageEvent);
-							if(damageEvent.isCancelled()) damageEvent.setDamage(5);
-							Sounds.CLEAVE3.play(livingEntity);
+							WrapperEntityDamageByEntityEvent event = DamageManager.createAttack(cleaveEntity.attacker, livingEntity, 5);
+							if(!event.isCancelled()) Sounds.CLEAVE3.play(cleaveEntity.attacker);
 						}
 					}
 				}
@@ -74,8 +71,8 @@ public class CleaveSpell extends PitEnchant {
 		int enchantLvl = event.getEnchantLevel(this);
 		if(enchantLvl == 0) return;
 
-		Cooldown cooldown = getCooldown(event.getPlayer(), 10);
-//		if(cooldown.isOnCooldown()) return;
+		Cooldown cooldown = getCooldown(event.getPlayer(), 4);
+		if(cooldown.isOnCooldown()) return;
 		PitPlayer pitPlayer = PitPlayer.getPitPlayer(event.getPlayer());
 		if(!pitPlayer.useMana(getManaCost(enchantLvl))) {
 			Sounds.NO.play(event.getPlayer());
@@ -101,7 +98,7 @@ public class CleaveSpell extends PitEnchant {
 		standMap.putIfAbsent(player, new ArrayList<>());
 		List<CleaveEntity> cleaveEntities = standMap.get(player);
 
-		CleaveEntity cleaveEntity = new CleaveEntity(stand, standLocation, velocity);
+		CleaveEntity cleaveEntity = new CleaveEntity(player, stand, standLocation, velocity);
 		cleaveEntities.add(cleaveEntity);
 
 		Sounds.CLEAVE1.play(player);
@@ -129,12 +126,14 @@ public class CleaveSpell extends PitEnchant {
 	}
 
 	public static class CleaveEntity {
+		public Player attacker;
 		public ArmorStand armorStand;
 		public Location spawnLocation;
 		public Vector velocity;
 		public int rotation = 0;
 
-		public CleaveEntity(ArmorStand armorStand, Location spawnLocation, Vector velocity) {
+		public CleaveEntity(Player attacker, ArmorStand armorStand, Location spawnLocation, Vector velocity) {
+			this.attacker = attacker;
 			this.armorStand = armorStand;
 			this.spawnLocation = spawnLocation;
 			this.velocity = velocity;

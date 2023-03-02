@@ -660,6 +660,7 @@ public class EnchantManager implements Listener {
 
 	public static List<PitEnchant> getEnchants(MysticType mystictype) {
 		List<PitEnchant> applicableEnchants = new ArrayList<>();
+		if(mystictype == null) return applicableEnchants;
 
 		for(PitEnchant pitEnchant : pitEnchants) {
 			ApplyType enchantApplyType = pitEnchant.applyType;

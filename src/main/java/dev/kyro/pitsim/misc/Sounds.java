@@ -121,7 +121,7 @@ public class Sounds {
 	public static final SoundEffect ROLLING_THUNDER_START = new SoundEffect(Sound.ENDERDRAGON_GROWL, 1, 1);
 	public static final SoundEffect PITPOCKET = new SoundEffect(Sound.BURP, 1, 1);
 	public static final SoundEffect ADRENALINE = new SoundEffect(Sound.NOTE_PLING, 1, 1.65);
-	public static final SoundEffect HEMORRHAGE = new SoundEffect(Sound.DIG_WOOD, 1, 1);
+	public static final SoundEffect HEMORRHAGE = new SoundEffect(Sound.DIG_STONE, 1, 0.8);
 
 	//	Megastreaks
 	public static final SoundEffect MEGA_GENERAL = new SoundEffect(Sound.WITHER_SPAWN, 1000, 1);

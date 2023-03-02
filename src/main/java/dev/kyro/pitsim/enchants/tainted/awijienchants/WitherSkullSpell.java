@@ -15,20 +15,24 @@ import org.bukkit.event.EventHandler;
 import java.util.List;
 
 public class WitherSkullSpell extends PitEnchant {
-	public static int MANA_COST = 30;
+	public static WitherSkullSpell INSTANCE;
 
 	public WitherSkullSpell() {
-		super("Wither Skull", true, ApplyType.SCYTHES,
-				"witherskull", "wither");
+		super("Necrotic", true, ApplyType.SCYTHES,
+				"necrotic", "necro");
 		isTainted = true;
+		INSTANCE = this;
 	}
 
 	@EventHandler
 	public void onDamage(AttackEvent.Pre attackEvent) {
+		int enchantLvl = attackEvent.getAttackerEnchantLevel(this);
+		if(enchantLvl == 0) return;
+
 		if(attackEvent.getFireball() == null || attackEvent.getAttacker() != attackEvent.getDefender()) return;
 		attackEvent.getAttackerEnchantMap().clear();
 		attackEvent.getDefenderEnchantMap().clear();
-		attackEvent.getEvent().setCancelled(true);
+		attackEvent.setCancelled(true);
 	}
 
 	@EventHandler
@@ -38,24 +42,26 @@ public class WitherSkullSpell extends PitEnchant {
 
 		Cooldown cooldown = getCooldown(event.getPlayer(), 20);
 		if(cooldown.isOnCooldown()) return;
-
 		Player player = event.getPlayer();
 		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
-		if(!pitPlayer.useMana(MANA_COST)) {
+		if(!pitPlayer.useMana(getManaCost(enchantLvl))) {
 			Sounds.NO.play(player);
 			return;
 		}
-
 		cooldown.restart();
 
-		WitherSkull witherSkull = player.getWorld().spawn(player.getLocation().add(0, 2, 0), WitherSkull.class);
-		witherSkull.setShooter(player);
+		player.launchProjectile(WitherSkull.class);
 	}
 
 	@Override
 	public List<String> getNormalDescription(int enchantLvl) {
 		return new PitLoreBuilder(
-				"&7Enjoy"
+				"&7Right-Clicking casts this spell for &b" + getManaCost(enchantLvl) + " mana&7, " +
+						"shooting a &8wither skull&7 that was so kindly donated by a now-headless friend"
 		).getLore();
+	}
+
+	public static int getManaCost(int enchantLvl) {
+		return 1;
 	}
 }

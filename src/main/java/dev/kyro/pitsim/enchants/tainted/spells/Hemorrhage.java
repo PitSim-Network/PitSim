@@ -1,4 +1,4 @@
-package dev.kyro.pitsim.enchants.tainted.znotcodedrare;
+package dev.kyro.pitsim.enchants.tainted.spells;
 
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.controllers.Cooldown;
@@ -11,22 +11,17 @@ import dev.kyro.pitsim.misc.PitLoreBuilder;
 import dev.kyro.pitsim.misc.Sounds;
 import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.entity.LivingEntity;
 import org.bukkit.event.EventHandler;
 import org.bukkit.material.MaterialData;
 import org.bukkit.scheduler.BukkitRunnable;
-import org.bukkit.scheduler.BukkitTask;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class Hemorrhage extends PitEnchant {
 	public static Hemorrhage INSTANCE;
-	public static Map<LivingEntity, BukkitTask> bleedingPlayerMap = new HashMap<>();
 
 	public Hemorrhage() {
-		super("Hemorrhage", true, ApplyType.CHESTPLATES,
+		super("Hemorrhage", true, ApplyType.SCYTHES,
 				"hemorrhage", "hemo");
 		isTainted = true;
 		INSTANCE = this;
@@ -57,33 +52,37 @@ public class Hemorrhage extends PitEnchant {
 			public void run() {
 				if(++count == getSeconds(enchantLvl)) cancel();
 
-				Location location = attackEvent.getDefenderPlayer().getLocation();
+				attackEvent.getDefender().setHealth(Math.max(attackEvent.getDefender().getHealth() -
+						getBleedDamage(enchantLvl), 1));
+
+				Location centerLocation = attackEvent.getDefenderPlayer().getLocation().add(0, 1, 0);
 				BlockCrackParticle particle = new BlockCrackParticle(new MaterialData(Material.REDSTONE_BLOCK));
-				particle.display(Misc.getNearbyRealPlayers(location, 25), location);
+				for(int i = 0; i < 50; i++) particle.display(Misc.getNearbyRealPlayers(centerLocation, 25), centerLocation);
 
-				Sounds.HEMORRHAGE.play(attackEvent.getDefenderPlayer());
+				Sounds.HEMORRHAGE.play(attackEvent.getDefenderPlayer().getLocation());
 			}
-		}.runTaskTimer(PitSim.INSTANCE, 0L, 15L);
-
-		Sounds.HEMORRHAGE.play(attackEvent.getAttackerPlayer());
+		}.runTaskTimer(PitSim.INSTANCE, 0L, 20L);
 	}
 
 	@Override
 	public List<String> getNormalDescription(int enchantLvl) {
 		return new PitLoreBuilder(
-				"&7Striking an enemy makes them bleed for " + getSeconds(enchantLvl) +
+				"&7Striking an enemy makes them &cbleed &7for " + getSeconds(enchantLvl) +
 						" second" + (getSeconds(enchantLvl) == 1 ? "" : "s") + " but costs &b" +
-						getManaCost(enchantLvl) + " mana (" + getCooldownSeconds(enchantLvl) + " second" +
-						(getCooldownSeconds(enchantLvl) == 1 ? "" : "s") + ")"
+						getManaCost(enchantLvl) + " mana &7(" + getCooldownSeconds(enchantLvl) + " second cooldown"
 		).getLore();
 	}
 
+	public static double getBleedDamage(int enchantLvl) {
+		return 0.5;
+	}
+
 	public static int getSeconds(int enchantLvl) {
-		return 1;
+		return 5;
 	}
 
 	public static int getCooldownSeconds(int enchantLvl) {
-		return 4;
+		return 10;
 	}
 
 	public static int getManaCost(int enchantLvl) {

@@ -1,4 +1,4 @@
-package dev.kyro.pitsim.enchants.tainted.awijienchants;
+package dev.kyro.pitsim.enchants.tainted.spells;
 
 import com.sk89q.worldedit.EditSession;
 import dev.kyro.arcticapi.misc.AOutput;
@@ -7,6 +7,7 @@ import dev.kyro.pitsim.controllers.Cooldown;
 import dev.kyro.pitsim.controllers.objects.PitEnchant;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.enums.ApplyType;
+import dev.kyro.pitsim.enums.PitEntityType;
 import dev.kyro.pitsim.events.PitPlayerAttemptAbilityEvent;
 import dev.kyro.pitsim.misc.Misc;
 import dev.kyro.pitsim.misc.PitLoreBuilder;
@@ -51,13 +52,11 @@ public class FreezeSpell extends PitEnchant {
 
 		Cooldown cooldown = getCooldown(event.getPlayer(), 40);
 		if(cooldown.isOnCooldown()) return;
-
 		PitPlayer pitPlayer = PitPlayer.getPitPlayer(event.getPlayer());
 		if(!pitPlayer.useMana(getManaCost(enchantLvl))) {
 			Sounds.NO.play(event.getPlayer());
 			return;
 		}
-
 		cooldown.restart();
 
 		for(Location value : sessionMap.values()) {
@@ -74,14 +73,14 @@ public class FreezeSpell extends PitEnchant {
 			location = player.getLocation().subtract(0, 1, 0);
 		else location = player.getLocation();
 
-		player.spigot().playEffect(player.getLocation().add(0, 1, 0), Effect.SNOWBALL_BREAK, 1, 1, (float) 2, (float) 2, (float) 2, (float) 0.2, 250, 6);
-		player.spigot().playEffect(player.getLocation().add(0, 1, 0), Effect.STEP_SOUND, 174, 1, (float) 2, (float) 2, (float) 2, (float) 0.2, 250, 6);
+		player.spigot().playEffect(player.getLocation().add(0, 1, 0),
+				Effect.SNOWBALL_BREAK, 1, 1, 2F, 2F, 2F, 0.2F, 250, 6);
+		player.spigot().playEffect(player.getLocation().add(0, 1, 0),
+				Effect.STEP_SOUND, 174, 1, 2F, 2F, 2F, 0.2F, 250, 6);
 		Sounds.FREEZE1.play(player);
 
 		for(Entity nearbyEntity : event.getPlayer().getNearbyEntities(6, 6, 6)) {
-			if(!(nearbyEntity instanceof LivingEntity)) continue;
-			if(nearbyEntity instanceof ArmorStand) continue;
-			if(nearbyEntity instanceof Villager) continue;
+			if(!Misc.isEntity(nearbyEntity, PitEntityType.REAL_PLAYER, PitEntityType.PIT_MOB, PitEntityType.PIT_BOSS))
 
 			Misc.applyPotionEffect((LivingEntity) nearbyEntity, PotionEffectType.SLOW, 40, 100, false, false);
 			Misc.applyPotionEffect((LivingEntity) nearbyEntity, PotionEffectType.WEAKNESS, 40, 100, false, false);

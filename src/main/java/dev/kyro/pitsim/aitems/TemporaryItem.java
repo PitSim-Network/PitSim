@@ -2,23 +2,26 @@ package dev.kyro.pitsim.aitems;
 
 import de.tr7zw.nbtapi.NBTItem;
 import dev.kyro.pitsim.enums.NBTTag;
+import dev.kyro.pitsim.misc.Misc;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 
 public interface TemporaryItem {
 	TemporaryType getTemporaryType();
 
-	default ItemDamageResult damage(PitItem pitItem, ItemStack itemStack, int lives) {
+	default void onItemRemove(ItemStack itemStack) {};
+
+	default ItemDamageResult damage(PitItem pitItem, ItemStack itemStack, int attemptToLoseLives) {
 		TemporaryType type = getTemporaryType();
 		if(type == TemporaryType.LOST_ON_DEATH) {
-			return new ItemDamageResult(new ItemStack(Material.AIR), true);
+			return new ItemDamageResult(new ItemStack(Material.AIR), 0);
 		} else if(type == TemporaryType.LOSES_LIVES_ON_DEATH) {
 			NBTItem nbtItem = new NBTItem(itemStack);
-			int newLives = nbtItem.getInteger(NBTTag.CURRENT_LIVES.getRef()) - lives;
-			if(newLives <= 0) return new ItemDamageResult(new ItemStack(Material.AIR), true);
-			nbtItem.setInteger(NBTTag.CURRENT_LIVES.getRef(), newLives);
+			int currentLives = nbtItem.getInteger(NBTTag.CURRENT_LIVES.getRef());
+			int livesLost = Math.min(attemptToLoseLives, currentLives);
+			nbtItem.setInteger(NBTTag.CURRENT_LIVES.getRef(), currentLives - livesLost);
 			pitItem.updateItem(nbtItem.getItem());
-			return new ItemDamageResult(nbtItem.getItem(), lives);
+			return new ItemDamageResult(nbtItem.getItem(), livesLost);
 		}
 		throw new RuntimeException();
 	}
@@ -28,19 +31,13 @@ public interface TemporaryItem {
 		LOSES_LIVES_ON_DEATH
 	}
 
-	public class ItemDamageResult {
+	class ItemDamageResult {
 		private final ItemStack itemStack;
-		private int livesLost = 0;
-		private boolean brokeItem;
+		private final int livesLost;
 
 		public ItemDamageResult(ItemStack itemStack, int livesLost) {
 			this.itemStack = itemStack;
 			this.livesLost = livesLost;
-		}
-
-		public ItemDamageResult(ItemStack itemStack, boolean brokeItem) {
-			this.itemStack = itemStack;
-			this.brokeItem = brokeItem;
 		}
 
 		public ItemStack getItemStack() {
@@ -51,8 +48,8 @@ public interface TemporaryItem {
 			return livesLost;
 		}
 
-		public boolean isItemBroken() {
-			return brokeItem;
+		public boolean wasRemoved() {
+			return Misc.isAirOrNull(itemStack);
 		}
 	}
 }

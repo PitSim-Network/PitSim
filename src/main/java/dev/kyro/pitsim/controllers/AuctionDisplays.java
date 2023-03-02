@@ -219,10 +219,7 @@ public class AuctionDisplays implements Listener {
 		stands.add(timerStandUUID);
 
 		for(UUID armorStand : stands) {
-			if(armorStand.equals(event.getDefender().getUniqueId())) {
-				event.setCancelled(true);
-				event.getEvent().setCancelled(true);
-			}
+			if(armorStand.equals(event.getDefender().getUniqueId())) event.setCancelled(true);
 		}
 	}
 

@@ -25,6 +25,7 @@ import dev.kyro.pitsim.enchants.tainted.uncommon.ShieldBuster;
 import dev.kyro.pitsim.enums.*;
 import dev.kyro.pitsim.events.AttackEvent;
 import dev.kyro.pitsim.events.KillEvent;
+import dev.kyro.pitsim.events.WrapperEntityDamageByEntityEvent;
 import dev.kyro.pitsim.logging.LogManager;
 import dev.kyro.pitsim.megastreaks.NoMegastreak;
 import dev.kyro.pitsim.megastreaks.RNGesus;
@@ -45,10 +46,7 @@ import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
-import org.bukkit.event.entity.EntityDamageByEntityEvent;
-import org.bukkit.event.entity.EntityDamageEvent;
-import org.bukkit.event.entity.EntityRegainHealthEvent;
-import org.bukkit.event.entity.EntityShootBowEvent;
+import org.bukkit.event.entity.*;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.potion.PotionEffect;
@@ -64,23 +62,28 @@ public class DamageManager implements Listener {
 	public static List<LivingEntity> nonHitCooldownList = new ArrayList<>();
 	public static List<LivingEntity> bossHitCooldown = new ArrayList<>();
 
-	public static Map<EntityShootBowEvent, Map<PitEnchant, Integer>> arrowMap = new HashMap<>();
+	public static Map<Projectile, Map<PitEnchant, Integer>> projectileMap = new HashMap<>();
 	public static Map<Entity, LivingEntity> hitTransferMap = new HashMap<>();
 
 	static {
 		new BukkitRunnable() {
 			@Override
 			public void run() {
-				List<EntityShootBowEvent> toRemove = new ArrayList<>();
-				for(Map.Entry<EntityShootBowEvent, Map<PitEnchant, Integer>> entry : arrowMap.entrySet()) {
-
-					if(entry.getKey().getProjectile().isDead()) toRemove.add(entry.getKey());
-				}
-				for(EntityShootBowEvent remove : toRemove) {
-					arrowMap.remove(remove);
+				for(Map.Entry<Projectile, Map<PitEnchant, Integer>> entry : new ArrayList<>(projectileMap.entrySet())) {
+					if(entry.getKey().isDead()) projectileMap.remove(entry.getKey());
 				}
 			}
 		}.runTaskTimer(PitSim.INSTANCE, 0L, 1L);
+	}
+
+	public static WrapperEntityDamageByEntityEvent createAttack(LivingEntity attacker, LivingEntity defender, double damage) {
+		assert attacker != null && defender != null;
+
+		WrapperEntityDamageByEntityEvent event = new WrapperEntityDamageByEntityEvent(defender, attacker, damage);
+		Bukkit.getServer().getPluginManager().callEvent(event);
+		if(event.isCancelled()) return event;
+		defender.damage(damage, attacker);
+		return event;
 	}
 
 	@EventHandler
@@ -107,10 +110,11 @@ public class DamageManager implements Listener {
 	}
 
 	@EventHandler(ignoreCancelled = true, priority = EventPriority.HIGH)
-	public void onBowShoot(EntityShootBowEvent event) {
-		if(!(event.getEntity() instanceof Player) || !(event.getProjectile() instanceof Arrow)) return;
-		Player shooter = (Player) event.getEntity();
-		arrowMap.put(event, EnchantManager.getEnchantsOnPlayer(shooter));
+	public void onBowShoot(ProjectileLaunchEvent event) {
+		if(!(event.getEntity().getShooter() instanceof Player)) return;
+		Projectile projectile = event.getEntity();
+		Player shooter = (Player) projectile.getShooter();
+		projectileMap.put(projectile, EnchantManager.getEnchantsOnPlayer(shooter));
 	}
 
 	public void transferHit(LivingEntity attacker, Entity damager, LivingEntity defender, double damage) {
@@ -123,6 +127,10 @@ public class DamageManager implements Listener {
 		if(!(event.getEntity() instanceof LivingEntity)) return;
 		LivingEntity attacker = getAttacker(event.getDamager());
 		LivingEntity defender = (LivingEntity) event.getEntity();
+
+		boolean isWrappedEvent = event instanceof WrapperEntityDamageByEntityEvent;
+		WrapperEntityDamageByEntityEvent wrappedEvent = null;
+		if(isWrappedEvent) wrappedEvent = (WrapperEntityDamageByEntityEvent) event;
 
 		if(defender.isDead()) return;
 
@@ -170,6 +178,8 @@ public class DamageManager implements Listener {
 		if(defender instanceof Slime && !(defender instanceof MagmaCube)) return;
 
 		Map<PitEnchant, Integer> defenderEnchantMap = EnchantManager.getEnchantsOnPlayer(defender);
+		if(isWrappedEvent && wrappedEvent.hasOverrideDefenderEnchants()) defenderEnchantMap = wrappedEvent.getOverrideDefenderEnchantMap();
+
 		boolean fakeHit = false;
 
 		Non attackingNon = NonManager.getNon(attacker);
@@ -245,17 +255,18 @@ public class DamageManager implements Listener {
 		if(event.getEntity() instanceof Fireball) return;
 
 		Map<PitEnchant, Integer> attackerEnchantMap = new HashMap<>();
-		if(realDamager instanceof Slime && !(realDamager instanceof MagmaCube)) {
-		} else if(realDamager instanceof Arrow) {
-			for(Map.Entry<EntityShootBowEvent, Map<PitEnchant, Integer>> entry : arrowMap.entrySet()) {
-				if(!entry.getKey().getProjectile().equals(realDamager)) continue;
-				attackerEnchantMap = arrowMap.get(entry.getKey());
+		if(realDamager instanceof Projectile) {
+			for(Map.Entry<Projectile, Map<PitEnchant, Integer>> entry : projectileMap.entrySet()) {
+				if(!entry.getKey().equals(realDamager)) continue;
+				attackerEnchantMap = projectileMap.get(entry.getKey());
 				break;
 			}
-		} else if(realDamager instanceof Fireball) {
 		} else if(realDamager instanceof LivingEntity) {
 			attackerEnchantMap = EnchantManager.getEnchantsOnPlayer(attacker);
 		}
+//		Override enchants
+		if(isWrappedEvent && wrappedEvent.hasOverrideAttackerEnchants())
+			attackerEnchantMap = wrappedEvent.getOverrideAttackerEnchantMap();
 
 //		Remove disabled enchants
 		for(Map.Entry<PitEnchant, Integer> entry : new ArrayList<>(attackerEnchantMap.entrySet()))
@@ -356,8 +367,7 @@ public class DamageManager implements Listener {
 	}
 
 	public static LivingEntity getAttacker(Entity damager) {
-		if(damager instanceof Arrow) return (LivingEntity) ((Arrow) damager).getShooter();
-		if(damager instanceof Fireball) return (LivingEntity) ((Fireball) damager).getShooter();
+		if(damager instanceof Projectile) return (LivingEntity) ((Projectile) damager).getShooter();
 		if(damager instanceof Slime && !(damager instanceof MagmaCube)) return BlobManager.getOwner((Slime) damager);
 		if(damager instanceof LivingEntity) return (LivingEntity) damager;
 		return null;
