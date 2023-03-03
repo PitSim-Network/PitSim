@@ -55,7 +55,7 @@ public class ProgressionManager implements Listener {
     defense &9 - decreased damage from mobs & bosses, increased shield
     first: unlock shield
     last:
-    path 1: TODO decrease damage from playrs?
+    path 1: decreased damage from players?
     path 2: decrease time until shield resets
     prestige 1:
     prestige 2:
@@ -64,7 +64,7 @@ public class ProgressionManager implements Listener {
     first: ability to t3 items
     last: ability to t4 items
     path 1: ability to fast travel at a cost
-    path 2:
+    path 2: decreased cost to tier 3 items
     prestige 1: free fast travel
     prestige 2:
 
@@ -77,18 +77,18 @@ public class ProgressionManager implements Listener {
     prestige 2:
 
     potions &5 - decreased brew time, increased brewing "luck"
-    first: unlock the brewing system
-    last: unlock receiving that item as a drop that directly just buffs up a potion
+    first: +2 brewing slots
+    last: +1 brewing ingredient slot
     path 1: unlock catalyst crafting
     path 2: unlock crafting of ingredient that increases potency or smth
-    prestige 1:
+    prestige 1: unlock receiving that item as a drop that directly just buffs up a potion
     prestige 2:
 
-    sacrifice &4 -
-    first:
-    last:
-    path 1:
-    path 2:
+    sacrifice &4 - x% more promotion lives, x% more renown
+    first: unlock the ability to use totems
+    last: increase the effect of all totems by x%
+    path 1: unlock the fourth totem, wealth
+    path 2: unlock the fifth totem, chaos
     prestige 1:
     prestige 2:
     */
