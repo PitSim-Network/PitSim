@@ -12,7 +12,6 @@ import dev.kyro.pitsim.aitems.mobdrops.EnderPearl;
 import dev.kyro.pitsim.aitems.mobdrops.*;
 import dev.kyro.pitsim.controllers.ItemFactory;
 import dev.kyro.pitsim.controllers.MapManager;
-import dev.kyro.pitsim.controllers.PlayerManager;
 import dev.kyro.pitsim.controllers.TaintedWell;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.enchants.tainted.uncommon.Fearmonger;
@@ -230,14 +229,22 @@ public class DarkzoneManager implements Listener {
 
 		PitBoss deadBoss = BossManager.getPitBoss(killEvent.getDead());
 		if(deadBoss != null) {
-			if(!PlayerManager.isRealPlayer(killEvent.getKillerPlayer())) throw new RuntimeException();
+			if(!killEvent.hasKiller()) {
+				deadBoss.kill(null);
+				return;
+			}
+			if(!killEvent.isKillerRealPlayer()) throw new RuntimeException();
 			deadBoss.kill(killEvent.getKillerPlayer());
 			return;
 		}
 
 		PitMob deadMob = getPitMob(killEvent.getDead());
 		if(deadMob != null) {
-			if(!PlayerManager.isRealPlayer(killEvent.getKillerPlayer())) throw new RuntimeException();
+			if(!killEvent.hasKiller()) {
+				deadMob.remove();
+				return;
+			}
+			if(!killEvent.isKillerRealPlayer()) throw new RuntimeException();
 			deadMob.kill(killEvent.getKillerPlayer());
 			return;
 		}

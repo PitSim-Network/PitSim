@@ -1,4 +1,4 @@
-package dev.kyro.pitsim.enchants.tainted.spells;
+package dev.kyro.pitsim.enchants.tainted.scythe;
 
 import com.sk89q.worldedit.EditSession;
 import dev.kyro.arcticapi.misc.AOutput;

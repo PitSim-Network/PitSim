@@ -1,4 +1,4 @@
-package dev.kyro.pitsim.enchants.tainted.spells;
+package dev.kyro.pitsim.enchants.tainted.scythe;
 
 import dev.kyro.pitsim.controllers.PlayerManager;
 import dev.kyro.pitsim.controllers.objects.PitEnchant;

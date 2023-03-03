@@ -1,4 +1,4 @@
-package dev.kyro.pitsim.enchants.tainted.spells;
+package dev.kyro.pitsim.enchants.tainted.scythe;
 
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.adarkzone.BossManager;

@@ -20,12 +20,12 @@ import dev.kyro.pitsim.controllers.objects.PitEnchant;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.enchants.overworld.Regularity;
 import dev.kyro.pitsim.enchants.overworld.Telebow;
-import dev.kyro.pitsim.enchants.tainted.effects.PurpleThumb;
+import dev.kyro.pitsim.enchants.tainted.chestplate.PurpleThumb;
 import dev.kyro.pitsim.enchants.tainted.uncommon.ShieldBuster;
 import dev.kyro.pitsim.enums.*;
 import dev.kyro.pitsim.events.AttackEvent;
 import dev.kyro.pitsim.events.KillEvent;
-import dev.kyro.pitsim.events.WrapperEntityDamageByEntityEvent;
+import dev.kyro.pitsim.events.WrapperEntityDamageEvent;
 import dev.kyro.pitsim.logging.LogManager;
 import dev.kyro.pitsim.megastreaks.NoMegastreak;
 import dev.kyro.pitsim.megastreaks.RNGesus;
@@ -46,7 +46,10 @@ import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
-import org.bukkit.event.entity.*;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.event.entity.EntityRegainHealthEvent;
+import org.bukkit.event.entity.ProjectileLaunchEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.potion.PotionEffect;
@@ -55,6 +58,7 @@ import org.bukkit.scheduler.BukkitTask;
 
 import java.text.DecimalFormat;
 import java.util.*;
+import java.util.function.Consumer;
 
 public class DamageManager implements Listener {
 	public static List<LivingEntity> hitCooldownList = new ArrayList<>();
@@ -64,6 +68,7 @@ public class DamageManager implements Listener {
 
 	public static Map<Projectile, Map<PitEnchant, Integer>> projectileMap = new HashMap<>();
 	public static Map<Entity, LivingEntity> hitTransferMap = new HashMap<>();
+	public static Map<LivingEntity, Consumer<AttackEvent>> attackCallbackMap = new HashMap<>();
 
 	static {
 		new BukkitRunnable() {
@@ -76,14 +81,26 @@ public class DamageManager implements Listener {
 		}.runTaskTimer(PitSim.INSTANCE, 0L, 1L);
 	}
 
-	public static WrapperEntityDamageByEntityEvent createAttack(LivingEntity attacker, LivingEntity defender, double damage) {
-		assert attacker != null && defender != null;
+	public static void createAttack(LivingEntity defender, double damage) {
+		createAttack(defender, damage, null);
+	}
 
-		WrapperEntityDamageByEntityEvent event = new WrapperEntityDamageByEntityEvent(defender, attacker, damage);
-		Bukkit.getServer().getPluginManager().callEvent(event);
-		if(event.isCancelled()) return event;
+	public static void createAttack(LivingEntity defender, double damage, Consumer<AttackEvent> callback) {
+		assert defender != null;
+		if(callback != null) attackCallbackMap.put(defender, callback);
+		EntityDamageEvent event = new EntityDamageEvent(defender, EntityDamageEvent.DamageCause.CUSTOM, damage);
+		Bukkit.getPluginManager().callEvent(event);
+		if(!event.isCancelled()) defender.damage(event.getDamage());
+	}
+
+	public static void createAttack(LivingEntity attacker, LivingEntity defender, double damage) {
+		createAttack(attacker, defender, damage, null);
+	}
+
+	public static void createAttack(LivingEntity attacker, LivingEntity defender, double damage, Consumer<AttackEvent> callback) {
+		assert attacker != null && defender != null;
+		if(callback != null) attackCallbackMap.put(defender, callback);
 		defender.damage(damage, attacker);
-		return event;
 	}
 
 	@EventHandler
@@ -124,13 +141,23 @@ public class DamageManager implements Listener {
 
 	@EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
 	public void onAttack(EntityDamageByEntityEvent event) {
-		if(!(event.getEntity() instanceof LivingEntity)) return;
-		LivingEntity attacker = getAttacker(event.getDamager());
-		LivingEntity defender = (LivingEntity) event.getEntity();
+		if(!(event.getDamager() instanceof LivingEntity) || !(event.getEntity() instanceof LivingEntity)) return;
+		WrapperEntityDamageEvent wrapperEvent = new WrapperEntityDamageEvent(event);
+		onAttack(wrapperEvent);
+	}
 
-		boolean isWrappedEvent = event instanceof WrapperEntityDamageByEntityEvent;
-		WrapperEntityDamageByEntityEvent wrappedEvent = null;
-		if(isWrappedEvent) wrappedEvent = (WrapperEntityDamageByEntityEvent) event;
+	@EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
+	public void onAttack(EntityDamageEvent event) {
+		if(event instanceof EntityDamageByEntityEvent) return;
+		if(!(event.getEntity() instanceof LivingEntity)) return;
+		WrapperEntityDamageEvent wrapperEvent = new WrapperEntityDamageEvent(event);
+		onAttack(wrapperEvent);
+	}
+
+	public void onAttack(WrapperEntityDamageEvent event) {
+		if(event.getEntity() == null) return;
+		LivingEntity attacker = getAttacker(event.getDamager());
+		LivingEntity defender = event.getEntity();
 
 		if(defender.isDead()) return;
 
@@ -153,7 +180,7 @@ public class DamageManager implements Listener {
 
 			if(defenderMob != null) {
 				try {
-					event.setDamage(EntityDamageEvent.DamageModifier.ARMOR, 0);
+					event.getSpigotEvent().setDamage(EntityDamageEvent.DamageModifier.ARMOR, 0);
 				} catch(Exception ignored) {}
 			}
 
@@ -178,7 +205,6 @@ public class DamageManager implements Listener {
 		if(defender instanceof Slime && !(defender instanceof MagmaCube)) return;
 
 		Map<PitEnchant, Integer> defenderEnchantMap = EnchantManager.getEnchantsOnPlayer(defender);
-		if(isWrappedEvent && wrappedEvent.hasOverrideDefenderEnchants()) defenderEnchantMap = wrappedEvent.getOverrideDefenderEnchantMap();
 
 		boolean fakeHit = false;
 
@@ -235,12 +261,12 @@ public class DamageManager implements Listener {
 
 //		Reduce cpu load by not handling non v non
 		if(attackingNon != null && defendingNon != null) {
-			if(defender.getHealth() <= event.getFinalDamage()) {
+			if(defender.getHealth() <= event.getSpigotEvent().getFinalDamage()) {
 				defender.setHealth(defender.getMaxHealth());
 			} else {
-				defender.setHealth(defender.getHealth() - event.getFinalDamage());
+				defender.setHealth(defender.getHealth() - event.getSpigotEvent().getFinalDamage());
 			}
-			event.setDamage(0);
+			event.getSpigotEvent().setDamage(0);
 			return;
 		}
 
@@ -248,7 +274,7 @@ public class DamageManager implements Listener {
 //			Non damage
 			double damage = attackingNon.traits.contains(NonTrait.IRON_STREAKER) ? 9.6 : 7;
 			if(Misc.isCritical(attacker)) damage *= 1.5;
-			event.setDamage(damage);
+			event.getSpigotEvent().setDamage(damage);
 		}
 
 		AttackEvent.Pre preEvent;
@@ -264,9 +290,6 @@ public class DamageManager implements Listener {
 		} else if(realDamager instanceof LivingEntity) {
 			attackerEnchantMap = EnchantManager.getEnchantsOnPlayer(attacker);
 		}
-//		Override enchants
-		if(isWrappedEvent && wrappedEvent.hasOverrideAttackerEnchants())
-			attackerEnchantMap = wrappedEvent.getOverrideAttackerEnchantMap();
 
 //		Remove disabled enchants
 		for(Map.Entry<PitEnchant, Integer> entry : new ArrayList<>(attackerEnchantMap.entrySet()))
@@ -283,8 +306,8 @@ public class DamageManager implements Listener {
 
 		AttackEvent.Apply applyEvent = new AttackEvent.Apply(preEvent);
 		Bukkit.getServer().getPluginManager().callEvent(applyEvent);
-
 		handleAttack(applyEvent);
+
 		Bukkit.getServer().getPluginManager().callEvent(new AttackEvent.Post(applyEvent));
 	}
 
@@ -295,8 +318,8 @@ public class DamageManager implements Listener {
 		attackEvent.multipliers.add(ArmorReduction.getReductionMultiplier(attackEvent.getDefender()));
 
 //		New player defence
-		if(PitSim.status.isOverworld() && PlayerManager.isRealPlayer(attackEvent.getDefenderPlayer()) && PlayerManager.isRealPlayer(attackEvent.getAttackerPlayer()) &&
-				attackEvent.getDefenderPlayer().getLocation().distance(MapManager.currentMap.getMid()) < 12) {
+		if(PitSim.status.isOverworld() && attackEvent.isDefenderRealPlayer() && attackEvent.isAttackerRealPlayer() &&
+				attackEvent.getDefender().getLocation().distance(MapManager.currentMap.getMid()) < 12) {
 			if(attackEvent.getDefenderPitPlayer().prestige < 10) {
 				int minutesPlayed = attackEvent.getDefenderPitPlayer().stats.minutesPlayed;
 				double reduction = Math.max(50 - (minutesPlayed / 8.0), 0);
@@ -313,13 +336,13 @@ public class DamageManager implements Listener {
 			if(PlayerManager.isRealPlayer(attackEvent.getAttackerPlayer())) multiplier *= 2;
 			if(defenderShield.isActive()) damage = defenderShield.damageShield(damage, multiplier);
 		}
-		attackEvent.getEvent().setDamage(damage);
+		attackEvent.getWrapperEvent().getSpigotEvent().setDamage(damage);
 
 		if(attackEvent.trueDamage != 0 || attackEvent.veryTrueDamage != 0) {
 			double finalHealth = attackEvent.getDefender().getHealth() - attackEvent.trueDamage - attackEvent.veryTrueDamage;
 			if(PurpleThumb.shouldPreventDeath(attackEvent.getDefenderPlayer())) finalHealth = Math.max(finalHealth, 1);
 			if(finalHealth <= 0) {
-				attackEvent.getEvent().setCancelled(true);
+				attackEvent.setCancelled(true);
 				kill(attackEvent, attackEvent.getAttacker(), attackEvent.getDefender(), KillType.KILL);
 				return;
 			} else {
@@ -331,7 +354,7 @@ public class DamageManager implements Listener {
 			double finalHealth = attackEvent.getAttacker().getHealth() - attackEvent.selfTrueDamage - attackEvent.selfVeryTrueDamage;
 			if(PurpleThumb.shouldPreventDeath(attackEvent.getAttackerPlayer())) finalHealth = Math.max(finalHealth, 1);
 			if(finalHealth <= 0) {
-				attackEvent.getEvent().setCancelled(true);
+				attackEvent.setCancelled(true);
 				kill(attackEvent, attackEvent.getDefender(), attackEvent.getAttacker(), KillType.KILL);
 				return;
 			} else {
@@ -342,19 +365,19 @@ public class DamageManager implements Listener {
 
 		if(attackEvent.isDefenderPlayer()) {
 			PitPlayer pitPlayer = PitPlayer.getPitPlayer(attackEvent.getDefenderPlayer());
-			pitPlayer.addDamage(attackEvent.getAttacker(), attackEvent.getEvent().getFinalDamage() + attackEvent.trueDamage);
+			pitPlayer.addDamage(attackEvent.getAttacker(), attackEvent.getWrapperEvent().getSpigotEvent().getFinalDamage() + attackEvent.trueDamage);
 		}
 
 //		AOutput.send(attackEvent.attacker, "Final Damage: " + attackEvent.event.getDamage());
 //		AOutput.send(attackEvent.attacker, "Final Damage: " + attackEvent.event.getFinalDamage());
 
-		if(attackEvent.getEvent().getFinalDamage() + attackEvent.executeUnder >= attackEvent.getDefender().getHealth()) {
+		if(attackEvent.getWrapperEvent().getSpigotEvent().getFinalDamage() + attackEvent.executeUnder >= attackEvent.getDefender().getHealth()) {
 			if(PurpleThumb.shouldPreventDeath(attackEvent.getDefenderPlayer())) {
-				attackEvent.getEvent().setDamage(0);
+				attackEvent.getWrapperEvent().getSpigotEvent().setDamage(0);
 				attackEvent.getDefender().setHealth(1);
 			} else {
-				attackEvent.getEvent().setCancelled(true);
-				boolean exeDeath = attackEvent.getEvent().getFinalDamage() < attackEvent.getDefender().getHealth();
+				attackEvent.setCancelled(true);
+				boolean exeDeath = attackEvent.getWrapperEvent().getSpigotEvent().getFinalDamage() < attackEvent.getDefender().getHealth();
 				if(exeDeath) {
 					kill(attackEvent, attackEvent.getAttacker(), attackEvent.getDefender(), KillType.KILL, KillModifier.EXECUTION);
 				} else {
@@ -364,6 +387,7 @@ public class DamageManager implements Listener {
 		}
 
 		DamageIndicator.onAttack(attackEvent);
+		if(attackCallbackMap.containsKey(attackEvent.getDefender())) attackCallbackMap.remove(attackEvent.getDefender()).accept(attackEvent);
 	}
 
 	public static LivingEntity getAttacker(Entity damager) {
@@ -534,7 +558,7 @@ public class DamageManager implements Listener {
 						Map<PitEnchant, Integer> attackerEnchant = EnchantManager.getEnchantsOnPlayer(assistPlayer);
 						Map<PitEnchant, Integer> defenderEnchant = new HashMap<>();
 						EntityDamageByEntityEvent newEvent = new EntityDamageByEntityEvent(assistPlayer, dead, EntityDamageEvent.DamageCause.CUSTOM, 0);
-						AttackEvent newAttackEvent = new AttackEvent(newEvent, attackerEnchant, defenderEnchant, false);
+						AttackEvent newAttackEvent = new AttackEvent(new WrapperEntityDamageEvent(newEvent), attackerEnchant, defenderEnchant, false);
 
 						DamageManager.fakeKill(newAttackEvent, assistPlayer, dead);
 						continue;

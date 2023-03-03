@@ -20,13 +20,11 @@ import dev.kyro.pitsim.controllers.*;
 import dev.kyro.pitsim.cosmetics.particles.ParticleColor;
 import dev.kyro.pitsim.enchants.overworld.GottaGoFast;
 import dev.kyro.pitsim.enchants.overworld.Hearts;
-import dev.kyro.pitsim.enchants.tainted.effects.Sonic;
+import dev.kyro.pitsim.enchants.tainted.chestplate.Sonic;
 import dev.kyro.pitsim.enchants.tainted.uncommon.Tanky;
 import dev.kyro.pitsim.enums.AChatColor;
 import dev.kyro.pitsim.enums.DeathCry;
 import dev.kyro.pitsim.enums.KillEffect;
-import dev.kyro.pitsim.enums.KillType;
-import dev.kyro.pitsim.events.AttackEvent;
 import dev.kyro.pitsim.events.HealEvent;
 import dev.kyro.pitsim.events.IncrementKillsEvent;
 import dev.kyro.pitsim.inventories.ChatColorPanel;
@@ -46,8 +44,6 @@ import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
-import org.bukkit.event.entity.EntityDamageByEntityEvent;
-import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
@@ -630,24 +626,9 @@ public class PitPlayer {
 	}
 
 	@Exclude
-	public void damage(double damage, LivingEntity damager) {
-		if(player.getHealth() - damage <= 0) {
-			if(damager == null) {
-				DamageManager.death(player);
-				AOutput.send(player, "&c&lDEATH!");
-			} else {
-				EntityDamageByEntityEvent newEvent = new EntityDamageByEntityEvent(damager, player, EntityDamageEvent.DamageCause.CUSTOM, damage);
-				AttackEvent attackEvent = new AttackEvent(newEvent, EnchantManager.getEnchantsOnPlayer(damager), EnchantManager.getEnchantsOnPlayer(player), false);
-
-				DamageManager.kill(attackEvent, damager, player, KillType.KILL);
-			}
-		} else player.damage(damage);
-	}
-
-	@Exclude
 	public void updateMaxHealth() {
 
-		int maxHealth = MapManager.inDarkzone(player) ? 20 : 24;
+		int maxHealth = 24;
 		if(hasPerk(Thick.INSTANCE) && !MapManager.inDarkzone(player)) maxHealth += 4;
 
 		Map<PitEnchant, Integer> enchantMap = EnchantManager.getEnchantsOnPlayer(player);

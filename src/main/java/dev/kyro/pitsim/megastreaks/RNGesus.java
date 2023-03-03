@@ -12,6 +12,7 @@ import dev.kyro.pitsim.enums.KillType;
 import dev.kyro.pitsim.events.AttackEvent;
 import dev.kyro.pitsim.events.HealEvent;
 import dev.kyro.pitsim.events.KillEvent;
+import dev.kyro.pitsim.events.WrapperEntityDamageEvent;
 import dev.kyro.pitsim.misc.Misc;
 import dev.kyro.pitsim.misc.Sounds;
 import dev.kyro.pitsim.misc.particles.HomeParticle;
@@ -167,7 +168,7 @@ public class RNGesus extends Megastreak {
 			double damage = getDamage(realityMap.get(Reality.DAMAGE).getLevel());
 			attackEvent.increase += damage;
 
-			if(attackEvent.getEvent().getDamager() instanceof Slime && Math.random() > 0.1) return;
+			if(attackEvent.getWrapperEvent().getDamager() instanceof Slime && Math.random() > 0.1) return;
 
 			List<Entity> entities = attackEvent.getDefender().getNearbyEntities(20, 20, 20);
 			Collections.shuffle(entities);
@@ -184,7 +185,7 @@ public class RNGesus extends Megastreak {
 						Map<PitEnchant, Integer> attackerEnchant = EnchantManager.getEnchantsOnPlayer(attackEvent.getAttacker());
 						Map<PitEnchant, Integer> defenderEnchant = new HashMap<>();
 						EntityDamageByEntityEvent newEvent = new EntityDamageByEntityEvent(attackEvent.getAttacker(), target, EntityDamageEvent.DamageCause.CUSTOM, 0);
-						AttackEvent attackEvent = new AttackEvent(newEvent, attackerEnchant, defenderEnchant, false);
+						AttackEvent attackEvent = new AttackEvent(new WrapperEntityDamageEvent(newEvent), attackerEnchant, defenderEnchant, false);
 
 						double chance = damage / target.getMaxHealth();
 						if(Math.random() < chance)
@@ -342,7 +343,7 @@ public class RNGesus extends Megastreak {
 								Map<PitEnchant, Integer> attackerEnchant = new HashMap<>();
 								Map<PitEnchant, Integer> defenderEnchant = new HashMap<>();
 								EntityDamageByEntityEvent newEvent = new EntityDamageByEntityEvent(onlinePlayer, pitPlayer.player, EntityDamageEvent.DamageCause.CUSTOM, 0);
-								AttackEvent attackEvent = new AttackEvent(newEvent, attackerEnchant, defenderEnchant, false);
+								AttackEvent attackEvent = new AttackEvent(new WrapperEntityDamageEvent(newEvent), attackerEnchant, defenderEnchant, false);
 
 								DamageManager.kill(attackEvent, onlinePlayer, pitPlayer.player, KillType.KILL);
 								return;

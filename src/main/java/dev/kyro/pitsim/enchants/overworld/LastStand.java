@@ -28,7 +28,7 @@ public class LastStand extends PitEnchant {
 		int enchantLvl = attackEvent.getDefenderEnchantLevel(this);
 		if(enchantLvl == 0) return;
 
-		if(attackEvent.getDefender().getHealth() - attackEvent.getEvent().getFinalDamage() <= getProcHealth()) {
+		if(attackEvent.getDefender().getHealth() - attackEvent.getWrapperEvent().getSpigotEvent().getFinalDamage() <= getProcHealth()) {
 			Cooldown cooldown = getCooldown(attackEvent.getDefenderPlayer(), getCooldownSeconds(enchantLvl) * 20);
 			if(cooldown.isOnCooldown()) return;
 			else cooldown.restart();

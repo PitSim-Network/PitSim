@@ -1,4 +1,4 @@
-package dev.kyro.pitsim.enchants.tainted.awijienchants;
+package dev.kyro.pitsim.enchants.tainted.chestplate;
 
 import dev.kyro.pitsim.controllers.Cooldown;
 import dev.kyro.pitsim.controllers.objects.PitEnchant;

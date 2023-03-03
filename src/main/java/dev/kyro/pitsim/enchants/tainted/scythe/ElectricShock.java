@@ -1,4 +1,4 @@
-package dev.kyro.pitsim.enchants.tainted.spells;
+package dev.kyro.pitsim.enchants.tainted.scythe;
 
 import dev.kyro.pitsim.controllers.Cooldown;
 import dev.kyro.pitsim.controllers.objects.PitEnchant;
@@ -51,7 +51,7 @@ public class ElectricShock extends PitEnchant {
 //		pick initial target
 		Location testLocation = player.getLocation();
 		LivingEntity target = null;
-		for(int i = 0; i < 20; i++) {
+		for(int i = 0; i < 40; i++) {
 			LivingEntity closestEntity = Misc.getMobPlayerClosest(testLocation, 1, player);
 			if(closestEntity == null) {
 				testLocation.add(player.getLocation().getDirection().multiply(0.5));

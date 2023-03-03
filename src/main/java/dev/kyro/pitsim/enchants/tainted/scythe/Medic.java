@@ -1,26 +1,24 @@
-package dev.kyro.pitsim.enchants.tainted.spells;
+package dev.kyro.pitsim.enchants.tainted.scythe;
 
-import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.controllers.Cooldown;
 import dev.kyro.pitsim.controllers.objects.PitEnchant;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
-import dev.kyro.pitsim.cosmetics.misc.kyrocosmetic.LeechParticle;
 import dev.kyro.pitsim.enums.ApplyType;
 import dev.kyro.pitsim.events.PitPlayerAttemptAbilityEvent;
+import dev.kyro.pitsim.misc.Misc;
 import dev.kyro.pitsim.misc.PitLoreBuilder;
 import dev.kyro.pitsim.misc.Sounds;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
-import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.List;
 
-public class Leech extends PitEnchant {
-	public static Leech INSTANCE;
+public class Medic extends PitEnchant {
+	public static Medic INSTANCE;
 
-	public Leech() {
-		super("Leech", true, ApplyType.SCYTHES,
-				"leech");
+	public Medic() {
+		super("Medic", true, ApplyType.SCYTHES,
+				"medic");
 		isTainted = true;
 		INSTANCE = this;
 	}
@@ -43,22 +41,15 @@ public class Leech extends PitEnchant {
 		}
 		cooldown.restart();
 
-		LeechParticle leechParticle = new LeechParticle(player);
-		new BukkitRunnable() {
-			@Override
-			public void run() {
-				leechParticle.remove();
-			}
-		}.runTaskLater(PitSim.INSTANCE, getLifetimeSeconds(enchantLvl) * 20L);
-		Sounds.LEECH.play(player);
+		pitPlayer.heal(getHealing(enchantLvl));
+		Sounds.MEDIC.play(player);
 	}
 
 	@Override
 	public List<String> getNormalDescription(int enchantLvl) {
 		return new PitLoreBuilder(
-				"&7Right-Clicking casts this spell for &b" + getManaCost(enchantLvl) + " mana&7, spawning a " +
-						"&cleech particle &7for " + getLifetimeSeconds(enchantLvl) + " second" +
-						(getLifetimeSeconds(enchantLvl) == 1 ? "" : "s")
+				"&7Right-Clicking casts this spell for &b" + getManaCost(enchantLvl) + " mana&7, healing &c" +
+				Misc.getHearts(getHealing(enchantLvl))
 		).getLore();
 	}
 
@@ -66,7 +57,7 @@ public class Leech extends PitEnchant {
 		return 1;
 	}
 
-	public static int getLifetimeSeconds(int enchantLvl) {
-		return enchantLvl * 4 + 12;
+	public static int getHealing(int enchantLvl) {
+		return enchantLvl * 4 + 8;
 	}
 }

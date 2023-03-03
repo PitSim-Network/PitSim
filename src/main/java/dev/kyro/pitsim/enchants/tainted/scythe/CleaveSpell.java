@@ -1,4 +1,4 @@
-package dev.kyro.pitsim.enchants.tainted.spells;
+package dev.kyro.pitsim.enchants.tainted.scythe;
 
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.controllers.Cooldown;
@@ -8,7 +8,6 @@ import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.enums.ApplyType;
 import dev.kyro.pitsim.enums.PitEntityType;
 import dev.kyro.pitsim.events.PitPlayerAttemptAbilityEvent;
-import dev.kyro.pitsim.events.WrapperEntityDamageByEntityEvent;
 import dev.kyro.pitsim.misc.Misc;
 import dev.kyro.pitsim.misc.PitLoreBuilder;
 import dev.kyro.pitsim.misc.Sounds;
@@ -52,8 +51,9 @@ public class CleaveSpell extends PitEnchant {
 							LivingEntity livingEntity = (LivingEntity) entity;
 							if(!Misc.isEntity(livingEntity, PitEntityType.REAL_PLAYER, PitEntityType.PIT_BOSS, PitEntityType.PIT_MOB)) continue;
 
-							WrapperEntityDamageByEntityEvent event = DamageManager.createAttack(cleaveEntity.attacker, livingEntity, 5);
-							if(!event.isCancelled()) Sounds.CLEAVE3.play(cleaveEntity.attacker);
+							DamageManager.createAttack(cleaveEntity.attacker, livingEntity, 5, attackEvent -> {
+								if(!attackEvent.isCancelled()) Sounds.CLEAVE3.play(cleaveEntity.attacker);
+							});
 						}
 					}
 				}

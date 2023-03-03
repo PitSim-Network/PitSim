@@ -1,4 +1,4 @@
-package dev.kyro.pitsim.enchants.tainted.effects;
+package dev.kyro.pitsim.enchants.tainted.chestplate;
 
 import dev.kyro.pitsim.adarkzone.DarkzoneManager;
 import dev.kyro.pitsim.adarkzone.PitMob;
@@ -69,7 +69,7 @@ public class Defraction extends PitEnchant {
 		if(candidates.isEmpty()) return;
 		reflectionTarget = candidates.get(new Random().nextInt(candidates.size()));
 
-		EntityDamageEvent event = new EntityDamageEvent(reflectionTarget, EntityDamageEvent.DamageCause.CUSTOM, attackEvent.getEvent().getDamage());
+		EntityDamageEvent event = new EntityDamageEvent(reflectionTarget, EntityDamageEvent.DamageCause.CUSTOM, attackEvent.getWrapperEvent().getDamage());
 		Bukkit.getPluginManager().callEvent(event);
 		if(!event.isCancelled()) reflectionTarget.damage(event.getDamage());
 		attackEvent.setCancelled(true);

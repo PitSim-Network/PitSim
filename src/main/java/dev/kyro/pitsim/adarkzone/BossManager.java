@@ -22,7 +22,7 @@ public class BossManager implements Listener {
 	public void onAttack(AttackEvent.Pre attackEvent) {
 		PitBoss attackerBoss = getPitBoss(attackEvent.getAttacker());
 		if(attackerBoss != null) {
-			attackEvent.getEvent().setDamage(attackerBoss.getMeleeDamage());
+			attackEvent.getWrapperEvent().getSpigotEvent().setDamage(attackerBoss.getMeleeDamage());
 		}
 	}
 
@@ -39,7 +39,7 @@ public class BossManager implements Listener {
 		if(!attackEvent.isAttackerPlayer()) return;
 
 		UUID uuid = player.getUniqueId();
-		defenderBoss.damageMap.put(uuid, defenderBoss.damageMap.getOrDefault(uuid, 0.0) + attackEvent.getEvent().getDamage());
+		defenderBoss.damageMap.put(uuid, defenderBoss.damageMap.getOrDefault(uuid, 0.0) + attackEvent.getWrapperEvent().getDamage());
 	}
 
 	/**

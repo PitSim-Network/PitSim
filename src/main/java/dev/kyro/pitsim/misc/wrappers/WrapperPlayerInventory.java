@@ -9,12 +9,12 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-public class PlayerInventoryWrapper {
+public class WrapperPlayerInventory {
 	public Player player;
 	public PlayerInventory inventory;
 	private final Map<PlayerItemLocation, ItemStack> itemMap = new LinkedHashMap<>();
 
-	public PlayerInventoryWrapper(Player player) {
+	public WrapperPlayerInventory(Player player) {
 		this.player = player;
 		this.inventory = player.getInventory();
 
