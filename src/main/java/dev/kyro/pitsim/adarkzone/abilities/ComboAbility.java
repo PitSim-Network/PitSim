@@ -3,12 +3,10 @@ package dev.kyro.pitsim.adarkzone.abilities;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.adarkzone.PitBossAbility;
 import dev.kyro.pitsim.events.AttackEvent;
-import net.minecraft.server.v1_8_R3.DamageSource;
-import net.minecraft.server.v1_8_R3.EntityHuman;
-import net.minecraft.server.v1_8_R3.EntityLiving;
-import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.HashMap;
@@ -36,12 +34,9 @@ public class ComboAbility extends PitBossAbility {
 
 			@Override
 			public void run() {
-				EntityLiving playerEntity = ((CraftPlayer) player).getHandle();
-				EntityHuman bossEntity = ((CraftPlayer) pitBoss.boss).getHandle();
-
-				playerEntity.lastDamager = bossEntity;
-				playerEntity.killer = bossEntity;
-				playerEntity.damageEntity(DamageSource.GENERIC, 1);
+				EntityDamageByEntityEvent damage = new EntityDamageByEntityEvent(player, pitBoss.boss, EntityDamageByEntityEvent.DamageCause.ENTITY_ATTACK, 1);
+				Bukkit.getPluginManager().callEvent(damage);
+//				player.daam
 
 				player.setNoDamageTicks(0);
 

@@ -2,7 +2,6 @@ package dev.kyro.pitsim.adarkzone.abilities;
 
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.adarkzone.RoutinePitBossAbility;
-import dev.kyro.pitsim.misc.Misc;
 import dev.kyro.pitsim.misc.Sounds;
 import org.bukkit.Bukkit;
 import org.bukkit.Effect;
@@ -29,22 +28,27 @@ public class DisorderAbility extends RoutinePitBossAbility {
 	public void onRoutineExecute() {
 		for(Player viewer : getViewers()) {
 			Sounds.DISORDER2.play(viewer);
-			viewer.spigot().playEffect(viewer.getLocation(), Effect.POTION_SWIRL, 0, 0, 10, 10, 10, 1, 128, 100);
 
 			new BukkitRunnable() {
 				int i = 0;
 
 				@Override
 				public void run() {
+					if(i <= 20) {
+						viewer.spigot().playEffect(viewer.getLocation(), Effect.POTION_SWIRL, 0, 0, 10, 10, 10, 20, 128, 100);
+						i++;
+						return;
+					}
+
 					swap(viewer);
 
-					if(i >= swaps) {
+					if(i >= swaps + 20) {
 						cancel();
 						return;
 					}
 					i++;
 				}
-			}.runTaskTimer(PitSim.INSTANCE, 20, 2);
+			}.runTaskTimer(PitSim.INSTANCE, 0, 2);
 		}
 	}
 
