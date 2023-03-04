@@ -118,7 +118,7 @@ public class Bipolar extends PitEnchant {
 				"&7gain &eSpeed " + AUtil.toRoman(getSpeedAmplifier(enchantLvl)),
 				"&a\u25a0 Peaceful&7: Deal &9-" + getDamageDecrease(enchantLvl) + "% &7damage,",
 				"&7gain &cRegeneration " + AUtil.toRoman(getRegenerationAmplifier(enchantLvl)),
-				"&7While worn, regain mana &b" + getManaReduction(enchantLvl) + "% &7slower"
+				"&7When worn, regain mana &b" + getManaReduction(enchantLvl) + "% &7slower"
 		).getLore();
 	}
 

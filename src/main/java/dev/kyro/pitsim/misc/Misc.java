@@ -8,6 +8,7 @@ import dev.kyro.pitsim.adarkzone.BossManager;
 import dev.kyro.pitsim.adarkzone.DarkzoneManager;
 import dev.kyro.pitsim.adarkzone.PitMob;
 import dev.kyro.pitsim.aitems.PitItem;
+import dev.kyro.pitsim.aitems.TemporaryItem;
 import dev.kyro.pitsim.commands.LightningCommand;
 import dev.kyro.pitsim.controllers.*;
 import dev.kyro.pitsim.controllers.objects.HelmetManager;
@@ -268,8 +269,15 @@ public class Misc {
 		PitItem pitItem = ItemFactory.getItem(itemStack);
 
 		if(pitItem != null && pitItem.isMystic) {
-			serializedItem += " " + nbtItem.getString(NBTTag.ITEM_UUID.getRef()) + " " +
-					nbtItem.getInteger(NBTTag.CURRENT_LIVES.getRef()) + "/" + nbtItem.getInteger(NBTTag.MAX_LIVES.getRef());
+			TemporaryItem.TemporaryType temporaryType = pitItem.getTemporaryType(itemStack);
+			TemporaryItem temporaryItem = temporaryType == null ? null : pitItem.getAsTemporaryItem();
+
+			serializedItem += " " + nbtItem.getString(NBTTag.ITEM_UUID.getRef());
+
+			if(temporaryType == TemporaryItem.TemporaryType.LOOSES_LIVES_ON_DEATH) {
+				serializedItem += " " + temporaryItem.getLives(itemStack) + "/" + temporaryItem.getMaxLives(itemStack);
+			}
+
 			if(nbtItem.hasKey(NBTTag.IS_GEMMED.getRef())) serializedItem += " Gemmed";
 			if(EnchantManager.isJewelComplete(itemStack)) serializedItem += " Jewel: " +
 					EnchantManager.getEnchant(nbtItem.getString(NBTTag.ITEM_JEWEL_ENCHANT.getRef())).getDisplayName();

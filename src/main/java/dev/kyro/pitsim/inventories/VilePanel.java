@@ -1,13 +1,14 @@
 package dev.kyro.pitsim.inventories;
 
-import de.tr7zw.nbtapi.NBTItem;
+import dev.kyro.arcticapi.builders.AItemStackBuilder;
+import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.arcticapi.gui.AGUI;
 import dev.kyro.arcticapi.gui.AGUIPanel;
+import dev.kyro.pitsim.aitems.MysticFactory;
 import dev.kyro.pitsim.aitems.PitItem;
+import dev.kyro.pitsim.aitems.TemporaryItem;
 import dev.kyro.pitsim.aitems.misc.ChunkOfVile;
-import dev.kyro.pitsim.controllers.EnchantManager;
 import dev.kyro.pitsim.controllers.ItemFactory;
-import dev.kyro.pitsim.enums.NBTTag;
 import dev.kyro.pitsim.logging.LogManager;
 import dev.kyro.pitsim.misc.Misc;
 import dev.kyro.pitsim.misc.Sounds;
@@ -21,7 +22,6 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public class VilePanel extends AGUIPanel {
@@ -54,8 +54,8 @@ public class VilePanel extends AGUIPanel {
 		}
 
 		ItemStack vileStack = player.getItemInHand();
-		PitItem pitItem = ItemFactory.getItem(vileStack);
-		if(!(pitItem instanceof ChunkOfVile)) {
+		PitItem pitVile = ItemFactory.getItem(vileStack);
+		if(!(pitVile instanceof ChunkOfVile)) {
 			player.closeInventory();
 			return;
 		}
@@ -66,30 +66,31 @@ public class VilePanel extends AGUIPanel {
 			if(!slots.containsKey(slot)) return;
 			int invSlot = slots.get(slot);
 
-			for(int i = 0; i < player.getInventory().getSize(); i++) {
-				if(i != invSlot) continue;
-				NBTItem nbtItem = new NBTItem(player.getInventory().getItem(i));
-				nbtItem.setInteger(NBTTag.CURRENT_LIVES.getRef(), nbtItem.getInteger(NBTTag.CURRENT_LIVES.getRef()) + 1);
-				EnchantManager.setItemLore(nbtItem.getItem(), player);
-				player.getInventory().setItem(i, nbtItem.getItem());
-				player.closeInventory();
+			ItemStack itemStack = player.getInventory().getItem(invSlot);
 
-				TextComponent message = new TextComponent(ChatColor.translateAlternateColorCodes('&', "&5WITHERCRAFT!&7 Repaired "));
-				message.addExtra(Misc.createItemHover(nbtItem.getItem()));
-				message.addExtra(new TextComponent(ChatColor.translateAlternateColorCodes('&', "&7!")));
-				player.sendMessage(message);
+			PitItem pitRepair = ItemFactory.getItem(itemStack);
+			assert pitRepair != null;
+			TemporaryItem temporaryItem = pitRepair.getAsTemporaryItem();
 
-				LogManager.onItemRepair(player, nbtItem.getItem());
+			itemStack = temporaryItem.addLives(itemStack, 1);
+			player.getInventory().setItem(invSlot, itemStack);
+			player.closeInventory();
 
-				Sounds.WITHERCRAFT_1.play(player);
-				Sounds.WITHERCRAFT_2.play(player);
+			TextComponent message = new TextComponent(ChatColor.translateAlternateColorCodes('&', "&5WITHERCRAFT!&7 Repaired "));
+			message.addExtra(Misc.createItemHover(itemStack));
+			message.addExtra(new TextComponent(ChatColor.translateAlternateColorCodes('&', "&7!")));
+			player.sendMessage(message);
 
-				if(vileStack.getAmount() == 1) {
-					player.setItemInHand(new ItemStack(Material.AIR));
-				} else {
-					vileStack.setAmount(vileStack.getAmount() - 1);
-					player.setItemInHand(vileStack);
-				}
+			LogManager.onItemRepair(player, itemStack);
+
+			Sounds.WITHERCRAFT_1.play(player);
+			Sounds.WITHERCRAFT_2.play(player);
+
+			if(vileStack.getAmount() == 1) {
+				player.setItemInHand(new ItemStack(Material.AIR));
+			} else {
+				vileStack.setAmount(vileStack.getAmount() - 1);
+				player.setItemInHand(vileStack);
 			}
 		}
 		updateInventory();
@@ -100,30 +101,28 @@ public class VilePanel extends AGUIPanel {
 		int slot = 0;
 
 		for(int i = 0; i < player.getInventory().getSize(); i++) {
-			ItemStack item = player.getInventory().getItem(i);
+			ItemStack itemStack = player.getInventory().getItem(i);
+			if(!MysticFactory.isJewel(itemStack, true)) continue;
 
-			if(Misc.isAirOrNull(item)) continue;
+			PitItem pitItem = ItemFactory.getItem(itemStack);
+			assert pitItem != null;
+			TemporaryItem temporaryItem = pitItem.getAsTemporaryItem();
 
-			NBTItem nbtItem = new NBTItem(item);
-			if(nbtItem.hasKey(NBTTag.ITEM_JEWEL_ENCHANT.getRef())) {
-				if(nbtItem.getInteger(NBTTag.CURRENT_LIVES.getRef()).equals(nbtItem.getInteger(NBTTag.MAX_LIVES.getRef())))
-					continue;
-				ItemMeta meta = nbtItem.getItem().getItemMeta();
-				List<String> lore = meta.getLore();
-				lore.add("");
-				lore.add(ChatColor.YELLOW + "Click to repair!");
-				meta.setLore(lore);
-				nbtItem.getItem().setItemMeta(meta);
-				getInventory().setItem(slot, nbtItem.getItem());
-				slots.put(slot, i);
-				slot++;
-			}
+			if(temporaryItem.isAtMaxLives(itemStack)) continue;
 
+			ItemMeta itemMeta = itemStack.getItemMeta();
+			ALoreBuilder loreBuilder = new ALoreBuilder(itemMeta.getLore()).addLore(
+					"",
+					"&eClick to repair!"
+			);
+			new AItemStackBuilder(itemStack).setLore(loreBuilder);
+
+			getInventory().setItem(slot, itemStack);
+			slots.put(slot++, i);
 		}
 	}
 
 	@Override
 	public void onClose(InventoryCloseEvent event) {
 	}
-
 }

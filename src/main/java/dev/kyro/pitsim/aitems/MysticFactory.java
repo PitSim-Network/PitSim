@@ -74,11 +74,11 @@ public class MysticFactory {
 		return enchantNum == 0;
 	}
 
-	public static boolean isJewel(ItemStack itemStack, boolean isComplete) {
+	public static boolean isJewel(ItemStack itemStack, boolean onlyComplete) {
 		if(!isMystic(itemStack)) return false;
 
 		NBTItem nbtItem = new NBTItem(itemStack);
-		if(isComplete && nbtItem.getInteger(NBTTag.JEWEL_KILLS.getRef()) < Constant.JEWEL_KILLS) return false;
+		if(onlyComplete && nbtItem.getInteger(NBTTag.JEWEL_KILLS.getRef()) < Constant.JEWEL_KILLS) return false;
 		return nbtItem.hasKey(NBTTag.IS_JEWEL.getRef());
 	}
 

@@ -41,7 +41,7 @@ class Sonic extends PitEnchant {
 	@Override
 	public List<String> getNormalDescription(int enchantLvl) {
 		return new PitLoreBuilder(
-				"&7Move &e" + getWalkSpeedIncrease(enchantLvl) + "% &7faster at all times. While worn, regain mana &b" +
+				"&7Move &e" + getWalkSpeedIncrease(enchantLvl) + "% &7faster at all times. When worn, regain mana &b" +
 						getManaReduction(enchantLvl) + "% &7slower"
 		).getLore();
 	}

@@ -142,6 +142,6 @@ public class MysticSword extends StaticPitItem implements TemporaryItem {
 
 	@Override
 	public TemporaryType getTemporaryType() {
-		return TemporaryType.LOSES_LIVES_ON_DEATH;
+		return TemporaryType.LOOSES_LIVES_ON_DEATH;
 	}
 }

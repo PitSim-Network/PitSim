@@ -247,7 +247,7 @@ public class KillEvent extends Event {
 			assert pitItem != null;
 			TemporaryItem temporaryItem = (TemporaryItem) pitItem;
 
-			TemporaryItem.ItemDamageResult damageResult = temporaryItem.damage(pitItem, itemStack, entry.getValue().livesToLose);
+			TemporaryItem.ItemDamageResult damageResult = temporaryItem.damage(itemStack, entry.getValue().livesToLose);
 			livesLost += damageResult.getLivesLost();
 
 			deadInventoryWrapper.putItem(entry.getKey(), itemStack);

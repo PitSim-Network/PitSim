@@ -1,6 +1,8 @@
 package dev.kyro.pitsim.controllers;
 
 import de.tr7zw.nbtapi.NBTItem;
+import dev.kyro.pitsim.aitems.PitItem;
+import dev.kyro.pitsim.aitems.TemporaryItem;
 import dev.kyro.pitsim.controllers.objects.PitEnchant;
 import dev.kyro.pitsim.enums.MysticType;
 import dev.kyro.pitsim.enums.NBTTag;
@@ -11,13 +13,16 @@ import java.util.*;
 
 public class TaintedEnchanting {
 	public static ItemStack enchantItem(ItemStack itemStack) {
+		PitItem pitItem = ItemFactory.getItem(itemStack);
+		if(pitItem == null || !pitItem.isMystic ||
+				pitItem.getTemporaryType(itemStack) != TemporaryItem.TemporaryType.LOOSES_LIVES_ON_DEATH) return null;
+		TemporaryItem temporaryItem = pitItem.getAsTemporaryItem();
+
 		MysticType type = MysticType.getMysticType(itemStack);
 //		if(type != MysticType.TAINTED_CHESTPLATE && type != MysticType.TAINTED_SCYTHE) return null;
 		NBTItem nbtItem = new NBTItem(itemStack);
 		int tier = nbtItem.getInteger(NBTTag.TAINTED_TIER.getRef());
 		if(tier == 3) return null;
-
-		ItemStack returnStack = itemStack;
 
 		if(tier == 0) {
 			int enchants;
@@ -35,8 +40,8 @@ public class TaintedEnchanting {
 					newEnchantsRandom.put(2, 0.3);
 					int newEnchants = enchants == 1 ? 1 : Misc.weightedRandom(newEnchantsRandom);
 
-					List<PitEnchant> enchantsOnItem = new ArrayList<>(EnchantManager.getEnchantsOnItem(returnStack).keySet());
-					returnStack = EnchantManager.addEnchant(returnStack, getRandomEnchant(type, enchantsOnItem, 0), newEnchants, false);
+					List<PitEnchant> enchantsOnItem = new ArrayList<>(EnchantManager.getEnchantsOnItem(itemStack).keySet());
+					itemStack = EnchantManager.addEnchant(itemStack, getRandomEnchant(type, enchantsOnItem, 0), newEnchants, false);
 				} catch(Exception e) {
 					e.printStackTrace();
 				}
@@ -50,7 +55,7 @@ public class TaintedEnchanting {
 			newTokens = Misc.weightedRandom(enchantRandom);
 
 			for(int i = 0; i < newTokens; i++) {
-				Map<PitEnchant, Integer> enchantsOnItem = EnchantManager.getEnchantsOnItem(returnStack);
+				Map<PitEnchant, Integer> enchantsOnItem = EnchantManager.getEnchantsOnItem(itemStack);
 				List<PitEnchant> randomEnchantList = new ArrayList<>();
 
 				Map<PitEnchant, Double> randomEnchantMap = new HashMap<>();
@@ -75,24 +80,17 @@ public class TaintedEnchanting {
 				PitEnchant selectedEnchant = Misc.weightedRandom(randomEnchantMap);
 				int newTier = enchantsOnItem.getOrDefault(selectedEnchant, 0);
 				try {
-					returnStack = EnchantManager.addEnchant(returnStack, selectedEnchant, newTier + 1, false);
+					itemStack = EnchantManager.addEnchant(itemStack, selectedEnchant, newTier + 1, false);
 				} catch(Exception exception) {
 					exception.printStackTrace();
 				}
 			}
 		}
 
-		nbtItem = new NBTItem(returnStack);
-		nbtItem.setInteger(NBTTag.TAINTED_TIER.getRef(), tier + 1);
-		int currentLives = nbtItem.getInteger(NBTTag.CURRENT_LIVES.getRef());
-		int currentMaxLives = nbtItem.getInteger(NBTTag.MAX_LIVES.getRef());
-
+		int currentMaxLives = temporaryItem.getMaxLives(itemStack);
 		int addedLives = EnchantManager.getTaintedMaxLifeIncrease(tier + 1, currentMaxLives);
-
-		nbtItem.setInteger(NBTTag.MAX_LIVES.getRef(), currentMaxLives + addedLives);
-		nbtItem.setInteger(NBTTag.CURRENT_LIVES.getRef(), currentLives + addedLives);
-
-		return nbtItem.getItem();
+		itemStack = temporaryItem.addMaxLives(itemStack, addedLives);
+		return itemStack;
 	}
 
 	public static PitEnchant getRandomEnchant(MysticType type, List<PitEnchant> existingEnchants, int enchantRarity) {

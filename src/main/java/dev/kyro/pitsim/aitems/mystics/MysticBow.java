@@ -145,6 +145,6 @@ public class MysticBow extends StaticPitItem implements TemporaryItem {
 
 	@Override
 	public TemporaryItem.TemporaryType getTemporaryType() {
-		return TemporaryItem.TemporaryType.LOSES_LIVES_ON_DEATH;
+		return TemporaryItem.TemporaryType.LOOSES_LIVES_ON_DEATH;
 	}
 }
