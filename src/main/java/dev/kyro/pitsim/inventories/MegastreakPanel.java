@@ -128,20 +128,24 @@ public class MegastreakPanel extends AGUIPanel {
 					}
 					if(megastreak instanceof RNGesus && !has && !prestige && !uberCd && !level) {
 						if(!RNGesus.isOnCooldown(pitPlayer)) {
-							Sounds.SUCCESS.play(player);
 							pitPlayer.megastreak.stop();
 							pitPlayer.megastreak = new RNGesus(pitPlayer);
 							perkGUI.megaWrapUp();
+
 							openPanel(perkGUI.getHomePanel());
+							Sounds.SUCCESS.play(player);
+							ChatTriggerManager.sendPerksInfo(pitPlayer);
 						} else if(pitPlayer.renown >= RNGesus.RENOWN_COST) {
 							pitPlayer.renown = pitPlayer.renown - RNGesus.RENOWN_COST;
 							AOutput.send(player, "&aEquipped &6RNGsus &afor &e" + RNGesus.RENOWN_COST + " Renown!");
-							Sounds.SUCCESS.play(player);
 							pitPlayer.rngCooldown = 0;
 							pitPlayer.megastreak.stop();
 							pitPlayer.megastreak = new RNGesus(pitPlayer);
 							perkGUI.megaWrapUp();
+
 							openPanel(perkGUI.getHomePanel());
+							Sounds.SUCCESS.play(player);
+							ChatTriggerManager.sendPerksInfo(pitPlayer);
 						} else {
 							AOutput.error(player, "&cYou do not have enough renown!");
 							Sounds.ERROR.play(player);

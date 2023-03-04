@@ -210,10 +210,10 @@ public class StorageProfile {
 		}
 	}
 
-	public void saveData(boolean logout) {
+	public void saveData(boolean isLogout) {
 		PluginMessage message = new PluginMessage().writeString("ITEM DATA SAVE").writeString(uuid.toString());
 
-		message.writeBoolean(logout);
+		message.writeBoolean(isLogout);
 //		System.out.println(StorageManager.isEditing(uuid) + " | " + StorageManager.editSessions);
 //		System.out.println(Bukkit.getPlayer(uuid) != null);
 		if(StorageManager.isEditing(uuid) && Bukkit.getPlayer(uuid) != null) return;
@@ -223,25 +223,25 @@ public class StorageProfile {
 		message.writeString(PitSim.serverName);
 		for(Inventory items : enderChest) {
 			for(int i = 9; i < items.getSize() - 9; i++) {
-				message.writeString(serialize(player, items.getItem(i)));
+				message.writeString(serialize(player, items.getItem(i), isLogout));
 			}
 		}
 
 		if(player.getPlayer() != null) {
 			for(ItemStack itemStack : player.getPlayer().getInventory()) {
-				message.writeString(serialize(player, itemStack));
+				message.writeString(serialize(player, itemStack, isLogout));
 			}
 
 			for(ItemStack itemStack : player.getPlayer().getInventory().getArmorContents()) {
-				message.writeString(serialize(player, itemStack));
+				message.writeString(serialize(player, itemStack, isLogout));
 			}
 		} else if(cachedInventory != null) {
 			for(ItemStack itemStack : cachedInventory) {
-				message.writeString(serialize(player, itemStack));
+				message.writeString(serialize(player, itemStack, isLogout));
 			}
 
 			for(ItemStack itemStack : armor) {
-				message.writeString(serialize(player, itemStack));
+				message.writeString(serialize(player, itemStack, isLogout));
 			}
 		}
 
@@ -308,10 +308,10 @@ public class StorageProfile {
 		}
 	}
 
-	public static String serialize(OfflinePlayer player, ItemStack itemStack) {
+	public static String serialize(OfflinePlayer player, ItemStack itemStack, boolean isLogout) {
 		if(Misc.isAirOrNull(itemStack)) return "";
 //		return Base64.itemTo64(itemStack);
-		if(EnchantManager.isIllegalItem(itemStack) && !player.isOp()) {
+		if(isLogout && EnchantManager.isIllegalItem(itemStack) && !player.isOp()) {
 			System.out.println("Did not save illegal item: " + Misc.stringifyItem(itemStack));
 			LogManager.onIllegalItemRemoved(player, itemStack);
 			return "";

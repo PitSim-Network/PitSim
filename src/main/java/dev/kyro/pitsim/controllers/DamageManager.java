@@ -451,6 +451,7 @@ public class DamageManager implements Listener {
 		if(killType != KillType.FAKE_KILL) {
 			if(deadIsPlayer) {
 				pitDead.bounty = 0;
+				ChatTriggerManager.sendBountyInfo(pitDead);
 			}
 			for(PotionEffect potionEffect : dead.getActivePotionEffects()) {
 				dead.removePotionEffect(potionEffect.getType());
