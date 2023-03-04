@@ -29,11 +29,11 @@ public class JudgementScoreboard extends ScoreboardOption {
 		if(!(deadAbility instanceof JudgementAbility)) return null;
 
 		if(liveAbility != null && liveAbility.isActive) {
-			int remainingSeconds = (int) Math.ceil(JudgementAbility.maxActivationMap.get(pitPlayer.player) / 20.0);
+			int remainingSeconds = (int) Math.ceil(JudgementAbility.maxActivationMap.getOrDefault(pitPlayer.player, 0) / 20.0);
 			return "&6Judgement: &e(" + remainingSeconds + ")";
 		} else {
 			if(!JudgementAbility.cooldownMap.containsKey(pitPlayer.player.getUniqueId())) return "&6Judgement: &aReady";
-			int remainingSeconds = (int) Math.ceil(JudgementAbility.cooldownMap.get(pitPlayer.player.getUniqueId()) / 20.0);
+			int remainingSeconds = (int) Math.ceil(JudgementAbility.cooldownMap.getOrDefault(pitPlayer.player.getUniqueId(), 0) / 20.0);
 			return "&6Judgement: &7(" + remainingSeconds + ")";
 		}
 	}
