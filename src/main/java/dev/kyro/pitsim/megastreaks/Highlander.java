@@ -3,6 +3,7 @@ package dev.kyro.pitsim.megastreaks;
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.battlepass.quests.daily.DailyMegastreakQuest;
+import dev.kyro.pitsim.controllers.ChatTriggerManager;
 import dev.kyro.pitsim.controllers.LevelManager;
 import dev.kyro.pitsim.controllers.NonManager;
 import dev.kyro.pitsim.controllers.PrestigeValues;
@@ -191,6 +192,7 @@ public class Highlander extends Megastreak {
 				DecimalFormat formatter = new DecimalFormat("#,###.#");
 				AOutput.send(pitPlayer.player, "&6&lHIGHLANDER! &7Earned &6+" + formatter.format(pitPlayer.bounty) + "&6g &7from megastreak!");
 				pitPlayer.bounty = 0;
+				ChatTriggerManager.sendBountyInfo(pitPlayer);
 			}
 		}
 

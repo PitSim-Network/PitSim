@@ -18,31 +18,31 @@ import org.bukkit.entity.Player;
 
 public class LevelManager {
 
-	static {
-
-	}
-
-	public static void addXP(Player player, long xp) {
+	public static void addXP(Player player, long xpToAdd) {
 		if(!(NonManager.getNon(player) == null)) return;
 		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
-		long addedXP = xp;
-		while(xp > 0) {
+		long addedXP = 0;
+		while(true) {
 			if(pitPlayer.level >= 120) {
 				pitPlayer.remainingXP = 0;
-				addedXP -= xp;
 				break;
 			}
-			if(pitPlayer.remainingXP - xp <= 0) {
-				xp -= pitPlayer.remainingXP;
+			if(pitPlayer.remainingXP <= xpToAdd) {
+				xpToAdd -= pitPlayer.remainingXP;
+				addedXP += pitPlayer.remainingXP;
 				pitPlayer.remainingXP = 0;
 				incrementLevel(player);
 			} else {
-				pitPlayer.remainingXP -= xp;
-				xp = 0;
+				pitPlayer.remainingXP -= xpToAdd;
+				addedXP += xpToAdd;
+				break;
 			}
 			pitPlayer.updateXPBar();
 		}
-		GrindXPQuest.INSTANCE.gainXP(pitPlayer, addedXP);
+		if(addedXP != 0) {
+			ChatTriggerManager.sendProgressionInfo(pitPlayer);
+			GrindXPQuest.INSTANCE.gainXP(pitPlayer, addedXP);
+		}
 	}
 
 	public static void incrementLevel(Player player) {
@@ -72,9 +72,11 @@ public class LevelManager {
 		if(!PlayerManager.isRealPlayer(player)) return;
 		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
 
-		GrindGoldQuest.INSTANCE.gainGold(pitPlayer, amount);
 		pitPlayer.gold += amount;
 		pitPlayer.goldGrinded += amount;
+
+		ChatTriggerManager.sendProgressionInfo(pitPlayer);
+		GrindGoldQuest.INSTANCE.gainGold(pitPlayer, amount);
 	}
 
 	public static void addGoldReq(Player player, double amount) {
@@ -82,6 +84,8 @@ public class LevelManager {
 		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
 
 		pitPlayer.goldGrinded += amount;
+
+		ChatTriggerManager.sendProgressionInfo(pitPlayer);
 	}
 
 	public static void incrementPrestige(Player player) {
@@ -112,6 +116,7 @@ public class LevelManager {
 		pitPlayer.killstreaks.set(1, NoKillstreak.INSTANCE);
 		pitPlayer.killstreaks.set(2, NoKillstreak.INSTANCE);
 
+		ChatTriggerManager.sendProgressionInfo(pitPlayer);
 		ChatTriggerManager.sendPrestigeInfo(pitPlayer);
 
 		String message = "%luckperms_prefix%";
