@@ -9,7 +9,41 @@ import org.bukkit.inventory.ItemStack;
 public interface TemporaryItem {
 	TemporaryType getTemporaryType();
 
-	default void onItemRemove(ItemStack itemStack) {};
+	default void onItemRemove(ItemStack itemStack) {}
+
+	default int getLives(ItemStack itemStack) {
+		TemporaryType type = getTemporaryType();
+		if(type != TemporaryType.LOSES_LIVES_ON_DEATH) throw new RuntimeException();
+
+		NBTItem nbtItem = new NBTItem(itemStack);
+		return nbtItem.getInteger(NBTTag.CURRENT_LIVES.getRef());
+	}
+
+	default int getMaxLives(ItemStack itemStack) {
+		TemporaryType type = getTemporaryType();
+		if(type != TemporaryType.LOSES_LIVES_ON_DEATH) throw new RuntimeException();
+
+		NBTItem nbtItem = new NBTItem(itemStack);
+		return nbtItem.getInteger(NBTTag.MAX_LIVES.getRef());
+	}
+
+	default boolean isAtMaxLives(ItemStack itemStack) {
+		TemporaryType type = getTemporaryType();
+		if(type != TemporaryType.LOSES_LIVES_ON_DEATH) throw new RuntimeException();
+
+		return getLives(itemStack) == getMaxLives(itemStack);
+	}
+
+	default ItemStack addLives(ItemStack itemStack, int lives) {
+		TemporaryType type = getTemporaryType();
+		if(type != TemporaryType.LOSES_LIVES_ON_DEATH) return itemStack;
+
+		NBTItem nbtItem = new NBTItem(itemStack);
+		int currentLives = nbtItem.getInteger(NBTTag.CURRENT_LIVES.getRef());
+		int maxLives = nbtItem.getInteger(NBTTag.MAX_LIVES.getRef());
+		nbtItem.setInteger(NBTTag.CURRENT_LIVES.getRef(), Math.min(currentLives + lives, maxLives));
+		return nbtItem.getItem();
+	}
 
 	default ItemDamageResult damage(PitItem pitItem, ItemStack itemStack, int attemptToLoseLives) {
 		TemporaryType type = getTemporaryType();
