@@ -416,6 +416,7 @@ public class PlayerManager implements Listener {
 				pitKiller.bounty = maxBounty;
 			} else {
 				pitKiller.bounty += amount;
+				ChatTriggerManager.sendBountyInfo(pitKiller);
 			}
 			String message = "&6&lBOUNTY!&7 bump &6&l" + amount + "g&7 on %luckperms_prefix%" + killEvent.getKillerPlayer().getDisplayName() +
 					"&7 for high streak";

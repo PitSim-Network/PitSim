@@ -6,6 +6,7 @@ import dev.kyro.arcticapi.gui.AGUI;
 import dev.kyro.arcticapi.gui.AGUIPanel;
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.arcticapi.misc.AUtil;
+import dev.kyro.pitsim.controllers.EnchantManager;
 import dev.kyro.pitsim.controllers.ItemFactory;
 import dev.kyro.pitsim.controllers.objects.PluginMessage;
 import dev.kyro.pitsim.misc.Misc;
@@ -121,13 +122,14 @@ public class CreateListingPanel extends AGUIPanel {
 			}
 
 			if(slot == 40) {
-				if(selectedItem == null || (!auctionEnabled && !binEnabled) || (auctionEnabled && !isBidValid()) || (binEnabled && !isBinValid())) {
+				if(selectedItem == null || (!auctionEnabled && !binEnabled) || (auctionEnabled && !isBidValid()) ||
+						(binEnabled && !isBinValid()) || EnchantManager.isIllegalItem(selectedItem)) {
 					Sounds.NO.play(player);
 					return;
 				}
 
 				PluginMessage message = new PluginMessage().writeString("CREATE LISTING").writeString(player.getUniqueId().toString());
-				message.writeString(StorageProfile.serialize(player, selectedItem));
+				message.writeString(StorageProfile.serialize(player, selectedItem, false));
 				message.writeInt(startingBid == 0 ? -1 : startingBid).writeInt(binPrice == 0 ? -1 : binPrice).writeBoolean(selectedItem.getAmount() > 1).writeLong(duration).send();
 				selectedItem = null;
 				Sounds.SUCCESS.play(player);

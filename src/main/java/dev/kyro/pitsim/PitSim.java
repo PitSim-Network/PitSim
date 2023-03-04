@@ -577,10 +577,10 @@ public class PitSim extends JavaPlugin {
 		new ExtendCommand(adminCommand, "extend");
 		new UnlockCosmeticCommand(adminCommand, "unlockcosmetic");
 		new GodCommand(adminCommand, "god");
-		new BountyCommand(setCommand, "bounty");
 
 		new JewelCommand(giveCommand, "jewel");
 		new StreakCommand(giveCommand, "streak");
+		new BountyCommand(giveCommand, "bounty");
 
 		getCommand("atest").setExecutor(new ATestCommand());
 		getCommand("ktest").setExecutor(new KTestCommand());
