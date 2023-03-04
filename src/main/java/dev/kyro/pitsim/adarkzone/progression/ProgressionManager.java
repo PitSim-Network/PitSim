@@ -54,7 +54,7 @@ public class ProgressionManager implements Listener {
 
     defense &9 - decreased damage from mobs & bosses, increased shield
     first: unlock shield
-    last:
+    last: shield takes x% less damage
     path 1: decreased damage from players?
     path 2: decrease time until shield resets
     prestige 1:
@@ -63,16 +63,16 @@ public class ProgressionManager implements Listener {
     souls &d/&f - increased soul chance from mobs, increased fresh drop chance?
     first: ability to t3 items
     last: ability to t4 items
-    path 1: ability to fast travel at a cost
+    path 1: ability to fast travel for free
     path 2: decreased cost to tier 3 items
-    prestige 1: free fast travel
+    prestige 1:
     prestige 2:
 
     mana &b - increased max mana, increased mana regen
     first: unlock mana
-    last:
-    path 1:
-    path 2:
+    last: spells cost -x% less mana
+    path 1: mobs give +x mana on kill
+    path 2: when your shield is down, regenerate mana x% faster
     prestige 1:
     prestige 2:
 
