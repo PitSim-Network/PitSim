@@ -16,8 +16,8 @@ import dev.kyro.pitsim.aitems.prot.ProtLeggings;
 import dev.kyro.pitsim.controllers.objects.Non;
 import dev.kyro.pitsim.controllers.objects.PitEnchant;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
-import dev.kyro.pitsim.enchants.overworld.Singularity;
 import dev.kyro.pitsim.enchants.overworld.Regularity;
+import dev.kyro.pitsim.enchants.overworld.Singularity;
 import dev.kyro.pitsim.enchants.overworld.Telebow;
 import dev.kyro.pitsim.enchants.tainted.chestplate.PurpleThumb;
 import dev.kyro.pitsim.enchants.tainted.uncommon.ShieldBuster;
@@ -34,11 +34,13 @@ import dev.kyro.pitsim.misc.Misc;
 import dev.kyro.pitsim.misc.Sounds;
 import me.clip.placeholderapi.PlaceholderAPI;
 import net.citizensnpcs.api.CitizensAPI;
+import net.minecraft.server.v1_8_R3.EntityLiving;
 import net.minecraft.server.v1_8_R3.EntityPlayer;
 import org.bukkit.Bukkit;
 import org.bukkit.EntityEffect;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.craftbukkit.v1_8_R3.entity.CraftLivingEntity;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
 import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
@@ -340,7 +342,7 @@ public class DamageManager implements Listener {
 		}
 		attackEvent.getWrapperEvent().getSpigotEvent().setDamage(damage);
 
-		EntityPlayer nmsDefender = ((CraftPlayer) attackEvent.getDefender()).getHandle();
+		EntityLiving nmsDefender = ((CraftLivingEntity) attackEvent.getDefender()).getHandle();
 		float absorption = nmsDefender.getAbsorptionHearts();
 		if(absorption != 0) nmsDefender.setAbsorptionHearts(0);
 
