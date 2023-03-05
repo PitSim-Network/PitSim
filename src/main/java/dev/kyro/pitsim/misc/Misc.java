@@ -87,7 +87,6 @@ public class Misc {
 				finalString += chars[i];
 			} else {
 				String substring = message.substring(0, i);
-				System.out.println("thing: " + ChatColor.getLastColors(substring));
 				finalString += "\u00A7k" + chars[i] + ChatColor.getLastColors(substring);
 			}
 		}
