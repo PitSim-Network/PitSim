@@ -1,6 +1,7 @@
 package dev.kyro.pitsim.enchants;
 
 import dev.kyro.arcticapi.builders.ALoreBuilder;
+import dev.kyro.pitsim.controllers.PlayerManager;
 import dev.kyro.pitsim.controllers.objects.PitEnchant;
 import dev.kyro.pitsim.enums.ApplyType;
 import dev.kyro.pitsim.events.AttackEvent;
@@ -19,7 +20,7 @@ public class Singularity extends PitEnchant {
 
 	public static double getAdjustedFinalDamage(AttackEvent attackEvent) {
 		double finalDamage = attackEvent.getEvent().getFinalDamage();
-		if(attackEvent.getDefenderPitPlayer().megastreak.isOnMega()) return finalDamage;
+		if(PlayerManager.isRealPlayer(attackEvent.getDefenderPlayer()) && attackEvent.getDefenderPitPlayer().megastreak.isOnMega()) return finalDamage;
 
 		int enchantLvl = attackEvent.getDefenderEnchantLevel(INSTANCE);
 		if(enchantLvl == 0) return finalDamage;
