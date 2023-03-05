@@ -33,7 +33,10 @@ import dev.kyro.pitsim.misc.Misc;
 import dev.kyro.pitsim.misc.Sounds;
 import me.clip.placeholderapi.PlaceholderAPI;
 import net.citizensnpcs.api.CitizensAPI;
+import net.minecraft.server.v1_8_R3.EntityLiving;
 import net.minecraft.server.v1_8_R3.EntityPlayer;
+import org.bukkit.*;
+import org.bukkit.craftbukkit.v1_8_R3.entity.CraftLivingEntity;
 import org.bukkit.Bukkit;
 import org.bukkit.EntityEffect;
 import org.bukkit.Location;
@@ -337,7 +340,7 @@ public class DamageManager implements Listener {
 		}
 		attackEvent.getWrapperEvent().getSpigotEvent().setDamage(damage);
 
-		EntityPlayer nmsDefender = ((CraftPlayer) attackEvent.getDefender()).getHandle();
+		EntityLiving nmsDefender = ((CraftLivingEntity) attackEvent.getDefender()).getHandle();
 		float absorption = nmsDefender.getAbsorptionHearts();
 		if(absorption != 0) nmsDefender.setAbsorptionHearts(0);
 
