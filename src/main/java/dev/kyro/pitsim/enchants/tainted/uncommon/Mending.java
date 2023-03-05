@@ -20,6 +20,8 @@ public class Mending extends PitEnchant {
 	}
 
 	public static double getIncreaseMultiplier(Player player) {
+		if(!INSTANCE.isEnabled()) return 1;
+
 		int enchantLvl = EnchantManager.getEnchantLevel(player, INSTANCE);
 		if(enchantLvl == 0) return 1;
 

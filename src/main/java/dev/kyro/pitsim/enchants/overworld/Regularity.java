@@ -77,7 +77,7 @@ public class Regularity extends PitEnchant {
 			public void run() {
 				if(!toReg.contains(attackEvent.getDefender().getUniqueId())) return;
 
-				double damage = attackEvent.getEvent().getOriginalDamage(EntityDamageEvent.DamageModifier.BASE);
+				double damage = attackEvent.getWrapperEvent().getSpigotEvent().getOriginalDamage(EntityDamageEvent.DamageModifier.BASE);
 				attackEvent.getDefender().setNoDamageTicks(0);
 				attackEvent.getDefender().damage(damage * secondHitDamage(enchantLvl) / 100, attackEvent.getAttacker());
 			}

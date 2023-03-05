@@ -12,9 +12,9 @@ import dev.kyro.pitsim.aitems.mobdrops.EnderPearl;
 import dev.kyro.pitsim.aitems.mobdrops.*;
 import dev.kyro.pitsim.controllers.ItemFactory;
 import dev.kyro.pitsim.controllers.MapManager;
-import dev.kyro.pitsim.controllers.PlayerManager;
 import dev.kyro.pitsim.controllers.TaintedWell;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
+import dev.kyro.pitsim.enchants.tainted.uncommon.Resilient;
 import dev.kyro.pitsim.enchants.tainted.uncommon.Fearmonger;
 import dev.kyro.pitsim.events.KillEvent;
 import dev.kyro.pitsim.events.ManaRegenEvent;
@@ -38,6 +38,8 @@ import java.util.*;
 public class DarkzoneManager implements Listener {
 	public static List<SubLevel> subLevels = new ArrayList<>();
 	public static List<Hologram> holograms = new ArrayList<>();
+
+	public static List<Player> regenCooldownList = new ArrayList<>();
 
 	public DarkzoneManager() {
 		SubLevel subLevel;
@@ -130,6 +132,35 @@ public class DarkzoneManager implements Listener {
 				}
 			}
 		}.runTaskTimer(PitSim.INSTANCE, 0L, 1L);
+
+		new BukkitRunnable() {
+			@Override
+			public void run() {
+				for(Player player : Bukkit.getOnlinePlayers()) {
+					if(regenCooldownList.contains(player)) continue;
+					PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
+					pitPlayer.heal(1);
+
+					int regenCooldownTicks = 40;
+					regenCooldownTicks /= 1 + (Resilient.getRegenIncrease(player) / 100.0);
+
+					regenCooldownList.add(player);
+					new BukkitRunnable() {
+						@Override
+						public void run() {
+							regenCooldownList.remove(player);
+						}
+					}.runTaskLater(PitSim.INSTANCE, regenCooldownTicks);
+				}
+			}
+		}.runTaskTimer(PitSim.INSTANCE, 0L, 1L);
+	}
+
+	@EventHandler
+	public void onRegen(EntityRegainHealthEvent event) {
+		if(!PitSim.status.isDarkzone() || !(event.getEntity() instanceof Player) ||
+				event.getRegainReason() != EntityRegainHealthEvent.RegainReason.SATIATED) return;
+		event.setCancelled(true);
 	}
 
 	@EventHandler
@@ -230,14 +261,22 @@ public class DarkzoneManager implements Listener {
 
 		PitBoss deadBoss = BossManager.getPitBoss(killEvent.getDead());
 		if(deadBoss != null) {
-			if(!PlayerManager.isRealPlayer(killEvent.getKillerPlayer())) throw new RuntimeException();
+			if(!killEvent.hasKiller()) {
+				deadBoss.kill(null);
+				return;
+			}
+			if(!killEvent.isKillerRealPlayer()) throw new RuntimeException();
 			deadBoss.kill(killEvent.getKillerPlayer());
 			return;
 		}
 
 		PitMob deadMob = getPitMob(killEvent.getDead());
 		if(deadMob != null) {
-			if(!PlayerManager.isRealPlayer(killEvent.getKillerPlayer())) throw new RuntimeException();
+			if(!killEvent.hasKiller()) {
+				deadMob.remove();
+				return;
+			}
+			if(!killEvent.isKillerRealPlayer()) throw new RuntimeException();
 			deadMob.kill(killEvent.getKillerPlayer());
 			return;
 		}

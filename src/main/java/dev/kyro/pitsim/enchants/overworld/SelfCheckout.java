@@ -1,24 +1,22 @@
 package dev.kyro.pitsim.enchants.overworld;
 
-import de.tr7zw.nbtapi.NBTItem;
 import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.arcticapi.misc.AOutput;
+import dev.kyro.pitsim.aitems.MysticFactory;
+import dev.kyro.pitsim.aitems.PitItem;
+import dev.kyro.pitsim.aitems.TemporaryItem;
 import dev.kyro.pitsim.battlepass.quests.EarnRenownQuest;
 import dev.kyro.pitsim.controllers.DamageManager;
-import dev.kyro.pitsim.controllers.EnchantManager;
-import dev.kyro.pitsim.controllers.PlayerManager;
+import dev.kyro.pitsim.controllers.ItemFactory;
 import dev.kyro.pitsim.controllers.objects.PitEnchant;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.enums.ApplyType;
 import dev.kyro.pitsim.enums.KillModifier;
-import dev.kyro.pitsim.enums.NBTTag;
 import dev.kyro.pitsim.events.KillEvent;
-import dev.kyro.pitsim.logging.LogManager;
 import dev.kyro.pitsim.megastreaks.NoMegastreak;
 import dev.kyro.pitsim.megastreaks.RNGesus;
 import dev.kyro.pitsim.megastreaks.Uberstreak;
 import dev.kyro.pitsim.misc.wrappers.PlayerItemLocation;
-import org.bukkit.Material;
 import org.bukkit.event.EventHandler;
 import org.bukkit.inventory.ItemStack;
 
@@ -49,19 +47,26 @@ public class SelfCheckout extends PitEnchant {
 	public void onKill(KillEvent killEvent) {
 		if(!killEvent.isKillerPlayer() || killEvent.getKiller() == killEvent.getDead()) return;
 
-		ItemStack leggings = killEvent.getKiller().getEquipment().getLeggings();
-		int enchantLvl = EnchantManager.getEnchantLevel(leggings, this);
+		ItemStack itemStack = killEvent.getKiller().getEquipment().getLeggings();
+		int enchantLvl = killEvent.getDeadEnchantLevel(this);
 		if(enchantLvl == 0) return;
+
+		PitItem pitItem = ItemFactory.getItem(itemStack);
+		assert pitItem != null;
+		TemporaryItem temporaryItem = pitItem.getAsTemporaryItem();
 
 		PitPlayer pitKiller = PitPlayer.getPitPlayer(killEvent.getKillerPlayer());
 		if(pitKiller.getKills() + 1 < 200 || pitKiller.megastreak instanceof Uberstreak ||
 				pitKiller.megastreak instanceof NoMegastreak || pitKiller.megastreak instanceof RNGesus) return;
 
-		NBTItem nbtItem = new NBTItem(leggings);
-		if(!EnchantManager.isJewelComplete(leggings) || !nbtItem.getString(NBTTag.ITEM_JEWEL_ENCHANT.getRef()).equalsIgnoreCase(refNames.get(0))) {
+		if(!MysticFactory.isJewel(itemStack, false)) {
 			AOutput.error(killEvent.getKiller(), "Self-Checkout only works on jewel items");
 			return;
 		}
+
+		itemStack = temporaryItem.damage(itemStack, LIVES_ON_USE).getItemStack();
+		killEvent.getKillerPlayer().getEquipment().setLeggings(itemStack);
+		killEvent.getKillerPlayer().updateInventory();
 
 		String scoMessage = "&9&lSCO!&7 Self-Checkout pants activated";
 		int renown = Math.min((pitKiller.getKills() + 1) / 300, 4);
@@ -73,26 +78,6 @@ public class SelfCheckout extends PitEnchant {
 
 		AOutput.send(killEvent.getKillerPlayer(), scoMessage);
 		DamageManager.death(killEvent.getKiller(), KillModifier.SELF_CHECKOUT);
-
-		if(nbtItem.hasKey(NBTTag.CURRENT_LIVES.getRef())) {
-			int lives = nbtItem.getInteger(NBTTag.CURRENT_LIVES.getRef());
-			if(lives - LIVES_ON_USE <= 0) {
-				killEvent.getKillerPlayer().getEquipment().setLeggings(new ItemStack(Material.AIR));
-				killEvent.getKillerPlayer().updateInventory();
-				PlayerManager.sendItemBreakMessage(killEvent.getKillerPlayer(), leggings);
-				if(pitKiller.stats != null) {
-					pitKiller.stats.itemsBroken++;
-					LogManager.onItemBreak(killEvent.getKillerPlayer(), nbtItem.getItem());
-				}
-			} else {
-				nbtItem.setInteger(NBTTag.CURRENT_LIVES.getRef(), nbtItem.getInteger(NBTTag.CURRENT_LIVES.getRef()) - LIVES_ON_USE);
-				EnchantManager.setItemLore(nbtItem.getItem(), pitKiller.player);
-				killEvent.getKillerPlayer().getEquipment().setLeggings(nbtItem.getItem());
-				killEvent.getKillerPlayer().updateInventory();
-
-				if(pitKiller.stats != null) pitKiller.stats.livesLost += LIVES_ON_USE;
-			}
-		}
 	}
 
 	@Override

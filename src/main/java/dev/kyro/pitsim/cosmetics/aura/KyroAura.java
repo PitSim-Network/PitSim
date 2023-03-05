@@ -53,6 +53,8 @@ public class KyroAura extends PitCosmetic {
 
 			@Override
 			public void run() {
+				if(!CosmeticManager.isStandingStill(pitPlayer.player)) return;
+
 				yawX = (0 + (yawX - 0) * Math.cos(Math.toRadians(0.4)) - ((yawY - 0) * Math.sin(Math.toRadians(0.4))));
 				yawY = (0 + (yawX - 0) * Math.sin(Math.toRadians(0.4)) + (yawY - 0) * Math.cos(Math.toRadians(0.4)));
 				RotationUtils.rotate(yawVector, 0, yawX * SPEED, yawY * SPEED);

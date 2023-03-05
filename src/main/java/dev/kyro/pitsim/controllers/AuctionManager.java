@@ -106,7 +106,6 @@ public class AuctionManager implements Listener {
 
 				animationPlayers.add(player);
 				Misc.applyPotionEffect(player, PotionEffectType.BLINDNESS, 60, 99, false, false);
-				Misc.applyPotionEffect(player, PotionEffectType.CONFUSION, 60, 5, false, false);
 				Sounds.MANA.play(player);
 
 				new BukkitRunnable() {
@@ -122,7 +121,6 @@ public class AuctionManager implements Listener {
 
 				animationPlayers.add(player);
 				Misc.applyPotionEffect(player, PotionEffectType.BLINDNESS, 60, 99, false, false);
-				Misc.applyPotionEffect(player, PotionEffectType.CONFUSION, 60, 5, false, false);
 				Sounds.MANA.play(player);
 
 				new BukkitRunnable() {
@@ -205,6 +203,5 @@ public class AuctionManager implements Listener {
 
 		PluginMessage pluginMessage = new PluginMessage().writeString("AUCTION ALERT").writeString(message + " " + System.currentTimeMillis());
 		pluginMessage.send();
-		System.out.println("Send Auction Alert");
 	}
 }

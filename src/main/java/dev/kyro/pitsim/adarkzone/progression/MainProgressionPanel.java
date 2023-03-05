@@ -54,7 +54,8 @@ public class MainProgressionPanel extends AGUIPanel {
 					Lang.NOT_ENOUGH_SOULS.send(player);
 					return;
 				}
-				ProgressionManager.unlock(pitPlayer, unlock);
+				pitPlayer.taintedSouls -= cost;
+				ProgressionManager.unlock(pitPlayer, unlock, cost);
 				setInventory();
 			} else if(state == UnlockState.UNLOCKED) {
 				if(unlock instanceof MainProgressionMajorUnlock) {

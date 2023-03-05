@@ -2,6 +2,7 @@ package dev.kyro.pitsim.controllers;
 
 import com.google.cloud.firestore.DocumentSnapshot;
 import de.tr7zw.nbtapi.NBTItem;
+import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.aitems.PitItem;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.controllers.objects.PluginMessage;
@@ -36,12 +37,12 @@ public class MigrationManager implements Listener {
 		if(documentSnapshot.exists()) {
 			pitPlayer = documentSnapshot.toObject(PitPlayer.class);
 		} else {
-			System.out.println("CRITICAL ERROR: COULD NOT LOAD PITPLAYER FOR " + uuid);
+			AOutput.log("CRITICAL ERROR: COULD NOT LOAD PITPLAYER FOR " + uuid);
 			return;
 		}
 
 		if(pitPlayer == null) {
-			System.out.println("CRITICAL ERROR: COULD NOT LOAD PITPLAYER FOR " + uuid);
+			AOutput.log("CRITICAL ERROR: COULD NOT LOAD PITPLAYER FOR " + uuid);
 			return;
 		}
 		pitPlayer.uuid = uuid;

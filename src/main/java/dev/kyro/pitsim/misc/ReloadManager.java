@@ -1,5 +1,6 @@
 package dev.kyro.pitsim.misc;
 
+import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.PitSim;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -29,14 +30,14 @@ public class ReloadManager {
 
 					if(file.lastModified() == lastModified && startedUpload) {
 						cancel();
-						System.out.println("Jar upload finished. Restarting plugin");
+						AOutput.log("Jar upload finished. Restarting plugin");
 						Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), "plugman reload pitremake");
 						return;
 					}
 
 					if(file.lastModified() != lastModified && !startedUpload) {
 						startedUpload = true;
-						System.out.println("Detected server jar upload. Waiting for completion");
+						AOutput.log("Detected server jar upload. Waiting for completion");
 					}
 					lastModified = file.lastModified();
 				} catch(Exception exception) {

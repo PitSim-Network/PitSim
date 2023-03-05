@@ -11,6 +11,7 @@ import dev.kyro.pitsim.controllers.objects.PitEnchant;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.enums.KillType;
 import dev.kyro.pitsim.events.AttackEvent;
+import dev.kyro.pitsim.events.WrapperEntityDamageEvent;
 import dev.kyro.pitsim.megastreaks.RNGesus;
 import org.bukkit.Effect;
 import org.bukkit.Location;
@@ -60,7 +61,7 @@ public class Shockwave extends Killstreak {
 			Map<PitEnchant, Integer> attackerEnchant = EnchantManager.getEnchantsOnPlayer(player);
 			Map<PitEnchant, Integer> defenderEnchant = new HashMap<>();
 			EntityDamageByEntityEvent newEvent = new EntityDamageByEntityEvent(player, non, EntityDamageEvent.DamageCause.CUSTOM, 0);
-			AttackEvent attackEvent = new AttackEvent(newEvent, attackerEnchant, defenderEnchant, false);
+			AttackEvent attackEvent = new AttackEvent(new WrapperEntityDamageEvent(newEvent), attackerEnchant, defenderEnchant, false);
 
 			if(non.getWorld() != player.getWorld()) continue;
 			double distance = non.getLocation().distance(player.getLocation());

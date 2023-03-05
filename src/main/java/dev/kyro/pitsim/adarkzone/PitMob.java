@@ -68,7 +68,7 @@ public abstract class PitMob implements Listener {
 		dropPool.singleDistribution(killer);
 
 		double soulChance = 0.05;
-		soulChance *= 1 + (Reaper.INSTANCE.getSoulChanceIncrease(killer) / 100.0);
+		soulChance *= 1 + (Reaper.getSoulChanceIncrease(killer) / 100.0);
 		if(Math.random() < soulChance) DarkzoneManager.createSoulExplosion(
 				killer, getMob().getLocation().add(0, 0.5, 0), getDroppedSouls(), false);
 

@@ -5,6 +5,7 @@ import com.google.cloud.firestore.Firestore;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.FirebaseOptions;
 import com.google.firebase.cloud.FirestoreClient;
+import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.controllers.objects.AuctionData;
 import dev.kyro.pitsim.controllers.objects.Config;
@@ -27,7 +28,7 @@ public class FirestoreManager {
 
 	public static void init() {
 		try {
-			System.out.println("Loading PitSim database");
+			AOutput.log("Loading PitSim database");
 			InputStream serviceAccount = new FileResourcesUtils().getFileFromResourceAsStream("google-key.json");
 			GoogleCredentials credentials = GoogleCredentials.fromStream(serviceAccount);
 			FirebaseOptions options = new FirebaseOptions.Builder()
@@ -36,13 +37,13 @@ public class FirestoreManager {
 			try {
 				FirebaseApp.initializeApp(options);
 			} catch(IllegalStateException exception) {
-				System.out.println("Firestore already initialized");
+				AOutput.log("Firestore already initialized");
 			}
 
 			FIRESTORE = FirestoreClient.getFirestore();
-			System.out.println("PitSim database loaded!");
+			AOutput.log("PitSim database loaded!");
 		} catch(IOException exception) {
-			System.out.println("PitSim database failed to load. Disabling plugin...");
+			AOutput.log("PitSim database failed to load. Disabling plugin...");
 			PitSim.INSTANCE.getServer().getPluginManager().disablePlugin(PitSim.INSTANCE);
 			return;
 		}
@@ -52,7 +53,7 @@ public class FirestoreManager {
 	}
 
 	public static void fetchDocuments() {
-		System.out.println("Loading essential PitSim data");
+		AOutput.log("Loading essential PitSim data");
 		try {
 			if(!FIRESTORE.collection(SERVER_COLLECTION).document(CONFIG_DOCUMENT).get().get().exists()) {
 				CONFIG = new Config();
@@ -72,10 +73,10 @@ public class FirestoreManager {
 
 		} catch(Exception exception) {
 			exception.printStackTrace();
-			System.out.println("Firestore failed to load critical data. Disabling plugin...");
+			AOutput.log("Firestore failed to load critical data. Disabling plugin...");
 			PitSim.INSTANCE.getServer().getPluginManager().disablePlugin(PitSim.INSTANCE);
 		}
-		System.out.println("PitSim data loaded");
+		AOutput.log("PitSim data loaded");
 	}
 
 	public enum Collection {

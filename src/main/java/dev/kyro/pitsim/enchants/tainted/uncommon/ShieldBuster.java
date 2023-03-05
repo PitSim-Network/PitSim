@@ -21,8 +21,11 @@ public class ShieldBuster extends PitEnchant {
 	}
 
 	public static double getMultiplier(Player player) {
+		if(!INSTANCE.isEnabled()) return 1;
+
 		int enchantLvl = EnchantManager.getEnchantLevel(player, INSTANCE);
 		if(enchantLvl == 0) return 1;
+
 		return getMultiplier(enchantLvl);
 	}
 

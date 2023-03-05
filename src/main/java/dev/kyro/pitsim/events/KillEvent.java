@@ -14,14 +14,13 @@ import dev.kyro.pitsim.controllers.objects.PitEnchant;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.enums.KillModifier;
 import dev.kyro.pitsim.enums.KillType;
-import dev.kyro.pitsim.misc.wrappers.PlayerInventoryWrapper;
 import dev.kyro.pitsim.misc.wrappers.PlayerItemLocation;
+import dev.kyro.pitsim.misc.wrappers.WrapperPlayerInventory;
 import dev.kyro.pitsim.upgrades.DivineIntervention;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
-import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.*;
@@ -29,7 +28,7 @@ import java.util.*;
 public class KillEvent extends Event {
 	private static final HandlerList handlers = new HandlerList();
 
-	private EntityDamageByEntityEvent event;
+	private WrapperEntityDamageEvent event;
 	private final AttackEvent attackEvent;
 	private final KillType killType;
 
@@ -61,14 +60,14 @@ public class KillEvent extends Event {
 	public boolean isLuckyKill = false;
 
 	private boolean shouldLoseItems = false;
-	private PlayerInventoryWrapper deadInventoryWrapper;
+	private WrapperPlayerInventory deadInventoryWrapper;
 	private final Map<PlayerItemLocation, ItemInfo> deadVulnerableItems = new HashMap<>();
 
 	public KillEvent(AttackEvent attackEvent, LivingEntity killer, LivingEntity dead, KillType killType, KillModifier... killModifiers) {
 		this.attackEvent = attackEvent;
 		this.killType = killType;
 		if(attackEvent != null) {
-			this.event = attackEvent.getEvent();
+			this.event = attackEvent.getWrapperEvent();
 			this.killerEnchantMap = killer == attackEvent.getAttacker() ? attackEvent.getAttackerEnchantMap() : attackEvent.getDefenderEnchantMap();
 			this.deadEnchantMap = killer == attackEvent.getAttacker() ? attackEvent.getDefenderEnchantMap() : attackEvent.getAttackerEnchantMap();
 		}
@@ -107,7 +106,7 @@ public class KillEvent extends Event {
 		}
 
 		shouldLoseItems = true;
-		deadInventoryWrapper = new PlayerInventoryWrapper(getDeadPlayer());
+		deadInventoryWrapper = new WrapperPlayerInventory(getDeadPlayer());
 		for(Map.Entry<PlayerItemLocation, ItemStack> entry : deadInventoryWrapper.getItemMap().entrySet()) {
 			ItemStack itemStack = entry.getValue();
 			PitItem pitItem = ItemFactory.getItem(itemStack);
@@ -188,6 +187,18 @@ public class KillEvent extends Event {
 		return isDeadPlayer;
 	}
 
+	public boolean isKillerRealPlayer() {
+		return isKillerRealPlayer;
+	}
+
+	public boolean isDeadRealPlayer() {
+		return isDeadRealPlayer;
+	}
+
+	public boolean hasKiller() {
+		return killer != null;
+	}
+
 	public Player getKillerPlayer() {
 		return killerPlayer;
 	}
@@ -206,7 +217,7 @@ public class KillEvent extends Event {
 		return deadPitPlayer;
 	}
 
-	public EntityDamageByEntityEvent getEvent() {
+	public WrapperEntityDamageEvent getWrapperEvent() {
 		return event;
 	}
 
@@ -228,14 +239,23 @@ public class KillEvent extends Event {
 
 	public void damageItems() {
 		if(!shouldLoseItems) return;
+
+		int livesLost = 0;
 		for(Map.Entry<PlayerItemLocation, ItemInfo> entry : deadVulnerableItems.entrySet()) {
 			ItemStack itemStack = entry.getValue().itemStack;
 			PitItem pitItem = ItemFactory.getItem(itemStack);
 			assert pitItem != null;
 			TemporaryItem temporaryItem = (TemporaryItem) pitItem;
-			itemStack = temporaryItem.damage(itemStack, entry.getValue().livesToLose);
+
+			TemporaryItem.ItemDamageResult damageResult = temporaryItem.damage(itemStack, entry.getValue().livesToLose);
+			livesLost += damageResult.getLivesLost();
+
 			deadInventoryWrapper.putItem(entry.getKey(), itemStack);
+			if(damageResult.wasRemoved()) temporaryItem.onItemRemove(itemStack);
 		}
+
+		if(livesLost != 0) PlayerManager.sendLivesLostMessage(getDeadPlayer(), livesLost);
+
 		deadInventoryWrapper.setInventory();
 	}
 

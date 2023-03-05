@@ -3,7 +3,7 @@ package dev.kyro.pitsim.adarkzone;
 import de.myzelyam.api.vanish.VanishAPI;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.enchants.tainted.uncommon.Fearmonger;
-import dev.kyro.pitsim.enchants.tainted.effects.Terror;
+import dev.kyro.pitsim.enchants.tainted.chestplate.Terror;
 import org.bukkit.Effect;
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;

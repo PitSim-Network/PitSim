@@ -5,16 +5,15 @@ import de.tr7zw.nbtapi.NBTItem;
 import de.tr7zw.nbtapi.NBTList;
 import dev.kyro.arcticapi.builders.AItemStackBuilder;
 import dev.kyro.arcticapi.builders.ALoreBuilder;
+import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.arcticapi.misc.AUtil;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.adarkzone.notdarkzone.PitEquipment;
 import dev.kyro.pitsim.aitems.MysticFactory;
 import dev.kyro.pitsim.aitems.PitItem;
+import dev.kyro.pitsim.aitems.TemporaryItem;
 import dev.kyro.pitsim.aitems.misc.GoldenHelmet;
-import dev.kyro.pitsim.controllers.objects.HelmetManager;
-import dev.kyro.pitsim.controllers.objects.PitEnchant;
-import dev.kyro.pitsim.controllers.objects.PitPlayer;
-import dev.kyro.pitsim.controllers.objects.PluginMessage;
+import dev.kyro.pitsim.controllers.objects.*;
 import dev.kyro.pitsim.enchants.overworld.ComboVenom;
 import dev.kyro.pitsim.enchants.overworld.SelfCheckout;
 import dev.kyro.pitsim.enums.ApplyType;
@@ -47,8 +46,6 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.LeatherArmorMeta;
 
 import java.util.*;
-
-import static dev.kyro.pitsim.enums.ApplyType.CHESTPLATES;
 
 public class EnchantManager implements Listener {
 	public static List<PitEnchant> pitEnchants = new ArrayList<>();
@@ -92,6 +89,14 @@ public class EnchantManager implements Listener {
 	public static void registerEnchant(PitEnchant pitEnchant) {
 		pitEnchants.add(pitEnchant);
 		if(pitEnchant.isEnabled()) PitSim.INSTANCE.getServer().getPluginManager().registerEvents(pitEnchant, PitSim.INSTANCE);
+
+		if(pitEnchant.isTainted && pitEnchant instanceof BasicDarkzoneEnchant) {
+			BasicDarkzoneEnchant basicEnchant = (BasicDarkzoneEnchant) pitEnchant;
+			int applicableMobs = basicEnchant.getApplicableMobs().size();
+			int scaling = 15 + new Random().nextInt(4) - applicableMobs * 2;
+			int base = new Random().nextInt(8) + 8 - applicableMobs;
+			AOutput.log(basicEnchant.getDisplayName() + " &7(" + applicableMobs + "): enchantLvl * " + scaling + " + " + base);
+		}
 	}
 
 	public static boolean canTypeApply(ItemStack itemStack, PitEnchant pitEnchant) {
@@ -104,6 +109,10 @@ public class EnchantManager implements Listener {
 			return pitEnchant.applyType == ApplyType.WEAPONS || pitEnchant.applyType == ApplyType.BOWS;
 		} else if(itemStack.getType() == Material.LEATHER_LEGGINGS) {
 			return pitEnchant.applyType == ApplyType.PANTS;
+		} else if(itemStack.getType() == Material.GOLD_HOE) {
+			return pitEnchant.applyType == ApplyType.SCYTHES || pitEnchant.applyType == ApplyType.TAINTED;
+		} else if(itemStack.getType() == Material.LEATHER_CHESTPLATE) {
+			return pitEnchant.applyType == ApplyType.CHESTPLATES || pitEnchant.applyType == ApplyType.TAINTED;
 		}
 
 		return false;
@@ -280,15 +289,16 @@ public class EnchantManager implements Listener {
 
 		PitItem pitItem = ItemFactory.getItem(itemStack);
 		if(pitItem == null || !pitItem.isMystic) return;
+		TemporaryItem temporaryItem = pitItem.getAsTemporaryItem();
+
 		NBTItem nbtItem = new NBTItem(itemStack);
 
 		NBTList<String> enchantOrder = nbtItem.getStringList(NBTTag.MYSTIC_ENCHANT_ORDER.getRef());
 		NBTCompound itemEnchants = nbtItem.getCompound(NBTTag.MYSTIC_ENCHANTS.getRef());
-		int currentLives = nbtItem.getInteger(NBTTag.CURRENT_LIVES.getRef());
-		int maxLives = nbtItem.getInteger(NBTTag.MAX_LIVES.getRef());
-		int jewelKills = nbtItem.getInteger(NBTTag.JEWEL_KILLS.getRef());
+
 		boolean isJewel = isJewel(itemStack);
-		char c;
+		boolean isJewelComplete = isJewelComplete(itemStack);
+		boolean isGemmed = isGemmed(itemStack);
 
 		if(player != null && !player.isOp()) {
 			ItemMeta itemMeta = itemStack.getItemMeta();
@@ -311,17 +321,21 @@ public class EnchantManager implements Listener {
 			}
 		}
 
+		ItemMeta itemMeta = itemStack.getItemMeta();
 		ALoreBuilder loreBuilder = new ALoreBuilder();
 
-		if(nbtItem.hasKey(NBTTag.MAX_LIVES.getRef())) {
-			if(currentLives <= 3) c = 'c';
-			else c = 'a';
-			String lives = "&7Lives: &" + c + currentLives + "&7/" + maxLives;
-			if(nbtItem.hasKey(NBTTag.IS_GEMMED.getRef())) lives += " &a\u2666";
+		if(isJewel && isJewelComplete) {
+			int currentLives = temporaryItem.getLives(itemStack);
+			int maxLives = temporaryItem.getMaxLives(itemStack);
+
+			String nameColor = currentLives <= 3 ? "&c" : "&a";
+			String lives = "&7Lives: " + nameColor + currentLives + "&7/" + maxLives;
+			if(isGemmed) lives += " &a\u2666";
 			loreBuilder.addLore(lives);
 		}
-		ItemMeta itemMeta = itemStack.getItemMeta();
-		if(isJewel && !isJewelComplete(itemStack)) {
+
+		if(isJewel && !isJewelComplete) {
+			int jewelKills = nbtItem.getInteger(NBTTag.JEWEL_KILLS.getRef());
 
 			MysticType mysticType = MysticType.getMysticType(nbtItem.getItem());
 			if(mysticType == MysticType.PANTS) {
@@ -398,11 +412,14 @@ public class EnchantManager implements Listener {
 		int jewelKills = nbtItem.getInteger(NBTTag.JEWEL_KILLS.getRef());
 		if(jewelKills < Constant.JEWEL_KILLS || !jewelString.isEmpty()) return null;
 
+		PitItem pitItem = ItemFactory.getItem(itemStack);
+		assert pitItem != null;
+		TemporaryItem temporaryItem = pitItem.getAsTemporaryItem();
+
 		List<PitEnchant> enchantList = EnchantManager.getEnchants(MysticType.getMysticType(itemStack));
 		List<PitEnchant> weightedEnchantList = new ArrayList<>();
 
 		for(PitEnchant pitEnchant : enchantList) {
-
 			weightedEnchantList.add(pitEnchant);
 			if(pitEnchant.isRare) continue;
 			weightedEnchantList.add(pitEnchant);
@@ -412,18 +429,17 @@ public class EnchantManager implements Listener {
 		Collections.shuffle(weightedEnchantList);
 		PitEnchant jewelEnchant = weightedEnchantList.get(0);
 
-		nbtItem = new NBTItem(PantColor.setPantColor(nbtItem.getItem(), PantColor.getNormalRandom()));
+		itemStack = PantColor.setPantColor(nbtItem.getItem(), PantColor.getNormalRandom());
 		int maxLives = getRandomMaxLives();
-		nbtItem.setInteger(NBTTag.MAX_LIVES.getRef(), maxLives);
-		nbtItem.setInteger(NBTTag.CURRENT_LIVES.getRef(), maxLives);
+		itemStack = temporaryItem.addMaxLives(itemStack, maxLives);
 
 		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
 		if(pitPlayer.stats != null) pitPlayer.stats.jewelsCompleted++;
 
 		try {
-			ItemStack jewelStack = EnchantManager.addEnchant(nbtItem.getItem(), jewelEnchant, 3, false, true, -1);
+			itemStack = EnchantManager.addEnchant(itemStack, jewelEnchant, 3, false, true, -1);
 
-			ItemStack displayStack = new AItemStackBuilder(jewelStack.clone())
+			ItemStack displayStack = new AItemStackBuilder(itemStack.clone())
 					.setName(jewelEnchant.getDisplayName())
 					.getItemStack();
 			sendJewelFindMessage(Misc.getDisplayName(player), displayStack);
@@ -437,7 +453,7 @@ public class EnchantManager implements Listener {
 					.writeString(CustomSerializer.serialize(displayStack))
 					.send();
 
-			return jewelStack;
+			return itemStack;
 		} catch(Exception ignored) {}
 
 		return null;
@@ -577,7 +593,7 @@ public class EnchantManager implements Listener {
 			Map<PitEnchant, Integer> itemEnchantMap = getEnchantsOnItem(equipmentPiece, playerEnchantMap);
 			if(i == 0) {
 				for(Map.Entry<PitEnchant, Integer> entry : itemEnchantMap.entrySet()) {
-					if(entry.getKey().applyType != ApplyType.PANTS && entry.getKey().applyType != CHESTPLATES)
+					if(entry.getKey().applyType != ApplyType.PANTS && entry.getKey().applyType != ApplyType.CHESTPLATES)
 						playerEnchantMap.put(entry.getKey(), entry.getValue());
 				}
 			} else {
@@ -647,7 +663,7 @@ public class EnchantManager implements Listener {
 						applicableEnchants.add(pitEnchant);
 					break;
 				case CHESTPLATES:
-					if(enchantApplyType == CHESTPLATES) applicableEnchants.add(pitEnchant);
+					if(enchantApplyType == ApplyType.CHESTPLATES) applicableEnchants.add(pitEnchant);
 					break;
 				case MELEE:
 					if(enchantApplyType == ApplyType.MELEE) applicableEnchants.add(pitEnchant);
@@ -660,6 +676,7 @@ public class EnchantManager implements Listener {
 
 	public static List<PitEnchant> getEnchants(MysticType mystictype) {
 		List<PitEnchant> applicableEnchants = new ArrayList<>();
+		if(mystictype == null) return applicableEnchants;
 
 		for(PitEnchant pitEnchant : pitEnchants) {
 			ApplyType enchantApplyType = pitEnchant.applyType;
@@ -678,7 +695,7 @@ public class EnchantManager implements Listener {
 						applicableEnchants.add(pitEnchant);
 					break;
 				case TAINTED_CHESTPLATE:
-					if(enchantApplyType == CHESTPLATES || enchantApplyType == ApplyType.TAINTED)
+					if(enchantApplyType == ApplyType.CHESTPLATES || enchantApplyType == ApplyType.TAINTED)
 						applicableEnchants.add(pitEnchant);
 					break;
 				case TAINTED_SCYTHE:

@@ -1,6 +1,7 @@
 package dev.kyro.pitsim.controllers.objects;
 
 import com.google.cloud.firestore.annotation.Exclude;
+import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.controllers.FirestoreManager;
 import dev.kyro.pitsim.misc.PrivateInfo;
@@ -56,7 +57,7 @@ public class Config {
 		}
 		if(!saveQueued && !onSaveCooldown) {
 			FirestoreManager.FIRESTORE.collection(FirestoreManager.SERVER_COLLECTION).document(FirestoreManager.CONFIG_DOCUMENT).set(this);
-			System.out.println("Saving PitSim Config");
+			AOutput.log("Saving PitSim Config");
 			onSaveCooldown = true;
 			new Thread(() -> {
 				try {

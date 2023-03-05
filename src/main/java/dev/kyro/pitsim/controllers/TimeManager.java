@@ -3,6 +3,7 @@ package dev.kyro.pitsim.controllers;
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
+import dev.kyro.pitsim.enums.PitCalendarEvent;
 import dev.kyro.pitsim.misc.Misc;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -10,72 +11,24 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import java.util.Calendar;
-import java.util.TimeZone;
+import java.util.HashMap;
+import java.util.Map;
 
 public class TimeManager implements Listener {
-	private static boolean isChristmasSeason;
+	private static final Map<PitCalendarEvent, Boolean> activeEventsMap = new HashMap<>();
 
 	static {
-		setChristmasSeason();
+		for(PitCalendarEvent calendarEvent : PitCalendarEvent.values())
+			activeEventsMap.put(calendarEvent, calendarEvent.isCurrentlyActive());
 	}
 
-	public static boolean isHalloween() {
-		Calendar eventStart = Calendar.getInstance(TimeZone.getTimeZone("EST"));
-		Calendar eventEnd = Calendar.getInstance(TimeZone.getTimeZone("EST"));
-
-		setDate(eventStart, Calendar.OCTOBER, 30);
-		setDate(eventEnd, Calendar.NOVEMBER, 1);
-
-		Calendar currentTime = Calendar.getInstance(TimeZone.getTimeZone("EST"));
-		return currentTime.after(eventStart) && currentTime.before(eventEnd);
-	}
-
-	public static boolean isChristmasSeason() {
-		return isChristmasSeason;
-	}
-
-	public static void setChristmasSeason() {
-		Calendar eventStart = Calendar.getInstance(TimeZone.getTimeZone("EST"));
-		Calendar eventEnd = Calendar.getInstance(TimeZone.getTimeZone("EST"));
-
-		setDate(eventStart, Calendar.DECEMBER, 1);
-		setDate(eventEnd, Calendar.JANUARY, 9, true);
-
-		Calendar currentTime = Calendar.getInstance(TimeZone.getTimeZone("EST"));
-		isChristmasSeason = currentTime.after(eventStart) && currentTime.before(eventEnd);
-	}
-
-	public static boolean isChristmasImminent() {
-		Calendar eventStart = Calendar.getInstance(TimeZone.getTimeZone("EST"));
-		Calendar eventEnd = Calendar.getInstance(TimeZone.getTimeZone("EST"));
-
-		setDate(eventStart, Calendar.DECEMBER, 1);
-		setDate(eventEnd, Calendar.JANUARY, 7, true);
-
-		Calendar currentTime = Calendar.getInstance(TimeZone.getTimeZone("EST"));
-		return currentTime.after(eventStart) && currentTime.before(eventEnd);
-	}
-
-	private static void setDate(Calendar calendar, int month, int date) {
-		setDate(calendar, month, date, false);
-	}
-
-	private static void setDate(Calendar calendar, int month, int date, boolean nextYear) {
-		calendar.clear();
-		calendar.set(Calendar.YEAR,
-				Calendar.getInstance(TimeZone.getTimeZone("EST")).get(Calendar.YEAR) + (nextYear ? 1 : 0));
-		calendar.set(Calendar.MONTH, month);
-		calendar.set(Calendar.DATE, date);
-		calendar.set(Calendar.HOUR_OF_DAY, 0);
-		calendar.set(Calendar.MINUTE, 0);
-		calendar.set(Calendar.SECOND, 0);
-		calendar.set(Calendar.MILLISECOND, 0);
+	public static boolean isEventActive(PitCalendarEvent calendarEvent) {
+		return activeEventsMap.get(calendarEvent);
 	}
 
 	@EventHandler
 	public void onJoin(PlayerJoinEvent event) {
-		if(!isHalloween()) return;
+		if(!isEventActive(PitCalendarEvent.HALLOWEEN)) return;
 		Player player = event.getPlayer();
 		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
 		if(pitPlayer.prestige < 5) return;
@@ -89,7 +42,8 @@ public class TimeManager implements Listener {
 		}.runTaskLater(PitSim.INSTANCE, 1L);
 	}
 
+//	TODO: No longer does anything, needs to be re-added to code
 	public static double getHalloweenSoulMultiplier() {
-		return isHalloween() ? 2 : 1;
+		return isEventActive(PitCalendarEvent.HALLOWEEN) ? 2 : 1;
 	}
 }

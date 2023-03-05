@@ -3,13 +3,16 @@ package dev.kyro.pitsim.aitems.misc;
 import de.tr7zw.nbtapi.NBTItem;
 import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.arcticapi.misc.AOutput;
+import dev.kyro.pitsim.aitems.MysticFactory;
+import dev.kyro.pitsim.aitems.PitItem;
 import dev.kyro.pitsim.aitems.StaticPitItem;
+import dev.kyro.pitsim.aitems.TemporaryItem;
+import dev.kyro.pitsim.controllers.ItemFactory;
 import dev.kyro.pitsim.controllers.MapManager;
 import dev.kyro.pitsim.controllers.UpgradeManager;
 import dev.kyro.pitsim.enums.AuctionCategory;
 import dev.kyro.pitsim.enums.NBTTag;
 import dev.kyro.pitsim.inventories.VileGUI;
-import dev.kyro.pitsim.misc.Misc;
 import dev.kyro.pitsim.misc.Sounds;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -78,20 +81,20 @@ public class ChunkOfVile extends StaticPitItem {
 			return;
 		}
 
-		int items = 0;
+		boolean foundAnyItems = false;
 		for(int i = 0; i < player.getInventory().getSize(); i++) {
-			ItemStack item = player.getInventory().getItem(i);
+			ItemStack inventoryStack = player.getInventory().getItem(i);
+			PitItem pitItem = ItemFactory.getItem(itemStack);
+			if(pitItem == null || !MysticFactory.isJewel(itemStack, true)) continue;
 
-			if(Misc.isAirOrNull(item)) continue;
+			TemporaryItem temporaryItem = pitItem.getAsTemporaryItem();
+			if(temporaryItem.isAtMaxLives(inventoryStack)) continue;
 
-			NBTItem nbtItem = new NBTItem(item);
-			if(nbtItem.hasKey(NBTTag.ITEM_JEWEL_ENCHANT.getRef())) {
-				if(nbtItem.getInteger(NBTTag.CURRENT_LIVES.getRef()).equals(nbtItem.getInteger(NBTTag.MAX_LIVES.getRef()))) continue;
-				items++;
-			}
+			foundAnyItems = true;
+			break;
 		}
 
-		if(items == 0) {
+		if(!foundAnyItems) {
 			AOutput.error(player, "&c&lERROR!&7 You have no items to repair!");
 			Sounds.ERROR.play(player);
 			return;

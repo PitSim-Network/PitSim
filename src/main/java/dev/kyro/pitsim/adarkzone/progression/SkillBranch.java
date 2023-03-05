@@ -5,7 +5,6 @@ import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.adarkzone.notdarkzone.UnlockState;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
-import dev.kyro.pitsim.enums.UIColor;
 import dev.kyro.pitsim.misc.Misc;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -16,8 +15,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public abstract class SkillBranch implements Listener {
-	public UIColor uiColor;
-
 	public MajorProgressionUnlock firstUnlock;
 	public MajorProgressionUnlock lastUnlock;
 	public MajorProgressionUnlock firstPathUnlock;
@@ -25,9 +22,7 @@ public abstract class SkillBranch implements Listener {
 	public Path firstPath;
 	public Path secondPath;
 
-	public SkillBranch(UIColor uiColor) {
-		this.uiColor = uiColor;
-
+	public SkillBranch() {
 		this.firstUnlock = createFirstUnlock();
 		this.firstUnlock.position = MajorUnlockPosition.FIRST;
 		this.lastUnlock = createLastUnlock();

@@ -10,6 +10,7 @@ import com.comphenix.protocol.events.PacketListener;
 import com.comphenix.protocol.injector.SortedPacketListenerList;
 import com.comphenix.protocol.injector.packet.PacketInjector;
 import com.comphenix.protocol.injector.player.PlayerInjectionHandler;
+import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.misc.effects.PacketBlock;
 import dev.kyro.pitsim.misc.packets.WrapperPlayClientBlockDig;
@@ -38,7 +39,7 @@ public class PacketManager implements Listener {
 					listener.getSendingWhitelist().getTypes().contains(PacketType.Play.Server.PLAYER_INFO) &&
 					listener.getClass().getName().contains("SilentOpenChestPacketAdapters")) {
 				removePacketListener(listener);
-				System.out.println("Removed packet listener from " + listener.getPlugin().getName());
+				AOutput.log("Removed packet listener from " + listener.getPlugin().getName());
 			}
 		}
 

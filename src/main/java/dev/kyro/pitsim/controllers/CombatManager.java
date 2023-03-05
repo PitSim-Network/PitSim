@@ -8,8 +8,8 @@ import dev.kyro.pitsim.enums.KillType;
 import dev.kyro.pitsim.events.AttackEvent;
 import dev.kyro.pitsim.events.KillEvent;
 import dev.kyro.pitsim.events.PlayerSpawnCommandEvent;
+import dev.kyro.pitsim.events.WrapperEntityDamageEvent;
 import org.bukkit.Bukkit;
-import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -57,11 +57,13 @@ public class CombatManager implements Listener {
 
 	@EventHandler
 	public void onAttack(AttackEvent.Apply attackEvent) {
-		LivingEntity attacker = attackEvent.getAttacker();
-		LivingEntity defender = attackEvent.getDefender();
+		if(attackEvent.hasAttacker()) taggedPlayers.put(attackEvent.getAttacker().getUniqueId(), combatTime);
+		taggedPlayers.put(attackEvent.getDefender().getUniqueId(), combatTime);
 
-		taggedPlayers.put(attacker.getUniqueId(), combatTime);
-		taggedPlayers.put(defender.getUniqueId(), combatTime);
+		if(attackEvent.isDefenderRealPlayer() && attackEvent.hasAttacker() &&
+				attackEvent.getDefenderPitPlayer() != attackEvent.getAttacker()) {
+			attackEvent.getDefenderPitPlayer().lastHitUUID = attackEvent.getAttacker().getUniqueId();
+		}
 	}
 
 	@EventHandler
@@ -79,7 +81,7 @@ public class CombatManager implements Listener {
 					Map<PitEnchant, Integer> attackerEnchant = new HashMap<>();
 					Map<PitEnchant, Integer> defenderEnchant = new HashMap<>();
 					EntityDamageByEntityEvent newEvent = new EntityDamageByEntityEvent(onlinePlayer, player, EntityDamageEvent.DamageCause.CUSTOM, 0);
-					AttackEvent attackEvent = new AttackEvent(newEvent, attackerEnchant, defenderEnchant, false);
+					AttackEvent attackEvent = new AttackEvent(new WrapperEntityDamageEvent(newEvent), attackerEnchant, defenderEnchant, false);
 
 					DamageManager.kill(attackEvent, onlinePlayer, player, KillType.KILL);
 					return;

@@ -13,6 +13,8 @@ import dev.kyro.arcticguilds.GuildData;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.adarkzone.notdarkzone.EquipmentType;
 import dev.kyro.pitsim.adarkzone.notdarkzone.PitEquipment;
+import dev.kyro.pitsim.aitems.PitItem;
+import dev.kyro.pitsim.aitems.TemporaryItem;
 import dev.kyro.pitsim.battlepass.quests.EarnRenownQuest;
 import dev.kyro.pitsim.battlepass.quests.WinAuctionsQuest;
 import dev.kyro.pitsim.controllers.objects.*;
@@ -200,11 +202,6 @@ public class PlayerManager implements Listener {
 		}.runTaskTimer(PitSim.INSTANCE, 0L, 1L);
 	}
 
-	@EventHandler
-	public void onEquipmentChange(EquipmentChangeEvent event) {
-		event.getPitPlayer().updateWalkingSpeed();
-	}
-
 	public static boolean isStaff(UUID uuid) {
 		User user;
 		try {
@@ -215,6 +212,13 @@ public class PlayerManager implements Listener {
 		}
 		Group group = PitSim.LUCKPERMS.getGroupManager().getGroup(user.getPrimaryGroup());
 		return group.data().contains(PermissionNode.builder("pitsim.staff").build(), NodeEqualityPredicate.EXACT).asBoolean();
+	}
+
+	@EventHandler
+	public void onEquipmentChange(EquipmentChangeEvent event) {
+		PitPlayer pitPlayer = event.getPitPlayer();
+		pitPlayer.updateMaxHealth();
+		pitPlayer.updateWalkingSpeed();
 	}
 
 	@EventHandler
@@ -237,14 +241,15 @@ public class PlayerManager implements Listener {
 	}
 
 	public static void sendItemBreakMessage(Player player, ItemStack itemStack) {
-		if(Misc.isAirOrNull(itemStack)) return;
+		PitItem pitItem = ItemFactory.getItem(itemStack);
+		assert pitItem != null;
+		TemporaryItem temporaryItem = pitItem.getAsTemporaryItem();
 
-		NBTItem nbtItem = new NBTItem(itemStack);
-		nbtItem.setInteger(NBTTag.CURRENT_LIVES.getRef(), 0);
-		EnchantManager.setItemLore(nbtItem.getItem(), player);
+		itemStack = temporaryItem.setLives(itemStack, 0);
+		pitItem.updateItem(itemStack);
 
 		TextComponent message = new TextComponent(ChatColor.translateAlternateColorCodes('&', "&cRIP!&7 Your "));
-		message.addExtra(Misc.createItemHover(nbtItem.getItem()));
+		message.addExtra(Misc.createItemHover(itemStack));
 		message.addExtra(new TextComponent(ChatColor.translateAlternateColorCodes('&', "&7 broke")));
 
 		player.sendMessage(message);

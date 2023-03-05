@@ -1,5 +1,6 @@
 package dev.kyro.pitsim.commands;
 
+import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.controllers.ProxyMessaging;
 import org.bukkit.command.Command;
@@ -22,7 +23,7 @@ public class MassMigrateCommand implements CommandExecutor {
 		new BukkitRunnable() {
 			@Override
 			public void run() {
-				System.out.println("Starting Data Migration Process");
+				AOutput.log("Starting Data Migration Process");
 				long startTime = System.currentTimeMillis();
 
 				int i = 1;
@@ -31,7 +32,7 @@ public class MassMigrateCommand implements CommandExecutor {
 				for(File file : files) {
 					String fileName = file.getName().substring(0, file.getName().length() - 4);
 
-					System.out.println("Migrating Player: " + fileName + " (" + i + "/" + files.length + ")");
+					AOutput.log("Migrating Player: " + fileName + " (" + i + "/" + files.length + ")");
 					UUID uuid = UUID.fromString(fileName);
 					ProxyMessaging.migrate(uuid);
 					i++;
@@ -39,7 +40,7 @@ public class MassMigrateCommand implements CommandExecutor {
 
 				long endTime = System.currentTimeMillis();
 				long diff = endTime - startTime;
-				System.out.println("Migration process completed in " + diff + "ms");
+				AOutput.log("Migration process completed in " + diff + "ms");
 			}
 		}.runTaskAsynchronously(PitSim.INSTANCE);
 		return false;

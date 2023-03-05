@@ -36,8 +36,9 @@ public class DamageIndicator implements Listener {
 
 		PitMob defenderMob = DarkzoneManager.getPitMob(attackEvent.getDefender());
 		PitBoss defenderBoss = BossManager.getPitBoss(attackEvent.getDefender());
+		double finalDamage = attackEvent.getWrapperEvent().getSpigotEvent().getFinalDamage();
 		if(defenderMob != null || defenderBoss != null) {
-			createDamageStand(attackEvent.getAttackerPlayer(), attackEvent.getDefender(), attackEvent.getEvent().getFinalDamage());
+			createDamageStand(attackEvent.getAttackerPlayer(), attackEvent.getDefender(), finalDamage);
 //			TODO: Enable this to remove boss bar damage indicator
 //			return;
 		}
@@ -109,7 +110,7 @@ public class DamageIndicator implements Listener {
 		if(!PlayerManager.isRealPlayer(killEvent.getKillerPlayer())) return;
 		PitMob pitDead = DarkzoneManager.getPitMob(killEvent.getDead());
 		if(pitDead == null || !killEvent.getKillType().hasAttackerAndDefender()) return;
-		createDamageStand(killEvent.getKillerPlayer(), killEvent.getDead(), killEvent.getEvent().getFinalDamage());
+		createDamageStand(killEvent.getKillerPlayer(), killEvent.getDead(), killEvent.getWrapperEvent().getSpigotEvent().getFinalDamage());
 	}
 
 	public static void createDamageStand(Player attacker, LivingEntity defender, double damage) {
