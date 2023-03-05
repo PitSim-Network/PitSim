@@ -42,12 +42,7 @@ public class BlobManager implements Listener {
 						Non non = NonManager.getNon((Player) entity);
 						if(non == null || DamageManager.nonHitCooldownList.contains(non.non)) continue;
 
-						EntityDamageByEntityEvent event = new EntityDamageByEntityEvent(entry.getValue(), non.non,
-								EntityDamageEvent.DamageCause.CUSTOM, damage);
-						Bukkit.getServer().getPluginManager().callEvent(event);
-						if(!event.isCancelled()) {
-							non.non.damage(damage);
-						}
+						DamageManager.createAttack(entry.getValue(), non.non, damage);
 					}
 				}
 			}
