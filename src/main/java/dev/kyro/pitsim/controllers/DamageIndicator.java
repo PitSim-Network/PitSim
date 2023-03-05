@@ -16,12 +16,12 @@ import org.bukkit.event.Listener;
 public class DamageIndicator implements Listener {
 
 	//    @EventHandler(priority = EventPriority.MONITOR)
-	public static void onAttack(AttackEvent.Apply attackEvent) {
-		if(!attackEvent.isAttackerPlayer()) return;
-		if(attackEvent.isFakeHit()) return;
+	public static void onAttack(AttackEvent.Post attackEvent) {
+		if(!attackEvent.isAttackerPlayer() || attackEvent.isFakeHit()) return;
 
 		Player attacker = attackEvent.getAttackerPlayer();
 		LivingEntity defender = attackEvent.getDefender();
+		double finalDamage = attackEvent.getFinalDamage();
 
 //        double maxHealth = defender.getMaxHealth() / 2;
 //        double currentHealth = defender.getHealth() / 2;
@@ -54,14 +54,14 @@ public class DamageIndicator implements Listener {
 		if(defender instanceof Player) entityPlayer = ((CraftPlayer) defender).getHandle();
 		LivingEntity player = defender;
 
-		int roundedDamageTaken = ((int) attackEvent.getEvent().getFinalDamage()) / getNum(player);
+		int roundedDamageTaken = ((int) finalDamage) / getNum(player);
 
 		int originalHealth = ((int) defender.getHealth()) / getNum(player);
 		int maxHealth = ((int) defender.getMaxHealth()) / getNum(player);
 
 		int result = Math.max(originalHealth - roundedDamageTaken, 0);
 
-		if((defender.getHealth() - attackEvent.getEvent().getFinalDamage()) % 2 < 1 && attackEvent.getEvent().getFinalDamage() > 1)
+		if((defender.getHealth() - finalDamage) % 2 < 1 && finalDamage > 1)
 			roundedDamageTaken++;
 
 		if(result == 0) {

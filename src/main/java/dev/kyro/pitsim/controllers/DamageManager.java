@@ -3,6 +3,7 @@ package dev.kyro.pitsim.controllers;
 import de.tr7zw.nbtapi.NBTItem;
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.PitSim;
+import dev.kyro.pitsim.enchants.Singularity;
 import dev.kyro.pitsim.logging.LogManager;
 import dev.kyro.pitsim.brewing.objects.BrewingIngredient;
 import dev.kyro.pitsim.controllers.objects.*;
@@ -208,11 +209,14 @@ public class DamageManager implements Listener {
 		AttackEvent.Apply applyEvent = new AttackEvent.Apply(preEvent);
 		Bukkit.getServer().getPluginManager().callEvent(applyEvent);
 
-		handleAttack(applyEvent);
-		Bukkit.getServer().getPluginManager().callEvent(new AttackEvent.Post(applyEvent));
+		double finalDamage = handleAttack(applyEvent);
+
+		AttackEvent.Post postEvent = new AttackEvent.Post(applyEvent, finalDamage);
+		Bukkit.getServer().getPluginManager().callEvent(postEvent);
+		DamageIndicator.onAttack(postEvent);
 	}
 
-	public static void handleAttack(AttackEvent.Apply attackEvent) {
+	public static double handleAttack(AttackEvent.Apply attackEvent) {
 //		AOutput.send(attackEvent.attacker, "Initial Damage: " + attackEvent.event.getDamage());
 
 //		As strong as iron
@@ -240,12 +244,15 @@ public class DamageManager implements Listener {
 		double damage = attackEvent.getFinalDamage();
 		attackEvent.getEvent().setDamage(damage);
 
+		double finalDamage = Singularity.getAdjustedFinalDamage(attackEvent);
+		attackEvent.getEvent().setDamage(0);
+
 		if(attackEvent.trueDamage != 0 || attackEvent.veryTrueDamage != 0) {
 			double finalHealth = attackEvent.getDefender().getHealth() - attackEvent.trueDamage - attackEvent.veryTrueDamage;
 			if(finalHealth <= 0) {
 				attackEvent.getEvent().setCancelled(true);
 				kill(attackEvent, attackEvent.getAttacker(), attackEvent.getDefender(), KillType.DEFAULT);
-				return;
+				return 0;
 			} else {
 				attackEvent.getDefender().setHealth(Math.max(finalHealth, 0));
 			}
@@ -256,7 +263,7 @@ public class DamageManager implements Listener {
 			if(finalHealth <= 0) {
 				attackEvent.getEvent().setCancelled(true);
 				kill(attackEvent, attackEvent.getDefender(), attackEvent.getAttacker(), KillType.DEFAULT);
-				return;
+				return 0;
 			} else {
 				attackEvent.getAttacker().setHealth(Math.max(finalHealth, 0));
 //				attackEvent.attacker.damage(0);
@@ -265,23 +272,25 @@ public class DamageManager implements Listener {
 
 		if(attackEvent.isDefenderPlayer()) {
 			PitPlayer pitPlayer = PitPlayer.getPitPlayer(attackEvent.getDefenderPlayer());
-			pitPlayer.addDamage(attackEvent.getAttacker(), attackEvent.getEvent().getFinalDamage() + attackEvent.trueDamage);
+			pitPlayer.addDamage(attackEvent.getAttacker(), finalDamage + attackEvent.trueDamage);
 		}
 
 //		AOutput.send(attackEvent.attacker, "Final Damage: " + attackEvent.event.getDamage());
 //		AOutput.send(attackEvent.attacker, "Final Damage: " + attackEvent.event.getFinalDamage());
 
-		if(attackEvent.getEvent().getFinalDamage() >= attackEvent.getDefender().getHealth()) {
+		if(finalDamage >= attackEvent.getDefender().getHealth()) {
 
 			attackEvent.getEvent().setCancelled(true);
 			kill(attackEvent, attackEvent.getAttacker(), attackEvent.getDefender(), KillType.DEFAULT);
-		} else if(attackEvent.getEvent().getFinalDamage() + attackEvent.executeUnder >= attackEvent.getDefender().getHealth()) {
+		} else if(finalDamage + attackEvent.executeUnder >= attackEvent.getDefender().getHealth()) {
 
 			attackEvent.getEvent().setCancelled(true);
 			kill(attackEvent, attackEvent.getAttacker(), attackEvent.getDefender(), KillType.DEFAULT, KillModifier.EXE_DEATH);
+		} else {
+			attackEvent.getDefender().setHealth(attackEvent.getDefender().getHealth() - finalDamage);
 		}
 
-		DamageIndicator.onAttack(attackEvent);
+		return finalDamage;
 	}
 
 	public static LivingEntity getAttacker(Entity damager) {

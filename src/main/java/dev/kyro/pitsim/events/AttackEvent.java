@@ -184,10 +184,15 @@ public class AttackEvent extends Event {
 	}
 
 	public static class Post extends AttackEvent {
+		private final double finalDamage;
 
-		public Post(AttackEvent event) {
+		public Post(AttackEvent event, double finalDamage) {
 			super(event.getEvent(), event.attackerEnchantMap, event.defenderEnchantMap, event.isFakeHit());
+			this.finalDamage = finalDamage;
+		}
 
+		public double getFinalDamage() {
+			return finalDamage;
 		}
 	}
 
