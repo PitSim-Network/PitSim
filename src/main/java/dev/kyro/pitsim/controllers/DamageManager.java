@@ -244,8 +244,23 @@ public class DamageManager implements Listener {
 		double damage = attackEvent.getFinalDamage();
 		attackEvent.getEvent().setDamage(damage);
 
+		EntityPlayer nmsDefender = ((CraftPlayer) attackEvent.getDefender()).getHandle();
+		float absorption = nmsDefender.getAbsorptionHearts();
+		if(absorption != 0) nmsDefender.setAbsorptionHearts(0);
+
 		double finalDamage = Singularity.getAdjustedFinalDamage(attackEvent);
 		attackEvent.getEvent().setDamage(0);
+
+		if(absorption != 0) {
+			if(absorption > finalDamage) {
+				finalDamage = 0;
+				absorption -= finalDamage;
+			} else {
+				finalDamage -= absorption;
+				absorption = 0;
+			}
+			nmsDefender.setAbsorptionHearts(absorption);
+		}
 
 		if(attackEvent.trueDamage != 0 || attackEvent.veryTrueDamage != 0) {
 			double finalHealth = attackEvent.getDefender().getHealth() - attackEvent.trueDamage - attackEvent.veryTrueDamage;
