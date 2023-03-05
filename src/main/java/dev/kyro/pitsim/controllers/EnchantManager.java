@@ -47,8 +47,6 @@ import org.bukkit.inventory.meta.LeatherArmorMeta;
 
 import java.util.*;
 
-import static dev.kyro.pitsim.enums.ApplyType.CHESTPLATES;
-
 public class EnchantManager implements Listener {
 	public static List<PitEnchant> pitEnchants = new ArrayList<>();
 	public static Map<Player, Map<PitEnchant, Integer>> enchantMap = new HashMap<>();
@@ -111,6 +109,10 @@ public class EnchantManager implements Listener {
 			return pitEnchant.applyType == ApplyType.WEAPONS || pitEnchant.applyType == ApplyType.BOWS;
 		} else if(itemStack.getType() == Material.LEATHER_LEGGINGS) {
 			return pitEnchant.applyType == ApplyType.PANTS;
+		} else if(itemStack.getType() == Material.GOLD_HOE) {
+			return pitEnchant.applyType == ApplyType.SCYTHES || pitEnchant.applyType == ApplyType.TAINTED;
+		} else if(itemStack.getType() == Material.LEATHER_CHESTPLATE) {
+			return pitEnchant.applyType == ApplyType.CHESTPLATES || pitEnchant.applyType == ApplyType.TAINTED;
 		}
 
 		return false;
@@ -591,7 +593,7 @@ public class EnchantManager implements Listener {
 			Map<PitEnchant, Integer> itemEnchantMap = getEnchantsOnItem(equipmentPiece, playerEnchantMap);
 			if(i == 0) {
 				for(Map.Entry<PitEnchant, Integer> entry : itemEnchantMap.entrySet()) {
-					if(entry.getKey().applyType != ApplyType.PANTS && entry.getKey().applyType != CHESTPLATES)
+					if(entry.getKey().applyType != ApplyType.PANTS && entry.getKey().applyType != ApplyType.CHESTPLATES)
 						playerEnchantMap.put(entry.getKey(), entry.getValue());
 				}
 			} else {
@@ -661,7 +663,7 @@ public class EnchantManager implements Listener {
 						applicableEnchants.add(pitEnchant);
 					break;
 				case CHESTPLATES:
-					if(enchantApplyType == CHESTPLATES) applicableEnchants.add(pitEnchant);
+					if(enchantApplyType == ApplyType.CHESTPLATES) applicableEnchants.add(pitEnchant);
 					break;
 				case MELEE:
 					if(enchantApplyType == ApplyType.MELEE) applicableEnchants.add(pitEnchant);
@@ -693,7 +695,7 @@ public class EnchantManager implements Listener {
 						applicableEnchants.add(pitEnchant);
 					break;
 				case TAINTED_CHESTPLATE:
-					if(enchantApplyType == CHESTPLATES || enchantApplyType == ApplyType.TAINTED)
+					if(enchantApplyType == ApplyType.CHESTPLATES || enchantApplyType == ApplyType.TAINTED)
 						applicableEnchants.add(pitEnchant);
 					break;
 				case TAINTED_SCYTHE:

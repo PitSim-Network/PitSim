@@ -1,5 +1,6 @@
 package dev.kyro.pitsim.events;
 
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
@@ -8,13 +9,13 @@ public class WrapperEntityDamageEvent {
 	private EntityDamageByEntityEvent entityDamageByEntityEvent;
 	private EntityDamageEvent entityDamageEvent;
 
-	private LivingEntity damager;
+	private Entity damager;
 	private LivingEntity entity;
 	private double damage;
 
 	public WrapperEntityDamageEvent(EntityDamageByEntityEvent event) {
 		this.entityDamageByEntityEvent = event;
-		this.damager = (LivingEntity) event.getDamager();
+		this.damager = event.getDamager();
 		this.entity = (LivingEntity) event.getEntity();
 		this.damage = event.getDamage();
 	}
@@ -33,7 +34,7 @@ public class WrapperEntityDamageEvent {
 		return entityDamageByEntityEvent != null;
 	}
 
-	public LivingEntity getDamager() {
+	public Entity getDamager() {
 		return damager;
 	}
 

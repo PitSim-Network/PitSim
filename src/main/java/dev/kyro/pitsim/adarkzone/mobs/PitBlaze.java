@@ -62,7 +62,7 @@ public class PitBlaze extends PitMob {
 	}
 
 	@EventHandler
-	public void onFireball(ProjectileLaunchEvent event) {
+	public void onFireballLaunch(ProjectileLaunchEvent event) {
 		Projectile projectile = event.getEntity();
 		ProjectileSource shooter = projectile.getShooter();
 		if(!(shooter instanceof LivingEntity) || !(projectile instanceof Fireball)) return;
@@ -70,7 +70,7 @@ public class PitBlaze extends PitMob {
 		if(!isThisMob(livingEntity)) return;
 
 		PitMob pitMob = DarkzoneManager.getPitMob(livingEntity);
-		if(pitMob instanceof Blaze) event.setCancelled(true);
+		if(pitMob instanceof PitBlaze) event.setCancelled(true);
 	}
 
 	@Override

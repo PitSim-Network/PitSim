@@ -70,7 +70,7 @@ public class Inferno extends PitEnchant {
 	@Override
 	public List<String> getNormalDescription(int enchantLvl) {
 		return new PitLoreBuilder(
-				"&7Strikes set your enemies &6ablaze &7for " + getFireSeconds(enchantLvl) + " seconds but cost &b" +
+				"&7Strikes set your enemies &6ablaze &7for " + getFireSeconds(enchantLvl) + " seconds but costs &b" +
 						getManaCost(enchantLvl) + " mana"
 		).getLore();
 	}

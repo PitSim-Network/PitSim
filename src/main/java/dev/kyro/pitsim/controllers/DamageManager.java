@@ -137,7 +137,7 @@ public class DamageManager implements Listener {
 
 	@EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
 	public void onAttack(EntityDamageByEntityEvent event) {
-		if(!(event.getDamager() instanceof LivingEntity) || !(event.getEntity() instanceof LivingEntity)) return;
+		if(!(event.getEntity() instanceof LivingEntity)) return;
 		WrapperEntityDamageEvent wrapperEvent = new WrapperEntityDamageEvent(event);
 		onAttack(wrapperEvent);
 	}
