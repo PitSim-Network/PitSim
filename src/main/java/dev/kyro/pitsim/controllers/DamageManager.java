@@ -25,8 +25,10 @@ import dev.kyro.pitsim.upgrades.DivineIntervention;
 import dev.kyro.pitsim.upgrades.LifeInsurance;
 import me.clip.placeholderapi.PlaceholderAPI;
 import net.citizensnpcs.api.CitizensAPI;
+import net.minecraft.server.v1_8_R3.EntityLiving;
 import net.minecraft.server.v1_8_R3.EntityPlayer;
 import org.bukkit.*;
+import org.bukkit.craftbukkit.v1_8_R3.entity.CraftLivingEntity;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
 import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
@@ -244,7 +246,7 @@ public class DamageManager implements Listener {
 		double damage = attackEvent.getFinalDamage();
 		attackEvent.getEvent().setDamage(damage);
 
-		EntityPlayer nmsDefender = ((CraftPlayer) attackEvent.getDefender()).getHandle();
+		EntityLiving nmsDefender = ((CraftLivingEntity) attackEvent.getDefender()).getHandle();
 		float absorption = nmsDefender.getAbsorptionHearts();
 		if(absorption != 0) nmsDefender.setAbsorptionHearts(0);
 
