@@ -68,6 +68,18 @@ public class Misc {
 		}.runTaskAsynchronously(PitSim.INSTANCE);
 	}
 
+	public static String distortMessage(String message) {
+		char[] chars = message.toCharArray();
+		String finalString = "";
+		for(int i = message.length() - 1; i >= 0; i--) {
+			if(Math.random() > 0.2) {
+				finalString = chars[i] + finalString;
+			} else {
+				finalString = "&k" + chars[i] + "&7" + finalString;
+			}
+		}
+	}
+
 	public static void broadcast(String message) {
 		new PluginMessage()
 				.writeString("BROADCAST")

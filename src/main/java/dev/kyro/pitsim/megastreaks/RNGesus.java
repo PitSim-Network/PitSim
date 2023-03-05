@@ -417,6 +417,9 @@ public class RNGesus extends Megastreak {
 
 	public void destabilize() {
 		reality = Reality.NONE;
+		String message = "Reality destabilizes. Will it make you stronger or will " +
+				"you succumb to the endless void of time";
+		AOutput.send(pitPlayer.player, "&e&lRNGESUS!&7 " + message);
 		Sounds.RNGESUS_DESTABILIZE.play(pitPlayer.player);
 
 		EntityPlayer nmsPlayer = ((CraftPlayer) pitPlayer.player).getHandle();
