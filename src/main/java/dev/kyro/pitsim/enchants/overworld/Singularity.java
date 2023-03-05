@@ -19,7 +19,7 @@ public class Singularity extends PitEnchant {
 
 	public static double getAdjustedFinalDamage(AttackEvent attackEvent) {
 		double finalDamage = attackEvent.getWrapperEvent().getSpigotEvent().getFinalDamage();
-		if(attackEvent.getDefenderPitPlayer().megastreak.isOnMega()) return finalDamage;
+		if(attackEvent.isDefenderRealPlayer() && attackEvent.getDefenderPitPlayer().megastreak.isOnMega()) return finalDamage;
 
 		int enchantLvl = attackEvent.getDefenderEnchantLevel(INSTANCE);
 		if(enchantLvl == 0) return finalDamage;
