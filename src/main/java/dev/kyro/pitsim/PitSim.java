@@ -851,6 +851,7 @@ public class PitSim extends JavaPlugin {
 		CosmeticManager.registerCosmetic(new LavaTrail());
 
 		CosmeticManager.registerCosmetic(new KyroAura());
+		CosmeticManager.registerCosmetic(new KyroAura2());
 		CosmeticManager.registerCosmetic(new LivelyAura());
 		CosmeticManager.registerCosmetic(new PotionAura());
 		CosmeticManager.registerCosmetic(new WaterAura());
