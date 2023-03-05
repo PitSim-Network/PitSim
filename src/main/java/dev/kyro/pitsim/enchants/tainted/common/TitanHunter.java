@@ -14,8 +14,8 @@ public class TitanHunter extends BasicDarkzoneEnchant {
 	public static TitanHunter INSTANCE;
 
 	public TitanHunter() {
-		super("NAME", false, ApplyType.SCYTHES,
-				"REFNAME");
+		super("Titan Hunter", false, ApplyType.SCYTHES,
+				"titanhunter", "titan", "hunter3", "hunt3");
 		isUncommonEnchant = true;
 		isTainted = true;
 		INSTANCE = this;

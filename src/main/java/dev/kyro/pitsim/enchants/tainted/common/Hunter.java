@@ -12,8 +12,8 @@ public class Hunter extends BasicDarkzoneEnchant {
 	public static Hunter INSTANCE;
 
 	public Hunter() {
-		super("NAME", false, ApplyType.SCYTHES,
-				"REFNAME");
+		super("Hunter", false, ApplyType.SCYTHES,
+				"hunter", "hunt");
 		isUncommonEnchant = true;
 		isTainted = true;
 		INSTANCE = this;

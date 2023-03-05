@@ -12,8 +12,8 @@ public class Cover extends BasicDarkzoneEnchant {
 	public static Cover INSTANCE;
 
 	public Cover() {
-		super("NAME", false, ApplyType.CHESTPLATES,
-				"REFNAME");
+		super("Cover", false, ApplyType.CHESTPLATES,
+				"cover", "shield1");
 		isUncommonEnchant = true;
 		isTainted = true;
 		INSTANCE = this;

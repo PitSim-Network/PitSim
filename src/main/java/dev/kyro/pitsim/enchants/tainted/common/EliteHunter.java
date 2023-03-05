@@ -14,8 +14,8 @@ public class EliteHunter extends BasicDarkzoneEnchant {
 	public static EliteHunter INSTANCE;
 
 	public EliteHunter() {
-		super("NAME", false, ApplyType.SCYTHES,
-				"REFNAME");
+		super("Elite Hunter", false, ApplyType.SCYTHES,
+				"elitehunter", "elite", "hunter2", "hunt2");
 		isUncommonEnchant = true;
 		isTainted = true;
 		INSTANCE = this;

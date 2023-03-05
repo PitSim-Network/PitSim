@@ -14,8 +14,8 @@ public class Guard extends BasicDarkzoneEnchant {
 	public static Guard INSTANCE;
 
 	public Guard() {
-		super("NAME", false, ApplyType.CHESTPLATES,
-				"REFNAME");
+		super("Guard", false, ApplyType.CHESTPLATES,
+				"guard", "shield2");
 		isUncommonEnchant = true;
 		isTainted = true;
 		INSTANCE = this;
