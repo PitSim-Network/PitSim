@@ -31,8 +31,10 @@ public class DamageIndicator implements Listener {
 	public static DecimalFormat decimalFormat = new DecimalFormat("0");
 
 	//    @EventHandler(priority = EventPriority.MONITOR)
-	public static void onAttack(AttackEvent.Apply attackEvent) {
+	public static void onAttack(AttackEvent.Post attackEvent) {
 		if(!attackEvent.isAttackerPlayer() || attackEvent.isFakeHit() || attackEvent.getDefender().isDead()) return;
+
+		double finalDamage = attackEvent.getFinalDamage();
 
 		PitMob defenderMob = DarkzoneManager.getPitMob(attackEvent.getDefender());
 		PitBoss defenderBoss = BossManager.getPitBoss(attackEvent.getDefender());
@@ -47,14 +49,14 @@ public class DamageIndicator implements Listener {
 		EntityPlayer entityPlayer = null;
 		if(attackEvent.isDefenderPlayer()) entityPlayer = ((CraftPlayer) attackEvent.getDefender()).getHandle();
 
-		int roundedDamageTaken = ((int) attackEvent.getEvent().getFinalDamage()) / getNum(attackEvent.getDefender());
+		int roundedDamageTaken = ((int) finalDamage) / getNum(attackEvent.getDefender());
 
 		int originalHealth = ((int) attackEvent.getDefender().getHealth()) / getNum(attackEvent.getDefender());
 		int maxHealth = ((int) attackEvent.getDefender().getMaxHealth()) / getNum(attackEvent.getDefender());
 
 		int result = Math.max(originalHealth - roundedDamageTaken, 0);
 
-		if((attackEvent.getDefender().getHealth() - attackEvent.getEvent().getFinalDamage()) % 2 < 1 && attackEvent.getEvent().getFinalDamage() > 1)
+		if((attackEvent.getDefender().getHealth() - finalDamage) % 2 < 1 && finalDamage > 1)
 			roundedDamageTaken++;
 
 		if(result == 0) {
@@ -109,7 +111,7 @@ public class DamageIndicator implements Listener {
 		if(!PlayerManager.isRealPlayer(killEvent.getKillerPlayer())) return;
 		PitMob pitDead = DarkzoneManager.getPitMob(killEvent.getDead());
 		if(pitDead == null || !killEvent.getKillType().hasAttackerAndDefender()) return;
-		createDamageStand(killEvent.getKillerPlayer(), killEvent.getDead(), killEvent.getEvent().getFinalDamage());
+		createDamageStand(killEvent.getKillerPlayer(), killEvent.getDead(), killEvent.getAttackEvent().getFinalDamage());
 	}
 
 	public static void createDamageStand(Player attacker, LivingEntity defender, double damage) {

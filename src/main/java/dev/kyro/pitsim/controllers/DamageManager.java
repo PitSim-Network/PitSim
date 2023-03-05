@@ -23,6 +23,17 @@ import dev.kyro.pitsim.enchants.overworld.Telebow;
 import dev.kyro.pitsim.enchants.tainted.effects.PurpleThumb;
 import dev.kyro.pitsim.enchants.tainted.uncommon.ShieldBuster;
 import dev.kyro.pitsim.enums.*;
+import dev.kyro.pitsim.enchants.Singularity;
+import dev.kyro.pitsim.logging.LogManager;
+import dev.kyro.pitsim.brewing.objects.BrewingIngredient;
+import dev.kyro.pitsim.controllers.objects.*;
+import dev.kyro.pitsim.enchants.PitBlob;
+import dev.kyro.pitsim.enchants.Regularity;
+import dev.kyro.pitsim.enchants.Telebow;
+import dev.kyro.pitsim.enums.KillModifier;
+import dev.kyro.pitsim.enums.KillType;
+import dev.kyro.pitsim.enums.NBTTag;
+import dev.kyro.pitsim.enums.NonTrait;
 import dev.kyro.pitsim.events.AttackEvent;
 import dev.kyro.pitsim.events.KillEvent;
 import dev.kyro.pitsim.logging.LogManager;
@@ -274,11 +285,14 @@ public class DamageManager implements Listener {
 		AttackEvent.Apply applyEvent = new AttackEvent.Apply(preEvent);
 		Bukkit.getServer().getPluginManager().callEvent(applyEvent);
 
-		handleAttack(applyEvent);
-		Bukkit.getServer().getPluginManager().callEvent(new AttackEvent.Post(applyEvent));
+		double finalDamage = handleAttack(applyEvent);
+
+		AttackEvent.Post postEvent = new AttackEvent.Post(applyEvent, finalDamage);
+		Bukkit.getServer().getPluginManager().callEvent(postEvent);
+		DamageIndicator.onAttack(postEvent);
 	}
 
-	public static void handleAttack(AttackEvent.Apply attackEvent) {
+	public static double handleAttack(AttackEvent.Apply attackEvent) {
 //		AOutput.send(attackEvent.attacker, "Initial Damage: " + attackEvent.event.getDamage());
 
 //		As strong as iron
@@ -305,13 +319,16 @@ public class DamageManager implements Listener {
 		}
 		attackEvent.getEvent().setDamage(damage);
 
+		double finalDamage = Singularity.getAdjustedFinalDamage(attackEvent);
+		attackEvent.getEvent().setDamage(0);
+
 		if(attackEvent.trueDamage != 0 || attackEvent.veryTrueDamage != 0) {
 			double finalHealth = attackEvent.getDefender().getHealth() - attackEvent.trueDamage - attackEvent.veryTrueDamage;
 			if(PurpleThumb.shouldPreventDeath(attackEvent.getDefenderPlayer())) finalHealth = Math.max(finalHealth, 1);
 			if(finalHealth <= 0) {
 				attackEvent.getEvent().setCancelled(true);
 				kill(attackEvent, attackEvent.getAttacker(), attackEvent.getDefender(), KillType.KILL);
-				return;
+				return 0;
 			} else {
 				attackEvent.getDefender().setHealth(Math.max(finalHealth, 0));
 			}
@@ -323,7 +340,7 @@ public class DamageManager implements Listener {
 			if(finalHealth <= 0) {
 				attackEvent.getEvent().setCancelled(true);
 				kill(attackEvent, attackEvent.getDefender(), attackEvent.getAttacker(), KillType.KILL);
-				return;
+				return 0;
 			} else {
 				attackEvent.getAttacker().setHealth(Math.max(finalHealth, 0));
 //				attackEvent.attacker.damage(0);
@@ -332,13 +349,13 @@ public class DamageManager implements Listener {
 
 		if(attackEvent.isDefenderPlayer()) {
 			PitPlayer pitPlayer = PitPlayer.getPitPlayer(attackEvent.getDefenderPlayer());
-			pitPlayer.addDamage(attackEvent.getAttacker(), attackEvent.getEvent().getFinalDamage() + attackEvent.trueDamage);
+			pitPlayer.addDamage(attackEvent.getAttacker(), finalDamage + attackEvent.trueDamage);
 		}
 
 //		AOutput.send(attackEvent.attacker, "Final Damage: " + attackEvent.event.getDamage());
 //		AOutput.send(attackEvent.attacker, "Final Damage: " + attackEvent.event.getFinalDamage());
 
-		if(attackEvent.getEvent().getFinalDamage() + attackEvent.executeUnder >= attackEvent.getDefender().getHealth()) {
+		if(finalDamage + attackEvent.executeUnder >= attackEvent.getDefender().getHealth()) {
 			if(PurpleThumb.shouldPreventDeath(attackEvent.getDefenderPlayer())) {
 				attackEvent.getEvent().setDamage(0);
 				attackEvent.getDefender().setHealth(1);
@@ -351,9 +368,11 @@ public class DamageManager implements Listener {
 					kill(attackEvent, attackEvent.getAttacker(), attackEvent.getDefender(), KillType.KILL);
 				}
 			}
+		} else {
+			attackEvent.getDefender().setHealth(attackEvent.getDefender().getHealth() - finalDamage);
 		}
 
-		DamageIndicator.onAttack(attackEvent);
+		return finalDamage;
 	}
 
 	public static LivingEntity getAttacker(Entity damager) {
