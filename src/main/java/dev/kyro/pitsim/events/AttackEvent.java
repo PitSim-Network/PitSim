@@ -204,16 +204,17 @@ public class AttackEvent extends Event {
 	}
 
 	public static class Post extends AttackEvent {
-		private final AttackEvent.Apply attackEvent;
+		private final AttackEvent.Apply applyEvent;
 		private final double finalDamage;
 
 		public Post(AttackEvent.Apply event, double finalDamage) {
-			super(event.getWrapperEvent(), event.realDamager, event.attackerEnchantMap, event.defenderEnchantMap, event.isFakeHit());
+			super(event.getWrapperEvent(), event.getRealDamager(), event.getAttackerEnchantMap(), event.getDefenderEnchantMap(), event.isFakeHit());
+			this.applyEvent = event;
 			this.finalDamage = finalDamage;
 		}
 
-		public Apply getAttackEvent() {
-			return attackEvent;
+		public Apply getApplyEvent() {
+			return applyEvent;
 		}
 
 		public double getFinalDamage() {

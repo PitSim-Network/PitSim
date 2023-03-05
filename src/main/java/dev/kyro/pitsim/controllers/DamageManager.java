@@ -15,7 +15,7 @@ import dev.kyro.pitsim.aitems.prot.ProtLeggings;
 import dev.kyro.pitsim.controllers.objects.Non;
 import dev.kyro.pitsim.controllers.objects.PitEnchant;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
-import dev.kyro.pitsim.enchants.Singularity;
+import dev.kyro.pitsim.enchants.overworld.Singularity;
 import dev.kyro.pitsim.enchants.overworld.Regularity;
 import dev.kyro.pitsim.enchants.overworld.Telebow;
 import dev.kyro.pitsim.enchants.tainted.chestplate.PurpleThumb;
@@ -338,7 +338,7 @@ public class DamageManager implements Listener {
 		attackEvent.getWrapperEvent().getSpigotEvent().setDamage(damage);
 
 		double finalDamage = Singularity.getAdjustedFinalDamage(attackEvent);
-		attackEvent.getEvent().setDamage(0);
+		attackEvent.getWrapperEvent().getSpigotEvent().setDamage(0);
 
 		DamageIndicator.onAttack(attackEvent, finalDamage);
 

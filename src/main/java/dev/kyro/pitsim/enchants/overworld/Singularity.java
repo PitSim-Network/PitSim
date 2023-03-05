@@ -1,4 +1,4 @@
-package dev.kyro.pitsim.enchants;
+package dev.kyro.pitsim.enchants.overworld;
 
 import dev.kyro.pitsim.controllers.objects.PitEnchant;
 import dev.kyro.pitsim.enums.ApplyType;
@@ -18,7 +18,7 @@ public class Singularity extends PitEnchant {
 	}
 
 	public static double getAdjustedFinalDamage(AttackEvent attackEvent) {
-		double finalDamage = attackEvent.getEvent().getFinalDamage();
+		double finalDamage = attackEvent.getWrapperEvent().getSpigotEvent().getFinalDamage();
 		if(attackEvent.getAttackerPitPlayer().megastreak.isOnMega()) return finalDamage;
 
 		int enchantLvl = attackEvent.getDefenderEnchantLevel(INSTANCE);

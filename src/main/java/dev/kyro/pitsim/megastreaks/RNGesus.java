@@ -238,7 +238,7 @@ public class RNGesus extends Megastreak {
 	}
 
 	@EventHandler(priority = EventPriority.MONITOR)
-	public void attack(AttackEvent.Apply attackEvent) {
+	public void attack(AttackEvent.Post attackEvent) {
 		if(!attackEvent.isAttackerPlayer()) return;
 		if(NonManager.getNon(attackEvent.getDefender()) == null) return;
 		PitPlayer pitPlayer = attackEvent.getAttackerPitPlayer();
@@ -246,9 +246,9 @@ public class RNGesus extends Megastreak {
 		if(pitPlayer.megastreak.isOnMega() && pitPlayer.megastreak instanceof RNGesus) {
 
 			if(reality == Reality.DAMAGE) {
-				realityMap.get(reality).progression += attackEvent.getFinalPitDamage();
+				realityMap.get(reality).progression += attackEvent.getFinalDamage();
 			} else if(reality == Reality.ABSORPTION) {
-				realityMap.get(reality).progression += attackEvent.trueDamage;
+				realityMap.get(reality).progression += attackEvent.getApplyEvent().trueDamage;
 			}
 			if(pitPlayer.getKills() + 1 < INSTABILITY_THRESHOLD) setXPBar();
 		}

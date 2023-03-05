@@ -36,7 +36,6 @@ public class DamageIndicator implements Listener {
 
 		PitMob defenderMob = DarkzoneManager.getPitMob(attackEvent.getDefender());
 		PitBoss defenderBoss = BossManager.getPitBoss(attackEvent.getDefender());
-		double finalDamage = attackEvent.getWrapperEvent().getSpigotEvent().getFinalDamage();
 		if(defenderMob != null || defenderBoss != null) {
 			createDamageStand(attackEvent.getAttackerPlayer(), attackEvent.getDefender(), finalDamage);
 //			TODO: Enable this to remove boss bar damage indicator
