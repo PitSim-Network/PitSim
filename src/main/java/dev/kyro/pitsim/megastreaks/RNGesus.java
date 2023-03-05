@@ -301,17 +301,8 @@ public class RNGesus extends Megastreak {
 					DecimalFormat decimalFormat = new DecimalFormat("#,####,##0");
 					switch(reality) {
 						case NONE:
-							String realityString = "Reality appears normal";
-							char[] chars = realityString.toCharArray();
-							String finalString = "";
-							for(int i = realityString.length() - 1; i >= 0; i--) {
-								if(Math.random() > 0.2) {
-									finalString = chars[i] + finalString;
-								} else {
-									finalString = "&k" + chars[i] + "&7" + finalString;
-								}
-							}
-							sendActionBar(pitPlayer.player, "&7" + finalString);
+							String realityString = Misc.distortMessage("Reality appears normal", 0.2);
+							sendActionBar(pitPlayer.player, "&7" + realityString);
 							break;
 						case XP:
 							double xp = realityMap.get(Reality.XP).progression;
@@ -435,11 +426,11 @@ public class RNGesus extends Megastreak {
 		AOutput.send(pitPlayer.player, "&cDamage &7increased by &c" + decimalFormat.format(damage));
 		AOutput.send(pitPlayer.player, "&6Absorption &7increased by &9" + decimalFormat.format(absorption));
 
-		String message = "%luckperms_prefix%";
+		String prefix = "%luckperms_prefix%";
 		if(pitPlayer.megastreak.isOnMega()) {
-			pitPlayer.prefix = pitPlayer.megastreak.getName() + " &7" + PlaceholderAPI.setPlaceholders(pitPlayer.player, message);
+			pitPlayer.prefix = pitPlayer.megastreak.getName() + " &7" + PlaceholderAPI.setPlaceholders(pitPlayer.player, prefix);
 		} else {
-			pitPlayer.prefix = PrestigeValues.getPlayerPrefixNameTag(pitPlayer.player) + PlaceholderAPI.setPlaceholders(pitPlayer.player, message);
+			pitPlayer.prefix = PrestigeValues.getPlayerPrefixNameTag(pitPlayer.player) + PlaceholderAPI.setPlaceholders(pitPlayer.player, prefix);
 		}
 	}
 

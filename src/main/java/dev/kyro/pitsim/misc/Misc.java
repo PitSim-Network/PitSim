@@ -68,16 +68,30 @@ public class Misc {
 		}.runTaskAsynchronously(PitSim.INSTANCE);
 	}
 
-	public static String distortMessage(String message) {
+	public static String distortMessage(String message, double chance) {
+		message = ChatColor.translateAlternateColorCodes('&', message);
 		char[] chars = message.toCharArray();
 		String finalString = "";
-		for(int i = message.length() - 1; i >= 0; i--) {
-			if(Math.random() > 0.2) {
-				finalString = chars[i] + finalString;
+		for(int i = 0; i < chars.length; i++) {
+			char character = chars[i];
+			if(character == ' ') {
+				finalString += character;
+				continue;
+			}
+			if(character == '\u00A7') {
+				i++;
+				continue;
+			}
+
+			if(Math.random() > chance) {
+				finalString += chars[i];
 			} else {
-				finalString = "&k" + chars[i] + "&7" + finalString;
+				String substring = message.substring(0, i);
+				System.out.println("thing: " + ChatColor.getLastColors(substring));
+				finalString += "\u00A7k" + chars[i] + ChatColor.getLastColors(substring);
 			}
 		}
+		return finalString;
 	}
 
 	public static void broadcast(String message) {
