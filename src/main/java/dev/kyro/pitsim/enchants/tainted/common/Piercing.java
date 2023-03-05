@@ -3,13 +3,13 @@ package dev.kyro.pitsim.enchants.tainted.common;
 import dev.kyro.pitsim.adarkzone.PitMob;
 import dev.kyro.pitsim.adarkzone.mobs.PitBlaze;
 import dev.kyro.pitsim.adarkzone.mobs.PitIronGolem;
-import dev.kyro.pitsim.controllers.objects.CommonDarkzoneEnchant;
+import dev.kyro.pitsim.controllers.objects.BasicDarkzoneEnchant;
 import dev.kyro.pitsim.enums.ApplyType;
 
 import java.util.Arrays;
 import java.util.List;
 
-public class Piercing extends CommonDarkzoneEnchant {
+public class Piercing extends BasicDarkzoneEnchant {
 	public static Piercing INSTANCE;
 
 	public Piercing() {

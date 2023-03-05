@@ -7,8 +7,9 @@ import org.bukkit.inventory.ItemStack;
 public class MainProgressionMajorUnlock extends MainProgressionUnlock {
 	public SkillBranch skillBranch;
 
-	public MainProgressionMajorUnlock(Class<? extends SkillBranch> clazz, int guiXPos, int guiYPos) {
-		super(ProgressionManager.getSkillBranch(clazz).getRefName(), guiXPos, guiYPos);
+	public MainProgressionMajorUnlock(Class<? extends SkillBranch> clazz, int index) {
+		super(ProgressionManager.getSkillBranch(clazz).getRefName(), ProgressionManager.branchSlots.get(index).guiXPos,
+				ProgressionManager.branchSlots.get(index).guiYPos);
 		this.skillBranch = ProgressionManager.getSkillBranch(clazz);
 	}
 

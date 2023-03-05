@@ -4,7 +4,7 @@ import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.arcticapi.misc.AUtil;
 import dev.kyro.pitsim.adarkzone.notdarkzone.UnlockState;
-import dev.kyro.pitsim.adarkzone.progression.skillbranches.damage.DamageBranch;
+import dev.kyro.pitsim.adarkzone.progression.skillbranches.*;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.misc.Sounds;
 import org.bukkit.event.Listener;
@@ -13,11 +13,26 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ProgressionManager implements Listener {
-	public static List<SkillBranch> skillBranches = new ArrayList<>();
-	public static List<MainProgressionUnlock> mainProgressionUnlocks = new ArrayList<>();
+	public static final List<SkillBranch> skillBranches = new ArrayList<>();
+	public static final List<MainProgressionUnlock> mainProgressionUnlocks = new ArrayList<>();
+	public static final List<PathGUILocation> branchSlots = new ArrayList<>();
 
 	static {
+		branchSlots.add(new PathGUILocation(2, 1));
+		branchSlots.add(new PathGUILocation(3, 5));
+		branchSlots.add(new PathGUILocation(4, 1));
+		branchSlots.add(new PathGUILocation(5, 5));
+		branchSlots.add(new PathGUILocation(6, 1));
+		branchSlots.add(new PathGUILocation(7, 5));
+		branchSlots.add(new PathGUILocation(8, 1));
+		branchSlots.add(new PathGUILocation(9, 5));
+
 		registerBranch(new DamageBranch());
+		registerBranch(new DefenceBranch());
+		registerBranch(new SoulBranch());
+		registerBranch(new ManaBranch());
+		registerBranch(new BrewingBranch());
+		registerBranch(new AltarBranch());
 
 		registerMainUnlock(new MainProgressionStart("start", 1, 3));
 
@@ -39,7 +54,13 @@ public class ProgressionManager implements Listener {
 		registerMainUnlock(new MainProgressionMinorUnlock("bottom-3", 7, 4));
 		registerMainUnlock(new MainProgressionMinorUnlock("bottom-4", 9, 4));
 
-		registerMainUnlock(new MainProgressionMajorUnlock(DamageBranch.class, 2, 1));
+		int index = 0;
+		registerMainUnlock(new MainProgressionMajorUnlock(DamageBranch.class, index++));
+		registerMainUnlock(new MainProgressionMajorUnlock(DefenceBranch.class, index++));
+		registerMainUnlock(new MainProgressionMajorUnlock(SoulBranch.class, index++));
+		registerMainUnlock(new MainProgressionMajorUnlock(ManaBranch.class, index++));
+		registerMainUnlock(new MainProgressionMajorUnlock(BrewingBranch.class, index++));
+		registerMainUnlock(new MainProgressionMajorUnlock(AltarBranch.class, index++));
 	}
 
 	/*
@@ -50,7 +71,7 @@ public class ProgressionManager implements Listener {
     path 1: heal on mob kill
     path 2: 50% chance for an item to count as 2 when spawning a boss
 
-    defense &9 - decreased damage from mobs & bosses, increased shield
+    defence &9 - decreased damage from mobs & bosses, increased shield
     first: unlock shield
     last: shield takes x% less damage
     path 1: decreased damage from players?
@@ -68,17 +89,17 @@ public class ProgressionManager implements Listener {
     path 1: mobs give +x mana on kill
     path 2: when your shield is down, regenerate mana x% faster
 
-    potions &5 - decreased brew time, increased brewing "luck"
-    first: +2 brewing slots
+    brewing &5 - decreased brew time, increased brewing "luck"
+    first: +1 brewing slot (3rd is premium)
     last: +1 brewing ingredient slot
-    path 1: unlock catalyst crafting
-    path 2: unlock crafting of ingredient that increases potency or smth
+    path 1: unlock potion pouch
+    path 2: unlock catalyst crafting
 
-    sacrifice &4 - x% more promotion lives, x% more renown
-    first: unlock the ability to use totems
-    last: increase the effect of all totems by x%
-    path 1: unlock the fourth totem, wealth
-    path 2: unlock the fifth totem, chaos
+    altar &4 - x% more promotion lives, x% more renown
+    first: unlock the ability to use pedestal
+    last: increase the effect of all pedestal by x%
+    path 1: unlock the fourth pedestal, wealth
+    path 2: unlock the fifth pedestal, turmoil
     */
 
 	public static void registerBranch(SkillBranch skillBranch) {
@@ -180,32 +201,33 @@ public class ProgressionManager implements Listener {
 		throw new RuntimeException();
 	}
 
-	public static void unlock(PitPlayer pitPlayer, MainProgressionUnlock unlock) {
+	public static void unlock(PitPlayer pitPlayer, MainProgressionUnlock unlock, int cost) {
 		if(pitPlayer.darkzoneData.mainProgressionUnlocks.contains(unlock.id)) throw new RuntimeException();
 		pitPlayer.darkzoneData.mainProgressionUnlocks.add(unlock.id);
 		Sounds.SUCCESS.play(pitPlayer.player);
 
-		AOutput.send(pitPlayer.player, "&5&lDARKZONE!&7 You unlocked " + unlock.getDisplayName());
+		AOutput.send(pitPlayer.player, "&5&lDARKZONE!&7 You unlocked " + unlock.getDisplayName() + " &7for " + formatSouls(cost));
 	}
 
-	public static void unlock(PitPlayer pitPlayer, SkillBranch.MajorProgressionUnlock unlock) {
+	public static void unlock(PitPlayer pitPlayer, SkillBranch.MajorProgressionUnlock unlock, int cost) {
 		pitPlayer.darkzoneData.skillBranchUnlocks.putIfAbsent(unlock.skillBranch.getRefName(), new DarkzoneData.SkillBranchData());
 		DarkzoneData.SkillBranchData skillBranchData = pitPlayer.darkzoneData.skillBranchUnlocks.get(unlock.skillBranch.getRefName());
 		if(skillBranchData.majorUnlocks.contains(unlock.getRefName())) throw new RuntimeException();
 		skillBranchData.majorUnlocks.add(unlock.getRefName());
 
 		Sounds.SUCCESS.play(pitPlayer.player);
-		AOutput.send(pitPlayer.player, "&5&lDARKZONE!&7 You unlocked " + unlock.getDisplayName());
+		AOutput.send(pitPlayer.player, "&5&lDARKZONE!&7 You unlocked " + unlock.getDisplayName() + " &7for " + formatSouls(cost));
 	}
 
-	public static void unlockNext(PitPlayer pitPlayer, SkillBranch.Path unlock) {
+	public static void unlockNext(PitPlayer pitPlayer, SkillBranch.Path unlock, int cost) {
 		pitPlayer.darkzoneData.skillBranchUnlocks.putIfAbsent(unlock.skillBranch.getRefName(), new DarkzoneData.SkillBranchData());
 		DarkzoneData.SkillBranchData skillBranchData = pitPlayer.darkzoneData.skillBranchUnlocks.get(unlock.skillBranch.getRefName());
 		int currentLevel = skillBranchData.pathUnlocks.getOrDefault(unlock.getRefName(), 0);
 		skillBranchData.pathUnlocks.put(unlock.getRefName(), currentLevel + 1);
 
 		Sounds.SUCCESS.play(pitPlayer.player);
-		AOutput.send(pitPlayer.player, "&5&lDARKZONE!&7 You unlocked " + unlock.getDisplayName() + " " + AUtil.toRoman(currentLevel + 1));
+		AOutput.send(pitPlayer.player, "&5&lDARKZONE!&7 You unlocked " + unlock.getDisplayName() + " " +
+				AUtil.toRoman(currentLevel + 1) + " &7for " + formatSouls(cost));
 	}
 
 	public static boolean isUnlocked(PitPlayer pitPlayer, MainProgressionUnlock unlock) {
@@ -249,5 +271,15 @@ public class ProgressionManager implements Listener {
 		DarkzoneData.SkillBranchData skillBranchData = pitPlayer.darkzoneData.skillBranchUnlocks.get(unlock.skillBranch.getRefName());
 		if(skillBranchData == null) return false;
 		return skillBranchData.majorUnlocks.contains(unlock.getRefName());
+	}
+
+	public static class PathGUILocation {
+		public int guiXPos;
+		public int guiYPos;
+
+		public PathGUILocation(int guiXPos, int guiYPos) {
+			this.guiXPos = guiXPos;
+			this.guiYPos = guiYPos;
+		}
 	}
 }

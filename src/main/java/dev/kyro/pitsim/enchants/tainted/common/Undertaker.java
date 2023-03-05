@@ -5,13 +5,13 @@ import dev.kyro.pitsim.adarkzone.mobs.PitSkeleton;
 import dev.kyro.pitsim.adarkzone.mobs.PitWitherSkeleton;
 import dev.kyro.pitsim.adarkzone.mobs.PitZombie;
 import dev.kyro.pitsim.adarkzone.mobs.PitZombiePigman;
-import dev.kyro.pitsim.controllers.objects.CommonDarkzoneEnchant;
+import dev.kyro.pitsim.controllers.objects.BasicDarkzoneEnchant;
 import dev.kyro.pitsim.enums.ApplyType;
 
 import java.util.Arrays;
 import java.util.List;
 
-public class Undertaker extends CommonDarkzoneEnchant {
+public class Undertaker extends BasicDarkzoneEnchant {
 	public static Undertaker INSTANCE;
 
 	public Undertaker() {

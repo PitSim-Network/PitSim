@@ -3,13 +3,13 @@ package dev.kyro.pitsim.enchants.tainted.common;
 import dev.kyro.pitsim.adarkzone.PitMob;
 import dev.kyro.pitsim.adarkzone.mobs.PitIronGolem;
 import dev.kyro.pitsim.adarkzone.mobs.PitWolf;
-import dev.kyro.pitsim.controllers.objects.CommonDarkzoneEnchant;
+import dev.kyro.pitsim.controllers.objects.BasicDarkzoneEnchant;
 import dev.kyro.pitsim.enums.ApplyType;
 
 import java.util.Arrays;
 import java.util.List;
 
-public class Antagonist extends CommonDarkzoneEnchant {
+public class Antagonist extends BasicDarkzoneEnchant {
 	public static Antagonist INSTANCE;
 
 	public Antagonist() {

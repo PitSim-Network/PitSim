@@ -12,8 +12,8 @@ import java.lang.reflect.Constructor;
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class CommonDarkzoneEnchant extends PitEnchant {
-	public CommonDarkzoneEnchant(String name, boolean isRare, ApplyType applyType, String... refNames) {
+public abstract class BasicDarkzoneEnchant extends PitEnchant {
+	public BasicDarkzoneEnchant(String name, boolean isRare, ApplyType applyType, String... refNames) {
 		super(name, isRare, applyType, refNames);
 	}
 

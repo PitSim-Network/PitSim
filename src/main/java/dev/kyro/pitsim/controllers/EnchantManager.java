@@ -5,6 +5,7 @@ import de.tr7zw.nbtapi.NBTItem;
 import de.tr7zw.nbtapi.NBTList;
 import dev.kyro.arcticapi.builders.AItemStackBuilder;
 import dev.kyro.arcticapi.builders.ALoreBuilder;
+import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.arcticapi.misc.AUtil;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.adarkzone.notdarkzone.PitEquipment;
@@ -12,10 +13,7 @@ import dev.kyro.pitsim.aitems.MysticFactory;
 import dev.kyro.pitsim.aitems.PitItem;
 import dev.kyro.pitsim.aitems.TemporaryItem;
 import dev.kyro.pitsim.aitems.misc.GoldenHelmet;
-import dev.kyro.pitsim.controllers.objects.HelmetManager;
-import dev.kyro.pitsim.controllers.objects.PitEnchant;
-import dev.kyro.pitsim.controllers.objects.PitPlayer;
-import dev.kyro.pitsim.controllers.objects.PluginMessage;
+import dev.kyro.pitsim.controllers.objects.*;
 import dev.kyro.pitsim.enchants.overworld.ComboVenom;
 import dev.kyro.pitsim.enchants.overworld.SelfCheckout;
 import dev.kyro.pitsim.enums.ApplyType;
@@ -93,6 +91,14 @@ public class EnchantManager implements Listener {
 	public static void registerEnchant(PitEnchant pitEnchant) {
 		pitEnchants.add(pitEnchant);
 		if(pitEnchant.isEnabled()) PitSim.INSTANCE.getServer().getPluginManager().registerEvents(pitEnchant, PitSim.INSTANCE);
+
+		if(pitEnchant.isTainted && pitEnchant instanceof BasicDarkzoneEnchant) {
+			BasicDarkzoneEnchant basicEnchant = (BasicDarkzoneEnchant) pitEnchant;
+			int applicableMobs = basicEnchant.getApplicableMobs().size();
+			int scaling = 15 + new Random().nextInt(4) - applicableMobs * 2;
+			int base = new Random().nextInt(8) + 8 - applicableMobs;
+			AOutput.log(basicEnchant.getDisplayName() + " &7(" + applicableMobs + "): enchantLvl * " + scaling + " + " + base);
+		}
 	}
 
 	public static boolean canTypeApply(ItemStack itemStack, PitEnchant pitEnchant) {
