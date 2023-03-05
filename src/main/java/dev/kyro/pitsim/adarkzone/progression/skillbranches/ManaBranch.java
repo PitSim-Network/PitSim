@@ -3,7 +3,14 @@ package dev.kyro.pitsim.adarkzone.progression.skillbranches;
 import dev.kyro.arcticapi.builders.AItemStackBuilder;
 import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.pitsim.adarkzone.progression.SkillBranch;
+import dev.kyro.pitsim.controllers.objects.PitPlayer;
+import dev.kyro.pitsim.enums.PitEntityType;
+import dev.kyro.pitsim.events.AttackEvent;
+import dev.kyro.pitsim.events.ManaRegenEvent;
+import dev.kyro.pitsim.misc.Misc;
 import org.bukkit.Material;
+import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
 import org.bukkit.inventory.ItemStack;
 
 public class ManaBranch extends SkillBranch {
@@ -11,6 +18,36 @@ public class ManaBranch extends SkillBranch {
 
 	public ManaBranch() {
 		INSTANCE = this;
+	}
+
+	@EventHandler
+	public void onManaRegen(ManaRegenEvent event) {
+		Player player = event.getPlayer();
+		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
+
+		if(pitPlayer.shield.isUnlocked() && !pitPlayer.shield.isActive() && isUnlocked(pitPlayer, secondPathUnlock))
+			event.multipliers.add(1 + (shieldDownManaIncrease() / 100.0));
+
+		event.multipliers.add(1 + (getUnlockedEffectAsValue(pitPlayer, secondPath, "mana-regen") / 100.0));
+	}
+
+	@EventHandler
+	public void onAttack(AttackEvent.Apply attackEvent) {
+		boolean hasFirstPath = isUnlocked(attackEvent.getAttackerPitPlayer(), firstPathUnlock);
+		if(hasFirstPath && Misc.isEntity(attackEvent.getDefender(), PitEntityType.PIT_MOB))
+			attackEvent.getAttackerPitPlayer().mana += getMobKillMana();
+	}
+
+	public static int getSpellManaReduction() {
+		return 30;
+	}
+
+	public static int getMobKillMana() {
+		return 5;
+	}
+
+	public static double shieldDownManaIncrease() {
+		return 100;
 	}
 
 	@Override

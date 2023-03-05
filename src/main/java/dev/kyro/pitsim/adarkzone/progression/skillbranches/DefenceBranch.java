@@ -3,7 +3,11 @@ package dev.kyro.pitsim.adarkzone.progression.skillbranches;
 import dev.kyro.arcticapi.builders.AItemStackBuilder;
 import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.pitsim.adarkzone.progression.SkillBranch;
+import dev.kyro.pitsim.enums.PitEntityType;
+import dev.kyro.pitsim.events.AttackEvent;
+import dev.kyro.pitsim.misc.Misc;
 import org.bukkit.Material;
+import org.bukkit.event.EventHandler;
 import org.bukkit.inventory.ItemStack;
 
 public class DefenceBranch extends SkillBranch {
@@ -11,6 +15,30 @@ public class DefenceBranch extends SkillBranch {
 
 	public DefenceBranch() {
 		INSTANCE = this;
+	}
+
+	@EventHandler
+	public void onAttack(AttackEvent.Apply attackEvent) {
+		boolean hasFirstPath = isUnlocked(attackEvent.getDefenderPitPlayer(), firstUnlock);
+		if(hasFirstPath && Misc.isEntity(attackEvent.getAttacker(), PitEntityType.REAL_PLAYER))
+			attackEvent.multipliers.add(Misc.getReductionMultiplier(getPlayerDamageDecrease()));
+
+		if(Misc.isEntity(attackEvent.getAttacker(), PitEntityType.PIT_MOB, PitEntityType.PIT_BOSS)) {
+			for(Double multiplier : getUnlockedEffectAsList(attackEvent.getDefenderPitPlayer(), firstPath, "defence"))
+				attackEvent.multipliers.add(Misc.getReductionMultiplier(multiplier));
+		}
+	}
+
+	public static int getShieldDamageReduction() {
+		return 50;
+	}
+
+	public static int getReactivationReductionTicks() {
+		return 40;
+	}
+
+	public static int getPlayerDamageDecrease() {
+		return 50;
 	}
 
 	@Override

@@ -26,7 +26,8 @@ public class Barbaric extends PitEnchant {
 		int enchantLvl = attackEvent.getAttackerEnchantLevel(this);
 		if(enchantLvl == 0) return;
 
-		if(attackEvent.getAttackerPitPlayer().mana != attackEvent.getAttackerPitPlayer().getMaxMana()) return;
+		if(!attackEvent.getAttackerPitPlayer().hasManaUnlocked() ||
+				attackEvent.getAttackerPitPlayer().mana != attackEvent.getAttackerPitPlayer().getMaxMana()) return;
 		attackEvent.increasePercent += getDamageIncrease(enchantLvl);
 	}
 

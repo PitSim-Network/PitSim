@@ -9,7 +9,6 @@ import dev.kyro.pitsim.adarkzone.PitMob;
 import dev.kyro.pitsim.controllers.objects.Non;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.events.AttackEvent;
-import dev.kyro.pitsim.events.KillEvent;
 import dev.kyro.pitsim.misc.Misc;
 import me.clip.placeholderapi.PlaceholderAPI;
 import net.minecraft.server.v1_8_R3.*;
@@ -19,7 +18,6 @@ import org.bukkit.craftbukkit.v1_8_R3.CraftWorld;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
-import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
@@ -96,20 +94,12 @@ public class DamageIndicator implements Listener {
 			}
 			if(pitPlayer.shield.isActive()) {
 				output.append(" &8[").append(AUtil.createProgressBar("|", ChatColor.BLUE, ChatColor.GRAY,
-						(int) Math.ceil(Math.sqrt(pitPlayer.shield.getMax())),
-						pitPlayer.shield.getPreciseAmount() / pitPlayer.shield.getMax())).append("&8]");
+						(int) Math.ceil(Math.sqrt(pitPlayer.shield.getMaxShield())),
+						pitPlayer.shield.getPreciseAmount() / pitPlayer.shield.getMaxShield())).append("&8]");
 			}
 		}
 
 		ActionBarManager.sendActionBar(attackEvent.getAttackerPlayer(), output.toString());
-	}
-
-	@EventHandler
-	public void onKill(KillEvent killEvent) {
-		if(!PlayerManager.isRealPlayer(killEvent.getKillerPlayer())) return;
-		PitMob pitDead = DarkzoneManager.getPitMob(killEvent.getDead());
-		if(pitDead == null || !killEvent.getKillType().hasAttackerAndDefender()) return;
-		createDamageStand(killEvent.getKillerPlayer(), killEvent.getDead(), killEvent.getWrapperEvent().getSpigotEvent().getFinalDamage());
 	}
 
 	public static void createDamageStand(Player attacker, LivingEntity defender, double damage) {

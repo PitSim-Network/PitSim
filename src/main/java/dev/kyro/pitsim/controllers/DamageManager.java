@@ -7,6 +7,7 @@ import dev.kyro.pitsim.adarkzone.DarkzoneManager;
 import dev.kyro.pitsim.adarkzone.PitMob;
 import dev.kyro.pitsim.adarkzone.SubLevel;
 import dev.kyro.pitsim.adarkzone.notdarkzone.Shield;
+import dev.kyro.pitsim.adarkzone.progression.skillbranches.DefenceBranch;
 import dev.kyro.pitsim.aitems.PitItem;
 import dev.kyro.pitsim.aitems.prot.ProtBoots;
 import dev.kyro.pitsim.aitems.prot.ProtChestplate;
@@ -328,11 +329,13 @@ public class DamageManager implements Listener {
 		}
 
 		double damage = attackEvent.getFinalPitDamage();
-		if(PlayerManager.isRealPlayer(attackEvent.getDefenderPlayer())) {
+		if(attackEvent.isDefenderRealPlayer()) {
 			Shield defenderShield = attackEvent.getDefenderPitPlayer().shield;
 			double multiplier = 1;
 			multiplier *= ShieldBuster.getMultiplier(attackEvent.getAttackerPlayer());
 			if(PlayerManager.isRealPlayer(attackEvent.getAttackerPlayer())) multiplier *= 2;
+			if(DefenceBranch.INSTANCE.isUnlocked(attackEvent.getDefenderPitPlayer(), DefenceBranch.INSTANCE.lastUnlock))
+				multiplier *= Misc.getReductionMultiplier(DefenceBranch.getShieldDamageReduction());
 			if(defenderShield.isActive()) damage = defenderShield.damageShield(damage, multiplier);
 		}
 		attackEvent.getWrapperEvent().getSpigotEvent().setDamage(damage);

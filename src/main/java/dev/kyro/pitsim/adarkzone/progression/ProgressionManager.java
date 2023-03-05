@@ -77,11 +77,11 @@ public class ProgressionManager implements Listener {
     path 1: decreased damage from players?
     path 2: decrease time until shield resets
 
-    souls &d/&f - increased soul chance from mobs, increased fresh drop chance?
-    first: ability to t3 items
-    last: ability to t4 items
-    path 1: ability to fast travel for free
-    path 2: decreased cost to tier 3 items
+    souls &d/&f - increased soul chance from mobs, increased fresh drop chance? // TODO (second)
+    first: ability to t3 items // TODO
+    last: ability to t4 items // TODO
+    path 1: ability to fast travel for free // TODO
+    path 2: decreased cost to tier 3 items // TODO (pull reduction % from soul branch)
 
     mana &b - increased max mana, increased mana regen
     first: unlock mana
@@ -89,17 +89,17 @@ public class ProgressionManager implements Listener {
     path 1: mobs give +x mana on kill
     path 2: when your shield is down, regenerate mana x% faster
 
-    brewing &5 - decreased brew time, increased brewing "luck"
-    first: +1 brewing slot (3rd is premium)
-    last: +1 brewing ingredient slot
-    path 1: unlock potion pouch
-    path 2: unlock catalyst crafting
+    brewing &5 - decreased brew time, increased brewing "luck" // TODO (first, second)
+    first: +1 brewing slot (3rd is premium) // TODO
+    last: +1 brewing ingredient slot // TODO
+    path 1: unlock potion pouch // TODO
+    path 2: unlock catalyst crafting // TODO
 
-    altar &4 - x% more promotion lives, x% more renown
-    first: unlock the ability to use pedestal
-    last: increase the effect of all pedestal by x%
-    path 1: unlock the fourth pedestal, wealth
-    path 2: unlock the fifth pedestal, turmoil
+    altar &4 - x% more promotion lives, x% more renown // TODO (first, second)
+    first: unlock the ability to use pedestal // TODO
+    last: increase the effect of all pedestal by x% // TODO
+    path 1: unlock the fourth pedestal, wealth // TODO
+    path 2: unlock the fifth pedestal, turmoil // TODO
     */
 
 	public static void registerBranch(SkillBranch skillBranch) {
@@ -254,16 +254,23 @@ public class ProgressionManager implements Listener {
 		return skillBranchData.pathUnlocks.getOrDefault(path.getRefName(), 0);
 	}
 
-	public static double getUnlockedEffect(PitPlayer pitPlayer, SkillBranch.Path path, String refName) {
+	public static double getUnlockedEffectAsValue(PitPlayer pitPlayer, SkillBranch.Path path, String refName) {
+		int total = 0;
+		for(Double value : getUnlockedEffectAsList(pitPlayer, path, refName)) total += value;
+		return total;
+	}
+
+	public static List<Double> getUnlockedEffectAsList(PitPlayer pitPlayer, SkillBranch.Path path, String refName) {
+		List<Double> valueList = new ArrayList<>();
+		if(pitPlayer == null) return valueList;
 		int currentLvl = getUnlockedLevel(pitPlayer, path);
-		if(currentLvl == 0) return 0;
+		if(currentLvl == 0) return valueList;
 		for(SkillBranch.Path.EffectData effectData : path.effectData) {
 			if(!effectData.refName.equalsIgnoreCase(refName)) continue;
-			int total = 0;
-			for(int i = 0; i < currentLvl; i++) total += effectData.values[i];
-			return total;
+			for(int i = 0; i < currentLvl; i++) valueList.add(effectData.values[i]);
+			break;
 		}
-		return 0;
+		return valueList;
 	}
 
 	public static boolean isUnlocked(PitPlayer pitPlayer, SkillBranch.MajorProgressionUnlock unlock) {

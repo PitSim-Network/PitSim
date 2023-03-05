@@ -52,8 +52,12 @@ public abstract class SkillBranch implements Listener {
 		return ProgressionManager.isUnlocked(pitPlayer, majorProgressionUnlock);
 	}
 
-	public double getUnlockedEffect(PitPlayer pitPlayer, SkillBranch.Path path, String refName) {
-		return ProgressionManager.getUnlockedEffect(pitPlayer, path, refName);
+	public double getUnlockedEffectAsValue(PitPlayer pitPlayer, SkillBranch.Path path, String refName) {
+		return ProgressionManager.getUnlockedEffectAsValue(pitPlayer, path, refName);
+	}
+
+	public List<Double> getUnlockedEffectAsList(PitPlayer pitPlayer, SkillBranch.Path path, String refName) {
+		return ProgressionManager.getUnlockedEffectAsList(pitPlayer, path, refName);
 	}
 
 //	This is for the main gui

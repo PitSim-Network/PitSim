@@ -13,6 +13,10 @@ public class SoulBranch extends SkillBranch {
 		INSTANCE = this;
 	}
 
+	public static int getEnchantingReductionPercent() {
+		return 30;
+	}
+
 	@Override
 	public String getDisplayName() {
 		return "&fSpirit";

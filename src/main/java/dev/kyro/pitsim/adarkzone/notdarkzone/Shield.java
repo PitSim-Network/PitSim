@@ -1,6 +1,8 @@
 package dev.kyro.pitsim.adarkzone.notdarkzone;
 
 import com.google.cloud.firestore.annotation.Exclude;
+import dev.kyro.pitsim.adarkzone.progression.ProgressionManager;
+import dev.kyro.pitsim.adarkzone.progression.skillbranches.DefenceBranch;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.enchants.tainted.uncommon.Fortify;
 import dev.kyro.pitsim.enchants.tainted.uncommon.Mechanic;
@@ -13,7 +15,7 @@ public class Shield {
 	@Exclude
 	public PitPlayer pitPlayer;
 
-	private double shieldAmount = getMax();
+	private double shieldAmount = getMaxShield();
 	private boolean isActive = true;
 	private int ticksUntilReactivation;
 
@@ -30,19 +32,25 @@ public class Shield {
 //	Only needed for calculations that require knowing the exact amount of health a player has total, such as for damage calcs
 	@Exclude
 	public double getPreciseAmount() {
-		shieldAmount = Math.min(shieldAmount, getMax());
+		shieldAmount = Math.min(shieldAmount, getMaxShield());
 		return shieldAmount;
 	}
 
 	@Exclude
+	public boolean isUnlocked() {
+		return DefenceBranch.INSTANCE.isUnlocked(pitPlayer, DefenceBranch.INSTANCE.secondPathUnlock);
+	}
+
+	@Exclude
 	public boolean isActive() {
+		if(!isUnlocked()) return false;
 		return isActive;
 	}
 
 	@Exclude
 	public void addShield(double amount) {
 		if(!isActive()) return;
-		shieldAmount = Math.min(getPreciseAmount() + amount, getMax());
+		shieldAmount = Math.min(getPreciseAmount() + amount, getMaxShield());
 	}
 
 //	Returns the remaining damage if the shield breaks;
@@ -82,13 +90,14 @@ public class Shield {
 
 		ticksUntilReactivation = 0;
 		isActive = true;
-		shieldAmount = getMax();
+		shieldAmount = getMaxShield();
 	}
 
 	@Exclude
-	public int getMax() {
+	public int getMaxShield() {
 		int maxShield = 100;
 		if(pitPlayer != null) maxShield += Fortify.getShieldIncrease(pitPlayer.player);
+		maxShield += ProgressionManager.getUnlockedEffectAsValue(pitPlayer, DefenceBranch.INSTANCE.secondPath, "defence");
 		return maxShield;
 	}
 
@@ -96,6 +105,8 @@ public class Shield {
 	public int getInitialTicksUntilReactivation() {
 		int reactivationTicks = 200;
 		if(pitPlayer != null) reactivationTicks -= Mechanic.getDecreaseTicks(pitPlayer.player);
+		if(DefenceBranch.INSTANCE.isUnlocked(pitPlayer, DefenceBranch.INSTANCE.secondPathUnlock))
+			reactivationTicks -= DefenceBranch.getReactivationReductionTicks();
 		reactivationTicks = Math.max(reactivationTicks, 0);
 		return reactivationTicks;
 	}

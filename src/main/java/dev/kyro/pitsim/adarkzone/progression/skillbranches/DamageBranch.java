@@ -3,7 +3,9 @@ package dev.kyro.pitsim.adarkzone.progression.skillbranches;
 import dev.kyro.arcticapi.builders.AItemStackBuilder;
 import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.pitsim.adarkzone.progression.SkillBranch;
+import dev.kyro.pitsim.enums.PitEntityType;
 import dev.kyro.pitsim.events.AttackEvent;
+import dev.kyro.pitsim.misc.Misc;
 import org.bukkit.Material;
 import org.bukkit.event.EventHandler;
 import org.bukkit.inventory.ItemStack;
@@ -17,14 +19,31 @@ public class DamageBranch extends SkillBranch {
 
 	@EventHandler
 	public void onAttack(AttackEvent.Apply attackEvent) {
-//		boolean hasMajor = isUnlocked(attackEvent.getAttackerPitPlayer(), firstUnlock);
-//		if(hasMajor) AOutput.send(attackEvent.getAttackerPlayer(), "You have the first upgrade");
-//
-//		double mobDamageIncrease = getUnlockedEffect(attackEvent.getAttackerPitPlayer(), firstPath, "damage");
-//		if(mobDamageIncrease != 0) {
-//			AOutput.send(attackEvent.getAttackerPlayer(), "this is cool: " + mobDamageIncrease);
-//			attackEvent.increasePercent += mobDamageIncrease;
-//		}
+		boolean hasFirstPath = isUnlocked(attackEvent.getAttackerPitPlayer(), firstPathUnlock);
+		if(hasFirstPath && Misc.isEntity(attackEvent.getDefender(), PitEntityType.PIT_MOB))
+			attackEvent.getAttackerPitPlayer().heal(getMobKillHealing());
+
+		boolean hasLast = isUnlocked(attackEvent.getAttackerPitPlayer(), lastUnlock);
+		if(hasLast && Misc.isEntity(attackEvent.getDefender(), PitEntityType.PIT_MOB, PitEntityType.PIT_BOSS))
+			attackEvent.increasePercent += getMobBossDamageIncrease();
+
+		if(Misc.isEntity(attackEvent.getDefender(), PitEntityType.PIT_MOB))
+			attackEvent.multipliers.addAll(getUnlockedEffectAsList(attackEvent.getAttackerPitPlayer(), firstPath, "damage"));
+
+		if(Misc.isEntity(attackEvent.getDefender(), PitEntityType.PIT_BOSS))
+			attackEvent.multipliers.addAll(getUnlockedEffectAsList(attackEvent.getAttackerPitPlayer(), secondPath, "damage"));
+	}
+
+	public static int getMobBossDamageIncrease() {
+		return 100;
+	}
+
+	public static double getMobKillHealing() {
+		return 2;
+	}
+
+	public static double getSecondItemSpawnChance() {
+		return 50;
 	}
 
 	@Override

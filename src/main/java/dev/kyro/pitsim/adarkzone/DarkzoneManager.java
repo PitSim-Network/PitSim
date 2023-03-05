@@ -6,6 +6,7 @@ import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.adarkzone.bosses.PitZombieBoss;
 import dev.kyro.pitsim.adarkzone.mobs.*;
 import dev.kyro.pitsim.adarkzone.notdarkzone.PitEquipment;
+import dev.kyro.pitsim.adarkzone.progression.skillbranches.DamageBranch;
 import dev.kyro.pitsim.aitems.PitItem;
 import dev.kyro.pitsim.aitems.misc.SoulPickup;
 import dev.kyro.pitsim.aitems.mobdrops.EnderPearl;
@@ -120,6 +121,7 @@ public class DarkzoneManager implements Listener {
 			public void run() {
 				for(Player player : MapManager.getDarkzone().getPlayers()) {
 					PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
+					if(!pitPlayer.hasManaUnlocked()) continue;
 
 					ManaRegenEvent event = new ManaRegenEvent(player, 0.1);
 					Bukkit.getPluginManager().callEvent(event);
@@ -209,6 +211,7 @@ public class DarkzoneManager implements Listener {
 		if(event.getAction() != Action.LEFT_CLICK_BLOCK && event.getAction() != Action.RIGHT_CLICK_BLOCK) return;
 
 		Player player = event.getPlayer();
+		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
 		Location location = event.getClickedBlock().getLocation();
 
 		ItemStack heldStack = player.getItemInHand();
@@ -218,12 +221,21 @@ public class DarkzoneManager implements Listener {
 		for(SubLevel subLevel : subLevels) {
 			if(subLevel.getSpawnItemClass() != pitItem.getClass() || !subLevel.getMiddle().equals(location)) continue;
 
+			if(!DamageBranch.INSTANCE.isUnlocked(pitPlayer, DamageBranch.INSTANCE.firstUnlock)) {
+				AOutput.error(player, "&c&lERROR!&7 You do have not unlocked the ability to spawn bosses");
+				return;
+			}
+
 			if(subLevel.isBossSpawned()) {
 				AOutput.error(player, "&c&lERROR!&7 You cannot do that while a boss is spawned");
 				return;
 			}
 
-			subLevel.setCurrentDrops(subLevel.getCurrentDrops() + 1);
+			int getEffectiveAmount = 1;
+			if(DamageBranch.INSTANCE.isUnlocked(pitPlayer, DamageBranch.INSTANCE.secondPathUnlock) &&
+					Math.random() < DamageBranch.getSecondItemSpawnChance() / 100.0) getEffectiveAmount *= 2;
+
+			subLevel.setCurrentDrops(subLevel.getCurrentDrops() + getEffectiveAmount);
 			if(heldStack.getAmount() == 1) {
 				player.setItemInHand(null);
 			} else {
@@ -277,7 +289,7 @@ public class DarkzoneManager implements Listener {
 				return;
 			}
 			if(!killEvent.isKillerRealPlayer()) throw new RuntimeException();
-			deadMob.kill(killEvent.getKillerPlayer());
+			deadMob.kill(killEvent.getKillerPitPlayer());
 			return;
 		}
 	}

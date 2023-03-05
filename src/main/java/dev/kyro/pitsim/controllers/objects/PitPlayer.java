@@ -9,6 +9,8 @@ import dev.kyro.arcticapi.misc.AUtil;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.adarkzone.notdarkzone.Shield;
 import dev.kyro.pitsim.adarkzone.progression.DarkzoneData;
+import dev.kyro.pitsim.adarkzone.progression.ProgressionManager;
+import dev.kyro.pitsim.adarkzone.progression.skillbranches.ManaBranch;
 import dev.kyro.pitsim.battlepass.PassData;
 import dev.kyro.pitsim.battlepass.PassManager;
 import dev.kyro.pitsim.battlepass.PassQuest;
@@ -614,15 +616,30 @@ public class PitPlayer {
 	}
 
 	@Exclude
+	public boolean hasManaUnlocked() {
+		return ManaBranch.INSTANCE.isUnlocked(this, ManaBranch.INSTANCE.firstUnlock);
+	}
+
+	@Exclude
+	public boolean useManaForSpell(int amount) {
+		if(!hasManaUnlocked()) return false;
+		if(ManaBranch.INSTANCE.isUnlocked(this, ManaBranch.INSTANCE.lastUnlock))
+			amount *= ManaBranch.getSpellManaReduction();
+		return useMana(amount);
+	}
+
+	@Exclude
 	public boolean useMana(int amount) {
-		if(amount > mana) return false;
+		if(!hasManaUnlocked() || amount > mana) return false;
 		mana -= amount;
 		return true;
 	}
 
 	@Exclude
 	public int getMaxMana() {
-		return 100;
+		int maxMana = 100;
+		maxMana += ProgressionManager.getUnlockedEffectAsValue(this, ManaBranch.INSTANCE.firstPath, "max-mana");
+		return maxMana;
 	}
 
 	@Exclude
@@ -652,10 +669,14 @@ public class PitPlayer {
 	public void updateXPBar() {
 		if(MapManager.inDarkzone(player)) {
 //			TODO: Check if shield is unlocked
-			player.setLevel((int) Math.ceil(shield.getDisplayAmount()));
-			if(shield.isActive()) {
-				player.setExp((float) (shield.getPreciseAmount() / shield.getMax()));
+			if(!shield.isUnlocked()) {
+				player.setLevel(0);
+				player.setExp(0);
+			} else if(shield.isActive()) {
+				player.setLevel(0);
+				player.setExp((float) (shield.getPreciseAmount() / shield.getMaxShield()));
 			} else {
+				player.setLevel((int) Math.ceil(shield.getDisplayAmount()));
 				player.setExp(1 - ((float) shield.getTicksUntilReactivation() / shield.getInitialTicksUntilReactivation()));
 			}
 			return;

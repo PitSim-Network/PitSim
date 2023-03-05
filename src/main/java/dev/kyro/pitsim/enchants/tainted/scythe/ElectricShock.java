@@ -42,7 +42,7 @@ public class ElectricShock extends PitEnchant {
 		Cooldown cooldown = getCooldown(player, 10);
 		if(cooldown.isOnCooldown()) return;
 		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
-		if(!pitPlayer.useMana(getManaCost(enchantLvl))) {
+		if(!pitPlayer.useManaForSpell(getManaCost(enchantLvl))) {
 			Sounds.NO.play(event.getPlayer());
 			return;
 		}
