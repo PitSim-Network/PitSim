@@ -2,11 +2,15 @@ package dev.kyro.pitsim.commands;
 
 import de.tr7zw.nbtapi.NBTItem;
 import dev.kyro.arcticapi.misc.AUtil;
-import dev.kyro.pitsim.adarkzone.progression.ProgressionGUI;
+import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.enums.NBTTag;
+import dev.kyro.pitsim.misc.effects.FallingBlock;
+import dev.kyro.pitsim.misc.effects.PacketBlock;
 import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.ChatColor;
+import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.block.Block;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -15,9 +19,11 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 public class KTestCommand implements CommandExecutor {
 
@@ -27,28 +33,30 @@ public class KTestCommand implements CommandExecutor {
 		Player player = (Player) sender;
 		if(!player.isOp()) return false;
 
-//		EnchantSound.Tier tier = null;
-//		try {
-//			int tierInt = Integer.parseInt(args[0]);
-//			switch(tierInt) {
-//				case 1:
-//					tier = EnchantSound.Tier.TIER_1;
-//					break;
-//				case 2:
-//					tier = EnchantSound.Tier.TIER_2;
-//					break;
-//				case 3:
-//					tier = EnchantSound.Tier.TIER_3;
-//			}
-//		} catch(Exception ignored) {}
-//		if(tier == null) {
-//			AOutput.error(player, "&c&lERROR!&7 Specify a tier");
-//			return false;
-//		}
-//		new EnchantSound(player, player.getLocation()).play(tier, tier != EnchantSound.Tier.TIER_1);
+		for(Block block : getNearbyBlocks(player.getLocation(), 100)) {
+			Block blockBelow = block.getRelative(0, -1, 0);
+			if(blockBelow == null || blockBelow.getType() != Material.AIR) continue;
+			if(Math.random() > 0.5) continue;
 
-		ProgressionGUI progressionGUI = new ProgressionGUI(player);
-		progressionGUI.open();
+			new BukkitRunnable() {
+				@Override
+				public void run() {
+					new PacketBlock(Material.AIR, (byte) 0, block.getLocation())
+							.setViewers(player)
+							.spawnBlock()
+							.removeAfter(30 * 20);
+
+					Location spawnLocation = block.getLocation().add(0.5, 0.5, 0.5);
+					new FallingBlock(block.getType(), block.getData(), spawnLocation)
+							.setViewers(player)
+							.spawnBlock()
+							.removeAfter(40 + new Random().nextInt(41));
+				}
+			}.runTaskLater(PitSim.INSTANCE, new Random().nextInt(30 * 20));
+		}
+
+//		ProgressionGUI progressionGUI = new ProgressionGUI(player);
+//		progressionGUI.open();
 
 //		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
 //		ItemStack itemStack = player.getItemInHand();
@@ -63,6 +71,20 @@ public class KTestCommand implements CommandExecutor {
 //		pitItem.updateItem(newStack);
 //		player.getInventory().addItem(newStack);
 		return false;
+	}
+
+	public static List<Block> getNearbyBlocks(Location location, int radius) {
+		List<Block> blocks = new ArrayList<>();
+		for(int x = location.getBlockX() - radius; x <= location.getBlockX() + radius; x++) {
+			for(int y = location.getBlockY() - radius; y <= location.getBlockY() + radius; y++) {
+				for(int z = location.getBlockZ() - radius; z <= location.getBlockZ() + radius; z++) {
+					Block block = location.getWorld().getBlockAt(x, y, z);
+					if(block == null || block.getType() == Material.AIR) continue;
+					blocks.add(block);
+				}
+			}
+		}
+		return blocks;
 	}
 
 	public static void giveToken(Player player, int amount) {

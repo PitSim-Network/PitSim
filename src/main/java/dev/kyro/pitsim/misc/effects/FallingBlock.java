@@ -12,6 +12,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class FallingBlock {
@@ -89,6 +90,11 @@ public class FallingBlock {
 
 	public List<Player> getViewers() {
 		return viewers;
+	}
+
+	public FallingBlock setViewers(Player viewer) {
+		this.viewers = Collections.singletonList(viewer);
+		return this;
 	}
 
 	public FallingBlock setViewers(List<Player> viewers) {
