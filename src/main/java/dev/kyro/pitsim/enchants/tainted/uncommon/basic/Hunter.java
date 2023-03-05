@@ -1,4 +1,4 @@
-package dev.kyro.pitsim.enchants.tainted.common;
+package dev.kyro.pitsim.enchants.tainted.uncommon.basic;
 
 import dev.kyro.pitsim.adarkzone.PitMob;
 import dev.kyro.pitsim.adarkzone.mobs.*;
@@ -21,7 +21,7 @@ public class Hunter extends BasicDarkzoneEnchant {
 
 	@Override
 	public int getStatPercent(int enchantLvl) {
-		return enchantLvl * 10;
+		return enchantLvl * 11 + 11;
 	}
 
 	@Override

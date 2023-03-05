@@ -21,7 +21,7 @@ public class GeneticReconstruction extends BasicDarkzoneEnchant {
 
 	@Override
 	public int getStatPercent(int enchantLvl) {
-		return enchantLvl * 10;
+		return enchantLvl * 4 + 4;
 	}
 
 	@Override

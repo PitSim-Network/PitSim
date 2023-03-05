@@ -1,4 +1,4 @@
-package dev.kyro.pitsim.enchants.tainted.common;
+package dev.kyro.pitsim.enchants.tainted.uncommon.basic;
 
 import dev.kyro.pitsim.adarkzone.PitMob;
 import dev.kyro.pitsim.adarkzone.mobs.PitCreeper;
@@ -10,12 +10,12 @@ import dev.kyro.pitsim.enums.ApplyType;
 import java.util.Arrays;
 import java.util.List;
 
-public class Shield extends BasicDarkzoneEnchant {
-	public static Shield INSTANCE;
+public class Barricade extends BasicDarkzoneEnchant {
+	public static Barricade INSTANCE;
 
-	public Shield() {
-		super("Shield", false, ApplyType.CHESTPLATES,
-				"shield", "shield3");
+	public Barricade() {
+		super("Barricade", false, ApplyType.CHESTPLATES,
+				"barricade", "shield3");
 		isUncommonEnchant = true;
 		isTainted = true;
 		INSTANCE = this;
@@ -23,7 +23,7 @@ public class Shield extends BasicDarkzoneEnchant {
 
 	@Override
 	public int getStatPercent(int enchantLvl) {
-		return enchantLvl * 10;
+		return enchantLvl * 5 + 6;
 	}
 
 	@Override

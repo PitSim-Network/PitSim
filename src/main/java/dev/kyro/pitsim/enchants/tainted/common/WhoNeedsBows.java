@@ -21,7 +21,7 @@ public class WhoNeedsBows extends BasicDarkzoneEnchant {
 
 	@Override
 	public int getStatPercent(int enchantLvl) {
-		return enchantLvl * 10;
+		return enchantLvl * 9 + 11;
 	}
 
 	@Override

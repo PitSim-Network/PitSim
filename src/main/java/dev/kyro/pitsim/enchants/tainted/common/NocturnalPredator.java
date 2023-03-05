@@ -20,7 +20,7 @@ public class NocturnalPredator extends BasicDarkzoneEnchant {
 
 	@Override
 	public int getStatPercent(int enchantLvl) {
-		return enchantLvl * 10;
+		return enchantLvl * 7 + 6;
 	}
 
 	@Override
