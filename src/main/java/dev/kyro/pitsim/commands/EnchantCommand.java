@@ -52,11 +52,16 @@ public class EnchantCommand implements CommandExecutor {
 		String refName = args[0].toLowerCase();
 		PitEnchant pitEnchant = EnchantManager.getEnchant(refName);
 		if(pitEnchant == null) {
-
 			AOutput.error(player, "That enchant does not exist");
 			return false;
 		}
-		if((pitEnchant.isTainted || pitEnchant == SelfCheckout.INSTANCE) && !player.isOp()) {
+
+		if(pitEnchant == SelfCheckout.INSTANCE && !player.isOp()) {
+			AOutput.error(player, "&cNice try.");
+			return false;
+		}
+
+		if(!EnchantManager.canTypeApply(player.getItemInHand(), pitEnchant) && !player.isOp()) {
 			AOutput.error(player, "&cNice try.");
 			return false;
 		}
