@@ -51,7 +51,7 @@ public class DamageBranch extends SkillBranch {
 		return new MajorProgressionUnlock() {
 			@Override
 			public String getDisplayName() {
-				return "Unlock Bosses";
+				return "&cUnlock: Bosses";
 			}
 
 			@Override
@@ -81,17 +81,17 @@ public class DamageBranch extends SkillBranch {
 		return new MajorProgressionUnlock() {
 			@Override
 			public String getDisplayName() {
-				return "something";
+				return "Damage vs Mobs and Bosses";
 			}
 
 			@Override
 			public String getRefName() {
-				return "something";
+				return "mob-boss-damage";
 			}
 
 			@Override
 			public ItemStack getBaseStack() {
-				return new AItemStackBuilder(Material.BARRIER)
+				return new AItemStackBuilder(Material.BLAZE_POWDER)
 						.setLore(new ALoreBuilder(
 								"&7Too lazy to write a description"
 						))
@@ -110,17 +110,17 @@ public class DamageBranch extends SkillBranch {
 		return new MajorProgressionUnlock() {
 			@Override
 			public String getDisplayName() {
-				return "something2";
+				return "Heal on Mob Kill";
 			}
 
 			@Override
 			public String getRefName() {
-				return "something2";
+				return "mob-kill-heal";
 			}
 
 			@Override
 			public ItemStack getBaseStack() {
-				return new AItemStackBuilder(Material.BARRIER)
+				return new AItemStackBuilder(Material.GOLDEN_APPLE)
 						.setLore(new ALoreBuilder(
 								"&7Too lazy to write a description"
 						))
@@ -139,17 +139,17 @@ public class DamageBranch extends SkillBranch {
 		return new MajorProgressionUnlock() {
 			@Override
 			public String getDisplayName() {
-				return "something3";
+				return "Cheaper Boss Spawning";
 			}
 
 			@Override
 			public String getRefName() {
-				return "something3";
+				return "cheaper-boss-spawning";
 			}
 
 			@Override
 			public ItemStack getBaseStack() {
-				return new AItemStackBuilder(Material.BARRIER)
+				return new AItemStackBuilder(Material.PUMPKIN)
 						.setLore(new ALoreBuilder(
 								"&7Too lazy to write a description"
 						))
@@ -168,7 +168,7 @@ public class DamageBranch extends SkillBranch {
 		return new Path() {
 			@Override
 			public String getDisplayName() {
-				return "&cIncreased Damage vs Mobs";
+				return "&cDamage vs Mobs";
 			}
 
 			@Override
@@ -194,7 +194,7 @@ public class DamageBranch extends SkillBranch {
 		return new Path() {
 			@Override
 			public String getDisplayName() {
-				return "&cIncreased Damage vs Bosses";
+				return "&cDamage vs Bosses";
 			}
 
 			@Override

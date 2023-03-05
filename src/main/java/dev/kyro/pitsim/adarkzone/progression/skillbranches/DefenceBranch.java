@@ -153,7 +153,7 @@ public class DefenceBranch extends SkillBranch {
 		return new Path() {
 			@Override
 			public String getDisplayName() {
-				return "&9Reduction from Mobs & Bosses";
+				return "&9Reduction from Mobs and Bosses";
 			}
 
 			@Override
