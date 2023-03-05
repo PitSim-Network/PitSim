@@ -387,6 +387,7 @@ public class DamageManager implements Listener {
 				public void run() {
 					pitDead.megastreak.stop();
 					pitDead.megastreak = new NoMegastreak(pitDead);
+					ChatTriggerManager.sendPerksInfo(pitDead);
 				}
 			}.runTaskLater(PitSim.INSTANCE, 1L);
 		}

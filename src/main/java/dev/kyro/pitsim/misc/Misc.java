@@ -203,6 +203,32 @@ public class Misc {
 		throw new RuntimeException();
 	}
 
+	public static String distortMessage(String message, double chance) {
+		message = ChatColor.translateAlternateColorCodes('&', message);
+		char[] chars = message.toCharArray();
+		String finalString = "";
+		for(int i = 0; i < chars.length; i++) {
+			char character = chars[i];
+			if(character == ' ') {
+				finalString += character;
+				continue;
+			}
+			if(character == '\u00A7') {
+				i++;
+				continue;
+			}
+
+			if(Math.random() > chance) {
+				finalString += chars[i];
+			} else {
+				String substring = message.substring(0, i);
+				System.out.println("thing: " + ChatColor.getLastColors(substring));
+				finalString += "\u00A7k" + chars[i] + ChatColor.getLastColors(substring);
+			}
+		}
+		return finalString;
+	}
+
 	public static void broadcast(String message) {
 		new PluginMessage()
 				.writeString("BROADCAST")
