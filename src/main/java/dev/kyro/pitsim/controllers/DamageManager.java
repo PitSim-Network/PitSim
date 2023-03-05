@@ -387,6 +387,7 @@ public class DamageManager implements Listener {
 				public void run() {
 					pitDead.megastreak.stop();
 					pitDead.megastreak = new NoMegastreak(pitDead);
+					ChatTriggerManager.sendPerksInfo(pitDead);
 				}
 			}.runTaskLater(PitSim.INSTANCE, 1L);
 		}
@@ -451,6 +452,7 @@ public class DamageManager implements Listener {
 		if(killType != KillType.FAKE_KILL) {
 			if(deadIsPlayer) {
 				pitDead.bounty = 0;
+				ChatTriggerManager.sendBountyInfo(pitDead);
 			}
 			for(PotionEffect potionEffect : dead.getActivePotionEffects()) {
 				dead.removePotionEffect(potionEffect.getType());

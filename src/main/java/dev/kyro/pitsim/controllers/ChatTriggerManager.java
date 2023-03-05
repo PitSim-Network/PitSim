@@ -9,7 +9,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerQuitEvent;
-import org.bukkit.scheduler.BukkitRunnable;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
@@ -17,24 +16,25 @@ import java.util.*;
 
 public class ChatTriggerManager implements Listener {
 	public static final String PREFIX = ChatColor.translateAlternateColorCodes('&', "&9&lDATA!&7 ");
-	private static final List<UUID> subscribedPlayers = new ArrayList<>();
+	private static final List<Player> subscribedPlayers = new ArrayList<>();
+	public static final Map<Player, Long> lastSendLevelData = new HashMap<>();
 
 	static {
-		new BukkitRunnable() {
-			@Override
-			public void run() {
-				for(Player player : getSubscribedPlayers()) {
-					PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
-					sendProgressionInfo(pitPlayer);
-				}
-			}
-		}.runTaskTimer(PitSim.INSTANCE, 0L, 20L);
+//		new BukkitRunnable() {
+//			@Override
+//			public void run() {
+//				for(Player player : getSubscribedPlayers()) {
+//					PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
+//					sendProgressionInfo(pitPlayer);
+//				}
+//			}
+//		}.runTaskTimer(PitSim.INSTANCE, 0L, 20L);
 	}
 
 	@EventHandler
 	public void onQuit(PlayerQuitEvent event) {
 		Player player = event.getPlayer();
-		subscribedPlayers.remove(player.getUniqueId());
+		subscribedPlayers.remove(player);
 	}
 
 	public static void sendPerksInfo(PitPlayer pitPlayer) {
@@ -48,12 +48,16 @@ public class ChatTriggerManager implements Listener {
 		pitPlayer.killstreaks.forEach(killstreak -> killstreaks.add(killstreak.displayName));
 		dataMap.put("killstreaks", encodeList(killstreaks));
 
-		dataMap.put("megastreak", pitPlayer.megastreak.getName());
+		dataMap.put("megastreak", pitPlayer.megastreak.getRawName());
 
 		sendData(pitPlayer.player, encodeMap(dataMap));
 	}
 
 	public static void sendProgressionInfo(PitPlayer pitPlayer) {
+		long currentTick = lastSendLevelData.getOrDefault(pitPlayer.player, 0L);
+		if(currentTick == PitSim.currentTick) return;
+		lastSendLevelData.put(pitPlayer.player, PitSim.currentTick);
+
 		Map<String, Object> dataMap = new LinkedHashMap<>();
 		dataMap.put("xp", PrestigeValues.getTotalXPForPrestige(pitPlayer.prestige, pitPlayer.level, pitPlayer.remainingXP));
 		dataMap.put("totalXPForPres", PrestigeValues.getTotalXPForPrestige(pitPlayer.prestige));
@@ -79,6 +83,12 @@ public class ChatTriggerManager implements Listener {
 		dataMap.put("maxUbers", Uberstreak.getMaxUbers(pitPlayer.player));
 		dataMap.put("ubersLeft", pitPlayer.dailyUbersLeft);
 		dataMap.put("uberResetTime", pitPlayer.uberReset);
+		sendData(pitPlayer.player, encodeMap(dataMap));
+	}
+
+	public static void sendBountyInfo(PitPlayer pitPlayer) {
+		Map<String, Object> dataMap = new LinkedHashMap<>();
+		dataMap.put("bounty", pitPlayer.bounty);
 		sendData(pitPlayer.player, encodeMap(dataMap));
 	}
 
@@ -110,10 +120,11 @@ public class ChatTriggerManager implements Listener {
 	}
 
 	public static void subscribePlayer(Player player) {
-		if(subscribedPlayers.contains(player.getUniqueId())) return;
-		subscribedPlayers.add(player.getUniqueId());
+		if(subscribedPlayers.contains(player)) return;
+		subscribedPlayers.add(player);
 
 		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
+		sendProgressionInfo(pitPlayer);
 		sendPrestigeInfo(pitPlayer);
 		sendAuctionInfo(pitPlayer);
 		sendPerksInfo(pitPlayer);
@@ -121,7 +132,7 @@ public class ChatTriggerManager implements Listener {
 	}
 
 	public static boolean isSubscribed(Player player) {
-		return subscribedPlayers.contains(player.getUniqueId());
+		return subscribedPlayers.contains(player);
 	}
 
 	public static List<Player> getSubscribedPlayers() {

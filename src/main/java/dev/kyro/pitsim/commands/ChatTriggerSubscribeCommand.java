@@ -14,9 +14,7 @@ public class ChatTriggerSubscribeCommand implements CommandExecutor {
 		if(!(sender instanceof Player)) return false;
 		Player player = (Player) sender;
 
-		if(!player.isOp()) {
-			if(args.length < 1 || !args[0].equalsIgnoreCase("thisisjustheretomakesureyoudontturnitononaccident")) return false;
-		}
+		if(!player.isOp() && !String.join(" ", args).equals("never run this command (this is the chattrigger handshake)")) return false;
 
 		if(ChatTriggerManager.isSubscribed(player)) {
 			AOutput.send(player, ChatTriggerManager.PREFIX + "You already have this enabled");

@@ -3,6 +3,7 @@ package dev.kyro.pitsim.commands.admin;
 import dev.kyro.arcticapi.commands.ACommand;
 import dev.kyro.arcticapi.commands.AMultiCommand;
 import dev.kyro.arcticapi.misc.AOutput;
+import dev.kyro.pitsim.controllers.ChatTriggerManager;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.misc.Sounds;
 import org.bukkit.Bukkit;
@@ -35,6 +36,7 @@ public class BountyCommand extends ACommand {
 
 				try {
 					pitPlayer.bounty += Integer.parseInt(args.get(1));
+					ChatTriggerManager.sendBountyInfo(pitPlayer);
 				} catch(Exception ignored) {
 					AOutput.error(player, "Please enter a valid number");
 					return;

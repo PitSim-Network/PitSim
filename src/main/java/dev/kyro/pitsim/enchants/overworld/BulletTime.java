@@ -35,16 +35,14 @@ public class BulletTime extends PitEnchant {
 		if(cooldown.isOnCooldown()) return;
 		else cooldown.restart();
 
-		Sounds.BULLET_TIME.play(attackEvent.getDefender());
-		attackEvent.getArrow().getWorld().playEffect(attackEvent.getArrow().getLocation(), Effect.EXPLOSION, 0, 30);
-
-//		if(enchantLvl > 1) {
-		PitPlayer pitDefender = attackEvent.getDefenderPitPlayer();
-		pitDefender.heal(getHealing(enchantLvl));
-//		}
-
 		attackEvent.setCancelled(true);
 		attackEvent.getArrow().remove();
+
+		PitPlayer pitDefender = attackEvent.getDefenderPitPlayer();
+		pitDefender.heal(getHealing(enchantLvl));
+
+		Sounds.BULLET_TIME.play(attackEvent.getDefender());
+		attackEvent.getArrow().getWorld().playEffect(attackEvent.getArrow().getLocation(), Effect.EXPLOSION, 0, 30);
 	}
 
 	@Override
@@ -60,6 +58,6 @@ public class BulletTime extends PitEnchant {
 	}
 
 	public double getHealing(int enchantLvl) {
-		return 3;
+		return 4;
 	}
 }

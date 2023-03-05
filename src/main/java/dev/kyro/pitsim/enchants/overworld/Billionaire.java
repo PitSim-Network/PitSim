@@ -15,10 +15,12 @@ import java.text.DecimalFormat;
 import java.util.List;
 
 public class Billionaire extends PitEnchant {
+	public static Billionaire INSTANCE;
 
 	public Billionaire() {
 		super("Billionaire", true, ApplyType.MELEE,
 				"bill", "billionaire");
+		INSTANCE = this;
 	}
 
 	@EventHandler
