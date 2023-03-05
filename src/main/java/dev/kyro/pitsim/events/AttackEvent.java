@@ -79,6 +79,10 @@ public class AttackEvent extends Event {
 		return event;
 	}
 
+	public Entity getRealDamager() {
+		return realDamager;
+	}
+
 	public LivingEntity getAttacker() {
 		return attacker;
 	}
@@ -189,11 +193,16 @@ public class AttackEvent extends Event {
 	}
 
 	public static class Post extends AttackEvent {
+		private final AttackEvent.Apply attackEvent;
 		private final double finalDamage;
 
-		public Post(AttackEvent event, double finalDamage) {
+		public Post(AttackEvent.Apply event, double finalDamage) {
 			super(event.getEvent(), event.realDamager, event.attackerEnchantMap, event.defenderEnchantMap, event.isFakeHit());
 			this.finalDamage = finalDamage;
+		}
+
+		public Apply getAttackEvent() {
+			return attackEvent;
 		}
 
 		public double getFinalDamage() {
