@@ -68,7 +68,7 @@ public class CrossServerMessageManager implements Listener {
 
 //	Called by darkzone to send data to overworld server(s)
 	public static void sendAuctionData(String serverName) {
-		if(PitSim.status.isPitsim()) throw new RuntimeException();
+		if(!PitSim.status.isDarkzone()) throw new RuntimeException();
 		PluginMessage pluginMessage = new PluginMessage()
 				.writeString("AUCTIONDATA")
 				.writeString(serverName)
