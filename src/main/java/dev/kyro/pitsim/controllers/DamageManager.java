@@ -18,22 +18,12 @@ import dev.kyro.pitsim.aitems.prot.ProtLeggings;
 import dev.kyro.pitsim.controllers.objects.Non;
 import dev.kyro.pitsim.controllers.objects.PitEnchant;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
+import dev.kyro.pitsim.enchants.Singularity;
 import dev.kyro.pitsim.enchants.overworld.Regularity;
 import dev.kyro.pitsim.enchants.overworld.Telebow;
 import dev.kyro.pitsim.enchants.tainted.effects.PurpleThumb;
 import dev.kyro.pitsim.enchants.tainted.uncommon.ShieldBuster;
 import dev.kyro.pitsim.enums.*;
-import dev.kyro.pitsim.enchants.Singularity;
-import dev.kyro.pitsim.logging.LogManager;
-import dev.kyro.pitsim.brewing.objects.BrewingIngredient;
-import dev.kyro.pitsim.controllers.objects.*;
-import dev.kyro.pitsim.enchants.PitBlob;
-import dev.kyro.pitsim.enchants.Regularity;
-import dev.kyro.pitsim.enchants.Telebow;
-import dev.kyro.pitsim.enums.KillModifier;
-import dev.kyro.pitsim.enums.KillType;
-import dev.kyro.pitsim.enums.NBTTag;
-import dev.kyro.pitsim.enums.NonTrait;
 import dev.kyro.pitsim.events.AttackEvent;
 import dev.kyro.pitsim.events.KillEvent;
 import dev.kyro.pitsim.logging.LogManager;
@@ -289,7 +279,6 @@ public class DamageManager implements Listener {
 
 		AttackEvent.Post postEvent = new AttackEvent.Post(applyEvent, finalDamage);
 		Bukkit.getServer().getPluginManager().callEvent(postEvent);
-		DamageIndicator.onAttack(postEvent);
 	}
 
 	public static double handleAttack(AttackEvent.Apply attackEvent) {
@@ -309,7 +298,7 @@ public class DamageManager implements Listener {
 			}
 		}
 
-		double damage = attackEvent.getFinalDamage();
+		double damage = attackEvent.getFinalPitDamage();
 		if(PlayerManager.isRealPlayer(attackEvent.getDefenderPlayer())) {
 			Shield defenderShield = attackEvent.getDefenderPitPlayer().shield;
 			double multiplier = 1;
@@ -321,6 +310,8 @@ public class DamageManager implements Listener {
 
 		double finalDamage = Singularity.getAdjustedFinalDamage(attackEvent);
 		attackEvent.getEvent().setDamage(0);
+
+		DamageIndicator.onAttack(attackEvent, finalDamage);
 
 		if(attackEvent.trueDamage != 0 || attackEvent.veryTrueDamage != 0) {
 			double finalHealth = attackEvent.getDefender().getHealth() - attackEvent.trueDamage - attackEvent.veryTrueDamage;

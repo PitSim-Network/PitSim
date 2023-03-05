@@ -245,7 +245,7 @@ public class RNGesus extends Megastreak {
 		if(pitPlayer.megastreak.isOnMega() && pitPlayer.megastreak instanceof RNGesus) {
 
 			if(reality == Reality.DAMAGE) {
-				realityMap.get(reality).progression += attackEvent.getFinalDamage();
+				realityMap.get(reality).progression += attackEvent.getFinalPitDamage();
 			} else if(reality == Reality.ABSORPTION) {
 				realityMap.get(reality).progression += attackEvent.trueDamage;
 			}

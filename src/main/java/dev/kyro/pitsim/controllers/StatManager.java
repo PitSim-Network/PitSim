@@ -70,7 +70,7 @@ public class StatManager implements Listener {
 				if(attackEvent.getArrow() == null) pitAttacker.stats.swordHits++;
 				else pitAttacker.stats.arrowHits++;
 			}
-			pitAttacker.stats.damageDealt += attackEvent.getFinalDamage();
+			pitAttacker.stats.damageDealt += attackEvent.getFinalPitDamage();
 			pitAttacker.stats.trueDamageDealt += attackEvent.trueDamage + attackEvent.veryTrueDamage;
 			pitAttacker.stats.trueDamageTaken += attackEvent.selfTrueDamage + attackEvent.selfVeryTrueDamage;
 
@@ -78,7 +78,7 @@ public class StatManager implements Listener {
 		}
 
 		if(pitDefender.stats != null) {
-			pitDefender.stats.damageTaken += attackEvent.getFinalDamage();
+			pitDefender.stats.damageTaken += attackEvent.getFinalPitDamage();
 			pitDefender.stats.trueDamageTaken += attackEvent.trueDamage + attackEvent.veryTrueDamage;
 		}
 	}

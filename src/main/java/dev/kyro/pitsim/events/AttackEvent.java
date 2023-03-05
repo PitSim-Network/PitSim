@@ -165,7 +165,7 @@ public class AttackEvent extends Event {
 			super(event.getEvent(), event.realDamager, event.attackerEnchantMap, event.defenderEnchantMap, event.isFakeHit());
 		}
 
-		public double getFinalDamage() {
+		public double getFinalPitDamage() {
 			double damage = getEvent().getDamage();
 			damage += increase;
 			damage *= 1 + (increasePercent / 100.0);
@@ -175,7 +175,7 @@ public class AttackEvent extends Event {
 			return Math.max(damage, 0);
 		}
 
-		public double getFinalDamageIncrease() {
+		public double getFinalPitDamageIncrease() {
 			double damage = getEvent().getDamage();
 			damage += increase;
 			damage *= 1 + (increasePercent / 100.0);

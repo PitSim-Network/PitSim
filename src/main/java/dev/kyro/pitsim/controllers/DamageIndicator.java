@@ -31,10 +31,8 @@ public class DamageIndicator implements Listener {
 	public static DecimalFormat decimalFormat = new DecimalFormat("0");
 
 	//    @EventHandler(priority = EventPriority.MONITOR)
-	public static void onAttack(AttackEvent.Post attackEvent) {
+	public static void onAttack(AttackEvent.Apply attackEvent, double finalDamage) {
 		if(!attackEvent.isAttackerPlayer() || attackEvent.isFakeHit() || attackEvent.getDefender().isDead()) return;
-
-		double finalDamage = attackEvent.getFinalDamage();
 
 		PitMob defenderMob = DarkzoneManager.getPitMob(attackEvent.getDefender());
 		PitBoss defenderBoss = BossManager.getPitBoss(attackEvent.getDefender());
@@ -111,7 +109,7 @@ public class DamageIndicator implements Listener {
 		if(!PlayerManager.isRealPlayer(killEvent.getKillerPlayer())) return;
 		PitMob pitDead = DarkzoneManager.getPitMob(killEvent.getDead());
 		if(pitDead == null || !killEvent.getKillType().hasAttackerAndDefender()) return;
-		createDamageStand(killEvent.getKillerPlayer(), killEvent.getDead(), killEvent.getAttackEvent().getFinalDamage());
+		createDamageStand(killEvent.getKillerPlayer(), killEvent.getDead(), killEvent.getEvent().getFinalDamage());
 	}
 
 	public static void createDamageStand(Player attacker, LivingEntity defender, double damage) {

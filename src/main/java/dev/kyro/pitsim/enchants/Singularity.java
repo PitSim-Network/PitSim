@@ -1,10 +1,10 @@
 package dev.kyro.pitsim.enchants;
 
-import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.pitsim.controllers.objects.PitEnchant;
 import dev.kyro.pitsim.enums.ApplyType;
 import dev.kyro.pitsim.events.AttackEvent;
 import dev.kyro.pitsim.misc.Misc;
+import dev.kyro.pitsim.misc.PitLoreBuilder;
 
 import java.util.List;
 
@@ -29,10 +29,9 @@ public class Singularity extends PitEnchant {
 	}
 
 	@Override
-	public List<String> getDescription(int enchantLvl) {
-		return new ALoreBuilder(
-				"&7Hits you receive deal at most",
-				"&c" + Misc.getHearts(getMaxDamage(enchantLvl)) + " &7damage"
+	public List<String> getNormalDescription(int enchantLvl) {
+		return new PitLoreBuilder(
+				"&7Hits you receive deal at most &c" + Misc.getHearts(getMaxDamage(enchantLvl)) + " &7damage"
 		).getLore();
 	}
 
