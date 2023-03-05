@@ -49,7 +49,7 @@ public class FunkyFeather extends StaticPitItem {
 	public List<String> getLore() {
 		return new ALoreBuilder(
 				"&eSpecial item",
-				"&7protects your inventory but",
+				"&7Protects your inventory but",
 				"&7gets consumed on death if",
 				"&7in your hotbar."
 		).getLore();
