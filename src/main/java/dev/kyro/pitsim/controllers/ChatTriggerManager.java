@@ -1,6 +1,7 @@
 package dev.kyro.pitsim.controllers;
 
 import dev.kyro.pitsim.PitSim;
+import dev.kyro.pitsim.controllers.objects.Mappable;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.enchants.ReallyToxic;
 import dev.kyro.pitsim.megastreaks.Uberstreak;
@@ -74,14 +75,7 @@ public class ChatTriggerManager implements Listener {
 
 	public static void sendAuctionInfo(PitPlayer pitPlayer) {
 		Map<String, Object> dataMap = new HashMap<>();
-
-		for(int i = 0; i < CrossServerMessageManager.auctionItems.length; i++) {
-			CrossServerMessageManager.CrossServerAuctionItem auctionItem = CrossServerMessageManager.auctionItems[i];
-			if(auctionItem == null) continue;
-			dataMap.put("auction" + (i + 1) + "Name", auctionItem.itemName);
-			dataMap.put("auction" + (i + 1) + "TopBidder", auctionItem.topBidder);
-			dataMap.put("auction" + (i + 1) + "TopBid", auctionItem.topBid);
-		}
+		dataMap.put("auctionData", CrossServerMessageManager.auctionItems);
 		dataMap.put("auctionEnd", CrossServerMessageManager.auctionEndTime);
 		sendData(pitPlayer.player, encodeMap(dataMap));
 	}
@@ -107,7 +101,9 @@ public class ChatTriggerManager implements Listener {
 	}
 
 	public static Object encodeObject(Object object) {
-		if(object instanceof Map) {
+		if(object instanceof Mappable) {
+			return encodeMap(((Mappable) object).getAsMap());
+		} else if(object instanceof Map) {
 			return encodeMap((Map<String, Object>) object);
 		} else if(object instanceof Object[]) {
 			return encodeArray((Object[]) object);
