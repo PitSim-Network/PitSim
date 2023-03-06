@@ -49,7 +49,8 @@ public class BrewingBranch extends SkillBranch {
 			public ItemStack getBaseStack() {
 				return new AItemStackBuilder(Material.BREWING_STAND_ITEM)
 						.setLore(new ALoreBuilder(
-								"&7Too lazy to write a description"
+								"&7Adds an additional slot to",
+								"&7brew potions with"
 						))
 						.getItemStack();
 			}
@@ -78,7 +79,9 @@ public class BrewingBranch extends SkillBranch {
 			public ItemStack getBaseStack() {
 				return new AItemStackBuilder(Material.CAULDRON_ITEM)
 						.setLore(new ALoreBuilder(
-								"&7Too lazy to write a description"
+								"&7A larger cauldron! Perfect",
+								"&7for packing another ingredient",
+								"&7into brews!"
 						))
 						.getItemStack();
 			}
@@ -107,7 +110,8 @@ public class BrewingBranch extends SkillBranch {
 			public ItemStack getBaseStack() {
 				return new AItemStackBuilder(Material.FLOWER_POT_ITEM)
 						.setLore(new ALoreBuilder(
-								"&7Too lazy to write a description"
+								"&7The perfect item for carrying",
+								"&7around your potions"
 						))
 						.getItemStack();
 			}
@@ -136,7 +140,9 @@ public class BrewingBranch extends SkillBranch {
 			public ItemStack getBaseStack() {
 				return new AItemStackBuilder(Material.NETHER_STAR)
 						.setLore(new ALoreBuilder(
-								"&7Too lazy to write a description"
+								"&7The most powerful potion",
+								"&7ingredient now craftable",
+								"&7and at your disposal"
 						))
 						.getItemStack();
 			}
@@ -168,7 +174,7 @@ public class BrewingBranch extends SkillBranch {
 
 			@Override
 			public void addEffects() {
-				addEffect(new EffectData("brew-time-reduction", "&c+%value%% &7something",
+				addEffect(new EffectData("brew-time-reduction", "&5-%value%% &7potion brew time",
 						100, 100, 100, 100, 100, 100));
 			}
 		};
@@ -194,7 +200,7 @@ public class BrewingBranch extends SkillBranch {
 
 			@Override
 			public void addEffects() {
-				addEffect(new EffectData("brewing-luck", "&c+%value%% &7something",
+				addEffect(new EffectData("brewing-luck", "&5+%value%% &7brewing luck",
 						100, 100, 100, 100, 100, 100));
 			}
 		};

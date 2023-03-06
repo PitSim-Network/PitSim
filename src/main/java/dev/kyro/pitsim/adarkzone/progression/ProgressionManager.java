@@ -43,17 +43,17 @@ public class ProgressionManager implements Listener {
 		registerMainUnlock(new MainProgressionMinorUnlock("main-4", 5, 3));
 		registerMainUnlock(new MainProgressionMinorUnlock("main-5", 6, 3));
 		registerMainUnlock(new MainProgressionMinorUnlock("main-6", 7, 3));
-		registerMainUnlock(new MainProgressionMinorUnlock("main-7", 8, 3));
-		registerMainUnlock(new MainProgressionMinorUnlock("main-8", 9, 3));
+//		registerMainUnlock(new MainProgressionMinorUnlock("main-7", 8, 3));
+//		registerMainUnlock(new MainProgressionMinorUnlock("main-8", 9, 3));
 
 		registerMainUnlock(new MainProgressionMinorUnlock("top-1", 2, 2));
 		registerMainUnlock(new MainProgressionMinorUnlock("top-2", 4, 2));
 		registerMainUnlock(new MainProgressionMinorUnlock("top-3", 6, 2));
-		registerMainUnlock(new MainProgressionMinorUnlock("top-4", 8, 2));
+//		registerMainUnlock(new MainProgressionMinorUnlock("top-4", 8, 2));
 		registerMainUnlock(new MainProgressionMinorUnlock("bottom-1", 3, 4));
 		registerMainUnlock(new MainProgressionMinorUnlock("bottom-2", 5, 4));
 		registerMainUnlock(new MainProgressionMinorUnlock("bottom-3", 7, 4));
-		registerMainUnlock(new MainProgressionMinorUnlock("bottom-4", 9, 4));
+//		registerMainUnlock(new MainProgressionMinorUnlock("bottom-4", 9, 4));
 
 		int index = 0;
 		registerMainUnlock(new MainProgressionMajorUnlock(DamageBranch.class, index++));

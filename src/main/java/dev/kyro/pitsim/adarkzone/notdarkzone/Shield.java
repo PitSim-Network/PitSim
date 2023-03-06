@@ -99,7 +99,7 @@ public class Shield {
 		int maxShield = 100;
 		if(pitPlayer != null) maxShield += Fortify.getShieldIncrease(pitPlayer.player);
 		maxShield += ProgressionManager.getUnlockedEffectAsValue(pitPlayer, DefenceBranch.INSTANCE,
-				SkillBranch.PathPosition.SECOND_PATH, "defence");
+				SkillBranch.PathPosition.SECOND_PATH, "shield");
 		return maxShield;
 	}
 

@@ -45,7 +45,7 @@ public class DamageBranch extends SkillBranch {
 		return 2;
 	}
 
-	public static double getSecondItemSpawnChance() {
+	public static int getSecondItemSpawnChance() {
 		return 50;
 	}
 
@@ -63,7 +63,7 @@ public class DamageBranch extends SkillBranch {
 	public ItemStack getBaseStack() {
 		return new AItemStackBuilder(Material.DIAMOND_SWORD)
 				.setLore(new ALoreBuilder(
-						"&7Develop your strength"
+						"&7Upgrade your damage"
 				))
 				.getItemStack();
 	}
@@ -115,7 +115,8 @@ public class DamageBranch extends SkillBranch {
 			public ItemStack getBaseStack() {
 				return new AItemStackBuilder(Material.BLAZE_POWDER)
 						.setLore(new ALoreBuilder(
-								"&7Too lazy to write a description"
+								"&7Deal &c+" + getMobBossDamageIncrease() + "% &7damage vs mobs",
+								"&7and bosses"
 						))
 						.getItemStack();
 			}
@@ -144,7 +145,7 @@ public class DamageBranch extends SkillBranch {
 			public ItemStack getBaseStack() {
 				return new AItemStackBuilder(Material.GOLDEN_APPLE)
 						.setLore(new ALoreBuilder(
-								"&7Too lazy to write a description"
+								"&7Heal &c" + Misc.getHearts(getMobKillHealing()) + " &7on mob kill"
 						))
 						.getItemStack();
 			}
@@ -173,7 +174,9 @@ public class DamageBranch extends SkillBranch {
 			public ItemStack getBaseStack() {
 				return new AItemStackBuilder(Material.PUMPKIN)
 						.setLore(new ALoreBuilder(
-								"&7Too lazy to write a description"
+								"&6" + getSecondItemSpawnChance() + "% &7chance for mob drops to",
+								"&7count as two when used to",
+								"&7spawn bosses"
 						))
 						.getItemStack();
 			}

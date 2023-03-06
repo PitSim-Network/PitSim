@@ -74,7 +74,7 @@ public abstract class PitMob implements Listener {
 		double soulChance = 0.05;
 		soulChance *= 1 + (Reaper.getSoulChanceIncrease(pitKiller.player) / 100.0);
 		soulChance *= 1 + (ProgressionManager.getUnlockedEffectAsValue(
-				pitKiller, SoulBranch.INSTANCE, SkillBranch.PathPosition.FIRST_PATH, "soul-chance") / 100.0);
+				pitKiller, SoulBranch.INSTANCE, SkillBranch.PathPosition.FIRST_PATH, "soul-chance-mobs") / 100.0);
 		if(Math.random() < soulChance) DarkzoneManager.createSoulExplosion(pitKiller.player,
 				getMob().getLocation().add(0, 0.5, 0), getDroppedSouls(), false);
 

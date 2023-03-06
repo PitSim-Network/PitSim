@@ -11,6 +11,7 @@ import org.bukkit.Material;
 import org.bukkit.event.Listener;
 import org.bukkit.inventory.ItemStack;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -138,8 +139,9 @@ public abstract class SkillBranch implements Listener {
 			ItemStack baseStack = new ItemStack(Material.STAINED_GLASS_PANE, 1, (short) unlockState.data);
 			ALoreBuilder loreBuilder = new ALoreBuilder();
 
+			DecimalFormat decimalFormat = new DecimalFormat("#,##0.#");
 			for(EffectData data : effectData) {
-				loreBuilder.addLore(data.formatting.replaceAll("%value%", String.valueOf(data.values[level - 1])));
+				loreBuilder.addLore(data.formatting.replaceAll("%value%", decimalFormat.format(data.values[level - 1])));
 			}
 			loreBuilder.addLore("");
 
