@@ -36,6 +36,6 @@ public class Singularity extends PitEnchant {
 	}
 
 	public static double getMaxDamage(int enchantLvl) {
-		return Math.max(4.5 - enchantLvl * 0.5, 0);
+		return Math.max(4.8 - enchantLvl * 0.4, 0);
 	}
 }
