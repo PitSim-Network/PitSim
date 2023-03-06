@@ -39,6 +39,12 @@ public class ChatTriggerManager implements Listener {
 		subscribedPlayers.remove(player);
 	}
 
+	public static void sendConstants(PitPlayer pitPlayer) {
+		Map<String, Object> dataMap = new HashMap<>();
+		dataMap.put("maxToxic", ReallyToxic.getMaxReduction());
+		sendData(pitPlayer.player, encodeMap(dataMap));
+	}
+
 	public static void sendPerksInfo(PitPlayer pitPlayer) {
 		Map<String, Object> dataMap = new HashMap<>();
 
@@ -134,6 +140,7 @@ public class ChatTriggerManager implements Listener {
 		subscribedPlayers.add(player);
 
 		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
+		sendConstants(pitPlayer);
 		sendPerksInfo(pitPlayer);
 		sendProgressionInfo(pitPlayer);
 		sendPrestigeInfo(pitPlayer);
