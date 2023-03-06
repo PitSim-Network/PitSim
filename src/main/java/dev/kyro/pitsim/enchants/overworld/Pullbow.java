@@ -1,5 +1,6 @@
 package dev.kyro.pitsim.enchants.overworld;
 
+import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.controllers.Cooldown;
 import dev.kyro.pitsim.controllers.objects.PitEnchant;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
@@ -10,6 +11,7 @@ import dev.kyro.pitsim.megastreaks.Uberstreak;
 import dev.kyro.pitsim.misc.PitLoreBuilder;
 import dev.kyro.pitsim.misc.Sounds;
 import org.bukkit.event.EventHandler;
+import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
 
 import java.util.List;
@@ -22,7 +24,7 @@ public class Pullbow extends PitEnchant {
 	}
 
 	@EventHandler
-	public void onAttack(AttackEvent.Apply attackEvent) {
+	public void onAttack(AttackEvent.Pre attackEvent) {
 		if(!attackEvent.isAttackerPlayer()) return;
 		if(!canApply(attackEvent)) return;
 
@@ -31,7 +33,7 @@ public class Pullbow extends PitEnchant {
 
 		if(attackEvent.getAttacker() == attackEvent.getDefender()) return;
 
-		Cooldown cooldown = getCooldown(attackEvent.getAttackerPlayer(), 160);
+		Cooldown cooldown = getCooldown(attackEvent.getAttackerPlayer(), 0);
 		if(cooldown.isOnCooldown()) return;
 		else cooldown.restart();
 
@@ -41,9 +43,22 @@ public class Pullbow extends PitEnchant {
 				if(pitDefender.megastreak instanceof Uberstreak || pitDefender.megastreak instanceof RNGesus) return;
 			}
 		}
-		Vector dirVector = attackEvent.getAttacker().getLocation().toVector().subtract(attackEvent.getDefender().getLocation().toVector()).setY(0);
-		Vector pullVector = dirVector.clone().normalize().setY(0.5).multiply(2.5).add(dirVector.clone().multiply(0.03));
-		attackEvent.getDefender().setVelocity(pullVector.multiply(getMultiplier(enchantLvl)));
+
+		Vector distanceVector = attackEvent.getAttacker().getLocation().subtract(attackEvent.getDefender().getLocation()).toVector().setY(0);
+		double distance = Math.min(distanceVector.length(), getCapDistance(enchantLvl));
+		Vector horizontalVelocity = distanceVector.clone().normalize().multiply(distance * 0.16);
+		double yComponent = Math.min(distance * 0.02 + 0.23, 0.65);
+		Vector finalVelocity = horizontalVelocity.clone().setY(yComponent);
+
+		attackEvent.setCancelled(true);
+		attackEvent.getArrow().remove();
+		attackEvent.getDefender().damage(0);
+		new BukkitRunnable() {
+			@Override
+			public void run() {
+				attackEvent.getDefender().setVelocity(finalVelocity);
+			}
+		}.runTaskLater(PitSim.INSTANCE, 1L);
 
 		Sounds.PULLBOW.play(attackEvent.getAttackerPlayer());
 		PitPlayer pitAttacker = PitPlayer.getPitPlayer(attackEvent.getAttackerPlayer());
@@ -53,11 +68,12 @@ public class Pullbow extends PitEnchant {
 	@Override
 	public List<String> getNormalDescription(int enchantLvl) {
 		return new PitLoreBuilder(
-				"&7Hitting a player pulls them toward you (8s cooldown)"
+				"&7Hitting a player pulls them to you (8s cooldown). Effect caps at &e" + getCapDistance(enchantLvl) +
+						" block" + (getCapDistance(enchantLvl) == 1 ? "" : "s") + " &7of distance"
 		).getLore();
 	}
 
-	public static double getMultiplier(int enchantLvl) {
-		return (enchantLvl * 0.2) + 1.15;
+	public static int getCapDistance(int enchantLvl) {
+		return enchantLvl * 5 + 10;
 	}
 }
