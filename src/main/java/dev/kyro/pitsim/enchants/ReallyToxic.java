@@ -3,6 +3,7 @@ package dev.kyro.pitsim.enchants;
 import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.PitSim;
+import dev.kyro.pitsim.controllers.ChatTriggerManager;
 import dev.kyro.pitsim.controllers.HitCounter;
 import dev.kyro.pitsim.controllers.objects.PitEnchant;
 import dev.kyro.pitsim.enums.ApplyType;
@@ -61,6 +62,7 @@ public class ReallyToxic extends PitEnchant {
 		if(attackEvent.isDefenderPlayer()) {
 			int charge = HitCounter.getCharge(attackEvent.getDefenderPlayer(), this);
 			HitCounter.setCharge(attackEvent.getDefenderPlayer(), this, charge + getReductionPerHit(enchantLvl));
+			ChatTriggerManager.sendToxicInfo(attackEvent.getDefenderPitPlayer());
 
 			PitEnchant thisEnchant = this;
 			new BukkitRunnable() {
@@ -69,6 +71,7 @@ public class ReallyToxic extends PitEnchant {
 					if(!attackEvent.getDefenderPlayer().isOnline()) return;
 					int charge = HitCounter.getCharge(attackEvent.getDefenderPlayer(), thisEnchant);
 					HitCounter.setCharge(attackEvent.getDefenderPlayer(), thisEnchant, charge - getReductionPerHit(enchantLvl));
+					ChatTriggerManager.sendToxicInfo(attackEvent.getDefenderPitPlayer());
 				}
 			}.runTaskLater(PitSim.INSTANCE, getStackTime(enchantLvl) * 20);
 		}
