@@ -4,6 +4,7 @@ import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.commands.ShowCommand;
 import dev.kyro.pitsim.controllers.objects.AuctionItem;
+import dev.kyro.pitsim.controllers.objects.Mappable;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.controllers.objects.PluginMessage;
 import dev.kyro.pitsim.events.MessageEvent;
@@ -17,7 +18,9 @@ import org.bukkit.event.Listener;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 public class CrossServerMessageManager implements Listener {
@@ -137,7 +140,7 @@ public class CrossServerMessageManager implements Listener {
 		return highestBidderName;
 	}
 
-	public static class CrossServerAuctionItem {
+	public static class CrossServerAuctionItem implements Mappable {
 		public String itemName;
 		public String topBidder;
 		public int topBid;
@@ -146,6 +149,15 @@ public class CrossServerMessageManager implements Listener {
 			this.itemName = itemName;
 			this.topBidder = topBidder;
 			this.topBid = topBid;
+		}
+
+		@Override
+		public Map<String, Object> getAsMap() {
+			Map<String, Object> dataMap = new HashMap<>();
+			dataMap.put("itemName", itemName);
+			dataMap.put("topBidder", topBidder);
+			dataMap.put("topBid", topBid);
+			return dataMap;
 		}
 	}
 }
