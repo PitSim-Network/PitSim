@@ -58,7 +58,7 @@ public class EnchantCommand implements CommandExecutor {
 		String refName = args[0].toLowerCase();
 		PitEnchant pitEnchant = EnchantManager.getEnchant(refName);
 		if(pitEnchant == null) {
-			AOutput.error(player, "T&c&lERROR!&7 hat enchant does not exist");
+			AOutput.error(player, "&c&lERROR!&7 That enchant does not exist");
 			return false;
 		}
 
