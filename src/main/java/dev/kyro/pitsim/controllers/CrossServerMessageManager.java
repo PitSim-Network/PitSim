@@ -9,6 +9,8 @@ import dev.kyro.pitsim.controllers.objects.PluginMessage;
 import dev.kyro.pitsim.events.MessageEvent;
 import dev.kyro.pitsim.megastreaks.Uberstreak;
 import dev.kyro.pitsim.misc.CustomSerializer;
+import org.bukkit.Bukkit;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -16,9 +18,10 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.List;
+import java.util.UUID;
 
 public class CrossServerMessageManager implements Listener {
-	public static String[] auctionNames = new String[AuctionManager.AUCTION_NUM];
+	public static CrossServerAuctionItem[] auctionItems = new CrossServerAuctionItem[AuctionManager.AUCTION_NUM];
 	public static long auctionEndTime;
 
 	static {
@@ -56,13 +59,17 @@ public class CrossServerMessageManager implements Listener {
 			ItemStack itemStack = CustomSerializer.deserialize(strings.get(2));
 			Uberstreak.sendUberMessage(displayName, itemStack);
 		} else if(strings.get(0).equals("AUCTIONREQUEST")) {
+			AOutput.log("Received request for auction data");
 			sendAuctionData(strings.get(1));
 		} else if(strings.get(0).equals("AUCTIONDATA")) {
 //			overworld receiving data from darkzone
+			AOutput.log("Received auction data from darkzone");
 			if(PitSim.status.isDarkzone()) throw new RuntimeException();
 			auctionEndTime = longs.get(0);
 			strings.remove(0);
-			for(int i = 0; i < auctionNames.length; i++) auctionNames[i] = strings.get(i);
+			for(int i = 0; i < auctionItems.length; i++) auctionItems[i] =
+					new CrossServerAuctionItem(strings.get(i), strings.get(i + AuctionManager.AUCTION_NUM), integers.get(i));
+			for(Player player : ChatTriggerManager.getSubscribedPlayers()) ChatTriggerManager.sendAuctionInfo(PitPlayer.getPitPlayer(player));
 		}
 	}
 
@@ -76,9 +83,21 @@ public class CrossServerMessageManager implements Listener {
 		for(AuctionItem auctionItem : AuctionManager.auctionItems) {
 			if(auctionItem == null) {
 				pluginMessage.writeString("None");
+				pluginMessage.writeString("None");
+				pluginMessage.writeInt(0);
 				continue;
 			}
+
+			UUID highestBidderUUID = auctionItem.getHighestBidder();
+			String highestBidderName = "None";
+			if(highestBidderUUID != null) {
+				OfflinePlayer highestBidder = Bukkit.getOfflinePlayer(auctionItem.getHighestBidder());
+				highestBidderName = highestBidder.getName();
+			}
+
 			pluginMessage.writeString(auctionItem.item.itemName);
+			pluginMessage.writeString(highestBidderName);
+			pluginMessage.writeInt(auctionItem.getHighestBid());
 		}
 		pluginMessage.send();
 		AOutput.log("Sending auction data to overworld servers");
@@ -88,14 +107,16 @@ public class CrossServerMessageManager implements Listener {
 	public static void loadAuctionData() {
 		if(!AuctionManager.haveAuctionsEnded(auctionEndTime)) return;
 		if(PitSim.status.isDarkzone()) {
-			for(int i = 0; i < auctionNames.length; i++) {
+			for(int i = 0; i < auctionItems.length; i++) {
 				auctionEndTime = AuctionManager.getAuctionEndTime();
 				AuctionItem auctionItem = AuctionManager.auctionItems[i];
 				if(auctionItem == null) {
-					auctionNames[i] = null;
+					auctionItems[i] = null;
 					continue;
 				}
-				auctionNames[i] = auctionItem.item.itemName;
+
+				auctionItems[i] = new CrossServerAuctionItem(auctionItem.item.itemName, getItemBidder(auctionItem), auctionItem.getHighestBid());
+				for(Player player : ChatTriggerManager.getSubscribedPlayers()) ChatTriggerManager.sendAuctionInfo(PitPlayer.getPitPlayer(player));
 			}
 		} else {
 			new PluginMessage()
@@ -104,6 +125,27 @@ public class CrossServerMessageManager implements Listener {
 					.send();
 			AOutput.log("Requesting auction data from darkzone");
 		}
-		for(Player player : ChatTriggerManager.getSubscribedPlayers()) ChatTriggerManager.sendAuctionInfo(PitPlayer.getPitPlayer(player));
+	}
+
+	public static String getItemBidder(AuctionItem auctionItem) {
+		UUID highestBidderUUID = auctionItem.getHighestBidder();
+		String highestBidderName = "None";
+		if(highestBidderUUID != null) {
+			OfflinePlayer highestBidder = Bukkit.getOfflinePlayer(auctionItem.getHighestBidder());
+			highestBidderName = highestBidder.getName();
+		}
+		return highestBidderName;
+	}
+
+	public static class CrossServerAuctionItem {
+		public String itemName;
+		public String topBidder;
+		public int topBid;
+
+		public CrossServerAuctionItem(String itemName, String topBidder, int topBid) {
+			this.itemName = itemName;
+			this.topBidder = topBidder;
+			this.topBid = topBid;
+		}
 	}
 }
