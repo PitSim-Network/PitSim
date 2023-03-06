@@ -50,7 +50,7 @@ public class Pullbow extends PitEnchant {
 		double yComponent = Math.min(distance * 0.02 + 0.23, 0.65);
 		Vector finalVelocity = horizontalVelocity.clone().setY(yComponent);
 
-		attackEvent.getEvent().setCancelled(true);
+		attackEvent.setCancelled(true);
 		attackEvent.getArrow().remove();
 		attackEvent.getDefender().damage(0);
 		new BukkitRunnable() {
@@ -68,8 +68,8 @@ public class Pullbow extends PitEnchant {
 	@Override
 	public List<String> getNormalDescription(int enchantLvl) {
 		return new PitLoreBuilder(
-				"&7Hitting a player pulls them to you (8s cooldown). Effect caps at &e" + getCapDistance(enchantLvl) + " block" + (getCapDistance(enchantLvl) == 1 ? "" : "s") +
-						" &7of distance"
+				"&7Hitting a player pulls them to you (8s cooldown). Effect caps at &e" + getCapDistance(enchantLvl) +
+						" block" + (getCapDistance(enchantLvl) == 1 ? "" : "s") + " &7of distance"
 		).getLore();
 	}
 
