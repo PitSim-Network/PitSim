@@ -2,6 +2,7 @@ package dev.kyro.pitsim.controllers;
 
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
+import dev.kyro.pitsim.enchants.ReallyToxic;
 import dev.kyro.pitsim.megastreaks.Uberstreak;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -38,7 +39,7 @@ public class ChatTriggerManager implements Listener {
 	}
 
 	public static void sendPerksInfo(PitPlayer pitPlayer) {
-		Map<String, Object> dataMap = new LinkedHashMap<>();
+		Map<String, Object> dataMap = new HashMap<>();
 
 		List<String> perks = new ArrayList<>();
 		pitPlayer.pitPerks.forEach(pitPerk -> perks.add(pitPerk.displayName));
@@ -58,7 +59,7 @@ public class ChatTriggerManager implements Listener {
 		if(currentTick == PitSim.currentTick) return;
 		lastSendLevelData.put(pitPlayer.player, PitSim.currentTick);
 
-		Map<String, Object> dataMap = new LinkedHashMap<>();
+		Map<String, Object> dataMap = new HashMap<>();
 		dataMap.put("xp", PrestigeValues.getTotalXPForPrestige(pitPlayer.prestige, pitPlayer.level, pitPlayer.remainingXP));
 		dataMap.put("totalXPForPres", PrestigeValues.getTotalXPForPrestige(pitPlayer.prestige));
 		dataMap.put("currentGReq", pitPlayer.goldGrinded);
@@ -66,20 +67,27 @@ public class ChatTriggerManager implements Listener {
 	}
 
 	public static void sendPrestigeInfo(PitPlayer pitPlayer) {
-		Map<String, Object> dataMap = new LinkedHashMap<>();
+		Map<String, Object> dataMap = new HashMap<>();
 		dataMap.put("totalGReqForPres", PrestigeValues.getPrestigeInfo(pitPlayer.prestige).goldReq);
 		sendData(pitPlayer.player, encodeMap(dataMap));
 	}
 
 	public static void sendAuctionInfo(PitPlayer pitPlayer) {
-		Map<String, Object> dataMap = new LinkedHashMap<>();
-		dataMap.put("auctionData", CrossServerMessageManager.auctionNames);
+		Map<String, Object> dataMap = new HashMap<>();
+
+		for(int i = 0; i < CrossServerMessageManager.auctionItems.length; i++) {
+			CrossServerMessageManager.CrossServerAuctionItem auctionItem = CrossServerMessageManager.auctionItems[i];
+			if(auctionItem == null) continue;
+			dataMap.put("auction" + (i + 1) + "Name", auctionItem.itemName);
+			dataMap.put("auction" + (i + 1) + "TopBidder", auctionItem.topBidder);
+			dataMap.put("auction" + (i + 1) + "TopBid", auctionItem.topBid);
+		}
 		dataMap.put("auctionEnd", CrossServerMessageManager.auctionEndTime);
 		sendData(pitPlayer.player, encodeMap(dataMap));
 	}
 
 	public static void sendUberInfo(PitPlayer pitPlayer) {
-		Map<String, Object> dataMap = new LinkedHashMap<>();
+		Map<String, Object> dataMap = new HashMap<>();
 		dataMap.put("maxUbers", Uberstreak.getMaxUbers(pitPlayer.player));
 		dataMap.put("ubersLeft", pitPlayer.dailyUbersLeft);
 		dataMap.put("uberResetTime", pitPlayer.uberReset);
@@ -87,8 +95,14 @@ public class ChatTriggerManager implements Listener {
 	}
 
 	public static void sendBountyInfo(PitPlayer pitPlayer) {
-		Map<String, Object> dataMap = new LinkedHashMap<>();
+		Map<String, Object> dataMap = new HashMap<>();
 		dataMap.put("bounty", pitPlayer.bounty);
+		sendData(pitPlayer.player, encodeMap(dataMap));
+	}
+
+	public static void sendToxicInfo(PitPlayer pitPlayer) {
+		Map<String, Object> dataMap = new HashMap<>();
+		dataMap.put("toxic", HitCounter.getCharge(pitPlayer.player, ReallyToxic.INSTANCE));
 		sendData(pitPlayer.player, encodeMap(dataMap));
 	}
 
@@ -124,11 +138,13 @@ public class ChatTriggerManager implements Listener {
 		subscribedPlayers.add(player);
 
 		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
+		sendPerksInfo(pitPlayer);
 		sendProgressionInfo(pitPlayer);
 		sendPrestigeInfo(pitPlayer);
 		sendAuctionInfo(pitPlayer);
-		sendPerksInfo(pitPlayer);
 		sendUberInfo(pitPlayer);
+		sendBountyInfo(pitPlayer);
+		sendToxicInfo(pitPlayer);
 	}
 
 	public static boolean isSubscribed(Player player) {
