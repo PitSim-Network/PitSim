@@ -28,7 +28,7 @@ public class AltarBranch extends SkillBranch {
 		return new AItemStackBuilder(Material.ENDER_PORTAL_FRAME)
 				.setLore(new ALoreBuilder(
 						"&7Improve your relationship",
-						"&7with the &4devil &7of the",
+						"&7with the &4Devil &7of the",
 						"&5Darkzone"
 				))
 				.getItemStack();

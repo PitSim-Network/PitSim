@@ -178,7 +178,7 @@ public class SoulBranch extends SkillBranch {
 
 			@Override
 			public void addEffects() {
-				addEffect(new EffectData("soul-chance-mobs", "&5+%value%% &7mob soul drop chance",
+				addEffect(new EffectData("soul-chance-mobs", "&5+%value%% &7soul drop chance from mobs",
 						100, 100, 100, 100, 100, 100));
 			}
 		};
@@ -204,7 +204,7 @@ public class SoulBranch extends SkillBranch {
 
 			@Override
 			public void addEffects() {
-				addEffect(new EffectData("fresh-chance", "&5+%value%% &7mob fresh drop chance",
+				addEffect(new EffectData("fresh-chance", "&5+%value%% &7fresh drop chance from mobs",
 						100, 100, 100, 100, 100, 100));
 			}
 		};
