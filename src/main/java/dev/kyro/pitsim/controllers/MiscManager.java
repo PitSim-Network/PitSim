@@ -1,9 +1,9 @@
 package dev.kyro.pitsim.controllers;
 
-import org.bukkit.event.EventHandler;
-import dev.kyro.pitsim.enchants.BulletTime;
+import dev.kyro.pitsim.enchants.overworld.BulletTime;
 import dev.kyro.pitsim.events.AttackEvent;
 import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockIgniteEvent;
