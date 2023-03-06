@@ -3,6 +3,7 @@ package dev.kyro.pitsim.adarkzone.progression;
 import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.arcticapi.misc.AUtil;
+import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.adarkzone.notdarkzone.UnlockState;
 import dev.kyro.pitsim.adarkzone.progression.skillbranches.*;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
@@ -128,7 +129,7 @@ public class ProgressionManager implements Listener {
 	}
 
 	public static UnlockState getUnlockState(PitPlayer pitPlayer, SkillBranch.MajorProgressionUnlock unlock) {
-		if(isUnlocked(pitPlayer, unlock)) return UnlockState.UNLOCKED;
+		if(isUnlocked(pitPlayer, unlock.skillBranch, unlock.position)) return UnlockState.UNLOCKED;
 		if(unlock.position == SkillBranch.MajorUnlockPosition.FIRST) {
 			return UnlockState.NEXT_TO_UNLOCK;
 		} else if(unlock.position == SkillBranch.MajorUnlockPosition.LAST) {
@@ -144,9 +145,9 @@ public class ProgressionManager implements Listener {
 	public static UnlockState getUnlockState(PitPlayer pitPlayer, SkillBranch.Path unlock, int level) {
 		if(isUnlocked(pitPlayer, unlock, level)) return UnlockState.UNLOCKED;
 		if(level == 1) {
-			if(isUnlocked(pitPlayer, unlock.skillBranch.firstUnlock)) return UnlockState.NEXT_TO_UNLOCK;
+			if(isUnlocked(pitPlayer, unlock.skillBranch, SkillBranch.MajorUnlockPosition.FIRST)) return UnlockState.NEXT_TO_UNLOCK;
 		} else if(level == 4) {
-			if(isUnlocked(pitPlayer, unlock.getAssociatedUnlock())) return UnlockState.NEXT_TO_UNLOCK;
+			if(isUnlocked(pitPlayer, unlock.getAssociatedUnlock().skillBranch, unlock.getAssociatedUnlock().position)) return UnlockState.NEXT_TO_UNLOCK;
 		} else {
 			if(isUnlocked(pitPlayer, unlock, level - 1)) return UnlockState.NEXT_TO_UNLOCK;
 		}
@@ -231,7 +232,7 @@ public class ProgressionManager implements Listener {
 	}
 
 	public static boolean isUnlocked(PitPlayer pitPlayer, MainProgressionUnlock unlock) {
-		if(pitPlayer == null || unlock == null) return false;
+		if(pitPlayer == null || unlock == null || !PitSim.status.isDarkzone()) return false;
 		if(unlock instanceof MainProgressionStart) return true;
 		return pitPlayer.darkzoneData.mainProgressionUnlocks.contains(unlock.id);
 	}
@@ -241,28 +242,39 @@ public class ProgressionManager implements Listener {
 	}
 
 	public static boolean isUnlocked(PitPlayer pitPlayer, SkillBranch.Path path, int level) {
-		if(pitPlayer == null || path == null) return false;
+		if(pitPlayer == null || path == null || !PitSim.status.isDarkzone()) return false;
 		DarkzoneData.SkillBranchData skillBranchData = pitPlayer.darkzoneData.skillBranchUnlocks.get(path.skillBranch.getRefName());
 		if(skillBranchData == null || !skillBranchData.pathUnlocks.containsKey(path.getRefName())) return false;
 		return skillBranchData.pathUnlocks.get(path.getRefName()) >= level;
 	}
 
 	public static int getUnlockedLevel(PitPlayer pitPlayer, SkillBranch.Path path) {
-		if(pitPlayer == null || path == null) return 0;
+		if(pitPlayer == null || path == null || !PitSim.status.isDarkzone()) return 0;
 		DarkzoneData.SkillBranchData skillBranchData = pitPlayer.darkzoneData.skillBranchUnlocks.get(path.skillBranch.getRefName());
 		if(skillBranchData == null) return 0;
 		return skillBranchData.pathUnlocks.getOrDefault(path.getRefName(), 0);
 	}
 
-	public static double getUnlockedEffectAsValue(PitPlayer pitPlayer, SkillBranch.Path path, String refName) {
+	public static double getUnlockedEffectAsValue(PitPlayer pitPlayer, SkillBranch skillBranch, SkillBranch.PathPosition position, String refName) {
 		int total = 0;
-		for(Double value : getUnlockedEffectAsList(pitPlayer, path, refName)) total += value;
+		for(Double value : getUnlockedEffectAsList(pitPlayer, skillBranch, position, refName)) total += value;
 		return total;
 	}
 
-	public static List<Double> getUnlockedEffectAsList(PitPlayer pitPlayer, SkillBranch.Path path, String refName) {
+	public static List<Double> getUnlockedEffectAsList(PitPlayer pitPlayer, SkillBranch skillBranch, SkillBranch.PathPosition position, String refName) {
 		List<Double> valueList = new ArrayList<>();
-		if(pitPlayer == null) return valueList;
+		if(pitPlayer == null || skillBranch == null || position == null || !PitSim.status.isDarkzone()) return valueList;
+		SkillBranch.Path path;
+		switch(position) {
+			case FIRST_PATH:
+				path = skillBranch.firstPath;
+				break;
+			case SECOND_PATH:
+				path = skillBranch.secondPath;
+				break;
+			default:
+				throw new RuntimeException();
+		}
 		int currentLvl = getUnlockedLevel(pitPlayer, path);
 		if(currentLvl == 0) return valueList;
 		for(SkillBranch.Path.EffectData effectData : path.effectData) {
@@ -273,10 +285,27 @@ public class ProgressionManager implements Listener {
 		return valueList;
 	}
 
-	public static boolean isUnlocked(PitPlayer pitPlayer, SkillBranch.MajorProgressionUnlock unlock) {
-		if(pitPlayer == null || unlock == null) return false;
-		DarkzoneData.SkillBranchData skillBranchData = pitPlayer.darkzoneData.skillBranchUnlocks.get(unlock.skillBranch.getRefName());
+	public static boolean isUnlocked(PitPlayer pitPlayer, SkillBranch skillBranch, SkillBranch.MajorUnlockPosition position) {
+		if(pitPlayer == null || skillBranch == null || position == null || !PitSim.status.isDarkzone()) return false;
+		DarkzoneData.SkillBranchData skillBranchData = pitPlayer.darkzoneData.skillBranchUnlocks.get(skillBranch.getRefName());
 		if(skillBranchData == null) return false;
+		SkillBranch.MajorProgressionUnlock unlock;
+		switch(position) {
+			case FIRST:
+				unlock = skillBranch.firstUnlock;
+				break;
+			case LAST:
+				unlock = skillBranch.lastUnlock;
+				break;
+			case FIRST_PATH:
+				unlock = skillBranch.firstPathUnlock;
+				break;
+			case SECOND_PATH:
+				unlock = skillBranch.secondPathUnlock;
+				break;
+			default:
+				throw new RuntimeException();
+		}
 		return skillBranchData.majorUnlocks.contains(unlock.getRefName());
 	}
 

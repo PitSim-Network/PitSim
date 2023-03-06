@@ -2,6 +2,7 @@ package dev.kyro.pitsim.adarkzone.progression.skillbranches;
 
 import dev.kyro.arcticapi.builders.AItemStackBuilder;
 import dev.kyro.arcticapi.builders.ALoreBuilder;
+import dev.kyro.pitsim.adarkzone.progression.ProgressionManager;
 import dev.kyro.pitsim.adarkzone.progression.SkillBranch;
 import dev.kyro.pitsim.enums.PitEntityType;
 import dev.kyro.pitsim.events.AttackEvent;
@@ -19,19 +20,21 @@ public class DamageBranch extends SkillBranch {
 
 	@EventHandler
 	public void onAttack(AttackEvent.Apply attackEvent) {
-		boolean hasFirstPath = isUnlocked(attackEvent.getAttackerPitPlayer(), firstPathUnlock);
+		boolean hasFirstPath = ProgressionManager.isUnlocked(attackEvent.getAttackerPitPlayer(), this, MajorUnlockPosition.FIRST_PATH);
 		if(hasFirstPath && Misc.isEntity(attackEvent.getDefender(), PitEntityType.PIT_MOB))
 			attackEvent.getAttackerPitPlayer().heal(getMobKillHealing());
 
-		boolean hasLast = isUnlocked(attackEvent.getAttackerPitPlayer(), lastUnlock);
+		boolean hasLast = ProgressionManager.isUnlocked(attackEvent.getAttackerPitPlayer(), this, MajorUnlockPosition.LAST);
 		if(hasLast && Misc.isEntity(attackEvent.getDefender(), PitEntityType.PIT_MOB, PitEntityType.PIT_BOSS))
 			attackEvent.increasePercent += getMobBossDamageIncrease();
 
 		if(Misc.isEntity(attackEvent.getDefender(), PitEntityType.PIT_MOB))
-			attackEvent.multipliers.addAll(getUnlockedEffectAsList(attackEvent.getAttackerPitPlayer(), firstPath, "damage"));
+			attackEvent.multipliers.addAll(ProgressionManager.getUnlockedEffectAsList(
+					attackEvent.getAttackerPitPlayer(), this, PathPosition.FIRST_PATH, "damage"));
 
 		if(Misc.isEntity(attackEvent.getDefender(), PitEntityType.PIT_BOSS))
-			attackEvent.multipliers.addAll(getUnlockedEffectAsList(attackEvent.getAttackerPitPlayer(), secondPath, "damage"));
+			attackEvent.multipliers.addAll(ProgressionManager.getUnlockedEffectAsList(
+					attackEvent.getAttackerPitPlayer(), this, PathPosition.SECOND_PATH, "damage"));
 	}
 
 	public static int getMobBossDamageIncrease() {

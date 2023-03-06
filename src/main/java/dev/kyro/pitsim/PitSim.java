@@ -81,7 +81,6 @@ import dev.kyro.pitsim.logging.LogManager;
 import dev.kyro.pitsim.market.MarketMessaging;
 import dev.kyro.pitsim.megastreaks.*;
 import dev.kyro.pitsim.misc.ItemRename;
-import dev.kyro.pitsim.misc.Misc;
 import dev.kyro.pitsim.misc.PrivateInfo;
 import dev.kyro.pitsim.misc.ReloadManager;
 import dev.kyro.pitsim.misc.packets.SignPrompt;
@@ -163,10 +162,6 @@ public class PitSim extends JavaPlugin {
 						Bukkit.getPluginManager().callEvent(event);
 					}
 				}.runTaskLater(PitSim.INSTANCE, 1L);
-			}
-
-			if(Misc.isKyro(onlinePlayer.getUniqueId())) {
-//				onlinePlayer.teleport(MapManager.kyroDarkzoneSpawn);
 			}
 		}
 
@@ -318,8 +313,10 @@ public class PitSim extends JavaPlugin {
 
 	@Override
 	public void onDisable() {
-		TaintedWell.onStop();
-		if(status.isDarkzone()) FirestoreManager.AUCTION.save();
+		if(status.isDarkzone()) {
+			TaintedWell.onStop();
+			FirestoreManager.AUCTION.save();
+		}
 
 		for(Player onlinePlayer : Bukkit.getOnlinePlayers()) {
 			PitPlayer pitPlayer = PitPlayer.getPitPlayer(onlinePlayer);

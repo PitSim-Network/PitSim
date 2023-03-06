@@ -6,6 +6,8 @@ import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.adarkzone.bosses.PitZombieBoss;
 import dev.kyro.pitsim.adarkzone.mobs.*;
 import dev.kyro.pitsim.adarkzone.notdarkzone.PitEquipment;
+import dev.kyro.pitsim.adarkzone.progression.ProgressionManager;
+import dev.kyro.pitsim.adarkzone.progression.SkillBranch;
 import dev.kyro.pitsim.adarkzone.progression.skillbranches.DamageBranch;
 import dev.kyro.pitsim.aitems.PitItem;
 import dev.kyro.pitsim.aitems.misc.SoulPickup;
@@ -221,7 +223,7 @@ public class DarkzoneManager implements Listener {
 		for(SubLevel subLevel : subLevels) {
 			if(subLevel.getSpawnItemClass() != pitItem.getClass() || !subLevel.getMiddle().equals(location)) continue;
 
-			if(!DamageBranch.INSTANCE.isUnlocked(pitPlayer, DamageBranch.INSTANCE.firstUnlock)) {
+			if(!ProgressionManager.isUnlocked(pitPlayer, DamageBranch.INSTANCE, SkillBranch.MajorUnlockPosition.FIRST)) {
 				AOutput.error(player, "&c&lERROR!&7 You do have not unlocked the ability to spawn bosses");
 				return;
 			}
@@ -232,7 +234,7 @@ public class DarkzoneManager implements Listener {
 			}
 
 			int getEffectiveAmount = 1;
-			if(DamageBranch.INSTANCE.isUnlocked(pitPlayer, DamageBranch.INSTANCE.secondPathUnlock) &&
+			if(ProgressionManager.isUnlocked(pitPlayer, DamageBranch.INSTANCE, SkillBranch.MajorUnlockPosition.SECOND_PATH) &&
 					Math.random() < DamageBranch.getSecondItemSpawnChance() / 100.0) getEffectiveAmount *= 2;
 
 			subLevel.setCurrentDrops(subLevel.getCurrentDrops() + getEffectiveAmount);

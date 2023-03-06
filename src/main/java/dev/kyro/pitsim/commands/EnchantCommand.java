@@ -118,8 +118,13 @@ public class EnchantCommand implements CommandExecutor {
 		}
 
 		player.setItemInHand(updatedItem);
-		AOutput.send(player, "&a&lSUCCESS!&7 Added Enchant: " + pitEnchant.getDisplayName() +
-				EnchantManager.enchantLevelToRoman(level));
+		if(level == 0) {
+			AOutput.send(player, "&a&lSUCCESS!&7 Removed Enchant: " + pitEnchant.getDisplayName() +
+					EnchantManager.enchantLevelToRoman(level));
+		} else {
+			AOutput.send(player, "&a&lSUCCESS!&7 Added Enchant: " + pitEnchant.getDisplayName() +
+					EnchantManager.enchantLevelToRoman(level));
+		}
 		return false;
 	}
 }

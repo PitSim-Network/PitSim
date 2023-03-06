@@ -32,7 +32,9 @@ public abstract class SkillBranch implements Listener {
 		this.secondPathUnlock = createSecondPathUnlock();
 		this.secondPathUnlock.position = MajorUnlockPosition.SECOND_PATH;
 		this.firstPath = createFirstPath();
+		this.firstPath.position = PathPosition.FIRST_PATH;
 		this.secondPath = createSecondPath();
+		this.secondPath.position = PathPosition.SECOND_PATH;
 
 		Bukkit.getPluginManager().registerEvents(this, PitSim.INSTANCE);
 	}
@@ -47,18 +49,6 @@ public abstract class SkillBranch implements Listener {
 	public abstract MajorProgressionUnlock createSecondPathUnlock();
 	public abstract Path createFirstPath();
 	public abstract Path createSecondPath();
-
-	public boolean isUnlocked(PitPlayer pitPlayer, MajorProgressionUnlock majorProgressionUnlock) {
-		return ProgressionManager.isUnlocked(pitPlayer, majorProgressionUnlock);
-	}
-
-	public double getUnlockedEffectAsValue(PitPlayer pitPlayer, SkillBranch.Path path, String refName) {
-		return ProgressionManager.getUnlockedEffectAsValue(pitPlayer, path, refName);
-	}
-
-	public List<Double> getUnlockedEffectAsList(PitPlayer pitPlayer, SkillBranch.Path path, String refName) {
-		return ProgressionManager.getUnlockedEffectAsList(pitPlayer, path, refName);
-	}
 
 //	This is for the main gui
 	public ItemStack getMainDisplayStack(PitPlayer pitPlayer, MainProgressionUnlock unlock, UnlockState unlockState) {
@@ -79,6 +69,11 @@ public abstract class SkillBranch implements Listener {
 	public enum MajorUnlockPosition {
 		FIRST,
 		LAST,
+		FIRST_PATH,
+		SECOND_PATH
+	}
+
+	public enum PathPosition {
 		FIRST_PATH,
 		SECOND_PATH
 	}
@@ -120,6 +115,7 @@ public abstract class SkillBranch implements Listener {
 
 	public abstract class Path {
 		public SkillBranch skillBranch;
+		public PathPosition position;
 
 		public List<EffectData> effectData = new ArrayList<>();
 

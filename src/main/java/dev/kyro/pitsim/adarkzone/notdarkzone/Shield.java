@@ -2,6 +2,7 @@ package dev.kyro.pitsim.adarkzone.notdarkzone;
 
 import com.google.cloud.firestore.annotation.Exclude;
 import dev.kyro.pitsim.adarkzone.progression.ProgressionManager;
+import dev.kyro.pitsim.adarkzone.progression.SkillBranch;
 import dev.kyro.pitsim.adarkzone.progression.skillbranches.DefenceBranch;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.enchants.tainted.uncommon.Fortify;
@@ -38,7 +39,7 @@ public class Shield {
 
 	@Exclude
 	public boolean isUnlocked() {
-		return DefenceBranch.INSTANCE.isUnlocked(pitPlayer, DefenceBranch.INSTANCE.secondPathUnlock);
+		return ProgressionManager.isUnlocked(pitPlayer, DefenceBranch.INSTANCE, SkillBranch.MajorUnlockPosition.SECOND_PATH);
 	}
 
 	@Exclude
@@ -97,7 +98,8 @@ public class Shield {
 	public int getMaxShield() {
 		int maxShield = 100;
 		if(pitPlayer != null) maxShield += Fortify.getShieldIncrease(pitPlayer.player);
-		maxShield += ProgressionManager.getUnlockedEffectAsValue(pitPlayer, DefenceBranch.INSTANCE.secondPath, "defence");
+		maxShield += ProgressionManager.getUnlockedEffectAsValue(pitPlayer, DefenceBranch.INSTANCE,
+				SkillBranch.PathPosition.SECOND_PATH, "defence");
 		return maxShield;
 	}
 
@@ -105,7 +107,7 @@ public class Shield {
 	public int getInitialTicksUntilReactivation() {
 		int reactivationTicks = 200;
 		if(pitPlayer != null) reactivationTicks -= Mechanic.getDecreaseTicks(pitPlayer.player);
-		if(DefenceBranch.INSTANCE.isUnlocked(pitPlayer, DefenceBranch.INSTANCE.secondPathUnlock))
+		if(ProgressionManager.isUnlocked(pitPlayer, DefenceBranch.INSTANCE, SkillBranch.MajorUnlockPosition.SECOND_PATH))
 			reactivationTicks -= DefenceBranch.getReactivationReductionTicks();
 		reactivationTicks = Math.max(reactivationTicks, 0);
 		return reactivationTicks;

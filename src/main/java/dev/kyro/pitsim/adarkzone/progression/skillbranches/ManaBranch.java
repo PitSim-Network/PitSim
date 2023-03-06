@@ -2,6 +2,7 @@ package dev.kyro.pitsim.adarkzone.progression.skillbranches;
 
 import dev.kyro.arcticapi.builders.AItemStackBuilder;
 import dev.kyro.arcticapi.builders.ALoreBuilder;
+import dev.kyro.pitsim.adarkzone.progression.ProgressionManager;
 import dev.kyro.pitsim.adarkzone.progression.SkillBranch;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.enums.PitEntityType;
@@ -25,15 +26,17 @@ public class ManaBranch extends SkillBranch {
 		Player player = event.getPlayer();
 		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
 
-		if(pitPlayer.shield.isUnlocked() && !pitPlayer.shield.isActive() && isUnlocked(pitPlayer, secondPathUnlock))
+		if(pitPlayer.shield.isUnlocked() && !pitPlayer.shield.isActive() &&
+				ProgressionManager.isUnlocked(pitPlayer, this, MajorUnlockPosition.SECOND_PATH))
 			event.multipliers.add(1 + (shieldDownManaIncrease() / 100.0));
 
-		event.multipliers.add(1 + (getUnlockedEffectAsValue(pitPlayer, secondPath, "mana-regen") / 100.0));
+		event.multipliers.add(1 + (ProgressionManager.getUnlockedEffectAsValue(pitPlayer, this,
+				PathPosition.SECOND_PATH, "mana-regen") / 100.0));
 	}
 
 	@EventHandler
 	public void onAttack(AttackEvent.Apply attackEvent) {
-		boolean hasFirstPath = isUnlocked(attackEvent.getAttackerPitPlayer(), firstPathUnlock);
+		boolean hasFirstPath = ProgressionManager.isUnlocked(attackEvent.getAttackerPitPlayer(), this, MajorUnlockPosition.FIRST_PATH);
 		if(hasFirstPath && Misc.isEntity(attackEvent.getDefender(), PitEntityType.PIT_MOB))
 			attackEvent.getAttackerPitPlayer().mana += getMobKillMana();
 	}

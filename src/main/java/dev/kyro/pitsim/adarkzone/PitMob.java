@@ -2,6 +2,7 @@ package dev.kyro.pitsim.adarkzone;
 
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.adarkzone.progression.ProgressionManager;
+import dev.kyro.pitsim.adarkzone.progression.SkillBranch;
 import dev.kyro.pitsim.adarkzone.progression.skillbranches.SoulBranch;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.enchants.tainted.uncommon.Reaper;
@@ -72,7 +73,8 @@ public abstract class PitMob implements Listener {
 
 		double soulChance = 0.05;
 		soulChance *= 1 + (Reaper.getSoulChanceIncrease(pitKiller.player) / 100.0);
-		soulChance *= 1 + (ProgressionManager.getUnlockedEffectAsValue(pitKiller, SoulBranch.INSTANCE.firstPath, "soul-chance") / 100.0);
+		soulChance *= 1 + (ProgressionManager.getUnlockedEffectAsValue(
+				pitKiller, SoulBranch.INSTANCE, SkillBranch.PathPosition.FIRST_PATH, "soul-chance") / 100.0);
 		if(Math.random() < soulChance) DarkzoneManager.createSoulExplosion(pitKiller.player,
 				getMob().getLocation().add(0, 0.5, 0), getDroppedSouls(), false);
 

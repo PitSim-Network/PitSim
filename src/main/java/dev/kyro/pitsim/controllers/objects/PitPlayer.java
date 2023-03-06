@@ -10,6 +10,7 @@ import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.adarkzone.notdarkzone.Shield;
 import dev.kyro.pitsim.adarkzone.progression.DarkzoneData;
 import dev.kyro.pitsim.adarkzone.progression.ProgressionManager;
+import dev.kyro.pitsim.adarkzone.progression.SkillBranch;
 import dev.kyro.pitsim.adarkzone.progression.skillbranches.ManaBranch;
 import dev.kyro.pitsim.battlepass.PassData;
 import dev.kyro.pitsim.battlepass.PassManager;
@@ -617,13 +618,13 @@ public class PitPlayer {
 
 	@Exclude
 	public boolean hasManaUnlocked() {
-		return ManaBranch.INSTANCE.isUnlocked(this, ManaBranch.INSTANCE.firstUnlock);
+		return ProgressionManager.isUnlocked(this, ManaBranch.INSTANCE, SkillBranch.MajorUnlockPosition.FIRST);
 	}
 
 	@Exclude
 	public boolean useManaForSpell(int amount) {
 		if(!hasManaUnlocked()) return false;
-		if(ManaBranch.INSTANCE.isUnlocked(this, ManaBranch.INSTANCE.lastUnlock))
+		if(ProgressionManager.isUnlocked(this, ManaBranch.INSTANCE, SkillBranch.MajorUnlockPosition.LAST))
 			amount *= ManaBranch.getSpellManaReduction();
 		return useMana(amount);
 	}
@@ -638,7 +639,8 @@ public class PitPlayer {
 	@Exclude
 	public int getMaxMana() {
 		int maxMana = 100;
-		maxMana += ProgressionManager.getUnlockedEffectAsValue(this, ManaBranch.INSTANCE.firstPath, "max-mana");
+		maxMana += ProgressionManager.getUnlockedEffectAsValue(this, ManaBranch.INSTANCE,
+				SkillBranch.PathPosition.FIRST_PATH, "max-mana");
 		return maxMana;
 	}
 

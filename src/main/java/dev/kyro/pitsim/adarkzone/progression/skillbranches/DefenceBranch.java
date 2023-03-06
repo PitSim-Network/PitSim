@@ -2,6 +2,7 @@ package dev.kyro.pitsim.adarkzone.progression.skillbranches;
 
 import dev.kyro.arcticapi.builders.AItemStackBuilder;
 import dev.kyro.arcticapi.builders.ALoreBuilder;
+import dev.kyro.pitsim.adarkzone.progression.ProgressionManager;
 import dev.kyro.pitsim.adarkzone.progression.SkillBranch;
 import dev.kyro.pitsim.enums.PitEntityType;
 import dev.kyro.pitsim.events.AttackEvent;
@@ -19,12 +20,13 @@ public class DefenceBranch extends SkillBranch {
 
 	@EventHandler
 	public void onAttack(AttackEvent.Apply attackEvent) {
-		boolean hasFirstPath = isUnlocked(attackEvent.getDefenderPitPlayer(), firstUnlock);
+		boolean hasFirstPath = ProgressionManager.isUnlocked(attackEvent.getDefenderPitPlayer(), this, MajorUnlockPosition.FIRST);
 		if(hasFirstPath && Misc.isEntity(attackEvent.getAttacker(), PitEntityType.REAL_PLAYER))
 			attackEvent.multipliers.add(Misc.getReductionMultiplier(getPlayerDamageDecrease()));
 
 		if(Misc.isEntity(attackEvent.getAttacker(), PitEntityType.PIT_MOB, PitEntityType.PIT_BOSS)) {
-			for(Double multiplier : getUnlockedEffectAsList(attackEvent.getDefenderPitPlayer(), firstPath, "defence"))
+			for(Double multiplier : ProgressionManager.getUnlockedEffectAsList(
+					attackEvent.getDefenderPitPlayer(), this, PathPosition.FIRST_PATH, "defence"))
 				attackEvent.multipliers.add(Misc.getReductionMultiplier(multiplier));
 		}
 	}
