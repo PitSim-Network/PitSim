@@ -2,7 +2,7 @@ package dev.kyro.pitsim.controllers;
 
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
-import dev.kyro.pitsim.enchants.ReallyToxic;
+import dev.kyro.pitsim.enchants.overworld.ReallyToxic;
 import dev.kyro.pitsim.megastreaks.Uberstreak;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
