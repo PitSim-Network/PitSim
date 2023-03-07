@@ -38,7 +38,7 @@ public class ComboHeal extends PitEnchant {
 		if(!HitCounter.hasReachedThreshold(pitAttacker.player, this, 4)) return;
 
 		pitAttacker.heal(getHealing(enchantLvl));
-		pitAttacker.heal(getAbsorption(enchantLvl), HealEvent.HealType.ABSORPTION, 8, this);
+		HealEvent healEvent = pitAttacker.heal(getAbsorption(enchantLvl), HealEvent.HealType.ABSORPTION, 8, this);
 
 		Sounds.COMBO_PROC.play(attackEvent.getAttacker());
 	}
