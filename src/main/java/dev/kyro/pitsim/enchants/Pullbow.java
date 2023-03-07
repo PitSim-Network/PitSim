@@ -11,6 +11,7 @@ import dev.kyro.pitsim.megastreaks.RNGesus;
 import dev.kyro.pitsim.megastreaks.Uberstreak;
 import dev.kyro.pitsim.misc.Sounds;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
 
@@ -23,7 +24,7 @@ public class Pullbow extends PitEnchant {
 				"pullbow", "pull");
 	}
 
-	@EventHandler
+	@EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
 	public void onAttack(AttackEvent.Pre attackEvent) {
 		if(!attackEvent.isAttackerPlayer()) return;
 		if(!canApply(attackEvent)) return;
