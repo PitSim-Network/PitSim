@@ -140,11 +140,13 @@ public class PitSim extends JavaPlugin {
 		if(Bukkit.getPluginManager().getPlugin("GrimAC") != null) hookIntoAnticheat(new GrimManager());
 		if(Bukkit.getPluginManager().getPlugin("PolarLoader") != null) hookIntoAnticheat(new PolarManager());
 
-		if(anticheat == null) {
-			Bukkit.getLogger().severe("No anticheat found! Shutting down...");
-			Bukkit.getPluginManager().disablePlugin(this);
-			return;
-		} else getServer().getPluginManager().registerEvents(anticheat, this);
+		if(!PitSim.serverName.contains("dev")) {
+			if(anticheat == null) {
+				Bukkit.getLogger().severe("No anticheat found! Shutting down...");
+				Bukkit.getPluginManager().disablePlugin(this);
+				return;
+			} else getServer().getPluginManager().registerEvents(anticheat, this);
+		}
 
 		getServer().getMessenger().registerOutgoingPluginChannel(this, "BungeeCord");
 		adventure = BukkitAudiences.create(this);
