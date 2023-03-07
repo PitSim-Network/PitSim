@@ -71,7 +71,7 @@ public class CrossServerMessageManager implements Listener {
 			auctionEndTime = longs.get(0);
 			strings.remove(0);
 			for(int i = 0; i < auctionItems.length; i++) auctionItems[i] =
-					new CrossServerAuctionItem(strings.get(i), strings.get(i + AuctionManager.AUCTION_NUM), integers.get(i));
+					new CrossServerAuctionItem(strings.get(i * 2), strings.get(i * 2 + 1), integers.get(i));
 			for(Player player : ChatTriggerManager.getSubscribedPlayers()) ChatTriggerManager.sendAuctionInfo(PitPlayer.getPitPlayer(player));
 		}
 	}
