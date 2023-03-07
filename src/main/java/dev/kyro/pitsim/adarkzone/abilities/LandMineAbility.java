@@ -35,6 +35,8 @@ public class LandMineAbility extends RoutinePitBossAbility {
 	public double damage;
 	public List<LandMine> landMines = new ArrayList<>();
 
+	public List<LandMine> toRemove = new ArrayList<>();
+
 	public LandMineAbility(double routineWeight, double radius, long primeTicks, long removeTicks, double damage) {
 		super(routineWeight);
 
@@ -128,16 +130,9 @@ public class LandMineAbility extends RoutinePitBossAbility {
 			detonate(landMine);
 		}
 
-	}
+		landMines.removeAll(toRemove);
+		toRemove.clear();
 
-	public List<Player> getViewers() {
-		List<Player> viewers = new ArrayList<>();
-		for(Entity entity : pitBoss.boss.getNearbyEntities(50, 50, 50)) {
-			if(!(entity instanceof Player)) continue;
-			Player player = Bukkit.getPlayer(entity.getUniqueId());
-			if(player != null) viewers.add(player);
-		}
-		return viewers;
 	}
 
 	public static class LandMine {
@@ -163,7 +158,7 @@ public class LandMineAbility extends RoutinePitBossAbility {
 	public void detonate(LandMine landMine) {
 		landMine.runnable.cancel();
 		landMine.fallingBlock.removeBlock();
-		landMines.remove(landMine);
+		toRemove.add(landMine);
 
 		ExplosionHugeParticle particle = new ExplosionHugeParticle();
 		Sounds.CREEPER_EXPLODE.play(landMine.fallingBlock.getSpawnLocation(), 40);

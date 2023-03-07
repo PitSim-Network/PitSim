@@ -3,9 +3,7 @@ package dev.kyro.pitsim.adarkzone.bosses;
 import dev.kyro.pitsim.adarkzone.DropPool;
 import dev.kyro.pitsim.adarkzone.PitBoss;
 import dev.kyro.pitsim.adarkzone.SubLevelType;
-import dev.kyro.pitsim.adarkzone.abilities.ComboAbility;
-import dev.kyro.pitsim.adarkzone.abilities.DisorderAbility;
-import dev.kyro.pitsim.adarkzone.abilities.LandMineAbility;
+import dev.kyro.pitsim.adarkzone.abilities.*;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
@@ -22,10 +20,10 @@ public class PitZombieBoss extends PitBoss {
 //				new SlamAbility(0.3, 25, 25,  25),
 //				new AnvilRainAbility(0.3, 40, 100, 100),
 //				new HailAbility(0.3, 40, 100, 100),
-//				new FirestormAbility(0.3, 40, 250, 100)
-//				new LandMineAbility(0.3, 4, 40, 100, 500)
+//				new FirestormAbility(0.3, 40, 250, 100),
+				new LandMineAbility(0.3, 4, 40, 100, 500),
 				new DisorderAbility(0.3, 5),
-				new ComboAbility()
+				new CollapseAbility(0.3, 5)
 		);
 	}
 

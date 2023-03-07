@@ -154,16 +154,6 @@ public class RuptureAbility extends RoutinePitBossAbility {
 
 	}
 
-	public List<Player> getViewers() {
-		List<Player> viewers = new ArrayList<>();
-		for(Entity entity : pitBoss.boss.getNearbyEntities(50, 50, 50)) {
-			if(!(entity instanceof Player)) continue;
-			Player player = Bukkit.getPlayer(entity.getUniqueId());
-			if(player != null) viewers.add(player);
-		}
-		return viewers;
-	}
-
 	public Player getClosestViewer(Location location) {
 		Player nearest = null;
 		double distance = 0;

@@ -85,6 +85,31 @@ public class Misc {
 		throw new RuntimeException();
 	}
 
+	public static boolean isEntityNoError(Entity entity, PitEntityType... entityTypes) {
+		if(!(entity instanceof LivingEntity)) return false;
+		LivingEntity livingEntity = (LivingEntity) entity;
+		for(PitEntityType entityType : entityTypes) {
+			switch(entityType) {
+				case REAL_PLAYER:
+					if(PlayerManager.isRealPlayer(livingEntity)) return true;
+					break;
+				case NON:
+					if(NonManager.getNon(livingEntity) != null) return true;
+					break;
+				case HOPPER:
+					if(HopperManager.isHopper(livingEntity)) return true;
+					break;
+				case PIT_MOB:
+					if(DarkzoneManager.isPitMob(livingEntity)) return true;
+					break;
+				case PIT_BOSS:
+					if(BossManager.isPitBoss(livingEntity)) return true;
+					break;
+			}
+		}
+		return false;
+	}
+
 	public static void stunEntity(LivingEntity livingEntity, int ticks) {
 		Misc.applyPotionEffect(livingEntity, PotionEffectType.SLOW, ticks, 7, true, false);
 		Misc.applyPotionEffect(livingEntity, PotionEffectType.JUMP, ticks, 128, true, false);

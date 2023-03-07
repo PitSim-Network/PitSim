@@ -139,16 +139,6 @@ public abstract class BlockRainAbility extends RoutinePitBossAbility {
 		return solidIndex + 1;
 	}
 
-	public List<Player> getViewers() {
-		List<Player> viewers = new ArrayList<>();
-		for(Entity entity : pitBoss.boss.getNearbyEntities(50, 50, 50)) {
-			if(!(entity instanceof Player)) continue;
-			Player player = Bukkit.getPlayer(entity.getUniqueId());
-			if(player != null) viewers.add(player);
-		}
-		return viewers;
-	}
-
 	public int getFallTime(int totalHeight) {
 		final double gravity = -0.03999999910593033;
 		final double drag = 0.9800000190734863;
