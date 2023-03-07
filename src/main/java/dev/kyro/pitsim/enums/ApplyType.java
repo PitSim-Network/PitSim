@@ -13,4 +13,8 @@ public enum ApplyType {
 	CHESTPLATES,
 	SCYTHES,
 	TAINTED;
+
+	public boolean isTainted() {
+		return this == CHESTPLATES || this == SCYTHES || this == TAINTED;
+	}
 }

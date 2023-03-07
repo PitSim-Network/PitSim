@@ -61,20 +61,17 @@ import dev.kyro.pitsim.cosmetics.misc.MysticPresence;
 import dev.kyro.pitsim.cosmetics.trails.*;
 import dev.kyro.pitsim.enchants.overworld.GoldBoost;
 import dev.kyro.pitsim.enchants.overworld.*;
-import dev.kyro.pitsim.enchants.tainted.awijienchants.*;
-import dev.kyro.pitsim.enchants.tainted.effects.*;
+import dev.kyro.pitsim.enchants.tainted.chestplate.*;
 import dev.kyro.pitsim.enchants.tainted.common.*;
-import dev.kyro.pitsim.enchants.tainted.spells.*;
+import dev.kyro.pitsim.enchants.tainted.scythe.*;
 import dev.kyro.pitsim.enchants.tainted.uncommon.*;
-import dev.kyro.pitsim.enchants.tainted.znotcodedrare.*;
-import dev.kyro.pitsim.enchants.tainted.uncommon.Adrenaline;
-import dev.kyro.pitsim.enchants.tainted.uncommon.Barbaric;
+import dev.kyro.pitsim.enchants.tainted.uncommon.basic.*;
 import dev.kyro.pitsim.enums.NBTTag;
+import dev.kyro.pitsim.enums.PitCalendarEvent;
 import dev.kyro.pitsim.events.EquipmentChangeEvent;
 import dev.kyro.pitsim.helmetabilities.*;
-import dev.kyro.pitsim.killstreaks.*;
 import dev.kyro.pitsim.killstreaks.Leech;
-import dev.kyro.pitsim.killstreaks.Shockwave;
+import dev.kyro.pitsim.killstreaks.*;
 import dev.kyro.pitsim.kits.EssentialKit;
 import dev.kyro.pitsim.kits.GoldKit;
 import dev.kyro.pitsim.kits.PvPKit;
@@ -83,7 +80,9 @@ import dev.kyro.pitsim.leaderboards.*;
 import dev.kyro.pitsim.logging.LogManager;
 import dev.kyro.pitsim.market.MarketMessaging;
 import dev.kyro.pitsim.megastreaks.*;
-import dev.kyro.pitsim.misc.*;
+import dev.kyro.pitsim.misc.ItemRename;
+import dev.kyro.pitsim.misc.PrivateInfo;
+import dev.kyro.pitsim.misc.ReloadManager;
 import dev.kyro.pitsim.misc.packets.SignPrompt;
 import dev.kyro.pitsim.npcs.*;
 import dev.kyro.pitsim.perks.*;
@@ -164,10 +163,6 @@ public class PitSim extends JavaPlugin {
 					}
 				}.runTaskLater(PitSim.INSTANCE, 1L);
 			}
-
-			if(Misc.isKyro(onlinePlayer.getUniqueId())) {
-//				onlinePlayer.teleport(MapManager.kyroDarkzoneSpawn);
-			}
 		}
 
 		FirestoreManager.init();
@@ -217,7 +212,6 @@ public class PitSim extends JavaPlugin {
 
 		if(getStatus().isOverworld()) NonManager.init();
 		SignPrompt.registerSignUpdateListener();
-		TempBlockHelper.init();
 		ReloadManager.init();
 
 		if(!Bukkit.getServer().getPluginManager().getPlugin("NoteBlockAPI").getDescription().getVersion().toLowerCase().contains("kyro")) {
@@ -319,17 +313,10 @@ public class PitSim extends JavaPlugin {
 
 	@Override
 	public void onDisable() {
-//		System.out.println("Disconnecting database");
-//		try {
-//			for(FirebaseApp app : new ArrayList<>(FirebaseApp.getApps())) app.delete();
-//		} catch(Exception exception) {
-//			exception.printStackTrace();
-//			System.out.println("Database failed to disconnect");
-//		}
-//		System.out.println("Database disconnected");
-
-		TaintedWell.onStop();
-		if(status.isDarkzone()) FirestoreManager.AUCTION.save();
+		if(status.isDarkzone()) {
+			TaintedWell.onStop();
+			FirestoreManager.AUCTION.save();
+		}
 
 		for(Player onlinePlayer : Bukkit.getOnlinePlayers()) {
 			PitPlayer pitPlayer = PitPlayer.getPitPlayer(onlinePlayer);
@@ -392,9 +379,6 @@ public class PitSim extends JavaPlugin {
 		for(EditSession session : FreezeSpell.sessionMap.keySet()) {
 			session.undo(session);
 		}
-
-		TempBlockHelper.restoreSessions();
-
 		for(Map.Entry<Location, Material> entry : FreezeSpell.blockMap.entrySet()) {
 			entry.getKey().getBlock().setType(entry.getValue());
 		}
@@ -456,7 +440,7 @@ public class PitSim extends JavaPlugin {
 				}
 			}
 
-			if(TimeManager.isChristmasSeason() && status.isOverworld()) {
+			if(TimeManager.isEventActive(PitCalendarEvent.CHRISTMAS_SEASON) && status.isOverworld()) {
 				pitMap = xmas;
 				time = System.currentTimeMillis();
 				MapManager.currentMap.world.setStorm(true);
@@ -864,6 +848,7 @@ public class PitSim extends JavaPlugin {
 		CosmeticManager.registerCosmetic(new LavaTrail());
 
 		CosmeticManager.registerCosmetic(new KyroAura());
+		CosmeticManager.registerCosmetic(new KyroAura2());
 		CosmeticManager.registerCosmetic(new LivelyAura());
 		CosmeticManager.registerCosmetic(new PotionAura());
 		CosmeticManager.registerCosmetic(new WaterAura());
@@ -982,6 +967,7 @@ public class PitSim extends JavaPlugin {
 		EnchantManager.registerEnchant(new RetroGravityMicrocosm());
 		EnchantManager.registerEnchant(new Regularity());
 		EnchantManager.registerEnchant(new Solitude());
+		EnchantManager.registerEnchant(new Singularity());
 
 		EnchantManager.registerEnchant(new Mirror());
 		EnchantManager.registerEnchant(new Sufferance());
@@ -1039,15 +1025,21 @@ public class PitSim extends JavaPlugin {
 		EnchantManager.registerEnchant(new ElectricShock());
 		EnchantManager.registerEnchant(new Hemorrhage());
 		EnchantManager.registerEnchant(new Inferno());
-		EnchantManager.registerEnchant(new dev.kyro.pitsim.enchants.tainted.spells.Leech());
+		EnchantManager.registerEnchant(new dev.kyro.pitsim.enchants.tainted.scythe.Leech());
 		EnchantManager.registerEnchant(new Medic());
-		EnchantManager.registerEnchant(new Passifist());
 		EnchantManager.registerEnchant(new PurpleThumb());
 		EnchantManager.registerEnchant(new RollingThunder());
 		EnchantManager.registerEnchant(new Swarm());
 		EnchantManager.registerEnchant(new Terror());
 
 //		Uncommon
+		EnchantManager.registerEnchant(new Hunter());
+		EnchantManager.registerEnchant(new EliteHunter());
+		EnchantManager.registerEnchant(new TitanHunter());
+		EnchantManager.registerEnchant(new Guard());
+		EnchantManager.registerEnchant(new Shield());
+		EnchantManager.registerEnchant(new Barricade());
+
 		EnchantManager.registerEnchant(new Adrenaline());
 		EnchantManager.registerEnchant(new Barbaric());
 		EnchantManager.registerEnchant(new ComboDefence());
@@ -1065,6 +1057,7 @@ public class PitSim extends JavaPlugin {
 		EnchantManager.registerEnchant(new Permed());
 		EnchantManager.registerEnchant(new PitPocket());
 		EnchantManager.registerEnchant(new Reaper());
+		EnchantManager.registerEnchant(new Resilient());
 		EnchantManager.registerEnchant(new ShieldBuster());
 		EnchantManager.registerEnchant(new StartingHand());
 		EnchantManager.registerEnchant(new Tanky());
@@ -1077,6 +1070,7 @@ public class PitSim extends JavaPlugin {
 		EnchantManager.registerEnchant(new Attentive());
 		EnchantManager.registerEnchant(new Belittle());
 		EnchantManager.registerEnchant(new BOOM());
+		EnchantManager.registerEnchant(new aDefend());
 		EnchantManager.registerEnchant(new Embalm());
 		EnchantManager.registerEnchant(new Evasive());
 		EnchantManager.registerEnchant(new Extinguish());

@@ -1,5 +1,6 @@
 package dev.kyro.pitsim.controllers.objects;
 
+import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.commands.FPSCommand;
 import dev.kyro.pitsim.controllers.MapManager;
@@ -140,7 +141,7 @@ public class Non {
 						else sprintVelo.multiply(0.4 * xMultiplier).setY(yVelo);
 						non.setVelocity(sprintVelo);
 					} catch(Exception ignored) {
-						System.out.println("error with non targets (im assuming)");
+						AOutput.log("error with non targets (im assuming)");
 					}
 				}
 			}
@@ -209,7 +210,7 @@ public class Non {
 			ignored.printStackTrace();
 			npc.despawn();
 			npc.spawn(spawnLoc);
-			System.out.println("non teleportation respawn errored");
+			AOutput.log("non teleportation respawn errored");
 		}
 
 		if(npc.isSpawned()) {

@@ -35,8 +35,8 @@ public class SkillBranchPanel extends AGUIPanel {
 
 	@Override
 	public String getName() {
-		String name = skillBranch.getDisplayName();
-		name = ChatColor.getLastColors(name) + "&l" + ChatColor.stripColor(name);
+		String name = ChatColor.translateAlternateColorCodes('&', skillBranch.getDisplayName());
+		name = ChatColor.getLastColors(name) + "&l" + "Skill: " + ChatColor.stripColor(name);
 		return ChatColor.translateAlternateColorCodes('&', name);
 	}
 
@@ -61,11 +61,13 @@ public class SkillBranchPanel extends AGUIPanel {
 			if(state == UnlockState.LOCKED) {
 				Sounds.NO.play(player);
 			} else if(state == UnlockState.NEXT_TO_UNLOCK) {
-				if(pitPlayer.taintedSouls < unlock.getCost()) {
+				int cost = unlock.getCost();
+				if(pitPlayer.taintedSouls < cost) {
 					Lang.NOT_ENOUGH_SOULS.send(player);
 					return;
 				}
-				ProgressionManager.unlock(pitPlayer, unlock);
+				pitPlayer.taintedSouls -= cost;
+				ProgressionManager.unlock(pitPlayer, unlock, cost);
 				setInventory();
 			}
 		} else if((slot >= 1 && slot <= 7) || (slot >= 19 && slot <= 25)) {
@@ -77,11 +79,13 @@ public class SkillBranchPanel extends AGUIPanel {
 			if(state == UnlockState.LOCKED) {
 				Sounds.NO.play(player);
 			} else if(state == UnlockState.NEXT_TO_UNLOCK) {
-				if(pitPlayer.taintedSouls < unlock.getCost(level)) {
+				int cost = unlock.getCost(level);
+				if(pitPlayer.taintedSouls < cost) {
 					Lang.NOT_ENOUGH_SOULS.send(player);
 					return;
 				}
-				ProgressionManager.unlockNext(pitPlayer, unlock);
+				pitPlayer.taintedSouls -= cost;
+				ProgressionManager.unlockNext(pitPlayer, unlock, cost);
 				setInventory();
 			}
 		} else if(slot == 36) {

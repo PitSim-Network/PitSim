@@ -1,6 +1,8 @@
 package dev.kyro.pitsim.controllers;
 
 import de.tr7zw.nbtapi.NBTItem;
+import dev.kyro.pitsim.aitems.PitItem;
+import dev.kyro.pitsim.aitems.TemporaryItem;
 import dev.kyro.pitsim.controllers.objects.PitEnchant;
 import dev.kyro.pitsim.enums.MysticType;
 import dev.kyro.pitsim.enums.NBTTag;
@@ -11,6 +13,11 @@ import java.util.*;
 
 public class TaintedEnchanting {
 	public static ItemStack enchantItem(ItemStack itemStack) {
+		PitItem pitItem = ItemFactory.getItem(itemStack);
+		if(pitItem == null || !pitItem.isMystic ||
+				pitItem.getTemporaryType(itemStack) != TemporaryItem.TemporaryType.LOOSES_LIVES_ON_DEATH) return null;
+		TemporaryItem temporaryItem = pitItem.getAsTemporaryItem();
+
 		MysticType type = MysticType.getMysticType(itemStack);
 //		if(type != MysticType.TAINTED_CHESTPLATE && type != MysticType.TAINTED_SCYTHE) return null;
 		NBTItem nbtItem = new NBTItem(itemStack);
@@ -83,7 +90,7 @@ public class TaintedEnchanting {
 				PitEnchant selectedEnchant = Misc.weightedRandom(randomEnchantMap);
 				int newTier = enchantsOnItem.getOrDefault(selectedEnchant, 0);
 				try {
-					returnStack = EnchantManager.addEnchant(returnStack, selectedEnchant, newTier + 1, false);
+					itemStack = EnchantManager.addEnchant(itemStack, selectedEnchant, newTier + 1, false);
 				} catch(Exception exception) {
 					exception.printStackTrace();
 				}

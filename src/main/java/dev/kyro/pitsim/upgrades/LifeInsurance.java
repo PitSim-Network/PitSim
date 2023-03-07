@@ -37,6 +37,17 @@ public class LifeInsurance extends RenownUpgrade {
 		}
 	}
 
+	public static boolean isApplicable(Player player) {
+		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
+		int tier = UpgradeManager.getTier(player, INSTANCE.refName);
+
+		if(!(pitPlayer.megastreak instanceof Uberstreak)) return false;
+		if(pitPlayer.getKills() >= 400 && tier >= 3) return true;
+		if(pitPlayer.getKills() >= 450 && tier >= 2) return true;
+		if(pitPlayer.getKills() >= 500 && tier >= 1) return true;
+		return false;
+	}
+
 	@Override
 	public ItemStack getDisplayItem(Player player) {
 		ItemStack item = new ItemStack(Material.BOOK_AND_QUILL);
@@ -58,17 +69,6 @@ public class LifeInsurance extends RenownUpgrade {
 		meta.setLore(UpgradeManager.loreBuilder(this, player, lore, false));
 		item.setItemMeta(meta);
 		return item;
-	}
-
-	public static boolean isApplicable(Player player) {
-		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
-		int tier = UpgradeManager.getTier(player, INSTANCE.refName);
-
-		if(!(pitPlayer.megastreak instanceof Uberstreak)) return false;
-		if(pitPlayer.getKills() >= 400 && tier >= 3) return true;
-		if(pitPlayer.getKills() >= 450 && tier >= 2) return true;
-		if(pitPlayer.getKills() >= 500 && tier >= 1) return true;
-		return false;
 	}
 
 	@Override

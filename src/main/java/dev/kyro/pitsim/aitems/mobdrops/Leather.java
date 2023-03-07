@@ -3,6 +3,7 @@ package dev.kyro.pitsim.aitems.mobdrops;
 import de.tr7zw.nbtapi.NBTItem;
 import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.pitsim.aitems.StaticPitItem;
+import dev.kyro.pitsim.aitems.TemporaryItem;
 import dev.kyro.pitsim.enums.AuctionCategory;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
@@ -11,7 +12,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class Leather extends StaticPitItem {
+public class Leather extends StaticPitItem implements TemporaryItem {
 
 	public Leather() {
 		hasDropConfirm = true;
@@ -51,5 +52,10 @@ public class Leather extends StaticPitItem {
 	@Override
 	public boolean isLegacyItem(ItemStack itemStack, NBTItem nbtItem) {
 		return false;
+	}
+
+	@Override
+	public TemporaryItem.TemporaryType getTemporaryType() {
+		return TemporaryType.LOST_ON_DEATH;
 	}
 }

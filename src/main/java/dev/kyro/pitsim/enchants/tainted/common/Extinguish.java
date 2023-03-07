@@ -4,13 +4,13 @@ import dev.kyro.pitsim.adarkzone.PitMob;
 import dev.kyro.pitsim.adarkzone.mobs.PitBlaze;
 import dev.kyro.pitsim.adarkzone.mobs.PitWitherSkeleton;
 import dev.kyro.pitsim.adarkzone.mobs.PitZombiePigman;
-import dev.kyro.pitsim.controllers.objects.CommonDarkzoneEnchant;
+import dev.kyro.pitsim.controllers.objects.BasicDarkzoneEnchant;
 import dev.kyro.pitsim.enums.ApplyType;
 
 import java.util.Arrays;
 import java.util.List;
 
-public class Extinguish extends CommonDarkzoneEnchant {
+public class Extinguish extends BasicDarkzoneEnchant {
 	public static Extinguish INSTANCE;
 
 	public Extinguish() {
@@ -22,7 +22,7 @@ public class Extinguish extends CommonDarkzoneEnchant {
 
 	@Override
 	public int getStatPercent(int enchantLvl) {
-		return enchantLvl * 10;
+		return enchantLvl * 10 + 8;
 	}
 
 	@Override

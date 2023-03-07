@@ -30,6 +30,20 @@ import java.util.Random;
 public class Stereo extends PitEnchant {
 	public static Stereo INSTANCE;
 
+	static {
+		new BukkitRunnable() {
+			@Override
+			public void run() {
+				for(Player player : Bukkit.getOnlinePlayers()) {
+					if(StereoManager.playerMusic.containsKey(player)) {
+						player.getWorld().spigot().playEffect(player.getLocation(),
+								Effect.NOTE, 0, 2, 0.5F, 0.5F, 0.5F, 1, 5, 25);
+					}
+				}
+			}
+		}.runTaskTimer(PitSim.INSTANCE, 0L, 4L);
+	}
+
 	public Stereo() {
 		super("Stereo", false, ApplyType.PANTS,
 				"stereo", "sterio");
@@ -38,7 +52,7 @@ public class Stereo extends PitEnchant {
 
 	@EventHandler
 	public void onArmorEquip(ArmorEquipEvent event) {
-		Player player = (Player) event.getPlayer();
+		Player player = event.getPlayer();
 
 		new BukkitRunnable() {
 			@Override
@@ -104,21 +118,6 @@ public class Stereo extends PitEnchant {
 				}
 			}
 		}.runTaskLater(PitSim.INSTANCE, 1L);
-
-	}
-
-	static {
-		new BukkitRunnable() {
-			@Override
-			public void run() {
-				for(Player player : Bukkit.getOnlinePlayers()) {
-					if(StereoManager.playerMusic.containsKey(player)) {
-						player.getWorld().spigot().playEffect(player.getLocation(),
-								Effect.NOTE, 0, 2, 0.5F, 0.5F, 0.5F, 1, 5, 25);
-					}
-				}
-			}
-		}.runTaskTimer(PitSim.INSTANCE, 0L, 4L);
 	}
 
 	@Override

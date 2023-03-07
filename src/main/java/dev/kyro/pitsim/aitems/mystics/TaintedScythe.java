@@ -4,6 +4,7 @@ import de.tr7zw.nbtapi.NBTItem;
 import dev.kyro.arcticapi.builders.AItemStackBuilder;
 import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.pitsim.aitems.StaticPitItem;
+import dev.kyro.pitsim.aitems.TemporaryItem;
 import dev.kyro.pitsim.controllers.EnchantManager;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.enums.AuctionCategory;
@@ -15,7 +16,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class TaintedScythe extends StaticPitItem {
+public class TaintedScythe extends StaticPitItem implements TemporaryItem {
 	public static double BASE_DAMAGE = 7.5;
 
 	public TaintedScythe() {
@@ -99,5 +100,10 @@ public class TaintedScythe extends StaticPitItem {
 	@Override
 	public boolean isLegacyItem(ItemStack itemStack, NBTItem nbtItem) {
 		return nbtItem.hasKey(NBTTag.TAINTED_TIER.getRef()) && itemStack.getType() == Material.GOLD_HOE;
+	}
+
+	@Override
+	public TemporaryType getTemporaryType() {
+		return TemporaryType.LOOSES_LIVES_ON_DEATH;
 	}
 }

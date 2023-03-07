@@ -2,13 +2,13 @@ package dev.kyro.pitsim.enchants.tainted.common;
 
 import dev.kyro.pitsim.adarkzone.PitMob;
 import dev.kyro.pitsim.adarkzone.mobs.PitCreeper;
-import dev.kyro.pitsim.controllers.objects.CommonDarkzoneEnchant;
+import dev.kyro.pitsim.controllers.objects.BasicDarkzoneEnchant;
 import dev.kyro.pitsim.enums.ApplyType;
 
 import java.util.Arrays;
 import java.util.List;
 
-public class BOOM extends CommonDarkzoneEnchant {
+public class BOOM extends BasicDarkzoneEnchant {
 	public static BOOM INSTANCE;
 
 	public BOOM() {
@@ -20,7 +20,7 @@ public class BOOM extends CommonDarkzoneEnchant {
 
 	@Override
 	public int getStatPercent(int enchantLvl) {
-		return enchantLvl * 10;
+		return enchantLvl * 6 + 4;
 	}
 
 	@Override

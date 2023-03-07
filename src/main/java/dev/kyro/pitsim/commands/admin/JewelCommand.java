@@ -6,7 +6,10 @@ import dev.kyro.arcticapi.commands.AMultiCommand;
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.arcticapi.misc.AUtil;
 import dev.kyro.pitsim.aitems.MysticFactory;
+import dev.kyro.pitsim.aitems.PitItem;
+import dev.kyro.pitsim.aitems.TemporaryItem;
 import dev.kyro.pitsim.controllers.EnchantManager;
+import dev.kyro.pitsim.controllers.ItemFactory;
 import dev.kyro.pitsim.controllers.objects.PitEnchant;
 import dev.kyro.pitsim.enums.MysticType;
 import dev.kyro.pitsim.enums.NBTTag;
@@ -60,6 +63,10 @@ public class JewelCommand extends ACommand {
 		ItemStack jewel = MysticFactory.getJewelItem(mysticType);
 		NBTItem nbtItem = new NBTItem(jewel);
 
+		PitItem pitItem = ItemFactory.getItem(jewel);
+		assert pitItem != null;
+		TemporaryItem temporaryItem = pitItem.getAsTemporaryItem();
+
 		if(pitEnchant != null) {
 			nbtItem.setInteger(NBTTag.JEWEL_KILLS.getRef(), Constant.JEWEL_KILLS);
 
@@ -67,16 +74,13 @@ public class JewelCommand extends ACommand {
 			if(maxLives <= 0) maxLives = EnchantManager.getRandomMaxLives();
 
 			nbtItem = new NBTItem(PantColor.setPantColor(nbtItem.getItem(), PantColor.getNormalRandom()));
-			nbtItem.setInteger(NBTTag.MAX_LIVES.getRef(), maxLives);
-			nbtItem.setInteger(NBTTag.CURRENT_LIVES.getRef(), maxLives);
 			try {
 				jewel = EnchantManager.addEnchant(nbtItem.getItem(), jewelEnchant, 3, false, true, -1);
-			} catch(Exception ignored) {
-			}
+			} catch(Exception ignored) {}
+			jewel = temporaryItem.addMaxLives(jewel, maxLives);
 		}
 
-		EnchantManager.setItemLore(jewel, null);
-
+		pitItem.updateItem(jewel);
 		return jewel;
 	}
 

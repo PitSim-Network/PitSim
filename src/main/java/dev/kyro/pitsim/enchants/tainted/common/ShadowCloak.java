@@ -2,13 +2,13 @@ package dev.kyro.pitsim.enchants.tainted.common;
 
 import dev.kyro.pitsim.adarkzone.PitMob;
 import dev.kyro.pitsim.adarkzone.mobs.*;
-import dev.kyro.pitsim.controllers.objects.CommonDarkzoneEnchant;
+import dev.kyro.pitsim.controllers.objects.BasicDarkzoneEnchant;
 import dev.kyro.pitsim.enums.ApplyType;
 
 import java.util.Arrays;
 import java.util.List;
 
-public class ShadowCloak extends CommonDarkzoneEnchant {
+public class ShadowCloak extends BasicDarkzoneEnchant {
 	public static ShadowCloak INSTANCE;
 
 	public ShadowCloak() {
@@ -20,7 +20,7 @@ public class ShadowCloak extends CommonDarkzoneEnchant {
 
 	@Override
 	public int getStatPercent(int enchantLvl) {
-		return enchantLvl * 10;
+		return enchantLvl * 3 + 4;
 	}
 
 	@Override

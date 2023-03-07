@@ -30,7 +30,7 @@ public class Leech extends Killstreak {
 		rewardPlayers.remove(attackEvent.getAttacker());
 
 		PitPlayer pitPlayer = attackEvent.getAttackerPitPlayer();
-		pitPlayer.heal(attackEvent.getFinalDamageIncrease() * (getPercent() / 100D));
+		pitPlayer.heal(attackEvent.getFinalPitDamageIncrease() * (getPercent() / 100D));
 	}
 
 	@Override

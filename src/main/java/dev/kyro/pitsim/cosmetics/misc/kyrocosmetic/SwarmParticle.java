@@ -1,12 +1,10 @@
 package dev.kyro.pitsim.cosmetics.misc.kyrocosmetic;
 
+import dev.kyro.pitsim.controllers.DamageManager;
 import dev.kyro.pitsim.misc.Misc;
-import org.bukkit.Bukkit;
 import org.bukkit.Effect;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
-import org.bukkit.event.entity.EntityDamageByEntityEvent;
-import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.util.Vector;
 
 import java.util.Random;
@@ -33,11 +31,7 @@ public class SwarmParticle extends AIParticle {
 		}
 		if(state == State.ATTACK) {
 			double distance = particleLocation.distance(target.getLocation().add(0, 1, 0));
-			if(distance < 1.5) {
-				EntityDamageByEntityEvent event = new EntityDamageByEntityEvent(owner, target, EntityDamageEvent.DamageCause.CUSTOM, DAMAGE);
-				Bukkit.getPluginManager().callEvent(event);
-				if(!event.isCancelled()) target.damage(DAMAGE, owner);
-			}
+			if(distance < 1.5) DamageManager.createAttack(owner, target, DAMAGE);
 			if(ticksUntilGoal == 0) {
 				state = State.IDLE;
 				cooldownTicks = new Random().nextInt(40) + 80;

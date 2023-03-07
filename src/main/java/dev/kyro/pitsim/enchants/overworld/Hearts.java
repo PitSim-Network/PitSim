@@ -1,13 +1,9 @@
 package dev.kyro.pitsim.enchants.overworld;
 
-import com.codingforcookies.armorequip.ArmorEquipEvent;
 import dev.kyro.pitsim.controllers.objects.PitEnchant;
-import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.enums.ApplyType;
 import dev.kyro.pitsim.misc.Misc;
 import dev.kyro.pitsim.misc.PitLoreBuilder;
-import org.bukkit.entity.Player;
-import org.bukkit.event.EventHandler;
 
 import java.util.List;
 import java.util.Map;
@@ -21,14 +17,14 @@ public class Hearts extends PitEnchant {
 		INSTANCE = this;
 	}
 
-	@EventHandler
-	public void onArmorEquip(ArmorEquipEvent event) {
-		Player player = event.getPlayer();
+	public static int getExtraHealth(Map<PitEnchant, Integer> enchantMap) {
+		if(!INSTANCE.isEnabled()) return 0;
 
-		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
-		pitPlayer.updateMaxHealth();
+		if(!enchantMap.containsKey(INSTANCE)) return 0;
+		int enchantLvl = enchantMap.get(INSTANCE);
+
+		return getExtraHealth(enchantLvl);
 	}
-
 	@Override
 	public List<String> getNormalDescription(int enchantLvl) {
 		return new PitLoreBuilder(
@@ -36,15 +32,7 @@ public class Hearts extends PitEnchant {
 		).getLore();
 	}
 
-	public int getExtraHealth(int enchantLvl) {
-
+	public static int getExtraHealth(int enchantLvl) {
 		return enchantLvl * 2;
-	}
-
-	public int getExtraHealth(Map<PitEnchant, Integer> enchantMap) {
-		if(!enchantMap.containsKey(this)) return 0;
-		int enchantLvl = enchantMap.get(this);
-
-		return getExtraHealth(enchantLvl);
 	}
 }

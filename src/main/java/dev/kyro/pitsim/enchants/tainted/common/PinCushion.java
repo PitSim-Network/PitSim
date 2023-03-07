@@ -3,13 +3,13 @@ package dev.kyro.pitsim.enchants.tainted.common;
 import dev.kyro.pitsim.adarkzone.PitMob;
 import dev.kyro.pitsim.adarkzone.mobs.PitBlaze;
 import dev.kyro.pitsim.adarkzone.mobs.PitSkeleton;
-import dev.kyro.pitsim.controllers.objects.CommonDarkzoneEnchant;
+import dev.kyro.pitsim.controllers.objects.BasicDarkzoneEnchant;
 import dev.kyro.pitsim.enums.ApplyType;
 
 import java.util.Arrays;
 import java.util.List;
 
-public class PinCushion extends CommonDarkzoneEnchant {
+public class PinCushion extends BasicDarkzoneEnchant {
 	public static PinCushion INSTANCE;
 
 	public PinCushion() {
@@ -21,7 +21,7 @@ public class PinCushion extends CommonDarkzoneEnchant {
 
 	@Override
 	public int getStatPercent(int enchantLvl) {
-		return enchantLvl * 10;
+		return enchantLvl * 5 + 3;
 	}
 
 	@Override

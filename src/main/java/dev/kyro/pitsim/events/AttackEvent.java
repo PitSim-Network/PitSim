@@ -1,13 +1,13 @@
 package dev.kyro.pitsim.events;
 
 import dev.kyro.pitsim.controllers.DamageManager;
+import dev.kyro.pitsim.controllers.PlayerManager;
 import dev.kyro.pitsim.controllers.objects.PitEnchant;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import org.bukkit.entity.*;
 import org.bukkit.event.Cancellable;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
-import org.bukkit.event.entity.EntityDamageByEntityEvent;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,12 +16,14 @@ import java.util.Map;
 public class AttackEvent extends Event {
 	private static final HandlerList handlers = new HandlerList();
 
-	private final EntityDamageByEntityEvent event;
+	private final WrapperEntityDamageEvent event;
 	private final Entity realDamager;
 	private final LivingEntity attacker;
 	private final LivingEntity defender;
-	private final boolean attackerIsPlayer;
-	private final boolean defenderIsPlayer;
+	private final boolean isAttackerPlayer;
+	private final boolean isDefenderPlayer;
+	private final boolean isAttackerRealPlayer;
+	private final boolean isDefenderRealPlayer;
 	private final Player attackerPlayer;
 	private final Player defenderPlayer;
 	private PitPlayer attackerPitPlayer;
@@ -34,28 +36,25 @@ public class AttackEvent extends Event {
 
 	private final boolean fakeHit;
 
-	public AttackEvent(EntityDamageByEntityEvent event, Map<PitEnchant, Integer> attackerEnchantMap, Map<PitEnchant, Integer> defenderEnchantMap, boolean fakeHit) {
+	public AttackEvent(WrapperEntityDamageEvent event, Map<PitEnchant, Integer> attackerEnchantMap, Map<PitEnchant, Integer> defenderEnchantMap, boolean fakeHit) {
 		this(event, event.getDamager(), attackerEnchantMap, defenderEnchantMap, fakeHit);
 	}
 
-	public AttackEvent(EntityDamageByEntityEvent event, Entity realDamager,
+	public AttackEvent(WrapperEntityDamageEvent event, Entity realDamager,
 					   Map<PitEnchant, Integer> attackerEnchantMap, Map<PitEnchant, Integer> defenderEnchantMap, boolean fakeHit) {
 		this.event = event;
 		this.realDamager = realDamager;
 		this.attacker = DamageManager.getAttacker(event.getDamager());
-		this.defender = (LivingEntity) event.getEntity();
-		this.attackerIsPlayer = getAttacker() instanceof Player;
-		this.defenderIsPlayer = getDefender() instanceof Player;
+		this.defender = event.getEntity();
+		this.isAttackerPlayer = attacker instanceof Player;
+		this.isDefenderPlayer = defender instanceof Player;
 		this.attackerPlayer = isAttackerPlayer() ? (Player) getAttacker() : null;
 		this.defenderPlayer = isDefenderPlayer() ? (Player) getDefender() : null;
+		this.isAttackerRealPlayer = PlayerManager.isRealPlayer(getAttackerPlayer());
+		this.isDefenderRealPlayer = PlayerManager.isRealPlayer((getDefenderPlayer()));
 		this.attackerEnchantMap = attackerEnchantMap;
 		this.defenderEnchantMap = defenderEnchantMap;
 		this.fakeHit = fakeHit;
-
-		if(isDefenderPlayer()) {
-			PitPlayer pitPlayer = PitPlayer.getPitPlayer(getDefenderPlayer());
-			if(!(pitPlayer.player == getAttacker())) pitPlayer.lastHitUUID = getAttacker().getUniqueId();
-		}
 
 		if(realDamager instanceof Arrow) {
 			this.arrow = (Arrow) realDamager;
@@ -75,8 +74,12 @@ public class AttackEvent extends Event {
 		return handlers;
 	}
 
-	public EntityDamageByEntityEvent getEvent() {
+	public WrapperEntityDamageEvent getWrapperEvent() {
 		return event;
+	}
+
+	public Entity getRealDamager() {
+		return realDamager;
 	}
 
 	public LivingEntity getAttacker() {
@@ -88,11 +91,23 @@ public class AttackEvent extends Event {
 	}
 
 	public boolean isAttackerPlayer() {
-		return attackerIsPlayer;
+		return isAttackerPlayer;
 	}
 
 	public boolean isDefenderPlayer() {
-		return defenderIsPlayer;
+		return isDefenderPlayer;
+	}
+
+	public boolean isAttackerRealPlayer() {
+		return isAttackerRealPlayer;
+	}
+
+	public boolean isDefenderRealPlayer() {
+		return isDefenderRealPlayer;
+	}
+
+	public boolean hasAttacker() {
+		return attacker != null;
 	}
 
 	public Player getAttackerPlayer() {
@@ -104,12 +119,12 @@ public class AttackEvent extends Event {
 	}
 
 	public PitPlayer getAttackerPitPlayer() {
-		if(attackerPitPlayer == null && attackerIsPlayer) attackerPitPlayer = PitPlayer.getPitPlayer(attackerPlayer);
+		if(attackerPitPlayer == null && isAttackerPlayer) attackerPitPlayer = PitPlayer.getPitPlayer(attackerPlayer);
 		return attackerPitPlayer;
 	}
 
 	public PitPlayer getDefenderPitPlayer() {
-		if(defenderPitPlayer == null && defenderIsPlayer) defenderPitPlayer = PitPlayer.getPitPlayer(defenderPlayer);
+		if(defenderPitPlayer == null && isDefenderPlayer) defenderPitPlayer = PitPlayer.getPitPlayer(defenderPlayer);
 		return defenderPitPlayer;
 	}
 
@@ -132,7 +147,7 @@ public class AttackEvent extends Event {
 	public static class Pre extends AttackEvent implements Cancellable {
 		private boolean cancel = false;
 
-		public Pre(EntityDamageByEntityEvent event, Entity realDamager,
+		public Pre(WrapperEntityDamageEvent event, Entity realDamager,
 				   Map<PitEnchant, Integer> attackerEnchantMap, Map<PitEnchant, Integer> defenderEnchantMap, boolean fakeHit) {
 			super(event, realDamager, attackerEnchantMap, defenderEnchantMap, fakeHit);
 		}
@@ -162,11 +177,11 @@ public class AttackEvent extends Event {
 		public double executeUnder = 0;
 
 		public Apply(AttackEvent event) {
-			super(event.getEvent(), event.realDamager, event.attackerEnchantMap, event.defenderEnchantMap, event.isFakeHit());
+			super(event.getWrapperEvent(), event.realDamager, event.attackerEnchantMap, event.defenderEnchantMap, event.isFakeHit());
 		}
 
-		public double getFinalDamage() {
-			double damage = getEvent().getDamage();
+		public double getFinalPitDamage() {
+			double damage = getWrapperEvent().getDamage();
 			damage += increase;
 			damage *= 1 + (increasePercent / 100.0);
 			for(double multiplier : multipliers) damage *= multiplier;
@@ -175,8 +190,8 @@ public class AttackEvent extends Event {
 			return Math.max(damage, 0);
 		}
 
-		public double getFinalDamageIncrease() {
-			double damage = getEvent().getDamage();
+		public double getFinalPitDamageIncrease() {
+			double damage = getWrapperEvent().getDamage();
 			damage += increase;
 			damage *= 1 + (increasePercent / 100.0);
 			for(double multiplier : multipliers) {
@@ -189,10 +204,21 @@ public class AttackEvent extends Event {
 	}
 
 	public static class Post extends AttackEvent {
+		private final AttackEvent.Apply applyEvent;
+		private final double finalDamage;
 
-		public Post(AttackEvent event) {
-			super(event.getEvent(), event.realDamager, event.attackerEnchantMap, event.defenderEnchantMap, event.isFakeHit());
+		public Post(AttackEvent.Apply event, double finalDamage) {
+			super(event.getWrapperEvent(), event.getRealDamager(), event.getAttackerEnchantMap(), event.getDefenderEnchantMap(), event.isFakeHit());
+			this.applyEvent = event;
+			this.finalDamage = finalDamage;
+		}
 
+		public Apply getApplyEvent() {
+			return applyEvent;
+		}
+
+		public double getFinalDamage() {
+			return finalDamage;
 		}
 	}
 
@@ -212,5 +238,13 @@ public class AttackEvent extends Event {
 
 	public Map<PitEnchant, Integer> getDefenderEnchantMap() {
 		return defenderEnchantMap;
+	}
+
+	public void setCancelled(boolean cancelled) {
+		getWrapperEvent().setCancelled(cancelled);
+	}
+
+	public boolean isCancelled() {
+		return getWrapperEvent().isCancelled();
 	}
 }

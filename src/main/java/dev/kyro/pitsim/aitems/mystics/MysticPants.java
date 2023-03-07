@@ -5,6 +5,7 @@ import de.tr7zw.nbtapi.NBTItem;
 import dev.kyro.arcticapi.builders.AItemStackBuilder;
 import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.pitsim.aitems.StaticPitItem;
+import dev.kyro.pitsim.aitems.TemporaryItem;
 import dev.kyro.pitsim.controllers.EnchantManager;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.enums.AuctionCategory;
@@ -17,7 +18,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class MysticPants extends StaticPitItem {
+public class MysticPants extends StaticPitItem implements TemporaryItem {
 
 	public MysticPants() {
 		hasUUID = true;
@@ -156,5 +157,10 @@ public class MysticPants extends StaticPitItem {
 	@Override
 	public boolean isLegacyItem(ItemStack itemStack, NBTItem nbtItem) {
 		return nbtItem.hasKey(NBTTag.ITEM_UUID.getRef()) && itemStack.getType() == Material.LEATHER_LEGGINGS;
+	}
+
+	@Override
+	public TemporaryType getTemporaryType() {
+		return TemporaryType.LOOSES_LIVES_ON_DEATH;
 	}
 }

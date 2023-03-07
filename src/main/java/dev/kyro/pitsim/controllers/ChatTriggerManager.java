@@ -1,7 +1,9 @@
 package dev.kyro.pitsim.controllers;
 
 import dev.kyro.pitsim.PitSim;
+import dev.kyro.pitsim.controllers.objects.Mappable;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
+import dev.kyro.pitsim.enchants.overworld.ReallyToxic;
 import dev.kyro.pitsim.megastreaks.Uberstreak;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -37,8 +39,14 @@ public class ChatTriggerManager implements Listener {
 		subscribedPlayers.remove(player);
 	}
 
+	public static void sendConstants(PitPlayer pitPlayer) {
+		Map<String, Object> dataMap = new HashMap<>();
+		dataMap.put("maxToxic", ReallyToxic.getMaxReduction());
+		sendData(pitPlayer.player, encodeMap(dataMap));
+	}
+
 	public static void sendPerksInfo(PitPlayer pitPlayer) {
-		Map<String, Object> dataMap = new LinkedHashMap<>();
+		Map<String, Object> dataMap = new HashMap<>();
 
 		List<String> perks = new ArrayList<>();
 		pitPlayer.pitPerks.forEach(pitPerk -> perks.add(pitPerk.displayName));
@@ -58,7 +66,7 @@ public class ChatTriggerManager implements Listener {
 		if(currentTick == PitSim.currentTick) return;
 		lastSendLevelData.put(pitPlayer.player, PitSim.currentTick);
 
-		Map<String, Object> dataMap = new LinkedHashMap<>();
+		Map<String, Object> dataMap = new HashMap<>();
 		dataMap.put("xp", PrestigeValues.getTotalXPForPrestige(pitPlayer.prestige, pitPlayer.level, pitPlayer.remainingXP));
 		dataMap.put("totalXPForPres", PrestigeValues.getTotalXPForPrestige(pitPlayer.prestige));
 		dataMap.put("currentGReq", pitPlayer.goldGrinded);
@@ -66,20 +74,20 @@ public class ChatTriggerManager implements Listener {
 	}
 
 	public static void sendPrestigeInfo(PitPlayer pitPlayer) {
-		Map<String, Object> dataMap = new LinkedHashMap<>();
+		Map<String, Object> dataMap = new HashMap<>();
 		dataMap.put("totalGReqForPres", PrestigeValues.getPrestigeInfo(pitPlayer.prestige).goldReq);
 		sendData(pitPlayer.player, encodeMap(dataMap));
 	}
 
 	public static void sendAuctionInfo(PitPlayer pitPlayer) {
-		Map<String, Object> dataMap = new LinkedHashMap<>();
-		dataMap.put("auctionData", CrossServerMessageManager.auctionNames);
+		Map<String, Object> dataMap = new HashMap<>();
+		dataMap.put("auctionData", CrossServerMessageManager.auctionItems);
 		dataMap.put("auctionEnd", CrossServerMessageManager.auctionEndTime);
 		sendData(pitPlayer.player, encodeMap(dataMap));
 	}
 
 	public static void sendUberInfo(PitPlayer pitPlayer) {
-		Map<String, Object> dataMap = new LinkedHashMap<>();
+		Map<String, Object> dataMap = new HashMap<>();
 		dataMap.put("maxUbers", Uberstreak.getMaxUbers(pitPlayer.player));
 		dataMap.put("ubersLeft", pitPlayer.dailyUbersLeft);
 		dataMap.put("uberResetTime", pitPlayer.uberReset);
@@ -87,13 +95,21 @@ public class ChatTriggerManager implements Listener {
 	}
 
 	public static void sendBountyInfo(PitPlayer pitPlayer) {
-		Map<String, Object> dataMap = new LinkedHashMap<>();
+		Map<String, Object> dataMap = new HashMap<>();
 		dataMap.put("bounty", pitPlayer.bounty);
 		sendData(pitPlayer.player, encodeMap(dataMap));
 	}
 
+	public static void sendToxicInfo(PitPlayer pitPlayer) {
+		Map<String, Object> dataMap = new HashMap<>();
+		dataMap.put("toxic", HitCounter.getCharge(pitPlayer.player, ReallyToxic.INSTANCE));
+		sendData(pitPlayer.player, encodeMap(dataMap));
+	}
+
 	public static Object encodeObject(Object object) {
-		if(object instanceof Map) {
+		if(object instanceof Mappable) {
+			return encodeMap(((Mappable) object).getAsMap());
+		} else if(object instanceof Map) {
 			return encodeMap((Map<String, Object>) object);
 		} else if(object instanceof Object[]) {
 			return encodeArray((Object[]) object);
@@ -124,11 +140,14 @@ public class ChatTriggerManager implements Listener {
 		subscribedPlayers.add(player);
 
 		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
+		sendConstants(pitPlayer);
+		sendPerksInfo(pitPlayer);
 		sendProgressionInfo(pitPlayer);
 		sendPrestigeInfo(pitPlayer);
 		sendAuctionInfo(pitPlayer);
-		sendPerksInfo(pitPlayer);
 		sendUberInfo(pitPlayer);
+		sendBountyInfo(pitPlayer);
+		sendToxicInfo(pitPlayer);
 	}
 
 	public static boolean isSubscribed(Player player) {

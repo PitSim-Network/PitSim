@@ -175,7 +175,7 @@ public class SlamAbility extends RoutinePitBossAbility {
 						dirt.display(entityPlayer, initialLocation, new ParticleOffset(0, 0, 0, 1, 1, 1));
 					}
 
-					Sounds.EXPLOSIVE_2.play(initialLocation, 20);
+					Sounds.SLAM_2.play(initialLocation, 20);
 
 					Location viewerLocation = viewer.getLocation();
 					double distance = viewerLocation.distance(initialLocation);

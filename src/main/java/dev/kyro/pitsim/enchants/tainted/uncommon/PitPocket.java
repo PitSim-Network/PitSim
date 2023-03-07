@@ -28,7 +28,7 @@ public class PitPocket extends PitEnchant {
 	public void onAttack(AttackEvent.Apply attackEvent) {
 		if(!PlayerManager.isRealPlayer(attackEvent.getAttackerPlayer()) || !PlayerManager.isRealPlayer(attackEvent.getDefenderPlayer())) return;
 		if(!canApply(attackEvent)) return;
-		if(attackEvent.getAttacker() != attackEvent.getEvent().getDamager()) return;
+		if(attackEvent.getAttacker() != attackEvent.getWrapperEvent().getDamager()) return;
 
 		int enchantLvl = attackEvent.getAttackerEnchantLevel(this);
 		if(enchantLvl == 0) return;

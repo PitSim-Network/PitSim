@@ -62,7 +62,6 @@ public class Sounds {
 	public static final SoundEffect BUTTON = new SoundEffect(Sound.CLICK, 2, 1);
 	public static final SoundEffect POTION_BUBBLE = new SoundEffect(Sound.LAVA, 1.5, 1);
 	public static final SoundEffect AEGIS = new SoundEffect(Sound.ANVIL_LAND, 1, 1.5);
-	public static final SoundEffect METEOR = new SoundEffect(Sound.FIZZ, 1, 0.7);
 	public static final SoundEffect TAINTED_CRAFT = new SoundEffect(Sound.ANVIL_USE, 2, 1.25F);
 	public static final SoundEffect SPLASH_CRAFT1 = new SoundEffect(Sound.GLASS, 2, 1.5F);
 	public static final SoundEffect SPLASH_CRAFT2 = new SoundEffect(Sound.LAVA, 2, 1.75F);
@@ -71,7 +70,6 @@ public class Sounds {
 	public static final SoundEffect LOAD_FINAL = new SoundEffect(Sound.NOTE_PLING, 1000, 1.8);
 
 	public static final SoundEffect SNAKE_ICE = new SoundEffect(Sound.GLASS, 1.3, 1.5);
-	public static final SoundEffect SLAM = new SoundEffect(Sound.DIG_GRASS, 1.3, 0.65);
 	public static final SoundEffect ANVIL_RAIN = new SoundEffect(Sound.ANVIL_LAND, 1.3, 0.45);
 	public static final SoundEffect FIRE_EXTINGUISH = new SoundEffect(Sound.FIREWORK_TWINKLE, 1.3, 0.45);
 	public static final SoundEffect BLOCK_LAND = new SoundEffect(Sound.DIG_STONE, 1.3, 0.45);
@@ -79,6 +77,8 @@ public class Sounds {
 	public static final SoundEffect TNT_PRIME = new SoundEffect("game.tnt.primed", 1.3, 1);
 	public static final SoundEffect DISORDER = new SoundEffect(Sound.ENDERMAN_TELEPORT, 1.3, 1.5);
 	public static final SoundEffect DISORDER2 = new SoundEffect(Sound.PORTAL_TRAVEL, 1, 1.25);
+	public static final SoundEffect SLAM = new SoundEffect(Sound.DIG_GRASS, 1.0, 0.65);
+	public static final SoundEffect SLAM_2 = new SoundEffect(Sound.EXPLODE, 0.5, 1);
 
 	//	Enchants
 	public static final SoundEffect BILLIONAIRE = new SoundEffect(Sound.ORB_PICKUP, 1, 0.73);
@@ -128,6 +128,9 @@ public class Sounds {
 	public static final SoundEffect ROLLING_THUNDER_START = new SoundEffect(Sound.ENDERDRAGON_GROWL, 1, 1);
 	public static final SoundEffect PITPOCKET = new SoundEffect(Sound.BURP, 1, 1);
 	public static final SoundEffect ADRENALINE = new SoundEffect(Sound.NOTE_PLING, 1, 1.65);
+	public static final SoundEffect HEMORRHAGE = new SoundEffect(Sound.DIG_STONE, 1, 0.8);
+	public static final SoundEffect METEOR = new SoundEffect(Sound.FIZZ, 0.5, 0.7);
+	public static final SoundEffect METEOR_2 = new SoundEffect(Sound.EXPLODE, 0.75, 1.4);
 
 	//	Megastreaks
 	public static final SoundEffect MEGA_GENERAL = new SoundEffect(Sound.WITHER_SPAWN, 1000, 1);

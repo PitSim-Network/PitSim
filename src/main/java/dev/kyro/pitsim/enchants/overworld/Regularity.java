@@ -62,13 +62,9 @@ public class Regularity extends PitEnchant {
 		ASound.play(attackEvent.getAttackerPlayer(), Sound.NOTE_BASS, 1, pitch);
 
 		if(toReg.contains(attackEvent.getDefender().getUniqueId())) return;
+		if(Math.random() > secondHitChance(enchantLvl) / 100.0) return;
 
 		HitCounter.incrementCharge(attackEvent.getAttackerPlayer(), this);
-
-//		double finalDamage = attackEvent.getEvent().getFinalDamage();
-//
-//		double random = Math.random() * (upperBoundFinalDamage(enchantLvl) - lowerBoundFinalDamage(enchantLvl)) + lowerBoundFinalDamage(enchantLvl);
-//		if(finalDamage > random) return;
 
 		toReg.add(attackEvent.getDefender().getUniqueId());
 		regCooldown.add(attackEvent.getDefender().getUniqueId());
@@ -77,7 +73,7 @@ public class Regularity extends PitEnchant {
 			public void run() {
 				if(!toReg.contains(attackEvent.getDefender().getUniqueId())) return;
 
-				double damage = attackEvent.getEvent().getOriginalDamage(EntityDamageEvent.DamageModifier.BASE);
+				double damage = attackEvent.getWrapperEvent().getSpigotEvent().getOriginalDamage(EntityDamageEvent.DamageModifier.BASE);
 				attackEvent.getDefender().setNoDamageTicks(0);
 				attackEvent.getDefender().damage(damage * secondHitDamage(enchantLvl) / 100, attackEvent.getAttacker());
 			}
@@ -112,8 +108,12 @@ public class Regularity extends PitEnchant {
 		return Math.random() * 100 > secondComboChance(enchantLvl);
 	}
 
+	public static int secondHitChance(int enchantLvl) {
+		return Math.min(enchantLvl * 25 + 25, 100);
+	}
+
 	public static int secondHitDamage(int enchantLvl) {
-		return enchantLvl * 50 - 10;
+		return enchantLvl * 30 + 40;
 	}
 
 	public static int secondComboChance(int enchantLvl) {
@@ -137,8 +137,9 @@ public class Regularity extends PitEnchant {
 //				"&7on the second hit)").getLore();
 
 		return new PitLoreBuilder(
-				"&7When you strike a player, &astrike again &7for &c" + secondHitDamage(enchantLvl) +
-				"% &7damage. Does not work &7with " + Billionaire.INSTANCE.getDisplayName()
+				"&7Your hits against players have a &a" + secondHitChance(enchantLvl) + "% &7chance to &astrike again &7for &c" +
+						secondHitDamage(enchantLvl) + "% &7damage if the final damage of your strike is low enough. " +
+						"Does not work with " + Billionaire.INSTANCE.getDisplayName()
 		).getLore();
 	}
 }

@@ -47,7 +47,7 @@ public class ProxyMessaging implements Listener {
 	}
 
 	public static void sendStartup() {
-		System.out.println(PitSim.serverName);
+		AOutput.log("Server Online: " + PitSim.serverName);
 		new PluginMessage().writeString("INITIATE STARTUP").writeString(PitSim.serverName).send();
 	}
 
@@ -135,7 +135,6 @@ public class ProxyMessaging implements Listener {
 			if(booleans.size() >= 1 && booleans.get(0)) {
 				UUID uuid = UUID.fromString(strings.get(1));
 				LobbySwitchManager.joinedFromDarkzone.add(uuid);
-				System.out.println(uuid + "joined from darkzone");
 
 				new BukkitRunnable() {
 					@Override
@@ -253,13 +252,11 @@ public class ProxyMessaging implements Listener {
 		}
 
 		if(strings.size() >= 3 && strings.get(0).equals("TELEPORT JOIN")) {
-			System.out.println("Map: " + joinTeleportMap);
 			UUID uuid = UUID.fromString(strings.get(1));
 			String player = strings.get(2);
 			if(player == null) return;
 
 			joinTeleportMap.put(uuid, player);
-			System.out.println("Map: " + joinTeleportMap);
 		}
 
 		if(strings.size() >= 2 && strings.get(0).equals("ADMIN GUI OPEN")) {
@@ -291,13 +288,14 @@ public class ProxyMessaging implements Listener {
 						pitPlayer.gold = currentBalance - toRemove;
 					}
 				}.runTask(PitSim.INSTANCE);
-
 			}
 
 			if(LobbySwitchManager.switchingPlayers.contains(player)) success = false;
 
-			System.out.println("Sending result of deposit: " + success);
-			dev.kyro.arcticguilds.misc.PluginMessage response = new dev.kyro.arcticguilds.misc.PluginMessage().writeString("DEPOSIT").writeString(player.getUniqueId().toString()).writeBoolean(success);
+			dev.kyro.arcticguilds.misc.PluginMessage response = new dev.kyro.arcticguilds.misc.PluginMessage()
+					.writeString("DEPOSIT")
+					.writeString(player.getUniqueId().toString())
+					.writeBoolean(success);
 			response.send();
 		}
 	}

@@ -3,13 +3,13 @@ package dev.kyro.pitsim.enchants.tainted.common;
 import dev.kyro.pitsim.adarkzone.PitMob;
 import dev.kyro.pitsim.adarkzone.mobs.PitIronGolem;
 import dev.kyro.pitsim.adarkzone.mobs.PitZombie;
-import dev.kyro.pitsim.controllers.objects.CommonDarkzoneEnchant;
+import dev.kyro.pitsim.controllers.objects.BasicDarkzoneEnchant;
 import dev.kyro.pitsim.enums.ApplyType;
 
 import java.util.Arrays;
 import java.util.List;
 
-public class Nimble extends CommonDarkzoneEnchant {
+public class Nimble extends BasicDarkzoneEnchant {
 	public static Nimble INSTANCE;
 
 	public Nimble() {
@@ -21,7 +21,7 @@ public class Nimble extends CommonDarkzoneEnchant {
 
 	@Override
 	public int getStatPercent(int enchantLvl) {
-		return enchantLvl * 10;
+		return enchantLvl * 11 + 10;
 	}
 
 	@Override

@@ -20,6 +20,8 @@ public class Fortify extends PitEnchant {
 	}
 
 	public static int getShieldIncrease(Player player) {
+		if(!INSTANCE.isEnabled()) return 0;
+
 		int enchantLvl = EnchantManager.getEnchantLevel(player, INSTANCE);
 		if(enchantLvl == 0) return 0;
 

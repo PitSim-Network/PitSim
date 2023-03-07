@@ -9,7 +9,6 @@ import dev.kyro.pitsim.adarkzone.PitMob;
 import dev.kyro.pitsim.controllers.objects.Non;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.events.AttackEvent;
-import dev.kyro.pitsim.events.KillEvent;
 import dev.kyro.pitsim.misc.Misc;
 import me.clip.placeholderapi.PlaceholderAPI;
 import net.minecraft.server.v1_8_R3.*;
@@ -19,7 +18,6 @@ import org.bukkit.craftbukkit.v1_8_R3.CraftWorld;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
-import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
@@ -31,13 +29,13 @@ public class DamageIndicator implements Listener {
 	public static DecimalFormat decimalFormat = new DecimalFormat("0");
 
 	//    @EventHandler(priority = EventPriority.MONITOR)
-	public static void onAttack(AttackEvent.Apply attackEvent) {
+	public static void onAttack(AttackEvent.Apply attackEvent, double finalDamage) {
 		if(!attackEvent.isAttackerPlayer() || attackEvent.isFakeHit() || attackEvent.getDefender().isDead()) return;
 
 		PitMob defenderMob = DarkzoneManager.getPitMob(attackEvent.getDefender());
 		PitBoss defenderBoss = BossManager.getPitBoss(attackEvent.getDefender());
 		if(defenderMob != null || defenderBoss != null) {
-			createDamageStand(attackEvent.getAttackerPlayer(), attackEvent.getDefender(), attackEvent.getEvent().getFinalDamage());
+			createDamageStand(attackEvent.getAttackerPlayer(), attackEvent.getDefender(), finalDamage);
 //			TODO: Enable this to remove boss bar damage indicator
 //			return;
 		}
@@ -47,14 +45,14 @@ public class DamageIndicator implements Listener {
 		EntityPlayer entityPlayer = null;
 		if(attackEvent.isDefenderPlayer()) entityPlayer = ((CraftPlayer) attackEvent.getDefender()).getHandle();
 
-		int roundedDamageTaken = ((int) attackEvent.getEvent().getFinalDamage()) / getNum(attackEvent.getDefender());
+		int roundedDamageTaken = ((int) finalDamage) / getNum(attackEvent.getDefender());
 
 		int originalHealth = ((int) attackEvent.getDefender().getHealth()) / getNum(attackEvent.getDefender());
 		int maxHealth = ((int) attackEvent.getDefender().getMaxHealth()) / getNum(attackEvent.getDefender());
 
 		int result = Math.max(originalHealth - roundedDamageTaken, 0);
 
-		if((attackEvent.getDefender().getHealth() - attackEvent.getEvent().getFinalDamage()) % 2 < 1 && attackEvent.getEvent().getFinalDamage() > 1)
+		if((attackEvent.getDefender().getHealth() - finalDamage) % 2 < 1 && finalDamage > 1)
 			roundedDamageTaken++;
 
 		if(result == 0) {
@@ -96,20 +94,12 @@ public class DamageIndicator implements Listener {
 			}
 			if(pitPlayer.shield.isActive()) {
 				output.append(" &8[").append(AUtil.createProgressBar("|", ChatColor.BLUE, ChatColor.GRAY,
-						(int) Math.ceil(Math.sqrt(pitPlayer.shield.getMax())),
-						pitPlayer.shield.getPreciseAmount() / pitPlayer.shield.getMax())).append("&8]");
+						(int) Math.ceil(Math.sqrt(pitPlayer.shield.getMaxShield())),
+						pitPlayer.shield.getPreciseAmount() / pitPlayer.shield.getMaxShield())).append("&8]");
 			}
 		}
 
 		ActionBarManager.sendActionBar(attackEvent.getAttackerPlayer(), output.toString());
-	}
-
-	@EventHandler
-	public void onKill(KillEvent killEvent) {
-		if(!PlayerManager.isRealPlayer(killEvent.getKillerPlayer())) return;
-		PitMob pitDead = DarkzoneManager.getPitMob(killEvent.getDead());
-		if(pitDead == null || !killEvent.getKillType().hasAttackerAndDefender()) return;
-		createDamageStand(killEvent.getKillerPlayer(), killEvent.getDead(), killEvent.getEvent().getFinalDamage());
 	}
 
 	public static void createDamageStand(Player attacker, LivingEntity defender, double damage) {

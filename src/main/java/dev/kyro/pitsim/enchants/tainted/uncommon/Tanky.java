@@ -19,6 +19,15 @@ public class Tanky extends PitEnchant {
 		INSTANCE = this;
 	}
 
+	public static int getExtraHealth(Map<PitEnchant, Integer> enchantMap) {
+		if(!INSTANCE.isEnabled()) return 0;
+
+		if(!enchantMap.containsKey(INSTANCE)) return 0;
+		int enchantLvl = enchantMap.get(INSTANCE);
+
+		return getExtraHealth(enchantLvl);
+	}
+
 	@Override
 	public List<String> getNormalDescription(int enchantLvl) {
 		return new PitLoreBuilder(
@@ -26,14 +35,7 @@ public class Tanky extends PitEnchant {
 		).getLore();
 	}
 
-	public int getExtraHealth(int enchantLvl) {
+	public static int getExtraHealth(int enchantLvl) {
 		return enchantLvl * 4;
-	}
-
-	public int getExtraHealth(Map<PitEnchant, Integer> enchantMap) {
-		if(!enchantMap.containsKey(this)) return 0;
-		int enchantLvl = enchantMap.get(this);
-
-		return getExtraHealth(enchantLvl);
 	}
 }

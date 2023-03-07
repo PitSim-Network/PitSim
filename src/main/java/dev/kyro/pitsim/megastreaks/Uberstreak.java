@@ -188,7 +188,7 @@ public class Uberstreak extends Megastreak {
 				if(uberEffects.size() < 1) uberEffects.add(uberEffect);
 				if(uberEffect == UberEffect.SKIP_100) zoom();
 				pitPlayer.updateMaxHealth();
-				AOutput.send(pitPlayer.player, "&d&lUBERSTREAK &7Random Effect: " + uberEffect.description);
+				AOutput.send(pitPlayer.player, "&d&lUBERSTREAK!&7 Random Effect: " + uberEffect.description);
 			}
 			if(current == 300) {
 				Sounds.UBER_300.play(pitPlayer.player);
@@ -196,7 +196,7 @@ public class Uberstreak extends Megastreak {
 				if(uberEffects.size() < 2) uberEffects.add(uberEffect);
 				if(uberEffect == UberEffect.SKIP_100) zoom();
 				pitPlayer.updateMaxHealth();
-				AOutput.send(pitPlayer.player, "&d&lUBERSTREAK &7Random Effect: " + uberEffect.description);
+				AOutput.send(pitPlayer.player, "&d&lUBERSTREAK!&7 Random Effect: " + uberEffect.description);
 			}
 			if(current == 400) {
 				Sounds.UBER_400.play(pitPlayer.player);
@@ -204,12 +204,12 @@ public class Uberstreak extends Megastreak {
 				if(uberEffects.size() < 3) uberEffects.add(uberEffect);
 				if(uberEffect == UberEffect.SKIP_100) zoom();
 				pitPlayer.updateMaxHealth();
-				AOutput.send(pitPlayer.player, "&d&lUBERSTREAK &7Random Effect: " + uberEffect.description);
+				AOutput.send(pitPlayer.player, "&d&lUBERSTREAK!&7 Random Effect: " + uberEffect.description);
 			}
 			if(current == 500) {
 				Sounds.UBER_500.play(pitPlayer.player);
 				pitPlayer.updateMaxHealth();
-				AOutput.send(pitPlayer.player, "&d&lUBERSTREAK &cCannot heal");
+				AOutput.send(pitPlayer.player, "&d&lUBERSTREAK!&c Cannot heal");
 			}
 		}
 	}
@@ -250,7 +250,7 @@ public class Uberstreak extends Megastreak {
 			player.sendMessage(PlaceholderAPI.setPlaceholders(pitPlayer.player, message2));
 		}
 		pitPlayer.updateMaxHealth();
-		AOutput.send(pitPlayer.player, "&d&lUBERSTREAK &cDeal -50% damage to nons");
+		AOutput.send(pitPlayer.player, "&d&lUBERSTREAK!&c Deal -50% damage to nons");
 	}
 
 	@Override
@@ -268,6 +268,7 @@ public class Uberstreak extends Megastreak {
 
 		if(pitPlayer.dailyUbersLeft <= 0) {
 			pitPlayer.megastreak = new NoMegastreak(pitPlayer);
+			ChatTriggerManager.sendPerksInfo(pitPlayer);
 			stop();
 		}
 

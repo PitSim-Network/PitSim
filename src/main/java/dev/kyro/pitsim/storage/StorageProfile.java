@@ -1,5 +1,6 @@
 package dev.kyro.pitsim.storage;
 
+import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.logging.LogManager;
 import dev.kyro.pitsim.controllers.EnchantManager;
@@ -214,8 +215,6 @@ public class StorageProfile {
 		PluginMessage message = new PluginMessage().writeString("ITEM DATA SAVE").writeString(uuid.toString());
 
 		message.writeBoolean(isLogout);
-//		System.out.println(StorageManager.isEditing(uuid) + " | " + StorageManager.editSessions);
-//		System.out.println(Bukkit.getPlayer(uuid) != null);
 		if(StorageManager.isEditing(uuid) && Bukkit.getPlayer(uuid) != null) return;
 		if(StorageManager.isBeingEdited(uuid) && Bukkit.getPlayer(uuid) != null) return;
 
@@ -312,7 +311,7 @@ public class StorageProfile {
 		if(Misc.isAirOrNull(itemStack)) return "";
 //		return Base64.itemTo64(itemStack);
 		if(isLogout && EnchantManager.isIllegalItem(itemStack) && !player.isOp()) {
-			System.out.println("Did not save illegal item: " + Misc.stringifyItem(itemStack));
+			AOutput.log("Did not save illegal item: " + Misc.stringifyItem(itemStack));
 			LogManager.onIllegalItemRemoved(player, itemStack);
 			return "";
 		}

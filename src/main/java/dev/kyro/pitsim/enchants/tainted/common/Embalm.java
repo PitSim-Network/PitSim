@@ -5,13 +5,13 @@ import dev.kyro.pitsim.adarkzone.mobs.PitSkeleton;
 import dev.kyro.pitsim.adarkzone.mobs.PitWitherSkeleton;
 import dev.kyro.pitsim.adarkzone.mobs.PitZombie;
 import dev.kyro.pitsim.adarkzone.mobs.PitZombiePigman;
-import dev.kyro.pitsim.controllers.objects.CommonDarkzoneEnchant;
+import dev.kyro.pitsim.controllers.objects.BasicDarkzoneEnchant;
 import dev.kyro.pitsim.enums.ApplyType;
 
 import java.util.Arrays;
 import java.util.List;
 
-public class Embalm extends CommonDarkzoneEnchant {
+public class Embalm extends BasicDarkzoneEnchant {
 	public static Embalm INSTANCE;
 
 	public Embalm() {
@@ -23,7 +23,7 @@ public class Embalm extends CommonDarkzoneEnchant {
 
 	@Override
 	public int getStatPercent(int enchantLvl) {
-		return enchantLvl * 10;
+		return enchantLvl * 4 + 4;
 	}
 
 	@Override

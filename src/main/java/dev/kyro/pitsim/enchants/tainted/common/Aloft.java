@@ -2,13 +2,13 @@ package dev.kyro.pitsim.enchants.tainted.common;
 
 import dev.kyro.pitsim.adarkzone.PitMob;
 import dev.kyro.pitsim.adarkzone.mobs.PitBlaze;
-import dev.kyro.pitsim.controllers.objects.CommonDarkzoneEnchant;
+import dev.kyro.pitsim.controllers.objects.BasicDarkzoneEnchant;
 import dev.kyro.pitsim.enums.ApplyType;
 
 import java.util.Arrays;
 import java.util.List;
 
-public class Aloft extends CommonDarkzoneEnchant {
+public class Aloft extends BasicDarkzoneEnchant {
 	public static Aloft INSTANCE;
 
 	public Aloft() {
@@ -20,7 +20,7 @@ public class Aloft extends CommonDarkzoneEnchant {
 
 	@Override
 	public int getStatPercent(int enchantLvl) {
-		return enchantLvl * 10;
+		return enchantLvl * 12 + 9;
 	}
 
 	@Override

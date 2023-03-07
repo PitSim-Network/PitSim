@@ -8,6 +8,7 @@ import dev.kyro.pitsim.adarkzone.BossManager;
 import dev.kyro.pitsim.adarkzone.DarkzoneManager;
 import dev.kyro.pitsim.adarkzone.PitMob;
 import dev.kyro.pitsim.aitems.PitItem;
+import dev.kyro.pitsim.aitems.TemporaryItem;
 import dev.kyro.pitsim.commands.LightningCommand;
 import dev.kyro.pitsim.controllers.*;
 import dev.kyro.pitsim.controllers.objects.HelmetManager;
@@ -60,30 +61,6 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class Misc {
-	public static boolean isEntity(Entity entity, PitEntityType... entityTypes) {
-		if(!(entity instanceof LivingEntity)) return false;
-		LivingEntity livingEntity = (LivingEntity) entity;
-		for(PitEntityType entityType : entityTypes) {
-			switch(entityType) {
-				case REAL_PLAYER:
-					if(PlayerManager.isRealPlayer(livingEntity)) return true;
-					break;
-				case NON:
-					if(NonManager.getNon(livingEntity) != null) return true;
-					break;
-				case HOPPER:
-					if(HopperManager.isHopper(livingEntity)) return true;
-					break;
-				case PIT_MOB:
-					if(DarkzoneManager.isPitMob(livingEntity)) return true;
-					break;
-				case PIT_BOSS:
-					if(BossManager.isPitBoss(livingEntity)) return true;
-					break;
-			}
-		}
-		throw new RuntimeException();
-	}
 
 	public static boolean isEntityNoError(Entity entity, PitEntityType... entityTypes) {
 		if(!(entity instanceof LivingEntity)) return false;
@@ -150,6 +127,31 @@ public class Misc {
 			realPlayers.add(onlinePlayer);
 		}
 		return realPlayers;
+	}
+
+	public static boolean isEntity(Entity entity, PitEntityType... entityTypes) {
+		if(!(entity instanceof LivingEntity)) return false;
+		LivingEntity livingEntity = (LivingEntity) entity;
+		for(PitEntityType entityType : entityTypes) {
+			switch(entityType) {
+				case REAL_PLAYER:
+					if(PlayerManager.isRealPlayer(livingEntity)) return true;
+					break;
+				case NON:
+					if(NonManager.getNon(livingEntity) != null) return true;
+					break;
+				case HOPPER:
+					if(HopperManager.isHopper(livingEntity)) return true;
+					break;
+				case PIT_MOB:
+					if(DarkzoneManager.isPitMob(livingEntity)) return true;
+					break;
+				case PIT_BOSS:
+					if(BossManager.isPitBoss(livingEntity)) return true;
+					break;
+			}
+		}
+		return false;
 	}
 
 	public static boolean isValidMobPlayerTarget(Entity entity, Entity... excluded) {
@@ -249,7 +251,6 @@ public class Misc {
 				finalString += chars[i];
 			} else {
 				String substring = message.substring(0, i);
-				System.out.println("thing: " + ChatColor.getLastColors(substring));
 				finalString += "\u00A7k" + chars[i] + ChatColor.getLastColors(substring);
 			}
 		}
@@ -318,8 +319,15 @@ public class Misc {
 		PitItem pitItem = ItemFactory.getItem(itemStack);
 
 		if(pitItem != null && pitItem.isMystic) {
-			serializedItem += " " + nbtItem.getString(NBTTag.ITEM_UUID.getRef()) + " " +
-					nbtItem.getInteger(NBTTag.CURRENT_LIVES.getRef()) + "/" + nbtItem.getInteger(NBTTag.MAX_LIVES.getRef());
+			TemporaryItem.TemporaryType temporaryType = pitItem.getTemporaryType(itemStack);
+			TemporaryItem temporaryItem = temporaryType == null ? null : pitItem.getAsTemporaryItem();
+
+			serializedItem += " " + nbtItem.getString(NBTTag.ITEM_UUID.getRef());
+
+			if(temporaryType == TemporaryItem.TemporaryType.LOOSES_LIVES_ON_DEATH) {
+				serializedItem += " " + temporaryItem.getLives(itemStack) + "/" + temporaryItem.getMaxLives(itemStack);
+			}
+
 			if(nbtItem.hasKey(NBTTag.IS_GEMMED.getRef())) serializedItem += " Gemmed";
 			if(EnchantManager.isJewelComplete(itemStack)) serializedItem += " Jewel: " +
 					EnchantManager.getEnchant(nbtItem.getString(NBTTag.ITEM_JEWEL_ENCHANT.getRef())).getDisplayName();

@@ -1,6 +1,5 @@
 package dev.kyro.pitsim.controllers;
 
-import de.tr7zw.nbtapi.NBTItem;
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.adarkzone.BossManager;
@@ -8,9 +7,10 @@ import dev.kyro.pitsim.adarkzone.DarkzoneManager;
 import dev.kyro.pitsim.adarkzone.PitMob;
 import dev.kyro.pitsim.adarkzone.SubLevel;
 import dev.kyro.pitsim.adarkzone.notdarkzone.Shield;
+import dev.kyro.pitsim.adarkzone.progression.ProgressionManager;
+import dev.kyro.pitsim.adarkzone.progression.SkillBranch;
+import dev.kyro.pitsim.adarkzone.progression.skillbranches.DefenceBranch;
 import dev.kyro.pitsim.aitems.PitItem;
-import dev.kyro.pitsim.aitems.misc.CorruptedFeather;
-import dev.kyro.pitsim.aitems.misc.FunkyFeather;
 import dev.kyro.pitsim.aitems.prot.ProtBoots;
 import dev.kyro.pitsim.aitems.prot.ProtChestplate;
 import dev.kyro.pitsim.aitems.prot.ProtHelmet;
@@ -19,28 +19,30 @@ import dev.kyro.pitsim.controllers.objects.Non;
 import dev.kyro.pitsim.controllers.objects.PitEnchant;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.enchants.overworld.Regularity;
+import dev.kyro.pitsim.enchants.overworld.Singularity;
 import dev.kyro.pitsim.enchants.overworld.Telebow;
-import dev.kyro.pitsim.enchants.tainted.effects.PurpleThumb;
+import dev.kyro.pitsim.enchants.tainted.chestplate.PurpleThumb;
 import dev.kyro.pitsim.enchants.tainted.uncommon.ShieldBuster;
-import dev.kyro.pitsim.enums.*;
+import dev.kyro.pitsim.enums.KillModifier;
+import dev.kyro.pitsim.enums.KillType;
+import dev.kyro.pitsim.enums.NonTrait;
 import dev.kyro.pitsim.events.AttackEvent;
 import dev.kyro.pitsim.events.KillEvent;
-import dev.kyro.pitsim.logging.LogManager;
+import dev.kyro.pitsim.events.WrapperEntityDamageEvent;
 import dev.kyro.pitsim.megastreaks.NoMegastreak;
 import dev.kyro.pitsim.megastreaks.RNGesus;
 import dev.kyro.pitsim.misc.ArmorReduction;
 import dev.kyro.pitsim.misc.Misc;
 import dev.kyro.pitsim.misc.Sounds;
-import dev.kyro.pitsim.upgrades.BreadDealer;
-import dev.kyro.pitsim.upgrades.DivineIntervention;
-import dev.kyro.pitsim.upgrades.LifeInsurance;
 import me.clip.placeholderapi.PlaceholderAPI;
 import net.citizensnpcs.api.CitizensAPI;
+import net.minecraft.server.v1_8_R3.EntityLiving;
 import net.minecraft.server.v1_8_R3.EntityPlayer;
 import org.bukkit.Bukkit;
 import org.bukkit.EntityEffect;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.craftbukkit.v1_8_R3.entity.CraftLivingEntity;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
 import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
@@ -49,7 +51,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityRegainHealthEvent;
-import org.bukkit.event.entity.EntityShootBowEvent;
+import org.bukkit.event.entity.ProjectileLaunchEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.potion.PotionEffect;
@@ -58,6 +60,7 @@ import org.bukkit.scheduler.BukkitTask;
 
 import java.text.DecimalFormat;
 import java.util.*;
+import java.util.function.Consumer;
 
 public class DamageManager implements Listener {
 	public static List<LivingEntity> hitCooldownList = new ArrayList<>();
@@ -65,23 +68,41 @@ public class DamageManager implements Listener {
 	public static List<LivingEntity> nonHitCooldownList = new ArrayList<>();
 	public static List<LivingEntity> bossHitCooldown = new ArrayList<>();
 
-	public static Map<EntityShootBowEvent, Map<PitEnchant, Integer>> arrowMap = new HashMap<>();
+	public static Map<Projectile, Map<PitEnchant, Integer>> projectileMap = new HashMap<>();
 	public static Map<Entity, LivingEntity> hitTransferMap = new HashMap<>();
+	public static Map<LivingEntity, Consumer<AttackEvent>> attackCallbackMap = new HashMap<>();
 
 	static {
 		new BukkitRunnable() {
 			@Override
 			public void run() {
-				List<EntityShootBowEvent> toRemove = new ArrayList<>();
-				for(Map.Entry<EntityShootBowEvent, Map<PitEnchant, Integer>> entry : arrowMap.entrySet()) {
-
-					if(entry.getKey().getProjectile().isDead()) toRemove.add(entry.getKey());
-				}
-				for(EntityShootBowEvent remove : toRemove) {
-					arrowMap.remove(remove);
+				for(Map.Entry<Projectile, Map<PitEnchant, Integer>> entry : new ArrayList<>(projectileMap.entrySet())) {
+					if(entry.getKey().isDead()) projectileMap.remove(entry.getKey());
 				}
 			}
 		}.runTaskTimer(PitSim.INSTANCE, 0L, 1L);
+	}
+
+	public static void createAttack(LivingEntity defender, double damage) {
+		createAttack(defender, damage, null);
+	}
+
+	public static void createAttack(LivingEntity defender, double damage, Consumer<AttackEvent> callback) {
+		assert defender != null;
+		if(callback != null) attackCallbackMap.put(defender, callback);
+		EntityDamageEvent event = new EntityDamageEvent(defender, EntityDamageEvent.DamageCause.CUSTOM, damage);
+		Bukkit.getPluginManager().callEvent(event);
+		if(!event.isCancelled()) defender.damage(event.getDamage());
+	}
+
+	public static void createAttack(LivingEntity attacker, LivingEntity defender, double damage) {
+		createAttack(attacker, defender, damage, null);
+	}
+
+	public static void createAttack(LivingEntity attacker, LivingEntity defender, double damage, Consumer<AttackEvent> callback) {
+		assert attacker != null && defender != null;
+		if(callback != null) attackCallbackMap.put(defender, callback);
+		defender.damage(damage, attacker);
 	}
 
 	@EventHandler
@@ -96,7 +117,7 @@ public class DamageManager implements Listener {
 		}
 	}
 
-	@EventHandler
+	@EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
 	public void onHeal(EntityRegainHealthEvent event) {
 		if(!(event.getEntity() instanceof Player) || event.getRegainReason() == EntityRegainHealthEvent.RegainReason.CUSTOM)
 			return;
@@ -108,10 +129,11 @@ public class DamageManager implements Listener {
 	}
 
 	@EventHandler(ignoreCancelled = true, priority = EventPriority.HIGH)
-	public void onBowShoot(EntityShootBowEvent event) {
-		if(!(event.getEntity() instanceof Player) || !(event.getProjectile() instanceof Arrow)) return;
-		Player shooter = (Player) event.getEntity();
-		arrowMap.put(event, EnchantManager.getEnchantsOnPlayer(shooter));
+	public void onBowShoot(ProjectileLaunchEvent event) {
+		if(!(event.getEntity().getShooter() instanceof Player)) return;
+		Projectile projectile = event.getEntity();
+		Player shooter = (Player) projectile.getShooter();
+		projectileMap.put(projectile, EnchantManager.getEnchantsOnPlayer(shooter));
 	}
 
 	public void transferHit(LivingEntity attacker, Entity damager, LivingEntity defender, double damage) {
@@ -122,8 +144,22 @@ public class DamageManager implements Listener {
 	@EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
 	public void onAttack(EntityDamageByEntityEvent event) {
 		if(!(event.getEntity() instanceof LivingEntity)) return;
+		WrapperEntityDamageEvent wrapperEvent = new WrapperEntityDamageEvent(event);
+		onAttack(wrapperEvent);
+	}
+
+	@EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
+	public void onAttack(EntityDamageEvent event) {
+		if(event instanceof EntityDamageByEntityEvent) return;
+		if(!(event.getEntity() instanceof LivingEntity)) return;
+		WrapperEntityDamageEvent wrapperEvent = new WrapperEntityDamageEvent(event);
+		onAttack(wrapperEvent);
+	}
+
+	public void onAttack(WrapperEntityDamageEvent event) {
+		if(event.getEntity() == null) return;
 		LivingEntity attacker = getAttacker(event.getDamager());
-		LivingEntity defender = (LivingEntity) event.getEntity();
+		LivingEntity defender = event.getEntity();
 
 		if(defender.isDead()) return;
 
@@ -146,7 +182,7 @@ public class DamageManager implements Listener {
 
 			if(defenderMob != null) {
 				try {
-					event.setDamage(EntityDamageEvent.DamageModifier.ARMOR, 0);
+					event.getSpigotEvent().setDamage(EntityDamageEvent.DamageModifier.ARMOR, 0);
 				} catch(Exception ignored) {}
 			}
 
@@ -171,6 +207,7 @@ public class DamageManager implements Listener {
 		if(defender instanceof Slime && !(defender instanceof MagmaCube)) return;
 
 		Map<PitEnchant, Integer> defenderEnchantMap = EnchantManager.getEnchantsOnPlayer(defender);
+
 		boolean fakeHit = false;
 
 		Non attackingNon = NonManager.getNon(attacker);
@@ -226,12 +263,12 @@ public class DamageManager implements Listener {
 
 //		Reduce cpu load by not handling non v non
 		if(attackingNon != null && defendingNon != null) {
-			if(defender.getHealth() <= event.getFinalDamage()) {
+			if(defender.getHealth() <= event.getSpigotEvent().getFinalDamage()) {
 				defender.setHealth(defender.getMaxHealth());
 			} else {
-				defender.setHealth(defender.getHealth() - event.getFinalDamage());
+				defender.setHealth(defender.getHealth() - event.getSpigotEvent().getFinalDamage());
 			}
-			event.setDamage(0);
+			event.getSpigotEvent().setDamage(0);
 			return;
 		}
 
@@ -239,21 +276,19 @@ public class DamageManager implements Listener {
 //			Non damage
 			double damage = attackingNon.traits.contains(NonTrait.IRON_STREAKER) ? 9.6 : 7;
 			if(Misc.isCritical(attacker)) damage *= 1.5;
-			event.setDamage(damage);
+			event.getSpigotEvent().setDamage(damage);
 		}
 
 		AttackEvent.Pre preEvent;
 		if(event.getEntity() instanceof Fireball) return;
 
 		Map<PitEnchant, Integer> attackerEnchantMap = new HashMap<>();
-		if(realDamager instanceof Slime && !(realDamager instanceof MagmaCube)) {
-		} else if(realDamager instanceof Arrow) {
-			for(Map.Entry<EntityShootBowEvent, Map<PitEnchant, Integer>> entry : arrowMap.entrySet()) {
-				if(!entry.getKey().getProjectile().equals(realDamager)) continue;
-				attackerEnchantMap = arrowMap.get(entry.getKey());
+		if(realDamager instanceof Projectile) {
+			for(Map.Entry<Projectile, Map<PitEnchant, Integer>> entry : projectileMap.entrySet()) {
+				if(!entry.getKey().equals(realDamager)) continue;
+				attackerEnchantMap = projectileMap.get(entry.getKey());
 				break;
 			}
-		} else if(realDamager instanceof Fireball) {
 		} else if(realDamager instanceof LivingEntity) {
 			attackerEnchantMap = EnchantManager.getEnchantsOnPlayer(attacker);
 		}
@@ -274,19 +309,21 @@ public class DamageManager implements Listener {
 		AttackEvent.Apply applyEvent = new AttackEvent.Apply(preEvent);
 		Bukkit.getServer().getPluginManager().callEvent(applyEvent);
 
-		handleAttack(applyEvent);
-		Bukkit.getServer().getPluginManager().callEvent(new AttackEvent.Post(applyEvent));
+		double finalDamage = handleAttack(applyEvent);
+
+		AttackEvent.Post postEvent = new AttackEvent.Post(applyEvent, finalDamage);
+		Bukkit.getServer().getPluginManager().callEvent(postEvent);
 	}
 
-	public static void handleAttack(AttackEvent.Apply attackEvent) {
+	public static double handleAttack(AttackEvent.Apply attackEvent) {
 //		AOutput.send(attackEvent.attacker, "Initial Damage: " + attackEvent.event.getDamage());
 
 //		As strong as iron
 		attackEvent.multipliers.add(ArmorReduction.getReductionMultiplier(attackEvent.getDefender()));
 
 //		New player defence
-		if(PitSim.status.isOverworld() && PlayerManager.isRealPlayer(attackEvent.getDefenderPlayer()) && PlayerManager.isRealPlayer(attackEvent.getAttackerPlayer()) &&
-				attackEvent.getDefenderPlayer().getLocation().distance(MapManager.currentMap.getMid()) < 12) {
+		if(PitSim.status.isOverworld() && attackEvent.isDefenderRealPlayer() && attackEvent.isAttackerRealPlayer() &&
+				attackEvent.getDefender().getLocation().distance(MapManager.currentMap.getMid()) < 12) {
 			if(attackEvent.getDefenderPitPlayer().prestige < 10) {
 				int minutesPlayed = attackEvent.getDefenderPitPlayer().stats.minutesPlayed;
 				double reduction = Math.max(50 - (minutesPlayed / 8.0), 0);
@@ -295,23 +332,45 @@ public class DamageManager implements Listener {
 			}
 		}
 
-		double damage = attackEvent.getFinalDamage();
-		if(PlayerManager.isRealPlayer(attackEvent.getDefenderPlayer())) {
+		double damage = attackEvent.getFinalPitDamage();
+		if(attackEvent.isDefenderRealPlayer()) {
 			Shield defenderShield = attackEvent.getDefenderPitPlayer().shield;
 			double multiplier = 1;
 			multiplier *= ShieldBuster.getMultiplier(attackEvent.getAttackerPlayer());
 			if(PlayerManager.isRealPlayer(attackEvent.getAttackerPlayer())) multiplier *= 2;
+			if(ProgressionManager.isUnlocked(attackEvent.getDefenderPitPlayer(), DefenceBranch.INSTANCE, SkillBranch.MajorUnlockPosition.LAST))
+				multiplier *= Misc.getReductionMultiplier(DefenceBranch.getShieldDamageReduction());
 			if(defenderShield.isActive()) damage = defenderShield.damageShield(damage, multiplier);
 		}
-		attackEvent.getEvent().setDamage(damage);
+		attackEvent.getWrapperEvent().getSpigotEvent().setDamage(damage);
+
+		EntityLiving nmsDefender = ((CraftLivingEntity) attackEvent.getDefender()).getHandle();
+		float absorption = nmsDefender.getAbsorptionHearts();
+		if(absorption != 0) nmsDefender.setAbsorptionHearts(0);
+
+		double finalDamage = Singularity.getAdjustedFinalDamage(attackEvent);
+		attackEvent.getWrapperEvent().getSpigotEvent().setDamage(0);
+
+		DamageIndicator.onAttack(attackEvent, finalDamage);
+
+		if(absorption != 0) {
+			if(absorption > finalDamage) {
+				finalDamage = 0;
+				absorption -= finalDamage;
+			} else {
+				finalDamage -= absorption;
+				absorption = 0;
+			}
+			nmsDefender.setAbsorptionHearts(absorption);
+		}
 
 		if(attackEvent.trueDamage != 0 || attackEvent.veryTrueDamage != 0) {
 			double finalHealth = attackEvent.getDefender().getHealth() - attackEvent.trueDamage - attackEvent.veryTrueDamage;
 			if(PurpleThumb.shouldPreventDeath(attackEvent.getDefenderPlayer())) finalHealth = Math.max(finalHealth, 1);
 			if(finalHealth <= 0) {
-				attackEvent.getEvent().setCancelled(true);
+				attackEvent.setCancelled(true);
 				kill(attackEvent, attackEvent.getAttacker(), attackEvent.getDefender(), KillType.KILL);
-				return;
+				return 0;
 			} else {
 				attackEvent.getDefender().setHealth(Math.max(finalHealth, 0));
 			}
@@ -321,9 +380,9 @@ public class DamageManager implements Listener {
 			double finalHealth = attackEvent.getAttacker().getHealth() - attackEvent.selfTrueDamage - attackEvent.selfVeryTrueDamage;
 			if(PurpleThumb.shouldPreventDeath(attackEvent.getAttackerPlayer())) finalHealth = Math.max(finalHealth, 1);
 			if(finalHealth <= 0) {
-				attackEvent.getEvent().setCancelled(true);
+				attackEvent.setCancelled(true);
 				kill(attackEvent, attackEvent.getDefender(), attackEvent.getAttacker(), KillType.KILL);
-				return;
+				return 0;
 			} else {
 				attackEvent.getAttacker().setHealth(Math.max(finalHealth, 0));
 //				attackEvent.attacker.damage(0);
@@ -332,33 +391,35 @@ public class DamageManager implements Listener {
 
 		if(attackEvent.isDefenderPlayer()) {
 			PitPlayer pitPlayer = PitPlayer.getPitPlayer(attackEvent.getDefenderPlayer());
-			pitPlayer.addDamage(attackEvent.getAttacker(), attackEvent.getEvent().getFinalDamage() + attackEvent.trueDamage);
+			pitPlayer.addDamage(attackEvent.getAttacker(), finalDamage + attackEvent.trueDamage);
 		}
 
 //		AOutput.send(attackEvent.attacker, "Final Damage: " + attackEvent.event.getDamage());
 //		AOutput.send(attackEvent.attacker, "Final Damage: " + attackEvent.event.getFinalDamage());
 
-		if(attackEvent.getEvent().getFinalDamage() + attackEvent.executeUnder >= attackEvent.getDefender().getHealth()) {
+		if(finalDamage + attackEvent.executeUnder >= attackEvent.getDefender().getHealth()) {
 			if(PurpleThumb.shouldPreventDeath(attackEvent.getDefenderPlayer())) {
-				attackEvent.getEvent().setDamage(0);
+				attackEvent.getWrapperEvent().getSpigotEvent().setDamage(0);
 				attackEvent.getDefender().setHealth(1);
 			} else {
-				attackEvent.getEvent().setCancelled(true);
-				boolean exeDeath = attackEvent.getEvent().getFinalDamage() < attackEvent.getDefender().getHealth();
+				attackEvent.setCancelled(true);
+				boolean exeDeath = finalDamage < attackEvent.getDefender().getHealth();
 				if(exeDeath) {
 					kill(attackEvent, attackEvent.getAttacker(), attackEvent.getDefender(), KillType.KILL, KillModifier.EXECUTION);
 				} else {
 					kill(attackEvent, attackEvent.getAttacker(), attackEvent.getDefender(), KillType.KILL);
 				}
 			}
+		} else {
+			attackEvent.getDefender().setHealth(attackEvent.getDefender().getHealth() - finalDamage);
 		}
 
-		DamageIndicator.onAttack(attackEvent);
+		if(attackCallbackMap.containsKey(attackEvent.getDefender())) attackCallbackMap.remove(attackEvent.getDefender()).accept(attackEvent);
+		return finalDamage;
 	}
 
 	public static LivingEntity getAttacker(Entity damager) {
-		if(damager instanceof Arrow) return (LivingEntity) ((Arrow) damager).getShooter();
-		if(damager instanceof Fireball) return (LivingEntity) ((Fireball) damager).getShooter();
+		if(damager instanceof Projectile) return (LivingEntity) ((Projectile) damager).getShooter();
 		if(damager instanceof Slime && !(damager instanceof MagmaCube)) return BlobManager.getOwner((Slime) damager);
 		if(damager instanceof LivingEntity) return (LivingEntity) damager;
 		return null;
@@ -402,8 +463,8 @@ public class DamageManager implements Listener {
 			EntityPlayer nmsPlayer = ((CraftPlayer) dead).getHandle();
 			nmsPlayer.setAbsorptionHearts(0);
 
-			if(!LifeInsurance.isApplicable(deadPlayer) && !hasKillModifier(KillModifier.SELF_CHECKOUT, killModifiers))
-				loseLives(dead, killer);
+//			if(!LifeInsurance.isApplicable(deadPlayer) && !hasKillModifier(KillModifier.SELF_CHECKOUT, killModifiers))
+//				loseLives(dead, killer);
 
 			if(deadIsRealPlayer) pitDead.endKillstreak();
 			Telebow.teleShots.removeIf(teleShot -> teleShot.getShooter().equals(dead));
@@ -527,7 +588,7 @@ public class DamageManager implements Listener {
 						Map<PitEnchant, Integer> attackerEnchant = EnchantManager.getEnchantsOnPlayer(assistPlayer);
 						Map<PitEnchant, Integer> defenderEnchant = new HashMap<>();
 						EntityDamageByEntityEvent newEvent = new EntityDamageByEntityEvent(assistPlayer, dead, EntityDamageEvent.DamageCause.CUSTOM, 0);
-						AttackEvent newAttackEvent = new AttackEvent(newEvent, attackerEnchant, defenderEnchant, false);
+						AttackEvent newAttackEvent = new AttackEvent(new WrapperEntityDamageEvent(newEvent), attackerEnchant, defenderEnchant, false);
 
 						DamageManager.fakeKill(newAttackEvent, assistPlayer, dead);
 						continue;
@@ -560,109 +621,109 @@ public class DamageManager implements Listener {
 		}
 	}
 
-	public static void loseLives(LivingEntity dead, LivingEntity killer) {
-		if(!(dead instanceof Player)) return;
-		if(MapManager.inDarkzone(dead.getLocation())) {
-			//TODO: Handle ingredient loss in darkzone
+//	public static void loseLives(LivingEntity dead, LivingEntity killer) {
+//		if(!(dead instanceof Player)) return;
+//		if(MapManager.inDarkzone(dead.getLocation())) {
+//			//TODO: Handle ingredient loss in darkzone
+////			Player deadPlayer = (Player) dead;
+////
+////			for(int i = 0; i < deadPlayer.getInventory().getSize(); i++) {
+////				if(!corruptedFeather && BrewingIngredient.isIngredient(deadPlayer.getInventory().getItem(i))) {
+////					ItemStack item = deadPlayer.getInventory().getItem(i);
+////					BrewingIngredient ingredient = BrewingIngredient.getIngredientFromItemStack(item);
+////					AOutput.send(deadPlayer, "&c- &8" + item.getAmount() + "x " + ingredient.color + item.getItemMeta().getDisplayName());
+////					deadPlayer.getInventory().setItem(i, new ItemStack(Material.AIR));
+////				}
+////			}
+////
+////			return;
+//		}
+//
+//
+//
+//		if(BoosterManager.getBooster("pvp").minutes <= 0) {
 //			Player deadPlayer = (Player) dead;
+//			PitPlayer pitDead = PitPlayer.getPitPlayer(deadPlayer);
+//
+//			boolean divine = DivineIntervention.INSTANCE.attemptDivine(deadPlayer);
+//			boolean feather = false;
+//			boolean corruptedFeather = deadPlayer.getWorld().equals(MapManager.getDarkzone()) && ItemFactory.getItem(CorruptedFeather.class).useCorruptedFeather(killer, deadPlayer);
+//			if(!divine) feather = ItemFactory.getItem(FunkyFeather.class).useFeather(killer, deadPlayer);
+//
+//			int livesLost = 0;
 //
 //			for(int i = 0; i < deadPlayer.getInventory().getSize(); i++) {
-//				if(!corruptedFeather && BrewingIngredient.isIngredient(deadPlayer.getInventory().getItem(i))) {
-//					ItemStack item = deadPlayer.getInventory().getItem(i);
-//					BrewingIngredient ingredient = BrewingIngredient.getIngredientFromItemStack(item);
-//					AOutput.send(deadPlayer, "&c- &8" + item.getAmount() + "x " + ingredient.color + item.getItemMeta().getDisplayName());
-//					deadPlayer.getInventory().setItem(i, new ItemStack(Material.AIR));
+//				ItemStack itemStack = deadPlayer.getInventory().getItem(i);
+//				if(Misc.isAirOrNull(itemStack)) continue;
+//				NBTItem nbtItem = new NBTItem(itemStack);
+//				if(nbtItem.hasKey(NBTTag.MAX_LIVES.getRef())) {
+//					int lives = nbtItem.getInteger(NBTTag.CURRENT_LIVES.getRef());
+//					if(feather || divine || corruptedFeather) continue;
+//					MysticType mysticType = MysticType.getMysticType(itemStack);
+//					if(mysticType == null) continue;
+//
+//					if(mysticType.isTainted() && !PitSim.status.isDarkzone()) continue;
+//					if(!mysticType.isTainted() && PitSim.status.isDarkzone()) continue;
+//
+//					if(lives - 1 == 0) {
+//						deadPlayer.getInventory().setItem(i, new ItemStack(Material.AIR));
+//						deadPlayer.updateInventory();
+//						PlayerManager.sendItemBreakMessage(deadPlayer, itemStack);
+//						if(pitDead.stats != null) {
+//							pitDead.stats.itemsBroken++;
+//							LogManager.onItemBreak(deadPlayer, nbtItem.getItem());
+//						}
+//					} else {
+//						nbtItem.setInteger(NBTTag.CURRENT_LIVES.getRef(), nbtItem.getInteger(NBTTag.CURRENT_LIVES.getRef()) - 1);
+//						EnchantManager.setItemLore(nbtItem.getItem(), deadPlayer);
+//						deadPlayer.getInventory().setItem(i, nbtItem.getItem());
+//						livesLost++;
+//						LogManager.onItemLifeLost(deadPlayer, nbtItem.getItem());
+//					}
 //				}
 //			}
 //
-//			return;
-		}
-
-
-
-		if(BoosterManager.getBooster("pvp").minutes <= 0) {
-			Player deadPlayer = (Player) dead;
-			PitPlayer pitDead = PitPlayer.getPitPlayer(deadPlayer);
-
-			boolean divine = DivineIntervention.INSTANCE.attemptDivine(deadPlayer);
-			boolean feather = false;
-			boolean corruptedFeather = deadPlayer.getWorld().equals(MapManager.getDarkzone()) && ItemFactory.getItem(CorruptedFeather.class).useCorruptedFeather(killer, deadPlayer);
-			if(!divine) feather = ItemFactory.getItem(FunkyFeather.class).useFeather(killer, deadPlayer);
-
-			int livesLost = 0;
-
-			for(int i = 0; i < deadPlayer.getInventory().getSize(); i++) {
-				ItemStack itemStack = deadPlayer.getInventory().getItem(i);
-				if(Misc.isAirOrNull(itemStack)) continue;
-				NBTItem nbtItem = new NBTItem(itemStack);
-				if(nbtItem.hasKey(NBTTag.MAX_LIVES.getRef())) {
-					int lives = nbtItem.getInteger(NBTTag.CURRENT_LIVES.getRef());
-					if(feather || divine || corruptedFeather) continue;
-					MysticType mysticType = MysticType.getMysticType(itemStack);
-					if(mysticType == null) continue;
-
-					if(mysticType.isTainted() && !PitSim.status.isDarkzone()) continue;
-					if(!mysticType.isTainted() && PitSim.status.isDarkzone()) continue;
-
-					if(lives - 1 == 0) {
-						deadPlayer.getInventory().setItem(i, new ItemStack(Material.AIR));
-						deadPlayer.updateInventory();
-						PlayerManager.sendItemBreakMessage(deadPlayer, itemStack);
-						if(pitDead.stats != null) {
-							pitDead.stats.itemsBroken++;
-							LogManager.onItemBreak(deadPlayer, nbtItem.getItem());
-						}
-					} else {
-						nbtItem.setInteger(NBTTag.CURRENT_LIVES.getRef(), nbtItem.getInteger(NBTTag.CURRENT_LIVES.getRef()) - 1);
-						EnchantManager.setItemLore(nbtItem.getItem(), deadPlayer);
-						deadPlayer.getInventory().setItem(i, nbtItem.getItem());
-						livesLost++;
-						LogManager.onItemLifeLost(deadPlayer, nbtItem.getItem());
-					}
-				}
-			}
-
-			if(!feather && !divine && !corruptedFeather) {
-				deleteProt(deadPlayer);
-				BreadDealer.handleBreadOnDeath(deadPlayer);
-				deadPlayer.updateInventory();
-			}
-			if(!Misc.isAirOrNull(deadPlayer.getInventory().getLeggings())) {
-				ItemStack pants = deadPlayer.getInventory().getLeggings();
-				NBTItem nbtItem = new NBTItem(pants);
-				if(nbtItem.hasKey(NBTTag.MAX_LIVES.getRef())) {
-					int lives = nbtItem.getInteger(NBTTag.CURRENT_LIVES.getRef());
-
-					MysticType mysticType = MysticType.getMysticType(pants);
-					if(mysticType == null) return;
-
-					if(mysticType.isTainted() && !PitSim.status.isDarkzone()) return;
-					if(!mysticType.isTainted() && PitSim.status.isDarkzone()) return;
-
-					if(!feather && !divine && !corruptedFeather) {
-						if(lives - 1 == 0) {
-							deadPlayer.getInventory().setLeggings(new ItemStack(Material.AIR));
-							deadPlayer.updateInventory();
-							PlayerManager.sendItemBreakMessage(deadPlayer, pants);
-							if(pitDead.stats != null) {
-								pitDead.stats.itemsBroken++;
-								LogManager.onItemBreak(deadPlayer, nbtItem.getItem());
-							}
-						} else {
-							nbtItem.setInteger(NBTTag.CURRENT_LIVES.getRef(), nbtItem.getInteger(NBTTag.CURRENT_LIVES.getRef()) - 1);
-							EnchantManager.setItemLore(nbtItem.getItem(), deadPlayer);
-							deadPlayer.getInventory().setLeggings(nbtItem.getItem());
-							livesLost++;
-							LogManager.onItemLifeLost(deadPlayer, nbtItem.getItem());
-						}
-					}
-				}
-			}
-
-			if(pitDead.stats != null) pitDead.stats.livesLost += livesLost;
-			PlayerManager.sendLivesLostMessage(deadPlayer, livesLost);
-		}
-	}
+//			if(!feather && !divine && !corruptedFeather) {
+//				deleteProt(deadPlayer);
+//				BreadDealer.handleBreadOnDeath(deadPlayer);
+//				deadPlayer.updateInventory();
+//			}
+//			if(!Misc.isAirOrNull(deadPlayer.getInventory().getLeggings())) {
+//				ItemStack pants = deadPlayer.getInventory().getLeggings();
+//				NBTItem nbtItem = new NBTItem(pants);
+//				if(nbtItem.hasKey(NBTTag.MAX_LIVES.getRef())) {
+//					int lives = nbtItem.getInteger(NBTTag.CURRENT_LIVES.getRef());
+//
+//					MysticType mysticType = MysticType.getMysticType(pants);
+//					if(mysticType == null) return;
+//
+//					if(mysticType.isTainted() && !PitSim.status.isDarkzone()) return;
+//					if(!mysticType.isTainted() && PitSim.status.isDarkzone()) return;
+//
+//					if(!feather && !divine && !corruptedFeather) {
+//						if(lives - 1 == 0) {
+//							deadPlayer.getInventory().setLeggings(new ItemStack(Material.AIR));
+//							deadPlayer.updateInventory();
+//							PlayerManager.sendItemBreakMessage(deadPlayer, pants);
+//							if(pitDead.stats != null) {
+//								pitDead.stats.itemsBroken++;
+//								LogManager.onItemBreak(deadPlayer, nbtItem.getItem());
+//							}
+//						} else {
+//							nbtItem.setInteger(NBTTag.CURRENT_LIVES.getRef(), nbtItem.getInteger(NBTTag.CURRENT_LIVES.getRef()) - 1);
+//							EnchantManager.setItemLore(nbtItem.getItem(), deadPlayer);
+//							deadPlayer.getInventory().setLeggings(nbtItem.getItem());
+//							livesLost++;
+//							LogManager.onItemLifeLost(deadPlayer, nbtItem.getItem());
+//						}
+//					}
+//				}
+//			}
+//
+//			if(pitDead.stats != null) pitDead.stats.livesLost += livesLost;
+//			PlayerManager.sendLivesLostMessage(deadPlayer, livesLost);
+//		}
+//	}
 
 	public static boolean hasKillModifier(KillModifier killModifier, KillModifier... killModifiers) {
 		return Arrays.asList(killModifiers).contains(killModifier);

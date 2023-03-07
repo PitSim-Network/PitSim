@@ -9,6 +9,9 @@ import dev.kyro.arcticapi.misc.AUtil;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.adarkzone.notdarkzone.Shield;
 import dev.kyro.pitsim.adarkzone.progression.DarkzoneData;
+import dev.kyro.pitsim.adarkzone.progression.ProgressionManager;
+import dev.kyro.pitsim.adarkzone.progression.SkillBranch;
+import dev.kyro.pitsim.adarkzone.progression.skillbranches.ManaBranch;
 import dev.kyro.pitsim.battlepass.PassData;
 import dev.kyro.pitsim.battlepass.PassManager;
 import dev.kyro.pitsim.battlepass.PassQuest;
@@ -20,13 +23,11 @@ import dev.kyro.pitsim.controllers.*;
 import dev.kyro.pitsim.cosmetics.particles.ParticleColor;
 import dev.kyro.pitsim.enchants.overworld.GottaGoFast;
 import dev.kyro.pitsim.enchants.overworld.Hearts;
-import dev.kyro.pitsim.enchants.tainted.effects.Sonic;
+import dev.kyro.pitsim.enchants.tainted.chestplate.Sonic;
 import dev.kyro.pitsim.enchants.tainted.uncommon.Tanky;
 import dev.kyro.pitsim.enums.AChatColor;
 import dev.kyro.pitsim.enums.DeathCry;
 import dev.kyro.pitsim.enums.KillEffect;
-import dev.kyro.pitsim.enums.KillType;
-import dev.kyro.pitsim.events.AttackEvent;
 import dev.kyro.pitsim.events.HealEvent;
 import dev.kyro.pitsim.events.IncrementKillsEvent;
 import dev.kyro.pitsim.inventories.ChatColorPanel;
@@ -46,8 +47,6 @@ import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
-import org.bukkit.event.entity.EntityDamageByEntityEvent;
-import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
@@ -239,11 +238,11 @@ public class PitPlayer {
 					Thread.sleep(timeUntilSave);
 					save(true, callback, itemData);
 				} catch(Exception exception) {
-					System.out.println("--------------------------------------------------");
-					System.out.println("CRITICAL ERROR: data for " + uuid + " failed to final save");
-					System.out.println();
+					AOutput.log("----------------------------------------");
+					AOutput.log("CRITICAL ERROR: data for " + uuid + " failed to final save");
+					AOutput.log("");
 					exception.printStackTrace();
-					System.out.println("--------------------------------------------------");
+					AOutput.log("----------------------------------------");
 					Misc.alertDiscord("CRITICAL ERROR: data for " + player.getName() + " failed to final save");
 				}
 			}).start();
@@ -254,7 +253,7 @@ public class PitPlayer {
 		lastSave = System.currentTimeMillis();
 
 		if(isNPC) {
-			System.out.println("complete development failure. " + uuid + " is attempting to save data and is not a real player");
+			AOutput.log("Complete development failure. " + uuid + " is attempting to save data and is not a real player");
 			return;
 		}
 
@@ -279,13 +278,11 @@ public class PitPlayer {
 
 		if(finalSave && callback != null) {
 			FirestoreManager.FIRESTORE.collection(FirestoreManager.PLAYERDATA_COLLECTION).document(uuid.toString())
-					.set(this).addListener(callback, command -> {
-						callback.runTask(PitSim.INSTANCE);
-					});
-			System.out.println("Saving Data (Blocking Thread): " + uuid.toString());
+					.set(this).addListener(callback, command -> callback.runTask(PitSim.INSTANCE));
+			AOutput.log("Saving Player (Blocking Thread): " + uuid.toString());
 		} else {
 			FirestoreManager.FIRESTORE.collection(FirestoreManager.PLAYERDATA_COLLECTION).document(uuid.toString()).set(this);
-			System.out.println("Saving Data: " + Bukkit.getOfflinePlayer(uuid).getName());
+			AOutput.log("Saving Player: " + Bukkit.getOfflinePlayer(uuid).getName());
 		}
 	}
 
@@ -452,7 +449,7 @@ public class PitPlayer {
 		for(PitPlayer testPitPlayer : pitPlayers) {
 			if(testPitPlayer.player == null) continue;
 			if(!testPitPlayer.player.getUniqueId().equals(playerUUID)) continue;
-			System.out.println("found duplicate pitplayer for " + testPitPlayer.player.getName());
+			AOutput.log("Found duplicate pitplayer for " + testPitPlayer.player.getName());
 			return false;
 		}
 
@@ -467,18 +464,18 @@ public class PitPlayer {
 				pitPlayer = new PitPlayer();
 			}
 
-			System.out.println("Loaded Data: " + Bukkit.getOfflinePlayer(playerUUID).getName());
+			AOutput.log("Loaded Player: " + Bukkit.getOfflinePlayer(playerUUID).getName());
 			assert pitPlayer != null;
 
 			pitPlayer.uuid = playerUUID;
 
 		} catch(Exception exception) {
-			System.out.println("--------------------------------------------------");
-			System.out.println("Playerdata for " + Bukkit.getOfflinePlayer(playerUUID).getName() + " failed to load");
-			System.out.println("Disconnecting player");
-			System.out.println();
+			AOutput.log("----------------------------------------");
+			AOutput.log("Playerdata for " + Bukkit.getOfflinePlayer(playerUUID).getName() + " failed to load");
+			AOutput.log("Disconnecting player");
+			AOutput.log("");
 			exception.printStackTrace();
-			System.out.println("--------------------------------------------------");
+			AOutput.log("----------------------------------------");
 			return false;
 		}
 
@@ -503,7 +500,7 @@ public class PitPlayer {
 			if(isNPC) {
 				pitPlayer = new PitPlayer(player);
 			} else {
-				System.out.println("pitplayer is null and shouldn't be");
+				AOutput.log("PitPlayer is null and shouldn't be");
 				return null;
 			}
 
@@ -620,41 +617,42 @@ public class PitPlayer {
 	}
 
 	@Exclude
+	public boolean hasManaUnlocked() {
+		return ProgressionManager.isUnlocked(this, ManaBranch.INSTANCE, SkillBranch.MajorUnlockPosition.FIRST);
+	}
+
+	@Exclude
+	public boolean useManaForSpell(int amount) {
+		if(!hasManaUnlocked()) return false;
+		if(ProgressionManager.isUnlocked(this, ManaBranch.INSTANCE, SkillBranch.MajorUnlockPosition.LAST))
+			amount *= ManaBranch.getSpellManaReduction();
+		return useMana(amount);
+	}
+
+	@Exclude
 	public boolean useMana(int amount) {
-		if(amount > mana) return false;
+		if(!hasManaUnlocked() || amount > mana) return false;
 		mana -= amount;
 		return true;
 	}
 
 	@Exclude
 	public int getMaxMana() {
-		return 100;
-	}
-
-	@Exclude
-	public void damage(double damage, LivingEntity damager) {
-		if(player.getHealth() - damage <= 0) {
-			if(damager == null) {
-				DamageManager.death(player);
-				AOutput.send(player, "&c&lDEATH!");
-			} else {
-				EntityDamageByEntityEvent newEvent = new EntityDamageByEntityEvent(damager, player, EntityDamageEvent.DamageCause.CUSTOM, damage);
-				AttackEvent attackEvent = new AttackEvent(newEvent, EnchantManager.getEnchantsOnPlayer(damager), EnchantManager.getEnchantsOnPlayer(player), false);
-
-				DamageManager.kill(attackEvent, damager, player, KillType.KILL);
-			}
-		} else player.damage(damage);
+		int maxMana = 100;
+		maxMana += ProgressionManager.getUnlockedEffectAsValue(this, ManaBranch.INSTANCE,
+				SkillBranch.PathPosition.FIRST_PATH, "max-mana");
+		return maxMana;
 	}
 
 	@Exclude
 	public void updateMaxHealth() {
 
-		int maxHealth = MapManager.inDarkzone(player) ? 20 : 24;
+		int maxHealth = 24;
 		if(hasPerk(Thick.INSTANCE) && !MapManager.inDarkzone(player)) maxHealth += 4;
 
 		Map<PitEnchant, Integer> enchantMap = EnchantManager.getEnchantsOnPlayer(player);
-		maxHealth += Hearts.INSTANCE.getExtraHealth(enchantMap);
-		maxHealth += Tanky.INSTANCE.getExtraHealth(enchantMap);
+		maxHealth += Hearts.getExtraHealth(enchantMap);
+		maxHealth += Tanky.getExtraHealth(enchantMap);
 
 		if(megastreak instanceof Uberstreak) {
 			Uberstreak uberstreak = (Uberstreak) megastreak;
@@ -673,10 +671,14 @@ public class PitPlayer {
 	public void updateXPBar() {
 		if(MapManager.inDarkzone(player)) {
 //			TODO: Check if shield is unlocked
-			player.setLevel((int) Math.ceil(shield.getDisplayAmount()));
-			if(shield.isActive()) {
-				player.setExp((float) (shield.getPreciseAmount() / shield.getMax()));
+			if(!shield.isUnlocked()) {
+				player.setLevel(0);
+				player.setExp(0);
+			} else if(shield.isActive()) {
+				player.setLevel(0);
+				player.setExp((float) (shield.getPreciseAmount() / shield.getMaxShield()));
 			} else {
+				player.setLevel((int) Math.ceil(shield.getDisplayAmount()));
 				player.setExp(1 - ((float) shield.getTicksUntilReactivation() / shield.getInitialTicksUntilReactivation()));
 			}
 			return;

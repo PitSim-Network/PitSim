@@ -88,4 +88,16 @@ public abstract class PitItem implements Listener {
 	public boolean isThisItem(ItemStack itemStack) {
 		return ItemFactory.getItem(itemStack) == this;
 	}
+
+	public TemporaryItem.TemporaryType getTemporaryType(ItemStack itemStack) {
+		if(!isThisItem(itemStack)) throw new RuntimeException();
+		if(!(this instanceof TemporaryItem)) return null;
+		TemporaryItem temporaryItem = (TemporaryItem) this;
+		return temporaryItem.getTemporaryType();
+	}
+
+	public TemporaryItem getAsTemporaryItem() {
+		if(!(this instanceof TemporaryItem)) throw new RuntimeException();
+		return (TemporaryItem) this;
+	}
 }
