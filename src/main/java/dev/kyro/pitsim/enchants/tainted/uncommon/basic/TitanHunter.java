@@ -1,37 +1,39 @@
-package dev.kyro.pitsim.enchants.tainted.common;
+package dev.kyro.pitsim.enchants.tainted.uncommon.basic;
 
 import dev.kyro.pitsim.adarkzone.PitMob;
 import dev.kyro.pitsim.adarkzone.mobs.PitCreeper;
 import dev.kyro.pitsim.adarkzone.mobs.PitEnderman;
-import dev.kyro.pitsim.adarkzone.mobs.PitSpider;
+import dev.kyro.pitsim.adarkzone.mobs.PitIronGolem;
 import dev.kyro.pitsim.controllers.objects.BasicDarkzoneEnchant;
 import dev.kyro.pitsim.enums.ApplyType;
 
 import java.util.Arrays;
 import java.util.List;
 
-public class Attentive extends BasicDarkzoneEnchant {
-	public static Attentive INSTANCE;
+public class TitanHunter extends BasicDarkzoneEnchant {
+	public static TitanHunter INSTANCE;
 
-	public Attentive() {
-		super("Attentive", false, ApplyType.CHESTPLATES,
-				"attentive");
+	public TitanHunter() {
+		super("Titan Hunter", false, ApplyType.SCYTHES,
+				"titanhunter", "titan", "hunter3", "hunt3");
+		isUncommonEnchant = true;
 		isTainted = true;
 		INSTANCE = this;
 	}
 
 	@Override
 	public int getStatPercent(int enchantLvl) {
-		return enchantLvl * 5 + 3;
+		return enchantLvl * 11 + 15
+				;
 	}
 
 	@Override
 	public boolean isOffensive() {
-		return false;
+		return true;
 	}
 
 	@Override
 	public List<Class<? extends PitMob>> getApplicableMobs() {
-		return Arrays.asList(PitSpider.class, PitCreeper.class, PitEnderman.class);
+		return Arrays.asList(PitCreeper.class, PitIronGolem.class, PitEnderman.class);
 	}
 }

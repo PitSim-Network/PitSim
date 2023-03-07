@@ -40,7 +40,7 @@ public class Hemorrhage extends PitEnchant {
 			Sounds.NO.play(attackEvent.getAttackerPlayer());
 			return;
 		}
-		if(!attackEvent.getAttackerPitPlayer().useMana(getManaCost(enchantLvl))) {
+		if(!attackEvent.getAttackerPitPlayer().useManaForSpell(getManaCost(enchantLvl))) {
 			Sounds.NO.play(attackEvent.getAttackerPlayer());
 			return;
 		}

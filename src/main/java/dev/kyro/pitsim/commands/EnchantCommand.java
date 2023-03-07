@@ -2,6 +2,7 @@ package dev.kyro.pitsim.commands;
 
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.PitSim;
+import dev.kyro.pitsim.aitems.MysticFactory;
 import dev.kyro.pitsim.aitems.PitItem;
 import dev.kyro.pitsim.controllers.EnchantManager;
 import dev.kyro.pitsim.controllers.ItemFactory;
@@ -25,7 +26,7 @@ public class EnchantCommand implements CommandExecutor {
 
 		if(!PitSim.isDev()) {
 			if(!player.hasPermission("group.nitro")) {
-				AOutput.send(player, "&cYou must boost our discord server to gain access to this feature!&7 Join with: &f&ndiscord.pitsim.net");
+				AOutput.send(player, "&c&lERROR!&7 You must boost our discord server to use this feature!&7 Join with: &f&ndiscord.pitsim.net");
 				return false;
 			}
 
@@ -39,7 +40,12 @@ public class EnchantCommand implements CommandExecutor {
 
 		PitItem pitItem = ItemFactory.getItem(player.getItemInHand());
 		if(pitItem == null || !pitItem.isMystic) {
-			AOutput.error(player, "Not holding a mystic item");
+			AOutput.error(player, "&c&lERROR!&7 Not holding a mystic item");
+			return false;
+		}
+
+		if(MysticFactory.isGemmed(player.getItemInHand())) {
+			AOutput.error(player, "&c&lERROR!&7 You cannot modify gemmed items");
 			return false;
 		}
 
@@ -52,7 +58,7 @@ public class EnchantCommand implements CommandExecutor {
 		String refName = args[0].toLowerCase();
 		PitEnchant pitEnchant = EnchantManager.getEnchant(refName);
 		if(pitEnchant == null) {
-			AOutput.error(player, "That enchant does not exist");
+			AOutput.error(player, "&c&lERROR!&7 That enchant does not exist");
 			return false;
 		}
 
@@ -83,28 +89,28 @@ public class EnchantCommand implements CommandExecutor {
 			}
 		} catch(Exception exception) {
 			if(exception instanceof MismatchedEnchantException) {
-				AOutput.error(player, "That enchant can't go on that item");
+				AOutput.error(player, "&c&lERROR!&7 That enchant can't go on that item");
 			} else if(exception instanceof InvalidEnchantLevelException) {
 
 				if(!((InvalidEnchantLevelException) exception).levelTooHigh) {
-					AOutput.error(player, "Level too low");
+					AOutput.error(player, "&c&lERROR!&7 Level too low");
 				} else {
-					AOutput.error(player, "Level too high");
+					AOutput.error(player, "&c&lERROR!&7 Level too high");
 				}
 			} else if(exception instanceof MaxTokensExceededException) {
 
 				if(((MaxTokensExceededException) exception).isRare) {
-					AOutput.error(player, "You cannot have more than 4 rare tokens on an item");
+					AOutput.error(player, "&c&lERROR!&7 You cannot have more than 4 rare tokens on an item");
 				} else {
-					AOutput.error(player, "You cannot have more than 8 tokens on an item");
+					AOutput.error(player, "&c&lERROR!&7 You cannot have more than 8 tokens on an item");
 				}
 			} else if(exception instanceof MaxEnchantsExceededException) {
 
-				AOutput.error(player, "You cannot have more than 3 enchants on an item");
+				AOutput.error(player, "&c&lERROR!&7 You cannot have more than 3 enchants on an item");
 			} else if(exception instanceof IsJewelException) {
-				AOutput.error(player, "You cannot modify a jewel enchant");
+				AOutput.error(player, "&c&lERROR!&7 You cannot modify a jewel enchant");
 			} else if(exception instanceof NoCommonEnchantException) {
-				AOutput.error(player, "You must have at least one common enchant on an item");
+				AOutput.error(player, "&c&lERROR!&7 You must have at least one common enchant on an item");
 			} else {
 				exception.printStackTrace();
 			}
@@ -112,7 +118,13 @@ public class EnchantCommand implements CommandExecutor {
 		}
 
 		player.setItemInHand(updatedItem);
-		AOutput.send(player, "Added the enchant");
+		if(level == 0) {
+			AOutput.send(player, "&a&lSUCCESS!&7 Removed Enchant: " + pitEnchant.getDisplayName() +
+					EnchantManager.enchantLevelToRoman(level));
+		} else {
+			AOutput.send(player, "&a&lSUCCESS!&7 Added Enchant: " + pitEnchant.getDisplayName() +
+					EnchantManager.enchantLevelToRoman(level));
+		}
 		return false;
 	}
 }

@@ -61,22 +61,17 @@ import dev.kyro.pitsim.cosmetics.misc.MysticPresence;
 import dev.kyro.pitsim.cosmetics.trails.*;
 import dev.kyro.pitsim.enchants.overworld.GoldBoost;
 import dev.kyro.pitsim.enchants.overworld.*;
-import dev.kyro.pitsim.enchants.tainted.uncommon.Resilient;
-import dev.kyro.pitsim.enchants.tainted.common.Defend;
-import dev.kyro.pitsim.enchants.tainted.chestplate.Inferno;
 import dev.kyro.pitsim.enchants.tainted.chestplate.*;
 import dev.kyro.pitsim.enchants.tainted.common.*;
 import dev.kyro.pitsim.enchants.tainted.scythe.*;
 import dev.kyro.pitsim.enchants.tainted.uncommon.*;
-import dev.kyro.pitsim.enchants.tainted.uncommon.Adrenaline;
-import dev.kyro.pitsim.enchants.tainted.uncommon.Barbaric;
+import dev.kyro.pitsim.enchants.tainted.uncommon.basic.*;
 import dev.kyro.pitsim.enums.NBTTag;
 import dev.kyro.pitsim.enums.PitCalendarEvent;
 import dev.kyro.pitsim.events.EquipmentChangeEvent;
 import dev.kyro.pitsim.helmetabilities.*;
-import dev.kyro.pitsim.killstreaks.*;
 import dev.kyro.pitsim.killstreaks.Leech;
-import dev.kyro.pitsim.killstreaks.Shockwave;
+import dev.kyro.pitsim.killstreaks.*;
 import dev.kyro.pitsim.kits.EssentialKit;
 import dev.kyro.pitsim.kits.GoldKit;
 import dev.kyro.pitsim.kits.PvPKit;
@@ -85,7 +80,9 @@ import dev.kyro.pitsim.leaderboards.*;
 import dev.kyro.pitsim.logging.LogManager;
 import dev.kyro.pitsim.market.MarketMessaging;
 import dev.kyro.pitsim.megastreaks.*;
-import dev.kyro.pitsim.misc.*;
+import dev.kyro.pitsim.misc.ItemRename;
+import dev.kyro.pitsim.misc.PrivateInfo;
+import dev.kyro.pitsim.misc.ReloadManager;
 import dev.kyro.pitsim.misc.packets.SignPrompt;
 import dev.kyro.pitsim.npcs.*;
 import dev.kyro.pitsim.perks.*;
@@ -165,10 +162,6 @@ public class PitSim extends JavaPlugin {
 						Bukkit.getPluginManager().callEvent(event);
 					}
 				}.runTaskLater(PitSim.INSTANCE, 1L);
-			}
-
-			if(Misc.isKyro(onlinePlayer.getUniqueId())) {
-//				onlinePlayer.teleport(MapManager.kyroDarkzoneSpawn);
 			}
 		}
 
@@ -320,8 +313,10 @@ public class PitSim extends JavaPlugin {
 
 	@Override
 	public void onDisable() {
-		TaintedWell.onStop();
-		if(status.isDarkzone()) FirestoreManager.AUCTION.save();
+		if(status.isDarkzone()) {
+			TaintedWell.onStop();
+			FirestoreManager.AUCTION.save();
+		}
 
 		for(Player onlinePlayer : Bukkit.getOnlinePlayers()) {
 			PitPlayer pitPlayer = PitPlayer.getPitPlayer(onlinePlayer);
@@ -1036,6 +1031,13 @@ public class PitSim extends JavaPlugin {
 		EnchantManager.registerEnchant(new Terror());
 
 //		Uncommon
+		EnchantManager.registerEnchant(new Hunter());
+		EnchantManager.registerEnchant(new EliteHunter());
+		EnchantManager.registerEnchant(new TitanHunter());
+		EnchantManager.registerEnchant(new Guard());
+		EnchantManager.registerEnchant(new Shield());
+		EnchantManager.registerEnchant(new Barricade());
+
 		EnchantManager.registerEnchant(new Adrenaline());
 		EnchantManager.registerEnchant(new Barbaric());
 		EnchantManager.registerEnchant(new ComboDefence());
@@ -1066,7 +1068,7 @@ public class PitSim extends JavaPlugin {
 		EnchantManager.registerEnchant(new Attentive());
 		EnchantManager.registerEnchant(new Belittle());
 		EnchantManager.registerEnchant(new BOOM());
-		EnchantManager.registerEnchant(new Defend());
+		EnchantManager.registerEnchant(new aDefend());
 		EnchantManager.registerEnchant(new Embalm());
 		EnchantManager.registerEnchant(new Evasive());
 		EnchantManager.registerEnchant(new Extinguish());

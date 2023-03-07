@@ -28,10 +28,14 @@ public class AltarBranch extends SkillBranch {
 		return new AItemStackBuilder(Material.ENDER_PORTAL_FRAME)
 				.setLore(new ALoreBuilder(
 						"&7Improve your relationship",
-						"&7with the &4devil &7of the",
+						"&7with the &4Devil &7of the",
 						"&5Darkzone"
 				))
 				.getItemStack();
+	}
+
+	public static int getTurboIncrease() {
+		return 20;
 	}
 
 	@Override
@@ -51,7 +55,10 @@ public class AltarBranch extends SkillBranch {
 			public ItemStack getBaseStack() {
 				return new AItemStackBuilder(Material.ENDER_PORTAL_FRAME)
 						.setLore(new ALoreBuilder(
-								"&7Too lazy to write a description"
+								"&7Start with the basics:",
+								"&7 - Pedestal of &fKnowledge",
+								"&7 - Pedestal of &eRenown",
+								"&7 - Pedestal of &4Heresy"
 						))
 						.getItemStack();
 			}
@@ -80,7 +87,8 @@ public class AltarBranch extends SkillBranch {
 			public ItemStack getBaseStack() {
 				return new AItemStackBuilder(Material.WATCH)
 						.setLore(new ALoreBuilder(
-								"&7Too lazy to write a description"
+								"&7All pedestals are &4" + getTurboIncrease() + "%",
+								"&7more effective"
 						))
 						.getItemStack();
 			}
@@ -109,7 +117,8 @@ public class AltarBranch extends SkillBranch {
 			public ItemStack getBaseStack() {
 				return new AItemStackBuilder(Material.GOLD_BLOCK)
 						.setLore(new ALoreBuilder(
-								"&7Too lazy to write a description"
+								"&7Unlocks the Pedestal",
+								"&7of &6Wealth"
 						))
 						.getItemStack();
 			}
@@ -138,7 +147,8 @@ public class AltarBranch extends SkillBranch {
 			public ItemStack getBaseStack() {
 				return new AItemStackBuilder(Material.COMPASS)
 						.setLore(new ALoreBuilder(
-								"&7Too lazy to write a description"
+								"&7Unlocks the Pedestal",
+								"&7of &cTurmoil"
 						))
 						.getItemStack();
 			}
@@ -170,7 +180,7 @@ public class AltarBranch extends SkillBranch {
 
 			@Override
 			public void addEffects() {
-				addEffect(new EffectData("renown", "&c+%value%% &7something",
+				addEffect(new EffectData("renown", "&4+%value%% &7more &4Demonic Vouchers",
 						100, 100, 100, 100, 100, 100));
 			}
 		};
@@ -196,7 +206,7 @@ public class AltarBranch extends SkillBranch {
 
 			@Override
 			public void addEffects() {
-				addEffect(new EffectData("renown", "&c+%value%% &7something",
+				addEffect(new EffectData("renown", "&4+%value%% &7more &eRenown",
 						100, 100, 100, 100, 100, 100));
 			}
 		};

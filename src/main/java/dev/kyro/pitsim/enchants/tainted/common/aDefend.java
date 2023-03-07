@@ -9,9 +9,9 @@ import org.bukkit.event.EventHandler;
 
 import java.util.List;
 
-public class Defend extends PitEnchant {
+public class aDefend extends PitEnchant {
 
-	public Defend() {
+	public aDefend() {
 		super("Defend", false, ApplyType.CHESTPLATES,
 				"defend");
 		isTainted = true;

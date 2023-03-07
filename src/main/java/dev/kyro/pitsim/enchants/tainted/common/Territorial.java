@@ -21,7 +21,7 @@ public class Territorial extends BasicDarkzoneEnchant {
 
 	@Override
 	public int getStatPercent(int enchantLvl) {
-		return enchantLvl * 10;
+		return enchantLvl * 5 + 3;
 	}
 
 	@Override

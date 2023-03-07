@@ -20,7 +20,7 @@ public class Evasive extends BasicDarkzoneEnchant {
 
 	@Override
 	public int getStatPercent(int enchantLvl) {
-		return enchantLvl * 10;
+		return enchantLvl * 6 + 4;
 	}
 
 	@Override

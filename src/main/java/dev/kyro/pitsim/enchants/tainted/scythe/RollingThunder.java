@@ -64,7 +64,7 @@ public class RollingThunder extends PitEnchant {
 			return;
 		}
 		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
-		if(!pitPlayer.useMana(getManaCost(enchantLvl))) {
+		if(!pitPlayer.useManaForSpell(getManaCost(enchantLvl))) {
 			Sounds.NO.play(player);
 			return;
 		}

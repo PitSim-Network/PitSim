@@ -13,6 +13,10 @@ public class SoulBranch extends SkillBranch {
 		INSTANCE = this;
 	}
 
+	public static int getEnchantingReductionPercent() {
+		return 30;
+	}
+
 	@Override
 	public String getDisplayName() {
 		return "&fSpirit";
@@ -51,7 +55,8 @@ public class SoulBranch extends SkillBranch {
 			public ItemStack getBaseStack() {
 				return new AItemStackBuilder(Material.BOOKSHELF)
 						.setLore(new ALoreBuilder(
-								"&7Too lazy to write a description"
+								"&7Unlocks the ability to",
+								"&7enchant items to &5Tier III"
 						))
 						.getItemStack();
 			}
@@ -80,7 +85,8 @@ public class SoulBranch extends SkillBranch {
 			public ItemStack getBaseStack() {
 				return new AItemStackBuilder(Material.ENCHANTMENT_TABLE)
 						.setLore(new ALoreBuilder(
-								"&7Too lazy to write a description"
+								"&7Unlocks the ability to",
+								"&7enchant items to &5Tier IV"
 						))
 						.getItemStack();
 			}
@@ -109,7 +115,8 @@ public class SoulBranch extends SkillBranch {
 			public ItemStack getBaseStack() {
 				return new AItemStackBuilder(Material.SPRUCE_DOOR_ITEM)
 						.setLore(new ALoreBuilder(
-								"&7Too lazy to write a description"
+								"&7Removes the cost from fast",
+								"&7traveling"
 						))
 						.getItemStack();
 			}
@@ -138,7 +145,8 @@ public class SoulBranch extends SkillBranch {
 			public ItemStack getBaseStack() {
 				return new AItemStackBuilder(Material.FURNACE)
 						.setLore(new ALoreBuilder(
-								"&7Too lazy to write a description"
+								"&7Reduces the cost of enchanting",
+								"&7by &5" + getEnchantingReductionPercent() + "%"
 						))
 						.getItemStack();
 			}
@@ -155,7 +163,7 @@ public class SoulBranch extends SkillBranch {
 		return new Path() {
 			@Override
 			public String getDisplayName() {
-				return "&fSoul Drop Chance from Mobs";
+				return "&fSoul Harvesting";
 			}
 
 			@Override
@@ -170,7 +178,7 @@ public class SoulBranch extends SkillBranch {
 
 			@Override
 			public void addEffects() {
-				addEffect(new EffectData("soul-chance", "&c+%value%% &7something",
+				addEffect(new EffectData("soul-chance-mobs", "&5+%value%% &7soul drop chance from mobs",
 						100, 100, 100, 100, 100, 100));
 			}
 		};
@@ -181,7 +189,7 @@ public class SoulBranch extends SkillBranch {
 		return new Path() {
 			@Override
 			public String getDisplayName() {
-				return "Fresh Drop Chance";
+				return "&fFresh Drop Chance";
 			}
 
 			@Override
@@ -196,7 +204,7 @@ public class SoulBranch extends SkillBranch {
 
 			@Override
 			public void addEffects() {
-				addEffect(new EffectData("fresh-chance", "&c+%value%% &7something",
+				addEffect(new EffectData("fresh-chance", "&5+%value%% &7fresh drop chance from mobs",
 						100, 100, 100, 100, 100, 100));
 			}
 		};

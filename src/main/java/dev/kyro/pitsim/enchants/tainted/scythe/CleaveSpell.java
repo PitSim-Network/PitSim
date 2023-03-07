@@ -74,7 +74,7 @@ public class CleaveSpell extends PitEnchant {
 		Cooldown cooldown = getCooldown(event.getPlayer(), 4);
 		if(cooldown.isOnCooldown()) return;
 		PitPlayer pitPlayer = PitPlayer.getPitPlayer(event.getPlayer());
-		if(!pitPlayer.useMana(getManaCost(enchantLvl))) {
+		if(!pitPlayer.useManaForSpell(getManaCost(enchantLvl))) {
 			Sounds.NO.play(event.getPlayer());
 			return;
 		}

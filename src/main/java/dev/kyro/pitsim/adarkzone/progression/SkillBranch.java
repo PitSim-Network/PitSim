@@ -11,6 +11,7 @@ import org.bukkit.Material;
 import org.bukkit.event.Listener;
 import org.bukkit.inventory.ItemStack;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -32,7 +33,9 @@ public abstract class SkillBranch implements Listener {
 		this.secondPathUnlock = createSecondPathUnlock();
 		this.secondPathUnlock.position = MajorUnlockPosition.SECOND_PATH;
 		this.firstPath = createFirstPath();
+		this.firstPath.position = PathPosition.FIRST_PATH;
 		this.secondPath = createSecondPath();
+		this.secondPath.position = PathPosition.SECOND_PATH;
 
 		Bukkit.getPluginManager().registerEvents(this, PitSim.INSTANCE);
 	}
@@ -47,14 +50,6 @@ public abstract class SkillBranch implements Listener {
 	public abstract MajorProgressionUnlock createSecondPathUnlock();
 	public abstract Path createFirstPath();
 	public abstract Path createSecondPath();
-
-	public boolean isUnlocked(PitPlayer pitPlayer, MajorProgressionUnlock majorProgressionUnlock) {
-		return ProgressionManager.isUnlocked(pitPlayer, majorProgressionUnlock);
-	}
-
-	public double getUnlockedEffect(PitPlayer pitPlayer, SkillBranch.Path path, String refName) {
-		return ProgressionManager.getUnlockedEffect(pitPlayer, path, refName);
-	}
 
 //	This is for the main gui
 	public ItemStack getMainDisplayStack(PitPlayer pitPlayer, MainProgressionUnlock unlock, UnlockState unlockState) {
@@ -75,6 +70,11 @@ public abstract class SkillBranch implements Listener {
 	public enum MajorUnlockPosition {
 		FIRST,
 		LAST,
+		FIRST_PATH,
+		SECOND_PATH
+	}
+
+	public enum PathPosition {
 		FIRST_PATH,
 		SECOND_PATH
 	}
@@ -116,6 +116,7 @@ public abstract class SkillBranch implements Listener {
 
 	public abstract class Path {
 		public SkillBranch skillBranch;
+		public PathPosition position;
 
 		public List<EffectData> effectData = new ArrayList<>();
 
@@ -138,8 +139,9 @@ public abstract class SkillBranch implements Listener {
 			ItemStack baseStack = new ItemStack(Material.STAINED_GLASS_PANE, 1, (short) unlockState.data);
 			ALoreBuilder loreBuilder = new ALoreBuilder();
 
+			DecimalFormat decimalFormat = new DecimalFormat("#,##0.#");
 			for(EffectData data : effectData) {
-				loreBuilder.addLore(data.formatting.replaceAll("%value%", String.valueOf(data.values[level - 1])));
+				loreBuilder.addLore(data.formatting.replaceAll("%value%", decimalFormat.format(data.values[level - 1])));
 			}
 			loreBuilder.addLore("");
 

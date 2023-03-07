@@ -1,4 +1,4 @@
-package dev.kyro.pitsim.enchants.tainted.common;
+package dev.kyro.pitsim.enchants.tainted.uncommon.basic;
 
 import dev.kyro.pitsim.adarkzone.PitMob;
 import dev.kyro.pitsim.adarkzone.mobs.*;
@@ -8,28 +8,29 @@ import dev.kyro.pitsim.enums.ApplyType;
 import java.util.Arrays;
 import java.util.List;
 
-public class NocturnalPredator extends BasicDarkzoneEnchant {
-	public static NocturnalPredator INSTANCE;
+public class Guard extends BasicDarkzoneEnchant {
+	public static Guard INSTANCE;
 
-	public NocturnalPredator() {
-		super("Nocturnal Predator", false, ApplyType.SCYTHES,
-				"nocturnalpredator", "nocturnal", "predator");
+	public Guard() {
+		super("Guard", false, ApplyType.CHESTPLATES,
+				"guard", "shield1");
+		isUncommonEnchant = true;
 		isTainted = true;
 		INSTANCE = this;
 	}
 
 	@Override
 	public int getStatPercent(int enchantLvl) {
-		return enchantLvl * 7 + 6;
+		return enchantLvl * 5 + 4;
 	}
 
 	@Override
 	public boolean isOffensive() {
-		return true;
+		return false;
 	}
 
 	@Override
 	public List<Class<? extends PitMob>> getApplicableMobs() {
-		return Arrays.asList(PitZombie.class, PitSkeleton.class, PitSpider.class, PitCreeper.class, PitEnderman.class);
+		return Arrays.asList(PitZombie.class, PitSkeleton.class, PitSpider.class, PitWolf.class);
 	}
 }

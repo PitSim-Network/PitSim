@@ -158,7 +158,7 @@ public class PurpleThumb extends PitEnchant {
 		Cooldown cooldown = getCooldown(player, getCooldownSeconds(enchantLvl) * 20);
 		if(cooldown.isOnCooldown()) return;
 		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
-		if(!pitPlayer.useMana(getManaCost(enchantLvl))) {
+		if(!pitPlayer.useManaForSpell(getManaCost(enchantLvl))) {
 			Sounds.NO.play(event.getPlayer());
 			return;
 		}

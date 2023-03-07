@@ -44,7 +44,7 @@ public class Inferno extends PitEnchant {
 
 		if(attackEvent.getDefender().getFireTicks() > 0 || fireDamageMap.containsKey(attackEvent.getDefender())) return;
 
-		if(!attackEvent.getAttackerPitPlayer().useMana(getManaCost(enchantLvl))) {
+		if(!attackEvent.getAttackerPitPlayer().useManaForSpell(getManaCost(enchantLvl))) {
 			Sounds.NO.play(attackEvent.getAttackerPlayer());
 			return;
 		}
