@@ -2,6 +2,7 @@ package dev.kyro.pitsim.adarkzone.abilities;
 
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.adarkzone.RoutinePitBossAbility;
+import dev.kyro.pitsim.controllers.DamageManager;
 import dev.kyro.pitsim.cosmetics.particles.ExplosionHugeParticle;
 import dev.kyro.pitsim.cosmetics.particles.ParticleColor;
 import dev.kyro.pitsim.cosmetics.particles.RedstoneParticle;
@@ -167,12 +168,13 @@ public class LandMineAbility extends RoutinePitBossAbility {
 		Location center = block.getSpawnLocation();
 		for(Entity entity : center.getWorld().getNearbyEntities(center, radius, radius, radius)) {
 			if(!Misc.isEntity(entity, PitEntityType.REAL_PLAYER)) continue;
+			if(!Misc.isEntity(entity, PitEntityType.REAL_PLAYER)) continue;
 			Player player = (Player) entity;
 
 			double distance = player.getLocation().distance(center);
 			if(distance > radius) continue;
 
-			player.damage(damage, pitBoss.boss);
+			DamageManager.createAttack(pitBoss.boss, player, damage);
 
 			double multiplier = Math.pow(5 - distance, 1.5);
 			Vector velocity = player.getLocation().toVector().subtract(landMine.fallingBlock.getSpawnLocation().toVector());

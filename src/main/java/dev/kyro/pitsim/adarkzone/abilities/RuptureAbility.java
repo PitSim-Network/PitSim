@@ -2,6 +2,7 @@ package dev.kyro.pitsim.adarkzone.abilities;
 
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.adarkzone.RoutinePitBossAbility;
+import dev.kyro.pitsim.controllers.DamageManager;
 import dev.kyro.pitsim.cosmetics.particles.ExplosionLargeParticle;
 import dev.kyro.pitsim.misc.Sounds;
 import dev.kyro.pitsim.misc.effects.FallingBlock;
@@ -136,7 +137,7 @@ public class RuptureAbility extends RoutinePitBossAbility {
 					new BukkitRunnable() {
 						@Override
 						public void run() {
-							viewer.damage(damage, pitBoss.boss);
+							DamageManager.createAttack(pitBoss.boss, viewer, damage);
 							Sounds.CREEPER_EXPLODE.play(viewer.getLocation(), 10);
 
 							for(Player player : getViewers()) {

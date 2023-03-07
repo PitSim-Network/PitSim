@@ -2,6 +2,7 @@ package dev.kyro.pitsim.adarkzone.abilities;
 
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.adarkzone.abilities.abilitytypes.BlockRainAbility;
+import dev.kyro.pitsim.controllers.DamageManager;
 import dev.kyro.pitsim.misc.BlockData;
 import dev.kyro.pitsim.misc.Sounds;
 import dev.kyro.pitsim.misc.effects.FallingBlock;
@@ -44,14 +45,14 @@ public class FirestormAbility extends BlockRainAbility {
 					@Override
 					public void run() {
 						if(player.getHealth() <= 1) return;
-						player.damage(1);
+						DamageManager.createAttack(player, damage);
 
 						if(i >= 5) cancel();
 						else i++;
 					}
 				}.runTaskTimer(PitSim.INSTANCE, 0, 20);
 			}
-			else player.damage(damage, pitBoss.boss);
+			DamageManager.createAttack(pitBoss.boss, player, damage);
 		}
 	}
 

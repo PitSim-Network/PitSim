@@ -1,6 +1,7 @@
 package dev.kyro.pitsim.adarkzone.abilities;
 
 import dev.kyro.pitsim.adarkzone.abilities.abilitytypes.BlockRainAbility;
+import dev.kyro.pitsim.controllers.DamageManager;
 import dev.kyro.pitsim.misc.BlockData;
 import dev.kyro.pitsim.misc.Misc;
 import dev.kyro.pitsim.misc.Sounds;
@@ -32,7 +33,7 @@ public class HailAbility extends BlockRainAbility {
 			Player player = Bukkit.getPlayer(nearbyEntity.getUniqueId());
 			if(player == null) continue;
 
-			if(material == Material.ICE) player.damage(damage, pitBoss.boss);
+			if(material == Material.ICE) DamageManager.createAttack(pitBoss.boss, player, damage);
 			else Misc.applyPotionEffect(player, PotionEffectType.SLOW, 20, 5, false, false);
 		}
 	}

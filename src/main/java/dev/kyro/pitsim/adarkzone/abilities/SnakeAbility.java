@@ -2,6 +2,7 @@ package dev.kyro.pitsim.adarkzone.abilities;
 
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.adarkzone.RoutinePitBossAbility;
+import dev.kyro.pitsim.controllers.DamageManager;
 import dev.kyro.pitsim.misc.Misc;
 import dev.kyro.pitsim.misc.Sounds;
 import dev.kyro.pitsim.misc.effects.FallingBlock;
@@ -57,7 +58,7 @@ public class SnakeAbility extends RoutinePitBossAbility {
 						if(!(entity instanceof Player)) continue;
 						if(entity == pitBoss.boss) continue;
 
-						((Player) entity).damage(damage, pitBoss.boss);
+						DamageManager.createAttack(pitBoss.boss, (Player) entity, damage);
 						Misc.applyPotionEffect((Player) entity, PotionEffectType.SLOW, 20, 1, false, false);
 					}
 				}

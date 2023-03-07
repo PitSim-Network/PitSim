@@ -1,6 +1,7 @@
 package dev.kyro.pitsim.adarkzone.abilities;
 
 import dev.kyro.pitsim.adarkzone.abilities.abilitytypes.BlockRainAbility;
+import dev.kyro.pitsim.controllers.DamageManager;
 import dev.kyro.pitsim.misc.BlockData;
 import dev.kyro.pitsim.misc.Sounds;
 import dev.kyro.pitsim.misc.effects.FallingBlock;
@@ -24,6 +25,7 @@ public class AnvilRainAbility extends BlockRainAbility {
 			if(player == null) continue;
 
 			player.damage(damage, pitBoss.boss);
+			DamageManager.createAttack(pitBoss.boss, player, damage);
 		}
 	}
 }

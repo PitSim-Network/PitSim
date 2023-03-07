@@ -79,6 +79,7 @@ public class Sounds {
 	public static final SoundEffect DISORDER2 = new SoundEffect(Sound.PORTAL_TRAVEL, 1, 1.25);
 	public static final SoundEffect SLAM = new SoundEffect(Sound.DIG_GRASS, 1.0, 0.65);
 	public static final SoundEffect SLAM_2 = new SoundEffect(Sound.EXPLODE, 0.5, 1);
+	public static final SoundEffect COLLAPSE = new SoundEffect(Sound.ZOMBIE_WOODBREAK, 1, 0.4);
 
 	//	Enchants
 	public static final SoundEffect BILLIONAIRE = new SoundEffect(Sound.ORB_PICKUP, 1, 0.73);

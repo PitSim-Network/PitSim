@@ -2,6 +2,7 @@ package dev.kyro.pitsim.adarkzone.abilities;
 
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.adarkzone.PitBossAbility;
+import dev.kyro.pitsim.controllers.DamageManager;
 import dev.kyro.pitsim.events.AttackEvent;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -34,10 +35,7 @@ public class ComboAbility extends PitBossAbility {
 
 			@Override
 			public void run() {
-				EntityDamageByEntityEvent damage = new EntityDamageByEntityEvent(player, pitBoss.boss, EntityDamageByEntityEvent.DamageCause.ENTITY_ATTACK, 1);
-				Bukkit.getPluginManager().callEvent(damage);
-//				player.daam
-
+				DamageManager.createAttack(pitBoss.boss, player, 1);
 				player.setNoDamageTicks(0);
 
 				if(i >= comboDuration) {

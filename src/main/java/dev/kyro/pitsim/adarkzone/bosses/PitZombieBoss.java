@@ -21,9 +21,9 @@ public class PitZombieBoss extends PitBoss {
 //				new AnvilRainAbility(0.3, 40, 100, 100),
 //				new HailAbility(0.3, 40, 100, 100),
 //				new FirestormAbility(0.3, 40, 250, 100),
-				new LandMineAbility(0.3, 4, 40, 100, 500),
-				new DisorderAbility(0.3, 5),
-				new CollapseAbility(0.3, 5)
+//				new LandMineAbility(0.3, 4, 40, 100, 500),
+//				new DisorderAbility(0.3, 5),
+				new CollapseAbility(0.3, 5, 5, 40, 10)
 		);
 	}
 

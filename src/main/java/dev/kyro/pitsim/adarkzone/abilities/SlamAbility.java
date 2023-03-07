@@ -2,6 +2,7 @@ package dev.kyro.pitsim.adarkzone.abilities;
 
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.adarkzone.RoutinePitBossAbility;
+import dev.kyro.pitsim.controllers.DamageManager;
 import dev.kyro.pitsim.cosmetics.ParticleOffset;
 import dev.kyro.pitsim.cosmetics.PitParticle;
 import dev.kyro.pitsim.cosmetics.particles.BlockCrackParticle;
@@ -190,7 +191,7 @@ public class SlamAbility extends RoutinePitBossAbility {
 					playerVector.multiply(multiplier);
 
 					viewer.setVelocity(playerVector);
-					viewer.damage(damage, pitBoss.boss);
+					DamageManager.createAttack(pitBoss.boss, viewer, damage);
 				}
 				break;
 			}
