@@ -113,7 +113,7 @@ public class Regularity extends PitEnchant {
 	}
 
 	public static int secondHitDamage(int enchantLvl) {
-		return enchantLvl * 50 - 10;
+		return enchantLvl * 50 - 20;
 	}
 
 	public static int secondComboChance(int enchantLvl) {
