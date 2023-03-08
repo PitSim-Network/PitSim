@@ -23,14 +23,6 @@ import java.util.Random;
 
 public class KyroAura2 extends PitCosmetic {
 
-	static {
-		new BukkitRunnable() {
-			@Override
-			public void run() {
-			}
-		}.runTaskTimer(PitSim.INSTANCE, 0L, 1);
-	}
-
 	public KyroAura2() {
 		super("&b&k|&9Kyro's Other Aura&b&k|", "kyroaura2", CosmeticType.AURA);
 	}
