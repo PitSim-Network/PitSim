@@ -1,8 +1,11 @@
 package dev.kyro.pitsim.enchants;
 
 import dev.kyro.arcticapi.builders.ALoreBuilder;
+import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.controllers.Cooldown;
 import dev.kyro.pitsim.controllers.HitCounter;
+import dev.kyro.pitsim.controllers.PolarManager;
+import dev.kyro.pitsim.controllers.objects.AnticheatManager;
 import dev.kyro.pitsim.controllers.objects.PitEnchant;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.enums.ApplyType;
@@ -11,6 +14,7 @@ import dev.kyro.pitsim.misc.Misc;
 import dev.kyro.pitsim.misc.Sounds;
 import org.bukkit.event.EventHandler;
 import org.bukkit.potion.PotionEffectType;
+import org.bukkit.scheduler.BukkitRunnable;
 
 import java.text.DecimalFormat;
 import java.util.List;
@@ -42,14 +46,19 @@ public class ComboStun extends PitEnchant {
 		if(!HitCounter.hasReachedThreshold(pitPlayer.player, this, 5)) return;
 
 		else cooldown.restart();
+		int duration = (int) getDuration(enchantLvl) * 20;
 
-		Misc.applyPotionEffect(attackEvent.getDefender(), PotionEffectType.SLOW, (int) getDuration(enchantLvl) * 20, 7, true, false);
-		Misc.applyPotionEffect(attackEvent.getDefender(), PotionEffectType.JUMP, (int) getDuration(enchantLvl) * 20, 254, true, false);
-		Misc.applyPotionEffect(attackEvent.getDefender(), PotionEffectType.SLOW_DIGGING, (int) getDuration(enchantLvl) * 20, 99, true, false);
+		if(PitSim.anticheat instanceof PolarManager) {
+			PitSim.anticheat.exemptPlayer(attackEvent.getDefenderPlayer(), duration * 1000L, AnticheatManager.FlagType.KNOCKBACK);
+		}
+
+		Misc.applyPotionEffect(attackEvent.getDefender(), PotionEffectType.SLOW, duration, 7, true, false);
+		Misc.applyPotionEffect(attackEvent.getDefender(), PotionEffectType.JUMP, duration, 254, true, false);
+		Misc.applyPotionEffect(attackEvent.getDefender(), PotionEffectType.SLOW_DIGGING, duration, 99, true, false);
 
 		if(attackEvent.isDefenderPlayer()) {
-			Misc.sendTitle(attackEvent.getDefenderPlayer(), "&cSTUNNED", (int) getDuration(enchantLvl) * 20);
-			Misc.sendSubTitle(attackEvent.getDefenderPlayer(), "&eYou cannot move!", (int) getDuration(enchantLvl) * 20);
+			Misc.sendTitle(attackEvent.getDefenderPlayer(), "&cSTUNNED", duration);
+			Misc.sendSubTitle(attackEvent.getDefenderPlayer(), "&eYou cannot move!", duration);
 		}
 
 		Sounds.COMBO_STUN.play(attackEvent.getAttacker());
