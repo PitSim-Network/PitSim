@@ -30,13 +30,15 @@ import java.util.Map;
 
 public class CageAbility extends RoutinePitBossAbility {
 	public static Map<Location, EditSession> sessionMap = new HashMap<>();
-	public int captureTicks =  80;
-	public int schemSize = 5;
+	public int captureTicks;
+	public int schemSize;
 
-	public CageAbility(double routineWeight) {
+	public CageAbility(double routineWeight, int captureTicks, int schemSize) {
 		super(routineWeight);
-	}
 
+		this.captureTicks = captureTicks;
+		this.schemSize = schemSize;
+	}
 
 	@Override
 	public void onRoutineExecute() {

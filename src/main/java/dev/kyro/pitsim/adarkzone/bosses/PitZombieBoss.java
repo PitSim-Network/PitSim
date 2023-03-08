@@ -4,6 +4,7 @@ import dev.kyro.pitsim.adarkzone.DropPool;
 import dev.kyro.pitsim.adarkzone.PitBoss;
 import dev.kyro.pitsim.adarkzone.SubLevelType;
 import dev.kyro.pitsim.adarkzone.abilities.*;
+import javafx.scene.effect.Light;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
@@ -25,7 +26,8 @@ public class PitZombieBoss extends PitBoss {
 //				new DisorderAbility(0.3, 5),
 //				new ComboAbility(5, 20),
 //				new CollapseAbility(0.3, 5, 5, 40, 10)
-				new CageAbility(0.3)
+//				new CageAbility(0.3, 80, 5)
+				new LightningAbility(5, 1)
 		);
 	}
 
