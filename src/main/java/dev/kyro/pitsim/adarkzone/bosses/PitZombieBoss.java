@@ -6,7 +6,9 @@ import dev.kyro.pitsim.adarkzone.SubLevelType;
 import dev.kyro.pitsim.adarkzone.abilities.*;
 import javafx.scene.effect.Light;
 import org.bukkit.ChatColor;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
+import org.bukkit.material.MaterialData;
 
 public class PitZombieBoss extends PitBoss {
 
@@ -28,7 +30,8 @@ public class PitZombieBoss extends PitBoss {
 //				new CollapseAbility(0.3, 5, 5, 40, 10)
 //				new CageAbility(0.3, 80, 5)
 //				new LightningAbility(5, 1)
-				new ChargeAbility(0.3)
+//				new ChargeAbility(0.3)
+				new PullAbility(0.3, 20, 1, new MaterialData(Material.DIRT, (byte) 0))
 		);
 	}
 
