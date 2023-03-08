@@ -9,10 +9,11 @@ import dev.kyro.pitsim.cosmetics.CosmeticType;
 import dev.kyro.pitsim.cosmetics.PitCosmetic;
 import dev.kyro.pitsim.cosmetics.particles.ParticleColor;
 import dev.kyro.pitsim.cosmetics.particles.RedstoneParticle;
+import dev.kyro.pitsim.misc.math.MathUtils;
+import dev.kyro.pitsim.misc.math.Point3D;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.SkullMeta;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -23,32 +24,18 @@ import java.util.Random;
 
 public class KyroAura2 extends PitCosmetic {
 
-	static {
-		new BukkitRunnable() {
-			@Override
-			public void run() {
-			}
-		}.runTaskTimer(PitSim.INSTANCE, 0L, 1);
-	}
-
 	public KyroAura2() {
 		super("&b&k|&9Kyro's Other Aura&b&k|", "kyroaura2", CosmeticType.AURA);
 	}
 
 	public static void drawSphere(Location location, int count, double offset, int number, double xRadius, double yRadius, double zRadius) {
 		RedstoneParticle particle = new RedstoneParticle();
-		for(int i = 0; i < number; i++) {
-			double k = i + (offset % 1);
-			double phi = Math.acos(1 - 2 * k / number);
-			double theta = Math.PI * (1 + Math.sqrt(5)) * k;
-			double x = Math.cos(theta) * Math.sin(phi) * xRadius;
-			double y = Math.sin(theta) * Math.sin(phi) * yRadius;
-			double z = Math.cos(phi) * zRadius;
-			Location displayLocation = location.clone().add(x, -z, y);
-			for(Player onlinePlayer : Bukkit.getOnlinePlayers()) {
-				ParticleColor particleColor = getRandomParticleColor(i, count);
-				particle.display(onlinePlayer, displayLocation, particleColor);
-			}
+		List<Point3D> spherePoints = MathUtils.getSphere(offset, number, xRadius, yRadius, zRadius);
+		for(int i = 0; i < spherePoints.size(); i++) {
+			Point3D point = spherePoints.get(i);
+			Location displayLocation = location.clone().add(point.getX(), point.getY(), point.getZ());
+			ParticleColor particleColor = getRandomParticleColor(i, count);
+			particle.display(new ArrayList<>(Bukkit.getOnlinePlayers()), displayLocation, particleColor);
 		}
 	}
 
