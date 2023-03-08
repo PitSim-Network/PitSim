@@ -27,7 +27,8 @@ public class PitZombieBoss extends PitBoss {
 //				new ComboAbility(5, 20),
 //				new CollapseAbility(0.3, 5, 5, 40, 10)
 //				new CageAbility(0.3, 80, 5)
-				new LightningAbility(5, 1)
+//				new LightningAbility(5, 1)
+				new ChargeAbility(0.3)
 		);
 	}
 

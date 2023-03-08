@@ -80,6 +80,7 @@ public class Sounds {
 	public static final SoundEffect SLAM = new SoundEffect(Sound.DIG_GRASS, 1.0, 0.65);
 	public static final SoundEffect SLAM_2 = new SoundEffect(Sound.EXPLODE, 0.5, 1);
 	public static final SoundEffect COLLAPSE = new SoundEffect(Sound.ZOMBIE_WOODBREAK, 1, 0.4);
+	public static final SoundEffect CHARGE = new SoundEffect(Sound.GHAST_FIREBALL, 1, 1.2);
 
 	public static final SoundEffect CAGE = new SoundEffect()
 			.add(new SoundMoment(0).add(Sound.ANVIL_LAND, 1, 0.7))
