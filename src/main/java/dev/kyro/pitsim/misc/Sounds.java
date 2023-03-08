@@ -81,6 +81,14 @@ public class Sounds {
 	public static final SoundEffect SLAM_2 = new SoundEffect(Sound.EXPLODE, 0.5, 1);
 	public static final SoundEffect COLLAPSE = new SoundEffect(Sound.ZOMBIE_WOODBREAK, 1, 0.4);
 
+	public static final SoundEffect CAGE = new SoundEffect()
+			.add(new SoundMoment(0).add(Sound.ANVIL_LAND, 1, 0.7))
+			.add(new SoundMoment(2).add(Sound.ANVIL_LAND, 1, 0.8))
+			.add(new SoundMoment(4).add(Sound.ANVIL_LAND, 1, 0.9))
+			.add(new SoundMoment(6).add(Sound.ANVIL_LAND, 1, 1.0))
+			.add(new SoundMoment(8).add(Sound.ANVIL_LAND, 1, 1.1))
+			.add(new SoundMoment(10).add(Sound.ANVIL_LAND, 1, 1.2));
+
 	//	Enchants
 	public static final SoundEffect BILLIONAIRE = new SoundEffect(Sound.ORB_PICKUP, 1, 0.73);
 	public static final SoundEffect BULLET_TIME = new SoundEffect(Sound.FIZZ, 1, 1.5);

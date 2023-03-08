@@ -9,6 +9,7 @@ import dev.kyro.pitsim.enums.PitEntityType;
 import dev.kyro.pitsim.misc.Misc;
 import dev.kyro.pitsim.misc.Sounds;
 import dev.kyro.pitsim.misc.effects.FallingBlock;
+import dev.kyro.pitsim.misc.effects.PacketBlock;
 import net.minecraft.server.v1_8_R3.EntityPlayer;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -180,10 +181,16 @@ public class CollapseAbility extends RoutinePitBossAbility {
 			int ticks = getFallTime(ceilingHeight - 1);
 
 			for(Location location : patchLocations) {
+				PacketBlock packetBlock = new PacketBlock(Material.BARRIER, (byte) 0, location);
+				packetBlock.setViewers(getViewers());
+				packetBlock.spawnBlock();
+				packetBlock.removeAfter(ticks * 2);
+
 				FallingBlock fallingBlock = new FallingBlock(location.getBlock().getType(), location.getBlock().getData(), location.subtract(0, 1, 0));
 				fallingBlock.setViewers(getViewers());
 				fallingBlock.spawnBlock();
 				fallingBlock.removeAfter(ticks);
+
 			}
 
 			new BukkitRunnable() {
@@ -224,25 +231,5 @@ public class CollapseAbility extends RoutinePitBossAbility {
 				}
 			}.runTaskTimer(PitSim.INSTANCE, 0, 5);
 		}
-	}
-
-	public int getFallTime(int totalHeight) {
-		final double gravity = -0.03999999910593033;
-		final double drag = 0.9800000190734863;
-
-		double locY = 0;
-		double motY = 0;
-
-		int ticks = 0;
-
-		while(locY <= totalHeight) {
-			locY += motY;
-			motY *= drag;
-			motY -= gravity;
-
-			ticks++;
-		}
-
-		return ticks;
 	}
 }

@@ -15,6 +15,7 @@ import dev.kyro.arcticapi.data.AConfig;
 import dev.kyro.arcticapi.hooks.AHook;
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.adarkzone.*;
+import dev.kyro.pitsim.adarkzone.abilities.CageAbility;
 import dev.kyro.pitsim.adarkzone.notdarkzone.EquipmentType;
 import dev.kyro.pitsim.adarkzone.notdarkzone.PitEquipment;
 import dev.kyro.pitsim.adarkzone.notdarkzone.ShieldManager;
@@ -379,6 +380,11 @@ public class PitSim extends JavaPlugin {
 		for(EditSession session : FreezeSpell.sessionMap.keySet()) {
 			session.undo(session);
 		}
+
+		for(EditSession session : CageAbility.sessionMap.values()) {
+			session.undo(session);
+		}
+
 		for(Map.Entry<Location, Material> entry : FreezeSpell.blockMap.entrySet()) {
 			entry.getKey().getBlock().setType(entry.getValue());
 		}

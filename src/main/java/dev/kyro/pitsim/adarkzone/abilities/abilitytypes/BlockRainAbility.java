@@ -139,26 +139,6 @@ public abstract class BlockRainAbility extends RoutinePitBossAbility {
 		return solidIndex + 1;
 	}
 
-	public int getFallTime(int totalHeight) {
-		final double gravity = -0.03999999910593033;
-		final double drag = 0.9800000190734863;
-
-		double locY = 0;
-		double motY = 0;
-
-		int ticks = 0;
-
-		while(locY <= totalHeight) {
-			locY += motY;
-			motY *= drag;
-			motY -= gravity;
-
-			ticks++;
-		}
-
-		return ticks;
-	}
-
 	public BlockData getBlock(Map<BlockData, Double> blockMap) {
 		return Misc.weightedRandom(blockMap);
 	}

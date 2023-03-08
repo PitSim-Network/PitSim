@@ -16,8 +16,13 @@ import java.util.UUID;
 
 public class ComboAbility extends PitBossAbility {
 
-	public int comboThreshold = 5;
-	public int comboDuration = 40;
+	public int comboThreshold;
+	public int comboDuration;
+
+	public ComboAbility(int comboThreshold, int comboDuration) {
+		this.comboThreshold = comboThreshold;
+		this.comboDuration = comboDuration;
+	}
 
 	public Map<UUID, Integer> comboMap = new HashMap<>();
 
@@ -35,7 +40,7 @@ public class ComboAbility extends PitBossAbility {
 
 			@Override
 			public void run() {
-				DamageManager.createAttack(pitBoss.boss, player, 1);
+				DamageManager.createAttack(pitBoss.boss, player, 0);
 				player.setNoDamageTicks(0);
 
 				if(i >= comboDuration) {
