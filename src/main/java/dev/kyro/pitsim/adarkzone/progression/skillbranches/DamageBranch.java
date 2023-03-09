@@ -208,7 +208,7 @@ public class DamageBranch extends SkillBranch {
 
 			@Override
 			public void addEffects() {
-				addEffect(new EffectData("damage", "&c+%value%% &7damage vs mobs",
+				addEffect(new EffectData("damage", "&c%value%x &7damage vs mobs",
 						2, 2, 2, 3, 3, 3));
 			}
 		};
@@ -234,7 +234,7 @@ public class DamageBranch extends SkillBranch {
 
 			@Override
 			public void addEffects() {
-				addEffect(new EffectData("damage", "&c+%value%% &7damage vs bosses",
+				addEffect(new EffectData("damage", "&c%value%x &7damage vs bosses",
 						1, 2, 3, 4, 5, 6));
 			}
 		};
