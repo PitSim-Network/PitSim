@@ -101,6 +101,20 @@ public class Sounds {
 			.add(new SoundMoment(12).add(Sound.DIG_GRASS, 1, 1.3))
 			.add(new SoundMoment(14).add(Sound.DIG_GRASS, 1, 1.4));
 
+	public static final SoundEffect REINCARNATION = new SoundEffect()
+			.add(new SoundMoment(0).add(Sound.WITHER_SPAWN, 1, 0.4))
+			.add(new SoundMoment(2).add(Sound.NOTE_BASS, 1, 0.8))
+			.add(new SoundMoment(4).add(Sound.NOTE_BASS, 1, 0.9))
+			.add(new SoundMoment(6).add(Sound.NOTE_BASS, 1, 1.0))
+			.add(new SoundMoment(8).add(Sound.NOTE_BASS, 1, 1.1))
+			.add(new SoundMoment(10).add(Sound.NOTE_BASS, 1, 1.2))
+			.add(new SoundMoment(60).add(Sound.FIZZ, 1, 0.8))
+			.add(new SoundMoment(62).add(Sound.FIZZ, 1, 0.9))
+			.add(new SoundMoment(64).add(Sound.FIZZ, 1, 1.0))
+			.add(new SoundMoment(66).add(Sound.FIZZ, 1, 1.1))
+			.add(new SoundMoment(68).add(Sound.FIZZ, 1, 1.2));
+
+
 	//	Enchants
 	public static final SoundEffect BILLIONAIRE = new SoundEffect(Sound.ORB_PICKUP, 1, 0.73);
 	public static final SoundEffect BULLET_TIME = new SoundEffect(Sound.FIZZ, 1, 1.5);

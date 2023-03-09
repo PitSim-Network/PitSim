@@ -3,10 +3,8 @@ package dev.kyro.pitsim.adarkzone.bosses;
 import dev.kyro.pitsim.adarkzone.DropPool;
 import dev.kyro.pitsim.adarkzone.PitBoss;
 import dev.kyro.pitsim.adarkzone.SubLevelType;
-import dev.kyro.pitsim.adarkzone.abilities.PopupAbility;
-import dev.kyro.pitsim.misc.BlockData;
+import dev.kyro.pitsim.adarkzone.abilities.ReincarnationAbility;
 import org.bukkit.ChatColor;
-import org.bukkit.Material;
 import org.bukkit.entity.Player;
 
 public class PitZombieBoss extends PitBoss {
@@ -33,7 +31,8 @@ public class PitZombieBoss extends PitBoss {
 //				new ChargeAbility(0.3)
 //				new PullAbility(0.3, 20, 1, new MaterialData(Material.DIRT, (byte) 0))
 //				new ZombieMinionAbility(0.3, 1, 10)
-				new PopupAbility(0.3, new BlockData(Material.FIRE, (byte) 0), 2, 5, 10)
+//				new PopupAbility(0.3, new BlockData(Material.FIRE, (byte) 0), 2, 5, 10)
+				new ReincarnationAbility(1, 10000)
 		);
 	}
 
