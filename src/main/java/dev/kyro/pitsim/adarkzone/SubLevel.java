@@ -6,6 +6,7 @@ import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.aitems.StaticPitItem;
 import dev.kyro.pitsim.controllers.ItemFactory;
 import dev.kyro.pitsim.controllers.MapManager;
+import dev.kyro.pitsim.enums.MobStatus;
 import net.minecraft.server.v1_8_R3.NBTTagCompound;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -168,10 +169,11 @@ public class SubLevel {
 	public void spawnMob() {
 		PitMob pitMob;
 		try {
-			Constructor<? extends PitMob> constructor = mobClass.getConstructor(Location.class);
+			Constructor<? extends PitMob> constructor = mobClass.getConstructor(Location.class, MobStatus.class);
 			Location location = getMobSpawnLocation();
+			MobStatus status = MobStatus.STANDARD;
 			if(!location.getChunk().isLoaded()) return;
-			pitMob = constructor.newInstance(location);
+			pitMob = constructor.newInstance(location, status);
 		} catch(Exception exception) {
 			exception.printStackTrace();
 			return;
@@ -188,14 +190,15 @@ public class SubLevel {
 			throw new RuntimeException(exception);
 		}
 		isBossSpawned = true;
-		disableMobs();
+		removeMobs();
 	}
 
 	public void bossDeath() {
+		removeMobs();
 		isBossSpawned = false;
 	}
 
-	public void disableMobs() {
+	public void removeMobs() {
 		for(PitMob mob : new ArrayList<>(mobs)) mob.remove();
 	}
 

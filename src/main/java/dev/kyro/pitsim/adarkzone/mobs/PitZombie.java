@@ -7,6 +7,7 @@ import dev.kyro.pitsim.adarkzone.PitNameTag;
 import dev.kyro.pitsim.adarkzone.notdarkzone.PitEquipment;
 import dev.kyro.pitsim.aitems.mobdrops.RottenFlesh;
 import dev.kyro.pitsim.controllers.ItemFactory;
+import dev.kyro.pitsim.enums.MobStatus;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.entity.Creature;
@@ -15,8 +16,8 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 public class PitZombie extends PitMob {
 
-	public PitZombie(Location spawnLocation) {
-		super(spawnLocation);
+	public PitZombie(Location spawnLocation, MobStatus mobStatus) {
+		super(spawnLocation, mobStatus);
 	}
 
 	@Override
@@ -41,7 +42,7 @@ public class PitZombie extends PitMob {
 
 	@Override
 	public String getRawDisplayName() {
-		return "Zombie";
+		return isMinion() ? "Minion Zombie" : "Zombie";
 	}
 
 	@Override

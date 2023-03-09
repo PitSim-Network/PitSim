@@ -7,6 +7,7 @@ import dev.kyro.pitsim.adarkzone.PitMob;
 import dev.kyro.pitsim.adarkzone.PitNameTag;
 import dev.kyro.pitsim.aitems.mobdrops.BlazeRod;
 import dev.kyro.pitsim.controllers.ItemFactory;
+import dev.kyro.pitsim.enums.MobStatus;
 import org.bukkit.ChatColor;
 import org.bukkit.Effect;
 import org.bukkit.Location;
@@ -24,8 +25,8 @@ public class PitBlaze extends PitMob {
 	public long lastAttack = PitSim.currentTick;
 	public BukkitTask attackRunnable;
 
-	public PitBlaze(Location spawnLocation) {
-		super(spawnLocation);
+	public PitBlaze(Location spawnLocation, MobStatus mobStatus) {
+		super(spawnLocation, mobStatus);
 
 		attackRunnable = new BukkitRunnable() {
 			@Override

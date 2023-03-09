@@ -1,6 +1,5 @@
 package dev.kyro.pitsim.adarkzone.abilities;
 
-import com.sk89q.jnbt.Tag;
 import com.sk89q.worldedit.CuboidClipboard;
 import com.sk89q.worldedit.EditSession;
 import com.sk89q.worldedit.MaxChangedBlocksException;
@@ -69,7 +68,7 @@ public class CageAbility extends RoutinePitBossAbility {
 			Location bottom = locations.get(locations.size() - 1);
 
 			int height = 3;
-			int ticks = getFallTime(height);
+			int ticks = Misc.getFallTime(height);
 
 			for(Map.Entry<Location, BlockData> entry : blockDataMap.entrySet()) {
 				FallingBlock fallingBlock = new FallingBlock(entry.getValue(), entry.getKey());
