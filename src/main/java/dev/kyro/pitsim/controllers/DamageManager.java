@@ -1,5 +1,6 @@
 package dev.kyro.pitsim.controllers;
 
+import de.myzelyam.api.vanish.VanishAPI;
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.adarkzone.BossManager;
@@ -38,10 +39,7 @@ import me.clip.placeholderapi.PlaceholderAPI;
 import net.citizensnpcs.api.CitizensAPI;
 import net.minecraft.server.v1_8_R3.EntityLiving;
 import net.minecraft.server.v1_8_R3.EntityPlayer;
-import org.bukkit.Bukkit;
-import org.bukkit.EntityEffect;
-import org.bukkit.Location;
-import org.bukkit.Material;
+import org.bukkit.*;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftLivingEntity;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
 import org.bukkit.entity.*;
@@ -89,6 +87,12 @@ public class DamageManager implements Listener {
 
 	public static void createAttack(LivingEntity defender, double damage, Consumer<AttackEvent> callback) {
 		assert defender != null;
+
+		if(defender instanceof Player) {
+			Player player = (Player) defender;
+			if(VanishAPI.isInvisible(player) || player.getGameMode() != GameMode.SURVIVAL) return;
+		}
+
 		if(callback != null) attackCallbackMap.put(defender, callback);
 		EntityDamageEvent event = new EntityDamageEvent(defender, EntityDamageEvent.DamageCause.CUSTOM, damage);
 		Bukkit.getPluginManager().callEvent(event);
@@ -101,6 +105,12 @@ public class DamageManager implements Listener {
 
 	public static void createAttack(LivingEntity attacker, LivingEntity defender, double damage, Consumer<AttackEvent> callback) {
 		assert attacker != null && defender != null;
+
+		if(defender instanceof Player) {
+			Player player = (Player) defender;
+			if(VanishAPI.isInvisible(player) || player.getGameMode() != GameMode.SURVIVAL) return;
+		}
+
 		if(callback != null) attackCallbackMap.put(defender, callback);
 		defender.damage(damage, attacker);
 	}

@@ -5,9 +5,9 @@ import java.util.Arrays;
 import java.util.List;
 
 public class Polygon2D {
-	private final List<PolygonPoint> points;
+	private final List<Point2D> points;
 
-	public Polygon2D(PolygonPoint... points) {
+	public Polygon2D(Point2D... points) {
 		this.points = new ArrayList<>(Arrays.asList(points));
 	}
 
@@ -17,13 +17,13 @@ public class Polygon2D {
 	 * @param test The point to check
 	 * @return true if the point is inside the boundary, false otherwise
 	 */
-	public boolean contains(PolygonPoint test) {
+	public boolean contains(Point2D test) {
 		int i;
 		int j;
 		boolean result = false;
 		for(i = 0, j = points.size() - 1; i < points.size(); j = i++) {
-			if((points.get(i).z > test.z) != (points.get(j).z > test.z) &&
-					(test.x < (points.get(j).x - points.get(i).x) * (test.z - points.get(i).z) / (points.get(j).z - points.get(i).z) + points.get(i).x)) {
+			if((points.get(i).getZ() > test.getZ()) != (points.get(j).getZ() > test.getZ()) &&
+					(test.getX() < (points.get(j).getX() - points.get(i).getX()) * (test.getZ() - points.get(i).getZ()) / (points.get(j).getZ() - points.get(i).getZ()) + points.get(i).getX())) {
 				result = !result;
 			}
 		}

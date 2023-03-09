@@ -3,6 +3,7 @@ package dev.kyro.pitsim.adarkzone.abilities;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.adarkzone.RoutinePitBossAbility;
 import dev.kyro.pitsim.controllers.DamageManager;
+import dev.kyro.pitsim.adarkzone.PitBossAbility;
 import dev.kyro.pitsim.cosmetics.ParticleOffset;
 import dev.kyro.pitsim.cosmetics.PitParticle;
 import dev.kyro.pitsim.cosmetics.particles.BlockCrackParticle;
@@ -27,7 +28,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-public class SlamAbility extends RoutinePitBossAbility {
+public class SlamAbility extends PitBossAbility {
 	public int radius;
 	public int blockCount;
 	public double damage;
@@ -43,7 +44,7 @@ public class SlamAbility extends RoutinePitBossAbility {
 
 	@Override
 	public void onRoutineExecute() {
-		Location centerLocation = pitBoss.boss.getLocation().clone().subtract(0, 1, 0);
+		Location centerLocation = getPitBoss().boss.getLocation().clone().subtract(0, 1, 0);
 
 		List<Block> applicableBlocks = new ArrayList<>();
 
@@ -191,11 +192,10 @@ public class SlamAbility extends RoutinePitBossAbility {
 					playerVector.multiply(multiplier);
 
 					viewer.setVelocity(playerVector);
-					DamageManager.createAttack(pitBoss.boss, viewer, damage);
+					DamageManager.createAttack(getPitBoss().boss, viewer, damage);
 				}
 				break;
 			}
 		}
 	}
 }
-

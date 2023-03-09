@@ -3,6 +3,7 @@ package dev.kyro.pitsim.adarkzone.abilities;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.adarkzone.RoutinePitBossAbility;
 import dev.kyro.pitsim.controllers.DamageManager;
+import dev.kyro.pitsim.adarkzone.PitBossAbility;
 import dev.kyro.pitsim.misc.Misc;
 import dev.kyro.pitsim.misc.Sounds;
 import dev.kyro.pitsim.misc.effects.FallingBlock;
@@ -18,7 +19,7 @@ import org.bukkit.util.Vector;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SnakeAbility extends RoutinePitBossAbility {
+public class SnakeAbility extends PitBossAbility {
 	public int length;
 	public double damage;
 	public Material blockType;
@@ -36,8 +37,8 @@ public class SnakeAbility extends RoutinePitBossAbility {
 
 	@Override
 	public void onRoutineExecute() {
-		Vector direction = pitBoss.boss.getLocation().getDirection().multiply(15);
-		Location origin = pitBoss.boss.getLocation();
+		Vector direction = getPitBoss().boss.getLocation().getDirection().multiply(15);
+		Location origin = getPitBoss().boss.getLocation();
 		direction.divide(new Vector(length, length, length));
 
 		int time = 0;
@@ -56,9 +57,9 @@ public class SnakeAbility extends RoutinePitBossAbility {
 
 					for(Entity entity : origin.getWorld().getNearbyEntities(origin, 1.5, 1.5, 1.5)) {
 						if(!(entity instanceof Player)) continue;
-						if(entity == pitBoss.boss) continue;
+						if(entity == getPitBoss().boss) continue;
 
-						DamageManager.createAttack(pitBoss.boss, (Player) entity, damage);
+						DamageManager.createAttack(getPitBoss().boss, (Player) entity, damage);
 						Misc.applyPotionEffect((Player) entity, PotionEffectType.SLOW, 20, 1, false, false);
 					}
 				}

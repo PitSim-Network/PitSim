@@ -12,11 +12,37 @@ import java.util.ArrayList;
 import java.util.List;
 
 public abstract class PitBossAbility implements Listener {
-	public PitBoss pitBoss;
-	public boolean enabled = true;
+	private PitBoss pitBoss;
+	private boolean enabled = true;
+	private double routineWeight;
 
 	public PitBossAbility() {
 		Bukkit.getPluginManager().registerEvents(this, PitSim.INSTANCE);
+	}
+
+	public PitBossAbility(double routineWeight) {
+		this();
+		this.routineWeight = routineWeight;
+	}
+
+//	Internal events (override to add functionality)
+	public void onRoutineExecute() {}
+	public boolean shouldExecuteRoutine() {
+		return true;
+	}
+
+	public PitBossAbility pitBoss(PitBoss pitBoss) {
+		this.pitBoss = pitBoss;
+		return this;
+	}
+
+	public boolean isAssignedBoss(LivingEntity entity) {
+		return getPitBoss().boss == entity;
+	}
+
+	public void disable() {
+		enabled = false;
+		HandlerList.unregisterAll(this);
 	}
 
 	public List<Player> getViewers() {
@@ -29,44 +55,15 @@ public abstract class PitBossAbility implements Listener {
 		return viewers;
 	}
 
-//	Internal events (override to add functionality)
-	public void onRoutineExecute() {}
-
-	public boolean shouldExecuteRoutine() {
-		return true;
+	public PitBoss getPitBoss() {
+		return pitBoss;
 	}
 
-	public PitBossAbility pitBoss(PitBoss pitBoss) {
-		this.pitBoss = pitBoss;
-		return this;
+	public boolean isEnabled() {
+		return enabled;
 	}
 
-	public boolean isAssignedBoss(LivingEntity entity) {
-		return pitBoss.boss == entity;
-	}
-
-	public void disable() {
-		enabled = false;
-		HandlerList.unregisterAll(this);
-	}
-
-	public int getFallTime(int totalHeight) {
-		final double gravity = -0.03999999910593033;
-		final double drag = 0.9800000190734863;
-
-		double locY = 0;
-		double motY = 0;
-
-		int ticks = 0;
-
-		while(locY <= totalHeight) {
-			locY += motY;
-			motY *= drag;
-			motY -= gravity;
-
-			ticks++;
-		}
-
-		return ticks;
+	public double getRoutineWeight() {
+		return routineWeight;
 	}
 }

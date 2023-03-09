@@ -17,7 +17,7 @@ import dev.kyro.pitsim.misc.PitLoreBuilder;
 import dev.kyro.pitsim.misc.Sounds;
 import dev.kyro.pitsim.misc.effects.FallingBlock;
 import dev.kyro.pitsim.misc.math.Polygon2D;
-import dev.kyro.pitsim.misc.math.PolygonPoint;
+import dev.kyro.pitsim.misc.math.Point2D;
 import dev.kyro.pitsim.misc.math.RotationUtils;
 import net.minecraft.server.v1_8_R3.BlockPosition;
 import net.minecraft.server.v1_8_R3.EntityPlayer;
@@ -114,12 +114,12 @@ public class RollingThunder extends PitEnchant {
 			Location prevRightLoc = rightLoc.clone();
 			leftLoc.add(leftDirection.clone().multiply(getSegmentSize(segmentNum)));
 			rightLoc.add(rightDirection.clone().multiply(getSegmentSize(segmentNum)));
-			Polygon2D polygon = new Polygon2D(new PolygonPoint(prevLeftLoc.getX(), prevLeftLoc.getZ()), new PolygonPoint(leftLoc.getX(), leftLoc.getZ()),
-					new PolygonPoint(rightLoc.getX(), rightLoc.getZ()), new PolygonPoint(prevRightLoc.getX(), prevRightLoc.getZ()));
+			Polygon2D polygon = new Polygon2D(new Point2D(prevLeftLoc.getX(), prevLeftLoc.getZ()), new Point2D(leftLoc.getX(), leftLoc.getZ()),
+					new Point2D(rightLoc.getX(), rightLoc.getZ()), new Point2D(prevRightLoc.getX(), prevRightLoc.getZ()));
 
 			for(Block block : new ArrayList<>(validBlocks)) {
 				Location location = block.getLocation();
-				if(!polygon.contains(new PolygonPoint(location.getX(), location.getZ()))) continue;
+				if(!polygon.contains(new Point2D(location.getX(), location.getZ()))) continue;
 				validBlocks.remove(block);
 
 				Sound sound = Misc.getBlockBreakSound(block);
@@ -159,7 +159,7 @@ public class RollingThunder extends PitEnchant {
 						if(!(entity instanceof LivingEntity) || entity == player) continue;
 						LivingEntity livingEntity = (LivingEntity) entity;
 						Location location = livingEntity.getLocation();
-						if(!polygon.contains(new PolygonPoint(location.getX(), location.getZ())) ||
+						if(!polygon.contains(new Point2D(location.getX(), location.getZ())) ||
 								Math.abs(location.getY() - mainLocation.getY()) > 5 || stunnedEntities.contains(livingEntity)) continue;
 						PitMob pitMob = DarkzoneManager.getPitMob(livingEntity);
 						PitBoss pitBoss = BossManager.getPitBoss(livingEntity);
