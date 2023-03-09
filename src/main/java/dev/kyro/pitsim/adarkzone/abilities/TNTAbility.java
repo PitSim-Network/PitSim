@@ -1,21 +1,28 @@
 package dev.kyro.pitsim.adarkzone.abilities;
 
+import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.adarkzone.PitBossAbility;
 import dev.kyro.pitsim.controllers.DamageManager;
 import dev.kyro.pitsim.cosmetics.particles.FireworkSparkParticle;
 import dev.kyro.pitsim.misc.Misc;
+import dev.kyro.pitsim.misc.Sounds;
 import dev.kyro.pitsim.misc.math.MathUtils;
 import dev.kyro.pitsim.misc.math.Point3D;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
+import org.bukkit.entity.TNTPrimed;
+import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 public class TNTAbility extends PitBossAbility {
 	public double damage;
+	public List<TNTPrimed> entities = new ArrayList<>();
 
 	public TNTAbility(double routineWeight, double damage) {
 		super(routineWeight);
@@ -25,7 +32,38 @@ public class TNTAbility extends PitBossAbility {
 	@Override
 	public void onRoutineExecute() {
 		Location centerLocation = getPitBoss().boss.getLocation().add(0, 3, 0); // replace with tnt explosion Location
-		createExplosion(centerLocation);
+
+		TNTPrimed tntPrimed = centerLocation.getWorld().spawn(centerLocation, TNTPrimed.class);
+		tntPrimed.setFuseTicks(40);
+		entities.add(tntPrimed);
+		Sounds.TNT_PRIME.play(tntPrimed.getLocation(), 40);
+
+		Player target = getPitBoss().bossTargetingSystem.target;
+		if(target == null) return;
+
+		tntPrimed.setVelocity(target.getLocation().toVector().subtract(centerLocation.toVector()).add(new Vector(0, 5, 0)).normalize().multiply(1.1));
+		new BukkitRunnable() {
+			@Override
+			public void run() {
+				createExplosion(tntPrimed.getLocation());
+				tntPrimed.remove();
+				entities.remove(tntPrimed);
+				Sounds.CREEPER_EXPLODE.play(tntPrimed.getLocation(), 40);
+			}
+		}.runTaskLater(PitSim.INSTANCE, 10);
+	}
+
+	@Override
+	public boolean shouldExecuteRoutine() {
+		return getPitBoss().bossTargetingSystem.target != null;
+	}
+
+	@Override
+	public void disable() {
+		super.disable();
+		for(TNTPrimed tntPrimed : entities) {
+			tntPrimed.remove();
+		}
 	}
 
 	public void createExplosion(Location centerLocation) {
