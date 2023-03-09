@@ -390,7 +390,7 @@ public class PitSim extends JavaPlugin {
 		}
 
 		if(status.isDarkzone()) {
-			for(SubLevel subLevel : DarkzoneManager.subLevels) subLevel.disableMobs();
+			for(SubLevel subLevel : DarkzoneManager.subLevels) subLevel.removeMobs();
 			for(PitBoss pitBoss : new ArrayList<>(BossManager.pitBosses)) pitBoss.remove();
 		}
 

@@ -7,6 +7,7 @@ import dev.kyro.pitsim.adarkzone.PitNameTag;
 import dev.kyro.pitsim.adarkzone.notdarkzone.PitEquipment;
 import dev.kyro.pitsim.aitems.mobdrops.Charcoal;
 import dev.kyro.pitsim.controllers.ItemFactory;
+import dev.kyro.pitsim.enums.MobStatus;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.entity.Creature;
@@ -15,8 +16,8 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 public class PitWitherSkeleton extends PitMob {
 
-	public PitWitherSkeleton(Location spawnLocation) {
-		super(spawnLocation);
+	public PitWitherSkeleton(Location spawnLocation, MobStatus mobStatus) {
+		super(spawnLocation, mobStatus);
 	}
 
 	@Override

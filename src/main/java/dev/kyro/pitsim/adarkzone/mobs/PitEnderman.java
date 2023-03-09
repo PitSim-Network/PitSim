@@ -5,6 +5,7 @@ import dev.kyro.pitsim.adarkzone.PitMob;
 import dev.kyro.pitsim.adarkzone.PitNameTag;
 import dev.kyro.pitsim.aitems.mobdrops.EnderPearl;
 import dev.kyro.pitsim.controllers.ItemFactory;
+import dev.kyro.pitsim.enums.MobStatus;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.entity.Creature;
@@ -12,8 +13,8 @@ import org.bukkit.entity.Enderman;
 
 public class PitEnderman extends PitMob {
 
-	public PitEnderman(Location spawnLocation) {
-		super(spawnLocation);
+	public PitEnderman(Location spawnLocation, MobStatus mobStatus) {
+		super(spawnLocation, mobStatus);
 	}
 
 	@Override

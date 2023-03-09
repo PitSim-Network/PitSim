@@ -178,7 +178,7 @@ public class CollapseAbility extends RoutinePitBossAbility {
 		}
 
 		public void collapse() {
-			int ticks = getFallTime(ceilingHeight - 1);
+			int ticks = Misc.getFallTime(ceilingHeight - 1);
 
 			for(Location location : patchLocations) {
 				PacketBlock packetBlock = new PacketBlock(Material.BARRIER, (byte) 0, location);

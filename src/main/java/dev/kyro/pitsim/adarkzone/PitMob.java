@@ -6,6 +6,7 @@ import dev.kyro.pitsim.adarkzone.progression.SkillBranch;
 import dev.kyro.pitsim.adarkzone.progression.skillbranches.SoulBranch;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.enchants.tainted.uncommon.Reaper;
+import dev.kyro.pitsim.enums.MobStatus;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -22,64 +23,65 @@ public abstract class PitMob implements Listener {
 	private Creature mob;
 	private DropPool dropPool;
 	private PitNameTag nameTag;
-	private MobClass mobClass;
+	private MobStatus mobStatus;
 
-	public PitMob(Location spawnLocation, MobClass mobClass) {
+	public PitMob(Location spawnLocation, MobStatus mobStatus) {
 		if(spawnLocation == null) return;
-		this.dropPool = createDropPool(mobClass);
-		this.mobClass = mobClass;
+		this.mobStatus = mobStatus;
+		this.dropPool = createDropPool();
 		spawn(spawnLocation);
 		Bukkit.getPluginManager().registerEvents(this, PitSim.INSTANCE);
 	}
 
 	public abstract Creature createMob(Location spawnLocation);
-	public abstract String getRawDisplayName(MobClass mobClass);
-	public abstract ChatColor getChatColor(MobClass mobClass);
-	public abstract int getMaxHealth(MobClass mobClass);
-	public abstract int getSpeedAmplifier(MobClass mobClass);
-	public abstract int getDroppedSouls(MobClass mobClass);
-	public abstract DropPool createDropPool(MobClass mobClass);
-	public abstract PitNameTag createNameTag(MobClass mobClass);
+	public abstract String getRawDisplayName();
+	public abstract ChatColor getChatColor();
+	public abstract int getMaxHealth();
+	public abstract int getSpeedAmplifier();
+	public abstract int getDroppedSouls();
+	public abstract DropPool createDropPool();
+	public abstract PitNameTag createNameTag();
 
 	//	Internal events (override to add functionality)
 	public void onSpawn() {}
 	public void onDeath() {}
 
 	public String getRawDisplayNamePlural() {
-		return getRawDisplayName(mobClass) + "s";
+		return getRawDisplayName() + "s";
 	}
 
 	public String getDisplayName() {
-		return getChatColor(mobClass) + getRawDisplayName(mobClass);
+		return getChatColor() + getRawDisplayName();
 	}
 
 	public String getDisplayNamePlural() {
-		return getChatColor(mobClass) + getRawDisplayNamePlural();
+		return getChatColor() + getRawDisplayNamePlural();
 	}
 
 	public void spawn(Location spawnLocation) {
 		mob = createMob(spawnLocation);
 		if(mob.isInsideVehicle()) mob.getVehicle().remove();
-		mob.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 99999, getSpeedAmplifier(mobClass), true, false));
-		mob.setMaxHealth(getMaxHealth(mobClass));
-		mob.setHealth(getMaxHealth(mobClass));
+		mob.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 99999, getSpeedAmplifier(), true, false));
+		mob.setMaxHealth(getMaxHealth());
+		mob.setHealth(getMaxHealth());
 
-		nameTag = createNameTag(mobClass);
+		nameTag = createNameTag();
 		nameTag.attach();
 
 		onSpawn();
 	}
 
 	public void kill(PitPlayer pitKiller) {
-		dropPool.singleDistribution(pitKiller.player);
+		if(mobStatus == MobStatus.STANDARD) {
+			dropPool.singleDistribution(pitKiller.player);
 
-		double soulChance = 0.05;
-		soulChance *= 1 + (Reaper.getSoulChanceIncrease(pitKiller.player) / 100.0);
-		soulChance *= 1 + (ProgressionManager.getUnlockedEffectAsValue(
-				pitKiller, SoulBranch.INSTANCE, SkillBranch.PathPosition.FIRST_PATH, "soul-chance-mobs") / 100.0);
-		if(Math.random() < soulChance) DarkzoneManager.createSoulExplosion(pitKiller.player,
-				getMob().getLocation().add(0, 0.5, 0), getDroppedSouls(mobClass), false);
-
+			double soulChance = 0.05;
+			soulChance *= 1 + (Reaper.getSoulChanceIncrease(pitKiller.player) / 100.0);
+			soulChance *= 1 + (ProgressionManager.getUnlockedEffectAsValue(
+					pitKiller, SoulBranch.INSTANCE, SkillBranch.PathPosition.FIRST_PATH, "soul-chance-mobs") / 100.0);
+			if(Math.random() < soulChance) DarkzoneManager.createSoulExplosion(pitKiller.player,
+					getMob().getLocation().add(0, 0.5, 0), getDroppedSouls(), false);
+		}
 		remove();
 	}
 
@@ -126,12 +128,15 @@ public abstract class PitMob implements Listener {
 		return nameTag;
 	}
 
+	public MobStatus getMobStatus() {
+		return mobStatus;
+	}
+
+	public boolean isMinion() {
+		return mobStatus.isMinion();
+	}
+
 	public boolean isThisMob(Entity entity) {
 		return entity == getMob();
 	}
-}
-
-enum MobClass {
-	STANDARD,
-	MINION;
 }

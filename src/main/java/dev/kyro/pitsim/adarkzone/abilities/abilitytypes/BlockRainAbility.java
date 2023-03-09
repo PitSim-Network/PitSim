@@ -5,12 +5,9 @@ import dev.kyro.pitsim.adarkzone.RoutinePitBossAbility;
 import dev.kyro.pitsim.misc.BlockData;
 import dev.kyro.pitsim.misc.Misc;
 import dev.kyro.pitsim.misc.effects.FallingBlock;
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.*;
@@ -105,7 +102,7 @@ public abstract class BlockRainAbility extends RoutinePitBossAbility {
 						return;
 					}
 
-					int fallTime = getFallTime(totalHeight - 2);
+					int fallTime = Misc.getFallTime(totalHeight - 2);
 
 					randomLocation.subtract(0, totalHeight - 1, 0);
 
