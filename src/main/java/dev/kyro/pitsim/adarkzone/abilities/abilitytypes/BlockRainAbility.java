@@ -1,7 +1,7 @@
 package dev.kyro.pitsim.adarkzone.abilities.abilitytypes;
 
 import dev.kyro.pitsim.PitSim;
-import dev.kyro.pitsim.adarkzone.RoutinePitBossAbility;
+import dev.kyro.pitsim.adarkzone.PitBossAbility;
 import dev.kyro.pitsim.misc.BlockData;
 import dev.kyro.pitsim.misc.Misc;
 import dev.kyro.pitsim.misc.effects.FallingBlock;
@@ -12,7 +12,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.*;
 
-public abstract class BlockRainAbility extends RoutinePitBossAbility {
+public abstract class BlockRainAbility extends PitBossAbility {
 
 	public int radius;
 	public int blockCount;
@@ -42,7 +42,7 @@ public abstract class BlockRainAbility extends RoutinePitBossAbility {
 	@Override
 	public void onRoutineExecute() {
 
-		Location centerLocation = pitBoss.boss.getLocation().clone().subtract(0, 1, 0);
+		Location centerLocation = getPitBoss().boss.getLocation().clone().subtract(0, 1, 0);
 		List<Location> applicableLocations = new ArrayList<>();
 
 		int rotations = 0;

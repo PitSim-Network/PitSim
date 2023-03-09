@@ -52,7 +52,7 @@ public class FirestormAbility extends BlockRainAbility {
 					}
 				}.runTaskTimer(PitSim.INSTANCE, 0, 20);
 			}
-			DamageManager.createAttack(pitBoss.boss, player, damage);
+			DamageManager.createAttack(getPitBoss().boss, player, damage);
 		}
 	}
 

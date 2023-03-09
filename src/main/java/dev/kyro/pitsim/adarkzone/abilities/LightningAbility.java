@@ -2,7 +2,6 @@ package dev.kyro.pitsim.adarkzone.abilities;
 
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.adarkzone.PitBossAbility;
-import dev.kyro.pitsim.adarkzone.RoutinePitBossAbility;
 import dev.kyro.pitsim.events.AttackEvent;
 import dev.kyro.pitsim.misc.Misc;
 import dev.kyro.pitsim.misc.Sounds;
@@ -23,7 +22,7 @@ public class LightningAbility extends PitBossAbility {
 
 	@EventHandler
 	public void onHit(AttackEvent.Apply event) {
-		if(event.getAttackerPlayer() != pitBoss.boss) return;
+		if(event.getAttackerPlayer() != getPitBoss().boss) return;
 		if(!event.isDefenderPlayer()) return;
 
 		Random random = new Random();

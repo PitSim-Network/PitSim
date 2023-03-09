@@ -1,12 +1,10 @@
 package dev.kyro.pitsim.adarkzone.abilities;
 
 import dev.kyro.pitsim.PitSim;
-import dev.kyro.pitsim.adarkzone.RoutinePitBossAbility;
+import dev.kyro.pitsim.adarkzone.PitBossAbility;
 import dev.kyro.pitsim.cosmetics.particles.BlockCrackParticle;
-import dev.kyro.pitsim.cosmetics.particles.ParticleColor;
 import dev.kyro.pitsim.misc.Sounds;
 import net.minecraft.server.v1_8_R3.EntityPlayer;
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
@@ -18,7 +16,7 @@ import org.bukkit.util.Vector;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PullAbility extends RoutinePitBossAbility {
+public class PullAbility extends PitBossAbility {
 	public double maxRadius;
 	public double interval;
 	public MaterialData materialData;
@@ -33,11 +31,11 @@ public class PullAbility extends RoutinePitBossAbility {
 
 	@Override
 	public void onRoutineExecute() {
-		Location location = pitBoss.boss.getLocation().subtract(0, 3, 0);
+		Location location = getPitBoss().boss.getLocation().subtract(0, 3, 0);
 		BlockCrackParticle particle = new BlockCrackParticle(materialData);
 		List<Player> affectedPlayers = new ArrayList<>();
 
-		Sounds.PULL.play(pitBoss.boss.getLocation(), 40);
+		Sounds.PULL.play(getPitBoss().boss.getLocation(), 40);
 
 		for(int radius = 0; radius < maxRadius; radius += interval) {
 			int finalRadius = radius;
@@ -86,7 +84,7 @@ public class PullAbility extends RoutinePitBossAbility {
 	@Override
 	public boolean shouldExecuteRoutine() {
 		for(Player viewer : getViewers()) {
-			if(viewer.getLocation().distance(pitBoss.boss.getLocation()) < 6) return false;
+			if(viewer.getLocation().distance(getPitBoss().boss.getLocation()) < 6) return false;
 		}
 		return true;
 	}

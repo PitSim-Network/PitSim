@@ -17,7 +17,7 @@ public class PitZombieBoss extends PitBoss {
 		super(summoner);
 
 		abilities(
-				new TNTAbility(1.0, 1)
+				new TNTAbility(1.0, 1),
 //				new TrueDamageAbility(4),
 //				new RuptureAbility(0.3, 25, 8, 50),
 //				new PoundAbility(0.3, 5),

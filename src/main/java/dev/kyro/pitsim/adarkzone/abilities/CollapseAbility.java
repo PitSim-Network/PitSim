@@ -1,7 +1,7 @@
 package dev.kyro.pitsim.adarkzone.abilities;
 
 import dev.kyro.pitsim.PitSim;
-import dev.kyro.pitsim.adarkzone.RoutinePitBossAbility;
+import dev.kyro.pitsim.adarkzone.PitBossAbility;
 import dev.kyro.pitsim.controllers.DamageManager;
 import dev.kyro.pitsim.cosmetics.particles.ParticleColor;
 import dev.kyro.pitsim.cosmetics.particles.RedstoneParticle;
@@ -11,7 +11,6 @@ import dev.kyro.pitsim.misc.Sounds;
 import dev.kyro.pitsim.misc.effects.FallingBlock;
 import dev.kyro.pitsim.misc.effects.PacketBlock;
 import net.minecraft.server.v1_8_R3.EntityPlayer;
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -24,7 +23,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-public class CollapseAbility extends RoutinePitBossAbility {
+public class CollapseAbility extends PitBossAbility {
 	public int radius;
 	public int patchCount;
 	public int roomRadius;
@@ -42,7 +41,7 @@ public class CollapseAbility extends RoutinePitBossAbility {
 
 	@Override
 	public void onRoutineExecute() {
-		Location centerLocation = pitBoss.getSubLevel().getMiddle().clone();
+		Location centerLocation = getPitBoss().getSubLevel().getMiddle().clone();
 		List<Block> applicableBlocks = new ArrayList<>();
 
 		for(int x = -1 * roomRadius; x < roomRadius + 1; x++) {
@@ -68,7 +67,7 @@ public class CollapseAbility extends RoutinePitBossAbility {
 		List<Location> usedLocations = new ArrayList<>();
 		Random random = new Random();
 
-		Sounds.WARNING_LOUD.play(pitBoss.getSubLevel().getMiddle(), 40);
+		Sounds.WARNING_LOUD.play(getPitBoss().getSubLevel().getMiddle(), 40);
 
 		for(int i = 0; i < patchCount; i++) {
 			int index = random.nextInt(applicableBlocks.size());
@@ -87,7 +86,7 @@ public class CollapseAbility extends RoutinePitBossAbility {
 		new BukkitRunnable() {
 			@Override
 			public void run() {
-				Sounds.COLLAPSE.play(pitBoss.getSubLevel().getMiddle(), 40);
+				Sounds.COLLAPSE.play(getPitBoss().getSubLevel().getMiddle(), 40);
 			}
 		}.runTaskLater(PitSim.INSTANCE, warningTime);
 	}
@@ -196,7 +195,7 @@ public class CollapseAbility extends RoutinePitBossAbility {
 			new BukkitRunnable() {
 				@Override
 				public void run() {
-					pitBoss.boss.getWorld().getNearbyEntities(center, radius, 5, radius).forEach(entity -> {
+					getPitBoss().boss.getWorld().getNearbyEntities(center, radius, 5, radius).forEach(entity -> {
 						if(Misc.isEntity(entity, PitEntityType.REAL_PLAYER)) {
 							Player player = (Player) entity;
 							DamageManager.createAttack(player, damage);

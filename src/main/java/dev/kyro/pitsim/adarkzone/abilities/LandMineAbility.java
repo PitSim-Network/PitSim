@@ -1,7 +1,7 @@
 package dev.kyro.pitsim.adarkzone.abilities;
 
 import dev.kyro.pitsim.PitSim;
-import dev.kyro.pitsim.adarkzone.RoutinePitBossAbility;
+import dev.kyro.pitsim.adarkzone.PitBossAbility;
 import dev.kyro.pitsim.controllers.DamageManager;
 import dev.kyro.pitsim.cosmetics.particles.ExplosionHugeParticle;
 import dev.kyro.pitsim.cosmetics.particles.ParticleColor;
@@ -12,7 +12,6 @@ import dev.kyro.pitsim.misc.Sounds;
 import dev.kyro.pitsim.misc.effects.FallingBlock;
 import dev.kyro.pitsim.misc.math.RotationUtils;
 import net.minecraft.server.v1_8_R3.EntityPlayer;
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
@@ -28,7 +27,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-public class LandMineAbility extends RoutinePitBossAbility {
+public class LandMineAbility extends PitBossAbility {
 	public static final double SHAKE_THRESHOLD = 0.02;
 	public long disableTicks;
 	public double radius;
@@ -49,13 +48,13 @@ public class LandMineAbility extends RoutinePitBossAbility {
 
 	@Override
 	public void onRoutineExecute() {
-		LandMine landMine = new LandMine(new FallingBlock(Material.TNT, (byte) 0, pitBoss.boss.getLocation().add(0, 0.5, 0)));
+		LandMine landMine = new LandMine(new FallingBlock(Material.TNT, (byte) 0, getPitBoss().boss.getLocation().add(0, 0.5, 0)));
 		FallingBlock fallingBlock = landMine.fallingBlock;
 		fallingBlock.setViewers(getViewers());
 		fallingBlock.spawnBlock();
 		landMines.add(landMine);
 
-		Sounds.TNT_PLACE.play(pitBoss.boss.getLocation(), 20);
+		Sounds.TNT_PLACE.play(getPitBoss().boss.getLocation(), 20);
 
 		landMine.runnable = new BukkitRunnable() {
 			int i = 0;
@@ -64,7 +63,7 @@ public class LandMineAbility extends RoutinePitBossAbility {
 			public void run() {
 				if(i == 0) {
 					landMine.isStarting = false;
-					Sounds.TNT_PRIME.play(pitBoss.boss.getLocation(), 20);
+					Sounds.TNT_PRIME.play(getPitBoss().boss.getLocation(), 20);
 				}
 
 				int dir = i % 4;
@@ -120,7 +119,7 @@ public class LandMineAbility extends RoutinePitBossAbility {
 	@EventHandler
 	public void onMove(PlayerMoveEvent event) {
 		Player player = event.getPlayer();
-		if(player.getWorld() != pitBoss.boss.getWorld()) return;
+		if(player.getWorld() != getPitBoss().boss.getWorld()) return;
 
 		for(LandMine landMine : landMines) {
 			if(landMine.runnable == null || landMine.isStarting) continue;
@@ -174,7 +173,7 @@ public class LandMineAbility extends RoutinePitBossAbility {
 			double distance = player.getLocation().distance(center);
 			if(distance > radius) continue;
 
-			DamageManager.createAttack(pitBoss.boss, player, damage);
+			DamageManager.createAttack(getPitBoss().boss, player, damage);
 
 			double multiplier = Math.pow(5 - distance, 1.5);
 			Vector velocity = player.getLocation().toVector().subtract(landMine.fallingBlock.getSpawnLocation().toVector());

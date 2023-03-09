@@ -4,10 +4,8 @@ import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.adarkzone.PitBossAbility;
 import dev.kyro.pitsim.controllers.DamageManager;
 import dev.kyro.pitsim.events.AttackEvent;
-import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
-import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.HashMap;
@@ -28,7 +26,7 @@ public class ComboAbility extends PitBossAbility {
 
 	@EventHandler
 	public void onHit(AttackEvent.Apply event) {
-		if(event.getAttackerPlayer() != pitBoss.boss) return;
+		if(event.getAttackerPlayer() != getPitBoss().boss) return;
 		if(!event.isDefenderPlayer()) return;
 
 		Player player = event.getDefenderPlayer();
@@ -40,7 +38,7 @@ public class ComboAbility extends PitBossAbility {
 
 			@Override
 			public void run() {
-				DamageManager.createAttack(pitBoss.boss, player, 0);
+				DamageManager.createAttack(getPitBoss().boss, player, 0);
 				player.setNoDamageTicks(0);
 
 				if(i >= comboDuration) {

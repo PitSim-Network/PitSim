@@ -1,20 +1,16 @@
 package dev.kyro.pitsim.adarkzone.abilities;
 
 import dev.kyro.pitsim.PitSim;
-import dev.kyro.pitsim.adarkzone.RoutinePitBossAbility;
+import dev.kyro.pitsim.adarkzone.PitBossAbility;
 import dev.kyro.pitsim.misc.Sounds;
-import org.bukkit.Bukkit;
 import org.bukkit.Effect;
-import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Random;
 
-public class DisorderAbility extends RoutinePitBossAbility {
+public class DisorderAbility extends PitBossAbility {
 
 	public int swaps;
 

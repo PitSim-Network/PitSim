@@ -8,7 +8,7 @@ import com.sk89q.worldedit.bukkit.WorldEditPlugin;
 import com.sk89q.worldedit.schematic.MCEditSchematicFormat;
 import com.sk89q.worldedit.world.DataException;
 import dev.kyro.pitsim.PitSim;
-import dev.kyro.pitsim.adarkzone.RoutinePitBossAbility;
+import dev.kyro.pitsim.adarkzone.PitBossAbility;
 import dev.kyro.pitsim.misc.BlockData;
 import dev.kyro.pitsim.misc.Misc;
 import dev.kyro.pitsim.misc.SchematicPaste;
@@ -27,7 +27,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class CageAbility extends RoutinePitBossAbility {
+public class CageAbility extends PitBossAbility {
 	public static Map<Location, EditSession> sessionMap = new HashMap<>();
 	public int captureTicks;
 	public int schemSize;
