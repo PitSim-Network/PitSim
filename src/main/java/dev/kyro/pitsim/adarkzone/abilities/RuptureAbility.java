@@ -1,7 +1,7 @@
 package dev.kyro.pitsim.adarkzone.abilities;
 
 import dev.kyro.pitsim.PitSim;
-import dev.kyro.pitsim.adarkzone.RoutinePitBossAbility;
+import dev.kyro.pitsim.adarkzone.PitBossAbility;
 import dev.kyro.pitsim.cosmetics.particles.ExplosionLargeParticle;
 import dev.kyro.pitsim.misc.Sounds;
 import dev.kyro.pitsim.misc.effects.FallingBlock;
@@ -20,7 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-public class RuptureAbility extends RoutinePitBossAbility {
+public class RuptureAbility extends PitBossAbility {
 	public double damage;
 	public int projectileCount;
 	public int radius;
@@ -35,7 +35,7 @@ public class RuptureAbility extends RoutinePitBossAbility {
 	@Override
 	public void onRoutineExecute() {
 
-		Location centerLocation = pitBoss.boss.getLocation().clone().subtract(0, 1, 0);
+		Location centerLocation = getPitBoss().boss.getLocation().clone().subtract(0, 1, 0);
 		List<Block> applicableBlocks = new ArrayList<>();
 
 		for(int x = -1 * radius; x < radius + 1; x++) {
@@ -136,7 +136,7 @@ public class RuptureAbility extends RoutinePitBossAbility {
 					new BukkitRunnable() {
 						@Override
 						public void run() {
-							viewer.damage(damage, pitBoss.boss);
+							viewer.damage(damage, getPitBoss().boss);
 							Sounds.CREEPER_EXPLODE.play(viewer.getLocation(), 10);
 
 							for(Player player : getViewers()) {
@@ -156,7 +156,7 @@ public class RuptureAbility extends RoutinePitBossAbility {
 
 	public List<Player> getViewers() {
 		List<Player> viewers = new ArrayList<>();
-		for(Entity entity : pitBoss.boss.getNearbyEntities(50, 50, 50)) {
+		for(Entity entity : getPitBoss().boss.getNearbyEntities(50, 50, 50)) {
 			if(!(entity instanceof Player)) continue;
 			Player player = Bukkit.getPlayer(entity.getUniqueId());
 			if(player != null) viewers.add(player);
@@ -169,7 +169,7 @@ public class RuptureAbility extends RoutinePitBossAbility {
 		double distance = 0;
 		for(Entity nearbyEntity : location.getWorld().getNearbyEntities(location, 50, 50, 50)) {
 			if(!(nearbyEntity instanceof Player)) continue;
-			if(pitBoss.boss == nearbyEntity) continue;
+			if(getPitBoss().boss == nearbyEntity) continue;
 
 			double entityDistance = nearbyEntity.getLocation().distance(location);
 			if(nearest == null || distance > entityDistance) {

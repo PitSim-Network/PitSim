@@ -32,7 +32,7 @@ public abstract class PitBoss {
 
 //	Ability Related
 	public List<PitBossAbility> abilities = new ArrayList<>();
-	public Map<RoutinePitBossAbility, Double> routineAbilityMap = new HashMap<>();
+	public Map<PitBossAbility, Double> routineAbilityMap = new HashMap<>();
 	public double skipRoutineChance = 0;
 	public long lastRoutineExecuteTick;
 	public int routineAbilityCooldownTicks = 20 * 5;
@@ -70,9 +70,8 @@ public abstract class PitBoss {
 		abilities = Arrays.asList(pitBossAbilities);
 		for(PitBossAbility ability : abilities) {
 			ability.pitBoss(this);
-			if(!(ability instanceof RoutinePitBossAbility)) continue;
-			RoutinePitBossAbility routineAbility = (RoutinePitBossAbility) ability;
-			routineAbilityMap.put(routineAbility, routineAbility.getRoutineWeight());
+			if(ability.getRoutineWeight() == -1) continue;
+			routineAbilityMap.put(ability, ability.getRoutineWeight());
 		}
 		return this;
 	}

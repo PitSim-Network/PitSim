@@ -2,7 +2,6 @@ package dev.kyro.pitsim.adarkzone.abilities;
 
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.adarkzone.PitBossAbility;
-import dev.kyro.pitsim.adarkzone.RoutinePitBossAbility;
 import dev.kyro.pitsim.misc.effects.FallingBlock;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -16,8 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-public class BlockRainAbility extends RoutinePitBossAbility {
-
+public class BlockRainAbility extends PitBossAbility {
 	public int radius;
 	public int blockCount;
 	public Material material;
@@ -34,7 +32,7 @@ public class BlockRainAbility extends RoutinePitBossAbility {
 	@Override
 	public void onRoutineExecute() {
 
-		Location centerLocation = pitBoss.boss.getLocation().clone().subtract(0, 1, 0);
+		Location centerLocation = getPitBoss().boss.getLocation().clone().subtract(0, 1, 0);
 		List<Location> applicableLocations = new ArrayList<>();
 
 		for(int x = -1 * radius; x < radius + 1; x++) {
@@ -108,7 +106,7 @@ public class BlockRainAbility extends RoutinePitBossAbility {
 
 	public List<Player> getViewers() {
 		List<Player> viewers = new ArrayList<>();
-		for(Entity entity : pitBoss.boss.getNearbyEntities(50, 50, 50)) {
+		for(Entity entity : getPitBoss().boss.getNearbyEntities(50, 50, 50)) {
 			if(!(entity instanceof Player)) continue;
 			Player player = Bukkit.getPlayer(entity.getUniqueId());
 			if(player != null) viewers.add(player);
