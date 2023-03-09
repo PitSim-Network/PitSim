@@ -1,7 +1,7 @@
 package dev.kyro.pitsim.adarkzone.abilities;
 
 import dev.kyro.pitsim.PitSim;
-import dev.kyro.pitsim.adarkzone.RoutinePitBossAbility;
+import dev.kyro.pitsim.adarkzone.PitBossAbility;
 import dev.kyro.pitsim.cosmetics.ParticleOffset;
 import dev.kyro.pitsim.cosmetics.PitParticle;
 import dev.kyro.pitsim.cosmetics.particles.BlockCrackParticle;
@@ -27,7 +27,7 @@ import org.bukkit.util.Vector;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PoundAbility extends RoutinePitBossAbility {
+public class PoundAbility extends PitBossAbility {
 	public int radius;
 	public boolean isActive = false;
 	List<Player> effectedPlayers = new ArrayList<>();
@@ -40,7 +40,7 @@ public class PoundAbility extends RoutinePitBossAbility {
 	@Override
 	public void onRoutineExecute() {
 		isActive = true;
-		Location centerLocation = pitBoss.boss.getLocation().clone().subtract(0, 1, 0);
+		Location centerLocation = getPitBoss().boss.getLocation().clone().subtract(0, 1, 0);
 
 		List<Block> applicableBlocks = new ArrayList<>();
 
@@ -65,7 +65,7 @@ public class PoundAbility extends RoutinePitBossAbility {
 		}
 
 		List<Player> viewers = new ArrayList<>();
-		for(Entity entity : pitBoss.boss.getNearbyEntities(50, 50, 50)) {
+		for(Entity entity : getPitBoss().boss.getNearbyEntities(50, 50, 50)) {
 			if(!(entity instanceof Player)) continue;
 			Player player = Bukkit.getPlayer(entity.getUniqueId());
 			if(player != null) viewers.add(player);
@@ -100,7 +100,7 @@ public class PoundAbility extends RoutinePitBossAbility {
 				dirt.display(nmsPlayer, centerLocation, new ParticleOffset(0, 4, 0, 10, 10, 10));
 			}
 
-			if(viewer.getLocation().distance(pitBoss.boss.getLocation()) > radius + 2) continue;
+			if(viewer.getLocation().distance(getPitBoss().boss.getLocation()) > radius + 2) continue;
 			effectedPlayers.add(viewer);
 
 			Vector vector = new Vector(0, 0.6, 0);
@@ -110,7 +110,7 @@ public class PoundAbility extends RoutinePitBossAbility {
 			viewer.setVelocity(vector);
 		}
 
-		Sounds.EXTRACT.play(pitBoss.boss.getLocation());
+		Sounds.EXTRACT.play(getPitBoss().boss.getLocation());
 
 		new BukkitRunnable() {
 			@Override

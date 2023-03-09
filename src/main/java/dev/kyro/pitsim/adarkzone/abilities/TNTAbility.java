@@ -1,6 +1,6 @@
 package dev.kyro.pitsim.adarkzone.abilities;
 
-import dev.kyro.pitsim.adarkzone.RoutinePitBossAbility;
+import dev.kyro.pitsim.adarkzone.PitBossAbility;
 import dev.kyro.pitsim.controllers.DamageManager;
 import dev.kyro.pitsim.cosmetics.particles.FireworkSparkParticle;
 import dev.kyro.pitsim.misc.Misc;
@@ -14,7 +14,7 @@ import org.bukkit.util.Vector;
 
 import java.util.Random;
 
-public class TNTAbility extends RoutinePitBossAbility {
+public class TNTAbility extends PitBossAbility {
 	public double damage;
 
 	public TNTAbility(double routineWeight, double damage) {
@@ -24,7 +24,7 @@ public class TNTAbility extends RoutinePitBossAbility {
 
 	@Override
 	public void onRoutineExecute() {
-		Location centerLocation = pitBoss.boss.getLocation().add(0, 3, 0); // replace with tnt explosion Location
+		Location centerLocation = getPitBoss().boss.getLocation().add(0, 3, 0); // replace with tnt explosion Location
 		createExplosion(centerLocation);
 	}
 

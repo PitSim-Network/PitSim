@@ -1,7 +1,7 @@
 package dev.kyro.pitsim.adarkzone.abilities;
 
 import dev.kyro.pitsim.PitSim;
-import dev.kyro.pitsim.adarkzone.RoutinePitBossAbility;
+import dev.kyro.pitsim.adarkzone.PitBossAbility;
 import dev.kyro.pitsim.cosmetics.ParticleOffset;
 import dev.kyro.pitsim.cosmetics.PitParticle;
 import dev.kyro.pitsim.cosmetics.particles.BlockCrackParticle;
@@ -26,7 +26,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-public class SlamAbility extends RoutinePitBossAbility {
+public class SlamAbility extends PitBossAbility {
 	public int radius;
 	public int blockCount;
 	public double damage;
@@ -42,7 +42,7 @@ public class SlamAbility extends RoutinePitBossAbility {
 
 	@Override
 	public void onRoutineExecute() {
-		Location centerLocation = pitBoss.boss.getLocation().clone().subtract(0, 1, 0);
+		Location centerLocation = getPitBoss().boss.getLocation().clone().subtract(0, 1, 0);
 
 		List<Block> applicableBlocks = new ArrayList<>();
 
@@ -190,7 +190,7 @@ public class SlamAbility extends RoutinePitBossAbility {
 					playerVector.multiply(multiplier);
 
 					viewer.setVelocity(playerVector);
-					viewer.damage(damage, pitBoss.boss);
+					viewer.damage(damage, getPitBoss().boss);
 				}
 				break;
 			}
@@ -199,7 +199,7 @@ public class SlamAbility extends RoutinePitBossAbility {
 
 	public List<Player> getViewers() {
 		List<Player> viewers = new ArrayList<>();
-		for(Entity entity : pitBoss.boss.getNearbyEntities(50, 50, 50)) {
+		for(Entity entity : getPitBoss().boss.getNearbyEntities(50, 50, 50)) {
 			if(!(entity instanceof Player)) continue;
 			Player player = Bukkit.getPlayer(entity.getUniqueId());
 			if(player != null) viewers.add(player);
