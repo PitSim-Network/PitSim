@@ -580,6 +580,7 @@ public class Misc {
 	}
 
 	public static boolean isCritical(LivingEntity entity) {
+		if(entity == null) return false;
 		return entity.getFallDistance() > 0.0F &&
 				!entity.isOnGround() &&
 				!entity.isInsideVehicle() &&
