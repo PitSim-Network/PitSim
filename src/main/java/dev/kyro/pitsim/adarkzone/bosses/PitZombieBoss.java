@@ -3,8 +3,10 @@ package dev.kyro.pitsim.adarkzone.bosses;
 import dev.kyro.pitsim.adarkzone.DropPool;
 import dev.kyro.pitsim.adarkzone.PitBoss;
 import dev.kyro.pitsim.adarkzone.SubLevelType;
-import dev.kyro.pitsim.adarkzone.abilities.TNTAbility;
+import dev.kyro.pitsim.adarkzone.abilities.PopupAbility;
+import dev.kyro.pitsim.misc.BlockData;
 import org.bukkit.ChatColor;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
 
 public class PitZombieBoss extends PitBoss {
@@ -13,7 +15,7 @@ public class PitZombieBoss extends PitBoss {
 		super(summoner);
 
 		abilities(
-				new TNTAbility(1.0, 1)
+//				new TNTAbility(1.0, 1)
 //				new TrueDamageAbility(4),
 //				new RuptureAbility(0.3, 25, 8, 50),
 //				new PoundAbility(0.3, 5),
@@ -31,6 +33,7 @@ public class PitZombieBoss extends PitBoss {
 //				new ChargeAbility(0.3)
 //				new PullAbility(0.3, 20, 1, new MaterialData(Material.DIRT, (byte) 0))
 //				new ZombieMinionAbility(0.3, 1, 10)
+				new PopupAbility(0.3, new BlockData(Material.FIRE, (byte) 0), 2, 5, 10)
 		);
 	}
 
