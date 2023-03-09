@@ -42,14 +42,14 @@ public class AuctionManager implements Listener {
 					for(AuctionItem item : auctionItems) item.endAuction();
 					generateNewAuctions();
 					AuctionDisplays.showItems();
-					CrossServerMessageManager.sendAuctionData("");
+					CrossServerMessageManager.updateAllServers();
 				}
 			}
 		}.runTaskTimer(PitSim.INSTANCE, 10, 10);
 		new BukkitRunnable() {
 			@Override
 			public void run() {
-				CrossServerMessageManager.sendAuctionData("");
+				CrossServerMessageManager.updateAllServers();
 			}
 		}.runTaskLater(PitSim.INSTANCE, 20 * 20);
 	}

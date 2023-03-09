@@ -31,7 +31,7 @@ public class CrossServerMessageManager implements Listener {
 		new BukkitRunnable() {
 			@Override
 			public void run() {
-				loadAuctionData();
+				getOrRequestLocalAuctionData();
 			}
 		}.runTaskLater(PitSim.INSTANCE, 20 * 20);
 	}
@@ -76,8 +76,15 @@ public class CrossServerMessageManager implements Listener {
 		}
 	}
 
-//	Called by darkzone to send data to overworld server(s)
-	public static void sendAuctionData(String serverName) {
+//	Called when darkzone auction data is updated
+	public static void updateAllServers() {
+		if(!PitSim.status.isDarkzone()) throw new RuntimeException();
+		getOrRequestLocalAuctionData();
+		sendAuctionData("");
+	}
+
+//	Called by darkzone to send data to an overworld server (or all of them)
+	private static void sendAuctionData(String serverName) {
 		if(!PitSim.status.isDarkzone()) throw new RuntimeException();
 		PluginMessage pluginMessage = new PluginMessage()
 				.writeString("AUCTIONDATA")
@@ -107,8 +114,7 @@ public class CrossServerMessageManager implements Listener {
 	}
 
 //	Called by overworld or darkzone if they don't have data loaded
-	public static void loadAuctionData() {
-		if(!AuctionManager.haveAuctionsEnded(auctionEndTime)) return;
+	private static void getOrRequestLocalAuctionData() {
 		if(PitSim.status.isDarkzone()) {
 			for(int i = 0; i < auctionItems.length; i++) {
 				auctionEndTime = AuctionManager.getAuctionEndTime();

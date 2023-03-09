@@ -136,8 +136,7 @@ public class ChatTriggerManager implements Listener {
 	}
 
 	public static void subscribePlayer(Player player) {
-		if(subscribedPlayers.contains(player)) return;
-		subscribedPlayers.add(player);
+		if(!subscribedPlayers.contains(player)) subscribedPlayers.add(player);
 
 		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
 		sendConstants(pitPlayer);
