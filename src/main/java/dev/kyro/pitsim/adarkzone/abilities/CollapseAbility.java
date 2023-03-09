@@ -178,12 +178,13 @@ public class CollapseAbility extends PitBossAbility {
 
 		public void collapse() {
 			int ticks = Misc.getFallTime(ceilingHeight - 1);
+			Random random = new Random();
 
 			for(Location location : patchLocations) {
 				PacketBlock packetBlock = new PacketBlock(Material.BARRIER, (byte) 0, location);
 				packetBlock.setViewers(getViewers());
 				packetBlock.spawnBlock();
-				packetBlock.removeAfter(ticks * 2);
+				packetBlock.removeAfter(ticks + random.nextInt(20 * 5));
 
 				FallingBlock fallingBlock = new FallingBlock(location.getBlock().getType(), location.getBlock().getData(), location.subtract(0, 1, 0));
 				fallingBlock.setViewers(getViewers());

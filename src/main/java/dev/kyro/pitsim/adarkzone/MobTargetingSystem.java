@@ -4,6 +4,8 @@ import de.myzelyam.api.vanish.VanishAPI;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.enchants.tainted.uncommon.Fearmonger;
 import dev.kyro.pitsim.enchants.tainted.chestplate.Terror;
+import dev.kyro.pitsim.enums.PitEntityType;
+import dev.kyro.pitsim.misc.Misc;
 import org.bukkit.Effect;
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
@@ -63,7 +65,7 @@ public class MobTargetingSystem {
 		potentialTargets.add(null);
 		Location subLevelMiddle = subLevel.getMiddle();
 		for(Entity entity : subLevelMiddle.getWorld().getNearbyEntities(subLevelMiddle, subLevel.spawnRadius, 20, subLevel.spawnRadius)) {
-			if(!(entity instanceof Player) || entity == pitMob.getMob()) continue;
+			if(!Misc.isEntity(entity, PitEntityType.REAL_PLAYER)) continue;
 			Player player = (Player) entity;
 			if(VanishAPI.isInvisible(player) || Fearmonger.isImmune(player)) continue;
 			potentialTargets.add(player);

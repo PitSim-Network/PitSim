@@ -5,10 +5,13 @@ import dev.kyro.pitsim.adarkzone.abilities.abilitytypes.MinionAbility;
 
 public class ZombieMinionAbility extends MinionAbility {
 
-	public ZombieMinionAbility(int spawnAmount, int maxMobs) {
-		super(SubLevelType.ZOMBIE, spawnAmount, maxMobs);
+	public ZombieMinionAbility(double routineWeight, int spawnAmount, int maxMobs) {
+		super(routineWeight, SubLevelType.ZOMBIE, maxMobs);
 	}
 
-
+	@Override
+	public void onRoutineExecute() {
+		spawnMobs(null, 3);
+	}
 
 }

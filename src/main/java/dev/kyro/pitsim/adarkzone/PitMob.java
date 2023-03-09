@@ -23,11 +23,11 @@ public abstract class PitMob implements Listener {
 	private Creature mob;
 	private DropPool dropPool;
 	private PitNameTag nameTag;
-	private MobStatus mobStatus;
+	private final MobStatus mobStatus;
 
 	public PitMob(Location spawnLocation, MobStatus mobStatus) {
-		if(spawnLocation == null) return;
 		this.mobStatus = mobStatus;
+		if(spawnLocation == null) return;
 		this.dropPool = createDropPool();
 		spawn(spawnLocation);
 		Bukkit.getPluginManager().registerEvents(this, PitSim.INSTANCE);

@@ -27,6 +27,7 @@ public class PitBlaze extends PitMob {
 
 	public PitBlaze(Location spawnLocation, MobStatus mobStatus) {
 		super(spawnLocation, mobStatus);
+		if(spawnLocation == null) return;
 
 		attackRunnable = new BukkitRunnable() {
 			@Override
