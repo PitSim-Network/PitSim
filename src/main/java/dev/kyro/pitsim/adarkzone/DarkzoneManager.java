@@ -5,6 +5,7 @@ import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.adarkzone.bosses.PitSkeletonBoss;
 import dev.kyro.pitsim.adarkzone.bosses.PitSpiderBoss;
+import dev.kyro.pitsim.adarkzone.bosses.PitWolfBoss;
 import dev.kyro.pitsim.adarkzone.bosses.PitZombieBoss;
 import dev.kyro.pitsim.adarkzone.mobs.*;
 import dev.kyro.pitsim.adarkzone.notdarkzone.PitEquipment;
@@ -68,9 +69,9 @@ public class DarkzoneManager implements Listener {
 		registerSubLevel(subLevel);
 
 		subLevel = new SubLevel(
-				SubLevelType.WOLF, PitZombieBoss.class, PitWolf.class, EntityType.WOLF, Leather.class,
+				SubLevelType.WOLF, PitWolfBoss.class, PitWolf.class, EntityType.WOLF, Leather.class,
 				new Location(MapManager.getDarkzone(), 419, 25, -27),
-				15, 17, 1, 10);
+				15, 17, 1, 50);
 		registerSubLevel(subLevel);
 
 		subLevel = new SubLevel(

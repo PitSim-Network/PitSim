@@ -39,7 +39,7 @@ public class PitWolf extends PitMob {
 
 	@Override
 	public String getRawDisplayName() {
-		return "Wolf";
+		return isMinion() ? "Minion Wolf" : "Wolf";
 	}
 
 	@Override
@@ -54,12 +54,12 @@ public class PitWolf extends PitMob {
 
 	@Override
 	public int getMaxHealth() {
-		return 80;
+		return isMinion() ? 10 : 80;
 	}
 
 	@Override
 	public int getSpeedAmplifier() {
-		return 1;
+		return isMinion() ? 3 : 1;
 	}
 
 	@Override

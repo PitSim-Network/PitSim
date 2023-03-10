@@ -3,9 +3,9 @@ package dev.kyro.pitsim.adarkzone.bosses;
 import dev.kyro.pitsim.adarkzone.DropPool;
 import dev.kyro.pitsim.adarkzone.PitBoss;
 import dev.kyro.pitsim.adarkzone.SubLevelType;
-import dev.kyro.pitsim.adarkzone.abilities.CollapseAbility;
-import dev.kyro.pitsim.adarkzone.abilities.SlamAbility;
-import dev.kyro.pitsim.adarkzone.abilities.SpiderMinionAbility;
+import dev.kyro.pitsim.adarkzone.abilities.CageAbility;
+import dev.kyro.pitsim.adarkzone.abilities.ChargeAbility;
+import dev.kyro.pitsim.adarkzone.abilities.WolfMinionAbility;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
@@ -15,20 +15,20 @@ public class PitWolfBoss extends PitBoss {
 		super(summoner);
 
 		abilities(
-				new SlamAbility(2, 40, 40, 3),
-				new CollapseAbility(2, 5, 5, 20, 20),
-				new SpiderMinionAbility(1, 2, 10,  5)
+				new ChargeAbility(2),
+				new CageAbility(1, 40, 5),
+				new WolfMinionAbility(3, 5, 50)
 		);
 	}
 
 	@Override
 	public SubLevelType getSubLevelType() {
-		return SubLevelType.SPIDER;
+		return SubLevelType.WOLF;
 	}
 
 	@Override
 	public String getRawDisplayName() {
-		return "Spider Boss";
+		return "Wolf Boss";
 	}
 
 	@Override
@@ -43,12 +43,12 @@ public class PitWolfBoss extends PitBoss {
 
 	@Override
 	public int getMaxHealth() {
-		return 300;
+		return 200;
 	}
 
 	@Override
 	public double getMeleeDamage() {
-		return 30;
+		return 40;
 	}
 
 	@Override
@@ -68,6 +68,6 @@ public class PitWolfBoss extends PitBoss {
 
 	@Override
 	public int getSpeedLevel() {
-		return 3;
+		return 4;
 	}
 }
