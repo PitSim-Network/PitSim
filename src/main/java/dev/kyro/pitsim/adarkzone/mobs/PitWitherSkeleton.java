@@ -41,7 +41,7 @@ public class PitWitherSkeleton extends PitMob {
 
 	@Override
 	public String getRawDisplayName() {
-		return "Wither Skeleton";
+		return isMinion() ? "Minion Wither Skeleton" : "Wither Skeleton";
 	}
 
 	@Override

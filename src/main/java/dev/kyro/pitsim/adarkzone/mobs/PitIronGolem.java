@@ -29,7 +29,7 @@ public class PitIronGolem extends PitMob {
 
 	@Override
 	public String getRawDisplayName() {
-		return "Iron Golem";
+		return isMinion() ? "Minion Golem" : "Iron Golem";
 	}
 
 	@Override
@@ -39,12 +39,12 @@ public class PitIronGolem extends PitMob {
 
 	@Override
 	public int getMaxHealth() {
-		return 180;
+		return isMinion() ? 600 : 180;
 	}
 
 	@Override
 	public int getSpeedAmplifier() {
-		return 1;
+		return isMinion() ? 4 : 1;
 	}
 
 	@Override
