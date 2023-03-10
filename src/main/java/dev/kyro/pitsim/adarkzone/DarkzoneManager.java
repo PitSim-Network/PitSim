@@ -3,10 +3,7 @@ package dev.kyro.pitsim.adarkzone;
 import com.gmail.filoghost.holographicdisplays.api.Hologram;
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.PitSim;
-import dev.kyro.pitsim.adarkzone.bosses.PitSkeletonBoss;
-import dev.kyro.pitsim.adarkzone.bosses.PitSpiderBoss;
-import dev.kyro.pitsim.adarkzone.bosses.PitWolfBoss;
-import dev.kyro.pitsim.adarkzone.bosses.PitZombieBoss;
+import dev.kyro.pitsim.adarkzone.bosses.*;
 import dev.kyro.pitsim.adarkzone.mobs.*;
 import dev.kyro.pitsim.adarkzone.notdarkzone.PitEquipment;
 import dev.kyro.pitsim.adarkzone.progression.ProgressionManager;
@@ -75,7 +72,7 @@ public class DarkzoneManager implements Listener {
 		registerSubLevel(subLevel);
 
 		subLevel = new SubLevel(
-				SubLevelType.BLAZE, PitZombieBoss.class, PitBlaze.class, EntityType.BLAZE, BlazeRod.class,
+				SubLevelType.BLAZE, PitBlazeBoss.class, PitBlaze.class, EntityType.BLAZE, BlazeRod.class,
 				new Location(MapManager.getDarkzone(), 342, 19, 15),
 				15, 17, 1, -1);
 		registerSubLevel(subLevel);

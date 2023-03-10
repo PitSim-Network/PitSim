@@ -333,6 +333,7 @@ public class DamageManager implements Listener {
 
 //		New player defence
 		if(PitSim.status.isOverworld() && attackEvent.isDefenderRealPlayer() && attackEvent.isAttackerRealPlayer() &&
+				attackEvent.getDefender().getWorld() != MapManager.getDarkzone() &&
 				attackEvent.getDefender().getLocation().distance(MapManager.currentMap.getMid()) < 12) {
 			if(attackEvent.getDefenderPitPlayer().prestige < 10) {
 				int minutesPlayed = attackEvent.getDefenderPitPlayer().stats.minutesPlayed;
@@ -421,7 +422,7 @@ public class DamageManager implements Listener {
 				}
 			}
 		} else {
-			attackEvent.getDefender().setHealth(attackEvent.getDefender().getHealth() - finalDamage);
+			attackEvent.getDefender().setHealth(Math.min(attackEvent.getDefender().getHealth() - finalDamage, attackEvent.getDefender().getMaxHealth()));
 		}
 
 		if(attackCallbackMap.containsKey(attackEvent.getDefender())) attackCallbackMap.remove(attackEvent.getDefender()).accept(attackEvent);
