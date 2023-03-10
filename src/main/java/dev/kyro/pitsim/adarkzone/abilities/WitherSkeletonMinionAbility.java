@@ -5,14 +5,14 @@ import dev.kyro.pitsim.adarkzone.abilities.abilitytypes.MinionAbility;
 import dev.kyro.pitsim.events.AttackEvent;
 import org.bukkit.event.EventHandler;
 
-public class SkeletonMinionAbility extends MinionAbility {
+public class WitherSkeletonMinionAbility extends MinionAbility {
 
 	public int spawnAmount;
 	public long cooldown;
 	public long lastSpawn = 0;
 
-	public SkeletonMinionAbility(int spawnAmount, int maxMobs, long cooldown) {
-		super(SubLevelType.SKELETON, maxMobs);
+	public WitherSkeletonMinionAbility(int spawnAmount, int maxMobs, long cooldown) {
+		super(SubLevelType.WITHER_SKELETON, maxMobs);
 
 		this.spawnAmount = spawnAmount;
 		this.cooldown = cooldown;

@@ -71,6 +71,7 @@ public class Sounds {
 
 	public static final SoundEffect SNAKE_ICE = new SoundEffect(Sound.GLASS, 1.3, 1.5);
 	public static final SoundEffect BONE_SNAKE = new SoundEffect(Sound.SKELETON_HURT, 1.3, 1.5);
+	public static final SoundEffect WITHER_SNAKE = new SoundEffect(Sound.DIG_STONE, 1.3, 1.5);
 	public static final SoundEffect ANVIL_RAIN = new SoundEffect(Sound.ANVIL_LAND, 1.3, 0.45);
 	public static final SoundEffect FIRE_EXTINGUISH = new SoundEffect(Sound.FIREWORK_TWINKLE, 1.3, 0.45);
 	public static final SoundEffect BLOCK_LAND = new SoundEffect(Sound.DIG_STONE, 1.3, 0.45);
