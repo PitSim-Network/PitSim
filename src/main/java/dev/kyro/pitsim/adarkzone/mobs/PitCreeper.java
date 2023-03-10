@@ -70,7 +70,7 @@ public class PitCreeper extends PitMob {
 
 	@Override
 	public String getRawDisplayName() {
-		return "Creeper";
+		return isMinion() ? "Creeper Minion" : "Creeper";
 	}
 
 	@Override
@@ -80,12 +80,12 @@ public class PitCreeper extends PitMob {
 
 	@Override
 	public int getMaxHealth() {
-		return 160;
+		return isMinion() ? 200 : 160;
 	}
 
 	@Override
 	public int getSpeedAmplifier() {
-		return 3;
+		return isMinion() ? 5 : 3;
 	}
 
 	@Override

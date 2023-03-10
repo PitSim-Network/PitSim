@@ -90,7 +90,7 @@ public class DarkzoneManager implements Listener {
 		registerSubLevel(subLevel);
 
 		subLevel = new SubLevel(
-				SubLevelType.CREEPER, PitZombieBoss.class, PitCreeper.class, EntityType.CREEPER, Gunpowder.class,
+				SubLevelType.CREEPER, PitCreeperBoss.class, PitCreeper.class, EntityType.CREEPER, Gunpowder.class,
 				new Location(MapManager.getDarkzone(), 247, 20, -174),
 				15, 17, 1, -1);
 		subLevel.mobTargetingSystem.persistenceWeight *= 2;

@@ -41,7 +41,7 @@ public class TNTAbility extends PitBossAbility {
 		Player target = getPitBoss().bossTargetingSystem.target;
 		if(target == null) return;
 
-		tntPrimed.setVelocity(target.getLocation().toVector().subtract(centerLocation.toVector()).add(new Vector(0, 5, 0)).normalize().multiply(1.1));
+		tntPrimed.setVelocity(target.getLocation().toVector().subtract(centerLocation.toVector()).add(new Vector(0, 2.5, 0)).normalize().multiply(1.1));
 		new BukkitRunnable() {
 			@Override
 			public void run() {
