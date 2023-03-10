@@ -29,7 +29,7 @@ public class PitSpider extends PitMob {
 
 	@Override
 	public String getRawDisplayName() {
-		return "Spider";
+		return isMinion() ? "Minion Spider" : "Spider";
 	}
 
 	@Override
@@ -39,12 +39,12 @@ public class PitSpider extends PitMob {
 
 	@Override
 	public int getMaxHealth() {
-		return 60;
+		return isMinion() ? 120 : 60;
 	}
 
 	@Override
 	public int getSpeedAmplifier() {
-		return 1;
+		return isMinion() ? 2 : 1;
 	}
 
 	@Override

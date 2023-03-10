@@ -3,36 +3,33 @@ package dev.kyro.pitsim.adarkzone.bosses;
 import dev.kyro.pitsim.adarkzone.DropPool;
 import dev.kyro.pitsim.adarkzone.PitBoss;
 import dev.kyro.pitsim.adarkzone.SubLevelType;
-import dev.kyro.pitsim.adarkzone.abilities.ComboAbility;
-import dev.kyro.pitsim.adarkzone.abilities.PoundAbility;
-import dev.kyro.pitsim.adarkzone.abilities.PullAbility;
-import dev.kyro.pitsim.adarkzone.abilities.ZombieMinionAbility;
+import dev.kyro.pitsim.adarkzone.abilities.*;
+import dev.kyro.pitsim.misc.Sounds;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
-import org.bukkit.material.MaterialData;
 
-public class PitZombieBoss extends PitBoss {
+public class PitSkeletonBoss extends PitBoss {
 
-	public PitZombieBoss(Player summoner) {
+	public PitSkeletonBoss(Player summoner) {
 		super(summoner);
 
 		abilities(
-				new ZombieMinionAbility(1, 2, 8),
-				new PullAbility(2, 20, 1, new MaterialData(Material.DIRT, (byte) 0)),
-				new PoundAbility(2, 5),
-				new ComboAbility(6, 6)
+				new RuptureAbility(1, 15, 1, 40),
+				new SnakeAbility(2, 20, 1, Material.QUARTZ_BLOCK, (byte) 0, Sounds.BONE_SNAKE),
+				new HailAbility(2, 25, 100, 4),
+				new SkeletonMinionAbility(1, 3, 5000)
 		);
 	}
 
 	@Override
 	public SubLevelType getSubLevelType() {
-		return SubLevelType.ZOMBIE;
+		return SubLevelType.SKELETON;
 	}
 
 	@Override
 	public String getRawDisplayName() {
-		return "Zombie Boss";
+		return "Skeleton Boss";
 	}
 
 	@Override
@@ -47,12 +44,12 @@ public class PitZombieBoss extends PitBoss {
 
 	@Override
 	public int getMaxHealth() {
-		return 100;
+		return 200;
 	}
 
 	@Override
 	public double getMeleeDamage() {
-		return 10;
+		return 20;
 	}
 
 	@Override
@@ -72,6 +69,6 @@ public class PitZombieBoss extends PitBoss {
 
 	@Override
 	public int getSpeedLevel() {
-		return 2;
+		return 1;
 	}
 }

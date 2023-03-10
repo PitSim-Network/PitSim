@@ -97,7 +97,7 @@ public class MobTargetingSystem {
 		double scaledTargets = 0;
 		if(candidate != null) {
 			scaledDistance = ((subLevel.spawnRadius * 2) - candidate.getLocation().distance(pitMob.getMob().getLocation())) / (subLevel.spawnRadius * 2);
-			scaledTargets = Math.pow(mobsTargeting, 1.3) / MAX_MOBS_PER_PLAYER;
+			scaledTargets = Math.pow(mobsTargeting, 1.3) / getMaxMobsPerPlayer(pitMob);
 			scaledTargets *= Terror.getAvoidanceMultiplier(candidate);
 		}
 
@@ -116,6 +116,12 @@ public class MobTargetingSystem {
 		return scaledDistance * distanceWeight +
 				scaledPersistence * persistenceWeight +
 				scaledTargets * otherMobsTargetingWeight;
+	}
+
+	public int getMaxMobsPerPlayer(PitMob pitMob) {
+		SubLevel subLevel = pitMob.getSubLevel();
+		if(subLevel == null || !subLevel.isBossSpawned() || subLevel.getMaxMinionsPerPlayer() < 0) return MAX_MOBS_PER_PLAYER;
+		return subLevel.getMaxMinionsPerPlayer();
 	}
 }
 

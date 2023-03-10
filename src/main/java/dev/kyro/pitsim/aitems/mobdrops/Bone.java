@@ -21,7 +21,7 @@ public class Bone extends StaticPitItem implements TemporaryItem {
 
 	@Override
 	public String getNBTID() {
-		return "rotten-flesh";
+		return "bone";
 	}
 
 	@Override

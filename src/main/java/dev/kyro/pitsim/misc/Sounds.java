@@ -70,6 +70,7 @@ public class Sounds {
 	public static final SoundEffect LOAD_FINAL = new SoundEffect(Sound.NOTE_PLING, 1000, 1.8);
 
 	public static final SoundEffect SNAKE_ICE = new SoundEffect(Sound.GLASS, 1.3, 1.5);
+	public static final SoundEffect BONE_SNAKE = new SoundEffect(Sound.SKELETON_HURT, 1.3, 1.5);
 	public static final SoundEffect ANVIL_RAIN = new SoundEffect(Sound.ANVIL_LAND, 1.3, 0.45);
 	public static final SoundEffect FIRE_EXTINGUISH = new SoundEffect(Sound.FIREWORK_TWINKLE, 1.3, 0.45);
 	public static final SoundEffect BLOCK_LAND = new SoundEffect(Sound.DIG_STONE, 1.3, 0.45);
@@ -80,6 +81,7 @@ public class Sounds {
 	public static final SoundEffect SLAM = new SoundEffect(Sound.DIG_GRASS, 1.0, 0.65);
 	public static final SoundEffect SLAM_2 = new SoundEffect(Sound.EXPLODE, 0.5, 1);
 	public static final SoundEffect COLLAPSE = new SoundEffect(Sound.ZOMBIE_WOODBREAK, 1, 0.4);
+	public static final SoundEffect COLLAPSE2 = new SoundEffect(Sound.DIG_GRAVEL, 1, 0.4);
 	public static final SoundEffect CHARGE = new SoundEffect(Sound.GHAST_FIREBALL, 1, 1.2);
 	public static final SoundEffect POPUP = new SoundEffect(Sound.FIZZ, 1, 1.2);
 

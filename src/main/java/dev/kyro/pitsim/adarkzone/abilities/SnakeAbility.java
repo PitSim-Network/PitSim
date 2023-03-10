@@ -54,7 +54,7 @@ public class SnakeAbility extends PitBossAbility {
 						if(!(entity instanceof Player)) continue;
 						if(entity == getPitBoss().boss) continue;
 
-						DamageManager.createAttack(getPitBoss().boss, (Player) entity, damage);
+						DamageManager.createAttack((Player) entity, damage);
 						Misc.applyPotionEffect((Player) entity, PotionEffectType.SLOW, 20, 1, false, false);
 					}
 				}

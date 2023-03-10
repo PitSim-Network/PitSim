@@ -37,6 +37,7 @@ public class SubLevel {
 	private Class<? extends StaticPitItem> spawnItemClass;
 	private int currentDrops = 0;
 	private int requiredDropsToSpawn;
+	private int maxMinionsPerPlayer;
 
 	//	Mob related fields
 	private Class<? extends PitMob> mobClass;
@@ -47,7 +48,7 @@ public class SubLevel {
 
 	public SubLevel(SubLevelType subLevelType, Class<? extends PitBoss> bossClass, Class<? extends PitMob> mobClass,
 					EntityType spawnerMob, Class<? extends StaticPitItem> spawnItemClass,
-					Location middle, int maxMobs, int spawnRadius, int requiredDropsToSpawn) {
+					Location middle, int maxMobs, int spawnRadius, int requiredDropsToSpawn, int maxMinionsPerPlayer) {
 		this.subLevelType = subLevelType;
 		this.bossClass = bossClass;
 		this.spawnerMob = spawnerMob;
@@ -57,6 +58,7 @@ public class SubLevel {
 		this.maxMobs = maxMobs;
 		this.spawnRadius = spawnRadius;
 		this.requiredDropsToSpawn = requiredDropsToSpawn;
+		this.maxMinionsPerPlayer = maxMinionsPerPlayer;
 
 //		Visualize spawnable spaces
 //		new BukkitRunnable() {
@@ -239,5 +241,9 @@ public class SubLevel {
 
 	public Class<? extends PitMob> getMobClass() {
 		return mobClass;
+	}
+
+	public int getMaxMinionsPerPlayer() {
+		return maxMinionsPerPlayer;
 	}
 }

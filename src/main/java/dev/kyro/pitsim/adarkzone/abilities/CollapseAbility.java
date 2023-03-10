@@ -196,6 +196,7 @@ public class CollapseAbility extends PitBossAbility {
 			new BukkitRunnable() {
 				@Override
 				public void run() {
+					Sounds.COLLAPSE2.play(center, 40);
 					getPitBoss().boss.getWorld().getNearbyEntities(center, radius, 5, radius).forEach(entity -> {
 						if(Misc.isEntity(entity, PitEntityType.REAL_PLAYER)) {
 							Player player = (Player) entity;

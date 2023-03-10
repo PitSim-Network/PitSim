@@ -90,7 +90,7 @@ public class TaintedEnchanting {
 				PitEnchant selectedEnchant = Misc.weightedRandom(randomEnchantMap);
 				int newTier = enchantsOnItem.getOrDefault(selectedEnchant, 0);
 				try {
-					itemStack = EnchantManager.addEnchant(itemStack, selectedEnchant, newTier + 1, false);
+					returnStack = EnchantManager.addEnchant(itemStack, selectedEnchant, newTier + 1, false);
 				} catch(Exception exception) {
 					exception.printStackTrace();
 				}

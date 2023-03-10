@@ -30,7 +30,8 @@ public class PitSkeleton extends PitMob {
 		new BukkitRunnable() {
 			@Override
 			public void run() {
-				new PitEquipment().setEquipment(skeleton);
+				PitEquipment equipment = new PitEquipment();
+				equipment.setEquipment(skeleton);
 			}
 		}.runTaskLater(PitSim.INSTANCE, 1L);
 
@@ -39,7 +40,7 @@ public class PitSkeleton extends PitMob {
 
 	@Override
 	public String getRawDisplayName() {
-		return "Skeleton";
+		return isMinion() ? "Minion Skeleton" : "Skeleton";
 	}
 
 	@Override

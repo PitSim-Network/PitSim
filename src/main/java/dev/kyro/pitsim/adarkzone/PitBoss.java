@@ -11,7 +11,9 @@ import net.citizensnpcs.trait.SkinTrait;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.EntityType;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
+import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
 
@@ -57,6 +59,7 @@ public abstract class PitBoss {
 	public abstract double getReach();
 	public abstract double getReachRanged();
 	public abstract DropPool createDropPool();
+	public abstract int getSpeedLevel();
 
 //	Internal events (override to add functionality)
 	public void onSpawn() {}
@@ -113,6 +116,7 @@ public abstract class PitBoss {
 					npcBoss.addTrait(skinTrait);
 					skinTrait.setSkinPersistent(getSkinName(), minecraftSkin.signature, minecraftSkin.skin);
 				}
+
 			}
 		}.runTaskLater(PitSim.INSTANCE, 1L);
 
@@ -155,6 +159,14 @@ public abstract class PitBoss {
 				count++;
 			}
 		}.runTaskTimer(PitSim.INSTANCE, 0L, 1);
+
+		new BukkitRunnable() {
+			@Override
+			public void run() {
+				if(getSpeedLevel() <= 0) return;
+				Misc.applyPotionEffect((LivingEntity) npcBoss.getEntity(), PotionEffectType.SPEED, 99999, getSpeedLevel() - 1, false, false);
+			}
+		}.runTaskLater(PitSim.INSTANCE, 10L);
 
 		onSpawn();
 	}

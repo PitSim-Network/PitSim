@@ -3,6 +3,8 @@ package dev.kyro.pitsim.adarkzone;
 import com.gmail.filoghost.holographicdisplays.api.Hologram;
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.PitSim;
+import dev.kyro.pitsim.adarkzone.bosses.PitSkeletonBoss;
+import dev.kyro.pitsim.adarkzone.bosses.PitSpiderBoss;
 import dev.kyro.pitsim.adarkzone.bosses.PitZombieBoss;
 import dev.kyro.pitsim.adarkzone.mobs.*;
 import dev.kyro.pitsim.adarkzone.notdarkzone.PitEquipment;
@@ -50,49 +52,49 @@ public class DarkzoneManager implements Listener {
 		subLevel = new SubLevel(
 				SubLevelType.ZOMBIE, PitZombieBoss.class, PitZombie.class, EntityType.ZOMBIE, RottenFlesh.class,
 				new Location(MapManager.getDarkzone(), 327, 67, -143),
-				15, 17, 1);
+				15, 17, 1, -1);
 		registerSubLevel(subLevel);
 
 		subLevel = new SubLevel(
-				SubLevelType.SKELETON, PitZombieBoss.class, PitSkeleton.class, EntityType.SKELETON, Bone.class,
+				SubLevelType.SKELETON, PitSkeletonBoss.class, PitSkeleton.class, EntityType.SKELETON, Bone.class,
 				new Location(MapManager.getDarkzone(), 424, 52, -128),
-				15, 17, 12);
+				15, 17, 1, -1);
 		registerSubLevel(subLevel);
 
 		subLevel = new SubLevel(
-				SubLevelType.SPIDER, PitZombieBoss.class, PitSpider.class, EntityType.SPIDER, SpiderEye.class,
+				SubLevelType.SPIDER, PitSpiderBoss.class, PitSpider.class, EntityType.SPIDER, SpiderEye.class,
 				new Location(MapManager.getDarkzone(), 463, 37, -72),
-				15, 17, 12);
+				15, 17, 1, -1);
 		registerSubLevel(subLevel);
 
 		subLevel = new SubLevel(
 				SubLevelType.WOLF, PitZombieBoss.class, PitWolf.class, EntityType.WOLF, Leather.class,
 				new Location(MapManager.getDarkzone(), 419, 25, -27),
-				15, 17, 12);
+				15, 17, 1, 10);
 		registerSubLevel(subLevel);
 
 		subLevel = new SubLevel(
 				SubLevelType.BLAZE, PitZombieBoss.class, PitBlaze.class, EntityType.BLAZE, BlazeRod.class,
 				new Location(MapManager.getDarkzone(), 342, 19, 15),
-				15, 17, 12);
+				15, 17, 1, -1);
 		registerSubLevel(subLevel);
 
 		subLevel = new SubLevel(
 				SubLevelType.ZOMBIE_PIGMAN, PitZombieBoss.class, PitZombiePigman.class, EntityType.PIG_ZOMBIE, RawPork.class,
 				new Location(MapManager.getDarkzone(), 235, 19, -23),
-				15, 17, 12);
+				15, 17, 1, -1);
 		registerSubLevel(subLevel);
 
 		subLevel = new SubLevel(
 				SubLevelType.WITHER_SKELETON, PitZombieBoss.class, PitWitherSkeleton.class, EntityType.SKELETON, Charcoal.class,
 				new Location(MapManager.getDarkzone(), 210, 19, -115),
-				15, 17, 12);
+				15, 17, 1, -1);
 		registerSubLevel(subLevel);
 
 		subLevel = new SubLevel(
 				SubLevelType.CREEPER, PitZombieBoss.class, PitCreeper.class, EntityType.CREEPER, Gunpowder.class,
 				new Location(MapManager.getDarkzone(), 247, 20, -174),
-				15, 17, 12);
+				15, 17, 1, -1);
 		subLevel.mobTargetingSystem.persistenceWeight *= 2;
 		subLevel.mobTargetingSystem.otherMobsTargetingWeight *= 1.5;
 		registerSubLevel(subLevel);
@@ -100,13 +102,13 @@ public class DarkzoneManager implements Listener {
 		subLevel = new SubLevel(
 				SubLevelType.IRON_GOLEM, PitZombieBoss.class, PitIronGolem.class, EntityType.IRON_GOLEM, IronIngot.class,
 				new Location(MapManager.getDarkzone(), 313, 19, -217),
-				15, 17, 12);
+				15, 17, 1, -1);
 		registerSubLevel(subLevel);
 
 		subLevel = new SubLevel(
 				SubLevelType.ENDERMAN, PitZombieBoss.class, PitEnderman.class, EntityType.ENDERMAN, EnderPearl.class,
 				new Location(MapManager.getDarkzone(), 388, 19, -226),
-				15, 17, 12);
+				15, 17, 1, -1);
 		registerSubLevel(subLevel);
 
 		subLevels.forEach(SubLevel::init);
@@ -223,7 +225,7 @@ public class DarkzoneManager implements Listener {
 		for(SubLevel subLevel : subLevels) {
 			if(subLevel.getSpawnItemClass() != pitItem.getClass() || !subLevel.getMiddle().equals(location)) continue;
 
-			if(!ProgressionManager.isUnlocked(pitPlayer, DamageBranch.INSTANCE, SkillBranch.MajorUnlockPosition.FIRST)) {
+			if(!ProgressionManager.isUnlocked(pitPlayer, DamageBranch.INSTANCE, SkillBranch.MajorUnlockPosition.FIRST) && !player.isOp()) {
 				AOutput.error(player, "&c&lERROR!&7 You do have not unlocked the ability to spawn bosses");
 				return;
 			}
