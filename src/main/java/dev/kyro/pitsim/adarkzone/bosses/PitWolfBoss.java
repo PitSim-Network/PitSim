@@ -1,5 +1,6 @@
 package dev.kyro.pitsim.adarkzone.bosses;
 
+import dev.kyro.pitsim.adarkzone.BossManager;
 import dev.kyro.pitsim.adarkzone.DropPool;
 import dev.kyro.pitsim.adarkzone.PitBoss;
 import dev.kyro.pitsim.adarkzone.SubLevelType;
@@ -43,12 +44,12 @@ public class PitWolfBoss extends PitBoss {
 
 	@Override
 	public int getMaxHealth() {
-		return 200;
+		return (BossManager.getHealth(getSubLevelType()) / 2);
 	}
 
 	@Override
 	public double getMeleeDamage() {
-		return 40;
+		return BossManager.getDamage(getSubLevelType());
 	}
 
 	@Override

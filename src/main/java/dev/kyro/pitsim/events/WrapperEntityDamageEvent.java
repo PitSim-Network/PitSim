@@ -11,19 +11,16 @@ public class WrapperEntityDamageEvent {
 
 	private Entity damager;
 	private LivingEntity entity;
-	private double damage;
 
 	public WrapperEntityDamageEvent(EntityDamageByEntityEvent event) {
 		this.entityDamageByEntityEvent = event;
 		this.damager = event.getDamager();
 		this.entity = (LivingEntity) event.getEntity();
-		this.damage = event.getDamage();
 	}
 
 	public WrapperEntityDamageEvent(EntityDamageEvent event) {
 		this.entityDamageEvent = event;
 		this.entity = (LivingEntity) event.getEntity();
-		this.damage = event.getDamage();
 	}
 
 	public EntityDamageEvent getSpigotEvent() {
@@ -43,7 +40,7 @@ public class WrapperEntityDamageEvent {
 	}
 
 	public double getDamage() {
-		return damage;
+		return getSpigotEvent().getDamage();
 	}
 
 	public void setCancelled(boolean cancelled) {

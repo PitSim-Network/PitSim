@@ -23,4 +23,9 @@ public enum SubLevelType {
 		for(SubLevel subLevel : DarkzoneManager.subLevels) if(subLevel.subLevelType == this) return subLevel;
 		throw new RuntimeException();
 	}
+
+	public int getIndex() {
+		for(int i = 0; i < values().length; i++) if(values()[i] == this) return i;
+		throw new RuntimeException();
+	}
 }

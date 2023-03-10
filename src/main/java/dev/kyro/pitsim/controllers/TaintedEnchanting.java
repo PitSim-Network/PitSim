@@ -7,6 +7,7 @@ import dev.kyro.pitsim.controllers.objects.PitEnchant;
 import dev.kyro.pitsim.enums.MysticType;
 import dev.kyro.pitsim.enums.NBTTag;
 import dev.kyro.pitsim.misc.Misc;
+import org.bukkit.Bukkit;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.*;
@@ -61,6 +62,7 @@ public class TaintedEnchanting {
 			enchantRandom.put(2, previousTier == 1 ? 0.6 : 0.4);
 			enchantRandom.put(3, previousTier == 1 ? 0.1 : 0.5);
 			newTokens = Misc.weightedRandom(enchantRandom);
+			Bukkit.broadcastMessage("newTokens: " + newTokens);
 
 			for(int i = 0; i < newTokens; i++) {
 				Map<PitEnchant, Integer> enchantsOnItem = EnchantManager.getEnchantsOnItem(returnStack);
@@ -89,6 +91,7 @@ public class TaintedEnchanting {
 
 				PitEnchant selectedEnchant = Misc.weightedRandom(randomEnchantMap);
 				int newTier = enchantsOnItem.getOrDefault(selectedEnchant, 0);
+				Bukkit.broadcastMessage("selectedEnchant: " + selectedEnchant.getDisplayName()+ " newTier: " + (newTier + 1))	;
 				try {
 					returnStack = EnchantManager.addEnchant(itemStack, selectedEnchant, newTier + 1, false);
 				} catch(Exception exception) {

@@ -1,5 +1,6 @@
 package dev.kyro.pitsim.adarkzone.bosses;
 
+import dev.kyro.pitsim.adarkzone.BossManager;
 import dev.kyro.pitsim.adarkzone.DropPool;
 import dev.kyro.pitsim.adarkzone.PitBoss;
 import dev.kyro.pitsim.adarkzone.SubLevelType;
@@ -21,7 +22,7 @@ public class PitZombieBoss extends PitBoss {
 				new ZombieMinionAbility(1, 2, 8),
 				new PullAbility(2, 20, 1, new MaterialData(Material.DIRT, (byte) 0)),
 				new PoundAbility(2, 5),
-				new ComboAbility(6, 6)
+				new ComboAbility(8, 2)
 		);
 	}
 
@@ -47,12 +48,12 @@ public class PitZombieBoss extends PitBoss {
 
 	@Override
 	public int getMaxHealth() {
-		return 100;
+		return BossManager.getHealth(getSubLevelType());
 	}
 
 	@Override
 	public double getMeleeDamage() {
-		return 10;
+		return BossManager.getDamage(getSubLevelType());
 	}
 
 	@Override

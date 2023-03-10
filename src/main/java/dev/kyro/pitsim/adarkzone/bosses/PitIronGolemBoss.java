@@ -1,9 +1,13 @@
 package dev.kyro.pitsim.adarkzone.bosses;
 
+import dev.kyro.pitsim.adarkzone.BossManager;
 import dev.kyro.pitsim.adarkzone.DropPool;
 import dev.kyro.pitsim.adarkzone.PitBoss;
 import dev.kyro.pitsim.adarkzone.SubLevelType;
-import dev.kyro.pitsim.adarkzone.abilities.*;
+import dev.kyro.pitsim.adarkzone.abilities.AnvilRainAbility;
+import dev.kyro.pitsim.adarkzone.abilities.CollapseAbility;
+import dev.kyro.pitsim.adarkzone.abilities.GolemMinionAbility;
+import dev.kyro.pitsim.adarkzone.abilities.LightningAbility;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
@@ -42,12 +46,12 @@ public class PitIronGolemBoss extends PitBoss {
 
 	@Override
 	public int getMaxHealth() {
-		return 900;
+		return BossManager.getHealth(getSubLevelType());
 	}
 
 	@Override
 	public double getMeleeDamage() {
-		return 90;
+		return BossManager.getDamage(getSubLevelType());
 	}
 
 	@Override

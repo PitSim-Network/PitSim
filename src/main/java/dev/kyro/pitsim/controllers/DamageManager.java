@@ -112,6 +112,8 @@ public class DamageManager implements Listener {
 		}
 
 		if(callback != null) attackCallbackMap.put(defender, callback);
+
+		Bukkit.broadcastMessage("Damage: " + damage);
 		defender.damage(damage, attacker);
 	}
 

@@ -1,9 +1,12 @@
 package dev.kyro.pitsim.adarkzone.bosses;
 
+import dev.kyro.pitsim.adarkzone.BossManager;
 import dev.kyro.pitsim.adarkzone.DropPool;
 import dev.kyro.pitsim.adarkzone.PitBoss;
 import dev.kyro.pitsim.adarkzone.SubLevelType;
-import dev.kyro.pitsim.adarkzone.abilities.*;
+import dev.kyro.pitsim.adarkzone.abilities.CollapseAbility;
+import dev.kyro.pitsim.adarkzone.abilities.SlamAbility;
+import dev.kyro.pitsim.adarkzone.abilities.SpiderMinionAbility;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
@@ -41,12 +44,12 @@ public class PitSpiderBoss extends PitBoss {
 
 	@Override
 	public int getMaxHealth() {
-		return 300;
+		return BossManager.getHealth(getSubLevelType());
 	}
 
 	@Override
 	public double getMeleeDamage() {
-		return 30;
+		return BossManager.getDamage(getSubLevelType());
 	}
 
 	@Override
