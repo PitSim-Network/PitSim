@@ -85,6 +85,7 @@ public class Sounds {
 	public static final SoundEffect COLLAPSE2 = new SoundEffect(Sound.DIG_GRAVEL, 1, 0.4);
 	public static final SoundEffect CHARGE = new SoundEffect(Sound.GHAST_FIREBALL, 1, 1.2);
 	public static final SoundEffect POPUP = new SoundEffect(Sound.FIZZ, 1, 1.2);
+	public static final SoundEffect TELEPORT = new SoundEffect(Sound.ENDERMAN_TELEPORT, 1, 1.4);
 
 	public static final SoundEffect CAGE = new SoundEffect()
 			.add(new SoundMoment(0).add(Sound.ANVIL_LAND, 1, 0.7))

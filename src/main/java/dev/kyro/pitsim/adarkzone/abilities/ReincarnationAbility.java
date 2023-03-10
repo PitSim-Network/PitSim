@@ -81,7 +81,9 @@ public class ReincarnationAbility extends PitBossAbility {
 	@Override
 	public boolean shouldExecuteRoutine() {
 		if(System.currentTimeMillis() - lastExecuteTime < cooldown) return false;
-		return getPitBoss().boss.getLocation().add(0, 10, 0).getBlock().getType() == Material.AIR;
+		if(getPitBoss().boss.getHealth() >= getPitBoss().boss.getMaxHealth() / 4) return false;
+
+		return getPitBoss().boss.getLocation().add(0, 7, 0).getBlock().getType() == Material.AIR;
 	}
 
 	public void createRays(Location center) {

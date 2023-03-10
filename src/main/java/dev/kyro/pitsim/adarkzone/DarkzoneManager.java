@@ -104,7 +104,7 @@ public class DarkzoneManager implements Listener {
 		registerSubLevel(subLevel);
 
 		subLevel = new SubLevel(
-				SubLevelType.ENDERMAN, PitZombieBoss.class, PitEnderman.class, EntityType.ENDERMAN, EnderPearl.class,
+				SubLevelType.ENDERMAN, PitEndermanBoss.class, PitEnderman.class, EntityType.ENDERMAN, EnderPearl.class,
 				new Location(MapManager.getDarkzone(), 388, 19, -226),
 				15, 17, 1, -1);
 		registerSubLevel(subLevel);
