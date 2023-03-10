@@ -8,30 +8,29 @@ import dev.kyro.pitsim.misc.BlockData;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
-import org.bukkit.material.MaterialData;
 
-public class PitBlazeBoss extends PitBoss {
+public class PitPigmanBoss extends PitBoss {
 
-	public PitBlazeBoss(Player summoner) {
+	public PitPigmanBoss(Player summoner) {
 		super(summoner);
 
 		abilities(
-				new BlazeMinionAbility(1, 1, 5),
-				new FirestormAbility(2, 40, 200, 4),
-				new PopupAbility(2, new BlockData(Material.FIRE, (byte) 0), 4, 40, 150),
-				new ComboAbility(20, 12),
-				new PullAbility(2, 20, 1, new MaterialData(Material.GLOWSTONE, (byte) 0))
+				new PigmanMinionAbility(1, 3, 30),
+				new PoundAbility(1, 15),
+				new LightningAbility(10, 1, 0.025),
+				new RuptureAbility(1, 25, 2, 40),
+				new PopupAbility(1, new BlockData(Material.FIRE, (byte) 0), 3, 40, 150)
 		);
 	}
 
 	@Override
 	public SubLevelType getSubLevelType() {
-		return SubLevelType.BLAZE;
+		return SubLevelType.ZOMBIE_PIGMAN;
 	}
 
 	@Override
 	public String getRawDisplayName() {
-		return "Blaze Boss";
+		return "Pigman Boss";
 	}
 
 	@Override
@@ -46,12 +45,12 @@ public class PitBlazeBoss extends PitBoss {
 
 	@Override
 	public int getMaxHealth() {
-		return 500;
+		return 600;
 	}
 
 	@Override
 	public double getMeleeDamage() {
-		return 50;
+		return 60;
 	}
 
 	@Override
@@ -71,6 +70,6 @@ public class PitBlazeBoss extends PitBoss {
 
 	@Override
 	public int getSpeedLevel() {
-		return -1;
+		return 4;
 	}
 }

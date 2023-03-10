@@ -41,7 +41,7 @@ public class PitZombiePigman extends PitMob {
 
 	@Override
 	public String getRawDisplayName() {
-		return "Zombie Pigman";
+		return isMinion() ? "Minion Pigman" : "Zombie Pigman";
 	}
 
 	@Override

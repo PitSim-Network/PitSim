@@ -38,6 +38,7 @@ public class PopupAbility extends PitBossAbility {
 //		Location spawnLocation = getPitBoss().boss.getLocation();
 //		new Popup(5, spawnLocation);
 
+		if(getPitBoss().bossTargetingSystem.findTarget() == null) return;
 		spawnPopups(getPitBoss().bossTargetingSystem.findTarget().getLocation());
 
 	}

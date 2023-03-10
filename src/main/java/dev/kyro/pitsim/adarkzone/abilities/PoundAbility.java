@@ -2,6 +2,7 @@ package dev.kyro.pitsim.adarkzone.abilities;
 
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.adarkzone.PitBossAbility;
+import dev.kyro.pitsim.adarkzone.PitMob;
 import dev.kyro.pitsim.cosmetics.ParticleOffset;
 import dev.kyro.pitsim.cosmetics.PitParticle;
 import dev.kyro.pitsim.cosmetics.particles.BlockCrackParticle;
@@ -108,6 +109,15 @@ public class PoundAbility extends PitBossAbility {
 			vector.normalize();
 
 			viewer.setVelocity(vector);
+		}
+
+		for(PitMob mob : getPitBoss().getSubLevel().mobs) {
+			if(mob.getMob().getLocation().distance(getPitBoss().boss.getLocation()) > radius + 2) continue;
+			Vector vector = new Vector(0, 0.6, 0);
+			vector.setY(vector.getY() + 1.5);
+			vector.normalize();
+
+			mob.getMob().setVelocity(vector);
 		}
 
 		Sounds.EXTRACT.play(getPitBoss().boss.getLocation());

@@ -14,10 +14,12 @@ import java.util.Random;
 public class LightningAbility extends PitBossAbility {
 	public int strikes;
 	public double damage;
+	public double chance;
 
-	public LightningAbility(int strikes, double damage) {
+	public LightningAbility(int strikes, double damage, double chance) {
 		this.strikes = strikes;
 		this.damage = damage;
+		this.chance = chance;
 	}
 
 	@EventHandler
@@ -26,7 +28,7 @@ public class LightningAbility extends PitBossAbility {
 		if(!event.isDefenderPlayer()) return;
 
 		Random random = new Random();
-		if(random.nextInt(100) > 20) return;
+		if(random.nextInt(100) > chance * 100) return;
 
 		Player player = event.getDefenderPlayer();
 		Sounds.JUDGEMENT_ZEUS_DEFENDER.play(player);
