@@ -21,7 +21,7 @@ public class HeresyPedestal extends AltarPedestal {
 
 	@Override
 	public int getActivationCost() {
-		return 0;
+		return 50;
 	}
 
 	@Override

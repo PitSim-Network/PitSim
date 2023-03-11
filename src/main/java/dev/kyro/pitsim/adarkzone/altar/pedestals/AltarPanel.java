@@ -94,6 +94,7 @@ public class AltarPanel extends AGUIPanel {
 				pedestal.activate(player);
 			}
 
+			totalCost = AltarPedestal.getTotalCost(player);
 			setItems();
 		}
 

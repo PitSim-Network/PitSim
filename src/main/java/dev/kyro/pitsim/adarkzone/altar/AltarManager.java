@@ -7,6 +7,7 @@ import dev.kyro.pitsim.adarkzone.altar.pedestals.*;
 import dev.kyro.pitsim.controllers.MapManager;
 import dev.kyro.pitsim.controllers.PrestigeValues;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
+import dev.kyro.pitsim.misc.Misc;
 import net.minecraft.server.v1_8_R3.DataWatcher;
 import net.minecraft.server.v1_8_R3.PacketPlayOutEntityMetadata;
 import org.bukkit.Bukkit;
@@ -146,20 +147,11 @@ public class AltarManager implements Listener {
 			}
 		}
 
+		Misc.strikeLightningForPlayers(CONFIRM_LOCATION, player);
+
 		if(pedestals.isEmpty()) return;
 
-		for(AltarPedestal pedestal : pedestals) {
-			pitPlayer.taintedSouls -= pedestal.getActivationCost();
-		}
-
-		AltarXPReward reward = new AltarXPReward(player, 100);
-		reward.spawn(CONFIRM_LOCATION.clone().add(0, 2, 0));
-
-		AltarRenownReward renownReward = new AltarRenownReward(player, 5);
-		renownReward.spawn(CONFIRM_LOCATION.clone().add(0, 2.5, 0));
-
-		AltarVoucherReward heresyReward = new AltarVoucherReward(player, 5);
-		heresyReward.spawn(CONFIRM_LOCATION.clone().add(0, 2.5, 0));
+		AltarRewards.rewardPlayer(player, pedestals);
 
 		AltarPedestal.disableAll(player);
 	}

@@ -21,7 +21,7 @@ public class KnowledgePedestal extends AltarPedestal {
 
 	@Override
 	public int getActivationCost() {
-		return 0;
+		return 50;
 	}
 
 	@Override

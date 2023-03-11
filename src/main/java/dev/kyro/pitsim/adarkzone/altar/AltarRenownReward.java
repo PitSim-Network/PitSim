@@ -91,7 +91,7 @@ public class AltarRenownReward {
 	public void reward() {
 		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
 		if(pitPlayer == null) return;
-		pitPlayer.renown += 1;
+		//TODO: Add Vouchers
 
 		AOutput.send(player, "&4&lALTAR! &7Gained &e+1 Renown");
 	}
