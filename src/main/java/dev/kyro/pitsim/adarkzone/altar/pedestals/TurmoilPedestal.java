@@ -27,7 +27,7 @@ public class TurmoilPedestal extends AltarPedestal {
 	@Override
 	public ItemStack getItem(Player player) {
 		AItemStackBuilder builder = new AItemStackBuilder(Material.SAPLING, 1, 3)
-				.setName("&2Pedestal of Renown")
+				.setName("&2Pedestal of Turmoil")
 				.setLore(new ALoreBuilder(
 						"&7This pedestal severely &2randomizes",
 						"&7your reward chances.",
@@ -35,7 +35,7 @@ public class TurmoilPedestal extends AltarPedestal {
 						"&7Activation Cost: &f" + getActivationCost() + " Souls",
 						"&7Status: " + getStatus(player)
 				));
-		Misc.addEnchantGlint(builder.getItemStack());
+		if(isActivated(player)) Misc.addEnchantGlint(builder.getItemStack());
 
 		return builder.getItemStack();
 	}

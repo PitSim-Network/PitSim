@@ -35,7 +35,7 @@ public class RenownPedestal extends AltarPedestal {
 						"&7Activation Cost: &f" + getActivationCost() + " Souls",
 						"&7Status: " + getStatus(player)
 				));
-		Misc.addEnchantGlint(builder.getItemStack());
+		if(isActivated(player)) Misc.addEnchantGlint(builder.getItemStack());
 
 		return builder.getItemStack();
 	}

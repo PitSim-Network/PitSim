@@ -4,7 +4,9 @@ import dev.kyro.arcticapi.builders.AItemStackBuilder;
 import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.arcticapi.gui.AGUI;
 import dev.kyro.arcticapi.gui.AGUIPanel;
+import dev.kyro.pitsim.adarkzone.altar.AltarManager;
 import dev.kyro.pitsim.adarkzone.altar.AltarPedestal;
+import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.misc.Sounds;
 import org.bukkit.Material;
 import org.bukkit.event.inventory.InventoryClickEvent;
@@ -14,8 +16,17 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
 public class AltarPanel extends AGUIPanel {
+
+	public PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
+	public int totalCost = AltarPedestal.getTotalCost(player);
+
 	public AltarPanel(AGUI gui) {
 		super(gui);
+
+		setItems();
+	}
+
+	public void setItems() {
 
 		int slot = 0;
 		for(AltarPedestal pedestal : AltarPedestal.altarPedestals) {
@@ -23,8 +34,8 @@ public class AltarPanel extends AGUIPanel {
 			ALoreBuilder loreBuilder = new ALoreBuilder(item.getItemMeta().getLore());
 			String status = "&eClick to activate!";
 			if(!pedestal.isUnlocked(player)) status = "&cPedestal is locked!";
-			else if(pedestal.isActivated(player)) status = "&aPedestal is activated!";
-			loreBuilder.addLore("&7Status: " + status);
+			else if(pedestal.isActivated(player)) status = "&eClick to deactivate!";
+			loreBuilder.addLore("", status);
 
 			ItemMeta meta = item.getItemMeta();
 			meta.setLore(loreBuilder.getLore());
@@ -35,8 +46,22 @@ public class AltarPanel extends AGUIPanel {
 			slot += 2;
 		}
 
-		AItemStackBuilder confirm = new AItemStackBuilder(Material.EMERALD)
-				.setName("&c&lClose");
+		String costStatus = totalCost > pitPlayer.taintedSouls ? "&cYou do not have enough souls!" : "&aClick to confirm your selections!";
+
+		AItemStackBuilder confirm = new AItemStackBuilder(Material.EMERALD_BLOCK)
+				.setName("&aConfirm Selections")
+				.setLore(new ALoreBuilder(
+						"&4Altar XP&7: &f+" + AltarPedestal.getRewardChance(player, AltarPedestal.ALTAR_REWARD.ALTAR_XP) + "%",
+						"&eRenown&7: &f+" + AltarPedestal.getRewardChance(player, AltarPedestal.ALTAR_REWARD.RENOWN) + "%",
+						"&4Vouchers&7: &f+" + AltarPedestal.getRewardChance(player, AltarPedestal.ALTAR_REWARD.VOUCHERS) + "%",
+						"",
+						"&7Total Cost: &f" + totalCost + " Souls",
+						"&7Your Souls: &f" + pitPlayer.taintedSouls + " Souls",
+						"",
+						costStatus
+				));
+
+		getInventory().setItem(22, confirm.getItemStack());
 	}
 
 	@Override
@@ -68,6 +93,18 @@ public class AltarPanel extends AGUIPanel {
 			} else {
 				pedestal.activate(player);
 			}
+
+			setItems();
+		}
+
+		if(slot == 22) {
+			if(pitPlayer.taintedSouls < totalCost) {
+				Sounds.ERROR.play(player);
+				return;
+			}
+
+			AltarManager.activateAltar(player);
+			player.closeInventory();
 		}
 
 

@@ -13,15 +13,12 @@ import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Random;
 
 public class AltarXPReward {
 
 	public Player player;
 	public double xp;
-	public List<EntityExperienceOrb> orbList = new ArrayList<>();
 
 	public AltarXPReward(Player player, double xp) {
 		this.player = player;
@@ -37,7 +34,6 @@ public class AltarXPReward {
 			EntityExperienceOrb orb = new EntityExperienceOrb(world, location.getX(), location.getY(), location.getZ(), (int) xp);
 			PacketPlayOutSpawnEntityExperienceOrb spawn = new PacketPlayOutSpawnEntityExperienceOrb(orb);
 			((CraftPlayer) player).getHandle().playerConnection.sendPacket(spawn);
-			orbList.add(orb);
 
 			new BukkitRunnable() {
 				@Override

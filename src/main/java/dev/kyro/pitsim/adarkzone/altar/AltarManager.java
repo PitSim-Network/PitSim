@@ -131,13 +131,13 @@ public class AltarManager implements Listener {
 		Block block = CONFIRM_LOCATION.clone().add(0, 2, 0).getBlock();
 		if(!event.getClickedBlock().equals(block)) return;
 
-
-
-		activateAltar(player);
+		AltarGUI altarGUI = new AltarGUI(player);
+		altarGUI.open();
 	}
 
-	public void activateAltar(Player player) {
+	public static void activateAltar(Player player) {
 		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
+		pitPlayer.taintedSouls -= AltarPedestal.getTotalCost(player);
 
 		List<AltarPedestal> pedestals = new ArrayList<>();
 		for(AltarPedestal pedestal : AltarPedestal.altarPedestals) {
@@ -154,6 +154,12 @@ public class AltarManager implements Listener {
 
 		AltarXPReward reward = new AltarXPReward(player, 100);
 		reward.spawn(CONFIRM_LOCATION.clone().add(0, 2, 0));
+
+		AltarRenownReward renownReward = new AltarRenownReward(player, 5);
+		renownReward.spawn(CONFIRM_LOCATION.clone().add(0, 2.5, 0));
+
+		AltarVoucherReward heresyReward = new AltarVoucherReward(player, 5);
+		heresyReward.spawn(CONFIRM_LOCATION.clone().add(0, 2.5, 0));
 
 		AltarPedestal.disableAll(player);
 	}

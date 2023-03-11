@@ -1,6 +1,7 @@
 package dev.kyro.pitsim.adarkzone.altar;
 
 import dev.kyro.pitsim.PitSim;
+import dev.kyro.pitsim.adarkzone.altar.pedestals.*;
 import dev.kyro.pitsim.adarkzone.progression.ProgressionManager;
 import dev.kyro.pitsim.adarkzone.progression.SkillBranch;
 import dev.kyro.pitsim.adarkzone.progression.skillbranches.AltarBranch;
@@ -30,6 +31,11 @@ import java.util.List;
 import java.util.UUID;
 
 public abstract class AltarPedestal implements Listener {
+
+	public static final int DEFAULT_ADDED_CHANCE = 100;
+	public static final int WEALTH_MULTIPLIER = 2;
+	public static final int BASE_COST = 100;
+
 
 	public static List<AltarPedestal> altarPedestals = new ArrayList<>();
 	public Location location;
@@ -152,5 +158,47 @@ public abstract class AltarPedestal implements Listener {
 		for(AltarPedestal pedestal : altarPedestals) {
 			pedestal.stand.remove();
 		}
+	}
+
+	public static int getRewardChance(Player player, ALTAR_REWARD reward) {
+		KnowledgePedestal knowledgePedestal = (KnowledgePedestal) AltarPedestal.getPedestal(0);
+		RenownPedestal renownPedestal = (RenownPedestal) AltarPedestal.getPedestal(1);
+		HeresyPedestal heresyPedestal = (HeresyPedestal) AltarPedestal.getPedestal(2);
+		WealthPedestal wealthPedestal = (WealthPedestal) AltarPedestal.getPedestal(3);
+
+		int increase;
+
+		switch(reward) {
+		case ALTAR_XP:
+			increase = knowledgePedestal.isActivated(player) ? DEFAULT_ADDED_CHANCE : 0;
+			break;
+		case RENOWN:
+			increase = renownPedestal.isActivated(player) ? DEFAULT_ADDED_CHANCE : 0;
+			break;
+		case VOUCHERS:
+			increase = heresyPedestal.isActivated(player) ? DEFAULT_ADDED_CHANCE : 0;
+			break;
+		default:
+			increase = 0;
+			break;
+		}
+
+		if(wealthPedestal.isActivated(player)) increase *= WEALTH_MULTIPLIER;
+		return increase;
+	}
+
+	public static int getTotalCost(Player player) {
+		int totalCost = BASE_COST;
+		for(AltarPedestal pedestal : altarPedestals) {
+			if(pedestal.isActivated(player)) totalCost += pedestal.getActivationCost();
+		}
+
+		return totalCost;
+	}
+
+	public enum ALTAR_REWARD {
+		ALTAR_XP,
+		RENOWN,
+		VOUCHERS;
 	}
 }

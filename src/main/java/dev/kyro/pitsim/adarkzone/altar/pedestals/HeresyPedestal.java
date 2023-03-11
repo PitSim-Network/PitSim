@@ -30,12 +30,12 @@ public class HeresyPedestal extends AltarPedestal {
 				.setName("&5Pedestal of Heresy")
 				.setLore(new ALoreBuilder(
 						"&7This pedestal increases your",
-						"&7chance of gaining &4&7.",
+						"&7chance of gaining &4Demonic Vouchers&7.",
 						"",
 						"&7Activation Cost: &f" + getActivationCost() + " Souls",
 						"&7Status: " + getStatus(player)
 				));
-		Misc.addEnchantGlint(builder.getItemStack());
+		if(isActivated(player)) Misc.addEnchantGlint(builder.getItemStack());
 
 		return builder.getItemStack();
 	}
