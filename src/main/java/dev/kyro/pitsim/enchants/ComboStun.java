@@ -49,7 +49,13 @@ public class ComboStun extends PitEnchant {
 		int duration = (int) getDuration(enchantLvl) * 20;
 
 		if(PitSim.anticheat instanceof PolarManager) {
-			PitSim.anticheat.exemptPlayer(attackEvent.getDefenderPlayer(), duration * 1000L, AnticheatManager.FlagType.KNOCKBACK);
+			new BukkitRunnable() {
+				@Override
+				public void run() {
+					PitSim.anticheat.exemptPlayer(attackEvent.getDefenderPlayer(), duration * 500L, AnticheatManager.FlagType.KNOCKBACK, AnticheatManager.FlagType.SIMULATION);
+				}
+			}.runTaskLater(PitSim.INSTANCE, 10);
+
 		}
 
 		Misc.applyPotionEffect(attackEvent.getDefender(), PotionEffectType.SLOW, duration, 7, true, false);
