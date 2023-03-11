@@ -714,6 +714,7 @@ public class PitSim extends JavaPlugin {
 			getServer().getPluginManager().registerEvents(new BossManager(), this);
 			getServer().getPluginManager().registerEvents(new ShieldManager(), this);
 			getServer().getPluginManager().registerEvents(new ProgressionManager(), this);
+			getServer().getPluginManager().registerEvents(new AltarManager(), this);
 		}
 	}
 

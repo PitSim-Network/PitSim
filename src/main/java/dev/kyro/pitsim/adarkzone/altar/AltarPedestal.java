@@ -46,6 +46,8 @@ public abstract class AltarPedestal implements Listener {
 	}
 
 	public abstract String getDisplayName();
+	public abstract int getActivationCost();
+	public abstract ItemStack getItem(Player player);
 
 	public boolean isUnlocked(Player player) {
 
@@ -79,11 +81,17 @@ public abstract class AltarPedestal implements Listener {
 		stand.getEquipment().setHelmet(new ItemStack(Material.SMOOTH_BRICK, 1, (short) 3));
 	}
 
+	public String getStatus(Player player) {
+		if(!isUnlocked(player)) return "&c&lLOCKED";
+		else if(isActivated(player)) return "&a&lACTIVE";
+		else return "&e&lINACTIVE";
+	}
+
 	public void activate(Player player) {
 		if(!isUnlocked(player)) {
 			DataWatcher dw = ((CraftEntity)stand).getHandle().getDataWatcher();
 			dw.watch(2, (Object)ChatColor.translateAlternateColorCodes('&', "&c&lLOCKED!"));
-			PacketPlayOutEntityMetadata metaPacket = new PacketPlayOutEntityMetadata(stand.getEntityId(), dw, false);
+			PacketPlayOutEntityMetadata metaPacket = new PacketPlayOutEntityMetadata(AltarManager.getStandID(stand), dw, false);
 			((CraftPlayer)player).getHandle().playerConnection.sendPacket(metaPacket);
 
 			new BukkitRunnable() {
@@ -91,7 +99,7 @@ public abstract class AltarPedestal implements Listener {
 				public void run() {
 					DataWatcher dw = ((CraftEntity)stand).getHandle().getDataWatcher();
 					dw.watch(2, (Object)ChatColor.translateAlternateColorCodes('&', getDisplayName()));
-					PacketPlayOutEntityMetadata metaPacket = new PacketPlayOutEntityMetadata(stand.getEntityId(), dw, false);
+					PacketPlayOutEntityMetadata metaPacket = new PacketPlayOutEntityMetadata(AltarManager.getStandID(stand), dw, false);
 					((CraftPlayer)player).getHandle().playerConnection.sendPacket(metaPacket);
 				}
 			}.runTaskLater(PitSim.INSTANCE, 20);
@@ -102,15 +110,16 @@ public abstract class AltarPedestal implements Listener {
 
 		activatedPlayers.add(player.getUniqueId());
 
-		PacketPlayOutEntityEquipment identityEquipmentPacket = new PacketPlayOutEntityEquipment(stand.getEntityId(), 4, CraftItemStack.asNMSCopy(new ItemStack(Material.SEA_LANTERN)));
+		PacketPlayOutEntityEquipment identityEquipmentPacket = new PacketPlayOutEntityEquipment(AltarManager.getStandID(stand), 4, CraftItemStack.asNMSCopy(new ItemStack(Material.SEA_LANTERN)));
 		((CraftPlayer) player).getHandle().playerConnection.sendPacket(identityEquipmentPacket);
 
 		Sounds.PEDESTAL_ACTIVATE.play(player);
-
 	}
 
 	public void deactivate(Player player, boolean silent) {
-		PacketPlayOutEntityEquipment identityEquipmentPacket = new PacketPlayOutEntityEquipment(stand.getEntityId(), 4, CraftItemStack.asNMSCopy(new ItemStack(Material.SMOOTH_BRICK, 1, (short) 3)));
+		if(!isActivated(player)) return;
+
+		PacketPlayOutEntityEquipment identityEquipmentPacket = new PacketPlayOutEntityEquipment(AltarManager.getStandID(stand), 4, CraftItemStack.asNMSCopy(new ItemStack(Material.SMOOTH_BRICK, 1, (short) 3)));
 		((CraftPlayer) player).getHandle().playerConnection.sendPacket(identityEquipmentPacket);
 		activatedPlayers.remove(player.getUniqueId());
 		if(!silent) Sounds.PEDESTAL_DEACTIVATE.play(player);
@@ -118,7 +127,7 @@ public abstract class AltarPedestal implements Listener {
 
 	@EventHandler
 	public void onClick(PlayerInteractAtEntityEvent event) {
-		if(event.getRightClicked().getUniqueId() != stand.getUniqueId()) return;
+		if(!event.getRightClicked().getUniqueId().equals(stand.getUniqueId())) return;
 		Player player = event.getPlayer();
 
 		if(isActivated(player)) deactivate(player, false);

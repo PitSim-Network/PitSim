@@ -12,15 +12,25 @@ import net.minecraft.server.v1_8_R3.PacketPlayOutEntityMetadata;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
+import org.bukkit.block.Block;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftEntity;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
 import org.bukkit.entity.ArmorStand;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
+import org.bukkit.event.block.Action;
+import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.scheduler.BukkitRunnable;
 
-public class AltarManager {
+import java.util.ArrayList;
+import java.util.List;
+
+public class AltarManager implements Listener {
 	public static final Location TEXT_LOCATION = new Location(MapManager.getDarkzone(), 192.5, 95, -104.5);
+	public static final Location CONFIRM_LOCATION = new Location(MapManager.getDarkzone(), 192.5, 89.5, -104.5);
 
 	public static ArmorStand[] textStands = new ArmorStand[7];
 
@@ -70,7 +80,7 @@ public class AltarManager {
 
 			DataWatcher dw = ((CraftEntity)textStands[i]).getHandle().getDataWatcher();
 			dw.watch(2, (Object)ChatColor.translateAlternateColorCodes('&', text[i]));
-			PacketPlayOutEntityMetadata metaPacket = new PacketPlayOutEntityMetadata(textStands[i].getEntityId(), dw, false);
+			PacketPlayOutEntityMetadata metaPacket = new PacketPlayOutEntityMetadata(getStandID(textStands[i]), dw, false);
 			((CraftPlayer)player).getHandle().playerConnection.sendPacket(metaPacket);
 		}
 	}
@@ -99,7 +109,52 @@ public class AltarManager {
 		for(ArmorStand textStand : textStands) {
 			textStand.remove();
 		}
-
 		AltarPedestal.cleanUp();
+	}
+
+	public static int getStandID(ArmorStand stand) {
+		for(Entity entity : Bukkit.getWorld("darkzone").getNearbyEntities(CONFIRM_LOCATION, 10.0, 10.0, 10.0)) {
+			if(!(entity instanceof ArmorStand)) {
+				continue;
+			}
+			if(entity.getUniqueId().equals(stand.getUniqueId())) {
+				return entity.getEntityId();
+			}
+		}
+		return 0;
+	}
+
+	@EventHandler
+	public void onInteract(PlayerInteractEvent event) {
+		if(event.getAction() != Action.RIGHT_CLICK_BLOCK) return;
+		Player player = event.getPlayer();
+		Block block = CONFIRM_LOCATION.clone().add(0, 2, 0).getBlock();
+		if(!event.getClickedBlock().equals(block)) return;
+
+
+
+		activateAltar(player);
+	}
+
+	public void activateAltar(Player player) {
+		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
+
+		List<AltarPedestal> pedestals = new ArrayList<>();
+		for(AltarPedestal pedestal : AltarPedestal.altarPedestals) {
+			if(pedestal.isActivated(player)) {
+				pedestals.add(pedestal);
+			}
+		}
+
+		if(pedestals.isEmpty()) return;
+
+		for(AltarPedestal pedestal : pedestals) {
+			pitPlayer.taintedSouls -= pedestal.getActivationCost();
+		}
+
+		AltarXPReward reward = new AltarXPReward(player, 100);
+		reward.spawn(CONFIRM_LOCATION.clone().add(0, 2, 0));
+
+		AltarPedestal.disableAll(player);
 	}
 }
