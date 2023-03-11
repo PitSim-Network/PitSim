@@ -48,8 +48,8 @@ public class AltarPanel extends AGUIPanel {
 
 		String costStatus = totalCost > pitPlayer.taintedSouls ? "&cYou do not have enough souls!" : "&aClick to confirm your selections!";
 
-		AItemStackBuilder confirm = new AItemStackBuilder(Material.EMERALD_BLOCK)
-				.setName("&aConfirm Selections")
+		AItemStackBuilder confirm = new AItemStackBuilder(Material.STAINED_CLAY, 1, pitPlayer.taintedSouls < totalCost ? 14 : 5)
+				.setName((pitPlayer.taintedSouls < totalCost ? "&c" : "&a") + "Confirm Selections")
 				.setLore(new ALoreBuilder(
 						"&4Altar XP&7: &f+" + AltarPedestal.getRewardChance(player, AltarPedestal.ALTAR_REWARD.ALTAR_XP) + "%",
 						"&eRenown&7: &f+" + AltarPedestal.getRewardChance(player, AltarPedestal.ALTAR_REWARD.RENOWN) + "%",
