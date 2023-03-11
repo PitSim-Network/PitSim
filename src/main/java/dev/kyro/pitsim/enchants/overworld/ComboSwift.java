@@ -17,7 +17,7 @@ public class ComboSwift extends PitEnchant {
 
 	public ComboSwift() {
 		super("Combo: Swift", false, ApplyType.MELEE,
-				"comoswift", "swift", "cs", "combo-swift");
+				"comboswift", "swift", "cs", "combo-swift");
 		isUncommonEnchant = true;
 	}
 
