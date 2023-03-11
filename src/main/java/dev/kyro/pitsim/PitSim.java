@@ -16,6 +16,7 @@ import dev.kyro.arcticapi.hooks.AHook;
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.adarkzone.*;
 import dev.kyro.pitsim.adarkzone.abilities.CageAbility;
+import dev.kyro.pitsim.adarkzone.altar.AltarManager;
 import dev.kyro.pitsim.adarkzone.notdarkzone.EquipmentType;
 import dev.kyro.pitsim.adarkzone.notdarkzone.PitEquipment;
 import dev.kyro.pitsim.adarkzone.notdarkzone.ShieldManager;
@@ -187,6 +188,7 @@ public class PitSim extends JavaPlugin {
 		getServer().getMessenger().registerOutgoingPluginChannel(this, "BungeeCord");
 		adventure = BukkitAudiences.create(this);
 		if(getStatus().isDarkzone()) TaintedWell.onStart();
+		if(getStatus().isDarkzone()) AltarManager.init();
 		if(getStatus().isDarkzone()) BrewingManager.onStart();
 		ScoreboardManager.init();
 
@@ -316,6 +318,7 @@ public class PitSim extends JavaPlugin {
 	public void onDisable() {
 		if(status.isDarkzone()) {
 			TaintedWell.onStop();
+			AltarManager.cleanUp();
 			FirestoreManager.AUCTION.save();
 		}
 
