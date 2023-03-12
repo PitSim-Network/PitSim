@@ -1,8 +1,10 @@
 package dev.kyro.pitsim.adarkzone.abilities;
+
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.adarkzone.PitBossAbility;
 import dev.kyro.pitsim.controllers.DamageManager;
 import dev.kyro.pitsim.cosmetics.particles.ExplosionLargeParticle;
+import dev.kyro.pitsim.misc.Misc;
 import dev.kyro.pitsim.misc.Sounds;
 import dev.kyro.pitsim.misc.effects.FallingBlock;
 import net.minecraft.server.v1_8_R3.EntityPlayer;
@@ -159,6 +161,7 @@ public class RuptureAbility extends PitBossAbility {
 		for(Entity nearbyEntity : location.getWorld().getNearbyEntities(location, 50, 50, 50)) {
 			if(!(nearbyEntity instanceof Player)) continue;
 			if(getPitBoss().boss == nearbyEntity) continue;
+			if(!Misc.isValidMobPlayerTarget(nearbyEntity)) continue;
 
 			double entityDistance = nearbyEntity.getLocation().distance(location);
 			if(nearest == null || distance > entityDistance) {
