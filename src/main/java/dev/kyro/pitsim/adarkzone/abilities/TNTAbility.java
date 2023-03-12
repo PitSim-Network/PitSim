@@ -84,7 +84,8 @@ public class TNTAbility extends PitBossAbility {
 				if(block != null && block.getType() != Material.AIR) break;
 
 				Location testLocation = displayLocation.clone().add(0, -1, 0);
-				for(Player player : Misc.getNearbyRealPlayers(testLocation, 1)) DamageManager.createAttack(player, damage);
+				for(Player player : Misc.getNearbyRealPlayers(testLocation, 1))
+					DamageManager.createIndirectAttack(getPitBoss().boss, player, damage);
 				particle.display(Misc.getNearbyRealPlayers(displayLocation, 50), displayLocation);
 			}
 		}

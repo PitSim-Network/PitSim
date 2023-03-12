@@ -60,7 +60,7 @@ public class Inferno extends PitEnchant {
 					fireDamageMap.remove(attackEvent.getDefender());
 					return;
 				}
-				DamageManager.createAttack(attackEvent.getDefender(), 5);
+				DamageManager.createIndirectAttack(null, attackEvent.getDefender(), 5);
 				count++;
 			}
 		}.runTaskTimer(PitSim.INSTANCE, 20L, 20);

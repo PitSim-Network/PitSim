@@ -11,11 +11,6 @@ import dev.kyro.pitsim.adarkzone.notdarkzone.Shield;
 import dev.kyro.pitsim.adarkzone.progression.ProgressionManager;
 import dev.kyro.pitsim.adarkzone.progression.SkillBranch;
 import dev.kyro.pitsim.adarkzone.progression.skillbranches.DefenceBranch;
-import dev.kyro.pitsim.aitems.PitItem;
-import dev.kyro.pitsim.aitems.prot.ProtBoots;
-import dev.kyro.pitsim.aitems.prot.ProtChestplate;
-import dev.kyro.pitsim.aitems.prot.ProtHelmet;
-import dev.kyro.pitsim.aitems.prot.ProtLeggings;
 import dev.kyro.pitsim.controllers.objects.Non;
 import dev.kyro.pitsim.controllers.objects.PitEnchant;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
@@ -50,8 +45,6 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityRegainHealthEvent;
 import org.bukkit.event.entity.ProjectileLaunchEvent;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
@@ -68,7 +61,7 @@ public class DamageManager implements Listener {
 
 	public static Map<Projectile, Map<PitEnchant, Integer>> projectileMap = new HashMap<>();
 	public static Map<Entity, LivingEntity> hitTransferMap = new HashMap<>();
-	public static Map<LivingEntity, Consumer<AttackEvent>> attackCallbackMap = new HashMap<>();
+	public static Map<LivingEntity, AttackInfo> attackInfoMap = new HashMap<>();
 
 	static {
 		new BukkitRunnable() {
@@ -81,11 +74,11 @@ public class DamageManager implements Listener {
 		}.runTaskTimer(PitSim.INSTANCE, 0L, 1L);
 	}
 
-	public static void createAttack(LivingEntity defender, double damage) {
-		createAttack(defender, damage, null);
+	public static void createIndirectAttack(LivingEntity fakeAttacker, LivingEntity defender, double damage) {
+		createIndirectAttack(fakeAttacker, defender, damage, null);
 	}
 
-	public static void createAttack(LivingEntity defender, double damage, Consumer<AttackEvent> callback) {
+	public static void createIndirectAttack(LivingEntity fakeAttacker, LivingEntity defender, double damage, Consumer<AttackEvent> callback) {
 		assert defender != null;
 
 		if(defender instanceof Player) {
@@ -93,17 +86,17 @@ public class DamageManager implements Listener {
 			if(VanishAPI.isInvisible(player) || player.getGameMode() != GameMode.SURVIVAL) return;
 		}
 
-		if(callback != null) attackCallbackMap.put(defender, callback);
+		if(callback != null) attackInfoMap.put(defender, new AttackInfo(fakeAttacker, callback));
 		EntityDamageEvent event = new EntityDamageEvent(defender, EntityDamageEvent.DamageCause.CUSTOM, damage);
 		Bukkit.getPluginManager().callEvent(event);
 		if(!event.isCancelled()) defender.damage(event.getDamage());
 	}
 
-	public static void createAttack(LivingEntity attacker, LivingEntity defender, double damage) {
-		createAttack(attacker, defender, damage, null);
+	public static void createDirectAttack(LivingEntity attacker, LivingEntity defender, double damage) {
+		createDirectAttack(attacker, defender, damage, null);
 	}
 
-	public static void createAttack(LivingEntity attacker, LivingEntity defender, double damage, Consumer<AttackEvent> callback) {
+	public static void createDirectAttack(LivingEntity attacker, LivingEntity defender, double damage, Consumer<AttackEvent> callback) {
 		assert attacker != null && defender != null;
 
 		if(defender instanceof Player) {
@@ -111,7 +104,7 @@ public class DamageManager implements Listener {
 			if(VanishAPI.isInvisible(player) || player.getGameMode() != GameMode.SURVIVAL) return;
 		}
 
-		if(callback != null) attackCallbackMap.put(defender, callback);
+		if(callback != null) attackInfoMap.put(defender, new AttackInfo(null, callback));
 
 		Bukkit.broadcastMessage("Damage: " + damage);
 		defender.damage(damage, attacker);
@@ -427,7 +420,10 @@ public class DamageManager implements Listener {
 			attackEvent.getDefender().setHealth(Math.min(attackEvent.getDefender().getHealth() - finalDamage, attackEvent.getDefender().getMaxHealth()));
 		}
 
-		if(attackCallbackMap.containsKey(attackEvent.getDefender())) attackCallbackMap.remove(attackEvent.getDefender()).accept(attackEvent);
+		if(attackEvent.getWrapperEvent().hasAttackInfo()) {
+			AttackInfo attackInfo = attackEvent.getWrapperEvent().getAttackInfo();
+			attackInfo.getCallback().accept(attackEvent);
+		}
 		return finalDamage;
 	}
 
@@ -748,21 +744,5 @@ public class DamageManager implements Listener {
 
 	public static void fakeKill(AttackEvent attackEvent, LivingEntity killer, LivingEntity dead, KillModifier... killModifiers) {
 		kill(attackEvent, killer, dead, KillType.FAKE_KILL, killModifiers);
-	}
-
-	public static void deleteProt(Player player) {
-		PlayerInventory inventory = player.getInventory();
-
-		if(ItemFactory.isThisItem(inventory.getHelmet(), ProtHelmet.class)) inventory.setHelmet(new ItemStack(Material.AIR));
-		if(ItemFactory.isThisItem(inventory.getChestplate(), ProtChestplate.class)) inventory.setChestplate(new ItemStack(Material.AIR));
-		if(ItemFactory.isThisItem(inventory.getLeggings(), ProtLeggings.class)) inventory.setLeggings(new ItemStack(Material.AIR));
-		if(ItemFactory.isThisItem(inventory.getBoots(), ProtBoots.class)) inventory.setBoots(new ItemStack(Material.AIR));
-
-		for(int i = 0; i < 36; i++) {
-			ItemStack itemStack = inventory.getItem(i);
-			PitItem pitItem = ItemFactory.getItem(itemStack);
-			if(pitItem == null || !pitItem.isProt) continue;
-			inventory.setItem(i, new ItemStack(Material.AIR));
-		}
 	}
 }

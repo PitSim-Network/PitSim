@@ -173,7 +173,7 @@ public class LandMineAbility extends PitBossAbility {
 			double distance = player.getLocation().distance(center);
 			if(distance > radius) continue;
 
-			DamageManager.createAttack(player, damage);
+			DamageManager.createIndirectAttack(getPitBoss().boss, player, damage);
 
 			double multiplier = Math.pow(5 - distance, 1.5);
 			Vector velocity = player.getLocation().toVector().subtract(landMine.fallingBlock.getSpawnLocation().toVector());

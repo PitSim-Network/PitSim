@@ -42,7 +42,7 @@ public class BlobManager implements Listener {
 						Non non = NonManager.getNon((Player) entity);
 						if(non == null || DamageManager.nonHitCooldownList.contains(non.non)) continue;
 
-						DamageManager.createAttack(entry.getValue(), non.non, damage);
+						DamageManager.createIndirectAttack(entry.getValue(), non.non, damage);
 					}
 				}
 			}

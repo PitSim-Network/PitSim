@@ -88,7 +88,7 @@ public class MeteorSpell extends PitEnchant {
 						double distance = livingEntity.getLocation().distance(effectLocation);
 						if(distance > 3) continue;
 
-						DamageManager.createAttack(player, livingEntity, 50);
+						DamageManager.createIndirectAttack(player, livingEntity, 50);
 					}
 				} else {
 					effectLocation.getWorld().playEffect(effectLocation, Effect.EXPLOSION_LARGE, 1);

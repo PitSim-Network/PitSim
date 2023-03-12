@@ -189,7 +189,7 @@ public class SlamAbility extends PitBossAbility {
 					playerVector.multiply(multiplier);
 
 					viewer.setVelocity(playerVector);
-					DamageManager.createAttack(viewer, damage);
+					DamageManager.createIndirectAttack(getPitBoss().boss, viewer, damage);
 				}
 				break;
 			}

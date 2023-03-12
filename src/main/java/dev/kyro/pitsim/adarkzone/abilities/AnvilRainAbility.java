@@ -24,7 +24,7 @@ public class AnvilRainAbility extends BlockRainAbility {
 			Player player = Bukkit.getPlayer(nearbyEntity.getUniqueId());
 			if(player == null) continue;
 
-			DamageManager.createAttack(player, damage);
+			DamageManager.createIndirectAttack(getPitBoss().boss, player, damage);
 		}
 	}
 }

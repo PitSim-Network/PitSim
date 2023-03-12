@@ -38,7 +38,7 @@ public class ComboAbility extends PitBossAbility {
 
 			@Override
 			public void run() {
-				DamageManager.createAttack(getPitBoss().boss, player, 0);
+				DamageManager.createIndirectAttack(getPitBoss().boss, player, 0);
 				player.setNoDamageTicks(0);
 
 				if(i >= comboDuration) {

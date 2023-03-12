@@ -45,13 +45,13 @@ public class FirestormAbility extends BlockRainAbility {
 					@Override
 					public void run() {
 						if(player.getHealth() <= 1) return;
-						DamageManager.createAttack(player, damage);
+						DamageManager.createIndirectAttack(getPitBoss().boss, player, damage);
 
 						if(i >= 5) cancel();
 						else i++;
 					}
 				}.runTaskTimer(PitSim.INSTANCE, 0, 20);
-			} else DamageManager.createAttack(player, damage * 3);
+			} else DamageManager.createIndirectAttack(getPitBoss().boss, player, damage * 3);
 		}
 	}
 

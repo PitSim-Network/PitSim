@@ -142,7 +142,7 @@ public class PopupAbility extends PitBossAbility {
 				@Override
 				public void run() {
 					if(player.getHealth() <= 1) return;
-					DamageManager.createAttack(player, damage);
+					DamageManager.createIndirectAttack(getPitBoss().boss, player, damage);
 
 					if(i >= 5) cancel();
 					else i++;

@@ -135,7 +135,7 @@ public class RuptureAbility extends PitBossAbility {
 					new BukkitRunnable() {
 						@Override
 						public void run() {
-							DamageManager.createAttack(viewer, damage);
+							DamageManager.createIndirectAttack(getPitBoss().boss, viewer, damage);
 							Sounds.CREEPER_EXPLODE.play(viewer.getLocation(), 10);
 
 							for(Player player : getViewers()) {

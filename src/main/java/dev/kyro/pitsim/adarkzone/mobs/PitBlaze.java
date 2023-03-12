@@ -77,7 +77,7 @@ public class PitBlaze extends PitMob {
 		event.getLocation().getWorld().playEffect(event.getLocation(), Effect.EXPLOSION_LARGE, 1);
 		for(Entity entity : event.getLocation().getWorld().getNearbyEntities(event.getLocation(), 3, 3, 3)) {
 			if(!Misc.isEntity(entity, PitEntityType.REAL_PLAYER)) continue;
-			DamageManager.createAttack(getMob(), (LivingEntity) entity, FIREBALL_DAMAGE);
+			DamageManager.createIndirectAttack(getMob(), (LivingEntity) entity, FIREBALL_DAMAGE);
 		}
 	}
 

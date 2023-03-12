@@ -3,6 +3,7 @@ package dev.kyro.pitsim.adarkzone.abilities;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.adarkzone.PitBossAbility;
 import dev.kyro.pitsim.controllers.DamageManager;
+import dev.kyro.pitsim.enums.PitEntityType;
 import dev.kyro.pitsim.misc.Misc;
 import dev.kyro.pitsim.misc.Sounds;
 import dev.kyro.pitsim.misc.effects.FallingBlock;
@@ -51,11 +52,11 @@ public class SnakeAbility extends PitBossAbility {
 					effect.play(origin, 20);
 
 					for(Entity entity : origin.getWorld().getNearbyEntities(origin, 1.5, 1.5, 1.5)) {
-						if(!(entity instanceof Player)) continue;
-						if(entity == getPitBoss().boss) continue;
+						if(!Misc.isEntity(entity, PitEntityType.REAL_PLAYER)) continue;
+						Player target = (Player) entity;
 
-						DamageManager.createAttack((Player) entity, damage);
-						Misc.applyPotionEffect((Player) entity, PotionEffectType.SLOW, 20, 1, false, false);
+						DamageManager.createIndirectAttack(getPitBoss().boss, target, damage);
+						Misc.applyPotionEffect(target, PotionEffectType.SLOW, 20, 1, false, false);
 					}
 				}
 			}.runTaskLater(PitSim.INSTANCE, time);
