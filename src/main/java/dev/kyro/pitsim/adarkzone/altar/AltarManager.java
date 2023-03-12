@@ -90,16 +90,18 @@ public class AltarManager implements Listener {
 		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
 		PrestigeValues.PrestigeInfo info = PrestigeValues.getPrestigeInfo(pitPlayer.prestige);
 
-		int difference = info.darkzoneLevel - pitPlayer.altarLevel;
+		int altarLevel = DarkzoneLeveling.getLevel(pitPlayer.altarXP);
+		int difference = info.darkzoneLevel - altarLevel;
 		String color = difference > 0 ? "&c" : "&a";
 		String status = difference > 0 ? "&7Taking &f" + Math.min(difference, 100) + "% &7of &bXP &7and &6Gold" : "&aYou are stronger than the Darkzone!";
+
 
 		setText(player, new String[] {
 				"&5Darkzone Level: " + info.darkzoneLevel,
 				"&8&m----------------------",
 				"&4&lAltar Level",
-				"&4" + pitPlayer.altarLevel + " " + AUtil.createProgressBar("|", ChatColor.RED, ChatColor.GRAY, 30,
-						pitPlayer.altarXP / DarkzoneLeveling.getXPForLevel(pitPlayer.altarLevel + 1)) + " &4" + (pitPlayer.altarLevel + 1),
+				"&4" + altarLevel + " " + AUtil.createProgressBar("|", ChatColor.RED, ChatColor.GRAY, 30,
+						pitPlayer.altarXP / DarkzoneLeveling.getXPForLevel(altarLevel + 1)) + " &4" + (altarLevel + 1),
 				"&8&m----------------------",
 				"&7Level Difference: " + color + Math.abs(difference),
 				status
@@ -151,7 +153,7 @@ public class AltarManager implements Listener {
 
 		if(pedestals.isEmpty()) return;
 
-		AltarRewards.rewardPlayer(player, pedestals);
+		AltarRewards.rewardPlayer(player);
 
 		AltarPedestal.disableAll(player);
 	}

@@ -150,7 +150,6 @@ public class PitPlayer {
 
 	public List<String> brewingSessions = Arrays.asList(null, null, null);
 
-	public int altarLevel = 0;
 	public double altarXP = 0;
 	public int taintedSouls = 200;
 

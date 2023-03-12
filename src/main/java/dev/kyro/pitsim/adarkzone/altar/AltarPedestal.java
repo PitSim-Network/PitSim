@@ -1,7 +1,10 @@
 package dev.kyro.pitsim.adarkzone.altar;
 
 import dev.kyro.pitsim.PitSim;
-import dev.kyro.pitsim.adarkzone.altar.pedestals.*;
+import dev.kyro.pitsim.adarkzone.altar.pedestals.HeresyPedestal;
+import dev.kyro.pitsim.adarkzone.altar.pedestals.KnowledgePedestal;
+import dev.kyro.pitsim.adarkzone.altar.pedestals.RenownPedestal;
+import dev.kyro.pitsim.adarkzone.altar.pedestals.WealthPedestal;
 import dev.kyro.pitsim.adarkzone.progression.ProgressionManager;
 import dev.kyro.pitsim.adarkzone.progression.SkillBranch;
 import dev.kyro.pitsim.adarkzone.progression.skillbranches.AltarBranch;
@@ -28,13 +31,13 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 import java.util.UUID;
 
 public abstract class AltarPedestal implements Listener {
 
-	public static final int DEFAULT_ADDED_CHANCE = 100;
-	public static final int WEALTH_MULTIPLIER = 2;
 	public static final int BASE_COST = 100;
+	public static final int WEALTH_MULTIPLIER = 2;
 
 
 	public static List<AltarPedestal> altarPedestals = new ArrayList<>();
@@ -54,6 +57,7 @@ public abstract class AltarPedestal implements Listener {
 	public abstract String getDisplayName();
 	public abstract int getActivationCost();
 	public abstract ItemStack getItem(Player player);
+
 
 	public boolean isUnlocked(Player player) {
 
@@ -144,8 +148,10 @@ public abstract class AltarPedestal implements Listener {
 		return altarPedestals.indexOf(this);
 	}
 
-	public static AltarPedestal getPedestal(int index) {
-		return altarPedestals.get(index);
+	@SuppressWarnings("unchecked")
+	public static <T extends AltarPedestal> T getPedestal(Class<T> clazz) {
+		for(AltarPedestal pedestal : altarPedestals) if(pedestal.getClass() == clazz) return (T) pedestal;
+		throw new RuntimeException();
 	}
 
 	public static void disableAll(Player player) {
@@ -161,30 +167,7 @@ public abstract class AltarPedestal implements Listener {
 	}
 
 	public static int getRewardChance(Player player, ALTAR_REWARD reward) {
-		KnowledgePedestal knowledgePedestal = (KnowledgePedestal) AltarPedestal.getPedestal(0);
-		RenownPedestal renownPedestal = (RenownPedestal) AltarPedestal.getPedestal(1);
-		HeresyPedestal heresyPedestal = (HeresyPedestal) AltarPedestal.getPedestal(2);
-		WealthPedestal wealthPedestal = (WealthPedestal) AltarPedestal.getPedestal(3);
-
-		int increase;
-
-		switch(reward) {
-		case ALTAR_XP:
-			increase = knowledgePedestal.isActivated(player) ? DEFAULT_ADDED_CHANCE : 0;
-			break;
-		case RENOWN:
-			increase = renownPedestal.isActivated(player) ? DEFAULT_ADDED_CHANCE : 0;
-			break;
-		case VOUCHERS:
-			increase = heresyPedestal.isActivated(player) ? DEFAULT_ADDED_CHANCE : 0;
-			break;
-		default:
-			increase = 0;
-			break;
-		}
-
-		if(wealthPedestal.isActivated(player)) increase *= WEALTH_MULTIPLIER;
-		return increase;
+		return reward.pedestal.isActivated(player) ? reward.increase : 0;
 	}
 
 	public static int getTotalCost(Player player) {
@@ -197,8 +180,66 @@ public abstract class AltarPedestal implements Listener {
 	}
 
 	public enum ALTAR_REWARD {
-		ALTAR_XP,
-		RENOWN,
-		VOUCHERS;
+		ALTAR_XP(getPedestal(KnowledgePedestal.class), 50, 1.5),
+		RENOWN(getPedestal(RenownPedestal.class), 50, 1.5),
+		VOUCHERS(getPedestal(HeresyPedestal.class), 50, 1.5);
+
+		public final AltarPedestal pedestal;
+		public final int increase;
+		public final double multiplier;
+
+		ALTAR_REWARD(AltarPedestal pedestal, int increase, double multiplier) {
+			this.pedestal = pedestal;
+			this.increase = increase;
+			this.multiplier = multiplier;
+		}
+
+		public int getRewardCount(REWARD_SIZE size, Player player) {
+			Random random = new Random();
+
+			int count = 0;
+
+			switch(size) {
+				case MEDIUM:
+					count = random.nextInt(2) + 3;
+					break;
+				case LARGE:
+					count = random.nextInt(2) + 5;
+					break;
+			}
+
+			if(pedestal.isActivated(player)) count *= multiplier;
+			if(getPedestal(WealthPedestal.class).isActivated(player)) count *= WEALTH_MULTIPLIER;
+
+			return count;
+		}
+
+		public void rewardPlayer(Player player, int amount) {
+			switch(this) {
+				case ALTAR_XP:
+					AltarXPReward reward = new AltarXPReward(player, amount);
+					reward.spawn(AltarManager.CONFIRM_LOCATION.clone().add(0, 2, 0));
+					break;
+				case RENOWN:
+					AltarRenownReward renownReward = new AltarRenownReward(player, amount);
+					renownReward.spawn(AltarManager.CONFIRM_LOCATION.clone().add(0, 2.5, 0));
+					break;
+				case VOUCHERS:
+					AltarVoucherReward heresyReward = new AltarVoucherReward(player, amount);
+					heresyReward.spawn(AltarManager.CONFIRM_LOCATION.clone().add(0, 2.5, 0));
+					break;
+			}
+		}
+	}
+
+	public enum REWARD_SIZE {
+		SMALL(30),
+		MEDIUM(60),
+		LARGE(100);
+
+		public int base;
+		REWARD_SIZE(int base) {
+			this.base = base;
+		}
 	}
 }

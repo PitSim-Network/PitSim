@@ -1,95 +1,64 @@
 package dev.kyro.pitsim.adarkzone.altar;
 
-import org.bukkit.Bukkit;
+import dev.kyro.pitsim.adarkzone.altar.pedestals.TurmoilPedestal;
 import org.bukkit.entity.Player;
 
-import java.util.List;
 import java.util.Random;
 
 public class AltarRewards {
 
-	public static final int BASE_CHANCE = 50;
-	public static final int XP_PER_ORB = 100;
-
-	public static void rewardPlayer(Player player, List<AltarPedestal> pedestals) {
-		int xpIncrease = AltarPedestal.getRewardChance(player, AltarPedestal.ALTAR_REWARD.ALTAR_XP);
-		int renownIncrease = AltarPedestal.getRewardChance(player, AltarPedestal.ALTAR_REWARD.RENOWN);
-		int voucherIncrease = AltarPedestal.getRewardChance(player, AltarPedestal.ALTAR_REWARD.VOUCHERS);
-
-		boolean turmoil = AltarPedestal.getPedestal(4).isActivated(player);
+	public static void rewardPlayer(Player player) {
+		boolean turmoil = AltarPedestal.getPedestal(TurmoilPedestal.class).isActivated(player);
 		boolean positiveTurmoil = new Random().nextBoolean();
 
-		int xpOrbs = 0;
-		int renown = 0;
-		int vouchers = 0;
+		for(AltarPedestal.ALTAR_REWARD reward : AltarPedestal.ALTAR_REWARD.values()) {
+			Random random = new Random();
 
-		Bukkit.broadcastMessage("XP: " + (xpIncrease + BASE_CHANCE));
-		Bukkit.broadcastMessage(100 / (getSecondaryChance(xpIncrease + BASE_CHANCE, turmoil && positiveTurmoil) / (xpIncrease + BASE_CHANCE)) + "");
-		Bukkit.broadcastMessage("Renown: " + (renownIncrease + BASE_CHANCE));
-		Bukkit.broadcastMessage(100 / (getSecondaryChance(renownIncrease + BASE_CHANCE, turmoil && positiveTurmoil) / (renownIncrease + BASE_CHANCE)) + "");
-		Bukkit.broadcastMessage("Vouchers: " + (voucherIncrease + BASE_CHANCE));
-		Bukkit.broadcastMessage(100 / (getSecondaryChance(voucherIncrease + BASE_CHANCE, turmoil && positiveTurmoil) / (voucherIncrease + BASE_CHANCE)) + "");
+			AltarPedestal.REWARD_SIZE size = AltarPedestal.REWARD_SIZE.SMALL;
 
-		Random decisionRandom = new Random();
-		if(decisionRandom.nextInt(100) <= xpIncrease + BASE_CHANCE) xpOrbs = 1;
-		if(decisionRandom.nextInt(100) <= renown + BASE_CHANCE) renown = 1;
-		if(decisionRandom.nextInt(100) <= voucherIncrease + BASE_CHANCE) vouchers = 1;
-
-		boolean xpCheck = false;
-		while(decisionRandom.nextInt((int) getSecondaryChance(xpIncrease + BASE_CHANCE, turmoil && positiveTurmoil))
-				< xpIncrease + BASE_CHANCE) {
-			if(turmoil && !positiveTurmoil && !xpCheck) {
-				xpCheck = true;
-				continue;
+			for(AltarPedestal.REWARD_SIZE value : AltarPedestal.REWARD_SIZE.values()) {
+				if(random.nextInt(100) <= value.base - (reward.pedestal.isActivated(player) ? reward.increase : 0)) {
+					size = value;
+					break;
+				}
 			}
 
-			xpCheck = false;
-			xpOrbs++;
-		}
+			int rewardCount = reward.getRewardCount(size, player);
 
-		boolean renownCheck = false;
-		while(decisionRandom.nextInt((int) getSecondaryChance(renownIncrease + BASE_CHANCE, turmoil && positiveTurmoil))
-				< renownIncrease + BASE_CHANCE) {
-			if(turmoil && !positiveTurmoil && !renownCheck) {
-				renownCheck = true;
-				continue;
+			if(turmoil) {
+				int breakChance = positiveTurmoil ? 3 : 10;
+
+				double multiplier = 1;
+				while(new Random().nextInt(100) > breakChance) multiplier += 0.1;
+				rewardCount *= multiplier;
 			}
 
-			renownCheck = false;
-			renown++;
+			reward.rewardPlayer(player, rewardCount);
 		}
 
-		boolean voucherCheck = false;
-		while(decisionRandom.nextInt((int) getSecondaryChance(voucherIncrease + BASE_CHANCE, turmoil && positiveTurmoil))
-				< voucherIncrease + BASE_CHANCE) {
-			if(turmoil && !positiveTurmoil && !voucherCheck) {
-				voucherCheck = true;
-				continue;
-			}
 
-			voucherCheck = false;
-			vouchers++;
-		}
 
-		AltarXPReward reward = new AltarXPReward(player, xpOrbs * XP_PER_ORB);
-		reward.spawn(AltarManager.CONFIRM_LOCATION.clone().add(0, 2, 0));
 
-		AltarRenownReward renownReward = new AltarRenownReward(player, renown);
-		renownReward.spawn(AltarManager.CONFIRM_LOCATION.clone().add(0, 2.5, 0));
+		//Weighted map of LOW/MEDIUM/HIGH
+		//Chance multiplier changes weight of certain catag
 
-		AltarVoucherReward heresyReward = new AltarVoucherReward(player, vouchers);
-		heresyReward.spawn(AltarManager.CONFIRM_LOCATION.clone().add(0, 2.5, 0));
-	}
+		//XP:
+		//Calculate chance for LOW/MED/HIGH using base chance and XP chance increase
+		//if != LOW, add small randomization to amount
+		//Add static XP multiplier for XP pedestal being on
+		//Add static wealth multiplier if wealth is on
+		//Apply Turmoil
 
-	public static double getSecondaryChance(int chance, boolean turmoil) {
-		double multiplier;
+		//Renown and Vouchers: same as XP
 
-		if(chance <= BASE_CHANCE) multiplier = 2.5;
-		else if( chance <= AltarPedestal.DEFAULT_ADDED_CHANCE + BASE_CHANCE) multiplier = 2;
-		else if(chance <= (AltarPedestal.DEFAULT_ADDED_CHANCE * AltarPedestal.WEALTH_MULTIPLIER) + BASE_CHANCE) multiplier = 1.5;
-		else multiplier = 3;
+		//Turmoil:
+		//good/bad calc 50/50 (determines break chance of while loop)
+		//starting multiplier < 1, increases by 0.1 each loop
+		//when loop breaks, multiply total items by multiplier
 
-		if(turmoil) multiplier /= 1.3;
-		return Math.max(chance + 1, chance * multiplier);
+		//Remove itemstack chance indicators
+		//Copy soul explosion code for xp orb count
+
+
 	}
 }
