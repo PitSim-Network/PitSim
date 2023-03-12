@@ -99,6 +99,7 @@ public class MysticSword extends StaticPitItem implements TemporaryItem {
 		NBTCompound itemEnchants = nbtItem.getCompound(NBTTag.MYSTIC_ENCHANTS.getRef());
 		for(String enchantKey : itemEnchants.getKeys()) {
 			int enchantLvl = itemEnchants.getInteger(enchantKey);
+			if(enchantKey.equals("comoswift")) enchantKey = "comboswift";
 			if(enchantLvl == 0) continue;
 			newItemEnchants.setInteger(enchantKey, enchantLvl);
 		}
