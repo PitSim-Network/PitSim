@@ -86,7 +86,7 @@ public class DamageManager implements Listener {
 			if(VanishAPI.isInvisible(player) || player.getGameMode() != GameMode.SURVIVAL) return;
 		}
 
-		if(callback != null) attackInfoMap.put(defender, new AttackInfo(fakeAttacker, callback));
+		attackInfoMap.put(defender, new AttackInfo(fakeAttacker, callback));
 		EntityDamageEvent event = new EntityDamageEvent(defender, EntityDamageEvent.DamageCause.CUSTOM, damage);
 		Bukkit.getPluginManager().callEvent(event);
 		if(!event.isCancelled()) defender.damage(event.getDamage());
@@ -104,7 +104,7 @@ public class DamageManager implements Listener {
 			if(VanishAPI.isInvisible(player) || player.getGameMode() != GameMode.SURVIVAL) return;
 		}
 
-		if(callback != null) attackInfoMap.put(defender, new AttackInfo(null, callback));
+		attackInfoMap.put(defender, new AttackInfo(null, callback));
 
 		Bukkit.broadcastMessage("Damage: " + damage);
 		defender.damage(damage, attacker);
@@ -422,7 +422,7 @@ public class DamageManager implements Listener {
 
 		if(attackEvent.getWrapperEvent().hasAttackInfo()) {
 			AttackInfo attackInfo = attackEvent.getWrapperEvent().getAttackInfo();
-			attackInfo.getCallback().accept(attackEvent);
+			if(attackInfo.getCallback() != null) attackInfo.getCallback().accept(attackEvent);
 		}
 		return finalDamage;
 	}
