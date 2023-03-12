@@ -141,8 +141,8 @@ public class DamageManager implements Listener {
 		projectileMap.put(projectile, EnchantManager.getEnchantsOnPlayer(shooter));
 	}
 
-	public void transferHit(LivingEntity attacker, Entity damager, LivingEntity defender, double damage) {
-		if(attacker != damager) hitTransferMap.put(damager, attacker);
+	public void transferHit(LivingEntity attacker, Entity realDamager, LivingEntity defender, double damage) {
+		if(attacker != realDamager) hitTransferMap.put(realDamager, attacker);
 		defender.damage(damage, attacker);
 	}
 
@@ -163,12 +163,12 @@ public class DamageManager implements Listener {
 
 	public void onAttack(WrapperEntityDamageEvent event) {
 		if(event.getEntity() == null) return;
+		Entity realDamager = event.getDamager();
 		LivingEntity attacker = getAttacker(event.getDamager());
 		LivingEntity defender = event.getEntity();
 
 		if(defender.isDead()) return;
 
-		Entity realDamager = event.getDamager();
 		for(Map.Entry<Entity, LivingEntity> entry : DamageManager.hitTransferMap.entrySet()) {
 			if(entry.getValue() != realDamager) continue;
 			realDamager = entry.getKey();
@@ -196,7 +196,7 @@ public class DamageManager implements Listener {
 					for(LivingEntity entity : pitMob.getNameTag().getEntities()) {
 						if(entity == defender) {
 							event.setCancelled(true);
-							transferHit(attacker, event.getDamager(), pitMob.getMob(), event.getDamage());
+							transferHit(attacker, realDamager, pitMob.getMob(), event.getDamage());
 							return;
 						}
 						if(entity == attacker) {
@@ -222,7 +222,7 @@ public class DamageManager implements Listener {
 				(attackingNon == null && defendingNon != null && hitCooldownList.contains(defender)) && !Regularity.toReg.contains(defender.getUniqueId()) &&
 						!(realDamager instanceof Arrow)) {
 			event.setCancelled(true);
-			DamageManager.hitTransferMap.remove(event.getDamager());
+			DamageManager.hitTransferMap.remove(realDamager);
 			return;
 		}
 //		Regular player to player hit

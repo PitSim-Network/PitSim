@@ -43,6 +43,7 @@ public class WrapperEntityDamageEvent {
 	}
 
 	public Entity getDamager() {
+		if(attackInfo != null) return attackInfo.getFakeAttacker();
 		return damager;
 	}
 
