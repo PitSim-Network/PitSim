@@ -43,7 +43,7 @@ public class WrapperEntityDamageEvent {
 	}
 
 	public Entity getDamager() {
-		if(attackInfo != null) return attackInfo.getFakeAttacker();
+		if(attackInfo != null && attackInfo.getFakeAttacker() != null) return attackInfo.getFakeAttacker();
 		return damager;
 	}
 
@@ -65,9 +65,5 @@ public class WrapperEntityDamageEvent {
 
 	public AttackInfo getAttackInfo() {
 		return attackInfo;
-	}
-
-	public boolean hasAttackInfo() {
-		return attackInfo != null;
 	}
 }

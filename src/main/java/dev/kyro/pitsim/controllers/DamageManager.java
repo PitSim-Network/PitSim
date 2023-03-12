@@ -106,7 +106,6 @@ public class DamageManager implements Listener {
 
 		attackInfoMap.put(defender, new AttackInfo(null, callback));
 
-		Bukkit.broadcastMessage("Damage: " + damage);
 		defender.damage(damage, attacker);
 	}
 
@@ -420,7 +419,7 @@ public class DamageManager implements Listener {
 			attackEvent.getDefender().setHealth(Math.min(attackEvent.getDefender().getHealth() - finalDamage, attackEvent.getDefender().getMaxHealth()));
 		}
 
-		if(attackEvent.getWrapperEvent().hasAttackInfo()) {
+		if(attackEvent.getWrapperEvent().getAttackInfo() != null) {
 			AttackInfo attackInfo = attackEvent.getWrapperEvent().getAttackInfo();
 			if(attackInfo.getCallback() != null) attackInfo.getCallback().accept(attackEvent);
 		}
