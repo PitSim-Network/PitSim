@@ -19,6 +19,7 @@ import dev.kyro.pitsim.adarkzone.notdarkzone.EquipmentType;
 import dev.kyro.pitsim.adarkzone.notdarkzone.PitEquipment;
 import dev.kyro.pitsim.adarkzone.notdarkzone.ShieldManager;
 import dev.kyro.pitsim.adarkzone.progression.ProgressionManager;
+import dev.kyro.pitsim.ahelp.HelpManager;
 import dev.kyro.pitsim.aitems.misc.*;
 import dev.kyro.pitsim.aitems.mobdrops.*;
 import dev.kyro.pitsim.aitems.mystics.*;
@@ -689,6 +690,7 @@ public class PitSim extends JavaPlugin {
 		getServer().getPluginManager().registerEvents(new MarketMessaging(), this);
 		getServer().getPluginManager().registerEvents(new MigrationManager(), this);
 		getServer().getPluginManager().registerEvents(new ActionBarManager(), this);
+		getServer().getPluginManager().registerEvents(new HelpManager(), this);
 
 		if(getStatus().isDarkzone()) {
 			getServer().getPluginManager().registerEvents(new TaintedWell(), this);

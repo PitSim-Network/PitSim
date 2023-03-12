@@ -54,7 +54,7 @@ dependencies {
     compileOnly 'com.google.firebase:firebase-admin:8.0.0'
     compileOnly 'com.github.MWHunter:GrimAPI:add576ba8b'
     compileOnly 'com.github.Polar-Anticheat:PolarApi:master-SNAPSHOT'
-
+    compileOnly 'com.google.cloud:google-cloud-dialogflow-cx:0.17.0'
 }
 
 shadowJar {
