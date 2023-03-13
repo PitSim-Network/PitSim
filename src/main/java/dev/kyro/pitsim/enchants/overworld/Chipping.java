@@ -34,6 +34,12 @@ public class Chipping extends PitEnchant {
 		).getLore();
 	}
 
+	@Override
+	public String getSummary() {
+		return getDisplayName(false, true) + " &7is an enchant that " +
+				"deals true damage on fully charged bow shots";
+	}
+
 	public double getDamage(int enchantLvl) {
 		if(enchantLvl == 1) return 0.5;
 		return enchantLvl - 1;

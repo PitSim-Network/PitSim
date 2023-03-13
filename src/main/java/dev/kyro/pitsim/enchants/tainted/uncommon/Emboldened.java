@@ -39,6 +39,12 @@ public class Emboldened extends PitEnchant {
 		).getLore();
 	}
 
+	@Override
+	public String getSummary() {
+		return getDisplayName(false, true) + " &7is a &5Darkzone &7enchant that " +
+				"does more damage when you have more health than your opponent";
+	}
+
 	public int getDamageIncrease(int enchantLvl) {
 		return enchantLvl * 8 + 4;
 	}

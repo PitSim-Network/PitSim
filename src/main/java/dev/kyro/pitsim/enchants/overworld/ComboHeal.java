@@ -51,6 +51,12 @@ public class ComboHeal extends PitEnchant {
 		).getLore();
 	}
 
+	@Override
+	public String getSummary() {
+		return getDisplayName(false, true) + " &7is an enchant that heals " +
+				"you and gives you absorption every few strikes";
+	}
+
 	public double getHealing(int enchantLvl) {
 
 		return enchantLvl * 0.8;

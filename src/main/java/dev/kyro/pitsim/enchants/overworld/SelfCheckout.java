@@ -89,4 +89,10 @@ public class SelfCheckout extends PitEnchant {
 				"&c\u25a0 &7Lose &c" + LIVES_ON_USE + " lives &7on this item"
 		).getLore();
 	}
+
+	@Override
+	public String getSummary() {
+		return getDisplayName(false, true) + " &7is an enchant that allows you to " +
+				"save the lives on &3Jewels&7, while also giving you &eRenown";
+	}
 }

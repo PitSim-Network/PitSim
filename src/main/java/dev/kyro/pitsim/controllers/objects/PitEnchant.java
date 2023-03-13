@@ -60,6 +60,10 @@ public abstract class PitEnchant implements Listener, Summarizable {
 	}
 
 	public String getDisplayName(boolean displayUncommon) {
+		return getDisplayName(displayUncommon, false);
+	}
+
+	public String getDisplayName(boolean displayUncommon, boolean overrideDisableCheck) {
 		String prefix = "";
 		if(isRare) {
 			if(applyType == ApplyType.SCYTHES) prefix += "&dSPELL! ";
@@ -68,7 +72,7 @@ public abstract class PitEnchant implements Listener, Summarizable {
 		} else if(isUncommonEnchant && displayUncommon) {
 			prefix += "&aUNC. ";
 		}
-		prefix += (isEnabled() ? "&9" : "&c");
+		prefix += (isEnabled() || overrideDisableCheck ? "&9" : "&c");
 		return ChatColor.translateAlternateColorCodes('&', prefix + name);
 	}
 
@@ -113,14 +117,10 @@ public abstract class PitEnchant implements Listener, Summarizable {
 	}
 
 	@Override
-	public String getSummary() {
-		return null;
-	}
-
-	@Override
 	public List<String> getTrainingPhrases() {
 		List<String> trainingPhrases = new ArrayList<>();
 		trainingPhrases.add("what is " + ChatColor.stripColor(getDisplayName()) + "?");
+		trainingPhrases.add("what does " + ChatColor.stripColor(getDisplayName()) + " do?");
 		return trainingPhrases;
 	}
 }

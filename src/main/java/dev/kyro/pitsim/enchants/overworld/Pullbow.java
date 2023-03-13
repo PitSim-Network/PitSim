@@ -73,6 +73,12 @@ public class Pullbow extends PitEnchant {
 		).getLore();
 	}
 
+	@Override
+	public String getSummary() {
+		return getDisplayName(false, true) + " &7is an enchant that pulls " +
+				"players to you when you shoot them";
+	}
+
 	public static int getCapDistance(int enchantLvl) {
 		return enchantLvl * 5 + 10;
 	}

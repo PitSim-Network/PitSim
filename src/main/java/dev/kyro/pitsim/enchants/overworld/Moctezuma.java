@@ -31,6 +31,12 @@ public class Moctezuma extends PitEnchant {
 		).getLore();
 	}
 
+	@Override
+	public String getSummary() {
+		return getDisplayName(false, true) + " &7is an enchant that increases " +
+				"the gold you get on kill";
+	}
+
 	public int getGoldIncrease(int enchantLvl) {
 		return enchantLvl * 6;
 	}

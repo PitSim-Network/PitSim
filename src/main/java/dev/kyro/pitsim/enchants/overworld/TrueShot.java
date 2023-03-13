@@ -42,6 +42,12 @@ public class TrueShot extends PitEnchant {
 		).getLore();
 	}
 
+	@Override
+	public String getSummary() {
+		return getDisplayName(false, true) + " &7is an enchant that converts a " +
+				"portion of the damage that you arrow does into true damage";
+	}
+
 	public int getPercent(int enchantLvl) {
 		return Math.min(enchantLvl * 10, 100) + 25;
 	}

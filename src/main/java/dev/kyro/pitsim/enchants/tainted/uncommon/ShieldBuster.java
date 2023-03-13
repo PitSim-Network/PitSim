@@ -37,6 +37,12 @@ public class ShieldBuster extends PitEnchant {
 		).getLore();
 	}
 
+	@Override
+	public String getSummary() {
+		return getDisplayName(false, true) + " &7is a &5Darkzone &7enchant that " +
+				"significantly increases the damage you do to other players' shields";
+	}
+
 	public static double getMultiplier(int enchantLvl) {
 		return enchantLvl * 0.5 + 1.5;
 	}

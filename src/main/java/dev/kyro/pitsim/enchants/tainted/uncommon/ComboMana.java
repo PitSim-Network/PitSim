@@ -50,6 +50,12 @@ public class ComboMana extends PitEnchant {
 		).getLore();
 	}
 
+	@Override
+	public String getSummary() {
+		return getDisplayName(false, true) + " &7is a &5Darkzone &7enchant that " +
+				"gives you &bmana &7every few strikes";
+	}
+
 	public int getMana(int enchantLvl) {
 		return enchantLvl * 6 + 2;
 	}

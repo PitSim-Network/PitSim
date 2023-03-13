@@ -35,6 +35,12 @@ public class Reaper extends PitEnchant {
 		).getLore();
 	}
 
+	@Override
+	public String getSummary() {
+		return getDisplayName(false, true) + " &7is a &5Darkzone &7enchant that " +
+				"increases the chance of harvesting &fsouls &7from mobs that you kill";
+	}
+
 	public static int getSoulChanceIncrease(int enchantLvl) {
 		return enchantLvl * 16 + 16;
 	}

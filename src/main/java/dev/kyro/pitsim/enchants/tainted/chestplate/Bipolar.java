@@ -122,6 +122,12 @@ public class Bipolar extends PitEnchant {
 		).getLore();
 	}
 
+	@Override
+	public String getSummary() {
+		return getDisplayName(false, true) + " &7is a &5Darkzone &7enchant that " +
+				"allows you to toggle between an offensive and a defensive mode while fighting";
+	}
+
 	public static int getManaReduction(int enchantLvl) {
 		return 50;
 	}

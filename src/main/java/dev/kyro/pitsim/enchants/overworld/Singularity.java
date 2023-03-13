@@ -35,6 +35,13 @@ public class Singularity extends PitEnchant {
 		).getLore();
 	}
 
+	@Override
+	public String getSummary() {
+		return getDisplayName(false, true) + " &7is an enchant that makes it so " +
+				"there is a maximum amount of damage that you can take on each hit (doesn't account for/affect " +
+				"true damage)";
+	}
+
 	public static double getMaxDamage(int enchantLvl) {
 		return Math.max(4.8 - enchantLvl * 0.4, 0);
 	}

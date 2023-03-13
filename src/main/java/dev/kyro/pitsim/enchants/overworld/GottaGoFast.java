@@ -38,6 +38,12 @@ public class GottaGoFast extends PitEnchant {
 		).getLore();
 	}
 
+	@Override
+	public String getSummary() {
+		return getDisplayName(false, true) + " &7is an enchant that increases " +
+				"your movement speed";
+	}
+
 	public static int getWalkSpeedIncrease(int enchantLvl) {
 		return enchantLvl * 5 + 5;
 	}

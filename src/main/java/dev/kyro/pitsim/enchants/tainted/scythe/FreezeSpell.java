@@ -129,6 +129,12 @@ public class FreezeSpell extends PitEnchant {
 		).getLore();
 	}
 
+	@Override
+	public String getSummary() {
+		return getDisplayName(false, true) + " &7is a &5Darkzone &7enchant that " +
+				"freezes all nearby enemies";
+	}
+
 	public static int getManaCost(int enchantLvl) {
 		return 30 * (4 - enchantLvl);
 	}

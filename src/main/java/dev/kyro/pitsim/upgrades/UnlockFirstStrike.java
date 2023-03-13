@@ -18,6 +18,11 @@ public class UnlockFirstStrike extends RenownUpgrade {
 	}
 
 	@Override
+	public List<Integer> getTierCosts() {
+		return null;
+	}
+
+	@Override
 	public ItemStack getDisplayItem(Player player) {
 		ItemStack item = new ItemStack(Material.COOKED_CHICKEN);
 		ItemMeta meta = item.getItemMeta();
@@ -35,7 +40,8 @@ public class UnlockFirstStrike extends RenownUpgrade {
 	}
 
 	@Override
-	public List<Integer> getTierCosts() {
-		return null;
+	public String getSummary() {
+		return "&eFirst Strike &7is a perk unlocked in the &erenown shop&7 that increases your &cdamage&7 and gives " +
+				"you &fSpeed&7 on your first hit against bots and players";
 	}
 }

@@ -46,6 +46,12 @@ class Sonic extends PitEnchant {
 		).getLore();
 	}
 
+	@Override
+	public String getSummary() {
+		return getDisplayName(false, true) + " &7is a &5Darkzone &7enchant that " +
+				"substantially increases your movement speed";
+	}
+
 	public static int getWalkSpeedIncrease(int enchantLvl) {
 		return 100;
 	}

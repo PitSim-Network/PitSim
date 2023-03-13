@@ -35,6 +35,12 @@ public class PainFocus extends PitEnchant {
 		).getLore();
 	}
 
+	@Override
+	public String getSummary() {
+		return getDisplayName(false, true) + " &7is an enchant that does more " +
+				"damage the lower you are";
+	}
+
 	public int getDamage(int enchantLvl) {
 		return enchantLvl * 2 - 1;
 	}

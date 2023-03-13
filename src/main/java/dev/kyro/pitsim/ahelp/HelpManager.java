@@ -4,8 +4,12 @@ import com.google.cloud.dialogflow.cx.v3.*;
 import com.google.protobuf.FieldMask;
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.PitSim;
+import dev.kyro.pitsim.controllers.EnchantManager;
 import dev.kyro.pitsim.controllers.PerkManager;
+import dev.kyro.pitsim.controllers.UpgradeManager;
 import dev.kyro.pitsim.controllers.objects.Megastreak;
+import dev.kyro.pitsim.controllers.objects.PitEnchant;
+import dev.kyro.pitsim.controllers.objects.RenownUpgrade;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 
@@ -36,6 +40,8 @@ public class HelpManager implements Listener {
 	public static void registerIntentsAndPages() {
 //		Intents
 		for(Megastreak megastreak : PerkManager.megastreaks) registerIntent(megastreak);
+		for(PitEnchant pitEnchant : EnchantManager.pitEnchants) registerIntent(pitEnchant);
+		for(RenownUpgrade upgrade : UpgradeManager.upgrades) registerIntent(upgrade);
 
 		helpIntents.add(new HelpIntent("WHAT_IS_THE_DARKZONE", HelpPageIdentifier.MAIN_PAGE)
 				.setReply("The darkzone is a place that makes you hate living more than anything else")
@@ -117,11 +123,13 @@ public class HelpManager implements Listener {
 			AgentName agentParent = AgentName.of(PROJECT_ID, LOCATION_ID, AGENT_ID);
 			FlowName flowParent = FlowName.of(PROJECT_ID, LOCATION_ID, AGENT_ID, FLOW_ID);
 
+			Iterable<Page> pages = pagesClient.listPages(flowParent).iterateAll();
+			Iterable<Intent> intents = intentsClient.listIntents(agentParent).iterateAll();
 			Map<HelpPage, Page> pageMap = new LinkedHashMap<>();
 			Map<HelpIntent, Intent> intentMap = new LinkedHashMap<>();
 			for(HelpPage helpPage : helpPages) {
 				Page page = null;
-				for(Page testPage : pagesClient.listPages(flowParent).iterateAll()) {
+				for(Page testPage : pages) {
 					if(!testPage.getDisplayName().equals(helpPage.getIdentifier())) continue;
 					page = testPage;
 					break;
@@ -138,7 +146,7 @@ public class HelpManager implements Listener {
 			}
 			for(HelpIntent helpIntent : helpIntents) {
 				Intent intent = null;
-				for(Intent testIntent : intentsClient.listIntents(agentParent).iterateAll()) {
+				for(Intent testIntent : intents) {
 					if(!testIntent.getDisplayName().equals(helpIntent.getIdentifier())) continue;
 					intent = testIntent;
 					break;
@@ -146,11 +154,10 @@ public class HelpManager implements Listener {
 				intentMap.put(helpIntent, intent);
 			}
 
-			try {
-				for(Map.Entry<HelpPage, Page> entry : pageMap.entrySet()) {
-					HelpPage helpPage = entry.getKey();
-					Page page = entry.getValue();
-					if(page != null) {
+			for(Map.Entry<HelpPage, Page> entry : pageMap.entrySet()) {
+				HelpPage helpPage = entry.getKey();
+				Page page = entry.getValue();
+				if(page != null) {
 //						page = Page.newBuilder()
 //								.setName(page.getName())
 //								.setEntryFulfillment(createFulfillment(helpPage.getEntryFulfillment()))
@@ -159,21 +166,19 @@ public class HelpManager implements Listener {
 //						page = pagesClient.updatePage(page, fieldMask);
 //						pageMap.put(helpPage, page);
 //						AOutput.log("Updated page: " + page.getDisplayName());
-						continue;
-					}
-
-					page = Page.newBuilder()
-							.setDisplayName(helpPage.getIdentifier())
-//							.setEntryFulfillment(createFulfillment(helpPage.getEntryFulfillment()))
-							.build();
-					Page createdPage = pagesClient.createPage(flowParent, page);
-
-					helpPage.setFullName(createdPage.getName());
-					pageMap.put(helpPage, createdPage);
-					AOutput.log("Created page: " + entry.getKey().getIdentifier());
+					continue;
 				}
-			} catch(Exception exception) {
-				exception.printStackTrace();
+
+				page = Page.newBuilder()
+						.setDisplayName(helpPage.getIdentifier())
+//							.setEntryFulfillment(createFulfillment(helpPage.getEntryFulfillment()))
+						.build();
+				Page createdPage = pagesClient.createPage(flowParent, page);
+
+				helpPage.setFullName(createdPage.getName());
+				pageMap.put(helpPage, createdPage);
+				AOutput.log("Created page: " + entry.getKey().getIdentifier());
+				sleep(1500);
 			}
 
 			for(Map.Entry<HelpIntent, Intent> entry : intentMap.entrySet()) {
@@ -188,6 +193,7 @@ public class HelpManager implements Listener {
 					intent = intentsClient.updateIntent(intent, fieldMask);
 					intentMap.put(helpIntent, intent);
 					AOutput.log("Updated intent: " + intent.getDisplayName());
+					sleep(1500);
 					continue;
 				}
 
@@ -198,62 +204,61 @@ public class HelpManager implements Listener {
 				intent = intentsClient.createIntent(agentParent, intent);
 				intentMap.put(helpIntent, intent);
 				AOutput.log("Created intent: " + helpIntent.getIdentifier());
+				sleep(1500);
 			}
 
-			try {
-				for(Map.Entry<HelpPage, Page> entry : pageMap.entrySet()) {
-					HelpPage helpPage = entry.getKey();
-					Page page = entry.getValue();
+			for(Map.Entry<HelpPage, Page> entry : pageMap.entrySet()) {
+				HelpPage helpPage = entry.getKey();
+				Page page = entry.getValue();
 
-					List<TransitionRoute> transitionRoutes = new ArrayList<>();
-					loop:
-					for(Map.Entry<HelpIntent, Intent> intentEntry : intentMap.entrySet()) {
-						HelpIntent helpIntent = intentEntry.getKey();
-						Intent intent = intentEntry.getValue();
-						if(!helpIntent.getParentPage().getIdentifier().equals(helpPage.getIdentifier())) continue;
+				List<TransitionRoute> transitionRoutes = new ArrayList<>();
+				loop:
+				for(Map.Entry<HelpIntent, Intent> intentEntry : intentMap.entrySet()) {
+					HelpIntent helpIntent = intentEntry.getKey();
+					Intent intent = intentEntry.getValue();
+					if(!helpIntent.getParentPage().getIdentifier().equals(helpPage.getIdentifier())) continue;
 
-						String transitionName = intent.getDisplayName() + "_TO_";
-						if(helpIntent.getChildPage() != null) {
-							transitionName += helpIntent.getChildPage().getIdentifier();
-						} else {
-							transitionName += "END_SESSION";
-						}
-
-						for(TransitionRoute transitionRoute : page.getTransitionRoutesList()) {
-							if(!transitionRoute.getName().equals(transitionName)) continue;
-							continue loop;
-						}
-
-						TransitionRoute.Builder builder = TransitionRoute.newBuilder()
-								.setName(transitionName)
-								.setIntent(intent.getName());
-						if(helpIntent.getChildPage() != null) {
-							builder.setTargetPage(getPage(pageMap, helpIntent.getChildPage()).getName());
-						} else {
-							builder.setTriggerFulfillment(createFulfillment(null));
-						}
-
-						transitionRoutes.add(builder.build());
-						AOutput.log("Added intent " + intent.getDisplayName() + " to page " + page.getDisplayName());
+					String transitionName = intent.getDisplayName() + "_TO_";
+					if(helpIntent.getChildPage() != null) {
+						transitionName += helpIntent.getChildPage().getIdentifier();
+					} else {
+						transitionName += "END_SESSION";
 					}
 
-					if(transitionRoutes.isEmpty()) continue;
+					for(TransitionRoute transitionRoute : page.getTransitionRoutesList()) {
+						if(!transitionRoute.getName().equals(transitionName)) continue;
+						continue loop;
+					}
 
-					page = page.toBuilder()
-							.addAllTransitionRoutes(transitionRoutes)
-							.build();
+					TransitionRoute.Builder builder = TransitionRoute.newBuilder()
+							.setName(transitionName)
+							.setIntent(intent.getName());
+					if(helpIntent.getChildPage() != null) {
+						builder.setTargetPage(getPage(pageMap, helpIntent.getChildPage()).getName());
+					} else {
+						builder.setTriggerFulfillment(createFulfillment(null));
+					}
 
-					UpdatePageRequest updatePageRequest = UpdatePageRequest.newBuilder()
-							.setPage(page)
-							.setUpdateMask(FieldMask.newBuilder().addPaths("transition_routes"))
-							.build();
-
-					page = pagesClient.updatePage(updatePageRequest);
-					pageMap.put(helpPage, page);
-					AOutput.log("Updated transition routes for page: " + page.getDisplayName());
+					transitionRoutes.add(builder.build());
+					AOutput.log("Added intent " + intent.getDisplayName() + " to page " + page.getDisplayName());
+					sleep(1500);
 				}
-			} catch(Exception exception) {
-				exception.printStackTrace();
+
+				if(transitionRoutes.isEmpty()) continue;
+
+				page = page.toBuilder()
+						.addAllTransitionRoutes(transitionRoutes)
+						.build();
+
+				UpdatePageRequest updatePageRequest = UpdatePageRequest.newBuilder()
+						.setPage(page)
+						.setUpdateMask(FieldMask.newBuilder().addPaths("transition_routes"))
+						.build();
+
+				page = pagesClient.updatePage(updatePageRequest);
+				pageMap.put(helpPage, page);
+				AOutput.log("Updated transition routes for page: " + page.getDisplayName());
+				sleep(1500);
 			}
 		} catch(IOException exception) {
 			exception.printStackTrace();
@@ -309,6 +314,14 @@ public class HelpManager implements Listener {
 				exception.printStackTrace();
 			}
 		} catch(IllegalAccessException exception) {
+			exception.printStackTrace();
+		}
+	}
+
+	public static void sleep(long millis) {
+		try {
+			Thread.sleep(millis);
+		} catch(InterruptedException exception) {
 			exception.printStackTrace();
 		}
 	}

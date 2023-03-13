@@ -49,6 +49,12 @@ public class ComboDamage extends PitEnchant {
 		).getLore();
 	}
 
+	@Override
+	public String getSummary() {
+		return getDisplayName(false, true) + " &7is an enchant that deals " +
+				"increased damage every few strikes";
+	}
+
 	public int getDamage(int enchantLvl) {
 		return (int) (Math.floor(Math.pow(enchantLvl, 1.75)) * 5 + 20);
 	}

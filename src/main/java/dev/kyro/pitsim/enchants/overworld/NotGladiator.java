@@ -44,6 +44,12 @@ public class NotGladiator extends PitEnchant {
 		).getLore();
 	}
 
+	@Override
+	public String getSummary() {
+		return getDisplayName(false, true) + " &7is an enchant that decreases " +
+				"the damage you take when there are more player and/or bots nearby";
+	}
+
 	public double getDamageReduction(int enchantLvl) {
 
 		return Math.min(enchantLvl * 0.5 + 1.5, 100);

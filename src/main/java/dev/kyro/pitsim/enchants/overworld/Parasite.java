@@ -42,6 +42,12 @@ public class Parasite extends PitEnchant {
 		).getLore();
 	}
 
+	@Override
+	public String getSummary() {
+		return getDisplayName(false, true) + " &7is an enchant that heals you " +
+				"when you land bow shots";
+	}
+
 	public double getHealing(int enchantLvl) {
 		return Math.floor(Math.pow(enchantLvl, 1.4)) * 0.5;
 	}

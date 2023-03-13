@@ -36,6 +36,12 @@ public class Permed extends PitEnchant {
 		).getLore();
 	}
 
+	@Override
+	public String getSummary() {
+		return getDisplayName(false, true) + " &7is a &5Darkzone &7enchant that " +
+				"increases the damage you deal to other players";
+	}
+
 	public int getDamageIncrease(int enchantLvl) {
 		return enchantLvl * 5 + 2;
 	}

@@ -19,6 +19,19 @@ public class XPComplex extends RenownUpgrade {
 	}
 
 	@Override
+	public List<Integer> getTierCosts() {
+		return null;
+	}
+
+	@EventHandler
+	public void onKill(KillEvent killEvent) {
+		if(!killEvent.isKillerPlayer()) return;
+		if(!UpgradeManager.hasUpgrade(killEvent.getKillerPlayer(), this)) return;
+
+		killEvent.xpCap += 150;
+	}
+
+	@Override
 	public ItemStack getDisplayItem(Player player) {
 		ItemStack item = new ItemStack(Material.DIAMOND_BARDING);
 		ItemMeta meta = item.getItemMeta();
@@ -31,15 +44,7 @@ public class XPComplex extends RenownUpgrade {
 	}
 
 	@Override
-	public List<Integer> getTierCosts() {
-		return null;
-	}
-
-	@EventHandler
-	public void onKill(KillEvent killEvent) {
-		if(!killEvent.isKillerPlayer()) return;
-		if(!UpgradeManager.hasUpgrade(killEvent.getKillerPlayer(), this)) return;
-
-		killEvent.xpCap += 150;
+	public String getSummary() {
+		return "&eExperience-Industrial Complex&7 is an &erenown&7 upgrade that increases your max &bXP";
 	}
 }

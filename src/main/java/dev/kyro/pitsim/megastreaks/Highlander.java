@@ -34,76 +34,10 @@ import java.util.Arrays;
 import java.util.List;
 
 public class Highlander extends Megastreak {
-	public Highlander(PitPlayer pitPlayer) {
-		super(pitPlayer);
-	}
-
 	public BukkitTask runnable;
 
-	@Override
-	public String getName() {
-		return "&6&lHIGH";
-	}
-
-	@Override
-	public String getRawName() {
-		return "Highlander";
-	}
-
-	@Override
-	public String getPrefix() {
-		return "&6Highlander";
-	}
-
-	@Override
-	public List<String> getRefNames() {
-		return Arrays.asList("highlander", "high");
-	}
-
-	@Override
-	public int getRequiredKills() {
-		return 50;
-	}
-
-	@Override
-	public int guiSlot() {
-		return 13;
-	}
-
-	@Override
-	public int prestigeReq() {
-		return 17;
-	}
-
-	@Override
-	public int initialLevelReq() {
-		return 90;
-	}
-
-	@Override
-	public ItemStack guiItem() {
-
-		ItemStack item = new ItemStack(Material.GOLD_BOOTS);
-		ItemMeta meta = item.getItemMeta();
-		List<String> lore = new ArrayList<>();
-		lore.add(ChatColor.translateAlternateColorCodes('&', "&7Triggers on: &c50 kills"));
-		lore.add("");
-		lore.add(ChatColor.GRAY + "On trigger:");
-		lore.add(ChatColor.translateAlternateColorCodes('&', "&a\u25a0 &7Perma &eSpeed I&7"));
-		lore.add(ChatColor.translateAlternateColorCodes('&', "&a\u25a0 &7Earn &6+135% gold &7from kills"));
-//		lore.add(ChatColor.translateAlternateColorCodes('&', "&a\u25a0 &7Deal &c+33% &7damage vs bountied players"));
-		lore.add(ChatColor.translateAlternateColorCodes('&', "&a\u25a0 &7Deal &c+25% &7damage vs bots"));
-		lore.add("");
-		lore.add(ChatColor.GRAY + "BUT:");
-		lore.add(ChatColor.translateAlternateColorCodes('&', "&c\u25a0 &7Heal &cless &7per kill over 200"));
-		lore.add(ChatColor.translateAlternateColorCodes('&', "&c\u25a0 &7Earn &c-50% &7XP from kills"));
-		lore.add("");
-		lore.add(ChatColor.GRAY + "On death:");
-		lore.add(ChatColor.translateAlternateColorCodes('&', "&e\u25a0 &7Earn your own bounty as well"));
-
-		meta.setLore(lore);
-		item.setItemMeta(meta);
-		return item;
+	public Highlander(PitPlayer pitPlayer) {
+		super(pitPlayer);
 	}
 
 	@EventHandler
@@ -203,6 +137,72 @@ public class Highlander extends Megastreak {
 	public void stop() {
 		HandlerList.unregisterAll(this);
 		if(runnable != null) runnable.cancel();
+	}
+
+	@Override
+	public String getName() {
+		return "&6&lHIGH";
+	}
+
+	@Override
+	public String getRawName() {
+		return "Highlander";
+	}
+
+	@Override
+	public String getPrefix() {
+		return "&6Highlander";
+	}
+
+	@Override
+	public List<String> getRefNames() {
+		return Arrays.asList("highlander", "high");
+	}
+
+	@Override
+	public int getRequiredKills() {
+		return 50;
+	}
+
+	@Override
+	public int guiSlot() {
+		return 13;
+	}
+
+	@Override
+	public int prestigeReq() {
+		return 17;
+	}
+
+	@Override
+	public int initialLevelReq() {
+		return 90;
+	}
+
+	@Override
+	public ItemStack guiItem() {
+
+		ItemStack item = new ItemStack(Material.GOLD_BOOTS);
+		ItemMeta meta = item.getItemMeta();
+		List<String> lore = new ArrayList<>();
+		lore.add(ChatColor.translateAlternateColorCodes('&', "&7Triggers on: &c50 kills"));
+		lore.add("");
+		lore.add(ChatColor.GRAY + "On trigger:");
+		lore.add(ChatColor.translateAlternateColorCodes('&', "&a\u25a0 &7Perma &eSpeed I&7"));
+		lore.add(ChatColor.translateAlternateColorCodes('&', "&a\u25a0 &7Earn &6+135% gold &7from kills"));
+//		lore.add(ChatColor.translateAlternateColorCodes('&', "&a\u25a0 &7Deal &c+33% &7damage vs bountied players"));
+		lore.add(ChatColor.translateAlternateColorCodes('&', "&a\u25a0 &7Deal &c+25% &7damage vs bots"));
+		lore.add("");
+		lore.add(ChatColor.GRAY + "BUT:");
+		lore.add(ChatColor.translateAlternateColorCodes('&', "&c\u25a0 &7Heal &cless &7per kill over 200"));
+		lore.add(ChatColor.translateAlternateColorCodes('&', "&c\u25a0 &7Earn &c-50% &7XP from kills"));
+		lore.add("");
+		lore.add(ChatColor.GRAY + "On death:");
+		lore.add(ChatColor.translateAlternateColorCodes('&', "&e\u25a0 &7Earn your own bounty as well"));
+
+		meta.setLore(lore);
+		item.setItemMeta(meta);
+		return item;
 	}
 
 	@Override

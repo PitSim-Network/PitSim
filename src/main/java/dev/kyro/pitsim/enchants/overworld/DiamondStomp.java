@@ -41,6 +41,13 @@ public class DiamondStomp extends PitEnchant {
 		).getLore();
 	}
 
+	@Override
+	public String getSummary() {
+		return getDisplayName(false, true) + " &7is an enchant that does more " +
+				"damage against players wearing any diamond armor " +
+				"(basically everyone)";
+	}
+
 	public int getDamage(int enchantLvl) {
 		return enchantLvl * 8 + 6;
 	}

@@ -38,6 +38,12 @@ public class Sufferance extends PitEnchant {
 		).getLore();
 	}
 
+	@Override
+	public String getSummary() {
+		return getDisplayName(false, true) + " &7is an enchant that converts a " +
+				"portion of the true damage that you receive into absorption";
+	}
+
 	public static int getReductionPercent(int enchantLvl) {
 		return enchantLvl * 20 + 5;
 	}

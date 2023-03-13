@@ -79,6 +79,12 @@ public class WarpSpell extends PitEnchant {
 		).getLore();
 	}
 
+	@Override
+	public String getSummary() {
+		return getDisplayName(false, true) + " &7is a &5Darkzone &7enchant that " +
+				"teleports you in the direction you are looking when used";
+	}
+
 	public static int getManaCost(int enchantLvl) {
 		return 30 * (4 - enchantLvl);
 	}

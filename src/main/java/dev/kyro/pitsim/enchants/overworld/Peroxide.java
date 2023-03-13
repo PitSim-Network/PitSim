@@ -45,6 +45,12 @@ public class Peroxide extends PitEnchant {
 		).getLore();
 	}
 
+	@Override
+	public String getSummary() {
+		return getDisplayName(false, true) + " &7is an enchant that gives " +
+				"you &cRegeneration &7when you are hit";
+	}
+
 	public int getAmplifier(int enchantLvl) {
 		return Misc.linearEnchant(enchantLvl, 0.5, 0);
 	}

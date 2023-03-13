@@ -62,6 +62,11 @@ public class ComboVenom extends PitEnchant {
 //	}
 
 	@Override
+	public String getSummary() {
+		return null;
+	}
+
+	@Override
 	public List<String> getNormalDescription(int enchantLvl) {
 		return new PitLoreBuilder(
 				"&7Every &ethird &7strike &apoisons &7enemies, temporarily applying " +

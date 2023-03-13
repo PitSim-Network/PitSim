@@ -59,6 +59,12 @@ public class Billionaire extends PitEnchant {
 		).getLore();
 	}
 
+	@Override
+	public String getSummary() {
+		return getDisplayName(false, true) + " &7is an enchant that drastically " +
+				"increases your damage but consumes &6gold &7on each strike";
+	}
+
 	public double getDamageIncrease(int enchantLvl) {
 		if(enchantLvl % 3 == 0) return (enchantLvl / 3) * 100;
 		return (enchantLvl / 3.0) * 100;

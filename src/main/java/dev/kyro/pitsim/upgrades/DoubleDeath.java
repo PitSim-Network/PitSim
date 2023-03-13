@@ -28,26 +28,6 @@ public class DoubleDeath extends RenownUpgrade {
 	}
 
 	@Override
-	public ItemStack getDisplayItem(Player player) {
-		ItemStack item = new ItemStack(Material.SKULL_ITEM);
-		ItemMeta meta = item.getItemMeta();
-		meta.setDisplayName(UpgradeManager.itemNameString(this, player));
-		List<String> lore = new ArrayList<>();
-		if(UpgradeManager.hasUpgrade(player, this)) lore.add(ChatColor.translateAlternateColorCodes('&',
-				"&7Current: &d+" + 5 * UpgradeManager.getTier(player, this) + "% Chance"));
-		if(UpgradeManager.hasUpgrade(player, this))
-			lore.add(ChatColor.GRAY + "Tier: " + ChatColor.GREEN + AUtil.toRoman(UpgradeManager.getTier(player, this)));
-		if(UpgradeManager.hasUpgrade(player, this)) lore.add("");
-		lore.add(ChatColor.GRAY + "Each Tier:");
-		lore.add(ChatColor.GRAY + "Gain " + ChatColor.LIGHT_PURPLE + "+5% " + ChatColor.GRAY + "chance to double");
-		lore.add(ChatColor.GRAY + "megastreak death rewards.");
-		lore.add(ChatColor.GRAY + "Does not work with Uberstreak.");
-		meta.setLore(UpgradeManager.loreBuilder(this, player, lore, false));
-		item.setItemMeta(meta);
-		return item;
-	}
-
-	@Override
 	public List<Integer> getTierCosts() {
 		return Arrays.asList(5, 5, 10, 10);
 	}
@@ -76,4 +56,28 @@ public class DoubleDeath extends RenownUpgrade {
 		return isDouble;
 	}
 
+	@Override
+	public ItemStack getDisplayItem(Player player) {
+		ItemStack item = new ItemStack(Material.SKULL_ITEM);
+		ItemMeta meta = item.getItemMeta();
+		meta.setDisplayName(UpgradeManager.itemNameString(this, player));
+		List<String> lore = new ArrayList<>();
+		if(UpgradeManager.hasUpgrade(player, this)) lore.add(ChatColor.translateAlternateColorCodes('&',
+				"&7Current: &d+" + 5 * UpgradeManager.getTier(player, this) + "% Chance"));
+		if(UpgradeManager.hasUpgrade(player, this))
+			lore.add(ChatColor.GRAY + "Tier: " + ChatColor.GREEN + AUtil.toRoman(UpgradeManager.getTier(player, this)));
+		if(UpgradeManager.hasUpgrade(player, this)) lore.add("");
+		lore.add(ChatColor.GRAY + "Each Tier:");
+		lore.add(ChatColor.GRAY + "Gain " + ChatColor.LIGHT_PURPLE + "+5% " + ChatColor.GRAY + "chance to double");
+		lore.add(ChatColor.GRAY + "megastreak death rewards.");
+		lore.add(ChatColor.GRAY + "Does not work with Uberstreak.");
+		meta.setLore(UpgradeManager.loreBuilder(this, player, lore, false));
+		item.setItemMeta(meta);
+		return item;
+	}
+
+	@Override
+	public String getSummary() {
+		return "&dDouble-Death &7gives you a chance to gain double death rewards on a &cMegastreak&7, excluding &dUberstreak";
+	}
 }

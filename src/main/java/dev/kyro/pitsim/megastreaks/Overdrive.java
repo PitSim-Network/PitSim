@@ -32,72 +32,7 @@ import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class Overdrive extends Megastreak {
-
 	public BukkitTask runnable;
-
-	@Override
-	public String getName() {
-		return "&c&lOVRDRV";
-	}
-
-	@Override
-	public String getRawName() {
-		return "Overdrive";
-	}
-
-	@Override
-	public String getPrefix() {
-		return "&cOverdrive";
-	}
-
-	@Override
-	public List<String> getRefNames() {
-		return Arrays.asList("overdrive");
-	}
-
-	@Override
-	public int getRequiredKills() {
-		return 50;
-	}
-
-	@Override
-	public int guiSlot() {
-		return 11;
-	}
-
-	@Override
-	public int prestigeReq() {
-		return 0;
-	}
-
-	@Override
-	public int initialLevelReq() {
-		return 0;
-	}
-
-	@Override
-	public ItemStack guiItem() {
-		ItemStack item = new ItemStack(Material.BLAZE_POWDER);
-		ItemMeta meta = item.getItemMeta();
-		List<String> lore = new ArrayList<>();
-		lore.add(ChatColor.translateAlternateColorCodes('&', "&7Triggers on: &c50 kills"));
-		lore.add("");
-		lore.add(ChatColor.GRAY + "On trigger:");
-		lore.add(ChatColor.translateAlternateColorCodes('&', "&a\u25a0 &7Earn &b+75% XP &7from kills"));
-		lore.add(ChatColor.translateAlternateColorCodes('&', "&a\u25a0 &7Earn &6+75% gold &7from kills"));
-		lore.add(ChatColor.translateAlternateColorCodes('&', "&a\u25a0 &7Permanent &eSpeed I&7"));
-		lore.add(ChatColor.translateAlternateColorCodes('&', "&a\u25a0 &7Immune to &9Slowness&7"));
-		lore.add("");
-		lore.add(ChatColor.GRAY + "BUT:");
-		lore.add(ChatColor.translateAlternateColorCodes('&', "&c\u25a0 &7Receive &c+" + Misc.getHearts(0.2) + " &7very true"));
-		lore.add(ChatColor.translateAlternateColorCodes('&', "&7damage per 10 kills (only from bots)"));
-		lore.add("");
-		lore.add(ChatColor.GRAY + "On death:");
-		lore.add(ChatColor.translateAlternateColorCodes('&', "&e\u25a0 &7Earn between &61000 &7and &65000 gold&7"));
-		meta.setLore(lore);
-		item.setItemMeta(meta);
-		return item;
-	}
 
 	public Overdrive(PitPlayer pitPlayer) {
 		super(pitPlayer);
@@ -190,6 +125,70 @@ public class Overdrive extends Megastreak {
 	public void kill() {
 
 		if(!isOnMega()) return;
+	}
+
+	@Override
+	public String getName() {
+		return "&c&lOVRDRV";
+	}
+
+	@Override
+	public String getRawName() {
+		return "Overdrive";
+	}
+
+	@Override
+	public String getPrefix() {
+		return "&cOverdrive";
+	}
+
+	@Override
+	public List<String> getRefNames() {
+		return Arrays.asList("overdrive");
+	}
+
+	@Override
+	public int getRequiredKills() {
+		return 50;
+	}
+
+	@Override
+	public int guiSlot() {
+		return 11;
+	}
+
+	@Override
+	public int prestigeReq() {
+		return 0;
+	}
+
+	@Override
+	public int initialLevelReq() {
+		return 0;
+	}
+
+	@Override
+	public ItemStack guiItem() {
+		ItemStack item = new ItemStack(Material.BLAZE_POWDER);
+		ItemMeta meta = item.getItemMeta();
+		List<String> lore = new ArrayList<>();
+		lore.add(ChatColor.translateAlternateColorCodes('&', "&7Triggers on: &c50 kills"));
+		lore.add("");
+		lore.add(ChatColor.GRAY + "On trigger:");
+		lore.add(ChatColor.translateAlternateColorCodes('&', "&a\u25a0 &7Earn &b+75% XP &7from kills"));
+		lore.add(ChatColor.translateAlternateColorCodes('&', "&a\u25a0 &7Earn &6+75% gold &7from kills"));
+		lore.add(ChatColor.translateAlternateColorCodes('&', "&a\u25a0 &7Permanent &eSpeed I&7"));
+		lore.add(ChatColor.translateAlternateColorCodes('&', "&a\u25a0 &7Immune to &9Slowness&7"));
+		lore.add("");
+		lore.add(ChatColor.GRAY + "BUT:");
+		lore.add(ChatColor.translateAlternateColorCodes('&', "&c\u25a0 &7Receive &c+" + Misc.getHearts(0.2) + " &7very true"));
+		lore.add(ChatColor.translateAlternateColorCodes('&', "&7damage per 10 kills (only from bots)"));
+		lore.add("");
+		lore.add(ChatColor.GRAY + "On death:");
+		lore.add(ChatColor.translateAlternateColorCodes('&', "&e\u25a0 &7Earn between &61000 &7and &65000 gold&7"));
+		meta.setLore(lore);
+		item.setItemMeta(meta);
+		return item;
 	}
 
 	@Override

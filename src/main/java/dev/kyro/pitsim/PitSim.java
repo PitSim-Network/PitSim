@@ -732,7 +732,7 @@ public class PitSim extends JavaPlugin {
 //		UpgradeManager.registerUpgrade(new SelfConfidence());
 		UpgradeManager.registerUpgrade(new UnlockCounterJanitor());
 		UpgradeManager.registerUpgrade(new LuckyKill());
-		UpgradeManager.registerUpgrade(new LifeInsurance());
+		UpgradeManager.registerUpgrade(new UberInsurance());
 		UpgradeManager.registerUpgrade(new TaxEvasion());
 		UpgradeManager.registerUpgrade(new DoubleDeath());
 		UpgradeManager.registerUpgrade(new XPComplex());
@@ -1072,7 +1072,6 @@ public class PitSim extends JavaPlugin {
 		EnchantManager.registerEnchant(new Attentive());
 		EnchantManager.registerEnchant(new Belittle());
 		EnchantManager.registerEnchant(new BOOM());
-		EnchantManager.registerEnchant(new aDefend());
 		EnchantManager.registerEnchant(new Embalm());
 		EnchantManager.registerEnchant(new Evasive());
 		EnchantManager.registerEnchant(new Extinguish());

@@ -50,6 +50,12 @@ public class Gamble extends PitEnchant {
 		).getLore();
 	}
 
+	@Override
+	public String getSummary() {
+		return getDisplayName(false, true) + " &7is an enchant that has a " +
+				"50-50 chance to deal true damage to you or your opponent";
+	}
+
 	public int getTrueDamage(int enchantLvl) {
 
 		return enchantLvl + 1;

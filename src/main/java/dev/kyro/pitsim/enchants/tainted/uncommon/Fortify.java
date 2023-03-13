@@ -35,6 +35,12 @@ public class Fortify extends PitEnchant {
 		).getLore();
 	}
 
+	@Override
+	public String getSummary() {
+		return getDisplayName(false, true) + " &7is a &5Darkzone &7enchant that " +
+				"increases the max hp of your shield";
+	}
+
 	public static int getShieldIncrease(int enchantLvl) {
 		return enchantLvl * 30 + 10;
 	}

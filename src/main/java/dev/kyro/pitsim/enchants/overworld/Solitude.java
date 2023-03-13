@@ -46,6 +46,12 @@ public class Solitude extends PitEnchant {
 		).getLore();
 	}
 
+	@Override
+	public String getSummary() {
+		return getDisplayName(false, true) + " &7is an enchant that significantly " +
+				"decreases the amount of damage you take when there are few players nearby";
+	}
+
 	public int getReductionPerPlayer() {
 		return 6;
 	}

@@ -45,6 +45,12 @@ public class Shark extends PitEnchant {
 		).getLore();
 	}
 
+	@Override
+	public String getSummary() {
+		return getDisplayName(false, true) + " &7is an enchant that does more damage " +
+				"when there are other players or bots nearby that have low health";
+	}
+
 	public int getDamage(int enchantLvl) {
 		return (int) (Math.pow(enchantLvl, 1.2) * 2);
 	}

@@ -132,7 +132,12 @@ public class FasterThanTheirShadow extends PitEnchant implements Listener {
 				"&7Hitting &f" + getStrikes(enchantLvl) + " &7shots without missing grants &eSpeed "
 				+ AUtil.toRoman(getSpeedAmplifier(enchantLvl)) + " &7(4s)"
 		).getLore();
+	}
 
+	@Override
+	public String getSummary() {
+		return getDisplayName(false, true) + " &7is an enchant that gives " +
+				"&eSpeed IV&7 after two consecutive bow shots are landed";
 	}
 
 	public int getSlowDuration(int enchantLvl) {

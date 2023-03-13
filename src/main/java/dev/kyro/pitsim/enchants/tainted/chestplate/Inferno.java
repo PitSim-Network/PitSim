@@ -75,6 +75,12 @@ public class Inferno extends PitEnchant {
 		).getLore();
 	}
 
+	@Override
+	public String getSummary() {
+		return getDisplayName(false, true) + " &7is a &5Darkzone &7enchant that " +
+				"sets your opponents &6ablaze";
+	}
+
 	public static int getManaCost(int enchantLvl) {
 		return 1;
 	}

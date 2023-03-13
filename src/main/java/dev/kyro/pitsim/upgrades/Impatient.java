@@ -63,4 +63,9 @@ public class Impatient extends RenownUpgrade {
 			}
 		}.runTaskTimer(PitSim.INSTANCE, 0L, 20L);
 	}
+
+	@Override
+	public String getSummary() {
+		return "&aImpatient &7is a &erenown &7upgrade that grant you speed in spawn. ";
+	}
 }

@@ -44,6 +44,13 @@ public class Lifesteal extends PitEnchant {
 		).getLore();
 	}
 
+	@Override
+	public String getSummary() {
+		return getDisplayName(false, true) + " &7is an enchant that heals you " +
+				"for a percentage of the damage that you deal. Despite its low value, this enchant is one of the " +
+				"most important when fighting other players";
+	}
+
 	public double getHealing(int enchantLvl) {
 		return enchantLvl * 3 - 2;
 	}

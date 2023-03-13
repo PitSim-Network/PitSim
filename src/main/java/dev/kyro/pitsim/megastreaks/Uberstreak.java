@@ -46,80 +46,9 @@ public class Uberstreak extends Megastreak {
 	public static double SHARD_MULTIPLIER = 2;
 
 	public List<UberEffect> uberEffects = new ArrayList<>();
-	MysticType mysticType;
 
 	public Uberstreak(PitPlayer pitPlayer) {
 		super(pitPlayer);
-	}
-
-	@Override
-	public String getName() {
-		return "&d&lUBER";
-	}
-
-	@Override
-	public String getRawName() {
-		return "Uberstreak";
-	}
-
-	@Override
-	public String getPrefix() {
-		return "&dUberstreak";
-	}
-
-	@Override
-	public List<String> getRefNames() {
-		return Arrays.asList("uberstreak");
-	}
-
-	@Override
-	public int guiSlot() {
-		return 14;
-	}
-
-	@Override
-	public int prestigeReq() {
-		return 20;
-	}
-
-	@Override
-	public int initialLevelReq() {
-		return 100;
-	}
-
-	@Override
-	public int getRequiredKills() {
-		return 100;
-	}
-
-	@Override
-	public ItemStack guiItem() {
-		DecimalFormat decimalFormat = new DecimalFormat("0.#");
-
-		ItemStack item = new ItemStack(Material.GOLD_SWORD);
-		ItemMeta meta = item.getItemMeta();
-		List<String> lore = new ArrayList<>();
-		lore.add(ChatColor.translateAlternateColorCodes('&', "&7Triggers on: &c100 kills"));
-		lore.add("");
-		lore.add(ChatColor.GRAY + "On trigger:");
-		lore.add(ChatColor.translateAlternateColorCodes('&', "&a\u25a0 &7Immune to enchants that &emove &7you"));
-		lore.add(ChatColor.translateAlternateColorCodes('&', "&a\u25a0 &d" + decimalFormat.format(SHARD_MULTIPLIER) + "x &7chance to find &aAncient Gem Shards"));
-		lore.add("");
-		lore.add(ChatColor.GRAY + "BUT:");
-		lore.add(ChatColor.translateAlternateColorCodes('&', "&c\u25a0 &7Deal &c-50% &7damage to nons"));
-		lore.add("");
-		lore.add(ChatColor.GRAY + "During the streak:");
-		lore.add(ChatColor.translateAlternateColorCodes('&', "&d\u25a0 &7200 kills: Random &dbuff &7or &cdebuff"));
-		lore.add(ChatColor.translateAlternateColorCodes('&', "&d\u25a0 &7300 kills: Random &dbuff &7or &cdebuff"));
-		lore.add(ChatColor.translateAlternateColorCodes('&', "&d\u25a0 &7400 kills: Random &dbuff &7or &cdebuff"));
-		lore.add(ChatColor.translateAlternateColorCodes('&', "&d\u25a0 &7500 kills: &cNo longer gain health"));
-		lore.add("");
-		lore.add(ChatColor.GRAY + "On death:");
-		lore.add(ChatColor.translateAlternateColorCodes('&', "&e\u25a0 &7Earn a random &dUberdrop&7"));
-		lore.add(ChatColor.translateAlternateColorCodes('&', "&7(If streak is at least 500)"));
-		meta.setLore(lore);
-		item.setItemMeta(meta);
-		return item;
 	}
 
 	@EventHandler
@@ -298,6 +227,76 @@ public class Uberstreak extends Megastreak {
 	public void kill() {
 
 		if(!isOnMega()) return;
+	}
+
+	@Override
+	public String getName() {
+		return "&d&lUBER";
+	}
+
+	@Override
+	public String getRawName() {
+		return "Uberstreak";
+	}
+
+	@Override
+	public String getPrefix() {
+		return "&dUberstreak";
+	}
+
+	@Override
+	public List<String> getRefNames() {
+		return Arrays.asList("uberstreak");
+	}
+
+	@Override
+	public int guiSlot() {
+		return 14;
+	}
+
+	@Override
+	public int prestigeReq() {
+		return 20;
+	}
+
+	@Override
+	public int initialLevelReq() {
+		return 100;
+	}
+
+	@Override
+	public int getRequiredKills() {
+		return 100;
+	}
+
+	@Override
+	public ItemStack guiItem() {
+		DecimalFormat decimalFormat = new DecimalFormat("0.#");
+
+		ItemStack item = new ItemStack(Material.GOLD_SWORD);
+		ItemMeta meta = item.getItemMeta();
+		List<String> lore = new ArrayList<>();
+		lore.add(ChatColor.translateAlternateColorCodes('&', "&7Triggers on: &c100 kills"));
+		lore.add("");
+		lore.add(ChatColor.GRAY + "On trigger:");
+		lore.add(ChatColor.translateAlternateColorCodes('&', "&a\u25a0 &7Immune to enchants that &emove &7you"));
+		lore.add(ChatColor.translateAlternateColorCodes('&', "&a\u25a0 &d" + decimalFormat.format(SHARD_MULTIPLIER) + "x &7chance to find &aAncient Gem Shards"));
+		lore.add("");
+		lore.add(ChatColor.GRAY + "BUT:");
+		lore.add(ChatColor.translateAlternateColorCodes('&', "&c\u25a0 &7Deal &c-50% &7damage to nons"));
+		lore.add("");
+		lore.add(ChatColor.GRAY + "During the streak:");
+		lore.add(ChatColor.translateAlternateColorCodes('&', "&d\u25a0 &7200 kills: Random &dbuff &7or &cdebuff"));
+		lore.add(ChatColor.translateAlternateColorCodes('&', "&d\u25a0 &7300 kills: Random &dbuff &7or &cdebuff"));
+		lore.add(ChatColor.translateAlternateColorCodes('&', "&d\u25a0 &7400 kills: Random &dbuff &7or &cdebuff"));
+		lore.add(ChatColor.translateAlternateColorCodes('&', "&d\u25a0 &7500 kills: &cNo longer gain health"));
+		lore.add("");
+		lore.add(ChatColor.GRAY + "On death:");
+		lore.add(ChatColor.translateAlternateColorCodes('&', "&e\u25a0 &7Earn a random &dUberdrop&7"));
+		lore.add(ChatColor.translateAlternateColorCodes('&', "&7(If streak is at least 500)"));
+		meta.setLore(lore);
+		item.setItemMeta(meta);
+		return item;
 	}
 
 	@Override

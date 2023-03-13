@@ -33,6 +33,12 @@ public class KingBuster extends PitEnchant {
 		).getLore();
 	}
 
+	@Override
+	public String getSummary() {
+		return getDisplayName(false, true) + " &7is an enchant that does " +
+				"more damage when your opponent is above half health";
+	}
+
 	public int getDamage(int enchantLvl) {
 		return enchantLvl * 7 + 5;
 	}

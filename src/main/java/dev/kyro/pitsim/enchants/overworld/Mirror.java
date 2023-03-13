@@ -11,11 +11,13 @@ import org.bukkit.event.EventPriority;
 import java.util.List;
 
 public class Mirror extends PitEnchant {
+	public static Mirror INSTANCE;
 
 	public Mirror() {
 		super("Mirror", false, ApplyType.PANTS,
 				"mirror", "mir");
 		isUncommonEnchant = true;
+		INSTANCE = this;
 	}
 
 	@EventHandler(priority = EventPriority.HIGH)
@@ -44,6 +46,12 @@ public class Mirror extends PitEnchant {
 					"&7You take &9" + getReductionPercent(enchantLvl) + "% &7less true damage"
 			).getLore();
 		}
+	}
+
+	@Override
+	public String getSummary() {
+		return getDisplayName(false, true) + " &7is an enchant that reduces the " +
+				"amount of true damage that you take";
 	}
 
 	public static int getReductionPercent(int enchantLvl) {

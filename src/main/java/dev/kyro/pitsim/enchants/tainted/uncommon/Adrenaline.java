@@ -68,6 +68,12 @@ public class Adrenaline extends PitEnchant {
 		).getLore();
 	}
 
+	@Override
+	public String getSummary() {
+		return getDisplayName(false, true) + " &7is a &5Darkzone &7enchant that " +
+				"gives you &eSpeed &7and increases the damage you deal when you are low";
+	}
+
 	public static int getThresholdPercent(int enchantLvl) {
 		return 30;
 	}

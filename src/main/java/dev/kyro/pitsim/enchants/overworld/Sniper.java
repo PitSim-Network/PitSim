@@ -34,6 +34,12 @@ public class Sniper extends PitEnchant {
 		).getLore();
 	}
 
+	@Override
+	public String getSummary() {
+		return getDisplayName(false, true) + " &7is an enchant that makes your arrows " +
+				"deal more damage when you are far away from your target";
+	}
+
 	public int getDamage(int enchantLvl) {
 		return enchantLvl * 12 + 48;
 	}

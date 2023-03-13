@@ -35,77 +35,6 @@ public class ToTheMoon extends Megastreak {
 	public boolean hasCalledHopper = false;
 	public BukkitTask runnable;
 
-	@Override
-	public String getName() {
-		return "&b&lMOON";
-	}
-
-	@Override
-	public String getRawName() {
-		return "To the Moon";
-	}
-
-	@Override
-	public String getPrefix() {
-		return "&bTo the Moon";
-	}
-
-	@Override
-	public List<String> getRefNames() {
-		return Arrays.asList("moon");
-	}
-
-	@Override
-	public int getRequiredKills() {
-		return 100;
-	}
-
-	@Override
-	public int guiSlot() {
-		return 15;
-	}
-
-	@Override
-	public int prestigeReq() {
-		return 30;
-	}
-
-	@Override
-	public int initialLevelReq() {
-		return 60;
-	}
-
-	@Override
-	public ItemStack guiItem() {
-		ItemStack item = new ItemStack(Material.ENDER_STONE);
-		ItemMeta meta = item.getItemMeta();
-		List<String> lore = new ArrayList<>();
-		lore.add(ChatColor.translateAlternateColorCodes('&', "&7Triggers on: &c100 kills"));
-		lore.add("");
-		lore.add(ChatColor.GRAY + "On trigger:");
-		lore.add(ChatColor.translateAlternateColorCodes('&', "&a\u25a0 &7Earn &b+135% XP &7from kills"));
-		lore.add(ChatColor.translateAlternateColorCodes('&', "&a\u25a0 &7Gain &b+330 max XP &7from kills"));
-		lore.add(ChatColor.translateAlternateColorCodes('&', "&a\u25a0 &7Gain &b+1 max XP &7per kill"));
-		lore.add("");
-		lore.add(ChatColor.GRAY + "BUT:");
-		lore.add(ChatColor.translateAlternateColorCodes('&', "&c\u25a0 &7Starting from 200, receive &c+3%"));
-		lore.add(ChatColor.translateAlternateColorCodes('&', "&7damage per 20 kills. (5x damage from bots)"));
-		lore.add(ChatColor.translateAlternateColorCodes('&', "&c\u25a0 &7Starting from 400, receive &c+" + Misc.getHearts(0.2)));
-		lore.add(ChatColor.translateAlternateColorCodes('&', "&7damage per 100 kills. (5x damage from bots)"));
-		lore.add(ChatColor.translateAlternateColorCodes('&', "&c\u25a0 &7Starting from 700, receive &c+" + Misc.getHearts(0.2)));
-		lore.add(ChatColor.translateAlternateColorCodes('&', "&7very true damage per 10 kills."));
-		lore.add(ChatColor.translateAlternateColorCodes('&', "&c\u25a0 &7Earn &c-50% &7gold from kills"));
-
-		lore.add("");
-		lore.add(ChatColor.GRAY + "On death:");
-		lore.add(ChatColor.translateAlternateColorCodes('&', "&e\u25a0 &7Earn a permanent &b+5 max XP"));
-		lore.add(ChatColor.translateAlternateColorCodes('&', "&7until you prestige (50 max)"));
-		lore.add(ChatColor.translateAlternateColorCodes('&', "&7(If streak is at least 700)"));
-		meta.setLore(lore);
-		item.setItemMeta(meta);
-		return item;
-	}
-
 	public ToTheMoon(PitPlayer pitPlayer) {
 		super(pitPlayer);
 	}
@@ -219,6 +148,77 @@ public class ToTheMoon extends Megastreak {
 	public void kill() {
 
 		if(!isOnMega()) return;
+	}
+
+	@Override
+	public String getName() {
+		return "&b&lMOON";
+	}
+
+	@Override
+	public String getRawName() {
+		return "To the Moon";
+	}
+
+	@Override
+	public String getPrefix() {
+		return "&bTo the Moon";
+	}
+
+	@Override
+	public List<String> getRefNames() {
+		return Arrays.asList("moon");
+	}
+
+	@Override
+	public int getRequiredKills() {
+		return 100;
+	}
+
+	@Override
+	public int guiSlot() {
+		return 15;
+	}
+
+	@Override
+	public int prestigeReq() {
+		return 30;
+	}
+
+	@Override
+	public int initialLevelReq() {
+		return 60;
+	}
+
+	@Override
+	public ItemStack guiItem() {
+		ItemStack item = new ItemStack(Material.ENDER_STONE);
+		ItemMeta meta = item.getItemMeta();
+		List<String> lore = new ArrayList<>();
+		lore.add(ChatColor.translateAlternateColorCodes('&', "&7Triggers on: &c100 kills"));
+		lore.add("");
+		lore.add(ChatColor.GRAY + "On trigger:");
+		lore.add(ChatColor.translateAlternateColorCodes('&', "&a\u25a0 &7Earn &b+135% XP &7from kills"));
+		lore.add(ChatColor.translateAlternateColorCodes('&', "&a\u25a0 &7Gain &b+330 max XP &7from kills"));
+		lore.add(ChatColor.translateAlternateColorCodes('&', "&a\u25a0 &7Gain &b+1 max XP &7per kill"));
+		lore.add("");
+		lore.add(ChatColor.GRAY + "BUT:");
+		lore.add(ChatColor.translateAlternateColorCodes('&', "&c\u25a0 &7Starting from 200, receive &c+3%"));
+		lore.add(ChatColor.translateAlternateColorCodes('&', "&7damage per 20 kills. (5x damage from bots)"));
+		lore.add(ChatColor.translateAlternateColorCodes('&', "&c\u25a0 &7Starting from 400, receive &c+" + Misc.getHearts(0.2)));
+		lore.add(ChatColor.translateAlternateColorCodes('&', "&7damage per 100 kills. (5x damage from bots)"));
+		lore.add(ChatColor.translateAlternateColorCodes('&', "&c\u25a0 &7Starting from 700, receive &c+" + Misc.getHearts(0.2)));
+		lore.add(ChatColor.translateAlternateColorCodes('&', "&7very true damage per 10 kills."));
+		lore.add(ChatColor.translateAlternateColorCodes('&', "&c\u25a0 &7Earn &c-50% &7gold from kills"));
+
+		lore.add("");
+		lore.add(ChatColor.GRAY + "On death:");
+		lore.add(ChatColor.translateAlternateColorCodes('&', "&e\u25a0 &7Earn a permanent &b+5 max XP"));
+		lore.add(ChatColor.translateAlternateColorCodes('&', "&7until you prestige (50 max)"));
+		lore.add(ChatColor.translateAlternateColorCodes('&', "&7(If streak is at least 700)"));
+		meta.setLore(lore);
+		item.setItemMeta(meta);
+		return item;
 	}
 
 	@Override
