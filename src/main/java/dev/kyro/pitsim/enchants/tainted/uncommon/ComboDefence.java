@@ -53,6 +53,12 @@ public class ComboDefence extends PitEnchant {
 		).getLore();
 	}
 
+	@Override
+	public String getSummary() {
+		return getDisplayName(false, true) + " &7is a &5Darkzone &7enchant that " +
+				"gives you &9Resistance &7every few strikes";
+	}
+
 	public int getSeconds(int enchantLvl) {
 		return enchantLvl + 2;
 	}

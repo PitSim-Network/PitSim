@@ -60,6 +60,12 @@ public class PushComesToShove extends PitEnchant {
 		).getLore();
 	}
 
+	@Override
+	public String getSummary() {
+		return getDisplayName(false, true) + " &7is an enchant that applies " +
+				"a huge knockback to every few bow shots you land";
+	}
+
 	public int getPunchMultiplier(int enchantLvl) {
 		return (int) Math.floor(Math.pow(enchantLvl, 0.67) * 22) - 10;
 	}

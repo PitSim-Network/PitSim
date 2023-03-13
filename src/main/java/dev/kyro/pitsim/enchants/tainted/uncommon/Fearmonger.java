@@ -64,6 +64,12 @@ public class Fearmonger extends PitEnchant {
 		).getLore();
 	}
 
+	@Override
+	public String getSummary() {
+		return getDisplayName(false, true) + " &7is a &5Darkzone &7enchant that " +
+				"causes mobs to temporarily de-target from you when you get a mob kill";
+	}
+
 	public static long getImmuneTicks(int enchantLvl) {
 		return enchantLvl * 5L + 5;
 	}

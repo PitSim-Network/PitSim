@@ -177,6 +177,12 @@ public class Telebow extends PitEnchant {
 		).getLore();
 	}
 
+	@Override
+	public String getSummary() {
+		return getDisplayName(false, true) + " &7is an enchant that allows you " +
+				"to shoot an arrow that teleports you to landing (this is done by sneaking when shooting)";
+	}
+
 	public static int getCooldown(int enchantLvl) {
 
 		switch(enchantLvl) {

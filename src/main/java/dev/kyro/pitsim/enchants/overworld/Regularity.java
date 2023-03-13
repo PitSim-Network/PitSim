@@ -141,4 +141,10 @@ public class Regularity extends PitEnchant {
 				"% &7damage. Does not work &7with " + Billionaire.INSTANCE.getDisplayName()
 		).getLore();
 	}
+
+	@Override
+	public String getSummary() {
+		return getDisplayName(false, true) + " &7is an enchant that can strike " +
+				"your opponent twice for every hit you register on them";
+	}
 }

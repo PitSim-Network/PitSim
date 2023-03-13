@@ -49,93 +49,6 @@ public class RNGesus extends Megastreak {
 	public Reality reality = Reality.NONE;
 	public BukkitTask runnable;
 
-	public int getXP(double progression) {
-		return (int) (progression);
-	}
-
-	public double getGold(double progression) {
-		return progression;
-	}
-
-	public double getDamage(double progression) {
-		return progression * 0.10;
-	}
-
-	public float getAbsorption(double progression) {
-		return (float) progression;
-	}
-
-	@Override
-	public String getName() {
-		return reality.prefix;
-	}
-
-	@Override
-	public String getRawName() {
-		return "RNGesus";
-	}
-
-	@Override
-	public String getPrefix() {
-		return "&eRNGesus";
-	}
-
-	@Override
-	public List<String> getRefNames() {
-		return Arrays.asList("rngesus");
-	}
-
-	@Override
-	public int getRequiredKills() {
-		return 100;
-	}
-
-	@Override
-	public int guiSlot() {
-		return 16;
-	}
-
-	@Override
-	public int prestigeReq() {
-		return 50;
-	}
-
-	@Override
-	public int initialLevelReq() {
-		return 0;
-	}
-
-	@Override
-	public ItemStack guiItem() {
-		ItemStack item = new ItemStack(Material.EYE_OF_ENDER);
-		ItemMeta meta = item.getItemMeta();
-		List<String> lore = new ArrayList<>();
-		lore.add(ChatColor.translateAlternateColorCodes('&', "&7Triggers on: &c100 kills"));
-		lore.add("");
-		lore.add(ChatColor.GRAY + "On trigger:");
-		lore.add(ChatColor.translateAlternateColorCodes('&', "&a\u25a0 &7Immune to enchants that &emove &7you"));
-		lore.add(ChatColor.translateAlternateColorCodes('&', "&e\u25a0 &eShift &7into a random reality (&6Gold&7, &bXP&7,"));
-		lore.add(ChatColor.translateAlternateColorCodes('&', "&cDamage&7, &eAbsorption&7)"));
-		lore.add(ChatColor.translateAlternateColorCodes('&', "&c\u25a0 &7Start a &b1 hour &7cooldown for this streak"));
-		lore.add("");
-		lore.add(ChatColor.GRAY + "Every 100 kills:");
-		lore.add(ChatColor.translateAlternateColorCodes('&', "&e\u25a0 &eShift &7into a random reality (&6Gold&7, &bXP&7,"));
-		lore.add(ChatColor.translateAlternateColorCodes('&', "&cDamage&7, &eAbsorption&7)"));
-		lore.add(ChatColor.translateAlternateColorCodes('&', "&e\u25a0 &7Build up stats for each reality as you streak"));
-		lore.add("");
-		lore.add(ChatColor.GRAY + "At 1000 kills:");
-		lore.add(ChatColor.translateAlternateColorCodes('&', "&e&k\u25a0&7 Reality &fdestabilizes"));
-		lore.add(ChatColor.translateAlternateColorCodes('&', "&a\u25a0 &7Use the stats earned from each reality as"));
-		lore.add(ChatColor.translateAlternateColorCodes('&', "&7&cdamage&7, &9health&7, &bXP&7, and &6gold &7on each kill"));
-		lore.add(ChatColor.translateAlternateColorCodes('&', "&c\u25a0 &7You can no longer heal"));
-		lore.add("");
-		lore.add(ChatColor.GRAY + "On death:");
-		lore.add(ChatColor.translateAlternateColorCodes('&', "&e\u25a0 &7View a recap of your stats from each reality"));
-		meta.setLore(lore);
-		item.setItemMeta(meta);
-		return item;
-	}
-
 	public RNGesus(PitPlayer pitPlayer) {
 		super(pitPlayer);
 		for(Reality value : Reality.values()) realityMap.put(value, new RealityInfo(value));
@@ -460,6 +373,100 @@ public class RNGesus extends Megastreak {
 		pitPlayer.player.setLevel(level);
 		float ratio = (currentAmount - currentTier) / (nextTier - currentTier);
 		pitPlayer.player.setExp(ratio);
+	}
+
+	public int getXP(double progression) {
+		return (int) (progression);
+	}
+
+	public double getGold(double progression) {
+		return progression;
+	}
+
+	public double getDamage(double progression) {
+		return progression * 0.10;
+	}
+
+	public float getAbsorption(double progression) {
+		return (float) progression;
+	}
+
+	@Override
+	public String getName() {
+		return reality.prefix;
+	}
+
+	@Override
+	public String getRawName() {
+		return "RNGesus";
+	}
+
+	@Override
+	public String getPrefix() {
+		return "&eRNGesus";
+	}
+
+	@Override
+	public List<String> getRefNames() {
+		return Arrays.asList("rngesus");
+	}
+
+	@Override
+	public int getRequiredKills() {
+		return 100;
+	}
+
+	@Override
+	public int guiSlot() {
+		return 16;
+	}
+
+	@Override
+	public int prestigeReq() {
+		return 50;
+	}
+
+	@Override
+	public int initialLevelReq() {
+		return 0;
+	}
+
+	@Override
+	public ItemStack guiItem() {
+		ItemStack item = new ItemStack(Material.EYE_OF_ENDER);
+		ItemMeta meta = item.getItemMeta();
+		List<String> lore = new ArrayList<>();
+		lore.add(ChatColor.translateAlternateColorCodes('&', "&7Triggers on: &c100 kills"));
+		lore.add("");
+		lore.add(ChatColor.GRAY + "On trigger:");
+		lore.add(ChatColor.translateAlternateColorCodes('&', "&a\u25a0 &7Immune to enchants that &emove &7you"));
+		lore.add(ChatColor.translateAlternateColorCodes('&', "&e\u25a0 &eShift &7into a random reality (&6Gold&7, &bXP&7,"));
+		lore.add(ChatColor.translateAlternateColorCodes('&', "&cDamage&7, &eAbsorption&7)"));
+		lore.add(ChatColor.translateAlternateColorCodes('&', "&c\u25a0 &7Start a &b1 hour &7cooldown for this streak"));
+		lore.add("");
+		lore.add(ChatColor.GRAY + "Every 100 kills:");
+		lore.add(ChatColor.translateAlternateColorCodes('&', "&e\u25a0 &eShift &7into a random reality (&6Gold&7, &bXP&7,"));
+		lore.add(ChatColor.translateAlternateColorCodes('&', "&cDamage&7, &eAbsorption&7)"));
+		lore.add(ChatColor.translateAlternateColorCodes('&', "&e\u25a0 &7Build up stats for each reality as you streak"));
+		lore.add("");
+		lore.add(ChatColor.GRAY + "At 1000 kills:");
+		lore.add(ChatColor.translateAlternateColorCodes('&', "&e&k\u25a0&7 Reality &fdestabilizes"));
+		lore.add(ChatColor.translateAlternateColorCodes('&', "&a\u25a0 &7Use the stats earned from each reality as"));
+		lore.add(ChatColor.translateAlternateColorCodes('&', "&7&cdamage&7, &9health&7, &bXP&7, and &6gold &7on each kill"));
+		lore.add(ChatColor.translateAlternateColorCodes('&', "&c\u25a0 &7You can no longer heal"));
+		lore.add("");
+		lore.add(ChatColor.GRAY + "On death:");
+		lore.add(ChatColor.translateAlternateColorCodes('&', "&e\u25a0 &7View a recap of your stats from each reality"));
+		meta.setLore(lore);
+		item.setItemMeta(meta);
+		return item;
+	}
+
+	@Override
+	public String getSummary() {
+		return "RNGesus grants you immunity to enchants that move you. RNGesus allows you to enter four different " +
+				"random realities, XP, Gold, Absorption, and Damage. At 1000 kills, gain the buffs that you earned " +
+				"throughout the realities, but you no longer heal";
 	}
 
 	public enum Reality {

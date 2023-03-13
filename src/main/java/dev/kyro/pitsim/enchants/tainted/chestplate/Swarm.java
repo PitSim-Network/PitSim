@@ -72,6 +72,12 @@ public class Swarm extends PitEnchant {
 		).getLore();
 	}
 
+	@Override
+	public String getSummary() {
+		return getDisplayName(false, true) + " &7is a &5Darkzone &7enchant that " +
+				"summons particles that attacks nearby players and mobs";
+	}
+
 	public static int getReduction(int enchantLvl) {
 		return 50;
 	}

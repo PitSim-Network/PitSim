@@ -46,6 +46,13 @@ public class Electrolytes extends PitEnchant {
 		).getLore();
 	}
 
+	@Override
+	public String getSummary() {
+		return getDisplayName(false, true) + " &7is an enchant that can extend " +
+				"the duration that you have &eSpeed &7for. This enchant " +
+				"pairs well with sources of &eSpeed IV";
+	}
+
 	public int getSeconds(int enchantLvl) {
 		return enchantLvl * 2 - 1;
 	}

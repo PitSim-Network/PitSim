@@ -12,8 +12,8 @@ public class Desperate extends PitEnchant {
 	public static Desperate INSTANCE;
 
 	public Desperate() {
-		super("Emboldened", false, ApplyType.SCYTHES,
-				"emboldened");
+		super("Desperate", false, ApplyType.SCYTHES,
+				"desperate");
 		isUncommonEnchant = true;
 		isTainted = true;
 		INSTANCE = this;
@@ -37,6 +37,12 @@ public class Desperate extends PitEnchant {
 				"&7Deal &c+" + getDamageIncrease(enchantLvl) + "% more damage when you have less " +
 						"health than your target"
 		).getLore();
+	}
+
+	@Override
+	public String getSummary() {
+		return getDisplayName(false, true) + " &7is a &5Darkzone &7enchant that " +
+				"does more damage when you have less health than your opponent";
 	}
 
 	public int getDamageIncrease(int enchantLvl) {

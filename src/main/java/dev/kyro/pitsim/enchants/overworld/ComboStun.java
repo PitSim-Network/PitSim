@@ -56,6 +56,12 @@ public class ComboStun extends PitEnchant {
 		).getLore();
 	}
 
+	@Override
+	public String getSummary() {
+		return getDisplayName(false, true) + " &7is an enchant that stuns " +
+				"your opponent every few strikes";
+	}
+
 	public double getDuration(int enchantLvl) {
 		return enchantLvl * 0.4 + 0.8;
 	}

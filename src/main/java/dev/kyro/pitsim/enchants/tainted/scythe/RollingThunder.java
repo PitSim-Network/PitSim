@@ -264,6 +264,12 @@ public class RollingThunder extends PitEnchant {
 		).getLore();
 	}
 
+	@Override
+	public String getSummary() {
+		return getDisplayName(false, true) + " &7is a &5Darkzone &7enchant that " +
+				"&mwas stolen&7 may have been inspired by Breach's ultimate ability Rolling Thunder";
+	}
+
 	public static int getManaCost(int enchantLvl) {
 		return 1;
 	}

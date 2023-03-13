@@ -39,6 +39,12 @@ public class LeaveMeAlone extends PitEnchant {
 		).getLore();
 	}
 
+	@Override
+	public String getSummary() {
+		return getDisplayName(false, true) + " &7is a &5Darkzone &7enchant that " +
+				"decreases the damage you take from other players";
+	}
+
 	public double getDamageReduction(int enchantLvl) {
 		return enchantLvl * 7 + 10;
 	}

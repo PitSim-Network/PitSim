@@ -38,6 +38,12 @@ public class Hoarder extends PitEnchant {
 		).getLore();
 	}
 
+	@Override
+	public String getSummary() {
+		return getDisplayName(false, true) + " &7is a &5Darkzone &7enchant that " +
+				"decreases the amount of &fsouls &7that you lose on death";
+	}
+
 	public int getDecreasePercent(int enchantLvl) {
 		return enchantLvl * 20;
 	}

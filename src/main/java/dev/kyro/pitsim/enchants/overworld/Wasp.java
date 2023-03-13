@@ -45,6 +45,12 @@ public class Wasp extends PitEnchant {
 		).getLore();
 	}
 
+	@Override
+	public String getSummary() {
+		return getDisplayName(false, true) + " &7is an enchant that effects your " +
+				"opponents with &cWeakness &7when hit";
+	}
+
 	public int getDuration(int enchantLvl) {
 		return enchantLvl * 5 + 1;
 	}

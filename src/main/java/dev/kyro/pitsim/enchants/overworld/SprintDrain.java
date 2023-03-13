@@ -55,6 +55,12 @@ public class SprintDrain extends PitEnchant {
 		}
 	}
 
+	@Override
+	public String getSummary() {
+		return getDisplayName(false, true) + " &7is an enchant that gives you " +
+				"&eSpeed &7when you shoot your opponent, and also afflicts them with &9Slowness";
+	}
+
 	public int getSlowDuration(int enchantLvl) {
 
 		return Misc.linearEnchant(enchantLvl, 0.5, 0) * 3;

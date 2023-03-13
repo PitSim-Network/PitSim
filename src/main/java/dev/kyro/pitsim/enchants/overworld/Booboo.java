@@ -59,6 +59,12 @@ public class Booboo extends PitEnchant {
 		).getLore();
 	}
 
+	@Override
+	public String getSummary() {
+		return getDisplayName(false, true) + " &7is an enchant that " +
+				"passively heals you while wearing it";
+	}
+
 	public int getSeconds(int enchantLvl) {
 
 		return Math.max(5 - enchantLvl, 1);

@@ -38,6 +38,12 @@ public class Barbaric extends PitEnchant {
 		).getLore();
 	}
 
+	@Override
+	public String getSummary() {
+		return getDisplayName(false, true) + " &7is a &5Darkzone &7enchant that " +
+				"increases the damage you do when your &bmana &7is full";
+	}
+
 	public static int getDamageIncrease(int enchantLvl) {
 		return enchantLvl * 7 + 9;
 	}

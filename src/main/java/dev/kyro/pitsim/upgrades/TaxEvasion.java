@@ -19,6 +19,11 @@ public class TaxEvasion extends RenownUpgrade {
 	}
 
 	@Override
+	public List<Integer> getTierCosts() {
+		return Arrays.asList(25, 50, 75);
+	}
+
+	@Override
 	public ItemStack getDisplayItem(Player player) {
 		ItemStack item = new ItemStack(Material.IRON_FENCE);
 		ItemMeta meta = item.getItemMeta();
@@ -38,7 +43,7 @@ public class TaxEvasion extends RenownUpgrade {
 	}
 
 	@Override
-	public List<Integer> getTierCosts() {
-		return Arrays.asList(25, 50, 75);
+	public String getSummary() {
+		return "&eTax Evasion&7 is an &erenown&7 upgrade that makes the enchant &dRARE! &9Billionaire&7 cost less &6gold";
 	}
 }

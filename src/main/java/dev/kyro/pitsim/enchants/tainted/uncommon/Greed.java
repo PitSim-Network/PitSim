@@ -37,6 +37,12 @@ public class Greed extends PitEnchant {
 		).getLore();
 	}
 
+	@Override
+	public String getSummary() {
+		return getDisplayName(false, true) + " &7is a &5Darkzone &7enchant that " +
+				"increases the amount of &fsouls &7that you get from killing other players";
+	}
+
 	public int getIncreasePercent(int enchantLvl) {
 		return enchantLvl * 20;
 	}

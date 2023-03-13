@@ -48,6 +48,12 @@ public class RingArmor extends PitEnchant {
 		).getLore();
 	}
 
+	@Override
+	public String getSummary() {
+		return getDisplayName(false, true) + " &7is an enchant that decreases " +
+				"the damage that arrows deal to you, and makes you do more damage after being shot by an arrow";
+	}
+
 	public double getDamageMultiplier(int enchantLvl) {
 		return (100D - getDamageReduction(enchantLvl)) / 100;
 	}

@@ -84,6 +84,12 @@ public class Volley extends PitEnchant {
 		).getLore();
 	}
 
+	@Override
+	public String getSummary() {
+		return getDisplayName(false, true) + " &7is an enchant that shoots multiple " +
+				"arrows each time you release your bow";
+	}
+
 	public int getArrows(int enchantLvl) {
 		return enchantLvl + 1;
 	}

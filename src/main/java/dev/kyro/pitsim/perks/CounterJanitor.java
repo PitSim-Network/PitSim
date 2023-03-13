@@ -7,17 +7,12 @@ import dev.kyro.pitsim.controllers.objects.PitPerk;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.events.KillEvent;
 import org.bukkit.Material;
-import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.inventory.ItemStack;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class CounterJanitor extends PitPerk {
-	public Map<Player, List<Player>> hitPlayers = new HashMap<>();
-
 	public static CounterJanitor INSTANCE;
 
 	public CounterJanitor() {

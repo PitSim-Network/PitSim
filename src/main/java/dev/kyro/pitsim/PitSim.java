@@ -19,6 +19,7 @@ import dev.kyro.pitsim.adarkzone.notdarkzone.EquipmentType;
 import dev.kyro.pitsim.adarkzone.notdarkzone.PitEquipment;
 import dev.kyro.pitsim.adarkzone.notdarkzone.ShieldManager;
 import dev.kyro.pitsim.adarkzone.progression.ProgressionManager;
+import dev.kyro.pitsim.ahelp.HelpManager;
 import dev.kyro.pitsim.aitems.misc.*;
 import dev.kyro.pitsim.aitems.mobdrops.*;
 import dev.kyro.pitsim.aitems.mystics.*;
@@ -293,6 +294,7 @@ public class PitSim extends JavaPlugin {
 		registerScoreboardOptions();
 
 		PassManager.registerPasses();
+		HelpManager.registerIntentsAndPages();
 		if(getStatus().isDarkzone()) AuctionManager.onStart();
 		if(getStatus().isDarkzone()) AuctionDisplays.onStart();
 
@@ -572,6 +574,7 @@ public class PitSim extends JavaPlugin {
 		new ExtendCommand(adminCommand, "extend");
 		new UnlockCosmeticCommand(adminCommand, "unlockcosmetic");
 		new GodCommand(adminCommand, "god");
+		new KyroCommand(adminCommand, "kyro");
 
 		new JewelCommand(giveCommand, "jewel");
 		new StreakCommand(giveCommand, "streak");
@@ -689,6 +692,7 @@ public class PitSim extends JavaPlugin {
 		getServer().getPluginManager().registerEvents(new MarketMessaging(), this);
 		getServer().getPluginManager().registerEvents(new MigrationManager(), this);
 		getServer().getPluginManager().registerEvents(new ActionBarManager(), this);
+		getServer().getPluginManager().registerEvents(new HelpManager(), this);
 
 		if(getStatus().isDarkzone()) {
 			getServer().getPluginManager().registerEvents(new TaintedWell(), this);
@@ -728,7 +732,7 @@ public class PitSim extends JavaPlugin {
 //		UpgradeManager.registerUpgrade(new SelfConfidence());
 		UpgradeManager.registerUpgrade(new UnlockCounterJanitor());
 		UpgradeManager.registerUpgrade(new LuckyKill());
-		UpgradeManager.registerUpgrade(new LifeInsurance());
+		UpgradeManager.registerUpgrade(new UberInsurance());
 		UpgradeManager.registerUpgrade(new TaxEvasion());
 		UpgradeManager.registerUpgrade(new DoubleDeath());
 		UpgradeManager.registerUpgrade(new XPComplex());
@@ -1068,7 +1072,6 @@ public class PitSim extends JavaPlugin {
 		EnchantManager.registerEnchant(new Attentive());
 		EnchantManager.registerEnchant(new Belittle());
 		EnchantManager.registerEnchant(new BOOM());
-		EnchantManager.registerEnchant(new aDefend());
 		EnchantManager.registerEnchant(new Embalm());
 		EnchantManager.registerEnchant(new Evasive());
 		EnchantManager.registerEnchant(new Extinguish());

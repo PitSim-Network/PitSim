@@ -33,6 +33,12 @@ public class Protection extends PitEnchant {
 		).getLore();
 	}
 
+	@Override
+	public String getSummary() {
+		return getDisplayName(false, true) + " &7is an enchant that reduces " +
+				"the damage that you take";
+	}
+
 	public double getDamageReduction(int enchantLvl) {
 		if(enchantLvl == 1) return 12;
 		return enchantLvl * 8;

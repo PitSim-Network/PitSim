@@ -86,6 +86,12 @@ public class ReallyToxic extends PitEnchant {
 		).getLore();
 	}
 
+	@Override
+	public String getSummary() {
+		return getDisplayName(false, true) + " &7is an enchant that temporarily " +
+				"decreases the amount of healing your opponents receive when you hit them";
+	}
+
 	public static int getReductionPerHit(int enchantLvl) {
 		return enchantLvl;
 	}

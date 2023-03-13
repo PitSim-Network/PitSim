@@ -88,6 +88,12 @@ public class ComboPerun extends PitEnchant {
 		).getLore();
 	}
 
+	@Override
+	public String getSummary() {
+		return getDisplayName(false, true) + " &7is an enchant that strikes " +
+				"lightning every few strikes (the lightning does true damage)";
+	}
+
 	public double getTrueDamage(int enchantLvl) {
 		return enchantLvl + 2;
 	}

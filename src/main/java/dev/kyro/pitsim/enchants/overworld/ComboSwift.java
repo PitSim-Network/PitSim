@@ -49,6 +49,12 @@ public class ComboSwift extends PitEnchant {
 		).getLore();
 	}
 
+	@Override
+	public String getSummary() {
+		return getDisplayName(false, true) + " &7is an enchant that gives you " +
+				"&eSpeed &7every few strikes";
+	}
+
 	public int getSeconds(int enchantLvl) {
 		return enchantLvl + 2;
 	}

@@ -73,6 +73,12 @@ public class Hemorrhage extends PitEnchant {
 		).getLore();
 	}
 
+	@Override
+	public String getSummary() {
+		return getDisplayName(false, true) + " &7is a &5Darkzone &7enchant that " +
+				"causes your enemies to bleed out, dealing very true damage";
+	}
+
 	public static double getBleedDamage(int enchantLvl) {
 		return 0.5;
 	}

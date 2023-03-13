@@ -120,6 +120,12 @@ public class CleaveSpell extends PitEnchant {
 		).getLore();
 	}
 
+	@Override
+	public String getSummary() {
+		return getDisplayName(false, true) + " &7is a &5Darkzone &7enchant that " +
+				"throws your scythe when used, dealing damage to all the enemies it hits";
+	}
+
 	public static int getManaCost(int enchantLvl) {
 		if(true) return 1;
 		return 30 * (4 - enchantLvl);

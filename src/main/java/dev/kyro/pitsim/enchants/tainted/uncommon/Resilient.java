@@ -34,6 +34,12 @@ public class Resilient extends PitEnchant {
 		).getLore();
 	}
 
+	@Override
+	public String getSummary() {
+		return getDisplayName(false, true) + " &7is a &5Darkzone &7enchant that " +
+				"causes you to regenerate &bmana &7faster when worn";
+	}
+
 	public static int getRegenIncrease(int enchantLvl) {
 		return enchantLvl * 25;
 	}

@@ -20,6 +20,11 @@ public class Helmetry extends RenownUpgrade {
 	}
 
 	@Override
+	public List<Integer> getTierCosts() {
+		return null;
+	}
+
+	@Override
 	public ItemStack getDisplayItem(Player player) {
 		ItemStack item = new ItemStack(Material.GOLD_HELMET);
 		ItemMeta meta = item.getItemMeta();
@@ -36,7 +41,8 @@ public class Helmetry extends RenownUpgrade {
 	}
 
 	@Override
-	public List<Integer> getTierCosts() {
-		return null;
+	public String getSummary() {
+		return "&eHelmetry&7 is a &erenown upgrade that sells you a &6Golden Helmet&7 for&e 5 renown&7, which grants " +
+				"various buffs based on how much &6gold&7 is in it";
 	}
 }

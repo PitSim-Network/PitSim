@@ -31,7 +31,7 @@ public class BlazeRod extends StaticPitItem implements TemporaryItem {
 
 	@Override
 	public Material getMaterial() {
-		return Material.BLAZE_POWDER;
+		return Material.BLAZE_ROD;
 	}
 
 	@Override

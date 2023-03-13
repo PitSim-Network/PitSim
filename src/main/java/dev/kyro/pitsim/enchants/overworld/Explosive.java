@@ -84,6 +84,12 @@ public class Explosive extends PitEnchant {
 		).getLore();
 	}
 
+	@Override
+	public String getSummary() {
+		return getDisplayName(false, true) + " &7is an enchant that shoots " +
+				"explosive arrows that knock nearby players away from their point of landing";
+	}
+
 	public double getRange(int enchantLvl) {
 
 		switch(enchantLvl) {

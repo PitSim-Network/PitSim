@@ -35,6 +35,12 @@ public class Tanky extends PitEnchant {
 		).getLore();
 	}
 
+	@Override
+	public String getSummary() {
+		return getDisplayName(false, true) + " &7is a &5Darkzone &7enchant that " +
+				"increases your &cmax hp";
+	}
+
 	public static int getExtraHealth(int enchantLvl) {
 		return enchantLvl * 4;
 	}

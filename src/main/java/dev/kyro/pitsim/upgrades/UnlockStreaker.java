@@ -19,6 +19,11 @@ public class UnlockStreaker extends RenownUpgrade {
 	}
 
 	@Override
+	public List<Integer> getTierCosts() {
+		return null;
+	}
+
+	@Override
 	public ItemStack getDisplayItem(Player player) {
 		ItemStack item = new ItemStack(Material.WHEAT);
 		ItemMeta meta = item.getItemMeta();
@@ -33,10 +38,6 @@ public class UnlockStreaker extends RenownUpgrade {
 		lore.add(ChatColor.translateAlternateColorCodes('&', "&7per additional &f10 &7seconds."));
 		lore.add(ChatColor.translateAlternateColorCodes('&', "&7Passively gain &b+80 max XP"));
 
-//		List<String> newLore = new ALoreBuilder("&7Required prestige: &e" + AUtil.toRoman(this.prestigeReq), "", "&eStreaker",
-//				"&7Upon reaching your &emegastreak&7,", "&7gain &b+100% XP &7if it took &f30 &7or",
-//				"&7less seconds. Subtracts &b10% XP", "&7per additional &f5 &7seconds.", "&7Passively gain &b+80 max XP").getLore();
-
 		List<String> newLore = new ALoreBuilder("&7Required prestige: &e" + AUtil.toRoman(this.prestigeReq), "", "&eStreaker",
 				"&7Upon reaching your &emegastreak&7,", "&7gain &bmore XP &7the faster you hit mega", "&7Passively gain &b+80 max XP").getLore();
 
@@ -46,7 +47,8 @@ public class UnlockStreaker extends RenownUpgrade {
 	}
 
 	@Override
-	public List<Integer> getTierCosts() {
-		return null;
+	public String getSummary() {
+		return "&eStreaker &7is a perk unlocked in the &erenown shop&7 that gives you a higher &bXP cap &7and more " +
+				"&bXP &7based on how quickly you activate a &cMegastreak";
 	}
 }
