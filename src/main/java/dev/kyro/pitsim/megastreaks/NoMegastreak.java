@@ -94,4 +94,9 @@ public class NoMegastreak extends Megastreak {
 
 		if(!isOnMega()) return;
 	}
+
+	@Override
+	public String getSummary() {
+		return null;
+	}
 }

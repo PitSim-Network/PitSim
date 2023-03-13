@@ -2,6 +2,7 @@ package dev.kyro.pitsim.controllers.objects;
 
 import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.pitsim.PitSim;
+import dev.kyro.pitsim.ahelp.Summarizable;
 import dev.kyro.pitsim.controllers.Cooldown;
 import dev.kyro.pitsim.enchants.overworld.Regularity;
 import dev.kyro.pitsim.enums.ApplyType;
@@ -13,7 +14,7 @@ import org.bukkit.event.Listener;
 
 import java.util.*;
 
-public abstract class PitEnchant implements Listener {
+public abstract class PitEnchant implements Listener, Summarizable {
 	public String name;
 	public List<String> refNames;
 	public boolean isRare;
@@ -104,5 +105,22 @@ public abstract class PitEnchant implements Listener {
 		if(isRare) return EnchantRarity.RARE;
 		if(isUncommonEnchant) return EnchantRarity.UNCOMMON;
 		return EnchantRarity.COMMON;
+	}
+
+	@Override
+	public String getIdentifier() {
+		return "ENCHANT_" + refNames.get(0).toUpperCase().replaceAll("[- ]", "_");
+	}
+
+	@Override
+	public String getSummary() {
+		return null;
+	}
+
+	@Override
+	public List<String> getTrainingPhrases() {
+		List<String> trainingPhrases = new ArrayList<>();
+		trainingPhrases.add("what is " + ChatColor.stripColor(getDisplayName()) + "?");
+		return trainingPhrases;
 	}
 }

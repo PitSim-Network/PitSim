@@ -204,4 +204,10 @@ public class Highlander extends Megastreak {
 		HandlerList.unregisterAll(this);
 		if(runnable != null) runnable.cancel();
 	}
+
+	@Override
+	public String getSummary() {
+		return "Highlander grants you increased Gold, permanent speed one, more damage to bots, and gain your bounty " +
+				"on death, but heal less per kill over 200  earn less XP";
+	}
 }

@@ -187,4 +187,10 @@ public class Beastmode extends Megastreak {
 	public void stop() {
 		HandlerList.unregisterAll(this);
 	}
+
+	@Override
+	public String getSummary() {
+		return "Beastmode grants you increased XP, max XP, gain xp on death, but makes you take more damage per kill " +
+				"over 50 and earn less gold";
+	}
 }

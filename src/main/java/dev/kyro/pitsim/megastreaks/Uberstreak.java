@@ -15,10 +15,6 @@ import dev.kyro.pitsim.aitems.prot.ProtLeggings;
 import dev.kyro.pitsim.battlepass.quests.CompleteUbersQuest;
 import dev.kyro.pitsim.battlepass.quests.daily.DailyMegastreakQuest;
 import dev.kyro.pitsim.controllers.*;
-import dev.kyro.pitsim.controllers.EnchantManager;
-import dev.kyro.pitsim.controllers.ItemFactory;
-import dev.kyro.pitsim.controllers.NonManager;
-import dev.kyro.pitsim.controllers.PrestigeValues;
 import dev.kyro.pitsim.controllers.objects.Megastreak;
 import dev.kyro.pitsim.controllers.objects.PitEnchant;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
@@ -27,11 +23,10 @@ import dev.kyro.pitsim.enums.MysticType;
 import dev.kyro.pitsim.events.AttackEvent;
 import dev.kyro.pitsim.events.HealEvent;
 import dev.kyro.pitsim.events.IncrementKillsEvent;
-import dev.kyro.pitsim.misc.*;
-import dev.kyro.pitsim.upgrades.UberIncrease;
 import dev.kyro.pitsim.misc.CustomSerializer;
 import dev.kyro.pitsim.misc.Misc;
 import dev.kyro.pitsim.misc.Sounds;
+import dev.kyro.pitsim.upgrades.UberIncrease;
 import me.clip.placeholderapi.PlaceholderAPI;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Bukkit;
@@ -303,6 +298,13 @@ public class Uberstreak extends Megastreak {
 	public void kill() {
 
 		if(!isOnMega()) return;
+	}
+
+	@Override
+	public String getSummary() {
+		return "Uberstreak grants you immunity to enchants that move you, double chance to find gem shards, gain " +
+				"random buffs or debuffs every 100 kills, gain a reward at 500 streak, but deal a lot less damage " +
+				"to bots and only have five uberstreaks daily";
 	}
 
 	public enum UberEffect {

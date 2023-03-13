@@ -2,16 +2,19 @@ package dev.kyro.pitsim.controllers.objects;
 
 import com.google.cloud.firestore.annotation.Exclude;
 import dev.kyro.pitsim.PitSim;
+import dev.kyro.pitsim.ahelp.Summarizable;
 import dev.kyro.pitsim.events.KillEvent;
+import dev.kyro.pitsim.megastreaks.NoMegastreak;
 import dev.kyro.pitsim.upgrades.TheWay;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 import org.bukkit.inventory.ItemStack;
 
+import java.util.ArrayList;
 import java.util.List;
 
-public abstract class Megastreak implements Listener {
+public abstract class Megastreak implements Listener, Summarizable {
 	public PitPlayer pitPlayer;
 
 	public Megastreak() {
@@ -61,5 +64,18 @@ public abstract class Megastreak implements Listener {
 
 	public int getFinalLevelReq(Player player) {
 		return Math.max(initialLevelReq() - TheWay.INSTANCE.getLevelReduction(player), 0);
+	}
+
+	@Override
+	public String getIdentifier() {
+		if(this instanceof NoMegastreak) return null;
+		return "MEGASTREAK_" + getRawName().toUpperCase().replaceAll("[- ]", "_");
+	}
+
+	@Override
+	public List<String> getTrainingPhrases() {
+		List<String> trainingPhrases = new ArrayList<>();
+		trainingPhrases.add("what is " + getRawName() + "?");
+		return trainingPhrases;
 	}
 }

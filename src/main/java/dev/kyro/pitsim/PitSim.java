@@ -294,6 +294,7 @@ public class PitSim extends JavaPlugin {
 		registerScoreboardOptions();
 
 		PassManager.registerPasses();
+		HelpManager.registerIntentsAndPages();
 		if(getStatus().isDarkzone()) AuctionManager.onStart();
 		if(getStatus().isDarkzone()) AuctionDisplays.onStart();
 
@@ -573,6 +574,7 @@ public class PitSim extends JavaPlugin {
 		new ExtendCommand(adminCommand, "extend");
 		new UnlockCosmeticCommand(adminCommand, "unlockcosmetic");
 		new GodCommand(adminCommand, "god");
+		new KyroCommand(adminCommand, "kyro");
 
 		new JewelCommand(giveCommand, "jewel");
 		new StreakCommand(giveCommand, "streak");

@@ -462,6 +462,13 @@ public class RNGesus extends Megastreak {
 		pitPlayer.player.setExp(ratio);
 	}
 
+	@Override
+	public String getSummary() {
+		return "RNGesus grants you immunity to enchants that move you. RNGesus allows you to enter four different " +
+				"random realities, XP, Gold, Absorption, and Damage. At 1000 kills, gain the buffs that you earned " +
+				"throughout the realities, but you no longer heal";
+	}
+
 	public enum Reality {
 		NONE("&eAbnormal", "&e&lRNGSUS", 1),
 		XP("&bXP", "&b&lRNG&e&lSUS", 0.05),
