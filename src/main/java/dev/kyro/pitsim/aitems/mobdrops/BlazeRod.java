@@ -42,8 +42,8 @@ public class BlazeRod extends StaticPitItem implements TemporaryItem {
 	@Override
 	public List<String> getLore() {
 		return new ALoreBuilder(
-				"&7Pork gathered from the Blazes",
-				"&7of the Blaze Caves",
+				"&7Blaze rods gathered from the",
+				"&7Blazes of the Blaze Caves",
 				"",
 				"&5Tainted Item"
 		).getLore();
