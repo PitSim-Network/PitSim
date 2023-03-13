@@ -49,6 +49,8 @@ public class BossTargetingSystem {
 
 	public void setTarget(Player target) {
 		this.target = target;
+
+		if(!pitBoss.npcBoss.isSpawned() || target == null) return;
 		pitBoss.npcBoss.getNavigator().setTarget(target, true);
 	}
 

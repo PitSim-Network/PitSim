@@ -6,6 +6,7 @@ import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.aitems.StaticPitItem;
 import dev.kyro.pitsim.controllers.ItemFactory;
 import dev.kyro.pitsim.controllers.MapManager;
+import dev.kyro.pitsim.enums.MobStatus;
 import net.minecraft.server.v1_8_R3.NBTTagCompound;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -36,6 +37,7 @@ public class SubLevel {
 	private Class<? extends StaticPitItem> spawnItemClass;
 	private int currentDrops = 0;
 	private int requiredDropsToSpawn;
+	private int maxMinionsPerPlayer;
 
 	//	Mob related fields
 	private Class<? extends PitMob> mobClass;
@@ -46,7 +48,7 @@ public class SubLevel {
 
 	public SubLevel(SubLevelType subLevelType, Class<? extends PitBoss> bossClass, Class<? extends PitMob> mobClass,
 					EntityType spawnerMob, Class<? extends StaticPitItem> spawnItemClass,
-					Location middle, int maxMobs, int spawnRadius, int requiredDropsToSpawn) {
+					Location middle, int maxMobs, int spawnRadius, int requiredDropsToSpawn, int maxMinionsPerPlayer) {
 		this.subLevelType = subLevelType;
 		this.bossClass = bossClass;
 		this.spawnerMob = spawnerMob;
@@ -56,6 +58,7 @@ public class SubLevel {
 		this.maxMobs = maxMobs;
 		this.spawnRadius = spawnRadius;
 		this.requiredDropsToSpawn = requiredDropsToSpawn;
+		this.maxMinionsPerPlayer = maxMinionsPerPlayer;
 
 //		Visualize spawnable spaces
 //		new BukkitRunnable() {
@@ -85,7 +88,7 @@ public class SubLevel {
 		if(Math.random() < 0.25) {
 			int newMobsNeeded = maxMobs - mobs.size();
 			for(int i = 0; i < Math.min(newMobsNeeded, 3); i++) {
-				if (!isBossSpawned) spawnMob();
+				if (!isBossSpawned) spawnMob(null, MobStatus.STANDARD);
 			}
 		}
 
@@ -165,13 +168,13 @@ public class SubLevel {
 		return foundCeiling;
 	}
 
-	public void spawnMob() {
+	public void spawnMob(Location location, MobStatus status) {
 		PitMob pitMob;
 		try {
-			Constructor<? extends PitMob> constructor = mobClass.getConstructor(Location.class);
-			Location location = getMobSpawnLocation();
+			Constructor<? extends PitMob> constructor = mobClass.getConstructor(Location.class, MobStatus.class);
+			if(location == null) location = getMobSpawnLocation();
 			if(!location.getChunk().isLoaded()) return;
-			pitMob = constructor.newInstance(location);
+			pitMob = constructor.newInstance(location, status);
 		} catch(Exception exception) {
 			exception.printStackTrace();
 			return;
@@ -188,14 +191,15 @@ public class SubLevel {
 			throw new RuntimeException(exception);
 		}
 		isBossSpawned = true;
-		disableMobs();
+		removeMobs();
 	}
 
 	public void bossDeath() {
+		removeMobs();
 		isBossSpawned = false;
 	}
 
-	public void disableMobs() {
+	public void removeMobs() {
 		for(PitMob mob : new ArrayList<>(mobs)) mob.remove();
 	}
 
@@ -237,5 +241,9 @@ public class SubLevel {
 
 	public Class<? extends PitMob> getMobClass() {
 		return mobClass;
+	}
+
+	public int getMaxMinionsPerPlayer() {
+		return maxMinionsPerPlayer;
 	}
 }

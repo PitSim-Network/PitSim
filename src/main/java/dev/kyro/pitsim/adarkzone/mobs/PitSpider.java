@@ -5,6 +5,7 @@ import dev.kyro.pitsim.adarkzone.PitMob;
 import dev.kyro.pitsim.adarkzone.PitNameTag;
 import dev.kyro.pitsim.aitems.mobdrops.SpiderEye;
 import dev.kyro.pitsim.controllers.ItemFactory;
+import dev.kyro.pitsim.enums.MobStatus;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.entity.Creature;
@@ -12,8 +13,8 @@ import org.bukkit.entity.Spider;
 
 public class PitSpider extends PitMob {
 
-	public PitSpider(Location spawnLocation) {
-		super(spawnLocation);
+	public PitSpider(Location spawnLocation, MobStatus mobStatus) {
+		super(spawnLocation, mobStatus);
 	}
 
 	@Override
@@ -28,7 +29,7 @@ public class PitSpider extends PitMob {
 
 	@Override
 	public String getRawDisplayName() {
-		return "Spider";
+		return isMinion() ? "Minion Spider" : "Spider";
 	}
 
 	@Override
@@ -38,12 +39,12 @@ public class PitSpider extends PitMob {
 
 	@Override
 	public int getMaxHealth() {
-		return 60;
+		return isMinion() ? 120 : 60;
 	}
 
 	@Override
 	public int getSpeedAmplifier() {
-		return 1;
+		return isMinion() ? 2 : 1;
 	}
 
 	@Override

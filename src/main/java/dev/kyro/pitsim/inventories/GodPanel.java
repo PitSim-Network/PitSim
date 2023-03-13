@@ -84,7 +84,7 @@ class GodPanel extends AGUIPanel {
 		addItem(ItemFactory.getItem(Bone.class).getItem(64));
 		addItem(ItemFactory.getItem(SpiderEye.class).getItem(64));
 		addItem(ItemFactory.getItem(Gunpowder.class).getItem(64));
-		addItem(ItemFactory.getItem(RottenFlesh.class).getItem(64));
+		addItem(ItemFactory.getItem(BlazeRod.class).getItem(64));
 		addItem(ItemFactory.getItem(Leather.class).getItem(64));
 		addItem(ItemFactory.getItem(Charcoal.class).getItem(64));
 		addItem(ItemFactory.getItem(IronIngot.class).getItem(64));

@@ -5,6 +5,7 @@ import dev.kyro.pitsim.adarkzone.PitMob;
 import dev.kyro.pitsim.adarkzone.PitNameTag;
 import dev.kyro.pitsim.aitems.mobdrops.Leather;
 import dev.kyro.pitsim.controllers.ItemFactory;
+import dev.kyro.pitsim.enums.MobStatus;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.entity.Creature;
@@ -15,8 +16,8 @@ import org.bukkit.event.entity.EntityTameEvent;
 
 public class PitWolf extends PitMob {
 
-	public PitWolf(Location spawnLocation) {
-		super(spawnLocation);
+	public PitWolf(Location spawnLocation, MobStatus mobStatus) {
+		super(spawnLocation, mobStatus);
 	}
 
 	@EventHandler
@@ -38,7 +39,7 @@ public class PitWolf extends PitMob {
 
 	@Override
 	public String getRawDisplayName() {
-		return "Wolf";
+		return isMinion() ? "Minion Wolf" : "Wolf";
 	}
 
 	@Override
@@ -53,12 +54,12 @@ public class PitWolf extends PitMob {
 
 	@Override
 	public int getMaxHealth() {
-		return 80;
+		return isMinion() ? 10 : 80;
 	}
 
 	@Override
 	public int getSpeedAmplifier() {
-		return 1;
+		return isMinion() ? 3 : 1;
 	}
 
 	@Override

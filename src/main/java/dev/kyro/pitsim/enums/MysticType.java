@@ -43,6 +43,8 @@ public enum MysticType {
 		return null;
 	}
 
+
+
 	public boolean isTainted() {
 		return this == TAINTED_CHESTPLATE || this == TAINTED_SCYTHE;
 	}

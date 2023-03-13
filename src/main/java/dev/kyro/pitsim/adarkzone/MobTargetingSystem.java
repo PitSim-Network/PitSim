@@ -4,6 +4,8 @@ import de.myzelyam.api.vanish.VanishAPI;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.enchants.tainted.uncommon.Fearmonger;
 import dev.kyro.pitsim.enchants.tainted.chestplate.Terror;
+import dev.kyro.pitsim.enums.PitEntityType;
+import dev.kyro.pitsim.misc.Misc;
 import org.bukkit.Effect;
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
@@ -63,7 +65,7 @@ public class MobTargetingSystem {
 		potentialTargets.add(null);
 		Location subLevelMiddle = subLevel.getMiddle();
 		for(Entity entity : subLevelMiddle.getWorld().getNearbyEntities(subLevelMiddle, subLevel.spawnRadius, 20, subLevel.spawnRadius)) {
-			if(!(entity instanceof Player) || entity == pitMob.getMob()) continue;
+			if(!Misc.isEntity(entity, PitEntityType.REAL_PLAYER)) continue;
 			Player player = (Player) entity;
 			if(VanishAPI.isInvisible(player) || Fearmonger.isImmune(player)) continue;
 			potentialTargets.add(player);
@@ -95,7 +97,7 @@ public class MobTargetingSystem {
 		double scaledTargets = 0;
 		if(candidate != null) {
 			scaledDistance = ((subLevel.spawnRadius * 2) - candidate.getLocation().distance(pitMob.getMob().getLocation())) / (subLevel.spawnRadius * 2);
-			scaledTargets = Math.pow(mobsTargeting, 1.3) / MAX_MOBS_PER_PLAYER;
+			scaledTargets = Math.pow(mobsTargeting, 1.3) / getMaxMobsPerPlayer(pitMob);
 			scaledTargets *= Terror.getAvoidanceMultiplier(candidate);
 		}
 
@@ -114,6 +116,12 @@ public class MobTargetingSystem {
 		return scaledDistance * distanceWeight +
 				scaledPersistence * persistenceWeight +
 				scaledTargets * otherMobsTargetingWeight;
+	}
+
+	public int getMaxMobsPerPlayer(PitMob pitMob) {
+		SubLevel subLevel = pitMob.getSubLevel();
+		if(subLevel == null || !subLevel.isBossSpawned() || subLevel.getMaxMinionsPerPlayer() < 0) return MAX_MOBS_PER_PLAYER;
+		return subLevel.getMaxMinionsPerPlayer();
 	}
 }
 

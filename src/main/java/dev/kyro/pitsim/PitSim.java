@@ -15,6 +15,8 @@ import dev.kyro.arcticapi.data.AConfig;
 import dev.kyro.arcticapi.hooks.AHook;
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.adarkzone.*;
+import dev.kyro.pitsim.adarkzone.abilities.CageAbility;
+import dev.kyro.pitsim.adarkzone.altar.AltarManager;
 import dev.kyro.pitsim.adarkzone.notdarkzone.EquipmentType;
 import dev.kyro.pitsim.adarkzone.notdarkzone.PitEquipment;
 import dev.kyro.pitsim.adarkzone.notdarkzone.ShieldManager;
@@ -187,6 +189,7 @@ public class PitSim extends JavaPlugin {
 		getServer().getMessenger().registerOutgoingPluginChannel(this, "BungeeCord");
 		adventure = BukkitAudiences.create(this);
 		if(getStatus().isDarkzone()) TaintedWell.onStart();
+		if(getStatus().isDarkzone()) AltarManager.init();
 		if(getStatus().isDarkzone()) BrewingManager.onStart();
 		ScoreboardManager.init();
 
@@ -317,6 +320,7 @@ public class PitSim extends JavaPlugin {
 	public void onDisable() {
 		if(status.isDarkzone()) {
 			TaintedWell.onStop();
+			AltarManager.cleanUp();
 			FirestoreManager.AUCTION.save();
 		}
 
@@ -381,12 +385,17 @@ public class PitSim extends JavaPlugin {
 		for(EditSession session : FreezeSpell.sessionMap.keySet()) {
 			session.undo(session);
 		}
+
+		for(EditSession session : CageAbility.sessionMap.values()) {
+			session.undo(session);
+		}
+
 		for(Map.Entry<Location, Material> entry : FreezeSpell.blockMap.entrySet()) {
 			entry.getKey().getBlock().setType(entry.getValue());
 		}
 
 		if(status.isDarkzone()) {
-			for(SubLevel subLevel : DarkzoneManager.subLevels) subLevel.disableMobs();
+			for(SubLevel subLevel : DarkzoneManager.subLevels) subLevel.removeMobs();
 			for(PitBoss pitBoss : new ArrayList<>(BossManager.pitBosses)) pitBoss.remove();
 		}
 
@@ -639,6 +648,8 @@ public class PitSim extends JavaPlugin {
 		getCommand("broadcast").setExecutor(new BroadcastCommand());
 		getCommand("trash").setExecutor(new TrashCommand());
 		getCommand("rename").setExecutor(new RenameCommand());
+
+		getCommand("testenchant").setExecutor(new TestEnchantCommand());
 	}
 
 	private void registerListeners() {
@@ -707,6 +718,7 @@ public class PitSim extends JavaPlugin {
 			getServer().getPluginManager().registerEvents(new BossManager(), this);
 			getServer().getPluginManager().registerEvents(new ShieldManager(), this);
 			getServer().getPluginManager().registerEvents(new ProgressionManager(), this);
+			getServer().getPluginManager().registerEvents(new AltarManager(), this);
 		}
 	}
 

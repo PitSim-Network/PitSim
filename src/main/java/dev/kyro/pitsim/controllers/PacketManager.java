@@ -57,6 +57,7 @@ public class PacketManager implements Listener {
 								auctions.getWorld() == player.getWorld() && auctions.distance(player.getLocation()) < 50) {
 							event.setCancelled(true);
 						}
+						if(soundName.equals("mob.endermen.stare")) event.setCancelled(true);
 					}
 				});
 

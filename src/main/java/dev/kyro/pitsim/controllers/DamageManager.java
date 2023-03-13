@@ -11,11 +11,6 @@ import dev.kyro.pitsim.adarkzone.notdarkzone.Shield;
 import dev.kyro.pitsim.adarkzone.progression.ProgressionManager;
 import dev.kyro.pitsim.adarkzone.progression.SkillBranch;
 import dev.kyro.pitsim.adarkzone.progression.skillbranches.DefenceBranch;
-import dev.kyro.pitsim.aitems.PitItem;
-import dev.kyro.pitsim.aitems.prot.ProtBoots;
-import dev.kyro.pitsim.aitems.prot.ProtChestplate;
-import dev.kyro.pitsim.aitems.prot.ProtHelmet;
-import dev.kyro.pitsim.aitems.prot.ProtLeggings;
 import dev.kyro.pitsim.controllers.objects.Non;
 import dev.kyro.pitsim.controllers.objects.PitEnchant;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
@@ -50,8 +45,6 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityRegainHealthEvent;
 import org.bukkit.event.entity.ProjectileLaunchEvent;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
@@ -68,7 +61,7 @@ public class DamageManager implements Listener {
 
 	public static Map<Projectile, Map<PitEnchant, Integer>> projectileMap = new HashMap<>();
 	public static Map<Entity, LivingEntity> hitTransferMap = new HashMap<>();
-	public static Map<LivingEntity, Consumer<AttackEvent>> attackCallbackMap = new HashMap<>();
+	public static Map<LivingEntity, AttackInfo> attackInfoMap = new HashMap<>();
 
 	static {
 		new BukkitRunnable() {
@@ -81,11 +74,11 @@ public class DamageManager implements Listener {
 		}.runTaskTimer(PitSim.INSTANCE, 0L, 1L);
 	}
 
-	public static void createAttack(LivingEntity defender, double damage) {
-		createAttack(defender, damage, null);
+	public static void createIndirectAttack(LivingEntity fakeAttacker, LivingEntity defender, double damage) {
+		createIndirectAttack(fakeAttacker, defender, damage, null);
 	}
 
-	public static void createAttack(LivingEntity defender, double damage, Consumer<AttackEvent> callback) {
+	public static void createIndirectAttack(LivingEntity fakeAttacker, LivingEntity defender, double damage, Consumer<AttackEvent> callback) {
 		assert defender != null;
 
 		if(defender instanceof Player) {
@@ -93,17 +86,17 @@ public class DamageManager implements Listener {
 			if(VanishAPI.isInvisible(player) || player.getGameMode() != GameMode.SURVIVAL) return;
 		}
 
-		if(callback != null) attackCallbackMap.put(defender, callback);
+		attackInfoMap.put(defender, new AttackInfo(fakeAttacker, callback));
 		EntityDamageEvent event = new EntityDamageEvent(defender, EntityDamageEvent.DamageCause.CUSTOM, damage);
 		Bukkit.getPluginManager().callEvent(event);
 		if(!event.isCancelled()) defender.damage(event.getDamage());
 	}
 
-	public static void createAttack(LivingEntity attacker, LivingEntity defender, double damage) {
-		createAttack(attacker, defender, damage, null);
+	public static void createDirectAttack(LivingEntity attacker, LivingEntity defender, double damage) {
+		createDirectAttack(attacker, defender, damage, null);
 	}
 
-	public static void createAttack(LivingEntity attacker, LivingEntity defender, double damage, Consumer<AttackEvent> callback) {
+	public static void createDirectAttack(LivingEntity attacker, LivingEntity defender, double damage, Consumer<AttackEvent> callback) {
 		assert attacker != null && defender != null;
 
 		if(defender instanceof Player) {
@@ -111,7 +104,8 @@ public class DamageManager implements Listener {
 			if(VanishAPI.isInvisible(player) || player.getGameMode() != GameMode.SURVIVAL) return;
 		}
 
-		if(callback != null) attackCallbackMap.put(defender, callback);
+		attackInfoMap.put(defender, new AttackInfo(null, callback));
+
 		defender.damage(damage, attacker);
 	}
 
@@ -146,8 +140,8 @@ public class DamageManager implements Listener {
 		projectileMap.put(projectile, EnchantManager.getEnchantsOnPlayer(shooter));
 	}
 
-	public void transferHit(LivingEntity attacker, Entity damager, LivingEntity defender, double damage) {
-		if(attacker != damager) hitTransferMap.put(damager, attacker);
+	public void transferHit(LivingEntity attacker, Entity realDamager, LivingEntity defender, double damage) {
+		if(attacker != realDamager) hitTransferMap.put(realDamager, attacker);
 		defender.damage(damage, attacker);
 	}
 
@@ -168,12 +162,12 @@ public class DamageManager implements Listener {
 
 	public void onAttack(WrapperEntityDamageEvent event) {
 		if(event.getEntity() == null) return;
+		Entity realDamager = event.getDamager();
 		LivingEntity attacker = getAttacker(event.getDamager());
 		LivingEntity defender = event.getEntity();
 
 		if(defender.isDead()) return;
 
-		Entity realDamager = event.getDamager();
 		for(Map.Entry<Entity, LivingEntity> entry : DamageManager.hitTransferMap.entrySet()) {
 			if(entry.getValue() != realDamager) continue;
 			realDamager = entry.getKey();
@@ -201,7 +195,7 @@ public class DamageManager implements Listener {
 					for(LivingEntity entity : pitMob.getNameTag().getEntities()) {
 						if(entity == defender) {
 							event.setCancelled(true);
-							transferHit(attacker, event.getDamager(), pitMob.getMob(), event.getDamage());
+							transferHit(attacker, realDamager, pitMob.getMob(), event.getDamage());
 							return;
 						}
 						if(entity == attacker) {
@@ -227,7 +221,7 @@ public class DamageManager implements Listener {
 				(attackingNon == null && defendingNon != null && hitCooldownList.contains(defender)) && !Regularity.toReg.contains(defender.getUniqueId()) &&
 						!(realDamager instanceof Arrow)) {
 			event.setCancelled(true);
-			DamageManager.hitTransferMap.remove(event.getDamager());
+			DamageManager.hitTransferMap.remove(realDamager);
 			return;
 		}
 //		Regular player to player hit
@@ -333,6 +327,7 @@ public class DamageManager implements Listener {
 
 //		New player defence
 		if(PitSim.status.isOverworld() && attackEvent.isDefenderRealPlayer() && attackEvent.isAttackerRealPlayer() &&
+				attackEvent.getDefender().getWorld() != MapManager.getDarkzone() &&
 				attackEvent.getDefender().getLocation().distance(MapManager.currentMap.getMid()) < 12) {
 			if(attackEvent.getDefenderPitPlayer().prestige < 10) {
 				int minutesPlayed = attackEvent.getDefenderPitPlayer().stats.minutesPlayed;
@@ -421,10 +416,13 @@ public class DamageManager implements Listener {
 				}
 			}
 		} else {
-			attackEvent.getDefender().setHealth(attackEvent.getDefender().getHealth() - finalDamage);
+			attackEvent.getDefender().setHealth(Math.min(attackEvent.getDefender().getHealth() - finalDamage, attackEvent.getDefender().getMaxHealth()));
 		}
 
-		if(attackCallbackMap.containsKey(attackEvent.getDefender())) attackCallbackMap.remove(attackEvent.getDefender()).accept(attackEvent);
+		if(attackEvent.getWrapperEvent().getAttackInfo() != null) {
+			AttackInfo attackInfo = attackEvent.getWrapperEvent().getAttackInfo();
+			if(attackInfo.getCallback() != null) attackInfo.getCallback().accept(attackEvent);
+		}
 		return finalDamage;
 	}
 
@@ -745,21 +743,5 @@ public class DamageManager implements Listener {
 
 	public static void fakeKill(AttackEvent attackEvent, LivingEntity killer, LivingEntity dead, KillModifier... killModifiers) {
 		kill(attackEvent, killer, dead, KillType.FAKE_KILL, killModifiers);
-	}
-
-	public static void deleteProt(Player player) {
-		PlayerInventory inventory = player.getInventory();
-
-		if(ItemFactory.isThisItem(inventory.getHelmet(), ProtHelmet.class)) inventory.setHelmet(new ItemStack(Material.AIR));
-		if(ItemFactory.isThisItem(inventory.getChestplate(), ProtChestplate.class)) inventory.setChestplate(new ItemStack(Material.AIR));
-		if(ItemFactory.isThisItem(inventory.getLeggings(), ProtLeggings.class)) inventory.setLeggings(new ItemStack(Material.AIR));
-		if(ItemFactory.isThisItem(inventory.getBoots(), ProtBoots.class)) inventory.setBoots(new ItemStack(Material.AIR));
-
-		for(int i = 0; i < 36; i++) {
-			ItemStack itemStack = inventory.getItem(i);
-			PitItem pitItem = ItemFactory.getItem(itemStack);
-			if(pitItem == null || !pitItem.isProt) continue;
-			inventory.setItem(i, new ItemStack(Material.AIR));
-		}
 	}
 }

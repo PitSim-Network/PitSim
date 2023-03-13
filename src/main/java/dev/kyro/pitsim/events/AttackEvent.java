@@ -144,6 +144,10 @@ public class AttackEvent extends Event {
 		return fakeHit;
 	}
 
+	public boolean hasFakeAttacker() {
+		return event.getAttackInfo() != null && event.getAttackInfo().getFakeAttacker() != null;
+	}
+
 	public static class Pre extends AttackEvent implements Cancellable {
 		private boolean cancel = false;
 

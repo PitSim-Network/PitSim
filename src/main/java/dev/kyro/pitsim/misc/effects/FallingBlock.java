@@ -1,6 +1,7 @@
 package dev.kyro.pitsim.misc.effects;
 
 import dev.kyro.pitsim.PitSim;
+import dev.kyro.pitsim.misc.BlockData;
 import net.minecraft.server.v1_8_R3.*;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -34,6 +35,13 @@ public class FallingBlock {
 		this.spawnLocation = spawnLocation;
 		this.nmsWorld = ((CraftWorld) spawnLocation.getWorld()).getHandle();
 		this.blockData = data;
+	}
+
+	public FallingBlock(BlockData blockData, Location spawnLocation) {
+		this.material = blockData.material;
+		this.spawnLocation = spawnLocation;
+		this.nmsWorld = ((CraftWorld) spawnLocation.getWorld()).getHandle();
+		this.blockData = blockData.data;
 	}
 
 	public FallingBlock spawnBlock() {

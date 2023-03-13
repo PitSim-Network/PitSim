@@ -1,8 +1,15 @@
 package dev.kyro.pitsim.adarkzone.notdarkzone;
 
+import dev.kyro.pitsim.enums.PitEntityType;
+import dev.kyro.pitsim.misc.Misc;
 import net.citizensnpcs.api.npc.NPC;
 import net.citizensnpcs.api.trait.trait.Equipment;
+import net.minecraft.server.v1_8_R3.EntityPlayer;
+import net.minecraft.server.v1_8_R3.PacketPlayOutEntityEquipment;
 import org.bukkit.Material;
+import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
+import org.bukkit.craftbukkit.v1_8_R3.inventory.CraftItemStack;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -65,6 +72,22 @@ public class PitEquipment {
 		entity.getEquipment().setLeggings(leggings);
 		entity.getEquipment().setBoots(boots);
 		if(entity instanceof Player) ((Player) entity).updateInventory();
+
+		PacketPlayOutEntityEquipment hand = new PacketPlayOutEntityEquipment(entity.getEntityId(), 0, CraftItemStack.asNMSCopy(held));
+		PacketPlayOutEntityEquipment helm = new PacketPlayOutEntityEquipment(entity.getEntityId(), 1, CraftItemStack.asNMSCopy(helmet));
+		PacketPlayOutEntityEquipment chest = new PacketPlayOutEntityEquipment(entity.getEntityId(), 2, CraftItemStack.asNMSCopy(chestplate));
+		PacketPlayOutEntityEquipment legs = new PacketPlayOutEntityEquipment(entity.getEntityId(), 3, CraftItemStack.asNMSCopy(leggings));
+		PacketPlayOutEntityEquipment boots = new PacketPlayOutEntityEquipment(entity.getEntityId(), 4, CraftItemStack.asNMSCopy(this.boots));
+
+		for(Entity nearbyEntity : entity.getNearbyEntities(50, 50, 50)) {
+			if(!Misc.isEntity(nearbyEntity, PitEntityType.REAL_PLAYER)) continue;
+			EntityPlayer nmsPlayer = ((CraftPlayer) nearbyEntity).getHandle();
+			nmsPlayer.playerConnection.sendPacket(hand);
+			nmsPlayer.playerConnection.sendPacket(helm);
+			nmsPlayer.playerConnection.sendPacket(chest);
+			nmsPlayer.playerConnection.sendPacket(legs);
+			nmsPlayer.playerConnection.sendPacket(boots);
+		}
 	}
 
 	public void setHeld(NPC npc) {

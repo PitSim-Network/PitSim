@@ -7,6 +7,7 @@ import dev.kyro.pitsim.adarkzone.PitNameTag;
 import dev.kyro.pitsim.adarkzone.notdarkzone.PitEquipment;
 import dev.kyro.pitsim.aitems.mobdrops.Bone;
 import dev.kyro.pitsim.controllers.ItemFactory;
+import dev.kyro.pitsim.enums.MobStatus;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.entity.Creature;
@@ -15,8 +16,8 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 public class PitSkeleton extends PitMob {
 
-	public PitSkeleton(Location spawnLocation) {
-		super(spawnLocation);
+	public PitSkeleton(Location spawnLocation, MobStatus mobStatus) {
+		super(spawnLocation, mobStatus);
 	}
 
 	@Override
@@ -29,7 +30,8 @@ public class PitSkeleton extends PitMob {
 		new BukkitRunnable() {
 			@Override
 			public void run() {
-				new PitEquipment().setEquipment(skeleton);
+				PitEquipment equipment = new PitEquipment();
+				equipment.setEquipment(skeleton);
 			}
 		}.runTaskLater(PitSim.INSTANCE, 1L);
 
@@ -38,7 +40,7 @@ public class PitSkeleton extends PitMob {
 
 	@Override
 	public String getRawDisplayName() {
-		return "Skeleton";
+		return isMinion() ? "Minion Skeleton" : "Skeleton";
 	}
 
 	@Override

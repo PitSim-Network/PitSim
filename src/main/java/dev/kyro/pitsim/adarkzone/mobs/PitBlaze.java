@@ -6,12 +6,17 @@ import dev.kyro.pitsim.adarkzone.DropPool;
 import dev.kyro.pitsim.adarkzone.PitMob;
 import dev.kyro.pitsim.adarkzone.PitNameTag;
 import dev.kyro.pitsim.aitems.mobdrops.BlazeRod;
+import dev.kyro.pitsim.controllers.DamageManager;
 import dev.kyro.pitsim.controllers.ItemFactory;
+import dev.kyro.pitsim.enums.MobStatus;
+import dev.kyro.pitsim.enums.PitEntityType;
+import dev.kyro.pitsim.misc.Misc;
 import org.bukkit.ChatColor;
 import org.bukkit.Effect;
 import org.bukkit.Location;
 import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.entity.EntityExplodeEvent;
 import org.bukkit.event.entity.ProjectileLaunchEvent;
 import org.bukkit.projectiles.ProjectileSource;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -21,11 +26,14 @@ import org.bukkit.util.Vector;
 import java.util.Random;
 
 public class PitBlaze extends PitMob {
+
+	public static final double FIREBALL_DAMAGE = 4;
+
 	public long lastAttack = PitSim.currentTick;
 	public BukkitTask attackRunnable;
 
-	public PitBlaze(Location spawnLocation) {
-		super(spawnLocation);
+	public PitBlaze(Location spawnLocation, MobStatus mobStatus) {
+		super(spawnLocation, mobStatus);
 		if(spawnLocation == null) return;
 
 		attackRunnable = new BukkitRunnable() {
@@ -63,6 +71,17 @@ public class PitBlaze extends PitMob {
 	}
 
 	@EventHandler
+	public void onFireballExplode(EntityExplodeEvent event) {
+		if(event.getEntity() instanceof Fireball) event.setCancelled(true);
+
+		event.getLocation().getWorld().playEffect(event.getLocation(), Effect.EXPLOSION_LARGE, 1);
+		for(Entity entity : event.getLocation().getWorld().getNearbyEntities(event.getLocation(), 3, 3, 3)) {
+			if(!Misc.isEntity(entity, PitEntityType.REAL_PLAYER)) continue;
+			DamageManager.createIndirectAttack(getMob(), (LivingEntity) entity, FIREBALL_DAMAGE);
+		}
+	}
+
+	@EventHandler
 	public void onFireballLaunch(ProjectileLaunchEvent event) {
 		Projectile projectile = event.getEntity();
 		ProjectileSource shooter = projectile.getShooter();
@@ -91,7 +110,7 @@ public class PitBlaze extends PitMob {
 
 	@Override
 	public String getRawDisplayName() {
-		return "Blaze";
+		return isMinion() ? "Minion Blaze" : "Blaze";
 	}
 
 	@Override

@@ -31,7 +31,7 @@ public class SwarmParticle extends AIParticle {
 		}
 		if(state == State.ATTACK) {
 			double distance = particleLocation.distance(target.getLocation().add(0, 1, 0));
-			if(distance < 1.5) DamageManager.createAttack(owner, target, DAMAGE);
+			if(distance < 1.5) DamageManager.createIndirectAttack(owner, target, DAMAGE);
 			if(ticksUntilGoal == 0) {
 				state = State.IDLE;
 				cooldownTicks = new Random().nextInt(40) + 80;

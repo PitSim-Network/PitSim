@@ -7,6 +7,7 @@ import dev.kyro.pitsim.adarkzone.PitNameTag;
 import dev.kyro.pitsim.aitems.mobdrops.Gunpowder;
 import dev.kyro.pitsim.controllers.ItemFactory;
 import dev.kyro.pitsim.controllers.PlayerManager;
+import dev.kyro.pitsim.enums.MobStatus;
 import dev.kyro.pitsim.misc.Sounds;
 import org.bukkit.ChatColor;
 import org.bukkit.Effect;
@@ -19,8 +20,8 @@ import org.bukkit.util.Vector;
 public class PitCreeper extends PitMob {
 	public static final double EXPLOSION_RADIUS = 6;
 
-	public PitCreeper(Location spawnLocation) {
-		super(spawnLocation);
+	public PitCreeper(Location spawnLocation, MobStatus mobStatus) {
+		super(spawnLocation, mobStatus);
 	}
 
 	@EventHandler
@@ -69,7 +70,7 @@ public class PitCreeper extends PitMob {
 
 	@Override
 	public String getRawDisplayName() {
-		return "Creeper";
+		return isMinion() ? "Minion Creeper" : "Creeper";
 	}
 
 	@Override
@@ -79,12 +80,12 @@ public class PitCreeper extends PitMob {
 
 	@Override
 	public int getMaxHealth() {
-		return 160;
+		return isMinion() ? 200 : 160;
 	}
 
 	@Override
 	public int getSpeedAmplifier() {
-		return 3;
+		return isMinion() ? 5 : 3;
 	}
 
 	@Override

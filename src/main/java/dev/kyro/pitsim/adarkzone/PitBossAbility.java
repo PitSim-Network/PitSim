@@ -2,9 +2,14 @@ package dev.kyro.pitsim.adarkzone;
 
 import dev.kyro.pitsim.PitSim;
 import org.bukkit.Bukkit;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
+import org.bukkit.entity.Player;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public abstract class PitBossAbility implements Listener {
 	private PitBoss pitBoss;
@@ -38,6 +43,16 @@ public abstract class PitBossAbility implements Listener {
 	public void disable() {
 		enabled = false;
 		HandlerList.unregisterAll(this);
+	}
+
+	public List<Player> getViewers() {
+		List<Player> viewers = new ArrayList<>();
+		for(Entity entity : pitBoss.boss.getNearbyEntities(50, 50, 50)) {
+			if(!(entity instanceof Player)) continue;
+			Player player = Bukkit.getPlayer(entity.getUniqueId());
+			if(player != null) viewers.add(player);
+		}
+		return viewers;
 	}
 
 	public PitBoss getPitBoss() {

@@ -21,76 +21,93 @@ public class TaintedEnchanting {
 		MysticType type = MysticType.getMysticType(itemStack);
 //		if(type != MysticType.TAINTED_CHESTPLATE && type != MysticType.TAINTED_SCYTHE) return null;
 		NBTItem nbtItem = new NBTItem(itemStack);
-		int tier = nbtItem.getInteger(NBTTag.TAINTED_TIER.getRef());
-		if(tier == 3) return null;
+		int previousTier = nbtItem.getInteger(NBTTag.TAINTED_TIER.getRef());
+		if(previousTier == 3) return null;
 
-		if(tier == 0) {
-			int enchants;
+		ItemStack returnStack = itemStack;
 
-			Map<Integer, Double> enchantChance = new HashMap<>();
-			enchantChance.put(1, 0.9);
-			enchantChance.put(2, 0.1);
-			enchants = Misc.weightedRandom(enchantChance);
+		if(previousTier == 0) {
+			int tokens;
 
-			for(int i = 0; i < enchants; i++) {
+			Map<Integer, Double> tokenChance = new HashMap<>();
+			tokenChance.put(1, 1.0);
+			tokenChance.put(2, 1.0);
+			tokens = Misc.weightedRandom(tokenChance);
+
+			for(int i = 0; i < tokens; i++) {
+				Map<PitEnchant, Integer> enchantsOnItem = EnchantManager.getEnchantsOnItem(returnStack);
+
+				Map<PitEnchant, Double> randomEnchantMap = new HashMap<>();
+				for(Map.Entry<PitEnchant, Integer> entry : enchantsOnItem.entrySet()) {
+					randomEnchantMap.put(entry.getKey(), 1.0);
+				}
+
+				PitEnchant randomEnchant = getRandomEnchant(type, new ArrayList<>(randomEnchantMap.keySet()), 0);
+				randomEnchantMap.put(randomEnchant, (double) 1);
+
+				PitEnchant selectedEnchant = Misc.weightedRandom(randomEnchantMap);
+				int newTier = enchantsOnItem.getOrDefault(selectedEnchant, 0);
 				try {
-
-					Map<Integer, Double> newEnchantsRandom = new HashMap<>();
-					newEnchantsRandom.put(1, 0.7);
-					newEnchantsRandom.put(2, 0.3);
-					int newEnchants = enchants == 1 ? 1 : Misc.weightedRandom(newEnchantsRandom);
-
-					List<PitEnchant> enchantsOnItem = new ArrayList<>(EnchantManager.getEnchantsOnItem(itemStack).keySet());
-					itemStack = EnchantManager.addEnchant(itemStack, getRandomEnchant(type, enchantsOnItem, 0), newEnchants, false);
-				} catch(Exception e) {
-					e.printStackTrace();
+					returnStack = EnchantManager.addEnchant(returnStack, selectedEnchant, newTier + 1, false);
+				} catch(Exception exception) {
+					exception.printStackTrace();
 				}
 			}
+
 		} else {
 			int newTokens;
 			Map<Integer, Double> enchantRandom = new HashMap<>();
-			enchantRandom.put(1, tier == 1 ? 0.3 : 0.1);
-			enchantRandom.put(2, tier == 1 ? 0.6 : 0.4);
-			enchantRandom.put(3, tier == 1 ? 0.1 : 0.5);
+			enchantRandom.put(1, previousTier == 1 ? 0.3 : 0.1);
+			enchantRandom.put(2, previousTier == 1 ? 0.6 : 0.4);
+			enchantRandom.put(3, previousTier == 1 ? 0.1 : 0.5);
 			newTokens = Misc.weightedRandom(enchantRandom);
 
 			for(int i = 0; i < newTokens; i++) {
-				Map<PitEnchant, Integer> enchantsOnItem = EnchantManager.getEnchantsOnItem(itemStack);
-				List<PitEnchant> randomEnchantList = new ArrayList<>();
+				Map<PitEnchant, Integer> enchantsOnItem = EnchantManager.getEnchantsOnItem(returnStack);
 
 				Map<PitEnchant, Double> randomEnchantMap = new HashMap<>();
 				for(Map.Entry<PitEnchant, Integer> entry : enchantsOnItem.entrySet()) {
 					if(entry.getValue() < 3) {
-						if(tier == 2 || (tier == 1 && !entry.getKey().isRare)) randomEnchantList.add(entry.getKey());
+						if(previousTier == 2 || (previousTier == 1 && !entry.getKey().isRare)) randomEnchantMap.put(entry.getKey(), 1.0);
 					}
 				}
 
-				if(enchantsOnItem.size() < 3) {
+				if(randomEnchantMap.size() < 3) {
 					Map<Integer, Double> randomRarityMap = new HashMap<>();
-					randomRarityMap.put(2, tier == 1 ? 0.02 : 0.1);
-					randomRarityMap.put(1, tier == 1 ? 0.49 : 0.45);
-					randomRarityMap.put(0, tier == 1 ? 0.49 : 0.45);
-					randomEnchantList.add(getRandomEnchant(type, new ArrayList<>(enchantsOnItem.keySet()), Misc.weightedRandom(randomRarityMap)));
-				}
+					randomRarityMap.put(2, previousTier == 1 ? 0.02 : 0.1);
+					randomRarityMap.put(1, previousTier == 1 ? 0.49 : 0.45);
+					randomRarityMap.put(0, previousTier == 1 ? 0.49 : 0.45);
 
-				for(PitEnchant enchant : randomEnchantList) {
-					randomEnchantMap.put(enchant, (double) (1 / randomEnchantList.size()));
+					List<PitEnchant> usedEnchants = new ArrayList<>(enchantsOnItem.keySet());
+					for(PitEnchant enchant : randomEnchantMap.keySet()) {
+						if(!usedEnchants.contains(enchant)) usedEnchants.add(enchant);
+					}
+
+					PitEnchant randomEnchant = getRandomEnchant(type, new ArrayList<>(usedEnchants), Misc.weightedRandom(randomRarityMap));
+					randomEnchantMap.put(randomEnchant, (double) (3 - enchantsOnItem.size()));
 				}
 
 				PitEnchant selectedEnchant = Misc.weightedRandom(randomEnchantMap);
 				int newTier = enchantsOnItem.getOrDefault(selectedEnchant, 0);
 				try {
-					itemStack = EnchantManager.addEnchant(itemStack, selectedEnchant, newTier + 1, false);
+					returnStack = EnchantManager.addEnchant(returnStack, selectedEnchant, newTier + 1, false);
 				} catch(Exception exception) {
 					exception.printStackTrace();
 				}
 			}
 		}
 
-		int currentMaxLives = temporaryItem.getMaxLives(itemStack);
-		int addedLives = EnchantManager.getTaintedMaxLifeIncrease(tier + 1, currentMaxLives);
-		itemStack = temporaryItem.addMaxLives(itemStack, addedLives);
-		return itemStack;
+		nbtItem = new NBTItem(returnStack);
+		nbtItem.setInteger(NBTTag.TAINTED_TIER.getRef(), previousTier + 1);
+		int currentLives = nbtItem.getInteger(NBTTag.CURRENT_LIVES.getRef());
+		int currentMaxLives = nbtItem.getInteger(NBTTag.MAX_LIVES.getRef());
+
+		int addedLives = EnchantManager.getTaintedMaxLifeIncrease(previousTier + 1, currentMaxLives);
+
+		nbtItem.setInteger(NBTTag.MAX_LIVES.getRef(), currentMaxLives + addedLives);
+		nbtItem.setInteger(NBTTag.CURRENT_LIVES.getRef(), currentLives + addedLives);
+
+		return nbtItem.getItem();
 	}
 
 	public static PitEnchant getRandomEnchant(MysticType type, List<PitEnchant> existingEnchants, int enchantRarity) {

@@ -5,6 +5,7 @@ import dev.kyro.pitsim.controllers.MapManager;
 import dev.kyro.pitsim.controllers.objects.PitPerk;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.events.AttackEvent;
+import dev.kyro.pitsim.events.HealEvent;
 import dev.kyro.pitsim.misc.Misc;
 import org.bukkit.Material;
 import org.bukkit.event.EventHandler;
@@ -31,7 +32,7 @@ public class Vampire extends PitPerk {
 
 		double healing = initialHealing;
 		if(attackEvent.getArrow() != null && attackEvent.getArrow().isCritical()) healing *= 2;
-		pitAttacker.heal(healing);
+		HealEvent healEvent = pitAttacker.heal(healing);
 	}
 
 	@Override

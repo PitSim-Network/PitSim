@@ -6,6 +6,7 @@ import dev.kyro.pitsim.adarkzone.progression.SkillBranch;
 import dev.kyro.pitsim.adarkzone.progression.skillbranches.SoulBranch;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.enchants.tainted.uncommon.Reaper;
+import dev.kyro.pitsim.enums.MobStatus;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -22,8 +23,10 @@ public abstract class PitMob implements Listener {
 	private Creature mob;
 	private DropPool dropPool;
 	private PitNameTag nameTag;
+	private final MobStatus mobStatus;
 
-	public PitMob(Location spawnLocation) {
+	public PitMob(Location spawnLocation, MobStatus mobStatus) {
+		this.mobStatus = mobStatus;
 		if(spawnLocation == null) return;
 		this.dropPool = createDropPool();
 		spawn(spawnLocation);
@@ -58,7 +61,7 @@ public abstract class PitMob implements Listener {
 	public void spawn(Location spawnLocation) {
 		mob = createMob(spawnLocation);
 		if(mob.isInsideVehicle()) mob.getVehicle().remove();
-		mob.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 9999, getSpeedAmplifier(), true, false));
+		mob.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 99999, getSpeedAmplifier(), true, false));
 		mob.setMaxHealth(getMaxHealth());
 		mob.setHealth(getMaxHealth());
 
@@ -69,15 +72,16 @@ public abstract class PitMob implements Listener {
 	}
 
 	public void kill(PitPlayer pitKiller) {
-		dropPool.singleDistribution(pitKiller.player);
+		if(mobStatus == MobStatus.STANDARD) {
+			dropPool.singleDistribution(pitKiller.player);
 
-		double soulChance = 0.05;
-		soulChance *= 1 + (Reaper.getSoulChanceIncrease(pitKiller.player) / 100.0);
-		soulChance *= 1 + (ProgressionManager.getUnlockedEffectAsValue(
-				pitKiller, SoulBranch.INSTANCE, SkillBranch.PathPosition.FIRST_PATH, "soul-chance-mobs") / 100.0);
-		if(Math.random() < soulChance) DarkzoneManager.createSoulExplosion(pitKiller.player,
-				getMob().getLocation().add(0, 0.5, 0), getDroppedSouls(), false);
-
+			double soulChance = 0.05;
+			soulChance *= 1 + (Reaper.getSoulChanceIncrease(pitKiller.player) / 100.0);
+			soulChance *= 1 + (ProgressionManager.getUnlockedEffectAsValue(
+					pitKiller, SoulBranch.INSTANCE, SkillBranch.PathPosition.FIRST_PATH, "soul-chance-mobs") / 100.0);
+			if(Math.random() < soulChance) DarkzoneManager.createSoulExplosion(pitKiller.player,
+					getMob().getLocation().add(0, 0.5, 0), getDroppedSouls(), false);
+		}
 		remove();
 	}
 
@@ -122,6 +126,14 @@ public abstract class PitMob implements Listener {
 
 	public PitNameTag getNameTag() {
 		return nameTag;
+	}
+
+	public MobStatus getMobStatus() {
+		return mobStatus;
+	}
+
+	public boolean isMinion() {
+		return mobStatus.isMinion();
 	}
 
 	public boolean isThisMob(Entity entity) {

@@ -68,10 +68,61 @@ public class Sounds {
 	public static final SoundEffect TUTORIAL_MESSAGE = new SoundEffect(Sound.CHICKEN_EGG_POP, 2, 1.6);
 	public static final SoundEffect LOAD_INITIAL = new SoundEffect(Sound.NOTE_PLING, 1000, 1.2);
 	public static final SoundEffect LOAD_FINAL = new SoundEffect(Sound.NOTE_PLING, 1000, 1.8);
+	public static final SoundEffect PEDESTAL_ACTIVATE = new SoundEffect(Sound.ORB_PICKUP, 1, 0.5);
+	public static final SoundEffect PEDESTAL_DEACTIVATE = new SoundEffect(Sound.DIG_STONE, 2, 0.2);
+	public static final SoundEffect XP_GAIN = new SoundEffect(Sound.ORB_PICKUP, 1, 1);
+	public static final SoundEffect ALTAR_LEVEL_UP = new SoundEffect(Sound.WOLF_HOWL, 1, 0.8);
+	public static final SoundEffect ITEM_PICKUP = new SoundEffect(Sound.ITEM_PICKUP, 1, 1);
 
 	public static final SoundEffect SNAKE_ICE = new SoundEffect(Sound.GLASS, 1.3, 1.5);
+	public static final SoundEffect BONE_SNAKE = new SoundEffect(Sound.SKELETON_HURT, 1.3, 1.5);
+	public static final SoundEffect WITHER_SNAKE = new SoundEffect(Sound.DIG_STONE, 1.3, 1.5);
+	public static final SoundEffect ANVIL_RAIN = new SoundEffect(Sound.ANVIL_LAND, 1.3, 0.45);
+	public static final SoundEffect FIRE_EXTINGUISH = new SoundEffect(Sound.FIREWORK_TWINKLE, 1.3, 0.45);
+	public static final SoundEffect BLOCK_LAND = new SoundEffect(Sound.DIG_STONE, 1.3, 0.45);
+	public static final SoundEffect TNT_PLACE = new SoundEffect("block.grass.place", 1.3, 1);
+	public static final SoundEffect TNT_PRIME = new SoundEffect("game.tnt.primed", 1.3, 1);
+	public static final SoundEffect DISORDER = new SoundEffect(Sound.ENDERMAN_TELEPORT, 1.3, 1.5);
+	public static final SoundEffect DISORDER2 = new SoundEffect(Sound.PORTAL_TRAVEL, 1, 1.25);
 	public static final SoundEffect SLAM = new SoundEffect(Sound.DIG_GRASS, 1.0, 0.65);
 	public static final SoundEffect SLAM_2 = new SoundEffect(Sound.EXPLODE, 0.5, 1);
+	public static final SoundEffect COLLAPSE = new SoundEffect(Sound.ZOMBIE_WOODBREAK, 1, 0.4);
+	public static final SoundEffect COLLAPSE2 = new SoundEffect(Sound.DIG_GRAVEL, 1, 0.4);
+	public static final SoundEffect CHARGE = new SoundEffect(Sound.GHAST_FIREBALL, 1, 1.2);
+	public static final SoundEffect POPUP = new SoundEffect(Sound.FIZZ, 1, 1.2);
+	public static final SoundEffect TELEPORT = new SoundEffect(Sound.ENDERMAN_TELEPORT, 1, 1.4);
+
+	public static final SoundEffect CAGE = new SoundEffect()
+			.add(new SoundMoment(0).add(Sound.ANVIL_LAND, 1, 0.7))
+			.add(new SoundMoment(2).add(Sound.ANVIL_LAND, 1, 0.8))
+			.add(new SoundMoment(4).add(Sound.ANVIL_LAND, 1, 0.9))
+			.add(new SoundMoment(6).add(Sound.ANVIL_LAND, 1, 1.0))
+			.add(new SoundMoment(8).add(Sound.ANVIL_LAND, 1, 1.1))
+			.add(new SoundMoment(10).add(Sound.ANVIL_LAND, 1, 1.2));
+
+	public static final SoundEffect PULL = new SoundEffect()
+			.add(new SoundMoment(0).add(Sound.DIG_GRASS, 1, 0.7))
+			.add(new SoundMoment(2).add(Sound.DIG_GRASS, 1, 0.8))
+			.add(new SoundMoment(4).add(Sound.DIG_GRASS, 1, 0.9))
+			.add(new SoundMoment(6).add(Sound.DIG_GRASS, 1, 1.0))
+			.add(new SoundMoment(8).add(Sound.DIG_GRASS, 1, 1.1))
+			.add(new SoundMoment(10).add(Sound.DIG_GRASS, 1, 1.2))
+			.add(new SoundMoment(12).add(Sound.DIG_GRASS, 1, 1.3))
+			.add(new SoundMoment(14).add(Sound.DIG_GRASS, 1, 1.4));
+
+	public static final SoundEffect REINCARNATION = new SoundEffect()
+			.add(new SoundMoment(0).add(Sound.WITHER_SPAWN, 1, 0.4))
+			.add(new SoundMoment(2).add(Sound.NOTE_BASS, 1, 0.8))
+			.add(new SoundMoment(4).add(Sound.NOTE_BASS, 1, 0.9))
+			.add(new SoundMoment(6).add(Sound.NOTE_BASS, 1, 1.0))
+			.add(new SoundMoment(8).add(Sound.NOTE_BASS, 1, 1.1))
+			.add(new SoundMoment(10).add(Sound.NOTE_BASS, 1, 1.2))
+			.add(new SoundMoment(60).add(Sound.FIZZ, 1, 0.8))
+			.add(new SoundMoment(62).add(Sound.FIZZ, 1, 0.9))
+			.add(new SoundMoment(64).add(Sound.FIZZ, 1, 1.0))
+			.add(new SoundMoment(66).add(Sound.FIZZ, 1, 1.1))
+			.add(new SoundMoment(68).add(Sound.FIZZ, 1, 1.2));
+
 
 	//	Enchants
 	public static final SoundEffect BILLIONAIRE = new SoundEffect(Sound.ORB_PICKUP, 1, 0.73);

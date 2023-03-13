@@ -62,6 +62,31 @@ import java.util.regex.Pattern;
 
 public class Misc {
 
+	public static boolean isEntityNoError(Entity entity, PitEntityType... entityTypes) {
+		if(!(entity instanceof LivingEntity)) return false;
+		LivingEntity livingEntity = (LivingEntity) entity;
+		for(PitEntityType entityType : entityTypes) {
+			switch(entityType) {
+				case REAL_PLAYER:
+					if(PlayerManager.isRealPlayer(livingEntity)) return true;
+					break;
+				case NON:
+					if(NonManager.getNon(livingEntity) != null) return true;
+					break;
+				case HOPPER:
+					if(HopperManager.isHopper(livingEntity)) return true;
+					break;
+				case PIT_MOB:
+					if(DarkzoneManager.isPitMob(livingEntity)) return true;
+					break;
+				case PIT_BOSS:
+					if(BossManager.isPitBoss(livingEntity)) return true;
+					break;
+			}
+		}
+		return false;
+	}
+
 	public static void stunEntity(LivingEntity livingEntity, int ticks) {
 		Misc.applyPotionEffect(livingEntity, PotionEffectType.SLOW, ticks, 7, true, false);
 		Misc.applyPotionEffect(livingEntity, PotionEffectType.JUMP, ticks, 128, true, false);
@@ -555,6 +580,7 @@ public class Misc {
 	}
 
 	public static boolean isCritical(LivingEntity entity) {
+		if(entity == null) return false;
 		return entity.getFallDistance() > 0.0F &&
 				!entity.isOnGround() &&
 				!entity.isInsideVehicle() &&
@@ -784,5 +810,25 @@ public class Misc {
 		if(itemStack.hasItemMeta()) return;
 		ItemMeta itemMeta = Bukkit.getItemFactory().getItemMeta(itemStack.getType());
 		itemStack.setItemMeta(itemMeta);
+	}
+
+	public static int getFallTime(int totalHeight) {
+		final double gravity = -0.03999999910593033;
+		final double drag = 0.9800000190734863;
+
+		double locY = 0;
+		double motY = 0;
+
+		int ticks = 0;
+
+		while(locY <= totalHeight) {
+			locY += motY;
+			motY *= drag;
+			motY -= gravity;
+
+			ticks++;
+		}
+
+		return ticks;
 	}
 }

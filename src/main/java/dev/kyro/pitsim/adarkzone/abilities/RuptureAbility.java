@@ -2,11 +2,12 @@ package dev.kyro.pitsim.adarkzone.abilities;
 
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.adarkzone.PitBossAbility;
+import dev.kyro.pitsim.controllers.DamageManager;
 import dev.kyro.pitsim.cosmetics.particles.ExplosionLargeParticle;
+import dev.kyro.pitsim.misc.Misc;
 import dev.kyro.pitsim.misc.Sounds;
 import dev.kyro.pitsim.misc.effects.FallingBlock;
 import net.minecraft.server.v1_8_R3.EntityPlayer;
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -136,7 +137,7 @@ public class RuptureAbility extends PitBossAbility {
 					new BukkitRunnable() {
 						@Override
 						public void run() {
-							viewer.damage(damage, getPitBoss().boss);
+							DamageManager.createDirectAttack(getPitBoss().boss, viewer, damage);
 							Sounds.CREEPER_EXPLODE.play(viewer.getLocation(), 10);
 
 							for(Player player : getViewers()) {
@@ -154,22 +155,13 @@ public class RuptureAbility extends PitBossAbility {
 
 	}
 
-	public List<Player> getViewers() {
-		List<Player> viewers = new ArrayList<>();
-		for(Entity entity : getPitBoss().boss.getNearbyEntities(50, 50, 50)) {
-			if(!(entity instanceof Player)) continue;
-			Player player = Bukkit.getPlayer(entity.getUniqueId());
-			if(player != null) viewers.add(player);
-		}
-		return viewers;
-	}
-
 	public Player getClosestViewer(Location location) {
 		Player nearest = null;
 		double distance = 0;
 		for(Entity nearbyEntity : location.getWorld().getNearbyEntities(location, 50, 50, 50)) {
 			if(!(nearbyEntity instanceof Player)) continue;
 			if(getPitBoss().boss == nearbyEntity) continue;
+			if(!Misc.isValidMobPlayerTarget(nearbyEntity)) continue;
 
 			double entityDistance = nearbyEntity.getLocation().distance(location);
 			if(nearest == null || distance > entityDistance) {

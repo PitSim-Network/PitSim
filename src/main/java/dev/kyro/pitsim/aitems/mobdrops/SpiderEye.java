@@ -31,7 +31,7 @@ public class SpiderEye extends StaticPitItem implements TemporaryItem {
 
 	@Override
 	public Material getMaterial() {
-		return Material.PORK;
+		return Material.SPIDER_EYE;
 	}
 
 	@Override

@@ -11,6 +11,7 @@ import dev.kyro.pitsim.megastreaks.Uberstreak;
 import dev.kyro.pitsim.misc.PitLoreBuilder;
 import dev.kyro.pitsim.misc.Sounds;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
 
@@ -23,7 +24,7 @@ public class Pullbow extends PitEnchant {
 				"pullbow", "pull");
 	}
 
-	@EventHandler
+	@EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
 	public void onAttack(AttackEvent.Pre attackEvent) {
 		if(!attackEvent.isAttackerPlayer()) return;
 		if(!canApply(attackEvent)) return;
@@ -33,7 +34,7 @@ public class Pullbow extends PitEnchant {
 
 		if(attackEvent.getAttacker() == attackEvent.getDefender()) return;
 
-		Cooldown cooldown = getCooldown(attackEvent.getAttackerPlayer(), 0);
+		Cooldown cooldown = getCooldown(attackEvent.getAttackerPlayer(), 20 * 8);
 		if(cooldown.isOnCooldown()) return;
 		else cooldown.restart();
 

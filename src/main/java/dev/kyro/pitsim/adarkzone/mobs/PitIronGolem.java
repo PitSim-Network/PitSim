@@ -5,6 +5,7 @@ import dev.kyro.pitsim.adarkzone.PitMob;
 import dev.kyro.pitsim.adarkzone.PitNameTag;
 import dev.kyro.pitsim.aitems.mobdrops.IronIngot;
 import dev.kyro.pitsim.controllers.ItemFactory;
+import dev.kyro.pitsim.enums.MobStatus;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.entity.Creature;
@@ -12,8 +13,8 @@ import org.bukkit.entity.IronGolem;
 
 public class PitIronGolem extends PitMob {
 
-	public PitIronGolem(Location spawnLocation) {
-		super(spawnLocation);
+	public PitIronGolem(Location spawnLocation, MobStatus mobStatus) {
+		super(spawnLocation, mobStatus);
 	}
 
 	@Override
@@ -28,7 +29,7 @@ public class PitIronGolem extends PitMob {
 
 	@Override
 	public String getRawDisplayName() {
-		return "Iron Golem";
+		return isMinion() ? "Minion Golem" : "Iron Golem";
 	}
 
 	@Override
@@ -38,12 +39,12 @@ public class PitIronGolem extends PitMob {
 
 	@Override
 	public int getMaxHealth() {
-		return 180;
+		return isMinion() ? 600 : 180;
 	}
 
 	@Override
 	public int getSpeedAmplifier() {
-		return 1;
+		return isMinion() ? 4 : 1;
 	}
 
 	@Override

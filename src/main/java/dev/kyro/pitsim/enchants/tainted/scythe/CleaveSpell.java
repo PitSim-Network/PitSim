@@ -51,7 +51,7 @@ public class CleaveSpell extends PitEnchant {
 							LivingEntity livingEntity = (LivingEntity) entity;
 							if(!Misc.isEntity(livingEntity, PitEntityType.REAL_PLAYER, PitEntityType.PIT_BOSS, PitEntityType.PIT_MOB)) continue;
 
-							DamageManager.createAttack(cleaveEntity.attacker, livingEntity, 5, attackEvent -> {
+							DamageManager.createDirectAttack(cleaveEntity.attacker, livingEntity, 5, attackEvent -> {
 								if(!attackEvent.isCancelled()) Sounds.CLEAVE3.play(cleaveEntity.attacker);
 							});
 						}

@@ -2,10 +2,11 @@ package dev.kyro.pitsim.adarkzone.abilities;
 
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.adarkzone.PitBossAbility;
+import dev.kyro.pitsim.controllers.DamageManager;
+import dev.kyro.pitsim.enums.PitEntityType;
 import dev.kyro.pitsim.misc.Misc;
 import dev.kyro.pitsim.misc.Sounds;
 import dev.kyro.pitsim.misc.effects.FallingBlock;
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Entity;
@@ -13,9 +14,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class SnakeAbility extends PitBossAbility {
 	public int length;
@@ -54,26 +52,16 @@ public class SnakeAbility extends PitBossAbility {
 					effect.play(origin, 20);
 
 					for(Entity entity : origin.getWorld().getNearbyEntities(origin, 1.5, 1.5, 1.5)) {
-						if(!(entity instanceof Player)) continue;
-						if(entity == getPitBoss().boss) continue;
+						if(!Misc.isEntity(entity, PitEntityType.REAL_PLAYER)) continue;
+						Player target = (Player) entity;
 
-						((Player) entity).damage(damage, getPitBoss().boss);
-						Misc.applyPotionEffect((Player) entity, PotionEffectType.SLOW, 20, 1, false, false);
+						DamageManager.createIndirectAttack(getPitBoss().boss, target, damage);
+						Misc.applyPotionEffect(target, PotionEffectType.SLOW, 20, 1, false, false);
 					}
 				}
 			}.runTaskLater(PitSim.INSTANCE, time);
 			time += 1;
 		}
-	}
-
-	public List<Player> getViewers() {
-		List<Player> viewers = new ArrayList<>();
-		for(Entity entity : getPitBoss().boss.getNearbyEntities(50, 50, 50)) {
-			if(!(entity instanceof Player)) continue;
-			Player player = Bukkit.getPlayer(entity.getUniqueId());
-			if(player != null) viewers.add(player);
-		}
-		return viewers;
 	}
 }
 

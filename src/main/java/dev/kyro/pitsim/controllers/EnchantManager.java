@@ -337,7 +337,8 @@ public class EnchantManager implements Listener {
 		ItemMeta itemMeta = itemStack.getItemMeta();
 		ALoreBuilder loreBuilder = new ALoreBuilder();
 
-		if(isJewel && isJewelComplete) {
+		MysticType type = MysticType.getMysticType(itemStack);
+		if((isJewel && isJewelComplete) || type == MysticType.TAINTED_SCYTHE || type == MysticType.TAINTED_CHESTPLATE) {
 			int currentLives = temporaryItem.getLives(itemStack);
 			int maxLives = temporaryItem.getMaxLives(itemStack);
 
