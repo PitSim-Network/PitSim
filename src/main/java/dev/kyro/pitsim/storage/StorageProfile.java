@@ -211,6 +211,7 @@ public class StorageProfile {
 	}
 
 	public void saveData(boolean isLogout) {
+		if(enderChest == null) return;
 		PluginMessage message = new PluginMessage().writeString("ITEM DATA SAVE").writeString(uuid.toString());
 
 		message.writeBoolean(isLogout);
