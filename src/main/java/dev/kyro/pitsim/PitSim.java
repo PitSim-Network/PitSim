@@ -167,6 +167,7 @@ public class PitSim extends JavaPlugin {
 			}
 		}
 
+		BossBarManager.init();
 		FirestoreManager.init();
 		for(Player onlinePlayer : Bukkit.getOnlinePlayers()) {
 			boolean success = PitPlayer.loadPitPlayer(onlinePlayer.getUniqueId());

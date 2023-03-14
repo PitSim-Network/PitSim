@@ -43,6 +43,7 @@ public class BossManager implements Listener {
 		PitBoss defenderBoss = getPitBoss(attackEvent.getDefender());
 		if(defenderBoss == null) return;
 		Player player = attackEvent.getAttackerPlayer();
+		defenderBoss.onHealthChange();
 		if(!attackEvent.isAttackerPlayer()) return;
 
 		UUID uuid = player.getUniqueId();

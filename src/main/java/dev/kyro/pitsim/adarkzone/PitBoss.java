@@ -2,12 +2,15 @@ package dev.kyro.pitsim.adarkzone;
 
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.adarkzone.notdarkzone.PitEquipment;
+import dev.kyro.pitsim.controllers.objects.PitBossBar;
 import dev.kyro.pitsim.misc.MinecraftSkin;
 import dev.kyro.pitsim.misc.Misc;
 import net.citizensnpcs.api.CitizensAPI;
 import net.citizensnpcs.api.npc.NPC;
 import net.citizensnpcs.npc.ai.CitizensNavigator;
 import net.citizensnpcs.trait.SkinTrait;
+import net.kyori.adventure.bossbar.BossBar;
+import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.EntityType;
@@ -25,6 +28,7 @@ public abstract class PitBoss {
 	public Player summoner;
 	public Map<UUID, Double> damageMap = new HashMap<>();
 	public DropPool dropPool;
+	public PitBossBar bossBar = new PitBossBar(getDisplayName(), 1F);
 
 //	Boss related
 	public NPC npcBoss;
@@ -184,6 +188,11 @@ public abstract class PitBoss {
 		onDeath();
 		getSubLevel().bossDeath();
 		BossManager.pitBosses.remove(this);
+		bossBar.remove();
+	}
+
+	public void onHealthChange() {
+		bossBar.updateProgress((float) (boss.getHealth() / boss.getMaxHealth()));
 	}
 
 	public void alertDespawn() {
