@@ -43,6 +43,11 @@ public class PitSpider extends PitMob {
 	}
 
 	@Override
+	public double getMeleeDamage() {
+		return 10;
+	}
+
+	@Override
 	public int getSpeedAmplifier() {
 		return isMinion() ? 2 : 1;
 	}

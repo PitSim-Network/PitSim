@@ -43,6 +43,11 @@ public class PitIronGolem extends PitMob {
 	}
 
 	@Override
+	public double getMeleeDamage() {
+		return 10;
+	}
+
+	@Override
 	public int getSpeedAmplifier() {
 		return isMinion() ? 4 : 1;
 	}

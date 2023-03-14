@@ -28,7 +28,7 @@ public class Tenacity extends RenownUpgrade {
 
 	@EventHandler
 	public void onKill(KillEvent killEvent) {
-		if(!killEvent.isKillerPlayer()) return;
+		if(!killEvent.isKillerPlayer() || !killEvent.isDeadPlayer()) return;
 		if(!UpgradeManager.hasUpgrade(killEvent.getKillerPlayer(), this)) return;
 
 		int tier = UpgradeManager.getTier(killEvent.getKillerPlayer(), this);

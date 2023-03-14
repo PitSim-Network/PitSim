@@ -45,6 +45,8 @@ import dev.kyro.pitsim.brewing.PotionManager;
 import dev.kyro.pitsim.brewing.objects.PotionEffect;
 import dev.kyro.pitsim.commands.*;
 import dev.kyro.pitsim.commands.admin.*;
+import dev.kyro.pitsim.commands.beta.BaseBetaCommand;
+import dev.kyro.pitsim.commands.beta.SoulsCommand;
 import dev.kyro.pitsim.commands.essentials.*;
 import dev.kyro.pitsim.controllers.*;
 import dev.kyro.pitsim.controllers.objects.*;
@@ -166,6 +168,9 @@ public class PitSim extends JavaPlugin {
 					}
 				}.runTaskLater(PitSim.INSTANCE, 1L);
 			}
+
+//			TODO: disable later
+			onlinePlayer.teleport(new Location(MapManager.getDarkzone(), 312.5, 68, -139.5, -104, 7));
 		}
 
 		FirestoreManager.init();
@@ -553,6 +558,7 @@ public class PitSim extends JavaPlugin {
 			NPCManager.registerNPC(new LeggingsShopNPC(Collections.singletonList(MapManager.getDarkzone())));
 			NPCManager.registerNPC(new PotionMasterNPC(Collections.singletonList(MapManager.getDarkzone())));
 			NPCManager.registerNPC(new AuctioneerNPC(Collections.singletonList(MapManager.getDarkzone())));
+			NPCManager.registerNPC(new MainProgressionNPC(Collections.singletonList(MapManager.getDarkzone())));
 		}
 
 		if(status.isOverworld()) {
@@ -588,6 +594,9 @@ public class PitSim extends JavaPlugin {
 		new JewelCommand(giveCommand, "jewel");
 		new StreakCommand(giveCommand, "streak");
 		new BountyCommand(giveCommand, "bounty");
+
+		AMultiCommand betaCommand = new BaseBetaCommand("beta");
+		new SoulsCommand(betaCommand, "souls");
 
 		getCommand("atest").setExecutor(new ATestCommand());
 		getCommand("ktest").setExecutor(new KTestCommand());
@@ -649,7 +658,7 @@ public class PitSim extends JavaPlugin {
 		getCommand("trash").setExecutor(new TrashCommand());
 		getCommand("rename").setExecutor(new RenameCommand());
 
-		getCommand("testenchant").setExecutor(new TestEnchantCommand());
+		getCommand("massenchant").setExecutor(new MassEnchantCommand());
 	}
 
 	private void registerListeners() {

@@ -66,4 +66,8 @@ public class WrapperEntityDamageEvent {
 	public AttackInfo getAttackInfo() {
 		return attackInfo;
 	}
+
+	public boolean hasAttackInfo() {
+		return attackInfo != null;
+	}
 }

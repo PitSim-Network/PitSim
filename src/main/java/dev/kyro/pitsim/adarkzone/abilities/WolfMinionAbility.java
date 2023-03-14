@@ -12,7 +12,6 @@ import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
 
 public class WolfMinionAbility extends MinionAbility {
-
 	public BukkitTask task;
 
 	public int spawnAmount;
@@ -36,7 +35,6 @@ public class WolfMinionAbility extends MinionAbility {
 	@EventHandler
 	public void onHit(AttackEvent.Apply event) {
 		if(event.getDefender() != getPitBoss().boss);
-
 		event.multipliers.add(Misc.getReductionMultiplier(subLevelType.getSubLevel().mobs.size()));
 	}
 
@@ -50,6 +48,4 @@ public class WolfMinionAbility extends MinionAbility {
 		super.disable();
 		task.cancel();
 	}
-
-
 }

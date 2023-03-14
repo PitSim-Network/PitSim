@@ -50,7 +50,7 @@ public class ManaBranch extends SkillBranch {
 	}
 
 	public static int shieldDownManaIncrease() {
-		return 100;
+		return 70;
 	}
 
 	@Override
@@ -213,7 +213,7 @@ public class ManaBranch extends SkillBranch {
 			@Override
 			public void addEffects() {
 				addEffect(new EffectData("max-mana", "&b+%value% max mana",
-						100, 100, 100, 100, 100, 100));
+						20, 30, 30, 40, 40, 40));
 			}
 		};
 	}
@@ -239,7 +239,7 @@ public class ManaBranch extends SkillBranch {
 			@Override
 			public void addEffects() {
 				addEffect(new EffectData("mana-regen", "&b+%value%% &7faster mana regen",
-						100, 100, 100, 100, 100, 100));
+						15, 15, 15, 15, 15, 15));
 			}
 		};
 	}

@@ -26,7 +26,7 @@ public class DamageBranch extends SkillBranch {
 
 		boolean hasLast = ProgressionManager.isUnlocked(attackEvent.getAttackerPitPlayer(), this, MajorUnlockPosition.LAST);
 		if(hasLast && Misc.isEntity(attackEvent.getDefender(), PitEntityType.PIT_MOB, PitEntityType.PIT_BOSS))
-			attackEvent.increasePercent += getMobBossDamageIncrease();
+			attackEvent.multipliers.add(getMobBossDamageIncrease());
 
 		if(Misc.isEntity(attackEvent.getDefender(), PitEntityType.PIT_MOB))
 			attackEvent.multipliers.addAll(ProgressionManager.getUnlockedEffectAsList(
@@ -37,8 +37,8 @@ public class DamageBranch extends SkillBranch {
 					attackEvent.getAttackerPitPlayer(), this, PathPosition.SECOND_PATH, "damage"));
 	}
 
-	public static int getMobBossDamageIncrease() {
-		return 100;
+	public static double getMobBossDamageIncrease() {
+		return 1.4;
 	}
 
 	public static double getMobKillHealing() {
@@ -115,7 +115,7 @@ public class DamageBranch extends SkillBranch {
 			public ItemStack getBaseStack() {
 				return new AItemStackBuilder(Material.BLAZE_POWDER)
 						.setLore(new ALoreBuilder(
-								"&7Deal &c+" + getMobBossDamageIncrease() + "% &7damage vs mobs",
+								"&7Deal &c" + getMobBossDamageIncrease() + "x &7damage vs mobs",
 								"&7and bosses"
 						))
 						.getItemStack();
@@ -209,7 +209,7 @@ public class DamageBranch extends SkillBranch {
 			@Override
 			public void addEffects() {
 				addEffect(new EffectData("damage", "&c%value%x &7damage vs mobs",
-						2, 2, 2, 3, 3, 3));
+						1.25, 1.25, 1.25, 1.25, 1.25, 1.25));
 			}
 		};
 	}
@@ -235,7 +235,7 @@ public class DamageBranch extends SkillBranch {
 			@Override
 			public void addEffects() {
 				addEffect(new EffectData("damage", "&c%value%x &7damage vs bosses",
-						1, 2, 3, 4, 5, 6));
+						1.25, 1.25, 1.25, 1.25, 1.25, 1.25));
 			}
 		};
 	}

@@ -1,24 +1,25 @@
 package dev.kyro.pitsim.commands;
 
 import dev.kyro.arcticapi.misc.AOutput;
+import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.aitems.MysticFactory;
-import dev.kyro.pitsim.inventories.TestEnchantGUI;
+import dev.kyro.pitsim.inventories.MassEnchantGUI;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
-public class TestEnchantCommand implements CommandExecutor {
+public class MassEnchantCommand implements CommandExecutor {
 	@Override
 	public boolean onCommand(CommandSender commandSender, Command command, String s, String[] args) {
 		if(!(commandSender instanceof Player)) return false;
 		Player player = (Player) commandSender;
 
-		if(!player.hasPermission("pitsim.admin")) return false;
+		if(!PitSim.isDev() && !player.hasPermission("pitsim.admin")) return false;
 
 		if(args.length < 1) {
-			AOutput.error(player, "&cUsage: /testEnchant <mysticType>");
+			AOutput.error(player, "&cUsage: /massenchant <mysticType>");
 			return false;
 		}
 
@@ -29,7 +30,7 @@ public class TestEnchantCommand implements CommandExecutor {
 			return false;
 		}
 
-		TestEnchantGUI gui = new TestEnchantGUI(player, mysticType);
+		MassEnchantGUI gui = new MassEnchantGUI(player, mysticType);
 		gui.open();
 
 		return false;

@@ -1,6 +1,5 @@
 package dev.kyro.pitsim.controllers;
 
-import de.myzelyam.api.vanish.VanishAPI;
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.adarkzone.BossManager;
@@ -34,7 +33,9 @@ import me.clip.placeholderapi.PlaceholderAPI;
 import net.citizensnpcs.api.CitizensAPI;
 import net.minecraft.server.v1_8_R3.EntityLiving;
 import net.minecraft.server.v1_8_R3.EntityPlayer;
-import org.bukkit.*;
+import org.bukkit.Bukkit;
+import org.bukkit.EntityEffect;
+import org.bukkit.Location;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftLivingEntity;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
 import org.bukkit.entity.*;
@@ -80,13 +81,9 @@ public class DamageManager implements Listener {
 
 	public static void createIndirectAttack(LivingEntity fakeAttacker, LivingEntity defender, double damage, Consumer<AttackEvent> callback) {
 		assert defender != null;
+		if(!Misc.isValidMobPlayerTarget(defender)) return;
 
-		if(defender instanceof Player) {
-			Player player = (Player) defender;
-			if(VanishAPI.isInvisible(player) || player.getGameMode() != GameMode.SURVIVAL) return;
-		}
-
-		attackInfoMap.put(defender, new AttackInfo(fakeAttacker, callback));
+		attackInfoMap.put(defender, new AttackInfo(AttackInfo.AttackType.FAKE_INDIRECT, fakeAttacker, callback));
 		EntityDamageEvent event = new EntityDamageEvent(defender, EntityDamageEvent.DamageCause.CUSTOM, damage);
 		Bukkit.getPluginManager().callEvent(event);
 		if(!event.isCancelled()) defender.damage(event.getDamage());
@@ -98,13 +95,9 @@ public class DamageManager implements Listener {
 
 	public static void createDirectAttack(LivingEntity attacker, LivingEntity defender, double damage, Consumer<AttackEvent> callback) {
 		assert attacker != null && defender != null;
+		if(!Misc.isValidMobPlayerTarget(defender)) return;
 
-		if(defender instanceof Player) {
-			Player player = (Player) defender;
-			if(VanishAPI.isInvisible(player) || player.getGameMode() != GameMode.SURVIVAL) return;
-		}
-
-		attackInfoMap.put(defender, new AttackInfo(null, callback));
+		attackInfoMap.put(defender, new AttackInfo(AttackInfo.AttackType.FAKE_DIRECT, null, callback));
 
 		defender.damage(damage, attacker);
 	}
@@ -345,6 +338,9 @@ public class DamageManager implements Listener {
 			if(PlayerManager.isRealPlayer(attackEvent.getAttackerPlayer())) multiplier *= 2;
 			if(ProgressionManager.isUnlocked(attackEvent.getDefenderPitPlayer(), DefenceBranch.INSTANCE, SkillBranch.MajorUnlockPosition.LAST))
 				multiplier *= Misc.getReductionMultiplier(DefenceBranch.getShieldDamageReduction());
+			if(attackEvent.isAttackerRealPlayer() && ProgressionManager.isUnlocked(attackEvent.getDefenderPitPlayer(),
+					DefenceBranch.INSTANCE, SkillBranch.MajorUnlockPosition.FIRST_PATH))
+				multiplier *= Misc.getReductionMultiplier(DefenceBranch.getShieldDamageFromPlayersReduction());
 			if(defenderShield.isActive()) damage = defenderShield.damageShield(damage, multiplier);
 		}
 		attackEvent.getWrapperEvent().getSpigotEvent().setDamage(damage);

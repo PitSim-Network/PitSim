@@ -35,12 +35,8 @@ public class PopupAbility extends PitBossAbility {
 
 	@Override
 	public void onRoutineExecute() {
-//		Location spawnLocation = getPitBoss().boss.getLocation();
-//		new Popup(5, spawnLocation);
-
-		if(getPitBoss().bossTargetingSystem.findTarget() == null) return;
-		spawnPopups(getPitBoss().bossTargetingSystem.findTarget().getLocation());
-
+		if(getPitBoss().bossTargetingSystem.target == null) return;
+		spawnPopups(getPitBoss().bossTargetingSystem.target.getLocation());
 	}
 
 	public void spawnPopups(Location centerLocation) {
