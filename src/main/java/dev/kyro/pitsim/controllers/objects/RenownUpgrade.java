@@ -40,7 +40,7 @@ public abstract class RenownUpgrade implements Listener, Summarizable {
 
 	@Override
 	public String getIdentifier() {
-		return "ENCHANT_" + refName.toUpperCase().replaceAll("[- ]", "_");
+		return "UPGRADE_" + refName.toUpperCase().replaceAll("[- ]", "_");
 	}
 
 	@Override

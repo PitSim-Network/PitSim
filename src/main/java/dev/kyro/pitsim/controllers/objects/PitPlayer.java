@@ -627,7 +627,7 @@ public class PitPlayer {
 	public boolean useManaForSpell(int amount) {
 		if(!hasManaUnlocked()) return false;
 		if(ProgressionManager.isUnlocked(this, ManaBranch.INSTANCE, SkillBranch.MajorUnlockPosition.LAST))
-			amount *= ManaBranch.getSpellManaReduction();
+			amount *= Misc.getReductionMultiplier(ManaBranch.getSpellManaReduction());
 		return useMana(amount);
 	}
 

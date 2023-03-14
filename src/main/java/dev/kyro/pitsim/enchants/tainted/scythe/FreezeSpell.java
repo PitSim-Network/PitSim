@@ -80,7 +80,7 @@ public class FreezeSpell extends PitEnchant {
 		Sounds.FREEZE1.play(player);
 
 		for(Entity nearbyEntity : event.getPlayer().getNearbyEntities(6, 6, 6)) {
-			if(!Misc.isEntity(nearbyEntity, PitEntityType.REAL_PLAYER, PitEntityType.PIT_MOB, PitEntityType.PIT_BOSS))
+			if(!Misc.isEntity(nearbyEntity, PitEntityType.REAL_PLAYER, PitEntityType.PIT_MOB, PitEntityType.PIT_BOSS)) continue;
 
 			Misc.applyPotionEffect((LivingEntity) nearbyEntity, PotionEffectType.SLOW, 40, 100, false, false);
 			Misc.applyPotionEffect((LivingEntity) nearbyEntity, PotionEffectType.WEAKNESS, 40, 100, false, false);

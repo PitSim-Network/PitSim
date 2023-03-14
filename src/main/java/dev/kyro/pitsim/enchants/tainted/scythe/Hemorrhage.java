@@ -55,11 +55,11 @@ public class Hemorrhage extends PitEnchant {
 				attackEvent.getDefender().setHealth(Math.max(attackEvent.getDefender().getHealth() -
 						getBleedDamage(enchantLvl), 1));
 
-				Location centerLocation = attackEvent.getDefenderPlayer().getLocation().add(0, 1, 0);
+				Location centerLocation = attackEvent.getDefender().getLocation().add(0, 1, 0);
 				BlockCrackParticle particle = new BlockCrackParticle(new MaterialData(Material.REDSTONE_BLOCK));
 				for(int i = 0; i < 50; i++) particle.display(Misc.getNearbyRealPlayers(centerLocation, 25), centerLocation);
 
-				Sounds.HEMORRHAGE.play(attackEvent.getDefenderPlayer().getLocation());
+				Sounds.HEMORRHAGE.play(attackEvent.getDefender().getLocation());
 			}
 		}.runTaskTimer(PitSim.INSTANCE, 0L, 20L);
 	}

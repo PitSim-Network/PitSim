@@ -130,7 +130,11 @@ public class DarkzoneManager implements Listener {
 					Bukkit.getPluginManager().callEvent(event);
 					if(!event.isCancelled()) {
 						double mana = event.getFinalMana();
-						if(pitPlayer.mana + mana <= pitPlayer.getMaxMana()) pitPlayer.mana += mana;
+						if(pitPlayer.mana + mana <= pitPlayer.getMaxMana()) {
+							pitPlayer.mana += mana;
+						} else {
+							pitPlayer.mana = pitPlayer.getMaxMana();
+						}
 					}
 
 					pitPlayer.updateManaBar();

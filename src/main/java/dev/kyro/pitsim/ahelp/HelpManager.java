@@ -103,6 +103,33 @@ public class HelpManager implements Listener {
 						"when can i join betterpit again?"
 				));
 
+		helpIntents.add(new HelpIntent("WHO_IS_ANDREW_TATE", HelpPageIdentifier.MAIN_PAGE)
+				.setReply("A MAN OF &4&l&oLIMITLESS POWER&7 JUST BELOW GOD. AN &4&l&oALPHA DOG&7 WHO &4&l&oRULES&7 " +
+						"OVER ALL MEN AND IS MORE CAPABLE THEN YOU EVER WILL BE")
+				.setTrainingPhrases(
+						"who is andrew tate?",
+						"who is tate?"
+				));
+
+		helpIntents.add(new HelpIntent("WHO_IS_KYRO", HelpPageIdentifier.MAIN_PAGE)
+				.setReply("&7The best &6&lPit&e&lSim&7 &9Developer &7(Kyro#2820)")
+				.setTrainingPhrases(
+						"who is kyro?",
+						"who is kyrokrypt?"
+				));
+
+		helpIntents.add(new HelpIntent("WHO_IS_WIJI", HelpPageIdentifier.MAIN_PAGE)
+				.setReply("&7The second-best &6&lPit&e&lSim&7 &9Developer &7(wiji#0001)")
+				.setTrainingPhrases(
+						"who is wiji?"
+				));
+
+		helpIntents.add(new HelpIntent("WHO_IS_FINN", HelpPageIdentifier.MAIN_PAGE)
+				.setReply("&7Single man, ladies hmu Finn#6575, btw im 6'2\", international DJ, worldwide traveler, inactive pitsim developer")
+				.setTrainingPhrases(
+						"who is finn?"
+				));
+
 //		Pages
 		helpPages.add(new HelpPage(HelpPageIdentifier.MAIN_PAGE));
 		helpPages.add(new HelpPage(HelpPageIdentifier.BEST_PERKS)
@@ -123,8 +150,24 @@ public class HelpManager implements Listener {
 			AgentName agentParent = AgentName.of(PROJECT_ID, LOCATION_ID, AGENT_ID);
 			FlowName flowParent = FlowName.of(PROJECT_ID, LOCATION_ID, AGENT_ID, FLOW_ID);
 
-			Iterable<Page> pages = pagesClient.listPages(flowParent).iterateAll();
-			Iterable<Intent> intents = intentsClient.listIntents(agentParent).iterateAll();
+			List<Page> pages = new ArrayList<>();
+			pagesClient.listPages(flowParent).iterateAll().forEach(pages::add);
+			List<Intent> intents = new ArrayList<>();
+			intentsClient.listIntents(agentParent).iterateAll().forEach(intents::add);
+
+//			if(true) {
+//				for(Intent intent : intents) {
+//					try {
+//						intentsClient.deleteIntent(intent.getName());
+//						System.out.println("deleting intent: " + intent.getDisplayName());
+//						sleep(1000);
+//					} catch(Exception e) {
+//						e.printStackTrace();
+//					}
+//				}
+//				return;
+//			}
+
 			Map<HelpPage, Page> pageMap = new LinkedHashMap<>();
 			Map<HelpIntent, Intent> intentMap = new LinkedHashMap<>();
 			for(HelpPage helpPage : helpPages) {
@@ -178,22 +221,22 @@ public class HelpManager implements Listener {
 				helpPage.setFullName(createdPage.getName());
 				pageMap.put(helpPage, createdPage);
 				AOutput.log("Created page: " + entry.getKey().getIdentifier());
-				sleep(1500);
+				sleep(1000);
 			}
 
 			for(Map.Entry<HelpIntent, Intent> entry : intentMap.entrySet()) {
 				HelpIntent helpIntent = entry.getKey();
 				Intent intent = entry.getValue();
 				if(intent != null) {
-					intent = Intent.newBuilder()
-							.setName(intent.getName())
-							.addAllTrainingPhrases(createTrainingPhrases(helpIntent.getTrainingPhrases()))
-							.build();
-					FieldMask fieldMask = FieldMask.newBuilder().addPaths("training_phrases").build();
-					intent = intentsClient.updateIntent(intent, fieldMask);
-					intentMap.put(helpIntent, intent);
-					AOutput.log("Updated intent: " + intent.getDisplayName());
-					sleep(1500);
+//					intent = Intent.newBuilder()
+//							.setName(intent.getName())
+//							.addAllTrainingPhrases(createTrainingPhrases(helpIntent.getTrainingPhrases()))
+//							.build();
+//					FieldMask fieldMask = FieldMask.newBuilder().addPaths("training_phrases").build();
+//					intent = intentsClient.updateIntent(intent, fieldMask);
+//					intentMap.put(helpIntent, intent);
+//					AOutput.log("Updated intent: " + intent.getDisplayName());
+//					sleep(1000);
 					continue;
 				}
 
@@ -204,7 +247,7 @@ public class HelpManager implements Listener {
 				intent = intentsClient.createIntent(agentParent, intent);
 				intentMap.put(helpIntent, intent);
 				AOutput.log("Created intent: " + helpIntent.getIdentifier());
-				sleep(1500);
+				sleep(1000);
 			}
 
 			for(Map.Entry<HelpPage, Page> entry : pageMap.entrySet()) {
@@ -241,7 +284,7 @@ public class HelpManager implements Listener {
 
 					transitionRoutes.add(builder.build());
 					AOutput.log("Added intent " + intent.getDisplayName() + " to page " + page.getDisplayName());
-					sleep(1500);
+					sleep(1000);
 				}
 
 				if(transitionRoutes.isEmpty()) continue;
@@ -258,7 +301,7 @@ public class HelpManager implements Listener {
 				page = pagesClient.updatePage(updatePageRequest);
 				pageMap.put(helpPage, page);
 				AOutput.log("Updated transition routes for page: " + page.getDisplayName());
-				sleep(1500);
+				sleep(1000);
 			}
 		} catch(IOException exception) {
 			exception.printStackTrace();
