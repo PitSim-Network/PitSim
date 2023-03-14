@@ -6,7 +6,7 @@ import dev.kyro.pitsim.adarkzone.PitBoss;
 import dev.kyro.pitsim.adarkzone.SubLevelType;
 import dev.kyro.pitsim.adarkzone.abilities.AnvilRainAbility;
 import dev.kyro.pitsim.adarkzone.abilities.CollapseAbility;
-import dev.kyro.pitsim.adarkzone.abilities.GolemMinionAbility;
+import dev.kyro.pitsim.adarkzone.abilities.GenericMinionAbility;
 import dev.kyro.pitsim.adarkzone.abilities.LightningAbility;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
@@ -17,7 +17,7 @@ public class PitIronGolemBoss extends PitBoss {
 		super(summoner);
 
 		abilities(
-				new GolemMinionAbility(1, 1, 1),
+				new GenericMinionAbility(1, SubLevelType.IRON_GOLEM, 1, 1),
 				new AnvilRainAbility(2, 40, 250, 10),
 				new CollapseAbility(2, 5, 5, 10, 20),
 				new LightningAbility(3, 1, 0.05)

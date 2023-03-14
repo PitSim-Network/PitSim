@@ -7,20 +7,29 @@ import org.bukkit.Material;
 
 import java.util.Random;
 
-public class SpiderMinionAbility extends MinionAbility {
+public class GenericMinionAbility extends MinionAbility {
 
 	public int spawnAmount;
-	public int spawnRadius;
+	public int radius = -1;
 
-	public SpiderMinionAbility(double routineWeight, int spawnAmount, int maxMobs, int spawnRadius) {
-		super(routineWeight, SubLevelType.SPIDER, maxMobs);
+	public GenericMinionAbility(double routineWeight, SubLevelType type, int spawnAmount, int maxMobs, int spawnRadius) {
+		this(routineWeight, type, spawnAmount, maxMobs);
+		this.radius = spawnRadius;
+	}
+
+	public GenericMinionAbility(double routineWeight, SubLevelType type, int spawnAmount, int maxMobs) {
+		super(routineWeight, type, maxMobs);
 		this.spawnAmount = spawnAmount;
-		this.spawnRadius = spawnRadius;
 	}
 
 	@Override
 	public void onRoutineExecute() {
-		spawnMobs(getSpawnLocation(spawnRadius), spawnAmount);
+		spawnMobs(radius == -1 ? null : getSpawnLocation(radius), spawnAmount);
+	}
+
+	@Override
+	public boolean shouldExecuteRoutine() {
+		return subLevelType.getSubLevel().mobs.size() < maxMobs;
 	}
 
 	public Location getSpawnLocation(int radius) {
