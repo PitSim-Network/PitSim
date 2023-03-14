@@ -385,9 +385,11 @@ public class PitSim extends JavaPlugin {
 			session.undo(session);
 		}
 
-		for(EditSession session : CageAbility.sessionMap.values()) {
-			session.undo(session);
-		}
+		try {
+			for(EditSession session : CageAbility.sessionMap.values()) {
+				session.undo(session);
+			}
+		} catch(NoClassDefFoundError ignored) { }
 
 		for(Map.Entry<Location, Material> entry : FreezeSpell.blockMap.entrySet()) {
 			entry.getKey().getBlock().setType(entry.getValue());
