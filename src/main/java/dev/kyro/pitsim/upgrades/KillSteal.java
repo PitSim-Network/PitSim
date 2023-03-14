@@ -45,6 +45,6 @@ public class KillSteal extends RenownUpgrade {
 	@Override
 	public String getSummary() {
 		return "&eKill Steal&7 is an &erenown&7 upgrade that increases the percentage on all your assists " +
-				"(and turn some assists into kills)";
+				"(and turns some assists into kills)";
 	}
 }

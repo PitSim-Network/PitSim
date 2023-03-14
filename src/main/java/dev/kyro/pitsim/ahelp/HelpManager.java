@@ -7,10 +7,7 @@ import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.controllers.EnchantManager;
 import dev.kyro.pitsim.controllers.PerkManager;
 import dev.kyro.pitsim.controllers.UpgradeManager;
-import dev.kyro.pitsim.controllers.objects.Megastreak;
-import dev.kyro.pitsim.controllers.objects.PitEnchant;
-import dev.kyro.pitsim.controllers.objects.PitPerk;
-import dev.kyro.pitsim.controllers.objects.RenownUpgrade;
+import dev.kyro.pitsim.controllers.objects.*;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 
@@ -42,8 +39,9 @@ public class HelpManager implements Listener {
 
 	public static void registerIntentsAndPages() {
 //		Intents
-		for(Megastreak megastreak : PerkManager.megastreaks) registerIntent(megastreak);
 		for(PitPerk pitPerk : PerkManager.pitPerks) registerIntent(pitPerk);
+		for(Killstreak killstreak : PerkManager.killstreaks) registerIntent(killstreak);
+		for(Megastreak megastreak : PerkManager.megastreaks) registerIntent(megastreak);
 		for(RenownUpgrade upgrade : UpgradeManager.upgrades) registerIntent(upgrade);
 		for(PitEnchant pitEnchant : EnchantManager.pitEnchants) registerIntent(pitEnchant);
 
@@ -173,7 +171,7 @@ public class HelpManager implements Listener {
 //				for(Intent intent : intents) {
 //					try {
 //						intentsClient.deleteIntent(intent.getName());
-//						System.out.println("deleting intent: " + intent.getDisplayName());
+//						AOutput.log("deleting intent: " + intent.getDisplayName());
 //						sleep(1000);
 //					} catch(Exception e) {
 //						e.printStackTrace();
