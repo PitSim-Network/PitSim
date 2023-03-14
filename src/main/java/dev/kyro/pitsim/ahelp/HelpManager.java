@@ -32,6 +32,9 @@ public class HelpManager implements Listener {
 	private static PagesSettings pagesSettings;
 	private static IntentsSettings intentsSettings;
 
+	//	TODO: Replace with database code
+	private static List<StoredRequest> tempStoredRequests = new ArrayList<>();
+
 	public HelpManager() {
 		setupSettings();
 		setupEnv();
@@ -43,6 +46,16 @@ public class HelpManager implements Listener {
 		for(PitPerk pitPerk : PerkManager.pitPerks) registerIntent(pitPerk);
 		for(RenownUpgrade upgrade : UpgradeManager.upgrades) registerIntent(upgrade);
 		for(PitEnchant pitEnchant : EnchantManager.pitEnchants) registerIntent(pitEnchant);
+
+		helpIntents.add(new HelpIntent("NO_INTENT", HelpPageIdentifier.MAIN_PAGE)
+				.setTrainingPhrases(
+						"?",
+						"huh?",
+						"what?",
+						"how are you?",
+						"where are you?",
+						"what are you doing?"
+				));
 
 		helpIntents.add(new HelpIntent("WHAT_IS_THE_DARKZONE", HelpPageIdentifier.MAIN_PAGE)
 				.setReply("The darkzone is a place that makes you hate living more than anything else")
@@ -202,14 +215,14 @@ public class HelpManager implements Listener {
 				HelpPage helpPage = entry.getKey();
 				Page page = entry.getValue();
 				if(page != null) {
-//						page = Page.newBuilder()
-//								.setName(page.getName())
-//								.setEntryFulfillment(createFulfillment(helpPage.getEntryFulfillment()))
-//								.build();
-//						FieldMask fieldMask = FieldMask.newBuilder().addPaths("entry_fulfillment").build();
-//						page = pagesClient.updatePage(page, fieldMask);
-//						pageMap.put(helpPage, page);
-//						AOutput.log("Updated page: " + page.getDisplayName());
+						page = Page.newBuilder()
+								.setName(page.getName())
+								.setEntryFulfillment(createFulfillment(helpPage.getEntryFulfillment()))
+								.build();
+						FieldMask fieldMask = FieldMask.newBuilder().addPaths("entry_fulfillment").build();
+						page = pagesClient.updatePage(page, fieldMask);
+						pageMap.put(helpPage, page);
+						AOutput.log("Updated page: " + page.getDisplayName());
 					continue;
 				}
 
@@ -229,15 +242,15 @@ public class HelpManager implements Listener {
 				HelpIntent helpIntent = entry.getKey();
 				Intent intent = entry.getValue();
 				if(intent != null) {
-//					intent = Intent.newBuilder()
-//							.setName(intent.getName())
-//							.addAllTrainingPhrases(createTrainingPhrases(helpIntent.getTrainingPhrases()))
-//							.build();
-//					FieldMask fieldMask = FieldMask.newBuilder().addPaths("training_phrases").build();
-//					intent = intentsClient.updateIntent(intent, fieldMask);
-//					intentMap.put(helpIntent, intent);
-//					AOutput.log("Updated intent: " + intent.getDisplayName());
-//					sleep(1000);
+					intent = Intent.newBuilder()
+							.setName(intent.getName())
+							.addAllTrainingPhrases(createTrainingPhrases(helpIntent.getTrainingPhrases()))
+							.build();
+					FieldMask fieldMask = FieldMask.newBuilder().addPaths("training_phrases").build();
+					intent = intentsClient.updateIntent(intent, fieldMask);
+					intentMap.put(helpIntent, intent);
+					AOutput.log("Updated intent: " + intent.getDisplayName());
+					sleep(1000);
 					continue;
 				}
 
@@ -401,6 +414,22 @@ public class HelpManager implements Listener {
 		return null;
 	}
 
+	public static StoredRequest getStoredRequest(String query) {
+//		TODO: Replace with database code
+		for(StoredRequest request : tempStoredRequests) if(request.getQuery().equals(query)) return request;
+		return null;
+	}
+
+	public static void writeStoredRequest(StoredRequest request) {
+//		TODO: Replace with database code
+		tempStoredRequests.add(request);
+	}
+
+	public static void clearStoredData() {
+//		TODO: Replace with database code
+		tempStoredRequests.clear();
+	}
+
 	public static HelperAgent getAgent(Player player) {
 		if(player == null) throw new RuntimeException();
 		if(helpClientMap.containsKey(player)) {
@@ -431,7 +460,7 @@ public class HelpManager implements Listener {
 			this.player = player;
 		}
 
-		public void detectIntent(String text) {
+		public String detectIntent(String text) {
 			if(!isReady) {
 				isReady = true;
 				detectIntent("init");
@@ -448,17 +477,22 @@ public class HelpManager implements Listener {
 
 				DetectIntentResponse response = client.detectIntent(request);
 				QueryResult queryResult = response.getQueryResult();
+				return queryResult.getIntent().getDisplayName();
+			} catch(IOException exception) {
+				throw new RuntimeException(exception);
+			}
+		}
 
-				String intent = queryResult.getIntent().getDisplayName();
-				if(intent.equals("DEFAULT_INIT")) return;
-				HelpIntent helpIntent = getHelpIntent(intent);
-				if(helpIntent == null) {
-					AOutput.error(player, "&9&lAI!&7 Sorry, I'm not sure about that");
-					return;
-				}
+		public void executeIntent(String intent) {
+			if(intent.equals("DEFAULT_INIT")) return;
+			HelpIntent helpIntent = getHelpIntent(intent);
+			if(helpIntent == null) {
+				AOutput.error(player, "&9&lAI!&7 Sorry, I'm not sure about that");
+				return;
+			}
 
-				if(helpIntent.getChildPage() == null) remove();
-				setLastIntent(helpIntent);
+			if(helpIntent.getChildPage() == null) remove();
+			setLastIntent(helpIntent);
 
 //				AOutput.send(player, "&7====================");
 //				AOutput.send(player, "&7text: " + queryResult.getText());
@@ -469,12 +503,9 @@ public class HelpManager implements Listener {
 //				}
 //				AOutput.send(player, "&7====================");
 
-				String reply = helpIntent.getReply();
-				if(reply == null) return;
-				AOutput.send(player, helpIntent.getReply());
-			} catch(IOException exception) {
-				throw new RuntimeException(exception);
-			}
+			String reply = helpIntent.getReply();
+			if(reply == null) return;
+			AOutput.send(player, helpIntent.getReply());
 		}
 
 		public void remove() {
@@ -505,6 +536,24 @@ public class HelpManager implements Listener {
 		public void setLastIntent(HelpIntent lastIntent) {
 			this.lastIntent = lastIntent;
 			lastIntentUpdate = System.currentTimeMillis();
+		}
+	}
+
+	public static class StoredRequest {
+		private final String query;
+		private final String intent;
+
+		public StoredRequest(String query, String intent) {
+			this.query = query;
+			this.intent = intent;
+		}
+
+		public String getQuery() {
+			return query;
+		}
+
+		public String getIntent() {
+			return intent;
 		}
 	}
 }

@@ -1,6 +1,7 @@
 package dev.kyro.pitsim.controllers;
 
 import dev.kyro.arcticapi.misc.AOutput;
+import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.ahelp.HelpManager;
 import dev.kyro.pitsim.aitems.PitItem;
 import dev.kyro.pitsim.commands.essentials.GamemodeCommand;
@@ -18,13 +19,13 @@ import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.scheduler.BukkitRunnable;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 public class ChatManager implements Listener {
 	public static List<String> illegalPhrases = new ArrayList<>();
+	public static Map<Player, Integer> helpCooldownMap = new HashMap<>();
 
 	static {
 		illegalPhrases.add("kyro");
@@ -127,13 +128,71 @@ public class ChatManager implements Listener {
 
 		event.setMessage(message);
 
+		handleQuestion(player, message);
+	}
+
+	public static void handleQuestion(Player player, String message) {
+		message = ChatColor.stripColor(message);
+		HelpManager.HelperAgent helperAgent = HelpManager.getAgent(player);
+		final boolean shouldStoreRequest;
+		if(message.endsWith("?") && !helperAgent.isWaitingForResponse()) {
+			HelpManager.StoredRequest storedRequest = HelpManager.getStoredRequest(message);
+			if(storedRequest != null) {
+				new BukkitRunnable() {
+					@Override
+					public void run() {
+						helperAgent.executeIntent(storedRequest.getIntent());
+					}
+				}.runTaskLater(PitSim.INSTANCE, 1L);
+				return;
+			} else {
+				shouldStoreRequest = true;
+			}
+		} else {
+			shouldStoreRequest = false;
+		}
+
+		if(message.endsWith("?") && !player.isOp()) {
+			int recentMessages = helpCooldownMap.getOrDefault(player, 0);
+			if(recentMessages > 3) {
+				sendMessageDelayed(player, "&9&lAI!&7 Please slow down with your requests");
+				return;
+			}
+			helpCooldownMap.put(player, ++recentMessages);
+			new BukkitRunnable() {
+				@Override
+				public void run() {
+					int recentMessages = helpCooldownMap.getOrDefault(player, 0);
+					if(recentMessages <= 1) {
+						helpCooldownMap.remove(player);
+					} else {
+						helpCooldownMap.put(player, --recentMessages);
+					}
+				}
+			}.runTaskLater(PitSim.INSTANCE, 20 * 60);
+		}
+
 		String finalMessage = message;
 		new Thread(() -> {
-			HelpManager.HelperAgent helperAgent = HelpManager.getAgent(player);
 			if(finalMessage.endsWith("?") || helperAgent.isWaitingForResponse()) {
-				helperAgent.detectIntent(ChatColor.stripColor(finalMessage));
+				String intent = helperAgent.detectIntent(finalMessage);
+				helperAgent.executeIntent(intent);
+				if(shouldStoreRequest) {
+					HelpManager.StoredRequest storedRequest = new HelpManager.StoredRequest(finalMessage, intent);
+					HelpManager.writeStoredRequest(storedRequest);
+					System.out.println("writing stored request");
+				}
 			}
 		}).start();
+	}
+
+	public static void sendMessageDelayed(Player player, String message) {
+		new BukkitRunnable() {
+			@Override
+			public void run() {
+				AOutput.error(player, message);
+			}
+		}.runTaskLater(PitSim.INSTANCE, 1L);
 	}
 
 	@EventHandler
