@@ -170,7 +170,7 @@ public class PitSim extends JavaPlugin {
 			}
 
 //			TODO: disable later
-			onlinePlayer.teleport(new Location(MapManager.getDarkzone(), 312.5, 68, -139.5, -104, 7));
+//			onlinePlayer.teleport(new Location(MapManager.getDarkzone(), 312.5, 68, -139.5, -104, 7));
 		}
 
 		FirestoreManager.init();
