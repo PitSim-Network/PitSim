@@ -471,18 +471,16 @@ public class PitSim extends JavaPlugin {
 		}
 
 	private void registerPerks() {
-
 		PerkManager.registerUpgrade(new NoPerk());
+
 		PerkManager.registerUpgrade(new Vampire());
 		PerkManager.registerUpgrade(new Dirty());
 		PerkManager.registerUpgrade(new StrengthChaining());
 		PerkManager.registerUpgrade(new Gladiator());
 		PerkManager.registerUpgrade(new Thick());
-//		PerkManager.registerUpgrade(new AssistantToTheStreaker());
 		PerkManager.registerUpgrade(new FirstStrike());
 		PerkManager.registerUpgrade(new Streaker());
 		PerkManager.registerUpgrade(new CounterJanitor());
-//		PerkManager.registerUpgrade(new Regenerative());
 		PerkManager.registerUpgrade(new JewelHunter());
 		PerkManager.registerUpgrade(new Dispersion());
 	}
@@ -495,7 +493,6 @@ public class PitSim extends JavaPlugin {
 		PerkManager.registerKillstreak(new AssuredStrike());
 		PerkManager.registerKillstreak(new Leech());
 
-//		PerkManager.registerKillstreak(new TacticalRetreat());
 		PerkManager.registerKillstreak(new RAndR());
 		PerkManager.registerKillstreak(new FightOrFlight());
 		PerkManager.registerKillstreak(new HerosHaste());
@@ -739,24 +736,23 @@ public class PitSim extends JavaPlugin {
 	}
 
 	public void registerUpgrades() {
+		UpgradeManager.registerUpgrade(new Tenacity());
 		UpgradeManager.registerUpgrade(new dev.kyro.pitsim.upgrades.GoldBoost());
 		UpgradeManager.registerUpgrade(new XPBoost());
-		UpgradeManager.registerUpgrade(new Tenacity());
+		UpgradeManager.registerUpgrade(new LuckyKill());
+		UpgradeManager.registerUpgrade(new Impatient());
 		UpgradeManager.registerUpgrade(new UnlockStreaker());
-		UpgradeManager.registerUpgrade(new UberIncrease());
+		UpgradeManager.registerUpgrade(new DoubleDeath());
+		UpgradeManager.registerUpgrade(new UnlockFirstStrike());
+		UpgradeManager.registerUpgrade(new UnlockCounterJanitor());
+		UpgradeManager.registerUpgrade(new Chemist());
+		UpgradeManager.registerUpgrade(new UberInsurance());
+		UpgradeManager.registerUpgrade(new Helmetry());
 		UpgradeManager.registerUpgrade(new DivineIntervention());
 		UpgradeManager.registerUpgrade(new Withercraft());
-		UpgradeManager.registerUpgrade(new UnlockFirstStrike());
-		UpgradeManager.registerUpgrade(new Impatient());
-		UpgradeManager.registerUpgrade(new Helmetry());
-		UpgradeManager.registerUpgrade(new Chemist());
-//		UpgradeManager.registerUpgrade(new SelfConfidence());
-		UpgradeManager.registerUpgrade(new UnlockCounterJanitor());
-		UpgradeManager.registerUpgrade(new LuckyKill());
-		UpgradeManager.registerUpgrade(new UberInsurance());
 		UpgradeManager.registerUpgrade(new TaxEvasion());
-		UpgradeManager.registerUpgrade(new DoubleDeath());
 		UpgradeManager.registerUpgrade(new XPComplex());
+		UpgradeManager.registerUpgrade(new UberIncrease());
 		UpgradeManager.registerUpgrade(new KillSteal());
 		UpgradeManager.registerUpgrade(new ShardHunter());
 		UpgradeManager.registerUpgrade(new TheWay());

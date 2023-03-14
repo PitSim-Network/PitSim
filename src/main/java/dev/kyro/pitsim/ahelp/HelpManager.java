@@ -9,6 +9,7 @@ import dev.kyro.pitsim.controllers.PerkManager;
 import dev.kyro.pitsim.controllers.UpgradeManager;
 import dev.kyro.pitsim.controllers.objects.Megastreak;
 import dev.kyro.pitsim.controllers.objects.PitEnchant;
+import dev.kyro.pitsim.controllers.objects.PitPerk;
 import dev.kyro.pitsim.controllers.objects.RenownUpgrade;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
@@ -25,7 +26,6 @@ public class HelpManager implements Listener {
 	public static final String AGENT_ID = "deed93e6-7edc-42e7-ac0f-9a472df87c56";
 	public static final String LOCATION_ID = "us-east1";
 	public static final String FLOW_ID = "00000000-0000-0000-0000-000000000000";
-	public static final String START_PAGE_ID = "START_PAGE";
 	private static final Map<Player, HelperAgent> helpClientMap = new HashMap<>();
 
 	private static SessionsSettings sessionsSettings;
@@ -40,8 +40,9 @@ public class HelpManager implements Listener {
 	public static void registerIntentsAndPages() {
 //		Intents
 		for(Megastreak megastreak : PerkManager.megastreaks) registerIntent(megastreak);
-		for(PitEnchant pitEnchant : EnchantManager.pitEnchants) registerIntent(pitEnchant);
+		for(PitPerk pitPerk : PerkManager.pitPerks) registerIntent(pitPerk);
 		for(RenownUpgrade upgrade : UpgradeManager.upgrades) registerIntent(upgrade);
+		for(PitEnchant pitEnchant : EnchantManager.pitEnchants) registerIntent(pitEnchant);
 
 		helpIntents.add(new HelpIntent("WHAT_IS_THE_DARKZONE", HelpPageIdentifier.MAIN_PAGE)
 				.setReply("The darkzone is a place that makes you hate living more than anything else")

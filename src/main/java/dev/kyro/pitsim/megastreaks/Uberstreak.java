@@ -301,9 +301,9 @@ public class Uberstreak extends Megastreak {
 
 	@Override
 	public String getSummary() {
-		return "Uberstreak grants you immunity to enchants that move you, double chance to find gem shards, gain " +
-				"random buffs or debuffs every 100 kills, gain a reward at 500 streak, but deal a lot less damage " +
-				"to bots and only have five uberstreaks daily";
+		return "&d&lUBERSTREAK&7 grants you immunity to enchants that move you, double chance to find &agem shards&7, " +
+				"gain random &abuffs&7 or &cdebuffs&7 every 100 kills, gain a reward at &c500 streak&7, but deal a " +
+				"lot less damage to bots and only have five &cUberstreaks&7 daily";
 	}
 
 	public enum UberEffect {

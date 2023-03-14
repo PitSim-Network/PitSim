@@ -66,6 +66,6 @@ public class Impatient extends RenownUpgrade {
 
 	@Override
 	public String getSummary() {
-		return "&aImpatient &7is a &erenown &7upgrade that grant you speed in spawn. ";
+		return "&aImpatient &7is a &erenown &7upgrade that grant you &espeed&7 in spawn";
 	}
 }

@@ -190,7 +190,7 @@ public class Beastmode extends Megastreak {
 
 	@Override
 	public String getSummary() {
-		return "Beastmode grants you increased XP, max XP, gain xp on death, but makes you take more damage per kill " +
-				"over 50 and earn less gold";
+		return "&a&lBEASTMODE&7 is a Megastreak that grants you increased &bXP&7, &bmax XP&7, " +
+				"gain &bXP&7 on death, but makes you earn less &6gold&7 and take more damage per kill over 50";
 	}
 }

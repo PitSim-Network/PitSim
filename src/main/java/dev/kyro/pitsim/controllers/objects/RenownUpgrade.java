@@ -47,6 +47,7 @@ public abstract class RenownUpgrade implements Listener, Summarizable {
 	public List<String> getTrainingPhrases() {
 		List<String> trainingPhrases = new ArrayList<>();
 		trainingPhrases.add("what is " + ChatColor.stripColor(name) + "?");
+		trainingPhrases.add("what does " + ChatColor.stripColor(name) + " do?");
 		return trainingPhrases;
 	}
 }

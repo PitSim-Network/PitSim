@@ -1,6 +1,8 @@
 package dev.kyro.pitsim.controllers.objects;
 
 import dev.kyro.arcticapi.builders.AItemStackBuilder;
+import dev.kyro.pitsim.ahelp.Summarizable;
+import org.bukkit.ChatColor;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
@@ -9,8 +11,7 @@ import org.bukkit.inventory.ItemStack;
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class PitPerk implements Listener {
-
+public abstract class PitPerk implements Listener, Summarizable {
 	public static List<PitPerk> pitPerks = new ArrayList<>();
 
 	public String displayName;
@@ -63,5 +64,18 @@ public abstract class PitPerk implements Listener {
 			if(pitPerk.refName.equalsIgnoreCase(refName)) return pitPerk;
 		}
 		return null;
+	}
+
+	@Override
+	public String getIdentifier() {
+		return "PERK_" + refName.toUpperCase().replaceAll("[- ]", "_");
+	}
+
+	@Override
+	public List<String> getTrainingPhrases() {
+		List<String> trainingPhrases = new ArrayList<>();
+		trainingPhrases.add("what is " + ChatColor.stripColor(displayName) + "?");
+		trainingPhrases.add("what does " + ChatColor.stripColor(displayName) + " do?");
+		return trainingPhrases;
 	}
 }

@@ -50,4 +50,10 @@ public class FirstStrike extends PitPerk {
 	public List<String> getDescription() {
 		return new ALoreBuilder("&7First hit on a player or", "&7bot deals &c+30% damage.").getLore();
 	}
+
+	@Override
+	public String getSummary() {
+		return "&eFirst Strike &7is a perk unlocked in the &erenown shop&7 that increases your &cdamage&7 and " +
+				"gives you &eSpeed&7 on your first hit against bots and players";
+	}
 }

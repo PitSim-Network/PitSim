@@ -40,6 +40,11 @@ public class Thick extends PitPerk {
 
 	@Override
 	public List<String> getDescription() {
-		return new ALoreBuilder("&7You have &c+2 Max \u2764&7.").getLore();
+		return new ALoreBuilder("&7You have &c+2 max \u2764&7.").getLore();
+	}
+
+	@Override
+	public String getSummary() {
+		return "&aThick &7is a perk that grants you &c+2 max \u2764";
 	}
 }

@@ -13,7 +13,6 @@ import org.bukkit.inventory.ItemStack;
 import java.text.DecimalFormat;
 
 public class GoldStack extends Killstreak {
-
 	public static GoldStack INSTANCE;
 
 	public GoldStack() {
@@ -40,6 +39,16 @@ public class GoldStack extends Killstreak {
 
 	}
 
+	public static double getMax(Player player) {
+		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
+		return (pitPlayer.prestige * 0.1) + 1;
+	}
+
+	public static double getCurrent(Player player) {
+		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
+		return pitPlayer.goldStack;
+	}
+
 	@Override
 	public ItemStack getDisplayItem(Player player) {
 		DecimalFormat formatter = new DecimalFormat("#.##");
@@ -60,13 +69,9 @@ public class GoldStack extends Killstreak {
 		return builder.getItemStack();
 	}
 
-	public static double getMax(Player player) {
-		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
-		return (pitPlayer.prestige * 0.1) + 1;
-	}
-
-	public static double getCurrent(Player player) {
-		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
-		return pitPlayer.goldStack;
+	@Override
+	public String getSummary() {
+		return "&6Gold Stack&7 is a killstreak that increases the &6gold&7 you earn on kill by a very small amount " +
+				"for the rest of your prestige (every &c40 kills&7)";
 	}
 }

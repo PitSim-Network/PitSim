@@ -49,6 +49,11 @@ public class Dispersion extends PitPerk {
 				"&7while in middle").getLore();
 	}
 
+	@Override
+	public String getSummary() {
+		return "&aDispersion &7is a perk that spreads out the enchants of your opponents attacks in middle";
+	}
+
 	public static int getRange() {
 		return 10;
 	}

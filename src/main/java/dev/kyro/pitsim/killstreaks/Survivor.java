@@ -61,4 +61,9 @@ public class Survivor extends Killstreak {
 
 		return builder.getItemStack();
 	}
+
+	@Override
+	public String getSummary() {
+		return "&eSurvivor&7 is a killstreak that increases your &chealing&7 for a short period of time every &c15 kills";
+	}
 }

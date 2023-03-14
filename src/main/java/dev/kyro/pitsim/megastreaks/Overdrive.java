@@ -193,8 +193,7 @@ public class Overdrive extends Megastreak {
 
 	@Override
 	public String getSummary() {
-		return "&c&lOVERDRIVE&7 is a megastreak grants you permanent &eSpeed I&7, increases your &6gold &7and " +
-				"&bXP&7, grants immunity to &9Slowless&7, gain &6gold &7on death, but makes you take very true damage " +
-				"every 10 kills";
+		return "&c&lOVERDRIVE&7 is a Megastreak grants you permanent &eSpeed I&7, increases your &6gold &7and &bXP&7, " +
+				"grants immunity to &9Slowless&7, gain &6gold &7on death, but makes you take very true damage every 10 kills";
 	}
 }

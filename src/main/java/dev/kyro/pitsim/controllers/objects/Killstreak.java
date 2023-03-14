@@ -1,11 +1,16 @@
 package dev.kyro.pitsim.controllers.objects;
 
+import dev.kyro.pitsim.ahelp.Summarizable;
 import dev.kyro.pitsim.controllers.PerkManager;
+import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 import org.bukkit.inventory.ItemStack;
 
-public abstract class Killstreak implements Listener {
+import java.util.ArrayList;
+import java.util.List;
+
+public abstract class Killstreak implements Listener, Summarizable {
 
 	public String displayName;
 	public String refName;
@@ -46,5 +51,18 @@ public abstract class Killstreak implements Listener {
 			if(killstreaks.refName.equals(killstreak)) return true;
 		}
 		return false;
+	}
+
+	@Override
+	public String getIdentifier() {
+		return "KILLSTREAK_" + refName.toUpperCase().replaceAll("[- ]", "_");
+	}
+
+	@Override
+	public List<String> getTrainingPhrases() {
+		List<String> trainingPhrases = new ArrayList<>();
+		trainingPhrases.add("what is " + ChatColor.stripColor(displayName) + "?");
+		trainingPhrases.add("what does " + ChatColor.stripColor(displayName) + " do?");
+		return trainingPhrases;
 	}
 }

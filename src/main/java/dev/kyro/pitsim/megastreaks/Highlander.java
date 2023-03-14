@@ -207,7 +207,7 @@ public class Highlander extends Megastreak {
 
 	@Override
 	public String getSummary() {
-		return "Highlander grants you increased Gold, permanent speed one, more damage to bots, and gain your bounty " +
-				"on death, but heal less per kill over 200  earn less XP";
+		return "&6&lHIGHLANDER&7 is a Megastreak grants you increased &6Gold, permanent &espeed I&7, more damage " +
+				"to bots, and gain your bounty on death, but heal less per kill over 200, and earn less &bXP";
 	}
 }

@@ -68,4 +68,10 @@ public class FightOrFlight extends Killstreak {
 
 		return builder.getItemStack();
 	}
+
+	@Override
+	public String getSummary() {
+		return "&cFight &7or &fFlight&7 is a killstreak that gives you &eSpeed&7 or &cDamage&7 for a short " +
+				"time based on your &chealh &7every &c7 kills";
+	}
 }

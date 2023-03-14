@@ -35,4 +35,10 @@ public class CounterJanitor extends PitPerk {
 	public List<String> getDescription() {
 		return new ALoreBuilder("&7Instantly heal half your", "&chealth &7on player kill.").getLore();
 	}
+
+	@Override
+	public String getSummary() {
+		return "&eCounter-Janitor is a perk unlocked in the &erenown shop&7 that &cheals you&7 for substantially " +
+				"on player kill. This perk is incompatible with &cVampire";
+	}
 }

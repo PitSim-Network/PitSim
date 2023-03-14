@@ -39,4 +39,9 @@ public class Vampire extends PitPerk {
 	public List<String> getDescription() {
 		return new ALoreBuilder("&7Heal &c" + Misc.getHearts(initialHealing) + " &7on hit.", "&7Doubled on arrow crit.").getLore();
 	}
+
+	@Override
+	public String getSummary() {
+		return "&aVampire &7is a perk that heals you on hit";
+	}
 }

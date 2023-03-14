@@ -76,6 +76,7 @@ public abstract class Megastreak implements Listener, Summarizable {
 	public List<String> getTrainingPhrases() {
 		List<String> trainingPhrases = new ArrayList<>();
 		trainingPhrases.add("what is " + getRawName() + "?");
+		trainingPhrases.add("what does " + getRawName() + " do?");
 		return trainingPhrases;
 	}
 }

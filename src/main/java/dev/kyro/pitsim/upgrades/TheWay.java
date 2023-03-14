@@ -52,6 +52,6 @@ public class TheWay extends RenownUpgrade {
 	@Override
 	public String getSummary() {
 		return "&eThe Way&7 is an &erenown&7 upgrade that decreases level requirement for " +
-				"&cMegastreaks&7, &aKillstreakers&7, and &6Trading ";
+				"&cMegastreaks&7, &aKillstreakers&7, and &6Trading";
 	}
 }

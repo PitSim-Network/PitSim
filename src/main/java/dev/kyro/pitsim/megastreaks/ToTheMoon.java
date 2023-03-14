@@ -223,7 +223,8 @@ public class ToTheMoon extends Megastreak {
 
 	@Override
 	public String getSummary() {
-		return "To the Moon grants you increased XP and XP cap both which increase per kill, but take damage, true " +
-				"damage, and very true damage based on your streak, spawns a hopper at a very high killstreak";
+		return "&b&lTO THE MOON&7 grants you increased &bXP&7 and &bXP cap&7 both which increase per kill, but take " +
+				"&cdamage&7, &9true damage&7, and &cvery &9true damage&7 based on your streak, spawns a &5hopper&7 " +
+				"at a very high killstreak";
 	}
 }

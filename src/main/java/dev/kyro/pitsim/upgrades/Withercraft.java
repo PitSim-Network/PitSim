@@ -38,6 +38,6 @@ public class Withercraft extends RenownUpgrade {
 
 	@Override
 	public String getSummary() {
-		return "&eWither Craft is an &erenown&7 upgrade that lets you use &5Chunks of Vile&7 to repair lives on &3Jewel items";
+		return "&eWithercraft is an &erenown&7 upgrade that lets you use &5Chunks of Vile&7 to repair lives on &3Jewel &7items";
 	}
 }

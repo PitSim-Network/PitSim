@@ -464,9 +464,10 @@ public class RNGesus extends Megastreak {
 
 	@Override
 	public String getSummary() {
-		return "RNGesus grants you immunity to enchants that move you. RNGesus allows you to enter four different " +
-				"random realities, XP, Gold, Absorption, and Damage. At 1000 kills, gain the buffs that you earned " +
-				"throughout the realities, but you no longer heal";
+		return "&e&lRNGesus&7 allows you to enter four different random realities, &bXP&7, &6Gold&7, &cDamage&7 and, " +
+				"&9Absorption&7. At an &c1000 streak&7, gain the buffs that you earned throughout the realities, but " +
+				"you no longer &cheal&7. Throughout the &cMegastreak&7 you are immune to enchants that would &emove&7 " +
+				"you There is an hour cooldown on this &cMegastreak&7, which can be skipped by using &eRenown";
 	}
 
 	public enum Reality {

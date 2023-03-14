@@ -56,4 +56,10 @@ public class AssuredStrike extends Killstreak {
 
 		return builder.getItemStack();
 	}
+
+	@Override
+	public String getSummary() {
+		return "&eAssured Strike&7 is a killstreak that increases &cdamage&7 on your next hit and grants &eSpeed I&7 " +
+				"for a period of time every &c3 kills";
+	}
 }
