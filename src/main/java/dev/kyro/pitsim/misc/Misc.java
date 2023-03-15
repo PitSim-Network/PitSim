@@ -466,8 +466,7 @@ public class Misc {
 	}
 
 	public static void applyPotionEffect(LivingEntity entity, PotionEffectType type, int duration, int amplifier, boolean ambient, boolean particles) {
-		if(amplifier < 0) return;
-		if(duration == 0) return;
+		if(entity == null || amplifier < 0 || duration == 0) return;
 
 		if(NonManager.getNon(entity) == null && entity instanceof Player) {
 			PitPlayer pitPlayer = PitPlayer.getPitPlayer((Player) entity);

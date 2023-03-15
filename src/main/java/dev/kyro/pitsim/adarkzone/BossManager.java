@@ -30,8 +30,6 @@ public class BossManager implements Listener {
 				attackEvent.getWrapperEvent().hasAttackInfo()) return;
 		PitBoss attackerBoss = getPitBoss(attackEvent.getAttacker());
 		if(attackerBoss != null) {
-			System.out.println(attackEvent.getWrapperEvent().getAttackInfo());
-			System.out.println("setting damage");
 			attackEvent.getWrapperEvent().getSpigotEvent().setDamage(attackerBoss.getMeleeDamage());
 		}
 	}
