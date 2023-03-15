@@ -26,14 +26,17 @@ public class KyroCommand extends ACommand {
 		}
 
 		if(args.isEmpty()) {
-			AOutput.error(player, "&c&lERROR!&7 Usage: <sync>");
+			AOutput.error(player, "&c&lERROR!&7 Usage: <sync|clear>");
 			return;
 		}
 
 		String subCommand = args.get(0).toLowerCase();
 		if(subCommand.equals("sync")) {
-
+			AOutput.send(player, "&9&lAI!&7 Updating Dialogflow model");
 			new Thread(HelpManager::updateIntentsAndPages).start();
+		} else if(subCommand.equals("clear")) {
+			AOutput.send(player, "&9&lAI!&7 Clearing saved Dialogflow intent requests");
+			HelpManager.clearStoredData();
 		}
 	}
 
