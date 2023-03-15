@@ -93,8 +93,7 @@ public class LuckyShot extends PitEnchant {
 					}
 				}
 			}
-		} catch(Exception ignored) {
-		}
+		} catch(Exception ignored) {}
 	}
 
 	@Override
@@ -102,6 +101,12 @@ public class LuckyShot extends PitEnchant {
 		return new PitLoreBuilder(
 				"&e" + getChance(enchantLvl) + "&e% &7chance for a shot to deal triple damage"
 		).getLore();
+	}
+
+	@Override
+	public String getSummary() {
+		return getDisplayName(false, true) + " &7is an enchant that has a very " +
+				"low chance to make your arrows deal triple damage";
 	}
 
 	public int getChance(int enchantLvl) {

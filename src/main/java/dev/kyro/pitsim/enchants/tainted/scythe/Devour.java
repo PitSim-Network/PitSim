@@ -50,6 +50,12 @@ public class Devour extends PitEnchant {
 		).getLore();
 	}
 
+	@Override
+	public String getSummary() {
+		return getDisplayName(false, true) + " &7is a &5Darkzone &7enchant that " +
+				"drastically increases your damage but consumes &fsouls &7on each strike";
+	}
+
 	public double getDamageIncrease(int enchantLvl) {
 		if(enchantLvl % 3 == 0) return (enchantLvl / 3) * 100;
 		return (enchantLvl / 3.0) * 100;

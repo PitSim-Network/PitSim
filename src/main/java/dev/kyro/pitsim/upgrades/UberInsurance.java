@@ -19,10 +19,10 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
-public class LifeInsurance extends RenownUpgrade {
-	public static LifeInsurance INSTANCE;
+public class UberInsurance extends RenownUpgrade {
+	public static UberInsurance INSTANCE;
 
-	public LifeInsurance() {
+	public UberInsurance() {
 		super("Uber Insurance", "LIFE_INSURANCE", 75, 22, 12, true, 3);
 		INSTANCE = this;
 	}
@@ -49,6 +49,11 @@ public class LifeInsurance extends RenownUpgrade {
 	}
 
 	@Override
+	public List<Integer> getTierCosts() {
+		return Arrays.asList(40, 75, 150);
+	}
+
+	@Override
 	public ItemStack getDisplayItem(Player player) {
 		ItemStack item = new ItemStack(Material.BOOK_AND_QUILL);
 		ItemMeta meta = item.getItemMeta();
@@ -72,7 +77,8 @@ public class LifeInsurance extends RenownUpgrade {
 	}
 
 	@Override
-	public List<Integer> getTierCosts() {
-		return Arrays.asList(40, 75, 150);
+	public String getSummary() {
+		return "&dUber Insurance &7is a &erenown&7 perk that saves your lives while on an &dUberstreak&7 " +
+				"based on how many &ckills&7 you got";
 	}
 }

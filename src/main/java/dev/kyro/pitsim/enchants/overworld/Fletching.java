@@ -32,6 +32,12 @@ public class Fletching extends PitEnchant {
 		).getLore();
 	}
 
+	@Override
+	public String getSummary() {
+		return getDisplayName(false, true) + " &7is an enchant that " +
+				"increases the damage your arrows deal";
+	}
+
 	public int getDamage(int enchantLvl) {
 		return (int) (Math.pow(enchantLvl, 1.32) * 4 + 3);
 	}

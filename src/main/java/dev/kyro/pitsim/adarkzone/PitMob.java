@@ -37,6 +37,7 @@ public abstract class PitMob implements Listener {
 	public abstract String getRawDisplayName();
 	public abstract ChatColor getChatColor();
 	public abstract int getMaxHealth();
+	public abstract double getMeleeDamage();
 	public abstract int getSpeedAmplifier();
 	public abstract int getDroppedSouls();
 	public abstract DropPool createDropPool();
@@ -72,14 +73,15 @@ public abstract class PitMob implements Listener {
 	}
 
 	public void kill(PitPlayer pitKiller) {
+		Player killer = pitKiller == null ? null : pitKiller.player;
 		if(mobStatus == MobStatus.STANDARD) {
-			dropPool.singleDistribution(pitKiller.player);
+			dropPool.singleDistribution(killer);
 
 			double soulChance = 0.05;
-			soulChance *= 1 + (Reaper.getSoulChanceIncrease(pitKiller.player) / 100.0);
+			soulChance *= 1 + (Reaper.getSoulChanceIncrease(killer) / 100.0);
 			soulChance *= 1 + (ProgressionManager.getUnlockedEffectAsValue(
 					pitKiller, SoulBranch.INSTANCE, SkillBranch.PathPosition.FIRST_PATH, "soul-chance-mobs") / 100.0);
-			if(Math.random() < soulChance) DarkzoneManager.createSoulExplosion(pitKiller.player,
+			if(Math.random() < soulChance) DarkzoneManager.createSoulExplosion(killer,
 					getMob().getLocation().add(0, 0.5, 0), getDroppedSouls(), false);
 		}
 		remove();

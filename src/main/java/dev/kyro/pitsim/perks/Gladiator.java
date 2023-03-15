@@ -66,6 +66,11 @@ public class Gladiator extends PitPerk {
 		).getLore();
 	}
 
+	@Override
+	public String getSummary() {
+		return "&aGladiator &7gives you &9-3% damage based on how many players are around you";
+	}
+
 	public static int getNearbyPlayers(Player player) {
 		return nearbyPlayerMap.getOrDefault(player.getUniqueId(), 0);
 	}

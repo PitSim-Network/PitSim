@@ -1,9 +1,8 @@
 package dev.kyro.pitsim.adarkzone;
 
-import de.myzelyam.api.vanish.VanishAPI;
 import dev.kyro.pitsim.PitSim;
-import dev.kyro.pitsim.enchants.tainted.uncommon.Fearmonger;
 import dev.kyro.pitsim.enchants.tainted.chestplate.Terror;
+import dev.kyro.pitsim.enchants.tainted.uncommon.Fearmonger;
 import dev.kyro.pitsim.enums.PitEntityType;
 import dev.kyro.pitsim.misc.Misc;
 import org.bukkit.Effect;
@@ -23,8 +22,8 @@ public class MobTargetingSystem {
 	public Map<PitMob, Long> changeTargetCooldown = new HashMap<>();
 
 	public double distanceWeight = 1.0;
-	public double persistenceWeight = 0.1;
-	public double otherMobsTargetingWeight = -0.5;
+	public double persistenceWeight = 0.3;
+	public double otherMobsTargetingWeight = -0.8;
 
 	public SubLevel subLevel;
 	public BukkitTask runnable;
@@ -54,6 +53,8 @@ public class MobTargetingSystem {
 	}
 
 	public void assignTarget(PitMob pitMob, Map<Player, Integer> currentTargetMap) {
+		Location subLevelMiddle = subLevel.getMiddle();
+
 		Player bestTarget = pitMob.getTarget();
 		if(bestTarget != null) {
 			double targetDistanceFromMid = Double.MAX_VALUE;
@@ -63,11 +64,10 @@ public class MobTargetingSystem {
 
 		List<Player> potentialTargets = new ArrayList<>();
 		potentialTargets.add(null);
-		Location subLevelMiddle = subLevel.getMiddle();
 		for(Entity entity : subLevelMiddle.getWorld().getNearbyEntities(subLevelMiddle, subLevel.spawnRadius, 20, subLevel.spawnRadius)) {
-			if(!Misc.isEntity(entity, PitEntityType.REAL_PLAYER)) continue;
+			if(!Misc.isEntity(entity, PitEntityType.REAL_PLAYER) || !Misc.isValidMobPlayerTarget(entity)) continue;
 			Player player = (Player) entity;
-			if(VanishAPI.isInvisible(player) || Fearmonger.isImmune(player)) continue;
+			if(Fearmonger.isImmune(player)) continue;
 			potentialTargets.add(player);
 		}
 

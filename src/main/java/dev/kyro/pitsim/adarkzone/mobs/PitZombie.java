@@ -52,7 +52,12 @@ public class PitZombie extends PitMob {
 
 	@Override
 	public int getMaxHealth() {
-		return 20;
+		return 40;
+	}
+
+	@Override
+	public double getMeleeDamage() {
+		return 8;
 	}
 
 	@Override

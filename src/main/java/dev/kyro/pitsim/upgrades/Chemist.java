@@ -20,6 +20,11 @@ public class Chemist extends RenownUpgrade {
 	}
 
 	@Override
+	public List<Integer> getTierCosts() {
+		return Arrays.asList(30, 45);
+	}
+
+	@Override
 	public ItemStack getDisplayItem(Player player) {
 		ItemStack item = new ItemStack(Material.POTION, 1, (short) 2);
 		ItemMeta meta = item.getItemMeta();
@@ -40,7 +45,7 @@ public class Chemist extends RenownUpgrade {
 	}
 
 	@Override
-	public List<Integer> getTierCosts() {
-		return Arrays.asList(30, 45);
+	public String getSummary() {
+		return "&eChemist&7 is a r&erenown&7 perk that increases how many &5potions&7 you can brew at a time";
 	}
 }

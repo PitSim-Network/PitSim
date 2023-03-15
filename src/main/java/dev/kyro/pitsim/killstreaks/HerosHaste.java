@@ -39,4 +39,9 @@ public class HerosHaste extends Killstreak {
 
 		return builder.getItemStack();
 	}
+
+	@Override
+	public String getSummary() {
+		return "&eHero’s Haste&7 is a killstreak that gives you &eSpeed IV&7 for a short period of time every &c7 kills";
+	}
 }

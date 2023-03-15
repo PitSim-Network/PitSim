@@ -53,4 +53,11 @@ public class Baker extends Killstreak {
 
 		return builder.getItemStack();
 	}
+
+	@Override
+	public String getSummary() {
+		return "&eBaker&7 is a killstreak that gives you one of two types of bread every &c15 kills&7: &eyummy bread, " +
+				"which increases your &cdamage &7against bots (and stacks), and &6very yummy bread&7, which &cheals&7 " +
+				"you and gives &9absorption&7";
+	}
 }

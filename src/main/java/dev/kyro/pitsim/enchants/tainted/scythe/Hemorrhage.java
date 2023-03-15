@@ -55,11 +55,11 @@ public class Hemorrhage extends PitEnchant {
 				attackEvent.getDefender().setHealth(Math.max(attackEvent.getDefender().getHealth() -
 						getBleedDamage(enchantLvl), 1));
 
-				Location centerLocation = attackEvent.getDefenderPlayer().getLocation().add(0, 1, 0);
+				Location centerLocation = attackEvent.getDefender().getLocation().add(0, 1, 0);
 				BlockCrackParticle particle = new BlockCrackParticle(new MaterialData(Material.REDSTONE_BLOCK));
 				for(int i = 0; i < 50; i++) particle.display(Misc.getNearbyRealPlayers(centerLocation, 25), centerLocation);
 
-				Sounds.HEMORRHAGE.play(attackEvent.getDefenderPlayer().getLocation());
+				Sounds.HEMORRHAGE.play(attackEvent.getDefender().getLocation());
 			}
 		}.runTaskTimer(PitSim.INSTANCE, 0L, 20L);
 	}
@@ -71,6 +71,12 @@ public class Hemorrhage extends PitEnchant {
 						" second" + (getSeconds(enchantLvl) == 1 ? "" : "s") + " but costs &b" +
 						getManaCost(enchantLvl) + " mana &7(" + getCooldownSeconds(enchantLvl) + " second cooldown"
 		).getLore();
+	}
+
+	@Override
+	public String getSummary() {
+		return getDisplayName(false, true) + " &7is a &5Darkzone &7enchant that " +
+				"causes your enemies to bleed out, dealing very true damage";
 	}
 
 	public static double getBleedDamage(int enchantLvl) {

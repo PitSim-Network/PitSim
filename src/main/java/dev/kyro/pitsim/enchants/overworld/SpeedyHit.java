@@ -42,6 +42,12 @@ public class SpeedyHit extends PitEnchant {
 		).getLore();
 	}
 
+	@Override
+	public String getSummary() {
+		return getDisplayName(false, true) + " &7is an enchant that gives you " +
+				"speed when you hit your opponent";
+	}
+
 	public int getAmplifier(int enchantLvl) {
 		return Misc.linearEnchant(enchantLvl, 0.5, 0);
 	}

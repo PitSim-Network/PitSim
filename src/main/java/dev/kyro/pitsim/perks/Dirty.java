@@ -35,4 +35,9 @@ public class Dirty extends PitPerk {
 	public List<String> getDescription() {
 		return new ALoreBuilder("&7Gain Resistance II (4s) on", "&7player/bot kill.").getLore();
 	}
+
+	@Override
+	public String getSummary() {
+		return "&aDirty &7is a perk that gives you Resistance II on player or bot kill";
+	}
 }

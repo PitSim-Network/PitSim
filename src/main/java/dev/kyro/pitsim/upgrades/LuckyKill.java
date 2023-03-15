@@ -31,29 +31,6 @@ public class LuckyKill extends RenownUpgrade {
 	}
 
 	@Override
-	public ItemStack getDisplayItem(Player player) {
-		ItemStack item = new ItemStack(Material.NAME_TAG);
-		ItemMeta meta = item.getItemMeta();
-		meta.setDisplayName(UpgradeManager.itemNameString(this, player));
-		meta.addEnchant(Enchantment.ARROW_FIRE, 1, false);
-		meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
-		List<String> lore = new ArrayList<>();
-		if(UpgradeManager.hasUpgrade(player, this)) lore.add(ChatColor.translateAlternateColorCodes('&',
-				"&7Current: &e" + UpgradeManager.getTier(player, this) + "&e% &7chance"));
-		if(UpgradeManager.hasUpgrade(player, this))
-			lore.add(ChatColor.GRAY + "Tier: " + ChatColor.GREEN + AUtil.toRoman(UpgradeManager.getTier(player, this)));
-		if(UpgradeManager.hasUpgrade(player, this)) lore.add("");
-		lore.add(ChatColor.GRAY + "Each Tier:");
-		lore.add(ChatColor.translateAlternateColorCodes('&', "&7Gain &f+1% &7chance when getting a"));
-		lore.add(ChatColor.translateAlternateColorCodes('&', "&7player kill to make it a &dLucky Kill&7."));
-		lore.add(ChatColor.translateAlternateColorCodes('&', "&7(Triples all kill rewards including"));
-		lore.add(ChatColor.translateAlternateColorCodes('&', "&7bounties and kill requirement)"));
-		meta.setLore(UpgradeManager.loreBuilder(this, player, lore, false));
-		item.setItemMeta(meta);
-		return item;
-	}
-
-	@Override
 	public List<Integer> getTierCosts() {
 		return Arrays.asList(10, 20, 30, 40);
 	}
@@ -86,5 +63,33 @@ public class LuckyKill extends RenownUpgrade {
 			rsp.addPlayer(killEvent.getKillerPlayer());
 			rsp.setPlaying(true);
 		}
+	}
+
+	@Override
+	public ItemStack getDisplayItem(Player player) {
+		ItemStack item = new ItemStack(Material.NAME_TAG);
+		ItemMeta meta = item.getItemMeta();
+		meta.setDisplayName(UpgradeManager.itemNameString(this, player));
+		meta.addEnchant(Enchantment.ARROW_FIRE, 1, false);
+		meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
+		List<String> lore = new ArrayList<>();
+		if(UpgradeManager.hasUpgrade(player, this)) lore.add(ChatColor.translateAlternateColorCodes('&',
+				"&7Current: &e" + UpgradeManager.getTier(player, this) + "&e% &7chance"));
+		if(UpgradeManager.hasUpgrade(player, this))
+			lore.add(ChatColor.GRAY + "Tier: " + ChatColor.GREEN + AUtil.toRoman(UpgradeManager.getTier(player, this)));
+		if(UpgradeManager.hasUpgrade(player, this)) lore.add("");
+		lore.add(ChatColor.GRAY + "Each Tier:");
+		lore.add(ChatColor.translateAlternateColorCodes('&', "&7Gain &f+1% &7chance when getting a"));
+		lore.add(ChatColor.translateAlternateColorCodes('&', "&7player kill to make it a &dLucky Kill&7."));
+		lore.add(ChatColor.translateAlternateColorCodes('&', "&7(Triples all kill rewards including"));
+		lore.add(ChatColor.translateAlternateColorCodes('&', "&7bounties and kill requirement)"));
+		meta.setLore(UpgradeManager.loreBuilder(this, player, lore, false));
+		item.setItemMeta(meta);
+		return item;
+	}
+
+	@Override
+	public String getSummary() {
+		return "&dLucky Kill &7is an &erenown &7upgrade that gives you a small chance to &dtriple &7player kill rewards";
 	}
 }

@@ -42,4 +42,10 @@ public class Spongesteve extends Killstreak {
 
 		return builder.getItemStack();
 	}
+
+	@Override
+	public String getSummary() {
+		return "&eSpongesteve&7 is a killstreak that gives &9" + Misc.getHearts(AMOUNT) +
+				"&7 of &9absorptio&7 hearts every &c40 kills";
+	}
 }

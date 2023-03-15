@@ -47,6 +47,12 @@ public class LastStand extends PitEnchant {
 		).getLore();
 	}
 
+	@Override
+	public String getSummary() {
+		return getDisplayName(false, true) + " &7is an enchant that gives you " +
+				"&9Resistance &7when you get low";
+	}
+
 	public int getCooldownSeconds(int enchantLvl) {
 		return 12;
 	}

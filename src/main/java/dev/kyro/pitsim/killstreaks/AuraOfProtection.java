@@ -68,4 +68,10 @@ public class AuraOfProtection extends Killstreak {
 
 		return builder.getItemStack();
 	}
+
+	@Override
+	public String getSummary() {
+		return "&eAura of Protection&7 is a killstreak that makes you take less &9true damage&7 for a short " +
+				"period of time excluded every &c15 kills";
+	}
 }

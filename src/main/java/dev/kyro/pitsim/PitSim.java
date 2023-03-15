@@ -21,6 +21,7 @@ import dev.kyro.pitsim.adarkzone.notdarkzone.EquipmentType;
 import dev.kyro.pitsim.adarkzone.notdarkzone.PitEquipment;
 import dev.kyro.pitsim.adarkzone.notdarkzone.ShieldManager;
 import dev.kyro.pitsim.adarkzone.progression.ProgressionManager;
+import dev.kyro.pitsim.ahelp.HelpManager;
 import dev.kyro.pitsim.aitems.misc.*;
 import dev.kyro.pitsim.aitems.mobdrops.*;
 import dev.kyro.pitsim.aitems.mystics.*;
@@ -44,6 +45,8 @@ import dev.kyro.pitsim.brewing.PotionManager;
 import dev.kyro.pitsim.brewing.objects.PotionEffect;
 import dev.kyro.pitsim.commands.*;
 import dev.kyro.pitsim.commands.admin.*;
+import dev.kyro.pitsim.commands.beta.BaseBetaCommand;
+import dev.kyro.pitsim.commands.beta.SoulsCommand;
 import dev.kyro.pitsim.commands.essentials.*;
 import dev.kyro.pitsim.controllers.*;
 import dev.kyro.pitsim.controllers.objects.*;
@@ -165,6 +168,9 @@ public class PitSim extends JavaPlugin {
 					}
 				}.runTaskLater(PitSim.INSTANCE, 1L);
 			}
+
+//			TODO: disable later
+//			onlinePlayer.teleport(new Location(MapManager.getDarkzone(), 312.5, 68, -139.5, -104, 7));
 		}
 
 		BossBarManager.init();
@@ -297,6 +303,7 @@ public class PitSim extends JavaPlugin {
 		registerScoreboardOptions();
 
 		PassManager.registerPasses();
+		HelpManager.registerIntentsAndPages();
 		if(getStatus().isDarkzone()) AuctionManager.onStart();
 		if(getStatus().isDarkzone()) AuctionDisplays.onStart();
 
@@ -467,18 +474,16 @@ public class PitSim extends JavaPlugin {
 		}
 
 	private void registerPerks() {
-
 		PerkManager.registerUpgrade(new NoPerk());
+
 		PerkManager.registerUpgrade(new Vampire());
 		PerkManager.registerUpgrade(new Dirty());
 		PerkManager.registerUpgrade(new StrengthChaining());
 		PerkManager.registerUpgrade(new Gladiator());
 		PerkManager.registerUpgrade(new Thick());
-//		PerkManager.registerUpgrade(new AssistantToTheStreaker());
 		PerkManager.registerUpgrade(new FirstStrike());
 		PerkManager.registerUpgrade(new Streaker());
 		PerkManager.registerUpgrade(new CounterJanitor());
-//		PerkManager.registerUpgrade(new Regenerative());
 		PerkManager.registerUpgrade(new JewelHunter());
 		PerkManager.registerUpgrade(new Dispersion());
 	}
@@ -491,7 +496,6 @@ public class PitSim extends JavaPlugin {
 		PerkManager.registerKillstreak(new AssuredStrike());
 		PerkManager.registerKillstreak(new Leech());
 
-//		PerkManager.registerKillstreak(new TacticalRetreat());
 		PerkManager.registerKillstreak(new RAndR());
 		PerkManager.registerKillstreak(new FightOrFlight());
 		PerkManager.registerKillstreak(new HerosHaste());
@@ -554,6 +558,7 @@ public class PitSim extends JavaPlugin {
 			NPCManager.registerNPC(new LeggingsShopNPC(Collections.singletonList(MapManager.getDarkzone())));
 			NPCManager.registerNPC(new PotionMasterNPC(Collections.singletonList(MapManager.getDarkzone())));
 			NPCManager.registerNPC(new AuctioneerNPC(Collections.singletonList(MapManager.getDarkzone())));
+			NPCManager.registerNPC(new MainProgressionNPC(Collections.singletonList(MapManager.getDarkzone())));
 		}
 
 		if(status.isOverworld()) {
@@ -584,10 +589,14 @@ public class PitSim extends JavaPlugin {
 		new ExtendCommand(adminCommand, "extend");
 		new UnlockCosmeticCommand(adminCommand, "unlockcosmetic");
 		new GodCommand(adminCommand, "god");
+		new KyroCommand(adminCommand, "kyro");
 
 		new JewelCommand(giveCommand, "jewel");
 		new StreakCommand(giveCommand, "streak");
 		new BountyCommand(giveCommand, "bounty");
+
+		AMultiCommand betaCommand = new BaseBetaCommand("beta");
+		new SoulsCommand(betaCommand, "souls");
 
 		getCommand("atest").setExecutor(new ATestCommand());
 		getCommand("ktest").setExecutor(new KTestCommand());
@@ -649,7 +658,7 @@ public class PitSim extends JavaPlugin {
 		getCommand("trash").setExecutor(new TrashCommand());
 		getCommand("rename").setExecutor(new RenameCommand());
 
-		getCommand("testenchant").setExecutor(new TestEnchantCommand());
+		getCommand("massenchant").setExecutor(new MassEnchantCommand());
 	}
 
 	private void registerListeners() {
@@ -703,6 +712,7 @@ public class PitSim extends JavaPlugin {
 		getServer().getPluginManager().registerEvents(new MarketMessaging(), this);
 		getServer().getPluginManager().registerEvents(new MigrationManager(), this);
 		getServer().getPluginManager().registerEvents(new ActionBarManager(), this);
+		getServer().getPluginManager().registerEvents(new HelpManager(), this);
 
 		if(getStatus().isDarkzone()) {
 			getServer().getPluginManager().registerEvents(new TaintedWell(), this);
@@ -729,24 +739,23 @@ public class PitSim extends JavaPlugin {
 	}
 
 	public void registerUpgrades() {
+		UpgradeManager.registerUpgrade(new Tenacity());
 		UpgradeManager.registerUpgrade(new dev.kyro.pitsim.upgrades.GoldBoost());
 		UpgradeManager.registerUpgrade(new XPBoost());
-		UpgradeManager.registerUpgrade(new Tenacity());
+		UpgradeManager.registerUpgrade(new LuckyKill());
+		UpgradeManager.registerUpgrade(new Impatient());
 		UpgradeManager.registerUpgrade(new UnlockStreaker());
-		UpgradeManager.registerUpgrade(new UberIncrease());
+		UpgradeManager.registerUpgrade(new DoubleDeath());
+		UpgradeManager.registerUpgrade(new UnlockFirstStrike());
+		UpgradeManager.registerUpgrade(new UnlockCounterJanitor());
+		UpgradeManager.registerUpgrade(new Chemist());
+		UpgradeManager.registerUpgrade(new UberInsurance());
+		UpgradeManager.registerUpgrade(new Helmetry());
 		UpgradeManager.registerUpgrade(new DivineIntervention());
 		UpgradeManager.registerUpgrade(new Withercraft());
-		UpgradeManager.registerUpgrade(new UnlockFirstStrike());
-		UpgradeManager.registerUpgrade(new Impatient());
-		UpgradeManager.registerUpgrade(new Helmetry());
-		UpgradeManager.registerUpgrade(new Chemist());
-//		UpgradeManager.registerUpgrade(new SelfConfidence());
-		UpgradeManager.registerUpgrade(new UnlockCounterJanitor());
-		UpgradeManager.registerUpgrade(new LuckyKill());
-		UpgradeManager.registerUpgrade(new LifeInsurance());
 		UpgradeManager.registerUpgrade(new TaxEvasion());
-		UpgradeManager.registerUpgrade(new DoubleDeath());
 		UpgradeManager.registerUpgrade(new XPComplex());
+		UpgradeManager.registerUpgrade(new UberIncrease());
 		UpgradeManager.registerUpgrade(new KillSteal());
 		UpgradeManager.registerUpgrade(new ShardHunter());
 		UpgradeManager.registerUpgrade(new TheWay());
@@ -1083,7 +1092,6 @@ public class PitSim extends JavaPlugin {
 		EnchantManager.registerEnchant(new Attentive());
 		EnchantManager.registerEnchant(new Belittle());
 		EnchantManager.registerEnchant(new BOOM());
-		EnchantManager.registerEnchant(new aDefend());
 		EnchantManager.registerEnchant(new Embalm());
 		EnchantManager.registerEnchant(new Evasive());
 		EnchantManager.registerEnchant(new Extinguish());

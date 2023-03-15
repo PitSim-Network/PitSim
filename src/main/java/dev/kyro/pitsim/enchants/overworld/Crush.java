@@ -46,6 +46,12 @@ public class Crush extends PitEnchant {
 		).getLore();
 	}
 
+	@Override
+	public String getSummary() {
+		return getDisplayName(false, true) + " &7is an enchant that briefly " +
+				"applies a high level of &cWeakness &7to your opponent on strike";
+	}
+
 	public int getDuration(int enchantLvl) {
 
 		return enchantLvl * 6 + 2;

@@ -22,6 +22,23 @@ public class Tenacity extends RenownUpgrade {
 	}
 
 	@Override
+	public List<Integer> getTierCosts() {
+		return Arrays.asList(10, 50);
+	}
+
+	@EventHandler
+	public void onKill(KillEvent killEvent) {
+		if(!killEvent.isKillerPlayer() || !killEvent.isDeadPlayer()) return;
+		if(!UpgradeManager.hasUpgrade(killEvent.getKillerPlayer(), this)) return;
+
+		int tier = UpgradeManager.getTier(killEvent.getKillerPlayer(), this);
+		if(tier == 0) return;
+
+		PitPlayer pitKiller = killEvent.getKillerPitPlayer();
+		pitKiller.heal(tier);
+	}
+
+	@Override
 	public ItemStack getDisplayItem(Player player) {
 		ItemStack item = new ItemStack(Material.MAGMA_CREAM);
 		ItemMeta meta = item.getItemMeta();
@@ -40,19 +57,7 @@ public class Tenacity extends RenownUpgrade {
 	}
 
 	@Override
-	public List<Integer> getTierCosts() {
-		return Arrays.asList(10, 50);
-	}
-
-	@EventHandler
-	public void onKill(KillEvent killEvent) {
-		if(!killEvent.isKillerPlayer()) return;
-		if(!UpgradeManager.hasUpgrade(killEvent.getKillerPlayer(), this)) return;
-
-		int tier = UpgradeManager.getTier(killEvent.getKillerPlayer(), this);
-		if(tier == 0) return;
-
-		PitPlayer pitKiller = killEvent.getKillerPitPlayer();
-		pitKiller.heal(tier);
+	public String getSummary() {
+		return "Tenacity is an &erenown &7upgrade that &cheals you &7when you kill a bot or player, which is very useful for streaking";
 	}
 }

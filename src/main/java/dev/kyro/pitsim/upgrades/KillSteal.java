@@ -19,6 +19,11 @@ public class KillSteal extends RenownUpgrade {
 	}
 
 	@Override
+	public List<Integer> getTierCosts() {
+		return Arrays.asList(20, 30, 40);
+	}
+
+	@Override
 	public ItemStack getDisplayItem(Player player) {
 		ItemStack item = new ItemStack(Material.SHEARS);
 		ItemMeta meta = item.getItemMeta();
@@ -38,8 +43,8 @@ public class KillSteal extends RenownUpgrade {
 	}
 
 	@Override
-	public List<Integer> getTierCosts() {
-		return Arrays.asList(20, 30, 40);
+	public String getSummary() {
+		return "&eKill Steal&7 is an &erenown&7 upgrade that increases the percentage on all your assists " +
+				"(and turns some assists into kills)";
 	}
-
 }

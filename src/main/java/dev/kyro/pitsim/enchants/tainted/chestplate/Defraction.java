@@ -105,6 +105,12 @@ public class Defraction extends PitEnchant {
 		).getLore();
 	}
 
+	@Override
+	public String getSummary() {
+		return getDisplayName(false, true) + " &7is a &5Darkzone &7enchant that " +
+				"deflects some of the incoming attacks from mobs to other nearby mobs";
+	}
+
 	public static int getChance(int enchantLvl) {
 		return enchantLvl * 10;
 	}

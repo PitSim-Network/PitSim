@@ -38,6 +38,12 @@ public class GoldenHeart extends PitEnchant {
 		).getLore();
 	}
 
+	@Override
+	public String getSummary() {
+		return getDisplayName(false, true) + " &7is an enchant that gives you " +
+				"&6absorption &7on kill";
+	}
+
 	public double getHealing(int enchantLvl) {
 		return enchantLvl;
 	}

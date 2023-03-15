@@ -53,6 +53,12 @@ public class Terror extends PitEnchant {
 		}
 	}
 
+	@Override
+	public String getSummary() {
+		return getDisplayName(false, true) + " &7is a &5Darkzone &7enchant that " +
+				"decreases the amount of mobs that naturally target you";
+	}
+
 	public static double getAvoidanceMultiplier(int enchantLvl) {
 		return enchantLvl * 0.5 + 1.0;
 	}

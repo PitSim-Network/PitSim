@@ -21,6 +21,22 @@ public class XPBoost extends RenownUpgrade {
 	}
 
 	@Override
+	public List<Integer> getTierCosts() {
+		return Arrays.asList(10, 12, 14, 16, 18, 20, 22, 24, 26, 28);
+	}
+
+	@EventHandler
+	public void onKill(KillEvent killEvent) {
+		if(!killEvent.isKillerPlayer()) return;
+		if(!UpgradeManager.hasUpgrade(killEvent.getKillerPlayer(), this)) return;
+
+		int tier = UpgradeManager.getTier(killEvent.getKillerPlayer(), this);
+		if(tier == 0) return;
+
+		killEvent.xpReward += 5 * tier;
+	}
+
+	@Override
 	public ItemStack getDisplayItem(Player player) {
 		ItemStack item = new ItemStack(Material.EXP_BOTTLE);
 		ItemMeta meta = item.getItemMeta();
@@ -39,18 +55,7 @@ public class XPBoost extends RenownUpgrade {
 	}
 
 	@Override
-	public List<Integer> getTierCosts() {
-		return Arrays.asList(10, 12, 14, 16, 18, 20, 22, 24, 26, 28);
-	}
-
-	@EventHandler
-	public void onKill(KillEvent killEvent) {
-		if(!killEvent.isKillerPlayer()) return;
-		if(!UpgradeManager.hasUpgrade(killEvent.getKillerPlayer(), this)) return;
-
-		int tier = UpgradeManager.getTier(killEvent.getKillerPlayer(), this);
-		if(tier == 0) return;
-
-		killEvent.xpReward += 5 * tier;
+	public String getSummary() {
+		return "&eRenown &bXP Boost &7is an &erenown &7upgrade that grants extra &b+5XP &7on a player/bot kill per tier";
 	}
 }

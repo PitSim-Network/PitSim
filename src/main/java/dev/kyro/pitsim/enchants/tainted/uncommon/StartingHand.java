@@ -64,6 +64,12 @@ public class StartingHand extends PitEnchant {
 		).getLore();
 	}
 
+	@Override
+	public String getSummary() {
+		return getDisplayName(false, true) + " &7is a &5Darkzone &7enchant that " +
+				"starts off your encounters with opponents with either a very high damage or very low damage attack";
+	}
+
 	public static int getGoodLuckChance(int enchantLvl) {
 		return enchantLvl * 9 + 23;
 	}

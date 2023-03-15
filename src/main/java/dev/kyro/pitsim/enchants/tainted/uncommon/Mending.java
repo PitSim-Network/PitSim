@@ -35,6 +35,12 @@ public class Mending extends PitEnchant {
 		).getLore();
 	}
 
+	@Override
+	public String getSummary() {
+		return getDisplayName(false, true) + " &7is a &5Darkzone &7enchant that " +
+				"increases the speed at which your shield recovers while active";
+	}
+
 	public static int getIncreasePercent(int enchantLvl) {
 		return enchantLvl * 10;
 	}

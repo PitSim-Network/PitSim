@@ -126,4 +126,10 @@ public class Stereo extends PitEnchant {
 				"&7You play a tune while cruising around"
 		).getLore();
 	}
+
+	@Override
+	public String getSummary() {
+		return getDisplayName(false, true) + " &7is an enchant that plays " +
+				"music to the wearer and all those nearby. Requires a rank to use (its cosmetic only)";
+	}
 }

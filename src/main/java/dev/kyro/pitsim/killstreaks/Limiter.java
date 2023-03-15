@@ -62,4 +62,9 @@ public class Limiter extends Killstreak {
 
 		return builder.getItemStack();
 	}
+
+	@Override
+	public String getSummary() {
+		return "&eLimiter&7 is a killstreak that limits the amount of &9true damage&7 you can take every &c3 kills";
+	}
 }

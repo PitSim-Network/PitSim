@@ -5,9 +5,13 @@ import dev.kyro.pitsim.adarkzone.DropPool;
 import dev.kyro.pitsim.adarkzone.PitBoss;
 import dev.kyro.pitsim.adarkzone.SubLevelType;
 import dev.kyro.pitsim.adarkzone.abilities.ComboAbility;
-import dev.kyro.pitsim.adarkzone.abilities.RuptureAbility;
+import dev.kyro.pitsim.adarkzone.abilities.PoundAbility;
+import dev.kyro.pitsim.adarkzone.abilities.PullAbility;
+import dev.kyro.pitsim.adarkzone.abilities.ZombieMinionAbility;
 import org.bukkit.ChatColor;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
+import org.bukkit.material.MaterialData;
 
 public class PitZombieBoss extends PitBoss {
 
@@ -15,11 +19,11 @@ public class PitZombieBoss extends PitBoss {
 		super(summoner);
 
 		abilities(
-				new RuptureAbility(1, 1, 15, 40),
-//				new ZombieMinionAbility(1, 2, 8),
-//				new PullAbility(2, 20, 1, new MaterialData(Material.DIRT, (byte) 0)),
-//				new PoundAbility(2, 5),
-				new ComboAbility(8, 2)
+				new ZombieMinionAbility(1, 2, 8),
+				new PullAbility(2, 20, 1, new MaterialData(Material.DIRT, (byte) 0)),
+				new PoundAbility(2, 5),
+
+				new ComboAbility(8, 5, 0)
 		);
 	}
 

@@ -1,6 +1,7 @@
 package dev.kyro.pitsim.commands;
 
 import dev.kyro.arcticapi.misc.AOutput;
+import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.controllers.CombatManager;
 import dev.kyro.pitsim.controllers.DamageManager;
 import dev.kyro.pitsim.controllers.MapManager;
@@ -31,7 +32,7 @@ public class OofCommand implements CommandExecutor {
 		if(!(sender instanceof Player)) return false;
 		Player player = (Player) sender;
 
-		if(player.getWorld() == MapManager.getDarkzone() && !player.isOp()) {
+		if(player.getWorld() == MapManager.getDarkzone() && !player.isOp() && !PitSim.isDev()) {
 			AOutput.send(player, "&c&lERROR!&7 Cant /oof in the darkzone!");
 			return false;
 		}

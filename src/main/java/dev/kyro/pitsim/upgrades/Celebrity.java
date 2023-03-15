@@ -41,4 +41,9 @@ public class Celebrity extends RenownUpgrade {
 
 		killEvent.goldMultipliers.add(2.0);
 	}
+
+	@Override
+	public String getSummary() {
+		return "&6Celebirty is an &erenown&7 upgrade that doubles the &6gold&7 you get on all bot and player kills";
+	}
 }

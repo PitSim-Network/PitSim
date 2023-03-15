@@ -97,6 +97,12 @@ public class GoldNanoFactory extends Killstreak {
 		return builder.getItemStack();
 	}
 
+	@Override
+	public String getSummary() {
+		return "&6Gold Nano Factory&7 is a killstreak that spawns &6gold&7 ingots that grant you &cregen&7, increases " +
+				"&6gold&7 on next kill, and gives some &6gold when picked up every &c15 kills";
+	}
+
 	public int getRegenSeconds() {
 		return 2;
 	}

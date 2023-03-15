@@ -71,6 +71,13 @@ public class Executioner extends PitEnchant {
 		).getLore();
 	}
 
+	@Override
+	public String getSummary() {
+		return getDisplayName(false, true) + " &7is an enchant that instantly " +
+				"kills bots and players that are under a certain health " +
+				"threshold. This enchant is particularly good for streaking";
+	}
+
 	public double getExecuteHealth(int enchantLvl) {
 		if(enchantLvl > 2) return enchantLvl * 2 - 1;
 		return enchantLvl + 1;

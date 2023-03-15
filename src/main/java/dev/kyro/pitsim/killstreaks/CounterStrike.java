@@ -61,4 +61,9 @@ public class CounterStrike extends Killstreak {
 
 		return builder.getItemStack();
 	}
+
+	@Override
+	public String getSummary() {
+		return "&eCounter-Strike&7 is a killstreak that increases your &cDamage&7 and &9Damage Reduction&7 temporarily every &c7 kills";
+	}
 }

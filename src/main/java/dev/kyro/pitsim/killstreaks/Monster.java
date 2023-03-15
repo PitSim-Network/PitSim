@@ -51,4 +51,10 @@ public class Monster extends Killstreak {
 
 		return builder.getItemStack();
 	}
+
+	@Override
+	public String getSummary() {
+		return "&eMonster&7 is a killstreak that increases your max hearts by &c" + Misc.getHearts(2) +
+				" &7every &c40 kills";
+	}
 }

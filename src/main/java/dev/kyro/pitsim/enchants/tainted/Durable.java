@@ -22,6 +22,12 @@ public class Durable extends PitEnchant {
 		).getLore();
 	}
 
+	@Override
+	public String getSummary() {
+		return getDisplayName(false, true) + " &7is a &5Darkzone &7enchant that " +
+				"increases the max lives on the item it is enchanted onto";
+	}
+
 	public static int getExtraLives(int enchantLvl) {
 		return enchantLvl * 10;
 	}

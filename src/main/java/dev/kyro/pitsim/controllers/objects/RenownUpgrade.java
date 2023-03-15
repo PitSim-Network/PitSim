@@ -1,5 +1,7 @@
 package dev.kyro.pitsim.controllers.objects;
 
+import dev.kyro.pitsim.ahelp.Summarizable;
+import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 import org.bukkit.inventory.ItemStack;
@@ -7,7 +9,7 @@ import org.bukkit.inventory.ItemStack;
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class RenownUpgrade implements Listener {
+public abstract class RenownUpgrade implements Listener, Summarizable {
 	public static List<RenownUpgrade> upgrades = new ArrayList<>();
 
 	public String name;
@@ -21,7 +23,6 @@ public abstract class RenownUpgrade implements Listener {
 	public RenownUpgrade INSTANCE;
 
 	public RenownUpgrade(String name, String refName, int renownCost, int guiSlot, int prestigeReq, boolean isTiered, int maxTiers) {
-//        INSTANCE = this;
 		this.name = name;
 		this.refName = refName;
 		this.renownCost = renownCost;
@@ -36,4 +37,17 @@ public abstract class RenownUpgrade implements Listener {
 	public abstract ItemStack getDisplayItem(Player player);
 
 	public abstract List<Integer> getTierCosts();
+
+	@Override
+	public String getIdentifier() {
+		return "UPGRADE_" + refName.toUpperCase().replaceAll("[- ]", "_");
+	}
+
+	@Override
+	public List<String> getTrainingPhrases() {
+		List<String> trainingPhrases = new ArrayList<>();
+		trainingPhrases.add("what is " + ChatColor.stripColor(name) + "?");
+		trainingPhrases.add("what does " + ChatColor.stripColor(name) + " do?");
+		return trainingPhrases;
+	}
 }

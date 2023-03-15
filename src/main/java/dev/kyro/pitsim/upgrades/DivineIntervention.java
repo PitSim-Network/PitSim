@@ -24,25 +24,6 @@ public class DivineIntervention extends RenownUpgrade {
 		INSTANCE = this;
 	}
 
-	@Override
-	public ItemStack getDisplayItem(Player player) {
-		ItemStack item = new ItemStack(Material.QUARTZ_STAIRS);
-		ItemMeta meta = item.getItemMeta();
-		meta.setDisplayName(UpgradeManager.itemNameString(this, player));
-		List<String> lore = new ArrayList<>();
-		if(UpgradeManager.hasUpgrade(player, this)) lore.add(ChatColor.translateAlternateColorCodes('&',
-				"&7Current: &e" + (5 * UpgradeManager.getTier(player, this)) + "% chance"));
-		if(UpgradeManager.hasUpgrade(player, this))
-			lore.add(ChatColor.GRAY + "Tier: " + ChatColor.GREEN + AUtil.toRoman(UpgradeManager.getTier(player, this)));
-		if(UpgradeManager.hasUpgrade(player, this)) lore.add("");
-		lore.add(ChatColor.GRAY + "Each Tier:");
-		lore.add(ChatColor.YELLOW + "+5% chance " + ChatColor.GRAY + "to keep your");
-		lore.add(ChatColor.GRAY + "inventory on death.");
-		meta.setLore(UpgradeManager.loreBuilder(this, player, lore, false));
-		item.setItemMeta(meta);
-		return item;
-	}
-
 	public static boolean attemptDivine(Player player) {
 		if(!UpgradeManager.hasUpgrade(player, INSTANCE)) return false;
 
@@ -70,5 +51,29 @@ public class DivineIntervention extends RenownUpgrade {
 	@Override
 	public List<Integer> getTierCosts() {
 		return Arrays.asList(25, 50, 75, 100, 125);
+	}
+
+	@Override
+	public ItemStack getDisplayItem(Player player) {
+		ItemStack item = new ItemStack(Material.QUARTZ_STAIRS);
+		ItemMeta meta = item.getItemMeta();
+		meta.setDisplayName(UpgradeManager.itemNameString(this, player));
+		List<String> lore = new ArrayList<>();
+		if(UpgradeManager.hasUpgrade(player, this)) lore.add(ChatColor.translateAlternateColorCodes('&',
+				"&7Current: &e" + (5 * UpgradeManager.getTier(player, this)) + "% chance"));
+		if(UpgradeManager.hasUpgrade(player, this))
+			lore.add(ChatColor.GRAY + "Tier: " + ChatColor.GREEN + AUtil.toRoman(UpgradeManager.getTier(player, this)));
+		if(UpgradeManager.hasUpgrade(player, this)) lore.add("");
+		lore.add(ChatColor.GRAY + "Each Tier:");
+		lore.add(ChatColor.YELLOW + "+5% chance " + ChatColor.GRAY + "to keep your");
+		lore.add(ChatColor.GRAY + "inventory on death.");
+		meta.setLore(UpgradeManager.loreBuilder(this, player, lore, false));
+		item.setItemMeta(meta);
+		return item;
+	}
+
+	@Override
+	public String getSummary() {
+		return "&eDivine Intervention&7 is an &erenown&7 upgrade  gives you a small chance to save your inventory on death";
 	}
 }

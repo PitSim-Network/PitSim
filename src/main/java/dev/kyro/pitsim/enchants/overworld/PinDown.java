@@ -65,6 +65,14 @@ public class PinDown extends PitEnchant {
 		).getLore();
 	}
 
+	@Override
+	public String getSummary() {
+		return getDisplayName(false, true) + " &7is an enchant that removes " +
+				"&eSpeed &7and &aJump Boost &7from your opponents when you shoot them. It also temporarily stops their " +
+				Telebow.INSTANCE.getDisplayName(false, true) + "&7 cooldown from " +
+				"counting down";
+	}
+
 	public int getDuration(int enchantLvl) {
 
 		return Math.max(11 - enchantLvl * 2, 0);

@@ -70,4 +70,10 @@ public class StrengthChaining extends PitPerk {
 	public List<String> getDescription() {
 		return new ALoreBuilder("&c+8% damage &7for 7s stacking", "&7on player/bot kill.").getLore();
 	}
+
+	@Override
+	public String getSummary() {
+		return "&aStrength-Chaining &7is a perk that gives you &c+8% damage&7 after every player and bot kill " +
+				"for 7 seconds, capping at 5 kills";
+	}
 }

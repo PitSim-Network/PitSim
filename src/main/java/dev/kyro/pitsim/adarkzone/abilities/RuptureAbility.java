@@ -160,8 +160,7 @@ public class RuptureAbility extends PitBossAbility {
 		double distance = 0;
 		for(Entity nearbyEntity : location.getWorld().getNearbyEntities(location, 50, 50, 50)) {
 			if(!(nearbyEntity instanceof Player)) continue;
-			if(getPitBoss().boss == nearbyEntity) continue;
-			if(!Misc.isValidMobPlayerTarget(nearbyEntity)) continue;
+			if(!Misc.isValidMobPlayerTarget(nearbyEntity, getPitBoss().boss)) continue;
 
 			double entityDistance = nearbyEntity.getLocation().distance(location);
 			if(nearest == null || distance > entityDistance) {

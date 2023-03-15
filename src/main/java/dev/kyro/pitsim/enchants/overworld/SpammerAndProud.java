@@ -34,6 +34,12 @@ public class SpammerAndProud extends PitEnchant {
 		).getLore();
 	}
 
+	@Override
+	public String getSummary() {
+		return getDisplayName(false, true) + " &7is an enchant that increases the " +
+				"damage your arrows deal when you are close to your target";
+	}
+
 	public int getDamage(int enchantLvl) {
 		return enchantLvl * 7 + 11;
 	}

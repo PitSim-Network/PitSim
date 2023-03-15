@@ -6,6 +6,7 @@ import dev.kyro.arcticapi.libs.discord.DiscordWebhook;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.adarkzone.BossManager;
 import dev.kyro.pitsim.adarkzone.DarkzoneManager;
+import dev.kyro.pitsim.adarkzone.PitBoss;
 import dev.kyro.pitsim.adarkzone.PitMob;
 import dev.kyro.pitsim.aitems.PitItem;
 import dev.kyro.pitsim.aitems.TemporaryItem;
@@ -159,8 +160,10 @@ public class Misc {
 
 		if(!(entity instanceof LivingEntity) || SpawnManager.isInSpawn(entity.getLocation()) || excludedList.contains(entity)) return false;
 		LivingEntity livingEntity = (LivingEntity) entity;
+
 		PitMob pitMob = DarkzoneManager.getPitMob(livingEntity);
-		if(pitMob == null && !(entity instanceof Player)) return false;
+		PitBoss pitBoss = BossManager.getPitBoss(livingEntity);
+		if(pitMob == null && pitBoss == null && !(entity instanceof Player)) return false;
 
 		if(entity instanceof Player) {
 			Player player = (Player) entity;

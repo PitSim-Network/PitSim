@@ -56,4 +56,9 @@ public class Explicious extends Killstreak {
 
 		return builder.getItemStack();
 	}
+
+	@Override
+	public String getSummary() {
+		return "&bExplicious&7 is a killstreak that increases &bXP&7 and &bmax XP&7 on your next kill every &c3 kills";
+	}
 }

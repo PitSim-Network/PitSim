@@ -17,6 +17,11 @@ public class Withercraft extends RenownUpgrade {
 	}
 
 	@Override
+	public List<Integer> getTierCosts() {
+		return null;
+	}
+
+	@Override
 	public ItemStack getDisplayItem(Player player) {
 		ItemStack item = new ItemStack(Material.COAL);
 		ItemMeta meta = item.getItemMeta();
@@ -32,7 +37,7 @@ public class Withercraft extends RenownUpgrade {
 	}
 
 	@Override
-	public List<Integer> getTierCosts() {
-		return null;
+	public String getSummary() {
+		return "&eWithercraft is an &erenown&7 upgrade that lets you use &5Chunks of Vile&7 to repair lives on &3Jewel &7items";
 	}
 }

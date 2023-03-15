@@ -18,6 +18,11 @@ public class UnlockCounterJanitor extends RenownUpgrade {
 	}
 
 	@Override
+	public List<Integer> getTierCosts() {
+		return null;
+	}
+
+	@Override
 	public ItemStack getDisplayItem(Player player) {
 		ItemStack item = new ItemStack(Material.SPONGE);
 		ItemMeta meta = item.getItemMeta();
@@ -34,7 +39,8 @@ public class UnlockCounterJanitor extends RenownUpgrade {
 	}
 
 	@Override
-	public List<Integer> getTierCosts() {
-		return null;
+	public String getSummary() {
+		return "&eCounter-Janitor is a perk unlocked in the &erenown shop&7 that &cheals you&7 for substantially on " +
+				"player kill. This perk is incompatible with &cVampire";
 	}
 }

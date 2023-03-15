@@ -20,6 +20,15 @@ public class UberIncrease extends RenownUpgrade {
 		super("Uberstreak Limit Increase", "UBER_INCREASE", 25, 30, 25, true, 5);
 	}
 
+	public static int getUberIncrease(Player player) {
+		return UpgradeManager.getTier(player, "UBER_INCREASE");
+	}
+
+	@Override
+	public List<Integer> getTierCosts() {
+		return Arrays.asList(25, 50, 75, 100, 125);
+	}
+
 	@Override
 	public ItemStack getDisplayItem(Player player) {
 		ItemStack item = new ItemStack(Material.WATCH);
@@ -41,12 +50,8 @@ public class UberIncrease extends RenownUpgrade {
 		return item;
 	}
 
-	public static int getUberIncrease(Player player) {
-		return UpgradeManager.getTier(player, "UBER_INCREASE");
-	}
-
 	@Override
-	public List<Integer> getTierCosts() {
-		return Arrays.asList(25, 50, 75, 100, 125);
+	public String getSummary() {
+		return "&dUberstreak Limit Increase&7 is an &erenown&7 upgrade that increases your daily &dUberstreak&7 limit";
 	}
 }

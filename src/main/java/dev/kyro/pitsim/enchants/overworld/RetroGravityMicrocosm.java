@@ -96,6 +96,13 @@ public class RetroGravityMicrocosm extends PitEnchant {
 		).getLore();
 	}
 
+	@Override
+	public String getSummary() {
+		return getDisplayName(false, true) + " &7is an enchant that increases the " +
+				"damage you do to other players when they attack you while not on the ground (it also heals you " +
+				"slightly when this happens)";
+	}
+
 	public double getDamagePerStack(int enchantLvl) {
 		return enchantLvl * 0.4 - 0.2;
 	}

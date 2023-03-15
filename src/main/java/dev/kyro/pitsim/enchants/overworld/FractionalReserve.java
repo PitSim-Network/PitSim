@@ -39,6 +39,12 @@ public class FractionalReserve extends PitEnchant {
 		).getLore();
 	}
 
+	@Override
+	public String getSummary() {
+		return getDisplayName(false, true) + " &7is an enchant that decreases " +
+				"damage based on the amount of gold you currently have";
+	}
+
 	public static double getReduction(int enchantLvl) {
 		if(enchantLvl == 1) return 2;
 		return enchantLvl * 1.5 + 0.5;

@@ -7,17 +7,12 @@ import dev.kyro.pitsim.controllers.objects.PitPerk;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.events.KillEvent;
 import org.bukkit.Material;
-import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.inventory.ItemStack;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class CounterJanitor extends PitPerk {
-	public Map<Player, List<Player>> hitPlayers = new HashMap<>();
-
 	public static CounterJanitor INSTANCE;
 
 	public CounterJanitor() {
@@ -39,5 +34,11 @@ public class CounterJanitor extends PitPerk {
 	@Override
 	public List<String> getDescription() {
 		return new ALoreBuilder("&7Instantly heal half your", "&chealth &7on player kill.").getLore();
+	}
+
+	@Override
+	public String getSummary() {
+		return "&eCounter-Janitor is a perk unlocked in the &erenown shop&7 that &cheals you&7 for substantially " +
+				"on player kill. This perk is incompatible with &cVampire";
 	}
 }

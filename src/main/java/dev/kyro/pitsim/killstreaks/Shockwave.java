@@ -98,4 +98,9 @@ public class Shockwave extends Killstreak {
 
 		return builder.getItemStack();
 	}
+
+	@Override
+	public String getSummary() {
+		return "&eShockwave&7 is a killstreak that instantly kills bots near you every &c40 kills";
+	}
 }

@@ -32,6 +32,12 @@ public class Sharp extends PitEnchant {
 		).getLore();
 	}
 
+	@Override
+	public String getSummary() {
+		return getDisplayName(false, true) + " &7is an enchant that increases the " +
+				"damage that you deal";
+	}
+
 	public int getDamageIncrease(int enchantLvl) {
 		return (int) (Math.pow(enchantLvl, 1.2) * 3 + 1);
 	}
