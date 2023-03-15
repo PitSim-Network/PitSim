@@ -128,7 +128,7 @@ public class ChatManager implements Listener {
 
 		event.setMessage(message);
 
-		handleQuestion(player, message);
+		if(!event.isCancelled()) handleQuestion(player, message);
 	}
 
 	public static void handleQuestion(Player player, String message) {
@@ -182,7 +182,6 @@ public class ChatManager implements Listener {
 				if(shouldStoreRequest) {
 					HelpManager.StoredRequest storedRequest = new HelpManager.StoredRequest(finalMessage, intent);
 					HelpManager.writeStoredRequest(storedRequest);
-					System.out.println("writing stored request");
 				}
 			}
 		}).start();
