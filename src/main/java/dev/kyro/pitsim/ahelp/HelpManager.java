@@ -65,26 +65,6 @@ public class HelpManager implements Listener {
 						"how do you unlock the darkzone?"
 				));
 
-		helpIntents.add(new HelpIntent("BEST_PERKS", HelpPageIdentifier.MAIN_PAGE)
-				.setChildPage(HelpPageIdentifier.BEST_PERKS)
-				.setReply("Are you asking about streaking or fighting perks?")
-				.setTrainingPhrases(
-						"what are the best perks?",
-						"what perks are the best?"
-				));
-		helpIntents.add(new HelpIntent("BEST_STREAKING_PERKS", HelpPageIdentifier.BEST_PERKS)
-				.setReply("You may as well jump off a bridge")
-				.setTrainingPhrases(
-						"streaking",
-						"streaking perks"
-				));
-		helpIntents.add(new HelpIntent("BEST_FIGHTING_PERKS", HelpPageIdentifier.BEST_PERKS)
-				.setReply("Why the fuck would I know")
-				.setTrainingPhrases(
-						"fighting",
-						"fighting perks"
-				));
-
 		helpIntents.add(new HelpIntent("WHAT_IS_PIT", HelpPageIdentifier.MAIN_PAGE)
 				.setReply("The Hypixel Pit is a glorious minigame run by our one true lord and saviour &cMinikloon")
 				.setTrainingPhrases(
@@ -118,8 +98,8 @@ public class HelpManager implements Listener {
 				));
 
 		helpIntents.add(new HelpIntent("WHO_IS_ANDREW_TATE", HelpPageIdentifier.MAIN_PAGE)
-				.setReply("A MAN OF &4&l&oLIMITLESS POWER&7 JUST BELOW GOD. AN &4&l&oALPHA DOG&7 WHO &4&l&oRULES&7 " +
-						"OVER ALL MEN AND IS MORE CAPABLE THEN YOU EVER WILL BE")
+				.setReply("A MAN OF &4&l&oLIMITLESS POWER&7 JUST BELOW GOD. AN &4&l&oALPHA DOG&7 WHO &4&l&oRULES " +
+						"OVER ALL MEN&7 AND IS MORE CAPABLE THEN YOU EVER WILL BE")
 				.setTrainingPhrases(
 						"who is andrew tate?",
 						"who is tate?"
@@ -146,8 +126,6 @@ public class HelpManager implements Listener {
 
 //		Pages
 		helpPages.add(new HelpPage(HelpPageIdentifier.MAIN_PAGE));
-		helpPages.add(new HelpPage(HelpPageIdentifier.BEST_PERKS)
-				.setEntryFulfillment("Are you asking about streaking or fighting perks?"));
 	}
 
 	private static void registerIntent(Summarizable summarizable) {

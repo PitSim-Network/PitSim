@@ -107,7 +107,7 @@ public class ManaBranch extends SkillBranch {
 		return new MajorProgressionUnlock() {
 			@Override
 			public String getDisplayName() {
-				return "Mana Spell Reduction";
+				return "&bMana Spell Reduction";
 			}
 
 			@Override
@@ -137,7 +137,7 @@ public class ManaBranch extends SkillBranch {
 		return new MajorProgressionUnlock() {
 			@Override
 			public String getDisplayName() {
-				return "Mana on Mob Kill";
+				return "&bMana on Mob Kill";
 			}
 
 			@Override
@@ -166,7 +166,7 @@ public class ManaBranch extends SkillBranch {
 		return new MajorProgressionUnlock() {
 			@Override
 			public String getDisplayName() {
-				return "Mana Regen Without Shield";
+				return "&bMana Regen Without Shield";
 			}
 
 			@Override
@@ -197,7 +197,7 @@ public class ManaBranch extends SkillBranch {
 		return new Path() {
 			@Override
 			public String getDisplayName() {
-				return "Max Mana";
+				return "&bMax Mana";
 			}
 
 			@Override
@@ -223,7 +223,7 @@ public class ManaBranch extends SkillBranch {
 		return new Path() {
 			@Override
 			public String getDisplayName() {
-				return "Mana Regen";
+				return "&bMana Regen";
 			}
 
 			@Override

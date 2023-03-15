@@ -133,6 +133,8 @@ public class ChatManager implements Listener {
 
 	public static void handleQuestion(Player player, String message) {
 		message = ChatColor.stripColor(message);
+		if(message.length() > 250) return;
+
 		HelpManager.HelperAgent helperAgent = HelpManager.getAgent(player);
 		final boolean shouldStoreRequest;
 		if(message.endsWith("?") && !helperAgent.isWaitingForResponse()) {

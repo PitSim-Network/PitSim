@@ -103,7 +103,7 @@ public class DamageBranch extends SkillBranch {
 		return new MajorProgressionUnlock() {
 			@Override
 			public String getDisplayName() {
-				return "Damage vs Mobs and Bosses";
+				return "&cDamage vs Mobs and Bosses";
 			}
 
 			@Override
@@ -133,7 +133,7 @@ public class DamageBranch extends SkillBranch {
 		return new MajorProgressionUnlock() {
 			@Override
 			public String getDisplayName() {
-				return "Heal on Mob Kill";
+				return "&cHeal on Mob Kill";
 			}
 
 			@Override
@@ -162,7 +162,7 @@ public class DamageBranch extends SkillBranch {
 		return new MajorProgressionUnlock() {
 			@Override
 			public String getDisplayName() {
-				return "Cheaper Boss Spawning";
+				return "&cCheaper Boss Spawning";
 			}
 
 			@Override

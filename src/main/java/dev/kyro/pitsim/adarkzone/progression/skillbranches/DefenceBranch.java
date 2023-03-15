@@ -230,7 +230,7 @@ public class DefenceBranch extends SkillBranch {
 		return new Path() {
 			@Override
 			public String getDisplayName() {
-				return "Max Shield";
+				return "&9Max Shield";
 			}
 
 			@Override
