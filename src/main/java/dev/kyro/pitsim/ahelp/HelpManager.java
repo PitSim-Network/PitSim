@@ -4,6 +4,7 @@ import com.google.cloud.dialogflow.cx.v3.*;
 import com.google.protobuf.FieldMask;
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.PitSim;
+import dev.kyro.pitsim.controllers.DiscordManager;
 import dev.kyro.pitsim.controllers.EnchantManager;
 import dev.kyro.pitsim.controllers.PerkManager;
 import dev.kyro.pitsim.controllers.UpgradeManager;
@@ -13,6 +14,7 @@ import org.bukkit.event.Listener;
 
 import java.io.IOException;
 import java.lang.reflect.Field;
+import java.sql.*;
 import java.util.*;
 
 public class HelpManager implements Listener {
@@ -24,13 +26,13 @@ public class HelpManager implements Listener {
 	public static final String LOCATION_ID = "us-east1";
 	public static final String FLOW_ID = "00000000-0000-0000-0000-000000000000";
 	private static final Map<Player, HelperAgent> helpClientMap = new HashMap<>();
+	public static final String TABLE_NAME = "HelpRequests";
 
 	private static SessionsSettings sessionsSettings;
 	private static PagesSettings pagesSettings;
 	private static IntentsSettings intentsSettings;
 
 	//	TODO: Replace with database code
-	private static List<StoredRequest> tempStoredRequests = new ArrayList<>();
 
 	public HelpManager() {
 		setupSettings();
@@ -413,19 +415,65 @@ public class HelpManager implements Listener {
 	}
 
 	public static StoredRequest getStoredRequest(String query) {
-//		TODO: Replace with database code
-		for(StoredRequest request : tempStoredRequests) if(request.getQuery().equals(query)) return request;
+		Connection connection = getConnection();
+		String sqlQuery = "SELECT * FROM " + TABLE_NAME + " WHERE query = ?";
+
+		try {
+			PreparedStatement statement = connection.prepareStatement(sqlQuery);
+			statement.setString(1, query);
+			ResultSet resultSet = statement.executeQuery();
+			if(resultSet.next()) {
+				String intent = resultSet.getString("intent");
+				return new StoredRequest(query, intent);
+			}
+		} catch(SQLException exception) {
+			exception.printStackTrace();
+		}
+
+		try {
+			connection.close();
+		} catch(SQLException e) {
+			throw new RuntimeException(e);
+		}
 		return null;
 	}
 
 	public static void writeStoredRequest(StoredRequest request) {
-//		TODO: Replace with database code
-		tempStoredRequests.add(request);
+		Connection connection = getConnection();
+		String sqlQuery = "INSERT INTO " + TABLE_NAME + " (query, intent) VALUES (?, ?)";
+
+		try {
+			PreparedStatement statement = connection.prepareStatement(sqlQuery);
+			statement.setString(1, request.query);
+			statement.setString(2, request.intent);
+			statement.executeUpdate();
+		} catch(SQLException exception) {
+			exception.printStackTrace();
+		}
+
+		try {
+			connection.close();
+		} catch(SQLException e) {
+			throw new RuntimeException(e);
+		}
 	}
 
 	public static void clearStoredData() {
-//		TODO: Replace with database code
-		tempStoredRequests.clear();
+		Connection connection = getConnection();
+		String sqlQuery = "DELETE FROM " + TABLE_NAME;
+
+		try {
+			PreparedStatement statement = connection.prepareStatement(sqlQuery);
+			statement.executeUpdate();
+		} catch(SQLException exception) {
+			exception.printStackTrace();
+		}
+
+		try {
+			connection.close();
+		} catch(SQLException e) {
+			throw new RuntimeException(e);
+		}
 	}
 
 	public static HelperAgent getAgent(Player player) {
@@ -553,5 +601,21 @@ public class HelpManager implements Listener {
 		public String getIntent() {
 			return intent;
 		}
+	}
+
+	public static Connection getConnection() {
+		return DiscordManager.getConnection();
+	}
+
+	public static void createTable(Connection connection) throws SQLException {
+		Statement stmt = connection.createStatement();
+
+		String createTableSQL = "CREATE TABLE " + TABLE_NAME + " (" +
+				"query VARCHAR(255) PRIMARY KEY, " +
+				"intent VARCHAR(255) NOT NULL)";
+		stmt.executeUpdate(createTableSQL);
+
+		stmt.close();
+		connection.close();
 	}
 }

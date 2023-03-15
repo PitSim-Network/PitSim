@@ -118,6 +118,7 @@ import septogeddon.pluginquery.PluginQuery;
 import septogeddon.pluginquery.api.QueryMessenger;
 
 import java.io.File;
+import java.sql.SQLException;
 import java.time.ZoneId;
 import java.util.*;
 
