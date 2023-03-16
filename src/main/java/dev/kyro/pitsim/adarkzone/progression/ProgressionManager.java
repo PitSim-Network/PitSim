@@ -193,7 +193,7 @@ public class ProgressionManager implements Listener {
 				loreBuilder.addLore("&eClick to purchase!");
 			}
 		} else if(unlockState == UnlockState.UNLOCKED) {
-			loreBuilder.addLore("&aClick to open!");
+			loreBuilder.addLore("&eClick to open!");
 		}
 	}
 

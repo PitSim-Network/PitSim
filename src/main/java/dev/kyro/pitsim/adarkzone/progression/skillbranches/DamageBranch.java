@@ -83,7 +83,7 @@ public class DamageBranch extends SkillBranch {
 
 			@Override
 			public ItemStack getBaseStack() {
-				return new AItemStackBuilder(Material.SKULL_ITEM, 1, 1)
+				return new AItemStackBuilder(Material.SKULL_ITEM)
 						.setLore(new ALoreBuilder(
 								"&7Unlocks the ability to summon",
 								"&7bosses in the &5Darkzone"
