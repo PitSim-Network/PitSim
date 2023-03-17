@@ -73,6 +73,8 @@ public class Sounds {
 	public static final SoundEffect XP_GAIN = new SoundEffect(Sound.ORB_PICKUP, 1, 1);
 	public static final SoundEffect ALTAR_LEVEL_UP = new SoundEffect(Sound.WOLF_HOWL, 1, 0.8);
 	public static final SoundEffect ITEM_PICKUP = new SoundEffect(Sound.ITEM_PICKUP, 1, 1);
+	public static final SoundEffect HEARTBEAT1 = new SoundEffect(Sound.NOTE_BASS_DRUM, 1, 0.6);
+	public static final SoundEffect HEARTBEAT2 = new SoundEffect(Sound.NOTE_BASS_DRUM, 1, 0.8);
 
 	public static final SoundEffect SNAKE_ICE = new SoundEffect(Sound.GLASS, 1.3, 1.5);
 	public static final SoundEffect BONE_SNAKE = new SoundEffect(Sound.SKELETON_HURT, 1.3, 1.5);
