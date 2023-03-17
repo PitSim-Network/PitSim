@@ -1,9 +1,11 @@
 package dev.kyro.pitsim.commands;
 
+import dev.kyro.pitsim.adarkzone.altar.BiomeChanger;
 import dev.kyro.pitsim.ahelp.HelpManager;
 import net.minecraft.server.v1_8_R3.EntityItem;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.block.Biome;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -29,8 +31,15 @@ public class ATestCommand implements CommandExecutor {
 		if(!(sender instanceof Player)) return false;
 		Player player = (Player) sender;
 
-		HelpManager.HelperAgent helperAgent = HelpManager.getAgent(player);
-		helperAgent.detectIntent(String.join(" ", args));
+//		if(BiomeChanger.players.contains(player.getUniqueId())) {
+//			BiomeChanger.players.remove(player.getUniqueId());
+//		} else {
+//			BiomeChanger.players.add(player.getUniqueId());
+//		}
+
+
+//		HelpManager.HelperAgent helperAgent = HelpManager.getAgent(player);
+//		helperAgent.detectIntent(String.join(" ", args));
 
 //		PacketBlock packetBlock = new PacketBlock(Material.RED_ROSE, (byte) 1, player.getLocation());
 //		packetBlock.setViewers(Collections.singletonList(player));

@@ -12,7 +12,9 @@ import net.minecraft.server.v1_8_R3.DataWatcher;
 import net.minecraft.server.v1_8_R3.PacketPlayOutEntityMetadata;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.Chunk;
 import org.bukkit.Location;
+import org.bukkit.block.Biome;
 import org.bukkit.block.Block;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftEntity;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
@@ -32,6 +34,7 @@ import java.util.List;
 public class AltarManager implements Listener {
 	public static final Location TEXT_LOCATION = new Location(MapManager.getDarkzone(), 192.5, 95, -104.5);
 	public static final Location CONFIRM_LOCATION = new Location(MapManager.getDarkzone(), 192.5, 89.5, -104.5);
+	public static final int EFFECT_RADIUS = 10;
 
 	public static ArmorStand[] textStands = new ArmorStand[7];
 
@@ -71,6 +74,17 @@ public class AltarManager implements Listener {
 
 			textStands[i] = stand;
 		}
+
+		List<Chunk> chunks = new ArrayList<>();
+		for(int x = -1 * EFFECT_RADIUS; x <= EFFECT_RADIUS; x++) {
+			for(int z = -1 * EFFECT_RADIUS; z <= EFFECT_RADIUS; z++) {
+				Chunk chunk = CONFIRM_LOCATION.clone().add(x, 0, z).getChunk();
+				if(!chunks.contains(chunk)) chunks.add(chunk);
+			}
+		}
+
+		BiomeChanger.chunkList.addAll(chunks);
+		Heartbeat.init();
 	}
 
 	public static void setText(Player player, String[] text) {

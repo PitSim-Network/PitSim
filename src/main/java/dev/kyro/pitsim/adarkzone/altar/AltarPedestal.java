@@ -139,6 +139,7 @@ public abstract class AltarPedestal implements Listener {
 	public void onClick(PlayerInteractAtEntityEvent event) {
 		if(!event.getRightClicked().getUniqueId().equals(stand.getUniqueId())) return;
 		Player player = event.getPlayer();
+		Bukkit.broadcastMessage("CLICKED!");
 
 		if(isActivated(player)) deactivate(player, false);
 		else activate(player);

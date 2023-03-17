@@ -17,6 +17,7 @@ import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.adarkzone.*;
 import dev.kyro.pitsim.adarkzone.abilities.CageAbility;
 import dev.kyro.pitsim.adarkzone.altar.AltarManager;
+import dev.kyro.pitsim.adarkzone.altar.BiomeChanger;
 import dev.kyro.pitsim.adarkzone.notdarkzone.EquipmentType;
 import dev.kyro.pitsim.adarkzone.notdarkzone.PitEquipment;
 import dev.kyro.pitsim.adarkzone.notdarkzone.ShieldManager;
@@ -118,7 +119,6 @@ import septogeddon.pluginquery.PluginQuery;
 import septogeddon.pluginquery.api.QueryMessenger;
 
 import java.io.File;
-import java.sql.SQLException;
 import java.time.ZoneId;
 import java.util.*;
 
@@ -204,6 +204,7 @@ public class PitSim extends JavaPlugin {
 		if(luckpermsProvider != null) LUCKPERMS = luckpermsProvider.getProvider();
 
 		PROTOCOL_MANAGER = ProtocolLibrary.getProtocolManager();
+		new BiomeChanger(this);
 
 		new BukkitRunnable() {
 			@Override
