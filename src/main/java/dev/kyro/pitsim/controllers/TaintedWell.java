@@ -8,7 +8,7 @@ import dev.kyro.pitsim.controllers.objects.PitEnchant;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.enums.NBTTag;
 import dev.kyro.pitsim.events.AttackEvent;
-import dev.kyro.pitsim.misc.EnchantSound;
+import dev.kyro.pitsim.misc.HypixelSound;
 import dev.kyro.pitsim.misc.Misc;
 import dev.kyro.pitsim.misc.Sounds;
 import net.minecraft.server.v1_8_R3.*;
@@ -307,9 +307,9 @@ public class TaintedWell implements Listener {
 			enchantingPlayers.add(player);
 			setText(player, "\u00A77", "\u00A77", "\u00A77", ChatColor.YELLOW + "Its rolling...");
 
-			EnchantSound.Tier tier = EnchantSound.Tier.getTier(freshTier + 1);
-			assert tier != null;
-			new EnchantSound(player, player.getLocation()).play(tier, true);
+			HypixelSound.Sound sound = HypixelSound.Sound.getTier(freshTier + 1);
+			assert sound != null;
+			new HypixelSound(player, player.getLocation()).play(sound, true);
 
 			new BukkitRunnable() {
 				public void run() {
@@ -318,7 +318,7 @@ public class TaintedWell implements Listener {
 					Sounds.EXPLOSIVE_3.play(player);
 					TaintedWell.showButtons(player);
 				}
-			}.runTaskLater(PitSim.INSTANCE, tier.length);
+			}.runTaskLater(PitSim.INSTANCE, sound.length);
 		}
 	}
 

@@ -63,7 +63,6 @@ public class LandMineAbility extends PitBossAbility {
 			public void run() {
 				if(i == 0) {
 					landMine.isStarting = false;
-					Sounds.TNT_PRIME.play(getPitBoss().boss.getLocation(), 20);
 				}
 
 				int dir = i % 4;
