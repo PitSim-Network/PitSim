@@ -20,10 +20,11 @@ public class Heartbeat {
 				Location altarLocation = AltarManager.TEXT_LOCATION.clone();
 				for(Player player : Bukkit.getOnlinePlayers()) {
 					EntityPlayer nmsPlayer = ((CraftPlayer) player).getHandle();
+					if(player.getWorld() != altarLocation.getWorld()) continue;
 
 					if(player.getLocation().distance(altarLocation) < AltarManager.EFFECT_RADIUS) {
 						nmsPlayer.playerConnection.sendPacket(new PacketPlayOutGameStateChange(2, 0));
-						nmsPlayer.playerConnection.sendPacket(new PacketPlayOutGameStateChange(8, 1000f));
+						nmsPlayer.playerConnection.sendPacket(new PacketPlayOutGameStateChange(8, 1.1f));
 						nmsPlayer.playerConnection.sendPacket(new PacketPlayOutGameStateChange(7, 3f));
 
 						Misc.applyPotionEffect(player, PotionEffectType.NIGHT_VISION, Integer.MAX_VALUE, 9, false, false);

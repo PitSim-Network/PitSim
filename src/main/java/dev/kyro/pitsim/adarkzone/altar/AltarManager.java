@@ -9,12 +9,13 @@ import dev.kyro.pitsim.controllers.PrestigeValues;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.misc.Misc;
 import net.minecraft.server.v1_8_R3.DataWatcher;
+import net.minecraft.server.v1_8_R3.PacketPlayOutEntityDestroy;
 import net.minecraft.server.v1_8_R3.PacketPlayOutEntityMetadata;
+import net.minecraft.server.v1_8_R3.PacketPlayOutSpawnEntity;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
-import org.bukkit.block.Biome;
 import org.bukkit.block.Block;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftEntity;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
@@ -115,7 +116,7 @@ public class AltarManager implements Listener {
 				"&8&m----------------------",
 				"&4&lAltar Level",
 				"&4" + altarLevel + " " + AUtil.createProgressBar("|", ChatColor.RED, ChatColor.GRAY, 30,
-						pitPlayer.altarXP / DarkzoneLeveling.getXPForLevel(altarLevel + 1)) + " &4" + (altarLevel + 1),
+						DarkzoneLeveling.getRemainingXP(pitPlayer.altarXP) / DarkzoneLeveling.getXPForLevel(altarLevel + 1)) + " &4" + (altarLevel + 1),
 				"&8&m----------------------",
 				"&7Level Difference: " + color + Math.abs(difference),
 				status
@@ -131,7 +132,7 @@ public class AltarManager implements Listener {
 
 	public static int getStandID(ArmorStand stand) {
 		for(Entity entity : Bukkit.getWorld("darkzone").getNearbyEntities(CONFIRM_LOCATION, 10.0, 10.0, 10.0)) {
-			if(!(entity instanceof ArmorStand)) {
+			if(!(entity instanceof ArmorStand) || !entity.isValid()) {
 				continue;
 			}
 			if(entity.getUniqueId().equals(stand.getUniqueId())) {
@@ -165,10 +166,34 @@ public class AltarManager implements Listener {
 
 		Misc.strikeLightningForPlayers(CONFIRM_LOCATION, player);
 
-		if(pedestals.isEmpty()) return;
-
 		AltarRewards.rewardPlayer(player);
-
 		AltarPedestal.disableAll(player);
+
+		disableText(player);
+		new BukkitRunnable() {
+			@Override
+			public void run() {
+				enableText(player);
+			}
+		}.runTaskLater(PitSim.INSTANCE, 20 * 3);
+
+	}
+
+	public static void disableText(Player player) {
+		for(ArmorStand textStand : textStands) {
+			PacketPlayOutEntityDestroy destroyPacket = new PacketPlayOutEntityDestroy(getStandID(textStand));
+			((CraftPlayer)player).getHandle().playerConnection.sendPacket(destroyPacket);
+		}
+	}
+
+	public static void enableText(Player player) {
+		for(ArmorStand textStand : textStands) {
+			PacketPlayOutSpawnEntity spawnPacket = new PacketPlayOutSpawnEntity(((CraftEntity) textStand).getHandle(), 78);
+			((CraftPlayer)player).getHandle().playerConnection.sendPacket(spawnPacket);
+
+			DataWatcher dw = ((CraftEntity)textStand).getHandle().getDataWatcher();
+			PacketPlayOutEntityMetadata metaPacket = new PacketPlayOutEntityMetadata(getStandID(textStand), dw, true);
+			((CraftPlayer)player).getHandle().playerConnection.sendPacket(metaPacket);
+		}
 	}
 }

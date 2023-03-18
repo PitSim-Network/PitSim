@@ -1,18 +1,26 @@
 package dev.kyro.pitsim.adarkzone.altar;
 
 import dev.kyro.pitsim.adarkzone.altar.pedestals.TurmoilPedestal;
+import dev.kyro.pitsim.adarkzone.altar.pedestals.WealthPedestal;
 import org.bukkit.entity.Player;
 
 import java.util.Random;
 
 public class AltarRewards {
 
+	//Primary 3 pedestals only determine chance.
+	//Base amount is based on LOW/MEDIUM/HIGH system (All base numbers should be doubles)
+	//Multipliers are Wealth, Turmoil, and Souls/Base roll cost
+
 	public static void rewardPlayer(Player player) {
-		boolean turmoil = AltarPedestal.getPedestal(TurmoilPedestal.class).isActivated(player);
+		boolean hasTurmoil = AltarPedestal.getPedestal(TurmoilPedestal.class).isActivated(player);
 		boolean positiveTurmoil = new Random().nextBoolean();
 
 		for(AltarPedestal.ALTAR_REWARD reward : AltarPedestal.ALTAR_REWARD.values()) {
 			Random random = new Random();
+
+			int chance = AltarPedestal.getRewardChance(player, reward);
+			if(random.nextInt(100) > chance) continue;
 
 			AltarPedestal.REWARD_SIZE size = AltarPedestal.REWARD_SIZE.SMALL;
 
@@ -23,21 +31,22 @@ public class AltarRewards {
 				}
 			}
 
-			int rewardCount = reward.getRewardCount(size, player);
+			double rewardCount = reward.getRewardCount(size, player);
 
-			if(turmoil) {
-				int breakChance = positiveTurmoil ? 3 : 10;
+			rewardCount *= getSoulMultiplier(player);
+
+			if(AltarPedestal.getPedestal(WealthPedestal.class).isActivated(player)) rewardCount *= AltarPedestal.WEALTH_MULTIPLIER;
+
+			if(hasTurmoil) {
+				int breakChance = positiveTurmoil ? 3 : 15;
 
 				double multiplier = 1;
 				while(new Random().nextInt(100) > breakChance) multiplier += 0.1;
 				rewardCount *= multiplier;
 			}
 
-			reward.rewardPlayer(player, rewardCount);
+			reward.rewardPlayer(player, (int) Math.floor(rewardCount));
 		}
-
-
-
 
 		//Weighted map of LOW/MEDIUM/HIGH
 		//Chance multiplier changes weight of certain catag
@@ -60,5 +69,9 @@ public class AltarRewards {
 		//Copy soul explosion code for xp orb count
 
 
+	}
+
+	public static double getSoulMultiplier(Player player) {
+		return AltarPedestal.getTotalCost(player) / (double) AltarPedestal.BASE_COST;
 	}
 }

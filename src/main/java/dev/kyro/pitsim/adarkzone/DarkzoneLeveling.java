@@ -23,14 +23,15 @@ public class DarkzoneLeveling {
 		return level * 5 + 10;
 	}
 
-	public static int getTotalXP(int level, int currentXP) {
-		int xp = 0;
+	public static double getRemainingXP(double currentXP) {
+		int level = 0;
 
-		for(int i = 1; i <= level; i++) {
-			xp += getXPForLevel(i);
+		while(currentXP >= getXPForLevel(level)) {
+			currentXP -= getXPForLevel(level);
+			level++;
 		}
 
-		return xp + currentXP;
+		return currentXP;
 	}
 
 	public static void giveXP(PitPlayer pitPlayer, double amount) {

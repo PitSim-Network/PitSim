@@ -4,7 +4,6 @@ import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.adarkzone.altar.pedestals.HeresyPedestal;
 import dev.kyro.pitsim.adarkzone.altar.pedestals.KnowledgePedestal;
 import dev.kyro.pitsim.adarkzone.altar.pedestals.RenownPedestal;
-import dev.kyro.pitsim.adarkzone.altar.pedestals.WealthPedestal;
 import dev.kyro.pitsim.adarkzone.progression.ProgressionManager;
 import dev.kyro.pitsim.adarkzone.progression.SkillBranch;
 import dev.kyro.pitsim.adarkzone.progression.skillbranches.AltarBranch;
@@ -26,6 +25,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerInteractAtEntityEvent;
+import org.bukkit.event.world.ChunkUnloadEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 
@@ -37,7 +37,7 @@ import java.util.UUID;
 public abstract class AltarPedestal implements Listener {
 
 	public static final int BASE_COST = 100;
-	public static final int WEALTH_MULTIPLIER = 2;
+	public static final double WEALTH_MULTIPLIER = 1.5;
 
 
 	public static List<AltarPedestal> altarPedestals = new ArrayList<>();
@@ -81,6 +81,10 @@ public abstract class AltarPedestal implements Listener {
 	}
 
 	public void spawnStand() {
+		if(stand != null) {
+			stand.remove();
+		}
+
 		stand = (ArmorStand) location.getWorld().spawnEntity(location, EntityType.ARMOR_STAND);
 		stand.setVisible(false);
 		stand.setCustomNameVisible(true);
@@ -139,10 +143,16 @@ public abstract class AltarPedestal implements Listener {
 	public void onClick(PlayerInteractAtEntityEvent event) {
 		if(!event.getRightClicked().getUniqueId().equals(stand.getUniqueId())) return;
 		Player player = event.getPlayer();
-//		Bukkit.broadcastMessage("CLICKED!");
 
 		if(isActivated(player)) deactivate(player, false);
 		else activate(player);
+	}
+
+	@EventHandler
+	public void onChunkLoad(ChunkUnloadEvent event) {
+		if(event.getChunk().equals(stand.getLocation().getChunk())) {
+			event.setCancelled(true);
+		}
 	}
 
 	public int getIndex() {
@@ -168,7 +178,7 @@ public abstract class AltarPedestal implements Listener {
 	}
 
 	public static int getRewardChance(Player player, ALTAR_REWARD reward) {
-		return reward.pedestal.isActivated(player) ? reward.increase : 0;
+		return reward.pedestal.isActivated(player) ? 100 : 25;
 	}
 
 	public static int getTotalCost(Player player) {
@@ -195,12 +205,15 @@ public abstract class AltarPedestal implements Listener {
 			this.multiplier = multiplier;
 		}
 
-		public int getRewardCount(REWARD_SIZE size, Player player) {
+		public double getRewardCount(REWARD_SIZE size, Player player) {
 			Random random = new Random();
 
 			int count = 0;
 
 			switch(size) {
+				case SMALL:
+					count = random.nextInt(2) + 1;
+					break;
 				case MEDIUM:
 					count = random.nextInt(2) + 3;
 					break;
@@ -210,8 +223,6 @@ public abstract class AltarPedestal implements Listener {
 			}
 
 			if(pedestal.isActivated(player)) count *= multiplier;
-			if(getPedestal(WealthPedestal.class).isActivated(player)) count *= WEALTH_MULTIPLIER;
-
 			return count;
 		}
 
