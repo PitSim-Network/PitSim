@@ -99,7 +99,7 @@ public class TaintedChestplate extends StaticPitItem implements TemporaryItem {
 
 	@Override
 	public ItemStack getReplacementItem(PitPlayer pitPlayer, ItemStack itemStack, NBTItem nbtItem) {
-//		TODO: Refund
+		pitPlayer.taintedSouls += 30;
 		return null;
 	}
 
