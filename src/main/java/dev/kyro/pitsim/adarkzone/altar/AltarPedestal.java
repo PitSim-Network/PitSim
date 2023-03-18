@@ -204,7 +204,7 @@ public abstract class AltarPedestal implements Listener {
 			this.increase = increase;
 		}
 
-		public double getRewardCount(REWARD_SIZE size) {
+		public double getRewardCount(RewardSize size) {
 			Random random = new Random();
 
 			int count = 0;
@@ -239,14 +239,27 @@ public abstract class AltarPedestal implements Listener {
 		}
 	}
 
-	public enum REWARD_SIZE {
+	public enum RewardSize {
 		SMALL(30),
 		MEDIUM(60),
 		LARGE(100);
 
-		public int base;
-		REWARD_SIZE(int base) {
+		private final int base;
+
+		RewardSize(int base) {
 			this.base = base;
+		}
+
+		public int getBase() {
+			return base;
+		}
+
+		public static RewardSize getFromChance(double chance) {
+			chance = Math.min(chance, 100);
+			for(RewardSize rewardSize : values()) {
+				if(chance < rewardSize.base) return rewardSize;
+			}
+			throw new RuntimeException();
 		}
 	}
 }
