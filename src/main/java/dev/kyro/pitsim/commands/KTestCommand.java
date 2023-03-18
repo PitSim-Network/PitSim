@@ -2,8 +2,8 @@ package dev.kyro.pitsim.commands;
 
 import de.tr7zw.nbtapi.NBTItem;
 import dev.kyro.arcticapi.misc.AUtil;
+import dev.kyro.pitsim.adarkzone.progression.ProgressionGUI;
 import dev.kyro.pitsim.enums.NBTTag;
-import dev.kyro.pitsim.misc.HypixelSound;
 import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -29,10 +29,10 @@ public class KTestCommand implements CommandExecutor {
 		Player player = (Player) sender;
 		if(!player.isOp()) return false;
 
-		new HypixelSound(player, player.getLocation()).play(HypixelSound.Sound.FRESH_DROP);
+//		new HypixelSound(player, player.getLocation()).play(HypixelSound.Sound.FRESH_DROP);
 
-//		ProgressionGUI progressionGUI = new ProgressionGUI(player);
-//		progressionGUI.open();
+		ProgressionGUI progressionGUI = new ProgressionGUI(player);
+		progressionGUI.open();
 
 //		for(Block block : getNearbyBlocks(player.getLocation(), 100)) {
 //			Block blockBelow = block.getRelative(0, -1, 0);
