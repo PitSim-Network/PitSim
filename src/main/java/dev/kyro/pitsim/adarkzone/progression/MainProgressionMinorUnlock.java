@@ -26,7 +26,7 @@ public class MainProgressionMinorUnlock extends MainProgressionUnlock {
 		ItemStack baseStack = new ItemStack(Material.STAINED_GLASS_PANE, 1, (short) unlockState.data);
 		ALoreBuilder loreBuilder = new ALoreBuilder();
 
-		ProgressionManager.addPurchaseCostLore(loreBuilder, unlockState, pitPlayer.taintedSouls, cost, false);
+		ProgressionManager.addPurchaseCostLore(this, loreBuilder, unlockState, pitPlayer.taintedSouls, cost, false);
 		if(unlockState == UnlockState.UNLOCKED) Misc.addEnchantGlint(baseStack);
 
 		return new AItemStackBuilder(baseStack)

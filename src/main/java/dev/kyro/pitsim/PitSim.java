@@ -46,6 +46,7 @@ import dev.kyro.pitsim.brewing.objects.PotionEffect;
 import dev.kyro.pitsim.commands.*;
 import dev.kyro.pitsim.commands.admin.*;
 import dev.kyro.pitsim.commands.beta.BaseBetaCommand;
+import dev.kyro.pitsim.commands.beta.ResetCommand;
 import dev.kyro.pitsim.commands.beta.SoulsCommand;
 import dev.kyro.pitsim.commands.essentials.*;
 import dev.kyro.pitsim.controllers.*;
@@ -118,7 +119,6 @@ import septogeddon.pluginquery.PluginQuery;
 import septogeddon.pluginquery.api.QueryMessenger;
 
 import java.io.File;
-import java.sql.SQLException;
 import java.time.ZoneId;
 import java.util.*;
 
@@ -598,6 +598,7 @@ public class PitSim extends JavaPlugin {
 
 		AMultiCommand betaCommand = new BaseBetaCommand("beta");
 		new SoulsCommand(betaCommand, "souls");
+		new ResetCommand(betaCommand, "reset");
 
 		getCommand("atest").setExecutor(new ATestCommand());
 		getCommand("ktest").setExecutor(new KTestCommand());

@@ -1,9 +1,6 @@
 package dev.kyro.pitsim.adarkzone.bosses;
 
-import dev.kyro.pitsim.adarkzone.BossManager;
-import dev.kyro.pitsim.adarkzone.DropPool;
-import dev.kyro.pitsim.adarkzone.PitBoss;
-import dev.kyro.pitsim.adarkzone.SubLevelType;
+import dev.kyro.pitsim.adarkzone.*;
 import dev.kyro.pitsim.adarkzone.abilities.CageAbility;
 import dev.kyro.pitsim.adarkzone.abilities.ChargeAbility;
 import dev.kyro.pitsim.adarkzone.abilities.WolfMinionAbility;
@@ -43,13 +40,13 @@ public class PitWolfBoss extends PitBoss {
 	}
 
 	@Override
-	public int getMaxHealth() {
-		return (BossManager.getHealth(getSubLevelType()) / 2);
+	public double getMaxHealth() {
+		return DarkzoneBalancing.getAttribute(getSubLevelType(), DarkzoneBalancing.Attribute.BOSS_HEALTH) * 0.5;
 	}
 
 	@Override
-	public double getMeleeDamage() {
-		return BossManager.getDamage(getSubLevelType());
+	public double getDamage() {
+		return DarkzoneBalancing.getAttribute(getSubLevelType(), DarkzoneBalancing.Attribute.BOSS_DAMAGE);
 	}
 
 	@Override
@@ -63,12 +60,17 @@ public class PitWolfBoss extends PitBoss {
 	}
 
 	@Override
-	public DropPool createDropPool() {
-		return new DropPool();
+	public int getSpeedLevel() {
+		return 4;
 	}
 
 	@Override
-	public int getSpeedLevel() {
-		return 4;
+	public int getDroppedSouls() {
+		return DarkzoneBalancing.getAttributeAsInt(getSubLevelType(), DarkzoneBalancing.Attribute.BOSS_SOULS);
+	}
+
+	@Override
+	public DropPool createDropPool() {
+		return new DropPool();
 	}
 }

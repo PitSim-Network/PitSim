@@ -33,11 +33,12 @@ public abstract class PitMob implements Listener {
 		Bukkit.getPluginManager().registerEvents(this, PitSim.INSTANCE);
 	}
 
+	public abstract SubLevelType getSubLevelType();
 	public abstract Creature createMob(Location spawnLocation);
 	public abstract String getRawDisplayName();
 	public abstract ChatColor getChatColor();
 	public abstract int getMaxHealth();
-	public abstract double getMeleeDamage();
+	public abstract double getDamage();
 	public abstract int getSpeedAmplifier();
 	public abstract int getDroppedSouls();
 	public abstract DropPool createDropPool();

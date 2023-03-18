@@ -1,6 +1,6 @@
 package dev.kyro.pitsim.adarkzone.bosses;
 
-import dev.kyro.pitsim.adarkzone.BossManager;
+import dev.kyro.pitsim.adarkzone.DarkzoneBalancing;
 import dev.kyro.pitsim.adarkzone.DropPool;
 import dev.kyro.pitsim.adarkzone.PitBoss;
 import dev.kyro.pitsim.adarkzone.SubLevelType;
@@ -20,8 +20,8 @@ public class PitSkeletonBoss extends PitBoss {
 
 		abilities(
 				new RuptureAbility(1, 15, 1, 40),
-				new SnakeAbility(2, 20, BossManager.getDamage(1, getSubLevelType()), Material.QUARTZ_BLOCK, (byte) 0, Sounds.BONE_SNAKE),
-				new HailAbility(2, 25, 100, BossManager.getDamage(2, getSubLevelType())),
+				new SnakeAbility(2, 20, getDamage() * 2, Material.QUARTZ_BLOCK, (byte) 0, Sounds.BONE_SNAKE),
+				new HailAbility(2, 25, 100, getDamage() * 2),
 				new DefensiveMinionAbility(SubLevelType.SKELETON, 1, 3, 5000)
 		);
 	}
@@ -47,13 +47,13 @@ public class PitSkeletonBoss extends PitBoss {
 	}
 
 	@Override
-	public int getMaxHealth() {
-		return BossManager.getHealth(getSubLevelType());
+	public double getMaxHealth() {
+		return DarkzoneBalancing.getAttribute(getSubLevelType(), DarkzoneBalancing.Attribute.BOSS_HEALTH);
 	}
 
 	@Override
-	public double getMeleeDamage() {
-		return BossManager.getDamage(getSubLevelType());
+	public double getDamage() {
+		return DarkzoneBalancing.getAttribute(getSubLevelType(), DarkzoneBalancing.Attribute.BOSS_DAMAGE);
 	}
 
 	@Override
@@ -67,12 +67,17 @@ public class PitSkeletonBoss extends PitBoss {
 	}
 
 	@Override
-	public DropPool createDropPool() {
-		return new DropPool();
+	public int getSpeedLevel() {
+		return 1;
 	}
 
 	@Override
-	public int getSpeedLevel() {
-		return 1;
+	public int getDroppedSouls() {
+		return DarkzoneBalancing.getAttributeAsInt(getSubLevelType(), DarkzoneBalancing.Attribute.BOSS_SOULS);
+	}
+
+	@Override
+	public DropPool createDropPool() {
+		return new DropPool();
 	}
 }

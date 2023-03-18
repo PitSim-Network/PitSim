@@ -26,10 +26,10 @@ public class AltarRewards {
 			int rewardCount = reward.getRewardCount(size, player);
 
 			if(turmoil) {
-				int breakChance = positiveTurmoil ? 3 : 10;
+				double breakChance = positiveTurmoil ? 0.03 : 0.1;
 
 				double multiplier = 1;
-				while(new Random().nextInt(100) > breakChance) multiplier += 0.1;
+				while(Math.random() > breakChance) multiplier += 0.1;
 				rewardCount *= multiplier;
 			}
 

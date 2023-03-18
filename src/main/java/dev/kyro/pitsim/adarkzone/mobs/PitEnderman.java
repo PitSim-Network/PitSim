@@ -1,8 +1,6 @@
 package dev.kyro.pitsim.adarkzone.mobs;
 
-import dev.kyro.pitsim.adarkzone.DropPool;
-import dev.kyro.pitsim.adarkzone.PitMob;
-import dev.kyro.pitsim.adarkzone.PitNameTag;
+import dev.kyro.pitsim.adarkzone.*;
 import dev.kyro.pitsim.aitems.mobdrops.EnderPearl;
 import dev.kyro.pitsim.controllers.ItemFactory;
 import dev.kyro.pitsim.enums.MobStatus;
@@ -15,6 +13,11 @@ public class PitEnderman extends PitMob {
 
 	public PitEnderman(Location spawnLocation, MobStatus mobStatus) {
 		super(spawnLocation, mobStatus);
+	}
+
+	@Override
+	public SubLevelType getSubLevelType() {
+		return SubLevelType.ENDERMAN;
 	}
 
 	@Override
@@ -44,12 +47,12 @@ public class PitEnderman extends PitMob {
 
 	@Override
 	public int getMaxHealth() {
-		return 200;
+		return DarkzoneBalancing.getAttributeAsInt(getSubLevelType(), DarkzoneBalancing.Attribute.MOB_DAMAGE);
 	}
 
 	@Override
-	public double getMeleeDamage() {
-		return 10;
+	public double getDamage() {
+		return DarkzoneBalancing.getAttributeAsInt(getSubLevelType(), DarkzoneBalancing.Attribute.HEALTH);
 	}
 
 	@Override
@@ -59,7 +62,7 @@ public class PitEnderman extends PitMob {
 
 	@Override
 	public int getDroppedSouls() {
-		return 10;
+		return DarkzoneBalancing.getAttributeAsInt(getSubLevelType(), DarkzoneBalancing.Attribute.MOB_SOULS);
 	}
 
 	@Override

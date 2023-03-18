@@ -1,9 +1,7 @@
 package dev.kyro.pitsim.adarkzone.mobs;
 
 import dev.kyro.pitsim.PitSim;
-import dev.kyro.pitsim.adarkzone.DropPool;
-import dev.kyro.pitsim.adarkzone.PitMob;
-import dev.kyro.pitsim.adarkzone.PitNameTag;
+import dev.kyro.pitsim.adarkzone.*;
 import dev.kyro.pitsim.adarkzone.notdarkzone.PitEquipment;
 import dev.kyro.pitsim.aitems.mobdrops.RottenFlesh;
 import dev.kyro.pitsim.controllers.ItemFactory;
@@ -18,6 +16,11 @@ public class PitZombie extends PitMob {
 
 	public PitZombie(Location spawnLocation, MobStatus mobStatus) {
 		super(spawnLocation, mobStatus);
+	}
+
+	@Override
+	public SubLevelType getSubLevelType() {
+		return SubLevelType.ZOMBIE;
 	}
 
 	@Override
@@ -52,12 +55,12 @@ public class PitZombie extends PitMob {
 
 	@Override
 	public int getMaxHealth() {
-		return 40;
+		return DarkzoneBalancing.getAttributeAsInt(getSubLevelType(), DarkzoneBalancing.Attribute.MOB_DAMAGE);
 	}
 
 	@Override
-	public double getMeleeDamage() {
-		return 8;
+	public double getDamage() {
+		return DarkzoneBalancing.getAttributeAsInt(getSubLevelType(), DarkzoneBalancing.Attribute.HEALTH);
 	}
 
 	@Override
@@ -67,7 +70,7 @@ public class PitZombie extends PitMob {
 
 	@Override
 	public int getDroppedSouls() {
-		return 1;
+		return DarkzoneBalancing.getAttributeAsInt(getSubLevelType(), DarkzoneBalancing.Attribute.MOB_SOULS);
 	}
 
 	@Override

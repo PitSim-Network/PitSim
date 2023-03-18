@@ -246,4 +246,8 @@ public class SubLevel {
 	public int getMaxMinionsPerPlayer() {
 		return maxMinionsPerPlayer;
 	}
+
+	public int getIndex() {
+		return getSubLevelType().getIndex();
+	}
 }
