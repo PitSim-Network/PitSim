@@ -2,6 +2,10 @@ package dev.kyro.pitsim.adarkzone.altar;
 
 import dev.kyro.pitsim.adarkzone.altar.pedestals.TurmoilPedestal;
 import dev.kyro.pitsim.adarkzone.altar.pedestals.WealthPedestal;
+import dev.kyro.pitsim.adarkzone.progression.ProgressionManager;
+import dev.kyro.pitsim.adarkzone.progression.SkillBranch;
+import dev.kyro.pitsim.adarkzone.progression.skillbranches.AltarBranch;
+import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import org.bukkit.entity.Player;
 
 import java.util.Random;
@@ -36,6 +40,21 @@ public class AltarRewards {
 			rewardCount *= getSoulMultiplier(player);
 
 			if(AltarPedestal.getPedestal(WealthPedestal.class).isActivated(player)) rewardCount *= AltarPedestal.WEALTH_MULTIPLIER;
+
+			PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
+			double voucherMultiplier = ProgressionManager.getUnlockedEffectAsValue(pitPlayer, AltarBranch.INSTANCE,
+					SkillBranch.PathPosition.FIRST_PATH, "altar-demonic-vouchers");
+
+			if(reward == AltarPedestal.ALTAR_REWARD.VOUCHERS) rewardCount *= (1 + (0.01 * voucherMultiplier));
+
+			double renownMultiplier = ProgressionManager.getUnlockedEffectAsValue(pitPlayer, AltarBranch.INSTANCE,
+					SkillBranch.PathPosition.FIRST_PATH, "altar-renown");
+
+			if(reward == AltarPedestal.ALTAR_REWARD.RENOWN) rewardCount *= (1 + (0.01 * renownMultiplier));
+
+			if(ProgressionManager.isUnlocked(pitPlayer, AltarBranch.INSTANCE, SkillBranch.MajorUnlockPosition.LAST))
+				rewardCount *= 1.2;
+
 
 			if(hasTurmoil) {
 				int breakChance = positiveTurmoil ? 3 : 15;
