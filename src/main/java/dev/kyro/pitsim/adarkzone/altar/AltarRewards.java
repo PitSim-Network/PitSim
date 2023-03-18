@@ -20,8 +20,7 @@ public class AltarRewards {
 		boolean hasTurmoil = AltarPedestal.getPedestal(TurmoilPedestal.class).isActivated(player);
 		boolean positiveTurmoil = new Random().nextBoolean();
 
-		for(AltarPedestal.ALTAR_REWARD reward : AltarPedestal.ALTAR_REWARD.values()) {
-			Random random = new Random();
+		for(AltarPedestal.ALTAR_REWARD reward : AltarPedestal.ALTAR_REWARD.values()) {;
 
 			double chance = Math.random() * 100 + AltarPedestal.getRewardChance(player, reward);
 			AltarPedestal.RewardSize size = AltarPedestal.RewardSize.getFromChance(chance);

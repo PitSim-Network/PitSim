@@ -257,7 +257,7 @@ public abstract class AltarPedestal implements Listener {
 		public static RewardSize getFromChance(double chance) {
 			chance = Math.min(chance, 100);
 			for(RewardSize rewardSize : values()) {
-				if(chance < rewardSize.base) return rewardSize;
+				if(chance <= rewardSize.base) return rewardSize;
 			}
 			throw new RuntimeException();
 		}

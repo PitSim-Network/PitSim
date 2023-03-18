@@ -24,7 +24,7 @@ public class Heartbeat {
 
 					if(player.getLocation().distance(altarLocation) < AltarManager.EFFECT_RADIUS) {
 						nmsPlayer.playerConnection.sendPacket(new PacketPlayOutGameStateChange(2, 0));
-						nmsPlayer.playerConnection.sendPacket(new PacketPlayOutGameStateChange(8, 1.1f));
+						nmsPlayer.playerConnection.sendPacket(new PacketPlayOutGameStateChange(8, 1.8f));
 						nmsPlayer.playerConnection.sendPacket(new PacketPlayOutGameStateChange(7, 3f));
 
 						Misc.applyPotionEffect(player, PotionEffectType.NIGHT_VISION, Integer.MAX_VALUE, 9, false, false);
