@@ -68,7 +68,7 @@ public class ProxyMessaging implements Listener {
 		}
 	}
 
-	public static void  sendBoosterUse(Booster booster, Player player, int time, boolean message) {
+	public static void sendBoosterUse(Booster booster, Player player, int time, boolean message) {
 
 		String playerName = "%luckperms_prefix%" + player.getName();
 		String playerNameColored = PlaceholderAPI.setPlaceholders(player, playerName);
@@ -181,6 +181,7 @@ public class ProxyMessaging implements Listener {
 			booster.minutes += integers.get(0);
 			booster.updateTime();
 			FirestoreManager.CONFIG.save();
+			for(Player player : ChatTriggerManager.getSubscribedPlayers()) ChatTriggerManager.sendBoosterInfo(PitPlayer.getPitPlayer(player));
 
 			String announcement = strings.get(2);
 			if(!announcement.isEmpty()) Bukkit.broadcastMessage(strings.get(2));
