@@ -19,19 +19,19 @@ public class AltarRewards {
 		for(AltarPedestal.ALTAR_REWARD reward : AltarPedestal.ALTAR_REWARD.values()) {
 			Random random = new Random();
 
-			int chance = AltarPedestal.getRewardChance(player, reward);
-			if(random.nextInt(100) > chance) continue;
+//			int chance = AltarPedestal.getRewardChance(player, reward);
+//			if(random.nextInt(100) > chance) continue;
 
 			AltarPedestal.REWARD_SIZE size = AltarPedestal.REWARD_SIZE.SMALL;
 
 			for(AltarPedestal.REWARD_SIZE value : AltarPedestal.REWARD_SIZE.values()) {
-				if(random.nextInt(100) <= value.base - (reward.pedestal.isActivated(player) ? reward.increase : 0)) {
+				if(random.nextInt(100) <= value.base + AltarPedestal.getRewardChance(player, reward)) {
 					size = value;
 					break;
 				}
 			}
 
-			double rewardCount = reward.getRewardCount(size, player);
+			double rewardCount = reward.getRewardCount(size);
 
 			rewardCount *= getSoulMultiplier(player);
 

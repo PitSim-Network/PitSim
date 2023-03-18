@@ -178,6 +178,7 @@ public abstract class AltarPedestal implements Listener {
 	}
 
 	public static int getRewardChance(Player player, ALTAR_REWARD reward) {
+		//TODO: Change these values
 		return reward.pedestal.isActivated(player) ? 100 : 25;
 	}
 
@@ -191,38 +192,32 @@ public abstract class AltarPedestal implements Listener {
 	}
 
 	public enum ALTAR_REWARD {
-		ALTAR_XP(getPedestal(KnowledgePedestal.class), 50, 1.5),
-		RENOWN(getPedestal(RenownPedestal.class), 50, 1.5),
-		VOUCHERS(getPedestal(HeresyPedestal.class), 50, 1.5);
+		ALTAR_XP(getPedestal(KnowledgePedestal.class), 50),
+		RENOWN(getPedestal(RenownPedestal.class), 50),
+		VOUCHERS(getPedestal(HeresyPedestal.class), 50);
 
 		public final AltarPedestal pedestal;
 		public final int increase;
-		public final double multiplier;
 
-		ALTAR_REWARD(AltarPedestal pedestal, int increase, double multiplier) {
+		ALTAR_REWARD(AltarPedestal pedestal, int increase) {
 			this.pedestal = pedestal;
 			this.increase = increase;
-			this.multiplier = multiplier;
 		}
 
-		public double getRewardCount(REWARD_SIZE size, Player player) {
+		public double getRewardCount(REWARD_SIZE size) {
 			Random random = new Random();
 
 			int count = 0;
 
 			switch(size) {
-				case SMALL:
-					count = random.nextInt(2) + 1;
-					break;
 				case MEDIUM:
-					count = random.nextInt(2) + 3;
+					count = random.nextInt(2) + 2;
 					break;
 				case LARGE:
 					count = random.nextInt(2) + 5;
 					break;
 			}
 
-			if(pedestal.isActivated(player)) count *= multiplier;
 			return count;
 		}
 
