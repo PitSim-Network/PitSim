@@ -39,7 +39,7 @@ public class ItemManager implements Listener {
 		new BukkitRunnable() {
 			@Override
 			public void run() {
-				if(!updatedItems.containsKey(player.getUniqueId())) return;
+				if(!updatedItems.containsKey(player.getUniqueId()) || !player.isOnline()) return;
 				List<ItemStack> itemList = updatedItems.remove(player.getUniqueId());
 				for(ItemStack itemStack : itemList) {
 					String itemName = itemStack.getItemMeta().getDisplayName();
