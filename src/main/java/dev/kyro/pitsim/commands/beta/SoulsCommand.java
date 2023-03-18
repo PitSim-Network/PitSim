@@ -22,7 +22,7 @@ public class SoulsCommand extends ACommand {
 		Player player = (Player) sender;
 
 		if(args.size() < 1) {
-			AOutput.error(player, "&c&lERROR!&7 Usage: /beta souls <number>");
+			AOutput.error(player, "&c&lERROR!&7 Usage: /beta souls <amount>");
 			return;
 		}
 
