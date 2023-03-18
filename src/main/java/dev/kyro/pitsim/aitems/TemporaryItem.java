@@ -74,15 +74,18 @@ public interface TemporaryItem {
 	default ItemDamageResult damage(ItemStack itemStack, int attemptToLoseLives) {
 		PitItem pitItem = (PitItem) this;
 		TemporaryType type = getTemporaryType();
+		System.out.println(new NBTItem(itemStack));
 		if(type == TemporaryType.LOST_ON_DEATH) {
 			return new ItemDamageResult(new ItemStack(Material.AIR), 0);
 		} else if(type == TemporaryType.LOOSES_LIVES_ON_DEATH) {
-			NBTItem nbtItem = new NBTItem(itemStack);
+			NBTItem nbtItem = new NBTItem(itemStack, true);
 			int currentLives = nbtItem.getInteger(NBTTag.CURRENT_LIVES.getRef());
 			int livesLost = Math.min(attemptToLoseLives, currentLives);
 			nbtItem.setInteger(NBTTag.CURRENT_LIVES.getRef(), currentLives - livesLost);
-			pitItem.updateItem(nbtItem.getItem());
-			return new ItemDamageResult(nbtItem.getItem(), livesLost);
+			pitItem.updateItem(itemStack);
+			System.out.println(currentLives + " " + livesLost);
+			System.out.println(new NBTItem(itemStack));
+			return new ItemDamageResult(itemStack, livesLost);
 		}
 		throw new RuntimeException();
 	}

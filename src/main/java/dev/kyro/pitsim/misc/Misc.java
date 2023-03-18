@@ -57,7 +57,7 @@ import java.net.URL;
 import java.text.DecimalFormat;
 import java.time.Duration;
 import java.util.*;
-import java.util.function.Predicate;
+import java.util.function.BiPredicate;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -205,22 +205,22 @@ public class Misc {
 		}.runTaskAsynchronously(PitSim.INSTANCE);
 	}
 
-	public static int getItemCount(Player player, Predicate<PitItem> condition) {
+	public static int getItemCount(Player player, BiPredicate<PitItem, ItemStack> condition) {
 		int count = 0;
 		for(ItemStack itemStack : player.getInventory().getContents()) {
 			PitItem pitItem = ItemFactory.getItem(itemStack);
-			if(pitItem == null || !condition.test(pitItem)) continue;
+			if(pitItem == null || !condition.test(pitItem, itemStack)) continue;
 			count += itemStack.getAmount();
 		}
 		return count;
 	}
 
-	public static boolean removeItems(Player player, int amount, Predicate<PitItem> condition) {
+	public static boolean removeItems(Player player, int amount, BiPredicate<PitItem, ItemStack> condition) {
 		if(getItemCount(player, condition) < amount) return false;
 		for(int i = 0; i < player.getInventory().getSize(); i++) {
 			ItemStack itemStack = player.getInventory().getItem(i);
 			PitItem pitItem = ItemFactory.getItem(itemStack);
-			if(pitItem == null || !condition.test(pitItem)) continue;
+			if(pitItem == null || !condition.test(pitItem, itemStack)) continue;
 
 			if(amount >= itemStack.getAmount()) {
 				player.getInventory().setItem(i, new ItemStack(Material.AIR));

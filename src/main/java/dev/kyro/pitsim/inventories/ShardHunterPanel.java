@@ -87,7 +87,7 @@ public class ShardHunterPanel extends AGUIPanel {
 				}
 			}
 			if(slot == 11) {
-				if(!Misc.removeItems(player, 64, pitItem -> pitItem instanceof AncientGemShard)) {
+				if(!Misc.removeItems(player, 64, (pitItem, itemStack) -> pitItem instanceof AncientGemShard)) {
 					AOutput.error(player, "&cYou do not have enough shards to craft this!");
 					Sounds.NO.play(player);
 					return;
@@ -114,7 +114,7 @@ public class ShardHunterPanel extends AGUIPanel {
 			if(renownUpgrade.refName.equals("SHARDHUNTER")) upgrade = renownUpgrade;
 		}
 
-		int shards = Misc.getItemCount(player, pitItem -> pitItem instanceof AncientGemShard);
+		int shards = Misc.getItemCount(player, (pitItem, itemStack) -> pitItem instanceof AncientGemShard);
 		double percent = shards / 64.0;
 		String progressBar = AUtil.createProgressBar("|", ChatColor.GREEN, ChatColor.GRAY, 25, percent);
 
