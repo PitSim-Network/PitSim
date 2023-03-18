@@ -23,18 +23,8 @@ public class AltarRewards {
 		for(AltarPedestal.ALTAR_REWARD reward : AltarPedestal.ALTAR_REWARD.values()) {
 			Random random = new Random();
 
-//			int chance = AltarPedestal.getRewardChance(player, reward);
-//			if(random.nextInt(100) > chance) continue;
-
-			AltarPedestal.REWARD_SIZE size = AltarPedestal.REWARD_SIZE.SMALL;
-
-			for(AltarPedestal.REWARD_SIZE value : AltarPedestal.REWARD_SIZE.values()) {
-				if(random.nextInt(100) <= value.base + AltarPedestal.getRewardChance(player, reward)) {
-					size = value;
-					break;
-				}
-			}
-
+			double chance = Math.random() * 100 + AltarPedestal.getRewardChance(player, reward);
+			AltarPedestal.RewardSize size = AltarPedestal.RewardSize.getFromChance(chance);
 			double rewardCount = reward.getRewardCount(size);
 
 			rewardCount *= getSoulMultiplier(player);
