@@ -4,8 +4,13 @@ import dev.kyro.pitsim.adarkzone.BossManager;
 import dev.kyro.pitsim.adarkzone.DropPool;
 import dev.kyro.pitsim.adarkzone.PitBoss;
 import dev.kyro.pitsim.adarkzone.SubLevelType;
+import dev.kyro.pitsim.adarkzone.abilities.DefensiveMinionAbility;
+import dev.kyro.pitsim.adarkzone.abilities.HailAbility;
 import dev.kyro.pitsim.adarkzone.abilities.RuptureAbility;
+import dev.kyro.pitsim.adarkzone.abilities.SnakeAbility;
+import dev.kyro.pitsim.misc.Sounds;
 import org.bukkit.ChatColor;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
 
 public class PitSkeletonBoss extends PitBoss {
@@ -14,10 +19,10 @@ public class PitSkeletonBoss extends PitBoss {
 		super(summoner);
 
 		abilities(
-				new RuptureAbility(1, 15, 1, 40)
-//				new SnakeAbility(2, 20, BossManager.getDamage(1, getSubLevelType()), Material.QUARTZ_BLOCK, (byte) 0, Sounds.BONE_SNAKE),
-//				new HailAbility(2, 25, 100, BossManager.getDamage(2, getSubLevelType())),
-//				new SkeletonMinionAbility(1, 3, 5000)
+				new RuptureAbility(1, 15, 1, 40),
+				new SnakeAbility(2, 20, BossManager.getDamage(1, getSubLevelType()), Material.QUARTZ_BLOCK, (byte) 0, Sounds.BONE_SNAKE),
+				new HailAbility(2, 25, 100, BossManager.getDamage(2, getSubLevelType())),
+				new DefensiveMinionAbility(SubLevelType.SKELETON, 1, 3, 5000)
 		);
 	}
 

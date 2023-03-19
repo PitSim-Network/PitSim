@@ -41,6 +41,12 @@ public class CounterOffensive extends PitEnchant {
 		).getLore();
 	}
 
+	@Override
+	public String getSummary() {
+		return getDisplayName(false, true) + " &7is an enchant that gives you " +
+				"&eSpeed &7when you are attacked by other players";
+	}
+
 	public int getStrikes(int enchantLvl) {
 		return Math.max(6 - enchantLvl, 1);
 	}

@@ -61,6 +61,12 @@ public class WitherSkullSpell extends PitEnchant {
 		).getLore();
 	}
 
+	@Override
+	public String getSummary() {
+		return getDisplayName(false, true) + " &7is a &5Darkzone &7enchant that " +
+				"shoots a &8wither skull &7in the direction that you are looking";
+	}
+
 	public static int getManaCost(int enchantLvl) {
 		return 1;
 	}

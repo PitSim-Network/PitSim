@@ -53,6 +53,12 @@ public class ComboSlow extends PitEnchant {
 		).getLore();
 	}
 
+	@Override
+	public String getSummary() {
+		return getDisplayName(false, true) + " &7is a &5Darkzone &7enchant that " +
+				"effects your opponent with &9Slowness &7every few strikes";
+	}
+
 	public int getSeconds(int enchantLvl) {
 		return enchantLvl + 2;
 	}

@@ -20,4 +20,9 @@ public class NoPerk extends PitPerk {
 	public List<String> getDescription() {
 		return new ALoreBuilder("no perk").getLore();
 	}
+
+	@Override
+	public String getSummary() {
+		return null;
+	}
 }

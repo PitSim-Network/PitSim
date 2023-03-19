@@ -14,8 +14,8 @@ import java.util.UUID;
 
 public class BossManager implements Listener {
 
-	public static final double BASE_DAMAGE = 5;
-	public static final double BASE_HEALTH = 50;
+	public static final double BASE_DAMAGE = 8;
+	public static final double BASE_HEALTH = 70;
 	public static final double DIFFICULTY_MULTIPLIER = 1.3;
 
 	public static List<PitBoss> pitBosses = new ArrayList<>();
@@ -26,9 +26,12 @@ public class BossManager implements Listener {
 	 */
 	@EventHandler
 	public void onAttack(AttackEvent.Pre attackEvent) {
-		if(attackEvent.getWrapperEvent().getSpigotEvent().getCause() != EntityDamageEvent.DamageCause.ENTITY_ATTACK) return;
+		if(attackEvent.getWrapperEvent().getSpigotEvent().getCause() != EntityDamageEvent.DamageCause.ENTITY_ATTACK ||
+				attackEvent.getWrapperEvent().hasAttackInfo()) return;
 		PitBoss attackerBoss = getPitBoss(attackEvent.getAttacker());
 		if(attackerBoss != null) {
+			System.out.println(attackEvent.getWrapperEvent().getAttackInfo());
+			System.out.println("setting damage");
 			attackEvent.getWrapperEvent().getSpigotEvent().setDamage(attackerBoss.getMeleeDamage());
 		}
 	}
@@ -43,6 +46,7 @@ public class BossManager implements Listener {
 		PitBoss defenderBoss = getPitBoss(attackEvent.getDefender());
 		if(defenderBoss == null) return;
 		Player player = attackEvent.getAttackerPlayer();
+		defenderBoss.onHealthChange();
 		if(!attackEvent.isAttackerPlayer()) return;
 
 		UUID uuid = player.getUniqueId();

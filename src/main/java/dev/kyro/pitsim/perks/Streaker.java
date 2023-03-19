@@ -109,4 +109,10 @@ public class Streaker extends PitPerk {
 		return new ALoreBuilder("&7Upon reaching your &emegastreak&7,",
 				"&7gain &bmore XP the faster you hit mega", "&7Passively gain &b+80 max XP").getLore();
 	}
+
+	@Override
+	public String getSummary() {
+		return "&eStreaker &7is a perk unlocked in the &erenown shop&7 that gives you a higher &bXP cap &7and more " +
+				"&bXP &7based on how quickly you activate a &cMegastreak";
+	}
 }

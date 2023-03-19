@@ -37,6 +37,12 @@ public class Weak extends PitEnchant {
 		).getLore();
 	}
 
+	@Override
+	public String getSummary() {
+		return getDisplayName(false, true) + " &7is a &5Darkzone &7enchant (curse) that " +
+				"makes you deal less damage";
+	}
+
 	public static int getDecrease(int enchantLvl) {
 		return enchantLvl * 10;
 	}

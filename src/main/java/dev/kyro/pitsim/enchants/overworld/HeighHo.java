@@ -44,6 +44,13 @@ public class HeighHo extends PitEnchant {
 		).getLore();
 	}
 
+	@Override
+	public String getSummary() {
+		return getDisplayName(false, true) + " &7is an enchant that decreases " +
+				"the damage you take and increases the damage you deal vs players wearing &9" +
+				Mirror.INSTANCE.getDisplayName(false, true);
+	}
+
 	public int getReduction(int enchantLvl) {
 		return 10;
 	}

@@ -21,7 +21,7 @@ public class WealthPedestal extends AltarPedestal {
 
 	@Override
 	public int getActivationCost() {
-		return 100;
+		return 500;
 	}
 
 	@Override

@@ -37,6 +37,12 @@ public class GoldAndBoosted extends PitEnchant {
 		).getLore();
 	}
 
+	@Override
+	public String getSummary() {
+		return getDisplayName(false, true) + " &7is an enchant that does more " +
+				"damage when you have &6absorption";
+	}
+
 	public int getDamage(int enchantLvl) {
 		return enchantLvl * 9 + 7;
 	}

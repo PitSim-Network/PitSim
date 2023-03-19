@@ -14,7 +14,7 @@ public class PitEndermanBoss extends PitBoss {
 		super(summoner);
 
 		abilities(
-				new EndermanMinionAbility(1, 3, 15),
+				new GenericMinionAbility(1, SubLevelType.ENDERMAN, 3, 15),
 				new DisorderAbility(1, 10),
 				new ReincarnationAbility(5, 1000 * 60 * 3),
 				new RuptureAbility(1, 30, 5, 40),

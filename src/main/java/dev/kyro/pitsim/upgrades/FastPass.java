@@ -17,6 +17,11 @@ public class FastPass extends RenownUpgrade {
 	}
 
 	@Override
+	public List<Integer> getTierCosts() {
+		return null;
+	}
+
+	@Override
 	public ItemStack getDisplayItem(Player player) {
 		ItemStack item = new ItemStack(Material.ACTIVATOR_RAIL);
 		ItemMeta meta = item.getItemMeta();
@@ -30,8 +35,7 @@ public class FastPass extends RenownUpgrade {
 	}
 
 	@Override
-	public List<Integer> getTierCosts() {
-		return null;
+	public String getSummary() {
+		return "&eFast Pass&7 is an &erenown&7 upgrade that increases the level you start on after completing a &eprestige";
 	}
-
 }

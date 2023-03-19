@@ -115,11 +115,17 @@ public class Bipolar extends PitEnchant {
 				"&7Sneaking toggles between &cVengeful",
 				"&7and &aPeaceful &7modes (5s cooldown):",
 				"&c\u25a0 Vengeful&7: Deal &c+" + getDamageDecrease(enchantLvl) + "% &7damage,",
-				"&7gain &eSpeed " + AUtil.toRoman(getSpeedAmplifier(enchantLvl)),
+				"&7gain &eSpeed " + AUtil.toRoman(getSpeedAmplifier(enchantLvl) + 1),
 				"&a\u25a0 Peaceful&7: Deal &9-" + getDamageDecrease(enchantLvl) + "% &7damage,",
-				"&7gain &cRegeneration " + AUtil.toRoman(getRegenerationAmplifier(enchantLvl)),
+				"&7gain &cRegeneration " + AUtil.toRoman(getRegenerationAmplifier(enchantLvl) + 1),
 				"&7When worn, regain mana &b" + getManaReduction(enchantLvl) + "% &7slower"
 		).getLore();
+	}
+
+	@Override
+	public String getSummary() {
+		return getDisplayName(false, true) + " &7is a &5Darkzone &7enchant that " +
+				"allows you to toggle between an offensive and a defensive mode while fighting";
 	}
 
 	public static int getManaReduction(int enchantLvl) {

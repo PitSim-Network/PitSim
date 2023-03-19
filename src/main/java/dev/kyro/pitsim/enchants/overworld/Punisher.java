@@ -33,6 +33,12 @@ public class Punisher extends PitEnchant {
 		).getLore();
 	}
 
+	@Override
+	public String getSummary() {
+		return getDisplayName(false, true) + " &7is an enchant that deals " +
+				"more damage vs players that are under half health";
+	}
+
 	public int getDamage(int enchantLvl) {
 		return enchantLvl * 6 + 6;
 	}

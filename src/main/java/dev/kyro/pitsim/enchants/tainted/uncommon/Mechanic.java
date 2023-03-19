@@ -39,6 +39,12 @@ public class Mechanic extends PitEnchant {
 		).getLore();
 	}
 
+	@Override
+	public String getSummary() {
+		return getDisplayName(false, true) + " &7is a &5Darkzone &7enchant that " +
+				"decreases the amount of time it takes for your shield to repair after it breaks";
+	}
+
 	public static int getDecreaseTicks(int enchantLvl) {
 		return enchantLvl * 4 + 8;
 	}

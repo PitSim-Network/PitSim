@@ -110,6 +110,12 @@ public class MeteorSpell extends PitEnchant {
 		).getLore();
 	}
 
+	@Override
+	public String getSummary() {
+		return getDisplayName(false, true) + " &7is a &5Darkzone &7enchant that " +
+				"summons a meteor that deals a very high amount of damage";
+	}
+
 	public static int getManaCost(int enchantLvl) {
 		if(true) return 1;
 		return 120 - (30 * enchantLvl);

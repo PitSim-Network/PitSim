@@ -1,18 +1,12 @@
 package dev.kyro.pitsim.inventories;
 
-import de.tr7zw.nbtapi.NBTItem;
 import dev.kyro.arcticapi.builders.AItemStackBuilder;
 import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.arcticapi.gui.AGUI;
 import dev.kyro.arcticapi.gui.AGUIPanel;
-import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.aitems.MysticFactory;
-import dev.kyro.pitsim.commands.FreshCommand;
 import dev.kyro.pitsim.controllers.EnchantManager;
 import dev.kyro.pitsim.controllers.TaintedEnchanting;
-import dev.kyro.pitsim.enums.MysticType;
-import dev.kyro.pitsim.enums.NBTTag;
-import dev.kyro.pitsim.enums.PantColor;
 import dev.kyro.pitsim.misc.Sounds;
 import org.bukkit.Material;
 import org.bukkit.event.inventory.InventoryClickEvent;
@@ -21,16 +15,17 @@ import org.bukkit.event.inventory.InventoryOpenEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
-public class TestEnchantPanel extends AGUIPanel {
+public class MassEnchantPanel extends AGUIPanel {
 
 	public int tier = 0;
 	String mysticType;
 	ItemStack freshItem;
 
-	public TestEnchantPanel(AGUI gui) {
+	public MassEnchantPanel(AGUI gui) {
 		super(gui);
+		cancelClicks = false;
 
-		this.mysticType = ((TestEnchantGUI) gui).mysticType;
+		this.mysticType = ((MassEnchantGUI) gui).mysticType;
 
 		freshItem = MysticFactory.getFreshItem(player, mysticType);
 		for(int i = 0; i < 36; i++) {
@@ -82,6 +77,8 @@ public class TestEnchantPanel extends AGUIPanel {
 	public void onClick(InventoryClickEvent event) {
 		if(!event.getClickedInventory().getHolder().equals(this)) return;
 		int slot = event.getSlot();
+
+		if(slot >= 36) event.setCancelled(true);
 
 		if(slot == 50) {
 			for(int i = 0; i < 36; i++) {

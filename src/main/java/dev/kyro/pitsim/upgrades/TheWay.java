@@ -22,6 +22,15 @@ public class TheWay extends RenownUpgrade {
 	}
 
 	@Override
+	public List<Integer> getTierCosts() {
+		return Arrays.asList(50, 100, 150, 200, 250, 300, 350, 400, 450, 500);
+	}
+
+	public int getLevelReduction(Player player) {
+		return UpgradeManager.getTier(player, this) * 5;
+	}
+
+	@Override
 	public ItemStack getDisplayItem(Player player) {
 		ItemStack item = new ItemStack(Material.ACACIA_DOOR_ITEM);
 		ItemMeta meta = item.getItemMeta();
@@ -41,11 +50,8 @@ public class TheWay extends RenownUpgrade {
 	}
 
 	@Override
-	public List<Integer> getTierCosts() {
-		return Arrays.asList(50, 100, 150, 200, 250, 300, 350, 400, 450, 500);
-	}
-
-	public int getLevelReduction(Player player) {
-		return UpgradeManager.getTier(player, this) * 5;
+	public String getSummary() {
+		return "&eThe Way&7 is an &erenown&7 upgrade that decreases level requirement for " +
+				"&cMegastreaks&7, &aKillstreakers&7, and &6Trading";
 	}
 }

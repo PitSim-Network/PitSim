@@ -37,4 +37,9 @@ public class NoKillstreak extends Killstreak {
 
 		return builder.getItemStack();
 	}
+
+	@Override
+	public String getSummary() {
+		return null;
+	}
 }

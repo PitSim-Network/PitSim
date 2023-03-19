@@ -19,6 +19,7 @@ import dev.kyro.pitsim.controllers.TaintedWell;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.enchants.tainted.uncommon.Resilient;
 import dev.kyro.pitsim.enchants.tainted.uncommon.Fearmonger;
+import dev.kyro.pitsim.events.AttackEvent;
 import dev.kyro.pitsim.events.KillEvent;
 import dev.kyro.pitsim.events.ManaRegenEvent;
 import dev.kyro.pitsim.misc.Misc;
@@ -50,7 +51,7 @@ public class DarkzoneManager implements Listener {
 		subLevel = new SubLevel(
 				SubLevelType.ZOMBIE, PitZombieBoss.class, PitZombie.class, EntityType.ZOMBIE, RottenFlesh.class,
 				new Location(MapManager.getDarkzone(), 327, 67, -143),
-				15, 17, 1, -1);
+				20, 20, 1, -1);
 		registerSubLevel(subLevel);
 
 		subLevel = new SubLevel(
@@ -129,7 +130,11 @@ public class DarkzoneManager implements Listener {
 					Bukkit.getPluginManager().callEvent(event);
 					if(!event.isCancelled()) {
 						double mana = event.getFinalMana();
-						if(pitPlayer.mana + mana <= pitPlayer.getMaxMana()) pitPlayer.mana += mana;
+						if(pitPlayer.mana + mana <= pitPlayer.getMaxMana()) {
+							pitPlayer.mana += mana;
+						} else {
+							pitPlayer.mana = pitPlayer.getMaxMana();
+						}
 					}
 
 					pitPlayer.updateManaBar();
@@ -145,7 +150,7 @@ public class DarkzoneManager implements Listener {
 					PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
 					pitPlayer.heal(1);
 
-					int regenCooldownTicks = 40;
+					int regenCooldownTicks = 30;
 					regenCooldownTicks /= 1 + (Resilient.getRegenIncrease(player) / 100.0);
 
 					regenCooldownList.add(player);
@@ -158,6 +163,15 @@ public class DarkzoneManager implements Listener {
 				}
 			}
 		}.runTaskTimer(PitSim.INSTANCE, 0L, 1L);
+	}
+
+	@EventHandler
+	public void onAttack(AttackEvent.Pre attackEvent) {
+		if(attackEvent.getWrapperEvent().getSpigotEvent().getCause() != EntityDamageEvent.DamageCause.ENTITY_ATTACK) return;
+		PitMob pitMob = getPitMob(attackEvent.getAttacker());
+		if(pitMob != null) {
+			attackEvent.getWrapperEvent().getSpigotEvent().setDamage(pitMob.getMeleeDamage());
+		}
 	}
 
 	@EventHandler

@@ -35,6 +35,11 @@ public class Guts extends PitEnchant {
 		).getLore();
 	}
 
+	@Override
+	public String getSummary() {
+		return getDisplayName(false, true) + " &7is an enchant that heals you on kill";
+	}
+
 	public double getHealing(int enchantLvl) {
 		return enchantLvl * 0.5 + 0.5;
 	}

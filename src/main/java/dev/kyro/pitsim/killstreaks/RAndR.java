@@ -42,4 +42,9 @@ public class RAndR extends Killstreak {
 
 		return builder.getItemStack();
 	}
+
+	@Override
+	public String getSummary() {
+		return "&eR&R&7 is a killstreak that gives you &9Resistance&7 and &cRegen&7 for a short period of time every &c7 kills";
+	}
 }

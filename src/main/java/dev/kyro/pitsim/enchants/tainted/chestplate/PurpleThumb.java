@@ -214,6 +214,12 @@ public class PurpleThumb extends PitEnchant {
 		).getLore();
 	}
 
+	@Override
+	public String getSummary() {
+		return getDisplayName(false, true) + " &7is a &5Darkzone &7enchant that " +
+				"allows you to plan flowers when sneaking. Each type of flower has a unique effect!";
+	}
+
 	public static int getCooldownSeconds(int enchantLvl) {
 		return 2;
 	}

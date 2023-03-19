@@ -60,6 +60,12 @@ public class Ethereal extends PitEnchant {
 		).getLore();
 	}
 
+	@Override
+	public String getSummary() {
+		return getDisplayName(false, true) + " &7is a &5Darkzone &7enchant that " +
+				"heals you for more from all sources, but loses additional lives when you die";
+	}
+
 	public static double getHealingMultiplier(int enchantLvl) {
 		return enchantLvl * 0.4 + 0.8;
 	}

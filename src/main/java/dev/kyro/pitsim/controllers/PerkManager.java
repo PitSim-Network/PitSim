@@ -15,9 +15,8 @@ public class PerkManager {
 	public static List<Killstreak> killstreaks = new ArrayList<>();
 
 	public static void registerUpgrade(PitPerk pitPerk) {
-
 		pitPerks.add(pitPerk);
-		PitSim.INSTANCE.getServer().getPluginManager().registerEvents(pitPerk, PitSim.INSTANCE);
+		if(PitSim.status.isOverworld()) PitSim.INSTANCE.getServer().getPluginManager().registerEvents(pitPerk, PitSim.INSTANCE);
 	}
 
 	public static void registerMegastreak(Megastreak megastreak) {

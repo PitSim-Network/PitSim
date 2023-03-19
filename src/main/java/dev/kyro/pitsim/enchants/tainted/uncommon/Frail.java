@@ -36,6 +36,12 @@ public class Frail extends PitEnchant {
 		).getLore();
 	}
 
+	@Override
+	public String getSummary() {
+		return getDisplayName(false, true) + " &7is a &5Darkzone &7enchant (curse) that " +
+				"makes you take more damage";
+	}
+
 	public static int getIncrease(int enchantLvl) {
 		return enchantLvl * 10;
 	}

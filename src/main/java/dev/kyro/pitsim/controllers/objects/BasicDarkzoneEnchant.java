@@ -43,6 +43,22 @@ public abstract class BasicDarkzoneEnchant extends PitEnchant {
 			description = "&7Receive &9-" + statPercent + "% &7damage from ";
 		}
 
+		description += getMobNames();
+		return new PitLoreBuilder(description).getLore();
+	}
+
+	@Override
+	public String getSummary() {
+		if(isOffensive()) {
+			return getDisplayName(false, true) + " &7is a &5Darkzone &7enchant that " +
+					"increases the damage you deal vs " + getMobNames();
+		} else {
+			return getDisplayName(false, true) + " &7is a &5Darkzone &7enchant that " +
+					"decreases the damage you take from " + getMobNames();
+		}
+	}
+
+	public String getMobNames() {
 		List<String> mobNames = new ArrayList<>();
 		for(Class<? extends PitMob> mobClass : getApplicableMobs()) {
 			try {
@@ -55,14 +71,13 @@ public abstract class BasicDarkzoneEnchant extends PitEnchant {
 			}
 		}
 		if(mobNames.size() == 1) {
-			description += mobNames.get(0);
+			return mobNames.get(0);
 		} else if(mobNames.size() == 2) {
-			description += String.join(" &7and ", mobNames);
+			return String.join(" &7and ", mobNames);
 		} else {
 			String lastMob = mobNames.remove(mobNames.size() - 1);
-			description += String.join("&7, ", mobNames) + "&7, and " + lastMob;
+			return String.join("&7, ", mobNames) + "&7, and " + lastMob;
 		}
-		return new PitLoreBuilder(description).getLore();
 	}
 
 	@Override

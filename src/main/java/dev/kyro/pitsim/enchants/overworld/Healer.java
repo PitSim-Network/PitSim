@@ -52,6 +52,12 @@ public class Healer extends PitEnchant {
 		).getLore();
 	}
 
+	@Override
+	public String getSummary() {
+		return getDisplayName(false, true) + " &7is an enchant that heals both " +
+				"you and your opponent. Quite silly if you ask me";
+	}
+
 	public double getHealing(int enchantLvl) {
 		return enchantLvl * 2;
 	}

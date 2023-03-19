@@ -62,6 +62,12 @@ public class Leech extends PitEnchant {
 		).getLore();
 	}
 
+	@Override
+	public String getSummary() {
+		return getDisplayName(false, true) + " &7is a &5Darkzone &7enchant that " +
+				"spawns a particle that steals health from other opponents and gives it to you";
+	}
+
 	public static int getManaCost(int enchantLvl) {
 		return 1;
 	}

@@ -53,7 +53,12 @@ public class JewelHunter extends PitPerk {
 	@Override
 	public List<String> getDescription() {
 		return new ALoreBuilder("&eOutside middle&7, Deal &c+" + getDamageIncrease() + "% &7damage for",
-				"&7each jewel your opponent has", "&7(holding or wearing)").getLore();
+				"&7each &3jewel &7your opponent has", "&7(holding or wearing)").getLore();
+	}
+
+	@Override
+	public String getSummary() {
+		return "&aJewel Hunter &7is a perk makes you deal more &cdamage &7to players holding and wearing jewel items";
 	}
 
 	public int getDamageIncrease() {

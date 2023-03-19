@@ -155,7 +155,7 @@ public class SpawnManager implements Listener {
 		ApplicableRegionSet set = regions.getApplicableRegions((BukkitUtil.toVector(loc)));
 
 		for(ProtectedRegion region : set) {
-			if(region.getId().equals("spawn") || region.getId().equals("spawn2")) {
+			if(region.getId().contains("spawn")) {
 				return true;
 			}
 		}

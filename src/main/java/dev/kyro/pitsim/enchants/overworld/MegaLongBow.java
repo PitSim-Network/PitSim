@@ -94,12 +94,18 @@ public class MegaLongBow extends PitEnchant {
 
 	@Override
 	public List<String> getNormalDescription(int enchantLvl) {
-
 		return new PitLoreBuilder(
 				"&7One shot per second, this bow is automatically fully drawn and grants &aJump Boost " +
 				AUtil.toRoman(getJumpMultiplier(enchantLvl) + 1) + " &7(2s). Arrows deal &c-" +
 				getReduction() + "% &7damage"
 		).getLore();
+	}
+
+	@Override
+	public String getSummary() {
+		return getDisplayName(false, true) + " &7is an enchant that allows you " +
+				"to instantly shoot a fully charged arrow shot once per second. This enchant is what sets PvP apart " +
+				"on this server from all others";
 	}
 
 	public static int getReduction() {

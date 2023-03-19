@@ -53,6 +53,12 @@ public class BulletTime extends PitEnchant {
 		).getLore();
 	}
 
+	@Override
+	public String getSummary() {
+		return getDisplayName(false, true) + " &7is an enchant that " +
+				"destroys arrows when blocking your sword (and heals you too)";
+	}
+
 	public static int getCooldownSeconds(int enchantLvl) {
 		return Math.max(11 - enchantLvl * 2, 0);
 	}

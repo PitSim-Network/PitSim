@@ -40,11 +40,15 @@ public class DefenceBranch extends SkillBranch {
 	}
 
 	public static int getShieldDamageReduction() {
-		return 50;
+		return 20;
+	}
+
+	public static int getShieldDamageFromPlayersReduction() {
+		return 20;
 	}
 
 	public static int getReactivationReductionTicks() {
-		return 40;
+		return 60;
 	}
 
 	public static int getPlayerDamageDecrease() {
@@ -147,7 +151,7 @@ public class DefenceBranch extends SkillBranch {
 			public ItemStack getBaseStack() {
 				return new AItemStackBuilder(Material.DIAMOND)
 						.setLore(new ALoreBuilder(
-								"&7Your shield takes &9-" + getShieldDamageReduction() + "% &7damage",
+								"&7Your shield takes &9-" + getShieldDamageFromPlayersReduction() + "% &7damage",
 								"&7from other players"
 						))
 						.getItemStack();
@@ -214,9 +218,9 @@ public class DefenceBranch extends SkillBranch {
 			@Override
 			public void addEffects() {
 				addEffect(new EffectData("mob-defence", "&9-%value%% &7damage from mobs",
-						100, 100, 100, 100, 100, 100));
+						20, 20, 20, 20, 20, 20));
 				addEffect(new EffectData("boss-defence", "&9-%value%% &7damage from bosses",
-						100, 100, 100, 100, 100, 100));
+						20, 20, 20, 20, 20, 20));
 			}
 		};
 	}
@@ -242,7 +246,7 @@ public class DefenceBranch extends SkillBranch {
 			@Override
 			public void addEffects() {
 				addEffect(new EffectData("shield", "&9+%value% &7max shield",
-						100, 100, 100, 100, 100, 100));
+						50, 50, 50, 50, 50, 50));
 			}
 		};
 	}

@@ -34,6 +34,12 @@ public class BeatTheSpammers extends PitEnchant {
 		).getLore();
 	}
 
+	@Override
+	public String getSummary() {
+		return getDisplayName(false, true) + " &7is an enchant that increases " +
+				"your damage vs players holding bows";
+	}
+
 	public int getDamage(int enchantLvl) {
 
 		return enchantLvl * 25;

@@ -2,12 +2,14 @@ package dev.kyro.pitsim.adarkzone;
 
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.adarkzone.notdarkzone.PitEquipment;
+import dev.kyro.pitsim.controllers.objects.PitBossBar;
 import dev.kyro.pitsim.misc.MinecraftSkin;
 import dev.kyro.pitsim.misc.Misc;
 import net.citizensnpcs.api.CitizensAPI;
 import net.citizensnpcs.api.npc.NPC;
 import net.citizensnpcs.npc.ai.CitizensNavigator;
 import net.citizensnpcs.trait.SkinTrait;
+import net.citizensnpcs.util.Util;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.EntityType;
@@ -25,6 +27,7 @@ public abstract class PitBoss {
 	public Player summoner;
 	public Map<UUID, Double> damageMap = new HashMap<>();
 	public DropPool dropPool;
+	public PitBossBar bossBar = new PitBossBar(getDisplayName(), 1F);
 
 //	Boss related
 	public NPC npcBoss;
@@ -37,7 +40,7 @@ public abstract class PitBoss {
 	public Map<PitBossAbility, Double> routineAbilityMap = new HashMap<>();
 	public double skipRoutineChance = 0;
 	public long lastRoutineExecuteTick;
-	public int routineAbilityCooldownTicks = 20 * 5;
+	public int routineAbilityCooldownTicks = 20 * 8;
 
 	public BukkitTask routineRunnable;
 	private BukkitTask targetingRunnbale;
@@ -152,10 +155,10 @@ public abstract class PitBoss {
 					boss.setMaxHealth(getMaxHealth());
 					boss.setHealth(getMaxHealth());
 				}
-//				EntityTarget target = npcBoss.getNavigator().getEntityTarget();
-//				if(target != null) Util.faceLocation(boss, target.getTarget().getLocation());
 
+				if(bossTargetingSystem.target != null) Util.faceLocation(boss, bossTargetingSystem.target.getLocation());
 				if(count % 5 == 0) bossTargetingSystem.assignTarget();
+
 				count++;
 			}
 		}.runTaskTimer(PitSim.INSTANCE, 0L, 1);
@@ -184,6 +187,11 @@ public abstract class PitBoss {
 		onDeath();
 		getSubLevel().bossDeath();
 		BossManager.pitBosses.remove(this);
+		bossBar.remove();
+	}
+
+	public void onHealthChange() {
+		bossBar.updateProgress((float) (boss.getHealth() / boss.getMaxHealth()));
 	}
 
 	public void alertDespawn() {

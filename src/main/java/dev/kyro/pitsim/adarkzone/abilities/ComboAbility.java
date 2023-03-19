@@ -13,16 +13,16 @@ import java.util.Map;
 import java.util.UUID;
 
 public class ComboAbility extends PitBossAbility {
-
+	public Map<UUID, Integer> comboMap = new HashMap<>();
 	public int comboThreshold;
 	public int comboDuration;
+	public double damage;
 
-	public ComboAbility(int comboThreshold, int comboDuration) {
+	public ComboAbility(int comboThreshold, int comboDuration, double damage) {
 		this.comboThreshold = comboThreshold;
 		this.comboDuration = comboDuration;
+		this.damage = damage;
 	}
-
-	public Map<UUID, Integer> comboMap = new HashMap<>();
 
 	@EventHandler
 	public void onHit(AttackEvent.Apply event) {
@@ -34,20 +34,21 @@ public class ComboAbility extends PitBossAbility {
 
 		if(comboMap.get(player.getUniqueId()) != comboThreshold) return;
 		new BukkitRunnable() {
-			int i = 0;
+			int count = 0;
 
 			@Override
 			public void run() {
-				DamageManager.createDirectAttack(getPitBoss().boss, player, 0);
-				player.setNoDamageTicks(0);
-
-				if(i >= comboDuration) {
+				if(count >= comboDuration) {
 					comboMap.remove(player.getUniqueId());
 					cancel();
 					return;
 				}
-				i++;
+
+				player.setNoDamageTicks(0);
+				DamageManager.createDirectAttack(getPitBoss().boss, player, damage);
+
+				count++;
 			}
-		}.runTaskTimer(PitSim.INSTANCE, 1, 1);
+		}.runTaskTimer(PitSim.INSTANCE, 0, 2);
 	}
 }

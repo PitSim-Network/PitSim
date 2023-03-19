@@ -25,30 +25,6 @@ public class BreadDealer extends RenownUpgrade {
 		INSTANCE = this;
 	}
 
-	@Override
-	public ItemStack getDisplayItem(Player player) {
-		int tier = UpgradeManager.getTier(player, this);
-		int retainPercent = tier * getPercentPerTier();
-		
-		ALoreBuilder loreBuilder = new ALoreBuilder();
-		if(UpgradeManager.hasUpgrade(player, this)) {
-			loreBuilder.addLore(
-					"&7Current: Retain &e" + retainPercent + "% &7bread on death",
-					"&7Tier: &a" + AUtil.toRoman(tier),
-					""
-			);
-		}
-		loreBuilder.addLore(
-				"&7Each Tier:",
-				"&7Retain &e+" + retainPercent + " &7bread on death"
-		);
-
-		return new AItemStackBuilder(Material.BREAD)
-				.setName(UpgradeManager.itemNameString(this, player))
-				.setLore(loreBuilder)
-				.getItemStack();
-	}
-
 	public static void handleBreadOnDeath(Player player) {
 		int tier = UpgradeManager.getTier(player, BreadDealer.INSTANCE);
 		int retainPercent = tier * getPercentPerTier();
@@ -78,5 +54,34 @@ public class BreadDealer extends RenownUpgrade {
 	
 	public static int getPercentPerTier() {
 		return 10;
+	}
+
+	@Override
+	public ItemStack getDisplayItem(Player player) {
+		int tier = UpgradeManager.getTier(player, this);
+		int retainPercent = tier * getPercentPerTier();
+
+		ALoreBuilder loreBuilder = new ALoreBuilder();
+		if(UpgradeManager.hasUpgrade(player, this)) {
+			loreBuilder.addLore(
+					"&7Current: Retain &e" + retainPercent + "% &7bread on death",
+					"&7Tier: &a" + AUtil.toRoman(tier),
+					""
+			);
+		}
+		loreBuilder.addLore(
+				"&7Each Tier:",
+				"&7Retain &e+" + retainPercent + " &7bread on death"
+		);
+
+		return new AItemStackBuilder(Material.BREAD)
+				.setName(UpgradeManager.itemNameString(this, player))
+				.setLore(loreBuilder)
+				.getItemStack();
+	}
+
+	@Override
+	public String getSummary() {
+		return "&eBread Dealer&7 is an &erenown&7 upgrade that allows you to retain some of the bread in your inventory on death";
 	}
 }

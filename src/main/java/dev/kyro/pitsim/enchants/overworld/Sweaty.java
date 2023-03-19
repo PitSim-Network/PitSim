@@ -40,6 +40,12 @@ public class Sweaty extends PitEnchant {
 		).getLore();
 	}
 
+	@Override
+	public String getSummary() {
+		return getDisplayName(false, true) + " &7is an enchant that increases " +
+				"the &bXP &7and &bmax XP &7you get on kill";
+	}
+
 //	Has to be proportional
 	public double getXpIncrease(int enchantLvl) {
 		return enchantLvl * 1.0;

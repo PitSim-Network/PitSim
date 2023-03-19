@@ -54,6 +54,13 @@ public class CriticallyFunky extends PitEnchant {
 		}
 	}
 
+	@Override
+	public String getSummary() {
+		return getDisplayName(false, true) + " &7is an enchant that decreases " +
+				"the damage that critical strikes do against you, and " +
+				"makes your next strike do more damage";
+	}
+
 	public double getReduction(int enchantLvl) {
 
 		switch(enchantLvl) {

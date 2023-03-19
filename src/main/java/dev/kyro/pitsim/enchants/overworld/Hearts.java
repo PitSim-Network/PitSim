@@ -32,6 +32,11 @@ public class Hearts extends PitEnchant {
 		).getLore();
 	}
 
+	@Override
+	public String getSummary() {
+		return getDisplayName(false, true) + " &7is an enchant that increases your &cmax hp";
+	}
+
 	public static int getExtraHealth(int enchantLvl) {
 		return enchantLvl * 2;
 	}

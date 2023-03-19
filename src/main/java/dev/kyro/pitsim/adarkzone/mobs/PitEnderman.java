@@ -48,6 +48,11 @@ public class PitEnderman extends PitMob {
 	}
 
 	@Override
+	public double getMeleeDamage() {
+		return 10;
+	}
+
+	@Override
 	public int getSpeedAmplifier() {
 		return 1;
 	}

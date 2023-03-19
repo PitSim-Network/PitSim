@@ -4,8 +4,8 @@ import dev.kyro.pitsim.adarkzone.BossManager;
 import dev.kyro.pitsim.adarkzone.DropPool;
 import dev.kyro.pitsim.adarkzone.PitBoss;
 import dev.kyro.pitsim.adarkzone.SubLevelType;
-import dev.kyro.pitsim.adarkzone.abilities.ComboAbility;
-import dev.kyro.pitsim.adarkzone.abilities.CreeperMinionAbility;
+import dev.kyro.pitsim.adarkzone.abilities.*;
+import dev.kyro.pitsim.adarkzone.abilities.GenericMinionAbility;
 import dev.kyro.pitsim.adarkzone.abilities.LandMineAbility;
 import dev.kyro.pitsim.adarkzone.abilities.TNTAbility;
 import org.bukkit.ChatColor;
@@ -17,10 +17,10 @@ public class PitCreeperBoss extends PitBoss {
 		super(summoner);
 
 		abilities(
-				new CreeperMinionAbility(1, 1, 2),
+				new GenericMinionAbility(1, SubLevelType.CREEPER, 1, 2),
 				new TNTAbility(2, 1),
 				new LandMineAbility(2, 3, 20, 20 * 45, 20),
-				new ComboAbility(5, 1)
+				new LightningAbility(3, 1, 0.05)
 		);
 	}
 

@@ -4,7 +4,6 @@ import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.adarkzone.altar.pedestals.HeresyPedestal;
 import dev.kyro.pitsim.adarkzone.altar.pedestals.KnowledgePedestal;
 import dev.kyro.pitsim.adarkzone.altar.pedestals.RenownPedestal;
-import dev.kyro.pitsim.adarkzone.altar.pedestals.WealthPedestal;
 import dev.kyro.pitsim.adarkzone.progression.ProgressionManager;
 import dev.kyro.pitsim.adarkzone.progression.SkillBranch;
 import dev.kyro.pitsim.adarkzone.progression.skillbranches.AltarBranch;
@@ -26,6 +25,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerInteractAtEntityEvent;
+import org.bukkit.event.world.ChunkUnloadEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 
@@ -37,7 +37,7 @@ import java.util.UUID;
 public abstract class AltarPedestal implements Listener {
 
 	public static final int BASE_COST = 100;
-	public static final int WEALTH_MULTIPLIER = 2;
+	public static final double WEALTH_MULTIPLIER = 1.5;
 
 
 	public static List<AltarPedestal> altarPedestals = new ArrayList<>();
@@ -81,6 +81,10 @@ public abstract class AltarPedestal implements Listener {
 	}
 
 	public void spawnStand() {
+		if(stand != null) {
+			stand.remove();
+		}
+
 		stand = (ArmorStand) location.getWorld().spawnEntity(location, EntityType.ARMOR_STAND);
 		stand.setVisible(false);
 		stand.setCustomNameVisible(true);
@@ -144,6 +148,13 @@ public abstract class AltarPedestal implements Listener {
 		else activate(player);
 	}
 
+	@EventHandler
+	public void onChunkLoad(ChunkUnloadEvent event) {
+		if(event.getChunk().equals(stand.getLocation().getChunk())) {
+			event.setCancelled(true);
+		}
+	}
+
 	public int getIndex() {
 		return altarPedestals.indexOf(this);
 	}
@@ -167,7 +178,8 @@ public abstract class AltarPedestal implements Listener {
 	}
 
 	public static int getRewardChance(Player player, ALTAR_REWARD reward) {
-		return reward.pedestal.isActivated(player) ? reward.increase : 0;
+		//TODO: Change these values
+		return reward.pedestal.isActivated(player) ? 100 : 25;
 	}
 
 	public static int getTotalCost(Player player) {
@@ -180,36 +192,31 @@ public abstract class AltarPedestal implements Listener {
 	}
 
 	public enum ALTAR_REWARD {
-		ALTAR_XP(getPedestal(KnowledgePedestal.class), 50, 1.5),
-		RENOWN(getPedestal(RenownPedestal.class), 50, 1.5),
-		VOUCHERS(getPedestal(HeresyPedestal.class), 50, 1.5);
+		ALTAR_XP(getPedestal(KnowledgePedestal.class), 50),
+		RENOWN(getPedestal(RenownPedestal.class), 50),
+		VOUCHERS(getPedestal(HeresyPedestal.class), 50);
 
 		public final AltarPedestal pedestal;
 		public final int increase;
-		public final double multiplier;
 
-		ALTAR_REWARD(AltarPedestal pedestal, int increase, double multiplier) {
+		ALTAR_REWARD(AltarPedestal pedestal, int increase) {
 			this.pedestal = pedestal;
 			this.increase = increase;
-			this.multiplier = multiplier;
 		}
 
-		public int getRewardCount(REWARD_SIZE size, Player player) {
+		public double getRewardCount(RewardSize size) {
 			Random random = new Random();
 
 			int count = 0;
 
 			switch(size) {
 				case MEDIUM:
-					count = random.nextInt(2) + 3;
+					count = random.nextInt(2) + 2;
 					break;
 				case LARGE:
 					count = random.nextInt(2) + 5;
 					break;
 			}
-
-			if(pedestal.isActivated(player)) count *= multiplier;
-			if(getPedestal(WealthPedestal.class).isActivated(player)) count *= WEALTH_MULTIPLIER;
 
 			return count;
 		}
@@ -232,14 +239,27 @@ public abstract class AltarPedestal implements Listener {
 		}
 	}
 
-	public enum REWARD_SIZE {
+	public enum RewardSize {
 		SMALL(30),
 		MEDIUM(60),
 		LARGE(100);
 
-		public int base;
-		REWARD_SIZE(int base) {
+		private final int base;
+
+		RewardSize(int base) {
 			this.base = base;
+		}
+
+		public int getBase() {
+			return base;
+		}
+
+		public static RewardSize getFromChance(double chance) {
+			chance = Math.min(chance, 100);
+			for(RewardSize rewardSize : values()) {
+				if(chance <= rewardSize.base) return rewardSize;
+			}
+			throw new RuntimeException();
 		}
 	}
 }

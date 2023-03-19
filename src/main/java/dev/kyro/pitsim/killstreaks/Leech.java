@@ -57,6 +57,11 @@ public class Leech extends Killstreak {
 		return builder.getItemStack();
 	}
 
+	@Override
+	public String getSummary() {
+		return "&eLeech&7 is a killstreak that gives you &chealing&7 on your next hit every &c3 kills";
+	}
+
 	public int getPercent() {
 		return 20;
 	}

@@ -53,6 +53,12 @@ public class Medic extends PitEnchant {
 		).getLore();
 	}
 
+	@Override
+	public String getSummary() {
+		return getDisplayName(false, true) + " &7is a &5Darkzone &7enchant that " +
+				"heals you when used";
+	}
+
 	public static int getManaCost(int enchantLvl) {
 		return 1;
 	}

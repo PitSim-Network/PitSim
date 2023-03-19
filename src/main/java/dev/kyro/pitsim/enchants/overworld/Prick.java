@@ -35,6 +35,12 @@ public class Prick extends PitEnchant {
 		).getLore();
 	}
 
+	@Override
+	public String getSummary() {
+		return getDisplayName(false, true) + " &7is an enchant that does " +
+				"true damage to anyone who attacks you";
+	}
+
 	public double getDamage(int enchantLvl) {
 		return enchantLvl * 0.2 + 0.2;
 	}

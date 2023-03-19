@@ -7,7 +7,6 @@ import org.bukkit.Material;
 import org.bukkit.event.HandlerList;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.scheduler.BukkitTask;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -15,7 +14,25 @@ import java.util.List;
 
 public class NoMegastreak extends Megastreak {
 
-	public BukkitTask runnable;
+	public NoMegastreak(PitPlayer pitPlayer) {
+		super(pitPlayer);
+	}
+
+	@Override
+	public void proc() {}
+
+	@Override
+	public void reset() {}
+
+	@Override
+	public void stop() {
+		HandlerList.unregisterAll(this);
+	}
+
+	@Override
+	public void kill() {
+		if(!isOnMega()) return;
+	}
 
 	@Override
 	public String getName() {
@@ -70,28 +87,8 @@ public class NoMegastreak extends Megastreak {
 		return item;
 	}
 
-	public NoMegastreak(PitPlayer pitPlayer) {
-		super(pitPlayer);
-	}
-
 	@Override
-	public void proc() {
-	}
-
-	@Override
-	public void reset() {
-
-		if(runnable != null) runnable.cancel();
-	}
-
-	@Override
-	public void stop() {
-		HandlerList.unregisterAll(this);
-	}
-
-	@Override
-	public void kill() {
-
-		if(!isOnMega()) return;
+	public String getSummary() {
+		return null;
 	}
 }

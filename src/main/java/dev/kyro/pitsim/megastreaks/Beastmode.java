@@ -28,76 +28,10 @@ import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class Beastmode extends Megastreak {
-	public Beastmode(PitPlayer pitPlayer) {
-		super(pitPlayer);
-	}
-
 	public BukkitTask runnable;
 
-	@Override
-	public String getName() {
-		return "&a&lBEAST";
-	}
-
-	@Override
-	public String getRawName() {
-		return "Beastmode";
-	}
-
-	@Override
-	public String getPrefix() {
-		return "&aBeastmode";
-	}
-
-	@Override
-	public List<String> getRefNames() {
-		return Arrays.asList("beastmode", "beast");
-	}
-
-	@Override
-	public int getRequiredKills() {
-		return 50;
-	}
-
-	@Override
-	public int guiSlot() {
-		return 12;
-	}
-
-	@Override
-	public int prestigeReq() {
-		return 13;
-	}
-
-	@Override
-	public int initialLevelReq() {
-		return 50;
-	}
-
-	@Override
-	public ItemStack guiItem() {
-
-		ItemStack item = new ItemStack(Material.DIAMOND_HELMET);
-		ItemMeta meta = item.getItemMeta();
-		List<String> lore = new ArrayList<>();
-		lore.add(ChatColor.translateAlternateColorCodes('&', "&7Triggers on: &c50 kills"));
-		lore.add("");
-		lore.add(ChatColor.GRAY + "On trigger:");
-//		lore.add(ChatColor.translateAlternateColorCodes('&', "&a\u25a0 &7Deal &c+25% &7damage to bots"));
-		lore.add(ChatColor.translateAlternateColorCodes('&', "&a\u25a0 &7Earn &b+100% XP &7from kills"));
-		lore.add(ChatColor.translateAlternateColorCodes('&', "&a\u25a0 &7Gain &b+130 max XP &7from kills"));
-		lore.add("");
-		lore.add(ChatColor.GRAY + "BUT:");
-		lore.add(ChatColor.translateAlternateColorCodes('&', "&c\u25a0 &7Receive &c+0.15% &7damage per kill over 50"));
-		lore.add(ChatColor.translateAlternateColorCodes('&', "&7(5x damage from bots)"));
-		lore.add(ChatColor.translateAlternateColorCodes('&', "&c\u25a0 &7Earn &c-50% &7gold from kills"));
-		lore.add("");
-		lore.add(ChatColor.GRAY + "On death:");
-		lore.add(ChatColor.translateAlternateColorCodes('&', "&e\u25a0 &7Earn between &b1000 &7and &b5000 XP&7"));
-
-		meta.setLore(lore);
-		item.setItemMeta(meta);
-		return item;
+	public Beastmode(PitPlayer pitPlayer) {
+		super(pitPlayer);
 	}
 
 	@EventHandler
@@ -186,5 +120,77 @@ public class Beastmode extends Megastreak {
 	@Override
 	public void stop() {
 		HandlerList.unregisterAll(this);
+	}
+
+	@Override
+	public String getName() {
+		return "&a&lBEAST";
+	}
+
+	@Override
+	public String getRawName() {
+		return "Beastmode";
+	}
+
+	@Override
+	public String getPrefix() {
+		return "&aBeastmode";
+	}
+
+	@Override
+	public List<String> getRefNames() {
+		return Arrays.asList("beastmode", "beast");
+	}
+
+	@Override
+	public int getRequiredKills() {
+		return 50;
+	}
+
+	@Override
+	public int guiSlot() {
+		return 12;
+	}
+
+	@Override
+	public int prestigeReq() {
+		return 13;
+	}
+
+	@Override
+	public int initialLevelReq() {
+		return 50;
+	}
+
+	@Override
+	public ItemStack guiItem() {
+
+		ItemStack item = new ItemStack(Material.DIAMOND_HELMET);
+		ItemMeta meta = item.getItemMeta();
+		List<String> lore = new ArrayList<>();
+		lore.add(ChatColor.translateAlternateColorCodes('&', "&7Triggers on: &c50 kills"));
+		lore.add("");
+		lore.add(ChatColor.GRAY + "On trigger:");
+//		lore.add(ChatColor.translateAlternateColorCodes('&', "&a\u25a0 &7Deal &c+25% &7damage to bots"));
+		lore.add(ChatColor.translateAlternateColorCodes('&', "&a\u25a0 &7Earn &b+100% XP &7from kills"));
+		lore.add(ChatColor.translateAlternateColorCodes('&', "&a\u25a0 &7Gain &b+130 max XP &7from kills"));
+		lore.add("");
+		lore.add(ChatColor.GRAY + "BUT:");
+		lore.add(ChatColor.translateAlternateColorCodes('&', "&c\u25a0 &7Receive &c+0.15% &7damage per kill over 50"));
+		lore.add(ChatColor.translateAlternateColorCodes('&', "&7(5x damage from bots)"));
+		lore.add(ChatColor.translateAlternateColorCodes('&', "&c\u25a0 &7Earn &c-50% &7gold from kills"));
+		lore.add("");
+		lore.add(ChatColor.GRAY + "On death:");
+		lore.add(ChatColor.translateAlternateColorCodes('&', "&e\u25a0 &7Earn between &b1000 &7and &b5000 XP&7"));
+
+		meta.setLore(lore);
+		item.setItemMeta(meta);
+		return item;
+	}
+
+	@Override
+	public String getSummary() {
+		return "&a&lBEASTMODE&7 is a Megastreak that grants you increased &bXP&7, &bmax XP&7, " +
+				"gain &bXP&7 on death, but makes you earn less &6gold&7 and take more damage per kill over 50";
 	}
 }

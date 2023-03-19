@@ -35,6 +35,12 @@ public class Berserker extends PitEnchant {
 		).getLore();
 	}
 
+	@Override
+	public String getSummary() {
+		return getDisplayName(false, true) + " &7is an enchant that increases " +
+				"the chance to land critical strikes while on the ground";
+	}
+
 	public int getChance(int enchantLvl) {
 		return enchantLvl * 17 + 24;
 	}

@@ -110,6 +110,11 @@ public class Robinhood extends PitEnchant {
 	}
 
 	@Override
+	public String getSummary() {
+		return getDisplayName(false, true) + " &7is an enchant that makes your arrows home";
+	}
+
+	@Override
 	public List<String> getNormalDescription(int enchantLvl) {
 		DecimalFormat format = new DecimalFormat("0.#");
 		return new PitLoreBuilder(

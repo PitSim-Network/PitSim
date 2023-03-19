@@ -16,7 +16,7 @@ public class PitPigmanBoss extends PitBoss {
 		super(summoner);
 
 		abilities(
-				new PigmanMinionAbility(1, 3, 30),
+				new GenericMinionAbility(1, SubLevelType.ZOMBIE_PIGMAN, 3, 30),
 				new PoundAbility(1, 15),
 				new LightningAbility(10, 1, 0.025),
 				new RuptureAbility(1, 25, 2, 40),

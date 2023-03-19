@@ -21,7 +21,7 @@ public class KnowledgePedestal extends AltarPedestal {
 
 	@Override
 	public int getActivationCost() {
-		return 50;
+		return 200;
 	}
 
 	@Override
@@ -30,7 +30,7 @@ public class KnowledgePedestal extends AltarPedestal {
 				.setName("&3Pedestal of Knowledge")
 				.setLore(new ALoreBuilder(
 						"&7This pedestal increases your",
-						"&7chance of gaining &4Altar XP&7.",
+						"&7chance of gaining &cAltar XP&7.",
 						"",
 						"&7Activation Cost: &f" + getActivationCost() + " Souls",
 						"&7Status: " + getStatus(player)

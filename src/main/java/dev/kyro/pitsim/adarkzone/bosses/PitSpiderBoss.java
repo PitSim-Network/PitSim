@@ -5,8 +5,8 @@ import dev.kyro.pitsim.adarkzone.DropPool;
 import dev.kyro.pitsim.adarkzone.PitBoss;
 import dev.kyro.pitsim.adarkzone.SubLevelType;
 import dev.kyro.pitsim.adarkzone.abilities.CollapseAbility;
+import dev.kyro.pitsim.adarkzone.abilities.GenericMinionAbility;
 import dev.kyro.pitsim.adarkzone.abilities.SlamAbility;
-import dev.kyro.pitsim.adarkzone.abilities.SpiderMinionAbility;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
@@ -18,7 +18,7 @@ public class PitSpiderBoss extends PitBoss {
 		abilities(
 				new SlamAbility(2, 40, 40, 3),
 				new CollapseAbility(2, 5, 5, 20, 20),
-				new SpiderMinionAbility(1, 2, 10,  5)
+				new GenericMinionAbility(1, SubLevelType.SPIDER, 2, 10,  5)
 		);
 	}
 

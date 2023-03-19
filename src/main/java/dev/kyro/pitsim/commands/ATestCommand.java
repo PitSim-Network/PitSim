@@ -1,9 +1,11 @@
 package dev.kyro.pitsim.commands;
 
-import dev.kyro.pitsim.misc.effects.PacketBlock;
+import dev.kyro.pitsim.adarkzone.altar.BiomeChanger;
+import dev.kyro.pitsim.ahelp.HelpManager;
 import net.minecraft.server.v1_8_R3.EntityItem;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.block.Biome;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -11,7 +13,10 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.UUID;
 
 public class ATestCommand implements CommandExecutor {
 
@@ -26,10 +31,20 @@ public class ATestCommand implements CommandExecutor {
 		if(!(sender instanceof Player)) return false;
 		Player player = (Player) sender;
 
-		PacketBlock packetBlock = new PacketBlock(Material.RED_ROSE, (byte) 1, player.getLocation());
-		packetBlock.setViewers(Collections.singletonList(player));
-		packetBlock.spawnBlock();
-		packetBlock.removeAfter(100);
+//		if(BiomeChanger.players.contains(player.getUniqueId())) {
+//			BiomeChanger.players.remove(player.getUniqueId());
+//		} else {
+//			BiomeChanger.players.add(player.getUniqueId());
+//		}
+
+
+//		HelpManager.HelperAgent helperAgent = HelpManager.getAgent(player);
+//		helperAgent.detectIntent(String.join(" ", args));
+
+//		PacketBlock packetBlock = new PacketBlock(Material.RED_ROSE, (byte) 1, player.getLocation());
+//		packetBlock.setViewers(Collections.singletonList(player));
+//		packetBlock.spawnBlock();
+//		packetBlock.removeAfter(100);
 
 //		location = player.getLocation();
 //

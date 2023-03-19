@@ -229,7 +229,7 @@ public class EnchantManager implements Listener {
 		if(mysticType == MysticType.PANTS) chatColor = PantColor.getPantColor(itemStack).chatColor;
 
 		int taintedTier = nbtItem.getInteger(NBTTag.TAINTED_TIER.getRef());
-		int tier = taintedTier != 0 ? taintedTier : enchantNum;
+		int tier = taintedTier != 0 ? taintedTier : enchantNum + 1;
 		return chatColor + "Tier " + (tier != 0 ? AUtil.toRoman(tier) : 0) + " " + mysticType.displayName;
 	}
 

@@ -43,6 +43,12 @@ public class Jumpspammer extends PitEnchant {
 		).getLore();
 	}
 
+	@Override
+	public String getSummary() {
+		return getDisplayName(false, true) + " &7is an enchant that decreases " +
+				"the damage you take and increases the damage of your arrows when you are in the air";
+	}
+
 	public int getDamage(int enchantLvl) {
 		return enchantLvl * 8;
 	}

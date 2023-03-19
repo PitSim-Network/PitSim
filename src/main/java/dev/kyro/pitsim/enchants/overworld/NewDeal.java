@@ -50,6 +50,13 @@ public class NewDeal extends PitEnchant {
 		).getLore();
 	}
 
+	@Override
+	public String getSummary() {
+		return getDisplayName(false, true) + " &7is an enchant that makes you " +
+				"immune to " + Billionaire.INSTANCE.getDisplayName(false, true) +
+				" &7but also makes you take very true damage on every hit";
+	}
+
 	public double getDamageReduction(int enchantLvl) {
 
 		return (enchantLvl - 1) * 4;
