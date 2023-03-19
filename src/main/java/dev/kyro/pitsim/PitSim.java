@@ -706,8 +706,7 @@ public class PitSim extends JavaPlugin {
 			getServer().getPluginManager().registerEvents(new BrewingManager(), this);
 			getServer().getPluginManager().registerEvents(new MusicManager(), this);
 			getServer().getPluginManager().registerEvents(new CutsceneManager(), this);
-//			TODO: FIX CODE IN OTHER TOOD
-			if(false) getServer().getPluginManager().registerEvents(new AuctionDisplays(), this);
+			getServer().getPluginManager().registerEvents(new AuctionDisplays(), this);
 			getServer().getPluginManager().registerEvents(new AuctionManager(), this);
 
 			getServer().getPluginManager().registerEvents(new DarkzoneManager(), this);

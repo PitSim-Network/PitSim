@@ -16,6 +16,7 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.ItemDespawnEvent;
 import org.bukkit.event.player.PlayerPickupItemEvent;
 import org.bukkit.event.player.PlayerTeleportEvent;
+import org.bukkit.event.world.ChunkUnloadEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.potion.PotionEffect;
@@ -93,10 +94,6 @@ public class AuctionDisplays implements Listener {
 	}
 
 	public static void onStart() {
-		pedestalLocations[0] = new Location(MapManager.getDarkzone(), 172.5, 52, -1013.5);
-		pedestalLocations[1] = new Location(MapManager.getDarkzone(), 178.5, 52, -1017.5);
-		pedestalLocations[2] = new Location(MapManager.getDarkzone(), 184.5, 52, -1013.5);
-
 		ArmorStand timerStand = (ArmorStand) MapManager.getDarkzone().spawnEntity(new Location(MapManager.getDarkzone(), 178.5, 50, -1011.5), EntityType.ARMOR_STAND);
 		timerStand.setGravity(false);
 		timerStand.setVisible(false);
@@ -148,9 +145,6 @@ public class AuctionDisplays implements Listener {
 			pedestalLocation.getChunk().load();
 		}
 
-//		TODO: FIX CODE BELOW
-		if(true) return;
-
 		for(int i = 0; i < pedestalLocations.length; i++) {
 			Location pedestalLocation = pedestalLocations[i];
 			ItemStack dropItem = AuctionManager.auctionItems[i].item.item.clone();
@@ -169,6 +163,16 @@ public class AuctionDisplays implements Listener {
 			stand.setCustomNameVisible(true);
 			pedestalArmorStands[i] = stand.getUniqueId();
 
+		}
+	}
+
+	@EventHandler
+	public void onUnload(ChunkUnloadEvent event) {
+		if(event.getChunk().getWorld() != MapManager.getDarkzone()) return;
+		for(Location pedestalLocation : pedestalLocations) {
+			if(pedestalLocation.getChunk().equals(event.getChunk())) {
+				event.setCancelled(true);
+			}
 		}
 	}
 
