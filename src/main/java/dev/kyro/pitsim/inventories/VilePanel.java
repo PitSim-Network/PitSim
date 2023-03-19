@@ -38,13 +38,13 @@ public class VilePanel extends AGUIPanel {
 			ItemStack itemStack = player.getInventory().getItem(i);
 			if(Misc.isAirOrNull(itemStack)) continue;
 			itemStack = itemStack.clone();
-			if(!MysticFactory.isJewel(itemStack, true)) continue;
+			if(!MysticFactory.hasLives(itemStack)) continue;
 
 			PitItem pitItem = ItemFactory.getItem(itemStack);
 			assert pitItem != null;
 			TemporaryItem temporaryItem = pitItem.getAsTemporaryItem();
 
-			if(temporaryItem.isAtMaxLives(itemStack)) continue;
+			if(temporaryItem.isAtMaxLives(itemStack) || temporaryItem.getLives(itemStack) == 0) continue;
 
 			ItemMeta itemMeta = itemStack.getItemMeta();
 			ALoreBuilder loreBuilder = new ALoreBuilder(itemMeta.getLore()).addLore(
@@ -95,7 +95,7 @@ public class VilePanel extends AGUIPanel {
 			assert pitRepair != null;
 			TemporaryItem temporaryItem = pitRepair.getAsTemporaryItem();
 
-			itemStack = temporaryItem.addLives(itemStack, 1);
+			temporaryItem.addLives(itemStack, 1);
 			player.getInventory().setItem(invSlot, itemStack);
 			player.closeInventory();
 

@@ -70,8 +70,14 @@ public class MysticFactory {
 		if(!isMystic(itemStack)) return false;
 
 		NBTItem nbtItem = new NBTItem(itemStack);
-		Integer enchantNum = nbtItem.getInteger(NBTTag.ITEM_ENCHANT_NUM.getRef());
+		int enchantNum = nbtItem.getInteger(NBTTag.ITEM_ENCHANT_NUM.getRef());
 		return enchantNum == 0;
+	}
+
+	public static boolean hasLives(ItemStack itemStack) {
+		if(!isMystic(itemStack)) return false;
+		NBTItem nbtItem = new NBTItem(itemStack);
+		return nbtItem.hasKey(NBTTag.CURRENT_LIVES.getRef());
 	}
 
 	public static boolean isJewel(ItemStack itemStack, boolean onlyComplete) {
@@ -87,5 +93,13 @@ public class MysticFactory {
 
 		NBTItem nbtItem = new NBTItem(itemStack);
 		return nbtItem.hasKey(NBTTag.IS_GEMMED.getRef());
+	}
+
+	public static boolean isBroken(ItemStack itemStack) {
+		if(!isMystic(itemStack) || !hasLives(itemStack)) return false;
+		PitItem pitItem = ItemFactory.getItem(itemStack);
+		assert pitItem != null;
+		TemporaryItem temporaryItem = (TemporaryItem) pitItem;
+		return temporaryItem.getLives(itemStack) == 0;
 	}
 }

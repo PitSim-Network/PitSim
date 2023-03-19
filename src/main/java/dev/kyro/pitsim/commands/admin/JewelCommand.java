@@ -67,17 +67,17 @@ public class JewelCommand extends ACommand {
 		assert pitItem != null;
 		TemporaryItem temporaryItem = pitItem.getAsTemporaryItem();
 
-		if(pitEnchant != null) {
+		PitEnchant jewelEnchant = EnchantManager.getEnchant(pitEnchant);
+		if(jewelEnchant != null) {
 			nbtItem.setInteger(NBTTag.JEWEL_KILLS.getRef(), Constant.JEWEL_KILLS);
 
-			PitEnchant jewelEnchant = EnchantManager.getEnchant(pitEnchant);
 			if(maxLives <= 0) maxLives = EnchantManager.getRandomMaxLives();
 
 			nbtItem = new NBTItem(PantColor.setPantColor(nbtItem.getItem(), PantColor.getNormalRandom()));
 			try {
 				jewel = EnchantManager.addEnchant(nbtItem.getItem(), jewelEnchant, 3, false, true, -1);
 			} catch(Exception ignored) {}
-			jewel = temporaryItem.addMaxLives(jewel, maxLives);
+			temporaryItem.addMaxLives(jewel, maxLives);
 		}
 
 		pitItem.updateItem(jewel);

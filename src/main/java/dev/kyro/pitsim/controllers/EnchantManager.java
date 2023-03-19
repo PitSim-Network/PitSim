@@ -445,7 +445,7 @@ public class EnchantManager implements Listener {
 
 		itemStack = PantColor.setPantColor(nbtItem.getItem(), PantColor.getNormalRandom());
 		int maxLives = getRandomMaxLives();
-		itemStack = temporaryItem.addMaxLives(itemStack, maxLives);
+		temporaryItem.addMaxLives(itemStack, maxLives);
 
 		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
 		if(pitPlayer.stats != null) pitPlayer.stats.jewelsCompleted++;
@@ -548,8 +548,7 @@ public class EnchantManager implements Listener {
 	}
 
 	public static PitEnchant getEnchant(String refName) {
-
-		if(refName.equals("")) return null;
+		if(refName == null || refName.equals("")) return null;
 		for(PitEnchant enchant : pitEnchants) {
 
 			if(!enchant.refNames.contains(refName)) continue;
@@ -624,7 +623,7 @@ public class EnchantManager implements Listener {
 	public static Map<PitEnchant, Integer> getEnchantsOnItem(ItemStack itemStack, Map<PitEnchant, Integer> currentEnchantMap) {
 		Map<PitEnchant, Integer> itemEnchantMap = new HashMap<>();
 		PitItem pitItem = ItemFactory.getItem(itemStack);
-		if(pitItem == null || !pitItem.isMystic) return itemEnchantMap;
+		if(pitItem == null || !pitItem.isMystic || MysticFactory.isBroken(itemStack)) return itemEnchantMap;
 		NBTItem nbtItem = new NBTItem(itemStack);
 
 		NBTCompound itemEnchants = nbtItem.getCompound(NBTTag.MYSTIC_ENCHANTS.getRef());

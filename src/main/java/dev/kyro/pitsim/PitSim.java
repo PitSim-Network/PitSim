@@ -556,7 +556,6 @@ public class PitSim extends JavaPlugin {
 	private void registerNPCs() {
 		if(status.isDarkzone()) {
 			NPCManager.registerNPC(new TaintedShopNPC(Collections.singletonList(MapManager.getDarkzone())));
-			NPCManager.registerNPC(new LeggingsShopNPC(Collections.singletonList(MapManager.getDarkzone())));
 			NPCManager.registerNPC(new PotionMasterNPC(Collections.singletonList(MapManager.getDarkzone())));
 			NPCManager.registerNPC(new AuctioneerNPC(Collections.singletonList(MapManager.getDarkzone())));
 			NPCManager.registerNPC(new MainProgressionNPC(Collections.singletonList(MapManager.getDarkzone())));

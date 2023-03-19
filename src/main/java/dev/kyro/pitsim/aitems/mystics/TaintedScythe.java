@@ -3,12 +3,14 @@ package dev.kyro.pitsim.aitems.mystics;
 import de.tr7zw.nbtapi.NBTItem;
 import dev.kyro.arcticapi.builders.AItemStackBuilder;
 import dev.kyro.arcticapi.builders.ALoreBuilder;
+import dev.kyro.pitsim.aitems.MysticFactory;
 import dev.kyro.pitsim.aitems.StaticPitItem;
 import dev.kyro.pitsim.aitems.TemporaryItem;
 import dev.kyro.pitsim.controllers.EnchantManager;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.enums.AuctionCategory;
 import dev.kyro.pitsim.enums.NBTTag;
+import dev.kyro.pitsim.misc.Misc;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 
@@ -79,6 +81,7 @@ public class TaintedScythe extends StaticPitItem implements TemporaryItem {
 	@Override
 	public void updateItem(ItemStack itemStack) {
 		if(!isThisItem(itemStack)) throw new RuntimeException();
+		boolean hasLives = MysticFactory.hasLives(itemStack);
 
 		NBTItem nbtItem = new NBTItem(itemStack);
 		Integer enchantNum = nbtItem.getInteger(NBTTag.ITEM_ENCHANT_NUM.getRef());
@@ -88,6 +91,15 @@ public class TaintedScythe extends StaticPitItem implements TemporaryItem {
 					.setLore(getLore());
 			return;
 		}
+
+		if(getLives(itemStack) == 0 && hasLives) {
+			itemStack.setType(Material.STONE_HOE);
+			Misc.removeEnchantGlint(itemStack);
+		} else {
+			itemStack.setType(Material.GOLD_HOE);
+			Misc.addEnchantGlint(itemStack);
+		}
+
 		EnchantManager.setItemLore(itemStack, null);
 	}
 

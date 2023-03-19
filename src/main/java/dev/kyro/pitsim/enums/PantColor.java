@@ -1,10 +1,10 @@
 package dev.kyro.pitsim.enums;
 
 import de.tr7zw.nbtapi.NBTItem;
-import dev.kyro.pitsim.misc.Misc;
+import dev.kyro.pitsim.aitems.mystics.MysticPants;
+import dev.kyro.pitsim.controllers.ItemFactory;
 import org.bukkit.ChatColor;
 import org.bukkit.Color;
-import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.LeatherArmorMeta;
 
@@ -62,21 +62,38 @@ public enum PantColor {
 	}
 
 	public static PantColor getPantColor(ItemStack itemStack) {
-		if(Misc.isAirOrNull(itemStack) || itemStack.getType() != Material.LEATHER_LEGGINGS) return null;
-		LeatherArmorMeta leatherArmorMeta = (LeatherArmorMeta) itemStack.getItemMeta();
-		for(PantColor pantColor : values()) if(Color.fromRGB(pantColor.hexColor).equals(leatherArmorMeta.getColor())) return pantColor;
-		return null;
+		if(!(ItemFactory.getItem(itemStack) instanceof MysticPants)) return null;
+		NBTItem nbtItem = new NBTItem(itemStack);
+		return PantColor.getPantColor(nbtItem.getString(NBTTag.SAVED_PANTS_COLOR.getRef()));
 	}
 
 	public static ItemStack setPantColor(ItemStack itemStack, PantColor pantColor) {
-		if(Misc.isAirOrNull(itemStack) || itemStack.getType() != Material.LEATHER_LEGGINGS) return itemStack;
-		LeatherArmorMeta leatherArmorMeta = (LeatherArmorMeta) itemStack.getItemMeta();
+		if(!(ItemFactory.getItem(itemStack) instanceof MysticPants)) return itemStack;
 
+		if(itemStack.getItemMeta() instanceof LeatherArmorMeta) {
+			LeatherArmorMeta leatherArmorMeta = (LeatherArmorMeta) itemStack.getItemMeta();
+			leatherArmorMeta.setColor(Color.fromRGB(pantColor.hexColor));
+			leatherArmorMeta.setDisplayName(pantColor.chatColor + (ChatColor.RESET + leatherArmorMeta.getDisplayName()));
+			itemStack.setItemMeta(leatherArmorMeta);
+		}
+
+		NBTItem nbtItem = new NBTItem(itemStack, true);
+		nbtItem.setString(NBTTag.SAVED_PANTS_COLOR.getRef(), pantColor.displayName);
+
+		updatePantColor(itemStack);
+		return itemStack;
+	}
+
+	public static void updatePantColor(ItemStack itemStack) {
+		if(!(ItemFactory.getItem(itemStack) instanceof MysticPants) ||
+				!(itemStack.getItemMeta() instanceof LeatherArmorMeta)) return;
+
+		PantColor pantColor = getPantColor(itemStack);
+		if(pantColor == null) return;
+
+		LeatherArmorMeta leatherArmorMeta = (LeatherArmorMeta) itemStack.getItemMeta();
 		leatherArmorMeta.setColor(Color.fromRGB(pantColor.hexColor));
 		leatherArmorMeta.setDisplayName(pantColor.chatColor + (ChatColor.RESET + leatherArmorMeta.getDisplayName()));
 		itemStack.setItemMeta(leatherArmorMeta);
-
-		NBTItem nbtItem = new NBTItem(itemStack);
-		return nbtItem.getItem();
 	}
 }

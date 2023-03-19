@@ -24,7 +24,6 @@ public enum MysticType {
 		if(pitItem == null || !pitItem.isMystic) return null;
 
 		switch(itemStack.getType()) {
-
 			case GOLD_SWORD:
 			case STONE_SWORD:
 				return SWORD;
@@ -42,8 +41,6 @@ public enum MysticType {
 		}
 		return null;
 	}
-
-
 
 	public boolean isTainted() {
 		return this == TAINTED_CHESTPLATE || this == TAINTED_SCYTHE;

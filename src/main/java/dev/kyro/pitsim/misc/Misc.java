@@ -413,6 +413,10 @@ public class Misc {
 		itemStack.setItemMeta(itemMeta);
 	}
 
+	public static void removeEnchantGlint(ItemStack itemStack) {
+		itemStack.removeEnchantment(Enchantment.WATER_WORKER);
+	}
+
 	public static String fetchUsernameFromMojang(String uuid) {
 		try {
 			// Make the HTTP request to the Mojang API

@@ -4,6 +4,7 @@ import de.tr7zw.nbtapi.NBTCompound;
 import de.tr7zw.nbtapi.NBTItem;
 import dev.kyro.arcticapi.builders.AItemStackBuilder;
 import dev.kyro.arcticapi.builders.ALoreBuilder;
+import dev.kyro.pitsim.aitems.MysticFactory;
 import dev.kyro.pitsim.aitems.StaticPitItem;
 import dev.kyro.pitsim.aitems.TemporaryItem;
 import dev.kyro.pitsim.controllers.EnchantManager;
@@ -69,10 +70,12 @@ public class MysticPants extends StaticPitItem implements TemporaryItem {
 	@Override
 	public void updateItem(ItemStack itemStack) {
 		if(!isThisItem(itemStack)) throw new RuntimeException();
+		boolean isJewel = MysticFactory.isJewel(itemStack, false);
+		boolean isJewelComplete = MysticFactory.isJewel(itemStack, true);
 
 		NBTItem nbtItem = new NBTItem(itemStack);
 		Integer enchantNum = nbtItem.getInteger(NBTTag.ITEM_ENCHANT_NUM.getRef());
-		if(enchantNum == 0) {
+		if(enchantNum == 0 && !isJewel) {
 			PantColor pantColor = PantColor.getPantColor(itemStack);
 			assert pantColor != null;
 			new AItemStackBuilder(itemStack)
@@ -80,6 +83,14 @@ public class MysticPants extends StaticPitItem implements TemporaryItem {
 					.setLore(getLore(pantColor));
 			return;
 		}
+
+		if(getLives(itemStack) == 0 && isJewelComplete) {
+			itemStack.setType(Material.CHAINMAIL_LEGGINGS);
+		} else {
+			itemStack.setType(Material.LEATHER_LEGGINGS);
+			PantColor.updatePantColor(itemStack);
+		}
+
 		EnchantManager.setItemLore(itemStack, null);
 	}
 

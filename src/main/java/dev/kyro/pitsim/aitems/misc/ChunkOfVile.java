@@ -3,6 +3,7 @@ package dev.kyro.pitsim.aitems.misc;
 import de.tr7zw.nbtapi.NBTItem;
 import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.arcticapi.misc.AOutput;
+import dev.kyro.pitsim.aitems.MysticFactory;
 import dev.kyro.pitsim.aitems.StaticPitItem;
 import dev.kyro.pitsim.aitems.TemporaryItem;
 import dev.kyro.pitsim.controllers.MapManager;
@@ -53,9 +54,12 @@ public class ChunkOfVile extends StaticPitItem {
 	@Override
 	public List<String> getLore() {
 		return new ALoreBuilder(
-				"&7Kept on death",
+				"&7Right-Click to open menu.",
+				"&7Can be consumed to repair",
+				"&7a life on a &3Jewel &7item. Does",
+				"&7not work on broken items",
 				"",
-				"&cHeretic artifact"
+				"&7Kept on death"
 		).getLore();
 	}
 
@@ -80,11 +84,11 @@ public class ChunkOfVile extends StaticPitItem {
 		}
 
 		if(Misc.getItemCount(player, (pitItem, itemStack) -> {
-			if(!(pitItem instanceof TemporaryItem)) return false;
+			if(!MysticFactory.hasLives(itemStack)) return false;
 			TemporaryItem temporaryItem = (TemporaryItem) pitItem;
-			return !temporaryItem.isAtMaxLives(itemStack);
+			return !temporaryItem.isAtMaxLives(itemStack) && temporaryItem.getLives(itemStack) != 0;
 		}) == 0) {
-			AOutput.error(player, "&c&lERROR!&7 You have no items to repair!");
+			AOutput.error(player, "&c&lERROR!&7 There are no items to repair in your inventory (armor excluded)");
 			Sounds.ERROR.play(player);
 			return;
 		}
